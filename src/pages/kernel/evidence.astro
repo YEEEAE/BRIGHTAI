@@ -432,106 +432,55 @@ const SECTOR_LABEL: Record<string, string> = {
     padding-block: var(--space-4);
   }
 
-  /* ── PROMPT-11: PDF.js viewer (replaces slow iframe preview) ── */
-  .kernel-evidence-pdf[hidden] { display: none; }
-  .kernel-evidence-pdf {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  /* ── BAI-PERF-02: HTML evidence preview (replaces pdfjs-dist canvas viewer).
+       Same data, styled HTML. Zero npm deps — dropped ~125KB gz pdfjs-dist. ── */
+  .kernel-evidence-preview[hidden] { display: none; }
+  .kernel-evidence-preview {
     margin-block-start: var(--space-4);
-  }
-  .kernel-evidence-pdf__loading {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding-block: var(--space-6);
-    justify-content: center;
-    color: var(--text-secondary);
-    font-size: var(--text-sm);
-  }
-  .kernel-evidence-pdf__spinner {
-    inline-size: 20px;
-    block-size: 20px;
-    border: 2px solid var(--border-subtle, rgba(255,255,255,.12));
-    border-block-start-color: var(--interactive-primary);
-    border-radius: 50%;
-    animation: kernel-evidence-pdf-spin 0.8s linear infinite;
-  }
-  @keyframes kernel-evidence-pdf-spin {
-    to { transform: rotate(360deg); }
-  }
-  .kernel-evidence-pdf__error {
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--status-danger);
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--status-danger) 10%, transparent);
-    color: var(--text-primary);
-    font-size: var(--text-sm);
-  }
-  .kernel-evidence-pdf__stage {
-    max-block-size: 60vh;
-    overflow: auto;
     border: 1px solid var(--border-subtle, rgba(255,255,255,.12));
     border-radius: var(--radius-md);
     background: var(--bg-base);
-    padding: var(--space-3);
-    display: flex;
-    justify-content: center;
+    overflow: hidden;
   }
-  .kernel-evidence-pdf__canvas {
-    max-inline-size: 100%;
-    height: auto;
-    box-shadow: 0 4px 16px rgba(0,0,0,.35);
-    background: #fff;
-  }
-  .kernel-evidence-pdf__controls {
+  .kernel-evidence-preview__head {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .kernel-evidence-pdf__btn {
-    min-height: 44px;
-    min-width: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-subtle, rgba(255,255,255,.16));
-    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    border-block-end: 1px solid var(--border-subtle, rgba(255,255,255,.12));
     background: var(--bg-surface);
-    color: var(--text-primary);
-    font-size: var(--text-lg);
-    cursor: pointer;
-    transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
   }
-  .kernel-evidence-pdf__btn:hover:not(:disabled) {
-    background: var(--bg-elevated);
-    border-color: var(--interactive-primary);
+  .kernel-evidence-preview__title {
+    font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
-  .kernel-evidence-pdf__btn:focus-visible {
-    outline: 2px solid var(--interactive-primary);
-    outline-offset: 2px;
-  }
-  .kernel-evidence-pdf__btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-  .kernel-evidence-pdf__page {
+  .kernel-evidence-preview__body {
+    padding: var(--space-4);
+    max-block-size: 55vh;
+    overflow: auto;
     font-family: var(--font-mono, 'IBM Plex Mono', monospace);
     font-size: var(--text-sm);
-    color: var(--text-secondary);
-    min-inline-size: 3.5rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    direction: ltr;
+    text-align: left;
+  }
+  .kernel-evidence-preview__line { white-space: pre-wrap; word-break: break-word; }
+  .kernel-evidence-preview__line--sep { color: var(--text-muted); }
+  .kernel-evidence-preview__line--head { color: var(--interactive-primary); font-weight: 600; }
+  .kernel-evidence-preview__line--foot { color: var(--text-muted); font-size: var(--text-xs); }
+  .kernel-evidence-preview__note {
+    padding: var(--space-2) var(--space-4);
+    border-block-start: 1px solid var(--border-subtle, rgba(255,255,255,.12));
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    font-size: var(--text-xs);
     text-align: center;
-  }
-  .kernel-evidence-pdf__sep {
-    inline-size: 1px;
-    block-size: 24px;
-    background: var(--border-subtle, rgba(255,255,255,.16));
-    margin-inline: var(--space-1);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .kernel-evidence-pdf__spinner { animation: none; }
   }
 
   /* ═══════════ PROMPT-3: Signed certificates section + verify modal ═══════════ */
@@ -1251,33 +1200,16 @@ const SECTOR_LABEL: Record<string, string> = {
         <p class="kernel-evidence-jsonverify__result" data-kernel-preview-verify-result></p>
       </div>
 
-      {/* PROMPT-11: PDF.js viewer — replaces the slow iframe srcdoc preview.
-          Lazy-loads pdfjs-dist + pdf-lib only when the modal opens. */}
-      <div class="kernel-evidence-pdf" data-kernel-evidence-pdf-viewer hidden>
-        <div class="kernel-evidence-pdf__loading" data-kernel-evidence-pdf-loading role="status" aria-live="polite">
-          <span class="kernel-evidence-pdf__spinner" aria-hidden="true"></span>
-          <span>جارٍ تحميل ملف الدليل…</span>
+      {/* BAI-PERF-02: HTML evidence preview (replaces pdfjs-dist canvas viewer).
+          Renders the same evidence metadata as styled HTML — zero npm deps.
+          The "تنزيل PDF" button below still produces a real PDF via the
+          zero-dependency kernel-evidence-pdf-lite module. */}
+      <div class="kernel-evidence-preview" data-kernel-evidence-preview-panel hidden>
+        <div class="kernel-evidence-preview__head">
+          <span class="kernel-evidence-preview__title">Evidence File Preview</span>
         </div>
-        <p class="kernel-evidence-pdf__error" data-kernel-evidence-pdf-error hidden role="alert"></p>
-        <div class="kernel-evidence-pdf__stage">
-          <canvas class="kernel-evidence-pdf__canvas" data-kernel-evidence-pdf-canvas aria-label="معاينة ملف الدليل"></canvas>
-        </div>
-        <div class="kernel-evidence-pdf__controls" role="toolbar" aria-label="أدوات معاينة PDF">
-          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-prev aria-label="الصفحة السابقة" data-kernel-touch>
-            <span aria-hidden="true">→</span>
-          </button>
-          <span class="kernel-evidence-pdf__page" data-kernel-evidence-pdf-page aria-live="polite">1 / 1</span>
-          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-next aria-label="الصفحة التالية" data-kernel-touch>
-            <span aria-hidden="true">←</span>
-          </button>
-          <span class="kernel-evidence-pdf__sep" aria-hidden="true"></span>
-          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-zoom-out aria-label="تصغير" data-kernel-touch>
-            <span aria-hidden="true">−</span>
-          </button>
-          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-zoom-in aria-label="تكبير" data-kernel-touch>
-            <span aria-hidden="true">+</span>
-          </button>
-        </div>
+        <pre class="kernel-evidence-preview__body" data-kernel-evidence-preview-body></pre>
+        <p class="kernel-evidence-preview__note">معاينة نصية لملف الدليل — التنزيل PDF ينتج ملفاً فعلياً.</p>
       </div>
 
       <div class="kernel-modal__actions">
@@ -1336,15 +1268,15 @@ const SECTOR_LABEL: Record<string, string> = {
       compiled client module /js/certificate-verifier.js (admin-key pattern,
       server-authoritative verify, PDF/JSON downloads). CSP-safe module. */}
   <script type="module" src="/js/kernel-evidence-certs.js"></script>
-  {/* PROMPT-11: lazy-load the PDF.js viewer module. Astro bundles the npm
-      deps (pdfjs-dist + pdf-lib) here; the worker is served from
-      /js/pdf.worker.mjs (same-origin, CSP-safe). The inline script above
-      calls window.__kernelEvidencePdfInit when the preview modal opens. */}
+  {/* BAI-PERF-02: zero-dependency evidence PDF builder. Replaces the old
+      pdfjs-dist (canvas viewer, ~125KB gz) + pdf-lib (~175KB gz) combo.
+      This module produces a valid PDF 1.4 from evidence metadata using
+      only the standard-14 Courier font — no fonts embedded, no worker,
+      no canvas. The inline script below calls window.__kernelEvidencePdf
+      when the user clicks "تنزيل PDF". */}
   <script>
-    import { initPdfViewer } from '../../scripts/kernel-evidence-pdf';
-    window.__kernelEvidencePdfInit = (data, root) => {
-      initPdfViewer(data, root);
-    };
+    import { buildEvidencePdfBlob } from '../../scripts/kernel-evidence-pdf-lite';
+    window.__kernelEvidencePdf = (data) => buildEvidencePdfBlob(data);
   </script>
 </KernelLayout>
 
@@ -1529,11 +1461,9 @@ const SECTOR_LABEL: Record<string, string> = {
       modal.setAttribute('aria-hidden', 'false');
       modal.dataset.previewId = data.id || '';
 
-      // PROMPT-11: render the PDF via the lazy-loaded PDF.js viewer module.
-      // The module is attached to window by the <script type="module"> below.
-      if (window.__kernelEvidencePdfInit) {
-        window.__kernelEvidencePdfInit(data, modal);
-      }
+      // BAI-PERF-02: render the evidence data as styled HTML instead of a
+      // pdfjs-dist canvas render. Same fields, zero npm deps.
+      renderEvidencePreview(data);
 
       setTimeout(function () {
         var close = el('.kernel-modal__close');
@@ -1546,22 +1476,78 @@ const SECTOR_LABEL: Record<string, string> = {
       if (!modal) return;
       modal.setAttribute('data-open', 'false');
       modal.setAttribute('aria-hidden', 'true');
-      // PROMPT-11: notify the PDF viewer to clean up its listeners + destroy
-      // the loaded PDF document (avoids memory leaks on repeated opens).
-      modal.dispatchEvent(new CustomEvent('kernel:evidence-pdf-close'));
     }
 
     function downloadFor(id) {
       var card = el('[data-kernel-evidence-item="' + id + '"]');
       if (!card) return;
-      var title = card.querySelector('.kernel-evidence-item__sub').textContent || id;
-      var content =
-        'BrightAI Kernel — Evidence File\n' +
-        '========================\n\n' +
-        'ID: ' + id + '\n' +
-        'Title: ' + title + '\n\n' +
-        'هذا ملف تجريبي يحاكي المحتوى الفعلي. في الإنتاج يتم توليد PDF موقّع رقمياً عبر Kernel API.\n';
-      downloadFile(id + '.pdf.txt', 'text/plain;charset=utf-8', content);
+      // BAI-PERF-02: collect the same metadata the preview modal uses, then
+      // hand it to the zero-dependency PDF builder (buildEvidencePdfBlob).
+      // This produces a real, valid PDF instead of the old .pdf.txt plain
+      // text, and costs 0 bytes of JS deps (the old path pulled pdf-lib).
+      var previewBtn = card.querySelector('[data-kernel-evidence-preview]');
+      var data = {
+        id: id,
+        title: (card.querySelector('.kernel-evidence-item__sub') || {}).textContent || id,
+        query: '—',
+        trace: previewBtn ? (previewBtn.getAttribute('data-trace') || '—') : '—',
+        hash: previewBtn ? (previewBtn.getAttribute('data-hash') || '—') : '—',
+        risk: previewBtn ? parseInt(previewBtn.getAttribute('data-risk') || '0', 10) : 0,
+        status: previewBtn ? (previewBtn.getAttribute('data-status') || '—') : '—',
+        sector: previewBtn ? (previewBtn.getAttribute('data-sector') || '—') : '—',
+        pack: previewBtn ? (previewBtn.getAttribute('data-pack') || '—') : '—',
+        retention: previewBtn ? (previewBtn.getAttribute('data-retention') || '—') : '—',
+        cert: previewBtn ? (previewBtn.getAttribute('data-cert') || '—') : '—',
+        size: (card.querySelector('.kernel-evidence-item__meta dd:nth-of-type(4)') || {}).textContent || '—',
+        signed: previewBtn ? (previewBtn.getAttribute('data-signed') || '—') : '—',
+      };
+      if (window.__kernelEvidencePdf) {
+        var blob = window.__kernelEvidencePdf(data);
+        downloadFile(id + '.pdf', 'application/pdf', blob);
+      } else {
+        // Fallback (module not yet loaded): keep the old text behaviour so
+        // the button never dead-ends. This branch should be unreachable in
+        // practice because the module script is in the same page.
+        downloadFile(id + '.pdf.txt', 'text/plain;charset=utf-8', 'BrightAI Kernel — Evidence File\n\nID: ' + id);
+      }
+    }
+
+    // BAI-PERF-02: render the evidence data as styled HTML inside the preview
+    // modal. Replaces the pdfjs-dist canvas renderer. Mirrors the PDF body so
+    // what the user sees matches what they download.
+    function renderEvidencePreview(data) {
+      var preview = el('[data-kernel-evidence-preview-panel]');
+      var body = el('[data-kernel-evidence-preview-body]');
+      if (!preview || !body) return;
+      var sep = '======================================================';
+      var lines = [
+        { t: 'BrightAI Kernel — Evidence File', c: 'head' },
+        { t: sep, c: 'sep' },
+        { t: '' },
+        { t: 'Evidence ID    : ' + (data.id || '—') },
+        { t: 'Title          : ' + (data.title || '—') },
+        { t: 'Query          : ' + (data.query || '—') },
+        { t: 'Trace ID       : ' + (data.trace || '—') },
+        { t: 'Hash (SHA-256) : ' + (data.hash || '—') },
+        { t: 'Risk Score     : ' + (data.risk != null ? data.risk + ' / 100' : '—') },
+        { t: 'Status         : ' + (data.status || '—') },
+        { t: 'Sector         : ' + (data.sector || '—') },
+        { t: 'Compliance Pack: ' + (data.pack || '—') },
+        { t: 'Retention      : ' + (data.retention || '—') },
+        { t: 'Certificate    : ' + (data.cert || '—') },
+        { t: 'Size           : ' + (data.size || '—') },
+        { t: 'Signed         : ' + (data.signed || '—') },
+        { t: '' },
+        { t: sep, c: 'sep' },
+        { t: 'Demo file. In production this is generated server-side from', c: 'foot' },
+        { t: 'the Kernel API and signed cryptographically (Ed25519 / SHA-256).', c: 'foot' },
+        { t: '', c: 'foot' },
+        { t: 'Verification: /api/kernel/certificates/verify', c: 'foot' },
+      ];
+      // Build lines as escaped text nodes to avoid any HTML injection from
+      // metadata values (defense in depth — data is local/demo only).
+      body.textContent = lines.map(function (l) { return l.t; }).join('\n');
+      preview.hidden = false;
     }
 
     function applyFilters() {
