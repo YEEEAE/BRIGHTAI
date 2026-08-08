@@ -19,6 +19,19 @@ skills_ready: 7
 
 ---
 
+### 2026-08-09 — BAI-P1-TYPES-001: شدّ عقد أنواع Prisma + CI drift gate
+
+- **Files**: `packages/db/src/client.ts` (استبدال `Omit<PrismaClient,…>` بـ `Prisma.TransactionClient` + شل `as unknown` casts)، `scripts/verify-prisma-drift.mjs` (جديد — CI gate)، `package.json` (`verify:prisma:drift` script)، `.github/workflows/ci-build-guard.yml` (step جديد بعد `Generate Prisma client`)
+- **What**: المهمة وصلت بادعاء "42 خطأ typecheck". التشخيص أثبت إن المشكلة **منحلّة فعليًا على main** عبر `pretypecheck→db:generate` المُتبت منذ `2a3ddffc` + `postinstall: prisma generate`. تقرير الأوديت بُني على commit مستقل (`5d6efbe3`) مو موجود في تاريخنا. بس فيه ثغرتان حقيقيتان سدّيتهم: (1) TS7006 implicit-any على `tx` + `fn(tx as unknown as …)` casts قبيحة في `client.ts:90,121,103,125`، (2) ما فيه drift-detection بين schema والـ generated client. أصلحت (1) بـ `Prisma.TransactionClient` صريح (لا any، لا cast) و (2) بـ سكربت جديد يقرأ models/enums من schema ويقارنها بـ generated client exports.
+- **Why**: قيد المهمة "ممنوع cast يخفي الانحراف" + AC "CI check يمنع تكرار الانحراف". الـ casts كانوا يخفوا TS7006 (يظهر لو فُقد generated client)، و الـ CI كان يتشيك وجود الـ client بس مو تطابقه مع schema — بالظبط فئة الانحراف اللي كسرت typecheck في الأوديت.
+- **Verification**: `rm -rf node_modules/.prisma/client && pnpm db:generate` (clean sim) → ✅، `npm run typecheck` → 5/5 Done 0 أخطاء ✅، `npm run verify:prisma:drift` → exit 0 (29 model + 24 enum متزامنين) ✅، `npm run build` → EXIT=0 ✅، `grep -rE "as any|@ts-ignore|as unknown" packages/db/src/` → 0 نتائج ✅. السكربت مُختبَر: لقّط drift حقيقي لما حذفت `LeadQueue` + `Role` يدويًا (exit 1 + diff).
+- **Report**: `report/2026-08-09-bai-p1-types-001-prisma-contract.md` (جديد)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظات مهمة للـ future agents: (1) `Prisma.TransactionClient` متاح كنوع مُولَّد — استخدمه بدل `Omit<PrismaClient, ITXClientDenyList>` اليدوي لأي callback `$transaction`. (2) الـ CI step القديم `test -d …/@prisma+client@5.22.0_prisma@5.22.0/…` هش (مقيّد بإصدار) — يستاهل إصلاح مستقل. (3) `verify-prisma-drift.mjs` field-level ما يدقق (existence-only) — `prisma generate` هو الـ authority على الحقول.
+
+---
+
 ### 2026-08-09 — SRC-LINK-REPAIR: إصلاح false positives في internal-links-audit (migrated pages غير مُتعرَّف عليها)
 
 - **Files**: `scripts/internal-links-common.mjs` (إضافة `readMigratedPageRoutes()` + استدعائها في `buildFileIndex()` — تسجّل canonicalات `src/data/migrated-pages/*.json` كـ valid public routes)

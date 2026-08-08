@@ -129,6 +129,12 @@ jobs:
             && echo "✅ Prisma client generated" \
             || (echo "❌ Prisma client NOT generated"; exit 1)
 
+      - name: Verify Prisma schema ↔ generated client drift
+        # BAI-P1-TYPES-001: every model/enum in schema.prisma must have a
+        # matching export in the generated @prisma/client. Catches the
+        # exact TS2305 drift class that broke typecheck on a clean clone.
+        run: pnpm verify:prisma:drift
+
   # ────────────────────────────────────────────────────────────────
   # Job 2: TypeScript Typecheck (all workspaces)
   # Catches: type errors, missing fields, schema drift.

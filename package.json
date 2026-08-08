@@ -35,6 +35,7 @@
     "build:patch-entry": "node scripts/patch-server-entry.mjs",
     "verify:deployment-surface": "node scripts/verify-deployment-surface.mjs",
     "verify:csp-drift": "node scripts/verify-csp-drift.mjs",
+    "verify:prisma:drift": "node scripts/verify-prisma-drift.mjs",
     "headers:sync": "node scripts/sync-headers-from-csp.mjs",
     "headers:check": "CHECK=1 node scripts/sync-headers-from-csp.mjs",
     "verify:live:headers": "node scripts/verify-live-security-headers.mjs",

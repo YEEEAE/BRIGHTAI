@@ -19,7 +19,7 @@
  *   await dbServiceRole.organization.delete({ where: { id } });
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -70,6 +70,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 /**
+ * The transaction client Prisma hands to `$transaction` callbacks. This
+ * is the generated `Prisma.TransactionClient` (= `Omit<PrismaClient,
+ * ITXClientDenyList>`), kept as a named alias so the callback `tx`
+ * parameter has a single explicit source of truth instead of being
+ * inferred as `any` when the generated client is missing (TS7006).
+ */
+export type TransactionClient = Prisma.TransactionClient;
+
+/**
  * Run `fn` inside a transaction with `app.current_org_id` and
  * `app.current_user_id` set via `SET LOCAL`. The session-local config
  * only lives for this transaction, so leakage between requests is
@@ -80,14 +89,9 @@ if (process.env.NODE_ENV !== 'production') {
 export async function withTenant<T>(
   orgId: string,
   userId: string | null,
-  fn: (
-    tx: Omit<
-      PrismaClient,
-      '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
-    >,
-  ) => Promise<T>,
+  fn: (tx: TransactionClient) => Promise<T>,
 ): Promise<T> {
-  return db.$transaction(async (tx) => {
+  return db.$transaction(async (tx: TransactionClient) => {
     // SET LOCAL configures the value only for the current transaction.
     // Two separate SETs because each parameter requires its own call.
     await tx.$executeRawUnsafe(
@@ -100,7 +104,7 @@ export async function withTenant<T>(
         userId,
       );
     }
-    return fn(tx as unknown as Parameters<typeof fn>[0]);
+    return fn(tx);
   });
 }
 
@@ -111,18 +115,13 @@ export async function withTenant<T>(
  * access but want a clear audit trail.
  */
 export async function withServiceRole<T>(
-  fn: (
-    tx: Omit<
-      PrismaClient,
-      '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
-    >,
-  ) => Promise<T>,
+  fn: (tx: TransactionClient) => Promise<T>,
 ): Promise<T> {
-  return dbServiceRole.$transaction(async (tx) => {
+  return dbServiceRole.$transaction(async (tx: TransactionClient) => {
     await tx.$executeRawUnsafe(
       `SELECT set_config('app.is_service', 'true', true)`,
     );
-    return fn(tx as unknown as Parameters<typeof fn>[0]);
+    return fn(tx);
   });
 }
 

@@ -1,4 +1,33 @@
 ---
+Task ID: 2026-08-09-BAI-P1-TYPES-001
+Agent: BrightAI Workspace Agent v2.3
+Task: BAI-P1-TYPES-001 — إرجاع typecheck لـ green بدون cast يخفي الانحراف + CI drift gate
+Started: 2026-08-09T01:50:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت brain.md (protocol 0.6) + audit2.md (التقرير المُحفِّز للمهمة)
+- Discovery: شغّلت `npm run typecheck` → نجح بـ 0 أخطاء على `main` (`f36068ca`). تناقض مع ادعاء الأوديت "42 خطأ".
+- قارنت الثلاثة: `schema.prisma` (29 model + 24 enum) · `types.ts` imports · `node_modules/.prisma/client/index.d.ts` exports — كلها متطابقة.
+- جاوبت السؤال الجوهري: لا schema ناقصة ولا types.ts متأخرة — المشكلة منحلّة فعليًا عبر `pretypecheck→db:generate` المُتبت منذ `2a3ddffc` (2026-07-18).
+- أعدت إنتاج فشل الأوديت: حذفت `node_modules/.prisma/client/` وشغّلت `tsc --noEmit` مباشرة → ~47 خطأ TS2305. هذي حالة clean clone بدون generation.
+- اكتشفت ثغرتين حقيقيتين: (1) TS7006 implicit-any على `tx` + `fn(tx as unknown as …)` casts في `client.ts:90,121,103,125`. (2) ما فيه drift-detection بين schema والـ generated.
+- اختبرت `Prisma.TransactionClient` متاح كنوع مُولَّد (`Omit<DefaultPrismaClient, ITXClientDenyList>`).
+- عدّلت `packages/db/src/client.ts`: `import { Prisma }` + `export type TransactionClient = Prisma.TransactionClient` + `tx: TransactionClient` صريح + `fn(tx)` مباشرة (لا cast).
+- كتبت `scripts/verify-prisma-drift.mjs` (CI gate): يقرأ models/enums من schema + يقارنها بـ generated client exports. exit 0/1/2.
+- اختبرت السكربت: in-sync → exit 0 ✅؛ حذفت LeadQueue+Role يدويًا → exit 1 + diff واضح ✅؛ استعدت → exit 0 ✅.
+- ربطت في `package.json`: `"verify:prisma:drift"` + في `ci-build-guard.yml`: step بعد `Generate Prisma client`.
+- التحقق الكامل: `rm -rf node_modules/.prisma/client && pnpm db:generate` → ✅، `npm run typecheck` → 5/5 Done 0 أخطاء ✅، `verify:prisma:drift` → exit 0 ✅، `npm run build` → EXIT=0 ✅.
+- `grep -rE "as any|@ts-ignore|as unknown" packages/db/src/` → 0 نتائج ✅ (قيد المهمة محترم).
+- كتبت `report/2026-08-09-bai-p1-types-001-prisma-contract.md` + حدّثت `brain.md`.
+
+Stage Summary:
+- المشكلة: الأوديت ادّعى 42 خطأ، بس typecheck ينجح على main. التقرير بُني على commit مستقل (`5d6efbe3`) مو في تاريخنا.
+- الحل لما لقيته حقيقي: شلت 2× TS7006 + 2× `as unknown` cast بـ `Prisma.TransactionClient` صريح، وأضفت CI drift gate يمنع تكرار فئة الانحراف اللي كسرت typecheck.
+- النتيجة: 4 ACs كلها تحقّقت. typecheck أخضر من clean install، لا cast جديد، drift-detection في CI.
+- المخاطر المتبقية: (1) drift gate field-level ما يدقق (existence-only). (2) CI step القديم `test -d …/@prisma+client@5.22.0…` هش (مقيّد بإصدار) — خارج نطاق المهمة.
+
+---
 Task ID: 2026-08-04-KRN-PDF-VIEWER
 Agent: BrightAI Workspace Agent v2.3
 Task: إنشاء KernelPdfViewer.astro مع TypeScript types صحيحة (إصلاح خطأ pdfDoc implicit any)
