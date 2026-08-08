@@ -64,6 +64,17 @@ const result = await new PurgeCSS().purge({
     greedy: [/sc-matrix/],
     keepAtRules: true,
     keyframes: true,
+    // BAI-CWV-CLS-001 (2026-08-08): font-face fallback families (FLO) are only
+    // referenced inside CSS (as fallback chains in --font-sans/--font-display).
+    // PurgeCSS fontFace analysis scans DOM content (HTML/JS) and sees no class/
+    // literal named 'IBM Plex Sans Arabic Fallback', so it strips the @font-face
+    // blocks even though CSS references them in font-family. Safelist them by
+    // keeping any @font-face whose font-family contains a fallback name — this is
+    // a rule-level (not class-level) filter so it lands at the raws processing.
+    fontFace: [
+      'IBM Plex Sans Arabic Fallback',
+      'Inter Fallback',
+    ],
   },
   fontFace: true,
   variables: true,

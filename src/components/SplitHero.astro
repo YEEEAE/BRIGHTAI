@@ -1060,7 +1060,12 @@ import TrustBadges from './TrustBadges.astro';
   // ~0.4KB minified. Skipped entirely on touch devices.
   // BAI-CWV-TBT-001 (2026-08-08): deferred via requestIdleCallback. The tilt
   // only activates on hover, so it has no perceptual role before interaction
-  // and can safely wait for an idle callback after LCP.
+  // and can safely wait for an idle callback after LCP. scheduleIdle is inlined
+  // because Astro compiles every <script> into an isolated module scope.
+  const scheduleIdle =
+    typeof window.requestIdleCallback === 'function'
+      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
+      : (work) => setTimeout(work, 1200);
   (function setupTilt() {
     let panel: HTMLElement | null = null;
     let raf = 0;
@@ -1128,6 +1133,12 @@ import TrustBadges from './TrustBadges.astro';
   // BAI-CWV-TBT-001 (2026-08-08): deferred via requestIdleCallback. The chip
   // shows the first word from SSR HTML, so rotation is a progressive
   // enhancement that can wait for idle without affecting the hero content.
+  // scheduleIdle is inlined because Astro compiles every <script> into an
+  // isolated module scope.
+  const scheduleIdle =
+    typeof window.requestIdleCallback === 'function'
+      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
+      : (work) => setTimeout(work, 1200);
   (function setupChipRotate() {
     const ROTATE_MS = 2800;
     const TRANSITION_MS = 450; // يطابق transition في CSS
@@ -1185,6 +1196,11 @@ import TrustBadges from './TrustBadges.astro';
   // lh-home-desktop.json bootup-time audit). Loading the module only when the
   // main thread is idle moves that work out of the first-paint critical path
   // without any perceptual loss — the canvas is invisible until dots animate.
+  // scheduleIdle is inlined (every <script> is an isolated module scope).
+  const scheduleIdle =
+    typeof window.requestIdleCallback === 'function'
+      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
+      : (work) => setTimeout(work, 1200);
   document.addEventListener('astro:page-load', () => {
     scheduleIdle(async () => {
       await import('../scripts/dotted-surface.js');
