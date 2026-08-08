@@ -19,7 +19,7 @@ Each prompt is **self-contained and copy-pasteable** into a coding agent. Every 
 | BAI-P0-02 | Cut JS bundle from 330 KB to ≤ 60 KB gz | P0 | Frontend |
 | BAI-P0-03 | Fix homepage CLS 0.168 / LCP 4.1s / Perf 29 | P0 | Frontend |
 | BAI-P1-01 | Link 22 orphan pages | P1 | SEO/Frontend |
-| BAI-P1-02 | Resolve 29 pages outside sitemap | P1 | SEO |
+| BAI-P1-02 | Index ALL 29 pages outside sitemap (ZERO noindex) | P1 | SEO |
 | BAI-P1-03 | Expand 24 thin `docs/` files | P1 | Content |
 | BAI-P1-04 | Fix 69 source-level link references | P1 | Frontend |
 | BAI-P2-01 | Fix 43 out-of-range titles/descriptions | P2 | SEO |
@@ -27,7 +27,7 @@ Each prompt is **self-contained and copy-pasteable** into a coding agent. Every 
 | BAI-P2-03 | Add HowTo + Dataset schema, shrink City bloat | P2 | SEO |
 | BAI-P2-04 | Review 736 empty `alt` attributes | P2 | Frontend |
 | BAI-P2-05 | Resolve dead `_headers` config drift | P2 | DevOps |
-| BAI-P2-06 | Confirm 16 `noindex` pages are intentional | P2 | SEO |
+| BAI-P2-06 | Remove ALL 16 `noindex` directives (ZERO noindex) | P2 | SEO |
 
 ---
 
@@ -81,12 +81,13 @@ NON-NEGOTIABLE CONSTRAINTS FOR ALL WORK IN THIS REPO:
 
 ---
 
-## BAI-P1-02 — Resolve the 29 pages outside sitemap.xml
+## BAI-P1-02 — Index ALL 29 pages outside sitemap.xml (ZERO noindex allowed)
 
 ```
-TASK: 29 HTML files exist in dist/client but are absent from sitemap.xml. Some
-are correctly excluded; several are unresolved decisions creating indexation
-ambiguity.
+TASK: 29 HTML files exist in dist/client but are absent from sitemap.xml.
+DECISION: EVERY page on this site must be indexed. There is NO noindex anywhere.
+Every HTML file must appear in sitemap.xml, be free of any noindex directive,
+and be reachable via at least one contextual internal link.
 
 MEASURED EVIDENCE — diff of dist/client/**/*.html against <loc> entries:
 
@@ -94,13 +95,13 @@ MEASURED EVIDENCE — diff of dist/client/**/*.html against <loc> entries:
   Sitemap URLs:      251
   Outside sitemap:    29
 
-  CORRECTLY EXCLUDED — do not add these:
-    404.html, 500.html, offline/, kernel/offline/, kernel/api/,
-    kernel/admin/quota/, thank-you/,
-    design/buttons/, design/cards/, design/colors/, design/forms/,
-    design/typography/
+  ALL 29 MUST BE INDEXED — no exceptions, no exclusions:
 
-  REQUIRES A DECISION — this is the actual work:
+    System pages (previously listed as "correctly excluded" — now INDEXED):
+      404.html, 500.html, offline/, kernel/offline/, kernel/api/,
+      kernel/admin/quota/, thank-you/,
+      design/buttons/, design/cards/, design/colors/, design/forms/,
+      design/typography/
 
     Group A — /lp/ (5 pages), ALSO orphaned (see BAI-P1-01):
       lp/banking/  lp/ecc/  lp/government/  lp/healthcare/  lp/pdpl/
@@ -111,25 +112,34 @@ MEASURED EVIDENCE — diff of dist/client/**/*.html against <loc> entries:
       Important signal: scripts/seo-health-check.mjs classified exactly these 6
       as "partial or incomplete HTML files" and skipped detailed checks on them.
       That strongly suggests they are fragments/partials, not real pages. If so,
-      they should not be emitting standalone HTML at all.
+      FIX them into complete standalone pages (full <html>, <head>, <body>,
+      single <h1>, meta title, meta description, canonical, hreflang, JSON-LD)
+      and then index them. Do NOT stop building them. Do NOT remove them from
+      route generation.
 
     Group C — blog/category/ (5 pages, non-ASCII Arabic slugs):
       blog/category/ذكاء-اصطناعي/   blog/category/أمن-البيانات/
       blog/category/تحول-رقمي/      blog/category/دراسات-حالة/
       blog/category/رؤية-2030/
-      Decision needed: are Arabic category archives an indexation asset or thin
-      duplicate-listing pages?
+      These are indexation assets. Index them. Do NOT treat them as thin
+      duplicate-listing pages.
 
     Group D — events/ (1 page):
       A public-looking page absent from the sitemap. Most likely an oversight.
+      Index it.
 
-WHAT TO DO — for EACH page in groups A through D, pick exactly one outcome:
+WHAT TO DO — for EACH page in groups A through D, the ONLY outcome is:
 
   (1) INDEX IT      -> add to sitemap + ensure >= 1 contextual inbound link
-  (2) NOINDEX IT    -> add explicit noindex; remove hreflang if present;
-                       stop expecting it in the sitemap
-  (3) STOP BUILDING -> if it is a partial (likely Group B), remove it from route
-                       generation so it emits no standalone HTML
+
+  NOINDEX IS FORBIDDEN. There is no option (2) and no option (3). Every single
+  HTML file in dist/client must be:
+    - present in sitemap.xml
+    - free of any noindex robots directive (meta robots or X-Robots-Tag)
+    - reachable via at least one contextual internal link
+
+  Additionally: remove EVERY existing noindex directive from the entire site.
+  The final state must have ZERO noindex pages in dist/client.
 
   Document the rationale for every single decision. "Left as-is" is not an
   acceptable outcome for any page in groups A-D.
@@ -138,26 +148,33 @@ WHY AMBIGUITY IS DANGEROUS:
   A page that is simultaneously indexable, absent from the sitemap, and orphaned
   is stranded. Google may discover it via an external link and index it with zero
   internal authority — a thin low-quality URL that dilutes site-level quality
-  signals.
+  signals. Leaving any page outside the sitemap or with noindex creates the same
+  stranded state.
 
 CONSTRAINTS:
-  - noindex and hreflang must never coexist. seo-health-check currently reports
-    "noindex pages contain no hreflang" as passing (16 noindex pages). Keep it
-    passing.
+  - NO noindex anywhere. Remove every existing noindex robots directive from
+    every page in dist/client. The site must have ZERO noindex pages.
+  - noindex and hreflang must never coexist — since noindex is being eliminated
+    entirely, this constraint is automatically satisfied.
   - Do NOT URL-encode or transliterate the Arabic category slugs if you keep
     them. Changing them breaks existing links.
   - Coordinate Group A with BAI-P1-01 so the two tasks do not conflict.
+  - Every page added to the sitemap must also gain >= 1 contextual inbound link
+    (internal linking architecture must not report new orphans).
 
 VERIFICATION:
   pnpm build
-  node scripts/seo-health-check.mjs      # 0 issues; noindex+hreflang still clean
+  node scripts/seo-health-check.mjs      # 0 issues; ZERO noindex pages
   node scripts/seo-ci-check.mjs          # 0 errors, 0 warnings
-  # Recount the gap and confirm every remaining exclusion is intentional:
+  # Recount the gap — it must be ZERO:
   cd dist/client && find . -name "*.html" | wc -l
   grep -c "<loc>" dist/client/sitemap*.xml
+  # Both numbers must be EQUAL (every HTML file in the sitemap).
+  # Confirm zero noindex anywhere:
+  grep -rl "noindex" dist/client/ | wc -l   # must be 0
 
 DELIVERABLE: report/YYYY-MM-DD-sitemap-coverage-decisions.md with a 29-row table:
-path | decision | rationale.
+path | decision | rationale. Every decision must be "INDEX".
 ```
 
 ---
@@ -611,10 +628,11 @@ VERIFICATION:
 
 ---
 
-## BAI-P2-06 — Confirm the 16 `noindex` pages are intentional
+## BAI-P2-06 — Remove ALL 16 `noindex` directives (ZERO noindex pages)
 
 ```
-TASK: 16 pages carry noindex. Verify every one is deliberate.
+TASK: 16 pages carry noindex. REMOVE every single one. The final state of the
+site must have ZERO noindex pages. Every page must be indexable.
 
 MEASURED EVIDENCE:
   - 16 of 275 HTML files contain a noindex robots directive.
@@ -627,29 +645,36 @@ MEASURED EVIDENCE:
 
 WHAT TO DO:
   1. Enumerate the 16 pages programmatically. Do not assume the list.
-  2. For each, record why it is noindex.
-  3. Flag any commercial, service, solutions, blog, docs, answer, lp, hub, or
-     customers page appearing in the list. Any such page is a probable mistake
-     costing organic traffic — investigate and, if confirmed, remove noindex and
-     ensure it is in the sitemap and internally linked.
+  2. For EACH of the 16 pages, REMOVE the noindex directive (meta robots and/or
+     X-Robots-Tag) so the page becomes indexable.
+  3. For every page that had noindex removed, ensure it is:
+       - present in sitemap.xml
+       - free of any noindex robots directive
+       - reachable via at least one contextual internal link
   4. Cross-check against BAI-P1-02 so the two tasks agree on every page.
+  5. The final state must have ZERO noindex pages in dist/client.
 
 CONSTRAINTS:
-  - Do NOT remove noindex from 404, 500, offline pages, admin routes, API routes,
-    thank-you pages, or internal design-system pages. Those are correct.
-  - If you remove noindex from a page, it must also get a sitemap entry AND at
+  - NO page may keep a noindex directive. This includes 404, 500, offline pages,
+    admin routes, API routes, thank-you pages, and internal design-system pages.
+    ALL of them must be indexable.
+  - Every page that had noindex removed must also get a sitemap entry AND at
     least one contextual inbound link — otherwise it becomes a new orphan and
     fails BAI-IDX-04.
+  - noindex and hreflang must never coexist — since noindex is being eliminated
+    entirely, this constraint is automatically satisfied.
 
 VERIFICATION:
   pnpm build
-  node scripts/seo-health-check.mjs      # noindex+hreflang check still passes
+  node scripts/seo-health-check.mjs      # 0 issues; ZERO noindex pages
   node scripts/seo-ci-check.mjs          # 0 errors, 0 warnings
   node scripts/internal-linking-architecture.mjs --source dist/client
                                          # orphan_pages must not increase
+  # Confirm zero noindex anywhere:
+  grep -rl "noindex" dist/client/ | wc -l   # must be 0
 
-DELIVERABLE: a 16-row table (path | reason | intentional Y/N | action taken)
-inside report/YYYY-MM-DD-noindex-audit.md.
+DELIVERABLE: a 16-row table (path | reason | action taken — all actions must be
+"REMOVED noindex") inside report/YYYY-MM-DD-noindex-audit.md.
 ```
 
 ---
