@@ -69,7 +69,7 @@
  * Related: BAI-DEPLOY-11, BAI-SEC-10, BAI-SEO-003-S3, DEC-PROC-12-2026-07-25-001.
  */
 
-import { execSync } from 'node:child_process';
+import { execSync, execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import process from 'node:process';
@@ -83,6 +83,11 @@ const WANT_JSON = process.argv.includes('--json');
 const SKIP_DRIFT = process.argv.includes('--skip-drift');
 const SKIP_CONTENT = process.argv.includes('--skip-content');
 const SKIP_FORBIDDEN = process.argv.includes('--skip-forbidden');
+// BAI-IDX-CRAWL (2026-08-08): skip the crawler-access probe (e.g. when
+// running against a host that has no Cloudflare edge, or in CI without
+// external network). Default is to run it — crawling access is part of
+// the production contract after the 2026-08-08 block incident.
+const SKIP_CRAWLER = process.argv.includes('--skip-crawler');
 const HOST_FLAG = (() => {
   const i = process.argv.indexOf('--host');
   return i > -1 && process.argv[i + 1] ? process.argv[i + 1] : null;
@@ -212,6 +217,10 @@ const probes = {
   forbidden: { ok: false, value: null, error: null, skipped: SKIP_CONTENT || SKIP_FORBIDDEN, perPath: [] },
   canonical: { ok: false, value: null, error: null, skipped: SKIP_CONTENT, perPage: [] },
   securityHeaders: { ok: false, value: null, error: null, skipped: SKIP_CONTENT, perHeader: [] },
+  // BAI-IDX-CRAWL (2026-08-08): crawler-access probe. Runs the dedicated
+  // monitor as a subprocess so the crawler list + sitemap count live in
+  // exactly one place (scripts/verify-crawler-access.mjs).
+  crawler: { ok: false, value: null, error: null, skipped: SKIP_CONTENT || SKIP_CRAWLER },
 };
 
 /* Probe 1 — x-brightai-build header on the root path. (BAI-DEPLOY-11) */
@@ -378,6 +387,29 @@ if (!SKIP_CONTENT) {
   }
 }
 
+/* Probe 7 — Crawler access. (BAI-IDX-CRAWL — 2026-08-08 incident guard)
+ * Delegates to scripts/verify-crawler-access.mjs so the crawler list +
+ * sitemap-URL floor live in one place. Fails if any search-engine / AI
+ * crawler gets non-200, or if /sitemap.xml is unreachable to Googlebot,
+ * or if the <loc> count drops below the floor. This is the synthetic
+ * monitor that would have caught the 2026-08-08 Cloudflare block on the
+ * first request, instead of silently degrading indexing for days. */
+if (!SKIP_CONTENT && !SKIP_CRAWLER) {
+  try {
+    const monitor = execFileSync(
+      process.execPath,
+      [path.join(root, 'scripts', 'verify-crawler-access.mjs')],
+      { env: { ...process.env, HOST: EFFECTIVE_HOST }, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    probes.crawler.value = monitor.split('\n').filter((l) => l.includes('PASS')).pop() || 'PASS';
+    probes.crawler.ok = true;
+  } catch (e) {
+    // e.stdout holds the monitor's partial output even on failure.
+    const detail = (e.stdout || e.stderr || '').split('\n').filter(Boolean).slice(-3).join(' | ');
+    probes.crawler.error = `crawler-access monitor failed: ${e.message}${detail ? ` — ${detail}` : ''}`;
+  }
+}
+
 /* ---------- result ---------- */
 
 const failedProbes = Object.entries(probes).filter(
@@ -385,7 +417,7 @@ const failedProbes = Object.entries(probes).filter(
 );
 const drift = !SKIP_DRIFT && (!probes.header.ok || !probes.json.ok);
 const contentFail = !SKIP_CONTENT && (
-  !probes.hreflang.ok || !probes.forbidden.ok || !probes.canonical.ok || !probes.securityHeaders.ok
+  !probes.hreflang.ok || !probes.forbidden.ok || !probes.canonical.ok || !probes.securityHeaders.ok || !probes.crawler.ok
 );
 const anyFail = drift || contentFail;
 
@@ -440,6 +472,7 @@ if (!SKIP_CONTENT) {
   for (const h of probes.securityHeaders.perHeader) {
     if (!h.ok) log(`      ❌ ${h.name}  ${h.error}`);
   }
+  log(`  crawler access:                  ${fmt(probes.crawler.ok, SKIP_CONTENT || SKIP_CRAWLER)} search + AI crawlers${probes.crawler.error ? '   ' + probes.crawler.error : ''}`);
 }
 log('');
 

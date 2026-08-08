@@ -43,6 +43,8 @@
     "verify:report": "node scripts/verify-report-claims.mjs",
     "cloudflare:purge": "node scripts/purge-cloudflare-cache.mjs",
     "cloudflare:hsts": "node scripts/setup-cloudflare-hsts-transform-rule.mjs",
+    "cloudflare:crawler-allowlist": "node scripts/setup-cloudflare-ai-crawler-allowlist.mjs",
+    "verify:crawler-access": "node scripts/verify-crawler-access.mjs",
     "build:verify": "npm run verify:all",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "lint:legacy": "echo 'Linting skipped for static site'",

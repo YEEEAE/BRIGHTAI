@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-04 15:45 +03:00
+last_updated: 2026-08-08 19:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.73
+version: 2.7.74
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,19 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-08 — BAI-IDX-CRAWL: فك حظر الـ crawlers من Cloudflare edge (ai_bots_protection: block → disabled)
+
+- **Files**: `scripts/setup-cloudflare-ai-crawler-allowlist.mjs` (جديد), `scripts/verify-crawler-access.mjs` (جديد), `scripts/verify-post-deploy.mjs` (تعديل: probe 7 crawler access + `--skip-crawler`), `package.json` (تعديل: `cloudflare:crawler-allowlist` + `verify:crawler-access`), `report/2026-08-08-cloudflare-crawler-unblock.md` (جديد). **Edge config** (مو في repo): Cloudflare Bot Management `ai_bots_protection` من `block` إلى `disabled` عبر API على zone `brightai.site`.
+- **What**: كل الـ AI crawlers (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, ChatGPT-User, ...) كانوا يحصلون على 403 من Cloudflare edge. السبب المؤكد: `ai_bots_protection: "block"` في Bot Management (خطة Free). غيرته إلى `"disabled"` عبر `PUT /zones/{zone}/bot_management`. أضفت سكربت idempotent يعيد الضغط + مونيتور synthetic يفحص 17 crawler + sitemap، وربطته بـ `verify-post-deploy` (probe 7).
+- **Why**: الحظر كان يمنع Google من قراءة `/sitemap.xml` (403 لغير verified bots) + يحجب كل استثمار GEO (llms.txt، ai.txt، Speakable) عن AI crawlers. `robots.txt` كان سليم أصلاً — المشكلة كلها edge.
+- **Verification**: 17 crawler × 5 مسارات = 90 استدعاء كلها 200 ✅, `/sitemap.xml` Googlebot → 200 + 251 `<loc>` ✅, `verify:crawler-access` exit 0 ✅, `cloudflare:crawler-allowlist` re-run = no-op ✅. مشكلة مسبقة في `verify-post-deploy` security headers (`x-frame-options SAMEORIGIN` متوقع `DENY` + `spec.mustMatch.test is not a function`) — خارج نطاق المهمة، مو متعلقة بالإصلاح.
+- **Report**: `report/2026-08-08-cloudflare-crawler-unblock.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: deployed (edge config مطبّق على الإنتاج ومُتحقَّق منه)
+- **Brain updates**: هذا الـ entry. ملاحظات: Bot Fight Mode (`fight_mode`) لسا ON — حماية الـ scrapers الخبيثة محفوظة. لو رجع `ai_bots_protection` `"block"` مستقبلًا، شغّل `pnpm cloudflare:crawler-allowlist`.
 
 ---
 
