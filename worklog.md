@@ -2839,3 +2839,32 @@ Stage Summary:
 - BAI-IDX-04 acceptance check PASSED: 0 orphans, 0 broken, depth 3
 - المخاطر المتبقية: pagesOutsideSitemap=2 + noHrefLinks=19 (خارج النطاق — باقية بالـ inventory)
 - الـ commit: يلتزمه المستخدم (per brain rule)
+
+---
+Task ID: 2026-08-08-BAI-SEO-004-S7
+Agent: BrightAI Workspace Agent
+Task: حل فجوات BAI-SEO-004 — صفحات indexable خارج الـ sitemap
+Started: 2026-08-08T19:45:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت أداة توليد السايت ماب scripts/generate-sitemap-all-pages.mjs بالكامل (groupRelPath + resolveSourceFiles + renderXml)
+- قارنت الأرقام: ادعاء الأوديت "29 ملف خارج السايت ماب" كان ضد نسخة قبل BAI-IDX-04؛ بعد الفحص الفعلي = 16 ملف indexable
+- صنّفت الـ 16: 14 مقصودة (design/* noindex، thank-you، kernel/offline، kernel/admin/quota، cities/* redirect stubs) + 2 فجوة حقيقية (events + kernel/api)
+- أثبت إن blog/category/* الخمس تظهر كـ "ناقصة" كاذبة بسبب URL-encoding العربي في السايت ماب
+- السبب الجذري: (1) events/index.html ناقص من whitelist، (2) excludes.includes("/api/") كان يلتقط kernel/api عبر substring match
+- أصلحت 4 تعديلات: includes→startsWith("api/")، kernel/api whitelist، events whitelist، فرع resolveSourceFiles لـ kernel/api
+- npm run sitemap:generate → 258 URL (كان 256) ✅
+- gap-check: 14 متبقية كلها مقصودة ✅
+- npm run seo:gate → 0 أخطاء 0 تحذيرات (258 URLs) ✅
+- npm run seo:hreflang → 0 أخطاء (259 sets) ✅
+- npm run build → 0 أخطاء ✅
+- node scripts/verify-all.mjs → 5/5 ✅
+- أكدت وجود /events/ + /kernel/api/ في السايت ماب مع lastmod صحيح (2026-07-31 / 2026-08-02)
+- كتبت report/2026-08-08-bai-seo-004-sitemap-gap.md + حدّثت brain.md (entry + version 2.7.75)
+
+Stage Summary:
+- الفجوة الحقيقية = صفحتين فقط (events + kernel/api) — والباقي استبعادات مقصودة
+- السايت ماب صار 258 URL، كل الفحوصات خضراء
+- المخاطر المتبقية: audit آلي قد يعدّ الـ 14 المقصودة كـ gaps (يحتاج allowlist)، blog/category تلوّث الفحص النصي (URL-encoding)
+- الـ commit: يلتزمه المستخدم (per brain rule)

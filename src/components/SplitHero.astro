@@ -995,29 +995,16 @@ import TrustBadges from './TrustBadges.astro';
 </style>
 
 <script>
-  // BAI-CWV-TBT-001 (2026-08-08) — shared idle scheduler for SplitHero scripts.
-  // Decorative effects (spotlight, tilt, chip rotator, dotted canvas) are
-  // deferred to an idle callback so they never block first paint / LCP.
-  // requestIdleCallback is available in Chromium 47+ and Safari 16.4+; older
-  // Safari falls back to a 1200ms setTimeout (long enough to let the hero +
-  // LCP settle, short enough that interactive effects feel instant on hover).
-  // Hoisted (no is:inline) → bundled once and shared by every script below.
-  function scheduleIdle(work) {
-    const ric = window.requestIdleCallback;
-    if (typeof ric === 'function') {
-      ric(work, { timeout: 2000 });
-    } else {
-      setTimeout(work, 1200);
-    }
-  }
-</script>
-
-<script>
   // Spotlight effect — desktop only, ~20 lines vanilla JS.
   // BAI-CWV-TBT-001 (2026-08-08): deferred via requestIdleCallback so the
   // mouse-move handler + querySelector work never blocks first paint / LCP.
   // The spotlight is purely decorative (only visible on pointer interaction),
-  // so deferring it to idle has zero perceptual cost.
+  // so deferring it to idle has zero perceptual cost. scheduleIdle is inlined
+  // because Astro compiles every <script> into an isolated module scope.
+  const scheduleIdle =
+    typeof window.requestIdleCallback === 'function'
+      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
+      : (work) => setTimeout(work, 1200);
   (function setupSpotlight() {
     let raf = 0;
     let targetX = 0, targetY = 0, currentX = 0, currentY = 0;

@@ -202,6 +202,11 @@ function resolveSourceFiles(relPath) {
   if (dir === "kernel" || dir.startsWith("kernel/")) {
     // kernel subpages: src/pages/kernel/[slug].astro (dynamic), with
     // kernel data in src/data/kernel.ts.
+    if (dir === "kernel/api") {
+      // BAI-SEO-004 (2026-08-08): kernel/api is a static .astro page,
+      // not a [slug] route — point lastmod at the real source file.
+      sources.push("src/pages/kernel/api.astro");
+    }
     sources.push("src/pages/kernel/[slug].astro");
     sources.push("src/data/kernel.ts");
   }
@@ -342,8 +347,11 @@ function groupRelPath(relPath) {
     normalized.includes("profile") ||
     normalized.includes("admin") ||
     normalized.includes("backend") ||
-    normalized.includes("/api/") ||
-    normalized.includes("/ws/")
+    // BAI-SEO-004 (2026-08-08): only exclude root-level API routes.
+    // The previous `includes("/api/")` accidentally excluded the real,
+    // indexable docs page `kernel/api/` (see kernel whitelist below).
+    normalized.startsWith("api/") ||
+    normalized.startsWith("ws/")
   ) {
     return null;
   }
@@ -408,7 +416,12 @@ function groupRelPath(relPath) {
        normalized === "kernel/scorers.html" ||
        normalized === "kernel/scorers/index.html" ||
        normalized === "kernel/eval.html" ||
-       normalized === "kernel/eval/index.html"
+       normalized === "kernel/eval/index.html" ||
+       // BAI-SEO-004 (2026-08-08): kernel/api is a real, indexable docs
+       // page (11k words, canonical + no noindex). It was silently dropped
+       // by the old root-level `/api/` exclusion — whitelist it explicitly.
+       normalized === "kernel/api.html" ||
+       normalized === "kernel/api/index.html"
      ) {
       return "kernel";
     }
@@ -450,6 +463,10 @@ function groupRelPath(relPath) {
     normalized === "en/sales-deck/index.html" ||
     normalized === "en/index.html" ||
     normalized === "calculator/roi/index.html" ||
+    // BAI-SEO-004 (2026-08-08): events/index.html is the real events hub
+    // (3471 words, canonical /events/, CollectionPage schema). The 3
+    // sub-events were already listed; the index page was missing.
+    normalized === "events/index.html" ||
     normalized === "events/ai-governance-day/index.html" ||
     normalized === "events/leap-2026/index.html" ||
     normalized === "events/webinar/index.html" ||

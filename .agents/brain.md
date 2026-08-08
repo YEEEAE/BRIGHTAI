@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-08 19:30 +03:00
+last_updated: 2026-08-08 20:15 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.74
+version: 2.7.75
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,19 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-08 — BAI-SEO-004-S7: إدراج صفحتي /events/ و /kernel/api/ الناقصتين في الـ sitemap
+
+- **Files**: `scripts/generate-sitemap-all-pages.mjs` (4 تعديلات: exclude `/api/` → `startsWith("api/")` عشان ما يلتقط `kernel/api`، إضافة `kernel/api` لـ kernel whitelist، إضافة `events/index.html` لـ pages whitelist، إضافة `src/pages/kernel/api.astro` في `resolveSourceFiles` لـ lastmod)، `dist/client/sitemap.xml` (متولد)
+- **What**: حققت في ادعاء الأوديت "29 ملف خارج sitemap". النتيجة: بعد إصلاح BAI-IDX-04 (اللي ضم 17 answer + 5 lp)، الفجوة الحقيقية الحالية = **16 ملف indexable خارج sitemap**، منها 14 مقصودة (noindex: design/*، thank-you، kernel/offline، kernel/admin/quota + redirect stubs: cities/*). الـ gap الفعلي اللي يجب إصلاحه = **صفحتان فقط**: `/events/` (فهرس فعاليات، 3471 كلمة) و `/kernel/api/` (صفحة وثائق API، 11k كلمة). كلاهما `index, follow` + canonical صحيح، لكن كانا خارج sitemap بسبب: (1) `events/index.html` ناقص من whitelist، (2) الـ exclude القديم `includes("/api/")` كان يلتقط `kernel/api` قبل ما يوصل لـ kernel whitelist.
+- **Why**: صفحتان indexable حقيقية بمحتوى كانتا مخفيتين عن الـ crawlers — خسارة فهرسة كاملة.
+- **Verification**: `sitemap:generate` → **258 URL** (كان 256) ✅, `/events/` + `/kernel/api/` ظاهرتين مع lastmod صحيح (2026-07-31 / 2026-08-02) ✅, `seo:gate` → 0 أخطاء 0 تحذيرات (258 sitemap URLs) ✅, `seo:hreflang` → 0 أخطاء (259 sets) ✅, `npm run build` → 0 أخطاء ✅, `verify-all.mjs` → 5/5 ✅
+- **Report**: `report/2026-08-08-bai-seo-004-sitemap-gap.md` (جديد)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظة: الـ 14 صفحة المتبقية خارج sitemap مقصودة بالتصميم (noindex/redirect) — مو bug. الأوديت الأصلي (29) كان ضد نسخة قديمة قبل BAI-IDX-04.
 
 ---
 
