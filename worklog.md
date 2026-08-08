@@ -2809,3 +2809,33 @@ Stage Summary:
 - البناء ناجح ✅
 - المخاطر المتبقية: الاختبارات التكاملية لا تشتغل بسبب صيغة .env المشوهة (مشكلة موجودة مسبقًا)
 - الـ verifyUrl في buildPayload يشير لا يزال للـ GET route القديم (اختياري — تحديث لاحق)
+---
+Task ID: 2026-08-08-BAI-IDX-04
+Agent: BrightAI Workspace Agent
+Task: إصلاح BAI-IDX-04 — orphan_pages و unreachable_indexable (روابط داخلية + سايت ماب)
+Started: 2026-08-08T20:30:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت internal-links audit output — فشل: orphan_pages=22, unreachable_indexable=22
+- قرأت BlogLayout.astro (internalLinks prop + relatedSolutions) + DocsLayout.astro + cross-links.ts + landing-pages.ts + hreflang-pairs.ts
+- قرأت src/pages/lp/[slug].astro (فهمت بنية صفحة الهبوط) + src/pages/answer/[slug].astro
+- قرأت scripts/generate-sitemap-all-pages.mjs — اكتشفت إن groupRelPath ما عندها فرع lp/ (ترجع null)
+- تحققت: /lp/ الخمس تُبنى في dist لكنها خارج الـ sitemap (0 إشارة) بينما answer/ فيها 51 إشارة (17 صفحة × 3)
+- قرار المستخدم: ربط /lp/ + ضمها للسايت ماب (بدل noindex)
+- أضفت INTERNAL_LINKS_BY_SLUG (40 entry) في src/pages/blog/[...slug].astro + دمجتها مع خريطة الفئات
+- أضفت فرع lp/ في groupRelPath + resolveSourceFiles في scripts/generate-sitemap-all-pages.mjs
+- اكتشفت إن إدخالي what-is-ai-governance-saudi-companies و ai-governance-framework-saudi-model لم يُحفظا في edit الأول — أعدت إضافتهما
+- npm run build → 0 أخطاء ✅
+- npm run internal-links:audit → orphan_pages=0, unreachable_indexable=0, brokenLinks=0, maxClickDepth=3 ✅
+- npm run sitemap:generate → exit 0 (256 URL، 17 answer + 5 lp) ✅
+- npm run verify:all → seo:gate + seo:hreflang + seo:schema 0 أخطاء ✅
+- تحققت من التغطية: كل 22 صفحة عندها ≥ 1 رابط وارد من blog post
+- كتبت report/2026-08-08-bai-idx-04-orphan-internal-links.md + حدّثت brain.md
+
+Stage Summary:
+- 22 صفحة يتيمة (17 answer + 5 lp) صارت كلها بلا روابط واردة سياقية من مقالات blog
+- /lp/ الخمس صارت في السايت ماب
+- BAI-IDX-04 acceptance check PASSED: 0 orphans, 0 broken, depth 3
+- المخاطر المتبقية: pagesOutsideSitemap=2 + noHrefLinks=19 (خارج النطاق — باقية بالـ inventory)
+- الـ commit: يلتزمه المستخدم (per brain rule)

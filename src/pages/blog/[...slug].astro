@@ -78,7 +78,141 @@ const INTERNAL_LINKS_BY_CATEGORY: Record<string, Array<{ href: string; label: st
   ],
 };
 
-const internalLinks = INTERNAL_LINKS_BY_CATEGORY[post.category] || [];
+// BAI-IDX-04 (2026-08-08): contextual inbound links from specific pillar
+// posts to /answer/ and /lp/ pages. These pages are indexable (sitemap +
+// indexed by Google) but previously had zero internal links. Every link
+// below is contextually relevant to its post — no hidden link farms.
+// Each /answer/ and /lp/ page must receive >= 1 inbound link from a page
+// at depth <= 2 so the link graph stays crawlable.
+const INTERNAL_LINKS_BY_SLUG: Record<string, Array<{ href: string; label: string }>> = {
+  'ai-governance': [
+    { href: '/answer/ai-governance-saudi-arabia/', label: 'أسئلة شائعة: حوكمة AI في السعودية' },
+  ],
+  'ai-governance-saudi-arabia': [
+    { href: '/answer/ai-governance-saudi-arabia/', label: 'أسئلة شائعة: حوكمة AI في السعودية' },
+  ],
+  'ai-vision-2030-saudi': [
+    { href: '/answer/ai-governance-saudi-arabia-ar/', label: 'أسئلة شائعة: حوكمة AI (عربي)' },
+  ],
+  'saudi-ai-regulators-guide': [
+    { href: '/answer/ai-governance-saudi-arabia-ar/', label: 'أسئلة شائعة: حوكمة AI في السعودية' },
+  ],
+  'ai-firewall-why-you-need-it': [
+    { href: '/answer/ai-firewall-saudi/', label: 'أسئلة شائعة: جدار حماية AI' },
+    { href: '/answer/ai-firewall-saudi-ar/', label: 'أسئلة شائعة: جدار حماية AI (عربي)' },
+  ],
+  'shadow-ai-discovery-saudi-company': [
+    { href: '/answer/ai-firewall-saudi/', label: 'أسئلة شائعة: جدار حماية AI' },
+  ],
+  'pdpl-ai-compliance-guide': [
+    { href: '/answer/pdpl-ai-compliance/', label: 'أسئلة شائعة: امتثال PDPL للذكاء الاصطناعي' },
+  ],
+  'pdpl-ai': [
+    { href: '/answer/pdpl-ai-compliance/', label: 'أسئلة شائعة: امتثال PDPL للذكاء الاصطناعي' },
+    { href: '/answer/pdpl-ai-compliance-ar/', label: 'أسئلة شائعة: امتثال PDPL (عربي)' },
+  ],
+  'pdpl-and-ai-saudi': [
+    { href: '/answer/pdpl-ai-compliance-ar/', label: 'أسئلة شائعة: امتثال PDPL (عربي)' },
+  ],
+  'ai-governance-vs-ai-safety-vs-ai-security': [
+    { href: '/answer/ai-safety-platform-enterprise/', label: 'أسئلة شائعة: منصة أمان AI للمنشآت' },
+  ],
+  'hidden-ai-risks-saudi-organizations': [
+    { href: '/answer/ai-safety-platform-enterprise/', label: 'أسئلة شائعة: منصة أمان AI للمنشآت' },
+  ],
+  'best-ai-governance-platforms-2026': [
+    { href: '/answer/saudi-ai-safety-os/', label: 'أسئلة شائعة: نظام أمان AI السعودي' },
+  ],
+  'pdpl-audit': [
+    { href: '/answer/audit-trail-saudi-ar/', label: 'أسئلة شائعة: سجل التدقيق (عربي)' },
+  ],
+  'ai-audit-trail-saudi': [
+    { href: '/answer/audit-trail-saudi-ar/', label: 'أسئلة شائعة: سجل التدقيق (عربي)' },
+  ],
+  'ecc-2-2024': [
+    { href: '/answer/nca-ecc-controls/', label: 'أسئلة شائعة: ضوابط NCA ECC' },
+  ],
+  'nca-ecc-ai-controls-guide': [
+    { href: '/answer/nca-ecc-controls/', label: 'أسئلة شائعة: ضوابط NCA ECC' },
+  ],
+  'ecc-ai-mapping': [
+    { href: '/answer/nca-ecc-controls/', label: 'أسئلة شائعة: ضوابط NCA ECC' },
+  ],
+  'sdaia-generative-ai-guidelines-practical-compliance': [
+    { href: '/answer/sdaia-generative-ai/', label: 'أسئلة شائعة: إرشادات سدايا للذكاء التوليدي' },
+  ],
+  'sdaia-seven-principles-practical-guide': [
+    { href: '/answer/sdaia-generative-ai/', label: 'أسئلة شائعة: إرشادات سدايا للذكاء التوليدي' },
+  ],
+  'ai-banking-saudi': [
+    { href: '/answer/ai-banking/', label: 'أسئلة شائعة: AI في البنوك السعودية' },
+  ],
+  'banking-ai-governance-sama-requirements': [
+    { href: '/answer/ai-banking/', label: 'أسئلة شائعة: AI في البنوك السعودية' },
+    { href: '/lp/banking/', label: 'حوكمة AI المصرفي — SAMA' },
+  ],
+  'sama-banking': [
+    { href: '/lp/banking/', label: 'حوكمة AI المصرفي — SAMA' },
+  ],
+  'ai-healthcare-saudi': [
+    { href: '/answer/ai-healthcare/', label: 'أسئلة شائعة: AI في القطاع الصحي' },
+    { href: '/lp/healthcare/', label: 'حوكمة AI الصحي — SFDA' },
+  ],
+  'healthcare-ai-governance-saudi-hospitals': [
+    { href: '/lp/healthcare/', label: 'حوكمة AI الصحي — SFDA' },
+  ],
+  'nca-cybersecurity-requirements-saudi': [
+    { href: '/answer/nca-compliance/', label: 'أسئلة شائعة: الامتثال لـ NCA' },
+    { href: '/lp/government/', label: 'حوكمة AI للقطاع الحكومي' },
+  ],
+  'sdaia-nca-pdpl-regulatory-map': [
+    { href: '/answer/nca-compliance/', label: 'أسئلة شائعة: الامتثال لـ NCA' },
+  ],
+  'sama-ai-governance': [
+    { href: '/answer/sama-ai/', label: 'أسئلة شائعة: حوكمة AI وفق SAMA' },
+  ],
+  'sama-ai': [
+    { href: '/answer/sama-ai/', label: 'أسئلة شائعة: حوكمة AI وفق SAMA' },
+  ],
+  'sama-ai-risk': [
+    { href: '/answer/sama-ai/', label: 'أسئلة شائعة: حوكمة AI وفق SAMA' },
+  ],
+  'iso-42001-saudi-implementation-guide': [
+    { href: '/answer/iso-42001/', label: 'أسئلة شائعة: ISO 42001 في السعودية' },
+  ],
+  'iso-42001-pdpl-data-protection-saudi': [
+    { href: '/answer/iso-42001/', label: 'أسئلة شائعة: ISO 42001 في السعودية' },
+  ],
+  'iso-27001-vs-iso-42001-ai-governance': [
+    { href: '/answer/iso-42001/', label: 'أسئلة شائعة: ISO 42001 في السعودية' },
+  ],
+  'pdpl-compliance-guide-saudi-companies': [
+    { href: '/lp/pdpl/', label: 'حوكمة AI وامتثال PDPL' },
+  ],
+  'pdpl-executive-regulations-explained': [
+    { href: '/lp/pdpl/', label: 'حوكمة AI وامتثال PDPL' },
+  ],
+  'ecc-vs-cscc-cybersecurity-controls': [
+    { href: '/lp/ecc/', label: 'حوكمة AI وضوابط NCA ECC' },
+  ],
+  'ecc-audit': [
+    { href: '/lp/ecc/', label: 'حوكمة AI وضوابط NCA ECC' },
+  ],
+  'sdaia-sector-compliance-healthcare-banking-government': [
+    { href: '/lp/government/', label: 'حوكمة AI للقطاع الحكومي' },
+  ],
+  'what-is-ai-governance-saudi-companies': [
+    { href: '/answer/ai-governance-framework/', label: 'أسئلة شائعة: إطار حوكمة AI' },
+  ],
+  'ai-governance-framework-saudi-model': [
+    { href: '/answer/ai-governance-framework/', label: 'أسئلة شائعة: إطار حوكمة AI' },
+  ],
+};
+
+const internalLinks = [
+  ...(INTERNAL_LINKS_BY_CATEGORY[post.category] || []),
+  ...(INTERNAL_LINKS_BY_SLUG[post.slug] || []),
+];
 
 // Prefer same-category related posts; fall back to broader tag-overlap.
 const allRelated = await getRelatedPosts(post.slug, 20);

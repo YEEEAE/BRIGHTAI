@@ -205,6 +205,12 @@ function resolveSourceFiles(relPath) {
     sources.push("src/pages/kernel/[slug].astro");
     sources.push("src/data/kernel.ts");
   }
+  if (dir === "lp" || dir.startsWith("lp/")) {
+    // /lp/ landing pages: src/pages/lp/[slug].astro (dynamic). BAI-IDX-04
+    // (2026-08-08) added them to the sitemap — keep lastmod wired to the
+    // route template so edits to a landing page refresh its freshness.
+    sources.push("src/pages/lp/[slug].astro");
+  }
 
   // 3) Content collection candidates — only meaningful when the relPath
   //    matches an actual content slug (e.g. blog/<slug>, docs/<slug>).
@@ -433,6 +439,9 @@ function groupRelPath(relPath) {
     normalized === "about/index.html" ||
     normalized === "contact/index.html" ||
     normalized.startsWith("answer/") && normalized.endsWith("/index.html") ||
+    // BAI-IDX-04 (2026-08-08): /lp/ landing pages are indexable and now
+    // receive inbound links — include them in the sitemap.
+    normalized.startsWith("lp/") && normalized.endsWith("/index.html") ||
     normalized === "pricing/index.html" ||
     normalized === "services/index.html" ||
     normalized === "demo/index.html" ||

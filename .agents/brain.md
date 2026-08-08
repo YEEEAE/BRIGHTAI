@@ -19,6 +19,19 @@ skills_ready: 7
 
 ---
 
+### 2026-08-08 — BAI-IDX-04: إصلاح الصفحات اليتيمة — روابط داخلية سياقية لـ /answer/ و /lp/ + ضم lp/ للسايت ماب
+
+- **Files**: `src/pages/blog/[...slug].astro` (أضفت `INTERNAL_LINKS_BY_SLUG` — 40 entry، دمج مع خريطة الفئات), `scripts/generate-sitemap-all-pages.mjs` (`groupRelPath`: فرع `lp/` → pages + `resolveSourceFiles`: `lp/[slug].astro` للـ lastmod), `public/sitemap.xml` (متولد), `report/2026-08-08-bai-idx-04-orphan-internal-links.md` (جديد)
+- **What**: 22 صفحة مفهرسة (17 `answer/` + 5 `lp/`) كانت بدون أي رابط داخلي وارد (orphan). أضفت خريطة روابط سياقية من مقالات blog محورية (عمق 2) لكل صفحة answer/lp — كل صفحة صار عندها 1–3 روابط واردة. وضمت `/lp/` للـ sitemap (كانت مفهرسة لكن خارج sitemap).
+- **Why**: الـ audit `internal-links:audit` كان يكسر بـ `orphan_pages=22` و `unreachable_indexable=22` — صفحات الـ FAQ والـ landing غير قابلة للاكتشاف عبر الـ link graph. القرار (بموافقة المستخدم): ربط + ضم للـ sitemap بدل noindex لأنها صفحات قوية.
+- **Verification**: `npm run build` → 0 أخطاء ✅, `internal-links:audit` → `orphan_pages=0`, `unreachable_indexable=0`, `brokenLinks=0`, `maxClickDepth=3 ≤ 3` ✅, `sitemap:generate` → exit 0 (256 URL، 17 answer + 5 lp) ✅, `verify:all` → seo:gate + seo:hreflang + seo:schema 0 أخطاء ✅
+- **Report**: `report/2026-08-08-bai-idx-04-orphan-internal-links.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظة: ما في قسم known issues منفصل في brain.md حاليًا. ملاحظات audit خارج النطاق: `pagesOutsideSitemap=2` + `noHrefLinks=19` (باقية، مو ضمن معايير BAI-IDX-04).
+
+---
+
 ### 2026-08-08 — BAI-IDX-CRAWL: فك حظر الـ crawlers من Cloudflare edge (ai_bots_protection: block → disabled)
 
 - **Files**: `scripts/setup-cloudflare-ai-crawler-allowlist.mjs` (جديد), `scripts/verify-crawler-access.mjs` (جديد), `scripts/verify-post-deploy.mjs` (تعديل: probe 7 crawler access + `--skip-crawler`), `package.json` (تعديل: `cloudflare:crawler-allowlist` + `verify:crawler-access`), `report/2026-08-08-cloudflare-crawler-unblock.md` (جديد). **Edge config** (مو في repo): Cloudflare Bot Management `ai_bots_protection` من `block` إلى `disabled` عبر API على zone `brightai.site`.
