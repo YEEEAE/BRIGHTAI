@@ -21,7 +21,14 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "reports/**",
   "brightai_orchestrator_output/**",
   ".render-static/**",
-  "**/.render-static/**"
+  "**/.render-static/**",
+  "**/.claude/**",
+  "**/.agents/plugins/**",
+  "**/.lighthouseci/**",
+  "**/apps/**",
+  "**/_reports/**",
+  "**/brightai-audit-reports/**",
+  "**/qa-screenshots/**"
 ];
 
 const ATTR_REFERENCE_REGEX = /\b(href|src|action|poster|data-href|data-src)\s*=\s*(['"])([^"'<>]+)\2/gi;
@@ -206,17 +213,124 @@ function pushRegexMatches({
   }
 }
 
+function blankOutComments(content) {
+  const output = content.split("");
+  const length = content.length;
+  let index = 0;
+  let state = "code";
+
+  while (index < length) {
+    const char = content[index];
+    const next = index + 1 < length ? content[index + 1] : "";
+
+    if (state === "code") {
+      if (char === "/" && next === "/") {
+        state = "line";
+        output[index] = " ";
+        output[index + 1] = " ";
+        index += 2;
+        continue;
+      }
+      if (char === "/" && next === "*") {
+        state = "block";
+        output[index] = " ";
+        output[index + 1] = " ";
+        index += 2;
+        continue;
+      }
+      if (char === "<" && content.slice(index, index + 4) === "<!--") {
+        state = "html-comment";
+        output[index] = " ";
+        output[index + 1] = " ";
+        output[index + 2] = " ";
+        output[index + 3] = " ";
+        index += 4;
+        continue;
+      }
+      if (char === '"' || char === "'" || char === "`") {
+        state = `string:${char}`;
+      }
+      index += 1;
+      continue;
+    }
+
+    if (state === "line") {
+      if (char === "\n") {
+        state = "code";
+      } else {
+        output[index] = " ";
+      }
+      index += 1;
+      continue;
+    }
+
+    if (state === "block") {
+      if (char === "*" && next === "/") {
+        output[index] = " ";
+        output[index + 1] = " ";
+        state = "code";
+        index += 2;
+        continue;
+      }
+      if (char !== "\n") {
+        output[index] = " ";
+      }
+      index += 1;
+      continue;
+    }
+
+    if (state === "html-comment") {
+      if (content.slice(index, index + 3) === "-->") {
+        output[index] = " ";
+        output[index + 1] = " ";
+        output[index + 2] = " ";
+        state = "code";
+        index += 3;
+        continue;
+      }
+      if (char !== "\n") {
+        output[index] = " ";
+      }
+      index += 1;
+      continue;
+    }
+
+    if (state.startsWith("string:")) {
+      const quote = state.split(":")[1];
+      if (char === "\\") {
+        output[index] = " ";
+        if (index + 1 < length) {
+          output[index + 1] = " ";
+          index += 1;
+        }
+        index += 1;
+        continue;
+      }
+      if (char === quote) {
+        state = "code";
+      }
+      index += 1;
+      continue;
+    }
+
+    index += 1;
+  }
+
+  return output.join("");
+}
+
 function extractReferencesFromContent(file, content) {
   const references = [];
   const seen = new Set();
   const lineStarts = buildLineStarts(content);
   const lowerFile = file.toLowerCase();
   const isJavaScriptFile = JS_FILE_REGEX.test(lowerFile);
+  const extractableContent = blankOutComments(content);
 
   pushRegexMatches({
     references,
     seen,
-    content,
+    content: extractableContent,
     regex: ATTR_REFERENCE_REGEX,
     valueGroup: 3,
     file,
@@ -231,7 +345,7 @@ function extractReferencesFromContent(file, content) {
     pushRegexMatches({
       references,
       seen,
-      content,
+      content: extractableContent,
       regex: CSS_URL_REGEX,
       valueGroup: 2,
       file,
@@ -244,7 +358,7 @@ function extractReferencesFromContent(file, content) {
     pushRegexMatches({
       references,
       seen,
-      content,
+      content: extractableContent,
       regex: JS_URL_KEY_REGEX,
       valueGroup: 2,
       file,
@@ -255,7 +369,7 @@ function extractReferencesFromContent(file, content) {
     pushRegexMatches({
       references,
       seen,
-      content,
+      content: extractableContent,
       regex: JS_QUOTED_KEY_REGEX,
       valueGroup: 3,
       file,
@@ -266,7 +380,7 @@ function extractReferencesFromContent(file, content) {
     pushRegexMatches({
       references,
       seen,
-      content,
+      content: extractableContent,
       regex: JS_ASSIGNMENT_REGEX,
       valueGroup: 2,
       file,
@@ -277,7 +391,7 @@ function extractReferencesFromContent(file, content) {
     pushRegexMatches({
       references,
       seen,
-      content,
+      content: extractableContent,
       regex: JS_SET_ATTRIBUTE_REGEX,
       valueGroup: 2,
       file,
@@ -887,6 +1001,109 @@ function suggestPath(referencePath, sourceFile, fileIndex) {
   return null;
 }
 
+function astroSourceToSitePath(file) {
+  const match = /^src\/pages\/(.+)$/.exec(file);
+  if (!match) {
+    return null;
+  }
+
+  let rest = match[1];
+  if (/\.(astro|md|mdx)$/i.test(rest)) {
+    rest = rest.replace(/\.(astro|md|mdx)$/i, "");
+  } else {
+    return null;
+  }
+
+  const dynamic = /\[.+?\]/.test(rest);
+
+  if (rest === "index") {
+    return { path: "/", dynamic: false };
+  }
+
+  rest = rest.replace(/\/index$/, "");
+  return { path: `/${rest.replace(/\/+$/, "")}/`, dynamic };
+}
+
+function astroDynamicToPattern(sitePath) {
+  return sitePath.replace(/\[\.\.\.[^\]]+\]/g, "*").replace(/\[[^\]]+\]/g, "*");
+}
+
+function matchesDynamicPattern(referencePath, pattern) {
+  const referenceSegments = referencePath.split("/").filter(Boolean);
+  const patternSegments = pattern.split("/").filter(Boolean);
+
+  if (referenceSegments.length !== patternSegments.length) {
+    return false;
+  }
+
+  return patternSegments.every((segment, index) => segment === "*" || segment === referenceSegments[index]);
+}
+
+function buildSourceRouteVariants(canonicalSitePath) {
+  const variants = new Set();
+  const normalizedCanonical = normalizePublicCanonical(canonicalSitePath);
+  const trimmedCanonical = stripTrailingSlash(normalizedCanonical);
+
+  variants.add(normalizedCanonical);
+  variants.add(trimmedCanonical);
+
+  if (trimmedCanonical !== "/") {
+    variants.add(ensureTrailingSlash(trimmedCanonical));
+    variants.add(`${trimmedCanonical}/index.html`);
+    variants.add(`${trimmedCanonical}.html`);
+  } else {
+    variants.add("/");
+    variants.add("/index.html");
+  }
+
+  return [...variants].map((value) => normalizeSitePath(value)).filter(Boolean);
+}
+
+// Migrated pages are built from JSON data (src/data/migrated-pages/*.json)
+// via dynamic routes (solutions/[slug].astro, etc.) — they have no
+// src/pages/*.astro source file, so astroSourceToSitePath() can't see them.
+// We read each JSON's `canonical` field and register it as a valid public
+// route. Without this, every reference to a migrated page (e.g.
+// /solutions/ai-firewall/) is a false-positive break.
+
+async function readJsonSafe(filePath) {
+  try {
+    const raw = await fs.readFile(filePath, "utf8");
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+async function readMigratedPageRoutes(root) {
+  const migratedDir = path.join(root, "src", "data", "migrated-pages");
+  let entries;
+  try {
+    entries = await fs.readdir(migratedDir);
+  } catch {
+    return [];
+  }
+
+  const routes = [];
+  for (const entry of entries) {
+    if (!entry.toLowerCase().endsWith(".json")) continue;
+    const parsed = await readJsonSafe(path.join(migratedDir, entry));
+    if (!parsed || typeof parsed !== "object") continue;
+    const canonical = typeof parsed.canonical === "string" ? parsed.canonical.trim() : "";
+    if (!canonical) continue;
+    // Strip the site origin manually. canonicalizeSitePath() and the local
+    // normalizeSitePath() both collapse "https://" → "https:/" via a generic
+    // "//" → "/" rule before their URL branch runs, so neither can parse a
+    // full-URL canonical. migrated-page JSON files store canonicals as full
+    // URLs (e.g. https://brightai.site/solutions/ai-firewall/).
+    const originStripped = canonical.replace(/^https?:\/\/[^/]+/i, "");
+    const sitePath = canonicalizeSitePath(originStripped);
+    if (!sitePath || sitePath === "/") continue;
+    routes.push(sitePath);
+  }
+  return routes;
+}
+
 async function buildFileIndex({ root, ignorePatterns }) {
   const projectFiles = await walkProjectFiles(root, ignorePatterns);
   const normalizedFiles = projectFiles.map((file) => normalizeRelativePath(toPosix(file)));
@@ -899,6 +1116,7 @@ async function buildFileIndex({ root, ignorePatterns }) {
   const publicRouteVariantsByBasename = new Map();
   const publicRouteVariantsByStem = new Map();
   const publicRedirectMap = await buildPublicRedirectMap(root);
+  const dynamicRoutePatterns = [];
 
   for (const file of files) {
     const baseName = path.posix.basename(file).toLowerCase();
@@ -940,6 +1158,63 @@ async function buildFileIndex({ root, ignorePatterns }) {
     }
   }
 
+  for (const file of files) {
+    if (/^src\/pages\/.+\.(astro|md|mdx)$/i.test(file)) {
+      const sourceRoute = astroSourceToSitePath(file);
+      if (!sourceRoute) {
+        continue;
+      }
+
+      const canonicalSitePath = normalizePublicCanonical(sourceRoute.path);
+      publicBasePathByFile.set(file, derivePublicBasePath(file, canonicalSitePath));
+
+      if (sourceRoute.dynamic) {
+        dynamicRoutePatterns.push(astroDynamicToPattern(canonicalSitePath));
+      }
+
+      for (const variant of buildSourceRouteVariants(canonicalSitePath)) {
+        addPublicRouteVariant(publicRouteMap, variant, canonicalSitePath);
+
+        const variantBaseName = path.posix.basename(variant).toLowerCase();
+        const variantStem = path.posix.basename(variant, path.posix.extname(variant)).toLowerCase();
+
+        if (!publicRouteVariantsByBasename.has(variantBaseName)) {
+          publicRouteVariantsByBasename.set(variantBaseName, []);
+        }
+        publicRouteVariantsByBasename.get(variantBaseName).push(variant);
+
+        if (!publicRouteVariantsByStem.has(variantStem)) {
+          publicRouteVariantsByStem.set(variantStem, []);
+        }
+        publicRouteVariantsByStem.get(variantStem).push(variant);
+      }
+    }
+  }
+
+  // Register migrated-page routes (solutions/[slug].astro, sectors, cities)
+  // built from JSON data in src/data/migrated-pages/. These have no
+  // src/pages/*.astro source, so the loop above cannot see them.
+  const migratedRoutes = await readMigratedPageRoutes(root);
+  for (const migratedSitePath of migratedRoutes) {
+    const canonicalSitePath = normalizePublicCanonical(migratedSitePath);
+    for (const variant of buildSourceRouteVariants(canonicalSitePath)) {
+      addPublicRouteVariant(publicRouteMap, variant, canonicalSitePath);
+
+      const variantBaseName = path.posix.basename(variant).toLowerCase();
+      const variantStem = path.posix.basename(variant, path.posix.extname(variant)).toLowerCase();
+
+      if (!publicRouteVariantsByBasename.has(variantBaseName)) {
+        publicRouteVariantsByBasename.set(variantBaseName, []);
+      }
+      publicRouteVariantsByBasename.get(variantBaseName).push(variant);
+
+      if (!publicRouteVariantsByStem.has(variantStem)) {
+        publicRouteVariantsByStem.set(variantStem, []);
+      }
+      publicRouteVariantsByStem.get(variantStem).push(variant);
+    }
+  }
+
   for (const values of basenameMap.values()) {
     values.sort();
   }
@@ -965,6 +1240,7 @@ async function buildFileIndex({ root, ignorePatterns }) {
     publicRouteVariantsByBasename,
     publicRouteVariantsByStem,
     publicRedirectMap,
+    dynamicRoutePatterns,
     allPublicRouteVariants: [...publicRouteMap.keys()].sort(),
     allFilesArray: [...files].sort()
   };

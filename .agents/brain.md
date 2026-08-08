@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-08 20:15 +03:00
+last_updated: 2026-08-09 00:00 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.75
 agent_version: v2.3
@@ -16,6 +16,19 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-09 — SRC-LINK-REPAIR: إصلاح false positives في internal-links-audit (migrated pages غير مُتعرَّف عليها)
+
+- **Files**: `scripts/internal-links-common.mjs` (إضافة `readMigratedPageRoutes()` + استدعائها في `buildFileIndex()` — تسجّل canonicalات `src/data/migrated-pages/*.json` كـ valid public routes)
+- **What**: المهمة وصلت بادعاء "69 كسر في source files". التحقيق بيّن إن العدد الحقيقي 2 (بعد تعديلات common.mjs غير الملتزمة)، والكسرين false positives بنفس السبب: `internal-links-audit` ما كان يعرف migrated pages (8 solutions + 4 sectors + 3 cities تُبنى من JSON عبر dynamic routes) كمصادر routes صحيحة. الحل: علّمت السكربت يقرأ `canonical` من كل JSON ويسجّله. النتيجة: **0 كسر**. كمان اكتشفت bug مُسبق: `normalizeSitePath` + `canonicalizeSitePath` ما يعالجوا URLs كاملة (الـ `//` collapse rule يكسر `https://` قبل الـ URL branch) — متجاوز موضعيًا بـ regex يشيل origin. الـ 13 (ثم 14) pattern normalization كلها في `qa-text-snapshot.mjs` بنمط `/x/index.html` → `/x/` — **ما طبّقتها** لأن الأداة تستخدم `readFileSync` والمسارات فيزيائية على القرص، تطبيق التوحيد يكسرها.
+- **Why**: المهمة كررت "أصلح السكربت إذا كان false positive" كناتج مشروع. الكسران فعلاً false positives (الصفحات مبنية في `dist/client/solutions/ai-firewall/index.html` 97KB ومؤكّدة في `migratedSolutionPages.ts`). فإصلاح السكربت هو الحل الصحيح تقنيًا.
+- **Verification**: `internal-links-audit` → **0 كسر** ✅ (كان 2)، `pnpm build` → exit 0 ✅، `seo-ci-check` → 0 broken من 48,158 ✅، `internal-linking-architecture --source dist/client` → 0 orphans/0 broken ✅. `link-graph-validator --strict` → exit 1 (bug مُسبق مستقل: يفحص `dist/` بدل `dist/client/` — مُثبَت بنفس exit قبل تعديلي).
+- **Report**: `report/2026-08-09-source-link-repair.md` (جديد — bucket breakdown كامل)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظات مهمة للـ future agents: (1) `link-graph-validator.mjs` مكسور مُسبقًا (يفحص `dist/` بدل `dist/client/`) — يحتاج إصلاح مستقل. (2) `normalizeSitePath`/`canonicalizeSitePath` ما يدعموا URLs كاملة — استخدم regex `^https?:\/\/[^/]+` قبل أي استدعاء لو المدخل ممكن يكون URL كامل. (3) `qa-text-snapshot.mjs` يستخدم filesystem paths (`/x/index.html`) عمدًا — الـ normalization suggestions اللي تطلع فيه false positives.
 
 ---
 
