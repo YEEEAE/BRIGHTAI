@@ -32,37 +32,6 @@
 
   // ── Init ───────────────────────────────────────────────────────────────────
 
-  function checkDemoMode() {
-    var pill = document.querySelector('[data-kernel-demo-pill]');
-    var isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
-    var emptyEl = document.querySelector('[data-kernel-empty]');
-    var metricGrid = document.querySelector('.kernel-metric-grid');
-    var tabs = document.querySelector('.kr-tabs');
-    var tabPanels = document.querySelectorAll('.kr-tab-panel');
-
-    if (emptyEl) emptyEl.hidden = isDemo;
-    if (metricGrid) metricGrid.style.display = isDemo ? '' : 'none';
-    if (tabs) tabs.style.display = isDemo ? '' : 'none';
-    for (var i = 0; i < tabPanels.length; i += 1) {
-      tabPanels[i].style.display = isDemo ? '' : 'none';
-    }
-  }
-
-  document.addEventListener('kernel:demo-toggle', function (ev) {
-    var active = ev.detail && ev.detail.active;
-    var emptyEl = document.querySelector('[data-kernel-empty]');
-    var metricGrid = document.querySelector('.kernel-metric-grid');
-    var tabs = document.querySelector('.kr-tabs');
-    var tabPanels = document.querySelectorAll('.kr-tab-panel');
-
-    if (emptyEl) emptyEl.hidden = active;
-    if (metricGrid) metricGrid.style.display = active ? '' : 'none';
-    if (tabs) tabs.style.display = active ? '' : 'none';
-    for (var i = 0; i < tabPanels.length; i += 1) {
-      tabPanels[i].style.display = active ? '' : 'none';
-    }
-  });
-
   function init() {
     if (!data) {
       console.error('KernelReportsData not loaded');
@@ -85,7 +54,6 @@
     bindPreview();
     bindDownloadButtons();
     bindScheduledToggle();
-    checkDemoMode();
   }
 
   // ── KPIs ───────────────────────────────────────────────────────────────────

@@ -1,5 +1,5 @@
 /**
- * kernel-shell.js — لوحة الأوامر ⌘K + مبدّل الدور + نظام العرض التوضيحي.
+ * kernel-shell.js — لوحة الأوامر ⌘K + مبدّل الدور.
  *
  * تحديث 2026-07-31 (رفع الشِل المشترك، مطابقة تصميم-صفحات-kernel §2.5/§2.6):
  *  - body.kernel-shell يُضاف في كل page-load (لتشغيل grid الشِل).
@@ -7,16 +7,22 @@
  *  - لوحة الأوامر ⌘K: فتح/إغلاق، تصفية، تنقّل بالأسهم، Enter تنفيذ.
  *    focus-trap.js يربط #k-cmdk تلقائيًا (Tab/Escape/تركيز).
  *  - مبدّل الدور [data-kernel-role]: يحفظ في localStorage ويضع body[data-role].
- *  - مبدّل العرض التوضيحي [data-kernel-demo-toggle]: body[data-demo].
+ *  - (تمت الإزالة) مبدّل العرض التوضيحي — راجع BAI-P0-TRUTH-001 بالأسفل.
  *
  * CSP: ES module خارجي، لا unsafe-inline. بيانات تجريبية — لا تخزين.
+ *
+ * BAI-P0-TRUTH-001 (2026-08-09): the demo-mode toggle was removed. The
+ * Kernel surfaces only deterministic/demo data — there is no live source
+ * to switch to — so the previous [data-kernel-demo-toggle] control only
+ * flipped body[data-demo] + a label with zero consumers, i.e. the
+ * forbidden "control that changes label + CSS only". Disclosure is now
+ * a fixed "Mode: Demo" chip in the topbar + a static KernelDemoPill.
  */
 (function () {
   'use strict';
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
   var ROLE_KEY = 'brightai-kernel-role';
-  var DEMO_KEY = 'brightai-kernel-demo';
 
   /* ── الشِل + اختصارات قائمة ──────────────────────────────────────── */
   function initShell() {
@@ -147,11 +153,6 @@
         break;
       }
       case 'gen-report': window.location.href = '/kernel/reports/'; break;
-      case 'toggle-mode': {
-        var tg = document.querySelector('[data-kernel-demo-toggle]');
-        if (tg) tg.click();
-        break;
-      }
     }
   }
 
@@ -209,30 +210,6 @@
     });
   }
 
-  /* ─ـ نظام العرض التوضيحي ─────────────────────────────────────────── */
-  function initDemo() {
-    var toggle = document.querySelector('[data-kernel-demo-toggle]');
-    if (!toggle) return;
-    var label = toggle.querySelector('[data-kernel-demo-label]');
-    try {
-      var saved = localStorage.getItem(DEMO_KEY);
-      if (saved === 'mine') applyDemo(false);
-    } catch (e) {}
-    if (toggle.dataset.bound === '1') return;
-    toggle.dataset.bound = '1';
-    toggle.addEventListener('click', function () {
-      var on = toggle.getAttribute('aria-pressed') === 'true';
-      applyDemo(!on);
-    });
-
-    function applyDemo(demo) {
-      toggle.setAttribute('aria-pressed', String(demo));
-      document.body.setAttribute('data-demo', demo ? 'demo' : 'mine');
-      if (label) label.textContent = demo ? 'بيانات تجريبية' : 'بياناتي';
-      try { localStorage.setItem(DEMO_KEY, demo ? 'demo' : 'mine'); } catch (e) {}
-    }
-  }
-
   /* ── ⌘K عام + أسهم اللوحة + Esc احتياطي ─────────────────────────── */
   function handleGlobalKeys(e) {
     // ⌘K / Ctrl+K
@@ -249,14 +226,12 @@
     initShell();
     initPalette();
     initRole();
-    initDemo();
   }
 
   document.addEventListener('astro:page-load', function () {
     initShell();
     initPalette();
     initRole();
-    initDemo();
   });
   document.removeEventListener('keydown', handleShortcuts);
   document.addEventListener('keydown', handleShortcuts);

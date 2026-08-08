@@ -1450,11 +1450,6 @@ body.kernel-shell footer.footer { display: none; }
 .k-status-chip__dot--ok { background: var(--k-allow); }
 .k-status-chip__dot--amber { background: var(--k-mask); }
 
-/* مبدّل العرض التوضيحي */
-.k-demo-toggle { cursor: pointer; color: var(--k-mask); border-color: rgba(245,158,11,.35); }
-.k-demo-toggle[aria-pressed="false"] { color: var(--text-mid); border-color: var(--line); }
-.k-demo-toggle:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
-
 /* زر ⌘K */
 .k-topbar__cmdk {
   display: inline-flex;
@@ -2977,7 +2972,8 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   100% { background-position: -200% 0; }
 }
 
-/* ── 16. Demo data pill ──────────────────────────────────────────────── */
+/* ── 16. Demo data pill (static disclosure badge — BAI-P0-TRUTH-001) ────
+   Read-only indicator. No :hover/:focus/--inactive: this is not a control. */
 
 .kernel-demo-pill {
   display: inline-flex;
@@ -2990,26 +2986,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   color: var(--accent-warm);
   font-size: var(--text-xs);
   font-weight: var(--font-bold);
-  cursor: pointer;
   font-family: inherit;
-  transition: background var(--duration-fast) var(--ease-out),
-              border-color var(--duration-fast) var(--ease-out);
-}
-
-.kernel-demo-pill:hover {
-  background: rgba(192,138,90,0.16);
-  border-color: rgba(192,138,90,0.5);
-}
-
-.kernel-demo-pill:focus-visible {
-  outline: 2px solid var(--brand-500);
-  outline-offset: 2px;
-}
-
-.kernel-demo-pill--inactive {
-  background: rgba(148,163,184,0.08);
-  border-color: var(--border-strong);
-  color: var(--text-secondary);
 }
 
 .kernel-demo-pill__dot {

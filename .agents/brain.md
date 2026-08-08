@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-09 00:00 +03:00
+last_updated: 2026-08-09 02:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.75
+version: 2.7.76
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,19 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-09 — BAI-P1-TEST-001: إرجاع regression signal لمسار /api/ai/chat (verification + mutation testing، بدون تعديل إنتاجي)
+
+- **Files**: بدون تعديل إنتاجي. (التقرير: `report/2026-08-09-bai-p1-test-001-chat-regression-signal.md` جديد)
+- **What**: المهمة وصلت بادعاء "npm test يفشل بـ LeadQueueStatus SyntaxError". الـ task نفسه صريح: "شغّل npm test أول شي بعد PROMPT-001. فيه احتمال قوي يمر بدون أي تعديل". نفّذت بالحرف: `pnpm db:generate` (يولّد Prisma client) → `npm test` → **38/38 pass** بدون لمس ولا سطر في `chat.ts` أو `test-chat-session.mjs`. الفشل كان عَرَضًا لانحراف Prisma = نفس السبب الجذري لـ BAI-P1-TYPES-001 (اللي انحلّ بـ `pretypecheck→db:generate` + `postinstall: prisma generate`). بعدها سوّيت mutation testing يدوي: كسرت `isValidSessionId` ليرجّع `true` دائمًا، شغّلت `pnpm test:chat-session` → فشل **تحديدًا** على test 7 + 8 (malformed/oversized sessionId expected 400 actual 200)، باقي 14 test نجحوا (isolation صحيح). رجّعت الـ mutation وأكدت baseline رجع أخضر (git status نظيف).
+- **Why**: الـ task الأصلي ينص صراحة إن الفشل غالبًا عَرَضي والاختبار مر بدون تعديل. هذا بالضبط اللي صار. القاعدة "Verify, Don't Claim" تتطلب إثبات إن regression signal حقيقي (اختبار يمر دايمًا = اختبار ما ينفع) — أثبتّها بالـ mutation.
+- **Verification**: `pnpm db:generate` → generated client ✅, `npm test` → **38/38 pass** ✅, `pnpm test:chat-session` → **16/16 pass** ✅, `npm run typecheck` → 5/5 Done 0 أخطاء ✅, mutation test → 2 fail موضعي + 14 pass ✅, post-revert `git status --porcelain` → clean ✅, security review على logs → grep على provider keys = 0 نتائج ✅.
+- **Report**: `report/2026-08-09-bai-p1-test-001-chat-regression-signal.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule). ما في كود إنتاجي معدّل أصلاً.
+- **Status**: verified locally · working tree clean
+- **Brain updates**: هذا الـ entry. ملاحظات مهمة للـ future agents: (1) **قيود بيئية مهمة**: `node scripts/test-chat-session.mjs` مباشرة يفشل بـ `ERR_MODULE_NOT_FOUND` على `kernel-system-prompts` لأن `chat.ts` يستورد ملف `.ts` بلا extension — لازم `--import ./scripts/test-ts-loader.mjs --experimental-strip-types`. الـ runner الموثّق = `pnpm test:chat-session` (= `node --import .../test-ts-loader.mjs --experimental-strip-types --test scripts/test-chat-session.mjs`). (2) لو CI شغّال بـ `--ignore-scripts`، `postinstall: prisma generate` ما يشتغل وكل tests تفشل بنفس خطأ LeadQueueStatus — تأكد إن CI يشغّل postinstall أو يضيف `pnpm db:generate` صريح. (3) **فجوة تغطية مؤجّلة**: rate limit (429) + SSE/non-streaming contract ما مغطّاة حاليًا — تستاهل task مستقل `BAI-P1-TEST-002` (ما أضفتها هنا عشان constraint الـ task "لا تعدّل ولا سطر" + لأنها توصية مو AC).
 
 ---
 

@@ -322,28 +322,9 @@
         updateToolbar();
         renderWindow();
     }
-    function checkDemoMode() {
-        const pill = $('[data-kernel-demo-pill]');
-        const isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
-        const emptyState = $('[data-kernel-empty]');
-        const vport = $('[data-ka-viewport]');
-        const verifier = $('.kernel-audit-verifier');
-        const filtersBar = $('.kernel-audit-filters');
-        const toolbar = $('.kernel-audit-toolbar');
-        const kpis = $('.kernel-audit-kpis');
-        if (emptyState)
-            emptyState.hidden = isDemo;
-        if (vport)
-            vport.hidden = !isDemo;
-        if (verifier)
-            verifier.hidden = !isDemo;
-        if (filtersBar)
-            filtersBar.hidden = !isDemo;
-        if (toolbar)
-            toolbar.hidden = !isDemo;
-        if (kpis)
-            kpis.hidden = !isDemo;
-    }
+    // BAI-P0-TRUTH-001: the demo-mode toggle was removed — this surface shows
+    // only deterministic data, so the viewport/verifier/kpis stay visible. The
+    // empty-state now means "filter returned no rows", not "live mode on".
     function reveal() {
         const main = $('[data-kernel-loading]');
         if (!main || !main.hasAttribute('data-kernel-loading'))
@@ -352,12 +333,8 @@
         if (skel)
             skel.hidden = true;
         main.removeAttribute('data-kernel-loading');
-        checkDemoMode();
     }
     ;
-    document.addEventListener('kernel:demo-toggle', function () {
-        checkDemoMode();
-    });
     function initAfterData() {
         if (!fullRows)
             return;

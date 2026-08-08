@@ -1,29 +1,32 @@
 ---
 /**
- * KernelDemoPill — Demo data toggle (matches /kernel/ PWA pattern).
- * - Pressed state reads from a parent data attr or localStorage.
- * - Click dispatches `kernel:demo-toggle` custom event for any page to listen.
- * - Pure CSS styling; no JS logic to wire up — page reads aria-pressed.
+ * KernelDemoPill — Static "demo data" disclosure badge (BAI-P0-TRUTH-001).
+ *
+ * Read-only indicator: the Kernel surfaces only deterministic/demo data.
+ * Not a toggle — there is no live data source to switch to (every
+ * src/data/kernel-*.ts is a seeded generator; KERNEL_DATASETS_LIVE = [],
+ * EVAL_LIVE_DATASETS = [], liveCount = 0). Replacing the old interactive
+ * toggle with a fixed badge avoids the "control that changes label + CSS
+ * only" anti-pattern. The shell-level "Mode: Demo" chip in KernelLayout
+ * is the other half of this disclosure.
+ *
+ * Provenance for live-backed surfaces lives separately on chat.astro
+ * (data-demo-badge toggled by setDemoMode), which marks real demo vs
+ * live provider replies — that system is untouched here.
  */
 interface Props {
   label?: string;
-  pressed?: boolean;
 }
 
-const { label = 'بيانات تجريبية', pressed = true } = Astro.props;
+const { label = 'بيانات تجريبية' } = Astro.props;
 ---
 
-<button
-  class:list={['kernel-demo-pill', !pressed && 'kernel-demo-pill--inactive']}
-  type="button"
-  aria-pressed={pressed ? 'true' : 'false'}
-  aria-label="تبديل البيانات التجريبية"
-  data-kernel-demo-pill
+<span
+  class="kernel-demo-pill"
+  role="img"
+  aria-label="البيانات المعروضة تجريبية"
+  title="البيانات المعروضة تجريبية"
 >
   <span class="kernel-demo-pill__dot" aria-hidden="true"></span>
   <span>{label}</span>
-</button>
-
-<!-- BAI-SEC-18 (2026-07-25): inline script moved to public/js/kernel-demo-pill.js
-     to enable strict-CSP (no 'unsafe-inline' on script-src). Loaded as ES module. -->
-<script type="module" src="/js/kernel-demo-pill.js"></script>
+</span>

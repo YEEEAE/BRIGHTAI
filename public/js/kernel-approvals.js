@@ -309,34 +309,13 @@
     updateLedger();
   }
 
-  function checkDemoMode() {
-    var pill = $('[data-kernel-demo-pill]');
-    var isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
-    var emptyState = $('[data-kernel-empty]');
-    var filtersBar = $('[data-kap-filters]');
-    var toolbar = $('.kernel-ap-toolbar');
-    var layout = $('.kernel-ap-layout');
-    var ledger = $('.kernel-ap-ledger-wrap');
-
-    if (emptyState) emptyState.hidden = isDemo;
-    if (filtersBar) filtersBar.hidden = !isDemo;
-    if (toolbar) toolbar.hidden = !isDemo;
-    if (layout) layout.hidden = !isDemo;
-    if (ledger) ledger.hidden = !isDemo;
-  }
-
   function reveal() {
     var main = $('[data-kernel-loading]');
     if (!main || !main.hasAttribute('data-kernel-loading')) return;
     var skel = main.querySelector('[data-kernel-skeleton]');
     if (skel) skel.hidden = true;
     main.removeAttribute('data-kernel-loading');
-    checkDemoMode();
   }
-
-  document.addEventListener('kernel:demo-toggle', function () {
-    checkDemoMode();
-  });
 
   // ── status filter cards ────────────────────────────────────────────────
   function bindFilters() {
