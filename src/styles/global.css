@@ -77,10 +77,10 @@
    خط عناوين + خط عربي = نفس الـ setup الحالي، بدون إضافة خطوط جديدة.
    ──────────────────────────────────────────────────────────── */
 :root {
-  --font-arabic: 'IBM Plex Sans Arabic', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'IBM Plex Sans Arabic', system-ui, sans-serif; /* للعناوين العربية */
-  --font-latin: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-brand: 'BrightAI Official', 'IBM Plex Sans Arabic', Arial, sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic Fallback', system-ui, sans-serif; /* للعناوين العربية */
+  --font-latin: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-brand: 'BrightAI Official', 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic Fallback', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'Fira Code', monospace;
 }
 

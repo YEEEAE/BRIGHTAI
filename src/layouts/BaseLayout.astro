@@ -215,11 +215,18 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
 
   <!-- BAI-PERF-02 (2026-07-25): Self-hosted fonts — no Google Fonts requests.
        Font files in public/fonts/, @font-face in tokens.css.
-       Preloaded for optimal LCP: no FOUT, no FOUT mitigations needed. -->
-  <link rel="preload" href="/fonts/IBMPlexSansArabic-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/IBMPlexSansArabic-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+       Preloaded for optimal LCP: no FOUT, no FOUT mitigations needed.
+       BAI-CWV-LCP-001 (2026-08-08): only IBM Plex Sans Arabic (the Arabic LCP
+       font) is preloaded with fetchpriority="high" — it paints every heading
+       and body run above the fold on every Arabic page. Inter Regular/SemiBold
+       (111KB + 114KB) were preloaded but NEVER applied to any element (no
+       --font-latin consumer exists, and 'Inter' has no direct font-family use).
+       Dropping them removed 225KB from the preload queue so the browser no
+       longer contends for them during the critical font window. The brand
+       subset (9.9KB, Latin-only unicode-range) stays preloaded for the chip/
+       gradient Latin words. -->
+  <link rel="preload" href="/fonts/IBMPlexSansArabic-Regular.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
+  <link rel="preload" href="/fonts/IBMPlexSansArabic-SemiBold.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
 
   <!-- Preload custom brand font (subsetted — 58.2KB → 9.9KB) -->
   <link rel="preload" href="/assets/fonts/TheYearofTheCamel-Medium.subset.woff2" as="font" type="font/woff2" crossorigin />

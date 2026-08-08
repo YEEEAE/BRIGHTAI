@@ -48,7 +48,7 @@ html[lang=ar] h1, html[lang=ar] h2, html[lang=ar] h3,
 html[lang=ar] h4, html[lang=ar] h5, html[lang=ar] h6,
 .gradient-text, .chip, .badge, .font-black, .font-bold,
 .feature-title, .section-title, .metric-label, .brand-text {
-  font-family: 'BrightAI Official', 'IBM Plex Sans Arabic', Arial, sans-serif;
+  font-family: 'BrightAI Official', 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic Fallback', Arial, sans-serif;
   font-weight: 700;
 }
 

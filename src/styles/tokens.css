@@ -87,9 +87,9 @@
   --space-16: 4rem;
 
   /* 6. خطوط */
-  --font-sans: 'IBM Plex Sans Arabic', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', 'Fira Code', monospace;
-  --font-display: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-display: 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic Fallback', system-ui, sans-serif;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -568,4 +568,79 @@ body.kernel-shell {
   font-weight: 600;
   font-display: swap;
   src: url('/fonts/Inter-SemiBold.woff2') format('woff2');
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BAI-CWV-CLS-001 (2026-08-08) — Font Loading Organizer (FLO) fallback metrics.
+   ════════════════════════════════════════════════════════════════════════════
+   ROOT CAUSE (confirmed by Lighthouse layout-shifts audit, lh-home-desktop.json):
+   Homepage CLS = 0.168. The audit names `div.split-hero__main` as the shifted
+   element and lists 4 "Web font loaded" causes (IBMPlexSansArabic + Inter,
+   Regular + SemiBold). Arabic glyphs in IBM Plex Sans Arabic occupy a taller
+   line box (hhea ascent 1085 / descent -415 / upem 1000 → 1.5 em) than the
+   Arial fallback the browser paints during the FOUT window (Arial line box ≈
+   1.117 em). On the homepage H1 — clamp(2.5rem, 4.5rem) — that 34% vertical
+   delta reflows the hero column the moment the web font swaps in.
+
+   FIX: register local Arial (and common equivalents) under dedicated fallback
+   family names, overriding its metrics so it reserves the SAME line box the
+   real web font will occupy. This is the standard "self-healing FOUT" recipe
+   (size-adjust / ascent-override / descent-override / line-gap-override,
+   Chrome 87+, Safari 16+, Firefox 89+). Glyphs stay at their natural Arial
+   size (size-adjust: 100%); only the surrounding line box is resized to match
+   the web font, so the swap produces ~zero layout shift.
+
+   Metric values are derived from the actual woff2 files in public/fonts/:
+     IBM Plex Sans Arabic: upem 1000, hhea ascent 1085, descent -415, gap 0
+     Inter:                upem 2048, hhea ascent 1984, descent -494, gap 0
+   against Arial:          upem 2048, hhea ascent 1854, descent -434, gap 0.
+   The hhea and OS/2 typo line boxes agree for both web fonts (1.5 em Arabic,
+   1.21 em Inter), so the values are consistent across the Windows/USE_TYPO
+   and macOS/hhea metric paths.
+
+   Arabic fonts / brand typeface are NOT removed — only the fallback box is
+   resized. font-display: swap stays on (visibility during load preserved).
+   ════════════════════════════════════════════════════════════════════════════ */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('DejaVu Sans'), local('sans-serif');
+  font-style: normal;
+  font-weight: 400;
+  ascent-override: 119.85%;
+  descent-override: 195.84%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Arabic Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('DejaVu Sans'), local('sans-serif');
+  font-style: normal;
+  font-weight: 600;
+  ascent-override: 119.85%;
+  descent-override: 195.84%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('DejaVu Sans'), local('sans-serif');
+  font-style: normal;
+  font-weight: 400;
+  ascent-override: 107.01%;
+  descent-override: 113.83%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('DejaVu Sans'), local('sans-serif');
+  font-style: normal;
+  font-weight: 600;
+  ascent-override: 107.01%;
+  descent-override: 113.83%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
 }

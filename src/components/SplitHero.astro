@@ -995,7 +995,29 @@ import TrustBadges from './TrustBadges.astro';
 </style>
 
 <script>
-  // Spotlight effect — desktop only, ~20 lines vanilla JS
+  // BAI-CWV-TBT-001 (2026-08-08) — shared idle scheduler for SplitHero scripts.
+  // Decorative effects (spotlight, tilt, chip rotator, dotted canvas) are
+  // deferred to an idle callback so they never block first paint / LCP.
+  // requestIdleCallback is available in Chromium 47+ and Safari 16.4+; older
+  // Safari falls back to a 1200ms setTimeout (long enough to let the hero +
+  // LCP settle, short enough that interactive effects feel instant on hover).
+  // Hoisted (no is:inline) → bundled once and shared by every script below.
+  function scheduleIdle(work) {
+    const ric = window.requestIdleCallback;
+    if (typeof ric === 'function') {
+      ric(work, { timeout: 2000 });
+    } else {
+      setTimeout(work, 1200);
+    }
+  }
+</script>
+
+<script>
+  // Spotlight effect — desktop only, ~20 lines vanilla JS.
+  // BAI-CWV-TBT-001 (2026-08-08): deferred via requestIdleCallback so the
+  // mouse-move handler + querySelector work never blocks first paint / LCP.
+  // The spotlight is purely decorative (only visible on pointer interaction),
+  // so deferring it to idle has zero perceptual cost.
   (function setupSpotlight() {
     let raf = 0;
     let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
@@ -1041,7 +1063,7 @@ import TrustBadges from './TrustBadges.astro';
       spotlight = null;
     }
 
-    document.addEventListener('astro:page-load', init);
+    document.addEventListener('astro:page-load', () => scheduleIdle(init));
     document.addEventListener('astro:before-swap', destroy);
   })();
 </script>
@@ -1049,6 +1071,9 @@ import TrustBadges from './TrustBadges.astro';
 <script>
   // Kernel panel 3D tilt — vanilla JS, max 6deg, respects prefers-reduced-motion.
   // ~0.4KB minified. Skipped entirely on touch devices.
+  // BAI-CWV-TBT-001 (2026-08-08): deferred via requestIdleCallback. The tilt
+  // only activates on hover, so it has no perceptual role before interaction
+  // and can safely wait for an idle callback after LCP.
   (function setupTilt() {
     let panel: HTMLElement | null = null;
     let raf = 0;
@@ -1103,7 +1128,7 @@ import TrustBadges from './TrustBadges.astro';
       panel = null;
     }
 
-    document.addEventListener('astro:page-load', init);
+    document.addEventListener('astro:page-load', () => scheduleIdle(init));
     document.addEventListener('astro:before-swap', destroy);
   })();
 </script>
@@ -1113,6 +1138,9 @@ import TrustBadges from './TrustBadges.astro';
   // يبدّل بين "AI Governance Platform" و "AI Audit Trail" كل 2800ms بـ fade.
   // يحترم prefers-reduced-motion (يوقف الدوران ويعرض الكلمة الأولى).
   // cleanup على astro:before-swap عشان view-transitions ما يكدّس intervals.
+  // BAI-CWV-TBT-001 (2026-08-08): deferred via requestIdleCallback. The chip
+  // shows the first word from SSR HTML, so rotation is a progressive
+  // enhancement that can wait for idle without affecting the hero content.
   (function setupChipRotate() {
     const ROTATE_MS = 2800;
     const TRANSITION_MS = 450; // يطابق transition في CSS
@@ -1156,7 +1184,7 @@ import TrustBadges from './TrustBadges.astro';
       words = [];
     }
 
-    document.addEventListener('astro:page-load', init);
+    document.addEventListener('astro:page-load', () => scheduleIdle(init));
     document.addEventListener('astro:before-swap', destroy);
   })();
 </script>
@@ -1164,5 +1192,15 @@ import TrustBadges from './TrustBadges.astro';
 <script>
   // Dotted-surface canvas — vanilla JS port (REPORTS-20).
   // Replaces the prior React island. Bundled only on pages that mount SplitHero.
-  import '../scripts/dotted-surface.js';
+  // BAI-CWV-TBT-001 (2026-08-08): deferred via dynamic import + requestIdleCallback.
+  // The dotted grid is an ambient background (no content), and grid construction
+  // + the first frame accounted for ~225ms of bootup on the homepage (per
+  // lh-home-desktop.json bootup-time audit). Loading the module only when the
+  // main thread is idle moves that work out of the first-paint critical path
+  // without any perceptual loss — the canvas is invisible until dots animate.
+  document.addEventListener('astro:page-load', () => {
+    scheduleIdle(async () => {
+      await import('../scripts/dotted-surface.js');
+    });
+  });
 </script>
