@@ -153,10 +153,9 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
           <strong dir="ltr">86ms</strong>
         </span>
 
-        <!-- مبدّل العرض التوضيحي: بيانات تجريبية / بياناتي -->
-        <button class="k-status-chip k-demo-toggle" type="button" data-kernel-demo-toggle aria-pressed="true" title="تبديل مصدر البيانات">
-          <span class="k-demo-toggle__state" data-kernel-demo-label>بيانات تجريبية</span>
-        </button>
+        <!-- BAI-P0-TRUTH-001 (2026-08-09): زر التبديل التجريبي محذوف — الشريط
+             يعرض البيانات التجريبية فقط، لا مصدر بديل. الإفصاح الثابت هو
+             chip الـ Mode: Demo + KernelDemoPill داخل كل صفحة. -->
 
         <!-- زر لوحة الأوامر -->
         <button class="k-topbar__cmdk" type="button" data-kernel-cmdk-open aria-label="فتح لوحة الأوامر">

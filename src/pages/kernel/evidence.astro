@@ -1828,25 +1828,10 @@ const SECTOR_LABEL: Record<string, string> = {
       if (focusBtn) focusBtn.focus({ preventScroll: true });
     }
 
-    function checkDemoMode() {
-      var pill = el('[data-kernel-demo-pill]');
-      var isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
-      var emptyState = el('[data-kernel-empty]');
-      var toolbar = el('.kernel-evidence-toolbar');
-      var verifySec = el('.kernel-evidence-verify');
-      var grid = el('[data-kernel-evidence-grid]');
-      var count = el('[data-kernel-evidence-count]');
-
-      if (emptyState) emptyState.hidden = isDemo;
-      if (toolbar) toolbar.hidden = !isDemo;
-      if (verifySec) verifySec.hidden = !isDemo;
-      if (grid) grid.hidden = !isDemo;
-      if (count) count.hidden = !isDemo;
-    }
-
-    document.addEventListener('kernel:demo-toggle', function () {
-      checkDemoMode();
-    });
+    // BAI-P0-TRUTH-001: the demo-mode toggle was removed — this surface shows
+    // only deterministic data, so the grid/toolbar stay visible. The existing
+    // filter-driven empty state (data-kernel-evidence-empty) keeps its job:
+    // it appears when a filter returns zero rows, not on a source switch.
 
     function init() {
       bindFilters();
@@ -1857,9 +1842,8 @@ const SECTOR_LABEL: Record<string, string> = {
       bindTamper();
       bindDropzone();
       applyLinkParams();
-      checkDemoMode();
     }
-
+  
     document.addEventListener('astro:page-load', init);
     if (document.readyState !== 'loading') init();
   })();
