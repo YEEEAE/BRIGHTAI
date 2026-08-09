@@ -602,6 +602,33 @@
         '<span style="font-family:var(--font-mono); font-size:0.85rem;">' + escapeHtml(r.traceId) + ' · Risk ' + r.risk + '</span>';
     }
 
+    // Show decision summary card
+    var summary = $('[data-kap-modal-summary]');
+    var actionLabel = action === 'approve' ? 'موافقة' : action === 'reject' ? 'رفض' : 'تحويل';
+    var isIrreversible = action === 'approve' || action === 'reject'; // approve/reject are irreversible
+    var policyReason = getPolicyReason(r);
+    var consequence = getConsequence(r, action);
+
+    if (summary) {
+      summary.hidden = false;
+      var badge = $('[data-kap-modal-summary-badge]');
+      if (badge) badge.textContent = actionLabel;
+      var irr = $('[data-kap-modal-irreversible]');
+      if (irr) irr.hidden = !isIrreversible;
+      var summaryTitle = $('[data-kap-modal-summary-title]');
+      if (summaryTitle) summaryTitle.textContent = r.title;
+      var summaryTrace = $('[data-kap-modal-summary-trace]');
+      if (summaryTrace) summaryTrace.textContent = r.traceId;
+      var summaryRisk = $('[data-kap-modal-summary-risk]');
+      if (summaryRisk) summaryRisk.textContent = String(r.risk);
+      var summaryAction = $('[data-kap-modal-summary-action]');
+      if (summaryAction) summaryAction.textContent = actionLabel;
+      var summaryPolicy = $('[data-kap-modal-summary-policy]');
+      if (summaryPolicy) summaryPolicy.textContent = policyReason;
+      var summaryConsequence = $('[data-kap-modal-summary-consequence]');
+      if (summaryConsequence) summaryConsequence.textContent = consequence;
+    }
+
     var label = $('[data-kap-modal-label]');
     if (label) {
       label.textContent = action === 'reject' ? 'سبب الرفض (إلزامي)' : action === 'transfer' ? 'سبب التفويض + اختيار المسؤول المستهدف (إلزامي)' : 'ملاحظاتك (اختياري)';
@@ -612,10 +639,13 @@
     var badge = $('[data-kap-modal-suggest-badge]');
     if (badge) badge.hidden = true;
 
+    var hint = document.getElementById('kap-modal-reason-hint');
+    if (hint) hint.hidden = action === 'approve';
+
     var confirm = $('[data-kap-modal-confirm]');
     if (confirm) {
       confirm.textContent = title;
-      confirm.className = 'kernel-modal__btn' +
+      confirm.className = 'kernel-modal__btn kernel-modal__btn--confirm' +
         (action === 'approve' ? ' kernel-modal__btn--approve' : action === 'reject' ? ' kernel-modal__btn--reject' : '');
     }
 
@@ -637,6 +667,10 @@
       }
     }
 
+    // Hide receipt initially
+    var receipt = $('[data-kap-modal-receipt]');
+    if (receipt) receipt.hidden = true;
+
     setTimeout(function () {
       var ta = $('[data-kap-modal-reason]');
       if (ta) ta.focus();
@@ -650,6 +684,11 @@
     modal.setAttribute('aria-hidden', 'true');
     var delegateField = $('[data-kap-modal-delegate-field]');
     if (delegateField) delegateField.hidden = true;
+    // Reset summary and receipt
+    var summary = $('[data-kap-modal-summary]');
+    if (summary) summary.hidden = true;
+    var receipt = $('[data-kap-modal-receipt]');
+    if (receipt) receipt.hidden = true;
   }
 
   function onDecideClick(action) {
@@ -668,6 +707,7 @@
     var delegateId = (action === 'transfer' && delegateSel) ? delegateSel.value : '';
     var delegateLabel = (action === 'transfer' && delegateSel) ? (delegateSel.selectedOptions && delegateSel.selectedOptions[0] ? delegateSel.selectedOptions[0].getAttribute('data-delegate-label') || '' : '') : '';
 
+    // Validation
     if (action === 'reject' && !text) {
       if (reason) {
         reason.focus();
@@ -693,12 +733,118 @@
       return;
     }
 
-    var entry = appendLedgerDecision(r, action, text, delegateId, delegateLabel);
-    closeModal();
+    // For approve: show explicit confirmation step
+    if (action === 'approve') {
+      showConfirmStep(r, action, text, delegateId, delegateLabel);
+      return;
+    }
+
+    // For reject/transfer: proceed directly
+    executeDecision(r, action, text, delegateId, delegateLabel);
+  }
+
+  function showConfirmStep(r, action, reason, delegateId, delegateLabel) {
+    var modal = $('[data-kap-modal]');
+    if (!modal) return;
+
+    // Change modal to confirmation state
+    var confirmBtn = $('[data-kap-modal-confirm]');
+    if (confirmBtn) {
+      confirmBtn.textContent = 'نعم، أنا متأكد — موافقة';
+      confirmBtn.className = 'kernel-modal__btn kernel-modal__btn--confirm kernel-modal__btn--approve kernel-modal__btn--final';
+      confirmBtn.dataset.confirmStep = 'true';
+      // Replace click handler
+      var newConfirmBtn = confirmBtn.cloneNode(true);
+      confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+      newConfirmBtn.addEventListener('click', function () {
+        executeDecision(r, action, reason, delegateId, delegateLabel);
+      });
+    }
+
+    // Update title
+    var title = $('[data-kap-modal-title]');
+    if (title) title.textContent = 'تأكيد نهائي — هل أنت متأكد من الموافقة؟';
+
+    // Show warning
+    var context = $('[data-kap-modal-context]');
+    if (context) {
+      context.innerHTML = '<strong style="color: var(--status-warning);">⚠ هذا قرار لا رجعة فيه.</strong><br>' + context.innerHTML;
+    }
+  }
+
+  function executeDecision(r, action, reason, delegateId, delegateLabel) {
+    var entry = appendLedgerDecision(r, action, reason, delegateId, delegateLabel);
+    showAuditReceipt(entry, r, action);
     renderDetail();
     renderList();
     updateFilterCounts();
     offerDecisionUndo(entry);
+  }
+
+  function showAuditReceipt(entry, r, action) {
+    var modal = $('[data-kap-modal]');
+    if (!modal) return;
+
+    // Hide form fields, show receipt
+    var formFields = modal.querySelectorAll('.kernel-modal__field, .kernel-modal__actions, .kernel-modal__summary, .kernel-modal__context');
+    formFields.forEach(function (el) { el.hidden = true; });
+
+    var receipt = $('[data-kap-modal-receipt]');
+    if (receipt) {
+      receipt.hidden = false;
+      var eventId = $('[data-kap-receipt-event-id]');
+      if (eventId) eventId.textContent = entry.eventId;
+      var trace = $('[data-kap-receipt-trace]');
+      if (trace) trace.textContent = entry.traceId;
+      var actionEl = $('[data-kap-receipt-action]');
+      if (actionEl) actionEl.textContent = entry.actionLabel;
+      var reasonEl = $('[data-kap-receipt-reason]');
+      if (reasonEl) reasonEl.textContent = entry.reason || '—';
+      var reviewer = $('[data-kap-receipt-reviewer]');
+      if (reviewer) reviewer.textContent = entry.reviewer;
+      var timestamp = $('[data-kap-receipt-timestamp]');
+      if (timestamp) timestamp.textContent = new Date(entry.ts).toLocaleString('ar-SA');
+      var evidence = $('[data-kap-receipt-evidence]');
+      if (evidence) evidence.textContent = entry.evidenceHash;
+      var certificate = $('[data-kap-receipt-certificate]');
+      if (certificate) certificate.textContent = entry.certificateId;
+    }
+
+    // Update confirm button to close
+    var confirmBtn = $('[data-kap-modal-confirm]');
+    if (confirmBtn) {
+      confirmBtn.textContent = 'إغلاق';
+      confirmBtn.className = 'kernel-modal__btn kernel-modal__btn--secondary';
+      confirmBtn.dataset.confirmStep = 'false';
+      var newConfirmBtn = confirmBtn.cloneNode(true);
+      confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+      newConfirmBtn.addEventListener('click', closeModal);
+    }
+
+    var title = $('[data-kap-modal-title]');
+    if (title) title.textContent = 'إيصال قرار التدقيق';
+  }
+
+  // Helper: Get policy reason from triggered policies
+  function getPolicyReason(r) {
+    if (!r.triggeredPolicies || r.triggeredPolicies.length === 0) return 'لا سياسات مشتعلة';
+    return r.triggeredPolicies.join('، ');
+  }
+
+  // Helper: Get consequence based on action and request data
+  function getConsequence(r, action) {
+    if (action === 'approve') {
+      if (r.risk >= 85) return 'مخاطر عالية — تفعيل القرار قد يعرض بيانات حساسة أو يخالف سياسات الحوكمة. يتطلب متابعة دقيقة.';
+      if (r.risk >= 60) return 'مخاطر متوسطة — القرار ضمن الحدود لكن يتطلب مراقبة دورية للتأكد من الامتثال.';
+      return 'مخاطر منخفضة — القرار متوافق مع السياسات وآمن للتفعيل.';
+    }
+    if (action === 'reject') {
+      return 'الطلب مرفوض — لن يتم تنفيذ الإجراء. يُسجل الرفض في سجل التدقيق مع السبب المقدم.';
+    }
+    if (action === 'transfer') {
+      return 'الطلب محول — سيتم إعادة توجيهه للمراجع المحدد لمراجعة جديدة واتخاذ قرار.';
+    }
+    return '—';
   }
 
   // ── decision ledger (Prompt 20: Audit · Trace · Evidence · Certificate) ─
@@ -925,6 +1071,39 @@
     });
     var confirm = $('[data-kap-modal-confirm]');
     if (confirm) confirm.addEventListener('click', confirmDecision);
+
+    // Receipt buttons
+    var receiptCopy = $('[data-kap-receipt-copy]');
+    if (receiptCopy) receiptCopy.addEventListener('click', copyReceiptJson);
+    var receiptPrint = $('[data-kap-receipt-print]');
+    if (receiptPrint) receiptPrint.addEventListener('click', printReceipt);
+    var receiptClose = $('[data-kap-receipt-close]');
+    if (receiptClose) receiptClose.addEventListener('click', closeModal);
+  }
+
+  // Copy audit receipt as JSON
+  function copyReceiptJson() {
+    var receipt = $('[data-kap-modal-receipt]');
+    if (!receipt || receipt.hidden) return;
+    var entry = decisionLedger[0];
+    if (!entry) return;
+    var json = JSON.stringify(entry, null, 2);
+    safeCopy(json).then(function () {
+      showToast('تم نسخ إيصال التدقيق');
+    });
+  }
+
+  // Print audit receipt
+  function printReceipt() {
+    var receipt = $('[data-kap-modal-receipt]');
+    if (!receipt || receipt.hidden) return;
+    window.print();
+  }
+
+  function showToast(message) {
+    if (window.KernelFeedback && window.KernelFeedback.toast) {
+      window.KernelFeedback.toast.show({ message: message });
+    }
   }
 
   // ── devtools window helper (no console.log in production) ──────────────

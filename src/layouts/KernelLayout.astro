@@ -225,6 +225,16 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
         <div class="k-trace-drawer__cell"><span class="k-cell-label">الزمن الكلي</span><strong dir="ltr" data-kernel-drawer-time data-label="الزمن الكلي">412ms</strong></div>
       </div>
 
+      {/* AUDIT-PROV (2026-08-09): provenance disclosure inside the drawer.
+          The page-level KernelDemoPill is visually covered once the drawer
+          opens; this band surfaces the data source inline. Hidden by default;
+          kernel-drawer.js fillFromSeed() reveals it when a seed carries a
+          sourceLabel (audit page). fillFromStore() keeps it hidden (session runs). */}
+      <p class="k-trace-drawer__provenance" data-kernel-drawer-provenance hidden>
+        <span class="k-trace-drawer__provenance-dot" aria-hidden="true"></span>
+        <span data-kernel-drawer-source-label>بيانات تجريبية</span>
+      </p>
+
       <!-- الخط الزمني — 6 مراحل. يعبَّأ من trace.stages عبر kernel-drawer.js -->
       <ol class="k-timeline" aria-label="مراحل الطلب" data-kernel-timeline>
         <li class="k-timeline__item k-timeline__item--done">
@@ -329,6 +339,46 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
         <span class="k-trace-drawer__lineage-mark" aria-hidden="true">↻</span>
         <span>هذا التشغيل إعادة تشغيل من <span class="k-mono" data-kernel-drawer-parent>—</span></span>
         <button class="k-trace-drawer__action-btn" type="button" data-kernel-drawer-open-parent>افتح الأصل</button>
+      </section>
+
+      <!-- ═══ COMPARE-UX (2026-08-09): «لماذا تغيّر الحكم؟» ═══
+           قسم مقارنة إعادة التشغيل — يظهر فقط لما الدرج يُفتح من سياق
+           replay بـ seed.compare (جدول الطلبات المتأثرة أو تبويب التحقيق).
+           يعرض: الحكم قبل←بعد · المدخلات (الثابتة) · إصدار السياسة/النموذج ·
+           حالة المطابقة · شرح السبب بالعامية · تصدير دليل المقارنة.
+           كل سياق غير replay (audit/approvals/playground) ما يفعّله → القسم
+           يبقى hidden. kernel-drawer.js يبدّله حسب seed.compare. -->
+      <section class="k-trace-drawer__detail k-trace-drawer__compare" hidden data-kernel-drawer-compare>
+        <h3 class="k-hash-chain__title">لماذا تغيّر الحكم؟</h3>
+
+        <!-- (أ) الحكم قبل ← بعد: pills جنب بعض -->
+        <div class="k-trace-drawer__compare-verdict">
+          <span class="k-vpill k-vpill--before" data-compare-before>—</span>
+          <span class="k-trace-drawer__compare-arrow" aria-hidden="true">←</span>
+          <span class="k-vpill k-vpill--after" data-compare-after>—</span>
+        </div>
+
+        <!-- (ب) المدخلات (الثابتة) — يثبت إن الـ replay ما يلمس الطلب الأصلي -->
+        <div class="k-trace-drawer__compare-input" data-compare-input>
+          <span class="k-cell-label">الطلب الأصلي (لم يتغير)</span>
+          <p dir="auto" data-compare-input-text>—</p>
+        </div>
+
+        <!-- (ج) جدول النسخ: السياسة + النموذج + حالة المطابقة -->
+        <dl class="k-trace-drawer__kv k-trace-drawer__compare-versions">
+          <div><dt>السياسة</dt><dd data-compare-policy>—</dd></div>
+          <div><dt>إصدار السياسة</dt><dd dir="ltr" data-compare-policy-version>—</dd></div>
+          <div><dt>إصدار النموذج</dt><dd dir="ltr" data-compare-model-version>—</dd></div>
+          <div><dt>حالة المطابقة</dt><dd data-compare-match>—</dd></div>
+        </dl>
+
+        <!-- (د) شرح السبب بلغة واضحة بالعامية -->
+        <p class="k-trace-drawer__compare-reason" data-compare-reason>—</p>
+
+        <!-- (هـ) تصدير دليل المقارنة -->
+        <div class="k-trace-drawer__action-row">
+          <button class="k-trace-drawer__action-btn" type="button" data-kernel-drawer-export-evidence aria-label="صدّر دليل المقارنة">صدّر دليل المقارنة</button>
+        </div>
       </section>
 
       <!-- ═══ تفاصيل موسّعة (M28 — دمج درج التدقيق) ═══

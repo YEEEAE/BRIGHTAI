@@ -219,6 +219,14 @@
     // نُظهر سطر النسب مع زر يفتح الأصل في نفس الدرج.
     showLineage(drawer, run);
 
+    // AUDIT-PROV: store-backed runs are session traces, not the seeded audit
+    // demo dataset → no provenance banner. Clear any stale seed label.
+    delete drawer.dataset.sourceLabel;
+    delete drawer.dataset.sourceKind;
+    toggleSection(drawer, '[data-kernel-drawer-provenance]', false);
+    // COMPARE-UX: store-backed runs ليست سياق replay → اخفِ قسم المقارنة.
+    toggleSection(drawer, '[data-kernel-drawer-compare]', false);
+
     // حقول الحالة/الإجراء من الـ trace (إن وُجدت) — تظهر في قسم التفاصيل.
     var hasDetail = false;
     if (trace.status) { setText(drawer, '[data-kernel-drawer-status]', statusAr(trace.status)); hasDetail = true; }
@@ -259,6 +267,23 @@
   /* ── التعبئة من seed (بيانات المتصل، مثلاً audit) ────────────────── */
   function fillFromSeed(drawer, seed) {
     if (!seed) return false;
+
+    // AUDIT-PROV (2026-08-09): provenance disclosure inside the drawer.
+    // The page-level DemoPill is visually covered once the drawer slides over
+    // the page, so seed-driven callers (audit) pass a source label that we
+    // surface in a dedicated band + stash on dataset for the PDF export.
+    var sourceLabel = seed.sourceLabel != null ? seed.sourceLabel : '';
+    if (sourceLabel) {
+      drawer.dataset.sourceLabel = sourceLabel;
+      drawer.dataset.sourceKind = seed.source != null ? seed.source : '';
+      setText(drawer, '[data-kernel-drawer-source-label]', sourceLabel);
+      toggleSection(drawer, '[data-kernel-drawer-provenance]', true);
+    } else {
+      delete drawer.dataset.sourceLabel;
+      delete drawer.dataset.sourceKind;
+      toggleSection(drawer, '[data-kernel-drawer-provenance]', false);
+    }
+
     if (seed.user != null) setText(drawer, '[data-kernel-drawer-user]', seed.user);
     if (seed.dept != null) setText(drawer, '[data-kernel-drawer-dept]', seed.dept);
     if (seed.model != null) setText(drawer, '[data-kernel-drawer-model]', seed.model);
@@ -296,7 +321,99 @@
 
     // إجراءات: تظهر في سياقات التدقيق (حين يوجد JSON أو hash محدد).
     toggleSection(drawer, '[data-kernel-drawer-actions]', hasJson || seed.hash != null);
+
+    // COMPARE-UX (2026-08-09): قسم «لماذا تغيّر الحكم؟» — يظهر فقط لما
+    // seed.compare موجود (سياق replay من جدول الطلبات المتأثرة أو التحقيق).
+    fillCompare(drawer, seed.compare);
     return true;
+  }
+
+  /* COMPARE-UX: يعبّي قسم المقارنة من seed.compare. لو الـ compare
+   * ناقص أو غير موجود، يُخفي القسم. يستخدم verdictInfo() لتحويل
+   * allowed/blocked → نص عربي + لون الـ pill. */
+  function fillCompare(drawer, compare) {
+    var section = drawer.querySelector('[data-kernel-drawer-compare]');
+    if (!section) return;
+    if (!compare || !compare.before || !compare.after) {
+      section.hidden = true;
+      return;
+    }
+
+    // (أ) الحكم قبل ← بعد: pills ملوّنة.
+    setVpill(drawer, '[data-compare-before]', compare.before);
+    setVpill(drawer, '[data-compare-after]', compare.after);
+    var arrow = drawer.querySelector('.k-trace-drawer__compare-arrow');
+    if (arrow) arrow.classList.toggle('flip', compare.before !== compare.after);
+
+    // (ب) المدخلات الثابتة.
+    setText(drawer, '[data-compare-input-text]', compare.inputSummary || '—');
+
+    // (ج) جدول النسخ.
+    setText(drawer, '[data-compare-policy]', compare.policyName || '—');
+    setText(drawer, '[data-compare-policy-version]', compare.policyVersion || '—');
+    setText(drawer, '[data-compare-model-version]', compare.modelVersion || '—');
+    setText(drawer, '[data-compare-match]', matchStatusLabel(compare.matchStatus));
+
+    // (د) شرح السبب بالعامية.
+    setText(drawer, '[data-compare-reason]', compareReasonText(compare));
+
+    section.hidden = false;
+  }
+
+  /** يحوّل verdict (allowed/blocked) إلى pill عربي ملوّن. */
+  function setVpill(drawer, sel, verdict) {
+    var el = drawer.querySelector(sel);
+    if (!el) return;
+    var info = verdictInfo(verdict);
+    el.textContent = info.label;
+    el.classList.remove('k-vpill--allow', 'k-vpill--block');
+    el.classList.add(info.cls === 'k-verdict--allow' ? 'k-vpill--allow' : 'k-vpill--block');
+  }
+
+  /** يحوّل matchStatus إلى نص عربي واضح. */
+  function matchStatusLabel(status) {
+    if (status === 'exact-match') return 'تطابق تام';
+    if (status === 'acceptable') return 'مقبول (نفس القرار)';
+    if (status === 'material') return 'تغيّر جوهري';
+    if (status === 'non-reproducible') return 'غير قابل لإعادة الإنتاج';
+    return '—';
+  }
+
+  /**
+   * يبني نص السبب بالعامية السعودية من matchStatus + diffReason + policyName.
+   * الهدف: المستخدم يقرا جملة وحدة ويفهم ليش النتيجة تغيّرت.
+   */
+  function compareReasonText(compare) {
+    if (!compare) return '—';
+    var name = compare.policyName || 'السياسة الجديدة';
+    var ver = compare.policyVersion ? (' (' + compare.policyVersion + ')') : '';
+    var fp = compare.falsePos ? ' وقد تكون إيجابية كاذبة.' : '';
+
+    // لو ما في flip → الطلب ما تأثر بهذي السياسة.
+    if (compare.matchStatus === 'exact-match' || compare.before === compare.after) {
+      return 'الطلب ما تأثر بهذي السياسة — الحكم بقي كما هو. الطلب الأصلي ما تغيّر.';
+    }
+
+    // flip مع policy-changed → السبب الأساسي.
+    var reasons = compare.diffReason || [];
+    if (reasons.indexOf('policy-changed') >= 0) {
+      if (compare.before === 'allowed' && compare.after === 'blocked') {
+        return 'السياسة الجديدة (' + name + ver + ') هي اللي حظرت الطلب. الطلب الأصلي ما تغيّر، اللي تغيّر هو الحكم عليه.' + fp;
+      }
+      if (compare.before === 'blocked' && compare.after === 'allowed') {
+        return 'السياسة الجديدة (' + name + ver + ') سوّت الطلب يطلع مسموح. الطلب الأصلي ما تغيّر.' + fp;
+      }
+      return 'السياسة الجديدة (' + name + ver + ') غيّرت الحكم. الطلب الأصلي ما تغيّر.' + fp;
+    }
+
+    // أسباب إجرائية ثانية (model/dataset/scorer/environment/stochastic).
+    if (reasons.indexOf('model-changed') >= 0) {
+      return 'تغيير إصدار النموذج (' + (compare.modelVersion || '—') + ') هو اللي غيّر النتيجة. الطلب الأصلي والإصدار القديم للسياسة ما تغيّروا.';
+    }
+    if (reasons.indexOf('stochastic-variance') >= 0) {
+      return 'نفس الإعداد بالضبط، بس النموذج أنتج نتيجة مختلفة (تباين عشوائي). الطلب والسياسة ما تغيّروا.';
+    }
+    return 'شي في إعادة التشغيل غيّر الحكم. الطلب الأصلي ما تغيّر.' + fp;
   }
 
   function setText(drawer, sel, val) {
@@ -314,7 +431,10 @@
     if (txtEl && txtEl !== iconEl) txtEl.textContent = v.label;
   }
 
-  /* تصدير PDF للدرج: صفحة طباعة نظيفة بالملخص + المراحل + الهاشات. */
+  /* تصدير PDF للدرج: صفحة طباعة نظيفة بالملخص + المراحل + الهاشات.
+   * AUDIT-PROV (2026-08-09): provenance header (source + full ISO timestamp)
+   * is always rendered at the top; a faint DEMO watermark is added when the
+   * drawer was opened from a demo seed (drawer.dataset.sourceLabel set). */
   function exportDrawerPdf(drawer) {
     var idEl = drawer.querySelector('[data-kernel-trace-id]');
     var id = idEl ? idEl.textContent.trim() : '—';
@@ -337,16 +457,32 @@
       hashes.push(escapeHtml(el.textContent));
     });
 
+    var exportedAt = new Date().toISOString();
+    var sourceLabel = drawer.dataset.sourceLabel || '';
+    var isDemo = !!sourceLabel;
+    var watermark = isDemo
+      ? 'body::before{content:"DEMO";position:fixed;top:40%;inset-inline-start:50%;transform:translateX(-50%) rotate(-30deg);font-size:120px;color:rgba(245,158,11,0.08);font-weight:800;pointer-events:none;z-index:0}body > *{position:relative;z-index:1}'
+      : '';
+    var provRow = isDemo
+      ? '<tr><th>المصدر</th><td>' + escapeHtml(sourceLabel) + '</td></tr>'
+      : '';
+
     var html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">' +
-      '<title>Trace ' + id + ' — تصدير</title>' +
+      '<title>Trace ' + escapeHtml(id) + ' — تصدير</title>' +
       '<style>body{font-family:system-ui;color:#0f172a;padding:24px;line-height:1.7}' +
       'h1{font-size:18px}h2{font-size:14px;margin-top:24px}' +
       'table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}' +
       'th,td{border:1px solid #cbd5e1;padding:6px 8px;text-align:start}th{background:#f1f5f9;width:140px}' +
-      'li{margin:4px 0}</style></head><body>' +
-      '<h1>Kernel Trace — ' + id + '</h1>' +
+      'li{margin:4px 0}' +
+      '.ka-prov-row{background:#fef3c7;border:1px solid #fcd34d;border-radius:6px;padding:6px 10px;font-size:11px;color:#92400e;margin:8px 0}' +
+      watermark +
+      '</style></head><body>' +
+      '<h1>Kernel Trace — ' + escapeHtml(id) + '</h1>' +
+      '<p class="ka-prov-row"><strong>توقيت التصدير:</strong> <span dir="ltr">' + exportedAt + '</span>' +
+      (isDemo ? ' · <strong>المصدر:</strong> ' + escapeHtml(sourceLabel) : '') + '</p>' +
       '<table><tbody>' +
       Object.keys(vals).map(function (k) { return '<tr><th>' + escapeHtml(k) + '</th><td>' + escapeHtml(vals[k]) + '</td></tr>'; }).join('') +
+      provRow +
       '<tr><th>الحكم</th><td>' + escapeHtml(verdict) + '</td></tr>' +
       '</tbody></table>' +
       '<h2>المراحل</h2><ol>' + stagesHtml + '</ol>' +
@@ -357,6 +493,75 @@
     if (!w) return;
     w.document.write(html);
     w.document.close();
+  }
+
+  /* COMPARE-UX (2026-08-09): تصدير دليل المقارنة — صفحة طباعة نظيفة تحوي
+   * الحكم قبل/بعد + المدخلات + جدول النسخ + السبب + توقيت ISO. نفس نمط
+   * exportDrawerPdf من ناحية الـ provenance header + علامة DEMO لو الـ
+   * drawer فُتح من بيانات توضيحية (sourceLabel موجود). */
+  function exportCompareEvidence(drawer) {
+    var idEl = drawer.querySelector('[data-kernel-trace-id]');
+    var id = idEl ? idEl.textContent.trim() : '—';
+    var before = textOf(drawer, '[data-compare-before]');
+    var after = textOf(drawer, '[data-compare-after]');
+    var input = textOf(drawer, '[data-compare-input-text]');
+    var policy = textOf(drawer, '[data-compare-policy]');
+    var policyVer = textOf(drawer, '[data-compare-policy-version]');
+    var modelVer = textOf(drawer, '[data-compare-model-version]');
+    var match = textOf(drawer, '[data-compare-match]');
+    var reason = textOf(drawer, '[data-compare-reason]');
+
+    var exportedAt = new Date().toISOString();
+    var sourceLabel = drawer.dataset.sourceLabel || '';
+    var isDemo = !!sourceLabel;
+    var watermark = isDemo
+      ? 'body::before{content:"DEMO";position:fixed;top:40%;inset-inline-start:50%;transform:translateX(-50%) rotate(-30deg);font-size:120px;color:rgba(245,158,11,0.08);font-weight:800;pointer-events:none;z-index:0}body > *{position:relative;z-index:1}'
+      : '';
+
+    var html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">' +
+      '<title>دليل مقارنة — ' + escapeHtml(id) + '</title>' +
+      '<style>body{font-family:system-ui;color:#0f172a;padding:24px;line-height:1.7}' +
+      'h1{font-size:18px}h2{font-size:14px;margin-top:24px}' +
+      'table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}' +
+      'th,td{border:1px solid #cbd5e1;padding:6px 8px;text-align:start}th{background:#f1f5f9;width:170px}' +
+      '.verdict{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:700;font-size:13px}' +
+      '.verdict--allow{background:#DCFCE7;color:#166534}' +
+      '.verdict--block{background:#FEE2E2;color:#991B1B}' +
+      '.arrow{margin:0 12px;font-size:18px;color:#475569}' +
+      '.reason{background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:10px 12px;font-size:13px;color:#92400E;margin:12px 0}' +
+      '.prov{background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:6px 10px;font-size:11px;color:#92400E;margin:8px 0}' +
+      watermark +
+      '</style></head><body>' +
+      '<h1>دليل مقارنة إعادة التشغيل — Trace ' + escapeHtml(id) + '</h1>' +
+      '<p class="prov"><strong>توقيت التصدير:</strong> <span dir="ltr">' + exportedAt + '</span>' +
+      (isDemo ? ' · <strong>المصدر:</strong> ' + escapeHtml(sourceLabel) : '') + '</p>' +
+      '<h2>الحكم قبل ← بعد</h2>' +
+      '<p><span class="verdict ' + (before === 'مسموح' ? 'verdict--allow' : 'verdict--block') + '">' + escapeHtml(before) + '</span>' +
+      '<span class="arrow">←</span>' +
+      '<span class="verdict ' + (after === 'مسموح' ? 'verdict--allow' : 'verdict--block') + '">' + escapeHtml(after) + '</span></p>' +
+      '<h2>المدخلات (الثابتة)</h2>' +
+      '<p style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:10px 12px;">' + escapeHtml(input) + '</p>' +
+      '<h2>تفاصيل النسخ</h2>' +
+      '<table><tbody>' +
+      '<tr><th>السياسة</th><td>' + escapeHtml(policy) + '</td></tr>' +
+      '<tr><th>إصدار السياسة</th><td dir="ltr">' + escapeHtml(policyVer) + '</td></tr>' +
+      '<tr><th>إصدار النموذج</th><td dir="ltr">' + escapeHtml(modelVer) + '</td></tr>' +
+      '<tr><th>حالة المطابقة</th><td>' + escapeHtml(match) + '</td></tr>' +
+      '</tbody></table>' +
+      '<h2>سبب التغيّر</h2>' +
+      '<p class="reason">' + escapeHtml(reason) + '</p>' +
+      '<script>window.onload=function(){setTimeout(function(){window.print();},250);};<\/script>' +
+      '</body></html>';
+    var w = window.open('', '_blank', 'width=860,height=680');
+    if (!w) return;
+    w.document.write(html);
+    w.document.close();
+  }
+
+  /** يقرأ نص عنصر من الدرج بأمان ("" لو غير موجود). */
+  function textOf(drawer, sel) {
+    var el = drawer.querySelector(sel);
+    return el ? el.textContent.trim() : '';
   }
 
   /* ── الفتح / الإغلاق ─────────────────────────────────────────────── */
@@ -372,7 +577,12 @@
     toggleSection(drawer, '[data-kernel-drawer-json]', false);
     toggleSection(drawer, '[data-kernel-drawer-snippet]', false);
     toggleSection(drawer, '[data-kernel-drawer-actions]', false);
+    toggleSection(drawer, '[data-kernel-drawer-provenance]', false);
+    // COMPARE-UX: اخفِ قسم المقارنة افتراضيًا — يُفعّل فقط بـ seed.compare.
+    toggleSection(drawer, '[data-kernel-drawer-compare]', false);
     delete drawer.dataset.currentHash;
+    delete drawer.dataset.sourceLabel;
+    delete drawer.dataset.sourceKind;
 
     // مصدر الحقيقة أولًا، ثم seed من المتصل، وإلا تبقى القيم الافتراضية.
     if (!fillFromStore(drawer, traceId || '')) fillFromSeed(drawer, seed);
@@ -474,6 +684,14 @@
     if (exportPdfBtn && exportPdfBtn.dataset.bound !== '1') {
       exportPdfBtn.dataset.bound = '1';
       exportPdfBtn.addEventListener('click', function () { exportDrawerPdf(drawer); });
+    }
+
+    // COMPARE-UX (2026-08-09): زر «صدّر دليل المقارنة» — يفتح صفحة طباعة
+    // بمحتوى المقارنة (قبل/بعد + المدخلات + النسخ + السبب).
+    var exportEvidenceBtn = drawer.querySelector('[data-kernel-drawer-export-evidence]');
+    if (exportEvidenceBtn && exportEvidenceBtn.dataset.bound !== '1') {
+      exportEvidenceBtn.dataset.bound = '1';
+      exportEvidenceBtn.addEventListener('click', function () { exportCompareEvidence(drawer); });
     }
 
     // M28 — replay→parent: زر «افتح الأصل» يعيد فتح الدرج على الـ run الأب.

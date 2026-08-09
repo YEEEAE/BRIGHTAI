@@ -2931,3 +2931,45 @@ Stage Summary:
 - لا تعديل إنتاجي — إضافة ملفات قياس + تقارير فقط
 - المخاطر المتبقية: العيوب الأربعة الجديدة تحتاج إصلاح في ملفات إنتاجية (تحتاج تنفيذ بحرص + build + إعادة قياس)، CWV LCP/CLS خارج الهدف، INP غير مُقاس field
 - الـ commit: يلتزمه المستخدم (per brain rule)
+
+---
+
+## Task ID: 2026-08-09-audit-provenance-trust
+**Agent:** BrightAI Workspace Agent
+**Task:** Audit Trustworthiness — provenance + honest exports + a11y + URL state (scope: audit.astro, drawer JS, shared export)
+**Started:** 2026-08-09T15:00:00+03:00
+**Mode:** Senior (Autopilot بعد اعتماد الخطة)
+**Report:** report/2026-08-09-audit-provenance-trust.md
+
+### Work Log
+- قرأت `src/pages/kernel/audit.astro` + `src/client/audit.ts` + `src/client/audit-verifier.ts` + `src/data/kernel-audit.ts` كامل
+- أرسلت 3 استكشافات متوازية: (1) focus-trap + drawer DOM، (2) filters + URL state patterns، (3) export component + provenance
+- اكتشفت: ما في «shared export component» فعلي — التصدير bespoke في audit.ts + نسخة compiled في /js/audit.js
+- اكتشفت: `audit-verifier.ts` فيه `exportAuditCsv/Json` بـ provenance بس dead code (ما يستخدمها أحد)
+- اكتشفت: focus-trap.js يعمل تلقائيًا على #k-trace-drawer، focus return يعتمد على activeElement وقت الفتح
+- اكتشفت: ما في URL state نهائيًا للفلاتر — audit يكون أول صفحة kernel بـ bidirectional filter URL state
+- اكتشفت: `[data-ka-filter]` في الـ test غلط (يحتاج `[data-kernel-audit-filter]`) → فلتر test silent-skip
+- سألت المستخدم قرارّين: (1) PDF rename vs delete → اختار «rename + provenance header»، (2) CSV/JSON provenance depth → اختار «CSV comment + JSON envelope»
+- سألت: URL state depth → اختار «bidirectional»
+- **المرحلة 1**: أضفت ثوابت `AUDIT_SOURCE/SOURCE_LABEL/SCHEMA` + دوال `exportCsv` (تعليق provenance) + `exportJson` (envelope) + أعدت كتابة `printPdf` (ترويسة provenance + ختم DEMO مائي)
+- **المرحلة 4**: `viewBtn.focus({ preventScroll: true })` قبل `openDrawer()` لضمان focus return صريح للزر
+- **المرحلة 5**: أضفت `readFiltersFromUrl`/`writeFiltersToUrl`/`syncDomFromFilters` + `popstate` listener + integration في `boot()` و `applyFilter()`
+- **المرحلة 2** (`kernel-drawer.js`): `fillFromSeed` يحفظ `sourceLabel` + يملأ الـ band؛ `fillFromStore` يخفيه؛ `openDrawer` ينظّف dataset؛ `exportDrawerPdf` يضيف provenance header + ختم DEMO شرطي
+- **المرحلة 3** (`KernelLayout.astro` + `kernel.css`): أضفت provenance band DOM بعد الـ summary strip + CSS بـ tokens الموجودة (`--k-mask`, `--warning-soft`)
+- **المرحلة 6**: أعدت كتابة `verify-kernel-audit.mjs` كامل — أصلحت selector الفلتر + أضفت 7 assertion blocks (copy, CSV provenance, JSON envelope, URL write, URL read, focus return, drawer provenance)
+- **المرحلة 7**: أعدت تسمية زر PDF → «معاينة طباعة» في audit.astro + كتبت report/2026-08-09-audit-provenance-trust.md
+
+### Verification
+- `npm run build:client` → exit 0 (tsc نظيف)
+- `npm run build` → 275 صفحة، 0 أخطاء
+- `npm run verify:audit` → 13/13 ✅ (determinism + parity + chain + hygiene ما تأثرت)
+- `npm run verify:all` → exit 0 (lint:tokens: 5 violations pre-existing في chat composer، مو من تغييراتي)
+- تحققات built output: audit page فيها provenance band + الزر الجديد؛ /js/audit.js فيها كل الميزات الجديدة
+
+### Stage Summary
+- كل artifact مُصدّر الحين يحمل source + timestamp ISO كامل (ACCEPTANCE criterion محقّق)
+- Drawer فيه provenance band داخله (ما يعود يُغطّى بصريًا)
+- الفلاتر refresh-safe + shareable عبر URL
+- focus return صريح للزر الصحيح
+- الـ browser smoke test يغطي 13 سيناريو (قبل كان 8 + 1 silent-skip)
+- **الـ commit:** يلتزمه المستخدم

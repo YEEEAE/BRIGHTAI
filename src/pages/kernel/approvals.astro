@@ -47,9 +47,9 @@ const cross = getCrossLinks(unit);
 // client dataset (kernel-approvals-data.js). SSR'd into the filter cards.
 const stats = buildApprovalStats();
 
-const jsonLd: Record<string, unknown>[] = [
+const jsonLd = [
   ...getKernelSubPageJsonLd(unit),
-  getKernelFaqJsonLd(unit),
+  ...(getKernelFaqJsonLd(unit) ? [getKernelFaqJsonLd(unit)] : []),
 ].filter((item): item is Record<string, unknown> => Boolean(item));
 
 const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
@@ -232,7 +232,7 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   description={unit.description}
   canonical={unit.canonical}
   hreflang={unit.hreflang}
-  jsonLd={jsonLd}
+  jsonLd={jsonLd as any}
   currentPath={unit.path}
   breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: 'الموافقات', href: unit.path }]}
   extraSpeakableSelectors={['.answer-first-summary']}
@@ -348,16 +348,38 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     </section>
   </div>
 
-  <!-- Decision modal (approve / reject / transfer) -->
+  <!-- Decision modal (approve / reject / transfer) — Enhanced with summary, policy, consequence, audit receipt -->
   <div class="kernel-modal" data-kap-modal data-open="false" role="dialog" aria-modal="true" aria-labelledby="kap-modal-title" aria-hidden="true">
     <div class="kernel-modal__backdrop" data-kap-modal-close></div>
-    <div class="kernel-modal__dialog" tabindex="-1">
+    <div class="kernel-modal__dialog kernel-modal__dialog--wide" tabindex="-1">
       <header class="kernel-modal__head">
         <h2 class="kernel-modal__title" id="kap-modal-title" data-kap-modal-title>تأكيد القرار</h2>
         <button type="button" class="kernel-modal__close" aria-label="إغلاق" data-kap-modal-close>
           <Fragment set:html={iconClose} />
         </button>
       </header>
+
+      <!-- Decision Summary Card -->
+      <div class="kernel-modal__summary" data-kap-modal-summary hidden>
+        <div class="kernel-modal__summary-header">
+          <span class="kernel-modal__summary-badge" data-kap-modal-summary-badge></span>
+          <span class="kernel-modal__summary-irreversible" data-kap-modal-irreversible hidden>قرار لا رجعة فيه</span>
+        </div>
+        <dl class="kernel-modal__summary-grid">
+          <dt>الطلب</dt>
+          <dd data-kap-modal-summary-title>—</dd>
+          <dt>Trace ID</dt>
+          <dd data-kap-modal-summary-trace>—</dd>
+          <dt>درجة المخاطر</dt>
+          <dd data-kap-modal-summary-risk>—</dd>
+          <dt>الإجراء</dt>
+          <dd data-kap-modal-summary-action>—</dd>
+          <dt>السياسة المحفزة</dt>
+          <dd data-kap-modal-summary-policy>—</dd>
+          <dt>الأثر المتوقع</dt>
+          <dd data-kap-modal-summary-consequence>—</dd>
+        </dl>
+      </div>
 
       <div class="kernel-modal__context" data-kap-modal-context>—</div>
 
@@ -376,14 +398,44 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           class="kernel-modal__textarea"
           data-kap-modal-reason
           placeholder="اكتب سبب القرار…"
+          aria-describedby="kap-modal-reason-hint"
         ></textarea>
-        <button type="button" class="kernel-modal__btn" data-kap-modal-suggest>اقتراح آلي</button>
+        <p id="kap-modal-reason-hint" class="kernel-modal__hint" hidden>سبب القرار إلزامي للرفض والتفويض</p>
+        <button type="button" class="kernel-modal__btn kernel-modal__btn--ghost" data-kap-modal-suggest>اقتراح آلي</button>
         <span class="kernel-modal__suggest-badge" data-kap-modal-suggest-badge hidden>اقتراح آلي — راجعه قبل التأكيد</span>
       </div>
 
       <div class="kernel-modal__actions">
-        <button type="button" class="kernel-modal__btn" data-kap-modal-close>إلغاء</button>
-        <button type="button" class="kernel-modal__btn" data-kap-modal-confirm>تأكيد القرار</button>
+        <button type="button" class="kernel-modal__btn kernel-modal__btn--secondary" data-kap-modal-close>إلغاء</button>
+        <button type="button" class="kernel-modal__btn kernel-modal__btn--confirm" data-kap-modal-confirm>تأكيد القرار</button>
+      </div>
+
+      <!-- Audit Receipt (shown after confirmation) -->
+      <div class="kernel-modal__receipt" data-kap-modal-receipt hidden role="region" aria-label="إيصال التدقيق">
+        <h3 class="kernel-modal__receipt-title">إيصال قرار التدقيق</h3>
+        <dl class="kernel-modal__receipt-grid">
+          <dt>رقم الحدث</dt>
+          <dd data-kap-receipt-event-id>—</dd>
+          <dt>Trace ID</dt>
+          <dd data-kap-receipt-trace>—</dd>
+          <dt>القرار</dt>
+          <dd data-kap-receipt-action>—</dd>
+          <dt>السبب</dt>
+          <dd data-kap-receipt-reason>—</dd>
+          <dt>المراجع</dt>
+          <dd data-kap-receipt-reviewer>—</dd>
+          <dt>الوقت</dt>
+          <dd data-kap-receipt-timestamp>—</dd>
+          <dt>هاش الدليل</dt>
+          <dd data-kap-receipt-evidence>—</dd>
+          <dt>رقم الشهادة</dt>
+          <dd data-kap-receipt-certificate>—</dd>
+        </dl>
+        <div class="kernel-modal__receipt-actions">
+          <button type="button" class="kernel-modal__btn kernel-modal__btn--secondary" data-kap-receipt-copy>نسخ JSON</button>
+          <button type="button" class="kernel-modal__btn" data-kap-receipt-print>طباعة</button>
+          <button type="button" class="kernel-modal__btn kernel-modal__btn--secondary" data-kap-receipt-close>إغلاق</button>
+        </div>
       </div>
     </div>
   </div>

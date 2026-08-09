@@ -310,6 +310,11 @@ declare global {
     bindDrawer();
     bindRowEvents();
 
+    // AUDIT-URL: read filters from the URL BEFORE the first filter request so
+    // a deep-link / refresh lands on the right filter set. Done after the DOM
+    // binders so syncDomFromFilters() can find the bound controls.
+    readFiltersFromUrl();
+
     setupWorker();
 
     if (useWorker && worker) {
@@ -404,7 +409,82 @@ declare global {
   }
 
   function applyFilter() {
+    // AUDIT-URL: mirror the in-memory filter state to the URL (replaceState,
+    // not pushState, so each tweak doesn't flood browser history). This makes
+    // the filter set refresh-safe and shareable. popstate (back button) is
+    // handled by readFiltersFromUrl.
+    writeFiltersToUrl();
     request({ type: 'filter', filters: filters }).then(handleFiltered);
+  }
+
+  // ── filter URL state (AUDIT-URL — bidirectional) ───────────────────────
+  // Param map: short URL-friendly keys ↔ internal filter fields. Audit is the
+  // first kernel page to sync live filter state; the contract is:
+  //   - read on boot (deep-link / refresh lands on the right filter set)
+  //   - written on every change (replaceState, history stays clean)
+  //   - popstate re-reads (browser back/forward restores filters)
+  const URL_PARAM_MAP: Array<[string, keyof typeof filters]> = [
+    ['from', 'dateFrom'],
+    ['to', 'dateTo'],
+    ['risk', 'risk'],
+    ['status', 'status'],
+    ['user', 'user'],
+    ['dept', 'dept'],
+    ['q', 'search'],
+  ];
+
+  /** Pull filter values from location.search into the in-memory state + sync
+   *  the DOM controls (selects, date inputs, search) so the UI reflects the
+   *  URL. Returns true if any param was present (caller skips the default). */
+  function readFiltersFromUrl(): boolean {
+    let params: URLSearchParams;
+    try {
+      params = new URLSearchParams(location.search);
+    } catch (e) {
+      return false;
+    }
+    let any = false;
+    URL_PARAM_MAP.forEach(function (entry) {
+      const val = params.get(entry[0]);
+      if (val != null && val !== '') {
+        (filters as any)[entry[1]] = val;
+        any = true;
+      }
+    });
+    if (any) syncDomFromFilters();
+    return any;
+  }
+
+  /** Reflect the in-memory filter state back onto the DOM controls. Needed
+   *  after a URL-driven read so the <select>/<input> elements show the
+   *  active filter (otherwise the UI says "all" while the URL says otherwise). */
+  function syncDomFromFilters() {
+    $all<HTMLSelectElement & HTMLInputElement>('[data-kernel-audit-filter]').forEach(function (el) {
+      const key = el.getAttribute('data-kernel-audit-filter') || '';
+      const val = (filters as any)[key];
+      if (typeof val === 'string') el.value = val;
+    });
+    const searchEl = $('[data-ka-search]') as HTMLInputElement;
+    if (searchEl && typeof filters.search === 'string') searchEl.value = filters.search;
+  }
+
+  /** Serialize the active filters to location.search via replaceState. Empty
+   *  values are dropped so the URL stays clean when a filter is cleared. */
+  function writeFiltersToUrl() {
+    const params = new URLSearchParams();
+    URL_PARAM_MAP.forEach(function (entry) {
+      const val = (filters as any)[entry[1]];
+      if (typeof val === 'string' && val !== '') params.set(entry[0], val);
+    });
+    const qs = params.toString();
+    const next = qs ? location.pathname + '?' + qs : location.pathname;
+    // Guard against no-op replaces (avoids spamming history/timing observers).
+    if (location.pathname + location.search === next) return;
+    try {
+      history.replaceState(null, '', next);
+    } catch (e) {
+      /* Safari private mode / cross-origin can throw — non-fatal. */
+    }
   }
 
   function updateToolbar() {
@@ -527,6 +607,11 @@ declare global {
       viewBtn.textContent = 'عرض';
       viewBtn.addEventListener('click', function (e) {
         e.stopPropagation();
+        // AUDIT-FOCUS: focus the button before opening so the shared focus-trap
+        // (focus-trap.js, which captures document.activeElement at open time)
+        // returns focus to THIS button on close, not the row container. This
+        // makes the drawer's focus-return precise and keyboard-navigable.
+        viewBtn.focus({ preventScroll: true });
         const idx = row.getAttribute('data-ka-idx');
         if (idx == null) return;
         openDrawer(parseInt(idx, 10));
@@ -611,6 +696,10 @@ declare global {
     if (!window.KernelTraceDrawer) return; // kernel-drawer.js (الشِل) لازم يحمّل أولًا
 
     const seed = {
+      // AUDIT-PROV: tag the trace as demo-seeded so the shared drawer can
+      // surface a provenance banner + stamp the PDF export.
+      source: AUDIT_SOURCE,
+      sourceLabel: AUDIT_SOURCE_LABEL,
       user: r.userLabel,
       dept: r.role,
       model: 'NVIDIA NIM',
@@ -660,6 +749,16 @@ declare global {
   }
 
   // ── exports ────────────────────────────────────────────────────────────
+  // AUDIT-PROV (2026-08-09): every exported artifact states its source and a
+  // full ISO timestamp. The dataset is deterministic demo data (seeded via
+  // AUDIT_SEED in src/data/kernel-audit.ts), NOT production audit records.
+  // Surfacing this in the artifact — not just the page-level DemoPill — is
+  // the trust contract: anyone who opens an exported CSV/JSON/PDF months
+  // later sees "بيانات تجريبية حتمية" inline, with no ambiguity.
+  const AUDIT_SOURCE = 'demo-seeded';
+  const AUDIT_SOURCE_LABEL = 'بيانات تجريبية حتمية — ليست سجلات إنتاج';
+  const AUDIT_SCHEMA = 'brightai.kernel.audit-events';
+
   function bindExports() {
     $all('[data-kernel-audit-export]').forEach(function (btn) {
       if (btn.dataset.bound === '1') return;
@@ -674,34 +773,74 @@ declare global {
     request({ type: 'export', format: format }).then(function (res) {
       if (!res || res.type !== 'export') return;
       const rows = res.rows || [];
-      const stamp = new Date().toISOString().slice(0, 10);
+      const now = new Date();
+      const iso = now.toISOString();
+      const fileStamp = iso.slice(0, 10); // filename stays date-only (cosmetic)
 
       if (format === 'csv') {
-        const header = 'ts,user,department,action,risk,status,traceId,hash,approved\n';
-        const body = rows.map(function (d: any) {
-          return [d.tsLabel, d.userLabel, d.role, d.action, d.risk, d.status, d.traceId, d.hash, d.humanApproved ? 'yes' : 'no']
-            .map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(',');
-        }).join('\n');
-        downloadFile('kernel-audit-' + stamp + '.csv', 'text/csv;charset=utf-8', header + body);
+        downloadFile('kernel-audit-' + fileStamp + '.csv', 'text/csv;charset=utf-8', exportCsv(rows, iso));
       } else if (format === 'json') {
-        downloadFile('kernel-audit-' + stamp + '.json', 'application/json', JSON.stringify(rows, null, 2));
+        downloadFile('kernel-audit-' + fileStamp + '.json', 'application/json', exportJson(rows, iso));
       } else if (format === 'pdf') {
-        printPdf(rows, stamp);
+        printPdf(rows, iso);
       }
     });
   }
 
-  function printPdf(rows: any[], stamp: string) {
+  /** CSV with a provenance comment header. Excel/LibreOffice/PapaParse treat
+   *  leading `#` lines as comments or single-cell text; either way the column
+   *  header row (`ts,user,...`) is unambiguous. RFC 4180 quoting preserved. */
+  function exportCsv(rows: any[], iso: string): string {
+    const meta =
+      '# source=' + AUDIT_SOURCE + ' exported_at=' + iso + ' count=' + rows.length + ' schema=' + AUDIT_SCHEMA + '\n' +
+      '# note=' + AUDIT_SOURCE_LABEL + ' — BrightAI Kernel Demo.' + '\n';
+    const header = 'ts,user,department,action,risk,status,traceId,hash,approved\n';
+    const body = rows.map(function (d: any) {
+      return [d.tsLabel, d.userLabel, d.role, d.action, d.risk, d.status, d.traceId, d.hash, d.humanApproved ? 'yes' : 'no']
+        .map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\n');
+    return meta + header + body;
+  }
+
+  /** JSON wrapped in a provenance envelope (mirrors audit-verifier.ts:
+   *  schema + exportedAt, extended with source/sourceLabel for demo honesty). */
+  function exportJson(rows: any[], iso: string): string {
+    return JSON.stringify({
+      schema: AUDIT_SCHEMA,
+      source: AUDIT_SOURCE,
+      sourceLabel: AUDIT_SOURCE_LABEL,
+      exportedAt: iso,
+      count: rows.length,
+      events: rows,
+    }, null, 2);
+  }
+
+  function printPdf(rows: any[], iso: string) {
     const w = window.open('', '_blank', 'width=900,height=700');
     if (!w) return;
     const thead = '<tr><th>الوقت</th><th>المستخدم</th><th>القسم</th><th>الإجراء</th><th>المخاطر</th><th>الحالة</th><th>Trace</th></tr>';
     const body = rows.map(function (r) {
-      return '<tr><td>' + r.tsLabel + '</td><td>' + r.userLabel + '</td><td>' + r.role + '</td><td>' + r.action +
-        '</td><td>' + r.risk + '</td><td>' + statusLabel(r.status) + '</td><td>' + r.traceId + '</td></tr>';
+      return '<tr><td>' + escapeHtml(r.tsLabel) + '</td><td>' + escapeHtml(r.userLabel) + '</td><td>' + escapeHtml(r.role) + '</td><td>' + escapeHtml(r.action) +
+        '</td><td>' + r.risk + '</td><td>' + statusLabel(r.status) + '</td><td>' + escapeHtml(r.traceId) + '</td></tr>';
     }).join('');
-    const html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>سجل تدقيق Kernel — ' + stamp + '</title>' +
-      '<style>body{font-family:system-ui;padding:20px;color:#0f172a}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #cbd5e1;padding:4px 6px;text-align:start}th{background:#f1f5f9}h1{font-size:16px}</style></head><body>' +
-      '<h1>BrightAI Kernel — سجل تدقيق (تصدير طباعة)</h1><p>عدد السجلات: ' + rows.length + ' — بتاريخ ' + stamp + '</p>' +
+    // AUDIT-PROV: provenance header (source + full ISO timestamp + count) is
+    // always visible at the top of the print view + any PDF the user saves.
+    const html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>سجل تدقيق Kernel (عرض توضيحي) — ' + iso + '</title>' +
+      '<style>' +
+      'body{font-family:system-ui;padding:20px;color:#0f172a;position:relative}' +
+      'table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #cbd5e1;padding:4px 6px;text-align:start}th{background:#f1f5f9}h1{font-size:16px}' +
+      '.ka-prov{background:#fef3c7;border:1px solid #fcd34d;border-radius:6px;padding:8px 12px;margin:8px 0 16px;font-size:12px;line-height:1.7}' +
+      '.ka-prov strong{color:#92400e}' +
+      '.ka-prov-row{display:block}' +
+      'body::before{content:"DEMO";position:fixed;top:40%;inset-inline-start:50%;transform:translateX(-50%) rotate(-30deg);font-size:120px;color:rgba(245,158,11,0.08);font-weight:800;pointer-events:none;z-index:0}' +
+      'table,h1,.ka-prov{position:relative;z-index:1}' +
+      '</style></head><body>' +
+      '<h1>BrightAI Kernel — سجل تدقيق (عرض توضيحي)</h1>' +
+      '<div class="ka-prov">' +
+      '<span class="ka-prov-row"><strong>المصدر:</strong> ' + AUDIT_SOURCE_LABEL + '</span>' +
+      '<span class="ka-prov-row"><strong>توقيت التصدير:</strong> <span dir="ltr">' + iso + '</span></span>' +
+      '<span class="ka-prov-row"><strong>عدد السجلات:</strong> ' + rows.length + '</span>' +
+      '</div>' +
       '<table><thead>' + thead + '</thead><tbody>' + body + '</tbody></table>' +
       '<script>window.onload=function(){setTimeout(function(){window.print();},250);};<\/script></body></html>';
     w.document.write(html);
@@ -853,4 +992,14 @@ declare global {
 
   document.addEventListener('astro:page-load', init);
   if (document.readyState !== 'loading') init();
+
+  // AUDIT-URL: restore filters when the user navigates with browser back/forward.
+  // boot() only runs once (guarded by data-audit-bound), so popstate must
+  // re-read the URL and re-apply the filter directly. Bound once on the window.
+  window.addEventListener('popstate', function () {
+    // Reset filters to empty first, then layer URL values on top.
+    Object.assign(filters, { dateFrom: '', dateTo: '', risk: '', status: '', user: '', dept: '', search: '' });
+    readFiltersFromUrl();
+    request({ type: 'filter', filters: filters }).then(handleFiltered);
+  });
 })();

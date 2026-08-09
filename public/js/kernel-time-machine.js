@@ -465,8 +465,42 @@
     chunk();
   }
 
+  // COMPARE-UX (2026-08-09): helpers لبناء سياق المقارنة في الـ seed.
+  // findRowByTrace يلفّ على fullRows ويرجّع الـ row الأصلي (policy/falsePos).
+  // policyName / policyVersion يشتقّون قيمًا ثابتة من REPLAY_POLICIES (ما يستخدمون
+  // RNG — لا يكسرون الـ determinism contract، اللي يحكمه verify-replay.mjs على
+  // الـ data module فقط). الإصدار رقم تسلسلي ثابت (v1..v5) مو من الـ seed.
+  function findRowByTrace(traceId) {
+    if (!fullRows || !traceId) return null;
+    for (var i = 0; i < fullRows.length; i += 1) {
+      if (fullRows[i].traceId === traceId) return fullRows[i];
+    }
+    return null;
+  }
+
+  function policyName(id) {
+    var policies = (mainThreadData && mainThreadData.REPLAY_POLICIES) || [];
+    for (var i = 0; i < policies.length; i += 1) {
+      if (policies[i].id === id) return policies[i].name;
+    }
+    return id ? ('سياسة ' + id) : '—';
+  }
+
+  function policyVersion(id) {
+    var policies = (mainThreadData && mainThreadData.REPLAY_POLICIES) || [];
+    for (var i = 0; i < policies.length; i += 1) {
+      if (policies[i].id === id) return 'v' + (i + 1);
+    }
+    return '—';
+  }
+
   // M28 — replay→parent: كل trace في جدول الطلبات المتأثرة يفتح الدرج المشترك
   // (KernelTraceDrawer) بسياق الصف نفسه — مصدر الحقيقة أولًا، ثم الـ seed.
+  //
+  // COMPARE-UX (2026-08-09): الـ seed يحوي الآن `compare` بسياق كامل
+  // (قبل/بعد + إصدار السياسة/النموذج + المدخلات الثابتة + matchStatus/diffReason)
+  // عشان الدرج يقدر يعرض قسم «لماذا تغيّر الحكم؟». الشرط بـ seed.compare
+  // يفعّل القسم فقط لما الدرج يُفتح من سياق replay.
   function bindAffectedTraceLinks() {
     var tbody = $('[data-rp-tbody]');
     if (!tbody || tbody.dataset.boundTrace === '1') return;
@@ -474,42 +508,63 @@
     tbody.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-rp-trace-open]');
       if (!btn) return;
-      var trace = btn.getAttribute('data-rp-trace-open');
-      if (!trace) return;
-      var tr = btn.closest('tr');
-      var dept = tr ? tr.children[1].textContent : '—';
-      var req = tr ? tr.children[2].textContent.replace(/\s*FP$/, '') : '—';
-      var afterCell = tr ? tr.querySelector('.rp-verdict-cell__after') : null;
-      var after = afterCell ? (afterCell.textContent === 'مسموح' ? 'allowed' : 'blocked') : 'blocked';
-      var seed = {
-        user: req,
-        dept: dept,
-        model: 'NVIDIA NIM',
-        time: '—',
-        verdict: after,
-        hashes: { prev: undefined, curr: undefined, next: undefined },
-        status: after === 'allowed' ? 'مسموح' : 'محظور',
-        action: 'محاكاة السياسة المقترحة',
-      };
-      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
-        window.KernelTraceDrawer.open(trace, seed);
-      } else {
-        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(trace);
-      }
+      openTraceFromRow(btn);
     });
     tbody.addEventListener('keydown', function (e) {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       var btn = e.target.closest('[data-rp-trace-open]');
       if (!btn) return;
       e.preventDefault();
-      var trace = btn.getAttribute('data-rp-trace-open');
-      if (!trace) return;
-      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
-        window.KernelTraceDrawer.open(trace);
-      } else {
-        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(trace);
-      }
+      openTraceFromRow(btn);
     });
+  }
+
+  // COMPARE-UX: يفتح الدرج بسياق مقارنة كامل من صف في جدول الطلبات المتأثرة.
+  // مشترك بين click و keyboard (Enter/Space) عشان التجربة تكون متناسقة.
+  function openTraceFromRow(btn) {
+    var trace = btn.getAttribute('data-rp-trace-open');
+    if (!trace) return;
+    var tr = btn.closest('tr');
+    var dept = tr ? tr.children[1].textContent : '—';
+    var req = tr ? tr.children[2].textContent.replace(/\s*FP$/, '') : '—';
+    var afterCell = tr ? tr.querySelector('.rp-verdict-cell__after') : null;
+    var after = afterCell ? (afterCell.textContent === 'مسموح' ? 'allowed' : 'blocked') : 'blocked';
+    var beforeCell = tr ? tr.querySelector('.rp-verdict-cell__before') : null;
+    var before = beforeCell ? (beforeCell.textContent === 'مسموح' ? 'allowed' : 'blocked') : 'allowed';
+
+    // نبني سياق المقارنة من بيانات الـ row المتأثر. نلقى الـ row الأصلي في
+    // fullRows عشان نسحب policy + falsePos بدقة (الجدول ما يعرضها).
+    var row = findRowByTrace(trace);
+    var policyId = row ? row.policy : '';
+    var flip = before !== after;
+    var seed = {
+      user: req,
+      dept: dept,
+      model: 'NVIDIA NIM',
+      time: '—',
+      verdict: after,
+      hashes: { prev: undefined, curr: undefined, next: undefined },
+      status: after === 'allowed' ? 'مسموح' : 'محظور',
+      action: 'محاكاة السياسة المقترحة',
+      compare: {
+        before: before,
+        after: after,
+        policyId: policyId,
+        policyName: policyName(policyId),
+        policyVersion: policyVersion(policyId),
+        modelVersion: 'v1.4',
+        inputUnchanged: true,
+        inputSummary: req,
+        matchStatus: flip ? 'material' : 'exact-match',
+        diffReason: flip && policyId ? ['policy-changed'] : [],
+        falsePos: row ? !!row.falsePos : false,
+      },
+    };
+    if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
+      window.KernelTraceDrawer.open(trace, seed);
+    } else {
+      window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(trace);
+    }
   }
 
   // ── consent modal (M20 security gate) — Prompt 12: plain Arabic text ───
@@ -676,6 +731,9 @@
   }
 
   // M28 — replay→parent: زر «افتح الرحلة في الدرج المشترك» في تبويب التحقيق.
+  // COMPARE-UX: نمرّر seed بسياق مقارنة لو لقينا الـ row الأصلي، عشان الدرج
+  // يعرض قسم «لماذا تغيّر الحكم؟». لو الـ trace غير موجود (missing trace)،
+  // نمرّر seed بدون compare — الدرج يفتح بدون قسم المقارنة.
   function bindInvestDrawer() {
     var btn = $('[data-rp-invest-drawer]');
     if (!btn || btn.dataset.bound === '1') return;
@@ -683,8 +741,45 @@
     btn.addEventListener('click', function () {
       var traceId = btn.getAttribute('data-trace-id');
       if (!traceId) return;
+      var row = findRowByTrace(traceId);
+      var seed;
+      if (row) {
+        var flip = row.before !== row.after;
+        seed = {
+          user: row.req,
+          dept: row.dept,
+          model: 'NVIDIA NIM',
+          time: '—',
+          verdict: row.after,
+          status: row.after === 'allowed' ? 'مسموح' : 'محظور',
+          action: 'إعادة بناء الحادثة',
+          compare: {
+            before: row.before,
+            after: row.after,
+            policyId: row.policy,
+            policyName: policyName(row.policy),
+            policyVersion: policyVersion(row.policy),
+            modelVersion: 'v1.4',
+            inputUnchanged: true,
+            inputSummary: row.req,
+            matchStatus: flip ? 'material' : 'exact-match',
+            diffReason: flip && row.policy ? ['policy-changed'] : [],
+            falsePos: !!row.falsePos,
+          },
+        };
+      } else {
+        seed = {
+          user: 'طلب غير مخزّن',
+          dept: '—',
+          model: 'NVIDIA NIM',
+          time: '—',
+          verdict: 'blocked',
+          status: 'غير متاح',
+          action: 'إعادة بناء — الـ trace غير موجود في البيانات التوضيحية',
+        };
+      }
       if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
-        window.KernelTraceDrawer.open(traceId);
+        window.KernelTraceDrawer.open(traceId, seed);
       } else {
         window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(traceId);
       }
