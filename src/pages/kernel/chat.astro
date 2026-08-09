@@ -1063,16 +1063,60 @@ const policyBanner = {
       avatar.textContent = role === 'user' ? 'ي' : 'AI';
       article.appendChild(avatar);
 
+      var body = document.createElement('div');
+      body.className = 'kernel-chat-message__body';
+      article.appendChild(body);
+
       var bubble = document.createElement('div');
       bubble.className = 'kernel-chat-message__bubble';
-      article.appendChild(bubble);
+      body.appendChild(bubble);
 
       var meta = document.createElement('span');
       meta.className = 'kernel-chat-message__meta';
       meta.textContent = 'الآن';
-      article.appendChild(meta);
+      body.appendChild(meta);
 
-      return { article: article, bubble: bubble, meta: meta, text: text };
+      // CHAT-STATE-001: every AI message carries a source badge slot so the
+      // origin (live / demo / unavailable / blocked / cancelled) is always
+      // visible adjacent to the response. User messages get no badge.
+      var badge = null;
+      if (role === 'ai') {
+        badge = document.createElement('span');
+        badge.className = 'kernel-source-badge';
+        badge.setAttribute('data-source', 'pending');
+        badge.setAttribute('hidden', '');
+        badge.setAttribute('aria-label', 'مصدر الرد: قيد التحديد');
+        body.appendChild(badge);
+      }
+
+      return { article: article, body: body, bubble: bubble, meta: meta, badge: badge, text: text };
+    }
+
+    /**
+     * CHAT-STATE-001: attach / update the source badge on an AI message.
+     * source: 'live' | 'demo' | 'unavailable' | 'blocked' | 'cancelled'.
+     * provider: optional provider name shown in the live badge title.
+     * Keeps badge hidden until a real source is set (not 'pending').
+     */
+    var SOURCE_LABELS = {
+      live: 'مباشر',
+      demo: 'تجريبي',
+      unavailable: 'غير متاح',
+      blocked: 'محظور بالسياسة',
+      cancelled: 'مُلغى',
+    };
+    function attachSourceBadge(badge, source, provider) {
+      if (!badge) return;
+      badge.setAttribute('data-source', source);
+      var label = SOURCE_LABELS[source] || source;
+      var title = 'مصدر الرد: ' + label;
+      if (source === 'live' && provider) title += ' (' + provider + ')';
+      badge.setAttribute('title', title);
+      badge.setAttribute('aria-label', title);
+      badge.innerHTML =
+        '<span class="kernel-source-badge__dot" aria-hidden="true"></span>' +
+        '<span>' + label + '</span>';
+      badge.removeAttribute('hidden');
     }
 
     function streamInto(bubble, html, onDone) {
@@ -1138,17 +1182,19 @@ const policyBanner = {
           network: 'تعذّر الاتصال',
           unavailable: 'المساعد في وضع تجريبي',
           timeout: 'انتهت مهلة الاستجابة',
+          cancelled: 'تم إيقاف الرد',
           unknown: 'حدث خطأ غير متوقع',
         };
         var msgs = {
           rate_limit: retryAfterSec
-            ? 'حاول مرة ثانية بعد ' + retryAfterSec + ' ثانية.'
-            : 'حاول مرة ثانية بعد لحظات.',
-          provider_failed: 'فشل الوصول إلى نموذج الذكاء الاصطناعي. سنعرض رداً تجريبياً بدلاً من ذلك.',
-          network: 'تحقق من اتصالك بالإنترنت. سنعرض رداً تجريبياً بدلاً من ذلك.',
+            ? 'وصلنا للحد المسموح. حاول مرة ثانية بعد ' + retryAfterSec + ' ثانية.'
+            : 'وصلنا للحد المسموح. حاول مرة ثانية بعد لحظات.',
+          provider_failed: 'فشل الوصول إلى نموذج الذكاء الاصطناعي (المزود لم يرد). طلبك ما وصل للنموذج — تقدر تعيد المحاولة الآن.',
+          network: 'تعذّر الاتصال بالخادم. تحقق من الإنترنت ثم أعد المحاولة. طلبك ما وصل للنموذج.',
           unavailable: 'هذه البيئة لا تشغّل نقطة الاتصال /api/ai/chat/. ستشاهد ردوداً توضيحية. للتفعيل الكامل تواصل مع فريق BrightAI.',
-          timeout: 'النموذج أخذ وقتاً أطول من المتوقع. سنعرض رداً تجريبياً بدلاً من ذلك.',
-          unknown: 'حاول مرة ثانية لاحقاً.',
+          timeout: 'النموذج أخذ وقتاً أطول من المتوقع. طلبك ما اكتمل — تقدر تعيد المحاولة.',
+          cancelled: 'أوقفت الرد يدوياً. النص الجزئي (إن وُجد) ظاهر فوق. تقدر تعيد المحاولة بنفس الرسالة.',
+          unknown: 'حدث خطأ غير متوقع. طلبك ما وصل للنموذج — تقدر تعيد المحاولة.',
         };
         var toneMap = {
           rate_limit: 'warning',
@@ -1156,7 +1202,18 @@ const policyBanner = {
           network: 'warning',
           unavailable: 'info',
           timeout: 'warning',
+          cancelled: 'warning',
           unknown: 'danger',
+        };
+        // CHAT-STATE-001: which error types should offer a retry button.
+        // Rate-limit is excluded (must wait); unavailable is excluded (a
+        // demo reply follows). All others get retry.
+        var retryable = {
+          provider_failed: true,
+          network: true,
+          timeout: true,
+          cancelled: true,
+          unknown: true,
         };
         var tone = toneMap[type] || 'warning';
         var div = document.createElement('div');
@@ -1181,10 +1238,29 @@ const policyBanner = {
           '<div class="kernel-chat-policy-banner__body">' +
             '<p class="kernel-chat-policy-banner__title">' + titles[type] + '</p>' +
             '<p class="kernel-chat-policy-banner__msg">' + msgs[type] + '</p>' +
+            (retryable[type]
+              ? '<button type="button" class="kernel-chat-policy-banner__retry" data-kernel-retry aria-label="إعادة إرسال آخر رسالة">' +
+                  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>' +
+                  '<span>إعادة المحاولة</span>' +
+                '</button>'
+              : '') +
           '</div>';
         // replace existing error if any
         errorSlot.innerHTML = '';
         errorSlot.appendChild(div);
+        // CHAT-STATE-001: wire the retry button to re-send the last message.
+        var retryBtn = div.querySelector('[data-kernel-retry]');
+        if (retryBtn) {
+          retryBtn.addEventListener('click', function () {
+            clearChatError();
+            if (lastUserMessage) {
+              input.value = lastUserMessage;
+              sendMessage();
+            } else {
+              input.focus();
+            }
+          });
+        }
         errorSlot.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       function clearChatError() {
@@ -1265,6 +1341,60 @@ const policyBanner = {
 
       /** BAI-KRN-002 / M1: one controller per send. M3 wires Cancel button. */
       var composerAbort = null;
+
+      /** CHAT-STATE-001: last user message text — used by error-banner retry. */
+      var lastUserMessage = '';
+
+      /** Original send-button markup, cached so we can restore it after
+       *  the in-flight Cancel state ends. */
+      var sendBtnOriginalHTML = '';
+      var sendBtnCancelHandler = null;
+
+      /**
+       * CHAT-STATE-001: morph the send button into a Cancel control.
+       * The button stays enabled (so it remains clickable) but swaps its
+       * label/icon/class to signal "stop", and a one-shot click handler
+       * triggers composerAbort.abort(). M3 finally wires the controller.
+       */
+      function enterStreamingState() {
+        if (!sendBtn) return;
+        if (!sendBtnOriginalHTML) sendBtnOriginalHTML = sendBtn.innerHTML;
+        sendBtn.disabled = false; // must stay clickable to cancel
+        sendBtn.classList.add('kernel-chat-composer__btn--cancel');
+        sendBtn.classList.remove('kernel-chat-composer__btn--primary');
+        sendBtn.setAttribute('aria-label', 'إيقاف الرد الجاري');
+        sendBtn.innerHTML =
+          '<span aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>' +
+          '</span>' +
+          '<span>إيقاف</span>';
+        sendBtnCancelHandler = function () {
+          if (composerAbort) {
+            try { composerAbort.abort(); } catch (_) { /* noop */ }
+          }
+        };
+        sendBtn.addEventListener('click', sendBtnCancelHandler, { once: true });
+      }
+
+      /**
+       * CHAT-STATE-001: restore the send button to its idle state. Called
+       * from every terminal path (finalizeIdle, abort, error, blocked).
+       */
+      function exitStreamingState() {
+        if (!sendBtn) return;
+        sendBtn.classList.remove('kernel-chat-composer__btn--cancel');
+        sendBtn.classList.add('kernel-chat-composer__btn--primary');
+        sendBtn.removeAttribute('aria-label');
+        if (sendBtnOriginalHTML) {
+          sendBtn.innerHTML = sendBtnOriginalHTML;
+          sendBtnOriginalHTML = '';
+        }
+        sendBtn.disabled = false;
+        if (sendBtnCancelHandler) {
+          sendBtn.removeEventListener('click', sendBtnCancelHandler);
+          sendBtnCancelHandler = null;
+        }
+      }
 
       /** BAI-KRN-002 / M1: isComposing guard for CJK / IME keyboards. */
       var composerIsComposing = false;
@@ -1441,9 +1571,17 @@ const policyBanner = {
         var userMsg = createMessage('user', raw);
         messages.insertBefore(userMsg.article, typing);
 
+        // CHAT-STATE-001: remember the last user message so the retry
+        // button in error banners can re-send it verbatim.
+        lastUserMessage = raw;
+
         // Clear + reset
         input.value = '';
-        if (sendBtn) sendBtn.disabled = true;
+
+        // CHAT-STATE-001: turn the send button into a Cancel control while
+        // a request is in flight. AbortController (composerAbort) is
+        // created below; the cancel handler reads it at click time.
+        enterStreamingState();
 
         // Show typing
         typing.hidden = false;
@@ -1503,6 +1641,10 @@ const policyBanner = {
               if (res.status === 404) {
                 apiAvailability = false;
                 showChatError('unavailable');
+                // CHAT-STATE-001: 404 is the one case where a demo reply
+                // remains useful — the endpoint genuinely does not exist
+                // (Render static). Other provider errors no longer fall
+                // back, so the user sees a clear retry path instead.
                 runDemoReply();
                 return null;
               }
@@ -1512,24 +1654,42 @@ const policyBanner = {
                 // No demo reply — user must wait
                 typing.hidden = true;
                 messages.setAttribute('aria-busy', 'false');
-                if (sendBtn) sendBtn.disabled = false;
+                exitStreamingState();
                 input.focus();
                 return null;
               }
+              // CHAT-STATE-001: firewall policy decisions. 451 = block,
+              // 428 = require_approval. Both carry { reply, blocked, decision,
+              // traceId, findings } in the body — we render the refusal as a
+              // real AI message with a "blocked" badge + suggested phrasing,
+              // NOT as a generic error + demo reply (previous behaviour).
+              if (res.status === 451 || res.status === 428) {
+                return res.json().then(function (data) {
+                  renderBlockedMessage(data || {});
+                  return null;
+                }).catch(function () {
+                  showChatError('unknown');
+                  finalizeIdle();
+                  return null;
+                });
+              }
               if (res.status === 502) {
+                // CHAT-STATE-001: provider failure — no demo fallback. The
+                // user gets a clear error + retry so they know the model
+                // was never reached.
                 showChatError('provider_failed');
-                runDemoReply();
+                finalizeIdle();
                 return null;
               }
               if (res.status === 503) {
-                // 503 = upstream rate-limited / overloaded. Surface it like 502.
+                // 503 = upstream rate-limited / overloaded. Same treatment as 502.
                 showChatError('provider_failed');
-                runDemoReply();
+                finalizeIdle();
                 return null;
               }
               if (res.status === 504) {
                 showChatError('timeout');
-                runDemoReply();
+                finalizeIdle();
                 return null;
               }
               if (res.status === 403) {
@@ -1542,7 +1702,15 @@ const policyBanner = {
               }
               if (!res.ok) {
                 showChatError('unknown');
-                runDemoReply();
+                finalizeIdle();
+                return null;
+              }
+              // CHAT-STATE-001: HTTP 200 with X-Stream-Status: all_providers_failed
+              // is the server's "no provider could serve this" signal (see
+              // chat.ts:~880). Treat it like a provider failure.
+              if (res.headers.get('X-Stream-Status') === 'all_providers_failed') {
+                showChatError('provider_failed');
+                finalizeIdle();
                 return null;
               }
               // K2 (2026-07-18): surface degraded session notice if the
@@ -1574,6 +1742,8 @@ const policyBanner = {
                 messages.insertBefore(aiMsg.article, typing);
                 if (data.provider) lastProvider = String(data.provider);
                 updateProviderBadges();
+                // CHAT-STATE-001: mark this as a live (not demo) reply.
+                attachSourceBadge(aiMsg.badge, 'live', lastProvider || undefined);
                 // KERNEL-ANALYTICS-2026-07-18: message_allowed — a reply was
                 // produced (PII passed firewall or was redacted). Non-PII.
                  kernelTrack(KEV().MESSAGE_ALLOWED, scenarioCtx());
@@ -1591,13 +1761,23 @@ const policyBanner = {
               if (err && (err.name === 'AbortError' || composerAbort && composerAbort.signal.aborted)) {
                 typing.hidden = true;
                 messages.setAttribute('aria-busy', 'false');
-                if (sendBtn) sendBtn.disabled = false;
+                // CHAT-STATE-001: mark the in-flight AI message (if any) as
+                // cancelled, keep partial text, and offer a retry.
+                var partial = messages.querySelector('.kernel-chat-message--ai[data-streaming="true"]');
+                if (partial) {
+                  var pBadge = partial.querySelector('.kernel-source-badge');
+                  attachSourceBadge(pBadge, 'cancelled');
+                  partial.removeAttribute('data-streaming');
+                }
+                exitStreamingState();
                 input.focus();
-                showChatError('timeout'); // user-facing message: "ended early"
+                // Show a retry banner (not a "timeout" confusion) so the
+                // user knows they stopped it and can resume.
+                showChatError('cancelled');
                 return;
               }
               showChatError('network');
-              runDemoReply();
+              finalizeIdle();
             });
         }
 
@@ -1612,9 +1792,13 @@ const policyBanner = {
          */
         async function consumeSSE(res) {
           var aiMsg = createMessage('ai', '');
+          // CHAT-STATE-001: tag the message as streaming so the catch path
+          // can find + demote it to "cancelled" if the user aborts.
+          aiMsg.article.setAttribute('data-streaming', 'true');
           messages.insertBefore(aiMsg.article, typing);
           var fullReply = '';
           var doneSeen = false;
+          var liveProvider = '';
           try {
             for await (var frame of readSSE(res, composerAbort && composerAbort.signal)) {
               if (!frame) continue;
@@ -1630,15 +1814,19 @@ const policyBanner = {
                } else if (frame.event === 'done' && frame.data) {
                  doneSeen = true;
                  if (typeof frame.data.provider === 'string') {
+                   liveProvider = frame.data.provider;
                    lastProvider = frame.data.provider;
                  }
                  updateProviderBadges();
+                 // CHAT-STATE-001: live reply completed — badge as مباشر.
+                 attachSourceBadge(aiMsg.badge, 'live', liveProvider || undefined);
                  // KERNEL-ANALYTICS-2026-07-18: message_allowed — stream
                  // completed with a reply. Non-PII.
                 kernelTrack(KEV().MESSAGE_ALLOWED, scenarioCtx());
                } else if (frame.event === 'error') {
-                // Stream-level error mid-response: keep what we have, then
-                // surface a non-blocking notice.
+                // Stream-level error mid-response: keep what we have, demote
+                // the badge to unavailable, and surface a retry notice.
+                attachSourceBadge(aiMsg.badge, 'unavailable');
                 showChatError('provider_failed');
               }
             }
@@ -1646,13 +1834,17 @@ const policyBanner = {
             // readSSE surfaces AbortError when the user cancels. Fall through
             // to idle state without showing a confusing network error.
             if (err && (err.name === 'AbortError' || composerAbort && composerAbort.signal.aborted)) {
-              // user cancel — leave the partial reply in place
+              // CHAT-STATE-001: user cancel — keep partial text, mark cancelled.
+              attachSourceBadge(aiMsg.badge, 'cancelled');
             } else {
+              attachSourceBadge(aiMsg.badge, 'unavailable');
               showChatError('network');
             }
           }
+          aiMsg.article.removeAttribute('data-streaming');
           if (!doneSeen && !fullReply) {
             // No tokens arrived before the stream closed — degrade gracefully.
+            attachSourceBadge(aiMsg.badge, 'unavailable');
             showChatError('unknown');
           }
           if (fullReply) lastCompletedReply = fullReply;
@@ -1676,11 +1868,12 @@ const policyBanner = {
 
       /**
        * BAI-KRN-002 / M2: shared finalize helper (idle state + focus).
+       * CHAT-STATE-001: also restores the send button from Cancel state.
        */
       function finalizeIdle() {
         typing.hidden = true;
         messages.setAttribute('aria-busy', 'false');
-        if (sendBtn) sendBtn.disabled = false;
+        exitStreamingState();
         // Announce the completed reply a single time, after streaming ends.
         if (lastCompletedReply) {
           announce(lastCompletedReply);
@@ -1689,12 +1882,15 @@ const policyBanner = {
       }
 
         // REPORTS-SEC-01: Demo fallback path (latency simulation + fake streaming).
-        // يُستخدم عندما الـ API غير متاح أو رجع 404/502/504. يحفظ الـ UX القديم.
+        // يُستخدم عندما الـ API غير متاح أو رجع 404/403. يحفظ الـ UX القديم.
+        // CHAT-STATE-001: now also tags the reply as demo so the source
+        // badge clearly distinguishes it from a live reply.
         function runDemoReply() {
           setDemoMode(true);
           setTimeout(function () {
             var aiMsg = createMessage('ai', '');
             messages.insertBefore(aiMsg.article, typing);
+            attachSourceBadge(aiMsg.badge, 'demo');
             var fake = pickFakeResponse();
             streamInto(aiMsg.bubble, fake, function () {
               lastCompletedReply = fake;
@@ -1705,11 +1901,86 @@ const policyBanner = {
           }, 700);
         }
 
+        /**
+         * CHAT-STATE-001: render a firewall-blocked response as a real AI
+         * message. The server returns this on HTTP 451 (block) and 428
+         * (require_approval) with { reply, blocked, decision, traceId,
+         * findings }. We show the refusal text, a "blocked" source badge,
+         * and a suggested-phrasing box explaining why + offering a safe
+         * rewrite — reusing the same pattern the seed messages use.
+         */
+        function renderBlockedMessage(data) {
+          var aiMsg = createMessage('ai', '');
+          messages.insertBefore(aiMsg.article, typing);
+          attachSourceBadge(aiMsg.badge, 'blocked');
+          var refusal = (data && data.reply) ||
+            'تعذّر إرسال الطلب: يحتوي على بيانات محظورة حسب سياسة الأمان.';
+          aiMsg.bubble.textContent = refusal;
+          // Governance strip mirroring the seed messages.
+          var gov = document.createElement('div');
+          gov.className = 'kernel-governance-strip';
+          gov.setAttribute('aria-label', 'شريط الحوكمة');
+          gov.innerHTML =
+            '<span class="kernel-governance-strip__item kernel-governance-strip__item--decision" data-decision="blocked" title="القرار">⊘ محظور</span>' +
+            (data && data.traceId
+              ? '<span class="kernel-governance-strip__item kernel-governance-strip__item--trace" title="Trace ID">' + data.traceId + '</span>'
+              : '');
+          aiMsg.body.appendChild(gov);
+          // Suggested-phrasing box: explain why + offer a safe rewrite.
+          var findings = (data && data.findings) || [];
+          var whyText = 'طلبك يحتوي على بيانات شخصية أو سرية محظورة. ' +
+            (findings.length
+              ? 'الكشف وجد: ' + findings.slice(0, 5).join('، ') + '. '
+              : '') +
+            'أعد صياغة الطلب بدون أرقام هوية أو بيانات حساسة، أو استخدم صياغة مجمّعة (إحصاءات بدل بيانات خام).';
+          var safePhrasing = 'جرّب صياغة أبعدَ عن البيانات الحساسة: اطلب ملخصاً إحصائياً أو تقريراً مجمّعاً بدل البيانات الخام.';
+          var sugg = document.createElement('div');
+          sugg.className = 'kernel-chat-suggestion';
+          sugg.setAttribute('role', 'alert');
+          sugg.innerHTML =
+            '<div class="kernel-chat-suggestion__head">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+              '<span>طلبك محظور — جرّب هذي الصياغة بدلاً منها</span>' +
+            '</div>' +
+            '<div class="kernel-chat-suggestion__body">' +
+              '<textarea readonly rows="2" aria-label="الصياغة الآمنة المقترحة">' + safePhrasing + '</textarea>' +
+            '</div>' +
+            '<div class="kernel-chat-suggestion__actions">' +
+              '<button type="button" class="kernel-chat-suggestion__btn kernel-chat-suggestion__btn--primary" data-kernel-use-phrasing>استخدم الصياغة</button>' +
+              '<button type="button" class="kernel-chat-suggestion__btn" data-kernel-why-modified>ليش عدّلت؟</button>' +
+            '</div>' +
+            '<div class="kernel-chat-suggestion__reason" hidden>' + whyText + '</div>';
+          aiMsg.body.appendChild(sugg);
+          // Track + finalize.
+          kernelTrack(KEV().MESSAGE_BLOCKED, Object.assign(
+            { error_type: 'policy_' + ((data && data.decision) || 'block') },
+            scenarioCtx()
+          ));
+          lastCompletedReply = refusal;
+          typing.hidden = true;
+          finalizeIdle();
+          scrollThreadToEnd(thread);
+          // Re-bind the suggestion buttons (reuse the existing handlers below).
+          bindSuggestionButtons();
+        }
+
         if (!apiTried) runDemoReply();
       }
 
+      // CHAT-STATE-001: send button handler guards against the streaming
+      // (Cancel) state — when the button is in cancel mode, the dedicated
+      // cancel listener (registered in enterStreamingState) handles the
+      // click; we must NOT also fire sendMessage.
       form.addEventListener('submit', function (e) { e.preventDefault(); sendMessage(); });
-      if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+      if (sendBtn) {
+        sendBtn.addEventListener('click', function (e) {
+          if (sendBtn.classList.contains('kernel-chat-composer__btn--cancel')) {
+            // Cancel listener (registered via {once:true}) handles this.
+            return;
+          }
+          sendMessage();
+        });
+      }
 
       // Enter / Shift+Enter handler on textarea
       input.addEventListener('keydown', function (e) {
@@ -1789,41 +2060,46 @@ const policyBanner = {
         });
       });
 
-      // M14: "Use phrasing" button — copies suggested text to input
-      elAll('[data-kernel-use-phrasing]').forEach(function (btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function () {
-          var suggestion = btn.closest('.kernel-chat-suggestion');
-          if (!suggestion) return;
-          var textarea = suggestion.querySelector('textarea');
-          if (textarea && input) {
-            input.value = textarea.value;
-            input.focus();
-          }
-        });
-      });
-
-      // M14: "Why modified?" button — toggles reason visibility
-      elAll('[data-kernel-why-modified]').forEach(function (btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function () {
-          var suggestion = btn.closest('.kernel-chat-suggestion');
-          if (!suggestion) return;
-          var reason = suggestion.querySelector('.kernel-chat-suggestion__reason');
-          if (reason) {
-            var isHidden = reason.hasAttribute('hidden');
-            if (isHidden) {
-              reason.removeAttribute('hidden');
-              btn.textContent = 'إخفاء السبب';
-            } else {
-              reason.setAttribute('hidden', '');
-              btn.textContent = 'ليش عدّلت؟';
+      // M14 + CHAT-STATE-001: "Use phrasing" / "Why modified?" binders.
+      // Factored into a function so renderBlockedMessage() can re-bind
+      // buttons added dynamically after a 451/428 firewall response.
+      function bindSuggestionButtons() {
+        // "Use phrasing" — copies suggested text to input
+        elAll('[data-kernel-use-phrasing]').forEach(function (btn) {
+          if (btn.dataset.bound === '1') return;
+          btn.dataset.bound = '1';
+          btn.addEventListener('click', function () {
+            var suggestion = btn.closest('.kernel-chat-suggestion');
+            if (!suggestion) return;
+            var textarea = suggestion.querySelector('textarea');
+            if (textarea && input) {
+              input.value = textarea.value;
+              input.focus();
             }
-          }
+          });
         });
-      });
+        // "Why modified?" — toggles reason visibility
+        elAll('[data-kernel-why-modified]').forEach(function (btn) {
+          if (btn.dataset.bound === '1') return;
+          btn.dataset.bound = '1';
+          btn.addEventListener('click', function () {
+            var suggestion = btn.closest('.kernel-chat-suggestion');
+            if (!suggestion) return;
+            var reason = suggestion.querySelector('.kernel-chat-suggestion__reason');
+            if (reason) {
+              var isHidden = reason.hasAttribute('hidden');
+              if (isHidden) {
+                reason.removeAttribute('hidden');
+                btn.textContent = 'إخفاء السبب';
+              } else {
+                reason.setAttribute('hidden', '');
+                btn.textContent = 'ليش عدّلت؟';
+              }
+            }
+          });
+        });
+      }
+      bindSuggestionButtons();
 
       // M14: "Open in Playground" button — navigates to playground with message text
       elAll('[data-kernel-open-playground]').forEach(function (btn) {

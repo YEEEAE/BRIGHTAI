@@ -679,26 +679,6 @@ import { detectPII as _detectPIIShared } from './pii-detector.js';
         <div class="pg-diff-line">السياسات: لا شيء</div>
       </div>`;
     }
-    // ── عرض الحكم المبسّط في وضع المرشد ───────────────────────────────────────
-    function renderGuided(r) {
-        const box = $('#pg-guided-result');
-        if (!box)
-            return;
-        const icon = ({ block: '⛔', mask: '⚠️', hitl: '🧑‍⚖️', allow: '✅' })[r.verdict] || '';
-        const title = ({ block: 'حُظر قبل الوصول للنموذج', mask: 'سُمح بعد التعمية', hitl: 'بحاجة مراجعة بشرية', allow: 'سُمح بأمان' })[r.verdict] || '';
-        const reason = r.verdict === 'block'
-            ? (r.risk.injection ? 'احتوى على إشارات حقن أوامر أو استخراج أسرار.' : 'احتوى على بيانات تحظرها سياسة فعّالة (مثل آيبان أو سجل طبي).')
-            : r.verdict === 'mask'
-                ? `عُمّيت ${r.entities.length} كيان قبل الإرسال للنموذج.`
-                : r.verdict === 'hitl'
-                    ? 'سياسة مراجعة بشرية اشتعلت (SDAIA شفافية أو ISO 42001 مخاطر عالية).'
-                    : 'ما كشف أي بيانات شخصية ولا انتهك أي سياسة.';
-        box.innerHTML = `<div class="pg-guided-verdict">
-            <h3 class="pg-guided__verdict-title">${icon} ${title}</h3>
-            <p class="pg-verdict__reason">${reason}</p>
-            <div class="pg-guided__verdict-score">درجة الأمان: <strong>${r.certificate.score}</strong> · الخطورة: <strong>${r.certificate.severity}</strong> · سجلات محمية: <strong>${r.entities.length}</strong></div>
-        </div>`;
-    }
     // ── صدّر الكود (cURL / Python / TS) ────────────────────────────────────────
     let _exportCodes = null;
     function buildExport(r, ctx) {
@@ -1001,100 +981,6 @@ import { detectPII as _detectPIIShared } from './pii-detector.js';
             ta.focus();
             announce(`تحميل عيّنة: ${s.label}`);
         }));
-        // عداد الطلبات المستخدمة (مشترك بين وضعي المرشد والخبير)
-        let used = 0;
-        // ═══ وضع المرشد: تعبئة عيّنات المرشد + ربط الأزرار ═══
-        const taGuided = $('#pg-input-guided');
-        const guidedSamplesBox = $('#pg-guided-samples');
-        const guidedRunBtn = $('#pg-run-guided');
-        const guidedErr = $('#pg-input-error-guided');
-        const openExpertBtn = $('#pg-open-expert');
-        // تعبئة عيّنات المرشد عند توفرها
-        if (guidedSamplesBox && CFG.samples) {
-            const wrap = guidedSamplesBox.querySelector('.pg-samples');
-            if (wrap && !wrap.hasChildNodes()) {
-                CFG.samples.slice(0, 4).forEach((s) => {
-                    const b = document.createElement('button');
-                    b.type = 'button';
-                    b.className = 'pg-sample';
-                    b.dataset.sample = s.id;
-                    b.innerHTML = `<span class="pg-sample__icon">${s.icon}</span>${s.label}`;
-                    b.addEventListener('click', () => {
-                        if (taGuided) {
-                            taGuided.value = s.prompt;
-                            if (guidedErr)
-                                guidedErr.hidden = true;
-                            taGuided.focus();
-                            announce(`تحميل عيّنة: ${s.label}`);
-                        }
-                    });
-                    wrap.appendChild(b);
-                });
-            }
-        }
-        // مبدّل الوضع
-        const modeBtns = $$('.pg-mode-btn');
-        function setMode(mode) {
-            root.dataset.mode = mode;
-            modeBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pgMode === mode)));
-        }
-        $$('[data-pg-mode]').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.pgMode)));
-        if (openExpertBtn)
-            openExpertBtn.addEventListener('click', () => setMode('expert'));
-        // تشغيل المرشد
-        async function doRunGuided() {
-            const text = taGuided ? taGuided.value.trim() : '';
-            if (!text) {
-                announce('اكتب نصًا أو اختر عيّنة أولًا.');
-                if (guidedErr)
-                    guidedErr.hidden = false;
-                if (taGuided) {
-                    taGuided.setAttribute('aria-invalid', 'true');
-                    taGuided.focus();
-                }
-                return;
-            }
-            if (guidedErr)
-                guidedErr.hidden = true;
-            if (taGuided)
-                taGuided.removeAttribute('aria-invalid');
-            if (used >= CFG.limits.maxRequests) {
-                showLimit();
-                return;
-            }
-            used++;
-            updateRemaining(used);
-            if (guidedRunBtn)
-                guidedRunBtn.disabled = true;
-            // استخدم نفس السياق الافتراضي مع تعمية، ونسخ النص لحقل الإدخال الخبير
-            if (ta)
-                ta.value = text;
-            updateCounter();
-            const ctx = readCtx();
-            const seed = readSettings().seed;
-            const r = analyze(ctx.conversation, ctx, seed);
-            renderGuided(r);
-            // أيضًا نعرض في عمود النتيجة
-            const skipAnim = root.dataset.skip === '1';
-            root.dataset.skip = '0';
-            if (skipAnim)
-                REDUCED_BYPASS(r, ctx);
-            else
-                await runPipeline(r, ctx);
-            if (guidedRunBtn)
-                guidedRunBtn.disabled = false;
-        }
-        if (guidedRunBtn)
-            guidedRunBtn.addEventListener('click', doRunGuided);
-        if (taGuided)
-            taGuided.addEventListener('input', () => {
-                if (guidedErr)
-                    guidedErr.hidden = true;
-                taGuided.removeAttribute('aria-invalid');
-            });
-        // الوضع الافتراضي: مرشد (يُضبط أول مرة فقط)
-        if (!root.dataset.mode)
-            root.dataset.mode = 'guided';
         // مفاتيح السياسات
         $$('.pg-toggle[data-pid]').forEach((t) => t.addEventListener('click', () => {
             const on = t.getAttribute('aria-checked') === 'true';
@@ -1130,6 +1016,7 @@ import { detectPII as _detectPIIShared } from './pii-detector.js';
             skip.addEventListener('click', () => { root.dataset.skip = '1'; });
         // زر التشغيل
         const runBtn = $('#pg-run');
+        let used = 0;
         async function doRun() {
             const ctx = readCtx();
             if (!ctx.text.trim()) {
