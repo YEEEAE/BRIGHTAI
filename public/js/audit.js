@@ -322,9 +322,9 @@
         updateToolbar();
         renderWindow();
     }
-    // BAI-P0-TRUTH-001: the demo-mode toggle was removed — this surface shows
-    // only deterministic data, so the viewport/verifier/kpis stay visible. The
-    // empty-state now means "filter returned no rows", not "live mode on".
+    // BAI-P0-TRUTH-001: demo-mode toggle removed — this surface shows only
+    // deterministic data, so the viewport/verifier/kpis stay visible. The
+    // empty state now means "filter returned no rows", not "live mode on".
     function reveal() {
         const main = $('[data-kernel-loading]');
         if (!main || !main.hasAttribute('data-kernel-loading'))
@@ -334,7 +334,6 @@
             skel.hidden = true;
         main.removeAttribute('data-kernel-loading');
     }
-    ;
     function initAfterData() {
         if (!fullRows)
             return;

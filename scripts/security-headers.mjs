@@ -135,10 +135,26 @@ export const RESPONSE_SECURITY_HEADERS = Object.freeze({
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
   "X-Robots-Tag":
     "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
-  "Content-Security-Policy":
+  // BAI-P1-SEC-001 (2026-08-09): CSP is delivered as a real HTTP response
+  // header (Content-Security-Policy-Report-Only) at the listener level via
+  // scripts/patch-server-entry.mjs — NOT as a <meta http-equiv> tag. Meta
+  // cannot carry Report-Only, ignores frame-ancestors, and misses requests
+  // before the meta is parsed. The header is applied to EVERY response
+  // (static + SSR) by the patched createStandaloneHandler listener.
+  //
+  // Report-Only first (per BAI-P1-SEC-001): a strict enforced CSP would
+  // silently break the live site. We ship Report-Only, monitor reports at
+  // /api/csp-report, then tighten and flip to the enforced header later.
+  //
+  // connect-src includes api.groq.com + generativelanguage.googleapis.com
+  // (the AI chat backend origins) — omitting them would break the AI chat
+  // when the policy is enforced. Redis (REDIS_URL) is server-to-server
+  // (ioredis from Node) and is NOT covered by browser CSP, so it is not
+  // listed here.
+  "Content-Security-Policy-Report-Only":
     "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-attr 'none'; style-src 'self'; style-src-elem " +
     STYLE_SRC_ELEM_BASE +
-    " 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
+    " 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com https://api.groq.com https://generativelanguage.googleapis.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
 });
 
 /**
@@ -202,7 +218,12 @@ export function buildCspWithStyleHashes(styleHashes = []) {
   // SoT (BAI-SEC-18 Phase 1 keeps it temporarily until the remaining
   // 7 inline script migrations land; Phase 2 removes it). This regex
   // is robust to both states.
-  return RESPONSE_SECURITY_HEADERS["Content-Security-Policy"].replace(
+  //
+  // BAI-P1-SEC-001 (2026-08-09): the SoT key is now
+  // Content-Security-Policy-Report-Only (the CSP is a response header,
+  // not a meta tag). This helper is retained for backwards-compat /
+  // future use; it reads the Report-Only value.
+  return RESPONSE_SECURITY_HEADERS["Content-Security-Policy-Report-Only"].replace(
     /style-src-elem [^;]+;/,
     `style-src-elem ${styleSrcElem};`
   );

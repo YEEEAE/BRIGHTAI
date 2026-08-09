@@ -5,11 +5,7 @@ import node from '@astrojs/node';
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
-import {
-  STATIC_SECURITY_META_OTHER,
-  buildCspWithStyleHashes,
-  computeStyleHash,
-} from './scripts/security-headers.mjs';
+import { STATIC_SECURITY_META_OTHER } from './scripts/security-headers.mjs';
 
 /**
  * BAI-PERF-01 (2026-07-25) — perf-css-defer removed.
@@ -52,44 +48,24 @@ import {
 /**
  * injectSecurityMeta — Astro integration that runs at build done and
  * injects <meta http-equiv="..."> tags into every prerendered HTML
- * file in dist/client/. This is the authoritative layer for security
- * headers on static pages (CSP, X-Content-Type-Options, X-Frame-Options,
- * Referrer-Policy).
+ * file in dist/client/.
  *
- * WHY META (not HTTP headers) for static:
- *   - Render Web Services (Node) do NOT apply the `headers:` block in
- *     render.yaml to runtime responses. The prerendered HTML files in
- *     dist/client/ are served by the Node adapter with no header
- *     injection. Cloudflare (our edge) also does not inject security
- *     headers by default.
- *   - The only mechanism that works at the HTML payload level — the
- *     point at which we have authority over a static file — is
- *     <meta http-equiv="...">. Browsers honour it for CSP,
- *     X-Content-Type-Options (Chromium-based), X-Frame-Options
- *     (legacy / older browsers), and Referrer-Policy.
- *   - HSTS does NOT work in meta — it must come from the HTTP layer
- *     (Cloudflare edge). See docs/cloudflare-deployment-headers.md
- *     for the Cloudflare Transform Rule that completes the posture
- *     on static pages.
+ * BAI-P1-SEC-001 (2026-08-09): the CSP is NO LONGER injected as a
+ * <meta http-equiv="Content-Security-Policy"> tag. It is delivered as
+ * a real HTTP response header (Content-Security-Policy-Report-Only) at
+ * the listener level by scripts/patch-server-entry.mjs, which covers
+ * EVERY response (static + SSR). Meta cannot carry Report-Only, ignores
+ * frame-ancestors, and misses requests before the meta is parsed.
+ * Keeping both meta + header would create a conflicting, hard-to-debug
+ * policy — so the meta CSP is removed entirely.
  *
- * PER-FILE STYLE HASHES (BAI-SEC-18, 2026-07-25):
- *   The static CSP SoT (scripts/security-headers.mjs) has
- *   style-src-elem without 'unsafe-inline'. For each HTML file, this
- *   integration scans the rendered <style>...</style> blocks (which
- *   are currently the Astro ClientRouter view-transition styles
- *   — one block per page), computes SHA-256 of each, and appends the
- *   'sha256-XXX' hashes to the style-src-elem directive in the
- *   per-file CSP meta tag. This lets prerendered pages honour a
- *   strict-CSP without per-request nonces (which are impossible for
- *   static HTML — see DEC-BAI-SEC-18-2026-07-25-002).
+ * This integration now injects ONLY the non-CSP static meta tags
+ * (X-Content-Type-Options, X-Frame-Options, Referrer-Policy) that
+ * browsers honour at the HTML payload level. HSTS does NOT work in
+ * meta — it comes from the HTTP layer (listener + Cloudflare edge).
  *
  * IDEMPOTENT: re-running on a file that already has the meta tags is
  * a no-op (matched against the unique marker comment we inject).
- *
- * @csp-attr-safe — Unlike perf-css-defer (which injects inline
- *   onload="" handlers and therefore needs 'unsafe-inline' on
- *   script-src-attr), this integration only injects meta tags. The
- *   strict script-src-attr 'none' posture is preserved.
  */
 function injectSecurityMeta() {
   // Unique marker for idempotency. If this comment is present, the
@@ -119,15 +95,8 @@ function injectSecurityMeta() {
         // treats it as the equivalent HTTP header.
         const staticMetaBlock = STATIC_SECURITY_META_OTHER.map(
           (m) =>
-            `<meta http-equiv="${m.httpEquiv}" content="${m.content.replace(/"/g, '&quot;')}">`
+            `<meta http-equiv="${m.httpEquiv}" content="${m.content.replace(/"/g, '"')}">`
         ).join('');
-
-        // Regex: match every <style>...</style> block. Astro extracts
-        // component <style scoped> blocks to external .css files, so
-        // the only inline <style> blocks in dist HTML are the Astro
-        // ClientRouter view-transition styles (one per page). The
-        // content is captured between the tags.
-        const inlineStyleRe = /<style(?:\s+[^>]*)?>([\s\S]*?)<\/style>/g;
 
         let totalInjected = 0;
         for (const file of htmlFiles) {
@@ -135,37 +104,18 @@ function injectSecurityMeta() {
           if (html.includes(MARKER)) continue; // already injected
           if (!html.includes('</head>')) continue; // malformed — skip
 
-          // Compute per-file style-src-elem hashes. Dedupe via Set
-          // because the same style block can appear multiple times in
-          // some edge cases (Astro server island fallback). The CSP
-          // is fine with duplicate hashes; dedupe is just for size.
-          const seen = new Set();
-          const styleHashes = [];
-          for (const m of html.matchAll(inlineStyleRe)) {
-            const content = m[1];
-            const hash = computeStyleHash(content);
-            if (!seen.has(hash)) {
-              seen.add(hash);
-              styleHashes.push(hash);
-            }
-          }
-
-          // Build the per-file CSP meta tag. For pages with no inline
-          // styles (e.g. 404), the directive is just the base value.
-          const cspContent = buildCspWithStyleHashes(styleHashes);
-          const cspMeta = `<meta http-equiv="Content-Security-Policy" content="${cspContent.replace(/"/g, '&quot;')}">`;
-
-          // Compose the full meta block: marker + CSP (per-file) +
-          // static non-CSP meta tags (shared) + closing marker.
+          // Compose the meta block: marker + static non-CSP meta tags
+          // (shared) + closing marker. No CSP meta — the CSP is a
+          // response header now (BAI-P1-SEC-001).
           const metaBlock =
-            MARKER + cspMeta + staticMetaBlock + '<!-- /brightai-security-meta -->';
+            MARKER + staticMetaBlock + '<!-- /brightai-security-meta -->';
 
           const newHtml = html.replace('</head>', `${metaBlock}</head>`);
           writeFileSync(file, newHtml, 'utf-8');
           totalInjected += 1;
         }
         console.log(
-          `[inject-security-meta] injected per-file CSP (with style-src-elem hashes) + ${STATIC_SECURITY_META_OTHER.length} static meta tag(s) into ${totalInjected} HTML file(s)`
+          `[inject-security-meta] injected ${STATIC_SECURITY_META_OTHER.length} static meta tag(s) into ${totalInjected} HTML file(s) (CSP is a response header — BAI-P1-SEC-001)`
         );
       },
     },

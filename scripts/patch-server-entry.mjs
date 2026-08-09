@@ -69,9 +69,11 @@ const __filename = fileURLToPath(import.meta.url);
 const root = path.resolve(path.dirname(__filename), '..');
 
 const SRC_DENY_LIST = path.join(root, 'src', 'server', 'deny-list.mjs');
+const SRC_SECURITY_HEADERS = path.join(root, 'scripts', 'security-headers.mjs');
 const DIST_SERVER = path.join(root, 'dist', 'server');
 const ENTRY = path.join(DIST_SERVER, 'entry.mjs');
 const DENY_LIST_DEPLOY = path.join(DIST_SERVER, '_deny-list.mjs');
+const SECURITY_HEADERS_DEPLOY = path.join(DIST_SERVER, '_security-headers.mjs');
 
 // PATCH_MARKER is the per-build identifier we inject into the chunk. We
 // started with BAI-SEC-10:deny-list for the deny-list patch and added
@@ -134,6 +136,16 @@ if (!fs.existsSync(ENTRY)) {
 const srcContent = fs.readFileSync(SRC_DENY_LIST, 'utf-8');
 fs.writeFileSync(DENY_LIST_DEPLOY, srcContent, 'utf-8');
 log(`wrote ${path.relative(root, DENY_LIST_DEPLOY)} (${srcContent.length} bytes)`);
+
+// ── Step 1.1: BAI-P1-SEC-001 — copy the security-headers SoT to dist/server/ ──
+// The patched listener imports RESPONSE_SECURITY_HEADERS from this copy so
+// the CSP (Content-Security-Policy-Report-Only) + baseline headers are
+// delivered as real HTTP response headers on EVERY response (static + SSR),
+// from a single source of truth. This is the authoritative HTTP-layer
+// posture for the Node service — the meta CSP was removed (BAI-P1-SEC-001).
+const securityHeadersContent = fs.readFileSync(SRC_SECURITY_HEADERS, 'utf-8');
+fs.writeFileSync(SECURITY_HEADERS_DEPLOY, securityHeadersContent, 'utf-8');
+log(`wrote ${path.relative(root, SECURITY_HEADERS_DEPLOY)} (${securityHeadersContent.length} bytes)`);
 
 // ── Step 1.5: BAI-DEPLOY-11 — capture build identity ──
 // Read git SHA + build time at patch time. These are inlined into the
@@ -265,6 +277,7 @@ if (existingMarker) {
   const importLines = [
     `import { isDenied } from '../_deny-list.mjs';`,
     `import { BUILD_COMMIT, BUILD_TIME } from '../_build-info.mjs';`,
+    `import { RESPONSE_SECURITY_HEADERS } from '../_security-headers.mjs';`,
   ];
   let newChunk = chunkContent;
 
@@ -366,9 +379,10 @@ if (existingMarker) {
   // process.env identity for SSR routes).
   const patchedFn = `function createStandaloneHandler(app, options, headersMap) {
   // BAI-SEC-10:deny-list + BAI-DEPLOY-11:build-info (2026-07-25) +
-  // BAI-DEPLOY-12:hsts (2026-07-28) — deployment-surface deny-list +
-  // build identity + Strict-Transport-Security at the listener level.
-  // Runs BEFORE staticHandler reads any file from disk.
+  // BAI-DEPLOY-12:hsts (2026-07-28) + BAI-P1-SEC-001 (2026-08-09) —
+  // deployment-surface deny-list + build identity + full security
+  // header posture (incl. Content-Security-Policy-Report-Only) at the
+  // listener level. Runs BEFORE staticHandler reads any file from disk.
   // See src/server/deny-list.mjs, scripts/patch-server-entry.mjs.
   // BAI-DEPLOY-11: stamp process.env so SSR routes (api/health.ts) can
   // include the build identity in their JSON response.
@@ -386,20 +400,21 @@ if (existingMarker) {
     // post-deploy gate can verify which build is live.
     // BAI-DEPLOY-12:hsts — set Strict-Transport-Security on every
     // response, including denied (404) and static file (200) responses.
-    // Value mirrors scripts/security-headers.mjs
-    // RESPONSE_SECURITY_HEADERS["Strict-Transport-Security"]; keep in
-    // sync if that canonical value changes (max-age is the long-lived
-    // preload commitment, do NOT shorten without a security review).
+    // BAI-P1-SEC-001 — apply the FULL RESPONSE_SECURITY_HEADERS posture
+    // (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy,
+    // Permissions-Policy, X-Robots-Tag, Content-Security-Policy-Report-Only)
+    // on every response. The CSP is delivered as a real HTTP response
+    // header here (NOT a meta tag) so Report-Only works, frame-ancestors
+    // is honoured, and requests before meta-parse are covered. Values come
+    // from the single source of truth scripts/security-headers.mjs (copied
+    // to dist/server/_security-headers.mjs at build time).
     try {
       if (res && typeof res.setHeader === 'function') {
         try { res.setHeader('x-brightai-build', BUILD_COMMIT); } catch { /* ignore */ }
         try { res.setHeader('x-brightai-build-time', BUILD_TIME); } catch { /* ignore */ }
-        try {
-          res.setHeader(
-            'Strict-Transport-Security',
-            'max-age=63072000; includeSubDomains; preload'
-          );
-        } catch { /* ignore */ }
+        for (const [name, value] of Object.entries(RESPONSE_SECURITY_HEADERS)) {
+          try { res.setHeader(name, value); } catch { /* ignore */ }
+        }
       }
     } catch { /* ignore */ }
     // BAI-SEC-10 deny-list check — short-circuit to 404 before the static
