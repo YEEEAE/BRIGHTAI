@@ -1312,6 +1312,15 @@
   function saveEditor() {
     if (!editor.policyId) return;
     var f = editor.fields;
+    var nameErrEl = document.getElementById('po-field-name-error');
+    if (!f.name.value.trim()) {
+      if (nameErrEl) nameErrEl.hidden = false;
+      if (f.name) f.name.setAttribute('aria-invalid', 'true');
+      f.name.focus();
+      return;
+    }
+    if (nameErrEl) nameErrEl.hidden = true;
+    if (f.name) f.name.removeAttribute('aria-invalid');
     var rule = {
       if: { piiType: f.pii.value, operator: f.operator.value, pattern: f.pattern.value.trim() ? f.pattern.value.trim() : null },
       and: { compliancePack: f.pack.value, orPacks: [] },
@@ -1637,7 +1646,16 @@
     if (ui.genBtn && ui.genInput) {
       ui.genBtn.addEventListener('click', function () {
         var text = ui.genInput.value.trim();
-        if (!text) { showToast('اكتب وصف السياسة أولاً', false); return; }
+        var genErrEl = document.getElementById('po-gen-input-error');
+        if (!text) {
+          if (genErrEl) genErrEl.hidden = false;
+          if (ui.genInput) ui.genInput.setAttribute('aria-invalid', 'true');
+          ui.genInput.focus();
+          showToast('اكتب وصف السياسة أولاً', false);
+          return;
+        }
+        if (genErrEl) genErrEl.hidden = true;
+        if (ui.genInput) ui.genInput.removeAttribute('aria-invalid');
         var suggested = suggest(text);
         if (!suggested) { showToast('ما قدّرنا نولّد', false); return; }
         if (ui.genMeta) ui.genMeta.textContent = 'شارة: ' + (config.aiBadge ? config.aiBadge.label : 'Demo') + ' · مسودة مو مسوّقة';

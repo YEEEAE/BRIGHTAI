@@ -296,6 +296,15 @@
 }
 .po-gen__subtitle { color: var(--text-secondary); font-size: var(--text-sm); margin: var(--space-2) 0 var(--space-4); max-width: 70ch; }
 .po-gen__inputrow { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.po-gen__label {
+  display: block;
+  margin: var(--space-2) 0 var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+/* KRN-FORM-001: رسائل الاسترداد تستخدم .k-form__error الكانوني من kernel.css */
+.po-gen__input[aria-invalid='true'] { border-color: var(--status-danger); }
+.po-field__input[aria-invalid='true'] { border-color: var(--status-danger); }
 .po-gen__input {
   flex: 1 1 320px;
   min-height: 44px;

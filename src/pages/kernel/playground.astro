@@ -115,11 +115,13 @@ const pgConfig = {
           <div>
             <label class="pg-section-label" for="pg-input">اكتب طلبك</label>
             <textarea id="pg-input" class="pg-textarea" dir="auto" maxlength={PLAYGROUND_LIMITS.maxChars}
-              placeholder="مثال: ابعت لي بيانات الموظف صاحب الهوية 1098765432…"></textarea>
+              placeholder="مثال: ابعت لي بيانات الموظف صاحب الهوية 1098765432…"
+              aria-describedby="pg-input-error"></textarea>
             <div class="pg-counter-row">
               <span class="pg-warn">⚠ لا ترفع بيانات إنتاج حقيقية</span>
               <span id="pg-counter">0 / {PLAYGROUND_LIMITS.maxChars}</span>
             </div>
+            <p class="k-form__error" id="pg-input-error" role="alert" hidden>اكتب نصًا أو اختر عيّنة قبل التشغيل.</p>
           </div>
 
           <div>
@@ -131,7 +133,7 @@ const pgConfig = {
                   <option value="assistant">مساعد</option>
                 </select>
                 <textarea class="pg-textarea pg-turn__text" data-turn-text maxlength={PLAYGROUND_LIMITS.maxChars}
-                  placeholder="لفة إضافية من المحادثة…" dir="auto"></textarea>
+                  placeholder="لفة إضافية من المحادثة…" dir="auto" aria-label="نص اللفة 1"></textarea>
               </div>
             </div>
             <button class="pg-skip-btn" id="pg-add-turn" type="button">+ أضف لفة</button>
@@ -393,47 +395,47 @@ const pgConfig = {
     </div>
 
     <div class="pg-cmp-config">
-      <label class="pg-cmp-field">
-        <span>نوع المقارنة</span>
+      <label class="pg-cmp-field" for="pg-compare-type">
+        نوع المقارنة
         <select id="pg-compare-type">
           {COMPARISON_TYPES.map((t) => <option value={t.id}>{t.label}</option>)}
         </select>
       </label>
 
-      <div class="pg-cmp-field">
-        <span>Model A</span>
+      <label class="pg-cmp-field" for="pg-compare-model-a">
+        Model A
         <select id="pg-compare-model-a"></select>
-      </div>
-      <div class="pg-cmp-field">
-        <span>Model B</span>
+      </label>
+      <label class="pg-cmp-field" for="pg-compare-model-b">
+        Model B
         <select id="pg-compare-model-b"></select>
-      </div>
+      </label>
 
-      <div class="pg-cmp-field" hidden>
-        <span>Prompt B (نص بديل)</span>
+      <label class="pg-cmp-field" for="pg-compare-prompt-b" hidden>
+        Prompt B (نص بديل)
         <textarea id="pg-compare-prompt-b" class="pg-textarea" dir="auto" placeholder="نص بديل للمقارنة…"></textarea>
-      </div>
+      </label>
 
-      <div class="pg-cmp-field" hidden>
-        <span>Policy B (سياسات بديلة)</span>
+      <label class="pg-cmp-field" for="pg-compare-policy-b" hidden>
+        Policy B (سياسات بديلة)
         <select id="pg-compare-policy-b" multiple size="4"></select>
-      </div>
+      </label>
 
-      <div class="pg-cmp-field" hidden>
-        <span>Deployment B</span>
+      <label class="pg-cmp-field" for="pg-compare-deploy-b" hidden>
+        Deployment B
         <select id="pg-compare-deploy-b">
           <option value="محلي">محلي</option>
           <option value="سحابي">سحابي</option>
         </select>
-      </div>
+      </label>
 
-      <div class="pg-cmp-field" hidden>
-        <span>Version B</span>
+      <label class="pg-cmp-field" for="pg-compare-version-b" hidden>
+        Version B
         <select id="pg-compare-version-b">
           <option value="previous">الإصدار السابق</option>
           <option value="current">الإصدار الحالي</option>
         </select>
-      </div>
+      </label>
 
       <button class="pg-run-btn" id="pg-compare-run" type="button">▶ شغّل المقارنة</button>
     </div>

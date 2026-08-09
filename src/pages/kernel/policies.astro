@@ -197,16 +197,20 @@ const stats = buildPolicyEditorStats();
         صف السياسة اللي تبيها بجملة، ونولّد لك مسودة جاهزة للمراجعة. المسودة Demo —
         تتطلب مراجعة فريق الحوكمة قبل التفعيل.
       </p>
+      <label class="po-gen__label" for="po-gen-input">وصف السياسة المطلوبة</label>
       <div class="po-gen__inputrow">
         <input
           type="text"
+          id="po-gen-input"
           class="po-gen__input"
           placeholder="مثلاً: امنع تسريب أرقام الجوال مع حزم PDPL…"
-          aria-label="وصف السياسة المطلوبة"
+          required
+          aria-describedby="po-gen-input-error"
           data-po-gen-input
         />
         <button type="button" class="po-btn po-btn--primary" data-po-gen-btn>ولّد المسودة</button>
       </div>
+      <p class="k-form__error" id="po-gen-input-error" role="alert" hidden>اكتب وصف السياسة قبل التوليد.</p>
       <pre class="po-gen__result" data-po-gen-result dir="ltr"></pre>
       <button type="button" class="po-btn po-btn--primary" data-po-gen-add hidden>
         أضف المسودة كسياسة (Demo)
@@ -244,7 +248,8 @@ const stats = buildPolicyEditorStats();
       <div class="po-editor__body">
         <div class="po-field">
           <label for="po-field-name">اسم السياسة</label>
-          <input type="text" id="po-field-name" class="po-field__input" data-po-field-name maxlength={editorConfig.limits.maxNameLen} />
+          <input type="text" id="po-field-name" class="po-field__input" data-po-field-name maxlength={editorConfig.limits.maxNameLen} required aria-describedby="po-field-name-error" />
+          <p class="k-form__error" id="po-field-name-error" role="alert" hidden>اسم السياسة مطلوب قبل الحفظ.</p>
         </div>
         <div class="po-field">
           <label for="po-field-desc">الوصف</label>

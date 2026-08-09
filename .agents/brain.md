@@ -19,6 +19,19 @@ skills_ready: 7
 
 ---
 
+### 2026-08-09 — CSS-FATIGUE-001: تقليل الـ nested card fatigue في لوحة الكيرنل + الامتثال
+
+- **Files**: `src/pages/kernel/compliance.astro`, `src/styles/kernel.css`, `scripts/playwright/card-fatigue-shot.mjs` (سكربت لقطات محفوظ جديد)
+- **What**: خفّضت المربّعات المتداخلة (box-inside-box) على مبدأ "الكروت للحدود التفاعلية، والمحتوى الثانوي بالفواصل + التباعد". في `compliance.astro`: أزلت `KernelCard` الخارجي اللي كان يلفّ شبكة الحزم الثمانية + خريطة الامتثال، واستبدلته بعنوان قسم (`k-section-title`) + intro مباشرة قبل الشبكة/الخريطة (الحزم نفسها تبقى كروت تفاعلية). في `kernel.css`: حوّلت `KernelActivityItem` من مربّع (background + border-radius) لصفّ بفواصل `border-block-end` بين العناصر (الأخير بدون فاصل) + تباعد — يبطل "مربّع داخل مربّع" في ويدجات اللوحة (approvals/recent traces). خفّفت `box-shadow` لكروت KPI من `--shadow-md` لـ `--shadow-sm` عشان يقل الوزن البصري. كروت KPI + action cards تبقى (محتوى أساسي/تفاعلي).
+- **Why**: اللوحة ولوحة الامتثال كانتا كروت-فوق-كروت (KernelCard يلفّ `kernel-compliance-pack` مربّعات، و`KernelActivityItem` مربّعات داخل `KernelCard`) → إجهاد بصري وصعوبة تمييز المحتوى الأساسي. الهدف: أسطح أقل + محتوى أساسي أوضح.
+- **Verification**: `npm run build` ✅ (275 صفحة، KernelLayout CSS 151.1KB). `npm run verify:all` ✅ exit 0 (SEO gate + hreflang 0 أخطاء). فحص الـ dist HTML: بنية الحزم = `<h2 class="k-section-title">` + `<p class="k-section-intro">` + `<div class="kernel-compliance-grid">` مباشرة (بدون `kernel-card__body`) ✅، الـ id غير مكرر ✅، 8 packs ✅. فحص الـ CSS المبنِي: `border-block-end` موجود ✅ + `box-shadow: var(--shadow-sm)` ✅. لقطات Playwright (1440/390): `download/qa/cf-dashboard-{desktop,mobile}.png` + `cf-compliance-{desktop,mobile}.png`. Console errors الوحيدة من الـ CSP report-only (موجودة مسبقًا من الـ preview).
+- **Report**: `report/2026-08-09-css-fatigue-nested-cards.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: أضفت هذه الـ entry. ملاحظة للـ future agents: `KernelCard` في `compliance.astro` ما يزال مستخدم في قسم "تحليل الفجوات" — أبقيتُه لأنه صندوق مفرد (مو تداخل). لو بدت الفجوات بلا صندوق أيضًا، يتحول لنفس نمط `k-section-title`.
+
+---
+
 ### 2026-08-09 — KRN-TYPE-001: توحيد type scale + vertical rhythm لصفحات الكيرنل
 
 - **Files**: `src/styles/kernel.css`, `src/layouts/KernelLayout.astro`, `scripts/playwright/krn-type-shot.mjs` (قياس محفوظ جديد)

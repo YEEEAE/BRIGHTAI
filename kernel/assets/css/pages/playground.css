@@ -173,6 +173,9 @@ html[dir='rtl'] .pg-col[data-collapsed='true'] .pg-chevron { transform: rotate(-
   font-size: var(--text-xs);
 }
 
+/* KRN-FORM-001: رسالة الاسترداد تستخدم .k-form__error الكانوني من kernel.css */
+.pg-textarea[aria-invalid='true'] { border-color: var(--status-danger); }
+
 /* العينات الست */
 .pg-samples {
   display: grid;

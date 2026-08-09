@@ -2326,7 +2326,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  box-shadow: var(--shadow-md), var(--highlight-inner);
+  box-shadow: var(--shadow-sm);
   transition: border-color var(--duration-base) var(--ease-out),
               transform var(--duration-base) var(--ease-out);
 }
@@ -2703,17 +2703,18 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  padding: var(--space-3);
-  border-radius: var(--radius-sm);
-  background: rgba(19,28,48,0.4);
-  border: 1px solid transparent;
-  transition: border-color var(--duration-fast) var(--ease-out),
-              background var(--duration-fast) var(--ease-out);
+  padding: var(--space-3) 0;
+  border-block-end: 1px solid var(--border-subtle);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.kernel-activity-item:last-child {
+  border-block-end: 0;
+  padding-block-end: 0;
 }
 
 .kernel-activity-item:hover {
-  border-color: var(--border-strong);
-  background: rgba(19,28,48,0.6);
+  background: rgba(19,28,48,0.3);
 }
 
 .kernel-activity-item__icon {
@@ -3493,6 +3494,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   outline-offset: 2px;
 }
 .kernel-chat-composer__textarea::placeholder { color: var(--text-secondary); opacity: 0.7; }
+.kernel-chat-composer__textarea[aria-invalid='true'] { border-color: var(--status-danger); }
 
 .kernel-chat-composer__row {
   display: flex;
@@ -8541,4 +8543,46 @@ button.kernel-ap-ledger__link {
     transition: none !important;
   }
   .kernel-journey__dot--active { transform: none; }
+}
+
+/* ═══ KRN-FORM-001 — Canonical kernel form vocabulary (2026-08-09) ═══
+   Single vocabulary for every field on /kernel/* interactive surfaces
+   (playground, chat, policies, api, admin). Guarantees: every control has
+   an associated label and a recovery message wired via aria-describedby.
+
+   Scope note: the shared canonical layer here is the FEEDBACK vocabulary
+   (help + error). Controls/labels keep their page-scoped BEM classes
+   (.pg-*, .po-*, .kernel-chat-*) because each page has bespoke layout; what
+   is unified is the recovery-message + hint styling and the state rules
+   (aria-invalid, disabled) so feedback looks identical across pages.
+   Class = .k-form__error (role="alert") / .k-form__hint (aria-describedby).
+   Selector purity: classes here are referenced by pages → survive purge-css. */
+.k-form__hint {
+  font-size: var(--text-sm, 0.875rem);
+  line-height: 1.5;
+  color: var(--text-muted, #64748b);
+}
+.k-form__error {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm, 0.875rem);
+  line-height: 1.5;
+  color: var(--status-danger, #ef4444);
+  min-block-size: 1.25em;   /* reserve space — no layout jump on appear */
+}
+.k-form__error[hidden],
+.k-form__error:empty {
+  display: none;
+}
+/* Error state on any kernel control — aria-invalid drives the red border. */
+textarea[aria-invalid='true'],
+input[aria-invalid='true'],
+select[aria-invalid='true'] {
+  border-color: var(--status-danger, #ef4444);
+}
+@media (prefers-reduced-motion: reduce) {
+  textarea,
+  input,
+  select {
+    transition: none !important;
+  }
 }

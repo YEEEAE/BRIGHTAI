@@ -564,11 +564,13 @@ const policyBanner = {
               class="kernel-chat-composer__textarea"
               placeholder="اكتب سؤالك هنا — كل رسالة تمر عبر فلتر PII، تقييم المخاطر، وفحص السياسات قبل إرسالها للنموذج…"
               rows="2"
+              required
               data-kernel-chat-input
               data-scenario-id={activeScenario?.id ?? ''}
               data-scenario-prompt-hint={activeScenario?.promptHint ?? ''}
-              aria-describedby="kernel-chat-hint"
+              aria-describedby="kernel-chat-hint kernel-chat-input-error"
             ></textarea>
+            <p class="k-form__error" id="kernel-chat-input-error" role="alert" hidden>اكتب رسالة قبل الإرسال.</p>
             <div class="kernel-chat-composer__row">
               <span class="kernel-chat-composer__hint" id="kernel-chat-hint">
                 <kbd>Enter</kbd> للإرسال · <kbd>Shift+Enter</kbd> لسطر جديد · <kbd>C</kbd> لمحادثة جديدة · <kbd>Esc</kbd> لإغلاق التنبيه
@@ -1272,6 +1274,12 @@ const policyBanner = {
       input.addEventListener('compositionend', function () {
         composerIsComposing = false;
       });
+      // KRN-FORM-001: مسح حالة الخطأ فور بدء الكتابة مرة أخرى.
+      input.addEventListener('input', function () {
+        var inputErr = document.getElementById('kernel-chat-input-error');
+        if (inputErr && !inputErr.hidden) inputErr.hidden = true;
+        if (input && input.hasAttribute('aria-invalid')) input.removeAttribute('aria-invalid');
+      });
 
       /** BAI-KRN-002 / M1: 4000-char cap (server enforces too). */
       var MAX_INPUT_CHARS = 4000;
@@ -1415,7 +1423,16 @@ const policyBanner = {
         if (composerIsComposing) return;
 
         var raw = input.value;
-        if (!raw || !raw.trim()) return;
+        if (!raw || !raw.trim()) {
+          var inputErr = document.getElementById('kernel-chat-input-error');
+          if (inputErr) inputErr.hidden = false;
+          if (input) input.setAttribute('aria-invalid', 'true');
+          input.focus();
+          return;
+        }
+        var inputErr = document.getElementById('kernel-chat-input-error');
+        if (inputErr) inputErr.hidden = true;
+        if (input) input.removeAttribute('aria-invalid');
         // BAI-KRN-002 / M1: clamp to server-side cap (4000). Server re-validates;
         // UI clamp is a UX nicety + prevents runaway payloads.
         if (raw.length > MAX_INPUT_CHARS) raw = raw.slice(0, MAX_INPUT_CHARS);

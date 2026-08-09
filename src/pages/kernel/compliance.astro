@@ -384,11 +384,14 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
       <KernelEmptyState title="ما في حزم امتثال الحين" message="حزم الامتثال تظهر فور توفرها." />
     </div>
 
-    {/* M21: Saudi city heatmap moved above the fold + accessible list alternative */}
+    {/* M21: Saudi city heatmap moved above the fold + accessible list alternative.
+        CSS-FATIGUE (2026-08-09): outer KernelCard removed — the map is the
+        primary visual, so it now sits under a section heading instead of a
+        nested box. Only one card surface remains on this section. */}
     <section class="kernel-col-12" aria-labelledby="compliance-heatmap-title">
-      <KernelCard title="خريطة الامتثال" subtitle="انتشار الحزم عبر المناطق السعودية · 6 مدن رئيسية" iconSvg={iconMap}>
-        <div class="kernel-card__body">
-          <div class="kernel-compliance-map" aria-label="خريطة المملكة العربية السعودية مع توزيع حزم الامتثال">
+      <h2 id="compliance-heatmap-title" class="k-section-title">خريطة الامتثال</h2>
+      <p class="k-section-intro">انتشار الحزم عبر المناطق السعودية · 6 مدن رئيسية</p>
+      <div class="kernel-compliance-map" aria-label="خريطة المملكة العربية السعودية مع توزيع حزم الامتثال">
             <svg viewBox="0 0 600 600" class="kernel-compliance-map__svg" role="img">
               <defs>
                 <linearGradient id="map-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -421,7 +424,7 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
             {/* M21: accessible sorted city list (visual alternative, WCAG) */}
             <div class="kernel-compliance-map__legend" aria-label="قائمة المدن بالترتيب التنازلي">
-              <h4 id="compliance-heatmap-title">تفاصيل المدن — مرتبة تنازلياً</h4>
+              <h4 class="kernel-compliance-map__legend-title">تفاصيل المدن — مرتبة تنازلياً</h4>
               <ul>
                 {SORTED_CITIES.map((c) => (
                   <li>
@@ -433,8 +436,6 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
               </ul>
             </div>
           </div>
-        </div>
-      </KernelCard>
     </section>
 
     {/* KPI cards */}
@@ -445,11 +446,15 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
       <KernelMetricCard label="فجوات ذات أولوية" value={PRIORITY_GAPS.length} iconSvg={iconGap} footer="أثر عالٍ / جهد منخفض أولاً" />
     </section>
 
-    {/* Packs grid */}
-    <section class="kernel-col-12">
-      <KernelCard title="حزم الامتثال" subtitle={`${packs.length} حزم · متوسط ${overallScore}%`} iconSvg={iconShield}>
-        <div class="kernel-card__body">
-          <div class="kernel-compliance-grid">
+    {/* Packs grid.
+        CSS-FATIGUE (2026-08-09): outer KernelCard removed. Each compliance
+        pack is already an actionable card (expand + evidence link), so the
+        wrapping box created a box-inside-box. Now the packs sit directly
+        under a section heading. */}
+    <section class="kernel-col-12" aria-labelledby="compliance-packs-title">
+      <h2 id="compliance-packs-title" class="k-section-title">حزم الامتثال</h2>
+      <p class="k-section-intro">{packs.length} حزم · متوسط {overallScore}%</p>
+      <div class="kernel-compliance-grid">
             {packs.map((pack) => (
               <article class="kernel-compliance-pack" data-pack-id={pack.id}>
                 <header class="kernel-compliance-pack__header">
@@ -538,8 +543,6 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
               </article>
             ))}
           </div>
-        </div>
-      </KernelCard>
     </section>
 
     {/* M21: Gap analysis — impact/effort matrix + priority list */}

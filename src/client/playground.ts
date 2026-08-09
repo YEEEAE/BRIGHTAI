@@ -968,7 +968,7 @@ interface PlaygroundConfig {
           <option value="user">مستخدم</option>
           <option value="assistant">مساعد</option>
         </select>
-        <textarea class="pg-textarea pg-turn__text" data-turn-text maxlength="${CFG.limits.maxChars}" placeholder="لفة إضافية من المحادثة…" dir="auto"></textarea>
+        <textarea class="pg-textarea pg-turn__text" data-turn-text aria-label="نص اللفة ${turnCount}" maxlength="${CFG.limits.maxChars}" placeholder="لفة إضافية من المحادثة…" dir="auto"></textarea>
         <button class="pg-skip-btn pg-turn__del" type="button" aria-label="حذف اللفة">✕</button>`;
       row.querySelector('.pg-turn__del')?.addEventListener('click', () => row.remove());
       turns.appendChild(row);
@@ -1021,7 +1021,14 @@ interface PlaygroundConfig {
     let used = 0;
     async function doRun() {
       const ctx = readCtx();
-      if (!ctx.text.trim()) { announce('اكتب نصًا أو اختر عيّنة أولًا.'); ta && ta.focus(); return; }
+      if (!ctx.text.trim()) {
+        announce('اكتب نصًا أو اختر عيّنة أولًا.');
+        const err = $('#pg-input-error'); if (err) err.hidden = false;
+        if (ta) { ta.setAttribute('aria-invalid', 'true'); ta.focus(); }
+        return;
+      }
+      const err = $('#pg-input-error'); if (err) err.hidden = true;
+      if (ta) ta.removeAttribute('aria-invalid');
       if (used >= CFG.limits.maxRequests) { showLimit(); return; }
       used++;
       updateRemaining(used);
@@ -1034,6 +1041,10 @@ interface PlaygroundConfig {
       if (runBtn) runBtn.disabled = false;
     }
     if (runBtn) runBtn.addEventListener('click', doRun);
+    if (ta) ta.addEventListener('input', () => {
+      const err = $('#pg-input-error'); if (err) err.hidden = true;
+      ta.removeAttribute('aria-invalid');
+    });
 
     // إعادة التشغيل (Replay)
     const replay = $('#pg-replay');
@@ -1715,6 +1726,7 @@ interface PlaygroundConfig {
     const pop = document.createElement('div');
     pop.className = 'pg-tour-pop';
     pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-label', 'جولة منتج Kernel');
     document.body.appendChild(pop);
     const render = () => {
       if (i >= steps.length) { pop.remove(); try { localStorage.setItem(key, '1'); } catch (e) {} return; }

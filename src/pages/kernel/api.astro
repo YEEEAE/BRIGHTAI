@@ -561,7 +561,7 @@ const navSections = [
           <button type="button" role="tab" aria-selected="false" class="kernel-api__lang" data-lang="typescript">TypeScript</button>
         </div>
         <pre class="kernel-api__codeblock" id="code-output" dir="ltr" tabindex="0" role="region" aria-label="مخرجات الأوامر" set:html={codeSamples.curl}></pre>
-        <button type="button" class="kernel-api__run-btn" data-run-code>
+        <button type="button" class="kernel-api__run-btn" data-run-code aria-live="polite" aria-atomic="true">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
           شغّل ◀
         </button>
@@ -663,10 +663,12 @@ const navSections = [
       if (runBtn && codeResp && codeOut) {
         runBtn.addEventListener('click', function () {
           runBtn.disabled = true;
+          runBtn.setAttribute('aria-busy', 'true');
           runBtn.textContent = 'جارٍ التنفيذ…';
           setTimeout(function () {
             codeResp.hidden = false;
             runBtn.disabled = false;
+            runBtn.removeAttribute('aria-busy');
             runBtn.textContent = 'شغّل ◀';
             codeResp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }, 700);
