@@ -363,6 +363,76 @@ export function listScenarios(): ScenarioMeta[] {
   return Object.values(SCENARIO_META);
 }
 
+// ── Scenario banner config (single sanitized serialized source) ────────────
+
+/**
+ * Sanitized scenario metadata for the chat scenario banner.
+ *
+ * This is the SINGLE source of truth that gets serialized into a JSON blob
+ * (`#scenarios-banner-config`) and injected into /kernel/chat/ at build time.
+ * The browser banner script reads from this blob — it does NOT duplicate
+ * SCENARIO_META. This eliminates the drift between the scenario card
+ * (scenarios.astro) and the chat banner (chat.astro).
+ *
+ * Sanitization rules:
+ *   - Only fields safe for display are included (no PII, no prompt text).
+ *   - `promptHint` is a short descriptive hint (not user data) — safe to show.
+ *   - The blob is consumed build-time; no TS import in the browser.
+ */
+export interface ScenarioBannerMeta {
+  id: string;
+  title: string;
+  sector: Sector;
+  riskBand: RiskBand;
+  compliancePack: string;
+  expectedAction: ExpectedAction;
+  promptHint: string;
+}
+
+/** Full banner config shape serialized into #scenarios-banner-config. */
+export interface ScenarioBannerConfig {
+  scenarios: ScenarioBannerMeta[];
+  sectorLabels: Record<Sector, string>;
+  riskLabels: Record<RiskBand, string>;
+}
+
+/**
+ * Build the sanitized banner config from SCENARIO_META.
+ * Single source of truth — serialized build-time into #scenarios-banner-config.
+ * The browser banner script reads from this blob; it does NOT duplicate
+ * SCENARIO_META or the label maps.
+ */
+export function buildScenarioBannerConfig(): ScenarioBannerConfig {
+  return {
+    scenarios: Object.values(SCENARIO_META).map((s) => ({
+      id: s.id,
+      title: s.title,
+      sector: s.sector,
+      riskBand: s.riskBand,
+      compliancePack: s.compliancePack,
+      expectedAction: s.expectedAction,
+      promptHint: s.promptHint,
+    })),
+    sectorLabels: SECTOR_LABELS,
+    riskLabels: RISK_BAND_LABELS,
+  };
+}
+
+/** Look up a single sanitized banner entry by id (for SSR + runtime). */
+export function getScenarioBannerMeta(id: string): ScenarioBannerMeta | null {
+  const meta = SCENARIO_META[id];
+  if (!meta) return null;
+  return {
+    id: meta.id,
+    title: meta.title,
+    sector: meta.sector,
+    riskBand: meta.riskBand,
+    compliancePack: meta.compliancePack,
+    expectedAction: meta.expectedAction,
+    promptHint: meta.promptHint,
+  };
+}
+
 /**
  * Count scenarios by sector (for filter chips on the scenario picker).
  * The categories here match the `category` field in scenarios.astro.

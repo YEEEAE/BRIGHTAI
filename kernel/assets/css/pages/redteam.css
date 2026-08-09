@@ -23,12 +23,18 @@
   --rt-green: #22C55E;
   --rt-green-soft: rgba(34, 197, 94, 0.12);
   --rt-green-glow: 0 0 24px rgba(34, 197, 94, 0.35), 0 0 0 1px rgba(34, 197, 94, 0.5);
+  --rt-amber: #F59E0B;
+  --rt-amber-soft: rgba(245, 158, 11, 0.12);
+  --rt-amber-glow: 0 0 24px rgba(245, 158, 11, 0.35), 0 0 0 1px rgba(245, 158, 11, 0.5);
   --rt-surface: #1A0E12;
   --rt-surface-elevated: #241216;
   --rt-text: #F2F6FF;
   --rt-text-muted: #A7A0A4;
   --rt-border: rgba(239, 68, 68, 0.15);
   --rt-border-strong: rgba(239, 68, 68, 0.3);
+  /* sim-ui: توكن رمادي محايد لإشارة المحاكاة (مو دفاع ولا هجوم) */
+  --rt-neutral-soft: rgba(167, 160, 164, 0.10);
+  --rt-neutral-border: rgba(167, 160, 164, 0.25);
 }
 
 /* ═══════════════ الرأس (فوق الطية) ═══════════════ */
@@ -55,6 +61,16 @@
   pointer-events: none;
 }
 
+/* صف البادج: بادج الهجوم + chip المحاكاة جنب بعض */
+.rt-hero__badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
 .rt-hero__badge {
   display: inline-flex;
   align-items: center;
@@ -66,8 +82,28 @@
   color: var(--rt-accent);
   font-size: var(--text-xs);
   font-weight: var(--font-semibold);
-  margin-bottom: var(--space-4);
   letter-spacing: 0.02em;
+}
+
+/* chip المحاكاة: رمادي محايد، يفصل "محاكاة" عن "هجوم إنتاجي" بدون ما يكسر التحدّي */
+.rt-hero__sim-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--rt-neutral-soft);
+  border: 1px solid var(--rt-neutral-border);
+  color: var(--rt-text-muted);
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+  cursor: help;
+  letter-spacing: 0.01em;
+}
+
+.rt-hero__sim-chip:hover {
+  background: rgba(167, 160, 164, 0.18);
+  color: var(--rt-text);
 }
 
 .rt-hero__title {
@@ -134,6 +170,43 @@
   gap: var(--space-3);
   margin-top: var(--space-4);
   flex-wrap: wrap;
+}
+
+.rt-input-area__actions-end {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+/* زر إعادة الضبط: ثانوي رمادي، يفكّ Rate Limiter ويمسح عدّاد الجلسة */
+.rt-input-area__reset {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: transparent;
+  color: var(--rt-text-muted);
+  border: 1px solid var(--rt-neutral-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 36px;
+  transition: color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
+}
+
+.rt-input-area__reset:hover {
+  color: var(--rt-text);
+  border-color: var(--rt-text-muted);
+  background: var(--rt-neutral-soft);
+}
+
+.rt-input-area__reset:focus-visible {
+  outline: 2px solid var(--rt-text-muted);
+  outline-offset: 2px;
 }
 
 .rt-input-area__hint {
@@ -250,6 +323,20 @@
   animation: rt-glass-break 600ms ease;
 }
 
+/* حالة Rate Limiter: كهرماني — يفصل "مقيّد" عن "صدّ أمني" */
+.rt-verdict__icon--rate-limited {
+  background: var(--rt-amber-soft);
+  color: var(--rt-amber);
+  animation: rt-shield-impact 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* حالة منخفض الخطورة: رمادي محايد — مو صدّ ولا اختراق */
+.rt-verdict__icon--low-risk {
+  background: var(--rt-neutral-soft);
+  color: var(--rt-text-muted);
+  animation: rt-shield-impact 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 .rt-verdict__title {
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
@@ -259,6 +346,38 @@
 
 .rt-verdict__title--blocked { color: var(--rt-green); }
 .rt-verdict__title--breached { color: var(--rt-accent); }
+.rt-verdict__title--rate-limited { color: var(--rt-amber); }
+.rt-verdict__title--low-risk { color: var(--rt-text-muted); }
+
+/* شريط المحاكاة: يظهر في كل نتيجة عشان يفصل محاكاة عن هجوم إنتاجي */
+.rt-verdict__sim-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  margin: 0 0 var(--space-4);
+  background: var(--rt-neutral-soft);
+  border: 1px dashed var(--rt-neutral-border);
+  border-radius: var(--radius-md);
+  color: var(--rt-text-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* رسالة المدخل الفارغ */
+.rt-verdict__empty {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3);
+  background: var(--rt-amber-soft);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--rt-amber);
+  font-size: var(--text-sm);
+  text-align: center;
+  line-height: 1.5;
+}
 
 .rt-verdict__subtitle {
   font-size: var(--text-sm);
@@ -350,6 +469,39 @@
   direction: ltr;
   text-align: left;
   unicode-bidi: isolate;
+}
+
+/* زر فتح الأثر: يحوّل Trace ID من نص زخرفي لـ evidence link حقيقي */
+.rt-open-trace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--rt-neutral-border);
+  border-radius: var(--radius-sm);
+  color: var(--rt-text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+}
+
+.rt-open-trace::after {
+  content: '↗';
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.rt-open-trace:hover {
+  background: var(--rt-neutral-soft);
+  border-color: var(--rt-text-muted);
+}
+
+.rt-open-trace:focus-visible {
+  outline: 2px solid var(--rt-text-muted);
+  outline-offset: 2px;
 }
 
 .rt-verdict__actions {
@@ -500,6 +652,51 @@
   color: var(--rt-text-muted);
   direction: ltr;
   unicode-bidi: isolate;
+}
+
+/* ═══════════════ ملخص جلسة المستخدم ═══════════════ */
+
+.rt-session {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  color: var(--rt-text-muted);
+}
+
+.rt-session__label {
+  font-weight: var(--font-semibold);
+  color: var(--rt-text);
+}
+
+.rt-session__stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.rt-session__stat strong {
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: var(--rt-text);
+}
+
+.rt-session__stat--blocked strong { color: var(--rt-green); }
+.rt-session__stat--breached strong { color: var(--rt-accent); }
+.rt-session__stat--limited strong { color: var(--rt-amber); }
+
+.rt-session__sep {
+  color: var(--rt-text-muted);
+  opacity: 0.5;
 }
 
 /* ═══════════════ مكتبة التقنيات ═══════════════ */
@@ -711,6 +908,8 @@
   .rt-verdict { transition: none; }
   .rt-verdict__icon--blocked { animation: none; }
   .rt-verdict__icon--breached { animation: none; }
+  .rt-verdict__icon--rate-limited { animation: none; }
+  .rt-verdict__icon--low-risk { animation: none; }
   .rt-input-area__textarea:not(:focus):not(:placeholder-shown) { animation: none; }
   .rt-hero::before { animation: none; }
   .rt-btn-attack { transition: none; }
@@ -718,6 +917,9 @@
   .rt-library__card-try { transition: none; }
   .rt-verdict__btn { transition: none; }
   .rt-chain__send { transition: none; }
+  .rt-input-area__reset { transition: none; }
+  .rt-open-trace { transition: none; }
+  .rt-hero__sim-chip { transition: none; }
 }
 
 /* ═══════════════ الجوال ═══════════════ */

@@ -26,11 +26,15 @@ import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 import KernelTabs from '../../components/kernel/KernelTabs.astro';
 // K1 (2026-07-18): kernel journey — read scenario from URL.
+// K1-DRIFT-FIX (2026-08-09): single sanitized serialized source for the
+// scenario banner. The browser reads from the #scenarios-banner-config JSON
+// blob (built from SCENARIO_META) — no more hand-maintained MAP mirror.
 import {
-  getScenarioMeta,
+  getScenarioBannerMeta,
+  buildScenarioBannerConfig,
   RISK_BAND_LABELS,
   SECTOR_LABELS,
-  type ScenarioMeta,
+  type ScenarioBannerMeta,
   type Sector,
   type RiskBand,
 } from '../../data/kernel-journey';
@@ -48,11 +52,15 @@ const jsonLd = [
 //  1) show a sticky banner above the composer so the user remembers context;
 //  2) pre-fill the textarea with the prompt hint (best-effort);
 const activeScenarioId: string | null = Astro.url.searchParams.get('scenario');
-const activeScenario: ScenarioMeta | null = activeScenarioId
-  ? getScenarioMeta(activeScenarioId)
+const activeScenario: ScenarioBannerMeta | null = activeScenarioId
+  ? getScenarioBannerMeta(activeScenarioId)
   : null;
 const activeSectorLabel: string | null = activeScenario ? SECTOR_LABELS[activeScenario.sector] : null;
 const activeRiskLabel: string | null = activeScenario ? RISK_BAND_LABELS[activeScenario.riskBand] : null;
+
+// K1-DRIFT-FIX (2026-08-09): single sanitized serialized source for the
+// scenario banner. Serialized build-time into #scenarios-banner-config.
+const scenarioBannerConfig = buildScenarioBannerConfig();
 
 const iconChat = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>';
 const iconMessages = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
@@ -64,6 +72,7 @@ const iconSend = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
 const iconWarning = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
 const iconInfo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+const iconPlay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
 
 // Demo seed threads
 const threads = [
@@ -229,50 +238,63 @@ const policyBanner = {
           <p class="k-scenario-banner__hint" data-banner-hint>
             {activeScenario?.promptHint ?? ''}
           </p>
+          {/* K1-DRIFT-FIX (2026-08-09): preflight summary + run CTA.
+              The summary mirrors the scenario card metadata (single source
+              via #scenarios-banner-config) so the card and banner never drift. */}
+          <p class="k-scenario-banner__preflight" data-banner-preflight hidden>
+            <span class="k-scenario-banner__preflight-label">ملخص ما قبل التشغيل:</span>
+            <span data-banner-preflight-text></span>
+          </p>
         </div>
       </div>
-      <a
-        class="k-scenario-banner__cancel"
-        href="/kernel/chat/"
-        data-clear-scenario
-        aria-label="إلغاء السيناريو والعودة لمحادثة فارغة"
-      >إلغاء السيناريو</a>
+      <div class="k-scenario-banner__actions">
+        <button
+          type="button"
+          class="k-scenario-banner__run"
+          data-scenario-run
+          aria-label="شغّل السيناريو في المحادثة"
+        >
+          <Fragment set:html={iconPlay} />
+          <span>شغّل السيناريو</span>
+        </button>
+        <a
+          class="k-scenario-banner__cancel"
+          href="/kernel/chat/"
+          data-clear-scenario
+          aria-label="إلغاء السيناريو والعودة لمحادثة فارغة"
+        >إلغاء السيناريو</a>
+      </div>
     </aside>
+
+    {/* K1-DRIFT-FIX (2026-08-09): single sanitized serialized source for the
+        scenario banner. Built from SCENARIO_META in kernel-journey.ts — the
+        browser script reads from this blob, no hand-maintained MAP mirror. */}
+    <script type="application/json" id="scenarios-banner-config" set:html={JSON.stringify(scenarioBannerConfig)} />
 
     <script>
       // K1 (2026-07-18): scenario banner runtime upgrade.
-      // The Astro static build sees activeScenario=null because query
-      // params don't exist at build time. The banner is rendered with
-      // empty data + hidden=true at build; this script reads the query
-      // string at runtime and shows + fills the banner. The metadata
-      // map is a minimal mirror of SCENARIO_META — single source of
-      // truth stays in src/data/kernel-journey.ts; this is a browser
-      // duplicate for the banner UX only.
+      // K1-DRIFT-FIX (2026-08-09): the metadata now comes from the
+      // #scenarios-banner-config JSON blob (built from SCENARIO_META) — no
+      // more hand-maintained MAP mirror. This eliminates drift between the
+      // scenario card (scenarios.astro) and the chat banner.
       (function () {
         'use strict';
-        var MAP = {
-          'pdpl-id-leak':            { sector: 'legal',      riskBand: 'critical', title: 'كشف تسريب الهوية الوطنية (PDPL)',                pack: 'PDPL',     action: 'block' },
-          'procurement-contract':    { sector: 'government', riskBand: 'minimal',  title: 'مراجعة عقود المشتريات الحكومية',                  pack: 'PROC',     action: 'allow' },
-          'sfda-medical-export':     { sector: 'healthcare', riskBand: 'critical', title: 'تصدير السجلات الطبية الحساسة (SFDA)',            pack: 'SFDA',     action: 'block' },
-          'nca-prompt-injection':    { sector: 'code',       riskBand: 'high',     title: 'منع Prompt Injection (NCA ECC)',                 pack: 'NCA ECC',  action: 'block' },
-          'hr-salary-export':        { sector: 'hr',         riskBand: 'high',     title: 'تصدير بيانات الرواتب (HR)',                       pack: 'PDPL',     action: 'block' },
-          'finance-iban-leak':       { sector: 'banking',    riskBand: 'critical', title: 'تسريب أرقام الآيبان البنكية (SAMA)',             pack: 'PDPL',     action: 'block' },
-          'code-secret-extract':     { sector: 'code',       riskBand: 'high',     title: 'استخراج أسرار من الكود (NCA)',                   pack: 'NCA ECC',  action: 'block' },
-          'healthcare-research':     { sector: 'healthcare', riskBand: 'medium',   title: 'بحث طبي على مرضى مجهولين (SFDA)',                pack: 'SFDA',     action: 'allow_with_review' },
-          'legal-contract-summary':  { sector: 'legal',      riskBand: 'minimal',  title: 'تلخيص عقد قانوني (مسموح)',                        pack: 'PROC',     action: 'allow' },
-          'hr-cv-screening':         { sector: 'hr',         riskBand: 'medium',   title: 'فحص سير ذاتية مع PII (HR)',                      pack: 'PDPL',     action: 'allow_with_review' },
-          'finance-quarterly-report':{ sector: 'banking',    riskBand: 'medium',   title: 'تقرير ربع سنوي بنوك (SAMA)',                     pack: 'PDPL',     action: 'allow_with_review' },
-          'code-sql-injection':      { sector: 'code',       riskBand: 'high',     title: 'كشف حقن SQL (NCA)',                              pack: 'NCA ECC',  action: 'block' },
-        };
-        var SECTOR_LABELS = {
-          banking: 'البنوك', government: 'الحكومي', healthcare: 'الرعاية الصحية',
-          hr: 'الموارد البشرية', legal: 'القانوني', finance: 'المالية',
-          code: 'أمن الكود',
-        };
-        var RISK_LABELS = {
-          minimal: 'منخفض جداً', low: 'منخفض', medium: 'متوسط',
-          high: 'عالي', critical: 'حرج',
-        };
+        // Read the sanitized config from the JSON blob (single source).
+        var cfg = { scenarios: [], sectorLabels: {}, riskLabels: {} };
+        var cfgEl = document.getElementById('scenarios-banner-config');
+        if (cfgEl) {
+          try {
+            var parsed = JSON.parse(cfgEl.textContent || '{}');
+            cfg.scenarios = parsed.scenarios || [];
+            cfg.sectorLabels = parsed.sectorLabels || {};
+            cfg.riskLabels = parsed.riskLabels || {};
+          } catch (e) { /* fall back to empty */ }
+        }
+        // Build a lookup map from the blob (id → sanitized meta).
+        var MAP = {};
+        cfg.scenarios.forEach(function (s) { MAP[s.id] = s; });
+        var SECTOR_LABELS = cfg.sectorLabels;
+        var RISK_LABELS = cfg.riskLabels;
 
         function upgrade() {
           var banner = document.querySelector('[data-scenario-banner]') as HTMLElement | null;
@@ -280,7 +302,7 @@ const policyBanner = {
           var params = new URLSearchParams(location.search);
           var id = params.get('scenario');
           if (!id) return;
-          var meta = MAP[id as keyof typeof MAP];
+          var meta = MAP[id];
           if (!meta) return;
           banner.hidden = false;
           banner.setAttribute('data-sector', meta.sector);
@@ -301,13 +323,38 @@ const policyBanner = {
           var metaEl = banner.querySelector('[data-banner-meta]');
           if (metaEl) {
             metaEl.innerHTML = '' +
-              'القطاع: <strong>' + (SECTOR_LABELS[meta.sector as keyof typeof SECTOR_LABELS] || meta.sector) + '</strong>' +
+              'القطاع: <strong>' + (SECTOR_LABELS[meta.sector] || meta.sector) + '</strong>' +
               ' <span aria-hidden="true">·</span> ' +
-              'المخاطر: <strong>' + (RISK_LABELS[meta.riskBand as keyof typeof RISK_LABELS] || meta.riskBand) + '</strong>' +
+              'المخاطر: <strong>' + (RISK_LABELS[meta.riskBand] || meta.riskBand) + '</strong>' +
               ' <span aria-hidden="true">·</span> ' +
-              'الحزمة: <strong lang="en">' + meta.pack + '</strong>' +
+              'الحزمة: <strong lang="en">' + meta.compliancePack.toUpperCase() + '</strong>' +
               ' <span aria-hidden="true">·</span> ' +
-              'الإجراء المتوقع: <strong>' + meta.action + '</strong>';
+              'الإجراء المتوقع: <strong>' + meta.expectedAction + '</strong>';
+          }
+          // K1-DRIFT-FIX (2026-08-09): preflight summary — mirrors the
+          // scenario card metadata (single source via the blob).
+          var preflightEl = banner.querySelector('[data-banner-preflight]');
+          var preflightTextEl = banner.querySelector('[data-banner-preflight-text]');
+          if (preflightEl && preflightTextEl) {
+            preflightTextEl.textContent =
+              (SECTOR_LABELS[meta.sector] || meta.sector) + ' · ' +
+              (RISK_LABELS[meta.riskBand] || meta.riskBand) + ' · ' +
+              meta.compliancePack.toUpperCase() + ' · ' +
+              meta.expectedAction;
+            preflightEl.hidden = false;
+          }
+          // K1-DRIFT-FIX (2026-08-09): "شغّل السيناريو" CTA — fills the
+          // composer with the prompt hint and focuses it.
+          var runBtn = banner.querySelector('[data-scenario-run]');
+          if (runBtn && runBtn.dataset.bound !== '1') {
+            runBtn.dataset.bound = '1';
+            runBtn.addEventListener('click', function () {
+              var input = document.querySelector('[data-kernel-chat-input]');
+              if (input) {
+                input.value = meta.promptHint || '';
+                input.focus();
+              }
+            });
           }
         }
 
@@ -959,17 +1006,79 @@ const policyBanner = {
       box-shadow: 0 0 0 2px var(--brand-500);
     }
 
-    /* Mobile: stack the cancel link under the banner body. */
+    /* K1-DRIFT-FIX (2026-08-09): run CTA + preflight summary. */
+    .k-scenario-banner__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-2);
+      flex-shrink: 0;
+    }
+    .k-scenario-banner__run {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-1-5);
+      padding: var(--space-1-5) var(--space-3);
+      background: var(--interactive-primary);
+      color: var(--bg-base);
+      border: 1px solid var(--interactive-primary);
+      border-radius: var(--radius-md);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      min-height: 44px;
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-out),
+                  border-color var(--duration-fast) var(--ease-out);
+    }
+    .k-scenario-banner__run:hover,
+    .k-scenario-banner__run:focus-visible {
+      background: var(--brand-500);
+      border-color: var(--brand-500);
+      color: var(--bg-base);
+      outline: none;
+    }
+    .k-scenario-banner__run:focus-visible {
+      box-shadow: 0 0 0 2px var(--brand-500);
+    }
+    .k-scenario-banner__run svg {
+      width: 14px;
+      height: 14px;
+    }
+    .k-scenario-banner__preflight {
+      margin: var(--space-2) 0 0;
+      padding: var(--space-1-5) var(--space-2);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-inline-start-width: 3px;
+      border-radius: var(--radius-sm);
+      font-size: 0.6875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      max-width: 65ch;
+    }
+    .k-scenario-banner__preflight-label {
+      color: var(--text-muted);
+      font-weight: var(--font-semibold);
+      margin-inline-end: var(--space-1);
+    }
+    .k-scenario-banner__preflight[hidden] { display: none; }
+
+    /* Mobile: stack the actions under the banner body. */
     @media (max-width: 480px) {
       .k-scenario-banner {
         flex-direction: column;
       }
-      .k-scenario-banner__cancel {
+      .k-scenario-banner__actions {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
         align-self: flex-start;
       }
     }
     @media (prefers-reduced-motion: reduce) {
       .k-scenario-banner__cancel { transition: none; }
+      .k-scenario-banner__run { transition: none; }
     }
 
     /* K2 (2026-07-18): live provider card tags (DEMO / DEGRADED). */

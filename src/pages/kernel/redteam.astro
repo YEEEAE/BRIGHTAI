@@ -58,9 +58,17 @@ const leaderboardData = RT_LEADERBOARD;
   <div class="rt-page" data-rt-root>
     <!-- ═══ فوق الطية: ساحة الهجوم ═══ -->
     <section class="rt-hero" aria-label="ساحة الفريق الأحمر">
-      <span class="rt-hero__badge">
-        <span aria-hidden="true">⚔️</span>
-        <span>ساحة الفريق الأحمر — Red Team Arena</span>
+      <span class="rt-hero__badge-row">
+        <span class="rt-hero__badge">
+          <span aria-hidden="true">⚔️</span>
+          <span>ساحة الفريق الأحمر — Red Team Arena</span>
+        </span>
+        <span class="rt-hero__sim-chip" data-rt-sim-chip
+          title="هذي بيئة محاكاة معزولة — كل التحليل يشتغل محلياً في متصفحك. ما يطلع أي طلب لخادم، ولا في نموذج AI حقيقي يُستدعى."
+        >
+          <span aria-hidden="true">🧪</span>
+          <span>محاكاة آمنة · محلي بالكامل</span>
+        </span>
       </span>
 
       <h1 class="rt-hero__title">
@@ -85,11 +93,17 @@ const leaderboardData = RT_LEADERBOARD;
 
         <div class="rt-input-area__actions">
           <span class="rt-input-area__hint">جرّب 40 تقنية هجوم من المكتبة تحت 👇</span>
-          <span class="rt-input-area__chars" id="rt-chars" aria-live="polite" data-rt-chars>0 / 4000</span>
-          <button type="button" class="rt-btn-attack" id="rt-attack-btn" data-rt-attack-btn>
-            <span>اهجم</span>
-            <span aria-hidden="true">🗡</span>
-          </button>
+          <div class="rt-input-area__actions-end">
+            <button type="button" class="rt-input-area__reset" id="rt-reset" data-rt-reset aria-label="إعادة ضبط الجلسة — يمسح العدّاد ويفكّ تقييد المحاولات">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+              <span>إعادة ضبط</span>
+            </button>
+            <span class="rt-input-area__chars" id="rt-chars" aria-live="polite" data-rt-chars>0 / 4000</span>
+            <button type="button" class="rt-btn-attack" id="rt-attack-btn" data-rt-attack-btn>
+              <span>اهجم</span>
+              <span aria-hidden="true">🗡</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -112,6 +126,12 @@ const leaderboardData = RT_LEADERBOARD;
       <h2 class="rt-verdict__title" id="rt-verdict-title" data-rt-verdict-title>—</h2>
       <p class="rt-verdict__subtitle" id="rt-verdict-subtitle" data-rt-verdict-subtitle>—</p>
 
+      <!-- شريط المحاكاة: يظهر في كل نتيجة عشان ما يلتبس الأمر على المستخدم -->
+      <p class="rt-verdict__sim-note" data-rt-sim-note>
+        <span aria-hidden="true">🧪</span>
+        <span>نتيجة محاكاة محلية — ما في أي هجوم فعلي ولا اتصال بشبكة.</span>
+      </p>
+
       <div class="rt-verdict__details" id="rt-verdict-details">
         <div class="rt-verdict__detail">
           <span class="rt-verdict__detail-label">الطبقة</span>
@@ -126,18 +146,24 @@ const leaderboardData = RT_LEADERBOARD;
           <span class="rt-verdict__detail-value" id="rt-v-reason" data-rt-v-reason>—</span>
         </div>
         <div class="rt-verdict__detail">
-          <span class="rt-verdict__detail-label">Trace ID</span>
-          <span class="rt-verdict__detail-value"><code id="rt-v-trace" data-rt-v-trace dir="ltr">—</code></span>
+          <span class="rt-verdict__detail-label">الأثر</span>
+          <span class="rt-verdict__detail-value">
+            <button type="button" class="rt-open-trace" id="rt-v-trace" data-rt-v-trace data-rt-open-trace dir="ltr" aria-label="افتح الأثر الكامل في السجل">—</button>
+          </span>
         </div>
       </div>
 
       <div id="rt-verdict-breach" data-rt-breach hidden>
-        <span class="rt-verdict__badge rt-verdict__badge--breached">🏆 مخترق</span>
+        <span class="rt-verdict__badge rt-verdict__badge--breached">🏆 مخترق (محاكاة)</span>
         <p class="rt-verdict__breach-note">
           تم توليد بلاغ تلقائي + سياسة مقترحة. تقدر تشاركه مع فريق الحوكمة أو ترسله لـ BrightAI.
         </p>
         <pre class="rt-policy-draft" data-rt-policy-draft dir="ltr"></pre>
       </div>
+
+      <p class="rt-verdict__empty" id="rt-verdict-empty" data-rt-empty hidden role="alert">
+        اكتب هجومك الأول فوق عشان تشوف كيف يصدّه Kernel — أو جرّب واحدة من 40 تقنية جاهزة تحت.
+      </p>
 
       <div class="rt-verdict__actions">
         <button type="button" class="rt-verdict__btn rt-verdict__btn--primary" id="rt-v-try-again" data-rt-try-again>
@@ -179,6 +205,30 @@ const leaderboardData = RT_LEADERBOARD;
             ))}
           </tbody>
         </table>
+
+        <!-- ملخص جلستك الحالية — يتحدّث مباشر بعد كل هجوم -->
+        <div class="rt-session" id="rt-session" data-rt-session hidden aria-live="polite">
+          <span class="rt-session__label">جلستك الحالية:</span>
+          <span class="rt-session__stat">
+            <strong data-rt-session-count>0</strong>
+            <span>هجوم</span>
+          </span>
+          <span class="rt-session__sep" aria-hidden="true">·</span>
+          <span class="rt-session__stat rt-session__stat--blocked">
+            <strong data-rt-session-blocked>0</strong>
+            <span>صُدّ</span>
+          </span>
+          <span class="rt-session__sep" aria-hidden="true">·</span>
+          <span class="rt-session__stat rt-session__stat--breached">
+            <strong data-rt-session-breached>0</strong>
+            <span>اختراق محاكاة</span>
+          </span>
+          <span class="rt-session__sep" aria-hidden="true">·</span>
+          <span class="rt-session__stat rt-session__stat--limited">
+            <strong data-rt-session-limited>0</strong>
+            <span>مقيّد</span>
+          </span>
+        </div>
       </section>
 
       <!-- ─── مكتبة 40 تقنية ─── -->

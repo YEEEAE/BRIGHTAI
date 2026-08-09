@@ -91,6 +91,7 @@
     "verify:stats": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/verify-stats.mjs",
     "verify:models": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/verify-models.mjs",
     "verify:connectors": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/verify-connectors.mjs",
+    "verify:scenario-banner": "node scripts/playwright/verify-scenario-banner.mjs",
     "test:chat-session": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types --test scripts/test-chat-session.mjs",
     "test:csrf": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types --test scripts/test-csrf.mjs",
     "test:pii": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types --test scripts/test-pii-detector.mjs",
