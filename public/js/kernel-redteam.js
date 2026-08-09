@@ -95,7 +95,8 @@
     blockedCount: 0,
     breachedCount: 0,
     rateLimitedCount: 0,
-    lastVerdict: null,        // blocked | breached | rate_limited
+    lowRiskCount: 0,          // منخفض الخطورة: عولج بسلام بدون صدّ أمني
+    lastVerdict: null,        // blocked | breached | rate_limited | low_risk
     lastLayer: null,
     lastPolicyId: null,
     lastReason: null,
@@ -452,6 +453,7 @@
     } else {
       state.rateHits.push(Date.now());
       if (result.verdict === 'breached') state.breachedCount += 1;
+      else if (result.verdict === 'low_risk') state.lowRiskCount += 1;
       else state.blockedCount += 1;
     }
     state.lastVerdict = result.verdict;
