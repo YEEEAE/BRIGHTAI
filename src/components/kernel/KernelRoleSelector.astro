@@ -148,6 +148,12 @@ const roles = [
     function setRole(roleId) {
       try { localStorage.setItem(ROLE_KEY, roleId); } catch (e) {}
       document.body.setAttribute('data-role', roleId);
+      // KRN-DASH-001 (2026-08-09): اختيار الدور = الزائر بدأ → onboarded.
+      // يفعّل وضع العائد للوحة التشغيل في /kernel/.
+      try {
+        localStorage.setItem('kernel-onboarded', 'done');
+        document.documentElement.setAttribute('data-kernel-mode', 'returning');
+      } catch (e2) {}
       // حدّث الـ select في السايدبار (لو موجود) — مصدر واحد للحقيقة.
       var select = document.querySelector('[data-kernel-role]');
       if (select) select.value = roleId;

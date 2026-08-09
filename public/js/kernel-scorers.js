@@ -373,14 +373,14 @@
   function registryRow(s) {
     return (
       '<tr data-sc-row="' + esc(s.id) + '" data-sc-category="' + esc(s.category) + '">' +
-      '<td><code class="sc-row-id">' + esc(s.id) + '</code></td>' +
-      '<td><button class="sc-row-name" type="button" data-sc-action="open" data-sc-id="' + esc(s.id) + '">' + esc(s.name) + '</button></td>' +
-      '<td><span class="sc-cat-chip ' + catClass(s.category) + '">' + esc((L.categories[s.category] || s.category)) + '</span></td>' +
-      '<td><span dir="ltr">v' + s.version + '</span></td>' +
-      '<td><span class="sc-sev ' + severityClass(s.severity) + '">' + esc((L.severities[s.severity] || s.severity)) + '</span></td>' +
-      '<td><span class="sc-threshold">' + s.threshold + '</span></td>' +
-      '<td><span class="sc-eval">' + esc((L.evaluators[s.evaluatorType] || s.evaluatorType)) + '</span></td>' +
-      '<td>' + ((s.controls || []).length ? '<span class="sc-controls-chip">✓ ' + s.controls.length + ' ضابط</span>' : '<span class="sc-eval">—</span>') + '</td>' +
+      '<td data-dt-p="2" data-dt-label="ID"><code class="sc-row-id">' + esc(s.id) + '</code></td>' +
+      '<td data-dt-p="1"><button class="sc-row-name" type="button" data-sc-action="open" data-sc-id="' + esc(s.id) + '">' + esc(s.name) + '</button></td>' +
+      '<td data-dt-p="2" data-dt-label="الفئة"><span class="sc-cat-chip ' + catClass(s.category) + '">' + esc((L.categories[s.category] || s.category)) + '</span></td>' +
+      '<td data-dt-p="3" data-dt-label="الإصدار"><span dir="ltr">v' + s.version + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="الخطورة"><span class="sc-sev ' + severityClass(s.severity) + '">' + esc((L.severities[s.severity] || s.severity)) + '</span></td>' +
+      '<td data-dt-p="3" data-dt-label="العتبة"><span class="sc-threshold">' + s.threshold + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="نوع المقيّم"><span class="sc-eval">' + esc((L.evaluators[s.evaluatorType] || s.evaluatorType)) + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="ضوابط">' + ((s.controls || []).length ? '<span class="sc-controls-chip">✓ ' + s.controls.length + ' ضابط</span>' : '<span class="sc-eval">—</span>') + '</td>' +
       '</tr>'
     );
   }
@@ -391,7 +391,12 @@
     var rows = REGISTRY.filter(matchScorer).map(registryRow);
     tbody.innerHTML = rows.length
       ? rows.join('')
-      : '<tr><td colspan="8">لا توجد نتائج مطابقة.</td></tr>';
+      : '<tr><td colspan="8">' +
+        '<div data-dt-empty role="status">' +
+        '<p data-dt-empty-title>لا توجد Scorers مطابقة</p>' +
+        '<p data-dt-empty-hint>جرّب إعادة ضبط البحث أو اختيار فئة مختلفة.</p>' +
+        '<button type="button" data-dt-empty-reset data-sc-filter-reset>إعادة ضبط الفلاتر</button>' +
+        '</div></td></tr>';
   }
 
   /* ── العرض: التفاصيل ─────────────────────────────────────────────── */
@@ -459,17 +464,17 @@
     var env = '<span class="sc-eval">' + esc((L.envs[r.environment] || r.environment)) + '</span>';
     return (
       '<tr data-sc-result="' + esc(r.scorerId) + '">' +
-      '<td><span class="sc-status ' + statusClass(r.status) + '">' + esc((L.statuses[r.status] || r.status)) + '</span></td>' +
-      '<td>' + scoreFill(r.score, r.status) + '</td>' +
-      '<td><span class="sc-explain"><span class="sc-explain__label">المتوقع</span>' + esc(r.expected) + '</span></td>' +
-      '<td><span class="sc-explain"><span class="sc-explain__label">الفعلي</span>' + esc(r.actual) + '</span></td>' +
-      '<td>' + severity + '</td>' +
-      '<td><span class="sc-explain"><span class="sc-explain__label">الشرح</span>' + esc(r.explanation) + '</span></td>' +
-      '<td>' + policy + '</td>' +
-      '<td>' + trace + '</td>' +
-      '<td><span class="sc-rec"><span class="sc-rec__label">التوصية</span>' + esc(r.recommendation) + '</span></td>' +
-      '<td><span class="sc-evidence"><span class="sc-evidence__label">الدليل</span>' + (evidence || '<span class="sc-eval">—</span>') + '</span></td>' +
-      '<td>' + env + '</td>' +
+      '<td data-dt-p="1"><span class="sc-status ' + statusClass(r.status) + '">' + esc((L.statuses[r.status] || r.status)) + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="الدرجة">' + scoreFill(r.score, r.status) + '</td>' +
+      '<td data-dt-p="3" data-dt-label="المتوقع"><span class="sc-explain"><span class="sc-explain__label">المتوقع</span>' + esc(r.expected) + '</span></td>' +
+      '<td data-dt-p="3" data-dt-label="الفعلي"><span class="sc-explain"><span class="sc-explain__label">الفعلي</span>' + esc(r.actual) + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="الخطورة">' + severity + '</td>' +
+      '<td data-dt-p="2" data-dt-label="الشرح"><span class="sc-explain"><span class="sc-explain__label">الشرح</span>' + esc(r.explanation) + '</span></td>' +
+      '<td data-dt-p="3" data-dt-label="السياسة">' + policy + '</td>' +
+      '<td data-dt-p="3" data-dt-label="Trace">' + trace + '</td>' +
+      '<td data-dt-p="2" data-dt-label="التوصية"><span class="sc-rec"><span class="sc-rec__label">التوصية</span>' + esc(r.recommendation) + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="الدليل"><span class="sc-evidence"><span class="sc-evidence__label">الدليل</span>' + (evidence || '<span class="sc-eval">—</span>') + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="البيئة">' + env + '</td>' +
       '</tr>'
     );
   }
@@ -584,6 +589,18 @@
       renderRegistry();
     });
   });
+
+  // إعادة ضبط فلاتر السجل (من حالة الفراغ الكنسية)
+  var dtReset = document.querySelector('[data-sc-filter-reset]');
+  if (dtReset) {
+    dtReset.addEventListener('click', function () {
+      state.search = '';
+      state.categoryFilter = 'all';
+      if (searchEl) searchEl.value = '';
+      syncChips();
+      renderRegistry();
+    });
+  }
 
   var runBtn = document.getElementById('sc-run-btn');
   if (runBtn) {

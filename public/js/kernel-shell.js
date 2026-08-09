@@ -5,7 +5,8 @@
  *  - body.kernel-shell يُضاف في كل page-load (لتشغيل grid الشِل).
  *  - اختصارات قائمة: Cmd/Ctrl + C/A/S/T/R (تحتاج modifier، WCAG 2.1.4).
  *  - لوحة الأوامر ⌘K: فتح/إغلاق، تصفية، تنقّل بالأسهم، Enter تنفيذ.
- *    focus-trap.js يربط #k-cmdk تلقائيًا (Tab/Escape/تركيز).
+ *    A11Y-DIALOG-001: اللوحة `<dialog>` أصلي تُفتح بـ showModal() — الحبس +
+ *    Esc + عودة التركيز + تعطيل الصفحة من المتصفح (بدون focus-trap.js).
  *  - مبدّل الدور [data-kernel-role]: يحفظ في localStorage ويضع body[data-role].
  *  - (تمت الإزالة) مبدّل العرض التوضيحي — راجع BAI-P0-TRUTH-001 بالأسفل.
  *
@@ -32,6 +33,8 @@
   }
 
   function handleShortcuts(e) {
+    // A11Y-DIALOG-001: لا تنقّل خارج اللوحة الأوامر المفتوحة (modal).
+    if (isPaletteOpen()) return;
     var target = e.target;
     if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT')) return;
     if (target && target.isContentEditable) return;
@@ -45,15 +48,20 @@
   }
 
   /* ── لوحة الأوامر ─────────────────────────────────────────────────── */
+  // A11Y-DIALOG-001 (2026-08-09): لوحة الأوامر صارت `<dialog>` أصلي وتُفتح
+  // عبر showModal(). الحبس (focus trap) + Esc + عودة التركيز للـ opener +
+  // تعطيل باقي الصفحة (inert) كلها مضمونة من المتصفح — بدون الاعتماد على
+  // focus-trap.js. الحالة تُقرأ من `dialog.open` (لا aria-hidden).
   function getPalette() { return document.getElementById('k-cmdk'); }
 
   function openPalette() {
     var p = getPalette();
     if (!p) return;
-    p.setAttribute('aria-hidden', 'false'); // focus-trap يفتح الفخ وينقل التركيز للحقل
+    if (!p.open) p.showModal(); // showModal يركّز أول focusable (الحقل) تلقائيًا
     var input = p.querySelector('[data-kernel-cmdk-input]');
     if (input) {
-      // focus-trap يركّز أول focusable (الحقل)؛ نفّذ تصفية فارغة وحدّد أول عنصر.
+      // أعد تعيين القائمة وعلّم أول عنصر (بدون سرقة التركيز من الحقل —
+      // المستخدم يكتب فورًا، والأسهم تنقل التركيز للقائمة).
       requestAnimationFrame(function () { filterPalette(''); });
     }
   }
@@ -61,12 +69,12 @@
   function closePalette() {
     var p = getPalette();
     if (!p) return;
-    p.setAttribute('aria-hidden', 'true'); // focus-trap يغلق ويعيد التركيز لمصدر الفتح
+    if (p.open) p.close(); // يعيد التركيز للـ opener تلقائيًا
   }
 
   function isPaletteOpen() {
     var p = getPalette();
-    return !!p && p.getAttribute('aria-hidden') === 'false';
+    return !!p && p.open === true;
   }
 
   function visibleItems() {
@@ -77,7 +85,7 @@
     });
   }
 
-  function setActiveItem(item) {
+  function markActive(item) {
     var p = getPalette();
     if (!p) return;
     p.querySelectorAll('.k-cmdk__item--active').forEach(function (el) {
@@ -87,8 +95,12 @@
     if (item) {
       item.classList.add('k-cmdk__item--active');
       item.setAttribute('aria-selected', 'true');
-      item.focus({ preventScroll: false });
     }
+  }
+
+  function setActiveItem(item) {
+    markActive(item);
+    if (item) item.focus({ preventScroll: false });
   }
 
   function filterPalette(query) {
@@ -112,9 +124,9 @@
     });
     var empty = p.querySelector('[data-kernel-cmdk-empty]');
     if (empty) empty.hidden = anyVisible;
-    // حدّد أول عنصر مرئي.
+    // علّم أول عنصر مرئي (بدون نقل التركيز — الحقل يبقى مركز الكتابة).
     var items = visibleItems();
-    if (items.length) setActiveItem(items[0]);
+    if (items.length) markActive(items[0]); else markActive(null);
   }
 
   function handlePaletteKeys(e) {
@@ -160,17 +172,23 @@
     var p = getPalette();
     if (!p) return;
 
+    // A11Y-DIALOG-001: نقر خارج اللوحة (على خلفية ::backdrop) يغلق؛ Esc يعالجه
+    // الـ dialog الأصلي (event cancel) وننظف تمييز العنصر فقط.
+    if (p.dataset.boundNative !== '1') {
+      p.dataset.boundNative = '1';
+      p.addEventListener('click', function (e) {
+        if (e.target === p) closePalette();
+      });
+      p.addEventListener('cancel', function () {
+        markActive(null); // نسمح لـ dialog بالغلق، فقط نزيل التمييز.
+      });
+    }
+
     // فتح من زر الشريط.
     document.querySelectorAll('[data-kernel-cmdk-open]').forEach(function (btn) {
       if (btn.dataset.bound === '1') return;
       btn.dataset.bound = '1';
       btn.addEventListener('click', openPalette);
-    });
-    // إغلاق: خلفية + زر.
-    p.querySelectorAll('[data-kernel-cmdk-close]').forEach(function (el) {
-      if (el.dataset.bound === '1') return;
-      el.dataset.bound = '1';
-      el.addEventListener('click', closePalette);
     });
     // تصفية.
     var input = p.querySelector('[data-kernel-cmdk-input]');

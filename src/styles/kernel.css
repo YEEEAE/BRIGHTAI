@@ -1931,26 +1931,32 @@ html[dir="rtl"] .k-trace-drawer__panel { transform: translateX(-100%); }
 }
 
 /* ── لوحة الأوامر ⌘K ───────────────────────────────────────────────── */
-.k-cmdk[aria-hidden="true"] { display: none; }
 .k-cmdk {
   position: fixed;
   inset: 0;
   z-index: var(--k-z-cmdk);
-  display: flex;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  inline-size: 100%;
+  block-size: 100%;
+  max-inline-size: none;
+  max-block-size: none;
+  overflow: visible;
+  display: none;
   align-items: flex-start;
   justify-content: center;
   padding-block-start: 12vh;
+  color: var(--text-hi);
 }
-.k-cmdk__backdrop {
-  position: absolute;
-  inset: 0;
+.k-cmdk[open] { display: flex; }
+/* خلفية تعتيم أصلية من المتصفح (بدل div يدوي) */
+.k-cmdk::backdrop {
   background: rgba(0,0,0,.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  opacity: 0;
-  transition: opacity var(--k-motion-drawer) var(--k-ease);
 }
-.k-cmdk[aria-hidden="false"] .k-cmdk__backdrop { opacity: 1; }
 .k-cmdk__panel {
   position: relative;
   inline-size: min(640px, 92vw);
@@ -1962,11 +1968,13 @@ html[dir="rtl"] .k-trace-drawer__panel { transform: translateX(-100%); }
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transform: translateY(-8px);
-  opacity: 0;
+  transform: translateY(0);
+  opacity: 1;
   transition: transform var(--k-motion-panel) var(--k-ease), opacity var(--k-motion-panel) var(--k-ease);
 }
-.k-cmdk[aria-hidden="false"] .k-cmdk__panel { transform: translateY(0); opacity: 1; }
+@starting-style {
+  .k-cmdk[open] .k-cmdk__panel { transform: translateY(-8px); opacity: 0; }
+}
 .k-cmdk__input-wrap {
   display: flex;
   align-items: center;
@@ -2031,6 +2039,25 @@ html[dir="rtl"] .k-trace-drawer__panel { transform: translateX(-100%); }
 }
 .k-cmdk__item-name { flex: 1 1 auto; }
 .k-cmdk__empty { padding: var(--space-4); text-align: center; color: var(--text-low); font-size: var(--text-sm); }
+.k-cmdk__hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  border-block-start: 1px solid var(--line);
+  color: var(--text-low);
+  font-size: var(--text-xs);
+}
+.k-cmdk__hint kbd {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--surface-700);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+  color: var(--text-mid);
+}
+.k-cmdk__hint-sep { color: var(--text-muted); margin-inline: var(--space-1); }
 
 /* ── توست النجاح ───────────────────────────────────────────────────── */
 .k-toast {
@@ -2101,9 +2128,12 @@ html[dir="rtl"] .k-trace-drawer__panel { transform: translateX(-100%); }
 
 @media (prefers-reduced-motion: reduce) {
   .k-trace-drawer__backdrop, .k-trace-drawer__panel,
-  .k-cmdk__backdrop, .k-cmdk__panel,
+  .k-cmdk__panel,
   .k-status-chip, .k-trace-unit, .k-topbar__cmdk {
     transition: none;
+  }
+  @starting-style {
+    .k-cmdk[open] .k-cmdk__panel { transform: none; opacity: 1; }
   }
 }
 

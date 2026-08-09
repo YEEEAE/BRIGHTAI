@@ -100,6 +100,24 @@ const complianceRows = [
   extraSpeakableSelectors={['.kernel-page-header__subtitle', 'aside[data-snippet="tl-dr"]']}
 >
 
+  {/* KRN-DASH-001 (2026-08-09): Pre-paint mode detection — يمنع FOUC.
+      يقرا localStorage('kernel-onboarded') + ('brightai-kernel-role') ويضبط
+      body[data-kernel-mode] قبل ما يرسم المتصفح الـ hero. السكربت تافه (~15 سطر)
+      ومتزامن. أي signal (دور محفوظ / تخطّي صريح / جولة مكتملة) = وضع العائد. */}
+  <script is:inline>
+    (function () {
+      try {
+        var onboarded = localStorage.getItem('kernel-onboarded') === 'done';
+        var hasRole = !!localStorage.getItem('brightai-kernel-role');
+        var mode = (onboarded || hasRole) ? 'returning' : 'first';
+        document.documentElement.setAttribute('data-kernel-mode', mode);
+      } catch (e) {
+        /* private mode — default to first (safe) */
+        document.documentElement.setAttribute('data-kernel-mode', 'first');
+      }
+    })();
+  </script>
+
   <!-- Page header -->
   <header class="kernel-page-header kernel-hero">
     {/* خلفية شبكية خافتة متحركة ببطء — تصميم-صفحات-kernel §1 (فوق الطية) */}
@@ -133,17 +151,61 @@ const complianceRows = [
         <p>نواة برايت أيه آي هي نظام تشغيل حوكمة الذكاء الاصطناعي يركّب تحت أي نموذج داخل المنشأة. تشمل جدار حماية للذكاء الاصطناعي وسجل تدقيق غير قابل للتعديل وموافقات بشرية للقرارات عالية الأثر وملفات أدلة قابلة للمراجعة. تدعم المنشآت السعودية في تطبيق ضوابط حماية البيانات والأمن السيبراني وإرشادات سدايا. أداة تشغيلية لا تعد استشارة قانونية.</p>
       </aside>
 
-      <!-- Journey trigger + counter -->
+      {/* KRN-DASH-001 (2026-08-09): Mode-aware hero — attention over showcase.
+         وضعان متنافيان، واحد فقط يظهر فوق الطية حسب حالة الزائر.
+         - data-hero-first: الزائر الجديد → CTA أساسي وحيد (جولة 90ث) + فعل تالي (اختر دورك).
+         - data-hero-returning: العائد → CTA أساسي وحيد (الموافقات المعلقة) + 4 quick actions.
+         الحالة تُقرأ من localStorage('kernel-onboarded') قبل paint (no FOUC).
+         HTML الكامل موجود دايمًا (progressive enhancement — crawlers يشوفون الاثنين). */}
       <div class="kernel-hero-actions">
-        <div class="kernel-hero__journey">
-          <button class="kernel-hero__journey-btn" id="kernel-journey-trigger" aria-label="شغّل جولة حادثة 90 ثانية">
-            <span class="kernel-hero__journey-btn-icon" aria-hidden="true">▶</span>
-            شغّل حادثة · 90 ثانية
-          </button>
-          <button class="kernel-hero__journey-btn kernel-hero__journey-btn--ghost" id="kernel-playground-trigger" onclick="window.location.href='/kernel/playground/'" aria-label="ابدأ بنصك أنت في الملعب">
-            ابدأ بنصك أنت ←
-          </button>
+        {/* ── وضع أول زيارة ── */}
+        <div class="kernel-hero__mode-panel kernel-hero__mode-panel--first" data-hero-first>
+          <div class="kernel-hero__cta-row">
+            <button class="kernel-hero__journey-btn kernel-hero__primary-cta" id="kernel-journey-trigger" aria-label="شغّل جولة حادثة 90 ثانية">
+              <span class="kernel-hero__journey-btn-icon" aria-hidden="true">▶</span>
+              شغّل حادثة · 90 ثانية
+            </button>
+            <button class="kernel-hero__secondary-cta" id="kernel-pick-role" aria-label="اختر دورك لتبدأ">
+              اختر دورك وابدأ ←
+            </button>
+          </div>
+          <p class="kernel-hero__next-hint">
+            <span class="kernel-hero__next-label">الخطوة التالية:</span>
+            <span>اختر دورك (CISO · امتثال · مطوّر · موظف) ونرتّب لك الوحدات.</span>
+          </p>
         </div>
+
+        {/* ── وضع العائد للتشغيل ── */}
+        <div class="kernel-hero__mode-panel kernel-hero__mode-panel--returning" data-hero-returning hidden>
+          <a class="kernel-hero__journey-btn kernel-hero__primary-cta" href="/kernel/approvals/" aria-label="راجع 7 موافقات معلقة — 3 حرجة">
+            <span class="kernel-hero__journey-btn-icon" aria-hidden="true">⚠</span>
+            راجع 7 موافقات معلقة · 3 حرجة ←
+          </a>
+          <nav class="kernel-hero__quick-actions" aria-label="إجراءات سريعة للتشغيل">
+            <a class="kernel-hero__quick-action" href="/kernel/approvals/" aria-label="الموافقات — 7 طلبات">
+              <span class="kernel-hero__qa-label">الموافقات</span>
+              <span class="kernel-hero__qa-value kernel-hero__qa-value--warn">7</span>
+              <span class="kernel-hero__qa-hint">طلبات</span>
+            </a>
+            <a class="kernel-hero__quick-action" href="/kernel/audit/?risk=high" aria-label="مخاطر عالية — 5 طلبات">
+              <span class="kernel-hero__qa-label">مخاطر عالية</span>
+              <span class="kernel-hero__qa-value kernel-hero__qa-value--danger">5</span>
+              <span class="kernel-hero__qa-hint">طلبات</span>
+            </a>
+            <a class="kernel-hero__quick-action" href="/kernel/audit/?status=unresolved" aria-label="غير محلولة — 3 حوادث">
+              <span class="kernel-hero__qa-label">غير محلولة</span>
+              <span class="kernel-hero__qa-value kernel-hero__qa-value--danger">3</span>
+              <span class="kernel-hero__qa-hint">حوادث</span>
+            </a>
+            <a class="kernel-hero__quick-action" href="/kernel/audit/" aria-label="آخر حادثة — قبل 3 دقائق">
+              <span class="kernel-hero__qa-label">آخر حادثة</span>
+              <span class="kernel-hero__qa-value kernel-hero__qa-value--time">3د</span>
+              <span class="kernel-hero__qa-hint">قبل</span>
+            </a>
+          </nav>
+        </div>
+
+        {/* Counter (shared، يظهر في كلا الوضعين) */}
         <div class="kernel-hero__counter" aria-live="polite" aria-atomic="true">
           <span class="kernel-hero__counter-label">ما مُنع اليوم</span>
           <span class="kernel-hero__counter-value" id="kernel-counter-pii">0</span>
@@ -161,7 +223,9 @@ const complianceRows = [
        تبقى كما هي. نضيف بطاقة رحلة Kernel فوقها كـ "بوابة" للزائر الجديد
        تربطه بالمراحل الخمس. البيانات أدناه كلها تجريبية (KernelDemoPill). */}
 
-    <section class="kernel-onboarding" aria-labelledby="kernel-onboarding-title">
+    {/* KRN-DASH-001: onboarding wrapper — يتخفى في وضع العائد (data-kernel-onboarding-only).
+       الـ HTML يبقى للـ crawlers؛ CSS يخفيه بصريًا فقط. */}
+    <section class="kernel-onboarding" data-kernel-onboarding-only aria-labelledby="kernel-onboarding-title">
       <h2 id="kernel-onboarding-title" class="k-section-title kernel-onboarding__title">رحلة Kernel — 5 مراحل</h2>
       <p class="k-section-intro kernel-onboarding__lead">
         Kernel أداة تشغيلية لحوكمة الذكاء الاصطناعي في المنشآت السعودية. لا تدّعي امتثالاً قانونياً كاملاً، لكنها تساعدك على الجاهزية للوائح (PDPL، NCA ECC، SDAIA، SFDA، SAMA). ابدأ بأي مرحلة تناسب مهمتك.
@@ -214,12 +278,14 @@ const complianceRows = [
     </section>
 
     {/* Product Tour — first-visit guided tour (max 7 steps, skippable, RTL, mobile-friendly) */}
-    <KernelProductTour />
+    <div data-kernel-onboarding-only>
+      <KernelProductTour />
 
-    {/* P1 (2026-08-04): Role-Based Personalized Journey — اختياري،
-       يظهر للزائر الجديد عشان يختار دوره ويشوف رحلة موصى بها. */}
-    <KernelRoleSelector />
-    <KernelRecommendedJourney />
+      {/* P1 (2026-08-04): Role-Based Personalized Journey — اختياري،
+         يظهر للزائر الجديد عشان يختار دوره ويشوف رحلة موصى بها. */}
+      <KernelRoleSelector />
+      <KernelRecommendedJourney />
+    </div>
 
     <!-- Journey Theater (hidden by default, toggled by JS) -->
     <section class="kernel-journey" id="kernel-journey" aria-label="جولة حادثة" hidden>
@@ -948,7 +1014,63 @@ const complianceRows = [
         journeyEl.removeAttribute('hidden');
         journeyEl.style.position = 'relative';
       }
+      initModeShell();
     });
+
+    /* ── KRN-DASH-001: Mode-aware shell (first-visit / returning-operator) ── */
+    /* يقرا data-kernel-mode (ضُبط قبل paint بالـ inline script) ويبديل اللوحة.
+       - first: يعرض [data-hero-first] + onboarding sections
+       - returning: يعرض [data-hero-returning] + يخفي onboarding
+       زر "اختر دورك" يعمل scroll للـ role selector + يفعّلها.
+       السكربت idempotent — re-run آمن على astro:page-load. */
+    function initModeShell() {
+      const mode = document.documentElement.getAttribute('data-kernel-mode') || 'first';
+      const heroFirst = document.querySelector('[data-hero-first]');
+      const heroReturning = document.querySelector('[data-hero-returning]');
+      const onboardingOnly = document.querySelectorAll('[data-kernel-onboarding-only]');
+
+      function applyMode(m) {
+        const isReturning = m === 'returning';
+        if (heroFirst) heroFirst.hidden = isReturning;
+        if (heroReturning) heroReturning.hidden = !isReturning;
+        onboardingOnly.forEach(function (el) {
+          el.classList.toggle('kernel-onboarding--hidden', isReturning);
+        });
+      }
+
+      applyMode(mode);
+
+      /* زر "اختر دورك" → scroll للـ role selector + سيجنال أن المستخدم بدأ */
+      const pickRoleBtn = document.getElementById('kernel-pick-role');
+      if (pickRoleBtn && !pickRoleBtn.dataset.bound) {
+        pickRoleBtn.dataset.bound = '1';
+        pickRoleBtn.addEventListener('click', function () {
+          const roleSelector = document.querySelector('[data-kernel-role-selector]');
+          if (roleSelector) {
+            roleSelector.scrollIntoView({ behavior: getReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+            /* ومّض خفيف للفت الانتباه */
+            roleSelector.classList.add('kernel-onboarding--pulse');
+            setTimeout(function () { roleSelector.classList.remove('kernel-onboarding--pulse'); }, 1600);
+          }
+        });
+      }
+
+      /* استمع لاختيار الدور → علّم المستخدم onboarded + بدّل للوحة التشغيل */
+      document.removeEventListener('kernel:role-change', handleRoleChange);
+      document.addEventListener('kernel:role-change', handleRoleChange);
+    }
+
+    function handleRoleChange() {
+      try { localStorage.setItem('kernel-onboarded', 'done'); } catch (e) {}
+      document.documentElement.setAttribute('data-kernel-mode', 'returning');
+      /* أعد تطبيق اللوحة فورًا */
+      const heroFirst = document.querySelector('[data-hero-first]');
+      const heroReturning = document.querySelector('[data-hero-returning]');
+      const onboardingOnly = document.querySelectorAll('[data-kernel-onboarding-only]');
+      if (heroFirst) heroFirst.hidden = true;
+      if (heroReturning) heroReturning.hidden = false;
+      onboardingOnly.forEach(function (el) { el.classList.add('kernel-onboarding--hidden'); });
+    }
   </script>
 
   {/* ═══════════ KERNEL-AI-2026-07-14: Lead Capture ═══════════ */}
@@ -1088,5 +1210,168 @@ const complianceRows = [
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .kernel-onboarding__link { transition: none; }
+  }
+
+  /* ═══ KRN-DASH-001 (2026-08-09): Mode-aware hero shell ═══
+     لوحة فوق الطية، وضع واحد فقط ينشط حسب حالة الزائر.
+     الهدف: الانتباه على فعل واحد، مو عرض ميزات. */
+
+  .kernel-hero__mode-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .kernel-hero__mode-panel[hidden] { display: none; }
+
+  .kernel-hero__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  /* CTA أساسي وحيد لكل وضع — volume أكبر من الـ ghost القديم */
+  .kernel-hero__primary-cta {
+    font-size: var(--text-base);
+    font-weight: var(--font-bold);
+    padding: var(--space-3) var(--space-5);
+    min-height: 48px;
+    background: linear-gradient(135deg, var(--interactive-primary) 0%, var(--brand-600) 100%);
+    color: var(--bg-base);
+    border: none;
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    border-radius: var(--radius-md);
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out);
+  }
+  .kernel-hero__primary-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+  }
+  .kernel-hero__primary-cta:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--brand-500), var(--shadow-md);
+  }
+
+  /* CTA ثانوي (فعل تالي) — أخف بصريًا */
+  .kernel-hero__secondary-cta {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    padding: var(--space-2) var(--space-4);
+    min-height: 44px;
+    background: transparent;
+    color: var(--interactive-primary);
+    border: 1px solid var(--interactive-primary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out);
+  }
+  .kernel-hero__secondary-cta:hover {
+    background: var(--brand-soft);
+  }
+  .kernel-hero__secondary-cta:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--brand-500);
+  }
+
+  /* سطر "الخطوة التالية" — يوضّح الفعل التالي المتوقع */
+  .kernel-hero__next-hint {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .kernel-hero__next-label {
+    color: var(--text-muted);
+    font-weight: var(--font-semibold);
+    flex-shrink: 0;
+  }
+
+  /* ── Quick actions bar (وضع العائد) ──
+     4 إجراءات تشغيلية، كل واحد رقم + رابط مباشر.
+     Not cards — صف أفقي خفيف (الـ dashboard الكامل تحت). */
+  .kernel-hero__quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+  }
+  .kernel-hero__quick-action {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-primary);
+    min-height: 56px;
+    transition: border-color var(--duration-fast) var(--ease-out),
+                background var(--duration-fast) var(--ease-out);
+  }
+  .kernel-hero__quick-action:hover {
+    border-color: var(--interactive-primary);
+    background: var(--brand-soft);
+  }
+  .kernel-hero__quick-action:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--brand-500);
+  }
+  .kernel-hero__qa-label {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    font-weight: var(--font-semibold);
+  }
+  .kernel-hero__qa-value {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .kernel-hero__qa-value--warn { color: var(--status-warning); }
+  .kernel-hero__qa-value--danger { color: var(--status-danger); }
+  .kernel-hero__qa-value--time { color: var(--interactive-primary); }
+  .kernel-hero__qa-hint {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .kernel-hero__quick-actions {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Onboarding sections تتخفى في وضع العائد (HTML يبقى للـ crawlers) */
+  .kernel-onboarding--hidden {
+    display: none !important;
+  }
+
+  /* وميض خفيف لفت الانتباه للـ role selector */
+  @keyframes kernel-onboarding-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 transparent; }
+    50% { box-shadow: 0 0 0 4px var(--brand-soft); }
+  }
+  .kernel-onboarding--pulse {
+    animation: kernel-onboarding-pulse 0.5s var(--ease-in-out) 2;
+    border-radius: var(--radius-lg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-hero__primary-cta,
+    .kernel-hero__secondary-cta,
+    .kernel-hero__quick-action { transition: none; }
+    .kernel-hero__primary-cta:hover { transform: none; }
+    .kernel-onboarding--pulse { animation: none; }
   }
 </style>

@@ -375,17 +375,15 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
     </div>
   </div>
 
-  <!-- ═══ لوحة الأوامر ⌘K ═══ -->
-  <div
+  <!-- ═══ لوحة الأوامر ⌘K — `<dialog>` أصلي (A11Y-DIALOG-001) ═══
+       showModal(): حبس تركيز + Esc + عودة تركيز للـ opener + تعطيل باقي
+       الصفحة — كلها من المتصفح، بدون الاعتماد على focus-trap.js. -->
+  <dialog
     class="k-cmdk"
     id="k-cmdk"
-    role="dialog"
-    aria-modal="true"
     aria-labelledby="k-cmdk-title"
-    aria-hidden="true"
   >
-    <div class="k-cmdk__backdrop" data-kernel-cmdk-close></div>
-    <div class="k-cmdk__panel" role="document">
+    <div class="k-cmdk__panel">
       <h2 id="k-cmdk-title" class="sr-only">لوحة الأوامر</h2>
       <div class="k-cmdk__input-wrap">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -433,10 +431,22 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
           <a class="k-cmdk__item" href="/kernel/reports/"><span class="k-cmdk__item-name">PDPL — الربع الثاني</span></a>
           <a class="k-cmdk__item" href="/kernel/reports/"><span class="k-cmdk__item-name">مخاطر يونيو</span></a>
         </div>
-        <p class="k-cmdk__empty" hidden data-kernel-cmdk-empty>ما فيه نتائج مطابقة.</p>
+        <p class="k-cmdk__empty" hidden data-kernel-cmdk-empty role="status">ما فيه نتائج مطابقة.</p>
       </div>
+
+      <!-- اختصارات (shortcut labeling): إرشاد كيبورد ظاهر، لا يتداخل مع الحبس -->
+      <p class="k-cmdk__hint">
+        <kbd aria-hidden="true">↑</kbd><kbd aria-hidden="true">↓</kbd>
+        <span>للتنقل</span>
+        <span class="k-cmdk__hint-sep" aria-hidden="true">·</span>
+        <kbd aria-hidden="true">↵</kbd>
+        <span>تنفيذ</span>
+        <span class="k-cmdk__hint-sep" aria-hidden="true">·</span>
+        <kbd aria-hidden="true">Esc</kbd>
+        <span>إغلاق</span>
+      </p>
     </div>
-  </div>
+  </dialog>
 
   <!-- توست النجاح المشترك مع زر «تراجع» (KernelUndoToast) + مودال التأكيد المشترك -->
   <KernelUndoToast />

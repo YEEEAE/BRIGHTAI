@@ -126,6 +126,10 @@
   function markTourDone(): void {
     try {
       localStorage.setItem(STORAGE_KEY, 'done');
+      // KRN-DASH-001 (2026-08-09): إكمال/تخطّي الجولة = الزائر صار onboarded.
+      // يفعّل وضع العائد للوحة التشغيل في /kernel/ (CTA أساسي وحيد للموافقات).
+      localStorage.setItem('kernel-onboarded', 'done');
+      document.documentElement.setAttribute('data-kernel-mode', 'returning');
     } catch {
       /* private mode — ignore */
     }
