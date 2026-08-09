@@ -15,7 +15,7 @@
  *
  * RTL: العربية كل عناصر، logical properties في الـ CSS.
  */
-import { fetchCertificates, verifyCertificate, downloadCertificatePdf, downloadCertificateJson, } from './certificate-verifier';
+import { fetchCertificates, verifyCertificate, downloadCertificatePdf, downloadCertificateJson, } from './certificate-verifier.js';
 /* ── DOM helpers (نفس نمط بقية الـ engines) ───────────────────────── */
 function el(q, root = document) {
     return root.querySelector(q);

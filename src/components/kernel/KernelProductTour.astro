@@ -36,13 +36,15 @@
 -->
 <script>
   // ── Lazy-load driver.js only when this component is on the page ──
-  let driver: any | null = null;
+  // driver.js v1.8.0 exports a named `driver` factory (not `default`,
+  // not `new Driver`). Using the factory avoids the v0→v1 API break.
+  let driverFactory: any | null = null;
 
   async function loadDriver(): Promise<any> {
-    if (driver) return driver;
-    const mod = await import('driver.js');
-    driver = (mod as any).default ?? mod;
-    return driver;
+    if (driverFactory) return driverFactory;
+    const mod: any = await import('driver.js');
+    driverFactory = mod.driver ?? mod.default ?? mod;
+    return driverFactory;
   }
 
   // ── Tour steps (max 7, per design spec) ──
@@ -136,40 +138,15 @@
   async function initTour() {
     if (hasDoneTour()) return;
 
-    const Driver = await loadDriver();
-    if (!Driver) return;
+    const createDriver = await loadDriver();
+    if (typeof createDriver !== 'function') return;
 
     // Filter steps to max 7 and only include steps whose target exists
     const validSteps = STEPS.filter((step) => resolveTarget(step.element)).slice(0, MAX_STEPS);
 
     if (validSteps.length === 0) return;
 
-    const driverInstance = new Driver({
-      allowClose: true,
-      animate: !prefersReducedMotion,
-      opacity: 0.72,
-      padding: 10,
-      overlayColor: 'rgba(5, 8, 15, 0.85)',
-      doneBtnText: 'تمّ',
-      nextBtnText: 'التالي',
-      prevBtnText: 'السابق',
-      skipBtnText: 'تخطّي',
-      closeBtnText: 'إغلاق',
-      keyboardControl: true,
-      nextBtnSelector: '[data-tour-next]',
-      prevBtnSelector: '[data-tour-prev]',
-      skipBtnSelector: '[data-tour-skip]',
-      closeBtnSelector: '[data-tour-close]',
-      doneBtnSelector: '[data-tour-done]',
-      toastPosition: 'bottom',
-      showButtons: true,
-      showProgress: true,
-      showPagination: true,
-      scrollToSteps: true,
-      disableInteractiveBackground: false,
-    });
-
-    // Map our steps to driver.js format
+    // Map our steps to driver.js v1.8.0 DriveStep format
     const driverSteps = validSteps.map((step) => ({
       element: step.element,
       popover: {
@@ -180,21 +157,30 @@
       },
     }));
 
-    driverInstance.defineSteps(driverSteps);
-
-    // Add custom skip/done/close buttons via event listeners
-    driverInstance.on('close', () => {
-      markTourDone();
+    const driverInstance = createDriver({
+      allowClose: true,
+      animate: !prefersReducedMotion,
+      overlayOpacity: 0.85,
+      stagePadding: 10,
+      overlayColor: 'rgba(5, 8, 15, 0.85)',
+      doneBtnText: 'تمّ',
+      nextBtnText: 'التالي',
+      prevBtnText: 'السابق',
+      allowKeyboardControl: true,
+      showProgress: true,
+      smoothScroll: true,
+      disableActiveInteraction: false,
+      // v1.8.0 hooks fire when the tour finishes/closes — mark it done.
+      onDoneClick: () => markTourDone(),
+      onCloseClick: () => markTourDone(),
     });
 
-    driverInstance.on('destroy', () => {
-      markTourDone();
-    });
+    driverInstance.setSteps(driverSteps);
 
     // Start after a short delay so the page layout settles
     setTimeout(() => {
       if (!hasDoneTour()) {
-        driverInstance.start();
+        driverInstance.drive();
       }
     }, 600);
   }

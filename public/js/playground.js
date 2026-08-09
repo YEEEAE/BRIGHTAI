@@ -1,4 +1,4 @@
-import { detectPII as _detectPIIShared } from './pii-detector';
+import { detectPII as _detectPIIShared } from './pii-detector.js';
 (function () {
     'use strict';
     if (typeof window === 'undefined' || typeof document === 'undefined')

@@ -2897,3 +2897,37 @@ Stage Summary:
 - السايت ماب صار 258 URL، كل الفحوصات خضراء
 - المخاطر المتبقية: audit آلي قد يعدّ الـ 14 المقصودة كـ gaps (يحتاج allowlist)، blog/category تلوّث الفحص النصي (URL-encoding)
 - الـ commit: يلتزمه المستخدم (per brain rule)
+
+---
+Task ID: 2026-08-09-kernel-reaudit-runtime
+Agent: BrightAI Workspace Agent
+Task: إعادة تدقيق Kernel runtime (Playwright/axe/CWV/عروض/ RTL/reduced-motion/نقاط الأدوار) بعد تحسينات 4cc1e984..HEAD، وتقرير بصيغة مقارنة
+Started: 2026-08-09 (بعد الظهر)
+Mode: Senior
+
+Work Log:
+- قرأت operating_Environment/prompts-تنفيذ-kernel.md (مصدر الأوديت) + report/2026-08-07-kernel-* البيسلاين
+- أكدت البيسلاين head=4cc1e984، وإعادة التدقيق HEAD=bae376ce؛ بينهما commitان فقط (b56822e5: KernelJourneyContext + chat؛ bae376ce: infra/kernel.css/KernelLayout/حذف audit.md)
+- npm run build → 0 أخطاء (purge-css: 736KB→626KB)
+- node scripts/serve-static.mjs → :8788 (PID 24162)
+- أكدت 21/21 route ترجع 200 (منها kernel/admin/quota صفحة قائمة بذاتها خارج KernelLayout)
+- CWV (Slow 4G ~1.6Mbps/150ms + CPU×4): LCP 3.5–4.5s FAIL، CLS 0.03–1.14 FAIL (connectors 1.14)، TTFB 2–16ms ممتاز، INP غير قابل للقياس headless
+- أخطاء runtime: TypeError e is not a constructor على /kernel/ (KernelProductTour→import('driver.js') interop فاشل)؛ 404 /js/pii-detector (playground) و /js/certificate-verifier (evidence) — السبب الجذري tsconfig.client.json moduleResolution:"bundler" → مخرجات ESM بلا .js والمتصفح يحتاجها
+- Viewport: datasets @320 overflow +215px (ds-dist + k-topbar__search)؛ بقية الـ routes نظيفة
+- axe = 0 مخالفات كل الـ 21 route؛ 0 أزرار/روابط بلا اسم؛ 0 صور بلا alt؛ h1 وحيد؛ 7 حقول بلا labels (كلها playground)
+- تباين: muted-on-elevated = 4.3:1 FAIL AA
+- درج الـ trace: open→focus-in→Escape→focus-return ✅؛ aria-live موجود ✅
+- Role-aware nav غير منفّذ (CISO=Analyst، navIdentical=true)
+- RTL ✓، logical properties نظيفة ✓، prefers-reduced-motion محترم (0 animations) ✓
+- كتبت report/2026-08-09-kernel-rerun-audit.md + حدّثت brain.md (entry)
+- أضفت سكربتات قياس: scripts/playwright/{measure-kernel-vitals,capture-kernel-errors,kernel-viewport-matrix,kernel-interaction-audit,kernel-interaction-2,kernel-role-rtl}.mjs
+
+Stage Summary:
+- السكور النهائي ~79% (بيسلاين 78%). Verdict: NO world-class، Maturity Level 3/5
+- أبرز ترقيات: Accessibility 78→82، Saudi UX 82→84، Interaction 78→80، Motion 77→79، Product Honesty 71→74، Consistency 79→80، Responsive 76→78، Mobile 72→74
+- أبرز تراجعات: Maintainability 68→66، Playground 82→79، Evidence 78→75، Datasets 77→74، Compliance 80→79
+- لا مقيّم وصل 95% (أقربها Accessibility 82 وSaudi UX 84)
+- أهم اكتشافات runtime: ProductTour crash (driver.js interop)، PII masking معطّل (404 /js/pii-detector)، التحقق من الشهادات معطّل (404 /js/certificate-verifier)، role-nav غير منفّذ، PDF=print stub (P0 غير محلول)، CLS مرتفع على عدة صفحات
+- لا تعديل إنتاجي — إضافة ملفات قياس + تقارير فقط
+- المخاطر المتبقية: العيوب الأربعة الجديدة تحتاج إصلاح في ملفات إنتاجية (تحتاج تنفيذ بحرص + build + إعادة قياس)، CWV LCP/CLS خارج الهدف، INP غير مُقاس field
+- الـ commit: يلتزمه المستخدم (per brain rule)

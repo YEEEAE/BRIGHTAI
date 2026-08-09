@@ -23,7 +23,7 @@ import {
   downloadCertificateJson,
   type PublicCertificate,
   type CertificateVerification,
-} from './certificate-verifier';
+} from './certificate-verifier.js';
 
 /* ── DOM helpers (نفس نمط بقية الـ engines) ───────────────────────── */
 

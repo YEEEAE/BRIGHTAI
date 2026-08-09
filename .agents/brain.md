@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-09 02:30 +03:00
+last_updated: 2026-08-09 03:10 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.76
+version: 2.7.77
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -19,7 +19,29 @@ skills_ready: 7
 
 ---
 
-### 2026-08-09 — BAI-P1-TEST-001: إرجاع regression signal لمسار /api/ai/chat (verification + mutation testing، بدون تعديل إنتاجي)
+### 2026-08-09 — KRN-TYPE-001: توحيد type scale + vertical rhythm لصفحات الكيرنل
+
+- **Files**: `src/styles/kernel.css`, `src/layouts/KernelLayout.astro`, `scripts/playwright/krn-type-shot.mjs` (قياس محفوظ جديد)
+- **What**: أضفت بلوك توكنز دلالية `KRN-TYPE-001` داخل `body.kernel-shell`: أدوار typographic (display/title/lead/body/meta) مبنية على مقياس rem الموجود (`--k-type-*`)، خطوط `--k-lh-*`، وأسماء مسافة 4pt دلالية (`--k-space-title-block/lead-block/header-inline/header-block`). وحّدت `.kernel-page-header__title/__subtitle` و `.kernel-hero__title/__subtitle` ليستهلكوا نفس الأدوار (القيم نفسها → صفر regress بصري، بس صارت مصدر واحد بدل تعريفات متفرقة). ضفت `text-wrap: balance` للعناوين + `text-wrap: pretty` للـ lead/body/summary (يمنع orphan كلمة عربية وحيدة)، و `font-variant-numeric: tabular-nums` على `.kernel-metric__value` و `.kernel-stat-card__value` (أرقام ثابتة العرض). أضفت `--k-type-display-mobile` وأعدلت الـ media query يستخدمها. في KernelLayout أضفت `text-wrap: balance` لعناوين الشِل (`k-trace-drawer__title` + `k-hash-chain__title`).
+- **Why**: صفحة فرعية كانت تحدد حجم/كثافة موضعية (`clamp` مختلف، line-height 1.3/1.6/1.7) → هرمية مختلطة عبر الـ 21 صفحة. الهدف: دور نوعي واحد لكل صفحة، RTL/عربي يلف زين، وأرقام المقاييس ما ترتج.
+- **Verification**: `npm run build` ✅ (21 صفحة kernel بُنيت، KernelLayout CSS 195KB → 151KB بعد purge). Playwright على `/kernel/`, `/kernel/policies/`, `/kernel/audit/` بعرضين (1440/390): `dir=rtl` ✅، `text-wrap: balance` على الـ h1 ✅، 0 أخطاء JS من التعديل (2 console warnings موجودين مسبقًا: CSP report-only + X-Frame-Options — من الـ preview المحلي، مو من هذا التغيير). لقطات: `download/qa/krn-*.png`.
+- **Report**: `report/2026-08-09-krn-type-001.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: أضفت هذه الـ entry. الـ token inventory (Section 5) لازم يُضاف فيها `--k-type-*`/`--k-lh-*`/`--k-space-*` كطبقة mint دلالية تتبع `KRN-DS-2026-08-09`. ملاحظة للـ future agents: `KernelPageHeader.astro` (المكوّن القياسي في `src/components/kernel/`) ما يزال **غير مستخدم** من أي صفحة ومقياسه يشذ (`clamp(1.375rem,3.5vw,2rem)` + `--weight-extrabold` قديم) — لو صار يستخدم مستقبلًا، لازم يتحول لنفس أدوار `--k-type-*`.
+
+---
+
+- **Files**: بدون تعديل إنتاجي. أُضيفت سكربتات قياس محفوظة: `scripts/playwright/measure-kernel-vitals.mjs`, `capture-kernel-errors.mjs`, `kernel-viewport-matrix.mjs`, `kernel-interaction-audit.mjs`, `kernel-interaction-2.mjs`, `kernel-role-rtl.mjs`. التقارير: `report/2026-08-09-kernel-rerun-audit.md` + `report/{a11y-kernel,kernel-runtime-errors,kernel-viewport-matrix,kernel-interaction-audit,kernel-interaction-2}.{json,txt}`. صور: `download/qa/kernel-rerun/` (21 route × 10 عرض).
+- **What**: إعادة تدقيق Kernel بعد تحسينات `4cc1e984..HEAD` (سلم `--k-z-*` دلالي + `--k-focus-ring` + `--k-h-control/input` 44px + طبقة mint + تحويل `KernelDemoPill` من toggle إلى badge ثابت). القياس صار runtime (build → serve-static:8788 → Playwright/Chromium + axe).
+- **Why**: البيسلاين كان source-only وكل قياساته runtime كانت `NOT MEASURED`. الهدف: ترقية المقيّمات من heuristic إلى measured بأدلة قابلة للتكرار.
+- **Verification**: build ✅ (21/21 route 200). axe = **0 مخالفات** على كل الـ 21 route ✅. صفر أزرار/روابط بلا اسم، صفر صور بلا `alt`، h1 وحيد في كل صفحة ✅. درج الـ trace: open + focus-in + Escape + focus-return ✅. RTL `dir=rtl` + `prefers-reduced-motion` محترم (0 animations) + logical properties نظيفة ✅. CWV (Slow 4G throttle): **LCP 3.5–4.5s ❌ FAIL**, CLS 0.03–1.14 ❌ (connectors 1.14), TTFB 2–16ms ✅.
+- **Report**: `report/2026-08-09-kernel-rerun-audit.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule). لا تعديل إنتاجي في هذا التمرير.
+- **Status**: verified locally (بنيان نظيف، أُضيفت ملفات قياس فقط)
+- **Brain updates**: أُضيفت **4 عيوب runtime جديدة** للسجل تحت (تحتاج مداخل known-issues مستقلة): (1) `TypeError: e is not a constructor` على `/kernel/` — `KernelProductTour.astro` `import('driver.js')` interop فاشل؛ (2) `playground` يطلب `/js/pii-detector` بلا `.js` → 404 → **PII masking معطّل**؛ (3) `evidence` يطلب `/js/certificate-verifier` بلا `.js` → 404 → **التحقق من الشهادات معطّل**؛ السبب الجذري لـ(2)(3): `tsconfig.client.json` يستخدم `moduleResolution: "bundler"` (يسمح بتركات بلا امتداد) بس المخرجات ESM `.js` والمتصفح يحتاج الامتداد → الحل: `rewriteRelativeImportExtensions` أو إضافة `.js` في `src/client/*.ts`؛ (4) `datasets` عند 320px overflow +215px (`ds-dist` + `k-topbar__search`). **7 حقول بلا labels في playground**. تباين `muted_on_elevated` = 4.3:1 (FAIL AA للنص الصغير). **Role-aware nav غير منفّذ** (measured: CISO=Analyst، نفس الـ 19 رابط). `compliance` "تقرير PDF" = `window.print()` (P0 البيسلاين لسه غير محلول). **السكور النهائي ~79%** (بيسلاين 78%). **Verdict: NO** world-class، Maturity Level 3/5. و**لا مقيّم وصل 95%** — أقربها Accessibility 82 وSaudi UX 84.
+
+---
 
 - **Files**: بدون تعديل إنتاجي. (التقرير: `report/2026-08-09-bai-p1-test-001-chat-regression-signal.md` جديد)
 - **What**: المهمة وصلت بادعاء "npm test يفشل بـ LeadQueueStatus SyntaxError". الـ task نفسه صريح: "شغّل npm test أول شي بعد PROMPT-001. فيه احتمال قوي يمر بدون أي تعديل". نفّذت بالحرف: `pnpm db:generate` (يولّد Prisma client) → `npm test` → **38/38 pass** بدون لمس ولا سطر في `chat.ts` أو `test-chat-session.mjs`. الفشل كان عَرَضًا لانحراف Prisma = نفس السبب الجذري لـ BAI-P1-TYPES-001 (اللي انحلّ بـ `pretypecheck→db:generate` + `postinstall: prisma generate`). بعدها سوّيت mutation testing يدوي: كسرت `isValidSessionId` ليرجّع `true` دائمًا، شغّلت `pnpm test:chat-session` → فشل **تحديدًا** على test 7 + 8 (malformed/oversized sessionId expected 400 actual 200)، باقي 14 test نجحوا (isolation صحيح). رجّعت الـ mutation وأكدت baseline رجع أخضر (git status نظيف).

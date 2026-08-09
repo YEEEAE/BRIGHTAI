@@ -100,6 +100,12 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
       transition: top var(--duration-fast) var(--ease-out);
     }
     .k-skip-link:focus { top: 0; }
+
+    /* KRN-TYPE-001 (2026-08-09): shell headings share the kernel rhythm —
+       balanced wrapping so long Arabic drawer/section titles don't orphan
+       a trailing word. */
+    .k-trace-drawer__title,
+    .k-hash-chain__title { text-wrap: balance; }
   </style>
 
   <!-- Skip-link -->

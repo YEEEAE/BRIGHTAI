@@ -1,4 +1,4 @@
-import { detectPII as _detectPIIShared, type PIIFinding } from './pii-detector';
+import { detectPII as _detectPIIShared, type PIIFinding } from './pii-detector.js';
 
 interface PlaygroundConfig {
   policies: any[];
