@@ -1280,3 +1280,131 @@ body.pg-embed .pg-col { max-height: 100dvh; }
 .pg-card[data-state='unavailable'] .pg-card__time,
 .pg-card[data-state='failed'] .pg-card__time,
 .pg-card[data-state='skipped'] .pg-card__time { display: inline; }
+
+/* ═══ مبدّل الوضع (مرشد / خبير) ═══ */
+.pg-mode-switch {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--bg-elevated, var(--bg-surface));
+}
+.pg-mode-btn {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: none;
+  color: var(--text-soft);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.pg-mode-btn:hover,
+.pg-mode-btn:focus-visible { color: var(--brand); outline: none; }
+.pg-mode-btn[aria-pressed='true'] {
+  background: var(--brand);
+  color: #04121a;
+}
+
+/* ═══ وضع المرشد: نتيجة أولى بسيطة ═══ */
+.pg-guided {
+  margin-block: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+.pg-guided[hidden] { display: none; }
+.pg-guided__inner {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 720px;
+  margin-inline: auto;
+}
+.pg-guided__intro { text-align: center; }
+.pg-guided__title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text);
+}
+.pg-guided__sub {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+.pg-guided__textarea { min-height: 120px; }
+.pg-guided__row { display: flex; flex-direction: column; gap: var(--space-1); }
+.pg-guided__samples { display: flex; flex-direction: column; gap: var(--space-2); }
+.pg-guided__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.pg-guided__run { flex: 0 0 auto; min-width: 140px; }
+.pg-guided__mode-hint {
+  font-size: var(--text-xs);
+  color: var(--text-soft);
+}
+.pg-guided__result {
+  min-height: 96px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  background: var(--bg-elevated, var(--bg-surface));
+  font-size: var(--text-sm);
+  line-height: 1.8;
+}
+.pg-guided__result .pg-verdict__reason { margin: 0; }
+.pg-guided__result .pg-guided-verdict {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.pg-guided__verdict-title {
+  font-size: var(--text-md);
+  font-weight: var(--font-bold);
+  margin: 0;
+}
+.pg-guided__verdict-score {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-soft);
+}
+.pg-guided__verdict-score strong { color: var(--brand); font-variant-numeric: tabular-nums; }
+
+/* زر فتح الوضع الخبير */
+.pg-open-expert {
+  display: block;
+  margin: 0 auto var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated, var(--bg-surface));
+  color: var(--text);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+}
+.pg-open-expert:hover,
+.pg-open-expert:focus-visible { border-color: var(--brand); color: var(--brand); outline: none; }
+.pg-open-expert[hidden] { display: none; }
+
+/* التحكم بالإظهار/الإخفاء حسب الوضع (يُضبط من الـ JS عبر data-mode على الجذر).
+   ملاحظة: قواعد display هنا أخص من قواعد media أدناه، لذلك نقيّد display:grid
+   للديسكتوب فقط ونترك flex للموبايل (1023px وأقل). */
+[data-pg-root][data-mode='guided'] .pg-guided { display: block; }
+[data-pg-root][data-mode='guided'] .pg-open-expert { display: block; }
+[data-pg-root][data-mode='guided'] .pg-grid { display: none; }
+[data-pg-root][data-mode='expert'] .pg-guided { display: none; }
+[data-pg-root][data-mode='expert'] .pg-open-expert { display: none; }
+@media (min-width: 1024px) {
+  [data-pg-root][data-mode='expert'] .pg-grid { display: grid; }
+}

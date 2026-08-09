@@ -99,10 +99,50 @@ const pgConfig = {
           <span class="pg-embed-badge">⚗️ الملعب التفاعلي</span>
           <span class="pg-link-note" id="pg-link-note" hidden>سياسة من محرر السياسات — طُبّقت هنا</span>
           <span class="pg-counter-row" id="pg-remaining" hidden></span>
+          <div class="pg-mode-switch" role="group" aria-label="وضع الملعب">
+            <button type="button" class="pg-mode-btn pg-mode-btn--guided" data-pg-mode="guided" aria-pressed="true">مرشد</button>
+            <button type="button" class="pg-mode-btn pg-mode-btn--expert" data-pg-mode="expert" aria-pressed="false">خبير</button>
+          </div>
         </div>
       </header>
 
-      {/* ═════════ الشبكة ثلاثية الأعمدة ═════════ */}
+      {/* ═════════ وضع المرشد: نتيجة أولى بدون فهم المراحل العشر ═════════ */}
+      <section class="pg-guided" id="pg-guided" aria-label="وضع المرشد">
+        <div class="pg-guided__inner">
+          <div class="pg-guided__intro">
+            <h2 class="pg-guided__title">ابدأ بنتيجة أولى في ثوانٍ</h2>
+            <p class="pg-guided__sub">اكتب طلبك أو اختر عيّنة جاهزة، اضغط «شغّل»، وشوف كيف Kernel يحكم قبل أن يصل النموذج — بدون ما تفهم المراحل العشر.</p>
+          </div>
+          <div class="pg-guided__row">
+            <textarea id="pg-input-guided" class="pg-textarea pg-guided__textarea" dir="auto" maxlength={PLAYGROUND_LIMITS.maxChars}
+              placeholder="مثال: ابعت لي بيانات الموظف صاحب الهوية 1098765432…"
+              aria-describedby="pg-input-error-guided" ></textarea>
+            <p class="k-form__error" id="pg-input-error-guided" role="alert" hidden>اكتب نصًا أو اختر عيّنة قبل التشغيل.</p>
+          </div>
+          <div class="pg-guided__samples" id="pg-guided-samples">
+            <span class="pg-section-label pg-section-label--flush">أو جرّب عيّنة جاهزة</span>
+            <div class="pg-samples">
+              {PLAYGROUND_SAMPLES.slice(0, 4).map((s) => (
+                <button class="pg-sample" type="button" data-sample={s.id}>
+                  <span class="pg-sample__icon">{s.icon}</span>{s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div class="pg-guided__controls">
+            <button class="pg-run-btn pg-guided__run" id="pg-run-guided" type="button">▶ شغّل</button>
+            <span class="pg-guided__mode-hint">غيّر الوضع «خبير» فوق لضبط السياسات والمقارنة A/B</span>
+          </div>
+          <div class="pg-guided__result" id="pg-guided-result" aria-live="polite">
+            <p class="pg-verdict__reason">الحكم هيظهر هنا بعد ما تشغّل.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* زر فتح الوضع الخبير (يظهر في وضع المرشد) */}
+      <button class="pg-open-expert" id="pg-open-expert" type="button" hidden>افتح وضع الخبير ←</button>
+
+      {/* ═════════ الشبكة ثلاثية الأعمدة (وضع الخبير) ═════════ */}
       <div class="pg-grid" id="pg-grid">
 
         {/* ── العمود الأيمن: الإدخال ── */}
