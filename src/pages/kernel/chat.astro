@@ -1007,7 +1007,9 @@ const policyBanner = {
   // REPORTS-15 — Chat interactivity (demo mode).
   // Streams a fake AI response word-by-word after the user sends a message.
   // Toggles the typing indicator. Supports Enter (send) / Shift+Enter (newline).
-  // Listens for kernel:demo-toggle (KernelDemoPill) and short-circuits gracefully.
+  // BAI-P0-TRUTH-001: KernelDemoPill is now a fixed disclosure badge (not a
+  // toggle), so kernel:demo-toggle was removed from the system; page data
+  // layering is disclosed statically instead.
   (function () {
     'use strict';
     var FAKE_RESPONSES = [

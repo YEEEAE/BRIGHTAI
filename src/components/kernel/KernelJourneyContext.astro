@@ -16,7 +16,8 @@
  * - لا PII على الإطلاق (لا اسم، لا بريد، لا هاتف)
  * - فقط بيانات وصفية (sector + riskBand + scenario id)
  * - sessionStorage يُمسح تلقائياً عند إغلاق التبويب
- * - يستجيب لحدث kernel:demo-toggle (لو الـ user عطّل البيانات التجريبية)
+ * - BAI-P0-TRUTH-001: بدايت السياسة مرة واحدة — demo SSI، ما فيه toggle
+ *   جوّال، فلا يبكي حدث kernel:demo-toggle (أُزيل من النظام)
  *
  * كيف يُستخدم:
  *   - <a data-scenario-link data-scenario-id="..." data-sector="..." data-risk-band="...">
@@ -176,21 +177,10 @@ const { id = 'k-journey-ctx', active = true } = Astro.props;
       if (stage) document.body.setAttribute('data-journey-stage', stage);
     }
 
-    /** Reset context when the demo pill is toggled off (user wants real data). */
-    function wireDemoPillReset() {
-      document.addEventListener('kernel:demo-toggle', function (e) {
-        if (e && e.detail && e.detail.active === false) {
-          // user just disabled demo data — drop the cached scenario context
-          safeClear();
-        }
-      });
-    }
-
     function init() {
       wireScenarioLinks();
       wireLeadForms();
       wireBodyAttribute();
-      wireDemoPillReset();
     }
 
     // Astro view transitions
