@@ -1846,6 +1846,7 @@ import { detectPII as _detectPIIShared } from './pii-detector.js';
         const pop = document.createElement('div');
         pop.className = 'pg-tour-pop';
         pop.setAttribute('role', 'dialog');
+        pop.setAttribute('aria-label', 'جولة منتج Kernel');
         document.body.appendChild(pop);
         const render = () => {
             if (i >= steps.length) {

@@ -286,19 +286,19 @@ const dsConfig = {
           </span>
         </div>
 
-        <div class="ds-table-wrap" role="region" aria-label="جدول مجموعات البيانات" tabindex="0">
-          <table class="ds-table">
+        <div class="ds-table-wrap" role="region" aria-label="جدول مجموعات البيانات" tabindex="0" data-dt-scroll>
+          <table class="ds-table" data-dt>
             <thead>
               <tr>
-                <th scope="col">الاسم</th>
-                <th scope="col">البيئة</th>
-                <th scope="col">الحالة</th>
-                <th scope="col">الإصدار / الهاش</th>
-                <th scope="col">الحالات</th>
-                <th scope="col">المصدر</th>
-                <th scope="col">مستخدم في Runs</th>
-                <th scope="col">آخر تحديث</th>
-                <th scope="col">إجراءات</th>
+                <th scope="col" data-dt-p="1">الاسم</th>
+                <th scope="col" data-dt-p="2">البيئة</th>
+                <th scope="col" data-dt-p="2">الحالة</th>
+                <th scope="col" data-dt-p="2">الإصدار / الهاش</th>
+                <th scope="col" data-dt-p="3">الحالات</th>
+                <th scope="col" data-dt-p="3">المصدر</th>
+                <th scope="col" data-dt-p="2">مستخدم في Runs</th>
+                <th scope="col" data-dt-p="3">آخر تحديث</th>
+                <th scope="col" data-dt-p="1">إجراءات</th>
               </tr>
             </thead>
             <tbody id="ds-registry-body">
@@ -306,22 +306,22 @@ const dsConfig = {
                 const cur = d.versions.find((v) => v.version === d.currentVersion) ?? d.versions[d.versions.length - 1];
                 return (
                   <tr data-ds-row={d.id} data-ds-status={d.status} data-ds-env={d.environment} data-ds-search={`${d.name} ${d.owner} ${d.id}`}>
-                    <td>
+                    <td data-dt-p="1">
                       <button class="ds-row-name" type="button" data-ds-action="open" data-ds-id={d.id}>{d.name}</button>
                     </td>
-                    <td><span class:list={['ds-env-chip', `ds-env-chip--${d.environment}`]}>{DATASET_ENV_LABELS[d.environment]}</span></td>
-                    <td><span class:list={['ds-status', `ds-status--${d.status}`]}>{DATASET_STATUS_LABELS[d.status]}</span></td>
-                    <td>
+                    <td data-dt-p="2" data-dt-label="البيئة"><span class:list={['ds-env-chip', `ds-env-chip--${d.environment}`]}>{DATASET_ENV_LABELS[d.environment]}</span></td>
+                    <td data-dt-p="2" data-dt-label="الحالة"><span class:list={['ds-status', `ds-status--${d.status}`]}>{DATASET_STATUS_LABELS[d.status]}</span></td>
+                    <td data-dt-p="2" data-dt-label="الإصدار/الهاش">
                       <span class="ds-version" dir="ltr">v{cur.version}</span>
                       <code class="ds-hash" dir="ltr" title={`hash v${cur.version}: ${cur.hash}`}>{cur.hash.slice(0, 10)}…</code>
                     </td>
-                    <td dir="ltr">{d.cases.length}</td>
-                    <td dir="ltr">{d.source}</td>
-                    <td>
+                    <td data-dt-p="3" data-dt-label="الحالات" dir="ltr">{d.cases.length}</td>
+                    <td data-dt-p="3" data-dt-label="المصدر" dir="ltr">{d.source}</td>
+                    <td data-dt-p="2" data-dt-label="مستخدم في Runs">
                       <span class:list={['ds-runs', d.usedInRuns > 0 ? 'ds-runs--used' : '']} dir="ltr">{d.usedInRuns}</span>
                     </td>
-                    <td dir="ltr">{d.updatedAt.slice(0, 10)}</td>
-                    <td>
+                    <td data-dt-p="3" data-dt-label="آخر تحديث" dir="ltr">{d.updatedAt.slice(0, 10)}</td>
+                    <td data-dt-p="1">
                       <div class="ds-row-actions">
                         <button class="ds-icon-btn" type="button" data-ds-action="open" data-ds-id={d.id} aria-label={`فتح ${d.name}`} title="فتح">👁</button>
                         <button class="ds-icon-btn" type="button" data-ds-action="new-version" data-ds-id={d.id} aria-label={`نسخة جديدة من ${d.name}`} title="نسخة جديدة">⧉</button>
@@ -335,17 +335,17 @@ const dsConfig = {
               })}
               {KERNEL_DATASETS_TEST.map((d) => (
                 <tr data-ds-row={d.id} data-ds-status={d.status} data-ds-env={d.environment} data-ds-search={`${d.name} ${d.owner} ${d.id}`}>
-                  <td>
+                  <td data-dt-p="1">
                     <button class="ds-row-name" type="button" data-ds-action="open" data-ds-id={d.id}>{d.name}</button>
                   </td>
-                  <td><span class="ds-env-chip ds-env-chip--test">Test</span></td>
-                  <td><span class="ds-status ds-status--draft">مسودة</span></td>
-                  <td><span class="ds-version" dir="ltr">v1</span><code class="ds-hash" dir="ltr">{d.versions[0].hash.slice(0, 10)}…</code></td>
-                  <td dir="ltr">{d.cases.length}</td>
-                  <td dir="ltr">fixture</td>
-                  <td><span class="ds-runs" dir="ltr">0</span></td>
-                  <td dir="ltr">{d.updatedAt.slice(0, 10)}</td>
-                  <td>
+                  <td data-dt-p="2" data-dt-label="البيئة"><span class="ds-env-chip ds-env-chip--test">Test</span></td>
+                  <td data-dt-p="2" data-dt-label="الحالة"><span class="ds-status ds-status--draft">مسودة</span></td>
+                  <td data-dt-p="2" data-dt-label="الإصدار/الهاش"><span class="ds-version" dir="ltr">v1</span><code class="ds-hash" dir="ltr">{d.versions[0].hash.slice(0, 10)}…</code></td>
+                  <td data-dt-p="3" data-dt-label="الحالات" dir="ltr">{d.cases.length}</td>
+                  <td data-dt-p="3" data-dt-label="المصدر" dir="ltr">fixture</td>
+                  <td data-dt-p="2" data-dt-label="مستخدم في Runs"><span class="ds-runs" dir="ltr">0</span></td>
+                  <td data-dt-p="3" data-dt-label="آخر تحديث" dir="ltr">{d.updatedAt.slice(0, 10)}</td>
+                  <td data-dt-p="1">
                     <div class="ds-row-actions">
                       <button class="ds-icon-btn" type="button" data-ds-action="open" data-ds-id={d.id} aria-label={`فتح ${d.name}`} title="فتح">👁</button>
                       <button class="ds-icon-btn" type="button" data-ds-action="new-version" data-ds-id={d.id} aria-label={`نسخة جديدة من ${d.name}`} title="نسخة جديدة">⧉</button>

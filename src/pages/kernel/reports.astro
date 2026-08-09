@@ -26,6 +26,9 @@ import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/ker
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import { buildReportStats, REPORT_TYPES, REPORT_LANGUAGES, REPORT_RECIPIENTS, REPORT_WIDGETS } from '../../data/kernel-reports';
 
+// تنسيق الصفحة (side-effect import).
+import '../../../kernel/assets/css/pages/reports.css';
+
 const unit = getKernelUnit('reports')!;
 const cross = getCrossLinks(unit);
 

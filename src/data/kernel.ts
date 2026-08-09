@@ -1551,3 +1551,68 @@ export function riskLevelLabel(level: string): string {
   };
   return map[level] || level;
 }
+
+// ── IA layer: Task Groups + Role-aware prioritization ─────────────────────
+// KRN-IA-001 (2026-08-09): 6 task groups replace the feature-first 4 groups.
+// Role config drives (a) group reorder and (b) a pinned "top tasks" strip.
+// Server-safe data only — no DOM, no localStorage. Consumers: KernelSidebar
+// (SSR default order) + kernel-sidebar.js (client reorder + pinned render).
+// Not consumed by SEO/schema scripts (verified via grep) — indexable content
+// in kernelUnits is untouched.
+
+export interface TaskGroup {
+  id: string;
+  /** Arabic label rendered as the group heading. */
+  label: string;
+  slugs: string[];
+  /** If set, group only renders when body[data-role] matches one of these. */
+  roles?: string[];
+}
+
+export const taskGroups: TaskGroup[] = [
+  { id: 'monitor', label: 'المراقبة', slugs: ['index', 'chat', 'scenarios', 'redteam', 'datasets'] },
+  { id: 'investigate', label: 'التحقيق', slugs: ['audit', 'replay', 'approvals'] },
+  { id: 'govern', label: 'الحوكمة', slugs: ['policies', 'compliance'] },
+  { id: 'evaluate', label: 'التقييم', slugs: ['eval', 'scorers', 'stats', 'reports'] },
+  { id: 'integrate', label: 'الربط', slugs: ['connectors', 'models', 'api', 'playground', 'evidence'] },
+  // Admin-only: quota is a separate noindex operator screen (not in kernelUnits).
+  // Gated by role so it never surfaces for public demo visitors.
+  { id: 'admin', label: 'الإدارة', slugs: ['quota'], roles: ['operator', 'admin'] },
+];
+
+export interface RoleConfig {
+  /** Group ids in display order for this role. */
+  order: string[];
+  /** Top task slugs pinned above the groups (max 3 — two-action reach). */
+  pinned: string[];
+}
+
+export const roleConfig: Record<string, RoleConfig> = {
+  // Default / DPO: monitor-first (operator-like overview).
+  dpo: {
+    order: ['monitor', 'investigate', 'govern', 'evaluate', 'integrate', 'admin'],
+    pinned: ['chat', 'playground', 'stats'],
+  },
+  ciso: {
+    order: ['investigate', 'govern', 'monitor', 'evaluate', 'integrate', 'admin'],
+    pinned: ['compliance', 'audit', 'evidence'],
+  },
+  compliance: {
+    order: ['govern', 'investigate', 'evaluate', 'monitor', 'integrate', 'admin'],
+    pinned: ['compliance', 'evidence', 'reports'],
+  },
+  developer: {
+    order: ['integrate', 'monitor', 'evaluate', 'govern', 'investigate', 'admin'],
+    pinned: ['api', 'playground', 'connectors'],
+  },
+  employee: {
+    order: ['monitor', 'investigate', 'govern', 'evaluate', 'integrate', 'admin'],
+    pinned: ['chat', 'playground', 'stats'],
+  },
+};
+
+/** Resolve a role config, falling back to the dpo default. */
+export function getRoleConfig(role: string | null | undefined): RoleConfig {
+  if (role && roleConfig[role]) return roleConfig[role];
+  return roleConfig.dpo;
+}

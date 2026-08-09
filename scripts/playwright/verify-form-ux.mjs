@@ -49,6 +49,7 @@ async function checkLabels(url) {
 
 // axe on the three pages
 for (const url of [`${base}/kernel/playground/`, `${base}/kernel/chat/`, `${base}/kernel/policies/`]) {
+  await checkLabels(url);
   await page.goto(url, { waitUntil: 'networkidle' });
   const results = await new AxeBuilder({ page }).analyze();
   const serious = results.violations.filter((v) => ['critical', 'serious'].includes(v.impact));

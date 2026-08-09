@@ -187,6 +187,17 @@
   }
 
   /* ── مبدّل الدور ──────────────────────────────────────────────────── */
+  // KRN-IA-001 (2026-08-09): نطلق حدث `kernel:role-change` عند كل تغيير
+  // (محفوظ أول مرة + تغيير يدوي) عشان يلتقطه kernel-sidebar.js ويعيد
+  // ترتيب المجموعات + بناء الـ pinned strip. KernelRoleSelector في
+  // الفهرس يطلق نفس الحدث — مصدر واحد للإشارة.
+  function announceRole(role) {
+    document.body.setAttribute('data-role', role);
+    try {
+      window.dispatchEvent(new CustomEvent('kernel:role-change', { detail: { role: role } }));
+    } catch (e) { /* CustomEvent مدعومة في كل المتصفحات المدعومة */ }
+  }
+
   function initRole() {
     var select = document.querySelector('[data-kernel-role]');
     if (!select) return;
@@ -194,19 +205,19 @@
       var saved = localStorage.getItem(ROLE_KEY);
       if (saved) {
         select.value = saved;
-        document.body.setAttribute('data-role', saved);
+        announceRole(saved);
       } else {
-        document.body.setAttribute('data-role', select.value || 'dpo');
+        announceRole(select.value || 'dpo');
       }
     } catch (e) {
-      document.body.setAttribute('data-role', 'dpo');
+      announceRole('dpo');
     }
     if (select.dataset.bound === '1') return;
     select.dataset.bound = '1';
     select.addEventListener('change', function () {
       var v = select.value;
-      document.body.setAttribute('data-role', v);
       try { localStorage.setItem(ROLE_KEY, v); } catch (e) {}
+      announceRole(v);
     });
   }
 

@@ -180,31 +180,31 @@ const scorersConfig = {
           </div>
         </div>
 
-        <div class="sc-table-wrap" role="region" aria-label="جدول الـ Scorers" tabindex="0">
-          <table class="sc-table">
+        <div class="sc-table-wrap" role="region" aria-label="جدول الـ Scorers" tabindex="0" data-dt-scroll>
+          <table class="sc-table" data-dt>
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">الاسم</th>
-                <th scope="col">الفئة</th>
-                <th scope="col">الإصدار</th>
-                <th scope="col">الخطورة</th>
-                <th scope="col">العتبة</th>
-                <th scope="col">نوع المقيّم</th>
-                <th scope="col">ضوابط</th>
+                <th scope="col" data-dt-p="2">ID</th>
+                <th scope="col" data-dt-p="1">الاسم</th>
+                <th scope="col" data-dt-p="2">الفئة</th>
+                <th scope="col" data-dt-p="3">الإصدار</th>
+                <th scope="col" data-dt-p="2">الخطورة</th>
+                <th scope="col" data-dt-p="3">العتبة</th>
+                <th scope="col" data-dt-p="2">نوع المقيّم</th>
+                <th scope="col" data-dt-p="2">ضوابط</th>
               </tr>
             </thead>
             <tbody id="sc-registry-body">
               {SCORER_REGISTRY.map((s) => (
                 <tr data-sc-row={s.id} data-sc-category={s.category}>
-                  <td><code class="sc-row-id">{s.id}</code></td>
-                  <td><button class="sc-row-name" type="button" data-sc-action="open" data-sc-id={s.id}>{s.name}</button></td>
-                  <td><span class:list={['sc-cat-chip', `sc-cat-chip--${SCORER_CATEGORY_COLORS[s.category]}`]}>{SCORER_CATEGORY_LABELS[s.category]}</span></td>
-                  <td><span dir="ltr">v{s.version}</span></td>
-                  <td><span class:list={['sc-sev', `sc-sev--${s.severity}`]}>{SCORER_SEVERITY_LABELS[s.severity]}</span></td>
-                  <td><span class="sc-threshold">{s.threshold}</span></td>
-                  <td><span class="sc-eval">{EVALUATOR_TYPE_LABELS[s.evaluatorType]}</span></td>
-                  <td>{(s.controls?.length ?? 0) > 0 ? <span class="sc-eval">✓ {s.controls!.length} ضابط</span> : <span class="sc-eval">—</span>}</td>
+                  <td data-dt-p="2" data-dt-label="ID"><code class="sc-row-id">{s.id}</code></td>
+                  <td data-dt-p="1"><button class="sc-row-name" type="button" data-sc-action="open" data-sc-id={s.id}>{s.name}</button></td>
+                  <td data-dt-p="2" data-dt-label="الفئة"><span class:list={['sc-cat-chip', `sc-cat-chip--${SCORER_CATEGORY_COLORS[s.category]}`]}>{SCORER_CATEGORY_LABELS[s.category]}</span></td>
+                  <td data-dt-p="3" data-dt-label="الإصدار"><span dir="ltr">v{s.version}</span></td>
+                  <td data-dt-p="2" data-dt-label="الخطورة"><span class:list={['sc-sev', `sc-sev--${s.severity}`]}>{SCORER_SEVERITY_LABELS[s.severity]}</span></td>
+                  <td data-dt-p="3" data-dt-label="العتبة"><span class="sc-threshold">{s.threshold}</span></td>
+                  <td data-dt-p="2" data-dt-label="نوع المقيّم"><span class="sc-eval">{EVALUATOR_TYPE_LABELS[s.evaluatorType]}</span></td>
+                  <td data-dt-p="2" data-dt-label="ضوابط">{(s.controls?.length ?? 0) > 0 ? <span class="sc-eval">✓ {s.controls!.length} ضابط</span> : <span class="sc-eval">—</span>}</td>
                 </tr>
               ))}
             </tbody>
@@ -261,21 +261,21 @@ const scorersConfig = {
         <div class="sc-run-results" id="sc-run-results" hidden>
           <div class="sc-run-summary" id="sc-run-summary" role="status" aria-live="polite"></div>
           <div id="sc-run-alerts"></div>
-          <div class="sc-results-wrap" role="region" aria-label="نتائج التقييم" tabindex="0">
-            <table class="sc-results-table">
+          <div class="sc-results-wrap" role="region" aria-label="نتائج التقييم" tabindex="0" data-dt-scroll data-dt-tall>
+            <table class="sc-results-table" data-dt>
               <thead>
                 <tr>
-                  <th scope="col">الحالة</th>
-                  <th scope="col">الدرجة</th>
-                  <th scope="col">المتوقع</th>
-                  <th scope="col">الفعلي</th>
-                  <th scope="col">الخطورة</th>
-                  <th scope="col">الشرح</th>
-                  <th scope="col">السياسة</th>
-                  <th scope="col">Trace</th>
-                  <th scope="col">التوصية</th>
-                  <th scope="col">الدليل</th>
-                  <th scope="col">البيئة</th>
+                  <th scope="col" data-dt-p="1">الحالة</th>
+                  <th scope="col" data-dt-p="2">الدرجة</th>
+                  <th scope="col" data-dt-p="3">المتوقع</th>
+                  <th scope="col" data-dt-p="3">الفعلي</th>
+                  <th scope="col" data-dt-p="2">الخطورة</th>
+                  <th scope="col" data-dt-p="2">الشرح</th>
+                  <th scope="col" data-dt-p="3">السياسة</th>
+                  <th scope="col" data-dt-p="3">Trace</th>
+                  <th scope="col" data-dt-p="2">التوصية</th>
+                  <th scope="col" data-dt-p="2">الدليل</th>
+                  <th scope="col" data-dt-p="2">البيئة</th>
                 </tr>
               </thead>
               <tbody id="sc-results-body"></tbody>

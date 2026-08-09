@@ -19,6 +19,16 @@ skills_ready: 7
 
 ---
 
+### 2026-08-09 — KRN-FORM-001: توحيد مفردات النماذج (forms) في صفحات الكيرنل
+- **Files**: `src/pages/kernel/{playground,chat,policies,api,admin/quota}.astro`, `src/styles/kernel.css`, `kernel/assets/css/pages/{playground,policies}.css`, `src/client/playground.ts`, `public/js/kernel-policies.js`, `scripts/playwright/verify-form-ux.mjs` (جديد)
+- **What**: وحّدت مفردة النماذج في 5 صفحات كيرنل. أضفت فصل كانوني مشترك `.k-form__error` (رسالة استرداد دورها `role="alert"`) في `kernel.css` + قاعدة واحدة لخطأ `[aria-invalid=true]` على أي input/select/textarea. كل حقل أصبح له label مربوط + رسالة استرداد موصولة بـ `aria-describedby` + `required` حيث يلزم. ثبّتت حوار المقارنة في playground (كانت الـ spans مو labels → selects بلا اسم ميسّر)، أضفت label للفة ورسالة استرداد للنص الفارغ. Chat: composer صار required + aria-invalid + رسالة فارغة + مسح عند الكتابة. Policies: مولّد السياسة صار label مرئي + required + رسالة؛ حقل الاسم بالمحرر required + رسالة. API: زر التشغيل aria-live/aria-busy. Quota: gateErr مربوط بـ aria-describedby + role=alert + required + disabled أثناء الفتح.
+- **Why**: مفردة النماذج ما كانت كانونية — كل صفحة حقول وأخطاء مستقلة؛ حوار مقارنة playground كان 7 selects بلا labels. القبول: كل حقل له label + رسالة استرداد.
+- **IMPORTANT (تصحيح معماري)**: `public/js/playground.js` **مخرَج بناء** من `src/client/playground.ts` عبر `build:client` (`tsc -p tsconfig.client.json`، outDir=`public/js`). أي تعديل على `public/js/*.js` اللي له مصدر `src/client/*.ts` **ينمسح بالبناء** → التعديل الصحيح على المصدر. استثناء: `kernel-policies.js` ما له مصدر TS → يعدَّل مباشرة. الملفات ذات المصدر: `src/client/{audit-verifier,audit,certificate-verifier,eval-api,eval-store,kernel-evidence-certs,pii-detector,playground,types}.ts`.
+- **ثانوي**: `doRun` في playground كان يستخدم `announce()` (منطقة sr-only، مو خطأ مرئي + بدون aria-invalid). أضفت في المصدر: عند تشغيل فارغ → إظهار `#pg-input-error` (role=alert) + `aria-invalid` على `#pg-input` + مسح عند الكتابة. أضفت `aria-label` للفة النصية الديناميكية + `aria-label` لـ tour pop (كان role=dialog بدون اسم → axe aria-dialog-name).
+- **Note**: purge-css يشيل CSS غير المستخدم اللي يشتغل وقت التشغيل فقط؛ الحل استخدمنا فصلًا كانونيًا واحدًا مستخدم فعلًا + قاعدة aria-invalid عامة. صفحة quota مستقلّة (برا KernelLayout) فدفعها inline.
+- **Verification**: `npm run build` ✅ (275 صفحة، KernelLayout CSS 151.3KB). `npm run verify:all` ✅ exit 0 (SEO gate + hreflang 0 أخطاء). سكربت `scripts/playwright/verify-form-ux.mjs` على dist المحلي ✅ exit 0 — 9/9: كل الحقول لها label، axe 0 critical/serious (بعد تسمية tour pop)، الكيبورد، وإرسال فارغ يظهر الاسترداد + aria-invalid.
+- **Status**: verified / build ✅ / verify:all EXIT=0 ✅ / Playwright 9/9 ✅ (uncommitted)
+
 ### 2026-08-09 — CSS-FATIGUE-001: تقليل الـ nested card fatigue في لوحة الكيرنل + الامتثال
 
 - **Files**: `src/pages/kernel/compliance.astro`, `src/styles/kernel.css`, `scripts/playwright/card-fatigue-shot.mjs` (سكربت لقطات محفوظ جديد)

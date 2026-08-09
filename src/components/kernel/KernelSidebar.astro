@@ -4,8 +4,16 @@
  *
  * مطابقة لتصميم-صفحات-kernel §2.2 (الشريط الجانبي 264px · مطوي 72px).
  *
- * التحديث 2026-07-31 (رفع الشِل المشترك):
- *  - أربع مجموعات بدل ثلاث: التشغيل · الرقابة · الإثبات · البنية (صفحات موجودة فقط).
+ * تحديث 2026-08-09 (KRN-IA-001): Role-aware task groups.
+ *  - 6 مجموعات مهام بدل 4 (feature-first): Monitor · Investigate · Govern ·
+ *    Evaluate · Integrate · Admin — مصدرها taskGroups في kernel.ts.
+ *  - Pinned "top tasks" strip فوق المجموعات (max 3) — يرسمها kernel-sidebar.js
+ *    حسب الدور المحفوظ. الـ SSR يرسم دور dpo الافتراضي ويخفي القسم حتى لا
+ *    يحدث FOUC، والـ JS يبنيه ويظهره فورًا.
+ *  - إعادة ترتيب المجموعات حسب الدور عبر kernel-sidebar.js (يقرأ body[data-role]).
+ *  - مجموعة Admin gated بـ role (operator/admin فقط) — ما تظهر للزائر العام.
+ *
+ * تحديث 2026-07-31 (رفع الشِل المشترك):
  *  - نقطة حالة ملوّنة لكل وحدة (ok/warn/err) عبر data-health.
  *  - مبدّل دور صغير (DPO ▾) أعلى البراند، يُحفظ في localStorage عبر kernel-shell.js.
  *  - شارات عددية: approvals=7 (محايد)، connectors=1 (حمراء).
@@ -16,8 +24,10 @@
  * Desktop (≥1024px): sidebar ثابت، قابل للطي 264↔72 (kernel-sidebar.js + data-sidebar).
  *
  * ARIA: navigation landmark + current page. CSP: لا inline script.
+ * No-JS fallback: المجموعات الست تظهر بالترتيب الافتراضي كاملة (full
+ * discoverability محفوظ)؛ الـ pinned section يختبئ لأنه يحتاج JS لمعرفة الدور.
  */
-import { kernelUnits } from '../../data/kernel';
+import { kernelUnits, taskGroups, getRoleConfig } from '../../data/kernel';
 import DOMPurify from 'isomorphic-dompurify';
 
 interface Props {
@@ -39,20 +49,6 @@ interface SidebarItem {
   /** شارة عددية حمراء (مثل الموصل الفاشل). */
   alertBadge?: number;
 }
-
-interface Group {
-  id: string;
-  label: string;
-  slugs: string[];
-}
-
-// المجموعات الأربع — صفحات موجودة فقط (لا روابط لصفحات مفقودة).
-const GROUPS: Group[] = [
-  { id: 'operations', label: 'التشغيل', slugs: ['index', 'chat', 'scenarios', 'redteam', 'datasets', 'scorers', 'eval'] },
-  { id: 'oversight', label: 'الرقابة', slugs: ['policies', 'audit', 'approvals'] },
-  { id: 'proof', label: 'الإثبات', slugs: ['compliance', 'evidence', 'reports', 'stats'] },
-  { id: 'infra', label: 'البنية', slugs: ['models', 'connectors', 'api'] },
-];
 
 // صحة كل وحدة (بيانات تجريبية موسومة Demo).
 const HEALTH: Record<string, Health> = {
@@ -90,10 +86,19 @@ function buildItem(slug: string): SidebarItem | null {
   return item;
 }
 
-const grouped = GROUPS.map(g => ({
-  ...g,
-  items: g.slugs.map(buildItem).filter((x): x is SidebarItem => x !== null),
-}));
+// SSR: ارسم المجموعات بالترتيب الافتراضي (dpo). Admin group ما تظهر SSR
+// لأن الزائر العام ما عنده role يسمح لها — kernel-sidebar.js يضيفها لو
+// الدور المحفوظ operator/admin. هذا يمنع تسريب رابط quota في HTML المصدر.
+const defaultConfig = getRoleConfig('dpo');
+const grouped = defaultConfig.order
+  .map(gid => taskGroups.find(g => g.id === gid))
+  .filter((g): g is typeof taskGroups[number] => Boolean(g))
+  .filter(g => !g.roles) // Admin gated — لا تظهر SSR
+  .map(g => ({
+    ...g,
+    items: g.slugs.map(buildItem).filter((x): x is SidebarItem => x !== null),
+  }))
+  .filter(g => g.items.length > 0);
 
 const isActive = (path: string) =>
   currentPath === path || currentPath === path.replace(/\/$/, '');
@@ -146,6 +151,17 @@ const isActive = (path: string) =>
       <span class="kernel-sidebar__subtitle">لوحة الحوكمة</span>
     </div>
   </header>
+
+  {/* KRN-IA-001 (2026-08-09): Pinned "top tasks" strip — max 3 مهام حسب الدور.
+      يُرسم بـ JS (kernel-sidebar.js) حسب body[data-role]. hidden افتراضيًا
+      لمنع FOUC لو الدور المحفوظ ≠ الافتراضي. No-JS: يختبئ، والمجموعات
+      الست الكاملة تظل متاحة (full discoverability محفوظ). */}
+  <section class="kernel-sidebar__pinned" data-kernel-pinned hidden aria-label="مهامك السريعة">
+    <span class="kernel-sidebar__section-label">مهامك السريعة</span>
+    <div class="kernel-sidebar__pinned-list" data-kernel-pinned-list role="list">
+      {/* يُملأ بـ JS */}
+    </div>
+  </section>
 
   <nav class="kernel-sidebar__nav" aria-label="التنقل الرئيسي لـ Kernel">
     {grouped.map(group => (

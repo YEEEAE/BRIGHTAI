@@ -219,15 +219,15 @@
       '<button class="ds-icon-btn ds-icon-btn--danger" type="button" data-ds-action="delete" data-ds-id="' + esc(d.id) + '" aria-label="حذف" title="حذف">✕</button>';
     return (
       '<tr data-ds-row="' + esc(d.id) + '" data-ds-status="' + esc(d.status) + '" data-ds-env="' + esc(d.environment) + '">' +
-      '<td><button class="ds-row-name" type="button" data-ds-action="open" data-ds-id="' + esc(d.id) + '">' + esc(d.name) + '</button></td>' +
-      '<td><span class="ds-env-chip ds-env-chip--' + esc(d.environment) + '">' + esc((L.envs[d.environment] || d.environment)) + '</span></td>' +
-      '<td><span class="ds-status ds-status--' + esc(d.status) + '">' + esc((L.statuses[d.status] || d.status)) + '</span></td>' +
-      '<td><span class="ds-version" dir="ltr">v' + esc(cur.version) + '</span><code class="ds-hash" dir="ltr" title="hash v' + esc(cur.version) + ': ' + esc(cur.hash) + '">' + esc(hash) + '…</code></td>' +
-      '<td dir="ltr">' + (d.cases ? d.cases.length : 0) + '</td>' +
-      '<td dir="ltr">' + esc(d.source) + '</td>' +
-      '<td><span class="ds-runs' + (d.usedInRuns > 0 ? ' ds-runs--used' : '') + '" dir="ltr">' + d.usedInRuns + '</span></td>' +
-      '<td dir="ltr">' + esc(String(d.updatedAt || '').slice(0, 10)) + '</td>' +
-      '<td><div class="ds-row-actions">' + actions + '</div></td>' +
+      '<td data-dt-p="1"><button class="ds-row-name" type="button" data-ds-action="open" data-ds-id="' + esc(d.id) + '">' + esc(d.name) + '</button></td>' +
+      '<td data-dt-p="2" data-dt-label="البيئة"><span class="ds-env-chip ds-env-chip--' + esc(d.environment) + '">' + esc((L.envs[d.environment] || d.environment)) + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="الحالة"><span class="ds-status ds-status--' + esc(d.status) + '">' + esc((L.statuses[d.status] || d.status)) + '</span></td>' +
+      '<td data-dt-p="2" data-dt-label="الإصدار/الهاش"><span class="ds-version" dir="ltr">v' + esc(cur.version) + '</span><code class="ds-hash" dir="ltr" title="hash v' + esc(cur.version) + ': ' + esc(cur.hash) + '">' + esc(hash) + '…</code></td>' +
+      '<td data-dt-p="3" data-dt-label="الحالات" dir="ltr">' + (d.cases ? d.cases.length : 0) + '</td>' +
+      '<td data-dt-p="3" data-dt-label="المصدر" dir="ltr">' + esc(d.source) + '</td>' +
+      '<td data-dt-p="2" data-dt-label="مستخدم في Runs"><span class="ds-runs' + (d.usedInRuns > 0 ? ' ds-runs--used' : '') + '" dir="ltr">' + d.usedInRuns + '</span></td>' +
+      '<td data-dt-p="3" data-dt-label="آخر تحديث" dir="ltr">' + esc(String(d.updatedAt || '').slice(0, 10)) + '</td>' +
+      '<td data-dt-p="1"><div class="ds-row-actions">' + actions + '</div></td>' +
       '</tr>'
     );
   }
@@ -238,7 +238,12 @@
     var rows = state.datasets.filter(matchRow).map(registryRow);
     tbody.innerHTML = rows.length
       ? rows.join('')
-      : '<tr class="ds-empty-row"><td colspan="9">لا توجد نتائج مطابقة.</td></tr>';
+      : '<tr class="ds-empty-row"><td colspan="9">' +
+        '<div data-dt-empty role="status">' +
+        '<p data-dt-empty-title>لا توجد Datasets مطابقة للفلاتر</p>' +
+        '<p data-dt-empty-hint>جرّب توسيع البحث أو اختيار حالة مختلفة (كل/منشور/مسودة/مؤرشف).</p>' +
+        '<button type="button" data-dt-empty-reset data-ds-filter-reset>إعادة ضبط الفلاتر</button>' +
+        '</div></td></tr>';
   }
 
   /* ── العرض: التفاصيل ─────────────────────────────────────────────── */
@@ -1091,6 +1096,18 @@
     if (statusEl) {
       statusEl.addEventListener('change', function () {
         state.statusFilter = statusEl.value;
+        renderRegistry();
+      });
+    }
+
+    // إعادة ضبط فلاتر السجل (من حالة الفراغ الكنسية)
+    var dtReset = document.querySelector('[data-ds-filter-reset]');
+    if (dtReset) {
+      dtReset.addEventListener('click', function () {
+        state.search = '';
+        state.statusFilter = 'all';
+        if (searchEl) searchEl.value = '';
+        if (statusEl) statusEl.value = 'all';
         renderRegistry();
       });
     }

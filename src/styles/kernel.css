@@ -1242,6 +1242,79 @@ body.kernel-shell footer.footer { display: none; }
   gap: 2px;
 }
 
+/* ── KRN-IA-001 (2026-08-09): Pinned "top tasks" strip ──────────────────
+   max 3 مهام حسب الدور، فوق المجموعات. hidden افتراضيًا حتى يبنيها JS.
+   الـ accent يميّزها عن باقي العناصر: pin mark + خلفية brand-soft خفيفة،
+   مع احترام الـ active item والـ collapsed mode. */
+.kernel-sidebar__pinned {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-block-end: var(--space-3);
+  margin-block-end: var(--space-2);
+  border-block-end: 1px solid var(--border);
+}
+.kernel-sidebar__pinned[hidden] { display: none; }
+.kernel-sidebar__pinned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.kernel-sidebar__pinned-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  position: relative;
+  background: var(--brand-soft);
+  border: 1px solid var(--brand-soft-border);
+  min-block-size: 44px;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+.kernel-sidebar__pinned-item:hover {
+  background: var(--brand-soft-strong);
+  border-color: var(--interactive-primary);
+}
+.kernel-sidebar__pinned-item:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+.kernel-sidebar__pinned-item[aria-current="page"] {
+  background: linear-gradient(135deg, var(--brand-soft-strong) 0%, var(--brand-soft) 100%);
+  border-color: var(--interactive-primary);
+  box-shadow: var(--shadow-cta-glow);
+}
+.kernel-sidebar__pinned-item[aria-current="page"]::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -1px;
+  inset-block: var(--space-2);
+  inline-size: 3px;
+  border-radius: var(--radius-full);
+  background: var(--brand-500);
+  box-shadow: 0 0 12px rgba(45,212,167,0.4);
+}
+.kernel-sidebar__pinned-item .kernel-sidebar__icon {
+  flex: 0 0 auto;
+  color: var(--interactive-primary);
+}
+.kernel-sidebar__pinned-item .kernel-sidebar__label { flex: 1 1 auto; }
+/* علامة pin صغيرة في الطرف — تميّز المهام المثبّتة بصريًا. */
+.kernel-sidebar__pinned-mark {
+  flex: 0 0 auto;
+  inline-size: 14px;
+  block-size: 14px;
+  color: var(--interactive-primary);
+  opacity: 0.7;
+}
+.kernel-sidebar__pinned-item:hover .kernel-sidebar__pinned-mark { opacity: 1; }
+
 /* نقطة حالة الوحدة: لون + شكل (لا اعتماد على اللون وحده). */
 .kernel-sidebar__dot {
   inline-size: 8px;
@@ -4621,6 +4694,132 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   .kernel-audit-vrow--anomaly {
     transition: none;
   }
+}
+
+/* ── 23c — CANONICAL DATA TABLE CONTRACT (data-dt) ─────────────────────
+ * Shared responsive contract for dense data tables across kernel data pages
+ * (datasets, scorers, stats). CSS-only via data attributes so it works on
+ * both SSR tables and JS-rendered tables alike.
+ *
+ * Column priority — set [data-dt-p] on each <th>/<td>:
+ *   p1 = critical   → always a column; on mobile the card headline (no label)
+ *   p2 = secondary  → on mobile becomes a label:value row
+ *   p3 = tertiary   → on mobile becomes a label:value row too
+ * The mobile label text comes from [data-dt-label] on the <td>.
+ *
+ * ACCEPTANCE: no p1/p2/p3 field disappears on mobile — p2/p3 render as
+ * label:value rows inside each card. Wrapper must carry [data-dt-scroll]
+ * to enable horizontal scroll + sticky header above 640px.
+ *
+ * Breakpoints: ≥641px sticky-header table · ≤640px card mode.
+ */
+[data-dt] { width: 100%; border-collapse: collapse; }
+
+/* Sticky header — requires [data-dt-scroll] wrapper (sets vertical bounds). */
+[data-dt-scroll] {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  border-radius: var(--radius-lg);
+}
+[data-dt-scroll] [data-dt] thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg-surface);
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+/* Tall tables (many rows): cap the wrapper height so the sticky header
+   actually engages on vertical scroll (e.g. scorer results, eval runs). */
+[data-dt-scroll][data-dt-tall] {
+  max-block-size: 480px;
+  overflow-y: auto;
+}
+
+/* ── Card mode (≤640px): tr → card, p1 headline, p2/p3 label:value ─── */
+@media (max-width: 640px) {
+  [data-dt] thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  [data-dt] tbody { display: block; padding: 0; }
+  [data-dt] tbody tr {
+    display: block;
+    margin-block-end: var(--space-3);
+    padding-block: var(--space-1);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+  }
+  [data-dt] tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    padding-inline: var(--space-3);
+    border: 0;
+  }
+  /* p1 = headline: value stands alone (no label), first one emphasized */
+  [data-dt] tbody td[data-dt-p="1"] {
+    justify-content: flex-start;
+    font-weight: var(--font-semibold);
+  }
+  [data-dt] tbody td[data-dt-p="1"]::before { display: none; }
+  /* p2/p3 = label:value rows */
+  [data-dt] tbody td[data-dt-p="2"]::before,
+  [data-dt] tbody td[data-dt-p="3"]::before {
+    content: attr(data-dt-label);
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+  }
+  [data-dt] tbody td[data-dt-label] > * { margin-inline-start: auto; text-align: end; }
+  [data-dt] tbody td[data-dt-label] > [class*="row-actions"],
+  [data-dt] tbody td[data-dt-label] > .ds-row-actions,
+  [data-dt] tbody td[data-dt-label] > .sc-row-actions { margin-inline-start: 0; }
+}
+
+/* ── Canonical empty / no-results state ─────────────────────────────── */
+[data-dt-empty] {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+  padding-inline: var(--space-6);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+}
+[data-dt-empty] [data-dt-empty-title] {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+}
+[data-dt-empty] [data-dt-empty-hint] { margin: 0; color: var(--text-muted); }
+[data-dt-empty] [data-dt-empty-reset] {
+  min-height: 44px;
+  min-width: 44px;
+  padding-inline: var(--space-5);
+  padding-block: var(--space-2);
+  border: 1px solid var(--interactive-primary);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--interactive-primary);
+  cursor: pointer;
+}
+[data-dt-empty][hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-dt] tbody tr { transition: none; }
 }
 
 /* ── 24. APPROVALS — queue list/detail (M19, تصميم-صفحات-kernel.md §8) ── */
