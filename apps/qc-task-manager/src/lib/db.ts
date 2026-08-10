@@ -14,16 +14,20 @@
 import Database from 'better-sqlite3';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mkdirSync, readFileSync, existsSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 import { seedUsersIfEmpty } from './seed';
+// Bundle the schema into the build so it resolves from BOTH the dev server
+// (src/) and the standalone production entry (dist/server/chunks). A runtime
+// readFileSync of '../../db/schema.sql' only works in dev — the built bundle
+// lives two levels deeper and would look in dist/db/.
+import schemaSql from '../../db/schema.sql?raw';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Resolve to <app>/db/qc_tasks.db. From src/lib/ that's ../../db/qc_tasks.db.
 const DB_DIR = resolve(__dirname, '..', '..', 'db');
 const DB_PATH = process.env.QC_DB_PATH || resolve(DB_DIR, 'qc_tasks.db');
-const SCHEMA_PATH = resolve(DB_DIR, 'schema.sql');
 
 let _db: BetterSqliteDatabase | null = null;
 let _initialized = false;
@@ -36,8 +40,7 @@ function ensureDir(): void {
 /** Apply schema.sql (idempotent) and seed the admin account if needed. */
 function initialize(db: BetterSqliteDatabase): void {
   if (_initialized) return;
-  const sql = readFileSync(SCHEMA_PATH, 'utf8');
-  db.exec(sql);
+  db.exec(schemaSql);
   seedUsersIfEmpty(db);
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.
@@ -106,4 +109,4 @@ export function query(sql: string): QueryHelper {
   };
 }
 
-export { DB_PATH, SCHEMA_PATH };
+export { DB_PATH };

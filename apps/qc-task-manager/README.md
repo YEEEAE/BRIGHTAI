@@ -88,6 +88,30 @@ apps/qc-task-manager/
 - `ADMIN_DEFAULT_PASSWORD` — seed password for the initial admin (default `admin123`, warns if unset). Only applies to a fresh seed.
 - Override the DB path with `QC_DB_PATH=/abs/path.db`.
 
+## Admin — user management (/admin/users)
+
+Admin-only (middleware guards `/admin/*`); it's also the admin's landing page after login.
+
+- **Create user** (inline form on the page): username (unique), full name, password (min 8),
+  role dropdown, and a `can_create_tasks` checkbox (only meaningful for employees). On submit
+  the account is inserted with a real bcrypt hash and `is_active = 1`, so it can sign in
+  immediately — no activation step needed.
+- **Per-user actions**: activate/deactivate, reset password (admin sets the new one), and toggle
+  `can_create_tasks` (rendered for employees only — the flag is ignored for other roles).
+- **Safety rules** (enforced in `src/lib/users.ts` AND the UI):
+  - an admin can never deactivate their own account;
+  - a username can never be changed after creation (no update path exists);
+  - password hashes are never selected, rendered, or logged.
+- **Audit**: user-management actions are NOT task-related, so they are logged to the console as
+  `[users] <ISO> actor=<actor>(id=<n>) …` lines — never to `task_activity_log`
+  (CORE BUSINESS RULE #6 covers task mutations only).
+- **Disabled accounts**: a deactivated user can no longer sign in — the login handler detects the
+  state and redirects to `/login?disabled=1`, which shows "This account has been disabled."
+  instead of the generic bad-credentials message.
+
+POSTs go to `/admin/users/api` (`src/pages/admin/users/api.ts`), which dispatches on the
+`action` form field and redirects back to `/admin/users` with a one-shot flash message.
+
 ## Task creation
 
 - `/manager/new`, `/supervisor/new`, `/employee/new` render the new-task form (GET). The POST is short-circuited in `src/middleware.ts` (Astro 6 pages have no named request handlers — same pattern as login) and handled by `handleCreateTaskPost` in `src/lib/tasks.ts`.

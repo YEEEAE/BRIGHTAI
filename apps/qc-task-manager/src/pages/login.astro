@@ -10,6 +10,7 @@ import { roleHome } from '../lib/permissions';
 const rawTarget = Astro.url.searchParams.get('redirect') || '';
 const redirectTarget = rawTarget.startsWith('/') && !rawTarget.startsWith('//') ? rawTarget : '/';
 const error = Astro.url.searchParams.get('error') === '1';
+const disabled = Astro.url.searchParams.get('disabled') === '1';
 
 // Already signed in? Bounce to the role home.
 const existing = getSessionUser(Astro.request);
@@ -23,7 +24,13 @@ if (existing) {
     <h1 class="text-2xl font-semibold text-slate-900">Sign in</h1>
     <p class="mt-1 text-sm text-slate-600">Use your QC Tasks account.</p>
 
-    {error && (
+    {disabled && (
+      <div class="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+        This account has been disabled. Contact your administrator.
+      </div>
+    )}
+
+    {!disabled && error && (
       <div class="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
         Invalid username or password.
       </div>

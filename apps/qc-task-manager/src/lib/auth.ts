@@ -37,6 +37,20 @@ export function getUserById(id: number): User | null {
   return user.is_active ? user : null;
 }
 
+/**
+ * True if a username exists but the account has been deactivated. Used by the
+ * login handler to show a distinct "account disabled" message instead of a
+ * generic bad-credentials error.
+ */
+export function isUserDisabled(username: string): boolean {
+  const db = getDb();
+  const row = db
+    .prepare('SELECT is_active FROM users WHERE username = ?')
+    .get(username) as { is_active: number } | undefined;
+  if (!row) return false;
+  return Number(row.is_active) !== 1;
+}
+
 /** Verify credentials and return the user, or null on failure. */
 export function verifyCredentials(
   username: string,

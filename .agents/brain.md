@@ -19,6 +19,17 @@ skills_ready: 7
 
 ---
 
+### 2026-08-10 — QC-ADMIN-USERS-001: صفحة إدارة المستخدمين في QC Task Manager (/admin/users) + رسالة الحساب المعطّل
+
+- **Files**: `apps/qc-task-manager/src/lib/users.ts` (جديد), `apps/qc-task-manager/src/pages/admin/users/api.ts` (جديد), `apps/qc-task-manager/src/pages/admin/users/index.astro`, `apps/qc-task-manager/src/lib/auth.ts`, `apps/qc-task-manager/src/lib/session.ts`, `apps/qc-task-manager/src/pages/login.astro`, `apps/qc-task-manager/src/lib/db.ts`, `apps/qc-task-manager/README.md`
+- **What**: بنيت صفحة إدارة المستخدمين كاملة عند `/admin/users` (admin فقط): نموذج إنشاء مستخدم (username فريد، full name، password ≥ 8، role dropdown، can_create_tasks) يُدرج الحساب بكلمة مرور bcrypt-hashed ونشط فورًا؛ جدول المستخدمين (username، full name، شارة الدور، department، can_create_tasks، النشاط، تاريخ الإنشاء)؛ إجراءات لكل صف: تفعيل/تعطيل، تصفير كلمة المرور، وتبديل can_create_tasks (للموظفين فقط). الأمان: admin ما يقدر يعطّل حسابه (في الواجهة والـ lib)، username غير قابل للتعديل، الهاشات ما تنعرض أبدًا. كل إجراءات المستخدمين تُسجّل في الكونسول فقط (سطور `[users]` بدون هاشات) لأنها موش إجراءات موثّقة في task_activity_log. أضفت `isUserDisabled()` + إعادة توجيه `?disabled=1` بحيث الحساب المعطّل يعرض رسالة "This account has been disabled." بدل الخطأ العام. إصلاح باغ في البناء: استبدلت `readFileSync(schema.sql)` بـ import `?raw` حتى يعمل الـ standalone entry (`pnpm start`) مو فقط الـ dev server، لأن `../../db/schema.sql` من dist ينحل لمسار غير موجود.
+- **Why**: صفحة `/admin/users` كانت جدولًا للقراءة فقط مع رابط "New user" مكسور يتجه لـ `/admin/users/new` غير موجود؛ وكان الـ login يعرض نفس رسالة الخطأ للحساب المعطّل. Acceptance criteria تنص على إنشاء موظف وتسجيل دخوله فورًا + الحساب المعطّل ما يدخل.
+- **Verification**: `pnpm typecheck` → 0 errors ✅؛ `pnpm build` → Server built ✅؛ اختبار end-to-end عبر `PORT=4399 node dist/server/entry.mjs` مع QC_DB_PATH مؤقت: admin يدخل ✅؛ إنشاء موظف جديد (can_create_tasks=1) → الحساب يدخل فورًا ويشوف "My tasks" ✅ (acceptance #1)؛ اسم مكرر مرفوض مع flash error ✅؛ كلمة مرور أقصر من 8 مرفوضة ✅؛ admin ما يقدر يعطّل نفسه (flash: "You cannot deactivate your own account") ✅؛ تعطيل الموظف → محاولة دخوله تعيد توجيه `?disabled=1` مع رسالة "account disabled" ✅ (acceptance #2)؛ سطور `[users]` في الكونسول بدون هاشات ✅؛ صفحة /admin/users عبر Playwright: 5 صفوف + النموذج + لا console errors ✅. نفّذت على QC_DB_PATH مؤقت ثم مسحت كل ملفات الاختبار.
+- **Note**: ملاحظة اختبار — استخدام `Origin: http://127.0.0.1:4399` مع curl لتفادي فحص CSRF في Astro 6 (نفس ملاحظة QC-TASK-CREATE-001 بمنفذ مختلف). `can_create_tasks` معروض في النموذج دائمًا مع تلميح "Only applies to employee accounts"، والتبديل داخل الجدول يظهر للموظفين فقط.
+- **Report**: none (موثّق في README + هذا الـ entry)
+- **Commit**: uncommitted
+- **Status**: verified
+
 ### 2026-08-10 — QC-TASK-CREATE-001: إنشاء المهام في QC Task Manager (نماذج + POST handlers + حارس can_create_tasks)
 
 - **Files**: `apps/qc-task-manager/src/lib/tasks.ts` (جديد), `apps/qc-task-manager/src/pages/manager/new.astro` (جديد), `apps/qc-task-manager/src/pages/supervisor/new.astro` (جديد), `apps/qc-task-manager/src/pages/employee/new.astro` (جديد), `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/README.md`
