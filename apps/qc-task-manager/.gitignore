@@ -1,0 +1,23 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# database (generated at runtime)
+db/*.db
+db/*.db-wal
+db/*.db-shm
+
+# logs
+*.log
+npm-debug.log*
+
+# env
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store

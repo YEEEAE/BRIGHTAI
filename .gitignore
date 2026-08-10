@@ -36,6 +36,11 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
+# QC Task Manager — SQLite database (generated at runtime, never committed)
+apps/qc-task-manager/db/*.db
+apps/qc-task-manager/db/*.db-wal
+apps/qc-task-manager/db/*.db-shm
+
 # IDE
 .vscode/
 .idea/

@@ -168,6 +168,7 @@
   "pnpm": {
     "overrides": {
       "js-cookie": ">=3.0.7"
-    }
+    },
+    "onlyBuiltDependencies": ["better-sqlite3", "esbuild"]
   }
 }

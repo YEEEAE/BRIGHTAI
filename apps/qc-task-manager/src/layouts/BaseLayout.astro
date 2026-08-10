@@ -1,0 +1,30 @@
+---
+// Base layout for QC Task Manager. English UI, LTR, top navbar placeholder.
+import Navbar from '../components/Navbar';
+
+interface Props {
+  title: string;
+  /** Hide the navbar (e.g. on the login page). */
+  hideNav?: boolean;
+}
+
+const { title, hideNav = false } = Astro.props;
+const siteTitle = title ? `${title} · QC Tasks` : 'QC Tasks';
+---
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{siteTitle}</title>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+    {!hideNav && (
+      <Navbar client:load session={Astro.locals.session ?? null} />
+    )}
+    <main class="mx-auto w-full max-w-6xl px-4 py-8">
+      <slot />
+    </main>
+  </body>
+</html>

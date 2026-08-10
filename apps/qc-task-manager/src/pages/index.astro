@@ -1,0 +1,40 @@
+---
+// Home page. If signed in, redirect to the role's landing page; otherwise show
+// a placeholder landing that links to login.
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const session = Astro.locals.session;
+const roleHome =
+  session &&
+  (session.role === 'employee'
+    ? '/employee'
+    : session.role === 'admin'
+      ? '/admin'
+      : session.role === 'manager'
+        ? '/manager'
+        : '/supervisor');
+
+if (roleHome) {
+  return Astro.redirect(roleHome);
+}
+---
+<BaseLayout title="Home">
+  <section class="py-16 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-slate-900">QC Task Manager</h1>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-slate-600">
+      Internal task tracking for the QC department. Sign in to view your tasks.
+    </p>
+    <div class="mt-8 flex justify-center gap-3">
+      <a
+        href="/login"
+        class="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+      >
+        Sign in
+      </a>
+    </div>
+
+    <p class="mt-12 text-xs text-slate-400">
+      Placeholder home page · roles: admin, manager, supervisor, employee
+    </p>
+  </section>
+</BaseLayout>
