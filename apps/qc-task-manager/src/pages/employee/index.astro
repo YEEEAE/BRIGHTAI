@@ -2,10 +2,11 @@
 // Employee landing page. Lists tasks assigned to or created by the user.
 // No dashboard link (CORE BUSINESS RULE #1).
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import FlashNotice from '../../components/FlashNotice.astro';
 import { getDb } from '../../lib/db';
 import { canCreateTasks } from '../../lib/permissions';
 
-const session = Astro.locals.session;
+const user = Astro.locals.user!; // protected route — middleware guarantees a session
 const db = getDb();
 
 const tasks = db
@@ -16,7 +17,7 @@ const tasks = db
      ORDER BY updated_at DESC
      LIMIT 50`,
   )
-  .all(session.userId, session.userId) as {
+  .all(user.userId, user.userId) as {
     id: number;
     title: string;
     status: string;
@@ -25,9 +26,10 @@ const tasks = db
     due_date: string | null;
   }[];
 
-const allowCreate = canCreateTasks({ role: session.role, can_create_tasks: true });
+const allowCreate = canCreateTasks({ role: user.role, can_create_tasks: true });
 ---
 <BaseLayout title="My Tasks">
+  <FlashNotice />
   <header class="mb-6 flex items-center justify-between">
     <div>
       <h1 class="text-2xl font-semibold text-slate-900">My tasks</h1>

@@ -29,6 +29,20 @@ export function canViewDashboard(role: Role): boolean {
   return role !== 'employee';
 }
 
+/** Role landing page after login. Single source of truth for role routing. */
+export function roleHome(role: Role): string {
+  switch (role) {
+    case 'admin':
+      return '/admin';
+    case 'manager':
+      return '/manager';
+    case 'supervisor':
+      return '/supervisor';
+    case 'employee':
+      return '/employee';
+  }
+}
+
 // ───────────────────────────── Task creation ─────────────────────────────
 // Employees can create tasks only if can_create_tasks = 1; everyone else can.
 export function canCreateTasks(user: Pick<User, 'role' | 'can_create_tasks'>): boolean {

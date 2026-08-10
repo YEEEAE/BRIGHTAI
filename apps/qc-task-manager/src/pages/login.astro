@@ -1,17 +1,23 @@
 ---
-// Login page (public). Renders the form; submission goes to /api/login.
+// Login page (public). GET renders the form; POST /login is handled by
+// src/middleware.ts (Astro 6 pages have no named request handlers), so the
+// form stays self-submitting with no separate API endpoint.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { readSession } from '../lib/session';
+import { getSessionUser } from '../lib/auth';
+import { roleHome } from '../lib/permissions';
+
+// Only allow internal redirect targets (blocks open-redirect abuse).
+const rawTarget = Astro.url.searchParams.get('redirect') || '';
+const redirectTarget = rawTarget.startsWith('/') && !rawTarget.startsWith('//') ? rawTarget : '/';
+const error = Astro.url.searchParams.get('error') === '1';
 
 // Already signed in? Bounce to the role home.
-const existing = readSession(Astro);
+const existing = getSessionUser(Astro.request);
 if (existing) {
-  return Astro.redirect('/');
+  return Astro.redirect(roleHome(existing.role));
 }
-
-const redirectTarget = Astro.url.searchParams.get('redirect') || '';
-const error = Astro.url.searchParams.get('error') === '1';
 ---
+
 <BaseLayout title="Sign in" hideNav>
   <section class="mx-auto mt-12 w-full max-w-sm">
     <h1 class="text-2xl font-semibold text-slate-900">Sign in</h1>
@@ -23,7 +29,7 @@ const error = Astro.url.searchParams.get('error') === '1';
       </div>
     )}
 
-    <form action="/api/login" method="POST" class="mt-6 space-y-4">
+    <form action="/login" method="POST" class="mt-6 space-y-4">
       <input type="hidden" name="redirect" value={redirectTarget} />
       <div>
         <label for="username" class="block text-sm font-medium text-slate-700">Username</label>
@@ -56,8 +62,8 @@ const error = Astro.url.searchParams.get('error') === '1';
     </form>
 
     <p class="mt-6 text-xs text-slate-400">
-      Seeded accounts: <code>admin</code>, <code>manager</code>, <code>supervisor</code>,
-      <code>employee</code>, <code>emp_creator</code> — password <code>password123</code>.
+      Seeded account: <code>admin</code> — password <code>admin123</code>.
+      Additional roles are created by an admin from the <code>/admin</code> area.
     </p>
   </section>
 </BaseLayout>

@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-09 03:10 +03:00
+last_updated: 2026-08-10 10:30 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.77
 agent_version: v2.3
@@ -16,6 +16,19 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-10 — QC-AUTH-001: ترقية جلسات المصادقة في QC Task Manager (TTL 12h + randomUUID + حرس الأدوار + POST /login)
+
+- **Files**: `apps/qc-task-manager/src/lib/{auth,db,session,flash,permissions,types}.ts`, `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/src/lib/flash.ts` (جديد), `apps/qc-task-manager/src/components/FlashNotice.astro` (جديد), `apps/qc-task-manager/src/pages/{login.astro,logout.ts,index.astro,dashboard.astro}`, `apps/qc-task-manager/src/pages/{admin,manager,supervisor,employee}/index.astro`, `apps/qc-task-manager/src/pages/api/login.ts` (محذوف), `apps/qc-task-manager/src/components/Navbar.tsx`, `apps/qc-task-manager/src/layouts/BaseLayout.astro`, `apps/qc-task-manager/src/env.d.ts`, `apps/qc-task-manager/README.md`
+- **What**: طبّقت المتطلبات الخمسة: (1) TTL جلسة 12 ساعة بدل 7 أيام عبر `SESSION_TTL_MS` + `maxAge` للكوكي؛ (2) tokens عشوائية بـ `randomUUID()`؛ (3) تنظيف الجلسات المنتهية عند الإقلاع + عند كل login (`cleanupExpiredSessions`)؛ (4) حارس صلاحيات بالأدوار في middleware (public = `/` + `/login` + `/_astro/`، وكل مسار محمي يرجع 302 لـ roleHome مع flash)؛ (5) POST /login self-submitting (في middleware لأن Astro 6 ما يدعم named handlers في ملفات .astro) + رسائل flash (qc_flash cookie + FlashNotice.astro). حذفت `src/pages/api/login.ts` (نمط قديم). كمان أصلحت bug مسبق: `admin/index.astro` كان يستعلم عمود `email` غير موجود → 500 → صار `department`. `locals.user` صار يُضبط دائمًا (قد يكون null) بدل الفحص المتكرر.
+- **Why**: المتطلبات المعلنة كانت: جلسات أقصر (12h)، tokens عشوائية، لا تراكم جلسات منتهية، حماية المسارات حسب الدور مع توضيح للمستخدم، وفورم دخول يشترّط نفسه بدل endpoint API منفصل.
+- **Verification**: `npx astro check` → 0 errors / 0 warnings / 1 hint (roleHome false-positive في login.astro بسبب return مبكر) ✅؛ `pnpm build` → Server built ✅؛ اختبارات runtime curl كلها نجحت (redirect المجهول، login صحيح/خاطئ، logout، حرس الأدوار employee→/admin = 302 لـ /employee مع flash، جلسة منتهية، تنظيف المنتهية عند login، CSRF Origin غريب = 403، token مزيّف مرفوض) ✅؛ نظّفت بيانات الاختبار (حذف emp_creator + كل sessions).
+- **Report**: none (تغيير متكامل موثّق في worklog.md + README)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظات للـ future agents على `apps/qc-task-manager`: (1) `App.SessionData` الفارغ من Astro يحجب اسم `SessionData` داخل `namespace App` → استخدم inline import في env.d.ts. (2) Astro 6 فيه CSRF مدمج للـ form POSTs — اختبارات curl تحتاج `-H "Origin: http://localhost:4321"`. (3) ملفات `.astro` ما تدعم named request handlers — POST forms تُعالَج في middleware. (4) الحساب المبذور الوحيد هو admin (ADMIN_DEFAULT_PASSWORD أو admin123) — الـ README كان يذكر 5 حسابات وهذا غلط، صحّحته.
 
 ---
 

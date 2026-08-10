@@ -2973,3 +2973,42 @@ Stage Summary:
 - focus return صريح للزر الصحيح
 - الـ browser smoke test يغطي 13 سيناريو (قبل كان 8 + 1 silent-skip)
 - **الـ commit:** يلتزمه المستخدم
+
+---
+
+---
+Task ID: 2026-08-10-qc-auth-session-fix
+Agent: BrightAI Workspace Agent v2.3
+Task: QC Task Manager — sessions بجلسة 12h + randomUUID + حرس الأدوار + POST /login self-submitting + flash messages + حذف /api/login.ts
+Started: 2026-08-10T10:00:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت brain.md (protocol 0.6) قبل الشغل
+- قرأت `apps/qc-task-manager/src/middleware.ts` + `src/lib/auth.ts` + `src/lib/session.ts` + `src/lib/db.ts` + `src/pages/login.astro` + `src/pages/logout.ts` + `src/pages/api/login.ts` + كل صفحات الأدوار + `Navbar.tsx` + `BaseLayout.astro` + `env.d.ts`
+- اكتشفت: Astro 6 ما يدعم named request handlers في ملفات `.astro` (الصفحات تُرسم دائمًا مهما كان الـ method؛ الـ method dispatch فقط لملفات `.ts` endpoints) → POST /login يُعالَج في middleware
+- اكتشفت: Astro 6 فيه CSRF مدمج — أي POST بـ form-like Content-Type يجب أن يكون Origin مطابقًا لـ url.origin (غياب Origin = 403، رسالة "Cross-site POST form submissions are forbidden"). اختبارات curl تحتاج `-H "Origin: http://localhost:PORT"`
+- اكتشفت: `App.SessionData` الفارغ من Astro يحجب الاسم المجرّد داخل `namespace App` → حللناها بـ inline import `import('./lib/types').SessionData`
+- أعدت كتابة `src/lib/auth.ts`: `SESSION_TTL_MS = 12h` + `randomUUID()` tokens + `getSessionUser(request)` + `requireRole()`
+- عدّلت `src/lib/db.ts`: أضفت `cleanupExpiredSessions()` + DELETE المنتهية عند الإقلاع + أصلحت cast في `query()` helper
+- عدّلت `src/lib/session.ts`: `loginAndSetCookie` (cleanup + maxAge 12h) + `handleLoginPost` (منع open-redirect + flash)
+- أنشأت `src/lib/flash.ts` (qc_flash cookie، maxAge 60) + `src/components/FlashNotice.astro`
+- أنشأت `roleHome()` في `src/lib/permissions.ts`
+- أعدت كتابة `src/middleware.ts`: `locals.user` يُضبط دائمًا + public = `/` + `/login` + `/_astro/` + حرس الأدوار مع flash
+- حذفت `src/pages/api/login.ts` (وحذف مجلد api/)
+- عدّلت `src/pages/login.astro`: فورم self-submitting + تصحيح نص seeded account
+- حدّثت `BaseLayout.astro` + `Navbar.tsx` (prop user) + كل صفحات الأدوار + `index.astro` (roleHome) + `logout.ts` (flash)
+- أصلحت bug مسبق: `admin/index.astro` كان يستعلم عمود `email` غير موجود في السكيما → 500 → استبدلناه بـ `department`
+- `env.d.ts`: `locals.user: import('./lib/types').SessionData | null`
+
+Verification:
+- `npx astro check` → 0 errors / 0 warnings / 1 hint (roleHome false-positive في login.astro بسبب return مبكر)
+- `pnpm build` → Server built في ~1.55s ✅
+- اختبارات runtime curl كلها نجحت: redirect المجهول، login صحيح/خاطئ، logout + مسح الكوكي، حرس الأدوار (employee→/admin = 302 لـ /employee مع flash)، الجلسة المنتهية، تنظيف المنتهية عند login، CSRF بـ Origin غريب = 403، token مزيّف = رفض
+- تنظيف بيانات الاختبار: حذف مستخدم emp_creator + كل صفوف sessions → القاعدة رجعت بحالة seed (admin فقط)
+- أوقفت dev server (منفذ 4321)
+
+Stage Summary:
+- المتطلبات الخمسة كلها مطبّقة: TTL 12h، randomUUID، تنظيف الجلسات، حرس الأدوار مع flash، self-submitting POST /login
+- إزالة /api/login.ts (كان تابعًا لنمط قديم)
+- الـ commit: يلتزمه المستخدم (per brain rule)

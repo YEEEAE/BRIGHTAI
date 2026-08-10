@@ -39,7 +39,22 @@ function initialize(db: BetterSqliteDatabase): void {
   const sql = readFileSync(SCHEMA_PATH, 'utf8');
   db.exec(sql);
   seedAdminIfEmpty(db);
+  // Periodic session cleanup: purge expired rows at process start (per spec).
+  // Sessions live in SQLite, so this runs naturally once per server boot.
+  db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(new Date().toISOString());
   _initialized = true;
+}
+
+/**
+ * Purge expired session rows. Called on every login (per spec) so the sessions
+ * table never accumulates stale tokens. Returns the number of rows removed.
+ */
+export function cleanupExpiredSessions(): number {
+  const db = getDb();
+  const info = db
+    .prepare('DELETE FROM sessions WHERE expires_at < ?')
+    .run(new Date().toISOString());
+  return info.changes;
 }
 
 /**
@@ -85,9 +100,9 @@ export function query(sql: string): QueryHelper {
   const db = getDb();
   const stmt = db.prepare(sql);
   return {
-    all: (...params) => stmt.all(...params) as Record<string, unknown>[],
-    one: (...params) => stmt.get(...params) as Record<string, unknown> | undefined,
-    run: (...params) => stmt.run(...params),
+    all: <T = Record<string, unknown>>(...params: unknown[]) => stmt.all(...params) as T[],
+    one: <T = Record<string, unknown>>(...params: unknown[]) => stmt.get(...params) as T | undefined,
+    run: (...params: unknown[]) => stmt.run(...params),
   };
 }
 

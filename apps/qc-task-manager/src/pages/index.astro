@@ -2,20 +2,13 @@
 // Home page. If signed in, redirect to the role's landing page; otherwise show
 // a placeholder landing that links to login.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { roleHome } from '../lib/permissions';
 
-const session = Astro.locals.session;
-const roleHome =
-  session &&
-  (session.role === 'employee'
-    ? '/employee'
-    : session.role === 'admin'
-      ? '/admin'
-      : session.role === 'manager'
-        ? '/manager'
-        : '/supervisor');
+const user = Astro.locals.user;
+const home = user ? roleHome(user.role) : null;
 
-if (roleHome) {
-  return Astro.redirect(roleHome);
+if (home) {
+  return Astro.redirect(home);
 }
 ---
 <BaseLayout title="Home">

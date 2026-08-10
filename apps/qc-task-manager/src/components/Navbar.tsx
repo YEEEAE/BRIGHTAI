@@ -11,7 +11,7 @@ interface SessionLike {
 }
 
 interface NavbarProps {
-  session: SessionLike | null;
+  user: SessionLike | null;
 }
 
 const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]> = {
@@ -31,9 +31,9 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
   employee: [{ href: '/employee', label: 'My Tasks' }],
 };
 
-export default function Navbar({ session }: NavbarProps) {
+export default function Navbar({ user }: NavbarProps) {
   const [open, setOpen] = useState(false);
-  const links = session ? ROLE_LINKS[session.role] : [];
+  const links = user ? ROLE_LINKS[user.role] : [];
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -59,12 +59,12 @@ export default function Navbar({ session }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          {session ? (
+          {user ? (
             <>
               <span className="hidden text-sm text-slate-600 sm:inline">
-                <span className="font-medium text-slate-900">{session.fullName}</span>
+                <span className="font-medium text-slate-900">{user.fullName}</span>
                 <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-500">
-                  {session.role}
+                  {user.role}
                 </span>
               </span>
               <form action="/logout" method="POST">

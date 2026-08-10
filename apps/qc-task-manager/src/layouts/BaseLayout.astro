@@ -21,7 +21,7 @@ const siteTitle = title ? `${title} · QC Tasks` : 'QC Tasks';
   </head>
   <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
     {!hideNav && (
-      <Navbar client:load session={Astro.locals.session ?? null} />
+      <Navbar client:load user={Astro.locals.user} />
     )}
     <main class="mx-auto w-full max-w-6xl px-4 py-8">
       <slot />

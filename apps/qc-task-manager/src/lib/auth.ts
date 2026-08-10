@@ -6,12 +6,12 @@
 // time, so role/name changes take effect on the next request for that session.
 
 import bcrypt from 'bcryptjs';
-import { randomBytes } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { getDb, toBool } from './db';
 import type { Role, SessionData, User } from './types';
 
 const COOKIE_NAME = 'qc_session';
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours (per spec)
 
 function rowToUser(row: Record<string, unknown>): User {
   return {
@@ -57,7 +57,7 @@ export function verifyCredentials(
 /** Create a session row and return the opaque token to store in the cookie. */
 export function createSession(user: User): string {
   const db = getDb();
-  const token = randomBytes(32).toString('hex');
+  const token = randomUUID(); // opaque random token, per spec
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
   db.prepare(
     `INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)`,
@@ -111,6 +111,46 @@ export function getSession(token: string | null | undefined): SessionData | null
 export function destroySession(token: string | null | undefined): void {
   if (!token) return;
   getDb().prepare('DELETE FROM sessions WHERE token = ?').run(token);
+}
+
+/** Extract the value of `name` from a raw Cookie header. */
+function cookieValue(header: string, name: string): string | null {
+  for (const part of header.split(';')) {
+    const idx = part.indexOf('=');
+    if (idx === -1) continue;
+    if (part.slice(0, idx).trim() !== name) continue;
+    const value = part.slice(idx + 1).trim();
+    try {
+      return decodeURIComponent(value);
+    } catch {
+      return value;
+    }
+  }
+  return null;
+}
+
+/**
+ * Resolve the current session (if any) straight from a Request object.
+ * Reads the `qc_session` cookie, validates the token + expiry, joins the users
+ * row, and returns null when the session is absent/expired or the user is
+ * inactive. Safe to call with any Request (middleware, pages, endpoints).
+ */
+export function getSessionUser(request: Pick<Request, 'headers'>): SessionData | null {
+  const header = request.headers.get('cookie') ?? '';
+  const token = cookieValue(header, COOKIE_NAME);
+  return getSession(token);
+}
+
+/**
+ * Authorization gate: true only when the user exists AND their role is in the
+ * allowed list. Accepts either a SessionData (middleware/locals) or a User.
+ */
+export function requireRole(
+  user: SessionData | User | null | undefined,
+  roles: Role[],
+): boolean {
+  if (!user) return false;
+  return roles.includes(user.role);
 }
 
 export { COOKIE_NAME, SESSION_TTL_MS };

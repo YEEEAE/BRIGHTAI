@@ -1,28 +1,3 @@
-
-في ملف .env تحط هذي المتغيرات بس، وما يحتاج أكثر:
-
-المتغير	وين يُستخدم	وضعه الحالي
-ADMIN_DEFAULT_PASSWORD	كلمة مرور حساب الـ admin وقت التهيئة	لازم تحطها؛ لو ما حطيتها تعتبر 'admin123' ويطلع تحذير
-QC_DB_PATH	مسار ملف qc_tasks.db	اختياري — الافتراضي db/qc_tasks.db
-خطواتك الحالية (بما إن قاعدة البيانات موجودة أصلاً)
-ما تحتاج تسوي أي شي لقاعدة البيانات — جاهزة. تشغّل التطبيق مباشرة:
-
-
-bash
-cd /Users/yzydalshmry/Desktop/BRIGHTAI/apps/qc-task-manager
-pnpm dev
-وافتح http://localhost:4321/login، سجّل دخول بـ:
-
-username: admin
-password: admin123 (لأننا ما خلّينا ملف .env، استخدم الافتراضي)
-⚠️ ملاحظة مهمة عن كلمة المرور: لو تبي تغيّر كلمة مرور الـ admin عن admin123، تغيير ملف .env ما يأثر على حساب موجود لأن الـ seed يسوي INSERT بس وقت ما يكون جدول users فاضي. عندك خيارين:
-
-قبل ما تنشئ أي مستخدمين إضافيين: نفّذ pnpm db:reset بعد ما تحط ADMIN_DEFAULT_PASSWORD الجديد في .env. الـ admin الجديد ياخذ كلمة المرور الجديدة.
-بعد ما صار عندك بيانات ما تبي تفقدها: تغيير كلمة المرور يتم من داخل التطبيق (صفحة الـ admin) أو بتحديث الـ hash يدوياً في الجدول — ما عن طريق متغير البيئة.
-تبيني أسوي صفحة لتغيير كلمة المرور داخل التطبيق، ولا تكفي طريقة db:reset للحين؟
-
-
-
 # QC Task Manager
 
 Internal task-tracking web app for the QC department. Astro (SSR) + React islands + Tailwind, backed by SQLite (`better-sqlite3`) with bcrypt password hashing. Runs locally on port 4321.
@@ -33,21 +8,29 @@ From the monorepo root:
 
 ```bash
 pnpm install
-pnpm --filter qc-task-manager db:init   # create db/qc_tasks.db + seed users
+pnpm --filter qc-task-manager db:init   # create db/qc_tasks.db + seed admin
 pnpm --filter qc-task-manager dev        # http://localhost:4321
 ```
 
-### Seeded accounts
+Open http://localhost:4321/login and sign in.
 
-Password for all: `password123`
+### Seeded account
 
-| Username      | Role       | Notes                          |
-| ------------- | ---------- | ------------------------------ |
-| `admin`       | admin      | Full control                   |
-| `manager`     | manager    | Tasks + delete requests        |
-| `supervisor`  | supervisor | Tasks + assignment             |
-| `employee`    | employee   | No dashboard, no task creation |
-| `emp_creator` | employee   | `can_create_tasks = 1`         |
+The DB seeds **one** admin account on first boot (only when the `users` table is empty). Additional users are created from the `/admin` UI.
+
+| Username | Role  | Password                                   | Notes                                  |
+| -------- | ----- | ------------------------------------------ | -------------------------------------- |
+| `admin`  | admin | `ADMIN_DEFAULT_PASSWORD` (default `admin123`) | Full control; change before exposing to network |
+
+> ⚠️ Changing `ADMIN_DEFAULT_PASSWORD` in `.env` does **not** update an existing admin — the seed is an `INSERT` that only runs when `users` is empty. To rotate an existing admin password either run `pnpm db:reset` (wipes data) after setting the new value, or change it from the admin UI / directly in the DB.
+
+## Auth & sessions
+
+- Session tokens are opaque `randomUUID()` values stored server-side in the `sessions` table; the browser only holds the token in an `HttpOnly` cookie (`qc_session`).
+- Session TTL is **12 hours** (`SESSION_TTL_MS` in `src/lib/auth.ts`). Expired rows are purged on every login and on server startup (`cleanupExpiredSessions` in `src/lib/db.ts`).
+- `src/middleware.ts` is the single auth guard: it resolves `locals.user` for every request, protects role-scoped routes (`/dashboard`, `/admin`, `/manager`, `/supervisor`), and handles the self-submitting `POST /login` form (redirects to the safe target on success, `/login?error=1` on bad credentials — open-redirect blocked).
+- One-shot flash messages (`qc_flash` cookie + `src/components/FlashNotice.astro`) are shown after login/logout and on access-denied redirects.
+- Astro 6 has a built-in same-origin CSRF check for form POSTs — cross-site POST forms are rejected with 403.
 
 ## Tech stack
 
@@ -65,24 +48,26 @@ apps/qc-task-manager/
 │   ├── seed.sql            # reference seed (authoritative seed is in scripts/init-db.mjs)
 │   └── qc_tasks.db         # generated at runtime (gitignored)
 ├── scripts/
-│   └── init-db.mjs         # applies schema + seeds real bcrypt hashes
+│   └── init-db.mjs         # applies schema + seeds admin with a real bcrypt hash
 ├── src/
 │   ├── layouts/BaseLayout.astro
-│   ├── components/Navbar.tsx
+│   ├── components/
+│   │   ├── Navbar.tsx
+│   │   └── FlashNotice.astro
 │   ├── lib/
-│   │   ├── db.ts           # SQLite singleton (WAL)
-│   │   ├── auth.ts         # bcrypt + sessions
-│   │   ├── session.ts      # cookie helpers for Astro endpoints
-│   │   ├── permissions.ts  # role checks (single source of truth)
+│   │   ├── db.ts           # SQLite singleton (WAL) + cleanupExpiredSessions
+│   │   ├── auth.ts         # bcrypt + sessions (12h TTL, randomUUID tokens)
+│   │   ├── session.ts      # cookie helpers for endpoints + handleLoginPost
+│   │   ├── flash.ts        # one-shot flash messages via qc_flash cookie
+│   │   ├── permissions.ts  # role checks + roleHome (single source of truth)
 │   │   ├── activity.ts     # task_activity_log helper
 │   │   └── types.ts
-│   ├── middleware.ts       # auth guard + role-scoped route protection
+│   ├── middleware.ts       # auth guard + role-scoped route protection + POST /login
 │   └── pages/
-│       ├── index.astro     # redirects by role
-│       ├── login.astro
+│       ├── index.astro     # redirects by role (roleHome)
+│       ├── login.astro     # self-submitting login form
 │       ├── logout.ts       # POST
 │       ├── dashboard.astro # manager/supervisor/admin
-│       ├── api/login.ts    # POST credentials
 │       ├── employee/       # employee-only views
 │       ├── manager/        # manager + admin
 │       ├── supervisor/     # supervisor + manager + admin
@@ -96,8 +81,8 @@ apps/qc-task-manager/
 ## Environment
 
 - Node 20+
+- `ADMIN_DEFAULT_PASSWORD` — seed password for the initial admin (default `admin123`, warns if unset). Only applies to a fresh seed.
 - Override the DB path with `QC_DB_PATH=/abs/path.db`.
-- Override the seed password with `QC_SEED_PASSWORD=...`.
 
 ## Notes
 

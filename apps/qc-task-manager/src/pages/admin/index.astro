@@ -1,22 +1,24 @@
 ---
 // Admin user management home (admin only).
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import FlashNotice from '../../components/FlashNotice.astro';
 import { getDb, toBool } from '../../lib/db';
 
 const db = getDb();
 const users = db
-  .prepare(`SELECT id, username, full_name, email, role, can_create_tasks, is_active FROM users ORDER BY id`)
+  .prepare(`SELECT id, username, full_name, department, role, can_create_tasks, is_active FROM users ORDER BY id`)
   .all() as {
     id: number;
     username: string;
     full_name: string;
-    email: string | null;
+    department: string;
     role: string;
     can_create_tasks: number;
     is_active: number;
   }[];
 ---
 <BaseLayout title="Users">
+  <FlashNotice />
   <header class="mb-6 flex items-center justify-between">
     <div>
       <h1 class="text-2xl font-semibold text-slate-900">Users</h1>
@@ -34,7 +36,7 @@ const users = db
           <th class="px-4 py-2">#</th>
           <th class="px-4 py-2">Username</th>
           <th class="px-4 py-2">Name</th>
-          <th class="px-4 py-2">Email</th>
+          <th class="px-4 py-2">Department</th>
           <th class="px-4 py-2">Role</th>
           <th class="px-4 py-2">Can create</th>
           <th class="px-4 py-2">Active</th>
@@ -46,7 +48,7 @@ const users = db
             <td class="px-4 py-2 text-slate-500">{u.id}</td>
             <td class="px-4 py-2 font-medium text-slate-900">{u.username}</td>
             <td class="px-4 py-2 text-slate-600">{u.full_name}</td>
-            <td class="px-4 py-2 text-slate-600">{u.email ?? '—'}</td>
+            <td class="px-4 py-2 text-slate-600">{u.department}</td>
             <td class="px-4 py-2">
               <span class="rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-500">{u.role}</span>
             </td>
