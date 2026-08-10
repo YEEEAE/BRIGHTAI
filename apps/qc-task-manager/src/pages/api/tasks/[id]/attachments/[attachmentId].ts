@@ -1,0 +1,51 @@
+// GET /api/tasks/[id]/attachments/[attachmentId] — stream a stored attachment.
+//
+// Auth: same view rule as the task details page (employees: assigned or
+// created). The BLOB stays in SQLite (CORE BUSINESS RULE #5) — this endpoint
+// is the only way to download it. Responses are private and never cached.
+
+import type { APIRoute } from 'astro';
+import { getDb } from '../../../../../lib/db';
+import { getCurrentUser } from '../../../../../lib/session';
+import { getAttachment, canViewTask } from '../../../../../lib/taskDetails';
+import type { Task } from '../../../../../lib/types';
+
+function json(body: Record<string, unknown>, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+export const GET: APIRoute = async (context) => {
+  const user = getCurrentUser(context);
+  if (!user) return json({ ok: false, error: 'Not authenticated.' }, 401);
+
+  const taskId = Number(context.params.id);
+  const attachmentId = Number(context.params.attachmentId);
+  if (!Number.isInteger(taskId) || taskId <= 0 || !Number.isInteger(attachmentId) || attachmentId <= 0) {
+    return json({ ok: false, error: 'Invalid task or attachment id.' }, 404);
+  }
+
+  const task = getDb().prepare('SELECT id, created_by, assigned_to FROM tasks WHERE id = ?').get(taskId) as
+    | Pick<Task, 'id' | 'created_by' | 'assigned_to'>
+    | undefined;
+  if (!task) return json({ ok: false, error: 'Task not found.' }, 404);
+  if (!canViewTask({ id: user.id, role: user.role }, task)) {
+    return json({ ok: false, error: 'You cannot view this task.' }, 403);
+  }
+
+  const attachment = getAttachment(attachmentId, taskId);
+  if (!attachment) return json({ ok: false, error: 'Attachment not found.' }, 404);
+
+  // RFC 5987 encodes non-ASCII file names safely for Content-Disposition.
+  const encodedName = encodeURIComponent(attachment.file_name);
+  return new Response(new Uint8Array(attachment.file_data), {
+    headers: {
+      'Content-Type': attachment.mime_type || 'application/octet-stream',
+      'Content-Length': String(attachment.file_data.byteLength),
+      'Content-Disposition': `attachment; filename*=UTF-8''${encodedName}`,
+      'Cache-Control': 'private, no-store',
+    },
+  });
+};

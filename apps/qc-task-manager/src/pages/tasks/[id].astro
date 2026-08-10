@@ -47,9 +47,14 @@ const rawId = Number(Astro.params.id);
 const idValid = Number.isInteger(rawId) && rawId > 0;
 
 const detail = idValid ? getTaskDetail(rawId) : null;
-const task = detail?.task ?? null;
+const task = detail;
 const notFound = !detail;
 const forbidden = !notFound && !canViewTask({ id: user.userId, role: user.role }, task!);
+
+// Correct HTTP semantics: 404 for a missing task, 403 for a forbidden one.
+// The body is still rendered so the user gets a styled page, not a bare code.
+if (notFound) Astro.response.status = 404;
+if (forbidden) Astro.response.status = 403;
 
 // Only pull the rich data when we will actually render the page.
 let comments: CommentWithAuthor[] = [];
@@ -138,7 +143,7 @@ function svgIcon(inner: string, cls = ''): string {
       </a>
     </section>
   </BaseLayout>
-) : (
+) : task ? (
   <BaseLayout title={`${task.title} · Task #${task.id}`}>
     <div class="space-y-6">
       <div class="rounded-lg border border-slate-200 bg-white p-6">
@@ -240,7 +245,6 @@ function svgIcon(inner: string, cls = ''): string {
           taskId={task.id}
           taskStatus={task.status}
           comments={regularComments}
-          userName={user.fullName}
           client:visible
         />
       </section>
@@ -339,4 +343,4 @@ function svgIcon(inner: string, cls = ''): string {
       )}
     </div>
   </BaseLayout>
-)}
+) : null}

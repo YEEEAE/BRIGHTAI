@@ -23,12 +23,11 @@ interface Props {
   taskId: number;
   taskStatus: string;
   comments: CommentItem[];
-  userName: string;
 }
 
 const MAX_LENGTH = 2000;
 
-export default function CommentBox({ taskId, taskStatus, comments, userName }: Props) {
+export default function CommentBox({ taskId, taskStatus, comments }: Props) {
   const [items, setItems] = useState<CommentItem[]>(comments);
   const [text, setText] = useState('');
   const [submitting, setSubmitting] = useState(false);

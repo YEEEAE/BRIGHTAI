@@ -119,7 +119,50 @@ POSTs go to `/admin/users/api` (`src/pages/admin/users/api.ts`), which dispatche
 - `/employee/new` is gated by `can_create_tasks` on both GET and POST (CORE BUSINESS RULE #1) — an employee without the flag is bounced, and a crafted POST cannot bypass the gate.
 - Every created task records a `task_created` row in `task_activity_log` (CORE BUSINESS RULE #6).
 
+## Task details (/tasks/[id])
+
+Read-only task detail page (`src/pages/tasks/[id].astro`), reachable from the task
+rows in every role's list view. Server-rendered with a single React island.
+
+- **Access rule** (CORE): employees may view only tasks **assigned to them or created
+  by them**; every other role sees any task. A missing id → `404`, an unauthorized
+  employee → `403` (both with a styled body, not a bare status).
+- **Sections**: header (status/priority badges, progress bar, due date, assignee,
+  creator, completion info), blocker-note callout, comments thread (completion
+  comment pinned on top), attachments list, activity timeline, and a closure panel
+  (evidence + completion details, only when the task is completed).
+- Completed tasks are **read-only for everyone** (CORE BUSINESS RULE #3) — the
+  comment box is disabled and the POST endpoint returns 403.
+- Comments render via `src/components/CommentBox.tsx` (React island, `client:visible`),
+  which POSTs to the comment API and appends the returned comment in place.
+- Presentation helpers live in `src/lib/format.ts` (dates, file sizes, labels) and
+  `src/lib/taskDetails.ts` (view check + all read queries + activity text).
+
+### POST /api/tasks/[id]/comment
+
+JSON API used by CommentBox. Body: `comment` (form-encoded, 1–2000 chars).
+
+| Case | Status |
+|---|---|
+| Not authenticated | 401 |
+| Task not found / invalid id | 404 |
+| Cannot view task / task completed | 403 |
+| Empty or over-limit comment | 400 |
+| Success | 200 `{ ok, comment }` |
+
+On success it inserts a `task_comments` row and logs `comment_added` in
+`task_activity_log` (CORE BUSINESS RULE #6).
+
+### GET /api/tasks/[id]/attachments/[attachmentId]
+
+Streams a stored attachment BLOB (CORE BUSINESS RULE #5: files live in SQLite).
+Same view rule as the page. Returns `Content-Type` (or `application/octet-stream`),
+`Content-Length`, an RFC 5987 `Content-Disposition` (`filename*=UTF-8''…`) for
+non-ASCII names, and `Cache-Control: private, no-store`.
+
 ## Notes
 
 - The DB file (`*.db`, `*.db-wal`, `*.db-shm`) is gitignored and never committed.
-- This scaffold establishes routing, auth, the data model, and task creation. Task editing/closure, attachments UI, and delete-request workflows are the next build phase.
+- This scaffold establishes routing, auth, the data model, task creation, and the
+  read-only task details page (comments + attachment downloads). Task editing/closure
+  flows, the attachments upload UI, and delete-request workflows are the next build phase.
