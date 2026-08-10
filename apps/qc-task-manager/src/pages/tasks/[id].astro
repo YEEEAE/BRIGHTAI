@@ -18,6 +18,8 @@
 // All formatting/action text lives in lib/{format,taskDetails}.ts.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CommentBox from '../../components/CommentBox';
+import DeleteRequestDialog from '../../components/DeleteRequestDialog';
+import { hasPendingDeleteRequest } from '../../lib/deleteRequests';
 import {
   canViewTask,
   getTaskDetail,
@@ -72,6 +74,19 @@ if (!notFound && !forbidden) {
 
 const completed = task?.status === 'completed';
 const regularComments = comments.filter((c) => c.id !== closureComment?.id);
+
+// Delete-request workflow (CORE BUSINESS RULE #4): employees request deletion of
+// their own tasks that are not started or in progress. Completed tasks are never
+// requestable (CORE BUSINESS RULE #3); manager/admin delete directly instead.
+const canRequestDeletion =
+  !notFound &&
+  !forbidden &&
+  user.role === 'employee' &&
+  !!task &&
+  (task.status === 'not_started' || task.status === 'in_progress') &&
+  canViewTask({ id: user.userId, role: user.role }, task);
+const deleteRequestPending =
+  !notFound && !forbidden && !!task ? hasPendingDeleteRequest(rawId) : false;
 
 const backHref = taskListFor(user.role);
 
@@ -153,13 +168,21 @@ function svgIcon(inner: string, cls = ''): string {
             <h1 class="mt-1 text-2xl font-semibold text-slate-900">{task.title}</h1>
             <p class="mt-0.5 text-sm text-slate-500">Task #{task.id}</p>
           </div>
-          <div class="flex gap-2">
-            <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_TONES[task.status] ?? 'bg-slate-100 text-slate-600'}`}>
-              {statusLabel(task.status)}
-            </span>
-            <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${PRIORITY_TONES[task.priority] ?? 'bg-slate-100 text-slate-600'}`}>
-              {priorityLabel(task.priority)}
-            </span>
+          <div class="flex flex-col items-end gap-2">
+            <div class="flex gap-2">
+              <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_TONES[task.status] ?? 'bg-slate-100 text-slate-600'}`}>
+                {statusLabel(task.status)}
+              </span>
+              <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${PRIORITY_TONES[task.priority] ?? 'bg-slate-100 text-slate-600'}`}>
+                {priorityLabel(task.priority)}
+              </span>
+            </div>
+            <DeleteRequestDialog
+              taskId={task.id}
+              canRequest={canRequestDeletion}
+              hasPendingRequest={deleteRequestPending}
+              client:visible
+            />
           </div>
         </header>
 

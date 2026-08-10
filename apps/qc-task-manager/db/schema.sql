@@ -77,9 +77,16 @@ CREATE TABLE IF NOT EXISTS task_activity_log (
 
 -- ──────────────────── Task delete requests ─────────────────────────
 -- CORE BUSINESS RULE #4: employees cannot delete; they request, manager/admin review.
+--
+-- Deliberately NO `ON DELETE CASCADE` on task_id: when a request is APPROVED the
+-- task is hard-deleted but the request row must survive as the audit record
+-- (status='approved'). task_id therefore becomes a historical reference that may
+-- point at a deleted task; task_title snapshots the task name so the requests
+-- page can render it even after the task is gone.
 CREATE TABLE IF NOT EXISTS task_delete_requests (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  task_id      INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+  task_id      INTEGER NOT NULL,
+  task_title   TEXT NOT NULL,
   requested_by INTEGER NOT NULL REFERENCES users(id),
   reason       TEXT,
   status       TEXT NOT NULL DEFAULT 'pending'

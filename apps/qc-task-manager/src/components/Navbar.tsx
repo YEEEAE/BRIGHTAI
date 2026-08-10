@@ -19,10 +19,12 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/admin/users', label: 'Admin' },
     { href: '/manager', label: 'Tasks' },
+    { href: '/manager/requests', label: 'Delete Requests' },
   ],
   manager: [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/manager', label: 'Tasks' },
+    { href: '/manager/requests', label: 'Delete Requests' },
   ],
   supervisor: [
     { href: '/dashboard', label: 'Dashboard' },

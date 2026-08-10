@@ -37,10 +37,54 @@ function ensureDir(): void {
   if (!existsSync(DB_DIR)) mkdirSync(DB_DIR, { recursive: true });
 }
 
+/**
+ * Rebuild task_delete_requests when it predates the delete-request workflow.
+ *
+ * The original table had `task_id ... ON DELETE CASCADE`, which destroyed the
+ * request row (the audit record) the moment an approval deleted its task. The
+ * workflow needs the approved/rejected request to survive, so the live table
+ * uses a plain INTEGER task_id + a task_title snapshot. Because schema.sql uses
+ * `CREATE TABLE IF NOT EXISTS`, existing databases keep the old shape — this
+ * migration detects it (missing task_title column) and rebuilds the table,
+ * backfilling task_title from the still-live tasks table.
+ */
+function migrateDeleteRequests(db: BetterSqliteDatabase): void {
+  const cols = db.prepare('PRAGMA table_info(task_delete_requests)').all() as {
+    name: string;
+  }[];
+  if (cols.length === 0) return; // table not created yet (fresh boot applies schema first)
+  if (cols.some((c) => c.name === 'task_title')) return; // already migrated
+
+  db.exec(`
+    CREATE TABLE task_delete_requests_new (
+      id           INTEGER PRIMARY KEY AUTOINCREMENT,
+      task_id      INTEGER NOT NULL,
+      task_title   TEXT NOT NULL DEFAULT '',
+      requested_by INTEGER NOT NULL REFERENCES users(id),
+      reason       TEXT,
+      status       TEXT NOT NULL DEFAULT 'pending'
+                     CHECK (status IN ('pending', 'approved', 'rejected')),
+      reviewed_by  INTEGER REFERENCES users(id),
+      reviewed_at  TEXT,
+      created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    INSERT INTO task_delete_requests_new
+      (id, task_id, task_title, requested_by, reason, status, reviewed_by, reviewed_at, created_at)
+      SELECT r.id, r.task_id, COALESCE(t.title, 'Deleted task'), r.requested_by, r.reason,
+             r.status, r.reviewed_by, r.reviewed_at, r.created_at
+      FROM task_delete_requests r
+      LEFT JOIN tasks t ON t.id = r.task_id;
+    DROP TABLE task_delete_requests;
+    ALTER TABLE task_delete_requests_new RENAME TO task_delete_requests;
+  `);
+  console.warn('[db] migrated task_delete_requests (task_title snapshot, no delete cascade).');
+}
+
 /** Apply schema.sql (idempotent) and seed the admin account if needed. */
 function initialize(db: BetterSqliteDatabase): void {
   if (_initialized) return;
   db.exec(schemaSql);
+  migrateDeleteRequests(db);
   seedUsersIfEmpty(db);
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.

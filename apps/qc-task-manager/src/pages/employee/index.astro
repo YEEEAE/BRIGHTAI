@@ -16,10 +16,12 @@ const allowCreate = fullUser ? PERMISSIONS.canCreateTask(fullUser) : false;
 
 const tasks = db
   .prepare(
-    `SELECT id, title, status, priority, progress_percent, due_date
-     FROM tasks
-     WHERE assigned_to = ? OR created_by = ?
-     ORDER BY updated_at DESC
+    `SELECT id, title, status, priority, progress_percent, due_date,
+            (SELECT 1 FROM task_delete_requests r
+              WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
+     FROM tasks t
+     WHERE t.assigned_to = ? OR t.created_by = ?
+     ORDER BY t.updated_at DESC
      LIMIT 50`,
   )
   .all(user.userId, user.userId) as {
@@ -29,6 +31,7 @@ const tasks = db
     priority: string;
     progress_percent: number;
     due_date: string | null;
+    delete_pending: number;
   }[];
 
 ---
@@ -59,7 +62,14 @@ const tasks = db
               #{t.id} · {t.priority} · {t.progress_percent}%
             </div>
           </div>
-          <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{t.status}</span>
+          <div class="flex items-center gap-2">
+            {t.delete_pending === 1 && (
+              <span class="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                🗑️ Deletion requested
+              </span>
+            )}
+            <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{t.status}</span>
+          </div>
         </li>
       ))}
     </ul>

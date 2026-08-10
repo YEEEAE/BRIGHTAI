@@ -9,7 +9,9 @@ const db = getDb();
 const tasks = db
   .prepare(
     `SELECT t.id, t.title, t.status, t.priority, t.progress_percent,
-            u.full_name AS assignee
+            u.full_name AS assignee,
+            (SELECT 1 FROM task_delete_requests r
+              WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
      FROM tasks t
      LEFT JOIN users u ON u.id = t.assigned_to
      ORDER BY t.updated_at DESC
@@ -22,6 +24,7 @@ const tasks = db
     priority: string;
     progress_percent: number;
     assignee: string | null;
+    delete_pending: number;
   }[];
 ---
 <BaseLayout title="Tasks">
@@ -68,7 +71,14 @@ const tasks = db
               <td class="px-4 py-2 text-slate-600">{t.priority}</td>
               <td class="px-4 py-2 text-slate-600">{t.progress_percent}%</td>
               <td class="px-4 py-2">
-                <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{t.status}</span>
+                <div class="flex items-center gap-2">
+                  {t.delete_pending === 1 && (
+                    <span class="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700" title="Pending deletion request">
+                      🗑️
+                    </span>
+                  )}
+                  <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{t.status}</span>
+                </div>
               </td>
             </tr>
           ))}
