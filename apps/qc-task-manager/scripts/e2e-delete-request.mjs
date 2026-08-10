@@ -17,6 +17,9 @@ if (!DB_PATH) {
   process.exit(1);
 }
 const PASS = 'admin123';
+// Astro's built-in same-origin CSRF check requires an Origin header; a real
+// browser sends it on form POSTs, Playwright's APIRequestContext does not.
+const CSRF_HEADERS = { Origin: BASE, Referer: `${BASE}/` };
 
 // ── tiny test harness ──
 let passed = 0;
@@ -55,7 +58,9 @@ async function login(page, username) {
   await page.goto(`${BASE}/login`);
   await page.fill('#username', username);
   await page.fill('#password', PASS);
-  await page.click('button[type="submit"]');
+  // Scope to the login form: the Navbar also renders a submit button (Sign out)
+  // once a session exists, which would otherwise be clicked first.
+  await page.locator('form[action="/login"] button[type="submit"]').click();
   await page.waitForURL((u) => !u.pathname.startsWith('/login'), { timeout: 15_000 });
 }
 
@@ -65,7 +70,9 @@ async function createTask(managerPage, { title, description, assigneeId }) {
   await managerPage.fill('#title', title);
   if (description) await managerPage.fill('#description', description);
   if (assigneeId) await managerPage.selectOption('#assigned_to', String(assigneeId));
-  await managerPage.click('button[type="submit"]');
+  // Scope to the new-task form: the Navbar's "Sign out" is also a submit
+  // button and comes first in the DOM — an unscoped click logs the manager out.
+  await managerPage.locator('form[action="/manager/new"] button[type="submit"]').click();
   await managerPage.waitForURL((u) => u.pathname === '/manager', { timeout: 15_000 });
   const row = taskByTitle(title);
   if (!row) throw new Error(`createTask: "${title}" not found in DB`);
@@ -124,6 +131,7 @@ try {
 
   const dupRes = await employeePage.request.post(`${BASE}/api/tasks/${aId}/delete-request`, {
     form: { reason: 'second attempt' },
+    headers: CSRF_HEADERS,
   });
   const dupBody = await dupRes.json();
   ok(dupRes.status() === 400 && /already pending/.test(dupBody.error ?? ''), 'D. duplicate pending request blocked (400)');
@@ -203,7 +211,9 @@ try {
   await openRequestsPage(managerPage);
   const bHistRow = managerPage.locator('section:has-text("History") li', { hasText: 'SC-B keep me' }).first();
   await bHistRow.waitFor({ timeout: 10_000 });
-  ok((await bHistRow.innerText()).includes('rejected'), 'B. history shows rejected');
+  const bHistText = await bHistRow.innerText();
+  ok(bHistText.includes('rejected'), 'B. history shows rejected');
+  ok(bHistText.includes('reviewed by Department Manager'), 'B. history shows reviewer name');
 
   // ─────────────── Scenario C: completed task blocked ───────────────
   console.log('\n── Scenario C: completed tasks are not deletion-requestable ──');
@@ -225,6 +235,7 @@ try {
 
   const cRes = await employeePage.request.post(`${BASE}/api/tasks/${cId}/delete-request`, {
     form: { reason: 'should fail' },
+    headers: CSRF_HEADERS,
   });
   const cBody = await cRes.json();
   ok(cRes.status() === 400 && /Completed tasks/.test(cBody.error ?? ''), 'C. API rejects deletion request for completed task');
@@ -235,6 +246,7 @@ try {
   const eRes = await supervisorPage.request.post(`${BASE}/manager/requests/api`, {
     form: { action: 'approve', request_id: String(bReq.id) },
     maxRedirects: 0,
+    headers: CSRF_HEADERS,
   });
   ok(eRes.status() === 302 && (eRes.headers()['location'] ?? '').startsWith('/supervisor'), 'E. supervisor POST /manager/requests/api → redirected away');
   ok(requestForTask(bId)?.status === 'rejected', 'E. rejected request untouched by supervisor attempt');
@@ -285,4 +297,3 @@ if (failures.length) {
   process.exit(1);
 }
 console.log('ALL PASS ✅');
-  ok(/reviewed by Department Manager/.test(histText), 'A. history shows reviewer name');

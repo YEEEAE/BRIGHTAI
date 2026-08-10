@@ -84,13 +84,23 @@ export function submitDeleteRequest(params: {
     return { ok: false, error: `Reason must be ${REASON_MAX_LENGTH} characters or fewer.` };
   }
 
-  const info = db
-    .prepare(
-      `INSERT INTO task_delete_requests (task_id, task_title, requested_by, reason)
-       VALUES (?, ?, ?, ?)`,
-    )
-    .run(params.taskId, task.title, params.userId, reason);
-  const requestId = Number(info.lastInsertRowid);
+  let requestId: number;
+  try {
+    const info = db
+      .prepare(
+        `INSERT INTO task_delete_requests (task_id, task_title, requested_by, reason)
+         VALUES (?, ?, ?, ?)`,
+      )
+      .run(params.taskId, task.title, params.userId, reason);
+    requestId = Number(info.lastInsertRowid);
+  } catch (err) {
+    // Defense in depth: the partial unique index
+    // (task_id) WHERE status = 'pending' makes duplicate blocking atomic.
+    if (err instanceof Error && /UNIQUE constraint failed/i.test(err.message)) {
+      return { ok: false, error: 'A deletion request for this task is already pending.' };
+    }
+    throw err;
+  }
 
   logActivity({
     taskId: params.taskId,
@@ -175,11 +185,16 @@ export function reviewDeleteRequest(params: {
   const markReviewed = db.prepare(
     `UPDATE task_delete_requests
      SET status = ?, reviewed_by = ?, reviewed_at = datetime('now')
-     WHERE id = ?`,
+     WHERE id = ? AND status = 'pending'`,
   );
 
   if (params.decision === 'rejected') {
-    markReviewed.run('rejected', params.reviewer.id, request.id);
+    // Conditional update: if the row was already reviewed between our SELECT
+    // and this UPDATE, changes === 0 and we bail instead of overwriting.
+    const info = markReviewed.run('rejected', params.reviewer.id, request.id);
+    if (info.changes !== 1) {
+      return { ok: false, error: 'This request has already been reviewed.' };
+    }
     logActivity({ taskId: request.task_id, userId: params.reviewer.id, action: Action.DELETE_REJECTED });
     console.log(
       `[tasks] deletion request #${request.id} (task #${request.task_id}) rejected by ${params.reviewer.username}`,
@@ -190,10 +205,22 @@ export function reviewDeleteRequest(params: {
   // approve — log first (the activity row dies with the task), then delete.
   const tx = db.transaction(() => {
     logActivity({ taskId: request.task_id, userId: params.reviewer.id, action: Action.DELETE_APPROVED });
-    markReviewed.run('approved', params.reviewer.id, request.id);
+    const info = markReviewed.run('approved', params.reviewer.id, request.id);
+    if (info.changes !== 1) {
+      throw new Error('already reviewed');
+    }
     db.prepare('DELETE FROM tasks WHERE id = ?').run(request.task_id);
   });
-  tx();
+  try {
+    tx();
+  } catch (err) {
+    // Rolled back (nothing deleted, nothing logged) — the request changed
+    // under us (e.g. a second reviewer clicked first).
+    if (err instanceof Error && err.message === 'already reviewed') {
+      return { ok: false, error: 'This request has already been reviewed.' };
+    }
+    throw err;
+  }
   console.log(
     `[tasks] deletion request #${request.id} approved by ${params.reviewer.username}; task #${request.task_id} deleted`,
   );

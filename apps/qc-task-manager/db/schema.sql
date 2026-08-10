@@ -110,3 +110,7 @@ CREATE INDEX IF NOT EXISTS idx_tasks_assigned_to ON tasks(assigned_to);
 CREATE INDEX IF NOT EXISTS idx_tasks_status      ON tasks(status);
 CREATE INDEX IF NOT EXISTS idx_activity_task_id  ON task_activity_log(task_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_expires  ON sessions(expires_at);
+-- One pending deletion request per task, enforced at the database level
+-- (CORE BUSINESS RULE #4: duplicate pending requests are blocked).
+CREATE UNIQUE INDEX IF NOT EXISTS idx_delreq_one_pending
+  ON task_delete_requests(task_id) WHERE status = 'pending';

@@ -19,6 +19,21 @@ skills_ready: 7
 
 ---
 
+### 2026-08-11 — QC-DELETE-REQ-001: التحقق الكامل من delete-request workflow في QC Task Manager (33/33 E2E ✅)
+
+- **Files**: `apps/qc-task-manager/src/lib/deleteRequests.ts`, `apps/qc-task-manager/src/components/DeleteRequestDialog.tsx`, `apps/qc-task-manager/src/pages/api/tasks/[id]/delete-request.ts`, `apps/qc-task-manager/src/pages/manager/requests/{index.astro,api.ts}`, `apps/qc-task-manager/src/pages/{manager,employee}/index.astro` (شارات 🗑️), `apps/qc-task-manager/src/lib/{permissions,activity,db}.ts`, `apps/qc-task-manager/db/schema.sql` (task_delete_requests بلا cascade + snapshot task_title), `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/src/components/Navbar.tsx` (رابط Delete Requests), `apps/qc-task-manager/scripts/e2e-delete-request.mjs`, `apps/qc-task-manager/README.md`
+- **What**: الـ workflow (القاعدة #4) مكتمل ومُتحقق منه: الموظف يطلّع "🗑️ Request Deletion" على مهامه (not_started/in_progress فقط) → dialog بسبب اختياري → POST `/api/tasks/[id]/delete-request` يدرج pending (المكرر مرفوض 400) → شارة "🗑️ Deletion requested" في صفحة المهمة وقائمة /employee + علامة في /manager. المانجر/الأدمن يشوفون القائمة في `/manager/requests` (رابط في Navbar و /manager) مع Approve/Reject: approve يحذف المهمة (cascade ينظف comments/attachments/activity) ويعلّم request approved + reviewed_by/at، reject يعلّم rejected والشارة تختفي. كل انتقال مسجّل في task_activity_log (delete_requested/approved/rejected). المهام المكتملة مرفوضة طلب الحذف (القاعدة #3). migration في db.ts يعيد بناء جدول قديم كان فيه ON DELETE CASCADE (كان يدمر سجل التدقيق عند الحذف) إلى شكل snapshot مع task_title.
+- **Why**: المتطلبات + معايير القبول: موظف يطلب → مانجر يشوف pending → يوافق → المهمة تختفي والطلب approved؛ ومسار الرفض: الشارة تختفي والطلب rejected. كلاهما متحقق E2E.
+- **Verification**: `pnpm typecheck` → 0 errors ✅؛ `pnpm build` → Server built ✅؛ E2E كامل ضد dist server على port 4322 مع DB مؤقتة → **33/33 PASS** (سيناريوهات A approve، B reject مع badge clear + reviewer name، C completed blocked، D duplicate blocked، E supervisor ما يقدر يراجع، F admin يقدر). بعد تحسينات الدفاع في العمق أعدنا الـ E2E → 33/33 مرة ثانية ✅. نظّفت DB الاختبار وملفاتها المؤقتة.
+- **Improvements (مراجعة كود)**: (1) فهرس فريد جزئي `idx_delreq_one_pending ON task_delete_requests(task_id) WHERE status='pending'` في schema.sql + migration — منع المكرر صار ذرّي على مستوى الـ DB، مع catch لـ UNIQUE constraint في submitDeleteRequest. (2) حارس already-reviewed صار UPDATE شرطي `WHERE id=? AND status='pending'` مع فحص `changes===1` (reject مباشرة، approve داخل نفس الترانزاكشن مع rollback لو تغيّر الطلب تحتنا). (3) قائمة pending تعرض "(deleted)" للمهام اللي اختفت بمسار آخر بدل رابط مكسور.
+- **Note**: ملاحظة تشغيل — خادم Astro standalone (`node dist/server/entry.mjs`) يشتغل على PORT البيئة (الافتراضي 3000 مو 4321)؛ لاختبار E2E استخدمنا `PORT=4322`. تثبيت Playwright على مستوى الـ monorepo root. tmux غير متوفر في البيئة — شغّلنا الخادم والـ E2E في نفس الـ basher session.
+- **Report**: none (موثّق في README + هذا الـ entry)
+- **Commit**: uncommitted (README + e2e script) — المستخدم يلتزم
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. القاعدة #4 مكتملة في QC Task Manager.
+
+---
+
 ### 2026-08-10 — QC-TASK-DETAILS-001: صفحة تفاصيل المهمة /tasks/[id] في QC Task Manager (6 أقسام + تعليقات + تنزيل المرفقات)
 
 - **Files**: `apps/qc-task-manager/src/pages/tasks/[id].astro` (جديد), `apps/qc-task-manager/src/lib/format.ts` (جديد), `apps/qc-task-manager/src/lib/taskDetails.ts` (جديد), `apps/qc-task-manager/src/components/CommentBox.tsx` (جديد), `apps/qc-task-manager/src/pages/api/tasks/[id]/comment.ts` (جديد), `apps/qc-task-manager/src/pages/api/tasks/[id]/attachments/[attachmentId].ts` (جديد), `apps/qc-task-manager/src/lib/tasks.ts` (تصدير taskListFor), `apps/qc-task-manager/README.md`

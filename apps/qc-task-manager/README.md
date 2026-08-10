@@ -160,9 +160,46 @@ Same view rule as the page. Returns `Content-Type` (or `application/octet-stream
 `Content-Length`, an RFC 5987 `Content-Disposition` (`filename*=UTF-8''…`) for
 non-ASCII names, and `Cache-Control: private, no-store`.
 
+## Delete requests (/manager/requests)
+
+CORE BUSINESS RULE #4 — employees cannot delete tasks; they submit a request that a
+manager/admin approves or rejects.
+
+- **Employee side** (`DeleteRequestDialog.tsx` on `/tasks/[id]`): a "🗑️ Request
+  Deletion" button opens a dialog asking for an optional reason. POST
+  `/api/tasks/[id]/delete-request` inserts a `pending` row in
+  `task_delete_requests`; the task then shows a "🗑️ Deletion requested" badge
+  (also visible in the `/employee` list and as a marker on `/manager`).
+  Duplicate pending requests are blocked (400). Only `not_started` /
+  `in_progress` tasks assigned to or created by the employee are requestable;
+  completed tasks never are (CORE BUSINESS RULE #3).
+- **Manager/admin side** (`/manager/requests`, linked in the Navbar and on
+  `/manager`): pending list shows task title, requester, reason, and date with
+  Approve / Reject buttons, plus a history of reviewed requests. Approve
+  hard-deletes the task (cascades comments/attachments/activity) and marks the
+  request `approved`; Reject marks it `rejected` and the badge clears.
+- Every transition is written to `task_activity_log` (`delete_requested`,
+  `delete_approved`, `delete_rejected`) — "where possible": the approval log is
+  written just before the task is deleted, so that row is cascade-removed with
+  the task, while the request row survives as the audit record (it deliberately
+  has no `ON DELETE CASCADE` and snapshots `task_title`).
+- **DB note**: databases created before this workflow had `task_id ... ON DELETE
+  CASCADE` on `task_delete_requests`; `src/lib/db.ts` migrates them to the
+  snapshot shape on boot (idempotent, logged to console).
+- **E2E**: `scripts/e2e-delete-request.mjs` covers approve, reject, completed
+  blocked, duplicate blocked, supervisor-cannot-review, and role surface.
+  Run it against a live server on port 4322 with a fresh DB:
+
+  ```bash
+  QC_DB_PATH=<app>/db/e2e_test.db node scripts/init-db.mjs
+  QC_DB_PATH=<app>/db/e2e_test.db node_modules/.bin/astro dev --port 4322 &   # or: pnpm build, then PORT=4322 node dist/server/entry.mjs
+  QC_DB_PATH=<app>/db/e2e_test.db BASE_URL=http://localhost:4322 node scripts/e2e-delete-request.mjs
+  ```
+
 ## Notes
 
 - The DB file (`*.db`, `*.db-wal`, `*.db-shm`) is gitignored and never committed.
-- This scaffold establishes routing, auth, the data model, task creation, and the
-  read-only task details page (comments + attachment downloads). Task editing/closure
-  flows, the attachments upload UI, and delete-request workflows are the next build phase.
+- This scaffold establishes routing, auth, the data model, task creation, the
+  read-only task details page (comments + attachment downloads), and the
+  delete-request workflow. Task editing/closure flows and the attachments upload
+  UI are the next build phase.

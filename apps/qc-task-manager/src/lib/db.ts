@@ -76,6 +76,8 @@ function migrateDeleteRequests(db: BetterSqliteDatabase): void {
       LEFT JOIN tasks t ON t.id = r.task_id;
     DROP TABLE task_delete_requests;
     ALTER TABLE task_delete_requests_new RENAME TO task_delete_requests;
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_delreq_one_pending
+      ON task_delete_requests(task_id) WHERE status = 'pending';
   `);
   console.warn('[db] migrated task_delete_requests (task_title snapshot, no delete cascade).');
 }
