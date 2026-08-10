@@ -1,3 +1,28 @@
+
+في ملف .env تحط هذي المتغيرات بس، وما يحتاج أكثر:
+
+المتغير	وين يُستخدم	وضعه الحالي
+ADMIN_DEFAULT_PASSWORD	كلمة مرور حساب الـ admin وقت التهيئة	لازم تحطها؛ لو ما حطيتها تعتبر 'admin123' ويطلع تحذير
+QC_DB_PATH	مسار ملف qc_tasks.db	اختياري — الافتراضي db/qc_tasks.db
+خطواتك الحالية (بما إن قاعدة البيانات موجودة أصلاً)
+ما تحتاج تسوي أي شي لقاعدة البيانات — جاهزة. تشغّل التطبيق مباشرة:
+
+
+bash
+cd /Users/yzydalshmry/Desktop/BRIGHTAI/apps/qc-task-manager
+pnpm dev
+وافتح http://localhost:4321/login، سجّل دخول بـ:
+
+username: admin
+password: admin123 (لأننا ما خلّينا ملف .env، استخدم الافتراضي)
+⚠️ ملاحظة مهمة عن كلمة المرور: لو تبي تغيّر كلمة مرور الـ admin عن admin123، تغيير ملف .env ما يأثر على حساب موجود لأن الـ seed يسوي INSERT بس وقت ما يكون جدول users فاضي. عندك خيارين:
+
+قبل ما تنشئ أي مستخدمين إضافيين: نفّذ pnpm db:reset بعد ما تحط ADMIN_DEFAULT_PASSWORD الجديد في .env. الـ admin الجديد ياخذ كلمة المرور الجديدة.
+بعد ما صار عندك بيانات ما تبي تفقدها: تغيير كلمة المرور يتم من داخل التطبيق (صفحة الـ admin) أو بتحديث الـ hash يدوياً في الجدول — ما عن طريق متغير البيئة.
+تبيني أسوي صفحة لتغيير كلمة المرور داخل التطبيق، ولا تكفي طريقة db:reset للحين؟
+
+
+
 # QC Task Manager
 
 Internal task-tracking web app for the QC department. Astro (SSR) + React islands + Tailwind, backed by SQLite (`better-sqlite3`) with bcrypt password hashing. Runs locally on port 4321.

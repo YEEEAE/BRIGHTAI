@@ -1,10 +1,10 @@
 // Initialize the QC Task Manager SQLite database.
-// Run: `pnpm --filter qc-task-manager db:init` (or `db:reset` to wipe first).
+// Run: `pnpm db:init` (or `pnpm db:reset` to wipe first).
 //
-// Applies db/schema.sql then seeds users with REAL bcrypt hashes (generated at
-// runtime via bcryptjs) so the seeded accounts actually work for login.
-// `db/seed.sql` is kept as a reference document but the authoritative seed
-// lives here so passwords are never stored as stale literals.
+// Applies db/schema.sql then seeds the admin account with a REAL bcrypt hash
+// generated at runtime (so passwords are never stored as stale literals).
+// The same bootstrap also happens automatically on dev-server startup via
+// src/lib/db.ts + src/lib/seed.ts; this script exists for explicit / CI use.
 
 import Database from 'better-sqlite3';
 import bcrypt from 'bcryptjs';
@@ -18,15 +18,8 @@ const DB_PATH = process.env.QC_DB_PATH || resolve(DB_DIR, 'qc_tasks.db');
 const SCHEMA_PATH = resolve(DB_DIR, 'schema.sql');
 
 const RESET = process.argv.includes('--reset');
-const DEFAULT_PASSWORD = process.env.QC_SEED_PASSWORD || 'password123';
-
-const SEED_USERS = [
-  { username: 'admin',      full_name: 'Site Admin',       email: 'admin@qc.local',      role: 'admin',      can_create_tasks: 1 },
-  { username: 'manager',    full_name: 'Task Manager',     email: 'manager@qc.local',    role: 'manager',    can_create_tasks: 1 },
-  { username: 'supervisor', full_name: 'Team Supervisor',  email: 'supervisor@qc.local', role: 'supervisor', can_create_tasks: 1 },
-  { username: 'employee',   full_name: 'Staff Employee',   email: 'employee@qc.local',   role: 'employee',   can_create_tasks: 0 },
-  { username: 'emp_creator',full_name: 'Creator Employee', email: 'creator@qc.local',    role: 'employee',   can_create_tasks: 1 },
-];
+const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
+const IS_DEFAULT_PASSWORD = DEFAULT_PASSWORD === 'admin123';
 
 function ensureDir() {
   if (!existsSync(DB_DIR)) mkdirSync(DB_DIR, { recursive: true });
@@ -37,21 +30,35 @@ function applySchema(db) {
   db.exec(sql);
 }
 
-function seedUsers(db) {
+function seedAdminIfEmpty(db) {
+  const { n } = db.prepare('SELECT COUNT(*) AS n FROM users').get();
+  if (n > 0) {
+    console.log(`[init-db] users table already has ${n} row(s) — skipping seed.`);
+    return false;
+  }
   const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
-  const stmt = db.prepare(`
-    INSERT INTO users (username, full_name, email, password_hash, role, can_create_tasks, is_active)
-    VALUES (@username, @full_name, @email, @password_hash, @role, @can_create_tasks, 1)
-    ON CONFLICT(username) DO UPDATE SET
-      full_name=excluded.full_name,
-      email=excluded.email,
-      password_hash=excluded.password_hash,
-      role=excluded.role,
-      can_create_tasks=excluded.can_create_tasks,
-      updated_at=datetime('now')
-  `);
-  const tx = db.transaction((rows) => rows.forEach((r) => stmt.run({ ...r, password_hash: hash })));
-  tx(SEED_USERS);
+  db.prepare(
+    `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
+     VALUES (@username, @password_hash, @full_name, @role, @department, @can_create_tasks, @is_active)`,
+  ).run({
+    username: 'admin',
+    password_hash: hash,
+    full_name: 'Administrator',
+    role: 'admin',
+    department: 'QC',
+    can_create_tasks: 1,
+    is_active: 1,
+  });
+  console.warn('[init-db] admin account created (username: "admin").');
+  if (IS_DEFAULT_PASSWORD) {
+    console.warn(
+      '[init-db] ⚠️  ADMIN_DEFAULT_PASSWORD is not set — the admin password is the default "admin123".',
+    );
+    console.warn('[init-db] ⚠️  Set ADMIN_DEFAULT_PASSWORD before exposing the app beyond localhost.');
+  } else {
+    console.warn('[init-db] admin password sourced from ADMIN_DEFAULT_PASSWORD.');
+  }
+  return true;
 }
 
 function main() {
@@ -69,14 +76,18 @@ function main() {
   db.pragma('foreign_keys = ON');
 
   applySchema(db);
-  seedUsers(db);
+  seedAdminIfEmpty(db);
 
-  const count = db.prepare('SELECT COUNT(*) AS n FROM users').get();
+  const { tableCount } = db
+    .prepare(
+      `SELECT COUNT(*) AS tableCount FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'`,
+    )
+    .get();
+  const { userCount } = db.prepare('SELECT COUNT(*) AS userCount FROM users').get();
   db.close();
 
   console.log(`[init-db] database ready at: ${DB_PATH}`);
-  console.log(`[init-db] seeded ${count.n} users (password: "${DEFAULT_PASSWORD}")`);
-  console.log('[init-db] logins: admin, manager, supervisor, employee, emp_creator');
+  console.log(`[init-db] tables: ${tableCount}, users: ${userCount}`);
 }
 
 main();

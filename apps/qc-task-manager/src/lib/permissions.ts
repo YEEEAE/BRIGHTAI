@@ -51,7 +51,8 @@ const EMPLOYEE_EDITABLE = new Set([
  * Can this user edit this task at all? (Completed tasks are frozen for everyone.)
  */
 export function canEditTask(user: Pick<User, 'role' | 'id'>, task: Pick<Task, 'status' | 'created_by' | 'assigned_to'>): boolean {
-  if (task.status === 'Completed') return false;
+  // Completed tasks are READ-ONLY for everyone (CORE BUSINESS RULE #2).
+  if (task.status === 'completed') return false;
   if (hasRankAtLeast(user.role, 'manager')) return true;
   // supervisors edit anything they can see (create/edit/assign)
   if (user.role === 'supervisor') return true;

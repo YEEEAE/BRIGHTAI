@@ -1,4 +1,8 @@
 // Activity logging helper. Every task mutation is recorded (CORE BUSINESS RULE #6).
+//
+// The activity log table is (task_id, user_id, action, old_value, new_value, created_at).
+// The changed field name, when meaningful, is encoded in `action`
+// (e.g. STATUS_CHANGED, PROGRESS_CHANGED) rather than stored in a separate column.
 
 import { getDb } from './db';
 
@@ -24,13 +28,14 @@ export const Action = {
 export type ActionType = (typeof Action)[keyof typeof Action];
 
 /**
- * Append a single activity entry. userId may be null for system actions.
+ * Append a single activity entry.
+ * `action` identifies what happened (and, via the well-known constants above,
+ * which field changed). `oldValue` / `newValue` capture the transition.
  */
 export function logActivity(params: {
   taskId: number;
-  userId: number | null;
+  userId: number;
   action: string;
-  field?: string | null;
   oldValue?: string | null | number | boolean;
   newValue?: string | null | number | boolean;
 }): void {
@@ -38,7 +43,7 @@ export function logActivity(params: {
   const oldStr = params.oldValue == null ? null : String(params.oldValue);
   const newStr = params.newValue == null ? null : String(params.newValue);
   db.prepare(
-    `INSERT INTO task_activity_log (task_id, user_id, action, field, old_value, new_value)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-  ).run(params.taskId, params.userId, params.action, params.field ?? null, oldStr, newStr);
+    `INSERT INTO task_activity_log (task_id, user_id, action, old_value, new_value)
+     VALUES (?, ?, ?, ?, ?)`,
+  ).run(params.taskId, params.userId, params.action, oldStr, newStr);
 }

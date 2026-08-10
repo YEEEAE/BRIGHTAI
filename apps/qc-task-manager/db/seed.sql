@@ -1,12 +1,20 @@
--- QC Task Manager — seed data (one user per role for local dev).
--- Re-runnable: uses INSERT OR IGNORE against unique username/email.
--- Passwords are bcrypt hashes of `password123` (cost 10).
---   - $2b$10$6JLq8mMRk1l3A2rQ9sY9heRTuU4cV0eXr9X8r8bY8r8bY8r8bY8r8b  (placeholder, replaced below)
+-- QC Task Manager — seed data (reference SQL).
+--
+-- The AUTHORITATIVE seed runs at process startup via src/lib/seed.ts, which
+-- generates a fresh bcrypt hash of ADMIN_DEFAULT_PASSWORD (fallback 'admin123').
+-- This file is kept as documentation and for out-of-band bootstrapping via the
+-- SQLTools SQLite extension; the password_hash below is a PLACEHOLDER and must
+-- be replaced with a real bcrypt hash before use.
+--
+-- Behaviour: seed runs only when the users table is empty (handled in seed.ts).
 
-INSERT OR IGNORE INTO users (username, full_name, email, password_hash, role, can_create_tasks, is_active)
-VALUES
-  ('admin',     'Site Admin',       'admin@qc.local',     '$2b$10$6JLq8mMRk1l3A2rQ9sY9heRTuU4cV0eXr9X8r8bY8r8bY8r8bY8r8b', 'admin',     1, 1),
-  ('manager',   'Task Manager',     'manager@qc.local',   '$2b$10$6JLq8mMRk1l3A2rQ9sY9heRTuU4cV0eXr9X8r8bY8r8bY8r8bY8r8b', 'manager',   1, 1),
-  ('supervisor','Team Supervisor',  'supervisor@qc.local','$2b$10$6JLq8mMRk1l3A2rQ9sY9heRTuU4cV0eXr9X8r8bY8r8bY8r8bY8r8b', 'supervisor',1, 1),
-  ('employee',  'Staff Employee',   'employee@qc.local',  '$2b$10$6JLq8mMRk1l3A2rQ9sY9heRTuU4cV0eXr9X8r8bY8r8bY8r8bY8r8b', 'employee',  0, 1),
-  ('emp_creator','Creator Employee','creator@qc.local',   '$2b$10$6JLq8mMRk1l3A2rQ9sY9heRTuU4cV0eXr9X8r8bY8r8bY8r8bY8r8b', 'employee',  1, 1);
+INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
+VALUES (
+  'admin',
+  '$2a$10$REPLACE_WITH_REAL_BCRYPT_HASH_OF_admin123',
+  'Administrator',
+  'admin',
+  'QC',
+  1,
+  1
+);

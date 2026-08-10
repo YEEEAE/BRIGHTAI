@@ -1,28 +1,51 @@
-// SQLite connection singleton for QC Task Manager.
-// WAL mode enabled per spec. The DB file lives at db/qc_tasks.db (override via QC_DB_PATH).
+// SQLite connection layer for QC Task Manager.
+//
+// Responsibilities:
+//   1. Open db/qc_tasks.db with better-sqlite3 (override path via QC_DB_PATH).
+//   2. Enable WAL mode + PRAGMA foreign_keys = ON (per spec).
+//   3. Apply db/schema.sql on every boot (idempotent — CREATE TABLE IF NOT EXISTS).
+//   4. Seed the admin account when the users table is empty.
+//   5. Expose a small typed query helper (`query`) so callers don't import the
+//      raw driver everywhere.
+//
+// Schema application + seeding happen once per process (guarded by a flag),
+// so repeated getDb() calls are cheap.
 
 import Database from 'better-sqlite3';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mkdirSync, existsSync } from 'node:fs';
+import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
+import { seedAdminIfEmpty } from './seed';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Resolve to <app>/db/qc_tasks.db. From src/lib/ that's ../../db/qc_tasks.db.
 const DB_DIR = resolve(__dirname, '..', '..', 'db');
 const DB_PATH = process.env.QC_DB_PATH || resolve(DB_DIR, 'qc_tasks.db');
+const SCHEMA_PATH = resolve(DB_DIR, 'schema.sql');
 
 let _db: BetterSqliteDatabase | null = null;
+let _initialized = false;
 
-/** Ensure the db directory exists (db file is created on first open). */
-function ensureDir() {
+/** Ensure the db directory exists (the file itself is created on first open). */
+function ensureDir(): void {
   if (!existsSync(DB_DIR)) mkdirSync(DB_DIR, { recursive: true });
+}
+
+/** Apply schema.sql (idempotent) and seed the admin account if needed. */
+function initialize(db: BetterSqliteDatabase): void {
+  if (_initialized) return;
+  const sql = readFileSync(SCHEMA_PATH, 'utf8');
+  db.exec(sql);
+  seedAdminIfEmpty(db);
+  _initialized = true;
 }
 
 /**
  * Open (or reuse) the SQLite connection. WAL mode + foreign keys are applied
- * once per connection. Safe to call repeatedly — returns the same instance.
+ * once per connection; schema + seed run once per process. Safe to call
+ * repeatedly — returns the same instance.
  */
 export function getDb(): BetterSqliteDatabase {
   if (_db) return _db;
@@ -31,6 +54,8 @@ export function getDb(): BetterSqliteDatabase {
   const db = new Database(DB_PATH);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
+
+  initialize(db);
 
   _db = db;
   return db;
@@ -41,4 +66,29 @@ export function toBool(value: number | null | undefined): boolean {
   return Number(value) === 1;
 }
 
-export { DB_PATH };
+// ─────────────────────────── Typed query helper ────────────────────────────
+// A thin wrapper so call sites read as `query.all(...)` / `query.one(...)` /
+// `query.run(...)` with a single typed return type instead of importing the
+// raw better-sqlite3 Statement API everywhere.
+
+export interface QueryHelper {
+  /** Return all matching rows. Each row is a plain object keyed by column. */
+  all<T = Record<string, unknown>>(...params: unknown[]): T[];
+  /** Return the first matching row, or undefined. */
+  one<T = Record<string, unknown>>(...params: unknown[]): T | undefined;
+  /** Run an INSERT/UPDATE/DELETE and return the better-sqlite3 RunResult. */
+  run(...params: unknown[]): Database.RunResult;
+}
+
+/** Prepare a SQL string into a typed helper (memoised by better-sqlite3). */
+export function query(sql: string): QueryHelper {
+  const db = getDb();
+  const stmt = db.prepare(sql);
+  return {
+    all: (...params) => stmt.all(...params) as Record<string, unknown>[],
+    one: (...params) => stmt.get(...params) as Record<string, unknown> | undefined,
+    run: (...params) => stmt.run(...params),
+  };
+}
+
+export { DB_PATH, SCHEMA_PATH };
