@@ -34,8 +34,9 @@ const jsonLd = toGraph([
   ...(faqJsonLd ? [faqJsonLd] : []),
 ]);
 
-// 8 compliance frameworks (Saudi regulatory + ISO). Demo labels.
-// Status: compliant = score >= 80, partial = 60-79.
+// 8 compliance frameworks (Saudi regulatory + ISO). Demo labels — NOT legal compliance.
+// Status: demoReady = score >= 80, needsImprovement = 60-79.
+// Each pack has a sourceTimestamp indicating when the demo assessment was generated.
 const packs = [
   {
     id: 'pdpl',
@@ -43,10 +44,11 @@ const packs = [
     fullName: 'نظام حماية البيانات الشخصية',
     authority: 'سدايا · SDAIA',
     score: 98,
-    status: 'compliant',
+    status: 'demoReady',
     trend: '+1',
     trendDir: 'up',
     lastAudit: '2026-05-29',
+    sourceTimestamp: '2026-05-29T10:00:00+03:00',
     color: 'var(--brand-500)',
     controls: [
       { id: 'consent', label: 'الموافقة الصريحة', score: 100, ref: 'PDPL م.8' },
@@ -63,10 +65,11 @@ const packs = [
     fullName: 'ضوابط الأمن السيبراني الأساسية',
     authority: 'الهيئة الوطنية للأمن السيبراني',
     score: 87,
-    status: 'compliant',
+    status: 'demoReady',
     trend: '+2',
     trendDir: 'up',
     lastAudit: '2026-05-27',
+    sourceTimestamp: '2026-05-27T14:30:00+03:00',
     color: 'var(--indigo-400)',
     controls: [
       { id: 'governance', label: 'الحوكمة السيبرانية', score: 100, ref: 'ECC-1' },
@@ -83,10 +86,11 @@ const packs = [
     fullName: 'إرشادات الذكاء الاصطناعي التوليدي',
     authority: 'الهيئة السعودية للبيانات والذكاء الاصطناعي',
     score: 90,
-    status: 'compliant',
+    status: 'demoReady',
     trend: '+3',
     trendDir: 'up',
     lastAudit: '2026-05-28',
+    sourceTimestamp: '2026-05-28T09:15:00+03:00',
     color: 'var(--brand-400)',
     controls: [
       { id: 'genai_governance', label: 'حوكمة نماذج AI التوليدية', score: 95, ref: 'SDAIA م.4' },
@@ -102,10 +106,11 @@ const packs = [
     fullName: 'هيئة الغذاء والدواء',
     authority: 'الهيئة العامة للغذاء والدواء',
     score: 64,
-    status: 'partial',
+    status: 'needsImprovement',
     trend: '+2',
     trendDir: 'up',
     lastAudit: '2026-05-25',
+    sourceTimestamp: '2026-05-25T16:45:00+03:00',
     color: 'var(--status-warning)',
     controls: [
       { id: 'patient_privacy', label: 'خصوصية بيانات المرضى', score: 75, ref: 'SFDA م.11' },
@@ -121,10 +126,11 @@ const packs = [
     fullName: 'البنك المركزي السعودي',
     authority: 'البنك المركزي السعودي',
     score: 92,
-    status: 'compliant',
+    status: 'demoReady',
     trend: '0',
     trendDir: 'flat',
     lastAudit: '2026-05-26',
+    sourceTimestamp: '2026-05-26T11:20:00+03:00',
     color: 'var(--status-info)',
     controls: [
       { id: 'cyber_framework', label: 'إطار الأمن السيبراني', score: 100, ref: 'SAMA CSF-1' },
@@ -140,10 +146,11 @@ const packs = [
     fullName: 'أمن المعلومات',
     authority: 'ISO/IEC',
     score: 96,
-    status: 'compliant',
+    status: 'demoReady',
     trend: '+1',
     trendDir: 'up',
     lastAudit: '2026-05-23',
+    sourceTimestamp: '2026-05-23T13:00:00+03:00',
     color: 'var(--accent-cool)',
     controls: [
       { id: 'a5_policies', label: 'سياسات أمن المعلومات (A.5)', score: 100, ref: 'A.5.1' },
@@ -159,10 +166,11 @@ const packs = [
     fullName: 'إدارة جودة الأجهزة الطبية',
     authority: 'ISO · SFDA',
     score: 78,
-    status: 'partial',
+    status: 'needsImprovement',
     trend: '+1',
     trendDir: 'up',
     lastAudit: '2026-05-22',
+    sourceTimestamp: '2026-05-22T08:30:00+03:00',
     color: 'var(--accent-warm)',
     controls: [
       { id: 'qms', label: 'نظام إدارة الجودة', score: 85, ref: 'ISO 13485 §4' },
@@ -178,10 +186,11 @@ const packs = [
     fullName: 'إدارة الذكاء الاصطناعي',
     authority: 'ISO/IEC',
     score: 81,
-    status: 'compliant',
+    status: 'demoReady',
     trend: '+4',
     trendDir: 'up',
     lastAudit: '2026-05-24',
+    sourceTimestamp: '2026-05-24T15:00:00+03:00',
     color: 'var(--brand-500)',
     controls: [
       { id: 'ai_policy', label: 'سياسة حوكمة AI', score: 90, ref: 'A.5.2' },
@@ -255,8 +264,8 @@ const CITIES = [
 const SORTED_CITIES = [...CITIES].sort((a, b) => b.score - a.score);
 
 const overallScore = Math.round(packs.reduce((s, p) => s + p.score, 0) / packs.length); // ~86
-const completeCount = packs.filter((p) => p.status === 'compliant').length; // 6
-const partialCount = packs.filter((p) => p.status === 'partial').length;   // 2
+const demoReadyCount = packs.filter((p) => p.status === 'demoReady').length; // 6
+const needsImprovementCount = packs.filter((p) => p.status === 'needsImprovement').length; // 2
 
 const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
 const iconMap = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>';
@@ -268,6 +277,7 @@ const iconAdd = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 const iconTrendUp = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>';
 const iconGap = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>';
 const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+const iconTimestamp = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg>';
 ---
 
 <style>
@@ -370,9 +380,13 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   </header>
 
   {/* M21: explicit disclaimer — no claim of full legal compliance */}
-  <div class="kernel-compliance-disclaimer" role="note" data-kernel-touch>
+  <div class="kernel-compliance-disclaimer kernel-compliance-disclaimer--prominent" role="alert" data-kernel-touch>
     <Fragment set:html={iconAlert} />
-    <p>نسب الامتثال المعروضة تقديرات داخلية أولية من Kernel، وليست إثبات امتثال قانوني كامل. الامتثال الفعلي يتم بإصدار شهادة رسمية من مدقق معتمد واعتماد الجهة الرقابية.</p>
+    <div class="kernel-compliance-disclaimer__content">
+      <strong>تنبيه مهم:</strong>
+      <p>نسب الجاهزية المعروضة هي <strong>تقديرات داخلية أولية من Kernel للعرض التجريبي فقط</strong>، وليست إثبات امتثال قانوني أو شهادة امتثال رسمية. الامتثال الفعلي لأي إطار تنظيمي (PDPL، NCA ECC، SFDA، SAMA، ISO 27001، ISO 13485، ISO 42001) يتم فقط بإصدار شهادة رسمية من مدقق معتمد واعتماد الجهة الرقابية المختصة.</p>
+      <p class="kernel-compliance-disclaimer__note">هذه الصفحة تعرض بيانات تجريبية لأغراض العرض والتوضيح. ربط Kernel ببيئة منشأتك الحقيقية مطلوب لتوليد تقارير جاهزية فعلية.</p>
+    </div>
   </div>
 
   <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={packs.length}>
@@ -440,9 +454,9 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
     {/* KPI cards */}
     <section class="kernel-metric-grid kernel-stagger" aria-label="مؤشرات الامتثال">
-      <KernelMetricCard label="متوسط الامتثال" value={overallScore} unit="%" variant="brand" trend="up" trendLabel="2%" iconSvg={iconShield} footer={`${packs.length} حزم · آخر تقييم اليوم`} />
-      <KernelMetricCard label="مكتمل بالكامل" value={completeCount} unit="حزم" trend="flat" iconSvg={iconCheck} footer="PDPL · NCA · SDAIA · SAMA · ISO 27001 · ISO 42001" />
-      <KernelMetricCard label="يحتاج تحسين" value={partialCount} unit="حزم" trend="down" trendLabel="1" iconSvg={iconAlert} footer="SFDA · ISO 13485" />
+      <KernelMetricCard label="متوسط الجاهزية التجريبية" value={overallScore} unit="%" variant="brand" trend="up" trendLabel="2%" iconSvg={iconShield} footer={`${packs.length} حزم · آخر تقييم اليوم`} />
+      <KernelMetricCard label="جاهز للعرض التجريبي" value={demoReadyCount} unit="حزم" trend="flat" iconSvg={iconCheck} footer="PDPL · NCA · SDAIA · SAMA · ISO 27001 · ISO 42001" />
+      <KernelMetricCard label="يحتاج تحسين" value={needsImprovementCount} unit="حزم" trend="down" trendLabel="1" iconSvg={iconAlert} footer="SFDA · ISO 13485" />
       <KernelMetricCard label="فجوات ذات أولوية" value={PRIORITY_GAPS.length} iconSvg={iconGap} footer="أثر عالٍ / جهد منخفض أولاً" />
     </section>
 
@@ -452,8 +466,8 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         wrapping box created a box-inside-box. Now the packs sit directly
         under a section heading. */}
     <section class="kernel-col-12" aria-labelledby="compliance-packs-title">
-      <h2 id="compliance-packs-title" class="k-section-title">حزم الامتثال</h2>
-      <p class="k-section-intro">{packs.length} حزم · متوسط {overallScore}%</p>
+      <h2 id="compliance-packs-title" class="k-section-title">حزم الجاهزية التجريبية</h2>
+      <p class="k-section-intro">{packs.length} حزم · متوسط {overallScore}% · <strong>هذه تقديرات عرض تجريبي وليست شهادة امتثال</strong></p>
       <div class="kernel-compliance-grid">
             {packs.map((pack) => (
               <article class="kernel-compliance-pack" data-pack-id={pack.id}>
@@ -462,13 +476,19 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                     <h3 class="kernel-compliance-pack__name">{pack.name}</h3>
                     <p class="kernel-compliance-pack__fullname">{pack.fullName}</p>
                     <p class="kernel-compliance-pack__authority">{pack.authority}</p>
-                    {/* M21: monthly trend */}
-                    <span class="kernel-compliance-pack__trend" data-trend={pack.trendDir} aria-label={`اتجاه شهري ${pack.trend}`}>
-                      <Fragment set:html={iconTrendUp} />
-                      {pack.trend} هذا الشهر
-                    </span>
+                    {/* M21: monthly trend + source timestamp */}
+                    <div class="kernel-compliance-pack__meta-row">
+                      <span class="kernel-compliance-pack__trend" data-trend={pack.trendDir} aria-label={`اتجاه شهري ${pack.trend}`}>
+                        <Fragment set:html={iconTrendUp} />
+                        {pack.trend} هذا الشهر
+                      </span>
+                      <span class="kernel-compliance-pack__source-timestamp" aria-label={`مصدر البيانات: ${pack.sourceTimestamp}`}>
+                        <Fragment set:html={iconTimestamp} />
+                        تقييم: {new Date(pack.sourceTimestamp).toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
                   </div>
-                  <div class="kernel-compliance-pack__ring" role="img" aria-label={`درجة الامتثال ${pack.score}%`}>
+                  <div class="kernel-compliance-pack__ring" role="img" aria-label={`درجة الجاهزية التجريبية ${pack.score}%`}>
                     <svg viewBox="0 0 100 100" class="kernel-compliance-pack__ring-svg">
                       <circle cx="50" cy="50" r="42" class="kernel-compliance-pack__ring-bg" />
                       <circle
@@ -484,8 +504,8 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                 </header>
 
                 <div class="kernel-compliance-pack__status">
-                  <span class:list={['kernel-badge', `kernel-badge--${pack.status === 'compliant' ? 'success' : 'warning'}`]}>
-                    {pack.status === 'compliant' ? 'مكتمل' : 'جزئي'}
+                  <span class:list={['kernel-badge', `kernel-badge--${pack.status === 'demoReady' ? 'success' : 'warning'}`]}>
+                    {pack.status === 'demoReady' ? 'جاهز للعرض التجريبي' : 'يحتاج تحسين'}
                   </span>
                   <span class="kernel-compliance-pack__audit">آخر تدقيق: {pack.lastAudit}</span>
                 </div>
@@ -494,7 +514,7 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
                 {/* M21: gap score */}
                 <div class="kernel-compliance-pack__gap" data-gap={pack.score < 80 ? 'open' : 'closed'}>
-                  <span>فجوة الامتثال</span>
+                  <span>فجوة الجاهزية</span>
                   <span class="kernel-compliance-pack__gap-value">{100 - pack.score}<small> / 100</small></span>
                 </div>
 
@@ -526,16 +546,16 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                             data-kernel-touch
                           >
                             <Fragment set:html={iconLink} />
-                            الأدلة
+                            أدلة الجاهزية
                           </a>
                         </div>
-                        <span class="kernel-compliance-pack__control-bar" role="progressbar" aria-valuenow={ctrl.score} aria-valuemin="0" aria-valuemax="100" aria-label={`${ctrl.label} ${ctrl.score}%`}>
-                          <span
-                            class:list={['kernel-compliance-pack__control-fill', ctrl.score >= 90 ? 'high' : ctrl.score >= 70 ? 'mid' : 'low']}
-                            style={`inline-size: ${ctrl.score}%`}
-                          ></span>
-                        </span>
-                        <span class="kernel-compliance-pack__control-value">{ctrl.score}%</span>
+<span class="kernel-compliance-pack__control-bar" role="progressbar" aria-valuenow={ctrl.score} aria-valuemin="0" aria-valuemax="100" aria-label={`${ctrl.label} جاهزية ${ctrl.score}%`}>
+                            <span
+                              class:list={['kernel-compliance-pack__control-fill', ctrl.score >= 90 ? 'high' : ctrl.score >= 70 ? 'mid' : 'low']}
+                              style={`inline-size: ${ctrl.score}%`}
+                            ></span>
+                          </span>
+                          <span class="kernel-compliance-pack__control-value">{ctrl.score}%</span>
                       </li>
                     ))}
                   </ul>
@@ -547,9 +567,9 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
     {/* M21: Gap analysis — impact/effort matrix + priority list */}
     <section class="kernel-col-12" aria-labelledby="gap-analysis-title">
-      <KernelCard title="تحليل الفجوات" subtitle="أثر × جهد · الأولوية لأثر عالٍ / جهد منخفض" iconSvg={iconGap}>
+      <KernelCard title="تحليل فجوات الجاهزية التجريبية" subtitle="أثر × جهد · الأولوية لأثر عالٍ / جهد منخفض · بيانات عرض تجريبي" iconSvg={iconGap}>
         <div class="kernel-card__body">
-          <h3 id="gap-analysis-title" class="kernel-compliance-gap__heading">مصفوفة الأثر × الجهد</h3>
+          <h3 id="gap-analysis-title" class="kernel-compliance-gap__heading">مصفوفة الأثر × الجهد — فجوات الجاهزية</h3>
           <div class="kernel-compliance-matrix" role="img" aria-label="مصفوفة الأثر مقابل الجهد، الفجوات موزعة على أربعة أرباع">
             <div class="kernel-compliance-matrix__axis-y">أثر عالٍ ▲</div>
             <div class="kernel-compliance-matrix__axis-x">جهد →</div>
@@ -596,7 +616,7 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
             </div>
           </div>
 
-          <h3 class="kernel-compliance-gap__heading">قائمة الأولوية — أثر عالٍ / جهد منخفض أولاً</h3>
+          <h3 class="kernel-compliance-gap__heading">قائمة أولوية فجوات الجاهزية — أثر عالٍ / جهد منخفض أولاً</h3>
           <ul class="kernel-compliance-gap__list">
             {PRIORITY_GAPS.map((g, i) => (
               <li class="kernel-compliance-gap__row" data-priority={i + 1}>
@@ -616,7 +636,7 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                   <button
                     type="button"
                     class="kernel-compliance-gap__task"
-                    data-add-task={`${g.framework}: سد فجوة الامتثال (${g.gap} نقطة) — أثر عالٍ، جهد منخفض، تقدير ${g.estimate}`}
+                    data-add-task={`${g.framework}: سد فجوة الجاهزية التجريبية (${g.gap} نقطة) — أثر عالٍ، جهد منخفض، تقدير ${g.estimate}`}
                     data-kernel-touch
                   >
                     <Fragment set:html={iconAdd} />
@@ -649,7 +669,8 @@ const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
           btn.classList.toggle('expanded', !isOpen);
           const labelEl = btn.querySelector('span');
           if (labelEl) {
-            labelEl.textContent = isOpen ? `عرض الضوابط (${controlsEl.querySelectorAll('li').length})` : 'إخفاء الضوابط';
+            const count = controlsEl.querySelectorAll('li').length;
+            labelEl.textContent = isOpen ? `عرض الضوابط (${count})` : 'إخفاء الضوابط';
           }
         });
       });
