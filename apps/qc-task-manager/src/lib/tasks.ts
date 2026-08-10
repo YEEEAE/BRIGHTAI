@@ -203,7 +203,7 @@ export async function handleCreateTaskPost(
 }
 
 /** Where a user lands after creating a task. */
-function taskListFor(role: string): string {
+export function taskListFor(role: string): string {
   switch (role) {
     case 'admin':
     case 'manager':
