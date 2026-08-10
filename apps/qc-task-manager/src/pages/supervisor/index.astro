@@ -1,9 +1,9 @@
 ---
 // Supervisor task list (supervisor + manager + admin). Create/edit/assign scope.
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import FlashNotice from '../../components/FlashNotice.astro';
 import { getDb } from '../../lib/db';
 
+const user = Astro.locals.user!; // protected route — middleware guarantees a session
 const db = getDb();
 
 const tasks = db
@@ -25,11 +25,10 @@ const tasks = db
   }[];
 ---
 <BaseLayout title="Tasks">
-  <FlashNotice />
   <header class="mb-6 flex items-center justify-between">
     <div>
       <h1 class="text-2xl font-semibold text-slate-900">Tasks</h1>
-      <p class="text-sm text-slate-600">Supervisor view (create, edit, assign).</p>
+      <p class="text-sm text-slate-600">Supervisor view (create, edit, assign). Signed in as {user.fullName} ({user.role}).</p>
     </div>
     <a href="/supervisor/new" class="rounded-md bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
       New task

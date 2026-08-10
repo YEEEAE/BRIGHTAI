@@ -1,5 +1,8 @@
-// Role-based permission checks. Single source of truth for authorization.
-// All checks are documented against the CORE BUSINESS RULES in the spec.
+// Role-based permission checks. SINGLE SOURCE OF TRUTH for authorization.
+//
+// The spec requires a single `PERMISSIONS` object that every page, API
+// endpoint, and the middleware imports from. No scattered role checks.
+// Every check below is documented against the CORE BUSINESS RULES in the spec.
 
 import type { Role, Task, User } from './types';
 
@@ -14,26 +17,55 @@ const ROLE_RANK: Record<Role, number> = {
   employee: 1,
 };
 
-export function roleRank(role: Role): number {
-  return ROLE_RANK[role];
-}
-
 /** True if `a` has at least the rank of `b`. */
 export function hasRankAtLeast(a: Role, b: Role): boolean {
   return ROLE_RANK[a] >= ROLE_RANK[b];
 }
 
-// ─────────────────────────────── Dashboard ───────────────────────────────
-// Employees have NO dashboard (CORE BUSINESS RULE #1).
-export function canViewDashboard(role: Role): boolean {
-  return role !== 'employee';
+/**
+ * The single permission contract (spec-mandated shape).
+ * All role checks elsewhere MUST go through this object.
+ */
+export const PERMISSIONS = {
+  /** Employees have NO dashboard (CORE BUSINESS RULE #1). */
+  canViewDashboard: (role: Role): boolean =>
+    ['admin', 'manager', 'supervisor'].includes(role),
+
+  /** Employees can create tasks ONLY if can_create_tasks = 1; others always can. */
+  canCreateTask: (user: Pick<User, 'role' | 'can_create_tasks'>): boolean =>
+    ['admin', 'manager', 'supervisor'].includes(user.role) || user.can_create_tasks === true,
+
+  /** Manager/admin can edit all task fields; employees edit a locked subset. */
+  canEditTaskFields: (role: Role): boolean => ['admin', 'manager'].includes(role),
+
+  /** Employees never delete tasks directly — they submit a delete request (RULE #4). */
+  canDeleteTask: (role: Role): boolean => ['admin', 'manager'].includes(role),
+
+  /** User management is admin-only (RULE #1). */
+  canManageUsers: (role: Role): boolean => role === 'admin',
+
+  /** Fields an employee may edit after task creation (CORE BUSINESS RULE #2). */
+  employeeEditableFields: ['status', 'progress_percent', 'blocker_note'] as const,
+};
+
+// ─────────────────────────────── Area access ─────────────────────────────
+// Route-prefix guards. These keep the middleware free of hardcoded role lists.
+
+/** /manager/* — manager + admin. */
+export function canAccessManagerArea(role: Role): boolean {
+  return role === 'manager' || role === 'admin';
+}
+
+/** /supervisor/* — supervisor + manager + admin. */
+export function canAccessSupervisorArea(role: Role): boolean {
+  return ['supervisor', 'manager', 'admin'].includes(role);
 }
 
 /** Role landing page after login. Single source of truth for role routing. */
 export function roleHome(role: Role): string {
   switch (role) {
     case 'admin':
-      return '/admin';
+      return '/admin/users';
     case 'manager':
       return '/manager';
     case 'supervisor':
@@ -43,23 +75,10 @@ export function roleHome(role: Role): string {
   }
 }
 
-// ───────────────────────────── Task creation ─────────────────────────────
-// Employees can create tasks only if can_create_tasks = 1; everyone else can.
-export function canCreateTasks(user: Pick<User, 'role' | 'can_create_tasks'>): boolean {
-  if (user.role === 'employee') return user.can_create_tasks === true;
-  return true;
-}
-
 // ──────────────────────────── Task editing scope ─────────────────────────
-// Employees can only edit status, progress_percent, comments, attachments, blocker_note.
-// Manager/admin can edit everything. Completed tasks are read-only for everyone.
-const EMPLOYEE_EDITABLE = new Set([
-  'status',
-  'progress_percent',
-  'blocker_note',
-  'comments', // via dedicated API
-  'attachments', // via dedicated API
-]);
+// Employees can only edit status, progress_percent, comments, attachments,
+// blocker_note. Manager/admin can edit everything. Completed tasks are
+// read-only for everyone.
 
 /**
  * Can this user edit this task at all? (Completed tasks are frozen for everyone.)
@@ -85,15 +104,10 @@ export function canEditLockedField(role: Role): boolean {
 /** Is a field editable by the given role per the lock rules? */
 export function isFieldEditableForRole(role: Role, field: string): boolean {
   if (hasRankAtLeast(role, 'manager')) return true;
-  return EMPLOYEE_EDITABLE.has(field);
+  return (PERMISSIONS.employeeEditableFields as readonly string[]).includes(field);
 }
 
 // ─────────────────────────── Task deletion / requests ────────────────────
-// Employees cannot delete; they submit a request. Manager/admin approve/reject.
-export function canDeleteTaskDirectly(role: Role): boolean {
-  return hasRankAtLeast(role, 'manager');
-}
-
 export function canSubmitDeleteRequest(role: Role): boolean {
   return role === 'employee';
 }
@@ -106,9 +120,4 @@ export function canReviewDeleteRequests(role: Role): boolean {
 // Only supervisor/manager/admin assign tasks.
 export function canAssignTask(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
-}
-
-// ─────────────────────────────── User management ─────────────────────────
-export function canManageUsers(role: Role): boolean {
-  return role === 'admin';
 }

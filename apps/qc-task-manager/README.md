@@ -8,21 +8,24 @@ From the monorepo root:
 
 ```bash
 pnpm install
-pnpm --filter qc-task-manager db:init   # create db/qc_tasks.db + seed admin
+pnpm --filter qc-task-manager db:init   # create db/qc_tasks.db + seed all roles
 pnpm --filter qc-task-manager dev        # http://localhost:4321
 ```
 
 Open http://localhost:4321/login and sign in.
 
-### Seeded account
+### Seeded accounts
 
-The DB seeds **one** admin account on first boot (only when the `users` table is empty). Additional users are created from the `/admin` UI.
+The DB seeds **one account per role** on first boot (only when the `users` table is empty). Every account uses the same password (`ADMIN_DEFAULT_PASSWORD`, default `admin123`), so the role-based home router can be tested end-to-end.
 
-| Username | Role  | Password                                   | Notes                                  |
-| -------- | ----- | ------------------------------------------ | -------------------------------------- |
-| `admin`  | admin | `ADMIN_DEFAULT_PASSWORD` (default `admin123`) | Full control; change before exposing to network |
+| Username     | Role       | Password                                   | can_create_tasks | Home after login |
+| ------------ | ---------- | ------------------------------------------ | ---------------- | ---------------- |
+| `admin`      | admin      | `ADMIN_DEFAULT_PASSWORD` (default `admin123`) | yes              | `/admin/users`   |
+| `manager`    | manager    | same                                        | yes              | `/manager`       |
+| `supervisor` | supervisor | same                                        | yes              | `/supervisor`    |
+| `employee`   | employee   | same                                        | no               | `/employee`      |
 
-> ⚠️ Changing `ADMIN_DEFAULT_PASSWORD` in `.env` does **not** update an existing admin — the seed is an `INSERT` that only runs when `users` is empty. To rotate an existing admin password either run `pnpm db:reset` (wipes data) after setting the new value, or change it from the admin UI / directly in the DB.
+> ⚠️ Changing `ADMIN_DEFAULT_PASSWORD` in `.env` does **not** update existing accounts — the seed is an `INSERT` that only runs when `users` is empty. To rotate passwords either run `pnpm db:reset` (wipes data) after setting the new value, or change them from the admin UI / directly in the DB.
 
 ## Auth & sessions
 
@@ -61,16 +64,17 @@ apps/qc-task-manager/
 │   │   ├── flash.ts        # one-shot flash messages via qc_flash cookie
 │   │   ├── permissions.ts  # role checks + roleHome (single source of truth)
 │   │   ├── activity.ts     # task_activity_log helper
+│   │   ├── tasks.ts        # createTask + assignment validation + POST handler
 │   │   └── types.ts
-│   ├── middleware.ts       # auth guard + role-scoped route protection + POST /login
+│   ├── middleware.ts       # auth guard + role-scoped route protection + POST /login + task-create POSTs
 │   └── pages/
 │       ├── index.astro     # redirects by role (roleHome)
 │       ├── login.astro     # self-submitting login form
 │       ├── logout.ts       # POST
 │       ├── dashboard.astro # manager/supervisor/admin
-│       ├── employee/       # employee-only views
-│       ├── manager/        # manager + admin
-│       ├── supervisor/     # supervisor + manager + admin
+│       ├── employee/       # employee-only views (index + new)
+│       ├── manager/        # manager + admin (index + new)
+│       ├── supervisor/     # supervisor + manager + admin (index + new)
 │       └── admin/          # admin-only user management
 ├── astro.config.mjs
 ├── tailwind.config.mjs
@@ -84,7 +88,14 @@ apps/qc-task-manager/
 - `ADMIN_DEFAULT_PASSWORD` — seed password for the initial admin (default `admin123`, warns if unset). Only applies to a fresh seed.
 - Override the DB path with `QC_DB_PATH=/abs/path.db`.
 
+## Task creation
+
+- `/manager/new`, `/supervisor/new`, `/employee/new` render the new-task form (GET). The POST is short-circuited in `src/middleware.ts` (Astro 6 pages have no named request handlers — same pattern as login) and handled by `handleCreateTaskPost` in `src/lib/tasks.ts`.
+- Manager/admin/supervisor may assign the task to **any active user**; employees may assign it **only to themselves or leave it unassigned** (`validateAssignee` in `src/lib/tasks.ts`, per product decision).
+- `/employee/new` is gated by `can_create_tasks` on both GET and POST (CORE BUSINESS RULE #1) — an employee without the flag is bounced, and a crafted POST cannot bypass the gate.
+- Every created task records a `task_created` row in `task_activity_log` (CORE BUSINESS RULE #6).
+
 ## Notes
 
 - The DB file (`*.db`, `*.db-wal`, `*.db-shm`) is gitignored and never committed.
-- This scaffold establishes routing, auth, and the data model. Task CRUD, the closure flow, attachments UI, and delete-request workflows are the next build phase.
+- This scaffold establishes routing, auth, the data model, and task creation. Task editing/closure, attachments UI, and delete-request workflows are the next build phase.

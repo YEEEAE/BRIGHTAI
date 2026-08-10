@@ -11,24 +11,24 @@ const totals = db
   .prepare(
     `SELECT
        COUNT(*) AS total,
-       SUM(CASE WHEN status = 'Open' THEN 1 ELSE 0 END) AS open_n,
-       SUM(CASE WHEN status = 'In Progress' THEN 1 ELSE 0 END) AS in_progress,
-       SUM(CASE WHEN status = 'Blocked' THEN 1 ELSE 0 END) AS blocked,
-       SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END) AS completed
+       SUM(CASE WHEN status = 'not_started' THEN 1 ELSE 0 END) AS not_started,
+       SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) AS in_progress,
+       SUM(CASE WHEN status = 'on_hold' THEN 1 ELSE 0 END) AS on_hold,
+       SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed
      FROM tasks`,
   )
   .get() as {
     total: number;
-    open_n: number;
+    not_started: number;
     in_progress: number;
-    blocked: number;
+    on_hold: number;
     completed: number;
   };
 ---
 <BaseLayout title="Dashboard">
   <header class="mb-6">
     <h1 class="text-2xl font-semibold text-slate-900">Dashboard</h1>
-    <p class="text-sm text-slate-600">Overview of all tasks. Role: {user.role}.</p>
+    <p class="text-sm text-slate-600">Overview of all tasks. Signed in as {user.fullName} ({user.role}).</p>
   </header>
 
   <section class="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -37,16 +37,16 @@ const totals = db
       <div class="mt-1 text-2xl font-semibold text-slate-900">{totals.total}</div>
     </div>
     <div class="rounded-lg border border-slate-200 bg-white p-4">
-      <div class="text-xs font-medium uppercase text-slate-500">Open</div>
-      <div class="mt-1 text-2xl font-semibold text-slate-900">{totals.open_n}</div>
+      <div class="text-xs font-medium uppercase text-slate-500">Not started</div>
+      <div class="mt-1 text-2xl font-semibold text-slate-900">{totals.not_started}</div>
     </div>
     <div class="rounded-lg border border-slate-200 bg-white p-4">
       <div class="text-xs font-medium uppercase text-slate-500">In Progress</div>
       <div class="mt-1 text-2xl font-semibold text-slate-900">{totals.in_progress}</div>
     </div>
     <div class="rounded-lg border border-slate-200 bg-white p-4">
-      <div class="text-xs font-medium uppercase text-slate-500">Blocked</div>
-      <div class="mt-1 text-2xl font-semibold text-red-600">{totals.blocked}</div>
+      <div class="text-xs font-medium uppercase text-slate-500">On Hold</div>
+      <div class="mt-1 text-2xl font-semibold text-red-600">{totals.on_hold}</div>
     </div>
   </section>
 

@@ -2,12 +2,17 @@
 // Employee landing page. Lists tasks assigned to or created by the user.
 // No dashboard link (CORE BUSINESS RULE #1).
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import FlashNotice from '../../components/FlashNotice.astro';
 import { getDb } from '../../lib/db';
-import { canCreateTasks } from '../../lib/permissions';
+import { getUserById } from '../../lib/auth';
+import { PERMISSIONS } from '../../lib/permissions';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
 const db = getDb();
+
+// Session payload has no can_create_tasks, so load the real user row
+// (CORE BUSINESS RULE #1: employees create tasks only if can_create_tasks = 1).
+const fullUser = getUserById(user.userId);
+const allowCreate = fullUser ? PERMISSIONS.canCreateTask(fullUser) : false;
 
 const tasks = db
   .prepare(
@@ -26,14 +31,12 @@ const tasks = db
     due_date: string | null;
   }[];
 
-const allowCreate = canCreateTasks({ role: user.role, can_create_tasks: true });
 ---
 <BaseLayout title="My Tasks">
-  <FlashNotice />
   <header class="mb-6 flex items-center justify-between">
     <div>
       <h1 class="text-2xl font-semibold text-slate-900">My tasks</h1>
-      <p class="text-sm text-slate-600">Tasks assigned to you or created by you.</p>
+      <p class="text-sm text-slate-600">Tasks assigned to you or created by you. Signed in as {user.fullName} ({user.role}).</p>
     </div>
     {allowCreate && (
       <a href="/employee/new" class="rounded-md bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">

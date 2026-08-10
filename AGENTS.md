@@ -13,7 +13,7 @@ Visibility: Saudi SEO + AI Search (GEO/AEO) — see Sections 11.6, 11.7
 ⚠️ القاعدة صفر — اقرأ الـ brain قبل أي شي
 قبل ما تبدأ أي مهمة (حتى لو تافهة): لازم تقرأ ملف /BRIGHTAI/.agents/brain.md كاملًا. هذا الملف هو دماغ المشروع — فيه آخر الأرقام، آخر القرارات، آخر المشاكل، وآخر الـ ledger. أي مهمة بدون قراءة الـ brain أولًا = تنفّذ وأنت أعمى عن الواقع الفعلي للمشروع.
 
-بعد ما تخلّص التنفيذ (ولو نجح): لازم تضيف entry للـ change ledger في الـ brain (أعلى Section 2) + تحدّث الـ state snapshot (Section 1) لو أي رقم تغيّر + تحدّث known-issues/decisions/inventory حسب الحاجة. القاعدة الكاملة في Section 0.6.
+بعد ما تخلّص التنفيذ (ولو نجح): لازم تضيف entry للـ change ledger في الـ brain  + تحدّث الـ state snapshot لو أي رقم تغيّر + تحدّث known-issues/decisions/inventory حسب الحاجة. القاعدة الكاملة في Section 0.6.
 
 القراءة دائمًا مطلوبة. الكتابة للتغييرات غير التافهة (2+ ملفات أو تأثير على build/SEO/أداء).
 

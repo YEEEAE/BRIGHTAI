@@ -19,6 +19,33 @@ skills_ready: 7
 
 ---
 
+### 2026-08-10 — QC-TASK-CREATE-001: إنشاء المهام في QC Task Manager (نماذج + POST handlers + حارس can_create_tasks)
+
+- **Files**: `apps/qc-task-manager/src/lib/tasks.ts` (جديد), `apps/qc-task-manager/src/pages/manager/new.astro` (جديد), `apps/qc-task-manager/src/pages/supervisor/new.astro` (جديد), `apps/qc-task-manager/src/pages/employee/new.astro` (جديد), `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/README.md`
+- **What**: أضفت صفحة إنشاء مهمة لكل مسار (manager/supervisor/employee) ونموذج POST. المعالجة في middleware عبر `handleCreateTaskPost` (نفس نمط POST /login لأن صفحات Astro 6 ما عندها named handlers). قواعد التعيين: manager/supervisor/admin يعيّنون لأي مستخدم نشط؛ الموظف يعيّن لنفسه أو بدون تعيين فقط (قرار المنتج). حارس مزدوج لـ `/employee/new`: على GET (يعيد توجيه غير الموظفين لصفحتهم + الموظف بدون can_create_tasks لـ roleHome) وعلى POST (canCreateTask server-side). سجل activity بكل إنشاء.
+- **Why**: README كان يذكر أن "Task CRUD" هو المرحلة التالية؛ زر "New task" كان موجودًا لكن يشاور صفحات غير موجودة.
+- **Verification**: `pnpm run typecheck` → 0 errors (3 hints false-positive معروفة) ✅؛ `pnpm run build` → Server built ✅؛ اختبار curl على dev server: manager ينشئ مهمة → 302 /manager + صف في tasks + activity task_created ✅؛ employee بدون can_create_tasks مرفوض من GET وPOST ✅؛ بعد تمكين can_create_tasks مؤقتًا: تعيين self ينجح، تعيين موظف آخر يُرفض (لا صف جديد) ✅؛ supervisor على /manager/new → يُبعث لـ /supervisor ✅؛ manager على /employee/new → 302 /manager/new ✅؛ supervisor ينشئ من /supervisor/new ✅؛ admin ينشئ من /manager/new ✅. نظّفت كل صفوف الاختبار ورجعت can_create_tasks=0 للموظف.
+- **Note**: ملاحظة اختبار — Astro 6 فحص CSRF مدمج: أي POST عبر curl لازم معه `Origin: http://localhost:4321` وإلا 403.
+- **Report**: none (موثّق في worklog + README + هذا الـ entry)
+- **Commit**: uncommitted
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. أضفت `tasks.ts` لملفات lib. المرحلة التالية (للمستقبل): صفحة تفاصيل المهمة `/tasks/[id]` + التحرير + closure flow + طلبات الحذف.
+
+---
+
+### 2026-08-10 — QC-ROUTE-001: الـ role-based home router + الـ shared layout النهائي في QC Task Manager
+
+- **Files**: `apps/qc-task-manager/src/lib/permissions.ts`, `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/src/pages/admin/users/index.astro` (جديد — انقفل من admin/index.astro)، `apps/qc-task-manager/src/pages/admin/index.astro` (صار redirect لـ /admin/users)، `apps/qc-task-manager/src/layouts/BaseLayout.astro` (FlashNotice صار مركزي)، `apps/qc-task-manager/src/components/Navbar.tsx` (اسم التطبيق "QC Task Manager" + رابط admin لـ /admin/users)، `apps/qc-task-manager/src/pages/{employee,manager,supervisor,dashboard}.astro` (حذف FlashNotice اليدوي + سطر "Signed in as")، `apps/qc-task-manager/src/lib/{seed,db}.ts` (بذرة 4 أدوار)، `apps/qc-task-manager/scripts/init-db.mjs`، `apps/qc-task-manager/db/seed.sql`، `apps/qc-task-manager/README.md`، `apps/qc-task-manager/src/pages/login.astro`
+- **What**: وحّدت الصلاحيات في `PERMISSIONS` const (الشكل المطلوب في الـ spec: canViewDashboard / canCreateTask / canEditTaskFields / canDeleteTask / canManageUsers / employeeEditableFields) وكل صفحة و middleware تستورد منه بدون role checks متفرقة. صيّرت `roleHome('admin')` → `/admin/users` وأنشأت صفحة /admin/users. أضفت FlashNotice مركزي في BaseLayout. صلّحت bug `can_create_tasks: true` الثابت في employee page (كان يسمح لأي موظف بإنشاء tasks) — الحين يقرأ real user من DB. صلّحت dashboard الذي كان يستعلم حالات `'Open'/'In Progress'/'Blocked'` بينما الـ schema يستخدم `not_started/in_progress/on_hold` (العدّادات كانت 0 دائمًا). وسّعت البذرة من admin وحده إلى 4 أدوار (admin/manager/supervisor/employee، كلمة المرور نفس ADMIN_DEFAULT_PASSWORD).
+- **Why**: المتطلبات المعلنة: index.astro يعيد توجيه حسب الدور (admin → /admin/users)، BaseLayout نهائي مع navbar يعرض اسم التطبيق + اسم المستخدم + شارة الدور + روابط حسب الدور (بدون Dashboard للموظف) + flash messages، ملف صلاحيات واحد هو مصدر الحقيقة، وصفحات placeholder للدور محمية. وقبول القبول: كل دور يسجل دخول يطلع على صفحته الصحيحة، والموظف لو زار /dashboard يُعاد توجيهه.
+- **Verification**: `pnpm run typecheck` → 0 errors ✅؛ `pnpm run build` → Server built ✅؛ `pnpm db:reset` → 4 حسابات ✓؛ اختبارات curl على dev server: login لكل دور → admin=/admin/users، manager=/manager، supervisor=/supervisor، employee=/employee ✅؛ employee يزور /dashboard → يترجّل لـ /employee ✅؛ manager يزور /admin/users → يترجّل لـ /manager ✅؛ supervisor يزور /manager → يترجّل لـ /supervisor ✅؛ مجهول يزور /manager → يترجّل لـ /login?redirect=%2Fmanager ✅.
+- **Report**: none (موثّق في worklog.md + README + هذا الـ entry)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظة للـ future agents: (1) الـ standalone build (`pnpm start` من dist/server/entry.mjs) يواجه مشكلة مسبقة — `db/schema.sql` يُحل من `dist/db/` اللي مو منسوخ، لذلك التشغيل المدعوم محليًا هو `pnpm dev`. (2) Astro check يطلّع hint false-positive على `roleHome` في login.astro و admin/index.astro بسبب الـ return المبكر — هو 0 errors، لا تجهد نفسك فيه. (3) البذرة الآن 4 أدوار بنفس كلمة المرور بدل admin فقط.
+
+---
+
 ### 2026-08-10 — QC-AUTH-001: ترقية جلسات المصادقة في QC Task Manager (TTL 12h + randomUUID + حرس الأدوار + POST /login)
 
 - **Files**: `apps/qc-task-manager/src/lib/{auth,db,session,flash,permissions,types}.ts`, `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/src/lib/flash.ts` (جديد), `apps/qc-task-manager/src/components/FlashNotice.astro` (جديد), `apps/qc-task-manager/src/pages/{login.astro,logout.ts,index.astro,dashboard.astro}`, `apps/qc-task-manager/src/pages/{admin,manager,supervisor,employee}/index.astro`, `apps/qc-task-manager/src/pages/api/login.ts` (محذوف), `apps/qc-task-manager/src/components/Navbar.tsx`, `apps/qc-task-manager/src/layouts/BaseLayout.astro`, `apps/qc-task-manager/src/env.d.ts`, `apps/qc-task-manager/README.md`

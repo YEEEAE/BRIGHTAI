@@ -16,7 +16,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
-import { seedAdminIfEmpty } from './seed';
+import { seedUsersIfEmpty } from './seed';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -38,7 +38,7 @@ function initialize(db: BetterSqliteDatabase): void {
   if (_initialized) return;
   const sql = readFileSync(SCHEMA_PATH, 'utf8');
   db.exec(sql);
-  seedAdminIfEmpty(db);
+  seedUsersIfEmpty(db);
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.
   db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(new Date().toISOString());

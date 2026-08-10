@@ -17,7 +17,7 @@ interface NavbarProps {
 const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]> = {
   admin: [
     { href: '/dashboard', label: 'Dashboard' },
-    { href: '/admin', label: 'Admin' },
+    { href: '/admin/users', label: 'Admin' },
     { href: '/manager', label: 'Tasks' },
   ],
   manager: [
@@ -28,6 +28,7 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/supervisor', label: 'Tasks' },
   ],
+  // Employees have NO dashboard link (CORE BUSINESS RULE #1).
   employee: [{ href: '/employee', label: 'My Tasks' }],
 };
 
@@ -40,7 +41,7 @@ export default function Navbar({ user }: NavbarProps) {
       <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-6">
           <a href="/" className="text-lg font-semibold text-slate-900">
-            QC Tasks
+            QC Task Manager
           </a>
           {links.length > 0 && (
             <ul className="hidden items-center gap-4 sm:flex">

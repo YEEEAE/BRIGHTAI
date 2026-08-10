@@ -7,12 +7,21 @@
 //   with a one-shot flash message when access is denied.
 // - The resolved session user (or null) is attached to context.locals.user for
 //   every route so pages/components never re-parse the cookie.
+//
+// All role decisions come from src/lib/permissions.ts — no scattered role
+// checks in this file.
 
 import { defineMiddleware } from 'astro:middleware';
 import { getSessionUser } from './lib/auth';
 import { setFlash } from './lib/flash';
-import { canManageUsers, canViewDashboard, roleHome } from './lib/permissions';
+import {
+  canAccessManagerArea,
+  canAccessSupervisorArea,
+  PERMISSIONS,
+  roleHome,
+} from './lib/permissions';
 import { handleLoginPost } from './lib/session';
+import { handleCreateTaskPost } from './lib/tasks';
 
 const PUBLIC_PATHS = new Set(['/', '/login']);
 
@@ -49,14 +58,14 @@ export const onRequest = defineMiddleware((context, next) => {
 
   // /dashboard — employees have no dashboard (CORE BUSINESS RULE #1).
   if (pathname === '/dashboard' || pathname.startsWith('/dashboard/')) {
-    if (!canViewDashboard(user.role)) {
+    if (!PERMISSIONS.canViewDashboard(user.role)) {
       return context.redirect(roleHome(user.role));
     }
   }
 
   // /admin/* — admin only.
   if (pathname.startsWith('/admin')) {
-    if (!canManageUsers(user.role)) {
+    if (!PERMISSIONS.canManageUsers(user.role)) {
       setFlash(context, 'error', 'You do not have permission to access the admin area.');
       return context.redirect(roleHome(user.role));
     }
@@ -64,7 +73,7 @@ export const onRequest = defineMiddleware((context, next) => {
 
   // /manager/* — manager + admin.
   if (pathname.startsWith('/manager')) {
-    if (user.role !== 'manager' && user.role !== 'admin') {
+    if (!canAccessManagerArea(user.role)) {
       setFlash(context, 'error', 'You do not have permission to access the manager area.');
       return context.redirect(roleHome(user.role));
     }
@@ -72,9 +81,22 @@ export const onRequest = defineMiddleware((context, next) => {
 
   // /supervisor/* — supervisor + manager + admin.
   if (pathname.startsWith('/supervisor')) {
-    if (!['supervisor', 'manager', 'admin'].includes(user.role)) {
+    if (!canAccessSupervisorArea(user.role)) {
       setFlash(context, 'error', 'You do not have permission to access the supervisor area.');
       return context.redirect(roleHome(user.role));
+    }
+  }
+
+  // "New task" form submissions. Astro 6 pages have no named request handlers,
+  // so the middleware short-circuits the POST (same pattern as POST /login).
+  // The route guards above have already confirmed the user may access this
+  // area; handleCreateTaskPost re-checks canCreateTask + assignment scope.
+  if (context.request.method === 'POST') {
+    if (pathname === '/manager/new' || pathname === '/supervisor/new') {
+      return handleCreateTaskPost(context, { assignmentScope: 'all' });
+    }
+    if (pathname === '/employee/new') {
+      return handleCreateTaskPost(context, { assignmentScope: 'self' });
     }
   }
 
