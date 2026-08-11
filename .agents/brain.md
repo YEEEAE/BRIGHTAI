@@ -2,11 +2,22 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-11 19:16 +03:00
+last_updated: 2026-08-11 20:27 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.83
+version: 2.7.84
 agent_version: v2.3
 skills_ready: 7
+---
+
+### 2026-08-11 — QC-DEPLOYMENT-DOCS-001: توثيق تشغيل ونشر Astro SSR/SQLite كامل
+
+- **Files**: `apps/qc-task-manager/README.md` (بوابة تشغيل محلي + رابط التشغيل)، `apps/qc-task-manager/docs/DEPLOYMENT.md`، `docs/DATABASE.md`، `docs/SQLTOOLS.md`، `docs/ROLES-AND-PERMISSIONS.md`، `docs/TESTING.md`.
+- **What**: وثّقت أن QC خدمة Astro SSR على Node عبر `@astrojs/node` standalone وليست Static Site؛ خطوات التشغيل المحلي تشمل `pnpm install`، `QC_DATABASE_PATH` المطلق، `ADMIN_DEFAULT_PASSWORD`، `SESSION_SECRET`، `NODE_ENV`، `db:init`، وفتح `http://localhost:4321/login` ثم إعادة تعيين كلمة مرور admin من `/admin/users`. أضفت إعداد Render Node Web Service: Node 22 LTS، أوامر pnpm المطابقة للـ monorepo، start عبر `pnpm --filter @brightai/qc-task-manager start`، HTTPS، disk دائم `/var/data` لقاعدة SQLite وbackups، وجدولة/نسخ خارجي واسترجاع. كذلك فصلت SQLTools، قاعدة البيانات، الصلاحيات، والاختبارات إلى مراجع مستقلة.
+- **Why**: قاعدة SQLite والجلسات ومسارات Astro server-side تحتاج Node process + تخزين دائم؛ نشرها كـ Static Site أو حفظ `qc_tasks.db` على Render ephemeral storage يؤدي لفقدان الوظائف أو البيانات.
+- **Decision / Caveat**: `QC_DATABASE_PATH=/var/data/qc_tasks.db` و`QC_BACKUP_DIR=/var/data/backups` هما المساران الموصى بهما على Render persistent disk، لا مسار repo. `SESSION_SECRET` مطلوب في عقد البيئة بطلب النشر لكنه **غير مقروء حاليًا من الكود**؛ الجلسات الحالية opaque random UUID tokens في SQLite، لذلك وثّقناه كمتغير reserved بدون ادعاء أنه يشفّر الجلسات. `render.yaml` على الجذر يعرّف BrightAI main site كـ Node Web Service فقط؛ لا توجد خدمة QC معرفة فيه ولا Static Site QC مؤكدة من الريبو.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **237 passed / 0 failed** + DB rules ✅؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 11 existing hints** ✅؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built** ✅؛ `pnpm run internal-links:audit` → **0 broken links / 0 orphans** ✅؛ فحص targets المحلية للروابط الجديدة + `git diff --check` ✅.
+- **Notes**: لم أعدل `render.yaml` ولا أنشأت خدمة Render/cron فعليًا (هذا يحتاج صلاحية Dashboard/قرار نشر). `git status` يعمل لكن يصدر تحذير fsmonitor IPC موجود بيئيًا. لا commit ولا push.
+
 ---
 
 ### 2026-08-11 — QC-TEST-ACCEPTANCE-001: اختبارات وحدة وقبول E2E موحّدة لمدير مهام QC

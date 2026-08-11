@@ -10,6 +10,20 @@ Built with **Astro (SSR)** + **React islands** + **Tailwind CSS**, backed by
 **SQLite** (`better-sqlite3`) with **bcryptjs** password hashing and **Zod**
 server-side validation. Runs locally on port 4321.
 
+> **Deployment model:** this application is an Astro SSR Node service. It
+> must run with the `@astrojs/node` standalone server; it is **not** a static
+> site and cannot be deployed as one because authentication and SQLite access
+> run on the server.
+
+## Operations documentation
+
+- [Deployment on Render](docs/DEPLOYMENT.md)
+- [Database operations and backups](docs/DATABASE.md)
+- [SQLTools connection](docs/SQLTOOLS.md)
+- [Roles and permissions](docs/ROLES-AND-PERMISSIONS.md)
+- [Testing](docs/TESTING.md)
+- [Restore procedure](docs/RESTORE.md)
+
 ---
 
 ## What the app does
@@ -87,12 +101,31 @@ All checks live in one place: `src/lib/permissions.ts`.
 From the **monorepo root** (the package is `@brightai/qc-task-manager`):
 
 ```bash
-pnpm install                                   # install (better-sqlite3 needs build tools)
-pnpm --filter @brightai/qc-task-manager db:seed   # create db/qc_tasks.db + seed roles
-pnpm --filter @brightai/qc-task-manager dev   # http://localhost:4321
+pnpm install
+
+# Use an absolute path; the local database is kept in the application folder.
+export QC_DATABASE_PATH="$PWD/apps/qc-task-manager/db/qc_tasks.db"
+export ADMIN_DEFAULT_PASSWORD='replace-with-a-strong-local-password'
+export SESSION_SECRET='replace-with-a-random-secret'
+export NODE_ENV=development
+
+# Explicitly create or upgrade the schema and its first set of accounts.
+pnpm --filter @brightai/qc-task-manager db:init
+pnpm --filter @brightai/qc-task-manager dev
 ```
 
-Open <http://localhost:4321/login> and sign in.
+Open <http://localhost:4321/login>, then sign in as `admin`. Immediately open
+`/admin/users` and reset the default admin password. `ADMIN_DEFAULT_PASSWORD`
+is only used when the users table is empty, so changing the variable later
+does not change an existing password.
+
+For the full local setup, including secure secret generation and SQLTools,
+see [DATABASE.md](docs/DATABASE.md) and [SQLTOOLS.md](docs/SQLTOOLS.md).
+
+`SESSION_SECRET` is included in the deployment contract. The current session
+implementation uses opaque random tokens stored in SQLite and does not yet
+consume this variable; keep it configured so a future session implementation
+can adopt it without an environment migration.
 
 ### Production build & start
 
