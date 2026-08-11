@@ -278,7 +278,8 @@ apps/qc-task-manager/
 │   ├── test.mjs            # `pnpm test`: structure + unit smoke
 │   ├── e2e-delete-request.mjs
 │   ├── e2e-dashboard.mjs
-│   └── e2e-auth-lockout.mjs
+│   ├── e2e-auth-lockout.mjs
+│   └── e2e-admin-users.mjs # /admin/users: CRUD, guards, Zod, last login
 ├── src/
 │   ├── middleware.ts       # auth + role guards + security headers + login/new-task POSTs
 │   ├── layouts/BaseLayout.astro
@@ -325,11 +326,31 @@ apps/qc-task-manager/
 
 ### Admin — user management (`/admin/users`)
 
-Create users (username unique, password ≥ 8 chars, role, `can_create_tasks`),
-activate/deactivate, reset passwords, and toggle `can_create_tasks` for
-employees. An admin can never deactivate their own account. Deactivated
-accounts get a dedicated "This account has been disabled." login message.
-Actions are console-audited (`[users] …`), never written to the task log.
+Admin-only user management, fully server-side validated (Zod):
+
+- **List** every user: username, full name, role badge, department,
+  `can_create_tasks`, active status, created date, and **last login**.
+- **Create** users (username unique, password ≥ 8 chars, role, department
+  defaulting to **QC**, `can_create_tasks`). New accounts are inserted
+  directly into SQLite as **active**, so they can sign in immediately.
+- **Edit** a user: full name, role, department, `can_create_tasks`, active
+  status. Username is **immutable** — there is no update path for it.
+- **Reset password** (also clears any brute-force lock — the sanctioned
+  unblock).
+- **Activate / deactivate** (quick toggle) and **toggle `can_create_tasks`**
+  for employees.
+- An admin can **never deactivate or demote their own account** (enforced in
+  the UI and in `src/lib/users.ts`; benign self-edits like changing one's own
+  full name still work). Reactivation — via the toggle or the edit form —
+  clears the brute-force lock so the account is usable immediately.
+- Deactivated accounts get a dedicated "This account has been disabled."
+  login message.
+- Password hashes are never selected, rendered, or logged. Actions are
+  console-audited (`[users] …` with actor + target + changed fields), never
+  written to the task log. Duplicate usernames and validation failures return
+  safe, user-friendly flash messages.
+
+E2E: `scripts/e2e-admin-users.mjs` (49 assertions).
 
 ### Task creation (`/manager/new`, `/supervisor/new`, `/employee/new`)
 
@@ -504,6 +525,13 @@ QC_DB_PATH=$(pwd)/db/e2e_test.db BASE_URL=http://localhost:4322 node scripts/e2e
 # dashboard (29 assertions): same pattern, scripts/e2e-dashboard.mjs
 # auth lockout (secure auth hardening): scripts/e2e-auth-lockout.mjs
 #   (PORT=4323 — build first so the Secure cookie flag is asserted)
+# admin users (49 assertions): scripts/e2e-admin-users.mjs
+#   (PORT=4398 — covers last login, department, edit, self-demotion guard,
+#    duplicate usernames, Zod errors, reset password, immediate login)
+#
+# Note: GET /login never touches the DB (the schema seeds on the first
+# session-bearing request), so E2E scripts that read SQLite directly fire a
+# warm-up login POST before opening the DB file.
 ```
 
 ## Notes

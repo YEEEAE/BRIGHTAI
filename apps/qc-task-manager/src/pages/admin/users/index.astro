@@ -18,7 +18,7 @@ const user = Astro.locals.user!; // protected route — middleware guarantees a 
 const db = getDb();
 const users = db
   .prepare(
-    `SELECT id, username, full_name, department, role, can_create_tasks, is_active, created_at
+    `SELECT id, username, full_name, department, role, can_create_tasks, is_active, created_at, last_login_at
      FROM users ORDER BY id`,
   )
   .all() as {
@@ -30,6 +30,7 @@ const users = db
     can_create_tasks: number;
     is_active: number;
     created_at: string;
+    last_login_at: string | null;
   }[];
 
 const ROLE_BADGE: Record<string, string> = {
@@ -92,6 +93,12 @@ const labelCls = 'block text-sm font-medium text-slate-700';
         </select>
       </div>
 
+      <div>
+        <label for="department" class={labelCls}>Department</label>
+        <input id="department" name="department" type="text" value="QC" required class={inputCls} />
+        <p class="mt-1 text-xs text-slate-400">Defaults to QC.</p>
+      </div>
+
       <label class="flex items-start gap-2 pt-5 text-sm text-slate-700 sm:col-span-2">
         <input type="checkbox" name="can_create_tasks" value="1" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-600" />
         <span>
@@ -124,6 +131,7 @@ const labelCls = 'block text-sm font-medium text-slate-700';
           <th class="px-4 py-2">Can create</th>
           <th class="px-4 py-2">Active</th>
           <th class="px-4 py-2">Created</th>
+          <th class="px-4 py-2">Last login</th>
           <th class="px-4 py-2">Actions</th>
         </tr>
       </thead>
@@ -152,6 +160,7 @@ const labelCls = 'block text-sm font-medium text-slate-700';
                 </span>
               </td>
               <td class="px-4 py-2 whitespace-nowrap text-slate-500">{formatDate(u.created_at)}</td>
+              <td class="px-4 py-2 whitespace-nowrap text-slate-500">{u.last_login_at ? formatDate(u.last_login_at) : '—'}</td>
               <td class="px-4 py-2">
                 <div class="flex flex-col items-start gap-2">
                   <div class="flex items-center gap-2">
@@ -195,6 +204,100 @@ const labelCls = 'block text-sm font-medium text-slate-700';
                       </form>
                     )}
                   </div>
+
+                  <details class="group">
+                    <summary class="cursor-pointer text-xs font-medium text-brand-600 hover:underline">Edit</summary>
+                    <form action="/admin/users/api" method="POST" class="mt-2 grid gap-2 rounded-md border border-slate-200 bg-slate-50 p-3 sm:min-w-72">
+                      <input type="hidden" name="action" value="edit" />
+                      <input type="hidden" name="user_id" value={u.id} />
+
+                      <div>
+                        <label for={`edit-full-${u.id}`} class="block text-xs font-medium text-slate-600">Full name</label>
+                        <input
+                          id={`edit-full-${u.id}`}
+                          name="full_name"
+                          type="text"
+                          required
+                          value={u.full_name}
+                          class="mt-0.5 block w-full rounded-md border border-slate-300 px-2 py-1 text-xs focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label for={`edit-role-${u.id}`} class="block text-xs font-medium text-slate-600">Role</label>
+                        {isSelf ? (
+                          <>
+                            <input type="hidden" name="role" value={u.role} />
+                            <p class="mt-1 text-xs text-slate-500">
+                              {u.role} — you cannot change your own role.
+                            </p>
+                          </>
+                        ) : (
+                          <select
+                            id={`edit-role-${u.id}`}
+                            name="role"
+                            class="mt-0.5 block w-full rounded-md border border-slate-300 px-2 py-1 text-xs focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                          >
+                            <option value="employee" selected={u.role === 'employee'}>Employee</option>
+                            <option value="supervisor" selected={u.role === 'supervisor'}>Supervisor</option>
+                            <option value="manager" selected={u.role === 'manager'}>Manager</option>
+                            <option value="admin" selected={u.role === 'admin'}>Admin</option>
+                          </select>
+                        )}
+                      </div>
+
+                      <div>
+                        <label for={`edit-dept-${u.id}`} class="block text-xs font-medium text-slate-600">Department</label>
+                        <input
+                          id={`edit-dept-${u.id}`}
+                          name="department"
+                          type="text"
+                          required
+                          value={u.department}
+                          class="mt-0.5 block w-full rounded-md border border-slate-300 px-2 py-1 text-xs focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                        />
+                      </div>
+
+                      <label class="flex items-start gap-2 text-xs text-slate-700">
+                        <input
+                          type="checkbox"
+                          name="can_create_tasks"
+                          value="1"
+                          checked={toBool(u.can_create_tasks)}
+                          class="mt-0.5 h-3.5 w-3.5 rounded border-slate-300 text-brand-600"
+                        />
+                        <span>
+                          Can create tasks
+                          <span class="block text-[10px] text-slate-400">Only applies to employee accounts.</span>
+                        </span>
+                      </label>
+
+                      {isSelf ? (
+                        <>
+                          <input type="hidden" name="is_active" value="1" />
+                          <p class="text-xs text-slate-500">Active — you cannot deactivate your own account.</p>
+                        </>
+                      ) : (
+                        <label class="flex items-center gap-2 text-xs text-slate-700">
+                          <input
+                            type="checkbox"
+                            name="is_active"
+                            value="1"
+                            checked={toBool(u.is_active)}
+                            class="h-3.5 w-3.5 rounded border-slate-300 text-brand-600"
+                          />
+                          Active account
+                        </label>
+                      )}
+
+                      <button
+                        type="submit"
+                        class="rounded-md bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700"
+                      >
+                        Save changes
+                      </button>
+                    </form>
+                  </details>
 
                   <details class="group">
                     <summary class="cursor-pointer text-xs font-medium text-brand-600 hover:underline">Reset password</summary>

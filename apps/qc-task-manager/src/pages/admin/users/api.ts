@@ -1,7 +1,8 @@
 // POST /admin/users/api — admin user-management actions.
 //
 // Dispatches on the `action` form field:
-//   create          → create a new user (username, full_name, password, role, can_create_tasks)
+//   create          → create a new user (username, full_name, password, role, department, can_create_tasks)
+//   edit            → update full_name / role / department / can_create_tasks / is_active (user_id)
 //   toggle_active   → activate/deactivate a user (user_id, value 0|1)
 //   toggle_create   → flip can_create_tasks (user_id, value 0|1)
 //   reset_password  → set a new password (user_id, password)
@@ -21,6 +22,7 @@ import {
   resetPassword,
   setCanCreateTasks,
   setUserActive,
+  updateUser,
 } from '../../../lib/users';
 import type { Role } from '../../../lib/types';
 
@@ -53,10 +55,29 @@ export const POST: APIRoute = async (context) => {
       fullName: String(form.get('full_name') ?? ''),
       password: String(form.get('password') ?? ''),
       role: role as Role,
+      department: String(form.get('department') ?? ''),
       canCreateTasks: form.get('can_create_tasks') === '1',
     });
     if (!result.ok) return fail(result.error);
     setFlash(context, 'success', `User "${username.trim()}" created.`);
+    return context.redirect('/admin/users');
+  }
+
+  if (action === 'edit') {
+    const id = Number(form.get('user_id') ?? '');
+    if (!Number.isInteger(id) || id <= 0) return fail('Invalid user.');
+    // The full editable payload is validated server-side through Zod inside
+    // updateUser (missing fields merge onto the current row). Role + is_active
+    // arrive as checkboxes/selects with the semantics defined by the schema.
+    const result = updateUser(actor, id, {
+      fullName: String(form.get('full_name') ?? ''),
+      role: String(form.get('role') ?? '') as Role,
+      department: String(form.get('department') ?? ''),
+      canCreateTasks: form.get('can_create_tasks') === '1',
+      isActive: form.get('is_active') === '1',
+    });
+    if (!result.ok) return fail(result.error);
+    setFlash(context, 'success', 'User updated.');
     return context.redirect('/admin/users');
   }
 

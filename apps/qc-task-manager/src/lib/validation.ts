@@ -123,6 +123,18 @@ export const deleteRequestSchema = z.object({
   ),
 });
 
+/** Max length for the free-text department field. */
+export const MAX_DEPARTMENT_LENGTH = 50;
+
+/**
+ * Normalize an unchecked checkbox / missing FormData value into a boolean.
+ * FormData omits unchecked checkboxes entirely, so missing/'' becomes false.
+ */
+const checkboxBool = (v: unknown): boolean => v === '1' || v === true || v === 1;
+
+/** Normalize an empty/missing department to the 'QC' default (per spec). */
+const departmentValue = (v: unknown): unknown => (v === '' || v == null ? 'QC' : v);
+
 /** Admin user creation (validates the already-shaped CreateUserInput object). */
 export const userCreateSchema = z.object({
   username: z
@@ -141,7 +153,37 @@ export const userCreateSchema = z.object({
   role: z.enum(['admin', 'manager', 'supervisor', 'employee'], {
     errorMap: () => ({ message: 'Invalid role.' }),
   }),
+  department: z.preprocess(
+    departmentValue,
+    z
+      .string()
+      .trim()
+      .min(1, 'Department is required.')
+      .max(MAX_DEPARTMENT_LENGTH, `Department must be ${MAX_DEPARTMENT_LENGTH} characters or fewer.`),
+  ),
   canCreateTasks: z.boolean(),
+});
+
+/**
+ * Admin user edit (full name, role, department, can_create_tasks, is_active).
+ * Username is deliberately absent — it is immutable after creation. Checkbox
+ * fields follow FormData semantics (unchecked → absent → false).
+ */
+export const userEditSchema = z.object({
+  fullName: z.string({ required_error: 'Full name is required.' }).trim().min(1, 'Full name is required.'),
+  role: z.enum(['admin', 'manager', 'supervisor', 'employee'], {
+    errorMap: () => ({ message: 'Invalid role.' }),
+  }),
+  department: z.preprocess(
+    departmentValue,
+    z
+      .string()
+      .trim()
+      .min(1, 'Department is required.')
+      .max(MAX_DEPARTMENT_LENGTH, `Department must be ${MAX_DEPARTMENT_LENGTH} characters or fewer.`),
+  ),
+  canCreateTasks: z.preprocess(checkboxBool, z.boolean()),
+  isActive: z.preprocess(checkboxBool, z.boolean()),
 });
 
 /** Admin password reset. */
