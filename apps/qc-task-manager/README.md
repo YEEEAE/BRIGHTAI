@@ -153,6 +153,15 @@ The server logs a warning when the default `admin123` is in use.
 - **Migrations**: `src/lib/db.ts` upgrades existing databases to the 12-table
   shape on boot (new columns via `ALTER TABLE` + a rebuild of
   `task_delete_requests` into the CASCADE shape) before `schema.sql` runs.
+  `scripts/init-db.mjs` runs the **same migrations** before applying
+  `schema.sql`, so `pnpm db:init` also upgrades existing databases instead of
+  failing on the new indexes.
+  > ⚠️ **Never run `db/schema.sql` directly against an existing database**
+  > (e.g. pasting it into SQLTools): `CREATE TABLE IF NOT EXISTS` keeps old
+  > table shapes, so the new `CREATE INDEX` statements fail with
+  > `SQLITE_ERROR: no such column: <name>` (e.g. `recurrence`). To upgrade an
+  > old DB, run `pnpm db:init` once (non-destructive `ADD COLUMN`s — data is
+  > kept) or simply boot the app.
   Note: `ALTER TABLE ADD COLUMN` cannot change CHECK constraints or make
   columns NOT NULL, so migrated databases keep the legacy `tasks.status` /
   `tasks.priority` CHECKs (no `'cancelled'`/`'urgent'`) and nullable

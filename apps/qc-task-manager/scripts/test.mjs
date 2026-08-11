@@ -12,6 +12,7 @@
 // e2e-delete-request.mjs) which need a live server — see the README.
 
 import Database from 'better-sqlite3';
+import { spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync, statSync, readdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -220,6 +221,108 @@ try {
   ok(statSync(second.file).size > 0, 'backup: second backup valid');
 } finally {
   rmSync(tmpDir, { recursive: true, force: true });
+}
+
+// ── 6. init-db migrates a legacy (pre-spec) database ──
+// Regression for the "SQLITE_ERROR: no such column: recurrence" bug: a
+// database created by an OLD schema keeps its old table shapes (schema.sql's
+// CREATE TABLE IF NOT EXISTS never touches them), so `pnpm db:init` must run
+// the same column migrations as the app boot BEFORE applying schema.sql.
+// This runs the REAL CLI as a subprocess against a legacy-shaped DB.
+section('init-db migration (legacy DB → spec shape)');
+const migDir = mkdtempSync(join(tmpdir(), 'qc-mig-'));
+try {
+  const legacyPath = join(migDir, 'legacy.db');
+  const legacy = new Database(legacyPath);
+  legacy.exec(`
+    CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      full_name TEXT NOT NULL,
+      role TEXT NOT NULL,
+      department TEXT NOT NULL DEFAULT 'QC',
+      can_create_tasks INTEGER NOT NULL DEFAULT 0,
+      is_active INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE TABLE tasks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      description TEXT,
+      status TEXT NOT NULL DEFAULT 'not_started',
+      priority TEXT NOT NULL DEFAULT 'medium',
+      progress_percent INTEGER NOT NULL DEFAULT 0,
+      created_by INTEGER NOT NULL,
+      assigned_to INTEGER,
+      due_date TEXT,
+      blocker_note TEXT,
+      completed_at TEXT,
+      completed_by INTEGER,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE TABLE task_delete_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      task_id INTEGER NOT NULL,
+      task_title TEXT NOT NULL,
+      requested_by INTEGER NOT NULL,
+      reason TEXT,
+      status TEXT NOT NULL DEFAULT 'pending',
+      reviewed_by INTEGER,
+      reviewed_at TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
+      VALUES ('admin', 'legacy-hash', 'Legacy Admin', 'admin', 'QC', 1, 1);
+    INSERT INTO tasks (title, status, created_by, due_date)
+      VALUES ('Legacy task', 'in_progress', 1, '2026-08-01');
+    INSERT INTO task_delete_requests (task_id, task_title, requested_by, status)
+      VALUES (1, 'Legacy task', 1, 'pending');
+  `);
+  legacy.close();
+
+  const run = spawnSync(process.execPath, ['scripts/init-db.mjs'], {
+    cwd: APP_DIR,
+    env: { ...process.env, QC_DATABASE_PATH: legacyPath },
+    encoding: 'utf8',
+  });
+  ok(run.status === 0, 'init-db: exits successfully');
+  // Migration warnings go to stderr (console.warn); logs to stdout.
+  const combined = `${run.stdout ?? ''}${run.stderr ?? ''}`;
+  ok(/migrated .* column\(s\)/.test(combined), 'init-db: reports migrated columns');
+  ok(/task_delete_requests \(spec shape/.test(combined), 'init-db: rebuilds legacy task_delete_requests');
+  ok(/users table already has 1 row/.test(combined), 'init-db: keeps existing rows (seed skipped)');
+
+  const check = new Database(legacyPath, { readonly: true });
+  const tasksCols = check.prepare('PRAGMA table_info(tasks)').all().map((c) => c.name);
+  for (const col of ['recurrence', 'recurrence_end_date', 'parent_recurring_task_id', 'department']) {
+    ok(tasksCols.includes(col), `init-db: tasks gains '${col}'`);
+  }
+  const delReqCols = check.prepare('PRAGMA table_info(task_delete_requests)').all().map((c) => c.name);
+  ok(!delReqCols.includes('task_title'), 'init-db: task_delete_requests loses legacy task_title');
+  const pending = check.prepare("SELECT task_id, status FROM task_delete_requests WHERE status = 'pending'").get();
+  ok(pending && pending.task_id === 1, 'init-db: pending delete request survives the rebuild');
+  const idx = check.prepare("SELECT 1 AS one FROM sqlite_master WHERE type = 'index' AND name = 'idx_tasks_recurrence'").get();
+  ok(!!idx, 'init-db: idx_tasks_recurrence index created');
+  const users = check.prepare('SELECT COUNT(*) AS n FROM users').get().n;
+  ok(users === 1, 'init-db: user data preserved (1 row)');
+  const tables = check.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all().map((r) => r.name);
+  ok(tables.length === 12, `init-db: full 12-table schema applied (got ${tables.length})`);
+  const fk = check.prepare('PRAGMA foreign_key_check').all();
+  ok(fk.length === 0, 'init-db: no foreign-key violations after migration');
+  check.close();
+
+  // Idempotency: a second run must be a no-op (columns already exist).
+  const run2 = spawnSync(process.execPath, ['scripts/init-db.mjs'], {
+    cwd: APP_DIR,
+    env: { ...process.env, QC_DATABASE_PATH: legacyPath },
+    encoding: 'utf8',
+  });
+  const combined2 = `${run2.stdout ?? ''}${run2.stderr ?? ''}`;
+  ok(run2.status === 0, 'init-db: second run exits successfully');
+  ok(!/migrated .* column\(s\)/.test(combined2), 'init-db: second run is a no-op (idempotent)');
+} finally {
+  rmSync(migDir, { recursive: true, force: true });
 }
 
 // ── summary ──
