@@ -2,12 +2,27 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-11 20:27 +03:00
+last_updated: 2026-08-11 21:39 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.84
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-11 — QC-PROMPT3-FORMAT-001: تحسين تنسيق prompt3.md بدون تغيير المحتوى
+
+- **Files**: `audit/qc/prompt3.md`، `.agents/brain.md`.
+- **What**: وحّدت مستويات عناوين Markdown داخل ملف البرومبت، وثبّت علامات القوائم على `-`، مع إبقاء النصوص والأمثلة والبرومبتات والمحتوى التقني كما هو.
+- **Verification**: عدد أسطر `audit/qc/prompt3.md` بقي **2302**؛ فحص بنية العناوين والقوائم وكتل الكود تم محليًا. الملف كان untracked مسبقًا، ولا يوجد commit أو push.
+- **Status**: تنسيق مكتمل، والمحتوى محفوظ.
+
+### 2026-08-11 — QC-MASTER-BASELINE-AUDIT-001: تدقيق baseline شامل بدون تعديل كود
+
+- **Files**: `apps/qc-task-manager/docs/MASTER-BASELINE-AUDIT.md` (جديد)، `.agents/brain.md` (هذا السجل).
+- **What**: راجعت Source of Truth الحالي لتطبيق QC Task Manager: package/config، schema، migrations داخل `src/lib/db.ts` و`scripts/init-db.mjs`، كل `src/lib` و`src/pages` و`src/components`، API/auth/RBAC/policy/validation/activity/evidence/notifications/dashboard/search/exports/backups، الاختبارات وE2E والتوثيق والنشر. استخدمت `audit/qc/REPORT.md` و`PROMPTS.md` و`prompt2.md` كمراجع داعمة فقط.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **237/237 domain + DB lockout/notification checks passed**؛ `typecheck` → **0 errors / 0 warnings / 11 hints**؛ `NODE_ENV=production ... build` → **Server built**؛ `verify-security-hygiene.mjs` → **passed**؛ local DB read-only → **12 tables / integrity ok / 0 FK violations / 4 users / 0 tasks**. `e2e:acceptance` → **blocked before first suite** بسبب `listen EPERM 127.0.0.1:4500` في البيئة الحالية، لذلك لم يُحسب PASS.
+- **Scores**: CORE COMPLETION **88%**، SECURITY **82%**، TESTING **72%**، PRODUCTION READINESS **64%**، OVERALL **80%**. أهم الفجوات: QC service غير معرف في `render.yaml`، اختلاف fresh/migrated SQLite، restore غير مثبت كاختبار، live E2E/a11y/load غير مثبتة، CSP فيها `style-src 'unsafe-inline'`، و`SESSION_SECRET` مو مستخدم.
+- **Status**: التقرير مكتمل؛ ما تعدّل أي كود أو schema أو deployment. `audit/qc/REPORT.md` و`audit/qc/prompt2.md` كانا dirty مسبقًا وتُركا بدون لمس. لا commit ولا push.
 
 ### 2026-08-11 — QC-DEPLOYMENT-DOCS-001: توثيق تشغيل ونشر Astro SSR/SQLite كامل
 

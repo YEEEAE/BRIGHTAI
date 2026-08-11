@@ -1,454 +1,2291 @@
-# 📋 التقرير التفصيلي — نظام إدارة مهام QC (QC Task Manager)
+أكيد. راجعت **ملفي البرومبتات كاملين** مع **ملف تقرير النظام** وملف الـMarkdown الذي يوثق ما تم تنفيذه فعليًا. النتيجة تعطي صورة أوضح بكثير من مجرد سرد الميزات: فيه **مرحلتين من البرومبتات**، والنسخة الثانية توسّعت بشكل كبير عن الأولى، والتنفيذ الفعلي تجاوز النسخة المختصرة من البرومبتات في عدة نقاط.
 
-**المستودع:** [YEEEAE/BRIGHTAI](https://github.com/YEEEAE/BRIGHTAI)
-**المسار المقترح داخل المستودع:** `apps/qc-task-manager/`
-**التقنيات:** Astro (SSR) + SQLite + SQLTools في VSCode
-**الفئة المستهدفة:** كل فريق QC (أدمن، مدير، سوبرفايزر، موظفين)
+# 📋 التقرير الشامل لنظام QC Task Manager
 
----
+## 1. وش هو النظام أساسًا؟
 
-## 1) الفكرة بعد التحسين ✨
+النظام هو **نظام داخلي لإدارة ومتابعة مهام قسم Quality Control / Compliance**، وليس Task Manager عادي.
 
-فكرتك الأساسية ممتازة، وهذه النسخة المحسّنة بعد إضافة التفاصيل:
+فكرته الأساسية هي تحويل دورة المهمة من شيء يتم عبر الإيميلات والرسائل والملفات المتفرقة إلى دورة عمل موثقة:
 
-> **ويب آب داخلي لفريق QC** يسمح للمدير والسوبرفايزر بإسناد المهام، وللموظفين بتحديث حالاتها (🔴 🟡 🟠 🟢) مع رفع الأدلة والتعليقات، ولوحة تحكم (Dashboard) للإدارة فقط، وصلاحيات دقيقة لكل دور، وقاعدة بيانات SQLite مربوطة مباشرة داخل VSCode عبر إضافة SQLTools، مع سجل كامل لكل حركة على كل مهمة (Activity Log) — وهو ما يناسب طبيعة عمل الـ Compliance لأن كل شيء موثّق وقابل للتدقيق.
+**إنشاء المهمة → إسنادها → تنفيذها → تحديث التقدم → تسجيل العوائق → رفع الأدلة → التعليقات → الإغلاق → سجل التدقيق → التقارير.**
 
-### أهم 6 تحسينات أضفتها على فكرتك:
+وهذا بالضبط اللي يخليه مناسب لبيئة QC؛ لأن القيمة الحقيقية للنظام مو فقط "وش المهام اللي عندنا؟"، بل:
 
-| # | التحسين | لماذا مهم؟ |
-|---|---------|------------|
-| 1 | **قفل الحقول (Field Locking)** بعد إنشاء المهمة | الموظف لا يغيّر كل شيء — يعدّل فقط الحالة ونسبة الإنجاز والتعليقات والأدلة |
-| 2 | **سجل النشاط (Activity Log)** لكل مهمة | أساس الـ Compliance: من فعل ماذا ومتى |
-| 3 | **تدفق إغلاق رسمي** للمهمة | Completed → Evidence (قابل للتخطي) → Comment → Completed Date → Completed By |
-| 4 | **طلبات الحذف** بدل الحذف المباشر | الموظف يطلب، المدير/الأدمن يعتمد |
-| 5 | **تخزين المرفقات داخل قاعدة البيانات** (BLOB) | كل شيء في مكان واحد، ونسخة احتياطية واحدة تكفي |
-| 6 | **صلاحية "إنشاء مهام" اختيارية لكل موظف** | مرونة: موظف تثق به تمنحه الإنشاء، وغيره لا |
+> **مين سوّى وش؟ ومتى؟ وش تغيّر؟ وين الدليل؟ وليش توقفت المهمة؟ وكيف أغلقت؟**
+
+ملف التقرير الأصلي يصف النظام بأنه يجمع بين Task Management وAccountability وEvidence وAudit Trail وRBAC وSLA Monitoring وManagement Dashboard. 
 
 ---
 
-## 2) التقنيات المختارة ولماذا 🛠️
+# 2. الملفات اللي اعتمدت عليها
 
-| التقنية | الدور | سبب الاختيار |
-|---------|-------|---------------|
-| **Astro** (وضع SSR) | بناء الصفحات والـ API | طلبتَه أنت، وسريع، ويدعم صفحات + API endpoints في مشروع واحد |
-| **@astrojs/node** | تشغيل السيرفر | يجعل Astro يعمل كسيرفر داخلي في الشركة |
-| **SQLite** | قاعدة البيانات | ملف واحد داخل المشروع، لا يحتاج سيرفر قواعد بيانات، ويرتبط مباشرة مع SQLTools داخل VSCode |
-| **better-sqlite3** | مكتبة الربط من الكود | الأسرع والأبسط مع SQLite، ويستخدم Prepared Statements (حماية من SQL Injection) |
-| **SQLTools + SQLite Driver** | إدارة القاعدة داخل VSCode | تشاهد الجداول وتنفّذ استعلامات وتعدّل البيانات بدون مغادرة VSCode |
-| **bcryptjs** | تشفير كلمات المرور | لا تُحفظ أي كلمة مرور كنص واضح أبداً |
-| **Session Cookies** | تسجيل الدخول | جلسة آمنة (HttpOnly) تنتهي بعد 8 ساعات |
+اعتمدت في المقارنة على:
 
-> 💡 **مستقبلاً:** إذا كبر الفريق واحتجتم MySQL/PostgreSQL، نفس SQLTools يدعمهما، والتصميم أدناه يسهّل الانتقال.
+### المجموعة الأولى — البرومبتات الموسعة
+
+ملف `prompt2.md`
+
+هذه النسخة تحتوي **19 مرحلة تنفيذية من PROMPT 00 إلى PROMPT 18**، وتبدأ من فحص المستودع وتنتهي بالنشر والتوثيق. 
+
+### المجموعة الثانية — حزمة البرومبتات المختصرة
+
+ملف `PROMPTS.md`
+
+هذه نسخة أكثر اختصارًا تحتوي **PROMPT 00 إلى PROMPT 12**، وفيها القرارات النهائية المبسطة للنظام. 
+
+### تقرير النظام
+
+ملف `REPORT.md`
+
+وهو يشرح تصميم النظام، الصفحات، الصلاحيات، قاعدة البيانات، دورة المهمة، الأمن، SQLTools وغيرها. 
+
+### سجل التنفيذ الفعلي
+
+ملف `تم لصق markdown.md`
+
+وهذا أهم ملف لمعرفة **وش تم تنفيذه فعليًا**؛ لأنه يسرد نتيجة كل Prompt تقريبًا، ثم يذكر بنية الملفات والفجوات المتبقية. 
 
 ---
 
-## 3) مكان المشروع في المستودع 📁
+# 3. الصورة العامة للتنفيذ
 
-مستودعك `BRIGHTAI` عبارة عن **pnpm monorepo** فيه مجلد `apps/` (مثل `apps/dashboard`). لذلك المسار "الممتاز" والمتوافق مع بنية مستودعك هو:
+بناءً على الملفات، المشروع وصل إلى مستوى:
 
-```
-BRIGHTAI/
+## 🟢 Advanced MVP / Pilot
+
+وليس مجرد Skeleton أو Prototype بسيط.
+
+الـMarkdown نفسه يصفه بأنه تجاوز مرحلة الـPrototype وأصبح تطبيقًا فعليًا بطبقات واضحة. 
+
+### تقديري للتنفيذ الوظيفي:
+
+| المجال                 |    التقييم |
+| ---------------------- | ---------: |
+| Architecture           |    **95%** |
+| Authentication         |    **95%** |
+| RBAC                   |    **95%** |
+| Task Management        |    **95%** |
+| Field Locking          |   **100%** |
+| Completion Workflow    |    **95%** |
+| Evidence / Attachments |    **95%** |
+| Activity / Audit Trail |    **95%** |
+| Notifications          |    **90%** |
+| Delete Workflow        |    **95%** |
+| Dashboard              |    **90%** |
+| Database               |    **95%** |
+| Security               |    **90%** |
+| Backup                 |    **85%** |
+| Testing                |    **80%** |
+| Reporting / Export     |    **80%** |
+| Production Readiness   | **70–75%** |
+
+### التقييم العام التقريبي:
+
+# **حوالي 90% من النظام الوظيفي الأساسي منفذ**
+
+لكن:
+
+# **الجاهزية كنظام Production رسمي أقل من ذلك**
+
+لأن بعض الأشياء تحتاج **اختبار فعلي وإثبات تشغيل**، مو مجرد وجود الكود أو السكربت.
+
+وهذا فرق مهم جدًا.
+
+---
+
+# 4. المرحلة الأولى: Repository Audit
+
+أول شيء تم عمله هو فحص المستودع قبل بناء النظام.
+
+تم التحقق من:
+
+* أنه Monorepo.
+* استخدام pnpm.
+* وجود `apps/*`.
+* نسخة Astro.
+* طريقة تشغيل Render.
+* إمكانية إضافة تطبيق مستقل.
+* عدم تخريب التطبيق الأساسي.
+
+والنتيجة:
+
+```text
+BRIGHTAI
 └── apps/
-    └── qc-task-manager/          ← المشروع كاملاً هنا
-        ├── package.json           (الاسم: @brightai/qc-task-manager)
-        ├── astro.config.mjs
-        ├── db/
-        │   ├── schema.sql         ← إنشاء الجداول
-        │   ├── seed.sql           ← البيانات الأولية (حساب الأدمن...)
-        │   └── qc_tasks.db        ← قاعدة البيانات (تتولد تلقائياً عند أول تشغيل)
-        ├── .vscode/
-        │   └── settings.json      ← إعدادات اتصال SQLTools جاهزة
-        └── src/
-            ├── middleware.ts      ← حارس الصلاحيات لكل صفحة
-            ├── lib/
-            │   ├── db.ts          ← الاتصال بقاعدة البيانات
-            │   ├── auth.ts        ← الجلسات وتسجيل الدخول
-            │   └── permissions.ts ← قواعد الصلاحيات وقفل الحقول
-            ├── layouts/
-            │   └── AppLayout.astro
-            ├── components/
-            │   ├── TaskCard.astro
-            │   ├── StatusBadge.astro
-            │   ├── ProgressBar.astro
-            │   └── CompleteTaskModal.astro
-            └── pages/
-                ├── login.astro
-                ├── index.astro            ← يحوّل كل دور لصفحته
-                ├── dashboard.astro        ← (أدمن + مدير فقط)
-                ├── tasks/index.astro      ← صفحة المدير/السوبرفايزر
-                ├── tasks/[id].astro       ← تفاصيل المهمة + سجل النشاط
-                ├── my-tasks.astro         ← صفحة الموظف
-                ├── admin/users.astro      ← إدارة الحسابات (أدمن فقط)
-                └── api/                   ← نقاط الـ API (إنشاء/تعديل/حالة/رفع...)
+    └── qc-task-manager/
 ```
 
-**تشغيله من جذر المستودع** (لأنه داخل الـ workspace):
-```bash
-pnpm install
-pnpm --filter @brightai/qc-task-manager dev
-```
+وتم تحديد أن التطبيق يعمل كـ **Astro SSR** وليس Static. 
+
+وهذي خطوة مهمة جدًا؛ لأن النظام يعتمد على:
+
+* SQLite
+* Sessions
+* Authentication
+* Server-side APIs
+* File uploads
+
+وبالتالي Static Hosting وحده ما يكفي.
 
 ---
 
-## 4) الصفحات بالتفصيل 📄
+# 5. إنشاء التطبيق
 
-### 4.1 صفحة تسجيل الدخول `/login`
-- حقلان: اسم المستخدم + كلمة المرور.
-- التحقق يتم مقابل جدول `users` في قاعدة البيانات (bcrypt مقارنة).
-- عند النجاح: إنشاء جلسة في جدول `sessions` + كوكي HttpOnly.
-- عند 5 محاولات فاشلة متتالية: قفل مؤقت 10 دقائق (حماية إضافية مقترحة).
-- بعد الدخول يُوجَّه المستخدم تلقائياً حسب دوره.
+تم إنشاء تطبيق مستقل:
 
-### 4.2 الصفحة الرئيسية `/` (موجّه ذكي)
-| الدور | يُوجَّه إلى |
-|-------|-------------|
-| admin | `/dashboard` |
-| manager | `/dashboard` |
-| supervisor | `/tasks` |
-| employee | `/my-tasks` |
+```text
+apps/qc-task-manager/
+```
 
-### 4.3 صفحة المدير `/tasks` 👔
-- جدول كل مهام القسم مع فلاتر: (الحالة، الأولوية، الموظف، القسم، التاريخ، المتأخرة).
-- زر **➕ إنشاء مهمة**: العنوان، الوصف، الإسناد لموظف/سوبرفايزر، الأولوية، تاريخ الاستحقاق، القسم.
-- تعديل أي مهمة (كل الحقول) — حتى بعد الإنشاء.
-- حذف مهمة (حذف مباشر) + **اعتماد/رفض طلبات الحذف** القادمة من الموظفين.
-- مشاهدة حالة كل مهمة بالألوان: 🔴 🟡 🟠 🟢 + شريط نسبة الإنجاز.
-- زر **اعتماد الإغلاق (Verify)** — اقتراح إضافي في قسم التحسينات أدناه.
+وبنية التطبيق أصبحت تشمل:
 
-### 4.4 صفحة السوبرفايزر `/tasks` (نفس الصفحة بصلاحيات أقل) 🧑‍🏫
-- إنشاء مهام وإسنادها لموظفيه.
-- تعديل المهام **التي أنشأها هو فقط**.
-- متابعة حالات مهام فريقه + التعليق عليها.
-- ❌ لا يستطيع الحذف ولا رؤية الداشبورد (حسب طلبك — قابل للتغيير).
+```text
+apps/qc-task-manager/
+├── .env.example
+├── .gitignore
+├── README.md
+├── SECURITY.md
+├── astro.config.mjs
+├── db/
+├── docs/
+├── package.json
+├── public/
+├── scripts/
+├── src/
+├── tailwind.config.mjs
+└── tsconfig.json
+```
 
-### 4.5 صفحة الموظف `/my-tasks` 👷
-- تبويبان: **"مهامي"** (المسندة إليّ) + **"أنشأتها"** (إن كان يملك صلاحية الإنشاء).
-- لكل مهمة يستطيع:
-  - تغيير الحالة: 🔴 Not Started → 🟡 In Progress → 🟠 On Hold → 🟢 Completed
-  - تحديد **نسبة الإنجاز %** (شريط تمرير 0–100).
-  - إضافة **تعليق (Comment)**.
-  - كتابة **ملاحظة عائق (Blocker Note)** — تظهر تلقائياً عند اختيار 🟠 On Hold.
-  - رفع **مرفق/دليل (Evidence)**.
-  - مشاهدة **سجل نشاط المهمة** كاملاً.
-  - **طلب حذف/إلغاء** المهمة (مع سبب) — وليس الحذف المباشر.
-- 🔒 **لا يستطيع تعديل:** العنوان، الوصف، القسم، الإسناد، تاريخ الاستحقاق، الأولوية.
+والكود الفعلي يتضمن طبقات منفصلة مثل:
 
-### 4.6 صفحة تفاصيل المهمة `/tasks/[id]`
-- كل بيانات المهمة + الحقول المقفلة تظهر رمادية (Read-only) حسب الدور.
-- **الخط الزمني (Timeline):** كل حركة من جدول `task_activity_log` بترتيب زمني.
-- **التعليقات** بشكل محادثة.
-- **المرفقات** مع زر تحميل (تُسحب من قاعدة البيانات).
-- قسم الإغلاق: من أغلقها، متى، تعليق الإغلاق، والدليل المرفق.
+```text
+db.ts
+auth.ts
+session.ts
+permissions.ts
+task-policy.ts
+validation.ts
+recurrence.ts
+notifications.ts
+backup.ts
+export.ts
+activity.ts
+tasks.ts
+taskUpdates.ts
+taskDetails.ts
+users.ts
+deleteRequests.ts
+dashboard.ts
+seed.ts
+```
 
-### 4.7 لوحة التحكم `/dashboard` 📊 (أدمن + مدير فقط)
-- بطاقات: إجمالي المهام، المكتملة، المتأخرة، المتعثرة (On Hold).
-- رسم دائري: توزيع المهام حسب الحالة.
-- رسم شريطي: نسبة الإنجاز لكل موظف.
-- جدول **المهام المتأخرة** (تجاوزت Due Date ولم تُغلق).
-- آخر 10 حركات في النظام (Live Activity Feed).
-- فلترة حسب: الموظف، القسم، الفترة الزمنية.
-
-### 4.8 صفحة إدارة المستخدمين `/admin/users` (أدمن فقط) 🛡️
-- إنشاء حساب جديد: اسم المستخدم، الاسم الكامل، الدور، القسم، كلمة مرور مؤقتة، وخيار **"يستطيع إنشاء مهام"**.
-- تعديل/تعطيل حساب (تعطيل وليس حذف — حفاظاً على سجل النشاط).
-- إعادة تعيين كلمة المرور.
-- **كل حساب تنشئه من الويب يُكتب مباشرة في جدول `users`** — أي ربط مباشر (Direct) مع القاعدة كما طلبت.
+وهذا مؤشر ممتاز على أن التطبيق ما انبنى بطريقة Monolithic عشوائية. 
 
 ---
 
-## 5) مصفوفة الصلاحيات الكاملة 🔐
+# 6. قاعدة البيانات
 
-| الإجراء | 🛡️ Admin | 👔 Manager | 🧑‍🏫 Supervisor | 👷 Employee |
-|---------|:--------:|:----------:|:--------------:|:-----------:|
-| تسجيل الدخول | ✅ | ✅ | ✅ | ✅ |
-| إنشاء حسابات مستخدمين | ✅ | ❌ | ❌ | ❌ |
-| تعديل/تعطيل الحسابات | ✅ | ❌ | ❌ | ❌ |
-| مشاهدة Dashboard | ✅ | ✅ | ❌ | ❌ |
-| إنشاء مهمة | ✅ | ✅ | ✅ | ✅ (إن مُنح الصلاحية) |
-| تعديل كل حقول أي مهمة | ✅ | ✅ | ❌ | ❌ |
-| تعديل المهام التي أنشأها | ✅ | ✅ | ✅ | 🔒 حقول محدودة فقط* |
-| تغيير حالة مهمة مسندة إليه | ✅ | ✅ | ✅ | ✅ |
-| تحديد نسبة الإنجاز % | ✅ | ✅ | ✅ | ✅ (مهامه) |
-| إضافة تعليق | ✅ | ✅ | ✅ | ✅ |
-| رفع Evidence / مرفقات | ✅ | ✅ | ✅ | ✅ |
-| كتابة ملاحظة عائق | ✅ | ✅ | ✅ | ✅ |
-| مشاهدة سجل النشاط | ✅ | ✅ | ✅ | ✅ (مهامه) |
-| حذف مهمة مباشرة | ✅ | ✅ | ❌ | ❌ |
-| طلب حذف/إلغاء مهمة | — | — | ✅ | ✅ |
-| اعتماد/رفض طلبات الحذف | ✅ | ✅ | ❌ | ❌ |
-| إعادة فتح مهمة مكتملة | ✅ | ✅ | ❌ | ❌ |
+هنا صار أكبر توسع عن النسخة المختصرة من البرومبتات.
 
-\* **الحقول المحدودة للموظف:** الحالة، نسبة الإنجاز، التعليقات، المرفقات، ملاحظة العائق — فقط لا غير.
+النسخة الأساسية كانت تحتوي 7 جداول، بينما النسخة الموسعة والتنفيذ الفعلي وصلت إلى:
 
----
+# **12 جدول**
 
-## 6) نظام قفل الحقول (Field Locking) 🔒
+وهي:
 
-هذه النقطة التي طلبتَها ("لا تجعل الموظف يغيّر كل شيء") وتُنفَّذ على مستويين:
+1. `users`
+2. `tasks`
+3. `task_comments`
+4. `task_attachments`
+5. `task_activity_log`
+6. `task_delete_requests`
+7. `task_checklists`
+8. `task_dependencies`
+9. `notifications`
+10. `sessions`
+11. `login_attempts`
+12. `saved_filters`
 
-### أ) القفل حسب الدور (بعد إنشاء المهمة مباشرة):
+وهذا موثق صراحة في سجل التنفيذ. 
 
-| الحقل | الموظف | السوبرفايزر | المدير | الأدمن |
-|-------|:------:|:-----------:|:------:|:------:|
-| العنوان Title | 🔒 | ✏️ (مهامه) | ✏️ | ✏️ |
-| الوصف Description | 🔒 | ✏️ (مهامه) | ✏️ | ✏️ |
-| القسم Department | 🔒 | 🔒 | ✏️ | ✏️ |
-| الإسناد Assigned To | 🔒 | ✏️ (مهامه) | ✏️ | ✏️ |
-| تاريخ الاستحقاق Due Date | 🔒 | ✏️ (مهامه) | ✏️ | ✏️ |
-| الأولوية Priority | 🔒 | ✏️ (مهامه) | ✏️ | ✏️ |
-| الحالة Status | ✏️ (مهامه) | ✏️ | ✏️ | ✏️ |
-| نسبة الإنجاز % | ✏️ (مهامه) | ✏️ | ✏️ | ✏️ |
-| التعليقات / المرفقات / العائق | ✏️ | ✏️ | ✏️ | ✏️ |
+### وهذا يعطي النظام قدرات مهمة:
 
-### ب) القفل حسب مرحلة المهمة:
-1. **بعد بدء العمل** (In Progress): لا يمكن حذف المهمة إلا بطلب + اعتماد.
-2. **بعد الإغلاق** (Completed): المهمة كاملة تصبح **للقراءة فقط** للجميع، ولا يفتحها إلا المدير/الأدمن عبر زر "إعادة فتح" (يُسجَّل في Activity Log).
-3. **الحماية في السيرفر وليس الواجهة فقط:** كل API endpoint يتحقق من الدور والحقل قبل التنفيذ — حتى لو حاول أحد التلاعب بالمتصفح.
+* Users
+* Tasks
+* Comments
+* Evidence
+* Audit Trail
+* Delete approvals
+* Checklists
+* Dependencies
+* Notifications
+* Sessions
+* Login security
+* Saved views
 
 ---
 
-## 7) دورة حياة المهمة 🔄
+# 7. Task Model
 
-```
-🔴 Not Started ──→ 🟡 In Progress ──→ 🟢 Completed ──(اعتماد اختياري)──→ ✅ Verified
-      │                  │  ▲
-      │                  ▼  │
-      │              🟠 On Hold ──(ملاحظة عائق إلزامية)
-      ▼
- ❌ Cancelled (بطلب + اعتماد المدير/الأدمن)
+المهمة نفسها أصبحت أكثر من مجرد:
+
+```text
+Title
+Status
+Due Date
 ```
 
-- أول انتقال إلى 🟡 In Progress يُسجّل تلقائياً في حقل `started_at`.
-- الانتقال إلى 🟠 On Hold يفتح حقل "ملاحظة العائق" **إلزامياً**.
-- الانتقال إلى 🟢 Completed يمر بتدفق الإغلاق الرسمي (القسم التالي).
+بل تحتوي على مفهوم متكامل:
+
+```text
+Task
+├── Owner
+├── Assignee
+├── Department
+├── Priority
+├── Status
+├── Progress
+├── Due Date
+├── Blocker
+├── Recurrence
+├── Checklist
+├── Dependencies
+├── Evidence
+├── Comments
+├── Completion
+├── Notifications
+└── Activity History
+```
+
+والنسخة الموسعة أضافت أيضًا مفاهيم QC مثل:
+
+* Inspection Type
+* Finding Classification
+* Risk Level
+* Corrective Action Required
+* Reference Number
+* Audit Batch / Work Order
+
+وهذي إضافة مهمة لأنها تخلي النظام **QC-oriented** بدل ما يكون Generic Task Manager. 
 
 ---
 
-## 8) تدفق إغلاق المهمة (Completion Flow) ✅
+# 8. نظام الصلاحيات RBAC
 
-عند ضغط الموظف "إنهاء المهمة" تظهر نافذة بالترتيب التالي:
+النظام يدعم 4 أدوار:
 
-```
-① اختيار 🟢 Completed
-        │
-② رفع Evidence (ملف الدليل)
-   └─ زر "تخطي ⏭️" متاح — لكن يُسجَّل في السجل أن الإغلاق تم بدون دليل
-        │
-③ تعليق الإغلاق (إلزامي): ماذا تم؟
-        │
-④ النظام يعبّي تلقائياً:
-   ├─ Completed Date = التاريخ والوقت الحالي
-   ├─ Completed By   = المستخدم الحالي
-   └─ Progress       = 100%
-        │
-⑤ حفظ + تسجيل كل شيء في task_activity_log
-        │
-⑥ المهمة تصبح Read-Only 🔒
-```
+### Admin
 
-**ملاحظات تنفيذية:**
-- المرفقات تُخزَّن **داخل قاعدة البيانات** كـ BLOB في جدول `task_attachments` (كما طلبت: أي داتا مرفقة تُحفظ في الداتابيس).
-- حد أقصى مقترح للملف: **5MB**، والأنواع المسموحة: `PDF, PNG, JPG, XLSX, DOCX`.
-- تخطي الدليل مسموح، لكنه يظهر في الداشبورد كإحصائية ("مهام أُغلقت بدون دليل") — مؤشر جودة مهم للـ QC.
+صلاحية كاملة.
+
+### Manager
+
+إدارة المهام ومتابعة الفريق.
+
+### Supervisor
+
+إدارة ومتابعة مهام فريقه.
+
+### Employee
+
+صلاحيات محدودة جدًا على المهمة.
+
+وهذا موجود في التصميم والبرومبتات. 
 
 ---
 
-## 9) قاعدة البيانات بالتفصيل الكامل 🗄️
+# 9. أهم ميزة: Field Locking
 
-### الاسم والموقع:
-- **اسم القاعدة:** `qc_tasks.db`
-- **الموقع:** `apps/qc-task-manager/db/qc_tasks.db`
-- **النوع:** SQLite 3
-- **اسم الاتصال في SQLTools:** `QC Tasks DB`
+هذه من أقوى أجزاء المشروع.
 
-### الجداول (7 جداول) وعلاقاتها:
+الموظف لا يستطيع تعديل:
 
-```
-users ──┬──< tasks (created_by / assigned_to / completed_by)
-        ├──< task_comments (user_id)
-        ├──< task_attachments (uploaded_by)
-        ├──< task_activity_log (user_id)
-        ├──< task_delete_requests (requested_by / reviewed_by)
-        └──< sessions (user_id)
-
-tasks ──┬──< task_comments (task_id)
-        ├──< task_attachments (task_id)
-        ├──< task_activity_log (task_id)
-        └──< task_delete_requests (task_id)
+```text
+title
+description
+department
+priority
+assigned_to
+due_date
+created_by
+recurrence
+dependencies
+checklist configuration
 ```
 
-### تفصيل كل جدول:
+لكن يستطيع تعديل:
 
-#### 1️⃣ `users` — المستخدمون
-| العمود | النوع | الوصف |
-|--------|-------|-------|
-| `id` | INTEGER PK | المعرف التلقائي |
-| `username` | TEXT UNIQUE | اسم المستخدم (للدخول) |
-| `password_hash` | TEXT | كلمة المرور مشفّرة bcrypt |
-| `full_name` | TEXT | الاسم الكامل |
-| `role` | TEXT | `admin` / `manager` / `supervisor` / `employee` |
-| `department` | TEXT | القسم (افتراضي: `QC`) |
-| `can_create_tasks` | INTEGER | 1 = يستطيع إنشاء مهام، 0 = لا |
-| `is_active` | INTEGER | 1 = فعّال، 0 = معطّل |
-| `created_by` | INTEGER → users | من أنشأ الحساب |
-| `created_at` | TEXT | تاريخ الإنشاء |
+```text
+status
+progress_percent
+blocker_note
+comments
+attachments
+evidence
+completion comment
+```
 
-#### 2️⃣ `tasks` — المهام
-| العمود | النوع | الوصف |
-|--------|-------|-------|
-| `id` | INTEGER PK | المعرف |
-| `title` | TEXT | العنوان 🔒 |
-| `description` | TEXT | الوصف 🔒 |
-| `department` | TEXT | القسم 🔒 |
-| `priority` | TEXT | `low` / `medium` / `high` / `urgent` 🔒 |
-| `status` | TEXT | `not_started` / `in_progress` / `on_hold` / `completed` |
-| `progress_percent` | INTEGER | 0–100 |
-| `created_by` | INTEGER → users | المنشئ |
-| `assigned_to` | INTEGER → users | المسند إليه 🔒 |
-| `due_date` | TEXT | تاريخ الاستحقاق 🔒 |
-| `blocker_note` | TEXT | ملاحظة العائق |
-| `completion_comment` | TEXT | تعليق الإغلاق |
-| `completed_by` | INTEGER → users | من أغلقها |
-| `completed_at` | TEXT | تاريخ الإغلاق |
-| `started_at` | TEXT | أول تاريخ بدء فعلي |
-| `is_cancelled` | INTEGER | ملغاة؟ |
-| `created_at` / `updated_at` | TEXT | الطوابع الزمنية |
+والأهم:
 
-🔒 = مقفل على الموظف بعد الإنشاء.
+## القفل مو فقط في الواجهة.
 
-#### 3️⃣ `task_comments` — التعليقات
-`id` · `task_id` → tasks · `user_id` → users · `comment` · `created_at`
+السيرفر نفسه يستخدم **Whitelist** للحقول المسموحة.
 
-#### 4️⃣ `task_attachments` — المرفقات والأدلة (داخل القاعدة)
-| العمود | النوع | الوصف |
-|--------|-------|-------|
-| `id` | INTEGER PK | المعرف |
-| `task_id` | INTEGER → tasks | المهمة |
-| `uploaded_by` | INTEGER → users | من رفع الملف |
-| `file_name` | TEXT | اسم الملف الأصلي |
-| `mime_type` | TEXT | نوع الملف |
-| `file_size` | INTEGER | الحجم بالبايت |
-| `file_data` | **BLOB** | محتوى الملف نفسه داخل القاعدة |
-| `is_evidence` | INTEGER | 1 = دليل إغلاق، 0 = مرفق عادي |
-| `created_at` | TEXT | تاريخ الرفع |
+يعني حتى لو الموظف فتح DevTools وأرسل:
 
-#### 5️⃣ `task_activity_log` — سجل النشاط (عمود الـ Compliance)
-`id` · `task_id` · `user_id` · `action` (created / status_changed / progress_updated / comment_added / evidence_uploaded / completed / reopened / delete_requested...) · `field` · `old_value` · `new_value` · `note` · `created_at`
-
-#### 6️⃣ `task_delete_requests` — طلبات الحذف
-`id` · `task_id` · `requested_by` · `reason` · `status` (`pending`/`approved`/`rejected`) · `reviewed_by` · `reviewed_at` · `created_at`
-
-#### 7️⃣ `sessions` — الجلسات
-`token` (PK) · `user_id` · `expires_at` · `created_at`
-
-> 📄 ملف `db/schema.sql` الجاهز (CREATE TABLE كاملة) وملف `db/seed.sql` (حساب الأدمن الأول) مرفقان مع هذا التقرير.
-
----
-
-## 10) ربط SQLTools في VSCode خطوة بخطوة 🔌
-
-### الخطوة 1 — تثبيت الإضافات:
-افتح Extensions في VSCode (`Ctrl+Shift+X`) وثبّت:
-1. **SQLTools** — المعرف: `mtxr.sqltools`
-2. **SQLTools SQLite driver** — المعرف: `mtxr.sqltools-driver-sqlite`
-
-### الخطوة 2 — إنشاء الاتصال (طريقتان):
-
-**الطريقة أ — من الواجهة:**
-1. افتح أيقونة SQLTools من الشريط الجانبي (أسطوانة قاعدة بيانات).
-2. اضغط **Add New Connection**.
-3. اختر Driver: **SQLite**.
-4. املأ الحقول:
-   - **Connection name:** `QC Tasks DB`
-   - **Database file:** اضغط Browse واختر `apps/qc-task-manager/db/qc_tasks.db`
-5. اضغط **Test Connection** ثم **Save Connection** ثم **Connect**.
-
-**الطريقة ب — جاهزة عبر ملف الإعدادات** (مرفق ملف `.vscode/settings.json`):
 ```json
 {
-  "sqltools.connections": [
-    {
-      "name": "QC Tasks DB",
-      "driver": "SQLite",
-      "database": "${workspaceFolder}/apps/qc-task-manager/db/qc_tasks.db",
-      "previewLimit": 50
-    }
-  ]
+  "title": "Changed by employee",
+  "priority": "urgent"
 }
 ```
 
-### الخطوة 3 — ماذا سترى بعد الاتصال:
-- شجرة بها الجداول السبعة: `users`, `tasks`, `task_comments`, `task_attachments`, `task_activity_log`, `task_delete_requests`, `sessions`.
-- كليك يمين على أي جدول → **Show Table Records** لعرض البيانات.
-- زر **New SQL File** لتنفيذ أي استعلام، مثل:
-  ```sql
-  -- مهام موظف معيّن لم تُغلق
-  SELECT t.id, t.title, t.status, t.progress_percent, t.due_date
-  FROM tasks t
-  JOIN users u ON u.id = t.assigned_to
-  WHERE u.username = 'employee1' AND t.status != 'completed';
-  ```
+المفروض السيرفر يرفض التعديل.
 
-### الخطوة 4 — إنشاء القاعدة لأول مرة:
-```bash
-cd apps/qc-task-manager/db
-sqlite3 qc_tasks.db < schema.sql     # إنشاء الجداول
-sqlite3 qc_tasks.db < seed.sql       # حساب الأدمن الأول
+وهذا هو النوع الصحيح من الصلاحيات، لأن:
+
+> Frontend permission ≠ Security.
+
+التقرير يؤكد أن الحماية موجودة على مستوى السيرفر وليس مجرد تعطيل حقول HTML. 
+
+---
+
+# 10. دورة حياة المهمة
+
+تم تنفيذ دورة واضحة:
+
+```text
+Not Started
+     ↓
+In Progress
+     ↓
+On Hold
+     ↓
+Completed
 ```
-(أو نفّذ محتوى الملفين من داخل SQLTools مباشرة عبر **Run Query** — والأتمتة الكاملة ستكون داخل كود المشروع بحيث تتولد تلقائياً عند أول تشغيل.)
+
+مع:
+
+```text
+Cancelled
+```
+
+### In Progress
+
+عند أول انتقال:
+
+```text
+started_at
+started_by
+activity log
+```
+
+يتم تسجيلها.
+
+### On Hold
+
+لا يسمح بالانتقال إليها بدون:
+
+```text
+Blocker Note
+```
+
+وهذا مهم جدًا في QC.
+
+### Completed
+
+لا يتم التعامل معها كتغيير Status عادي.
+
+بل تدخل في:
+
+# Completion Wizard
 
 ---
 
-## 11) الأمان 🔐
+# 11. Completion Flow
 
-| البند | التنفيذ |
-|-------|---------|
-| كلمات المرور | bcrypt (cost 10) — لا نص واضح أبداً |
-| الجلسات | Token عشوائي + كوكي `HttpOnly; SameSite=Strict` + انتهاء 8 ساعات |
-| SQL Injection | Prepared Statements فقط عبر better-sqlite3 |
-| الصلاحيات | فحص في `middleware.ts` + فحص ثانٍ داخل كل API endpoint |
-| رفع الملفات | حد 5MB + قائمة أنواع مسموحة + فحص MIME |
-| الحسابات المعطّلة | لا تستطيع الدخول ولا تُحذف (حفاظاً على السجل) |
+هذه من أقوى أجزاء النظام.
 
----
+التسلسل:
 
-## 12) تحسينات وإضافات مقترحة (اختيارية) 💡
+```text
+① Completed
+      ↓
+② Evidence
+      ↓
+③ Completion Comment
+      ↓
+④ Confirmation
+      ↓
+⑤ Transaction
+      ↓
+⑥ Read-only
+```
 
-| # | الإضافة | الفائدة |
-|---|---------|---------|
-| 1 | **اعتماد المدير على الإغلاق (Verified ✅)** | المهمة تُغلق من الموظف ثم تعتمد من المدير — قوية جداً للـ QC Compliance |
-| 2 | **إشعارات داخلية** 🔔 | الموظف يعرف فور إسناد مهمة جديدة له |
-| 3 | **تصدير Excel / PDF** | تقارير دورية للإدارة العليا بضغطة زر |
-| 4 | **مهام متكررة (Recurring)** | فحوصات QC الدورية تتجدد تلقائياً |
-| 5 | **Checklist داخل المهمة** | خطوات فحص فرعية تحت كل مهمة |
-| 6 | **تنبيه المهام المتأخرة** | لون أحمر وامض + عداد في الداشبورد |
-| 7 | **دعم عربي/إنجليزي + RTL** | واجهة مزدوجة اللغة |
-| 8 | **تقييم جودة التنفيذ (1–5 ⭐)** | المدير يقيّم الإغلاق — مؤشر أداء للموظف |
-| 9 | **وضع ليلي (Dark Mode)** | راحة العين |
-| 10 | **نسخ احتياطي تلقائي يومي** لملف `qc_tasks.db` | حماية من فقدان البيانات |
+Evidence يمكن تخطيه، لكن إذا تم التخطي يسجل:
 
----
+```text
+evidence_skipped
+```
 
-## 13) خطة التنفيذ على مراحل 🗓️
+أما Completion Comment فهو إلزامي.
 
-| المرحلة | المحتوى | النتيجة |
-|---------|---------|---------|
-| **1** | قاعدة البيانات + تسجيل الدخول + الأدوار | دخول كل مستخدم لصفحته |
-| **2** | إنشاء/تعديل المهام + الحالات + قفل الحقول | دورة مهام كاملة |
-| **3** | تدفق الإغلاق + المرفقات + التعليقات + سجل النشاط | توثيق كامل |
-| **4** | الداشبورد + طلبات الحذف | رؤية إدارية |
-| **5** | التحسينات: RTL، تصدير، إشعارات | لمسات احترافية |
+بعد النجاح:
 
----
+```text
+progress = 100%
+completed_at = now
+completed_by = current_user
+status = completed
+```
 
-## 14) أسئلة أحتاج إجابتها قبل البناء ❓
+وتصبح المهمة:
 
-1. **اعتماد الإغلاق:** هل تريد أن إغلاق الموظف للمهمة يحتاج اعتماد المدير/السوبرفايزر (Verified) أم يُغلق مباشرة؟
-2. **السوبرفايزر والداشبورد:** أكدتَ أن الداشبورد للمدير والأدمن فقط — هل يبقى السوبرفايزر بدونها؟
-3. **لغة الواجهة:** عربي، إنجليزي، أم الاثنان؟
-4. **الأقسام:** هل الفريق كله قسم واحد (QC) أم توجد أقسام فرعية؟
-5. **التشغيل:** على جهازك الشخصي للعرض على المدير، أم سيرفر داخلي بالشركة لاحقاً؟
+# 🔒 Read-only
+
+ولا يستطيع إعادة فتحها إلا Admin / Manager.
+
+وهذا كله من المتطلبات الأساسية التي تم تنفيذها. 
 
 ---
 
-*أُعد هذا التقرير بناءً على وصفك الكامل، وجاهز للتنفيذ فور إجابتك على الأسئلة أعلاه.* 🚀
+# 12. Transaction عند الإغلاق
+
+النظام مصمم بحيث تتم عملية الإغلاق كوحدة واحدة:
+
+```text
+Evidence
++
+Completion Comment
++
+Status
++
+Progress
++
+Completed At
++
+Completed By
++
+Activity
++
+Notifications
+```
+
+إذا حدث خطأ:
+
+```text
+ROLLBACK
+```
+
+بدل ما تحصل مشكلة مثل:
+
+> المهمة صارت Completed لكن Completion Comment ما انحفظ.
+
+وهذا تصميم ممتاز لنظام Compliance.
+
+---
+
+# 13. Evidence / Attachments
+
+تم تنفيذ نظام مرفقات داخل SQLite باستخدام:
+
+```text
+BLOB
+```
+
+مع:
+
+* File name
+* MIME type
+* File size
+* SHA-256
+* Evidence flag
+* Uploaded by
+* Upload timestamp
+
+وتم تنفيذ:
+
+* File validation
+* MIME validation
+* Hashing
+* Authorization عند التحميل
+* Evidence skipped
+
+وهذا موثق في سجل التنفيذ. 
+
+---
+
+# 14. Activity Log
+
+هذه فعليًا **الطبقة الأهم للـ Compliance**.
+
+النظام يسجل أحداث مثل:
+
+```text
+created
+field_updated
+status_changed
+progress_updated
+blocker_updated
+comment_added
+evidence_uploaded
+evidence_skipped
+completed
+reopened
+delete_requested
+delete_approved
+delete_rejected
+checklist_updated
+dependency_added
+dependency_removed
+recurring_task_created
+notification_created
+```
+
+وكل Event يمكن أن يرتبط بـ:
+
+```text
+Who
+What
+Old Value
+New Value
+When
+IP
+```
+
+وهذا يحول النظام من مجرد Task Manager إلى:
+
+# Audit-capable system
+
+---
+
+# 15. Comments
+
+تم تنفيذ نظام Comments مرتبط بالمهمة.
+
+الموظف يستطيع:
+
+* إضافة تعليق.
+* مشاهدة التعليقات.
+* استخدام Completion Comment كتعليق خاص بالإغلاق.
+
+والـ Completion Comment يتم تمييزه عن التعليقات العادية.
+
+---
+
+# 16. Notifications
+
+تم تنفيذ Notification Center كامل نسبيًا.
+
+يشمل:
+
+* Bell
+* Unread Count
+* Dropdown
+* Mark One Read
+* Mark All Read
+* Notifications Page
+* Task Links
+* Assignment Notifications
+* Completion Notifications
+
+وهذا يتجاوز مجرد Notification بسيطة.
+
+التنفيذ الفعلي موثق في سجل التنفيذ. 
+
+---
+
+# 17. Delete Workflow
+
+بدل ما الموظف يحذف المهمة:
+
+```text
+Employee
+   ↓
+Delete Request
+   ↓
+Manager/Admin
+   ↓
+Approve / Reject
+```
+
+وتم تنفيذ:
+
+* طلب حذف.
+* سبب الطلب.
+* منع Duplicate Pending Request.
+* Approval.
+* Rejection.
+* Activity Log.
+* Badges.
+
+
+
+وهذا مناسب جدًا للـ Compliance.
+
+---
+
+# 18. Recurrence
+
+تم توسيع النظام ليشمل:
+
+```text
+None
+Daily
+Weekly
+Monthly
+```
+
+مع:
+
+* Recurrence end date
+* Parent recurring task
+* إنشاء recurring tasks
+* تسجيل العملية في Activity Log
+
+وهذا شيء ما كان واضحًا بنفس القوة في النسخة المختصرة، لكنه موجود في النسخة الموسعة والتنفيذ. 
+
+---
+
+# 19. Checklists
+
+تم إضافة:
+
+```text
+task_checklists
+```
+
+والـ Checklist يدعم:
+
+* Title
+* Sort Order
+* Completed / Not Completed
+* Completed By
+* Completed At
+
+وهذا مهم جدًا في QC لأن كثير من المهام أصلًا مبنية على Inspection / Verification checklist.
+
+---
+
+# 20. Dependencies
+
+تم تنفيذ:
+
+```text
+Task A
+   ↓
+Task B
+```
+
+بحيث يمكن ربط مهمة بمهمة أخرى.
+
+والفكرة:
+
+> لا تبدأ مهمة تعتمد على مهمة سابقة قبل اكتمالها.
+
+وهذا يحول النظام من مجرد قائمة Tasks إلى Workflow بسيط.
+
+---
+
+# 21. Dashboard
+
+تم تنفيذ Dashboard تحتوي على:
+
+### KPIs
+
+مثل:
+
+* Total Tasks
+* Completed
+* Overdue
+* On Hold
+* Blockers
+
+### Charts
+
+* Status Distribution
+* Progress
+* Completion trends
+
+### Operational Views
+
+* Overdue Tasks
+* Recently Completed
+* Blocked Tasks
+* Completed Without Evidence
+* Activity Feed
+
+### Filters
+
+* Date
+* Assignee
+* Priority
+
+### Export
+
+تم تنفيذ CSV Export أيضًا.
+
+وهذا كله مذكور ضمن نتائج التنفيذ. 
+
+---
+
+# 22. نقطة مهمة جدًا: من يشوف Dashboard؟
+
+هنا كان فيه **تعارض بين الوثائق القديمة والجديدة**.
+
+التقرير القديم يقول:
+
+> Dashboard = Admin + Manager.
+
+بينما القرارات النهائية في حزمة البرومبتات تقول:
+
+> Dashboard = Admin + Manager + Supervisor.
+
+والسجل الفعلي للتنفيذ يقول إن النسخة الأحدث هي التي تجعل الـ Supervisor يرى Dashboard. 
+
+لذلك القرار الذي أعتبره **الحالي والمعتمد**:
+
+| Role       | Dashboard |
+| ---------- | --------- |
+| Admin      | ✅         |
+| Manager    | ✅         |
+| Supervisor | ✅         |
+| Employee   | ❌         |
+
+وهذا لازم يكون مثبت كـ **Single Source of Truth** حتى ما يرجع وكيل برمجي مستقبلاً ويغيره بناءً على التقرير القديم.
+
+---
+
+# 23. Authentication & Security
+
+تم تنفيذ:
+
+* Login
+* Logout
+* bcrypt
+* Sessions
+* HttpOnly Cookie
+* `qc_session`
+* 12-hour TTL
+* SameSite
+* Secure production cookie
+* Account deactivation
+* Generic login error
+* Failed login tracking
+* 5 failed attempts
+* 10-minute lockout
+* Middleware
+* Server-side authorization
+* Security headers
+
+وهذا مستوى جيد جدًا لتطبيق داخلي.
+
+---
+
+# 24. Admin User Management
+
+Admin يستطيع:
+
+* Create User
+* Edit User
+* Activate
+* Deactivate
+* Reset Password
+* Toggle `can_create_tasks`
+
+مع حماية مهمة:
+
+> Admin لا يستطيع تعطيل نفسه.
+
+وكذلك:
+
+> Password hashes لا تظهر في الواجهة.
+
+وهذه الميزات منفذة حسب سجل التنفيذ. 
+
+---
+
+# 25. SQLTools
+
+تم تجهيز المشروع للعمل مباشرة مع:
+
+**VSCode + SQLTools + SQLite Driver**
+
+بحيث تستطيع فتح:
+
+```text
+apps/qc-task-manager/db/qc_tasks.db
+```
+
+ومشاهدة:
+
+* Tables
+* Queries
+* Data
+* Schema
+
+من داخل VSCode.
+
+وهذه نقطة عملية ممتازة أثناء التطوير والصيانة.
+
+---
+
+# 26. Backup
+
+تم تنفيذ طبقة Backup وظهرت ضمن:
+
+```text
+backup.ts
+```
+
+كما توجد:
+
+```text
+db/backups/
+```
+
+وتمت إضافة Backup Commands.
+
+لكن هنا فيه فرق مهم:
+
+## وجود Backup ≠ إثبات أن Restore يعمل.
+
+وهذا واحد من الأشياء التي التقرير النهائي اعتبرها بحاجة إلى اختبار فعلي. 
+
+---
+
+# 27. Testing
+
+تمت إضافة:
+
+* Typecheck
+* Tests
+* E2E scripts
+* Build
+
+لكن مرة ثانية:
+
+**وجود الاختبارات في المشروع لا يعني أنها نجحت فعليًا.**
+
+لازم فعليًا تشغيل:
+
+```bash
+pnpm --filter @brightai/qc-task-manager typecheck
+pnpm --filter @brightai/qc-task-manager test
+pnpm --filter @brightai/qc-task-manager build
+```
+
+وهذا مذكور صراحة كفجوة متبقية في التقرير. 
+
+---
+
+# 28. وش الفرق بين مجموعتي البرومبتات؟
+
+هذه نقطة مهمة جدًا.
+
+## المجموعة الأولى
+
+`PROMPTS.md`
+
+كانت أقرب إلى:
+
+> **Build the MVP**
+
+وتحتوي 13 مرحلة.
+
+ركزت على:
+
+* Scaffold
+* Database
+* Authentication
+* Roles
+* Users
+* Tasks
+* Employees
+* Details
+* Completion
+* Delete Requests
+* Dashboard
+* Final delivery
+
+
+
+---
+
+## المجموعة الثانية
+
+`prompt2.md`
+
+كانت أعمق بكثير، ووصلت إلى:
+
+### PROMPT 00
+
+Repository Audit
+
+### 01
+
+Application Architecture
+
+### 02
+
+Production Database
+
+### 03
+
+Database Layer
+
+### 04
+
+Authentication
+
+### 05
+
+User Management
+
+### 06
+
+Tasks + Assignment + Recurrence
+
+### 07
+
+Employee + Field Locking
+
+### 08
+
+Lifecycle + Completion
+
+### 09
+
+Comments + Attachments + Audit
+
+### 10
+
+Notifications
+
+### 11
+
+Deletion Workflow
+
+### 12
+
+Dashboard
+
+### 13
+
+Search + Filters + Saved Views + Export
+
+### 14
+
+Checklist + QC Enhancements
+
+### 15
+
+Security Hardening
+
+### 16
+
+Backup / Restore
+
+### 17
+
+Testing
+
+### 18
+
+Deployment + Documentation
+
+وهذا يجعلها عمليًا **Production Hardening Roadmap** وليس مجرد بناء MVP. 
+
+---
+
+# 29. وش اللي أضافته المجموعة الثانية فعليًا؟
+
+أهم الإضافات عن النسخة الأولى:
+
+### 🟢 Recurrence
+
+مهام دورية.
+
+### 🟢 Checklists
+
+قوائم فحص.
+
+### 🟢 Dependencies
+
+اعتماد المهام على بعضها.
+
+### 🟢 Notifications
+
+نظام إشعارات كامل.
+
+### 🟢 Saved Filters
+
+حفظ Views/Filters.
+
+### 🟢 Advanced Search
+
+البحث المتقدم.
+
+### 🟢 CSV Export
+
+### 🟢 Backup
+
+### 🟢 Security Hardening
+
+### 🟢 Login Attempts
+
+### 🟢 QC-specific fields
+
+### 🟢 Deployment documentation
+
+### 🟢 E2E testing
+
+وبالتالي المجموعة الثانية رفعت النظام من:
+
+**Task Manager**
+
+إلى:
+
+# **QC Operations + Compliance Management System**
+
+---
+
+# 30. وش الأشياء اللي تم تنفيذها فعلًا حسب سجل التنفيذ؟
+
+هذه أهم نقطة في التقرير.
+
+| Prompt                         | النتيجة                     |
+| ------------------------------ | --------------------------- |
+| 00 Repository Audit            | ✅                           |
+| 01 Application                 | ✅                           |
+| 02 Database                    | ✅                           |
+| 03 DB + SQLTools               | ✅                           |
+| 04 Authentication              | ✅                           |
+| 05 User Management             | ✅                           |
+| 06 Task Management             | ✅                           |
+| 07 Employee + Locking          | ✅                           |
+| 08 Lifecycle + Completion      | ✅                           |
+| 09 Comments + Evidence + Audit | ✅                           |
+| 10 Notifications               | ✅                           |
+| 11 Delete Requests             | ✅                           |
+| 12 Dashboard                   | ✅                           |
+| Recurrence                     | ✅                           |
+| Checklist                      | ✅                           |
+| Dependencies                   | ✅                           |
+| Backup                         | ✅                           |
+| Export                         | ✅                           |
+| Documentation                  | ✅                           |
+| Tests / E2E                    | 🟡 موجودة وتحتاج تشغيل فعلي |
+
+وسجل التنفيذ نفسه يسرد هذه المراحل كمنفذة. 
+
+---
+
+# 31. أهم الفجوات الحالية
+
+هنا لازم نكون صريحين.
+
+النظام قوي، لكن **ما أنصح تقول إنه Production Ready 100% الآن**.
+
+## 1. تشغيل الاختبارات فعليًا
+
+لازم إثبات:
+
+```text
+typecheck PASS
+test PASS
+build PASS
+E2E PASS
+```
+
+---
+
+## 2. Database Migration
+
+هذه أخطر نقطة برمجية حاليًا.
+
+التقرير يحذر من احتمال وجود SQLite database قديمة بقيود قديمة، خصوصًا:
+
+```text
+urgent
+cancelled
+```
+
+ولذلك يجب التحقق من:
+
+```sql
+PRAGMA table_info(tasks);
+PRAGMA foreign_key_check;
+PRAGMA integrity_check;
+```
+
+
+
+---
+
+# 32. PDF Audit Report
+
+CSV موجود.
+
+لكن:
+
+> PDF Audit Report غير مؤكد بنفس مستوى CSV.
+
+ويحتاج تنفيذ واختبار مستقل. 
+
+وهذه إضافة ممتازة مستقبلًا، خصوصًا لو تبي النظام يستخدم في Audit رسمي.
+
+---
+
+# 33. Advanced Search
+
+الفلاتر موجودة.
+
+لكن التقرير يشير إلى أن:
+
+* Text Search
+* Search title
+* Search description
+* Search comments
+* Saved Filters
+
+تحتاج تحقق عملي إضافي. 
+
+---
+
+# 34. Tags / Categories
+
+غير مكتملة كميزة مستقلة.
+
+لو احتجتها لاحقًا:
+
+```text
+tags
+task_tags
+```
+
+تكون الإضافة الصحيحة.
+
+لكن بصراحة **ما أشوفها أولوية الآن** مقارنة بالأشياء الأمنية والاختبارات.
+
+---
+
+# 35. User Profiles
+
+ما تظهر كميزة مكتملة.
+
+ممكن مستقبلًا إضافة:
+
+```text
+Profile
+Avatar
+Phone
+Job Title
+Department
+Preferences
+Notification Settings
+```
+
+لكنها ليست Core Requirement للنظام الحالي.
+
+---
+
+# 36. Excel Export
+
+وجود:
+
+```text
+exceljs
+```
+
+في package لا يعني تلقائيًا أن XLSX Export مكتمل.
+
+لازم التأكد من وجود Endpoint فعلي يولد ملف XLSX صالح.
+
+التقرير نبه لهذه النقطة تحديدًا. 
+
+---
+
+# 37. Render + SQLite
+
+وهذه **أكبر مشكلة Production محتملة**.
+
+SQLite ممتاز جدًا محليًا.
+
+لكن لو بتشغل النظام على Render:
+
+```text
+Node SSR
++
+SQLite
+```
+
+لازم يكون عندك **Persistent Disk**.
+
+لأن SQLite ملف فعلي:
+
+```text
+qc_tasks.db
+```
+
+ولو البيئة غير دائمة، ممكن تضيع البيانات بعد إعادة تشغيل/نشر البيئة.
+
+التقرير يحذر من هذه النقطة صراحة. 
+
+---
+
+# 38. التقييم المعماري
+
+أنا أشوف المعمارية الحالية ممتازة بالنسبة لحجم النظام.
+
+عندك فصل واضح:
+
+```text
+UI
+ ↓
+Astro Pages / React Islands
+ ↓
+API / Server Actions
+ ↓
+Policy / Validation
+ ↓
+Database Layer
+ ↓
+SQLite
+```
+
+ومكتبات مثل:
+
+```text
+permissions.ts
+task-policy.ts
+validation.ts
+auth.ts
+activity.ts
+backup.ts
+```
+
+تخلي منطق النظام ما يكون موزع عشوائيًا داخل الصفحات.
+
+---
+
+# 39. أقوى 7 أجزاء بالنظام
+
+بالترتيب:
+
+### 🥇 1. Field Locking
+
+أقوى ميزة أمنية وظيفية.
+
+### 🥈 2. Completion Flow
+
+يحول إغلاق المهمة إلى عملية رسمية.
+
+### 🥉 3. Activity Log
+
+يعطي Accountability حقيقي.
+
+### 4. Evidence
+
+يربط الإنجاز بدليل.
+
+### 5. RBAC
+
+يفصل الصلاحيات بشكل واضح.
+
+### 6. Delete Approval
+
+يمنع حذف البيانات بدون أثر.
+
+### 7. Dashboard
+
+يعطي الإدارة رؤية تشغيلية.
+
+---
+
+# 40. وش النظام الآن فعليًا؟
+
+لو بنختصره بجملة واحدة:
+
+> **QC Task Manager هو نظام داخلي لإدارة عمليات ومهام Quality Control، مبني حول مفهوم المساءلة والتدقيق، بحيث تكون كل مهمة قابلة للتتبع من لحظة إنشائها وحتى إغلاقها مع صلاحيات حسب الدور، Evidence، Comments، Checklists، Dependencies، Notifications، Audit Trail وDashboard.**
+
+وهذا أقرب إلى:
+
+# **QC Operations Management System**
+
+وليس مجرد:
+
+# Task Management App
+
+---
+
+# 41. الحكم النهائي
+
+### من ناحية الفكرة
+
+**95%+**
+
+فكرة ممتازة ومناسبة جدًا لـ QC/Compliance.
+
+### من ناحية المعمارية
+
+**90–95%**
+
+الهيكل ممتاز ومناسب لتطبيق داخلي.
+
+### من ناحية الوظائف
+
+**حوالي 90%**
+
+معظم الـ Core Features موجودة.
+
+### من ناحية Security
+
+**90% تقريبًا**
+
+الأساس قوي، لكن لازم اختبار IDOR وAPI abuse عمليًا.
+
+### من ناحية Testing
+
+**80%**
+
+الاختبارات موجودة، لكن المهم تشغيلها وإثبات النتائج.
+
+### من ناحية Production
+
+**70–75%**
+
+بسبب:
+
+* SQLite persistence
+* Migration
+* Restore testing
+* E2E validation
+* PDF reporting
+* API security verification
+
+---
+
+# 🚨 أهم ملاحظة عندي
+
+**لا تبدأ تضيف Features جديدة الآن.**
+
+المشروع وصل لمرحلة لو كملت تضيف:
+
+> Tags → Profiles → Themes → More Charts → More UI
+
+قبل ما تقفل الـ Production Gaps، بتصير عندك ميزات كثيرة لكن أساس التشغيل غير مثبت.
+
+الأولوية الآن:
+
+```text
+1. Database Migration Audit
+        ↓
+2. Typecheck
+        ↓
+3. Unit Tests
+        ↓
+4. E2E Tests
+        ↓
+5. IDOR / Authorization Audit
+        ↓
+6. Backup + Restore Test
+        ↓
+7. XLSX Verification
+        ↓
+8. PDF Audit Report
+        ↓
+9. Render Persistence Decision
+        ↓
+10. Final Production Readiness Gate
+```
+
+**بعد هذي المرحلة** أقول لك فعليًا: النظام جاهز ينتقل من Advanced MVP إلى Production.
+
+والأهم أن تقرير التنفيذ نفسه وصل لنفس الاستنتاج تقريبًا: النظام حاليًا **MVP متقدم / Pilot جاهز للعرض**، وليس نظامًا إنتاجيًا نهائيًا حتى تُغلق فجوات الاختبارات، الـmigration، الـbackup/restore، التقارير، والاستضافة. 
+
+### الخلاصة النهائية
+
+**البرومبتات نفذت مشروعًا أكبر بكثير من فكرة Task Manager عادية.**
+المجموعة الأولى بنت الـCore، والمجموعة الثانية وسّعت النظام إلى طبقة **QC + Compliance + Audit + Operations**. والتنفيذ الفعلي وصل إلى تطبيق مستقل داخل `apps/qc-task-manager` مع 12 جدولًا، Authentication، RBAC، Field Locking، Completion Workflow، Evidence، Activity Log، Notifications، Recurrence، Checklists، Dependencies، Dashboard، Backup وExport. 
+
+**لو بنعطيه تقييم واحد الآن: 90% وظيفيًا، لكن 70–75% Production Readiness.** وهذا تقييم صحي؛ لأن الجزء الناقص الآن أغلبه **Verification + Hardening** وليس إعادة بناء النظام من الصفر.
+
+
+
+
+
+
+
+
+#إيه، وعندي تحسينات كثيرة — لكن **ما أنصح نزيد Features بشكل عشوائي**. بعد مراجعة تصميم النظام والبرومبتات، أشوف الأفضل ننقله من **Advanced Task Manager** إلى **QC Operations & Compliance Platform** بشكل مدروس.
+
+## 🔥 أهم الإضافات اللي أنصح فيها
+
+### 1. SLA Engine — أولوية عالية جدًا
+
+بدل ما النظام يعرف فقط:
+
+> Due Date = 20 Aug
+
+يبدأ يحسب:
+
+* SLA target
+* الوقت المتبقي
+* نسبة استهلاك الـSLA
+* Overdue
+* At Risk
+* Breached
+
+مثلاً:
+
+```text
+SLA: 48 hours
+Elapsed: 39 hours
+Remaining: 9 hours
+
+🟡 At Risk
+```
+
+وتظهر في Dashboard:
+
+```text
+SLA Compliance       94.2%
+Tasks At Risk        7
+SLA Breached         3
+Avg Resolution       31.4h
+```
+
+**هذي من أقوى الإضافات للنظام.**
+
+---
+
+### 2. Escalation Engine
+
+اربط SLA بالإشعارات.
+
+مثلاً:
+
+```text
+Due in 24h
+   ↓
+Notify Employee
+
+Due in 8h
+   ↓
+Notify Employee + Supervisor
+
+SLA Breached
+   ↓
+Notify Supervisor + Manager
+```
+
+ويُسجل كل Escalation في Activity Log.
+
+---
+
+### 3. QC Finding / Non-Conformance Module
+
+وهذي أشوفها **مهمة جدًا** إذا النظام فعلاً بيستخدم في QC.
+
+بدل ما تكون كل الأشياء "Tasks" فقط، أضف مفهوم:
+
+```text
+QC Finding
+├── Finding Number
+├── Finding Type
+├── Severity
+├── Risk Level
+├── Description
+├── Evidence
+├── Root Cause
+├── Corrective Action
+├── Preventive Action
+├── Owner
+├── Due Date
+└── Closure Evidence
+```
+
+وبكذا يصير عندك:
+
+**Finding → Corrective Action → Task → Evidence → Closure**
+
+وهذا أقرب بكثير لبيئة Quality Management.
+
+---
+
+### 4. CAPA
+
+إذا عندكم Corrective / Preventive Actions، أضف CAPA Module.
+
+```text
+Issue
+ ↓
+Root Cause Analysis
+ ↓
+Corrective Action
+ ↓
+Preventive Action
+ ↓
+Verification
+ ↓
+Closure
+```
+
+ويكون مرتبطًا بالـTask.
+
+---
+
+### 5. Root Cause Analysis
+
+أضف خيارات:
+
+* 5 Whys
+* Fishbone
+* RCA Notes
+* Root Cause Category
+
+وممكن لاحقًا AI يساعد في اقتراح RCA، لكن **لا أخليه يقرر الإغلاق أو التصنيف النهائي**.
+
+---
+
+# 🧠 6. AI Copilot — لكن بطريقة صحيحة
+
+هنا ممكن BrightAI يدخل بقوة.
+
+أضف زر:
+
+> **Analyze Task**
+
+والـAI يعطي:
+
+```text
+Risk Assessment
+━━━━━━━━━━━━━━━━
+Risk: HIGH
+
+Why:
+• Due date approaching
+• Task blocked for 18 hours
+• Missing evidence
+• Similar tasks historically delayed
+
+Recommended Actions:
+1. Resolve blocker
+2. Assign additional reviewer
+3. Upload inspection evidence
+```
+
+لكن:
+
+**AI = Recommendation**
+
+وليس:
+
+**AI = Authority**
+
+أي قرار رسمي يبقى للموظف/السوبرفايزر/المدير.
+
+---
+
+# 7. AI Evidence Review
+
+ميزة ممتازة جدًا لـQC.
+
+الموظف يرفع:
+
+```text
+PDF
+Image
+Excel
+Document
+```
+
+والـAI يفحص:
+
+* هل الملف يحتوي على المعلومات المطلوبة؟
+* هل Evidence مرتبط بالمهمة؟
+* هل فيه بيانات ناقصة؟
+* هل التاريخ صحيح؟
+* هل رقم التقرير موجود؟
+* هل توجد مؤشرات على أن الدليل غير مكتمل؟
+
+ثم:
+
+```text
+Evidence Quality
+━━━━━━━━━━━━━━━━
+Completeness     92%
+Relevance        96%
+Missing Fields   1
+Risk             Low
+```
+
+لكن يظل:
+
+> **Human Approval Required**
+
+---
+
+# 📊 8. Executive Dashboard أقوى
+
+الـDashboard الحالية جيدة، لكن أضيف طبقة Management Analytics:
+
+### KPIs
+
+```text
+Total Tasks
+Completion Rate
+SLA Compliance
+Overdue Rate
+On-Hold Rate
+Avg Resolution Time
+Evidence Compliance
+```
+
+### Trends
+
+```text
+Tasks Created vs Completed
+Weekly Completion
+SLA Breaches
+Employee Workload
+```
+
+### Risk
+
+```text
+🔴 Critical
+🟠 High
+🟡 Medium
+🟢 Low
+```
+
+---
+
+# 9. Workload Management
+
+ميزة مهمة جدًا للمدير.
+
+مثلاً:
+
+```text
+Employee       Active   Overdue   SLA Risk
+──────────────────────────────────────────
+Ahmed             12        3       High
+Mohammed           7        0       Low
+Sara               18        5       Critical
+```
+
+ويظهر:
+
+> **Workload Imbalance**
+
+بحيث المدير يعرف أن الموظف عنده 18 مهمة بينما شخص آخر عنده 3.
+
+---
+
+# 10. Smart Assignment
+
+بدل المدير يختار الموظف فقط، النظام يقترح:
+
+```text
+Recommended Assignee
+
+1. Ahmed       92%
+2. Mohammed    76%
+3. Sara        41%
+```
+
+حسب:
+
+* Current workload
+* Skills
+* Department
+* Historical completion time
+* Current SLA load
+
+ومرة ثانية:
+
+**Recommendation فقط.**
+
+---
+
+# 🔐 11. Audit Integrity
+
+هذي مهمة جدًا.
+
+حالياً عندك Activity Log.
+
+أنا أقترح نطوره إلى:
+
+## Tamper-Evident Audit Log
+
+كل Event يكون مرتبط بالحدث السابق:
+
+```text
+Event 1
+Hash A
+   ↓
+Event 2
+Hash B = Hash(Event1 + Event2)
+   ↓
+Event 3
+Hash C = Hash(Event2 + Event3)
+```
+
+إذا أحد عدل Event قديم:
+
+```text
+❌ Audit Chain Integrity Failed
+```
+
+وهذا ممتاز جدًا لو بتستخدم النظام في Compliance رسمي.
+
+---
+
+# 12. Immutable Completed Tasks
+
+أنت عندك Read-only بعد Completed، وهذا ممتاز.
+
+أزيد عليه:
+
+**Snapshot عند الإغلاق.**
+
+يعني النظام يحفظ:
+
+```text
+Task Closure Snapshot
+├── Title
+├── Description
+├── Assignee
+├── Priority
+├── Due Date
+├── Status
+├── Progress
+├── Evidence IDs
+├── Completion Comment
+├── Completed By
+└── Completed At
+```
+
+وبالتالي حتى لو Admin أعاد فتح المهمة مستقبلًا، عندك نسخة تثبت **كيف كانت لحظة الإغلاق الأصلية**.
+
+---
+
+# 13. Approval Workflow قابل للتكوين
+
+بدل ما تكون الصلاحيات hard-coded فقط:
+
+```text
+Manager
+Supervisor
+Employee
+```
+
+أضف لاحقًا Workflow Builder:
+
+```text
+Task Type: Inspection
+
+Employee
+   ↓
+Supervisor Review
+   ↓
+Manager Approval
+   ↓
+Closed
+```
+
+بينما Task عادية:
+
+```text
+Employee
+   ↓
+Completed
+```
+
+هذا يخلي النظام قابل للتوسع بدون إعادة كتابة الـCore.
+
+---
+
+# 14. Task Templates
+
+بدل إنشاء نفس المهمة كل مرة:
+
+```text
+Create Task
+   ↓
+Use Template
+```
+
+مثلاً:
+
+### Daily Inspection
+
+يولد تلقائيًا:
+
+* Checklist
+* Due Date
+* Priority
+* Required Evidence
+* Assigned Team
+
+### Monthly QC Review
+
+نفس الفكرة.
+
+وهذا يتكامل بشكل ممتاز مع Recurrence الموجودة.
+
+---
+
+# 15. Evidence Requirements
+
+بدل:
+
+> Evidence optional
+
+يكون لكل نوع مهمة:
+
+```text
+Required Evidence:
+☑ Inspection Photo
+☑ Inspection Report
+☐ Excel Measurement
+```
+
+وعند محاولة الإغلاق:
+
+```text
+Cannot complete task.
+
+Missing required evidence:
+• Inspection Report
+```
+
+وهذا أقوى بكثير من Evidence عام.
+
+---
+
+# 16. Global Search
+
+أضيف Search موحد:
+
+```text
+Search everything...
+
+TASK-1023
+Ahmed
+Inspection
+NCR-2026-44
+Pump
+PDF
+```
+
+ويبحث في:
+
+* Tasks
+* Comments
+* Evidence metadata
+* Users
+* Findings
+* Activity Log
+* Reference Numbers
+
+---
+
+# 17. Audit / Compliance Reports
+
+أقترح صفحة:
+
+## Reports
+
+وتولد:
+
+### Monthly QC Report
+
+```text
+Period
+Total Tasks
+Completed
+Overdue
+SLA Breaches
+Evidence Compliance
+Top Blockers
+Employee Performance
+```
+
+### Audit Trail Report
+
+```text
+Task
+User
+Action
+Old Value
+New Value
+Timestamp
+```
+
+### Employee Performance
+
+```text
+Completion Rate
+Average Completion Time
+Overdue Tasks
+SLA Compliance
+```
+
+ثم:
+
+**Export PDF / XLSX / CSV**
+
+---
+
+# 18. Data Retention
+
+حدد Policies:
+
+```text
+Activity Logs
+→ Never delete
+
+Completed Tasks
+→ Retain X years
+
+Evidence
+→ Retain X years
+
+Notifications
+→ Delete after X days
+```
+
+وهذي مهمة إذا النظام بيكبر.
+
+---
+
+# 19. Soft Delete بدل Hard Delete
+
+أنا بصراحة أفضل تغيير هذا.
+
+بدل:
+
+```text
+DELETE FROM tasks
+```
+
+استخدم:
+
+```text
+deleted_at
+deleted_by
+deletion_reason
+```
+
+وتصير المهمة:
+
+```text
+Active
+Archived
+Deleted
+```
+
+لأن حذف البيانات فعليًا في نظام Compliance مو أفضل خيار.
+
+---
+
+# 20. Database Migration System
+
+هذه **ليست Feature اختيارية**.
+
+بما أن SQLite عندك والـschema يتطور، أضف:
+
+```text
+migrations/
+├── 001_initial.sql
+├── 002_add_checklists.sql
+├── 003_add_dependencies.sql
+├── 004_add_notifications.sql
+└── 005_add_sla.sql
+```
+
+مع:
+
+```text
+schema_version
+```
+
+وبكذا ما يصير عندك مشكلة:
+
+> Database قديمة + Code جديد = النظام ينكسر.
+
+---
+
+# 21. Backup + Restore Verification
+
+مو بس:
+
+```text
+Backup created
+```
+
+أبي:
+
+```text
+Backup
+ ↓
+Create temporary DB
+ ↓
+Restore
+ ↓
+Integrity Check
+ ↓
+Count tables
+ ↓
+Count records
+ ↓
+PASS
+```
+
+ويطلع:
+
+```text
+Backup Verification
+━━━━━━━━━━━━━━━━━━━
+Backup:  qc-2026-08-11.db
+Size:    18.4 MB
+Tables:  12/12
+Records: 8,921
+Integrity: PASS
+Restore: PASS
+```
+
+---
+
+# 22. Observability
+
+أضف:
+
+```text
+/health
+/ready
+```
+
+مثلاً:
+
+```json
+{
+  "status": "ok",
+  "database": "healthy",
+  "storage": "healthy",
+  "version": "1.0.0"
+}
+```
+
+وممكن Admin يشوف:
+
+* DB health
+* Last backup
+* App version
+* Active sessions
+* Failed logins
+* Storage usage
+
+---
+
+# 23. Security إضافية
+
+أوصي بإضافة:
+
+### CSRF protection
+
+خصوصًا للـPOST actions.
+
+### Rate limiting
+
+خصوصًا:
+
+```text
+/login
+/api/*
+/upload
+```
+
+### Upload limits
+
+مثلاً:
+
+```text
+Max file size
+Allowed MIME
+Allowed extensions
+```
+
+### Security event log
+
+مثل:
+
+```text
+Failed Login
+Account Locked
+Permission Denied
+Suspicious Request
+Password Reset
+```
+
+---
+
+# 24. UX — تحسين مهم
+
+أضيف **Command Palette**:
+
+```text
+⌘ K
+```
+
+وتقدر تكتب:
+
+```text
+Create task
+Search task
+Open dashboard
+My tasks
+Overdue tasks
+Reports
+Users
+```
+
+ممتاز جدًا إذا صار عندكم عدد مهام كبير.
+
+---
+
+# 25. Keyboard Shortcuts
+
+مثلاً:
+
+```text
+N → New Task
+/ → Search
+G D → Dashboard
+G T → Tasks
+G M → My Tasks
+```
+
+إضافة صغيرة لكن تعطي النظام إحساس SaaS احترافي.
+
+---
+
+# 26. Activity Timeline أفضل
+
+بدل جدول:
+
+```text
+field_updated
+```
+
+خله بصري:
+
+```text
+🟢 10:42
+Ahmed completed task
+
+📎 10:41
+Evidence uploaded
+
+💬 10:39
+Completion comment added
+
+🟡 09:20
+Status changed
+In Progress → On Hold
+```
+
+ويظهر الفرق:
+
+```text
+Due Date
+Aug 15 → Aug 18
+```
+
+---
+
+# 27. إضافة Health Score للمهمة
+
+أشوفها ممتازة.
+
+كل Task يكون عندها:
+
+```text
+Task Health
+━━━━━━━━━━━━━━
+🟢 92
+```
+
+ويحسب مثلاً:
+
+* SLA
+* Progress
+* Blocker
+* Due date
+* Missing evidence
+* Dependencies
+* Age
+
+مثال:
+
+```text
+🔴 31 — Critical
+```
+
+وهذا يعطي المدير نظرة فورية.
+
+---
+
+# 28. أهم شيء: لا تضيف AI قبل ضبط الـCore
+
+لو أنا ماسك المشروع معك، ترتيب التنفيذ بيكون:
+
+```text
+PHASE 1
+Production Hardening
+        ↓
+PHASE 2
+SLA + Escalation
+        ↓
+PHASE 3
+QC Findings + CAPA
+        ↓
+PHASE 4
+Templates + Required Evidence
+        ↓
+PHASE 5
+Advanced Dashboard + Reports
+        ↓
+PHASE 6
+AI Copilot
+        ↓
+PHASE 7
+AI Evidence Analysis
+```
+
+## 🏆 وأقوى 10 إضافات عندي للمشروع
+
+لو تبي تختصر كل الكلام:
+
+| الأولوية | الإضافة                                   |
+| -------- | ----------------------------------------- |
+| 🔴 P0    | Database Migration System                 |
+| 🔴 P0    | Security / IDOR / CSRF / Rate Limit Audit |
+| 🔴 P0    | Full E2E Testing                          |
+| 🔴 P0    | Backup + Restore Verification             |
+| 🟠 P1    | SLA Engine                                |
+| 🟠 P1    | Escalation Engine                         |
+| 🟠 P1    | QC Findings + CAPA                        |
+| 🟠 P1    | Required Evidence                         |
+| 🟡 P2    | Advanced Reports                          |
+| 🟡 P2    | AI Copilot                                |
+
+**وأنا شخصيًا ما راح أضيف Tags أو Profiles أو ألوان وميزات شكلية الآن.** عندك أساس قوي؛ الأفضل نخليه **موثوق وقابل للتدقيق** أول، ثم نضيف الأشياء اللي ترفع قيمة QC فعلًا.
+
+إذا بنطور النظام بشكل احترافي، فأنا أشوف أفضل نقلة له هي:
+**QC Task Manager → QC Operations & Compliance Platform**، مع SLA + CAPA + Findings + Evidence Governance + Audit Integrity + AI Assistant.
