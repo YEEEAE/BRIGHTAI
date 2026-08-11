@@ -18,7 +18,18 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 
-import { createBackup } from '../src/lib/backup.ts';
+import {
+  BACKUP_FILE_PATTERN,
+  backupTimestamp,
+  createBackup,
+  getBackupStatus,
+  listBackups,
+} from '../src/lib/backup.ts';
+import {
+  getNextScheduledBackupAt,
+  getRiyadhDateKey,
+  shouldRunBackupCatchup,
+} from '../src/lib/backup-scheduler.ts';
 import {
   parseFormData,
   taskCreateInputSchema,
@@ -103,6 +114,9 @@ const requiredPaths = [
   'src/pages/supervisor',
   'src/pages/employee',
   'src/pages/admin',
+  'src/pages/admin/settings/index.astro',
+  'src/pages/api/admin/backup.ts',
+  'scripts/e2e-backup.mjs',
   'src/pages/tasks',
   'src/pages/notifications.astro',
   'src/pages/api',
@@ -119,6 +133,7 @@ const requiredPaths = [
   'package.json',
   'tsconfig.json',
   'README.md',
+  'docs/RESTORE.md',
 ];
 for (const p of requiredPaths) {
   ok(existsSync(resolve(APP_DIR, p)), `exists: ${p}`);
@@ -525,6 +540,9 @@ ok(pdfStr.trimEnd().endsWith('%%EOF'), 'pdf: EOF marker');
 
 // ── 5. Backup round-trip (real files) ──
 section('Backup (src/lib/backup.ts)');
+ok(backupTimestamp(new Date('2026-08-11T09:34:56.000Z')) === '2026-08-11-123456', 'backup: timestamp uses Riyadh YYYY-MM-DD-HHmmss format');
+ok(BACKUP_FILE_PATTERN.test('qc_tasks-2026-08-11-123456.db'), 'backup: filename pattern accepts the required format');
+ok(!BACKUP_FILE_PATTERN.test('qc_tasks-20260811-123456789.db'), 'backup: filename pattern rejects legacy compact names');
 const tmpDir = mkdtempSync(join(tmpdir(), 'qc-backup-'));
 try {
   const srcDb = join(tmpDir, 'source.db');
@@ -534,8 +552,9 @@ try {
   db.close();
 
   const backupDir = join(tmpDir, 'backups');
-  const first = await createBackup({ dbPath: srcDb, backupDir, keep: 1 });
+  const first = await createBackup({ dbPath: srcDb, backupDir, keep: 1, trigger: 'test' });
   ok(existsSync(first.file) && statSync(first.file).size > 0, 'backup: file created with data');
+  ok(BACKUP_FILE_PATTERN.test(first.name), 'backup: created file has the required name');
 
   const check = new Database(first.file, { readonly: true });
   const row = check.prepare('SELECT v FROM t WHERE id = 1').get();
@@ -547,9 +566,53 @@ try {
   ok(remaining.length === 1, 'backup: retention keeps only the newest');
   ok(second.pruned === 1, `backup: pruned 1 old backup (got ${second.pruned})`);
   ok(statSync(second.file).size > 0, 'backup: second backup valid');
+  ok(listBackups(backupDir).length === 1, 'backup: listBackups only returns retained backup files');
+  ok(getBackupStatus(backupDir).lastSuccessAt !== null, 'backup: success status is persisted');
+
+  const missingDb = join(tmpDir, 'missing.db');
+  let failedBackup = false;
+  try {
+    await createBackup({ dbPath: missingDb, backupDir, trigger: 'test' });
+  } catch {
+    failedBackup = true;
+  }
+  ok(failedBackup, 'backup: missing source fails');
+  ok(getBackupStatus(backupDir).lastFailureAt !== null, 'backup: failure status is persisted');
+
+  const retainedDir = join(tmpDir, 'retained-14');
+  for (let index = 0; index < 15; index += 1) {
+    await createBackup({ dbPath: srcDb, backupDir: retainedDir, keep: 14, trigger: 'test' });
+  }
+  ok(listBackups(retainedDir).length === 14, 'backup: retention keeps the latest 14 backups');
 } finally {
   rmSync(tmpDir, { recursive: true, force: true });
 }
+
+// WAL data must be captured by SQLite's backup API; copying only the main file
+// would lose this row while the writer connection is still open.
+const walDir = mkdtempSync(join(tmpdir(), 'qc-backup-wal-'));
+try {
+  const walDbPath = join(walDir, 'source.db');
+  const walDb = new Database(walDbPath);
+  walDb.pragma('journal_mode = WAL');
+  walDb.exec('CREATE TABLE t (id INTEGER PRIMARY KEY, v TEXT)');
+  walDb.prepare('INSERT INTO t (v) VALUES (?)').run('wal-value');
+  const walBackup = await createBackup({ dbPath: walDbPath, backupDir: join(walDir, 'backups'), trigger: 'test' });
+  const walCheck = new Database(walBackup.file, { readonly: true });
+  const walRow = walCheck.prepare('SELECT v FROM t WHERE id = 1').get();
+  walCheck.close();
+  walDb.close();
+  ok(walRow.v === 'wal-value', 'backup: WAL-resident data is included');
+  ok(!existsSync(`${walBackup.file}-wal`) && !existsSync(`${walBackup.file}-shm`), 'backup: no backup WAL/SHM sidecars are required');
+} finally {
+  rmSync(walDir, { recursive: true, force: true });
+}
+
+section('Backup scheduler');
+ok(getRiyadhDateKey(new Date('2026-08-11T09:34:56.000Z')) === '2026-08-11', 'scheduler: Riyadh date key is stable');
+ok(getNextScheduledBackupAt(new Date('2026-08-10T22:30:00.000Z')).toISOString() === '2026-08-10T23:00:00.000Z', 'scheduler: next run is 02:00 Riyadh');
+ok(shouldRunBackupCatchup({ lastSuccessAt: null }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up runs when no success exists');
+ok(!shouldRunBackupCatchup({ lastSuccessAt: '2026-08-11T09:00:00.000Z' }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up skips after today success');
 
 // ── 6. init-db migrates a legacy (pre-spec) database ──
 // Regression for the "SQLITE_ERROR: no such column: recurrence" bug: a

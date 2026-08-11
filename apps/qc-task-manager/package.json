@@ -14,7 +14,7 @@
     "db:init": "node scripts/init-db.mjs",
     "db:reset": "node scripts/init-db.mjs --reset",
     "db:seed": "node scripts/init-db.mjs",
-    "db:backup": "node scripts/backup-db.mjs",
+    "db:backup": "node --experimental-strip-types scripts/backup-db.mjs",
     "test": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs"
   },
   "dependencies": {

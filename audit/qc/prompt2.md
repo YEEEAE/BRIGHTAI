@@ -4,34 +4,6 @@
 * * *
 
 
-* * *
-
-# PROMPT 16: Backup and Restore
-
-```text
-Implement automatic SQLite backup.
-
-Requirements:
-- backup qc_tasks.db once per day
-- use SQLite backup API or a safe consistent-copy method
-- never copy only the WAL file
-- create:
-  db/backups/qc_tasks-YYYY-MM-DD-HHmmss.db
-- keep the latest 14 backups
-- expose manual backup to admin only
-- show backup status in admin settings
-- log backup creation and failure
-- never expose backup files over HTTP
-- never commit backups to Git
-
-Add restore documentation:
-1. Stop the server.
-2. Backup the current database.
-3. Replace qc_tasks.db with the selected backup.
-4. Remove stale WAL and SHM files.
-5. Restart the server.
-6. Verify table integrity with PRAGMA integrity_check.
-```
 
 * * *
 

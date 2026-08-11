@@ -37,6 +37,7 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/search', label: 'Search' },
     { href: '/manager/requests', label: 'Delete Requests' },
     { href: '/admin/users', label: 'Admin' },
+    { href: '/admin/settings', label: 'Settings' },
     { href: '/notifications', label: 'Notifications' },
   ],
   manager: [

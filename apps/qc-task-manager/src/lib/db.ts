@@ -27,6 +27,8 @@ import { fileURLToPath } from 'node:url';
 import { mkdirSync, existsSync } from 'node:fs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 import { seedDemoData, seedUsersIfEmpty } from './seed';
+import { startBackupScheduler } from './backup-scheduler';
+import { backupDirectoryForDatabase } from './backup';
 // Bundle the schema into the build so it resolves from BOTH the dev server
 // (src/) and the standalone production entry (dist/server/chunks). A runtime
 // readFileSync of '../../db/schema.sql' only works in dev — the built bundle
@@ -41,6 +43,7 @@ const DB_DIR = resolve(__dirname, '..', '..', 'db');
 // README, used by scripts/init-db.mjs, scripts/backup-db.mjs and the e2e runs).
 const DB_PATH =
   process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
+const BACKUP_DIR = backupDirectoryForDatabase(DB_PATH);
 
 let _db: BetterSqliteDatabase | null = null;
 let _initialized = false;
@@ -336,6 +339,7 @@ export function getDb(): BetterSqliteDatabase {
   initialize(db);
 
   _db = db;
+  startBackupScheduler({ dbPath: DB_PATH, backupDir: BACKUP_DIR });
   return db;
 }
 
@@ -420,4 +424,4 @@ export function query(sql: string): QueryHelper {
   };
 }
 
-export { DB_PATH };
+export { DB_PATH, BACKUP_DIR };

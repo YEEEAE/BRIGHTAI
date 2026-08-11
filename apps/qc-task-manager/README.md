@@ -169,6 +169,19 @@ The server logs a warning when the default `admin123` is in use.
 - The file (`*.db`, `*.db-wal`, `*.db-shm`) is gitignored and never committed.
 - Override the path with `QC_DATABASE_PATH=/absolute/path.db` (the legacy
   `QC_DB_PATH` alias is still accepted).
+- **Automatic backups**: the server creates a consistent SQLite backup at
+  02:00 `Asia/Riyadh` every day, and runs a catch-up backup after startup when
+  the current Riyadh day has no successful backup. Manual backups are available
+  to admins from `/admin/settings` or `pnpm --filter @brightai/qc-task-manager db:backup`.
+  Files are written to `db/backups/qc_tasks-YYYY-MM-DD-HHmmss.db`; only the
+  latest 14 are retained. The implementation uses SQLite's Online Backup API,
+  never copies a WAL or SHM file, and stores backup status beside the files.
+  Backup directories are outside `public/`, ignored by Git, and must be on a
+  protected persistent volume in production. Never set `QC_DATABASE_PATH` to a
+  static/public directory.
+
+  The live HTTP checks are available as `scripts/e2e-backup.mjs`; run them
+  against a built server and the same absolute `QC_DATABASE_PATH`.
 - Schema: `db/schema.sql` — **12 tables** (users, tasks, task_comments,
   task_attachments, task_activity_log, task_delete_requests, task_checklists,
   task_dependencies, notifications, sessions, login_attempts, saved_filters),
