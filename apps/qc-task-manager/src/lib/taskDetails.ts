@@ -193,6 +193,11 @@ export function actionCategory(action: string): string {
       return 'progress';
     case 'task_updated':
     case 'field_changed':
+    case 'title_changed':
+    case 'description_changed':
+    case 'assignee_changed':
+    case 'due_date_changed':
+    case 'priority_changed':
       return 'field';
     case 'blocker_set':
       return 'blocker';
@@ -201,6 +206,7 @@ export function actionCategory(action: string): string {
       return 'comment';
     case 'evidence_uploaded':
     case 'evidence_skipped':
+    case 'attachment_uploaded':
       return 'evidence';
     case 'delete_requested':
     case 'delete_approved':
@@ -224,6 +230,17 @@ export function describeAction(action: string, oldValue: string | null, newValue
     case 'progress_changed':
       return `updated progress to ${newValue ?? '0'}%.`;
     case 'task_updated':
+      return 'updated task details.';
+    case 'title_changed':
+      return `changed the title from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
+    case 'description_changed':
+      return oldValue ? 'updated the description.' : 'added a description.';
+    case 'assignee_changed':
+      return `reassigned the task from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
+    case 'due_date_changed':
+      return `changed the due date from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
+    case 'priority_changed':
+      return `changed priority from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
     case 'field_changed':
       return 'updated task details.';
     case 'blocker_set':
@@ -236,6 +253,8 @@ export function describeAction(action: string, oldValue: string | null, newValue
       return `uploaded evidence: ${newValue ?? 'a file'}.`;
     case 'evidence_skipped':
       return 'skipped the evidence upload.';
+    case 'attachment_uploaded':
+      return `uploaded an attachment: ${newValue ?? 'a file'}.`;
     case 'delete_requested':
       return 'requested deletion of this task.';
     case 'delete_approved':
@@ -247,4 +266,10 @@ export function describeAction(action: string, oldValue: string | null, newValue
     default:
       return `recorded ${action.replace(/_/g, ' ')}.`;
   }
+}
+
+/** Render a nullable old/new value in timeline text ("—" for null/empty). */
+function fmtVal(value: string | null | undefined): string {
+  if (!value) return '—';
+  return `"${value}"`;
 }

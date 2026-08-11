@@ -19,6 +19,7 @@ const DB_PATH = process.env.QC_DB_PATH || resolve(DB_DIR, 'qc_tasks.db');
 const SCHEMA_PATH = resolve(DB_DIR, 'schema.sql');
 
 const RESET = process.argv.includes('--reset');
+const SEED_DEMO = process.env.SEED_DEMO === '1';
 const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 const IS_DEFAULT_PASSWORD = DEFAULT_PASSWORD === 'admin123';
 
@@ -77,6 +78,109 @@ function seedUsersIfEmpty(db) {
   return true;
 }
 
+/** Local date YYYY-MM-DD offset by `days` from today (mirrors src/lib/seed.ts). */
+function iso(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+// 12 demo tasks in mixed statuses (mirrors src/lib/seed.ts DEMO_TASKS).
+// Completed tasks carry completedBy + completedOffset + completion comment so
+// the db:init path demos identically to the runtime seed (src/lib/seed.ts).
+const DEMO_TASKS = [
+  { title: 'Calibrate temperature gauges – Line A', status: 'in_progress', priority: 'high', progress: 45, createdBy: 'manager', assignedTo: 'emp_sara', due: 3, blocker: null },
+  { title: 'Inspect incoming batch #8841', status: 'not_started', priority: 'medium', progress: 0, createdBy: 'supervisor', assignedTo: 'employee', due: -2, blocker: null },
+  { title: 'Update QC checklist template', status: 'completed', priority: 'medium', progress: 100, createdBy: 'supervisor', assignedTo: 'emp_omar', due: -5, blocker: null, completedBy: 'emp_omar', completedOffset: '-6 days', comment: 'Checklist updated and versioned — ready for training.', evidence: { name: 'checklist_rev4.pdf', mime: 'application/pdf' } },
+  { title: 'Audit calibration certificates', status: 'on_hold', priority: 'high', progress: 60, createdBy: 'manager', assignedTo: 'emp_sara', due: 5, blocker: 'Awaiting the vendor calibration certificate for the torque wrench.' },
+  { title: 'Review supplier audit report', status: 'in_progress', priority: 'high', progress: 80, createdBy: 'supervisor', assignedTo: 'emp_omar', due: -1, blocker: null },
+  { title: 'Verify batch #8839 results', status: 'completed', priority: 'low', progress: 100, createdBy: 'supervisor', assignedTo: 'employee', due: -12, blocker: null, completedBy: 'employee', completedOffset: '-14 days', comment: 'Batch results verified against retention samples — all within specification.', evidence: null },
+  { title: 'Draft SOP for new packaging line', status: 'not_started', priority: 'low', progress: 0, createdBy: 'manager', assignedTo: 'employee', due: 10, blocker: null },
+  { title: 'First-article inspection – connector #332', status: 'in_progress', priority: 'medium', progress: 25, createdBy: 'supervisor', assignedTo: null, due: 2, blocker: null },
+  { title: 'Monthly QC metrics report', status: 'completed', priority: 'medium', progress: 100, createdBy: 'manager', assignedTo: 'emp_sara', due: -30, blocker: null, completedBy: 'emp_sara', completedOffset: '-28 days', comment: 'Report compiled and submitted to management review.', evidence: { name: 'qc_metrics_Q2.xlsx', mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' } },
+  { title: 'Environmental monitoring – cleanroom', status: 'not_started', priority: 'high', progress: 0, createdBy: 'manager', assignedTo: null, due: -3, blocker: null },
+  { title: 'Supplier onboarding – new vendor', status: 'on_hold', priority: 'low', progress: 15, createdBy: 'manager', assignedTo: 'emp_omar', due: 14, blocker: 'Legal review of the quality agreement is pending.' },
+  { title: 'Retest failed batch #8827', status: 'in_progress', priority: 'high', progress: 60, createdBy: 'supervisor', assignedTo: 'employee', due: -4, blocker: null },
+];
+
+function seedDemo(db) {
+  if (!SEED_DEMO) return;
+  const { n } = db.prepare('SELECT COUNT(*) AS n FROM tasks').get();
+  if (n > 0) {
+    console.warn('[init-db] SEED_DEMO=1 but tasks already exist — skipping demo data.');
+    return;
+  }
+  const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
+  const insUser = db.prepare(
+    `INSERT OR IGNORE INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
+     VALUES (?, ?, ?, 'employee', 'QC', ?, 1)`,
+  );
+  insUser.run('emp_sara', hash, 'Sara Alharbi', 1);
+  insUser.run('emp_omar', hash, 'Omar Alqahtani', 0);
+
+  const uid = (username) => db.prepare('SELECT id FROM users WHERE username = ?').get(username).id;
+  const insTask = db.prepare(
+    `INSERT INTO tasks (title, description, status, priority, progress_percent, created_by, assigned_to, due_date, blocker_note, completed_at, completed_by, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? IS NULL THEN NULL ELSE datetime('now', ?) END, ?, datetime('now', ?))`,
+  );
+  const insComment = db.prepare(
+    `INSERT INTO task_comments (task_id, user_id, comment, created_at)
+     VALUES (?, ?, ?, datetime('now', ?))`,
+  );
+  const insAct = db.prepare(
+    `INSERT INTO task_activity_log (task_id, user_id, action, old_value, new_value, created_at)
+     VALUES (?, ?, ?, ?, ?, datetime('now', ?))`,
+  );
+  const insAtt = db.prepare(
+    `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, uploaded_at)
+     VALUES (?, ?, ?, ?, ?, ?, datetime('now', ?))`,
+  );
+  const pdfBytes = Buffer.from('%PDF-1.4\n% QC demo evidence (placeholder)\n%%EOF\n', 'utf8');
+  const xlsxBytes = Buffer.from('PK\x03\x04 QC demo evidence (placeholder)', 'utf8');
+
+  const tx = db.transaction(() => {
+    for (const t of DEMO_TASKS) {
+      const info = insTask.run(
+        t.title, 'Demo task for the QC department.', t.status, t.priority, t.progress,
+        uid(t.createdBy), t.assignedTo ? uid(t.assignedTo) : null,
+        t.due !== null ? iso(t.due) : null, t.blocker,
+        t.completedOffset ?? null, t.completedOffset ?? null,
+        t.completedBy ? uid(t.completedBy) : null, '-5 days',
+      );
+      const taskId = Number(info.lastInsertRowid);
+      const creatorId = uid(t.createdBy);
+      insAct.run(taskId, creatorId, 'task_created', null, t.title, '-5 days');
+
+      if (t.status === 'in_progress' || t.status === 'on_hold') {
+        const worker = t.assignedTo ? uid(t.assignedTo) : creatorId;
+        insAct.run(taskId, worker, 'status_changed', 'Not started', 'In progress', '-3 days');
+        if (t.progress > 0) insAct.run(taskId, worker, 'progress_changed', '0', String(t.progress), '-3 days');
+      }
+      if (t.status === 'on_hold' && t.blocker) {
+        insAct.run(taskId, t.assignedTo ? uid(t.assignedTo) : creatorId, 'blocker_set', null, t.blocker, '-1 days');
+      }
+      if (t.status === 'completed' && t.completedBy && t.completedOffset) {
+        const completerId = uid(t.completedBy);
+        insComment.run(taskId, completerId, t.comment, t.completedOffset);
+        insAct.run(taskId, completerId, 'task_completed', null, null, t.completedOffset);
+        insAct.run(taskId, completerId, 'closure_comment_added', null, t.comment, t.completedOffset);
+        if (t.evidence) {
+          insAct.run(taskId, completerId, 'evidence_uploaded', null, t.evidence.name, t.completedOffset);
+          const bytes = t.evidence.name.endsWith('.pdf') ? pdfBytes : xlsxBytes;
+          insAtt.run(taskId, completerId, t.evidence.name, t.evidence.mime, bytes, bytes.length, t.completedOffset);
+        } else {
+          insAct.run(taskId, completerId, 'evidence_skipped', null, null, t.completedOffset);
+        }
+      }
+    }
+  });
+  tx();
+  console.warn(`[init-db] SEED_DEMO=1 → seeded demo team (emp_sara, emp_omar) + ${DEMO_TASKS.length} tasks.`);
+}
+
 function main() {
   ensureDir();
 
@@ -93,6 +197,7 @@ function main() {
 
   applySchema(db);
   seedUsersIfEmpty(db);
+  seedDemo(db);
 
   const { tableCount } = db
     .prepare(
@@ -100,10 +205,11 @@ function main() {
     )
     .get();
   const { userCount } = db.prepare('SELECT COUNT(*) AS userCount FROM users').get();
+  const { taskCount } = db.prepare('SELECT COUNT(*) AS taskCount FROM tasks').get();
   db.close();
 
   console.log(`[init-db] database ready at: ${DB_PATH}`);
-  console.log(`[init-db] tables: ${tableCount}, users: ${userCount}`);
+  console.log(`[init-db] tables: ${tableCount}, users: ${userCount}, tasks: ${taskCount}`);
 }
 
 main();

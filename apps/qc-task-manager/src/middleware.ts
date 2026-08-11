@@ -7,11 +7,15 @@
 //   with a one-shot flash message when access is denied.
 // - The resolved session user (or null) is attached to context.locals.user for
 //   every route so pages/components never re-parse the cookie.
+// - EVERY response (pages, redirects, API JSON, static assets) is passed
+//   through withSecurityHeaders() before leaving the server: X-Frame-Options
+//   DENY, X-Content-Type-Options nosniff, Referrer-Policy.
 //
 // All role decisions come from src/lib/permissions.ts — no scattered role
 // checks in this file.
 
 import { defineMiddleware } from 'astro:middleware';
+import type { APIContext, MiddlewareNext } from 'astro';
 import { getSessionUser } from './lib/auth';
 import { setFlash } from './lib/flash';
 import {
@@ -32,7 +36,33 @@ function isPublic(pathname: string): boolean {
   return false;
 }
 
-export const onRequest = defineMiddleware((context, next) => {
+/**
+ * Attach security headers to a Response. Applied to EVERY outgoing response
+ * (pages, redirects, API endpoints) — never skip. Headers are set on a copy so
+ * both Astro's response and redirected responses get them uniformly.
+ */
+function withSecurityHeaders(response: Response): Response {
+  const headers = new Headers(response.headers);
+  // DENY: the app is an internal tool — it must never be framed.
+  headers.set('X-Frame-Options', 'DENY');
+  // nosniff: browsers must not MIME-sniff (protects the attachment downloads
+  // and any API responses from content-type confusion).
+  headers.set('X-Content-Type-Options', 'nosniff');
+  // Trim referrer leakage to same-origin.
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+/**
+ * The actual request handler. Every `return` path is a Response; the exported
+ * onRequest wraps the result with withSecurityHeaders so no branch can
+ * accidentally skip the headers.
+ */
+async function handle(context: APIContext, next: MiddlewareNext): Promise<Response> {
   const { pathname } = context.url;
   const user = getSessionUser(context.request);
 
@@ -57,8 +87,10 @@ export const onRequest = defineMiddleware((context, next) => {
   }
 
   // /dashboard — employees have no dashboard (CORE BUSINESS RULE #1).
+  // Redirect + flash so the user understands why they were bounced.
   if (pathname === '/dashboard' || pathname.startsWith('/dashboard/')) {
     if (!PERMISSIONS.canViewDashboard(user.role)) {
+      setFlash(context, 'error', 'You do not have permission to access the dashboard.');
       return context.redirect(roleHome(user.role));
     }
   }
@@ -102,4 +134,9 @@ export const onRequest = defineMiddleware((context, next) => {
 
   // /employee/* — any authenticated role may view the employee view.
   return next();
+}
+
+export const onRequest = defineMiddleware(async (context, next) => {
+  const response = await handle(context, next);
+  return withSecurityHeaders(response);
 });

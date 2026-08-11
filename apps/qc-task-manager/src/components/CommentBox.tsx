@@ -64,21 +64,15 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
   return (
     <div>
       <div className="space-y-3" aria-live="polite">
-        {items.length === 0 ? (
-          <p className="rounded-md border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
-            No comments yet.
-          </p>
-        ) : (
-          items.map((c) => (
-            <div key={c.id} className="rounded-md border border-slate-200 bg-slate-50 px-4 py-3">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-sm font-semibold text-slate-900">{c.full_name}</span>
-                <span className="text-xs text-slate-500">{formatDbDate(c.created_at)}</span>
-              </div>
-              <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{c.comment}</p>
+        {items.map((c) => (
+          <div key={c.id} className="rounded-md border border-slate-200 bg-slate-50 px-4 py-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm font-semibold text-slate-900">{c.full_name}</span>
+              <span className="text-xs text-slate-500">{formatDbDate(c.created_at)}</span>
             </div>
-          ))
-        )}
+            <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{c.comment}</p>
+          </div>
+        ))}
       </div>
 
       {readOnly ? (

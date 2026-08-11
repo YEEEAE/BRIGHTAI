@@ -1,14 +1,22 @@
 ---
 // Manager task list (manager + admin). Full create/edit/delete scope.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import EmptyState from '../../components/EmptyState.astro';
 import { getDb } from '../../lib/db';
+import {
+  formatDueDate,
+  isOverdue,
+  priorityLabel,
+  priorityBadgeClass,
+} from '../../lib/format';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
 const db = getDb();
 
 const tasks = db
   .prepare(
-    `SELECT t.id, t.title, t.status, t.priority, t.progress_percent,
+    `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date,
             u.full_name AS assignee,
             (SELECT 1 FROM task_delete_requests r
               WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
@@ -23,6 +31,7 @@ const tasks = db
     status: string;
     priority: string;
     progress_percent: number;
+    due_date: string | null;
     assignee: string | null;
     delete_pending: number;
   }[];
@@ -44,44 +53,59 @@ const tasks = db
   </header>
 
   {tasks.length === 0 ? (
-    <p class="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
-      No tasks yet.
-    </p>
+    <EmptyState
+      title="No tasks yet"
+      hint="Create the first task for your team to get started."
+      ctaHref="/manager/new"
+      ctaLabel="Create your first task"
+    />
   ) : (
-    <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
-      <table class="w-full text-sm">
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+      <table class="w-full min-w-max text-sm">
         <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
           <tr>
-            <th class="px-4 py-2">#</th>
-            <th class="px-4 py-2">Title</th>
-            <th class="px-4 py-2">Assignee</th>
-            <th class="px-4 py-2">Priority</th>
-            <th class="px-4 py-2">Progress</th>
-            <th class="px-4 py-2">Status</th>
+            <th class="px-4 py-2.5">#</th>
+            <th class="px-4 py-2.5">Title</th>
+            <th class="px-4 py-2.5">Assignee</th>
+            <th class="px-4 py-2.5">Due</th>
+            <th class="px-4 py-2.5">Priority</th>
+            <th class="px-4 py-2.5">Progress</th>
+            <th class="px-4 py-2.5">Status</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-200">
-          {tasks.map((t) => (
-            <tr class="hover:bg-slate-50">
-              <td class="px-4 py-2 text-slate-500">{t.id}</td>
-              <td class="px-4 py-2">
-                <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
-              </td>
-              <td class="px-4 py-2 text-slate-600">{t.assignee ?? '—'}</td>
-              <td class="px-4 py-2 text-slate-600">{t.priority}</td>
-              <td class="px-4 py-2 text-slate-600">{t.progress_percent}%</td>
-              <td class="px-4 py-2">
-                <div class="flex items-center gap-2">
-                  {t.delete_pending === 1 && (
-                    <span class="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700" title="Pending deletion request">
-                      🗑️
-                    </span>
-                  )}
-                  <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{t.status}</span>
-                </div>
-              </td>
-            </tr>
-          ))}
+          {tasks.map((t) => {
+            const overdue = isOverdue(t.due_date, t.status);
+            return (
+              <tr class="transition-colors hover:bg-slate-50">
+                <td class="px-4 py-2.5 text-slate-500">{t.id}</td>
+                <td class="px-4 py-2.5">
+                  <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+                </td>
+                <td class="px-4 py-2.5 text-slate-600">{t.assignee ?? '—'}</td>
+                <td class={`whitespace-nowrap px-4 py-2.5 ${overdue ? 'font-semibold text-red-600' : 'text-slate-600'}`}>
+                  {formatDueDate(t.due_date)}
+                  {overdue && ' ⚠️'}
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5">
+                  <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>
+                    {priorityLabel(t.priority)}
+                  </span>
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5 text-slate-600 tabular-nums">{t.progress_percent}%</td>
+                <td class="px-4 py-2.5">
+                  <div class="flex items-center gap-2">
+                    {t.delete_pending === 1 && (
+                      <span class="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700" title="Pending deletion request">
+                        🗑️
+                      </span>
+                    )}
+                    <StatusBadge status={t.status} />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

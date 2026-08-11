@@ -38,13 +38,16 @@ export const GET: APIRoute = async (context) => {
   const attachment = getAttachment(attachmentId, taskId);
   if (!attachment) return json({ ok: false, error: 'Attachment not found.' }, 404);
 
-  // RFC 5987 encodes non-ASCII file names safely for Content-Disposition.
+  // RFC 5987 encodes non-ASCII file names safely; an ASCII filename= fallback
+  // keeps very old browsers working.
   const encodedName = encodeURIComponent(attachment.file_name);
+  // eslint-disable-next-line no-control-regex
+  const asciiName = attachment.file_name.replace(/[^\x20-\x7e]/g, '_').replace(/[\\/"]/g, '_').slice(0, 180);
   return new Response(new Uint8Array(attachment.file_data), {
     headers: {
       'Content-Type': attachment.mime_type || 'application/octet-stream',
       'Content-Length': String(attachment.file_data.byteLength),
-      'Content-Disposition': `attachment; filename*=UTF-8''${encodedName}`,
+      'Content-Disposition': `attachment; filename="${asciiName}"; filename*=UTF-8''${encodedName}`,
       'Cache-Control': 'private, no-store',
     },
   });

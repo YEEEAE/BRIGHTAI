@@ -16,7 +16,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdirSync, existsSync } from 'node:fs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
-import { seedUsersIfEmpty } from './seed';
+import { seedDemoData, seedUsersIfEmpty } from './seed';
 // Bundle the schema into the build so it resolves from BOTH the dev server
 // (src/) and the standalone production entry (dist/server/chunks). A runtime
 // readFileSync of '../../db/schema.sql' only works in dev — the built bundle
@@ -88,6 +88,8 @@ function initialize(db: BetterSqliteDatabase): void {
   db.exec(schemaSql);
   migrateDeleteRequests(db);
   seedUsersIfEmpty(db);
+  // SEED_DEMO=1 → demo team + 12 mixed-status tasks (only on an empty DB).
+  seedDemoData(db);
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.
   db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(new Date().toISOString());

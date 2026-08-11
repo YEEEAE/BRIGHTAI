@@ -19,6 +19,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CommentBox from '../../components/CommentBox';
 import DeleteRequestDialog from '../../components/DeleteRequestDialog';
+import StatusBadge from '../../components/StatusBadge.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import TaskUpdatePanel from '../../components/TaskUpdatePanel';
+import AttachmentUploader from '../../components/AttachmentUploader';
 import { hasPendingDeleteRequest } from '../../lib/deleteRequests';
 import {
   canViewTask,
@@ -35,13 +39,15 @@ import {
   type ActivityEntry,
   type EvidenceInfo,
 } from '../../lib/taskDetails';
-import { taskListFor } from '../../lib/tasks';
+import { taskListFor, listActiveUsers } from '../../lib/tasks';
+import { canEditTask, canEditLockedField } from '../../lib/permissions';
 import {
   formatDbDate,
   formatDueDate,
   humanFileSize,
-  statusLabel,
   priorityLabel,
+  priorityBadgeClass,
+  isOverdue,
 } from '../../lib/format';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
@@ -75,6 +81,15 @@ if (!notFound && !forbidden) {
 const completed = task?.status === 'completed';
 const regularComments = comments.filter((c) => c.id !== closureComment?.id);
 
+// Editing + closure UI (CORE BUSINESS RULES #2/#3): visible when the task is
+// not completed and the actor may edit it. Locked fields additionally require
+// supervisor/manager/admin (canEditLockedField).
+const canEdit =
+  !notFound && !forbidden && !!task && !completed && canEditTask({ id: user.userId, role: user.role }, task);
+const canEditLocked = canEdit && canEditLockedField(user.role);
+const usersForAssignee = canEditLocked ? listActiveUsers() : [];
+const overdue = !!task && isOverdue(task.due_date, task.status);
+
 // Delete-request workflow (CORE BUSINESS RULE #4): employees request deletion of
 // their own tasks that are not started or in progress. Completed tasks are never
 // requestable (CORE BUSINESS RULE #3); manager/admin delete directly instead.
@@ -90,17 +105,6 @@ const deleteRequestPending =
 
 const backHref = taskListFor(user.role);
 
-const STATUS_TONES: Record<string, string> = {
-  not_started: 'bg-slate-100 text-slate-700',
-  in_progress: 'bg-blue-100 text-blue-800',
-  on_hold: 'bg-amber-100 text-amber-800',
-  completed: 'bg-emerald-100 text-emerald-800',
-};
-const PRIORITY_TONES: Record<string, string> = {
-  low: 'bg-sky-100 text-sky-800',
-  medium: 'bg-amber-100 text-amber-800',
-  high: 'bg-red-100 text-red-800',
-};
 function progressTone(p: number): string {
   if (p >= 100) return 'bg-emerald-500';
   if (p >= 60) return 'bg-blue-500';
@@ -169,11 +173,9 @@ function svgIcon(inner: string, cls = ''): string {
             <p class="mt-0.5 text-sm text-slate-500">Task #{task.id}</p>
           </div>
           <div class="flex flex-col items-end gap-2">
-            <div class="flex gap-2">
-              <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_TONES[task.status] ?? 'bg-slate-100 text-slate-600'}`}>
-                {statusLabel(task.status)}
-              </span>
-              <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${PRIORITY_TONES[task.priority] ?? 'bg-slate-100 text-slate-600'}`}>
+            <div class="flex flex-wrap justify-end gap-2">
+              <StatusBadge status={task.status} />
+              <span class={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${priorityBadgeClass(task.priority)}`}>
                 {priorityLabel(task.priority)}
               </span>
             </div>
@@ -205,7 +207,14 @@ function svgIcon(inner: string, cls = ''): string {
         <dl class="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
           <div>
             <dt class="text-xs uppercase text-slate-500">Due date</dt>
-            <dd class="mt-0.5 font-medium text-slate-900">{formatDueDate(task.due_date)}</dd>
+            <dd class={`mt-0.5 font-medium ${overdue ? 'text-red-600' : 'text-slate-900'}`}>
+              {formatDueDate(task.due_date)}
+              {overdue && (
+                <span class="ml-2 inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">
+                  ⚠️ Overdue
+                </span>
+              )}
+            </dd>
           </div>
           <div>
             <dt class="text-xs uppercase text-slate-500">Assignee</dt>
@@ -241,6 +250,28 @@ function svgIcon(inner: string, cls = ''): string {
         )}
       </div>
 
+      {/* 1b. Update / closure panel */}
+      {canEdit && (
+        <section aria-label="Edit task">
+          <TaskUpdatePanel
+            client:visible
+            task={{
+              id: task.id,
+              title: task.title,
+              description: task.description,
+              status: task.status,
+              priority: task.priority,
+              progress_percent: task.progress_percent,
+              assigned_to: task.assigned_to,
+              due_date: task.due_date,
+              blocker_note: task.blocker_note,
+            }}
+            canEditLocked={canEditLocked}
+            users={usersForAssignee}
+          />
+        </section>
+      )}
+
       {/* 2. Blocker note */}
       {task.blocker_note && (
         <div class="rounded-lg border border-amber-200 bg-amber-50 p-4" role="alert">
@@ -257,6 +288,9 @@ function svgIcon(inner: string, cls = ''): string {
       {/* 3. Comments */}
       <section class="rounded-lg border border-slate-200 bg-white p-6">
         <h2 class="mb-4 text-lg font-medium text-slate-900">Comments</h2>
+        {regularComments.length === 0 && !closureComment && (
+          <EmptyState title="No comments yet" hint="Start the conversation — post the first comment below." />
+        )}
         {closureComment && (
           <div class="mb-4 rounded-md border border-indigo-200 bg-indigo-50 px-4 py-3">
             <p class="text-xs font-semibold uppercase text-indigo-600">Completion comment</p>
@@ -276,9 +310,7 @@ function svgIcon(inner: string, cls = ''): string {
       <section class="rounded-lg border border-slate-200 bg-white p-6">
         <h2 class="mb-4 text-lg font-medium text-slate-900">Attachments</h2>
         {attachments.length === 0 ? (
-          <p class="rounded-md border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
-            No attachments yet.
-          </p>
+          <EmptyState title="No attachments yet" hint="Upload evidence or supporting files for this task." />
         ) : (
           <ul class="divide-y divide-slate-100">
             {attachments.map((a) => (
@@ -302,6 +334,7 @@ function svgIcon(inner: string, cls = ''): string {
             ))}
           </ul>
         )}
+        {canEdit && <AttachmentUploader taskId={task.id} client:visible />}
       </section>
 
       {/* 5. Activity history */}

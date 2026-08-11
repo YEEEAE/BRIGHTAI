@@ -78,3 +78,173 @@ export function seedUsersIfEmpty(db: BetterSqliteDatabase): number {
   }
   return SEED_USERS.length;
 }
+
+// ─────────────────────────────── Demo data ───────────────────────────────
+// SEED_DEMO=1 populates a FRESH database with a demo team + 12 tasks in mixed
+// statuses so the whole app (lists, details, closure flow, dashboard) can be
+// demoed immediately. Runs only when the tasks table is empty — an existing
+// database is never touched.
+//
+// Demo team: admin + manager + supervisor (base seed) + 3 employees
+// (employee, emp_sara, emp_omar). Dates are computed relative to today so the
+// dashboard always shows live data (overdue tasks, last-8-weeks completions).
+
+/** Local date YYYY-MM-DD offset by `days` from today. */
+function iso(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/** Demo rows for seedDemoData. Completed tasks carry a created_at modifier too. */
+interface DemoTask {
+  title: string;
+  description: string;
+  status: 'not_started' | 'in_progress' | 'on_hold' | 'completed';
+  priority: 'low' | 'medium' | 'high';
+  progress: number;
+  createdBy: string;
+  assignedTo: string | null;
+  due: number | null; // days from today (negative = past/overdue)
+  blocker: string | null;
+  createdOffset: string | null; // SQLite datetime modifier, e.g. '-10 days'
+  completedOffset: string | null;
+  completedBy: string | null;
+}
+
+const DEMO_TASKS: DemoTask[] = [
+  { title: 'Calibrate temperature gauges – Line A', description: 'Annual calibration of the 12 gauges on packaging Line A. Certificates must be filed in the QC archive.', status: 'in_progress', priority: 'high', progress: 45, createdBy: 'manager', assignedTo: 'emp_sara', due: 3, blocker: null, createdOffset: '-6 days', completedOffset: null, completedBy: null },
+  { title: 'Inspect incoming batch #8841', description: 'Raw material inspection per SOP-QC-14. Record results in the batch log.', status: 'not_started', priority: 'medium', progress: 0, createdBy: 'supervisor', assignedTo: 'employee', due: -2, blocker: null, createdOffset: '-4 days', completedOffset: null, completedBy: null },
+  { title: 'Update QC checklist template', description: 'Refresh the pre-shipment checklist with the new packaging requirements.', status: 'completed', priority: 'medium', progress: 100, createdBy: 'supervisor', assignedTo: 'emp_omar', due: -5, blocker: null, createdOffset: '-14 days', completedOffset: '-6 days', completedBy: 'emp_omar' },
+  { title: 'Audit calibration certificates', description: 'Quarterly audit of all calibration certificates for accuracy and expiry dates.', status: 'on_hold', priority: 'high', progress: 60, createdBy: 'manager', assignedTo: 'emp_sara', due: 5, blocker: 'Awaiting the vendor calibration certificate for the torque wrench.', createdOffset: '-9 days', completedOffset: null, completedBy: null },
+  { title: 'Review supplier audit report', description: 'Review the audit findings from the packaging supplier visit and file the report.', status: 'in_progress', priority: 'high', progress: 80, createdBy: 'supervisor', assignedTo: 'emp_omar', due: -1, blocker: null, createdOffset: '-10 days', completedOffset: null, completedBy: null },
+  { title: 'Verify batch #8839 results', description: 'Cross-check the released batch results against the retention samples.', status: 'completed', priority: 'low', progress: 100, createdBy: 'supervisor', assignedTo: 'employee', due: -12, blocker: null, createdOffset: '-20 days', completedOffset: '-14 days', completedBy: 'employee' },
+  { title: 'Draft SOP for new packaging line', description: 'Write the draft SOP for the upcoming packaging line B commissioning.', status: 'not_started', priority: 'low', progress: 0, createdBy: 'manager', assignedTo: 'employee', due: 10, blocker: null, createdOffset: '-2 days', completedOffset: null, completedBy: null },
+  { title: 'First-article inspection – connector #332', description: 'First-article inspection of connector #332 per customer drawing REV-C.', status: 'in_progress', priority: 'medium', progress: 25, createdBy: 'supervisor', assignedTo: null, due: 2, blocker: null, createdOffset: '-3 days', completedOffset: null, completedBy: null },
+  { title: 'Monthly QC metrics report', description: 'Compile the monthly defect-rate and OOS metrics for the management review.', status: 'completed', priority: 'medium', progress: 100, createdBy: 'manager', assignedTo: 'emp_sara', due: -30, blocker: null, createdOffset: '-35 days', completedOffset: '-28 days', completedBy: 'emp_sara' },
+  { title: 'Environmental monitoring – cleanroom', description: 'Run the quarterly cleanroom particle + settle-plate monitoring campaign.', status: 'not_started', priority: 'high', progress: 0, createdBy: 'manager', assignedTo: null, due: -3, blocker: null, createdOffset: '-5 days', completedOffset: null, completedBy: null },
+  { title: 'Supplier onboarding – new vendor', description: 'Complete the quality agreement and onboarding checklist for the new label vendor.', status: 'on_hold', priority: 'low', progress: 15, createdBy: 'manager', assignedTo: 'emp_omar', due: 14, blocker: 'Legal review of the quality agreement is pending.', createdOffset: '-7 days', completedOffset: null, completedBy: null },
+  { title: 'Retest failed batch #8827', description: 'Retest the failed batch #8827 samples per the deviation investigation plan.', status: 'in_progress', priority: 'high', progress: 60, createdBy: 'supervisor', assignedTo: 'employee', due: -4, blocker: null, createdOffset: '-8 days', completedOffset: null, completedBy: null },
+];
+
+/**
+ * Seed demo team + tasks when SEED_DEMO=1 and the tasks table is empty.
+ * Returns the number of demo tasks created (0 when the flag is off or the
+ * database already has tasks).
+ */
+export function seedDemoData(db: BetterSqliteDatabase): number {
+  if (process.env.SEED_DEMO !== '1') return 0;
+  const { n } = db.prepare('SELECT COUNT(*) AS n FROM tasks').get() as { n: number };
+  if (n > 0) {
+    console.warn('[seed] SEED_DEMO=1 but tasks already exist — skipping demo data.');
+    return 0;
+  }
+
+  const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
+  const insUser = db.prepare(
+    `INSERT OR IGNORE INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
+     VALUES (?, ?, ?, 'employee', 'QC', ?, 1)`,
+  );
+  insUser.run('emp_sara', hash, 'Sara Alharbi', 1);
+  insUser.run('emp_omar', hash, 'Omar Alqahtani', 0);
+
+  const userId = (username: string): number => {
+    const row = db.prepare('SELECT id FROM users WHERE username = ?').get(username) as
+      | { id: number }
+      | undefined;
+    if (!row) throw new Error(`[seed] demo user "${username}" missing`);
+    return row.id;
+  };
+
+  const insertTask = db.prepare(
+    `INSERT INTO tasks (title, description, status, priority, progress_percent, created_by, assigned_to, due_date, blocker_note, completed_at, completed_by, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? IS NULL THEN NULL ELSE datetime('now', ?) END, ?, datetime('now', ?))`,
+  );
+  const insertComment = db.prepare(
+    `INSERT INTO task_comments (task_id, user_id, comment, created_at)
+     VALUES (?, ?, ?, datetime('now', ?))`,
+  );
+  const insertActivity = db.prepare(
+    `INSERT INTO task_activity_log (task_id, user_id, action, old_value, new_value, created_at)
+     VALUES (?, ?, ?, ?, ?, datetime('now', ?))`,
+  );
+  // Tiny placeholder BLOBs so demo evidence files actually download.
+  const insertAttachment = db.prepare(
+    `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, uploaded_at)
+     VALUES (?, ?, ?, ?, ?, ?, datetime('now', ?))`,
+  );
+  const pdfBytes = Buffer.from('%PDF-1.4\n% QC demo evidence (placeholder)\n%%EOF\n', 'utf8');
+  const xlsxBytes = Buffer.from('PK\x03\x04 QC demo evidence (placeholder)', 'utf8');
+
+  const taskIds: number[] = [];
+  const tx = db.transaction(() => {
+    for (const t of DEMO_TASKS) {
+      const info = insertTask.run(
+        t.title,
+        t.description,
+        t.status,
+        t.priority,
+        t.progress,
+        userId(t.createdBy),
+        t.assignedTo ? userId(t.assignedTo) : null,
+        t.due !== null ? iso(t.due) : null,
+        t.blocker,
+        t.completedOffset,
+        t.completedOffset,
+        t.completedBy ? userId(t.completedBy) : null,
+        t.createdOffset ?? 'now',
+      );
+      const taskId = Number(info.lastInsertRowid);
+      taskIds.push(taskId);
+      const creatorId = userId(t.createdBy);
+
+      insertActivity.run(taskId, creatorId, 'task_created', null, t.title, t.createdOffset ?? 'now');
+
+      if (t.status === 'in_progress' || t.status === 'on_hold') {
+        const workerId = t.assignedTo ? userId(t.assignedTo) : creatorId;
+        insertActivity.run(taskId, workerId, 'status_changed', 'Not started', 'In progress', t.createdOffset ?? 'now');
+        if (t.progress > 0) {
+          insertActivity.run(taskId, workerId, 'progress_changed', '0', String(t.progress), t.createdOffset ?? 'now');
+        }
+      }
+      if (t.status === 'on_hold' && t.blocker) {
+        insertActivity.run(taskId, t.assignedTo ? userId(t.assignedTo) : creatorId, 'blocker_set', null, t.blocker, '-1 days');
+      }
+
+      if (t.status === 'completed' && t.completedBy && t.completedOffset) {
+        const completerId = userId(t.completedBy);
+        const comment =
+          t.title.includes('metrics')
+            ? 'Report compiled and submitted to management review.'
+            : t.title.includes('checklist')
+              ? 'Checklist updated and versioned — ready for training.'
+              : 'Batch results verified against retention samples — all within specification.';
+        insertComment.run(taskId, completerId, comment, t.completedOffset);
+        insertActivity.run(taskId, completerId, 'task_completed', null, null, t.completedOffset);
+        insertActivity.run(taskId, completerId, 'closure_comment_added', null, comment, t.completedOffset);
+        if (t.title.includes('metrics')) {
+          insertActivity.run(taskId, completerId, 'evidence_uploaded', null, 'qc_metrics_Q2.xlsx', t.completedOffset);
+          insertAttachment.run(taskId, completerId, 'qc_metrics_Q2.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', xlsxBytes, xlsxBytes.length, t.completedOffset);
+        } else if (t.title.includes('checklist')) {
+          insertActivity.run(taskId, completerId, 'evidence_uploaded', null, 'checklist_rev4.pdf', t.completedOffset);
+          insertAttachment.run(taskId, completerId, 'checklist_rev4.pdf', 'application/pdf', pdfBytes, pdfBytes.length, t.completedOffset);
+        } else {
+          insertActivity.run(taskId, completerId, 'evidence_skipped', null, null, t.completedOffset);
+        }
+      }
+    }
+
+    // A couple of working comments so the thread view feels alive.
+    if (taskIds.length >= 12) {
+      insertComment.run(taskIds[0], userId('emp_sara'), 'Started the Line A calibration — 5 of 12 gauges done.', '-3 days');
+      insertComment.run(taskIds[11], userId('employee'), 'Retest running — first 6 samples are within spec.', '-2 days');
+    }
+  });
+  tx();
+
+  console.warn(`[seed] SEED_DEMO=1 → seeded demo team (emp_sara, emp_omar) + ${DEMO_TASKS.length} tasks.`);
+  return DEMO_TASKS.length;
+}

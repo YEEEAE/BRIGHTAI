@@ -1,0 +1,438 @@
+// Dashboard analytics charts — React island, pure SVG (no chart library).
+//
+// The data is computed server-side (src/lib/dashboard.ts) with read-only,
+// parameterized queries and passed in as props; this island only renders it.
+// All charts are interactive (hover tooltips) but also carry native <title>
+// fallbacks and descriptive aria-labels, so they degrade gracefully without JS.
+
+import { useState } from 'react';
+
+// ── shared prop types (mirror src/lib/dashboard.ts) ──
+export interface DonutSlice {
+  status: string;
+  label: string;
+  color: string;
+  count: number;
+}
+
+export interface EmployeeBar {
+  user_id: number;
+  full_name: string;
+  total: number;
+  statuses: DonutSlice[];
+}
+
+export interface WeekPoint {
+  weekStart: string;
+  label: string;
+  count: number;
+}
+
+interface Props {
+  donut: DonutSlice[];
+  bar: EmployeeBar[];
+  line: WeekPoint[];
+}
+
+const TOOLTIP_CLS =
+  'pointer-events-none absolute z-10 -translate-x-1/2 rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white shadow';
+
+// ─────────────────────────── Donut chart ───────────────────────────
+
+function DonutChart({ data }: { data: DonutSlice[] }) {
+  const [active, setActive] = useState<number | null>(null);
+  const total = data.reduce((sum, d) => sum + d.count, 0);
+  const R = 76;
+  const C = 2 * Math.PI * R;
+  let acc = 0;
+  const segments = data
+    .filter((d) => d.count > 0)
+    .map((d) => {
+      const frac = total > 0 ? d.count / total : 0;
+      const seg = { ...d, start: acc, frac };
+      acc += frac;
+      return seg;
+    });
+  const activeSeg = active !== null ? segments[active] : null;
+
+  return (
+    <div className="relative flex flex-col items-center">
+      <svg
+        viewBox="0 0 200 200"
+        className="h-52 w-52"
+        role="img"
+        aria-label={`Tasks by status: ${data
+          .map((d) => `${d.label} ${d.count}`)
+          .join(', ')}`}
+      >
+        {/* track */}
+        <circle cx="100" cy="100" r={R} fill="none" stroke="#f1f5f9" strokeWidth="30" />
+        {segments.map((s, i) => (
+          <circle
+            key={s.status}
+            cx="100"
+            cy="100"
+            r={R}
+            fill="none"
+            stroke={s.color}
+            strokeWidth="30"
+            strokeDasharray={`${Math.max(s.frac * C - 2, 0.5)} ${C}`}
+            strokeDashoffset={-(s.start * C)}
+            transform="rotate(-90 100 100)"
+            opacity={active === null || active === i ? 1 : 0.3}
+            onMouseEnter={() => setActive(i)}
+            onMouseLeave={() => setActive(null)}
+            onFocus={() => setActive(i)}
+            onBlur={() => setActive(null)}
+            tabIndex={0}
+            className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            style={{ outlineOffset: '2px' }}
+          >
+            <title>{`${s.label}: ${s.count} (${total > 0 ? Math.round(s.frac * 100) : 0}%)`}</title>
+          </circle>
+        ))}
+        {/* center label — pointer-events none so the ring segments stay hoverable */}
+        <text
+          x="100"
+          y="98"
+          textAnchor="middle"
+          className="fill-slate-900"
+          style={{ fontSize: '30px', fontWeight: 700, pointerEvents: 'none' }}
+        >
+          {activeSeg ? activeSeg.count : total}
+        </text>
+        <text
+          x="100"
+          y="118"
+          textAnchor="middle"
+          className="fill-slate-500"
+          style={{ fontSize: '11px', pointerEvents: 'none' }}
+        >
+          {activeSeg ? activeSeg.label : 'tasks'}
+        </text>
+      </svg>
+
+      {/* legend */}
+      <ul className="mt-4 grid w-full grid-cols-2 gap-x-4 gap-y-1.5">
+        {data.map((d, i) => (
+          <li key={d.status} className="flex items-center gap-2 text-xs text-slate-600">
+            <span
+              className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+              style={{ backgroundColor: d.color }}
+              aria-hidden="true"
+            />
+            <span className="flex-1 truncate">{d.label}</span>
+            <span className="font-semibold tabular-nums text-slate-900">{d.count}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ─────────────────────────── Bar chart ───────────────────────────
+
+const BAR_H = 210;
+const BAR_PAD_L = 30;
+const BAR_PAD_B = 38;
+const BAR_PAD_T = 12;
+
+function BarChart({ data }: { data: EmployeeBar[] }) {
+  const [hover, setHover] = useState<{ user: number; status: string; label: string; value: number; color: string } | null>(null);
+  const maxTotal = Math.max(1, ...data.map((d) => d.total));
+  const slotW = 64;
+  const width = Math.max(520, data.length * slotW + BAR_PAD_L + 8);
+  const innerH = BAR_H - BAR_PAD_T - BAR_PAD_B;
+  const yFor = (v: number) => BAR_PAD_T + innerH - (v / maxTotal) * innerH;
+  // Rounding can collide for small maxima (e.g. maxTotal 3 → [0,1,2,2,3]), so
+  // dedupe before using values as React keys.
+  const gridVals = [...new Set([0, 0.25, 0.5, 0.75, 1].map((g) => Math.round(g * maxTotal)))];
+  const barW = Math.min(34, slotW - 20);
+
+  if (data.length === 0) {
+    return (
+      <p className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
+        No active users yet.
+      </p>
+    );
+  }
+
+  return (
+    <div className="relative min-w-0">
+      <div className="min-w-0 overflow-x-auto">
+        <svg
+          viewBox={`0 0 ${width} ${BAR_H}`}
+          // Natural size: the overflow-x-auto wrapper scrolls when the team is
+          // large, so labels never get squashed by a viewBox downscale.
+          style={{ minWidth: `${width}px`, width: '100%' }}
+          role="img"
+          aria-label={`Tasks per employee: ${data
+            .map((d) => `${d.full_name} ${d.total}`)
+            .join(', ')}`}
+        >
+          {/* gridlines + y labels */}
+          {gridVals.map((g, gi) => (
+            <g key={`y-${gi}`}>
+              <line
+                x1={BAR_PAD_L}
+                x2={width - 4}
+                y1={yFor(g)}
+                y2={yFor(g)}
+                stroke="#e2e8f0"
+                strokeDasharray={g === 0 ? undefined : '3 3'}
+              />
+              <text x={BAR_PAD_L - 6} y={yFor(g) + 3.5} textAnchor="end" className="fill-slate-400" style={{ fontSize: '10px' }}>
+                {g}
+              </text>
+            </g>
+          ))}
+
+          {data.map((user, ui) => {
+            const slotX = BAR_PAD_L + ui * slotW;
+            const barLeft = slotX + (slotW - barW) / 2;
+            let cum = 0;
+            const segments = user.statuses
+              .filter((s) => s.count > 0)
+              .map((s) => {
+                const h = (s.count / maxTotal) * innerH;
+                const seg = { ...s, y: yFor(cum + s.count), h, cum };
+                cum += s.count;
+                return seg;
+              });
+            return (
+              <g key={user.user_id}>
+                {segments.map((s, si) => (
+                  <rect
+                    key={s.status}
+                    x={barLeft}
+                    y={s.y}
+                    width={barW}
+                    height={s.h}
+                    fill={s.color}
+                    rx={si === segments.length - 1 ? 4 : 2}
+                    opacity={hover ? (hover.user === user.user_id && hover.status === s.status ? 1 : 0.65) : 1}
+                    className="cursor-pointer transition-opacity duration-150"
+                    onMouseEnter={() =>
+                      setHover({ user: user.user_id, status: s.status, label: s.label, value: s.count, color: s.color })
+                    }
+                    onMouseLeave={() => setHover(null)}
+                    onFocus={() =>
+                      setHover({ user: user.user_id, status: s.status, label: s.label, value: s.count, color: s.color })
+                    }
+                    onBlur={() => setHover(null)}
+                    tabIndex={0}
+                  >
+                    <title>{`${user.full_name} — ${s.label}: ${s.count}`}</title>
+                  </rect>
+                ))}
+                {/* total on top */}
+                <text
+                  x={slotX + slotW / 2}
+                  y={yFor(user.total) - 5}
+                  textAnchor="middle"
+                  className="fill-slate-600"
+                  style={{ fontSize: '11px', fontWeight: 600 }}
+                >
+                  {user.total}
+                </text>
+                {/* name */}
+                <text
+                  x={slotX + slotW / 2}
+                  y={BAR_H - 14}
+                  textAnchor="middle"
+                  className="fill-slate-600"
+                  style={{ fontSize: '10.5px' }}
+                >
+                  <title>{user.full_name}</title>
+                  {user.full_name.length > 13 ? `${user.full_name.slice(0, 12)}…` : user.full_name}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      {/* status legend */}
+      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+        {['not_started', 'in_progress', 'on_hold', 'completed'].map((status, i) => {
+          const slice = data[0]?.statuses.find((s) => s.status === status);
+          return (
+            <li key={status} className="flex items-center gap-1.5 text-xs text-slate-600">
+              <span
+                className="inline-block h-2.5 w-2.5 rounded-sm"
+                style={{ backgroundColor: slice?.color ?? '#94a3b8' }}
+                aria-hidden="true"
+              />
+              {slice?.label ?? status}
+            </li>
+          );
+        })}
+      </ul>
+
+      {hover && (() => {
+        const userIdx = data.findIndex((d) => d.user_id === hover.user);
+        const leftPct =
+          userIdx >= 0
+            ? ((BAR_PAD_L + userIdx * slotW + slotW / 2) / width) * 100
+            : 50;
+        return (
+          <div
+            className={TOOLTIP_CLS}
+            style={{ left: `${leftPct}%`, top: '-8px' }}
+            role="tooltip"
+          >
+            <span className="mr-1 inline-block h-2 w-2 rounded-full" style={{ backgroundColor: hover.color }} aria-hidden="true" />
+            {hover.label}: {hover.value}
+          </div>
+        );
+      })()}
+    </div>
+  );
+}
+
+// ─────────────────────────── Line chart ───────────────────────────
+
+const LINE_W = 640;
+const LINE_H = 230;
+const LINE_PAD_L = 30;
+const LINE_PAD_R = 12;
+const LINE_PAD_T = 16;
+const LINE_PAD_B = 34;
+
+function LineChart({ data }: { data: WeekPoint[] }) {
+  const [active, setActive] = useState<number | null>(null);
+  const maxCount = Math.max(4, ...data.map((d) => d.count));
+  const innerW = LINE_W - LINE_PAD_L - LINE_PAD_R;
+  const innerH = LINE_H - LINE_PAD_T - LINE_PAD_B;
+  const xFor = (i: number) =>
+    LINE_PAD_L + (data.length <= 1 ? innerW / 2 : (i / (data.length - 1)) * innerW);
+  const yFor = (v: number) => LINE_PAD_T + innerH - (v / maxCount) * innerH;
+  const points = data.map((d, i) => ({ ...d, x: xFor(i), y: yFor(d.count) }));
+  const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+  const areaPath =
+    points.length > 0
+      ? `${linePath} L${points[points.length - 1].x},${LINE_PAD_T + innerH} L${points[0].x},${LINE_PAD_T + innerH} Z`
+      : '';
+  const total = data.reduce((sum, w) => sum + w.count, 0);
+  const gridVals = [...new Set([0, 0.25, 0.5, 0.75, 1].map((g) => Math.round(g * maxCount)))];
+  const activePoint = active !== null ? points[active] : null;
+
+  return (
+    <div className="relative">
+      <svg
+        viewBox={`0 0 ${LINE_W} ${LINE_H}`}
+        className="w-full"
+        role="img"
+        aria-label={`Tasks completed per week (last 8 weeks): ${data
+          .map((d) => `${d.label} ${d.count}`)
+          .join(', ')}`}
+      >
+        <defs>
+          <linearGradient id="line-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#22c55e" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {gridVals.map((g, gi) => (
+          <g key={`y-${gi}`}>
+            <line
+              x1={LINE_PAD_L}
+              x2={LINE_W - LINE_PAD_R}
+              y1={yFor(g)}
+              y2={yFor(g)}
+              stroke="#e2e8f0"
+              strokeDasharray={g === 0 ? undefined : '3 3'}
+            />
+            <text x={LINE_PAD_L - 6} y={yFor(g) + 3.5} textAnchor="end" className="fill-slate-400" style={{ fontSize: '10px' }}>
+              {g}
+            </text>
+          </g>
+        ))}
+
+        {areaPath && <path d={areaPath} fill="url(#line-fill)" />}
+        <path
+          d={linePath}
+          fill="none"
+          stroke="#22c55e"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        {points.map((p, i) => (
+          <g
+            key={p.weekStart}
+            onMouseEnter={() => setActive(i)}
+            onMouseLeave={() => setActive(null)}
+            onFocus={() => setActive(i)}
+            onBlur={() => setActive(null)}
+            className="cursor-pointer"
+          >
+            <circle
+              cx={p.x}
+              cy={p.y}
+              r={active === i ? 6.5 : 4.5}
+              fill="#fff"
+              stroke="#22c55e"
+              strokeWidth="2.5"
+              className="transition-all duration-150"
+              tabIndex={0}
+            >
+              <title>{`${p.label}: ${p.count} completed`}</title>
+            </circle>
+            <text
+              x={p.x}
+              y={LINE_H - 12}
+              textAnchor="middle"
+              className={active === i ? 'fill-slate-900' : 'fill-slate-500'}
+              style={{ fontSize: '10.5px', fontWeight: active === i ? 600 : 400 }}
+            >
+              {p.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+
+      <p className="mt-2 text-xs text-slate-500">
+        {total} task{total === 1 ? '' : 's'} completed in the last 8 weeks.
+      </p>
+
+      {activePoint && (
+        <div
+          className={TOOLTIP_CLS}
+          style={{ left: `${(activePoint.x / LINE_W) * 100}%`, top: '-10px' }}
+          role="tooltip"
+        >
+          {activePoint.label}: {activePoint.count} completed
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────── Island root ───────────────────────────
+
+export default function DashboardCharts({ donut, bar, line }: Props) {
+  return (
+    <section aria-label="Analytics" className="mt-8 grid gap-4 lg:grid-cols-3">
+      <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
+        <h2 className="text-sm font-semibold text-slate-900">Tasks by status</h2>
+        <p className="mb-4 text-xs text-slate-500">Distribution across all statuses</p>
+        <DonutChart data={donut} />
+      </div>
+
+      <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 lg:col-span-2">
+        <h2 className="text-sm font-semibold text-slate-900">Completed per week</h2>
+        <p className="mb-4 text-xs text-slate-500">Completions from completed_at, last 8 weeks</p>
+        <LineChart data={line} />
+      </div>
+
+      <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 lg:col-span-3">
+        <h2 className="text-sm font-semibold text-slate-900">Tasks per employee</h2>
+        <p className="mb-4 text-xs text-slate-500">Assigned tasks, split by status</p>
+        <BarChart data={bar} />
+      </div>
+    </section>
+  );
+}

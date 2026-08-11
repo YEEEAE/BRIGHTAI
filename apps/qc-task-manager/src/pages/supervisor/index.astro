@@ -1,14 +1,22 @@
 ---
 // Supervisor task list (supervisor + manager + admin). Create/edit/assign scope.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import EmptyState from '../../components/EmptyState.astro';
 import { getDb } from '../../lib/db';
+import {
+  formatDueDate,
+  isOverdue,
+  priorityLabel,
+  priorityBadgeClass,
+} from '../../lib/format';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
 const db = getDb();
 
 const tasks = db
   .prepare(
-    `SELECT t.id, t.title, t.status, t.priority, t.progress_percent,
+    `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date,
             u.full_name AS assignee
      FROM tasks t
      LEFT JOIN users u ON u.id = t.assigned_to
@@ -21,6 +29,7 @@ const tasks = db
     status: string;
     priority: string;
     progress_percent: number;
+    due_date: string | null;
     assignee: string | null;
   }[];
 ---
@@ -36,22 +45,39 @@ const tasks = db
   </header>
 
   {tasks.length === 0 ? (
-    <p class="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
-      No tasks yet.
-    </p>
+    <EmptyState
+      title="No tasks yet"
+      hint="Create the first task for your team to get started."
+      ctaHref="/supervisor/new"
+      ctaLabel="Create your first task"
+    />
   ) : (
-    <ul class="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
-      {tasks.map((t) => (
-        <li class="flex items-center justify-between p-4">
-          <div>
-            <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
-            <div class="mt-0.5 text-xs text-slate-500">
-              #{t.id} · {t.assignee ?? 'Unassigned'} · {t.priority} · {t.progress_percent}%
+    <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
+      {tasks.map((t) => {
+        const overdue = isOverdue(t.due_date, t.status);
+        return (
+          <li class="flex flex-wrap items-center justify-between gap-3 p-4 transition-colors hover:bg-slate-50">
+            <div class="min-w-0">
+              <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+              <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                <span>#{t.id}</span>
+                <span>{t.assignee ?? 'Unassigned'}</span>
+                <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>
+                  {priorityLabel(t.priority)}
+                </span>
+                {t.due_date && (
+                  <span class={overdue ? 'font-semibold text-red-600' : ''}>
+                    Due {formatDueDate(t.due_date)}
+                    {overdue && ' ⚠️'}
+                  </span>
+                )}
+                <span class="tabular-nums">{t.progress_percent}%</span>
+              </div>
             </div>
-          </div>
-          <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{t.status}</span>
-        </li>
-      ))}
+            <StatusBadge status={t.status} />
+          </li>
+        );
+      })}
     </ul>
   )}
 </BaseLayout>

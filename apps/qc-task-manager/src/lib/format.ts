@@ -10,6 +10,9 @@
 const DT_RE = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})$/;
 const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
+/** Shared limit: completion + regular comments (kept here so APIs never drift). */
+export const MAX_COMMENT_LENGTH = 2000;
+
 /** Parse a SQLite UTC timestamp ("YYYY-MM-DD HH:MM:SS") into a Date. Null-safe. */
 export function parseDbDate(value: string | null | undefined): Date | null {
   if (!value) return null;
@@ -83,3 +86,66 @@ const PRIORITY_LABELS: Record<string, string> = {
 export function priorityLabel(priority: string): string {
   return PRIORITY_LABELS[priority] ?? priority;
 }
+
+// ──────────────────── Status presentation (single source) ────────────────────
+// The 🔴🟡🟠🟢 scheme is used EVERYWHERE: task lists, task details, dashboard.
+// Keep in sync with dashboard.ts STATUS_COLORS (chart fills use the same hue).
+
+export const STATUS_EMOJI: Record<string, string> = {
+  not_started: '🔴',
+  in_progress: '🟡',
+  on_hold: '🟠',
+  completed: '🟢',
+};
+
+/** Tailwind pill classes per status (badge = soft tinted background). */
+export const STATUS_BADGE: Record<string, string> = {
+  not_started: 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-200',
+  in_progress: 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200',
+  on_hold: 'bg-orange-50 text-orange-700 ring-1 ring-inset ring-orange-200',
+  completed: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200',
+};
+
+/** Tailwind pill classes per priority. */
+export const PRIORITY_BADGE: Record<string, string> = {
+  low: 'bg-sky-50 text-sky-700 ring-1 ring-inset ring-sky-200',
+  medium: 'bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-200',
+  high: 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200',
+};
+
+/** Emoji + badge class for a status code (falls back to a neutral gray). */
+export function statusBadgeClass(status: string): string {
+  return STATUS_BADGE[status] ?? 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200';
+}
+
+/** Emoji for a status code, or a generic dot when unknown. */
+export function statusEmoji(status: string): string {
+  return STATUS_EMOJI[status] ?? '⚪';
+}
+
+/** Badge class for a priority code (falls back to a neutral gray). */
+export function priorityBadgeClass(priority: string): string {
+  return PRIORITY_BADGE[priority] ?? 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200';
+}
+
+/**
+ * Today's date in the LOCAL timezone as YYYY-MM-DD (matches how due_date is
+ * stored and displayed). Pure + dependency-free so islands can use it too.
+ */
+export function localDateStr(d: Date = new Date()): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/**
+ * Overdue = a due date strictly BEFORE today AND the task is not completed
+ * (a task due today is not yet overdue — same rule as the dashboard).
+ */
+export function isOverdue(dueDate: string | null | undefined, status: string): boolean {
+  if (!dueDate) return false;
+  if (status === 'completed') return false;
+  return dueDate < localDateStr();
+}
+

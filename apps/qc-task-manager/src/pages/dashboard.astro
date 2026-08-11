@@ -1,65 +1,240 @@
 ---
-// Dashboard — manager/supervisor/admin only (employees are redirected by middleware).
+// Dashboard — manager/supervisor/admin ONLY (employees are redirected by the
+// middleware with a flash message; CORE BUSINESS RULE #1).
+//
+// All numbers come from src/lib/dashboard.ts — read-only, fully parameterized
+// SELECT queries. Filters (?from&to&assignee&priority) are validated in
+// parseDashboardFilters and scoped over the same WHERE clause for every widget.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getDb } from '../lib/db';
+import DashboardCharts from '../components/DashboardCharts';
+import { formatDbDate, formatDueDate, statusLabel, priorityLabel } from '../lib/format';
+import * as dash from '../lib/dashboard';
 
-const user = Astro.locals.user!; // protected route — middleware guarantees a session
+const user = Astro.locals.user!; // protected route — middleware guarantees a session + role
 
-const db = getDb();
+const filters = dash.parseDashboardFilters(Astro.url, Astro);
+const filtered = dash.hasActiveFilters(filters);
 
-const totals = db
-  .prepare(
-    `SELECT
-       COUNT(*) AS total,
-       SUM(CASE WHEN status = 'not_started' THEN 1 ELSE 0 END) AS not_started,
-       SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) AS in_progress,
-       SUM(CASE WHEN status = 'on_hold' THEN 1 ELSE 0 END) AS on_hold,
-       SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed
-     FROM tasks`,
-  )
-  .get() as {
-    total: number;
-    not_started: number;
-    in_progress: number;
-    on_hold: number;
-    completed: number;
-  };
+const kpis = dash.getKpis(filters);
+const donut = dash.getStatusDistribution(filters);
+const bar = dash.getPerEmployee(filters);
+const line = dash.getCompletedPerWeek(filters);
+const overdue = dash.getOverdueTasks(filters);
+const recent = dash.getRecentlyCompleted(filters);
+const assignees = dash.listActiveUsers();
 ---
+
 <BaseLayout title="Dashboard">
   <header class="mb-6">
     <h1 class="text-2xl font-semibold text-slate-900">Dashboard</h1>
-    <p class="text-sm text-slate-600">Overview of all tasks. Signed in as {user.fullName} ({user.role}).</p>
+    <p class="text-sm text-slate-600">
+      Live overview of all QC tasks. Signed in as {user.fullName} ({user.role}).
+    </p>
   </header>
 
-  <section class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-    <div class="rounded-lg border border-slate-200 bg-white p-4">
-      <div class="text-xs font-medium uppercase text-slate-500">Total</div>
-      <div class="mt-1 text-2xl font-semibold text-slate-900">{totals.total}</div>
+  <!-- Filters (GET — server-side, every query stays parameterized) -->
+  <form
+    method="get"
+    action="/dashboard"
+    class="mb-6 flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 bg-white p-4"
+  >
+    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+      Created from
+      <input
+        type="date"
+        name="from"
+        value={filters.from ?? ''}
+        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+      />
+    </label>
+    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+      Created to
+      <input
+        type="date"
+        name="to"
+        value={filters.to ?? ''}
+        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+      />
+    </label>
+    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+      Assignee
+      <select
+        name="assignee"
+        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+      >
+        <option value="">All assignees</option>
+        {assignees.map((a) => (
+          <option value={a.id} selected={filters.assignee === a.id}>
+            {a.full_name}
+          </option>
+        ))}
+      </select>
+    </label>
+    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+      Priority
+      <select
+        name="priority"
+        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+      >
+        <option value="">All priorities</option>
+        {dash.PRIORITIES.map((p) => (
+          <option value={p} selected={filters.priority === p}>
+            {priorityLabel(p)}
+          </option>
+        ))}
+      </select>
+    </label>
+    <button
+      type="submit"
+      class="rounded-md bg-brand-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
+    >
+      Apply filters
+    </button>
+    {filtered && (
+      <a
+        href="/dashboard"
+        class="rounded-md border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+      >
+        Clear
+      </a>
+    )}
+    {filtered && (
+      <p class="w-full text-xs text-slate-500">
+        Filters applied — every number below is scoped to the selected tasks.
+      </p>
+    )}
+  </form>
+
+  <!-- KPI cards -->
+  <section aria-label="Key metrics" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+    <div data-kpi="total" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+        <span aria-hidden="true">📋</span> Total tasks
+      </div>
+      <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">{kpis.total}</div>
     </div>
-    <div class="rounded-lg border border-slate-200 bg-white p-4">
-      <div class="text-xs font-medium uppercase text-slate-500">Not started</div>
-      <div class="mt-1 text-2xl font-semibold text-slate-900">{totals.not_started}</div>
+    <div data-kpi="not_started" class="rounded-xl border border-slate-200 bg-red-50/60 p-4 shadow-sm">
+      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-red-700">
+        <span aria-hidden="true">🔴</span> Not started
+      </div>
+      <div class="mt-2 text-3xl font-semibold tabular-nums text-red-700">{kpis.not_started}</div>
     </div>
-    <div class="rounded-lg border border-slate-200 bg-white p-4">
-      <div class="text-xs font-medium uppercase text-slate-500">In Progress</div>
-      <div class="mt-1 text-2xl font-semibold text-slate-900">{totals.in_progress}</div>
+    <div data-kpi="in_progress" class="rounded-xl border border-slate-200 bg-amber-50/70 p-4 shadow-sm">
+      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-amber-700">
+        <span aria-hidden="true">🟡</span> In progress
+      </div>
+      <div class="mt-2 text-3xl font-semibold tabular-nums text-amber-700">{kpis.in_progress}</div>
     </div>
-    <div class="rounded-lg border border-slate-200 bg-white p-4">
-      <div class="text-xs font-medium uppercase text-slate-500">On Hold</div>
-      <div class="mt-1 text-2xl font-semibold text-red-600">{totals.on_hold}</div>
+    <div data-kpi="on_hold" class="rounded-xl border border-slate-200 bg-orange-50/70 p-4 shadow-sm">
+      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-orange-700">
+        <span aria-hidden="true">🟠</span> On hold
+      </div>
+      <div class="mt-2 text-3xl font-semibold tabular-nums text-orange-700">{kpis.on_hold}</div>
+    </div>
+    <div data-kpi="completed" class="rounded-xl border border-slate-200 bg-green-50/70 p-4 shadow-sm">
+      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-green-700">
+        <span aria-hidden="true">🟢</span> Completed
+      </div>
+      <div class="mt-2 text-3xl font-semibold tabular-nums text-green-700">{kpis.completed}</div>
+    </div>
+    <div data-kpi="overdue" class="rounded-xl border border-rose-200 bg-rose-50 p-4 shadow-sm">
+      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-rose-700">
+        <span aria-hidden="true">⚠️</span> Overdue
+      </div>
+      <div class="mt-2 text-3xl font-semibold tabular-nums text-rose-700">{kpis.overdue}</div>
     </div>
   </section>
 
-  <section class="mt-8 rounded-lg border border-slate-200 bg-white p-6">
-    <h2 class="text-lg font-medium text-slate-900">Task management</h2>
-    <p class="mt-1 text-sm text-slate-600">
-      The task list, filters, and CRUD UI will be implemented here. This scaffold
-      establishes routing, authentication, and the dashboard container.
-    </p>
-    <div class="mt-4 flex gap-2">
-      <a href="/manager" class="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
-        Open task list
-      </a>
+  <!-- Charts (React island, pure SVG) -->
+  <DashboardCharts client:load donut={donut} bar={bar} line={line} />
+
+  <!-- Overdue tasks -->
+  <section aria-label="Overdue tasks" class="mt-8">
+    <div class="mb-3 flex items-baseline justify-between">
+      <h2 class="text-lg font-semibold text-slate-900">Overdue tasks</h2>
+      <span class="text-xs text-slate-500">Due before today and not completed</span>
     </div>
+
+    {overdue.length === 0 ? (
+      <p class="rounded-xl border border-dashed border-slate-300 bg-white px-4 py-10 text-center text-sm text-slate-500">
+        No overdue tasks — great job! 🎉
+      </p>
+    ) : (
+      <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+            <tr>
+              <th class="px-4 py-2.5">Task</th>
+              <th class="px-4 py-2.5">Assignee</th>
+              <th class="px-4 py-2.5">Due date</th>
+              <th class="px-4 py-2.5">Days overdue</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            {overdue.map((t) => (
+              <tr class="hover:bg-slate-50">
+                <td class="px-4 py-2.5">
+                  <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
+                    {t.title}
+                  </a>
+                </td>
+                <td class="px-4 py-2.5 text-slate-600">{t.assignee_name ?? '—'}</td>
+                <td class="px-4 py-2.5 text-slate-600">{formatDueDate(t.due_date)}</td>
+                <td class="px-4 py-2.5">
+                  <span class="rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-rose-700">
+                    {t.days_overdue} {t.days_overdue === 1 ? 'day' : 'days'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </section>
+
+  <!-- Recently completed -->
+  <section aria-label="Recently completed" class="mt-8">
+    <div class="mb-3 flex items-baseline justify-between">
+      <h2 class="text-lg font-semibold text-slate-900">Recently completed</h2>
+      <span class="text-xs text-slate-500">Last 10 completions</span>
+    </div>
+
+    {recent.length === 0 ? (
+      <p class="rounded-xl border border-dashed border-slate-300 bg-white px-4 py-10 text-center text-sm text-slate-500">
+        No completed tasks yet.
+      </p>
+    ) : (
+      <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+            <tr>
+              <th class="px-4 py-2.5">Task</th>
+              <th class="px-4 py-2.5">Status</th>
+              <th class="px-4 py-2.5">Completed by</th>
+              <th class="px-4 py-2.5">Completed at</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            {recent.map((t) => (
+              <tr class="hover:bg-slate-50">
+                <td class="px-4 py-2.5">
+                  <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
+                    {t.title}
+                  </a>
+                </td>
+                <td class="px-4 py-2.5">
+                  <span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
+                    {statusLabel('completed')}
+                  </span>
+                </td>
+                <td class="px-4 py-2.5 text-slate-600">{t.completed_by_name ?? '—'}</td>
+                <td class="px-4 py-2.5 text-slate-600">{formatDbDate(t.completed_at)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
   </section>
 </BaseLayout>

@@ -95,10 +95,11 @@ export function canEditTask(user: Pick<User, 'role' | 'id'>, task: Pick<Task, 's
 
 /**
  * Can this user edit a specific LOCKED field (title, description, assigned_to, due_date, priority)?
- * Only manager/admin. Never employees (even if they created the task). CORE BUSINESS RULE #2.
+ * The FIELD LOCKING rule locks these for EMPLOYEES only; supervisors, managers
+ * and admins all create/edit/assign tasks (CORE BUSINESS RULE #1).
  */
 export function canEditLockedField(role: Role): boolean {
-  return hasRankAtLeast(role, 'manager');
+  return hasRankAtLeast(role, 'supervisor');
 }
 
 /** Is a field editable by the given role per the lock rules? */

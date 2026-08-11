@@ -12,9 +12,8 @@ import { getDb } from '../../../../lib/db';
 import { getCurrentUser } from '../../../../lib/session';
 import { canViewTask } from '../../../../lib/taskDetails';
 import { logActivity, Action } from '../../../../lib/activity';
+import { MAX_COMMENT_LENGTH } from '../../../../lib/format';
 import type { Task } from '../../../../lib/types';
-
-const MAX_COMMENT_LENGTH = 2000;
 
 function json(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), {

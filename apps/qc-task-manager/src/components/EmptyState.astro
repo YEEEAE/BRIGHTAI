@@ -1,0 +1,28 @@
+---
+// EmptyState — consistent "nothing here yet" block used across task lists,
+// comments, attachments, and the admin/requests pages. Optionally shows a CTA
+// link when there is an obvious next action.
+interface Props {
+  title: string;
+  hint?: string;
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+
+const { title, hint, ctaHref, ctaLabel } = Astro.props;
+---
+<div class="rounded-xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+  <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-2xl" aria-hidden="true">
+    📭
+  </div>
+  <h2 class="mt-4 text-base font-semibold text-slate-900">{title}</h2>
+  {hint && <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">{hint}</p>}
+  {ctaHref && (
+    <a
+      href={ctaHref}
+      class="mt-5 inline-block rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+    >
+      {ctaLabel ?? 'Get started'}
+    </a>
+  )}
+</div>
