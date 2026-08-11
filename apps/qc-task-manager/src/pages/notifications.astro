@@ -1,0 +1,129 @@
+---
+// Notifications page — derived in-app alerts for the signed-in user.
+// Accessible to every role (the middleware already requires a session).
+// Data comes from src/lib/notifications.ts, which computes everything from
+// existing task/comment/delete-request data (no separate table).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmptyState from '../components/EmptyState.astro';
+import { getNotificationsForUser, type AppNotification, type NotificationKind } from '../lib/notifications';
+import { roleHome } from '../lib/permissions';
+
+const user = Astro.locals.user!; // protected route — middleware guarantees a session
+const notifications = getNotificationsForUser({ id: user.userId, role: user.role });
+
+// Presentation maps — kept local to the page.
+const KIND_ICON: Record<NotificationKind, string> = {
+  overdue: '🚨',
+  due_soon: '📅',
+  unstarted: '⏳',
+  recent_comment: '💬',
+  pending_delete: '🗑️',
+};
+
+const KIND_LABEL: Record<NotificationKind, string> = {
+  overdue: 'Overdue',
+  due_soon: 'Due soon',
+  unstarted: 'Not started',
+  recent_comment: 'New comments',
+  pending_delete: 'Deletion requests',
+};
+
+const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
+  danger: 'border-l-red-400 bg-red-50/60',
+  warning: 'border-l-amber-400 bg-amber-50/60',
+  info: 'border-l-sky-400 bg-white',
+  success: 'border-l-emerald-400 bg-emerald-50/60',
+};
+
+// Section order: danger → warning → info.
+const SECTIONS: { key: NotificationKind; order: number }[] = [
+  { key: 'overdue', order: 0 },
+  { key: 'due_soon', order: 1 },
+  { key: 'pending_delete', order: 1 },
+  { key: 'unstarted', order: 2 },
+  { key: 'recent_comment', order: 2 },
+];
+
+function sectionOrder(kind: NotificationKind): number {
+  return SECTIONS.find((s) => s.key === kind)?.order ?? 3;
+}
+
+const grouped = new Map<NotificationKind, AppNotification[]>();
+for (const n of notifications) {
+  const list = grouped.get(n.kind) ?? [];
+  list.push(n);
+  grouped.set(n.kind, list);
+}
+const orderedKinds = [...grouped.keys()].sort(
+  (a, b) => sectionOrder(a) - sectionOrder(b),
+);
+
+const total = notifications.length;
+const overdueCount = notifications.filter((n) => n.kind === 'overdue').length;
+const dueSoonCount = notifications.filter((n) => n.kind === 'due_soon').length;
+---
+
+<BaseLayout title="Notifications">
+  <header class="mb-6">
+    <h1 class="text-2xl font-semibold text-slate-900">Notifications</h1>
+    <p class="text-sm text-slate-600">
+      Alerts derived from your tasks and team activity. Signed in as {user.fullName} ({user.role}).
+    </p>
+  </header>
+
+  {total === 0 ? (
+    <EmptyState
+      title="You're all caught up 🎉"
+      hint="No overdue tasks, upcoming due dates, or recent activity need your attention right now."
+      ctaHref={roleHome(user.role)}
+      ctaLabel="Back to my home"
+    />
+  ) : (
+    <>
+      <div class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div class="rounded-xl border border-slate-200 bg-white p-4">
+          <p class="text-2xl font-semibold text-slate-900">{total}</p>
+          <p class="text-sm text-slate-500">Total alerts</p>
+        </div>
+        <div class="rounded-xl border border-red-100 bg-red-50 p-4">
+          <p class="text-2xl font-semibold text-red-700">{overdueCount}</p>
+          <p class="text-sm text-red-600">Overdue</p>
+        </div>
+        <div class="rounded-xl border border-amber-100 bg-amber-50 p-4">
+          <p class="text-2xl font-semibold text-amber-700">{dueSoonCount}</p>
+          <p class="text-sm text-amber-600">Due within 3 days</p>
+        </div>
+      </div>
+
+      {orderedKinds.map((kind) => (
+        <section class="mb-8" aria-labelledby={`section-${kind}`}>
+          <h2 id={`section-${kind}`} class="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <span aria-hidden="true">{KIND_ICON[kind]}</span>
+            {KIND_LABEL[kind]}
+            <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+              {grouped.get(kind)!.length}
+            </span>
+          </h2>
+          <ul class="space-y-2">
+            {grouped.get(kind)!.map((n) => (
+              <li>
+                <a
+                  href={n.href}
+                  class={`block rounded-lg border border-slate-200 border-l-4 p-4 transition hover:border-slate-300 hover:shadow-sm ${SEVERITY_CARD[n.severity]}`}
+                >
+                  <div class="flex items-start justify-between gap-3">
+                    <p class="font-medium text-slate-900">{n.title}</p>
+                    <span class="shrink-0 text-xs text-slate-400">
+                      {n.createdAt.slice(0, 10)}
+                    </span>
+                  </div>
+                  <p class="mt-1 text-sm text-slate-600">{n.message}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </>
+  )}
+</BaseLayout>

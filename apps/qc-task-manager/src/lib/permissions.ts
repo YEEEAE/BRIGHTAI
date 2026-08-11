@@ -4,6 +4,7 @@
 // endpoint, and the middleware imports from. No scattered role checks.
 // Every check below is documented against the CORE BUSINESS RULES in the spec.
 
+import { EMPLOYEE_EDITABLE_FIELDS, isEmployeeEditableField } from './task-policy';
 import type { Role, Task, User } from './types';
 
 /**
@@ -45,7 +46,7 @@ export const PERMISSIONS = {
   canManageUsers: (role: Role): boolean => role === 'admin',
 
   /** Fields an employee may edit after task creation (CORE BUSINESS RULE #2). */
-  employeeEditableFields: ['status', 'progress_percent', 'blocker_note'] as const,
+  employeeEditableFields: EMPLOYEE_EDITABLE_FIELDS,
 };
 
 // ─────────────────────────────── Area access ─────────────────────────────
@@ -105,7 +106,7 @@ export function canEditLockedField(role: Role): boolean {
 /** Is a field editable by the given role per the lock rules? */
 export function isFieldEditableForRole(role: Role, field: string): boolean {
   if (hasRankAtLeast(role, 'manager')) return true;
-  return (PERMISSIONS.employeeEditableFields as readonly string[]).includes(field);
+  return isEmployeeEditableField(field);
 }
 
 // ─────────────────────────── Task deletion / requests ────────────────────

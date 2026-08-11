@@ -17,50 +17,30 @@ import { getDb } from './db';
 import { logActivity, Action } from './activity';
 import { canEditTask, canEditLockedField } from './permissions';
 import { statusLabel, priorityLabel, formatDueDate, MAX_COMMENT_LENGTH } from './format';
-import type { Role, Task, TaskPriority } from './types';
+import {
+  ALLOWED_EXTENSIONS,
+  ALLOWED_EXTENSIONS_HINT,
+  EXT_MIME,
+  MAX_BLOCKER_LENGTH,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_FILE_NAME,
+  MAX_UPLOAD_BYTES,
+  TASK_PRIORITIES,
+  canTransitionStatus,
+} from './task-policy';
+import type { Role, Task } from './types';
 
-// ─────────────────────────────── Limits ───────────────────────────────
-
-export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB (per spec)
-export const MAX_FILE_NAME = 200;
-export const MAX_BLOCKER_LENGTH = 1000;
-export const MAX_DESCRIPTION_LENGTH = 5000;
-
-const STATUSES = ['not_started', 'in_progress', 'on_hold'] as const;
-const PRIORITIES: TaskPriority[] = ['low', 'medium', 'high'];
-
-/**
- * Allowed extensions → accepted MIME types. A file passes validation ONLY when
- * BOTH its extension is listed here AND its declared MIME type is in the
- * extension's set (defense in depth against renamed executables).
- */
-export const EXT_MIME: Record<string, string[]> = {
-  pdf: ['application/pdf'],
-  png: ['image/png'],
-  jpg: ['image/jpeg'],
-  jpeg: ['image/jpeg'],
-  gif: ['image/gif'],
-  webp: ['image/webp'],
-  txt: ['text/plain'],
-  md: ['text/markdown', 'text/plain'],
-  csv: ['text/csv', 'text/plain'],
-  json: ['application/json', 'text/plain'],
-  log: ['text/plain'],
-  xml: ['application/xml', 'text/xml', 'text/plain'],
-  sql: ['text/x-sql', 'application/sql', 'text/plain'],
-  xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-  xls: ['application/vnd.ms-excel'],
-  docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-  doc: ['application/msword'],
-  pptx: ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
-  ppt: ['application/vnd.ms-powerpoint'],
-  zip: ['application/zip'],
-};
-
-export const ALLOWED_EXTENSIONS = Object.keys(EXT_MIME);
-
-/** Readable list for UI hints, e.g. "pdf, png, jpg, …". */
-export const ALLOWED_EXTENSIONS_HINT = ALLOWED_EXTENSIONS.join(', ');
+// Back-compat re-exports (constants moved to the canonical src/lib/task-policy.ts).
+export {
+  ALLOWED_EXTENSIONS,
+  ALLOWED_EXTENSIONS_HINT,
+  EXT_MIME,
+  MAX_BLOCKER_LENGTH,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_FILE_NAME,
+  MAX_UPLOAD_BYTES,
+} from './task-policy';
+export { ACTIVE_TASK_STATUSES as STATUSES } from './task-policy';
 
 // ─────────────────────────── Result types ───────────────────────────
 
@@ -207,7 +187,8 @@ export function applyTaskUpdate(params: {
         error: 'Use the "Complete task" flow — a completion comment and evidence are required.',
       };
     }
-    if (!(STATUSES as readonly string[]).includes(s)) {
+    // RULE #3 transition rules live in task-policy (any active → any active).
+    if (!canTransitionStatus(task.status, s)) {
       return { ok: false, error: 'Invalid status value.' };
     }
     if (s !== task.status) {
@@ -349,7 +330,7 @@ export function applyTaskUpdate(params: {
   if (rawPriority !== null) {
     if (!canEditLocked) return fieldErr('priority');
     const p = String(rawPriority);
-    if (!(PRIORITIES as string[]).includes(p)) {
+    if (!(TASK_PRIORITIES as readonly string[]).includes(p)) {
       return { ok: false, error: 'Invalid priority value.' };
     }
     if (p !== task.priority) {

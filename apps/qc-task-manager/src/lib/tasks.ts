@@ -16,9 +16,8 @@ import { logActivity, Action } from './activity';
 import { getCurrentUser } from './session';
 import { setFlash } from './flash';
 import { PERMISSIONS } from './permissions';
+import { parseFormData, taskCreateInputSchema } from './validation';
 import type { TaskPriority } from './types';
-
-const PRIORITIES: TaskPriority[] = ['low', 'medium', 'high'];
 
 /** Active users, used to populate the assignee dropdown. */
 export function listActiveUsers(): { id: number; full_name: string; role: string }[] {
@@ -64,7 +63,11 @@ export function createTask(params: {
   return taskId;
 }
 
-/** Normalize + validate the raw form body into clean task input. */
+/**
+ * Normalize + validate the raw form body into clean task input.
+ * All rules live in the Zod schema (src/lib/validation.ts) — this wrapper
+ * only maps the parsed shape onto the task-layer field names.
+ */
 export function parseNewTaskInput(form: FormData): {
   ok: true;
   data: { title: string; description: string | null; assignedTo: number | null; priority: TaskPriority; dueDate: string | null };
@@ -72,44 +75,19 @@ export function parseNewTaskInput(form: FormData): {
   ok: false;
   error: string;
 } {
-  const title = String(form.get('title') ?? '').trim();
-  if (!title) {
-    return { ok: false, error: 'Title is required.' };
-  }
-  if (title.length > 200) {
-    return { ok: false, error: 'Title must be 200 characters or fewer.' };
-  }
-
-  const rawDescription = String(form.get('description') ?? '').trim();
-  const description = rawDescription.length > 0 ? rawDescription : null;
-
-  const rawPriority = String(form.get('priority') ?? 'medium');
-  if (!(PRIORITIES as string[]).includes(rawPriority)) {
-    return { ok: false, error: 'Invalid priority value.' };
-  }
-  const priority = rawPriority as TaskPriority;
-
-  const rawAssignee = String(form.get('assigned_to') ?? '').trim();
-  let assignedTo: number | null = null;
-  if (rawAssignee.length > 0) {
-    const id = Number(rawAssignee);
-    if (!Number.isInteger(id) || id <= 0) {
-      return { ok: false, error: 'Invalid assignee.' };
-    }
-    assignedTo = id;
-  }
-
-  const rawDue = String(form.get('due_date') ?? '').trim();
-  let dueDate: string | null = null;
-  if (rawDue.length > 0) {
-    // Accept a YYYY-MM-DD date; store it as-is (lexicographic ordering works).
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(rawDue)) {
-      return { ok: false, error: 'Due date must be a valid date (YYYY-MM-DD).' };
-    }
-    dueDate = rawDue;
-  }
-
-  return { ok: true, data: { title, description, assignedTo, priority, dueDate } };
+  const parsed = parseFormData(taskCreateInputSchema, form);
+  if (!parsed.ok) return { ok: false, error: parsed.error };
+  const { title, description, priority, assigned_to, due_date } = parsed.data;
+  return {
+    ok: true,
+    data: {
+      title,
+      description,
+      assignedTo: assigned_to,
+      priority,
+      dueDate: due_date,
+    },
+  };
 }
 
 /**

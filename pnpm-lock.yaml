@@ -280,6 +280,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.19(tsx@4.23.0)(yaml@2.9.0)
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.10

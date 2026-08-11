@@ -1,0 +1,2 @@
+# SQLite backups land here (`pnpm db:backup` → db/backups/qc_tasks-<timestamp>.db).
+# Backup files are gitignored; this .gitkeep keeps the folder in the repo.

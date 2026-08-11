@@ -10,6 +10,7 @@
 import type { APIRoute } from 'astro';
 import { getCurrentUser } from '../../../../lib/session';
 import { submitDeleteRequest } from '../../../../lib/deleteRequests';
+import { parseFormData, deleteRequestSchema } from '../../../../lib/validation';
 
 function json(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -28,9 +29,10 @@ export const POST: APIRoute = async (context) => {
   }
 
   const form = await context.request.formData();
-  const reason = String(form.get('reason') ?? '').trim();
+  const parsed = parseFormData(deleteRequestSchema, form);
+  if (!parsed.ok) return json({ ok: false, error: parsed.error }, 400);
 
-  const result = submitDeleteRequest({ taskId, userId: user.id, role: user.role, reason: reason || null });
+  const result = submitDeleteRequest({ taskId, userId: user.id, role: user.role, reason: parsed.data.reason });
   if (!result.ok) {
     const status = result.error === 'Task not found.' ? 404 : 400;
     return json({ ok: false, error: result.error }, status);

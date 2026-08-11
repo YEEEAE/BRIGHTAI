@@ -5,8 +5,8 @@ workflow: user management → task creation → employee progress updates →
 closure flow (completion comment + evidence) → analytics dashboard.
 
 Built with **Astro (SSR)** + **React islands** + **Tailwind CSS**, backed by
-**SQLite** (`better-sqlite3`) with **bcryptjs** password hashing. Runs locally
-on port 4321.
+**SQLite** (`better-sqlite3`) with **bcryptjs** password hashing and **Zod**
+server-side validation. Runs locally on port 4321.
 
 ---
 
@@ -27,6 +27,9 @@ on port 4321.
   a manager/admin approves or rejects.
 - **Dashboard**: KPI cards, donut/bar/line SVG charts, overdue + recently
   completed tables, and date/assignee/priority filters.
+- **Notifications** (`/notifications`): derived alerts (overdue, due soon,
+  stale, recent comments, pending deletion requests) + navbar bell with count.
+- **CSV export**: `/api/export/tasks.csv` (role-scoped, Excel-friendly).
 - **Activity log** (CORE RULE #6): every mutation is recorded with who/what/
   old/new/timestamp.
 
@@ -52,12 +55,12 @@ All checks live in one place: `src/lib/permissions.ts`.
 
 ## Quick start
 
-From the **monorepo root**:
+From the **monorepo root** (the package is `@brightai/qc-task-manager`):
 
 ```bash
 pnpm install                                   # install (better-sqlite3 needs build tools)
-pnpm --filter qc-task-manager db:init          # create db/qc_tasks.db + seed roles
-pnpm --filter qc-task-manager dev              # http://localhost:4321
+pnpm --filter @brightai/qc-task-manager db:seed   # create db/qc_tasks.db + seed roles
+pnpm --filter @brightai/qc-task-manager dev   # http://localhost:4321
 ```
 
 Open <http://localhost:4321/login> and sign in.
@@ -65,7 +68,7 @@ Open <http://localhost:4321/login> and sign in.
 ### Production build & start
 
 ```bash
-pnpm --filter qc-task-manager build
+pnpm --filter @brightai/qc-task-manager build
 # then, from the app directory:
 cd apps/qc-task-manager && node dist/server/entry.mjs     # serves on PORT (default 4321)
 ```
@@ -79,8 +82,8 @@ Seed a demo team (2 extra employees) + **12 tasks in mixed statuses**
 (overdue, in progress, on hold, completed with closure comments) on a fresh DB:
 
 ```bash
-SEED_DEMO=1 pnpm --filter qc-task-manager db:init --reset
-SEED_DEMO=1 pnpm --filter qc-task-manager dev
+SEED_DEMO=1 pnpm --filter @brightai/qc-task-manager db:init --reset
+SEED_DEMO=1 pnpm --filter @brightai/qc-task-manager dev
 ```
 
 Demo logins (all roles use the same password, see below):
@@ -114,7 +117,7 @@ table is empty). Every account uses the same password from
 localhost):
 
 ```bash
-ADMIN_DEFAULT_PASSWORD='a-strong-password' SEED_DEMO=1 pnpm --filter qc-task-manager db:init --reset
+ADMIN_DEFAULT_PASSWORD='a-strong-password' SEED_DEMO=1 pnpm --filter @brightai/qc-task-manager db:init --reset
 ```
 
 > ⚠️ Changing `ADMIN_DEFAULT_PASSWORD` does **not** update existing accounts —
@@ -182,9 +185,14 @@ apps/qc-task-manager/
 ├── db/
 │   ├── schema.sql          # all 7 tables (idempotent)
 │   ├── seed.sql            # reference seed (authoritative seed is in src/lib/seed.ts)
+│   ├── backups/            # `pnpm db:backup` output (gitignored, .gitkeep kept)
 │   └── qc_tasks.db         # generated at runtime (gitignored)
+├── docs/ARCHITECTURE.md    # architecture + operations reference
+├── public/                 # static assets (favicons, images, …)
 ├── scripts/
 │   ├── init-db.mjs         # CLI: schema + seed (+ SEED_DEMO support)
+│   ├── backup-db.mjs       # CLI: `db:backup` (mirrors src/lib/backup.ts)
+│   ├── test.mjs            # `pnpm test`: structure + unit smoke
 │   ├── e2e-delete-request.mjs
 │   └── e2e-dashboard.mjs
 ├── src/
@@ -199,7 +207,13 @@ apps/qc-task-manager/
 │   │   ├── db.ts           # SQLite singleton (WAL) + migrations + cleanup
 │   │   ├── auth.ts         # bcrypt + sessions (12h TTL, randomUUID)
 │   │   ├── session.ts      # cookie helpers + handleLoginPost
-│   │   ├── flash.ts, format.ts, permissions.ts, types.ts
+│   │   ├── permissions.ts  # single source of truth for role checks
+│   │   ├── task-policy.ts  # canonical domain rules (statuses, limits, locks, uploads)
+│   │   ├── validation.ts   # Zod schemas for every server input
+│   │   ├── notifications.ts# derived in-app alerts (/notifications)
+│   │   ├── backup.ts       # programmatic SQLite backup (createBackup)
+│   │   ├── export.ts       # CSV export (tasksToCsv + exportTasksForRole)
+│   │   ├── flash.ts, format.ts, types.ts
 │   │   ├── activity.ts     # task_activity_log helper
 │   │   ├── tasks.ts        # task creation + assignment validation
 │   │   ├── taskUpdates.ts  # update + closure flow + upload validation
@@ -208,16 +222,19 @@ apps/qc-task-manager/
 │   │   ├── deleteRequests.ts
 │   │   ├── dashboard.ts    # KPI / charts / tables queries
 │   │   └── seed.ts         # role seed + SEED_DEMO data
+│   ├── types/              # re-export shim for the shared types
 │   └── pages/
 │       ├── index.astro, login.astro, logout.ts, dashboard.astro
+│       ├── notifications.astro
 │       ├── tasks/[id].astro
 │       ├── api/tasks/[id]/{comment.ts, update.ts, close.ts, delete-request.ts}
 │       ├── api/tasks/[id]/attachments/{index.ts, [attachmentId].ts}
+│       ├── api/export/tasks.csv.ts
 │       ├── employee/ manager/ supervisor/ admin/
 │       └── manager/requests/
 ├── astro.config.mjs        # SSR + @astrojs/node standalone, port 4321
 ├── tailwind.config.mjs
-└── package.json
+└── package.json            # name: @brightai/qc-task-manager
 ```
 
 ## Pages & flows
@@ -276,6 +293,7 @@ All endpoints re-check the session **and** the role/permission server-side
 | `/api/tasks/[id]/attachments/[attachmentId]` | GET | Stream attachment BLOB (RFC 5987 name) |
 | `/admin/users/api` | POST | User management actions (admin) |
 | `/manager/requests/api` | POST | Approve/reject delete requests (manager+) |
+| `/api/export/tasks.csv` | GET | Download tasks as CSV (role-scoped, attachment) |
 
 ### Upload validation
 
@@ -307,6 +325,35 @@ Employees submit requests (`DeleteRequestDialog`), managers/admins approve
 (hard delete) or reject (task untouched). Requests survive the task deletion
 as the audit record. E2E: `scripts/e2e-delete-request.mjs`.
 
+### Notifications (`/notifications`)
+
+Every role gets a **Notifications** page (bell icon in the navbar with a live
+count badge). There is **no notifications table** — alerts are derived from the
+existing data by `src/lib/notifications.ts`:
+
+- **🚨 Overdue** tasks (due before today, not completed)
+- **📅 Due soon** (due within 3 days, not completed)
+- **⏳ Not started** tasks older than 2 days
+- **💬 Recent comments** by other people on your tasks (last 7 days)
+- **🗑️ Pending deletion requests** (manager/admin only)
+
+Employees only see their own/created tasks; supervisors+ see the whole team.
+Alerts sort by severity (danger → warning → info) and link straight to the task.
+
+### CSV export (`/api/export/tasks.csv`)
+
+Any authenticated role can download the task list as CSV (`src/lib/export.ts`):
+employees get their own/created tasks, supervisors+ get everything. The file
+has a UTF-8 BOM (Excel-friendly) and RFC-4180-style escaping.
+
+### Server-side validation (Zod)
+
+All server input is validated with **Zod** in `src/lib/validation.ts` (login,
+task creation, comments, delete-request reasons, user creation, password
+reset). Endpoints call `parseFormData(schema, form)` and return the first
+user-facing message; limits and enums come from `src/lib/task-policy.ts` so the
+schemas can never drift from the business rules.
+
 ## Status colors
 
 The whole app uses one consistent scheme (`src/lib/format.ts` +
@@ -326,18 +373,35 @@ Overdue tasks show their due date in **red** (lists, details, dashboard).
 - Node **20+**
 - `ADMIN_DEFAULT_PASSWORD` — seed password (default `admin123`, warns if unset)
 - `QC_DB_PATH` — absolute path to an alternate SQLite database
+- `QC_BACKUP_DIR` — backup output directory for `db:backup` (default `<app>/db/backups`)
 - `SEED_DEMO=1` — seed demo team + 12 tasks on an empty DB
 
-## Scripts (`pnpm --filter qc-task-manager …`)
+## Scripts (`pnpm --filter @brightai/qc-task-manager …`)
 
 | Script | What it does |
 | --- | --- |
 | `dev` | Astro dev server on port 4321 |
 | `build` | Production SSR build (`dist/server/entry.mjs`) |
 | `start` | `node ./dist/server/entry.mjs` |
+| `preview` | `astro preview` |
 | `typecheck` | `astro check` |
+| `test` | Fast, server-less checks: spec structure + Zod/task-policy/CSV/backup unit smoke (`scripts/test.mjs`) |
 | `db:init` | Apply schema + seed roles |
 | `db:reset` | Wipe + re-init (`--reset`) |
+| `db:seed` | Same as `db:init` (alias for the spec name) |
+| `db:backup` | Snapshot the DB into `db/backups/` (keeps last 14, `--keep=N` to override) |
+
+### Backups
+
+```bash
+pnpm --filter @brightai/qc-task-manager db:backup
+# → db/backups/qc_tasks-<YYYYMMDD-HHMMSS>.db (better-sqlite3 online backup, WAL-safe)
+```
+
+Backups land in `db/backups/` (gitignored — the folder is kept via `.gitkeep`).
+Retention defaults to 14 (`--keep=30` to change). `QC_BACKUP_DIR` overrides the
+output directory. The same routine is exposed programmatically in
+`src/lib/backup.ts` (`createBackup`).
 
 ### E2E scripts
 

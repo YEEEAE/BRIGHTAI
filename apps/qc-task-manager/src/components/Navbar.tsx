@@ -12,6 +12,8 @@ interface SessionLike {
 
 interface NavbarProps {
   user: SessionLike | null;
+  /** Live alert count for the Notifications bell (0 hides the badge). */
+  notificationCount?: number;
 }
 
 const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]> = {
@@ -20,21 +22,27 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/admin/users', label: 'Admin' },
     { href: '/manager', label: 'Tasks' },
     { href: '/manager/requests', label: 'Delete Requests' },
+    { href: '/notifications', label: 'Notifications' },
   ],
   manager: [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/manager', label: 'Tasks' },
     { href: '/manager/requests', label: 'Delete Requests' },
+    { href: '/notifications', label: 'Notifications' },
   ],
   supervisor: [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/supervisor', label: 'Tasks' },
+    { href: '/notifications', label: 'Notifications' },
   ],
   // Employees have NO dashboard link (CORE BUSINESS RULE #1).
-  employee: [{ href: '/employee', label: 'My Tasks' }],
+  employee: [
+    { href: '/employee', label: 'My Tasks' },
+    { href: '/notifications', label: 'Notifications' },
+  ],
 };
 
-export default function Navbar({ user }: NavbarProps) {
+export default function Navbar({ user, notificationCount = 0 }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const links = user ? ROLE_LINKS[user.role] : [];
 
@@ -64,6 +72,21 @@ export default function Navbar({ user }: NavbarProps) {
         <div className="flex items-center gap-3">
           {user ? (
             <>
+              <a
+                href="/notifications"
+                aria-label={`Notifications (${notificationCount} active)`}
+                className="relative rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+                </svg>
+                {notificationCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+                    {notificationCount > 99 ? '99+' : notificationCount}
+                  </span>
+                )}
+              </a>
               <span className="hidden text-sm text-slate-600 sm:inline">
                 <span className="font-medium text-slate-900">{user.fullName}</span>
                 <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-500">

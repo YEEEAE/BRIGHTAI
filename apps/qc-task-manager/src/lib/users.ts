@@ -15,10 +15,11 @@
 
 import bcrypt from 'bcryptjs';
 import { getDb } from './db';
+import { MIN_PASSWORD_LENGTH } from './task-policy';
+import { userCreateSchema } from './validation';
 import type { Role } from './types';
 
 const ROLES: Role[] = ['admin', 'manager', 'supervisor', 'employee'];
-export const MIN_PASSWORD_LENGTH = 8;
 
 export interface CreateUserInput {
   username: string;
@@ -37,19 +38,16 @@ function log(actor: { id: number; username: string }, message: string): void {
   console.log(`[users] ${new Date().toISOString()} actor=${actor.username}(id=${actor.id}) ${message}`);
 }
 
-/** Validate the create-user payload before touching the database. */
+/**
+ * Validate the create-user payload before touching the database.
+ * Rules live in the Zod schema (src/lib/validation.ts); this wrapper keeps the
+ * existing `{ ok, error }` contract so callers never change.
+ */
 export function validateCreateUser(input: CreateUserInput): { ok: true } | { ok: false; error: string } {
-  const username = input.username.trim();
-  if (!username) return { ok: false, error: 'Username is required.' };
-  if (username.length > 50) return { ok: false, error: 'Username must be 50 characters or fewer.' };
-  if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
-    return { ok: false, error: 'Username may only contain letters, numbers, _ . and -.' };
+  const result = userCreateSchema.safeParse(input);
+  if (!result.success) {
+    return { ok: false, error: result.error.issues[0]?.message ?? 'Invalid input.' };
   }
-  if (!input.fullName.trim()) return { ok: false, error: 'Full name is required.' };
-  if (input.password.length < MIN_PASSWORD_LENGTH) {
-    return { ok: false, error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.` };
-  }
-  if (!ROLES.includes(input.role)) return { ok: false, error: 'Invalid role.' };
   return { ok: true };
 }
 

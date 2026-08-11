@@ -12,7 +12,7 @@ import { getDb } from '../../../../lib/db';
 import { getCurrentUser } from '../../../../lib/session';
 import { canViewTask } from '../../../../lib/taskDetails';
 import { logActivity, Action } from '../../../../lib/activity';
-import { MAX_COMMENT_LENGTH } from '../../../../lib/format';
+import { parseFormData, commentSchema } from '../../../../lib/validation';
 import type { Task } from '../../../../lib/types';
 
 function json(body: Record<string, unknown>, status = 200): Response {
@@ -44,11 +44,9 @@ export const POST: APIRoute = async (context) => {
   }
 
   const form = await context.request.formData();
-  const comment = String(form.get('comment') ?? '').trim();
-  if (!comment) return json({ ok: false, error: 'Comment cannot be empty.' }, 400);
-  if (comment.length > MAX_COMMENT_LENGTH) {
-    return json({ ok: false, error: `Comment must be ${MAX_COMMENT_LENGTH} characters or fewer.` }, 400);
-  }
+  const parsed = parseFormData(commentSchema, form);
+  if (!parsed.ok) return json({ ok: false, error: parsed.error }, 400);
+  const comment = parsed.data.comment;
 
   const db = getDb();
   const result = db

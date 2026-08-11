@@ -14,6 +14,7 @@ import {
 } from './auth';
 import { cleanupExpiredSessions } from './db';
 import { setFlash } from './flash';
+import { parseFormData, loginInputSchema } from './validation';
 import type { SessionData, User } from './types';
 
 /** Read the current session from the request cookie, if any. */
@@ -72,11 +73,17 @@ export interface LoginContext {
  */
 export async function handleLoginPost(context: LoginContext): Promise<Response> {
   const form = await context.request.formData();
-  const username = String(form.get('username') ?? '').trim();
-  const password = String(form.get('password') ?? '');
   const rawTarget = String(form.get('redirect') ?? '');
   // Only allow internal redirect targets (blocks open-redirect abuse).
   const safeTarget = rawTarget.startsWith('/') && !rawTarget.startsWith('//') ? rawTarget : '/';
+
+  // Shape validation via Zod (src/lib/validation.ts). An empty/malformed body
+  // is treated exactly like bad credentials — no user enumeration.
+  const parsed = parseFormData(loginInputSchema, form);
+  if (!parsed.ok) {
+    return context.redirect(`/login?redirect=${encodeURIComponent(safeTarget)}&error=1`);
+  }
+  const { username, password } = parsed.data;
 
   // Purge expired sessions on every login (per spec).
   cleanupExpiredSessions();

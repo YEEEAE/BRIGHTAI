@@ -1,6 +1,13 @@
 // Shared domain types for QC Task Manager.
 // Mirrors db/schema.sql exactly. Keep these in sync with the SQL definitions.
 
+// Field-lock lists are defined canonically in src/lib/task-policy.ts; they are
+// re-exported here so type consumers can keep importing from './types'.
+export {
+  EMPLOYEE_EDITABLE_FIELDS,
+  EMPLOYEE_LOCKED_FIELDS,
+} from './task-policy';
+
 export type Role = 'admin' | 'manager' | 'supervisor' | 'employee';
 
 // status values match the tasks.status CHECK constraint in db/schema.sql.
@@ -20,26 +27,6 @@ export interface User {
   created_at: string;
 }
 
-/**
- * Fields an employee is allowed to edit after creation (CORE BUSINESS RULE #2).
- * comments / attachments are managed via dedicated endpoints, not direct edits.
- */
-export const EMPLOYEE_EDITABLE_FIELDS = [
-  'status',
-  'progress_percent',
-  'comments', // via task_comments
-  'attachments', // via task_attachments
-  'blocker_note',
-] as const;
-
-/** Fields locked for employees after task creation. */
-export const EMPLOYEE_LOCKED_FIELDS = [
-  'title',
-  'description',
-  'assigned_to',
-  'due_date',
-  'priority',
-] as const;
 
 export interface Task {
   id: number;

@@ -1,5 +1,5 @@
 {
-  "name": "qc-task-manager",
+  "name": "@brightai/qc-task-manager",
   "version": "0.1.0",
   "private": true,
   "description": "QC Department internal task-tracking application.",
@@ -12,7 +12,10 @@
     "astro": "astro",
     "typecheck": "astro check",
     "db:init": "node scripts/init-db.mjs",
-    "db:reset": "node scripts/init-db.mjs --reset"
+    "db:reset": "node scripts/init-db.mjs --reset",
+    "db:seed": "node scripts/init-db.mjs",
+    "db:backup": "node scripts/backup-db.mjs",
+    "test": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^10.1.0",
@@ -23,7 +26,8 @@
     "better-sqlite3": "^11.7.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

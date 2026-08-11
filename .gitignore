@@ -40,6 +40,8 @@ Thumbs.db
 apps/qc-task-manager/db/*.db
 apps/qc-task-manager/db/*.db-wal
 apps/qc-task-manager/db/*.db-shm
+apps/qc-task-manager/db/backups/*
+!apps/qc-task-manager/db/backups/.gitkeep
 
 # IDE
 .vscode/
@@ -111,6 +113,9 @@ Saudi tourism and heritage services/
 fix my website/
 Docfile/
 backups/
+# …except the QC Task Manager backup folder, whose .gitkeep must stay tracked.
+!apps/qc-task-manager/db/backups/
+!apps/qc-task-manager/db/backups/.gitkeep
 *.zip
 .env*.local
 
