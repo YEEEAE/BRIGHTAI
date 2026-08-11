@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { REPORT_CATALOG } from '../lib/reporting/catalog';
+import { listActiveUsers } from '../lib/tasks';
+import { FINDING_CLASSIFICATIONS, RISK_LEVELS, TASK_PRIORITIES } from '../lib/task-policy';
+import { SLA_STATUSES } from '../lib/sla';
+
+const user = Astro.locals.user!;
+const selectedType = Astro.url.searchParams.get('report_type') ?? 'monthly-qc';
+const activeUsers = listActiveUsers();
+const supervisors = activeUsers.filter((person) => person.role === 'supervisor');
+const filters = new URLSearchParams(Astro.url.searchParams);
+filters.delete('report_type');
+filters.delete('format');
+const query = filters.toString();
+const canChooseOrganization = user.role === 'admin' || user.role === 'manager';
+---
+
+<BaseLayout title="Reports">
+  <header class="mb-6">
+    <h1 class="text-2xl font-semibold text-slate-900">Reports</h1>
+    <p class="text-sm text-slate-600">Generate English QC reports with a visible, server-enforced data scope.</p>
+  </header>
+
+  <form method="get" action="/reports" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Report type
+        <select name="report_type" class="rounded-md border border-slate-300 px-3 py-2">
+          {Object.values(REPORT_CATALOG).map((report) => <option value={report.key} selected={selectedType === report.key}>{report.label}</option>)}
+        </select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">From date<input type="date" name="from" value={Astro.url.searchParams.get('from') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">To date<input type="date" name="to" value={Astro.url.searchParams.get('to') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Department<input name="department" maxlength="50" value={Astro.url.searchParams.get('department') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Employee
+        <select name="employee" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All employees</option>{activeUsers.map((person) => <option value={person.id} selected={Astro.url.searchParams.get('employee') === String(person.id)}>{person.full_name}</option>)}</select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Supervisor
+        <select name="supervisor" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All supervisors</option>{supervisors.map((person) => <option value={person.id} selected={Astro.url.searchParams.get('supervisor') === String(person.id)}>{person.full_name}</option>)}</select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Priority
+        <select name="priority" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All priorities</option>{TASK_PRIORITIES.map((value) => <option value={value} selected={Astro.url.searchParams.get('priority') === value}>{value}</option>)}</select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Risk
+        <select name="risk" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All risk levels</option>{RISK_LEVELS.map((value) => <option value={value} selected={Astro.url.searchParams.get('risk') === value}>{value}</option>)}</select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Finding Classification
+        <select name="finding_classification" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All classifications</option>{FINDING_CLASSIFICATIONS.map((value) => <option value={value} selected={Astro.url.searchParams.get('finding_classification') === value}>{value}</option>)}</select>
+      </label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">SLA Status
+        <select name="sla_status" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All SLA statuses</option>{SLA_STATUSES.map((value) => <option value={value} selected={Astro.url.searchParams.get('sla_status') === value}>{value}</option>)}</select>
+      </label>
+      {canChooseOrganization && <label class="flex items-center gap-2 self-end text-sm font-medium text-slate-700"><input type="checkbox" name="scope" value="organization" checked={Astro.url.searchParams.get('scope') === 'organization'} class="h-4 w-4 rounded border-slate-300" /> Organization-wide scope</label>}
+    </div>
+    <div class="mt-4 flex flex-wrap items-center gap-3"><button type="submit" class="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">Preview scope</button><span class="text-sm text-slate-600">Signed in as {user.fullName} ({user.role}).</span></div>
+  </form>
+
+  <section class="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby="report-downloads-heading">
+    <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 id="report-downloads-heading" class="text-lg font-semibold text-slate-900">Download report</h2><p class="text-sm text-slate-600">The server will re-check your role and resolve the final scope before generation.</p></div><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">Scope: {user.role === 'employee' ? 'Your tasks only' : user.role === 'supervisor' ? 'Your department' : 'Organization'}</span></div>
+    <div class="mt-4 flex flex-wrap gap-3">
+      {(['csv', 'xlsx', 'pdf'] as const).map((format) => <a href={`/api/reports/${selectedType}.${format}${query ? `?${query}` : ''}`} class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500">Download {format.toUpperCase()}</a>)}
+    </div>
+  </section>
+
+  <section id="audit" class="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><h2 class="text-lg font-semibold text-slate-900">Audit Trail</h2><p class="mt-1 text-sm text-slate-600">Every generation records Report ID, Generated By, Filters, Timestamp, Format, and Data Scope.</p><a href="/api/reports/audit" class="mt-3 inline-block text-sm font-medium text-brand-700 hover:underline">View report audit JSON</a></section>
+</BaseLayout>

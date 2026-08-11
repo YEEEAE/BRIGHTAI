@@ -1,0 +1,53 @@
+import { FINDING_CLASSIFICATIONS, RISK_LEVELS, TASK_PRIORITIES } from '../task-policy';
+import { SLA_STATUSES } from '../sla';
+import type { ReportFilters } from './types';
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function date(value: string | null, field: string): string | null {
+  if (!value) return null;
+  if (!DATE_RE.test(value)) throw new Error(`Invalid ${field} date`);
+  const parsed = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(parsed.valueOf()) || parsed.toISOString().slice(0, 10) !== value) throw new Error(`Invalid ${field} date`);
+  return value;
+}
+
+function enumValue<T extends string>(params: URLSearchParams, key: string, allowed: readonly T[]): T | null {
+  const raw = params.get(key);
+  if (!raw) return null;
+  const normalized = key === 'sla_status' ? raw.toUpperCase() : raw;
+  if (!allowed.includes(normalized as T)) throw new Error(`Invalid ${key} filter`);
+  return normalized as T;
+}
+
+function positiveId(params: URLSearchParams, key: string): number | null {
+  const raw = params.get(key);
+  if (!raw) return null;
+  const value = Number(raw);
+  if (!Number.isInteger(value) || value <= 0) throw new Error(`Invalid ${key} filter`);
+  return value;
+}
+
+export function parseReportFilters(params: URLSearchParams): ReportFilters {
+  const from = date(params.get('from'), 'from');
+  const to = date(params.get('to'), 'to');
+  if (from && to && from > to) throw new Error('From date must be on or before the to date');
+  const department = params.get('department')?.trim() || null;
+  if (department && department.length > 50) throw new Error('Invalid department filter');
+  return {
+    from,
+    to,
+    department,
+    employee: positiveId(params, 'employee'),
+    supervisor: positiveId(params, 'supervisor'),
+    priority: enumValue(params, 'priority', TASK_PRIORITIES),
+    risk: enumValue(params, 'risk', RISK_LEVELS),
+    finding_classification: enumValue(params, 'finding_classification', FINDING_CLASSIFICATIONS),
+    sla_status: enumValue(params, 'sla_status', SLA_STATUSES),
+  };
+}
+
+export const emptyReportFilters: ReportFilters = {
+  from: null, to: null, department: null, employee: null, supervisor: null,
+  priority: null, risk: null, finding_classification: null, sla_status: null,
+};

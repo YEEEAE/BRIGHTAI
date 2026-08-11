@@ -16,10 +16,11 @@ import { getDb } from './db';
 import { listActiveUsers } from './tasks';
 import { parseDbDate } from './format';
 import { setFlash } from './flash';
-import { TASK_PRIORITIES, TASK_STATUSES } from './task-policy';
-import { refreshTaskSla, serverNow } from './sla/engine';
+import { FINDING_CLASSIFICATIONS, RISK_LEVELS, TASK_PRIORITIES, TASK_STATUSES } from './task-policy';
+import { SLA_STATUSES } from './sla';
 import type { AstroCookies } from 'astro';
-import type { TaskPriority, TaskStatus } from './types';
+import type { FindingClassification, RiskLevel, TaskPriority, TaskStatus } from './types';
+import type { SlaStatus } from './sla';
 
 // ───────────────────── Status presentation (charts + legends) ─────────────────────
 // Single source for the dashboard's status colors/labels so the KPI cards, the
@@ -86,8 +87,13 @@ export interface DashboardFilters {
   range: RangePreset | null;
   /** assigned_to = assignee */
   assignee: number | null;
+  department: string | null;
+  supervisor: number | null;
   priority: TaskPriority | null;
   status: TaskStatus | null;
+  risk: RiskLevel | null;
+  finding_classification: FindingClassification | null;
+  sla_status: SlaStatus | null;
   /** Overdue-only switch: restrict every widget to overdue tasks. */
   overdue_only: boolean;
 }
@@ -97,8 +103,13 @@ export const NO_FILTERS: DashboardFilters = {
   to: null,
   range: null,
   assignee: null,
+  department: null,
+  supervisor: null,
   priority: null,
   status: null,
+  risk: null,
+  finding_classification: null,
+  sla_status: null,
   overdue_only: false,
 };
 
@@ -124,6 +135,18 @@ function isPriority(v: string): v is TaskPriority {
 
 function isStatus(v: string): v is TaskStatus {
   return (STATUSES as string[]).includes(v);
+}
+
+function isRisk(v: string): v is RiskLevel {
+  return (RISK_LEVELS as readonly string[]).includes(v);
+}
+
+function isFindingClassification(v: string): v is FindingClassification {
+  return (FINDING_CLASSIFICATIONS as readonly string[]).includes(v);
+}
+
+function isSlaStatus(v: string): v is SlaStatus {
+  return (SLA_STATUSES as readonly string[]).includes(v.toUpperCase());
 }
 
 function isRangePreset(v: string): v is RangePreset {
@@ -216,11 +239,24 @@ export function parseDashboardFilters(url: URL, jar: CookieJar): DashboardFilter
     }
   }
 
-  const assignee = sp.get('assignee');
+  const assignee = sp.get('assignee') ?? sp.get('employee');
   if (assignee && assignee.trim() !== '') {
     const id = Number(assignee);
     if (Number.isInteger(id) && id > 0) f.assignee = id;
     else setFlash(jar, 'error', 'Invalid assignee filter.');
+  }
+
+  const department = sp.get('department')?.trim();
+  if (department) {
+    if (department.length <= 50) f.department = department;
+    else setFlash(jar, 'error', 'Invalid department filter.');
+  }
+
+  const supervisor = sp.get('supervisor');
+  if (supervisor && supervisor.trim() !== '') {
+    const id = Number(supervisor);
+    if (Number.isInteger(id) && id > 0) f.supervisor = id;
+    else setFlash(jar, 'error', 'Invalid supervisor filter.');
   }
 
   const priority = sp.get('priority');
@@ -235,6 +271,25 @@ export function parseDashboardFilters(url: URL, jar: CookieJar): DashboardFilter
     else setFlash(jar, 'error', 'Invalid status filter.');
   }
 
+  const risk = sp.get('risk');
+  if (risk && risk.trim() !== '') {
+    if (isRisk(risk)) f.risk = risk;
+    else setFlash(jar, 'error', 'Invalid risk filter.');
+  }
+
+  const classification = sp.get('finding_classification');
+  if (classification && classification.trim() !== '') {
+    if (isFindingClassification(classification)) f.finding_classification = classification;
+    else setFlash(jar, 'error', 'Invalid finding classification filter.');
+  }
+
+  const slaStatus = sp.get('sla_status');
+  if (slaStatus && slaStatus.trim() !== '') {
+    const normalized = slaStatus.toUpperCase();
+    if (isSlaStatus(normalized)) f.sla_status = normalized;
+    else setFlash(jar, 'error', 'Invalid SLA status filter.');
+  }
+
   const overdue = sp.get('overdue');
   if (overdue === '1' || overdue === 'true') f.overdue_only = true;
 
@@ -244,7 +299,7 @@ export function parseDashboardFilters(url: URL, jar: CookieJar): DashboardFilter
 /** True when any filter is active (drives the "Clear filters" affordance). */
 export function hasActiveFilters(f: DashboardFilters): boolean {
   return Boolean(
-    f.from || f.to || f.assignee !== null || f.priority || f.status || f.overdue_only,
+    f.from || f.to || f.assignee !== null || f.department || f.supervisor !== null || f.priority || f.status || f.risk || f.finding_classification || f.sla_status || f.overdue_only,
   );
 }
 
@@ -258,8 +313,13 @@ export function filterQuerystring(f: DashboardFilters): string {
     if (f.to) sp.set('to', f.to);
   }
   if (f.assignee !== null) sp.set('assignee', String(f.assignee));
+  if (f.department) sp.set('department', f.department);
+  if (f.supervisor !== null) sp.set('supervisor', String(f.supervisor));
   if (f.priority) sp.set('priority', f.priority);
   if (f.status) sp.set('status', f.status);
+  if (f.risk) sp.set('risk', f.risk);
+  if (f.finding_classification) sp.set('finding_classification', f.finding_classification);
+  if (f.sla_status) sp.set('sla_status', f.sla_status);
   if (f.overdue_only) sp.set('overdue', '1');
   const qs = sp.toString();
   return qs ? `?${qs}` : '';
@@ -292,6 +352,14 @@ function whereClause(
     conds.push('t.assigned_to = ?');
     params.push(f.assignee);
   }
+  if (f.department) {
+    conds.push('t.department = ?');
+    params.push(f.department);
+  }
+  if (f.supervisor !== null) {
+    conds.push('t.created_by = ?');
+    params.push(f.supervisor);
+  }
   if (f.priority) {
     conds.push('t.priority = ?');
     params.push(f.priority);
@@ -299,6 +367,18 @@ function whereClause(
   if (f.status) {
     conds.push('t.status = ?');
     params.push(f.status);
+  }
+  if (f.risk) {
+    conds.push('t.risk_level = ?');
+    params.push(f.risk);
+  }
+  if (f.finding_classification) {
+    conds.push('t.finding_classification = ?');
+    params.push(f.finding_classification);
+  }
+  if (f.sla_status) {
+    conds.push('t.sla_status = ?');
+    params.push(f.sla_status);
   }
   if (f.overdue_only) {
     const today = localToday();
@@ -340,9 +420,29 @@ function whereClauseForWindow(
     conds.push('t.assigned_to = ?');
     params.push(f.assignee);
   }
+  if (f.department) {
+    conds.push('t.department = ?');
+    params.push(f.department);
+  }
+  if (f.supervisor !== null) {
+    conds.push('t.created_by = ?');
+    params.push(f.supervisor);
+  }
   if (f.priority) {
     conds.push('t.priority = ?');
     params.push(f.priority);
+  }
+  if (f.risk) {
+    conds.push('t.risk_level = ?');
+    params.push(f.risk);
+  }
+  if (f.finding_classification) {
+    conds.push('t.finding_classification = ?');
+    params.push(f.finding_classification);
+  }
+  if (f.sla_status) {
+    conds.push('t.sla_status = ?');
+    params.push(f.sla_status);
   }
   return { sql: conds.length ? `WHERE ${conds.join(' AND ')}` : '', params };
 }
@@ -372,11 +472,47 @@ export interface Kpis {
   avg_sla_consumption_percent: number | null;
 }
 
+/**
+ * Refresh dashboard SLA snapshots in one set-based UPDATE. The previous
+ * implementation selected every task and called refreshTaskSla once per row,
+ * creating an N+1 query pattern on every dashboard request. Escalation events
+ * remain mutation/scheduler responsibilities; the dashboard only needs the
+ * current read model for its aggregates.
+ */
 function refreshAllSla(): void {
   const db = getDb();
-  const now = serverNow(db);
-  const tasks = db.prepare('SELECT id FROM tasks WHERE sla_started_at IS NOT NULL').all() as { id: number }[];
-  for (const task of tasks) refreshTaskSla(task.id, db, now);
+  db.prepare(`
+    UPDATE tasks AS t
+    SET
+      sla_elapsed_seconds = MAX(
+        t.sla_elapsed_seconds,
+        CAST(MAX(0, (julianday(
+          CASE WHEN p.pause_on_hold = 1 AND t.status = 'on_hold' AND t.sla_paused_at IS NOT NULL
+               THEN t.sla_paused_at ELSE datetime('now') END
+        ) - julianday(t.sla_started_at)) * 86400.0) AS INTEGER)
+      ),
+      sla_remaining_seconds = CAST((julianday(t.sla_due_at) - julianday(
+        CASE WHEN p.pause_on_hold = 1 AND t.status = 'on_hold' AND t.sla_paused_at IS NOT NULL
+             THEN t.sla_paused_at ELSE datetime('now') END
+      )) * 86400.0 AS INTEGER),
+      sla_percent_used = ROUND(
+        100.0 * MAX(
+          t.sla_elapsed_seconds,
+          CAST(MAX(0, (julianday(
+            CASE WHEN p.pause_on_hold = 1 AND t.status = 'on_hold' AND t.sla_paused_at IS NOT NULL
+                 THEN t.sla_paused_at ELSE datetime('now') END
+          ) - julianday(t.sla_started_at)) * 86400.0) AS INTEGER)
+        ) / NULLIF((julianday(t.sla_due_at) - julianday(t.sla_started_at)) * 86400.0, 0), 2),
+      sla_status = CASE
+        WHEN p.pause_on_hold = 1 AND t.status = 'on_hold' AND t.sla_paused_at IS NOT NULL THEN 'PAUSED'
+        WHEN (julianday(t.sla_due_at) - julianday(datetime('now'))) < 0 THEN 'BREACHED'
+        WHEN 100.0 * MAX(t.sla_elapsed_seconds, CAST(MAX(0, (julianday(datetime('now')) - julianday(t.sla_started_at)) * 86400.0) AS INTEGER)) / NULLIF((julianday(t.sla_due_at) - julianday(t.sla_started_at)) * 86400.0, 0) >= p.critical_percent THEN 'CRITICAL'
+        WHEN 100.0 * MAX(t.sla_elapsed_seconds, CAST(MAX(0, (julianday(datetime('now')) - julianday(t.sla_started_at)) * 86400.0) AS INTEGER)) / NULLIF((julianday(t.sla_due_at) - julianday(t.sla_started_at)) * 86400.0, 0) >= p.warning_percent THEN 'AT_RISK'
+        ELSE 'NORMAL'
+      END
+    FROM sla_policies AS p
+    WHERE t.sla_started_at IS NOT NULL AND t.sla_due_at IS NOT NULL AND p.id = t.sla_policy_id
+  `).run();
 }
 
 export function getKpis(f: DashboardFilters): Kpis {

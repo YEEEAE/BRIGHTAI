@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUserById } from '../../lib/auth';
+import { parseReportFilters } from '../../lib/reporting/filters';
+import { listDrilldownTasks, type DrilldownKpi } from '../../lib/reporting/queries';
+import { resolveReportScope } from '../../lib/reporting/scope';
+import { formatDueDate, priorityLabel, statusLabel } from '../../lib/format';
+
+const user = Astro.locals.user!;
+const actor = getUserById(user.userId);
+if (!actor) return Astro.redirect('/login');
+
+const filters = parseReportFilters(Astro.url.searchParams);
+const allowedKpis: DrilldownKpi[] = ['total', 'completion_rate', 'sla_compliance', 'overdue', 'on_hold', 'critical_findings', 'open_capa', 'evidence_compliance', 'average_resolution'];
+const requestedKpi = Astro.url.searchParams.get('kpi') as DrilldownKpi | null;
+const kpi: DrilldownKpi = requestedKpi && allowedKpis.includes(requestedKpi) ? requestedKpi : 'total';
+const scope = resolveReportScope({ id: actor.id, role: actor.role, department: actor.department }, filters);
+const tasks = listDrilldownTasks(filters, scope, kpi, null, 500);
+const label = kpi.replaceAll('_', ' ');
+---
+
+<BaseLayout title="KPI drill-down">
+  <header class="mb-6 flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <a href="/dashboard" class="text-sm font-medium text-brand-700 hover:underline">← Back to dashboard</a>
+      <h1 class="mt-2 text-2xl font-semibold capitalize text-slate-900">{label} tasks</h1>
+      <p class="mt-1 text-sm text-slate-600">{tasks.length} matching task{tasks.length === 1 ? '' : 's'} in your authorized scope.</p>
+    </div>
+    <a href={`/reports?${Astro.url.searchParams.toString()}`} class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open reports</a>
+  </header>
+
+  <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm" aria-label="Matching tasks">
+    {tasks.length === 0 ? (
+      <div class="p-8 text-center text-sm text-slate-600">No matching tasks were found.</div>
+    ) : (
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200 text-sm">
+          <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">
+            <tr><th class="px-4 py-3">ID</th><th class="px-4 py-3">Title</th><th class="px-4 py-3">Employee</th><th class="px-4 py-3">Department</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Priority</th><th class="px-4 py-3">SLA</th><th class="px-4 py-3">Due</th></tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            {tasks.map((task) => (
+              <tr class="hover:bg-slate-50">
+                <td class="whitespace-nowrap px-4 py-3"><a class="font-medium text-brand-700 hover:underline" href={`/tasks/${task.id}`}>#{task.id}</a></td>
+                <td class="min-w-64 px-4 py-3 text-slate-900">{task.title}</td>
+                <td class="whitespace-nowrap px-4 py-3 text-slate-700">{task.assignee ?? 'Unassigned'}</td>
+                <td class="whitespace-nowrap px-4 py-3 text-slate-700">{task.department}</td>
+                <td class="whitespace-nowrap px-4 py-3 text-slate-700">{statusLabel(task.status)}</td>
+                <td class="whitespace-nowrap px-4 py-3 text-slate-700">{priorityLabel(task.priority)}</td>
+                <td class="whitespace-nowrap px-4 py-3 font-medium text-slate-700">{task.sla_status}</td>
+                <td class="whitespace-nowrap px-4 py-3 text-slate-700">{task.due_date ? formatDueDate(task.due_date) : '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </section>
+</BaseLayout>

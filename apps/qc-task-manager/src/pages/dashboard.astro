@@ -17,6 +17,13 @@ import EmptyState from '../components/EmptyState.astro';
 import { formatDbDate, formatDueDate, statusLabel, priorityLabel } from '../lib/format';
 import { describeAction } from '../lib/taskDetails';
 import * as dash from '../lib/dashboard';
+import { buildKpiHref, type DashboardKpiKey } from '../lib/reporting/drilldown';
+import { emptyReportFilters, parseReportFilters } from '../lib/reporting/filters';
+import { FINDING_CLASSIFICATIONS, RISK_LEVELS } from '../lib/task-policy';
+import { SLA_STATUSES } from '../lib/sla';
+import { getUserById } from '../lib/auth';
+import { getKpiSnapshot } from '../lib/reporting/queries';
+import { resolveReportScope } from '../lib/reporting/scope';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session + role
 
@@ -56,6 +63,7 @@ let recent: ReturnType<typeof dash.getRecentlyCompleted> = [];
 let withoutEvidence: ReturnType<typeof dash.getCompletedWithoutEvidence> = [];
 let blockers: ReturnType<typeof dash.getCurrentBlockers> = [];
 let activity: ReturnType<typeof dash.getLatestActivity> = [];
+let reportKpis: ReturnType<typeof getKpiSnapshot> | null = null;
 
 try {
   kpis = dash.getKpis(filters);
@@ -78,6 +86,49 @@ try {
 }
 
 const assignees = dash.listActiveUsers();
+const supervisors = assignees.filter((person) => person.role === 'supervisor');
+let reportFilters = emptyReportFilters;
+try {
+  reportFilters = parseReportFilters(Astro.url.searchParams);
+} catch {
+  // The legacy dashboard parser owns the flash message; keep the page usable
+  // when a report-only filter is invalid.
+}
+const reportActor = getUserById(user.userId);
+if (reportActor) {
+  try {
+    reportKpis = getKpiSnapshot(reportFilters, resolveReportScope({ id: reportActor.id, role: reportActor.role, department: reportActor.department }, reportFilters));
+  } catch (err) {
+    console.error('[dashboard] reporting KPI query failure', err);
+  }
+}
+const kpiParams = new URLSearchParams(Astro.url.searchParams);
+const kpiHref = (key: DashboardKpiKey) => buildKpiHref(key, kpiParams);
+const kpiCards = kpis
+  ? [
+      { id: 'total', key: 'total' as DashboardKpiKey, label: 'Total Tasks', value: kpis.total, tone: 'border-slate-200 bg-white text-slate-900', icon: '📋' },
+      { id: 'not_started', key: 'total' as DashboardKpiKey, label: 'Not Started', value: kpis.not_started, tone: 'border-red-200 bg-red-50/60 text-red-700', icon: '🔴' },
+      { id: 'in_progress', key: 'total' as DashboardKpiKey, label: 'In Progress', value: kpis.in_progress, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🟡' },
+      { id: 'on_hold', key: 'on_hold' as DashboardKpiKey, label: 'On Hold', value: kpis.on_hold, tone: 'border-orange-200 bg-orange-50/70 text-orange-700', icon: '🟠' },
+      { id: 'completed', key: 'completion_rate' as DashboardKpiKey, label: 'Completed', value: kpis.completed, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '🟢' },
+      { id: 'overdue', key: 'overdue' as DashboardKpiKey, label: 'Overdue', value: kpis.overdue, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '⚠️' },
+      { id: 'urgent_open', key: 'total' as DashboardKpiKey, label: 'Urgent Open', value: kpis.urgent_open, tone: 'border-red-300 bg-red-100 text-red-800', icon: '🚨' },
+      { id: 'completed_without_evidence', key: 'evidence_compliance' as DashboardKpiKey, label: 'Completed Without Evidence', value: kpis.completed_without_evidence, tone: 'border-slate-200 bg-white text-slate-900', icon: '📎' },
+      { id: 'avg_completion_time', key: 'average_resolution' as DashboardKpiKey, label: 'Average Completion Time', value: formatDuration(kpis.avg_completion_seconds), tone: 'border-slate-200 bg-white text-slate-900', icon: '⏱️' },
+      { id: 'sla_compliance', key: 'sla_compliance' as DashboardKpiKey, label: 'SLA Compliance', value: formatPercent(kpis.sla_compliance_percent), tone: 'border-emerald-200 bg-emerald-50 text-emerald-700', icon: '✅' },
+      { id: 'sla_at_risk', key: 'sla_compliance' as DashboardKpiKey, label: 'At Risk', value: kpis.sla_at_risk, tone: 'border-amber-200 bg-amber-50 text-amber-700', icon: '⚠️' },
+      { id: 'sla_critical', key: 'critical_findings' as DashboardKpiKey, label: 'Critical', value: kpis.sla_critical, tone: 'border-orange-200 bg-orange-50 text-orange-700', icon: '🔥' },
+      { id: 'sla_breached', key: 'sla_breached' as DashboardKpiKey, label: 'SLA Breached', value: kpis.sla_breached, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '🚨' },
+      { id: 'avg_resolution', key: 'average_resolution' as DashboardKpiKey, label: 'Average Resolution', value: formatDuration(kpis.avg_completion_seconds), tone: 'border-slate-200 bg-white text-slate-900', icon: '⏱️' },
+      { id: 'avg_sla_consumption', key: 'sla_compliance' as DashboardKpiKey, label: 'Average SLA Consumption', value: formatPercent(kpis.avg_sla_consumption_percent), tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '📊' },
+      ...(reportKpis ? [
+        { id: 'completion_rate', key: 'completion_rate' as DashboardKpiKey, label: 'Completion Rate', value: formatPercent(reportKpis.completion_rate), tone: 'border-green-200 bg-green-50 text-green-700', icon: '📈' },
+        { id: 'critical_findings', key: 'critical_findings' as DashboardKpiKey, label: 'Critical Findings', value: reportKpis.critical_findings, tone: 'border-red-200 bg-red-50 text-red-700', icon: '🔎' },
+        { id: 'open_capa', key: 'open_capa' as DashboardKpiKey, label: 'Open CAPA', value: reportKpis.open_capa, tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '🧩' },
+        { id: 'evidence_compliance', key: 'evidence_compliance' as DashboardKpiKey, label: 'Evidence Compliance', value: formatPercent(reportKpis.evidence_compliance), tone: 'border-cyan-200 bg-cyan-50 text-cyan-700', icon: '📎' },
+      ] : []),
+    ]
+  : [];
 ---
 
 <BaseLayout title="Dashboard">
@@ -131,17 +182,36 @@ const assignees = dash.listActiveUsers();
       </label>
 
       <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
-        Assignee
+        Employee
         <select
-          name="assignee"
+          name="employee"
           class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
         >
-          <option value="">All assignees</option>
+          <option value="">All employees</option>
           {assignees.map((a) => (
             <option value={a.id} selected={filters.assignee === a.id}>
               {a.full_name}
             </option>
           ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Department
+        <input
+          name="department"
+          value={reportFilters.department ?? ''}
+          placeholder="e.g. QC"
+          maxlength="50"
+          class="w-28 rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Supervisor
+        <select name="supervisor" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">All supervisors</option>
+          {supervisors.map((person) => <option value={person.id} selected={reportFilters.supervisor === person.id}>{person.full_name}</option>)}
         </select>
       </label>
 
@@ -186,6 +256,30 @@ const assignees = dash.listActiveUsers();
         Overdue only
       </label>
 
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Risk
+        <select name="risk" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">All risk levels</option>
+          {RISK_LEVELS.map((risk) => <option value={risk} selected={reportFilters.risk === risk}>{risk}</option>)}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Finding Classification
+        <select name="finding_classification" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">All classifications</option>
+          {FINDING_CLASSIFICATIONS.map((classification) => <option value={classification} selected={reportFilters.finding_classification === classification}>{classification}</option>)}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        SLA Status
+        <select name="sla_status" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">All SLA statuses</option>
+          {SLA_STATUSES.map((status) => <option value={status} selected={reportFilters.sla_status === status}>{status}</option>)}
+        </select>
+      </label>
+
       <button
         type="submit"
         class="rounded-md bg-brand-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
@@ -208,6 +302,15 @@ const assignees = dash.listActiveUsers();
     )}
   </form>
 
+  <nav aria-label="Dashboard sections" class="mb-6 overflow-x-auto rounded-xl border border-slate-200 bg-white p-2">
+    <div class="flex min-w-max gap-2 text-sm font-medium">
+      {['Operations', 'SLA', 'Findings', 'CAPA', 'Workforce', 'Evidence', 'Audit'].map((section) => (
+        <a href={`#${section.toLowerCase()}`} class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500">{section}</a>
+      ))}
+      <a href="/reports" class="rounded-lg bg-brand-600 px-3 py-2 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500">Reports</a>
+    </div>
+  </nav>
+
   {/* ───────────── Error state (queries failed but the shell stays usable) ───────────── */}
   {dataError && (
     <section
@@ -221,92 +324,14 @@ const assignees = dash.listActiveUsers();
   {!dataError && kpis && (
     <>
       {/* ───────────── KPI cards ───────────── */}
-      <section
-        aria-label="Key metrics"
-        class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5"
-      >
-        <div data-kpi="total" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            <span aria-hidden="true">📋</span> Total tasks
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">{kpis.total}</div>
-        </div>
-        <div data-kpi="not_started" class="rounded-xl border border-slate-200 bg-red-50/60 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-red-700">
-            <span aria-hidden="true">🔴</span> Not started
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-red-700">{kpis.not_started}</div>
-        </div>
-        <div data-kpi="in_progress" class="rounded-xl border border-slate-200 bg-amber-50/70 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-amber-700">
-            <span aria-hidden="true">🟡</span> In progress
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-amber-700">{kpis.in_progress}</div>
-        </div>
-        <div data-kpi="on_hold" class="rounded-xl border border-slate-200 bg-orange-50/70 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-orange-700">
-            <span aria-hidden="true">🟠</span> On hold
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-orange-700">{kpis.on_hold}</div>
-        </div>
-        <div data-kpi="completed" class="rounded-xl border border-slate-200 bg-green-50/70 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-green-700">
-            <span aria-hidden="true">🟢</span> Completed
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-green-700">{kpis.completed}</div>
-        </div>
-        <div data-kpi="overdue" class="rounded-xl border border-rose-200 bg-rose-50 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-rose-700">
-            <span aria-hidden="true">⚠️</span> Overdue
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-rose-700">{kpis.overdue}</div>
-        </div>
-        <div data-kpi="urgent_open" class="rounded-xl border border-red-300 bg-red-100 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-red-800">
-            <span aria-hidden="true">🚨</span> Urgent open
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-red-800">{kpis.urgent_open}</div>
-        </div>
-        <div data-kpi="completed_without_evidence" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            <span aria-hidden="true">📎</span> Completed without evidence
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">
-            {kpis.completed_without_evidence}
-          </div>
-        </div>
-        <div data-kpi="avg_completion_time" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-            <span aria-hidden="true">⏱️</span> Avg completion time
-          </div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">
-            {formatDuration(kpis.avg_completion_seconds)}
-          </div>
-        </div>
-        <div data-kpi="sla_compliance" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-emerald-700">✅ SLA Compliance</div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-emerald-700">{formatPercent(kpis.sla_compliance_percent)}</div>
-        </div>
-        <div data-kpi="sla_at_risk" class="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-amber-700">⚠️ At Risk</div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-amber-700">{kpis.sla_at_risk}</div>
-        </div>
-        <div data-kpi="sla_critical" class="rounded-xl border border-orange-200 bg-orange-50 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-orange-700">🔥 Critical</div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-orange-700">{kpis.sla_critical}</div>
-        </div>
-        <div data-kpi="sla_breached" class="rounded-xl border border-rose-200 bg-rose-50 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-rose-700">🚨 Breached</div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-rose-700">{kpis.sla_breached}</div>
-        </div>
-        <div data-kpi="avg_resolution" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">⏱️ Average Resolution</div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">{formatDuration(kpis.avg_completion_seconds)}</div>
-        </div>
-        <div data-kpi="avg_sla_consumption" class="rounded-xl border border-violet-200 bg-violet-50 p-4 shadow-sm">
-          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-violet-700">📊 Average SLA Consumption</div>
-          <div class="mt-2 text-3xl font-semibold tabular-nums text-violet-700">{formatPercent(kpis.avg_sla_consumption_percent)}</div>
-        </div>
+      <section aria-label="Key metrics" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {kpiCards.map((card) => (
+          <a data-kpi={card.id} href={kpiHref(card.key)} class={`rounded-xl border p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-500 ${card.tone}`} aria-label={`${card.label}: ${card.value}. Open matching tasks`}>
+            <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide"><span aria-hidden="true">{card.icon}</span> {card.label}</div>
+            <div class="mt-2 text-3xl font-semibold tabular-nums">{card.value}</div>
+            <div class="mt-2 text-[11px] font-medium opacity-70">Open drill-down ↗</div>
+          </a>
+        ))}
       </section>
       <section data-checklist-dashboard class="rounded-xl border border-violet-200 bg-violet-50 p-4 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-2"><h2 class="text-sm font-semibold text-violet-900">QC checklist progress</h2><span class="text-2xl font-semibold tabular-nums text-violet-800">{checklistCompletion.percent}%</span></div>
@@ -314,22 +339,34 @@ const assignees = dash.listActiveUsers();
       </section>
 
       {/* ───────────── Charts (React island, pure SVG) ───────────── */}
-      <DashboardCharts
-        client:load
-        donut={donut}
-        priority={priorityDist}
-        bar={bar}
-        overdueByEmployee={overdueByEmployee}
-        line={line}
-        completionRate={completionRate!}
-      />
+      <section id="operations" aria-labelledby="operations-heading" class="mt-6">
+        <h2 id="operations-heading" class="sr-only">Operations</h2>
+        <DashboardCharts
+          client:load
+          donut={donut}
+          priority={priorityDist}
+          bar={bar}
+          overdueByEmployee={overdueByEmployee}
+          line={line}
+          completionRate={completionRate!}
+        />
+      </section>
+      <section id="findings" aria-labelledby="findings-heading" class="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 id="findings-heading" class="text-lg font-semibold text-slate-900">Findings</h2><p class="text-sm text-slate-600">Review critical and classified QC findings.</p></div><a href="/findings" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open Findings</a></div>
+      </section>
+      <section id="capa" aria-labelledby="capa-heading" class="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 id="capa-heading" class="text-lg font-semibold text-slate-900">CAPA</h2><p class="text-sm text-slate-600">Track corrective and preventive actions linked to findings.</p></div><a href={kpiHref('open_capa')} class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open CAPA Tasks</a></div>
+      </section>
+      <section id="workforce" aria-labelledby="workforce-heading" class="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 id="workforce-heading" class="text-lg font-semibold text-slate-900">Workforce</h2><p class="text-sm text-slate-600">Use Employee and Supervisor filters to inspect workload performance.</p></div><a href="/manager/workload" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open Workforce</a></div>
+      </section>
     </>
   )}
 
   {!dataError && (
     <>
       {/* ───────────── Most overdue tasks ───────────── */}
-      <section aria-label="Most overdue tasks" class="mt-8">
+      <section id="sla" aria-label="Most overdue tasks" class="mt-8">
         <div class="mb-3 flex items-baseline justify-between">
           <h2 class="text-lg font-semibold text-slate-900">Most overdue tasks</h2>
           <span class="text-xs text-slate-500">Due before today and not completed</span>
@@ -460,7 +497,7 @@ const assignees = dash.listActiveUsers();
       </section>
 
       {/* ───────────── Completed without evidence ───────────── */}
-      <section aria-label="Completed without evidence" class="mt-8">
+      <section id="evidence" aria-label="Completed without evidence" class="mt-8">
         <div class="mb-3 flex items-baseline justify-between">
           <h2 class="text-lg font-semibold text-slate-900">Completed without evidence</h2>
           <span class="text-xs text-slate-500">Missing proof-of-work on completed tasks</span>
@@ -501,7 +538,7 @@ const assignees = dash.listActiveUsers();
       </section>
 
       {/* ───────────── Latest activity feed ───────────── */}
-      <section aria-label="Latest activity" class="mt-8">
+      <section id="audit" aria-label="Latest activity" class="mt-8">
         <div class="mb-3 flex items-baseline justify-between">
           <h2 class="text-lg font-semibold text-slate-900">Latest activity</h2>
           <span class="text-xs text-slate-500">Most recent 20 events</span>
