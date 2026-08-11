@@ -24,7 +24,7 @@ export const POST: APIRoute = async (context) => {
       return context.redirect('/admin/settings');
     }
     return new Response(
-      JSON.stringify({ ok: true, backup: { name: result.name, size: result.size, pruned: result.pruned }, status: getBackupStatus(backupDir), count: listBackups(backupDir).length }),
+      JSON.stringify({ ok: true, backup: { name: result.name, size: result.size, pruned: result.pruned, metadata: result.metadata, verification: result.verification }, status: getBackupStatus(backupDir), count: listBackups(backupDir).length }),
       { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } },
     );
   } catch {

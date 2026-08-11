@@ -207,8 +207,10 @@ The server logs a warning when the default `admin123` is in use.
   the current Riyadh day has no successful backup. Manual backups are available
   to admins from `/admin/settings` or `pnpm --filter @brightai/qc-task-manager db:backup`.
   Files are written to `db/backups/qc_tasks-YYYY-MM-DD-HHmmss.db`; only the
-  latest 14 are retained. The implementation uses SQLite's Online Backup API,
-  never copies a WAL or SHM file, and stores backup status beside the files.
+  latest 14 are retained by default. Set `QC_BACKUP_RETENTION` to configure the
+  retention count. The implementation uses SQLite's Online Backup API, never
+  copies a WAL or SHM file, writes schema/application version, timestamp,
+  SHA-256, and record counts to a sidecar, and verifies every new backup.
   Backup directories are outside `public/`, ignored by Git, and must be on a
   protected persistent volume in production. Never set `QC_DATABASE_PATH` to a
   static/public directory.
@@ -727,6 +729,7 @@ Overdue tasks show their due date in **red** (lists, details, dashboard).
 - `QC_DATABASE_PATH` — absolute path to an alternate SQLite database
   (`QC_DB_PATH` accepted as a legacy alias)
 - `QC_BACKUP_DIR` — backup output directory for `db:backup` (default `<app>/db/backups`)
+- `QC_BACKUP_RETENTION` — positive integer retention count (default `14`)
 - `SEED_DEMO=1` — seed demo team + 12 tasks on an empty DB
 
 ## Scripts (`pnpm --filter @brightai/qc-task-manager …`)
@@ -743,7 +746,8 @@ Overdue tasks show their due date in **red** (lists, details, dashboard).
 | `db:init` | Apply schema + seed roles |
 | `db:reset` | Wipe + re-init (`--reset`) |
 | `db:seed` | Same as `db:init` (alias for the spec name) |
-| `db:backup` | Snapshot the DB into `db/backups/` (keeps last 14, `--keep=N` to override) |
+| `db:backup` | Snapshot, verify, and retain the DB (`QC_BACKUP_RETENTION`, `--keep=N` override) |
+| `db:restore` | Maintenance-only verified restore with exact confirmation and safety backup |
 
 ### Backups
 
@@ -753,9 +757,18 @@ pnpm --filter @brightai/qc-task-manager db:backup
 ```
 
 Backups land in `db/backups/` (gitignored — the folder is kept via `.gitkeep`).
-Retention defaults to 14 (`--keep=30` to change). `QC_BACKUP_DIR` overrides the
-output directory. The same routine is exposed programmatically in
-`src/lib/backup.ts` (`createBackup`).
+Retention defaults to 14 (`--keep=30` or `QC_BACKUP_RETENTION=30` to change).
+`QC_BACKUP_DIR` overrides the output directory. Verify/restore behavior and
+failure handling are documented in `../../docs/DISASTER-RECOVERY.md` and
+`docs/RESTORE.md`.
+
+To restore during maintenance, stop the server and use:
+
+```bash
+pnpm --filter @brightai/qc-task-manager db:restore -- \
+  --backup=/absolute/path/backups/qc_tasks-YYYY-MM-DD-HHmmss.db \
+  --confirm="RESTORE QC DATABASE"
+```
 
 ### E2E scripts
 

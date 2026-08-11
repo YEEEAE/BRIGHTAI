@@ -2,10 +2,12 @@
 // Admin settings — backup status and manual backup control.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { BACKUP_DIR } from '../../../lib/db';
-import { getBackupStatus, listBackups } from '../../../lib/backup';
+import { getBackupStatus, listBackups, verifyBackup } from '../../../lib/backup';
 
 const status = getBackupStatus(BACKUP_DIR);
 const backups = listBackups(BACKUP_DIR);
+const latest = backups[0];
+const verification = latest ? await verifyBackup({ file: latest.file, metadataFile: latest.metadataFile }) : null;
 
 function formatDate(value: string | null): string {
   if (!value) return 'Never';
@@ -43,10 +45,12 @@ const stateClass = status.state === 'success' ? 'bg-emerald-100 text-emerald-700
     </div>
 
     <dl class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Last successful backup</dt><dd class="mt-1 text-sm font-semibold text-slate-900">{formatDate(status.lastSuccessAt)}</dd></div>
+      <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Last backup</dt><dd class="mt-1 text-sm font-semibold text-slate-900">{formatDate(status.lastSuccessAt)}</dd></div>
+      <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Backup size</dt><dd class="mt-1 text-sm font-semibold text-slate-900">{formatBytes(status.lastBackupSize)}</dd></div>
       <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Last attempt</dt><dd class="mt-1 text-sm font-semibold text-slate-900">{formatDate(status.lastAttemptAt)}</dd></div>
+      <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Last verification</dt><dd class={`mt-1 text-sm font-semibold ${verification?.result === 'PASS' ? 'text-emerald-700' : verification ? 'text-red-700' : 'text-slate-900'}`}>{verification?.result ?? status.lastVerificationResult ?? 'Never'}</dd></div>
       <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Latest file</dt><dd class="mt-1 break-all text-sm font-semibold text-slate-900">{status.lastBackupName ?? '—'}</dd></div>
-      <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Stored backups</dt><dd class="mt-1 text-sm font-semibold text-slate-900">{backups.length} / 14</dd></div>
+      <div class="rounded-md bg-slate-50 p-4"><dt class="text-xs font-medium uppercase text-slate-500">Stored backups</dt><dd class="mt-1 text-sm font-semibold text-slate-900">{backups.length} / {Number(import.meta.env.QC_BACKUP_RETENTION ?? 14)}</dd></div>
     </dl>
 
     {status.state === 'failure' && <p class="mt-4 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert">Last backup failed: {status.lastError ?? 'Unknown error.'}</p>}
@@ -55,7 +59,7 @@ const stateClass = status.state === 'success' ? 'bg-emerald-100 text-emerald-700
       <form action="/api/admin/backup" method="POST">
         <button type="submit" class="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">Create backup now</button>
       </form>
-      <p class="text-xs text-slate-500">Manual backups use the same consistent SQLite backup API and retention policy.</p>
+      <p class="text-xs text-slate-500">Manual backups use a consistent SQLite snapshot and are verified before being marked PASS.</p>
     </div>
   </section>
 

@@ -1090,3 +1090,13 @@ skills_ready: 7
 - **Commit**: uncommitted (user commits via main — per brain line 18)
 - **Status**: verified locally
 - **Brain updates**: Section 1 (build page count +1)، Section 5 (redteam added to canonical components)
+
+### 2026-08-11 — QC-DISASTER-RECOVERY-001: Backup/Verify/Restore آمن لقاعدة QC
+
+- **Files**: `apps/qc-task-manager/src/lib/backup.ts`, `scripts/{backup-db,restore-db,test,e2e-backup}.mjs`, `src/pages/admin/settings/index.astro`, `src/pages/api/admin/backup.ts`, `src/env.d.ts`, `package.json`, `README.md`, `docs/RESTORE.md`, root `docs/DISASTER-RECOVERY.md`, design/plan docs.
+- **What**: طوّرت backup الحالي ليستخدم SQLite online snapshot المتسق ثم يحفظ sidecar metadata فيها schema version، application version، timestamp، SHA-256 checksum، وrecord counts. كل backup جديد يمر `integrity_check` و`foreign_key_check` وchecksum/schema/count comparison ويرجع `PASS/FAIL`. أضفت restore maintenance CLI (`db:restore`) يتطلب confirmation exact، يرفض أي snapshot غير متحقق، يأخذ safety backup للإنتاج، يتحقق من الملف المؤقت ثم يستبدل ذريًا. retention صار configurable عبر `QC_BACKUP_RETENTION` مع `--keep=N`.
+- **Admin**: `/admin/settings` يعرض Last Backup وBackup Size وLast Verification وstatus والـ retention، وmanual backup يعيد verification PASS metadata بدون download surface.
+- **Tests**: أضيفت تغطية فعلية لـ metadata، WAL data، PASS، corrupt backup، missing file، wrong schema، count mismatch، restore، failed restore preservation، retention. `e2e:acceptance` شغّل كل suites بنجاح، ومنها backup **13/13**.
+- **Verification**: QC `pnpm test` → **248 domain + DB-backed checks passed / 0 failed**؛ `typecheck` → **0 errors / 0 warnings / 11 existing hints**؛ `NODE_ENV=production pnpm build` → **Server built**؛ elevated `e2e:acceptance` → **49 + 44 + 196 + 39 + 45 + 13 + restart persistence passed**؛ `git diff --check` مرّ (مع تحذير fsmonitor IPC موجود مسبقًا عند `git status`).
+- **Decision**: HTTP admin يسمح بالإنشاء/التحقق فقط؛ استبدال Production DB محصور في maintenance CLI مع confirmation وsafety backup، لأن process حي قد يمسك SQLite connection.
+- **Status**: verified locally and with live E2E; uncommitted — المستخدم يلتزم ولا push.

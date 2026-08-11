@@ -6,7 +6,9 @@
 // Backup files and status metadata live outside public/ and are gitignored.
 
 import Database from 'better-sqlite3';
+import { createHash } from 'node:crypto';
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
@@ -17,11 +19,15 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export const BACKUP_RETENTION = 14;
 export const BACKUP_TIME_ZONE = 'Asia/Riyadh';
 export const BACKUP_FILE_PATTERN = /^qc_tasks-\d{4}-\d{2}-\d{2}-\d{6}\.db$/;
 const STATUS_FILE_NAME = 'status.json';
+const METADATA_SUFFIX = '.json';
+const RESTORE_CONFIRMATION = 'RESTORE QC DATABASE';
+const DEFAULT_APPLICATION_VERSION = 'unknown';
 
 export type BackupTrigger = 'scheduled' | 'manual' | 'cli' | 'test';
 
@@ -45,6 +51,34 @@ export interface BackupResult {
   size: number;
   /** How many old backups were pruned by retention. */
   pruned: number;
+  metadataFile: string;
+  metadata: BackupMetadata;
+  verification: VerificationResult;
+}
+
+export interface BackupMetadata {
+  schemaVersion: number | null;
+  applicationVersion: string;
+  timestamp: string;
+  checksum: string;
+  counts: Record<string, number>;
+}
+
+export interface VerificationResult {
+  result: 'PASS' | 'FAIL';
+  file: string;
+  integrityCheck: string;
+  foreignKeyCheck: 'PASS' | 'FAIL' | 'NOT_RUN';
+  schemaVersion: number | null;
+  checksum: string | null;
+  checks: Record<string, boolean>;
+  failures: string[];
+}
+
+export interface RestoreResult {
+  verification: VerificationResult;
+  safetyBackup: BackupResult | null;
+  productionDbPath: string;
 }
 
 export interface BackupStatus {
@@ -56,6 +90,9 @@ export interface BackupStatus {
   lastBackupName: string | null;
   lastBackupSize: number | null;
   lastTrigger: BackupTrigger | null;
+  lastVerificationAt: string | null;
+  lastVerificationResult: 'PASS' | 'FAIL' | null;
+  lastVerificationError: string | null;
 }
 
 export interface BackupFile {
@@ -63,6 +100,7 @@ export interface BackupFile {
   file: string;
   size: number;
   modifiedAt: string;
+  metadataFile: string;
 }
 
 const EMPTY_STATUS: BackupStatus = {
@@ -74,6 +112,9 @@ const EMPTY_STATUS: BackupStatus = {
   lastBackupName: null,
   lastBackupSize: null,
   lastTrigger: null,
+  lastVerificationAt: null,
+  lastVerificationResult: null,
+  lastVerificationError: null,
 };
 
 let activeBackup: Promise<BackupResult> | null = null;
@@ -100,6 +141,48 @@ export function backupTimestamp(date = new Date()): string {
 
 function nowIso(): string {
   return new Date().toISOString();
+}
+
+function applicationVersion(): string {
+  try {
+    const packagePath = resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json');
+    return String((JSON.parse(readFileSync(packagePath, 'utf8')) as { version?: string }).version ?? DEFAULT_APPLICATION_VERSION);
+  } catch {
+    return DEFAULT_APPLICATION_VERSION;
+  }
+}
+
+function checksum(file: string): string {
+  return createHash('sha256').update(readFileSync(file)).digest('hex');
+}
+
+function metadataPath(file: string): string {
+  return `${file}${METADATA_SUFFIX}`;
+}
+
+function databaseSnapshot(db: Database.Database): { schemaVersion: number | null; counts: Record<string, number> } {
+  const tables = new Set((db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all() as { name: string }[]).map((row) => row.name));
+  const counts: Record<string, number> = {};
+  for (const table of ['users', 'tasks', 'task_comments', 'task_attachments', 'task_activity_log']) {
+    if (tables.has(table)) counts[table] = Number((db.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get() as { count: number }).count);
+  }
+  const schemaVersion = tables.has('schema_migrations')
+    ? Number((db.prepare('SELECT COALESCE(MAX(version), 0) AS version FROM schema_migrations').get() as { version: number }).version)
+    : null;
+  return { schemaVersion, counts };
+}
+
+function writeMetadata(file: string, metadata: BackupMetadata): string {
+  const target = metadataPath(file);
+  const temp = `${target}.tmp`;
+  writeFileSync(temp, `${JSON.stringify(metadata, null, 2)}\n`, { encoding: 'utf8', mode: 0o600 });
+  renameSync(temp, target);
+  return target;
+}
+
+function readMetadata(file?: string): BackupMetadata | null {
+  if (!file || !existsSync(file)) return null;
+  try { return JSON.parse(readFileSync(file, 'utf8')) as BackupMetadata; } catch { return null; }
 }
 
 function statusPath(backupDir: string): string {
@@ -136,7 +219,7 @@ export function listBackups(backupDir: string): BackupFile[] {
     .map((name) => {
       const file = join(backupDir, name);
       const stats = statSync(file);
-      return { name, file, size: stats.size, modifiedAt: stats.mtime.toISOString() };
+      return { name, file, size: stats.size, modifiedAt: stats.mtime.toISOString(), metadataFile: metadataPath(file) };
     })
     .sort((a, b) => b.name.localeCompare(a.name));
 }
@@ -156,8 +239,7 @@ async function performBackup(options: BackupOptions): Promise<BackupResult> {
   writeStatus(options.backupDir, { ...previous, lastAttemptAt: attemptedAt, lastTrigger: trigger });
 
   try {
-    const keep = options.keep ?? BACKUP_RETENTION;
-    if (!Number.isInteger(keep) || keep < 1) throw new Error('Backup retention must be a positive integer.');
+    const keep = backupRetention(options.keep);
     if (!existsSync(options.dbPath)) throw new Error(`Database file not found: ${options.dbPath}`);
 
     mkdirSync(options.backupDir, { recursive: true });
@@ -190,10 +272,24 @@ async function performBackup(options: BackupOptions): Promise<BackupResult> {
       normalized.close();
     }
 
+    const metadataDb = new Database(file, { readonly: true });
+    const snapshot = databaseSnapshot(metadataDb);
+    metadataDb.close();
+    const metadata: BackupMetadata = {
+      ...snapshot,
+      applicationVersion: applicationVersion(),
+      timestamp: nowIso(),
+      checksum: checksum(file),
+    };
+    const metadataFile = writeMetadata(file, metadata);
+    const verification = await verifyBackup({ file, metadataFile });
+    if (verification.result !== 'PASS') throw new Error(`Created backup failed verification: ${verification.failures.join(' ')}`);
+
     const backups = listBackups(options.backupDir);
     let pruned = 0;
     for (const old of backups.slice(keep)) {
       rmSync(old.file, { force: true });
+      rmSync(old.metadataFile, { force: true });
       pruned += 1;
     }
 
@@ -207,10 +303,13 @@ async function performBackup(options: BackupOptions): Promise<BackupResult> {
       lastBackupName: name,
       lastBackupSize: size,
       lastTrigger: trigger,
+      lastVerificationAt: nowIso(),
+      lastVerificationResult: verification.result,
+      lastVerificationError: null,
     };
     writeStatus(options.backupDir, status);
     log(`created ${name} (${size} bytes, trigger=${trigger}, pruned=${pruned})`);
-    return { file, name, size, pruned };
+    return { file, name, size, pruned, metadataFile, metadata, verification };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const status: BackupStatus = {
@@ -220,6 +319,9 @@ async function performBackup(options: BackupOptions): Promise<BackupResult> {
       lastFailureAt: nowIso(),
       lastError: message,
       lastTrigger: trigger,
+      lastVerificationAt: getBackupStatus(options.backupDir).lastVerificationAt,
+      lastVerificationResult: 'FAIL',
+      lastVerificationError: message,
     };
     writeStatus(options.backupDir, status);
     log(`failed (trigger=${trigger}): ${message}`, error);
@@ -238,4 +340,74 @@ export function createBackup(options: BackupOptions): Promise<BackupResult> {
 
 export function backupDirectoryForDatabase(dbPath: string): string {
   return resolve(join(dirname(resolve(dbPath)), 'backups'));
+}
+
+export function backupRetention(override?: number): number {
+  const raw = override ?? Number(process.env.QC_BACKUP_RETENTION ?? BACKUP_RETENTION);
+  if (!Number.isInteger(raw) || raw < 1) throw new Error('Backup retention must be a positive integer.');
+  return raw;
+}
+
+export async function verifyBackup(options: { file: string; metadataFile?: string; expectedSchemaVersion?: number }): Promise<VerificationResult> {
+  const failures: string[] = [];
+  const checks: Record<string, boolean> = {};
+  const metadata = readMetadata(options.metadataFile ?? metadataPath(options.file));
+  if (!existsSync(options.file)) {
+    return { result: 'FAIL', file: options.file, integrityCheck: 'not run', foreignKeyCheck: 'NOT_RUN', schemaVersion: null, checksum: null, checks: { fileExists: false }, failures: ['Backup file does not exist.'] };
+  }
+  let db: Database.Database | null = null;
+  let snapshot: { schemaVersion: number | null; counts: Record<string, number> } | null = null;
+  let integrityCheck = 'not run';
+  let foreignKeyCheck: VerificationResult['foreignKeyCheck'] = 'NOT_RUN';
+  try {
+    db = new Database(options.file, { readonly: true, fileMustExist: true });
+    integrityCheck = String((db.prepare('PRAGMA integrity_check').get() as { integrity_check: string }).integrity_check);
+    checks.integrityCheck = integrityCheck === 'ok';
+    if (!checks.integrityCheck) failures.push(`integrity_check returned ${integrityCheck}.`);
+    const fk = db.prepare('PRAGMA foreign_key_check').all();
+    foreignKeyCheck = fk.length === 0 ? 'PASS' : 'FAIL';
+    checks.foreignKeyCheck = fk.length === 0;
+    if (fk.length > 0) failures.push(`foreign_key_check returned ${fk.length} violation(s).`);
+    snapshot = databaseSnapshot(db);
+    checks.schemaVersion = options.expectedSchemaVersion === undefined || snapshot.schemaVersion === options.expectedSchemaVersion;
+    if (!checks.schemaVersion) failures.push(`Schema version ${String(snapshot.schemaVersion)} does not match expected ${String(options.expectedSchemaVersion)}.`);
+    if (metadata) {
+      checks.checksum = checksum(options.file) === metadata.checksum;
+      if (!checks.checksum) failures.push('Backup checksum does not match metadata.');
+      checks.metadataSchemaVersion = metadata.schemaVersion === snapshot.schemaVersion;
+      if (!checks.metadataSchemaVersion) failures.push('Metadata schema version does not match the database.');
+      for (const [table, expected] of Object.entries(metadata.counts)) {
+        checks[`count:${table}`] = snapshot.counts[table] === expected;
+        if (!checks[`count:${table}`]) failures.push(`${table} count does not match metadata.`);
+      }
+    }
+  } catch (error) {
+    failures.push(error instanceof Error ? error.message : String(error));
+  } finally { db?.close(); }
+  return { result: failures.length === 0 ? 'PASS' : 'FAIL', file: options.file, integrityCheck, foreignKeyCheck, schemaVersion: snapshot?.schemaVersion ?? null, checksum: existsSync(options.file) ? checksum(options.file) : null, checks, failures };
+}
+
+export async function restoreBackup(options: { productionDbPath: string; backupFile: string; metadataFile?: string; confirmation?: string; backupDir?: string; expectedSchemaVersion?: number }): Promise<RestoreResult> {
+  if (options.confirmation !== RESTORE_CONFIRMATION) throw new Error(`Restore requires confirmation: ${RESTORE_CONFIRMATION}`);
+  const verification = await verifyBackup({ file: options.backupFile, metadataFile: options.metadataFile, expectedSchemaVersion: options.expectedSchemaVersion });
+  if (verification.result !== 'PASS') throw new Error(`Restore refused: backup verification ${verification.result}. ${verification.failures.join(' ')}`);
+  const productionDir = dirname(resolve(options.productionDbPath));
+  mkdirSync(productionDir, { recursive: true });
+  const safetyBackup = existsSync(options.productionDbPath)
+    ? await createBackup({ dbPath: options.productionDbPath, backupDir: options.backupDir ?? backupDirectoryForDatabase(options.productionDbPath), trigger: 'manual' })
+    : null;
+  const temp = `${options.productionDbPath}.restore-${process.pid}-${Date.now()}.tmp`;
+  try {
+    copyFileSync(options.backupFile, temp);
+    const restored = new Database(temp, { readonly: true, fileMustExist: true });
+    const integrity = String((restored.prepare('PRAGMA integrity_check').get() as { integrity_check: string }).integrity_check);
+    const foreignKeys = restored.prepare('PRAGMA foreign_key_check').all();
+    restored.close();
+    if (integrity !== 'ok' || foreignKeys.length > 0) throw new Error('Restored temporary database failed integrity verification.');
+    renameSync(temp, options.productionDbPath);
+  } catch (error) {
+    rmSync(temp, { force: true });
+    throw error;
+  }
+  return { verification, safetyBackup, productionDbPath: options.productionDbPath };
 }

@@ -69,6 +69,7 @@ try {
   let payload = {};
   try { payload = JSON.parse(manualText); } catch { console.log(`  ℹ️ manual response body: ${JSON.stringify(manualText)}`); }
   ok(manual.status() === 200 && payload.ok === true, `admin manual backup returns success JSON (got ${manual.status()})`);
+  ok(payload.backup?.verification?.result === 'PASS', 'manual backup returns PASS verification');
   const name = payload.backup?.name ?? '';
   ok(/^qc_tasks-\d{4}-\d{2}-\d{2}-\d{6}\.db$/.test(name), 'manual backup uses required filename format');
   ok(existsSync(join(dirname(DB_PATH), 'backups', name)), 'manual backup file exists on disk');

@@ -13,7 +13,7 @@
 
 import Database from 'better-sqlite3';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync, statSync, readdirSync } from 'node:fs';
+import { existsSync, mkdtempSync, rmSync, statSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -24,6 +24,8 @@ import {
   createBackup,
   getBackupStatus,
   listBackups,
+  verifyBackup,
+  restoreBackup,
 } from '../src/lib/backup.ts';
 import {
   getNextScheduledBackupAt,
@@ -594,7 +596,9 @@ const tmpDir = mkdtempSync(join(tmpdir(), 'qc-backup-'));
 try {
   const srcDb = join(tmpDir, 'source.db');
   const db = new Database(srcDb);
-  db.exec('CREATE TABLE t (id INTEGER PRIMARY KEY, v TEXT)');
+  db.exec("CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, name TEXT, checksum TEXT, applied_at TEXT); INSERT INTO schema_migrations VALUES (2, 'test', 'checksum', datetime('now')); CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT); CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT); CREATE TABLE t (id INTEGER PRIMARY KEY, v TEXT)");
+  db.prepare('INSERT INTO users (username) VALUES (?)').run('admin');
+  db.prepare('INSERT INTO tasks (title) VALUES (?)').run('task');
   db.prepare('INSERT INTO t (v) VALUES (?)').run('hello');
   db.close();
 
@@ -602,11 +606,36 @@ try {
   const first = await createBackup({ dbPath: srcDb, backupDir, keep: 1, trigger: 'test' });
   ok(existsSync(first.file) && statSync(first.file).size > 0, 'backup: file created with data');
   ok(BACKUP_FILE_PATTERN.test(first.name), 'backup: created file has the required name');
+  ok(first.metadata.schemaVersion === 2 && first.metadata.applicationVersion, 'backup: metadata stores schema and application versions');
+  ok(first.metadata.checksum.length === 64 && first.metadata.timestamp, 'backup: metadata stores checksum and timestamp');
 
   const check = new Database(first.file, { readonly: true });
   const row = check.prepare('SELECT v FROM t WHERE id = 1').get();
   check.close();
   ok(row.v === 'hello', 'backup: content intact');
+  const verification = await verifyBackup({ file: first.file, metadataFile: first.metadataFile });
+  ok(verification.result === 'PASS' && verification.integrityCheck === 'ok' && verification.foreignKeyCheck === 'PASS', 'backup: valid snapshot verifies PASS');
+
+  const restoredDb = join(tmpDir, 'restored.db');
+  const restore = await restoreBackup({ productionDbPath: restoredDb, backupFile: first.file, metadataFile: first.metadataFile, confirmation: 'RESTORE QC DATABASE' });
+  ok(restore.verification.result === 'PASS' && new Database(restoredDb, { readonly: true }).prepare('SELECT v FROM t').get().v === 'hello', 'backup: verified snapshot restores data');
+
+  const corrupt = join(tmpDir, 'corrupt.db');
+  writeFileSync(corrupt, 'not sqlite');
+  const corruptResult = await verifyBackup({ file: corrupt });
+  ok(corruptResult.result === 'FAIL', 'backup: corrupt snapshot verifies FAIL');
+  const missingResult = await verifyBackup({ file: join(tmpDir, 'missing.db') });
+  ok(missingResult.result === 'FAIL', 'backup: missing snapshot verifies FAIL');
+
+  const wrongSchema = new Database(first.file);
+  wrongSchema.prepare('UPDATE schema_migrations SET version = 99').run();
+  wrongSchema.close();
+  const wrongSchemaResult = await verifyBackup({ file: first.file, metadataFile: first.metadataFile });
+  ok(wrongSchemaResult.result === 'FAIL', 'backup: wrong schema verifies FAIL');
+  const productionBeforeFailedRestore = new Database(restoredDb, { readonly: true }).prepare('SELECT v FROM t').get().v;
+  let failedRestore = false;
+  try { await restoreBackup({ productionDbPath: restoredDb, backupFile: corrupt, confirmation: 'RESTORE QC DATABASE' }); } catch { failedRestore = true; }
+  ok(failedRestore && new Database(restoredDb, { readonly: true }).prepare('SELECT v FROM t').get().v === productionBeforeFailedRestore, 'backup: failed restore preserves production database');
 
   const second = await createBackup({ dbPath: srcDb, backupDir, keep: 1 });
   const remaining = readdirSync(backupDir).filter((f) => f.endsWith('.db'));
