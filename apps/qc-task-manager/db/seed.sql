@@ -8,8 +8,13 @@
 --
 -- Behaviour: seed runs only when the users table is empty (handled in seed.ts).
 -- One account per role so the role-based home router is testable end-to-end.
+--
+-- Idempotency: uses INSERT OR IGNORE so re-running this file against a database
+-- that already has any of these usernames is a safe no-op instead of failing
+-- with "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username".
+-- (Use scripts/init-db.mjs --reset for a full fresh reseed.)
 
-INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
+INSERT OR IGNORE INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
 VALUES
   ('admin',      '$2a$10$REPLACE_WITH_REAL_BCRYPT_HASH', 'Administrator',       'admin',      'QC', 1, 1),
   ('manager',    '$2a$10$REPLACE_WITH_REAL_BCRYPT_HASH', 'Department Manager',  'manager',    'QC', 1, 1),

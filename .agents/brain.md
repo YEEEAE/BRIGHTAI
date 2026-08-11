@@ -19,6 +19,20 @@ skills_ready: 7
 
 ---
 
+### 2026-08-11 — QC-SEED-IDEMPOTENT-001: `seed.sql` idempotent (INSERT OR IGNORE) لمنع خطأ UNIQUE
+
+- **Files**: `apps/qc-task-manager/db/seed.sql`
+- **What**: المستخدم رمى خطأ `SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username` لما شغّل `seed.sql` يدويًا (SQLTools) على `qc_tasks.db` الحقيقية. السبب: الـ DB فيها أصلًا الـ 4 مستخدمين (admin/manager/supervisor/employee) اللي التطبيق فرسهم (IDs 1–4)، وseed.sql كان `INSERT INTO` بدون حماية فيكسر UNIQUE على username (schema سطر 26). غيّرت المقطع لـ `INSERT OR IGNORE INTO` + ملاحظة توثيق إن إعادة التشغيل على قاعدة فيها البيانات = no-op آمن، والـ reseed الكامل عبر `init-db.mjs --reset`.
+- **Why**: ملف التوثيق كان يقتل نفسه على أي قاعدة مفروسة بدل ما يكون idempotent (nفس منطق seed.ts الرسمي اللي يشيك isUsersEmpty).
+- **Verification**: على نسخة من qc_tasks.db (مفروسة) → 0 صفوف مدرجة، لا خطأ ✅. على قاعدة فاضية (schema + INSERT OR IGNORE) → 4 مستخدمين يُدرجون ✅. نظّفت كل الملفات المؤقتة.
+- **Report**: none
+- **Commit**: uncommitted — المستخدم يلتزم (القاعدة الثانية)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry.
+
+---
+
+
 ### 2026-08-11 — QC-DB-INIT-MIGRATE-001: إصلاح `SQLITE_ERROR: no such column: recurrence` على DB قديمة (init-db صار يرقّي الـ DB الموجودة مثل التطبيق) — مُتحقق ✅
 
 - **Files**: `apps/qc-task-manager/scripts/init-db.mjs` (جديد: `COLUMN_MIGRATIONS` + `migrateExistingDb()` — نفس قائمة db.ts بالضبط: 19 عمود عبر ALTER + backfill users.updated_at + إعادة بناء task_delete_requests القديمة (task_title) إلى شكل CASCADE، تُشغَّل قبل applySchema؛ + pragmas `busy_timeout=5000` و `synchronous=NORMAL` لمطابقة db.ts)، `apps/qc-task-manager/scripts/test.mjs` (قسم جديد "init-db migration" — 16 فحص يشغّل CLI الحقيقي كـ subprocess على DB قديمة الشكل: columns تنضاف + del-req يُعاد بناؤه + البيانات باقية + فهرس recurrence + 12 جدول + 0 FK + idempotent)، `apps/qc-task-manager/README.md` (تحذير: ما تشغّل schema.sql يدويًا على DB موجودة — استخدم db:init أو الإقلاع)
