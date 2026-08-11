@@ -19,7 +19,7 @@ interface Requirement {
 
 interface Props {
   /** Initial requirements (edit mode). JSON-decoded by the Astro page. */
-  initial?: Requirement[];
+  initial?: unknown;
 }
 
 const inputCls =
@@ -86,53 +86,53 @@ export default function EvidenceRequirementsInput({ initial = [] }: Props) {
     <div>
       <input type="hidden" name="evidence_requirements_json" value={serialized} />
 
-      <div class="mb-3 flex items-center justify-between">
-        <p class="text-sm text-slate-600">
-          Declare the evidence this task requires. <span class="font-medium">Required</span> items block task completion until uploaded.
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-sm text-slate-600">
+          Declare the evidence this task requires. <span className="font-medium">Required</span> items block task completion until uploaded.
         </p>
         <button
           type="button"
           onClick={add}
-          class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
         >
           + Add requirement
         </button>
       </div>
 
       {rows.length === 0 ? (
-        <p class="rounded-md border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center text-sm text-slate-500">
+        <p className="rounded-md border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center text-sm text-slate-500">
           No evidence requirements — tasks from this template close without an evidence gate.
         </p>
       ) : (
-        <div class="space-y-3">
+        <div className="space-y-3">
           {rows.map((r, i) => (
-            <div class="rounded-md border border-slate-200 bg-slate-50 p-3">
-              <div class="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <label class={labelCls} htmlFor={`er-type-${i}`}>Type (slug)</label>
+                  <label className={labelCls} htmlFor={`er-type-${i}`}>Type (slug)</label>
                   <input
                     id={`er-type-${i}`}
-                    class={inputCls}
+                    className={inputCls}
                     value={r.type}
                     placeholder="e.g. inspection_report"
                     onChange={(e) => patch(i, { type: e.target.value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_') })}
                   />
                 </div>
                 <div>
-                  <label class={labelCls} htmlFor={`er-label-${i}`}>Label</label>
+                  <label className={labelCls} htmlFor={`er-label-${i}`}>Label</label>
                   <input
                     id={`er-label-${i}`}
-                    class={inputCls}
+                    className={inputCls}
                     value={r.label}
                     placeholder="e.g. Inspection Report"
                     onChange={(e) => patch(i, { label: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label class={labelCls} htmlFor={`er-req-${i}`}>Requirement</label>
+                  <label className={labelCls} htmlFor={`er-req-${i}`}>Requirement</label>
                   <select
                     id={`er-req-${i}`}
-                    class={inputCls}
+                    className={inputCls}
                     value={r.requirement}
                     onChange={(e) => patch(i, { requirement: e.target.value as 'REQUIRED' | 'OPTIONAL' })}
                   >
@@ -141,21 +141,21 @@ export default function EvidenceRequirementsInput({ initial = [] }: Props) {
                   </select>
                 </div>
                 <div>
-                  <label class={labelCls} htmlFor={`er-max-${i}`}>Max files (optional)</label>
+                  <label className={labelCls} htmlFor={`er-max-${i}`}>Max files (optional)</label>
                   <input
                     id={`er-max-${i}`}
                     type="number"
                     min={1}
-                    class={inputCls}
+                    className={inputCls}
                     value={r.maxFiles ?? ''}
                     onChange={(e) => patch(i, { maxFiles: e.target.value ? Number(e.target.value) : undefined })}
                   />
                 </div>
-                <div class="sm:col-span-2">
-                  <label class={labelCls} htmlFor={`er-ext-${i}`}>Allowed extensions (optional, comma list)</label>
+                <div className="sm:col-span-2">
+                  <label className={labelCls} htmlFor={`er-ext-${i}`}>Allowed extensions (optional, comma list)</label>
                   <input
                     id={`er-ext-${i}`}
-                    class={inputCls}
+                    className={inputCls}
                     value={(r.allowedExtensions ?? []).join(', ')}
                     placeholder="pdf, png, jpg — leave blank to accept all evidence types"
                     onChange={(e) =>
@@ -168,21 +168,21 @@ export default function EvidenceRequirementsInput({ initial = [] }: Props) {
                     }
                   />
                 </div>
-                <div class="sm:col-span-2">
-                  <label class={labelCls} htmlFor={`er-desc-${i}`}>Description (optional)</label>
+                <div className="sm:col-span-2">
+                  <label className={labelCls} htmlFor={`er-desc-${i}`}>Description (optional)</label>
                   <input
                     id={`er-desc-${i}`}
-                    class={inputCls}
+                    className={inputCls}
                     value={r.description ?? ''}
                     onChange={(e) => patch(i, { description: e.target.value })}
                   />
                 </div>
               </div>
-              <div class="mt-2 text-left">
+              <div className="mt-2 text-left">
                 <button
                   type="button"
                   onClick={() => remove(i)}
-                  class="text-xs font-medium text-rose-600 hover:text-rose-700"
+                  className="text-xs font-medium text-rose-600 hover:text-rose-700"
                 >
                   Remove
                 </button>

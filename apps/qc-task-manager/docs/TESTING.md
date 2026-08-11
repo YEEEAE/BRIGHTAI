@@ -21,6 +21,7 @@ build environment.
 pnpm --filter @brightai/qc-task-manager test:domain
 pnpm --filter @brightai/qc-task-manager test:qc-operations
 pnpm --filter @brightai/qc-task-manager test:db-rules
+pnpm --filter @brightai/qc-task-manager test:templates
 pnpm --filter @brightai/qc-task-manager db:init
 pnpm --filter @brightai/qc-task-manager db:backup
 ```
@@ -53,3 +54,21 @@ run the suite in a normal local shell.
 
 See [ROLES-AND-PERMISSIONS.md](ROLES-AND-PERMISSIONS.md) for the expected role
 boundaries and [DEPLOYMENT.md](DEPLOYMENT.md) for the production configuration.
+
+## Evidence/template acceptance matrix
+
+`test:templates` covers the requested architecture end to end:
+
+- Evidence: required/optional slot normalization, wrong MIME, wrong magic
+  signature, oversized upload, duplicate SHA-256, unauthorized close/replacement,
+  metadata persistence, rejected evidence behavior, and reopened-task evidence.
+- Templates: create, edit, `DRAFT → ACTIVE → ARCHIVED`, archived read-only
+  behavior, ACTIVE instantiation, checklist/evidence copying, and immutable
+  configuration snapshots.
+- Lifecycle: the `TaskLifecycle` wizard submits one final multipart request;
+  cancellation before confirmation persists nothing, while the server closes
+  the task atomically with evidence, comment, audit, and notifications.
+
+The five example configurations documented in `ARCHITECTURE.md` are the
+recommended fixtures for manual smoke testing: Daily Inspection, Weekly QC
+Review, Monthly Audit, Material Inspection, and Non-Conformance Review.

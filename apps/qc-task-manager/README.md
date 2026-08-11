@@ -722,6 +722,28 @@ The whole app uses one consistent scheme (`src/lib/format.ts` +
 
 Overdue tasks show their due date in **red** (lists, details, dashboard).
 
+### Evidence-driven task templates
+
+Admins manage reusable templates at `/admin/templates`. A template starts as
+`DRAFT`, can be activated for task creation, and can later be archived. Creating
+a task from an ACTIVE template freezes its configuration in a task snapshot;
+editing the template later cannot change old tasks.
+
+Templates can declare typed `REQUIRED` and `OPTIONAL` evidence, for example:
+
+| Task type | Required evidence | Optional evidence |
+| --- | --- | --- |
+| Daily Inspection | Inspection Report, Photo | Measurement XLSX |
+| Weekly QC Review | Review Summary | KPI Export XLSX |
+| Monthly Audit | Audit Report, Findings Register XLSX | Audit Photos |
+| Material Inspection | Lab Report, Sample Photo | Measurement XLSX |
+| Non-Conformance Review | NCR Report, Root-Cause Analysis, Corrective-Action Evidence | — |
+
+The completion wizard is advisory. The server-side close endpoint is the final
+authority: missing required evidence blocks completion, and every accepted
+evidence file is checked for authorization, extension, MIME, size, magic bytes,
+duplicate SHA-256, and persisted metadata/status.
+
 ## Environment
 
 - Node **20+**

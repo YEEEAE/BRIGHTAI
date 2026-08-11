@@ -346,7 +346,7 @@ try {
     checklist: [],
     evidenceRequirements: [
       { type: 'lab_report', label: 'Lab Report', requirement: 'REQUIRED', allowedExtensions: ['pdf'] },
-      { type: 'photo', label: 'Sample Photo', requirement: 'REQUIRED', allowedExtensions: ['png', 'jpg'] },
+      { type: 'photo', label: 'Sample Photo', requirement: 'REQUIRED', allowedExtensions: ['png', 'jpg'], description: 'Photo of the inspected sample' },
     ],
   }, admin.id);
   transitionTemplate(gatedId, 'ACTIVE', admin.id);
@@ -388,13 +388,18 @@ try {
   // 3. Close with BOTH required evidence → success.
   res = await closeTask({ taskId: gatedTaskId, actor: { id: employee.id, role: 'employee' }, form: makeForm({ files: [pdfFile(), pngFile()], types: ['lab_report', 'photo'] }) });
   assert.equal(res.ok, true, `expected close to succeed, got: ${res.ok === false ? res.error : ''}`);
-  const evidenceRows = db.prepare('SELECT evidence_type, evidence_label, verification_status, collected_by, source FROM task_attachments WHERE task_id = ? AND is_evidence = 1 ORDER BY evidence_type').all(gatedTaskId);
+  const evidenceRows = db.prepare('SELECT evidence_type, evidence_label, description, mime_type, file_size, file_hash, collected_at, verification_status, collected_by, source FROM task_attachments WHERE task_id = ? AND is_evidence = 1 ORDER BY evidence_type').all(gatedTaskId);
   assert.equal(evidenceRows.length, 2);
   assert.equal(evidenceRows[0].evidence_type, 'lab_report');
   assert.equal(evidenceRows[0].verification_status, 'UNVERIFIED');
   assert.equal(evidenceRows[0].source, 'manual_upload');
   assert.equal(evidenceRows[0].collected_by, employee.id);
   assert.equal(evidenceRows[1].evidence_type, 'photo');
+  assert.equal(evidenceRows[1].description, 'Photo of the inspected sample');
+  assert.equal(evidenceRows[1].mime_type, 'image/png');
+  assert.equal(evidenceRows[1].file_size, pngBytes.length);
+  assert.match(evidenceRows[1].file_hash, /^[a-f0-9]{64}$/);
+  assert.ok(evidenceRows[1].collected_at, 'collected_at is persisted');
 
   // 4. Wrong magic bytes rejected (fake PDF).
   db.prepare("UPDATE tasks SET status = 'in_progress' WHERE id = ?").run(gatedTaskId);
@@ -402,6 +407,26 @@ try {
   res = await closeTask({ taskId: gatedTaskId, actor: { id: employee.id, role: 'employee' }, form: makeForm({ files: [fakePdf(), pngFile()], types: ['lab_report', 'photo'] }) });
   assert.equal(res.ok, false);
   assert.match(res.error, /does not match|magic/i);
+
+  // Wrong declared MIME is rejected even when the bytes and extension look valid.
+  db.prepare('DELETE FROM task_attachments WHERE task_id = ?').run(gatedTaskId);
+  res = await closeTask({
+    taskId: gatedTaskId,
+    actor: { id: employee.id, role: 'employee' },
+    form: makeForm({ files: [new File([pdfBytes], 'mime-mismatch.pdf', { type: 'image/png' }), pngFile()], types: ['lab_report', 'photo'] }),
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.error, /MIME type/i);
+
+  // Oversized evidence is rejected before the BLOB is read or persisted.
+  const oversized = new File([new Uint8Array(10 * 1024 * 1024 + 1)], 'oversized.pdf', { type: 'application/pdf' });
+  res = await closeTask({
+    taskId: gatedTaskId,
+    actor: { id: employee.id, role: 'employee' },
+    form: makeForm({ files: [oversized, pngFile()], types: ['lab_report', 'photo'] }),
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.error, /10 MB upload limit/i);
 
   // 5. Per-requirement extension narrowing: PDF into the photo slot rejected.
   db.prepare('DELETE FROM task_attachments WHERE task_id = ?').run(gatedTaskId);
@@ -459,6 +484,23 @@ try {
   db.prepare("UPDATE tasks SET status = 'in_progress', started_at = datetime('now') WHERE id = ?").run(gatedTaskId4);
   res = await closeTask({ taskId: gatedTaskId4, actor: { id: manager.id, role: 'manager' }, form: makeForm({ files: [pdfFile()], types: ['lab_report'] }) });
   assert.equal(res.ok, false);
+
+  // Existing evidence remains part of the frozen task record after reopen and
+  // can satisfy the gate; an unauthorized employee still cannot replace it.
+  const persistedTaskId = instantiateTemplate(gatedId, { assignedTo: employee.id }, manager.id);
+  db.prepare("UPDATE tasks SET status = 'in_progress', started_at = datetime('now') WHERE id = ?").run(persistedTaskId);
+  res = await closeTask({ taskId: persistedTaskId, actor: { id: employee.id, role: 'employee' }, form: makeForm({ files: [pdfFile('persisted.pdf'), pngFile('persisted.png')], types: ['lab_report', 'photo'] }) });
+  assert.equal(res.ok, true);
+  const reopenedPersisted = reopenTask({ taskId: persistedTaskId, actor: { id: manager.id, role: 'manager' } });
+  assert.equal(reopenedPersisted.ok, true);
+  res = await closeTask({ taskId: persistedTaskId, actor: { id: employee.id, role: 'employee' }, form: makeForm({ skip: true }) });
+  assert.equal(res.ok, true, 'persisted non-rejected evidence should satisfy the gate after reopen');
+
+  const unauthorizedReplacementTask = instantiateTemplate(gatedId, { assignedTo: manager.id }, manager.id);
+  db.prepare("UPDATE tasks SET status = 'in_progress', started_at = datetime('now') WHERE id = ?").run(unauthorizedReplacementTask);
+  res = await closeTask({ taskId: unauthorizedReplacementTask, actor: { id: employee.id, role: 'employee' }, form: makeForm({ files: [pdfFile('unauthorized.pdf'), pngFile('unauthorized.png')], types: ['lab_report', 'photo'] }) });
+  assert.equal(res.ok, false);
+  assert.match(res.error, /permission/i);
 
   // 9. Task without a template → gate inert (legacy behavior preserved).
   const legacyId = Number(db.prepare("INSERT INTO tasks (title, department, status, priority, created_by, started_at) VALUES ('Legacy', 'QC', 'in_progress', 'medium', ?, datetime('now'))").run(manager.id).lastInsertRowid);

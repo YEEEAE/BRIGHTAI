@@ -137,7 +137,10 @@ export function listAttachmentMeta(taskId: number): AttachmentMeta[] {
   return db
     .prepare(
       `SELECT a.id, a.task_id, a.uploaded_by, a.file_name, a.mime_type,
-              a.file_size, a.file_hash, a.is_evidence, a.uploaded_at, u.full_name AS uploader
+              a.file_size, a.file_hash, a.is_evidence, a.evidence_type,
+              a.evidence_label, a.description, a.source, a.collected_by,
+              a.collected_at, a.verification_status, a.uploaded_at,
+              u.full_name AS uploader
        FROM task_attachments a
        JOIN users u ON u.id = a.uploaded_by
        WHERE a.task_id = ?
@@ -240,7 +243,10 @@ export function listEvidenceFiles(taskId: number): AttachmentMeta[] {
   return db
     .prepare(
       `SELECT a.id, a.task_id, a.uploaded_by, a.file_name, a.mime_type,
-              a.file_size, a.file_hash, a.is_evidence, a.uploaded_at, u.full_name AS uploader
+              a.file_size, a.file_hash, a.is_evidence, a.evidence_type,
+              a.evidence_label, a.description, a.source, a.collected_by,
+              a.collected_at, a.verification_status, a.uploaded_at,
+              u.full_name AS uploader
        FROM task_attachments a
        JOIN users u ON u.id = a.uploaded_by
        WHERE a.task_id = ? AND a.is_evidence = 1

@@ -37,6 +37,8 @@ interface Props {
   canOverrideChecklist?: boolean;
   /** Evidence requirements declared on the task's template snapshot (server-supplied). */
   evidenceRequirements?: { type: string; label: string; requirement: string; allowedExtensions?: string[] }[];
+  /** Non-rejected evidence already persisted on the task (for reopened tasks). */
+  existingEvidenceTypes?: string[];
   /** manager/admin may override the required-evidence gate with a reason. */
   canOverrideEvidence?: boolean;
 }
@@ -89,7 +91,7 @@ const inputCls =
   'w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 const labelCls = 'block text-sm font-medium text-slate-700';
 
-export default function TaskLifecycle({ taskId, title, status, canComplete, canCancel, canReopen, incompleteChecklist = 0, canOverrideChecklist = false, evidenceRequirements = [], canOverrideEvidence = false }: Props) {
+export default function TaskLifecycle({ taskId, title, status, canComplete, canCancel, canReopen, incompleteChecklist = 0, canOverrideChecklist = false, evidenceRequirements = [], existingEvidenceTypes = [], canOverrideEvidence = false }: Props) {
   // ── wizard state ──
   const [wizardOpen, setWizardOpen] = useState(false);
   const [step, setStep] = useState(0);
@@ -168,7 +170,10 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
 
   // Required-evidence coverage (mirrors the server gate for the UI hint).
   const requiredTypes = evidenceRequirements.filter((r) => r.requirement === 'REQUIRED');
-  const coveredTypes = new Set(Object.values(fileTypes).filter(Boolean));
+  const coveredTypes = new Set([
+    ...existingEvidenceTypes,
+    ...Object.values(fileTypes).filter(Boolean),
+  ]);
   const missingRequired = requiredTypes.filter((r) => !coveredTypes.has(r.type));
 
   async function confirmCompletion() {
@@ -395,7 +400,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                   <h3 className="text-sm font-semibold text-slate-900">Step 1 — Evidence</h3>
                   <p className="mt-1 text-xs text-slate-500">
                     Upload proof of completion ({HINT}, max 10 MB per file — extension, MIME type and file signature are
-                    validated). You may skip; the skip is recorded in the activity log.
+                    validated). {requiredTypes.length > 0 ? 'Required items cannot be skipped unless a manager/admin override is supplied.' : 'You may skip; the skip is recorded in the activity log.'}
                   </p>
 
                   {evidenceRequirements.length > 0 && (

@@ -1041,6 +1041,7 @@ export async function closeTask(params: {
     hash: string;
     evidenceType: string | null;
     evidenceLabel: string | null;
+    description: string | null;
   }
   const evidenceFiles: PreparedEvidence[] = [];
   for (let i = 0; i < files.length; i += 1) {
@@ -1075,6 +1076,7 @@ export async function closeTask(params: {
       hash,
       evidenceType: requirement ? requirement.type : (rawType || null),
       evidenceLabel: requirement ? requirement.label : null,
+      description: requirement?.description ?? null,
     });
   }
 
@@ -1105,9 +1107,22 @@ export async function closeTask(params: {
   // is blocked.
   let evidenceOverrideReason: string | null = null;
   if (evidenceRequirements.length > 0) {
-    const uploadedTypes = evidenceFiles
+    const existingEvidence = db
+      .prepare(
+        `SELECT DISTINCT evidence_type
+         FROM task_attachments
+         WHERE task_id = ?
+           AND is_evidence = 1
+           AND evidence_type IS NOT NULL
+           AND verification_status != 'REJECTED'`,
+      )
+      .all(task.id) as { evidence_type: string }[];
+    const uploadedTypes = [
+      ...existingEvidence.map((ev) => ev.evidence_type),
+      ...evidenceFiles
       .map((ev) => ev.evidenceType)
-      .filter((t): t is string => t !== null);
+      .filter((t): t is string => t !== null),
+    ];
     const missing = computeMissingEvidence(evidenceRequirements, uploadedTypes);
     if (missing.length > 0) {
       const labels = missing.map((m) => m.label).join(', ');
@@ -1170,8 +1185,8 @@ export async function closeTask(params: {
       db.prepare(
         `INSERT INTO task_attachments
           (task_id, uploaded_by, file_name, mime_type, file_data, file_size, file_hash, is_evidence,
-           evidence_type, evidence_label, source, collected_by, collected_at, verification_status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, 'manual_upload', ?, datetime('now'), 'UNVERIFIED')`,
+           evidence_type, evidence_label, description, source, collected_by, collected_at, verification_status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, 'manual_upload', ?, datetime('now'), 'UNVERIFIED')`,
       ).run(
         task.id,
         params.actor.id,
@@ -1182,6 +1197,7 @@ export async function closeTask(params: {
         ev.hash,
         ev.evidenceType,
         ev.evidenceLabel,
+        ev.description,
         params.actor.id,
       );
       logActivity({

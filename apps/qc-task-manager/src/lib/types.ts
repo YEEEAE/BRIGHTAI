@@ -95,6 +95,14 @@ export interface TaskAttachment {
   file_hash: string | null;
   /** 1 = completion-evidence file (completion wizard), 0 = generic attachment. */
   is_evidence: number;
+  /** Evidence architecture metadata; nullable for legacy generic attachments. */
+  evidence_type: string | null;
+  evidence_label: string | null;
+  description: string | null;
+  source: string;
+  collected_by: number | null;
+  collected_at: string | null;
+  verification_status: 'UNVERIFIED' | 'VALID' | 'REJECTED' | 'AI_REVIEWED' | 'HUMAN_VERIFIED';
   uploaded_at: string;
 }
 

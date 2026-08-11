@@ -15,6 +15,8 @@ server-side; hiding a button is not a permission boundary.
 | Submit deletion request | No | No | No | Yes |
 | Review deletion requests | Yes | Yes | No | No |
 | View all tasks | Yes | Yes | Yes | No, only own or assigned tasks |
+| Manage task templates | Yes | No | No | No |
+| Instantiate ACTIVE templates | Yes | Yes | Yes | Yes, when task creation is enabled |
 
 ## QC Operations RBAC
 
@@ -27,6 +29,16 @@ server-side; hiding a button is not a permission boundary.
 
 The UI only reflects these permissions; every API mutation resolves the actor
 from the server session and applies the same checks again.
+
+## Evidence and completion gate
+
+Evidence upload and replacement use the current task authorization check. The
+wizard is only a convenience layer: `/api/tasks/:id/close` re-validates the
+actor, file extension, MIME, magic bytes, size, SHA-256 duplicate, and template
+snapshot requirements. Required evidence cannot be skipped. A manager/admin
+can override a missing requirement only by supplying a reason, which is written
+to the task activity log. Existing non-rejected evidence remains valid when a
+completed task is reopened; rejected evidence does not satisfy the gate.
 
 ## Role landing pages
 

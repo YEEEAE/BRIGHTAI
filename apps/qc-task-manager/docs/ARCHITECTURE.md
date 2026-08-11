@@ -37,6 +37,8 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 | `qc-operations.ts` | Finding/CAPA/RCA persistence, lifecycle gates, evidence, and server-side audit transactions |
 | `tasks.ts` | Task creation + assignment-scope validation + `handleCreateTaskPost` |
 | `taskUpdates.ts` | Update / closure flow / attachment upload (atomic, permission-gated) |
+| `evidence/` | Canonical evidence requirements, verification statuses, extension/magic-byte policy, and completion-gate arithmetic |
+| `templates/` + `templatesStore.ts` | Template validation/lifecycle, persistence, instantiation, and immutable task configuration snapshots |
 | `taskDetails.ts` | Read queries + `canViewTask` + activity timeline text |
 | `activity.ts` | `logActivity()` — every mutation is recorded (`task_activity_log`) |
 | `notifications.ts` | Derived in-app notifications (overdue / due-soon / unstarted / recent activity / pending delete requests) |
@@ -58,6 +60,43 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 4. **Closure flow**: completing requires a mandatory completion comment; evidence is uploaded or the skip is recorded. Atomic, race-safe (conditional UPDATE).
 5. **Delete requests**: employees cannot delete — they request; manager/admin approve (hard delete) or reject. The request row is a child of its task (`task_id … ON DELETE CASCADE`), so an approved request is cascade-removed with the task; rejected requests stay in history (titles joined live).
 6. **Activity log**: every task mutation writes `task_activity_log` rows (who / what / old / new / when).
+
+## Evidence architecture
+
+Task templates declare `evidenceRequirements` as typed slots with `REQUIRED` or
+`OPTIONAL` status. A task created from a template stores a JSON snapshot, so
+later template edits do not change the task's required evidence. The close API
+re-checks the snapshot server-side; missing required evidence blocks completion.
+Managers/admins may bypass that gate only with a recorded override reason.
+
+Evidence rows are stored with `evidence_type`, `description`, `source`,
+`collected_at`, `collected_by`, SHA-256 `file_hash`, `file_size`, `mime_type`,
+and `verification_status` (`UNVERIFIED`, `VALID`, `REJECTED`, `AI_REVIEWED`,
+`HUMAN_VERIFIED`). Upload validation checks authorization, extension, declared
+MIME, size, magic bytes, executable signatures, and duplicate SHA-256 content.
+Rejected prior evidence does not satisfy a required slot; re-uploading a new
+hash for the same slot replaces the prior row atomically and records an audit
+event.
+
+## Template lifecycle and examples
+
+Templates move `DRAFT → ACTIVE → ARCHIVED`. Only `ACTIVE` templates can create
+tasks. Instantiation copies title, description, department, priority, SLA,
+checklist, recurrence, finding defaults, assignment rules, and evidence
+requirements into `tasks.template_snapshot`.
+
+Recommended starting templates:
+
+- **Daily Inspection** — daily; Inspection Report required, Photo required,
+  Measurement XLSX optional.
+- **Weekly QC Review** — weekly; Review Summary required, KPI Export XLSX
+  optional.
+- **Monthly Audit** — monthly; Audit Report required, Findings Register XLSX
+  required, Audit Photos optional.
+- **Material Inspection** — per batch; Lab Report required, Sample Photo
+  required, Measurement XLSX optional.
+- **Non-Conformance Review** — on demand; NCR Report required, Root-Cause
+  Analysis required, Corrective-Action Evidence required.
 
 ## QC Operations Platform
 

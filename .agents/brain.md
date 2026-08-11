@@ -2,12 +2,20 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-11 23:12 +03:00
+last_updated: 2026-08-12 00:22 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.88
+version: 2.7.89
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-12 — QC-EVIDENCE-TEMPLATES-LIFECYCLE-001: إكمال Evidence architecture وربطها بالـ Templates والـ Lifecycle
+
+- **Files**: `apps/qc-task-manager/src/lib/taskUpdates.ts`, `src/lib/taskDetails.ts`, `src/lib/types.ts`, `src/components/TaskLifecycle.tsx`, `src/components/EvidenceRequirementsInput.tsx`, `src/pages/tasks/[id].astro`, `scripts/test-templates.mjs`, `docs/{ARCHITECTURE,ROLES-AND-PERMISSIONS,TESTING}.md`, `README.md`, `docs/superpowers/plans/2026-08-12-qc-evidence-templates-lifecycle.md`.
+- **What**: أكملت metadata الخاصة بـ Evidence (description/source/collected_at/collected_by/SHA-256/size/MIME/verification status) عند الحفظ، وخليت بوابة الإكمال server-side تعترف بالأدلة السابقة غير المرفوضة بعد reopen، مع بقاء authorization وduplicate/replacement rules. صفحة تفاصيل المهمة والـ wizard يعرضون حالة Required/Optional ومحتوى evidence الموجود. أصلحت JSX/type contract في EvidenceRequirementsInput.
+- **Docs/examples**: وثّقت Evidence security/statuses، Template lifecycle/snapshot، الصلاحيات، الاختبارات، وأمثلة Daily Inspection وWeekly QC Review وMonthly Audit وMaterial Inspection وNon-Conformance Review.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **265 passed / 0 failed**؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 12 hints**؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built**؛ `node apps/qc-task-manager/scripts/verify-security-hygiene.mjs` → **passed**؛ focused `test:templates` → **passed**؛ `git -c core.fsmonitor=false diff --check` → **passed**.
+- **Status**: verified locally; live browser E2E غير مشغّل في هذه المهمة، فلا يُستنتج منه production readiness. لا commit ولا push؛ المستخدم يلتزم.
 
 ### 2026-08-11 — QC-OPERATIONS-PLATFORM-001: إضافة Findings/CAPA/RCA وواجهات التشغيل
 
