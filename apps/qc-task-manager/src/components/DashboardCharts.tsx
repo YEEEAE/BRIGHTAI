@@ -4,12 +4,23 @@
 // parameterized queries and passed in as props; this island only renders it.
 // All charts are interactive (hover tooltips) but also carry native <title>
 // fallbacks and descriptive aria-labels, so they degrade gracefully without JS.
+//
+// Six widgets live here: status donut, priority bars, per-employee stacked
+// bars, overdue-by-employee bars, completed-per-week line, and the
+// completion-rate-vs-previous-period card.
 
 import { useState } from 'react';
 
 // ── shared prop types (mirror src/lib/dashboard.ts) ──
 export interface DonutSlice {
   status: string;
+  label: string;
+  color: string;
+  count: number;
+}
+
+export interface PrioritySlice {
+  priority: string;
   label: string;
   color: string;
   count: number;
@@ -22,16 +33,35 @@ export interface EmployeeBar {
   statuses: DonutSlice[];
 }
 
+export interface OverdueEmployee {
+  user_id: number;
+  full_name: string;
+  count: number;
+}
+
 export interface WeekPoint {
   weekStart: string;
   label: string;
   count: number;
 }
 
+export interface CompletionRateProps {
+  current: number | null;
+  previous: number | null;
+  delta_pp: number | null;
+  current_from: string;
+  current_to: string;
+  previous_from: string;
+  previous_to: string;
+}
+
 interface Props {
   donut: DonutSlice[];
+  priority: PrioritySlice[];
   bar: EmployeeBar[];
+  overdueByEmployee: OverdueEmployee[];
   line: WeekPoint[];
+  completionRate: CompletionRateProps;
 }
 
 const TOOLTIP_CLS =
@@ -114,7 +144,7 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
 
       {/* legend */}
       <ul className="mt-4 grid w-full grid-cols-2 gap-x-4 gap-y-1.5">
-        {data.map((d, i) => (
+        {data.map((d) => (
           <li key={d.status} className="flex items-center gap-2 text-xs text-slate-600">
             <span
               className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
@@ -130,7 +160,70 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
   );
 }
 
-// ─────────────────────────── Bar chart ───────────────────────────
+// ─────────────────────────── Priority bar chart ───────────────────────────
+// Horizontal bars, one per priority, with the count + share-of-total.
+
+function PriorityChart({ data }: { data: PrioritySlice[] }) {
+  const [hover, setHover] = useState<string | null>(null);
+  const total = data.reduce((sum, d) => sum + d.count, 0);
+  const max = Math.max(1, ...data.map((d) => d.count));
+
+  return (
+    <div className="relative">
+      <ul className="space-y-3">
+        {data.map((d) => {
+          const pct = total > 0 ? Math.round((d.count / total) * 100) : 0;
+          const widthPct = (d.count / max) * 100;
+          const isHover = hover === d.priority;
+          return (
+            <li
+              key={d.priority}
+              data-priority-bar={d.priority}
+              data-count={d.count}
+              className="group relative"
+              onMouseEnter={() => setHover(d.priority)}
+              onMouseLeave={() => setHover(null)}
+            >
+              <div className="mb-1 flex items-baseline justify-between text-xs">
+                <span className="font-medium text-slate-700">{d.label}</span>
+                <span className="tabular-nums text-slate-500">
+                  {d.count} <span className="text-slate-400">({pct}%)</span>
+                </span>
+              </div>
+              <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+                <div
+                  className="h-full rounded-full transition-all duration-300"
+                  style={{
+                    width: `${widthPct}%`,
+                    backgroundColor: d.color,
+                    opacity: hover === null || isHover ? 1 : 0.45,
+                  }}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      {total === 0 && (
+        <p className="mt-2 text-center text-xs text-slate-400">
+          No tasks match the current filters.
+        </p>
+      )}
+      {hover && (() => {
+        const d = data.find((x) => x.priority === hover)!;
+        const pct = total > 0 ? Math.round((d.count / total) * 100) : 0;
+        return (
+          <div className={TOOLTIP_CLS} style={{ left: '50%', top: '-8px' }} role="tooltip">
+            <span className="mr-1 inline-block h-2 w-2 rounded-full" style={{ backgroundColor: d.color }} aria-hidden="true" />
+            {d.label}: {d.count} ({pct}%)
+          </div>
+        );
+      })()}
+    </div>
+  );
+}
+
+// ─────────────────────────── Stacked bar chart ───────────────────────────
 
 const BAR_H = 210;
 const BAR_PAD_L = 30;
@@ -149,10 +242,10 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
   const gridVals = [...new Set([0, 0.25, 0.5, 0.75, 1].map((g) => Math.round(g * maxTotal)))];
   const barW = Math.min(34, slotW - 20);
 
-  if (data.length === 0) {
+  if (data.length === 0 || data.every((d) => d.total === 0)) {
     return (
       <p className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
-        No active users yet.
+        No tasks assigned to active users match the current filters.
       </p>
     );
   }
@@ -201,7 +294,7 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
               });
             return (
               <g key={user.user_id}>
-                {segments.map((s, si) => (
+                {segments.map((s) => (
                   <rect
                     key={s.status}
                     x={barLeft}
@@ -209,7 +302,7 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
                     width={barW}
                     height={s.h}
                     fill={s.color}
-                    rx={si === segments.length - 1 ? 4 : 2}
+                    rx={2}
                     opacity={hover ? (hover.user === user.user_id && hover.status === s.status ? 1 : 0.65) : 1}
                     className="cursor-pointer transition-opacity duration-150"
                     onMouseEnter={() =>
@@ -254,7 +347,7 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
 
       {/* status legend */}
       <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
-        {['not_started', 'in_progress', 'on_hold', 'completed', 'cancelled'].map((status, i) => {
+        {['not_started', 'in_progress', 'on_hold', 'completed', 'cancelled'].map((status) => {
           const slice = data[0]?.statuses.find((s) => s.status === status);
           return (
             <li key={status} className="flex items-center gap-1.5 text-xs text-slate-600">
@@ -286,6 +379,69 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
           </div>
         );
       })()}
+    </div>
+  );
+}
+
+// ─────────────────────── Overdue by employee ───────────────────────
+// Horizontal bars, one per active user with overdue tasks. Red-tinted so it
+// reads as "needs attention". Users with zero overdue tasks are omitted.
+
+function OverdueByEmployeeChart({ data }: { data: OverdueEmployee[] }) {
+  const [hover, setHover] = useState<number | null>(null);
+  const max = Math.max(1, ...data.map((d) => d.count));
+
+  if (data.length === 0) {
+    return (
+      <p className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
+        No overdue tasks — great job! 🎉
+      </p>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <ul className="space-y-2.5">
+        {data.map((d) => {
+          const widthPct = (d.count / max) * 100;
+          const isHover = hover === d.user_id;
+          return (
+            <li
+              key={d.user_id}
+              data-overdue-emp={d.user_id}
+              data-count={d.count}
+              className="group relative"
+              onMouseEnter={() => setHover(d.user_id)}
+              onMouseLeave={() => setHover(null)}
+            >
+              <div className="mb-1 flex items-baseline justify-between text-xs">
+                <span className="truncate font-medium text-slate-700">{d.full_name}</span>
+                <span className="tabular-nums font-semibold text-rose-700">{d.count}</span>
+              </div>
+              <div className="h-3 w-full overflow-hidden rounded-full bg-rose-50">
+                <div
+                  className="h-full rounded-full transition-all duration-300"
+                  style={{
+                    width: `${widthPct}%`,
+                    backgroundColor: '#dc2626',
+                    opacity: hover === null || isHover ? 1 : 0.4,
+                  }}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      {hover !== null &&
+        (() => {
+          const d = data.find((x) => x.user_id === hover);
+          if (!d) return null;
+          return (
+            <div className={TOOLTIP_CLS} style={{ left: '50%', top: '-8px' }} role="tooltip">
+              {d.full_name}: {d.count} overdue
+            </div>
+          );
+        })()}
     </div>
   );
 }
@@ -411,28 +567,106 @@ function LineChart({ data }: { data: WeekPoint[] }) {
   );
 }
 
+// ─────────────────────── Completion rate card ───────────────────────
+// Big current rate, with the delta vs the previous period (percentage points)
+// and a small comparison so the trend is obvious at a glance.
+
+function CompletionRateCard({ data }: { data: CompletionRateProps }) {
+  const cur = data.current;
+  const prev = data.previous;
+  const delta = data.delta_pp;
+  const curPct = cur !== null ? Math.round(cur * 100) : null;
+  const prevPct = prev !== null ? Math.round(prev * 100) : null;
+  const up = delta !== null && delta > 0;
+  const down = delta !== null && delta < 0;
+  const flat = delta === 0;
+  const deltaColor = up ? 'text-emerald-600' : down ? 'text-rose-600' : 'text-slate-500';
+  const arrow = up ? '▲' : down ? '▼' : flat ? '■' : '';
+
+  return (
+    <div className="flex h-full flex-col" data-completion-card data-current={curPct ?? ''} data-previous={prevPct ?? ''} data-delta={delta ?? ''}>
+      <div className="flex items-baseline gap-3">
+        <span
+          className="text-4xl font-semibold tabular-nums text-slate-900"
+          aria-label={`Completion rate ${curPct ?? '—'} percent`}
+        >
+          {curPct !== null ? `${curPct}%` : '—'}
+        </span>
+        {delta !== null && (
+          <span className={`text-sm font-semibold tabular-nums ${deltaColor}`}>
+            <span aria-hidden="true">{arrow}</span>{' '}
+            {Math.abs(delta) < 0.5 ? '< 1' : Math.abs(Math.round(delta))} pp
+          </span>
+        )}
+      </div>
+      <p className="mt-1 text-xs text-slate-500">
+        vs previous period ({prevPct !== null ? `${prevPct}%` : '—'})
+      </p>
+      {/* progress bar representing the current rate */}
+      <div className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
+        <div
+          className="h-full rounded-full bg-emerald-500 transition-all duration-500"
+          style={{ width: `${curPct ?? 0}%` }}
+        />
+      </div>
+      <p className="mt-3 text-[11px] leading-relaxed text-slate-400">
+        Current: {data.current_from} → {data.current_to}
+        <br />
+        Previous: {data.previous_from} → {data.previous_to}
+      </p>
+    </div>
+  );
+}
+
 // ─────────────────────────── Island root ───────────────────────────
 
-export default function DashboardCharts({ donut, bar, line }: Props) {
+export default function DashboardCharts({
+  donut,
+  priority,
+  bar,
+  overdueByEmployee,
+  line,
+  completionRate,
+}: Props) {
   return (
-    <section aria-label="Analytics" className="mt-8 grid gap-4 lg:grid-cols-3">
-      <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="text-sm font-semibold text-slate-900">Tasks by status</h2>
-        <p className="mb-4 text-xs text-slate-500">Distribution across all statuses</p>
-        <DonutChart data={donut} />
-      </div>
+    <>
+      <section aria-label="Analytics" className="mt-8 grid gap-4 lg:grid-cols-3">
+        <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="text-sm font-semibold text-slate-900">Tasks by status</h2>
+          <p className="mb-4 text-xs text-slate-500">Distribution across all statuses</p>
+          <DonutChart data={donut} />
+        </div>
 
-      <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 lg:col-span-2">
-        <h2 className="text-sm font-semibold text-slate-900">Completed per week</h2>
-        <p className="mb-4 text-xs text-slate-500">Completions from completed_at, last 8 weeks</p>
-        <LineChart data={line} />
-      </div>
+        <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="text-sm font-semibold text-slate-900">Completion rate</h2>
+          <p className="mb-4 text-xs text-slate-500">Completed vs total, current vs previous period</p>
+          <CompletionRateCard data={completionRate} />
+        </div>
 
-      <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 lg:col-span-3">
-        <h2 className="text-sm font-semibold text-slate-900">Tasks per employee</h2>
-        <p className="mb-4 text-xs text-slate-500">Assigned tasks, split by status</p>
-        <BarChart data={bar} />
-      </div>
-    </section>
+        <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="text-sm font-semibold text-slate-900">Tasks by priority</h2>
+          <p className="mb-4 text-xs text-slate-500">Count and share per priority</p>
+          <PriorityChart data={priority} />
+        </div>
+
+        <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 lg:col-span-3">
+          <h2 className="text-sm font-semibold text-slate-900">Completed per week</h2>
+          <p className="mb-4 text-xs text-slate-500">Completions from completed_at, last 8 weeks</p>
+          <LineChart data={line} />
+        </div>
+
+        <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 lg:col-span-2">
+          <h2 className="text-sm font-semibold text-slate-900">Tasks per employee</h2>
+          <p className="mb-4 text-xs text-slate-500">Assigned tasks, split by status</p>
+          <BarChart data={bar} />
+        </div>
+
+        <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="text-sm font-semibold text-slate-900">Overdue by employee</h2>
+          <p className="mb-4 text-xs text-slate-500">Overdue tasks assigned to each active user</p>
+          <OverdueByEmployeeChart data={overdueByEmployee} />
+        </div>
+      </section>
+    </>
   );
 }

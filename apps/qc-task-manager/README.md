@@ -45,8 +45,12 @@ server-side validation. Runs locally on port 4321.
   database as BLOBs** (CORE RULE #5) with extension + MIME + 10 MB validation.
 - **Delete requests** (CORE RULE #4): employees cannot delete — they request,
   a manager/admin approves or rejects.
-- **Dashboard**: KPI cards, donut/bar/line SVG charts, overdue + recently
-  completed tables, and date/assignee/priority filters.
+- **Dashboard**: 9 KPI cards, 6 pure-SVG charts (status donut, priority bars,
+  per-employee stacked bars, overdue-by-employee bars, completed-per-week line,
+  completion-rate-vs-previous-period card), 5 tables (most overdue, current
+  blockers, recently completed, completed without evidence, latest activity),
+  and 8 filters (range preset / custom range / assignee / priority / status /
+  overdue-only) with loading + error states.
 - **Notifications** (`/notifications` + navbar bell dropdown): persisted
   alerts for assignment, due-date / priority changes, comments, blockers,
   completions, deletion requests, reopens, and recurring tasks — with
@@ -516,7 +520,7 @@ All endpoints re-check the session **and** the role/permission server-side
 | `/api/notifications/read-all` | POST | Mark all persisted notifications as read |
 | `/api/notifications/[id]/read` | POST | Mark ONE persisted notification as read (owner only) |
 | `/admin/users/api` | POST | User management actions (admin) |
-| `/manager/requests/api` | POST | Approve/reject delete requests (manager+) |
+| `/manager/requests/api` | POST | Approve (confirmed) / reject (optional reason) a delete request (manager+) |
 | `/api/export/tasks.csv` | GET | Download tasks as CSV (role-scoped, attachment) |
 
 ### Upload validation
@@ -537,17 +541,32 @@ renamed file with the right extension and MIME is still rejected.
 
 ### Dashboard (`/dashboard`)
 
-Manager/supervisor/admin only (employees are redirected with a flash).
-Read-only parameterized queries in `src/lib/dashboard.ts`:
+Manager/supervisor/admin only (employees are redirected to `/employee` with a
+flash — CORE BUSINESS RULE #1). Read-only, fully parameterized queries in
+`src/lib/dashboard.ts`; filters scope every widget through the same WHERE clause.
 
-- **KPIs**: Total, 🔴 Not started, 🟡 In progress, 🟠 On hold, 🟢 Completed,
-  ✖️ Cancelled, ⚠️ Overdue (`due_date < today AND status NOT IN
-  ('completed', 'cancelled')`).
-- **Charts** (pure SVG, no library): donut by status, stacked bar per
-  employee, line of completions per week (last 8 weeks, Monday-aligned).
-- **Tables**: overdue tasks + recently completed.
-- **Filters**: created-date range, assignee, priority — every widget shares the
-  same WHERE clause; invalid values are dropped with a flash.
+- **KPIs (9)**: 📋 Total, 🔴 Not started, 🟡 In progress, 🟠 On hold, 🟢
+  Completed, ⚠️ Overdue (`due_date < today AND status NOT IN ('completed',
+  'cancelled')`), 🚨 Urgent open (`priority = 'urgent'` AND not
+  completed/cancelled), 📎 Completed without evidence (no `is_evidence = 1`
+  attachment), ⏱️ Average completion time (AVG of `completed_at − started_at`).
+- **Charts (6, pure SVG/HTML — no library)**: donut by status, horizontal bars
+  by priority, stacked bars per employee (with an Unassigned bucket), red
+  horizontal bars for overdue-by-employee, line of completions per week (last 8
+  weeks, Monday-aligned), and a completion-rate-vs-previous-period card (current
+  %, delta in percentage points, progress bar).
+- **Tables (5)**: most overdue tasks, current blockers (status = on_hold),
+  recently completed, completed without evidence, latest activity feed (20 most
+  recent events from `task_activity_log`).
+- **Filters (8)**: range preset (Today / This week / This month / Custom
+  range…), custom created-from / created-to dates, assignee, priority, status,
+  and an Overdue-only switch. Range presets resolve to local-calendar windows;
+  custom date fields appear only when "Custom range…" is selected.
+- **States**: every widget has an empty state; a full-screen loading overlay
+  appears on filter submit (CSP-safe Astro `<script>`); a top-level try/catch
+  renders a friendly error banner instead of a 500 if any query fails.
+
+E2E: `scripts/e2e-dashboard.mjs` (45 assertions).
 
 ### Delete requests (`/manager/requests`)
 
@@ -556,7 +575,20 @@ Employees submit requests (`DeleteRequestDialog`), managers/admins approve
 request row is a child of its task (`task_id … ON DELETE CASCADE`): approving
 hard-deletes the task **and** the request row together, and rejecting keeps the
 task with the rejected request visible in history (titles are joined live from
-`tasks`). E2E: `scripts/e2e-delete-request.mjs`.
+`tasks`).
+
+Review is guarded (`ReviewDeleteRequestDialog` island):
+
+- **Approval requires confirmation** — the reviewer clicks Approve, a dialog
+  spells out that the task, its comments, attachments and activity history
+  will be **permanently deleted**, and nothing is sent to the server until
+  they confirm.
+- **Rejection may include a reason** — the reviewer can type an optional note
+  in the dialog. It is persisted on the request row (`review_note`), shown in
+  the history list, carried by the `delete_rejected` activity entry, and
+  included in the requester's notification message.
+
+E2E: `scripts/e2e-delete-request.mjs`.
 
 ### Notifications (bell + `/notifications`)
 
@@ -661,13 +693,13 @@ output directory. The same routine is exposed programmatically in
 ### E2E scripts
 
 ```bash
-# delete-request workflow (31 assertions) — run from the app directory:
+# delete-request workflow (39 assertions) — run from the app directory:
 QC_DB_PATH=$(pwd)/db/e2e_test.db node scripts/init-db.mjs
 QC_DB_PATH=$(pwd)/db/e2e_test.db PORT=4322 node dist/server/entry.mjs &
 QC_DB_PATH=$(pwd)/db/e2e_test.db BASE_URL=http://localhost:4322 node scripts/e2e-delete-request.mjs
 # …then kill the server and remove db/e2e_test.db*
 
-# dashboard (30 assertions): same pattern, scripts/e2e-dashboard.mjs
+# dashboard (45 assertions): same pattern, scripts/e2e-dashboard.mjs
 #   (covers the cancelled KPI/donut slice + cancelled-never-overdue rule)
 # auth lockout (secure auth hardening): scripts/e2e-auth-lockout.mjs
 #   (PORT=4323 — build first so the Secure cookie flag is asserted)

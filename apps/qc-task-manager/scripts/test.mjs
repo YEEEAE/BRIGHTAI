@@ -19,7 +19,15 @@ import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 
 import { createBackup } from '../src/lib/backup.ts';
-import { parseFormData, taskCreateInputSchema, commentSchema, userCreateSchema, loginInputSchema } from '../src/lib/validation.ts';
+import {
+  parseFormData,
+  taskCreateInputSchema,
+  commentSchema,
+  userCreateSchema,
+  loginInputSchema,
+  deleteReviewSchema,
+  savedFilterSchema,
+} from '../src/lib/validation.ts';
 import {
   isTaskReadOnly,
   canTransitionStatus,
@@ -40,6 +48,17 @@ import {
 } from '../src/lib/task-policy.ts';
 import { nextDueDate, shouldCreateNextOccurrence } from '../src/lib/recurrence.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
+import {
+  parseTaskSearchFilters,
+  filtersToQuery,
+  hasSearchFilters,
+  buildSearchWhere,
+  escapeLike,
+  savedFilterHref,
+  NO_SEARCH_FILTERS,
+} from '../src/lib/taskSearch.ts';
+import { searchRowsToCsv } from '../src/lib/searchExport.ts';
+import { buildTaskPdf } from '../src/lib/pdf.ts';
 
 const APP_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -229,6 +248,18 @@ ok(r.success, 'user create: valid input passes');
 r = parseFormData(loginInputSchema, form({ username: '', password: '' }));
 ok(!r.ok && r.error === 'Username is required.', 'login: empty username');
 
+// delete review (approve/reject + optional rejection reason)
+r = parseFormData(deleteReviewSchema, form({ action: 'reject', request_id: '12', review_note: '  Duplicate task  ' }));
+ok(r.ok && r.data.action === 'reject' && r.data.request_id === 12 && r.data.review_note === 'Duplicate task', 'delete review: parses action/request + trims review note');
+r = parseFormData(deleteReviewSchema, form({ action: 'approve', request_id: '3' }));
+ok(r.ok && r.data.action === 'approve' && r.data.request_id === 3 && r.data.review_note === null, 'delete review: approve without a note');
+r = parseFormData(deleteReviewSchema, form({ action: 'approve', request_id: 'abc' }));
+ok(!r.ok && r.error === 'Invalid request.', 'delete review: non-numeric request id rejected');
+r = parseFormData(deleteReviewSchema, form({ action: 'bogus', request_id: '1' }));
+ok(!r.ok && r.error === 'Invalid action.', 'delete review: bogus action rejected');
+r = parseFormData(deleteReviewSchema, form({ action: 'reject', request_id: '1', review_note: 'x'.repeat(1001) }));
+ok(!r.ok && /Review note must be/.test(r.error), 'delete review: review note capped');
+
 // ── 3. Task policy ──
 section('Task policy (src/lib/task-policy.ts)');
 ok(isTaskReadOnly('completed') === true, 'completed is read-only');
@@ -331,6 +362,152 @@ ok(csv.startsWith('\uFEFF'), 'csv: UTF-8 BOM');
 ok(csv.includes('ID,Title,Description,Status,Priority,Progress (%),Assignee,Created by,Due date,Created at,Completed at,Blocker note'), 'csv: headers');
 ok(csv.includes('"Calibrate, gauges"'), 'csv: title escaped');
 ok(csv.endsWith('\r\n'), 'csv: CRLF line ending');
+
+// ── 4b. Advanced search (src/lib/taskSearch.ts) ──
+section('Advanced search (src/lib/taskSearch.ts)');
+const noopJar = { cookies: { set: () => undefined } };
+
+// Full valid query string → typed filters.
+const fullUrl = new URL(
+  'http://localhost/search?q=zinc%20test&status=completed&priority=urgent&department=Lab' +
+    '&assigned=7&creator=3&due_from=2026-08-01&due_to=2026-08-31&created_from=2026-07-01' +
+    '&created_to=2026-07-31&completed_from=2026-08-01&completed_to=2026-08-15' +
+    '&overdue=1&has_evidence=1&evidence_skipped=1&recurrence=weekly&deletion=1' +
+    '&sort=due_date&dir=asc&page=3&per=50',
+);
+let f = parseTaskSearchFilters(fullUrl, noopJar);
+ok(f.q === 'zinc test', 'search parse: free text trimmed');
+ok(f.status === 'completed' && f.priority === 'urgent' && f.department === 'Lab', 'search parse: status/priority/department');
+ok(f.assigned_to === 7 && f.created_by === 3, 'search parse: assigned + creator');
+ok(f.due_from === '2026-08-01' && f.due_to === '2026-08-31', 'search parse: due range');
+ok(f.created_from === '2026-07-01' && f.created_to === '2026-07-31', 'search parse: created range');
+ok(f.completed_from === '2026-08-01' && f.completed_to === '2026-08-15', 'search parse: completed range');
+ok(f.overdue_only && f.has_evidence && f.evidence_skipped && f.deletion_requested, 'search parse: boolean toggles');
+ok(f.recurrence === 'weekly', 'search parse: recurrence');
+ok(f.sort === 'due_date' && f.dir === 'asc' && f.page === 3 && f.per_page === 50, 'search parse: sort/dir/page/per');
+
+// Invalid values are dropped + a flash is set (never thrown).
+const flashed = [];
+const spyJar = { cookies: { set: () => flashed.push('x') } };
+const bad = parseTaskSearchFilters(
+  new URL('http://localhost/search?status=bogus&priority=nah&due_from=11/08/2026&page=abc&per=999&sort=evil'),
+  spyJar,
+);
+ok(bad.status === null && bad.priority === null && bad.due_from === null, 'search parse: invalid values dropped');
+ok(bad.page === 1 && bad.per_page === 25 && bad.sort === 'updated_at' && bad.dir === 'desc', 'search parse: invalid page/per/sort fall back to defaults');
+ok(flashed.length >= 2, 'search parse: invalid params flash an error');
+
+// filtersToQuery round-trips through the parser (URL state preservation).
+const shaped = { ...NO_SEARCH_FILTERS, q: 'hello world', status: 'in_progress', per_page: 50, sort: 'due_date', dir: 'asc' };
+const qs = filtersToQuery(shaped);
+ok(qs.includes('status=in_progress') && qs.includes('q=hello+world'), 'filtersToQuery: encodes filters');
+const re = parseTaskSearchFilters(new URL(`http://localhost/search${qs}`), noopJar);
+ok(re.status === 'in_progress' && re.q === 'hello world' && re.per_page === 50 && re.sort === 'due_date' && re.dir === 'asc', 'filtersToQuery: round-trips through the parser');
+ok(parseTaskSearchFilters(new URL('http://localhost/search'), noopJar).page === 1, 'search parse: no page param defaults to 1');
+
+ok(!hasSearchFilters(NO_SEARCH_FILTERS), 'hasSearchFilters: empty state is false');
+ok(hasSearchFilters({ ...NO_SEARCH_FILTERS, overdue_only: true }), 'hasSearchFilters: overdue counts');
+
+// LIKE escaping + the parameterized WHERE builder.
+ok(escapeLike('50%_done') === '50\\%\\_done', 'escapeLike: escapes wildcards');
+const w = buildSearchWhere({ ...NO_SEARCH_FILTERS, q: 'abc', status: 'on_hold', priority: 'high', due_from: '2026-08-01', overdue_only: true, has_evidence: true });
+ok(w.sql.includes('t.status = ?') && w.sql.includes('t.priority = ?'), 'buildSearchWhere: conditions present');
+ok(w.sql.includes("EXISTS (SELECT 1 FROM task_attachments"), 'buildSearchWhere: has_evidence subquery');
+ok(w.params.length >= 6, 'buildSearchWhere: params bound for every condition');
+// Injection proof: hostile text lands in PARAMS, never in the SQL text.
+const evil = buildSearchWhere({ ...NO_SEARCH_FILTERS, q: "'; DROP TABLE tasks; --", department: 'x\" OR 1=1 --' });
+ok(!evil.sql.includes('DROP') && !evil.sql.includes('OR 1=1'), 'buildSearchWhere: user input never interpolated into SQL');
+ok(evil.params.includes("%'; DROP TABLE tasks; --%"), 'buildSearchWhere: hostile text bound as a param');
+
+// Saved-filter URL builder.
+ok(savedFilterHref('{"status":"completed","priority":"urgent"}') === '/search?status=completed&priority=urgent', 'savedFilterHref: rebuilds the search URL');
+ok(savedFilterHref('not-json') === '/search', 'savedFilterHref: malformed JSON falls back safely');
+
+// Saved-filter POST schema.
+r = parseFormData(savedFilterSchema, form({ action: 'save', name: '  High priority  ', filter_json: '{"priority":"high"}', next: '/search?priority=high' }));
+ok(r.ok && r.data.action === 'save' && r.data.name === 'High priority' && r.data.filter_json === '{"priority":"high"}', 'saved filter: save action trims the name');
+r = parseFormData(savedFilterSchema, form({ action: 'delete', filter_id: '5' }));
+ok(r.ok && r.data.filter_id === 5 && r.data.name === null, 'saved filter: delete parses the id');
+r = parseFormData(savedFilterSchema, form({ action: 'bogus' }));
+ok(!r.ok && r.error === 'Invalid action.', 'saved filter: bogus action rejected');
+r = parseFormData(savedFilterSchema, form({ action: 'save', name: 'x'.repeat(101) }));
+ok(!r.ok && /Saved filter name must be/.test(r.error), 'saved filter: name capped');
+
+// ── 4c. Search exports (CSV row mapping — never BLOBs) ──
+section('Search export CSV (src/lib/searchExport.ts)');
+const searchRows = [
+  {
+    id: 1,
+    title: 'Calibrate, gauges',
+    description: 'fix, "quoted"',
+    blocker_note: 'waiting on parts',
+    status: 'in_progress',
+    priority: 'high',
+    progress_percent: 40,
+    department: 'Lab',
+    recurrence: 'none',
+    due_date: '2026-08-01',
+    created_at: '2026-08-01 10:00:00',
+    completed_at: null,
+    updated_at: '2026-08-02 10:00:00',
+    assignee: 'Sara',
+    creator: 'Manager',
+    comments_count: 2,
+    evidence_count: 1,
+    delete_pending: 0,
+    evidence_files: 'report.pdf; shot.png',
+    evidence_skipped: 0,
+  },
+];
+const scsv = searchRowsToCsv(searchRows);
+ok(scsv.startsWith('\uFEFF'), 'search csv: UTF-8 BOM');
+ok(scsv.includes('ID,Title,Description,Status,Priority'), 'search csv: headers');
+ok(scsv.includes('"Calibrate, gauges"'), 'search csv: title escaped');
+ok(scsv.includes('"fix, ""quoted"""'), 'search csv: description quotes doubled');
+ok(scsv.includes('report.pdf; shot.png'), 'search csv: evidence file NAMES only (no BLOB content)');
+ok(!scsv.includes('file_data'), 'search csv: never references the BLOB column');
+ok(scsv.endsWith('\r\n'), 'search csv: CRLF line ending');
+
+// ── 4d. Task PDF report (pure builder) ──
+section('Task PDF report (src/lib/pdf.ts)');
+const pdfData = {
+  id: 42,
+  title: 'Calibrate the gauges',
+  description: 'Check calibration equipment',
+  department: 'Lab',
+  progress_percent: 100,
+  status_label: 'Completed',
+  priority_label: 'High',
+  recurrence_label: 'Weekly',
+  assignee: 'Sara',
+  creator: 'Manager',
+  due_date: '2026-08-01',
+  created_at: '2026-08-01 10:00:00',
+  updated_at: null,
+  started_at: '2026-08-01 10:05:00',
+  completed: true,
+  completed_at: '2026-08-02 10:00:00',
+  completed_by: 'Sara',
+  completion_comment: 'All good',
+  evidence_files: ['report.pdf'],
+  evidence_skipped: false,
+  cancelled: false,
+  cancelled_at: null,
+  cancelled_by: null,
+  comments: [{ author: 'Manager', date: '1 Aug 2026', text: 'Please verify' }],
+  activity: [{ user: 'Sara', date: '2 Aug 2026', text: 'marked the task completed.' }],
+  generated_at: '11 Aug 2026, 12:00',
+};
+const pdfStr = buildTaskPdf(pdfData).toString('latin1');
+ok(pdfStr.startsWith('%PDF-1.4'), 'pdf: header');
+ok(pdfStr.includes('Calibrate the gauges'), 'pdf: task title present');
+ok(pdfStr.includes('COMPLETION DETAILS') && pdfStr.includes('All good'), 'pdf: completion details + comment');
+ok(pdfStr.includes('report.pdf'), 'pdf: evidence file name present');
+ok(pdfStr.includes('Please verify'), 'pdf: comments present');
+ok(pdfStr.includes('marked the task completed.'), 'pdf: activity history present');
+ok(pdfStr.includes('Generated: 11 Aug 2026'), 'pdf: generated date present');
+ok((pdfStr.match(/\/Type \/Page\b/g) ?? []).length >= 1, 'pdf: at least one page object');
+ok(pdfStr.trimEnd().endsWith('%%EOF'), 'pdf: EOF marker');
 
 // ── 5. Backup round-trip (real files) ──
 section('Backup (src/lib/backup.ts)');

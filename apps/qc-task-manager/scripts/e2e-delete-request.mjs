@@ -1,13 +1,14 @@
 // E2E spec for the delete-request workflow (CORE BUSINESS RULE #4).
 // Runs against a live dev server (BASE_URL, default http://localhost:4322) and
 // asserts DB state via better-sqlite3 on the SAME database the server uses.
-// Scenarios: A approve path, B reject path, C completed blocked, D duplicate
-// blocked, E supervisor cannot review, F role surface.
+// Scenarios: A approve path (with REQUIRED confirmation dialog), B reject path
+// (with optional rejection reason), C completed blocked, D duplicate blocked,
+// E supervisor cannot review, F role surface.
 //
 // Spec semantics (12-table schema): the request row is a child of its task
 // (task_id ON DELETE CASCADE) — approving deletes task AND request together,
 // so scenario A asserts the row is gone. Rejected requests survive (task
-// alive) and appear in history.
+// alive), keep the reviewer's review_note, and appear in history.
 // Usage: QC_DB_PATH=<app>/db/e2e_test.db node scripts/e2e-delete-request.mjs
 
 import { chromium } from 'playwright';
@@ -99,6 +100,23 @@ async function openRequestsPage(managerPage) {
   await managerPage.goto(`${BASE}/manager/requests`);
   await managerPage.waitForSelector('h1:has-text("Delete requests")', { timeout: 15_000 });
 }
+
+/**
+ * Click a review trigger button (data-review-action) and wait for its confirm
+ * dialog. Retries the click in case the React island has not hydrated yet (a
+ * pre-hydration click is a harmless no-op). The trigger is located by data
+ * attribute because the dialog's own confirm button is always in the DOM
+ * (hidden when closed) and would collide with a text-based locator.
+ */
+async function openReviewDialog(page, row, action) {
+  let tries = 0;
+  while ((await page.locator('dialog[open]').count()) === 0 && tries < 3) {
+    await row.locator(`button[data-review-action="${action}"]`).click();
+    tries += 1;
+    await page.waitForTimeout(250);
+  }
+  await page.waitForSelector('dialog[open]', { timeout: 10_000 });
+}
 // ── part 2: scenarios A–B ──
 const browser = await launch();
 const SHOT_DIR = join(process.cwd(), 'download', 'qa');
@@ -160,7 +178,14 @@ try {
   ok(rowText.includes('Duplicate task, please remove.'), 'A. pending row shows reason');
   ok(/Requested by .*·/.test(rowText), 'A. pending row shows request date');
 
-  await pendingRow.locator('button:has-text("Approve")').click();
+  // A. approval requires confirmation — nothing is sent before the reviewer
+  // confirms (no task delete, no request change).
+  await openReviewDialog(managerPage, pendingRow, 'approve');
+  const approveDlgText = await managerPage.locator('dialog[open]').innerText();
+  ok(approveDlgText.includes('permanently delete') && approveDlgText.includes('SC-A delete me'), 'A. approval dialog explains the permanent deletion');
+  ok(taskByTitle('SC-A delete me') !== undefined, 'A. task NOT deleted before confirmation');
+  ok(requestForTask(aId)?.status === 'pending', 'A. request still pending before confirmation');
+  await managerPage.locator('dialog[open] button:has-text("Confirm deletion")').click();
   await managerPage.waitForSelector('text=Deletion approved', { timeout: 15_000 });
 
   await managerPage.goto(`${BASE}/tasks/${aId}`);
@@ -191,16 +216,25 @@ try {
   await openRequestsPage(managerPage);
   const bPendingRow = managerPage.locator('section:has-text("Pending") li', { hasText: 'SC-B keep me' }).first();
   await bPendingRow.waitFor({ timeout: 10_000 });
-  await bPendingRow.locator('button:has-text("Reject")').click();
+  // B. rejection may include a reason — typed into the review dialog.
+  await openReviewDialog(managerPage, bPendingRow, 'reject');
+  await managerPage.fill(`#review-note-${bReq0.id}`, 'Keep this task — still needed');
+  ok((await managerPage.locator('dialog[open] textarea').inputValue()) === 'Keep this task — still needed', 'B. rejection reason entered in the dialog');
+  await managerPage.locator('dialog[open] button:has-text("Reject request")').click();
   await managerPage.waitForSelector('text=Delete request for "SC-B keep me" rejected', { timeout: 15_000 });
 
   const bReq = requestForTask(bId);
   ok(bReq?.status === 'rejected', 'B. request status = rejected');
   ok(bReq?.reviewed_by === mgr.id && !!bReq?.reviewed_at, 'B. reviewed_by/at recorded');
+  ok(bReq?.review_note === 'Keep this task — still needed', 'B. rejection reason persisted in review_note');
   ok(taskByTitle('SC-B keep me') !== undefined, 'B. task still exists after rejection');
   const bActs = activityForTask(bId);
   ok(bActs.some((a) => a.action === 'delete_requested'), 'B. delete_requested logged');
   ok(bActs.some((a) => a.action === 'delete_rejected' && a.user_id === mgr.id), 'B. delete_rejected logged');
+  const bRejAct = q("SELECT new_value FROM task_activity_log WHERE task_id = ? AND action = 'delete_rejected'", bId);
+  ok(bRejAct?.new_value === 'Keep this task — still needed', 'B. rejection reason logged in the activity entry');
+  const bNotif = q("SELECT * FROM notifications WHERE user_id = ? AND type = 'delete_rejected' AND task_id = ?", emp.id, bId);
+  ok(!!bNotif && bNotif.message.includes('Keep this task — still needed'), 'B. rejection reason included in the requester notification');
 
   await employeePage.goto(`${BASE}/employee`);
   const bBadgeGone = await employeePage.locator('li:has-text("SC-B keep me") span:has-text("🗑️ Deletion requested")').count();
@@ -215,6 +249,7 @@ try {
   const bHistText = await bHistRow.innerText();
   ok(bHistText.includes('rejected'), 'B. history shows rejected');
   ok(bHistText.includes('reviewed by Department Manager'), 'B. history shows reviewer name');
+  ok(bHistText.includes('Rejection note') && bHistText.includes('Keep this task — still needed'), 'B. history shows the rejection note');
 
   // ─────────────── Scenario C: completed task blocked ───────────────
   console.log('\n── Scenario C: completed tasks are not deletion-requestable ──');

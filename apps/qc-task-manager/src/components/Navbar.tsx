@@ -33,25 +33,29 @@ interface NavbarProps {
 const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]> = {
   admin: [
     { href: '/dashboard', label: 'Dashboard' },
-    { href: '/admin/users', label: 'Admin' },
     { href: '/manager', label: 'Tasks' },
+    { href: '/search', label: 'Search' },
     { href: '/manager/requests', label: 'Delete Requests' },
+    { href: '/admin/users', label: 'Admin' },
     { href: '/notifications', label: 'Notifications' },
   ],
   manager: [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/manager', label: 'Tasks' },
+    { href: '/search', label: 'Search' },
     { href: '/manager/requests', label: 'Delete Requests' },
     { href: '/notifications', label: 'Notifications' },
   ],
   supervisor: [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/supervisor', label: 'Tasks' },
+    { href: '/search', label: 'Search' },
     { href: '/notifications', label: 'Notifications' },
   ],
   // Employees have NO dashboard link (CORE BUSINESS RULE #1).
   employee: [
     { href: '/employee', label: 'My Tasks' },
+    { href: '/search', label: 'Search' },
     { href: '/notifications', label: 'Notifications' },
   ],
 };

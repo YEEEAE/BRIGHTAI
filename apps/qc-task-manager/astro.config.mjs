@@ -24,8 +24,11 @@ export default defineConfig({
   // Database file lives under the app's db/ directory (generated at runtime).
   vite: {
     ssr: {
-      // better-sqlite3 is a native addon — must be externalized from the SSR bundle.
-      external: ['better-sqlite3', 'bcryptjs'],
+      // better-sqlite3 is a native addon and exceljs is a CJS package with
+      // dynamic requires — both must be externalized from the SSR bundle so
+      // they resolve from node_modules at runtime (Vite bundling breaks the
+      // CJS default-export interop: ExcelJS.Workbook becomes undefined).
+      external: ['better-sqlite3', 'bcryptjs', 'exceljs'],
     },
   },
 });

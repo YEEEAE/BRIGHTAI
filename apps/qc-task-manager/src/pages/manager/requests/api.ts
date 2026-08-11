@@ -12,6 +12,7 @@
 import type { APIRoute } from 'astro';
 import { getCurrentUser } from '../../../lib/session';
 import { setFlash } from '../../../lib/flash';
+import { parseFormData, deleteReviewSchema } from '../../../lib/validation';
 import { canReviewDeleteRequests } from '../../../lib/permissions';
 import { reviewDeleteRequest } from '../../../lib/deleteRequests';
 
@@ -25,22 +26,21 @@ export const POST: APIRoute = async (context) => {
     return context.redirect('/');
   }
 
-  const form = await context.request.formData();
-  const action = String(form.get('action') ?? '');
-  const requestId = Number(form.get('request_id') ?? '');
-
   const fail = (error: string): Response => {
     setFlash(context, 'error', error);
     return context.redirect('/manager/requests');
   };
 
-  if (!Number.isInteger(requestId) || requestId <= 0) return fail('Invalid request.');
-  if (action !== 'approve' && action !== 'reject') return fail('Invalid action.');
+  const form = await context.request.formData();
+  const parsed = parseFormData(deleteReviewSchema, form);
+  if (!parsed.ok) return fail(parsed.error);
+  const { action, request_id, review_note } = parsed.data;
 
   const result = reviewDeleteRequest({
-    requestId,
+    requestId: request_id,
     reviewer: { id: actor.id, role: actor.role, username: actor.username },
     decision: action === 'approve' ? 'approved' : 'rejected',
+    reviewNote: review_note,
   });
   if (!result.ok) return fail(result.error);
 

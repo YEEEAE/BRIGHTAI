@@ -3,24 +3,74 @@
 // middleware with a flash message; CORE BUSINESS RULE #1).
 //
 // All numbers come from src/lib/dashboard.ts — read-only, fully parameterized
-// SELECT queries. Filters (?from&to&assignee&priority) are validated in
-// parseDashboardFilters and scoped over the same WHERE clause for every widget.
+// SELECT queries. Filters (?range&from&to&assignee&priority&status&overdue)
+// are validated in parseDashboardFilters and scoped over the same WHERE clause
+// for every widget (KPI cards, charts, tables).
+//
+// Loading state: the filter <form> submission shows a full-screen overlay via
+// a CSP-safe Astro <script> (compiled to an external module — no inline JS).
+// Error state: a top-level try/catch renders a friendly banner instead of a
+// 500, keeping the shell (navbar + filters) usable.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DashboardCharts from '../components/DashboardCharts';
+import EmptyState from '../components/EmptyState.astro';
 import { formatDbDate, formatDueDate, statusLabel, priorityLabel } from '../lib/format';
+import { describeAction } from '../lib/taskDetails';
 import * as dash from '../lib/dashboard';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session + role
 
+// Pretty-print an "average completion time" in seconds as e.g. "2d 6h".
+function formatDuration(seconds: number | null): string {
+  if (seconds === null || !Number.isFinite(seconds)) return '—';
+  if (seconds < 60) return '< 1m';
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  const remHours = hours % 24;
+  return remHours === 0 ? `${days}d` : `${days}d ${remHours}h`;
+}
+
 const filters = dash.parseDashboardFilters(Astro.url, Astro);
 const filtered = dash.hasActiveFilters(filters);
 
-const kpis = dash.getKpis(filters);
-const donut = dash.getStatusDistribution(filters);
-const bar = dash.getPerEmployee(filters);
-const line = dash.getCompletedPerWeek(filters);
-const overdue = dash.getOverdueTasks(filters);
-const recent = dash.getRecentlyCompleted(filters);
+// Every query is wrapped so a transient DB hiccup renders a banner rather than
+// a raw 500 — the shell stays usable and the user can adjust filters / retry.
+let dataError: string | null = null;
+let kpis: ReturnType<typeof dash.getKpis> | null = null;
+let donut: ReturnType<typeof dash.getStatusDistribution> = [];
+let priorityDist: ReturnType<typeof dash.getPriorityDistribution> = [];
+let bar: ReturnType<typeof dash.getPerEmployee> = [];
+let overdueByEmployee: ReturnType<typeof dash.getOverdueByEmployee> = [];
+let line: ReturnType<typeof dash.getCompletedPerWeek> = [];
+let completionRate: ReturnType<typeof dash.getCompletionRate> | null = null;
+let overdue: ReturnType<typeof dash.getOverdueTasks> = [];
+let recent: ReturnType<typeof dash.getRecentlyCompleted> = [];
+let withoutEvidence: ReturnType<typeof dash.getCompletedWithoutEvidence> = [];
+let blockers: ReturnType<typeof dash.getCurrentBlockers> = [];
+let activity: ReturnType<typeof dash.getLatestActivity> = [];
+
+try {
+  kpis = dash.getKpis(filters);
+  donut = dash.getStatusDistribution(filters);
+  priorityDist = dash.getPriorityDistribution(filters);
+  bar = dash.getPerEmployee(filters);
+  overdueByEmployee = dash.getOverdueByEmployee(filters);
+  line = dash.getCompletedPerWeek(filters);
+  completionRate = dash.getCompletionRate(filters);
+  overdue = dash.getOverdueTasks(filters);
+  recent = dash.getRecentlyCompleted(filters);
+  withoutEvidence = dash.getCompletedWithoutEvidence(filters);
+  blockers = dash.getCurrentBlockers(filters);
+  activity = dash.getLatestActivity(filters);
+} catch (err) {
+  console.error('[dashboard] query failure', err);
+  dataError =
+    'Could not load the dashboard data. Try clearing filters or reloading — if the problem persists, contact an administrator.';
+}
+
 const assignees = dash.listActiveUsers();
 ---
 
@@ -32,215 +82,494 @@ const assignees = dash.listActiveUsers();
     </p>
   </header>
 
-  <!-- Filters (GET — server-side, every query stays parameterized) -->
+  {/* ───────────── Filters (GET — server-side, every query stays parameterized) ───────────── */}
   <form
     method="get"
     action="/dashboard"
-    class="mb-6 flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 bg-white p-4"
+    data-dashboard-filters
+    class="mb-6 rounded-xl border border-slate-200 bg-white p-4"
   >
-    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
-      Created from
-      <input
-        type="date"
-        name="from"
-        value={filters.from ?? ''}
-        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-      />
-    </label>
-    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
-      Created to
-      <input
-        type="date"
-        name="to"
-        value={filters.to ?? ''}
-        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-      />
-    </label>
-    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
-      Assignee
-      <select
-        name="assignee"
-        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+    <div class="flex flex-wrap items-end gap-3">
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Range
+        <select
+          name="range"
+          data-range-select
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="" selected={!filters.range}>All time</option>
+          <option value="today" selected={filters.range === 'today'}>Today</option>
+          <option value="week" selected={filters.range === 'week'}>This week</option>
+          <option value="month" selected={filters.range === 'month'}>This month</option>
+          <option value="custom" selected={filters.range === 'custom'}>Custom range…</option>
+        </select>
+      </label>
+
+      <label class="hidden flex-col gap-1 text-xs font-medium text-slate-600 [&.show]:flex" data-custom-range>
+        Created from
+        <input
+          type="date"
+          name="from"
+          value={filters.from ?? ''}
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+      </label>
+      <label class="hidden flex-col gap-1 text-xs font-medium text-slate-600 [&.show]:flex" data-custom-range>
+        Created to
+        <input
+          type="date"
+          name="to"
+          value={filters.to ?? ''}
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Assignee
+        <select
+          name="assignee"
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="">All assignees</option>
+          {assignees.map((a) => (
+            <option value={a.id} selected={filters.assignee === a.id}>
+              {a.full_name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Priority
+        <select
+          name="priority"
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="">All priorities</option>
+          {dash.PRIORITIES.map((p) => (
+            <option value={p} selected={filters.priority === p}>
+              {priorityLabel(p)}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Status
+        <select
+          name="status"
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        >
+          <option value="">All statuses</option>
+          {dash.STATUSES.map((s) => (
+            <option value={s} selected={filters.status === s}>
+              {statusLabel(s)}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex items-center gap-2 text-xs font-medium text-slate-600">
+        <input
+          type="checkbox"
+          name="overdue"
+          value="1"
+          checked={filters.overdue_only}
+          class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+        />
+        Overdue only
+      </label>
+
+      <button
+        type="submit"
+        class="rounded-md bg-brand-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
       >
-        <option value="">All assignees</option>
-        {assignees.map((a) => (
-          <option value={a.id} selected={filters.assignee === a.id}>
-            {a.full_name}
-          </option>
-        ))}
-      </select>
-    </label>
-    <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
-      Priority
-      <select
-        name="priority"
-        class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-      >
-        <option value="">All priorities</option>
-        {dash.PRIORITIES.map((p) => (
-          <option value={p} selected={filters.priority === p}>
-            {priorityLabel(p)}
-          </option>
-        ))}
-      </select>
-    </label>
-    <button
-      type="submit"
-      class="rounded-md bg-brand-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
-    >
-      Apply filters
-    </button>
+        Apply filters
+      </button>
+      {filtered && (
+        <a
+          href="/dashboard"
+          class="rounded-md border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          Clear
+        </a>
+      )}
+    </div>
     {filtered && (
-      <a
-        href="/dashboard"
-        class="rounded-md border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-      >
-        Clear
-      </a>
-    )}
-    {filtered && (
-      <p class="w-full text-xs text-slate-500">
+      <p class="mt-3 text-xs text-slate-500">
         Filters applied — every number below is scoped to the selected tasks.
       </p>
     )}
   </form>
 
-  <!-- KPI cards -->
-  <section aria-label="Key metrics" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-7">
-    <div data-kpi="total" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-        <span aria-hidden="true">📋</span> Total tasks
-      </div>
-      <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">{kpis.total}</div>
-    </div>
-    <div data-kpi="not_started" class="rounded-xl border border-slate-200 bg-red-50/60 p-4 shadow-sm">
-      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-red-700">
-        <span aria-hidden="true">🔴</span> Not started
-      </div>
-      <div class="mt-2 text-3xl font-semibold tabular-nums text-red-700">{kpis.not_started}</div>
-    </div>
-    <div data-kpi="in_progress" class="rounded-xl border border-slate-200 bg-amber-50/70 p-4 shadow-sm">
-      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-amber-700">
-        <span aria-hidden="true">🟡</span> In progress
-      </div>
-      <div class="mt-2 text-3xl font-semibold tabular-nums text-amber-700">{kpis.in_progress}</div>
-    </div>
-    <div data-kpi="on_hold" class="rounded-xl border border-slate-200 bg-orange-50/70 p-4 shadow-sm">
-      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-orange-700">
-        <span aria-hidden="true">🟠</span> On hold
-      </div>
-      <div class="mt-2 text-3xl font-semibold tabular-nums text-orange-700">{kpis.on_hold}</div>
-    </div>
-    <div data-kpi="completed" class="rounded-xl border border-slate-200 bg-green-50/70 p-4 shadow-sm">
-      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-green-700">
-        <span aria-hidden="true">🟢</span> Completed
-      </div>
-      <div class="mt-2 text-3xl font-semibold tabular-nums text-green-700">{kpis.completed}</div>
-    </div>
-    <div data-kpi="cancelled" class="rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
-      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-600">
-        <span aria-hidden="true">✖️</span> Cancelled
-      </div>
-      <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-700">{kpis.cancelled}</div>
-    </div>
-    <div data-kpi="overdue" class="rounded-xl border border-rose-200 bg-rose-50 p-4 shadow-sm">
-      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-rose-700">
-        <span aria-hidden="true">⚠️</span> Overdue
-      </div>
-      <div class="mt-2 text-3xl font-semibold tabular-nums text-rose-700">{kpis.overdue}</div>
-    </div>
-  </section>
+  {/* ───────────── Error state (queries failed but the shell stays usable) ───────────── */}
+  {dataError && (
+    <section
+      aria-label="Dashboard error"
+      class="mb-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800"
+    >
+      <p class="font-medium">{dataError}</p>
+    </section>
+  )}
 
-  <!-- Charts (React island, pure SVG) -->
-  <DashboardCharts client:load donut={donut} bar={bar} line={line} />
+  {!dataError && kpis && (
+    <>
+      {/* ───────────── KPI cards ───────────── */}
+      <section
+        aria-label="Key metrics"
+        class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5"
+      >
+        <div data-kpi="total" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <span aria-hidden="true">📋</span> Total tasks
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">{kpis.total}</div>
+        </div>
+        <div data-kpi="not_started" class="rounded-xl border border-slate-200 bg-red-50/60 p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-red-700">
+            <span aria-hidden="true">🔴</span> Not started
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-red-700">{kpis.not_started}</div>
+        </div>
+        <div data-kpi="in_progress" class="rounded-xl border border-slate-200 bg-amber-50/70 p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-amber-700">
+            <span aria-hidden="true">🟡</span> In progress
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-amber-700">{kpis.in_progress}</div>
+        </div>
+        <div data-kpi="on_hold" class="rounded-xl border border-slate-200 bg-orange-50/70 p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-orange-700">
+            <span aria-hidden="true">🟠</span> On hold
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-orange-700">{kpis.on_hold}</div>
+        </div>
+        <div data-kpi="completed" class="rounded-xl border border-slate-200 bg-green-50/70 p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-green-700">
+            <span aria-hidden="true">🟢</span> Completed
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-green-700">{kpis.completed}</div>
+        </div>
+        <div data-kpi="overdue" class="rounded-xl border border-rose-200 bg-rose-50 p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-rose-700">
+            <span aria-hidden="true">⚠️</span> Overdue
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-rose-700">{kpis.overdue}</div>
+        </div>
+        <div data-kpi="urgent_open" class="rounded-xl border border-red-300 bg-red-100 p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-red-800">
+            <span aria-hidden="true">🚨</span> Urgent open
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-red-800">{kpis.urgent_open}</div>
+        </div>
+        <div data-kpi="completed_without_evidence" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <span aria-hidden="true">📎</span> Completed without evidence
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">
+            {kpis.completed_without_evidence}
+          </div>
+        </div>
+        <div data-kpi="avg_completion_time" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <span aria-hidden="true">⏱️</span> Avg completion time
+          </div>
+          <div class="mt-2 text-3xl font-semibold tabular-nums text-slate-900">
+            {formatDuration(kpis.avg_completion_seconds)}
+          </div>
+        </div>
+      </section>
 
-  <!-- Overdue tasks -->
-  <section aria-label="Overdue tasks" class="mt-8">
-    <div class="mb-3 flex items-baseline justify-between">
-      <h2 class="text-lg font-semibold text-slate-900">Overdue tasks</h2>
-      <span class="text-xs text-slate-500">Due before today and not completed</span>
-    </div>
+      {/* ───────────── Charts (React island, pure SVG) ───────────── */}
+      <DashboardCharts
+        client:load
+        donut={donut}
+        priority={priorityDist}
+        bar={bar}
+        overdueByEmployee={overdueByEmployee}
+        line={line}
+        completionRate={completionRate!}
+      />
+    </>
+  )}
 
-    {overdue.length === 0 ? (
-      <p class="rounded-xl border border-dashed border-slate-300 bg-white px-4 py-10 text-center text-sm text-slate-500">
-        No overdue tasks — great job! 🎉
-      </p>
-    ) : (
-      <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
-        <table class="w-full text-sm">
-          <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
-            <tr>
-              <th class="px-4 py-2.5">Task</th>
-              <th class="px-4 py-2.5">Assignee</th>
-              <th class="px-4 py-2.5">Due date</th>
-              <th class="px-4 py-2.5">Days overdue</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200">
-            {overdue.map((t) => (
-              <tr class="hover:bg-slate-50">
-                <td class="px-4 py-2.5">
-                  <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
-                    {t.title}
-                  </a>
-                </td>
-                <td class="px-4 py-2.5 text-slate-600">{t.assignee_name ?? '—'}</td>
-                <td class="px-4 py-2.5 text-slate-600">{formatDueDate(t.due_date)}</td>
-                <td class="px-4 py-2.5">
-                  <span class="rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-rose-700">
-                    {t.days_overdue} {t.days_overdue === 1 ? 'day' : 'days'}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )}
-  </section>
+  {!dataError && (
+    <>
+      {/* ───────────── Most overdue tasks ───────────── */}
+      <section aria-label="Most overdue tasks" class="mt-8">
+        <div class="mb-3 flex items-baseline justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">Most overdue tasks</h2>
+          <span class="text-xs text-slate-500">Due before today and not completed</span>
+        </div>
 
-  <!-- Recently completed -->
-  <section aria-label="Recently completed" class="mt-8">
-    <div class="mb-3 flex items-baseline justify-between">
-      <h2 class="text-lg font-semibold text-slate-900">Recently completed</h2>
-      <span class="text-xs text-slate-500">Last 10 completions</span>
-    </div>
+        {overdue.length === 0 ? (
+          <EmptyState title="No overdue tasks — great job! 🎉" />
+        ) : (
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                  <tr>
+                    <th class="px-4 py-2.5">Task</th>
+                    <th class="px-4 py-2.5">Assignee</th>
+                    <th class="px-4 py-2.5">Due date</th>
+                    <th class="px-4 py-2.5">Days overdue</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  {overdue.map((t) => (
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-2.5">
+                        <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
+                          {t.title}
+                        </a>
+                      </td>
+                      <td class="px-4 py-2.5 text-slate-600">{t.assignee_name ?? '—'}</td>
+                      <td class="px-4 py-2.5 text-slate-600">{formatDueDate(t.due_date)}</td>
+                      <td class="px-4 py-2.5">
+                        <span class="rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-rose-700">
+                          {t.days_overdue} {t.days_overdue === 1 ? 'day' : 'days'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </section>
 
-    {recent.length === 0 ? (
-      <p class="rounded-xl border border-dashed border-slate-300 bg-white px-4 py-10 text-center text-sm text-slate-500">
-        No completed tasks yet.
-      </p>
-    ) : (
-      <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
-        <table class="w-full text-sm">
-          <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
-            <tr>
-              <th class="px-4 py-2.5">Task</th>
-              <th class="px-4 py-2.5">Status</th>
-              <th class="px-4 py-2.5">Completed by</th>
-              <th class="px-4 py-2.5">Completed at</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200">
-            {recent.map((t) => (
-              <tr class="hover:bg-slate-50">
-                <td class="px-4 py-2.5">
-                  <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
-                    {t.title}
-                  </a>
-                </td>
-                <td class="px-4 py-2.5">
-                  <span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                    {statusLabel('completed')}
-                  </span>
-                </td>
-                <td class="px-4 py-2.5 text-slate-600">{t.completed_by_name ?? '—'}</td>
-                <td class="px-4 py-2.5 text-slate-600">{formatDbDate(t.completed_at)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )}
-  </section>
+      {/* ───────────── Current blockers ───────────── */}
+      <section aria-label="Current blockers" class="mt-8">
+        <div class="mb-3 flex items-baseline justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">Current blockers</h2>
+          <span class="text-xs text-slate-500">Tasks on hold</span>
+        </div>
+
+        {blockers.length === 0 ? (
+          <EmptyState title="No tasks are currently blocked. 🚀" />
+        ) : (
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                  <tr>
+                    <th class="px-4 py-2.5">Task</th>
+                    <th class="px-4 py-2.5">Assignee</th>
+                    <th class="px-4 py-2.5">Blocker note</th>
+                    <th class="px-4 py-2.5">Last updated</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  {blockers.map((t) => (
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-2.5">
+                        <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
+                          {t.title}
+                        </a>
+                      </td>
+                      <td class="px-4 py-2.5 text-slate-600">{t.assignee_name ?? '—'}</td>
+                      <td class="max-w-xs px-4 py-2.5 text-slate-600">
+                        <span class="line-clamp-2">{t.blocker_note ?? '—'}</span>
+                      </td>
+                      <td class="whitespace-nowrap px-4 py-2.5 text-slate-600">
+                        {formatDbDate(t.on_hold_since)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ───────────── Recently completed ───────────── */}
+      <section aria-label="Recently completed" class="mt-8">
+        <div class="mb-3 flex items-baseline justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">Recently completed</h2>
+          <span class="text-xs text-slate-500">Last 10 completions</span>
+        </div>
+
+        {recent.length === 0 ? (
+          <EmptyState title="No completed tasks yet." />
+        ) : (
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                  <tr>
+                    <th class="px-4 py-2.5">Task</th>
+                    <th class="px-4 py-2.5">Completed by</th>
+                    <th class="px-4 py-2.5">Completed at</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  {recent.map((t) => (
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-2.5">
+                        <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
+                          {t.title}
+                        </a>
+                      </td>
+                      <td class="px-4 py-2.5 text-slate-600">{t.completed_by_name ?? '—'}</td>
+                      <td class="whitespace-nowrap px-4 py-2.5 text-slate-600">
+                        {formatDbDate(t.completed_at)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ───────────── Completed without evidence ───────────── */}
+      <section aria-label="Completed without evidence" class="mt-8">
+        <div class="mb-3 flex items-baseline justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">Completed without evidence</h2>
+          <span class="text-xs text-slate-500">Missing proof-of-work on completed tasks</span>
+        </div>
+
+        {withoutEvidence.length === 0 ? (
+          <EmptyState title="Every completed task has evidence attached. ✅" />
+        ) : (
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                  <tr>
+                    <th class="px-4 py-2.5">Task</th>
+                    <th class="px-4 py-2.5">Assignee</th>
+                    <th class="px-4 py-2.5">Completed at</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  {withoutEvidence.map((t) => (
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-2.5">
+                        <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">
+                          {t.title}
+                        </a>
+                      </td>
+                      <td class="px-4 py-2.5 text-slate-600">{t.assignee_name ?? '—'}</td>
+                      <td class="whitespace-nowrap px-4 py-2.5 text-slate-600">
+                        {formatDbDate(t.completed_at)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ───────────── Latest activity feed ───────────── */}
+      <section aria-label="Latest activity" class="mt-8">
+        <div class="mb-3 flex items-baseline justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">Latest activity</h2>
+          <span class="text-xs text-slate-500">Most recent 20 events</span>
+        </div>
+
+        {activity.length === 0 ? (
+          <EmptyState title="No activity recorded yet." />
+        ) : (
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                  <tr>
+                    <th class="px-4 py-2.5">When</th>
+                    <th class="px-4 py-2.5">User</th>
+                    <th class="px-4 py-2.5">Task</th>
+                    <th class="px-4 py-2.5">Event</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  {activity.map((a) => (
+                    <tr class="hover:bg-slate-50">
+                      <td class="whitespace-nowrap px-4 py-2.5 text-slate-600">
+                        {formatDbDate(a.created_at)}
+                      </td>
+                      <td class="px-4 py-2.5 text-slate-600">{a.user_name}</td>
+                      <td class="px-4 py-2.5">
+                        <a href={`/tasks/${a.task_id}`} class="font-medium text-slate-900 hover:underline">
+                          {a.task_title}
+                        </a>
+                      </td>
+                      <td class="px-4 py-2.5 text-slate-600">
+                        {describeAction(a.action, a.old_value, a.new_value)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </section>
+    </>
+  )}
 </BaseLayout>
+
+{/* ───────────── Loading overlay + filter form behaviour ─────────────
+     Astro <script> (no is:inline) is compiled to an external module, so it is
+     CSP-safe (no inline script hash needed). Shows a full-screen overlay the
+     moment the filter form is submitted, and reveals the custom date range
+     fields only when "Custom range…" is selected. */}
+<div
+  id="dash-loading"
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm"
+>
+  <div class="flex items-center gap-3 rounded-lg bg-white px-5 py-3 text-sm font-medium text-slate-700 shadow-lg">
+    <svg class="h-4 w-4 animate-spin text-brand-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z" />
+    </svg>
+    Loading…
+  </div>
+</div>
+
+<script>
+  // Toggle the custom date-range fields when the preset changes.
+  const rangeSelect = document.querySelector<HTMLSelectElement>('[data-range-select]');
+  const customFields = document.querySelectorAll<HTMLElement>('[data-custom-range]');
+  function syncCustomRange() {
+    if (!rangeSelect) return;
+    const show = rangeSelect.value === 'custom';
+    customFields.forEach((el) => el.classList.toggle('show', show));
+  }
+  rangeSelect?.addEventListener('change', syncCustomRange);
+  syncCustomRange();
+
+  // Full-screen loading overlay on filter submit.
+  const filterForm = document.querySelector<HTMLFormElement>('[data-dashboard-filters]');
+  const overlay = document.getElementById('dash-loading');
+  filterForm?.addEventListener('submit', () => {
+    if (!overlay) return;
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    overlay.setAttribute('aria-hidden', 'false');
+    const btn = filterForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (btn) {
+      btn.disabled = true;
+      btn.dataset.label = btn.textContent ?? '';
+      btn.textContent = 'Loading…';
+    }
+  });
+  // Hide the overlay once the new page has rendered (safety net for back-nav).
+  window.addEventListener('pageshow', () => {
+    if (!overlay) return;
+    overlay.classList.add('hidden');
+    overlay.classList.remove('flex');
+    overlay.setAttribute('aria-hidden', 'true');
+    const btn = filterForm?.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (btn && btn.dataset.label) {
+      btn.disabled = false;
+      btn.textContent = btn.dataset.label;
+    }
+  });
+</script>

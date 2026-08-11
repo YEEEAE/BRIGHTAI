@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS task_delete_requests (
   task_id      INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
   requested_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   reason       TEXT,
+  review_note  TEXT,
   status       TEXT NOT NULL DEFAULT 'pending'
                  CHECK (status IN ('pending', 'approved', 'rejected')),
   reviewed_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,

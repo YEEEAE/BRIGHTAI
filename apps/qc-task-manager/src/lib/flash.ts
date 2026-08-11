@@ -23,7 +23,9 @@ export function setFlash(ctx: CookieJar, type: Flash['type'], message: string): 
   ctx.cookies.set(FLASH_COOKIE, JSON.stringify({ type, message }), {
     httpOnly: true,
     sameSite: 'lax',
-    secure: import.meta.env.PROD,
+    // import.meta.env is undefined under the plain Node test runner — treat
+    // that as non-production so flash stays usable in server-less tests.
+    secure: import.meta.env?.PROD === true,
     path: '/',
     maxAge: 60,
   });

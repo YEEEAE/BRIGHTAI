@@ -63,6 +63,10 @@ export const MAX_DEPENDENCIES = 20;
 export const MAX_OVERRIDE_REASON_LENGTH = 500;
 /** Max depth walked when checking dependency cycles at creation time. */
 export const MAX_DEPENDENCY_DEPTH = 20;
+/** Max length of a saved-search filter name (saved_filters.name). */
+export const MAX_SAVED_FILTER_NAME = 100;
+/** Max length of the stored filter JSON (saved_filters.filter_json). */
+export const MAX_SAVED_FILTER_JSON = 4000;
 
 // ───────────────────────── Field locking (RULE #2) ─────────────────────────
 

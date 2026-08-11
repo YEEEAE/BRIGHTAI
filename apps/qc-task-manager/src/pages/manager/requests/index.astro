@@ -7,6 +7,7 @@
 // task titles are joined live from the tasks table (rejected requests keep
 // their task alive, so the JOIN always resolves).
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ReviewDeleteRequestDialog from '../../../components/ReviewDeleteRequestDialog';
 import {
   listPendingDeleteRequests,
   listReviewedDeleteRequests,
@@ -63,30 +64,12 @@ function statusTone(status: string): string {
                 </p>
               )}
             </div>
-            <div class="flex shrink-0 gap-2">
-              <form action="/manager/requests/api" method="POST">
-                <input type="hidden" name="action" value="approve" />
-                <input type="hidden" name="request_id" value={r.id} />
-                <button
-                  type="submit"
-                  class="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700"
-                  title="Delete the task and approve this request"
-                >
-                  Approve
-                </button>
-              </form>
-              <form action="/manager/requests/api" method="POST">
-                <input type="hidden" name="action" value="reject" />
-                <input type="hidden" name="request_id" value={r.id} />
-                <button
-                  type="submit"
-                  class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                  title="Keep the task and reject this request"
-                >
-                  Reject
-                </button>
-              </form>
-            </div>
+            <ReviewDeleteRequestDialog
+              requestId={r.id}
+              taskId={r.task_id}
+              taskTitle={r.task_title}
+              client:visible
+            />
           </li>
         ))}
       </ul>
@@ -111,7 +94,10 @@ function statusTone(status: string): string {
                 by {r.requester_name}
                 {r.reviewer_name && <> · reviewed by {r.reviewer_name} · {formatDbDate(r.reviewed_at)}</>}
               </p>
-              {r.reason && <p class="mt-1 truncate text-xs text-slate-400">“{r.reason}”</p>}
+              {r.reason && <p class="mt-1 truncate text-xs text-slate-400">Requester reason: “{r.reason}”</p>}
+              {r.review_note && (
+                <p class="mt-1 truncate text-xs font-medium text-amber-700">Rejection note: “{r.review_note}”</p>
+              )}
             </div>
             <span class={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${statusTone(r.status)}`}>
               {r.status}

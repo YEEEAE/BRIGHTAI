@@ -122,6 +122,8 @@ export interface DeleteRequest {
   task_id: number;
   requested_by: number;
   reason: string | null;
+  /** Optional reviewer note attached at review time (rejection reason). */
+  review_note: string | null;
   status: DeleteRequestStatus;
   reviewed_by: number | null;
   reviewed_at: string | null;

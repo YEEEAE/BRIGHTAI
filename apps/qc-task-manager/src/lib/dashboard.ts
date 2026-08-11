@@ -4,17 +4,21 @@
 // user input is ever interpolated into SQL text. Filter values are validated
 // and typed in parseDashboardFilters before any query runs.
 //
-// The /dashboard page renders KPI cards, three charts (donut, bar, line) and
-// two tables, all driven from this module so the page stays thin and the
-// numbers are computed in one place.
+// The /dashboard page renders KPI cards, six charts and five tables, all
+// driven from this module so the page stays thin and every number is computed
+// in one place. Filters scope every widget through the same WHERE clause.
+//
+// Overdue definition (spec): due_date < today AND status NOT IN
+// ('completed', 'cancelled'). Applied identically in the KPI, the overdue
+// table and the overdue-by-employee chart.
 
 import { getDb } from './db';
 import { listActiveUsers } from './tasks';
 import { parseDbDate } from './format';
 import { setFlash } from './flash';
-import { TASK_PRIORITIES } from './task-policy';
+import { TASK_PRIORITIES, TASK_STATUSES } from './task-policy';
 import type { AstroCookies } from 'astro';
-import type { TaskPriority } from './types';
+import type { TaskPriority, TaskStatus } from './types';
 
 // ───────────────────── Status presentation (charts + legends) ─────────────────────
 // Single source for the dashboard's status colors/labels so the KPI cards, the
@@ -37,9 +41,28 @@ export const STATUS_COLORS: Record<string, string> = {
   cancelled: '#64748b',   // slate
 };
 
-// Priority filter options — single source is task-policy's TASK_PRIORITIES
-// (which now includes 'urgent'); never hardcode a second list here.
+// Priority colors + labels — single source for the priority chart + legends.
+// Urgent is a vivid red so it always reads as "act now".
+export const PRIORITY_ORDER = ['low', 'medium', 'high', 'urgent'] as const;
+
+export const PRIORITY_LABELS: Record<string, string> = {
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+  urgent: 'Urgent',
+};
+
+export const PRIORITY_COLORS: Record<string, string> = {
+  low: '#0ea5e9',     // sky
+  medium: '#6366f1',  // indigo
+  high: '#f43f5e',    // rose
+  urgent: '#dc2626',  // red-600 (solid, prominent)
+};
+
+// Filter option lists — single source is task-policy's enum arrays; never
+// hardcode a second list here.
 export const PRIORITIES: readonly TaskPriority[] = TASK_PRIORITIES;
+export const STATUSES: readonly TaskStatus[] = TASK_STATUSES;
 
 // Active users for the assignee filter dropdown (reused from the task layer).
 export { listActiveUsers } from './tasks';
@@ -48,21 +71,34 @@ const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 // ─────────────────────────────── Filter model ───────────────────────────────
 
+/** Range presets — resolved to from/to on the local calendar before queries. */
+export type RangePreset = 'today' | 'week' | 'month' | 'custom';
+
+export const RANGE_PRESETS: RangePreset[] = ['today', 'week', 'month', 'custom'];
+
 export interface DashboardFilters {
-  /** created_at >= from (YYYY-MM-DD, inclusive) */
+  /** created_at >= from (YYYY-MM-DD, inclusive) — resolved from range or from/to. */
   from: string | null;
-  /** created_at <= to (YYYY-MM-DD, inclusive) */
+  /** created_at <= to (YYYY-MM-DD, inclusive) — resolved from range or from/to. */
   to: string | null;
+  /** The raw preset the user picked (drives the dropdown's selected option). */
+  range: RangePreset | null;
   /** assigned_to = assignee */
   assignee: number | null;
   priority: TaskPriority | null;
+  status: TaskStatus | null;
+  /** Overdue-only switch: restrict every widget to overdue tasks. */
+  overdue_only: boolean;
 }
 
 export const NO_FILTERS: DashboardFilters = {
   from: null,
   to: null,
+  range: null,
   assignee: null,
   priority: null,
+  status: null,
+  overdue_only: false,
 };
 
 /** Today's date in the server's local timezone, as YYYY-MM-DD. */
@@ -85,13 +121,66 @@ function isPriority(v: string): v is TaskPriority {
   return (PRIORITIES as string[]).includes(v);
 }
 
+function isStatus(v: string): v is TaskStatus {
+  return (STATUSES as string[]).includes(v);
+}
+
+function isRangePreset(v: string): v is RangePreset {
+  return (RANGE_PRESETS as string[]).includes(v);
+}
+
+/** Local ISO date n days from today (negative = past). */
+function isoDaysFromToday(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/**
+ * Resolve a range preset to a {from, to} window on the local calendar.
+ * - today:  from = to = today
+ * - week:   from = this week's Monday, to = today (ISO weeks, Monday-first)
+ * - month:  from = first of this month, to = today
+ * Never extends into the future — `to` is clamped to today so partial weeks/
+ * months show the in-progress picture rather than an empty future window.
+ */
+export function resolveRange(range: RangePreset): { from: string; to: string } {
+  const today = localToday();
+  if (range === 'today') return { from: today, to: today };
+  if (range === 'week') {
+    const d = new Date();
+    const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    // JS getDay: 0 = Sunday … 6 = Saturday. Shift so Monday = 0.
+    const sinceMonday = (monday.getDay() + 6) % 7;
+    monday.setDate(monday.getDate() - sinceMonday);
+    const from = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+    return { from, to: today };
+  }
+  // month
+  const d = new Date();
+  const from = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
+  return { from, to: today };
+}
+
 /** Anything exposing Astro's cookies API (the page frontmatter `Astro` global). */
 interface CookieJar {
   cookies: AstroCookies;
 }
 
 /**
- * Parse + validate the ?from&to&assignee&priority query params.
+ * Parse + validate the dashboard query params:
+ *   ?range=today|week|month|custom &from=YYYY-MM-DD &to=YYYY-MM-DD
+ *   &assignee=<id> &priority=<p> &status=<s> &overdue=1
+ *
+ * Range resolution:
+ *   - range=today/week/month → from/to computed on the local calendar (any
+ *     from/to in the URL is ignored).
+ *   - range=custom (or absent) with from/to in the URL → those exact dates.
+ *   - nothing → no date filter (all tasks).
+ *
  * Invalid values are dropped and reported via a one-shot flash so the user
  * knows why a filter had no effect. Never throws — always returns a safe
  * filter object.
@@ -100,20 +189,30 @@ export function parseDashboardFilters(url: URL, jar: CookieJar): DashboardFilter
   const f: DashboardFilters = { ...NO_FILTERS };
   const sp = url.searchParams;
 
-  const from = sp.get('from');
-  const to = sp.get('to');
-  if (from) {
-    if (isValidDate(from)) f.from = from;
-    else setFlash(jar, 'error', 'Invalid "from" date — expected YYYY-MM-DD.');
-  }
-  if (to) {
-    if (isValidDate(to)) f.to = to;
-    else setFlash(jar, 'error', 'Invalid "to" date — expected YYYY-MM-DD.');
-  }
-  if (f.from && f.to && f.from > f.to) {
-    setFlash(jar, 'error', '"From" date must be on or before the "to" date.');
-    f.from = null;
-    f.to = null;
+  // ── Date window (range preset first, then explicit from/to) ──
+  const rangeParam = sp.get('range');
+  if (rangeParam && isRangePreset(rangeParam) && rangeParam !== 'custom') {
+    f.range = rangeParam;
+    const { from, to } = resolveRange(rangeParam);
+    f.from = from;
+    f.to = to;
+  } else {
+    f.range = rangeParam === 'custom' ? 'custom' : null;
+    const from = sp.get('from');
+    const to = sp.get('to');
+    if (from) {
+      if (isValidDate(from)) f.from = from;
+      else setFlash(jar, 'error', 'Invalid "from" date — expected YYYY-MM-DD.');
+    }
+    if (to) {
+      if (isValidDate(to)) f.to = to;
+      else setFlash(jar, 'error', 'Invalid "to" date — expected YYYY-MM-DD.');
+    }
+    if (f.from && f.to && f.from > f.to) {
+      setFlash(jar, 'error', '"From" date must be on or before the "to" date.');
+      f.from = null;
+      f.to = null;
+    }
   }
 
   const assignee = sp.get('assignee');
@@ -129,18 +228,50 @@ export function parseDashboardFilters(url: URL, jar: CookieJar): DashboardFilter
     else setFlash(jar, 'error', 'Invalid priority filter.');
   }
 
+  const status = sp.get('status');
+  if (status && status.trim() !== '') {
+    if (isStatus(status)) f.status = status;
+    else setFlash(jar, 'error', 'Invalid status filter.');
+  }
+
+  const overdue = sp.get('overdue');
+  if (overdue === '1' || overdue === 'true') f.overdue_only = true;
+
   return f;
 }
 
 /** True when any filter is active (drives the "Clear filters" affordance). */
 export function hasActiveFilters(f: DashboardFilters): boolean {
-  return Boolean(f.from || f.to || f.assignee !== null || f.priority);
+  return Boolean(
+    f.from || f.to || f.assignee !== null || f.priority || f.status || f.overdue_only,
+  );
+}
+
+/** Rebuild the querystring for the current filters (used by the clear link). */
+export function filterQuerystring(f: DashboardFilters): string {
+  const sp = new URLSearchParams();
+  if (f.range && f.range !== 'custom') sp.set('range', f.range);
+  else if (f.from || f.to) {
+    sp.set('range', 'custom');
+    if (f.from) sp.set('from', f.from);
+    if (f.to) sp.set('to', f.to);
+  }
+  if (f.assignee !== null) sp.set('assignee', String(f.assignee));
+  if (f.priority) sp.set('priority', f.priority);
+  if (f.status) sp.set('status', f.status);
+  if (f.overdue_only) sp.set('overdue', '1');
+  const qs = sp.toString();
+  return qs ? `?${qs}` : '';
 }
 
 /**
  * Build the shared, fully parameterized task WHERE clause. Callers add their
  * own extra conditions (with their own bound params); every condition is
  * joined with AND and the query text never contains raw user input.
+ *
+ * The "extra" conditions are placed FIRST in the text (so a caller can put a
+ * `date(?)` in the SELECT and bind its param before the WHERE params — see
+ * getKpis). All params are returned in the exact order they appear in the SQL.
  */
 function whereClause(
   f: DashboardFilters,
@@ -148,9 +279,6 @@ function whereClause(
 ): { sql: string; params: unknown[] } {
   const conds: string[] = [];
   const params: unknown[] = [];
-  // created_at is a UTC timestamp (datetime('now')); shift to the server's
-  // LOCAL calendar day so filter boundaries match how dates are displayed
-  // everywhere else in the app (formatDbDate parses UTC → renders local).
   if (f.from) {
     conds.push("date(t.created_at, 'localtime') >= date(?)");
     params.push(f.from);
@@ -167,12 +295,55 @@ function whereClause(
     conds.push('t.priority = ?');
     params.push(f.priority);
   }
+  if (f.status) {
+    conds.push('t.status = ?');
+    params.push(f.status);
+  }
+  if (f.overdue_only) {
+    const today = localToday();
+    conds.push(
+      "t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status NOT IN ('completed', 'cancelled')",
+    );
+    params.push(today);
+  }
   const allConds = [...extra.map((e) => e.sql), ...conds];
   const allParams = [...extra.flatMap((e) => e.params), ...params];
   return {
     sql: allConds.length ? `WHERE ${allConds.join(' AND ')}` : '',
     params: allParams,
   };
+}
+
+/**
+ * A WHERE clause scoped to a SPECIFIC date window (used by the completion-rate
+ * comparison so we can compute the previous period independently). Other
+ * filters (assignee/priority) still apply; status/overdue_only are dropped
+ * because they would distort the ratio's meaning.
+ */
+function whereClauseForWindow(
+  f: DashboardFilters,
+  from: string | null,
+  to: string | null,
+): { sql: string; params: unknown[] } {
+  const conds: string[] = [];
+  const params: unknown[] = [];
+  if (from) {
+    conds.push("date(t.created_at, 'localtime') >= date(?)");
+    params.push(from);
+  }
+  if (to) {
+    conds.push("date(t.created_at, 'localtime') <= date(?)");
+    params.push(to);
+  }
+  if (f.assignee !== null) {
+    conds.push('t.assigned_to = ?');
+    params.push(f.assignee);
+  }
+  if (f.priority) {
+    conds.push('t.priority = ?');
+    params.push(f.priority);
+  }
+  return { sql: conds.length ? `WHERE ${conds.join(' AND ')}` : '', params };
 }
 
 // ─────────────────────────────── KPI cards ───────────────────────────────
@@ -183,15 +354,25 @@ export interface Kpis {
   in_progress: number;
   on_hold: number;
   completed: number;
+  /** status = 'cancelled' (manager/admin cancel flow) */
   cancelled: number;
   /** due_date before today AND status NOT IN ('completed', 'cancelled') */
   overdue: number;
+  /** priority = 'urgent' AND status NOT IN ('completed', 'cancelled') */
+  urgent_open: number;
+  /** status = 'completed' with NO is_evidence=1 attachment */
+  completed_without_evidence: number;
+  /** Average completion time in seconds (completed_at − started_at), or null. */
+  avg_completion_seconds: number | null;
 }
 
 export function getKpis(f: DashboardFilters): Kpis {
   const db = getDb();
   const today = localToday();
   const { sql, params } = whereClause(f);
+  // NOTE on placeholder order: SQLite binds placeholders in the order they
+  // appear in the text. The SELECT contains date(?) (for the overdue CASE)
+  // BEFORE the WHERE clause, so `today` must bind FIRST, then the WHERE params.
   const row = db
     .prepare(
       `SELECT COUNT(*) AS total,
@@ -201,12 +382,17 @@ export function getKpis(f: DashboardFilters): Kpis {
               COALESCE(SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END), 0) AS completed,
               COALESCE(SUM(CASE WHEN t.status = 'cancelled' THEN 1 ELSE 0 END), 0) AS cancelled,
               COALESCE(SUM(CASE WHEN t.due_date IS NOT NULL AND date(t.due_date) < date(?)
-                                 AND t.status NOT IN ('completed', 'cancelled') THEN 1 ELSE 0 END), 0) AS overdue
+                                 AND t.status NOT IN ('completed', 'cancelled') THEN 1 ELSE 0 END), 0) AS overdue,
+              COALESCE(SUM(CASE WHEN t.priority = 'urgent'
+                                 AND t.status NOT IN ('completed', 'cancelled') THEN 1 ELSE 0 END), 0) AS urgent_open,
+              COALESCE(SUM(CASE WHEN t.status = 'completed'
+                                 AND NOT EXISTS (
+                                   SELECT 1 FROM task_attachments a
+                                   WHERE a.task_id = t.id AND a.is_evidence = 1
+                                 ) THEN 1 ELSE 0 END), 0) AS completed_without_evidence
        FROM tasks t
        ${sql}`,
     )
-    // Placeholder order follows the SQL text: the SELECT's date(?) comes BEFORE
-    // the WHERE clause's filter placeholders, so `today` binds first.
     .get(today, ...params) as {
     total: number;
     not_started: number;
@@ -215,7 +401,30 @@ export function getKpis(f: DashboardFilters): Kpis {
     completed: number;
     cancelled: number;
     overdue: number;
+    urgent_open: number;
+    completed_without_evidence: number;
   };
+
+  // Average completion time = AVG(completed_at − started_at) in seconds, for
+  // completed tasks that have both timestamps. Computed separately so the
+  // heavyweight AVG/julianday does not interfere with the COUNT query's
+  // placeholder order. The status/timestamp conditions ride in `extra` so the
+  // WHERE/AND shape stays correct whether or not the user picked filters.
+  const { sql: avgSql, params: avgParams } = whereClause(f, [
+    {
+      sql: "t.status = 'completed' AND t.completed_at IS NOT NULL AND t.started_at IS NOT NULL",
+      params: [],
+    },
+  ]);
+  const avgRow = db
+    .prepare(
+      `SELECT AVG((julianday(t.completed_at) - julianday(t.started_at)) * 86400.0) AS avg_seconds
+       FROM tasks t
+       ${avgSql}`,
+    )
+    .get(...avgParams) as { avg_seconds: number | null } | undefined;
+
+  const avgSeconds = avgRow?.avg_seconds ?? null;
 
   return {
     total: Number(row.total),
@@ -225,6 +434,9 @@ export function getKpis(f: DashboardFilters): Kpis {
     completed: Number(row.completed),
     cancelled: Number(row.cancelled),
     overdue: Number(row.overdue),
+    urgent_open: Number(row.urgent_open),
+    completed_without_evidence: Number(row.completed_without_evidence),
+    avg_completion_seconds: avgSeconds == null ? null : Number(avgSeconds),
   };
 }
 
@@ -250,6 +462,31 @@ export function getStatusDistribution(f: DashboardFilters): DonutSlice[] {
     label: STATUS_LABELS[status],
     color: STATUS_COLORS[status],
     count: byStatus.get(status) ?? 0,
+  }));
+}
+
+// ─────────────────────── Bar: tasks by priority ───────────────────────
+
+export interface PrioritySlice {
+  priority: string;
+  label: string;
+  color: string;
+  count: number;
+}
+
+/** Counts per priority, in a fixed order (zeros included) for the bar chart. */
+export function getPriorityDistribution(f: DashboardFilters): PrioritySlice[] {
+  const db = getDb();
+  const { sql, params } = whereClause(f);
+  const rows = db
+    .prepare(`SELECT t.priority, COUNT(*) AS count FROM tasks t ${sql} GROUP BY t.priority`)
+    .all(...params) as { priority: string; count: number }[];
+  const byPriority = new Map(rows.map((r) => [r.priority, Number(r.count)]));
+  return PRIORITY_ORDER.map((priority) => ({
+    priority,
+    label: PRIORITY_LABELS[priority],
+    color: PRIORITY_COLORS[priority],
+    count: byPriority.get(priority) ?? 0,
   }));
 }
 
@@ -315,6 +552,59 @@ export function getPerEmployee(f: DashboardFilters): EmployeeBar[] {
   if (unassignedTotal > 0) result.push(build(UNASSIGNED_USER_ID, 'Unassigned', unassigned));
 
   return result.sort((a, b) => b.total - a.total || a.full_name.localeCompare(b.full_name));
+}
+
+// ─────────────────── Bar: overdue tasks per employee ───────────────────
+
+export interface OverdueEmployee {
+  user_id: number;
+  full_name: string;
+  count: number;
+}
+
+/**
+ * Overdue-task counts per ACTIVE user (overdue = due before today AND status
+ * NOT IN completed/cancelled). Sorted by count descending. Includes an
+ * "Unassigned" row when there are overdue tasks without an active assignee.
+ */
+export function getOverdueByEmployee(f: DashboardFilters): OverdueEmployee[] {
+  const db = getDb();
+  const users = listActiveUsers();
+  const activeIds = new Set(users.map((u) => u.id));
+  const today = localToday();
+  const { sql, params } = whereClause(f, [
+    {
+      sql: "t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status NOT IN ('completed', 'cancelled')",
+      params: [today],
+    },
+  ]);
+  const rows = db
+    .prepare(
+      `SELECT t.assigned_to, COUNT(*) AS count
+       FROM tasks t
+       ${sql}
+       GROUP BY t.assigned_to`,
+    )
+    .all(...params) as { assigned_to: number | null; count: number }[];
+
+  const byId = new Map<number, number>();
+  let unassigned = 0;
+  for (const r of rows) {
+    if (r.assigned_to === null || !activeIds.has(r.assigned_to)) {
+      unassigned += Number(r.count);
+    } else {
+      byId.set(r.assigned_to, (byId.get(r.assigned_to) ?? 0) + Number(r.count));
+    }
+  }
+
+  const result: OverdueEmployee[] = users
+    .map((u) => ({ user_id: u.id, full_name: u.full_name, count: byId.get(u.id) ?? 0 }))
+    .filter((e) => e.count > 0)
+    .sort((a, b) => b.count - a.count || a.full_name.localeCompare(b.full_name));
+  if (unassigned > 0) {
+    result.push({ user_id: UNASSIGNED_USER_ID, full_name: 'Unassigned', count: unassigned });
+  }
+  return result;
 }
 
 // ─────────────── Line: tasks completed per week ───────────────
@@ -387,6 +677,96 @@ export function getCompletedPerWeek(f: DashboardFilters): WeekPoint[] {
   return weeks;
 }
 
+// ─────────────── Gauge: completion rate vs previous period ───────────────
+
+export interface CompletionRate {
+  /** Current window [from, to] (defaults to the last 30 days when unfiltered). */
+  current_from: string;
+  current_to: string;
+  /** Previous window (same length, immediately before the current one). */
+  previous_from: string;
+  previous_to: string;
+  /** completed / total in the current window (0–1, or null when total = 0). */
+  current: number | null;
+  /** completed / total in the previous window (0–1, or null when total = 0). */
+  previous: number | null;
+  /** Percentage-point change (current − previous), or null if either is null. */
+  delta_pp: number | null;
+}
+
+/**
+ * Completion rate for the filtered window, compared to the immediately
+ * preceding window of the same length.
+ *
+ *   completion rate = completed tasks / total tasks (by created_at)
+ *
+ * The date window comes from the dashboard filters (from/to). With no date
+ * filter the window defaults to the last 30 days so the metric is always
+ * meaningful. Status + overdue_only filters are intentionally NOT applied
+ * here — they would make the ratio trivial (e.g. status=completed → 100%).
+ * Assignee and priority DO apply, so a manager can scope the rate to a person.
+ */
+export function getCompletionRate(f: DashboardFilters): CompletionRate {
+  const db = getDb();
+  // Default window: last 30 days when no date filter is active. NOTE the
+  // negative offset — isoDaysFromToday ADDS `days` to today, so -29 gives the
+  // start of the 30-day window ending today (today-29 … today inclusive).
+  const currentFrom = f.from ?? isoDaysFromToday(-29);
+  const currentTo = f.to ?? localToday();
+
+  // Length of the current window in days (inclusive of both endpoints). Clamp
+  // to at least 1 so the previous window is well-formed for a single-day range.
+  const lenDays = Math.max(1, daysBetween(currentFrom, currentTo) + 1);
+  const previousTo = isoOffset(currentFrom, -1);
+  const previousFrom = isoOffset(previousTo, -(lenDays - 1));
+
+  const compute = (from: string, to: string): { rate: number | null; completed: number; total: number } => {
+    const { sql, params } = whereClauseForWindow(f, from, to);
+    const row = db
+      .prepare(
+        `SELECT COUNT(*) AS total,
+                COALESCE(SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END), 0) AS completed
+         FROM tasks t
+         ${sql}`,
+      )
+      .all(...params) as { total: number; completed: number }[];
+    const total = row.length > 0 ? Number(row[0].total) : 0;
+    const completed = row.length > 0 ? Number(row[0].completed) : 0;
+    return { rate: total > 0 ? completed / total : null, completed, total };
+  };
+
+  const cur = compute(currentFrom, currentTo);
+  const prev = compute(previousFrom, previousTo);
+  const delta = cur.rate !== null && prev.rate !== null ? (cur.rate - prev.rate) * 100 : null;
+
+  return {
+    current_from: currentFrom,
+    current_to: currentTo,
+    previous_from: previousFrom,
+    previous_to: previousTo,
+    current: cur.rate,
+    previous: prev.rate,
+    delta_pp: delta,
+  };
+}
+
+/** Whole days from `fromIso` (inclusive) to `toIso` (inclusive). */
+function daysBetween(fromIso: string, toIso: string): number {
+  const [fy, fm, fd] = fromIso.split('-').map(Number);
+  const [ty, tm, td] = toIso.split('-').map(Number);
+  const a = new Date(fy, fm - 1, fd);
+  const b = new Date(ty, tm - 1, td);
+  return Math.round((b.getTime() - a.getTime()) / 86_400_000);
+}
+
+/** ISO date offset from `baseIso` by `days` days (negative = earlier). */
+function isoOffset(baseIso: string, days: number): string {
+  const [y, m, d] = baseIso.split('-').map(Number);
+  const base = new Date(y, m - 1, d);
+  base.setDate(base.getDate() + days);
+  return `${base.getFullYear()}-${String(base.getMonth() + 1).padStart(2, '0')}-${String(base.getDate()).padStart(2, '0')}`;
+}
+
 // ─────────────────────────────── Tables ───────────────────────────────
 
 export interface OverdueRow {
@@ -397,7 +777,7 @@ export interface OverdueRow {
   days_overdue: number;
 }
 
-/** Overdue = due before today AND not completed. Sorted by most overdue first. */
+/** Overdue = due before today AND not completed/cancelled. Sorted by most overdue first. */
 export function getOverdueTasks(f: DashboardFilters): OverdueRow[] {
   const db = getDb();
   const today = localToday();
@@ -432,15 +812,6 @@ export function getOverdueTasks(f: DashboardFilters): OverdueRow[] {
   }));
 }
 
-/** Whole days from `fromIso` (inclusive) to `toIso` (exclusive), local calendar. */
-function daysBetween(fromIso: string, toIso: string): number {
-  const [fy, fm, fd] = fromIso.split('-').map(Number);
-  const [ty, tm, td] = toIso.split('-').map(Number);
-  const a = new Date(fy, fm - 1, fd);
-  const b = new Date(ty, tm - 1, td);
-  return Math.round((b.getTime() - a.getTime()) / 86_400_000);
-}
-
 export interface RecentRow {
   id: number;
   title: string;
@@ -464,4 +835,101 @@ export function getRecentlyCompleted(f: DashboardFilters): RecentRow[] {
        LIMIT 10`,
     )
     .all(...params) as RecentRow[];
+}
+
+export interface WithoutEvidenceRow {
+  id: number;
+  title: string;
+  assignee_name: string | null;
+  completed_at: string;
+}
+
+/**
+ * Completed tasks that have NO is_evidence=1 attachment. These are surfaced
+ * separately so reviewers can chase missing proof-of-work on completed items.
+ */
+export function getCompletedWithoutEvidence(f: DashboardFilters): WithoutEvidenceRow[] {
+  const db = getDb();
+  const { sql, params } = whereClause(f, [
+    {
+      sql:
+        "t.status = 'completed' AND NOT EXISTS (SELECT 1 FROM task_attachments a WHERE a.task_id = t.id AND a.is_evidence = 1)",
+      params: [],
+    },
+  ]);
+  return db
+    .prepare(
+      `SELECT t.id, t.title, t.completed_at, u.full_name AS assignee_name
+       FROM tasks t
+       LEFT JOIN users u ON u.id = t.assigned_to
+       ${sql}
+       ORDER BY t.completed_at DESC, t.id DESC
+       LIMIT 25`,
+    )
+    .all(...params) as WithoutEvidenceRow[];
+}
+
+export interface BlockerRow {
+  id: number;
+  title: string;
+  assignee_name: string | null;
+  blocker_note: string;
+  on_hold_since: string | null;
+}
+
+/**
+ * Current blockers — tasks that are on hold (status = 'on_hold'). Includes the
+ * blocker note (required when moving to on_hold) and the last update time so a
+ * manager can see at a glance what is stuck and for how long.
+ */
+export function getCurrentBlockers(f: DashboardFilters): BlockerRow[] {
+  const db = getDb();
+  const { sql, params } = whereClause(f, [
+    { sql: "t.status = 'on_hold'", params: [] },
+  ]);
+  return db
+    .prepare(
+      `SELECT t.id, t.title, t.blocker_note, t.updated_at AS on_hold_since, u.full_name AS assignee_name
+       FROM tasks t
+       LEFT JOIN users u ON u.id = t.assigned_to
+       ${sql}
+       ORDER BY t.updated_at DESC, t.id DESC
+       LIMIT 25`,
+    )
+    .all(...params) as BlockerRow[];
+}
+
+export interface ActivityRow {
+  id: number;
+  task_id: number;
+  task_title: string;
+  user_name: string;
+  action: string;
+  old_value: string | null;
+  new_value: string | null;
+  created_at: string;
+}
+
+/**
+ * The latest 20 activity entries across all tasks (the dashboard feed). The
+ * task filters (assignee/priority/status/overdue_only + date window on the
+ * task's created_at) scope the feed via the JOIN, so a manager viewing a given
+ * assignee sees that person's recent activity. `t.*` columns resolve through
+ * the JOIN, so the shared whereClause drops in unchanged.
+ */
+export function getLatestActivity(f: DashboardFilters): ActivityRow[] {
+  const db = getDb();
+  const { sql, params } = whereClause(f);
+  return db
+    .prepare(
+      `SELECT a.id, a.task_id, t.title AS task_title, u.full_name AS user_name,
+              a.action, a.old_value, a.new_value, a.created_at
+       FROM task_activity_log a
+       JOIN tasks t ON t.id = a.task_id
+       JOIN users u ON u.id = a.user_id
+       ${sql}
+       ORDER BY a.created_at DESC, a.id DESC
+       LIMIT 20`,
+    )
+    .all(...params) as ActivityRow[];
 }

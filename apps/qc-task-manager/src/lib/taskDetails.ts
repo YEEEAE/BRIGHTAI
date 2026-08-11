@@ -370,7 +370,7 @@ export function describeAction(action: string, oldValue: string | null, newValue
     case 'delete_approved':
       return 'approved the deletion request.';
     case 'delete_rejected':
-      return 'rejected the deletion request.';
+      return `rejected the deletion request${newValue ? `: ${newValue}` : '.'}`;
     case 'task_deleted':
       return 'deleted this task.';
     case 'notification_created':

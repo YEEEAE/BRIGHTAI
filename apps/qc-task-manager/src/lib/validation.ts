@@ -18,6 +18,8 @@ import {
   MAX_DEPARTMENT_LENGTH,
   MAX_DESCRIPTION_LENGTH,
   MAX_REASON_LENGTH,
+  MAX_SAVED_FILTER_JSON,
+  MAX_SAVED_FILTER_NAME,
   MAX_TITLE_LENGTH,
   MAX_USERNAME_LENGTH,
   MIN_PASSWORD_LENGTH,
@@ -199,6 +201,32 @@ export const deleteRequestSchema = z.object({
   ),
 });
 
+/**
+ * POST /manager/requests/api — approve/reject a delete request. The reviewer
+ * note is optional ("rejection may include a reason") and normalized to null
+ * when empty; it is persisted on the request row, logged, and notified.
+ */
+export const deleteReviewSchema = z.object({
+  action: z.enum(['approve', 'reject'], {
+    errorMap: () => ({ message: 'Invalid action.' }),
+  }),
+  request_id: z.preprocess(
+    (v) => (v === '' || v == null ? NaN : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid request.' }) })
+      .int()
+      .positive(),
+  ),
+  review_note: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z
+      .string()
+      .trim()
+      .max(MAX_REASON_LENGTH, `Review note must be ${MAX_REASON_LENGTH} characters or fewer.`)
+      .nullable(),
+  ),
+});
+
 // Max length for the free-text department field — canonical value lives in
 // task-policy.ts; re-exported here for back-compat with existing importers.
 export { MAX_DEPARTMENT_LENGTH } from './task-policy';
@@ -265,4 +293,40 @@ export const passwordResetSchema = z.object({
   newPassword: z
     .string({ required_error: 'Password is required.' })
     .min(MIN_PASSWORD_LENGTH, `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`),
+});
+
+/**
+ * POST /api/filters — save or delete a per-user saved search filter.
+ * `name` (save) and `filter_id` (delete) are optional per action; the schema
+ * accepts both shapes and the handler validates per action. `next` is the
+ * same-origin redirect target after the POST (validated at the handler).
+ */
+export const savedFilterSchema = z.object({
+  action: z.enum(['save', 'delete'], {
+    errorMap: () => ({ message: 'Invalid action.' }),
+  }),
+  name: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z
+      .string()
+      .trim()
+      .max(MAX_SAVED_FILTER_NAME, `Saved filter name must be ${MAX_SAVED_FILTER_NAME} characters or fewer.`)
+      .nullable(),
+  ),
+  filter_json: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z.string().max(MAX_SAVED_FILTER_JSON, 'Saved filter payload is too large.').nullable(),
+  ),
+  filter_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid saved filter.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  next: z.preprocess(
+    (v) => (v === '' || v == null ? '/' : v),
+    z.string().max(500, 'Redirect target is too long.').nullable(),
+  ),
 });

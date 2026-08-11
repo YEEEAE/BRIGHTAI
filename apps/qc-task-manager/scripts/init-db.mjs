@@ -66,6 +66,7 @@ const COLUMN_MIGRATIONS = [
   { table: 'task_activity_log', column: 'field', ddl: 'ALTER TABLE task_activity_log ADD COLUMN field TEXT' },
   { table: 'task_activity_log', column: 'note', ddl: 'ALTER TABLE task_activity_log ADD COLUMN note TEXT' },
   { table: 'task_activity_log', column: 'ip_address', ddl: 'ALTER TABLE task_activity_log ADD COLUMN ip_address TEXT' },
+  { table: 'task_delete_requests', column: 'review_note', ddl: 'ALTER TABLE task_delete_requests ADD COLUMN review_note TEXT' },
 ];
 
 /**
@@ -117,6 +118,7 @@ function migrateExistingDb(db) {
           task_id      INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
           requested_by INTEGER NOT NULL REFERENCES users(id),
           reason       TEXT,
+          review_note  TEXT,
           status       TEXT NOT NULL DEFAULT 'pending'
                          CHECK (status IN ('pending', 'approved', 'rejected')),
           reviewed_by  INTEGER REFERENCES users(id),

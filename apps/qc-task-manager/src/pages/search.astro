@@ -1,0 +1,452 @@
+---
+// Advanced task search (/search) — available to every authenticated role.
+//
+//  - Server-side filtering only: the form submits GET /search and every
+//    filter, sort and page number lives in the URL query string, so the state
+//    is shareable/bookmarkable and survives navigation (spec requirement).
+//  - The WHERE clause is built by taskSearch.buildSearchWhere — fully
+//    parameterized, never interpolates user input, and employees are scoped
+//    to their own tasks server-side.
+//  - Exports (CSV / XLSX) re-run the SAME filters over all matching rows.
+//  - Saved filters (per user) are stored in saved_filters and applied by
+//    rebuilding the URL from the stored query JSON.
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import EmptyState from '../components/EmptyState.astro';
+import * as search from '../lib/taskSearch';
+import {
+  formatDbDate,
+  formatDueDate,
+  isOverdue,
+  isUrgent,
+  priorityLabel,
+  priorityBadgeClass,
+  recurrenceLabel,
+  statusLabel,
+  URGENT_ROW_CLASS,
+} from '../lib/format';
+
+const user = Astro.locals.user!; // protected route — middleware guarantees a session
+const filters = search.parseTaskSearchFilters(Astro.url, Astro);
+const filtered = search.hasSearchFilters(filters);
+
+// DB reads are async (lazy dynamic import — see taskSearch.ts).
+const result = await search.searchTasks(filters, { role: user.role, userId: user.userId });
+const assignees = await search.listSearchAssignees();
+const creators = await search.listSearchCreators();
+const departments = await search.listSearchDepartments();
+const savedFilters = await search.listSavedFilters(user.userId);
+
+// Current filter state WITHOUT a page number — reused by every link on the
+// page (sort, pagination, exports, save-filter payload).
+const qsBase = search.filtersToQuery({ ...filters, page: 1 });
+const qsParams = new URLSearchParams(qsBase.replace(/^\?/, ''));
+
+function pageHref(p: number): string {
+  const sp = new URLSearchParams(qsParams);
+  if (p > 1) sp.set('page', String(p));
+  else sp.delete('page');
+  const qs = sp.toString();
+  return qs ? `/search?${qs}` : '/search';
+}
+
+/** Sort header link: toggles asc/desc for the clicked column. */
+function sortHref(field: search.SearchSortField): string {
+  const next = {
+    ...filters,
+    sort: field,
+    dir: (filters.sort === field && filters.dir === 'asc' ? 'desc' : 'asc') as 'asc' | 'desc',
+    page: 1,
+  };
+  return `/search${search.filtersToQuery(next)}`;
+}
+
+function sortArrow(field: search.SearchSortField): string {
+  if (filters.sort !== field) return '';
+  return filters.dir === 'asc' ? ' ▲' : ' ▼';
+}
+
+// Every column shown in the table; only fields with a SORT_SQL entry are
+// clickable sort headers (progress is displayed but not sortable).
+const SORTABLE: { field: search.SearchSortField; label: string }[] = [
+  { field: 'id', label: '#' },
+  { field: 'title', label: 'Title' },
+  { field: 'assignee', label: 'Assignee' },
+  { field: 'due_date', label: 'Due' },
+  { field: 'priority', label: 'Priority' },
+  { field: 'status', label: 'Status' },
+];
+
+function th(field: search.SearchSortField, label: string): string {
+  return `<a href="${sortHref(field)}" class="inline-flex items-center gap-1 hover:text-slate-900">${label}${sortArrow(field)}</a>`;
+}
+
+const saveFilterJson = JSON.stringify(Object.fromEntries(qsParams));
+const currentUrl = Astro.url.pathname + Astro.url.search;
+const pageNumbers: number[] = [];
+{
+  const total = result.total_pages;
+  const cur = result.page;
+  // Window of up to 7 pages around the current one.
+  const start = Math.max(1, Math.min(cur - 3, total - 6));
+  const end = Math.min(total, start + 6);
+  for (let p = start; p <= end; p += 1) pageNumbers.push(p);
+}
+---
+
+<BaseLayout title="Search tasks">
+  <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-900">Search tasks</h1>
+      <p class="text-sm text-slate-600">
+        Advanced search across title, description, blockers and comments.
+        Signed in as {user.fullName} ({user.role}).
+      </p>
+    </div>
+    <div class="flex gap-2">
+      <a
+        href={`/api/export/search.csv${qsBase}`}
+        class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+      >
+        Export CSV
+      </a>
+      <a
+        href={`/api/export/search.xlsx${qsBase}`}
+        class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+      >
+        Export XLSX
+      </a>
+    </div>
+  </header>
+
+  {/* ───────────── Filters (GET — server-side, state preserved in the URL) ───────────── */}
+  <form
+    method="get"
+    action="/search"
+    class="mb-6 rounded-xl border border-slate-200 bg-white p-4"
+  >
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600 sm:col-span-2 lg:col-span-4">
+        Search text (title / description / blocker / comments)
+        <input
+          type="search"
+          name="q"
+          value={filters.q ?? ''}
+          placeholder="e.g. calibration, client approval, ZATCA…"
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Status
+        <select name="status" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">All statuses</option>
+          {search.TASK_STATUSES.map((s) => (
+            <option value={s} selected={filters.status === s}>{statusLabel(s)}</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Priority
+        <select name="priority" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">All priorities</option>
+          {search.TASK_PRIORITIES.map((p) => (
+            <option value={p} selected={filters.priority === p}>{priorityLabel(p)}</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Department
+        <select name="department" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">All departments</option>
+          {departments.map((d) => (
+            <option value={d} selected={filters.department === d}>{d}</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Assigned to
+        <select name="assigned" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">Anyone</option>
+          {assignees.map((a) => (
+            <option value={a.id} selected={filters.assigned_to === a.id}>{a.full_name}</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Created by
+        <select name="creator" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">Anyone</option>
+          {creators.map((c) => (
+            <option value={c.id} selected={filters.created_by === c.id}>{c.full_name}</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+        Recurrence
+        <select name="recurrence" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          <option value="">Any recurrence</option>
+          {search.TASK_RECURRENCES.map((r) => (
+            <option value={r} selected={filters.recurrence === r}>{recurrenceLabel(r)}</option>
+          ))}
+        </select>
+      </label>
+
+      <div class="flex items-end gap-2">
+        <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          Due from
+          <input type="date" name="due_from" value={filters.due_from ?? ''} class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+        </label>
+        <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          Due to
+          <input type="date" name="due_to" value={filters.due_to ?? ''} class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+        </label>
+      </div>
+
+      <div class="flex items-end gap-2">
+        <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          Created from
+          <input type="date" name="created_from" value={filters.created_from ?? ''} class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+        </label>
+        <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          Created to
+          <input type="date" name="created_to" value={filters.created_to ?? ''} class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+        </label>
+      </div>
+
+      <div class="flex items-end gap-2">
+        <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          Completed from
+          <input type="date" name="completed_from" value={filters.completed_from ?? ''} class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+        </label>
+        <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          Completed to
+          <input type="date" name="completed_to" value={filters.completed_to ?? ''} class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+        </label>
+      </div>
+
+      <div class="flex items-end gap-2">
+        <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          Per page
+          <select name="per" class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+            {search.SEARCH_PER_PAGE_OPTIONS.map((n) => (
+              <option value={n} selected={filters.per_page === n}>{n}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 sm:col-span-2 lg:col-span-4">
+        <label class="flex items-center gap-2 text-xs font-medium text-slate-600">
+          <input type="checkbox" name="overdue" value="1" checked={filters.overdue_only} class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+          Overdue only
+        </label>
+        <label class="flex items-center gap-2 text-xs font-medium text-slate-600">
+          <input type="checkbox" name="has_evidence" value="1" checked={filters.has_evidence} class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+          Has evidence
+        </label>
+        <label class="flex items-center gap-2 text-xs font-medium text-slate-600">
+          <input type="checkbox" name="evidence_skipped" value="1" checked={filters.evidence_skipped} class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+          Evidence skipped
+        </label>
+        <label class="flex items-center gap-2 text-xs font-medium text-slate-600">
+          <input type="checkbox" name="deletion" value="1" checked={filters.deletion_requested} class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+          Deletion requested
+        </label>
+        <span class="flex-1"></span>
+        <button type="submit" class="rounded-md bg-brand-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+          Search
+        </button>
+        <a href="/search" class="rounded-md border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+          Reset filters
+        </a>
+      </div>
+    </div>
+  </form>
+
+  {/* ───────────── Saved filters (per user) ───────────── */}
+  <section aria-label="Saved filters" class="mb-6 rounded-xl border border-slate-200 bg-white p-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 class="text-sm font-semibold text-slate-900">Saved filters</h2>
+      <form method="post" action="/api/filters" class="flex flex-wrap items-center gap-2">
+        <input type="hidden" name="action" value="save" />
+        <input type="hidden" name="filter_json" value={saveFilterJson} />
+        <input type="hidden" name="next" value={currentUrl} />
+        <input
+          type="text"
+          name="name"
+          required
+          maxlength={search.MAX_SAVED_FILTER_NAME}
+          placeholder="Name this filter set…"
+          class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+        <button type="submit" class="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
+          Save current filters
+        </button>
+      </form>
+    </div>
+    {savedFilters.length === 0 ? (
+      <p class="mt-3 text-xs text-slate-500">
+        No saved filters yet — apply some filters above and save them for one-click reuse.
+      </p>
+    ) : (
+      <ul class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {savedFilters.map((sf) => (
+          <li class="flex items-center justify-between gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
+            <div class="min-w-0">
+              <a href={search.savedFilterHref(sf.filter_json)} class="block truncate text-sm font-medium text-slate-900 hover:underline">
+                {sf.name}
+              </a>
+              <span class="text-[11px] text-slate-400">Saved {formatDbDate(sf.created_at)}</span>
+            </div>
+            <form method="post" action="/api/filters">
+              <input type="hidden" name="action" value="delete" />
+              <input type="hidden" name="filter_id" value={sf.id} />
+              <input type="hidden" name="next" value={currentUrl} />
+              <button
+                type="submit"
+                class="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-600 hover:bg-red-50 hover:text-red-700"
+                aria-label={`Delete saved filter ${sf.name}`}
+              >
+                Delete
+              </button>
+            </form>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  {/* ───────────── Results ───────────── */}
+  <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+    <p class="text-sm text-slate-600">
+      <span class="font-semibold text-slate-900">{result.total}</span> task{result.total === 1 ? '' : 's'} found
+      {filtered && (
+        <span class="text-slate-400"> (filtered — <a href="/search" class="underline hover:text-slate-600">clear all</a>)</span>
+      )}
+    </p>
+    {result.total > 0 && (
+      <p class="text-xs text-slate-500">Page {result.page} of {result.total_pages}</p>
+    )}
+  </div>
+
+  {result.rows.length === 0 ? (
+    <EmptyState
+      title="No tasks match your search"
+      hint="Try removing some filters, or clear the search text."
+      ctaHref="/search"
+      ctaLabel="Reset search"
+    />
+  ) : (
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+      <table class="w-full min-w-max text-sm">
+        <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+          <tr>
+            {SORTABLE.map((s) => (
+              <th class="px-4 py-2.5">
+                <span set:html={th(s.field, s.label)} />
+              </th>
+            ))}
+            <th class="px-4 py-2.5">Creator</th>
+            <th class="px-4 py-2.5">Dept</th>
+            <th class="px-4 py-2.5">Updated</th>
+            <th class="px-4 py-2.5">Files</th>
+            <th class="px-4 py-2.5">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200">
+          {result.rows.map((t) => {
+            const overdue = isOverdue(t.due_date, t.status);
+            const urgent = isUrgent(t.priority);
+            return (
+              <tr class={urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50'}>
+                <td class="px-4 py-2.5 text-slate-500">{t.id}</td>
+                <td class="px-4 py-2.5">
+                  <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+                  {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
+                  {t.delete_pending === 1 && (
+                    <span class="ml-1" title="Pending deletion request">🗑️</span>
+                  )}
+                  <div class="mt-0.5 line-clamp-1 max-w-sm text-xs text-slate-400">{t.description ?? ''}</div>
+                </td>
+                <td class="px-4 py-2.5 text-slate-600">{t.assignee ?? '—'}</td>
+                <td class={`whitespace-nowrap px-4 py-2.5 ${overdue ? 'font-semibold text-red-600' : 'text-slate-600'}`}>
+                  {formatDueDate(t.due_date)}
+                  {overdue && ' ⚠️'}
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5">
+                  <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>
+                    {priorityLabel(t.priority)}
+                  </span>
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5 text-slate-600 tabular-nums">{t.progress_percent}%</td>
+                <td class="px-4 py-2.5"><StatusBadge status={t.status} /></td>
+                <td class="px-4 py-2.5 text-slate-600">{t.creator ?? '—'}</td>
+                <td class="px-4 py-2.5 text-slate-600">{t.department}</td>
+                <td class="whitespace-nowrap px-4 py-2.5 text-slate-500">{formatDbDate(t.updated_at)}</td>
+                <td class="whitespace-nowrap px-4 py-2.5 text-slate-600">
+                  {t.evidence_count > 0 ? (
+                    <span title={t.evidence_files ?? ''}>📎 {t.evidence_count}</span>
+                  ) : (
+                    <span class="text-slate-300">—</span>
+                  )}
+                  {t.evidence_count === 0 && Number(t.evidence_skipped) === 1 && (
+                    <span class="ml-1 text-amber-500" title="Evidence was skipped">⏭</span>
+                  )}
+                </td>
+                <td class="whitespace-nowrap px-4 py-2.5">
+                  <a
+                    href={`/api/export/tasks/pdf/${t.id}`}
+                    class="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
+                    title="Download PDF report"
+                  >
+                    PDF
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  )}
+
+  {/* ───────────── Pagination (state preserved via URL) ───────────── */}
+  {result.total_pages > 1 && (
+    <nav aria-label="Pagination" class="mt-4 flex flex-wrap items-center justify-center gap-2">
+      {result.page > 1 ? (
+        <a href={pageHref(result.page - 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+          ← Prev
+        </a>
+      ) : (
+        <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-400">← Prev</span>
+      )}
+      {pageNumbers.map((p) => (
+        <a
+          href={pageHref(p)}
+          aria-current={p === result.page ? 'page' : undefined}
+          class={`rounded-md px-3 py-1.5 text-sm font-medium ${
+            p === result.page
+              ? 'bg-brand-600 text-white'
+              : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+          }`}
+        >
+          {p}
+        </a>
+      ))}
+      {result.page < result.total_pages ? (
+        <a href={pageHref(result.page + 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+          Next →
+        </a>
+      ) : (
+        <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-400">Next →</span>
+      )}
+    </nav>
+  )}
+</BaseLayout>

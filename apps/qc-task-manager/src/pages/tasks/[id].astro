@@ -225,6 +225,13 @@ function svgIcon(inner: string, cls = ''): string {
               <span class={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${priorityBadgeClass(task.priority)}`}>
                 {priorityLabel(task.priority)}
               </span>
+              <a
+                href={`/api/export/tasks/pdf/${task.id}`}
+                class="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
+                title="Download PDF report"
+              >
+                PDF report
+              </a>
             </div>
             <DeleteRequestDialog
               taskId={task.id}

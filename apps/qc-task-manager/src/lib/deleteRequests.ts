@@ -26,6 +26,7 @@ export type SubmitResult = { ok: true; requestId: number } | { ok: false; error:
 export type ReviewResult = { ok: true; message: string } | { ok: false; error: string };
 
 const REASON_MAX_LENGTH = 500;
+const REVIEW_NOTE_MAX_LENGTH = 500;
 
 /** True when this task has a live 'pending' deletion request (blocks duplicates). */
 export function hasPendingDeleteRequest(taskId: number): boolean {
@@ -138,6 +139,8 @@ export interface DeleteRequestRow {
   /** Live title via JOIN — the task always exists (approved rows cascade away). */
   task_title: string;
   reason: string | null;
+  /** Optional reviewer note (rejection reason) written at review time. */
+  review_note: string | null;
   status: string;
   created_at: string;
   reviewed_at: string | null;
@@ -146,7 +149,7 @@ export interface DeleteRequestRow {
 }
 
 const REQUEST_LIST_SQL = `
-  SELECT r.id, r.task_id, t.title AS task_title, r.reason, r.status, r.created_at, r.reviewed_at,
+  SELECT r.id, r.task_id, t.title AS task_title, r.reason, r.review_note, r.status, r.created_at, r.reviewed_at,
          req.full_name AS requester_name,
          rev.full_name AS reviewer_name
   FROM task_delete_requests r
@@ -182,6 +185,8 @@ export function reviewDeleteRequest(params: {
   requestId: number;
   reviewer: { id: number; role: Role; username: string };
   decision: 'approved' | 'rejected';
+  /** Optional reviewer note — persisted, notified and logged (rejection reason). */
+  reviewNote?: string | null;
 }): ReviewResult {
   const db = getDb();
   if (!canReviewDeleteRequests(params.reviewer.role)) {
@@ -189,6 +194,10 @@ export function reviewDeleteRequest(params: {
   }
   if (params.decision !== 'approved' && params.decision !== 'rejected') {
     return { ok: false, error: 'Invalid decision.' };
+  }
+  const reviewNote = params.reviewNote?.trim() || null;
+  if (reviewNote && reviewNote.length > REVIEW_NOTE_MAX_LENGTH) {
+    return { ok: false, error: `Review note must be ${REVIEW_NOTE_MAX_LENGTH} characters or fewer.` };
   }
 
   const request = db
@@ -212,26 +221,33 @@ export function reviewDeleteRequest(params: {
 
   const markReviewed = db.prepare(
     `UPDATE task_delete_requests
-     SET status = ?, reviewed_by = ?, reviewed_at = datetime('now')
+     SET status = ?, reviewed_by = ?, reviewed_at = datetime('now'), review_note = ?
      WHERE id = ? AND status = 'pending'`,
   );
 
   if (params.decision === 'rejected') {
     // Conditional update: if the row was already reviewed between our SELECT
     // and this UPDATE, changes === 0 and we bail instead of overwriting.
-    const info = markReviewed.run('rejected', params.reviewer.id, request.id);
+    const info = markReviewed.run('rejected', params.reviewer.id, reviewNote, request.id);
     if (info.changes !== 1) {
       return { ok: false, error: 'This request has already been reviewed.' };
     }
-    logActivity({ taskId: request.task_id, userId: params.reviewer.id, action: Action.DELETE_REJECTED });
-    // The requester is told their request was rejected (task stays alive, so
-    // the notification links to it).
+    // The rejection reason (if any) rides in the activity log's new_value.
+    logActivity({
+      taskId: request.task_id,
+      userId: params.reviewer.id,
+      action: Action.DELETE_REJECTED,
+      newValue: reviewNote,
+    });
+    // The requester is told their request was rejected — with the reviewer's
+    // reason when one was given (task stays alive, so the notification links
+    // to it).
     createNotification({
       userId: request.requested_by,
       taskId: request.task_id,
       type: 'delete_rejected',
       title: 'Deletion request rejected',
-      message: `The deletion request for "${taskTitle}" was rejected.`,
+      message: `The deletion request for "${taskTitle}" was rejected${reviewNote ? `: “${reviewNote}”` : '.'}`,
     });
     console.log(
       `[tasks] deletion request #${request.id} (task #${request.task_id}) rejected by ${params.reviewer.username}`,
@@ -242,7 +258,7 @@ export function reviewDeleteRequest(params: {
   // approve — log first (the activity row dies with the task), then delete.
   const tx = db.transaction(() => {
     logActivity({ taskId: request.task_id, userId: params.reviewer.id, action: Action.DELETE_APPROVED });
-    const info = markReviewed.run('approved', params.reviewer.id, request.id);
+    const info = markReviewed.run('approved', params.reviewer.id, null, request.id);
     if (info.changes !== 1) {
       throw new Error('already reviewed');
     }
