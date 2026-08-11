@@ -16,6 +16,18 @@ server-side; hiding a button is not a permission boundary.
 | Review deletion requests | Yes | Yes | No | No |
 | View all tasks | Yes | Yes | Yes | No, only own or assigned tasks |
 
+## QC Operations RBAC
+
+| Finding/CAPA capability | Admin | Manager | Supervisor | Employee |
+| --- | :---: | :---: | :---: | :---: |
+| Full control | Yes | No | No | No |
+| Review Finding / CAPA | Yes | Yes | Yes | Assigned action only |
+| Approve / reject closure | Yes | Yes | No | No |
+| Evidence and corrective-action updates | Yes | Yes | Review only | Assigned owner only |
+
+The UI only reflects these permissions; every API mutation resolves the actor
+from the server session and applies the same checks again.
+
 ## Role landing pages
 
 | Role | Landing page |

@@ -56,6 +56,8 @@ function checkRequiredFiles() {
     'src/lib/ai/index.ts',
     'src/lib/findings/index.ts',
     'src/lib/capa/index.ts',
+    'src/lib/evidence/index.ts',
+    'src/lib/templates/index.ts',
   ];
   for (const path of required) {
     const file = join(APP_DIR, path);

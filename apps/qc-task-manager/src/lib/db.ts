@@ -33,6 +33,7 @@ import { runMigrations } from './migrations';
 import initialMigrationSql from '../../db/migrations/001_initial.sql?raw';
 import legacyMigrationSql from '../../db/migrations/002_legacy_schema_reconciliation.sql?raw';
 import slaMigrationSql from '../../db/migrations/003_sla_engine.sql?raw';
+import qcOperationsMigrationSql from '../../db/migrations/004_qc_operations.sql?raw';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -81,6 +82,11 @@ const REQUIRED_TABLES = [
   'sla_policies',
   'escalation_policies',
   'escalation_events',
+  'qc_findings',
+  'qc_rca',
+  'qc_capa',
+  'qc_evidence',
+  'qc_audit_log',
 ] as const;
 
 /** Every index required by the application (FK lookups + dashboard filters). */
@@ -116,6 +122,14 @@ const REQUIRED_INDEXES = [
   'idx_sla_policies_match',
   'idx_escalation_events_task',
   'idx_escalation_events_retry',
+  'idx_qc_findings_task',
+  'idx_qc_findings_owner_status',
+  'idx_qc_findings_due',
+  'idx_qc_rca_finding',
+  'idx_qc_capa_finding_status',
+  'idx_qc_evidence_finding',
+  'idx_qc_evidence_capa',
+  'idx_qc_audit_entity',
 ] as const;
 
 /**
@@ -167,6 +181,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '001_initial.sql', source: initialMigrationSql },
       { file: '002_legacy_schema_reconciliation.sql', source: legacyMigrationSql },
       { file: '003_sla_engine.sql', source: slaMigrationSql },
+      { file: '004_qc_operations.sql', source: qcOperationsMigrationSql },
     ],
   });
   validateSchema(db, migrationResult.currentVersion);

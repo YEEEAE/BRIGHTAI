@@ -19,6 +19,8 @@ interface Props {
   selfAssignOnly?: boolean;
   /** Candidate tasks for the dependency picker (when includeDependencies). */
   dependencyTasks?: { id: number; title: string; status: string }[];
+  /** ACTIVE templates offered as a starting point (optional). */
+  templates?: { id: number; title: string; code: string }[];
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   users,
   includeDependencies = false,
   selfAssignOnly = false,
+  templates = [],
 } = Astro.props;
 
 const inputCls =
@@ -47,6 +50,22 @@ const f = {
 ---
 
 <form action={action} method="POST" class="space-y-5 rounded-lg border border-slate-200 bg-white p-6">
+  {templates.length > 0 && (
+    <div class="rounded-md border border-brand-200 bg-brand-50 p-4">
+      <label for="template_id" class={labelCls}>Start from a template (optional)</label>
+      <select id="template_id" name="template_id" class={inputCls}>
+        <option value="">— Blank task —</option>
+        {templates.map((t) => (
+          <option value={t.id}>{t.title} ({t.code})</option>
+        ))}
+      </select>
+      <p class="mt-1 text-xs text-slate-500">
+        Choosing a template copies its department, priority, recurrence, checklist, and required evidence.
+        Title, assignee, and due date below override the template defaults.
+      </p>
+    </div>
+  )}
+
   <div>
     <label for={f.title} class={labelCls}>Title</label>
     <input

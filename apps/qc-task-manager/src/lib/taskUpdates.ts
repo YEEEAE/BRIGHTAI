@@ -57,6 +57,15 @@ import {
 } from './task-policy';
 import { nextDueDate, shouldCreateNextOccurrence } from './recurrence';
 import { checkpointTaskSla, refreshTaskSla } from './sla/engine';
+import {
+  computeMissingEvidence,
+  effectiveExtensionsFor,
+  findRequirement,
+  isExtensionAllowedFor,
+  normalizeEvidenceRequirements,
+  type EvidenceRequirementSpec,
+} from './evidence';
+import { parseSnapshot, type TemplateSnapshot } from './templates';
 import type { Role, Task } from './types';
 
 // Keep the mutation implementation readable while forcing every task audit
@@ -206,10 +215,15 @@ function isExecutableBytes(bytes: Buffer): boolean {
  * (pdf/png/jpg/jpeg/xlsx/docx, per spec) with extension + MIME + 10 MB + magic
  * bytes where the type has a signature. `bytes` is the file content already
  * read by the caller (needed for the signature check).
+ *
+ * `requirement`, when provided, NARROWS the allowlist to the requirement's
+ * `allowedExtensions` (e.g. an XLSX-only measurement slot rejects a PDF even
+ * though PDF is globally valid evidence).
  */
 export function validateEvidenceFile(
   file: File,
   bytes: Buffer,
+  requirement?: EvidenceRequirementSpec,
 ): { ok: true; fileName: string; mimeType: string } | { ok: false; error: string } {
   const fileName = sanitizeFileName(file.name);
   if (!fileName) {
@@ -226,6 +240,14 @@ export function validateEvidenceFile(
   }
   const dot = fileName.lastIndexOf('.');
   const ext = dot >= 0 ? fileName.slice(dot + 1).toLowerCase() : '';
+  // Per-requirement narrowing takes precedence when declared.
+  if (requirement && !isExtensionAllowedFor(requirement, ext)) {
+    const allowed = effectiveExtensionsFor(requirement);
+    return {
+      ok: false,
+      error: `File type ".${ext || 'unknown'}" is not allowed for "${requirement.label}". Allowed: ${allowed.join(', ')}.`,
+    };
+  }
   const allowedTypes = EVIDENCE_EXT_MIME[ext];
   if (!allowedTypes) {
     return {
@@ -987,14 +1009,29 @@ export async function closeTask(params: {
     };
   }
 
+  // Evidence requirements come from the task's frozen template snapshot (set
+  // at instantiation time). Tasks without a template have no requirements — the
+  // gate is inert for them and the legacy evidence-optional behavior is kept.
+  const snapshotRow = db.prepare('SELECT template_snapshot FROM tasks WHERE id = ?').get(task.id) as
+    | { template_snapshot: string | null }
+    | undefined;
+  const snapshot: TemplateSnapshot | null = parseSnapshot(snapshotRow?.template_snapshot ?? null);
+  const evidenceRequirements: EvidenceRequirementSpec[] = snapshot
+    ? normalizeEvidenceRequirements(snapshot.evidenceRequirements)
+    : [];
+
   // Evidence step: zero or more uploaded files — each validated against the
   // RESTRICTED evidence allowlist (pdf/png/jpg/jpeg/xlsx/docx) + MIME + size +
   // magic bytes — or a recorded skip. The bytes are read BEFORE the transaction
-  // (transaction callbacks are synchronous), so this function is async.
+  // (transaction callbacks are synchronous), so this function is async. Each
+  // file may carry an `evidence_type` parallel field that ties it to one of the
+  // task's evidence requirements; when present, the requirement's narrowed
+  // extension allowlist is applied in addition to the global one.
   const rawFiles = params.form.getAll('evidence');
   const files = rawFiles.filter(
     (f): f is File => typeof f === 'object' && f !== null && 'size' in f && f.size > 0,
   );
+  const rawEvidenceTypes = params.form.getAll('evidence_type');
   const skipEvidence = String(params.form.get('skip_evidence') ?? '') === '1';
 
   interface PreparedEvidence {
@@ -1002,18 +1039,93 @@ export async function closeTask(params: {
     mimeType: string;
     bytes: Buffer;
     hash: string;
+    evidenceType: string | null;
+    evidenceLabel: string | null;
   }
   const evidenceFiles: PreparedEvidence[] = [];
-  for (const f of files) {
+  for (let i = 0; i < files.length; i += 1) {
+    const f = files[i];
     // Reject over-limit input before allocating a Buffer from FormData. This
     // is the last guard before any BLOB-sized allocation or database insert.
     if (f.size > MAX_UPLOAD_BYTES) {
       return { ok: false, error: `The file exceeds the ${MAX_UPLOAD_BYTES / (1024 * 1024)} MB upload limit.` };
     }
+    const rawType = i < rawEvidenceTypes.length ? String(rawEvidenceTypes[i] ?? '').trim().toLowerCase() : '';
+    const requirement = rawType ? findRequirement(evidenceRequirements, rawType) : undefined;
+    if (rawType && !requirement) {
+      return { ok: false, error: `Evidence type "${rawType}" is not declared on this task.` };
+    }
     const bytes = Buffer.from(await f.arrayBuffer());
-    const validated = validateEvidenceFile(f, bytes);
+    const validated = validateEvidenceFile(f, bytes, requirement);
     if (!validated.ok) return { ok: false, error: validated.error };
-    evidenceFiles.push({ fileName: validated.fileName, mimeType: validated.mimeType, bytes, hash: sha256Hex(bytes) });
+    const hash = sha256Hex(bytes);
+    // Duplicate-hash guard: the same content must not be recorded twice on one
+    // task. This is a read-then-write check (acceptable on single-writer SQLite
+    // — same pattern as the dependency gate).
+    const dup = db
+      .prepare('SELECT id FROM task_attachments WHERE task_id = ? AND file_hash = ?')
+      .get(task.id, hash);
+    if (dup) {
+      return { ok: false, error: 'This file was already uploaded as evidence for this task.' };
+    }
+    evidenceFiles.push({
+      fileName: validated.fileName,
+      mimeType: validated.mimeType,
+      bytes,
+      hash,
+      evidenceType: requirement ? requirement.type : (rawType || null),
+      evidenceLabel: requirement ? requirement.label : null,
+    });
+  }
+
+  // Per-requirement maxFiles: at most N files may satisfy one slot.
+  if (evidenceRequirements.length > 0 && evidenceFiles.length > 0) {
+    const counts = new Map<string, number>();
+    for (const ev of evidenceFiles) {
+      if (!ev.evidenceType) continue;
+      counts.set(ev.evidenceType, (counts.get(ev.evidenceType) ?? 0) + 1);
+    }
+    for (const req of evidenceRequirements) {
+      const cap = req.maxFiles ?? 1;
+      const used = counts.get(req.type) ?? 0;
+      if (used > cap) {
+        return {
+          ok: false,
+          error: `"${req.label}" accepts at most ${cap} file(s); ${used} were uploaded.`,
+        };
+      }
+    }
+  }
+
+  // ── COMPLETION GATE: required-evidence enforcement (server-side) ──
+  // Missing required evidence blocks completion — whether or not evidence was
+  // skipped. Skipping only affects the activity log (evidence_skipped); it does
+  // NOT waive declared REQUIRED requirements. Managers/admins may override with
+  // an explicit reason (mirrors the checklist-override pattern); everyone else
+  // is blocked.
+  let evidenceOverrideReason: string | null = null;
+  if (evidenceRequirements.length > 0) {
+    const uploadedTypes = evidenceFiles
+      .map((ev) => ev.evidenceType)
+      .filter((t): t is string => t !== null);
+    const missing = computeMissingEvidence(evidenceRequirements, uploadedTypes);
+    if (missing.length > 0) {
+      const labels = missing.map((m) => m.label).join(', ');
+      const rawOverride = String(params.form.get('evidence_override_reason') ?? '').trim();
+      if (!hasRankAtLeast(params.actor.role, 'manager')) {
+        return {
+          ok: false,
+          error: `Required evidence is missing: ${labels}. Upload the required evidence before completing this task.`,
+        };
+      }
+      if (!isValidOverrideReason(rawOverride)) {
+        return {
+          ok: false,
+          error: `Required evidence is missing: ${labels}. Provide a manager/admin override reason, or upload the missing evidence.`,
+        };
+      }
+      evidenceOverrideReason = rawOverride;
+    }
   }
 
   let nextTaskId: number | null = null;
@@ -1036,21 +1148,60 @@ export async function closeTask(params: {
     }
 
     // Evidence BLOBs — each stored with is_evidence = 1 and logged individually.
+    // When a file targets an evidence_type that already has a record on this
+    // task, the previous record is REPLACED (deleted) so a re-upload supersedes
+    // the earlier evidence rather than accumulating duplicates.
     for (const ev of evidenceFiles) {
+      if (ev.evidenceType) {
+        const prior = db
+          .prepare('SELECT id, file_name FROM task_attachments WHERE task_id = ? AND is_evidence = 1 AND evidence_type = ?')
+          .get(task.id, ev.evidenceType) as { id: number; file_name: string } | undefined;
+        if (prior) {
+          db.prepare('DELETE FROM task_attachments WHERE id = ?').run(prior.id);
+          logActivity({
+            taskId: task.id,
+            userId: params.actor.id,
+            action: Action.EVIDENCE_REPLACED,
+            oldValue: prior.file_name,
+            newValue: ev.fileName,
+          });
+        }
+      }
       db.prepare(
-        `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, file_hash, is_evidence)
-         VALUES (?, ?, ?, ?, ?, ?, ?, 1)`,
-      ).run(task.id, params.actor.id, ev.fileName, ev.mimeType, ev.bytes, ev.bytes.length, ev.hash);
+        `INSERT INTO task_attachments
+          (task_id, uploaded_by, file_name, mime_type, file_data, file_size, file_hash, is_evidence,
+           evidence_type, evidence_label, source, collected_by, collected_at, verification_status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, 'manual_upload', ?, datetime('now'), 'UNVERIFIED')`,
+      ).run(
+        task.id,
+        params.actor.id,
+        ev.fileName,
+        ev.mimeType,
+        ev.bytes,
+        ev.bytes.length,
+        ev.hash,
+        ev.evidenceType,
+        ev.evidenceLabel,
+        params.actor.id,
+      );
       logActivity({
         taskId: task.id,
         userId: params.actor.id,
         action: Action.EVIDENCE_UPLOADED,
-        newValue: ev.fileName,
+        newValue: ev.evidenceType ? `${ev.evidenceType}:${ev.fileName}` : ev.fileName,
       });
     }
     if (evidenceFiles.length === 0) {
       // Skipping must still be recorded in the activity log (CORE BUSINESS RULE #3).
       logActivity({ taskId: task.id, userId: params.actor.id, action: Action.EVIDENCE_SKIPPED });
+    }
+    if (evidenceOverrideReason) {
+      logActivity({
+        taskId: task.id,
+        userId: params.actor.id,
+        action: Action.EVIDENCE_GATE_OVERRIDE,
+        newValue: evidenceOverrideReason,
+      });
     }
 
     // Completion comment stored with is_completion_comment = 1 and linked on
@@ -1117,12 +1268,17 @@ export async function closeTask(params: {
     ) {
       const nextDue = nextDueDate(task.recurrence, task.due_date);
       if (nextDue) {
+        // Inherit the template linkage + frozen snapshot so the recurring
+        // occurrence enforces the same evidence requirements as the original.
+        const templateLink = db
+          .prepare('SELECT template_id, template_snapshot FROM tasks WHERE id = ?')
+          .get(task.id) as { template_id: number | null; template_snapshot: string | null } | undefined;
         const ins = db
           .prepare(
             `INSERT INTO tasks (title, description, department, status, priority, progress_percent,
                                 created_by, assigned_to, due_date, recurrence, recurrence_end_date,
-                                parent_recurring_task_id)
-             VALUES (?, ?, ?, 'not_started', ?, 0, ?, ?, ?, ?, ?, ?)`,
+                                parent_recurring_task_id, template_id, template_snapshot)
+             VALUES (?, ?, ?, 'not_started', ?, 0, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .run(
             task.title,
@@ -1135,6 +1291,8 @@ export async function closeTask(params: {
             task.recurrence,
             task.recurrence_end_date,
             task.id,
+            templateLink?.template_id ?? null,
+            templateLink?.template_snapshot ?? null,
           );
         nextTaskId = Number(ins.lastInsertRowid);
 

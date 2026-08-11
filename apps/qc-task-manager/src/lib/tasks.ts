@@ -373,6 +373,51 @@ export async function handleCreateTaskPost(
   }
 
   const form = await context.request.formData();
+
+  // Optional: create the task from a template. When template_id points at an
+  // ACTIVE template, instantiate it with the form's overrides (title/assignee/
+  // due date). The template's checklist + evidence requirements are frozen onto
+  // the new task; the free-form checklist/dependencies fields are ignored in
+  // this path (they come from the template).
+  const rawTemplateId = form.get('template_id');
+  if (rawTemplateId !== null && String(rawTemplateId).trim() !== '') {
+    const templateId = Number(rawTemplateId);
+    if (!Number.isInteger(templateId) || templateId <= 0) {
+      setFlash(context, 'error', 'Invalid template.');
+      return context.redirect(context.url.pathname);
+    }
+    try {
+      const { instantiateTemplate, getTemplate } = await import('./templatesStore');
+      const existing = getTemplate(templateId);
+      if (!existing) {
+        setFlash(context, 'error', 'Template not found.');
+        return context.redirect(context.url.pathname);
+      }
+      const title = String(form.get('title') ?? '').trim() || existing.title;
+      const assignedToRaw = form.get('assigned_to');
+      const assignedTo = assignedToRaw !== null && String(assignedToRaw).trim() !== ''
+        ? Number(assignedToRaw)
+        : undefined;
+      const dueDateRaw = String(form.get('due_date') ?? '').trim();
+      const dueDate = dueDateRaw || undefined;
+      const taskId = instantiateTemplate(
+        templateId,
+        { title, assignedTo, dueDate },
+        user.id,
+      );
+      // Assignment notification for the auto-assigned / overridden assignee.
+      const row = (await import('./db')).getDb().prepare('SELECT assigned_to FROM tasks WHERE id = ?').get(taskId) as { assigned_to: number | null } | undefined;
+      if (row?.assigned_to) {
+        notifyAssigned({ taskId, assigneeId: row.assigned_to, title, actorId: user.id });
+      }
+      setFlash(context, 'success', `Task "${title}" created from template "${existing.title}".`);
+      return context.redirect(`/tasks/${taskId}`);
+    } catch (err) {
+      setFlash(context, 'error', err instanceof Error ? err.message : 'Could not create a task from the template.');
+      return context.redirect(context.url.pathname);
+    }
+  }
+
   const parsed = parseNewTaskInput(form);
   if (!parsed.ok) {
     setFlash(context, 'error', parsed.error);

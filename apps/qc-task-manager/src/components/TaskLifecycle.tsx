@@ -35,6 +35,10 @@ interface Props {
   canReopen: boolean;
   incompleteChecklist?: number;
   canOverrideChecklist?: boolean;
+  /** Evidence requirements declared on the task's template snapshot (server-supplied). */
+  evidenceRequirements?: { type: string; label: string; requirement: string; allowedExtensions?: string[] }[];
+  /** manager/admin may override the required-evidence gate with a reason. */
+  canOverrideEvidence?: boolean;
 }
 
 // ── evidence rules (mirror src/lib/task-policy.ts EVIDENCE_* constants) ──
@@ -85,7 +89,7 @@ const inputCls =
   'w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 const labelCls = 'block text-sm font-medium text-slate-700';
 
-export default function TaskLifecycle({ taskId, title, status, canComplete, canCancel, canReopen, incompleteChecklist = 0, canOverrideChecklist = false }: Props) {
+export default function TaskLifecycle({ taskId, title, status, canComplete, canCancel, canReopen, incompleteChecklist = 0, canOverrideChecklist = false, evidenceRequirements = [], canOverrideEvidence = false }: Props) {
   // ── wizard state ──
   const [wizardOpen, setWizardOpen] = useState(false);
   const [step, setStep] = useState(0);
@@ -94,6 +98,10 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
   const [skipEvidence, setSkipEvidence] = useState(false);
   const [comment, setComment] = useState('');
   const [checklistOverrideReason, setChecklistOverrideReason] = useState('');
+  /** Selected evidence_type per accepted-file index (keyed by position). */
+  const [fileTypes, setFileTypes] = useState<Record<number, string>>({});
+  /** Manager/admin override reason when required evidence is missing. */
+  const [evidenceOverrideReason, setEvidenceOverrideReason] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // ── cancel dialog state ──
@@ -132,6 +140,8 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
     setSkipEvidence(false);
     setComment('');
     setChecklistOverrideReason('');
+    setFileTypes({});
+    setEvidenceOverrideReason('');
     setError(null);
   }
 
@@ -156,6 +166,11 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
     setAccepted((prev) => prev.filter((_, i) => i !== index));
   }
 
+  // Required-evidence coverage (mirrors the server gate for the UI hint).
+  const requiredTypes = evidenceRequirements.filter((r) => r.requirement === 'REQUIRED');
+  const coveredTypes = new Set(Object.values(fileTypes).filter(Boolean));
+  const missingRequired = requiredTypes.filter((r) => !coveredTypes.has(r.type));
+
   async function confirmCompletion() {
     if (submitting) return;
     setSubmitting(true);
@@ -168,6 +183,15 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
         form.set('skip_evidence', '1');
       } else {
         for (const f of accepted) form.append('evidence', f);
+        // Parallel evidence_type field (same order as the files above) ties each
+        // uploaded file to one of the task's declared evidence requirements.
+        for (let i = 0; i < accepted.length; i += 1) {
+          form.append('evidence_type', fileTypes[i] ?? '');
+        }
+      }
+      // Manager/admin override reason when required evidence is still missing.
+      if (missingRequired.length > 0 && canOverrideEvidence && evidenceOverrideReason.trim()) {
+        form.set('evidence_override_reason', evidenceOverrideReason.trim());
       }
       const res = await fetch(`/api/tasks/${taskId}/close`, { method: 'POST', body: form });
       const data = (await res.json()) as { ok: boolean; error?: string };
@@ -233,9 +257,17 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
   }
 
   const active = status !== 'completed' && status !== 'cancelled';
+  // Step 0 gate: when the task declares required evidence, the user must either
+  // (a) cover every REQUIRED type with an uploaded file, or (b) be a
+  // manager/admin supplying an override reason. Skipping is allowed only when
+  // there are no required types.
+  const requiredGateOk =
+    requiredTypes.length === 0 ||
+    missingRequired.length === 0 ||
+    (canOverrideEvidence && evidenceOverrideReason.trim().length > 0);
   const canGoNext =
     step === 0
-      ? skipEvidence || accepted.length > 0
+      ? (skipEvidence || accepted.length > 0) && requiredGateOk
       : step === 1
         ? comment.trim().length > 0
         : true;
@@ -366,6 +398,33 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                     validated). You may skip; the skip is recorded in the activity log.
                   </p>
 
+                  {evidenceRequirements.length > 0 && (
+                    <div className="mt-3 rounded-md border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-xs font-semibold text-slate-700">Required evidence for this task</p>
+                      <ul className="mt-2 space-y-1 text-xs">
+                        {evidenceRequirements.map((r) => {
+                          const covered = coveredTypes.has(r.type);
+                          return (
+                            <li key={r.type} className="flex items-center gap-2">
+                              <span aria-hidden="true">{covered ? '✅' : r.requirement === 'REQUIRED' ? '⬜' : '➖'}</span>
+                              <span className={covered ? 'text-slate-500 line-through' : 'text-slate-700'}>
+                                {r.label}
+                              </span>
+                              <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${r.requirement === 'REQUIRED' ? 'bg-rose-100 text-rose-700' : 'bg-slate-200 text-slate-600'}`}>
+                                {r.requirement === 'REQUIRED' ? 'Required' : 'Optional'}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      {missingRequired.length > 0 && (
+                        <p className="mt-2 text-xs font-medium text-rose-700">
+                          Still missing: {missingRequired.map((r) => r.label).join(', ')}.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                   <input
                     type="file"
                     multiple
@@ -385,22 +444,48 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                       {accepted.map((f, i) => (
                         <li
                           key={`${f.name}-${f.size}-${i}`}
-                          className="flex items-center justify-between gap-2 rounded-md border border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm"
+                          className="rounded-md border border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm"
                         >
-                          <span className="min-w-0 truncate text-emerald-900" title={f.name}>
-                            📎 {f.name}
-                          </span>
-                          <span className="flex shrink-0 items-center gap-2">
-                            <span className="text-xs text-emerald-700">{humanSize(f.size)}</span>
-                            <button
-                              type="button"
-                              onClick={() => removeFile(i)}
-                              aria-label={`Remove ${f.name}`}
-                              className="rounded-md px-1 text-slate-400 hover:text-red-600"
-                            >
-                              ✕
-                            </button>
-                          </span>
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="min-w-0 truncate text-emerald-900" title={f.name}>
+                              📎 {f.name}
+                            </span>
+                            <span className="flex shrink-0 items-center gap-2">
+                              <span className="text-xs text-emerald-700">{humanSize(f.size)}</span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  removeFile(i);
+                                  setFileTypes((prev) => {
+                                    const next = { ...prev };
+                                    delete next[i];
+                                    return next;
+                                  });
+                                }}
+                                aria-label={`Remove ${f.name}`}
+                                className="rounded-md px-1 text-slate-400 hover:text-red-600"
+                              >
+                                ✕
+                              </button>
+                            </span>
+                          </div>
+                          {evidenceRequirements.length > 0 && (
+                            <label className="mt-1.5 flex items-center gap-2 text-xs text-slate-600">
+                              Type:
+                              <select
+                                value={fileTypes[i] ?? ''}
+                                onChange={(e) => setFileTypes((prev) => ({ ...prev, [i]: e.target.value }))}
+                                className="flex-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                              >
+                                <option value="">— Unassigned —</option>
+                                {evidenceRequirements.map((r) => (
+                                  <option key={r.type} value={r.type}>
+                                    {r.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -413,6 +498,24 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                     </ul>
                   )}
 
+                  {missingRequired.length > 0 && canOverrideEvidence && (
+                    <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3">
+                      <label className={`${labelCls} text-amber-900`} htmlFor="evidence-override-reason">
+                        Manager/admin override reason
+                      </label>
+                      <input
+                        id="evidence-override-reason"
+                        type="text"
+                        maxLength={500}
+                        value={evidenceOverrideReason}
+                        onChange={(e) => setEvidenceOverrideReason(e.target.value)}
+                        placeholder="Explain why the missing required evidence is waived."
+                        className={`${inputCls} mt-1`}
+                      />
+                      <p className="mt-1 text-xs text-amber-800">Required to complete without: {missingRequired.map((r) => r.label).join(', ')}.</p>
+                    </div>
+                  )}
+
                   <label className="mt-3 flex items-center gap-2 text-sm text-slate-700">
                     <input
                       type="checkbox"
@@ -422,6 +525,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                         if (e.target.checked) {
                           setAccepted([]);
                           setInvalid([]);
+                          setFileTypes({});
                         }
                       }}
                       className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"

@@ -12,9 +12,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewTaskForm from '../../components/NewTaskForm.astro';
 import { getUserById } from '../../lib/auth';
 import { PERMISSIONS, roleHome } from '../../lib/permissions';
+import { listTemplates } from '../../lib/templatesStore';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
 const fullUser = getUserById(user.userId);
+const templates = listTemplates({ status: 'ACTIVE' }).map((t) => ({ id: t.id, title: t.title, code: t.code }));
 
 // Gate: employees create tasks only if can_create_tasks = 1 (CORE BUSINESS RULE #1).
 // Non-employees posting here are bounced by the middleware; keep the GET
@@ -39,6 +41,7 @@ if (user.role !== 'employee') {
       action="/employee/new"
       users={[{ id: user.userId, full_name: user.fullName, role: user.role }]}
       selfAssignOnly={true}
+      templates={templates}
     />
   </div>
 </BaseLayout>

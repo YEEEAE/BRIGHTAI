@@ -244,6 +244,21 @@ export const deleteRequestSchema = z.object({
   ),
 });
 
+const qcText = (max = 5000) => z.string().trim().min(1).max(max);
+export const findingCreateSchema = z.object({
+  finding_number: qcText(80), task_id: z.coerce.number().int().positive(), inspection_type: qcText(200),
+  classification: z.enum(['conforming','observation','minor','major','critical']),
+  severity: z.enum(['low','medium','high','critical']), risk_description: qcText(),
+  requirement_reference: z.string().trim().max(500).nullable().optional(), owner: z.coerce.number().int().positive(),
+  due_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+});
+export const findingUpdateSchema = findingCreateSchema.partial().omit({ finding_number: true, task_id: true });
+export const findingActionSchema = z.object({ action: z.enum(['status','approve','reject','close','reopen']), status: z.string().optional(), note: z.string().trim().max(5000).optional(), closure_evidence: z.string().trim().max(5000).optional() });
+export const rcaSchema = z.object({ method: z.enum(['5_WHYS','FISHBONE','FREE_FORM']), free_form: z.string().trim().max(5000).optional(), why_1: z.string().trim().max(1000).optional(), why_2: z.string().trim().max(1000).optional(), why_3: z.string().trim().max(1000).optional(), why_4: z.string().trim().max(1000).optional(), why_5: z.string().trim().max(1000).optional(), fishbone_json: z.string().max(5000).optional() });
+export const capaSchema = z.object({ problem_statement: qcText(), root_cause: qcText(), corrective_action: qcText(), preventive_action: qcText(), owner: z.coerce.number().int().positive(), due_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(), evidence: z.string().trim().max(5000).optional(), effectiveness_check: z.string().trim().max(5000).optional() });
+export const capaActionSchema = z.object({ status: z.enum(['OPEN','IMPLEMENTATION','VERIFICATION','EFFECTIVE','CLOSED','REOPENED']), decision: z.string().trim().max(5000).optional() });
+export const evidenceSchema = z.object({ description: qcText(5000), reference: z.string().trim().max(1000).optional(), capa_id: z.coerce.number().int().positive().optional() });
+
 /**
  * POST /manager/requests/api — approve/reject a delete request. The reviewer
  * note is optional ("rejection may include a reason") and normalized to null
@@ -371,5 +386,100 @@ export const savedFilterSchema = z.object({
   next: z.preprocess(
     (v) => (v === '' || v == null ? '/' : v),
     z.string().max(500, 'Redirect target is too long.').nullable(),
+  ),
+});
+
+// ─────────────────────────── Task Templates ───────────────────────────
+// The structured JSON columns (checklist/evidence_requirements/finding_defaults/
+// assignment_rules) arrive from the admin form as JSON strings produced by the
+// editor islands. The Zod layer validates the scalar fields + JSON shape; the
+// deep domain validation (duplicates, extension allowlists, enum membership)
+// runs in templatesStore.validateTemplateConfig where richer errors live.
+
+/** Parse a JSON string field into an object/array, tolerating empty input. */
+function jsonField<T>(fallback: T) {
+  return z.preprocess((v) => {
+    if (v === '' || v == null) return fallback;
+    if (typeof v !== 'string') return v;
+    try {
+      return JSON.parse(v);
+    } catch {
+      return fallback;
+    }
+  }, z.unknown());
+}
+
+/** Scalar fields shared by create + edit. Code is omitted on edit (immutable). */
+const templateScalarFields = {
+  title: z.preprocess(
+    (v) => (v === '' || v == null ? '' : String(v).trim()),
+    z.string().min(1, 'Template title is required.').max(200, 'Title must be 200 characters or fewer.'),
+  ),
+  description: z.preprocess(
+    (v) => (v === '' || v == null ? '' : String(v).trim()),
+    z.string().max(5000, 'Description must be 5000 characters or fewer.').optional(),
+  ),
+  department: z.preprocess(departmentValue, z.string().trim().min(1, 'Department is required.').max(50)),
+  priority: z.preprocess(
+    (v) => (v === '' || v == null ? 'medium' : v),
+    z.enum(TASK_PRIORITIES as [TaskPriority, ...TaskPriority[]], {
+      errorMap: () => ({ message: 'Invalid priority value.' }),
+    }),
+  ),
+  task_type: z.preprocess(optionalMeta, z.string().trim().max(200).nullable()),
+  recurrence: z.preprocess(recurrenceValue, z.enum(TASK_RECURRENCES as [TaskRecurrence, ...TaskRecurrence[]], {
+    errorMap: () => ({ message: 'Invalid recurrence value.' }),
+  })),
+  sla_policy_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z.number().int().positive().nullable(),
+  ),
+  checklist_json: jsonField([]),
+  evidence_requirements_json: jsonField([]),
+  finding_defaults_json: jsonField({}),
+  assignment_rules_json: jsonField({}),
+};
+
+/** Template creation. `code` is required and must be a kebab-case slug. */
+export const templateCreateSchema = z
+  .object({
+    code: z
+      .preprocess((v) => (v == null ? '' : String(v).trim().toLowerCase()), z.string())
+      .refine((c) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(c) && c.length <= 60, {
+        message: 'Code must be lowercase kebab-case (letters, digits, hyphens).',
+      }),
+    ...templateScalarFields,
+  })
+  .passthrough();
+
+/** Template edit — `code` is immutable, all other fields are optional. */
+export const templateEditSchema = z.object({ ...templateScalarFields }).passthrough();
+
+/** Template lifecycle action. */
+export const templateLifecycleSchema = z.object({
+  action: z.enum(['activate', 'archive', 'unarchive'], {
+    errorMap: () => ({ message: 'Invalid lifecycle action.' }),
+  }),
+  template_id: z.preprocess(
+    (v) => (v === '' || v == null ? NaN : Number(v)),
+    z.number({ errorMap: () => ({ message: 'Invalid template.' }) }).int().positive(),
+  ),
+});
+
+/** Instantiate a template into a task. */
+export const templateInstantiateSchema = z.object({
+  template_id: z.preprocess(
+    (v) => (v === '' || v == null ? NaN : Number(v)),
+    z.number({ errorMap: () => ({ message: 'Invalid template.' }) }).int().positive(),
+  ),
+  title: z.preprocess((v) => (v === '' || v == null ? undefined : String(v).trim()), z.string().min(1).max(200).optional()),
+  description: z.preprocess((v) => (v === '' || v == null ? undefined : String(v).trim()), z.string().max(5000).optional()),
+  assigned_to: z.preprocess(
+    (v) => (v === '' || v == null ? undefined : Number(v)),
+    z.number().int().positive().nullable().optional(),
+  ),
+  due_date: z.preprocess(
+    (v) => (v === '' || v == null ? undefined : v),
+    z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Due date must be a valid date (YYYY-MM-DD).').nullable().optional(),
   ),
 });

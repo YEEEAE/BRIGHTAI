@@ -19,6 +19,8 @@ export type TaskRecurrence = 'none' | 'daily' | 'weekly' | 'monthly';
 export type DeleteRequestStatus = 'pending' | 'approved' | 'rejected';
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 export type FindingClassification = 'conforming' | 'minor' | 'major' | 'critical' | 'observation';
+export type FindingStatus = 'OPEN' | 'UNDER_REVIEW' | 'ACTION_REQUIRED' | 'VERIFICATION' | 'CLOSED' | 'REOPENED';
+export type CapaStatus = 'DRAFT' | 'OPEN' | 'IMPLEMENTATION' | 'VERIFICATION' | 'EFFECTIVE' | 'CLOSED' | 'REOPENED';
 
 export interface User {
   id: number;

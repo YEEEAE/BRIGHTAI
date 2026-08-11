@@ -19,6 +19,7 @@ build environment.
 
 ```bash
 pnpm --filter @brightai/qc-task-manager test:domain
+pnpm --filter @brightai/qc-task-manager test:qc-operations
 pnpm --filter @brightai/qc-task-manager test:db-rules
 pnpm --filter @brightai/qc-task-manager db:init
 pnpm --filter @brightai/qc-task-manager db:backup

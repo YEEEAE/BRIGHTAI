@@ -34,6 +34,7 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 | `ai/` | Suggestion-only AI normalization; no DB, authorization, workflow, or audit authority |
 | `findings/` | Finding classification, risk, and finding-text domain rules |
 | `capa/` | Corrective/preventive action domain rules |
+| `qc-operations.ts` | Finding/CAPA/RCA persistence, lifecycle gates, evidence, and server-side audit transactions |
 | `tasks.ts` | Task creation + assignment-scope validation + `handleCreateTaskPost` |
 | `taskUpdates.ts` | Update / closure flow / attachment upload (atomic, permission-gated) |
 | `taskDetails.ts` | Read queries + `canViewTask` + activity timeline text |
@@ -57,6 +58,21 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 4. **Closure flow**: completing requires a mandatory completion comment; evidence is uploaded or the skip is recorded. Atomic, race-safe (conditional UPDATE).
 5. **Delete requests**: employees cannot delete — they request; manager/admin approve (hard delete) or reject. The request row is a child of its task (`task_id … ON DELETE CASCADE`), so an approved request is cascade-removed with the task; rejected requests stay in history (titles joined live).
 6. **Activity log**: every task mutation writes `task_activity_log` rows (who / what / old / new / when).
+
+## QC Operations Platform
+
+QC Operations is additive to the existing Task model. `qc_findings.task_id` is
+the only parent link; the Task entity and its lifecycle are not replaced.
+
+- Finding classifications: `conforming`, `observation`, `minor`, `major`, `critical`.
+- Finding lifecycle: `OPEN → UNDER_REVIEW → ACTION_REQUIRED → VERIFICATION → CLOSED`, with `REOPENED` for rework.
+- CAPA lifecycle: `DRAFT → OPEN → IMPLEMENTATION → VERIFICATION → EFFECTIVE → CLOSED`, with `REOPENED` for rework.
+- RCA methods: `5_WHYS`, `FISHBONE`, and `FREE_FORM`; Fishbone supports People, Process, Equipment, Material, Environment, Measurement, and Management.
+- Critical Findings cannot close unless a CAPA is effective/closed and corrective action, evidence, effectiveness review, verification, approval, and Finding closure evidence are present.
+- CAPA cannot close unless corrective action, evidence, effectiveness review, and approval are non-empty.
+- Every Finding/CAPA/RCA/Evidence create, update, status transition, approval, rejection, closure, and reopen writes `qc_audit_log` server-side.
+
+Routes: `/findings` lists and creates Findings; `/findings/[id]` renders Finding Timeline, RCA, CAPA, Evidence, Approval, and Audit sections. API handlers re-check session, CSRF, role, assignment, and lifecycle rules.
 
 ## Source-of-truth and request boundaries
 

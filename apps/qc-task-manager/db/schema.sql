@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS tasks (
   reference_number        TEXT,
   audit_batch_or_work_order TEXT,
   task_type               TEXT,
+  template_id             INTEGER REFERENCES task_templates(id) ON DELETE SET NULL,
+  template_snapshot       TEXT,
   sla_policy_id           INTEGER REFERENCES sla_policies(id) ON DELETE SET NULL,
   sla_started_at          TEXT,
   sla_due_at              TEXT,
@@ -109,6 +111,35 @@ CREATE TABLE IF NOT EXISTS escalation_events (
   delivered_at TEXT, retry_count INTEGER NOT NULL DEFAULT 0 CHECK (retry_count >= 0), last_error TEXT
 );
 
+-- ─────────────────────────── task_templates ─────────────────────────────
+-- Reusable task configuration with lifecycle DRAFT → ACTIVE → ARCHIVED.
+-- Only ACTIVE templates may be instantiated. The JSON columns carry the
+-- structured configuration; instantiateTemplate() freezes a snapshot onto the
+-- task so later edits here never mutate existing tasks.
+CREATE TABLE IF NOT EXISTS task_templates (
+  id                         INTEGER PRIMARY KEY AUTOINCREMENT,
+  code                       TEXT NOT NULL UNIQUE,
+  title                      TEXT NOT NULL,
+  description                TEXT,
+  department                 TEXT NOT NULL DEFAULT 'QC',
+  priority                   TEXT NOT NULL DEFAULT 'medium'
+                               CHECK (priority IN ('low', 'medium', 'high', 'urgent')),
+  task_type                  TEXT,
+  sla_policy_id              INTEGER REFERENCES sla_policies(id) ON DELETE SET NULL,
+  checklist_json             TEXT NOT NULL DEFAULT '[]',
+  evidence_requirements_json TEXT NOT NULL DEFAULT '[]',
+  recurrence                 TEXT NOT NULL DEFAULT 'none'
+                               CHECK (recurrence IN ('none', 'daily', 'weekly', 'monthly')),
+  finding_defaults_json      TEXT NOT NULL DEFAULT '{}',
+  assignment_rules_json      TEXT NOT NULL DEFAULT '{}',
+  lifecycle_status           TEXT NOT NULL DEFAULT 'DRAFT'
+                               CHECK (lifecycle_status IN ('DRAFT', 'ACTIVE', 'ARCHIVED')),
+  version                    INTEGER NOT NULL DEFAULT 1 CHECK (version >= 1),
+  created_by                 INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  created_at                 TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at                 TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- ─────────────────────────── 3. task_comments ───────────────────────────
 -- The completion comment (CORE BUSINESS RULE #3) is flagged with
 -- is_completion_comment; the closure flow itself is enforced at the app layer.
@@ -134,6 +165,17 @@ CREATE TABLE IF NOT EXISTS task_attachments (
   file_hash   TEXT,
   file_data   BLOB NOT NULL,
   is_evidence INTEGER NOT NULL DEFAULT 0 CHECK (is_evidence IN (0, 1)),
+  -- Evidence-platform metadata (added by migration 005). Populated for
+  -- completion-evidence rows (is_evidence=1); nullable/default for generic
+  -- attachment rows so legacy data is unaffected.
+  evidence_type       TEXT,
+  evidence_label      TEXT,
+  description         TEXT,
+  source              TEXT NOT NULL DEFAULT 'manual_upload',
+  collected_by        INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  collected_at        TEXT,
+  verification_status TEXT NOT NULL DEFAULT 'UNVERIFIED'
+                    CHECK (verification_status IN ('UNVERIFIED', 'VALID', 'REJECTED', 'AI_REVIEWED', 'HUMAN_VERIFIED')),
   uploaded_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -279,6 +321,54 @@ CREATE INDEX IF NOT EXISTS idx_notifications_task    ON notifications(task_id);
 
 CREATE INDEX IF NOT EXISTS idx_sessions_expires      ON sessions(expires_at);
 
+-- ─────────────────────── QC Operations Platform ───────────────────────
+-- These tables extend the Task Manager without replacing the tasks model.
+CREATE TABLE IF NOT EXISTS qc_findings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, finding_number TEXT NOT NULL UNIQUE,
+  task_id INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+  inspection_type TEXT NOT NULL, classification TEXT NOT NULL CHECK (classification IN ('conforming','observation','minor','major','critical')),
+  severity TEXT NOT NULL CHECK (severity IN ('low','medium','high','critical')), risk_description TEXT NOT NULL,
+  requirement_reference TEXT, owner INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT, due_date TEXT,
+  status TEXT NOT NULL DEFAULT 'OPEN' CHECK (status IN ('OPEN','UNDER_REVIEW','ACTION_REQUIRED','VERIFICATION','CLOSED','REOPENED')),
+  closure_evidence TEXT, closed_by INTEGER REFERENCES users(id) ON DELETE SET NULL, closed_at TEXT,
+  created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT, created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS qc_rca (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, finding_id INTEGER NOT NULL UNIQUE REFERENCES qc_findings(id) ON DELETE CASCADE,
+  method TEXT NOT NULL CHECK (method IN ('5_WHYS','FISHBONE','FREE_FORM')), free_form TEXT,
+  why_1 TEXT, why_2 TEXT, why_3 TEXT, why_4 TEXT, why_5 TEXT, fishbone_json TEXT,
+  updated_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT, created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS qc_capa (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, finding_id INTEGER NOT NULL UNIQUE REFERENCES qc_findings(id) ON DELETE CASCADE,
+  problem_statement TEXT NOT NULL, root_cause TEXT NOT NULL, corrective_action TEXT NOT NULL, preventive_action TEXT NOT NULL,
+  owner INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT, due_date TEXT, evidence TEXT, effectiveness_check TEXT,
+  reviewer INTEGER REFERENCES users(id) ON DELETE SET NULL, approval TEXT,
+  status TEXT NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT','OPEN','IMPLEMENTATION','VERIFICATION','EFFECTIVE','CLOSED','REOPENED')),
+  created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT, created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS qc_evidence (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, finding_id INTEGER REFERENCES qc_findings(id) ON DELETE CASCADE,
+  capa_id INTEGER REFERENCES qc_capa(id) ON DELETE CASCADE, description TEXT NOT NULL, reference TEXT,
+  created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT, created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  CHECK ((finding_id IS NOT NULL AND capa_id IS NULL) OR (finding_id IS NULL AND capa_id IS NOT NULL))
+);
+CREATE TABLE IF NOT EXISTS qc_audit_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, entity_type TEXT NOT NULL CHECK (entity_type IN ('FINDING','RCA','CAPA','EVIDENCE')),
+  entity_id INTEGER NOT NULL, task_id INTEGER REFERENCES tasks(id) ON DELETE CASCADE,
+  actor_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  action TEXT NOT NULL CHECK (action IN ('CREATE','UPDATE','STATUS_TRANSITION','APPROVAL','REJECTION','CLOSURE','REOPEN')),
+  old_value TEXT, new_value TEXT, note TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_qc_findings_task ON qc_findings(task_id);
+CREATE INDEX IF NOT EXISTS idx_qc_findings_owner_status ON qc_findings(owner,status);
+CREATE INDEX IF NOT EXISTS idx_qc_findings_due ON qc_findings(due_date);
+CREATE INDEX IF NOT EXISTS idx_qc_rca_finding ON qc_rca(finding_id);
+CREATE INDEX IF NOT EXISTS idx_qc_capa_finding_status ON qc_capa(finding_id,status);
+CREATE INDEX IF NOT EXISTS idx_qc_evidence_finding ON qc_evidence(finding_id);
+CREATE INDEX IF NOT EXISTS idx_qc_evidence_capa ON qc_evidence(capa_id);
+CREATE INDEX IF NOT EXISTS idx_qc_audit_entity ON qc_audit_log(entity_type,entity_id,created_at);
+
 CREATE INDEX IF NOT EXISTS idx_login_attempts_user   ON login_attempts(username, created_at);
 CREATE INDEX IF NOT EXISTS idx_login_attempts_ip_failure
   ON login_attempts(ip_address, succeeded, created_at);
@@ -291,3 +381,8 @@ CREATE INDEX IF NOT EXISTS idx_tasks_sla_due         ON tasks(sla_due_at);
 CREATE INDEX IF NOT EXISTS idx_sla_policies_match    ON sla_policies(priority, department, task_type, is_active);
 CREATE INDEX IF NOT EXISTS idx_escalation_events_task ON escalation_events(task_id, triggered_at);
 CREATE INDEX IF NOT EXISTS idx_escalation_events_retry ON escalation_events(delivery_status, triggered_at);
+
+CREATE INDEX IF NOT EXISTS idx_task_templates_status     ON task_templates(lifecycle_status);
+CREATE INDEX IF NOT EXISTS idx_task_templates_department ON task_templates(department);
+CREATE INDEX IF NOT EXISTS idx_attachments_evidence_type ON task_attachments(evidence_type);
+CREATE INDEX IF NOT EXISTS idx_tasks_template            ON tasks(template_id);

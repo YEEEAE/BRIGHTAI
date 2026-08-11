@@ -20,8 +20,10 @@
     "test:architecture": "node scripts/architecture-guard.mjs",
     "test:domain": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs",
     "test:sla": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-sla.mjs",
+    "test:qc-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-qc-operations.mjs",
+    "test:templates": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-templates.mjs",
     "test:db-rules": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-db-rules.mjs",
-    "test": "pnpm test:migrations && pnpm test:architecture && pnpm test:domain && pnpm test:sla && pnpm test:db-rules",
+    "test": "pnpm test:migrations && pnpm test:architecture && pnpm test:qc-operations && pnpm test:templates && pnpm test:domain && pnpm test:sla && pnpm test:db-rules",
     "e2e:acceptance": "NODE_ENV=production pnpm build && node scripts/e2e-acceptance.mjs"
   },
   "dependencies": {

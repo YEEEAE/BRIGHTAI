@@ -1,0 +1,125 @@
+---
+// Admin task-template management (admin only). Lists templates with their
+// lifecycle status, department, priority, and required-evidence count, plus
+// actions to edit / activate / archive / unarchive / instantiate.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { listTemplates } from '../../../lib/templatesStore';
+import { TEMPLATE_LIFECYCLE_LABELS } from '../../../lib/templates';
+
+const user = Astro.locals.user!;
+const templates = listTemplates();
+
+const STATUS_BADGE: Record<string, string> = {
+  DRAFT: 'bg-slate-100 text-slate-700',
+  ACTIVE: 'bg-emerald-100 text-emerald-700',
+  ARCHIVED: 'bg-rose-100 text-rose-700',
+};
+const PRIORITY_BADGE: Record<string, string> = {
+  low: 'bg-slate-100 text-slate-600',
+  medium: 'bg-blue-100 text-blue-700',
+  high: 'bg-amber-100 text-amber-700',
+  urgent: 'bg-rose-100 text-rose-700',
+};
+
+function formatDate(value: string): string {
+  const iso = value.includes('T') ? value : `${value.replace(' ', 'T')}Z`;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return value;
+  return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+---
+
+<BaseLayout title="Task Templates">
+  <header class="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-900">Task Templates</h1>
+      <p class="text-sm text-slate-600">Reusable task configurations with required evidence. Signed in as {user.fullName}.</p>
+    </div>
+    <a href="/admin/templates/new" class="inline-flex items-center rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">New template</a>
+  </header>
+
+  <section class="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+    <p class="mb-4 text-sm text-slate-500">
+      Templates move <span class="font-medium text-slate-700">Draft → Active → Archived</span>. Only Active templates can be
+      instantiated into tasks. Editing a template never changes tasks already created from it — each task freezes its own
+      snapshot at instantiation time.
+    </p>
+
+    {
+      templates.length === 0 ? (
+        <p class="rounded-md border border-dashed border-slate-300 bg-slate-50 px-4 py-8 text-center text-sm text-slate-500">
+          No templates yet. Create your first template to standardize recurring QC work.
+        </p>
+      ) : (
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50">
+              <tr>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Code</th>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Title</th>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Department</th>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Priority</th>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Required evidence</th>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Status</th>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Updated</th>
+                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {templates.map((t) => (
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-mono text-xs text-slate-500">{t.code}</td>
+                  <td class="px-4 py-3 font-medium text-slate-900">{t.title}</td>
+                  <td class="px-4 py-3 text-slate-600">{t.department}</td>
+                  <td class="px-4 py-3">
+                    <span class={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${PRIORITY_BADGE[t.priority] ?? 'bg-slate-100 text-slate-600'}`}>{t.priority}</span>
+                  </td>
+                  <td class="px-4 py-3 text-slate-600">{t.requiredEvidenceCount} required</td>
+                  <td class="px-4 py-3">
+                    <span class={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_BADGE[t.lifecycle_status] ?? 'bg-slate-100 text-slate-600'}`}>{TEMPLATE_LIFECYCLE_LABELS[t.lifecycle_status]}</span>
+                  </td>
+                  <td class="px-4 py-3 text-xs text-slate-500">{formatDate(t.updated_at)}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex flex-wrap gap-2">
+                      <a href={`/admin/templates/${t.id}/edit`} class="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50">Edit</a>
+                      {t.lifecycle_status !== 'ARCHIVED' && (
+                        <form method="POST" action="/admin/templates/api" class="inline">
+                          <input type="hidden" name="action" value="instantiate" />
+                          <input type="hidden" name="template_id" value={t.id} />
+                          <button type="submit" class="rounded-md border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100" disabled={t.lifecycle_status !== 'ACTIVE'}>
+                            New task
+                          </button>
+                        </form>
+                      )}
+                      {t.lifecycle_status === 'DRAFT' && (
+                        <form method="POST" action="/admin/templates/api" class="inline">
+                          <input type="hidden" name="action" value="activate" />
+                          <input type="hidden" name="template_id" value={t.id} />
+                          <button type="submit" class="rounded-md border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100">Activate</button>
+                        </form>
+                      )}
+                      {t.lifecycle_status === 'ACTIVE' && (
+                        <form method="POST" action="/admin/templates/api" class="inline">
+                          <input type="hidden" name="action" value="archive" />
+                          <input type="hidden" name="template_id" value={t.id} />
+                          <button type="submit" class="rounded-md border border-rose-300 bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700 hover:bg-rose-100">Archive</button>
+                        </form>
+                      )}
+                      {t.lifecycle_status === 'ARCHIVED' && (
+                        <form method="POST" action="/admin/templates/api" class="inline">
+                          <input type="hidden" name="action" value="unarchive" />
+                          <input type="hidden" name="template_id" value={t.id} />
+                          <button type="submit" class="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50">Unarchive</button>
+                        </form>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

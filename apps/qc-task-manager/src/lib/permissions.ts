@@ -7,6 +7,8 @@
 import { EMPLOYEE_EDITABLE_FIELDS, isEmployeeEditableField } from './task-policy';
 import type { Role, Task, User } from './types';
 
+type QcOwner = { owner: number };
+
 /**
  * Higher rank = more privileges. Used for "at least" comparisons.
  * admin > manager > supervisor > employee.
@@ -44,6 +46,12 @@ export const PERMISSIONS = {
 
   /** User management is admin-only (RULE #1). */
   canManageUsers: (role: Role): boolean => role === 'admin',
+
+  /** Task templates are administered by admins only (lifecycle + configuration). */
+  canManageTemplates: (role: Role): boolean => role === 'admin',
+
+  /** Manager/admin may override the required-evidence completion gate with a reason. */
+  canOverrideEvidenceGate: (role: Role): boolean => hasRankAtLeast(role, 'manager'),
 
   /** Fields an employee may edit after task creation (CORE BUSINESS RULE #2). */
   employeeEditableFields: EMPLOYEE_EDITABLE_FIELDS,
@@ -124,7 +132,43 @@ export function canAssignTask(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
 }
 
+/** QC Operations RBAC: employees can work only on assigned actions. */
+export function canManageFinding(user: Pick<User, 'id' | 'role'>, finding: QcOwner): boolean {
+  if (user.role === 'admin' || user.role === 'manager' || user.role === 'supervisor') return true;
+  return user.id === finding.owner;
+}
+
+/** Content edits are reserved for assigned employees, managers, and admins;
+ * supervisors operate the review/status lane. */
+export function canEditFindingContent(user: Pick<User, 'id' | 'role'>, finding: QcOwner): boolean {
+  if (user.role === 'admin' || user.role === 'manager') return true;
+  return user.role === 'employee' && user.id === finding.owner;
+}
+
+export function canManageCapa(user: Pick<User, 'id' | 'role'>, capa: QcOwner): boolean {
+  if (user.role === 'admin' || user.role === 'manager' || user.role === 'supervisor') return true;
+  return user.id === capa.owner;
+}
+
+export function canApproveCapa(role: Role): boolean {
+  return role === 'manager' || role === 'admin';
+}
+
+export function canApproveFinding(role: Role): boolean {
+  return role === 'manager' || role === 'admin';
+}
+
 export function canEditChecklistStructure(user: Pick<User, 'id' | 'role'>, task: Pick<Task, 'created_by' | 'assigned_to'>): boolean {
   if (hasRankAtLeast(user.role, 'manager')) return true;
   return user.role === 'supervisor' && (task.created_by === user.id || task.assigned_to === user.id);
+}
+
+/** Admin-only gate for the /admin/templates area + template CRUD. */
+export function canManageTemplates(role: Role): boolean {
+  return role === 'admin';
+}
+
+/** Manager/admin may override the required-evidence completion gate with a reason. */
+export function canOverrideEvidenceGate(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
 }

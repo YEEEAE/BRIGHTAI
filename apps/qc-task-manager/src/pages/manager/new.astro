@@ -8,10 +8,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewTaskForm from '../../components/NewTaskForm.astro';
 import { listActiveUsers, listTasksForDependency } from '../../lib/tasks';
+import { listTemplates } from '../../lib/templatesStore';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
 const users = listActiveUsers();
 const dependencyTasks = listTasksForDependency();
+const templates = listTemplates({ status: 'ACTIVE' }).map((t) => ({ id: t.id, title: t.title, code: t.code }));
 ---
 
 <BaseLayout title="New task">
@@ -27,6 +29,7 @@ const dependencyTasks = listTasksForDependency();
       users={users}
       includeDependencies={true}
       dependencyTasks={dependencyTasks}
+      templates={templates}
     />
   </div>
 </BaseLayout>

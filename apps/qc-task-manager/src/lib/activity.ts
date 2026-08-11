@@ -38,6 +38,9 @@ export const Action = {
   CLOSURE_COMMENT_ADDED: 'closure_comment_added',
   EVIDENCE_UPLOADED: 'evidence_uploaded',
   EVIDENCE_SKIPPED: 'evidence_skipped',
+  EVIDENCE_REPLACED: 'evidence_replaced',
+  EVIDENCE_GATE_OVERRIDE: 'evidence_gate_override',
+  EVIDENCE_VERIFIED: 'evidence_verified',
   ATTACHMENT_UPLOADED: 'attachment_uploaded',
   TASK_COMPLETED: 'task_completed',
   DELETE_REQUESTED: 'delete_requested',
@@ -46,6 +49,12 @@ export const Action = {
   TASK_DELETED: 'task_deleted',
   NOTIFICATION_CREATED: 'notification_created',
   SLA_ESCALATED: 'sla_escalated',
+  TEMPLATE_CREATED: 'template_created',
+  TEMPLATE_UPDATED: 'template_updated',
+  TEMPLATE_ACTIVATED: 'template_activated',
+  TEMPLATE_ARCHIVED: 'template_archived',
+  TEMPLATE_UNARCHIVED: 'template_unarchived',
+  TEMPLATE_INSTANTIATED: 'template_instantiated',
 } as const;
 
 export type ActionType = (typeof Action)[keyof typeof Action];

@@ -9,6 +9,13 @@ agent_version: v2.3
 skills_ready: 7
 ---
 
+### 2026-08-11 — QC-OPERATIONS-PLATFORM-001: إضافة Findings/CAPA/RCA وواجهات التشغيل
+
+- **Files**: `apps/qc-task-manager/db/migrations/004_qc_operations.sql`, `db/schema.sql`, `src/lib/{db,findings,capa,qc-operations,permissions,types,validation}.ts`, `src/pages/findings/{index,[id]}.astro`, `src/pages/api/findings/**`, `src/components/QcStatusBadge.astro`, `src/components/Navbar.tsx`, `scripts/test-qc-operations.mjs`, `package.json`, `docs/{ARCHITECTURE,ROLES-AND-PERMISSIONS,TESTING}.md`, `docs/superpowers/plans/2026-08-11-qc-operations-platform.md`.
+- **What**: أضفت QC Findings مرتبطة بـ `tasks.id` فقط بدون استبدال أو إعادة تعريف `Task`، مع classification/lifecycle المطلوبين، CAPA واحد لكل Finding، RCA (5 Whys/Fishbone/Free-form)، Evidence، Audit مستقل، وRBAC server-side. أضيفت routes `/findings` و`/findings/[id]`، وأقسام Timeline/RCA/CAPA/Evidence/Approval/Audit. Critical Finding لا يقفل إلا بعد CAPA وaction/evidence/effectiveness/verification/approval وclosure evidence؛ CAPA لا يقفل بدون action/evidence/effectiveness/approval.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **265 passed / 0 failed** + migration/architecture/QC operations/SLA/DB rules PASS؛ `typecheck` → **0 errors / 0 warnings / 11 hints**؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built**؛ `git diff --check` لا أخطاء محتوى، مع تحذير fsmonitor IPC بيئي من Git.
+- **Status**: verified locally; live browser E2E على `/findings` و`/findings/[id]` غير مشغّل في هذه المهمة، لذلك لا يُستنتج منه production readiness. لا commit ولا push؛ المستخدم يلتزم.
+
 ### 2026-08-11 — QC-SLA-ENGINE-001: إضافة SLA Engine قابل للتهيئة والتصعيد داخل QC Task Manager
 
 - **Files**: `apps/qc-task-manager/db/migrations/003_sla_engine.sql`, `db/schema.sql`, `src/lib/{sla/index.ts,sla/engine.ts,db.ts,types.ts,activity.ts,notifications.ts,tasks.ts,taskUpdates.ts,dashboard.ts}`, `src/pages/{dashboard.astro,notifications.astro}`, `scripts/{test-sla.mjs,test.mjs,test-migrations.mjs}`, `package.json`, `docs/superpowers/plans/2026-08-11-qc-sla-engine.md`.
