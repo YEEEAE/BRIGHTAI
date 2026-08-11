@@ -82,11 +82,11 @@ export function roleHome(role: Role): string {
 // read-only for everyone.
 
 /**
- * Can this user edit this task at all? (Completed tasks are frozen for everyone.)
+ * Can this user edit this task at all? (Completed AND cancelled tasks are
+ * frozen for everyone — RULE #3; cancelled is terminal.)
  */
 export function canEditTask(user: Pick<User, 'role' | 'id'>, task: Pick<Task, 'status' | 'created_by' | 'assigned_to'>): boolean {
-  // Completed tasks are READ-ONLY for everyone (CORE BUSINESS RULE #2).
-  if (task.status === 'completed') return false;
+  if (task.status === 'completed' || task.status === 'cancelled') return false;
   if (hasRankAtLeast(user.role, 'manager')) return true;
   // supervisors edit anything they can see (create/edit/assign)
   if (user.role === 'supervisor') return true;

@@ -117,7 +117,8 @@ function expectedKpis(extraWhere = '', params = []) {
             COALESCE(SUM(CASE WHEN t.status = 'in_progress' THEN 1 ELSE 0 END), 0) AS in_progress,
             COALESCE(SUM(CASE WHEN t.status = 'on_hold' THEN 1 ELSE 0 END), 0) AS on_hold,
             COALESCE(SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END), 0) AS completed,
-            COALESCE(SUM(CASE WHEN t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status != 'completed' THEN 1 ELSE 0 END), 0) AS overdue
+            COALESCE(SUM(CASE WHEN t.status = 'cancelled' THEN 1 ELSE 0 END), 0) AS cancelled,
+            COALESCE(SUM(CASE WHEN t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status NOT IN ('completed', 'cancelled') THEN 1 ELSE 0 END), 0) AS overdue
      FROM tasks t ${extraWhere}`,
     today,
     ...params,
@@ -128,6 +129,7 @@ function expectedKpis(extraWhere = '', params = []) {
     in_progress: Number(row.in_progress),
     on_hold: Number(row.on_hold),
     completed: Number(row.completed),
+    cancelled: Number(row.cancelled),
     overdue: Number(row.overdue),
   };
 }
@@ -148,7 +150,7 @@ async function login(page, username) {
 /** Read the rendered KPI values from the KPI card data attributes. */
 async function readKpis(page) {
   const out = {};
-  for (const key of ['total', 'not_started', 'in_progress', 'on_hold', 'completed', 'overdue']) {
+  for (const key of ['total', 'not_started', 'in_progress', 'on_hold', 'completed', 'cancelled', 'overdue']) {
     out[key] = Number(await page.locator(`[data-kpi="${key}"] .text-3xl`).innerText());
   }
   return out;
@@ -188,6 +190,8 @@ const SEED = [
   ['DASH due today', 'in_progress', 'high', 'employee', 0, 5, null, null],
   ['DASH done 3d', 'completed', 'high', 'employee', -3, 4, 3, 'employee'],
   ['DASH done 10d', 'completed', 'medium', 'employee', null, 30, 10, 'admin'],
+  // cancelled 5d ago, DUE 5d ago → counts in cancelled KPI/donut, NOT in overdue
+  ['DASH cancelled', 'cancelled', 'medium', 'employee', 5, 25, null, null],
   // unassigned — must surface in the bar chart as an "Unassigned" bucket
   ['DASH unassigned', 'not_started', 'low', null, 8, 2, null, null],
 ];
@@ -238,7 +242,11 @@ try {
   const donutCounts = await svgCounts(mgrPage, 'Tasks by status');
   ok(donutCounts !== null, '1. donut chart rendered');
   if (donutCounts) {
-    eq(donutCounts, [expect.not_started, expect.in_progress, expect.on_hold, expect.completed], '1. donut counts = status distribution');
+    eq(
+      donutCounts,
+      [expect.not_started, expect.in_progress, expect.on_hold, expect.completed, expect.cancelled],
+      '1. donut counts = status distribution (incl. cancelled)',
+    );
   }
 
   // Bar chart: one entry per active user (+ "Unassigned" bucket for tasks with
@@ -286,7 +294,7 @@ try {
   const expectedOverdue = all(
     `SELECT t.id, t.title, t.due_date, u.full_name AS assignee
      FROM tasks t LEFT JOIN users u ON u.id = t.assigned_to
-     WHERE t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status != 'completed'
+     WHERE t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status NOT IN ('completed', 'cancelled')
      ORDER BY date(t.due_date) ASC, t.id ASC`,
     localToday(),
   );

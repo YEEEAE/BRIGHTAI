@@ -19,13 +19,14 @@ import type { TaskPriority } from './types';
 // ───────────────────── Status presentation (charts + legends) ─────────────────────
 // Single source for the dashboard's status colors/labels so the KPI cards, the
 // React charts island and the tables never drift apart.
-export const STATUS_ORDER = ['not_started', 'in_progress', 'on_hold', 'completed'] as const;
+export const STATUS_ORDER = ['not_started', 'in_progress', 'on_hold', 'completed', 'cancelled'] as const;
 
 export const STATUS_LABELS: Record<string, string> = {
   not_started: 'Not started',
   in_progress: 'In progress',
   on_hold: 'On hold',
   completed: 'Completed',
+  cancelled: 'Cancelled',
 };
 
 export const STATUS_COLORS: Record<string, string> = {
@@ -33,6 +34,7 @@ export const STATUS_COLORS: Record<string, string> = {
   in_progress: '#f59e0b', // amber
   on_hold: '#f97316',     // orange
   completed: '#22c55e',   // green
+  cancelled: '#64748b',   // slate
 };
 
 // Priority filter options — single source is task-policy's TASK_PRIORITIES
@@ -181,7 +183,8 @@ export interface Kpis {
   in_progress: number;
   on_hold: number;
   completed: number;
-  /** due_date before today AND status != 'completed' */
+  cancelled: number;
+  /** due_date before today AND status NOT IN ('completed', 'cancelled') */
   overdue: number;
 }
 
@@ -196,8 +199,9 @@ export function getKpis(f: DashboardFilters): Kpis {
               COALESCE(SUM(CASE WHEN t.status = 'in_progress' THEN 1 ELSE 0 END), 0) AS in_progress,
               COALESCE(SUM(CASE WHEN t.status = 'on_hold' THEN 1 ELSE 0 END), 0) AS on_hold,
               COALESCE(SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END), 0) AS completed,
+              COALESCE(SUM(CASE WHEN t.status = 'cancelled' THEN 1 ELSE 0 END), 0) AS cancelled,
               COALESCE(SUM(CASE WHEN t.due_date IS NOT NULL AND date(t.due_date) < date(?)
-                                 AND t.status != 'completed' THEN 1 ELSE 0 END), 0) AS overdue
+                                 AND t.status NOT IN ('completed', 'cancelled') THEN 1 ELSE 0 END), 0) AS overdue
        FROM tasks t
        ${sql}`,
     )
@@ -209,6 +213,7 @@ export function getKpis(f: DashboardFilters): Kpis {
     in_progress: number;
     on_hold: number;
     completed: number;
+    cancelled: number;
     overdue: number;
   };
 
@@ -218,6 +223,7 @@ export function getKpis(f: DashboardFilters): Kpis {
     in_progress: Number(row.in_progress),
     on_hold: Number(row.on_hold),
     completed: Number(row.completed),
+    cancelled: Number(row.cancelled),
     overdue: Number(row.overdue),
   };
 }
@@ -397,7 +403,7 @@ export function getOverdueTasks(f: DashboardFilters): OverdueRow[] {
   const today = localToday();
   const { sql, params } = whereClause(f, [
     {
-      sql: "t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status != 'completed'",
+      sql: "t.due_date IS NOT NULL AND date(t.due_date) < date(?) AND t.status NOT IN ('completed', 'cancelled')",
       params: [today],
     },
   ]);

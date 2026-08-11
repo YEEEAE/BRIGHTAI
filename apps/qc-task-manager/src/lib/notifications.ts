@@ -29,7 +29,8 @@ export type NotificationKind =
   | 'assigned'
   | 'due_date_changed'
   | 'priority_changed'
-  | 'recurring_created';
+  | 'recurring_created'
+  | 'task_completed';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -79,6 +80,7 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   due_date_changed: 'warning',
   priority_changed: 'warning',
   recurring_created: 'success',
+  task_completed: 'success',
 };
 
 /** Load the signed-in user's persisted notifications (newest first). */
@@ -195,6 +197,7 @@ export function getNotificationsForUser(user: { id: number; role: Role }): AppNo
     } else if (
       task.due_date &&
       task.status !== 'completed' &&
+      task.status !== 'cancelled' &&
       task.due_date >= today &&
       task.due_date <= todayPlus3
     ) {
@@ -230,7 +233,7 @@ export function getNotificationsForUser(user: { id: number; role: Role }): AppNo
        JOIN tasks t ON t.id = c.task_id
        JOIN users u ON u.id = c.user_id
        WHERE c.user_id != ? AND c.created_at >= datetime('now', '-7 days')
-         AND t.status != 'completed' ${clause}
+         AND t.status NOT IN ('completed', 'cancelled') ${clause}
        ORDER BY c.created_at DESC
        LIMIT 15`,
     )
@@ -306,17 +309,17 @@ export function countNotifications(user: { id: number; role: Role }): number {
 
   let total = countUnreadPersisted(user.id);
 
-  // Overdue (due before today, not completed).
+  // Overdue (due before today, still active).
   total += count(
     `SELECT COUNT(*) AS n FROM tasks t
-     WHERE t.due_date < ? AND t.status != 'completed' ${clause}`,
+     WHERE t.due_date < ? AND t.status NOT IN ('completed', 'cancelled') ${clause}`,
     [today, ...params],
   );
 
-  // Due soon (today … today+3, not completed).
+  // Due soon (today … today+3, still active).
   total += count(
     `SELECT COUNT(*) AS n FROM tasks t
-     WHERE t.due_date >= ? AND t.due_date <= ? AND t.status != 'completed' ${clause}`,
+     WHERE t.due_date >= ? AND t.due_date <= ? AND t.status NOT IN ('completed', 'cancelled') ${clause}`,
     [today, todayPlus3, ...params],
   );
 
@@ -333,7 +336,7 @@ export function countNotifications(user: { id: number; role: Role }): number {
      FROM task_comments c
      JOIN tasks t ON t.id = c.task_id
      WHERE c.user_id != ? AND c.created_at >= datetime('now', '-7 days')
-       AND t.status != 'completed' ${clause}`,
+       AND t.status NOT IN ('completed', 'cancelled') ${clause}`,
     [user.id, ...params],
   );
 

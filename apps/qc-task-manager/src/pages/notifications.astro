@@ -23,6 +23,7 @@ const KIND_ICON: Record<NotificationKind, string> = {
   due_date_changed: '🗓️',
   priority_changed: '🚦',
   recurring_created: '🔁',
+  task_completed: '✅',
 };
 
 const KIND_LABEL: Record<NotificationKind, string> = {
@@ -35,6 +36,7 @@ const KIND_LABEL: Record<NotificationKind, string> = {
   due_date_changed: 'Due date changes',
   priority_changed: 'Priority changes',
   recurring_created: 'Recurring tasks',
+  task_completed: 'Completed tasks',
 };
 
 const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
@@ -55,6 +57,7 @@ const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'unstarted', order: 2 },
   { key: 'recent_comment', order: 2 },
   { key: 'recurring_created', order: 3 },
+  { key: 'task_completed', order: 3 },
 ];
 
 function sectionOrder(kind: NotificationKind): number {

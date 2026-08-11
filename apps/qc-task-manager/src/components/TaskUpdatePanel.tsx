@@ -9,7 +9,8 @@
 //   3. Checklist: anyone who can edit the task may toggle items; add/remove
 //      items requires supervisor+.
 //   4. Dependencies (supervisor+): add / remove blocking tasks.
-//   5. Closure flow: completion comment (mandatory) + evidence or recorded skip.
+//   The COMPLETION flow is NOT here — it lives in TaskLifecycle.tsx (the
+//   3-step wizard), mounted on the task page.
 //
 // Every successful mutation reloads the page so the server-rendered sections
 // (status badges, activity timeline, attachments) stay in sync.
@@ -64,7 +65,6 @@ interface Props {
 }
 
 const MAX_BLOCKER = 1000;
-const MAX_COMMENT = 2000;
 const MAX_TITLE = 200;
 const MAX_DESCRIPTION = 5000;
 const MAX_DEPARTMENT = 50;
@@ -118,10 +118,6 @@ export default function TaskUpdatePanel({
   // ── checklist / dependency group ──
   const [newChecklistItem, setNewChecklistItem] = useState('');
   const [depPick, setDepPick] = useState('');
-  // ── closure group ──
-  const [comment, setComment] = useState('');
-  const [evidence, setEvidence] = useState<File | null>(null);
-  const [skipEvidence, setSkipEvidence] = useState(false);
   // ── ui state ──
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -129,6 +125,12 @@ export default function TaskUpdatePanel({
 
   const progressNum = Number(progress);
   const blocked = status === 'in_progress' && blockingDependencies.length > 0;
+  // on_hold from not_started/in_progress requires a blocker note (spec) — the
+  // server enforces it; this hint explains why Save will be rejected.
+  const holdNeedsBlocker =
+    status === 'on_hold' &&
+    (task.status === 'not_started' || task.status === 'in_progress') &&
+    blocker.trim().length === 0;
 
   function reload() {
     window.location.href = window.location.pathname;
@@ -192,45 +194,6 @@ export default function TaskUpdatePanel({
       recurrence,
       recurrence_end_date: recurrenceEndDate,
     });
-  }
-
-  async function saveClose(ev: React.FormEvent) {
-    ev.preventDefault();
-    if (saving) return;
-    if (!comment.trim()) {
-      setError('A completion comment is required to complete the task.');
-      return;
-    }
-    if (evidence && !skipEvidence && evidence.size > 10 * 1024 * 1024) {
-      setError('The evidence file exceeds the 10 MB upload limit.');
-      return;
-    }
-    setSaving('close');
-    setError(null);
-    setNotice(null);
-    try {
-      const form = new FormData();
-      form.set('completion_comment', comment.trim());
-      if (evidence && !skipEvidence) {
-        form.set('evidence', evidence);
-      } else {
-        form.set('skip_evidence', '1');
-      }
-      const res = await fetch(`/api/tasks/${task.id}/close`, {
-        method: 'POST',
-        body: form,
-      });
-      const data = (await res.json()) as { ok: boolean; error?: string };
-      if (!res.ok || !data.ok) {
-        setError(data.error ?? 'Could not complete the task.');
-        setSaving(null);
-        return;
-      }
-      reload();
-    } catch {
-      setError('Network error while completing the task.');
-      setSaving(null);
-    }
   }
 
   async function addChecklistItem(ev: React.FormEvent) {
@@ -309,8 +272,13 @@ export default function TaskUpdatePanel({
               ))}
             </select>
             <p className="mt-1 text-xs text-slate-400">
-              Mark as <span className="font-medium text-emerald-600">Completed</span> using the completion flow below.
+              Mark as <span className="font-medium text-emerald-600">Completed</span> using the Complete task button.
             </p>
+            {holdNeedsBlocker && (
+              <p className="mt-1 text-xs font-medium text-red-600">
+                Moving to On hold requires a blocker note — fill in the blocker field below.
+              </p>
+            )}
             {blocked && !canOverrideDependencies && (
               <p className="mt-1 text-xs font-medium text-red-600">
                 Blocked by {blockingDependencies.length} incomplete dependenc{blockingDependencies.length === 1 ? 'y' : 'ies'}. Ask a manager/admin to override.
@@ -637,70 +605,6 @@ export default function TaskUpdatePanel({
         </form>
       )}
 
-      {/* ── Closure group ── */}
-      <form onSubmit={saveClose} className="rounded-lg border border-emerald-200 bg-emerald-50/60 p-5">
-        <h2 className="text-sm font-semibold text-emerald-900">Complete this task</h2>
-        <p className="mt-0.5 text-xs text-emerald-700">
-          Closure flow: completion comment (required) + evidence (optional — you may skip, and the skip is recorded).
-          {task.recurrence !== 'none' && (
-            <span className="mt-1 block font-medium">🔁 Recurring — completing this task creates the next occurrence.</span>
-          )}
-        </p>
-
-        <div className="mt-4">
-          <label htmlFor={`close-comment-${task.id}`} className="block text-sm font-medium text-emerald-900">
-            Completion comment <span className="text-emerald-600">*</span>
-          </label>
-          <textarea
-            id={`close-comment-${task.id}`}
-            rows={3}
-            maxLength={MAX_COMMENT}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Summarize the outcome, results, or next steps…"
-            required
-            className={`${inputCls} mt-1`}
-          />
-          <p className="mt-1 text-right text-xs text-slate-400">{comment.length}/{MAX_COMMENT}</p>
-        </div>
-
-        <div className="mt-3">
-          <label htmlFor={`evidence-${task.id}`} className="block text-sm font-medium text-emerald-900">
-            Evidence file <span className="font-normal text-emerald-700">(optional)</span>
-          </label>
-          <input
-            id={`evidence-${task.id}`}
-            type="file"
-            accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.txt,.md,.csv,.json,.log,.xml,.sql,.xlsx,.xls,.docx,.doc,.pptx,.ppt,.zip"
-            disabled={skipEvidence}
-            onChange={(e) => setEvidence(e.target.files?.[0] ?? null)}
-            className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-emerald-700 hover:file:bg-emerald-200"
-          />
-          <label className="mt-2 flex items-center gap-2 text-sm text-slate-700">
-            <input
-              type="checkbox"
-              checked={skipEvidence}
-              onChange={(e) => {
-                setSkipEvidence(e.target.checked);
-                if (e.target.checked) setEvidence(null);
-              }}
-              className="h-4 w-4 rounded border-slate-300 text-emerald-600"
-            />
-            Skip evidence upload <span className="text-xs text-slate-400">(recorded in the activity log)</span>
-          </label>
-          {evidence && !skipEvidence && (
-            <p className="mt-1 text-xs text-slate-500">Selected: {evidence.name} ({Math.round(evidence.size / 1024)} KB)</p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          disabled={saving !== null}
-          className="mt-4 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {saving === 'close' ? 'Completing…' : '✅ Mark as completed'}
-        </button>
-      </form>
     </div>
   );
 }

@@ -42,21 +42,24 @@ export type TaskDetail = Task & {
   creator_name: string | null;
   assignee_name: string | null;
   completed_by_name: string | null;
+  cancelled_by_name: string | null;
 };
 
-/** Load a single task with creator/assignee/completer display names. */
+/** Load a single task with creator/assignee/completer/canceller display names. */
 export function getTaskDetail(id: number): TaskDetail | null {
   const db = getDb();
   const row = db
     .prepare(
       `SELECT t.*,
-              creator.full_name  AS creator_name,
-              assignee.full_name AS assignee_name,
-              completer.full_name AS completed_by_name
+              creator.full_name   AS creator_name,
+              assignee.full_name  AS assignee_name,
+              completer.full_name AS completed_by_name,
+              canceller.full_name AS cancelled_by_name
        FROM tasks t
        LEFT JOIN users creator   ON creator.id   = t.created_by
        LEFT JOIN users assignee  ON assignee.id  = t.assigned_to
        LEFT JOIN users completer ON completer.id = t.completed_by
+       LEFT JOIN users canceller ON canceller.id = t.cancelled_by
        WHERE t.id = ?`,
     )
     .get(id) as TaskDetail | undefined;
@@ -201,32 +204,42 @@ export function getEvidenceInfo(taskId: number): EvidenceInfo {
 }
 
 /**
- * Completion comment matched back from the latest CLOSURE_COMMENT_ADDED entry
- * (new_value holds the comment text) to its row in task_comments.
+ * The completion comment is stored with is_completion_comment = 1 (the wizard
+ * flow) and linked on tasks.completion_comment_id — a direct lookup, no longer
+ * inferred from the activity log. After a reopen the flag is cleared and the
+ * comment returns to the regular thread.
  */
 export function getClosureComment(taskId: number): CommentWithAuthor | null {
   const db = getDb();
-  const entry = db
-    .prepare(
-      `SELECT new_value
-       FROM task_activity_log
-       WHERE task_id = ? AND action = 'closure_comment_added'
-       ORDER BY created_at DESC, id DESC
-       LIMIT 1`,
-    )
-    .get(taskId) as { new_value: string | null } | undefined;
-  if (!entry?.new_value) return null;
   const comment = db
     .prepare(
       `SELECT c.*, u.full_name
        FROM task_comments c
        JOIN users u ON u.id = c.user_id
-       WHERE c.task_id = ? AND c.comment = ?
+       WHERE c.task_id = ? AND c.is_completion_comment = 1
        ORDER BY c.created_at DESC, c.id DESC
        LIMIT 1`,
     )
-    .get(taskId, entry.new_value) as CommentWithAuthor | undefined;
+    .get(taskId) as CommentWithAuthor | undefined;
   return comment ?? null;
+}
+
+/**
+ * Evidence attachments (is_evidence = 1) — the completion wizard's uploads.
+ * All of them are shown on the completed-task panel (spec: "Evidence files").
+ */
+export function listEvidenceFiles(taskId: number): AttachmentMeta[] {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT a.id, a.task_id, a.uploaded_by, a.file_name, a.mime_type,
+              a.file_size, a.uploaded_at, u.full_name AS uploader
+       FROM task_attachments a
+       JOIN users u ON u.id = a.uploaded_by
+       WHERE a.task_id = ? AND a.is_evidence = 1
+       ORDER BY a.uploaded_at ASC, a.id ASC`,
+    )
+    .all(taskId) as AttachmentMeta[];
 }
 
 /**
@@ -238,8 +251,12 @@ export function actionCategory(action: string): string {
     case 'task_created':
       return 'created';
     case 'status_changed':
+    case 'task_started':
     case 'task_completed':
+    case 'task_reopened':
       return 'status';
+    case 'task_cancelled':
+      return 'delete';
     case 'progress_changed':
       return 'progress';
     case 'task_updated':
@@ -289,8 +306,14 @@ export function describeAction(action: string, oldValue: string | null, newValue
       return `created this task${newValue ? `: "${newValue}"` : ''}.`;
     case 'status_changed':
       return `changed status from ${statusLabel(oldValue ?? 'unknown')} to ${statusLabel(newValue ?? 'unknown')}.`;
+    case 'task_started':
+      return 'started working on this task.';
     case 'task_completed':
       return 'marked the task completed.';
+    case 'task_cancelled':
+      return `cancelled this task${newValue ? `: ${fmtVal(newValue)}` : '.'}`;
+    case 'task_reopened':
+      return 'reopened this task — it is In Progress again.';
     case 'progress_changed':
       return `updated progress to ${newValue ?? '0'}%.`;
     case 'task_updated':

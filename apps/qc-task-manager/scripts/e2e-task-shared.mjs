@@ -482,14 +482,294 @@ try {
   const openNext = q('SELECT * FROM tasks WHERE parent_recurring_task_id = ?', openR.id);
   ok(!!openNext && openNext.due_date === isoDaysFromToday(2), '7. open-ended series creates the next day');
 
-  // ─────────────────── 8. Read-only completed + cross-checks ───────────────────
-  console.log('\n── Scenario 8: completed tasks stay read-only ──');
-  const roRes = await mgrCtx.request.post(`${BASE}/api/tasks/${r1.id}/update`, {
+  // ─────────────────── 9. Status rules + completion wizard flow ───────────────────
+  console.log('\n── Scenario 9: status rules, completion flow, cancel/reopen ──');
+
+  // 9a. Status transition rules + started_at stamping.
+  const statusTaskId = Number(
+    db.prepare(
+      `INSERT INTO tasks (title, description, status, priority, created_by, assigned_to, due_date)
+       VALUES (?, ?, 'not_started', 'medium', ?, ?, ?)`,
+    )
+      .run('E2E Status Flow', null, mgr.id, emp.id, isoDaysFromToday(6)).lastInsertRowid,
+  );
+  db.prepare('INSERT INTO task_activity_log (task_id, user_id, action, new_value) VALUES (?, ?, ?, ?)')
+    .run(statusTaskId, mgr.id, 'task_created', 'E2E Status Flow');
+
+  // not_started → in_progress sets started_at once + logs task_started.
+  const start1 = await empCtx.request.post(`${BASE}/api/tasks/${statusTaskId}/update`, {
+    form: { status: 'in_progress', progress_percent: '10' },
+    headers: { Origin: BASE },
+  });
+  ok(start1.status() === 200, '9a. not_started → in_progress succeeds');
+  const afterStart = q('SELECT status, started_at, progress_percent FROM tasks WHERE id = ?', statusTaskId);
+  eq(afterStart.status, 'in_progress', '9a. task is in_progress');
+  ok(!!afterStart.started_at, '9a. started_at stamped on first in_progress');
+  ok(
+    all('SELECT action FROM task_activity_log WHERE task_id = ?', statusTaskId).some((a) => a.action === 'task_started'),
+    '9a. task_started logged',
+  );
+
+  // No going back to not_started.
+  const backRes = await empCtx.request.post(`${BASE}/api/tasks/${statusTaskId}/update`, {
+    form: { status: 'not_started' },
+    headers: { Origin: BASE },
+  });
+  ok(backRes.status() === 400, '9a. in_progress → not_started rejected');
+
+  // in_progress → on_hold REQUIRES a blocker note.
+  const holdNoNote = await empCtx.request.post(`${BASE}/api/tasks/${statusTaskId}/update`, {
+    form: { status: 'on_hold' },
+    headers: { Origin: BASE },
+  });
+  const holdNoNoteJson = await holdNoNote.json();
+  ok(holdNoNote.status() === 400 && /blocker note is required/.test(holdNoNoteJson.error ?? ''), `9a. on_hold without blocker rejected (${holdNoNoteJson.error})`);
+  eq(q('SELECT status FROM tasks WHERE id = ?', statusTaskId).status, 'in_progress', '9a. status unchanged after rejected hold');
+
+  const holdOk = await empCtx.request.post(`${BASE}/api/tasks/${statusTaskId}/update`, {
+    form: { status: 'on_hold', blocker_note: 'Waiting for client approval' },
+    headers: { Origin: BASE },
+  });
+  ok(holdOk.status() === 200, '9a. on_hold with blocker note succeeds');
+  const held = q('SELECT status, blocker_note, started_at FROM tasks WHERE id = ?', statusTaskId);
+  eq(held.status, 'on_hold', '9a. task is on_hold');
+  eq(held.blocker_note, 'Waiting for client approval', '9a. blocker note stored');
+
+  // on_hold → in_progress resumes work; started_at is NOT re-stamped.
+  const resume = await empCtx.request.post(`${BASE}/api/tasks/${statusTaskId}/update`, {
+    form: { status: 'in_progress', progress_percent: '40' },
+    headers: { Origin: BASE },
+  });
+  ok(resume.status() === 200, '9a. on_hold → in_progress succeeds (work resumes)');
+  const resumed = q('SELECT status, started_at FROM tasks WHERE id = ?', statusTaskId);
+  eq(resumed.status, 'in_progress', '9a. task back to in_progress');
+  eq(resumed.started_at, afterStart.started_at, '9a. started_at kept on resume (not re-stamped)');
+  const startedCount = all('SELECT action FROM task_activity_log WHERE task_id = ? AND action = ?', statusTaskId, 'task_started').length;
+  eq(startedCount, 1, '9a. task_started logged exactly once');
+
+  // on_hold → not_started rejected.
+  const holdBack = await empCtx.request.post(`${BASE}/api/tasks/${statusTaskId}/update`, {
+    form: { status: 'not_started' },
+    headers: { Origin: BASE },
+  });
+  ok(holdBack.status() === 400, '9a. on_hold → not_started rejected');
+
+  // status=cancelled via the update form is rejected (dedicated flow only).
+  const cancelViaUpdate = await mgrCtx.request.post(`${BASE}/api/tasks/${statusTaskId}/update`, {
+    form: { status: 'cancelled' },
+    headers: { Origin: BASE },
+  });
+  ok(cancelViaUpdate.status() === 400, '9a. status=cancelled rejected via update form');
+
+  // 9b. Completion wizard server-side: comment mandatory + is_completion_comment + notifications.
+  const closeTaskId = Number(
+    db.prepare(
+      `INSERT INTO tasks (title, description, status, priority, created_by, assigned_to, due_date)
+       VALUES (?, ?, 'in_progress', 'high', ?, ?, ?)`,
+    )
+      .run('E2E Wizard Close', null, mgr.id, emp.id, isoDaysFromToday(4)).lastInsertRowid,
+  );
+  db.prepare('INSERT INTO task_activity_log (task_id, user_id, action, new_value) VALUES (?, ?, ?, ?)')
+    .run(closeTaskId, mgr.id, 'task_created', 'E2E Wizard Close');
+
+  const noComment = await empCtx.request.post(`${BASE}/api/tasks/${closeTaskId}/close`, {
+    multipart: { skip_evidence: '1' },
+    headers: { Origin: BASE },
+  });
+  ok(noComment.status() === 400, '9b. close without a completion comment rejected');
+
+  const skipClose = await empCtx.request.post(`${BASE}/api/tasks/${closeTaskId}/close`, {
+    multipart: { completion_comment: 'Done and verified', skip_evidence: '1' },
+    headers: { Origin: BASE },
+  });
+  ok(skipClose.status() === 200, '9b. close with comment + skip succeeds');
+  const closed = q('SELECT status, progress_percent, completed_at, completed_by, completion_comment_id FROM tasks WHERE id = ?', closeTaskId);
+  eq(closed.status, 'completed', '9b. task completed');
+  eq(closed.progress_percent, 100, '9b. progress forced to 100');
+  ok(!!closed.completed_at, '9b. completed_at set');
+  eq(closed.completed_by, emp.id, '9b. completed_by set to the completer');
+  ok(!!closed.completion_comment_id, '9b. completion_comment_id linked');
+  const cc = q('SELECT comment, is_completion_comment FROM task_comments WHERE id = ?', closed.completion_comment_id);
+  eq(cc.comment, 'Done and verified', '9b. completion comment stored');
+  eq(Number(cc.is_completion_comment), 1, '9b. completion comment flagged is_completion_comment = 1');
+  const closeActs = all('SELECT action, new_value FROM task_activity_log WHERE task_id = ? ORDER BY id', closeTaskId);
+  ok(closeActs.some((a) => a.action === 'task_completed'), '9b. task_completed logged');
+  ok(closeActs.some((a) => a.action === 'closure_comment_added' && a.new_value === 'Done and verified'), '9b. closure_comment_added logged');
+  ok(closeActs.some((a) => a.action === 'evidence_skipped'), '9b. evidence_skipped logged when skipped');
+  // Notifications: creator (manager) + every active manager/supervisor (deduped, completer excluded).
+  const completeNotifs = all(
+    "SELECT user_id, type FROM notifications WHERE task_id = ? AND type = 'task_completed'",
+    closeTaskId,
+  );
+  const notifUserIds = completeNotifs.map((n) => n.user_id).sort();
+  ok(notifUserIds.length >= 2, `9b. completion notifications created (${notifUserIds.length})`);
+  ok(notifUserIds.includes(mgr.id), '9b. task creator (manager) notified');
+  ok(notifUserIds.includes(sup.id), '9b. supervisor notified');
+  ok(!notifUserIds.includes(emp.id), '9b. completer (employee) NOT notified');
+
+  // 9c. Evidence validation: restricted allowlist + magic bytes + multiple files.
+  const evTaskId = Number(
+    db.prepare(
+      `INSERT INTO tasks (title, description, status, priority, created_by, assigned_to)
+       VALUES (?, ?, 'in_progress', 'medium', ?, ?)`,
+    )
+      .run('E2E Wizard Evidence', null, mgr.id, emp.id).lastInsertRowid,
+  );
+  db.prepare('INSERT INTO task_activity_log (task_id, user_id, action, new_value) VALUES (?, ?, ?, ?)')
+    .run(evTaskId, mgr.id, 'task_created', 'E2E Wizard Evidence');
+
+  // .txt is NOT in the evidence allowlist (spec: pdf/png/jpg/jpeg/xlsx/docx only).
+  const txtEv = await empCtx.request.post(`${BASE}/api/tasks/${evTaskId}/close`, {
+    multipart: {
+      completion_comment: 'with txt',
+      evidence: { name: 'note.txt', mimeType: 'text/plain', buffer: Buffer.from('hello') },
+    },
+    headers: { Origin: BASE },
+  });
+  const txtEvJson = await txtEv.json();
+  ok(txtEv.status() === 400 && /not allowed for evidence/.test(txtEvJson.error ?? ''), `9c. .txt evidence rejected (${txtEvJson.error})`);
+  eq(q('SELECT status FROM tasks WHERE id = ?', evTaskId).status, 'in_progress', '9c. task NOT completed after rejected evidence');
+
+  // Bad signature: .pdf extension + valid MIME but content is not %PDF- → rejected.
+  const fakePdf = await empCtx.request.post(`${BASE}/api/tasks/${evTaskId}/close`, {
+    multipart: {
+      completion_comment: 'with fake pdf',
+      evidence: { name: 'fake.pdf', mimeType: 'application/pdf', buffer: Buffer.from('not a pdf at all') },
+    },
+    headers: { Origin: BASE },
+  });
+  const fakePdfJson = await fakePdf.json();
+  ok(fakePdf.status() === 400 && /content does not match/.test(fakePdfJson.error ?? ''), `9c. bad-signature .pdf rejected (${fakePdfJson.error})`);
+
+  // Two REAL evidence files in ONE close → both BLOBs stored + both logged.
+  // Driven through the actual WIZARD in the browser (Playwright cannot send
+  // duplicate multipart keys, so the real UI path is the honest test).
+  const pdfBuf = Buffer.from('%PDF-1.4 minimal fake pdf body');
+  const pngBuf = Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), Buffer.from('pngbody')]);
+  await empPage.goto(`${BASE}/tasks/${evTaskId}`);
+  await empPage.click('button:has-text("Complete task")');
+  await empPage.setInputFiles('input[type="file"]', [
+    { name: 'report.pdf', mimeType: 'application/pdf', buffer: pdfBuf },
+    { name: 'shot.png', mimeType: 'image/png', buffer: pngBuf },
+  ]);
+  await empPage.waitForSelector('[data-wizard-evidence] li', { timeout: 10_000 });
+  ok((await empPage.locator('[data-wizard-evidence] li').count()) === 2, '9c. wizard lists both selected evidence files');
+  await empPage.click('button:has-text("Next")');
+  await empPage.fill('#wizard-comment', 'two evidence files');
+  await empPage.click('button:has-text("Next")');
+  await empPage.click('button:has-text("Confirm completion")');
+  await empPage.waitForSelector('text=This task is completed and is read-only', { timeout: 15_000 });
+  ok(true, '9c. wizard confirms and the task becomes read-only');
+  const evAtts = all('SELECT file_name, mime_type, is_evidence, file_size FROM task_attachments WHERE task_id = ? ORDER BY id', evTaskId);
+  eq(evAtts.length, 2, '9c. both evidence BLOBs stored');
+  ok(evAtts.every((a) => Number(a.is_evidence) === 1), '9c. attachments flagged is_evidence = 1');
+  ok(evAtts.some((a) => a.file_name === 'report.pdf' && a.mime_type === 'application/pdf'), '9c. pdf stored with mime');
+  ok(evAtts.some((a) => a.file_name === 'shot.png' && a.mime_type === 'image/png'), '9c. png stored with mime');
+  const evActs = all('SELECT action, new_value FROM task_activity_log WHERE task_id = ? AND action LIKE ?', evTaskId, 'evidence_%');
+  ok(evActs.filter((a) => a.action === 'evidence_uploaded').length === 2, '9c. evidence_uploaded logged per file');
+  ok(!evActs.some((a) => a.action === 'evidence_skipped'), '9c. no evidence_skipped when files uploaded');
+
+  // 9c2. Cancelling the wizard BEFORE confirmation saves NOTHING (spec): no
+  // status change, no temporary evidence, no completion comment.
+  const cancelWizId = Number(
+    db.prepare(
+      `INSERT INTO tasks (title, description, status, priority, created_by, assigned_to)
+       VALUES (?, ?, 'in_progress', 'medium', ?, ?)`,
+    )
+      .run('E2E Wizard Cancel', null, mgr.id, emp.id).lastInsertRowid,
+  );
+  db.prepare('INSERT INTO task_activity_log (task_id, user_id, action, new_value) VALUES (?, ?, ?, ?)')
+    .run(cancelWizId, mgr.id, 'task_created', 'E2E Wizard Cancel');
+  await empPage.goto(`${BASE}/tasks/${cancelWizId}`);
+  await empPage.click('button:has-text("Complete task")');
+  await empPage.setInputFiles('input[type="file"]', [
+    { name: 'report.pdf', mimeType: 'application/pdf', buffer: pdfBuf },
+  ]);
+  await empPage.waitForSelector('[data-wizard-evidence] li', { timeout: 10_000 });
+  await empPage.click('button:has-text("Next")');
+  await empPage.fill('#wizard-comment', 'should never be saved');
+  // Hit the wizard's Cancel (top-right ✕ equivalent: footer Cancel button).
+  await empPage.click('div[role="dialog"] button:has-text("Cancel")');
+  ok((await empPage.locator('div[role="dialog"]').count()) === 0, '9c2. wizard closed');
+  const afterCancelWiz = q('SELECT status, completed_at, completed_by FROM tasks WHERE id = ?', cancelWizId);
+  eq(afterCancelWiz.status, 'in_progress', '9c2. task status NOT changed');
+  ok(afterCancelWiz.completed_at === null, '9c2. completed_at NOT set');
+  const wizComments = q('SELECT COUNT(*) AS n FROM task_comments WHERE task_id = ?', cancelWizId);
+  eq(Number(wizComments.n), 0, '9c2. no completion comment saved');
+  const wizAtts = q('SELECT COUNT(*) AS n FROM task_attachments WHERE task_id = ?', cancelWizId);
+  eq(Number(wizAtts.n), 0, '9c2. no temporary evidence saved');
+  ok(
+    !all('SELECT action FROM task_activity_log WHERE task_id = ?', cancelWizId).some((a) => a.action === 'task_completed'),
+    '9c2. no completion activity logged',
+  );
+
+  // 9d. Reopen — admin/manager only; completed → in_progress, editable again.
+  const empReopen = await empCtx.request.post(`${BASE}/api/tasks/${closeTaskId}/reopen`, {
+    headers: { Origin: BASE },
+  });
+  ok(empReopen.status() === 400, '9d. employee cannot reopen');
+  const mgrReopen = await mgrCtx.request.post(`${BASE}/api/tasks/${closeTaskId}/reopen`, {
+    headers: { Origin: BASE },
+  });
+  ok(mgrReopen.status() === 200, '9d. manager reopens the completed task');
+  const reopened = q('SELECT status, completed_at, completed_by FROM tasks WHERE id = ?', closeTaskId);
+  eq(reopened.status, 'in_progress', '9d. task is in_progress after reopen');
+  ok(reopened.completed_at === null && reopened.completed_by === null, '9d. completion metadata cleared');
+  const unflag = q('SELECT is_completion_comment FROM task_comments WHERE id = ?', closed.completion_comment_id);
+  eq(Number(unflag.is_completion_comment), 0, '9d. completion comment unflagged back into the thread');
+  ok(
+    all('SELECT action FROM task_activity_log WHERE task_id = ?', closeTaskId).some((a) => a.action === 'task_reopened'),
+    '9d. task_reopened logged',
+  );
+  const editAfter = await mgrCtx.request.post(`${BASE}/api/tasks/${closeTaskId}/update`, {
+    form: { title: 'E2E Wizard Close (reopened)' },
+    headers: { Origin: BASE },
+  });
+  ok(editAfter.status() === 200, '9d. reopened task is editable again');
+
+  // 9e. Cancel — manager/admin approval with reason; cancelled is read-only.
+  const cancelTaskId = Number(
+    db.prepare(
+      `INSERT INTO tasks (title, description, status, priority, created_by, assigned_to)
+       VALUES (?, ?, 'in_progress', 'medium', ?, ?)`,
+    )
+      .run('E2E Cancel Task', null, mgr.id, emp.id).lastInsertRowid,
+  );
+  db.prepare('INSERT INTO task_activity_log (task_id, user_id, action, new_value) VALUES (?, ?, ?, ?)')
+    .run(cancelTaskId, mgr.id, 'task_created', 'E2E Cancel Task');
+
+  const empCancel = await empCtx.request.post(`${BASE}/api/tasks/${cancelTaskId}/cancel`, {
+    form: { reason: 'not mine' },
+    headers: { Origin: BASE },
+  });
+  ok(empCancel.status() === 400, '9e. employee cannot cancel (manager/admin approval required)');
+  const noReason = await mgrCtx.request.post(`${BASE}/api/tasks/${cancelTaskId}/cancel`, {
+    form: { reason: '' },
+    headers: { Origin: BASE },
+  });
+  ok(noReason.status() === 400, '9e. cancel without a reason rejected');
+  const mgrCancel = await mgrCtx.request.post(`${BASE}/api/tasks/${cancelTaskId}/cancel`, {
+    form: { reason: 'Customer cancelled the project' },
+    headers: { Origin: BASE },
+  });
+  ok(mgrCancel.status() === 200, '9e. manager cancels with a reason');
+  const cancelled = q('SELECT status, cancelled_at, cancelled_by FROM tasks WHERE id = ?', cancelTaskId);
+  eq(cancelled.status, 'cancelled', '9e. task cancelled');
+  ok(!!cancelled.cancelled_at, '9e. cancelled_at set');
+  eq(cancelled.cancelled_by, mgr.id, '9e. cancelled_by set');
+  const cancelAct = q("SELECT action, new_value FROM task_activity_log WHERE task_id = ? AND action = 'task_cancelled'", cancelTaskId);
+  ok(!!cancelAct && cancelAct.new_value === 'Customer cancelled the project', '9e. task_cancelled logged with the reason');
+  const editCancelled = await mgrCtx.request.post(`${BASE}/api/tasks/${cancelTaskId}/update`, {
     form: { title: 'E2E Hacked' },
     headers: { Origin: BASE },
   });
-  const roJson = await roRes.json();
-  ok(roRes.status() === 400 && /read-only for everyone/.test(roJson.error ?? ''), `8. completed task rejects edits (${roJson.error})`);
+  const editCancelledJson = await editCancelled.json();
+  ok(editCancelled.status() === 400 && /cancelled and is read-only/.test(editCancelledJson.error ?? ''), `9e. cancelled task is read-only (${editCancelledJson.error})`);
+  const closeCancelled = await mgrCtx.request.post(`${BASE}/api/tasks/${cancelTaskId}/close`, {
+    multipart: { completion_comment: 'late', skip_evidence: '1' },
+    headers: { Origin: BASE },
+  });
+  ok(closeCancelled.status() === 400, '9e. cancelled task cannot be completed');
 } catch (err) {
   failed += 1;
   failures.push(`unhandled error: ${err.message}`);

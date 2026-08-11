@@ -23,6 +23,7 @@ import { parseFormData, taskCreateInputSchema, commentSchema, userCreateSchema, 
 import {
   isTaskReadOnly,
   canTransitionStatus,
+  requiresBlockerNote,
   isEmployeeEditableField,
   isEmployeeLockedField,
   MAX_UPLOAD_BYTES,
@@ -30,7 +31,12 @@ import {
   TASK_PRIORITIES,
   TASK_RECURRENCES,
   isAllowedExtension,
+  isEvidenceExtension,
   isRecurrence,
+  EVIDENCE_EXTENSIONS,
+  EVIDENCE_EXT_MIME,
+  EVIDENCE_SIGNATURES,
+  EVIDENCE_EXTENSIONS_HINT,
 } from '../src/lib/task-policy.ts';
 import { nextDueDate, shouldCreateNextOccurrence } from '../src/lib/recurrence.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
@@ -226,18 +232,71 @@ ok(!r.ok && r.error === 'Username is required.', 'login: empty username');
 // ── 3. Task policy ──
 section('Task policy (src/lib/task-policy.ts)');
 ok(isTaskReadOnly('completed') === true, 'completed is read-only');
+ok(isTaskReadOnly('cancelled') === true, 'cancelled is read-only (terminal)');
 ok(isTaskReadOnly('in_progress') === false, 'in_progress is not read-only');
-ok(canTransitionStatus('in_progress', 'on_hold') === true, 'active → active allowed');
-ok(canTransitionStatus('completed', 'in_progress') === false, 'completed → active rejected');
+
+// Status transitions (spec):
+//   not_started → in_progress / on_hold(with blocker) / in_progress ↔ on_hold
+ok(canTransitionStatus('not_started', 'in_progress') === true, 'not_started → in_progress allowed');
+ok(canTransitionStatus('not_started', 'on_hold') === true, 'not_started → on_hold allowed (blocker required)');
+ok(canTransitionStatus('in_progress', 'on_hold') === true, 'in_progress → on_hold allowed (blocker required)');
+ok(canTransitionStatus('on_hold', 'in_progress') === true, 'on_hold → in_progress allowed (work resumes)');
+ok(canTransitionStatus('in_progress', 'not_started') === false, 'in_progress → not_started rejected (no going back)');
+ok(canTransitionStatus('on_hold', 'not_started') === false, 'on_hold → not_started rejected (no going back)');
+ok(canTransitionStatus('completed', 'in_progress') === false, 'completed → active rejected (reopen is admin/manager-only)');
+ok(canTransitionStatus('cancelled', 'in_progress') === false, 'cancelled → active rejected');
 ok(canTransitionStatus('not_started', 'completed') === false, 'completed only via closure flow');
+ok(canTransitionStatus('in_progress', 'cancelled') === false, 'cancelled only via the manager/admin cancel flow');
+ok(canTransitionStatus('on_hold', 'on_hold') === true, 'same-status no-op allowed');
+
+// Blocker-note requirement for on_hold (spec).
+ok(requiresBlockerNote('not_started', 'on_hold') === true, 'not_started → on_hold requires a blocker note');
+ok(requiresBlockerNote('in_progress', 'on_hold') === true, 'in_progress → on_hold requires a blocker note');
+ok(requiresBlockerNote('on_hold', 'in_progress') === false, 'on_hold → in_progress does not require a blocker note');
+ok(requiresBlockerNote('not_started', 'in_progress') === false, 'not_started → in_progress does not require a blocker note');
+ok(requiresBlockerNote('on_hold', 'on_hold') === false, 'same-status on_hold no-op needs no blocker');
+
 ok(isEmployeeEditableField('status') && isEmployeeEditableField('progress_percent') && isEmployeeEditableField('blocker_note'), 'employee editable fields');
 ok(isEmployeeLockedField('title') && isEmployeeLockedField('assigned_to'), 'locked fields');
 ok(!isEmployeeEditableField('title'), 'title is not employee-editable');
 ok(MAX_UPLOAD_BYTES === 10 * 1024 * 1024, 'upload limit 10 MB');
-ok(TASK_STATUSES.length === 4, 'four statuses');
+ok(TASK_STATUSES.length === 5 && TASK_STATUSES.includes('cancelled'), 'five statuses incl. cancelled');
 ok(TASK_PRIORITIES.includes('urgent'), 'urgent is a valid priority');
 ok(TASK_RECURRENCES.length === 4 && isRecurrence('daily') && isRecurrence('monthly') && !isRecurrence('yearly'), 'recurrence enum');
 ok(isAllowedExtension('pdf') && !isAllowedExtension('exe'), 'extension allowlist');
+
+// Completion-evidence allowlist (spec: PDF, PNG, JPG, JPEG, XLSX, DOCX only).
+section('Evidence policy (completion wizard allowlist)');
+ok(
+  JSON.stringify(EVIDENCE_EXTENSIONS) === JSON.stringify(['pdf', 'png', 'jpg', 'jpeg', 'xlsx', 'docx']),
+  'evidence: exactly pdf/png/jpg/jpeg/xlsx/docx',
+);
+ok(EVIDENCE_EXTENSIONS_HINT === 'pdf, png, jpg, jpeg, xlsx, docx', 'evidence: hint lists the six types');
+ok(
+  EVIDENCE_EXTENSIONS.every((e) => isEvidenceExtension(e)) && !isEvidenceExtension('txt') && !isEvidenceExtension('exe'),
+  'evidence: isEvidenceExtension matches the allowlist',
+);
+ok(
+  EVIDENCE_EXT_MIME.pdf.join() === 'application/pdf' &&
+    EVIDENCE_EXT_MIME.png.join() === 'image/png' &&
+    EVIDENCE_EXT_MIME.jpg.join() === 'image/jpeg' &&
+    EVIDENCE_EXT_MIME.jpeg.join() === 'image/jpeg' &&
+    EVIDENCE_EXT_MIME.xlsx.join() === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
+    EVIDENCE_EXT_MIME.docx.join() === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'evidence: MIME map matches the six types',
+);
+ok(
+  JSON.stringify(EVIDENCE_SIGNATURES.pdf) === JSON.stringify([0x25, 0x50, 0x44, 0x46, 0x2d]) &&
+    JSON.stringify(EVIDENCE_SIGNATURES.png) === JSON.stringify([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]) &&
+    JSON.stringify(EVIDENCE_SIGNATURES.jpg) === JSON.stringify([0xff, 0xd8, 0xff]) &&
+    JSON.stringify(EVIDENCE_SIGNATURES.jpeg) === JSON.stringify([0xff, 0xd8, 0xff]),
+  'evidence: magic bytes for pdf/png/jpg/jpeg',
+);
+ok(
+  JSON.stringify(EVIDENCE_SIGNATURES.xlsx) === JSON.stringify([0x50, 0x4b, 0x03, 0x04]) &&
+    JSON.stringify(EVIDENCE_SIGNATURES.docx) === JSON.stringify([0x50, 0x4b, 0x03, 0x04]),
+  'evidence: xlsx/docx are ZIP containers (PK.. magic)',
+);
 
 // ── 4b. Recurrence scheduling (pure) ──
 section('Recurrence (src/lib/recurrence.ts)');

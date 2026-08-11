@@ -23,6 +23,7 @@ import StatusBadge from '../../components/StatusBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import TaskUpdatePanel from '../../components/TaskUpdatePanel';
 import AttachmentUploader from '../../components/AttachmentUploader';
+import TaskLifecycle from '../../components/TaskLifecycle';
 import { hasPendingDeleteRequest } from '../../lib/deleteRequests';
 import {
   canViewTask,
@@ -32,6 +33,7 @@ import {
   listActivity,
   getEvidenceInfo,
   getClosureComment,
+  listEvidenceFiles,
   describeAction,
   actionCategory,
   listChecklist,
@@ -75,6 +77,7 @@ let comments: CommentWithAuthor[] = [];
 let attachments: AttachmentMeta[] = [];
 let activity: ActivityEntry[] = [];
 let evidence: EvidenceInfo = null;
+let evidenceFiles: Awaited<ReturnType<typeof listEvidenceFiles>> = [];
 let closureComment: CommentWithAuthor | null = null;
 let checklist: Awaited<ReturnType<typeof listChecklist>> = [];
 let dependencies: DependencyInfo[] = [];
@@ -85,6 +88,7 @@ if (!notFound && !forbidden) {
   attachments = listAttachmentMeta(rawId);
   activity = listActivity(rawId);
   evidence = getEvidenceInfo(rawId);
+  evidenceFiles = listEvidenceFiles(rawId);
   closureComment = getClosureComment(rawId);
   checklist = listChecklist(rawId);
   dependencies = listDependencies(rawId);
@@ -93,13 +97,19 @@ if (!notFound && !forbidden) {
 }
 
 const completed = task?.status === 'completed';
-const regularComments = comments.filter((c) => c.id !== closureComment?.id);
+const cancelled = task?.status === 'cancelled';
+// The completion comment is flagged is_completion_comment = 1 (wizard flow);
+// it is pinned at the top and excluded from the regular thread.
+const regularComments = comments.filter((c) => Number(c.is_completion_comment) !== 1);
 
-// Editing + closure UI (CORE BUSINESS RULES #2/#3): visible when the task is
-// not completed and the actor may edit it. Locked fields additionally require
-// supervisor/manager/admin (canEditLockedField).
+// Editing + lifecycle UI (CORE BUSINESS RULES #2/#3): visible when the task is
+// active (not completed/cancelled) and the actor may edit it. Locked fields
+// additionally require supervisor/manager/admin (canEditLockedField).
 const canEdit =
-  !notFound && !forbidden && !!task && !completed && canEditTask({ id: user.userId, role: user.role }, task);
+  !notFound && !forbidden && !!task && !completed && !cancelled && canEditTask({ id: user.userId, role: user.role }, task);
+// Cancel = manager/admin approval (spec); Reopen of completed = admin/manager only.
+const canCancel = canEdit && hasRankAtLeast(user.role, 'manager');
+const canReopen = !notFound && !forbidden && !!task && completed && hasRankAtLeast(user.role, 'manager');
 const canEditLocked = canEdit && canEditLockedField(user.role);
 const usersForAssignee = canEditLocked ? listActiveUsers() : [];
 const dependencyTasks = canEditLocked ? listTasksForDependency() : [];
@@ -210,6 +220,11 @@ function svgIcon(inner: string, cls = ''): string {
             This task is completed and is read-only for everyone.
           </div>
         )}
+        {cancelled && (
+          <div class="mb-4 rounded-md border border-slate-300 bg-slate-100 px-4 py-3 text-sm text-slate-700" role="status">
+            This task is cancelled and is read-only for everyone.
+          </div>
+        )}
 
         <div class="space-y-1">
           <div class="flex items-center justify-between text-sm">
@@ -281,7 +296,23 @@ function svgIcon(inner: string, cls = ''): string {
           {completed && (
             <div>
               <dt class="text-xs uppercase text-slate-500">Completed</dt>
-              <dd class="mt-0.5 font-medium text-slate-900">{formatDbDate(task.completed_at)}</dd>
+              <dd class="mt-0.5 font-medium text-slate-900">
+                {formatDbDate(task.completed_at)}
+                {task.completed_by_name && (
+                  <span class="block text-xs font-normal text-slate-500">by {task.completed_by_name}</span>
+                )}
+              </dd>
+            </div>
+          )}
+          {cancelled && (
+            <div>
+              <dt class="text-xs uppercase text-slate-500">Cancelled</dt>
+              <dd class="mt-0.5 font-medium text-slate-900">
+                {formatDbDate(task.cancelled_at)}
+                {task.cancelled_by_name && (
+                  <span class="block text-xs font-normal text-slate-500">by {task.cancelled_by_name}</span>
+                )}
+              </dd>
             </div>
           )}
         </dl>
@@ -294,7 +325,22 @@ function svgIcon(inner: string, cls = ''): string {
         )}
       </div>
 
-      {/* 1b. Update / closure panel */}
+      {/* 1b. Lifecycle actions: complete wizard / cancel / reopen */}
+      {(canEdit || canReopen) && (
+        <section aria-label="Task actions">
+          <TaskLifecycle
+            taskId={task.id}
+            title={task.title}
+            status={task.status}
+            canComplete={canEdit}
+            canCancel={canCancel}
+            canReopen={canReopen}
+            client:visible
+          />
+        </section>
+      )}
+
+      {/* 1c. Update panel */}
       {canEdit && (
         <section aria-label="Edit task">
           <TaskUpdatePanel
@@ -512,20 +558,23 @@ function svgIcon(inner: string, cls = ''): string {
             {formatDbDate(task.completed_at)}
           </p>
           <div class="mt-3 rounded-md border border-emerald-200 bg-white px-4 py-3 text-sm text-slate-700">
-            {evidence?.kind === 'uploaded' ? (
-              <div class="flex flex-wrap items-center gap-2">
-                <span set:html={svgIcon(ICON_SVG.evidence, 'text-emerald-600')} />
-                <span class="font-medium">Evidence file:</span>
-                {evidence.attachmentId ? (
-                  <a
-                    href={`/api/tasks/${task.id}/attachments/${evidence.attachmentId}`}
-                    class="font-medium text-brand-600 hover:underline"
-                  >
-                    {evidence.fileName}
-                  </a>
-                ) : (
-                  <span>{evidence.fileName ?? 'unknown'}</span>
-                )}
+            {evidenceFiles.length > 0 ? (
+              <div class="space-y-1">
+                <span class="font-medium">Evidence files:</span>
+                <ul class="mt-1 space-y-1" data-evidence-files>
+                  {evidenceFiles.map((ef) => (
+                    <li class="flex flex-wrap items-center gap-2">
+                      <span set:html={svgIcon(ICON_SVG.evidence, 'shrink-0 text-emerald-600')} />
+                      <a
+                        href={`/api/tasks/${task.id}/attachments/${ef.id}`}
+                        class="font-medium text-brand-600 hover:underline"
+                      >
+                        {ef.file_name}
+                      </a>
+                      <span class="text-xs text-slate-500">({humanFileSize(ef.file_size)} · {ef.uploader})</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : evidence?.kind === 'skipped' ? (
               <span class="font-medium text-amber-700">Evidence skipped</span>

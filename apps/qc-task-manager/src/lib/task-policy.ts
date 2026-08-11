@@ -23,9 +23,14 @@ export const TASK_STATUSES: readonly TaskStatus[] = [
   'in_progress',
   'on_hold',
   'completed',
+  'cancelled',
 ];
 
-/** Statuses that can be set through the regular update form (completed is not one). */
+/**
+ * Statuses that can be set through the regular update form (completed is not
+ * one — it goes through the completion wizard; cancelled is manager/admin-only
+ * through the dedicated cancel flow).
+ */
 export const ACTIVE_TASK_STATUSES: readonly TaskStatus[] = [
   'not_started',
   'in_progress',
@@ -119,26 +124,94 @@ export const ALLOWED_EXTENSIONS = Object.keys(EXT_MIME);
 /** Readable list for UI hints, e.g. "pdf, png, jpg, …". */
 export const ALLOWED_EXTENSIONS_HINT = ALLOWED_EXTENSIONS.join(', ');
 
-// ─────────────────────────── Predicates ───────────────────────────
+/**
+ * Evidence upload allowlist for the completion wizard — the ONLY types accepted
+ * as completion evidence (per spec: PDF, PNG, JPG, JPEG, XLSX, DOCX).
+ * Narrower than the generic attachment allowlist (EXT_MIME above).
+ */
+export const EVIDENCE_EXT_MIME: Record<string, string[]> = {
+  pdf: ['application/pdf'],
+  png: ['image/png'],
+  jpg: ['image/jpeg'],
+  jpeg: ['image/jpeg'],
+  xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+};
 
-/** RULE #3 — completed tasks are frozen for everyone. */
-export function isTaskReadOnly(status: TaskStatus | string): boolean {
-  return status === 'completed';
+export const EVIDENCE_EXTENSIONS = Object.keys(EVIDENCE_EXT_MIME);
+
+/** Readable list for UI hints: "pdf, png, jpg, jpeg, xlsx, docx". */
+export const EVIDENCE_EXTENSIONS_HINT = EVIDENCE_EXTENSIONS.join(', ');
+
+/**
+ * Magic bytes (file signatures) for the evidence types that have one. The
+ * signature is checked IN ADDITION to extension + MIME where possible — a
+ * renamed executable cannot pass even when its declared MIME matches.
+ * xlsx/docx are OOXML ZIP packages (both start with the ZIP magic "PK..").
+ */
+export const EVIDENCE_SIGNATURES: Record<string, number[]> = {
+  pdf: [0x25, 0x50, 0x44, 0x46, 0x2d], // %PDF-
+  png: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // \x89PNG\r\n\x1a\n
+  jpg: [0xff, 0xd8, 0xff], // \xFF\xD8\xFF
+  jpeg: [0xff, 0xd8, 0xff], // \xFF\xD8\xFF
+  xlsx: [0x50, 0x4b, 0x03, 0x04], // PK\x03\x04 (ZIP container)
+  docx: [0x50, 0x4b, 0x03, 0x04], // PK\x03\x04 (ZIP container)
+};
+
+/** Is `ext` one of the completion-evidence types? */
+export function isEvidenceExtension(ext: string): boolean {
+  return ext in EVIDENCE_EXT_MIME;
 }
 
-/** Is `status` a settable active state (not completed)? */
+// ─────────────────────────── Predicates ───────────────────────────
+
+/**
+ * RULE #3 — completed AND cancelled tasks are frozen for everyone. Cancelled is
+ * terminal (a manager/admin decision); it is not edited, only deleted via the
+ * approved deletion workflow.
+ */
+export function isTaskReadOnly(status: TaskStatus | string): boolean {
+  return status === 'completed' || status === 'cancelled';
+}
+
+/** Is `status` a settable active state (not completed/cancelled)? */
 export function isActiveStatus(status: string): boolean {
   return (ACTIVE_TASK_STATUSES as readonly string[]).includes(status);
 }
 
 /**
- * RULE #3 — status transitions. Any active → any active is allowed; nothing may
- * leave `completed` (reopening is a deliberate, logged admin/manager action and
- * is handled separately from the generic update path).
+ * RULE #3 — status transitions. The spec allows exactly these moves through
+ * the regular update form:
+ *   not_started → in_progress        (start work)
+ *   not_started → on_hold            (blocker note REQUIRED — requiresBlockerNote)
+ *   in_progress → on_hold            (blocker note REQUIRED — requiresBlockerNote)
+ *   on_hold     → in_progress        (work resumes)
+ * Everything else is rejected: going BACK to not_started is not in the spec,
+ * `completed` only leaves via the admin/manager reopen flow, and `cancelled`
+ * is set exclusively by the manager/admin cancel flow (never via this form).
  */
 export function canTransitionStatus(from: TaskStatus | string, to: string): boolean {
   if (!isActiveStatus(to)) return false;
-  return isTaskReadOnly(from) ? false : true;
+  if (isTaskReadOnly(from)) return false;
+  if (from === to) return true;
+  switch (to) {
+    case 'in_progress':
+      return from === 'not_started' || from === 'on_hold';
+    case 'on_hold':
+      return from === 'not_started' || from === 'in_progress';
+    case 'not_started':
+      return false;
+    default:
+      return false;
+  }
+}
+
+/**
+ * Moving a task INTO on_hold from not_started or in_progress requires a
+ * non-empty blocker note explaining why work stopped (spec).
+ */
+export function requiresBlockerNote(from: TaskStatus | string, to: string): boolean {
+  return to === 'on_hold' && (from === 'not_started' || from === 'in_progress');
 }
 
 /** Is `field` one of the employee-editable fields (RULE #2)? */

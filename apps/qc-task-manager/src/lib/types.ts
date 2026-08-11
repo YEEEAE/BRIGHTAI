@@ -11,7 +11,7 @@ export {
 export type Role = 'admin' | 'manager' | 'supervisor' | 'employee';
 
 // status values match the tasks.status CHECK constraint in db/schema.sql.
-export type TaskStatus = 'not_started' | 'in_progress' | 'on_hold' | 'completed';
+export type TaskStatus = 'not_started' | 'in_progress' | 'on_hold' | 'completed' | 'cancelled';
 // priority values match the tasks.priority CHECK constraint in db/schema.sql.
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
 // recurrence values match the tasks.recurrence CHECK constraint in db/schema.sql.
@@ -59,6 +59,8 @@ export interface TaskComment {
   task_id: number;
   user_id: number;
   comment: string;
+  /** 1 = the task's completion comment (completion wizard flow). */
+  is_completion_comment: number;
   created_at: string;
 }
 

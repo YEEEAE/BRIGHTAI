@@ -3,9 +3,13 @@
 // Single source of truth for MUTATING a task after creation:
 //   applyTaskUpdate  → status / progress / blocker (+ locked fields for
 //                      supervisor/manager/admin, per CORE BUSINESS RULE #2)
-//   closeTask        → the CLOSURE FLOW (CORE BUSINESS RULE #3), atomic:
-//                      status=Completed → evidence (or recorded skip) →
-//                      completion comment (mandatory) → completed_at/completed_by
+//   closeTask        → the COMPLETION WIZARD flow (CORE BUSINESS RULE #3),
+//                      atomic: status=Completed → evidence BLOBs (restricted
+//                      allowlist + magic bytes, or recorded skip) → completion
+//                      comment (is_completion_comment=1) → completed_at/by →
+//                      notifications for creator + managers + supervisors
+//   cancelTask       → manager/admin-only cancellation (reason required)
+//   reopenTask       → admin/manager-only reopen of a completed task
 //   uploadAttachment → generic attachment upload with extension + MIME + 10 MB
 //                      validation (CORE BUSINESS RULE #5: BLOBs in SQLite)
 //
@@ -28,6 +32,9 @@ import {
 import {
   ALLOWED_EXTENSIONS,
   ALLOWED_EXTENSIONS_HINT,
+  EVIDENCE_EXTENSIONS_HINT,
+  EVIDENCE_EXT_MIME,
+  EVIDENCE_SIGNATURES,
   EXT_MIME,
   MAX_BLOCKER_LENGTH,
   MAX_CHECKLIST_ITEMS,
@@ -36,12 +43,15 @@ import {
   MAX_DESCRIPTION_LENGTH,
   MAX_FILE_NAME,
   MAX_OVERRIDE_REASON_LENGTH,
+  MAX_REASON_LENGTH,
   MAX_UPLOAD_BYTES,
   TASK_PRIORITIES,
   TASK_RECURRENCES,
   canTransitionStatus,
   isRecurrence,
+  isTaskReadOnly,
   isValidOverrideReason,
+  requiresBlockerNote,
 } from './task-policy';
 import { nextDueDate, shouldCreateNextOccurrence } from './recurrence';
 import type { Role, Task } from './types';
@@ -71,6 +81,10 @@ export type CloseResult =
 export type UploadResult =
   | { ok: true; attachmentId: number; fileName: string }
   | { ok: false; error: string };
+
+export type CancelResult = { ok: true; message: string } | { ok: false; error: string };
+
+export type ReopenResult = { ok: true; message: string } | { ok: false; error: string };
 
 // ─────────────────────── Shared helpers ───────────────────────
 
@@ -118,6 +132,64 @@ export function validateUploadedFile(
   return { ok: true, fileName, mimeType: declared };
 }
 
+/**
+ * Validate a completion-evidence file — the RESTRICTED evidence allowlist
+ * (pdf/png/jpg/jpeg/xlsx/docx, per spec) with extension + MIME + 10 MB + magic
+ * bytes where the type has a signature. `bytes` is the file content already
+ * read by the caller (needed for the signature check).
+ */
+export function validateEvidenceFile(
+  file: File,
+  bytes: Buffer,
+): { ok: true; fileName: string; mimeType: string } | { ok: false; error: string } {
+  const fileName = sanitizeFileName(file.name);
+  if (!fileName) {
+    return { ok: false, error: 'The file must have a name.' };
+  }
+  if (file.size === 0) {
+    return { ok: false, error: 'The file is empty.' };
+  }
+  if (file.size > MAX_UPLOAD_BYTES) {
+    return {
+      ok: false,
+      error: `The file exceeds the ${MAX_UPLOAD_BYTES / (1024 * 1024)} MB upload limit.`,
+    };
+  }
+  const dot = fileName.lastIndexOf('.');
+  const ext = dot >= 0 ? fileName.slice(dot + 1).toLowerCase() : '';
+  const allowedTypes = EVIDENCE_EXT_MIME[ext];
+  if (!allowedTypes) {
+    return {
+      ok: false,
+      error: `File type ".${ext || 'unknown'}" is not allowed for evidence. Allowed: ${EVIDENCE_EXTENSIONS_HINT}.`,
+    };
+  }
+  const declared = (file.type || '').toLowerCase();
+  if (!declared || !allowedTypes.includes(declared)) {
+    return {
+      ok: false,
+      error: `The file's MIME type (${declared || 'unknown'}) does not match a ".${ext}" file.`,
+    };
+  }
+  const sig = EVIDENCE_SIGNATURES[ext];
+  if (sig && !matchesSignature(bytes, sig)) {
+    return {
+      ok: false,
+      error: `The file's content does not match a ".${ext}" file — upload a valid file.`,
+    };
+  }
+  return { ok: true, fileName, mimeType: declared };
+}
+
+/** True when the byte buffer starts with the given magic bytes. */
+function matchesSignature(bytes: Buffer, sig: number[]): boolean {
+  if (bytes.length < sig.length) return false;
+  for (let i = 0; i < sig.length; i++) {
+    if (bytes[i] !== sig[i]) return false;
+  }
+  return true;
+}
+
 /** Resolve a user's display name (for assignee activity entries). */
 function userName(id: number | null | undefined): string | null {
   if (id == null) return null;
@@ -133,7 +205,7 @@ function loadEditableTask(taskId: number) {
     .prepare(
       `SELECT id, title, description, department, status, priority, progress_percent,
               created_by, assigned_to, due_date, blocker_note, recurrence,
-              recurrence_end_date, completed_at
+              recurrence_end_date, started_at, completed_at, cancelled_at, cancelled_by
        FROM tasks WHERE id = ?`,
     )
     .get(taskId) as
@@ -152,7 +224,10 @@ function loadEditableTask(taskId: number) {
         | 'blocker_note'
         | 'recurrence'
         | 'recurrence_end_date'
+        | 'started_at'
         | 'completed_at'
+        | 'cancelled_at'
+        | 'cancelled_by'
       >)
     | undefined;
 }
@@ -198,10 +273,16 @@ export function applyTaskUpdate(params: {
   const task = loadEditableTask(params.taskId);
   if (!task) return { ok: false, error: 'Task not found.' };
 
-  // Completed tasks are read-only for EVERYONE — checked before canEditTask so
-  // the message says why (CORE BUSINESS RULES #2/#3).
-  if (task.status === 'completed') {
-    return { ok: false, error: 'This task is completed and is read-only for everyone.' };
+  // Completed/cancelled tasks are read-only for EVERYONE — checked before
+  // canEditTask so the message says why (CORE BUSINESS RULES #2/#3).
+  if (isTaskReadOnly(task.status)) {
+    return {
+      ok: false,
+      error:
+        task.status === 'completed'
+          ? 'This task is completed and is read-only for everyone.'
+          : 'This task is cancelled and is read-only for everyone.',
+    };
   }
   if (!canEditTask(params.actor, task)) {
     return { ok: false, error: 'You do not have permission to edit this task.' };
@@ -241,11 +322,25 @@ export function applyTaskUpdate(params: {
         error: 'Use the "Complete task" flow — a completion comment and evidence are required.',
       };
     }
-    // RULE #3 transition rules live in task-policy (any active → any active).
+    if (s === 'cancelled') {
+      return {
+        ok: false,
+        error: 'Cancelling a task requires manager/admin approval — use the Cancel task action.',
+      };
+    }
+    // RULE #3 transition rules live in task-policy (strict set per spec).
     if (!canTransitionStatus(task.status, s)) {
-      return { ok: false, error: 'Invalid status value.' };
+      return { ok: false, error: 'Invalid status transition.' };
     }
     if (s !== task.status) {
+      // on_hold from not_started/in_progress requires a blocker note explaining
+      // why work stopped (spec). The note must come in THIS submission.
+      if (requiresBlockerNote(task.status, s)) {
+        const b = String(form.get('blocker_note') ?? '').trim();
+        if (!b) {
+          return { ok: false, error: 'A blocker note is required to put the task on hold.' };
+        }
+      }
       // Dependency gate: a task cannot move to In Progress while any dependency
       // is incomplete. Admin/manager may override ONLY with an explicit reason,
       // and the override is logged (spec: dependency behavior). The check is
@@ -275,6 +370,18 @@ export function applyTaskUpdate(params: {
             };
           }
         }
+      }
+
+      // First time the task enters In Progress → stamp started_at (once) and
+      // log the start (spec). on_hold → in_progress keeps the ORIGINAL
+      // started_at — work resumed, not restarted.
+      if (s === 'in_progress' && task.started_at === null) {
+        sets.push("started_at = datetime('now')");
+        activity.push({
+          action: Action.TASK_STARTED,
+          oldValue: null,
+          newValue: statusLabel('in_progress'),
+        });
       }
       sets.push('status = ?');
       values.push(s);
@@ -689,8 +796,14 @@ export async function closeTask(params: {
   const task = loadEditableTask(params.taskId);
   if (!task) return { ok: false, error: 'Task not found.' };
 
-  if (task.status === 'completed') {
-    return { ok: false, error: 'This task is already completed.' };
+  if (isTaskReadOnly(task.status)) {
+    return {
+      ok: false,
+      error:
+        task.status === 'completed'
+          ? 'This task is already completed.'
+          : 'This task is cancelled and cannot be completed.',
+    };
   }
   if (!canEditTask(params.actor, task)) {
     return { ok: false, error: 'You do not have permission to edit this task.' };
@@ -707,30 +820,27 @@ export async function closeTask(params: {
     };
   }
 
-  // Evidence step: a file upload, or a recorded skip. The file's bytes are read
-  // BEFORE the transaction (transaction callbacks are synchronous), so this
-  // function is async.
-  const rawFile = params.form.get('evidence');
-  const hasFile =
-    typeof rawFile === 'object' && rawFile !== null && 'size' in rawFile && rawFile.size > 0;
+  // Evidence step: zero or more uploaded files — each validated against the
+  // RESTRICTED evidence allowlist (pdf/png/jpg/jpeg/xlsx/docx) + MIME + size +
+  // magic bytes — or a recorded skip. The bytes are read BEFORE the transaction
+  // (transaction callbacks are synchronous), so this function is async.
+  const rawFiles = params.form.getAll('evidence');
+  const files = rawFiles.filter(
+    (f): f is File => typeof f === 'object' && f !== null && 'size' in f && f.size > 0,
+  );
+  const skipEvidence = String(params.form.get('skip_evidence') ?? '') === '1';
 
-  let evidenceAction: string;
-  let evidenceValue: string | null;
-  let evidenceBytes: Buffer | null = null;
-  let evidenceName: string | null = null;
-  let evidenceMime: string | null = null;
-  if (hasFile) {
-    const validated = validateUploadedFile(rawFile as File);
+  interface PreparedEvidence {
+    fileName: string;
+    mimeType: string;
+    bytes: Buffer;
+  }
+  const evidenceFiles: PreparedEvidence[] = [];
+  for (const f of files) {
+    const bytes = Buffer.from(await f.arrayBuffer());
+    const validated = validateEvidenceFile(f, bytes);
     if (!validated.ok) return { ok: false, error: validated.error };
-    evidenceBytes = Buffer.from(await rawFile.arrayBuffer());
-    evidenceName = validated.fileName;
-    evidenceMime = validated.mimeType;
-    evidenceAction = Action.EVIDENCE_UPLOADED;
-    evidenceValue = validated.fileName;
-  } else {
-    // Skipping must still be recorded in the activity log (CORE BUSINESS RULE #3).
-    evidenceAction = Action.EVIDENCE_SKIPPED;
-    evidenceValue = null;
+    evidenceFiles.push({ fileName: validated.fileName, mimeType: validated.mimeType, bytes });
   }
 
   let nextTaskId: number | null = null;
@@ -752,17 +862,36 @@ export async function closeTask(params: {
       throw new Error('already completed');
     }
 
-    if (evidenceBytes && evidenceName) {
+    // Evidence BLOBs — each stored with is_evidence = 1 and logged individually.
+    for (const ev of evidenceFiles) {
       db.prepare(
-        `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-      ).run(task.id, params.actor.id, evidenceName, evidenceMime, evidenceBytes, evidenceBytes.length);
+        `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, is_evidence)
+         VALUES (?, ?, ?, ?, ?, ?, 1)`,
+      ).run(task.id, params.actor.id, ev.fileName, ev.mimeType, ev.bytes, ev.bytes.length);
+      logActivity({
+        taskId: task.id,
+        userId: params.actor.id,
+        action: Action.EVIDENCE_UPLOADED,
+        newValue: ev.fileName,
+      });
+    }
+    if (evidenceFiles.length === 0) {
+      // Skipping must still be recorded in the activity log (CORE BUSINESS RULE #3).
+      logActivity({ taskId: task.id, userId: params.actor.id, action: Action.EVIDENCE_SKIPPED });
     }
 
-    db.prepare('INSERT INTO task_comments (task_id, user_id, comment) VALUES (?, ?, ?)').run(
+    // Completion comment stored with is_completion_comment = 1 and linked on
+    // the task row (spec) so it stays unambiguous even after a reopen unflags
+    // it back into the regular thread.
+    const commentInfo = db
+      .prepare(
+        `INSERT INTO task_comments (task_id, user_id, comment, is_completion_comment)
+         VALUES (?, ?, ?, 1)`,
+      )
+      .run(task.id, params.actor.id, completionComment);
+    db.prepare('UPDATE tasks SET completion_comment_id = ? WHERE id = ?').run(
+      Number(commentInfo.lastInsertRowid),
       task.id,
-      params.actor.id,
-      completionComment,
     );
 
     logActivity({ taskId: task.id, userId: params.actor.id, action: Action.TASK_COMPLETED });
@@ -772,12 +901,30 @@ export async function closeTask(params: {
       action: Action.CLOSURE_COMMENT_ADDED,
       newValue: completionComment,
     });
-    logActivity({
-      taskId: task.id,
-      userId: params.actor.id,
-      action: evidenceAction,
-      newValue: evidenceValue ?? undefined,
-    });
+
+    // Completion notifications (spec): the task creator, plus every active
+    // manager and supervisor — deduped and excluding the completer.
+    const notifyIds = new Set<number>();
+    if (task.created_by !== params.actor.id) notifyIds.add(task.created_by);
+    const leaders = db
+      .prepare("SELECT id FROM users WHERE is_active = 1 AND role IN ('manager', 'supervisor')")
+      .all() as { id: number }[];
+    for (const row of leaders) {
+      if (row.id !== params.actor.id) notifyIds.add(row.id);
+    }
+    const completerName =
+      (db.prepare('SELECT full_name FROM users WHERE id = ?').get(params.actor.id) as
+        | { full_name: string }
+        | undefined)?.full_name ?? 'a team member';
+    for (const userId of notifyIds) {
+      createNotification({
+        userId,
+        taskId: task.id,
+        type: 'task_completed',
+        title: 'Task completed',
+        message: `"${task.title}" was completed by ${completerName}.`,
+      });
+    }
 
     // ── Recurring series: spawn the NEXT occurrence, but ONLY here (on
     // completion), never up front — no endless tasks. The next task is linked
@@ -871,6 +1018,112 @@ export async function closeTask(params: {
   return { ok: true, taskId: task.id, nextTaskId };
 }
 
+// ────────────────────────── Cancel / reopen ──────────────────────────
+
+/**
+ * Manager/admin cancellation (spec: "cancelled requires manager/admin
+ * approval"). The manager/admin IS the approver — they cancel directly with a
+ * mandatory reason. Employees cannot cancel here; their path is the existing
+ * approved deletion workflow (request → manager/admin review).
+ */
+export function cancelTask(params: {
+  taskId: number;
+  actor: { id: number; role: Role };
+  reason: string;
+}): CancelResult {
+  const db = getDb();
+  const task = loadEditableTask(params.taskId);
+  if (!task) return { ok: false, error: 'Task not found.' };
+  if (isTaskReadOnly(task.status)) {
+    return { ok: false, error: 'This task is already completed or cancelled.' };
+  }
+  if (!hasRankAtLeast(params.actor.role, 'manager')) {
+    return { ok: false, error: 'Only managers and admins can cancel tasks.' };
+  }
+  const reason = params.reason.trim();
+  if (!reason) {
+    return { ok: false, error: 'A cancellation reason is required.' };
+  }
+  if (reason.length > MAX_REASON_LENGTH) {
+    return { ok: false, error: `Cancellation reason must be ${MAX_REASON_LENGTH} characters or fewer.` };
+  }
+
+  // Conditional update keeps the transition atomic (a concurrent close/cancel
+  // between check and write hits changes === 0 and nothing is overwritten).
+  const info = db
+    .prepare(
+      `UPDATE tasks
+       SET status = 'cancelled', cancelled_at = datetime('now'), cancelled_by = ?,
+           updated_at = datetime('now')
+       WHERE id = ? AND status NOT IN ('completed', 'cancelled')`,
+    )
+    .run(params.actor.id, task.id);
+  if (info.changes !== 1) {
+    return { ok: false, error: 'This task is already completed or cancelled.' };
+  }
+
+  logActivity({
+    taskId: task.id,
+    userId: params.actor.id,
+    action: Action.TASK_CANCELLED,
+    oldValue: statusLabel(task.status),
+    newValue: reason,
+  });
+  return { ok: true, message: `Task "${task.title}" cancelled.` };
+}
+
+/**
+ * Reopen a completed task — ADMIN/MANAGER ONLY (spec). Returns the task to
+ * In Progress (work resumes): clears completed_at/completed_by, unflags the
+ * completion comment back into the regular thread, and logs the reopen.
+ * started_at is kept (the task was genuinely started once).
+ */
+export function reopenTask(params: {
+  taskId: number;
+  actor: { id: number; role: Role };
+}): ReopenResult {
+  const db = getDb();
+  const task = loadEditableTask(params.taskId);
+  if (!task) return { ok: false, error: 'Task not found.' };
+  if (task.status !== 'completed') {
+    return { ok: false, error: 'Only completed tasks can be reopened.' };
+  }
+  if (!hasRankAtLeast(params.actor.role, 'manager')) {
+    return { ok: false, error: 'Only managers and admins can reopen completed tasks.' };
+  }
+
+  const tx = db.transaction(() => {
+    const info = db
+      .prepare(
+        `UPDATE tasks
+         SET status = 'in_progress', completed_at = NULL, completed_by = NULL,
+             completion_comment_id = NULL, updated_at = datetime('now')
+         WHERE id = ? AND status = 'completed'`,
+      )
+      .run(task.id);
+    if (info.changes !== 1) throw new Error('not completed');
+    db.prepare(
+      'UPDATE task_comments SET is_completion_comment = 0 WHERE task_id = ? AND is_completion_comment = 1',
+    ).run(task.id);
+    logActivity({
+      taskId: task.id,
+      userId: params.actor.id,
+      action: Action.TASK_REOPENED,
+      oldValue: 'completed',
+      newValue: 'in_progress',
+    });
+  });
+  try {
+    tx();
+  } catch (err) {
+    if (err instanceof Error && err.message === 'not completed') {
+      return { ok: false, error: 'Only completed tasks can be reopened.' };
+    }
+    throw err;
+  }
+  return { ok: true, message: `Task "${task.title}" reopened — it is In Progress again.` };
+}
+
 // ─────────────────────── Attachment upload ───────────────────────
 
 /**
@@ -887,8 +1140,14 @@ export async function uploadAttachment(params: {
   const task = loadEditableTask(params.taskId);
   if (!task) return { ok: false, error: 'Task not found.' };
 
-  if (task.status === 'completed') {
-    return { ok: false, error: 'This task is completed and is read-only for everyone.' };
+  if (isTaskReadOnly(task.status)) {
+    return {
+      ok: false,
+      error:
+        task.status === 'completed'
+          ? 'This task is completed and is read-only for everyone.'
+          : 'This task is cancelled and is read-only for everyone.',
+    };
   }
   if (!canEditTask(params.actor, task)) {
     return { ok: false, error: 'You do not have permission to edit this task.' };

@@ -42,6 +42,9 @@ export const POST: APIRoute = async (context) => {
   if (task.status === 'completed') {
     return json({ ok: false, error: 'This task is completed and is read-only.' }, 403);
   }
+  if (task.status === 'cancelled') {
+    return json({ ok: false, error: 'This task is cancelled and is read-only.' }, 403);
+  }
 
   const form = await context.request.formData();
   const parsed = parseFormData(commentSchema, form);

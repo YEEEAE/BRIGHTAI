@@ -33,7 +33,7 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const readOnly = taskStatus === 'completed';
+  const readOnly = taskStatus === 'completed' || taskStatus === 'cancelled';
 
   async function submit() {
     const body = text.trim();
@@ -77,7 +77,7 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
 
       {readOnly ? (
         <p className="mt-4 rounded-md bg-slate-100 px-4 py-3 text-sm text-slate-600">
-          This task is completed and read-only — commenting is disabled.
+          This task is {taskStatus === 'cancelled' ? 'cancelled' : 'completed'} and read-only — commenting is disabled.
         </p>
       ) : (
         <div className="mt-4">

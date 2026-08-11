@@ -254,7 +254,7 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
 
       {/* status legend */}
       <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
-        {['not_started', 'in_progress', 'on_hold', 'completed'].map((status, i) => {
+        {['not_started', 'in_progress', 'on_hold', 'completed', 'cancelled'].map((status, i) => {
           const slice = data[0]?.statuses.find((s) => s.status === status);
           return (
             <li key={status} className="flex items-center gap-1.5 text-xs text-slate-600">

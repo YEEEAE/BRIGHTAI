@@ -69,6 +69,7 @@ const STATUS_LABELS: Record<string, string> = {
   in_progress: 'In progress',
   on_hold: 'On hold',
   completed: 'Completed',
+  cancelled: 'Cancelled',
 };
 
 /** Human label for a task status code. Unknown codes fall back to the raw value. */
@@ -109,6 +110,7 @@ export const STATUS_EMOJI: Record<string, string> = {
   in_progress: '🟡',
   on_hold: '🟠',
   completed: '🟢',
+  cancelled: '⚫',
 };
 
 /** Tailwind pill classes per status (badge = soft tinted background). */
@@ -117,6 +119,7 @@ export const STATUS_BADGE: Record<string, string> = {
   in_progress: 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200',
   on_hold: 'bg-orange-50 text-orange-700 ring-1 ring-inset ring-orange-200',
   completed: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200',
+  cancelled: 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-300',
 };
 
 /** Tailwind pill classes per priority. */
@@ -165,12 +168,13 @@ export function localDateStr(d: Date = new Date()): string {
 }
 
 /**
- * Overdue = a due date strictly BEFORE today AND the task is not completed
- * (a task due today is not yet overdue — same rule as the dashboard).
+ * Overdue = a due date strictly BEFORE today AND the task is still active
+ * (completed and cancelled tasks are never overdue — same rule as the
+ * dashboard).
  */
 export function isOverdue(dueDate: string | null | undefined, status: string): boolean {
   if (!dueDate) return false;
-  if (status === 'completed') return false;
+  if (status === 'completed' || status === 'cancelled') return false;
   return dueDate < localDateStr();
 }
 
