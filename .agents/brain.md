@@ -4,10 +4,20 @@ project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
 last_updated: 2026-08-11 19:16 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.82
+version: 2.7.83
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-11 — QC-TEST-ACCEPTANCE-001: اختبارات وحدة وقبول E2E موحّدة لمدير مهام QC
+
+- **Files**: `apps/qc-task-manager/scripts/test.mjs` (تغطية صريحة للصلاحيات، whitelist الموظف، overdue، dependencies، uploads)، `scripts/test-db-rules.mjs` (جديد — lockout + notification creation مع SQLite مؤقت)، `scripts/e2e-acceptance.mjs` (جديد — orchestrator يعزل كل suite بقاعدة/منفذ)، `scripts/e2e-persistence.mjs` (جديد — upload ثم restart ثم download)، `scripts/e2e-auth-lockout.mjs` (إضافة login/logout)، `scripts/e2e-task-shared.mjs` (authorized/unauthorized attachment download)، `scripts/test-ts-loader-hook.mjs` (دعم `?raw` لملفات SQL في اختبارات Node)، `apps/qc-task-manager/package.json`، `apps/qc-task-manager/docs/ACCEPTANCE-CHECKLIST.md`، `apps/qc-task-manager/README.md`، `docs/superpowers/plans/2026-08-11-qc-test-acceptance.md`
+- **What**: أضفت `test:domain` + `test:db-rules` تحت `pnpm test`، مع assertions واضحة لكل قواعد الوحدة المطلوبة (permission checks، employee field whitelist، status transitions، overdue، recurrence، dependency guards، upload/evidence validation، login lockout، notification creation). أضفت `e2e:acceptance` يبني QC ثم يشغّل admin users/auth/task/delete/dashboard/backup، ويضيف فحص استمرار BLOB بعد restart. أضفت checklist تشغيلية تغطي كل acceptance criteria وتربطها بالأوامر والنتائج المتوقعة.
+- **Why**: كانت التغطية موجودة موزعة في smoke/E2E scripts لكن بدون بوابة واحدة وقائمة قبول مرجعية، وبعض البنود المطلوبة (logout، attachment authorization، restart persistence، lockout/notification كاختبارات DB-backed) ما كانت assertions مستقلة.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **237 domain checks / 0 failures** + DB-backed lockout/notification checks ✅؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 11 existing hints** ✅؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → Server built ✅؛ `node --check` لكل scripts الجديدة ✅. `e2e:acceptance` build نجح، لكن تشغيل الخوادم المحلية توقف بيئيًا عند `listen EPERM` على `127.0.0.1:4500` داخل sandbox؛ طلب escalation رُفض آليًا بسبب سعة نموذج المراجعة، لذلك live E2E **blocked — غير محسوب PASS**.
+- **Notes**: `scripts/test-ts-loader-hook.mjs` صار يحوّل imports من نوع `*.sql?raw` إلى ESM text module، عشان `taskUpdates.ts` ينختبر فعليًا بدون نسخ validator. `audit/qc/prompt2.md` كان dirty مسبقًا وتُرك كما هو. لا commit ولا push.
+- **Status**: unit/typecheck/build verified locally؛ live acceptance runner جاهز لكن يحتاج تشغيلًا خارج sandbox/بصلاحية bind محلية.
+
 
 ### 2026-08-11 — QC-SECURITY-PASS-001: تمرير أمني شامل لمدير مهام QC
 

@@ -332,7 +332,10 @@ apps/qc-task-manager/
 │   ├── e2e-dashboard.mjs
 │   ├── e2e-auth-lockout.mjs
 │   ├── e2e-admin-users.mjs # /admin/users: CRUD, guards, Zod, last login
-│   └── e2e-task-shared.mjs # full task model: fields, roles, deps, recurring + status lifecycle + notifications (193)
+│   ├── e2e-acceptance.mjs  # isolated runner for the complete E2E acceptance surface
+│   ├── e2e-task-shared.mjs # full task model: fields, roles, deps, recurring + status lifecycle + notifications (193)
+│   ├── test-db-rules.mjs   # DB-backed lockout + notification unit checks
+│   └── test.mjs            # domain/unit smoke suite
 ├── src/
 │   ├── middleware.ts       # auth + role guards + security headers + login/new-task POSTs
 │   ├── layouts/BaseLayout.astro
@@ -702,7 +705,8 @@ Overdue tasks show their due date in **red** (lists, details, dashboard).
 | `start` | `node ./dist/server/entry.mjs` |
 | `preview` | `astro preview` |
 | `typecheck` | `astro check` |
-| `test` | Fast, server-less checks: spec structure + Zod/task-policy/CSV/backup unit smoke (`scripts/test.mjs`) |
+| `test` | Domain and DB-backed unit checks: structure, validation, policy, permissions, overdue, recurrence, dependencies, uploads, lockout, notifications, CSV, backup, and migrations |
+| `e2e:acceptance` | Build QC and run every live acceptance suite against isolated temporary SQLite DBs and ports |
 | `db:init` | Apply schema + seed roles |
 | `db:reset` | Wipe + re-init (`--reset`) |
 | `db:seed` | Same as `db:init` (alias for the spec name) |
@@ -721,6 +725,17 @@ output directory. The same routine is exposed programmatically in
 `src/lib/backup.ts` (`createBackup`).
 
 ### E2E scripts
+
+For the complete release gate, run the isolated orchestrator:
+
+```bash
+pnpm --filter @brightai/qc-task-manager e2e:acceptance
+```
+
+It runs admin users, authentication/logout + lockout, the shared task model,
+deletion requests, dashboard access/data, and backup integrity. The full
+manual sign-off matrix is in
+[`docs/ACCEPTANCE-CHECKLIST.md`](./docs/ACCEPTANCE-CHECKLIST.md).
 
 ```bash
 # delete-request workflow (39 assertions) — run from the app directory:

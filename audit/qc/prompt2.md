@@ -3,59 +3,6 @@
 هذه النسخة التنفيذية المصححة، وتلغي التعارضات الموجودة في الملفات القديمة: الـ Dashboard متاح لـ **admin + manager + supervisor**، الموظف يغلق المهمة مباشرة، والمهمة المكتملة تصبح Read-only مع إمكانية إعادة فتحها فقط للـ admin/manager.
 * * *
 
-
-
-* * *
-
-# PROMPT 17: Testing and Acceptance
-
-```text
-Add automated tests and an end-to-end acceptance checklist.
-
-Unit tests:
-- permission checks
-- employee field whitelist
-- status transitions
-- overdue calculation
-- recurrence calculation
-- dependency blocking
-- upload validation
-- login lockout
-- notification creation
-
-Integration tests:
-- login/logout
-- create user
-- create task
-- assign task
-- employee updates progress
-- employee cannot change title
-- employee cannot delete
-- deletion request workflow
-- completion with evidence
-- completion with skipped evidence
-- completion without comment is rejected
-- completed task is read-only
-- manager reopens completed task
-- dashboard blocked for employee
-- attachment download authorization
-
-Acceptance criteria:
-- pnpm install works from repository root
-- existing BRIGHTAI app still works
-- QC app starts independently
-- database is generated automatically
-- SQLTools can browse the database
-- all roles can log in
-- dashboard is inaccessible to employees
-- uploaded evidence survives server restart
-- activity history records all critical actions
-- no unauthorized employee field update succeeds
-- recurring task creates the next task correctly
-- overdue tasks appear correctly
-- backup command creates a valid SQLite backup
-```
-
 * * *
 
 # PROMPT 18: Deployment and Documentation

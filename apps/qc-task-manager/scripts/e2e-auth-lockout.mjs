@@ -124,6 +124,15 @@ try {
   ok(!!aUser.last_login_at, 'A. last_login_at recorded on success');
   ok(Number(aUser.failed_login_attempts) === 0, 'A. failed_login_attempts reset to 0');
 
+  // Login/logout integration contract: logout is a CSRF-protected POST that
+  // destroys the server-side session and clears the browser cookie.
+  const logout = await ctx.request.post(`${BASE}/logout`, {
+    headers: CSRF_HEADERS,
+    maxRedirects: 0,
+  });
+  ok(logout.status() === 302 && logout.headers()['location'] === '/login', 'A. logout redirects to /login');
+  ok(!q('SELECT 1 FROM sessions WHERE token = ?', aToken), 'A. logout destroys the server-side session');
+
   // ─────────────── B. Generic invalid credentials ───────────────
   console.log('── Scenario B: wrong password → generic message ──');
   const b = await postLogin('employee', 'wrong-password');

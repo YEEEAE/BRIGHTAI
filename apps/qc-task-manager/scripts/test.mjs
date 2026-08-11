@@ -61,6 +61,15 @@ import {
   normalizeOptionalMetadata,
 } from '../src/lib/task-policy.ts';
 import { nextDueDate, shouldCreateNextOccurrence } from '../src/lib/recurrence.ts';
+import { isOverdue, localDateStr } from '../src/lib/format.ts';
+import {
+  PERMISSIONS,
+  canEditTask,
+  canEditLockedField,
+  isFieldEditableForRole,
+} from '../src/lib/permissions.ts';
+import { validateDependencies } from '../src/lib/tasks.ts';
+import { validateEvidenceFile, validateUploadedFile } from '../src/lib/taskUpdates.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
 import {
   parseTaskSearchFilters,
@@ -375,6 +384,42 @@ ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', rec
 ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', recurrenceEndDate: '2026-08-18' }) === true, 'recurrence: next date within end date');
 ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', recurrenceEndDate: '2026-08-17' }) === false, 'recurrence: next date past end date → stop');
 ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', recurrenceEndDate: '2026-08-18' }) === true, 'recurrence: end date is inclusive');
+
+// ── 4c. Explicit acceptance-unit coverage ──
+section('Acceptance unit coverage');
+
+// Permission checks and employee field whitelist.
+ok(PERMISSIONS.canViewDashboard('employee') === false, 'permissions: employee dashboard denied');
+ok(PERMISSIONS.canViewDashboard('manager') === true, 'permissions: manager dashboard allowed');
+ok(PERMISSIONS.canManageUsers('admin') === true && PERMISSIONS.canManageUsers('manager') === false, 'permissions: user management is admin-only');
+ok(canEditLockedField('supervisor') && !canEditLockedField('employee'), 'permissions: supervisor can edit locked fields, employee cannot');
+ok(isFieldEditableForRole('employee', 'status') && !isFieldEditableForRole('employee', 'title'), 'permissions: employee field whitelist is enforced');
+ok(canEditTask({ id: 7, role: 'employee' }, { status: 'in_progress', created_by: 1, assigned_to: 7 }), 'permissions: employee can edit assigned active task');
+ok(!canEditTask({ id: 7, role: 'employee' }, { status: 'in_progress', created_by: 1, assigned_to: 8 }), 'permissions: employee cannot edit unrelated task');
+ok(!canEditTask({ id: 7, role: 'employee' }, { status: 'completed', created_by: 1, assigned_to: 7 }), 'permissions: completed task is read-only');
+
+// Overdue calculation is strict (before today) and excludes terminal states.
+const today = new Date();
+const todayKey = localDateStr(today);
+const yesterdayKey = localDateStr(new Date(today.getTime() - 86_400_000));
+const tomorrowKey = localDateStr(new Date(today.getTime() + 86_400_000));
+ok(isOverdue(yesterdayKey, 'in_progress') === true, 'overdue: active task due yesterday is overdue');
+ok(isOverdue(todayKey, 'in_progress') === false && isOverdue(tomorrowKey, 'in_progress') === false, 'overdue: today and future are not overdue');
+ok(isOverdue(yesterdayKey, 'completed') === false && isOverdue(yesterdayKey, 'cancelled') === false, 'overdue: terminal tasks are never overdue');
+
+// Dependency validation covers self/cap guards without needing a live server.
+ok(validateDependencies([], null).ok === true, 'dependencies: empty list is valid');
+ok(validateDependencies(Array.from({ length: 21 }, (_, i) => i + 1), null).ok === false, 'dependencies: maximum count enforced');
+ok(validateDependencies([9], 9).ok === false, 'dependencies: self-dependency rejected');
+
+// Upload validation checks extension, MIME, size, and evidence magic bytes.
+const validPdf = new File([Buffer.from('%PDF-1.7\n')], 'evidence.pdf', { type: 'application/pdf' });
+const validUpload = validateUploadedFile(validPdf);
+ok(validUpload.ok && validUpload.fileName === 'evidence.pdf', 'uploads: valid PDF passes extension + MIME validation');
+ok(!validateUploadedFile(new File([Buffer.from('MZ')], 'malware.exe', { type: 'application/octet-stream' })).ok, 'uploads: executable extension rejected');
+ok(!validateUploadedFile(new File([Buffer.from('text')], 'report.pdf', { type: 'text/plain' })).ok, 'uploads: mismatched MIME rejected');
+ok(validateEvidenceFile(validPdf, Buffer.from('%PDF-1.7\n')).ok, 'uploads: evidence PDF magic bytes accepted');
+ok(!validateEvidenceFile(validPdf, Buffer.from('not a PDF')).ok, 'uploads: fake PDF magic bytes rejected');
 
 // ── 4. CSV export (pure) ──
 section('CSV export (src/lib/export.ts)');

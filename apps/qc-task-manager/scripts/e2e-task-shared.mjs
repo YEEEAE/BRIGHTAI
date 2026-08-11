@@ -669,6 +669,19 @@ try {
   ok(evActs.filter((a) => a.action === 'evidence_uploaded').length === 2, '9c. evidence_uploaded logged per file');
   ok(!evActs.some((a) => a.action === 'evidence_skipped'), '9c. no evidence_skipped when files uploaded');
 
+  // Attachment download authorization: the assignee receives the original
+  // bytes, while an unrelated employee cannot use the same attachment id.
+  const reportAttachment = q("SELECT id FROM task_attachments WHERE task_id = ? AND file_name = 'report.pdf'", evTaskId);
+  const authorizedDownload = await empCtx.request.get(
+    `${BASE}/api/tasks/${evTaskId}/attachments/${reportAttachment.id}`,
+  );
+  ok(authorizedDownload.status() === 200, '9c. authorized assignee can download evidence');
+  eq(Buffer.from(await authorizedDownload.body()), pdfBuf, '9c. authorized download returns original evidence bytes');
+  const unauthorizedDownload = await empCtx2.request.get(
+    `${BASE}/api/tasks/${evTaskId}/attachments/${reportAttachment.id}`,
+  );
+  ok([403, 404].includes(unauthorizedDownload.status()), '9c. unrelated employee cannot download evidence');
+
   // 9c2. Cancelling the wizard BEFORE confirmation saves NOTHING (spec): no
   // status change, no temporary evidence, no completion comment.
   const cancelWizId = Number(

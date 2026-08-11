@@ -6,7 +6,7 @@
  * by URL.
  */
 
-import { existsSync, statSync } from "node:fs";
+import { existsSync, statSync, readFileSync } from "node:fs";
 import { dirname, resolve as pathResolve, join } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -22,6 +22,17 @@ export async function resolve(specifier, context, nextResolve) {
   const parentURL = context.parentURL;
   if (!parentURL) {
     return nextResolve(specifier, context);
+  }
+
+  // Astro source modules may import text assets as `?raw` (the QC DB layer
+  // bundles schema.sql this way). Node's default ESM loader does not know how
+  // to resolve that asset in server-less unit tests, so map it to the file URL
+  // and let load() turn it into a tiny ESM module.
+  if (specifier.endsWith('.sql?raw')) {
+    const targetPath = pathResolve(dirname(new URL(parentURL).pathname), specifier.slice(0, -4));
+    if (existsSync(targetPath) && statSync(targetPath).isFile()) {
+      return { url: pathToFileURL(targetPath).href + '?raw', shortCircuit: true };
+    }
   }
 
   const parentPath = dirname(new URL(parentURL).pathname);
@@ -55,4 +66,13 @@ export async function resolve(specifier, context, nextResolve) {
   }
 
   return nextResolve(specifier, context);
+}
+
+export async function load(url, context, nextLoad) {
+  const parsed = new URL(url);
+  if (parsed.search === '?raw' && parsed.pathname.endsWith('.sql')) {
+    const source = `export default ${JSON.stringify(readFileSync(parsed, 'utf8'))};`;
+    return { format: 'module', source, shortCircuit: true };
+  }
+  return nextLoad(url, context);
 }
