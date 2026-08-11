@@ -11,13 +11,14 @@
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
-    "db:init": "node scripts/init-db.mjs",
-    "db:reset": "node scripts/init-db.mjs --reset",
+    "db:init": "node --experimental-strip-types scripts/init-db.mjs",
+    "db:reset": "node --experimental-strip-types scripts/init-db.mjs --reset",
     "db:seed": "node scripts/init-db.mjs",
     "db:backup": "node --experimental-strip-types scripts/backup-db.mjs",
+    "test:migrations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-migrations.mjs",
     "test:domain": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs",
     "test:db-rules": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-db-rules.mjs",
-    "test": "pnpm test:domain && pnpm test:db-rules",
+    "test": "pnpm test:migrations && pnpm test:domain && pnpm test:db-rules",
     "e2e:acceptance": "NODE_ENV=production pnpm build && node scripts/e2e-acceptance.mjs"
   },
   "dependencies": {

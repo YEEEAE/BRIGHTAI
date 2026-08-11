@@ -4,10 +4,19 @@ project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
 last_updated: 2026-08-11 21:39 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.84
+version: 2.7.85
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-11 — QC-DATABASE-MIGRATIONS-001: sequential SQLite migration architecture
+
+- **Files**: `apps/qc-task-manager/db/migrations/001_initial.sql`, `002_legacy_schema_reconciliation.sql`, `src/lib/migrations.ts`, `src/lib/db.ts`, `scripts/init-db.mjs`, `scripts/test-migrations.mjs`, `scripts/test.mjs`, `package.json`, `db/schema.sql`, `docs/DATABASE.md`, `docs/MIGRATIONS.md`, `docs/superpowers/specs/2026-08-11-qc-database-migrations-design.md`, `docs/superpowers/plans/2026-08-11-qc-database-migrations.md`.
+- **What**: استبدلت migrations المخفية داخل `db.ts` و`init-db.mjs` بمحرك sequential migrations حقيقي. أنشأ المحرك `schema_migrations` و`schema_migration_failures`، يحسب SHA-256 checksum، يمنع إعادة التطبيق وتغيير migration مطبقة، يسجل الفشل مع rollback، يتحقق من foreign keys ونسخة schema عند startup، ويرفض SQL destructive غير المصرح به. migration 002 تعالج قواعد legacy بشكل additive وتعيد بناء `task_delete_requests` بأمان، مع backup قبل migration المصنفة destructive. `schema.sql` صار reference snapshot فقط.
+- **Compatibility**: اختبارات fresh/existing/upgrade/repeated/failure-recovery/data preservation/FK/version/checksum/destructive guard كلها ضمن `test:migrations`; اختبار init-db القديم حدّث ليتحقق من 14 جدولًا (12 تطبيق + 2 metadata) وschema version 2.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **238 passed / 0 failed** + DB lockout/notification checks ✅؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 11 hints** ✅؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built** ✅؛ root `pnpm typecheck` → workspace pass (QC 0 errors / 11 hints) ✅؛ root `pnpm test` → **16 + 29 + 38 tests passed** ✅؛ root `pnpm build` → **Completed / Server built** ✅؛ `git diff --check` ✅.
+- **Notes**: الـ working tree كان فيه تغييرات مسبقة `audit/qc/prompt3.md` و`MASTER-BASELINE-AUDIT.md` untracked؛ ما لمستها. لا commit ولا push.
+- **Status**: verified locally; migration architecture مكتملة وجاهزة للمراجعة.
 
 ### 2026-08-11 — QC-PROMPT3-FORMAT-001: تحسين تنسيق prompt3.md بدون تغيير المحتوى
 

@@ -1,9 +1,9 @@
 -- QC Task Manager — production database schema (SQLite).
 --
--- Applied on every boot (src/lib/db.ts + scripts/init-db.mjs); every statement
--- uses IF NOT EXISTS so the file is idempotent. Existing databases are upgraded
--- to this shape by the migrations in src/lib/db.ts, which run BEFORE this file
--- on boot (they add the new columns so the indexes below resolve).
+-- The executable schema history lives in db/migrations/. This file is retained
+-- for SQLTools/manual inspection and compatibility, but it is not used to
+-- decide or record schema history. Application startup and db:init use the
+-- sequential migration runner instead.
 --
 -- Referential-integrity policy:
 --   * ON DELETE CASCADE  — child records whose life is tied to the parent

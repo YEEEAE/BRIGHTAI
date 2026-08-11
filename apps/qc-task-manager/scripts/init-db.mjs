@@ -1,22 +1,20 @@
 // Initialize the QC Task Manager SQLite database.
 // Run: `pnpm db:init` (or `pnpm db:reset` to wipe first).
 //
-// Applies db/schema.sql then seeds one account per role (admin, manager,
-// supervisor, employee) with REAL bcrypt hashes generated at runtime (so
-// passwords are never stored as stale literals). The same bootstrap also
-// happens automatically on dev-server startup via src/lib/db.ts + src/lib/seed.ts;
-// this script exists for explicit / CI use.
+// Applies the same sequential migrations and seeds one account per role. The
+// bootstrap also happens automatically on application startup; this script is
+// the explicit/CI entry point.
 
 import Database from 'better-sqlite3';
 import bcrypt from 'bcryptjs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mkdirSync, readFileSync, existsSync, rmSync } from 'node:fs';
+import { mkdirSync, existsSync, rmSync } from 'node:fs';
+import { runMigrations } from '../src/lib/migrations.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_DIR = resolve(__dirname, '../db');
 const DB_PATH = process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
-const SCHEMA_PATH = resolve(DB_DIR, 'schema.sql');
 
 const RESET = process.argv.includes('--reset');
 const SEED_DEMO = process.env.SEED_DEMO === '1';
@@ -34,118 +32,6 @@ const SEED_USERS = [
 
 function ensureDir() {
   if (!existsSync(DB_DIR)) mkdirSync(DB_DIR, { recursive: true });
-}
-
-// ── Existing-database migrations ─────────────────────────────────────────
-// schema.sql uses CREATE TABLE IF NOT EXISTS, so a database created by an
-// OLDER schema keeps its old shape forever — including missing columns that
-// the new indexes reference (e.g. tasks.recurrence → idx_tasks_recurrence,
-// which fails with "no such column" when schema.sql runs on an un-migrated
-// DB). The app migrates existing databases on every boot (src/lib/db.ts);
-// this CLI mirrors that logic so `pnpm db:init` upgrades existing databases
-// instead of erroring out. Keep this list in sync with src/lib/db.ts
-// (COLUMN_MIGRATIONS).
-
-const COLUMN_MIGRATIONS = [
-  { table: 'users', column: 'failed_login_attempts', ddl: 'ALTER TABLE users ADD COLUMN failed_login_attempts INTEGER NOT NULL DEFAULT 0' },
-  { table: 'users', column: 'locked_until', ddl: 'ALTER TABLE users ADD COLUMN locked_until TEXT' },
-  { table: 'users', column: 'last_login_at', ddl: 'ALTER TABLE users ADD COLUMN last_login_at TEXT' },
-  { table: 'users', column: 'created_by', ddl: 'ALTER TABLE users ADD COLUMN created_by INTEGER REFERENCES users(id) ON DELETE SET NULL' },
-  { table: 'users', column: 'updated_at', ddl: 'ALTER TABLE users ADD COLUMN updated_at TEXT' },
-  { table: 'tasks', column: 'department', ddl: "ALTER TABLE tasks ADD COLUMN department TEXT NOT NULL DEFAULT 'QC'" },
-  { table: 'tasks', column: 'recurrence', ddl: "ALTER TABLE tasks ADD COLUMN recurrence TEXT NOT NULL DEFAULT 'none'" },
-  { table: 'tasks', column: 'recurrence_end_date', ddl: 'ALTER TABLE tasks ADD COLUMN recurrence_end_date TEXT' },
-  { table: 'tasks', column: 'parent_recurring_task_id', ddl: 'ALTER TABLE tasks ADD COLUMN parent_recurring_task_id INTEGER REFERENCES tasks(id) ON DELETE SET NULL' },
-  { table: 'tasks', column: 'started_at', ddl: 'ALTER TABLE tasks ADD COLUMN started_at TEXT' },
-  { table: 'tasks', column: 'cancelled_at', ddl: 'ALTER TABLE tasks ADD COLUMN cancelled_at TEXT' },
-  { table: 'tasks', column: 'cancelled_by', ddl: 'ALTER TABLE tasks ADD COLUMN cancelled_by INTEGER REFERENCES users(id) ON DELETE SET NULL' },
-  { table: 'tasks', column: 'completion_comment_id', ddl: 'ALTER TABLE tasks ADD COLUMN completion_comment_id INTEGER' },
-  { table: 'task_comments', column: 'is_completion_comment', ddl: 'ALTER TABLE task_comments ADD COLUMN is_completion_comment INTEGER NOT NULL DEFAULT 0' },
-  { table: 'task_attachments', column: 'file_hash', ddl: 'ALTER TABLE task_attachments ADD COLUMN file_hash TEXT' },
-  { table: 'task_attachments', column: 'is_evidence', ddl: 'ALTER TABLE task_attachments ADD COLUMN is_evidence INTEGER NOT NULL DEFAULT 0' },
-  { table: 'task_activity_log', column: 'field', ddl: 'ALTER TABLE task_activity_log ADD COLUMN field TEXT' },
-  { table: 'task_activity_log', column: 'note', ddl: 'ALTER TABLE task_activity_log ADD COLUMN note TEXT' },
-  { table: 'task_activity_log', column: 'ip_address', ddl: 'ALTER TABLE task_activity_log ADD COLUMN ip_address TEXT' },
-  { table: 'task_delete_requests', column: 'review_note', ddl: 'ALTER TABLE task_delete_requests ADD COLUMN review_note TEXT' },
-];
-
-/**
- * Upgrade a pre-spec database before applying schema.sql: add missing columns
- * (ALTER ADD COLUMN), backfill users.updated_at, and rebuild the legacy
- * task_delete_requests shape into the spec CASCADE shape. Fresh databases have
- * no tables yet — everything is a no-op and schema.sql builds the full shape.
- */
-function migrateExistingDb(db) {
-  const byTable = new Map();
-  for (const m of COLUMN_MIGRATIONS) {
-    const list = byTable.get(m.table) ?? [];
-    list.push(m);
-    byTable.set(m.table, list);
-  }
-
-  let added = 0;
-  for (const [table, columns] of byTable) {
-    const exists = db
-      .prepare("SELECT 1 AS one FROM sqlite_master WHERE type = 'table' AND name = ?")
-      .get(table);
-    if (!exists) continue; // fresh database — schema.sql creates the full shape
-    const existing = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));
-    for (const m of columns) {
-      if (existing.has(m.column)) continue;
-      db.exec(m.ddl);
-      added += 1;
-    }
-  }
-
-  // updated_at (added nullable above) mirrors created_at for existing rows.
-  const userCols = new Set(db.prepare('PRAGMA table_info(users)').all().map((c) => c.name));
-  if (userCols.has('updated_at') && userCols.has('created_at')) {
-    db.prepare(
-      'UPDATE users SET updated_at = created_at WHERE updated_at IS NULL AND created_at IS NOT NULL',
-    ).run();
-  }
-
-  // Legacy task_delete_requests (task_title snapshot, no cascade) → spec shape.
-  const delReqCols = db.prepare('PRAGMA table_info(task_delete_requests)').all().map((c) => c.name);
-  if (delReqCols.length > 0 && delReqCols.includes('task_title')) {
-    db.transaction(() => {
-      db.prepare(
-        'DELETE FROM task_delete_requests WHERE task_id NOT IN (SELECT id FROM tasks)',
-      ).run();
-      db.exec(`
-        CREATE TABLE task_delete_requests_new (
-          id           INTEGER PRIMARY KEY AUTOINCREMENT,
-          task_id      INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
-          requested_by INTEGER NOT NULL REFERENCES users(id),
-          reason       TEXT,
-          review_note  TEXT,
-          status       TEXT NOT NULL DEFAULT 'pending'
-                         CHECK (status IN ('pending', 'approved', 'rejected')),
-          reviewed_by  INTEGER REFERENCES users(id),
-          reviewed_at  TEXT,
-          created_at   TEXT NOT NULL DEFAULT (datetime('now'))
-        );
-        INSERT INTO task_delete_requests_new
-          (id, task_id, requested_by, reason, status, reviewed_by, reviewed_at, created_at)
-          SELECT id, task_id, requested_by, reason, status, reviewed_by, reviewed_at, created_at
-          FROM task_delete_requests;
-        DROP TABLE task_delete_requests;
-        ALTER TABLE task_delete_requests_new RENAME TO task_delete_requests;
-      `);
-      db.exec(`
-        CREATE UNIQUE INDEX IF NOT EXISTS idx_delreq_one_pending
-          ON task_delete_requests(task_id) WHERE status = 'pending';
-      `);
-    })();
-    console.warn('[init-db] migrated task_delete_requests (spec shape: CASCADE, no task_title snapshot).');
-  }
-
-  if (added > 0) console.warn(`[init-db] migrated ${added} new column(s) onto existing tables.`);
-}
-
-function applySchema(db) {
-  const sql = readFileSync(SCHEMA_PATH, 'utf8');
-  db.exec(sql);
 }
 
 function seedUsersIfEmpty(db) {
@@ -306,10 +192,9 @@ function main() {
   db.pragma('busy_timeout = 5000');
   db.pragma('synchronous = NORMAL');
 
-  // Upgrade existing databases FIRST — schema.sql's CREATE INDEX statements
-  // reference columns that old databases don't have yet (e.g. recurrence).
-  migrateExistingDb(db);
-  applySchema(db);
+  // Use the same migration runner as application startup.
+  const migrationResult = runMigrations(db, { backup: true, backupDir: process.env.QC_BACKUP_DIR || resolve(DB_DIR, 'backups') });
+  console.log(`[init-db] schema version ${migrationResult.currentVersion}; applied ${migrationResult.applied.length} migration(s).`);
   seedUsersIfEmpty(db);
   seedDemo(db);
 

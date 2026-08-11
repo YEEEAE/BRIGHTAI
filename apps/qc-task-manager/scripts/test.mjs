@@ -726,7 +726,7 @@ try {
   // Migration warnings go to stderr (console.warn); logs to stdout.
   const combined = `${run.stdout ?? ''}${run.stderr ?? ''}`;
   ok(/migrated .* column\(s\)/.test(combined), 'init-db: reports migrated columns');
-  ok(/task_delete_requests \(spec shape/.test(combined), 'init-db: rebuilds legacy task_delete_requests');
+  ok(/rebuilt legacy task_delete_requests/.test(combined), 'init-db: rebuilds legacy task_delete_requests');
   ok(/users table already has 1 row/.test(combined), 'init-db: keeps existing rows (seed skipped)');
 
   const check = new Database(legacyPath, { readonly: true });
@@ -743,7 +743,9 @@ try {
   const users = check.prepare('SELECT COUNT(*) AS n FROM users').get().n;
   ok(users === 1, 'init-db: user data preserved (1 row)');
   const tables = check.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all().map((r) => r.name);
-  ok(tables.length === 12, `init-db: full 12-table schema applied (got ${tables.length})`);
+  ok(tables.length === 14, `init-db: application + migration metadata tables applied (got ${tables.length})`);
+  const migrationVersion = check.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version;
+  ok(migrationVersion === 2, 'init-db: schema version recorded as 2');
   const fk = check.prepare('PRAGMA foreign_key_check').all();
   ok(fk.length === 0, 'init-db: no foreign-key violations after migration');
   check.close();

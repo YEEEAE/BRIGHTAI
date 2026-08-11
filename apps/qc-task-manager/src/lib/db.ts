@@ -7,16 +7,16 @@
 //      <app>/db/qc_tasks.db.
 //   2. Enable WAL mode, `foreign_keys = ON`, `busy_timeout = 5000` and
 //      `synchronous = NORMAL` on every connection.
-//   3. Apply db/schema.sql on every boot (idempotent — CREATE TABLE IF NOT
-//      EXISTS), then validate that every required table and index exists.
+//   3. Apply db/migrations/ sequentially on startup, then validate the final
+//      schema, migration version, and foreign-key integrity.
 //   4. Seed accounts when the users table is empty (see src/lib/seed.ts).
 //   5. Expose `db` (lazy singleton), a typed `query` helper, a `transaction`
 //      helper and a `closeDatabase` helper for tests.
 //
 // Every SQL statement in this app goes through prepared statements
 // (`db.prepare(...)` with `?`/named params) — user input is NEVER concatenated
-// into SQL. The only raw `db.exec` calls here run static DDL (schema.sql and
-// fixed migration statements), never data.
+// into SQL. Migration DDL is isolated in the migration runner and is never
+// built from user input.
 //
 // Schema application + seeding happen once per process (guarded by a flag),
 // so repeated getDb() calls are cheap.
@@ -29,11 +29,9 @@ import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 import { seedDemoData, seedUsersIfEmpty } from './seed';
 import { startBackupScheduler } from './backup-scheduler';
 import { backupDirectoryForDatabase } from './backup';
-// Bundle the schema into the build so it resolves from BOTH the dev server
-// (src/) and the standalone production entry (dist/server/chunks). A runtime
-// readFileSync of '../../db/schema.sql' only works in dev — the built bundle
-// lives two levels deeper and would look in dist/db/.
-import schemaSql from '../../db/schema.sql?raw';
+import { runMigrations } from './migrations';
+import initialMigrationSql from '../../db/migrations/001_initial.sql?raw';
+import legacyMigrationSql from '../../db/migrations/002_legacy_schema_reconciliation.sql?raw';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -58,148 +56,15 @@ function ensureDir(): void {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 }
 
-/**
- * Upgrade pre-spec databases to the 12-table production schema.
- *
- * schema.sql uses `CREATE TABLE IF NOT EXISTS`, so existing databases keep
- * their old shapes forever unless we migrate them here. This runs BEFORE
- * schema.sql on boot: new columns must exist before the new indexes are
- * created, and on a fresh database every table is missing so it is a no-op
- * (schema.sql then builds the full shape from scratch).
- */
-const COLUMN_MIGRATIONS: { table: string; column: string; ddl: string }[] = [
-  // users
-  { table: 'users', column: 'failed_login_attempts', ddl: 'ALTER TABLE users ADD COLUMN failed_login_attempts INTEGER NOT NULL DEFAULT 0' },
-  { table: 'users', column: 'locked_until', ddl: 'ALTER TABLE users ADD COLUMN locked_until TEXT' },
-  { table: 'users', column: 'last_login_at', ddl: 'ALTER TABLE users ADD COLUMN last_login_at TEXT' },
-  { table: 'users', column: 'created_by', ddl: 'ALTER TABLE users ADD COLUMN created_by INTEGER REFERENCES users(id) ON DELETE SET NULL' },
-  // ALTER ADD COLUMN forbids expression defaults, so updated_at is added
-  // nullable then backfilled from created_at (schema.sql keeps the NOT NULL
-  // DEFAULT datetime('now') shape for fresh databases).
-  { table: 'users', column: 'updated_at', ddl: 'ALTER TABLE users ADD COLUMN updated_at TEXT' },
-  // tasks
-  { table: 'tasks', column: 'department', ddl: "ALTER TABLE tasks ADD COLUMN department TEXT NOT NULL DEFAULT 'QC'" },
-  { table: 'tasks', column: 'recurrence', ddl: "ALTER TABLE tasks ADD COLUMN recurrence TEXT NOT NULL DEFAULT 'none'" },
-  { table: 'tasks', column: 'recurrence_end_date', ddl: 'ALTER TABLE tasks ADD COLUMN recurrence_end_date TEXT' },
-  { table: 'tasks', column: 'parent_recurring_task_id', ddl: 'ALTER TABLE tasks ADD COLUMN parent_recurring_task_id INTEGER REFERENCES tasks(id) ON DELETE SET NULL' },
-  { table: 'tasks', column: 'started_at', ddl: 'ALTER TABLE tasks ADD COLUMN started_at TEXT' },
-  { table: 'tasks', column: 'cancelled_at', ddl: 'ALTER TABLE tasks ADD COLUMN cancelled_at TEXT' },
-  { table: 'tasks', column: 'cancelled_by', ddl: 'ALTER TABLE tasks ADD COLUMN cancelled_by INTEGER REFERENCES users(id) ON DELETE SET NULL' },
-  { table: 'tasks', column: 'completion_comment_id', ddl: 'ALTER TABLE tasks ADD COLUMN completion_comment_id INTEGER' },
-  { table: 'tasks', column: 'inspection_type', ddl: 'ALTER TABLE tasks ADD COLUMN inspection_type TEXT' },
-  { table: 'tasks', column: 'finding_classification', ddl: 'ALTER TABLE tasks ADD COLUMN finding_classification TEXT' },
-  { table: 'tasks', column: 'risk_level', ddl: 'ALTER TABLE tasks ADD COLUMN risk_level TEXT' },
-  { table: 'tasks', column: 'corrective_action_required', ddl: 'ALTER TABLE tasks ADD COLUMN corrective_action_required INTEGER' },
-  { table: 'tasks', column: 'reference_number', ddl: 'ALTER TABLE tasks ADD COLUMN reference_number TEXT' },
-  { table: 'tasks', column: 'audit_batch_or_work_order', ddl: 'ALTER TABLE tasks ADD COLUMN audit_batch_or_work_order TEXT' },
-  // task_comments
-  { table: 'task_comments', column: 'is_completion_comment', ddl: 'ALTER TABLE task_comments ADD COLUMN is_completion_comment INTEGER NOT NULL DEFAULT 0' },
-  // task_attachments
-  { table: 'task_attachments', column: 'file_hash', ddl: 'ALTER TABLE task_attachments ADD COLUMN file_hash TEXT' },
-  { table: 'task_attachments', column: 'is_evidence', ddl: 'ALTER TABLE task_attachments ADD COLUMN is_evidence INTEGER NOT NULL DEFAULT 0' },
-  // task_activity_log
-  { table: 'task_activity_log', column: 'field', ddl: 'ALTER TABLE task_activity_log ADD COLUMN field TEXT' },
-  { table: 'task_activity_log', column: 'note', ddl: 'ALTER TABLE task_activity_log ADD COLUMN note TEXT' },
-  { table: 'task_activity_log', column: 'ip_address', ddl: 'ALTER TABLE task_activity_log ADD COLUMN ip_address TEXT' },
-  // task_delete_requests
-  { table: 'task_delete_requests', column: 'review_note', ddl: 'ALTER TABLE task_delete_requests ADD COLUMN review_note TEXT' },
-];
-
-function migrateNewColumns(db: BetterSqliteDatabase): void {
-  const byTable = new Map<string, typeof COLUMN_MIGRATIONS>();
-  for (const m of COLUMN_MIGRATIONS) {
-    const list = byTable.get(m.table) ?? [];
-    list.push(m);
-    byTable.set(m.table, list);
-  }
-
-  let added = 0;
-  for (const [table, columns] of byTable) {
-    const exists = db
-      .prepare("SELECT 1 AS one FROM sqlite_master WHERE type = 'table' AND name = ?")
-      .get(table);
-    if (!exists) continue; // fresh database — schema.sql creates the full shape
-    const existing = new Set(
-      (db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).map((c) => c.name),
-    );
-    for (const m of columns) {
-      if (existing.has(m.column)) continue;
-      db.exec(m.ddl);
-      added += 1;
-    }
-  }
-  // updated_at (added nullable above) mirrors created_at for existing rows.
-  const userCols = new Set(
-    (db.prepare('PRAGMA table_info(users)').all() as { name: string }[]).map((c) => c.name),
-  );
-  if (userCols.has('updated_at') && userCols.has('created_at')) {
-    db.prepare(
-      'UPDATE users SET updated_at = created_at WHERE updated_at IS NULL AND created_at IS NOT NULL',
-    ).run();
-  }
-  if (added > 0) console.warn(`[db] migrated ${added} new column(s) onto existing tables.`);
-}
-
-/**
- * Rebuild task_delete_requests when it predates the spec's CASCADE shape.
- *
- * The legacy shape (from the delete-request workflow era) uses a plain
- * INTEGER task_id + a task_title snapshot and deliberately has NO cascade.
- * The production spec makes the request a child of its task: task_id
- * REFERENCES tasks(id) ON DELETE CASCADE and no snapshot column. Because
- * schema.sql uses `CREATE TABLE IF NOT EXISTS`, existing databases keep the
- * old shape — this migration rebuilds the table into the spec shape.
- * Approved requests whose task was already deleted cannot satisfy the new
- * FK (task_id NOT NULL, target gone) — they are dropped with the legacy
- * shape; live pending/rejected rows keep their ids intact.
- */
-function migrateDeleteRequests(db: BetterSqliteDatabase): void {
-  const cols = db.prepare('PRAGMA table_info(task_delete_requests)').all() as {
-    name: string;
-  }[];
-  if (cols.length === 0) return; // table not created yet (fresh boot applies schema after)
-  if (!cols.some((c) => c.name === 'task_title')) return; // already the spec shape
-
-  db.transaction(() => {
-    // Rows pointing at already-deleted tasks cannot survive the new FK.
-    db.prepare(
-      'DELETE FROM task_delete_requests WHERE task_id NOT IN (SELECT id FROM tasks)',
-    ).run();
-    db.exec(`
-      CREATE TABLE task_delete_requests_new (
-        id           INTEGER PRIMARY KEY AUTOINCREMENT,
-        task_id      INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
-        requested_by INTEGER NOT NULL REFERENCES users(id),
-        reason       TEXT,
-        review_note  TEXT,
-        status       TEXT NOT NULL DEFAULT 'pending'
-                       CHECK (status IN ('pending', 'approved', 'rejected')),
-        reviewed_by  INTEGER REFERENCES users(id),
-        reviewed_at  TEXT,
-        created_at   TEXT NOT NULL DEFAULT (datetime('now'))
-      );
-      INSERT INTO task_delete_requests_new
-        (id, task_id, requested_by, reason, status, reviewed_by, reviewed_at, created_at)
-        SELECT id, task_id, requested_by, reason, status, reviewed_by, reviewed_at, created_at
-        FROM task_delete_requests;
-      DROP TABLE task_delete_requests;
-      ALTER TABLE task_delete_requests_new RENAME TO task_delete_requests;
-    `);
-    // The partial unique index died with the old table — recreate it.
-    db.exec(`
-      CREATE UNIQUE INDEX IF NOT EXISTS idx_delreq_one_pending
-        ON task_delete_requests(task_id) WHERE status = 'pending';
-    `);
-  })();
-  console.warn('[db] migrated task_delete_requests (spec shape: CASCADE, no task_title snapshot).');
-}
-
 // ─────────────────────── Startup schema validation ───────────────────────
-// After schema.sql runs, the boot fails fast (with a precise message) if any
-// required table or index is missing — a broken schema must never be served.
+// After migrations run, the boot fails fast (with a precise message) if any
+// required table, index, or migration version is missing — a broken schema
+// must never be served.
 
-/** Every table the app relies on (must exist after schema.sql). */
+/** Every table the app relies on (must exist after migrations). */
 const REQUIRED_TABLES = [
+  'schema_migrations',
+  'schema_migration_failures',
   'users',
   'tasks',
   'task_comments',
@@ -214,7 +79,7 @@ const REQUIRED_TABLES = [
   'saved_filters',
 ] as const;
 
-/** Every index schema.sql creates (FK lookups + dashboard filters). */
+/** Every index required by the application (FK lookups + dashboard filters). */
 const REQUIRED_INDEXES = [
   'idx_tasks_status',
   'idx_tasks_priority',
@@ -253,7 +118,7 @@ const REQUIRED_INDEXES = [
  * side effects), which in practice is the first real request of the server
  * (any session-bearing request touches the DB).
  */
-function validateSchema(db: BetterSqliteDatabase): void {
+function validateSchema(db: BetterSqliteDatabase, expectedVersion: number): void {
   const tables = new Set(
     (db.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all() as { name: string }[]).map(
       (r) => r.name,
@@ -267,29 +132,34 @@ function validateSchema(db: BetterSqliteDatabase): void {
 
   const missingTables = REQUIRED_TABLES.filter((t) => !tables.has(t));
   const missingIndexes = REQUIRED_INDEXES.filter((i) => !indexes.has(i));
+  const currentVersion = Number(
+    (db.prepare('SELECT COALESCE(MAX(version), 0) AS version FROM schema_migrations').get() as { version: number }).version,
+  );
 
-  if (missingTables.length === 0 && missingIndexes.length === 0) return;
+  if (missingTables.length === 0 && missingIndexes.length === 0 && currentVersion === expectedVersion) return;
 
   const details: string[] = [];
   if (missingTables.length > 0) details.push(`missing tables: ${missingTables.join(', ')}`);
   if (missingIndexes.length > 0) details.push(`missing indexes: ${missingIndexes.join(', ')}`);
+  if (currentVersion !== expectedVersion) details.push(`schema version ${currentVersion} does not match expected ${expectedVersion}`);
   throw new Error(
     `[db] startup validation failed — ${details.join('; ')}. ` +
-      'The schema at apps/qc-task-manager/db/schema.sql is out of sync with ' +
-      'src/lib/db.ts (REQUIRED_TABLES / REQUIRED_INDEXES).',
+      'The migration history and runtime schema are out of sync.',
   );
 }
 
-/** Apply schema.sql (idempotent), validate the result, then seed if needed. */
+/** Apply the ordered migration history, validate the result, then seed. */
 function initialize(db: BetterSqliteDatabase): void {
   if (_initialized) return;
-  // Migrations first: existing databases need the new columns/tables before
-  // schema.sql's CREATE INDEX statements reference them. On a fresh database
-  // every table is missing, so both migrations are no-ops.
-  migrateNewColumns(db);
-  migrateDeleteRequests(db);
-  db.exec(schemaSql);
-  validateSchema(db);
+  const migrationResult = runMigrations(db, {
+    backup: true,
+    backupDir: BACKUP_DIR,
+    embeddedMigrations: [
+      { file: '001_initial.sql', source: initialMigrationSql },
+      { file: '002_legacy_schema_reconciliation.sql', source: legacyMigrationSql },
+    ],
+  });
+  validateSchema(db, migrationResult.currentVersion);
   seedUsersIfEmpty(db);
   // SEED_DEMO=1 → demo team + 12 mixed-status tasks (only on an empty DB).
   seedDemoData(db);
@@ -411,17 +281,6 @@ export interface QueryHelper {
   one<T = Record<string, unknown>>(...params: unknown[]): T | undefined;
   /** Run an INSERT/UPDATE/DELETE and return the better-sqlite3 RunResult. */
   run(...params: unknown[]): Database.RunResult;
-}
-
-/** Prepare a SQL string into a typed helper (memoised by better-sqlite3). */
-export function query(sql: string): QueryHelper {
-  const db = getDb();
-  const stmt = db.prepare(sql);
-  return {
-    all: <T = Record<string, unknown>>(...params: unknown[]) => stmt.all(...params) as T[],
-    one: <T = Record<string, unknown>>(...params: unknown[]) => stmt.get(...params) as T | undefined,
-    run: (...params: unknown[]) => stmt.run(...params),
-  };
 }
 
 export { DB_PATH, BACKUP_DIR };

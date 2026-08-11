@@ -30,7 +30,7 @@ export ADMIN_DEFAULT_PASSWORD='replace-with-a-strong-password'
 pnpm --filter @brightai/qc-task-manager db:init
 ```
 
-`db:init` applies the same non-destructive migrations and schema validation as
+`db:init` applies the same sequential migration history and schema validation as
 the running application. Use it to prepare a fresh database or upgrade an
 existing one. Do not paste `db/schema.sql` into SQLTools for an existing
 database: `CREATE TABLE IF NOT EXISTS` cannot upgrade an old table shape.
@@ -38,13 +38,21 @@ database: `CREATE TABLE IF NOT EXISTS` cannot upgrade an old table shape.
 `db:reset` intentionally recreates the database and is destructive; use it
 only for disposable local data.
 
-## Schema and data handling
+## Schema ownership and data handling
 
-The schema is `db/schema.sql` and contains 12 application tables:
+The executable schema source of truth is `db/migrations/`, not `db/schema.sql`.
+The reference snapshot contains 12 application tables:
 
 `users`, `tasks`, `task_comments`, `task_attachments`, `task_activity_log`,
 `task_delete_requests`, `task_checklists`, `task_dependencies`, `notifications`,
 `sessions`, `login_attempts`, and `saved_filters`.
+
+Every database also contains `schema_migrations` with `version`, `name`,
+SHA-256 `checksum`, and `applied_at`. Failed attempts are retained in
+`schema_migration_failures`; failed SQL is rolled back and retried on the next
+startup. Startup verifies the migration version, applied checksums, and
+`PRAGMA foreign_key_check` before serving requests. See
+[`MIGRATIONS.md`](MIGRATIONS.md) for the operational procedure.
 
 Attachments are stored as BLOBs in SQLite. Treat the database and every backup
 as confidential application data. Keep them outside `public/`, source control,
