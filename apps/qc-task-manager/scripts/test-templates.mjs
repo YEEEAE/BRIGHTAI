@@ -56,8 +56,9 @@ assert.equal(isInstantiable('ARCHIVED'), false);
 assert.equal(TEMPLATE_LIFECYCLE_LABELS.ACTIVE, 'Active');
 
 // Verification statuses.
-assert.deepEqual(VERIFICATION_STATUSES, ['UNVERIFIED', 'VALID', 'REJECTED', 'AI_REVIEWED', 'HUMAN_VERIFIED']);
+assert.deepEqual(VERIFICATION_STATUSES, ['UNVERIFIED', 'VALID', 'REJECTED', 'AI_REVIEWED', 'AI_PENDING', 'HUMAN_VERIFIED']);
 assert.equal(isVerificationStatus('UNVERIFIED'), true);
+assert.equal(isVerificationStatus('AI_PENDING'), true);
 assert.equal(isVerificationStatus('pending'), false);
 assert.deepEqual(EVIDENCE_REQUIREMENT, ['REQUIRED', 'OPTIONAL']);
 assert.equal(isEvidenceRequirement('REQUIRED'), true);

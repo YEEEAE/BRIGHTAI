@@ -21,11 +21,14 @@
     "test:domain": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs",
     "test:sla": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-sla.mjs",
     "test:workflow": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-workflow.mjs",
+    "test:audit-integrity": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-audit-integrity.mjs",
+    "test:ai-foundation": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ai-foundation.mjs",
+    "test:ai-features": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ai-features.mjs",
     "test:dashboard-reports": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-dashboard-reports.mjs",
     "test:qc-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-qc-operations.mjs",
     "test:templates": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-templates.mjs",
     "test:db-rules": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-db-rules.mjs",
-    "test": "pnpm test:migrations && pnpm test:architecture && pnpm test:qc-operations && pnpm test:templates && pnpm test:domain && pnpm test:sla && pnpm test:workflow && pnpm test:db-rules && pnpm test:dashboard-reports",
+    "test": "pnpm test:migrations && pnpm test:architecture && pnpm test:qc-operations && pnpm test:templates && pnpm test:audit-integrity && pnpm test:ai-foundation && pnpm test:ai-features && pnpm test:domain && pnpm test:sla && pnpm test:workflow && pnpm test:db-rules && pnpm test:dashboard-reports",
     "e2e:acceptance": "NODE_ENV=production pnpm build && node scripts/e2e-acceptance.mjs"
   },
   "dependencies": {

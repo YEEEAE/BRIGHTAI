@@ -4,10 +4,38 @@ project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
 last_updated: 2026-08-12 00:38 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.90
+version: 2.7.93
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-12 — QC-GROQ-CONFIG-001: اعتماد GROQ_MODEL بدون حفظ المفتاح
+
+- **Files**: `apps/qc-task-manager/src/lib/ai/provider.ts`, `docs/AI-ARCHITECTURE.md`.
+- **What**: صار `GROQ_MODEL` هو override الأساسي لموديل Groq، مع إبقاء `AI_MODEL` كتوافق خلفي، والافتراضي `llama-3.3-70b-versatile`.
+- **Secrets**: لم أكتب قيمة `GROQ_API_KEY` في source أو `.env` أو logs؛ قواعد المشروع تمنع تعديل ملفات `.env*`. المفتاح الذي أُرسل في المحادثة يُعامل كمكشوف ويحتاج revoke/rotate خارجيًا.
+- **Status**: local configuration update; no commit/push.
+
+---
+
+### 2026-08-12 — QC-AI-QC-COPILOT-001: ميزات AI QC فوق Groq Foundation
+
+- **Files**: `apps/qc-task-manager/src/lib/ai/{features,schemas,context,prompts,types}.ts`, `src/lib/aiQcContext.ts`, `src/pages/api/ai/[feature].ts`, `src/components/AiReviewPanel.tsx`, `src/pages/{tasks/[id],findings/[id],dashboard}.astro`, `db/migrations/010_ai_evidence_status.sql`, `db/schema.sql`, `src/lib/{types,evidence,index}.ts`, `scripts/test-ai-features.mjs`, `scripts/test-ai-foundation.mjs`, `scripts/test-templates.mjs`, `scripts/test-migrations.mjs`, `scripts/test-dashboard-reports.mjs`, `scripts/test.mjs`, `package.json`, `docs/AI-QC-COPILOT.md`, `docs/superpowers/plans/2026-08-12-ai-qc-copilot.md`.
+- **What**: أضفت Task Analysis، Finding Analysis، RCA Assistance، CAPA Assistance، AI Executive Summary، وEvidence AI Review. كل النتائج strict Zod structured output وتحمل confidence/evidence_used/human_review_required. الـ API يقرأ IDs فقط، ويعيد بناء authorized context server-side؛ AI لا يستدعي mutation/approval/closure/RBAC/delete authority. أضفت UI labels واضحة: AI Generated، Confidence، Evidence Used، Human Review Required.
+- **Security**: محتوى التعليقات/الملفات داخل `<untrusted_qc_data>` ولا يغيّر system instructions؛ redaction للإيميل/الجوال/الأسرار؛ Evidence review لا يرسل BLOB إلى Groq، ويتطلب صلاحية + supported evidence extension + consent صريح. أضفت lifecycle `AI_PENDING` → `AI_REVIEWED` مع الرجوع إلى `UNVERIFIED` عند الفشل، و`HUMAN_VERIFIED`/`REJECTED` تبقى قرارات بشرية.
+- **Management scope**: management summary للـ supervisor/manager/admin فقط؛ supervisor مقيد بقسمه؛ الموظف يرجع 403. لا يتم حفظ أي اقتراح AI كقرار نهائي تلقائيًا.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **265 passed / 0 failed**؛ tests mocked تغطي valid response، invalid JSON/schema، timeout، 429، 500، prompt injection، PII، unauthorized access، evidence consent. `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built**؛ typecheck → **0 errors / 13 existing hints**؛ Architecture Guard → **passed**؛ Security Hygiene → **passed**؛ diff check → **passed**.
+- **Limitations**: لا live Groq integration test لعدم توفر `GROQ_API_KEY` في السياق؛ لا يُستنتج من mocked tests أن الاتصال الخارجي أو quota production يعمل. تحذيرات backup scheduler `SQLITE_CANTOPEN` أثناء حذف قواعد الاختبار المؤقتة موجودة بدون فشل في الاختبارات.
+- **Status**: verified locally; لا commit ولا push. تغييرات dirty السابقة في `audit/qc/prompt3.md` و`.superpowers` خارج نطاق المهمة ولم تُستخدم.
+
+### 2026-08-12 — QC-AUDIT-INTEGRITY-GROQ-001: SHA-256 audit chain وGroq AI foundation
+
+- **Files**: `apps/qc-task-manager/db/migrations/{008_audit_integrity,009_ai_audit}.sql`, `db/schema.sql`, `src/lib/{activity,audit/chain,ai,aiAudit,db}.ts`, `scripts/{test-audit-integrity,test-ai-foundation,test,test-migrations,test-dashboard-reports}.mjs`, `package.json`, `apps/qc-task-manager/.env.example`, `docs/{AUDIT-INTEGRITY,AI-ARCHITECTURE}.md`, `docs/superpowers/plans/2026-08-12-audit-integrity-groq-foundation.md`.
+- **What**: أضفت `previous_hash` و`event_hash` لـ `task_activity_log`، canonical JSON ثابت، SHA-256 على `canonical_event + previous_hash`، append ذري، backfill legacy، و`verifyAuditChain()` يرجع PASS أو FAIL مع أول event وexpected/actual hash. وثّقت أن السلسلة تكشف العبث لكنها لا تجعل SQLite immutable فعليًا. أضفت Groq server-only abstraction بحدود Feature → AI Service → Groq Provider → Groq API، model default `llama-3.3-70b-versatile` عبر `AI_MODEL` اختياري، `GROQ_API_KEY` فقط من server env، timeout/retries transient bounded، Zod validation، sanitized AI audit table، rate limit per user/feature، وعدم تسجيل key أو Authorization أو raw prompts/errors.
+- **Migration decision**: migration `007_dashboard_reports.sql` كانت موجودة؛ لذلك صار Audit integrity = `008` وAI audit = `009`، وأضيفت migration التقارير إلى embedded startup list لضمان تطابق التطبيق مع مجلد migrations.
+- **Secrets**: لم يصل `GROQ_API_KEY` في طلب المستخدم، لذلك لم أعدل أو أنشئ `.env` ولم أضع قيمة مخترعة. `apps/qc-task-manager/.env.example` يحتوي فقط `GROQ_API_KEY=`، و`.env` مستثنى من Git.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **265 passed / 0 failed**؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built**؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 13 existing hints**؛ Architecture Guard → **passed**؛ `verify-security-hygiene.mjs` → **passed**؛ `git -c core.fsmonitor=false diff --check` → **passed**. ظهرت تحذيرات `SQLITE_CANTOPEN` من backup scheduler بعد حذف قواعد الاختبار المؤقتة، بدون فشل اختبار.
+- **Status**: verified locally; لا live Groq request لغياب المفتاح، ولا commit ولا push. يوجد dirty work سابق على `audit/qc/prompt3.md` وملفات حالة `.superpowers` ولم تُستخدم ضمن التغيير المقصود.
 
 ### 2026-08-12 — QC-WORKFLOW-ENGINE-001: إضافة Workflow Engine مع snapshot وworkload وsmart assignment
 

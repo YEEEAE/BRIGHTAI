@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS task_attachments (
   collected_by        INTEGER REFERENCES users(id) ON DELETE SET NULL,
   collected_at        TEXT,
   verification_status TEXT NOT NULL DEFAULT 'UNVERIFIED'
-                    CHECK (verification_status IN ('UNVERIFIED', 'VALID', 'REJECTED', 'AI_REVIEWED', 'HUMAN_VERIFIED')),
+                    CHECK (verification_status IN ('UNVERIFIED', 'AI_PENDING', 'VALID', 'REJECTED', 'AI_REVIEWED', 'HUMAN_VERIFIED')),
   uploaded_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -199,7 +199,9 @@ CREATE TABLE IF NOT EXISTS task_activity_log (
   new_value  TEXT,
   note       TEXT,
   ip_address TEXT,
-  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  previous_hash TEXT,
+  event_hash TEXT
 );
 
 -- ──────────────────── 6. task_delete_requests ─────────────────────────

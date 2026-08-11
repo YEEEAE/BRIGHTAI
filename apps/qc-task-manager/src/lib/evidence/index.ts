@@ -42,6 +42,7 @@ export const VERIFICATION_STATUSES = [
   'VALID',
   'REJECTED',
   'AI_REVIEWED',
+  'AI_PENDING',
   'HUMAN_VERIFIED',
 ] as const;
 export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number];
@@ -52,6 +53,7 @@ export const VERIFICATION_LABELS: Record<VerificationStatus, string> = {
   VALID: 'Valid',
   REJECTED: 'Rejected',
   AI_REVIEWED: 'AI Reviewed',
+  AI_PENDING: 'AI Review Pending',
   HUMAN_VERIFIED: 'Human Verified',
 };
 

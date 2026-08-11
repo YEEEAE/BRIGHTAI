@@ -24,6 +24,7 @@ import { SLA_STATUSES } from '../lib/sla';
 import { getUserById } from '../lib/auth';
 import { getKpiSnapshot } from '../lib/reporting/queries';
 import { resolveReportScope } from '../lib/reporting/scope';
+import AiReviewPanel from '../components/AiReviewPanel';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session + role
 
@@ -310,6 +311,7 @@ const kpiCards = kpis
       <a href="/reports" class="rounded-lg bg-brand-600 px-3 py-2 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500">Reports</a>
     </div>
   </nav>
+  <AiReviewPanel feature="management-summary" requestBody={{}} title="AI Executive Summary" client:visible />
 
   {/* ───────────── Error state (queries failed but the shell stays usable) ───────────── */}
   {dataError && (

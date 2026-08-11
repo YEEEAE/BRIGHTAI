@@ -36,6 +36,11 @@ import slaMigrationSql from '../../db/migrations/003_sla_engine.sql?raw';
 import qcOperationsMigrationSql from '../../db/migrations/004_qc_operations.sql?raw';
 import evidenceTemplatesMigrationSql from '../../db/migrations/005_evidence_templates.sql?raw';
 import workflowMigrationSql from '../../db/migrations/006_workflow_engine.sql?raw';
+import dashboardReportsMigrationSql from '../../db/migrations/007_dashboard_reports.sql?raw';
+import auditIntegrityMigrationSql from '../../db/migrations/008_audit_integrity.sql?raw';
+import aiAuditMigrationSql from '../../db/migrations/009_ai_audit.sql?raw';
+import aiEvidenceStatusMigrationSql from '../../db/migrations/010_ai_evidence_status.sql?raw';
+import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -93,6 +98,7 @@ const REQUIRED_TABLES = [
   'workflow_steps',
   'workflow_instances',
   'workflow_actions',
+  'ai_audit_log',
 ] as const;
 
 /** Every index required by the application (FK lookups + dashboard filters). */
@@ -139,6 +145,9 @@ const REQUIRED_INDEXES = [
   'idx_qc_evidence_finding',
   'idx_qc_evidence_capa',
   'idx_qc_audit_entity',
+  'idx_activity_event_hash',
+  'idx_ai_audit_user_created',
+  'idx_ai_audit_feature_created',
 ] as const;
 
 /**
@@ -193,12 +202,18 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '004_qc_operations.sql', source: qcOperationsMigrationSql },
       { file: '005_evidence_templates.sql', source: evidenceTemplatesMigrationSql },
       { file: '006_workflow_engine.sql', source: workflowMigrationSql },
+      { file: '007_dashboard_reports.sql', source: dashboardReportsMigrationSql },
+      { file: '008_audit_integrity.sql', source: auditIntegrityMigrationSql },
+      { file: '009_ai_audit.sql', source: aiAuditMigrationSql },
+      { file: '010_ai_evidence_status.sql', source: aiEvidenceStatusMigrationSql },
     ],
   });
+  backfillAuditChain(db);
   validateSchema(db, migrationResult.currentVersion);
   seedUsersIfEmpty(db);
   // SEED_DEMO=1 → demo team + 12 mixed-status tasks (only on an empty DB).
   seedDemoData(db);
+  backfillAuditChain(db);
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.
   db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(new Date().toISOString());

@@ -5,6 +5,9 @@
 // (e.g. STATUS_CHANGED, PROGRESS_CHANGED) rather than stored in a separate column.
 
 import { getDb } from './db';
+import { backfillAuditChain, canonicalEvent, createAuditEventHash, verifyAuditChain } from './audit/chain';
+
+export { backfillAuditChain, canonicalEvent, createAuditEventHash, verifyAuditChain };
 
 /** Well-known action strings to keep the log consistent. */
 export const Action = {
@@ -73,12 +76,21 @@ export function logActivity(params: {
   action: string;
   oldValue?: string | null | number | boolean;
   newValue?: string | null | number | boolean;
+  field?: string | null;
+  note?: string | null;
+  ipAddress?: string | null;
 }): void {
   const db = getDb();
   const oldStr = params.oldValue == null ? null : String(params.oldValue);
   const newStr = params.newValue == null ? null : String(params.newValue);
-  db.prepare(
-    `INSERT INTO task_activity_log (task_id, user_id, action, old_value, new_value)
-     VALUES (?, ?, ?, ?, ?)`,
-  ).run(params.taskId, params.userId, params.action, oldStr, newStr);
+  const createdAt = new Date().toISOString();
+  db.transaction(() => {
+    const previous = db.prepare('SELECT event_hash FROM task_activity_log ORDER BY id DESC LIMIT 1').get() as { event_hash: string | null } | undefined;
+    const event = { task_id: params.taskId, user_id: params.userId, action: params.action, field: params.field ?? null, old_value: oldStr, new_value: newStr, note: params.note ?? null, ip_address: params.ipAddress ?? null, created_at: createdAt };
+    const eventHash = createAuditEventHash(event, previous?.event_hash ?? null);
+    db.prepare(
+      `INSERT INTO task_activity_log (task_id, user_id, action, field, old_value, new_value, note, ip_address, created_at, previous_hash, event_hash)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).run(event.task_id, event.user_id, event.action, event.field, event.old_value, event.new_value, event.note, event.ip_address, event.created_at, previous?.event_hash ?? null, eventHash);
+  })();
 }

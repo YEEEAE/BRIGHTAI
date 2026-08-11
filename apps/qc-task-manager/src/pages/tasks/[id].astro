@@ -24,6 +24,7 @@ import EmptyState from '../../components/EmptyState.astro';
 import TaskUpdatePanel from '../../components/TaskUpdatePanel';
 import AttachmentUploader from '../../components/AttachmentUploader';
 import TaskLifecycle from '../../components/TaskLifecycle';
+import AiReviewPanel from '../../components/AiReviewPanel';
 import { hasPendingDeleteRequest } from '../../lib/deleteRequests';
 import {
   canViewTask,
@@ -375,6 +376,8 @@ function svgIcon(inner: string, cls = ''): string {
         )}
       </div>
 
+      <AiReviewPanel feature="task-analysis" requestBody={{ id: task.id }} title="Analyze Task" client:visible />
+
       {/* 1a. Locked field summary — employees only (CORE BUSINESS RULE #2). */}
       {showLockedSummary && (
         <section
@@ -659,6 +662,9 @@ function svgIcon(inner: string, cls = ''): string {
           </ul>
         )}
         {canEdit && <AttachmentUploader taskId={task.id} client:visible />}
+        {evidenceFiles.filter((file) => file.verification_status !== 'REJECTED').map((file) => (
+          <AiReviewPanel feature="evidence-review" requestBody={{ id: file.id, task_id: task.id }} title={`AI Evidence Review · ${file.file_name}`} consent client:visible />
+        ))}
       </section>
 
       {/* 5. Activity history */}

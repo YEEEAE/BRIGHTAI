@@ -113,7 +113,7 @@ export interface TaskAttachment {
   source: string;
   collected_by: number | null;
   collected_at: string | null;
-  verification_status: 'UNVERIFIED' | 'VALID' | 'REJECTED' | 'AI_REVIEWED' | 'HUMAN_VERIFIED';
+  verification_status: 'UNVERIFIED' | 'AI_PENDING' | 'VALID' | 'REJECTED' | 'AI_REVIEWED' | 'HUMAN_VERIFIED';
   uploaded_at: string;
 }
 
