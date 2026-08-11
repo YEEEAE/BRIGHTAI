@@ -286,7 +286,7 @@ done
 **Depends on:** — |
 **Blocks:** —
 
-**CONTEXT** — agents/brain.md:2748 يحوي قيمة مفتاح Gemini API: AIzaSyC3pLdZ-7R2XlvPFTZ8Alg93zkuThHbQYM. المفتاح يرجع CONSUMER_SUSPENDED لكن القيمة مكشوفة في الريبو. حتى لو الريبو خاص، أي backup أو CI log يحوي القيمة.
+**CONTEXT** — agents/brain.md:2748 يحوي قيمة مفتاح Gemini API: REDACTED_COMPROMISED_KEY. المفتاح يرجع CONSUMER_SUSPENDED لكن القيمة مكشوفة في الريبو. حتى لو الريبو خاص، أي backup أو CI log يحوي القيمة.
 
 **FILES IN SCOPE** — .agents/brain.md (line 2748 + grep -B2 -A2 AIza), Google AI Studio dashboard (rotate key)
 

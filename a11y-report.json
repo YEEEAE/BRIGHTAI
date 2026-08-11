@@ -66054,7 +66054,7 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<img alt=\"\" src=\"https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i2640703&2i1799660&2e1&3u14&4m2&1u511&2u380&5m6&1e0&5sar&6sus&10b1&12b1&14i47083502&8e1&key=AIzaSyCmL18misQw9KdwqGaw3zHkitj8vG6QF2Y&token=125043\" style=\"width: 511px; height: 380px;\">",
+              "html": "<img alt=\"\" src=\"https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i2640703&2i1799660&2e1&3u14&4m2&1u511&2u380&5m6&1e0&5sar&6sus&10b1&12b1&14i47083502&8e1&key=REDACTED_COMPROMISED_KEY&token=125043\" style=\"width: 511px; height: 380px;\">",
               "target": [
                 "iframe",
                 "img"
@@ -68016,7 +68016,7 @@
                 }
               ],
               "impact": null,
-              "html": "<img alt=\"\" src=\"https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i2640703&2i1799660&2e1&3u14&4m2&1u511&2u380&5m6&1e0&5sar&6sus&10b1&12b1&14i47083502&8e1&key=AIzaSyCmL18misQw9KdwqGaw3zHkitj8vG6QF2Y&token=125043\" style=\"width: 511px; height: 380px;\">",
+              "html": "<img alt=\"\" src=\"https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i2640703&2i1799660&2e1&3u14&4m2&1u511&2u380&5m6&1e0&5sar&6sus&10b1&12b1&14i47083502&8e1&key=REDACTED_COMPROMISED_KEY&token=125043\" style=\"width: 511px; height: 380px;\">",
               "target": [
                 "iframe",
                 "img"

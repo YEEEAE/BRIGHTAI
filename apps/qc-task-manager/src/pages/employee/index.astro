@@ -27,8 +27,8 @@ const allowCreate = fullUser ? PERMISSIONS.canCreateTask(fullUser) : false;
 const tasks = db
   .prepare(
     `SELECT id, title, status, priority, progress_percent, due_date, recurrence,
-            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = tasks.id) AS checklist_total,
-            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = tasks.id AND c.is_completed = 1) AS checklist_completed,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
             (SELECT 1 FROM task_delete_requests r
               WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
      FROM tasks t

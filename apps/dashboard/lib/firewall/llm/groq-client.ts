@@ -5,8 +5,8 @@
  * function so the API route can stay provider-agnostic (Phase 1c
  * will add a router for OpenAI, Anthropic, NVIDIA, ALLaM).
  *
- * Default model: llama-3.1-8b-instant (fast + cheap; suitable for
- * PII-redacted traffic). Override via GROQ_DEFAULT_MODEL env var
+ * Default model: llama-3.3-70b-versatile. Override via GROQ_MODEL
+ * (GROQ_DEFAULT_MODEL remains a backwards-compatible fallback)
  * or per-request `model` parameter.
  */
 
@@ -48,7 +48,8 @@ function getClient(): Groq {
   return client;
 }
 
-const DEFAULT_MODEL = process.env.GROQ_DEFAULT_MODEL || 'llama-3.1-8b-instant';
+const DEFAULT_MODEL =
+  process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama-3.3-70b-versatile';
 
 export async function chat(req: ChatRequest): Promise<ChatResponse> {
   const groq = getClient();

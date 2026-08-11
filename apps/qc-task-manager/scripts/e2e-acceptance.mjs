@@ -60,6 +60,7 @@ function suiteEnv(dbPath, port, extra = {}) {
     ...process.env,
     ...extra,
     NODE_ENV: 'production',
+    ADMIN_DEFAULT_PASSWORD: 'acceptance-only-password-2026',
     HOST: '127.0.0.1',
     PORT: String(port),
     BASE_URL: `http://127.0.0.1:${port}`,
@@ -87,6 +88,17 @@ async function runSuite(label, script, port) {
   const server = startServer(env);
   try {
     await waitForServer(server, env.BASE_URL);
+    // GET /login does not touch SQLite. Bootstrap schema + seed once before
+    // suites that inspect the fixture database directly.
+    await fetch(`${env.BASE_URL}/login`, {
+      method: 'POST',
+      headers: {
+        Origin: env.BASE_URL,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'username=%5F%5Fwarmup%5F%5F&password=x',
+      redirect: 'manual',
+    });
     console.log(`\n▶ Acceptance suite: ${label}`);
     await runChild(script, env);
     console.log(`✅ ${label}`);

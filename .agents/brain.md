@@ -4,9 +4,20 @@ project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
 last_updated: 2026-08-11 21:39 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.85
+version: 2.7.86
 agent_version: v2.3
 skills_ready: 7
+---
+
+### 2026-08-11 — QC-SECURITY-HARDENING-002: إكمال Security Hardening والتحقق الحي
+
+- **Files**: `docs/SECURITY-AUDIT.md`, `.env.example`, `apps/qc-task-manager/.env.example`, `.gitignore`, `package.json`, `apps/qc-task-manager/src/{lib/auth.ts,lib/session.ts,lib/api-security.ts,lib/taskUpdates.ts,middleware.ts}`, `apps/qc-task-manager/src/components/DeleteRequestDialog.tsx`, `apps/qc-task-manager/src/pages/{employee/index.astro,tasks/[id].astro}`, Groq server provider files, security/E2E scripts.
+- **What**: اكتمل hardening للمصادقة والجلسات والتدوير والانتهاء/logout وbcrypt والـ lockout، صلاحيات الأدوار الأربعة وIDOR/field locking server-side، CSRF/rate-limit/body/content-type/security headers، تحقق الملفات بالامتداد وMIME وmagic bytes والحجم والاسم وSHA-256 ومنع executable، وعقد Groq server-only مع `GROQ_MODEL=llama-3.3-70b-versatile`. أضيفت CSP hashes لسكريبتات Astro hydration المعروفة بدون `unsafe-inline` في `script-src` بعد أن كشف E2E أن CSP كان يمنع React islands. لم تُكسر قواعد الأعمال الحالية.
+- **Secrets**: عُرّيت قيم الأسرار الحالية من الملفات المتتبعة، لكن مفاتيح مزودين سابقة موجودة في Git history؛ اعتُبرت compromised ولم تتم إعادة كتابة التاريخ أو push. يلزم revoke/rotate خارجيًا.
+- **Verification**: `pnpm typecheck` PASS (0 errors، 11 hints)؛ `pnpm test` PASS (16+29+38)؛ `pnpm build` PASS (269 HTML، 258 sitemap URLs، مع warnings قديمة)؛ QC tests PASS (240 + migration + DB rules)؛ `pnpm e2e:acceptance` PASS: 49+44+196+39+45+12 وكل restart-persistence؛ `verify-security-hygiene.mjs` PASS؛ `git diff --check` PASS.
+- **Risks**: `style-src 'unsafe-inline'` قائم ويحتاج migration منفصلة؛ production HTTPS/proxy limits/shared limiter/secret rotation تحتاج تحقق تشغيلي؛ Finding/CAPA ليست routes مستقلة في هذا التطبيق وتم تغطيتها ضمن task metadata/reports/task authorization.
+- **Status**: verified locally with live acceptance; uncommitted — المستخدم يلتزم، ولا push.
+
 ---
 
 ### 2026-08-11 — QC-DATABASE-MIGRATIONS-001: sequential SQLite migration architecture

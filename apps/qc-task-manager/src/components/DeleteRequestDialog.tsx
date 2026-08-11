@@ -31,7 +31,17 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
   useEffect(() => {
     const dlg = dialogRef.current;
     if (!dlg) return;
-    if (open && !dlg.open) dlg.showModal();
+    if (open && !dlg.open) {
+      try {
+        if (typeof dlg.showModal === 'function') dlg.showModal();
+        else dlg.setAttribute('open', '');
+      } catch {
+        // Keep the workflow usable if the browser rejects a second modal
+        // transition during hydration/navigation; the server still enforces
+        // the request authorization and CSRF rules.
+        dlg.setAttribute('open', '');
+      }
+    }
     if (!open && dlg.open) dlg.close();
   }, [open]);
 

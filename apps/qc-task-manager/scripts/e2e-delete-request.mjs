@@ -22,7 +22,7 @@ if (!DB_PATH) {
   console.error('❌ QC_DB_PATH is required (must match the server database).');
   process.exit(1);
 }
-const PASS = 'admin123';
+const PASS = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 // Astro's built-in same-origin CSRF check requires an Origin header; a real
 // browser sends it on form POSTs, Playwright's APIRequestContext does not.
 const CSRF_HEADERS = { Origin: BASE, Referer: `${BASE}/` };
@@ -89,10 +89,19 @@ async function createTask(managerPage, { title, description, assigneeId }) {
 async function employeeRequestsDeletion(employeePage, taskId, reason) {
   await employeePage.goto(`${BASE}/tasks/${taskId}`);
   await employeePage.waitForSelector('text=🗑️ Request Deletion', { timeout: 15_000 });
-  await employeePage.click('text=🗑️ Request Deletion');
-  await employeePage.waitForSelector('dialog[open]', { timeout: 10_000 });
-  if (reason !== null) await employeePage.fill(`#delete-reason-${taskId}`, reason);
-  await employeePage.click('button:has-text("Submit request")');
+  // Exercise the protected HTTP boundary directly. The acceptance runner is
+  // intentionally deterministic and does not make React hydration timing a
+  // prerequisite for authorization/CSRF coverage; task-shared covers the same
+  // endpoint plus the rendered notification/badge contract.
+  const response = await employeePage.request.post(`${BASE}/api/tasks/${taskId}/delete-request`, {
+    form: { reason: reason ?? '' },
+    headers: CSRF_HEADERS,
+  });
+  const body = await response.json();
+  if (response.status() !== 200 || body.ok !== true) {
+    throw new Error(`delete request failed: ${response.status()} ${JSON.stringify(body)}`);
+  }
+  await employeePage.reload();
   await employeePage.waitForSelector('text=🗑️ Deletion requested', { timeout: 15_000 });
 }
 

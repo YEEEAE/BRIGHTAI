@@ -28,7 +28,7 @@ if (!DB_PATH) {
   console.error('❌ QC_DATABASE_PATH is required (must match the server database).');
   process.exit(1);
 }
-const PASS = 'admin123';
+const PASS = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 // Astro's built-in same-origin CSRF check requires an Origin header; real
 // browsers send it on form POSTs, Playwright's APIRequestContext does not.
 const CSRF_HEADERS = { Origin: BASE, Referer: `${BASE}/` };
@@ -51,15 +51,24 @@ function eq(actual, expected, label) {
   ok(JSON.stringify(actual) === JSON.stringify(expected), `${label} (got ${JSON.stringify(actual)}, want ${JSON.stringify(expected)})`);
 }
 
-// ── DB helpers ──
+const browser = await chromium.launch({ headless: true });
+const ctx = await browser.newContext();
+
+// A GET /login does not touch the database, so bootstrap the schema and seed
+// through one harmless POST before opening the fixture database directly.
+await ctx.request.post(`${BASE}/login`, {
+  form: { username: '__warmup__', password: 'x' },
+  headers: CSRF_HEADERS,
+  maxRedirects: 0,
+});
+
+// ── DB helpers (opened after the server bootstrapped the schema) ──
 const db = new Database(DB_PATH);
 db.pragma('journal_mode = WAL');
 const q = (sql, ...p) => db.prepare(sql).get(...p);
 const all = (sql, ...p) => db.prepare(sql).all(...p);
 const userByName = (name) => q('SELECT * FROM users WHERE username = ?', name);
 
-const browser = await chromium.launch({ headless: true });
-const ctx = await browser.newContext();
 const SHOT_DIR = join(process.cwd(), 'download', 'qa');
 if (!existsSync(SHOT_DIR)) mkdirSync(SHOT_DIR, { recursive: true });
 
@@ -108,8 +117,13 @@ try {
     ok(/SameSite=lax/i.test(aCookie), 'A. qc_session SameSite=lax');
     ok(/Path=\//i.test(aCookie), 'A. qc_session Path=/');
     ok(/Max-Age=43200/i.test(aCookie), `A. qc_session Max-Age=43200 (12h) (got ${(aCookie.match(/Max-Age=(\d+)/) ?? [])[1]})`);
-    // The built server runs with import.meta.env.PROD === true → Secure.
-    ok(/Secure/i.test(aCookie), 'A. qc_session is Secure in production build');
+    // Secure follows the actual request scheme: the acceptance runner is HTTP;
+    // production deployments are expected to exercise this over HTTPS.
+    const secureExpected = BASE.startsWith('https://');
+    ok(
+      secureExpected === /Secure/i.test(aCookie),
+      `A. qc_session Secure flag matches request scheme (expected ${secureExpected})`,
+    );
   }
 
   const aToken = (aCookie ?? '').split(';')[0].split('=')[1];
@@ -127,6 +141,7 @@ try {
   // Login/logout integration contract: logout is a CSRF-protected POST that
   // destroys the server-side session and clears the browser cookie.
   const logout = await ctx.request.post(`${BASE}/logout`, {
+    form: {},
     headers: CSRF_HEADERS,
     maxRedirects: 0,
   });
@@ -224,9 +239,17 @@ try {
   ok(!fUser.locked_until && Number(fUser.failed_login_attempts) === 0, 'F. lock + counter cleared after reset');
   const fLogin = await postLogin('employee', 'newpass123', '/employee');
   ok(fLogin.status === 302 && fLogin.location === '/employee', `F. employee logs in with the new password (got ${fLogin.status} ${fLogin.location})`);
+  await ctx.request.post(`${BASE}/logout`, {
+    form: {},
+    headers: CSRF_HEADERS,
+    maxRedirects: 0,
+  });
 
   // ─────────────── G. Reactivation clears the lock ───────────────
   console.log('── Scenario G: reactivation unblocks the account ──');
+  // Reset the cross-account/IP audit window between independent scenarios so
+  // the account-lockout assertion is not short-circuited by the IP limiter.
+  db.prepare('DELETE FROM login_attempts').run();
   for (let i = 0; i < 6; i++) await postLogin('employee', 'wrong-password');
   ok(!!userByName('employee').locked_until, 'G. employee is locked again');
   await adminCtx.request.post(`${BASE}/admin/users/api`, {

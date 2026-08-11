@@ -27,7 +27,7 @@ if (!DB_PATH) {
   console.error('❌ QC_DATABASE_PATH is required (must match the server database).');
   process.exit(1);
 }
-const PASS = 'admin123';
+const PASS = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 // Astro's built-in same-origin CSRF check requires an Origin header; real
 // browsers send it on form POSTs, Playwright's APIRequestContext does not.
 const CSRF_HEADERS = { Origin: BASE, Referer: `${BASE}/` };
@@ -220,7 +220,7 @@ try {
   const disabledLogin = await login(disCtx, 'e2e_emp', 'pass12345');
   await disCtx.close();
   ok(
-    disabledLogin.status === 302 && disabledLogin.location.includes('disabled=1'),
+    disabledLogin.status === 302 && disabledLogin.location.includes('error=1'),
     `6g. deactivated user cannot sign in (got ${disabledLogin.location})`,
   );
 

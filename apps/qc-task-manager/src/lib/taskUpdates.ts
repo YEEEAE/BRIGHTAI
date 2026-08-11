@@ -109,6 +109,7 @@ function sha256Hex(bytes: Buffer): string {
 /** Validate an uploaded file against extension + MIME + size rules. */
 export function validateUploadedFile(
   file: File,
+  bytes?: Buffer,
 ): { ok: true; fileName: string; mimeType: string } | { ok: false; error: string } {
   const fileName = sanitizeFileName(file.name);
   if (!fileName) {
@@ -139,7 +140,46 @@ export function validateUploadedFile(
       error: `The file's MIME type (${declared || 'unknown'}) does not match a ".${ext}" file.`,
     };
   }
+  if (bytes) {
+    const signature = GENERIC_SIGNATURES[ext];
+    if (isExecutableBytes(bytes)) {
+      return { ok: false, error: 'Executable files are not allowed.' };
+    }
+    if (signature && !matchesSignature(bytes, signature)) {
+      return { ok: false, error: `The file's content does not match a ".${ext}" file.` };
+    }
+    if (TEXT_EXTENSIONS.has(ext) && bytes.includes(0)) {
+      return { ok: false, error: 'Binary content is not allowed for text files.' };
+    }
+  }
   return { ok: true, fileName, mimeType: declared };
+}
+
+const TEXT_EXTENSIONS = new Set(['txt', 'md', 'csv', 'json', 'log', 'xml', 'sql']);
+const GENERIC_SIGNATURES: Record<string, number[]> = {
+  pdf: [0x25, 0x50, 0x44, 0x46, 0x2d],
+  png: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+  jpg: [0xff, 0xd8, 0xff],
+  jpeg: [0xff, 0xd8, 0xff],
+  gif: [0x47, 0x49, 0x46, 0x38],
+  webp: [0x52, 0x49, 0x46, 0x46],
+  zip: [0x50, 0x4b, 0x03, 0x04],
+  xlsx: [0x50, 0x4b, 0x03, 0x04],
+  docx: [0x50, 0x4b, 0x03, 0x04],
+  pptx: [0x50, 0x4b, 0x03, 0x04],
+  xls: [0xd0, 0xcf, 0x11, 0xe0],
+  doc: [0xd0, 0xcf, 0x11, 0xe0],
+  ppt: [0xd0, 0xcf, 0x11, 0xe0],
+};
+
+function isExecutableBytes(bytes: Buffer): boolean {
+  // Windows PE, ELF, Mach-O (32/64-bit) and script shebangs.
+  return (
+    (bytes[0] === 0x4d && bytes[1] === 0x5a) ||
+    (bytes[0] === 0x7f && bytes[1] === 0x45 && bytes[2] === 0x4c && bytes[3] === 0x46) ||
+    ([0xfe, 0xce, 0xcf, 0xca].includes(bytes[0]) && [0xed, 0xfa, 0xfe, 0xcf].includes(bytes[1])) ||
+    (bytes[0] === 0x23 && bytes[1] === 0x21)
+  );
 }
 
 /**
@@ -1282,10 +1322,12 @@ export async function uploadAttachment(params: {
     return { ok: false, error: 'You do not have permission to edit this task.' };
   }
 
-  const validated = validateUploadedFile(params.file);
-  if (!validated.ok) return { ok: false, error: validated.error };
-
+  if (params.file.size > MAX_UPLOAD_BYTES) {
+    return { ok: false, error: `The file exceeds the ${MAX_UPLOAD_BYTES / (1024 * 1024)} MB upload limit.` };
+  }
   const bytes = Buffer.from(await params.file.arrayBuffer());
+  const validated = validateUploadedFile(params.file, bytes);
+  if (!validated.ok) return { ok: false, error: validated.error };
   const hash = sha256Hex(bytes);
   const info = db
     .prepare(

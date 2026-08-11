@@ -3,7 +3,7 @@ inherit = "core"
 
 [shell_environment_policy.set]
 ANTHROPIC_BASE_URL = "https://api.tokenrouter.com"
-ANTHROPIC_AUTH_TOKEN = "sk-okD7L1BJW2TypJBsTtp4IYE9Byrid0H57eWCdJm6klryaXS8"
+ANTHROPIC_AUTH_TOKEN = "REDACTED_COMPROMISED_KEY"
 ANTHROPIC_MODEL = "moonshotai/kimi-k3-free"
 ANTHROPIC_DEFAULT_SONNET_MODEL = "moonshotai/kimi-k3-free"
 ANTHROPIC_DEFAULT_OPUS_MODEL = "moonshotai/kimi-k3-free"

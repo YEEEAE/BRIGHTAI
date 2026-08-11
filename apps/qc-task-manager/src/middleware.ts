@@ -26,7 +26,7 @@ import {
 } from './lib/permissions';
 import { handleLoginPost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
-import { requireCsrf } from './lib/api-security';
+import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
 const PUBLIC_PATHS = new Set(['/', '/login']);
 
@@ -51,11 +51,17 @@ function withSecurityHeaders(response: Response): Response {
   headers.set('X-Content-Type-Options', 'nosniff');
   // Trim referrer leakage to same-origin.
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+  headers.set('Cross-Origin-Resource-Policy', 'same-origin');
+  if (import.meta.env.PROD) {
+    headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
   // The internal application ships only self-hosted Astro assets. Keep this
   // conservative CSP compatible with the current React islands and downloads.
   headers.set(
     'Content-Security-Policy',
-    "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; media-src 'self'; worker-src 'self' blob:",
+    "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'sha256-QzWFZi+FLIx23tnm9SBU4aEgx4x8DsuASP07mfqol/c=' 'sha256-SaCkFfPruIdTXT8/97JArQmGxiJAL2o4bBDvSgJ5y3Q=' 'sha256-Q2BPg90ZMplYY+FSdApNErhpWafg2hcRRbndmvxuL/Q='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; media-src 'self'; worker-src 'self' blob:",
   );
   return new Response(response.body, {
     status: response.status,
@@ -76,6 +82,9 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   // Always attach the resolved user to locals (null when anonymous), so public
   // pages (e.g. "/") can redirect signed-in users to their role home.
   context.locals.user = user;
+
+  const requestSecurity = requireRequestSecurity(context);
+  if (requestSecurity) return requestSecurity;
 
   // POST /login — self-submitting auth form. Astro 6 has no named request
   // handlers for .astro pages, so the middleware short-circuits the request

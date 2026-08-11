@@ -420,6 +420,8 @@ ok(!validateUploadedFile(new File([Buffer.from('MZ')], 'malware.exe', { type: 'a
 ok(!validateUploadedFile(new File([Buffer.from('text')], 'report.pdf', { type: 'text/plain' })).ok, 'uploads: mismatched MIME rejected');
 ok(validateEvidenceFile(validPdf, Buffer.from('%PDF-1.7\n')).ok, 'uploads: evidence PDF magic bytes accepted');
 ok(!validateEvidenceFile(validPdf, Buffer.from('not a PDF')).ok, 'uploads: fake PDF magic bytes rejected');
+ok(!validateUploadedFile(new File([Buffer.from('MZ\x90\x00')], 'renamed.pdf', { type: 'application/pdf' }), Buffer.from('MZ\x90\x00')).ok, 'uploads: executable magic bytes rejected even with safe extension');
+ok(!validateUploadedFile(new File([Buffer.from('not a PDF')], 'fake.pdf', { type: 'application/pdf' }), Buffer.from('not a PDF')).ok, 'uploads: generic attachment magic bytes enforced');
 
 // ── 4. CSV export (pure) ──
 section('CSV export (src/lib/export.ts)');

@@ -42,6 +42,7 @@ apps/qc-task-manager/db/*.db-wal
 apps/qc-task-manager/db/*.db-shm
 apps/qc-task-manager/db/backups/*
 !apps/qc-task-manager/db/backups/.gitkeep
+apps/qc-task-manager/download/
 
 # IDE
 .vscode/

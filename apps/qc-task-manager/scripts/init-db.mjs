@@ -21,6 +21,12 @@ const SEED_DEMO = process.env.SEED_DEMO === '1';
 const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 const IS_DEFAULT_PASSWORD = DEFAULT_PASSWORD === 'admin123';
 
+function assertSafeSeedPassword() {
+  if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_DEFAULT_PASSWORD) {
+    throw new Error('ADMIN_DEFAULT_PASSWORD must be set before seeding a production database.');
+  }
+}
+
 // One account per role (mirrors src/lib/seed.ts). Every account uses the same
 // ADMIN_DEFAULT_PASSWORD so the role router is testable on a fresh database.
 const SEED_USERS = [
@@ -40,6 +46,7 @@ function seedUsersIfEmpty(db) {
     console.log(`[init-db] users table already has ${n} row(s) — skipping seed.`);
     return false;
   }
+  assertSafeSeedPassword();
   const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
   const insert = db.prepare(
     `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)

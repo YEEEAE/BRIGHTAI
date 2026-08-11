@@ -16,6 +16,14 @@ import { setFlash } from './flash';
 import { parseFormData, loginInputSchema } from './validation';
 import type { SessionData, User } from './types';
 
+/** Secure cookies follow the actual request scheme, not the build mode. */
+function isSecureRequest(context: { request: Request; url?: URL }): boolean {
+  return (
+    context.url?.protocol === 'https:' ||
+    context.request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() === 'https'
+  );
+}
+
 /** Read the current session from the request cookie, if any. */
 export function readSession(context: APIContext): SessionData | null {
   const token = context.cookies.get(COOKIE_NAME)?.value;
@@ -45,7 +53,7 @@ export function loginAndSetCookie(
   context.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: 'lax',
-    secure: import.meta.env.PROD,
+    secure: isSecureRequest(context),
     path: '/',
     maxAge: Math.round(SESSION_TTL_MS / 1000),
   });
@@ -103,7 +111,7 @@ export async function handleLoginPost(context: LoginContext): Promise<Response> 
   context.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: 'lax',
-    secure: import.meta.env.PROD,
+    secure: isSecureRequest(context),
     path: '/',
     maxAge: Math.round(SESSION_TTL_MS / 1000),
   });

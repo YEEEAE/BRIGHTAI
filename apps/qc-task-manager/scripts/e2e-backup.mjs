@@ -16,7 +16,7 @@ if (!DB_PATH) {
   process.exit(1);
 }
 
-const PASS = 'admin123';
+const PASS = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 const CSRF_HEADERS = { Origin: BASE, Referer: `${BASE}/` };
 let passed = 0;
 let failed = 0;

@@ -174,7 +174,7 @@ hr{border:none;border-top:1px solid var(--line);margin:14px 0}
 <table>
 <thead><tr><th>القيمة</th><th>الموقع</th><th>متتبّع في git؟</th><th>الحكم</th></tr></thead>
 <tbody>
-<tr><td class="code">AIzaSyC3pLdZ-7R2XlvPFTZ8Alg93zkuThHbQYM (قديم)</td><td class="code">.agents/brain.md:4373</td><td class="fail">نعم (في HEAD a8857c26، دخل عبر 3f49dd81)</td><td class="fail">FAIL — high</td></tr>
+<tr><td class="code">REDACTED_COMPROMISED_KEY (قديم)</td><td class="code">.agents/brain.md:4373</td><td class="fail">نعم (في HEAD a8857c26، دخل عبر 3f49dd81)</td><td class="fail">FAIL — high</td></tr>
 <tr><td class="code">AIzaSyC3pLdZ… (نفسه)</td><td class="code">report/A/2026-07-15-kernel-audit-master.md:119</td><td class="fail">نعم</td><td class="fail">FAIL</td></tr>
 <tr><td class="code">AIzaSyC3pLdZ… (نفسه)</td><td class="code">report/A/2026-07-18-pre-audit-brain-snapshot.md:1320</td><td class="fail">نعم</td><td class="fail">FAIL</td></tr>
 <tr><td class="code">AIzaSyC3pLdZ… (نفسه)</td><td class="code">brightai-audit-reports/prompt/brightai-audit-prompts.md:289</td><td class="fail">نعم</td><td class="fail">FAIL</td></tr>
@@ -974,7 +974,7 @@ pnpm run verify:post-deploy
 <pre><code>## PROMPT [ID: BAI-SEC-13] — تدوير مفتاح Gemini + تنظيف brain.md
 **Priority: P0 · Effort: 1h · Impact: 10 · Risk: low · Depends: none · Blocks: BAI-KERNEL-01**
 
-**CONTEXT** — المفتاح القديم AIzaSyC3pLdZ-7R2XlvPFTZ8Alg93zkuThHbQYM لا يزال نصًا صريحًا في .agents/brain.md:4373 + 3 تقارير (report/A/2026-07-15-kernel-audit-master.md:119, report/A/2026-07-18-pre-audit-brain-snapshot.md:1320, brightai-audit-reports/prompt/brightai-audit-prompts.md:289) — كلها متتبّعة في git (دخل عبر commits 3f49dd81 و 55b6464c، في HEAD a8857c26). المفتاح CONSUMER_SUSPENDED عند Google لكن تعرّضه النصّي باقٍ. لقطة شاشة المالك كشفت المفتاح الجديد AIzaSyBFMm… كاملة → يجب تدويره أيضًا بغض النظر عن الريبو.
+**CONTEXT** — المفتاح القديم REDACTED_COMPROMISED_KEY لا يزال نصًا صريحًا في .agents/brain.md:4373 + 3 تقارير (report/A/2026-07-15-kernel-audit-master.md:119, report/A/2026-07-18-pre-audit-brain-snapshot.md:1320, brightai-audit-reports/prompt/brightai-audit-prompts.md:289) — كلها متتبّعة في git (دخل عبر commits 3f49dd81 و 55b6464c، في HEAD a8857c26). المفتاح CONSUMER_SUSPENDED عند Google لكن تعرّضه النصّي باقٍ. لقطة شاشة المالك كشفت المفتاح الجديد AIzaSyBFMm… كاملة → يجب تدويره أيضًا بغض النظر عن الريبو.
 
 **FILES IN SCOPE**
 - .agents/brain.md:4373

@@ -13,7 +13,10 @@ export default function MarkAllReadButton() {
     if (busy) return;
     setBusy(true);
     try {
-      const res = await fetch('/api/notifications/read-all', { method: 'POST' });
+      const res = await fetch('/api/notifications/read-all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
       const data = (await res.json()) as { ok: boolean };
       if (res.ok && data.ok) {
         window.location.href = '/notifications';

@@ -8,7 +8,8 @@
 //   supervisor   supervisor  Team Supervisor  1
 //   employee     employee    QC Employee      0
 //
-// Every account uses ADMIN_DEFAULT_PASSWORD (fallback 'admin123'),
+// Every account uses ADMIN_DEFAULT_PASSWORD. The local-only fallback is never
+// accepted when NODE_ENV=production.
 // bcrypt-hashed at runtime. The password is only used on the first boot (seed
 // runs when the users table is empty).
 
@@ -18,6 +19,12 @@ import type { Role } from './types';
 
 const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 const IS_DEFAULT_PASSWORD = DEFAULT_PASSWORD === 'admin123';
+
+function assertSafeSeedPassword(): void {
+  if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_DEFAULT_PASSWORD) {
+    throw new Error('ADMIN_DEFAULT_PASSWORD must be set before seeding a production database.');
+  }
+}
 
 interface SeedUser {
   username: string;
@@ -46,6 +53,8 @@ export function isUsersEmpty(db: BetterSqliteDatabase): boolean {
  */
 export function seedUsersIfEmpty(db: BetterSqliteDatabase): number {
   if (!isUsersEmpty(db)) return 0;
+
+  assertSafeSeedPassword();
 
   const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
   const insert = db.prepare(

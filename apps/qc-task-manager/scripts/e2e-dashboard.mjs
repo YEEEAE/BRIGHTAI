@@ -25,7 +25,7 @@ if (!DB_PATH) {
   console.error('❌ QC_DB_PATH is required (must match the server database).');
   process.exit(1);
 }
-const PASS = 'admin123';
+const PASS = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 
 // ── tiny test harness ──
 let passed = 0;

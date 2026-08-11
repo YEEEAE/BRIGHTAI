@@ -12,7 +12,7 @@ if (!BASE || !DB_PATH || !['create', 'verify'].includes(STAGE)) {
   throw new Error('BASE_URL, QC_DATABASE_PATH, and PERSISTENCE_STAGE=create|verify are required.');
 }
 
-const PASS = 'admin123';
+const PASS = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
 const bytes = Buffer.from('%PDF-1.7 persistence fixture');
 const headers = { Origin: BASE, Referer: `${BASE}/` };
 
@@ -75,4 +75,3 @@ try {
   await browser.close();
   db.close();
 }
-

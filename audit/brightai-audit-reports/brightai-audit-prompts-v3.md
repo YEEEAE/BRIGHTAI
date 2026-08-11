@@ -196,7 +196,7 @@ curl -sI https://brightai.site/api/health/ | grep x-brightai-build
 
 **Priority: P0 · Effort: 1h · Impact: 10 · Risk: low · Depends: none · Blocks: BAI-KERNEL-01**
 
-**CONTEXT** — المفتاح القديم AIzaSyC3pLdZ-7R2XlvPFTZ8Alg93zkuThHbQYM لا يزال نصًا صريحًا في .agents/brain.md:4373 + 3 تقارير (report/A/2026-07-15-kernel-audit-master.md:119, report/A/2026-07-18-pre-audit-brain-snapshot.md:1320, brightai-audit-reports/prompt/brightai-audit-prompts.md:289) — كلها متتبّعة في git. المفتاح CONSUMER_SUSPENDED لكن التعرّض النصّي باقٍ. لقطة شاشة المالك كشفت المفتاح الجديد AIzaSyBFMm… كاملة → يجب تدويره أيضًا.
+**CONTEXT** — المفتاح القديم REDACTED_COMPROMISED_KEY لا يزال نصًا صريحًا في .agents/brain.md:4373 + 3 تقارير (report/A/2026-07-15-kernel-audit-master.md:119, report/A/2026-07-18-pre-audit-brain-snapshot.md:1320, brightai-audit-reports/prompt/brightai-audit-prompts.md:289) — كلها متتبّعة في git. المفتاح CONSUMER_SUSPENDED لكن التعرّض النصّي باقٍ. لقطة شاشة المالك كشفت المفتاح الجديد AIzaSyBFMm… كاملة → يجب تدويره أيضًا.
 
 **FILES IN SCOPE**
 - .agents/brain.md:4373

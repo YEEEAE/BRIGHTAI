@@ -6,7 +6,7 @@
 // time, so role/name changes take effect on the next request for that session.
 
 import bcrypt from 'bcryptjs';
-import { randomUUID } from 'node:crypto';
+import { randomBytes } from 'node:crypto';
 import { getDb, toBool } from './db';
 import type { Role, SessionData, User } from './types';
 
@@ -191,7 +191,7 @@ export function verifyCredentials(
 /** Create a session row and return the opaque token to store in the cookie. */
 export function createSession(user: User): string {
   const db = getDb();
-  const token = randomUUID(); // opaque random token, per spec
+  const token = randomBytes(32).toString('base64url'); // 256-bit opaque token
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
   db.prepare(
     `INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)`,
@@ -231,7 +231,10 @@ export function getSession(token: string | null | undefined): SessionData | null
     return null;
   }
   // User deactivated since session was issued: drop it.
-  if (!toBool(row.is_active)) return null;
+  if (!toBool(row.is_active)) {
+    db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+    return null;
+  }
 
   return {
     userId: row.user_id,

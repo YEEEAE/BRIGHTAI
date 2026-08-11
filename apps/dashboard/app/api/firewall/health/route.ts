@@ -89,7 +89,8 @@ export async function GET() {
     },
     llm: {
       groqConfigured: isGroqConfigured(),
-      defaultModel: process.env.GROQ_DEFAULT_MODEL || 'llama-3.1-8b-instant',
+      defaultModel:
+        process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama-3.3-70b-versatile',
     },
     rateLimit: rlStatus,
     audit: { lastOrgHash, verified },
