@@ -28,6 +28,12 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 | `permissions.ts` | **Single source of truth** for role checks (`PERMISSIONS`, area guards, `roleHome`) |
 | `task-policy.ts` | **Canonical domain rules**: statuses/priorities, field locks, limits, upload allowlist, read-only/transition predicates |
 | `validation.ts` | Zod schemas for every server input (login, task create/update, comment, close, delete request, user create, dashboard filters) |
+| `sla/` | Pure SLA, overdue, and due-soon calculations |
+| `workflows/` | Task lifecycle transition boundary; delegates rule ownership to `task-policy.ts` |
+| `audit/` | Server-side audit boundary for accepted mutations |
+| `ai/` | Suggestion-only AI normalization; no DB, authorization, workflow, or audit authority |
+| `findings/` | Finding classification, risk, and finding-text domain rules |
+| `capa/` | Corrective/preventive action domain rules |
 | `tasks.ts` | Task creation + assignment-scope validation + `handleCreateTaskPost` |
 | `taskUpdates.ts` | Update / closure flow / attachment upload (atomic, permission-gated) |
 | `taskDetails.ts` | Read queries + `canViewTask` + activity timeline text |
@@ -41,6 +47,7 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 | `format.ts` | Pure formatting + status color/emoji maps (server + client safe) |
 | `seed.ts` | Role seed + `SEED_DEMO=1` demo team/tasks |
 | `types.ts` | Shared domain types (mirrors `db/schema.sql`) |
+| `scripts/architecture-guard.mjs` | Dependency-free static guard for rule ownership and trust boundaries |
 
 ## Key business rules (encoded in `task-policy.ts`)
 
@@ -50,6 +57,14 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 4. **Closure flow**: completing requires a mandatory completion comment; evidence is uploaded or the skip is recorded. Atomic, race-safe (conditional UPDATE).
 5. **Delete requests**: employees cannot delete — they request; manager/admin approve (hard delete) or reject. The request row is a child of its task (`task_id … ON DELETE CASCADE`), so an approved request is cascade-removed with the task; rejected requests stay in history (titles joined live).
 6. **Activity log**: every task mutation writes `task_activity_log` rows (who / what / old / new / when).
+
+## Source-of-truth and request boundaries
+
+`docs/SINGLE-SOURCE-OF-TRUTH.md` is the detailed ownership contract. In short,
+UI controls are advisory, API handlers re-check session and domain policy,
+AI code is suggestion-only, SQLite protects critical invariants, and audit is
+created server-side. The Architecture Guard checks these boundaries and the
+absence of copied role/status/field-lock/SLA authority.
 
 ## Operations
 
@@ -61,6 +76,7 @@ pnpm --filter @brightai/qc-task-manager db:seed    # apply schema + seed roles (
 pnpm --filter @brightai/qc-task-manager db:backup  # snapshot DB → db/backups/ (keeps last 14)
 pnpm --filter @brightai/qc-task-manager typecheck  # astro check (strict)
 pnpm --filter @brightai/qc-task-manager test       # structure + unit smoke (no server needed)
+pnpm --filter @brightai/qc-task-manager test:architecture # source-of-truth/trust-boundary guard
 ```
 
 Environment:

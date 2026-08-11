@@ -64,6 +64,11 @@ import {
 } from '../src/lib/task-policy.ts';
 import { nextDueDate, shouldCreateNextOccurrence } from '../src/lib/recurrence.ts';
 import { isOverdue, localDateStr } from '../src/lib/format.ts';
+import { dueSoonEnd, isDueSoon } from '../src/lib/sla/index.ts';
+import { canTransitionStatus as workflowCanTransition } from '../src/lib/workflows/index.ts';
+import { normalizeAiSuggestion } from '../src/lib/ai/index.ts';
+import { normalizeFindingText, isFinding, isRisk } from '../src/lib/findings/index.ts';
+import { normalizeCapaAction, requiresCorrectiveAction } from '../src/lib/capa/index.ts';
 import {
   PERMISSIONS,
   canEditTask,
@@ -138,6 +143,12 @@ const requiredPaths = [
   'src/lib/notifications.ts',
   'src/lib/task-policy.ts',
   'src/lib/validation.ts',
+  'src/lib/sla/index.ts',
+  'src/lib/workflows/index.ts',
+  'src/lib/audit/index.ts',
+  'src/lib/ai/index.ts',
+  'src/lib/findings/index.ts',
+  'src/lib/capa/index.ts',
   'src/lib/backup.ts',
   'src/lib/export.ts',
   'astro.config.mjs',
@@ -149,6 +160,15 @@ const requiredPaths = [
 for (const p of requiredPaths) {
   ok(existsSync(resolve(APP_DIR, p)), `exists: ${p}`);
 }
+
+const architectureGuard = spawnSync(process.execPath, [resolve(APP_DIR, 'scripts/architecture-guard.mjs')], {
+  cwd: APP_DIR,
+  encoding: 'utf8',
+});
+ok(
+  architectureGuard.status === 0,
+  `architecture guard: passes${architectureGuard.status === 0 ? '' : `\n${architectureGuard.stdout}${architectureGuard.stderr}`}`,
+);
 
 // ── 2. Validation (Zod) ──
 section('Validation (src/lib/validation.ts)');
@@ -335,6 +355,18 @@ ok(TASK_STATUSES.length === 5 && TASK_STATUSES.includes('cancelled'), 'five stat
 ok(TASK_PRIORITIES.includes('urgent'), 'urgent is a valid priority');
 ok(TASK_RECURRENCES.length === 4 && isRecurrence('daily') && isRecurrence('monthly') && !isRecurrence('yearly'), 'recurrence enum');
 ok(isAllowedExtension('pdf') && !isAllowedExtension('exe'), 'extension allowlist');
+
+section('Architecture domain boundaries');
+ok(workflowCanTransition('not_started', 'in_progress'), 'workflow delegates status transitions to task policy');
+ok(isDueSoon('2026-08-14', 'in_progress', '2026-08-11'), 'sla: due-soon window is canonical');
+ok(!isDueSoon('2026-08-15', 'in_progress', '2026-08-11'), 'sla: dates after the window are not due-soon');
+ok(dueSoonEnd('2026-08-11') === '2026-08-14', 'sla: due-soon end is deterministic');
+ok(normalizeAiSuggestion({ kind: 'summary', text: '  advisory  ' })?.text === 'advisory', 'ai: suggestions are normalized only');
+ok(normalizeAiSuggestion({ kind: 'summary', text: '' }) === null, 'ai: blank suggestions are rejected');
+ok(isFinding('major') && !isFinding('invalid') && isRisk('critical'), 'findings: canonical classification and risk policy');
+ok(normalizeFindingText('  deviation  ') === 'deviation', 'findings: text is normalized');
+ok(normalizeCapaAction('  retrain operator  ') === 'retrain operator', 'capa: action is normalized');
+ok(requiresCorrectiveAction('critical') && !requiresCorrectiveAction('observation'), 'capa: critical findings require corrective action');
 
 // Completion-evidence allowlist (spec: PDF, PNG, JPG, JPEG, XLSX, DOCX only).
 section('Evidence policy (completion wizard allowlist)');

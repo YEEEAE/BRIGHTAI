@@ -20,7 +20,7 @@
 import { createHash } from 'node:crypto';
 
 import { getDb } from './db';
-import { logActivity, Action } from './activity';
+import { Action, recordTaskMutation } from './audit';
 import { canEditTask, canEditLockedField, canEditChecklistStructure, hasRankAtLeast } from './permissions';
 import { createNotification } from './notifications';
 import { validateDependencies } from './tasks';
@@ -57,6 +57,24 @@ import {
 } from './task-policy';
 import { nextDueDate, shouldCreateNextOccurrence } from './recurrence';
 import type { Role, Task } from './types';
+
+// Keep the mutation implementation readable while forcing every task audit
+// event through the server-side audit boundary.
+function logActivity(params: {
+  taskId: number;
+  userId: number;
+  action: string;
+  oldValue?: string | null | number | boolean;
+  newValue?: string | null | number | boolean;
+}): void {
+  recordTaskMutation({
+    taskId: params.taskId,
+    actorId: params.userId,
+    action: params.action,
+    oldValue: params.oldValue,
+    newValue: params.newValue,
+  });
+}
 
 // Back-compat re-exports (constants moved to the canonical src/lib/task-policy.ts).
 export {

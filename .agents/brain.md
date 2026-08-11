@@ -2,12 +2,21 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-11 21:39 +03:00
+last_updated: 2026-08-11 23:12 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.86
+version: 2.7.87
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-11 — QC-ARCHITECTURE-GUARD-001: توحيد مصدر الحقيقة وحارس architecture
+
+- **Files**: `apps/qc-task-manager/scripts/architecture-guard.mjs`, `scripts/test.mjs`, `package.json`, `src/lib/{sla,workflows,audit,ai,findings,capa}/`, `src/lib/{format,notifications,taskUpdates}.ts`, `apps/qc-task-manager/docs/ARCHITECTURE.md`, `apps/qc-task-manager/SECURITY.md`, `docs/{SINGLE-SOURCE-OF-TRUTH,ARCHITECTURE,SECURITY}.md`, `docs/superpowers/{specs,plans}/2026-08-11-qc-architecture-guard-*`.
+- **What**: ثبّتُّ `task-policy.ts` كمصدر قواعد المهمة و`permissions.ts` كمصدر RBAC، وأضفت طبقات SLA/workflows/audit/ai/findings/capa. نقلت حسابات overdue/due-soon إلى SLA مع compatibility exports، وربطت task mutation audit boundary server-side. أضفت Architecture Guard ثابتًا يفحص canonical modules، تكرار authority، حدود UI/AI، API guard imports، وSQLite invariants. أضفت entry points جذرية للـ architecture/security بدون نسخ الوثائق.
+- **Rules**: UI ليس authorization authority؛ API يعيد التحقق server-side؛ AI advisory-only ولا يكتب state/audit؛ DB تحمي role/status/progress/FK invariants؛ audit ينشأ من الخادم.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **migration + Architecture Guard + 265 domain + DB rules PASS / 0 failures**؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 11 existing hints**؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built**؛ `node apps/qc-task-manager/scripts/verify-security-hygiene.mjs` → **passed**؛ Architecture Guard → **passed**؛ `git diff --check` فيه تحذير fsmonitor بيئي فقط ولا توجد أخطاء diff.
+- **Status**: verified locally; uncommitted — المستخدم يلتزم، ولا push. التحقق الحي E2E غير مُعاد تشغيله ضمن هذه المهمة؛ لا يُستنتج منه production readiness.
+
 
 ### 2026-08-11 — QC-SECURITY-HARDENING-002: إكمال Security Hardening والتحقق الحي
 

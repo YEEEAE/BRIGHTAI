@@ -19,6 +19,10 @@ scanning, host hardening, or a managed web application firewall.
   from the server-side `sessions` table. API handlers repeat that check.
 - Task operations use role and task ownership/visibility rules on the server;
   client-side UI permissions are never authoritative.
+- The Architecture Guard checks that UI components do not import DB/auth/mutation
+  authority, AI modules remain suggestion-only, and role/status/field-lock/SLA
+  logic is not duplicated outside canonical modules. Run
+  `pnpm --filter @brightai/qc-task-manager test:architecture` before release.
 - State-changing requests require same-origin CSRF validation in addition to
   Astro's built-in CSRF handling.
 - Session cookies are `HttpOnly`, `SameSite=Lax`, path-scoped and `Secure` in
@@ -31,6 +35,9 @@ scanning, host hardening, or a managed web application firewall.
   Dynamic SQL fragments are fixed allowlists, never user-provided identifiers.
 - Inputs are constrained with Zod and domain validation; route IDs are positive
   integers and redirect targets are same-origin paths only.
+- AI provider output is untrusted advisory input. AI cannot authorize a user,
+  change task state, assign a task, close/reopen/cancel a task, or create an
+  audit event.
 - Uploads are restricted by sanitized filename, extension, declared MIME type,
   maximum size (10 MiB) and, for evidence formats, magic bytes. File size is
   checked before BLOB allocation/insertion. Files are served as attachments
@@ -38,6 +45,9 @@ scanning, host hardening, or a managed web application firewall.
 - Responses use CSP, `X-Content-Type-Options: nosniff`,
   `Referrer-Policy: strict-origin-when-cross-origin`, and
   `X-Frame-Options: DENY` / CSP `frame-ancestors 'none'`.
+- Critical role, status, progress, and foreign-key invariants are also enforced
+  in SQLite schema/migrations; API validation and policy remain required for
+  business transitions and authorization.
 - Passwords, hashes, cookies, session tokens, raw upload bytes and file
   contents must never be returned or logged. Run the security hygiene gate
   before release.
@@ -74,6 +84,7 @@ Run from the repository root:
 ```bash
 pnpm --filter @brightai/qc-task-manager typecheck
 pnpm --filter @brightai/qc-task-manager test
+pnpm --filter @brightai/qc-task-manager test:architecture
 node apps/qc-task-manager/scripts/verify-security-hygiene.mjs
 pnpm --filter @brightai/qc-task-manager build
 ```

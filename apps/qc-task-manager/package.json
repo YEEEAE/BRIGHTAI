@@ -17,9 +17,10 @@
     "db:backup": "node --experimental-strip-types scripts/backup-db.mjs",
     "db:restore": "node --experimental-strip-types scripts/restore-db.mjs",
     "test:migrations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-migrations.mjs",
+    "test:architecture": "node scripts/architecture-guard.mjs",
     "test:domain": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs",
     "test:db-rules": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-db-rules.mjs",
-    "test": "pnpm test:migrations && pnpm test:domain && pnpm test:db-rules",
+    "test": "pnpm test:migrations && pnpm test:architecture && pnpm test:domain && pnpm test:db-rules",
     "e2e:acceptance": "NODE_ENV=production pnpm build && node scripts/e2e-acceptance.mjs"
   },
   "dependencies": {

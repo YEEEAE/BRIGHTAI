@@ -10,6 +10,9 @@
 const DT_RE = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})$/;
 const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
+// Compatibility exports: SLA ownership lives in src/lib/sla/index.ts.
+export { isOverdue, localDateStr } from './sla';
+
 /** Shared limit: completion + regular comments (kept here so APIs never drift). */
 export const MAX_COMMENT_LENGTH = 2000;
 
@@ -154,27 +157,5 @@ export function statusEmoji(status: string): string {
 /** Badge class for a priority code (falls back to a neutral gray). */
 export function priorityBadgeClass(priority: string): string {
   return PRIORITY_BADGE[priority] ?? 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200';
-}
-
-/**
- * Today's date in the LOCAL timezone as YYYY-MM-DD (matches how due_date is
- * stored and displayed). Pure + dependency-free so islands can use it too.
- */
-export function localDateStr(d: Date = new Date()): string {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-/**
- * Overdue = a due date strictly BEFORE today AND the task is still active
- * (completed and cancelled tasks are never overdue — same rule as the
- * dashboard).
- */
-export function isOverdue(dueDate: string | null | undefined, status: string): boolean {
-  if (!dueDate) return false;
-  if (status === 'completed' || status === 'cancelled') return false;
-  return dueDate < localDateStr();
 }
 

@@ -19,7 +19,7 @@
 
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
-import { isOverdue, localDateStr } from './format';
+import { dueSoonEnd, isDueSoon, isOverdue, localDateStr } from './sla';
 import type { Role } from './types';
 
 export type NotificationKind =
@@ -259,9 +259,6 @@ function relevantTasks(user: { id: number; role: Role }): TaskRow[] {
 /** Build the notification list for a user. Cheap reads, capped at MAX_NOTIFICATIONS. */
 export function getNotificationsForUser(user: { id: number; role: Role }): AppNotification[] {
   const today = localDateStr();
-  const plus3 = new Date();
-  plus3.setDate(plus3.getDate() + 3);
-  const todayPlus3 = localDateStr(plus3);
 
   const out: AppNotification[] = [];
   const push = (n: Omit<AppNotification, 'key'> & { key?: string }) => {
@@ -284,20 +281,15 @@ export function getNotificationsForUser(user: { id: number; role: Role }): AppNo
         href: `/tasks/${task.id}`,
         createdAt: task.due_date ?? task.created_at,
       });
-    } else if (
-      task.due_date &&
-      task.status !== 'completed' &&
-      task.status !== 'cancelled' &&
-      task.due_date >= today &&
-      task.due_date <= todayPlus3
-    ) {
+    } else if (isDueSoon(task.due_date, task.status, today)) {
+      const dueDate = task.due_date;
       push({
         kind: 'due_soon',
         severity: 'warning',
         title: 'Due soon',
         message: `"${task.title}" is due on ${task.due_date}${task.assignee_name ? ` (assigned to ${task.assignee_name})` : ''}.`,
         href: `/tasks/${task.id}`,
-        createdAt: task.due_date,
+        createdAt: dueDate ?? today,
       });
     } else if (
       task.status === 'not_started' &&
@@ -334,9 +326,7 @@ export function countNotifications(user: { id: number; role: Role }): number {
   const { clause, params } = taskScope(user);
   const db = getDb();
   const today = localDateStr();
-  const plus3 = new Date();
-  plus3.setDate(plus3.getDate() + 3);
-  const todayPlus3 = localDateStr(plus3);
+  const todayPlus3 = dueSoonEnd(today);
 
   const count = (sql: string, p: unknown[]): number => {
     const row = db.prepare(sql).get(...p) as { n: number };
