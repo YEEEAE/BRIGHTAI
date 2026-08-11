@@ -12,6 +12,7 @@ import { getDb } from '../../../../lib/db';
 import { getCurrentUser } from '../../../../lib/session';
 import { canViewTask } from '../../../../lib/taskDetails';
 import { logActivity, Action } from '../../../../lib/activity';
+import { createNotification } from '../../../../lib/notifications';
 import { parseFormData, commentSchema } from '../../../../lib/validation';
 import type { Task } from '../../../../lib/types';
 
@@ -31,8 +32,8 @@ export const POST: APIRoute = async (context) => {
     return json({ ok: false, error: 'Invalid task id.' }, 404);
   }
 
-  const task = getDb().prepare('SELECT id, status, created_by, assigned_to FROM tasks WHERE id = ?').get(taskId) as
-    | Pick<Task, 'id' | 'status' | 'created_by' | 'assigned_to'>
+  const task = getDb().prepare('SELECT id, status, created_by, assigned_to, title FROM tasks WHERE id = ?').get(taskId) as
+    | Pick<Task, 'id' | 'status' | 'created_by' | 'assigned_to' | 'title'>
     | undefined;
   if (!task) return json({ ok: false, error: 'Task not found.' }, 404);
 
@@ -58,6 +59,23 @@ export const POST: APIRoute = async (context) => {
   const commentId = Number(result.lastInsertRowid);
 
   logActivity({ taskId, userId: user.id, action: Action.COMMENT_ADDED, newValue: comment });
+
+  // Comment notification (spec: "a comment is added to a task"): the assignee
+  // + creator, excluding the commenter, get a persisted in-app alert.
+  const recipients = new Set<number>();
+  if (task.assigned_to != null) recipients.add(task.assigned_to);
+  if (task.created_by != null) recipients.add(task.created_by);
+  recipients.delete(user.id);
+  const snippet = comment.length > 90 ? `${comment.slice(0, 90)}…` : comment;
+  for (const uid of recipients) {
+    createNotification({
+      userId: uid,
+      taskId,
+      type: 'comment_added',
+      title: `New comment by ${user.full_name}`,
+      message: `On "${task.title}": “${snippet}”`,
+    });
+  }
 
   const created = db
     .prepare('SELECT created_at FROM task_comments WHERE id = ?')

@@ -4,7 +4,7 @@
 // (success/error) without each page importing it manually.
 import Navbar from '../components/Navbar';
 import FlashNotice from '../components/FlashNotice.astro';
-import { countNotifications } from '../lib/notifications';
+import { countNotifications, listPersistedNotifications } from '../lib/notifications';
 
 interface Props {
   title: string;
@@ -15,11 +15,15 @@ interface Props {
 const { title, hideNav = false } = Astro.props;
 const siteTitle = title ? `${title} · QC Tasks` : 'QC Tasks';
 
-// Live alert count for the navbar bell (only when signed in — login has no nav).
+// Live alert count for the navbar bell + the latest persisted notifications
+// for the dropdown (only when signed in — login has no nav).
 const navUser = Astro.locals.user;
 const notificationCount = navUser
   ? countNotifications({ id: navUser.userId, role: navUser.role })
   : 0;
+const recentNotifications = navUser
+  ? listPersistedNotifications(navUser.userId, 8)
+  : [];
 ---
 <!doctype html>
 <html lang="en" dir="ltr">
@@ -31,7 +35,12 @@ const notificationCount = navUser
   </head>
   <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
     {!hideNav && (
-      <Navbar client:load user={Astro.locals.user} notificationCount={notificationCount} />
+      <Navbar
+        client:load
+        user={Astro.locals.user}
+        notificationCount={notificationCount}
+        recentNotifications={recentNotifications}
+      />
     )}
     <main class="mx-auto w-full max-w-6xl px-4 py-8">
       <FlashNotice />

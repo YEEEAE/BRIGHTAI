@@ -371,7 +371,7 @@ try {
   await empPage.goto(`${BASE}/notifications`);
   ok((await empPage.locator('text=New task assigned to you').count()) >= 1, '6. assignment notification visible to assignee');
   ok((await empPage.locator('text=Task due date changed').count()) >= 1, '6. due-date notification visible');
-  const bell = empPage.locator('a[aria-label^="Notifications"] span');
+  const bell = empPage.locator('[aria-label^="Notifications"] span');
   const bellCount = Number(await bell.innerText());
   ok(bellCount >= 1, `6. navbar badge counts notifications (${bellCount})`);
   const markRes = await empCtx.request.post(`${BASE}/api/notifications/read-all`, {
@@ -770,6 +770,145 @@ try {
     headers: { Origin: BASE },
   });
   ok(closeCancelled.status() === 400, '9e. cancelled task cannot be completed');
+
+  // ─────────────────── 10. In-app notification events ───────────────────
+  console.log('\n── Scenario 10: comment / blocker / delete-request / reopen notifications ──');
+
+  // 10a. A comment notifies the assignee (never the commenter).
+  const notifyTaskId = Number(
+    db.prepare(
+      `INSERT INTO tasks (title, description, status, priority, created_by, assigned_to, due_date)
+       VALUES (?, ?, 'in_progress', 'medium', ?, ?, ?)`,
+    )
+      .run('E2E Notify Task', null, mgr.id, emp.id, isoDaysFromToday(3)).lastInsertRowid,
+  );
+  db.prepare('INSERT INTO task_activity_log (task_id, user_id, action, new_value) VALUES (?, ?, ?, ?)')
+    .run(notifyTaskId, mgr.id, 'task_created', 'E2E Notify Task');
+
+  const commentRes = await mgrCtx.request.post(`${BASE}/api/tasks/${notifyTaskId}/comment`, {
+    form: { comment: 'Please review this soon' },
+    headers: { Origin: BASE },
+  });
+  ok(commentRes.status() === 200, '10a. manager comments on the task');
+  const commentNotif = q("SELECT * FROM notifications WHERE user_id = ? AND task_id = ? AND type = 'comment_added'", emp.id, notifyTaskId);
+  ok(!!commentNotif && commentNotif.message.includes('Please review this soon'), '10a. assignee notified about the comment');
+  const selfComment = q("SELECT COUNT(*) AS n FROM notifications WHERE user_id = ? AND type = 'comment_added'", mgr.id);
+  eq(Number(selfComment.n), 0, '10a. the commenter is NOT notified');
+
+  // 10b. A blocker note notifies the creator (the assignee typed it).
+  const blockerRes = await empCtx.request.post(`${BASE}/api/tasks/${notifyTaskId}/update`, {
+    form: { blocker_note: 'Waiting on lab equipment' },
+    headers: { Origin: BASE },
+  });
+  ok(blockerRes.status() === 200, '10b. employee adds a blocker note');
+  const blockerNotif = q("SELECT * FROM notifications WHERE user_id = ? AND task_id = ? AND type = 'blocker_added'", mgr.id, notifyTaskId);
+  ok(!!blockerNotif && blockerNotif.message.includes('Waiting on lab equipment'), '10b. creator notified about the blocker');
+
+  // 10c. Priority DOWNGRADE does not notify (spec: only changes TO high/urgent).
+  const downgrade = await supCtx.request.post(`${BASE}/api/tasks/${notifyTaskId}/update`, {
+    form: { priority: 'low' },
+    headers: { Origin: BASE },
+  });
+  ok(downgrade.status() === 200, '10c. supervisor downgrades priority to low');
+  const downgradeNotif = q("SELECT COUNT(*) AS n FROM notifications WHERE task_id = ? AND type = 'priority_changed'", notifyTaskId);
+  eq(Number(downgradeNotif.n), 0, '10c. no notification on a priority downgrade');
+
+  // 10d. A submitted deletion request notifies managers/admins; rejecting it
+  // notifies the requester.
+  const delReq = await empCtx.request.post(`${BASE}/api/tasks/${notifyTaskId}/delete-request`, {
+    form: { reason: 'Duplicate task' },
+    headers: { Origin: BASE },
+  });
+  ok(delReq.status() === 200, '10d. employee submits a deletion request');
+  const delReqNotif = q("SELECT * FROM notifications WHERE user_id = ? AND type = 'delete_requested' AND task_id = ?", mgr.id, notifyTaskId);
+  ok(!!delReqNotif && delReqNotif.message.includes('Duplicate task'), '10d. manager notified about the submitted request');
+  const reqRow = q("SELECT id FROM task_delete_requests WHERE task_id = ? AND status = 'pending'", notifyTaskId);
+  ok(!!reqRow, '10d. pending request row exists');
+  const rejectRes = await mgrCtx.request.post(`${BASE}/manager/requests/api`, {
+    form: { action: 'reject', request_id: String(reqRow.id) },
+    headers: { Origin: BASE },
+    maxRedirects: 0,
+  });
+  ok(rejectRes.status() === 302, '10d. manager rejects the request');
+  const rejectNotif = q("SELECT * FROM notifications WHERE user_id = ? AND task_id = ? AND type = 'delete_rejected'", emp.id, notifyTaskId);
+  ok(!!rejectNotif, '10d. requester notified about the rejection');
+
+  // 10e. Approving a request notifies the requester; the task link drops
+  // because the task itself is deleted (ON DELETE SET NULL).
+  const delReq2 = await empCtx.request.post(`${BASE}/api/tasks/${depC.id}/delete-request`, {
+    form: { reason: 'No longer needed' },
+    headers: { Origin: BASE },
+  });
+  ok(delReq2.status() === 200, '10e. employee submits a second deletion request');
+  const reqRow2 = q("SELECT id FROM task_delete_requests WHERE task_id = ? AND status = 'pending'", depC.id);
+  ok(!!reqRow2, '10e. second pending request exists');
+  const approveRes = await mgrCtx.request.post(`${BASE}/manager/requests/api`, {
+    form: { action: 'approve', request_id: String(reqRow2.id) },
+    headers: { Origin: BASE },
+    maxRedirects: 0,
+  });
+  ok(approveRes.status() === 302, '10e. manager approves the request');
+  const approveNotif = q("SELECT * FROM notifications WHERE user_id = ? AND type = 'delete_approved'", emp.id);
+  ok(!!approveNotif && approveNotif.task_id === null, '10e. requester notified; task link dropped (task deleted)');
+  ok(!q('SELECT 1 FROM tasks WHERE id = ?', depC.id), '10e. approved task deleted');
+
+  // 10f. Reopening a completed task notifies the assignee (not the re-opener).
+  const reopenNotifId = Number(
+    db.prepare(
+      `INSERT INTO tasks (title, description, status, priority, created_by, assigned_to)
+       VALUES (?, ?, 'in_progress', 'medium', ?, ?)`,
+    )
+      .run('E2E Reopen Notify', null, mgr.id, emp.id).lastInsertRowid,
+  );
+  db.prepare('INSERT INTO task_activity_log (task_id, user_id, action, new_value) VALUES (?, ?, ?, ?)')
+    .run(reopenNotifId, mgr.id, 'task_created', 'E2E Reopen Notify');
+  const closeRN = await empCtx.request.post(`${BASE}/api/tasks/${reopenNotifId}/close`, {
+    multipart: { completion_comment: 'done', skip_evidence: '1' },
+    headers: { Origin: BASE },
+  });
+  ok(closeRN.status() === 200, '10f. task completed for the reopen test');
+  const reopenRN = await mgrCtx.request.post(`${BASE}/api/tasks/${reopenNotifId}/reopen`, {
+    headers: { Origin: BASE },
+  });
+  ok(reopenRN.status() === 200, '10f. manager reopens it');
+  const reopenNotif = q("SELECT * FROM notifications WHERE user_id = ? AND task_id = ? AND type = 'task_reopened'", emp.id, reopenNotifId);
+  ok(!!reopenNotif, '10f. assignee notified about the reopen');
+  const selfReopen = q("SELECT COUNT(*) AS n FROM notifications WHERE user_id = ? AND type = 'task_reopened'", mgr.id);
+  eq(Number(selfReopen.n), 0, '10f. the re-opener is NOT notified');
+
+  // 10g. Mark ONE notification as read (ownership enforced).
+  const oneUnread = q('SELECT id FROM notifications WHERE user_id = ? AND is_read = 0 ORDER BY id DESC LIMIT 1', emp.id);
+  ok(!!oneUnread, '10g. employee has an unread notification');
+  const readRes = await empCtx.request.post(`${BASE}/api/notifications/${oneUnread.id}/read`, {
+    headers: { Origin: BASE },
+  });
+  ok(readRes.status() === 200, '10g. mark-one-read endpoint works');
+  eq(Number(q('SELECT is_read FROM notifications WHERE id = ?', oneUnread.id).is_read), 1, '10g. that notification is now read');
+  const stillUnread = q('SELECT COUNT(*) AS n FROM notifications WHERE user_id = ? AND is_read = 0', emp.id);
+  ok(Number(stillUnread.n) >= 1, '10g. other notifications stay unread');
+  // A different user cannot flip someone else's row.
+  const stolen = await mgrCtx.request.post(`${BASE}/api/notifications/${oneUnread.id}/read`, {
+    headers: { Origin: BASE },
+  });
+  ok(stolen.status() === 200, '10g. foreign mark-read is a harmless no-op');
+  eq(Number(q('SELECT is_read FROM notifications WHERE id = ?', oneUnread.id).is_read), 1, '10g. foreign call changed nothing');
+
+  // 10h. Bell dropdown: opens on click, links to tasks, closes on Escape.
+  // (Retry the click until the React island hydrates — a pre-hydration click
+  // is a harmless no-op.)
+  await empPage.goto(`${BASE}/employee`);
+  let tries = 0;
+  while ((await empPage.locator('#notification-dropdown').count()) === 0 && tries < 3) {
+    await empPage.click('button[aria-label^="Notifications"]');
+    tries += 1;
+    await empPage.waitForTimeout(250);
+  }
+  await empPage.waitForSelector('#notification-dropdown', { timeout: 5_000 });
+  ok(true, '10h. notification dropdown opens from the bell');
+  ok((await empPage.locator('#notification-dropdown a[href^="/tasks/"]').count()) >= 1, '10h. dropdown items link to tasks');
+  ok((await empPage.locator('#notification-dropdown').getByText('Mark all as read').count()) === 1, '10h. dropdown has mark-all-as-read');
+  await empPage.keyboard.press('Escape');
+  ok((await empPage.locator('#notification-dropdown').count()) === 0, '10h. dropdown closes on Escape');
 } catch (err) {
   failed += 1;
   failures.push(`unhandled error: ${err.message}`);

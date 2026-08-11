@@ -72,6 +72,10 @@ export interface TaskAttachment {
   mime_type: string | null;
   file_data: Buffer;
   file_size: number | null;
+  /** SHA-256 hex digest of file_data (computed on upload, NULL for legacy rows). */
+  file_hash: string | null;
+  /** 1 = completion-evidence file (completion wizard), 0 = generic attachment. */
+  is_evidence: number;
   uploaded_at: string;
 }
 

@@ -48,6 +48,7 @@ import {
 import { listBlockingDependencies } from '../../lib/taskUpdates';
 import { taskListFor, listActiveUsers, listTasksForDependency } from '../../lib/tasks';
 import { canEditTask, canEditLockedField, hasRankAtLeast } from '../../lib/permissions';
+import { EMPLOYEE_LOCKED_FIELDS } from '../../lib/task-policy';
 import {
   formatDbDate,
   formatDueDate,
@@ -131,6 +132,25 @@ const deleteRequestPending =
   !notFound && !forbidden && !!task ? hasPendingDeleteRequest(rawId) : false;
 
 const backHref = taskListFor(user.role);
+
+// Locked-field summary (section #2): the business fields an EMPLOYEE cannot
+// edit after creation (EMPLOYEE_LOCKED_FIELDS). Supervisors/managers/admins can.
+// Shown only to employees on tasks they may edit, so they understand why parts
+// of the update panel are disabled.
+const LOCKED_FIELD_LABELS: Record<string, string> = {
+  title: 'Title',
+  description: 'Description',
+  department: 'Department',
+  assigned_to: 'Assignee',
+  due_date: 'Due date',
+  priority: 'Priority',
+  recurrence: 'Recurrence',
+  recurrence_end_date: 'Recurrence end date',
+  checklist: 'Checklist items',
+  dependencies: 'Dependencies',
+};
+const showLockedSummary = user.role === 'employee' && canEdit;
+const lockedFieldLabels = EMPLOYEE_LOCKED_FIELDS.map((f) => LOCKED_FIELD_LABELS[f] ?? f);
 
 function progressTone(p: number): string {
   if (p >= 100) return 'bg-emerald-500';
@@ -325,6 +345,35 @@ function svgIcon(inner: string, cls = ''): string {
         )}
       </div>
 
+      {/* 1a. Locked field summary — employees only (CORE BUSINESS RULE #2). */}
+      {showLockedSummary && (
+        <section
+          class="rounded-lg border border-slate-200 bg-slate-50 p-5"
+          aria-label="Locked fields"
+          data-locked-field-summary
+        >
+          <div class="flex items-start gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="mt-0.5 shrink-0 text-slate-500">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <div class="min-w-0 flex-1">
+              <h2 class="text-sm font-semibold text-slate-900">Locked fields</h2>
+              <p class="mt-0.5 text-xs text-slate-600">
+                These fields are managed by a supervisor or manager. You can still update the status, progress, and blocker note below.
+              </p>
+              <ul class="mt-2 flex flex-wrap gap-1.5">
+                {lockedFieldLabels.map((label) => (
+                  <li class="inline-flex items-center rounded-full border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-600">
+                    {label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 1b. Lifecycle actions: complete wizard / cancel / reopen */}
       {(canEdit || canReopen) && (
         <section aria-label="Task actions">
@@ -506,6 +555,11 @@ function svgIcon(inner: string, cls = ''): string {
                     <p class="text-xs text-slate-500">
                       {humanFileSize(a.file_size)} · uploaded by {a.uploader} on {formatDbDate(a.uploaded_at)}
                     </p>
+                    {a.file_hash && (
+                      <p class="mt-0.5 font-mono text-[11px] text-slate-400" title={`SHA-256: ${a.file_hash}`}>
+                        sha256:{a.file_hash.slice(0, 12)}…
+                      </p>
+                    )}
                   </div>
                 </div>
                 <a
@@ -572,6 +626,11 @@ function svgIcon(inner: string, cls = ''): string {
                         {ef.file_name}
                       </a>
                       <span class="text-xs text-slate-500">({humanFileSize(ef.file_size)} · {ef.uploader})</span>
+                      {ef.file_hash && (
+                        <span class="font-mono text-[11px] text-slate-400" title={`SHA-256: ${ef.file_hash}`}>
+                          sha256:{ef.file_hash.slice(0, 12)}…
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>

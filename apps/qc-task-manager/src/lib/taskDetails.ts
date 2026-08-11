@@ -131,7 +131,7 @@ export function listAttachmentMeta(taskId: number): AttachmentMeta[] {
   return db
     .prepare(
       `SELECT a.id, a.task_id, a.uploaded_by, a.file_name, a.mime_type,
-              a.file_size, a.uploaded_at, u.full_name AS uploader
+              a.file_size, a.file_hash, a.is_evidence, a.uploaded_at, u.full_name AS uploader
        FROM task_attachments a
        JOIN users u ON u.id = a.uploaded_by
        WHERE a.task_id = ?
@@ -145,7 +145,8 @@ export function getAttachment(id: number, taskId: number): TaskAttachment | null
   const db = getDb();
   const row = db
     .prepare(
-      `SELECT id, task_id, uploaded_by, file_name, mime_type, file_data, file_size, uploaded_at
+      `SELECT id, task_id, uploaded_by, file_name, mime_type, file_data, file_size,
+             file_hash, is_evidence, uploaded_at
        FROM task_attachments
        WHERE id = ? AND task_id = ?`,
     )
@@ -233,7 +234,7 @@ export function listEvidenceFiles(taskId: number): AttachmentMeta[] {
   return db
     .prepare(
       `SELECT a.id, a.task_id, a.uploaded_by, a.file_name, a.mime_type,
-              a.file_size, a.uploaded_at, u.full_name AS uploader
+              a.file_size, a.file_hash, a.is_evidence, a.uploaded_at, u.full_name AS uploader
        FROM task_attachments a
        JOIN users u ON u.id = a.uploaded_by
        WHERE a.task_id = ? AND a.is_evidence = 1
@@ -294,6 +295,8 @@ export function actionCategory(action: string): string {
     case 'delete_rejected':
     case 'task_deleted':
       return 'delete';
+    case 'notification_created':
+      return 'other';
     default:
       return 'other';
   }
@@ -370,6 +373,9 @@ export function describeAction(action: string, oldValue: string | null, newValue
       return 'rejected the deletion request.';
     case 'task_deleted':
       return 'deleted this task.';
+    case 'notification_created':
+      // newValue = "Recipient Name · Notification title".
+      return `notified ${fmtVal(newValue)}.`;
     default:
       return `recorded ${action.replace(/_/g, ' ')}.`;
   }

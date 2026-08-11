@@ -17,6 +17,8 @@
 // parameterized. Completed tasks are read-only for everyone (#2/#3) — enforced
 // here, so no endpoint can bypass it.
 
+import { createHash } from 'node:crypto';
+
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
 import { canEditTask, canEditLockedField, hasRankAtLeast } from './permissions';
@@ -94,6 +96,11 @@ function sanitizeFileName(name: string): string {
   // eslint-disable-next-line no-control-regex
   const clean = base.replace(/[\u0000-\u001f\u007f]/g, '').trim();
   return clean.slice(0, MAX_FILE_NAME);
+}
+
+/** SHA-256 hex digest of a file's bytes (spec: "calculate SHA-256 hash"). */
+function sha256Hex(bytes: Buffer): string {
+  return createHash('sha256').update(bytes).digest('hex');
 }
 
 /** Validate an uploaded file against extension + MIME + size rules. */
@@ -297,12 +304,15 @@ export function applyTaskUpdate(params: {
   // The assignee this task WILL have after this request — due/priority-change
   // notifications go to the NEW assignee when the same request reassigns it.
   let effectiveAssignee: number | null = task.assigned_to;
+  // Set when THIS request adds/replaces a blocker note; the notifications are
+  // queued AFTER the assignee section so they reach the NEW assignee too.
+  let pendingBlockerNote: string | null = null;
   // Self-contained mutations (checklist / dependency ops) executed inside the tx.
   const ops: Array<() => void> = [];
   // Explicit notifications to persist after the mutation succeeds.
   const notifications: Array<{
     userId: number;
-    type: 'assigned' | 'due_date_changed' | 'priority_changed';
+    type: 'assigned' | 'due_date_changed' | 'priority_changed' | 'blocker_added';
     title: string;
     message: string;
   }> = [];
@@ -431,6 +441,10 @@ export function applyTaskUpdate(params: {
         newValue: next,
       });
       changes.push('blocker_note');
+      // A blocker note (added or replaced) — queued here, recipients resolved
+      // after the assignee section (see below) so a same-request reassignment
+      // reaches the NEW assignee (spec: "a blocker note is added").
+      if (next !== null) pendingBlockerNote = next;
     }
   }
 
@@ -553,9 +567,10 @@ export function applyTaskUpdate(params: {
         newValue: priorityLabel(p),
       });
       changes.push('priority');
-      // Priority change notifies the assignee (spec) — the NEW one if the same
-      // request also reassigned the task.
-      if (effectiveAssignee != null) {
+      // Priority ESCALATION notifies the assignee (spec: "priority changes to
+      // high or urgent") — the NEW one if the same request also reassigned the
+      // task. Downgrades to low/medium do not notify.
+      if (effectiveAssignee != null && (p === 'high' || p === 'urgent')) {
         notifications.push({
           userId: effectiveAssignee,
           type: 'priority_changed',
@@ -563,6 +578,24 @@ export function applyTaskUpdate(params: {
           message: `The priority of "${task.title}" changed from ${priorityLabel(task.priority)} to ${priorityLabel(p)}.`,
         });
       }
+    }
+  }
+
+  // Blocker notification — queued here (AFTER the assignee section) so it uses
+  // the effective (post-update) assignee, matching the due/priority pattern.
+  // Recipients: assignee + creator, excluding whoever typed the note.
+  if (pendingBlockerNote !== null) {
+    const recipients = new Set<number>();
+    if (effectiveAssignee != null) recipients.add(effectiveAssignee);
+    if (task.created_by != null) recipients.add(task.created_by);
+    recipients.delete(params.actor.id);
+    for (const uid of recipients) {
+      notifications.push({
+        userId: uid,
+        type: 'blocker_added',
+        title: 'Blocker added',
+        message: `A blocker note was added to "${task.title}": “${pendingBlockerNote}”`,
+      });
     }
   }
 
@@ -764,7 +797,7 @@ export function applyTaskUpdate(params: {
     }
     for (const op of ops) op();
     for (const n of notifications) {
-      createNotification({ userId: n.userId, taskId: task.id, type: n.type, title: n.title, message: n.message });
+      createNotification({ userId: n.userId, taskId: task.id, type: n.type, title: n.title, message: n.message, actorId: params.actor.id });
     }
   });
   tx();
@@ -834,13 +867,14 @@ export async function closeTask(params: {
     fileName: string;
     mimeType: string;
     bytes: Buffer;
+    hash: string;
   }
   const evidenceFiles: PreparedEvidence[] = [];
   for (const f of files) {
     const bytes = Buffer.from(await f.arrayBuffer());
     const validated = validateEvidenceFile(f, bytes);
     if (!validated.ok) return { ok: false, error: validated.error };
-    evidenceFiles.push({ fileName: validated.fileName, mimeType: validated.mimeType, bytes });
+    evidenceFiles.push({ fileName: validated.fileName, mimeType: validated.mimeType, bytes, hash: sha256Hex(bytes) });
   }
 
   let nextTaskId: number | null = null;
@@ -865,9 +899,9 @@ export async function closeTask(params: {
     // Evidence BLOBs — each stored with is_evidence = 1 and logged individually.
     for (const ev of evidenceFiles) {
       db.prepare(
-        `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, is_evidence)
-         VALUES (?, ?, ?, ?, ?, ?, 1)`,
-      ).run(task.id, params.actor.id, ev.fileName, ev.mimeType, ev.bytes, ev.bytes.length);
+        `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, file_hash, is_evidence)
+         VALUES (?, ?, ?, ?, ?, ?, ?, 1)`,
+      ).run(task.id, params.actor.id, ev.fileName, ev.mimeType, ev.bytes, ev.bytes.length, ev.hash);
       logActivity({
         taskId: task.id,
         userId: params.actor.id,
@@ -923,6 +957,7 @@ export async function closeTask(params: {
         type: 'task_completed',
         title: 'Task completed',
         message: `"${task.title}" was completed by ${completerName}.`,
+        actorId: params.actor.id,
       });
     }
 
@@ -1000,6 +1035,7 @@ export async function closeTask(params: {
             type: 'recurring_created',
             title: 'Next recurring task created',
             message: `The next occurrence of "${task.title}" is scheduled for ${nextDue}.`,
+            actorId: params.actor.id,
           });
         }
       }
@@ -1112,6 +1148,22 @@ export function reopenTask(params: {
       oldValue: 'completed',
       newValue: 'in_progress',
     });
+    // Notify the people doing the work (assignee + creator), excluding the
+    // admin/manager who reopened it (spec: "a task is reopened").
+    const recipients = new Set<number>();
+    if (task.assigned_to != null) recipients.add(task.assigned_to);
+    if (task.created_by != null) recipients.add(task.created_by);
+    recipients.delete(params.actor.id);
+    for (const uid of recipients) {
+      createNotification({
+        userId: uid,
+        taskId: task.id,
+        type: 'task_reopened',
+        title: 'Task reopened',
+        message: `"${task.title}" was reopened and is In Progress again.`,
+        actorId: params.actor.id,
+      });
+    }
   });
   try {
     tx();
@@ -1157,12 +1209,13 @@ export async function uploadAttachment(params: {
   if (!validated.ok) return { ok: false, error: validated.error };
 
   const bytes = Buffer.from(await params.file.arrayBuffer());
+  const hash = sha256Hex(bytes);
   const info = db
     .prepare(
-      `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, file_hash)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
     )
-    .run(task.id, params.actor.id, validated.fileName, validated.mimeType, bytes, bytes.length);
+    .run(task.id, params.actor.id, validated.fileName, validated.mimeType, bytes, bytes.length, hash);
 
   logActivity({
     taskId: task.id,

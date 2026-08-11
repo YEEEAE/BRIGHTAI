@@ -205,6 +205,7 @@ export function notifyAssigned(params: {
   taskId: number;
   assigneeId: number;
   title: string;
+  actorId: number;
 }): void {
   createNotification({
     userId: params.assigneeId,
@@ -212,6 +213,7 @@ export function notifyAssigned(params: {
     type: 'assigned',
     title: 'New task assigned to you',
     message: `"${params.title}" has been assigned to you.`,
+    actorId: params.actorId,
   });
 }
 
@@ -384,7 +386,7 @@ export async function handleCreateTaskPost(
 
   // Assignment notification (spec: assigning a task creates an in-app notification).
   if (assignedTo !== null) {
-    notifyAssigned({ taskId, assigneeId: assignedTo, title });
+    notifyAssigned({ taskId, assigneeId: assignedTo, title, actorId: user.id });
   }
 
   setFlash(context, 'success', `Task "${title}" created.`);

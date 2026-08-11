@@ -18,6 +18,7 @@
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
 import { canViewTask } from './taskDetails';
+import { createNotification } from './notifications';
 import { canReviewDeleteRequests, canSubmitDeleteRequest } from './permissions';
 import type { Role, Task } from './types';
 
@@ -62,9 +63,9 @@ export function submitDeleteRequest(params: {
 }): SubmitResult {
   const db = getDb();
   const task = db
-    .prepare('SELECT id, status, created_by, assigned_to FROM tasks WHERE id = ?')
+    .prepare('SELECT id, status, created_by, assigned_to, title FROM tasks WHERE id = ?')
     .get(params.taskId) as
-    | (Pick<Task, 'id' | 'status' | 'created_by' | 'assigned_to'>)
+    | (Pick<Task, 'id' | 'status' | 'created_by' | 'assigned_to' | 'title'>)
     | undefined;
   if (!task) return { ok: false, error: 'Task not found.' };
   if (task.status === 'completed') {
@@ -109,6 +110,25 @@ export function submitDeleteRequest(params: {
     action: Action.DELETE_REQUESTED,
     newValue: reason ?? 'no reason given',
   });
+
+  // Notify every active manager/admin — they are the approvers (spec: "a
+  // deletion request is submitted"). Inactive users are skipped centrally.
+  const requesterName =
+    (db.prepare('SELECT full_name FROM users WHERE id = ?').get(params.userId) as
+      | { full_name: string }
+      | undefined)?.full_name ?? 'An employee';
+  const reviewers = db
+    .prepare("SELECT id FROM users WHERE is_active = 1 AND role IN ('manager', 'admin')")
+    .all() as { id: number }[];
+  for (const r of reviewers) {
+    createNotification({
+      userId: r.id,
+      taskId: params.taskId,
+      type: 'delete_requested',
+      title: 'Deletion request submitted',
+      message: `${requesterName} requested deletion of "${task.title}"${reason ? `: “${reason}”` : '.'}`,
+    });
+  }
   return { ok: true, requestId };
 }
 
@@ -173,10 +193,10 @@ export function reviewDeleteRequest(params: {
 
   const request = db
     .prepare(
-      `SELECT id, task_id, status FROM task_delete_requests WHERE id = ?`,
+      `SELECT id, task_id, requested_by, status FROM task_delete_requests WHERE id = ?`,
     )
     .get(params.requestId) as
-    | { id: number; task_id: number; status: string }
+    | { id: number; task_id: number; requested_by: number; status: string }
     | undefined;
   if (!request) return { ok: false, error: 'Deletion request not found.' };
   if (request.status !== 'pending') {
@@ -204,6 +224,15 @@ export function reviewDeleteRequest(params: {
       return { ok: false, error: 'This request has already been reviewed.' };
     }
     logActivity({ taskId: request.task_id, userId: params.reviewer.id, action: Action.DELETE_REJECTED });
+    // The requester is told their request was rejected (task stays alive, so
+    // the notification links to it).
+    createNotification({
+      userId: request.requested_by,
+      taskId: request.task_id,
+      type: 'delete_rejected',
+      title: 'Deletion request rejected',
+      message: `The deletion request for "${taskTitle}" was rejected.`,
+    });
     console.log(
       `[tasks] deletion request #${request.id} (task #${request.task_id}) rejected by ${params.reviewer.username}`,
     );
@@ -217,6 +246,16 @@ export function reviewDeleteRequest(params: {
     if (info.changes !== 1) {
       throw new Error('already reviewed');
     }
+    // Notify the requester INSIDE the tx — the task is deleted right after,
+    // so notifications.task_id → NULL via ON DELETE SET NULL (there is no
+    // task left to link to).
+    createNotification({
+      userId: request.requested_by,
+      taskId: request.task_id,
+      type: 'delete_approved',
+      title: 'Deletion request approved',
+      message: `The deletion request for "${taskTitle}" was approved — the task was deleted.`,
+    });
     db.prepare('DELETE FROM tasks WHERE id = ?').run(request.task_id);
   });
   try {

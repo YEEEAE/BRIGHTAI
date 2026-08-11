@@ -2,7 +2,9 @@
 
 Internal task-tracking web app for the **QC department**. It covers the full
 workflow: user management → task creation → employee progress updates →
-closure flow (completion comment + evidence) → analytics dashboard.
+status lifecycle (strict transitions + blocker notes + started tracking) →
+completion wizard (evidence + mandatory comment, one transaction) →
+analytics dashboard.
 
 Built with **Astro (SSR)** + **React islands** + **Tailwind CSS**, backed by
 **SQLite** (`better-sqlite3`) with **bcryptjs** password hashing and **Zod**
@@ -14,9 +16,18 @@ server-side validation. Runs locally on port 4321.
 
 - **Role-based access**: `admin`, `manager`, `supervisor`, `employee` — each
   lands on their own home page after login.
-- **Task lifecycle**: create → progress (status / % / blocker notes) →
-  complete via the **closure flow** (mandatory completion comment + optional
-  evidence, or a recorded skip) → archived read-only.
+- **Status lifecycle**: `not_started` → `in_progress` → `on_hold` →
+  `completed` (or `cancelled`). Strict transitions: entering `on_hold`
+  **requires a blocker note**; `completed` and `cancelled` are read-only;
+  `completed` can be reopened only by admin/manager; `cancelled` requires
+  manager/admin approval. The first `in_progress` stamps `started_at` and
+  logs `task_started`.
+- **Completion wizard** (3 steps, one server transaction): evidence upload
+  (PDF/PNG/JPG/JPEG/XLSX/DOCX, ≤ 10 MB, extension + MIME + magic-byte
+  validation, skippable with a logged `evidence_skipped`) → mandatory
+  completion comment (flagged `is_completion_comment = 1`) → confirmation.
+  On success the task becomes read-only and the creator/manager/supervisor
+  are notified. Cancelling the wizard saves nothing.
 - **Full task model** (shared create + edit): title, description, department,
   priority (**low / medium / high / urgent**), assignee, due date,
   **recurrence** (daily / weekly / monthly + end date), **checklist items**,
@@ -36,8 +47,11 @@ server-side validation. Runs locally on port 4321.
   a manager/admin approves or rejects.
 - **Dashboard**: KPI cards, donut/bar/line SVG charts, overdue + recently
   completed tables, and date/assignee/priority filters.
-- **Notifications** (`/notifications`): derived alerts (overdue, due soon,
-  stale, recent comments, pending deletion requests) + navbar bell with count.
+- **Notifications** (`/notifications` + navbar bell dropdown): persisted
+  alerts for assignment, due-date / priority changes, comments, blockers,
+  completions, deletion requests, reopens, and recurring tasks — with
+  read/unread state (mark one or all), task links, and a live badge; inactive
+  users are never notified.
 - **CSV export**: `/api/export/tasks.csv` (role-scoped, Excel-friendly).
 - **Activity log** (CORE RULE #6): every mutation is recorded with who/what/
   old/new/timestamp.
@@ -58,7 +72,9 @@ server-side validation. Runs locally on port 4321.
 | View any task             | ✅ | ✅ | ✅ | assigned/created only |
 | View task details page    | ✅ | ✅ | ✅ | ✅ (own/created) |
 
-Completed tasks are **read-only for everyone** (CORE RULE #3).
+Completed **and cancelled** tasks are **read-only for everyone** (CORE RULE
+#3). `completed` may be reopened to `in_progress` by admin/manager only;
+`cancelled` is terminal (cleanup via the approved deletion workflow).
 
 All checks live in one place: `src/lib/permissions.ts`.
 
@@ -176,9 +192,9 @@ The server logs a warning when the default `admin123` is in use.
   `tasks.priority` CHECKs (no `'cancelled'`/`'urgent'`) and nullable
   `task_attachments.mime_type`/`file_size` — fresh databases get the full
   spec shape. The DB also accepts `'cancelled'`/`'urgent'` while
-  `src/lib/task-policy.ts` validates 4 statuses (no `cancelled` in the app
-  layer) and all 4 priorities; the schema is deliberately future-ready for
-  `cancelled`.
+  `src/lib/task-policy.ts` now validates all **5 statuses** (incl.
+  `cancelled`) and all 4 priorities — the legacy CHECK constraints simply
+  can't be altered, so migrated DBs stay looser than the app layer.
 - Seed: `src/lib/seed.ts` (runtime) + `scripts/init-db.mjs` (CLI).
 
 ### Inspect it with SQLTools (VS Code)
@@ -299,7 +315,7 @@ apps/qc-task-manager/
 │   ├── e2e-dashboard.mjs
 │   ├── e2e-auth-lockout.mjs
 │   ├── e2e-admin-users.mjs # /admin/users: CRUD, guards, Zod, last login
-│   └── e2e-task-shared.mjs # full task model: fields, roles, deps, recurring (98)
+│   └── e2e-task-shared.mjs # full task model: fields, roles, deps, recurring + status lifecycle + notifications (193)
 ├── src/
 │   ├── middleware.ts       # auth + role guards + security headers + login/new-task POSTs
 │   ├── layouts/BaseLayout.astro
@@ -307,7 +323,9 @@ apps/qc-task-manager/
 │   │   ├── Navbar.tsx, FlashNotice.astro, StatusBadge.astro, EmptyState.astro
 │   │   ├── CommentBox.tsx, DeleteRequestDialog.tsx
 │   │   ├── NewTaskForm.astro, TaskChecklistInput.tsx, TaskDependencyInput.tsx
-│   │   ├── TaskUpdatePanel.tsx, AttachmentUploader.tsx, MarkAllReadButton.tsx
+│   │   ├── TaskUpdatePanel.tsx, AttachmentUploader.tsx
+│   │   ├── MarkAllReadButton.tsx, MarkReadButton.tsx  # mark all / mark one as read
+│   │   ├── TaskLifecycle.tsx   # 3-step completion wizard + cancel dialog + reopen
 │   │   └── DashboardCharts.tsx
 │   ├── lib/
 │   │   ├── db.ts           # SQLite singleton (WAL) + migrations + cleanup
@@ -317,7 +335,7 @@ apps/qc-task-manager/
 │   │   ├── task-policy.ts  # canonical domain rules (statuses, limits, locks, uploads)
 │   │   ├── validation.ts   # Zod schemas for every server input
 │   │   ├── recurrence.ts   # next-due-date + occurrence gating (pure)
-│   │   ├── notifications.ts# persisted + derived in-app alerts (/notifications)
+│   │   ├── notifications.ts# persisted + derived in-app alerts (bell, page, read state)
 │   │   ├── backup.ts       # programmatic SQLite backup (createBackup)
 │   │   ├── export.ts       # CSV export (tasksToCsv + exportTasksForRole)
 │   │   ├── flash.ts, format.ts, types.ts
@@ -334,10 +352,11 @@ apps/qc-task-manager/
 │       ├── index.astro, login.astro, logout.ts, dashboard.astro
 │       ├── notifications.astro
 │       ├── tasks/[id].astro
-│       ├── api/tasks/[id]/{comment.ts, update.ts, close.ts, delete-request.ts}
+│       ├── api/tasks/[id]/{comment.ts, update.ts, close.ts, cancel.ts, reopen.ts, delete-request.ts}
 │       ├── api/tasks/[id]/attachments/{index.ts, [attachmentId].ts}
 │       ├── api/export/tasks.csv.ts
 │       ├── api/notifications/read-all.ts
+│       ├── api/notifications/[id]/read.ts
 │       ├── employee/ manager/ supervisor/ admin/
 │       └── manager/requests/
 ├── astro.config.mjs        # SSR + @astrojs/node standalone, port 4321
@@ -428,31 +447,56 @@ blocking-dependencies callout, checklist, dependencies, comments thread,
 attachments, activity timeline, and closure info. Two React islands provide
 editing:
 
+- **`TaskLifecycle`** — the **3-step completion wizard** (evidence →
+  comment → confirmation), the **cancel dialog** (manager/admin, with a
+  reason) and the **reopen button** (admin/manager, on completed tasks).
+  Cancelling the wizard before confirmation saves nothing.
 - **`TaskUpdatePanel`** — update progress (status / % / blocker) for any
   editor; edit locked fields (title/description/department/assignee/due
   date/priority/recurrence) for supervisor/manager/admin; manage the
   checklist (any editor toggles items, supervisor+ adds/removes) and
   dependencies (supervisor+); show the dependency-override reason box for
-  admin/manager; and the **complete task** closure form.
+  admin/manager. Moving a task to **On hold** surfaces the mandatory
+  blocker-note hint.
 - **`AttachmentUploader`** — upload a file with client-side + server-side
   validation, loading state, and inline errors.
 
-Editing a task also **notifies the assignee**: an assignment notification on
-reassign, plus a notification whenever the due date or priority changes
-(addressed to the new assignee if the same request also reassigns).
+Editing a task also **notifies the relevant people**: an assignment
+notification on assign/reassign (to the new assignee), a notification when the
+due date changes or the priority **escalates to high/urgent** (downgrades stay
+silent), and a **blocker-added** notification to the assignee + creator
+(excluding whoever typed it). All of these go to the NEW assignee if the same
+request also reassigns the task.
 
-**Closure flow** (CORE RULE #3, atomic server-side). Any editor may complete a
-task — an employee on their own/assigned tasks, or supervisor/manager/admin
-on any task:
+**Status lifecycle** (server-enforced in `src/lib/task-policy.ts` +
+`src/lib/taskUpdates.ts`):
 
-1. status → `completed`
-2. evidence step — upload a file, or press **Skip** (the skip is **recorded**
-   in the activity log)
-3. completion comment (**mandatory**)
-4. the system auto-fills `completed_at` + `completed_by`
-5. if the task recurs, the **next occurrence is created** (see above)
+- `not_started → in_progress` — the first entry stamps `started_at` and logs
+  `task_started` (never re-stamped on resume).
+- `→ on_hold` — **requires a blocker note** (both from `not_started` and
+  `in_progress`); `on_hold → in_progress` resumes work.
+- `→ completed` — only through the **completion wizard**; `status=cancelled`
+  via the update form is rejected.
+- `→ cancelled` — manager/admin approval with a reason (dedicated
+  `/cancel` endpoint, logged `task_cancelled` + `cancelled_at`/`cancelled_by`).
 
-After completion the task is read-only for everyone.
+**Completion wizard** (CORE RULE #3, atomic server-side — one transaction).
+Any editor may complete a task — an employee on their own/assigned tasks, or
+supervisor/manager/admin on any task:
+
+1. **Evidence step** — upload one or more files (PDF/PNG/JPG/JPEG/XLSX/DOCX,
+   ≤ 10 MB each, extension + MIME + **magic-byte signature** validation), or
+   press **Skip** (recorded as `evidence_skipped`).
+2. **Completion comment** — **mandatory**, stored flagged
+   `is_completion_comment = 1` (pinned at the top of the thread).
+3. **Confirmation summary** — then the single transaction writes evidence
+   BLOBs, the comment, `status = 'completed'`, `progress = 100`,
+   `completed_at`, `completed_by`, activity entries, and notifies the task
+   creator + all managers/supervisors (completer excluded).
+
+After completion the task is **read-only**; admin/manager can **reopen** it to
+`in_progress` (completion metadata cleared, comment unflagged, `task_reopened`
+logged). After cancellation it is read-only and terminal.
 
 ### API endpoints
 
@@ -463,11 +507,14 @@ All endpoints re-check the session **and** the role/permission server-side
 | --- | --- | --- |
 | `/api/tasks/[id]/comment` | POST | Add a comment (JSON) |
 | `/api/tasks/[id]/update` | POST | Progress / blocker / locked-field update (JSON) |
-| `/api/tasks/[id]/close` | POST | Closure flow: comment + evidence/skip (multipart) |
+| `/api/tasks/[id]/close` | POST | Completion wizard: comment + evidence/skip (multipart) |
+| `/api/tasks/[id]/cancel` | POST | Cancel a task (manager/admin, reason required) |
+| `/api/tasks/[id]/reopen` | POST | Reopen a completed task (admin/manager only) |
 | `/api/tasks/[id]/delete-request` | POST | Employee requests deletion (JSON) |
 | `/api/tasks/[id]/attachments` | POST | Upload attachment (multipart, ext+MIME+10 MB) |
 | `/api/tasks/[id]/attachments/[attachmentId]` | GET | Stream attachment BLOB (RFC 5987 name) |
 | `/api/notifications/read-all` | POST | Mark all persisted notifications as read |
+| `/api/notifications/[id]/read` | POST | Mark ONE persisted notification as read (owner only) |
 | `/admin/users/api` | POST | User management actions (admin) |
 | `/manager/requests/api` | POST | Approve/reject delete requests (manager+) |
 | `/api/export/tasks.csv` | GET | Download tasks as CSV (role-scoped, attachment) |
@@ -483,13 +530,19 @@ All endpoints re-check the session **and** the role/permission server-side
 
 File names are sanitized (basename only, control characters stripped).
 
+**Evidence files** (completion wizard) are stricter: a smaller allowlist
+(**pdf, png, jpg, jpeg, xlsx, docx**), the same 10 MB cap, **and** a magic-byte
+signature check (`%PDF-`, PNG header, JPEG SOI, ZIP PK for xlsx/docx) — a
+renamed file with the right extension and MIME is still rejected.
+
 ### Dashboard (`/dashboard`)
 
 Manager/supervisor/admin only (employees are redirected with a flash).
 Read-only parameterized queries in `src/lib/dashboard.ts`:
 
 - **KPIs**: Total, 🔴 Not started, 🟡 In progress, 🟠 On hold, 🟢 Completed,
-  ⚠️ Overdue (`due_date < today AND status != 'completed'`).
+  ✖️ Cancelled, ⚠️ Overdue (`due_date < today AND status NOT IN
+  ('completed', 'cancelled')`).
 - **Charts** (pure SVG, no library): donut by status, stacked bar per
   employee, line of completions per week (last 8 weeks, Monday-aligned).
 - **Tables**: overdue tasks + recently completed.
@@ -505,22 +558,40 @@ hard-deletes the task **and** the request row together, and rejecting keeps the
 task with the rejected request visible in history (titles are joined live from
 `tasks`). E2E: `scripts/e2e-delete-request.mjs`.
 
-### Notifications (`/notifications`)
+### Notifications (bell + `/notifications`)
 
-Every role gets a **Notifications** page (bell icon in the navbar with a live
-count badge). Two sources are merged (`src/lib/notifications.ts`):
+Every role gets a **bell icon** in the navbar with a live unread badge. Clicking
+it opens a **dropdown** of the latest persisted notifications (unread first,
+with dots; clicking an item marks it read and opens it); it closes on outside
+click / `Escape`. The full **Notifications** page (`/notifications`) groups the
+same alerts and adds per-item **Mark as read** buttons. Two sources are merged
+(`src/lib/notifications.ts`):
 
-- **Persisted** (the `notifications` table) — explicit alerts written when the
-  app must notify someone: **task assigned to you**, **due date changed**,
-  **priority changed**, **next recurring task created**. These can be cleared
-  with **✓ Mark all as read** (`/api/notifications/read-all`).
+- **Persisted** (the `notifications` table, `is_read` flag) — explicit alerts
+  written when the app must notify someone:
+  - **task assigned / reassigned** → the (new) assignee;
+  - **due date changed** → the assignee;
+  - **priority escalated to high/urgent** → the assignee (downgrades silent);
+  - **comment added** → assignee + creator (commenter excluded);
+  - **blocker note added** → assignee + creator (author excluded);
+  - **task completed** → creator + every active manager/supervisor (completer
+    excluded);
+  - **deletion request submitted** → every active manager/admin;
+  - **deletion request approved / rejected** → the requester (an approved
+    task is deleted, so its link falls back to the notifications page);
+  - **task reopened** → assignee + creator (the admin/manager who reopened it
+    is excluded);
+  - **next recurring task created** → the assignee.
+  Each carries a `task_id` link when the task still exists. **Inactive users
+  are never notified** (checked centrally in `createNotification`). Mark one
+  as read (`/api/notifications/[id]/read`) or all as read
+  (`/api/notifications/read-all`).
 - **Derived** — computed from existing data: **🚨 Overdue**, **📅 Due soon**,
-  **⏳ Not started**, **💬 Recent comments**, **🗑️ Pending deletion requests**
-  (manager/admin only).
+  **⏳ Not started** (stale > 2 days). These have no read state.
 
 Employees only see their own/created tasks; supervisors+ see the whole team.
 Alerts sort by severity (danger → warning → info → success) and link straight
-to the task.
+to the task. The bell badge counts unread persisted alerts + the derived ones.
 
 ### CSV export (`/api/export/tasks.csv`)
 
@@ -547,6 +618,7 @@ The whole app uses one consistent scheme (`src/lib/format.ts` +
 | In progress | 🟡 amber | 🟡 |
 | On hold | 🟠 orange | 🟠 |
 | Completed | 🟢 green | 🟢 |
+| Cancelled | ⚪ slate | ✖️ |
 
 Overdue tasks show their due date in **red** (lists, details, dashboard).
 
@@ -595,17 +667,25 @@ QC_DB_PATH=$(pwd)/db/e2e_test.db PORT=4322 node dist/server/entry.mjs &
 QC_DB_PATH=$(pwd)/db/e2e_test.db BASE_URL=http://localhost:4322 node scripts/e2e-delete-request.mjs
 # …then kill the server and remove db/e2e_test.db*
 
-# dashboard (29 assertions): same pattern, scripts/e2e-dashboard.mjs
+# dashboard (30 assertions): same pattern, scripts/e2e-dashboard.mjs
+#   (covers the cancelled KPI/donut slice + cancelled-never-overdue rule)
 # auth lockout (secure auth hardening): scripts/e2e-auth-lockout.mjs
 #   (PORT=4323 — build first so the Secure cookie flag is asserted)
 # admin users (49 assertions): scripts/e2e-admin-users.mjs
 #   (PORT=4398 — covers last login, department, edit, self-demotion guard,
 #    duplicate usernames, Zod errors, reset password, immediate login)
-# shared task model (98 assertions): scripts/e2e-task-shared.mjs
+# shared task model (193 assertions): scripts/e2e-task-shared.mjs
 #   (PORT=4390 — covers every field on create, supervisor assign scope,
 #    employee gating + locked fields, dependency blocking + logged override,
 #    assignment/due/priority notifications, recurring series incl. the stop
-#    rule, urgent prominence)
+#    rule, urgent prominence, the status lifecycle: strict transitions
+#    + started_at stamping, blocker-required on_hold, the 3-step completion
+#    wizard (evidence signatures, multi-file, cancel-saves-nothing), reopen,
+#    cancel with reason, read-only completed/cancelled, AND the full
+#    notification event set: comment_added / blocker_added / priority
+#    escalation-only / delete_requested + reject + approve (task link drops)
+#    / task_reopened / mark-one-as-read ownership / bell dropdown open -
+#    Escape-close)
 #
 # Note: GET /login never touches the DB (the schema seeds on the first
 # session-bearing request), so E2E scripts that read SQLite directly fire a

@@ -1,22 +1,24 @@
-// In-app notifications for /notifications.
+// In-app notifications for /notifications + the navbar bell dropdown.
 //
 // Two sources are merged into one list:
 //   1. PERSISTED — rows in the `notifications` table, written whenever the app
-//      must notify someone explicitly (task assigned, due date / priority
-//      changed for the assignee, next recurring task created). These carry an
-//      is_read flag and can be cleared with markAllNotificationsRead.
-//   2. DERIVED — computed from existing data (overdue / due soon / stale /
-//      recent comments / pending deletion requests), so there is nothing to
-//      keep in sync and no write path.
+//      must notify someone explicitly (assigned / reassigned, due date or
+//      priority changed, comment added, blocker added, task completed,
+//      deletion request submitted/approved/rejected, task reopened, next
+//      recurring task created). These carry an is_read flag, can be marked
+//      read one-by-one or all at once, and drive the bell badge + dropdown.
+//   2. DERIVED — computed from existing data (overdue / due soon / stale), so
+//      there is nothing to keep in sync and no write path.
 // Each notification links to the relevant page and carries a severity so the
 // UI can style it.
 //
 // Scope rules:
 //   - employee     → notifications about tasks they are assigned to or created
 //   - supervisor+  → the whole team's tasks (overdue / due soon / stale)
-//   - manager/admin→ additionally, pending deletion requests awaiting review
+//   - Inactive users are never notified (createNotification guards is_active).
 
 import { getDb } from './db';
+import { logActivity, Action } from './activity';
 import { isOverdue, localDateStr } from './format';
 import type { Role } from './types';
 
@@ -24,13 +26,17 @@ export type NotificationKind =
   | 'overdue'
   | 'due_soon'
   | 'unstarted'
-  | 'recent_comment'
-  | 'pending_delete'
   | 'assigned'
   | 'due_date_changed'
   | 'priority_changed'
   | 'recurring_created'
-  | 'task_completed';
+  | 'task_completed'
+  | 'comment_added'
+  | 'blocker_added'
+  | 'delete_requested'
+  | 'delete_approved'
+  | 'delete_rejected'
+  | 'task_reopened';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -44,6 +50,10 @@ export interface AppNotification {
   href: string;
   /** Sortable timestamp (SQLite UTC string). */
   createdAt: string;
+  /** Persisted rows only: the notifications.id (mark-one-as-read). */
+  notificationId?: number;
+  /** Persisted rows only: read state (undefined for derived rows). */
+  isRead?: boolean;
 }
 
 const MAX_NOTIFICATIONS = 50;
@@ -52,8 +62,14 @@ const MAX_NOTIFICATIONS = 50;
 
 /**
  * Write an explicit in-app notification (assignments, due/priority changes,
- * recurring-task creation). Insert failures are swallowed on purpose — a
- * notification must never break the task mutation that triggered it.
+ * comments, blockers, deletion requests, completions, reopens, recurring-task
+ * creation). Insert failures are swallowed on purpose — a notification must
+ * never break the task mutation that triggered it.
+ *
+ * When `actorId` is supplied AND the notification is task-scoped (taskId != null),
+ * a `notification_created` entry is appended to the task activity log attributed
+ * to the actor (spec: "notification_created" must be recorded). The recipient's
+ * name is resolved for a human-readable message ("notified Sara: …").
  */
 export function createNotification(params: {
   userId: number;
@@ -61,14 +77,37 @@ export function createNotification(params: {
   type: NotificationKind;
   title: string;
   message: string;
+  /** Who triggered the notification (logged as the actor). Omit to skip logging. */
+  actorId?: number;
 }): void {
   try {
+    // Spec: "do not notify inactive users" — enforced centrally so every call
+    // site is covered (the single active-user query is cheap and indexed).
+    const active = getDb()
+      .prepare('SELECT 1 AS one FROM users WHERE id = ? AND is_active = 1')
+      .get(params.userId);
+    if (!active) return;
     getDb()
       .prepare(
         `INSERT INTO notifications (user_id, task_id, type, title, message)
          VALUES (?, ?, ?, ?, ?)`,
       )
       .run(params.userId, params.taskId, params.type, params.title, params.message);
+
+    // Activity-log audit (spec): record that this actor notified this user. Only
+    // task-scoped notifications are logged — global/bell-only ones have no task.
+    if (params.actorId != null && params.taskId != null) {
+      const recipient =
+        (getDb().prepare('SELECT full_name FROM users WHERE id = ?').get(params.userId) as
+          | { full_name: string }
+          | undefined)?.full_name ?? `user #${params.userId}`;
+      logActivity({
+        taskId: params.taskId,
+        userId: params.actorId,
+        action: Action.NOTIFICATION_CREATED,
+        newValue: `${recipient} · ${params.title}`,
+      });
+    }
   } catch (err) {
     console.error('[notifications] failed to create notification:', err);
   }
@@ -81,34 +120,77 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   priority_changed: 'warning',
   recurring_created: 'success',
   task_completed: 'success',
+  comment_added: 'info',
+  blocker_added: 'warning',
+  delete_requested: 'warning',
+  delete_approved: 'success',
+  delete_rejected: 'danger',
+  task_reopened: 'warning',
 };
 
-/** Load the signed-in user's persisted notifications (newest first). */
-function persistedForUser(userId: number): AppNotification[] {
+/** A raw persisted notification row (with read state) for the UI layers. */
+export interface PersistedNotification {
+  id: number;
+  taskId: number | null;
+  kind: NotificationKind;
+  severity: NotificationSeverity;
+  title: string;
+  message: string;
+  href: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+/**
+ * The signed-in user's persisted notifications (newest first) — the raw rows
+ * with read state. Used by the navbar dropdown and the notifications page.
+ * Deleted tasks leave task_id NULL via ON DELETE SET NULL, so href falls back
+ * to the notifications page (e.g. an approved deletion request).
+ */
+export function listPersistedNotifications(userId: number, limit = 10): PersistedNotification[] {
   const rows = getDb()
     .prepare(
-      `SELECT id, task_id, type, title, message, created_at
+      `SELECT id, task_id, type, title, message, is_read, created_at
        FROM notifications
        WHERE user_id = ?
-       ORDER BY created_at DESC, id DESC`,
+       ORDER BY created_at DESC, id DESC
+       LIMIT ?`,
     )
-    .all(userId) as {
+    .all(userId, limit) as {
     id: number;
     task_id: number | null;
     type: string;
     title: string;
     message: string;
+    is_read: number;
     created_at: string;
   }[];
 
   return rows.map((r) => ({
-    key: `persisted-${r.id}`,
+    id: r.id,
+    taskId: r.task_id,
     kind: (r.type in PERSISTED_SEVERITY ? r.type : 'assigned') as NotificationKind,
     severity: PERSISTED_SEVERITY[r.type] ?? 'info',
     title: r.title,
     message: r.message,
     href: r.task_id != null ? `/tasks/${r.task_id}` : '/notifications',
     createdAt: r.created_at,
+    isRead: Number(r.is_read) === 1,
+  }));
+}
+
+/** Load the signed-in user's persisted notifications as list items. */
+function persistedForUser(userId: number): AppNotification[] {
+  return listPersistedNotifications(userId, MAX_NOTIFICATIONS).map((n) => ({
+    key: `persisted-${n.id}`,
+    kind: n.kind,
+    severity: n.severity,
+    title: n.title,
+    message: n.message,
+    href: n.href,
+    createdAt: n.createdAt,
+    notificationId: n.id,
+    isRead: n.isRead,
   }));
 }
 
@@ -118,6 +200,14 @@ export function markAllNotificationsRead(userId: number): number {
     .prepare('UPDATE notifications SET is_read = 1 WHERE user_id = ? AND is_read = 0')
     .run(userId);
   return info.changes;
+}
+
+/** Mark a single persisted notification as read (true when it actually changed). */
+export function markNotificationRead(userId: number, notificationId: number): boolean {
+  const info = getDb()
+    .prepare('UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ? AND is_read = 0')
+    .run(notificationId, userId);
+  return info.changes === 1;
 }
 
 /** Unread persisted notifications for the badge count. */
@@ -224,60 +314,6 @@ export function getNotificationsForUser(user: { id: number; role: Role }): AppNo
     }
   }
 
-  // Recent comments by OTHER people on tasks the user is involved with.
-  const { clause, params } = taskScope(user);
-  const comments = getDb()
-    .prepare(
-      `SELECT c.id, c.comment, c.created_at, t.title, t.id AS task_id, u.full_name
-       FROM task_comments c
-       JOIN tasks t ON t.id = c.task_id
-       JOIN users u ON u.id = c.user_id
-       WHERE c.user_id != ? AND c.created_at >= datetime('now', '-7 days')
-         AND t.status NOT IN ('completed', 'cancelled') ${clause}
-       ORDER BY c.created_at DESC
-       LIMIT 15`,
-    )
-    .all(user.id, ...params) as {
-    id: number;
-    comment: string;
-    created_at: string;
-    title: string;
-    task_id: number;
-    full_name: string;
-  }[];
-
-  for (const c of comments) {
-    const snippet = c.comment.length > 90 ? `${c.comment.slice(0, 90)}…` : c.comment;
-    push({
-      key: `comment-${c.id}`,
-      kind: 'recent_comment',
-      severity: 'info',
-      title: `New comment by ${c.full_name}`,
-      message: `On "${c.title}": “${snippet}”`,
-      href: `/tasks/${c.task_id}`,
-      createdAt: c.created_at,
-    });
-  }
-
-  // Pending deletion requests — manager/admin only (RULE #4).
-  if (user.role === 'manager' || user.role === 'admin') {
-    const pending = getDb()
-      .prepare(
-        `SELECT COUNT(*) AS n FROM task_delete_requests WHERE status = 'pending'`,
-      )
-      .get() as { n: number };
-    if (pending.n > 0) {
-      push({
-        kind: 'pending_delete',
-        severity: 'warning',
-        title: 'Deletion requests awaiting review',
-        message: `${pending.n} employee deletion request${pending.n === 1 ? '' : 's'} pending your approval.`,
-        href: '/manager/requests',
-        createdAt: new Date().toISOString(),
-      });
-    }
-  }
-
   // Sort: danger → warning → info, then newest first within a severity.
   const rank: Record<NotificationSeverity, number> = { danger: 0, warning: 1, info: 2, success: 3 };
   out.sort((a, b) => {
@@ -329,24 +365,6 @@ export function countNotifications(user: { id: number; role: Role }): number {
      WHERE t.status = 'not_started' AND t.created_at < ? ${clause}`,
     [sqliteDaysAgo(2), ...params],
   );
-
-  // Recent comments by OTHER people on tasks the user is involved with.
-  total += count(
-    `SELECT COUNT(*) AS n
-     FROM task_comments c
-     JOIN tasks t ON t.id = c.task_id
-     WHERE c.user_id != ? AND c.created_at >= datetime('now', '-7 days')
-       AND t.status NOT IN ('completed', 'cancelled') ${clause}`,
-    [user.id, ...params],
-  );
-
-  // Pending deletion requests — manager/admin only (RULE #4).
-  if (user.role === 'manager' || user.role === 'admin') {
-    total += count(
-      `SELECT COUNT(*) AS n FROM task_delete_requests WHERE status = 'pending'`,
-      [],
-    );
-  }
 
   return total;
 }

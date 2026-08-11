@@ -6,6 +6,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmptyState from '../components/EmptyState.astro';
 import MarkAllReadButton from '../components/MarkAllReadButton';
+import MarkReadButton from '../components/MarkReadButton';
 import { getNotificationsForUser, type AppNotification, type NotificationKind } from '../lib/notifications';
 import { roleHome } from '../lib/permissions';
 
@@ -17,26 +18,34 @@ const KIND_ICON: Record<NotificationKind, string> = {
   overdue: '🚨',
   due_soon: '📅',
   unstarted: '⏳',
-  recent_comment: '💬',
-  pending_delete: '🗑️',
   assigned: '👤',
   due_date_changed: '🗓️',
   priority_changed: '🚦',
   recurring_created: '🔁',
   task_completed: '✅',
+  comment_added: '💬',
+  blocker_added: '🚧',
+  delete_requested: '🗑️',
+  delete_approved: '✅',
+  delete_rejected: '⛔',
+  task_reopened: '🔄',
 };
 
 const KIND_LABEL: Record<NotificationKind, string> = {
   overdue: 'Overdue',
   due_soon: 'Due soon',
   unstarted: 'Not started',
-  recent_comment: 'New comments',
-  pending_delete: 'Deletion requests',
   assigned: 'Assigned to you',
   due_date_changed: 'Due date changes',
   priority_changed: 'Priority changes',
   recurring_created: 'Recurring tasks',
   task_completed: 'Completed tasks',
+  comment_added: 'New comments',
+  blocker_added: 'Blockers',
+  delete_requested: 'Deletion requests',
+  delete_approved: 'Deletion approved',
+  delete_rejected: 'Deletion rejected',
+  task_reopened: 'Reopened tasks',
 };
 
 const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
@@ -49,15 +58,19 @@ const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
 // Section order: danger → warning → info → success.
 const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'overdue', order: 0 },
+  { key: 'delete_rejected', order: 0 },
   { key: 'due_soon', order: 1 },
-  { key: 'pending_delete', order: 1 },
   { key: 'due_date_changed', order: 1 },
   { key: 'priority_changed', order: 1 },
+  { key: 'blocker_added', order: 1 },
+  { key: 'delete_requested', order: 1 },
   { key: 'assigned', order: 2 },
   { key: 'unstarted', order: 2 },
-  { key: 'recent_comment', order: 2 },
+  { key: 'comment_added', order: 2 },
   { key: 'recurring_created', order: 3 },
   { key: 'task_completed', order: 3 },
+  { key: 'task_reopened', order: 3 },
+  { key: 'delete_approved', order: 3 },
 ];
 
 function sectionOrder(kind: NotificationKind): number {
@@ -126,18 +139,31 @@ const dueSoonCount = notifications.filter((n) => n.kind === 'due_soon').length;
           <ul class="space-y-2">
             {grouped.get(kind)!.map((n) => (
               <li>
-                <a
-                  href={n.href}
-                  class={`block rounded-lg border border-slate-200 border-l-4 p-4 transition hover:border-slate-300 hover:shadow-sm ${SEVERITY_CARD[n.severity]}`}
+                <div
+                  class={`rounded-lg border border-slate-200 border-l-4 p-4 transition hover:shadow-sm ${SEVERITY_CARD[n.severity]} ${
+                    n.isRead === false ? 'ring-1 ring-sky-200' : ''
+                  }`}
                 >
                   <div class="flex items-start justify-between gap-3">
-                    <p class="font-medium text-slate-900">{n.title}</p>
-                    <span class="shrink-0 text-xs text-slate-400">
-                      {n.createdAt.slice(0, 10)}
-                    </span>
+                    <a href={n.href} class="min-w-0 flex-1">
+                      <div class="flex items-start justify-between gap-3">
+                        <p class="flex items-center gap-2 font-medium text-slate-900">
+                          {n.isRead === false && (
+                            <span aria-hidden="true" class="h-2 w-2 shrink-0 rounded-full bg-sky-500" />
+                          )}
+                          {n.title}
+                        </p>
+                        <span class="shrink-0 text-xs text-slate-400">
+                          {n.createdAt.slice(0, 10)}
+                        </span>
+                      </div>
+                      <p class="mt-1 text-sm text-slate-600">{n.message}</p>
+                    </a>
+                    {n.notificationId != null && n.isRead === false && (
+                      <MarkReadButton client:visible notificationId={n.notificationId} />
+                    )}
                   </div>
-                  <p class="mt-1 text-sm text-slate-600">{n.message}</p>
-                </a>
+                </div>
               </li>
             ))}
           </ul>
