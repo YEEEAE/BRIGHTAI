@@ -284,6 +284,11 @@ function initialize(db: BetterSqliteDatabase): void {
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.
   db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(new Date().toISOString());
+  // Audit retention: login_attempts rows older than 90 days are pruned so the
+  // audit table cannot grow without bound in a long-lived database.
+  db.prepare('DELETE FROM login_attempts WHERE created_at < ?').run(
+    new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+  );
   _initialized = true;
 }
 

@@ -13,6 +13,16 @@ import type { Role, SessionData, User } from './types';
 const COOKIE_NAME = 'qc_session';
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours (per spec)
 
+// Brute-force protection (per spec): lock the account for 10 minutes after
+// five consecutive failed login attempts.
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCK_DURATION_MS = 10 * 60 * 1000; // 10 minutes
+// A real bcrypt hash of a throwaway string. Used on the unknown-username path
+// so login takes the same time whether or not the account exists — otherwise
+// the missing-user branch returns before bcrypt runs and an attacker can
+// enumerate usernames by timing.
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync('brightai-qc-dummy-password', 10);
+
 function rowToUser(row: Record<string, unknown>): User {
   return {
     id: Number(row.id),
@@ -51,21 +61,109 @@ export function isUserDisabled(username: string): boolean {
   return Number(row.is_active) !== 1;
 }
 
-/** Verify credentials and return the user, or null on failure. */
+/** Result of a credential check — richer than `User | null` so callers can
+ * distinguish a locked account from plain bad credentials. */
+export type LoginResult =
+  | { status: 'ok'; user: User }
+  | { status: 'locked'; lockedUntil: string }
+  | { status: 'invalid' };
+
+/**
+ * Append a row to the login_attempts audit table (username + IP + outcome).
+ *
+ * Audit logging must NEVER break authentication: if the insert fails (disk,
+ * schema drift, …) the login proceeds normally and we log the failure to the
+ * console instead of turning the attempt into a 500.
+ */
+function recordLoginAttempt(
+  username: string,
+  ipAddress: string | null | undefined,
+  succeeded: boolean,
+): void {
+  try {
+    const db = getDb();
+    db.prepare(
+      'INSERT INTO login_attempts (username, ip_address, succeeded) VALUES (?, ?, ?)',
+    ).run(username, ipAddress ?? null, succeeded ? 1 : 0);
+  } catch (err) {
+    console.error(`[auth] login_attempts audit write failed (login continues): ${(err as Error).message}`);
+  }
+}
+
+/**
+ * Verify credentials with brute-force protection.
+ *
+ * Failed attempts are counted per account (users.failed_login_attempts). After
+ * MAX_FAILED_ATTEMPTS consecutive failures the account locks for
+ * LOCK_DURATION_MS (users.locked_until) and login is refused even with the
+ * correct password; a successful login (or lock expiry) resets the counter.
+ * Every attempt is appended to login_attempts for the audit trail. Unknown
+ * usernames return the same generic result as wrong passwords (no enumeration).
+ */
 export function verifyCredentials(
   username: string,
   password: string,
-): User | null {
+  ipAddress?: string | null,
+): LoginResult {
   const db = getDb();
   const row = db
     .prepare('SELECT * FROM users WHERE username = ?')
     .get(username) as Record<string, unknown> | undefined;
-  if (!row) return null;
-  if (!toBool(Number(row.is_active))) return null;
+
+  // Unknown username → generic failure (nothing to lock, but keep the audit).
+  // Run a real bcrypt compare against a dummy hash so the response time does
+  // not reveal whether the username exists (timing-based enumeration).
+  if (!row) {
+    bcrypt.compareSync(password, DUMMY_PASSWORD_HASH);
+    recordLoginAttempt(username, ipAddress, false);
+    return { status: 'invalid' };
+  }
+  const userId = Number(row.id);
+  // Deactivated accounts never authenticate (the caller shows a distinct
+  // message via isUserDisabled; this is defense in depth for other callers).
+  if (!toBool(Number(row.is_active))) {
+    recordLoginAttempt(username, ipAddress, false);
+    return { status: 'invalid' };
+  }
+
+  const now = Date.now();
+  const lockedUntil = row.locked_until ? new Date(String(row.locked_until)).getTime() : 0;
+
+  // Lock active: refuse even a correct password until the lock expires.
+  if (lockedUntil > now) {
+    recordLoginAttempt(username, ipAddress, false);
+    return { status: 'locked', lockedUntil: String(row.locked_until) };
+  }
+  // Lock expired: clear it and give the account a fresh set of attempts.
+  if (lockedUntil > 0) {
+    db.prepare(
+      'UPDATE users SET locked_until = NULL, failed_login_attempts = 0 WHERE id = ?',
+    ).run(userId);
+  }
 
   const ok = bcrypt.compareSync(password, String(row.password_hash));
-  if (!ok) return null;
-  return rowToUser(row);
+  if (ok) {
+    db.prepare(
+      `UPDATE users SET failed_login_attempts = 0, locked_until = NULL, last_login_at = ?
+       WHERE id = ?`,
+    ).run(new Date().toISOString(), userId);
+    recordLoginAttempt(username, ipAddress, true);
+    return { status: 'ok', user: rowToUser(row) };
+  }
+
+  // Consecutive failures: increment the counter, lock at the threshold.
+  const attempts = Number(row.failed_login_attempts ?? 0) + 1;
+  if (attempts >= MAX_FAILED_ATTEMPTS) {
+    const until = new Date(now + LOCK_DURATION_MS).toISOString();
+    db.prepare(
+      'UPDATE users SET failed_login_attempts = 0, locked_until = ? WHERE id = ?',
+    ).run(until, userId);
+    recordLoginAttempt(username, ipAddress, false);
+    return { status: 'locked', lockedUntil: until };
+  }
+  db.prepare('UPDATE users SET failed_login_attempts = ? WHERE id = ?').run(attempts, userId);
+  recordLoginAttempt(username, ipAddress, false);
+  return { status: 'invalid' };
 }
 
 /** Create a session row and return the opaque token to store in the cookie. */
@@ -167,4 +265,4 @@ export function requireRole(
   return roles.includes(user.role);
 }
 
-export { COOKIE_NAME, SESSION_TTL_MS };
+export { COOKIE_NAME, SESSION_TTL_MS, MAX_FAILED_ATTEMPTS, LOCK_DURATION_MS };

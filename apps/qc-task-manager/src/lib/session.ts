@@ -30,7 +30,8 @@ export function getCurrentUser(context: APIContext): User | null {
   return getUserById(session.userId);
 }
 
-/** Authenticate a user and set the session cookie. Returns the user or null. */
+/** Authenticate a user and set the session cookie. Returns the user or null
+ * (bad credentials, disabled, or currently locked). */
 export function loginAndSetCookie(
   context: APIContext,
   username: string,
@@ -38,8 +39,9 @@ export function loginAndSetCookie(
 ): User | null {
   // Purge expired sessions on every login (per spec: no stale rows accumulate).
   cleanupExpiredSessions();
-  const user = verifyCredentials(username, password);
-  if (!user) return null;
+  const result = verifyCredentials(username, password, context.clientAddress);
+  if (result.status !== 'ok') return null;
+  const user = result.user;
   const token = createSession(user);
   context.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
@@ -63,6 +65,8 @@ export interface LoginContext {
   request: Request;
   cookies: AstroCookies;
   redirect: (path: string) => Response;
+  /** Client IP (Astro's context.clientAddress) — recorded in login_attempts. */
+  clientAddress?: string;
 }
 
 /**
@@ -93,10 +97,16 @@ export async function handleLoginPost(context: LoginContext): Promise<Response> 
     return context.redirect(`/login?redirect=${encodeURIComponent(safeTarget)}&disabled=1`);
   }
 
-  const user = verifyCredentials(username, password);
-  if (!user) {
+  // verifyCredentials returns a richer result: bad credentials, or a locked
+  // account (5 consecutive failures → 10-minute lock, per spec).
+  const result = verifyCredentials(username, password, context.clientAddress);
+  if (result.status === 'locked') {
+    return context.redirect(`/login?redirect=${encodeURIComponent(safeTarget)}&locked=1`);
+  }
+  if (result.status === 'invalid') {
     return context.redirect(`/login?redirect=${encodeURIComponent(safeTarget)}&error=1`);
   }
+  const user = result.user;
 
   const token = createSession(user);
   context.cookies.set(COOKIE_NAME, token, {

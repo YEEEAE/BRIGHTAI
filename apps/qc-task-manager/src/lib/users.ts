@@ -99,7 +99,17 @@ export function setUserActive(
   if (targetUserId === actor.id && !active) {
     return { ok: false, error: 'You cannot deactivate your own account.' };
   }
-  getDb().prepare('UPDATE users SET is_active = ? WHERE id = ?').run(active ? 1 : 0, targetUserId);
+  // Reactivation also clears any brute-force lock so the account is usable
+  // immediately (deactivation leaves the lock untouched until re-enabled).
+  if (active) {
+    getDb()
+      .prepare(
+        'UPDATE users SET is_active = 1, failed_login_attempts = 0, locked_until = NULL WHERE id = ?',
+      )
+      .run(targetUserId);
+  } else {
+    getDb().prepare('UPDATE users SET is_active = 0 WHERE id = ?').run(targetUserId);
+  }
   log(actor, `set active=${active ? 1 : 0} for username="${target.username}"(id=${targetUserId})`);
   return { ok: true };
 }
@@ -135,7 +145,13 @@ export function resetPassword(
   if (!target) return { ok: false, error: 'User not found.' };
 
   const hash = bcrypt.hashSync(newPassword, 10);
-  getDb().prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, targetUserId);
+  // A fresh password also clears any brute-force lock: the admin reset is the
+  // sanctioned way to unblock an account.
+  getDb()
+    .prepare(
+      'UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?',
+    )
+    .run(hash, targetUserId);
   log(actor, `reset password for username="${target.username}"(id=${targetUserId})`);
   return { ok: true };
 }

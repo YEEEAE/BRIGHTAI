@@ -68,10 +68,17 @@ Open <http://localhost:4321/login> and sign in.
 ### Production build & start
 
 ```bash
-pnpm --filter @brightai/qc-task-manager build
+NODE_ENV=production pnpm --filter @brightai/qc-task-manager build
 # then, from the app directory:
 cd apps/qc-task-manager && node dist/server/entry.mjs     # serves on PORT (default 4321)
 ```
+
+> ⚠️ **Build with `NODE_ENV=production`.** Astro compiles
+> `import.meta.env.PROD` at build time from the shell's `NODE_ENV`. If the
+> shell exports `NODE_ENV=development` (some local setups do), a plain
+> `pnpm build` produces `PROD: false` and the session cookie **loses the
+> `Secure` flag**. CI/CD sets `NODE_ENV=production` automatically; locally,
+> prefix the build command above.
 
 The standalone server respects `PORT` / `HOST` env vars (default `4321` /
 `0.0.0.0`). Set `QC_DATABASE_PATH` to point at a different database file.
@@ -237,6 +244,14 @@ Walkthrough for browsing `qc_tasks.db` directly from VS Code:
 - Opaque `randomUUID()` tokens stored server-side in the `sessions` table; the
   browser only holds the token in an `HttpOnly` cookie (`qc_session`).
 - Session TTL: **12 hours**. Expired rows are purged on login and at startup.
+- Cookie flags: `HttpOnly` + `SameSite=Lax` + `Secure` (production) + `Path=/`.
+- **Account lockout** (brute-force protection): after **5 consecutive failed
+  login attempts** the account is **locked for 10 minutes** (`users.locked_until`)
+  and even the correct password is rejected until the lock expires. A
+  successful login (or lock expiry) resets the counter. Every attempt is
+  audited in the `login_attempts` table (username + IP + outcome, never the
+  password). Admin can unblock a locked account by **resetting the password**
+  or **reactivating** it from `/admin/users`.
 - `src/middleware.ts` is the single auth guard: resolves `locals.user` for
   every request, protects role-scoped routes, and handles the self-submitting
   `POST /login` (open-redirect blocked).
@@ -262,7 +277,8 @@ apps/qc-task-manager/
 │   ├── backup-db.mjs       # CLI: `db:backup` (mirrors src/lib/backup.ts)
 │   ├── test.mjs            # `pnpm test`: structure + unit smoke
 │   ├── e2e-delete-request.mjs
-│   └── e2e-dashboard.mjs
+│   ├── e2e-dashboard.mjs
+│   └── e2e-auth-lockout.mjs
 ├── src/
 │   ├── middleware.ts       # auth + role guards + security headers + login/new-task POSTs
 │   ├── layouts/BaseLayout.astro
@@ -486,6 +502,8 @@ QC_DB_PATH=$(pwd)/db/e2e_test.db BASE_URL=http://localhost:4322 node scripts/e2e
 # …then kill the server and remove db/e2e_test.db*
 
 # dashboard (29 assertions): same pattern, scripts/e2e-dashboard.mjs
+# auth lockout (secure auth hardening): scripts/e2e-auth-lockout.mjs
+#   (PORT=4323 — build first so the Secure cookie flag is asserted)
 ```
 
 ## Notes

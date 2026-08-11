@@ -11,6 +11,7 @@ const rawTarget = Astro.url.searchParams.get('redirect') || '';
 const redirectTarget = rawTarget.startsWith('/') && !rawTarget.startsWith('//') ? rawTarget : '/';
 const error = Astro.url.searchParams.get('error') === '1';
 const disabled = Astro.url.searchParams.get('disabled') === '1';
+const locked = Astro.url.searchParams.get('locked') === '1';
 
 // Already signed in? Bounce to the role home.
 const existing = getSessionUser(Astro.request);
@@ -30,7 +31,13 @@ if (existing) {
       </div>
     )}
 
-    {!disabled && error && (
+    {locked && !disabled && (
+      <div class="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        Account locked due to too many failed attempts. Try again in about 10 minutes.
+      </div>
+    )}
+
+    {!disabled && !locked && error && (
       <div class="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
         Invalid username or password.
       </div>
