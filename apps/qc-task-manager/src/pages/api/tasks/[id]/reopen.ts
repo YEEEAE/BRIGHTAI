@@ -7,9 +7,10 @@
 // Returns JSON for the island.
 
 import type { APIRoute } from 'astro';
-import { getCurrentUser } from '../../../../lib/session';
+import { isResponse, requireApiUser, requireCsrf } from '../../../../lib/api-security';
 import { reopenTask } from '../../../../lib/taskUpdates';
 import { setFlash } from '../../../../lib/flash';
+import { parsePositiveId } from '../../../../lib/validation';
 
 function json(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -19,11 +20,14 @@ function json(body: Record<string, unknown>, status = 200): Response {
 }
 
 export const POST: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) return json({ ok: false, error: 'Not authenticated.' }, 401);
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
-  const taskId = Number(context.params.id);
-  if (!Number.isInteger(taskId) || taskId <= 0) {
+  const taskId = parsePositiveId(context.params.id);
+  if (taskId == null) {
     return json({ ok: false, error: 'Invalid task id.' }, 404);
   }
 

@@ -26,6 +26,7 @@ import {
 } from './lib/permissions';
 import { handleLoginPost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
+import { requireCsrf } from './lib/api-security';
 
 const PUBLIC_PATHS = new Set(['/', '/login']);
 
@@ -50,6 +51,12 @@ function withSecurityHeaders(response: Response): Response {
   headers.set('X-Content-Type-Options', 'nosniff');
   // Trim referrer leakage to same-origin.
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  // The internal application ships only self-hosted Astro assets. Keep this
+  // conservative CSP compatible with the current React islands and downloads.
+  headers.set(
+    'Content-Security-Policy',
+    "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; media-src 'self'; worker-src 'self' blob:",
+  );
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -74,6 +81,8 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   // handlers for .astro pages, so the middleware short-circuits the request
   // (the built-in same-origin/CSRF check has already run before us).
   if (pathname === '/login' && context.request.method === 'POST') {
+    const csrf = requireCsrf(context);
+    if (csrf) return csrf;
     return handleLoginPost(context);
   }
 

@@ -7,22 +7,19 @@
 // may only export tasks assigned to them or created by them; 403 otherwise.
 
 import type { APIRoute } from 'astro';
-import { getCurrentUser } from '../../../../../lib/session';
+import { isResponse, requireApiUser } from '../../../../../lib/api-security';
 import { canViewTask, getTaskDetail } from '../../../../../lib/taskDetails';
 import { getTaskPdfData } from '../../../../../lib/pdfData';
 import { buildTaskPdf } from '../../../../../lib/pdf';
+import { parsePositiveId } from '../../../../../lib/validation';
 
 export const GET: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) {
-    return new Response(JSON.stringify({ ok: false, error: 'Not authenticated.' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
-  const id = Number(context.params.id);
-  if (!Number.isInteger(id) || id <= 0) {
+  const id = parsePositiveId(context.params.id);
+  if (id == null) {
     return new Response(JSON.stringify({ ok: false, error: 'Invalid task id.' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },

@@ -91,11 +91,14 @@ export type ReopenResult = { ok: true; message: string } | { ok: false; error: s
 // ─────────────────────── Shared helpers ───────────────────────
 
 /** Strip path components + control characters from a file name. */
-function sanitizeFileName(name: string): string {
+export function sanitizeFileName(name: string): string {
   const base = name.split(/[\\/]/).pop() ?? name;
   // eslint-disable-next-line no-control-regex
   const clean = base.replace(/[\u0000-\u001f\u007f]/g, '').trim();
-  return clean.slice(0, MAX_FILE_NAME);
+  // Dot-only names and leading dots are not useful download names and can
+  // cause platform-specific hidden-file behavior.
+  const safe = clean.replace(/^\.+/, '');
+  return safe.slice(0, MAX_FILE_NAME);
 }
 
 /** SHA-256 hex digest of a file's bytes (spec: "calculate SHA-256 hash"). */
@@ -937,6 +940,11 @@ export async function closeTask(params: {
   }
   const evidenceFiles: PreparedEvidence[] = [];
   for (const f of files) {
+    // Reject over-limit input before allocating a Buffer from FormData. This
+    // is the last guard before any BLOB-sized allocation or database insert.
+    if (f.size > MAX_UPLOAD_BYTES) {
+      return { ok: false, error: `The file exceeds the ${MAX_UPLOAD_BYTES / (1024 * 1024)} MB upload limit.` };
+    }
     const bytes = Buffer.from(await f.arrayBuffer());
     const validated = validateEvidenceFile(f, bytes);
     if (!validated.ok) return { ok: false, error: validated.error };

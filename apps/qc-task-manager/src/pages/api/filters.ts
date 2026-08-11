@@ -10,7 +10,7 @@
 // `next` is restricted to same-origin relative paths to prevent open redirects.
 
 import type { APIRoute } from 'astro';
-import { getCurrentUser } from '../../lib/session';
+import { isResponse, requireApiUser, requireCsrf } from '../../lib/api-security';
 import { setFlash } from '../../lib/flash';
 import { parseFormData, savedFilterSchema } from '../../lib/validation';
 import { deleteSavedFilter, saveFilter } from '../../lib/taskSearch';
@@ -22,13 +22,11 @@ function safeNext(value: string | null | undefined): string {
 }
 
 export const POST: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) {
-    return new Response(JSON.stringify({ ok: false, error: 'Not authenticated.' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
   const form = await context.request.formData();
   const parsed = parseFormData(savedFilterSchema, form);

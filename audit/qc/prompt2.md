@@ -4,44 +4,6 @@
 * * *
 
 
-
-* * *
-
-# PROMPT 15: Security Hardening
-
-```text
-Perform a complete security pass.
-
-Requirements:
-- every protected page checks the session server-side
-- every API endpoint checks the session server-side
-- every API endpoint checks task ownership/visibility
-- use prepared SQL statements only
-- validate all input with Zod
-- sanitize displayed filenames
-- prevent path traversal
-- enforce upload size limits before inserting BLOBs
-- restrict MIME types and extensions
-- use CSRF protection for state-changing requests
-- use secure cookie settings in production
-- generic login errors
-- login rate limiting
-- account lockout after repeated failures
-- session expiration
-- logout invalidates the server session
-- no password hashes in responses
-- no secrets committed to Git
-- no database files committed to Git
-- set security headers:
-  Content-Security-Policy where compatible
-  X-Content-Type-Options
-  Referrer-Policy
-  X-Frame-Options or frame-ancestors
-- do not log passwords, cookies, tokens, or file contents
-
-Create a SECURITY.md explaining the threat model and deployment requirements.
-```
-
 * * *
 
 # PROMPT 16: Backup and Restore

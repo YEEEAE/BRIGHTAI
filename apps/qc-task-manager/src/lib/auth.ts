@@ -17,6 +17,7 @@ const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours (per spec)
 // five consecutive failed login attempts.
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCK_DURATION_MS = 10 * 60 * 1000; // 10 minutes
+const MAX_FAILED_ATTEMPTS_PER_IP = 20;
 // A real bcrypt hash of a throwaway string. Used on the unknown-username path
 // so login takes the same time whether or not the account exists — otherwise
 // the missing-user branch returns before bcrypt runs and an attacker can
@@ -68,6 +69,19 @@ export type LoginResult =
   | { status: 'locked'; lockedUntil: string }
   | { status: 'invalid' };
 
+/** Rate limit failed login attempts from one client IP in the lock window. */
+function isIpRateLimited(ipAddress: string | null | undefined): boolean {
+  if (!ipAddress) return false;
+  const row = getDb()
+    .prepare(
+      `SELECT COUNT(*) AS count FROM login_attempts
+       WHERE ip_address = ? AND succeeded = 0
+         AND datetime(created_at) >= datetime('now', '-10 minutes')`,
+    )
+    .get(ipAddress) as { count: number };
+  return Number(row.count) >= MAX_FAILED_ATTEMPTS_PER_IP;
+}
+
 /**
  * Append a row to the login_attempts audit table (username + IP + outcome).
  *
@@ -106,6 +120,13 @@ export function verifyCredentials(
   ipAddress?: string | null,
 ): LoginResult {
   const db = getDb();
+  // Apply the IP gate before any account-specific work. It deliberately maps
+  // to the generic external login failure to prevent account enumeration.
+  if (isIpRateLimited(ipAddress)) {
+    bcrypt.compareSync(password, DUMMY_PASSWORD_HASH);
+    recordLoginAttempt(username, ipAddress, false);
+    return { status: 'invalid' };
+  }
   const row = db
     .prepare('SELECT * FROM users WHERE username = ?')
     .get(username) as Record<string, unknown> | undefined;
@@ -119,9 +140,10 @@ export function verifyCredentials(
     return { status: 'invalid' };
   }
   const userId = Number(row.id);
-  // Deactivated accounts never authenticate (the caller shows a distinct
-  // message via isUserDisabled; this is defense in depth for other callers).
+  // Deactivated accounts never authenticate. Use the dummy hash too so this
+  // branch is indistinguishable from an unknown username to remote callers.
   if (!toBool(Number(row.is_active))) {
+    bcrypt.compareSync(password, DUMMY_PASSWORD_HASH);
     recordLoginAttempt(username, ipAddress, false);
     return { status: 'invalid' };
   }

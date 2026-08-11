@@ -8,18 +8,14 @@
 // "Evidence files" column carries file names only.
 
 import type { APIRoute } from 'astro';
-import { getCurrentUser } from '../../../lib/session';
+import { isResponse, requireApiUser } from '../../../lib/api-security';
 import { parseTaskSearchFilters, searchTaskRows } from '../../../lib/taskSearch';
 import { searchRowsToCsv } from '../../../lib/searchExport';
 
 export const GET: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) {
-    return new Response(JSON.stringify({ ok: false, error: 'Not authenticated.' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
   const filters = parseTaskSearchFilters(context.url, context);
   const rows = await searchTaskRows(filters, { role: user.role, userId: user.id });

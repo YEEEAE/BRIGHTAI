@@ -14,6 +14,12 @@ export default defineConfig({
     port: 4321,
     host: true,
   },
+  // Keep CSRF handling inside our middleware so rejected requests also pass
+  // through the uniform security-header wrapper. The middleware's explicit
+  // Origin check is required on every unsafe route, including /login.
+  security: {
+    checkOrigin: false,
+  },
   integrations: [
     react(),
     tailwind({

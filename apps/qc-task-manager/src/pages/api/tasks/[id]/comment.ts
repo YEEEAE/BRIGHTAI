@@ -9,11 +9,11 @@
 
 import type { APIRoute } from 'astro';
 import { getDb } from '../../../../lib/db';
-import { getCurrentUser } from '../../../../lib/session';
+import { isResponse, requireApiUser, requireCsrf } from '../../../../lib/api-security';
 import { canViewTask } from '../../../../lib/taskDetails';
 import { logActivity, Action } from '../../../../lib/activity';
 import { createNotification } from '../../../../lib/notifications';
-import { parseFormData, commentSchema } from '../../../../lib/validation';
+ import { parseFormData, commentSchema, parsePositiveId } from '../../../../lib/validation';
 import type { Task } from '../../../../lib/types';
 
 function json(body: Record<string, unknown>, status = 200): Response {
@@ -24,11 +24,14 @@ function json(body: Record<string, unknown>, status = 200): Response {
 }
 
 export const POST: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) return json({ ok: false, error: 'Not authenticated.' }, 401);
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
-  const taskId = Number(context.params.id);
-  if (!Number.isInteger(taskId) || taskId <= 0) {
+  const taskId = parsePositiveId(context.params.id);
+  if (taskId == null) {
     return json({ ok: false, error: 'Invalid task id.' }, 404);
   }
 

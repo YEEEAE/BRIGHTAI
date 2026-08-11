@@ -7,17 +7,13 @@
 // re-checks the session (defense in depth) and returns an attachment.
 
 import type { APIRoute } from 'astro';
-import { getCurrentUser } from '../../../lib/session';
+import { isResponse, requireApiUser } from '../../../lib/api-security';
 import { exportTasksForRole } from '../../../lib/export';
 
 export const GET: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) {
-    return new Response(JSON.stringify({ ok: false, error: 'Not authenticated.' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
   const csv = await exportTasksForRole(user.role, user.id);
   const date = new Date().toISOString().slice(0, 10);

@@ -11,12 +11,15 @@
 
 import type { APIRoute } from 'astro';
 import { getCurrentUser } from '../../../lib/session';
+import { requireCsrf } from '../../../lib/api-security';
 import { setFlash } from '../../../lib/flash';
 import { parseFormData, deleteReviewSchema } from '../../../lib/validation';
 import { canReviewDeleteRequests } from '../../../lib/permissions';
 import { reviewDeleteRequest } from '../../../lib/deleteRequests';
 
 export const POST: APIRoute = async (context) => {
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
   const actor = getCurrentUser(context);
   if (!actor) {
     return context.redirect(`/login?redirect=${encodeURIComponent('/manager/requests')}`);

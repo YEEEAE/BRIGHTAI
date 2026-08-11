@@ -6,9 +6,10 @@
 
 import type { APIRoute } from 'astro';
 import { getDb } from '../../../../../lib/db';
-import { getCurrentUser } from '../../../../../lib/session';
+import { isResponse, requireApiUser } from '../../../../../lib/api-security';
 import { getAttachment, canViewTask } from '../../../../../lib/taskDetails';
 import type { Task } from '../../../../../lib/types';
+import { parsePositiveId } from '../../../../../lib/validation';
 
 function json(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -18,12 +19,13 @@ function json(body: Record<string, unknown>, status = 200): Response {
 }
 
 export const GET: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) return json({ ok: false, error: 'Not authenticated.' }, 401);
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
-  const taskId = Number(context.params.id);
-  const attachmentId = Number(context.params.attachmentId);
-  if (!Number.isInteger(taskId) || taskId <= 0 || !Number.isInteger(attachmentId) || attachmentId <= 0) {
+  const taskId = parsePositiveId(context.params.id);
+  const attachmentId = parsePositiveId(context.params.attachmentId);
+  if (taskId == null || attachmentId == null) {
     return json({ ok: false, error: 'Invalid task or attachment id.' }, 404);
   }
 

@@ -9,6 +9,15 @@ agent_version: v2.3
 skills_ready: 7
 ---
 
+### 2026-08-11 — QC-SECURITY-PASS-001: تمرير أمني شامل لمدير مهام QC
+
+- **Files**: `apps/qc-task-manager/src/lib/api-security.ts` (جديد — حارس جلسة API وCSRF وJSON آمن)، `src/middleware.ts` (CSP + تمرير CSRF موحد حتى ردود الرفض)، `astro.config.mjs` (تعطيل Astro origin preflight لصالح حارس middleware الذي يضيف headers)، `src/lib/auth.ts` (rate limit فشل الدخول حسب IP + مقارنة dummy hash للحسابات المعطلة/المفقودة)، `src/lib/session.ts` + `src/pages/login.astro` (رسالة دخول عامة للحساب المفقود/المعطل/المقفل)، `src/lib/validation.ts` (positiveIdSchema/parsePositiveId)، `src/lib/taskUpdates.ts` (تصدير وتنقية أسماء الملفات، إزالة leading dots، فحص الحجم قبل Buffer في evidence)، كل `src/pages/api/**` (إعادة فحص session/CSRF/route IDs)، `src/pages/{admin/users/api,manager/requests/api,logout}.ts` (CSRF)، `db/schema.sql` (فهرس فشل IP)، `SECURITY.md`، `scripts/verify-security-hygiene.mjs`، `docs/superpowers/{specs,plans}/2026-08-11-qc-security-pass*`، `scripts/e2e-auth-lockout.mjs` (تحديث توقعات الرسائل العامة)
+- **What**: كل API يعيد فحص session server-side عبر `requireApiUser`، كل POST حساس يمر عبر Origin CSRF، كل route ID يمر عبر Zod، وأضيف CSP (`default-src 'self'`, `frame-ancestors 'none'`, `object-src 'none'` وغيرها) مع headers `DENY/nosniff/referrer`. أضيف rate limit محافظ (20 فشل/IP/10 دقائق) فوق قفل الحساب (5 محاولات/10 دقائق)، وصارت حالة الحساب المعطل/المقفل/المستخدم المجهول ترجع نفس `error=1` بدون enumeration. أسماء الملفات تُزال منها المسارات والتحكم والـ leading dots؛ file size يُرفض قبل Buffer/BLOB في مسار evidence، والـ extension/MIME allowlist القائم محفوظ.
+- **Security doc**: `apps/qc-task-manager/SECURITY.md` يشرح الأصول والخصوم وحدود الثقة، الضوابط، متطلبات HTTPS/proxy/IP، قاعدة البيانات والنسخ الاحتياطية، secrets، CSP، الرفع، والتحديثات.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **199/199** ✅؛ `typecheck` → 0 errors / 0 warnings / 11 hints قديمة ✅؛ `build` → Server built ✅؛ `verify-security-hygiene.mjs` → passed ✅؛ HTTP مباشر على build: صفحة login وredirect/API تحمل CSP + X-Frame-Options DENY + nosniff + Referrer-Policy، Origin غريب على POST يرجع 403 مع headers ✅. Live login/session E2E **محجوب بيئيًا** لأن `better-sqlite3` native binary ABI 127 بينما Node الحالي ABI 147 (نفس القيد الموثق سابقًا في brain، وليس فشلًا من التغيير).
+- **Notes**: `.env.example` templates مسموحة ومتحققة بلا values سرية؛ ملفات `audit/qc/prompt2.md` كانت dirty مسبقًا ولم ألمسها. Astro's built-in origin check صار `checkOrigin:false` عمدًا عشان ردود CSRF تمر عبر middleware وتاخذ headers؛ الحارس التطبيقي الآن يغطي `/login` وAPI وlogout ومسارات admin/manager.
+- **Status**: local static/build verified; live DB E2E blocked by pre-existing Node ABI mismatch; uncommitted — المستخدم يلتزم. **Follow-up**: أضفت `taskUpdateInputSchema`/`closeTaskInputSchema`/`cancelTaskInputSchema` وربطتها بالمسارات، فصار حدّ Zod يسبق منطق mutation أيضًا.
+
 > هذا الملف هو دماغ المشروع. كل تغيير جوهري يُسجَّل هنا.
 > اقرأه كاملًا قبل أي تغيير غير تافه (قاعدة agent.md Section 0.6).
 > الكتابة فقط بعد التحقق من نجاح التغيير.

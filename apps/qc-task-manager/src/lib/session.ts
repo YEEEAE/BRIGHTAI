@@ -9,7 +9,6 @@ import {
   destroySession,
   getSession,
   getUserById,
-  isUserDisabled,
   verifyCredentials,
 } from './auth';
 import { cleanupExpiredSessions } from './db';
@@ -92,18 +91,10 @@ export async function handleLoginPost(context: LoginContext): Promise<Response> 
   // Purge expired sessions on every login (per spec).
   cleanupExpiredSessions();
 
-  // Distinct message when the account exists but was deactivated by an admin.
-  if (isUserDisabled(username)) {
-    return context.redirect(`/login?redirect=${encodeURIComponent(safeTarget)}&disabled=1`);
-  }
-
   // verifyCredentials returns a richer result: bad credentials, or a locked
   // account (5 consecutive failures → 10-minute lock, per spec).
   const result = verifyCredentials(username, password, context.clientAddress);
-  if (result.status === 'locked') {
-    return context.redirect(`/login?redirect=${encodeURIComponent(safeTarget)}&locked=1`);
-  }
-  if (result.status === 'invalid') {
+  if (result.status === 'locked' || result.status === 'invalid') {
     return context.redirect(`/login?redirect=${encodeURIComponent(safeTarget)}&error=1`);
   }
   const user = result.user;

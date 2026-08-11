@@ -15,6 +15,7 @@
 
 import type { APIRoute } from 'astro';
 import { getCurrentUser } from '../../../lib/session';
+import { requireCsrf } from '../../../lib/api-security';
 import { setFlash } from '../../../lib/flash';
 import { PERMISSIONS } from '../../../lib/permissions';
 import {
@@ -29,6 +30,8 @@ import type { Role } from '../../../lib/types';
 const ROLES: Role[] = ['admin', 'manager', 'supervisor', 'employee'];
 
 export const POST: APIRoute = async (context) => {
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
   const actor = getCurrentUser(context);
   if (!actor) {
     return context.redirect(`/login?redirect=${encodeURIComponent('/admin/users')}`);

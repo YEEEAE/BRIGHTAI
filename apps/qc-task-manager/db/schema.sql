@@ -247,6 +247,8 @@ CREATE INDEX IF NOT EXISTS idx_notifications_task    ON notifications(task_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_expires      ON sessions(expires_at);
 
 CREATE INDEX IF NOT EXISTS idx_login_attempts_user   ON login_attempts(username, created_at);
+CREATE INDEX IF NOT EXISTS idx_login_attempts_ip_failure
+  ON login_attempts(ip_address, succeeded, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_saved_filters_user    ON saved_filters(user_id);
 

@@ -7,8 +7,9 @@
 // Returns JSON so the TaskUpdatePanel island can show errors inline.
 
 import type { APIRoute } from 'astro';
-import { getCurrentUser } from '../../../../lib/session';
+import { isResponse, requireApiUser, requireCsrf } from '../../../../lib/api-security';
 import { applyTaskUpdate } from '../../../../lib/taskUpdates';
+import { parseFormData, parsePositiveId, taskUpdateInputSchema } from '../../../../lib/validation';
 
 function json(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -18,15 +19,20 @@ function json(body: Record<string, unknown>, status = 200): Response {
 }
 
 export const POST: APIRoute = async (context) => {
-  const user = getCurrentUser(context);
-  if (!user) return json({ ok: false, error: 'Not authenticated.' }, 401);
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+  const auth = requireApiUser(context);
+  if (isResponse(auth)) return auth;
+  const user = auth;
 
-  const taskId = Number(context.params.id);
-  if (!Number.isInteger(taskId) || taskId <= 0) {
+  const taskId = parsePositiveId(context.params.id);
+  if (taskId == null) {
     return json({ ok: false, error: 'Invalid task id.' }, 404);
   }
 
   const form = await context.request.formData();
+  const parsed = parseFormData(taskUpdateInputSchema, form);
+  if (!parsed.ok) return json({ ok: false, error: parsed.error }, 400);
   const result = applyTaskUpdate({ taskId, actor: { id: user.id, role: user.role }, form });
   if (!result.ok) {
     const status = result.error === 'Task not found.' ? 404 : 400;

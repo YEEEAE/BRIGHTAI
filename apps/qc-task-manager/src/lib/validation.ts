@@ -73,6 +73,14 @@ export function parseFormData<T extends z.ZodTypeAny>(
   return { ok: true, data: result.data };
 }
 
+/** Route identifiers are untrusted input just like form fields. */
+export const positiveIdSchema = z.coerce.number().int().positive();
+
+export function parsePositiveId(value: string | undefined): number | null {
+  const result = positiveIdSchema.safeParse(value);
+  return result.success ? result.data : null;
+}
+
 // ───────────────────────────── Schemas ─────────────────────────────
 
 /** POST /login — username + password presence/shape. */
@@ -198,6 +206,31 @@ export const commentSchema = z.object({
     .min(1, 'Comment cannot be empty.')
     .max(MAX_COMMENT_LENGTH, `Comment must be ${MAX_COMMENT_LENGTH} characters or fewer.`),
 });
+
+/** Shared shape guards for task mutation forms; domain transition rules remain
+ * in taskUpdates after this input boundary. Unknown fields are retained for
+ * checklist/dependency controls and validated by their dedicated handlers. */
+const optionalText = (max: number) => z.preprocess((v) => (v == null ? undefined : String(v)), z.string().trim().max(max).optional());
+const optionalInt = z.preprocess((v) => (v == null || v === '' ? undefined : Number(v)), z.number().int().optional());
+export const taskUpdateInputSchema = z.object({
+  status: z.enum(['not_started', 'in_progress', 'on_hold', 'completed', 'cancelled']).optional(),
+  progress_percent: z.preprocess((v) => (v == null || v === '' ? undefined : Number(v)), z.number().min(0).max(100).optional()),
+  blocker_note: optionalText(2000),
+  title: optionalText(MAX_TITLE_LENGTH),
+  description: optionalText(MAX_DESCRIPTION_LENGTH),
+  assigned_to: optionalInt,
+  due_date: z.preprocess((v) => (v == null || v === '' ? undefined : v), z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional()),
+  priority: z.enum(TASK_PRIORITIES as [TaskPriority, ...TaskPriority[]]).optional(),
+}).passthrough();
+
+export const closeTaskInputSchema = z.object({
+  completion_comment: z.string().trim().min(1).max(MAX_COMMENT_LENGTH),
+  skip_evidence: z.enum(['0', '1']).optional(),
+}).passthrough();
+
+export const cancelTaskInputSchema = z.object({
+  reason: z.string().trim().min(1).max(MAX_REASON_LENGTH),
+}).passthrough();
 
 /** POST /api/tasks/[id]/delete-request — optional reason (max length only). */
 export const deleteRequestSchema = z.object({

@@ -5,13 +5,13 @@
 //      SameSite=lax, Secure in production, qc_session name) + last_login_at.
 //   B. Wrong password → generic "Invalid username or password." message.
 //   C. 5 consecutive failures → account locked (users.locked_until set,
-//      counter reset); correct password still rejected while locked; the
-//      locked message is shown; every attempt is audited in login_attempts.
+//      counter reset); correct password still gets the same generic failure;
+//      every attempt is audited in login_attempts.
 //   D. Lock expiry (simulated) → login works again with a fresh counter.
 //   E. Successful login resets the failure counter.
 //   F. Admin password reset clears the lock (sanctioned unblock).
 //   G. Admin reactivation clears the lock.
-//   H. Deactivated account → distinct "disabled" message (no counter bumps).
+//   H. Deactivated account → generic failure (no counter bumps).
 //   I. Anonymous request to a protected route → 302 to /login?redirect=…
 //
 // Usage: QC_DB_PATH=<app>/db/e2e_auth.db node scripts/e2e-auth-lockout.mjs
@@ -159,14 +159,13 @@ try {
   }
   ok(Number(cLocked.failed_login_attempts) === 0, 'C. failure counter reset on lock');
 
-  // Correct password while locked → still rejected, but NEVER reveals the
-  // password state; shows the locked message instead.
+  // Correct password while locked → still rejected with the generic message.
   const cCorrect = await postLogin('employee', PASS, '/employee');
-  ok(cCorrect.status === 302 && cCorrect.location.includes('locked=1'), `C. correct password while locked → /login?locked=1 (got ${cCorrect.location})`);
+  ok(cCorrect.status === 302 && cCorrect.location.includes('error=1'), `C. correct password while locked → generic /login?error=1 (got ${cCorrect.location})`);
 
-  const { fresh: cFresh, page: cPage } = await loginPageWith('locked=1');
-  await cPage.waitForSelector('text=Account locked due to too many failed attempts', { timeout: 10_000 });
-  ok(true, 'C. page shows the locked message');
+  const { fresh: cFresh, page: cPage } = await loginPageWith('error=1');
+  await cPage.waitForSelector('text=Invalid username or password.', { timeout: 10_000 });
+  ok(true, 'C. locked account shows the generic login message');
   await cFresh.close();
 
   const cAudit = all('SELECT * FROM login_attempts WHERE username = ? AND succeeded = 0', 'employee');
@@ -237,16 +236,16 @@ try {
   ok(gLogin.status === 302 && gLogin.location === '/employee', `G. employee logs in after reactivation (got ${gLogin.status} ${gLogin.location})`);
   await adminCtx.close();
 
-  // ─────────────── H. Deactivated account → distinct message ───────────────
-  console.log('── Scenario H: deactivated account → disabled message, no counter bumps ──');
+  // ─────────────── H. Deactivated account → generic message ───────────────
+  console.log('── Scenario H: deactivated account → generic message, no counter bumps ──');
   db.prepare('UPDATE users SET is_active = 0, failed_login_attempts = 0, locked_until = NULL WHERE username = ?').run('employee');
   const h = await postLogin('employee', 'newpass123', '/employee');
-  ok(h.status === 302 && h.location.includes('disabled=1'), `H. disabled account → /login?disabled=1 (got ${h.location})`);
+  ok(h.status === 302 && h.location.includes('error=1'), `H. disabled account → generic /login?error=1 (got ${h.location})`);
   const hUser = userByName('employee');
   ok(Number(hUser.failed_login_attempts) === 0, 'H. disabled account does not accumulate failures');
-  const { fresh: hFresh, page: hPage } = await loginPageWith('disabled=1');
-  await hPage.waitForSelector('text=This account has been disabled', { timeout: 10_000 });
-  ok(true, 'H. page shows the disabled message');
+  const { fresh: hFresh, page: hPage } = await loginPageWith('error=1');
+  await hPage.waitForSelector('text=Invalid username or password.', { timeout: 10_000 });
+  ok(true, 'H. disabled account shows the generic login message');
   await hFresh.close();
   db.prepare('UPDATE users SET is_active = 1 WHERE username = ?').run('employee');
 
