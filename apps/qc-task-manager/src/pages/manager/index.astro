@@ -19,6 +19,8 @@ const db = getDb();
 const tasks = db
   .prepare(
     `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date, t.recurrence,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
             u.full_name AS assignee,
             (SELECT 1 FROM task_delete_requests r
               WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
@@ -37,6 +39,8 @@ const tasks = db
     recurrence: string;
     assignee: string | null;
     delete_pending: number;
+    checklist_total: number;
+    checklist_completed: number;
   }[];
 ---
 <BaseLayout title="Tasks">
@@ -97,7 +101,7 @@ const tasks = db
                     {priorityLabel(t.priority)}
                   </span>
                 </td>
-                <td class="whitespace-nowrap px-4 py-2.5 text-slate-600 tabular-nums">{t.progress_percent}%</td>
+                <td class="whitespace-nowrap px-4 py-2.5 text-slate-600 tabular-nums">{t.progress_percent}%<span class="block text-xs text-slate-400">QC {t.checklist_completed}/{t.checklist_total} ({t.checklist_total ? Math.round((t.checklist_completed / t.checklist_total) * 100) : 0}%)</span></td>
                 <td class="px-4 py-2.5">
                   <div class="flex items-center gap-2">
                     {t.delete_pending === 1 && (

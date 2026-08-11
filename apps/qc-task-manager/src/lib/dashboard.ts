@@ -440,6 +440,17 @@ export function getKpis(f: DashboardFilters): Kpis {
   };
 }
 
+/** Average checklist completion across tasks in the current dashboard scope. */
+export function getChecklistCompletion(f: DashboardFilters): { completed: number; total: number; percent: number } {
+  const db = getDb();
+  const { sql, params } = whereClause(f);
+  const row = db.prepare(`SELECT COALESCE(SUM((SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1)), 0) AS completed,
+                                COALESCE(SUM((SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id)), 0) AS total
+                         FROM tasks t ${sql}`).get(...params) as { completed: number; total: number };
+  const total = Number(row.total); const completed = Number(row.completed);
+  return { completed, total, percent: total ? Math.round((completed / total) * 100) : 0 };
+}
+
 // ─────────────────────── Donut: tasks by status ───────────────────────
 
 export interface DonutSlice {

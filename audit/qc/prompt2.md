@@ -7,40 +7,6 @@
 
 * * *
 
-# PROMPT 14: Checklist and QC-Specific Enhancements
-
-```text
-Build QC checklist support inside every task.
-
-Features:
-- add checklist items
-- reorder items
-- mark item complete
-- show completion percentage
-- prevent completion if configured checklist items are incomplete
-- allow manager/admin override with reason
-- record every checklist change
-- show checklist progress in task rows and dashboard
-
-Add optional QC metadata:
-- inspection type
-- finding classification
-- risk level
-- corrective action required
-- reference number
-- audit batch or work order number
-
-Do not force these fields on existing tasks without a migration.
-Add them through a safe migration or make them nullable.
-
-Use the existing roles and field-locking rules:
-- employees may update checklist progress only if permitted
-- managers/admins may edit checklist structure
-- supervisors may edit checklist structure for tasks they own or supervise
-```
-
-* * *
-
 # PROMPT 15: Security Hardening
 
 ```text

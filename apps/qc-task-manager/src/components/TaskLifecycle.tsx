@@ -33,6 +33,8 @@ interface Props {
   canCancel: boolean;
   /** manager/admin on a completed task → show Reopen. */
   canReopen: boolean;
+  incompleteChecklist?: number;
+  canOverrideChecklist?: boolean;
 }
 
 // ── evidence rules (mirror src/lib/task-policy.ts EVIDENCE_* constants) ──
@@ -83,7 +85,7 @@ const inputCls =
   'w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 const labelCls = 'block text-sm font-medium text-slate-700';
 
-export default function TaskLifecycle({ taskId, title, status, canComplete, canCancel, canReopen }: Props) {
+export default function TaskLifecycle({ taskId, title, status, canComplete, canCancel, canReopen, incompleteChecklist = 0, canOverrideChecklist = false }: Props) {
   // ── wizard state ──
   const [wizardOpen, setWizardOpen] = useState(false);
   const [step, setStep] = useState(0);
@@ -91,6 +93,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
   const [invalid, setInvalid] = useState<string[]>([]);
   const [skipEvidence, setSkipEvidence] = useState(false);
   const [comment, setComment] = useState('');
+  const [checklistOverrideReason, setChecklistOverrideReason] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // ── cancel dialog state ──
@@ -128,6 +131,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
     setInvalid([]);
     setSkipEvidence(false);
     setComment('');
+    setChecklistOverrideReason('');
     setError(null);
   }
 
@@ -159,6 +163,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
     try {
       const form = new FormData();
       form.set('completion_comment', comment.trim());
+      if (checklistOverrideReason.trim()) form.set('checklist_override_reason', checklistOverrideReason.trim());
       if (skipEvidence || accepted.length === 0) {
         form.set('skip_evidence', '1');
       } else {
@@ -449,7 +454,17 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                 </div>
               )}
 
-              {step === 2 && (
+                {step === 2 && (
+                  <>
+                    {incompleteChecklist > 0 && (
+                      <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                        <p>{incompleteChecklist} checklist item(s) remain incomplete.</p>
+                        {canOverrideChecklist ? <label className={`${labelCls} mt-2`}>Manager/admin override reason<input value={checklistOverrideReason} onChange={(e) => setChecklistOverrideReason(e.target.value)} maxLength={500} className={`${inputCls} mt-1`} required /></label> : <p className="mt-1">Complete the checklist before confirming.</p>}
+                      </div>
+                    )}
+                  </>
+                )}
+                {step === 2 && (
                 <div>
                   <h3 className="text-sm font-semibold text-slate-900">Step 3 — Confirm</h3>
                   <p className="mt-1 text-xs text-slate-500">

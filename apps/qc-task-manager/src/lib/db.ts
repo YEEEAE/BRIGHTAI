@@ -83,6 +83,12 @@ const COLUMN_MIGRATIONS: { table: string; column: string; ddl: string }[] = [
   { table: 'tasks', column: 'cancelled_at', ddl: 'ALTER TABLE tasks ADD COLUMN cancelled_at TEXT' },
   { table: 'tasks', column: 'cancelled_by', ddl: 'ALTER TABLE tasks ADD COLUMN cancelled_by INTEGER REFERENCES users(id) ON DELETE SET NULL' },
   { table: 'tasks', column: 'completion_comment_id', ddl: 'ALTER TABLE tasks ADD COLUMN completion_comment_id INTEGER' },
+  { table: 'tasks', column: 'inspection_type', ddl: 'ALTER TABLE tasks ADD COLUMN inspection_type TEXT' },
+  { table: 'tasks', column: 'finding_classification', ddl: 'ALTER TABLE tasks ADD COLUMN finding_classification TEXT' },
+  { table: 'tasks', column: 'risk_level', ddl: 'ALTER TABLE tasks ADD COLUMN risk_level TEXT' },
+  { table: 'tasks', column: 'corrective_action_required', ddl: 'ALTER TABLE tasks ADD COLUMN corrective_action_required INTEGER' },
+  { table: 'tasks', column: 'reference_number', ddl: 'ALTER TABLE tasks ADD COLUMN reference_number TEXT' },
+  { table: 'tasks', column: 'audit_batch_or_work_order', ddl: 'ALTER TABLE tasks ADD COLUMN audit_batch_or_work_order TEXT' },
   // task_comments
   { table: 'task_comments', column: 'is_completion_comment', ddl: 'ALTER TABLE task_comments ADD COLUMN is_completion_comment INTEGER NOT NULL DEFAULT 0' },
   // task_attachments

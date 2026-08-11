@@ -21,6 +21,9 @@ import {
   MAX_SAVED_FILTER_JSON,
   MAX_SAVED_FILTER_NAME,
   MAX_TITLE_LENGTH,
+  MAX_QC_METADATA_LENGTH,
+  FINDING_CLASSIFICATIONS,
+  RISK_LEVELS,
   MAX_USERNAME_LENGTH,
   MIN_PASSWORD_LENGTH,
   TASK_PRIORITIES,
@@ -93,6 +96,7 @@ const recurrenceValue = (v: unknown): unknown => (v === '' || v == null ? 'none'
 
 /** Normalize empty/missing recurrence end date to null. */
 const endDateValue = (v: unknown): unknown => (v === '' || v == null ? null : v);
+const optionalMeta = (v: unknown): unknown => (v === '' || v == null ? null : v);
 
 /** Task creation (/manager/new, /supervisor/new, /employee/new). */
 export const taskCreateInputSchema = z.object({
@@ -151,6 +155,12 @@ export const taskCreateInputSchema = z.object({
       .regex(/^\d{4}-\d{2}-\d{2}$/, 'Recurrence end date must be a valid date (YYYY-MM-DD).')
       .nullable(),
   ),
+  inspection_type: z.preprocess(optionalMeta, z.string().trim().max(MAX_QC_METADATA_LENGTH).nullable()),
+  finding_classification: z.preprocess(optionalMeta, z.enum(FINDING_CLASSIFICATIONS as [string, ...string[]]).nullable()),
+  risk_level: z.preprocess(optionalMeta, z.enum(RISK_LEVELS as [string, ...string[]]).nullable()),
+  corrective_action_required: z.preprocess((v) => (v === '' || v == null ? null : v === '1' || v === 1 ? 1 : v === '0' || v === 0 ? 0 : v), z.number().int().min(0).max(1).nullable()),
+  reference_number: z.preprocess(optionalMeta, z.string().trim().max(MAX_QC_METADATA_LENGTH).nullable()),
+  audit_batch_or_work_order: z.preprocess(optionalMeta, z.string().trim().max(MAX_QC_METADATA_LENGTH).nullable()),
   checklist: z.preprocess(
     (v) =>
       Array.isArray(v)

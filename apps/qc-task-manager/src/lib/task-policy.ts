@@ -13,7 +13,7 @@
 //   RULE #5  Evidence/attachments are stored as BLOBs, validated ext+MIME+10 MB.
 //   RULE #6  Every task mutation is recorded in task_activity_log.
 
-import type { TaskPriority, TaskRecurrence, TaskStatus } from './types';
+import type { TaskPriority, TaskRecurrence, TaskStatus, RiskLevel, FindingClassification } from './types';
 
 // ─────────────────────────── Enumerations ───────────────────────────
 
@@ -61,6 +61,9 @@ export const MAX_CHECKLIST_TITLE_LENGTH = 200;
 export const MAX_DEPENDENCIES = 20;
 /** Max length of the explicit dependency-override reason (admin/manager only). */
 export const MAX_OVERRIDE_REASON_LENGTH = 500;
+export const MAX_QC_METADATA_LENGTH = 200;
+export const RISK_LEVELS: readonly RiskLevel[] = ['low', 'medium', 'high', 'critical'];
+export const FINDING_CLASSIFICATIONS: readonly FindingClassification[] = ['conforming', 'minor', 'major', 'critical', 'observation'];
 /** Max depth walked when checking dependency cycles at creation time. */
 export const MAX_DEPENDENCY_DEPTH = 20;
 /** Max length of a saved-search filter name (saved_filters.name). */
@@ -242,4 +245,19 @@ export function isRecurrence(value: string): value is TaskRecurrence {
 export function isValidOverrideReason(reason: string): boolean {
   const r = reason.trim();
   return r.length > 0 && r.length <= MAX_OVERRIDE_REASON_LENGTH;
+}
+
+export function isRiskLevel(value: string): value is RiskLevel {
+  return (RISK_LEVELS as readonly string[]).includes(value);
+}
+
+export function isFindingClassification(value: string): value is FindingClassification {
+  return (FINDING_CLASSIFICATIONS as readonly string[]).includes(value);
+}
+
+export function normalizeOptionalMetadata(value: unknown): string | null | undefined {
+  if (value === null || value === undefined) return undefined;
+  const trimmed = String(value).trim();
+  if (!trimmed) return null;
+  return trimmed.length <= MAX_QC_METADATA_LENGTH ? trimmed : undefined;
 }

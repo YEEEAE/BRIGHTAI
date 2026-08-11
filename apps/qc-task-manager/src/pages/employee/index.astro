@@ -27,6 +27,8 @@ const allowCreate = fullUser ? PERMISSIONS.canCreateTask(fullUser) : false;
 const tasks = db
   .prepare(
     `SELECT id, title, status, priority, progress_percent, due_date, recurrence,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = tasks.id) AS checklist_total,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = tasks.id AND c.is_completed = 1) AS checklist_completed,
             (SELECT 1 FROM task_delete_requests r
               WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
      FROM tasks t
@@ -42,6 +44,8 @@ const tasks = db
     progress_percent: number;
     due_date: string | null;
     recurrence: string;
+    checklist_total: number;
+    checklist_completed: number;
     delete_pending: number;
   }[];
 
@@ -91,7 +95,7 @@ const tasks = db
                   <span class="inline-block h-1.5 w-24 overflow-hidden rounded-full bg-slate-200 align-middle">
                     <span class="block h-full rounded-full bg-brand-500" style={`width: ${t.progress_percent}%`}></span>
                   </span>
-                  <span class="ml-1 tabular-nums">{t.progress_percent}%</span>
+                  <span class="ml-1 tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
                 </span>
               </div>
             </div>

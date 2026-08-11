@@ -17,6 +17,8 @@ export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
 // recurrence values match the tasks.recurrence CHECK constraint in db/schema.sql.
 export type TaskRecurrence = 'none' | 'daily' | 'weekly' | 'monthly';
 export type DeleteRequestStatus = 'pending' | 'approved' | 'rejected';
+export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
+export type FindingClassification = 'conforming' | 'minor' | 'major' | 'critical' | 'observation';
 
 export interface User {
   id: number;
@@ -50,6 +52,12 @@ export interface Task {
   completed_by: number | null;
   cancelled_at: string | null;
   cancelled_by: number | null;
+  inspection_type: string | null;
+  finding_classification: FindingClassification | null;
+  risk_level: RiskLevel | null;
+  corrective_action_required: number | null;
+  reference_number: string | null;
+  audit_batch_or_work_order: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -89,6 +97,13 @@ export interface TaskChecklistItem {
   completed_by: number | null;
   completed_at: string | null;
   created_at: string;
+}
+
+export interface ChecklistProgress {
+  total: number;
+  completed: number;
+  percent: number;
+  incomplete: number;
 }
 
 /** One row of a task's dependency edge (task_dependencies: task_id → depends_on_task_id). */

@@ -123,3 +123,8 @@ export function canReviewDeleteRequests(role: Role): boolean {
 export function canAssignTask(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
 }
+
+export function canEditChecklistStructure(user: Pick<User, 'id' | 'role'>, task: Pick<Task, 'created_by' | 'assigned_to'>): boolean {
+  if (hasRankAtLeast(user.role, 'manager')) return true;
+  return user.role === 'supervisor' && (task.created_by === user.id || task.assigned_to === user.id);
+}

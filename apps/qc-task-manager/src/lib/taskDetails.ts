@@ -95,6 +95,12 @@ export function listChecklist(taskId: number): TaskChecklistItem[] {
     .all(taskId) as TaskChecklistItem[];
 }
 
+export function getChecklistProgress(items: Pick<TaskChecklistItem, 'is_completed'>[]): import('./types').ChecklistProgress {
+  const total = items.length;
+  const completed = items.filter((item) => Boolean(item.is_completed)).length;
+  return { total, completed, incomplete: total - completed, percent: total === 0 ? 0 : Math.round((completed / total) * 100) };
+}
+
 /** All dependency edges of a task joined with the dependency task's display data. */
 export function listDependencies(taskId: number): DependencyInfo[] {
   const db = getDb();
@@ -274,6 +280,8 @@ export function actionCategory(action: string): string {
     case 'checklist_item_added':
     case 'checklist_item_updated':
     case 'checklist_item_removed':
+    case 'checklist_reordered':
+    case 'checklist_override':
       return 'checklist';
     case 'dependency_added':
     case 'dependency_removed':
@@ -343,6 +351,10 @@ export function describeAction(action: string, oldValue: string | null, newValue
       return `${oldValue === 'checked' ? 'unchecked' : 'checked off'} the checklist item ${fmtVal(newValue)}.`;
     case 'checklist_item_removed':
       return `removed the checklist item ${fmtVal(newValue)}.`;
+    case 'checklist_reordered':
+      return `reordered the checklist (${fmtVal(oldValue)} → ${fmtVal(newValue)}).`;
+    case 'checklist_override':
+      return `completed the task with incomplete checklist items using an override reason: ${fmtVal(newValue)}.`;
     case 'dependency_added':
       return `added dependency task ${newValue ?? ''}.`;
     case 'dependency_removed':

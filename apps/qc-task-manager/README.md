@@ -445,6 +445,18 @@ occurrence is created only when the current task is completed** (in
 
 ### Task details + editing (`/tasks/[id]`)
 
+Every task can carry an optional QC checklist. The details editor shows live
+`completed / total` and percentage progress, lets permitted employees toggle
+items, and lets managers/admins reorder or change the structure. Supervisors
+can change structure only for tasks they created or supervise (assigned to
+them). Every add/remove/toggle/reorder and completion override is written to
+`task_activity_log`. Completion is blocked while checklist items are open;
+managers/admins may supply a bounded reason to override the gate.
+
+The following nullable QC metadata is available without migrating existing
+task data: inspection type, finding classification, risk level, corrective
+action required, reference number, and audit batch/work-order number.
+
 Server-rendered sections: header (status/priority badges, progress, due date,
 assignee, department, recurrence + series parent, creator), blocker note,
 blocking-dependencies callout, checklist, dependencies, comments thread,
@@ -540,6 +552,11 @@ signature check (`%PDF-`, PNG header, JPEG SOI, ZIP PK for xlsx/docx) — a
 renamed file with the right extension and MIME is still rejected.
 
 ### Dashboard (`/dashboard`)
+
+Task rows and the dashboard include QC checklist progress. The dashboard's
+`QC checklist completion` card is scoped by the active filters and reports
+completed versus total checklist items; tasks with no checklist contribute zero
+items and do not force legacy tasks to adopt metadata.
 
 Manager/supervisor/admin only (employees are redirected to `/employee` with a
 flash — CORE BUSINESS RULE #1). Read-only, fully parameterized queries in

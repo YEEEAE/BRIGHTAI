@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-11 18:50 +03:00
+last_updated: 2026-08-11 19:16 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.82
 agent_version: v2.3
@@ -18,6 +18,16 @@ skills_ready: 7
 > هذا مشروع astro 
 
 ---
+
+### 2026-08-11 — QC-CHECKLIST-SUPPORT-001: دعم QC checklist داخل كل مهمة + metadata اختيارية
+
+- **Files**: `apps/qc-task-manager/db/schema.sql`, `apps/qc-task-manager/src/lib/db.ts`, `src/lib/types.ts`, `src/lib/task-policy.ts`, `src/lib/permissions.ts`, `src/lib/taskUpdates.ts`, `src/lib/taskDetails.ts`, `src/lib/activity.ts`, `src/lib/tasks.ts`, `src/lib/validation.ts`, `src/components/TaskChecklistInput.tsx`, `src/components/TaskUpdatePanel.tsx`, `src/components/TaskLifecycle.tsx`, `src/components/NewTaskForm.astro`, `src/pages/tasks/[id].astro`, `src/pages/{employee,manager,supervisor}/index.astro`, `src/lib/dashboard.ts`, `src/pages/dashboard.astro`, `README.md`
+- **What**: أضفت checklist progress (completed/total/%), إعادة ترتيب بعناصر up/down، صلاحية toggle للموظف ضمن نطاقه، وصلاحية تعديل الهيكل للمدير/الأدمن وللمشرف إذا كان مالك المهمة أو مشرفها. كل تغيير (إضافة/حذف/toggle/reorder/override) يُسجل في `task_activity_log`. إكمال المهمة يُمنع عند وجود عناصر ناقصة؛ manager/admin يقدر يتجاوز بشرح إلزامي ومحدود. أضفت metadata اختيارية وnullable: inspection type، finding classification، risk level، corrective action required، reference number، audit batch/work order، مع migration آمنة للأعمدة على قواعد البيانات القديمة. progress ظاهر في صفوف المهام وتحت فلاتر dashboard.
+- **Why**: المواصفة طلبت بوابة QC داخل كل task بدون إجبار المهام القديمة على تعبئة حقول جديدة، مع احترام field-locking والأدوار الحالية.
+- **Verification**: `pnpm typecheck` → 0 errors (11 hints قديمة) ✅؛ `pnpm build` → Server built ✅؛ SQLite schema smoke عبر `sqlite3` أكد الأعمدة الستة nullable ✅. `scripts/test.mjs` مرّ باختبارات policy الجديدة ثم توقف عند backup بسبب `better-sqlite3` binary مبني على Node ABI 127 بينما runtime الحالي ABI 147 (بيئة الاختبار، خارج التغيير).
+- **Plan**: `docs/superpowers/plans/2026-08-11-qc-checklist-support.md`
+- **Commit**: uncommitted — المستخدم يلتزم (القاعدة الثانية)
+- **Status**: verified locally (typecheck + build + schema smoke؛ unit suite blocked by native dependency ABI mismatch)
 
 ### 2026-08-11 — QC-DASHBOARD-V2-001: إعادة بناء /dashboard الكاملة (9 KPI + 6 charts + 5 tables + فلاتر موسّعة) — 45/45 E2E ✅
 

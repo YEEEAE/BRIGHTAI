@@ -21,7 +21,7 @@ import { createHash } from 'node:crypto';
 
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
-import { canEditTask, canEditLockedField, hasRankAtLeast } from './permissions';
+import { canEditTask, canEditLockedField, canEditChecklistStructure, hasRankAtLeast } from './permissions';
 import { createNotification } from './notifications';
 import { validateDependencies } from './tasks';
 import {
@@ -212,7 +212,9 @@ function loadEditableTask(taskId: number) {
     .prepare(
       `SELECT id, title, description, department, status, priority, progress_percent,
               created_by, assigned_to, due_date, blocker_note, recurrence,
-              recurrence_end_date, started_at, completed_at, cancelled_at, cancelled_by
+              recurrence_end_date, started_at, completed_at, cancelled_at, cancelled_by,
+              inspection_type, finding_classification, risk_level, corrective_action_required,
+              reference_number, audit_batch_or_work_order
        FROM tasks WHERE id = ?`,
     )
     .get(taskId) as
@@ -235,6 +237,12 @@ function loadEditableTask(taskId: number) {
         | 'completed_at'
         | 'cancelled_at'
         | 'cancelled_by'
+        | 'inspection_type'
+        | 'finding_classification'
+        | 'risk_level'
+        | 'corrective_action_required'
+        | 'reference_number'
+        | 'audit_batch_or_work_order'
       >)
     | undefined;
 }
@@ -296,6 +304,7 @@ export function applyTaskUpdate(params: {
   }
 
   const canEditLocked = canEditLockedField(params.actor.role);
+  const canEditChecklist = canEditChecklistStructure(params.actor, task);
   const form = params.form;
   const changes: string[] = [];
   const sets: string[] = [];
@@ -660,7 +669,35 @@ export function applyTaskUpdate(params: {
     }
   }
 
-  // ── checklist ops (toggle: any editor; add/remove: supervisor+) ──
+  // Optional QC metadata. These remain nullable for legacy tasks.
+  const metadataFields = [
+    ['inspection_type', task.inspection_type],
+    ['finding_classification', task.finding_classification],
+    ['risk_level', task.risk_level],
+    ['corrective_action_required', task.corrective_action_required],
+    ['reference_number', task.reference_number],
+    ['audit_batch_or_work_order', task.audit_batch_or_work_order],
+  ] as const;
+  for (const [key, oldValue] of metadataFields) {
+    const raw = form.get(key);
+    if (raw === null) continue;
+    if (!canEditLocked) return fieldErr(key);
+    const rawString = String(raw).trim();
+    let next: string | number | null = rawString || null;
+    if (key === 'corrective_action_required') {
+      if (!['', '0', '1'].includes(rawString)) return { ok: false, error: 'Corrective action value is invalid.' };
+      next = rawString === '' ? null : Number(rawString);
+    }
+    if (key === 'risk_level' && next !== null && !['low', 'medium', 'high', 'critical'].includes(String(next))) return { ok: false, error: 'Risk level is invalid.' };
+    if (key === 'finding_classification' && next !== null && !['conforming', 'minor', 'major', 'critical', 'observation'].includes(String(next))) return { ok: false, error: 'Finding classification is invalid.' };
+    if (typeof next === 'string' && next.length > 200) return { ok: false, error: `${key} must be 200 characters or fewer.` };
+    if (String(next ?? '') !== String(oldValue ?? '')) {
+      sets.push(`${key} = ?`); values.push(next); changes.push(key);
+      activity.push({ action: Action.FIELD_CHANGED, oldValue: `${key}: ${oldValue ?? ''}`, newValue: `${key}: ${next ?? ''}` });
+    }
+  }
+
+  // ── checklist ops (toggle: permitted editor; structure: owner/supervisor+) ──
   const rawToggle = form.get('checklist_toggle');
   if (rawToggle !== null) {
     const id = Number(rawToggle);
@@ -694,7 +731,7 @@ export function applyTaskUpdate(params: {
 
   const rawAdd = form.get('checklist_add');
   if (rawAdd !== null) {
-    if (!canEditLocked) return fieldErr('checklist');
+    if (!canEditChecklist) return fieldErr('checklist');
     const title = String(rawAdd).trim();
     if (!title) return { ok: false, error: 'Checklist item cannot be empty.' };
     if (title.length > MAX_CHECKLIST_TITLE_LENGTH) {
@@ -724,7 +761,7 @@ export function applyTaskUpdate(params: {
 
   const rawRemove = form.get('checklist_remove');
   if (rawRemove !== null) {
-    if (!canEditLocked) return fieldErr('checklist');
+    if (!canEditChecklist) return fieldErr('checklist');
     const id = Number(rawRemove);
     if (!Number.isInteger(id) || id <= 0) return { ok: false, error: 'Invalid checklist item.' };
     const item = db
@@ -739,6 +776,19 @@ export function applyTaskUpdate(params: {
         action: Action.CHECKLIST_ITEM_REMOVED,
         newValue: item.title,
       });
+    });
+  }
+
+  const rawReorder = form.get('checklist_reorder');
+  if (rawReorder !== null) {
+    if (!canEditChecklist) return fieldErr('checklist');
+    const ids = String(rawReorder).split(',').map((v) => Number(v));
+    const current = db.prepare('SELECT id FROM task_checklists WHERE task_id = ? ORDER BY sort_order ASC, id ASC').all(task.id) as { id: number }[];
+    if (ids.length !== current.length || new Set(ids).size !== current.length || ids.some((id) => !current.some((row) => row.id === id))) return { ok: false, error: 'Checklist order is invalid.' };
+    ops.push(() => {
+      const update = db.prepare('UPDATE task_checklists SET sort_order = ? WHERE id = ? AND task_id = ?');
+      ids.forEach((id, index) => update.run(index, id, task.id));
+      logActivity({ taskId: task.id, userId: params.actor.id, action: Action.CHECKLIST_REORDERED, oldValue: current.map((x) => x.id).join(','), newValue: ids.join(',') });
     });
   }
 
@@ -842,6 +892,22 @@ export async function closeTask(params: {
     return { ok: false, error: 'You do not have permission to edit this task.' };
   }
 
+  const checklistState = db.prepare(
+    'SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END), 0) AS completed FROM task_checklists WHERE task_id = ?',
+  ).get(task.id) as { total: number; completed: number };
+  const incompleteChecklist = Number(checklistState.total) - Number(checklistState.completed);
+  let checklistOverrideReason: string | null = null;
+  if (incompleteChecklist > 0) {
+    const rawOverride = String(params.form.get('checklist_override_reason') ?? '').trim();
+    if (!hasRankAtLeast(params.actor.role, 'manager')) {
+      return { ok: false, error: `Complete all ${incompleteChecklist} remaining checklist item(s) before completing this task.` };
+    }
+    if (!isValidOverrideReason(rawOverride)) {
+      return { ok: false, error: `Complete all ${incompleteChecklist} remaining checklist item(s), or provide a manager/admin override reason.` };
+    }
+    checklistOverrideReason = rawOverride;
+  }
+
   const completionComment = String(params.form.get('completion_comment') ?? '').trim();
   if (!completionComment) {
     return { ok: false, error: 'A completion comment is required to complete the task.' };
@@ -929,6 +995,9 @@ export async function closeTask(params: {
     );
 
     logActivity({ taskId: task.id, userId: params.actor.id, action: Action.TASK_COMPLETED });
+    if (checklistOverrideReason) {
+      logActivity({ taskId: task.id, userId: params.actor.id, action: Action.CHECKLIST_OVERRIDE, newValue: checklistOverrideReason });
+    }
     logActivity({
       taskId: task.id,
       userId: params.actor.id,

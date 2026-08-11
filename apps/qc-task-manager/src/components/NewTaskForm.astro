@@ -157,6 +157,18 @@ const f = {
     </div>
   </div>
 
+  <fieldset class="rounded-md border border-slate-200 p-4">
+    <legend class="px-1 text-sm font-semibold text-slate-700">QC metadata (optional)</legend>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class={labelCls}>Inspection type<input name="inspection_type" maxlength="200" class={inputCls} /></label>
+      <label class={labelCls}>Finding classification<select name="finding_classification" class={inputCls}><option value="">Not set</option><option value="conforming">Conforming</option><option value="minor">Minor</option><option value="major">Major</option><option value="critical">Critical</option><option value="observation">Observation</option></select></label>
+      <label class={labelCls}>Risk level<select name="risk_level" class={inputCls}><option value="">Not set</option><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option></select></label>
+      <label class={labelCls}>Corrective action required<select name="corrective_action_required" class={inputCls}><option value="">Not set</option><option value="1">Yes</option><option value="0">No</option></select></label>
+      <label class={labelCls}>Reference number<input name="reference_number" maxlength="200" class={inputCls} /></label>
+      <label class={labelCls}>Audit batch / work order<input name="audit_batch_or_work_order" maxlength="200" class={inputCls} /></label>
+    </div>
+  </fieldset>
+
   <div>
     <span class={labelCls}>Checklist items <span class="font-normal text-slate-400">(optional)</span></span>
     <div class="mt-1">

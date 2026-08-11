@@ -19,6 +19,8 @@ const db = getDb();
 const tasks = db
   .prepare(
     `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date, t.recurrence,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
+            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
             u.full_name AS assignee
      FROM tasks t
      LEFT JOIN users u ON u.id = t.assigned_to
@@ -33,6 +35,8 @@ const tasks = db
     progress_percent: number;
     due_date: string | null;
     recurrence: string;
+    checklist_total: number;
+    checklist_completed: number;
     assignee: string | null;
   }[];
 ---
@@ -76,7 +80,7 @@ const tasks = db
                     {overdue && ' ⚠️'}
                   </span>
                 )}
-                <span class="tabular-nums">{t.progress_percent}%</span>
+                <span class="tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
               </div>
             </div>
             <StatusBadge status={t.status} />

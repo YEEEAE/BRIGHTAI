@@ -25,6 +25,8 @@ export const Action = {
   CHECKLIST_ITEM_ADDED: 'checklist_item_added',
   CHECKLIST_ITEM_UPDATED: 'checklist_item_updated',
   CHECKLIST_ITEM_REMOVED: 'checklist_item_removed',
+  CHECKLIST_REORDERED: 'checklist_reordered',
+  CHECKLIST_OVERRIDE: 'checklist_override',
   DEPENDENCY_ADDED: 'dependency_added',
   DEPENDENCY_REMOVED: 'dependency_removed',
   DEPENDENCY_OVERRIDE: 'dependency_override',

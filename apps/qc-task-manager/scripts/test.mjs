@@ -45,6 +45,9 @@ import {
   EVIDENCE_EXT_MIME,
   EVIDENCE_SIGNATURES,
   EVIDENCE_EXTENSIONS_HINT,
+  isRiskLevel,
+  isFindingClassification,
+  normalizeOptionalMetadata,
 } from '../src/lib/task-policy.ts';
 import { nextDueDate, shouldCreateNextOccurrence } from '../src/lib/recurrence.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
@@ -59,6 +62,7 @@ import {
 } from '../src/lib/taskSearch.ts';
 import { searchRowsToCsv } from '../src/lib/searchExport.ts';
 import { buildTaskPdf } from '../src/lib/pdf.ts';
+import { canEditChecklistStructure } from '../src/lib/permissions.ts';
 
 const APP_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -122,6 +126,16 @@ for (const p of requiredPaths) {
 
 // ── 2. Validation (Zod) ──
 section('Validation (src/lib/validation.ts)');
+
+// QC checklist + metadata policy
+ok(isRiskLevel('critical') && !isRiskLevel('unknown'), 'qc metadata: risk levels are constrained');
+ok(isFindingClassification('major') && !isFindingClassification('invalid'), 'qc metadata: finding classifications are constrained');
+ok(normalizeOptionalMetadata('  WO-42  ') === 'WO-42', 'qc metadata: optional values trim');
+ok(normalizeOptionalMetadata('   ') === null, 'qc metadata: blank values normalize to null');
+ok(normalizeOptionalMetadata('x'.repeat(201)) === undefined, 'qc metadata: values over max length reject');
+ok(canEditChecklistStructure({ id: 7, role: 'supervisor' }, { created_by: 7, assigned_to: 9 }), 'checklist structure: supervisor can edit owned task');
+ok(!canEditChecklistStructure({ id: 7, role: 'supervisor' }, { created_by: 8, assigned_to: 9 }), 'checklist structure: supervisor cannot edit unrelated task');
+ok(canEditChecklistStructure({ id: 7, role: 'manager' }, { created_by: 8, assigned_to: 9 }), 'checklist structure: manager can edit any task');
 
 function form(entries) {
   const f = new FormData();

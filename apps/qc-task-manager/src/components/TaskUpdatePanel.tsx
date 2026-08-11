@@ -30,6 +30,12 @@ export interface TaskSnapshot {
   recurrence: string;
   recurrence_end_date: string | null;
   blocker_note: string | null;
+  inspection_type: string | null;
+  finding_classification: string | null;
+  risk_level: string | null;
+  corrective_action_required: number | null;
+  reference_number: string | null;
+  audit_batch_or_work_order: string | null;
 }
 
 export interface ChecklistItemSnapshot {
@@ -53,6 +59,7 @@ export interface UserOption {
 interface Props {
   task: TaskSnapshot;
   canEditLocked: boolean;
+  canEditChecklistStructure?: boolean;
   users: UserOption[];
   checklist: ChecklistItemSnapshot[];
   dependencies: DependencySnapshot[];
@@ -100,6 +107,7 @@ export default function TaskUpdatePanel({
   dependencyTasks,
   blockingDependencies,
   canOverrideDependencies,
+  canEditChecklistStructure = canEditLocked,
 }: Props) {
   // ── progress group ──
   const [status, setStatus] = useState(task.status);
@@ -115,6 +123,12 @@ export default function TaskUpdatePanel({
   const [priority, setPriority] = useState(task.priority);
   const [recurrence, setRecurrence] = useState(task.recurrence);
   const [recurrenceEndDate, setRecurrenceEndDate] = useState(task.recurrence_end_date ?? '');
+  const [inspectionType, setInspectionType] = useState(task.inspection_type ?? '');
+  const [findingClassification, setFindingClassification] = useState(task.finding_classification ?? '');
+  const [riskLevel, setRiskLevel] = useState(task.risk_level ?? '');
+  const [correctiveAction, setCorrectiveAction] = useState(task.corrective_action_required == null ? '' : String(task.corrective_action_required));
+  const [referenceNumber, setReferenceNumber] = useState(task.reference_number ?? '');
+  const [auditBatch, setAuditBatch] = useState(task.audit_batch_or_work_order ?? '');
   // ── checklist / dependency group ──
   const [newChecklistItem, setNewChecklistItem] = useState('');
   const [depPick, setDepPick] = useState('');
@@ -193,6 +207,12 @@ export default function TaskUpdatePanel({
       priority,
       recurrence,
       recurrence_end_date: recurrenceEndDate,
+      inspection_type: inspectionType,
+      finding_classification: findingClassification,
+      risk_level: riskLevel,
+      corrective_action_required: correctiveAction,
+      reference_number: referenceNumber,
+      audit_batch_or_work_order: auditBatch,
     });
   }
 
@@ -464,6 +484,18 @@ export default function TaskUpdatePanel({
             </div>
           </div>
 
+          <fieldset className="mt-4 rounded-md border border-slate-200 p-3">
+            <legend className="px-1 text-xs font-semibold uppercase text-slate-500">QC metadata (optional)</legend>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className={labelCls}>Inspection type<input value={inspectionType} onChange={(e) => setInspectionType(e.target.value)} className={`${inputCls} mt-1`} maxLength={200} /></label>
+              <label className={labelCls}>Finding classification<select value={findingClassification} onChange={(e) => setFindingClassification(e.target.value)} className={`${inputCls} mt-1`}><option value="">Not set</option><option value="conforming">Conforming</option><option value="minor">Minor</option><option value="major">Major</option><option value="critical">Critical</option><option value="observation">Observation</option></select></label>
+              <label className={labelCls}>Risk level<select value={riskLevel} onChange={(e) => setRiskLevel(e.target.value)} className={`${inputCls} mt-1`}><option value="">Not set</option><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option></select></label>
+              <label className={labelCls}>Corrective action required<select value={correctiveAction} onChange={(e) => setCorrectiveAction(e.target.value)} className={`${inputCls} mt-1`}><option value="">Not set</option><option value="1">Yes</option><option value="0">No</option></select></label>
+              <label className={labelCls}>Reference number<input value={referenceNumber} onChange={(e) => setReferenceNumber(e.target.value)} className={`${inputCls} mt-1`} maxLength={200} /></label>
+              <label className={labelCls}>Audit batch / work order<input value={auditBatch} onChange={(e) => setAuditBatch(e.target.value)} className={`${inputCls} mt-1`} maxLength={200} /></label>
+            </div>
+          </fieldset>
+
           <button
             type="submit"
             disabled={saving !== null}
@@ -477,6 +509,9 @@ export default function TaskUpdatePanel({
       {/* ── Checklist group ── */}
       <div className="rounded-lg border border-slate-200 bg-white p-5" aria-label="Checklist">
         <h2 className={sectionTitle}>Checklist</h2>
+        <p className="mt-1 text-sm font-medium text-slate-700" data-checklist-progress>
+          {checklist.filter((item) => item.is_completed).length}/{checklist.length} complete · {checklist.length ? Math.round((checklist.filter((item) => item.is_completed).length / checklist.length) * 100) : 0}%
+        </p>
         <p className="mt-0.5 text-xs text-slate-500">
           {checklist.length} item{checklist.length === 1 ? '' : 's'} — anyone assigned may tick items off;
           {canEditLocked ? ' add/remove requires supervisor+.' : ' items are managed by supervisors and above.'}
@@ -499,21 +534,27 @@ export default function TaskUpdatePanel({
                 <span className={`flex-1 text-sm ${item.is_completed ? 'text-slate-400 line-through' : 'text-slate-800'}`}>
                   {item.title}
                 </span>
-                {canEditLocked && (
-                  <button
+          {canEditChecklistStructure && (
+            <button
                     type="button"
                     onClick={() => removeChecklistItem(item.id)}
                     aria-label={`Remove checklist item "${item.title}"`}
                     className="rounded-md px-1.5 py-0.5 text-sm text-slate-400 hover:bg-red-50 hover:text-red-600"
                   >
                     ✕
-                  </button>
-                )}
+            </button>
+          )}
+          {canEditChecklistStructure && (
+            <div className="flex shrink-0 gap-1">
+              <button type="button" disabled={item.id === checklist[0]?.id || saving !== null} onClick={() => postUpdate({ checklist_reorder: [item.id, ...checklist.filter((x) => x.id !== item.id).map((x) => x.id)].join(',') })} aria-label={`Move "${item.title}" up`} className="rounded px-1 text-xs text-slate-500 hover:bg-slate-100">↑</button>
+              <button type="button" disabled={item.id === checklist[checklist.length - 1]?.id || saving !== null} onClick={() => { const i = checklist.findIndex((x) => x.id === item.id); const next = [...checklist]; [next[i], next[i + 1]] = [next[i + 1], next[i]]; void postUpdate({ checklist_reorder: next.map((x) => x.id).join(',') }); }} aria-label={`Move "${item.title}" down`} className="rounded px-1 text-xs text-slate-500 hover:bg-slate-100">↓</button>
+            </div>
+          )}
               </li>
             ))}
           </ul>
         )}
-        {canEditLocked && (
+        {canEditChecklistStructure && (
           <form onSubmit={addChecklistItem} className="mt-3 flex gap-2">
             <input
               type="text"

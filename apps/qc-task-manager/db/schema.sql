@@ -66,6 +66,12 @@ CREATE TABLE IF NOT EXISTS tasks (
   completion_comment_id   INTEGER,
   cancelled_at            TEXT,
   cancelled_by            INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  inspection_type         TEXT,
+  finding_classification  TEXT,
+  risk_level              TEXT,
+  corrective_action_required INTEGER CHECK (corrective_action_required IN (0, 1)),
+  reference_number        TEXT,
+  audit_batch_or_work_order TEXT,
   created_at              TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at              TEXT NOT NULL DEFAULT (datetime('now'))
 );

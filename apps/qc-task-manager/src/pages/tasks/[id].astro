@@ -47,7 +47,7 @@ import {
 } from '../../lib/taskDetails';
 import { listBlockingDependencies } from '../../lib/taskUpdates';
 import { taskListFor, listActiveUsers, listTasksForDependency } from '../../lib/tasks';
-import { canEditTask, canEditLockedField, hasRankAtLeast } from '../../lib/permissions';
+import { canEditTask, canEditLockedField, canEditChecklistStructure, hasRankAtLeast } from '../../lib/permissions';
 import { EMPLOYEE_LOCKED_FIELDS } from '../../lib/task-policy';
 import {
   formatDbDate,
@@ -112,6 +112,9 @@ const canEdit =
 const canCancel = canEdit && hasRankAtLeast(user.role, 'manager');
 const canReopen = !notFound && !forbidden && !!task && completed && hasRankAtLeast(user.role, 'manager');
 const canEditLocked = canEdit && canEditLockedField(user.role);
+const canEditChecklistStructureForTask = !!task && canEditChecklistStructure({ id: user.userId, role: user.role }, task);
+const incompleteChecklist = checklist.filter((item) => !item.is_completed).length;
+const canOverrideChecklist = hasRankAtLeast(user.role, 'manager');
 const usersForAssignee = canEditLocked ? listActiveUsers() : [];
 const dependencyTasks = canEditLocked ? listTasksForDependency() : [];
 const canOverrideDependencies = canEditLocked && hasRankAtLeast(user.role, 'manager');
@@ -391,6 +394,8 @@ function svgIcon(inner: string, cls = ''): string {
             canComplete={canEdit}
             canCancel={canCancel}
             canReopen={canReopen}
+            incompleteChecklist={incompleteChecklist}
+            canOverrideChecklist={canOverrideChecklist}
             client:visible
           />
         </section>
@@ -414,8 +419,15 @@ function svgIcon(inner: string, cls = ''): string {
               recurrence: task.recurrence,
               recurrence_end_date: task.recurrence_end_date,
               blocker_note: task.blocker_note,
+              inspection_type: task.inspection_type,
+              finding_classification: task.finding_classification,
+              risk_level: task.risk_level,
+              corrective_action_required: task.corrective_action_required,
+              reference_number: task.reference_number,
+              audit_batch_or_work_order: task.audit_batch_or_work_order,
             }}
             canEditLocked={canEditLocked}
+            canEditChecklistStructure={canEditChecklistStructureForTask}
             users={usersForAssignee}
             checklist={checklist.map((c) => ({
               id: c.id,
@@ -478,10 +490,25 @@ function svgIcon(inner: string, cls = ''): string {
         </div>
       )}
 
+      {(task.inspection_type || task.finding_classification || task.risk_level || task.corrective_action_required !== null || task.reference_number || task.audit_batch_or_work_order) && (
+        <section class="rounded-lg border border-slate-200 bg-white p-6" aria-label="QC metadata">
+          <h2 class="mb-3 text-lg font-medium text-slate-900">QC metadata</h2>
+          <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
+            <div><dt class="text-xs uppercase text-slate-500">Inspection type</dt><dd class="mt-0.5 text-slate-900">{task.inspection_type ?? '—'}</dd></div>
+            <div><dt class="text-xs uppercase text-slate-500">Finding</dt><dd class="mt-0.5 text-slate-900">{task.finding_classification ?? '—'}</dd></div>
+            <div><dt class="text-xs uppercase text-slate-500">Risk</dt><dd class="mt-0.5 text-slate-900">{task.risk_level ?? '—'}</dd></div>
+            <div><dt class="text-xs uppercase text-slate-500">Corrective action</dt><dd class="mt-0.5 text-slate-900">{task.corrective_action_required === null ? '—' : task.corrective_action_required ? 'Required' : 'Not required'}</dd></div>
+            <div><dt class="text-xs uppercase text-slate-500">Reference</dt><dd class="mt-0.5 text-slate-900">{task.reference_number ?? '—'}</dd></div>
+            <div><dt class="text-xs uppercase text-slate-500">Audit batch / work order</dt><dd class="mt-0.5 text-slate-900">{task.audit_batch_or_work_order ?? '—'}</dd></div>
+          </dl>
+        </section>
+      )}
+
       {/* 2b. Checklist (static display when the edit panel is hidden) */}
-      {checklist.length > 0 && !canEdit && (
+      {!canEdit && (
         <section class="rounded-lg border border-slate-200 bg-white p-6">
-          <h2 class="mb-3 text-lg font-medium text-slate-900">Checklist</h2>
+          <h2 class="mb-1 text-lg font-medium text-slate-900">Checklist</h2>
+          <p class="mb-3 text-sm text-slate-600">{checklist.filter((c) => c.is_completed).length}/{checklist.length} complete · {checklist.length ? Math.round((checklist.filter((c) => c.is_completed).length / checklist.length) * 100) : 0}%</p>
           <ul class="space-y-1.5" data-checklist>
             {checklist.map((c) => (
               <li class="flex items-center gap-2 text-sm">

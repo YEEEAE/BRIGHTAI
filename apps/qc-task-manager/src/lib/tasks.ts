@@ -147,6 +147,12 @@ export function createTask(params: {
   dueDate: string | null;
   recurrence: TaskRecurrence;
   recurrenceEndDate: string | null;
+  inspectionType?: string | null;
+  findingClassification?: string | null;
+  riskLevel?: string | null;
+  correctiveActionRequired?: number | null;
+  referenceNumber?: string | null;
+  auditBatchOrWorkOrder?: string | null;
   checklist: string[];
   dependencies: number[];
   createdBy: number;
@@ -156,8 +162,10 @@ export function createTask(params: {
     const result = db
       .prepare(
         `INSERT INTO tasks (title, description, department, status, priority, progress_percent,
-                            created_by, assigned_to, due_date, recurrence, recurrence_end_date)
-         VALUES (?, ?, ?, 'not_started', ?, 0, ?, ?, ?, ?, ?)`,
+                            created_by, assigned_to, due_date, recurrence, recurrence_end_date,
+                            inspection_type, finding_classification, risk_level, corrective_action_required,
+                            reference_number, audit_batch_or_work_order)
+         VALUES (?, ?, ?, 'not_started', ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         params.title,
@@ -169,6 +177,12 @@ export function createTask(params: {
         params.dueDate,
         params.recurrence,
         params.recurrenceEndDate,
+        params.inspectionType ?? null,
+        params.findingClassification ?? null,
+        params.riskLevel ?? null,
+        params.correctiveActionRequired ?? null,
+        params.referenceNumber ?? null,
+        params.auditBatchOrWorkOrder ?? null,
       );
     const taskId = Number(result.lastInsertRowid);
 
@@ -233,6 +247,12 @@ export function parseNewTaskInput(form: FormData): {
     dueDate: string | null;
     recurrence: TaskRecurrence;
     recurrenceEndDate: string | null;
+    inspectionType: string | null;
+    findingClassification: string | null;
+    riskLevel: string | null;
+    correctiveActionRequired: number | null;
+    referenceNumber: string | null;
+    auditBatchOrWorkOrder: string | null;
     checklist: string[];
     dependencies: number[];
   };
@@ -251,6 +271,12 @@ export function parseNewTaskInput(form: FormData): {
     due_date,
     recurrence,
     recurrence_end_date,
+    inspection_type,
+    finding_classification,
+    risk_level,
+    corrective_action_required,
+    reference_number,
+    audit_batch_or_work_order,
     checklist,
     dependencies,
   } = parsed.data;
@@ -265,6 +291,12 @@ export function parseNewTaskInput(form: FormData): {
       dueDate: due_date,
       recurrence,
       recurrenceEndDate: recurrence_end_date,
+      inspectionType: inspection_type,
+      findingClassification: finding_classification,
+      riskLevel: risk_level,
+      correctiveActionRequired: corrective_action_required,
+      referenceNumber: reference_number,
+      auditBatchOrWorkOrder: audit_batch_or_work_order,
       checklist,
       dependencies,
     },
@@ -350,6 +382,12 @@ export async function handleCreateTaskPost(
     dueDate,
     recurrence,
     recurrenceEndDate,
+    inspectionType,
+    findingClassification,
+    riskLevel,
+    correctiveActionRequired,
+    referenceNumber,
+    auditBatchOrWorkOrder,
     checklist,
     dependencies,
   } = parsed.data;
@@ -379,6 +417,12 @@ export async function handleCreateTaskPost(
     dueDate,
     recurrence,
     recurrenceEndDate,
+    inspectionType,
+    findingClassification,
+    riskLevel,
+    correctiveActionRequired,
+    referenceNumber,
+    auditBatchOrWorkOrder,
     checklist: checklistCheck.items,
     dependencies: depCheck.ids,
     createdBy: user.id,

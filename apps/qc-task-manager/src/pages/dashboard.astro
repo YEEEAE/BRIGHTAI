@@ -46,6 +46,7 @@ let bar: ReturnType<typeof dash.getPerEmployee> = [];
 let overdueByEmployee: ReturnType<typeof dash.getOverdueByEmployee> = [];
 let line: ReturnType<typeof dash.getCompletedPerWeek> = [];
 let completionRate: ReturnType<typeof dash.getCompletionRate> | null = null;
+let checklistCompletion = { completed: 0, total: 0, percent: 0 };
 let overdue: ReturnType<typeof dash.getOverdueTasks> = [];
 let recent: ReturnType<typeof dash.getRecentlyCompleted> = [];
 let withoutEvidence: ReturnType<typeof dash.getCompletedWithoutEvidence> = [];
@@ -60,6 +61,7 @@ try {
   overdueByEmployee = dash.getOverdueByEmployee(filters);
   line = dash.getCompletedPerWeek(filters);
   completionRate = dash.getCompletionRate(filters);
+  checklistCompletion = dash.getChecklistCompletion(filters);
   overdue = dash.getOverdueTasks(filters);
   recent = dash.getRecentlyCompleted(filters);
   withoutEvidence = dash.getCompletedWithoutEvidence(filters);
@@ -277,6 +279,10 @@ const assignees = dash.listActiveUsers();
             {formatDuration(kpis.avg_completion_seconds)}
           </div>
         </div>
+      </section>
+      <section data-checklist-dashboard class="rounded-xl border border-violet-200 bg-violet-50 p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2"><h2 class="text-sm font-semibold text-violet-900">QC checklist progress</h2><span class="text-2xl font-semibold tabular-nums text-violet-800">{checklistCompletion.percent}%</span></div>
+        <p class="mt-1 text-xs text-violet-700">{checklistCompletion.completed}/{checklistCompletion.total} checklist items complete in the current filter scope.</p>
       </section>
 
       {/* ───────────── Charts (React island, pure SVG) ───────────── */}
