@@ -132,6 +132,11 @@ export function canAssignTask(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
 }
 
+/** Team workload comparisons are private to operational leads. */
+export function canViewTeamWorkload(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+
 /** QC Operations RBAC: employees can work only on assigned actions. */
 export function canManageFinding(user: Pick<User, 'id' | 'role'>, finding: QcOwner): boolean {
   if (user.role === 'admin' || user.role === 'manager' || user.role === 'supervisor') return true;

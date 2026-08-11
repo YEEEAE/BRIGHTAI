@@ -34,6 +34,8 @@ import initialMigrationSql from '../../db/migrations/001_initial.sql?raw';
 import legacyMigrationSql from '../../db/migrations/002_legacy_schema_reconciliation.sql?raw';
 import slaMigrationSql from '../../db/migrations/003_sla_engine.sql?raw';
 import qcOperationsMigrationSql from '../../db/migrations/004_qc_operations.sql?raw';
+import evidenceTemplatesMigrationSql from '../../db/migrations/005_evidence_templates.sql?raw';
+import workflowMigrationSql from '../../db/migrations/006_workflow_engine.sql?raw';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -87,6 +89,10 @@ const REQUIRED_TABLES = [
   'qc_capa',
   'qc_evidence',
   'qc_audit_log',
+  'workflow_definitions',
+  'workflow_steps',
+  'workflow_instances',
+  'workflow_actions',
 ] as const;
 
 /** Every index required by the application (FK lookups + dashboard filters). */
@@ -122,6 +128,9 @@ const REQUIRED_INDEXES = [
   'idx_sla_policies_match',
   'idx_escalation_events_task',
   'idx_escalation_events_retry',
+  'idx_workflow_steps_definition_order',
+  'idx_workflow_instances_status',
+  'idx_workflow_actions_instance_time',
   'idx_qc_findings_task',
   'idx_qc_findings_owner_status',
   'idx_qc_findings_due',
@@ -182,6 +191,8 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '002_legacy_schema_reconciliation.sql', source: legacyMigrationSql },
       { file: '003_sla_engine.sql', source: slaMigrationSql },
       { file: '004_qc_operations.sql', source: qcOperationsMigrationSql },
+      { file: '005_evidence_templates.sql', source: evidenceTemplatesMigrationSql },
+      { file: '006_workflow_engine.sql', source: workflowMigrationSql },
     ],
   });
   validateSchema(db, migrationResult.currentVersion);

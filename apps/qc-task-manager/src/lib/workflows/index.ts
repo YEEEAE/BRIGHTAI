@@ -1,5 +1,7 @@
-// Canonical task lifecycle boundary. Policy owns the rule data/predicates;
-// this module gives mutation code one workflow-facing import surface.
+// Server-authoritative workflow boundary. RBAC decides who may act; this
+// module decides whether the task may advance or close.
+export { createWorkflowInstance, getWorkflowInstance, getCurrentWorkflowStep, approveWorkflowStep, rejectWorkflowStep, canCloseTaskWithWorkflow, closeWorkflowInstance, workflowForTask } from './engine';
+export type { WorkflowTransitionRequest } from './engine';
 
 export {
   ACTIVE_TASK_STATUSES,
@@ -10,8 +12,4 @@ export {
   requiresBlockerNote,
 } from '../task-policy';
 
-export type WorkflowTransition = {
-  from: string;
-  to: string;
-};
-
+export type WorkflowTransition = { from: string; to: string };

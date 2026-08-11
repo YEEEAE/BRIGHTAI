@@ -20,6 +20,7 @@ import { setFlash } from './flash';
 import { PERMISSIONS } from './permissions';
 import { createNotification } from './notifications';
 import { initializeTaskSla } from './sla/engine';
+import { createWorkflowInstance } from './workflows/engine';
 import {
   MAX_DEPENDENCIES,
   MAX_DEPENDENCY_DEPTH,
@@ -158,6 +159,7 @@ export function createTask(params: {
   checklist: string[];
   dependencies: number[];
   createdBy: number;
+  workflowEnabled?: boolean;
 }): number {
   const db = getDb();
   const tx = db.transaction(() => {
@@ -216,6 +218,7 @@ export function createTask(params: {
   });
   const taskId = tx();
   initializeTaskSla(taskId, db);
+  if (params.workflowEnabled !== false) createWorkflowInstance(taskId, params.createdBy, db);
   return taskId;
 }
 

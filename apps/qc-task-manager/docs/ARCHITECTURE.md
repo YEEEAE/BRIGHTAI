@@ -121,6 +121,14 @@ AI code is suggestion-only, SQLite protects critical invariants, and audit is
 created server-side. The Architecture Guard checks these boundaries and the
 absence of copied role/status/field-lock/SLA authority.
 
+## Workflow Engine
+
+RBAC answers **who can do what**. Workflow answers **what must happen before closure**.
+Normal tasks use `Employee → Completed`; critical findings use `Employee → Supervisor Review → Manager Approval → Closed`.
+New instances store an immutable JSON snapshot of the selected definition and steps. Editing a later definition cannot change historical instances. Legacy tasks without an instance keep their existing lifecycle.
+
+Rejections require a reason and persist `previous_state`, `reason`, `actor_id`, and `acted_at` in `workflow_actions`. Workload analytics expose active, overdue, at-risk, critical, on-hold, completion rate, average resolution, and a bounded workload score. Assignment suggestions rank the best three active employees using workload, department, optional skills, historical completion, and SLA pressure; suggestions are advisory and do not mutate `tasks.assigned_to`.
+
 ## Operations
 
 ```bash

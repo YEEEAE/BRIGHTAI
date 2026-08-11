@@ -9,6 +9,17 @@ export {
 } from './task-policy';
 
 export type Role = 'admin' | 'manager' | 'supervisor' | 'employee';
+export type WorkflowAppliesTo = 'normal' | 'critical';
+export type WorkflowInstanceStatus = 'ACTIVE' | 'REJECTED' | 'COMPLETED' | 'CANCELLED';
+export type WorkflowApprovalType = 'none' | 'review' | 'approval' | 'closure';
+export type WorkflowActionType = 'SUBMITTED' | 'APPROVED' | 'REJECTED' | 'CLOSED';
+
+export interface WorkflowStep { id: number; step_key: string; label: string; role: Role; step_order: number; is_required: number; approval_type: WorkflowApprovalType; sla_seconds: number | null; }
+export interface WorkflowDefinition { id: number; code: string; name: string; applies_to: WorkflowAppliesTo; version: number; is_active: number; steps: WorkflowStep[]; }
+export interface WorkflowInstance { id: number; task_id: number; definition_code: string; definition_version: number; definition_snapshot: WorkflowDefinition; current_step_order: number; status: WorkflowInstanceStatus; created_by: number; created_at: string; updated_at: string; completed_at: string | null; }
+export interface WorkflowAction { id: number; instance_id: number; step_order: number; action: WorkflowActionType; previous_state: string; next_state: string; reason: string | null; actor_id: number; acted_at: string; }
+export interface WorkloadSummary { user_id: number; full_name: string; department: string; active_tasks: number; overdue: number; at_risk: number; critical: number; on_hold: number; completion_rate: number; average_resolution_seconds: number | null; workload_score: number; }
+export interface AssignmentRecommendation { user_id: number; full_name: string; score: number; factors: Record<string, number>; whyRecommended: string[]; workload: WorkloadSummary; }
 
 // status values match the tasks.status CHECK constraint in db/schema.sql.
 export type TaskStatus = 'not_started' | 'in_progress' | 'on_hold' | 'completed' | 'cancelled';

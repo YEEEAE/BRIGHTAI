@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_by            INTEGER REFERENCES users(id) ON DELETE SET NULL,
   created_at            TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at            TEXT NOT NULL DEFAULT (datetime('now'))
+  ,skills_json          TEXT
 );
 
 -- ────────────────────────────── 2. tasks ──────────────────────────────
@@ -110,6 +111,11 @@ CREATE TABLE IF NOT EXISTS escalation_events (
   delivery_status TEXT NOT NULL CHECK (delivery_status IN ('PENDING','DELIVERED','FAILED')),
   delivered_at TEXT, retry_count INTEGER NOT NULL DEFAULT 0 CHECK (retry_count >= 0), last_error TEXT
 );
+
+CREATE TABLE IF NOT EXISTS workflow_definitions (id INTEGER PRIMARY KEY AUTOINCREMENT, code TEXT NOT NULL UNIQUE, name TEXT NOT NULL, applies_to TEXT NOT NULL, version INTEGER NOT NULL DEFAULT 1, is_active INTEGER NOT NULL DEFAULT 1, created_by INTEGER, created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(code, version));
+CREATE TABLE IF NOT EXISTS workflow_steps (id INTEGER PRIMARY KEY AUTOINCREMENT, definition_id INTEGER NOT NULL REFERENCES workflow_definitions(id) ON DELETE CASCADE, step_key TEXT NOT NULL, label TEXT NOT NULL, role TEXT NOT NULL, step_order INTEGER NOT NULL, is_required INTEGER NOT NULL DEFAULT 1, approval_type TEXT NOT NULL, sla_seconds INTEGER, UNIQUE(definition_id, step_order), UNIQUE(definition_id, step_key));
+CREATE TABLE IF NOT EXISTS workflow_instances (id INTEGER PRIMARY KEY AUTOINCREMENT, task_id INTEGER NOT NULL UNIQUE REFERENCES tasks(id) ON DELETE CASCADE, definition_id INTEGER, definition_code TEXT NOT NULL, definition_version INTEGER NOT NULL, definition_snapshot TEXT NOT NULL, current_step_order INTEGER NOT NULL, status TEXT NOT NULL DEFAULT 'ACTIVE', created_by INTEGER NOT NULL REFERENCES users(id), created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now')), completed_at TEXT);
+CREATE TABLE IF NOT EXISTS workflow_actions (id INTEGER PRIMARY KEY AUTOINCREMENT, instance_id INTEGER NOT NULL REFERENCES workflow_instances(id) ON DELETE CASCADE, step_order INTEGER NOT NULL, action TEXT NOT NULL, previous_state TEXT NOT NULL, next_state TEXT NOT NULL, reason TEXT, actor_id INTEGER NOT NULL REFERENCES users(id), acted_at TEXT NOT NULL DEFAULT (datetime('now')));
 
 -- ─────────────────────────── task_templates ─────────────────────────────
 -- Reusable task configuration with lifecycle DRAFT → ACTIVE → ARCHIVED.

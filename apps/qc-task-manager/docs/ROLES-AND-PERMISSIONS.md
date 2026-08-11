@@ -71,4 +71,11 @@ toggle an employee's `can_create_tasks` flag, and reset passwords. Resetting a
 password also clears that account's lockout state. Use `/admin/users` to reset
 the seeded admin password immediately after the first login.
 
+Workflow is separate from RBAC: employees may work their assigned step,
+supervisors review, and managers approve or close according to the immutable
+workflow instance. Team workload comparisons and peer metrics are restricted
+to supervisors, managers, and admins; employees do not receive comparison
+data. Assignment recommendations are suggestions only and require an explicit
+authorized assignment action.
+
 For the full system overview, see [ARCHITECTURE.md](ARCHITECTURE.md).

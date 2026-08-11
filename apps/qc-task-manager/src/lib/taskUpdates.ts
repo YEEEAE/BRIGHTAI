@@ -57,6 +57,7 @@ import {
 } from './task-policy';
 import { nextDueDate, shouldCreateNextOccurrence } from './recurrence';
 import { checkpointTaskSla, refreshTaskSla } from './sla/engine';
+import { canCloseTaskWithWorkflow, closeWorkflowInstance } from './workflows/engine';
 import {
   computeMissingEvidence,
   effectiveExtensionsFor,
@@ -386,7 +387,6 @@ export function applyTaskUpdate(params: {
   if (!canEditTask(params.actor, task)) {
     return { ok: false, error: 'You do not have permission to edit this task.' };
   }
-
   const canEditLocked = canEditLockedField(params.actor.role);
   const canEditChecklist = canEditChecklistStructure(params.actor, task);
   const form = params.form;
@@ -981,6 +981,9 @@ export async function closeTask(params: {
   if (!canEditTask(params.actor, task)) {
     return { ok: false, error: 'You do not have permission to edit this task.' };
   }
+  if (!canCloseTaskWithWorkflow(task.id, params.actor, db)) {
+    return { ok: false, error: 'Workflow approvals are incomplete. Complete the required review steps before closing this task.' };
+  }
 
   const checklistState = db.prepare(
     'SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END), 0) AS completed FROM task_checklists WHERE task_id = ?',
@@ -1368,6 +1371,9 @@ export async function closeTask(params: {
   }
 
   checkpointTaskSla(task.id, task.status, 'completed', db);
+  if (db.prepare('SELECT id FROM workflow_instances WHERE task_id = ?').get(task.id)) {
+    closeWorkflowInstance(task.id, params.actor, db);
+  }
 
   return { ok: true, taskId: task.id, nextTaskId };
 }

@@ -1,0 +1,55 @@
+import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
+
+const temp = mkdtempSync(join(tmpdir(), 'brightai-workflow-'));
+const dbPath = join(temp, 'workflow.db');
+try {
+  process.env.QC_DATABASE_PATH = dbPath;
+  process.env.QC_DB_PATH = '';
+  const { getDb, closeDatabase } = await import('../src/lib/db.ts');
+  const { createWorkflowInstance, getWorkflowInstance, approveWorkflowStep, rejectWorkflowStep, canCloseTaskWithWorkflow } = await import('../src/lib/workflows/engine.ts');
+  const { getEmployeeWorkload } = await import('../src/lib/workload.ts');
+  const { suggestTaskAssignees } = await import('../src/lib/assignment.ts');
+  const db = getDb();
+  const people = db.prepare("SELECT id, role FROM users WHERE is_active = 1 ORDER BY id").all();
+  const employee = people.find((p) => p.role === 'employee');
+  const supervisor = people.find((p) => p.role === 'supervisor');
+  const manager = people.find((p) => p.role === 'manager');
+  assert.ok(employee && supervisor && manager);
+  db.prepare("UPDATE users SET skills_json = '[\"inspection\"]' WHERE id = ?").run(employee.id);
+  const normal = db.prepare("INSERT INTO tasks (title, department, status, priority, created_by, assigned_to) VALUES ('workflow normal', 'QC', 'in_progress', 'medium', ?, ?)").run(employee.id, employee.id);
+  const normalId = Number(normal.lastInsertRowid);
+  createWorkflowInstance(normalId, employee.id, db);
+  const normalInstance = getWorkflowInstance(normalId, db);
+  assert.equal(normalInstance.definition_snapshot.code, 'normal-task-v1');
+  assert.deepEqual(normalInstance.definition_snapshot.steps.map((s) => s.label), ['Employee', 'Completed']);
+  assert.equal(canCloseTaskWithWorkflow(normalId, { id: employee.id, role: 'employee' }, db), true);
+  const critical = db.prepare("INSERT INTO tasks (title, department, status, priority, risk_level, created_by, assigned_to) VALUES ('workflow critical', 'QC', 'in_progress', 'high', 'critical', ?, ?)").run(employee.id, employee.id);
+  const criticalId = Number(critical.lastInsertRowid);
+  createWorkflowInstance(criticalId, employee.id, db);
+  assert.deepEqual(getWorkflowInstance(criticalId, db).definition_snapshot.steps.map((s) => s.label), ['Employee', 'Supervisor Review', 'Manager Approval', 'Closed']);
+  approveWorkflowStep(criticalId, { id: employee.id, role: 'employee' }, null, db);
+  assert.equal(canCloseTaskWithWorkflow(criticalId, { id: employee.id, role: 'employee' }, db), false);
+  assert.throws(() => approveWorkflowStep(criticalId, { id: employee.id, role: 'employee' }, null, db));
+  rejectWorkflowStep(criticalId, { id: supervisor.id, role: 'supervisor' }, 'Evidence is incomplete.', db);
+  const rejected = db.prepare("SELECT previous_state, reason, actor_id, acted_at FROM workflow_actions WHERE instance_id = (SELECT id FROM workflow_instances WHERE task_id = ?) AND action = 'REJECTED'").get(criticalId);
+  assert.equal(rejected.previous_state, 'supervisor-review');
+  assert.equal(rejected.reason, 'Evidence is incomplete.');
+  assert.equal(rejected.actor_id, supervisor.id);
+  assert.ok(rejected.acted_at);
+  const snapshotBefore = getWorkflowInstance(criticalId, db).definition_snapshot;
+  db.prepare("UPDATE workflow_definitions SET name = 'Changed later' WHERE code = 'critical-finding-v1'").run();
+  assert.deepEqual(getWorkflowInstance(criticalId, db).definition_snapshot, snapshotBefore);
+  const workload = getEmployeeWorkload(employee.id, db);
+  assert.deepEqual(Object.keys(workload).sort(), ['active_tasks','at_risk','average_resolution_seconds','completion_rate','critical','department','full_name','on_hold','overdue','user_id','workload_score'].sort());
+  const recommendations = suggestTaskAssignees({ department: 'QC', taskType: 'inspection', priority: 'high' }, db);
+  assert.ok(recommendations.length >= 1 && recommendations.length <= 3);
+  assert.ok(recommendations[0].whyRecommended.includes('Same department'));
+  assert.equal(db.prepare('SELECT assigned_to FROM tasks WHERE id = ?').get(normalId).assigned_to, employee.id);
+  closeDatabase();
+  console.log('Workflow engine, snapshot, rejection, workload, and assignment tests passed.');
+} finally {
+  rmSync(temp, { recursive: true, force: true });
+}

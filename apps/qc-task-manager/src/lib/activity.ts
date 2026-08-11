@@ -55,6 +55,9 @@ export const Action = {
   TEMPLATE_ARCHIVED: 'template_archived',
   TEMPLATE_UNARCHIVED: 'template_unarchived',
   TEMPLATE_INSTANTIATED: 'template_instantiated',
+  WORKFLOW_APPROVED: 'workflow_approved',
+  WORKFLOW_REJECTED: 'workflow_rejected',
+  WORKFLOW_CLOSED: 'workflow_closed',
 } as const;
 
 export type ActionType = (typeof Action)[keyof typeof Action];

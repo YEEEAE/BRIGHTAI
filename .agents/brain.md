@@ -2,12 +2,19 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-12 00:22 +03:00
+last_updated: 2026-08-12 00:38 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.89
+version: 2.7.90
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-12 — QC-WORKFLOW-ENGINE-001: إضافة Workflow Engine مع snapshot وworkload وsmart assignment
+
+- **Files**: `apps/qc-task-manager/db/migrations/006_workflow_engine.sql`, `db/schema.sql`, `src/lib/{workflows/engine,workflows/index,workload,assignment,types,permissions,activity,db,tasks,taskUpdates}.ts`, `src/pages/manager/workload.astro`, `src/pages/api/tasks/suggestions.ts`, `scripts/test-workflow.mjs`, `scripts/test.mjs`, `scripts/test-migrations.mjs`, `package.json`, `docs/{ARCHITECTURE,ROLES-AND-PERMISSIONS}.md`, `docs/superpowers/plans/2026-08-12-workflow-engine.md`.
+- **What**: أضفت الجداول الأربعة المطلوبة: `workflow_definitions`, `workflow_steps`, `workflow_instances`, `workflow_actions`، مع تعريفين افتراضيين: Normal `Employee → Completed` وCritical `Employee → Supervisor Review → Manager Approval → Closed`. المهمة الجديدة تنشئ instance، والـ instance يحتفظ بـ immutable definition snapshot؛ المهام القديمة بدون instance تبقى على lifecycle الحالي. الرفض يتطلب سببًا ويسجل `previous_state`, `reason`, `actor_id`, `acted_at`. أضفت workload metrics الثمانية، top-3 assignment recommendations مع `whyRecommended`، و`skills_json` اختياري. الاقتراحات لا تعدّل assignee تلقائيًا. صفحة مقارنة workload والـ API محمية بصلاحية supervisor/manager/admin، والموظف لا يستلم مقارنة زملائه.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **265 passed / 0 failed**؛ `pnpm --filter @brightai/qc-task-manager test:workflow` → **passed**؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 13 hints**؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built**؛ `node apps/qc-task-manager/scripts/verify-security-hygiene.mjs` → **passed**؛ `git -c core.fsmonitor=false diff --check` → **passed**. اختبار workflow ظهر معه warning بيئي من backup scheduler عند حذف قاعدة temp، بدون فشل في الاختبار.
+- **Status**: verified locally; لا live browser E2E لمسارات workflow/workload في هذه المهمة، فلا يُستنتج production readiness. لا commit ولا push؛ المستخدم يلتزم.
 
 ### 2026-08-12 — QC-EVIDENCE-TEMPLATES-LIFECYCLE-001: إكمال Evidence architecture وربطها بالـ Templates والـ Lifecycle
 
