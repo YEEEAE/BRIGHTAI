@@ -12,6 +12,7 @@ import { getDb } from './db';
 import { listActiveUsers } from './tasks';
 import { parseDbDate } from './format';
 import { setFlash } from './flash';
+import { TASK_PRIORITIES } from './task-policy';
 import type { AstroCookies } from 'astro';
 import type { TaskPriority } from './types';
 
@@ -34,7 +35,9 @@ export const STATUS_COLORS: Record<string, string> = {
   completed: '#22c55e',   // green
 };
 
-export const PRIORITIES: TaskPriority[] = ['low', 'medium', 'high'];
+// Priority filter options — single source is task-policy's TASK_PRIORITIES
+// (which now includes 'urgent'); never hardcode a second list here.
+export const PRIORITIES: readonly TaskPriority[] = TASK_PRIORITIES;
 
 // Active users for the assignee filter dropdown (reused from the task layer).
 export { listActiveUsers } from './tasks';

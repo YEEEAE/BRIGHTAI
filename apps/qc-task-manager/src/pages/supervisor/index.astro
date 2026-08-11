@@ -7,8 +7,10 @@ import { getDb } from '../../lib/db';
 import {
   formatDueDate,
   isOverdue,
+  isUrgent,
   priorityLabel,
   priorityBadgeClass,
+  URGENT_ROW_CLASS,
 } from '../../lib/format';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
@@ -16,7 +18,7 @@ const db = getDb();
 
 const tasks = db
   .prepare(
-    `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date,
+    `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date, t.recurrence,
             u.full_name AS assignee
      FROM tasks t
      LEFT JOIN users u ON u.id = t.assigned_to
@@ -30,6 +32,7 @@ const tasks = db
     priority: string;
     progress_percent: number;
     due_date: string | null;
+    recurrence: string;
     assignee: string | null;
   }[];
 ---
@@ -55,10 +58,12 @@ const tasks = db
     <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
       {tasks.map((t) => {
         const overdue = isOverdue(t.due_date, t.status);
+        const urgent = isUrgent(t.priority);
         return (
-          <li class="flex flex-wrap items-center justify-between gap-3 p-4 transition-colors hover:bg-slate-50">
+          <li class={`flex flex-wrap items-center justify-between gap-3 p-4 ${urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50'}`}>
             <div class="min-w-0">
               <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+              {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
               <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
                 <span>#{t.id}</span>
                 <span>{t.assignee ?? 'Unassigned'}</span>

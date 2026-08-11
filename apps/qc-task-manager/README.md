@@ -17,10 +17,19 @@ server-side validation. Runs locally on port 4321.
 - **Task lifecycle**: create → progress (status / % / blocker notes) →
   complete via the **closure flow** (mandatory completion comment + optional
   evidence, or a recorded skip) → archived read-only.
+- **Full task model** (shared create + edit): title, description, department,
+  priority (**low / medium / high / urgent**), assignee, due date,
+  **recurrence** (daily / weekly / monthly + end date), **checklist items**,
+  and **dependencies** — with recurring series that spawn the next occurrence
+  on completion (never up front) and a dependency gate that blocks
+  In Progress until every dependency is complete.
 - **Field locking** (CORE RULE #2): employees may only change
   status / progress / comments / attachments / blocker notes. Title,
-  description, assignee, due date, and priority are locked for employees and
-  editable by supervisor/manager/admin only.
+  description, department, assignee, due date, priority, recurrence, and
+  checklist/dependency management are locked for employees and editable by
+  supervisor/manager/admin only.
+- **Urgent tasks are visually prominent**: solid-red priority pill plus a
+  highlighted row in every task list.
 - **Comments + attachments**: threads per task; files are stored **inside the
   database as BLOBs** (CORE RULE #5) with extension + MIME + 10 MB validation.
 - **Delete requests** (CORE RULE #4): employees cannot delete — they request,
@@ -40,8 +49,8 @@ server-side validation. Runs locally on port 4321.
 | View dashboard            | ✅ | ✅ | ✅ | ❌ |
 | Manage users (`/admin/users`) | ✅ | ❌ | ❌ | ❌ |
 | Create / edit / delete tasks | ✅ | ✅ | create/edit (no direct delete) | only if `can_create_tasks = 1` |
-| Assign tasks              | ✅ | ✅ | ✅ | self / unassigned only |
-| Edit locked fields (title, description, assignee, due date, priority) | ✅ | ✅ | ✅ | ❌ |
+| Assign tasks              | ✅ | ✅ | only active **QC employees** | self / unassigned only |
+| Edit locked fields (title, description, department, assignee, due date, priority, recurrence, checklist, dependencies) | ✅ | ✅ | ✅ | ❌ |
 | Edit status / progress / blocker / comments / attachments | ✅ | ✅ | ✅ | ✅ (own/created tasks) |
 | Complete a task (closure flow) | ✅ | ✅ | ✅ | ✅ (own/created tasks) |
 | Submit deletion requests  | ❌ | ❌ | ❌ | ✅ |
@@ -167,8 +176,9 @@ The server logs a warning when the default `admin123` is in use.
   `tasks.priority` CHECKs (no `'cancelled'`/`'urgent'`) and nullable
   `task_attachments.mime_type`/`file_size` — fresh databases get the full
   spec shape. The DB also accepts `'cancelled'`/`'urgent'` while
-  `src/lib/task-policy.ts` still validates 4 statuses / 3 priorities; the
-  schema is deliberately future-ready for those values.
+  `src/lib/task-policy.ts` validates 4 statuses (no `cancelled` in the app
+  layer) and all 4 priorities; the schema is deliberately future-ready for
+  `cancelled`.
 - Seed: `src/lib/seed.ts` (runtime) + `scripts/init-db.mjs` (CLI).
 
 ### Inspect it with SQLTools (VS Code)
@@ -288,14 +298,16 @@ apps/qc-task-manager/
 │   ├── e2e-delete-request.mjs
 │   ├── e2e-dashboard.mjs
 │   ├── e2e-auth-lockout.mjs
-│   └── e2e-admin-users.mjs # /admin/users: CRUD, guards, Zod, last login
+│   ├── e2e-admin-users.mjs # /admin/users: CRUD, guards, Zod, last login
+│   └── e2e-task-shared.mjs # full task model: fields, roles, deps, recurring (98)
 ├── src/
 │   ├── middleware.ts       # auth + role guards + security headers + login/new-task POSTs
 │   ├── layouts/BaseLayout.astro
 │   ├── components/
 │   │   ├── Navbar.tsx, FlashNotice.astro, StatusBadge.astro, EmptyState.astro
 │   │   ├── CommentBox.tsx, DeleteRequestDialog.tsx
-│   │   ├── TaskUpdatePanel.tsx, AttachmentUploader.tsx
+│   │   ├── NewTaskForm.astro, TaskChecklistInput.tsx, TaskDependencyInput.tsx
+│   │   ├── TaskUpdatePanel.tsx, AttachmentUploader.tsx, MarkAllReadButton.tsx
 │   │   └── DashboardCharts.tsx
 │   ├── lib/
 │   │   ├── db.ts           # SQLite singleton (WAL) + migrations + cleanup
@@ -304,13 +316,14 @@ apps/qc-task-manager/
 │   │   ├── permissions.ts  # single source of truth for role checks
 │   │   ├── task-policy.ts  # canonical domain rules (statuses, limits, locks, uploads)
 │   │   ├── validation.ts   # Zod schemas for every server input
-│   │   ├── notifications.ts# derived in-app alerts (/notifications)
+│   │   ├── recurrence.ts   # next-due-date + occurrence gating (pure)
+│   │   ├── notifications.ts# persisted + derived in-app alerts (/notifications)
 │   │   ├── backup.ts       # programmatic SQLite backup (createBackup)
 │   │   ├── export.ts       # CSV export (tasksToCsv + exportTasksForRole)
 │   │   ├── flash.ts, format.ts, types.ts
 │   │   ├── activity.ts     # task_activity_log helper
-│   │   ├── tasks.ts        # task creation + assignment validation
-│   │   ├── taskUpdates.ts  # update + closure flow + upload validation
+│   │   ├── tasks.ts        # task creation (all fields) + assignment validation
+│   │   ├── taskUpdates.ts  # update + closure + recurring + dependencies + upload
 │   │   ├── taskDetails.ts  # read queries + access rule + activity text
 │   │   ├── users.ts        # admin user management
 │   │   ├── deleteRequests.ts
@@ -324,6 +337,7 @@ apps/qc-task-manager/
 │       ├── api/tasks/[id]/{comment.ts, update.ts, close.ts, delete-request.ts}
 │       ├── api/tasks/[id]/attachments/{index.ts, [attachmentId].ts}
 │       ├── api/export/tasks.csv.ts
+│       ├── api/notifications/read-all.ts
 │       ├── employee/ manager/ supervisor/ admin/
 │       └── manager/requests/
 ├── astro.config.mjs        # SSR + @astrojs/node standalone, port 4321
@@ -363,22 +377,69 @@ E2E: `scripts/e2e-admin-users.mjs` (49 assertions).
 
 ### Task creation (`/manager/new`, `/supervisor/new`, `/employee/new`)
 
-- Manager/supervisor/admin assign to **any active user**; employees assign
-  **only to themselves** or leave unassigned.
+One shared form (`src/components/NewTaskForm.astro`) powers all three pages:
+
+- **Fields**: title, description, department (default `QC`), assignee,
+  priority (**incl. urgent**), due date, recurrence (+ end date), checklist
+  items (dynamic add/remove), and dependencies (supervisor/manager/admin
+  only).
+- Manager/admin assign to **any active user**; **supervisors assign only to
+  active QC employees** (role `employee`, enforced server-side); employees
+  assign **only to themselves** or leave unassigned.
 - `/employee/new` is gated by `can_create_tasks` on GET **and** POST.
-- Every creation logs `task_created`.
+- A task with an assignee immediately creates an **in-app notification** for
+  that assignee.
+- Every creation logs `task_created` (+ `checklist_item_added` /
+  `dependency_added` entries) — all inside one transaction.
+
+### Recurring tasks
+
+A task with `recurrence ≠ none` never spawns work up front — the **next
+occurrence is created only when the current task is completed** (in
+`closeTask`, same transaction):
+
+- Created only if `next due date <= recurrence_end_date` (or the end date is
+  null). The end date is **inclusive**, so a series can never run past it —
+  no endless tasks.
+- The next task is linked via `parent_recurring_task_id` and copies title,
+  description, department, priority, assignee, recurrence, and the checklist
+  **template** (titles + order, all unchecked).
+- Comments, evidence/attachments, activity logs, and completion metadata are
+  **not** copied.
+- The creation is recorded in the activity log on both sides of the series,
+  and the assignee gets an in-app notification.
+
+### Dependencies
+
+- A task **cannot move to In Progress while any dependency is incomplete**
+  (a dependency is blocking unless it is `completed`/`cancelled`).
+- Blocking dependencies are shown clearly on the task page (red callout with
+  links) and in the update panel.
+- **Admin/manager may override** a block only with an explicit reason; the
+  override (blocked tasks + reason) is logged as `dependency_override`.
+  Supervisors cannot override.
+- Dependency cycles are rejected at creation/editing (depth-limited check).
 
 ### Task details + editing (`/tasks/[id]`)
 
 Server-rendered sections: header (status/priority badges, progress, due date,
-assignee, creator), blocker note, comments thread, attachments, activity
-timeline, and closure info. Two React islands provide editing:
+assignee, department, recurrence + series parent, creator), blocker note,
+blocking-dependencies callout, checklist, dependencies, comments thread,
+attachments, activity timeline, and closure info. Two React islands provide
+editing:
 
 - **`TaskUpdatePanel`** — update progress (status / % / blocker) for any
-  editor; edit locked fields (title/description/assignee/due date/priority)
-  for supervisor/manager/admin; and the **complete task** closure form.
+  editor; edit locked fields (title/description/department/assignee/due
+  date/priority/recurrence) for supervisor/manager/admin; manage the
+  checklist (any editor toggles items, supervisor+ adds/removes) and
+  dependencies (supervisor+); show the dependency-override reason box for
+  admin/manager; and the **complete task** closure form.
 - **`AttachmentUploader`** — upload a file with client-side + server-side
   validation, loading state, and inline errors.
+
+Editing a task also **notifies the assignee**: an assignment notification on
+reassign, plus a notification whenever the due date or priority changes
+(addressed to the new assignee if the same request also reassigns).
 
 **Closure flow** (CORE RULE #3, atomic server-side). Any editor may complete a
 task — an employee on their own/assigned tasks, or supervisor/manager/admin
@@ -389,6 +450,7 @@ on any task:
    in the activity log)
 3. completion comment (**mandatory**)
 4. the system auto-fills `completed_at` + `completed_by`
+5. if the task recurs, the **next occurrence is created** (see above)
 
 After completion the task is read-only for everyone.
 
@@ -405,6 +467,7 @@ All endpoints re-check the session **and** the role/permission server-side
 | `/api/tasks/[id]/delete-request` | POST | Employee requests deletion (JSON) |
 | `/api/tasks/[id]/attachments` | POST | Upload attachment (multipart, ext+MIME+10 MB) |
 | `/api/tasks/[id]/attachments/[attachmentId]` | GET | Stream attachment BLOB (RFC 5987 name) |
+| `/api/notifications/read-all` | POST | Mark all persisted notifications as read |
 | `/admin/users/api` | POST | User management actions (admin) |
 | `/manager/requests/api` | POST | Approve/reject delete requests (manager+) |
 | `/api/export/tasks.csv` | GET | Download tasks as CSV (role-scoped, attachment) |
@@ -445,18 +508,19 @@ task with the rejected request visible in history (titles are joined live from
 ### Notifications (`/notifications`)
 
 Every role gets a **Notifications** page (bell icon in the navbar with a live
-count badge). Alerts are currently **derived** from the existing data by
-`src/lib/notifications.ts`; the schema also ships a `notifications` table for
-future persistence (unused by the app today). Current alerts:
+count badge). Two sources are merged (`src/lib/notifications.ts`):
 
-- **🚨 Overdue** tasks (due before today, not completed)
-- **📅 Due soon** (due within 3 days, not completed)
-- **⏳ Not started** tasks older than 2 days
-- **💬 Recent comments** by other people on your tasks (last 7 days)
-- **🗑️ Pending deletion requests** (manager/admin only)
+- **Persisted** (the `notifications` table) — explicit alerts written when the
+  app must notify someone: **task assigned to you**, **due date changed**,
+  **priority changed**, **next recurring task created**. These can be cleared
+  with **✓ Mark all as read** (`/api/notifications/read-all`).
+- **Derived** — computed from existing data: **🚨 Overdue**, **📅 Due soon**,
+  **⏳ Not started**, **💬 Recent comments**, **🗑️ Pending deletion requests**
+  (manager/admin only).
 
 Employees only see their own/created tasks; supervisors+ see the whole team.
-Alerts sort by severity (danger → warning → info) and link straight to the task.
+Alerts sort by severity (danger → warning → info → success) and link straight
+to the task.
 
 ### CSV export (`/api/export/tasks.csv`)
 
@@ -537,6 +601,11 @@ QC_DB_PATH=$(pwd)/db/e2e_test.db BASE_URL=http://localhost:4322 node scripts/e2e
 # admin users (49 assertions): scripts/e2e-admin-users.mjs
 #   (PORT=4398 — covers last login, department, edit, self-demotion guard,
 #    duplicate usernames, Zod errors, reset password, immediate login)
+# shared task model (98 assertions): scripts/e2e-task-shared.mjs
+#   (PORT=4390 — covers every field on create, supervisor assign scope,
+#    employee gating + locked fields, dependency blocking + logged override,
+#    assignment/due/priority notifications, recurring series incl. the stop
+#    rule, urgent prominence)
 #
 # Note: GET /login never touches the DB (the schema seeds on the first
 # session-bearing request), so E2E scripts that read SQLite directly fire a

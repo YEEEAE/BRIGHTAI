@@ -34,19 +34,25 @@ import {
   getClosureComment,
   describeAction,
   actionCategory,
+  listChecklist,
+  listDependencies,
+  getRecurringParent,
   type CommentWithAuthor,
   type AttachmentMeta,
   type ActivityEntry,
   type EvidenceInfo,
+  type DependencyInfo,
 } from '../../lib/taskDetails';
-import { taskListFor, listActiveUsers } from '../../lib/tasks';
-import { canEditTask, canEditLockedField } from '../../lib/permissions';
+import { listBlockingDependencies } from '../../lib/taskUpdates';
+import { taskListFor, listActiveUsers, listTasksForDependency } from '../../lib/tasks';
+import { canEditTask, canEditLockedField, hasRankAtLeast } from '../../lib/permissions';
 import {
   formatDbDate,
   formatDueDate,
   humanFileSize,
   priorityLabel,
   priorityBadgeClass,
+  recurrenceLabel,
   isOverdue,
 } from '../../lib/format';
 
@@ -70,12 +76,20 @@ let attachments: AttachmentMeta[] = [];
 let activity: ActivityEntry[] = [];
 let evidence: EvidenceInfo = null;
 let closureComment: CommentWithAuthor | null = null;
+let checklist: Awaited<ReturnType<typeof listChecklist>> = [];
+let dependencies: DependencyInfo[] = [];
+let blockingDependencies: Awaited<ReturnType<typeof listBlockingDependencies>> = [];
+let recurringParent: { id: number; title: string } | null = null;
 if (!notFound && !forbidden) {
   comments = listComments(rawId);
   attachments = listAttachmentMeta(rawId);
   activity = listActivity(rawId);
   evidence = getEvidenceInfo(rawId);
   closureComment = getClosureComment(rawId);
+  checklist = listChecklist(rawId);
+  dependencies = listDependencies(rawId);
+  blockingDependencies = listBlockingDependencies(rawId);
+  recurringParent = getRecurringParent(rawId);
 }
 
 const completed = task?.status === 'completed';
@@ -88,7 +102,10 @@ const canEdit =
   !notFound && !forbidden && !!task && !completed && canEditTask({ id: user.userId, role: user.role }, task);
 const canEditLocked = canEdit && canEditLockedField(user.role);
 const usersForAssignee = canEditLocked ? listActiveUsers() : [];
+const dependencyTasks = canEditLocked ? listTasksForDependency() : [];
+const canOverrideDependencies = canEditLocked && hasRankAtLeast(user.role, 'manager');
 const overdue = !!task && isOverdue(task.due_date, task.status);
+
 
 // Delete-request workflow (CORE BUSINESS RULE #4): employees request deletion of
 // their own tasks that are not started or in progress. Completed tasks are never
@@ -221,12 +238,39 @@ function svgIcon(inner: string, cls = ''): string {
             <dd class="mt-0.5 font-medium text-slate-900">{task.assignee_name ?? 'Unassigned'}</dd>
           </div>
           <div>
+            <dt class="text-xs uppercase text-slate-500">Department</dt>
+            <dd class="mt-0.5 font-medium text-slate-900">{task.department}</dd>
+          </div>
+          <div>
             <dt class="text-xs uppercase text-slate-500">Created by</dt>
             <dd class="mt-0.5 font-medium text-slate-900">{task.creator_name ?? 'Unknown'}</dd>
           </div>
           <div>
             <dt class="text-xs uppercase text-slate-500">Created</dt>
             <dd class="mt-0.5 text-slate-700">{formatDbDate(task.created_at)}</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase text-slate-500">Recurrence</dt>
+            <dd class="mt-0.5 font-medium text-slate-900">
+              {task.recurrence !== 'none' ? (
+                <span class="inline-flex items-center gap-1">
+                  🔁 {recurrenceLabel(task.recurrence)}
+                  {task.recurrence_end_date && (
+                    <span class="text-xs font-normal text-slate-500">until {formatDueDate(task.recurrence_end_date)}</span>
+                  )}
+                </span>
+              ) : (
+                <span class="text-slate-500">None</span>
+              )}
+              {recurringParent && (
+                <span class="block text-xs font-normal text-slate-500">
+                  Part of a recurring series — parent:{' '}
+                  <a href={`/tasks/${recurringParent.id}`} class="font-medium text-brand-600 hover:underline">
+                    #{recurringParent.id} {recurringParent.title}
+                  </a>
+                </span>
+              )}
+            </dd>
           </div>
           {task.updated_at && (
             <div>
@@ -259,17 +303,64 @@ function svgIcon(inner: string, cls = ''): string {
               id: task.id,
               title: task.title,
               description: task.description,
+              department: task.department,
               status: task.status,
               priority: task.priority,
               progress_percent: task.progress_percent,
               assigned_to: task.assigned_to,
               due_date: task.due_date,
+              recurrence: task.recurrence,
+              recurrence_end_date: task.recurrence_end_date,
               blocker_note: task.blocker_note,
             }}
             canEditLocked={canEditLocked}
             users={usersForAssignee}
+            checklist={checklist.map((c) => ({
+              id: c.id,
+              title: c.title,
+              is_completed: c.is_completed,
+            }))}
+            dependencies={dependencies}
+            dependencyTasks={dependencyTasks.map((d) => ({
+              task_id: d.id,
+              title: d.title,
+              status: d.status,
+            }))}
+            blockingDependencies={blockingDependencies.map((b) => ({
+              task_id: b.task_id,
+              title: b.title,
+              status: b.status,
+            }))}
+            canOverrideDependencies={canOverrideDependencies}
           />
         </section>
+      )}
+
+      {/* 1c. Blocking dependencies callout (always visible — spec: show clearly) */}
+      {blockingDependencies.length > 0 && (
+        <div class="rounded-lg border-2 border-red-300 bg-red-50 p-4" role="alert" data-blocking-dependencies>
+          <div class="flex items-start gap-2">
+            <span class="mt-0.5 shrink-0 text-lg" aria-hidden="true">⛔</span>
+            <div class="min-w-0 flex-1">
+              <h2 class="text-sm font-semibold text-red-900">
+                Blocked by {blockingDependencies.length} incomplete dependenc{blockingDependencies.length === 1 ? 'y' : 'ies'}
+              </h2>
+              <p class="mt-0.5 text-xs text-red-700">
+                This task cannot move to In Progress until these are completed:
+              </p>
+              <ul class="mt-2 space-y-1">
+                {blockingDependencies.map((b) => (
+                  <li class="text-sm text-red-800">
+                    <a href={`/tasks/${b.task_id}`} class="font-medium underline decoration-red-300 hover:text-red-900">
+                      #{b.task_id} {b.title}
+                    </a>{' '}
+                    <span class="text-xs uppercase text-red-500">({b.status.replace(/_/g, ' ')})</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* 2. Blocker note */}
@@ -283,6 +374,53 @@ function svgIcon(inner: string, cls = ''): string {
             </div>
           </div>
         </div>
+      )}
+
+      {/* 2b. Checklist (static display when the edit panel is hidden) */}
+      {checklist.length > 0 && !canEdit && (
+        <section class="rounded-lg border border-slate-200 bg-white p-6">
+          <h2 class="mb-3 text-lg font-medium text-slate-900">Checklist</h2>
+          <ul class="space-y-1.5" data-checklist>
+            {checklist.map((c) => (
+              <li class="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={c.is_completed}
+                  disabled
+                  class="h-4 w-4 rounded border-slate-300 text-emerald-600"
+                  aria-label={c.title}
+                />
+                <span class={c.is_completed ? 'text-slate-400 line-through' : 'text-slate-800'}>{c.title}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* 2c. Dependencies (static display when the edit panel is hidden) */}
+      {dependencies.length > 0 && !canEditLocked && (
+        <section class="rounded-lg border border-slate-200 bg-white p-6">
+          <h2 class="mb-3 text-lg font-medium text-slate-900">Dependencies</h2>
+          <ul class="space-y-1.5" data-dependencies>
+            {dependencies.map((d) => {
+              const blocked = d.status !== 'completed' && d.status !== 'cancelled';
+              return (
+                <li class="flex flex-wrap items-center justify-between gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm">
+                  <a href={`/tasks/${d.task_id}`} class="font-medium text-slate-800 hover:underline">
+                    #{d.task_id} {d.title}
+                  </a>
+                  <span
+                    class={`text-xs uppercase ${
+                      blocked ? 'font-semibold text-red-600' : 'text-emerald-600'
+                    }`}
+                  >
+                    {d.status.replace(/_/g, ' ')}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
 
       {/* 3. Comments */}

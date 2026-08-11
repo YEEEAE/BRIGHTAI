@@ -12,6 +12,7 @@
 import type { APIRoute } from 'astro';
 import { getCurrentUser } from '../../../../lib/session';
 import { closeTask } from '../../../../lib/taskUpdates';
+import { setFlash } from '../../../../lib/flash';
 
 function json(body: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -39,5 +40,10 @@ export const POST: APIRoute = async (context) => {
     const status = result.error === 'Task not found.' ? 404 : 400;
     return json({ ok: false, error: result.error }, status);
   }
-  return json({ ok: true, taskId: result.taskId });
+  // Completing a recurring task may have spawned the next occurrence — surface
+  // it as a one-shot flash so the reloaded page tells the user.
+  if (result.nextTaskId != null) {
+    setFlash(context, 'success', `Next recurring task created (#${result.nextTaskId}).`);
+  }
+  return json({ ok: true, taskId: result.taskId, nextTaskId: result.nextTaskId });
 };

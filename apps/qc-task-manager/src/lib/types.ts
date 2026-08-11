@@ -13,7 +13,9 @@ export type Role = 'admin' | 'manager' | 'supervisor' | 'employee';
 // status values match the tasks.status CHECK constraint in db/schema.sql.
 export type TaskStatus = 'not_started' | 'in_progress' | 'on_hold' | 'completed';
 // priority values match the tasks.priority CHECK constraint in db/schema.sql.
-export type TaskPriority = 'low' | 'medium' | 'high';
+export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
+// recurrence values match the tasks.recurrence CHECK constraint in db/schema.sql.
+export type TaskRecurrence = 'none' | 'daily' | 'weekly' | 'monthly';
 export type DeleteRequestStatus = 'pending' | 'approved' | 'rejected';
 
 export interface User {
@@ -32,6 +34,7 @@ export interface Task {
   id: number;
   title: string;
   description: string | null;
+  department: string;
   status: TaskStatus;
   priority: TaskPriority;
   progress_percent: number;
@@ -39,8 +42,14 @@ export interface Task {
   assigned_to: number | null;
   due_date: string | null;
   blocker_note: string | null;
+  recurrence: TaskRecurrence;
+  recurrence_end_date: string | null;
+  parent_recurring_task_id: number | null;
+  started_at: string | null;
   completed_at: string | null;
   completed_by: number | null;
+  cancelled_at: string | null;
+  cancelled_by: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -62,6 +71,34 @@ export interface TaskAttachment {
   file_data: Buffer;
   file_size: number | null;
   uploaded_at: string;
+}
+
+/** One row of a task's checklist (task_checklists). */
+export interface TaskChecklistItem {
+  id: number;
+  task_id: number;
+  title: string;
+  sort_order: number;
+  is_completed: boolean;
+  completed_by: number | null;
+  completed_at: string | null;
+  created_at: string;
+}
+
+/** One row of a task's dependency edge (task_dependencies: task_id → depends_on_task_id). */
+export interface TaskDependency {
+  task_id: number;
+  depends_on_task_id: number;
+}
+
+/** A dependency task joined with display fields (for the UI + blocking gate). */
+export interface DependencyInfo {
+  task_id: number;
+  depends_on_task_id: number;
+  title: string;
+  status: string;
+  progress_percent: number;
+  due_date: string | null;
 }
 
 export interface ActivityLogEntry {

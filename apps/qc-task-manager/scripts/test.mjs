@@ -27,8 +27,12 @@ import {
   isEmployeeLockedField,
   MAX_UPLOAD_BYTES,
   TASK_STATUSES,
+  TASK_PRIORITIES,
+  TASK_RECURRENCES,
   isAllowedExtension,
+  isRecurrence,
 } from '../src/lib/task-policy.ts';
+import { nextDueDate, shouldCreateNextOccurrence } from '../src/lib/recurrence.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
 
 const APP_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -115,7 +119,61 @@ r = parseFormData(taskCreateInputSchema, form({ title: 'x'.repeat(201) }));
 ok(!r.ok && r.error === 'Title must be 200 characters or fewer.', 'task create: title max 200');
 
 r = parseFormData(taskCreateInputSchema, form({ title: 't', priority: 'urgent' }));
+ok(r.ok && r.data.priority === 'urgent', 'task create: urgent priority accepted');
+r = parseFormData(taskCreateInputSchema, form({ title: 't', priority: 'critical' }));
 ok(!r.ok && r.error === 'Invalid priority value.', 'task create: bad priority');
+
+// department / recurrence / recurrence end date
+r = parseFormData(taskCreateInputSchema, form({ title: 't' }));
+ok(r.ok && r.data.department === 'QC', 'task create: missing department defaults to QC');
+ok(r.ok && r.data.recurrence === 'none', 'task create: missing recurrence defaults to none');
+ok(r.ok && r.data.recurrence_end_date === null, 'task create: missing recurrence end date → null');
+
+r = parseFormData(taskCreateInputSchema, form({ title: 't', department: '  Lab  ', recurrence: 'weekly', recurrence_end_date: '2026-12-31' }));
+ok(r.ok && r.data.department === 'Lab', 'task create: trims department');
+ok(r.ok && r.data.recurrence === 'weekly', 'task create: weekly recurrence accepted');
+ok(r.ok && r.data.recurrence_end_date === '2026-12-31', 'task create: recurrence end date accepted');
+
+r = parseFormData(taskCreateInputSchema, form({ title: 't', recurrence: 'yearly' }));
+ok(!r.ok && r.error === 'Invalid recurrence value.', 'task create: bad recurrence rejected');
+
+r = parseFormData(taskCreateInputSchema, form({ title: 't', recurrence_end_date: '31/12/2026' }));
+ok(!r.ok && r.error === 'Recurrence end date must be a valid date (YYYY-MM-DD).', 'task create: bad recurrence end date');
+
+r = parseFormData(taskCreateInputSchema, form({ title: 't', department: 'X'.repeat(51) }));
+ok(!r.ok && r.error === 'Department must be 50 characters or fewer.', 'task create: department max 50');
+
+// checklist + dependencies (repeated form keys → arrays)
+const multiForm = new FormData();
+multiForm.append('title', 't');
+multiForm.append('checklist', ' Prep sample  ');
+multiForm.append('checklist', '  Run analysis');
+multiForm.append('checklist', '   ');
+multiForm.append('dependencies', '7');
+multiForm.append('dependencies', '9');
+r = parseFormData(taskCreateInputSchema, multiForm);
+ok(r.ok && r.data.checklist.length === 2, 'task create: checklist trims + drops empty rows');
+ok(r.ok && r.data.checklist[0] === 'Prep sample' && r.data.checklist[1] === 'Run analysis', 'task create: checklist order kept');
+ok(r.ok && r.data.dependencies.length === 2 && r.data.dependencies[0] === 7, 'task create: dependencies parsed to numbers');
+
+const tooManyForm = new FormData();
+tooManyForm.append('title', 't');
+for (let i = 0; i < 31; i += 1) tooManyForm.append('checklist', `item ${i}`);
+r = parseFormData(taskCreateInputSchema, tooManyForm);
+ok(!r.ok && /at most 30 checklist items/.test(r.error), 'task create: checklist capped at 30');
+
+// Regression: a SINGLE checklist/dependency item must stay an array (a scalar
+// would be dropped by the preprocess and the item would silently vanish).
+const singleItemForm = new FormData();
+singleItemForm.append('title', 't');
+singleItemForm.append('checklist', 'Only item');
+singleItemForm.append('dependencies', '5');
+r = parseFormData(taskCreateInputSchema, singleItemForm);
+ok(
+  r.ok && r.data.checklist.length === 1 && r.data.checklist[0] === 'Only item',
+  'task create: single checklist item stays an array',
+);
+ok(r.ok && r.data.dependencies.length === 1 && r.data.dependencies[0] === 5, 'task create: single dependency stays an array');
 
 r = parseFormData(taskCreateInputSchema, form({ title: 't', due_date: '11/08/2026' }));
 ok(!r.ok && r.error === 'Due date must be a valid date (YYYY-MM-DD).', 'task create: bad due date');
@@ -177,7 +235,27 @@ ok(isEmployeeLockedField('title') && isEmployeeLockedField('assigned_to'), 'lock
 ok(!isEmployeeEditableField('title'), 'title is not employee-editable');
 ok(MAX_UPLOAD_BYTES === 10 * 1024 * 1024, 'upload limit 10 MB');
 ok(TASK_STATUSES.length === 4, 'four statuses');
+ok(TASK_PRIORITIES.includes('urgent'), 'urgent is a valid priority');
+ok(TASK_RECURRENCES.length === 4 && isRecurrence('daily') && isRecurrence('monthly') && !isRecurrence('yearly'), 'recurrence enum');
 ok(isAllowedExtension('pdf') && !isAllowedExtension('exe'), 'extension allowlist');
+
+// ── 4b. Recurrence scheduling (pure) ──
+section('Recurrence (src/lib/recurrence.ts)');
+ok(nextDueDate('none', '2026-08-11') === null, 'recurrence: none → no next date');
+ok(nextDueDate('daily', '2026-08-11') === '2026-08-12', 'recurrence: daily +1 day');
+ok(nextDueDate('weekly', '2026-08-11') === '2026-08-18', 'recurrence: weekly +7 days');
+ok(nextDueDate('monthly', '2026-08-11') === '2026-09-11', 'recurrence: monthly +1 month');
+ok(nextDueDate('monthly', '2026-01-31') === '2026-02-28', 'recurrence: monthly clamps Jan 31 → Feb 28');
+ok(nextDueDate('monthly', '2024-01-31') === '2024-02-29', 'recurrence: monthly leap year Feb 29');
+ok(nextDueDate('monthly', '2026-12-31') === '2027-01-31', 'recurrence: monthly year rollover');
+ok(nextDueDate('weekly', null) === null, 'recurrence: missing due date → null');
+ok(nextDueDate('weekly', 'not-a-date') === null, 'recurrence: invalid due date → null');
+
+ok(shouldCreateNextOccurrence({ recurrence: 'none', dueDate: '2026-08-11', recurrenceEndDate: null }) === false, 'recurrence: none never creates next');
+ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', recurrenceEndDate: null }) === true, 'recurrence: open-ended series allowed');
+ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', recurrenceEndDate: '2026-08-18' }) === true, 'recurrence: next date within end date');
+ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', recurrenceEndDate: '2026-08-17' }) === false, 'recurrence: next date past end date → stop');
+ok(shouldCreateNextOccurrence({ recurrence: 'weekly', dueDate: '2026-08-11', recurrenceEndDate: '2026-08-18' }) === true, 'recurrence: end date is inclusive');
 
 // ── 4. CSV export (pure) ──
 section('CSV export (src/lib/export.ts)');

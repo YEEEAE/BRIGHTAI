@@ -13,7 +13,17 @@
 
 import { getDb } from './db';
 import { statusLabel } from './format';
-import type { Role, Task, TaskComment, TaskAttachment, ActivityLogEntry } from './types';
+import type {
+  Role,
+  Task,
+  TaskComment,
+  TaskAttachment,
+  ActivityLogEntry,
+  TaskChecklistItem,
+  DependencyInfo,
+} from './types';
+
+export type { DependencyInfo } from './types';
 
 /**
  * Can `actor` view this task? Employees may view only tasks they were assigned
@@ -67,6 +77,47 @@ export function listComments(taskId: number): CommentWithAuthor[] {
        ORDER BY c.created_at ASC, c.id ASC`,
     )
     .all(taskId) as CommentWithAuthor[];
+}
+
+/** Checklist items in display order. */
+export function listChecklist(taskId: number): TaskChecklistItem[] {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT id, task_id, title, sort_order, is_completed, completed_by, completed_at, created_at
+       FROM task_checklists
+       WHERE task_id = ?
+       ORDER BY sort_order ASC, id ASC`,
+    )
+    .all(taskId) as TaskChecklistItem[];
+}
+
+/** All dependency edges of a task joined with the dependency task's display data. */
+export function listDependencies(taskId: number): DependencyInfo[] {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT d.task_id, d.depends_on_task_id, t.title, t.status, t.progress_percent, t.due_date
+       FROM task_dependencies d
+       JOIN tasks t ON t.id = d.depends_on_task_id
+       WHERE d.task_id = ?
+       ORDER BY t.title ASC, t.id ASC`,
+    )
+    .all(taskId) as DependencyInfo[];
+}
+
+/** The parent task of a recurring child, if any (for the "series of" link). */
+export function getRecurringParent(taskId: number): { id: number; title: string } | null {
+  const db = getDb();
+  const row = db
+    .prepare(
+      `SELECT p.id, p.title
+       FROM tasks t
+       JOIN tasks p ON p.id = t.parent_recurring_task_id
+       WHERE t.id = ?`,
+    )
+    .get(taskId) as { id: number; title: string } | undefined;
+  return row ?? null;
 }
 
 /** Attachment metadata (never the BLOB) with the uploader's name. */
@@ -195,10 +246,23 @@ export function actionCategory(action: string): string {
     case 'field_changed':
     case 'title_changed':
     case 'description_changed':
+    case 'department_changed':
     case 'assignee_changed':
     case 'due_date_changed':
     case 'priority_changed':
+    case 'recurrence_changed':
+    case 'recurrence_end_date_changed':
       return 'field';
+    case 'checklist_item_added':
+    case 'checklist_item_updated':
+    case 'checklist_item_removed':
+      return 'checklist';
+    case 'dependency_added':
+    case 'dependency_removed':
+    case 'dependency_override':
+      return 'dependency';
+    case 'recurring_task_created':
+      return 'recurring';
     case 'blocker_set':
       return 'blocker';
     case 'comment_added':
@@ -235,12 +299,32 @@ export function describeAction(action: string, oldValue: string | null, newValue
       return `changed the title from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
     case 'description_changed':
       return oldValue ? 'updated the description.' : 'added a description.';
+    case 'department_changed':
+      return `changed the department from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
     case 'assignee_changed':
       return `reassigned the task from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
     case 'due_date_changed':
       return `changed the due date from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
     case 'priority_changed':
       return `changed priority from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
+    case 'recurrence_changed':
+      return `changed recurrence from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
+    case 'recurrence_end_date_changed':
+      return `changed the recurrence end date from ${fmtVal(oldValue)} to ${fmtVal(newValue)}.`;
+    case 'checklist_item_added':
+      return `added a checklist item: ${fmtVal(newValue)}.`;
+    case 'checklist_item_updated':
+      return `${oldValue === 'checked' ? 'unchecked' : 'checked off'} the checklist item ${fmtVal(newValue)}.`;
+    case 'checklist_item_removed':
+      return `removed the checklist item ${fmtVal(newValue)}.`;
+    case 'dependency_added':
+      return `added dependency task ${newValue ?? ''}.`;
+    case 'dependency_removed':
+      return `removed dependency task ${newValue ?? ''}.`;
+    case 'dependency_override':
+      return `overrode blocked dependencies (${fmtVal(oldValue)}) with reason: ${fmtVal(newValue)}.`;
+    case 'recurring_task_created':
+      return `created ${newValue ?? 'the next occurrence'}.`;
     case 'field_changed':
       return 'updated task details.';
     case 'blocker_set':

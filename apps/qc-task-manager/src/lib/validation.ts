@@ -12,27 +12,46 @@
 
 import { z } from 'zod';
 import {
+  MAX_CHECKLIST_ITEMS,
+  MAX_CHECKLIST_TITLE_LENGTH,
+  MAX_DEPENDENCIES,
+  MAX_DEPARTMENT_LENGTH,
   MAX_DESCRIPTION_LENGTH,
   MAX_REASON_LENGTH,
   MAX_TITLE_LENGTH,
   MAX_USERNAME_LENGTH,
   MIN_PASSWORD_LENGTH,
   TASK_PRIORITIES,
+  TASK_RECURRENCES,
 } from './task-policy';
 import { MAX_COMMENT_LENGTH } from './format';
-import type { TaskPriority } from './types';
+import type { TaskPriority, TaskRecurrence } from './types';
 
 // ─────────────────────────── Small helpers ───────────────────────────
 
 /** Map a FormData body to a plain record (files pass through untouched). */
 function formToRecord(form: FormData): Record<string, unknown> {
   const record: Record<string, unknown> = {};
+  const seen = new Set<string>();
   for (const key of form.keys()) {
-    const value = form.get(key);
-    if (value !== null) record[key] = value;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    // Repeated keys (checklist[], dependencies[]) become arrays so the Zod
+    // array schemas below can validate them; single values stay scalars —
+    // except ARRAY_FIELDS, which stay arrays even with one entry (an item
+    // count of one must not be mistaken for a scalar and dropped).
+    const all = form.getAll(key);
+    if (ARRAY_FIELDS.has(key)) {
+      record[key] = all;
+    } else {
+      record[key] = all.length > 1 ? all : (all[0] ?? null);
+    }
   }
   return record;
 }
+
+/** Form fields that are ALWAYS arrays (a single value is still an array of one). */
+const ARRAY_FIELDS = new Set(['checklist', 'dependencies']);
 
 /**
  * Parse a raw FormData body against a schema. Returns the first Zod issue
@@ -64,6 +83,15 @@ export const loginInputSchema = z.object({
     .max(200),
 });
 
+/** Normalize an empty/missing department to the 'QC' default (per spec). */
+const departmentValue = (v: unknown): unknown => (v === '' || v == null ? 'QC' : v);
+
+/** Normalize empty/missing recurrence to 'none'. */
+const recurrenceValue = (v: unknown): unknown => (v === '' || v == null ? 'none' : v);
+
+/** Normalize empty/missing recurrence end date to null. */
+const endDateValue = (v: unknown): unknown => (v === '' || v == null ? null : v);
+
 /** Task creation (/manager/new, /supervisor/new, /employee/new). */
 export const taskCreateInputSchema = z.object({
   title: z
@@ -78,6 +106,14 @@ export const taskCreateInputSchema = z.object({
       .trim()
       .max(MAX_DESCRIPTION_LENGTH, `Description must be ${MAX_DESCRIPTION_LENGTH} characters or fewer.`)
       .nullable(),
+  ),
+  department: z.preprocess(
+    departmentValue,
+    z
+      .string()
+      .trim()
+      .min(1, 'Department is required.')
+      .max(MAX_DEPARTMENT_LENGTH, `Department must be ${MAX_DEPARTMENT_LENGTH} characters or fewer.`),
   ),
   priority: z.preprocess(
     (v) => (v === '' || v == null ? 'medium' : v),
@@ -99,6 +135,46 @@ export const taskCreateInputSchema = z.object({
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/, 'Due date must be a valid date (YYYY-MM-DD).')
       .nullable(),
+  ),
+  recurrence: z.preprocess(
+    recurrenceValue,
+    z.enum(TASK_RECURRENCES as [TaskRecurrence, ...TaskRecurrence[]], {
+      errorMap: () => ({ message: 'Invalid recurrence value.' }),
+    }),
+  ),
+  recurrence_end_date: z.preprocess(
+    endDateValue,
+    z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, 'Recurrence end date must be a valid date (YYYY-MM-DD).')
+      .nullable(),
+  ),
+  checklist: z.preprocess(
+    (v) =>
+      Array.isArray(v)
+        ? v.map((s) => String(s).trim()).filter((s) => s.length > 0)
+        : [],
+    z
+      .array(
+        z
+          .string({ errorMap: () => ({ message: 'Checklist items must be text.' }) })
+          .max(
+            MAX_CHECKLIST_TITLE_LENGTH,
+            `Checklist items must be ${MAX_CHECKLIST_TITLE_LENGTH} characters or fewer.`,
+          ),
+      )
+      .max(MAX_CHECKLIST_ITEMS, `A task can have at most ${MAX_CHECKLIST_ITEMS} checklist items.`),
+  ),
+  dependencies: z.preprocess(
+    (v) => (Array.isArray(v) ? v.map((x) => Number(x)) : []),
+    z
+      .array(
+        z
+          .number({ errorMap: () => ({ message: 'Invalid dependency task id.' }) })
+          .int()
+          .positive(),
+      )
+      .max(MAX_DEPENDENCIES, `A task can depend on at most ${MAX_DEPENDENCIES} tasks.`),
   ),
 });
 
@@ -123,17 +199,15 @@ export const deleteRequestSchema = z.object({
   ),
 });
 
-/** Max length for the free-text department field. */
-export const MAX_DEPARTMENT_LENGTH = 50;
+// Max length for the free-text department field — canonical value lives in
+// task-policy.ts; re-exported here for back-compat with existing importers.
+export { MAX_DEPARTMENT_LENGTH } from './task-policy';
 
 /**
  * Normalize an unchecked checkbox / missing FormData value into a boolean.
  * FormData omits unchecked checkboxes entirely, so missing/'' becomes false.
  */
 const checkboxBool = (v: unknown): boolean => v === '1' || v === true || v === 1;
-
-/** Normalize an empty/missing department to the 'QC' default (per spec). */
-const departmentValue = (v: unknown): unknown => (v === '' || v == null ? 'QC' : v);
 
 /** Admin user creation (validates the already-shaped CreateUserInput object). */
 export const userCreateSchema = z.object({

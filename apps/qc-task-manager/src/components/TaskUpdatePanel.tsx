@@ -1,15 +1,18 @@
 // TaskUpdatePanel — React island for editing a task in place.
 //
-// Three responsibilities, all permission-gated server-side too:
+// Responsibilities, all permission-gated server-side too:
 //   1. Progress: status (non-completed states), progress %, blocker note.
-//   2. Details (supervisor/manager/admin only): title, description, assignee,
-//      due date, priority.
-//   3. Closure flow (CORE BUSINESS RULE #3): completion comment (mandatory) +
-//      evidence file or recorded skip → POST /api/tasks/[id]/close.
+//      Moving to In Progress is BLOCKED while dependencies are incomplete;
+//      admin/manager may override ONLY with an explicit logged reason.
+//   2. Details (supervisor/manager/admin only): title, description, department,
+//      assignee, due date, priority, recurrence, recurrence end date.
+//   3. Checklist: anyone who can edit the task may toggle items; add/remove
+//      items requires supervisor+.
+//   4. Dependencies (supervisor+): add / remove blocking tasks.
+//   5. Closure flow: completion comment (mandatory) + evidence or recorded skip.
 //
 // Every successful mutation reloads the page so the server-rendered sections
-// (status badges, activity timeline, attachments) stay in sync. Submit buttons
-// show a loading state while the request is in flight.
+// (status badges, activity timeline, attachments) stay in sync.
 
 import { useState } from 'react';
 
@@ -17,12 +20,27 @@ export interface TaskSnapshot {
   id: number;
   title: string;
   description: string | null;
+  department: string;
   status: string;
   priority: string;
   progress_percent: number;
   assigned_to: number | null;
   due_date: string | null;
+  recurrence: string;
+  recurrence_end_date: string | null;
   blocker_note: string | null;
+}
+
+export interface ChecklistItemSnapshot {
+  id: number;
+  title: string;
+  is_completed: boolean;
+}
+
+export interface DependencySnapshot {
+  task_id: number;
+  title: string;
+  status: string;
 }
 
 export interface UserOption {
@@ -35,12 +53,23 @@ interface Props {
   task: TaskSnapshot;
   canEditLocked: boolean;
   users: UserOption[];
+  checklist: ChecklistItemSnapshot[];
+  dependencies: DependencySnapshot[];
+  /** Candidate tasks for the dependency add-picker. */
+  dependencyTasks: DependencySnapshot[];
+  /** Dependencies that are NOT completed (they block In Progress). */
+  blockingDependencies: DependencySnapshot[];
+  /** Admin/manager may force past a block with a logged reason. */
+  canOverrideDependencies: boolean;
 }
 
 const MAX_BLOCKER = 1000;
 const MAX_COMMENT = 2000;
 const MAX_TITLE = 200;
 const MAX_DESCRIPTION = 5000;
+const MAX_DEPARTMENT = 50;
+const MAX_CHECKLIST_ITEM = 200;
+const MAX_OVERRIDE_REASON = 500;
 
 const STATUS_OPTIONS: { value: string; label: string; emoji: string }[] = [
   { value: 'not_started', label: 'Not started', emoji: '🔴' },
@@ -52,29 +81,54 @@ const PRIORITY_OPTIONS = [
   { value: 'low', label: 'Low' },
   { value: 'medium', label: 'Medium' },
   { value: 'high', label: 'High' },
+  { value: 'urgent', label: 'Urgent 🔴' },
 ];
 
-export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
+const RECURRENCE_OPTIONS = [
+  { value: 'none', label: 'No recurrence' },
+  { value: 'daily', label: 'Daily' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'monthly', label: 'Monthly' },
+];
+
+export default function TaskUpdatePanel({
+  task,
+  canEditLocked,
+  users,
+  checklist,
+  dependencies,
+  dependencyTasks,
+  blockingDependencies,
+  canOverrideDependencies,
+}: Props) {
   // ── progress group ──
   const [status, setStatus] = useState(task.status);
   const [progress, setProgress] = useState(String(task.progress_percent));
   const [blocker, setBlocker] = useState(task.blocker_note ?? '');
+  const [overrideReason, setOverrideReason] = useState('');
   // ── details group (locked fields) ──
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description ?? '');
+  const [department, setDepartment] = useState(task.department);
   const [assignee, setAssignee] = useState(task.assigned_to != null ? String(task.assigned_to) : '');
   const [dueDate, setDueDate] = useState(task.due_date ?? '');
   const [priority, setPriority] = useState(task.priority);
+  const [recurrence, setRecurrence] = useState(task.recurrence);
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState(task.recurrence_end_date ?? '');
+  // ── checklist / dependency group ──
+  const [newChecklistItem, setNewChecklistItem] = useState('');
+  const [depPick, setDepPick] = useState('');
   // ── closure group ──
   const [comment, setComment] = useState('');
   const [evidence, setEvidence] = useState<File | null>(null);
   const [skipEvidence, setSkipEvidence] = useState(false);
   // ── ui state ──
-  const [saving, setSaving] = useState<'update' | 'close' | null>(null);
+  const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
   const progressNum = Number(progress);
+  const blocked = status === 'in_progress' && blockingDependencies.length > 0;
 
   function reload() {
     window.location.href = window.location.pathname;
@@ -94,6 +148,7 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
       const data = (await res.json()) as { ok: boolean; error?: string; message?: string };
       if (!res.ok || !data.ok) {
         setError(data.error ?? 'Could not save the changes.');
+        setSaving(null);
         return;
       }
       setNotice(data.message ?? 'Task updated.');
@@ -104,7 +159,7 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
     }
   }
 
-  /** Progress group only (status / progress / blocker) — every editor. */
+  /** Progress group (status / progress / blocker + dependency override). */
   async function saveProgress(ev: React.FormEvent) {
     ev.preventDefault();
     if (saving) return;
@@ -112,19 +167,30 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
       setError('Progress must be a number between 0 and 100.');
       return;
     }
-    await postUpdate({ status, progress_percent: progress, blocker_note: blocker });
+    const fields: Record<string, string> = { status, progress_percent: progress, blocker_note: blocker };
+    if (blocked && canOverrideDependencies) {
+      if (!overrideReason.trim()) {
+        setError('An explicit reason is required to override blocked dependencies.');
+        return;
+      }
+      fields.dependency_override_reason = overrideReason.trim();
+    }
+    await postUpdate(fields);
   }
 
-  /** Locked-fields group only (title/description/assignee/due/priority). */
+  /** Locked-fields group (title/description/department/assignee/due/priority/recurrence). */
   async function saveDetails(ev: React.FormEvent) {
     ev.preventDefault();
     if (saving) return;
     await postUpdate({
       title,
       description,
+      department,
       assigned_to: assignee,
       due_date: dueDate,
       priority,
+      recurrence,
+      recurrence_end_date: recurrenceEndDate,
     });
   }
 
@@ -135,11 +201,9 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
       setError('A completion comment is required to complete the task.');
       return;
     }
-    if (evidence && !skipEvidence) {
-      if (evidence.size > 10 * 1024 * 1024) {
-        setError('The evidence file exceeds the 10 MB upload limit.');
-        return;
-      }
+    if (evidence && !skipEvidence && evidence.size > 10 * 1024 * 1024) {
+      setError('The evidence file exceeds the 10 MB upload limit.');
+      return;
     }
     setSaving('close');
     setError(null);
@@ -159,6 +223,7 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
         setError(data.error ?? 'Could not complete the task.');
+        setSaving(null);
         return;
       }
       reload();
@@ -166,6 +231,41 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
       setError('Network error while completing the task.');
       setSaving(null);
     }
+  }
+
+  async function addChecklistItem(ev: React.FormEvent) {
+    ev.preventDefault();
+    if (saving) return;
+    if (!newChecklistItem.trim()) {
+      setError('Checklist item cannot be empty.');
+      return;
+    }
+    await postUpdate({ checklist_add: newChecklistItem.trim() });
+  }
+
+  async function toggleChecklist(id: number, checked: boolean) {
+    if (saving) return;
+    await postUpdate({ checklist_toggle: String(id) });
+  }
+
+  async function removeChecklistItem(id: number) {
+    if (saving) return;
+    await postUpdate({ checklist_remove: String(id) });
+  }
+
+  async function addDependency(ev: React.FormEvent) {
+    ev.preventDefault();
+    if (saving) return;
+    if (!depPick) {
+      setError('Select a task to add as a dependency.');
+      return;
+    }
+    await postUpdate({ dependency_add: depPick });
+  }
+
+  async function removeDependency(id: number) {
+    if (saving) return;
+    await postUpdate({ dependency_remove: String(id) });
   }
 
   const inputCls =
@@ -211,6 +311,26 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
             <p className="mt-1 text-xs text-slate-400">
               Mark as <span className="font-medium text-emerald-600">Completed</span> using the completion flow below.
             </p>
+            {blocked && !canOverrideDependencies && (
+              <p className="mt-1 text-xs font-medium text-red-600">
+                Blocked by {blockingDependencies.length} incomplete dependenc{blockingDependencies.length === 1 ? 'y' : 'ies'}. Ask a manager/admin to override.
+              </p>
+            )}
+            {blocked && canOverrideDependencies && (
+              <label className="mt-2 block">
+                <span className="text-xs font-medium text-red-700">
+                  Override reason <span className="text-red-500">* (required, logged)</span>
+                </span>
+                <textarea
+                  value={overrideReason}
+                  onChange={(e) => setOverrideReason(e.target.value)}
+                  maxLength={MAX_OVERRIDE_REASON}
+                  rows={2}
+                  placeholder="Why is it safe to start despite incomplete dependencies?"
+                  className={`${inputCls} mt-1`}
+                />
+              </label>
+            )}
           </div>
 
           <div>
@@ -269,7 +389,7 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
         <form onSubmit={saveDetails} className="rounded-lg border border-slate-200 bg-white p-5">
           <h2 className={sectionTitle}>Task details</h2>
           <p className="mt-0.5 text-xs text-slate-500">
-            Title, description, assignee, due date, and priority — supervisor/manager/admin only.
+            Title, description, department, assignee, due date, priority, recurrence — supervisor/manager/admin only.
           </p>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -293,6 +413,17 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
                 maxLength={MAX_DESCRIPTION}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                className={`${inputCls} mt-1`}
+              />
+            </div>
+            <div>
+              <label htmlFor={`department-${task.id}`} className={labelCls}>Department</label>
+              <input
+                id={`department-${task.id}`}
+                type="text"
+                maxLength={MAX_DEPARTMENT}
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
                 className={`${inputCls} mt-1`}
               />
             </div>
@@ -337,6 +468,32 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
                 ))}
               </select>
             </div>
+            <div>
+              <label htmlFor={`recurrence-${task.id}`} className={labelCls}>Recurrence</label>
+              <select
+                id={`recurrence-${task.id}`}
+                value={recurrence}
+                onChange={(e) => setRecurrence(e.target.value)}
+                className={`${inputCls} mt-1`}
+              >
+                {RECURRENCE_OPTIONS.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor={`recurrence-end-${task.id}`} className={labelCls}>Recurrence end date</label>
+              <input
+                id={`recurrence-end-${task.id}`}
+                type="date"
+                value={recurrenceEndDate}
+                onChange={(e) => setRecurrenceEndDate(e.target.value)}
+                className={`${inputCls} mt-1`}
+              />
+              <p className="mt-1 text-xs text-slate-400">Empty = keep recurring (on completion) indefinitely.</p>
+            </div>
           </div>
 
           <button
@@ -349,11 +506,145 @@ export default function TaskUpdatePanel({ task, canEditLocked, users }: Props) {
         </form>
       )}
 
+      {/* ── Checklist group ── */}
+      <div className="rounded-lg border border-slate-200 bg-white p-5" aria-label="Checklist">
+        <h2 className={sectionTitle}>Checklist</h2>
+        <p className="mt-0.5 text-xs text-slate-500">
+          {checklist.length} item{checklist.length === 1 ? '' : 's'} — anyone assigned may tick items off;
+          {canEditLocked ? ' add/remove requires supervisor+.' : ' items are managed by supervisors and above.'}
+        </p>
+        {checklist.length === 0 ? (
+          <p className="mt-3 rounded-md border border-dashed border-slate-300 bg-slate-50 p-3 text-sm text-slate-500">
+            No checklist items yet.
+          </p>
+        ) : (
+          <ul className="mt-3 space-y-1.5" data-checklist>
+            {checklist.map((item) => (
+              <li key={item.id} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2">
+                <input
+                  type="checkbox"
+                  checked={item.is_completed}
+                  onChange={(e) => toggleChecklist(item.id, e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                  aria-label={`Mark "${item.title}" as ${item.is_completed ? 'not done' : 'done'}`}
+                />
+                <span className={`flex-1 text-sm ${item.is_completed ? 'text-slate-400 line-through' : 'text-slate-800'}`}>
+                  {item.title}
+                </span>
+                {canEditLocked && (
+                  <button
+                    type="button"
+                    onClick={() => removeChecklistItem(item.id)}
+                    aria-label={`Remove checklist item "${item.title}"`}
+                    className="rounded-md px-1.5 py-0.5 text-sm text-slate-400 hover:bg-red-50 hover:text-red-600"
+                  >
+                    ✕
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+        {canEditLocked && (
+          <form onSubmit={addChecklistItem} className="mt-3 flex gap-2">
+            <input
+              type="text"
+              value={newChecklistItem}
+              onChange={(e) => setNewChecklistItem(e.target.value)}
+              maxLength={MAX_CHECKLIST_ITEM}
+              placeholder="New checklist item…"
+              aria-label="New checklist item title"
+              className={inputCls}
+            />
+            <button
+              type="submit"
+              disabled={saving !== null}
+              className="shrink-0 rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Add
+            </button>
+          </form>
+        )}
+      </div>
+
+      {/* ── Dependencies group (supervisor+) ── */}
+      {canEditLocked && (
+        <form onSubmit={addDependency} className="rounded-lg border border-slate-200 bg-white p-5" aria-label="Dependencies">
+          <h2 className={sectionTitle}>Dependencies</h2>
+          <p className="mt-0.5 text-xs text-slate-500">
+            Tasks that must be completed before this one can start. Blocking is enforced on the server.
+          </p>
+          {dependencies.length === 0 ? (
+            <p className="mt-3 rounded-md border border-dashed border-slate-300 bg-slate-50 p-3 text-sm text-slate-500">
+              No dependencies — this task can start any time.
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-1.5" data-dependencies>
+              {dependencies.map((d) => {
+                const blocked = d.status !== 'completed' && d.status !== 'cancelled';
+                return (
+                  <li
+                    key={d.task_id}
+                    className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm ${
+                      blocked ? 'border-red-200 bg-red-50/60' : 'border-slate-200 bg-white'
+                    }`}
+                  >
+                    <a href={`/tasks/${d.task_id}`} className="font-medium text-slate-800 hover:underline">
+                      #{d.task_id} {d.title}
+                    </a>
+                    <span className="flex items-center gap-2">
+                      <span className={`text-xs uppercase ${blocked ? 'font-semibold text-red-600' : 'text-emerald-600'}`}>
+                        {d.status.replace(/_/g, ' ')}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeDependency(d.task_id)}
+                        aria-label={`Remove dependency #${d.task_id}`}
+                        className="rounded-md px-1.5 py-0.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          <div className="mt-3 flex gap-2">
+            <select
+              value={depPick}
+              onChange={(e) => setDepPick(e.target.value)}
+              aria-label="Add dependency task"
+              className={inputCls}
+            >
+              <option value="">Select a task to depend on…</option>
+              {dependencyTasks
+                .filter((t) => t.task_id !== task.id && !dependencies.some((d) => d.task_id === t.task_id))
+                .map((t) => (
+                  <option key={t.task_id} value={t.task_id}>
+                    #{t.task_id} {t.title} ({t.status.replace(/_/g, ' ')})
+                  </option>
+                ))}
+            </select>
+            <button
+              type="submit"
+              disabled={saving !== null}
+              className="shrink-0 rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700"
+            >
+              Add
+            </button>
+          </div>
+        </form>
+      )}
+
       {/* ── Closure group ── */}
       <form onSubmit={saveClose} className="rounded-lg border border-emerald-200 bg-emerald-50/60 p-5">
         <h2 className="text-sm font-semibold text-emerald-900">Complete this task</h2>
         <p className="mt-0.5 text-xs text-emerald-700">
           Closure flow: completion comment (required) + evidence (optional — you may skip, and the skip is recorded).
+          {task.recurrence !== 'none' && (
+            <span className="mt-1 block font-medium">🔁 Recurring — completing this task creates the next occurrence.</span>
+          )}
         </p>
 
         <div className="mt-4">

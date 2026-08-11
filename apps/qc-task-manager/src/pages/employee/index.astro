@@ -10,8 +10,10 @@ import { PERMISSIONS } from '../../lib/permissions';
 import {
   formatDueDate,
   isOverdue,
+  isUrgent,
   priorityLabel,
   priorityBadgeClass,
+  URGENT_ROW_CLASS,
 } from '../../lib/format';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
@@ -24,7 +26,7 @@ const allowCreate = fullUser ? PERMISSIONS.canCreateTask(fullUser) : false;
 
 const tasks = db
   .prepare(
-    `SELECT id, title, status, priority, progress_percent, due_date,
+    `SELECT id, title, status, priority, progress_percent, due_date, recurrence,
             (SELECT 1 FROM task_delete_requests r
               WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
      FROM tasks t
@@ -39,6 +41,7 @@ const tasks = db
     priority: string;
     progress_percent: number;
     due_date: string | null;
+    recurrence: string;
     delete_pending: number;
   }[];
 
@@ -67,10 +70,12 @@ const tasks = db
     <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
       {tasks.map((t) => {
         const overdue = isOverdue(t.due_date, t.status);
+        const urgent = isUrgent(t.priority);
         return (
-          <li class="flex flex-wrap items-center justify-between gap-3 p-4 transition-colors hover:bg-slate-50">
+          <li class={`flex flex-wrap items-center justify-between gap-3 p-4 ${urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50'}`}>
             <div class="min-w-0">
               <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+              {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
               <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
                 <span>#{t.id}</span>
                 <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>

@@ -5,6 +5,7 @@
 // existing task/comment/delete-request data (no separate table).
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmptyState from '../components/EmptyState.astro';
+import MarkAllReadButton from '../components/MarkAllReadButton';
 import { getNotificationsForUser, type AppNotification, type NotificationKind } from '../lib/notifications';
 import { roleHome } from '../lib/permissions';
 
@@ -18,6 +19,10 @@ const KIND_ICON: Record<NotificationKind, string> = {
   unstarted: '⏳',
   recent_comment: '💬',
   pending_delete: '🗑️',
+  assigned: '👤',
+  due_date_changed: '🗓️',
+  priority_changed: '🚦',
+  recurring_created: '🔁',
 };
 
 const KIND_LABEL: Record<NotificationKind, string> = {
@@ -26,6 +31,10 @@ const KIND_LABEL: Record<NotificationKind, string> = {
   unstarted: 'Not started',
   recent_comment: 'New comments',
   pending_delete: 'Deletion requests',
+  assigned: 'Assigned to you',
+  due_date_changed: 'Due date changes',
+  priority_changed: 'Priority changes',
+  recurring_created: 'Recurring tasks',
 };
 
 const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
@@ -35,13 +44,17 @@ const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
   success: 'border-l-emerald-400 bg-emerald-50/60',
 };
 
-// Section order: danger → warning → info.
+// Section order: danger → warning → info → success.
 const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'overdue', order: 0 },
   { key: 'due_soon', order: 1 },
   { key: 'pending_delete', order: 1 },
+  { key: 'due_date_changed', order: 1 },
+  { key: 'priority_changed', order: 1 },
+  { key: 'assigned', order: 2 },
   { key: 'unstarted', order: 2 },
   { key: 'recent_comment', order: 2 },
+  { key: 'recurring_created', order: 3 },
 ];
 
 function sectionOrder(kind: NotificationKind): number {
@@ -64,11 +77,14 @@ const dueSoonCount = notifications.filter((n) => n.kind === 'due_soon').length;
 ---
 
 <BaseLayout title="Notifications">
-  <header class="mb-6">
-    <h1 class="text-2xl font-semibold text-slate-900">Notifications</h1>
-    <p class="text-sm text-slate-600">
-      Alerts derived from your tasks and team activity. Signed in as {user.fullName} ({user.role}).
-    </p>
+  <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-900">Notifications</h1>
+      <p class="text-sm text-slate-600">
+        Alerts about your tasks and team activity. Signed in as {user.fullName} ({user.role}).
+      </p>
+    </div>
+    {total > 0 && <MarkAllReadButton client:visible />}
   </header>
 
   {total === 0 ? (

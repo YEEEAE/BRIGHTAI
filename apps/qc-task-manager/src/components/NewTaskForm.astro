@@ -1,0 +1,190 @@
+---
+// NewTaskForm — the SHARED task creation form (manager / supervisor /
+// employee pages). Renders every task field: title, description, department,
+// assignee, priority (incl. urgent), due date, recurrence, recurrence end
+// date, checklist items, and (opt-in) dependencies.
+//
+// The POST is handled in src/middleware.ts → handleCreateTaskPost.
+import TaskChecklistInput from './TaskChecklistInput';
+import TaskDependencyInput from './TaskDependencyInput';
+
+interface Props {
+  /** Where the form posts (also used for the cancel link back). */
+  action: string;
+  /** Assignee options for the dropdown. */
+  users: { id: number; full_name: string; role: string }[];
+  /** Supervisor/manager/admin may pick dependencies; employees cannot. */
+  includeDependencies?: boolean;
+  /** Employee mode: assignee is fixed to self/unassigned. */
+  selfAssignOnly?: boolean;
+  /** Candidate tasks for the dependency picker (when includeDependencies). */
+  dependencyTasks?: { id: number; title: string; status: string }[];
+}
+
+const {
+  action,
+  users,
+  includeDependencies = false,
+  selfAssignOnly = false,
+} = Astro.props;
+
+const inputCls =
+  'mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
+const labelCls = 'block text-sm font-medium text-slate-700';
+
+// Each page renders exactly ONE NewTaskForm, so the field ids are the stable
+// document-global ones the app has always used (e2e scripts rely on #title).
+const f = {
+  title: 'title',
+  description: 'description',
+  department: 'department',
+  priority: 'priority',
+  assigned_to: 'assigned_to',
+  due_date: 'due_date',
+  recurrence: 'recurrence',
+  recurrence_end_date: 'recurrence_end_date',
+};
+---
+
+<form action={action} method="POST" class="space-y-5 rounded-lg border border-slate-200 bg-white p-6">
+  <div>
+    <label for={f.title} class={labelCls}>Title</label>
+    <input
+      id={f.title}
+      name="title"
+      type="text"
+      required
+      maxlength="200"
+      placeholder="e.g. Review inspection report Q3"
+      class={inputCls}
+    />
+  </div>
+
+  <div>
+    <label for={f.description} class={labelCls}>Description</label>
+    <textarea
+      id={f.description}
+      name="description"
+      rows="4"
+      maxlength="5000"
+      placeholder="Optional details, acceptance criteria, links…"
+      class={inputCls}
+    ></textarea>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for={f.department} class={labelCls}>Department</label>
+      <input
+        id={f.department}
+        name="department"
+        type="text"
+        maxlength="50"
+        value="QC"
+        placeholder="QC"
+        class={inputCls}
+      />
+    </div>
+
+    <div>
+      <label for={f.priority} class={labelCls}>Priority</label>
+      <select id={f.priority} name="priority" class={inputCls}>
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+        <option value="urgent">Urgent 🔴</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for={f.assigned_to} class={labelCls}>Assignee</label>
+      {selfAssignOnly ? (
+        <>
+          <select id={f.assigned_to} name="assigned_to" class={inputCls}>
+            <option value="">Unassigned</option>
+            {users.map((u) => (
+              <option value={u.id}>Me ({u.full_name})</option>
+            ))}
+          </select>
+          <p class="mt-1 text-xs text-slate-500">Employees can only assign tasks to themselves.</p>
+        </>
+      ) : (
+        <select id={f.assigned_to} name="assigned_to" class={inputCls}>
+          <option value="">Unassigned</option>
+          {users.map((u) => (
+            <option value={u.id}>{u.full_name} ({u.role})</option>
+          ))}
+        </select>
+      )}
+    </div>
+
+    <div>
+      <label for={f.due_date} class={labelCls}>Due date</label>
+      <input
+        id={f.due_date}
+        name="due_date"
+        type="date"
+        class={inputCls}
+      />
+    </div>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for={f.recurrence} class={labelCls}>Recurrence</label>
+      <select id={f.recurrence} name="recurrence" class={inputCls}>
+        <option value="none" selected>No recurrence</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+      </select>
+      <p class="mt-1 text-xs text-slate-500">
+        The next occurrence is created only when this task is completed — never up front.
+      </p>
+    </div>
+
+    <div>
+      <label for={f.recurrence_end_date} class={labelCls}>Recurrence end date</label>
+      <input
+        id={f.recurrence_end_date}
+        name="recurrence_end_date"
+        type="date"
+        class={inputCls}
+      />
+      <p class="mt-1 text-xs text-slate-500">Leave empty to keep recurring (on completion) indefinitely.</p>
+    </div>
+  </div>
+
+  <div>
+    <span class={labelCls}>Checklist items <span class="font-normal text-slate-400">(optional)</span></span>
+    <div class="mt-1">
+      <TaskChecklistInput client:visible />
+    </div>
+  </div>
+
+  {includeDependencies && (
+    <div>
+      <span class={labelCls}>Dependencies <span class="font-normal text-slate-400">(optional)</span></span>
+      <div class="mt-1">
+        <TaskDependencyInput
+          client:visible
+          tasks={Astro.props.dependencyTasks ?? []}
+        />
+      </div>
+    </div>
+  )}
+
+  <div class="flex items-center justify-end gap-3 border-t border-slate-100 pt-5">
+    <a
+      href={action.replace(/\/new$/, '')}
+      class="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+    >
+      Cancel
+    </a>
+    <button type="submit" class="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
+      Create task
+    </button>
+  </div>
+</form>

@@ -1,9 +1,15 @@
-// Derived in-app notifications for /notifications.
+// In-app notifications for /notifications.
 //
-// There is deliberately NO notifications table — everything is computed from
-// the data we already have (tasks, comments, delete requests), so there is
-// nothing to keep in sync and no write path. Each notification links to the
-// relevant page and carries a severity so the UI can style it.
+// Two sources are merged into one list:
+//   1. PERSISTED — rows in the `notifications` table, written whenever the app
+//      must notify someone explicitly (task assigned, due date / priority
+//      changed for the assignee, next recurring task created). These carry an
+//      is_read flag and can be cleared with markAllNotificationsRead.
+//   2. DERIVED — computed from existing data (overdue / due soon / stale /
+//      recent comments / pending deletion requests), so there is nothing to
+//      keep in sync and no write path.
+// Each notification links to the relevant page and carries a severity so the
+// UI can style it.
 //
 // Scope rules:
 //   - employee     → notifications about tasks they are assigned to or created
@@ -19,7 +25,11 @@ export type NotificationKind =
   | 'due_soon'
   | 'unstarted'
   | 'recent_comment'
-  | 'pending_delete';
+  | 'pending_delete'
+  | 'assigned'
+  | 'due_date_changed'
+  | 'priority_changed'
+  | 'recurring_created';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -35,14 +45,98 @@ export interface AppNotification {
   createdAt: string;
 }
 
-const MAX_NOTIFICATIONS = 30;
+const MAX_NOTIFICATIONS = 50;
 
-/** SQL fragment + params scoping task rows to what the user may act on. */
+// ─────────────────────────── Persisted notifications ───────────────────────
+
+/**
+ * Write an explicit in-app notification (assignments, due/priority changes,
+ * recurring-task creation). Insert failures are swallowed on purpose — a
+ * notification must never break the task mutation that triggered it.
+ */
+export function createNotification(params: {
+  userId: number;
+  taskId: number | null;
+  type: NotificationKind;
+  title: string;
+  message: string;
+}): void {
+  try {
+    getDb()
+      .prepare(
+        `INSERT INTO notifications (user_id, task_id, type, title, message)
+         VALUES (?, ?, ?, ?, ?)`,
+      )
+      .run(params.userId, params.taskId, params.type, params.title, params.message);
+  } catch (err) {
+    console.error('[notifications] failed to create notification:', err);
+  }
+}
+
+/** Severity used for persisted notifications (derived ones set their own). */
+const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
+  assigned: 'info',
+  due_date_changed: 'warning',
+  priority_changed: 'warning',
+  recurring_created: 'success',
+};
+
+/** Load the signed-in user's persisted notifications (newest first). */
+function persistedForUser(userId: number): AppNotification[] {
+  const rows = getDb()
+    .prepare(
+      `SELECT id, task_id, type, title, message, created_at
+       FROM notifications
+       WHERE user_id = ?
+       ORDER BY created_at DESC, id DESC`,
+    )
+    .all(userId) as {
+    id: number;
+    task_id: number | null;
+    type: string;
+    title: string;
+    message: string;
+    created_at: string;
+  }[];
+
+  return rows.map((r) => ({
+    key: `persisted-${r.id}`,
+    kind: (r.type in PERSISTED_SEVERITY ? r.type : 'assigned') as NotificationKind,
+    severity: PERSISTED_SEVERITY[r.type] ?? 'info',
+    title: r.title,
+    message: r.message,
+    href: r.task_id != null ? `/tasks/${r.task_id}` : '/notifications',
+    createdAt: r.created_at,
+  }));
+}
+
+/** Mark every persisted notification of a user as read (returns count). */
+export function markAllNotificationsRead(userId: number): number {
+  const info = getDb()
+    .prepare('UPDATE notifications SET is_read = 1 WHERE user_id = ? AND is_read = 0')
+    .run(userId);
+  return info.changes;
+}
+
+/** Unread persisted notifications for the badge count. */
+function countUnreadPersisted(userId: number): number {
+  const row = getDb()
+    .prepare('SELECT COUNT(*) AS n FROM notifications WHERE user_id = ? AND is_read = 0')
+    .get(userId) as { n: number };
+  return Number(row.n);
+}
+
+/**
+ * SQL fragment + params scoping task rows to what the user may act on.
+ * Columns are ALWAYS t-qualified: users also carries created_by/assigned_to-
+ * like columns, so an unqualified name is ambiguous once tasks is joined.
+ * Every caller must alias the tasks table as `t`.
+ */
 function taskScope(user: { id: number; role: Role }): { clause: string; params: unknown[] } {
   // Supervisors, managers and admins watch the whole team.
   if (user.role !== 'employee') return { clause: '', params: [] };
   // Employees care about tasks they own or were handed.
-  return { clause: 'AND (assigned_to = ? OR created_by = ?)', params: [user.id, user.id] };
+  return { clause: 'AND (t.assigned_to = ? OR t.created_by = ?)', params: [user.id, user.id] };
 }
 
 interface TaskRow {
@@ -84,6 +178,9 @@ export function getNotificationsForUser(user: { id: number; role: Role }): AppNo
       ...n,
     });
   };
+
+  // Persisted (explicit) notifications first — they are the most recent intent.
+  for (const n of persistedForUser(user.id)) push(n);
 
   for (const task of relevantTasks(user)) {
     if (isOverdue(task.due_date, task.status)) {
@@ -207,26 +304,26 @@ export function countNotifications(user: { id: number; role: Role }): number {
     return Number(row.n);
   };
 
-  let total = 0;
+  let total = countUnreadPersisted(user.id);
 
   // Overdue (due before today, not completed).
   total += count(
-    `SELECT COUNT(*) AS n FROM tasks
-     WHERE due_date < ? AND status != 'completed' ${clause}`,
+    `SELECT COUNT(*) AS n FROM tasks t
+     WHERE t.due_date < ? AND t.status != 'completed' ${clause}`,
     [today, ...params],
   );
 
   // Due soon (today … today+3, not completed).
   total += count(
-    `SELECT COUNT(*) AS n FROM tasks
-     WHERE due_date >= ? AND due_date <= ? AND status != 'completed' ${clause}`,
+    `SELECT COUNT(*) AS n FROM tasks t
+     WHERE t.due_date >= ? AND t.due_date <= ? AND t.status != 'completed' ${clause}`,
     [today, todayPlus3, ...params],
   );
 
   // Not started for 2+ days.
   total += count(
-    `SELECT COUNT(*) AS n FROM tasks
-     WHERE status = 'not_started' AND created_at < ? ${clause}`,
+    `SELECT COUNT(*) AS n FROM tasks t
+     WHERE t.status = 'not_started' AND t.created_at < ? ${clause}`,
     [sqliteDaysAgo(2), ...params],
   );
 

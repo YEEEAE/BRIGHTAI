@@ -15,19 +15,35 @@
 
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
-import { canEditTask, canEditLockedField } from './permissions';
-import { statusLabel, priorityLabel, formatDueDate, MAX_COMMENT_LENGTH } from './format';
+import { canEditTask, canEditLockedField, hasRankAtLeast } from './permissions';
+import { createNotification } from './notifications';
+import { validateDependencies } from './tasks';
+import {
+  statusLabel,
+  priorityLabel,
+  formatDueDate,
+  recurrenceLabel,
+  MAX_COMMENT_LENGTH,
+} from './format';
 import {
   ALLOWED_EXTENSIONS,
   ALLOWED_EXTENSIONS_HINT,
   EXT_MIME,
   MAX_BLOCKER_LENGTH,
+  MAX_CHECKLIST_ITEMS,
+  MAX_CHECKLIST_TITLE_LENGTH,
+  MAX_DEPARTMENT_LENGTH,
   MAX_DESCRIPTION_LENGTH,
   MAX_FILE_NAME,
+  MAX_OVERRIDE_REASON_LENGTH,
   MAX_UPLOAD_BYTES,
   TASK_PRIORITIES,
+  TASK_RECURRENCES,
   canTransitionStatus,
+  isRecurrence,
+  isValidOverrideReason,
 } from './task-policy';
+import { nextDueDate, shouldCreateNextOccurrence } from './recurrence';
 import type { Role, Task } from './types';
 
 // Back-compat re-exports (constants moved to the canonical src/lib/task-policy.ts).
@@ -48,7 +64,9 @@ export type UpdateResult =
   | { ok: true; message: string; changed: string[] }
   | { ok: false; error: string };
 
-export type CloseResult = { ok: true; taskId: number } | { ok: false; error: string };
+export type CloseResult =
+  | { ok: true; taskId: number; nextTaskId: number | null }
+  | { ok: false; error: string };
 
 export type UploadResult =
   | { ok: true; attachmentId: number; fileName: string }
@@ -113,8 +131,9 @@ function userName(id: number | null | undefined): string | null {
 function loadEditableTask(taskId: number) {
   return getDb()
     .prepare(
-      `SELECT id, title, description, status, priority, progress_percent,
-              created_by, assigned_to, due_date, blocker_note, completed_at
+      `SELECT id, title, description, department, status, priority, progress_percent,
+              created_by, assigned_to, due_date, blocker_note, recurrence,
+              recurrence_end_date, completed_at
        FROM tasks WHERE id = ?`,
     )
     .get(taskId) as
@@ -123,6 +142,7 @@ function loadEditableTask(taskId: number) {
         | 'id'
         | 'title'
         | 'description'
+        | 'department'
         | 'status'
         | 'priority'
         | 'progress_percent'
@@ -130,9 +150,31 @@ function loadEditableTask(taskId: number) {
         | 'assigned_to'
         | 'due_date'
         | 'blocker_note'
+        | 'recurrence'
+        | 'recurrence_end_date'
         | 'completed_at'
       >)
     | undefined;
+}
+
+/**
+ * Dependencies of `taskId` that are NOT completed/cancelled (they block moving
+ * the task to In Progress). Returns task ids + titles for messages and the UI.
+ * Interpretation: "incomplete" = not completed; a cancelled dependency is
+ * terminal (nothing will ever finish it), so it does NOT block — the app layer
+ * cannot produce 'cancelled' today, but the schema allows it.
+ */
+export function listBlockingDependencies(taskId: number): { task_id: number; title: string; status: string }[] {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT d.depends_on_task_id AS task_id, t.title, t.status
+       FROM task_dependencies d
+       JOIN tasks t ON t.id = d.depends_on_task_id
+       WHERE d.task_id = ? AND t.status NOT IN ('completed', 'cancelled')
+       ORDER BY t.title ASC, t.id ASC`,
+    )
+    .all(taskId) as { task_id: number; title: string; status: string }[];
 }
 
 // ─────────────────────────── Generic update ───────────────────────────
@@ -171,6 +213,18 @@ export function applyTaskUpdate(params: {
   const sets: string[] = [];
   const values: unknown[] = [];
   const activity: Array<{ action: string; oldValue: string | null; newValue: string | null }> = [];
+  // The assignee this task WILL have after this request — due/priority-change
+  // notifications go to the NEW assignee when the same request reassigns it.
+  let effectiveAssignee: number | null = task.assigned_to;
+  // Self-contained mutations (checklist / dependency ops) executed inside the tx.
+  const ops: Array<() => void> = [];
+  // Explicit notifications to persist after the mutation succeeds.
+  const notifications: Array<{
+    userId: number;
+    type: 'assigned' | 'due_date_changed' | 'priority_changed';
+    title: string;
+    message: string;
+  }> = [];
 
   const fieldErr = (field: string): { ok: false; error: string } => ({
     ok: false,
@@ -192,6 +246,36 @@ export function applyTaskUpdate(params: {
       return { ok: false, error: 'Invalid status value.' };
     }
     if (s !== task.status) {
+      // Dependency gate: a task cannot move to In Progress while any dependency
+      // is incomplete. Admin/manager may override ONLY with an explicit reason,
+      // and the override is logged (spec: dependency behavior). The check is
+      // read-then-write (not inside the tx): on this single-writer SQLite app a
+      // concurrent completion of the dependency between check and write is an
+      // acceptable, harmless race (the task simply starts while the dependency
+      // finishes a moment later).
+      if (s === 'in_progress') {
+        const blocking = listBlockingDependencies(task.id);
+        if (blocking.length > 0) {
+          const overrideReason = String(form.get('dependency_override_reason') ?? '').trim();
+          if (hasRankAtLeast(params.actor.role, 'manager') && isValidOverrideReason(overrideReason)) {
+            activity.push({
+              action: Action.DEPENDENCY_OVERRIDE,
+              oldValue: blocking.map((b) => `#${b.task_id} ${b.title}`).join('; '),
+              newValue: overrideReason,
+            });
+          } else if (hasRankAtLeast(params.actor.role, 'manager')) {
+            return {
+              ok: false,
+              error: `An explicit reason is required to override blocked dependencies (blocked by: ${blocking.map((b) => b.title).join(', ')}).`,
+            };
+          } else {
+            return {
+              ok: false,
+              error: `This task cannot be started yet — it is blocked by incomplete dependencies: ${blocking.map((b) => b.title).join(', ')}.`,
+            };
+          }
+        }
+      }
       sets.push('status = ?');
       values.push(s);
       activity.push({
@@ -291,6 +375,7 @@ export function applyTaskUpdate(params: {
       if (!exists) return { ok: false, error: 'Selected assignee does not exist or is inactive.' };
       next = id;
     }
+    effectiveAssignee = next;
     if (next !== task.assigned_to) {
       sets.push('assigned_to = ?');
       values.push(next);
@@ -300,6 +385,15 @@ export function applyTaskUpdate(params: {
         newValue: userName(next),
       });
       changes.push('assigned_to');
+      // Assignment notification goes to the NEW assignee (spec).
+      if (next !== null) {
+        notifications.push({
+          userId: next,
+          type: 'assigned',
+          title: 'Task assigned to you',
+          message: `"${task.title}" is now assigned to you.`,
+        });
+      }
     }
   }
 
@@ -323,6 +417,16 @@ export function applyTaskUpdate(params: {
         newValue: formatDueDate(next),
       });
       changes.push('due_date');
+      // Due-date change notifies the assignee (spec) — the NEW one if the same
+      // request also reassigned the task.
+      if (effectiveAssignee != null) {
+        notifications.push({
+          userId: effectiveAssignee,
+          type: 'due_date_changed',
+          title: 'Task due date changed',
+          message: `The due date of "${task.title}" changed from ${formatDueDate(task.due_date)} to ${formatDueDate(next)}.`,
+        });
+      }
     }
   }
 
@@ -342,25 +446,225 @@ export function applyTaskUpdate(params: {
         newValue: priorityLabel(p),
       });
       changes.push('priority');
+      // Priority change notifies the assignee (spec) — the NEW one if the same
+      // request also reassigned the task.
+      if (effectiveAssignee != null) {
+        notifications.push({
+          userId: effectiveAssignee,
+          type: 'priority_changed',
+          title: 'Task priority changed',
+          message: `The priority of "${task.title}" changed from ${priorityLabel(task.priority)} to ${priorityLabel(p)}.`,
+        });
+      }
     }
   }
 
-  if (changes.length === 0) {
+  // ── locked fields: department / recurrence / recurrence_end_date ──
+  const rawDepartment = form.get('department');
+  if (rawDepartment !== null) {
+    if (!canEditLocked) return fieldErr('department');
+    const d = String(rawDepartment).trim();
+    if (!d) return { ok: false, error: 'Department is required.' };
+    if (d.length > MAX_DEPARTMENT_LENGTH) {
+      return { ok: false, error: `Department must be ${MAX_DEPARTMENT_LENGTH} characters or fewer.` };
+    }
+    if (d !== task.department) {
+      sets.push('department = ?');
+      values.push(d);
+      activity.push({
+        action: Action.DEPARTMENT_CHANGED,
+        oldValue: task.department,
+        newValue: d,
+      });
+      changes.push('department');
+    }
+  }
+
+  const rawRecurrence = form.get('recurrence');
+  if (rawRecurrence !== null) {
+    if (!canEditLocked) return fieldErr('recurrence');
+    const r = String(rawRecurrence);
+    if (!isRecurrence(r)) return { ok: false, error: 'Invalid recurrence value.' };
+    if (r !== task.recurrence) {
+      sets.push('recurrence = ?');
+      values.push(r);
+      activity.push({
+        action: Action.RECURRENCE_CHANGED,
+        oldValue: recurrenceLabel(task.recurrence),
+        newValue: recurrenceLabel(r),
+      });
+      changes.push('recurrence');
+    }
+  }
+
+  const rawRecEnd = form.get('recurrence_end_date');
+  if (rawRecEnd !== null) {
+    if (!canEditLocked) return fieldErr('recurrence_end_date');
+    let next: string | null = null;
+    if (String(rawRecEnd).trim() !== '') {
+      const v = String(rawRecEnd).trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+        return { ok: false, error: 'Recurrence end date must be a valid date (YYYY-MM-DD).' };
+      }
+      next = v;
+    }
+    if (next !== task.recurrence_end_date) {
+      sets.push('recurrence_end_date = ?');
+      values.push(next);
+      activity.push({
+        action: Action.RECURRENCE_END_CHANGED,
+        oldValue: formatDueDate(task.recurrence_end_date),
+        newValue: formatDueDate(next),
+      });
+      changes.push('recurrence_end_date');
+    }
+  }
+
+  // ── checklist ops (toggle: any editor; add/remove: supervisor+) ──
+  const rawToggle = form.get('checklist_toggle');
+  if (rawToggle !== null) {
+    const id = Number(rawToggle);
+    if (!Number.isInteger(id) || id <= 0) return { ok: false, error: 'Invalid checklist item.' };
+    const item = db
+      .prepare('SELECT id, title, is_completed FROM task_checklists WHERE id = ? AND task_id = ?')
+      .get(id, task.id) as { id: number; title: string; is_completed: number } | undefined;
+    if (!item) return { ok: false, error: 'Checklist item not found.' };
+    const toggledOn = Number(item.is_completed) === 0;
+    ops.push(() => {
+      if (toggledOn) {
+        db.prepare(
+          `UPDATE task_checklists SET is_completed = 1, completed_by = ?, completed_at = datetime('now')
+           WHERE id = ?`,
+        ).run(params.actor.id, id);
+      } else {
+        db.prepare(
+          `UPDATE task_checklists SET is_completed = 0, completed_by = NULL, completed_at = NULL
+           WHERE id = ?`,
+        ).run(id);
+      }
+      logActivity({
+        taskId: task.id,
+        userId: params.actor.id,
+        action: Action.CHECKLIST_ITEM_UPDATED,
+        oldValue: toggledOn ? 'unchecked' : 'checked',
+        newValue: item.title,
+      });
+    });
+  }
+
+  const rawAdd = form.get('checklist_add');
+  if (rawAdd !== null) {
+    if (!canEditLocked) return fieldErr('checklist');
+    const title = String(rawAdd).trim();
+    if (!title) return { ok: false, error: 'Checklist item cannot be empty.' };
+    if (title.length > MAX_CHECKLIST_TITLE_LENGTH) {
+      return { ok: false, error: `Checklist items must be ${MAX_CHECKLIST_TITLE_LENGTH} characters or fewer.` };
+    }
+    const count = db
+      .prepare('SELECT COUNT(*) AS n FROM task_checklists WHERE task_id = ?')
+      .get(task.id) as { n: number };
+    if (Number(count.n) >= MAX_CHECKLIST_ITEMS) {
+      return { ok: false, error: `A task can have at most ${MAX_CHECKLIST_ITEMS} checklist items.` };
+    }
+    ops.push(() => {
+      const nextOrder = db
+        .prepare('SELECT COALESCE(MAX(sort_order), -1) + 1 AS n FROM task_checklists WHERE task_id = ?')
+        .get(task.id) as { n: number };
+      db.prepare(
+        'INSERT INTO task_checklists (task_id, title, sort_order, is_completed) VALUES (?, ?, ?, 0)',
+      ).run(task.id, title, Number(nextOrder.n));
+      logActivity({
+        taskId: task.id,
+        userId: params.actor.id,
+        action: Action.CHECKLIST_ITEM_ADDED,
+        newValue: title,
+      });
+    });
+  }
+
+  const rawRemove = form.get('checklist_remove');
+  if (rawRemove !== null) {
+    if (!canEditLocked) return fieldErr('checklist');
+    const id = Number(rawRemove);
+    if (!Number.isInteger(id) || id <= 0) return { ok: false, error: 'Invalid checklist item.' };
+    const item = db
+      .prepare('SELECT id, title FROM task_checklists WHERE id = ? AND task_id = ?')
+      .get(id, task.id) as { id: number; title: string } | undefined;
+    if (!item) return { ok: false, error: 'Checklist item not found.' };
+    ops.push(() => {
+      db.prepare('DELETE FROM task_checklists WHERE id = ?').run(id);
+      logActivity({
+        taskId: task.id,
+        userId: params.actor.id,
+        action: Action.CHECKLIST_ITEM_REMOVED,
+        newValue: item.title,
+      });
+    });
+  }
+
+  // ── dependency ops (supervisor+) ──
+  const depAdd = form.get('dependency_add');
+  if (depAdd !== null) {
+    if (!canEditLocked) return fieldErr('dependencies');
+    const id = Number(depAdd);
+    const check = validateDependencies([id], task.id);
+    if (!check.ok) return { ok: false, error: check.error };
+    const depId = check.ids[0];
+    if (depId === undefined) return { ok: false, error: 'Invalid dependency task id.' };
+    ops.push(() => {
+      db.prepare('INSERT INTO task_dependencies (task_id, depends_on_task_id) VALUES (?, ?)').run(task.id, depId);
+      logActivity({
+        taskId: task.id,
+        userId: params.actor.id,
+        action: Action.DEPENDENCY_ADDED,
+        newValue: `#${depId}`,
+      });
+    });
+  }
+
+  const depRemove = form.get('dependency_remove');
+  if (depRemove !== null) {
+    if (!canEditLocked) return fieldErr('dependencies');
+    const id = Number(depRemove);
+    if (!Number.isInteger(id) || id <= 0) return { ok: false, error: 'Invalid dependency task id.' };
+    const exists = db
+      .prepare('SELECT 1 AS one FROM task_dependencies WHERE task_id = ? AND depends_on_task_id = ?')
+      .get(task.id, id);
+    if (!exists) return { ok: false, error: 'That dependency does not exist.' };
+    ops.push(() => {
+      db.prepare('DELETE FROM task_dependencies WHERE task_id = ? AND depends_on_task_id = ?').run(task.id, id);
+      logActivity({
+        taskId: task.id,
+        userId: params.actor.id,
+        action: Action.DEPENDENCY_REMOVED,
+        newValue: `#${id}`,
+      });
+    });
+  }
+
+  const totalChanges = changes.length + ops.length;
+  if (totalChanges === 0) {
     return { ok: true, message: 'No changes were made.', changed: [] };
   }
 
-  sets.push("updated_at = datetime('now')");
+  if (changes.length > 0) sets.push("updated_at = datetime('now')");
   const tx = db.transaction(() => {
-    db.prepare(`UPDATE tasks SET ${sets.join(', ')} WHERE id = ?`).run(...values, task.id);
+    if (changes.length > 0) {
+      db.prepare(`UPDATE tasks SET ${sets.join(', ')} WHERE id = ?`).run(...values, task.id);
+    }
     for (const a of activity) {
       logActivity({ taskId: task.id, userId: params.actor.id, action: a.action, oldValue: a.oldValue, newValue: a.newValue });
+    }
+    for (const op of ops) op();
+    for (const n of notifications) {
+      createNotification({ userId: n.userId, taskId: task.id, type: n.type, title: n.title, message: n.message });
     }
   });
   tx();
 
   return {
     ok: true,
-    message: changes.length === 1 ? 'Task updated.' : `${changes.length} fields updated.`,
+    message: totalChanges === 1 ? 'Task updated.' : `${totalChanges} fields updated.`,
     changed: changes,
   };
 }
@@ -429,6 +733,8 @@ export async function closeTask(params: {
     evidenceValue = null;
   }
 
+  let nextTaskId: number | null = null;
+
   const tx = db.transaction(() => {
     // Conditional update (status != 'completed') makes the transition atomic:
     // a concurrent second close hits changes === 0 and the whole tx rolls back
@@ -472,6 +778,85 @@ export async function closeTask(params: {
       action: evidenceAction,
       newValue: evidenceValue ?? undefined,
     });
+
+    // ── Recurring series: spawn the NEXT occurrence, but ONLY here (on
+    // completion), never up front — no endless tasks. The next task is linked
+    // via parent_recurring_task_id and copies the checklist TEMPLATE (titles
+    // + order, all unchecked) plus the business fields, but NOT comments,
+    // evidence, activity logs, or completion metadata.
+    if (
+      shouldCreateNextOccurrence({
+        recurrence: task.recurrence,
+        dueDate: task.due_date,
+        recurrenceEndDate: task.recurrence_end_date,
+      })
+    ) {
+      const nextDue = nextDueDate(task.recurrence, task.due_date);
+      if (nextDue) {
+        const ins = db
+          .prepare(
+            `INSERT INTO tasks (title, description, department, status, priority, progress_percent,
+                                created_by, assigned_to, due_date, recurrence, recurrence_end_date,
+                                parent_recurring_task_id)
+             VALUES (?, ?, ?, 'not_started', ?, 0, ?, ?, ?, ?, ?, ?)`,
+          )
+          .run(
+            task.title,
+            task.description,
+            task.department,
+            task.priority,
+            task.created_by,
+            task.assigned_to,
+            nextDue,
+            task.recurrence,
+            task.recurrence_end_date,
+            task.id,
+          );
+        nextTaskId = Number(ins.lastInsertRowid);
+
+        const template = db
+          .prepare(
+            'SELECT title, sort_order FROM task_checklists WHERE task_id = ? ORDER BY sort_order ASC, id ASC',
+          )
+          .all(task.id) as { title: string; sort_order: number }[];
+        for (const it of template) {
+          db.prepare(
+            'INSERT INTO task_checklists (task_id, title, sort_order, is_completed) VALUES (?, ?, ?, 0)',
+          ).run(nextTaskId, it.title, it.sort_order);
+        }
+
+        // Recurring creation is recorded in the activity log on BOTH sides of
+        // the series (spec: record recurring task creation).
+        logActivity({
+          taskId: task.id,
+          userId: params.actor.id,
+          action: Action.RECURRING_TASK_CREATED,
+          newValue: `next occurrence created (#${nextTaskId})`,
+        });
+        logActivity({
+          taskId: nextTaskId,
+          userId: task.created_by,
+          action: Action.TASK_CREATED,
+          newValue: task.title,
+        });
+        logActivity({
+          taskId: nextTaskId,
+          userId: task.created_by,
+          action: Action.RECURRING_TASK_CREATED,
+          newValue: `next occurrence of recurring task #${task.id}`,
+        });
+
+        if (task.assigned_to != null) {
+          createNotification({
+            userId: task.assigned_to,
+            taskId: nextTaskId,
+            type: 'recurring_created',
+            title: 'Next recurring task created',
+            message: `The next occurrence of "${task.title}" is scheduled for ${nextDue}.`,
+          });
+        }
+      }
+    }
   });
   try {
     tx();
@@ -483,7 +868,7 @@ export async function closeTask(params: {
     throw err;
   }
 
-  return { ok: true, taskId: task.id };
+  return { ok: true, taskId: task.id, nextTaskId };
 }
 
 // ─────────────────────── Attachment upload ───────────────────────

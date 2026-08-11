@@ -13,7 +13,7 @@
 //   RULE #5  Evidence/attachments are stored as BLOBs, validated ext+MIME+10 MB.
 //   RULE #6  Every task mutation is recorded in task_activity_log.
 
-import type { TaskPriority, TaskStatus } from './types';
+import type { TaskPriority, TaskRecurrence, TaskStatus } from './types';
 
 // ─────────────────────────── Enumerations ───────────────────────────
 
@@ -33,7 +33,10 @@ export const ACTIVE_TASK_STATUSES: readonly TaskStatus[] = [
 ];
 
 /** Priorities (matches the schema CHECK constraint). */
-export const TASK_PRIORITIES: readonly TaskPriority[] = ['low', 'medium', 'high'];
+export const TASK_PRIORITIES: readonly TaskPriority[] = ['low', 'medium', 'high', 'urgent'];
+
+/** Recurrence intervals (matches the schema CHECK constraint). */
+export const TASK_RECURRENCES: readonly TaskRecurrence[] = ['none', 'daily', 'weekly', 'monthly'];
 
 // ───────────────────────────── Limits ─────────────────────────────
 
@@ -45,6 +48,16 @@ export const MAX_FILE_NAME = 200;
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB (per spec)
 export const MIN_PASSWORD_LENGTH = 8;
 export const MAX_USERNAME_LENGTH = 50;
+export const MAX_DEPARTMENT_LENGTH = 50;
+/** Max checklist items per task (creation + editing). */
+export const MAX_CHECKLIST_ITEMS = 30;
+export const MAX_CHECKLIST_TITLE_LENGTH = 200;
+/** Max dependencies per task. */
+export const MAX_DEPENDENCIES = 20;
+/** Max length of the explicit dependency-override reason (admin/manager only). */
+export const MAX_OVERRIDE_REASON_LENGTH = 500;
+/** Max depth walked when checking dependency cycles at creation time. */
+export const MAX_DEPENDENCY_DEPTH = 20;
 
 // ───────────────────────── Field locking (RULE #2) ─────────────────────────
 
@@ -59,9 +72,14 @@ export const EMPLOYEE_EDITABLE_FIELDS = [
 export const EMPLOYEE_LOCKED_FIELDS = [
   'title',
   'description',
+  'department',
   'assigned_to',
   'due_date',
   'priority',
+  'recurrence',
+  'recurrence_end_date',
+  'checklist',
+  'dependencies',
 ] as const;
 
 export type EmployeeEditableField = (typeof EMPLOYEE_EDITABLE_FIELDS)[number];
@@ -136,4 +154,15 @@ export function isEmployeeLockedField(field: string): boolean {
 /** A file extension is accepted when it is in the upload allowlist (RULE #5). */
 export function isAllowedExtension(ext: string): boolean {
   return ext in EXT_MIME;
+}
+
+/** Is `recurrence` a valid interval (or 'none')? */
+export function isRecurrence(value: string): value is TaskRecurrence {
+  return (TASK_RECURRENCES as readonly string[]).includes(value);
+}
+
+/** A dependency override reason is required whenever admin/manager force past a block. */
+export function isValidOverrideReason(reason: string): boolean {
+  const r = reason.trim();
+  return r.length > 0 && r.length <= MAX_OVERRIDE_REASON_LENGTH;
 }

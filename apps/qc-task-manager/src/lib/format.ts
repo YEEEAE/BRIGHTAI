@@ -80,11 +80,24 @@ const PRIORITY_LABELS: Record<string, string> = {
   low: 'Low',
   medium: 'Medium',
   high: 'High',
+  urgent: 'Urgent',
 };
 
 /** Human label for a task priority code. */
 export function priorityLabel(priority: string): string {
   return PRIORITY_LABELS[priority] ?? priority;
+}
+
+const RECURRENCE_LABELS: Record<string, string> = {
+  none: 'No recurrence',
+  daily: 'Daily',
+  weekly: 'Weekly',
+  monthly: 'Monthly',
+};
+
+/** Human label for a recurrence interval code. */
+export function recurrenceLabel(recurrence: string): string {
+  return RECURRENCE_LABELS[recurrence] ?? recurrence;
 }
 
 // ──────────────────── Status presentation (single source) ────────────────────
@@ -111,7 +124,19 @@ export const PRIORITY_BADGE: Record<string, string> = {
   low: 'bg-sky-50 text-sky-700 ring-1 ring-inset ring-sky-200',
   medium: 'bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-200',
   high: 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200',
+  // Urgent must be visually prominent everywhere — solid red pill (WCAG AA on
+  // white: white-on-red-600 ≈ 4.7:1) plus a subtle glow for list contexts.
+  urgent: 'bg-red-600 text-white shadow-sm shadow-red-600/40',
 };
+
+/** Extra row treatment for urgent tasks in lists (highlight + left accent). */
+export const URGENT_ROW_CLASS =
+  'bg-red-50/70 ring-1 ring-inset ring-red-200 hover:bg-red-50';
+
+/** True when a priority is 'urgent' (drives list-row highlighting). */
+export function isUrgent(priority: string): boolean {
+  return priority === 'urgent';
+}
 
 /** Emoji + badge class for a status code (falls back to a neutral gray). */
 export function statusBadgeClass(status: string): string {
