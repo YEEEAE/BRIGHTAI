@@ -3,8 +3,9 @@
 // middleware /manager/* rule; the page lists pending requests with Approve /
 // Reject actions and a history of reviewed requests below.
 //
-// Approving deletes the task (cascade) and marks the request approved; the
-// task_title snapshot keeps the history readable after the task is gone.
+// Approving deletes the task (cascade) and the request row goes with it;
+// task titles are joined live from the tasks table (rejected requests keep
+// their task alive, so the JOIN always resolves).
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import {
   listPendingDeleteRequests,
@@ -49,14 +50,7 @@ function statusTone(status: string): string {
           <li class="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
             <div class="min-w-0 flex-1">
               <p class="font-medium text-slate-900">
-                {r.task_exists === 1 ? (
-                  <a href={`/tasks/${r.task_id}`} class="hover:underline">{r.task_title}</a>
-                ) : (
-                  <span>
-                    {r.task_title}
-                    <span class="ml-2 text-xs font-normal text-slate-400">(deleted)</span>
-                  </span>
-                )}
+                <a href={`/tasks/${r.task_id}`} class="hover:underline">{r.task_title}</a>
                 <span class="ml-2 text-xs font-normal text-slate-400">#{r.task_id}</span>
               </p>
               <p class="mt-0.5 text-xs text-slate-500">
@@ -111,14 +105,7 @@ function statusTone(status: string): string {
           <li class="flex flex-wrap items-center justify-between gap-3 px-5 py-3">
             <div class="min-w-0">
               <p class="text-sm font-medium text-slate-900">
-                {r.task_exists === 1 ? (
-                  <a href={`/tasks/${r.task_id}`} class="hover:underline">{r.task_title}</a>
-                ) : (
-                  <span>
-                    {r.task_title}
-                    <span class="ml-2 text-xs font-normal text-slate-400">(deleted)</span>
-                  </span>
-                )}
+                <a href={`/tasks/${r.task_id}`} class="hover:underline">{r.task_title}</a>
               </p>
               <p class="mt-0.5 text-xs text-slate-500">
                 by {r.requester_name}

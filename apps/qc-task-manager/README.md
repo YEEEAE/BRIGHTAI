@@ -132,7 +132,26 @@ The server logs a warning when the default `admin123` is in use.
   WAL mode + `foreign_keys = ON`).
 - The file (`*.db`, `*.db-wal`, `*.db-shm`) is gitignored and never committed.
 - Override the path with `QC_DB_PATH=/absolute/path.db`.
-- Schema: `db/schema.sql` (idempotent — applied on every boot).
+- Schema: `db/schema.sql` — **12 tables** (users, tasks, task_comments,
+  task_attachments, task_activity_log, task_delete_requests, task_checklists,
+  task_dependencies, notifications, sessions, login_attempts, saved_filters),
+  idempotent (`CREATE TABLE IF NOT EXISTS`), applied on every boot with
+  `PRAGMA journal_mode = WAL` + `PRAGMA foreign_keys = ON`.
+- **Referential-integrity policy** in the schema: `ON DELETE CASCADE` only for
+  child records (comments/attachments/activity/checklists/dependencies of a
+  task; sessions/notifications/saved filters of a user); `RESTRICT` for
+  audit-critical user references (task creator, commenter, uploader, actor);
+  `SET NULL` for optional references (assignee, completer, reviewer, …).
+- **Migrations**: `src/lib/db.ts` upgrades existing databases to the 12-table
+  shape on boot (new columns via `ALTER TABLE` + a rebuild of
+  `task_delete_requests` into the CASCADE shape) before `schema.sql` runs.
+  Note: `ALTER TABLE ADD COLUMN` cannot change CHECK constraints or make
+  columns NOT NULL, so migrated databases keep the legacy `tasks.status` /
+  `tasks.priority` CHECKs (no `'cancelled'`/`'urgent'`) and nullable
+  `task_attachments.mime_type`/`file_size` — fresh databases get the full
+  spec shape. The DB also accepts `'cancelled'`/`'urgent'` while
+  `src/lib/task-policy.ts` still validates 4 statuses / 3 priorities; the
+  schema is deliberately future-ready for those values.
 - Seed: `src/lib/seed.ts` (runtime) + `scripts/init-db.mjs` (CLI).
 
 ### Inspect it with SQLTools (VS Code)
@@ -183,7 +202,7 @@ The server logs a warning when the default `admin123` is in use.
 ```
 apps/qc-task-manager/
 ├── db/
-│   ├── schema.sql          # all 7 tables (idempotent)
+│   ├── schema.sql          # 12 tables (idempotent, WAL + FK guards)
 │   ├── seed.sql            # reference seed (authoritative seed is in src/lib/seed.ts)
 │   ├── backups/            # `pnpm db:backup` output (gitignored, .gitkeep kept)
 │   └── qc_tasks.db         # generated at runtime (gitignored)
@@ -322,14 +341,18 @@ Read-only parameterized queries in `src/lib/dashboard.ts`:
 ### Delete requests (`/manager/requests`)
 
 Employees submit requests (`DeleteRequestDialog`), managers/admins approve
-(hard delete) or reject (task untouched). Requests survive the task deletion
-as the audit record. E2E: `scripts/e2e-delete-request.mjs`.
+(hard delete) or reject (task untouched). Per the production schema the
+request row is a child of its task (`task_id … ON DELETE CASCADE`): approving
+hard-deletes the task **and** the request row together, and rejecting keeps the
+task with the rejected request visible in history (titles are joined live from
+`tasks`). E2E: `scripts/e2e-delete-request.mjs`.
 
 ### Notifications (`/notifications`)
 
 Every role gets a **Notifications** page (bell icon in the navbar with a live
-count badge). There is **no notifications table** — alerts are derived from the
-existing data by `src/lib/notifications.ts`:
+count badge). Alerts are currently **derived** from the existing data by
+`src/lib/notifications.ts`; the schema also ships a `notifications` table for
+future persistence (unused by the app today). Current alerts:
 
 - **🚨 Overdue** tasks (due before today, not completed)
 - **📅 Due soon** (due within 3 days, not completed)
@@ -406,7 +429,7 @@ output directory. The same routine is exposed programmatically in
 ### E2E scripts
 
 ```bash
-# delete-request workflow (33 assertions) — run from the app directory:
+# delete-request workflow (31 assertions) — run from the app directory:
 QC_DB_PATH=$(pwd)/db/e2e_test.db node scripts/init-db.mjs
 QC_DB_PATH=$(pwd)/db/e2e_test.db PORT=4322 node dist/server/entry.mjs &
 QC_DB_PATH=$(pwd)/db/e2e_test.db BASE_URL=http://localhost:4322 node scripts/e2e-delete-request.mjs

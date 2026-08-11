@@ -10,9 +10,10 @@
 // (submit + reject always; approve is logged before the task is deleted, so the
 // row is cascade-removed with the task — "where possible" per the spec).
 //
-// The request row deliberately outlives its task (no ON DELETE CASCADE) so the
-// approved/rejected decision remains as the audit record; task_title snapshots
-// the task name so history pages can render it after deletion.
+// Per the production schema the request row is a child of its task (task_id
+// ON DELETE CASCADE): approving a request deletes the task AND the request row
+// together. Task titles are read live via a JOIN, so history rows always render
+// the current task name (rejected requests keep their task alive).
 
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
@@ -61,9 +62,9 @@ export function submitDeleteRequest(params: {
 }): SubmitResult {
   const db = getDb();
   const task = db
-    .prepare('SELECT id, status, title, created_by, assigned_to FROM tasks WHERE id = ?')
+    .prepare('SELECT id, status, created_by, assigned_to FROM tasks WHERE id = ?')
     .get(params.taskId) as
-    | (Pick<Task, 'id' | 'status' | 'title' | 'created_by' | 'assigned_to'>)
+    | (Pick<Task, 'id' | 'status' | 'created_by' | 'assigned_to'>)
     | undefined;
   if (!task) return { ok: false, error: 'Task not found.' };
   if (task.status === 'completed') {
@@ -88,10 +89,10 @@ export function submitDeleteRequest(params: {
   try {
     const info = db
       .prepare(
-        `INSERT INTO task_delete_requests (task_id, task_title, requested_by, reason)
-         VALUES (?, ?, ?, ?)`,
+        `INSERT INTO task_delete_requests (task_id, requested_by, reason)
+         VALUES (?, ?, ?)`,
       )
-      .run(params.taskId, task.title, params.userId, reason);
+      .run(params.taskId, params.userId, reason);
     requestId = Number(info.lastInsertRowid);
   } catch (err) {
     // Defense in depth: the partial unique index
@@ -114,6 +115,7 @@ export function submitDeleteRequest(params: {
 export interface DeleteRequestRow {
   id: number;
   task_id: number;
+  /** Live title via JOIN — the task always exists (approved rows cascade away). */
   task_title: string;
   reason: string | null;
   status: string;
@@ -121,15 +123,14 @@ export interface DeleteRequestRow {
   reviewed_at: string | null;
   requester_name: string;
   reviewer_name: string | null;
-  task_exists: number;
 }
 
 const REQUEST_LIST_SQL = `
-  SELECT r.id, r.task_id, r.task_title, r.reason, r.status, r.created_at, r.reviewed_at,
+  SELECT r.id, r.task_id, t.title AS task_title, r.reason, r.status, r.created_at, r.reviewed_at,
          req.full_name AS requester_name,
-         rev.full_name AS reviewer_name,
-         (SELECT 1 FROM tasks t WHERE t.id = r.task_id) AS task_exists
+         rev.full_name AS reviewer_name
   FROM task_delete_requests r
+  JOIN tasks t ON t.id = r.task_id
   JOIN users req ON req.id = r.requested_by
   LEFT JOIN users rev ON rev.id = r.reviewed_by
   WHERE r.status = ?
@@ -172,15 +173,22 @@ export function reviewDeleteRequest(params: {
 
   const request = db
     .prepare(
-      `SELECT id, task_id, task_title, status FROM task_delete_requests WHERE id = ?`,
+      `SELECT id, task_id, status FROM task_delete_requests WHERE id = ?`,
     )
     .get(params.requestId) as
-    | { id: number; task_id: number; task_title: string; status: string }
+    | { id: number; task_id: number; status: string }
     | undefined;
   if (!request) return { ok: false, error: 'Deletion request not found.' };
   if (request.status !== 'pending') {
     return { ok: false, error: 'This request has already been reviewed.' };
   }
+
+  // Title for user-facing messages — read live while the task still exists
+  // (approval deletes the task right after this point).
+  const taskTitle =
+    (db.prepare('SELECT title FROM tasks WHERE id = ?').get(request.task_id) as
+      | { title: string }
+      | undefined)?.title ?? `task #${request.task_id}`;
 
   const markReviewed = db.prepare(
     `UPDATE task_delete_requests
@@ -199,7 +207,7 @@ export function reviewDeleteRequest(params: {
     console.log(
       `[tasks] deletion request #${request.id} (task #${request.task_id}) rejected by ${params.reviewer.username}`,
     );
-    return { ok: true, message: `Delete request for "${request.task_title}" rejected.` };
+    return { ok: true, message: `Delete request for "${taskTitle}" rejected.` };
   }
 
   // approve — log first (the activity row dies with the task), then delete.
@@ -224,5 +232,5 @@ export function reviewDeleteRequest(params: {
   console.log(
     `[tasks] deletion request #${request.id} approved by ${params.reviewer.username}; task #${request.task_id} deleted`,
   );
-  return { ok: true, message: `Deletion approved — task "${request.task_title}" deleted.` };
+  return { ok: true, message: `Deletion approved — task "${taskTitle}" deleted.` };
 }

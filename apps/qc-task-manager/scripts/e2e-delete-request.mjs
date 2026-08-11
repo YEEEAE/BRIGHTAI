@@ -3,6 +3,11 @@
 // asserts DB state via better-sqlite3 on the SAME database the server uses.
 // Scenarios: A approve path, B reject path, C completed blocked, D duplicate
 // blocked, E supervisor cannot review, F role surface.
+//
+// Spec semantics (12-table schema): the request row is a child of its task
+// (task_id ON DELETE CASCADE) — approving deletes task AND request together,
+// so scenario A asserts the row is gone. Rejected requests survive (task
+// alive) and appear in history.
 // Usage: QC_DB_PATH=<app>/db/e2e_test.db node scripts/e2e-delete-request.mjs
 
 import { chromium } from 'playwright';
@@ -163,16 +168,12 @@ try {
   ok(true, 'A. task page returns 404 after approval');
   ok(taskByTitle('SC-A delete me') === undefined, 'A. task row deleted from DB');
   const aReq = requestForTask(aId);
-  ok(aReq?.status === 'approved', 'A. request status = approved');
-  ok(aReq?.reviewed_by === mgr.id, 'A. reviewed_by = approving manager');
-  ok(!!aReq?.reviewed_at && aReq.reviewed_at !== '', 'A. reviewed_at recorded');
+  ok(aReq === undefined, 'A. request row cascade-deleted with the task (spec: ON DELETE CASCADE)');
   ok(activityForTask(aId).length === 0, 'A. activity log wiped with the task (cascade)');
 
   await openRequestsPage(managerPage);
-  const histRow = managerPage.locator('section:has-text("History") li', { hasText: 'SC-A delete me' }).first();
-  await histRow.waitFor({ timeout: 10_000 });
-  const histText = await histRow.innerText();
-  ok(histText.includes('approved') && histText.includes('(deleted)'), 'A. history shows approved + (deleted)');
+  const aHistGone = await managerPage.locator('section:has-text("History") li', { hasText: 'SC-A delete me' }).count();
+  ok(aHistGone === 0, 'A. approved request absent from history (cascade removed it)');
 // ─────────────── Scenario B: reject path ───────────────
   console.log('\n── Scenario B: employee requests → manager rejects → badge clears ──');
 

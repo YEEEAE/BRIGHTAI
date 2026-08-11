@@ -48,7 +48,7 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 2. **Field locking**: employees may only edit `status`, `progress_percent`, `blocker_note` (plus comments/attachments via dedicated endpoints). Title/description/assignee/due date/priority are supervisor+.
 3. **Completed tasks are read-only for everyone** — enforced in `taskUpdates.ts`, all endpoints, and the UI.
 4. **Closure flow**: completing requires a mandatory completion comment; evidence is uploaded or the skip is recorded. Atomic, race-safe (conditional UPDATE).
-5. **Delete requests**: employees cannot delete — they request; manager/admin approve (hard delete) or reject.
+5. **Delete requests**: employees cannot delete — they request; manager/admin approve (hard delete) or reject. The request row is a child of its task (`task_id … ON DELETE CASCADE`), so an approved request is cascade-removed with the task; rejected requests stay in history (titles joined live).
 6. **Activity log**: every task mutation writes `task_activity_log` rows (who / what / old / new / when).
 
 ## Operations
@@ -74,5 +74,6 @@ Environment:
 
 ## Testing
 
-- `scripts/e2e-dashboard.mjs` (29 assertions) and `scripts/e2e-delete-request.mjs` (33) run against a **live server** sharing `QC_DB_PATH` — the heavy regression suites. See the README for the exact run recipe.
+- `scripts/e2e-dashboard.mjs` (29 assertions) and `scripts/e2e-delete-request.mjs` (31) run against a **live server** sharing `QC_DB_PATH` — the heavy regression suites. See the README for the exact run recipe.
+- Schema/migrations live in `db/schema.sql` + `src/lib/db.ts` (column migrations + a `task_delete_requests` rebuild into the spec's CASCADE shape).
 - `scripts/test.mjs` (`pnpm test`) runs fast, server-less checks: spec-structure compliance, Zod schema behavior, task-policy rules, CSV escaping, and a real backup round-trip on a temp DB.
