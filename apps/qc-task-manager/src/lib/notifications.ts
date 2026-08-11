@@ -36,7 +36,8 @@ export type NotificationKind =
   | 'delete_requested'
   | 'delete_approved'
   | 'delete_rejected'
-  | 'task_reopened';
+  | 'task_reopened'
+  | 'sla_escalation';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -79,14 +80,14 @@ export function createNotification(params: {
   message: string;
   /** Who triggered the notification (logged as the actor). Omit to skip logging. */
   actorId?: number;
-}): void {
+}): boolean {
   try {
     // Spec: "do not notify inactive users" — enforced centrally so every call
     // site is covered (the single active-user query is cheap and indexed).
     const active = getDb()
       .prepare('SELECT 1 AS one FROM users WHERE id = ? AND is_active = 1')
       .get(params.userId);
-    if (!active) return;
+    if (!active) return false;
     getDb()
       .prepare(
         `INSERT INTO notifications (user_id, task_id, type, title, message)
@@ -108,8 +109,10 @@ export function createNotification(params: {
         newValue: `${recipient} · ${params.title}`,
       });
     }
+    return true;
   } catch (err) {
     console.error('[notifications] failed to create notification:', err);
+    return false;
   }
 }
 
@@ -126,6 +129,7 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   delete_approved: 'success',
   delete_rejected: 'danger',
   task_reopened: 'warning',
+  sla_escalation: 'danger',
 };
 
 /** A raw persisted notification row (with read state) for the UI layers. */

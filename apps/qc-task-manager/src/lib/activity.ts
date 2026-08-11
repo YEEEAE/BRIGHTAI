@@ -45,6 +45,7 @@ export const Action = {
   DELETE_REJECTED: 'delete_rejected',
   TASK_DELETED: 'task_deleted',
   NOTIFICATION_CREATED: 'notification_created',
+  SLA_ESCALATED: 'sla_escalated',
 } as const;
 
 export type ActionType = (typeof Action)[keyof typeof Action];

@@ -4,10 +4,18 @@ project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
 last_updated: 2026-08-11 23:12 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.87
+version: 2.7.88
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-11 — QC-SLA-ENGINE-001: إضافة SLA Engine قابل للتهيئة والتصعيد داخل QC Task Manager
+
+- **Files**: `apps/qc-task-manager/db/migrations/003_sla_engine.sql`, `db/schema.sql`, `src/lib/{sla/index.ts,sla/engine.ts,db.ts,types.ts,activity.ts,notifications.ts,tasks.ts,taskUpdates.ts,dashboard.ts}`, `src/pages/{dashboard.astro,notifications.astro}`, `scripts/{test-sla.mjs,test.mjs,test-migrations.mjs}`, `package.json`, `docs/superpowers/plans/2026-08-11-qc-sla-engine.md`.
+- **What**: أضفت SLA policies قابلة للتهيئة حسب priority/department/task type مع target duration وwarning/critical thresholds و`pause_on_hold`. أضفت snapshot fields للمهمة (`sla_policy_id`, timestamps, elapsed/remaining/percent/status)، ومحركًا server-authoritative يستخدم `datetime('now')`. الافتراضي: On Hold لا يوقف SLA؛ policy تقدر تفعّله. أضفت escalation policies/events بعتبات 80/90/100/120، in-app delivery فقط، audit fields المطلوبة، retry recovery، وunique idempotency key يمنع التكرار. أضفت dashboard KPIs: SLA Compliance, At Risk, Critical, Breached, Average Resolution, Average SLA Consumption.
+- **Defaults**: URGENT = 24h / Warning 70% / Critical 90%، وfallback عام = 72h؛ لا تُعاد seed policies إذا كانت موجودة. Task Type يستفيد من `task_type` ويستخدم `inspection_type` كـ compatibility fallback عند إنشاء المهمة.
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **265 passed / 0 failed** (migration + architecture + domain + SLA pure/DB + DB rules)؛ `pnpm --filter @brightai/qc-task-manager test:sla` → pure temporal cases + escalation idempotency/retry recovery PASS؛ `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 11 existing hints**؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built**؛ Architecture Guard PASS.
+- **Status**: verified locally; uncommitted — المستخدم يلتزم، ولا push. Live E2E بعد إضافة SLA غير مشغّل في هذه المهمة؛ production scheduler/worker خارجي غير مضاف، لذلك dashboard/task requests هي trigger لتحديث SLA والتصعيد حاليًا. تعديل `audit/qc/prompt3.md` كان موجودًا مسبقًا ولم ألمسه. تحذير `git` fsmonitor IPC بيئي قائم.
 
 ### 2026-08-11 — QC-ARCHITECTURE-GUARD-001: توحيد مصدر الحقيقة وحارس architecture
 

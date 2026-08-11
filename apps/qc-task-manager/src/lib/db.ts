@@ -32,6 +32,7 @@ import { backupDirectoryForDatabase } from './backup';
 import { runMigrations } from './migrations';
 import initialMigrationSql from '../../db/migrations/001_initial.sql?raw';
 import legacyMigrationSql from '../../db/migrations/002_legacy_schema_reconciliation.sql?raw';
+import slaMigrationSql from '../../db/migrations/003_sla_engine.sql?raw';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -77,6 +78,9 @@ const REQUIRED_TABLES = [
   'sessions',
   'login_attempts',
   'saved_filters',
+  'sla_policies',
+  'escalation_policies',
+  'escalation_events',
 ] as const;
 
 /** Every index required by the application (FK lookups + dashboard filters). */
@@ -107,6 +111,11 @@ const REQUIRED_INDEXES = [
   'idx_login_attempts_user',
   'idx_saved_filters_user',
   'idx_users_created_by',
+  'idx_tasks_sla_status',
+  'idx_tasks_sla_due',
+  'idx_sla_policies_match',
+  'idx_escalation_events_task',
+  'idx_escalation_events_retry',
 ] as const;
 
 /**
@@ -157,6 +166,7 @@ function initialize(db: BetterSqliteDatabase): void {
     embeddedMigrations: [
       { file: '001_initial.sql', source: initialMigrationSql },
       { file: '002_legacy_schema_reconciliation.sql', source: legacyMigrationSql },
+      { file: '003_sla_engine.sql', source: slaMigrationSql },
     ],
   });
   validateSchema(db, migrationResult.currentVersion);

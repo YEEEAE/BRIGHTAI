@@ -58,6 +58,15 @@ export interface Task {
   corrective_action_required: number | null;
   reference_number: string | null;
   audit_batch_or_work_order: string | null;
+  task_type: string | null;
+  sla_policy_id: number | null;
+  sla_started_at: string | null;
+  sla_due_at: string | null;
+  sla_paused_at: string | null;
+  sla_elapsed_seconds: number;
+  sla_remaining_seconds: number | null;
+  sla_percent_used: number;
+  sla_status: 'NORMAL' | 'AT_RISK' | 'CRITICAL' | 'BREACHED' | 'PAUSED';
   created_at: string;
   updated_at: string;
 }

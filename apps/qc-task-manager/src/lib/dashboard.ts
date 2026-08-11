@@ -17,6 +17,7 @@ import { listActiveUsers } from './tasks';
 import { parseDbDate } from './format';
 import { setFlash } from './flash';
 import { TASK_PRIORITIES, TASK_STATUSES } from './task-policy';
+import { refreshTaskSla, serverNow } from './sla/engine';
 import type { AstroCookies } from 'astro';
 import type { TaskPriority, TaskStatus } from './types';
 
@@ -364,10 +365,23 @@ export interface Kpis {
   completed_without_evidence: number;
   /** Average completion time in seconds (completed_at − started_at), or null. */
   avg_completion_seconds: number | null;
+  sla_compliance_percent: number;
+  sla_at_risk: number;
+  sla_critical: number;
+  sla_breached: number;
+  avg_sla_consumption_percent: number | null;
+}
+
+function refreshAllSla(): void {
+  const db = getDb();
+  const now = serverNow(db);
+  const tasks = db.prepare('SELECT id FROM tasks WHERE sla_started_at IS NOT NULL').all() as { id: number }[];
+  for (const task of tasks) refreshTaskSla(task.id, db, now);
 }
 
 export function getKpis(f: DashboardFilters): Kpis {
   const db = getDb();
+  refreshAllSla();
   const today = localToday();
   const { sql, params } = whereClause(f);
   // NOTE on placeholder order: SQLite binds placeholders in the order they
@@ -426,6 +440,19 @@ export function getKpis(f: DashboardFilters): Kpis {
 
   const avgSeconds = avgRow?.avg_seconds ?? null;
 
+  const { sql: slaSql, params: slaParams } = whereClause(f);
+  const slaRow = db.prepare(
+    `SELECT
+       COALESCE(SUM(CASE WHEN t.sla_status = 'AT_RISK' THEN 1 ELSE 0 END), 0) AS at_risk,
+       COALESCE(SUM(CASE WHEN t.sla_status = 'CRITICAL' THEN 1 ELSE 0 END), 0) AS critical,
+       COALESCE(SUM(CASE WHEN t.sla_status = 'BREACHED' THEN 1 ELSE 0 END), 0) AS breached,
+       AVG(CASE WHEN t.sla_started_at IS NOT NULL THEN t.sla_percent_used END) AS avg_consumption,
+       CASE WHEN SUM(CASE WHEN t.status = 'completed' AND t.sla_started_at IS NOT NULL THEN 1 ELSE 0 END) = 0 THEN 0
+            ELSE ROUND(100.0 * SUM(CASE WHEN t.status = 'completed' AND t.sla_started_at IS NOT NULL AND t.sla_percent_used <= 100 THEN 1 ELSE 0 END)
+              / SUM(CASE WHEN t.status = 'completed' AND t.sla_started_at IS NOT NULL THEN 1 ELSE 0 END), 2) END AS compliance
+     FROM tasks t ${slaSql}`,
+  ).get(...slaParams) as { at_risk: number; critical: number; breached: number; avg_consumption: number | null; compliance: number };
+
   return {
     total: Number(row.total),
     not_started: Number(row.not_started),
@@ -437,6 +464,11 @@ export function getKpis(f: DashboardFilters): Kpis {
     urgent_open: Number(row.urgent_open),
     completed_without_evidence: Number(row.completed_without_evidence),
     avg_completion_seconds: avgSeconds == null ? null : Number(avgSeconds),
+    sla_compliance_percent: Number(slaRow.compliance),
+    sla_at_risk: Number(slaRow.at_risk),
+    sla_critical: Number(slaRow.critical),
+    sla_breached: Number(slaRow.breached),
+    avg_sla_consumption_percent: slaRow.avg_consumption == null ? null : Number(slaRow.avg_consumption),
   };
 }
 

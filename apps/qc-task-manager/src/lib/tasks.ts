@@ -19,6 +19,7 @@ import { getCurrentUser } from './session';
 import { setFlash } from './flash';
 import { PERMISSIONS } from './permissions';
 import { createNotification } from './notifications';
+import { initializeTaskSla } from './sla/engine';
 import {
   MAX_DEPENDENCIES,
   MAX_DEPENDENCY_DEPTH,
@@ -153,6 +154,7 @@ export function createTask(params: {
   correctiveActionRequired?: number | null;
   referenceNumber?: string | null;
   auditBatchOrWorkOrder?: string | null;
+  taskType?: string | null;
   checklist: string[];
   dependencies: number[];
   createdBy: number;
@@ -164,8 +166,8 @@ export function createTask(params: {
         `INSERT INTO tasks (title, description, department, status, priority, progress_percent,
                             created_by, assigned_to, due_date, recurrence, recurrence_end_date,
                             inspection_type, finding_classification, risk_level, corrective_action_required,
-                            reference_number, audit_batch_or_work_order)
-         VALUES (?, ?, ?, 'not_started', ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                            reference_number, audit_batch_or_work_order, task_type)
+         VALUES (?, ?, ?, 'not_started', ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         params.title,
@@ -183,6 +185,7 @@ export function createTask(params: {
         params.correctiveActionRequired ?? null,
         params.referenceNumber ?? null,
         params.auditBatchOrWorkOrder ?? null,
+        params.taskType ?? params.inspectionType ?? null,
       );
     const taskId = Number(result.lastInsertRowid);
 
@@ -211,7 +214,9 @@ export function createTask(params: {
     }
     return taskId;
   });
-  return tx();
+  const taskId = tx();
+  initializeTaskSla(taskId, db);
+  return taskId;
 }
 
 /** Notify the assignee that a task was assigned (creation + reassignment). */

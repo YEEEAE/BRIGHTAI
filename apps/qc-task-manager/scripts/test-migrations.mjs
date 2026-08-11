@@ -26,8 +26,8 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 2);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 2);
+    assert.equal(result.applied.length, 3);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 3);
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='tasks'").get());
     assert.deepEqual(db.pragma('foreign_key_check'), []);
     db.close();
@@ -52,7 +52,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 2);
+    assert.equal(first.applied.length, 3);
     assert.equal(second.applied.length, 0);
     db.close();
   }

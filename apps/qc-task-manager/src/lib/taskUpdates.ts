@@ -56,6 +56,7 @@ import {
   requiresBlockerNote,
 } from './task-policy';
 import { nextDueDate, shouldCreateNextOccurrence } from './recurrence';
+import { checkpointTaskSla, refreshTaskSla } from './sla/engine';
 import type { Role, Task } from './types';
 
 // Keep the mutation implementation readable while forcing every task audit
@@ -913,6 +914,12 @@ export function applyTaskUpdate(params: {
   });
   tx();
 
+  if (changes.includes('status')) {
+    checkpointTaskSla(task.id, task.status, String(form.get('status')), db);
+  } else {
+    refreshTaskSla(task.id, db);
+  }
+
   return {
     ok: true,
     message: totalChanges === 1 ? 'Task updated.' : `${totalChanges} fields updated.`,
@@ -1186,6 +1193,8 @@ export async function closeTask(params: {
     throw err;
   }
 
+  checkpointTaskSla(task.id, task.status, 'completed', db);
+
   return { ok: true, taskId: task.id, nextTaskId };
 }
 
@@ -1240,6 +1249,7 @@ export function cancelTask(params: {
     oldValue: statusLabel(task.status),
     newValue: reason,
   });
+  refreshTaskSla(task.id, db);
   return { ok: true, message: `Task "${task.title}" cancelled.` };
 }
 
@@ -1308,6 +1318,7 @@ export function reopenTask(params: {
     }
     throw err;
   }
+  refreshTaskSla(task.id, db);
   return { ok: true, message: `Task "${task.title}" reopened — it is In Progress again.` };
 }
 
