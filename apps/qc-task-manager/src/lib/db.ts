@@ -1,12 +1,22 @@
 // SQLite connection layer for QC Task Manager.
 //
-// Responsibilities:
-//   1. Open db/qc_tasks.db with better-sqlite3 (override path via QC_DB_PATH).
-//   2. Enable WAL mode + PRAGMA foreign_keys = ON (per spec).
-//   3. Apply db/schema.sql on every boot (idempotent — CREATE TABLE IF NOT EXISTS).
-//   4. Seed the admin account when the users table is empty.
-//   5. Expose a small typed query helper (`query`) so callers don't import the
-//      raw driver everywhere.
+// Responsibilities (per the database-layer spec):
+//   1. Open db/qc_tasks.db with better-sqlite3. The path comes from
+//      `QC_DATABASE_PATH` (spec name), falling back to the legacy `QC_DB_PATH`
+//      alias (kept so existing scripts/README/e2e flows keep working), then to
+//      <app>/db/qc_tasks.db.
+//   2. Enable WAL mode, `foreign_keys = ON`, `busy_timeout = 5000` and
+//      `synchronous = NORMAL` on every connection.
+//   3. Apply db/schema.sql on every boot (idempotent — CREATE TABLE IF NOT
+//      EXISTS), then validate that every required table and index exists.
+//   4. Seed accounts when the users table is empty (see src/lib/seed.ts).
+//   5. Expose `db` (lazy singleton), a typed `query` helper, a `transaction`
+//      helper and a `closeDatabase` helper for tests.
+//
+// Every SQL statement in this app goes through prepared statements
+// (`db.prepare(...)` with `?`/named params) — user input is NEVER concatenated
+// into SQL. The only raw `db.exec` calls here run static DDL (schema.sql and
+// fixed migration statements), never data.
 //
 // Schema application + seeding happen once per process (guarded by a flag),
 // so repeated getDb() calls are cheap.
@@ -27,14 +37,22 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Resolve to <app>/db/qc_tasks.db. From src/lib/ that's ../../db/qc_tasks.db.
 const DB_DIR = resolve(__dirname, '..', '..', 'db');
-const DB_PATH = process.env.QC_DB_PATH || resolve(DB_DIR, 'qc_tasks.db');
+// Spec env var first; QC_DB_PATH stays as a legacy alias (documented in the
+// README, used by scripts/init-db.mjs, scripts/backup-db.mjs and the e2e runs).
+const DB_PATH =
+  process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
 
 let _db: BetterSqliteDatabase | null = null;
 let _initialized = false;
 
-/** Ensure the db directory exists (the file itself is created on first open). */
+/**
+ * Ensure the parent directory of the resolved DB path exists (the file itself
+ * is created on first open). This honors custom `QC_DATABASE_PATH` values
+ * pointing at nested directories that don't exist yet — not just <app>/db.
+ */
 function ensureDir(): void {
-  if (!existsSync(DB_DIR)) mkdirSync(DB_DIR, { recursive: true });
+  const dir = dirname(DB_PATH);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 }
 
 /**
@@ -164,7 +182,93 @@ function migrateDeleteRequests(db: BetterSqliteDatabase): void {
   console.warn('[db] migrated task_delete_requests (spec shape: CASCADE, no task_title snapshot).');
 }
 
-/** Apply schema.sql (idempotent) and seed the admin account if needed. */
+// ─────────────────────── Startup schema validation ───────────────────────
+// After schema.sql runs, the boot fails fast (with a precise message) if any
+// required table or index is missing — a broken schema must never be served.
+
+/** Every table the app relies on (must exist after schema.sql). */
+const REQUIRED_TABLES = [
+  'users',
+  'tasks',
+  'task_comments',
+  'task_attachments',
+  'task_activity_log',
+  'task_delete_requests',
+  'task_checklists',
+  'task_dependencies',
+  'notifications',
+  'sessions',
+  'login_attempts',
+  'saved_filters',
+] as const;
+
+/** Every index schema.sql creates (FK lookups + dashboard filters). */
+const REQUIRED_INDEXES = [
+  'idx_tasks_status',
+  'idx_tasks_priority',
+  'idx_tasks_assigned_to',
+  'idx_tasks_created_by',
+  'idx_tasks_due_date',
+  'idx_tasks_completed_at',
+  'idx_tasks_recurrence',
+  'idx_comments_task_id',
+  'idx_comments_user_id',
+  'idx_attachments_task_id',
+  'idx_attachments_uploaded_by',
+  'idx_activity_task_created',
+  'idx_activity_user_id',
+  'idx_delreq_task_id',
+  'idx_delreq_requested_by',
+  'idx_delreq_reviewed_by',
+  'idx_delreq_one_pending',
+  'idx_checklists_task_id',
+  'idx_checklists_completed_by',
+  'idx_dependencies_depends_on',
+  'idx_notifications_user',
+  'idx_notifications_task',
+  'idx_sessions_expires',
+  'idx_login_attempts_user',
+  'idx_saved_filters_user',
+  'idx_users_created_by',
+] as const;
+
+/**
+ * Verify every required table and index exists. Throws with the full list of
+ * missing objects so a corrupted/partial database fails early instead of with
+ * confusing query errors later.
+ *
+ * Runs on the FIRST connection (lazy getDb() — importing this module has no
+ * side effects), which in practice is the first real request of the server
+ * (any session-bearing request touches the DB).
+ */
+function validateSchema(db: BetterSqliteDatabase): void {
+  const tables = new Set(
+    (db.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all() as { name: string }[]).map(
+      (r) => r.name,
+    ),
+  );
+  const indexes = new Set(
+    (db.prepare("SELECT name FROM sqlite_master WHERE type = 'index'").all() as { name: string }[]).map(
+      (r) => r.name,
+    ),
+  );
+
+  const missingTables = REQUIRED_TABLES.filter((t) => !tables.has(t));
+  const missingIndexes = REQUIRED_INDEXES.filter((i) => !indexes.has(i));
+
+  if (missingTables.length === 0 && missingIndexes.length === 0) return;
+
+  const details: string[] = [];
+  if (missingTables.length > 0) details.push(`missing tables: ${missingTables.join(', ')}`);
+  if (missingIndexes.length > 0) details.push(`missing indexes: ${missingIndexes.join(', ')}`);
+  throw new Error(
+    `[db] startup validation failed — ${details.join('; ')}. ` +
+      'The schema at apps/qc-task-manager/db/schema.sql is out of sync with ' +
+      'src/lib/db.ts (REQUIRED_TABLES / REQUIRED_INDEXES).',
+  );
+}
+
+/** Apply schema.sql (idempotent), validate the result, then seed if needed. */
 function initialize(db: BetterSqliteDatabase): void {
   if (_initialized) return;
   // Migrations first: existing databases need the new columns/tables before
@@ -173,6 +277,7 @@ function initialize(db: BetterSqliteDatabase): void {
   migrateNewColumns(db);
   migrateDeleteRequests(db);
   db.exec(schemaSql);
+  validateSchema(db);
   seedUsersIfEmpty(db);
   // SEED_DEMO=1 → demo team + 12 mixed-status tasks (only on an empty DB).
   seedDemoData(db);
@@ -195,9 +300,9 @@ export function cleanupExpiredSessions(): number {
 }
 
 /**
- * Open (or reuse) the SQLite connection. WAL mode + foreign keys are applied
- * once per connection; schema + seed run once per process. Safe to call
- * repeatedly — returns the same instance.
+ * Open (or reuse) the SQLite connection. WAL + foreign_keys + busy_timeout +
+ * synchronous are applied once per connection; schema + seed run once per
+ * process. Safe to call repeatedly — returns the same instance.
  */
 export function getDb(): BetterSqliteDatabase {
   if (_db) return _db;
@@ -206,11 +311,69 @@ export function getDb(): BetterSqliteDatabase {
   const db = new Database(DB_PATH);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
+  // Concurrent readers/writers wait up to 5s for the lock instead of failing
+  // immediately with SQLITE_BUSY.
+  db.pragma('busy_timeout = 5000');
+  // WAL + synchronous=NORMAL: durability is "app might lose recent
+  // transactions on power loss" — never corruption — at a fraction of the
+  // FULL fsync cost. This is the recommended setting for WAL databases.
+  db.pragma('synchronous = NORMAL');
 
   initialize(db);
 
   _db = db;
   return db;
+}
+
+/**
+ * Close the database connection and reset the singleton. Designed for tests
+ * (open a temp DB, run assertions, close, repeat). Safe to call repeatedly —
+ * no-op when no connection is open.
+ */
+export function closeDatabase(): void {
+  if (!_db) return;
+  _db.close();
+  _db = null;
+  _initialized = false;
+}
+
+/**
+ * The raw better-sqlite3 instance (per the spec export list). The connection
+ * opens lazily on first property access via a Proxy, so merely importing this
+ * module never touches disk — `getDb()` is equivalent and preferred inside the
+ * app; `db` exists for the spec/tests.
+ *
+ * Bundler note: in the PRODUCTION bundle, Rollup replaces this export with a
+ * static module-namespace object (this module gets merged into a shared chunk
+ * that also carries a namespace facade, and nothing in the app references the
+ * proxy directly). The live Proxy is what you get from SOURCE — the dev
+ * server and tests (e.g. via Vite's ssrLoadModule). `getDb()` behaves the same
+ * in every environment, so app code should use it.
+ */
+export const db = new Proxy({} as BetterSqliteDatabase, {
+  get(_target, prop, receiver) {
+    const instance = getDb();
+    const value = Reflect.get(instance, prop, instance);
+    // Bind methods so `db.prepare(...)`/`db.transaction(...)` keep `this` on
+    // the live instance (a plain property copy would lose it).
+    return typeof value === 'function' ? value.bind(instance) : value;
+  },
+});
+
+/**
+ * Run a function inside a database transaction (per the spec export list).
+ * The function receives nothing and returns its result; the transaction
+ * commits on success and rolls back on throw.
+ *
+ * @example
+ * const ids = transaction(() => {
+ *   const a = query('INSERT INTO ...').run(1);
+ *   const b = query('INSERT INTO ...').run(2);
+ *   return [Number(a.lastInsertRowid), Number(b.lastInsertRowid)];
+ * });
+ */
+export function transaction<T>(fn: () => T): T {
+  return getDb().transaction(fn)();
 }
 
 /** Convert a 0/1 SQLite integer into a boolean. */

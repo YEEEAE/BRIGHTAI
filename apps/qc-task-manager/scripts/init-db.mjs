@@ -15,7 +15,7 @@ import { mkdirSync, readFileSync, existsSync, rmSync } from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_DIR = resolve(__dirname, '../db');
-const DB_PATH = process.env.QC_DB_PATH || resolve(DB_DIR, 'qc_tasks.db');
+const DB_PATH = process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
 const SCHEMA_PATH = resolve(DB_DIR, 'schema.sql');
 
 const RESET = process.argv.includes('--reset');

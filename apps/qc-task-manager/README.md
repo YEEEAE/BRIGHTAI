@@ -74,7 +74,7 @@ cd apps/qc-task-manager && node dist/server/entry.mjs     # serves on PORT (defa
 ```
 
 The standalone server respects `PORT` / `HOST` env vars (default `4321` /
-`0.0.0.0`). Set `QC_DB_PATH` to point at a different database file.
+`0.0.0.0`). Set `QC_DATABASE_PATH` to point at a different database file.
 
 ### Demo data (for showing the boss)
 
@@ -131,7 +131,8 @@ The server logs a warning when the default `admin123` is in use.
 - **Location**: `apps/qc-task-manager/db/qc_tasks.db` (created on first boot;
   WAL mode + `foreign_keys = ON`).
 - The file (`*.db`, `*.db-wal`, `*.db-shm`) is gitignored and never committed.
-- Override the path with `QC_DB_PATH=/absolute/path.db`.
+- Override the path with `QC_DATABASE_PATH=/absolute/path.db` (the legacy
+  `QC_DB_PATH` alias is still accepted).
 - Schema: `db/schema.sql` — **12 tables** (users, tasks, task_comments,
   task_attachments, task_activity_log, task_delete_requests, task_checklists,
   task_dependencies, notifications, sessions, login_attempts, saved_filters),
@@ -156,32 +157,80 @@ The server logs a warning when the default `admin123` is in use.
 
 ### Inspect it with SQLTools (VS Code)
 
-1. Install the extensions: **SQLTools** (`mtxr.sqltools`) and the SQLite driver
-   (**`mtxr.sqltools-driver-sqlite`**).
-2. Add this connection. You can paste the snippet into your workspace
-   `.vscode/settings.json` (relative to the repo root), or create the
-   connection from the SQLTools sidebar with these values:
+Walkthrough for browsing `qc_tasks.db` directly from VS Code:
 
-   - Connection name: **`QC Tasks DB`**
-   - Driver: **SQLite**
-   - Database file: **`./db/qc_tasks.db`** (relative to `apps/qc-task-manager`)
+1. **Install SQLTools** — open the Extensions panel (`⇧⌘X`) and search for
+   **SQLTools** (`mtxr.sqltools`), then click **Install**.
+2. **Install the SQLite driver** — search for **SQLTools SQLite**
+   (**`mtxr.sqltools-driver-sqlite`**) and install it too. SQLTools needs a
+   per-database driver; without it the connection below won't list.
+3. **Open the repository root in VS Code** — the connection is relative to
+   the workspace folder (`${workspaceFolder}/apps/qc-task-manager/db/...`),
+   so the monorepo root must be the open folder.
+4. **Start the app once** so the database file is generated:
+
+   ```bash
+   pnpm --filter @brightai/qc-task-manager db:init
+   # or: pnpm --filter @brightai/qc-task-manager dev  → then open /login and log in once
+   ```
+
+   This creates `apps/qc-task-manager/db/qc_tasks.db` (plus `-wal`/`-shm`
+   sidecar files while the server is running) and seeds the initial accounts.
+   Note the dev server only opens the database on its first real request —
+   an anonymous visit to `/login` alone isn't enough; log in once (any
+   seeded account) or use `db:init` above.
+5. **Connect using SQLTools** — a ready-made connection is generated locally
+   at `apps/qc-task-manager/.vscode/settings.json` (the `.vscode/` folder is
+   gitignored, so on a fresh clone paste the snippet below manually):
 
    ```jsonc
-   // .vscode/settings.json (monorepo root)
    {
      "sqltools.connections": [
        {
          "name": "QC Tasks DB",
          "driver": "SQLite",
          "database": "${workspaceFolder}/apps/qc-task-manager/db/qc_tasks.db",
-         "group": "QC"
+         "previewLimit": 100
        }
      ]
    }
    ```
 
-   Note: the SQLite driver field is named `database` (it stores the `.db` file
-   path); older driver versions may show it as `databaseFile`.
+   Open the **SQLTools** icon in the sidebar and click the **QC Tasks DB**
+   connection (or `Database: Connect` from the command palette). If you'd
+   rather not use the workspace file, create the connection manually with
+   those same values — connection name **`QC Tasks DB`**, driver **SQLite**,*
+   database file **`${workspaceFolder}/apps/qc-task-manager/db/qc_tasks.db`**.
+6. **Browse the tables** — click the connected database to expand the table
+   list (users, tasks, task_comments, …). Right-click a table and pick
+   **Show Table Data** to inspect rows, or use the **New Query** button to
+   open a SQL scratchpad.
+7. **Run sample queries** — paste one of these into a query tab and press
+   `⌘⏎` / `Ctrl+Enter`:
+
+   ```sql
+   -- Every user-facing table
+   SELECT name FROM sqlite_master
+   WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name;
+
+   -- Seeded accounts
+   SELECT username, full_name, role, department, is_active, created_at
+   FROM users ORDER BY role;
+
+   -- Task status breakdown
+   SELECT status, COUNT(*) AS n FROM tasks GROUP BY status ORDER BY n DESC;
+
+   -- Open tasks that are overdue
+   SELECT id, title, status, due_date, assigned_to
+   FROM tasks
+   WHERE status NOT IN ('completed', 'cancelled') AND due_date < date('now')
+   ORDER BY due_date;
+   ```
+
+   > Note: the SQLite driver field is named `database` (it stores the `.db`
+   > file path); older driver versions may show it as `databaseFile`.
+   > SQLTools reads the live database — run queries while the app is stopped
+   > if you want a clean view without the WAL sidecar.
 
 ## Auth & sessions
 
@@ -395,7 +444,8 @@ Overdue tasks show their due date in **red** (lists, details, dashboard).
 
 - Node **20+**
 - `ADMIN_DEFAULT_PASSWORD` — seed password (default `admin123`, warns if unset)
-- `QC_DB_PATH` — absolute path to an alternate SQLite database
+- `QC_DATABASE_PATH` — absolute path to an alternate SQLite database
+  (`QC_DB_PATH` accepted as a legacy alias)
 - `QC_BACKUP_DIR` — backup output directory for `db:backup` (default `<app>/db/backups`)
 - `SEED_DEMO=1` — seed demo team + 12 tasks on an empty DB
 

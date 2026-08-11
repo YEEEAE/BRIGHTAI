@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-10 10:30 +03:00
+last_updated: 2026-08-11 05:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.77
+version: 2.7.78
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,20 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-11 — QC-DB-LAYER-001: محاذاة طبقة SQLite مع مواصفة PROMPT-03 (QC_DATABASE_PATH + pragmas الأربعة + db/transaction/closeDatabase + تحقق الجداول/الفهارس + SQLTools + README) — 10/10 + 19/19 + E2E حي ✅
+
+- **Files**: `apps/qc-task-manager/src/lib/db.ts` (المتغير صار `QC_DATABASE_PATH` أولًا + `QC_DB_PATH` alias قديم + fallback `<app>/db/qc_tasks.db`؛ pragmas: `journal_mode = WAL` + `foreign_keys = ON` + `busy_timeout = 5000` + `synchronous = NORMAL`؛ تصديرات جديدة: `db` = Proxy كسول، `transaction` = دالة تشغّل fn داخل ترانزاكشن (commit/rollback تلقائي)، `closeDatabase` = إغلاق + reset للاختبارات؛ تحقق إقلاع `validateSchema` — 12 جدول + 26 فهرس، يرمي Error بالقائمة الناقصة)، `apps/qc-task-manager/src/env.d.ts` (+ `QC_DATABASE_PATH`)، `apps/qc-task-manager/scripts/{init-db,backup-db}.mjs` (نفس env fallback للتوافق)، `apps/qc-task-manager/.vscode/settings.json` (جديد — اتصال SQLTools جاهز "QC Tasks DB"، **gitignored** بسبب قاعدة `.vscode/` العامة)، `apps/qc-task-manager/README.md` (قسم SQLTools صار walkthrough مرقّم كامل: تثبيت SQLTools + تثبيت الـ driver + فتح الروت + تشغيل التطبيق مرة + اتصال + تصفح + استعلامات جاهزة + توثيق `QC_DATABASE_PATH`)
+- **What**: المستخدم طلب تنفيذ مواصفة طبقة الـ DB حرفيًا (PROMPT-03 في `audit/qc/prompt2.md`) على `src/lib/db.ts` الموجودة: (1) المسار من `process.env.QC_DATABASE_PATH` مع fallback، (2) فتح بـ better-sqlite3، (3) الـ pragmas الأربعة، (4) schema.sql تلقائيًا عند الإقلاع، (5) تهيئة idempotent، (6) تصدير db + query + transaction + closeDatabase، (7+8) prepared statements فقط بلا concatenation لمُدخلات المستخدم، (9) تحقق إقلاع بوجود كل الجداول والفهارس، (10) seed runner يشتغل فقط لما `users` فاضي. سألت المستخدم عن بند الـ seed (النص يقول "حساب الأدمن فقط") → **اختار إبقاء الوضع الحالي** (4 حسابات admin/manager/supervisor/employee) لأن SEED_DEMO والـ README والاختبارات تعتمد عليها.
+- **Why**: الملف كان ينفذ أغلب المواصفة بس عنده انحرافات جوهرية: متغير قديم (QC_DB_PATH بدل QC_DATABASE_PATH)، نقص busy_timeout + synchronous، نقص تصديرات الاختبارات (transaction/closeDatabase/db)، ولا تحقق إقلاع. المستخدم يبغى مطابقة المواصفة حرفيًا بدون كسر الميزات الموثقة.
+- **Verification**: `pnpm typecheck` → 0 errors ✅؛ `pnpm test` → 73/73 ✅؛ `pnpm build` → Server built ✅. **Part A (الـ chunk المبني — 10/10)**: `QC_DATABASE_PATH` يُحترم (فتح ملف temp) + `journal_mode=wal` + `busy_timeout=5000` + `synchronous=NORMAL(1)` + `foreign_keys=1` + seed 4 مستخدمين على DB فاضية + 12 جدول + 26 فهرس (التحقق ما رما — لو ناقص شي كان رما) + cleanupExpiredSessions + singleton. **Part B (المصدر عبر `createServer().ssrLoadModule('/src/lib/db.ts')` — 19/19)**: تصدير DB_PATH + query().run/one/all + transaction (يُرجع القيمة ويـ commit + rollback عند throw) + `db` Proxy ينفذ prepared statements + toBool + closeDatabase ثم إعادة فتح idempotent بدون re-seed + double-close آمن. **E2E حي (خادم standalone على DB مؤقتة)**: GET /login 200 → POST login بـ Origin هيدر 302 → /admin/users بكوكي الجلسة 200 + /manager 200 → DB الناتجة: users=4 + sessions=1 + صف admin صحيح + journal_mode=wal.
+- **Note**: (1) **ملاحظة للـ future agents — خادم Astro standalone ما يلمس الـ DB عند GET /login المجهول** (`getSession` يرجّع null مبكرًا بلا كوكي) — لاختبار الـ DB الحي لازم POST login (مع `Origin` هيدر لتفادي CSRF 403 في Astro 6) أو طلب بجلسة حقيقية. (2) في **الـ bundle المبني** تصدير `db` يتحول لكائن namespace (Rollup يدمج الوحدات ويسقط الـ Proxy — لا صفحة تستورده؛ التطبيق يستخدم `getDb`) — `db`/query/transaction/closeDatabase يشتغلون على مستوى المصدر (dev والاختبارات عبر Vite) وهذا المعتمد. (3) `.vscode/settings.json` الجديد gitignored (قاعدة `.vscode/`) — موجود محليًا؛ لو المستخدم يبغى يشاركه يضيف negation في الـ gitignore. (4) **qc_tasks.db مؤكد غير متتبع**: git ls-files يعرض فقط schema.sql/seed.sql/.gitkeep في db/، وcheck-ignore يطابق `db/*.db` و `-wal` و `-shm`. (5) SQLTools language server شغال عند المستخدم (VS Code) وماسك `db/qc_tasks.db` الحقيقي — لا تقتله ولا تعدّل الـ db الحقيقي في الاختبارات.
+- **Report**: README محدّث (SQLTools walkthrough + QC_DATABASE_PATH + ملاحظة legacy alias)
+- **Commit**: uncommitted — المستخدم يلتزم (القاعدة الثانية)
+- **Status**: verified locally (typecheck + test 73/73 + build + Part A 10/10 + Part B 19/19 + E2E حي)
+- **Brain updates**: هذا الـ entry. للـ future agents: اسم المتغير الرسمي صار `QC_DATABASE_PATH` (`QC_DB_PATH` alias ما زال مقبولًا) — حدّث أي سكربت جديد على الاسم الرسمي. **إصلاحات مراجعة الكود**: (1) `ensureDir` صار ينشئ مجلد المسار المخصص `dirname(DB_PATH)` مو فقط `<app>/db` — يدعم مسارات `QC_DATABASE_PATH` المتداخلة؛ (2) `scripts/{init-db,backup-db}.mjs` صاروا يستخدمون `??` مثل db.ts؛ (3) README صرّح أن `dev` وحده لا يولّد الـ DB إلا عند أول طلب يلمسها (سجّل دخول مرة) + وضّح أن `.vscode/settings.json` gitignored. جرّبت إمرار `transaction` عبر proxy `db` لإبقائه في الـ bundle — **لم يغيّر سلوك Rollup** فرجّعته لـ getDb ووثّقت الـ quirk في تعليق `db`.
 
 ---
 

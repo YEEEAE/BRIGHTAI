@@ -2,6 +2,9 @@
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
+  /** Spec env var for the SQLite database path (see src/lib/db.ts). */
+  readonly QC_DATABASE_PATH?: string;
+  /** Legacy alias for QC_DATABASE_PATH, kept for backward compatibility. */
   readonly QC_DB_PATH?: string;
 }
 
