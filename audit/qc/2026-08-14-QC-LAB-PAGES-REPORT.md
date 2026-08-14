@@ -1,276 +1,180 @@
-# تقرير تفصيلي — صفحات مختبر QC ومحتواها
+تمام. هذا تقرير مفصّل ومنسّق للصفحات، بنفس أسلوب `2026-08-14-QC-LAB-PAGES-REPORT.md` بس بالإنجليزي عشان يمشي مع البرومبتز والكود:
 
-> **التاريخ:** 2026-08-14
-> **الحالة:** مواصفة تصميم وتنفيذ مستهدفة — ليست Features منفذة في الكود حاليًا.
-> **التطبيق المستهدف:** `apps/qc-task-manager/`
-> **البرومبت التنفيذي المرتبط:** `audit/qc/2026-08-14-QC-LAB-IMPLEMENTATION-PROMPTS.md`
+````markdown
+# QC Laboratory — Detailed Pages & Implementation Report
 
-## 1. الملخص التنفيذي
+> **Date:** 2026-08-14
+> **Status:** Targeted design & implementation spec — NOT yet built in code.
+> **Target app:** `apps/qc-task-manager/` (Astro SSR · SQLite · RBAC · CSRF · Zod)
+> **Companion reporting app:** `apps/dashboard/` (Next.js)
+> **Linked prompt pack:** `audit/qc/2026-08-14-QC-LAB-IMPLEMENTATION-PROMPTS.md`
 
-هذا التقرير يعرّف مساحة جديدة داخل QC Task Manager باسم **QC Laboratory**. الهدف هو تحويل عمليات مختبر الشركة من نماذج منفصلة وسجلات يدوية إلى صفحات مترابطة تحفظ البيانات في SQLite، وتعرضها للموظفين والمراجعين والمديرين حسب الصلاحية.
+---
 
-المساحة الجديدة تغطي أربع وظائف رئيسية:
+## 1. Executive Summary
 
-1. تسجيل اختبارات المنتجات من الموظفين، مع دعم `AIR` و`VACUUM`.
-2. مراجعة واعتماد نتائج الاختبارات مع سجل تغييرات غير قابل للإخفاء.
-3. إدارة أجهزة المختبر وحالتها ومعايرتها.
-4. إنشاء وتحرير واعتماد وثائق `SOP` و`WI` من داخل النظام مع إصدارات مستقلة.
+This report defines a new space inside QC Task Manager called **QC Laboratory**. The goal is to move the company lab from scattered forms and manual logs into a set of connected pages that persist to SQLite and expose data to employees, reviewers, and managers by permission.
 
-كل الصفحات يجب أن تستخدم بنية التطبيق الحالية: Astro SSR، SQLite migrations، RBAC، CSRF، Zod، Activity Log، Notifications، Dashboard، Exports، واختبارات القبول الموجودة.
+The new space covers four core functions:
 
-## 2. حدود النطاق
+1. **Product test capture** by employees, supporting both `AIR` and `VACUUM`.
+2. **Review & approval** of test results with a tamper-proof change log.
+3. **Lab equipment** management: status, calibration, and history.
+4. **SOP/WI documents** created, edited, and approved inside the system with independent versioning.
 
-### داخل النطاق
+Every page must reuse the existing app foundation: Astro SSR, SQLite migrations, RBAC, CSRF, Zod, activity log, notifications, dashboard, exports, and the existing acceptance tests.
 
-- مسار جديد يبدأ من `/lab`.
-- نماذج Air/Vacuum قابلة للحفظ كمسودة.
-- إدخال خمس عينات مبدئيًا مع إمكانية تمديد العدد بطريقة مضبوطة.
-- مراجعة ورفض واعتماد النتائج.
-- سجل أجهزة المختبر مع تعديل البيانات.
-- محرر داخلي لوثائق SOP/WI.
-- إصدار جديد عند تعديل وثيقة معتمدة.
-- ربط الاختبارات بالأجهزة والوثائق.
-- مؤشرات مختبرية داخل الـ Dashboard.
-- بحث، فلاتر، CSV، وصفحات طباعة.
-- إشعارات وسجل تدقيق.
+---
 
-### خارج النطاق حاليًا
+## 2. Scope Boundaries
 
-- رفع ملفات أو تخزين PDF كبديل للمحرر الداخلي.
-- اتخاذ قرار PASS/FAIL بواسطة AI.
-- اعتماد تلقائي للوثائق أو النتائج.
-- اختراع معادلات علمية غير موجودة في المواصفة.
-- تغيير نظام المهام الحالي أو إعادة بناء الـ Dashboard بالكامل.
-- إضافة أدوار جديدة غير الأدوار الحالية.
+### In scope
+- A new route tree starting at `/lab`.
+- Air/Vacuum forms saveable as draft.
+- Five initial sample rows, extendable in a controlled way.
+- Review, reject, and approve of results.
+- Editable equipment register.
+- Internal SOP/WI editor.
+- New version on editing an approved document.
+- Linking tests ↔ equipment ↔ documents.
+- Lab metrics inside the Dashboard.
+- Search, filters, CSV, print views.
+- Notifications and audit trail.
 
-## 3. خريطة الصفحات
+### Out of scope (for now)
+- File upload / PDF storage as a replacement for the internal editor.
+- AI deciding PASS/FAIL.
+- Auto-approval of documents or results.
+- Inventing scientific formulas not present in the spec.
+- Changing the existing task system or rebuilding the Dashboard.
+- Adding new roles beyond the current four.
 
-| المسار | الصفحة | المستخدمون | الوظيفة الأساسية |
+---
+
+## 3. Page Map
+
+| Route | Page | Users | Primary function |
 |---|---|---|---|
-| `/lab` | مختبر QC الرئيسي | كل الأدوار المصرح لها | ملخص المؤشرات والروابط والإجراءات |
-| `/lab/tests` | سجل اختبارات المختبر | كل الأدوار حسب النطاق | البحث والفلاتر وعرض حالة الاختبارات |
-| `/lab/tests/new?type=air` | اختبار Air جديد | الموظف والمصرح لهم | إنشاء مسودة اختبار Air |
-| `/lab/tests/new?type=vacuum` | اختبار Vacuum جديد | الموظف والمصرح لهم | إنشاء مسودة اختبار Vacuum |
-| `/lab/tests/[id]` | تفاصيل الاختبار | حسب الصلاحية | العرض والتحرير والمراجعة والاعتماد |
-| `/lab/equipment` | أجهزة المختبر | كل الأدوار حسب الصلاحية | عرض وتعديل سجل الأجهزة |
-| `/lab/equipment/new` | جهاز جديد | المدير/المشرف/الإداري | إضافة جهاز للمختبر |
-| `/lab/equipment/[id]/edit` | تعديل جهاز | حسب الصلاحية | تعديل بيانات جهاز وتسجيل التغيير |
-| `/lab/documents` | مكتبة SOP/WI | كل الأدوار حسب الصلاحية | البحث وعرض الإصدارات والحالات |
-| `/lab/documents/new` | محرر وثيقة جديد | الموظف إذا سمحت الصلاحية | إنشاء SOP أو WI كمسودة |
-| `/lab/documents/[id]` | عرض وثيقة | حسب الصلاحية | عرض الإصدار الحالي والتاريخ والروابط |
-| `/lab/documents/[id]/edit` | تحرير وثيقة | مالك المسودة/المصرح لهم | تعديل مسودة أو إنشاء إصدار جديد |
-| `/lab/documents/[id]/versions` | تاريخ الإصدارات | المشرف/المدير/الإداري | مقارنة الإصدارات وعرض الاعتمادات |
-| `/dashboard` | قسم Laboratory | المدير/المشرف/الإداري حسب السياسة | مؤشرات ومخاطر المختبر |
+| `/lab` | Laboratory home | All permitted roles | KPI summary, links, actions |
+| `/lab/tests` | Test records list | All roles (scoped) | Search, filter, view test status |
+| `/lab/tests/new?type=air` | New Air test | Employee + permitted | Create Air test draft |
+| `/lab/tests/new?type=vacuum` | New Vacuum test | Employee + permitted | Create Vacuum test draft |
+| `/lab/tests/[id]` | Test details | By permission | View, edit, review, approve |
+| `/lab/equipment` | Lab equipment | All (scoped) | View & edit equipment register |
+| `/lab/equipment/new` | New equipment | Manager/Supervisor/Admin | Add equipment |
+| `/lab/equipment/[id]/edit` | Edit equipment | By permission | Edit + log change |
+| `/lab/documents` | SOP/WI library | All (scoped) | Search, versions, statuses |
+| `/lab/documents/new` | New document editor | Supervisor+ (Employee per flag) | Create SOP/WI draft |
+| `/lab/documents/[id]` | Document view | By permission | Current version, history, links |
+| `/lab/documents/[id]/edit` | Edit document | Draft owner / permitted | Edit draft or new version |
+| `/lab/documents/[id]/versions` | Version history | Supervisor/Manager/Admin | Compare versions, approvals |
+| `/dashboard` | Laboratory section | Admin/Manager/Supervisor | Lab KPIs and risks |
 
-## 4. صفحة `/lab` — الصفحة الرئيسية للمختبر
+---
 
-### الهدف
+## 4. `/lab` — Laboratory Home
 
-تكون الصفحة نقطة الدخول التشغيلية للمختبر، وتعرض ما يحتاجه المستخدم الآن بدون تحميل كل التفاصيل في الصفحة الأولى.
+**Goal:** operational entry point; shows what the user needs now without loading everything up front.
 
-### المكونات
+**Header:** title `QC Laboratory`, subtitle `Product testing, equipment, and controlled laboratory documents`, plus `New Air Test`, `New Vacuum Test`, and `Create SOP/WI` (if permitted).
 
-#### شريط العنوان
+**KPI cards:** Draft tests · pending review · Approved (in period) · PASS/FAIL/HOLD · documents needing review · uncalibrated / under-maintenance equipment.
 
-- اسم الصفحة: `QC Laboratory`.
-- وصف مختصر: `Product testing, equipment, and controlled laboratory documents`.
-- زر `New Air Test`.
-- زر `New Vacuum Test`.
-- زر `Create SOP/WI` إذا كانت الصلاحية تسمح.
+**Compact tables:**
+1. **Recent Test Records** — Test ID, Type, Product, Result, Status, Tested By, Updated.
+2. **Pending Reviews** — Type, owner, submitted date, age in days, open button.
+3. **Equipment Alerts** — Equipment, Code, Status, Calibration, Updated.
+4. **Document Reviews Due** — Document, Type, Version, Owner, review date.
 
-#### بطاقات المؤشرات
+**States:** normal · empty (with clear create buttons) · safe error (never expose DB path) · no-JS core content.
 
-- اختبارات `Draft`.
-- اختبارات بانتظار المراجعة.
-- اختبارات `Approved` خلال الفترة المحددة.
-- نتائج `PASS` و`FAIL` و`HOLD`.
-- وثائق تحتاج مراجعة.
-- أجهزة غير معايرة أو تحت الصيانة.
+---
 
-#### جداول مختصرة
+## 5. `/lab/tests` — Test Records List
 
-1. **Recent Test Records**
-   - رقم الاختبار، النوع، المنتج، النتيجة، الحالة، المختبر، آخر تحديث.
-2. **Pending Reviews**
-   - النوع، صاحب السجل، تاريخ الإرسال، العمر بالأيام، زر فتح.
-3. **Equipment Alerts**
-   - الجهاز، الكود، الحالة، المعايرة، آخر تحديث.
-4. **Document Reviews Due**
-   - الوثيقة، النوع، الإصدار، المالك، تاريخ المراجعة.
+**Goal:** show every test record the user is allowed to see, with server-side search and filters.
 
-### الحالات
+**Columns:** Test ID · Test Type (`AIR`/`VACUUM`) · Product Description · Lot Number · Sampling Area · Machine Name · Tested By · Final Result · Workflow Status · Created/Updated · `View`.
 
-- حالة طبيعية مع بيانات.
-- حالة فارغة مع أزرار إنشاء واضحة.
-- حالة خطأ آمنة بدون عرض مسار قاعدة البيانات.
-- حالة تحميل لا تعتمد على JavaScript لعرض المحتوى الأساسي.
+**Filters:** test type · status (Draft/Submitted/Under Review/Approved/Rejected/Void) · result (PASS/FAIL/HOLD) · tester · equipment · product · lot number · date range.
 
-## 5. صفحة `/lab/tests` — سجل الاختبارات
+**Behavior:** server-side search + pagination · sorting limited to known columns · no SQL from query string · results respect section scope & permission · CSV export only for permitted users · approved records open read-only.
 
-### الهدف
+---
 
-عرض كل سجلات الاختبارات التي يحق للمستخدم رؤيتها، مع أدوات بحث وفلاتر من الخادم.
+## 6. Air/Vacuum Entry Pages
 
-### الأعمدة الأساسية
+Air and Vacuum use the **same form component and same save rules**, only `test_type` differs. Do NOT copy two separate forms — that causes future field/validation drift.
 
-- Test ID.
-- Test Type: `AIR` أو `VACUUM`.
-- Product Description.
-- Lot Number.
-- Sampling Area.
-- Machine Name.
-- Tested By.
-- Final Result.
-- Workflow Status.
-- Created/Updated At.
-- زر `View`.
-
-### الفلاتر
-
-- نوع الاختبار.
-- الحالة: Draft، Submitted، Under Review، Approved، Rejected، Void.
-- النتيجة: PASS، FAIL، HOLD/Further Evaluation.
-- الموظف المختبر.
-- الجهاز.
-- المنتج.
-- Lot Number.
-- فترة زمنية.
-
-### سلوك الصفحة
-
-- البحث من الخادم مع pagination.
-- sorting محدود بأعمدة معروفة.
-- لا يسمح بتكوين SQL من query string.
-- نتائج البحث تحترم نطاق القسم والصلاحية.
-- زر تصدير CSV يظهر فقط لمن يملك صلاحية التصدير.
-- السجل المعتمد يفتح في وضع read-only.
-
-## 6. صفحات إنشاء اختبار Air/Vacuum
-
-تستخدم صفحتا Air وVacuum نفس مكوّن النموذج ونفس قواعد الحفظ، مع `test_type` مختلف. لا يصح نسخ نموذجين منفصلين لأن ذلك يسبب اختلافات مستقبلية في الحقول وقواعد التحقق.
-
-### القسم 1 — Sample Identification
-
-الحقول التي يدخلها الموظف:
-
-| الحقل | النوع | مطلوب؟ | الملاحظات |
+### Section 1 — Sample Identification
+| Field | Type | Required | Notes |
 |---|---|---:|---|
-| Product Description | نص | نعم | وصف المنتج |
-| Connector Type | اختيار متعدد مضبوط | نعم | ثلاثة خيارات محددة |
-| No. of Samples Tested | رقم موجب | نعم | يبدأ افتراضيًا بخمس عينات |
-| Lot Number | نص | نعم | رقم التشغيلة |
-| Sampling Area | نص | نعم | منطقة أخذ العينة |
+| Product Description | text | yes | product description |
+| Connector Type | controlled single choice | yes | three fixed options |
+| No. of Samples Tested | positive int | yes | defaults to 5 |
+| Lot Number | text | yes | lot number |
+| Sampling Area | text | yes | sampling area |
 
-خيارات Connector Type:
+Connector Type options: Non-locking (Lipid connector) · Connector with floating or rotatable collar · Locking connector with fixed threads.
 
-- Non-locking (Lipid connector).
-- Connector with floating or rotatable collar.
-- Locking connector with fixed threads.
-
-### القسم 2 — Equipment Used
-
-| الحقل | النوع | مطلوب؟ | الملاحظات |
+### Section 2 — Equipment Used
+| Field | Type | Required | Notes |
 |---|---|---:|---|
-| Machine Name | اختيار من أجهزة المختبر أو نص مضبوط | نعم | يفضّل الربط بـ `lab_equipment` |
-| Medium Used | نص | نعم | الوسط المستخدم في الاختبار |
+| Machine Name | select from `lab_equipment` or controlled text | yes | prefer linking to `lab_equipment` |
+| Medium Used | text | yes | medium used in test |
 
-### القسم 3 — Connector Assembly
-
-| الحقل | النوع | القيمة المرجعية |
+### Section 3 — Connector Assembly
+| Field | Type | Reference |
 |---|---|---|
-| Actual Pressure | رقم عشري | `-2.5` إلى `-4 in./Hg` كمرجع عرضي |
-| Torque (in.lb) | رقم عشري | يدخلها الموظف |
-| Time (Sec.) | رقم موجب | يدخلها الموظف |
-| Angle | رقم/نص مضبوط | يدخلها الموظف |
+| Actual Pressure | decimal | `-2.5` to `-4 in./Hg` as a display hint |
+| Torque (in.lb) | decimal | entered by employee |
+| Time (Sec.) | positive number | entered by employee |
+| Angle | number / controlled text | entered by employee |
 
-القيمة المرجعية لا تعني أن النظام يرفض كل قيمة خارجها إلا إذا تم اعتماد قاعدة علمية صريحة. يجب عدم اختراع validation تنظيمي من تلقاء النظام.
+The reference value does not auto-reject out-of-range input unless an explicit scientific rule is approved. Do not invent regulatory validation.
 
-### القسم 4 — Differential Conversion
+### Section 4 — Differential Conversion
+- `Temperature (Measured)` — decimal. No undocumented conversion computed by the system.
 
-- `Temperature (Measured)` — رقم عشري أو نص رقمي حسب وحدة القياس المعتمدة.
-- يجب عرض الوحدة بوضوح إذا تم اعتمادها لاحقًا.
-- لا يحسب النظام تحويلًا غير موثق.
+### Section 5 — Test Parameters (reference, not free input unless configured)
+- `Standard Parameter: Subatmospheric Pressure -40 ~ -80 kPa`
+- `Acceptance Criteria: ≤ 800 Pa`
+- `Holding Time: 18 ~ 56 Sec.`
 
-### القسم 5 — Test Parameters
+If later made editable, store who changed them and when — they affect result interpretation.
 
-هذه القيم تظهر كمرجع في النموذج ولا تُعامل كمدخلات حرة إلا إذا احتاجت الشركة ذلك:
-
-- `Standard Parameter: Subatmospheric Pressure -40 ~ -80 kPa`.
-- `Acceptance Criteria: ≤ 800 Pa`.
-- `Holding Time: 18 ~ 56 Sec.`.
-
-إذا تم تحويلها إلى بيانات قابلة للتعديل، فيجب حفظ من عدلها وتاريخ التعديل، لأنها تؤثر على تفسير النتيجة.
-
-### القسم 6 — Test Results
-
-يحتوي الجدول على خمس صفوف أولية:
-
-| العمود | النوع | ملاحظات |
+### Section 6 — Test Results (5 initial rows)
+| Column | Type | Notes |
 |---|---|---|
-| Sample No. | رقم | 1 إلى 5 افتراضيًا |
-| Part Name | نص | اسم الجزء |
-| Set Pressure (in./Hg) | رقم عشري | ضغط الضبط |
-| Actual Pressure | رقم عشري | الضغط الفعلي |
-| Volume (Sec.) | رقم عشري | حسب تعريف النموذج الحالي |
-| Pressure Difference | رقم عشري | إدخال أو حساب فقط إذا اعتمدت المعادلة |
-| Holding Time (Sec.) | رقم عشري | زمن التثبيت |
-| Leakage Rate | رقم عشري/نص منضبط | معدل التسرب |
-| Result | PASS/FAIL/HOLD | لا يحسمه AI |
+| Sample No. | int | 1–5 default |
+| Part Name | text | part name |
+| Set Pressure (in./Hg) | decimal | set pressure |
+| Actual Pressure | decimal | actual pressure |
+| Volume (Sec.) | decimal | per current form definition |
+| Pressure Difference | decimal | input or compute only if formula approved |
+| Holding Time (Sec.) | decimal | holding time |
+| Leakage Rate | decimal / controlled text | leakage rate |
+| Result | PASS/FAIL/HOLD | not decided by AI |
 
-إضافات القسم:
+Extras: `Any Remarks` · `Add Sample` (up to policy max) · `Save Draft` · `Submit for Review`. `Approve` never shown to the record owner.
 
-- `Any Remarks`.
-- زر `Add Sample` بحد أقصى معتمد من سياسة المختبر.
-- زر `Save Draft`.
-- زر `Submit for Review`.
-- لا يظهر `Approve` للموظف صاحب السجل.
+### Section 7 — Authorization
+- `Tested By` — auto-filled with current user (server-side), editable only under explicit admin policy.
+- `Reviewed By` — filled on review. `Approved By: Q.C.M.` — filled on final approval.
+- System names/dates never rely on browser hidden inputs.
 
-### القسم 7 — Authorization
+### Section 8 — Final Result
+PASS · FAIL · HOLD / FURTHER EVALUATION. Never auto-set by AI; issued by employee/reviewer per role and audit log.
 
-- `Tested By` — يملأ تلقائيًا بالمستخدم الحالي، ويمكن تعديله فقط وفق سياسة إدارية واضحة.
-- `Reviewed By` — يملأ عند تنفيذ المراجعة.
-- `Approved By: Q.C.M.` — يملأ عند الاعتماد النهائي.
-- الأسماء والتواريخ النظامية لا تعتمد على hidden inputs من المتصفح.
+---
 
-### القسم 8 — Final Result
+## 7. `/lab/tests/[id]` — Test Details
 
-الاختيارات:
+**Draft mode:** all fields shown; owner (or permitted) edits; save; submit for review; recent edits log.
+**Review mode:** entered vs reference values side by side; samples table; `Request Changes` (mandatory reason); `Approve` for authorized; self-approval blocked.
+**Approved mode:** all fields read-only; record/version id; tester/reviewer/approver identity; submit/review/approve dates; Activity Timeline; Print View + CSV (if permitted).
 
-- PASS.
-- FAIL.
-- HOLD / FURTHER EVALUATION.
-
-النتيجة النهائية لا تتغير تلقائيًا بناءً على تخمين AI. يجب أن تكون صادرة من الموظف/المراجع وفق الصلاحية وسجل التدقيق.
-
-## 7. صفحة تفاصيل الاختبار `/lab/tests/[id]`
-
-### وضع المسودة
-
-- عرض جميع الحقول.
-- تعديل صاحب المسودة أو من تسمح له الصلاحية.
-- حفظ التغييرات.
-- إرسال للمراجعة.
-- سجل آخر التعديلات.
-
-### وضع المراجعة
-
-- عرض القيم المدخلة والمرجعية بجانب بعضها.
-- عرض عينات الاختبار في جدول واضح.
-- زر `Request Changes` مع سبب إلزامي.
-- زر `Approve` للمصرح لهم.
-- منع اعتماد صاحب الاختبار لنفسه.
-
-### وضع الاعتماد
-
-- كل الحقول read-only.
-- رقم الإصدار/السجل.
-- هوية المختبر والمراجع والمعتمد.
-- تواريخ الإرسال والمراجعة والاعتماد.
-- عرض Activity Timeline.
-- Print View وCSV إذا الصلاحية تسمح.
-
-### دورة الحالة
-
+**State cycle:**
 ```text
 DRAFT
   -> SUBMITTED
@@ -279,335 +183,181 @@ DRAFT
        -> REJECTED -> DRAFT
 APPROVED -> VOID (authorized reason required)
 ```
+The system never allows a direct browser-driven status change to a disallowed value.
 
-لا يسمح النظام بتغيير الحالة مباشرة من المتصفح إلى قيمة غير مسموحة.
+---
 
-## 8. صفحة `/lab/equipment` — أجهزة المختبر
+## 8. `/lab/equipment` — Lab Equipment
 
-### الأعمدة
+**Columns:** Equipment · Code · Location (`LABORATORY`) · Status · Calibration (نعم/لا) · Serial Number · Notes · Updated By/At.
 
-| العمود | وصف |
-|---|---|
-| Equipment | اسم الجهاز |
-| Code | كود الجهاز |
-| Location | الموقع، والبيانات الحالية تستخدم `LABORATORY` |
-| Status | مستخدم، NEW، تحت الصيانة، غير مستخدم، DONE، أو قيمة موحدة معتمدة |
-| Calibration | نعم/لا |
-| Serial Number | الرقم التسلسلي |
-| Notes | الملاحظات التشغيلية |
-| Updated By/At | بيانات النظام |
+**Seed data:** the 24 equipment rows from the user request are inserted via an **idempotent migration/seed**, not a hardcoded array in the page. Preserve original text; do NOT auto-normalize status meanings before an official status dictionary is approved.
 
-### البيانات الأولية
+**Functions:** view · search & filter · add · edit · **archive instead of delete** · link to test/document · change history.
 
-يتم إدخال صفوف الأجهزة الـ24 الواردة في طلب المستخدم بواسطة migration/seed idempotent، وليس بمصفوفة ثابتة داخل الصفحة. يجب الحفاظ على النصوص الأصلية، مع عدم تعديل معاني الحالات تلقائيًا قبل اعتماد قاموس حالات رسمي.
+**Key rules:**
+- Archiving does NOT delete links from old tests.
+- Employees can't edit equipment unless policy grants it.
+- Changing `Calibration` or `Status` writes to Activity Log.
+- Serial number accepts text like `-` and `DOA-P104-AA`; never assume numeric only.
 
-### الوظائف
+---
 
-- عرض الأجهزة.
-- بحث وفلاتر.
-- إضافة جهاز.
-- تعديل جهاز.
-- أرشفة جهاز بدل الحذف.
-- ربط الجهاز باختبار أو وثيقة.
-- إظهار سجل التغييرات.
+## 9. SOP/WI Pages
 
-### قواعد مهمة
+### `/lab/documents` — Library
+Shows: Document Code · Title · Type (SOP/WI) · Current Version · Status · Owner · Related Product · Related Equipment · Effective Date · Review Due Date · Updated.
+Filters: type · status · owner · equipment · product · review-due-soon.
 
-- الأرشفة لا تحذف روابط الاختبارات القديمة.
-- لا يسمح للموظف بتعديل الجهاز إلا إذا أعطته سياسة الصلاحيات ذلك.
-- تغيير `Calibration` أو `Status` يسجل في Activity Log.
-- الرقم التسلسلي يقبل القيم النصية مثل `-` و`DOA-P104-AA` ولا يفترض أنه رقم فقط.
+### `/lab/documents/new` — Internal Editor
+Metadata: Title · Document Code · Document Type · Description · Product Reference · Related Equipment · Owner · Review Due Date · Effective Date · Change Summary.
+Editor: safe Markdown textarea (or existing project editor) · sanitized HTML preview · headings/lists/steps/tables/callouts/links · Save Draft · Submit for Review · never execute user HTML/JS.
 
-## 9. صفحات SOP/WI
+### `/lab/documents/[id]` — View
+Current approved version · status · owner/reviewer/approver · effective + next review dates · linked equipment/tests · View Versions · Print · Create Revision (if permitted).
 
-### `/lab/documents` — مكتبة الوثائق
+### `/lab/documents/[id]/edit` — Edit & Versions
+Edit the draft directly. An approved document is not edited in place — editing it creates a NEW version. Previous version stays `APPROVED` or `SUPERSEDED` per the approval cycle. `Change Summary` required per version.
 
-تعرض:
-
-- Document Code.
-- Title.
-- Type: SOP أو WI.
-- Current Version.
-- Status.
-- Owner.
-- Related Product.
-- Related Equipment.
-- Effective Date.
-- Review Due Date.
-- آخر تحديث.
-
-الفلاتر:
-
-- النوع.
-- الحالة.
-- المالك.
-- الجهاز.
-- المنتج.
-- الوثائق التي اقترب موعد مراجعتها.
-
-### `/lab/documents/new` — محرر وثيقة داخلي
-
-البيانات الوصفية:
-
-- Title.
-- Document Code.
-- Document Type.
-- Description.
-- Product Reference.
-- Related Equipment.
-- Owner.
-- Review Due Date.
-- Effective Date.
-- Change Summary.
-
-المحرر:
-
-- Textarea Markdown آمن أو محرر موجود مسبقًا في المشروع.
-- معاينة HTML معقّمة.
-- عناوين وقوائم وخطوات وجداول وتحذيرات وروابط.
-- زر حفظ مسودة.
-- زر إرسال للمراجعة.
-- عدم تشغيل أي HTML أو JavaScript يكتبه المستخدم.
-
-### `/lab/documents/[id]` — عرض الوثيقة
-
-- عرض الإصدار المعتمد الحالي.
-- حالة الوثيقة.
-- صاحب الوثيقة والمراجع والمعتمد.
-- تاريخ السريان والمراجعة القادمة.
-- الأجهزة والاختبارات المرتبطة.
-- زر عرض الإصدارات.
-- زر طباعة.
-- زر إنشاء Revision إذا كانت الصلاحية تسمح.
-
-### `/lab/documents/[id]/edit` — التعديل والإصدارات
-
-- تعديل المسودة مباشرة.
-- الوثيقة المعتمدة لا تعدل مكانها.
-- عند تعديل وثيقة معتمدة، ينشئ النظام إصدارًا جديدًا.
-- الإصدار السابق يبقى `APPROVED` أو `SUPERSEDED` حسب دورة الاعتماد.
-- يجب إدخال `Change Summary` لكل إصدار.
-
-### حالات الوثيقة
-
+**Document states:**
 ```text
 DRAFT -> IN_REVIEW -> APPROVED -> SUPERSEDED
                   \-> DRAFT (changes requested)
 APPROVED -> ARCHIVED (authorized action)
 ```
 
-## 10. الصلاحيات حسب الدور
+---
 
-| العملية | Employee | Supervisor | Manager | Admin |
+## 10. Permissions by Role
+
+| Operation | Employee | Supervisor | Manager | Admin |
 |---|---:|---:|---:|---:|
-| مشاهدة المختبر | حسب القسم | نعم | نعم | نعم |
-| إنشاء مسودة اختبار | نعم | نعم | نعم | نعم |
-| تعديل مسودته | نعم | نعم | نعم | نعم |
-| مراجعة اختبار | لا | نعم | نعم | نعم |
-| اعتماد اختبار | لا | حسب السياسة | نعم | نعم |
-| اعتماد سجله الشخصي | لا | لا | لا | لا |
-| مشاهدة الأجهزة | نعم | نعم | نعم | نعم |
-| تعديل الأجهزة | حسب السياسة | نعم | نعم | نعم |
-| أرشفة جهاز | لا | حسب السياسة | نعم | نعم |
-| إنشاء SOP/WI draft | حسب السياسة | نعم | نعم | نعم |
-| مراجعة SOP/WI | لا | نعم | نعم | نعم |
-| اعتماد SOP/WI | لا | حسب السياسة | نعم | نعم |
-| تصدير تقارير المختبر | حسب السياسة | نعم | نعم | نعم |
+| View lab | Scoped | Yes | Yes | Yes |
+| Create test draft | Yes | Yes | Yes | Yes |
+| Edit own draft | Yes | Yes | Yes | Yes |
+| Review test | No | Yes | Yes | Yes |
+| Approve test | No | Per policy | Yes | Yes |
+| Approve own record | No | No | No | No |
+| View equipment | Yes | Yes | Yes | Yes |
+| Edit equipment | Per policy | Yes | Yes | Yes |
+| Archive equipment | No | Per policy | Yes | Yes |
+| Create SOP/WI draft | Per policy | Yes | Yes | Yes |
+| Review SOP/WI | No | Yes | Yes | Yes |
+| Approve SOP/WI | No | Per policy | Yes | Yes |
+| Export lab reports | Per policy | Yes | Yes | Yes |
 
-هذه مصفوفة تصميمية، ويجب مطابقتها مع `src/lib/permissions.ts` قبل التنفيذ. لا تنشئ الكود checks موزعة داخل الصفحات.
+This is a design matrix; reconcile it with `src/lib/permissions.ts` before building. Do not scatter checks across pages.
 
-## 11. نموذج البيانات والربط
+---
 
-### الجداول المستهدفة
+## 11. Data Model & Linking
 
-- `lab_test_records`: رأس سجل الاختبار.
-- `lab_test_samples`: نتائج العينات التابعة للاختبار.
-- `lab_equipment`: سجل الأجهزة.
-- `lab_documents`: هوية الوثيقة وحالتها الحالية.
-- `lab_document_versions`: محتوى كل إصدار واعتماداته.
-- `lab_document_links`: الربط بين الوثائق والاختبارات والأجهزة.
-- `lab_activity_log`: سجل أحداث مختبرية منظم.
+**Target tables:** `lab_test_records` · `lab_test_samples` · `lab_equipment` · `lab_documents` · `lab_document_versions` · `lab_document_links` · `lab_activity_log`.
 
-### الربط مع النظام الحالي
-
-| النظام الحالي | طريقة الربط |
+**Links to the existing system:**
+| Existing system | Link method |
 |---|---|
 | users | tested_by, reviewed_by, approved_by, owner_id, actor_id |
-| permissions | حماية الصفحات وAPIs من مصدر واحد |
-| migrations | إضافة جداول جديدة بدون تعديل القديم |
-| notifications | إشعار الإرسال والرفض والاعتماد ومراجعة الوثائق |
-| dashboard | queries مختبرية مستقلة داخل Laboratory section |
-| export | CSV/print مع نفس فحوصات الصلاحية |
-| audit | تسجيل كل تغيير وحالة واعتماد |
-| AI | advisory فقط، ممنوع اتخاذ القرار |
+| permissions | page & API protection from one source |
+| migrations | add new tables without touching old ones |
+| notifications | notify on submit, reject, approve, doc review |
+| dashboard | independent lab queries in a Laboratory section |
+| export | CSV/print with the same permission checks |
+| audit | log every change, status, approval |
+| AI | advisory only, never decides |
 
-## 12. APIs المتوقعة
+---
 
-المسارات التالية مقترحة، ويجب على الوكيل مطابقتها مع naming conventions الحالية قبل الإنشاء:
+## 12. Expected APIs
 
 ```text
-GET    /api/lab/tests
-POST   /api/lab/tests
-GET    /api/lab/tests/:id
-PATCH  /api/lab/tests/:id
-POST   /api/lab/tests/:id/submit
-POST   /api/lab/tests/:id/review
-POST   /api/lab/tests/:id/approve
-POST   /api/lab/tests/:id/void
+GET   /api/lab/tests
+POST  /api/lab/tests
+GET   /api/lab/tests/:id
+PATCH /api/lab/tests/:id
+POST  /api/lab/tests/:id/submit
+POST  /api/lab/tests/:id/review
+POST  /api/lab/tests/:id/approve
+POST  /api/lab/tests/:id/void
 
-GET    /api/lab/equipment
-POST   /api/lab/equipment
-PATCH  /api/lab/equipment/:id
-POST   /api/lab/equipment/:id/archive
+GET   /api/lab/equipment
+POST  /api/lab/equipment
+PATCH /api/lab/equipment/:id
+POST  /api/lab/equipment/:id/archive
 
-GET    /api/lab/documents
-POST   /api/lab/documents
-GET    /api/lab/documents/:id
-PATCH  /api/lab/documents/:id
-POST   /api/lab/documents/:id/submit
-POST   /api/lab/documents/:id/request-changes
-POST   /api/lab/documents/:id/approve
-POST   /api/lab/documents/:id/supersede
-GET    /api/lab/documents/:id/versions
-GET    /api/lab/exports/tests.csv
-GET    /api/lab/exports/equipment.csv
-GET    /api/lab/exports/documents.csv
+GET   /api/lab/documents
+POST  /api/lab/documents
+GET   /api/lab/documents/:id
+PATCH /api/lab/documents/:id
+POST  /api/lab/documents/:id/submit
+POST  /api/lab/documents/:id/request-changes
+POST  /api/lab/documents/:id/approve
+POST  /api/lab/documents/:id/supersede
+GET   /api/lab/documents/:id/versions
+
+GET   /api/lab/exports/tests.csv
+GET   /api/lab/exports/equipment.csv
+GET   /api/lab/exports/documents.csv
 ```
+Every `POST/PATCH` needs CSRF, session, role check, validation, and an activity event.
 
-كل `POST/PATCH` يحتاج CSRF، session، role check، validation، وactivity event.
+---
 
-## 13. الربط مع Dashboard
+## 13. Dashboard Integration
 
-تضاف Laboratory section منفصلة عن مؤشرات المهام الحالية، وتتضمن:
+A separate **Laboratory** section, distinct from task KPIs:
+- Tests by type · tests by status · PASS/FAIL/HOLD trend
+- Average review time · tests pending approval
+- Equipment under maintenance · uncalibrated equipment
+- SOP/WI needing review · latest lab activity
 
-- عدد الاختبارات حسب النوع.
-- عدد الاختبارات حسب الحالة.
-- PASS/FAIL/HOLD trend.
-- متوسط وقت المراجعة.
-- اختبارات بانتظار الاعتماد.
-- أجهزة تحت الصيانة.
-- أجهزة غير معايرة.
-- SOP/WI تحتاج مراجعة.
-- آخر نشاط مختبري.
+All metrics: server-side · period-bounded · user-scoped · auditable against the DB. Visibility = **Admin + Manager + Supervisor** (Employee excluded) as the single source of truth.
 
-يجب أن تكون كل المؤشرات:
+---
 
-- محسوبة من server-side queries.
-- محددة بفترة زمنية واضحة.
-- متوافقة مع نطاق المستخدم.
-- قابلة للتدقيق بمقارنة النتيجة مع قاعدة البيانات المؤقتة.
+## 14. Security & Quality
 
-## 14. الأمان والجودة
+- No `innerHTML` for unsanitized SOP/WI content.
+- Never trust `tested_by`, `approved_by`, `status`, or `final_result` from the browser.
+- No self-approval. No silent editing of an approved record.
+- Never expose file paths, env vars, or API secrets.
+- No `unsafe-inline` in CSP. Use `requireCsrf` on every mutation.
+- Positive-integer parsing for ids. Safe error messages.
+- XSS test inside the SOP/WI editor.
+- Respect skip link, focus, keyboard, reduced motion.
+- Test at 360 / 768 / 1024 / 1440 with no overflow.
 
-- لا تستخدم `innerHTML` لمحتوى SOP/WI غير معقّم.
-- لا تثق بقيم `tested_by`, `approved_by`, `status`, أو `final_result` القادمة من المتصفح.
-- لا تسمح بالاعتماد الذاتي.
-- لا تعدّل سجلًا معتمدًا مباشرة.
-- لا تعرض مسارات الملفات أو متغيرات البيئة أو أسرار API.
-- لا تضف `unsafe-inline` إلى CSP.
-- استخدم `requireCsrf` في كل عملية تغيير.
-- استخدم positive integer parsing للمعرفات.
-- سجل الأخطاء برسائل آمنة.
-- اختبر XSS داخل محرر SOP/WI.
-- احترم skip link وfocus وkeyboard وreduced motion.
-- اختبر 360 و768 و1024 و1440 بدون overflow.
+---
 
-## 15. حالات المستخدم والرسائل
+## 15. Acceptance Criteria
 
-### حالات الاختبار
+The QC Laboratory space is done only when:
+- All core pages render SSR.
+- Migrations succeed on fresh + existing DBs without breaking old data.
+- Permissions enforced server + UI.
+- Air/Vacuum forms save and re-render.
+- Review/approve/reject work with an audit trail.
+- Approved records and approved document versions are tamper-proof.
+- The 24 equipment rows exist via idempotent seed.
+- SOP/WI editor renders sanitized preview and stores Markdown + version.
+- Dashboard shows reconcilable metrics.
+- Search and export apply the same permissions.
+- Security / a11y / responsive / E2E tests documented.
+- No "Production Ready" claim while P0 blockers remain.
 
-- `Draft`: `مسودة — لم ترسل للمراجعة`.
-- `Submitted`: `مرسل للمراجعة`.
-- `Under Review`: `قيد المراجعة`.
-- `Approved`: `معتمد — للقراءة فقط`.
-- `Rejected`: `مرفوض — راجع الملاحظات وعدّل المسودة`.
-- `Hold`: `معلّق — يحتاج تقييم إضافي`.
-- `Void`: `ملغى — لا يستخدم كسجل فعال`.
+---
 
-### حالات الوثائق
+## 16. Open Decisions (need sign-off)
 
-- `Draft`: `مسودة`.
-- `In Review`: `قيد المراجعة`.
-- `Approved`: `معتمد`.
-- `Superseded`: `استُبدل بإصدار أحدث`.
-- `Archived`: `مؤرشف`.
+1. Do `AIR` and `VACUUM` have different formulas? Current spec doesn't say.
+2. Max allowed number of samples per test?
+3. Keep equipment statuses as mixed free text, or adopt an official status dictionary?
+4. Who holds final SOP/WI approval authority?
+5. Official unit for `Temperature` and `Leakage Rate`?
+6. Do documents need a formal code like `SOP-QC-001` with auto-generation?
+7. Does an approved report need an e-signature, or is user + timestamp enough?
 
-رسائل الخطأ يجب أن تشرح المشكلة وطريقة إصلاحها بدون كشف تفاصيل داخلية أو SQL.
+Until these are decided, keep the implementation flexible and configurable, and do not invent scientific or regulatory rules.
+````
 
-## 16. الاختبارات المطلوبة
-
-### Unit/DB
-
-- migration جديدة تطبق مرة واحدة.
-- foreign keys وعدم وجود orphan rows.
-- enum/status constraints.
-- حفظ واسترجاع خمس عينات.
-- منع اعتماد صاحب الاختبار لنفسه.
-- عدم تعديل approved record.
-- version increment للوثيقة.
-- sanitization لمحتوى Markdown.
-
-### API/Security
-
-- كل API محمي بالصلاحية المناسبة.
-- CSRF مرفوض عند غيابه.
-- IDOR مرفوض.
-- أرقام ومعرفات غير صحيحة مرفوضة.
-- CSV آمن من formula injection.
-
-### E2E
-
-1. موظف ينشئ Air draft ويحفظه.
-2. موظف ينشئ Vacuum draft.
-3. الموظف يرسل الاختبار للمراجعة.
-4. المراجع يرفض مع سبب.
-5. الموظف يعدل ويعيد الإرسال.
-6. المعتمد يعتمد الاختبار.
-7. محاولة تعديل approved record تفشل.
-8. تعديل جهاز يظهر بعد reload.
-9. إنشاء SOP/WI draft من المحرر.
-10. طلب تغييرات ثم اعتماد إصدار.
-11. إنشاء revision لا يغير الإصدار السابق.
-12. مؤشرات Dashboard تطابق fixtures.
-
-## 17. معايير القبول النهائية
-
-لا تعتبر مساحة مختبر QC جاهزة إلا إذا:
-
-- كل الصفحات الأساسية تعمل SSR.
-- migrations نجحت على قاعدة مؤقتة وقاعدة موجودة بدون كسر البيانات القديمة.
-- الصلاحيات مطبقة في الخادم والواجهة.
-- نماذج Air/Vacuum تحفظ البيانات وتعيد عرضها.
-- المراجعة والاعتماد والرفض تعمل بسجل تدقيق.
-- approved records وapproved document versions غير قابلة للتعديل الصامت.
-- الأجهزة الـ24 موجودة في seed/migration idempotent.
-- محرر SOP/WI يعرض preview معقّم ويحفظ Markdown والإصدار.
-- Dashboard يعرض مؤشرات قابلة للمطابقة.
-- البحث والتصدير يطبقان نفس الصلاحيات.
-- اختبارات security/a11y/responsive وE2E موثقة.
-- لا يوجد ادعاء Production Ready إذا بقيت P0 blockers من تقرير التدقيق.
-
-## 18. قرارات تحتاج اعتمادًا لاحقًا
-
-1. هل `AIR` و`VACUUM` لهما معادلات مختلفة؟ المواصفة الحالية لا تحدد ذلك.
-2. ما الحد الأعلى المسموح لعدد العينات في الاختبار؟
-3. هل حالات الأجهزة الحالية ستبقى نصية مختلطة، أم تعتمد الشركة قاموس حالات رسمي؟
-4. من يملك صلاحية اعتماد SOP/WI نهائيًا؟
-5. ما وحدة قياس `Temperature` و`Leakage Rate` الرسمية؟
-6. هل تحتاج الوثائق رقمًا رسميًا مثل `SOP-QC-001` مع توليد تلقائي؟
-7. هل التقرير المعتمد يحتاج توقيعًا إلكترونيًا أو يكفي سجل المستخدم والتاريخ؟
-
-إلى أن تعتمد هذه القرارات، يجب أن يبقى التنفيذ مرنًا وقابلًا للتهيئة، وألا يخترع قواعد علمية أو تنظيمية غير مذكورة.
-
-## 19. حالة التنفيذ الحالية
-
-| العنصر | الحالة الحالية |
-|---|---|
-| تقرير الصفحات هذا | مكتمل كمواصفة |
-| برومبتز DeepSeek التنفيذية | مكتملة في ملف مستقل |
-| Routes `/lab/*` | غير منفذة حسب هذا التقرير |
-| جداول `lab_*` | غير منفذة حسب هذا التقرير |
-| محرر SOP/WI | غير منفذ حسب هذا التقرير |
-| Dashboard Laboratory section | غير منفذ حسب هذا التقرير |
-| اختبارات مختبرية | غير منفذة حسب هذا التقرير |
-| Production readiness | لا يمكن الحكم عليها من هذا التقرير |
+جاهز. تبيني أنزّله كملف فعلي بالريبو تحت `audit/qc/`؟ ولا تبيه بالعربي بدل الإنجليزي؟
