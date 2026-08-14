@@ -63,9 +63,18 @@ function withSecurityHeaders(response: Response): Response {
   }
   // The internal application ships only self-hosted Astro assets. Keep this
   // conservative CSP compatible with the current React islands and downloads.
+  //
+  // style-src has a single hash, not 'unsafe-inline': Astro injects one static
+  // <style> tag per hydrated island — `astro-island,astro-slot,astro-static-slot
+  // {display:contents}` — so the exact block is allowlisted by SHA-256. All app
+  // styles are Tailwind classes (purged into external CSS files); charts and
+  // progress bars use SVG attributes instead of inline style attributes, and
+  // React applies hover-state styles through the CSSOM (not blocked by CSP).
+  // If the Astro version ever changes ISLAND_STYLES, recompute the hash with:
+  //   printf 'astro-island,astro-slot,astro-static-slot{display:contents}' | shasum -a 256 | awk '{print $1}' | xxd -r -p | base64
   headers.set(
     'Content-Security-Policy',
-    "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'sha256-QzWFZi+FLIx23tnm9SBU4aEgx4x8DsuASP07mfqol/c=' 'sha256-SaCkFfPruIdTXT8/97JArQmGxiJAL2o4bBDvSgJ5y3Q=' 'sha256-Q2BPg90ZMplYY+FSdApNErhpWafg2hcRRbndmvxuL/Q='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; media-src 'self'; worker-src 'self' blob:",
+    "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'sha256-QzWFZi+FLIx23tnm9SBU4aEgx4x8DsuASP07mfqol/c=' 'sha256-SaCkFfPruIdTXT8/97JArQmGxiJAL2o4bBDvSgJ5y3Q=' 'sha256-Q2BPg90ZMplYY+FSdApNErhpWafg2hcRRbndmvxuL/Q='; style-src 'self' 'sha256-vv9IoKo7BSLbWcUHr3tNmfNVmm5L/9Cfn2H6LMk7/ow='; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; media-src 'self'; worker-src 'self' blob:",
   );
   return new Response(response.body, {
     status: response.status,

@@ -41,3 +41,9 @@ The service applies an in-memory per-user/per-feature rate limit of 10 requests 
 ## Audit and integrity boundary
 
 AI audit records are separate from `task_activity_log`. The task activity chain detects changes to task events, while the AI audit records whether an AI request succeeded. Neither mechanism makes SQLite physically immutable; database permissions, backups, and external retention remain necessary.
+
+## Live verification
+
+**2026-08-14** — One live Groq request was attempted via `apps/qc-task-manager/scripts/smoke-ai-live.mjs` (uncommitted). It ran a controlled task fixture (`QC_DATABASE_PATH=/tmp/...` temp DB) through the real provider path: `analyzeTask` → `runStructuredAi` → `createGroqProvider()` reading `GROQ_API_KEY` / `GROQ_MODEL` from the environment only (the key is never printed or committed).
+
+**Outcome: FAILED — not a pass.** The single live request failed with `AiServiceError` (`AI request could not be completed.`), i.e. the existing safe error contract held: no raw provider response body, key, Authorization header, or prompt was surfaced or logged. The root cause is deliberately hidden by the contract — the key may be invalid/expired, the account quota may be exhausted, or outbound network may be restricted in this environment. It was **not re-run** (explicit single-call approval). The local-only checks that ran before the call passed: a Saudi mobile number (`0551234567`) and an email (`person@example.com`) were redacted from the prompt inside `<untrusted_qc_data>` before the request. The remaining assertions (Zod parse, audit no-leak, mocked 429/5xx → safe error mapping) are already covered by the existing `test-ai-foundation.mjs` / `test-ai-features.mjs` suites, and `pnpm --filter @brightai/qc-task-manager test` still passes **265/0** after the attempt.

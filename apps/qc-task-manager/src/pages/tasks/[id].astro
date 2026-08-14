@@ -176,11 +176,14 @@ const LOCKED_FIELD_LABELS: Record<string, string> = {
 const showLockedSummary = user.role === 'employee' && canEdit;
 const lockedFieldLabels = EMPLOYEE_LOCKED_FIELDS.map((f) => LOCKED_FIELD_LABELS[f] ?? f);
 
+// Returns the fill color for the progress bar. Values are hex because the bar
+// is an inline <svg> <rect> (CSP style-src 'self' blocks inline style
+// attributes, so the tone is carried by the SVG fill attribute instead).
 function progressTone(p: number): string {
-  if (p >= 100) return 'bg-emerald-500';
-  if (p >= 60) return 'bg-blue-500';
-  if (p >= 30) return 'bg-amber-500';
-  return 'bg-slate-400';
+  if (p >= 100) return '#10b981'; // emerald-500
+  if (p >= 60) return '#3b82f6'; // blue-500
+  if (p >= 30) return '#f59e0b'; // amber-500
+  return '#94a3b8'; // slate-400
 }
 
 // Timeline icons + tones per action category (inline SVGs keep this server-rendered).
@@ -283,7 +286,10 @@ function svgIcon(inner: string, cls = ''): string {
             <span class="text-slate-600">{task.progress_percent}%</span>
           </div>
           <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
-            <div class={`h-full rounded-full ${progressTone(task.progress_percent)}`} style={`width: ${task.progress_percent}%`}></div>
+            {/* SVG width/fill attributes instead of inline style (CSP style-src 'self'). */}
+            <svg class="block h-full w-full" aria-hidden="true">
+              <rect x="0" y="0" width={`${task.progress_percent}%`} height="100%" fill={progressTone(task.progress_percent)} rx="9999" />
+            </svg>
           </div>
         </div>
 

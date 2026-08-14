@@ -93,7 +93,10 @@ const tasks = db
                 )}
                 <span>
                   <span class="inline-block h-1.5 w-24 overflow-hidden rounded-full bg-slate-200 align-middle">
-                    <span class="block h-full rounded-full bg-brand-500" style={`width: ${t.progress_percent}%`}></span>
+                    {/* SVG width attribute instead of inline style (CSP style-src 'self'). */}
+                    <svg class="block h-full w-full" aria-hidden="true">
+                      <rect x="0" y="0" width={`${t.progress_percent}%`} height="100%" fill="#3b82f6" rx="9999" />
+                    </svg>
                   </span>
                   <span class="ml-1 tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
                 </span>

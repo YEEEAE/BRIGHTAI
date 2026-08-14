@@ -115,8 +115,9 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
             onFocus={() => setActive(i)}
             onBlur={() => setActive(null)}
             tabIndex={0}
+            // outline-none already carries outline-offset 2px in Tailwind v3.4,
+            // so no inline style attribute is needed here (CSP style-src 'self').
             className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
-            style={{ outlineOffset: '2px' }}
           >
             <title>{`${s.label}: ${s.count} (${total > 0 ? Math.round(s.frac * 100) : 0}%)`}</title>
           </circle>
@@ -127,7 +128,9 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
           y="98"
           textAnchor="middle"
           className="fill-slate-900"
-          style={{ fontSize: '30px', fontWeight: 700, pointerEvents: 'none' }}
+          fontSize={30}
+          fontWeight={700}
+          pointerEvents="none"
         >
           {activeSeg ? activeSeg.count : total}
         </text>
@@ -136,7 +139,8 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
           y="118"
           textAnchor="middle"
           className="fill-slate-500"
-          style={{ fontSize: '11px', pointerEvents: 'none' }}
+          fontSize={11}
+          pointerEvents="none"
         >
           {activeSeg ? activeSeg.label : 'tasks'}
         </text>
@@ -146,11 +150,9 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
       <ul className="mt-4 grid w-full grid-cols-2 gap-x-4 gap-y-1.5">
         {data.map((d) => (
           <li key={d.status} className="flex items-center gap-2 text-xs text-slate-600">
-            <span
-              className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
-              style={{ backgroundColor: d.color }}
-              aria-hidden="true"
-            />
+            <svg className="h-2.5 w-2.5 shrink-0" viewBox="0 0 10 10" aria-hidden="true">
+              <circle cx="5" cy="5" r="5" fill={d.color} />
+            </svg>
             <span className="flex-1 truncate">{d.label}</span>
             <span className="font-semibold tabular-nums text-slate-900">{d.count}</span>
           </li>
@@ -191,14 +193,19 @@ function PriorityChart({ data }: { data: PrioritySlice[] }) {
                 </span>
               </div>
               <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
-                <div
-                  className="h-full rounded-full transition-all duration-300"
-                  style={{
-                    width: `${widthPct}%`,
-                    backgroundColor: d.color,
-                    opacity: hover === null || isHover ? 1 : 0.45,
-                  }}
-                />
+                {/* width/fill/opacity are SVG attributes here (not inline style
+                    attributes), so they are allowed by CSP style-src 'self'. */}
+                <svg className="block h-full w-full" aria-hidden="true">
+                  <rect
+                    x="0"
+                    y="0"
+                    width={`${widthPct}%`}
+                    height="100%"
+                    fill={d.color}
+                    opacity={hover === null || isHover ? 1 : 0.45}
+                    rx="9999"
+                  />
+                </svg>
               </div>
             </li>
           );
@@ -255,9 +262,11 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
       <div className="min-w-0 overflow-x-auto">
         <svg
           viewBox={`0 0 ${width} ${BAR_H}`}
-          // Natural size: the overflow-x-auto wrapper scrolls when the team is
-          // large, so labels never get squashed by a viewBox downscale.
-          style={{ minWidth: `${width}px`, width: '100%' }}
+          // Natural size: the width attribute (not an inline style) keeps the
+          // chart at its designed pixel width, and the overflow-x-auto wrapper
+          // scrolls when the team is large, so labels never get squashed by a
+          // viewBox downscale (CSP style-src 'self' allows SVG attributes).
+          width={width}
           role="img"
           aria-label={`Tasks per employee: ${data
             .map((d) => `${d.full_name} ${d.total}`)
@@ -274,7 +283,7 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
                 stroke="#e2e8f0"
                 strokeDasharray={g === 0 ? undefined : '3 3'}
               />
-              <text x={BAR_PAD_L - 6} y={yFor(g) + 3.5} textAnchor="end" className="fill-slate-400" style={{ fontSize: '10px' }}>
+              <text x={BAR_PAD_L - 6} y={yFor(g) + 3.5} textAnchor="end" className="fill-slate-400" fontSize={10}>
                 {g}
               </text>
             </g>
@@ -324,7 +333,8 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
                   y={yFor(user.total) - 5}
                   textAnchor="middle"
                   className="fill-slate-600"
-                  style={{ fontSize: '11px', fontWeight: 600 }}
+                  fontSize={11}
+                  fontWeight={600}
                 >
                   {user.total}
                 </text>
@@ -334,7 +344,7 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
                   y={BAR_H - 14}
                   textAnchor="middle"
                   className="fill-slate-600"
-                  style={{ fontSize: '10.5px' }}
+                  fontSize={10.5}
                 >
                   <title>{user.full_name}</title>
                   {user.full_name.length > 13 ? `${user.full_name.slice(0, 12)}…` : user.full_name}
@@ -351,11 +361,9 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
           const slice = data[0]?.statuses.find((s) => s.status === status);
           return (
             <li key={status} className="flex items-center gap-1.5 text-xs text-slate-600">
-              <span
-                className="inline-block h-2.5 w-2.5 rounded-sm"
-                style={{ backgroundColor: slice?.color ?? '#94a3b8' }}
-                aria-hidden="true"
-              />
+              <svg className="h-2.5 w-2.5" viewBox="0 0 10 10" aria-hidden="true">
+                <rect x="0" y="0" width="10" height="10" rx="2" fill={slice?.color ?? '#94a3b8'} />
+              </svg>
               {slice?.label ?? status}
             </li>
           );
@@ -419,14 +427,18 @@ function OverdueByEmployeeChart({ data }: { data: OverdueEmployee[] }) {
                 <span className="tabular-nums font-semibold text-rose-700">{d.count}</span>
               </div>
               <div className="h-3 w-full overflow-hidden rounded-full bg-rose-50">
-                <div
-                  className="h-full rounded-full transition-all duration-300"
-                  style={{
-                    width: `${widthPct}%`,
-                    backgroundColor: '#dc2626',
-                    opacity: hover === null || isHover ? 1 : 0.4,
-                  }}
-                />
+                {/* SVG attributes instead of inline style (CSP style-src 'self'). */}
+                <svg className="block h-full w-full" aria-hidden="true">
+                  <rect
+                    x="0"
+                    y="0"
+                    width={`${widthPct}%`}
+                    height="100%"
+                    fill="#dc2626"
+                    opacity={hover === null || isHover ? 1 : 0.4}
+                    rx="9999"
+                  />
+                </svg>
               </div>
             </li>
           );
@@ -500,7 +512,7 @@ function LineChart({ data }: { data: WeekPoint[] }) {
               stroke="#e2e8f0"
               strokeDasharray={g === 0 ? undefined : '3 3'}
             />
-            <text x={LINE_PAD_L - 6} y={yFor(g) + 3.5} textAnchor="end" className="fill-slate-400" style={{ fontSize: '10px' }}>
+            <text x={LINE_PAD_L - 6} y={yFor(g) + 3.5} textAnchor="end" className="fill-slate-400" fontSize={10}>
               {g}
             </text>
           </g>
@@ -542,7 +554,8 @@ function LineChart({ data }: { data: WeekPoint[] }) {
               y={LINE_H - 12}
               textAnchor="middle"
               className={active === i ? 'fill-slate-900' : 'fill-slate-500'}
-              style={{ fontSize: '10.5px', fontWeight: active === i ? 600 : 400 }}
+              fontSize={10.5}
+              fontWeight={active === i ? 600 : 400}
             >
               {p.label}
             </text>
@@ -604,10 +617,10 @@ function CompletionRateCard({ data }: { data: CompletionRateProps }) {
       </p>
       {/* progress bar representing the current rate */}
       <div className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
-        <div
-          className="h-full rounded-full bg-emerald-500 transition-all duration-500"
-          style={{ width: `${curPct ?? 0}%` }}
-        />
+        {/* SVG width attribute instead of inline style (CSP style-src 'self'). */}
+        <svg className="block h-full w-full" aria-hidden="true">
+          <rect x="0" y="0" width={`${curPct ?? 0}%`} height="100%" fill="#10b981" rx="9999" />
+        </svg>
       </div>
       <p className="mt-3 text-[11px] leading-relaxed text-slate-400">
         Current: {data.current_from} → {data.current_to}

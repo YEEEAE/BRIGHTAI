@@ -77,7 +77,7 @@ The repository contains local database artifacts under `apps/qc-task-manager/db/
 | Upload security | **PASS locally** | Size, extension, MIME, magic bytes, filename normalization, executable rejection, SHA-256, and evidence authorization are covered. |
 | Session security | **PASS locally** | HttpOnly, SameSite, Secure-on-HTTPS, path, expiry, server-side session lookup, cleanup, and logout are implemented/tested. `SESSION_SECRET` is documented but currently reserved and not consumed by the opaque-token implementation. |
 | Secrets | **PARTIAL** | Current environment had `GROQ_API_KEY=UNSET`; no key-shaped token was found in current files, client bundles, or client HTML. `.env` files are ignored and only examples are tracked. The brain records provider secrets in old Git history as compromised; revoke/rotate outside this workspace is still required. |
-| Headers / CSP | **PARTIAL** | QC headers include DENY, nosniff, referrer, COOP/CORP, HSTS in production, and CSP. `style-src 'unsafe-inline'` remains. Main-site deployment surface protected deny-list paths (56 passing checks), but the same surface check failed the unconfigured AI route. |
+| Headers / CSP | **PARTIAL** | QC headers include DENY, nosniff, referrer, COOP/CORP, HSTS in production, and CSP. `style-src` is `'self'` plus one SHA-256 hash for Astro's static island style — `unsafe-inline` removed 2026-08-14 (charts/bars use SVG attributes; verified live with 0 inline style attributes served). Main-site deployment surface protected deny-list paths (56 passing checks), but the same surface check failed the unconfigured AI route. |
 
 ## Groq audit
 
@@ -169,7 +169,6 @@ The repository contains local database artifacts under `apps/qc-task-manager/db/
 
 ## P1 risks
 
-- `style-src 'unsafe-inline'` remains in the QC CSP.
 - Historical provider secrets are recorded as exposed in Git history and need external revoke/rotate confirmation.
 - Rate limiting is not proven across multiple instances; some limits are process-local.
 - AI PII minimization is narrower than the broader firewall’s sensitive-data coverage.

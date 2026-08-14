@@ -2,11 +2,32 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-14 16:30 +03:00
+last_updated: 2026-08-14 16:50 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.95
+version: 2.7.97
 agent_version: v2.3
 skills_ready: 7
+---
+
+### 2026-08-14 — QC-CSP-STYLE-SRC-001: إزالة `unsafe-inline` من `style-src` في CSP تطبيق QC (P1 من الـ evidence audit) — بدون كسر Tailwind أو React islands
+
+- **Files**: `apps/qc-task-manager/src/middleware.ts` (CSP)، `apps/qc-task-manager/src/components/DashboardCharts.tsx`، `apps/qc-task-manager/src/pages/employee/index.astro`، `apps/qc-task-manager/src/pages/tasks/[id].astro`، `docs/SECURITY-AUDIT.md`، `docs/PRODUCTION-READINESS-REPORT.md`، `.agents/brain.md` (هذا السجل).
+- **What**: غيّرت `style-src 'self' 'unsafe-inline'` → `style-src 'self' 'sha256-vv9IoKo7BSLbWcUHr3tNmfNVmm5L/9Cfn2H6LMk7/ow='`. التحقق الأولي: لا `<style>` tags في المصدر إطلاقًا؛ 22 inline `style=` موزعة على 3 ملفات (2 أشرطة تقدم Astro + 20 في DashboardCharts). **الاكتشاف الحاسم**: Astro يحقن `<style>astro-island,astro-slot,astro-static-slot{display:contents}</style>` ثابتًا في كل صفحة فيها island (وكل صفحات QC فيها Navbar client:load) — هذا الـ block الوحيد الذي يحتاج استثناء، فحسبت له SHA-256 وحده بدل unsafe-inline (الـ hash موثق في تعليق الـ middleware مع أمر إعادة الحساب عند ترقية Astro). كل الـ inline styles التطبيقية حُوّلت لمباني CSP-safe: أحجام/أوزان خطوط SVG صارت presentation attributes (`fontSize`/`fontWeight`/`pointerEvents`)، أشرطة التقدم (employee + tasks/[id] + CompletionRateCard + Priority/Overdue bars) صارت `<svg><rect width=% fill=...>`، نقاط الـ legends صارت `<circle fill=...>`، `outlineOffset` حُذف لأن Tailwind v3.4 `outline-none` يتضمن `outline-offset: 2px` أصلًا، و`minWidth` حق BarChart صار attribute `width={width}`. الـ tooltips (hover-only) بقيت inline لأنها تُرسم client-side عبر CSSOM اللي ما يحجبه CSP — موثّق في تعليق الـ middleware.
+- **Verification**: typecheck → 0 errors / 13 hints (نفس baseline) ✅؛ `NODE_ENV=production build` → Server built ✅؛ **فحص حي** على سيرفر production: هيدر login فيه `style-src 'self' 'sha256-...'` بدون unsafe-inline، صفحة login فيها **0** `style="` و **0** `<style>`، /dashboard فيها **0** `style="` و `<style>` الوحيد هو بالضبط `astro-island,...{display:contents}` (يطابق الـ hash)، أشرطة تقدم /tasks و /employee تُعرض `<rect width="45%" fill="#f59e0b/#3b82f6">` صحيحة؛ `verify-security-hygiene.mjs` → passed ✅؛ `pnpm test` → **265 passed / 0 failed** ✅؛ `pnpm e2e:acceptance` → **كل الـ suites PASS (dashboard 45/45 + task-shared + الباقي + restart persistence)** ✅؛ `git diff --check` → نظيف ✅.
+- **Notes**: `docs/SECURITY-AUDIT.md` و `docs/PRODUCTION-READINESS-REPORT.md` اتحدثت (RISK/P1 مقفولة). ملاحظة للمستقبل: أي ترقية لـ Astro تغيّر ISLAND_STYLES تتطلب إعادة حساب الـ hash (الأمر موجود في تعليق middleware.ts). الـ e2e-dashboard بقي 45/45 والـ charts نفس data attributes/aria-labels — فقط آلية التلوين/العرض تحولت من inline style إلى SVG attributes.
+- **Status**: verified (build + typecheck + hygiene + 265/0 + e2e acceptance كامل). لا commit ولا push — المستخدم يلتزم.
+
+---
+
+### 2026-08-14 — QC-GROQ-LIVE-SMOKE-001: محاولة تحقق حي واحد من تكامل Groq — FAILED بصراحة
+
+- **Files**: `apps/qc-task-manager/scripts/smoke-ai-live.mjs` (جديد — غير committed)، `docs/AI-ARCHITECTURE.md` (قسم "Live verification")، `.agents/brain.md` (هذا السجل).
+- **What**: بإذن صريح من المستخدم لمكالمة شبكة **واحدة** فقط، نفّذت smoke حي: `analyzeTask` → `runStructuredAi` → `createGroqProvider()` (المسار الحقيقي: `serverAiConfig()` يقرأ `GROQ_API_KEY`/`GROQ_MODEL` من env فقط — المفتاح طوله 56 موجود بالبيئة، ما طُبع ولا كُتب). Temp DB في `/tmp` مع fixture متحكم فيه فيه رقم جوال سعودي (0551234567) وإيميل (person@example.com) داخل `<untrusted_qc_data>`.
+- **Result**: **FAILED — لا اختراع نجاح.** المكالمة الحية الوحيدة فشلت مع `AiServiceError` ('AI request could not be completed.') — أي العقد الآمن اشتغل (لا body خام ولا key ولا prompt تسرّب). السبب الجذري مخفي عمدًا بالعقد: المفتاح ممكن invalid/expired، أو quota منتهي، أو الشبكة محجوبة في هذه البيئة. **ما أعدت المحاولة** (الإذن كان لمكالمة واحدة فقط — القاعدة حرفية). الـ redaction pre-check المحلي اللي سبق المكالمة نجح (الجوال والإيميل انمحوا من الـ prompt المرسل).
+- **Verification**: `pnpm --filter @brightai/qc-task-manager test` → **265 passed / 0 failed** بعد المحاولة ✅ (acceptance criterion 2). ملاحظة: `apps/qc-task-manager/docs/AI-ARCHITECTURE.md` **غير موجود** — الملف الفعلي على الجذر `docs/AI-ARCHITECTURE.md` (نفس المسار الموثق في سجلات الـ brain السابقة)؛ وثّقت هناك.
+- **Notes**: السكربت `smoke-ai-live.mjs` بقي (غير committed) وأُحسّن ليطبع `failure_reason` من audit log ويحتفظ بالـ temp DB للفحص عند الفشل — جاهز لإعادة تشغيله عند إذن ثانٍ أو بعد تدوير المفتاح. الـ mocked 429/5xx mapping و audit no-leak مغطاة أصلاً في `test-ai-foundation.mjs`/`test-ai-features.mjs`.
+- **Status**: delivered — FAILED بصراحة؛ لا commit ولا push.
+
 ---
 
 ### 2026-08-14 — QC-RENDER-BLUEPRINT-001: تعريف خدمة QC الثانية في render.yaml (PROMPT 02 من الـ evidence audit)

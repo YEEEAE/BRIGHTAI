@@ -28,7 +28,7 @@
 | CSRF | PASS | Same-origin `Origin` check on login, logout, API POSTs, admin user actions, and deletion review. | Requires correct `Origin` handling through the production reverse proxy. |
 | Body limits / Content-Type | FIXED | Middleware rejects unsupported mutation content types and `Content-Length` above 12 MiB before FormData parsing. | Chunked requests still depend on the runtime parser/proxy limit; configure an upstream 12 MiB or lower limit. |
 | API rate limiting | FIXED | Per-process 120 mutations/minute/path backstop; login has stricter account/IP controls. | Use a shared Redis/edge limiter for multiple production instances. |
-| Secure headers | FIXED | CSP, frame denial, nosniff, Referrer-Policy, Permissions-Policy, COOP, CORP, production HSTS, and no-store on sensitive downloads/API responses. | CSP still contains `style-src 'unsafe-inline'` for the existing UI; removal is a separate UI/CSP migration. |
+| Secure headers | FIXED | CSP, frame denial, nosniff, Referrer-Policy, Permissions-Policy, COOP, CORP, production HSTS, and no-store on sensitive downloads/API responses. | `style-src` is `'self'` plus one SHA-256 hash for Astro's static island style — no `unsafe-inline` (resolved 2026-08-14). |
 | File extension / MIME | PASS | Allowlist requires both normalized extension and declared MIME. Executable extensions are not allowed. | MIME is client-declared and therefore never treated as sufficient alone. |
 | Magic bytes / executable files | FIXED | Generic uploads now verify signatures for PDF/images/Office/ZIP formats, reject PE/ELF/Mach-O/shebang signatures, and reject binary NUL content in text extensions. Evidence already had strict signatures. | Deep archive inspection and antivirus scanning are not implemented. |
 | File size / filename / path traversal | PASS | 10 MiB application limit before allocation, basename extraction, control-character removal, leading-dot removal, bounded download filename, and no filesystem upload path. | Keep reverse-proxy upload limits aligned. |
@@ -75,7 +75,6 @@ The E2E runner first exposed a CSP/hydration regression. It was fixed with expli
 
 - **RISK**: historical provider keys remain in Git history and are compromised until revoked/rotated; history was not rewritten or pushed.
 - **RISK**: the local `.env` has duplicate Groq entries; recreate it with one rotated `GROQ_API_KEY` value locally.
-- **RISK**: `style-src 'unsafe-inline'` remains for the existing UI and needs a separate style nonce/hash migration.
 - **RISK**: production HTTPS, reverse-proxy body limits, shared rate limiting, and deployment secret rotation need live operational verification.
 
 No commit or push was performed; the user owns the commit and release decision.
