@@ -31,6 +31,7 @@ import {
 } from './lib/permissions';
 import { handleLoginPost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
+import { handleLabTestFormPost } from './lib/lab/tests';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
@@ -162,6 +163,15 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
       setFlash(context, 'error', 'You do not have permission to access the laboratory.');
       return context.redirect(roleHome(user.role));
     }
+  }
+
+  // POST /lab/tests/new — shared AIR/VACUUM test form (PROMPT 05). Astro 6
+  // pages have no named request handlers, so the middleware short-circuits
+  // the POST (same pattern as the new-task forms). handleLabTestFormPost
+  // re-checks canCreateLabTest, resolves test_type from the query parameter
+  // only (never the body), and runs the shared Zod validation.
+  if (context.request.method === 'POST' && pathname === '/lab/tests/new') {
+    return handleLabTestFormPost(context);
   }
 
   // "New task" form submissions. Astro 6 pages have no named request handlers,

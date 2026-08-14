@@ -1,0 +1,117 @@
+---
+// /lab/tests/new — Shared AIR/VACUUM Laboratory Test Form (PROMPT 05).
+//
+// ONE page serves both test types; test_type comes from the query parameter
+// (?type=air | ?type=vacuum) and NEVER from the request body — the POST
+// handler re-resolves it from the query only (§66: hidden fields are
+// ignored). Only printed/black fields from the approved form become inputs;
+// handwritten-only content is not invented. Reference values are displayed
+// for traceability but never compared against measurements, and no formula
+// or AI-determined result exists anywhere (§78).
+//
+// The form itself lives in the LabTestForm island (client:visible) so the
+// sample grid can grow/shrink with No. of Samples Tested without a page
+// round-trip. The server re-validates the entire payload with Zod
+// (labTestFormSchema in src/lib/validation.ts).
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import LabTestForm from '../../../components/lab/LabTestForm';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import { listLabEquipmentForForm, listLabProductsForForm } from '../../../lib/lab/tests';
+import {
+  LAB_ACTUAL_PRESSURE_REFERENCE,
+  LAB_ACCEPTANCE_CRITERIA,
+  LAB_CONNECTOR_TYPES,
+  LAB_HOLDING_TIME,
+  LAB_RESULT_LABELS,
+  LAB_RESULT_OPTIONS,
+  LAB_SAMPLE_COUNT_DEFAULT,
+  LAB_SAMPLE_COUNT_MAX,
+  LAB_SAMPLE_COUNT_MIN,
+  LAB_STANDARD_PARAMETER,
+} from '../../../lib/lab/policy';
+import { canCreateLabTest } from '../../../lib/permissions';
+import type { Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+const rawType = Astro.url.searchParams.get('type');
+if (rawType !== 'air' && rawType !== 'vacuum') {
+  return Astro.redirect('/lab');
+}
+const testType = rawType;
+
+if (!canCreateLabTest(role)) {
+  return Astro.redirect('/lab');
+}
+
+let loadError: string | null = null;
+let equipment: ReturnType<typeof listLabEquipmentForForm> = [];
+let products: ReturnType<typeof listLabProductsForForm> = [];
+try {
+  equipment = listLabEquipmentForForm();
+  products = listLabProductsForForm();
+} catch (err) {
+  console.error('[lab] test form load failure', err);
+  loadError = 'Could not load the equipment and product lists. Try reloading — if the problem persists, contact an administrator.';
+}
+
+const navItems = labNavForRole(role);
+const title = testType === 'air' ? 'New AIR Test' : 'New VACUUM Test';
+const testTypeLabel = testType === 'air' ? 'AIR' : 'VACUUM';
+const userName = user.fullName;
+
+const referenceValues = {
+  actualPressure: LAB_ACTUAL_PRESSURE_REFERENCE,
+  standardParameter: LAB_STANDARD_PARAMETER,
+  acceptanceCriteria: LAB_ACCEPTANCE_CRITERIA,
+  holdingTime: LAB_HOLDING_TIME,
+};
+
+const resultOptions = LAB_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RESULT_LABELS[value] }));
+---
+
+<BaseLayout title={title}>
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: testTypeLabel === 'AIR' ? 'New AIR Test' : 'New VACUUM Test' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — {testTypeLabel}</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">{title}</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Records an {testTypeLabel} leak test for a product lot. Sample measurements are entered exactly as taken;
+        results are human decisions. Reference values are shown for traceability only.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/tests/new" />
+
+    {loadError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {loadError}
+      </div>
+    )}
+
+    <LabTestForm
+      client:visible
+      testType={testType}
+      userName={userName}
+      equipment={equipment}
+      products={products}
+      connectorTypes={[...LAB_CONNECTOR_TYPES]}
+      resultOptions={resultOptions}
+      reference={referenceValues}
+      sampleCountMin={LAB_SAMPLE_COUNT_MIN}
+      sampleCountMax={LAB_SAMPLE_COUNT_MAX}
+      sampleCountDefault={LAB_SAMPLE_COUNT_DEFAULT}
+    />
+  </div>
+</BaseLayout>

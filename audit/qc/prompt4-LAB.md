@@ -27,7 +27,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 02
 - [✅] Prompt 03
 - [✅] Prompt 04
-- [ ] Prompt 05
+- [✅] Prompt 05
 - [ ] Prompt 06
 - [ ] Prompt 07
 - [ ] Prompt 08
@@ -561,7 +561,7 @@ Do not rebuild the global dashboard.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Build one shared test form architecture for AIR and VACUUM.

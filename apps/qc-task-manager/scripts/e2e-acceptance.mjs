@@ -21,6 +21,7 @@ const suites = [
   ['search', 'scripts/e2e-search.mjs'],
   ['findings', 'scripts/e2e-findings.mjs'],
   ['lab-nav', 'scripts/e2e-lab-nav.mjs'],
+  ['lab-form', 'scripts/e2e-lab-form.mjs'],
   ['reports', 'scripts/e2e-reports.mjs'],
 ];
 

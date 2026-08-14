@@ -86,11 +86,13 @@ for (const roleCase of roleCases) {
   const mobileLinks = await page.locator('#mobile-menu a[href="/lab"]').count();
   ok(mobileLinks > 0, `${roleCase.username}: mobile menu shows the Laboratory link`);
 
-  // Secondary nav: only implemented routes are linked (today: /lab itself)
+  // Secondary nav: only implemented routes are linked (today: /lab + /lab/tests/new)
   const secondary = page.locator('nav[aria-label="Laboratory sections"] a');
   const secondaryHrefs = await secondary.evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
   ok(secondaryHrefs.includes('/lab'), `${roleCase.username}: secondary nav shows the command center`);
-  ok(secondaryHrefs.every((href) => href === '/lab'), `${roleCase.username}: no dead links in secondary nav`);
+  ok(secondaryHrefs.includes('/lab/tests/new'), `${roleCase.username}: secondary nav shows the new-test link`);
+  ok(secondaryHrefs.every((href) => href === '/lab' || href === '/lab/tests/new'),
+    `${roleCase.username}: no dead links in secondary nav`);
 
   // Command center (PROMPT 04): KPI cards render from real queries, and the
   // permission-scoped ones match the role (Data Quality KPI is supervisor+,
@@ -104,9 +106,11 @@ for (const roleCase of roleCases) {
   ok(hasNewProduct === roleCase.expectNewProduct, `${roleCase.username}: New Product action matches role permission`);
 
   // No drill-down may link to an unimplemented route (no dead links) — every
-  // KPI/action href inside main must target an implemented lab route.
+  // KPI/action href inside main must target an implemented lab route. The two
+  // "New Test" quick actions now link to the live form (?type=air|vacuum).
   const mainHrefs = await page.locator('main a[href^="/lab/"]').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
-  ok(mainHrefs.every((href) => href === '/lab'), `${roleCase.username}: no drill-down links to unimplemented routes`);
+  ok(mainHrefs.every((href) => href === '/lab' || href === '/lab/tests/new' || href.startsWith('/lab/tests/new?type=')),
+    `${roleCase.username}: no drill-down links to unimplemented routes`);
   const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();
   ok(disabledActions >= 2, `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
 

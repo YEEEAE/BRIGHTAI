@@ -30,6 +30,16 @@ import {
   TASK_RECURRENCES,
 } from './task-policy';
 import { MAX_COMMENT_LENGTH } from './format';
+import {
+  LAB_CONNECTOR_TYPES,
+  LAB_MEASUREMENT_MAX,
+  LAB_PART_NAME_MAX,
+  LAB_REMARKS_MAX,
+  LAB_SAMPLE_COUNT_DEFAULT,
+  LAB_SAMPLE_COUNT_MAX,
+  LAB_SAMPLE_COUNT_MIN,
+  LAB_SHORT_TEXT_MAX,
+} from './lab/policy';
 import type { TaskPriority, TaskRecurrence } from './types';
 
 // ─────────────────────────── Small helpers ───────────────────────────
@@ -465,6 +475,163 @@ export const templateLifecycleSchema = z.object({
     z.number({ errorMap: () => ({ message: 'Invalid template.' }) }).int().positive(),
   ),
 });
+
+// ─────────────────────────── QC Laboratory test form ───────────────────────────
+// Shared AIR/VACUUM test form (PROMPT 05; page reference §§11–19). One schema
+// serves both routes: `form_action` distinguishes draft / continue / submit.
+// Drafts accept sparse input; submits enforce the printed form's required
+// fields plus a complete, bounded sample grid. The sample grid arrives as a
+// JSON string (`samples_json`) serialized by the LabTestForm island — the
+// server re-parses and re-validates it (never trust the client's shape).
+
+/** Optional measurement cell: empty/missing → null; trimmed, length-bounded. */
+function optLabText(max: number, label: string) {
+  return z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z
+      .string()
+      .max(max, `${label} must be ${max} characters or fewer.`)
+      .nullable(),
+  );
+}
+
+/** One sample row (§16 columns). Measurement cells stay TEXT (D-2) — no units invented. */
+export const labTestSampleRowSchema = z.object({
+  sample_no: z.coerce.number().int().min(1, 'Sample numbers must be positive.').max(20, 'Sample numbers must be 20 or fewer.'),
+  part_name: optLabText(LAB_PART_NAME_MAX, 'Part name'),
+  set_pressure: optLabText(LAB_MEASUREMENT_MAX, 'Set Pressure'),
+  actual_pressure: optLabText(LAB_MEASUREMENT_MAX, 'Actual Pressure'),
+  volume_sec: optLabText(LAB_MEASUREMENT_MAX, 'Volume'),
+  pressure_difference: optLabText(LAB_MEASUREMENT_MAX, 'Pressure Difference'),
+  holding_time_sec: optLabText(LAB_MEASUREMENT_MAX, 'Holding Time'),
+  leakage_rate: optLabText(LAB_MEASUREMENT_MAX, 'Leakage Rate'),
+  result: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z
+      .enum(['PASS', 'FAIL', 'HOLD'], {
+        errorMap: () => ({ message: 'Invalid sample result.' }),
+      })
+      .nullable(),
+  ),
+});
+
+/**
+ * Parse the island's samples_json string into an array (max 20 rows — the DB
+ * CHECK bounds sample_count the same way; no arbitrary grid growth).
+ */
+const samplesField = z.preprocess(
+  (v) => {
+    if (v === '' || v == null) return [];
+    if (typeof v !== 'string') return v;
+    try {
+      const parsed: unknown = JSON.parse(v);
+      return Array.isArray(parsed) ? parsed : null;
+    } catch {
+      return null;
+    }
+  },
+  z
+    .array(labTestSampleRowSchema)
+    .max(LAB_SAMPLE_COUNT_MAX, `A test can have at most ${LAB_SAMPLE_COUNT_MAX} samples.`)
+    .nullable()
+    .refine((rows) => rows !== null, 'Samples payload is invalid.'),
+);
+
+/** Submit-level presence check (fields the printed form marks Required, §11). */
+function labRequired(v: unknown): boolean {
+  return v != null && String(v).trim() !== '';
+}
+
+/**
+ * POST /lab/tests/new — the shared form body. `test_type` is deliberately NOT
+ * here: it is resolved from the query parameter only (hidden-field
+ * manipulation cannot change the test type, page reference §66).
+ */
+export const labTestFormSchema = z
+  .object({
+    form_action: z.enum(['draft', 'continue', 'submit'], {
+      errorMap: () => ({ message: 'Invalid form action.' }),
+    }),
+    product_description: optLabText(LAB_SHORT_TEXT_MAX, 'Product Description'),
+    connector_type: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z
+        .enum([...LAB_CONNECTOR_TYPES] as [string, ...string[]], {
+          errorMap: () => ({ message: 'Invalid connector type.' }),
+        })
+        .nullable(),
+    ),
+    sample_count: z.preprocess(
+      (v) => (v === '' || v == null ? LAB_SAMPLE_COUNT_DEFAULT : v),
+      z.coerce
+        .number({ errorMap: () => ({ message: 'No. of Samples Tested must be a number.' }) })
+        .int()
+        .min(LAB_SAMPLE_COUNT_MIN, `No. of Samples Tested must be between ${LAB_SAMPLE_COUNT_MIN} and ${LAB_SAMPLE_COUNT_MAX}.`)
+        .max(LAB_SAMPLE_COUNT_MAX, `No. of Samples Tested must be between ${LAB_SAMPLE_COUNT_MIN} and ${LAB_SAMPLE_COUNT_MAX}.`),
+    ),
+    lot_number: optLabText(LAB_SHORT_TEXT_MAX, 'Lot Number'),
+    sampling_area: optLabText(LAB_SHORT_TEXT_MAX, 'Sampling Area'),
+    equipment_id: z.preprocess(
+      (v) => (v === '' || v == null ? null : Number(v)),
+      z
+        .number({ errorMap: () => ({ message: 'Invalid machine.' }) })
+        .int()
+        .positive()
+        .nullable(),
+    ),
+    medium_used: optLabText(LAB_SHORT_TEXT_MAX, 'Medium Used'),
+    actual_pressure: optLabText(LAB_MEASUREMENT_MAX, 'Actual Pressure'),
+    torque_in_lb: optLabText(LAB_MEASUREMENT_MAX, 'Torque'),
+    time_sec: optLabText(LAB_MEASUREMENT_MAX, 'Time'),
+    angle: optLabText(LAB_SHORT_TEXT_MAX, 'Angle'),
+    temperature_measured: optLabText(LAB_MEASUREMENT_MAX, 'Temperature'),
+    samples_json: samplesField,
+    remarks: optLabText(LAB_REMARKS_MAX, 'Remarks'),
+    final_result: z.preprocess(
+      (v) => (v === '' || v == null ? null : v),
+      z
+        .enum(['PASS', 'FAIL', 'HOLD'], {
+          errorMap: () => ({ message: 'Invalid final result.' }),
+        })
+        .nullable(),
+    ),
+  })
+  .superRefine((data, ctx) => {
+    if (data.form_action !== 'submit') return;
+    const need = (value: unknown, label: string) => {
+      if (!labRequired(value)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `${label} is required.` });
+      }
+    };
+    need(data.product_description, 'Product Description');
+    need(data.connector_type, 'Connector Type');
+    need(data.lot_number, 'Lot Number');
+    need(data.sampling_area, 'Sampling Area');
+    need(data.equipment_id, 'Machine Name');
+    need(data.final_result, 'Final Result');
+
+    // Complete, bounded sample grid: rows 1..sample_count, every row judged
+    // by a human (no AI-determined results — page reference §76).
+    const rows = data.samples_json ?? [];
+    const present = new Set(rows.map((r) => r.sample_no));
+    const expected = data.sample_count;
+    if (rows.length !== expected) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `The number of sample rows (${rows.length}) must match No. of Samples Tested (${expected}).`,
+      });
+    }
+    for (let n = LAB_SAMPLE_COUNT_MIN; n <= expected; n += 1) {
+      if (!present.has(n)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Sample ${n} result is required.` });
+      }
+    }
+    for (const row of rows) {
+      if (row.result == null) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Sample ${row.sample_no} result is required.` });
+      }
+    }
+  });
 
 /** Instantiate a template into a task. */
 export const templateInstantiateSchema = z.object({
