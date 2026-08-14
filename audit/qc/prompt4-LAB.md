@@ -22,8 +22,8 @@
 
 Mark a prompt only when that prompt itself has been executed and verified.
 
-- [ ] Prompt 00
-- [ ] Prompt 01
+- [✅] Prompt 00
+- [✅] Prompt 01
 - [ ] Prompt 02
 - [ ] Prompt 03
 - [ ] Prompt 04
@@ -182,7 +182,7 @@ After every prompt:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Perform a read-only discovery and architecture audit before implementing the
@@ -252,7 +252,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Create the final architecture contract for the QC Laboratory.
