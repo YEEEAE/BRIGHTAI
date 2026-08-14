@@ -2,11 +2,43 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-14 17:30 +03:00
+last_updated: 2026-08-14 19:30 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.99
 agent_version: v2.3
 skills_ready: 7
+---
+
+### 2026-08-14 — MIND-SPLIT-001: تقسيم brain.md إلى ثلاثة ملفات في .agents/mind/ (عقل الوكيل)
+
+- **Files**: `.agents/mind/01-mind-latest.md` (جديد، 435 سطر / 143KB)، `.agents/mind/02-mind-mid.md` (جديد، 458 سطر / 102KB)، `.agents/mind/03-mind-earliest.md` (جديد، 448 سطر / 71KB)، `.agents/brain.md` (هذا السجل).
+- **What**: قُسّم الـ ledger الكامل (84 سجلًا) إلى 3 أجزاء متوازنة عند حدود السجلات (فواصل `---`) بدون قطع أي سجل: **01 = الأحدث** (2026-08-14 → 2026-08-11، يحمل الـ frontmatter الأصلي)، **02 = الأوسط** (2026-08-11 → 2026-08-02)، **03 = الأقدم** (2026-08-02 → 2026-07-31 + ملحقات QC في نهاية الملف الأصلي). الأجزاء 02 و03 أخذت frontmatter بسيطًا يوثق مصدرها.
+- **Decision**: (1) التقسيم زمني-تسلسلي بالتساوي (~440 سطرًا للجزء) لأن الملف كله ledger واحد طويل. (2) `brain.md` بقي كما هو كمصدر وحيد للحقيقة — ملفات mind/ هي نسخة مقسومة للقراءة؛ **أي تحديث جديد يروح لـ brain.md** وليس لملفات mind (تجنب تفرّع مصادر الحقيقة). (3) ما حذفت brain.md — يحتاج قرار صريح من المستخدم لو يبغى استبداله بـ index يشير للأجزاء.
+- **Verification**: عدد السجلات قبل = 84، بعد = 84 عبر الأجزاء؛ كل جزء يبدأ وينتهي عند `### عنوان سجل` / فاصل `---` — ما انقطع أي سجل؛ مجموع أحجام الأجزاء = حجم الأصل + frontmatter المضاف فقط.
+- **Status**: delivered (الأجزاء الثلاثة جاهزة في `.agents/mind/`).
+
+---
+
+### 2026-08-14 — QC-LAB-PROMPTS-V2-ADDITIONS-001: ترقية برومبتز مختبر QC إلى v2 + ملف إضافات جديد ببيانات الشركة الدقيقة
+
+- **Files**: `audit/qc/2026-08-14-QC-LAB-IMPLEMENTATION-PROMPTS.md` (أُعيد كتابته v2)، `audit/qc/2026-08-14-QC-LAB-ADDITIONS-PROMPTS.md` (جديد)، `.agents/brain.md` (هذا السجل).
+- **What**: (1) **v2 للملف الأساسي** (889 سطرًا): أُضيف بروتوكول تنفيذ مخصص لـ DeepSeek Flash v4 (verify-before-claim، grounding للـ helpers، برومبت واحد لكل session، بروتوكول تعارض، منع scope drift) + block "Repository facts" متحقق من الكود فعليًا (آخر migration = `010_ai_evidence_status.sql` → التالي **011**؛ `permissions.ts` مصدر RBAC الوحيد؛ أوامر التحقق وbaseline: typecheck 0/0/13 وtest 279/0 وe2e:acceptance كلها خضراء) + كل برومبت صار له: Read first / Allowed file changes / Requirements / Non-goals / Verification commands / Acceptance criteria، وPROMPT 03 صار يحمل مواصفة الحقول المطبوعة الكاملة (أقسام 1-8). (2) **ملف إضافات جديد** (627 سطرًا، A0-A5): صفحة إدخال وثائق اختبارات المنتجات Air/Vacuum بالمواصفة الحرفية للنموذج المطبوع (الحقول السوداء فقط، قيم المرجع عرض لا validation)، صفحة أجهزة المختبر مع **الـ dataset الكامل لـ24 جهازًا حرفيًا** (مع حفظ النصوص العربية الأصلية verbatim + display mapping موثق للحالات لا يعدل البيانات)، صفحات SOP/WI، وPROMPT A4 للربط الشامل (navbar + مصفوفة صلاحيات كاملة في permissions.ts + قسم Laboratory بالداشبورد مع KPIs محددة + إشعارات + audit chain + CSV exports + بحث شامل + فحوصات FK/overflow)، وA5 تقرير تحقق.
+- **Decision**: (1) فصل الأدوار بين الملفين: الأساسي = البنية (migration 011 + مسارات + lifecycle)، والإضافات = البيانات الدقيقة للشركة + الربط الشامل؛ وكل برومبت في ملف الإضافات مكتوب ليكون آمنًا سواء نُفذت برومبتات الأساس أو لا (A0 يقرر extend-vs-build بالأدلة). (2) بيانات الحالات المختلطة للأجهزة (مثل "تحت الصيانة / NEW") تُخزن verbatim والفلترة عبر mapping عرضي فقط — لأن قاموس الحالات الرسمي قرار معلّق (قسم 18 من تقرير الصفحات). (3) Serial numbers نصية (تقبل "-" و"DOA-P104-AA" و"1-800-5556-3484"). (4) حقول Authorization (Tested/Reviewed/Approved By) لا تقبل أبدًا من body الطلب. (5) القيم المرجعية (قسم 5) تُلقط snapshot عند الإرسال ليحتفظ السجل المعتمد بمعاييره. (6) القرارات المفتوحة السبعة نُقلت كما هي مع منع اختراع إجاباتها.
+- **Verification**: تحقق بنيوي: fences متوازنة (28/14)، 24 صف جهاز مطابق حرفيًا للبيانات المرسلة (spot-check الصفوف 6/13/24)، وحقائق الـ repo (ترقيم migrations، scripts، صلاحيات) متحققة من الكود مباشرة قبل الكتابة. لا كود تنفيذي أُنشئ — الملفان مواصفات برومبت فقط.
+- **Notes**: المستخدم ذكر أنه سيرفق صورة توضيحية للنموذج لاحقًا — البرومبتز تشترط التوقف والتأكيد قبل إضافة/حذف أي حقل مطبوع إذا اختلفت الصورة عن المواصفة النصية. لا commit ولا push — المستخدم يلتزم.
+- **Status**: delivered (prompts v2 + additions ready، لم تُشغّل برومبتات DeepSeek بعد).
+
+---
+
+### 2026-08-14 — QC-SAVED-FILTERS-DOCS-001: إغلاق PROMPT 10 — unit checks لأذونات saved filters + توثيق SESSION_SECRET + REPOSITORY-AUDIT.md
+
+- **Files**: `apps/qc-task-manager/scripts/test-db-rules.mjs`، `apps/qc-task-manager/scripts/e2e-task-search.mjs`، `apps/qc-task-manager/README.md`، `apps/qc-task-manager/docs/DEPLOYMENT.md`، `apps/qc-task-manager/docs/REPOSITORY-AUDIT.md` (جديد)، `apps/qc-task-manager/docs/ARCHITECTURE.md`، `.agents/brain.md` (هذا السجل).
+- **What**: (1) **الـ saved-filters UI/API** (`search.astro` + `/api/filters` + `taskSearch.ts` + `savedFilterSchema`) كانت منفذة ومُلتزمة في الريبو مسبقًا — الفجوة الفعلية من الـ audit كانت في الـ unit checks والتوثيق، فأغلقتها. (2) **unit checks جديدة في `test-db-rules.mjs`** (8 فحوصات): handler-level `POST /api/filters` بدون جلسة → **401**، Origin خاطئ → **403**، الطلبات المرفوضة لا تكتب صفوف أبدًا، save→list يرجع الصف، `savedFilterHref` يعيد بناء URL (apply)، المستخدم يشوف فلاتره فقط، delete من مستخدم آخر **مرفوض** (owner-only يترك الصف)، delete من المالك يمسحه (gone). (3) **`e2e-task-search.mjs` Scenario E**: فحص جديد — anonymous `POST /api/filters` → **302 إلى /login** (جدار الـ middleware، لا يصل الـ handler أبدًا). (4) **التوثيق**: `SESSION_SECRET` صار **"reserved but not implemented"** صراحةً — أُزيل من quick-start block في `README.md` ومن جدول متغيرات Render الإلزامي في `DEPLOYMENT.md` (مع ملاحظة "لا تضبطوه")، وحدّثت جملة blueprint اللي كانت تقول "بعد ما يهبط alignment التوثيقي". (5) **`REPOSITORY-AUDIT.md`** جديد: workspace wiring (pnpm workspaces، `@brightai/qc-task-manager`، Node 22/pnpm 10)، astro config (SSR standalone، inlineStylesheets: never)، deployment surface (render.yaml service، `/api/health`، disk/env)، والملفات الممنوع تعديلها (`.github/workflows`، `.env*`، خدمة brightai-site، db runtime) — مشتق من ARCHITECTURE.md + brain، ومرتبط من `ARCHITECTURE.md` (قسم "Repository integration" جديد).
+- **Decision (مهم للـ future agents)**: اخترت مسار "reserved (not implemented)" بدل تنفيذ توقيع الجلسات — الأصغر والأصدق للواقع (الجلسات opaque tokens في SQLite). `test-db-rules.mjs` هو بيت الـ DB-backed unit checks (يضبط `QC_DATABASE_PATH` قبل import `db.ts`) — الـ 8 فحوصات الجديدة تختبر الـ handler الحقيقي `filters.ts` بمـ mock context مصغّر (CSRF + auth قبل أي parse)، والـ happy path عبر دوال `taskSearch` على نفس الـ temp DB.
+- **Verification**: typecheck → **0 errors / 0 warnings / 13 hints** ✅؛ `pnpm --filter @brightai/qc-task-manager test` → **كل السلاسل PASS** (domain **279/0** + db-rules مع 8 فحوصات saved filters جديدة) ✅؛ **تحقق حي على build إنتاجي بقاعدة مؤقتة**: `e2e-task-search.mjs` كامل → **84 passed / 0 failed** (Scenario E: create → list → apply → delete → gone + anonymous 302) ✅.
+- **Notes**: المستخدم التزم ودفع بنفسه بعد تسليمي (القاعدة الثانية — أنا ما دفعت). لا commit مني.
+- **Status**: verified locally (typecheck + full test + live round-trip)؛ committed/pushed بواسطة المستخدم.
+
 ---
 
 ### 2026-08-14 — QC-LAB-PAGES-REPORT-001: توثيق صفحات ومحتوى مختبر QC

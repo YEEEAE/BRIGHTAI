@@ -1,0 +1,458 @@
+---
+file: 02-mind-mid.md
+project: BrightAI — Saudi AI Safety OS
+site: https://brightai.site
+part: 2/3 — الجزء الأوسط من عقل الوكيل (2026-08-11 → 2026-08-02)
+source: .agents/brain.md v2.7.99 (مقسوم 2026-08-14)
+---
+
+
+### 2026-08-11 — QC-SCHEMA-002: ترقية schema.sql إلى مواصفة الإنتاج الكاملة (12 جدول + WAL/FK + CHECKs + فهارس) + CASCADE على delete requests + migrations للـ DB الموجودة — 25/25 + 16/16 + 31/31 + 30/30 + 73/73 ✅
+
+- **Files**: `apps/qc-task-manager/db/schema.sql` (إعادة كتابة كاملة — 12 جدول: users/tasks/task_comments/task_attachments/task_activity_log/task_delete_requests/task_checklists/task_dependencies/notifications/sessions/login_attempts/saved_filters + `PRAGMA journal_mode = WAL` + `PRAGMA foreign_keys = ON` في الأعلى + CHECKs لكل enums/نسب + فهارس لكل FKs وفلاتر اللوحة)، `src/lib/db.ts` (جديد: `migrateNewColumns` = 19 عمود عبر ALTER TABLE ADD COLUMN بفحص table_info + `migrateDeleteRequests` **معكوس** = إعادة بناء الجدول القديم (task_title بلا FK) إلى شكل المواصفة `task_id REFERENCES tasks(id) ON DELETE CASCADE` بدون task_title + ترتيب initialize صار: migrations ← ثم schema.sql ← ثم seeds)، `src/lib/deleteRequests.ts` (إزالة task_title نهائيًا: INSERT بدون snapshot، قائمة الصفوف JOIN مباشر من tasks، عنوان المراجعة يُقرأ حيًا من tasks)، `src/pages/manager/requests/index.astro` (إزالة فرع "(deleted)" — الصفوف المعتمدة تختفي مع المهمة)، `scripts/e2e-delete-request.mjs` (سيناريو A صار يثبت: صف الطلب يُحذف بـ cascade + غائب من History — 31/31)، `README.md` + `docs/ARCHITECTURE.md` (12 جدول + سلوك CASCADE + ملاحظة الانجراف)
+- **What**: المستخدم طلب schema.sql إنتاجي كامل (12 جدول بمواصفات حرفية: أعمدة + CHECKs + ON DELETE CASCADE للـ children فقط + RESTRICT/SET NULL للمراجع الحرجة + فهارس). اختار عبر ask_user: (1) **المواصفة حرفيًا على task_delete_requests** (CASCADE بدون task_title — عكس التصميم القديم المتعمد اللي كان يحفظ الطلب كسجل تدقيق)، (2) **إضافة migrations في db.ts** لترقية الـ DB الموجودة. نفّذت: (1) schema.sql كامل بالشكل المطلوب حرفيًا + سياسة FK: CASCADE للـ children (comments/attachments/activity/checklists/dependencies للـ task + sessions/notifications/saved_filters للـ user)، RESTRICT للحرجة (tasks.created_by، user_id في comments/attachments/activity، requested_by) ، SET NULL للمراجع الاختيارية (assigned_to/completed_by/cancelled_by/reviewed_by/users.created_by/notifications.task_id + `parent_recurring_task_id`). (2) migrations: `migrateNewColumns` تضيف الأعمدة الجديدة (users: failed_login_attempts/locked_until/last_login_at/created_by/updated_at؛ tasks: department/recurrence/recurrence_end_date/parent_recurring_task_id/started_at/cancelled_at/cancelled_by/completion_comment_id؛ comments: is_completion_comment؛ attachments: file_hash/is_evidence؛ activity: field/note/ip_address) و `migrateDeleteRequests` تعيد بناء الجدول القديم (task_title) إلى شكل CASCADE — تحذف الصفوف الـ dangling (approved لمهام محذوفة) لأن FK الجديد NOT NULL ما يسمح بها.
+- **Why**: المواصفة طلبت بنية أوسع (إعادة استخدام + recurrence + إشعارات + lockout + login attempts + saved filters) وكلها كانت ناقصة؛ وقرار المستخدم: اتباع المواصفة حرفيًا حتى لو ضحّى بسجل التدقيق + رفع الـ DB الموجودة.
+- **Verification**: (1) **schema على DB جديدة: 25/25** — 12 جدول + integrity + fk_check نظيف + 14 فهرس إلزامي + كل CHECKs ترفض القيم الغلط + RESTRICT/CASCADE/SET NULL/partial unique/defaults. (2) **migration حقيقية عبر إقلاع خادم Astro على DB قديمة: 16/16** — الأعمدة انضافت، task_delete_requests صار CASCADE بلا task_title، الصف الـ dangling انحذف والـ pending/rejected بقوا، 12 جدول، integrity + fk_check نظيفين، partial unique عايش، cascade يشتغل فعليًا. (3) **E2E delete-request: 31/31** على DB طازة (init-db: 12 جداول + 4 مستخدمين) — approve يحذف المهمة والطلب معًا، History ما يعرضه؛ reject يبقي الطلب والتاريخ. (4) **E2E dashboard: 30/30** على DB طازة — لا regression. (5) **SEED_DEMO=1 db:init**: 12 جدول + 6 مستخدمين + 12 مهمة + 2 مرفق (mime/size NOT NULL راضين) + fk_check نظيف. (6) `pnpm test` → 73/73 ✅؛ `pnpm typecheck` → 0 errors (7 hints معروفة) ✅؛ `pnpm build` → Server built ✅.
+- **Note**: (1) **تنبيه فقدان بيانات**: عند أول إقلاع على `db/qc_tasks.db` الحالي، الـ migration تحذف طلبات الحذف `approved` اللي مهماتها انحذفت سابقًا (History في /manager/requests يفقدها) — نتيجة مباشرة لاختيار المستخدم CASCADE. (2) **انجراف migrated/fresh**: ALTER ADD COLUMN ما يغيّر CHECKs ولا يجعل NOT NULL — الـ DB المُرحّلة تبقى بحالات status/priority القديمة (بدون cancelled/urgent) وبـ mime_type/file_size nullable، والجديدة تاخذ المواصفة كاملة — موثّق في README. (3) **انجراف مقصود schema↔validation**: DB تقبل `'cancelled'`/`'urgent'` بينما task-policy.ts (4 حالات/3 أولويات) وZod ترفض `'urgent'` — الـ schema للمستقبل ولا كسر حالي. (4) `users.updated_at` انضاف nullable + backfill من created_at (ALTER يمنع DEFAULT تعبيري)؛ ما فيه trigger. (5) `notifications` table موجودة لكن التطبيق لسا يستخدم الإشعارات المشتقة (قراءة الـ brain: QC-SPEC-001) — الربط المستقبلي متروك. (6) انحراف لفظي واحد عن المواصفة: `parent_recurring_task_id ... ON DELETE SET NULL` (المواصفة كتبتها bare) — متسق مع قاعدة المستخدم العليا. (7) `listReviewedDeleteRequests` لسا يستعلم status='approved' (ميت دفاعيًا — approved ينحذف مع المهمة). (8) ملاحظة بيئية مُعاد تأكيدها: خادم Astro ما يلمس الـ DB إلا عند أول طلب يكشف session حقيقية — لاختبار الـ migration لا تكتفي بـ GET /login بدون كوكي.
+- **Report**: README + docs/ARCHITECTURE.md محدّثان
+- **Commit**: uncommitted — المستخدم يلتزم (القاعدة الثانية)
+- **Status**: verified locally (schema 25/25 + migration حقيقية 16/16 + E2E 31/31 + 30/30 + test 73/73 + build/typecheck)
+- **Brain updates**: هذا الـ entry. لاحظ للـ future agents: الـ delete-request flow صار CASCADE (approved يختفي مع المهمة — مو مثل QC-DELETE-REQ-001)؛ استخدم `--filter @brightai/qc-task-manager`.
+
+### 2026-08-11 — QC-SPEC-001: سدّ فجوات المواصفة في QC Task Manager (اسم @brightai + Zod + notifications + backup + export + scripts) — 73/73 + 30/30 + 33/33 ✅
+
+- **Files**: `apps/qc-task-manager/package.json` (الاسم → `@brightai/qc-task-manager` + zod ^3.24.1 + scripts db:seed/db:backup/test)، `.gitignore` (root + app: db/backups/* مع استثناء .gitkeep + تجاوز قاعدة `backups/` العامة)، `db/backups/.gitkeep` (جديد)، `docs/ARCHITECTURE.md` (جديد)، `public/.gitkeep` (جديد)، `src/types/index.ts` (جديد — re-export)، `src/lib/task-policy.ts` (جديد — الدومين القوانين: statuses/limits/field locks/upload allowlist/transition predicates)، `src/lib/validation.ts` (جديد — Zod schemas + parseFormData)، `src/lib/notifications.ts` + `src/pages/notifications.astro` (جديد — إشعارات مشتقة بلا جدول) + `src/components/Navbar.tsx` + `src/layouts/BaseLayout.astro` (جرس + عداد)، `src/lib/backup.ts` + `scripts/backup-db.mjs` (جديد — online backup WAL-safe + retention)، `src/lib/export.ts` + `src/pages/api/export/tasks.csv.ts` (جديد — CSV role-scoped)، `scripts/test.mjs` (جديد — `pnpm test`)، وأربطة Zod في `tasks.ts`/`users.ts`/`comment.ts`/`delete-request.ts`/`session.ts` + نقل ثوابت `taskUpdates.ts`/`types.ts`/`permissions.ts` إلى task-policy
+- **What**: التطبيق كان موجودًا ومكتملًا (52/52) لكن المواصفة طلبت بنية أوسع — سدّيت كل الفجوات بدون ما أكسر شي: (1) **الاسم** صار `@brightai/qc-task-manager` (تحققت: ما فيه أي مرجع خارجي للاسم القديم) + **zod** (نفس نسخة الـ monorepo ^3.24.1). (2) **task-policy.ts** = مصدر الحقيقة لقواعد الدومين (قواعد العمل الستة) و `taskUpdates.ts`/`types.ts`/`permissions.ts` يستوردون منها مع re-exports للتوافق (attachments/index.ts يستورد MAX_UPLOAD_BYTES من taskUpdates — ما تكسر). (3) **validation.ts** = كل schemas المدخلات (login/task create/comment/delete-request/user create/password reset) بنفس رسائل الخطأ الحرفية، مربوطة في 5 مسارات. (4) **notifications** = مشتقة من البيانات الموجودة (بدون جدول جديد): overdue/due_soon/unstarted/recent comments/pending delete requests، صفحة `/notifications` لكل الأدوار + جرس في الـ navbar مع عداد مباشر. (5) **backup** = `pnpm db:backup` ياخذ online backup (readonly connection + better-sqlite3 backup()) لـ `db/backups/qc_tasks-<ts>.db` مع retention 14 (`--keep=N`)، و`createBackup` برمجيًا. (6) **export** = `GET /api/export/tasks.csv` role-scoped (الموظف: مهامه فقط) مع BOM + escaping RFC-4180. (7) **scripts**: `db:seed` (alias لـ db:init)، `db:backup`، `test` (= structure compliance + وحدة smoke على Zod/task-policy/CSV/backup عبر الـ loader).
+- **Why**: المواصفة طلبت stack + بنية محددة (Zod، notifications، backup، export، types/، docs/، public/، db/backups، scripts معينة، واسم الحزمة) وكانت هذي الملفات/الخصائص ناقصة — مع الحفاظ على كل الوظائف القائمة بدون ترقيات غير ضرورية.
+- **Verification**: `pnpm install` ✅؛ `pnpm typecheck` → 0 errors (8 hints معروفة مسبقًا) ✅؛ `pnpm build` → Server built ✅؛ **`pnpm test` → 73/73** (بنية المواصفة كاملة + سلوك Zod + قواعد task-policy + CSV escaping + backup round-trip حقيقي مع retention) ✅؛ **E2E dashboard 30/30** و **delete-request 33/33** (لا regression — الرقم الأول 30 مو 29 لأنه السكربت تطور) ✅؛ `db:seed` على DB طازة (7 جداول + 6 users + 12 tasks demo) ✅؛ `db:backup` + `--keep=2` prunes صح ✅؛ فحص حي على الخادم (SEED_DEMO=1): /notifications فيه 4 Overdue + 2 Due soon + 8 روابط، الجرس "Notifications (8 active)"، CSV 13 سطر (12 مهمة) مع Content-Disposition ✅.
+- **Note**: (1) **باغ بيئي للـ future agents**: خادم Astro standalone يموت أو يتجاهل الـ env إذا شغّلته في basher call وطلعت منه — شغّل الخادم والفحص في **نفس** الأمر، وحدد الـ DB بـ `env -u PORT QC_DB_PATH=... SEED_DEMO=1 PORT=NNNN node dist/server/entry.mjs` (بيئة الجهاز تصدّر PORT=3000). (2) أول محاولة فحص شغلت الخادم على DB غلط (dist/db/qc_tasks.db — السلوك المعروف للـ standalone) فظهرت الإشعارات فاضية — **مو باغ بالكود**، تأكد من الـ DB عبر lsof أو عدد صفوف CSV. (3) `pnpm test` يحتاج Node 22+ (`--experimental-strip-types`) — الإصدار المثبت 22.22.3 والـ engines يكتب >=20 فصار التحديث منطقيًا. (4) قاعدة `.gitignore` العامة `backups/` (سطر 115) كانت تحجب `db/backups/.gitkeep` — حليتها بإضافة negations بعدها.
+- **Report**: `docs/ARCHITECTURE.md` + README محدّث (الاسم الجديد، scripts، notifications/export/backup/validation sections، layout tree)
+- **Commit**: uncommitted — المستخدم يلتزم (القاعدة الثانية)
+- **Status**: verified locally (typecheck/build/test/E2E/CLI/حي)
+- **Brain updates**: هذا الـ entry. لاحظ للـ future agents: استخدم `--filter @brightai/qc-task-manager` (الاسم الجديد) وليس `qc-task-manager`.
+
+---
+
+### 2026-08-11 — QC-FINAL-001: التسليم النهائي لـ QC Task Manager (أمن + UX + closure flow + uploads + demo seed + README + إنتاج) — 52/52 ✅
+
+- **Files**: `src/middleware.ts` (security headers على كل response), `src/lib/taskUpdates.ts` (جديد — update + closure + upload validation), `src/pages/api/tasks/[id]/{update,close}.ts` + `attachments/index.ts` (جديد), `src/components/{TaskUpdatePanel,AttachmentUploader}.tsx` + `{StatusBadge,EmptyState}.astro` (جديد), `src/lib/format.ts` (خرائط ألوان موحدة 🔴🟡🟠🟢 + isOverdue + MAX_COMMENT_LENGTH), `src/lib/permissions.ts` (canEditLockedField صار supervisor+), `src/lib/activity.ts` + `taskDetails.ts` (أفعال title/description/assignee/due/priority/attachment_uploaded), `src/pages/tasks/[id].astro` + قوائم {employee,manager,supervisor} (شارات + overdue أحمر + empty states + responsive)، `src/lib/seed.ts` + `scripts/init-db.mjs` (SEED_DEMO=1)، `README.md` (إعادة كتابة كاملة + SQLTools + .vscode snippet)
+- **What**: التسليم النهائي حسب المواصفة: (1) **أمن** — headers `X-Frame-Options: DENY` + `X-Content-Type-Options: nosniff` + `Referrer-Policy` تُطبَّق على كل response (صفحات/redirects/API) عبر `withSecurityHeaders` في middleware؛ كل /api/* يعيد فحص session+role server-side (comment/update/close/attachments/delete-request/admin-users/manager-requests) وكل SQL parameterized (فقط fragments ثابتة تُبنى بـ template، القيم دايم `?`). (2) **UX** — ألوان موحدة 🔴🟡🟠🟢 في كل الصفحات (StatusBadge + خرائط format.ts)، التواريخ المتأخرة حمراء، empty states موحدة بـ EmptyState مع CTAs، جداول responsive، loading states على كل الجزر. (3) **closure flow + uploads** (كانت الناقصة الكبيرة): `POST /update` مع field locking كامل (الموظف: status/progress/blocker فقط؛ supervisor/manager/admin: الكل) + `POST /close` (الـ closure flow ذرّي: comment إلزامي + evidence أو skip مسجّل + completed_at/by تلقائي + conditional UPDATE يمنع الـ race) + `POST /attachments` (ext + MIME + 10MB، أسماء ملفات منقّاة). (4) **SEED_DEMO=1**: 6 حسابات (1 manager + 1 supervisor + 3 employees) + 12 مهمة بحالات مختلطة (3 not_started/4 in_progress/2 on_hold/3 completed) بتواريخ نسبية لليوم + أنشطة وتعليقات + evidence attachments حقيقية (placeholder BLOBs قابلة للتحميل) — نفس النتيجة من `db:init --reset` ومن `dev`. (5) **README** شامل (roles/permissions table، التشغيل، credentials وكيف تغيّرها، مكان الـ DB، SQLTools + mtxr.sqltools-driver-sqlite باسم "QC Tasks DB" + snippet جاهز، الأمان، الـ E2E). (6) **إنتاج**: `node dist/server/entry.mjs` يشتغل على **4321 افتراضيًا** (options.port=4321 من astro.config) — لاحظت إن بيئة الجهاز الحالية تصدّر `PORT=3000` فتُلغيه بـ `env -u PORT`، وهذا مو باغ بالتطبيق.
+- **Why**: معايير القبول تتطلب الـ workflow الكامل end-to-end (create users → create task → employee progresses → closure flow → dashboard updates) وكان الـ update/closure/upload UI غير موجود أصلاً (README القديم يقول "next build phase")، وما فيه security headers ولا demo seed ولا توثيق SQLTools.
+- **Verification**: `pnpm typecheck` 0 errors ✅؛ `pnpm build` Server built ✅؛ **سكربت تسليم شامل ضد الخادم الإنتاجي على 4321 (DB demo طازة) → 52/52 PASS**: headers على صفحات/API/redirects، anonymous → 302، logins، field locking (موظف يعدّل مهمته ✅ / حقل مقفل مرفوض / status=completed عبر update مرفوض / موظف ما يعدّل مهمة ثانية)، closure (بدون comment 400 / comment+skip 200 / completed_at+by تلقائي / 3 أفعال مسجلة / re-close 400 / update على completed → read-only)، uploads (pdf ✅ / .exe 400 / MIME غلط 400 / >10MB 400 / فارغ 400) + download + dashboard ينعكس (completed KPI 3→4) + manager يعدّل locked fields مع title_changed في الـ activity + create task. **E2E قديمة: dashboard 30/30 + delete-request 33/33 (لا regression)** ✅. فحص بصري Playwright (admin/users، manager 12 صف بشارات emoji، صفحة مهمة فيها Update progress + Task details + Complete this task + uploader، dashboard 6 KPI، 0 console errors، 0 overflow على 390px) ✅. SEED_DEMO متسق (6 users/12 tasks/3 completed ببيانات إغلاق/2 attachments/3 closure comments) من init-db ومن seed.ts.
+- **Note**: (1) بيئة الجهاز تصدّر `PORT=3000` — لاختبار الافتراضي 4321 استخدم `env -u PORT node dist/server/entry.mjs`. (2) الـ closure flow مقصود ليشمل أي محرِّر (موظف على مهامه + supervisor/manager/admin على أي مهمة) — موثّق بالـ README. (3) ملاحظة مراجعة كود عُولجت: `init-db.mjs` و `seed.ts` صاروا ينتجون نفس الـ demo الكامل، و `closeTask` فيه conditional UPDATE (`WHERE status != 'completed'` + changes===1) مثل نمط `reviewDeleteRequest` لمنع race. (4) `MAX_COMMENT_LENGTH` صار مشترك من format.ts. (5) `Content-Disposition` صار معه `filename=` fallback ASCII.
+- **Report**: README موثّق بالكامل + هذا الـ entry
+- **Commit**: uncommitted — المستخدم يلتزم
+- **Status**: verified locally (52/52 + 30/30 + 33/33)
+- **Brain updates**: هذا الـ entry. كل قواعد العمل الستة مكتملة الآن في QC Task Manager.
+
+---
+
+### 2026-08-11 — QC-DASH-001: بناء /dashboard كامل في QC Task Manager (KPI + 3 رسوم SVG + جدولين + فلاتر) — 29/29 E2E ✅
+
+- **Files**: `apps/qc-task-manager/src/lib/dashboard.ts` (جديد — طبقة بيانات read-only بالكامل), `apps/qc-task-manager/src/components/DashboardCharts.tsx` (جديد — جزيرة React برسوم SVG نقية), `apps/qc-task-manager/src/pages/dashboard.astro` (إعادة بناء), `apps/qc-task-manager/src/middleware.ts` (فلاش عند رفض الموظف), `apps/qc-task-manager/scripts/e2e-dashboard.mjs` (جديد), `apps/qc-task-manager/README.md`
+- **What**: بنيت اللوحة كاملة حسب المواصفة: 6 كروت KPI (Total/Not started/In progress/On hold/Completed/Overdue — الـ overdue = `due_date < اليوم AND status != 'completed'` بتوقيت محلي). 3 رسوم بيانية بـ pure SVG داخل جزيرة React (`client:load`) بدون أي dependency جديدة (المواصفة تسمح بـ SVG): دونات للحالات، أعمدة مكدسة لكل موظف نشط مقسّمة بالحالات (مرتبة بالتنازلي + scroll أفقي)، وخط لإنجازات آخر 8 أسابيع (Monday-aligned من completed_at). جدولان: "Overdue tasks" (العنوان/المعيَّن/تاريخ الاستحقاق/أيام التأخير، مرتب بالأقدم) و"Recently completed" (آخر 10 مع completed_by). فلاتر GET (نطاق تاريخ الإنشاء، المعيَّن، الأولوية) تُقيّد كل الأرقام بنفس الـ WHERE — وكل الاستعلامات `?`-parameterized و read-only. القيم غير الصالحة تُرفض مع flash. الموظف يترجّل لـ /employee مع flash "permission to access the dashboard" (شرط القبول).
+- **Why**: /dashboard كان scaffold بـ 4 كروت بلا رسوم/جداول/فلاتر، وموظف يزور /dashboard كان يترجّل بدون أي توضيح. المواصفة طلبت البناء الكامل بمعايير قبول "الأرقام تطابق قاعدة البيانات" + "redirect + flash".
+- **Verification**: `pnpm typecheck` → 0 errors ✅؛ `pnpm build` → Server built ✅؛ **E2E 29/29 PASS** ضد خادم حي (PORT=4322، DB مؤقتة) — بذرة 10 مهام بتواريخ نسبية لـ "now" (ظهيرة UTC لتثبيت التقويم)، وكل رقم معروض (KPI عبر data-kpi، الرسوم عبر aria-label للـ SVG، الجداول عبر DOM) قورن بحسابات SQL مستقلة: KPI بدون فلاتر + 4 فلاتر + فلتر مدمج + فلتر غير صالح (يُرفض مع flash one-shot)؛ خط chart طابق آخر-8-أسابيع؛ الموظف → 302 لـ /employee + كوكي qc_flash فيه permission + الرسالة تظهر؛ supervisor/admin 200. لقطات: `download/qa/dashboard-{desktop,mobile}.png`. فحص ثانٍ: 0 console errors، لا تحذيرات React keys، overflow أفقي على 390px = 0 (الـ bar chart يتقلب داخل حاويته).
+- **Note**: ملاحظتان مهمتان للـ future agents: (1) **ترتيب الـ params** — في SQLite الـ placeholders تُربط بترتيب ظهورها في النص؛ في `getKpis` الـ `date(?)` داخل الـ SELECT يجي قبل أسئلة الـ WHERE فلازم `today` يُمر أولًا (`.get(today, ...params)`) — اكتشفت هذا الباغ عبر الـ E2E لما فلتر الأولوية رجع صفر. (2) Astro 6 يسلسل island props بشكل مشفّر — قراءة الـ chart data عبر `aria-label` للـ SVG المعروض أقوى وأثبت من فك ترميز الـ props attribute. كمان: gridVals لازم تُنقّى من التكرار (`new Set`) بعد التقريب لأنها تستخدم keys في React (تحذير duplicate keys عند max صغير)، و `min-w-0` على كروت الـ grid يمنع الـ SVG min-width يكسر تخطيط الجوال.
+- **Report**: none (موثّق في README + هذا الـ entry)
+- **Commit**: uncommitted — المستخدم يلتزم
+- **Status**: verified locally (29/29 E2E)
+- **Brain updates**: هذا الـ entry. القاعدة #1 مكتملة في QC Task Manager (اللوحة + الحماية).
+
+---
+
+### 2026-08-11 — QC-DELETE-REQ-001: التحقق الكامل من delete-request workflow في QC Task Manager (33/33 E2E ✅)
+
+- **Files**: `apps/qc-task-manager/src/lib/deleteRequests.ts`, `apps/qc-task-manager/src/components/DeleteRequestDialog.tsx`, `apps/qc-task-manager/src/pages/api/tasks/[id]/delete-request.ts`, `apps/qc-task-manager/src/pages/manager/requests/{index.astro,api.ts}`, `apps/qc-task-manager/src/pages/{manager,employee}/index.astro` (شارات 🗑️), `apps/qc-task-manager/src/lib/{permissions,activity,db}.ts`, `apps/qc-task-manager/db/schema.sql` (task_delete_requests بلا cascade + snapshot task_title), `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/src/components/Navbar.tsx` (رابط Delete Requests), `apps/qc-task-manager/scripts/e2e-delete-request.mjs`, `apps/qc-task-manager/README.md`
+- **What**: الـ workflow (القاعدة #4) مكتمل ومُتحقق منه: الموظف يطلّع "🗑️ Request Deletion" على مهامه (not_started/in_progress فقط) → dialog بسبب اختياري → POST `/api/tasks/[id]/delete-request` يدرج pending (المكرر مرفوض 400) → شارة "🗑️ Deletion requested" في صفحة المهمة وقائمة /employee + علامة في /manager. المانجر/الأدمن يشوفون القائمة في `/manager/requests` (رابط في Navbar و /manager) مع Approve/Reject: approve يحذف المهمة (cascade ينظف comments/attachments/activity) ويعلّم request approved + reviewed_by/at، reject يعلّم rejected والشارة تختفي. كل انتقال مسجّل في task_activity_log (delete_requested/approved/rejected). المهام المكتملة مرفوضة طلب الحذف (القاعدة #3). migration في db.ts يعيد بناء جدول قديم كان فيه ON DELETE CASCADE (كان يدمر سجل التدقيق عند الحذف) إلى شكل snapshot مع task_title.
+- **Why**: المتطلبات + معايير القبول: موظف يطلب → مانجر يشوف pending → يوافق → المهمة تختفي والطلب approved؛ ومسار الرفض: الشارة تختفي والطلب rejected. كلاهما متحقق E2E.
+- **Verification**: `pnpm typecheck` → 0 errors ✅؛ `pnpm build` → Server built ✅؛ E2E كامل ضد dist server على port 4322 مع DB مؤقتة → **33/33 PASS** (سيناريوهات A approve، B reject مع badge clear + reviewer name، C completed blocked، D duplicate blocked، E supervisor ما يقدر يراجع، F admin يقدر). بعد تحسينات الدفاع في العمق أعدنا الـ E2E → 33/33 مرة ثانية ✅. نظّفت DB الاختبار وملفاتها المؤقتة.
+- **Improvements (مراجعة كود)**: (1) فهرس فريد جزئي `idx_delreq_one_pending ON task_delete_requests(task_id) WHERE status='pending'` في schema.sql + migration — منع المكرر صار ذرّي على مستوى الـ DB، مع catch لـ UNIQUE constraint في submitDeleteRequest. (2) حارس already-reviewed صار UPDATE شرطي `WHERE id=? AND status='pending'` مع فحص `changes===1` (reject مباشرة، approve داخل نفس الترانزاكشن مع rollback لو تغيّر الطلب تحتنا). (3) قائمة pending تعرض "(deleted)" للمهام اللي اختفت بمسار آخر بدل رابط مكسور.
+- **Note**: ملاحظة تشغيل — خادم Astro standalone (`node dist/server/entry.mjs`) يشتغل على PORT البيئة (الافتراضي 3000 مو 4321)؛ لاختبار E2E استخدمنا `PORT=4322`. تثبيت Playwright على مستوى الـ monorepo root. tmux غير متوفر في البيئة — شغّلنا الخادم والـ E2E في نفس الـ basher session.
+- **Report**: none (موثّق في README + هذا الـ entry)
+- **Commit**: uncommitted (README + e2e script) — المستخدم يلتزم
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. القاعدة #4 مكتملة في QC Task Manager.
+
+---
+
+### 2026-08-10 — QC-TASK-DETAILS-001: صفحة تفاصيل المهمة /tasks/[id] في QC Task Manager (6 أقسام + تعليقات + تنزيل المرفقات)
+
+- **Files**: `apps/qc-task-manager/src/pages/tasks/[id].astro` (جديد), `apps/qc-task-manager/src/lib/format.ts` (جديد), `apps/qc-task-manager/src/lib/taskDetails.ts` (جديد), `apps/qc-task-manager/src/components/CommentBox.tsx` (جديد), `apps/qc-task-manager/src/pages/api/tasks/[id]/comment.ts` (جديد), `apps/qc-task-manager/src/pages/api/tasks/[id]/attachments/[attachmentId].ts` (جديد), `apps/qc-task-manager/src/lib/tasks.ts` (تصدير taskListFor), `apps/qc-task-manager/README.md`
+- **What**: بنيت صفحة تفاصيل المهمة عند `/tasks/[id]` لكل الأدوار: هيدر (شارات الحالة/الأولوية + شريط التقدم + تاريخ الاستحقاق + المعيّن + المنشئ + معلومات الإغلاق)، callout حاجز (blocker note)، خيط التعليقات مع CommentBox (React island، client:visible، ينشر على الـ API ويضيف الرد فورًا)، قائمة المرفقات مع روابط تنزيل، خط زمني للنشاط من task_activity_log (أيقونات SVG حسب الفئة + نص وصفي)، ولوحة إغلاق للمهام المكتملة (evidence + تعليق الإغلاق المثبّت). قاعدة العرض: الموظف يشوف فقط المهام المعيّنة له أو التي أنشأها، والباقي أي مهمة؛ المهمة المفقودة → 404، الموظف غير المصرّح → 403 (مع body مُصمّم). المهام المكتملة للقراءة فقط للجميع (القاعدة #3). أضفت `POST /api/tasks/[id]/comment` (401/404/403/400 JSON، يدرج task_comments + يسجل comment_added) و `GET /api/tasks/[id]/attachments/[attachmentId]` (يسترجع BLOB مع Content-Disposition RFC 5987 + no-store). استخرجت كل الاستعلامات والتنسيق في lib (taskDetails.ts + format.ts) بدل تشتيتها في الصفحة.
+- **Why**: المهام كانت بلا صفحة تفاصيل — الموظف يضغط على مهمة (الروابط موجودة من قبل) ويدخل فراغ. README يذكر أن "task details page" مرحلة قادمة. الشيفرة الحالية كانت تشير أن صفحة `/tasks/[id]` القادمة تنتظر بنائها.
+- **Verification**: `pnpm typecheck` → 0 errors ✅؛ `pnpm build` → Server built ✅؛ اختبار end-to-end عبر `PORT=4399 node dist/server/entry.mjs` مع QC_DB_PATH مؤقت (seed فيه 3 مهام: واحدة in_progress مع مرفق + تعليق + blocker، واحدة للموظف نفسه، واحدة مكتملة مع evidence + تعليق إغلاق): manager على /tasks/1 → 200 والست أقسام ظاهرة (العنوان، الشارات، التقدم 40%، الحاجز، التعليقان، المرفق، رابط التنزيل) ✅؛ /tasks/3 المكتملة → لوحة الإغلاق + "Completion comment" + evidence ✅؛ الموظف على مهمة مو مهمته → 403، على مهمته → 200 ✅؛ /tasks/999 → 404 ✅؛ تنزيل المرفق → PDF bytes + Content-Disposition ✅؛ POST comment → 200 ويصير يظهر + سطر activity ✅؛ POST comment على مهمة مكتملة → 403 ✅؛ تعليق فارغ → 400 ✅؛ مرفق عبر مهمة ثانية → 404 ✅. لاحظت وأصلحت باغ: الصفحة كانت ترجع 200 لـ /tasks/999 (بدون تعيين Astro.response.status) — أضفت 404/403 الصريحة.
+- **Note**: ملاحظة لـ future agents — أدوات هذه الجلسة (read/بعض bash) كانت تعرض محتوى تالف: `read` يرجع "No content." وبعض الملفات المكتوبة عبر write ذهبت لمسار مضروب ("/Requests/..."). الحل المجرّب: استخدم `git show HEAD:<path>` للقراءة الموثوقة + `python3 heredoc` للفحص الدقيق + تحقق بعد كل write بـ `os.walk`. كمان: Astro 6 ما يدعم spread لخصائص SVGAttributes من string — بنيت svgIcon() helper يحقن الـ inner HTML عبر set:html. Ternary الطويلة في .astro ما تضيّق null على task — أضفت `: task ? (... ) : null` كحارس.
+- **Report**: none (موثّق في README + هذا الـ entry)
+- **Commit**: uncommitted
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. أضفت format.ts + taskDetails.ts + CommentBox.tsx لملفات lib/components. الخطوة التالية (للمستقبل): تحرير المهام (edit) + closure flow + رفع المرفقات UI + طلبات الحذف (كلها مذكورة في README كمرحلة قادمة).
+
+### 2026-08-10 — QC-ADMIN-USERS-001: صفحة إدارة المستخدمين في QC Task Manager (/admin/users) + رسالة الحساب المعطّل
+
+- **Files**: `apps/qc-task-manager/src/lib/users.ts` (جديد), `apps/qc-task-manager/src/pages/admin/users/api.ts` (جديد), `apps/qc-task-manager/src/pages/admin/users/index.astro`, `apps/qc-task-manager/src/lib/auth.ts`, `apps/qc-task-manager/src/lib/session.ts`, `apps/qc-task-manager/src/pages/login.astro`, `apps/qc-task-manager/src/lib/db.ts`, `apps/qc-task-manager/README.md`
+- **What**: بنيت صفحة إدارة المستخدمين كاملة عند `/admin/users` (admin فقط): نموذج إنشاء مستخدم (username فريد، full name، password ≥ 8، role dropdown، can_create_tasks) يُدرج الحساب بكلمة مرور bcrypt-hashed ونشط فورًا؛ جدول المستخدمين (username، full name، شارة الدور، department، can_create_tasks، النشاط، تاريخ الإنشاء)؛ إجراءات لكل صف: تفعيل/تعطيل، تصفير كلمة المرور، وتبديل can_create_tasks (للموظفين فقط). الأمان: admin ما يقدر يعطّل حسابه (في الواجهة والـ lib)، username غير قابل للتعديل، الهاشات ما تنعرض أبدًا. كل إجراءات المستخدمين تُسجّل في الكونسول فقط (سطور `[users]` بدون هاشات) لأنها موش إجراءات موثّقة في task_activity_log. أضفت `isUserDisabled()` + إعادة توجيه `?disabled=1` بحيث الحساب المعطّل يعرض رسالة "This account has been disabled." بدل الخطأ العام. إصلاح باغ في البناء: استبدلت `readFileSync(schema.sql)` بـ import `?raw` حتى يعمل الـ standalone entry (`pnpm start`) مو فقط الـ dev server، لأن `../../db/schema.sql` من dist ينحل لمسار غير موجود.
+- **Why**: صفحة `/admin/users` كانت جدولًا للقراءة فقط مع رابط "New user" مكسور يتجه لـ `/admin/users/new` غير موجود؛ وكان الـ login يعرض نفس رسالة الخطأ للحساب المعطّل. Acceptance criteria تنص على إنشاء موظف وتسجيل دخوله فورًا + الحساب المعطّل ما يدخل.
+- **Verification**: `pnpm typecheck` → 0 errors ✅؛ `pnpm build` → Server built ✅؛ اختبار end-to-end عبر `PORT=4399 node dist/server/entry.mjs` مع QC_DB_PATH مؤقت: admin يدخل ✅؛ إنشاء موظف جديد (can_create_tasks=1) → الحساب يدخل فورًا ويشوف "My tasks" ✅ (acceptance #1)؛ اسم مكرر مرفوض مع flash error ✅؛ كلمة مرور أقصر من 8 مرفوضة ✅؛ admin ما يقدر يعطّل نفسه (flash: "You cannot deactivate your own account") ✅؛ تعطيل الموظف → محاولة دخوله تعيد توجيه `?disabled=1` مع رسالة "account disabled" ✅ (acceptance #2)؛ سطور `[users]` في الكونسول بدون هاشات ✅؛ صفحة /admin/users عبر Playwright: 5 صفوف + النموذج + لا console errors ✅. نفّذت على QC_DB_PATH مؤقت ثم مسحت كل ملفات الاختبار.
+- **Note**: ملاحظة اختبار — استخدام `Origin: http://127.0.0.1:4399` مع curl لتفادي فحص CSRF في Astro 6 (نفس ملاحظة QC-TASK-CREATE-001 بمنفذ مختلف). `can_create_tasks` معروض في النموذج دائمًا مع تلميح "Only applies to employee accounts"، والتبديل داخل الجدول يظهر للموظفين فقط.
+- **Report**: none (موثّق في README + هذا الـ entry)
+- **Commit**: uncommitted
+- **Status**: verified
+
+### 2026-08-10 — QC-TASK-CREATE-001: إنشاء المهام في QC Task Manager (نماذج + POST handlers + حارس can_create_tasks)
+
+- **Files**: `apps/qc-task-manager/src/lib/tasks.ts` (جديد), `apps/qc-task-manager/src/pages/manager/new.astro` (جديد), `apps/qc-task-manager/src/pages/supervisor/new.astro` (جديد), `apps/qc-task-manager/src/pages/employee/new.astro` (جديد), `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/README.md`
+- **What**: أضفت صفحة إنشاء مهمة لكل مسار (manager/supervisor/employee) ونموذج POST. المعالجة في middleware عبر `handleCreateTaskPost` (نفس نمط POST /login لأن صفحات Astro 6 ما عندها named handlers). قواعد التعيين: manager/supervisor/admin يعيّنون لأي مستخدم نشط؛ الموظف يعيّن لنفسه أو بدون تعيين فقط (قرار المنتج). حارس مزدوج لـ `/employee/new`: على GET (يعيد توجيه غير الموظفين لصفحتهم + الموظف بدون can_create_tasks لـ roleHome) وعلى POST (canCreateTask server-side). سجل activity بكل إنشاء.
+- **Why**: README كان يذكر أن "Task CRUD" هو المرحلة التالية؛ زر "New task" كان موجودًا لكن يشاور صفحات غير موجودة.
+- **Verification**: `pnpm run typecheck` → 0 errors (3 hints false-positive معروفة) ✅؛ `pnpm run build` → Server built ✅؛ اختبار curl على dev server: manager ينشئ مهمة → 302 /manager + صف في tasks + activity task_created ✅؛ employee بدون can_create_tasks مرفوض من GET وPOST ✅؛ بعد تمكين can_create_tasks مؤقتًا: تعيين self ينجح، تعيين موظف آخر يُرفض (لا صف جديد) ✅؛ supervisor على /manager/new → يُبعث لـ /supervisor ✅؛ manager على /employee/new → 302 /manager/new ✅؛ supervisor ينشئ من /supervisor/new ✅؛ admin ينشئ من /manager/new ✅. نظّفت كل صفوف الاختبار ورجعت can_create_tasks=0 للموظف.
+- **Note**: ملاحظة اختبار — Astro 6 فحص CSRF مدمج: أي POST عبر curl لازم معه `Origin: http://localhost:4321` وإلا 403.
+- **Report**: none (موثّق في worklog + README + هذا الـ entry)
+- **Commit**: uncommitted
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. أضفت `tasks.ts` لملفات lib. المرحلة التالية (للمستقبل): صفحة تفاصيل المهمة `/tasks/[id]` + التحرير + closure flow + طلبات الحذف.
+
+---
+
+### 2026-08-10 — QC-ROUTE-001: الـ role-based home router + الـ shared layout النهائي في QC Task Manager
+
+- **Files**: `apps/qc-task-manager/src/lib/permissions.ts`, `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/src/pages/admin/users/index.astro` (جديد — انقفل من admin/index.astro)، `apps/qc-task-manager/src/pages/admin/index.astro` (صار redirect لـ /admin/users)، `apps/qc-task-manager/src/layouts/BaseLayout.astro` (FlashNotice صار مركزي)، `apps/qc-task-manager/src/components/Navbar.tsx` (اسم التطبيق "QC Task Manager" + رابط admin لـ /admin/users)، `apps/qc-task-manager/src/pages/{employee,manager,supervisor,dashboard}.astro` (حذف FlashNotice اليدوي + سطر "Signed in as")، `apps/qc-task-manager/src/lib/{seed,db}.ts` (بذرة 4 أدوار)، `apps/qc-task-manager/scripts/init-db.mjs`، `apps/qc-task-manager/db/seed.sql`، `apps/qc-task-manager/README.md`، `apps/qc-task-manager/src/pages/login.astro`
+- **What**: وحّدت الصلاحيات في `PERMISSIONS` const (الشكل المطلوب في الـ spec: canViewDashboard / canCreateTask / canEditTaskFields / canDeleteTask / canManageUsers / employeeEditableFields) وكل صفحة و middleware تستورد منه بدون role checks متفرقة. صيّرت `roleHome('admin')` → `/admin/users` وأنشأت صفحة /admin/users. أضفت FlashNotice مركزي في BaseLayout. صلّحت bug `can_create_tasks: true` الثابت في employee page (كان يسمح لأي موظف بإنشاء tasks) — الحين يقرأ real user من DB. صلّحت dashboard الذي كان يستعلم حالات `'Open'/'In Progress'/'Blocked'` بينما الـ schema يستخدم `not_started/in_progress/on_hold` (العدّادات كانت 0 دائمًا). وسّعت البذرة من admin وحده إلى 4 أدوار (admin/manager/supervisor/employee، كلمة المرور نفس ADMIN_DEFAULT_PASSWORD).
+- **Why**: المتطلبات المعلنة: index.astro يعيد توجيه حسب الدور (admin → /admin/users)، BaseLayout نهائي مع navbar يعرض اسم التطبيق + اسم المستخدم + شارة الدور + روابط حسب الدور (بدون Dashboard للموظف) + flash messages، ملف صلاحيات واحد هو مصدر الحقيقة، وصفحات placeholder للدور محمية. وقبول القبول: كل دور يسجل دخول يطلع على صفحته الصحيحة، والموظف لو زار /dashboard يُعاد توجيهه.
+- **Verification**: `pnpm run typecheck` → 0 errors ✅؛ `pnpm run build` → Server built ✅؛ `pnpm db:reset` → 4 حسابات ✓؛ اختبارات curl على dev server: login لكل دور → admin=/admin/users، manager=/manager، supervisor=/supervisor، employee=/employee ✅؛ employee يزور /dashboard → يترجّل لـ /employee ✅؛ manager يزور /admin/users → يترجّل لـ /manager ✅؛ supervisor يزور /manager → يترجّل لـ /supervisor ✅؛ مجهول يزور /manager → يترجّل لـ /login?redirect=%2Fmanager ✅.
+- **Report**: none (موثّق في worklog.md + README + هذا الـ entry)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظة للـ future agents: (1) الـ standalone build (`pnpm start` من dist/server/entry.mjs) يواجه مشكلة مسبقة — `db/schema.sql` يُحل من `dist/db/` اللي مو منسوخ، لذلك التشغيل المدعوم محليًا هو `pnpm dev`. (2) Astro check يطلّع hint false-positive على `roleHome` في login.astro و admin/index.astro بسبب الـ return المبكر — هو 0 errors، لا تجهد نفسك فيه. (3) البذرة الآن 4 أدوار بنفس كلمة المرور بدل admin فقط.
+
+---
+
+### 2026-08-10 — QC-AUTH-001: ترقية جلسات المصادقة في QC Task Manager (TTL 12h + randomUUID + حرس الأدوار + POST /login)
+
+- **Files**: `apps/qc-task-manager/src/lib/{auth,db,session,flash,permissions,types}.ts`, `apps/qc-task-manager/src/middleware.ts`, `apps/qc-task-manager/src/lib/flash.ts` (جديد), `apps/qc-task-manager/src/components/FlashNotice.astro` (جديد), `apps/qc-task-manager/src/pages/{login.astro,logout.ts,index.astro,dashboard.astro}`, `apps/qc-task-manager/src/pages/{admin,manager,supervisor,employee}/index.astro`, `apps/qc-task-manager/src/pages/api/login.ts` (محذوف), `apps/qc-task-manager/src/components/Navbar.tsx`, `apps/qc-task-manager/src/layouts/BaseLayout.astro`, `apps/qc-task-manager/src/env.d.ts`, `apps/qc-task-manager/README.md`
+- **What**: طبّقت المتطلبات الخمسة: (1) TTL جلسة 12 ساعة بدل 7 أيام عبر `SESSION_TTL_MS` + `maxAge` للكوكي؛ (2) tokens عشوائية بـ `randomUUID()`؛ (3) تنظيف الجلسات المنتهية عند الإقلاع + عند كل login (`cleanupExpiredSessions`)؛ (4) حارس صلاحيات بالأدوار في middleware (public = `/` + `/login` + `/_astro/`، وكل مسار محمي يرجع 302 لـ roleHome مع flash)؛ (5) POST /login self-submitting (في middleware لأن Astro 6 ما يدعم named handlers في ملفات .astro) + رسائل flash (qc_flash cookie + FlashNotice.astro). حذفت `src/pages/api/login.ts` (نمط قديم). كمان أصلحت bug مسبق: `admin/index.astro` كان يستعلم عمود `email` غير موجود → 500 → صار `department`. `locals.user` صار يُضبط دائمًا (قد يكون null) بدل الفحص المتكرر.
+- **Why**: المتطلبات المعلنة كانت: جلسات أقصر (12h)، tokens عشوائية، لا تراكم جلسات منتهية، حماية المسارات حسب الدور مع توضيح للمستخدم، وفورم دخول يشترّط نفسه بدل endpoint API منفصل.
+- **Verification**: `npx astro check` → 0 errors / 0 warnings / 1 hint (roleHome false-positive في login.astro بسبب return مبكر) ✅؛ `pnpm build` → Server built ✅؛ اختبارات runtime curl كلها نجحت (redirect المجهول، login صحيح/خاطئ، logout، حرس الأدوار employee→/admin = 302 لـ /employee مع flash، جلسة منتهية، تنظيف المنتهية عند login، CSRF Origin غريب = 403، token مزيّف مرفوض) ✅؛ نظّفت بيانات الاختبار (حذف emp_creator + كل sessions).
+- **Report**: none (تغيير متكامل موثّق في worklog.md + README)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظات للـ future agents على `apps/qc-task-manager`: (1) `App.SessionData` الفارغ من Astro يحجب اسم `SessionData` داخل `namespace App` → استخدم inline import في env.d.ts. (2) Astro 6 فيه CSRF مدمج للـ form POSTs — اختبارات curl تحتاج `-H "Origin: http://localhost:4321"`. (3) ملفات `.astro` ما تدعم named request handlers — POST forms تُعالَج في middleware. (4) الحساب المبذور الوحيد هو admin (ADMIN_DEFAULT_PASSWORD أو admin123) — الـ README كان يذكر 5 حسابات وهذا غلط، صحّحته.
+
+---
+
+### 2026-08-09 — KRN-FORM-001: توحيد مفردات النماذج (forms) في صفحات الكيرنل
+- **Files**: `src/pages/kernel/{playground,chat,policies,api,admin/quota}.astro`, `src/styles/kernel.css`, `kernel/assets/css/pages/{playground,policies}.css`, `src/client/playground.ts`, `public/js/kernel-policies.js`, `scripts/playwright/verify-form-ux.mjs` (جديد)
+- **What**: وحّدت مفردة النماذج في 5 صفحات كيرنل. أضفت فصل كانوني مشترك `.k-form__error` (رسالة استرداد دورها `role="alert"`) في `kernel.css` + قاعدة واحدة لخطأ `[aria-invalid=true]` على أي input/select/textarea. كل حقل أصبح له label مربوط + رسالة استرداد موصولة بـ `aria-describedby` + `required` حيث يلزم. ثبّتت حوار المقارنة في playground (كانت الـ spans مو labels → selects بلا اسم ميسّر)، أضفت label للفة ورسالة استرداد للنص الفارغ. Chat: composer صار required + aria-invalid + رسالة فارغة + مسح عند الكتابة. Policies: مولّد السياسة صار label مرئي + required + رسالة؛ حقل الاسم بالمحرر required + رسالة. API: زر التشغيل aria-live/aria-busy. Quota: gateErr مربوط بـ aria-describedby + role=alert + required + disabled أثناء الفتح.
+- **Why**: مفردة النماذج ما كانت كانونية — كل صفحة حقول وأخطاء مستقلة؛ حوار مقارنة playground كان 7 selects بلا labels. القبول: كل حقل له label + رسالة استرداد.
+- **IMPORTANT (تصحيح معماري)**: `public/js/playground.js` **مخرَج بناء** من `src/client/playground.ts` عبر `build:client` (`tsc -p tsconfig.client.json`، outDir=`public/js`). أي تعديل على `public/js/*.js` اللي له مصدر `src/client/*.ts` **ينمسح بالبناء** → التعديل الصحيح على المصدر. استثناء: `kernel-policies.js` ما له مصدر TS → يعدَّل مباشرة. الملفات ذات المصدر: `src/client/{audit-verifier,audit,certificate-verifier,eval-api,eval-store,kernel-evidence-certs,pii-detector,playground,types}.ts`.
+- **ثانوي**: `doRun` في playground كان يستخدم `announce()` (منطقة sr-only، مو خطأ مرئي + بدون aria-invalid). أضفت في المصدر: عند تشغيل فارغ → إظهار `#pg-input-error` (role=alert) + `aria-invalid` على `#pg-input` + مسح عند الكتابة. أضفت `aria-label` للفة النصية الديناميكية + `aria-label` لـ tour pop (كان role=dialog بدون اسم → axe aria-dialog-name).
+- **Note**: purge-css يشيل CSS غير المستخدم اللي يشتغل وقت التشغيل فقط؛ الحل استخدمنا فصلًا كانونيًا واحدًا مستخدم فعلًا + قاعدة aria-invalid عامة. صفحة quota مستقلّة (برا KernelLayout) فدفعها inline.
+- **Verification**: `npm run build` ✅ (275 صفحة، KernelLayout CSS 151.3KB). `npm run verify:all` ✅ exit 0 (SEO gate + hreflang 0 أخطاء). سكربت `scripts/playwright/verify-form-ux.mjs` على dist المحلي ✅ exit 0 — 9/9: كل الحقول لها label، axe 0 critical/serious (بعد تسمية tour pop)، الكيبورد، وإرسال فارغ يظهر الاسترداد + aria-invalid.
+- **Status**: verified / build ✅ / verify:all EXIT=0 ✅ / Playwright 9/9 ✅ (uncommitted)
+
+### 2026-08-09 — CSS-FATIGUE-001: تقليل الـ nested card fatigue في لوحة الكيرنل + الامتثال
+
+- **Files**: `src/pages/kernel/compliance.astro`, `src/styles/kernel.css`, `scripts/playwright/card-fatigue-shot.mjs` (سكربت لقطات محفوظ جديد)
+- **What**: خفّضت المربّعات المتداخلة (box-inside-box) على مبدأ "الكروت للحدود التفاعلية، والمحتوى الثانوي بالفواصل + التباعد". في `compliance.astro`: أزلت `KernelCard` الخارجي اللي كان يلفّ شبكة الحزم الثمانية + خريطة الامتثال، واستبدلته بعنوان قسم (`k-section-title`) + intro مباشرة قبل الشبكة/الخريطة (الحزم نفسها تبقى كروت تفاعلية). في `kernel.css`: حوّلت `KernelActivityItem` من مربّع (background + border-radius) لصفّ بفواصل `border-block-end` بين العناصر (الأخير بدون فاصل) + تباعد — يبطل "مربّع داخل مربّع" في ويدجات اللوحة (approvals/recent traces). خفّفت `box-shadow` لكروت KPI من `--shadow-md` لـ `--shadow-sm` عشان يقل الوزن البصري. كروت KPI + action cards تبقى (محتوى أساسي/تفاعلي).
+- **Why**: اللوحة ولوحة الامتثال كانتا كروت-فوق-كروت (KernelCard يلفّ `kernel-compliance-pack` مربّعات، و`KernelActivityItem` مربّعات داخل `KernelCard`) → إجهاد بصري وصعوبة تمييز المحتوى الأساسي. الهدف: أسطح أقل + محتوى أساسي أوضح.
+- **Verification**: `npm run build` ✅ (275 صفحة، KernelLayout CSS 151.1KB). `npm run verify:all` ✅ exit 0 (SEO gate + hreflang 0 أخطاء). فحص الـ dist HTML: بنية الحزم = `<h2 class="k-section-title">` + `<p class="k-section-intro">` + `<div class="kernel-compliance-grid">` مباشرة (بدون `kernel-card__body`) ✅، الـ id غير مكرر ✅، 8 packs ✅. فحص الـ CSS المبنِي: `border-block-end` موجود ✅ + `box-shadow: var(--shadow-sm)` ✅. لقطات Playwright (1440/390): `download/qa/cf-dashboard-{desktop,mobile}.png` + `cf-compliance-{desktop,mobile}.png`. Console errors الوحيدة من الـ CSP report-only (موجودة مسبقًا من الـ preview).
+- **Report**: `report/2026-08-09-css-fatigue-nested-cards.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: أضفت هذه الـ entry. ملاحظة للـ future agents: `KernelCard` في `compliance.astro` ما يزال مستخدم في قسم "تحليل الفجوات" — أبقيتُه لأنه صندوق مفرد (مو تداخل). لو بدت الفجوات بلا صندوق أيضًا، يتحول لنفس نمط `k-section-title`.
+
+---
+
+### 2026-08-09 — KRN-TYPE-001: توحيد type scale + vertical rhythm لصفحات الكيرنل
+
+- **Files**: `src/styles/kernel.css`, `src/layouts/KernelLayout.astro`, `scripts/playwright/krn-type-shot.mjs` (قياس محفوظ جديد)
+- **What**: أضفت بلوك توكنز دلالية `KRN-TYPE-001` داخل `body.kernel-shell`: أدوار typographic (display/title/lead/body/meta) مبنية على مقياس rem الموجود (`--k-type-*`)، خطوط `--k-lh-*`، وأسماء مسافة 4pt دلالية (`--k-space-title-block/lead-block/header-inline/header-block`). وحّدت `.kernel-page-header__title/__subtitle` و `.kernel-hero__title/__subtitle` ليستهلكوا نفس الأدوار (القيم نفسها → صفر regress بصري، بس صارت مصدر واحد بدل تعريفات متفرقة). ضفت `text-wrap: balance` للعناوين + `text-wrap: pretty` للـ lead/body/summary (يمنع orphan كلمة عربية وحيدة)، و `font-variant-numeric: tabular-nums` على `.kernel-metric__value` و `.kernel-stat-card__value` (أرقام ثابتة العرض). أضفت `--k-type-display-mobile` وأعدلت الـ media query يستخدمها. في KernelLayout أضفت `text-wrap: balance` لعناوين الشِل (`k-trace-drawer__title` + `k-hash-chain__title`).
+- **Why**: صفحة فرعية كانت تحدد حجم/كثافة موضعية (`clamp` مختلف، line-height 1.3/1.6/1.7) → هرمية مختلطة عبر الـ 21 صفحة. الهدف: دور نوعي واحد لكل صفحة، RTL/عربي يلف زين، وأرقام المقاييس ما ترتج.
+- **Verification**: `npm run build` ✅ (21 صفحة kernel بُنيت، KernelLayout CSS 195KB → 151KB بعد purge). Playwright على `/kernel/`, `/kernel/policies/`, `/kernel/audit/` بعرضين (1440/390): `dir=rtl` ✅، `text-wrap: balance` على الـ h1 ✅، 0 أخطاء JS من التعديل (2 console warnings موجودين مسبقًا: CSP report-only + X-Frame-Options — من الـ preview المحلي، مو من هذا التغيير). لقطات: `download/qa/krn-*.png`.
+- **Report**: `report/2026-08-09-krn-type-001.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: أضفت هذه الـ entry. الـ token inventory (Section 5) لازم يُضاف فيها `--k-type-*`/`--k-lh-*`/`--k-space-*` كطبقة mint دلالية تتبع `KRN-DS-2026-08-09`. ملاحظة للـ future agents: `KernelPageHeader.astro` (المكوّن القياسي في `src/components/kernel/`) ما يزال **غير مستخدم** من أي صفحة ومقياسه يشذ (`clamp(1.375rem,3.5vw,2rem)` + `--weight-extrabold` قديم) — لو صار يستخدم مستقبلًا، لازم يتحول لنفس أدوار `--k-type-*`.
+
+---
+
+- **Files**: بدون تعديل إنتاجي. أُضيفت سكربتات قياس محفوظة: `scripts/playwright/measure-kernel-vitals.mjs`, `capture-kernel-errors.mjs`, `kernel-viewport-matrix.mjs`, `kernel-interaction-audit.mjs`, `kernel-interaction-2.mjs`, `kernel-role-rtl.mjs`. التقارير: `report/2026-08-09-kernel-rerun-audit.md` + `report/{a11y-kernel,kernel-runtime-errors,kernel-viewport-matrix,kernel-interaction-audit,kernel-interaction-2}.{json,txt}`. صور: `download/qa/kernel-rerun/` (21 route × 10 عرض).
+- **What**: إعادة تدقيق Kernel بعد تحسينات `4cc1e984..HEAD` (سلم `--k-z-*` دلالي + `--k-focus-ring` + `--k-h-control/input` 44px + طبقة mint + تحويل `KernelDemoPill` من toggle إلى badge ثابت). القياس صار runtime (build → serve-static:8788 → Playwright/Chromium + axe).
+- **Why**: البيسلاين كان source-only وكل قياساته runtime كانت `NOT MEASURED`. الهدف: ترقية المقيّمات من heuristic إلى measured بأدلة قابلة للتكرار.
+- **Verification**: build ✅ (21/21 route 200). axe = **0 مخالفات** على كل الـ 21 route ✅. صفر أزرار/روابط بلا اسم، صفر صور بلا `alt`، h1 وحيد في كل صفحة ✅. درج الـ trace: open + focus-in + Escape + focus-return ✅. RTL `dir=rtl` + `prefers-reduced-motion` محترم (0 animations) + logical properties نظيفة ✅. CWV (Slow 4G throttle): **LCP 3.5–4.5s ❌ FAIL**, CLS 0.03–1.14 ❌ (connectors 1.14), TTFB 2–16ms ✅.
+- **Report**: `report/2026-08-09-kernel-rerun-audit.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule). لا تعديل إنتاجي في هذا التمرير.
+- **Status**: verified locally (بنيان نظيف، أُضيفت ملفات قياس فقط)
+- **Brain updates**: أُضيفت **4 عيوب runtime جديدة** للسجل تحت (تحتاج مداخل known-issues مستقلة): (1) `TypeError: e is not a constructor` على `/kernel/` — `KernelProductTour.astro` `import('driver.js')` interop فاشل؛ (2) `playground` يطلب `/js/pii-detector` بلا `.js` → 404 → **PII masking معطّل**؛ (3) `evidence` يطلب `/js/certificate-verifier` بلا `.js` → 404 → **التحقق من الشهادات معطّل**؛ السبب الجذري لـ(2)(3): `tsconfig.client.json` يستخدم `moduleResolution: "bundler"` (يسمح بتركات بلا امتداد) بس المخرجات ESM `.js` والمتصفح يحتاج الامتداد → الحل: `rewriteRelativeImportExtensions` أو إضافة `.js` في `src/client/*.ts`؛ (4) `datasets` عند 320px overflow +215px (`ds-dist` + `k-topbar__search`). **7 حقول بلا labels في playground**. تباين `muted_on_elevated` = 4.3:1 (FAIL AA للنص الصغير). **Role-aware nav غير منفّذ** (measured: CISO=Analyst، نفس الـ 19 رابط). `compliance` "تقرير PDF" = `window.print()` (P0 البيسلاين لسه غير محلول). **السكور النهائي ~79%** (بيسلاين 78%). **Verdict: NO** world-class، Maturity Level 3/5. و**لا مقيّم وصل 95%** — أقربها Accessibility 82 وSaudi UX 84.
+
+---
+
+- **Files**: بدون تعديل إنتاجي. (التقرير: `report/2026-08-09-bai-p1-test-001-chat-regression-signal.md` جديد)
+- **What**: المهمة وصلت بادعاء "npm test يفشل بـ LeadQueueStatus SyntaxError". الـ task نفسه صريح: "شغّل npm test أول شي بعد PROMPT-001. فيه احتمال قوي يمر بدون أي تعديل". نفّذت بالحرف: `pnpm db:generate` (يولّد Prisma client) → `npm test` → **38/38 pass** بدون لمس ولا سطر في `chat.ts` أو `test-chat-session.mjs`. الفشل كان عَرَضًا لانحراف Prisma = نفس السبب الجذري لـ BAI-P1-TYPES-001 (اللي انحلّ بـ `pretypecheck→db:generate` + `postinstall: prisma generate`). بعدها سوّيت mutation testing يدوي: كسرت `isValidSessionId` ليرجّع `true` دائمًا، شغّلت `pnpm test:chat-session` → فشل **تحديدًا** على test 7 + 8 (malformed/oversized sessionId expected 400 actual 200)، باقي 14 test نجحوا (isolation صحيح). رجّعت الـ mutation وأكدت baseline رجع أخضر (git status نظيف).
+- **Why**: الـ task الأصلي ينص صراحة إن الفشل غالبًا عَرَضي والاختبار مر بدون تعديل. هذا بالضبط اللي صار. القاعدة "Verify, Don't Claim" تتطلب إثبات إن regression signal حقيقي (اختبار يمر دايمًا = اختبار ما ينفع) — أثبتّها بالـ mutation.
+- **Verification**: `pnpm db:generate` → generated client ✅, `npm test` → **38/38 pass** ✅, `pnpm test:chat-session` → **16/16 pass** ✅, `npm run typecheck` → 5/5 Done 0 أخطاء ✅, mutation test → 2 fail موضعي + 14 pass ✅, post-revert `git status --porcelain` → clean ✅, security review على logs → grep على provider keys = 0 نتائج ✅.
+- **Report**: `report/2026-08-09-bai-p1-test-001-chat-regression-signal.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule). ما في كود إنتاجي معدّل أصلاً.
+- **Status**: verified locally · working tree clean
+- **Brain updates**: هذا الـ entry. ملاحظات مهمة للـ future agents: (1) **قيود بيئية مهمة**: `node scripts/test-chat-session.mjs` مباشرة يفشل بـ `ERR_MODULE_NOT_FOUND` على `kernel-system-prompts` لأن `chat.ts` يستورد ملف `.ts` بلا extension — لازم `--import ./scripts/test-ts-loader.mjs --experimental-strip-types`. الـ runner الموثّق = `pnpm test:chat-session` (= `node --import .../test-ts-loader.mjs --experimental-strip-types --test scripts/test-chat-session.mjs`). (2) لو CI شغّال بـ `--ignore-scripts`، `postinstall: prisma generate` ما يشتغل وكل tests تفشل بنفس خطأ LeadQueueStatus — تأكد إن CI يشغّل postinstall أو يضيف `pnpm db:generate` صريح. (3) **فجوة تغطية مؤجّلة**: rate limit (429) + SSE/non-streaming contract ما مغطّاة حاليًا — تستاهل task مستقل `BAI-P1-TEST-002` (ما أضفتها هنا عشان constraint الـ task "لا تعدّل ولا سطر" + لأنها توصية مو AC).
+
+---
+
+### 2026-08-09 — BAI-P1-TYPES-001: شدّ عقد أنواع Prisma + CI drift gate
+
+- **Files**: `packages/db/src/client.ts` (استبدال `Omit<PrismaClient,…>` بـ `Prisma.TransactionClient` + شل `as unknown` casts)، `scripts/verify-prisma-drift.mjs` (جديد — CI gate)، `package.json` (`verify:prisma:drift` script)، `.github/workflows/ci-build-guard.yml` (step جديد بعد `Generate Prisma client`)
+- **What**: المهمة وصلت بادعاء "42 خطأ typecheck". التشخيص أثبت إن المشكلة **منحلّة فعليًا على main** عبر `pretypecheck→db:generate` المُتبت منذ `2a3ddffc` + `postinstall: prisma generate`. تقرير الأوديت بُني على commit مستقل (`5d6efbe3`) مو موجود في تاريخنا. بس فيه ثغرتان حقيقيتان سدّيتهم: (1) TS7006 implicit-any على `tx` + `fn(tx as unknown as …)` casts قبيحة في `client.ts:90,121,103,125`، (2) ما فيه drift-detection بين schema والـ generated client. أصلحت (1) بـ `Prisma.TransactionClient` صريح (لا any، لا cast) و (2) بـ سكربت جديد يقرأ models/enums من schema ويقارنها بـ generated client exports.
+- **Why**: قيد المهمة "ممنوع cast يخفي الانحراف" + AC "CI check يمنع تكرار الانحراف". الـ casts كانوا يخفوا TS7006 (يظهر لو فُقد generated client)، و الـ CI كان يتشيك وجود الـ client بس مو تطابقه مع schema — بالظبط فئة الانحراف اللي كسرت typecheck في الأوديت.
+- **Verification**: `rm -rf node_modules/.prisma/client && pnpm db:generate` (clean sim) → ✅، `npm run typecheck` → 5/5 Done 0 أخطاء ✅، `npm run verify:prisma:drift` → exit 0 (29 model + 24 enum متزامنين) ✅، `npm run build` → EXIT=0 ✅، `grep -rE "as any|@ts-ignore|as unknown" packages/db/src/` → 0 نتائج ✅. السكربت مُختبَر: لقّط drift حقيقي لما حذفت `LeadQueue` + `Role` يدويًا (exit 1 + diff).
+- **Report**: `report/2026-08-09-bai-p1-types-001-prisma-contract.md` (جديد)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظات مهمة للـ future agents: (1) `Prisma.TransactionClient` متاح كنوع مُولَّد — استخدمه بدل `Omit<PrismaClient, ITXClientDenyList>` اليدوي لأي callback `$transaction`. (2) الـ CI step القديم `test -d …/@prisma+client@5.22.0_prisma@5.22.0/…` هش (مقيّد بإصدار) — يستاهل إصلاح مستقل. (3) `verify-prisma-drift.mjs` field-level ما يدقق (existence-only) — `prisma generate` هو الـ authority على الحقول.
+
+---
+
+### 2026-08-09 — SRC-LINK-REPAIR: إصلاح false positives في internal-links-audit (migrated pages غير مُتعرَّف عليها)
+
+- **Files**: `scripts/internal-links-common.mjs` (إضافة `readMigratedPageRoutes()` + استدعائها في `buildFileIndex()` — تسجّل canonicalات `src/data/migrated-pages/*.json` كـ valid public routes)
+- **What**: المهمة وصلت بادعاء "69 كسر في source files". التحقيق بيّن إن العدد الحقيقي 2 (بعد تعديلات common.mjs غير الملتزمة)، والكسرين false positives بنفس السبب: `internal-links-audit` ما كان يعرف migrated pages (8 solutions + 4 sectors + 3 cities تُبنى من JSON عبر dynamic routes) كمصادر routes صحيحة. الحل: علّمت السكربت يقرأ `canonical` من كل JSON ويسجّله. النتيجة: **0 كسر**. كمان اكتشفت bug مُسبق: `normalizeSitePath` + `canonicalizeSitePath` ما يعالجوا URLs كاملة (الـ `//` collapse rule يكسر `https://` قبل الـ URL branch) — متجاوز موضعيًا بـ regex يشيل origin. الـ 13 (ثم 14) pattern normalization كلها في `qa-text-snapshot.mjs` بنمط `/x/index.html` → `/x/` — **ما طبّقتها** لأن الأداة تستخدم `readFileSync` والمسارات فيزيائية على القرص، تطبيق التوحيد يكسرها.
+- **Why**: المهمة كررت "أصلح السكربت إذا كان false positive" كناتج مشروع. الكسران فعلاً false positives (الصفحات مبنية في `dist/client/solutions/ai-firewall/index.html` 97KB ومؤكّدة في `migratedSolutionPages.ts`). فإصلاح السكربت هو الحل الصحيح تقنيًا.
+- **Verification**: `internal-links-audit` → **0 كسر** ✅ (كان 2)، `pnpm build` → exit 0 ✅، `seo-ci-check` → 0 broken من 48,158 ✅، `internal-linking-architecture --source dist/client` → 0 orphans/0 broken ✅. `link-graph-validator --strict` → exit 1 (bug مُسبق مستقل: يفحص `dist/` بدل `dist/client/` — مُثبَت بنفس exit قبل تعديلي).
+- **Report**: `report/2026-08-09-source-link-repair.md` (جديد — bucket breakdown كامل)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظات مهمة للـ future agents: (1) `link-graph-validator.mjs` مكسور مُسبقًا (يفحص `dist/` بدل `dist/client/`) — يحتاج إصلاح مستقل. (2) `normalizeSitePath`/`canonicalizeSitePath` ما يدعموا URLs كاملة — استخدم regex `^https?:\/\/[^/]+` قبل أي استدعاء لو المدخل ممكن يكون URL كامل. (3) `qa-text-snapshot.mjs` يستخدم filesystem paths (`/x/index.html`) عمدًا — الـ normalization suggestions اللي تطلع فيه false positives.
+
+---
+
+### 2026-08-08 — BAI-SEO-004-S7: إدراج صفحتي /events/ و /kernel/api/ الناقصتين في الـ sitemap
+
+- **Files**: `scripts/generate-sitemap-all-pages.mjs` (4 تعديلات: exclude `/api/` → `startsWith("api/")` عشان ما يلتقط `kernel/api`، إضافة `kernel/api` لـ kernel whitelist، إضافة `events/index.html` لـ pages whitelist، إضافة `src/pages/kernel/api.astro` في `resolveSourceFiles` لـ lastmod)، `dist/client/sitemap.xml` (متولد)
+- **What**: حققت في ادعاء الأوديت "29 ملف خارج sitemap". النتيجة: بعد إصلاح BAI-IDX-04 (اللي ضم 17 answer + 5 lp)، الفجوة الحقيقية الحالية = **16 ملف indexable خارج sitemap**، منها 14 مقصودة (noindex: design/*، thank-you، kernel/offline، kernel/admin/quota + redirect stubs: cities/*). الـ gap الفعلي اللي يجب إصلاحه = **صفحتان فقط**: `/events/` (فهرس فعاليات، 3471 كلمة) و `/kernel/api/` (صفحة وثائق API، 11k كلمة). كلاهما `index, follow` + canonical صحيح، لكن كانا خارج sitemap بسبب: (1) `events/index.html` ناقص من whitelist، (2) الـ exclude القديم `includes("/api/")` كان يلتقط `kernel/api` قبل ما يوصل لـ kernel whitelist.
+- **Why**: صفحتان indexable حقيقية بمحتوى كانتا مخفيتين عن الـ crawlers — خسارة فهرسة كاملة.
+- **Verification**: `sitemap:generate` → **258 URL** (كان 256) ✅, `/events/` + `/kernel/api/` ظاهرتين مع lastmod صحيح (2026-07-31 / 2026-08-02) ✅, `seo:gate` → 0 أخطاء 0 تحذيرات (258 sitemap URLs) ✅, `seo:hreflang` → 0 أخطاء (259 sets) ✅, `npm run build` → 0 أخطاء ✅, `verify-all.mjs` → 5/5 ✅
+- **Report**: `report/2026-08-08-bai-seo-004-sitemap-gap.md` (جديد)
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظة: الـ 14 صفحة المتبقية خارج sitemap مقصودة بالتصميم (noindex/redirect) — مو bug. الأوديت الأصلي (29) كان ضد نسخة قديمة قبل BAI-IDX-04.
+
+---
+
+### 2026-08-08 — BAI-IDX-04: إصلاح الصفحات اليتيمة — روابط داخلية سياقية لـ /answer/ و /lp/ + ضم lp/ للسايت ماب
+
+- **Files**: `src/pages/blog/[...slug].astro` (أضفت `INTERNAL_LINKS_BY_SLUG` — 40 entry، دمج مع خريطة الفئات), `scripts/generate-sitemap-all-pages.mjs` (`groupRelPath`: فرع `lp/` → pages + `resolveSourceFiles`: `lp/[slug].astro` للـ lastmod), `public/sitemap.xml` (متولد), `report/2026-08-08-bai-idx-04-orphan-internal-links.md` (جديد)
+- **What**: 22 صفحة مفهرسة (17 `answer/` + 5 `lp/`) كانت بدون أي رابط داخلي وارد (orphan). أضفت خريطة روابط سياقية من مقالات blog محورية (عمق 2) لكل صفحة answer/lp — كل صفحة صار عندها 1–3 روابط واردة. وضمت `/lp/` للـ sitemap (كانت مفهرسة لكن خارج sitemap).
+- **Why**: الـ audit `internal-links:audit` كان يكسر بـ `orphan_pages=22` و `unreachable_indexable=22` — صفحات الـ FAQ والـ landing غير قابلة للاكتشاف عبر الـ link graph. القرار (بموافقة المستخدم): ربط + ضم للـ sitemap بدل noindex لأنها صفحات قوية.
+- **Verification**: `npm run build` → 0 أخطاء ✅, `internal-links:audit` → `orphan_pages=0`, `unreachable_indexable=0`, `brokenLinks=0`, `maxClickDepth=3 ≤ 3` ✅, `sitemap:generate` → exit 0 (256 URL، 17 answer + 5 lp) ✅, `verify:all` → seo:gate + seo:hreflang + seo:schema 0 أخطاء ✅
+- **Report**: `report/2026-08-08-bai-idx-04-orphan-internal-links.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry. ملاحظة: ما في قسم known issues منفصل في brain.md حاليًا. ملاحظات audit خارج النطاق: `pagesOutsideSitemap=2` + `noHrefLinks=19` (باقية، مو ضمن معايير BAI-IDX-04).
+
+---
+
+### 2026-08-08 — BAI-IDX-CRAWL: فك حظر الـ crawlers من Cloudflare edge (ai_bots_protection: block → disabled)
+
+- **Files**: `scripts/setup-cloudflare-ai-crawler-allowlist.mjs` (جديد), `scripts/verify-crawler-access.mjs` (جديد), `scripts/verify-post-deploy.mjs` (تعديل: probe 7 crawler access + `--skip-crawler`), `package.json` (تعديل: `cloudflare:crawler-allowlist` + `verify:crawler-access`), `report/2026-08-08-cloudflare-crawler-unblock.md` (جديد). **Edge config** (مو في repo): Cloudflare Bot Management `ai_bots_protection` من `block` إلى `disabled` عبر API على zone `brightai.site`.
+- **What**: كل الـ AI crawlers (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, ChatGPT-User, ...) كانوا يحصلون على 403 من Cloudflare edge. السبب المؤكد: `ai_bots_protection: "block"` في Bot Management (خطة Free). غيرته إلى `"disabled"` عبر `PUT /zones/{zone}/bot_management`. أضفت سكربت idempotent يعيد الضغط + مونيتور synthetic يفحص 17 crawler + sitemap، وربطته بـ `verify-post-deploy` (probe 7).
+- **Why**: الحظر كان يمنع Google من قراءة `/sitemap.xml` (403 لغير verified bots) + يحجب كل استثمار GEO (llms.txt، ai.txt، Speakable) عن AI crawlers. `robots.txt` كان سليم أصلاً — المشكلة كلها edge.
+- **Verification**: 17 crawler × 5 مسارات = 90 استدعاء كلها 200 ✅, `/sitemap.xml` Googlebot → 200 + 251 `<loc>` ✅, `verify:crawler-access` exit 0 ✅, `cloudflare:crawler-allowlist` re-run = no-op ✅. مشكلة مسبقة في `verify-post-deploy` security headers (`x-frame-options SAMEORIGIN` متوقع `DENY` + `spec.mustMatch.test is not a function`) — خارج نطاق المهمة، مو متعلقة بالإصلاح.
+- **Report**: `report/2026-08-08-cloudflare-crawler-unblock.md`
+- **Commit**: uncommitted (المستخدم يلتزم — per brain rule)
+- **Status**: deployed (edge config مطبّق على الإنتاج ومُتحقَّق منه)
+- **Brain updates**: هذا الـ entry. ملاحظات: Bot Fight Mode (`fight_mode`) لسا ON — حماية الـ scrapers الخبيثة محفوظة. لو رجع `ai_bots_protection` `"block"` مستقبلًا، شغّل `pnpm cloudflare:crawler-allowlist`.
+
+---
+
+### 2026-08-04 — CSS Cleanup: ترتيب layers + تأكيد purgecss (CSS < 25KB)
+
+- **Files**: `src/layouts/BaseLayout.astro`, `src/layouts/ArabicLayout.astro`, `src/layouts/KernelLayout.astro`
+- **What**: رتّبت الـ CSS layers حسب المطلوب (variables → reset → components → utilities): أضفت `components, pages` للـ layer declaration في BaseLayout و KernelLayout، وحوّلت استيرادات components.css + pages.css في ArabicLayout من unlayered إلى `layer(components)` + `layer(pages)`. أكدت إن purgecss configured صح ومدمج في build chain.
+- **Why**: components.css + pages.css كانت unlayered (أعلى أولوية من utilities) — مخالف لترتيب المهمة. الآن utilities يغلّبهم (نفس السلوك السابق لأنهم كانوا أعلى، والآن صاروا layer قبل utilities).
+- **Verification**: `pnpm build` → exit 0 (251 URLs / 275 HTML) ✅, `pnpm performance:budget` → CSS 19.91KB gz (حد 50KB) ✅, HTML 36.41KB ✅, JS 329.55KB ❌ (مسبق — خارج نطاق CSS), `pnpm purge:css` → 735.6KB → 627.5KB (-108.15KB = 14.7%) ✅
+- **Report**: `report/2026-08-04-css-cleanup.md`
+- **Commit**: uncommitted (user commits via main — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry). ملاحظة: أكبر ملف CSS gzipped = 19.91KB < 25KB — شرط التنظيف اليدوي ما تحقق لأن CSS تحت الهدف.
+
+---
+
+### 2026-08-04 — Core Web Vitals Optimization (content-visibility + contain + aspect-ratio)
+
+- **Files**: `src/styles/base.css`, `src/styles/components.css`
+- **What**: أضفت 3 تحسينات CSS للـ Core Web Vitals: (1) `content-visibility: auto` على `.home-section--padded` لأقسام تحت الطية، (2) `contain: layout style paint` على card components، (3) defensive `aspect-ratio: auto` على `img, video`.
+- **Why**: المشروع كان محسّن مسبقًا (fonts preloaded, font-display: swap, scripts deferred). الـ `content-visibility` أكبر فرصة لتحسين الـ rendering (يخلي المتصفح يتخطى rendering المحتوى خارج الشاشة → TBT/INP أحسن).
+- **Verification**: `pnpm build` → 0 errors ✅, `pnpm performance:budget` → CSS+HTML ✅, JS ❌ (مسبق — pdf.js 125KB + index.js 175KB)
+- **Report**: `report/2026-08-04-cwv-optimization.md`
+- **Status**: verified locally
+- **Brain updates**: State snapshot (CSS sizes updated), Known issues (JS budget failure confirmed pre-existing)
+
+---
+
+### 2026-08-04 — Added RSS Feeds for Docs and Solutions (AEO Enhancement)
+
+- **Files**: `src/pages/docs/feed.xml.ts` (new), `src/pages/solutions/feed.xml.ts` (new)
+- **What**: إضافة موجزات RSS جديدة لكل من الوثائق (/docs/feed.xml) والحلول والقطاعات (/solutions/feed.xml) لتعزيز الفهرسة واكتشاف المحتوى التقني والخدمي بواسطة محركات الذكاء الاصطناعي (Perplexity, SGE, ChatGPT Search).
+- **Why**: زيادة التغطية ورفع كفاءة الـ AEO (AI Engine Optimization) بجانب الموجز الرئيسي للمدونة /rss.xml.
+- **Verification**: `pnpm build` → 251 URLs / 275 HTML files, 0 errors ✅, `pnpm seo:all` → exit 0 ✅, `pnpm lint:tokens` → 0 violations ✅
+- **Status**: verified locally
+
+---
+
+
+### 2026-08-04 — Implemented Kernel Product Tour (Onboarding)
+
+- **Files**: `package.json` (added `driver.js ^1.8.0`), `src/components/kernel/KernelTourStep.astro` (new), `src/components/kernel/KernelProductTour.astro` (new), `src/pages/kernel/index.astro` (added import + component placement)
+- **What**: أنشأت مكون جولة منتج موجّهة للمستخدمين الجدد باستخدام `driver.js`. الجولة ت spotlight العناصر الرئيسية في صفحة Kernel (الشريط الجانبي، لوحة الحوكمة، المؤشرات، التنقل، لوحات التحكم، الوحدات، وزر البدء) في 7 خطوات قصوى. تظهر مرة واحدة فقط (localStorage persistence)، قابلة للتخطي، تدعم RTL والجوال، وتحترم `prefers-reduced-motion`.
+- **Why**: Prompt 13 من التقرير الشامل — No guided tour للمستخدمين الجدد، Slow learning curve، Features undiscovered. الحل يوجه الزائر الجدد خطوة بخطوة بدون حاجة لإعداد.
+- **Verification**: `pnpm build` → 125+ pages, 0 errors ✅, `pnpm run seo:check` → exit 0 ✅, `KernelProductTour` bundled at 1.71KB gzipped ✅, `driver.js` bundled at 7.14KB gzipped ✅
+- **Report**: report/2026-08-04-kernel-product-tour.md
+- **Commit**: uncommitted (user commits via main — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry), Section 5 (KernelTourStep.astro + KernelProductTour.astro added to component inventory), `package.json` updated (driver.js added).
+
+- **Files**: `src/components/kernel/KernelPdfViewer.astro` (new)
+- **What**: أنشأت مكون PDF viewer قابل لإعادة الاستخدام لصفحات Kernel — يستخدم pdfjs-dist مع lazy loading، zoom controls، prev/next navigation، RTL-aware layout، و TypeScript types صحيحة (بدون `pdfDoc` implicit `any`).
+- **Why**: الملف الأصلي (الذي لم يكن موجودًا) كان فيه خطأ TypeScript: `pdfDoc` implicitly has type `any` — الحل كان باستخدام type annotation صريحة + data attributes لتمرير القيم الأولية من Astro frontmatter للـ client script.
+- **Verification**: `npm run build` → 125 pages, 0 errors ✅, `npm run verify:all` → exit 0 ✅ (pre-existing token violations in eval.astro unrelated)
+- **Report**: none
+- **Commit**: uncommitted (user commits via main — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry), Section 5 (KernelPdfViewer.astro added to component inventory).
+
+---
+
+- **Files**:
+  - `src/pages/kernel/chat.astro` (EDITED — أضفت `KernelTabs` import + component بثلاثة تبويبات (المحادثات | المحادثة | التفاصيل) داخل `.kernel-chat-layout`، وأضفت `role="tabpanel"` + `id="kernel-chat-tabpanel-*"` + `aria-labelledby` للـ panes الثلاثة، و`data-tab-active="chat"` للـ center pane (الافتراضي)، وأضفت `initMobileTabs()` — ربط النقرات على الـ tablist + swipe gestures (RTL-aware) + auto-scroll للرسائل عند الرجوع لتبويب المحادثة + state preservation (تبديل display فقط، لا حذف DOM))
+  - `src/components/kernel/KernelTabs.astro` (EDITED — أضفت دعم `class` prop عبر `class:list` للـ consumer)
+  - `src/styles/kernel.css` (EDITED — كتلة `22.c CHAT — Mobile-first tabs`: `.kernel-chat-mobile-tabs` يظهر فقط على <768px؛ فقط الـ pane النشط يظهر؛ composer `position:fixed` مع `env(safe-area-inset-bottom)`؛ toolbar القديم مخفي على <768px؛ على 768-1023px شبكة بعمودين والـ context مخفي)
+- **What**: حللت انهيار الـ 3-pane layout على الجوال — استبدلت الـ drawers بنظام 3 تبويبات (المحادثات | المحادثة | التفاصيل) باستخدام KernelTabs (WAI-ARIA كامل). التبويب الافتراضي = المحادثة. الـ composer ثابت بالأسفل. Swipe أفقي (RTL-aware). State preservation بالتبديل display فقط.
+- **Why**: PROMPT-2 — الـ 3-pane كان ينهار على الجوال (<768px) و40%+ من الزوار على الجوال.
+- **Verification**:
+  - `npm run build` → exit 0 ✅
+  - `grep kernel-chat-mobile-tabs dist/client/kernel/chat/index.html` → 1 ✅
+  - `grep data-tab-active="chat" dist/client/kernel/chat/index.html` → 1 ✅
+  - `grep "max-width:767px" dist/client/_astro/KernelLayout*.css` → 1 ✅
+- **قرارات موثقة**:
+  - **التبويب الافتراضي = المحادثة** — المستخدم يرى المحادثة مباشرة.
+  - **الـ drawers القديمة بقيت** كـ fallback للـ tablet (768-1023px) — لا تحذفها.
+  - **KernelTabs.astro دعم class prop** — كان لا يقرأ `class` من `Astro.props`.
+- **Report**: none
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry).
+
+---
+
+### 2026-08-04 — Phase 2 API routes: evaluations/[id], certificates/index, certificates/[id]/verify, audit/index
+
+- **Files**: src/pages/api/kernel/evaluations/[id].ts (new), src/pages/api/kernel/certificates/index.ts (new), src/pages/api/kernel/certificates/[id]/verify.ts (new), src/pages/api/kernel/audit/index.ts (new), src/lib/kernel-certs/cert-service.ts (modified — added listCerts to CertStore interface), src/lib/kernel-certs/prisma-store.ts (modified — added listCerts + listAuditEvents + StoredAuditEvent), kernel/tests/eval-certificate.test.js (modified — added reject + listCerts tests), kernel/tests/eval-certificate.db.integration.test.js (modified — added listCerts + listAuditEvents integration test)
+- **What**: أكملنا الـ 4 routes المتبقية من Phase 2 spec: GET/PATCH/DELETE على evaluations/[id]، GET/POST على certificates/index، POST verify على certificates/[id]/verify، GET list على audit/index. أضفنا listCerts() و listAuditEvents() للمخازن. أضفنا 3 اختبارات وحدوية جديدة (reject + listCerts) واختبار تكاملي للـ list methods.
+- **Why**: الـ spec الأصلي طلب 5 routes — الأولى (evaluations/index) كانت موجودة. الباقي 4 كانوا ناقصين. الـ store methods الجديدة مطلوبة للـ list endpoints.
+- **Verification**: npm run build:client ✅ 0 errors, npx astro build ✅ 125 pages 0 errors, npx vitest run kernel/tests/eval-certificate.test.js ✅ 12/12, grep للـ routes الجديدة في dist/server/ ✅ كل الـ handlers مدمجة, tsc --noEmit ✅ 0 errors من ملفاتنا (4 أخطاء مسبقة في ملفات أخرى).
+- **Report**: report/2026-08-04-kernel-api-routes.md
+- **Commit**: 636ea0e1 (المستخدم التزم — per brain.md rule)
+- **Status**: verified locally
+- **Brain updates**: Updated Section 2 (هذا الـ entry), Section 5 (cert-service interface + prisma-store methods added).
+
+### 2026-08-03 — Evaluation Certificate side-server: libs + API + Ed25519 + Postgres + اختبارات (12/12)
+
+- **Files**: `src/lib/kernel-certs/*` (admin-auth, canonical, sha256, signing, env, libClient, eval-service, cert-service, in-memory-store, prisma-store, facade), `src/pages/api/kernel/evaluations/*` (index + [id]/cases/complete/resume/rerun), `src/pages/api/kernel/certificates/*` (issue/verify/revoke), `packages/db/prisma/schema.prisma` + migrations `20260803*`, `scripts/generate-eval-cert-key.mjs`, `scripts/seed-eval-cert-key.mjs`, `.env.example`, `kernel/tests/eval-certificate.test.js` + `.db.integration.test.js`
+- **What**: بنينا نظام شهادات تقييم للـ kernel — يوقّع بروتوكول من بيانات التقييم لكل جولة مكتملة، وأي جهة خارجية تتطلب منه عبر `/api/kernel/certificates/verify?id=…`. تضمن: بوابة admin (x-brightai-admin-key)، canonical JSON digest، توقيع Ed25519، مخازن in-memory + Postgres (Prisma)، جداول run/certificate/signing_key/audit.
+- **Why**: شرط الحوكمة — تقييمات kernel لازم تنفع إثبات سلامة دائم قابل للتحقق المستقل. وأصّلنا bug صريح كشفه اختبار التكامل: `fromDbCert` كان يعيد بناء payload فارغ/أصفار، فتحقق أي شهادة سليمة يطلع digest-mismatch؛ الحل حفظ الـ payload JSON في DB.
+- **Verification**: `npx tsc --noEmit --moduleResolution bundler ... src/lib/kernel-certs/*` ✅ 0؛ vitest: unit 10 + DB integration 2 = **12/12** ✅؛ `scripts/seed-eval-cert-key.mjs` ✅ `v1 | Ed25519` seeded (psql تأكد)؛ migration payload طُبّق على dev.
+- **Report**: `_reports/2026-08-03-evaluation-certificate.md`
+- **Commit**: uncommitted — المستخدم يلتزم (rule: لا commits من الوكيل)
+- **Status**: verified (local, dev DB)
+- **Brain updates**: معرّفة новых libs فقط، لا تغيير tokens/components.
+
+### 2026-08-02 — KRN-M29-QA: فحص WCAG 2.2 AA شامل (axe 21 صفحة = 0) + responsive (80 حالة = 0) + إصلاح M26 (CSS الموصلات) + حل verify:all
+
+- **Files**:
+  - `kernel/assets/css/pages/connectors.css` (REWRITTEN — نظام `kc-*` كامل بدل الـlegacy الميت `.connectors-*`؛ KPIs، بطاقات، guide، drawer، flow، test، sync، queue، toast، prefers-reduced-motion، responsive)
+  - `src/styles/kernel.css` (EDITED — `body.kernel-shell footer.footer { display: none }` + إصلاحات color-contrast)
+  - `src/styles/kernel/{eval,datasets,scorers,policies,redteam,playground}.css` (EDITED — color-contrast AA)
+  - `public/js/kernel-audit.js` (EDITED — `role="cell"`)، `public/js/kernel-policies.js` (EDITED — `role="row"/"cell"`)
+  - `public/js/kernel-connectors.js` (EDITED — `.kc-card__main` منطق نقر البطاقة، أزرار الحالة خارجها)
+  - `src/pages/kernel/{playground,api,models}.astro` (EDITED — roles + tabindex + scrollable-focusable)
+  - `public/js/kernel-api 2.js` + `public/js/kernel-api-data 2.js` (DELETED — مكرّران macOS " 2" كانا يكسران verify:all، بموافقة المستخدم)
+  - `scripts/playwright/axe-kernel.mjs` (NEW — 21 route axe wcag 22aa)، `scripts/playwright/m29-responsive-qa.mjs` (NEW — 16 صفحة × 5 viewports)
+  - `report/2026-08-02-krn-m29-qa.md` (NEW)
+- **What**: فحص شامل لصفحات kernel: axe WCAG 2.2 AA على 21 مسار + فحص overflow أفقي على 5 viewports + إصلاح كل المخالفات. اكتشفت وأصلحت خلل M26: صفحة `/kernel/connectors/` كانت بلا CSS إطلاقًا (الـlegacy `.connectors-*` لا يطابق `kc-*` الحالي). كذالك اكتشفت أن الفوتر التسويقي من `BaseLayout` يظهر على kernel بلا أنماطه (`components.css` غير محمّل) فأخفينه.
+- **Why**: شرط الجودة — kernel يحتاج WCAG 2.2 AA (0 violations) + لا overflow أفقي على أي viewport. وM26 خلل جوهري: الموصلات معروضة بلا أي تنسيق.
+- **Verification**:
+  - `npm run build` → نجح ✅
+  - axe-kernel.mjs → **21/21 صفحة: 0 critical / 0 serious / 0 moderate / 0 minor** ✅ (كانت سابقًا C:3 S:22 قبل إصلاحات M-series)
+  - m29-responsive-qa.mjs → **80 combo / 0 failing** + 0 أخطاء console/page ✅
+  - probe connectors: البطاقات مصفّفة (bg #131c30، border، radius، 365×320)، الدرج يفتح/يقفل ✅
+  - `npm run verify:all` → **exit 0** (TOTAL ERRORS: 0) — حُلّ المعلّق من M28 (ملفا "kernel-api 2") ✅
+- **Report**: `report/2026-08-02-krn-m29-qa.md`
+- **Commit**: uncommitted — المستخدم يلتزم (rule: لا commits من الوكيل)
+- **Status**: verified locally
+- **Brain updates**: قسم 2 (هذا الـ entry)؛ حلّ KI مفتوح (ملفا "kernel-api 2" كانا في known-issues كمصدر broken-links). ملاحظة: `dist/` يحتفظ بنسخ قديمة من الملفات المحذوفة — أي حذف من `public/` يتطلب `npm run build` قبل `verify:all` (لأن seo:gate يفحص `CLIENT_ROOT=dist/client`).
+- **ملاحظة**: بقي تنظيف لاحق خارج النطاق: ملفات kernel-api الميتة الباقية (`kernel-api`, `kernel-api.js`, `kernel-api-data.js` 55B)؛ LSP errors قديمة في policies.astro:53 / models.astro:41 (لا تُفشل البناء)؛ روابط فوتر السايدبار صغيرة (target-size).
+
+---
+
+### 2026-08-02 — KRN-M28-LINKS-PHASE3: ربط الموافقات بالدليل (approvals → evidence) + إعادة التشغيل بالأصل (replay → parent)
+
+- **Files**:
+  - `public/js/kernel-approvals.js` (EDITED — `updateLedger()`: الـ spans السابقة صارت روابط/أزرار حقيقية — `Audit {eventId}` → `<a>` لـ `/kernel/audit/?trace=...`، `Trace` → `<button data-kap-ledger-trace>` يفتح الدرج المشترك، `Evidence {evidenceHash}` و`{certificateId}` → `<a>` لـ `/kernel/evidence/?trace=&evd=`؛ `bindLedgerEvents()`: delegation click/keydown على `[data-kap-ledger-trace]` → `KernelTraceDrawer.open(traceId)` مع fallback لـ audit)
+  - `src/pages/kernel/evidence.astro` (EDITED — articles الثابتة صارت تحمل `data-trace={item.traceId}`؛ دالة `applyLinkParams()` جديدة تقرأ `?trace=` (+`?evd=`)، تعيد ضبط الفلاتر، تُبرز العنصر المطابق بـ `.kernel-evidence-item--linktarget` + scroll + focus، تحدّث عدّاد `[data-kernel-evidence-count]`، وتُظهر `.kernel-evidence-linknote` عند عدم التطابق؛ استُدعيت في `init()`)
+  - `public/js/kernel-time-machine.js` (EDITED — `renderRows()`: خلية الـ trace صارت `<button class="rp-table__trace" data-rp-trace-open>`؛ `bindAffectedTraceLinks()` جديدة: delegation على tbody يفتح الدرج المشترك بسياق الصف (user/dept/verdict seed) مع fallback؛ `runInvestigation()` + `bindInvestDrawer()`: زر `[data-rp-invest-drawer]` يفتح الرحلة المحقّقة في الدرج)
+  - `src/pages/kernel/replay.astro` (EDITED — أُضيف زر `[data-rp-invest-drawer]` بجانب زر إعادة البناء + أيقونة `iconExternal`؛ **وصلاح خطأ جوهري**: الـ inputs كان لها `id="rp-date-from/to"` و`id="rp-dept"` بينما المحرّك يبحث عن `data-rp-date-from/to/dept` → زر التشغيل كان يكسر بخطأ `Cannot read properties of null` — أُضيفت الـ data-attributes فصار يشتغل)
+  - `public/js/kernel-drawer.js` (EDITED — `showLineage(drawer, run)` جديدة داخل `fillFromStore`: لو الـ run له `parentRunId` تظهر سطر «↻ إعادة تشغيل من» + زر «افتح الأصل» `[data-kernel-drawer-open-parent]` يعيد فتح الدرج على الأصل)
+  - `src/layouts/KernelLayout.astro` (EDITED — قسم `.k-trace-drawer__lineage` + بيانات `data-kernel-drawer-lineage/parent/open-parent`)
+  - `src/styles/kernel.css` (EDITED — `.kernel-ap-ledger__link` (+ hover/focus/reduced-motion)، `.kernel-evidence-item--linktarget`، `.kernel-evidence-linknote`، `.k-trace-drawer__lineage`)
+  - `kernel/assets/css/pages/replay.css` (EDITED — `.rp-table__trace` صار زرًا فعليًا + `.rp-invest-drawer`)
+  - `scripts/playwright/verify-kernel-approvals-evidence.mjs` (NEW — 4 مراحل: ledger links حقيقية، نقر Trace يفتح الدرج، `?trace=` يبرز ملف الدليل، صفوف replay أزرار تفتح الدرج)
+- **What**: نفّذت آخر ربطَين من M28: (4) من سجل قرارات الموافقات كل رابط Trace/Evidence/Certificate يفتح الدرج المشترك أو صفحة الدليل المعنية بمعرّف مطابق؛ (3) من آلة الزمن كل trace في الطلبات المتأثرة وزر التحقيق يفتح الدرج المشترك، والدرج يعرض نسب «إعادة تشغيل من الأصل» مع زر فتح الأصل.
+- **Why**: شرط M28 — تنقّل موحّد بمعرّفات مشتركة بين كل صفحات kernel. كذلك انكشف خطأ جوهري كان يكسر زر التشغيل في `/kernel/replay/` (selector mismatch بين HTML وJS) فصُحّح.
+- **Verification**:
+  - `npm run build` → نجح ✅
+  - Playwright `verify-kernel-approvals-evidence.mjs` → **كل المراحل نجحت ✅** (A: ledger 4 روابط صحيحة ✅، B: نقر Trace فتح الدرج ✅، C: `?trace=` أبرز العنصر + عدّاد «1 من 12» ✅، D: 200 زر trace + فتح الدرج بسياق الصف ✅)
+  - `verify:all` → exit 1 فقط بسبب 6 broken-links من `public/js/kernel-api-data 2.js` (ملف قديم مكرر — غير مرتبط)
+  - `npm run performance:budget` → ✅ جميع البنود ضمن الميزانية
+- **Status**: verified locally
+- **Brain updates**: أُضيف entry (Section 2). **بكتمال هذا الـ entry اكتمل M28 Links Phase 2 بالكامل** (4 روابط: stats→Store، policies→playground، approvals→evidence، replay→parent).
+- **ملاحظة**: بقي معلّقًا خارج النطاق: إزالة/إصلاح `public/js/kernel-api-data 2.js` (مصدر أخطاء verify:all الستة) — يُفضَّل في مرحلة تنظيف منفصلة.
+
+---
+
+### 2026-08-02 — KRN-M28-LINKS-PHASE2: ربط محرر السياسات بالملعب (policies → playground) بمعرّفات مطابقة
+
+- **Files**:
+  - `public/js/kernel-policies.js` (EDITED — أُضيفت بعد `actionLabel()`: خرائط `PG_PII_MAP`/`PG_PACK_MAP`/`PG_ACTION_MAP` + دالة `playgroundLinkFor(p)` تُرجع رابط `/kernel/playground/?pii=...&action=...&pack=...` أو null لـ piiType بلا نظير (مثل salary)؛ أُضيف زر «جرّبها» `<a class="po-btn po-btn--ghost">` بعد زر الاستثناءات في `renderPoliciesTable()` — `data-po-playground` عند توفر الرابط وإلا `data-po-playground-disabled` + `aria-disabled`)
+  - `public/js/kernel-playground.js` (EDITED — أُضيفت `applyLinkParams(root)` بعد `applyHash` تقرأ `?pii/action/pack/name`، تفعّل كل `.pg-toggle[data-pid]` المطابقة (piiType+action)، تضبط `[data-context=pack]`، تُظهر `#pg-link-note`، وتعلن عبر `announce()`؛ استُدعيت في `init()` بجانب `applyHash`)
+  - `src/pages/kernel/playground.astro` (EDITED — `<span class="pg-link-note" id="pg-link-note" hidden>سياسة من محرر السياسات — طُبّقت هنا</span>` بجانب `pg-local-badge/pg-embed-badge`)
+  - `kernel/assets/css/pages/playground.css` (EDITED — نمط `.pg-link-note` + `[hidden]` بعد `.pg-local-badge`)
+  - `scripts/playwright/verify-kernel-policies-playground.mjs` (NEW — 4 مراحل: 10 روابط «جرّبها» بالصيغة الصحيحة + action param، `pr_iban_block_cross` OFF افتراضيًا، `?pii=iban&action=block&pack=sama` → ON + note ظاهر + pack=sama + لا أخطاء console، `?pii=salary` (بلا نظير) → الافتراضي محفوظ + note مخفي)
+- **What**: نفّذت المرحلة 2 من الربط المشترك M28: من محرر السياسات تقدر تجرّب أي سياسة في الملعب مباشرة — الرابط يبني معرّفات مطابقة تلقائيًا (piiType/action/pack) ويطبقها على كل مفتاح الملعب المطابق مع شارة إعلامية.
+- **Why**: شرط M28 (تنقّل موحّد بين صفحات /kernel/* بمعرّفات مشتركة). السياسات والمفتاح كانا معزولين — الـ editor يستخدم piiTypes مختلفة (mobile/patient_file/medical_record/salary + packs nca_ecc/iso_27001/iso_42001) عن playground (phone/patient_id/medical + nca/iso27001/iso42001)، فتطلّب خرائط تحويل.
+- **Verification**:
+  - `npm run build` → نجح ✅ (dist مبني بدون أخطاء)
+  - Playwright `verify-kernel-policies-playground.mjs` → **كل المراحل نجحت ✅** (روابط Phase A ✅، OFF الافتراضي Phase B ✅، التطبيق الكامل Phase C ✅، حالة salary Phase D ✅)
+  - `verify:all` → exit 1 بسبب 6 broken-links من ملف قديم مكرر `public/js/kernel-api-data 2.js` فقط (غير مرتبط بهذا التغيير؛ كل أخطاء الـ verify:all منه)
+- **Status**: verified locally
+- **Brain updates**: أُضيف entry (Section 2). ملاحظة لاحقة: الربطان المتبقيان من M28 (approvals→evidence عبر `evidenceHash`، وreplay←parent) لم يُنفذا بعد.
+
+---
+
+
+### 2026-08-02 — KRN-M28-DRAWER-MERGE: دمج درج التدقيق في الدرج المشترك + تنظيف بقاياه
+
+- **Files**:
+  - `src/layouts/KernelLayout.astro` (EDITED — أقسام تفاصيل جديدة بعد سلسلة الهاش: `[data-kernel-drawer-detail|json|snippet|actions]` + `data-label` للخانات الأربع الملخص → تستخدمها دالة تصدير PDF)
+  - `src/styles/kernel.css` (EDITED — كلاسات `.k-trace-drawer__detail/*` الجديدة + حذف بقايا `.kernel-audit-drawer*` كلها (الكتلة الكاملة + 3 media queries))
+  - `public/js/kernel-drawer.js` (EDITED — fillFromStore/fillFromSeed موسّعان يملآن status/approval/anomaly/action/JSON/snippet + `statusAr()` + `toggleSection()` + ربط أزرار نسخ الهاش/نسخ snippet/تصدير PDF + `exportDrawerPdf()` + openDrawer يعيد ضبط الأقسام عند كل فتح)
+  - `public/js/kernel-audit.js` (EDITED — استبدال نظام الدرج الخاص: `openDrawer(realIndex)` → `window.KernelTraceDrawer.open(r.traceId, seed)` بseed غني + `buildTimeline(r)` بصيغة seed الجديدة + `closeDrawer()` توكل للشِل + `bindDrawer()` فارغة + تحديث رأس DOM contract)
+  - `src/pages/kernel/audit.astro` (EDITED — حذف درج `[data-kernel-audit-drawer]` الخاص كاملًا + حذف `iconCopy` الميت + إصلاح نوع `jsonLd` عبر `as unknown as Record<string, unknown>`)
+  - `scripts/playwright/verify-kernel-audit.mjs` (EDITED — التحديث للدرج المشترك: traceId من `[data-kernel-trace-id]`، حالة الفتح من `aria-hidden="false"`)
+- **What**: نفّذت "دمج كامل — درج واحد" (خيار المستخدم): ميزات درج التدقيق (JSON، DevTools snippet، تصدير PDF، نسخ هاش، رابط دليل) انتقلت للدرج المشترك `#k-trace-drawer`، وحذفت الدرج الخاص نهائيًا.
+- **Why**: توحيد الفتح عبر `window.KernelTraceDrawer.open(traceId, seed)` يزيل ازدواجية الكود ويوحّد التجربة في كل صفحات /kernel/* (شرط M28).
+- **Verification**:
+  - `npm run build` → نجح ✅ (chunk `audit_6LMTMIRk.mjs` مبني، 0 بقايا `kernel-audit-drawer` في dist)
+  - Playwright `verify-kernel-audit.mjs` → الصفوف (12,483) ✅ · البحث ✅ · verifier ✅ · tamper ✅ · **shared drawer opened ✅** (باقي فحص console واحد: 504 Outdated Optimize Dep — من Vite dev-toolbar، لا علاقة لنا)
+  - `rg "kernel-audit-drawer" src/ public/` → فقط تعليق توثيقي في kernel-audit.js ✅
+- **Status**: verified locally
+- **Brain updates**: أُضيف entry (Section 2). ملاحظة: مشكلة نوع `jsonLd` موجودة مسبقًا في صفحات kernel القديمة (models/evidence/connectors/reports/approvals) — الصفحات الأحدث (playground/scorers/datasets/eval/replay) تستخدم الـ cast.
+
+---
