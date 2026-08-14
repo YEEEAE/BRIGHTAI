@@ -2,12 +2,21 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-12 00:38 +03:00
+last_updated: 2026-08-14 16:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.93
+version: 2.7.94
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-14 — QC-HEALTH-ENDPOINT-001: إضافة `/api/health` (readiness probe) لمدير مهام QC — PROMPT 01 من الـ evidence audit
+
+- **Files**: `apps/qc-task-manager/src/pages/api/health.ts` (جديد)، `src/middleware.ts`، `scripts/verify-security-hygiene.mjs`، `docs/DEPLOYMENT.md`، `.agents/brain.md` (هذا السجل).
+- **What**: أضفت `GET /api/health` عام (مثل `/login`) بدون auth ولا CSRF — GET فقط بلا تغيير حالة، ويعيد `200 { ok:true, service:'qc-task-manager', status:'healthy', schemaVersion:<int> }` حيث `schemaVersion` من جدول `schema_migrations` الحقيقي (`COALESCE(MAX(version),0)` — نفس استعلام validateSchema). عند غياب ملف القاعدة أو عدم تمكن الوصول أو عدم تهيئة الـ schema يرجع `503 { ok:false, status:'unhealthy', reason:<رسالة ثابتة قصيرة> }`. الـ reasons ثابتة: `database unavailable` / `schema not initialized` — الـ handler **ما يسجل أي شيء** ولا يضع مسارات/env/أسرار في الاستجابة (catch صامت لأن رسائل الاستثناء قد تحمل مسارات). أضفت `/api/health` لـ `PUBLIC_PATHS` في middleware (مع توثيق أنه read-only ولا ينشئ القاعدة أبدًا)، واستثنيت الملف من فحص `requireApiUser` في `verify-security-hygiene.mjs` عبر `PUBLIC_API_ROUTES` (فحص الباقي باقي على حاله — CSRF للـ POST و [id] و query()). وثّقت الـ endpoint في DEPLOYMENT.md كـ `healthCheckPath: /api/health` مع أمثلة 200/503.
+- **Decision (مهم للـ future agents)**: الـ probe **لا ينشئ القاعدة أبدًا** — الملف ناقص = 503 حتمي (قرص فارغ/ملف منقول = "not ready" صادق). جرّبت تهيئة القاعدة عند إقلاع الخادم عبر module-scope في middleware، لكن اكتشفت أن Astro standalone **لا يقيّم middleware عند الإقلاع** (يقيّمه عند أول طلب) — وأي auto-create عند أول طلب يكسر حتمية "missing → 503" (أول probe يخلق القاعدة ويرجع 200). لذلك القاعدة تنشأ من التطبيق نفسه عند أول طلب يمسّ القاعدة (أول POST /login) — نفس السلوك الكسول الأصلي — والـ health يرجع 503 إلى أن يوجد الملف، وهذا سلوك readiness صحيح موثق في DEPLOYMENT.md (بعد أول deploy، القرص الدائم يحتفظ بالقاعدة فتصير الـ deploys اللاحقة healthy فورًا).
+- **Verification**: `pnpm --filter @brightai/qc-task-manager typecheck` → **0 errors / 0 warnings / 13 hints** ✅؛ `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` → **Server built** ✅؛ `verify-security-hygiene.mjs` → **passed** ✅؛ `architecture-guard.mjs` → **passed** ✅؛ `pnpm --filter @brightai/qc-task-manager test` (كل السلاسل) → **exit 0** ✅. **اختبار حي على build**: قاعدة مؤقتة `/tmp/health-test.db` (db:init أولًا مثل عرف الـ e2e) → `200` مع `schemaVersion:10` وبلا أي مسار/سر في الجسم (scan نظيف) + headers أمنية كاملة (CSP/nosniff/DENY/no-store)؛ نقلت الملف → `503` + الخادم **حي** بعده و`/login` رجع 200؛ أرجعته → 200. مسار جديد بدون ملف → `503` حتمي بدون إنشاء. `POST /api/health` → 404 (بلا handler — GET only). مجهول → 200/503 مباشر بدون 302 لجدار الدخول.
+- **Notes**: ملاحظة بيئية — الـ background servers اللي تشتغل من أداة الـ terminal تموت بين استدعاءات الأدوات (قتل العملية عند انتهاء الأمر الأب)، فاختبارات الـ live server لازم تشغّل الخادم والـ curl بنفس الأمر/السكربت (نمط e2e-acceptance). `render.yaml` ما زال بلا خدمة QC (PROMPT 02 — قرار نشر للمستخدم). لم أعدّل `.github/workflows/` ولا `.env*` ولا push.
+- **Status**: verified locally (typecheck + build + guards + full test suite + live 200/503/restore + leak scan). لا commit ولا push — المستخدم يلتزم.
 
 ### 2026-08-14 — QC-AUDIT-EXEC-001: تنفيذ تدقيق Evidence-First كامل + تسليم تقرير وبرومبتات تنفيذية
 

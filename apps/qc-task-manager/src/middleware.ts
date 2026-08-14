@@ -1,7 +1,11 @@
 // Auth guard middleware for QC Task Manager.
-// - Public (no session required): "/", "/login", Astro static assets.
+// - Public (no session required): "/", "/login", "/api/health", Astro static
+//   assets.
 // - All other routes require an active session; anonymous requests are sent to
 //   /login with a `redirect` param so they return where they came from.
+// - /api/health is the public readiness probe: GET-only, no session, no state
+//   change. It is a read-only check and must NEVER create the database, so a
+//   missing database file is reported honestly as 503.
 // - Role-specific prefixes (/admin, /manager, /supervisor, /dashboard) are
 //   enforced here before the page renders, redirecting to the user's role home
 //   with a one-shot flash message when access is denied.
@@ -28,7 +32,7 @@ import { handleLoginPost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
-const PUBLIC_PATHS = new Set(['/', '/login']);
+const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
 
 function isPublic(pathname: string): boolean {
   if (PUBLIC_PATHS.has(pathname)) return true;

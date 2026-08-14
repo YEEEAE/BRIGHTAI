@@ -16,7 +16,7 @@ the service root at the repository root so Render can use the workspace lockfile
 | Node version | 22 LTS (`NODE_VERSION=22`) |
 | Build command | `pnpm install --frozen-lockfile && NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` |
 | Start command | `pnpm --filter @brightai/qc-task-manager start` |
-| Health check | `/login` |
+| Health check | `/api/health` |
 
 The package `start` command runs Astro's Node standalone entry point:
 
@@ -27,6 +27,38 @@ node ./dist/server/entry.mjs
 Do not use `astro preview` as the production start command. Render supplies
 `PORT`; do not hard-code a public port for production. Set `HOST=0.0.0.0` if
 the service environment requires it.
+
+## Health check endpoint
+
+`GET /api/health` is the Render readiness probe (`healthCheckPath: /api/health`).
+It is public (no session or CSRF required, like `/login`) and performs no state
+changes, so Render can call it without a cookie.
+
+- `200` — the SQLite database is reachable and migrated:
+
+  ```json
+  { "ok": true, "service": "qc-task-manager", "status": "healthy", "schemaVersion": 10 }
+  ```
+
+  `schemaVersion` is the latest applied version from the real
+  `schema_migrations` table.
+- `503` — the database file is missing/unreachable or the schema is not
+  initialized:
+
+  ```json
+  { "ok": false, "status": "unhealthy", "reason": "database unavailable" }
+  ```
+
+The response never includes file paths, environment values, or secrets. The
+probe is read-only and never creates the database: it reports `503` whenever
+the database file is missing or unreachable, and `200` only once the file
+exists and is migrated. The database is created by the application on the first
+database-touching request (for example the first login POST), so on a fresh
+deployment verify login once (step 4 below) before expecting the health check
+to report healthy — and after the first deploy the persistent disk keeps the
+database, so later deploys are healthy immediately. A moved/deleted database
+file is reported as `503` — the correct signal for a service that cannot serve
+work without its database.
 
 ## Persistent SQLite disk
 

@@ -28,10 +28,17 @@ check(middleware.includes("X-Content-Type-Options"), 'middleware must set X-Cont
 check(middleware.includes("Referrer-Policy"), 'middleware must set Referrer-Policy');
 check(middleware.includes("X-Frame-Options"), 'middleware must set X-Frame-Options');
 
+// Public, stateless routes are exempt from the session gate by design. The
+// readiness probe (/api/health) must be reachable by infrastructure that has
+// no cookie — it performs a read-only DB check and no state change.
+const PUBLIC_API_ROUTES = new Set(['src/pages/api/health.ts']);
+
 for (const path of files(apiRoot).filter((p) => p.endsWith('.ts'))) {
   const source = readFileSync(path, 'utf8');
   const label = relative(root, path);
-  check(source.includes('requireApiUser('), `${label} must re-check the server session with requireApiUser`);
+  if (!PUBLIC_API_ROUTES.has(label)) {
+    check(source.includes('requireApiUser('), `${label} must re-check the server session with requireApiUser`);
+  }
   if (source.includes('export const POST')) {
     check(source.includes('requireCsrf('), `${label} must enforce CSRF for POST`);
   }
