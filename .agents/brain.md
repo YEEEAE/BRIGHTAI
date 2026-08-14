@@ -9,6 +9,22 @@ agent_version: v2.3
 skills_ready: 7
 ---
 
+### 2026-08-14 — QC-AUDIT-EXEC-001: تنفيذ تدقيق Evidence-First كامل + تسليم تقرير وبرومبتات تنفيذية
+
+- **Files**: `audit/qc/2026-08-14-EVIDENCE-AUDIT.md` (جديد — التقرير الكامل)، `audit/qc/2026-08-14-IMPLEMENTATION-PROMPTS.md` (جديد — 10 برومبتات تنفيذية لإغلاق الفجوات)، `.agents/brain.md` (هذا السجل).
+- **What**: نفّذت برومبت تدقيق QC-AUDIT-AGENT-PROMPT-001 بالكامل read-only: فهرسة `audit/qc/`، استخراج المتطلبات من PROMPTS.md (12) + prompt2.md (18) + prompt3.md، RTM كامل، وفحوصات طازجة.
+- **Verification (طازج اليوم)**: typecheck 0/0/13 ✅؛ `pnpm test` = **265 passed/0 failed** ✅؛ Architecture Guard ✅؛ Security Hygiene ✅؛ `NODE_ENV=production build` → Server built ✅؛ **`pnpm e2e:acceptance` = 386/0** (admin-users 49 + auth-lockout 44 + task-shared 196 + delete-request 39 + dashboard 45 + backup 13 + restart-persistence ✅ — اشتغل في هذه البيئة بعد ما كان EPERM سابقًا)؛ قاعدة طازجة `/tmp`: 29 جدول/51 فهرس/integrity ok/0 FK violations + migrations العشر مطبقة؛ `pnpm lint` الجذر FAIL (كله في dashboard logger.ts:81 — QC بلا lint script)؛ `GROQ_API_KEY` موجود بالبيئة (لم يُستخدم — قواعد التدقيق تمنع الشبكة).
+- **Findings**: Functional 92%، Deployment 35% — **NO-GO إنتاجيًا / Conditional GO محليًا** (نفس P0s: render.yaml بلا خدمة QC، لا /api/health، Groq live غير متحقق) + P1: style-src unsafe-inline، SESSION_SECRET غير مقروء، أسرار تاريخية تحتاج rotate.
+- **Notes**: الـ working tree بقي نظيفًا (تعديل brain فقط)؛ الملفات الجديدة untracked — commit على المستخدم.
+- **Status**: delivered؛ لا commit ولا push.
+
+### 2026-08-14 — QC-AUDIT-AGENT-PROMPT-001: برومبت تدقيق evidence-first لمسار QC
+
+- **Files**: `.agents/brain.md` فقط.
+- **What**: جهّزت للمستخدم برومبت محادثة لوكيل مستقل يقرأ `audit/qc/` ويطابق البرومبتات والتقارير مع التطبيق الفعلي في `apps/qc-task-manager`، ويعطي scorecard بنسب قابلة للتتبع، فجوات مرتبة، ومراجعة UI/UX/A11y/operations بدون تعديل ملفات.
+- **Decision**: البرومبت يفرض الفصل بين implemented وverified محليًا وverified production؛ ولا يسمح بتحويل تقارير/اختبارات قديمة إلى دليل إنتاج.
+- **Status**: delivered in chat; لا تعديل للكود ولا commit ولا push.
+
 ### 2026-08-12 — QC-PRODUCTION-READINESS-AUDIT-001: تدقيق Release/Security/QA/Database/AI Governance شامل — القرار NO-GO
 
 - **Files**: `docs/PRODUCTION-READINESS-REPORT.md`, `.agents/brain.md`.
