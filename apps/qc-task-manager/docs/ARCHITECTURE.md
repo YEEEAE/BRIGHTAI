@@ -3,6 +3,13 @@
 > Concise reference for how `@brightai/qc-task-manager` is put together and how
 > to operate it. For the user-facing guide see the app `README.md`.
 
+## Repository integration
+
+`@brightai/qc-task-manager` is a pnpm workspace package inside the BRIGHTAI
+monorepo (workspace wiring, Astro/deployment surface, and the files that must
+never be modified are in
+[REPOSITORY-AUDIT.md](REPOSITORY-AUDIT.md)).
+
 ## Stack
 
 | Layer | Choice | Why |

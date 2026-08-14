@@ -1,4 +1,5 @@
-// Database-backed unit checks for authentication lockout and notification writes.
+// Database-backed unit checks for authentication lockout, notification writes,
+// and per-user saved search filters.
 // This runs in its own process so QC_DATABASE_PATH is set before src/lib/db.ts
 // evaluates its singleton path.
 
@@ -90,6 +91,86 @@ try {
   });
   const inactiveCount = db.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id = ? AND title = 'Should not arrive'").get(manager.id);
   assert(Number(inactiveCount.n) === 0, 'notifications: inactive recipient is never notified');
+
+  console.log('\n■ Saved filters (per user)');
+  // DB-backed saved-filter round trip + server-side ownership enforcement.
+  // The same lazy dynamic import used by /search (taskSearch.getSearchDb)
+  // resolves to the in-process getDb singleton, so these functions and the
+  // API handler below share this temporary database.
+  const { saveFilter, listSavedFilters, deleteSavedFilter, savedFilterHref } = await import('../src/lib/taskSearch.ts');
+  const { POST: filtersPost } = await import('../src/pages/api/filters.ts');
+
+  // Minimal APIContext for POST /api/filters: same-origin form POST with an
+  // empty cookie jar by default (the CSRF + auth gates run before any parse).
+  function filtersContext({ origin = 'http://qc.test', fields = {} }) {
+    const cookieMap = new Map();
+    const cookies = {
+      get(key) {
+        const value = cookieMap.get(key);
+        return value === undefined ? undefined : { value };
+      },
+      set(key, value) {
+        cookieMap.set(key, value);
+      },
+      delete(key) {
+        cookieMap.delete(key);
+      },
+    };
+    return {
+      request: new Request('http://qc.test/api/filters', {
+        method: 'POST',
+        headers: {
+          Origin: origin,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(fields).toString(),
+      }),
+      url: new URL('http://qc.test/api/filters'),
+      cookies,
+      clientAddress: '127.0.0.1',
+      redirect: (dest) => new Response(null, { status: 302, headers: { Location: dest } }),
+    };
+  }
+
+  const mgrRow = db.prepare("SELECT id FROM users WHERE username = 'manager'").get();
+  const empRow = db.prepare("SELECT id FROM users WHERE username = 'employee'").get();
+
+  // Unauthorized access is denied at the handler before any DB write.
+  const anonSave = await filtersPost(
+    filtersContext({ fields: { action: 'save', name: 'Sneaky', filter_json: '{}', next: '/search' } }),
+  );
+  assert(anonSave.status === 401, 'saved filters: unauthenticated POST is rejected with 401');
+  const crossOrigin = await filtersPost(
+    filtersContext({ origin: 'http://evil.test', fields: { action: 'save', name: 'Sneaky', filter_json: '{}' } }),
+  );
+  assert(crossOrigin.status === 403, 'saved filters: cross-origin POST is rejected with 403');
+  assert(
+    Number(db.prepare('SELECT COUNT(*) AS n FROM saved_filters').get().n) === 0,
+    'saved filters: denied requests never write rows',
+  );
+
+  // Happy path round trip: save → list → apply (href) → owner delete → gone.
+  const filterId = await saveFilter(mgrRow.id, 'Completed only', '{"status":"completed"}');
+  const myFilters = await listSavedFilters(mgrRow.id);
+  assert(
+    myFilters.some(
+      (f) => f.id === filterId && f.name === 'Completed only' && f.filter_json === '{"status":"completed"}',
+    ),
+    'saved filters: save then list returns the row',
+  );
+  const stored = myFilters.find((f) => f.id === filterId);
+  assert(savedFilterHref(stored.filter_json) === '/search?status=completed', 'saved filters: apply href rebuilds the search URL');
+  assert((await listSavedFilters(empRow.id)).length === 0, 'saved filters: a user only lists their own filters');
+  const foreignDelete = await deleteSavedFilter(empRow.id, filterId);
+  assert(
+    foreignDelete === false && (await listSavedFilters(mgrRow.id)).some((f) => f.id === filterId),
+    'saved filters: foreign delete is denied (owner-only)',
+  );
+  const ownerDelete = await deleteSavedFilter(mgrRow.id, filterId);
+  assert(
+    ownerDelete === true && !(await listSavedFilters(mgrRow.id)).some((f) => f.id === filterId),
+    'saved filters: owner delete removes the row (gone)',
+  );
 
   console.log('\nDatabase-backed unit checks passed.');
 } finally {

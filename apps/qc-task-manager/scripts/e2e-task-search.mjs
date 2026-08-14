@@ -403,6 +403,20 @@ try {
   });
   ok(delRes.status() === 302, 'E. delete-filter POST redirects');
   ok(!q('SELECT 1 FROM saved_filters WHERE id = ?', saved.id), 'E. owner can delete the filter row');
+  // Anonymous mutation is blocked at the middleware auth wall (302 → login),
+  // so an unauthenticated caller can never reach the save handler.
+  const anonCtx2 = await browser.newContext();
+  const anonPost = await postForm(anonCtx2, `${BASE}/api/filters`, {
+    action: 'save',
+    name: 'Not allowed',
+    filter_json: '{}',
+    next: '/search',
+  });
+  ok(
+    anonPost.status() === 302 && (anonPost.headers().location ?? '').includes('/login'),
+    'E. anonymous save POST is blocked at the auth wall (302 → login)',
+  );
+  await anonCtx2.close();
 
   // ─────────────────── F. Exports ───────────────────
   console.log('\n── Scenario F: CSV / XLSX / PDF exports ──');

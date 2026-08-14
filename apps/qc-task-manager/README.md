@@ -106,7 +106,6 @@ pnpm install
 # Use an absolute path; the local database is kept in the application folder.
 export QC_DATABASE_PATH="$PWD/apps/qc-task-manager/db/qc_tasks.db"
 export ADMIN_DEFAULT_PASSWORD='replace-with-a-strong-local-password'
-export SESSION_SECRET='replace-with-a-random-secret'
 export NODE_ENV=development
 
 # Explicitly create or upgrade the schema and its first set of accounts.
@@ -122,10 +121,11 @@ does not change an existing password.
 For the full local setup, including secure secret generation and SQLTools,
 see [DATABASE.md](docs/DATABASE.md) and [SQLTOOLS.md](docs/SQLTOOLS.md).
 
-`SESSION_SECRET` is included in the deployment contract. The current session
-implementation uses opaque random tokens stored in SQLite and does not yet
-consume this variable; keep it configured so a future session implementation
-can adopt it without an environment migration.
+`SESSION_SECRET` is **reserved but not implemented**: the session
+implementation uses opaque random tokens stored in SQLite, and the app does not
+read this variable today. It is not required for local development or
+deployment — do not configure it until a future signed-session implementation
+consumes it.
 
 ### Production build & start
 

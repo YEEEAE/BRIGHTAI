@@ -90,8 +90,13 @@ values in the dashboard and never commit their values.
 | `QC_DATABASE_PATH` | `/var/data/qc_tasks.db` on the persistent disk |
 | `QC_BACKUP_DIR` | `/var/data/backups` on the persistent disk |
 | `ADMIN_DEFAULT_PASSWORD` | strong one-time seed password; rotate immediately after first login |
-| `SESSION_SECRET` | high-entropy secret kept stable across deploys; currently reserved because sessions use opaque SQLite tokens |
 | `HOST` | `0.0.0.0` if required by the service environment |
+
+> `SESSION_SECRET` is **reserved but not implemented** — the app does not read
+> it (sessions are opaque random tokens stored in SQLite). It is **not** part of
+> the required deployment contract: do not configure it in the Render
+> environment until a future signed-session implementation actually consumes
+> it.
 
 Generate secrets outside source control, for example:
 
@@ -164,8 +169,9 @@ secrets. Set the values in the Render dashboard before the first deploy:
 `QC_DATABASE_PATH=/var/data/qc_tasks.db`, `QC_BACKUP_DIR=/var/data/backups`,
 `NODE_ENV=production`, plus `GROQ_API_KEY` and `ADMIN_DEFAULT_PASSWORD` as
 secret values. `SESSION_SECRET` is intentionally **not** listed in the
-blueprint: the app does not read it (sessions are opaque SQLite tokens), and it
-should only be added once the documentation alignment lands.
+blueprint: the app does not read it (sessions are opaque SQLite tokens), and
+the documentation marks it as reserved — do not add it until a future
+signed-session implementation consumes it.
 
 If an existing QC service in Render is configured as a Static Site, replace it
 with the Node Web Service configuration above before deploying.
