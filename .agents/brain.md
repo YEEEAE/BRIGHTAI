@@ -9,6 +9,17 @@ agent_version: v2.3
 skills_ready: 7
 ---
 
+### 2026-08-12 — QC-PRODUCTION-READINESS-AUDIT-001: تدقيق Release/Security/QA/Database/AI Governance شامل — القرار NO-GO
+
+- **Files**: `docs/PRODUCTION-READINESS-REPORT.md`, `.agents/brain.md`.
+- **Scope**: تدقيق read-only بدون إضافة Features أو تعديل `.env*` أو workflows أو Git history؛ فحصت build/test/E2E، SQLite/migrations/backups، auth/RBAC/IDOR/CSRF/rate limits/uploads/sessions، Groq server-only، AI governance، QC operations/audit/performance/deployment.
+- **BUILD evidence**: `pnpm typecheck` exit 0 (QC Astro check: 144 files، 0 errors، 0 warnings، 13 hints)؛ `pnpm test` exit 0 (root 16+29+38 = 83)؛ `pnpm build` exit 0 (258 public URLs، 269 HTML، مع duplicate route-collision warnings)؛ `pnpm e2e:acceptance` elevated outside sandbox PASS (49+44+196+39+45+13 + restart persistence)؛ QC suite `pnpm --filter @brightai/qc-task-manager test` = 265 passed/0 failed؛ `pnpm lint` **FAIL** بسبب `@typescript-eslint/no-explicit-any` في `apps/dashboard/lib/observability/logger.ts:81` مع warnings قائمة.
+- **Security/Groq evidence**: `verify-security-hygiene.mjs` PASS؛ لا key-shaped token حاليًا في Git/current files/client bundles/HTML؛ `GROQ_API_KEY` في البيئة الحالية UNSET، لذلك live Groq request **غير متحقق**؛ mocked 429/500/timeout/Zod/prompt-injection/AI-audit tests PASS؛ root `verify:deployment-surface` outside sandbox = 56/57، `/api/ai/chat/` رجع 500 بدون provider config.
+- **Database evidence**: temp DB schema version 10، 10 migrations، 29 tables، 51 indexes، `integrity_check=ok`، وFK check بلا violations؛ migration/backup/restore/retention/E2E backup 13 checks PASS؛ synthetic SQLite 1001-row query plan استخدم attachment index، وconcurrent write انتظر ~5.4s ثم `SQLITE_BUSY` بعد busy_timeout 5000ms.
+- **P0 blockers**: root `render.yaml` يعرّف `brightai-site` فقط ولا يعرّف QC Render service/persistent disk/env؛ لا يوجد QC `/api/health` route (الـ health الموجود لـ dashboard منفصل)؛ Groq live/configuration غير متحقق والـ deployment-surface AI endpoint 500 بدون المفتاح.
+- **P1/P2**: `style-src 'unsafe-inline'` قائم؛ historical provider secrets تحتاج revoke/rotate خارجي؛ distributed rate limiting/load/a11y manual/live production backup restore غير متحقق؛ backup scheduler يطبع `SQLITE_CANTOPEN` أثناء تنظيف temp DB؛ duplicate route warnings وfindings full-scan query plan مرشحات تحسين.
+- **Decision**: **NO-GO**. لا يصح استخدام `Production Ready`؛ التقرير يفرق بين Implemented + Tested + Verified محليًا وبين verified production. لا commit ولا push؛ المستخدم يراجع ويلتزم بنفسه.
+
 ### 2026-08-12 — QC-GROQ-CONFIG-001: اعتماد GROQ_MODEL بدون حفظ المفتاح
 
 - **Files**: `apps/qc-task-manager/src/lib/ai/provider.ts`, `docs/AI-ARCHITECTURE.md`.

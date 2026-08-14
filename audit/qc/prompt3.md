@@ -22,9 +22,1741 @@ llama-3.3-70b-versatile
 
 ---
 
+# المجموعة الأولى — البنية الأساسية + الأمان + قاعدة البيانات
+
+هذي البرومبتات من `00 → 06`. شغّلها بالترتيب.
+
+# PROMPT 00 — MASTER BASELINE & IMPLEMENTATION AUDIT
+
+أنت Senior Staff Engineer + Solution Architect + Security Engineer + QA Architect متخصص في:
+
+Astro 6
+Node.js SSR
+TypeScript
+SQLite
+RBAC
+QC Operations
+Compliance Systems
+AI Governance
+Groq API
+
+المشروع:
+`YEEEAE/BRIGHTAI`
+
+التطبيق المستهدف فقط:
+
+`apps/qc-task-manager/`
+
 ---
 
+## IMPORTANT
 
+لا تعِد بناء أي شيء موجود.
+
+لا تنشئ duplicate business logic.
+
+لا تستبدل architecture الحالي بدون سبب.
+
+اعتبر الكود الحالي Source of Truth.
+
+استخدم الوثائق الحالية كمراجع فقط.
+
+راجع:
+
+* `audit/qc/`
+* `apps/qc-task-manager/docs/`
+* `docs/superpowers/`
+
+---
+
+# 1. FULL CODEBASE ANALYSIS
+
+حلل:
+
+* package.json
+* src/
+* db/
+* migrations
+* API routes
+* Astro pages
+* React components
+* authentication
+* authorization
+* task-policy
+* validation
+* activity logging
+* attachments
+* notifications
+* backup
+* tests
+* E2E
+* deployment
+* environment configuration
+
+---
+
+# 2. EXISTING FEATURES
+
+اكتشف ما هو موجود فعليًا.
+
+صنف كل feature:
+
+IMPLEMENTED
+PARTIAL
+MISSING
+BROKEN
+NEEDS VERIFICATION
+
+---
+
+# 3. ARCHITECTURE
+
+حدد:
+
+* Frontend
+* SSR
+* API
+* Database
+* Authentication
+* Authorization
+* Domain Layer
+* Services
+* AI Layer إن وجدت
+* File Storage
+* Audit
+* Notifications
+
+---
+
+# 4. DATABASE
+
+حدد:
+
+* tables
+* indexes
+* foreign keys
+* constraints
+* migrations
+* schema version
+* backup mechanisms
+
+---
+
+# 5. SECURITY
+
+افحص:
+
+* IDOR
+* CSRF
+* RBAC
+* session security
+* upload security
+* secrets
+* environment variables
+* API authorization
+* rate limiting
+* sensitive logging
+
+---
+
+# 6. AI READINESS
+
+حدد جميع الأماكن التي يمكن أن تستفيد من AI:
+
+* Task analysis
+* QC Finding analysis
+* RCA assistance
+* CAPA assistance
+* Management summaries
+* Evidence analysis
+
+لكن لا تضف AI الآن.
+
+---
+
+# 7. OUTPUT
+
+أنشئ:
+
+`apps/qc-task-manager/docs/MASTER-BASELINE-AUDIT.md`
+
+يتضمن:
+
+Architecture
+Features
+Database
+Security
+Testing
+AI readiness
+Technical debt
+Missing features
+Recommended execution order
+
+وأعط:
+
+CORE COMPLETION %
+SECURITY %
+TESTING %
+DATABASE %
+AI READINESS %
+PRODUCTION READINESS %
+OVERALL %
+
+لا تعدل الكود في هذه المرحلة.
+
+شغّل فقط أدوات القراءة والتحليل والاختبارات الموجودة.
+
+# PROMPT 01 — PRODUCTION DATABASE MIGRATIONS
+
+اعتمد على:
+
+`docs/MASTER-BASELINE-AUDIT.md`
+
+طوّر Database Migration Architecture حقيقية لتطبيق:
+
+`apps/qc-task-manager/`
+
+---
+
+# GOAL
+
+منع اختلاف:
+
+Application Code
+Database Schema
+Existing SQLite Database
+
+---
+
+# IMPLEMENT
+
+أنشئ:
+
+`db/migrations/`
+
+بنظام sequential migrations:
+
+001_initial
+002_xxx
+003_xxx
+...
+
+أنشئ:
+
+`schema_migrations`
+
+ويحتوي:
+
+version
+name
+checksum
+applied_at
+
+---
+
+# RULES
+
+1. لا تعمل migration مرتين.
+2. لا تفقد البيانات.
+3. migrations يجب أن تكون deterministic.
+4. سجل failures.
+5. تحقق من foreign keys.
+6. تحقق من schema version عند startup.
+7. امنع destructive migration غير المقصودة.
+8. migration history يجب أن تكون واضحة.
+9. Backup قبل migrations الخطرة.
+10. لا تعتمد على schema.sql وحده لتتبع history.
+
+---
+
+# COMPATIBILITY
+
+اختبر:
+
+Fresh DB
+Existing DB
+Upgrade DB
+Repeated migration
+Failed migration
+Recovery
+
+---
+
+# TESTS
+
+أضف اختبارات:
+
+Migration
+Rollback/failure
+Data preservation
+FK integrity
+Schema version
+
+---
+
+# DOCUMENTATION
+
+حدّث:
+
+`docs/DATABASE.md`
+
+وأنشئ:
+
+`docs/MIGRATIONS.md`
+
+---
+
+# VERIFICATION
+
+شغّل فعليًا:
+
+pnpm typecheck
+pnpm test
+pnpm build
+
+لا تدّعي نجاح شيء لم يتم تشغيله.
+
+# PROMPT 02 — COMPLETE SECURITY HARDENING
+
+نفذ Security Hardening شامل.
+
+لا تكسر Business Rules الحالية.
+
+---
+
+# AUTHENTICATION
+
+راجع:
+
+* Session fixation
+* Session rotation
+* Expiration
+* Logout
+* Password handling
+* Login attempts
+* Account lockout
+
+---
+
+# AUTHORIZATION
+
+اختبر جميع الأدوار:
+
+Admin
+Manager
+Supervisor
+Employee
+
+اختبر:
+
+Horizontal privilege escalation
+Vertical privilege escalation
+IDOR
+
+خصوصًا:
+
+Task
+Comment
+Evidence
+Finding
+CAPA
+Reports
+Users
+Audit logs
+
+---
+
+# FIELD LOCKING
+
+يجب أن يكون server-side.
+
+راجع:
+
+title
+description
+department
+assigned_to
+due_date
+priority
+recurrence
+checklist
+dependencies
+
+لا تثق بالـUI.
+
+---
+
+# API SECURITY
+
+طبّق عند الحاجة:
+
+CSRF
+Rate limiting
+Request validation
+Body limits
+Secure headers
+Content-Type validation
+
+---
+
+# FILE SECURITY
+
+تحقق من:
+
+Extension
+MIME
+Magic bytes
+File size
+Filename normalization
+Path traversal
+Hash
+
+لا تسمح executable files.
+
+---
+
+# SECRET SECURITY
+
+ممنوع:
+
+API keys داخل source code.
+
+ممنوع:
+
+API keys داخل frontend.
+
+ممنوع:
+
+API keys داخل logs.
+
+ممنوع:
+
+API keys داخل Git.
+
+---
+
+# GROQ SECURITY
+
+أنشئ environment variable:
+
+`GROQ_API_KEY`
+
+والـmodel:
+
+`llama-3.3-70b-versatile`
+
+يجب أن يكون استدعاء Groq:
+
+SERVER SIDE ONLY.
+
+لا ترسل:
+
+`GROQ_API_KEY`
+
+إلى client bundle.
+
+لا تضعه في:
+
+React props
+HTML
+Astro page data
+public/
+localStorage
+sessionStorage
+
+---
+
+# ENVIRONMENT
+
+إذا كان `.env` موجودًا:
+
+أضف المتغير له محليًا.
+
+إذا كان `.env.example` موجودًا:
+
+أضف:
+
+`GROQ_API_KEY=`
+
+بدون القيمة السرية.
+
+إذا كان `.gitignore` لا يحمي `.env`:
+
+أصلحه.
+
+إذا اكتشفت secret committed سابقًا:
+
+لا تكتفِ بحذفه من الملف الحالي؛ اعتبره compromised ووضح ذلك في التقرير.
+
+---
+
+# OUTPUT
+
+أنشئ:
+
+`docs/SECURITY-AUDIT.md`
+
+مع:
+
+PASS
+FAIL
+FIXED
+RISK
+
+ثم شغّل:
+
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm e2e:acceptance
+
+# PROMPT 03 — COMPLETE AUTOMATED TESTING
+
+ارفع Testing Architecture إلى Production Grade.
+
+---
+
+# UNIT TESTS
+
+اختبر:
+
+task-policy
+status transitions
+field locking
+permissions
+validation
+recurrence
+dependencies
+checklists
+SLA
+risk
+findings
+CAPA
+workflow
+AI validation
+
+---
+
+# DATABASE TESTS
+
+اختبر:
+
+constraints
+foreign keys
+indexes
+migrations
+transactions
+concurrency
+data integrity
+
+---
+
+# API TESTS
+
+لكل endpoint اختبر:
+
+Admin
+Manager
+Supervisor
+Employee
+Unauthenticated
+
+---
+
+# SECURITY TESTS
+
+اختبر:
+
+IDOR
+role escalation
+field tampering
+unauthorized downloads
+unauthorized reports
+unauthorized audit access
+
+---
+
+# E2E
+
+اختبر:
+
+Login
+Create Task
+Assign
+Update
+Comment
+Checklist
+Evidence
+Completion
+Reopen
+Delete Request
+Approval
+Notification
+Dashboard
+Reports
+
+---
+
+# QC E2E
+
+أضف لاحقًا سيناريوهات:
+
+Finding
+CAPA
+RCA
+SLA
+Escalation
+Approval
+
+---
+
+# AI TESTS
+
+لا تستخدم live Groq API في كل test.
+
+أنشئ provider abstraction يسمح بـmock provider.
+
+اختبر:
+
+Valid AI response
+Malformed response
+Timeout
+429
+500
+Network failure
+Invalid JSON
+Schema validation
+
+---
+
+# OUTPUT
+
+أنشئ:
+
+`docs/TEST-COVERAGE-REPORT.md`
+
+استخدم أرقام حقيقية من الاختبارات.
+
+لا تكتب PASS بدون تشغيل الاختبار.
+
+# PROMPT 04 — BACKUP & DISASTER RECOVERY
+
+طوّر Backup/Restore.
+
+---
+
+# BACKUP
+
+احفظ:
+
+SQLite DB
+Schema version
+Application version
+Timestamp
+Checksum
+
+استخدم consistent SQLite snapshot.
+
+---
+
+# VERIFY
+
+بعد إنشاء backup:
+
+Create temporary DB
+Restore
+Run integrity_check
+Run foreign_key_check
+Check schema version
+Compare important record counts
+
+النتيجة:
+
+PASS
+FAIL
+
+---
+
+# RETENTION
+
+أضف configurable retention.
+
+---
+
+# ADMIN
+
+اعرض:
+
+Last Backup
+Backup Size
+Backup Status
+Last Verification
+Manual Backup
+
+---
+
+# RESTORE SAFETY
+
+لا تسمح باستبدال Production DB مباشرة بدون:
+
+confirmation
+backup
+integrity verification
+
+---
+
+# TEST
+
+اختبر:
+
+Backup
+Restore
+Corrupt backup
+Missing file
+Wrong schema
+Failed restore
+
+---
+
+# DOCUMENT
+
+أنشئ:
+
+`docs/DISASTER-RECOVERY.md`
+
+# PROMPT 05 — ARCHITECTURE GUARD
+
+أنشئ Architecture Guard.
+
+---
+
+# SINGLE SOURCE OF TRUTH
+
+راجع الـdomain architecture الحالية.
+
+Business rules يجب أن تكون مركزية.
+
+خصوصًا:
+
+RBAC
+Task policy
+Validation
+Status transitions
+Field locking
+
+---
+
+# TARGET STRUCTURE
+
+إذا كانت متوافقة مع architecture الحالية:
+
+`src/lib/task-policy.ts`
+
+لـTask rules.
+
+وأنشئ/استخدم طبقات واضحة:
+
+`src/lib/sla/`
+`src/lib/workflows/`
+`src/lib/audit/`
+`src/lib/ai/`
+`src/lib/findings/`
+`src/lib/capa/`
+
+---
+
+# RULE
+
+UI لا يحتوي authorization authority.
+
+API لا يثق بالـUI.
+
+AI لا يملك business authority.
+
+Database يحمي invariants المهمة.
+
+Audit server-side.
+
+---
+
+# DUPLICATION
+
+ابحث عن:
+
+duplicate permission logic
+duplicate status logic
+duplicate validation
+duplicate field locking
+duplicate calculations
+
+وحّدها.
+
+---
+
+# DOCUMENT
+
+أنشئ:
+
+`docs/SINGLE-SOURCE-OF-TRUTH.md`
+
+وحدّث:
+
+`docs/ARCHITECTURE.md`
+`docs/SECURITY.md`
+
+---
+
+# المجموعة الثانية — QC Operations
+
+هنا يبدأ تحويل التطبيق من Task Manager إلى **QC Operations Platform**.
+
+# PROMPT 06 — SLA + ESCALATION ENGINE
+
+اعتمد على baseline والـarchitecture الحالية.
+
+أضف SLA Engine.
+
+---
+
+# SLA POLICY
+
+أنشئ configurable policies:
+
+SLA Policy
+Priority
+Department
+Task Type
+Target Duration
+Warning %
+Critical %
+
+مثال:
+
+URGENT
+24h
+Warning 70%
+Critical 90%
+
+---
+
+# TASK SLA
+
+أضف:
+
+sla_policy_id
+sla_started_at
+sla_due_at
+sla_paused_at
+sla_elapsed_seconds
+sla_remaining_seconds
+sla_percent_used
+sla_status
+
+Statuses:
+
+NORMAL
+AT_RISK
+CRITICAL
+BREACHED
+PAUSED
+
+---
+
+# IMPORTANT
+
+لا تفترض أن On Hold يوقف SLA.
+
+اجعل behavior configurable.
+
+Server time هو مصدر الحقيقة.
+
+---
+
+# DASHBOARD
+
+أضف:
+
+SLA Compliance
+At Risk
+Critical
+Breached
+Average Resolution
+Average SLA Consumption
+
+---
+
+# ESCALATION
+
+أنشئ:
+
+escalation_policies
+escalation_events
+
+مثال:
+
+80%:
+Employee
+
+90%:
+Employee + Supervisor
+
+100%:
+Supervisor + Manager
+
+120%:
+Manager + Admin
+
+---
+
+# IDEMPOTENCY
+
+لا ترسل نفس escalation مرتين.
+
+استخدم unique/idempotency key.
+
+---
+
+# NOTIFICATION
+
+ابدأ بـIn-App.
+
+صمم abstraction لاحقًا:
+
+Email
+Teams
+WhatsApp
+
+لا تربط الخدمات الخارجية الآن.
+
+---
+
+# AUDIT
+
+سجل:
+
+Trigger
+Rule
+Recipient
+Timestamp
+Delivery Status
+
+---
+
+# TESTS
+
+Timezone
+On Hold
+Reopen
+Complete
+Overdue
+Duplicate escalation
+Retry
+Failure
+Recovery
+
+# PROMPT 07 — QC FINDINGS + CAPA + RCA
+
+حوّل النظام إلى QC Operations Platform.
+
+لا تستبدل Task model.
+
+---
+
+# FINDINGS
+
+أنشئ:
+
+QC Finding
+
+Fields:
+
+finding_number
+task_id
+inspection_type
+classification
+severity
+risk
+description
+requirement_reference
+owner
+due_date
+status
+closure_evidence
+closed_by
+closed_at
+
+Classification:
+
+Conforming
+Observation
+Minor
+Major
+Critical
+
+Lifecycle:
+
+OPEN
+UNDER_REVIEW
+ACTION_REQUIRED
+VERIFICATION
+CLOSED
+REOPENED
+
+---
+
+# CRITICAL RULE
+
+Critical Finding لا يمكن إغلاقه مباشرة.
+
+يتطلب:
+
+Corrective Action
+Evidence
+Verification
+Approval
+
+---
+
+# CAPA
+
+أنشئ CAPA مرتبطًا بالFinding.
+
+Fields:
+
+problem_statement
+root_cause
+corrective_action
+preventive_action
+owner
+due_date
+evidence
+effectiveness_check
+reviewer
+approval
+
+Lifecycle:
+
+DRAFT
+OPEN
+IMPLEMENTATION
+VERIFICATION
+EFFECTIVE
+CLOSED
+REOPENED
+
+---
+
+# RCA
+
+دعم:
+
+5 Whys
+Fishbone
+Free-form
+
+Fishbone:
+
+People
+Process
+Equipment
+Material
+Environment
+Measurement
+Management
+
+---
+
+# CLOSURE
+
+CAPA لا يغلق بدون:
+
+Action complete
+Evidence
+Effectiveness review
+Approval
+
+---
+
+# RBAC
+
+Employee:
+assigned actions
+
+Supervisor:
+review
+
+Manager:
+approval
+
+Admin:
+full control
+
+---
+
+# AUDIT
+
+كل:
+
+Create
+Update
+Status transition
+Approval
+Rejection
+Closure
+Reopen
+
+يسجل.
+
+---
+
+# UI
+
+أنشئ:
+
+`/findings`
+`/findings/[id]`
+
+وأضف:
+
+Finding Timeline
+RCA
+CAPA
+Evidence
+Approval
+Audit
+
+# PROMPT 08 — EVIDENCE GOVERNANCE + TASK TEMPLATES
+
+طوّر Evidence architecture الحالية.
+
+---
+
+# EVIDENCE REQUIREMENTS
+
+كل Task Type يمكن أن يحدد:
+
+Required Evidence
+Optional Evidence
+Evidence Type
+
+مثال:
+
+Inspection:
+
+Inspection Report REQUIRED
+Photo REQUIRED
+Measurement XLSX OPTIONAL
+
+---
+
+# COMPLETION GATE
+
+إذا Evidence Required ناقص:
+
+لا تسمح بالـcompletion.
+
+يجب أن يكون server-side.
+
+---
+
+# METADATA
+
+Evidence يحتوي:
+
+type
+description
+source
+collected_at
+collected_by
+hash
+size
+mime
+verification_status
+
+---
+
+# HASH
+
+استخدم SHA-256.
+
+---
+
+# STATUS
+
+UNVERIFIED
+VALID
+REJECTED
+AI_REVIEWED
+HUMAN_VERIFIED
+
+---
+
+# FILE SECURITY
+
+تحقق:
+
+MIME
+Magic bytes
+Size
+Extension
+Authorization
+
+---
+
+# TASK TEMPLATES
+
+أنشئ Templates تحتوي:
+
+Title
+Description
+Department
+Priority
+SLA
+Checklist
+Required Evidence
+Recurrence
+Finding Defaults
+Assignment Rules
+
+Lifecycle:
+
+DRAFT
+ACTIVE
+ARCHIVED
+
+---
+
+# SNAPSHOT
+
+عند إنشاء Task من Template:
+
+انسخ configuration snapshot.
+
+لا تجعل Task القديمة تتغير إذا تغير Template.
+
+---
+
+# EXAMPLES
+
+Daily Inspection
+Weekly QC Review
+Monthly Audit
+Material Inspection
+Non-Conformance Review
+
+---
+
+# TESTS
+
+Evidence:
+
+wrong MIME
+wrong signature
+oversized
+duplicate
+unauthorized
+replacement
+
+Templates:
+
+create
+edit
+archive
+instantiate
+snapshot
+
+# PROMPT 09 — APPROVAL WORKFLOW + WORKLOAD MANAGEMENT
+
+أضف Workflow Engine.
+
+---
+
+# RBAC VS WORKFLOW
+
+RBAC:
+
+WHO CAN DO WHAT
+
+Workflow:
+
+WHAT MUST HAPPEN BEFORE CLOSURE
+
+---
+
+# EXAMPLE
+
+Normal Task:
+
+Employee
+→ Completed
+
+Critical Finding:
+
+Employee
+→ Supervisor Review
+→ Manager Approval
+→ Closed
+
+---
+
+# TABLES
+
+workflow_definitions
+workflow_steps
+workflow_instances
+workflow_actions
+
+كل Step:
+
+role
+order
+required
+approval_type
+SLA
+
+---
+
+# REJECTION
+
+عند rejection:
+
+previous state
+reason
+actor
+timestamp
+
+يجب أن يكون واضحًا.
+
+---
+
+# SNAPSHOT
+
+Workflow instance يجب أن يحتفظ بنسخة من definition وقت الإنشاء.
+
+لا تجعل تعديل workflow يؤثر على التاريخ.
+
+---
+
+# WORKLOAD
+
+لكل موظف احسب:
+
+Active Tasks
+Overdue
+At Risk
+Critical
+On Hold
+Completion Rate
+Average Resolution
+Workload Score
+
+---
+
+# SMART ASSIGNMENT
+
+عند إنشاء Task:
+
+اقترح أفضل 3 موظفين.
+
+اعتمد على:
+
+Current workload
+Department
+Skills إن كانت موجودة
+Historical completion
+SLA pressure
+
+لا تعمل auto-assignment بدون approval.
+
+---
+
+# EXPLAINABILITY
+
+اعرض:
+
+Why recommended?
+
+مثال:
+
+Low workload
+Same department
+Strong completion history
+No critical SLA
+
+---
+
+# PRIVACY
+
+Employee لا يرى بيانات مقارنة الآخرين إلا بصلاحية.
+
+---
+
+# المجموعة الثالثة — Dashboard + AI + Audit + Production
+
+وهنا أهم تعديل مقارنة بالنسخة السابقة: **Groq صار Provider حقيقي داخل architecture، مو مجرد فكرة.**
+
+# PROMPT 10 — ADVANCED DASHBOARD + REPORTING
+
+طوّر Dashboard الحالية ولا تحذف KPIs الموجودة.
+
+---
+
+# KPIs
+
+Total Tasks
+Completion Rate
+SLA Compliance
+Overdue
+On Hold
+Critical Findings
+Open CAPA
+Evidence Compliance
+Average Resolution
+
+---
+
+# SECTIONS
+
+Operations
+SLA
+Findings
+CAPA
+Workforce
+Evidence
+Audit
+
+---
+
+# FILTERS
+
+Date
+Department
+Employee
+Supervisor
+Priority
+Risk
+Finding Classification
+SLA Status
+
+---
+
+# DRILL DOWN
+
+كل KPI يجب أن يكون clickable.
+
+مثال:
+
+SLA Breached 8
+→ يفتح الـ8 Tasks.
+
+---
+
+# PERFORMANCE
+
+امنع:
+
+N+1 queries
+
+استخدم optimized queries.
+
+أضف indexes إذا أثبتت الحاجة.
+
+---
+
+# REPORTS
+
+أنشئ:
+
+Monthly QC
+SLA
+Findings
+CAPA
+Employee Performance
+Audit Trail
+Evidence Compliance
+Overdue
+
+Formats:
+
+CSV
+XLSX
+PDF
+
+---
+
+# LARGE DATA
+
+استخدم streaming/chunking عند الحاجة.
+
+لا تحمل dataset ضخم بالكامل في memory.
+
+---
+
+# REPORT SECURITY
+
+Employee لا يستطيع إنشاء تقرير شامل.
+
+Report generation يجب أن يخضع للـRBAC.
+
+---
+
+# REPORT AUDIT
+
+سجل:
+
+Report ID
+Generated By
+Filters
+Timestamp
+Format
+Data scope
+
+# PROMPT 11 — TAMPER-EVIDENT AUDIT + GROQ AI FOUNDATION
+
+نفذ مرحلتين مترابطتين:
+
+A) Audit Integrity
+B) Groq AI Foundation
+
+---
+
+# A — AUDIT INTEGRITY
+
+طوّر `task_activity_log`.
+
+كل event يحتوي:
+
+previous_hash
+event_hash
+
+استخدم:
+
+SHA-256
+
+Hash:
+
+canonical_event + previous_hash
+
+---
+
+# CANONICAL EVENT
+
+يجب أن يكون deterministic.
+
+يتضمن عند الحاجة:
+
+task_id
+user_id
+action
+field
+old_value
+new_value
+note
+ip_address
+created_at
+
+---
+
+# VERIFICATION
+
+أنشئ:
+
+`verifyAuditChain()`
+
+Returns:
+
+PASS
+FAIL
+first_invalid_event
+expected_hash
+actual_hash
+
+---
+
+# IMPORTANT
+
+وضح في documentation:
+
+Hash chain detects tampering.
+
+It does NOT make SQLite physically immutable.
+
+---
+
+# B — GROQ FOUNDATION
+
+أنشئ AI abstraction:
+
+`src/lib/ai/`
+
+مثلاً:
+
+provider.ts
+groq.ts
+prompts.ts
+schemas.ts
+guardrails.ts
+service.ts
+types.ts
+
+---
+
+# PROVIDER
+
+استخدم Groq API.
+
+Model:
+
+`llama-3.3-70b-versatile`
+
+API Key:
+
+`GROQ_API_KEY`
+
+---
+
+# ENVIRONMENT
+
+ضع المفتاح الذي يوفره المستخدم في:
+
+`apps/qc-task-manager/.env`
+
+لكن لا تكتب السر داخل source code.
+
+تأكد أن:
+
+`.env`
+
+داخل `.gitignore`.
+
+أنشئ/حدّث:
+
+`.env.example`
+
+ليحتوي فقط:
+
+`GROQ_API_KEY=`
+
+---
+
+# SERVER ONLY
+
+Groq client يجب أن يعمل داخل server-side code فقط.
+
+لا تستخدم:
+
+PUBLIC_GROQ_API_KEY
+VITE_GROQ_API_KEY
+Astro public env
+React client env
+
+---
+
+# SECURITY
+
+لا ترسل API key للbrowser.
+
+لا تسجل API key.
+
+لا تسجل Authorization header.
+
+لا تعرض key في errors.
+
+---
+
+# GROQ CLIENT
+
+أنشئ centralized client.
+
+لا تجعل كل feature تستدعي Groq مباشرة.
+
+Architecture:
+
+Feature
+↓
+AI Service
+↓
+Groq Provider
+↓
+Groq API
+
+---
+
+# CONFIG
+
+ضع model configuration في server config.
+
+مثلاً:
+
+AI_MODEL=llama-3.3-70b-versatile
+
+ويمكن جعلها environment configurable.
+
+---
+
+# VALIDATION
+
+كل structured AI output يجب أن يمر عبر Zod.
+
+Invalid response:
+
+reject
+retry safely if appropriate
+log sanitized failure
+
+---
+
+# TIMEOUT
+
+ضع timeout واضح.
+
+---
+
+# RETRY
+
+Retry فقط للأخطاء transient.
+
+لا تعيد المحاولة بلا حدود.
+
+---
+
+# RATE LIMIT
+
+احمِ AI endpoint من abuse.
+
+---
+
+# AUDIT
+
+سجل:
+
+user
+feature
+model
+timestamp
+request reference
+response reference
+success/failure
+
+لا تسجل الأسرار.
+
+---
+
+# DOCUMENTATION
+
+أنشئ:
+
+`docs/AI-ARCHITECTURE.md`
+
+ووثق:
+
+Provider
+Model
+Environment
+Security
+Data Flow
+Failure Handling
+Privacy
 
 # PROMPT 12 — GROQ QC COPILOT + AI EVIDENCE ANALYSIS
 
@@ -44,7 +1776,7 @@ API key:
 
 ---
 
-## IMPORTANT AI POLICY
+# IMPORTANT AI POLICY
 
 AI = ASSISTANT.
 
@@ -52,20 +1784,20 @@ AI ليس Authority.
 
 AI لا يستطيع:
 
-- Close Task
-- Approve Finding
-- Reject CAPA
-- Change Severity النهائي
-- Change Risk النهائي
-- Modify RBAC
-- Delete Evidence
-- Complete Task
+* Close Task
+* Approve Finding
+* Reject CAPA
+* Change Severity النهائي
+* Change Risk النهائي
+* Modify RBAC
+* Delete Evidence
+* Complete Task
 
 إلا من خلال Human-approved action flow، وحتى عندها القرار النهائي للبشر.
 
 ---
 
-## 1. TASK ANALYSIS
+# 1. TASK ANALYSIS
 
 أضف:
 
@@ -90,7 +1822,7 @@ Missing Information
 
 ---
 
-## 2. FINDING ANALYSIS
+# 2. FINDING ANALYSIS
 
 AI يقترح:
 
@@ -104,7 +1836,7 @@ Questions for Reviewer
 
 ---
 
-## 3. RCA ASSISTANCE
+# 3. RCA ASSISTANCE
 
 AI يستطيع اقتراح:
 
@@ -117,7 +1849,7 @@ Contributing factors
 
 ---
 
-## 4. CAPA ASSISTANCE
+# 4. CAPA ASSISTANCE
 
 AI يقترح:
 
@@ -128,7 +1860,7 @@ Effectiveness Check
 
 ---
 
-## 5. MANAGEMENT SUMMARY
+# 5. MANAGEMENT SUMMARY
 
 أنشئ:
 
@@ -147,7 +1879,7 @@ Evidence gaps
 
 ---
 
-## 6. EVIDENCE AI REVIEW
+# 6. EVIDENCE AI REVIEW
 
 عند رفع Evidence، يمكن تشغيل AI Review.
 
@@ -169,7 +1901,7 @@ Extracted metadata
 
 ---
 
-## 7. AI EVIDENCE SECURITY
+# 7. AI EVIDENCE SECURITY
 
 لا ترسل الملف إلى Groq إلا إذا:
 
@@ -184,7 +1916,7 @@ Data processing permitted
 
 ---
 
-## 8. PII
+# 8. PII
 
 إذا أمكن:
 
@@ -199,7 +1931,7 @@ secrets
 
 ---
 
-## 9. AI UI
+# 9. AI UI
 
 اعرض بوضوح:
 
@@ -213,7 +1945,7 @@ Human Review Required
 
 ---
 
-## 10. PROMPT INJECTION DEFENSE
+# 10. PROMPT INJECTION DEFENSE
 
 تعامل مع محتوى الملفات والتعليقات كـUNTRUSTED DATA.
 
@@ -227,7 +1959,7 @@ AI يجب أن يتعامل معها كمحتوى للتحليل فقط.
 
 ---
 
-## 11. STRUCTURED OUTPUT
+# 11. STRUCTURED OUTPUT
 
 استخدم Zod schemas.
 
@@ -235,7 +1967,7 @@ AI يجب أن يتعامل معها كمحتوى للتحليل فقط.
 
 ---
 
-## 12. FAILURE
+# 12. FAILURE
 
 إذا Groq:
 
@@ -251,7 +1983,7 @@ invalid response
 
 ---
 
-## 13. AUDIT
+# 13. AUDIT
 
 سجل:
 
@@ -271,7 +2003,7 @@ unnecessary sensitive payload
 
 ---
 
-## 14. TESTS
+# 14. TESTS
 
 استخدم mocked AI provider في automated tests.
 
@@ -289,7 +2021,7 @@ PII handling
 
 ---
 
-## FINAL
+# FINAL
 
 أنشئ:
 
@@ -322,7 +2054,7 @@ AI Governance Auditor
 
 ---
 
-## BUILD
+# BUILD
 
 شغّل فعليًا:
 
@@ -335,7 +2067,7 @@ pnpm e2e:acceptance
 
 ---
 
-## DATABASE
+# DATABASE
 
 تحقق:
 
@@ -349,7 +2081,7 @@ Restore
 
 ---
 
-## SECURITY
+# SECURITY
 
 اختبر:
 
@@ -364,7 +2096,7 @@ Secrets
 
 ---
 
-## GROQ
+# GROQ
 
 تحقق:
 
@@ -388,7 +2120,7 @@ llama-3.3-70b-versatile
 
 ---
 
-## AI
+# AI
 
 تحقق:
 
@@ -405,7 +2137,7 @@ AI audit
 
 ---
 
-## BUSINESS
+# BUSINESS
 
 تحقق:
 
@@ -424,7 +2156,7 @@ Reports
 
 ---
 
-## AUDIT
+# AUDIT
 
 تحقق:
 
@@ -436,7 +2168,7 @@ Approval Audit
 
 ---
 
-## PERFORMANCE
+# PERFORMANCE
 
 اختبر:
 
@@ -450,7 +2182,7 @@ AI request latency
 
 ---
 
-## DEPLOYMENT
+# DEPLOYMENT
 
 تحقق:
 
@@ -464,7 +2196,7 @@ Backup
 
 ---
 
-## OUTPUT
+# OUTPUT
 
 أنشئ:
 
@@ -496,7 +2228,7 @@ NO-GO
 
 ---
 
-## HARD RULE
+# HARD RULE
 
 لا تقل:
 
