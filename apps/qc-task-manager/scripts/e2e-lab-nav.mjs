@@ -86,12 +86,14 @@ for (const roleCase of roleCases) {
   const mobileLinks = await page.locator('#mobile-menu a[href="/lab"]').count();
   ok(mobileLinks > 0, `${roleCase.username}: mobile menu shows the Laboratory link`);
 
-  // Secondary nav: only implemented routes are linked (today: /lab + /lab/tests/new)
+  // Secondary nav: only implemented routes are linked (today: /lab, /lab/tests,
+  // /lab/tests/new — the register + details now exist)
   const secondary = page.locator('nav[aria-label="Laboratory sections"] a');
   const secondaryHrefs = await secondary.evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
   ok(secondaryHrefs.includes('/lab'), `${roleCase.username}: secondary nav shows the command center`);
+  ok(secondaryHrefs.includes('/lab/tests'), `${roleCase.username}: secondary nav shows the test register`);
   ok(secondaryHrefs.includes('/lab/tests/new'), `${roleCase.username}: secondary nav shows the new-test link`);
-  ok(secondaryHrefs.every((href) => href === '/lab' || href === '/lab/tests/new'),
+  ok(secondaryHrefs.every((href) => href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new'),
     `${roleCase.username}: no dead links in secondary nav`);
 
   // Command center (PROMPT 04): KPI cards render from real queries, and the
@@ -106,11 +108,19 @@ for (const roleCase of roleCases) {
   ok(hasNewProduct === roleCase.expectNewProduct, `${roleCase.username}: New Product action matches role permission`);
 
   // No drill-down may link to an unimplemented route (no dead links) — every
-  // KPI/action href inside main must target an implemented lab route. The two
-  // "New Test" quick actions now link to the live form (?type=air|vacuum).
+  // KPI/action href inside main must target an implemented lab route. The test
+  // register + its details page now exist, so test KPI drill-downs and the
+  // per-row View links are live (/lab/tests?, /lab/tests/<id>); New Test links
+  // to the live form (?type=air|vacuum); everything else stays disabled.
   const mainHrefs = await page.locator('main a[href^="/lab/"]').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
-  ok(mainHrefs.every((href) => href === '/lab' || href === '/lab/tests/new' || href.startsWith('/lab/tests/new?type=')),
-    `${roleCase.username}: no drill-down links to unimplemented routes`);
+  ok(mainHrefs.every((href) =>
+    href === '/lab' ||
+    href === '/lab/tests' ||
+    href === '/lab/tests/new' ||
+    href.startsWith('/lab/tests/new?type=') ||
+    href.startsWith('/lab/tests?') ||
+    /^\/lab\/tests\/\d+$/.test(href), // live per-row View links
+  ), `${roleCase.username}: no drill-down links to unimplemented routes`);
   const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();
   ok(disabledActions >= 2, `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
 

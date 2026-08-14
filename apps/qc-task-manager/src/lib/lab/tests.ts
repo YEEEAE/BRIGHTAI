@@ -299,3 +299,52 @@ export function listLabTestSamples(testId: number): LabTestSample[] {
     .prepare('SELECT * FROM lab_test_samples WHERE test_id = ? ORDER BY sample_no ASC')
     .all(testId) as LabTestSample[];
 }
+
+/** Full detail row for the read-only test record page (PROMPT 06 /lab/tests/[id]). */
+export function getLabTestRecordById(id: number): Record<string, unknown> | undefined {
+  return getDb()
+    .prepare(
+      `SELECT t.*,
+         p.name AS product_name, p.code AS product_code,
+         e.name AS equipment_name, e.code AS equipment_code,
+         tester.full_name AS tester_name,
+         reviewer.full_name AS reviewer_name,
+         approver.full_name AS approver_name,
+         creator.full_name AS creator_name
+       FROM lab_test_records t
+       LEFT JOIN lab_products p ON p.id = t.product_id
+       LEFT JOIN lab_equipment e ON e.id = t.equipment_id
+       LEFT JOIN users tester ON tester.id = t.tested_by
+       LEFT JOIN users reviewer ON reviewer.id = t.reviewed_by
+       LEFT JOIN users approver ON approver.id = t.approved_by
+       LEFT JOIN users creator ON creator.id = t.created_by
+       WHERE t.id = ?`,
+    )
+    .get(id) as Record<string, unknown> | undefined;
+}
+
+/** Equipment identity frozen at approval (lab_test_equipment_snapshots). */
+export function getLabTestEquipmentSnapshot(testId: number): Record<string, unknown> | undefined {
+  return getDb()
+    .prepare('SELECT * FROM lab_test_equipment_snapshots WHERE test_id = ?')
+    .get(testId) as Record<string, unknown> | undefined;
+}
+
+/** Controlled-document (SOP/WI) snapshots frozen at approval. */
+export function getLabTestDocumentSnapshots(testId: number): Record<string, unknown>[] {
+  return getDb()
+    .prepare('SELECT * FROM lab_test_document_snapshots WHERE test_id = ? ORDER BY role ASC')
+    .all(testId) as Record<string, unknown>[];
+}
+
+/** Audit timeline for a test (PROMPT 06 details page) — newest first. */
+export function getLabTestAuditTimeline(testId: number): Record<string, unknown>[] {
+  return getDb()
+    .prepare(
+      `SELECT a.*, u.full_name AS actor_name
+       FROM qc_audit_log a LEFT JOIN users u ON u.id = a.actor_id
+       WHERE a.entity_type = 'LAB_TEST' AND a.entity_id = ?
+       ORDER BY a.created_at DESC, a.id DESC`,
+    )
+    .all(testId) as Record<string, unknown>[];
+}

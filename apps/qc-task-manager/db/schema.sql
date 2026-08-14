@@ -643,6 +643,8 @@ CREATE INDEX IF NOT EXISTS idx_lab_tests_equipment ON lab_test_records(equipment
 CREATE INDEX IF NOT EXISTS idx_lab_tests_tested_by ON lab_test_records(tested_by);
 CREATE INDEX IF NOT EXISTS idx_lab_tests_created_at ON lab_test_records(created_at);
 CREATE INDEX IF NOT EXISTS idx_lab_tests_final_result ON lab_test_records(final_result);
+CREATE INDEX IF NOT EXISTS idx_lab_tests_lot ON lab_test_records(lot_number);
+CREATE INDEX IF NOT EXISTS idx_lab_tests_sampling_area ON lab_test_records(sampling_area);
 CREATE INDEX IF NOT EXISTS idx_lab_samples_test ON lab_test_samples(test_id, sample_no);
 CREATE INDEX IF NOT EXISTS idx_lab_retests_original ON lab_test_retests(original_test_id);
 CREATE INDEX IF NOT EXISTS idx_lab_retests_new ON lab_test_retests(new_test_id);

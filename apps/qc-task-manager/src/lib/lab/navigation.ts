@@ -79,7 +79,12 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
 ];
 
 /** Routes whose pages exist today. Extended as implementation prompts land. */
-export const IMPLEMENTED_LAB_ROUTES: readonly string[] = ['/lab', '/lab/tests/new'];
+export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
+  '/lab',
+  '/lab/tests/new',
+  '/lab/tests',
+  '/lab/tests/[id]',
+];
 
 /**
  * Lab secondary-nav items visible to `role`: permission-filtered (via the

@@ -44,6 +44,7 @@ import labCoreMasterDataMigrationSql from '../../db/migrations/011_lab_core_mast
 import labTestsMigrationSql from '../../db/migrations/012_lab_tests.sql?raw';
 import labDocumentsMigrationSql from '../../db/migrations/013_lab_documents.sql?raw';
 import labViewsMigrationSql from '../../db/migrations/014_lab_views.sql?raw';
+import labTestsRegisterIndexesSql from '../../db/migrations/015_lab_tests_register_indexes.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -184,6 +185,8 @@ const REQUIRED_INDEXES = [
   'idx_lab_tests_tested_by',
   'idx_lab_tests_created_at',
   'idx_lab_tests_final_result',
+  'idx_lab_tests_lot',
+  'idx_lab_tests_sampling_area',
   'idx_lab_samples_test',
   'idx_lab_retests_original',
   'idx_lab_retests_new',
@@ -258,6 +261,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '012_lab_tests.sql', source: labTestsMigrationSql },
       { file: '013_lab_documents.sql', source: labDocumentsMigrationSql },
       { file: '014_lab_views.sql', source: labViewsMigrationSql },
+      { file: '015_lab_tests_register_indexes.sql', source: labTestsRegisterIndexesSql },
     ],
   });
   backfillAuditChain(db);

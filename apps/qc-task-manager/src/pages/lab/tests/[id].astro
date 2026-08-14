@@ -1,0 +1,319 @@
+---
+// /lab/tests/[id] — read-only laboratory test record (PROMPT 06).
+//
+// The details page for a single test. It is intentionally READ-ONLY: workflow
+// mutations (Edit/Submit/Review/Approve/Void/Retest) live on their own routes
+// that land with the review/approve module. APPROVED and VOID records are
+// immutable quality records — this page surfaces a clear badge and shows no
+// mutable affordances for them. RBAC scope mirrors the register: employees
+// may only open tests they tested or created; anyone else gets 404.
+//
+// Approval-time immutability is honoured here: equipment and SOP/WI
+// snapshots, plus the product/template/parameters snapshots on the record,
+// are the historical truth and are shown as-is.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import {
+  getLabTestRecordById,
+  getLabTestEquipmentSnapshot,
+  getLabTestDocumentSnapshots,
+  getLabTestAuditTimeline,
+  listLabTestSamples,
+} from '../../../lib/lab/tests';
+import { LAB_TEST_STATUS_LABELS } from '../../../lib/lab/testSearch';
+import { LAB_RESULT_LABELS } from '../../../lib/lab/policy';
+import type { Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+const userId = user.userId;
+
+const navItems = labNavForRole(role);
+
+const idParam = Astro.params.id;
+const id = idParam ? Number(idParam) : Number.NaN;
+const validId = Number.isInteger(id) && id > 0;
+
+let record: Record<string, unknown> | null = null;
+let samples: Awaited<ReturnType<typeof listLabTestSamples>> = [];
+let equipmentSnapshot: Record<string, unknown> | null = null;
+let documentSnapshots: Record<string, unknown>[] = [];
+let timeline: Record<string, unknown>[] = [];
+let loadError: string | null = null;
+
+if (validId) {
+  try {
+    record = getLabTestRecordById(id) ?? null;
+    if (record) {
+      const testedBy = record.tested_by == null ? null : Number(record.tested_by);
+      const createdBy = Number(record.created_by);
+      const isOwn = role === 'employee' && (testedBy === userId || createdBy === userId);
+      if (role === 'employee' && !isOwn) {
+        // Employees may not open other testers' records (mirrors register scope).
+        record = null;
+      } else {
+        samples = listLabTestSamples(id);
+        equipmentSnapshot = getLabTestEquipmentSnapshot(id) ?? null;
+        documentSnapshots = getLabTestDocumentSnapshots(id);
+        timeline = getLabTestAuditTimeline(id);
+      }
+    }
+  } catch (err) {
+    console.error('[lab] test details load failure', err);
+    loadError = 'Could not load this test record. Try reloading — if the problem persists, contact an administrator.';
+  }
+}
+
+const notFound = !validId || record === null;
+
+const status = record ? String(record.status) : '';
+const result = record ? String(record.final_result ?? '') : '';
+const immutable = status === 'APPROVED' || status === 'VOID';
+
+const statusTone: Record<string, string> = {
+  DRAFT: 'bg-slate-100 text-slate-700',
+  SUBMITTED: 'bg-blue-100 text-blue-800',
+  UNDER_REVIEW: 'bg-amber-100 text-amber-800',
+  REJECTED: 'bg-rose-100 text-rose-800',
+  APPROVED: 'bg-emerald-100 text-emerald-800',
+  VOID: 'bg-slate-200 text-slate-500',
+};
+const resultTone: Record<string, string> = { PASS: 'text-green-700', FAIL: 'text-red-700', HOLD: 'text-orange-700' };
+
+// Author/identity rows (unknown actor → generic label).
+function actor(name: unknown): string {
+  return name ? String(name) : '—';
+}
+
+function parseSnapshot(json: unknown): Record<string, unknown> | null {
+  if (typeof json !== 'string' || !json) return null;
+  try {
+    const parsed = JSON.parse(json);
+    return parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : null;
+  } catch {
+    return null;
+  }
+}
+const paramsSnapshot = record ? parseSnapshot(record.parameters_snapshot_json) : null;
+
+// Human labels for the parameters_snapshot_json keys (see policy.ts §5).
+const PARAM_LABELS: Record<string, string> = {
+  standard_parameter: 'Standard Parameter',
+  acceptance_criteria: 'Acceptance Criteria',
+  holding_time: 'Holding Time',
+  actual_pressure_reference: 'Actual Pressure Reference',
+};
+
+const field = (k: string) => {
+  const v = record?.[k];
+  return v == null || v === '' ? '—' : String(v);
+};
+---
+
+<BaseLayout title={record ? `${String(record.test_number)} — Laboratory Test` : 'Test not found'}>
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Tests', href: '/lab/tests' },
+        { label: record ? String(record.test_number) : 'Test' },
+      ]}
+    />
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/tests" />
+
+    {notFound ? (
+      <section class="mx-auto max-w-xl rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <h1 class="text-xl font-semibold text-slate-900">Test not found</h1>
+        <p class="mt-2 text-sm text-slate-600">
+          {loadError ?? 'This test record does not exist or is not available to you.'}
+        </p>
+        <a href="/lab/tests" class="mt-5 inline-block rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Back to the register</a>
+      </section>
+    ) : record ? (
+      <>
+        <header class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">Laboratory Test Record</p>
+            <h1 class="mt-1 text-3xl font-semibold text-slate-900">{String(record.test_number)}</h1>
+            <p class="mt-1 text-sm text-slate-600">
+              {String(record.test_type).toUpperCase()} test · created {field('created_at')} by {actor(record.creator_name)}
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusTone[status] ?? 'bg-slate-100 text-slate-700'}`}>
+              {LAB_TEST_STATUS_LABELS[status as keyof typeof LAB_TEST_STATUS_LABELS] ?? status}
+            </span>
+            {result && <span class={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${resultTone[result] ?? 'bg-slate-100 text-slate-700'}`}>{LAB_RESULT_LABELS[result as keyof typeof LAB_RESULT_LABELS] ?? result}</span>}
+            {immutable && (
+              <span class="inline-flex rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" title="Approved and voided records are immutable quality records — they cannot be edited.">Read-only</span>
+            )}
+          </div>
+        </header>
+
+        {loadError && (
+          <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{loadError}</div>
+        )}
+
+        {/* Record sections */}
+        <section aria-label="Record summary" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Record</h2>
+          <dl class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div><dt class="text-xs font-medium text-slate-500">Sample Count</dt><dd class="mt-0.5 text-sm text-slate-900">{field('sample_count')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Lot Number</dt><dd class="mt-0.5 text-sm text-slate-900">{field('lot_number')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Sampling Area</dt><dd class="mt-0.5 text-sm text-slate-900">{field('sampling_area')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Medium Used</dt><dd class="mt-0.5 text-sm text-slate-900">{field('medium_used')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Connector Type</dt><dd class="mt-0.5 text-sm text-slate-900">{field('connector_type')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Product</dt><dd class="mt-0.5 text-sm text-slate-900">{field('product_name')} <span class="text-slate-500">{record.product_code ? `(${record.product_code})` : ''}</span></dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Equipment</dt><dd class="mt-0.5 text-sm text-slate-900">{field('equipment_name')} <span class="text-slate-500">{record.equipment_code ? `(${record.equipment_code})` : ''}</span></dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Tester</dt><dd class="mt-0.5 text-sm text-slate-900">{actor(record.tester_name)}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Final Result</dt><dd class={`mt-0.5 text-sm font-semibold ${result ? resultTone[result] ?? 'text-slate-900' : 'text-slate-400'}`}>{result ? (LAB_RESULT_LABELS[result as keyof typeof LAB_RESULT_LABELS] ?? result) : 'Pending'}</dd></div>
+          </dl>
+        </section>
+
+        {immutable && (equipmentSnapshot || documentSnapshots.length > 0) && (
+          <section aria-label="Approval-time snapshots" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Frozen at approval (historical truth)</h2>
+            <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+              {equipmentSnapshot && (
+                <>
+                  <div><dt class="text-xs font-medium text-slate-500">Equipment (snapshot)</dt><dd class="mt-0.5 text-sm text-slate-900">{String(equipmentSnapshot.equipment_name ?? '—')}</dd></div>
+                  <div><dt class="text-xs font-medium text-slate-500">Serial Number</dt><dd class="mt-0.5 text-sm text-slate-900">{String(equipmentSnapshot.serial_number ?? '—')}</dd></div>
+                  <div><dt class="text-xs font-medium text-slate-500">Location</dt><dd class="mt-0.5 text-sm text-slate-900">{String(equipmentSnapshot.location ?? '—')}</dd></div>
+                  <div><dt class="text-xs font-medium text-slate-500">Calibration State</dt><dd class="mt-0.5 text-sm text-slate-900">{String(equipmentSnapshot.calibration_state ?? '—')}</dd></div>
+                  <div><dt class="text-xs font-medium text-slate-500">Calibration Reference</dt><dd class="mt-0.5 text-sm text-slate-900">{String(equipmentSnapshot.calibration_reference ?? '—')}</dd></div>
+                </>
+              )}
+              {documentSnapshots.map((doc) => (
+                <div><dt class="text-xs font-medium text-slate-500">{String(doc.role)} {String(doc.version_number ?? '')}</dt><dd class="mt-0.5 text-sm text-slate-900">{String(doc.document_code ?? '')} — {String(doc.title ?? '')}</dd></div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section aria-label="Test parameters" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Test Parameters</h2>
+          <dl class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div><dt class="text-xs font-medium text-slate-500">Actual Pressure</dt><dd class="mt-0.5 text-sm text-slate-900">{field('actual_pressure')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Torque (lb)</dt><dd class="mt-0.5 text-sm text-slate-900">{field('torque_in_lb')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Time (sec)</dt><dd class="mt-0.5 text-sm text-slate-900">{field('time_sec')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Angle</dt><dd class="mt-0.5 text-sm text-slate-900">{field('angle')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Temperature Measured</dt><dd class="mt-0.5 text-sm text-slate-900">{field('temperature_measured')}</dd></div>
+          </dl>
+          {paramsSnapshot && (
+            <div class="mt-4 border-t border-slate-100 pt-4">
+              <p class="text-xs font-medium text-slate-500">Reference values (displayed, not entered — from the active template)</p>
+              <dl class="mt-2 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+                {Object.entries(paramsSnapshot).map(([key, value]) => (
+                  <div><dt class="text-xs font-medium text-slate-500">{PARAM_LABELS[key] ?? key}</dt><dd class="mt-0.5 text-sm text-slate-700">{value == null || value === '' ? '—' : String(value)}</dd></div>
+                ))}
+              </dl>
+            </div>
+          )}
+        </section>
+
+        <section aria-label="Sample results" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Sample Results</h2>
+          {samples.length === 0 ? (
+            <p class="mt-3 text-sm text-slate-500">No sample rows recorded.</p>
+          ) : (
+            <div class="mt-3 overflow-x-auto contain-layout contain-paint">
+              <table class="min-w-[760px] divide-y divide-slate-100 text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-3 py-2 font-semibold">Sample</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Part</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Set Pressure</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Actual Pressure</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Volume (sec)</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Δ Pressure</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Holding (sec)</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Leakage Rate</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Result</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {samples.map((s) => {
+                    const sr = s.result as string | null;
+                    return (
+                      <tr>
+                        <td class="px-3 py-2 font-medium text-slate-900">{s.sample_identifier ?? `S${s.sample_no}`}</td>
+                        <td class="px-3 py-2 text-slate-700">{s.part_name ?? '—'}</td>
+                        <td class="px-3 py-2 text-slate-700">{s.set_pressure ?? '—'}</td>
+                        <td class="px-3 py-2 text-slate-700">{s.actual_pressure ?? '—'}</td>
+                        <td class="px-3 py-2 text-slate-700">{s.volume_sec ?? '—'}</td>
+                        <td class="px-3 py-2 text-slate-700">{s.pressure_difference ?? '—'}</td>
+                        <td class="px-3 py-2 text-slate-700">{s.holding_time_sec ?? '—'}</td>
+                        <td class="px-3 py-2 text-slate-700">{s.leakage_rate ?? '—'}</td>
+                        <td class={`px-3 py-2 font-semibold ${sr ? resultTone[sr] ?? 'text-slate-500' : 'text-slate-400'}`}>{sr ? (LAB_RESULT_LABELS[sr as keyof typeof LAB_RESULT_LABELS] ?? sr) : '—'}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        {record.remarks ? (
+          <section aria-label="Remarks" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Remarks</h2>
+            <p class="mt-2 text-sm whitespace-pre-wrap text-slate-700">{String(record.remarks)}</p>
+          </section>
+        ) : null}
+
+        {(status === 'REJECTED' && record.rejected_reason) ? (
+          <section aria-label="Rejection reason" class="rounded-xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-rose-700">Rejection Reason</h2>
+            <p class="mt-2 text-sm text-rose-800">{String(record.rejected_reason)}</p>
+          </section>
+        ) : null}
+        {(status === 'VOID' && record.void_reason) ? (
+          <section aria-label="Void reason" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Void Reason</h2>
+            <p class="mt-2 text-sm text-slate-700">{String(record.void_reason)}</p>
+          </section>
+        ) : null}
+
+        <section aria-label="Authorization" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Authorization</h2>
+          <dl class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div><dt class="text-xs font-medium text-slate-500">Tester</dt><dd class="mt-0.5 text-sm text-slate-900">{actor(record.tester_name)}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Reviewed By</dt><dd class="mt-0.5 text-sm text-slate-900">{actor(record.reviewer_name)} {record.reviewed_at ? <span class="text-slate-500">· {String(record.reviewed_at)}</span> : ''}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Approved By</dt><dd class="mt-0.5 text-sm text-slate-900">{actor(record.approver_name)} {record.approved_at ? <span class="text-slate-500">· {String(record.approved_at)}</span> : ''}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Submitted At</dt><dd class="mt-0.5 text-sm text-slate-900">{field('submitted_at')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Created At</dt><dd class="mt-0.5 text-sm text-slate-900">{field('created_at')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Updated At</dt><dd class="mt-0.5 text-sm text-slate-900">{field('updated_at')}</dd></div>
+          </dl>
+        </section>
+
+        <section aria-label="Audit timeline" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Audit Timeline</h2>
+          {timeline.length === 0 ? (
+            <p class="mt-3 text-sm text-slate-500">No recorded activity.</p>
+          ) : (
+            <ol class="mt-3 space-y-3">
+              {timeline.map((e) => (
+                <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-l-2 border-brand-100 pl-3 text-sm">
+                  <span class="font-semibold text-slate-900">{String(e.action)}</span>
+                  <span class="text-slate-600">{String(e.note ?? '')}</span>
+                  <span class="text-xs text-slate-400">{String(e.actor_name ?? 'System')} · {String(e.created_at)}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+
+        <div class="flex items-center gap-3">
+          <a href="/lab/tests" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">← Back to the register</a>
+          {!immutable && (
+            <p class="text-sm text-slate-500">Workflow actions (edit, review, approve, retest) are coming with the review/approve module.</p>
+          )}
+        </div>
+      </>
+    ) : null}
+  </div>
+</BaseLayout>

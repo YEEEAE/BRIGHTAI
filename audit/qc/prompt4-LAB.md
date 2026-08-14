@@ -28,7 +28,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 03
 - [✅] Prompt 04
 - [✅] Prompt 05
-- [ ] Prompt 06
+- [✅] Prompt 06
 - [ ] Prompt 07
 - [ ] Prompt 08
 - [ ] Prompt 09
@@ -679,7 +679,7 @@ Do not let AI determine final results.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement /lab/tests.

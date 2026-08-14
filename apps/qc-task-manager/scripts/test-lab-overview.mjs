@@ -241,9 +241,12 @@ try {
     ok(d != null && typeof d.href === 'string' && d.href.startsWith('/lab/') && typeof d.hint === 'string',
       `drilldown: ${key} has a /lab target + hint`);
   }
-  // Today no lab list page exists yet → every drill-down must be disabled,
-  // i.e. labDrilldownEnabled never returns true for an unknown route.
-  eq(overview.labDrilldownEnabled({ href: '/lab/tests', route: '/lab/tests', hint: 'x' }), false,
+  // The test register is implemented (PROMPT 06) — pick a route that is still
+  // not implemented today (the retest register) and confirm labDrilldownEnabled
+  // never returns true for an unknown/unimplemented route.
+  eq(overview.labDrilldownEnabled({ href: '/lab/tests', route: '/lab/tests', hint: 'x' }), true,
+    'drilldown: test register route enabled');
+  eq(overview.labDrilldownEnabled({ href: '/lab/retests', route: '/lab/retests', hint: 'x' }), false,
     'drilldown: unimplemented route disabled');
   eq(overview.labDrilldownEnabled({ href: '/lab', route: '/lab', hint: 'x' }), true,
     'drilldown: implemented route enabled');
