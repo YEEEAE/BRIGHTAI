@@ -4,9 +4,20 @@ project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
 last_updated: 2026-08-14 16:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.94
+version: 2.7.95
 agent_version: v2.3
 skills_ready: 7
+---
+
+### 2026-08-14 — QC-RENDER-BLUEPRINT-001: تعريف خدمة QC الثانية في render.yaml (PROMPT 02 من الـ evidence audit)
+
+- **Files**: `render.yaml` (إضافة service block `qc-task-manager` — لم ألمس `brightai-site` إطلاقًا)، `apps/qc-task-manager/docs/DEPLOYMENT.md` (قسمان جديدان: "Deployment ownership (no push from agents)" + "Render blueprint configuration" بدل التحذير القديم)، `.agents/brain.md` (هذا السجل).
+- **What**: أضفت خدمة QC كخدمة **ثانية** في `services:` (بعد `brightai-site` مباشرة في نهاية الملف): `type: web` + `runtime: node` + `name: qc-task-manager` + `buildCommand: pnpm install && pnpm --filter @brightai/qc-task-manager build` (minimal ومطابق لأسلوب الـ monorepo — ما كسرت buildCommand حق brightai-site) + `startCommand: pnpm --filter @brightai/qc-task-manager start` (السكربت `start` = `node ./dist/server/entry.mjs` موجود في package.json) + `healthCheckPath: /api/health` (بعد ما نزل PROMPT 01). أضفت persistent disk: `name: qc-data` + `mountPath: /var/data` + `sizeGB: 1` (SQLite + backups). envVars **أسماء فقط** بلا قيم: `QC_DATABASE_PATH` / `QC_BACKUP_DIR` / `NODE_ENV` / `GROQ_API_KEY` / `ADMIN_DEFAULT_PASSWORD` — كلها `sync: false` (نفس نمط REDIS_URL الحالي = القيمة من الـ dashboard وما تتزامن مع الـ redeploys). **SESSION_SECRET ما أضفته** — PROMPT 10 (docs alignment) ما نزل بعد. `autoDeploy: false` عشان الخدمة تبقى opt-in والمستخدم يفرّغها يدويًا من الـ dashboard.
+- **Decision**: (1) `sync: false` لكل المتغيرات لأن القيم كلها من الـ dashboard (ما في value واحد في الملف — حتى غير السرية زي المسارات) — هذي القراءة الحرفية لـ "never commit values" والـ acceptance criteria "No env values, keys, or secrets are written to the file". (2) `autoDeploy: false` على خدمة QC فقط — ما غيرت سلوك brightai-site الافتراضي. (3) ما أضفت NODE_VERSION env لأن المطلوب Node 22 LTS والمطابق لـ root engines (node 22.x) — وRender node runtime افتراضيًا 22 — ووثّقته بتعليق بدل متغير (المتغيرات المطلوبة في المواصفة خمسة فقط).
+- **Verification**: `python3 -c yaml.safe_load` → **services count = 2** (brightai-site + qc-task-manager) ✅؛ envVars كلها keys فقط بلا values ✅؛ مسح أسرار (`sk-`/`gsk_`/`AIza`/`BEGIN`/`xox`) → الـ `sk-` الوحيد كان false positive من كلمة "task-" في التعليقات ✅؛ `node scripts/check-render-route-hygiene.mjs` → exit 0 (htmlDestinations فارغة) ✅؛ `node scripts/verify-csp-drift.mjs` → **CSP drift check passed** (headers حق brightai-site ما تأثرت — القراءة تعتمد على services[0]) ✅؛ `git diff` → 73 insertions / 5 deletions (render.yaml +39، DEPLOYMENT.md +39/-5) ✅.
+- **Notes**: لم أعدّل `.github/workflows/` ولا `.env*` ولا push ولا commit — المستخدم يلتزم. الـ qc service معرّف لكن ما فيه deploy تلقائي — أول deploy يدوي من الـ dashboard (مع ضبط القيم الخمس + إنشاء الـ disk). DEPLOYMENT.md وثّق أن النشر **ملك المستخدم** وأن أي تغيير ينضاف للريبو ما يفرّغ شي بنفسه.
+- **Status**: verified locally (yaml parse + 2 services + لا أسرار + لا قيم + guards نظيفة). لا commit ولا push.
+
 ---
 
 ### 2026-08-14 — QC-HEALTH-ENDPOINT-001: إضافة `/api/health` (readiness probe) لمدير مهام QC — PROMPT 01 من الـ evidence audit

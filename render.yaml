@@ -999,3 +999,42 @@ services:
       - type: redirect
         source: /blog/feed/index.html
         destination: /rss.xml/
+
+  # ──────────────────────────────────────────────────────────────────────
+  # QC TASK MANAGER — second service (internal QC department tool).
+  # Astro SSR app under apps/qc-task-manager (@astrojs/node standalone).
+  # QC-AUDIT-EXEC / PROMPT 02 (2026-08-14): deployment surface for QC.
+  # Deployment is OWNED BY THE USER via the Render dashboard — agents never
+  # push and never deploy (project no-push rule). autoDeploy is disabled so
+  # blueprint changes can never trigger a deploy of either service.
+  # Full runbook: apps/qc-task-manager/docs/DEPLOYMENT.md
+  - type: web
+    runtime: node
+    name: qc-task-manager
+    # Node 22 LTS — matches root engines (node: 22.x). Render's `node`
+    # runtime defaults to Node 22; do not pin a patch version here.
+    buildCommand: pnpm install && pnpm --filter @brightai/qc-task-manager build
+    startCommand: pnpm --filter @brightai/qc-task-manager start
+    # Readiness probe added in PROMPT 01 (src/pages/api/health.ts).
+    healthCheckPath: /api/health
+    # Never auto-deploy: QC stays opt-in, the user deploys from the dashboard.
+    autoDeploy: false
+    # Persistent disk — SQLite database + daily backups (internal tool).
+    disk:
+      name: qc-data
+      mountPath: /var/data
+      sizeGB: 1
+    # Env var NAMES only — values are set in the Render dashboard and are
+    # never committed to the repo. sync:false = Render keeps the dashboard
+    # value across redeploys (same pattern as brightai-site REDIS_URL).
+    envVars:
+      - key: QC_DATABASE_PATH
+        sync: false
+      - key: QC_BACKUP_DIR
+        sync: false
+      - key: NODE_ENV
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: ADMIN_DEFAULT_PASSWORD
+        sync: false

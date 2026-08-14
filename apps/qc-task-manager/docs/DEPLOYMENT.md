@@ -133,10 +133,39 @@ pnpm --filter @brightai/qc-task-manager db:backup -- --keep=30
 See [DATABASE.md](DATABASE.md) and [RESTORE.md](RESTORE.md) for backup and
 restore details.
 
-## Render configuration warning
+## Deployment ownership (no push from agents)
 
-The repository-level `render.yaml` currently configures the main BrightAI site
-as a Node Web Service. It does **not** define a QC Task Manager service. Add
-the QC service in the Render dashboard or a reviewed Blueprint before release.
-If a QC service exists in Render and is configured as a Static Site, replace it
+Deployment of the QC Task Manager is **owned by the user** and is performed
+from the Render dashboard. Agents never push, never commit, and never trigger
+deploys: the QC service in `render.yaml` sets `autoDeploy: false`, so a change
+merged into the repository does not deploy anything by itself. To deploy or
+re-deploy the service, open the Render dashboard for the `qc-task-manager`
+service and click **Manual Deploy** (and set the env values listed below before
+the first deploy).
+
+## Render blueprint configuration
+
+The repository-level `render.yaml` now defines the QC Task Manager as a second
+Node Web Service (`name: qc-task-manager`, `runtime: node`), alongside the
+unchanged `brightai-site` service. The blueprint block matches the settings in
+this document:
+
+| Setting | Blueprint value |
+| --- | --- |
+| Service type | `type: web`, `runtime: node` (Node 22 LTS — matches root `engines`) |
+| Build command | `pnpm install && pnpm --filter @brightai/qc-task-manager build` |
+| Start command | `pnpm --filter @brightai/qc-task-manager start` |
+| Health check | `healthCheckPath: /api/health` |
+| Persistent disk | `mountPath: /var/data`, `sizeGB: 1` |
+| Auto-deploy | `autoDeploy: false` (user deploys from the dashboard) |
+
+The blueprint lists **env var names only** — it contains no values and no
+secrets. Set the values in the Render dashboard before the first deploy:
+`QC_DATABASE_PATH=/var/data/qc_tasks.db`, `QC_BACKUP_DIR=/var/data/backups`,
+`NODE_ENV=production`, plus `GROQ_API_KEY` and `ADMIN_DEFAULT_PASSWORD` as
+secret values. `SESSION_SECRET` is intentionally **not** listed in the
+blueprint: the app does not read it (sessions are opaque SQLite tokens), and it
+should only be added once the documentation alignment lands.
+
+If an existing QC service in Render is configured as a Static Site, replace it
 with the Node Web Service configuration above before deploying.
