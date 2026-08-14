@@ -1,624 +1,632 @@
-أكيد. سأكتب **الشرح والملاحظات بالعربي**، أما **أسماء الصفحات والحقول والبرومبتز نفسها بالإنجليزي**؛ وهذه النسخة المحسّنة تضيف تدقيق قاعدة البيانات، seed آمن، حماية SQLite/Render، توحيد مخرجات الوكيل، وحقول التتبع المهمة.
+# BRIGHTAI QC Laboratory
+## Complete DeepSeek Flash v4 Master Implementation Prompt Pack
 
-## أهم التحسينات المعتمدة
-
-- إضافة `Test Number` و`Test Date` لكل اختبار.
-- استخدام `seed_key` ثابت للأجهزة بدل `code + serial` لأن بعض القيم مكررة.
-- إضافة برومبت مستقل لفحص قاعدة البيانات القديمة قبل أي Migration.
-- منع DeepSeek من تعديل النظام الحالي أو اختراع قواعد علمية.
-- فرض تشغيل المشروع داخل `apps/qc-task-manager/` وليس `apps/dashboard/`.
-- إضافة اختبارات IDOR وCSRF وXSS وCSV Formula Injection.
-- إضافة قرار صريح لتخزين SQLite على Render باستخدام Persistent Disk.
-- إلزام الوكيل بإرجاع الملفات المعدلة، أوامر التشغيل، نتائج الاختبارات، وأي مخاطر متبقية.
+**Repository:** `YEEEAE/BRIGHTAI`  
+**Target application:** `apps/qc-task-manager/`  
+**Primary route:** `/lab`  
+**Prompt language:** English  
+**Execution model:** Execute sequentially. Do not skip acceptance criteria.
 
 ---
 
-# QC Laboratory Implementation Prompt Pack
+# How to Use This Checklist
 
-> **Instruction:** Execute these prompts in order. Every prompt must be given to the same repository-aware agent.
+- Mark `☐` as not completed.
+- Change it to `✅` when the prompt has been implemented and verified.
+- Do not mark a prompt complete until its acceptance criteria and tests pass.
+- If implementation is partial, leave `☐` and record notes in the status area.
+- The executing agent must inspect the current repository before making changes.
+- Existing BRIGHTAI architecture is the source of truth.
 
-## MASTER CONTEXT
+## Global Prompt Execution Status
+
+Mark a prompt only when that prompt itself has been executed and verified.
+
+- [ ] Prompt 00
+- [ ] Prompt 01
+- [ ] Prompt 02
+- [ ] Prompt 03
+- [ ] Prompt 04
+- [ ] Prompt 05
+- [ ] Prompt 06
+- [ ] Prompt 07
+- [ ] Prompt 08
+- [ ] Prompt 09
+- [ ] Prompt 10
+- [ ] Prompt 11
+- [ ] Prompt 12
+- [ ] Prompt 13
+- [ ] Prompt 14
+- [ ] Prompt 15
+- [ ] Prompt 16
+- [ ] Prompt 17
+- [ ] Prompt 18
+- [ ] Prompt 19
+- [ ] Prompt 20
+- [ ] Prompt 21
+- [ ] Prompt 22
+- [ ] Prompt 23
+- [ ] Prompt 24
+- [ ] Prompt 25
+- [ ] Prompt 26
+- [ ] Prompt 27
+- [ ] Prompt 28
+- [ ] Prompt 29
+- [ ] Prompt 30
+- [ ] Prompt 31
+- [ ] Prompt 32
+- [ ] Prompt 33
+- [ ] Prompt 34
+- [ ] Prompt 35
+- [ ] Prompt 36
+- [ ] Prompt 37
+- [ ] Prompt 38
+- [ ] Prompt 39
+- [ ] Prompt 40
+
+
+---
+
+# MASTER RULES — APPLY TO EVERY PROMPT
 
 ```text
-You are implementing a new QC Laboratory module inside the existing monorepo:
+You are DeepSeek Flash v4 acting as a senior staff full-stack engineer inside the
+existing BRIGHTAI monorepo.
 
-Repository: yeeeae/brightai
-Primary application: apps/qc-task-manager/
-Secondary dashboard application: apps/dashboard/
-Reference reports: audit/qc/REPORT.md and audit/qc/2026-08-14-QC-LAB-PAGES-REPORT.md
+Repository:
+YEEEAE/BRIGHTAI
 
-The primary implementation target is apps/qc-task-manager/.
-It uses Astro SSR, SQLite, server-side sessions, RBAC, CSRF protection, Zod validation, activity logs, notifications, exports, and existing task-management infrastructure.
+Target application:
+apps/qc-task-manager/
 
-Do not rebuild existing authentication, permissions, database, dashboard, notification, or audit systems. Reuse their established conventions.
+Your mission is to implement a complete QC Laboratory workspace that integrates
+deeply with the existing application.
 
-Do not move the Laboratory pages into apps/dashboard unless the existing architecture explicitly requires a reporting read-model there.
+THIS IS NOT A GREENFIELD PROJECT.
 
-Do not invent scientific formulas, acceptance rules, regulatory requirements, automatic PASS/FAIL decisions, or undocumented fields.
+The current BRIGHTAI implementation is the source of truth.
 
-AI may provide advisory information only. AI must never approve, reject, or determine a laboratory result.
+Before changing anything:
 
-For every prompt, first inspect the existing repository conventions. Before finishing, report:
+1. Read .agents/brain.md completely.
+2. Read the relevant QC audit files.
+3. Read:
+   audit/qc/REPORT.md
+   audit/qc/2026-08-14-QC-LAB-PAGES-REPORT.md
+   audit/qc/2026-08-14-QC-LAB-IMPLEMENTATION-PROMPTS.md
+   audit/qc/before/2026-08-14-EVIDENCE-AUDIT.md
+4. Inspect apps/qc-task-manager/ sufficiently to understand:
+   - routing
+   - layouts
+   - components
+   - authentication
+   - sessions
+   - RBAC
+   - permissions
+   - database
+   - migrations
+   - validation
+   - CSRF
+   - audit/activity logging
+   - notifications
+   - dashboard
+   - exports
+   - tests
+   - existing workflow/state transition patterns
+5. Search the repository for existing services/components before creating anything.
+6. Reuse existing architecture wherever possible.
 
-1. Files created or modified.
-2. Database migrations added.
-3. Commands executed.
-4. Test results.
-5. Remaining risks or decisions.
-6. Any behavior that was intentionally not implemented.
+NON-NEGOTIABLE:
 
-Do not claim production readiness unless all acceptance criteria pass.
+- Do not create a second application.
+- Do not create a second authentication system.
+- Do not create a second RBAC system.
+- Do not create a second notification system.
+- Do not create a second audit system.
+- Do not create a second dashboard system.
+- Do not create a second export system.
+- Do not create a second workflow engine.
+- Do not duplicate business logic.
+- Do not silently replace existing functionality.
+- Do not rewrite unrelated features.
+- Do not modify previous database migrations.
+- Every schema change must use a new sequential migration.
+- Do not modify .env or .env.* files.
+- Never introduce secrets.
+- Never write secrets into source code, tests, fixtures, logs, prompts, or docs.
+- Do not modify CI/CD workflows unless explicitly instructed.
+- Do not delete existing data.
+- Do not delete existing files unless explicitly necessary and justified.
+- Keep current tasks, findings, CAPA, SLA, evidence, workflows, AI guardrails,
+  backup, dashboard, authentication, and notification behavior working.
+- All authorization must be enforced server-side.
+- Never trust hidden form fields for security decisions.
+- Never trust query parameters for authorization.
+- Never trust client-side role checks.
+- Use existing Zod/server validation conventions.
+- Use prepared/parameterized SQLite queries.
+- Never concatenate untrusted input into SQL.
+- Treat employee-entered text as untrusted.
+- Treat Markdown/HTML document content as untrusted.
+- Protect all state-changing requests with the existing CSRF mechanism.
+- Do not invent medical, regulatory, scientific, or quality requirements.
+- Do not invent formulas.
+- Do not invent acceptance criteria.
+- Never allow AI to automatically decide PASS/FAIL.
+- Never allow AI to automatically approve a test.
+- Never overwrite approved records silently.
+- Preserve historical traceability.
+- Do not claim something is verified unless the actual verification command passed.
+
+When a requirement conflicts with the existing architecture:
+
+1. inspect the implementation;
+2. preserve the architecture;
+3. choose the smallest compatible extension;
+4. document the decision;
+5. do not silently create an alternative architecture.
+
+After every prompt:
+
+1. List exact files changed.
+2. List exact commands executed.
+3. Report actual command results.
+4. Report implementation status.
+5. Report test status.
+6. Report anything still unverified.
 ```
 
 ---
 
-## PROMPT 00: Repository Audit and Implementation Contract
+# PROMPT 00 — COMPLETE REPOSITORY DISCOVERY
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Before writing code, perform a read-only audit of the repository.
+Perform a read-only discovery and architecture audit before implementing the
+QC Laboratory.
 
 Inspect:
 
-1. apps/qc-task-manager/src/lib/
-2. Existing database and migration files.
-3. Existing authentication and session handling.
-4. Existing RBAC and permission helpers.
-5. Existing CSRF implementation.
-6. Existing Zod validation patterns.
-7. Existing activity log and notification services.
-8. Existing export and print-view patterns.
-9. Existing SSR pages and API routes.
-10. Existing tests and test commands.
-11. apps/dashboard/ integration conventions.
-12. audit/qc/REPORT.md.
-13. audit/qc/2026-08-14-QC-LAB-PAGES-REPORT.md.
-14. Existing prompt or implementation reports related to QC.
+- existing route map
+- application layout
+- navigation
+- user roles
+- permissions
+- authentication
+- session handling
+- database connection
+- migrations
+- validation
+- CSRF
+- audit/activity logging
+- notifications
+- dashboard
+- exports
+- existing forms
+- existing workflow/state transition services
+- existing tables related to users/tasks/findings/CAPA/evidence
+- testing infrastructure
 
-Do not modify files.
+Search the codebase for reusable:
 
-Produce a concise implementation contract containing:
+- table components
+- form components
+- status badges
+- modal/dialog components
+- search/filter controls
+- dashboard cards
+- charts
+- notification functions
+- audit functions
+- authorization helpers
+- CSV export helpers
+- print styles
 
-- The correct database migration pattern.
-- The correct server-side authorization pattern.
-- The correct CSRF pattern.
-- The correct session access pattern.
-- The correct activity-log pattern.
-- The correct notification pattern.
-- The correct API response and error format.
-- The correct SSR page structure.
-- The correct testing commands.
-- The correct way to integrate laboratory metrics with the dashboard.
+Produce:
 
-Also identify conflicts between older reports and newer reports. The newer QC Laboratory report must be treated as the source of truth unless the repository proves otherwise.
+apps/qc-task-manager/docs/QC-LAB-MASTER-DISCOVERY.md
+
+Classify laboratory-related functionality:
+
+IMPLEMENTED
+PARTIAL
+MISSING
+UNVERIFIED
+
+Do NOT implement features in this prompt.
+
+Acceptance criteria:
+
+- No production code changes.
+- The report reflects the real repository.
+- Existing architecture is identified.
+- Existing implementation is not falsely treated as missing.
 ```
 
 ---
 
-## PROMPT 01: Existing Database and Migration Safety Audit
+# PROMPT 01 — MASTER LABORATORY ARCHITECTURE
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Before creating any new Laboratory tables, audit the existing SQLite database and migration state.
+Create the final architecture contract for the QC Laboratory.
 
-Do not change application behavior yet.
-
-Run and document:
-
-1. PRAGMA user_version;
-2. PRAGMA foreign_keys;
-3. PRAGMA table_info(tasks);
-4. PRAGMA table_info(users);
-5. PRAGMA foreign_key_check;
-6. PRAGMA integrity_check;
-7. Inspect all existing CHECK constraints.
-8. Inspect all existing migrations and their execution order.
-9. Identify any old status constraints that may conflict with current statuses, especially:
-   - urgent
-   - cancelled
-   - completed
-   - on_hold
-10. Confirm whether existing migrations are idempotent.
-11. Confirm whether the current database contains production-like data.
-
-If an old migration or constraint is unsafe, do not silently rewrite production data. Create a safe migration strategy and clearly report the required action.
-
-Do not create Laboratory tables in this prompt.
-
-Acceptance:
-- Existing database integrity is explicitly reported.
-- Existing foreign keys are explicitly reported.
-- Existing task statuses are explicitly reported.
-- Any migration risk is documented before new Laboratory work begins.
-```
-
----
-
-## PROMPT 02: Laboratory Database Schema
-
-```text
-Create a new idempotent SQLite migration for the QC Laboratory module.
-
-Do not drop, rename, or modify existing tables unless the repository's migration design requires a safe additive change.
-
-Create these tables:
-
-1. lab_test_records
-
-Required fields:
-
-- id
-- test_number TEXT NOT NULL UNIQUE
-- test_date TEXT NOT NULL
-- test_type TEXT NOT NULL CHECK(test_type IN ('AIR', 'VACUUM'))
-- product_description TEXT NOT NULL
-- connector_type TEXT NOT NULL
-- no_of_samples INTEGER NOT NULL
-- lot_number TEXT NOT NULL
-- sampling_area TEXT NOT NULL
-- machine_name TEXT NOT NULL
-- equipment_id INTEGER REFERENCES lab_equipment(id)
-- medium_used TEXT NOT NULL
-- actual_pressure REAL
-- torque_in_lb REAL
-- assembly_time_sec REAL
-- angle TEXT
-- temperature_measured REAL
-- standard_parameter TEXT
-- acceptance_criteria TEXT
-- holding_time_reference TEXT
-- remarks TEXT
-- final_result TEXT CHECK(final_result IN ('PASS', 'FAIL', 'HOLD') OR final_result IS NULL)
-- workflow_status TEXT NOT NULL DEFAULT 'DRAFT'
-- tested_by INTEGER REFERENCES users(id)
-- reviewed_by INTEGER REFERENCES users(id)
-- approved_by INTEGER REFERENCES users(id)
-- created_by INTEGER REFERENCES users(id)
-- updated_by INTEGER REFERENCES users(id)
-- submitted_at
-- reviewed_at
-- approved_at
-- created_at
-- updated_at
-
-Use safe constraints for:
-
-- test_type
-- workflow_status
-- final_result
-- no_of_samples
-- test_number uniqueness
-
-Do not make undocumented scientific fields mandatory.
-
-2. lab_test_samples
-
-Fields:
-
-- id
-- test_id INTEGER NOT NULL REFERENCES lab_test_records(id) ON DELETE CASCADE
-- sample_no INTEGER NOT NULL
-- part_name TEXT
-- set_pressure_in_hg REAL
-- actual_pressure REAL
-- volume_sec REAL
-- pressure_difference REAL
-- holding_time_sec REAL
-- leakage_rate TEXT
-- result TEXT CHECK(result IN ('PASS', 'FAIL', 'HOLD') OR result IS NULL)
-- created_at
-- updated_at
-
-Add a unique constraint on test_id + sample_no.
-
-3. lab_equipment
-
-Fields:
-
-- id
-- seed_key TEXT UNIQUE
-- name TEXT NOT NULL
-- code TEXT
-- location TEXT NOT NULL DEFAULT 'LABORATORY'
-- status TEXT NOT NULL
-- calibration TEXT
-- serial_number TEXT
-- notes TEXT
-- archived INTEGER NOT NULL DEFAULT 0
-- created_by
-- updated_by
-- created_at
-- updated_at
-
-The seed_key is mandatory for the initial 24 equipment rows. Do not use code + serial_number as the only idempotency key because the source data contains repeated values such as '-' and '—'.
-
-4. lab_documents
-
-Fields:
-
-- id
-- document_code TEXT
-- title TEXT NOT NULL
-- document_type TEXT NOT NULL CHECK(document_type IN ('SOP', 'WI'))
-- description TEXT
-- product_reference TEXT
-- owner_id INTEGER REFERENCES users(id)
-- current_version_id INTEGER
-- status TEXT NOT NULL DEFAULT 'DRAFT'
-- effective_date
-- review_due_date
-- created_at
-- updated_at
-
-5. lab_document_versions
-
-Fields:
-
-- id
-- document_id INTEGER NOT NULL REFERENCES lab_documents(id) ON DELETE CASCADE
-- version_number INTEGER NOT NULL
-- content_markdown TEXT NOT NULL
-- change_summary TEXT NOT NULL
-- status TEXT NOT NULL
-- author_id INTEGER REFERENCES users(id)
-- reviewed_by INTEGER REFERENCES users(id)
-- approved_by INTEGER REFERENCES users(id)
-- created_at
-- approved_at
-
-Add a unique constraint on document_id + version_number.
-
-6. lab_document_links
-
-Support links between documents, tests, and equipment.
-
-7. lab_activity_log
-
-Support:
-
-- entity_type
-- entity_id
-- event
-- actor_id
-- old_value
-- new_value
-- ip
-- created_at
-
-Add indexes for:
-
-- test_number
-- test_type
-- workflow_status
-- final_result
-- lot_number
-- test_date
-- equipment code
-- equipment status
-- document status
-- review_due_date
-
-Run:
-
-- PRAGMA table_info for every new table.
-- PRAGMA foreign_key_check.
-- PRAGMA integrity_check.
-
-Do not report success unless the migration runs correctly on both a fresh database and a temporary copy of the existing database.
-```
-
----
-
-## PROMPT 03: Idempotent Equipment Seed
-
-```text
-Create an idempotent seed or migration for the 24 initial laboratory equipment records supplied in the QC Laboratory specification.
-
-Use stable seed keys:
-
-- EQUIPMENT-001
-- EQUIPMENT-002
-- EQUIPMENT-003
-- ...
-- EQUIPMENT-024
-
-The seed must upsert by seed_key, never by serial_number alone and never by code + serial_number alone.
-
-Preserve the source values exactly, including:
-
-- Arabic status text.
-- Arabic notes.
-- '-' serial values.
-- '—' notes.
-- Mixed statuses such as 'تحت الصيانة / NEW'.
-- Duplicate codes or serial values.
-
-The seed must:
-
-1. Insert missing rows.
-2. Update only the intended seed-owned fields for matching seed_key.
-3. Never create duplicates when executed twice.
-4. Never delete manually added equipment.
-5. Never overwrite user-edited notes or statuses after the initial seed unless the repository has an explicit seed-update policy.
-6. Remain safe on an existing populated database.
-
-After execution, verify:
-
-- Exactly 24 seed records exist.
-- Every seed_key is unique.
-- Duplicate serial values do not merge equipment rows.
-- Running the seed twice does not increase the row count.
-```
-
----
-
-## PROMPT 04: Laboratory Permissions and Policies
-
-```text
-Extend the existing central permissions system without scattering role checks across pages.
-
-Roles remain:
-
-- Admin
-- Manager
-- Supervisor
-- Employee
-
-Implement permissions for:
-
-- view_lab
-- create_lab_test
-- edit_lab_test_draft
-- submit_lab_test
-- review_lab_test
-- approve_lab_test
-- void_lab_test
-- view_lab_equipment
-- create_lab_equipment
-- edit_lab_equipment
-- archive_lab_equipment
-- create_lab_document
-- edit_lab_document_draft
-- review_lab_document
-- approve_lab_document
-- export_lab_data
-- view_lab_dashboard
-
-Rules:
-
-1. Employees may create and edit their own drafts.
-2. Employees cannot review or approve tests.
-3. Nobody may approve their own test.
-4. Managers and Admins may approve tests.
-5. Supervisors may review tests and may approve only if an explicit policy flag enables it.
-6. Equipment archive requires Manager or Admin unless policy explicitly allows Supervisor.
-7. Approved tests and approved document versions are immutable.
-8. All checks must run server-side.
-9. UI checks are only supplementary.
-
-Create reusable predicates such as:
-
-- canViewLab
-- canEditLabTest
-- canReviewLabTest
-- canApproveLabTest
-- canEditLabEquipment
-- canArchiveLabEquipment
-- canApproveLabDocument
-
-Add unit tests for every role and operation.
-```
-
----
-
-## PROMPT 05: Shared Laboratory Services
-
-```text
-Create shared Laboratory services that follow existing project conventions.
-
-Create or extend:
-
-- lab-validation.ts
-- lab-policy.ts
-- lab-activity.ts
-- lab-notifications.ts
-- lab-queries.ts
-- lab-exports.ts
-
-Validation must cover:
-
-- test_number
-- test_date
-- test_type
-- required employee-entered fields
-- positive sample count
-- sample rows
-- equipment fields
-- document metadata
-- document version fields
-
-Do not invent scientific formulas or hard validation rules.
-
-Policy must enforce:
-
-Test workflow:
-
-DRAFT -> SUBMITTED -> UNDER_REVIEW -> APPROVED
-DRAFT <- REJECTED
-APPROVED -> VOID
-
-Document workflow:
-
-DRAFT -> IN_REVIEW -> APPROVED -> SUPERSEDED
-IN_REVIEW -> DRAFT when changes are requested
-APPROVED -> ARCHIVED only through authorized action
-
-Enforce:
-
-- no self-approval
-- no illegal transitions
-- no editing approved records
-- mandatory rejection/request-change reason
-- server-derived tested_by, reviewed_by, and approved_by
-- immutable approval timestamps
-
-Every mutation must perform:
-
-1. Session validation.
-2. CSRF validation.
-3. Permission validation.
-4. Input validation.
-5. State-policy validation.
-6. Database transaction where multiple records change.
-7. Activity logging.
-8. Notification where required.
-```
-
----
-
-## PROMPT 06: Laboratory Home Page
-
-```text
-Create the SSR page:
+Target route tree:
 
 /lab
-
-Page title:
-
-QC Laboratory
-
-Subtitle:
-
-Product testing, equipment, and controlled laboratory documents
-
-Actions:
-
-- New Air Test
-- New Vacuum Test
-- Create SOP/WI
-
-Show these server-side KPI cards:
-
-- Draft Tests
-- Tests Pending Review
-- Approved Tests
-- PASS Results
-- FAIL Results
-- HOLD Results
-- Documents Due for Review
-- Equipment Under Maintenance
-- Equipment Not Calibrated
-
-Show these tables:
-
-1. Recent Test Records
-   - Test Number
-   - Test Type
-   - Test Date
-   - Product
-   - Final Result
-   - Workflow Status
-   - Tested By
-   - Updated At
-
-2. Pending Reviews
-   - Test Number
-   - Test Type
-   - Owner
-   - Submitted At
-   - Age
-   - Open action
-
-3. Equipment Alerts
-   - Equipment
-   - Code
-   - Status
-   - Calibration
-   - Updated At
-
-4. Documents Due for Review
-   - Document Code
-   - Title
-   - Document Type
-   - Version
-   - Owner
-   - Review Due Date
-
-The page must support:
-
-- permission-scoped queries
-- empty state
-- safe error state
-- no database paths in errors
-- SSR content without requiring JavaScript
-- accessible keyboard navigation
-- responsive layouts at 360, 768, 1024, and 1440 pixels
-```
-
----
-
-## PROMPT 07: Test List and Test Creation Pages
-
-```text
-Create these SSR pages:
-
 /lab/tests
 /lab/tests/new?type=air
 /lab/tests/new?type=vacuum
+/lab/tests/review
+/lab/tests/[id]
+/lab/tests/[id]/print
 
-Use one shared form component for AIR and VACUUM. Only test_type changes.
+/lab/products
+/lab/products/new
+/lab/products/[id]
+/lab/products/[id]/edit
 
-The form must contain exactly these employee-entered fields:
+/lab/templates
+/lab/templates/new
+/lab/templates/[id]
+/lab/templates/[id]/edit
 
-1. SAMPLE IDENTIFICATION
+/lab/equipment
+/lab/equipment/new
+/lab/equipment/[id]
+/lab/equipment/[id]/edit
+/lab/equipment/[id]/maintenance
 
-- Test Number
-- Test Date
+/lab/calibration
+/lab/calibration/[id]
+
+/lab/documents
+/lab/documents/new
+/lab/documents/[id]
+/lab/documents/[id]/edit
+/lab/documents/[id]/versions
+
+/lab/retests
+/lab/retests/[id]
+
+/lab/search
+/lab/reports
+/lab/data-quality
+/lab/calendar
+/lab/notifications
+
+Do not create routes blindly.
+
+If a required feature already exists under another path, reuse the existing path
+and document the mapping.
+
+Define:
+
+- route guards
+- permissions
+- services
+- entities
+- relationships
+- database migration order
+- workflow states
+- audit events
+- notifications
+- dashboard dependencies
+- export dependencies
+
+Create:
+
+apps/qc-task-manager/docs/QC-LAB-ARCHITECTURE.md
+```
+
+---
+
+# PROMPT 02 — DATABASE FOUNDATION
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement the complete database foundation through new sequential migrations.
+
+Do not alter old migrations.
+
+Core entities:
+
+1. lab_test_records
+2. lab_test_samples
+3. lab_equipment
+4. lab_documents
+5. lab_document_versions
+6. lab_document_links
+
+Additional recommended entities:
+
+7. lab_products
+8. lab_test_templates
+9. lab_test_template_versions
+10. lab_equipment_maintenance
+11. lab_equipment_calibration
+12. lab_test_retests
+13. lab_test_document_snapshots
+14. lab_test_equipment_snapshots
+15. lab_sample_identifiers
+16. lab_document_acknowledgements
+17. lab_saved_views
+18. lab_calendar_items only if a genuinely normalized calendar entity is needed
+
+Use existing project conventions.
+
+Do not add tables that duplicate existing application entities.
+
+The test record must support:
+
+- AIR
+- VACUUM
+- DRAFT
+- SUBMITTED
+- UNDER_REVIEW
+- REJECTED
+- APPROVED
+- VOID
+
+Results:
+
+- PASS
+- FAIL
+- HOLD
+
+Preserve created/updated metadata.
+
+Use foreign keys and appropriate indexes.
+
+IMPORTANT HISTORICAL RULE:
+
+The canonical equipment relationship should be equipment_id.
+
+Do not rely on equipment_name as the historical relationship.
+
+When a test is finalized/approved, preserve a snapshot of relevant equipment
+identity:
+
+- equipment name at time of test
+- equipment code at time of test
+- serial number at time of test
+- calibration state at time of test
+
+Likewise preserve the controlled-document reference/version relevant to an
+approved test.
+
+Historical test records must remain historically correct even if equipment,
+product, SOP, WI, template, or calibration data changes later.
+
+Acceptance criteria:
+
+- Migration succeeds.
+- Fresh database succeeds.
+- Existing database succeeds.
+- Existing schema integrity remains valid.
+```
+
+---
+
+# PROMPT 03 — NAVIGATION + RBAC
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Integrate QC Laboratory into the existing navigation.
+
+Do not replace current navigation.
+
+Use existing:
+
+- layout
+- sidebar
+- mobile navigation
+- breadcrumbs
+- permission helpers
+- flash messages
+- error pages
+
+Use existing roles.
+
+Do not invent new roles unless the repository proves a new role is unavoidable.
+
+Create/extend centralized permissions:
+
+LAB_VIEW
+LAB_TEST_CREATE
+LAB_TEST_EDIT
+LAB_TEST_SUBMIT
+LAB_TEST_REVIEW
+LAB_TEST_APPROVE
+LAB_TEST_VOID
+
+LAB_PRODUCT_VIEW
+LAB_PRODUCT_EDIT
+LAB_TEMPLATE_VIEW
+LAB_TEMPLATE_EDIT
+
+LAB_EQUIPMENT_VIEW
+LAB_EQUIPMENT_EDIT
+LAB_EQUIPMENT_ARCHIVE
+LAB_EQUIPMENT_MAINTENANCE
+LAB_CALIBRATION_VIEW
+LAB_CALIBRATION_EDIT
+
+LAB_DOCUMENT_VIEW
+LAB_DOCUMENT_CREATE
+LAB_DOCUMENT_EDIT
+LAB_DOCUMENT_REVIEW
+LAB_DOCUMENT_APPROVE
+LAB_DOCUMENT_ARCHIVE
+LAB_DOCUMENT_ACKNOWLEDGE
+
+LAB_RETEST_CREATE
+LAB_RETEST_VIEW
+
+LAB_EXPORT
+LAB_MANAGEMENT_DASHBOARD
+LAB_DATA_QUALITY
+
+Do not duplicate the permission system.
+
+Acceptance criteria:
+
+- unauthorized route access is blocked server-side;
+- navigation is role-aware;
+- hidden fields cannot bypass permissions;
+- query parameters cannot bypass permissions;
+- existing routes remain unchanged.
+```
+
+---
+
+# PROMPT 04 — QC LABORATORY HOME / COMMAND CENTER
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement /lab as the operational Laboratory Command Center.
+
+Header:
+
+QC Laboratory
+
+Description:
+
+Product testing, equipment, calibration, controlled documents, and laboratory
+quality operations.
+
+Actions:
+
+- New AIR Test
+- New VACUUM Test
+- New Retest where applicable
+- New Product
+- New Template
+- New SOP
+- New WI
+- Equipment
+- Calibration
+
+KPIs:
+
+- Tests Today
+- Tests This Week
+- Draft Tests
+- Awaiting Review
+- Approved Tests
+- PASS
+- FAIL
+- HOLD
+- Equipment Requiring Attention
+- Calibration Due
+- Documents Due for Review
+- Retests Open
+- Data Quality Issues
+
+Sections:
+
+Recent Tests
+Pending Reviews
+Equipment Alerts
+Calibration Alerts
+Document Reviews Due
+Open Retests
+Recent Laboratory Activity
+
+Every KPI should support drill-down to filtered records.
+
+Use real database queries.
+
+Do not rebuild the global dashboard.
+```
+
+---
+
+# PROMPT 05 — SHARED AIR/VACUUM TEST FORM
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Build one shared test form architecture for AIR and VACUUM.
+
+Routes:
+
+/lab/tests/new?type=air
+/lab/tests/new?type=vacuum
+
+Only include printed/black fields from the supplied QC form.
+Do not add handwritten-only fields.
+
+Section 1 — SAMPLE IDENTIFICATION
+
 - Product Description
 - Connector Type
 - No. of Samples Tested
 - Lot Number
 - Sampling Area
 
-Connector Type options:
+Connector Type:
 
 - Non-locking (Lipid connector)
 - Connector with floating or rotatable collar
 - Locking connector with fixed threads
 
-2. EQUIPMENT USED
+Section 2 — EQUIPMENT USED
 
 - Machine Name
 - Medium Used
 
-3. CONNECTOR ASSEMBLY
+Machine Name should be backed by equipment_id whenever possible.
+
+Section 3 — CONNECTOR ASSEMBLY
 
 - Actual Pressure
 - Torque (in.lb)
 - Time (Sec.)
 - Angle
 
-Show the Actual Pressure reference:
+Display:
 
+Actual Pressure:
 (-2.5 ~ -4) in./Hg
 
-This is a reference hint, not an automatic rejection rule.
-
-4. DIFFERENTIAL CONVERSION
+Section 4 — DIFFERENTIAL CONVERSION
 
 - Temperature (Measured)
 
-Do not calculate any undocumented conversion.
+Section 5 — TEST PARAMETERS
 
-5. TEST PARAMETERS
+Standard Parameter:
+Subatmospheric Pressure -40 ~ -80 kPa
 
-Show these as reference values:
+Acceptance Criteria:
+≤ 800 Pa
 
-- Standard Parameter: Subatmospheric Pressure -40 ~ -80 kPa
-- Acceptance Criteria: ≤ 800 Pa
-- Holding Time: 18 ~ 56 Sec.
+Holding Time:
+18 ~ 56 Sec.
 
-6. TEST RESULTS
+Section 6 — TEST RESULTS
 
-Start with five rows:
+Five initial rows.
+
+Columns:
 
 - Sample No.
 - Part Name
@@ -630,119 +638,314 @@ Start with five rows:
 - Leakage Rate
 - Result
 
-Allowed Result values:
+Result:
 
-- PASS
-- FAIL
-- HOLD
+PASS
+FAIL
+HOLD / FURTHER EVALUATION
 
-Include:
+Any Remarks
 
-- Any Remarks
-- Add Sample
+Section 7 — AUTHORIZATION
+
+- Tested By
+- Reviewed By
+- Approved By: Q.C.M.
+
+Section 8 — FINAL RESULT
+
+PASS
+FAIL
+HOLD / FURTHER EVALUATION
+
+Capabilities:
+
 - Save Draft
-- Submit for Review
+- Save and Continue
+- Submit
+- Cancel
+- Unsaved change detection
+- Accessible sample table
+- Mobile support
 
-Do not include handwritten fields from the source image. Do not add unapproved fields.
+Do not invent scientific formulas.
 
-The list page must support:
+Do not let AI determine final results.
+```
+
+---
+
+# PROMPT 06 — TEST REGISTER
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement /lab/tests.
+
+Columns:
+
+- Test ID
+- Type
+- Product
+- Lot
+- Sampling Area
+- Equipment
+- Tester
+- Result
+- Workflow Status
+- Created
+- Updated
+
+Filters:
+
+- Type
+- Status
+- Result
+- Tester
+- Equipment
+- Product
+- Lot
+- Date
+
+Search:
+
+- Test ID
+- Product
+- Lot
+- Equipment
+- Tester
+
+Requirements:
 
 - server-side search
 - pagination
-- filters
-- sorting by allowlisted columns
-- Test Number
-- Test Type
-- Test Date
-- Product
-- Lot Number
-- Final Result
-- Workflow Status
-- Tested By
-- Machine Name
+- safe sorting
+- indexed fields
+- RBAC filtering
+- export action where permitted
 
-Do not construct SQL directly from query-string values.
+Approved tests must be visually read-only.
 ```
 
 ---
 
-## PROMPT 08: Test Details, Review, Approval, and Print
+# PROMPT 07 — TEST DETAIL + PRINT
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Create:
+Implement:
 
 /lab/tests/[id]
+/lab/tests/[id]/print
 
-And the following APIs:
+Detail must contain:
 
-GET /api/lab/tests
-POST /api/lab/tests
-GET /api/lab/tests/:id
-PATCH /api/lab/tests/:id
-POST /api/lab/tests/:id/submit
-POST /api/lab/tests/:id/review
-POST /api/lab/tests/:id/approve
-POST /api/lab/tests/:id/void
+Test Identification
+Sample Identification
+Equipment
+Connector Assembly
+Differential Conversion
+Test Parameters
+Sample Results
+Remarks
+Authorization
+Final Result
+Workflow
+Applicable SOP/WI
+Equipment Snapshot
+Calibration Snapshot
+Audit Timeline
+Retest History
+Related Product
+Related Investigation/NCR/CAPA hooks if existing system supports them
 
-Draft mode:
+Approved records are read-only.
 
-- Owner may edit permitted fields.
-- Save changes.
-- Submit for review.
-- Show activity history.
+Print:
 
-Review mode:
+- A4
+- server-rendered
+- professional laboratory record
+- no navigation
+- no dashboard chrome
+- exact stored values
+- record ID
+- controlled version metadata
+- final result
+- authorization
+- relevant SOP/WI version
+- equipment snapshot
+- calibration state snapshot
 
-- Show employee-entered values.
-- Show reference values.
-- Show all sample rows.
-- Request Changes requires a reason.
-- Approve is visible only to authorized roles.
-- Self-approval must be rejected server-side.
+Acceptance criteria:
 
-Approved mode:
-
-- Read-only fields.
-- Test Number and Test Date.
-- Tester, reviewer, approver.
-- Submit/review/approval timestamps.
-- Activity timeline.
-- Print view.
-- CSV export if permitted.
-
-Void requires an authorized reason.
-
-All mutations require:
-
-- session
-- CSRF
-- permission
-- validation
-- state transition check
-- transaction where needed
-- activity event
-- notification
-
-An approved test must never be edited silently.
+- print output matches stored record exactly;
+- historical references remain unchanged.
 ```
 
 ---
 
-## PROMPT 09: Equipment Pages
+# PROMPT 08 — REVIEW CENTER
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Create these SSR pages:
+Implement /lab/tests/review.
+
+Dashboard:
+
+- Awaiting Review
+- Aging
+- Rejected
+- Approved Today
+- HOLD
+
+Filters:
+
+- Test type
+- Tester
+- Product
+- Lot
+- Date
+- Result
+- Aging
+
+Actions:
+
+- Start Review
+- Request Changes
+- Reject
+- Approve
+
+Rules:
+
+- Tester cannot approve own test.
+- Rejection requires reason.
+- Request Changes requires reason.
+- Approval requires permission.
+- Approved record immutable.
+- Every transition audited.
+- Existing notifications reused.
+
+Do not build a second workflow engine.
+```
+
+---
+
+# PROMPT 09 — PRODUCT MASTER
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement a laboratory Product Master.
+
+Routes:
+
+/lab/products
+/lab/products/new
+/lab/products/[id]
+/lab/products/[id]/edit
+
+Fields:
+
+- Product Name
+- Product Code
+- Product Description
+- Connector Type
+- Default Test Type
+- Applicable Test Template
+- Applicable SOP
+- Applicable WI
+- Related Equipment
+- Active / Inactive
+- Notes
+
+When creating a test:
+
+Employee selects product.
+
+The system may populate approved reference values and linked documents.
+
+Measured values remain editable and are never silently overwritten.
+
+Use Product ID as the canonical relationship.
+
+Historical tests must retain historical product identity.
+
+Audit changes.
+```
+
+---
+
+# PROMPT 10 — TEST TEMPLATES
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement laboratory Test Templates.
+
+Routes:
+
+/lab/templates
+/lab/templates/new
+/lab/templates/[id]
+/lab/templates/[id]/edit
+
+Types:
+
+- AIR
+- VACUUM
+
+Templates may define:
+
+- standard parameters
+- reference ranges
+- expected test structure
+- default sample count
+- connector options
+- applicable SOP
+- applicable WI
+- equipment compatibility
+- product associations
+
+Do not let templates silently overwrite measured results.
+
+Version templates.
+
+When a test is created from a template, store:
+
+- template_id
+- template_version
+
+Snapshot relevant configuration where needed for historical reproducibility.
+```
+
+---
+
+# PROMPT 11 — EQUIPMENT REGISTRY
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement:
 
 /lab/equipment
 /lab/equipment/new
+/lab/equipment/[id]
 /lab/equipment/[id]/edit
-
-Create these APIs:
-
-GET /api/lab/equipment
-POST /api/lab/equipment
-PATCH /api/lab/equipment/:id
-POST /api/lab/equipment/:id/archive
 
 Columns:
 
@@ -753,302 +956,1546 @@ Columns:
 - Calibration
 - Serial Number
 - Notes
-- Updated By
-- Updated At
+
+Seed the supplied 24 laboratory equipment records exactly as provided by the
+business specification.
+
+Preserve supplied values exactly.
+
+Do not invent missing information.
+
+Editable fields:
+
+- equipment name
+- code
+- location
+- status
+- calibration status
+- serial number
+- notes
 
 Features:
 
-- server-side search
-- filters by status and calibration
-- add equipment
-- edit equipment
-- archive instead of delete
-- link equipment to tests and documents
-- activity history
+- search
+- filters
+- create
+- edit
+- archive
+- restore where supported
+- history
 
-Rules:
+Important:
 
-1. Serial numbers are free text.
-2. Duplicate serial numbers are allowed when the source data requires them.
-3. Archived equipment remains visible in historical test records.
-4. Employees cannot edit equipment unless policy grants it.
-5. Status and Calibration changes create activity events.
-6. The initial 24 rows come from the idempotent seed using seed_key.
-7. The page must not contain the seed array.
+Use equipment_id as the canonical relationship.
+
+Never hard-delete referenced equipment.
 ```
 
 ---
 
-## PROMPT 10: SOP/WI Document Pages
+# PROMPT 12 — EQUIPMENT MAINTENANCE
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Create:
+Implement:
+
+/lab/equipment/[id]/maintenance
+
+Fields:
+
+- maintenance date
+- issue
+- maintenance type
+- description
+- technician/vendor
+- status
+- completed date
+- notes
+
+Do not fabricate historical entries.
+
+Equipment timeline should combine:
+
+- usage
+- maintenance
+- calibration
+- returned to service
+
+Audit all maintenance changes.
+```
+
+---
+
+# PROMPT 13 — CALIBRATION MANAGEMENT
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement:
+
+/lab/calibration
+
+Fields:
+
+- Equipment
+- Last Calibration Date
+- Calibration Due Date
+- Calibration Provider
+- Certificate Reference
+- Calibration Result
+- Next Due Date
+- Status
+- Notes
+
+Support:
+
+- compliant
+- due
+- overdue
+- not compliant
+- unknown
+
+Missing data must remain nullable.
+
+Use existing notification infrastructure.
+
+When selecting equipment for a test:
+
+show calibration status.
+
+Do not block a test automatically unless an approved existing policy requires it.
+
+At finalization/approval, snapshot the calibration state.
+```
+
+---
+
+# PROMPT 14 — SOP/WI LIBRARY
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement:
 
 /lab/documents
-/lab/documents/new
-/lab/documents/[id]
-/lab/documents/[id]/edit
-/lab/documents/[id]/versions
 
-Document types:
+Support:
 
-- SOP
-- WI
+SOP
+WI
 
-Metadata fields:
+Columns:
 
 - Document Code
 - Title
-- Document Type
-- Description
-- Product Reference
-- Related Equipment
+- Type
+- Version
+- Status
 - Owner
 - Effective Date
-- Review Due Date
-- Change Summary
+- Review Due
+- Updated At
 
-The editor must:
+Filters:
 
-- store Markdown
-- render sanitized HTML preview
-- support headings
-- support ordered and unordered lists
-- support steps
-- support tables
-- support warnings/callouts
-- support safe links
-- reject or sanitize scripts and unsafe HTML
-- never use unsanitized innerHTML
+- type
+- status
+- owner
+- equipment
+- product
+- review due
 
-Rules:
+Search:
 
-1. Draft documents may be edited by authorized users.
-2. Approved documents cannot be edited in place.
-3. Editing an approved document creates a new version.
-4. Change Summary is mandatory for every new version.
-5. Previous versions remain available.
-6. Approval creates reviewer and approver metadata.
-7. Requests for changes return the document to Draft.
-8. Every version change is logged.
+- title
+- code
+- product
+- equipment
 
-Document statuses:
+Statuses:
 
 DRAFT
 IN_REVIEW
 APPROVED
 SUPERSEDED
 ARCHIVED
+
+Approved versions are immutable.
 ```
 
 ---
 
-## PROMPT 11: Dashboard, Notifications, and Exports
+# PROMPT 15 — SOP/WI EDITOR
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Integrate Laboratory functionality with the existing system.
+Implement:
 
-Dashboard:
+/lab/documents/new
+/lab/documents/[id]/edit
 
-Add a separate Laboratory section with:
+Fields:
 
-- tests by type
-- tests by status
-- PASS/FAIL/HOLD trend
-- average review time
-- tests pending approval
-- equipment under maintenance
-- equipment not calibrated
-- documents due for review
-- latest laboratory activity
+- document type
+- title
+- document code
+- description
+- product reference
+- equipment
+- owner
+- review due date
+- effective date
+- change summary
+- content
 
-Dashboard visibility:
+Support:
 
-- Admin: yes
-- Manager: yes
-- Supervisor: yes
-- Employee: no
+- headings
+- numbered steps
+- bullets
+- tables
+- warnings
+- notes
+- checklists
+- safe links
 
-All metrics must be:
+Sanitize rendered HTML.
 
-- server-side
-- permission-scoped
-- period-bounded
-- auditable against the database
+Workflow:
 
-Notifications:
+DRAFT
+→ IN_REVIEW
+→ APPROVED
+→ SUPERSEDED
+or
+→ ARCHIVED
 
-- notify reviewers when a test is submitted
-- notify the owner when changes are requested
-- notify owner and relevant approver after approval
-- notify document owner when review is due
+Editing approved content creates a new version.
 
-Exports:
-
-- GET /api/lab/exports/tests.csv
-- GET /api/lab/exports/equipment.csv
-- GET /api/lab/exports/documents.csv
-
-CSV requirements:
-
-- same permission checks as pages
-- safe against formula injection
-- escape values beginning with =, +, -, or @
-- never expose secrets or internal file paths
-
-Add print views for:
-
-- approved test record
-- approved SOP/WI version
+Old approved version remains immutable.
 ```
 
 ---
 
-## PROMPT 12: SQLite and Render Deployment Safety
+# PROMPT 16 — DOCUMENT VERSION COMPARISON
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Audit and document how SQLite is persisted in deployment.
+Implement:
 
-The Laboratory module contains regulated operational data. Do not claim the system is production-ready until database persistence is confirmed.
+/lab/documents/[id]/versions
+
+Display:
+
+- version
+- status
+- author
+- created
+- reviewer
+- approver
+- approval date
+- change summary
+
+Allow authorized comparison.
+
+Comparison is read-only.
+```
+
+---
+
+# PROMPT 17 — VERSION-LOCKED TEST REFERENCES
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+When a test is finalized/approved, preserve the exact relevant reference context.
+
+Preserve:
+
+1. Product identity snapshot
+2. Equipment identity snapshot
+3. Equipment calibration state snapshot
+4. SOP code + version
+5. WI code + version
+6. Template + template version where applicable
+7. Reference parameter values used
+8. Relevant units
+
+Historical tests must continue showing the exact references used at that time.
+
+Example:
+
+If a test used SOP-QC-001 v3,
+later approving v4 must not change that historical test to v4.
+
+Never dynamically resolve historical references to current values.
+```
+
+---
+
+# PROMPT 18 — RETEST / REPEAT TEST WORKFLOW
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement a controlled Retest workflow.
+
+Routes:
+
+/lab/retests
+/lab/retests/[id]
+
+Allow authorized users to create a retest from an existing test.
+
+Preserve:
+
+- original test ID
+- reason
+- original result
+- original final state
+- new test ID
+- relationship
+
+Do not modify original test.
+
+Example:
+
+TEST-00081
+  RETEST-01
+  RETEST-02
+
+Audit every retest creation and completion.
+```
+
+---
+
+# PROMPT 19 — SAMPLE TRACEABILITY
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement sample-level traceability.
+
+Each sample has a stable identifier.
+
+Example:
+
+LAB-TEST-00081-S03
+
+Store:
+
+- test
+- sample number
+- sample identifier
+- part name
+- status
+- result
+
+Sample identifiers must remain stable after test approval.
+
+Do not duplicate the entire test record.
+```
+
+---
+
+# PROMPT 20 — INVESTIGATION / NCR / CAPA HOOKS
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Do not build a duplicate NCR/CAPA system.
+
+Inspect existing:
+
+- findings
+- NCR-like entities
+- CAPA
+- investigations
+
+If existing entities exist:
+
+allow laboratory tests to link to them.
+
+Possible relationship:
+
+Test
+→ Finding
+→ CAPA
+
+or:
+
+Test
+→ Investigation
+
+If no suitable target exists, create only a minimal future-compatible relation
+hook.
+
+Do not build a second quality-management workflow.
+```
+
+---
+
+# PROMPT 21 — DOCUMENT ACKNOWLEDGEMENT
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement controlled-document acknowledgement.
+
+Track:
+
+- document
+- version
+- employee
+- assigned date
+- acknowledged date
+- status
+
+Statuses:
+
+PENDING
+ACKNOWLEDGED
+
+Acknowledgement is version-specific.
+
+SOP v3 acknowledgement does not equal SOP v4 acknowledgement.
+
+Use existing user and notification architecture.
+```
+
+---
+
+# PROMPT 22 — DOCUMENT REVIEW SCHEDULER
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Extend document review management.
+
+Show:
+
+- 30 days remaining
+- 15 days remaining
+- 7 days remaining
+- due today
+- overdue
+
+Reuse existing notification/scheduling architecture.
+
+Do not duplicate scheduler infrastructure.
+```
+
+---
+
+# PROMPT 23 — LABORATORY SEARCH
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement /lab/search.
+
+Search across:
+
+- tests
+- samples
+- products
+- equipment
+- SOPs
+- WIs
+- retests
+
+Search fields:
+
+- test ID
+- sample ID
+- product
+- lot
+- equipment
+- equipment code
+- serial number
+- document code
+- document title
+
+Use:
+
+- server-side search
+- indexed queries
+- pagination
+- RBAC filtering
+- parameterized SQL
+
+Do not expose unauthorized records.
+```
+
+---
+
+# PROMPT 24 — SAVED VIEWS / FILTERS
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement user-specific saved laboratory views.
+
+Examples:
+
+My Air Tests
+My Vacuum Tests
+Awaiting My Review
+Failed Tests
+HOLD Tests
+Equipment Under Maintenance
+Calibration Due Soon
+SOP Review Due
+Pending Document Acknowledgement
+Retests Open
+
+Store structured validated filters.
+
+Never store arbitrary SQL.
+
+Users only see their own saved views.
+```
+
+---
+
+# PROMPT 25 — LABORATORY CALENDAR
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement /lab/calendar.
+
+Display real operational dates:
+
+- equipment calibration
+- equipment maintenance
+- SOP review deadlines
+- WI review deadlines
+- document acknowledgement deadlines
+- supported test/retest dates
+
+Do not invent events.
+
+Use existing calendar infrastructure if available.
+```
+
+---
+
+# PROMPT 26 — LABORATORY NOTIFICATION CENTER
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement /lab/notifications.
+
+Show:
+
+- review requests
+- rejected tests
+- requested changes
+- approved tests
+- document review reminders
+- document acknowledgement reminders
+- calibration reminders
+- maintenance alerts
+- retest updates
+
+Reuse existing notification infrastructure.
+
+Provide read/unread state and entity links.
+```
+
+---
+
+# PROMPT 27 — DATA QUALITY CENTER
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Implement /lab/data-quality.
+
+Identify data quality conditions such as:
+
+Tests:
+- missing lot
+- missing equipment
+- missing tester
+- incomplete samples
+- missing final result when required
+- inconsistent status
+
+Equipment:
+- missing code
+- missing serial
+- missing calibration state
+- missing location
+
+Documents:
+- missing owner
+- missing review date
+- missing approval metadata
+- missing effective date where required
+
+Products:
+- missing code
+- inactive product used unexpectedly
+- missing applicable document where required
+
+Only report conditions supported by actual data/policy.
+
+Do not silently modify records.
+```
+
+---
+
+# PROMPT 28 — DASHBOARD INTEGRATION
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Integrate the laboratory into the existing main dashboard.
+
+Do not replace or rebuild it.
+
+Metrics:
+
+Tests:
+- total
+- AIR
+- VACUUM
+- draft
+- submitted
+- under review
+- approved
+- rejected
+- void
+
+Results:
+- PASS
+- FAIL
+- HOLD
+
+Equipment:
+- active
+- new
+- maintenance
+- unused
+- calibration attention
+- calibration compliant
+
+Documents:
+- SOP
+- WI
+- draft
+- review
+- approved
+- superseded
+- archived
+- review due
+- acknowledgement pending
+
+Retests:
+- total
+- open
+- completed
+- by reason
+
+Data Quality:
+- open issues
+
+Charts:
+
+- tests by date
+- AIR vs VACUUM
+- PASS/FAIL/HOLD
+- equipment status
+- calibration
+- document review status
+
+Every KPI should support drill-down.
+```
+
+---
+
+# PROMPT 29 — REPORTS AND EXPORTS
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Integrate Laboratory reporting into existing export architecture.
+
+Reports:
+
+1. Laboratory Test Register
+2. AIR Test Register
+3. VACUUM Test Register
+4. PASS/FAIL/HOLD Report
+5. Retest Report
+6. Product Test History
+7. Equipment Register
+8. Equipment Calibration Report
+9. Equipment Maintenance Report
+10. SOP Register
+11. WI Register
+12. Document Review Due Report
+13. Document Acknowledgement Report
+14. Laboratory Activity Report
+15. Data Quality Report
+
+Respect all filters and permissions.
+
+Never export secrets.
+
+Use safe CSV generation.
+
+Reuse the existing exporter.
+```
+
+---
+
+# PROMPT 30 — LABORATORY AUDIT
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Every state-changing laboratory action must use the existing audit architecture.
+
+Tests:
+- create
+- update
+- submit
+- review
+- request changes
+- reject
+- approve
+- void
+- retest creation
+
+Equipment:
+- create
+- update
+- archive
+- restore
+- maintenance
+- calibration
+
+Products:
+- create
+- update
+- archive
+
+Templates:
+- create
+- update
+- approve
+- version
+
+Documents:
+- create
+- update
+- submit
+- request changes
+- approve
+- supersede
+- archive
+- acknowledge
+
+Relationships:
+- link
+- unlink
+
+Do not store secrets in audit records.
+```
+
+---
+
+# PROMPT 31 — ADVANCED AUDIT TIMELINE
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Create a readable Laboratory Audit Timeline.
+
+Example:
+
+14 Aug 2026 09:41
+Employee created Test LAB-00081
+
+14 Aug 2026 10:03
+Employee submitted test
+
+14 Aug 2026 11:20
+Reviewer started review
+
+14 Aug 2026 11:41
+Reviewer requested changes
+
+14 Aug 2026 13:10
+Employee resubmitted
+
+14 Aug 2026 14:02
+QC Manager approved
+
+Show:
+
+- who
+- what
+- when
+- before
+- after
+- reason
+
+Do not create a parallel history system.
+```
+
+---
+
+# PROMPT 32 — AI QC COPILOT
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Add a controlled AI assistance layer only if the existing BRIGHTAI AI
+architecture supports safe integration.
+
+AI may:
+
+- summarize a test
+- summarize equipment history
+- summarize SOP/WI changes
+- identify missing fields
+- suggest review questions
+- compare a test against approved SOP/WI content
+- summarize historical FAIL patterns
+- summarize repeated retests
+- summarize data-quality issues
+
+AI MUST NOT:
+
+- decide PASS/FAIL
+- approve tests
+- approve documents
+- modify records
+- modify results
+- modify equipment
+- modify calibration
+- invent scientific acceptance criteria
+
+Every AI response must be clearly marked:
+
+AI GENERATED — HUMAN REVIEW REQUIRED
+
+Reuse existing AI infrastructure, permissions, guardrails, logging, and
+configuration.
+```
+
+---
+
+# PROMPT 33 — SECURITY HARDENING
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Perform a complete Laboratory security audit.
+
+Test:
+
+- authentication bypass
+- RBAC bypass
+- IDOR
+- CSRF
+- XSS
+- SQL injection
+- mass assignment
+- hidden field manipulation
+- route ID manipulation
+- document access bypass
+- export bypass
+- equipment edit bypass
+- self approval
+- status transition bypass
+- retest authorization
+- saved view injection
+- Markdown injection
+- HTML injection
+- malicious URLs
+- audit tampering
+- information leakage
+
+For each vulnerability:
+
+1. reproduce
+2. identify root cause
+3. fix
+4. add regression test
+5. rerun test
+
+Acceptance criteria:
+
+- no known critical/high Laboratory security issue remains.
+```
+
+---
+
+# PROMPT 34 — PERFORMANCE + DATABASE INDEXING
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Audit laboratory database performance.
 
 Inspect:
 
-1. Render configuration.
-2. Dockerfile.
-3. Start command.
-4. SQLite database path.
-5. Backup path.
-6. Whether a persistent disk or persistent volume is configured.
-7. Whether deployments can recreate the filesystem.
-8. Whether backups are stored outside the disposable application filesystem.
+- test register
+- review queue
+- test details
+- sample queries
+- equipment
+- maintenance
+- calibration
+- products
+- templates
+- documents
+- versions
+- search
+- dashboard
+- reports
+- audit timeline
 
-Implement or document one approved strategy:
+Check:
 
-Option A:
-- Render Persistent Disk is configured.
-- SQLite database path points to the persistent mount.
-- Backups are stored separately.
-- Restore procedure is documented and tested.
+- N+1 queries
+- missing indexes
+- unbounded queries
+- duplicate queries
+- SELECT *
+- expensive aggregation
+- inefficient sorting
+- inefficient search
 
-Option B:
-- The application migrates to PostgreSQL or another persistent production database.
-- SQLite remains available only for local development and tests.
-
-Add:
-
-- startup database integrity check
-- backup command
-- restore command
-- documented rollback process
-- warning when running SQLite without persistent storage
-
-Do not silently switch databases.
-Do not delete existing SQLite data.
-Report the final deployment decision and its risks.
+Add only necessary indexes using new migrations.
 ```
 
 ---
 
-## PROMPT 13: Security, Accessibility, and Acceptance Tests
+# PROMPT 35 — ACCESSIBILITY + RESPONSIVE UX
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Add and run tests for the complete Laboratory module.
+Perform an accessibility and responsive pass across the complete Laboratory.
 
-Database tests:
+Test:
 
-- migration applies once
-- migration is idempotent
-- foreign keys pass
-- integrity_check passes
-- five test samples save and reload
-- equipment seed creates exactly 24 rows
-- running seed twice creates no duplicates
-- duplicate serial values do not merge records
-- approved tests cannot be edited
-- approved document versions remain immutable
-- document version numbers increment correctly
+360px
+768px
+1024px
+1440px
 
-Authorization tests:
+Check:
 
-- Employee cannot approve
-- Employee cannot review
-- users cannot approve their own test
-- unauthorized users cannot access another user's scoped records
-- IDOR attempts fail
-- archived equipment cannot be deleted
-- invalid state transitions fail
+- keyboard navigation
+- focus
+- screen readers
+- labels
+- validation
+- table semantics
+- touch target size
+- responsive forms
+- responsive tables
+- modals
+- alerts
+- status badges
+- print views
+- loading
+- empty states
+- error states
 
-Security tests:
+The Laboratory must feel native to BRIGHTAI.
 
-- missing CSRF fails
-- invalid session fails
-- invalid ids fail safely
-- SQL injection attempts fail
-- XSS in document Markdown is sanitized
-- unsafe HTML is not executed
-- CSV formula injection is neutralized
-- errors do not expose database paths, environment variables, or secrets
-
-E2E tests:
-
-1. Employee creates an Air draft.
-2. Employee creates a Vacuum draft.
-3. Employee reloads and sees saved values.
-4. Employee submits the test.
-5. Reviewer requests changes with a reason.
-6. Employee edits and resubmits.
-7. Authorized approver approves.
-8. Owner attempts self-approval and is rejected.
-9. Approved test edit is rejected.
-10. Equipment edit persists after reload.
-11. Equipment seed is idempotent.
-12. User creates an SOP/WI draft.
-13. User previews sanitized Markdown.
-14. Reviewer requests changes.
-15. Authorized approver approves the document.
-16. New revision does not modify the previous version.
-17. Dashboard metrics match database fixtures.
-18. Print views render correctly.
-19. CSV exports respect permissions.
-
-Run the repository's actual commands, including the appropriate equivalents of:
-
-pnpm --filter @brightai/qc-task-manager typecheck
-pnpm --filter @brightai/qc-task-manager test
-pnpm --filter @brightai/qc-task-manager build
-
-Report actual PASS/FAIL output. Do not claim tests passed unless they were executed.
+Do not redesign unrelated application areas.
 ```
 
 ---
 
-## PROMPT 14: Final Documentation and Handover
+# PROMPT 36 — COMPREHENSIVE TEST SUITE
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
 
 ```text
-Create or update the following documentation:
+Create or extend tests for the complete Laboratory.
 
-1. QC Laboratory page report.
-2. Laboratory API reference.
-3. Laboratory database schema reference.
-4. Permission matrix.
-5. Equipment seed policy.
-6. Test workflow state machine.
-7. SOP/WI versioning policy.
-8. Backup and restore procedure.
-9. SQLite/Render persistence decision.
-10. Test and acceptance report.
-11. Known limitations and open decisions.
+Database:
+- migrations
+- constraints
+- foreign keys
+- indexes
 
-The final report must clearly separate:
+Tests:
+- AIR creation
+- VACUUM creation
+- draft
+- submit
+- review
+- reject
+- request changes
+- approve
+- void
+- self-approval prevention
+- immutable approval
 
-- Implemented
-- Tested and passed
-- Implemented but not fully tested
-- Not implemented
-- Requires business approval
-- Production blockers
+Samples:
+- five samples
+- controlled extension
+- validation
+- identifiers
 
-Do not describe the module as Production Ready while any critical database, backup, authorization, migration, or deployment blocker remains.
+Equipment:
+- all 24 seed records
+- edit
+- archive
+- maintenance
+- calibration
+
+Products:
+- create
+- edit
+- archive
+- relation to tests
+
+Templates:
+- create
+- version
+- relation to test
+
+Documents:
+- SOP
+- WI
+- draft
+- review
+- approval
+- version
+- comparison
+- acknowledgement
+
+Retests:
+- create
+- link
+- original immutability
+
+Dashboard:
+- KPI accuracy
+- role visibility
+
+Search:
+- authorization
+- correctness
+
+Exports:
+- escaping
+- authorization
+- filtering
+
+Security:
+- CSRF
+- IDOR
+- XSS
+- SQL injection
+- permission bypass
+
+AI:
+- cannot approve
+- cannot mutate
+- clearly labeled output
+
+Use isolated temporary databases.
+
+Never run destructive tests against production data.
 ```
 
 ---
+
+# PROMPT 37 — END-TO-END BUSINESS WORKFLOWS
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Run and verify complete end-to-end business workflows.
+
+WORKFLOW A — AIR TEST
+
+Employee
+→ Select product
+→ Select AIR template
+→ Select equipment
+→ Enter sample information
+→ Enter connector assembly
+→ Enter test results
+→ Save draft
+→ Submit
+→ Reviewer opens
+→ Reviewer reviews
+→ Approves
+→ Record becomes read-only
+→ Print
+→ Dashboard updates
+→ Audit recorded
+→ Notification generated
+
+WORKFLOW B — VACUUM TEST
+
+Employee
+→ Create VACUUM test
+→ Save
+→ Submit
+→ Reviewer rejects
+→ Reason captured
+→ Employee edits
+→ Resubmits
+→ Reviewer approves
+
+WORKFLOW C — EQUIPMENT
+
+Manager
+→ Create equipment
+→ Edit equipment
+→ Add maintenance
+→ Add calibration
+→ Link to test
+→ Archive equipment
+→ Historical test still shows original equipment snapshot
+
+WORKFLOW D — SOP
+
+Employee
+→ Create SOP
+→ Draft
+→ Submit
+→ Reviewer requests changes
+→ Employee updates
+→ Resubmit
+→ Approve
+→ Version 1 becomes immutable
+
+WORKFLOW E — SOP REVISION
+
+Create Version 2
+→ Approve Version 2
+
+Old tests continue showing Version 1.
+New tests use Version 2.
+
+WORKFLOW F — RETEST
+
+Test FAIL
+→ Authorized user creates retest
+→ Original remains unchanged
+→ Retest references original
+→ Retest reviewed
+→ Retest approved
+
+WORKFLOW G — ACKNOWLEDGEMENT
+
+SOP v4 approved
+→ Employees receive acknowledgement requirement
+→ Employee acknowledges
+→ Dashboard updates
+```
+
+---
+
+# PROMPT 38 — FINAL CODE QUALITY PASS
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Inspect all Laboratory implementation for:
+
+- duplicate code
+- duplicate components
+- dead code
+- unused imports
+- unnecessary dependencies
+- inconsistent naming
+- inconsistent enums
+- inconsistent authorization
+- inconsistent validation
+- unsafe error handling
+- missing audit events
+- missing tests
+- missing indexes
+- incomplete loading states
+- incomplete error states
+- incomplete empty states
+- duplicated database logic
+
+Remove only unnecessary code introduced by Laboratory work.
+
+Do not remove unrelated legacy functionality.
+
+Run:
+
+- formatter
+- linter
+- type check
+- unit tests
+- integration tests
+- end-to-end tests
+- production build
+
+Record exact results.
+```
+
+---
+
+# PROMPT 39 — PRODUCTION READINESS AUDIT
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Perform final production-readiness verification.
+
+Verify:
+
+Architecture
+Database
+Migrations
+Authentication
+RBAC
+CSRF
+Validation
+SQL safety
+XSS protection
+Audit
+Notifications
+Dashboard
+Search
+Reports
+Exports
+Print
+Accessibility
+Responsive UI
+Performance
+AI guardrails
+Document control
+Equipment history
+Calibration
+Retesting
+Data quality
+Testing
+
+Create:
+
+apps/qc-task-manager/docs/QC-LAB-PRODUCTION-READINESS.md
+
+Classify:
+
+PASS
+PARTIAL
+FAIL
+UNVERIFIED
+
+Never mark PASS without real verification.
+
+Provide:
+
+1. Implemented functionality
+2. Existing functionality reused
+3. Database changes
+4. Routes
+5. Permissions
+6. Audit integration
+7. Notification integration
+8. Dashboard integration
+9. Product integration
+10. Template integration
+11. Equipment integration
+12. Calibration integration
+13. SOP/WI integration
+14. Retest integration
+15. Investigation/CAPA hooks
+16. Data quality
+17. AI guardrails
+18. Security
+19. Performance
+20. Accessibility
+21. Tests
+22. Remaining risks
+23. Required manual validation
+24. Exact files changed
+25. Exact commands executed
+26. Exact results
+```
+
+---
+
+# PROMPT 40 — FINAL MASTER REGRESSION
+
+**Execution Checklist**
+
+- [ ] Prompt executed and verified
+
+```text
+Perform the final regression audit of BRIGHTAI.
+
+The QC Laboratory implementation must not break:
+
+- authentication
+- sessions
+- users
+- tasks
+- task updates
+- evidence
+- findings
+- CAPA
+- SLA
+- notifications
+- dashboard
+- exports
+- backup
+- audit integrity
+- existing AI functionality
+
+Run the complete relevant test suite for the repository.
+
+Verify:
+
+- clean installation
+- migration from existing database
+- migration from empty database
+- seeded laboratory data
+- all routes
+- all state transitions
+- all permission boundaries
+- all exports
+- all audit events
+- all critical dashboard metrics
+
+Do NOT deploy.
+
+Do NOT push.
+
+Do NOT alter CI/CD.
+
+Do NOT claim success unless actual verification succeeds.
+
+Produce the final verification summary.
+```
+
+---
+
+# FINAL EXECUTION ORDER
+
+## Phase 1 — Foundation
+
+- [ ] 00 Discovery
+- [ ] 01 Architecture
+- [ ] 02 Database
+- [ ] 03 Navigation/RBAC
+
+## Phase 2 — Core Laboratory
+
+- [ ] 04 Laboratory Home
+- [ ] 05 AIR/VACUUM Forms
+- [ ] 06 Test Register
+- [ ] 07 Test Detail/Print
+- [ ] 08 Review Center
+
+## Phase 3 — Master Data
+
+- [ ] 09 Product Master
+- [ ] 10 Test Templates
+- [ ] 11 Equipment Registry
+- [ ] 12 Equipment Maintenance
+- [ ] 13 Calibration
+
+## Phase 4 — Controlled Documents
+
+- [ ] 14 SOP/WI Library
+- [ ] 15 SOP/WI Editor
+- [ ] 16 Version Comparison
+- [ ] 17 Version-Locked References
+- [ ] 21 Document Acknowledgement
+- [ ] 22 Document Review Scheduler
+
+## Phase 5 — Traceability and Quality
+
+- [ ] 18 Retest
+- [ ] 19 Sample Traceability
+- [ ] 20 Investigation/NCR/CAPA Hooks
+- [ ] 27 Data Quality Center
+
+## Phase 6 — Productivity
+
+- [ ] 23 Search
+- [ ] 24 Saved Views
+- [ ] 25 Laboratory Calendar
+- [ ] 26 Laboratory Notifications
+
+## Phase 7 — Intelligence and Reporting
+
+- [ ] 28 Dashboard Integration
+- [ ] 29 Reports/Exports
+- [ ] 30 Audit
+- [ ] 31 Audit Timeline
+- [ ] 32 AI QC Copilot
+
+## Phase 8 — Hardening
+
+- [ ] 33 Security
+- [ ] 34 Performance
+- [ ] 35 Accessibility
+- [ ] 36 Test Suite
+- [ ] 37 End-to-End Workflows
+- [ ] 38 Code Quality
+- [ ] 39 Production Readiness
+- [ ] 40 Final Regression
+
+---
+
+# DEFINITION OF DONE
+
+The QC Laboratory is considered complete only when all execution prompts have been verified, the relevant acceptance criteria pass, existing BRIGHTAI functionality remains intact, and the final regression is green.
+
+---
+
+# AGENT EXECUTION CONTRACT
+
+```text
+DO NOT EXECUTE ALL PROMPTS AS ONE BLIND BATCH.
+
+After each prompt:
+
+1. Inspect current state.
+2. Implement only the requested scope.
+3. Run relevant tests.
+4. Verify acceptance criteria.
+5. List changed files.
+6. List commands executed.
+7. Report actual results.
+8. Continue only after the prompt is verified.
+
+If something already exists:
+REUSE IT.
+
+If something partially exists:
+EXTEND IT.
+
+If something is missing:
+IMPLEMENT IT.
+
+If something conflicts:
+STOP THAT SUBTASK,
+EXPLAIN THE CONFLICT,
+AND CHOOSE THE SMALLEST COMPATIBLE CHANGE.
+
+The final result must be one coherent BRIGHTAI QC platform.
+
+Historical integrity is mandatory.
+
+Human users remain responsible for:
+
+- test measurements
+- PASS/FAIL/HOLD
+- review
+- approval
+- scientific interpretation
+- quality decisions
+```
+
+---
+
+# IMPLEMENTATION NOTES
+
+**Current repository context to preserve**
+
+The Laboratory extension must integrate with the existing:
+
+- Astro SSR application
+- SQLite database and sequential migrations
+- authentication/session system
+- RBAC
+- CSRF protection
+- Zod/server validation
+- Activity/Audit Log
+- Notifications
+- Dashboard
+- Exports
+- Existing task/finding/CAPA/SLA/evidence architecture
+- Existing AI guardrails
+- Existing acceptance tests
+
+**Historical integrity rule**
+
+Never allow a later change to:
+
+- Product Master
+- Equipment
+- Calibration
+- SOP
+- WI
+- Template
+
+to silently change the meaning of an already approved historical test.
+
+Approved records must retain the exact reference context used when they were
+performed and approved.
