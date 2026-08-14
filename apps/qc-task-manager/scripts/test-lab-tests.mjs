@@ -284,6 +284,87 @@ try {
     eq(timeline[0].action, 'CREATE', 'details: audit action CREATE');
   }
 
+  // ── 7. loadLabTestView — shared loader (details + print consistency) ──
+  console.log('\n■ loadLabTestView');
+  {
+    // Invalid id / not allowed → full empty view (never a crash).
+    const bad = tests.loadLabTestView(0, true);
+    eq(bad.record, null, 'load: id 0 → record null');
+    const denied = tests.loadLabTestView(1, false);
+    eq(denied.record, null, 'load: not allowed → record null');
+
+    const view = tests.loadLabTestView(1, true);
+    ok(view.record != null, 'load: record 1 loaded');
+    eq(view.record.test_number, 'LAB-TEST-00001', 'load: correct test_number');
+    eq(view.samples.length, 0, 'load: no sample rows in fixture');
+    ok(view.equipmentSnapshot != null, 'load: equipment snapshot present');
+    eq(view.equipmentSnapshot.calibration_state, 'CALIBRATED', 'load: calibration state carried');
+    eq(view.documentSnapshots.length, 0, 'load: no document snapshots');
+    eq(view.productSnapshot, null, 'load: no product snapshot written yet');
+    eq(view.templateSnapshot, null, 'load: no template snapshot yet');
+    eq(view.parametersSnapshot, null, 'load: no parameters snapshot (draft fixture)');
+    eq(view.retests.length, 0, 'load: no retests yet');
+    eq(view.relatedQuality.length, 0, 'load: no linked quality entities yet');
+    eq(view.timeline.length, 1, 'load: audit event carried into view');
+  }
+
+  // ── 8. loadLabTestView snapshot parsing + retest history + quality hook ──
+  console.log('\n■ snapshots JSON / retest history / related-quality hook');
+  {
+    // product/template/parameters snapshots live on the record as JSON; write
+    // them and confirm the loader parses them back for both pages.
+    db.prepare(
+      `UPDATE lab_test_records SET
+         product_snapshot_json = ?,
+         template_snapshot_json = ?,
+         parameters_snapshot_json = ?
+       WHERE id = 1`,
+    ).run(
+      JSON.stringify({ name: 'Seal Product', code: 'PRD-1' }),
+      JSON.stringify({ template_id: 'AIR-TEMPLATE-001', version: 2 }),
+      JSON.stringify({ standard_parameter: 'Subatmospheric Pressure -40 ~ -80 kPa', acceptance_criteria: '≤ 800 Pa' }),
+    );
+    const v2 = tests.loadLabTestView(1, true);
+    eq(v2.productSnapshot.name, 'Seal Product', 'load: product snapshot parsed');
+    eq(v2.templateSnapshot.version, 2, 'load: template snapshot parsed');
+    eq(v2.parametersSnapshot.acceptance_criteria, '≤ 800 Pa', 'load: parameters snapshot parsed');
+    eq(v2.templateSnapshot.notakey, undefined, 'load: template snapshot has only stored keys');
+
+    // Retest history: original stays immutable, retest references it.
+    const newTest = db.prepare(
+      `INSERT INTO lab_test_records (test_number, test_type, product_id, equipment_id, lot_number,
+         sampling_area, sample_count, final_result, status, tested_by, created_by, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).run('LAB-TEST-00004', 'air', productId, equipmentId, 'LOT-A', 'Bay 1', 5, 'PASS', 'APPROVED', employeeId, employeeId, '2026-01-08 09:00:00', '2026-01-08 10:00:00');
+    const newTestId = Number(newTest.lastInsertRowid);
+    db.prepare(
+      'INSERT INTO lab_test_retests (retest_number, original_test_id, new_test_id, reason, reason_note, status, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    ).run('LAB-RETEST-00001-01', 1, newTestId, 'FAIL', 'burst on S03', 'COMPLETED', employeeId, '2026-01-08 11:00:00');
+
+    const retests = tests.getLabTestRetestHistory(1);
+    eq(retests.length, 1, 'retest: history returns the row');
+    eq(retests[0].retest_number, 'LAB-RETEST-00001-01', 'retest: number read back');
+    eq(retests[0].reason, 'FAIL', 'retest: reason read back');
+    eq(retests[0].new_test_number, 'LAB-TEST-00004', 'retest: joins resulting test number');
+    eq(retests[0].new_test_result, 'PASS', 'retest: joins resulting result');
+    eq(tests.getLabTestRetestHistory(2).length, 0, 'retest: unrelated test has none');
+
+    // Related-quality hook is wired through the audit log LINK/UNLINK actions
+    // and is empty by default (no parallel linking table, §49).
+    eq(tests.getLabTestRelatedQualityEntities(1).length, 0, 'quality: empty by default (no invented links)');
+    db.prepare(
+      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, note) VALUES ('LAB_TEST', ?, NULL, ?, 'LINK', ?)`,
+    ).run(1, managerId, 'linked to finding #12');
+    const linked = tests.getLabTestRelatedQualityEntities(1);
+    eq(linked.length, 1, 'quality: LINK action surfaces via audit log');
+    eq(linked[0].action, 'LINK', 'quality: action LINK read back');
+
+    // The shared loader now reflects retest + linked-quality too.
+    const v3 = tests.loadLabTestView(1, true);
+    eq(v3.retests.length, 1, 'load: retest history carried into view');
+    eq(v3.relatedQuality.length, 1, 'load: related-quality carried into view');
+  }
+
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) {
     console.error(failures.map((f) => `  - ${f}`).join('\n'));

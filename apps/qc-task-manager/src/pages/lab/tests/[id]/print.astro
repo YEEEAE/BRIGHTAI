@@ -1,0 +1,314 @@
+---
+// /lab/tests/[id]/print — controlled laboratory test print view (page ref §25/§70).
+//
+// Server-rendered, A4, chrome-free (PrintLayout renders no navbar/dashboard
+// chrome). Reads the SAME loader as the details page (loadLabTestView) so the
+// printed record matches the stored record exactly. Shows exact stored values,
+// the record ID, controlled version metadata, the final result, authorization,
+// the applicable SOP/WI version, and the equipment + calibration snapshot.
+//
+// RBAC scope mirrors the details page: employees may print only tests they
+// tested or created; anyone else gets the not-found state (IDOR wall, §66).
+import PrintLayout from '../../../../layouts/PrintLayout.astro';
+import { loadLabTestView } from '../../../../lib/lab/tests';
+import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../../lib/lab/policy';
+import { LAB_TEST_STATUS_LABELS } from '../../../../lib/lab/testSearch';
+import type { Role } from '../../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+const userId = user.userId;
+
+const idParam = Astro.params.id;
+const id = idParam ? Number(idParam) : Number.NaN;
+const validId = Number.isInteger(id) && id > 0;
+
+let view = loadLabTestView(Number.NaN, false);
+let loadError: string | null = null;
+if (validId) {
+  try {
+    const probe = loadLabTestView(id, true);
+    const testedBy = probe.record?.tested_by == null ? null : Number(probe.record.tested_by);
+    const createdBy = probe.record?.created_by == null ? null : Number(probe.record.created_by);
+    const isOwn = role === 'employee' && (testedBy === userId || createdBy === userId);
+    view = loadLabTestView(id, role !== 'employee' || isOwn);
+  } catch (err) {
+    console.error('[lab] print load failure', err);
+    loadError = 'Could not load this test record for printing.';
+  }
+}
+
+const record = view.record;
+const notFound = !validId || record === null;
+const status = record ? String(record.status) : '';
+const result = record ? String(record.final_result ?? '') : '';
+const typeLabel = record ? String(record.test_type).toUpperCase() : '';
+
+function actor(name: unknown): string {
+  return name ? String(name) : '—';
+}
+function val(k: string): string {
+  const v = record?.[k];
+  return v == null || v === '' ? '—' : String(v);
+}
+const resultLabel = (v: unknown) => {
+  const s = v == null ? '' : String(v);
+  return s ? (LAB_RESULT_LABELS[s as (typeof LAB_RESULT_OPTIONS)[number]] ?? s) : '—';
+};
+const resultClass = result ? `result-${result.toLowerCase()}` : '';
+
+const PARAM_LABELS: Record<string, string> = {
+  standard_parameter: 'Standard Parameter',
+  acceptance_criteria: 'Acceptance Criteria',
+  holding_time: 'Holding Time',
+  actual_pressure_reference: 'Actual Pressure Reference',
+};
+const RETEST_REASON_LABELS: Record<string, string> = {
+  FAIL: 'FAIL',
+  HOLD: 'HOLD / Further Evaluation',
+  SAMPLE_ISSUE: 'Sample Issue',
+  EQUIPMENT_ISSUE: 'Equipment Issue',
+  PROCEDURAL_ISSUE: 'Procedural Issue',
+  OTHER: 'Other',
+};
+
+function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, string]> {
+  if (!snap) return [];
+  return Object.entries(snap).map(([k, v]) => [k, v == null || v === '' ? '—' : String(v)]);
+}
+---
+
+<PrintLayout title={record ? `${String(record.test_number)} — Laboratory Test` : 'Test not found'} backHref={record ? `/lab/tests/${String(record.id)}` : ''}>
+  {notFound ? (
+    <section>
+      <h1 class="print-title">Test not found</h1>
+      <p>{loadError ?? 'This test record does not exist or is not available to you.'}</p>
+    </section>
+  ) : record ? (
+    <>
+      <header class="print-header">
+        <div>
+          <div class="print-title">QC Laboratory</div>
+          <div class="print-sub">Controlled Laboratory Test Record</div>
+        </div>
+        <div class="print-meta">
+          <div><strong>Test ID:</strong> {val('test_number')}</div>
+          <div><strong>Record ID:</strong> {val('id')}</div>
+          <div><strong>Type:</strong> {typeLabel}</div>
+          <div><strong>Status:</strong> {LAB_TEST_STATUS_LABELS[status as keyof typeof LAB_TEST_STATUS_LABELS] ?? status}</div>
+        </div>
+      </header>
+
+      {/* Sample Identification */}
+      <section class="print-section">
+        <div class="print-section-title">1 · Sample Identification</div>
+        <div class="print-section-body grid2">
+          <div class="dl-item"><dt>Product Description</dt><dd>{val('product_name')} {record.product_code ? `(${record.product_code})` : ''}</dd></div>
+          <div class="dl-item"><dt>Connector Type</dt><dd>{val('connector_type')}</dd></div>
+          <div class="dl-item"><dt>No. of Samples Tested</dt><dd>{val('sample_count')}</dd></div>
+          <div class="dl-item"><dt>Lot Number</dt><dd>{val('lot_number')}</dd></div>
+          <div class="dl-item"><dt>Sampling Area</dt><dd>{val('sampling_area')}</dd></div>
+          <div class="dl-item"><dt>Medium Used</dt><dd>{val('medium_used')}</dd></div>
+        </div>
+      </section>
+
+      {/* Equipment Used */}
+      <section class="print-section">
+        <div class="print-section-title">2 · Equipment Used</div>
+        <div class="print-section-body grid2">
+          <div class="dl-item"><dt>Machine</dt><dd>{val('equipment_name')} {record.equipment_code ? `(${record.equipment_code})` : ''}</dd></div>
+          <div class="dl-item"><dt>Medium Used</dt><dd>{val('medium_used')}</dd></div>
+        </div>
+      </section>
+
+      {/* Connector Assembly */}
+      <section class="print-section">
+        <div class="print-section-title">3 · Connector Assembly</div>
+        <div class="print-section-body grid3">
+          <div class="dl-item"><dt>Actual Pressure</dt><dd>{val('actual_pressure')}</dd></div>
+          <div class="dl-item"><dt>Torque (in.lb)</dt><dd>{val('torque_in_lb')}</dd></div>
+          <div class="dl-item"><dt>Time (Sec.)</dt><dd>{val('time_sec')}</dd></div>
+          <div class="dl-item"><dt>Angle</dt><dd>{val('angle')}</dd></div>
+        </div>
+      </section>
+
+      {/* Differential Conversion */}
+      <section class="print-section">
+        <div class="print-section-title">4 · Differential Conversion</div>
+        <div class="print-section-body grid2">
+          <div class="dl-item"><dt>Temperature (Measured)</dt><dd>{val('temperature_measured')}</dd></div>
+        </div>
+      </section>
+
+      {/* Test Parameters */}
+      <section class="print-section">
+        <div class="print-section-title">5 · Test Parameters</div>
+        <div class="print-section-body">
+          {view.parametersSnapshot ? (
+            <div class="grid3">
+              {snapshotEntries(view.parametersSnapshot).map(([key, value]) => (
+                <div class="dl-item"><dt>{PARAM_LABELS[key] ?? key}</dt><dd>{value}</dd></div>
+              ))}
+            </div>
+          ) : (
+            <div>Reference parameters are captured when this test is submitted for review.</div>
+          )}
+        </div>
+      </section>
+
+      {/* Sample Results */}
+      <section class="print-section">
+        <div class="print-section-title">6 · Sample Results</div>
+        <div class="print-section-body">
+          {view.samples.length === 0 ? (
+            <div>No sample rows recorded.</div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Sample</th>
+                  <th>Part Name</th>
+                  <th>Set Pressure</th>
+                  <th>Actual Pressure</th>
+                  <th>Volume (Sec.)</th>
+                  <th>Pressure Diff.</th>
+                  <th>Holding (Sec.)</th>
+                  <th>Leakage Rate</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                {view.samples.map((s) => (
+                  <tr>
+                    <td>{s.sample_identifier ?? `S${s.sample_no}`}</td>
+                    <td>{s.part_name ?? '—'}</td>
+                    <td>{s.set_pressure ?? '—'}</td>
+                    <td>{s.actual_pressure ?? '—'}</td>
+                    <td>{s.volume_sec ?? '—'}</td>
+                    <td>{s.pressure_difference ?? '—'}</td>
+                    <td>{s.holding_time_sec ?? '—'}</td>
+                    <td>{s.leakage_rate ?? '—'}</td>
+                    <td>{s.result ? resultLabel(s.result) : '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </section>
+
+      {/* Remarks */}
+      {record.remarks ? (
+        <section class="print-section">
+          <div class="print-section-title">7 · Remarks</div>
+          <div class="print-section-body remark-text">{String(record.remarks)}</div>
+        </section>
+      ) : null}
+
+      {/* Retest history */}
+      {view.retests.length > 0 ? (
+        <section class="print-section">
+          <div class="print-section-title">Retest History</div>
+          <div class="print-section-body">
+            <table>
+              <thead>
+                <tr>
+                  <th>Retest</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>New Test</th>
+                  <th>Result</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {view.retests.map((r) => (
+                  <tr>
+                    <td>{r.retest_number}</td>
+                    <td>{RETEST_REASON_LABELS[r.reason] ?? r.reason}</td>
+                    <td>{r.status}</td>
+                    <td>{r.new_test_number ?? '—'}</td>
+                    <td>{r.new_test_result ? resultLabel(r.new_test_result) : '—'}</td>
+                    <td>{r.created_at}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Final Result */}
+      <section class="print-section">
+        <div class="print-section-title">Final Result</div>
+        <div class={`print-section-body final-result ${resultClass}`}>{result ? resultLabel(result) : 'Pending'}</div>
+      </section>
+
+      {/* Applicable SOP/WI */}
+      <section class="print-section">
+        <div class="print-section-title">Applicable SOP / WI</div>
+        <div class="print-section-body">
+          {view.documentSnapshots.length === 0 ? (
+            <div>No applicable controlled document recorded for this test.</div>
+          ) : (
+            <div class="grid2">
+              {view.documentSnapshots.map((doc) => (
+                <div class="dl-item">
+                  <dt>{String(doc.role)} {doc.version_number ? `v${String(doc.version_number)}` : ''}</dt>
+                  <dd>{String(doc.document_code ?? '—')} — {String(doc.title ?? '—')}</dd>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Equipment + Calibration snapshot */}
+      {view.equipmentSnapshot && (
+        <section class="print-section">
+          <div class="print-section-title">Equipment &amp; Calibration Snapshot (at test time)</div>
+          <div class="print-section-body grid3">
+            <div class="dl-item"><dt>Equipment</dt><dd>{String(view.equipmentSnapshot.equipment_name ?? '—')} ({String(view.equipmentSnapshot.equipment_code ?? '—')})</dd></div>
+            <div class="dl-item"><dt>Serial Number</dt><dd>{String(view.equipmentSnapshot.serial_number ?? '—')}</dd></div>
+            <div class="dl-item"><dt>Location</dt><dd>{String(view.equipmentSnapshot.location ?? '—')}</dd></div>
+            <div class="dl-item"><dt>Calibration State</dt><dd>{String(view.equipmentSnapshot.calibration_state ?? '—')}</dd></div>
+            <div class="dl-item"><dt>Calibration Reference</dt><dd>{String(view.equipmentSnapshot.calibration_reference ?? '—')}</dd></div>
+          </div>
+        </section>
+      )}
+
+      {/* Authorization */}
+      <section class="print-section">
+        <div class="print-section-title">Authorization</div>
+        <div class="print-section-body auth-grid">
+          <div class="auth-box">
+            <div class="label">Tested By</div>
+            <div class="value">{actor(record.tester_name)}</div>
+            <div class="stamp">{val('submitted_at')}</div>
+          </div>
+          <div class="auth-box">
+            <div class="label">Reviewed By</div>
+            <div class="value">{actor(record.reviewer_name)}</div>
+            <div class="stamp">{record.reviewed_at ? String(record.reviewed_at) : '—'}</div>
+          </div>
+          <div class="auth-box">
+            <div class="label">Approved By · Q.C.M.</div>
+            <div class="value">{actor(record.approver_name)}</div>
+            <div class="stamp">{record.approved_at ? String(record.approved_at) : '—'}</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Controlled version metadata */}
+      <section class="print-section">
+        <div class="print-section-title">Controlled Version Metadata</div>
+        <div class="print-section-body grid3">
+          <div class="dl-item"><dt>Created</dt><dd>{val('created_at')}</dd></div>
+          <div class="dl-item"><dt>Updated</dt><dd>{val('updated_at')}</dd></div>
+          <div class="dl-item"><dt>Approved</dt><dd>{val('approved_at')}</dd></div>
+          <div class="dl-item"><dt>Record Status</dt><dd>{LAB_TEST_STATUS_LABELS[status as keyof typeof LAB_TEST_STATUS_LABELS] ?? status}</dd></div>
+        </div>
+      </section>
+    </>
+  ) : null}
+</PrintLayout>

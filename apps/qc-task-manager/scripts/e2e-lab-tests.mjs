@@ -75,6 +75,14 @@ insertTest.run('LAB-TEST-00001', 'air', productId, equipmentId, 'LOT-E2E-A', 'Ba
 insertTest.run('LAB-TEST-00002', 'vacuum', productId, equipmentId, 'LOT-E2E-B', 'Bay 2', 5, null, 'DRAFT', employeeId, employeeId, '2026-01-02 09:00:00', '2026-01-02 09:00:00');
 insertTest.run('LAB-TEST-00003', 'air', productId, equipmentId, 'LOT-E2E-C', 'Bay 3', 5, 'PASS', 'APPROVED', employeeId, employeeId, '2026-01-03 09:00:00', '2026-01-03 09:00:00');
 
+// Frozen equipment + calibration snapshot for the approved record so the
+// detail/print calibration-snapshot sections have real data to show.
+db.prepare(
+  `INSERT INTO lab_test_equipment_snapshots (test_id, equipment_id, equipment_name, equipment_code,
+     serial_number, location, calibration_state, calibration_reference)
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+).run(1, equipmentId, 'E2E Rig', 'EQ-E2E', 'E2E-SN-1', 'Lab', 'COMPLIANT', 'CAL-2026-001');
+
 // ── A. Auth wall ──
 {
   const ctx = await browser.newContext();
@@ -159,10 +167,29 @@ insertTest.run('LAB-TEST-00003', 'air', productId, equipmentId, 'LOT-E2E-C', 'Ba
   await page.locator('h1', { hasText: /LAB-TEST-\d{5}/ }).waitFor({ timeout: 10_000 });
   const h1 = await page.locator('h1').innerText();
   ok(/LAB-TEST-\d{5}/.test(h1), 'details: opens a LAB-TEST record');
-  await page.getByText('Sample Results', { exact: true }).waitFor({ timeout: 10_000 });
-  ok(true, 'details: sample results section present');
-  await page.getByText('Audit Timeline', { exact: true }).waitFor({ timeout: 10_000 });
-  ok(true, 'details: audit timeline section present');
+  // Every requested detail section is present on the read-only page (§24).
+  for (const label of [
+    'Test Identification',
+    'Sample Identification',
+    'Equipment Used',
+    'Connector Assembly',
+    'Differential Conversion',
+    'Test Parameters',
+    'Sample Results',
+    'Final Result',
+    'Workflow',
+    'Applicable SOP / WI',
+    'Related Product',
+    'Retest History',
+    'Investigation / NCR / CAPA Links',
+    'Authorization',
+    'Audit Timeline',
+  ]) {
+    await page.getByText(label, { exact: true }).waitFor({ timeout: 10_000 });
+    ok(true, `details: section "${label}" present`);
+  }
+  await page.locator('a:has-text("Print")').waitFor({ timeout: 10_000 });
+  ok(true, 'details: Print affordance present');
 
   const notFound = await page.goto(`${BASE}/lab/tests/999999`, { waitUntil: 'domcontentloaded' });
   const nfText = await page.locator('main').innerText();
@@ -198,6 +225,65 @@ insertTest.run('LAB-TEST-00003', 'air', productId, equipmentId, 'LOT-E2E-C', 'Ba
   const overflow390 = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   ok(!overflow390, 'register: no horizontal overflow at 390px (table scrolls in place)');
   await page.close();
+}
+
+// ── I. Controlled print view /lab/tests/[id]/print ──
+{
+  // Employee may print only own records (IDOR wall mirrors the details page).
+  const emp = await browser.newPage();
+  await login(emp, 'employee');
+  await emp.goto(`${BASE}/lab/tests/1/print`, { waitUntil: 'domcontentloaded' });
+  await emp.locator('.print-title', { hasText: /not found|Not found/i }).first().waitFor({ timeout: 10_000 });
+  const empDenied = await emp.locator('body').textContent();
+  ok(/not found/i.test(empDenied), 'print: employee cannot print another tester\'s record');
+
+  await emp.goto(`${BASE}/lab/tests/3/print`, { waitUntil: 'domcontentloaded' });
+  await emp.locator('.print-title', { hasText: 'QC Laboratory' }).waitFor({ timeout: 10_000 });
+  const empPrint = await emp.locator('body').textContent();
+  ok(empPrint.includes('QC Laboratory'), 'print: employee prints own approved record');
+  await emp.close();
+
+  // Approved record prints: exact stored values, final result, authorization,
+  // SOP/WI + equipment/calibration snapshot + print timestamp. No nav chrome.
+  // textContent() is used (not innerText) so checks match the exact stored
+  // values even where the print CSS applies text-transform: uppercase.
+  const page = await browser.newPage();
+  await login(page, 'admin');
+  await page.goto(`${BASE}/lab/tests/1/print`, { waitUntil: 'domcontentloaded' });
+  await page.locator('.print-title', { hasText: 'QC Laboratory' }).waitFor({ timeout: 10_000 });
+  const printText = await page.locator('body').textContent();
+  ok(printText.includes('LAB-TEST-00001'), 'print: shows exact test ID');
+  ok(printText.includes('Test ID'), 'print: Test ID field present');
+  ok(printText.includes('Sample Identification'), 'print: sample identification present');
+  ok(printText.includes('Sample Results'), 'print: sample results section present');
+  ok(printText.includes('Authorization'), 'print: authorization section present');
+  ok(printText.includes('Final Result'), 'print: final result section present');
+  ok(printText.includes('PASS'), 'print: final result value PASS printed');
+  ok(printText.includes('Applicable SOP / WI'), 'print: SOP/WI section present');
+  ok(printText.includes('Calibration State'), 'print: calibration state snapshot present');
+  ok(printText.includes('Controlled Version Metadata'), 'print: controlled version metadata present');
+  ok(/Generated \d{4}-\d{2}-\d{2}/.test(printText), 'print: print timestamp present');
+
+  const hasNav = await page.evaluate(() => !!document.querySelector('nav'));
+  ok(!hasNav, 'print: no navigation chrome');
+  const hasSkipLink = await page.evaluate(() => !!document.querySelector('.skip-link'));
+  ok(!hasSkipLink, 'print: no skip-link/dashboard chrome');
+  const a4 = await page.evaluate(() => {
+    const match = [...document.styleSheets].map((s) => {
+      try { return Array.from(s.cssRules || []).map((r) => r.cssText).join('\n'); } catch { return ''; }
+    }).join('\n');
+    return /@page\s*\{[^}]*size\s*:\s*A4/i.test(match);
+  });
+  ok(a4, 'print: declares @page A4');
+  await page.close();
+
+  // Bogus id → not found on the print route too.
+  const nf = await browser.newPage();
+  await login(nf, 'admin');
+  await nf.goto(`${BASE}/lab/tests/999999/print`, { waitUntil: 'domcontentloaded' });
+  const nfText = await nf.locator('body').textContent();
+  ok(/not found/i.test(nfText), 'print: bogus id → not found');
+  await nf.close();
 }
 
 await browser.close();

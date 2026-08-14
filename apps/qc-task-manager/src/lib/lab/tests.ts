@@ -348,3 +348,136 @@ export function getLabTestAuditTimeline(testId: number): Record<string, unknown>
     )
     .all(testId) as Record<string, unknown>[];
 }
+
+export interface LabTestRetestHistoryRow {
+  id: number;
+  retest_number: string;
+  reason: string;
+  reason_note: string | null;
+  status: string;
+  created_by: number;
+  created_at: string;
+  new_test_id: number | null;
+  new_test_number: string | null;
+  new_test_status: string | null;
+  new_test_result: string | null;
+}
+
+/**
+ * Controlled retest history for a test (§46–§48). The original test stays
+ * immutable; retests reference it and are listed newest first. If the retest
+ * has been executed (new_test_id set) the resulting record's number, status
+ * and final result are joined so the operator can jump to the outcome.
+ */
+export function getLabTestRetestHistory(testId: number): LabTestRetestHistoryRow[] {
+  return getDb()
+    .prepare(
+      `SELECT r.id, r.retest_number, r.reason, r.reason_note, r.status,
+              r.created_by, r.created_at, r.new_test_id,
+              nt.test_number AS new_test_number,
+              nt.status AS new_test_status,
+              nt.final_result AS new_test_result
+       FROM lab_test_retests r
+       LEFT JOIN lab_test_records nt ON nt.id = r.new_test_id
+       WHERE r.original_test_id = ?
+       ORDER BY r.created_at DESC, r.id DESC`,
+    )
+    .all(testId) as LabTestRetestHistoryRow[];
+}
+
+/**
+ * Related Investigation / NCR / CAPA hooks for a test (§49). The existing
+ * application links those quality entities to tasks, not laboratory tests, so
+ * this surface is intentionally wired through the shared audit log's
+ * LINK/UNLINK actions on the LAB_TEST entity rather than a parallel linking
+ * table. Nothing writes these yet (that lands with the workflow/link module),
+ * so it returns an empty array by default — the detail/print pages render a
+ * clear empty state instead of inventing links.
+ */
+export function getLabTestRelatedQualityEntities(testId: number): Record<string, unknown>[] {
+  return getDb()
+    .prepare(
+      `SELECT a.id, a.action, a.actor_id, a.created_at, a.note, u.full_name AS actor_name
+       FROM qc_audit_log a LEFT JOIN users u ON u.id = a.actor_id
+       WHERE a.entity_type = 'LAB_TEST' AND a.entity_id = ?
+         AND a.action IN ('LINK','UNLINK')
+       ORDER BY a.created_at DESC, a.id DESC`,
+    )
+    .all(testId) as Record<string, unknown>[];
+}
+
+export interface LabTestView {
+  record: Record<string, unknown> | null;
+  samples: LabTestSample[];
+  equipmentSnapshot: Record<string, unknown> | null;
+  documentSnapshots: Record<string, unknown>[];
+  productSnapshot: Record<string, unknown> | null;
+  templateSnapshot: Record<string, unknown> | null;
+  parametersSnapshot: Record<string, unknown> | null;
+  retests: LabTestRetestHistoryRow[];
+  relatedQuality: Record<string, unknown>[];
+  timeline: Record<string, unknown>[];
+}
+
+function parseJsonObject(json: unknown): Record<string, unknown> | null {
+  if (typeof json !== 'string' || !json) return null;
+  try {
+    const parsed = JSON.parse(json);
+    return parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Single loader backing BOTH the details page and the controlled print page.
+ * Returning one consistent shape guarantees the print output matches the
+ * stored record exactly (§25, §70): both pages read the exact same values.
+ *
+ * `allowed` encodes the employee scope decision (tested-by-me OR created-by-me
+ * for employees); when false the whole view is nulled so callers render the
+ * not-found state (mirrors the register scope and the IDOR wall, §66).
+ */
+export function loadLabTestView(id: number, allowed: boolean): LabTestView {
+  if (!Number.isInteger(id) || id <= 0 || !allowed) {
+    return {
+      record: null,
+      samples: [],
+      equipmentSnapshot: null,
+      documentSnapshots: [],
+      productSnapshot: null,
+      templateSnapshot: null,
+      parametersSnapshot: null,
+      retests: [],
+      relatedQuality: [],
+      timeline: [],
+    };
+  }
+  const record = getLabTestRecordById(id) ?? null;
+  if (!record) {
+    return {
+      record: null,
+      samples: [],
+      equipmentSnapshot: null,
+      documentSnapshots: [],
+      productSnapshot: null,
+      templateSnapshot: null,
+      parametersSnapshot: null,
+      retests: [],
+      relatedQuality: [],
+      timeline: [],
+    };
+  }
+  return {
+    record,
+    samples: listLabTestSamples(id),
+    equipmentSnapshot: getLabTestEquipmentSnapshot(id) ?? null,
+    documentSnapshots: getLabTestDocumentSnapshots(id),
+    productSnapshot: parseJsonObject(record.product_snapshot_json),
+    templateSnapshot: parseJsonObject(record.template_snapshot_json),
+    parametersSnapshot: parseJsonObject(record.parameters_snapshot_json),
+    retests: getLabTestRetestHistory(id),
+    relatedQuality: getLabTestRelatedQualityEntities(id),
+    timeline: getLabTestAuditTimeline(id),
+  };
+}
