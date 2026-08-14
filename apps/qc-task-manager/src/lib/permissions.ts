@@ -5,7 +5,7 @@
 // Every check below is documented against the CORE BUSINESS RULES in the spec.
 
 import { EMPLOYEE_EDITABLE_FIELDS, isEmployeeEditableField } from './task-policy';
-import type { Role, Task, User } from './types';
+import type { LabDocumentStatus, LabTestStatus, Role, Task, User } from './types';
 
 type QcOwner = { owner: number };
 
@@ -176,4 +176,260 @@ export function canManageTemplates(role: Role): boolean {
 /** Manager/admin may override the required-evidence completion gate with a reason. */
 export function canOverrideEvidenceGate(role: Role): boolean {
   return hasRankAtLeast(role, 'manager');
+}
+
+// ───────────────────────── QC Laboratory RBAC ─────────────────────────────
+// Mirrors docs/QC-LAB-ARCHITECTURE.md §6.2 (the binding contract). All LAB_*
+// permission authority lives HERE and nowhere else (architecture-guard).
+//
+// Hard invariants enforced by the entity-context predicates below:
+//   1. A tester can NEVER review or approve their own test.
+//   2. A document editor can NEVER approve their own version.
+//   3. Tested/Reviewed/Approved By are derived from the session, never input.
+//   4. Terminal states (APPROVED / VOID / SUPERSEDED / ARCHIVED) are immutable.
+// Contract decisions baked in: D-4 (supervisor test approval denied by
+// default) and D-5 (retest creation is supervisor+ only).
+
+/** Minimal shape needed for lab test authorization checks. */
+type LabTestAuth = { status: LabTestStatus; tested_by: number | null; reviewed_by: number | null; created_by: number };
+/** Minimal shape needed for lab document authorization checks. */
+type LabDocumentAuth = { status: LabDocumentStatus; owner_id: number | null; created_by: number };
+
+const ALL_ROLES: readonly Role[] = ['admin', 'manager', 'supervisor', 'employee'];
+
+/** /lab — every role may enter the laboratory workspace (contract: LAB_VIEW = all). */
+export function canViewLab(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+
+// ── Lab tests ──
+export function canViewLabTests(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canCreateLabTest(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+/** Editing is status-scoped: see canEditLabTest(user, test) for the entity check. */
+export function canEditLabTest(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canSubmitLabTest(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+/** Review queue: manager/admin, plus supervisor EXCEPT their own tests (entity check below). */
+export function canReviewLabTest(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+/** Approval: admin, or manager EXCEPT their own test. Supervisor denied by default (D-4). */
+export function canApproveLabTest(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canVoidLabTest(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+
+// ── Lab products (Product Master) ──
+export function canViewLabProducts(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canCreateLabProduct(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canEditLabProduct(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canArchiveLabProduct(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+
+// ── Lab test templates (≠ /admin/templates task templates) ──
+export function canViewLabTemplates(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canCreateLabTemplate(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canEditLabTemplate(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canApproveLabTemplate(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+
+// ── Lab equipment registry ──
+export function canViewLabEquipment(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canCreateLabEquipment(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canEditLabEquipment(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canArchiveLabEquipment(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canRecordLabEquipmentMaintenance(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+
+// ── Lab calibration (status derived from dates at read time — never stored) ──
+export function canViewLabCalibration(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canCreateLabCalibration(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canEditLabCalibration(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+
+// ── Controlled documents (SOP / WI) ──
+export function canViewLabDocuments(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canCreateLabDocument(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+export function canEditLabDocument(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+export function canReviewLabDocument(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+export function canApproveLabDocument(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canArchiveLabDocument(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
+export function canAcknowledgeLabDocument(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+
+// ── Retests (D-5: originals never overwritten; supervisor+ may create) ──
+export function canViewLabRetests(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canCreateLabRetest(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+
+// ── Reporting / exports / dashboards ──
+export function canViewLabReports(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+export function canExportLabData(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+export function canViewLabDataQuality(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+export function canViewLabManagementDashboard(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+
+// ── AI assist (advisory only — AI NEVER decides PASS/FAIL or approves) ──
+export function canUseLabAiAssist(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+
+// ── Lab entity-context predicates (hard server-side invariants) ──────────
+
+/**
+ * Can the user edit this test record? Manager/admin: any non-terminal test.
+ * Employee/supervisor: only their own DRAFT/REJECTED tests. Terminal states
+ * (APPROVED/VOID) are immutable for everyone.
+ */
+export function canEditLabTestRecord(
+  user: Pick<User, 'id' | 'role'>,
+  test: LabTestAuth,
+): boolean {
+  if (test.status === 'APPROVED' || test.status === 'VOID') return false;
+  if (hasRankAtLeast(user.role, 'manager')) return true;
+  const isOwn = test.tested_by === user.id || test.created_by === user.id;
+  return isOwn && (test.status === 'DRAFT' || test.status === 'REJECTED');
+}
+
+/**
+ * Can the user submit this test for review? Own non-terminal, not-yet-submitted
+ * workflow states only (DRAFT/REJECTED rework). Never from the session of
+ * another tester — tested_by is the authority, not request input.
+ */
+export function canSubmitLabTestRecord(
+  user: Pick<User, 'id' | 'role'>,
+  test: LabTestAuth,
+): boolean {
+  const isOwn = test.tested_by === user.id || test.created_by === user.id;
+  if (!isOwn) return false;
+  return test.status === 'DRAFT' || test.status === 'REJECTED';
+}
+
+/**
+ * Review authority for a specific test. A tester can NEVER review their own
+ * test — hard invariant #1 (tested_by === actor → denied, even for admins).
+ */
+export function canReviewLabTestRecord(
+  user: Pick<User, 'id' | 'role'>,
+  test: LabTestAuth,
+): boolean {
+  if (!canReviewLabTest(user.role)) return false;
+  if (test.tested_by === user.id || test.created_by === user.id) return false;
+  return test.status === 'SUBMITTED' || test.status === 'UNDER_REVIEW';
+}
+
+/**
+ * Approval authority for a specific test. The tester and the reviewer can
+ * NEVER approve it; supervisor is denied by default (D-4).
+ */
+export function canApproveLabTestRecord(
+  user: Pick<User, 'id' | 'role'>,
+  test: LabTestAuth,
+): boolean {
+  if (!canApproveLabTest(user.role)) return false;
+  if (test.tested_by === user.id || test.created_by === user.id) return false;
+  if (test.reviewed_by === user.id) return false;
+  return test.status === 'SUBMITTED' || test.status === 'UNDER_REVIEW';
+}
+
+/**
+ * Edit authority for a controlled document. Editing an APPROVED document
+ * means creating a NEW draft version (contract §9) — the approved version is
+ * immutable. Employees never edit documents.
+ */
+export function canEditLabDocumentRecord(
+  user: Pick<User, 'id' | 'role'>,
+  doc: LabDocumentAuth,
+): boolean {
+  if (!canEditLabDocument(user.role)) return false;
+  if (doc.status === 'ARCHIVED' || doc.status === 'SUPERSEDED') return false;
+  if (hasRankAtLeast(user.role, 'manager')) return true;
+  // supervisor: own document, draft/review states only
+  return doc.owner_id === user.id || doc.created_by === user.id;
+}
+
+/**
+ * Review authority for a specific document — never the author's own
+ * (owner/created_by === actor → denied).
+ */
+export function canReviewLabDocumentRecord(
+  user: Pick<User, 'id' | 'role'>,
+  doc: LabDocumentAuth,
+): boolean {
+  if (!canReviewLabDocument(user.role)) return false;
+  if (doc.owner_id === user.id || doc.created_by === user.id) return false;
+  return doc.status === 'IN_REVIEW' || doc.status === 'DRAFT';
+}
+
+/**
+ * Approval authority for a specific document — the editor/author can NEVER
+ * approve their own version (hard invariant #2).
+ */
+export function canApproveLabDocumentRecord(
+  user: Pick<User, 'id' | 'role'>,
+  doc: LabDocumentAuth,
+): boolean {
+  if (!canApproveLabDocument(user.role)) return false;
+  if (doc.owner_id === user.id || doc.created_by === user.id) return false;
+  return doc.status === 'IN_REVIEW';
 }

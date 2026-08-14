@@ -41,6 +41,7 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/admin/settings', label: 'Settings' },
     { href: '/notifications', label: 'Notifications' },
     { href: '/findings', label: 'Findings' },
+    { href: '/lab', label: 'Laboratory' },
   ],
   manager: [
     { href: '/dashboard', label: 'Dashboard' },
@@ -49,6 +50,7 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/manager/requests', label: 'Delete Requests' },
     { href: '/notifications', label: 'Notifications' },
     { href: '/findings', label: 'Findings' },
+    { href: '/lab', label: 'Laboratory' },
   ],
   supervisor: [
     { href: '/dashboard', label: 'Dashboard' },
@@ -56,6 +58,7 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/search', label: 'Search' },
     { href: '/notifications', label: 'Notifications' },
     { href: '/findings', label: 'Findings' },
+    { href: '/lab', label: 'Laboratory' },
   ],
   // Employees have NO dashboard link (CORE BUSINESS RULE #1).
   employee: [
@@ -63,6 +66,7 @@ const ROLE_LINKS: Record<SessionLike['role'], { href: string; label: string }[]>
     { href: '/search', label: 'Search' },
     { href: '/notifications', label: 'Notifications' },
     { href: '/findings', label: 'Findings' },
+    { href: '/lab', label: 'Laboratory' },
   ],
 };
 

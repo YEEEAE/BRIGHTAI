@@ -96,6 +96,25 @@ Completed **and cancelled** tasks are **read-only for everyone** (CORE RULE
 
 All checks live in one place: `src/lib/permissions.ts`.
 
+## QC Laboratory (`/lab`)
+
+The QC Laboratory workspace (Air/Vacuum product testing, equipment,
+calibration, and controlled SOP/WI documents) is being enabled step by step.
+Current state (PROMPT 03 — navigation + RBAC):
+
+- `/lab` renders the command-center landing page for every role (`LAB_VIEW`),
+  with a permission-filtered secondary nav and breadcrumbs. Data-backed
+  modules (tests, equipment, documents, reports) land in later prompts.
+- All `can*Lab*` permission predicates live in `src/lib/permissions.ts`
+  (enforced by `architecture-guard.mjs`); the `/lab` prefix is walled in
+  `src/middleware.ts`. Full matrix: [docs/ROLES-AND-PERMISSIONS.md](docs/ROLES-AND-PERMISSIONS.md).
+- Hard invariants: no self-review/self-approval (testers and document
+  authors can never approve their own work), Tested/Reviewed/Approved By
+  come from the session only, terminal states are immutable, and AI never
+  decides PASS/FAIL or approves anything.
+- E2E: `scripts/e2e-lab-nav.mjs` (auth wall, role-aware navbar, secondary
+  nav filtering, bypass attempts, no navbar overflow at 390/1024/1440).
+
 ## Quick start
 
 From the **monorepo root** (the package is `@brightai/qc-task-manager`):

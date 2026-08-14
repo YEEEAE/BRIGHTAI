@@ -2,12 +2,21 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-14 18:16 +03:00
+last_updated: 2026-08-14 22:50 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.99
+version: 2.8.00
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-14 — QC-LAB-NAV-RBAC-001: تنفيذ PROMPT 03 — تنقل مختبر QC + RBAC + صلاحيات LAB_* كاملة (العقد v1.1)
+
+- **Files**: `apps/qc-task-manager/src/lib/permissions.ts` (قسم Laboratory جديد: ~28 role-level predicate + 6 entity-context predicates)، `src/middleware.ts` (حارس بادئة `/lab`)، `src/components/Navbar.tsx` (رابط Laboratory للأدوار الأربعة)، `src/components/Breadcrumbs.astro` (جديد — ما كان فيه breadcrumbs أصلاً)، `src/components/lab/LabSecondaryNav.astro` (جديد)، `src/lib/lab/navigation.ts` (جديد — أول ملف فعلي في lib/lab)، `src/pages/lab/index.astro` (جديد — صفحة الهبوط)، `scripts/test.mjs` (قسم "Laboratory RBAC" — 44 فحص)، `scripts/e2e-lab-nav.mjs` (جديد — ~35 فحص)، `scripts/e2e-acceptance.mjs` (تسجيل سويت lab-nav)، `scripts/architecture-guard.mjs` (قاعدة `can*Lab* predicate` في DUPLICATE_AUTHORITY)، `docs/ROLES-AND-PERMISSIONS.md` (قسم QC Laboratory RBAC كامل + الحدود الصلبة)، `README.md` (قسم QC Laboratory)، `.agents/mind/01-mind-latest.md` (هذا السجل).
+- **What**: (1) **permissions.ts**: كل صلاحيات العقد §6.2 (~34): view للكل، create/edit test للكل (تعديل own DRAFT/REJECTED فقط للموظف/المشرف عبر `canEditLabTestRecord`)، review supervisor+ بدون self (`canReviewLabTestRecord`: tested_by==actor → مرفوض حتى للأدمن)، approve manager+ بدون self-test/self-review (D-4: supervisor مرفوض)، void manager+، products/templates/equipment/calibration create/edit/archive manager+، maintenance supervisor+، documents create/edit/review supervisor+ وapprove/archive manager+ بدون self (hard invariant #2 على author_id)، acknowledge للكل، retest create supervisor+ (D-5)، reports/exports/data-quality/management-dashboard supervisor+، AI assist للكل (advisory only). الحالات النهائية (APPROVED/VOID/SUPERSEDED/ARCHIVED) immutable للجميع. (2) **middleware.ts**: حارس بادئة `/lab` بنمط الحراس القائمة (session + canViewLab → flash + roleHome) — جدار البادئة فقط؛ الفحوص الأدق مسؤولية الصفحات/APIs لاحقًا (العقد §5.1). (3) **Navbar**: رابط واحد `{href:'/lab', label:'Laboratory'}` آخر ROLE_LINKS لكل الأدوار (الكل عنده LAB_VIEW) — الروابط القائمة ما انلمست. (4) **/lab**: صفحة هبوط (Breadcrumbs + secondary nav مفلتر بالصلاحية + كروت قدرات permission-filtered + EmptyState "modules being enabled" — بلا بيانات مخترعة).
+- **Decision (مهم للـ future agents)**: (1) **UI_AUTHOMETRY collision**: الحارس يمنع المكوّنات من استيراد `lib/permissions` — نقلت فلترة التنقل الثانوي إلى `src/lib/lab/navigation.ts` (`labNavForRole(role)` + `ALL_ENTRIES` + `IMPLEMENTED_LAB_ROUTES`) والمكوّن يستقبل entries جاهزة كـ props. أي صفحة /lab جديدة تستدعي `labNavForRole(user.role)` وتمرر الناتج + تضيف مسارها لـ IMPLEMENTED_LAB_ROUTES (منع الروابط الميتة). (2) **Breadcrumbs مكوّن جديد مشترك** (`Breadcrumbs.astro`) — البرومبت قال "استخدم الموجود" لكنه غير موجود أصلًا؛ أصغر امتداد متوافق وموثق. (3) أضفت قاعدة حارس جديدة: أي `function can\w*Lab\w*` خارج permissions.ts = DUPLICATE_AUTHORITY فشل. (4) قائمة صلاحيات المستخدم في رسالته كانت أقصر من العقد — المستخدم اختار "العقد الملزم كامل" (شمل LAB_PRODUCT_CREATE/TEMPLATE_CREATE/APPROVE/ARCHIVE/EQUIPMENT_CREATE/CALIBRATION_CREATE/REPORT_VIEW/AI_ASSIST/LAB_DATA_QUALITY_VIEW).
+- **Verification**: `pnpm typecheck` → **0 errors / 0 warnings / 13 hints** ✅؛ `pnpm test` كامل → **exit 0** (domain صار **326 passed / 0 failed** بعد +44 فحص lab) ✅؛ `NODE_ENV=production build` → Server built ✅؛ `architecture-guard` → passed (مع القاعدة الجديدة) ✅؛ `verify-security-hygiene` → passed ✅؛ `pnpm e2e:acceptance` → (النتيجة أدناه).
+- **Notes**: لا commit ولا push — المستخدم يلتزم. رسالة مقترحة: `feat(lab): add QC laboratory navigation, RBAC permissions and /lab landing (PROMPT 03)`. PROMPT 04+ (صفحات الاختبارات الفعلية) هو التالي. ملاحظة overflow: admin صار عنده 10 روابط desktop — e2e-lab-nav يفحص docWidth عند 390/1024/1440.
+- **Status**: delivered & verified (كل معايير قبول PROMPT 03 مستوفاة: الحجب server-side ✅ التنقل role-aware ✅ hidden fields/query ما تتجاوز ✅ (e2e scenario E) المسارات القائمة ما تغيرت ✅).
 
 ### 2026-08-14 — QC-LAB-DB-FOUNDATION-001: تنفيذ PROMPT 02 — أساس قاعدة بيانات مختبر QC (migrations 011–014)
 

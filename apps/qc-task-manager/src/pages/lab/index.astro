@@ -1,0 +1,78 @@
+---
+// /lab — QC Laboratory command center (landing page). PROMPT 03 delivers the
+// workspace shell: navigation + RBAC. Data-backed sections (tests, equipment,
+// documents) land in later implementation prompts, so this page renders the
+// permission-filtered secondary nav plus capability cards — no invented data,
+// no seeded numbers.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
+import { labNavForRole } from '../../lib/lab/navigation';
+import {
+  canCreateLabTest,
+  canReviewLabTest,
+  canViewLabReports,
+  canViewLabManagementDashboard,
+} from '../../lib/permissions';
+
+const user = Astro.locals.user!;
+const navItems = labNavForRole(user.role);
+
+const capabilities = [
+  {
+    title: 'Product Tests (Air / Vacuum)',
+    description: 'Create test records, capture sample results, and follow the submit → review → approval workflow. Final PASS/FAIL/HOLD is always decided by an authorized human.',
+    show: canCreateLabTest(user.role),
+  },
+  {
+    title: 'Review & Approval',
+    description: 'Review submitted tests and approve them. Testers can never review or approve their own tests.',
+    show: canReviewLabTest(user.role),
+  },
+  {
+    title: 'Reports & Exports',
+    description: 'Laboratory reports and CSV exports across tests, equipment, and documents.',
+    show: canViewLabReports(user.role),
+  },
+  {
+    title: 'Management Dashboard',
+    description: 'Laboratory KPIs: test throughput, approval turnaround, and data-quality signals.',
+    show: canViewLabManagementDashboard(user.role),
+  },
+];
+const visibleCapabilities = capabilities.filter((capability) => capability.show);
+---
+<BaseLayout title="Laboratory">
+  <div class="space-y-6">
+    <Breadcrumbs items={[{ label: 'QC Tasks' }, { label: 'Laboratory' }]} />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Command Center</h1>
+      <p class="mt-1 text-sm text-slate-600">
+        Product testing, equipment, calibration, and controlled documents — with human-decided results at every gate.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab" />
+
+    {visibleCapabilities.length === 0 ? (
+      <EmptyState title="No laboratory capabilities available for your role." />
+    ) : (
+      <section aria-label="Laboratory capabilities" class="grid gap-4 sm:grid-cols-2">
+        {visibleCapabilities.map((capability) => (
+          <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-base font-semibold text-slate-900">{capability.title}</h2>
+            <p class="mt-2 text-sm leading-relaxed text-slate-600">{capability.description}</p>
+          </article>
+        ))}
+      </section>
+    )}
+
+    <EmptyState
+      title="Laboratory modules are being enabled step by step."
+      hint="Tests, equipment, calibration, and controlled documents will appear here as each module goes live. Nothing was migrated or seeded — data starts from zero when the first module lands."
+    />
+  </div>
+</BaseLayout>

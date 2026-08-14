@@ -77,6 +77,9 @@ function checkDuplicateAuthority() {
     ['canTransitionStatus', /\b(?:export\s+)?function\s+canTransitionStatus\b/],
     ['isTaskReadOnly', /\b(?:export\s+)?function\s+isTaskReadOnly\b/],
     ['isOverdue', /\b(?:export\s+)?function\s+isOverdue\b/],
+    // QC Laboratory RBAC: every can*Lab* predicate is owned by the canonical
+    // permissions module (PROMPT 03 contract — no second permission system).
+    ['can*Lab* predicate', /\b(?:export\s+)?function\s+can\w*Lab\w*\b/],
   ];
   const allowed = new Set([
     join(SRC_DIR, 'lib', 'task-policy.ts'),

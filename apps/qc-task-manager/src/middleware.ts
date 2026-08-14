@@ -25,6 +25,7 @@ import { setFlash } from './lib/flash';
 import {
   canAccessManagerArea,
   canAccessSupervisorArea,
+  canViewLab,
   PERMISSIONS,
   roleHome,
 } from './lib/permissions';
@@ -146,6 +147,19 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   if (pathname.startsWith('/supervisor')) {
     if (!canAccessSupervisorArea(user.role)) {
       setFlash(context, 'error', 'You do not have permission to access the supervisor area.');
+      return context.redirect(roleHome(user.role));
+    }
+  }
+
+  // /lab/* — QC Laboratory prefix wall (contract §5.1): auth + LAB_VIEW only.
+  // Finer-grained checks (review/approve/void/...) belong to the lab pages and
+  // API handlers, which re-check server-side per entity. Every role currently
+  // holds LAB_VIEW, but the guard keeps the prefix honest if the matrix ever
+  // changes — query parameters and hidden fields can never bypass it because
+  // the decision comes from the session user alone.
+  if (pathname === '/lab' || pathname.startsWith('/lab/')) {
+    if (!canViewLab(user.role)) {
+      setFlash(context, 'error', 'You do not have permission to access the laboratory.');
       return context.redirect(roleHome(user.role));
     }
   }

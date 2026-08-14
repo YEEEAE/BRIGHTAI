@@ -40,6 +40,52 @@ can override a missing requirement only by supplying a reason, which is written
 to the task activity log. Existing non-rejected evidence remains valid when a
 completed task is reopened; rejected evidence does not satisfy the gate.
 
+## QC Laboratory RBAC
+
+Laboratory permissions live in the same canonical `src/lib/permissions.ts`
+(`can*Lab*` predicates — enforced by `architecture-guard.mjs`; there is no
+second permission system). The `/lab` route prefix is walled in
+`src/middleware.ts` (session + `LAB_VIEW`); every lab page and API handler
+re-checks its specific permission server-side. The full route→permission map
+is in [QC-LAB-ARCHITECTURE.md](QC-LAB-ARCHITECTURE.md) §5.
+
+| Laboratory capability | Admin | Manager | Supervisor | Employee |
+| --- | :---: | :---: | :---: | :---: |
+| Enter the laboratory (`/lab`, LAB_VIEW) | Yes | Yes | Yes | Yes |
+| View tests / products / templates / equipment / calibration / documents / retests | Yes | Yes | Yes | Yes |
+| Create test records | Yes | Yes | Yes | Yes |
+| Edit test records | Any non-terminal | Any non-terminal | Own DRAFT/REJECTED | Own DRAFT/REJECTED |
+| Submit test for review | Yes | Yes | Own | Own |
+| Review tests | Yes | Yes | Yes — never own test | No |
+| Approve tests | Yes | Yes — never own test/review | No (D-4) | No |
+| Void tests | Yes | Yes | No | No |
+| Create / edit / archive products | Yes | Yes | No | No |
+| Create / edit templates | Yes | Yes | No | No |
+| Approve templates | Yes | Yes — not own edit | No | No |
+| Create / edit / archive equipment | Yes | Yes | No | No |
+| Record equipment maintenance | Yes | Yes | Yes | No |
+| Create / edit calibration records | Yes | Yes | No | No |
+| Create / edit documents (SOP/WI) | Yes | Yes | Own | No |
+| Review documents | Yes | Yes | Yes — never own document | No |
+| Approve documents | Yes | Yes — never own version | No | No |
+| Archive documents | Yes | Yes | No | No |
+| Acknowledge documents | Yes | Yes | Yes | Yes |
+| Create retests | Yes | Yes | Yes (D-5) | No |
+| Reports / exports / data quality / management dashboard | Yes | Yes | Yes | No |
+| AI assist (advisory only) | Yes | Yes | Yes | Yes |
+
+Hard rules enforced server-side by the entity-context predicates:
+
+- A tester can never review or approve their own test — even an admin.
+- A document author can never review or approve their own version.
+- Tested/Reviewed/Approved By are derived from the session user, never from
+  request input (hidden fields and query parameters carry no authority).
+- `final_result` (PASS/FAIL/HOLD) is entered by authorized humans only; AI is
+  advisory and never decides a result or approves a record.
+- Terminal states (`APPROVED`, `VOID`, `SUPERSEDED`, `ARCHIVED`) are immutable
+  for every role; editing an approved document means creating a new draft
+  version.
+
 ## Role landing pages
 
 | Role | Landing page |

@@ -78,6 +78,38 @@ import {
   canEditLockedField,
   isFieldEditableForRole,
 } from '../src/lib/permissions.ts';
+import {
+  canViewLab,
+  canCreateLabTest,
+  canReviewLabTest,
+  canApproveLabTest,
+  canVoidLabTest,
+  canCreateLabProduct,
+  canEditLabProduct,
+  canCreateLabTemplate,
+  canApproveLabTemplate,
+  canCreateLabEquipment,
+  canRecordLabEquipmentMaintenance,
+  canCreateLabCalibration,
+  canCreateLabDocument,
+  canReviewLabDocument,
+  canApproveLabDocument,
+  canArchiveLabDocument,
+  canAcknowledgeLabDocument,
+  canCreateLabRetest,
+  canViewLabReports,
+  canExportLabData,
+  canViewLabDataQuality,
+  canViewLabManagementDashboard,
+  canUseLabAiAssist,
+  canEditLabTestRecord,
+  canSubmitLabTestRecord,
+  canReviewLabTestRecord,
+  canApproveLabTestRecord,
+  canEditLabDocumentRecord,
+  canReviewLabDocumentRecord,
+  canApproveLabDocumentRecord,
+} from '../src/lib/permissions.ts';
 import { validateDependencies } from '../src/lib/tasks.ts';
 import { validateEvidenceFile, validateUploadedFile } from '../src/lib/taskUpdates.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
@@ -983,6 +1015,83 @@ process.exit(0);
 } finally {
   rmSync(seedPolicyDir, { recursive: true, force: true });
 }
+
+// ── 8. Laboratory RBAC (PROMPT 03 — contract §6.2 matrix) ──
+section('Laboratory RBAC');
+
+const LAB_ROLES = ['admin', 'manager', 'supervisor', 'employee'];
+
+// LAB_VIEW and *_VIEW permissions: every role.
+ok(LAB_ROLES.every((role) => canViewLab(role)), 'lab: every role can enter the laboratory');
+// Test creation: every role (core lab work).
+ok(LAB_ROLES.every((role) => canCreateLabTest(role)), 'lab: every role can create tests');
+// Review: supervisor+ (entity-level self-review exclusion tested below).
+ok(!canReviewLabTest('employee') && canReviewLabTest('supervisor') && canReviewLabTest('manager') && canReviewLabTest('admin'), 'lab: review is supervisor+');
+// Approval: manager+ — supervisor denied by default (D-4).
+ok(!canApproveLabTest('employee') && !canApproveLabTest('supervisor') && canApproveLabTest('manager') && canApproveLabTest('admin'), 'lab: test approval is manager+ (D-4 supervisor denied)');
+// Void: manager+ only.
+ok(!canVoidLabTest('supervisor') && canVoidLabTest('manager') && canVoidLabTest('admin'), 'lab: voiding tests is manager+');
+// Products / templates / equipment editing: manager+.
+ok(LAB_ROLES.filter((role) => canCreateLabProduct(role)).join() === 'admin,manager', 'lab: product create is manager+');
+ok(LAB_ROLES.filter((role) => canEditLabProduct(role)).join() === 'admin,manager', 'lab: product edit is manager+');
+ok(LAB_ROLES.filter((role) => canCreateLabTemplate(role)).join() === 'admin,manager', 'lab: template create is manager+');
+ok(LAB_ROLES.filter((role) => canApproveLabTemplate(role)).join() === 'admin,manager', 'lab: template approval is manager+');
+ok(LAB_ROLES.filter((role) => canCreateLabEquipment(role)).join() === 'admin,manager', 'lab: equipment create is manager+');
+ok(LAB_ROLES.filter((role) => canCreateLabCalibration(role)).join() === 'admin,manager', 'lab: calibration create is manager+');
+// Maintenance: supervisor+.
+ok(!canRecordLabEquipmentMaintenance('employee') && canRecordLabEquipmentMaintenance('supervisor'), 'lab: maintenance recording is supervisor+');
+// Documents: create/edit/review supervisor+, approve/archive manager+, acknowledge everyone.
+ok(!canCreateLabDocument('employee') && canCreateLabDocument('supervisor'), 'lab: document create is supervisor+');
+ok(!canReviewLabDocument('employee') && canReviewLabDocument('supervisor'), 'lab: document review is supervisor+');
+ok(LAB_ROLES.filter((role) => canApproveLabDocument(role)).join() === 'admin,manager', 'lab: document approval is manager+');
+ok(LAB_ROLES.filter((role) => canArchiveLabDocument(role)).join() === 'admin,manager', 'lab: document archive is manager+');
+ok(LAB_ROLES.every((role) => canAcknowledgeLabDocument(role)), 'lab: every role can acknowledge documents');
+// Retests: D-5 — supervisor+ create, everyone views.
+ok(!canCreateLabRetest('employee') && canCreateLabRetest('supervisor'), 'lab: retest creation is supervisor+ (D-5)');
+// Reports / exports / dashboards / data quality: supervisor+.
+ok(!canViewLabReports('employee') && canViewLabReports('supervisor'), 'lab: reports are supervisor+');
+ok(!canExportLabData('employee') && canExportLabData('supervisor'), 'lab: exports are supervisor+');
+ok(!canViewLabDataQuality('employee') && canViewLabDataQuality('supervisor'), 'lab: data quality is supervisor+');
+ok(!canViewLabManagementDashboard('employee') && canViewLabManagementDashboard('supervisor'), 'lab: management dashboard is supervisor+');
+// AI assist: advisory-only, every role.
+ok(LAB_ROLES.every((role) => canUseLabAiAssist(role)), 'lab: AI assist is available to every role (advisory only)');
+
+// Entity-context hard invariants.
+const ownTest = { status: 'SUBMITTED', tested_by: 7, reviewed_by: null, created_by: 7 };
+const foreignTest = { status: 'SUBMITTED', tested_by: 8, reviewed_by: null, created_by: 8 };
+const actor = { id: 7, role: 'admin' };
+// #1 — a tester can NEVER review or approve their own test, even as admin.
+ok(!canReviewLabTestRecord(actor, ownTest), 'lab: tester cannot review own test (even admin)');
+ok(!canApproveLabTestRecord(actor, ownTest), 'lab: tester cannot approve own test (even admin)');
+// The reviewer cannot approve what they reviewed.
+ok(!canApproveLabTestRecord({ id: 9, role: 'manager' }, { status: 'UNDER_REVIEW', tested_by: 8, reviewed_by: 9, created_by: 8 }), 'lab: reviewer cannot approve own review');
+// Legitimate foreign review/approval passes.
+ok(canReviewLabTestRecord({ id: 9, role: 'manager' }, foreignTest), 'lab: manager can review a foreign submitted test');
+ok(canApproveLabTestRecord({ id: 10, role: 'manager' }, { status: 'UNDER_REVIEW', tested_by: 8, reviewed_by: 9, created_by: 8 }), 'lab: manager can approve a reviewed foreign test');
+// D-4: supervisor cannot approve regardless of ownership.
+ok(!canApproveLabTestRecord({ id: 11, role: 'supervisor' }, foreignTest), 'lab: supervisor cannot approve tests (D-4)');
+// Editing: employee/supervisor limited to own DRAFT/REJECTED; terminal immutable.
+ok(canEditLabTestRecord({ id: 7, role: 'employee' }, { status: 'DRAFT', tested_by: 7, reviewed_by: null, created_by: 7 }), 'lab: tester can edit own DRAFT');
+ok(!canEditLabTestRecord({ id: 7, role: 'employee' }, { status: 'DRAFT', tested_by: 8, reviewed_by: null, created_by: 8 }), 'lab: cannot edit someone else\'s DRAFT');
+ok(!canEditLabTestRecord({ id: 7, role: 'employee' }, { status: 'SUBMITTED', tested_by: 7, reviewed_by: null, created_by: 7 }), 'lab: cannot edit own SUBMITTED test');
+ok(canEditLabTestRecord({ id: 7, role: 'employee' }, { status: 'REJECTED', tested_by: 7, reviewed_by: 9, created_by: 7 }), 'lab: tester can rework own REJECTED test');
+ok(!canEditLabTestRecord({ id: 1, role: 'admin' }, { status: 'APPROVED', tested_by: 8, reviewed_by: 9, created_by: 8 }), 'lab: APPROVED tests are immutable (even admin)');
+ok(!canEditLabTestRecord({ id: 1, role: 'admin' }, { status: 'VOID', tested_by: 8, reviewed_by: 9, created_by: 8 }), 'lab: VOID tests are immutable');
+// Submission: own DRAFT/REJECTED only.
+ok(canSubmitLabTestRecord({ id: 7, role: 'employee' }, { status: 'DRAFT', tested_by: 7, reviewed_by: null, created_by: 7 }), 'lab: tester can submit own DRAFT');
+ok(!canSubmitLabTestRecord({ id: 7, role: 'manager' }, { status: 'DRAFT', tested_by: 8, reviewed_by: null, created_by: 8 }), 'lab: manager cannot submit someone else\'s DRAFT (authority is tested_by, not input)');
+// Documents: author cannot review or approve their own version (hard invariant #2).
+const ownDoc = { status: 'IN_REVIEW', owner_id: 7, created_by: 7 };
+ok(!canReviewLabDocumentRecord({ id: 7, role: 'manager' }, ownDoc), 'lab: author cannot review own document');
+ok(!canApproveLabDocumentRecord({ id: 7, role: 'manager' }, ownDoc), 'lab: author cannot approve own document (even manager)');
+ok(!canApproveLabDocumentRecord({ id: 7, role: 'admin' }, ownDoc), 'lab: author cannot approve own document (even admin)');
+ok(canApproveLabDocumentRecord({ id: 9, role: 'manager' }, { status: 'IN_REVIEW', owner_id: 7, created_by: 7 }), 'lab: manager can approve a foreign reviewed document');
+ok(!canApproveLabDocumentRecord({ id: 9, role: 'manager' }, { status: 'DRAFT', owner_id: 7, created_by: 7 }), 'lab: cannot approve a DRAFT document');
+ok(canEditLabDocumentRecord({ id: 7, role: 'supervisor' }, { status: 'DRAFT', owner_id: 7, created_by: 7 }), 'lab: supervisor can edit own draft document');
+ok(!canEditLabDocumentRecord({ id: 7, role: 'supervisor' }, { status: 'DRAFT', owner_id: 8, created_by: 8 }), 'lab: supervisor cannot edit someone else\'s draft document');
+ok(!canEditLabDocumentRecord({ id: 7, role: 'employee' }, { status: 'DRAFT', owner_id: 7, created_by: 7 }), 'lab: employee cannot edit documents');
+ok(!canEditLabDocumentRecord({ id: 1, role: 'admin' }, { status: 'ARCHIVED', owner_id: 7, created_by: 7 }), 'lab: ARCHIVED documents are immutable');
+ok(!canEditLabDocumentRecord({ id: 1, role: 'admin' }, { status: 'SUPERSEDED', owner_id: 7, created_by: 7 }), 'lab: SUPERSEDED documents are immutable');
 
 // ── summary ──
 console.log(`\n${passed} passed, ${failed} failed`);
