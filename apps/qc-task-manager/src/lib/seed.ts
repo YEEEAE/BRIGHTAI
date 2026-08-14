@@ -17,12 +17,33 @@ import bcrypt from 'bcryptjs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 import type { Role } from './types';
 
-const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD ?? 'admin123';
+const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD || 'admin123';
 const IS_DEFAULT_PASSWORD = DEFAULT_PASSWORD === 'admin123';
 
 function assertSafeSeedPassword(): void {
   if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_DEFAULT_PASSWORD) {
-    throw new Error('ADMIN_DEFAULT_PASSWORD must be set before seeding a production database.');
+    throw new Error(
+      'ADMIN_DEFAULT_PASSWORD must be set before seeding a production database: ' +
+        'the app refuses to create accounts with the default "admin123" password when NODE_ENV=production.',
+    );
+  }
+}
+
+/**
+ * Production also refuses to KEEP accounts that still verify against the
+ * default "admin123" password — e.g. a database seeded locally and then
+ * promoted to production. Only enforced while ADMIN_DEFAULT_PASSWORD is unset
+ * (an operator-supplied value is the allowed seed password).
+ */
+function assertNoDefaultPasswordAccounts(db: BetterSqliteDatabase): void {
+  if (process.env.NODE_ENV !== 'production' || process.env.ADMIN_DEFAULT_PASSWORD) return;
+  const rows = db.prepare('SELECT password_hash FROM users').all() as { password_hash: string }[];
+  if (rows.some((row) => bcrypt.compareSync('admin123', row.password_hash))) {
+    throw new Error(
+      'ADMIN_DEFAULT_PASSWORD must be set before booting a production database: ' +
+        'existing accounts still use the default "admin123" password. Set ADMIN_DEFAULT_PASSWORD ' +
+        'to a strong value and reset those accounts (e.g. from /admin/users).',
+    );
   }
 }
 
@@ -52,7 +73,12 @@ export function isUsersEmpty(db: BetterSqliteDatabase): boolean {
  * is present. Returns the number of rows actually inserted.
  */
 export function seedUsersIfEmpty(db: BetterSqliteDatabase): number {
-  if (!isUsersEmpty(db)) return 0;
+  if (!isUsersEmpty(db)) {
+    // Accounts already exist — never touch them, but production refuses to
+    // keep booting while any of them still uses the default password.
+    assertNoDefaultPasswordAccounts(db);
+    return 0;
+  }
 
   assertSafeSeedPassword();
 

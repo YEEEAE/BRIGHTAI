@@ -12,6 +12,7 @@
 // e2e-delete-request.mjs) which need a live server — see the README.
 
 import Database from 'better-sqlite3';
+import bcrypt from 'bcryptjs';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync, statSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -31,6 +32,8 @@ import {
   getNextScheduledBackupAt,
   getRiyadhDateKey,
   shouldRunBackupCatchup,
+  startBackupScheduler,
+  stopBackupScheduler,
 } from '../src/lib/backup-scheduler.ts';
 import {
   parseFormData,
@@ -722,6 +725,38 @@ ok(getNextScheduledBackupAt(new Date('2026-08-10T22:30:00.000Z')).toISOString() 
 ok(shouldRunBackupCatchup({ lastSuccessAt: null }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up runs when no success exists');
 ok(!shouldRunBackupCatchup({ lastSuccessAt: '2026-08-11T09:00:00.000Z' }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up skips after today success');
 
+// A scheduled/catch-up backup must SKIP — not fail — when the database file
+// is absent (temp test databases are removed between suites, and a fresh disk
+// may boot before the first write). The skip must log a quiet debug line, must
+// not record a failure status, and must never surface SQLITE_CANTOPEN noise.
+{
+  const skipDir = mkdtempSync(join(tmpdir(), 'qc-backup-skip-'));
+  try {
+    const missingDbPath = join(skipDir, 'missing.db');
+    const backupDir = join(skipDir, 'backups');
+    // The scheduler is a module singleton; reset it so this check always
+    // exercises the catch-up path regardless of prior tests in this process.
+    stopBackupScheduler();
+    const originalInfo = console.info;
+    const infoLines = [];
+    console.info = (...args) => infoLines.push(args.map(String).join(' '));
+    let stop = null;
+    try {
+      stop = startBackupScheduler({ dbPath: missingDbPath, backupDir });
+    } finally {
+      console.info = originalInfo;
+    }
+    stop?.();
+    const info = infoLines.join('\n');
+    ok(/skipped \(trigger=scheduled\)/.test(info) && /database file missing/.test(info), 'scheduler: missing DB file logs a skip debug line');
+    ok(!/failed/.test(info) && !/unable to open database file/.test(info) && !/SQLITE_CANTOPEN/.test(info), 'scheduler: missing DB file logs no failure and no CANTOPEN');
+    const status = getBackupStatus(backupDir);
+    ok(status.state === 'never' && status.lastFailureAt === null && status.lastAttemptAt === null && status.lastError === null, 'scheduler: missing DB file records no failure status');
+  } finally {
+    rmSync(skipDir, { recursive: true, force: true });
+  }
+}
+
 // ── 6. init-db migrates a legacy (pre-spec) database ──
 // Regression for the "SQLITE_ERROR: no such column: recurrence" bug: a
 // database created by an OLD schema keeps its old table shapes (schema.sql's
@@ -824,6 +859,129 @@ try {
   ok(!/migrated .* column\(s\)/.test(combined2), 'init-db: second run is a no-op (idempotent)');
 } finally {
   rmSync(migDir, { recursive: true, force: true });
+}
+
+// ── 7. Seed password policy (production refuses the default password) ──
+// The seed path reads ADMIN_DEFAULT_PASSWORD / NODE_ENV at module load
+// (DEFAULT_PASSWORD) and at call time (the guards), so these checks run in
+// fresh subprocesses with a controlled environment — same pattern as the
+// init-db migration checks above. The probes import the REAL runtime entry
+// (getDb → migrations → seedUsersIfEmpty) so a production boot is reproduced
+// end to end on a temp database. The backup-scheduler timer is unref'ed, so
+// the probe processes exit on their own.
+section('Seed password policy');
+const seedPolicyDir = mkdtempSync(join(tmpdir(), 'qc-seed-policy-'));
+const probeFlags = ['--import', '../../scripts/test-ts-loader.mjs', '--experimental-strip-types', '--input-type=module', '-e'];
+const probeThrow = `
+import { getDb } from './src/lib/db.ts';
+try {
+  getDb();
+  console.log('NO_THROW');
+  process.exit(2);
+} catch (err) {
+  console.log('THREW');
+  console.log(err instanceof Error ? err.message : String(err));
+  process.exit(0);
+}
+`;
+try {
+  // Env profiles: no ADMIN_DEFAULT_PASSWORD, with it, and plain dev (unset
+  // NODE_ENV) — each built from the parent env so nothing leaks across probes.
+  const envNoPass = { ...process.env, NODE_ENV: 'production' };
+  delete envNoPass.ADMIN_DEFAULT_PASSWORD;
+  delete envNoPass.SEED_DEMO;
+  const envStrong = { ...process.env, NODE_ENV: 'production', ADMIN_DEFAULT_PASSWORD: 'unit-test-strong-password-2026' };
+  delete envStrong.SEED_DEMO;
+  const envDev = { ...process.env };
+  delete envDev.NODE_ENV;
+  delete envDev.ADMIN_DEFAULT_PASSWORD;
+  delete envDev.SEED_DEMO;
+
+  // (a) Production + no ADMIN_DEFAULT_PASSWORD + fresh DB → boot fails fast.
+  const throwRun = spawnSync(process.execPath, [...probeFlags, probeThrow], {
+    cwd: APP_DIR,
+    env: { ...envNoPass, QC_DATABASE_PATH: join(seedPolicyDir, 'prod-fail.db') },
+    encoding: 'utf8',
+  });
+  const throwOut = `${throwRun.stdout ?? ''}${throwRun.stderr ?? ''}`;
+  ok(throwRun.status === 0 && /THREW/.test(throwOut), 'seed: production boot without ADMIN_DEFAULT_PASSWORD fails fast');
+  ok(/ADMIN_DEFAULT_PASSWORD/.test(throwOut), 'seed: refusal message names ADMIN_DEFAULT_PASSWORD');
+
+  // (b) Production + ADMIN_DEFAULT_PASSWORD set → fresh DB seeds the
+  //     configured password, never the default 'admin123'.
+  const probeExpectSeed = `
+import { getDb } from './src/lib/db.ts';
+import bcrypt from 'bcryptjs';
+const db = getDb();
+const admin = db.prepare('SELECT password_hash FROM users WHERE username = ?').get('admin');
+if (!admin) { console.log('NO_ADMIN'); process.exit(2); }
+const configured = process.env.ADMIN_DEFAULT_PASSWORD || '';
+const okConfigured = bcrypt.compareSync(configured, admin.password_hash);
+const notDefault = !bcrypt.compareSync('admin123', admin.password_hash);
+console.log(okConfigured && notDefault ? 'SEEDED_CONFIGURED' : 'WRONG_HASH');
+process.exit(okConfigured && notDefault ? 0 : 1);
+`;
+  const seedRun = spawnSync(process.execPath, [...probeFlags, probeExpectSeed], {
+    cwd: APP_DIR,
+    env: { ...envStrong, QC_DATABASE_PATH: join(seedPolicyDir, 'prod-seed.db') },
+    encoding: 'utf8',
+  });
+  const seedOut = `${seedRun.stdout ?? ''}${seedRun.stderr ?? ''}`;
+  ok(seedRun.status === 0 && /SEEDED_CONFIGURED/.test(seedOut), 'seed: production with ADMIN_DEFAULT_PASSWORD seeds the configured password');
+
+  // (c) Same policy through the db:init CLI on a fresh temp database.
+  const cliFail = spawnSync(process.execPath, ['scripts/init-db.mjs'], {
+    cwd: APP_DIR,
+    env: { ...envNoPass, QC_DATABASE_PATH: join(seedPolicyDir, 'cli-fail.db') },
+    encoding: 'utf8',
+  });
+  const cliFailOut = `${cliFail.stdout ?? ''}${cliFail.stderr ?? ''}`;
+  ok(cliFail.status !== 0, 'init-db: production without ADMIN_DEFAULT_PASSWORD refuses (non-zero exit)');
+  ok(/ADMIN_DEFAULT_PASSWORD/.test(cliFailOut), 'init-db: refusal message names ADMIN_DEFAULT_PASSWORD');
+
+  const cliSeedPath = join(seedPolicyDir, 'cli-seed.db');
+  const cliSeed = spawnSync(process.execPath, ['scripts/init-db.mjs'], {
+    cwd: APP_DIR,
+    env: { ...envStrong, QC_DATABASE_PATH: cliSeedPath },
+    encoding: 'utf8',
+  });
+  ok(cliSeed.status === 0, 'init-db: production with ADMIN_DEFAULT_PASSWORD seeds successfully');
+  if (cliSeed.status === 0 && existsSync(cliSeedPath)) {
+    const cliCheck = new Database(cliSeedPath, { readonly: true });
+    const admin = cliCheck.prepare('SELECT password_hash FROM users WHERE username = ?').get('admin');
+    ok(!!admin && bcrypt.compareSync('unit-test-strong-password-2026', admin.password_hash), 'init-db: seeded admin uses the configured password');
+    ok(!!admin && !bcrypt.compareSync('admin123', admin.password_hash), 'init-db: seeded admin does NOT use admin123');
+    cliCheck.close();
+  } else {
+    ok(false, 'init-db: seeded admin hash is verifiable');
+  }
+
+  // (d) A dev-seeded database (admin123) promoted to production is refused:
+  //     accounts already exist, so the seed is skipped, but the keep-guard
+  //     still blocks boot until ADMIN_DEFAULT_PASSWORD is set and accounts
+  //     are reset.
+  const promotedPath = join(seedPolicyDir, 'promoted.db');
+  const devSeed = spawnSync(process.execPath, [...probeFlags, `
+import { getDb } from './src/lib/db.ts';
+getDb();
+console.log('DEV_SEEDED');
+process.exit(0);
+`], {
+    cwd: APP_DIR,
+    env: { ...envDev, QC_DATABASE_PATH: promotedPath },
+    encoding: 'utf8',
+  });
+  ok(devSeed.status === 0 && /DEV_SEEDED/.test(`${devSeed.stdout ?? ''}${devSeed.stderr ?? ''}`), 'seed: dev-mode boot seeds accounts (warning path unchanged)');
+  const promotedRun = spawnSync(process.execPath, [...probeFlags, probeThrow], {
+    cwd: APP_DIR,
+    env: { ...envNoPass, QC_DATABASE_PATH: promotedPath },
+    encoding: 'utf8',
+  });
+  const promotedOut = `${promotedRun.stdout ?? ''}${promotedRun.stderr ?? ''}`;
+  ok(promotedRun.status === 0 && /THREW/.test(promotedOut), 'seed: production boot refuses a dev-seeded database (keeps-guard)');
+  ok(/ADMIN_DEFAULT_PASSWORD/.test(promotedOut), 'seed: keeps-guard message names ADMIN_DEFAULT_PASSWORD');
+} finally {
+  rmSync(seedPolicyDir, { recursive: true, force: true });
 }
 
 // ── summary ──

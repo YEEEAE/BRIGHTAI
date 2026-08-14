@@ -76,6 +76,9 @@ scanning, host hardening, or a managed web application firewall.
    controls as the live database.
 8. Patch Node.js, Astro, bcryptjs, better-sqlite3 and the host OS on a defined
    cadence; subscribe to their security advisories.
+9. Run exactly one application instance. The backup scheduler is in-process
+   and login/IP rate limiting is in-memory, so multiple replicas would each
+   run the daily backup and enforce separate rate-limit windows.
 
 ## Release checks
 

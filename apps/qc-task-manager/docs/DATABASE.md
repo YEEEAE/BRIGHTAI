@@ -62,7 +62,9 @@ and ephemeral production storage.
 
 The process schedules a WAL-safe backup every day at 02:00 Asia/Riyadh and
 runs a catch-up after startup if no successful backup exists for that Riyadh
-day. It retains 14 backup files by default.
+day. It retains 14 backup files by default. The scheduler is in-process, so
+the app assumes a single running instance; deploy one replica and keep any
+off-service copy of backups outside the app.
 
 Create an on-demand backup:
 

@@ -3,6 +3,8 @@
 // second deployment surface. Saudi Arabia has no DST, therefore 02:00 Riyadh
 // is 23:00 UTC and the conversion remains deterministic.
 
+import { statSync } from 'node:fs';
+
 import {
   BACKUP_TIME_ZONE,
   backupDirectoryForDatabase,
@@ -14,6 +16,24 @@ import {
 
 const DAILY_HOUR_RIYADH = 2;
 const RIYADH_UTC_OFFSET_HOURS = 3;
+
+/** True when the source database file currently exists on disk. */
+function dbFileExists(dbPath: string): boolean {
+  try {
+    return statSync(dbPath).isFile();
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * A scheduled backup with no database file is a skip, not a failure: temp
+ * test databases are removed between suites, and a fresh disk may boot before
+ * the first write. Log one quiet line and let the next scheduled run retry.
+ */
+function logSkipped(dbPath: string): void {
+  console.info(`[backup] skipped (trigger=scheduled): database file missing (${dbPath})`);
+}
 
 export function getRiyadhDateKey(date = new Date()): string {
   const parts = new Intl.DateTimeFormat('en-CA', {
@@ -47,11 +67,17 @@ function scheduleNext(options: BackupOptions): void {
   const delay = Math.max(1_000, getNextScheduledBackupAt().getTime() - Date.now());
   timer = setTimeout(async () => {
     timer = null;
-    try {
-      await createBackup({ ...options, trigger: 'scheduled' });
-    } catch {
-      // createBackup records and logs the failure; the scheduler must survive
-      // one failed run and try again on the next day.
+    if (dbFileExists(options.dbPath)) {
+      try {
+        await createBackup({ ...options, trigger: 'scheduled' });
+      } catch {
+        // createBackup records and logs the failure; the scheduler must survive
+        // one failed run and try again on the next day.
+      }
+    } else {
+      // No database file (e.g. a temp test database removed between suites).
+      // Skip quietly — a failure status would misrepresent backup health.
+      logSkipped(options.dbPath);
     }
     scheduleNext(options);
   }, delay);
@@ -68,9 +94,15 @@ export function startBackupScheduler(options: BackupOptions): () => void {
   process.once('exit', stopBackupScheduler);
   const status = getBackupStatus(options.backupDir);
   if (shouldRunBackupCatchup(status)) {
-    void createBackup({ ...options, trigger: 'scheduled' })
-      .catch(() => {})
-      .finally(() => scheduleNext(options));
+    if (dbFileExists(options.dbPath)) {
+      void createBackup({ ...options, trigger: 'scheduled' })
+        .catch(() => {})
+        .finally(() => scheduleNext(options));
+    } else {
+      // Same quiet skip as the daily timer: absent file is not a failure.
+      logSkipped(options.dbPath);
+      scheduleNext(options);
+    }
   } else {
     scheduleNext(options);
   }

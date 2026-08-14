@@ -16,6 +16,12 @@ const existing = getSessionUser(Astro.request);
 if (existing) {
   return Astro.redirect(roleHome(existing.role));
 }
+
+// The seeded-accounts hint is a local-dev convenience. It must never render in
+// production: the default credentials would be broadcast on the public login
+// page. Mirrors the seed policy in src/lib/seed.ts (production refuses to
+// boot with the default "admin123" password).
+const showSeededHint = process.env.NODE_ENV !== 'production';
 ---
 
 <BaseLayout title="Sign in" hideNav>
@@ -61,11 +67,13 @@ if (existing) {
       </button>
     </form>
 
-    <p class="mt-6 text-xs text-slate-400">
-      Seeded accounts — password <code>admin123</code> by default:
-      <code>admin</code> → /admin/users, <code>manager</code> → /manager,
-      <code>supervisor</code> → /supervisor, <code>employee</code> → /employee.
-      Additional roles are created by an admin from the <code>/admin/users</code> area.
-    </p>
+    {showSeededHint && (
+      <p class="mt-6 text-xs text-slate-400">
+        Seeded accounts — password <code>admin123</code> by default:
+        <code>admin</code> → /admin/users, <code>manager</code> → /manager,
+        <code>supervisor</code> → /supervisor, <code>employee</code> → /employee.
+        Additional roles are created by an admin from the <code>/admin/users</code> area.
+      </p>
+    )}
   </section>
 </BaseLayout>

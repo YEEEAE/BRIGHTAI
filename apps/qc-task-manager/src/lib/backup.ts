@@ -311,6 +311,15 @@ async function performBackup(options: BackupOptions): Promise<BackupResult> {
     log(`created ${name} (${size} bytes, trigger=${trigger}, pruned=${pruned})`);
     return { file, name, size, pruned, metadataFile, metadata, verification };
   } catch (error) {
+    // A scheduled backup whose source database vanished mid-run — e.g. a temp
+    // test database removed between suites, or the file deleted out-of-band —
+    // is a skip, not a failure: recording it would misrepresent backup health
+    // and spam error logs. Manual/CLI/test triggers keep failing loudly so an
+    // operator notices a genuinely missing database.
+    if (trigger === 'scheduled' && !existsSync(options.dbPath)) {
+      log(`skipped (trigger=scheduled): source database file missing: ${options.dbPath}`);
+      throw error;
+    }
     const message = error instanceof Error ? error.message : String(error);
     const status: BackupStatus = {
       ...getBackupStatus(options.backupDir),

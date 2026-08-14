@@ -2,11 +2,31 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-14 16:50 +03:00
+last_updated: 2026-08-14 17:05 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.97
+version: 2.7.99
 agent_version: v2.3
 skills_ready: 7
+---
+
+### 2026-08-14 — QC-BACKUP-SKIP-MISSING-001: إيقاف ضجيج SQLITE_CANTOPEN من backup-scheduler عند غياب ملف القاعدة (P2 G-09 / PROMPT 06 من الـ evidence audit)
+
+- **Files**: `apps/qc-task-manager/src/lib/backup-scheduler.ts`، `apps/qc-task-manager/src/lib/backup.ts`، `apps/qc-task-manager/scripts/test.mjs`، `apps/qc-task-manager/SECURITY.md`، `apps/qc-task-manager/docs/DATABASE.md`، `.agents/brain.md` (هذا السجل).
+- **What**: (1) `backup-scheduler.ts` — أضفت `dbFileExists()` (statSync + isFile) و`logSkipped()`؛ قبل أي scheduled/catch-up backup (التايمر اليومي + الـ catch-up عند الإقلاع) إذا ملف القاعدة غايب → skip بسطر `[backup] skipped (trigger=scheduled): database file missing (...)` بدون تسجيل failure. (2) `backup.ts` performBackup — في الـ catch block: إذا `trigger === 'scheduled'` وملف المصدر غير موجود (`!existsSync(dbPath)`) → skip (سطر debug + رفع الخطأ بدون كتابة حالة failure ولا log error) — هذا يغطي الحالة الحرجة اللي كانت تنتج CANTOPEN فعلًا: السويتات تحذف الـ temp dir **أثناء** `await source.backup()` (المصدر + مجلد backups يروحون مع بعض)، والـ Database.backup يفشل بفتح الوجهة بـ SQLITE_CANTOPEN "unable to open database file". الـ manual/CLI/test triggers بقيت تفشل بصوت عالي (فحص test.mjs القديم "missing source fails" باقي يمر — trigger=test). (3) `test.mjs` — 3 فحوصات جديدة في قسم "Backup scheduler": startBackupScheduler على ملف غايب → يطبع سطر skip (بدون failed/CANTOPEN) + `getBackupStatus` يرجع `state:'never'` و lastFailureAt/lastAttemptAt/lastError = null (ما سُجل أي فشل). (4) `SECURITY.md` بند #9 جديد + `DATABASE.md` سطر في قسم Backups: التطبيق يفترض **single instance** (scheduler in-process + rate limiting in-memory) — يغلق G-10.
+- **Verification**: typecheck → **0 errors / 0 warnings / 13 hints** ✅؛ `pnpm --filter @brightai/qc-task-manager test` → **279 passed / 0 failed** (276 + 3 جديدة) و **صفر** ظهور لـ `SQLITE_CANTOPEN`/"unable to open database file" في السجل كامل (قبل: 4 أخطاء CANTOPEN من audit-integrity/ai-foundation/ai-features/workflow؛ بعد: 4 أسطر skip هادئة) ✅؛ `pnpm e2e:acceptance` → كل الـ suites PASS و **backup 13/13** ✅؛ `verify-security-hygiene.mjs` → passed ✅؛ `git diff --check` → نظيف ✅.
+- **Notes**: قرار — الـ skip محصور في `trigger === 'scheduled'` عشان الـ manual/CLI يبقون يفشلون (القاعدة "keep real failures recorded")؛ وشرط الكشف في الـ catch هو `!existsSync(dbPath)` (الملف غايب) وليس رسالة الخطأ، عشان مشاكل الصلاحيات/القرص/التلف على ملف موجود تبقى failures حقيقية. سطر الـ skip يستخدم console.info (نفس أسلوب log الحالي) مو console.debug. لا commit ولا push — المستخدم يلتزم.
+- **Status**: verified (typecheck + 279/0 + صفر CANTOPEN + e2e acceptance كامل + backup 13/13 + hygiene). لا commit ولا push.
+
+---
+
+### 2026-08-14 — QC-SEED-PASSWORD-POLICY-001: إلزام ADMIN_DEFAULT_PASSWORD خارج localhost (P1 G-07 من الـ evidence audit) — منع الإقلاع بكلمة المرور الافتراضية في الإنتاج
+
+- **Files**: `apps/qc-task-manager/src/lib/seed.ts`، `apps/qc-task-manager/src/pages/login.astro`، `apps/qc-task-manager/scripts/test.mjs`، `.agents/brain.md` (هذا السجل).
+- **What**: (1) `seed.ts` — صار `DEFAULT_PASSWORD` يستخدم `||` بدل `??` (الـ empty string يُعامل كغير معيّن — يطابق تعريف الـ guard نفسه)؛ `assertSafeSeedPassword()` رسالته صارت أوضح (تذكر admin123 و NODE_ENV=production)؛ **جديد**: `assertNoDefaultPasswordAccounts()` — في الإنتاج وعند غياب المتغير، إذا فيه أي حساب موجود يتحقق مع `admin123` (bcrypt) → يرفض الإقلاع برسالة تطلب ضبط المتغير وإعادة ضبط الحسابات (حماية "keep" لقاعدة مرفوعة من dev إلى prod). (2) `login.astro` — كتلة "Seeded accounts — password admin123" صارت `{showSeededHint && ...}` حيث `showSeededHint = process.env.NODE_ENV !== 'production'` (مخفية في الـ production build — وVite يدمج NODE_ENV وقت البناء فتبقى مخفية حتى لو runtime بدون المتغير؛ الـ dev باقي يعرضها). (3) `test.mjs` — قسم جديد "Seed password policy" (11 فحص) عبر subprocesses بنمط `-e` + الـ loader نفسه: (a) إقلاع إنتاجي بدون المتغير على قاعدة جديدة → يرمي مع رسالة تذكر ADMIN_DEFAULT_PASSWORD؛ (b) مع المتغير → البذور تنزرع بكلمة المرور المكوّنة (bcrypt verify) وليس admin123؛ (c) نفس السياسة عبر CLI `init-db.mjs` (رفض + نجاح + تحقق hash)؛ (d) قاعدة مُزرعة dev (admin123) مرفوعة للإنتاج → الـ keep-guard يرفض حتى بدون إعادة بذر.
+- **Verification**: typecheck → **0 errors / 0 warnings / 13 hints** ✅؛ `pnpm --filter @brightai/qc-task-manager test` → **276 passed / 0 failed** (265 + 11 جديدة) ✅؛ `NODE_ENV=production build` → Server built ✅؛ **فحص حي على build الإنتاجي**: GET /login → **0** ظهور لـ admin123 و "Seeded accounts" ✅؛ **فحص حي على astro dev**: الـ hint ظاهر ✅ (سلوك dev ما تغيّر)؛ يدوي على قواعد مؤقتة: `init-db` ومسار `getDb` مع NODE_ENV=production بدون المتغير → exit 1 برسالة واضحة تذكر المتغير ✅؛ `git diff --check` → نظيف ✅.
+- **Notes**: `init-db.mjs` بقي كما هو (حارس الـ creation موجود أصلًا فيه ويطابق seed.ts — الـ keep-guard الجديد حصرته في مسار الـ runtime لأن المهمة سمّت `src/lib/seed.ts` فقط). الـ e2e scripts تستخدم `?? 'admin123'` كـ default محلي — ما لمستها. لا commit ولا push — المستخدم يلتزم.
+- **Status**: verified (typecheck + 276/0 + build + live prod/dev login + temp-DB refusal). لا commit ولا push.
+
 ---
 
 ### 2026-08-14 — QC-CSP-STYLE-SRC-001: إزالة `unsafe-inline` من `style-src` في CSP تطبيق QC (P1 من الـ evidence audit) — بدون كسر Tailwind أو React islands
