@@ -186,3 +186,284 @@ export interface SessionData {
   role: Role;
   fullName: string;
 }
+
+// ─────────────────────── QC Laboratory (lab_* tables) ───────────────────────
+// Mirrors db/migrations/011–014. equipment_id is the canonical equipment
+// relationship; historical correctness comes from approval-time snapshots.
+
+// test_type values match lab_test_records.test_type / lab_test_templates.test_type CHECKs.
+export type LabTestType = 'air' | 'vacuum';
+// status values match lab_test_records.status CHECK (migration 012).
+export type LabTestStatus = 'DRAFT' | 'SUBMITTED' | 'UNDER_REVIEW' | 'REJECTED' | 'APPROVED' | 'VOID';
+// final_result / sample result values match their CHECKs (migration 012).
+export type LabFinalResult = 'PASS' | 'FAIL' | 'HOLD';
+// reason values match lab_test_retests.reason CHECK (migration 012).
+export type LabRetestReason = 'FAIL' | 'HOLD' | 'SAMPLE_ISSUE' | 'EQUIPMENT_ISSUE' | 'PROCEDURAL_ISSUE' | 'OTHER';
+// status values match lab_test_templates.status CHECK (migration 011).
+export type LabTemplateStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
+// type values match lab_documents.type CHECK (migration 013).
+export type LabDocumentType = 'SOP' | 'WI';
+// status values match lab_documents.status / lab_document_versions.status CHECKs (migration 013).
+export type LabDocumentStatus = 'DRAFT' | 'IN_REVIEW' | 'APPROVED' | 'SUPERSEDED' | 'ARCHIVED';
+// entity_type values match lab_document_links.entity_type CHECK (migration 013).
+export type LabDocumentLinkEntityType = 'EQUIPMENT' | 'PRODUCT' | 'TEMPLATE';
+// status values match lab_document_acknowledgements.status CHECK (migration 013).
+export type LabAcknowledgementStatus = 'PENDING' | 'ACKNOWLEDGED';
+
+/** One row of lab_test_templates — test template identity (versioned content in LabTestTemplateVersion). */
+export interface LabTestTemplate {
+  id: number;
+  name: string;
+  code: string;
+  test_type: LabTestType;
+  status: LabTemplateStatus;
+  current_version_id: number | null;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One immutable-numbered version of a lab test template (lab_test_template_versions). */
+export interface LabTestTemplateVersion {
+  id: number;
+  template_id: number;
+  version: number;
+  default_sample_count: number | null;
+  parameters_json: string;
+  connector_choices_json: string | null;
+  applicable_product_id: number | null;
+  applicable_equipment_id: number | null;
+  sop_id: number | null;
+  wi_id: number | null;
+  created_by: number;
+  approved_by: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One row of the equipment registry (lab_equipment). status_raw is the verbatim business value. */
+export interface LabEquipment {
+  id: number;
+  name: string;
+  code: string;
+  location: string | null;
+  status_raw: string;
+  serial_number: string | null;
+  notes: string | null;
+  is_archived: number;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One append-only maintenance event (lab_equipment_maintenance). */
+export interface LabEquipmentMaintenance {
+  id: number;
+  equipment_id: number;
+  maintenance_date: string | null;
+  issue: string | null;
+  maintenance_type: string | null;
+  description: string | null;
+  technician_vendor: string | null;
+  status: string | null;
+  completed_date: string | null;
+  notes: string | null;
+  created_by: number;
+  created_at: string;
+}
+
+/** One calibration record (lab_equipment_calibration). UI state is derived from dates, never stored. */
+export interface LabEquipmentCalibration {
+  id: number;
+  equipment_id: number;
+  last_calibrated_at: string | null;
+  calibration_due_at: string | null;
+  provider: string | null;
+  certificate_reference: string | null;
+  result: string | null;
+  next_due_at: string | null;
+  notes: string | null;
+  created_by: number;
+  created_at: string;
+}
+
+/** One row of the Product Master (lab_products). */
+export interface LabProduct {
+  id: number;
+  name: string;
+  code: string;
+  description: string | null;
+  connector_type: string | null;
+  default_test_type: LabTestType | null;
+  default_template_id: number | null;
+  applicable_sop_id: number | null;
+  applicable_wi_id: number | null;
+  is_active: number;
+  notes: string | null;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One AIR/VACUUM test record (lab_test_records). */
+export interface LabTestRecord {
+  id: number;
+  test_number: string;
+  test_type: LabTestType;
+  product_id: number | null;
+  equipment_id: number | null;
+  lot_number: string | null;
+  sampling_area: string | null;
+  medium_used: string | null;
+  connector_type: string | null;
+  sample_count: number;
+  actual_pressure: string | null;
+  torque_in_lb: string | null;
+  time_sec: string | null;
+  angle: string | null;
+  temperature_measured: string | null;
+  remarks: string | null;
+  final_result: LabFinalResult | null;
+  status: LabTestStatus;
+  template_version_id: number | null;
+  sop_version_id: number | null;
+  wi_version_id: number | null;
+  tested_by: number | null;
+  reviewed_by: number | null;
+  approved_by: number | null;
+  submitted_at: string | null;
+  reviewed_at: string | null;
+  approved_at: string | null;
+  rejected_reason: string | null;
+  void_reason: string | null;
+  product_snapshot_json: string | null;
+  template_snapshot_json: string | null;
+  parameters_snapshot_json: string | null;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One sample row of a test (lab_test_samples); sample_identifier is stable after approval. */
+export interface LabTestSample {
+  id: number;
+  test_id: number;
+  sample_no: number;
+  sample_identifier: string | null;
+  part_name: string | null;
+  set_pressure: string | null;
+  actual_pressure: string | null;
+  volume_sec: string | null;
+  pressure_difference: string | null;
+  holding_time_sec: string | null;
+  leakage_rate: string | null;
+  result: LabFinalResult | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One controlled retest (lab_test_retests). Originals are never overwritten. */
+export interface LabTestRetest {
+  id: number;
+  retest_number: string;
+  original_test_id: number;
+  new_test_id: number | null;
+  reason: LabRetestReason;
+  reason_note: string | null;
+  status: string;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Equipment identity frozen at approval (lab_test_equipment_snapshots). Written once, never updated. */
+export interface LabTestEquipmentSnapshot {
+  test_id: number;
+  equipment_id: number | null;
+  equipment_name: string | null;
+  equipment_code: string | null;
+  serial_number: string | null;
+  location: string | null;
+  calibration_state: string | null;
+  calibration_reference: string | null;
+  captured_at: string;
+}
+
+/** Controlled-document reference frozen at approval (lab_test_document_snapshots), one row per role. */
+export interface LabTestDocumentSnapshot {
+  id: number;
+  test_id: number;
+  role: 'SOP' | 'WI';
+  document_id: number | null;
+  document_code: string | null;
+  document_type: string | null;
+  version_number: number | null;
+  title: string | null;
+  captured_at: string;
+}
+
+/** One SOP/WI document identity (lab_documents). */
+export interface LabDocument {
+  id: number;
+  code: string;
+  title: string;
+  type: LabDocumentType;
+  description: string | null;
+  product_id: number | null;
+  owner_id: number | null;
+  reviewer_id: number | null;
+  approver_id: number | null;
+  current_version_id: number | null;
+  status: LabDocumentStatus;
+  effective_date: string | null;
+  review_due_date: string | null;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** One immutable-numbered document version (lab_document_versions). Approved versions never mutate. */
+export interface LabDocumentVersion {
+  id: number;
+  document_id: number;
+  version: number;
+  content_md: string;
+  content_html_sanitized: string | null;
+  change_summary: string | null;
+  author_id: number;
+  reviewed_by: number | null;
+  reviewed_at: string | null;
+  approved_by: number | null;
+  approved_at: string | null;
+  status: LabDocumentStatus;
+  created_at: string;
+}
+
+/** One typed document ↔ equipment/product/template link (lab_document_links). */
+export interface LabDocumentLink {
+  id: number;
+  document_id: number;
+  entity_type: LabDocumentLinkEntityType;
+  entity_id: number;
+  created_by: number;
+  created_at: string;
+}
+
+/** One version-specific acknowledgement (lab_document_acknowledgements). */
+export interface LabDocumentAcknowledgement {
+  id: number;
+  document_version_id: number;
+  user_id: number;
+  assigned_at: string;
+  acknowledged_at: string | null;
+  status: LabAcknowledgementStatus;
+}
+
+/** One user-scoped saved lab view (lab_saved_views) — same shape as saved_filters. */
+export interface LabSavedView {
+  id: number;
+  user_id: number;
+  name: string;
+  filter_json: string;
+  created_at: string;
+}

@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync, readdirSync, copyFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +9,26 @@ import { runMigrations, MigrationError } from '../src/lib/migrations.ts';
 const appDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const migrationDir = join(appDir, 'db/migrations');
 const tempRoot = mkdtempSync(join(tmpdir(), 'brightai-qc-migrations-'));
+
+// Laboratory tables added by migrations 011-014 (PROMPT 02).
+const LAB_TABLES = [
+  'lab_test_templates',
+  'lab_test_template_versions',
+  'lab_equipment',
+  'lab_equipment_maintenance',
+  'lab_equipment_calibration',
+  'lab_products',
+  'lab_test_records',
+  'lab_test_samples',
+  'lab_test_retests',
+  'lab_test_equipment_snapshots',
+  'lab_test_document_snapshots',
+  'lab_documents',
+  'lab_document_versions',
+  'lab_document_links',
+  'lab_document_acknowledgements',
+  'lab_saved_views',
+];
 
 function database(name) {
   const db = new Database(join(tempRoot, `${name}.db`));
@@ -26,9 +46,61 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 10);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 10);
+    assert.equal(result.applied.length, 14);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 14);
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='tasks'").get());
+    for (const table of LAB_TABLES) {
+      assert.ok(
+        db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(table),
+        `fresh database is missing lab table ${table}`,
+      );
+    }
+    assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_tests_status'").get());
+    assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_doc_ack_version'").get());
+    assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_saved_views_user'").get());
+    assert.deepEqual(db.pragma('foreign_key_check'), []);
+    db.close();
+  }
+
+  console.log('■ qc_audit_log rows preserved across the 011 rebuild');
+  {
+    // Simulate the real v10 → v14 upgrade: apply only migrations 001-010,
+    // write rows with the LEGACY vocabulary, then upgrade with the full set.
+    const v10Dir = join(tempRoot, 'migrations-v10');
+    mkdirSync(v10Dir, { recursive: true });
+    for (const file of readdirSync(migrationDir).filter((f) => /^\d{3}_/.test(f)).sort()) {
+      if (Number(file.slice(0, 3)) <= 10) copyFileSync(join(migrationDir, file), join(v10Dir, file));
+    }
+    const db = database('audit-preserve');
+    runMigrations(db, { migrationsDir: v10Dir, backup: false });
+    db.prepare(
+      "INSERT INTO users (id, username, password_hash, full_name, role) VALUES (1, 'auditor', 'hash', 'Audit User', 'admin')",
+    ).run();
+    const insert = db.prepare(
+      'INSERT INTO qc_audit_log (id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    );
+    insert.run(1, 'FINDING', 11, null, 1, 'CREATE', null, 'OPEN', 'legacy row', '2026-01-01 00:00:00');
+    insert.run(2, 'CAPA', 12, null, 1, 'STATUS_TRANSITION', 'DRAFT', 'OPEN', null, '2026-01-02 00:00:00');
+    insert.run(3, 'EVIDENCE', 13, null, 1, 'APPROVAL', null, null, 'approved', '2026-01-03 00:00:00');
+    const before = db
+      .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
+      .all();
+
+    const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
+    assert.equal(upgraded.applied.length, 4, 'upgrade applies exactly migrations 011-014');
+    const after = db
+      .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
+      .all();
+    assert.deepEqual(after, before, 'qc_audit_log rows are preserved verbatim across the rebuild');
+    // The rebuilt table accepts the new laboratory vocabulary AND the legacy one.
+    db.prepare(
+      "INSERT INTO qc_audit_log (entity_type, entity_id, actor_id, action, note) VALUES ('LAB_TEST', 1, 1, 'SUBMIT', 'lab event')",
+    ).run();
+    db.prepare(
+      "INSERT INTO qc_audit_log (entity_type, entity_id, actor_id, action) VALUES ('FINDING', 21, 1, 'UPDATE')",
+    ).run();
+    const count = db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log').get().n;
+    assert.equal(count, 5);
     assert.deepEqual(db.pragma('foreign_key_check'), []);
     db.close();
   }
@@ -52,7 +124,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 10);
+    assert.equal(first.applied.length, 14);
     assert.equal(second.applied.length, 0);
     db.close();
   }

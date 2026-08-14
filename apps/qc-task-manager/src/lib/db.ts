@@ -40,6 +40,10 @@ import dashboardReportsMigrationSql from '../../db/migrations/007_dashboard_repo
 import auditIntegrityMigrationSql from '../../db/migrations/008_audit_integrity.sql?raw';
 import aiAuditMigrationSql from '../../db/migrations/009_ai_audit.sql?raw';
 import aiEvidenceStatusMigrationSql from '../../db/migrations/010_ai_evidence_status.sql?raw';
+import labCoreMasterDataMigrationSql from '../../db/migrations/011_lab_core_master_data.sql?raw';
+import labTestsMigrationSql from '../../db/migrations/012_lab_tests.sql?raw';
+import labDocumentsMigrationSql from '../../db/migrations/013_lab_documents.sql?raw';
+import labViewsMigrationSql from '../../db/migrations/014_lab_views.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -99,6 +103,22 @@ const REQUIRED_TABLES = [
   'workflow_instances',
   'workflow_actions',
   'ai_audit_log',
+  'lab_test_templates',
+  'lab_test_template_versions',
+  'lab_equipment',
+  'lab_equipment_maintenance',
+  'lab_equipment_calibration',
+  'lab_products',
+  'lab_test_records',
+  'lab_test_samples',
+  'lab_test_retests',
+  'lab_test_equipment_snapshots',
+  'lab_test_document_snapshots',
+  'lab_documents',
+  'lab_document_versions',
+  'lab_document_links',
+  'lab_document_acknowledgements',
+  'lab_saved_views',
 ] as const;
 
 /** Every index required by the application (FK lookups + dashboard filters). */
@@ -148,6 +168,34 @@ const REQUIRED_INDEXES = [
   'idx_activity_event_hash',
   'idx_ai_audit_user_created',
   'idx_ai_audit_feature_created',
+  'idx_lab_products_code',
+  'idx_lab_products_active',
+  'idx_lab_equipment_code',
+  'idx_lab_equipment_archived',
+  'idx_lab_equip_maint_equipment',
+  'idx_lab_equip_cal_equipment',
+  'idx_lab_equip_cal_due',
+  'idx_lab_templates_code',
+  'idx_lab_template_versions_template',
+  'idx_lab_tests_status',
+  'idx_lab_tests_type',
+  'idx_lab_tests_product',
+  'idx_lab_tests_equipment',
+  'idx_lab_tests_tested_by',
+  'idx_lab_tests_created_at',
+  'idx_lab_tests_final_result',
+  'idx_lab_samples_test',
+  'idx_lab_retests_original',
+  'idx_lab_retests_new',
+  'idx_lab_documents_code',
+  'idx_lab_documents_type_status',
+  'idx_lab_documents_review_due',
+  'idx_lab_doc_versions_document',
+  'idx_lab_doc_links_document',
+  'idx_lab_doc_links_entity',
+  'idx_lab_doc_ack_version',
+  'idx_lab_doc_ack_user',
+  'idx_lab_saved_views_user',
 ] as const;
 
 /**
@@ -206,6 +254,10 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '008_audit_integrity.sql', source: auditIntegrityMigrationSql },
       { file: '009_ai_audit.sql', source: aiAuditMigrationSql },
       { file: '010_ai_evidence_status.sql', source: aiEvidenceStatusMigrationSql },
+      { file: '011_lab_core_master_data.sql', source: labCoreMasterDataMigrationSql },
+      { file: '012_lab_tests.sql', source: labTestsMigrationSql },
+      { file: '013_lab_documents.sql', source: labDocumentsMigrationSql },
+      { file: '014_lab_views.sql', source: labViewsMigrationSql },
     ],
   });
   backfillAuditChain(db);

@@ -24,7 +24,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 
 - [✅] Prompt 00
 - [✅] Prompt 01
-- [ ] Prompt 02
+- [✅] Prompt 02
 - [ ] Prompt 03
 - [ ] Prompt 04
 - [ ] Prompt 05
@@ -331,7 +331,7 @@ apps/qc-task-manager/docs/QC-LAB-ARCHITECTURE.md
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement the complete database foundation through new sequential migrations.
