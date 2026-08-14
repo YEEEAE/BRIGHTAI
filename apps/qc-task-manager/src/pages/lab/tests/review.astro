@@ -1,0 +1,404 @@
+---
+// /lab/tests/review — QC Laboratory Review Center (PROMPT 07, page reference §26).
+//
+// Central reviewer queue. Five summary cards (Awaiting Review / Aging / HOLD /
+// Rejected / Approved Today), server-side filters (type / tester / product /
+// lot / date / result / age), and the four review actions (Start Review /
+// Request Changes / Reject / Approve) via self-submitting forms to
+// /api/lab/tests/[id]/review.
+//
+// The queue only ever shows tests the requesting reviewer can ACT on: their
+// own tests are excluded (a tester can never review/approve their own test).
+// Actions are still gated per row through the can*LabTestRecord predicates, so
+// a reviewer who already started a review cannot approve that same test.
+//
+// RBAC: the page self-guards — non-reviewers (employees) are redirected to
+// /lab. No second workflow engine: transitions live in src/lib/lab/review.ts
+// on the existing lab_test_records status + shared qc_audit_log + notifications.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EmptyState from '../../../components/EmptyState.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import { setFlash } from '../../../lib/flash';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import {
+  canReviewLabTest,
+  canReviewLabTestRecord,
+  canApproveLabTestRecord,
+} from '../../../lib/permissions';
+import {
+  hasLabReviewFilters,
+  LAB_REVIEW_AGE_OPTIONS,
+  labReviewFiltersToQuery,
+  labReviewSummary,
+  listReviewProducts,
+  listReviewTesters,
+  parseLabReviewFilters,
+  searchReviewQueue,
+  type LabReviewFilters,
+  type LabReviewRow,
+  type LabReviewSortField,
+} from '../../../lib/lab/review';
+import { LAB_RESULT_OPTIONS, LAB_RESULT_LABELS } from '../../../lib/lab/policy';
+import { LAB_TEST_STATUS_LABELS } from '../../../lib/lab/testSearch';
+import type { Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+const userId = user.userId;
+
+// Page-level guard: the /lab prefix wall only checks LAB_VIEW (all roles);
+// the Review Center is reviewer-only. Employees are bounced to /lab.
+if (!canReviewLabTest(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to access the Review Center.');
+  return Astro.redirect('/lab');
+}
+
+const navItems = labNavForRole(role);
+const filters: LabReviewFilters = parseLabReviewFilters(Astro.url);
+
+let dataError: string | null = null;
+let summary = { awaiting_review: 0, aging: 0, hold: 0, rejected: 0, approved_today: 0 };
+let result: { rows: LabReviewRow[]; total: number; page: number; per_page: number; total_pages: number } = {
+  rows: [],
+  total: 0,
+  page: 1,
+  per_page: 25,
+  total_pages: 1,
+};
+let testers: { id: number; full_name: string }[] = [];
+let products: { id: number; name: string; code: string }[] = [];
+try {
+  [summary, result, testers, products] = await Promise.all([
+    Promise.resolve(labReviewSummary({ userId })),
+    searchReviewQueue(filters, { userId }),
+    listReviewTesters(),
+    listReviewProducts(),
+  ]);
+} catch (err) {
+  console.error('[lab] review queue query failure', err);
+  dataError = 'Could not load the review queue. Try reloading — if the problem persists, contact an administrator.';
+}
+
+const filtered = hasLabReviewFilters(filters);
+
+const qsParams = new URLSearchParams(labReviewFiltersToQuery({ ...filters, page: 1 }).replace(/^\?/, ''));
+function pageHref(p: number): string {
+  const sp = new URLSearchParams(qsParams);
+  if (p > 1) sp.set('page', String(p));
+  else sp.delete('page');
+  const qs = sp.toString();
+  return qs ? `/lab/tests/review?${qs}` : '/lab/tests/review';
+}
+function sortHref(field: LabReviewSortField): string {
+  const next: LabReviewFilters = {
+    ...filters,
+    sort: field,
+    dir: (filters.sort === field && filters.dir === 'asc' ? 'desc' : 'asc') as 'asc' | 'desc',
+    page: 1,
+  };
+  return `/lab/tests/review${labReviewFiltersToQuery(next)}`;
+}
+function sortArrow(field: LabReviewSortField): string {
+  if (filters.sort !== field) return '';
+  return filters.dir === 'asc' ? ' ▲' : ' ▼';
+}
+
+const SORTABLE: { field: LabReviewSortField; label: string }[] = [
+  { field: 'test_number', label: 'Test ID' },
+  { field: 'test_type', label: 'Type' },
+  { field: 'product', label: 'Product' },
+  { field: 'tester', label: 'Tester' },
+  { field: 'submitted_at', label: 'Submitted At' },
+  { field: 'age', label: 'Age' },
+  { field: 'result', label: 'Result' },
+  { field: 'status', label: 'Status' },
+];
+function th(field: LabReviewSortField, label: string): string {
+  return `<a href="${sortHref(field)}" class="inline-flex items-center gap-1 hover:text-slate-900">${label}${sortArrow(field)}</a>`;
+}
+
+const pageNumbers: number[] = [];
+{
+  const total = result.total_pages;
+  const cur = result.page;
+  let start = Math.max(1, cur - 3);
+  let end = Math.min(total, cur + 3);
+  if (end - start < 6) {
+    if (start === 1) end = Math.min(total, start + 6);
+    else start = Math.max(1, end - 6);
+  }
+  for (let p = start; p <= end; p++) pageNumbers.push(p);
+}
+
+const resultTone: Record<string, string> = { PASS: 'text-green-700', FAIL: 'text-red-700', HOLD: 'text-orange-700' };
+const statusTone: Record<string, string> = {
+  SUBMITTED: 'bg-blue-100 text-blue-800',
+  UNDER_REVIEW: 'bg-amber-100 text-amber-800',
+  REJECTED: 'bg-rose-100 text-rose-800',
+  APPROVED: 'bg-emerald-100 text-emerald-800',
+};
+
+// Summary cards → same page, a matching filter link (mirrors the /lab KPI
+// drill-down pattern). Approved Today opens the queue pinned to APPROVED.
+const summaryCards: { label: string; value: number; href: string; tone: string }[] = [
+  { label: 'Awaiting Review', value: summary.awaiting_review, href: '/lab/tests/review', tone: 'text-blue-700' },
+  { label: 'Aging', value: summary.aging, href: `/lab/tests/review?age=${LAB_REVIEW_AGE_OPTIONS[0]}`, tone: 'text-amber-700' },
+  { label: 'HOLD', value: summary.hold, href: '/lab/tests/review?result=HOLD', tone: 'text-orange-700' },
+  { label: 'Rejected', value: summary.rejected, href: '/lab/tests/review?status=REJECTED', tone: 'text-rose-700' },
+  { label: 'Approved Today', value: summary.approved_today, href: '/lab/tests/review?status=APPROVED', tone: 'text-emerald-700' },
+];
+
+// Per-row review/approve authority. The queue already excludes own tests, but
+// a reviewer who started a review must still be prevented from approving that
+// same test (canApproveLabTestRecord denies reviewed_by === me).
+// Only the active queue (SUBMITTED/UNDER_REVIEW) is actionable; REJECTED and
+// APPROVED rows are read-only history in this view.
+function actionForm(row: LabReviewRow): string {
+  const test = { status: row.status as never, tested_by: row.tested_by, reviewed_by: row.reviewed_by, created_by: row.created_by };
+  if (row.status !== 'SUBMITTED' && row.status !== 'UNDER_REVIEW') {
+    return `<span class="text-slate-400 text-xs font-medium">Read-only</span>`;
+  }
+  const canReview = canReviewLabTestRecord({ id: userId, role }, test);
+  const canApprove = canApproveLabTestRecord({ id: userId, role }, test);
+  if (!canReview && !canApprove) {
+    return `<span class="text-slate-400 text-xs font-medium">Read-only</span>`;
+  }
+  const start = row.status === 'SUBMITTED' && canReview
+    ? `<button type="submit" name="action" value="start_review" class="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">Start Review</button>`
+    : '';
+  const changes = canReview
+    ? `<button type="submit" name="action" value="request_changes" class="rounded-md border border-amber-300 bg-white px-2.5 py-1 text-xs font-semibold text-amber-700 shadow-sm hover:bg-amber-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Request Changes</button>`
+    : '';
+  const reject = canReview
+    ? `<button type="submit" name="action" value="reject" class="rounded-md border border-rose-300 bg-white px-2.5 py-1 text-xs font-semibold text-rose-700 shadow-sm hover:bg-rose-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">Reject</button>`
+    : '';
+  const approve = canApprove
+    ? `<button type="submit" name="action" value="approve" class="rounded-md bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600">Approve</button>`
+    : '';
+  const needsReason = canReview
+    ? `<label class="mt-1 block">
+        <span class="sr-only">Reason (required for Request Changes / Reject)</span>
+        <input type="text" name="reason" maxlength="2000" placeholder="Reason (required for Request Changes / Reject)" class="w-full rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+      </label>`
+    : '';
+  return `<form method="POST" action="/api/lab/tests/${row.id}/review" class="flex flex-col items-stretch gap-1.5">
+    <div class="flex flex-wrap gap-1.5">${start}${changes}${reject}${approve}</div>
+    ${needsReason}
+  </form>`;
+}
+---
+
+<BaseLayout title="Laboratory Review Center">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Tests', href: '/lab/tests' },
+        { label: 'Review Center' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Testing</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Review Center</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Reviewer queue for submitted AIR and VACUUM tests. A tester can never review or approve their own
+        test; rejected and returned tests require a reason; approved records are immutable.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/tests/review" />
+
+    {dataError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {dataError}
+      </div>
+    )}
+
+    {!dataError && (
+      <>
+        {/* Summary cards */}
+        <section aria-label="Review summary" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          {summaryCards.map((card) => (
+            <a
+              href={card.href}
+              class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-brand-300 hover:bg-brand-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            >
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-500">{card.label}</p>
+              <p class={`mt-1 text-2xl font-semibold ${card.tone}`}>{card.value.toLocaleString('en-US')}</p>
+            </a>
+          ))}
+        </section>
+
+        {/* Filters */}
+        <form method="get" action="/lab/tests/review" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Type
+              <select name="type" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <option value="">All types</option>
+                <option value="air" selected={filters.test_type === 'air'}>AIR</option>
+                <option value="vacuum" selected={filters.test_type === 'vacuum'}>VACUUM</option>
+              </select>
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Tester
+              <select name="tester" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <option value="">All testers</option>
+                {testers.map((t) => (
+                  <option value={t.id} selected={filters.tester_id === t.id}>{t.full_name}</option>
+                ))}
+              </select>
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Product
+              <select name="product" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <option value="">All products</option>
+                {products.map((p) => (
+                  <option value={p.id} selected={filters.product_id === p.id}>{p.name} ({p.code})</option>
+                ))}
+              </select>
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Lot Number
+              <input
+                type="text"
+                name="lot"
+                value={filters.lot ?? ''}
+                placeholder="e.g. LOT-0001"
+                class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              />
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Submitted From
+              <input type="date" name="from" value={filters.submitted_from ?? ''} class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Submitted To
+              <input type="date" name="to" value={filters.submitted_to ?? ''} class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Result
+              <select name="result" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <option value="">All results</option>
+                {LAB_RESULT_OPTIONS.map((r) => (
+                  <option value={r} selected={filters.result === r}>{LAB_RESULT_LABELS[r]}</option>
+                ))}
+              </select>
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Age (at least)
+              <select name="age" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <option value="">Any age</option>
+                {LAB_REVIEW_AGE_OPTIONS.map((d) => (
+                  <option value={d} selected={filters.age_days === d}>{d}+ days</option>
+                ))}
+              </select>
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Status
+              <select name="status" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <option value="">Active queue</option>
+                <option value="SUBMITTED" selected={filters.status === 'SUBMITTED'}>Submitted</option>
+                <option value="UNDER_REVIEW" selected={filters.status === 'UNDER_REVIEW'}>Under Review</option>
+                <option value="REJECTED" selected={filters.status === 'REJECTED'}>Rejected</option>
+                <option value="APPROVED" selected={filters.status === 'APPROVED'}>Approved</option>
+              </select>
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+              Per page
+              <select name="per" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                {[10, 25, 50, 100].map((n) => (
+                  <option value={n} selected={filters.per_page === n}>{n} per page</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div class="mt-3 flex flex-wrap items-center gap-2">
+            <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">Apply filters</button>
+            <a href="/lab/tests/review" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Reset</a>
+          </div>
+        </form>
+
+        {/* Result summary */}
+        <p class="text-sm text-slate-600">
+          {result.total.toLocaleString('en-US')} test{result.total === 1 ? '' : 's'} found
+          {filtered && <span> (filtered — <a href="/lab/tests/review" class="text-brand-600 hover:underline">clear all</a>)</span>}
+        </p>
+
+        {/* Results table */}
+        {result.rows.length === 0 ? (
+          <EmptyState
+            title={filtered ? 'No tests match your filters' : 'Nothing awaiting review'}
+            hint={filtered ? 'Try adjusting the filters.' : 'Submitted tests will appear here once they await review.'}
+            ctaHref={filtered ? '/lab/tests/review' : '/lab/tests'}
+            ctaLabel={filtered ? 'Clear filters' : 'View test register'}
+          />
+        ) : (
+          <section aria-label="Review queue" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div class="overflow-x-auto contain-layout contain-paint">
+              <table class="min-w-[1080px] divide-y divide-slate-100 text-sm">
+                <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    {SORTABLE.map((s) => (
+                      <th scope="col" class="px-4 py-2.5 font-semibold" set:html={th(s.field, s.label)} />
+                    ))}
+                    <th scope="col" class="px-4 py-2.5 font-semibold"><span class="sr-only">Review actions</span></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {result.rows.map((row) => (
+                    <tr class="align-middle">
+                      <td class="px-4 py-2 font-medium text-slate-900">
+                        <a href={`/lab/tests/${row.id}`} class="hover:text-brand-600 hover:underline">{row.test_number}</a>
+                      </td>
+                      <td class="px-4 py-2 uppercase text-slate-600">{row.test_type}</td>
+                      <td class="px-4 py-2 text-slate-700">{row.product_name ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{row.tester_name ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-500">{row.submitted_at ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-600">{row.age_days}d</td>
+                      <td class={`px-4 py-2 font-semibold ${row.final_result ? resultTone[row.final_result] ?? 'text-slate-500' : 'text-slate-400'}`}>{row.final_result ?? '—'}</td>
+                      <td class="px-4 py-2">
+                        <span class={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusTone[row.status] ?? 'bg-slate-100 text-slate-700'}`}>{LAB_TEST_STATUS_LABELS[row.status as keyof typeof LAB_TEST_STATUS_LABELS] ?? row.status}</span>
+                      </td>
+                      <td class="px-4 py-2" set:html={actionForm(row)} />
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {/* Pagination */}
+        {result.total_pages > 1 && (
+          <nav aria-label="Pagination" class="flex flex-wrap items-center justify-center gap-2">
+            {result.page > 1 ? (
+              <a href={pageHref(result.page - 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">← Prev</a>
+            ) : (
+              <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-400">← Prev</span>
+            )}
+            {pageNumbers.map((p) => (
+              <a
+                href={pageHref(p)}
+                aria-current={p === result.page ? 'page' : undefined}
+                class={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                  p === result.page ? 'bg-brand-600 text-white' : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                {p}
+              </a>
+            ))}
+            {result.page < result.total_pages ? (
+              <a href={pageHref(result.page + 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Next →</a>
+            ) : (
+              <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-400">Next →</span>
+            )}
+          </nav>
+        )}
+      </>
+    )}
+  </div>
+</BaseLayout>

@@ -364,6 +364,33 @@ export const passwordResetSchema = z.object({
 });
 
 /**
+ * POST /api/lab/tests/[id]/review — Review Center actions (PROMPT 07, page
+ * reference §26). `reason` is required for reject and request_changes (a
+ * reviewer must always say why — §22); it is optional and ignored for
+ * start_review and approve. Action values are resolved server-side; the body
+ * can never inject a state machine transition (only these four are allowed).
+ */
+export const labReviewActionSchema = z
+  .object({
+    action: z.enum(['start_review', 'request_changes', 'reject', 'approve'], {
+      errorMap: () => ({ message: 'Invalid review action.' }),
+    }),
+    reason: z.preprocess(
+      (v) => (v === '' || v == null ? null : v),
+      z
+        .string()
+        .trim()
+        .max(MAX_REASON_LENGTH, `Reason must be ${MAX_REASON_LENGTH} characters or fewer.`)
+        .nullable(),
+    ),
+  })
+  .superRefine((data, ctx) => {
+    if ((data.action === 'reject' || data.action === 'request_changes') && !data.reason) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'A reason is required for this action.' });
+    }
+  });
+
+/**
  * POST /api/filters — save or delete a per-user saved search filter.
  * `name` (save) and `filter_id` (delete) are optional per action; the schema
  * accepts both shapes and the handler validates per action. `next` is the
