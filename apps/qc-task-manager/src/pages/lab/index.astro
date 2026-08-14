@@ -1,78 +1,454 @@
 ---
-// /lab — QC Laboratory command center (landing page). PROMPT 03 delivers the
-// workspace shell: navigation + RBAC. Data-backed sections (tests, equipment,
-// documents) land in later implementation prompts, so this page renders the
-// permission-filtered secondary nav plus capability cards — no invented data,
-// no seeded numbers.
+// /lab — QC Laboratory Command Center (PROMPT 04).
+//
+// The operational landing page for the laboratory: KPI cards (every one
+// drillable to a filtered list once that module's route lands), quick actions,
+// and seven data-backed sections. All numbers come from src/lib/lab/overview.ts
+// — read-only, fully parameterized SELECT queries over the lab_* tables.
+// This is NOT the global dashboard: nothing here touches src/lib/dashboard.ts
+// widgets, and no data is seeded or invented (a fresh install shows zeros).
+//
+// Drill-downs/actions whose target page is not implemented yet render as
+// disabled affordances with a hint (never a dead link); they activate
+// automatically when the route is added to IMPLEMENTED_LAB_ROUTES.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
-import { labNavForRole } from '../../lib/lab/navigation';
+import { labNavForRole, IMPLEMENTED_LAB_ROUTES } from '../../lib/lab/navigation';
 import {
+  getLabKpis,
+  getLabRecentTests,
+  getLabPendingReviews,
+  getLabEquipmentAlerts,
+  getLabCalibrationAlerts,
+  getLabDocumentReviewsDue,
+  getLabOpenRetests,
+  getLabRecentActivity,
+  LAB_KPI_DRILLDOWNS,
+  labDrilldownEnabled,
+  type LabKpis,
+} from '../../lib/lab/overview';
+import {
+  canCreateLabDocument,
+  canCreateLabProduct,
+  canCreateLabRetest,
+  canCreateLabTemplate,
   canCreateLabTest,
-  canReviewLabTest,
-  canViewLabReports,
-  canViewLabManagementDashboard,
+  canViewLabCalibration,
+  canViewLabDataQuality,
+  canViewLabEquipment,
 } from '../../lib/permissions';
+import type { Role } from '../../lib/types';
 
 const user = Astro.locals.user!;
-const navItems = labNavForRole(user.role);
+const role = user.role as Role;
+const navItems = labNavForRole(role);
+const routeEnabled = (route: string) => IMPLEMENTED_LAB_ROUTES.includes(route);
 
-const capabilities = [
-  {
-    title: 'Product Tests (Air / Vacuum)',
-    description: 'Create test records, capture sample results, and follow the submit → review → approval workflow. Final PASS/FAIL/HOLD is always decided by an authorized human.',
-    show: canCreateLabTest(user.role),
-  },
-  {
-    title: 'Review & Approval',
-    description: 'Review submitted tests and approve them. Testers can never review or approve their own tests.',
-    show: canReviewLabTest(user.role),
-  },
-  {
-    title: 'Reports & Exports',
-    description: 'Laboratory reports and CSV exports across tests, equipment, and documents.',
-    show: canViewLabReports(user.role),
-  },
-  {
-    title: 'Management Dashboard',
-    description: 'Laboratory KPIs: test throughput, approval turnaround, and data-quality signals.',
-    show: canViewLabManagementDashboard(user.role),
-  },
-];
-const visibleCapabilities = capabilities.filter((capability) => capability.show);
+// Every query is wrapped so a transient DB hiccup renders a banner instead of
+// a 500 — the shell (nav + actions) stays usable (same pattern as /dashboard).
+let dataError: string | null = null;
+let kpis: LabKpis | null = null;
+let recentTests: ReturnType<typeof getLabRecentTests> = [];
+let pendingReviews: ReturnType<typeof getLabPendingReviews> = [];
+let equipmentAlerts: ReturnType<typeof getLabEquipmentAlerts> = [];
+let calibrationAlerts: ReturnType<typeof getLabCalibrationAlerts> = [];
+let documentReviewsDue: ReturnType<typeof getLabDocumentReviewsDue> = [];
+let openRetests: ReturnType<typeof getLabOpenRetests> = [];
+let recentActivity: ReturnType<typeof getLabRecentActivity> = [];
+
+try {
+  kpis = getLabKpis();
+  recentTests = getLabRecentTests();
+  pendingReviews = getLabPendingReviews();
+  equipmentAlerts = getLabEquipmentAlerts();
+  calibrationAlerts = getLabCalibrationAlerts();
+  documentReviewsDue = getLabDocumentReviewsDue();
+  openRetests = getLabOpenRetests();
+  recentActivity = getLabRecentActivity();
+} catch (err) {
+  console.error('[lab] overview query failure', err);
+  dataError = 'Could not load laboratory data. Try reloading — if the problem persists, contact an administrator.';
+}
+
+// ── KPI cards (permission-filtered; drill-down activates with its module) ──
+interface KpiCard {
+  id: keyof LabKpis;
+  label: string;
+  value: number;
+  tone: string;
+}
+const kpiCards: KpiCard[] = kpis
+  ? [
+      { id: 'tests_today', label: 'Tests Today', value: kpis.tests_today, tone: 'border-slate-200 bg-white text-slate-900' },
+      { id: 'tests_this_week', label: 'Tests This Week', value: kpis.tests_this_week, tone: 'border-slate-200 bg-white text-slate-900' },
+      { id: 'draft_tests', label: 'Draft Tests', value: kpis.draft_tests, tone: 'border-slate-200 bg-slate-50 text-slate-700' },
+      { id: 'awaiting_review', label: 'Awaiting Review', value: kpis.awaiting_review, tone: 'border-amber-200 bg-amber-50/70 text-amber-700' },
+      { id: 'approved_tests', label: 'Approved Tests', value: kpis.approved_tests, tone: 'border-emerald-200 bg-emerald-50/70 text-emerald-700' },
+      { id: 'pass_tests', label: 'PASS', value: kpis.pass_tests, tone: 'border-green-200 bg-green-50/70 text-green-700' },
+      { id: 'fail_tests', label: 'FAIL', value: kpis.fail_tests, tone: 'border-red-200 bg-red-50/70 text-red-700' },
+      { id: 'hold_tests', label: 'HOLD', value: kpis.hold_tests, tone: 'border-orange-200 bg-orange-50/70 text-orange-700' },
+      { id: 'equipment_requiring_attention', label: 'Equipment Requiring Attention', value: kpis.equipment_requiring_attention, tone: 'border-rose-200 bg-rose-50 text-rose-700' },
+      { id: 'calibration_due', label: 'Calibration Due', value: kpis.calibration_due, tone: 'border-amber-200 bg-amber-50/70 text-amber-700' },
+      { id: 'documents_due_for_review', label: 'Documents Due for Review', value: kpis.documents_due_for_review, tone: 'border-amber-200 bg-amber-50/70 text-amber-700' },
+      { id: 'retests_open', label: 'Retests Open', value: kpis.retests_open, tone: 'border-orange-200 bg-orange-50/70 text-orange-700' },
+      // Data Quality is supervisor+ only (LAB_DATA_QUALITY_VIEW).
+      ...(canViewLabDataQuality(role)
+        ? [{ id: 'data_quality_issues' as const, label: 'Data Quality Issues', value: kpis.data_quality_issues, tone: 'border-slate-200 bg-white text-slate-900' }]
+        : []),
+    ]
+  : [];
+
+// ── Quick actions (shown only with permission; disabled until route lands) ──
+interface LabAction {
+  label: string;
+  href: string;
+  route: string;
+  hint: string;
+  primary: boolean;
+}
+const actions: LabAction[] = [];
+const push = (a: LabAction, allowed: boolean) => { if (allowed) actions.push(a); };
+push({ label: 'New AIR Test', href: '/lab/tests/new?type=air', route: '/lab/tests/new', hint: 'Coming with the Tests module', primary: true }, canCreateLabTest(role));
+push({ label: 'New VACUUM Test', href: '/lab/tests/new?type=vacuum', route: '/lab/tests/new', hint: 'Coming with the Tests module', primary: true }, canCreateLabTest(role));
+push({ label: 'New Retest', href: '/lab/retests', route: '/lab/retests', hint: 'Retests are created where applicable — coming with the Retests module', primary: false }, canCreateLabRetest(role));
+push({ label: 'New Product', href: '/lab/products/new', route: '/lab/products/new', hint: 'Coming with the Products module', primary: false }, canCreateLabProduct(role));
+push({ label: 'New Template', href: '/lab/templates/new', route: '/lab/templates/new', hint: 'Coming with the Templates module', primary: false }, canCreateLabTemplate(role));
+push({ label: 'New SOP', href: '/lab/documents/new?type=SOP', route: '/lab/documents/new', hint: 'Coming with the Documents module', primary: false }, canCreateLabDocument(role));
+push({ label: 'New WI', href: '/lab/documents/new?type=WI', route: '/lab/documents/new', hint: 'Coming with the Documents module', primary: false }, canCreateLabDocument(role));
+push({ label: 'Equipment', href: '/lab/equipment', route: '/lab/equipment', hint: 'Coming with the Equipment module', primary: false }, canViewLabEquipment(role));
+push({ label: 'Calibration', href: '/lab/calibration', route: '/lab/calibration', hint: 'Coming with the Calibration module', primary: false }, canViewLabCalibration(role));
+const primaryActions = actions.filter((a) => a.primary);
+const secondaryActions = actions.filter((a) => !a.primary);
+
+const hasAnyData =
+  recentTests.length > 0 || pendingReviews.length > 0 || equipmentAlerts.length > 0 ||
+  calibrationAlerts.length > 0 || documentReviewsDue.length > 0 || openRetests.length > 0 ||
+  recentActivity.length > 0;
+
+const resultTone: Record<string, string> = { PASS: 'text-green-700', FAIL: 'text-red-700', HOLD: 'text-orange-700' };
+const calibrationLabel: Record<string, string> = {
+  COMPLIANT: 'Compliant',
+  DUE_SOON: 'Due soon',
+  DUE_TODAY: 'Due today',
+  OVERDUE: 'Overdue',
+  UNKNOWN: 'Unknown',
+};
 ---
+
 <BaseLayout title="Laboratory">
   <div class="space-y-6">
     <Breadcrumbs items={[{ label: 'QC Tasks' }, { label: 'Laboratory' }]} />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Command Center</h1>
-      <p class="mt-1 text-sm text-slate-600">
-        Product testing, equipment, calibration, and controlled documents — with human-decided results at every gate.
-      </p>
+    <header class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory</p>
+        <h1 class="mt-1 text-3xl font-semibold text-slate-900">QC Laboratory</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          Product testing, equipment, calibration, controlled documents, and laboratory quality operations.
+        </p>
+      </div>
+      {primaryActions.length > 0 && (
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Primary laboratory actions">
+          {primaryActions.map((action) => {
+            return routeEnabled(action.route) ? (
+              <a href={action.href} class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">{action.label}</a>
+            ) : (
+              <button type="button" disabled title={action.hint} aria-disabled="true" class="cursor-not-allowed rounded-lg bg-brand-600/50 px-4 py-2 text-sm font-semibold text-white">{action.label}</button>
+            );
+          })}
+        </div>
+      )}
     </header>
+
+    {secondaryActions.length > 0 && (
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Secondary laboratory actions">
+        {secondaryActions.map((action) => {
+          return routeEnabled(action.route) ? (
+            <a href={action.href} class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">{action.label}</a>
+          ) : (
+            <button type="button" disabled title={action.hint} aria-disabled="true" class="cursor-not-allowed rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-400">{action.label}</button>
+          );
+        })}
+      </div>
+    )}
 
     <LabSecondaryNav items={navItems} currentPath="/lab" />
 
-    {visibleCapabilities.length === 0 ? (
-      <EmptyState title="No laboratory capabilities available for your role." />
-    ) : (
-      <section aria-label="Laboratory capabilities" class="grid gap-4 sm:grid-cols-2">
-        {visibleCapabilities.map((capability) => (
-          <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-base font-semibold text-slate-900">{capability.title}</h2>
-            <p class="mt-2 text-sm leading-relaxed text-slate-600">{capability.description}</p>
-          </article>
-        ))}
+    {dataError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {dataError}
+      </div>
+    )}
+
+    {kpis && kpiCards.length > 0 && (
+      <section aria-label="Laboratory KPIs" class="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {kpiCards.map((card) => {
+          const drilldown = LAB_KPI_DRILLDOWNS[card.id];
+          const enabled = labDrilldownEnabled(drilldown);
+          return enabled ? (
+            <a href={drilldown.href} title={`Open filtered records — ${drilldown.hint}`} class={`block rounded-xl border p-4 shadow-sm transition hover:shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${card.tone}`}>
+              <p class="text-2xl font-semibold" data-lab-kpi={card.id}>{card.value}</p>
+              <p class="mt-1 text-xs font-medium opacity-80">{card.label}</p>
+            </a>
+          ) : (
+            <div title={drilldown.hint} class={`rounded-xl border p-4 shadow-sm ${card.tone}`}>
+              <p class="text-2xl font-semibold" data-lab-kpi={card.id}>{card.value}</p>
+              <p class="mt-1 text-xs font-medium opacity-80">{card.label}</p>
+            </div>
+          );
+        })}
       </section>
     )}
 
-    <EmptyState
-      title="Laboratory modules are being enabled step by step."
-      hint="Tests, equipment, calibration, and controlled documents will appear here as each module goes live. Nothing was migrated or seeded — data starts from zero when the first module lands."
-    />
+    {!hasAnyData ? (
+      <EmptyState
+        title="No laboratory activity yet."
+        hint="Numbers and lists appear here as soon as the first tests, equipment, and controlled documents are recorded. Nothing was migrated or seeded — data starts from zero."
+      />
+    ) : (
+      <div class="grid gap-6 lg:grid-cols-2">
+        {recentTests.length > 0 && (
+          <section aria-label="Recent Tests" class="rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
+            <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Recent Tests</h2>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-100 text-sm">
+                <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-4 py-2 font-semibold">Test ID</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Type</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Product</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Lot</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Equipment</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Tester</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Result</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Status</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Updated</th>
+                    <th scope="col" class="px-4 py-2 font-semibold"><span class="sr-only">View</span></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {recentTests.map((t) => (
+                    <tr>
+                      <td class="px-4 py-2 font-medium text-slate-900">{t.test_number}</td>
+                      <td class="px-4 py-2 uppercase text-slate-600">{t.test_type}</td>
+                      <td class="px-4 py-2 text-slate-700">{t.product_name ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{t.lot_number ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{t.equipment_code ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{t.tester_name ?? '—'}</td>
+                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-400'}`}>{t.final_result ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{t.status}</td>
+                      <td class="px-4 py-2 text-slate-500">{t.updated_at}</td>
+                      <td class="px-4 py-2">
+                        {routeEnabled('/lab/tests/[id]') && t.id
+                          ? <a href={`/lab/tests/${t.id}`} class="font-medium text-brand-600 hover:underline">View</a>
+                          : <span class="text-slate-400" title="Coming with the Tests module">View</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {pendingReviews.length > 0 && (
+          <section aria-label="Pending Reviews" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Pending Reviews</h2>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-100 text-sm">
+                <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-4 py-2 font-semibold">Test ID</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Type</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Tester</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Submitted</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Aging</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Result</th>
+                    <th scope="col" class="px-4 py-2 font-semibold"><span class="sr-only">Review</span></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {pendingReviews.map((t) => (
+                    <tr>
+                      <td class="px-4 py-2 font-medium text-slate-900">{t.test_number}</td>
+                      <td class="px-4 py-2 uppercase text-slate-600">{t.test_type}</td>
+                      <td class="px-4 py-2 text-slate-700">{t.tester_name ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-500">{t.submitted_at}</td>
+                      <td class="px-4 py-2 text-slate-700">{t.aging_days}d</td>
+                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-400'}`}>{t.final_result ?? '—'}</td>
+                      <td class="px-4 py-2">
+                        {routeEnabled('/lab/tests/review')
+                          ? <a href="/lab/tests/review" class="font-medium text-brand-600 hover:underline">Review</a>
+                          : <span class="text-slate-400" title="Coming with the Tests module">Review</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {equipmentAlerts.length > 0 && (
+          <section aria-label="Equipment Alerts" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Equipment Alerts</h2>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-100 text-sm">
+                <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-4 py-2 font-semibold">Equipment</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Code</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Status</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Calibration</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Alert</th>
+                    <th scope="col" class="px-4 py-2 font-semibold"><span class="sr-only">Open</span></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {equipmentAlerts.map((e) => (
+                    <tr>
+                      <td class="px-4 py-2 font-medium text-slate-900">{e.equipment_name}</td>
+                      <td class="px-4 py-2 text-slate-700">{e.code}</td>
+                      <td class="px-4 py-2 text-slate-700">{e.status_raw}</td>
+                      <td class="px-4 py-2 text-slate-700">{calibrationLabel[e.calibration_state]}</td>
+                      <td class="px-4 py-2 text-rose-700">{e.alert === 'overdue_calibration' ? 'Overdue calibration' : 'Open maintenance'}</td>
+                      <td class="px-4 py-2">
+                        {routeEnabled('/lab/equipment/[id]')
+                          ? <a href={`/lab/equipment/${e.id}`} class="font-medium text-brand-600 hover:underline">Open</a>
+                          : <span class="text-slate-400" title="Coming with the Equipment module">Open</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {calibrationAlerts.length > 0 && (
+          <section aria-label="Calibration Alerts" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Calibration Alerts</h2>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-100 text-sm">
+                <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-4 py-2 font-semibold">Equipment</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Code</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Due Date</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">State</th>
+                    <th scope="col" class="px-4 py-2 font-semibold"><span class="sr-only">Open</span></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {calibrationAlerts.map((c) => (
+                    <tr>
+                      <td class="px-4 py-2 font-medium text-slate-900">{c.equipment_name}</td>
+                      <td class="px-4 py-2 text-slate-700">{c.code}</td>
+                      <td class="px-4 py-2 text-slate-700">{c.due_date}</td>
+                      <td class={`px-4 py-2 font-semibold ${c.calibration_state === 'OVERDUE' ? 'text-rose-700' : 'text-amber-700'}`}>{calibrationLabel[c.calibration_state]}</td>
+                      <td class="px-4 py-2">
+                        {routeEnabled('/lab/calibration')
+                          ? <a href="/lab/calibration" class="font-medium text-brand-600 hover:underline">Open</a>
+                          : <span class="text-slate-400" title="Coming with the Calibration module">Open</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {documentReviewsDue.length > 0 && (
+          <section aria-label="Document Reviews Due" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Document Reviews Due</h2>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-100 text-sm">
+                <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-4 py-2 font-semibold">Document Code</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Title</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Type</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Version</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Owner</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Due Date</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Status</th>
+                    <th scope="col" class="px-4 py-2 font-semibold"><span class="sr-only">Open</span></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {documentReviewsDue.map((d) => (
+                    <tr>
+                      <td class="px-4 py-2 font-medium text-slate-900">{d.code}</td>
+                      <td class="px-4 py-2 text-slate-700">{d.title}</td>
+                      <td class="px-4 py-2 text-slate-700">{d.type}</td>
+                      <td class="px-4 py-2 text-slate-700">{d.version ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{d.owner_name ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{d.review_due_date}</td>
+                      <td class="px-4 py-2 text-slate-700">{d.status}</td>
+                      <td class="px-4 py-2">
+                        {routeEnabled('/lab/documents/[id]')
+                          ? <a href={`/lab/documents/${d.id}`} class="font-medium text-brand-600 hover:underline">Open</a>
+                          : <span class="text-slate-400" title="Coming with the Documents module">Open</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {openRetests.length > 0 && (
+          <section aria-label="Open Retests" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Open Retests</h2>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-100 text-sm">
+                <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-4 py-2 font-semibold">Retest</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Original Test</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Product</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Reason</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Status</th>
+                    <th scope="col" class="px-4 py-2 font-semibold">Updated</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {openRetests.map((r) => (
+                    <tr>
+                      <td class="px-4 py-2 font-medium text-slate-900">{r.retest_number}</td>
+                      <td class="px-4 py-2 text-slate-700">{r.original_test_number}</td>
+                      <td class="px-4 py-2 text-slate-700">{r.product_name ?? '—'}</td>
+                      <td class="px-4 py-2 text-slate-700">{r.reason}</td>
+                      <td class="px-4 py-2 text-slate-700">{r.status}</td>
+                      <td class="px-4 py-2 text-slate-500">{r.updated_at}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {recentActivity.length > 0 && (
+          <section aria-label="Recent Laboratory Activity" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+            <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Recent Laboratory Activity</h2>
+            <ol class="divide-y divide-slate-100">
+              {recentActivity.map((a) => (
+                <li class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 px-4 py-2.5 text-sm">
+                  <span class="font-medium text-slate-900">{a.actor_name}</span>
+                  <span class="text-slate-600">{a.action}</span>
+                  <span class="text-slate-500">{a.entity_type} #{a.entity_id}</span>
+                  <span class="ms-auto text-xs text-slate-400">{a.created_at}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+      </div>
+    )}
   </div>
 </BaseLayout>

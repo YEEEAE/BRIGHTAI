@@ -25,8 +25,8 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 00
 - [✅] Prompt 01
 - [✅] Prompt 02
-- [ ] Prompt 03
-- [ ] Prompt 04
+- [✅] Prompt 03
+- [✅] Prompt 04
 - [ ] Prompt 05
 - [ ] Prompt 06
 - [ ] Prompt 07
@@ -421,7 +421,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Integrate QC Laboratory into the existing navigation.
@@ -496,7 +496,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement /lab as the operational Laboratory Command Center.

@@ -65,10 +65,10 @@ async function login(page, username) {
 
 // ── B + C + D. Every role reaches /lab; navbar + secondary nav behavior ──
 const roleCases = [
-  { username: 'admin', expectReviewQueue: true, expectCapabilities: true },
-  { username: 'manager', expectReviewQueue: true, expectCapabilities: true },
-  { username: 'supervisor', expectReviewQueue: true, expectCapabilities: true },
-  { username: 'employee', expectReviewQueue: false, expectCapabilities: true },
+  { username: 'admin', expectDataQualityKpi: true, expectNewProduct: true },
+  { username: 'manager', expectDataQualityKpi: true, expectNewProduct: true },
+  { username: 'supervisor', expectDataQualityKpi: true, expectNewProduct: false },
+  { username: 'employee', expectDataQualityKpi: false, expectNewProduct: false },
 ];
 
 for (const roleCase of roleCases) {
@@ -92,10 +92,23 @@ for (const roleCase of roleCases) {
   ok(secondaryHrefs.includes('/lab'), `${roleCase.username}: secondary nav shows the command center`);
   ok(secondaryHrefs.every((href) => href === '/lab'), `${roleCase.username}: no dead links in secondary nav`);
 
-  // Capability cards are permission-filtered: employees get no Review & Approval card
+  // Command center (PROMPT 04): KPI cards render from real queries, and the
+  // permission-scoped ones match the role (Data Quality KPI is supervisor+,
+  // "New Product" action is manager+).
+  const kpiCount = await page.locator('[data-lab-kpi]').count();
+  ok(kpiCount === (roleCase.expectDataQualityKpi ? 13 : 12), `${roleCase.username}: ${kpiCount} KPI cards rendered`);
+  const hasDataQualityKpi = (await page.locator('[data-lab-kpi="data_quality_issues"]').count()) === 1;
+  ok(hasDataQualityKpi === roleCase.expectDataQualityKpi, `${roleCase.username}: Data Quality KPI matches role permission`);
   const bodyText = await page.locator('main').innerText();
-  const hasReviewCard = bodyText.includes('Review & Approval');
-  ok(hasReviewCard === roleCase.expectReviewQueue, `${roleCase.username}: capability cards match role permissions`);
+  const hasNewProduct = bodyText.includes('New Product');
+  ok(hasNewProduct === roleCase.expectNewProduct, `${roleCase.username}: New Product action matches role permission`);
+
+  // No drill-down may link to an unimplemented route (no dead links) — every
+  // KPI/action href inside main must target an implemented lab route.
+  const mainHrefs = await page.locator('main a[href^="/lab/"]').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
+  ok(mainHrefs.every((href) => href === '/lab'), `${roleCase.username}: no drill-down links to unimplemented routes`);
+  const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();
+  ok(disabledActions >= 2, `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
 
   // Breadcrumbs present
   ok((await page.locator('nav[aria-label="Breadcrumb"]').count()) === 1, `${roleCase.username}: breadcrumbs render`);
@@ -111,8 +124,10 @@ for (const roleCase of roleCases) {
   // NOT upgrade the rendered permission-filtered content.
   await page.goto(`${BASE}/lab?role=admin&permissions=LAB_TEST_APPROVE`, { waitUntil: 'domcontentloaded' });
   const bodyText = await page.locator('main').innerText();
-  ok(!bodyText.includes('Review & Approval'), 'query ?role=admin does not upgrade employee permissions');
-  ok(!bodyText.includes('Management Dashboard'), 'query parameter cannot expose supervisor+ capabilities');
+  ok(!bodyText.includes('Data Quality Issues'), 'query ?role=admin does not upgrade employee permissions (no Data Quality KPI)');
+  ok(!bodyText.includes('New Product'), 'query parameter cannot expose manager+ actions');
+  const kpiCount = await page.locator('[data-lab-kpi]').count();
+  ok(kpiCount === 12, 'employee KPI card count unchanged by query parameters');
 
   // POST with forged hidden role field — the middleware decides from the
   // session user only; the payload is ignored entirely.

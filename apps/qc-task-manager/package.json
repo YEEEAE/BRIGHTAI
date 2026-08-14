@@ -28,8 +28,9 @@
     "test:qc-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-qc-operations.mjs",
     "test:templates": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-templates.mjs",
     "test:db-rules": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-db-rules.mjs",
+    "test:lab-overview": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-overview.mjs",
     "test:badge-contrast": "node scripts/verify-badge-contrast.mjs",
-    "test": "pnpm test:badge-contrast && pnpm test:migrations && pnpm test:architecture && pnpm test:qc-operations && pnpm test:templates && pnpm test:audit-integrity && pnpm test:ai-foundation && pnpm test:ai-features && pnpm test:domain && pnpm test:sla && pnpm test:workflow && pnpm test:db-rules && pnpm test:dashboard-reports",
+    "test": "pnpm test:badge-contrast && pnpm test:migrations && pnpm test:architecture && pnpm test:qc-operations && pnpm test:templates && pnpm test:audit-integrity && pnpm test:ai-foundation && pnpm test:ai-features && pnpm test:domain && pnpm test:sla && pnpm test:workflow && pnpm test:db-rules && pnpm test:lab-overview && pnpm test:dashboard-reports",
     "e2e:acceptance": "NODE_ENV=production pnpm build && node scripts/e2e-acceptance.mjs"
   },
   "dependencies": {

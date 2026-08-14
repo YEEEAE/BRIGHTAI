@@ -1,0 +1,482 @@
+// QC Laboratory Command Center queries (PROMPT 04, architecture contract §12).
+//
+// Every query here is READ-ONLY (SELECT) and fully parameterized (?) — no user
+// input is interpolated into SQL text. This module powers the /lab page only;
+// it is NOT the global dashboard and does not share its filters. All numbers
+// are computed from the lab_* tables created by migrations 011–014 — nothing
+// is seeded or invented, so a fresh install shows zero everywhere.
+//
+// Derived-state decisions (documented, smallest extension of the contract):
+// - Calibration state is derived at read time from the LATEST calibration
+//   record's due date (COALESCE(next_due_at, calibration_due_at)), never
+//   stored. Per the contract: Due Soon = due within 30 days. NOT_COMPLIANT
+//   requires interpreting the free-text `result` field and is deliberately
+//   NOT derived here — it belongs to the calibration module (open decision).
+// - "Equipment Requiring Attention" = non-archived equipment with an open
+//   maintenance event (completed_date IS NULL) OR an overdue latest
+//   calibration. Structural checks only — no status_raw text mapping (D-1).
+// - "Documents Due for Review" = active documents whose review_due_date has
+//   been reached (<= today). The separate "overdue" split belongs to the
+//   documents module.
+// - Data-quality counts are the informational checks from the page reference
+//   §56 (missing lot/equipment/tester, incomplete samples, inconsistent
+//   workflow, equipment/document/product master-data gaps). Counts only —
+//   this module never mutates data.
+
+import { getDb } from '../db';
+import { localToday, resolveRange } from '../dashboard';
+import { IMPLEMENTED_LAB_ROUTES } from './navigation';
+
+/** Due-soon window for derived calibration state (contract: ≤ 30 days). */
+export const CALIBRATION_DUE_SOON_DAYS = 30;
+
+export type LabCalibrationState = 'COMPLIANT' | 'DUE_SOON' | 'DUE_TODAY' | 'OVERDUE' | 'UNKNOWN';
+
+/** Local ISO date offset from today by `days` (negative = earlier). */
+function isoOffset(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/**
+ * Derive the calibration UI state from a due date (YYYY-MM-DD or NULL).
+ * UNKNOWN when there is no usable due date; DUE_TODAY beats OVERDUE/DUE_SOON.
+ */
+export function deriveCalibrationState(dueIso: string | null, today = localToday()): LabCalibrationState {
+  if (!dueIso) return 'UNKNOWN';
+  if (dueIso < today) return 'OVERDUE';
+  if (dueIso === today) return 'DUE_TODAY';
+  if (dueIso <= isoOffset(CALIBRATION_DUE_SOON_DAYS)) return 'DUE_SOON';
+  return 'COMPLIANT';
+}
+
+/**
+ * Latest calibration due date for each equipment row, as a scalar subquery
+ * expression: `date(COALESCE(next_due_at, calibration_due_at))` of the most
+ * recent record (by created_at, then id) or NULL when none exists.
+ */
+const LATEST_DUE_SQL = `(
+  SELECT date(COALESCE(c.next_due_at, c.calibration_due_at))
+  FROM lab_equipment_calibration c
+  WHERE c.equipment_id = e.id
+  ORDER BY c.created_at DESC, c.id DESC
+  LIMIT 1
+)`;
+
+// ─────────────────────────────── KPI cards ───────────────────────────────
+
+export interface LabKpis {
+  tests_today: number;
+  tests_this_week: number;
+  draft_tests: number;
+  awaiting_review: number;
+  approved_tests: number;
+  pass_tests: number;
+  fail_tests: number;
+  hold_tests: number;
+  equipment_requiring_attention: number;
+  calibration_due: number;
+  documents_due_for_review: number;
+  retests_open: number;
+  data_quality_issues: number;
+}
+
+export function getLabKpis(): LabKpis {
+  const db = getDb();
+  const today = localToday();
+  const { from: weekStart } = resolveRange('week');
+
+  const tests = db
+    .prepare(
+      `SELECT
+         COALESCE(SUM(CASE WHEN date(t.created_at, 'localtime') = date(?) THEN 1 ELSE 0 END), 0) AS tests_today,
+         COALESCE(SUM(CASE WHEN date(t.created_at, 'localtime') >= date(?) THEN 1 ELSE 0 END), 0) AS tests_this_week,
+         COALESCE(SUM(CASE WHEN t.status = 'DRAFT' THEN 1 ELSE 0 END), 0) AS draft_tests,
+         COALESCE(SUM(CASE WHEN t.status IN ('SUBMITTED', 'UNDER_REVIEW') THEN 1 ELSE 0 END), 0) AS awaiting_review,
+         COALESCE(SUM(CASE WHEN t.status = 'APPROVED' THEN 1 ELSE 0 END), 0) AS approved_tests,
+         COALESCE(SUM(CASE WHEN t.status <> 'VOID' AND t.final_result = 'PASS' THEN 1 ELSE 0 END), 0) AS pass_tests,
+         COALESCE(SUM(CASE WHEN t.status <> 'VOID' AND t.final_result = 'FAIL' THEN 1 ELSE 0 END), 0) AS fail_tests,
+         COALESCE(SUM(CASE WHEN t.status <> 'VOID' AND t.final_result = 'HOLD' THEN 1 ELSE 0 END), 0) AS hold_tests
+       FROM lab_test_records t`,
+    )
+    .get(today, weekStart) as Omit<LabKpis, 'equipment_requiring_attention' | 'calibration_due' | 'documents_due_for_review' | 'retests_open' | 'data_quality_issues'>;
+
+  // Equipment: attention = open maintenance OR overdue latest calibration.
+  // Calibration due = due today or within the 30-day window (not overdue).
+  const equipment = db
+    .prepare(
+      `SELECT
+         COALESCE(SUM(CASE WHEN ${LATEST_DUE_SQL} IS NOT NULL AND ${LATEST_DUE_SQL} < date(?)
+                                OR EXISTS (
+                                  SELECT 1 FROM lab_equipment_maintenance m
+                                  WHERE m.equipment_id = e.id AND m.completed_date IS NULL
+                                ) THEN 1 ELSE 0 END), 0) AS attention,
+         COALESCE(SUM(CASE WHEN ${LATEST_DUE_SQL} IS NOT NULL
+                                AND ${LATEST_DUE_SQL} >= date(?)
+                                AND ${LATEST_DUE_SQL} <= date(?) THEN 1 ELSE 0 END), 0) AS calibration_due
+       FROM lab_equipment e
+       WHERE e.is_archived = 0`,
+    )
+    .get(today, today, isoOffset(CALIBRATION_DUE_SOON_DAYS)) as { attention: number; calibration_due: number };
+
+  const documents = db
+    .prepare(
+      `SELECT COUNT(*) AS due
+       FROM lab_documents d
+       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED')
+         AND d.review_due_date IS NOT NULL
+         AND date(d.review_due_date) <= date(?)`,
+    )
+    .get(today) as { due: number };
+
+  const retests = db
+    .prepare(`SELECT COUNT(*) AS open FROM lab_test_retests r WHERE r.status = 'OPEN'`)
+    .get() as { open: number };
+
+  const dataQuality = countLabDataQualityIssues();
+
+  return {
+    tests_today: Number(tests.tests_today),
+    tests_this_week: Number(tests.tests_this_week),
+    draft_tests: Number(tests.draft_tests),
+    awaiting_review: Number(tests.awaiting_review),
+    approved_tests: Number(tests.approved_tests),
+    pass_tests: Number(tests.pass_tests),
+    fail_tests: Number(tests.fail_tests),
+    hold_tests: Number(tests.hold_tests),
+    equipment_requiring_attention: Number(equipment.attention),
+    calibration_due: Number(equipment.calibration_due),
+    documents_due_for_review: Number(documents.due),
+    retests_open: Number(retests.open),
+    data_quality_issues: dataQuality,
+  };
+}
+
+/**
+ * Informational data-quality count (page reference §56). A test counts once
+ * even with several gaps; equipment/document/product master-data gaps are
+ * counted per row. Read-only — never mutates or "fixes" anything.
+ */
+export function countLabDataQualityIssues(): number {
+  const db = getDb();
+
+  const tests = db
+    .prepare(
+      `SELECT COUNT(*) AS issues
+       FROM lab_test_records t
+       WHERE t.status <> 'VOID' AND (
+         (t.lot_number IS NULL OR TRIM(t.lot_number) = '')
+         OR t.equipment_id IS NULL
+         OR t.tested_by IS NULL
+         OR (SELECT COUNT(*) FROM lab_test_samples s WHERE s.test_id = t.id) <> t.sample_count
+         OR (t.status = 'APPROVED' AND t.final_result IS NULL)
+         OR (t.status <> 'DRAFT' AND t.submitted_at IS NULL)
+       )`,
+    )
+    .get() as { issues: number };
+
+  const equipment = db
+    .prepare(
+      `SELECT COUNT(*) AS issues
+       FROM lab_equipment e
+       WHERE e.is_archived = 0 AND (
+         (e.code IS NULL OR TRIM(e.code) = '')
+         OR e.serial_number IS NULL
+         OR e.location IS NULL
+         OR ${LATEST_DUE_SQL} IS NULL
+       )`,
+    )
+    .get() as { issues: number };
+
+  const documents = db
+    .prepare(
+      `SELECT COUNT(*) AS issues
+       FROM lab_documents d
+       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND (
+         d.owner_id IS NULL
+         OR d.review_due_date IS NULL
+         OR d.effective_date IS NULL
+         OR d.current_version_id IS NULL
+       )`,
+    )
+    .get() as { issues: number };
+
+  const products = db
+    .prepare(
+      `SELECT COUNT(*) AS issues
+       FROM lab_products p
+       WHERE p.is_active = 1 AND (
+         (p.code IS NULL OR TRIM(p.code) = '')
+         OR p.default_test_type IS NULL
+       )`,
+    )
+    .get() as { issues: number };
+
+  return Number(tests.issues) + Number(equipment.issues) + Number(documents.issues) + Number(products.issues);
+}
+
+// ─────────────────────────────── Sections ───────────────────────────────
+
+export interface LabRecentTestRow {
+  id: number;
+  test_number: string;
+  test_type: string;
+  product_name: string | null;
+  lot_number: string | null;
+  equipment_code: string | null;
+  tester_name: string | null;
+  final_result: string | null;
+  status: string;
+  updated_at: string;
+}
+
+/** Latest 8 tests, most recently updated first. */
+export function getLabRecentTests(): LabRecentTestRow[] {
+  return getDb()
+    .prepare(
+      `SELECT t.id, t.test_number, t.test_type, t.lot_number, t.final_result, t.status, t.updated_at,
+              p.name AS product_name, e.code AS equipment_code, u.full_name AS tester_name
+       FROM lab_test_records t
+       LEFT JOIN lab_products p ON p.id = t.product_id
+       LEFT JOIN lab_equipment e ON e.id = t.equipment_id
+       LEFT JOIN users u ON u.id = t.tested_by
+       ORDER BY t.updated_at DESC, t.id DESC
+       LIMIT 8`,
+    )
+    .all() as LabRecentTestRow[];
+}
+
+export interface LabPendingReviewRow {
+  id: number;
+  test_number: string;
+  test_type: string;
+  tester_name: string | null;
+  submitted_at: string;
+  /** Whole days since submission (0 = today). */
+  aging_days: number;
+  final_result: string | null;
+  status: string;
+}
+
+/** Tests awaiting a reviewer (SUBMITTED or UNDER_REVIEW), oldest first. */
+export function getLabPendingReviews(): LabPendingReviewRow[] {
+  return getDb()
+    .prepare(
+      `SELECT t.id, t.test_number, t.test_type, t.submitted_at, t.final_result, t.status,
+              u.full_name AS tester_name,
+              CAST(julianday(datetime('now', 'localtime')) - julianday(t.submitted_at) AS INTEGER) AS aging_days
+       FROM lab_test_records t
+       LEFT JOIN users u ON u.id = t.tested_by
+       WHERE t.status IN ('SUBMITTED', 'UNDER_REVIEW')
+       ORDER BY t.submitted_at ASC, t.id ASC
+       LIMIT 8`,
+    )
+    .all() as LabPendingReviewRow[];
+}
+
+export interface LabEquipmentAlertRow {
+  id: number;
+  equipment_name: string;
+  code: string;
+  status_raw: string;
+  calibration_state: LabCalibrationState;
+  /** First matching reason: 'overdue_calibration' or 'open_maintenance'. */
+  alert: 'overdue_calibration' | 'open_maintenance';
+  due_date: string | null;
+}
+
+/** Non-archived equipment with an open maintenance event or an overdue calibration. */
+export function getLabEquipmentAlerts(): LabEquipmentAlertRow[] {
+  const today = localToday();
+  const rows = getDb()
+    .prepare(
+      `SELECT e.id, e.name AS equipment_name, e.code, e.status_raw, ${LATEST_DUE_SQL} AS due_date,
+              CASE WHEN ${LATEST_DUE_SQL} IS NOT NULL AND ${LATEST_DUE_SQL} < date(?) THEN 1 ELSE 0 END AS overdue,
+              EXISTS (SELECT 1 FROM lab_equipment_maintenance m
+                      WHERE m.equipment_id = e.id AND m.completed_date IS NULL) AS open_maintenance
+       FROM lab_equipment e
+       WHERE e.is_archived = 0
+         AND (
+           ${LATEST_DUE_SQL} IS NOT NULL AND ${LATEST_DUE_SQL} < date(?)
+           OR EXISTS (SELECT 1 FROM lab_equipment_maintenance m
+                      WHERE m.equipment_id = e.id AND m.completed_date IS NULL)
+         )
+       ORDER BY due_date ASC, e.id ASC
+       LIMIT 8`,
+    )
+    .all(today, today) as Array<{
+    id: number;
+    equipment_name: string;
+    code: string;
+    status_raw: string;
+    due_date: string | null;
+    overdue: number;
+    open_maintenance: number;
+  }>;
+
+  return rows.map((r) => ({
+    id: r.id,
+    equipment_name: r.equipment_name,
+    code: r.code,
+    status_raw: r.status_raw,
+    calibration_state: deriveCalibrationState(r.due_date, today),
+    alert: r.overdue ? ('overdue_calibration' as const) : ('open_maintenance' as const),
+    due_date: r.due_date,
+  }));
+}
+
+export interface LabCalibrationAlertRow {
+  id: number;
+  equipment_name: string;
+  code: string;
+  due_date: string;
+  calibration_state: LabCalibrationState;
+}
+
+/** Equipment whose latest calibration is due today, due soon, or overdue — most urgent first. */
+export function getLabCalibrationAlerts(): LabCalibrationAlertRow[] {
+  const today = localToday();
+  const rows = getDb()
+    .prepare(
+      `SELECT e.id, e.name AS equipment_name, e.code, ${LATEST_DUE_SQL} AS due_date
+       FROM lab_equipment e
+       WHERE e.is_archived = 0
+         AND ${LATEST_DUE_SQL} IS NOT NULL
+         AND ${LATEST_DUE_SQL} <= date(?)
+       ORDER BY due_date ASC, e.id ASC
+       LIMIT 8`,
+    )
+    .all(isoOffset(CALIBRATION_DUE_SOON_DAYS)) as Array<{
+    id: number;
+    equipment_name: string;
+    code: string;
+    due_date: string;
+  }>;
+
+  return rows.map((r) => ({
+    ...r,
+    calibration_state: deriveCalibrationState(r.due_date, today),
+  }));
+}
+
+export interface LabDocumentReviewRow {
+  id: number;
+  code: string;
+  title: string;
+  type: string;
+  version: number | null;
+  owner_name: string | null;
+  review_due_date: string;
+  status: string;
+}
+
+/** Active documents whose review date has been reached, most overdue first. */
+export function getLabDocumentReviewsDue(): LabDocumentReviewRow[] {
+  const today = localToday();
+  return getDb()
+    .prepare(
+      `SELECT d.id, d.code, d.title, d.type, d.review_due_date, d.status,
+              v.version, u.full_name AS owner_name
+       FROM lab_documents d
+       LEFT JOIN lab_document_versions v ON v.id = d.current_version_id
+       LEFT JOIN users u ON u.id = d.owner_id
+       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED')
+         AND d.review_due_date IS NOT NULL
+         AND date(d.review_due_date) <= date(?)
+       ORDER BY d.review_due_date ASC, d.id ASC
+       LIMIT 8`,
+    )
+    .all(today) as LabDocumentReviewRow[];
+}
+
+export interface LabOpenRetestRow {
+  id: number;
+  retest_number: string;
+  original_test_number: string;
+  product_name: string | null;
+  reason: string;
+  status: string;
+  updated_at: string;
+}
+
+/** Open retests, most recently updated first. */
+export function getLabOpenRetests(): LabOpenRetestRow[] {
+  return getDb()
+    .prepare(
+      `SELECT r.id, r.retest_number, r.reason, r.status, r.updated_at,
+              t.test_number AS original_test_number, p.name AS product_name
+       FROM lab_test_retests r
+       JOIN lab_test_records t ON t.id = r.original_test_id
+       LEFT JOIN lab_products p ON p.id = t.product_id
+       WHERE r.status = 'OPEN'
+       ORDER BY r.updated_at DESC, r.id DESC
+       LIMIT 8`,
+    )
+    .all() as LabOpenRetestRow[];
+}
+
+export interface LabActivityRow {
+  id: number;
+  entity_type: string;
+  entity_id: number;
+  actor_name: string;
+  action: string;
+  created_at: string;
+}
+
+/**
+ * Latest 10 laboratory events from the ONE audit system (`qc_audit_log`,
+ * extended by migration 011 with the LAB_* entity types). Read-only.
+ */
+export function getLabRecentActivity(): LabActivityRow[] {
+  return getDb()
+    .prepare(
+      `SELECT a.id, a.entity_type, a.entity_id, a.action, a.created_at,
+              u.full_name AS actor_name
+       FROM qc_audit_log a
+       JOIN users u ON u.id = a.actor_id
+       WHERE a.entity_type LIKE 'LAB\_%' ESCAPE '\\'
+       ORDER BY a.id DESC
+       LIMIT 10`,
+    )
+    .all() as LabActivityRow[];
+}
+
+// ─────────────────────────── Drill-down registry ───────────────────────────
+
+export interface LabDrilldown {
+  /** Full href including filter params for the target list page. */
+  href: string;
+  /** Base route (path without query) — must exist before the link activates. */
+  route: string;
+  /** Shown while the target page is not implemented yet. */
+  hint: string;
+}
+
+/**
+ * KPI id → filtered list target. A drill-down renders as a real link only
+ * when its route is in IMPLEMENTED_LAB_ROUTES (no dead links); otherwise the
+ * card shows the number with a disabled hint. Later prompts add their route
+ * to IMPLEMENTED_LAB_ROUTES and every matching KPI activates automatically.
+ */
+export const LAB_KPI_DRILLDOWNS: Record<keyof LabKpis, LabDrilldown> = {
+  tests_today: { href: '/lab/tests?created=today', route: '/lab/tests', hint: 'Opens with the test register (coming with the Tests module)' },
+  tests_this_week: { href: '/lab/tests?created=week', route: '/lab/tests', hint: 'Opens with the test register (coming with the Tests module)' },
+  draft_tests: { href: '/lab/tests?status=DRAFT', route: '/lab/tests', hint: 'Opens with the test register (coming with the Tests module)' },
+  awaiting_review: { href: '/lab/tests/review', route: '/lab/tests/review', hint: 'Opens the review queue (coming with the Tests module)' },
+  approved_tests: { href: '/lab/tests?status=APPROVED', route: '/lab/tests', hint: 'Opens with the test register (coming with the Tests module)' },
+  pass_tests: { href: '/lab/tests?result=PASS', route: '/lab/tests', hint: 'Opens with the test register (coming with the Tests module)' },
+  fail_tests: { href: '/lab/tests?result=FAIL', route: '/lab/tests', hint: 'Opens with the test register (coming with the Tests module)' },
+  hold_tests: { href: '/lab/tests?result=HOLD', route: '/lab/tests', hint: 'Opens with the test register (coming with the Tests module)' },
+  equipment_requiring_attention: { href: '/lab/equipment?attention=1', route: '/lab/equipment', hint: 'Opens the equipment register (coming with the Equipment module)' },
+  calibration_due: { href: '/lab/calibration?due=1', route: '/lab/calibration', hint: 'Opens the calibration register (coming with the Calibration module)' },
+  documents_due_for_review: { href: '/lab/documents?review=due', route: '/lab/documents', hint: 'Opens the document library (coming with the Documents module)' },
+  retests_open: { href: '/lab/retests?status=OPEN', route: '/lab/retests', hint: 'Opens the retest register (coming with the Retests module)' },
+  data_quality_issues: { href: '/lab/data-quality', route: '/lab/data-quality', hint: 'Opens the data-quality report (coming with the Data Quality module)' },
+};
+
+/** True when the drill-down's target page exists today. */
+export function labDrilldownEnabled(drilldown: LabDrilldown): boolean {
+  return IMPLEMENTED_LAB_ROUTES.includes(drilldown.route);
+}
