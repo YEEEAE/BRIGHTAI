@@ -5,6 +5,10 @@
 import Navbar from '../components/Navbar';
 import FlashNotice from '../components/FlashNotice.astro';
 import { countNotifications, listPersistedNotifications } from '../lib/notifications';
+// Global a11y styles (skip link + prefers-reduced-motion). Bundled by Astro
+// as a same-origin stylesheet so the strict CSP in src/middleware.ts stays
+// intact (no inline <style> blocks).
+import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -34,6 +38,9 @@ const recentNotifications = navUser
     <title>{siteTitle}</title>
   </head>
   <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+    <!-- Skip link — first focusable element on every page (WCAG 2.4.1).
+         Hidden until focused; styling lives in src/styles/global.css. -->
+    <a class="skip-link" href="#main">Skip to content</a>
     {!hideNav && (
       <Navbar
         client:load
@@ -42,7 +49,7 @@ const recentNotifications = navUser
         recentNotifications={recentNotifications}
       />
     )}
-    <main class="mx-auto w-full max-w-6xl px-4 py-8">
+    <main id="main" tabindex="-1" class="mx-auto w-full max-w-6xl px-4 py-8 focus:outline-none">
       <FlashNotice />
       <slot />
     </main>

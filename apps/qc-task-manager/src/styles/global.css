@@ -1,0 +1,63 @@
+/*
+ * Global accessibility styles (WCAG 2.2 AA basics).
+ *
+ * Bundled by Astro as a same-origin stylesheet (/_astro/*.css), which keeps
+ * the strict CSP in src/middleware.ts happy: no inline <style> blocks.
+ *
+ * 1. Skip link — visually hidden until it receives keyboard focus
+ *    (WCAG 2.4.1 Bypass Blocks). The markup lives in BaseLayout.astro as the
+ *    first focusable element on every page.
+ * 2. prefers-reduced-motion — disables non-essential animation site-wide
+ *    (WCAG 2.3.3 Animation from Interactions). Covers the React islands
+ *    (completion wizard in TaskLifecycle.tsx, navbar notification dropdown in
+ *    Navbar.tsx, TaskUpdatePanel.tsx) plus Tailwind transitions/hover lifts
+ *    and the dashboard loading spinner.
+ */
+.skip-link {
+  position: absolute;
+  top: 0;
+  inset-inline-start: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  position: fixed;
+  top: 0.75rem;
+  inset-inline-start: 0.75rem;
+  z-index: 999;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  box-shadow:
+    0 10px 15px -3px rgb(15 23 42 / 0.15),
+    0 4px 6px -4px rgb(15 23 42 / 0.15);
+  outline: 2px solid #2563eb; /* brand-600 */
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

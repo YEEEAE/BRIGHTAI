@@ -80,7 +80,13 @@ try {
   ok(integrity.integrity_check === 'ok', 'live database passes integrity_check');
 
   const backupDir = join(dirname(DB_PATH), 'backups');
-  const backupFiles = readdirSync(backupDir).filter((file) => file.endsWith('.db'));
+  // Retention only manages qc_tasks-<ts>.db files (src/lib/backup.ts
+  // listBackups → BACKUP_FILE_PATTERN; pre-migration-*.db safety snapshots are
+  // deliberately never pruned). Every acceptance suite boots its own server
+  // against a fresh DB in the same temp dir, so pre-migration files from OTHER
+  // suites accumulate here — they are not "retention backups" and must not be
+  // counted against the retention cap. Mirrors the app's own listBackups.
+  const backupFiles = readdirSync(backupDir).filter((file) => /^qc_tasks-\d{4}-\d{2}-\d{2}-\d{6}\.db$/.test(file));
   ok(backupFiles.length >= 1 && backupFiles.length <= 14, 'backup retention directory contains at most 14 databases');
 
   const directDb = await admin.request.get(`${BASE}/db/backups/${encodeURIComponent(name)}`, { maxRedirects: 0 });

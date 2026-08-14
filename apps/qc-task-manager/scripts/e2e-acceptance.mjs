@@ -16,6 +16,7 @@ const suites = [
   ['task-shared', 'scripts/e2e-task-shared.mjs'],
   ['delete-request', 'scripts/e2e-delete-request.mjs'],
   ['dashboard', 'scripts/e2e-dashboard.mjs'],
+  ['a11y', 'scripts/e2e-a11y.mjs'],
   ['backup', 'scripts/e2e-backup.mjs'],
 ];
 
@@ -137,7 +138,7 @@ try {
     const [label, script] = suites[i];
     await runSuite(label, script, 4500 + i);
   }
-  await runPersistenceSuite(4506);
+  await runPersistenceSuite(4507);
   console.log('\n✅ All QC acceptance suites passed.');
 } finally {
   rmSync(tempDir, { recursive: true, force: true });

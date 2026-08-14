@@ -87,16 +87,27 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
   const [menuOpen, setMenuOpen] = useState(false);
   const [markingAll, setMarkingAll] = useState(false);
   const bellRef = useRef<HTMLDivElement>(null);
+  const bellButtonRef = useRef<HTMLButtonElement>(null);
+  const bellDropdownRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const links = user ? ROLE_LINKS[user.role] : [];
 
-  // Close the dropdown on outside click / Escape (keyboard a11y).
+  // Close the dropdown and hand focus back to the bell trigger (keyboard a11y:
+  // focus must return to the element that opened the menu on Escape).
+  function closeDropdown() {
+    setOpen(false);
+    bellButtonRef.current?.focus();
+  }
+
+  // Close the dropdown on outside click (no focus steal — the pointer click
+  // itself moves focus where it belongs) / Escape (restores focus to the bell).
   useEffect(() => {
     if (!open) return;
     function onPointerDown(ev: PointerEvent) {
       if (bellRef.current && !bellRef.current.contains(ev.target as Node)) setOpen(false);
     }
     function onKey(ev: KeyboardEvent) {
-      if (ev.key === 'Escape') setOpen(false);
+      if (ev.key === 'Escape') closeDropdown();
     }
     document.addEventListener('pointerdown', onPointerDown);
     document.addEventListener('keydown', onKey);
@@ -105,6 +116,46 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
       document.removeEventListener('keydown', onKey);
     };
   }, [open]);
+
+  // Move focus into the menu when it opens (standard menu pattern).
+  useEffect(() => {
+    if (!open) return;
+    const first = bellDropdownRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
+    first?.focus();
+  }, [open]);
+
+  // Trap Tab/Shift+Tab inside the open menu so keyboard users cannot tab into
+  // the page behind it (WCAG 2.1.2 No Keyboard Trap in reverse).
+  function trapDropdownTab(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key !== 'Tab') return;
+    const container = e.currentTarget;
+    const focusables = Array.from(container.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter(
+      (el) => el.offsetParent !== null || el === document.activeElement,
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  // Mobile role menu: Escape closes it and returns focus to the toggle.
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onKey(ev: KeyboardEvent) {
+      if (ev.key === 'Escape') {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
 
   /** Clicking an item marks it read (if unread) then navigates to it. */
   function openNotification(n: NavNotification) {
@@ -157,6 +208,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
               {/* Notifications bell + dropdown */}
               <div ref={bellRef} className="relative">
                 <button
+                  ref={bellButtonRef}
                   type="button"
                   onClick={() => setOpen((v) => !v)}
                   aria-label={`Notifications (${notificationCount} active)`}
@@ -170,7 +222,9 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                     <path d="M13.7 21a2 2 0 0 1-3.4 0" />
                   </svg>
                   {notificationCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+                    // WCAG AA contrast: white-on-red-500 is only 3.76:1 at this
+                    // size — red-600 raises it to 4.83:1 (normal text threshold).
+                    <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold text-white">
                       {notificationCount > 99 ? '99+' : notificationCount}
                     </span>
                   )}
@@ -178,15 +232,19 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
 
                 {open && (
                   <div
+                    ref={bellDropdownRef}
                     id="notification-dropdown"
                     role="menu"
                     aria-label="Recent notifications"
+                    onKeyDown={trapDropdownTab}
                     className="fixed inset-x-4 top-16 z-40 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg md:absolute md:inset-x-auto md:right-0 md:top-full md:mt-2 md:w-80 md:max-w-[calc(100vw-2rem)]"
                   >
                     <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2.5">
                       <p className="text-sm font-semibold text-slate-900">Notifications</p>
                       {notificationCount > 0 && (
-                        <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-600">
+                        // WCAG AA contrast: red-600 on red-50 is 4.41:1 at this
+                        // size — red-700 raises it to 5.91:1 (normal text threshold).
+                        <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
                           {notificationCount} unread
                         </span>
                       )}
@@ -247,7 +305,9 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
 
               <span className="hidden text-sm text-slate-600 sm:inline">
                 <span className="font-medium text-slate-900">{user.fullName}</span>
-                <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-500">
+                {/* WCAG AA: slate-500 on slate-100 is 4.34:1 at text-xs —
+                    slate-600 raises it to 6.92:1 (normal text threshold). */}
+                <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-600">
                   {user.role}
                 </span>
               </span>
@@ -271,11 +331,13 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
           {/* Mobile menu toggle (role links only) */}
           {links.length > 0 && (
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               className="rounded-md p-2 text-slate-600 hover:bg-slate-100 sm:hidden"
               aria-label="Toggle navigation"
               aria-expanded={menuOpen}
+              aria-controls={menuOpen ? 'mobile-menu' : undefined}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 6h16M4 12h16M4 18h16" />
@@ -286,7 +348,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
       </nav>
 
       {menuOpen && links.length > 0 && (
-        <ul className="border-t border-slate-200 bg-white px-4 py-2 sm:hidden">
+        <ul id="mobile-menu" className="border-t border-slate-200 bg-white px-4 py-2 sm:hidden">
           {links.map((l) => (
             <li key={l.href}>
               <a

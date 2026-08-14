@@ -115,11 +115,37 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
   const [reopening, setReopening] = useState(false);
   const [reopenError, setReopenError] = useState<string | null>(null);
 
-  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const wizardDialogRef = useRef<HTMLDivElement | null>(null);
+  const cancelDialogRef = useRef<HTMLDivElement | null>(null);
+  /** The trigger button that opened the current dialog — focus returns here on close. */
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
+
+  // Trap Tab/Shift+Tab inside an open modal dialog (WCAG 2.1.2). Both the
+  // completion wizard and the cancel dialog are role="dialog" aria-modal="true"
+  // so keyboard focus must not escape into the page behind them.
+  function trapDialogTab(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key !== 'Tab') return;
+    const container = e.currentTarget;
+    const focusables = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((el) => el.offsetParent !== null || el === document.activeElement);
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
 
   useEffect(() => {
     if (wizardOpen) {
-      dialogRef.current?.querySelector<HTMLElement>('input, textarea, button')?.focus();
+      wizardDialogRef.current?.querySelector<HTMLElement>('input, textarea, select, button')?.focus();
     }
   }, [wizardOpen, step]);
 
@@ -145,6 +171,31 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
     setFileTypes({});
     setEvidenceOverrideReason('');
     setError(null);
+    // Keyboard a11y: return focus to the button that opened the wizard.
+    lastTriggerRef.current?.focus();
+  }
+
+  // Cancel dialog: focus its reason field on open, close on Escape, restore
+  // focus to the trigger button on close.
+  useEffect(() => {
+    if (cancelOpen) {
+      cancelDialogRef.current?.querySelector<HTMLElement>('input, textarea, select, button')?.focus();
+    }
+  }, [cancelOpen]);
+
+  useEffect(() => {
+    if (!cancelOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeCancel();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [cancelOpen]);
+
+  function closeCancel() {
+    setCancelOpen(false);
+    setCancelError(null);
+    lastTriggerRef.current?.focus();
   }
 
   function reload() {
@@ -296,6 +347,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
           <button
             type="button"
             onClick={() => {
+              lastTriggerRef.current = document.activeElement as HTMLElement | null;
               setWizardOpen(true);
               setStep(0);
               setError(null);
@@ -309,6 +361,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
           <button
             type="button"
             onClick={() => {
+              lastTriggerRef.current = document.activeElement as HTMLElement | null;
               setCancelOpen(true);
               setCancelReason('');
               setCancelError(null);
@@ -339,10 +392,11 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
           }}
         >
           <div
-            ref={dialogRef}
+            ref={wizardDialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="completion-wizard-title"
+            onKeyDown={trapDialogTab}
             className={panelCls}
           >
             <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
@@ -676,13 +730,15 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
         <div
           className={overlayCls}
           onMouseDown={(e) => {
-            if (e.target === e.currentTarget && !cancelSubmitting) setCancelOpen(false);
+            if (e.target === e.currentTarget && !cancelSubmitting) closeCancel();
           }}
         >
           <div
+            ref={cancelDialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="cancel-dialog-title"
+            onKeyDown={trapDialogTab}
             className={panelCls}
           >
             <div className="border-b border-slate-200 px-5 py-4">
@@ -720,7 +776,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
             <div className="flex items-center justify-end gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4">
               <button
                 type="button"
-                onClick={() => setCancelOpen(false)}
+                onClick={closeCancel}
                 disabled={cancelSubmitting}
                 className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-slate-400/40 disabled:cursor-not-allowed disabled:opacity-50"
               >

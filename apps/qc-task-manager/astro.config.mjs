@@ -20,6 +20,13 @@ export default defineConfig({
   security: {
     checkOrigin: false,
   },
+  // Emit page stylesheets as same-origin files (/_astro/*.css) instead of
+  // inlining small ones — the strict CSP in src/middleware.ts whitelists only
+  // the Astro island style hash, so an inlined <style> for src/styles/global.css
+  // (skip link + prefers-reduced-motion) would be blocked by the browser.
+  build: {
+    inlineStylesheets: 'never',
+  },
   integrations: [
     react(),
     tailwind({
