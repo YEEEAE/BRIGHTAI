@@ -87,6 +87,29 @@ async function login(page, username) {
   await page.waitForURL((u) => !u.pathname.startsWith('/login'), { timeout: 15_000 });
 }
 
+/**
+ * Open a dialog by focusing its trigger button and pressing Enter, retrying
+ * while the island hydrates. The wizard/cancel triggers are server-rendered
+ * and visible before the React hydration click handlers attach, so a single
+ * Enter under load can land on a dead button; every retry re-presses Enter and
+ * polls for the dialog (all focus/trap assertions below remain unchanged).
+ */
+async function openDialogWithKeyboard(page, triggerLocator, dialogSelector) {
+  await triggerLocator.waitFor({ state: 'visible', timeout: 15_000 });
+  await triggerLocator.focus();
+  const dialog = page.locator(dialogSelector);
+  for (let i = 0; i < 15; i += 1) {
+    await page.keyboard.press('Enter');
+    try {
+      await dialog.waitFor({ state: 'visible', timeout: 800 });
+      return dialog;
+    } catch {
+      // Island may still be hydrating — the next Enter press is the retry.
+    }
+  }
+  throw new Error(`Dialog ${dialogSelector} did not open after retries.`);
+}
+
 /** Focus is inside the given selector? (polled — React effects move focus after paint.) */
 async function waitFocusInside(page, selector, timeoutMs = 2000) {
   const deadline = Date.now() + timeoutMs;
@@ -176,12 +199,7 @@ try {
   console.log('\n── Scenario 3: completion wizard keyboard behaviour ──');
   await page.goto(`${BASE}/tasks/${taskId}`);
   const completeBtn = page.locator('button:has-text("Complete task")');
-  await completeBtn.waitFor({ state: 'visible', timeout: 15_000 });
-  await completeBtn.focus();
-  await page.keyboard.press('Enter');
-
-  const wizard = page.locator('[role="dialog"][aria-labelledby="completion-wizard-title"]');
-  await wizard.waitFor({ state: 'visible', timeout: 5_000 });
+  const wizard = await openDialogWithKeyboard(page, completeBtn, '[role="dialog"][aria-labelledby="completion-wizard-title"]');
   ok(await waitFocusInside(page, '[role="dialog"][aria-labelledby="completion-wizard-title"]'), '3a. wizard opens with focus inside the dialog');
 
   let wTrapped = true;
@@ -207,11 +225,7 @@ try {
   // ─────────────────── 4. Cancel dialog: focus in, Escape back ───────────────────
   console.log('\n── Scenario 4: cancel dialog keyboard behaviour ──');
   const cancelBtn = page.locator('button:has-text("Cancel task")');
-  await cancelBtn.focus();
-  await page.keyboard.press('Enter');
-
-  const cancelDlg = page.locator('[role="dialog"][aria-labelledby="cancel-dialog-title"]');
-  await cancelDlg.waitFor({ state: 'visible', timeout: 5_000 });
+  const cancelDlg = await openDialogWithKeyboard(page, cancelBtn, '[role="dialog"][aria-labelledby="cancel-dialog-title"]');
   ok(
     await waitFocusInside(page, '[role="dialog"][aria-labelledby="cancel-dialog-title"]'),
     '4a. cancel dialog opens with focus inside',

@@ -76,7 +76,7 @@ export function transitionFinding(id: number, status: string, actorId: number, n
 export function upsertRca(findingId: number, input: Record<string, unknown>, actorId: number): void {
   const finding = getFinding(findingId); if (!finding) throw new Error('Finding not found.');
   transaction(() => {
-    getDb().prepare(`INSERT INTO qc_rca (finding_id, method, free_form, why_1, why_2, why_3, why_4, why_5, fishbone_json, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(finding_id) DO UPDATE SET method=excluded.method, free_form=excluded.free_form, why_1=excluded.why_1, why_2=excluded.why_2, why_3=excluded.why_3, why_4=excluded.why_4, why_5=excluded.why_5, fishbone_json=excluded.fishbone_json, updated_by=excluded.updated_by, updated_at=datetime('now'))`).run(findingId, input.method, input.free_form ?? null, input.why_1 ?? null, input.why_2 ?? null, input.why_3 ?? null, input.why_4 ?? null, input.why_5 ?? null, input.fishbone_json ?? null, actorId);
+    getDb().prepare(`INSERT INTO qc_rca (finding_id, method, free_form, why_1, why_2, why_3, why_4, why_5, fishbone_json, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(finding_id) DO UPDATE SET method=excluded.method, free_form=excluded.free_form, why_1=excluded.why_1, why_2=excluded.why_2, why_3=excluded.why_3, why_4=excluded.why_4, why_5=excluded.why_5, fishbone_json=excluded.fishbone_json, updated_by=excluded.updated_by, updated_at=datetime('now')`).run(findingId, input.method, input.free_form ?? null, input.why_1 ?? null, input.why_2 ?? null, input.why_3 ?? null, input.why_4 ?? null, input.why_5 ?? null, input.fishbone_json ?? null, actorId);
     const rca = getDb().prepare('SELECT id FROM qc_rca WHERE finding_id=?').get(findingId) as { id: number };
     audit('RCA', rca.id, Number(finding.task_id), actorId, finding.rca ? 'UPDATE' : 'CREATE', null, input);
   });
@@ -86,7 +86,12 @@ export function upsertCapa(findingId: number, input: Record<string, unknown>, ac
   const finding = getFinding(findingId); if (!finding) throw new Error('Finding not found.');
   return transaction(() => {
     const db = getDb();
-    db.prepare(`INSERT INTO qc_capa (finding_id, problem_statement, root_cause, corrective_action, preventive_action, owner, due_date, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(finding_id) DO UPDATE SET problem_statement=excluded.problem_statement, root_cause=excluded.root_cause, corrective_action=excluded.corrective_action, preventive_action=excluded.preventive_action, owner=excluded.owner, due_date=excluded.due_date, updated_at=datetime('now')`).run(findingId, input.problem_statement, input.root_cause, input.corrective_action, input.preventive_action, input.owner, input.due_date ?? null, actorId);
+    // `evidence` and `effectiveness_check` are part of capaSchema and the CAPA
+    // form; persisting them here is what feeds the critical-finding closure
+    // gate (hasCapaClosureGates requires corrective_action + evidence +
+    // effectiveness_check + approval) — dropping them made critical Findings
+    // impossible to close through the UI/API.
+    db.prepare(`INSERT INTO qc_capa (finding_id, problem_statement, root_cause, corrective_action, preventive_action, owner, due_date, evidence, effectiveness_check, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(finding_id) DO UPDATE SET problem_statement=excluded.problem_statement, root_cause=excluded.root_cause, corrective_action=excluded.corrective_action, preventive_action=excluded.preventive_action, owner=excluded.owner, due_date=excluded.due_date, evidence=excluded.evidence, effectiveness_check=excluded.effectiveness_check, updated_at=datetime('now')`).run(findingId, input.problem_statement, input.root_cause, input.corrective_action, input.preventive_action, input.owner, input.due_date ?? null, input.evidence ?? null, input.effectiveness_check ?? null, actorId);
     const capa = db.prepare('SELECT id FROM qc_capa WHERE finding_id=?').get(findingId) as { id: number };
     audit('CAPA', capa.id, Number(finding.task_id), actorId, finding.capa ? 'UPDATE' : 'CREATE', null, input);
     return capa.id;

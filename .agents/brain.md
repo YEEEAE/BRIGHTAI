@@ -2,12 +2,27 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-14 17:05 +03:00
+last_updated: 2026-08-14 17:30 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.99
 agent_version: v2.3
 skills_ready: 7
 ---
+
+### 2026-08-14 — QC-LAB-PAGES-REPORT-001: توثيق صفحات ومحتوى مختبر QC
+
+- **Files**: `audit/qc/2026-08-14-QC-LAB-PAGES-REPORT.md`، `.agents/brain.md`.
+- **What**: أُنشئ تقرير تفصيلي يحدد صفحات `/lab/*`، محتوى كل صفحة، حقول نماذج Air/Vacuum، صفحة الأجهزة، محرر SOP/WI الداخلي، دورة الحالات، الصلاحيات، APIs المقترحة، ربط Dashboard، الأمان، الاختبارات، ومعايير القبول.
+- **Decision**: التقرير يميز بوضوح بين المواصفة المستهدفة والتنفيذ الفعلي؛ جميع عناصر مختبر QC ما زالت غير منفذة في الكود حسب هذه المهمة.
+- **Status**: documented (لا commit ولا push).
+
+### 2026-08-14 — QC-LAB-PROMPTS-001: إنشاء حزمة برومبتز إنجليزية لإضافة مختبر QC
+
+- **Files**: `audit/qc/2026-08-14-QC-LAB-IMPLEMENTATION-PROMPTS.md`، `.agents/brain.md`.
+- **What**: أُنشئت حزمة من 12 برومبت تنفيذية لوكيل DeepSeek Flash v4 لإضافة مساحة مختبر QC داخل `apps/qc-task-manager`: قاعدة بيانات بمigrations متسلسلة، مسارات وصلاحيات، نماذج Air/Vacuum، دورة مراجعة واعتماد، سجل أجهزة المختبر، محرر داخلي لـ SOP/WI مع versioning، ربط Dashboard، بحث وتصدير، إشعارات وتدقيق، ثم security/a11y/E2E verification.
+- **Decision**: محرر SOP/WI داخلي نصّي (Markdown محفوظ + HTML معقّم للمعاينة) مع Draft → In Review → Approved → Superseded/Archived؛ تعديل وثيقة معتمدة ينشئ إصدارًا جديدًا ولا يغيّر الإصدار المعتمد، لأن المستخدم اختار التأليف من داخل النظام وليس مكتبة رفع ملفات فقط.
+- **Notes**: البرومبتز تشترط قراءة `brain.md` وملفات تدقيق QC قبل التنفيذ، إعادة استخدام RBAC والمigrations والـ audit والـ dashboard، وعدم اختراع معادلات علمية أو متطلبات تنظيمية غير موجودة في المواصفة. لم تُنفذ ميزات مختبر QC في الكود؛ الملف هو مواصفات تنفيذية فقط.
+- **Status**: prompts-ready (لم تُشغّل برومبتز DeepSeek، لا commit ولا push).
 
 ### 2026-08-14 — QC-NAVBAR-OVERFLOW-BADGE-001: إصلاح overflow الـ navbar عند 768px + توحيد شارة "Deletion requested" بمكوّن مشترك (مع فحص docWidth آلي)
 

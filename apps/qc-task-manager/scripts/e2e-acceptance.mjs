@@ -18,6 +18,9 @@ const suites = [
   ['dashboard', 'scripts/e2e-dashboard.mjs'],
   ['a11y', 'scripts/e2e-a11y.mjs'],
   ['backup', 'scripts/e2e-backup.mjs'],
+  ['search', 'scripts/e2e-search.mjs'],
+  ['findings', 'scripts/e2e-findings.mjs'],
+  ['reports', 'scripts/e2e-reports.mjs'],
 ];
 
 function sleep(ms) {
@@ -138,7 +141,7 @@ try {
     const [label, script] = suites[i];
     await runSuite(label, script, 4500 + i);
   }
-  await runPersistenceSuite(4507);
+  await runPersistenceSuite(4512);
   console.log('\n✅ All QC acceptance suites passed.');
 } finally {
   rmSync(tempDir, { recursive: true, force: true });
