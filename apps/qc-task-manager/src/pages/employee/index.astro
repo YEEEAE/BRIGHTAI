@@ -3,6 +3,7 @@
 // No dashboard link (CORE BUSINESS RULE #1).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import { getDb } from '../../lib/db';
 import { getUserById } from '../../lib/auth';
@@ -29,8 +30,10 @@ const tasks = db
     `SELECT id, title, status, priority, progress_percent, due_date, recurrence,
             (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
             (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
-            (SELECT 1 FROM task_delete_requests r
-              WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
+            (SELECT r.status FROM task_delete_requests r
+              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_status,
+            (SELECT r.review_note FROM task_delete_requests r
+              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_note
      FROM tasks t
      WHERE t.assigned_to = ? OR t.created_by = ?
      ORDER BY t.updated_at DESC
@@ -46,7 +49,8 @@ const tasks = db
     recurrence: string;
     checklist_total: number;
     checklist_completed: number;
-    delete_pending: number;
+    delete_request_status: 'pending' | 'rejected' | string | null;
+    delete_request_note: string | null;
   }[];
 
 ---
@@ -103,11 +107,7 @@ const tasks = db
               </div>
             </div>
             <div class="flex shrink-0 items-center gap-2">
-              {t.delete_pending === 1 && (
-                <span class="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
-                  🗑️ Deletion requested
-                </span>
-              )}
+              <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />
               <StatusBadge status={t.status} />
             </div>
           </li>

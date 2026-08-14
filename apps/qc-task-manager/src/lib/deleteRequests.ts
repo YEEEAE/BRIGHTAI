@@ -48,6 +48,27 @@ export function getPendingDeleteRequest(taskId: number): { id: number; reason: s
   return row ?? null;
 }
 
+export interface DeleteRequestStatus {
+  status: 'pending' | 'rejected' | 'approved';
+  /** Reviewer's rejection reason (review_note), when one was recorded. */
+  reviewNote: string | null;
+}
+
+/**
+ * The most recent delete-request row for a task (status + rejection note).
+ * Drives the shared DeleteRequestBadge on task rows and the detail page:
+ * a 'pending' row wins over any older 'rejected' history, and a 'rejected'
+ * row surfaces its review_note as the badge tooltip. ('approved' rows only
+ * ever exist transiently — approving deletes the task itself.)
+ */
+export function getDeleteRequestStatus(taskId: number): DeleteRequestStatus | null {
+  const row = getDb()
+    .prepare('SELECT status, review_note FROM task_delete_requests WHERE task_id = ? ORDER BY id DESC LIMIT 1')
+    .get(taskId) as { status: string; review_note: string | null } | undefined;
+  if (!row) return null;
+  return { status: row.status as DeleteRequestStatus['status'], reviewNote: row.review_note };
+}
+
 /**
  * Submit a deletion request (employee → manager/admin review).
  * All guards live here so no endpoint can bypass them:

@@ -187,7 +187,11 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
             QC Task Manager
           </a>
           {links.length > 0 && (
-            <ul className="hidden items-center gap-4 sm:flex">
+            // Role links live in the header only at lg+ (1024px). Between 640px
+            // and 1023px the full desktop cluster (links + username + sign out)
+            // overflows the viewport, so everything below lg collapses into the
+            // mobile menu (see the toggle + #mobile-menu below).
+            <ul className="hidden items-center gap-4 lg:flex">
               {links.map((l) => (
                 <li key={l.href}>
                   <a
@@ -303,7 +307,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                 )}
               </div>
 
-              <span className="hidden text-sm text-slate-600 sm:inline">
+              <span className="hidden text-sm text-slate-600 lg:inline">
                 <span className="font-medium text-slate-900">{user.fullName}</span>
                 {/* WCAG AA: slate-500 on slate-100 is 4.34:1 at text-xs —
                     slate-600 raises it to 6.92:1 (normal text threshold). */}
@@ -311,7 +315,10 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                   {user.role}
                 </span>
               </span>
-              <form action="/logout" method="POST">
+              {/* Sign out is header-only at lg+; below lg it moves into the
+                  mobile menu (keeps the right-side cluster small enough that
+                  document scroll width never exceeds the viewport at 768px). */}
+              <form action="/logout" method="POST" className="hidden lg:block">
                 <button
                   type="submit"
                   className="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700"
@@ -334,7 +341,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
               ref={menuButtonRef}
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="rounded-md p-2 text-slate-600 hover:bg-slate-100 sm:hidden"
+              className="rounded-md p-2 text-slate-600 hover:bg-slate-100 lg:hidden"
               aria-label="Toggle navigation"
               aria-expanded={menuOpen}
               aria-controls={menuOpen ? 'mobile-menu' : undefined}
@@ -348,7 +355,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
       </nav>
 
       {menuOpen && links.length > 0 && (
-        <ul id="mobile-menu" className="border-t border-slate-200 bg-white px-4 py-2 sm:hidden">
+        <ul id="mobile-menu" className="border-t border-slate-200 bg-white px-4 py-2 lg:hidden">
           {links.map((l) => (
             <li key={l.href}>
               <a
@@ -359,6 +366,26 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
               </a>
             </li>
           ))}
+          {user && (
+            <>
+              <li className="mt-2 flex items-center gap-2 border-t border-slate-100 pt-3">
+                <span className="text-sm font-medium text-slate-900">{user.fullName}</span>
+                <span className="rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-600">
+                  {user.role}
+                </span>
+              </li>
+              <li className="pt-2">
+                <form action="/logout" method="POST">
+                  <button
+                    type="submit"
+                    className="w-full rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700"
+                  >
+                    Sign out
+                  </button>
+                </form>
+              </li>
+            </>
+          )}
         </ul>
       )}
     </header>

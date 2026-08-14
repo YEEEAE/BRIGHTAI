@@ -2,6 +2,7 @@
 // Manager task list (manager + admin). Full create/edit/delete scope.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import { getDb } from '../../lib/db';
 import {
@@ -22,8 +23,10 @@ const tasks = db
             (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
             (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
             u.full_name AS assignee,
-            (SELECT 1 FROM task_delete_requests r
-              WHERE r.task_id = t.id AND r.status = 'pending' LIMIT 1) AS delete_pending
+            (SELECT r.status FROM task_delete_requests r
+              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_status,
+            (SELECT r.review_note FROM task_delete_requests r
+              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_note
      FROM tasks t
      LEFT JOIN users u ON u.id = t.assigned_to
      ORDER BY t.updated_at DESC
@@ -38,7 +41,8 @@ const tasks = db
     due_date: string | null;
     recurrence: string;
     assignee: string | null;
-    delete_pending: number;
+    delete_request_status: 'pending' | 'rejected' | string | null;
+    delete_request_note: string | null;
     checklist_total: number;
     checklist_completed: number;
   }[];
@@ -104,11 +108,7 @@ const tasks = db
                 <td class="whitespace-nowrap px-4 py-2.5 text-slate-600 tabular-nums">{t.progress_percent}%<span class="block text-xs text-slate-400">QC {t.checklist_completed}/{t.checklist_total} ({t.checklist_total ? Math.round((t.checklist_completed / t.checklist_total) * 100) : 0}%)</span></td>
                 <td class="px-4 py-2.5">
                   <div class="flex items-center gap-2">
-                    {t.delete_pending === 1 && (
-                      <span class="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700" title="Pending deletion request">
-                        🗑️
-                      </span>
-                    )}
+                    <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />
                     <StatusBadge status={t.status} />
                   </div>
                 </td>

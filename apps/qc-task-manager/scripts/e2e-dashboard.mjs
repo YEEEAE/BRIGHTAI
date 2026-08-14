@@ -612,6 +612,29 @@ try {
   await mobile.waitForTimeout(600);
   await mobile.screenshot({ path: join(SHOT_DIR, 'dashboard-mobile.png'), fullPage: true });
   console.log('   📸 screenshots → download/qa/dashboard-{desktop,mobile}.png');
+
+  // ─────────────────── 5. No horizontal overflow (nav regression guard) ───────────────────
+  console.log('\n── Scenario 5: document width never exceeds the viewport ──');
+  // The navbar previously overflowed at 768px (role links + username + sign
+  // out + bell all visible). The right-side cluster now collapses into the
+  // mobile menu below lg (1024px); this proves documentElement.scrollWidth
+  // never exceeds the viewport on /dashboard and /manager at the widths the
+  // acceptance criteria mandate (390 / 768 / 1440).
+  for (const width of [390, 768, 1440]) {
+    const vpPage = await browser.newPage({ viewport: { width, height: 900 } });
+    await login(vpPage, 'manager');
+    for (const path of ['/dashboard', '/manager']) {
+      await vpPage.goto(`${BASE}${path}`);
+      if (path === '/dashboard') await vpPage.waitForSelector('[data-kpi="total"]', { timeout: 15_000 });
+      else await vpPage.waitForSelector('h1:has-text("Tasks")', { timeout: 15_000 });
+      const { docWidth, vw } = await vpPage.evaluate(() => ({
+        docWidth: document.documentElement.scrollWidth,
+        vw: window.innerWidth,
+      }));
+      ok(docWidth <= vw, `5. ${path} @${width}px: docWidth ${docWidth} <= viewport ${vw}`);
+    }
+    await vpPage.close();
+  }
 } catch (err) {
   failed += 1;
   failures.push(`unhandled error: ${err.message}`);

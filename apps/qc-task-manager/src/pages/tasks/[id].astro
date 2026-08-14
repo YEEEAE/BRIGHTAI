@@ -19,13 +19,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CommentBox from '../../components/CommentBox';
 import DeleteRequestDialog from '../../components/DeleteRequestDialog';
+import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import TaskUpdatePanel from '../../components/TaskUpdatePanel';
 import AttachmentUploader from '../../components/AttachmentUploader';
 import TaskLifecycle from '../../components/TaskLifecycle';
 import AiReviewPanel from '../../components/AiReviewPanel';
-import { hasPendingDeleteRequest } from '../../lib/deleteRequests';
+import { hasPendingDeleteRequest, getDeleteRequestStatus } from '../../lib/deleteRequests';
 import {
   canViewTask,
   getTaskDetail,
@@ -154,6 +155,14 @@ const canRequestDeletion =
   canViewTask({ id: user.userId, role: user.role }, task);
 const deleteRequestPending =
   !notFound && !forbidden && !!task ? hasPendingDeleteRequest(rawId) : false;
+// The DeleteRequestDialog island owns the interactive pending badge; the
+// shared server-rendered DeleteRequestBadge here surfaces a REJECTED request
+// (with the reviewer's reason as a tooltip) so the state is visible to every
+// role — including after the dialog hands the workflow back to the button.
+const deleteRequestStatus =
+  !notFound && !forbidden && !!task ? getDeleteRequestStatus(rawId) : null;
+const deleteRequestRejected =
+  deleteRequestStatus?.status === 'rejected' ? deleteRequestStatus : null;
 
 const backHref = taskListFor(user.role);
 
@@ -260,12 +269,18 @@ function svgIcon(inner: string, cls = ''): string {
                 PDF report
               </a>
             </div>
-            <DeleteRequestDialog
-              taskId={task.id}
-              canRequest={canRequestDeletion}
-              hasPendingRequest={deleteRequestPending}
-              client:load
-            />
+            <div class="flex items-center gap-2">
+              <DeleteRequestBadge
+                status={deleteRequestRejected?.status ?? null}
+                reason={deleteRequestRejected?.reviewNote ?? null}
+              />
+              <DeleteRequestDialog
+                taskId={task.id}
+                canRequest={canRequestDeletion}
+                hasPendingRequest={deleteRequestPending}
+                client:load
+              />
+            </div>
           </div>
         </header>
 

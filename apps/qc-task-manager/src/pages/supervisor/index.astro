@@ -2,6 +2,7 @@
 // Supervisor task list (supervisor + manager + admin). Create/edit/assign scope.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import { getDb } from '../../lib/db';
 import {
@@ -21,7 +22,11 @@ const tasks = db
     `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date, t.recurrence,
             (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
             (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
-            u.full_name AS assignee
+            u.full_name AS assignee,
+            (SELECT r.status FROM task_delete_requests r
+              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_status,
+            (SELECT r.review_note FROM task_delete_requests r
+              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_note
      FROM tasks t
      LEFT JOIN users u ON u.id = t.assigned_to
      ORDER BY t.updated_at DESC
@@ -38,6 +43,8 @@ const tasks = db
     checklist_total: number;
     checklist_completed: number;
     assignee: string | null;
+    delete_request_status: 'pending' | 'rejected' | string | null;
+    delete_request_note: string | null;
   }[];
 ---
 <BaseLayout title="Tasks">
@@ -83,7 +90,10 @@ const tasks = db
                 <span class="tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
               </div>
             </div>
-            <StatusBadge status={t.status} />
+            <div class="flex shrink-0 items-center gap-2">
+              <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />
+              <StatusBadge status={t.status} />
+            </div>
           </li>
         );
       })}
