@@ -39,8 +39,8 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 14
 - [✅] Prompt 15
 - [✅] Prompt 16
-- [ ] Prompt 17
-- [ ] Prompt 18
+- [✅] Prompt 17
+- [✅] Prompt 18
 - [ ] Prompt 19
 - [ ] Prompt 20
 - [ ] Prompt 21
@@ -1220,7 +1220,7 @@ Comparison is read-only.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 When a test is finalized/approved, preserve the exact relevant reference context.
@@ -1252,7 +1252,7 @@ Never dynamically resolve historical references to current values.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement a controlled Retest workflow.
