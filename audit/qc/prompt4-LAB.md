@@ -46,9 +46,9 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 21
 - [✅] Prompt 22
 - [✅] Prompt 23
-- [ ] Prompt 24
-- [ ] Prompt 25
-- [ ] Prompt 26
+- [✅] Prompt 24
+- [✅] Prompt 25
+- [✅] Prompt 26
 - [ ] Prompt 27
 - [ ] Prompt 28
 - [ ] Prompt 29
@@ -1460,7 +1460,7 @@ Do not expose unauthorized records.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement user-specific saved laboratory views.
@@ -1491,7 +1491,7 @@ Users only see their own saved views.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement /lab/calendar.
@@ -1516,7 +1516,7 @@ Use existing calendar infrastructure if available.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement /lab/notifications.

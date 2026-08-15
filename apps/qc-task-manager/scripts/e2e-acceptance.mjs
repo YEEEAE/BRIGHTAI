@@ -30,6 +30,7 @@ const suites = [
   ['lab-calibration', 'scripts/e2e-lab-calibration.mjs'],
   ['lab-documents', 'scripts/e2e-lab-documents.mjs'],
   ['lab-acknowledgements', 'scripts/e2e-lab-acknowledgements.mjs'],
+  ['lab-calendar', 'scripts/e2e-lab-calendar.mjs'],
   ['lab-retests', 'scripts/e2e-lab-retests.mjs'],
   ['reports', 'scripts/e2e-reports.mjs'],
 ];

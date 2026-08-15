@@ -239,7 +239,7 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
         {result.items.length === 0 ? (
           <EmptyState
             title="No matching laboratory records found"
-            description={
+            hint={
               filtered
                 ? 'Try refining your search terms, searching a different entity category, or clearing the filter.'
                 : 'No laboratory records exist in the selected category.'

@@ -172,6 +172,126 @@ try {
     'saved filters: owner delete removes the row (gone)',
   );
 
+  console.log('\n■ Lab saved views (per user, structured filters)');
+  // Same ownership + validation contract as task saved filters, against the
+  // lab_saved_views table (migration 014). Payloads are structured {path,
+  // params} JSON validated against a per-page allowlist — never raw SQL.
+  const {
+    saveLabView,
+    listLabSavedViews,
+    deleteLabView,
+    labViewHref,
+    validateLabViewFilter,
+    buildLabViewFilterJson,
+  } = await import('../src/lib/lab/savedViews.ts');
+  const { POST: savedViewsPost } = await import('../src/pages/api/lab/saved-views.ts');
+
+  function savedViewsContext({ origin = 'http://qc.test', fields = {} }) {
+    const cookieMap = new Map();
+    const cookies = {
+      get(key) {
+        const value = cookieMap.get(key);
+        return value === undefined ? undefined : { value };
+      },
+      set(key, value) {
+        cookieMap.set(key, value);
+      },
+      delete(key) {
+        cookieMap.delete(key);
+      },
+    };
+    return {
+      request: new Request('http://qc.test/api/lab/saved-views', {
+        method: 'POST',
+        headers: {
+          Origin: origin,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(fields).toString(),
+      }),
+      url: new URL('http://qc.test/api/lab/saved-views'),
+      cookies,
+      clientAddress: '127.0.0.1',
+      redirect: (dest) => new Response(null, { status: 302, headers: { Location: dest } }),
+    };
+  }
+
+  const validFilterJson = JSON.stringify({
+    path: '/lab/tests',
+    params: { type: 'air', status: 'HOLD' },
+  });
+
+  // Validator: only structured, allowlisted payloads survive.
+  assert(
+    JSON.stringify(validateLabViewFilter(validFilterJson)) === validFilterJson,
+    'lab views: structured {path, params} payload passes validation',
+  );
+  assert(
+    validateLabViewFilter(JSON.stringify({ path: '/lab/unknown', params: {} })) === null,
+    'lab views: unknown target path is rejected',
+  );
+  assert(
+    validateLabViewFilter('not-json') === null,
+    'lab views: malformed JSON is rejected',
+  );
+  const cleaned = validateLabViewFilter(
+    JSON.stringify({ path: '/lab/tests', params: { status: 'FAIL', evil: 'DROP TABLE users', page: '2' } }),
+  );
+  assert(
+    cleaned !== null && cleaned.params.status === 'FAIL' && !('evil' in cleaned.params) && !('page' in cleaned.params),
+    'lab views: unknown/forbidden params are dropped, never stored',
+  );
+
+  // buildLabViewFilterJson: only allowlisted keys from the current URL survive.
+  const built = buildLabViewFilterJson(
+    '/lab/tests',
+    new URL('http://qc.test/lab/tests?type=air&page=3&csrf=x&q=lot%20A'),
+  );
+  assert(
+    built !== null &&
+      JSON.stringify(JSON.parse(built).params) === JSON.stringify({ q: 'lot A', type: 'air' }),
+    'lab views: builder keeps allowlisted params and drops page/csrf',
+  );
+  assert(buildLabViewFilterJson('/lab/unknown', new URL('http://qc.test/lab/unknown')) === null, 'lab views: builder rejects unknown pages');
+
+  // Apply href rebuilds a safe URL from stored params.
+  assert(labViewHref(validFilterJson) === '/lab/tests?type=air&status=HOLD', 'lab views: apply href rebuilds the filtered URL');
+  assert(labViewHref('garbage') === '/lab', 'lab views: invalid payload falls back to /lab');
+
+  // Unauthorized access is denied at the handler before any DB write.
+  const anonView = await savedViewsPost(
+    savedViewsContext({ fields: { action: 'save', name: 'Sneaky', filter_json: validFilterJson, next: '/lab/saved-views' } }),
+  );
+  assert(anonView.status === 401, 'lab views: unauthenticated POST is rejected with 401');
+  const crossOriginView = await savedViewsPost(
+    savedViewsContext({ origin: 'http://evil.test', fields: { action: 'save', name: 'Sneaky', filter_json: validFilterJson } }),
+  );
+  assert(crossOriginView.status === 403, 'lab views: cross-origin POST is rejected with 403');
+  assert(
+    Number(db.prepare('SELECT COUNT(*) AS n FROM lab_saved_views').get().n) === 0,
+    'lab views: denied requests never write rows',
+  );
+
+  // Happy path round trip: save → list (owner only) → apply → foreign delete
+  // denied → owner delete → gone.
+  const viewId = saveLabView(mgrRow.id, 'HOLD Tests', validFilterJson);
+  const myViews = listLabSavedViews(mgrRow.id);
+  assert(
+    myViews.some((v) => v.id === viewId && v.name === 'HOLD Tests' && v.filter_json === validFilterJson),
+    'lab views: save then list returns the row',
+  );
+  assert(listLabSavedViews(empRow.id).length === 0, 'lab views: a user only lists their own views');
+  const foreignViewDelete = deleteLabView(empRow.id, viewId);
+  assert(
+    foreignViewDelete === false && listLabSavedViews(mgrRow.id).some((v) => v.id === viewId),
+    'lab views: foreign delete is denied (owner-only)',
+  );
+  const ownerViewDelete = deleteLabView(mgrRow.id, viewId);
+  assert(
+    ownerViewDelete === true && !listLabSavedViews(mgrRow.id).some((v) => v.id === viewId),
+    'lab views: owner delete removes the row (gone)',
+  );
+
   console.log('\nDatabase-backed unit checks passed.');
 } finally {
   rmSync(tempDir, { recursive: true, force: true });

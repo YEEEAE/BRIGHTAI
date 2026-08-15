@@ -872,6 +872,41 @@ export const savedFilterSchema = z.object({
   ),
 });
 
+// ─────────────────────────── Lab Saved Views ───────────────────────────
+// POST /api/lab/saved-views — save or delete a per-user lab saved view.
+// The filter_json payload is validated at the service layer (validateLabViewFilter)
+// against a per-page param allowlist — never arbitrary SQL or query strings.
+
+export const labSavedViewSchema = z.object({
+  action: z.enum(['save', 'delete'], {
+    errorMap: () => ({ message: 'Invalid action.' }),
+  }),
+  name: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z
+      .string()
+      .trim()
+      .max(MAX_SAVED_FILTER_NAME, `View name must be ${MAX_SAVED_FILTER_NAME} characters or fewer.`)
+      .nullable(),
+  ),
+  filter_json: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z.string().max(MAX_SAVED_FILTER_JSON, 'Saved view payload is too large.').nullable(),
+  ),
+  view_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid saved view.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  next: z.preprocess(
+    (v) => (v === '' || v == null ? '/' : v),
+    z.string().max(500, 'Redirect target is too long.').nullable(),
+  ),
+});
+
 // ─────────────────────────── Task Templates ───────────────────────────
 // The structured JSON columns (checklist/evidence_requirements/finding_defaults/
 // assignment_rules) arrive from the admin form as JSON strings produced by the

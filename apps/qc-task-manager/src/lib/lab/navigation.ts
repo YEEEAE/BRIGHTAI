@@ -57,6 +57,7 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
   // Overview
   { href: '/lab', label: 'Command Center', group: 'Overview', allowed: canViewLab },
   { href: '/lab/search', label: 'Search', group: 'Overview', allowed: canViewLab },
+  { href: '/lab/saved-views', label: 'Saved Views', group: 'Overview', allowed: canViewLab },
   { href: '/lab/calendar', label: 'Calendar', group: 'Overview', allowed: canViewLab },
   { href: '/lab/notifications', label: 'Notifications', group: 'Overview', allowed: canViewLab },
   // Testing
@@ -114,6 +115,8 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/documents/[id]/versions',
   '/lab/acknowledgements',
   '/lab/acknowledgements/assign',
+  '/lab/saved-views',
+  '/lab/calendar',
 ];
 
 /**

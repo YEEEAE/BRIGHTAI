@@ -1,0 +1,284 @@
+---
+// /lab/calendar — QC Laboratory Calendar (PROMPT 25).
+//
+// Server-rendered month calendar of REAL operational dates, derived at read
+// time by lib/lab/calendar.ts (contract §14: no lab_calendar_items table —
+// every event comes from a stored date in another lab module, nothing is
+// invented):
+//   * equipment calibration due dates (latest-record COALESCE rule)
+//   * equipment maintenance (maintenance_date / completed_date)
+//   * SOP + WI review deadlines (review_due_date of live documents)
+//   * document acknowledgement deadlines (parent document's real review date)
+//   * supported test/retest dates (created / submitted / approved lifecycle)
+// Clicking any event opens its source record (page reference §54). The page
+// is pure server HTML — zero client JS (CSP-safe), mobile-first with a list
+// view under md and the month grid from md up.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
+import { labNavForRole } from '../../lib/lab/navigation';
+import {
+  LAB_CALENDAR_LOOKAHEAD_DAYS,
+  LAB_CALENDAR_TYPE_LABELS,
+  labCalendarData,
+  type LabCalendarEventType,
+} from '../../lib/lab/calendar';
+import { formatDueDate } from '../../lib/format';
+import type { Role } from '../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+const navItems = labNavForRole(role);
+
+// `?month=YYYY-MM` selects the viewed month; anything else falls back to now.
+const monthParam = Astro.url.searchParams.get('month');
+
+let dataError: string | null = null;
+let calendar: ReturnType<typeof labCalendarData> | null = null;
+try {
+  calendar = labCalendarData({ monthParam, role, userId: user.userId });
+} catch (err) {
+  console.error('[lab] calendar query failure', err);
+  dataError = 'Could not load the laboratory calendar. Try reloading — if the problem persists, contact an administrator.';
+}
+
+// Static Tailwind classes per event type (no dynamic class construction).
+const TYPE_BADGE: Record<LabCalendarEventType, string> = {
+  calibration: 'bg-amber-50 text-amber-800 border-amber-200',
+  maintenance: 'bg-teal-50 text-teal-800 border-teal-200',
+  sop_review: 'bg-brand-50 text-brand-700 border-brand-100',
+  wi_review: 'bg-violet-50 text-violet-800 border-violet-200',
+  acknowledgement: 'bg-rose-50 text-rose-800 border-rose-200',
+  test_created: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+  test_submitted: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+  test_approved: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+  retest_created: 'bg-cyan-50 text-cyan-800 border-cyan-200',
+};
+
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+// Mobile list view: group the month's events by date (real dates only).
+const eventsByDate = new Map<string, { iso: string; events: NonNullable<typeof calendar>['events'] }>();
+if (calendar) {
+  for (const ev of calendar.events) {
+    const group = eventsByDate.get(ev.date) ?? { iso: ev.date, events: [] };
+    group.events.push(ev);
+    eventsByDate.set(ev.date, group);
+  }
+}
+const groupedEvents = calendar ? [...eventsByDate.values()] : [];
+---
+
+<BaseLayout title="Laboratory Calendar">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Calendar' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Overview</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Calendar</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Real operational dates only — equipment calibration and maintenance, SOP/WI review deadlines, document
+        acknowledgement deadlines, and supported test/retest dates. Every event is derived from a stored date in its
+        source module; nothing is invented. Click an event to open its source record.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/calendar" />
+
+    {dataError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {dataError}
+      </div>
+    )}
+
+    {!dataError && calendar && (
+      <>
+        <!-- Summary: overdue + upcoming deadline windows -->
+        <section aria-label="Calendar summary" class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Overdue deadlines</p>
+            <p class="mt-1 text-2xl font-semibold text-slate-900">{calendar.overdue.length}</p>
+            <p class="mt-0.5 text-xs text-slate-500">Past-due calibration, maintenance, review or acknowledgement dates</p>
+          </div>
+          <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Due within {LAB_CALENDAR_LOOKAHEAD_DAYS} days</p>
+            <p class="mt-1 text-2xl font-semibold text-slate-900">{calendar.upcoming.length}</p>
+            <p class="mt-0.5 text-xs text-slate-500">From today ({formatDueDate(calendar.today)})</p>
+          </div>
+          <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Events in view</p>
+            <p class="mt-1 text-2xl font-semibold text-slate-900">{calendar.events.length}</p>
+            <p class="mt-0.5 text-xs text-slate-500">All kinds across {calendar.month.label}</p>
+          </div>
+        </section>
+
+        {calendar.events.length === 0 && (
+          <EmptyState
+            title="No events in this month"
+            hint="There are no stored laboratory dates in the visible grid — pick another month, or check the registers directly."
+            ctaHref="/lab"
+            ctaLabel="Back to Command Center"
+          />
+        )}
+
+        {calendar.overdue.length > 0 && (
+          <section aria-label="Overdue deadlines" class="rounded-xl border border-red-200 bg-red-50/50 p-4">
+            <h2 class="text-sm font-semibold text-red-800">Overdue — needs attention</h2>
+            <ul class="mt-2 space-y-1.5">
+              {calendar.overdue.slice(0, 8).map((ev) => (
+                <li class="flex flex-wrap items-baseline gap-x-2 text-sm">
+                  <a href={ev.href} class="font-medium text-red-800 underline decoration-red-300 hover:decoration-red-600">
+                    {ev.label}
+                  </a>
+                  <span class="text-xs text-red-700">
+                    {LAB_CALENDAR_TYPE_LABELS[ev.type]} · was due {formatDueDate(ev.date)}
+                  </span>
+                </li>
+              ))}
+              {calendar.overdue.length > 8 && (
+                <li class="text-xs text-red-700">…and {calendar.overdue.length - 8} more overdue item(s) in the registers.</li>
+              )}
+            </ul>
+          </section>
+        )}
+
+        {calendar.events.length > 0 && (
+          <>
+            <!-- Month navigation -->
+            <nav aria-label="Calendar months" class="flex items-center justify-between gap-2">
+              <a
+                href={calendar.month.prev}
+                class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              >
+                ← Previous
+              </a>
+              <h2 class="text-lg font-semibold text-slate-900">{calendar.month.label}</h2>
+              <a
+                href={calendar.month.next}
+                class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              >
+                Next →
+              </a>
+            </nav>
+
+            <!-- Mobile / tablet: list view (the grid needs md+) -->
+            <section aria-label="Calendar events by date" class="md:hidden">
+              <ul class="space-y-3">
+                {groupedEvents.map((group) => (
+                  <li class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+                    <p class={`text-xs font-semibold uppercase tracking-wide ${group.iso === calendar!.today ? 'text-brand-600' : 'text-slate-500'}`}>
+                      {formatDueDate(group.iso)}{group.iso === calendar!.today ? ' · today' : ''}
+                    </p>
+                    <ul class="mt-2 space-y-1.5">
+                      {group.events.map((ev) => (
+                        <li>
+                          <a
+                            href={ev.href}
+                            class={`block rounded-md border px-2.5 py-1.5 text-sm ${TYPE_BADGE[ev.type]} hover:opacity-80`}
+                          >
+                            <span class="font-medium">{ev.label}</span>
+                            <span class="block text-xs opacity-80">{LAB_CALENDAR_TYPE_LABELS[ev.type]} · {ev.detail}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <!-- Desktop: month grid (7 columns × 6 rows, Monday-first) -->
+            <section aria-label="Calendar month grid" class="hidden md:block">
+              <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                <div class="grid grid-cols-7 border-b border-slate-200 bg-slate-50">
+                  {WEEKDAYS.map((wd) => (
+                    <div class="px-2 py-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      {wd}
+                    </div>
+                  ))}
+                </div>
+                <div class="grid grid-cols-7">
+                  {calendar.month.days.map((day) => (
+                    <div
+                      class={`min-h-24 border-b border-r border-slate-100 p-1.5 ${day.inMonth ? 'bg-white' : 'bg-slate-50/60'}`}
+                    >
+                      <p
+                        class={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
+                          day.isToday
+                            ? 'bg-brand-600 text-white'
+                            : day.inMonth
+                              ? 'text-slate-700'
+                              : 'text-slate-400'
+                        }`}
+                      >
+                        {Number(day.iso.slice(8, 10))}
+                      </p>
+                      {day.events.length > 0 && (
+                        <ul class="mt-1 space-y-1">
+                          {day.events.slice(0, 3).map((ev) => (
+                            <li>
+                              <a
+                                href={ev.href}
+                                title={`${ev.label} — ${LAB_CALENDAR_TYPE_LABELS[ev.type]} · ${ev.detail}`}
+                                class={`block rounded border px-1.5 py-0.5 text-xs ${TYPE_BADGE[ev.type]} hover:opacity-80`}
+                              >
+                                <span class="block truncate">{ev.label}</span>
+                                <span class="block truncate text-[10px] leading-tight opacity-75">{ev.detail}</span>
+                              </a>
+                            </li>
+                          ))}
+                          {day.events.length > 3 && (
+                            <li class="px-1.5 text-xs text-slate-500">+{day.events.length - 3} more</li>
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <!-- Legend -->
+            <section aria-label="Event legend" class="flex flex-wrap gap-2">
+              {Object.entries(LAB_CALENDAR_TYPE_LABELS).map(([type, label]) => (
+                <span
+                  class={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${TYPE_BADGE[type as LabCalendarEventType]}`}
+                >
+                  {label}
+                </span>
+              ))}
+            </section>
+          </>
+        )}
+
+        {calendar.events.length > 0 && calendar.upcoming.length > 0 && (
+          <section aria-label="Upcoming deadlines" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 class="text-sm font-semibold text-slate-900">Upcoming deadlines (next {LAB_CALENDAR_LOOKAHEAD_DAYS} days)</h2>
+            <ul class="mt-2 space-y-1.5">
+              {calendar.upcoming.slice(0, 10).map((ev) => (
+                <li class="flex flex-wrap items-baseline gap-x-2 text-sm">
+                  <a href={ev.href} class="font-medium text-brand-700 underline decoration-brand-100 hover:decoration-brand-600">
+                    {ev.label}
+                  </a>
+                  <span class="text-xs text-slate-500">
+                    {LAB_CALENDAR_TYPE_LABELS[ev.type]} · due {formatDueDate(ev.date)}
+                  </span>
+                </li>
+              ))}
+              {calendar.upcoming.length > 10 && (
+                <li class="text-xs text-slate-500">…and {calendar.upcoming.length - 10} more in the window.</li>
+              )}
+            </ul>
+          </section>
+        )}
+      </>
+    )}
+  </div>
+</BaseLayout>

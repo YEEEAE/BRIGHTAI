@@ -22,6 +22,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import EmptyState from '../../../components/EmptyState.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import LabSaveViewForm from '../../../components/lab/LabSaveViewForm.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import {
   hasLabAcknowledgementFilters,
@@ -226,6 +227,8 @@ function fmtDate(d: string | null | undefined): string {
             <a href="/lab/acknowledgements" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Reset</a>
           </div>
         </form>
+
+        <LabSaveViewForm path="/lab/acknowledgements" />
 
         {versionScoped && (
           <p class="rounded-lg border border-brand-100 bg-brand-50/50 px-4 py-2.5 text-sm text-slate-700">
