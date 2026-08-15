@@ -43,7 +43,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 18
 - [✅] Prompt 19
 - [✅] Prompt 20
-- [ ] Prompt 21
+- [✅] Prompt 21
 - [ ] Prompt 22
 - [ ] Prompt 23
 - [ ] Prompt 24
@@ -1360,7 +1360,7 @@ Do not build a second quality-management workflow.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement controlled-document acknowledgement.

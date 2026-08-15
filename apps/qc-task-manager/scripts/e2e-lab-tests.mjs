@@ -83,6 +83,16 @@ db.prepare(
    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 ).run(1, equipmentId, 'E2E Rig', 'EQ-E2E', 'E2E-SN-1', 'Lab', 'COMPLIANT', 'CAL-2026-001');
 
+// A QC Finding (the existing NCR-like entity) to link a test to (PROMPT 20).
+db.prepare('INSERT INTO tasks (title, created_by) VALUES (?, ?)').run('E2E non-conformance', managerId);
+const taskId = Number(db.prepare("SELECT id FROM tasks WHERE title='E2E non-conformance'").get().id);
+db.prepare(
+  `INSERT INTO qc_findings (finding_number, task_id, inspection_type, classification, severity,
+     risk_description, owner, due_date, status, created_by)
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'OPEN', ?)`,
+).run('NCR-E2E-0001', taskId, 'lab_review', 'major', 'high', 'Sample burst above limit', managerId, '2026-01-31', managerId);
+const findingId = Number(db.prepare("SELECT id FROM qc_findings WHERE finding_number='NCR-E2E-0001'").get().id);
+
 // ── A. Auth wall ──
 {
   const ctx = await browser.newContext();
@@ -284,6 +294,68 @@ db.prepare(
   const nfText = await nf.locator('body').textContent();
   ok(/not found/i.test(nfText), 'print: bogus id → not found');
   await nf.close();
+}
+
+// ── J. Investigation / NCR / CAPA hooks: link a test to a QC Finding ──
+{
+  // RBAC wall: an employee (who may view own tests) gets NO link affordance.
+  const emp = await browser.newPage();
+  await login(emp, 'employee');
+  await emp.goto(`${BASE}/lab/tests/3`, { waitUntil: 'domcontentloaded' });
+  await emp.locator('h2', { hasText: 'Investigation / NCR / CAPA Links' }).waitFor({ timeout: 10_000 });
+  ok((await emp.locator('main').innerText()).includes('No linked findings.'), 'links: empty state shown');
+  const empHasForm = await emp.locator('select[name="finding_id"]').count();
+  ok(empHasForm === 0, 'links: employee sees no link form');
+  await emp.close();
+
+  // Supervisor links the DRAFT test to the finding via the real form.
+  const page = await browser.newPage();
+  await login(page, 'supervisor');
+  await page.goto(`${BASE}/lab/tests/2`, { waitUntil: 'domcontentloaded' });
+  await page.locator('select[name="finding_id"]').waitFor({ timeout: 10_000 });
+  await page.selectOption('select[name="finding_id"]', String(findingId));
+  await page.fill('input[name="note"]', 'burst on S03');
+  await Promise.all([
+    page.waitForURL((u) => u.pathname === '/lab/tests/2', { timeout: 15_000 }),
+    page.locator('button:has-text("Link Finding")').click(),
+  ]);
+  const linkedText = await page.locator('main').innerText();
+  ok(linkedText.includes('NCR-E2E-0001'), 'links: linked finding number shown');
+  ok(linkedText.includes('burst on S03'), 'links: note shown');
+  ok(linkedText.includes('Unlink'), 'links: unlink affordance shown');
+  const linkHref = await page.locator('a:has-text("NCR-E2E-0001")').getAttribute('href');
+  ok(linkHref === `/findings/${findingId}`, 'links: link targets the existing finding page');
+  const linkRow = db.prepare('SELECT COUNT(*) AS n FROM lab_test_findings WHERE test_id = 2 AND finding_id = ?').get(findingId).n;
+  ok(Number(linkRow) === 1, 'links: lab_test_findings row persisted');
+  const linkAudit = db.prepare("SELECT COUNT(*) AS n FROM qc_audit_log WHERE entity_type='LAB_TEST' AND entity_id=2 AND action='LINK' AND note LIKE '%NCR-E2E-0001%'").get().n;
+  ok(Number(linkAudit) >= 1, 'links: LAB_TEST/LINK audit row written');
+
+  // The linked finding is excluded from the picker.
+  const optionText = await page.locator('select[name="finding_id"]').textContent();
+  ok(!optionText.includes('NCR-E2E-0001'), 'links: linked finding excluded from the picker');
+
+  // Unlink removes the row + writes the UNLINK audit row.
+  await Promise.all([
+    page.waitForURL((u) => u.pathname === '/lab/tests/2', { timeout: 15_000 }),
+    page.locator('button:has-text("Unlink")').first().click(),
+  ]);
+  const unlinkedText = await page.locator('main').innerText();
+  ok(unlinkedText.includes('No linked findings.'), 'links: empty state after unlink');
+  const linkRowAfter = db.prepare('SELECT COUNT(*) AS n FROM lab_test_findings WHERE test_id = 2 AND finding_id = ?').get(findingId).n;
+  ok(Number(linkRowAfter) === 0, 'links: link row removed');
+  const unlinkAudit = db.prepare("SELECT COUNT(*) AS n FROM qc_audit_log WHERE entity_type='LAB_TEST' AND entity_id=2 AND action='UNLINK' AND note LIKE '%NCR-E2E-0001%'").get().n;
+  ok(Number(unlinkAudit) >= 1, 'links: LAB_TEST/UNLINK audit row written');
+
+  // The controlled print of an approved record carries the linked finding.
+  db.prepare(
+    `INSERT INTO lab_test_findings (test_id, finding_id, note, created_by)
+     VALUES (1, ?, 'post-approval traceability', ?)`,
+  ).run(findingId, managerId);
+  await page.goto(`${BASE}/lab/tests/1/print`, { waitUntil: 'domcontentloaded' });
+  await page.locator('.print-title', { hasText: 'QC Laboratory' }).waitFor({ timeout: 10_000 });
+  const printText = await page.locator('body').textContent();
+  ok(printText.includes('NCR-E2E-0001'), 'print: linked finding printed on the controlled record');
+  await page.close();
 }
 
 await browser.close();

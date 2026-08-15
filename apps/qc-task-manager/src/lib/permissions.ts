@@ -318,6 +318,13 @@ export function canCreateLabRetest(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
 }
 
+// ── Lab test ↔ finding traceability links (PROMPT 20) ──
+/** Linking a lab test to a QC Finding is a quality-significant mutation —
+ *  same supervisor+ bar as retest creation (D-5). */
+export function canLinkLabTestToFinding(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+
 // ── Reporting / exports / dashboards ──
 export function canViewLabReports(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');

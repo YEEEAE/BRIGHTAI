@@ -37,6 +37,7 @@ import { handleLabTemplateCreatePost, handleLabTemplateEditPost } from './lib/la
 import { handleLabEquipmentCreatePost, handleLabEquipmentEditPost } from './lib/lab/equipment';
 import { handleLabCalibrationCreatePost, handleLabCalibrationEditPost } from './lib/lab/calibration';
 import { handleLabRetestCreatePost } from './lib/lab/retests';
+import { handleLabTestFindingLinkPost, handleLabTestFindingUnlinkPost } from './lib/lab/findingLinks';
 import { handleLabDocumentCreatePost, handleLabDocumentEditPost } from './lib/lab/documents';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
@@ -243,6 +244,17 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   // re-checks the supervisor+ create permission + CSRF + shared Zod validation.
   if (context.request.method === 'POST' && pathname === '/lab/retests/new') {
     return handleLabRetestCreatePost(context);
+  }
+
+  // POST /lab/tests/[id]/links + /lab/tests/[id]/links/unlink — lab test ↔ QC
+  // Finding traceability links (PROMPT 20). The test id comes from the URL
+  // segment only; the finding id + optional note from the form. Each handler
+  // re-checks the supervisor+ link permission + CSRF + shared Zod validation.
+  if (context.request.method === 'POST') {
+    const testLink = pathname.match(/^\/lab\/tests\/(\d+)\/links$/);
+    if (testLink) return handleLabTestFindingLinkPost(context, Number(testLink[1]));
+    const testUnlink = pathname.match(/^\/lab\/tests\/(\d+)\/links\/unlink$/);
+    if (testUnlink) return handleLabTestFindingUnlinkPost(context, Number(testUnlink[1]));
   }
 
   // POST /lab/documents/new + /lab/documents/[id]/edit — SOP/WI Document

@@ -594,6 +594,15 @@ CREATE TABLE IF NOT EXISTS lab_test_retests (
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+CREATE TABLE IF NOT EXISTS lab_test_findings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  test_id INTEGER NOT NULL REFERENCES lab_test_records(id) ON DELETE RESTRICT,
+  finding_id INTEGER NOT NULL REFERENCES qc_findings(id) ON DELETE RESTRICT,
+  note TEXT,
+  created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE (test_id, finding_id)
+);
 CREATE TABLE IF NOT EXISTS lab_test_equipment_snapshots (
   test_id INTEGER NOT NULL UNIQUE REFERENCES lab_test_records(id) ON DELETE CASCADE,
   equipment_id INTEGER REFERENCES lab_equipment(id) ON DELETE SET NULL,
@@ -693,6 +702,8 @@ CREATE INDEX IF NOT EXISTS idx_lab_tests_sampling_area ON lab_test_records(sampl
 CREATE INDEX IF NOT EXISTS idx_lab_samples_test ON lab_test_samples(test_id, sample_no);
 CREATE INDEX IF NOT EXISTS idx_lab_retests_original ON lab_test_retests(original_test_id);
 CREATE INDEX IF NOT EXISTS idx_lab_retests_new ON lab_test_retests(new_test_id);
+CREATE INDEX IF NOT EXISTS idx_lab_test_findings_test ON lab_test_findings(test_id);
+CREATE INDEX IF NOT EXISTS idx_lab_test_findings_finding ON lab_test_findings(finding_id);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_code ON lab_documents(code);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_type_status ON lab_documents(type, status);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_review_due ON lab_documents(review_due_date);

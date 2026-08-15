@@ -20,6 +20,7 @@ import { requireCsrf } from '../api-security';
 import { canCreateLabTest } from '../permissions';
 import { deriveCalibrationState, type LabCalibrationState } from './overview';
 import { labParametersSnapshotJson } from './policy';
+import { getLabTestFindingLinks, type LabTestFindingLink } from './findingLinks';
 import type { LabTestSample, LabTestType } from '../types';
 
 /** Lab audit actions allowed by the extended qc_audit_log CHECK (migration 011). */
@@ -467,6 +468,7 @@ export interface LabTestView {
   templateSnapshot: Record<string, unknown> | null;
   parametersSnapshot: Record<string, unknown> | null;
   retests: LabTestRetestHistoryRow[];
+  findingLinks: LabTestFindingLink[];
   relatedQuality: Record<string, unknown>[];
   timeline: Record<string, unknown>[];
 }
@@ -501,6 +503,7 @@ export function loadLabTestView(id: number, allowed: boolean): LabTestView {
       templateSnapshot: null,
       parametersSnapshot: null,
       retests: [],
+      findingLinks: [],
       relatedQuality: [],
       timeline: [],
     };
@@ -516,6 +519,7 @@ export function loadLabTestView(id: number, allowed: boolean): LabTestView {
       templateSnapshot: null,
       parametersSnapshot: null,
       retests: [],
+      findingLinks: [],
       relatedQuality: [],
       timeline: [],
     };
@@ -529,6 +533,7 @@ export function loadLabTestView(id: number, allowed: boolean): LabTestView {
     templateSnapshot: parseJsonObject(record.template_snapshot_json),
     parametersSnapshot: parseJsonObject(record.parameters_snapshot_json),
     retests: getLabTestRetestHistory(id),
+    findingLinks: getLabTestFindingLinks(id),
     relatedQuality: getLabTestRelatedQualityEntities(id),
     timeline: getLabTestAuditTimeline(id),
   };

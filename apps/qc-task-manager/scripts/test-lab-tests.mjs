@@ -67,6 +67,7 @@ try {
   const search = await import('../src/lib/lab/testSearch.ts');
   const exp = await import('../src/lib/lab/testExport.ts');
   const tests = await import('../src/lib/lab/tests.ts');
+  const links = await import('../src/lib/lab/findingLinks.ts');
 
   const db = getDb();
   const employee = db.prepare("SELECT id FROM users WHERE username = 'employee'").get();
@@ -451,6 +452,111 @@ try {
       1,
       'trace: single canonical record (no duplication)',
     );
+  }
+
+  // ── 10. Investigation / NCR / CAPA hooks (migration 021, PROMPT 20) ──
+  console.log('\n■ test ↔ finding traceability links (findingLinks)');
+  {
+    // Existing quality entities are used as-is: a task + a QC Finding (the
+    // NCR-like entity). No second quality workflow is built.
+    const task = db.prepare('INSERT INTO tasks (title, created_by) VALUES (?, ?)').run('Non-conformance investigation', managerId);
+    const taskId = Number(task.lastInsertRowid);
+    const finding = db.prepare(
+      `INSERT INTO qc_findings (finding_number, task_id, inspection_type, classification, severity,
+         risk_description, requirement_reference, owner, due_date, status, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).run('NCR-2026-00001', taskId, 'lab_review', 'major', 'high', 'Sample S03 burst pressure above limit', 'QC-REQ-1', managerId, '2026-01-31', 'OPEN', managerId);
+    const findingId = Number(finding.lastInsertRowid);
+    const second = db.prepare(
+      `INSERT INTO qc_findings (finding_number, task_id, inspection_type, classification, severity,
+         risk_description, owner, status, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).run('NCR-2026-00002', taskId, 'audit', 'minor', 'low', 'Cosmetic label defect', managerId, 'CLOSED', managerId);
+    const secondFindingId = Number(second.lastInsertRowid);
+
+    eq(links.getLabTestFindingLinks(2).length, 0, 'links: none by default');
+    const options = links.getLabTestFindingLinkOptions(2);
+    ok(options.some((o) => o.id === findingId && o.finding_number === 'NCR-2026-00001'), 'links: finding is available to link');
+    ok(options.some((o) => o.id === secondFindingId), 'links: closed finding still selectable (traceability)');
+    ok(!options.some((o) => o.id === 999999), 'links: unknown finding not offered');
+
+    // Linking is transactional and writes the LAB_TEST/LINK audit row.
+    links.linkLabTestToFinding({ actorId: managerId, testId: 2, findingId, note: 'burst on S03' });
+    eq(Number(db.prepare('SELECT COUNT(*) AS n FROM lab_test_findings WHERE test_id = 2 AND finding_id = ?').get(findingId).n), 1, 'links: row stored');
+    const linked = links.getLabTestFindingLinks(2);
+    eq(linked.length, 1, 'links: resolved link surfaced');
+    eq(linked[0].finding_number, 'NCR-2026-00001', 'links: finding number resolved');
+    eq(linked[0].classification, 'major', 'links: classification resolved');
+    eq(linked[0].status, 'OPEN', 'links: status resolved');
+    eq(linked[0].task_title, 'Non-conformance investigation', 'links: owning task title resolved');
+    eq(linked[0].note, 'burst on S03', 'links: note carried');
+    eq(linked[0].href, `/findings/${findingId}`, 'links: href targets the existing finding page');
+    ok(linked[0].linked_by_name && linked[0].linked_by_name.length > 0, 'links: linked-by resolved');
+    const linkAudit = tests.getLabTestRelatedQualityEntities(2);
+    ok(linkAudit.some((e) => e.action === 'LINK' && String(e.note).includes('NCR-2026-00001')), 'links: LAB_TEST/LINK audit row written');
+
+    // The loader surfaces links in the shared view (details + print).
+    const vLinks = tests.loadLabTestView(2, true);
+    eq(vLinks.findingLinks.length, 1, 'load: findingLinks carried into view');
+    eq(vLinks.findingLinks[0].finding_number, 'NCR-2026-00001', 'load: findingLinks resolved in view');
+
+    // After linking, the finding is no longer offered for this test.
+    ok(!links.getLabTestFindingLinkOptions(2).some((o) => o.id === findingId), 'links: linked finding excluded from options');
+
+    // Duplicate links are refused; unlink removes the row + writes UNLINK.
+    let dupBlocked = false;
+    try {
+      links.linkLabTestToFinding({ actorId: managerId, testId: 2, findingId, note: null });
+    } catch {
+      dupBlocked = true;
+    }
+    ok(dupBlocked, 'links: duplicate link refused');
+    links.unlinkLabTestFromFinding({ actorId: managerId, testId: 2, findingId });
+    eq(links.getLabTestFindingLinks(2).length, 0, 'links: unlinked');
+    ok(tests.getLabTestRelatedQualityEntities(2).some((e) => e.action === 'UNLINK'), 'links: LAB_TEST/UNLINK audit row written');
+    let unlinkTwiceBlocked = false;
+    try {
+      links.unlinkLabTestFromFinding({ actorId: managerId, testId: 2, findingId });
+    } catch {
+      unlinkTwiceBlocked = true;
+    }
+    ok(unlinkTwiceBlocked, 'links: unlink of a missing link refused');
+
+    // RESTRICT protects both sides: a linked finding or test cannot be deleted.
+    links.linkLabTestToFinding({ actorId: managerId, testId: 2, findingId, note: null });
+    let findingDeleteBlocked = false;
+    try {
+      db.prepare('DELETE FROM qc_findings WHERE id = ?').run(findingId);
+    } catch {
+      findingDeleteBlocked = true;
+    }
+    ok(findingDeleteBlocked, 'links: RESTRICT blocks deleting a linked finding');
+    let testDeleteBlocked = false;
+    try {
+      db.prepare('DELETE FROM lab_test_records WHERE id = 2').run();
+    } catch {
+      testDeleteBlocked = true;
+    }
+    ok(testDeleteBlocked, 'links: RESTRICT blocks deleting a linked test');
+    eq(links.getLabTestFindingLinks(2).length, 1, 'links: link intact after blocked deletes');
+
+    // Invalid ids are refused by the service layer.
+    let badLinkBlocked = false;
+    try {
+      links.linkLabTestToFinding({ actorId: managerId, testId: 2, findingId: 999999, note: null });
+    } catch {
+      badLinkBlocked = true;
+    }
+    ok(badLinkBlocked, 'links: unknown finding refused');
+
+    // Shared Zod schema: coerces numeric ids, rejects junk, empty note → null.
+    const { labTestFindingLinkSchema } = await import('../src/lib/validation.ts');
+    const bad = labTestFindingLinkSchema.safeParse({ finding_id: 'not-a-number', note: '' });
+    eq(bad.success, false, 'links: schema rejects non-numeric finding id');
+    const good = labTestFindingLinkSchema.safeParse({ finding_id: '12', note: '' });
+    ok(good.success && good.data.finding_id === 12 && good.data.note === null, 'links: schema coerces id + empty note → null');
+    const tooLong = labTestFindingLinkSchema.safeParse({ finding_id: '12', note: 'x'.repeat(5001) });
+    eq(tooLong.success, false, 'links: schema rejects over-long note');
   }
 
   console.log(`\n${passed} passed, ${failed} failed`);

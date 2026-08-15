@@ -250,6 +250,41 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
         </section>
       ) : null}
 
+      {/* Related Investigation / NCR / CAPA links */}
+      {view.findingLinks.length > 0 ? (
+        <section class="print-section">
+          <div class="print-section-title">Related Findings (NCR / CAPA)</div>
+          <div class="print-section-body">
+            <table>
+              <thead>
+                <tr>
+                  <th>Finding</th>
+                  <th>Classification</th>
+                  <th>Severity</th>
+                  <th>Status</th>
+                  <th>Note</th>
+                  <th>Linked By</th>
+                  <th>Linked At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {view.findingLinks.map((link) => (
+                  <tr>
+                    <td>{link.finding_number}</td>
+                    <td>{link.classification}</td>
+                    <td>{link.severity}</td>
+                    <td>{link.status}</td>
+                    <td>{link.note ?? '—'}</td>
+                    <td>{link.linked_by_name}</td>
+                    <td>{link.created_at}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+
       {/* Final Result */}
       <section class="print-section">
         <div class="print-section-title">Final Result</div>

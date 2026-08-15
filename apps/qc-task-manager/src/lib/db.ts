@@ -51,6 +51,7 @@ import labTemplateEquipmentSql from '../../db/migrations/017_lab_template_equipm
 import labEquipmentCalibrationStatusSql from '../../db/migrations/018_lab_equipment_calibration_status.sql?raw';
 import labRetestOriginalSnapshotSql from '../../db/migrations/019_lab_retest_original_snapshot.sql?raw';
 import labSampleStatusSql from '../../db/migrations/020_lab_sample_status.sql?raw';
+import labTestFindingsSql from '../../db/migrations/021_lab_test_findings.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -121,6 +122,7 @@ const REQUIRED_TABLES = [
   'lab_test_records',
   'lab_test_samples',
   'lab_test_retests',
+  'lab_test_findings',
   'lab_test_equipment_snapshots',
   'lab_test_document_snapshots',
   'lab_documents',
@@ -200,6 +202,8 @@ const REQUIRED_INDEXES = [
   'idx_lab_samples_test',
   'idx_lab_retests_original',
   'idx_lab_retests_new',
+  'idx_lab_test_findings_test',
+  'idx_lab_test_findings_finding',
   'idx_lab_documents_code',
   'idx_lab_documents_type_status',
   'idx_lab_documents_review_due',
@@ -277,6 +281,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '018_lab_equipment_calibration_status.sql', source: labEquipmentCalibrationStatusSql },
       { file: '019_lab_retest_original_snapshot.sql', source: labRetestOriginalSnapshotSql },
       { file: '020_lab_sample_status.sql', source: labSampleStatusSql },
+      { file: '021_lab_test_findings.sql', source: labTestFindingsSql },
     ],
   });
   backfillAuditChain(db);

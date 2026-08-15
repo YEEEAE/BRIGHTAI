@@ -1124,6 +1124,25 @@ export const labRetestSchema = z
   })
   .strict();
 
+/**
+ * Lab test ↔ QC Finding link (PROMPT 20). The finding id comes from the form
+ * body and must be a positive integer; the note is free-form but bounded.
+ * The SAME schema validates both link and unlink POSTs (unlink ignores the
+ * note). `.strict()` rejects unknown keys as a mass-assignment guard.
+ */
+export const labTestFindingLinkSchema = z
+  .object({
+    finding_id: z.preprocess(
+      (v) => (v === '' || v == null ? NaN : Number(v)),
+      z.number({ errorMap: () => ({ message: 'A valid finding is required.' }) }).int().positive(),
+    ),
+    note: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_REMARKS_MAX, `Note must be ${LAB_REMARKS_MAX} characters or fewer.`).nullable(),
+    ),
+  })
+  .strict();
+
 /** Instantiate a template into a task. */
 
 export const templateInstantiateSchema = z.object({

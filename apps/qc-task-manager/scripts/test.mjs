@@ -873,9 +873,9 @@ try {
   const users = check.prepare('SELECT COUNT(*) AS n FROM users').get().n;
   ok(users === 1, 'init-db: user data preserved (1 row)');
   const tables = check.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all().map((r) => r.name);
-  ok(tables.length === 47, `init-db: application + migration metadata tables applied (got ${tables.length})`);
+  ok(tables.length === 48, `init-db: application + migration metadata tables applied (got ${tables.length})`);
   const migrationVersion = check.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version;
-  ok(migrationVersion === 20, 'init-db: schema version recorded as 20');
+  ok(migrationVersion === 21, 'init-db: schema version recorded as 21');
   const fk = check.prepare('PRAGMA foreign_key_check').all();
   ok(fk.length === 0, 'init-db: no foreign-key violations after migration');
   check.close();
