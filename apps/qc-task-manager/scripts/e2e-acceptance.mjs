@@ -27,6 +27,7 @@ const suites = [
   ['lab-products', 'scripts/e2e-lab-products.mjs'],
   ['lab-equipment', 'scripts/e2e-lab-equipment.mjs'],
   ['lab-maintenance', 'scripts/e2e-lab-maintenance.mjs'],
+  ['lab-calibration', 'scripts/e2e-lab-calibration.mjs'],
   ['reports', 'scripts/e2e-reports.mjs'],
 ];
 

@@ -35,6 +35,7 @@ import { handleLabTestFormPost } from './lib/lab/tests';
 import { handleLabProductCreatePost, handleLabProductEditPost } from './lib/lab/products';
 import { handleLabTemplateCreatePost, handleLabTemplateEditPost } from './lib/lab/templates';
 import { handleLabEquipmentCreatePost, handleLabEquipmentEditPost } from './lib/lab/equipment';
+import { handleLabCalibrationCreatePost, handleLabCalibrationEditPost } from './lib/lab/calibration';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
@@ -218,6 +219,20 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     const equipmentEdit = pathname.match(/^\/lab\/equipment\/(\d+)\/edit$/);
     if (equipmentEdit) {
       return handleLabEquipmentEditPost(context, Number(equipmentEdit[1]));
+    }
+  }
+
+  // POST /lab/calibration/new + /lab/calibration/[id]/edit — Calibration
+  // Register form (PROMPT 37). Same short-circuit pattern; the calibration id
+  // comes from the path segment only (never the body), and the handler
+  // re-checks the create/edit permission + CSRF + shared Zod validation.
+  if (context.request.method === 'POST' && pathname === '/lab/calibration/new') {
+    return handleLabCalibrationCreatePost(context);
+  }
+  if (context.request.method === 'POST') {
+    const calibrationEdit = pathname.match(/^\/lab\/calibration\/(\d+)\/edit$/);
+    if (calibrationEdit) {
+      return handleLabCalibrationEditPost(context, Number(calibrationEdit[1]));
     }
   }
 

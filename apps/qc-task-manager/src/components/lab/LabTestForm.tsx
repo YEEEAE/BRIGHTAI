@@ -353,6 +353,7 @@ export default function LabTestForm({
     DUE_SOON: 'Calibration: DUE SOON',
     DUE_TODAY: 'Calibration: DUE TODAY',
     OVERDUE: 'Calibration: OVERDUE',
+    NOT_COMPLIANT: 'Calibration: NOT COMPLIANT',
     UNKNOWN: 'Calibration: UNKNOWN',
   };
 

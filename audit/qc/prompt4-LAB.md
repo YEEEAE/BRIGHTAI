@@ -36,7 +36,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 11
 - [✅] Prompt 12
 - [✅] Prompt 13
-- [ ] Prompt 14
+- [✅] Prompt 14
 - [ ] Prompt 15
 - [ ] Prompt 16
 - [ ] Prompt 17
@@ -1079,7 +1079,7 @@ At finalization/approval, snapshot the calibration state.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement:

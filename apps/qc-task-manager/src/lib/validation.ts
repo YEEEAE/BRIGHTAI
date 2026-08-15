@@ -591,6 +591,69 @@ export const labMaintenanceSchema = z
   });
 
 /**
+ * POST /lab/calibration/new + /lab/calibration/[id]/edit — Calibration Register
+ * (page reference §37). Only `equipment_id` is required; every other field is
+ * nullable on purpose (missing data stays missing — never auto-filled). Dates
+ * are YYYY-MM-DD, free text is bounded, and `.strict()` rejects unknown keys
+ * (mass-assignment guard). The calibration record id always comes from the
+ * matched path, never the body. `next_due_at` must not precede
+ * `calibration_due_at` when both are present.
+ */
+export const labCalibrationSchema = z
+  .object({
+    equipment_id: z.preprocess(
+      (v) => (v === '' || v == null ? null : Number(v)),
+      z
+        .number({ errorMap: () => ({ message: 'Equipment is required.' }) })
+        .int()
+        .positive('Equipment is required.'),
+    ),
+    last_calibrated_at: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Last Calibration Date must be a valid date (YYYY-MM-DD).')
+        .nullable(),
+    ),
+    calibration_due_at: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Calibration Due Date must be a valid date (YYYY-MM-DD).')
+        .nullable(),
+    ),
+    provider: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_SHORT_TEXT_MAX, `Calibration Provider must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`).nullable(),
+    ),
+    certificate_reference: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_SHORT_TEXT_MAX, `Certificate Reference must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`).nullable(),
+    ),
+    result: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_SHORT_TEXT_MAX, `Calibration Result must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`).nullable(),
+    ),
+    next_due_at: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Next Due Date must be a valid date (YYYY-MM-DD).')
+        .nullable(),
+    ),
+    notes: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_REMARKS_MAX, `Notes must be ${LAB_REMARKS_MAX} characters or fewer.`).nullable(),
+    ),
+  })
+  .strict()
+  .superRefine((data, ctx) => {
+    if (data.calibration_due_at && data.next_due_at && data.next_due_at < data.calibration_due_at) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Next Due Date cannot be before the Calibration Due Date.' });
+    }
+  });
+
+/**
  * POST /lab/templates/new + /lab/templates/[id]/edit — Test Template form
  * (PROMPT 10). `equipment_ids` (the "Equipment Compatibility" checkboxes)
  * and `connector_choices` (repeated key per printed connector option) are NOT

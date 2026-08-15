@@ -13,6 +13,8 @@ import EmptyState from '../../../components/EmptyState.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import { getLabEquipmentAuditTimeline, getLabEquipmentDetail, getLabEquipmentMaintenanceSummary } from '../../../lib/lab/equipment';
+import { getLabCalibrationSummary, LAB_CALIBRATION_STATUS_LABELS } from '../../../lib/lab/calibration';
+import type { LabCalibrationStatus } from '../../../lib/lab/calibration';
 import { calibrationLabel, statusLabels } from '../../../lib/lab/equipmentStatus';
 import { LAB_MAINTENANCE_STATUS_LABELS } from '../../../lib/lab/policy';
 import { canArchiveLabEquipment, canEditLabEquipment } from '../../../lib/permissions';
@@ -24,14 +26,25 @@ const role = user.role as Role;
 const id = Number(Astro.params.id);
 let detail: ReturnType<typeof getLabEquipmentDetail> = null;
 let maintenanceSummary: ReturnType<typeof getLabEquipmentMaintenanceSummary> = { count: 0, latest: null };
+let calibrationSummary: ReturnType<typeof getLabCalibrationSummary> = { count: 0, latest: null, status: 'UNKNOWN', due_date: null };
 try {
   detail = getLabEquipmentDetail(id);
   if (detail) {
     maintenanceSummary = getLabEquipmentMaintenanceSummary(id);
+    calibrationSummary = getLabCalibrationSummary(id);
   }
 } catch (err) {
   console.error('[lab] equipment detail query failure', err);
 }
+
+const CAL_STATUS_BADGE_CLS: Record<LabCalibrationStatus, string> = {
+  COMPLIANT: 'bg-emerald-100 text-emerald-800',
+  DUE_SOON: 'bg-amber-100 text-amber-800',
+  DUE_TODAY: 'bg-orange-100 text-orange-800',
+  OVERDUE: 'bg-rose-100 text-rose-800',
+  NOT_COMPLIANT: 'bg-red-100 text-red-800',
+  UNKNOWN: 'bg-slate-100 text-slate-700',
+};
 
 const navItems = labNavForRole(role);
 
@@ -212,12 +225,28 @@ function fmt(value: unknown): string {
               <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Calibration</dt>
               <dd class="mt-1 text-slate-900">{calibrationLabel(detail.equipment.calibration_status_raw)}</dd>
             </div>
+            <div class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+              <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Calibration Records</dt>
+              <dd class="mt-1 font-medium text-slate-900">{calibrationSummary.count.toLocaleString('en-US')}</dd>
+              {calibrationSummary.latest && (
+                <dd class="mt-1">
+                  <span class={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${CAL_STATUS_BADGE_CLS[calibrationSummary.status]}`}>
+                    {LAB_CALIBRATION_STATUS_LABELS[calibrationSummary.status]}
+                  </span>
+                  <span class="ms-2 text-xs text-slate-500" dir="ltr">{fmt(calibrationSummary.due_date)}</span>
+                </dd>
+              )}
+            </div>
           </dl>
           <p class="mt-3 text-sm text-slate-600">
             <a href={`/lab/equipment/${detail.equipment.id}/maintenance`} class="font-medium text-brand-600 hover:underline">
               Log maintenance &amp; view the full equipment timeline →
             </a>
             <span class="text-slate-500"> (usage, maintenance, calibration and returned-to-service events)</span>
+            <span class="text-slate-400"> · </span>
+            <a href={`/lab/calibration?equipment=${detail.equipment.id}`} class="font-medium text-brand-600 hover:underline">
+              View calibration records →
+            </a>
           </p>
         </section>
 
