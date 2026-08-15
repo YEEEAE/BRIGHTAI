@@ -1,0 +1,194 @@
+---
+// LabProductForm — the shared Product Master form (PROMPT 08), rendered
+// server-side for BOTH /lab/products/new and /lab/products/[id]/edit.
+//
+// A plain Astro form (no island): the field set is fixed and every input is
+// a native control, so there is no client JS to load. Submission is a native
+// POST to the same URL; the middleware short-circuits it and the shared Zod
+// schema (labProductSchema) re-validates everything server-side. The
+// "Related Equipment" checkboxes repeat the `equipment_ids` key — the handler
+// collects them from the raw FormData.
+//
+// Reference fields (template / SOP / WI / equipment) are ids from the real
+// master tables — no seeded or invented data (§78).
+const {
+  mode,
+  product = null,
+  selectedEquipmentIds = [],
+  templates,
+  sops,
+  wis,
+  equipmentOptions,
+  connectorTypes,
+} = Astro.props;
+
+const actionUrl = mode === 'create' ? '/lab/products/new' : `/lab/products/${product!.id}/edit`;
+const submitLabel = mode === 'create' ? 'Create Product' : 'Save Changes';
+
+const inputCls =
+  'mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
+const labelCls = 'block text-sm font-medium text-slate-700';
+const sectionCls = 'rounded-xl border border-slate-200 bg-white p-5 shadow-sm';
+const sectionTitleCls = 'text-base font-semibold text-slate-900';
+---
+
+<form method="POST" action={actionUrl}>
+  <div class="space-y-6">
+    <section aria-labelledby="sec-product-identity" class={sectionCls}>
+      <h2 id="sec-product-identity" class={sectionTitleCls}>Product Identity</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="name" class={labelCls}>Product Name <span class="text-red-600" aria-hidden="true">*</span></label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            maxlength="200"
+            value={product?.name ?? ''}
+            class={inputCls}
+          />
+        </div>
+        <div>
+          <label for="code" class={labelCls}>Product Code <span class="text-red-600" aria-hidden="true">*</span></label>
+          <input
+            id="code"
+            name="code"
+            type="text"
+            required
+            maxlength="60"
+            pattern="[A-Za-z0-9][A-Za-z0-9._-]*"
+            value={product?.code ?? ''}
+            dir="ltr"
+            class={inputCls}
+          />
+          <p class="mt-1 text-xs text-slate-500">Unique. Letters, numbers, _ . and - only.</p>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="description" class={labelCls}>Product Description</label>
+          <textarea id="description" name="description" rows="2" maxlength="2000" class={inputCls}>{product?.description ?? ''}</textarea>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sec-product-test-defaults" class={sectionCls}>
+      <h2 id="sec-product-test-defaults" class={sectionTitleCls}>Test Defaults</h2>
+      <p class="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+        Suggestions only — the test form prefills empty fields and never overwrites values the tester entered.
+      </p>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="connector_type" class={labelCls}>Connector Type</label>
+          <select id="connector_type" name="connector_type" class={inputCls}>
+            <option value="">Not specified</option>
+            {connectorTypes.map((c: string) => (
+              <option value={c} selected={product?.connector_type === c}>{c}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label for="default_test_type" class={labelCls}>Default Test Type</label>
+          <select id="default_test_type" name="default_test_type" class={inputCls}>
+            <option value="">Not specified</option>
+            <option value="air" selected={product?.default_test_type === 'air'}>AIR</option>
+            <option value="vacuum" selected={product?.default_test_type === 'vacuum'}>VACUUM</option>
+          </select>
+        </div>
+        <div>
+          <label for="default_template_id" class={labelCls}>Applicable Test Template</label>
+          <select id="default_template_id" name="default_template_id" class={inputCls}>
+            <option value="">Not specified</option>
+            {templates.map((t: { id: number; name: string; code: string; test_type: string }) => (
+              <option value={t.id} selected={product?.default_template_id === t.id}>{t.name} ({t.code}) — {t.test_type.toUpperCase()}</option>
+            ))}
+          </select>
+          {templates.length === 0 && <p class="mt-1 text-xs text-slate-500">No test templates registered yet.</p>}
+        </div>
+        <div>
+          <label for="applicable_sop_id" class={labelCls}>Applicable SOP</label>
+          <select id="applicable_sop_id" name="applicable_sop_id" class={inputCls}>
+            <option value="">Not specified</option>
+            {sops.map((d: { id: number; title: string; code: string }) => (
+              <option value={d.id} selected={product?.applicable_sop_id === d.id}>{d.code} — {d.title}</option>
+            ))}
+          </select>
+          {sops.length === 0 && <p class="mt-1 text-xs text-slate-500">No approved SOP documents yet.</p>}
+        </div>
+        <div>
+          <label for="applicable_wi_id" class={labelCls}>Applicable WI</label>
+          <select id="applicable_wi_id" name="applicable_wi_id" class={inputCls}>
+            <option value="">Not specified</option>
+            {wis.map((d: { id: number; title: string; code: string }) => (
+              <option value={d.id} selected={product?.applicable_wi_id === d.id}>{d.code} — {d.title}</option>
+            ))}
+          </select>
+          {wis.length === 0 && <p class="mt-1 text-xs text-slate-500">No approved WI documents yet.</p>}
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sec-product-equipment" class={sectionCls}>
+      <h2 id="sec-product-equipment" class={sectionTitleCls}>Related Equipment</h2>
+      <p class="mt-1 text-xs text-slate-500">Linked by canonical equipment id — shown as suggestions on the test form.</p>
+      {equipmentOptions.length === 0 ? (
+        <p class="mt-3 text-sm text-slate-600">No equipment registered yet — equipment can be linked later.</p>
+      ) : (
+        <fieldset class="mt-3">
+          <legend class="sr-only">Related equipment</legend>
+          <ul class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {equipmentOptions.map((e: { id: number; name: string; code: string }) => (
+              <li>
+                <label class="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    name="equipment_ids"
+                    value={e.id}
+                    checked={selectedEquipmentIds.includes(e.id)}
+                    class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span class="font-medium">{e.name}</span>
+                  <span class="text-slate-500" dir="ltr">({e.code})</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </fieldset>
+      )}
+    </section>
+
+    <section aria-labelledby="sec-product-status" class={sectionCls}>
+      <h2 id="sec-product-status" class={sectionTitleCls}>Status &amp; Notes</h2>
+      <div class="mt-4 space-y-4">
+        <label class="flex items-center gap-2 text-sm font-medium text-slate-700">
+          <input
+            type="checkbox"
+            name="is_active"
+            value="1"
+            checked={product ? product.is_active === 1 : true}
+            class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+          />
+          Active — inactive products are hidden from the test form and cannot be edited
+        </label>
+        <div>
+          <label for="notes" class={labelCls}>Notes</label>
+          <textarea id="notes" name="notes" rows="3" maxlength="5000" class={inputCls}>{product?.notes ?? ''}</textarea>
+        </div>
+      </div>
+    </section>
+
+    <div class="flex flex-wrap items-center justify-end gap-3">
+      <a
+        href={mode === 'create' ? '/lab/products' : `/lab/products/${product!.id}`}
+        class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+      >
+        Cancel
+      </a>
+      <button
+        type="submit"
+        class="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+      >
+        {submitLabel}
+      </button>
+    </div>
+  </div>
+</form>

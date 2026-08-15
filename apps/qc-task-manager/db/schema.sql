@@ -500,6 +500,14 @@ CREATE TABLE IF NOT EXISTS lab_products (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Product Master ↔ Equipment link ("Related Equipment", by canonical id).
+CREATE TABLE IF NOT EXISTS lab_product_equipment (
+  product_id INTEGER NOT NULL REFERENCES lab_products(id) ON DELETE CASCADE,
+  equipment_id INTEGER NOT NULL REFERENCES lab_equipment(id) ON DELETE CASCADE,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (product_id, equipment_id)
+);
+
 -- AIR/VACUUM test records. Measurement columns are TEXT (printed-form values,
 -- no invented unit semantics). Authorization identities and snapshots are
 -- written by the service layer; final_result stays NULL until a human decides.
@@ -629,6 +637,7 @@ CREATE TABLE IF NOT EXISTS lab_saved_views (
 
 CREATE INDEX IF NOT EXISTS idx_lab_products_code ON lab_products(code);
 CREATE INDEX IF NOT EXISTS idx_lab_products_active ON lab_products(is_active);
+CREATE INDEX IF NOT EXISTS idx_lab_product_equipment_equipment ON lab_product_equipment(equipment_id);
 CREATE INDEX IF NOT EXISTS idx_lab_equipment_code ON lab_equipment(code);
 CREATE INDEX IF NOT EXISTS idx_lab_equipment_archived ON lab_equipment(is_archived);
 CREATE INDEX IF NOT EXISTS idx_lab_equip_maint_equipment ON lab_equipment_maintenance(equipment_id, maintenance_date);

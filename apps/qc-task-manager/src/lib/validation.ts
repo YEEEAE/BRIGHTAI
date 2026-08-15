@@ -391,6 +391,76 @@ export const labReviewActionSchema = z
   });
 
 /**
+ * POST /lab/products/new + /lab/products/[id]/edit — Product Master form
+ * (PROMPT 08). `equipment_ids` (the "Related Equipment" checkboxes) is NOT
+ * part of this schema: FormData repeats that key per checkbox, so the handler
+ * collects it from the raw form and the service re-validates existence.
+ * The product id itself always comes from the matched path, never the body.
+ */
+export const labProductSchema = z.object({
+  name: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(1, 'Product Name is required.')
+      .max(LAB_SHORT_TEXT_MAX, `Product Name must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+  ),
+  code: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(1, 'Product Code is required.')
+      .max(60, 'Product Code must be 60 characters or fewer.')
+      .regex(/^[A-Za-z0-9][A-Za-z0-9._-]*$/, 'Product Code may only contain letters, numbers, _ . and -, and must start with a letter or number.'),
+  ),
+  description: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(2000, 'Product Description must be 2000 characters or fewer.').nullable(),
+  ),
+  connector_type: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z
+      .enum([...LAB_CONNECTOR_TYPES] as [string, ...string[]], {
+        errorMap: () => ({ message: 'Invalid connector type.' }),
+      })
+      .nullable(),
+  ),
+  default_test_type: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z.enum(['air', 'vacuum'], { errorMap: () => ({ message: 'Invalid default test type.' }) }).nullable(),
+  ),
+  default_template_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid test template.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  applicable_sop_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid SOP document.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  applicable_wi_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid WI document.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  is_active: z.preprocess(checkboxBool, z.boolean()),
+  notes: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(LAB_REMARKS_MAX, `Notes must be ${LAB_REMARKS_MAX} characters or fewer.`).nullable(),
+  ),
+});
+
+/**
  * POST /api/filters — save or delete a per-user saved search filter.
  * `name` (save) and `filter_id` (delete) are optional per action; the schema
  * accepts both shapes and the handler validates per action. `next` is the

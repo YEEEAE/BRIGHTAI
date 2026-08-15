@@ -19,7 +19,7 @@ const tempRoot = mkdtempSync(join(tmpdir(), 'brightai-qc-reports-'));
 try {
   const db = new Database(join(tempRoot, 'migration.db'));
   const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-  assert.equal(first.applied.length, 15, 'report, audit, AI, evidence, and lab migrations are applied');
+  assert.equal(first.applied.length, 16, 'report, audit, AI, evidence, and lab migrations are applied');
   const columns = db.prepare('PRAGMA table_info(report_audit_log)').all().map((row) => row.name);
   for (const column of ['report_id', 'report_type', 'generated_by', 'filters_json', 'generated_at', 'format', 'data_scope_json', 'status', 'row_count', 'failure_reason']) {
     assert.ok(columns.includes(column), `report_audit_log has ${column}`);

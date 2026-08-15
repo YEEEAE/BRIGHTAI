@@ -1,0 +1,85 @@
+---
+// /lab/products/new — create a Product Master row (PROMPT 08).
+// Manager+ only (canCreateLabProduct); the shared form component posts to
+// this same URL and the middleware short-circuits the POST.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import LabProductForm from '../../../components/lab/LabProductForm.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import {
+  listLabDocumentsForProductForm,
+  listLabEquipmentForProductForm,
+  listLabTemplatesForProductForm,
+} from '../../../lib/lab/products';
+import { LAB_CONNECTOR_TYPES } from '../../../lib/lab/policy';
+import { canCreateLabProduct } from '../../../lib/permissions';
+import type { Role } from '../../../lib/types';
+import { setFlash } from '../../../lib/flash';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canCreateLabProduct(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to create products.');
+  return Astro.redirect('/lab/products');
+}
+
+const navItems = labNavForRole(role);
+
+let loadError: string | null = null;
+let equipment: ReturnType<typeof listLabEquipmentForProductForm> = [];
+let templates: ReturnType<typeof listLabTemplatesForProductForm> = [];
+let sops: ReturnType<typeof listLabDocumentsForProductForm> = [];
+let wis: ReturnType<typeof listLabDocumentsForProductForm> = [];
+try {
+  equipment = listLabEquipmentForProductForm();
+  templates = listLabTemplatesForProductForm();
+  sops = listLabDocumentsForProductForm('SOP');
+  wis = listLabDocumentsForProductForm('WI');
+} catch (err) {
+  console.error('[lab] product form load failure', err);
+  loadError = 'Could not load the reference lists. Try reloading — if the problem persists, contact an administrator.';
+}
+---
+
+<BaseLayout title="New Product">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Products', href: '/lab/products' },
+        { label: 'New Product' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Product</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Register a tested product with its defaults and linked controlled documents. Tests reference the product by ID;
+        every change is written to the audit log.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/products/new" />
+
+    {loadError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {loadError}
+      </div>
+    )}
+
+    {!loadError && (
+      <LabProductForm
+        mode="create"
+        templates={templates}
+        sops={sops}
+        wis={wis}
+        equipmentOptions={equipment}
+        connectorTypes={[...LAB_CONNECTOR_TYPES]}
+      />
+    )}
+  </div>
+</BaseLayout>

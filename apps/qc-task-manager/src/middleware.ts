@@ -32,6 +32,7 @@ import {
 import { handleLoginPost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
 import { handleLabTestFormPost } from './lib/lab/tests';
+import { handleLabProductCreatePost, handleLabProductEditPost } from './lib/lab/products';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
@@ -172,6 +173,20 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   // only (never the body), and runs the shared Zod validation.
   if (context.request.method === 'POST' && pathname === '/lab/tests/new') {
     return handleLabTestFormPost(context);
+  }
+
+  // POST /lab/products/new + /lab/products/[id]/edit — Product Master form
+  // (PROMPT 08). Same short-circuit pattern; the product id comes from the
+  // path segment only (never the body), and the handler re-checks the
+  // create/edit permission + CSRF + shared Zod validation.
+  if (context.request.method === 'POST' && pathname === '/lab/products/new') {
+    return handleLabProductCreatePost(context);
+  }
+  if (context.request.method === 'POST') {
+    const productEdit = pathname.match(/^\/lab\/products\/(\d+)\/edit$/);
+    if (productEdit) {
+      return handleLabProductEditPost(context, Number(productEdit[1]));
+    }
   }
 
   // "New task" form submissions. Astro 6 pages have no named request handlers,

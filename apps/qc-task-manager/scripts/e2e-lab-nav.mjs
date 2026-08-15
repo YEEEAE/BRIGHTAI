@@ -93,7 +93,7 @@ for (const roleCase of roleCases) {
   ok(secondaryHrefs.includes('/lab'), `${roleCase.username}: secondary nav shows the command center`);
   ok(secondaryHrefs.includes('/lab/tests'), `${roleCase.username}: secondary nav shows the test register`);
   ok(secondaryHrefs.includes('/lab/tests/new'), `${roleCase.username}: secondary nav shows the new-test link`);
-  ok(secondaryHrefs.every((href) => href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new'),
+  ok(secondaryHrefs.every((href) => href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' || href === '/lab/products' || href === '/lab/products/new'),
     `${roleCase.username}: no dead links in secondary nav`);
 
   // Command center (PROMPT 04): KPI cards render from real queries, and the
@@ -117,6 +117,9 @@ for (const roleCase of roleCases) {
     href === '/lab' ||
     href === '/lab/tests' ||
     href === '/lab/tests/new' ||
+    href === '/lab/products' ||
+    href === '/lab/products/new' || // Product Master module (PROMPT 08)
+    href === '/lab/tests/review' ||
     href.startsWith('/lab/tests/new?type=') ||
     href.startsWith('/lab/tests?') ||
     /^\/lab\/tests\/\d+$/.test(href), // live per-row View links

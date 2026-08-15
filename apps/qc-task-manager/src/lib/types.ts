@@ -305,6 +305,13 @@ export interface LabProduct {
   updated_at: string;
 }
 
+/** One "Related Equipment" link on a Product Master row (lab_product_equipment). */
+export interface LabProductEquipment {
+  product_id: number;
+  equipment_id: number;
+  created_at: string;
+}
+
 /** One AIR/VACUUM test record (lab_test_records). */
 export interface LabTestRecord {
   id: number;

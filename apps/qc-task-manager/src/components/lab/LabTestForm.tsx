@@ -42,6 +42,19 @@ interface Props {
     calibration_due: string | null;
   }>;
   products: Array<{ id: number; name: string; code: string }>;
+  /** Active Product Master rows with defaults + approved linked documents (§28). */
+  productRefs: Array<{
+    id: number;
+    name: string;
+    code: string;
+    connector_type: string | null;
+    default_test_type: string | null;
+    template_name: string | null;
+    sop_title: string | null;
+    sop_code: string | null;
+    wi_title: string | null;
+    wi_code: string | null;
+  }>;
   connectorTypes: readonly string[];
   resultOptions: LabResultOption[];
   reference: LabReferenceValues;
@@ -117,6 +130,7 @@ export default function LabTestForm({
   userName,
   equipment,
   products,
+  productRefs,
   connectorTypes,
   resultOptions,
   reference,
@@ -137,6 +151,26 @@ export default function LabTestForm({
   const [errors, setErrors] = useState<Errors>({});
   const [dirty, setDirty] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [productDescription, setProductDescription] = useState('');
+  // Set once the tester deliberately changes Connector Type — after that the
+  // product default never touches it again ("populate, never overwrite", §28).
+  const connectorTouchedRef = useRef(false);
+
+  const matchedRef = productRefs.find(
+    (p) => productDescription.trim() !== '' && p.name.trim().toLowerCase() === productDescription.trim().toLowerCase(),
+  );
+
+  // Prefill Connector Type from the Product Master ONLY while untouched/empty.
+  useEffect(() => {
+    if (!matchedRef || connectorTouchedRef.current) return;
+    const select = formRef.current?.elements.namedItem('connector_type') as HTMLSelectElement | null;
+    if (select && select.value === '' && matchedRef.connector_type) {
+      select.value = matchedRef.connector_type;
+      // Display-only prefill — not a measured value, but still mark the form
+      // dirty so the tester knows the sheet changed.
+      markDirty();
+    }
+  }, [matchedRef]);
 
   const markDirty = () => {
     dirtyRef.current = true;
@@ -282,7 +316,11 @@ export default function LabTestForm({
                 maxLength={200}
                 data-field="Product Description"
                 aria-invalid={errors['Product Description'] ? 'true' : undefined}
-                onChange={markDirty}
+                value={productDescription}
+                onChange={(e) => {
+                  setProductDescription(e.target.value);
+                  markDirty();
+                }}
                 className={errors['Product Description'] ? inputErrorCls : inputCls}
               />
               <datalist id="lab-product-options">
@@ -292,6 +330,42 @@ export default function LabTestForm({
               </datalist>
               <p className="mt-1 text-xs text-slate-500">Start typing to pick from the Product Master.</p>
             </div>
+            {/* Product Master suggestions (§28): populated when the typed
+                description matches an active product; every measured value
+                below stays editable and is never silently overwritten. */}
+            {matchedRef && (
+              <div className="sm:col-span-2 rounded-md border border-brand-200 bg-brand-50 px-4 py-3" data-testid="product-reference-panel">
+                <p className="text-sm font-semibold text-brand-800">
+                  Product Master — {matchedRef.name} ({matchedRef.code})
+                </p>
+                <dl className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Connector Type (default)</dt>
+                    <dd className="text-slate-800">{matchedRef.connector_type ?? '—'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Default Test Type</dt>
+                    <dd className="uppercase text-slate-800">{matchedRef.default_test_type ?? '—'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Test Template</dt>
+                    <dd className="text-slate-800">{matchedRef.template_name ?? '—'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Applicable SOP</dt>
+                    <dd className="text-slate-800">{matchedRef.sop_title ? `${matchedRef.sop_code} — ${matchedRef.sop_title}` : '—'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Applicable WI</dt>
+                    <dd className="text-slate-800">{matchedRef.wi_title ? `${matchedRef.wi_code} — ${matchedRef.wi_title}` : '—'}</dd>
+                  </div>
+                </dl>
+                <p className="mt-2 text-xs text-slate-600">
+                  Suggestions from the approved Product Master. All entries on this form remain editable — nothing you
+                  typed is overwritten.
+                </p>
+              </div>
+            )}
             <div className="sm:col-span-2">
               <label htmlFor="connector_type" className={labelCls}>Connector Type</label>
               <select

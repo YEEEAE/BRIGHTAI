@@ -81,6 +81,10 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
 /** Routes whose pages exist today. Extended as implementation prompts land. */
 export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab',
+  '/lab/products',
+  '/lab/products/new',
+  '/lab/products/[id]',
+  '/lab/products/[id]/edit',
   '/lab/tests/new',
   '/lab/tests',
   '/lab/tests/review',
