@@ -108,6 +108,7 @@ for (const roleCase of roleCases) {
     href === '/lab/calendar' || // Laboratory calendar (PROMPT 25)
     href === '/lab/notifications' || // Lab-filtered notifications (PROMPT 26)
     href === '/lab/data-quality' || // Data Quality Center (PROMPT 27)
+    href === '/lab/reports' || // Laboratory reports (§13, supervisor+ nav entry)
     href === '/lab/retests', // Retest register (§46, supervisor+ nav entry)
   ), `${roleCase.username}: no dead links in secondary nav`);
 

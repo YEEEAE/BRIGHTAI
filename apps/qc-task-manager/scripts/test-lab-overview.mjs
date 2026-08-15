@@ -244,11 +244,14 @@ try {
       `drilldown: ${key} has a /lab target + hint`);
   }
   // The test register is implemented (PROMPT 06) — pick a route that is still
-  // not implemented today (the reports register) and confirm labDrilldownEnabled
-  // never returns true for an unknown/unimplemented route.
+  // not implemented today (the management dashboard) and confirm labDrilldownEnabled
+  // never returns true for an unknown/unimplemented route. (The reports register
+  // is now implemented too — §13 QC-LAB-REPORTING.)
   eq(overview.labDrilldownEnabled({ href: '/lab/tests', route: '/lab/tests', hint: 'x' }), true,
     'drilldown: test register route enabled');
-  eq(overview.labDrilldownEnabled({ href: '/lab/reports', route: '/lab/reports', hint: 'x' }), false,
+  eq(overview.labDrilldownEnabled({ href: '/lab/reports', route: '/lab/reports', hint: 'x' }), true,
+    'drilldown: reports route enabled');
+  eq(overview.labDrilldownEnabled({ href: '/lab/management', route: '/lab/management', hint: 'x' }), false,
     'drilldown: unimplemented route disabled');
   eq(overview.labDrilldownEnabled({ href: '/lab', route: '/lab', hint: 'x' }), true,
     'drilldown: implemented route enabled');

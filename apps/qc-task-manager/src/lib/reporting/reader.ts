@@ -1,11 +1,21 @@
 import { getDb } from '../db';
 import { getKpiSnapshot, buildReportWhere } from './queries';
+import { isLabReportType } from './types';
+import { readLabReportRows, toLabReportFilters } from '../lab/labReports';
 import type { ReportFilters, ReportType, ResolvedDataScope } from './types';
 
 type Cell = string | number | null;
 const CHUNK_SIZE = 500;
 
 export async function* readReportRows(reportType: ReportType, filters: ReportFilters, scope: ResolvedDataScope, reportId: string): AsyncGenerator<readonly Cell[]> {
+  // Laboratory reports (§13) — same pipeline, lab-shaped readers. The scope
+  // parameter is neutral for lab types (authorizeReport already denied the
+  // employee role; lab readers apply their own parameter-bound filters).
+  if (isLabReportType(reportType)) {
+    yield* readLabReportRows(reportType, reportId, toLabReportFilters(filters));
+    return;
+  }
+
   const db = getDb();
   if (reportType === 'monthly-qc') {
     const kpi = getKpiSnapshot(filters, scope);

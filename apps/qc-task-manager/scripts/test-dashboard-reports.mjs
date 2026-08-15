@@ -42,6 +42,7 @@ try {
   assert.deepEqual(filters, {
     from: '2026-08-01', to: '2026-08-12', department: 'QC', employee: 42,
     supervisor: null, priority: 'high', risk: 'critical', finding_classification: 'major', sla_status: 'BREACHED',
+    test_type: null, result: null, status: null, reason: null, product: null, equipment: null,
   });
   assert.throws(() => parseReportFilters(new URLSearchParams({ employee: 'not-an-id' })), /employee/i);
   assert.deepEqual(resolveReportScope({ id: 7, role: 'employee', department: 'QC' }, filters), {
@@ -53,7 +54,15 @@ try {
     '/dashboard/drilldown?from=2026-08-01&department=QC&sla_status=BREACHED&dashboard=1',
   );
   assert.equal(buildKpiHref('overdue', new URLSearchParams()), '/dashboard/drilldown?overdue=1&dashboard=1');
-  assert.deepEqual(Object.keys(REPORT_CATALOG), ['monthly-qc', 'sla', 'findings', 'capa', 'employee-performance', 'audit-trail', 'evidence-compliance', 'overdue']);
+  assert.deepEqual(Object.keys(REPORT_CATALOG), [
+    'monthly-qc', 'sla', 'findings', 'capa', 'employee-performance', 'audit-trail', 'evidence-compliance', 'overdue',
+    // Laboratory reports (§13 — same pipeline, rendered by the same writers)
+    'lab-test-register', 'lab-test-register-air', 'lab-test-register-vacuum',
+    'lab-results', 'lab-retests', 'lab-product-history',
+    'lab-equipment-register', 'lab-calibration', 'lab-maintenance',
+    'lab-sop-register', 'lab-wi-register', 'lab-doc-review-due', 'lab-acknowledgements',
+    'lab-activity', 'lab-data-quality',
+  ]);
   const csv = rowsToCsv(['Report ID', 'Task'], [['R-1', 'Line, with "quotes"\nnext']]);
   assert.match(csv, /^\uFEFFReport ID,Task\r\nR-1,"Line, with ""quotes""\nnext"\r\n$/);
   assert.equal(authorizeReport({ id: 7, role: 'employee', department: 'QC' }, 'overdue', false).allowed, true);

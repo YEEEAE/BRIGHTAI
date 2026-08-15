@@ -115,6 +115,7 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/documents/[id]/versions',
   '/lab/acknowledgements',
   '/lab/acknowledgements/assign',
+  '/lab/reports',
   '/lab/saved-views',
   '/lab/calendar',
   '/lab/notifications',
