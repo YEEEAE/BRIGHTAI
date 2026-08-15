@@ -458,6 +458,7 @@ CREATE TABLE IF NOT EXISTS lab_equipment (
   code TEXT NOT NULL UNIQUE,
   location TEXT,
   status_raw TEXT NOT NULL,
+  calibration_status_raw TEXT,
   serial_number TEXT,
   notes TEXT,
   is_archived INTEGER NOT NULL DEFAULT 0 CHECK (is_archived IN (0,1)),

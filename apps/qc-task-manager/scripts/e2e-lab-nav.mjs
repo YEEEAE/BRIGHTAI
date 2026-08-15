@@ -93,8 +93,11 @@ for (const roleCase of roleCases) {
   ok(secondaryHrefs.includes('/lab'), `${roleCase.username}: secondary nav shows the command center`);
   ok(secondaryHrefs.includes('/lab/tests'), `${roleCase.username}: secondary nav shows the test register`);
   ok(secondaryHrefs.includes('/lab/tests/new'), `${roleCase.username}: secondary nav shows the new-test link`);
-  ok(secondaryHrefs.every((href) => href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' || href === '/lab/products' || href === '/lab/products/new'),
-    `${roleCase.username}: no dead links in secondary nav`);
+  ok(secondaryHrefs.includes('/lab/equipment'), `${roleCase.username}: secondary nav shows the equipment registry`);
+  ok(secondaryHrefs.every((href) =>
+    href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' ||
+    href === '/lab/products' || href === '/lab/products/new' || href === '/lab/templates' || href === '/lab/equipment',
+  ), `${roleCase.username}: no dead links in secondary nav`);
 
   // Command center (PROMPT 04): KPI cards render from real queries, and the
   // permission-scoped ones match the role (Data Quality KPI is supervisor+,
@@ -119,13 +122,19 @@ for (const roleCase of roleCases) {
     href === '/lab/tests/new' ||
     href === '/lab/products' ||
     href === '/lab/products/new' || // Product Master module (PROMPT 08)
+    href === '/lab/templates' ||
+    href === '/lab/templates/new' ||
+    href === '/lab/equipment' || // Equipment Registry module (PROMPT 11)
+    href.startsWith('/lab/equipment?') || // live "requires attention" drill-down
     href === '/lab/tests/review' ||
     href.startsWith('/lab/tests/new?type=') ||
     href.startsWith('/lab/tests?') ||
     /^\/lab\/tests\/\d+$/.test(href), // live per-row View links
   ), `${roleCase.username}: no drill-down links to unimplemented routes`);
   const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();
-  ok(disabledActions >= 2, `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
+  // Equipment is live (PROMPT 11), so employee now has only Calibration left
+  // unimplemented (>=1); the other roles still hold several disabled actions.
+  ok(disabledActions >= (roleCase.username === 'employee' ? 1 : 2), `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
 
   // Breadcrumbs present
   ok((await page.locator('nav[aria-label="Breadcrumb"]').count()) === 1, `${roleCase.username}: breadcrumbs render`);

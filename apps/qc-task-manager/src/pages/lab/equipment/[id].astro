@@ -1,0 +1,221 @@
+---
+// /lab/equipment/[id] — Equipment Registry details (PROMPT 11).
+//
+// Read-only view: all registry fields (status + calibration displayed via the
+// read-time mapping), the creator/last updater from the audit log, test usage
+// (drills into the register filtered by equipment), linked SOP/WI documents,
+// and the change history from the shared audit log (entity_type=
+// 'LAB_EQUIPMENT'). Edit / Archive / Restore are offered to manager+ only
+// (canEditLabEquipment / canArchiveLabEquipment).
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EmptyState from '../../../components/EmptyState.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import { getLabEquipmentAuditTimeline, getLabEquipmentDetail } from '../../../lib/lab/equipment';
+import { calibrationLabel, statusLabels } from '../../../lib/lab/equipmentStatus';
+import { canArchiveLabEquipment, canEditLabEquipment } from '../../../lib/permissions';
+import type { Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+const id = Number(Astro.params.id);
+let detail: ReturnType<typeof getLabEquipmentDetail> = null;
+try {
+  detail = getLabEquipmentDetail(id);
+} catch (err) {
+  console.error('[lab] equipment detail query failure', err);
+}
+
+const navItems = labNavForRole(role);
+
+const fieldCls = 'rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700';
+const labelCls = 'text-xs font-semibold uppercase tracking-wide text-slate-500';
+
+function fmt(value: unknown): string {
+  return value == null || String(value).trim() === '' ? '—' : String(value);
+}
+---
+
+<BaseLayout title={detail ? `Equipment ${detail.equipment.code}` : 'Equipment not found'}>
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Equipment', href: '/lab/equipment' },
+        ...(detail ? [{ label: detail.equipment.code }] : []),
+      ]}
+    />
+
+    {!detail ? (
+      <EmptyState
+        title="Equipment not found"
+        hint="This device does not exist — it may have been removed, or the link is stale."
+        ctaHref="/lab/equipment"
+        ctaLabel="Back to the Equipment Registry"
+      />
+    ) : (
+      <>
+        <header class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
+            <h1 class="mt-1 text-3xl font-semibold text-slate-900">{detail.equipment.name}</h1>
+            <p class="mt-1 text-sm text-slate-600">
+              Code <span class="font-medium text-slate-900" dir="ltr">{detail.equipment.code}</span>
+              <span class="ms-3 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold bg-slate-100 text-slate-700">
+                {statusLabels(detail.equipment.status_raw)}
+              </span>
+              {detail.equipment.is_archived === 1 && (
+                <span class="ms-2 inline-flex rounded-full bg-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-500">Archived</span>
+              )}
+            </p>
+          </div>
+          {canEditLabEquipment(role) && detail.equipment.is_archived === 0 && (
+            <a
+              href={`/lab/equipment/${detail.equipment.id}/edit`}
+              class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            >
+              Edit Equipment
+            </a>
+          )}
+          {canArchiveLabEquipment(role) && (
+            <form method="POST" action={`/lab/equipment/${detail.equipment.id}/edit`}>
+              <input type="hidden" name="form_action" value={detail.equipment.is_archived === 1 ? 'restore' : 'archive'} />
+              <button
+                type="submit"
+                class={`rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
+                  detail.equipment.is_archived === 1 ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-amber-600 hover:bg-amber-700'
+                }`}
+              >
+                {detail.equipment.is_archived === 1 ? 'Restore Equipment' : 'Archive Equipment'}
+              </button>
+            </form>
+          )}
+        </header>
+
+        <LabSecondaryNav items={navItems} currentPath={`/lab/equipment/${detail.equipment.id}`} />
+
+        <section aria-labelledby="sec-fields" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 id="sec-fields" class="text-base font-semibold text-slate-900">Registry Data</h2>
+          <dl class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div class={fieldCls}>
+              <dt class={labelCls}>Equipment Name</dt>
+              <dd class="mt-1 font-medium text-slate-900">{detail.equipment.name}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Equipment Code</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{detail.equipment.code}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Location</dt>
+              <dd class="mt-1 text-slate-900">{fmt(detail.equipment.location)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Status</dt>
+              <dd class="mt-1 text-slate-900">{statusLabels(detail.equipment.status_raw)}</dd>
+              <dd class="mt-1 text-xs text-slate-500" dir="rtl">{fmt(detail.equipment.status_raw)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Calibration</dt>
+              <dd class="mt-1 text-slate-900">{calibrationLabel(detail.equipment.calibration_status_raw)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Serial Number</dt>
+              <dd class="mt-1 text-slate-900" dir="ltr">{fmt(detail.equipment.serial_number)}</dd>
+            </div>
+            <div class="sm:col-span-2 lg:col-span-3">
+              <div class={fieldCls}>
+                <dt class={labelCls}>Notes</dt>
+                <dd class="mt-1 text-slate-900 whitespace-pre-line">{fmt(detail.equipment.notes)}</dd>
+              </div>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Created By</dt>
+              <dd class="mt-1 text-slate-900">{fmt(detail.created_by_name)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Last Updated By</dt>
+              <dd class="mt-1 text-slate-900">{fmt(detail.updated_by_name)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Last Updated At</dt>
+              <dd class="mt-1 text-slate-900">{fmt(detail.equipment.updated_at)}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section aria-labelledby="sec-usage" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 id="sec-usage" class="text-base font-semibold text-slate-900">Test Usage</h2>
+          <p class="mt-2 text-sm text-slate-600">
+            {detail.test_count.toLocaleString('en-US')} test{detail.test_count === 1 ? '' : 's'} reference this device by ID.
+            {detail.test_count > 0 && (
+              <a href={`/lab/tests?equipment=${detail.equipment.id}`} class="ms-1 font-medium text-brand-600 hover:underline">
+                View in the test register →
+              </a>
+            )}
+          </p>
+        </section>
+
+        <section aria-labelledby="sec-documents" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 id="sec-documents" class="text-base font-semibold text-slate-900">Linked Documents</h2>
+          {detail.documents.length === 0 ? (
+            <p class="mt-2 text-sm text-slate-600">
+              No SOP / WI documents linked to this device yet. Document linking is managed from the controlled-document module.
+            </p>
+          ) : (
+            <ul class="mt-3 flex flex-wrap gap-2">
+              {detail.documents.map((d) => (
+                <li class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
+                  <span class="font-medium">{d.code}</span>
+                  <span class="ms-2 text-slate-500">— {d.title} ({d.type})</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section aria-labelledby="sec-maintenance" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 id="sec-maintenance" class="text-base font-semibold text-slate-900">Maintenance &amp; Calibration Records</h2>
+          <p class="mt-2 text-sm text-slate-600">
+            Maintenance and dated calibration records are managed by dedicated modules (arriving in later prompts).
+          </p>
+        </section>
+
+        <section aria-labelledby="sec-history" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 id="sec-history" class="text-base font-semibold text-slate-900">Change History</h2>
+          {(() => {
+            const timeline = getLabEquipmentAuditTimeline(detail.equipment.id);
+            return timeline.length === 0 ? (
+              <p class="mt-2 text-sm text-slate-600">No recorded changes yet.</p>
+            ) : (
+              <div class="mt-3 overflow-x-auto contain-layout contain-paint">
+                <table class="min-w-[640px] divide-y divide-slate-100 text-sm">
+                  <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
+                    <tr>
+                      <th scope="col" class="px-3 py-2 font-semibold">When</th>
+                      <th scope="col" class="px-3 py-2 font-semibold">Actor</th>
+                      <th scope="col" class="px-3 py-2 font-semibold">Action</th>
+                      <th scope="col" class="px-3 py-2 font-semibold">Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    {timeline.map((entry) => (
+                      <tr>
+                        <td class="px-3 py-2 text-slate-500">{String(entry.created_at)}</td>
+                        <td class="px-3 py-2 text-slate-700">{String(entry.actor_name ?? '—')}</td>
+                        <td class="px-3 py-2 font-medium text-slate-900">{String(entry.action)}</td>
+                        <td class="px-3 py-2 text-slate-600" dir="ltr">{String(entry.note ?? '—')}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            );
+          })()}
+        </section>
+      </>
+    )}
+  </div>
+</BaseLayout>

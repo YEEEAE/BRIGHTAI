@@ -94,6 +94,10 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/tests/review',
   '/lab/tests/[id]',
   '/lab/tests/[id]/print',
+  '/lab/equipment',
+  '/lab/equipment/new',
+  '/lab/equipment/[id]',
+  '/lab/equipment/[id]/edit',
 ];
 
 /**

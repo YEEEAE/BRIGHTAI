@@ -27,6 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { mkdirSync, existsSync } from 'node:fs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 import { seedDemoData, seedUsersIfEmpty } from './seed';
+import { seedLabEquipmentIfEmpty } from './lab/seed';
 import { startBackupScheduler } from './backup-scheduler';
 import { backupDirectoryForDatabase } from './backup';
 import { runMigrations } from './migrations';
@@ -47,6 +48,7 @@ import labViewsMigrationSql from '../../db/migrations/014_lab_views.sql?raw';
 import labTestsRegisterIndexesSql from '../../db/migrations/015_lab_tests_register_indexes.sql?raw';
 import labProductEquipmentSql from '../../db/migrations/016_lab_product_equipment.sql?raw';
 import labTemplateEquipmentSql from '../../db/migrations/017_lab_template_equipment.sql?raw';
+import labEquipmentCalibrationStatusSql from '../../db/migrations/018_lab_equipment_calibration_status.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -270,6 +272,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '015_lab_tests_register_indexes.sql', source: labTestsRegisterIndexesSql },
       { file: '016_lab_product_equipment.sql', source: labProductEquipmentSql },
       { file: '017_lab_template_equipment.sql', source: labTemplateEquipmentSql },
+      { file: '018_lab_equipment_calibration_status.sql', source: labEquipmentCalibrationStatusSql },
     ],
   });
   backfillAuditChain(db);
@@ -277,6 +280,11 @@ function initialize(db: BetterSqliteDatabase): void {
   seedUsersIfEmpty(db);
   // SEED_DEMO=1 → demo team + 12 mixed-status tasks (only on an empty DB).
   seedDemoData(db);
+  // Canonical 24-device lab equipment registry (PROMPT 11). Idempotent; gated
+  // by QC_SEED_LAB_EQUIPMENT !== '0' so empty-DB fixtures can opt out.
+  if (process.env.QC_SEED_LAB_EQUIPMENT !== '0') {
+    seedLabEquipmentIfEmpty(db);
+  }
   backfillAuditChain(db);
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.

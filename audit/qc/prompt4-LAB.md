@@ -32,9 +32,9 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 07
 - [✅] Prompt 08
 - [✅] Prompt 09
-- [ ] Prompt 10
-- [ ] Prompt 11
-- [ ] Prompt 12
+- [✅] Prompt 10
+- [✅] Prompt 11
+- [✅] Prompt 12
 - [ ] Prompt 13
 - [ ] Prompt 14
 - [ ] Prompt 15
@@ -890,7 +890,7 @@ Audit changes.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement laboratory Test Templates.
@@ -937,7 +937,7 @@ Snapshot relevant configuration where needed for historical reproducibility.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement:
@@ -997,7 +997,7 @@ Never hard-delete referenced equipment.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement:

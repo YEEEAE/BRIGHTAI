@@ -461,6 +461,62 @@ export const labProductSchema = z.object({
 });
 
 /**
+ * POST /lab/equipment/new + /lab/equipment/[id]/edit — Laboratory equipment
+ * registry form (PROMPT 11).
+ *
+ * The equipment code is deliberately NOT pattern-restricted like product /
+ * template codes: the canonical registry carries codes such as "-" and
+ * "BSS-250N, 250N" that a strict regex would reject, and it is company data
+ * (A2). serial_number is free text (accepts "-", "DOA-P104-AA",
+ * "1-800-5556-3484"). status_raw is free text preserved verbatim — the
+ * English display mapping is read-time only (equipmentStatus.ts).
+ * `form_action` (save|archive|restore) is read from the raw form by the
+ * handler, never validated here. The equipment id comes from the matched
+ * path, never the body.
+ */
+export const labEquipmentSchema = z.object({
+  name: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(1, 'Equipment Name is required.')
+      .max(LAB_SHORT_TEXT_MAX, `Equipment Name must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+  ),
+  code: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(1, 'Equipment Code is required.')
+      .max(LAB_SHORT_TEXT_MAX, `Equipment Code must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+  ),
+  location: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(LAB_SHORT_TEXT_MAX, `Location must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`).nullable(),
+  ),
+  status_raw: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(1, 'Status is required.')
+      .max(LAB_SHORT_TEXT_MAX, `Status must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+  ),
+  calibration_status_raw: z.preprocess(
+    (v) => (v === '' || v == null ? null : v),
+    z
+      .enum(['yes', 'no'], { errorMap: () => ({ message: 'Invalid calibration status.' }) })
+      .nullable(),
+  ),
+  serial_number: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(LAB_SHORT_TEXT_MAX, `Serial Number must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`).nullable(),
+  ),
+  notes: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(LAB_REMARKS_MAX, `Notes must be ${LAB_REMARKS_MAX} characters or fewer.`).nullable(),
+  ),
+});
+
+/**
  * POST /lab/templates/new + /lab/templates/[id]/edit — Test Template form
  * (PROMPT 10). `equipment_ids` (the "Equipment Compatibility" checkboxes)
  * and `connector_choices` (repeated key per printed connector option) are NOT

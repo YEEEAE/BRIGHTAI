@@ -1,0 +1,166 @@
+---
+// LabEquipmentForm — the shared Equipment Registry form (PROMPT 11), rendered
+// server-side for BOTH /lab/equipment/new and /lab/equipment/[id]/edit.
+//
+// A plain Astro form (no island): every input is a native control, so there
+// is no client JS to load. Submission is a native POST to the same URL; the
+// middleware short-circuits it and the shared Zod schema (labEquipmentSchema)
+// re-validates everything server-side.
+//
+// Status is free text preserved verbatim (mixed Arabic/English company data,
+// A2) — the English display mapping is read-time only. Serial Number accepts
+// "-", "DOA-P104-AA", "1-800-5556-3484" etc. (TEXT, no pattern). The code
+// field deliberately has NO strict pattern: canonical codes include "-" and
+// "BSS-250N, 250N". Archive / restore are separate small POST forms carrying
+// a hidden `form_action`; the edit handler re-checks canArchiveLabEquipment
+// and skips field validation for those actions (pattern: templates.ts).
+const { mode, equipment = null, canArchive = false } = Astro.props;
+
+const actionUrl = mode === 'create' ? '/lab/equipment/new' : `/lab/equipment/${equipment!.id}/edit`;
+const submitLabel = mode === 'create' ? 'Add to Registry' : 'Save Changes';
+
+const inputCls =
+  'mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
+const labelCls = 'block text-sm font-medium text-slate-700';
+const sectionCls = 'rounded-xl border border-slate-200 bg-white p-5 shadow-sm';
+const sectionTitleCls = 'text-base font-semibold text-slate-900';
+---
+
+<form method="POST" action={actionUrl}>
+  <div class="space-y-6">
+    <section aria-labelledby="sec-equipment-identity" class={sectionCls}>
+      <h2 id="sec-equipment-identity" class={sectionTitleCls}>Equipment Identity</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="name" class={labelCls}>Equipment Name <span class="text-red-600" aria-hidden="true">*</span></label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            maxlength="200"
+            value={equipment?.name ?? ''}
+            class={inputCls}
+          />
+        </div>
+        <div>
+          <label for="code" class={labelCls}>Equipment Code <span class="text-red-600" aria-hidden="true">*</span></label>
+          <input
+            id="code"
+            name="code"
+            type="text"
+            required
+            maxlength="200"
+            value={equipment?.code ?? ''}
+            dir="ltr"
+            class={inputCls}
+          />
+          <p class="mt-1 text-xs text-slate-500">Unique. Registry codes are company data and are not pattern-restricted.</p>
+        </div>
+        <div>
+          <label for="location" class={labelCls}>Location</label>
+          <input
+            id="location"
+            name="location"
+            type="text"
+            maxlength="200"
+            value={equipment?.location ?? ''}
+            class={inputCls}
+          />
+        </div>
+        <div>
+          <label for="serial_number" class={labelCls}>Serial Number</label>
+          <input
+            id="serial_number"
+            name="serial_number"
+            type="text"
+            maxlength="200"
+            value={equipment?.serial_number ?? ''}
+            dir="ltr"
+            class={inputCls}
+          />
+          <p class="mt-1 text-xs text-slate-500">Free text — registry values include "-", "DOA-P104-AA", phone-style strings.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sec-equipment-status" class={sectionCls}>
+      <h2 id="sec-equipment-status" class={sectionTitleCls}>Status &amp; Calibration</h2>
+      <p class="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+        Status is stored verbatim — the English labels (In Use / Under Maintenance / Not In Use / New / Done) are
+        display-only and shown on badges and filters.
+      </p>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="status_raw" class={labelCls}>Status <span class="text-red-600" aria-hidden="true">*</span></label>
+          <input
+            id="status_raw"
+            name="status_raw"
+            type="text"
+            required
+            maxlength="200"
+            value={equipment?.status_raw ?? ''}
+            class={inputCls}
+          />
+        </div>
+        <div>
+          <label for="calibration_status_raw" class={labelCls}>Calibration</label>
+          <select id="calibration_status_raw" name="calibration_status_raw" class={inputCls}>
+            <option value="">Not specified</option>
+            <option value="yes" selected={equipment?.calibration_status_raw === 'yes'}>Yes</option>
+            <option value="no" selected={equipment?.calibration_status_raw === 'no'}>No</option>
+          </select>
+          <p class="mt-1 text-xs text-slate-500">Registry flag only — dated calibration records are managed separately.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sec-equipment-notes" class={sectionCls}>
+      <h2 id="sec-equipment-notes" class={sectionTitleCls}>Notes</h2>
+      <div class="mt-4">
+        <label for="notes" class={labelCls}>Notes</label>
+        <textarea id="notes" name="notes" rows="3" maxlength="5000" class={inputCls}>{equipment?.notes ?? ''}</textarea>
+      </div>
+    </section>
+
+    <div class="flex flex-wrap items-center justify-end gap-3">
+      <input type="hidden" name="form_action" value="save" />
+      <a
+        href={mode === 'create' ? '/lab/equipment' : `/lab/equipment/${equipment!.id}`}
+        class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+      >
+        Cancel
+      </a>
+      <button
+        type="submit"
+        class="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+      >
+        {submitLabel}
+      </button>
+    </div>
+  </div>
+</form>
+
+{
+  mode === 'edit' && canArchive && (
+    <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
+      <h2 class="text-base font-semibold text-slate-900">{equipment!.is_archived === 1 ? 'Restore equipment' : 'Archive equipment'}</h2>
+      <p class="mt-1 text-sm text-slate-600">
+        {equipment!.is_archived === 1
+          ? 'Bring this device back to the active registry. Its audit history is preserved.'
+          : 'Archive retires this device from the active registry (no hard delete) — tests, documents and history stay linked by canonical id.'}
+      </p>
+      <form method="POST" action={actionUrl} class="mt-3">
+        <input type="hidden" name="form_action" value={equipment!.is_archived === 1 ? 'restore' : 'archive'} />
+        <button
+          type="submit"
+          class={`rounded-lg px-4 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 ${
+            equipment!.is_archived === 1 ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-amber-600 hover:bg-amber-700'
+          }`}
+        >
+          {equipment!.is_archived === 1 ? 'Restore equipment' : 'Archive equipment'}
+        </button>
+      </form>
+    </div>
+  )
+}

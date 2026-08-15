@@ -94,6 +94,8 @@ function completeBody(overrides = {}) {
 try {
   process.env.QC_DATABASE_PATH = dbPath;
   process.env.QC_DB_PATH = '';
+  // PROMPT 11: keep the empty-DB fixture empty (no 24-device seed).
+  process.env.QC_SEED_LAB_EQUIPMENT = '0';
 
   execFileSync(process.execPath, ['scripts/init-db.mjs'], {
     cwd: appDir,

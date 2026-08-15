@@ -248,6 +248,7 @@ export interface LabEquipment {
   code: string;
   location: string | null;
   status_raw: string;
+  calibration_status_raw: string | null;
   serial_number: string | null;
   notes: string | null;
   is_archived: number;

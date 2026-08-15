@@ -169,9 +169,20 @@ let productId;
 {
   const emp = await browser.newPage();
   await login(emp, 'employee');
-  await emp.goto(`${BASE}/lab/tests/new?type=air`, { waitUntil: 'domcontentloaded' });
-  await emp.fill('#product_description', 'e2e syringe seal v2'); // case-insensitive match
-  await emp.waitForSelector('[data-testid="product-reference-panel"]', { timeout: 10_000 });
+  await emp.goto(`${BASE}/lab/tests/new?type=air`, { waitUntil: 'networkidle' });
+  // The island is client:visible — hydration must finish before the fill can
+  // flip React state. A pre-hydration fill is a harmless no-op that leaves
+  // React's state empty, so retry the fill (same pattern as e2e-delete-request)
+  // until the reference panel confirms the onChange handler ran.
+  let panel = emp.locator('[data-testid="product-reference-panel"]');
+  let tries = 0;
+  do {
+    await emp.fill('#product_description', 'e2e syringe seal v2'); // case-insensitive match
+    if (await panel.count() > 0) break;
+    await emp.waitForTimeout(300);
+    tries += 1;
+  } while (tries < 5);
+  await panel.waitFor({ state: 'visible', timeout: 10_000 });
   ok((await emp.locator('[data-testid="product-reference-panel"]').getByText('Locking connector with fixed threads').count()) > 0, 'test form: product panel shows the stored connector default');
   // The measured fields remain editable inputs on the same page.
   const pressure = emp.locator('#actual_pressure');

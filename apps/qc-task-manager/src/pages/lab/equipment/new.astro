@@ -1,0 +1,49 @@
+---
+// /lab/equipment/new — add a device to the Equipment Registry (PROMPT 11).
+// Manager+ only (canCreateLabEquipment); the shared form component posts to
+// this same URL and the middleware short-circuits the POST.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import LabEquipmentForm from '../../../components/lab/LabEquipmentForm.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import { canCreateLabEquipment } from '../../../lib/permissions';
+import { setFlash } from '../../../lib/flash';
+import type { Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canCreateLabEquipment(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to add equipment to the registry.');
+  return Astro.redirect('/lab/equipment');
+}
+
+const navItems = labNavForRole(role);
+---
+
+<BaseLayout title="New Equipment">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Equipment', href: '/lab/equipment' },
+        { label: 'New Equipment' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Equipment</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Register a device in the laboratory registry. Status and calibration are stored verbatim as company data;
+        every change is written to the audit log.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/equipment/new" />
+
+    <LabEquipmentForm mode="create" />
+  </div>
+</BaseLayout>

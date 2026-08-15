@@ -1,0 +1,71 @@
+---
+// /lab/equipment/[id]/edit — edit a device in the Equipment Registry (PROMPT 11).
+// Manager+ only (canEditLabEquipment). Archived devices are NOT editable —
+// the page bounces to the read-only detail with a flash (archived rows are
+// historical). The form POSTs to this same URL; the middleware short-circuits
+// it with the id from the path segment only. Archive / restore are separate
+// POST forms carrying a hidden form_action.
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import LabSecondaryNav from '../../../../components/lab/LabSecondaryNav.astro';
+import LabEquipmentForm from '../../../../components/lab/LabEquipmentForm.astro';
+import { labNavForRole } from '../../../../lib/lab/navigation';
+import { getLabEquipmentDetail } from '../../../../lib/lab/equipment';
+import { canArchiveLabEquipment, canEditLabEquipment } from '../../../../lib/permissions';
+import { setFlash } from '../../../../lib/flash';
+import type { Role } from '../../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canEditLabEquipment(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to edit equipment.');
+  return Astro.redirect('/lab/equipment');
+}
+
+const id = Number(Astro.params.id);
+let detail: ReturnType<typeof getLabEquipmentDetail> = null;
+try {
+  detail = getLabEquipmentDetail(id);
+} catch (err) {
+  console.error('[lab] equipment edit load failure', err);
+}
+
+if (!detail) {
+  return Astro.redirect('/lab/equipment');
+}
+if (detail.equipment.is_archived === 1) {
+  setFlash(Astro, 'error', 'Archived equipment is read-only and cannot be edited.');
+  return Astro.redirect(`/lab/equipment/${id}`);
+}
+
+const navItems = labNavForRole(role);
+const canArchive = canArchiveLabEquipment(role);
+---
+
+<BaseLayout title={`Edit Equipment ${detail.equipment.code}`}>
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Equipment', href: '/lab/equipment' },
+        { label: detail.equipment.code, href: `/lab/equipment/${detail.equipment.id}` },
+        { label: 'Edit' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Edit Equipment</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        {detail.equipment.name} (<span dir="ltr">{detail.equipment.code}</span>). Status and calibration are stored
+        verbatim; every change is audited.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath={`/lab/equipment/${detail.equipment.id}/edit`} />
+
+    <LabEquipmentForm mode="edit" equipment={detail.equipment} canArchive={canArchive} />
+  </div>
+</BaseLayout>
