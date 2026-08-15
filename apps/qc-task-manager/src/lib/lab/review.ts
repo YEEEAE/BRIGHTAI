@@ -24,6 +24,7 @@
 import { getDb, transaction } from '../db';
 import { createNotification } from '../notifications';
 import { deriveCalibrationState } from './overview';
+import { completeLabRetestsForApproval } from './retests';
 import { canApproveLabTestRecord, canReviewLabTestRecord } from '../permissions';
 import type { LabFinalResult, LabTestStatus, LabTestType, Role } from '../types';
 
@@ -558,6 +559,10 @@ export function transitionLabTest(
          SET status = 'APPROVED', approved_by = ?, approved_at = ?, updated_at = ?
          WHERE id = ?`,
       ).run(user.id, dbNow, dbNow, testId);
+      // Retest completion (§46): when the approved test is a retest's
+      // execution record, the retest moves OPEN → COMPLETED in the SAME
+      // transaction, with a LAB_RETEST/APPROVAL audit row for the completion.
+      completeLabRetestsForApproval(db, testId, testNumber, user.id, dbNow);
     } else {
       // reject / request_changes → REJECTED with the required reason.
       db.prepare(

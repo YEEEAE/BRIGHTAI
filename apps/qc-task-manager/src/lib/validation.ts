@@ -41,6 +41,7 @@ import {
   LAB_MEASUREMENT_MAX,
   LAB_PART_NAME_MAX,
   LAB_REMARKS_MAX,
+  LAB_RETEST_REASONS,
   LAB_SAMPLE_COUNT_DEFAULT,
   LAB_SAMPLE_COUNT_MAX,
   LAB_SAMPLE_COUNT_MIN,
@@ -1105,7 +1106,26 @@ export const labTestFormSchema = z
     }
   });
 
+/**
+ * Retest creation (§46–§47). The original test id comes from the URL query —
+ * never the body — and the reason vocabulary is the migration 012 CHECK.
+ * A reason note is free-form but bounded.
+ */
+export const labRetestSchema = z
+  .object({
+    reason: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z.enum(LAB_RETEST_REASONS, { errorMap: () => ({ message: 'A valid retest reason is required.' }) }),
+    ),
+    reason_note: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_SHORT_TEXT_MAX, `Reason note must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`).nullable(),
+    ),
+  })
+  .strict();
+
 /** Instantiate a template into a task. */
+
 export const templateInstantiateSchema = z.object({
   template_id: z.preprocess(
     (v) => (v === '' || v == null ? NaN : Number(v)),

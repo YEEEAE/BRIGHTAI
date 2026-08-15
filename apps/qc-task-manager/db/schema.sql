@@ -565,6 +565,8 @@ CREATE TABLE IF NOT EXISTS lab_test_retests (
   reason TEXT NOT NULL CHECK (reason IN ('FAIL','HOLD','SAMPLE_ISSUE','EQUIPMENT_ISSUE','PROCEDURAL_ISSUE','OTHER')),
   reason_note TEXT,
   status TEXT NOT NULL DEFAULT 'OPEN',
+  original_result TEXT,
+  original_status TEXT,
   created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))

@@ -49,6 +49,7 @@ import labTestsRegisterIndexesSql from '../../db/migrations/015_lab_tests_regist
 import labProductEquipmentSql from '../../db/migrations/016_lab_product_equipment.sql?raw';
 import labTemplateEquipmentSql from '../../db/migrations/017_lab_template_equipment.sql?raw';
 import labEquipmentCalibrationStatusSql from '../../db/migrations/018_lab_equipment_calibration_status.sql?raw';
+import labRetestOriginalSnapshotSql from '../../db/migrations/019_lab_retest_original_snapshot.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -273,6 +274,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '016_lab_product_equipment.sql', source: labProductEquipmentSql },
       { file: '017_lab_template_equipment.sql', source: labTemplateEquipmentSql },
       { file: '018_lab_equipment_calibration_status.sql', source: labEquipmentCalibrationStatusSql },
+      { file: '019_lab_retest_original_snapshot.sql', source: labRetestOriginalSnapshotSql },
     ],
   });
   backfillAuditChain(db);

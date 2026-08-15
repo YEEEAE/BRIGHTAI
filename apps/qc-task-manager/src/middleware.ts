@@ -36,6 +36,7 @@ import { handleLabProductCreatePost, handleLabProductEditPost } from './lib/lab/
 import { handleLabTemplateCreatePost, handleLabTemplateEditPost } from './lib/lab/templates';
 import { handleLabEquipmentCreatePost, handleLabEquipmentEditPost } from './lib/lab/equipment';
 import { handleLabCalibrationCreatePost, handleLabCalibrationEditPost } from './lib/lab/calibration';
+import { handleLabRetestCreatePost } from './lib/lab/retests';
 import { handleLabDocumentCreatePost, handleLabDocumentEditPost } from './lib/lab/documents';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
@@ -235,6 +236,13 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     if (calibrationEdit) {
       return handleLabCalibrationEditPost(context, Number(calibrationEdit[1]));
     }
+  }
+
+  // POST /lab/retests/new?test=<id> — Retest creation (§46). The original
+  // test id comes from the URL query only (never the body); the handler
+  // re-checks the supervisor+ create permission + CSRF + shared Zod validation.
+  if (context.request.method === 'POST' && pathname === '/lab/retests/new') {
+    return handleLabRetestCreatePost(context);
   }
 
   // POST /lab/documents/new + /lab/documents/[id]/edit — SOP/WI Document

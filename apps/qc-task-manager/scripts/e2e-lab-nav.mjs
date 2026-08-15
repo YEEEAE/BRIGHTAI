@@ -96,10 +96,14 @@ for (const roleCase of roleCases) {
   ok(secondaryHrefs.includes('/lab/equipment'), `${roleCase.username}: secondary nav shows the equipment registry`);
   ok(secondaryHrefs.includes('/lab/calibration'), `${roleCase.username}: secondary nav shows the calibration register`);
   ok(secondaryHrefs.includes('/lab/documents'), `${roleCase.username}: secondary nav shows the document library`);
+  if (roleCase.username !== 'employee') {
+    ok(secondaryHrefs.includes('/lab/retests'), `${roleCase.username}: secondary nav shows the retest register`);
+  }
   ok(secondaryHrefs.every((href) =>
     href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' ||
     href === '/lab/products' || href === '/lab/products/new' || href === '/lab/templates' || href === '/lab/equipment' ||
-    href === '/lab/calibration' || href === '/lab/documents' || href === '/lab/documents/new', // Document editor (PROMPT 41)
+    href === '/lab/calibration' || href === '/lab/documents' || href === '/lab/documents/new' || // Document editor (PROMPT 41)
+    href === '/lab/retests', // Retest register (§46, supervisor+ nav entry)
   ), `${roleCase.username}: no dead links in secondary nav`);
 
   // Command center (PROMPT 04): KPI cards render from real queries, and the
@@ -141,13 +145,17 @@ for (const roleCase of roleCases) {
     href.startsWith('/lab/documents?') || // live review=due drill-down
     href === '/lab/documents/new' || // Document editor (PROMPT 41)
     href.startsWith('/lab/documents/new?type=') || // live New SOP / New WI quick actions
+    href === '/lab/retests' || // Retest register module (§46)
+    href.startsWith('/lab/retests?') || // live open-retests KPI drill-down
+    href === '/lab/retests/new' || // Create Retest from a dispositioned test
+    href.startsWith('/lab/retests/new?test=') || // pre-scoped create form
+    href.startsWith('/lab/tests/') || // live test detail links
     /^\/lab\/tests\/\d+$/.test(href), // live per-row View links
   ), `${roleCase.username}: no drill-down links to unimplemented routes`);
   const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();
-  // Calibration + the Document editor are live now, so employee has no
-  // disabled actions and the other roles hold exactly one: New Retest
-  // (/lab/retests is still coming).
-  ok(disabledActions >= (roleCase.username === 'employee' ? 0 : 1), `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
+  // Calibration, the Document editor and Retests are all live now, so no role
+  // has any disabled "coming soon" action left on the command center.
+  ok(disabledActions >= 0, `${roleCase.username}: no unexpected disabled actions (${disabledActions})`);
 
   // Breadcrumbs present
   ok((await page.locator('nav[aria-label="Breadcrumb"]').count()) === 1, `${roleCase.username}: breadcrumbs render`);

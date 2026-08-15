@@ -1,0 +1,139 @@
+---
+// /lab/retests/new?test=<id> — create a controlled retest from an existing
+// test (§46–§47). Supervisor+ only (canCreateLabRetest, D-5). The original
+// test id comes from the URL query only; the form posts back to this same
+// URL and the middleware short-circuits the POST. The original test is shown
+// read-only with its existing retests so the operator sees -01/-02 usage.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EmptyState from '../../../components/EmptyState.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import { getLabRetestCreateContext, LAB_RETEST_REASONS, LAB_RETEST_REASON_LABELS } from '../../../lib/lab/retests';
+import { canCreateLabRetest } from '../../../lib/permissions';
+import { setFlash } from '../../../lib/flash';
+import type { Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canCreateLabRetest(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to create retests.');
+  return Astro.redirect('/lab/retests');
+}
+
+const navItems = labNavForRole(role);
+
+const testId = Number(Astro.url.searchParams.get('test') ?? '');
+const ctxResult = getLabRetestCreateContext(Number.isInteger(testId) ? testId : 0);
+const test = ctxResult.test;
+
+if (!test) {
+  setFlash(Astro, 'error', 'A valid original test is required to create a retest.');
+  return Astro.redirect('/lab/tests');
+}
+
+function fmt(value: unknown): string {
+  return value == null || String(value).trim() === '' ? '—' : String(value);
+}
+---
+
+<BaseLayout title={`Create Retest · ${test.test_number}`}>
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Retests', href: '/lab/retests' },
+        { label: 'Create Retest' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Testing</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Create Retest</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        A retest never modifies the original test. The original's result and final state are preserved on the retest record, a
+        documented reason is required, and a new DRAFT execution test is created carrying the original's controlled context —
+        measurements are re-taken, never copied.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/retests/new" />
+
+    <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 class="text-base font-semibold text-slate-900">Original Test (read-only)</h2>
+      <dl class="mt-3 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
+        <div><dt class="font-medium text-slate-500">Test ID</dt><dd class="mt-0.5 text-slate-900" dir="ltr">{test.test_number}</dd></div>
+        <div><dt class="font-medium text-slate-500">Type</dt><dd class="mt-0.5 text-slate-900">{test.test_type.toUpperCase()}</dd></div>
+        <div><dt class="font-medium text-slate-500">Workflow Status</dt><dd class="mt-0.5 text-slate-900">{test.status}</dd></div>
+        <div><dt class="font-medium text-slate-500">Final Result</dt><dd class="mt-0.5 text-slate-900">{fmt(test.final_result)}</dd></div>
+        <div><dt class="font-medium text-slate-500">Product</dt><dd class="mt-0.5 text-slate-900">{fmt(test.product_name)}</dd></div>
+        <div><dt class="font-medium text-slate-500">Lot Number</dt><dd class="mt-0.5 text-slate-900" dir="ltr">{fmt(test.lot_number)}</dd></div>
+        <div><dt class="font-medium text-slate-500">Sampling Area</dt><dd class="mt-0.5 text-slate-900">{fmt(test.sampling_area)}</dd></div>
+      </dl>
+      <a href={`/lab/tests/${test.id}`} class="mt-3 inline-block text-sm font-medium text-brand-600 hover:underline">View the original test →</a>
+
+      {ctxResult.existing.length > 0 && (
+        <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Existing retests for this test</p>
+          <ul class="mt-1.5 space-y-1 text-sm text-slate-700">
+            {ctxResult.existing.map((r) => (
+              <li>
+                <a href={`/lab/retests/${r.id}`} class="font-medium text-brand-600 hover:underline" dir="ltr">{r.retest_number}</a>
+                <span class="ms-2 text-xs text-slate-500">{LAB_RETEST_REASON_LABELS[r.reason as keyof typeof LAB_RETEST_REASON_LABELS] ?? r.reason} · {r.status}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+
+    {!ctxResult.eligible ? (
+      <EmptyState
+        title="This test is not eligible for a retest"
+        hint={`Retests may only be created from a dispositioned test (APPROVED, REJECTED or VOID). Current status: ${test.status}.`}
+        ctaHref={`/lab/tests/${test.id}`}
+        ctaLabel="Back to the test"
+      />
+    ) : (
+      <form method="post" action={`/lab/retests/new?test=${test.id}`} class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 class="text-base font-semibold text-slate-900">Retest Reason</h2>
+        <p class="mt-1 text-sm text-slate-600">Document why this test is being repeated — the reason is preserved on the retest record and audited.</p>
+
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Reason
+            <select id="reason" name="reason" required class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+              <option value="">Select a reason…</option>
+              {LAB_RETEST_REASONS.map((r) => (
+                <option value={r}>{LAB_RETEST_REASON_LABELS[r]}</option>
+              ))}
+            </select>
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            Reason note <span class="font-normal text-slate-400">(optional, max 200 characters)</span>
+            <input
+              type="text"
+              id="reason_note"
+              name="reason_note"
+              maxlength="200"
+              placeholder="Documented detail — sample, equipment or procedural context…"
+              class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+            />
+          </label>
+        </div>
+
+        <div class="mt-5 flex flex-wrap items-center gap-2">
+          <button
+            type="submit"
+            class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+          >
+            Create retest
+          </button>
+          <a href={`/lab/tests/${test.id}`} class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Cancel</a>
+        </div>
+      </form>
+    )}
+  </div>
+</BaseLayout>

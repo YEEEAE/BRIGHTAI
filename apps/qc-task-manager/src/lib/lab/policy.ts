@@ -54,6 +54,22 @@ export function labParametersSnapshotJson(): string {
 
 /** Product Description, Lot Number, Sampling Area, Medium Used, Angle. */
 export const LAB_SHORT_TEXT_MAX = 200;
+
+/** Controlled retest reasons (lab_test_retests CHECK, migration 012 §46). */
+export const LAB_RETEST_REASONS = ['FAIL', 'HOLD', 'SAMPLE_ISSUE', 'EQUIPMENT_ISSUE', 'PROCEDURAL_ISSUE', 'OTHER'] as const;
+export type LabRetestReason = (typeof LAB_RETEST_REASONS)[number];
+export const LAB_RETEST_REASON_LABELS: Record<LabRetestReason, string> = {
+  FAIL: 'FAIL result',
+  HOLD: 'HOLD / Further evaluation',
+  SAMPLE_ISSUE: 'Sample issue',
+  EQUIPMENT_ISSUE: 'Equipment issue',
+  PROCEDURAL_ISSUE: 'Procedural issue',
+  OTHER: 'Other documented reason',
+};
+
+/** Retest lifecycle: OPEN at creation, COMPLETED when the new test is approved. */
+export const LAB_RETEST_STATUSES = ['OPEN', 'COMPLETED'] as const;
+export type LabRetestStatus = (typeof LAB_RETEST_STATUSES)[number];
 /** Remarks (free-form, sanitized server-side). */
 export const LAB_REMARKS_MAX = 5000;
 /** Connector Assembly / Differential Conversion / sample measurement cells. */
