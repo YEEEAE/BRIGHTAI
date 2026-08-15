@@ -427,6 +427,99 @@ let manager;
   eq_(await manager.locator('nav[aria-label="Breadcrumb"] a', { hasText: 'E2E-VERSIONS' }).count(), 0, 'versions: code crumb is not a dead link');
 }
 
+// ── J. Review management buckets (30 / 15 / 7 days remaining, today, overdue) ──
+// Inserted after the earlier scenarios so their link-count / pagination / KPI
+// assertions are untouched. E2E-SOP-001 (APPROVED, review -1) is the overdue
+// fixture; add one DRAFT doc per remaining window.
+{
+  insertDoc({
+    code: 'E2E-REV-TODAY',
+    title: 'E2E Review Due Today',
+    type: 'SOP',
+    status: 'DRAFT',
+    ownerId: supervisorId,
+    reviewDue: isoDay(0),
+    updatedAt: '2026-02-10 09:00:00',
+  });
+  insertDoc({
+    code: 'E2E-REV-7D',
+    title: 'E2E Review Due 7 Days',
+    type: 'SOP',
+    status: 'DRAFT',
+    ownerId: supervisorId,
+    reviewDue: isoDay(5),
+    updatedAt: '2026-02-11 09:00:00',
+  });
+  insertDoc({
+    code: 'E2E-REV-15D',
+    title: 'E2E Review Due 15 Days',
+    type: 'SOP',
+    status: 'DRAFT',
+    ownerId: supervisorId,
+    reviewDue: isoDay(12),
+    updatedAt: '2026-02-12 09:00:00',
+  });
+  insertDoc({
+    code: 'E2E-REV-30D',
+    title: 'E2E Review Due 30 Days',
+    type: 'SOP',
+    status: 'DRAFT',
+    ownerId: supervisorId,
+    reviewDue: isoDay(28),
+    updatedAt: '2026-02-13 09:00:00',
+  });
+
+  // Summary strip: one active doc per window (overdue = E2E-SOP-001; archived
+  // E2E-WI-OLD and the no-date fixtures never count).
+  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  const strip = await manager.locator('main section[aria-label="Document review status"]').innerText();
+  const flat = strip.replace(/\s+/g, ' ').trim();
+  ok(flat.includes('1 Overdue 1 Due today 1 Due within 7 days 1 Due within 15 days 1 Due within 30 days'), 'review: summary strip counts one doc per window');
+  const stripLinks = manager.locator('main section[aria-label="Document review status"] a');
+  eq_(await stripLinks.count(), 5, 'review: strip has five drill-down links');
+
+  // Each window link drills into its filter and shows only that document.
+  const overdueLink = manager.locator('main section[aria-label="Document review status"] a[href="/lab/documents?review=overdue"]');
+  ok((await overdueLink.count()) === 1, 'review: overdue drill link present');
+  await overdueLink.click();
+  await manager.waitForURL((u) => u.pathname === '/lab/documents' && u.search === '?review=overdue', { timeout: 15_000 });
+  let body = await manager.locator('main').innerText();
+  ok(body.includes(TITLE_AIR) && !body.includes('E2E Review Due Today'), 'review: overdue filter shows only the overdue SOP');
+  ok(body.includes('1 document found'), 'review: overdue filter count label');
+  let tbody = await manager.locator('main tbody').innerText();
+  ok(tbody.includes('Overdue'), 'review: overdue badge rendered on the row');
+
+  for (const [window, title, badge] of [
+    ['today', 'E2E Review Due Today', 'Due today'],
+    ['7', 'E2E Review Due 7 Days', 'Due within 7 days'],
+    ['15', 'E2E Review Due 15 Days', 'Due within 15 days'],
+    ['30', 'E2E Review Due 30 Days', 'Due within 30 days'],
+  ]) {
+    await manager.goto(`${BASE}${registerUrl}?review=${window}`, { waitUntil: 'domcontentloaded' });
+    body = await manager.locator('main').innerText();
+    ok(body.includes(title) && !body.includes(TITLE_AIR), `review: ${window}-day filter shows its window doc`);
+    ok(body.includes('1 document found'), `review: ${window}-day filter count label`);
+    tbody = await manager.locator('main tbody').innerText();
+    ok(tbody.includes(badge), `review: ${window}-day badge rendered on the row`);
+  }
+
+  // The Review column is sortable (exact sort=review link — "Review Due" is a
+  // different column).
+  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.locator('main a[href*="sort=review"]').first().click();
+  await manager.waitForURL((u) => u.pathname === '/lab/documents' && u.search.includes('sort=review'), { timeout: 15_000 });
+  tbody = await manager.locator('main tbody').innerText();
+  ok(tbody.includes('Overdue'), 'review: sort by review keeps badge rendering');
+
+  // No horizontal overflow with the summary strip + extra column at 1440/390.
+  await manager.setViewportSize({ width: 1440, height: 900 });
+  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  ok(!(await manager.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)), 'review: no horizontal overflow at 1440px');
+  await manager.setViewportSize({ width: 390, height: 844 });
+  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  ok(!(await manager.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)), 'review: no horizontal overflow at 390px');
+}
+
 // Cleanup fixtures (leave the shared DB tidy for later suites).
 db.prepare(`DELETE FROM lab_document_links WHERE document_id IN (SELECT id FROM lab_documents WHERE code LIKE '${PREFIX}%')`).run();
 db.prepare(`DELETE FROM lab_document_versions WHERE document_id IN (SELECT id FROM lab_documents WHERE code LIKE '${PREFIX}%')`).run();

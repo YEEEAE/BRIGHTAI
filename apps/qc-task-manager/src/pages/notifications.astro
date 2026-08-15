@@ -30,6 +30,7 @@ const KIND_ICON: Record<NotificationKind, string> = {
   delete_rejected: '⛔',
   task_reopened: '🔄',
   sla_escalation: '🚨',
+  lab_document_review_due: '📋',
 };
 
 const KIND_LABEL: Record<NotificationKind, string> = {
@@ -48,6 +49,7 @@ const KIND_LABEL: Record<NotificationKind, string> = {
   delete_rejected: 'Deletion rejected',
   task_reopened: 'Reopened tasks',
   sla_escalation: 'SLA escalations',
+  lab_document_review_due: 'Document reviews',
 };
 
 const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
@@ -73,6 +75,7 @@ const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'task_completed', order: 3 },
   { key: 'task_reopened', order: 3 },
   { key: 'delete_approved', order: 3 },
+  { key: 'lab_document_review_due', order: 1 },
 ];
 
 function sectionOrder(kind: NotificationKind): number {

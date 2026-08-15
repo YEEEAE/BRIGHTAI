@@ -37,7 +37,8 @@ export type NotificationKind =
   | 'delete_approved'
   | 'delete_rejected'
   | 'task_reopened'
-  | 'sla_escalation';
+  | 'sla_escalation'
+  | 'lab_document_review_due';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -130,6 +131,7 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   delete_rejected: 'danger',
   task_reopened: 'warning',
   sla_escalation: 'danger',
+  lab_document_review_due: 'warning',
 };
 
 /** A raw persisted notification row (with read state) for the UI layers. */

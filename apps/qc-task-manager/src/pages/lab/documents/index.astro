@@ -20,6 +20,7 @@ import EmptyState from '../../../components/EmptyState.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import {
+  getLabDocumentReviewSummary,
   hasLabDocumentFilters,
   labDocumentFiltersToQuery,
   listLabDocumentEquipmentOptions,
@@ -28,10 +29,14 @@ import {
   parseLabDocumentSearchFilters,
   searchLabDocuments,
   LAB_DOCUMENT_PER_PAGE_OPTIONS,
+  LAB_DOCUMENT_REVIEW_FILTERS,
+  LAB_DOCUMENT_REVIEW_STATE_LABELS,
   LAB_DOCUMENT_STATUS_LABELS,
   LAB_DOCUMENT_STATUSES,
   LAB_DOCUMENT_TYPE_LABELS,
   LAB_DOCUMENT_TYPES,
+  type LabDocumentReviewFilter,
+  type LabDocumentReviewState,
   type LabDocumentSearchFilters,
   type LabDocumentSortField,
 } from '../../../lib/lab/documents';
@@ -55,17 +60,34 @@ let result: ReturnType<typeof searchLabDocuments> = {
 let owners: Array<{ id: number; full_name: string }> = [];
 let equipmentOptions: Array<{ id: number; name: string; code: string }> = [];
 let productOptions: Array<{ id: number; name: string; code: string }> = [];
+let reviewSummary: ReturnType<typeof getLabDocumentReviewSummary> = {
+  overdue: 0,
+  due_today: 0,
+  due_7: 0,
+  due_15: 0,
+  due_30: 0,
+};
 try {
   result = searchLabDocuments(filters);
   owners = listLabDocumentOwners();
   equipmentOptions = listLabDocumentEquipmentOptions();
   productOptions = listLabDocumentProductOptions();
+  reviewSummary = getLabDocumentReviewSummary();
 } catch (err) {
   console.error('[lab] documents register query failure', err);
   dataError = 'Could not load the SOP / WI document library. Try reloading — if the problem persists, contact an administrator.';
 }
 
 const filtered = hasLabDocumentFilters(filters);
+
+// Review-management summary strip (30 / 15 / 7 days remaining, today, overdue).
+const REVIEW_WINDOWS: { key: LabDocumentReviewFilter; label: string; count: number }[] = [
+  { key: 'overdue', label: 'Overdue', count: reviewSummary.overdue },
+  { key: 'today', label: 'Due today', count: reviewSummary.due_today },
+  { key: '7', label: 'Due within 7 days', count: reviewSummary.due_7 },
+  { key: '15', label: 'Due within 15 days', count: reviewSummary.due_15 },
+  { key: '30', label: 'Due within 30 days', count: reviewSummary.due_30 },
+];
 
 const qsParams = new URLSearchParams(labDocumentFiltersToQuery({ ...filters, page: 1 }).replace(/^\?/, ''));
 
@@ -101,6 +123,7 @@ const SORTABLE: { field: LabDocumentSortField; label: string }[] = [
   { field: 'owner', label: 'Owner' },
   { field: 'effective_date', label: 'Effective Date' },
   { field: 'review_due_date', label: 'Review Due' },
+  { field: 'review', label: 'Review' },
   { field: 'updated_at', label: 'Updated' },
 ];
 
@@ -140,6 +163,29 @@ function statusBadge(status: LabDocumentStatus): string {
 
 function typeBadge(type: LabDocumentType): string {
   return `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${TYPE_BADGE_CLS[type]}">${LAB_DOCUMENT_TYPE_LABELS[type]}</span>`;
+}
+
+const REVIEW_BADGE_CLS: Record<LabDocumentReviewState, string> = {
+  OVERDUE: 'bg-red-100 text-red-800',
+  DUE_TODAY: 'bg-amber-100 text-amber-800',
+  DUE_7: 'bg-orange-100 text-orange-800',
+  DUE_15: 'bg-yellow-100 text-yellow-800',
+  DUE_30: 'bg-sky-100 text-sky-800',
+  OK: 'bg-slate-100 text-slate-600',
+};
+
+const REVIEW_FILTER_LABELS: Record<LabDocumentReviewFilter, string> = {
+  due: 'Active — review date reached',
+  overdue: LAB_DOCUMENT_REVIEW_STATE_LABELS.OVERDUE,
+  today: LAB_DOCUMENT_REVIEW_STATE_LABELS.DUE_TODAY,
+  '7': LAB_DOCUMENT_REVIEW_STATE_LABELS.DUE_7,
+  '15': LAB_DOCUMENT_REVIEW_STATE_LABELS.DUE_15,
+  '30': LAB_DOCUMENT_REVIEW_STATE_LABELS.DUE_30,
+};
+
+function reviewBadge(state: LabDocumentReviewState | null): string {
+  if (!state) return `<span class="text-slate-400">—</span>`;
+  return `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${REVIEW_BADGE_CLS[state]}">${LAB_DOCUMENT_REVIEW_STATE_LABELS[state]}</span>`;
 }
 
 function fmt(value: unknown): string {
@@ -186,6 +232,31 @@ function fmt(value: unknown): string {
 
     {!dataError && (
       <>
+        <section aria-label="Document review status" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-3 flex items-baseline justify-between gap-3">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Review management</h2>
+            <span class="text-xs text-slate-500">Active documents by review window</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+            {REVIEW_WINDOWS.map((w) => {
+              const active = filters.review === w.key;
+              const href = `/lab/documents?review=${w.key}`;
+              return (
+                <a
+                  href={href}
+                  aria-current={active ? 'true' : undefined}
+                  class={`rounded-lg border p-3 transition hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
+                    active ? 'border-brand-500 bg-brand-50' : 'border-slate-200 bg-white hover:border-slate-300'
+                  }`}
+                >
+                  <span class="block text-2xl font-semibold text-slate-900" dir="ltr">{w.count}</span>
+                  <span class="mt-0.5 block text-xs font-medium text-slate-600">{w.label}</span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+
         <form method="get" action="/lab/documents" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
             <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
@@ -247,7 +318,9 @@ function fmt(value: unknown): string {
               Review Due
               <select name="review" class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
                 <option value="">All documents</option>
-                <option value="due" selected={filters.review === 'due'}>Active — review date reached</option>
+                {LAB_DOCUMENT_REVIEW_FILTERS.map((w) => (
+                  <option value={w} selected={filters.review === w}>{REVIEW_FILTER_LABELS[w]}</option>
+                ))}
               </select>
             </label>
             <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
@@ -280,7 +353,7 @@ function fmt(value: unknown): string {
         ) : (
           <section aria-label="Document Library" class="rounded-xl border border-slate-200 bg-white shadow-sm">
             <div class="overflow-x-auto contain-layout contain-paint">
-              <table class="min-w-[1150px] divide-y divide-slate-100 text-sm">
+              <table class="min-w-[1260px] divide-y divide-slate-100 text-sm">
                 <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr>
                     {SORTABLE.map((s) => (
@@ -303,6 +376,7 @@ function fmt(value: unknown): string {
                       <td class="px-4 py-2 text-slate-700">{r.owner_name ?? '—'}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.effective_date)}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.review_due_date)}</td>
+                      <td class="px-4 py-2" set:html={reviewBadge(r.review_state)} />
                       <td class="px-4 py-2 whitespace-nowrap text-slate-500" dir="ltr">{r.updated_at.slice(0, 10)}</td>
                       <td class="px-4 py-2">
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">

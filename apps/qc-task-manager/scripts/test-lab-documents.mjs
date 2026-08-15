@@ -287,6 +287,125 @@ try {
     eq(reviewDue.rows[0].code, 'SOP-QC-001', 'filter: review=due row correct (ARCHIVED/SUPERSEDED excluded)');
   }
 
+  // ── Review state: derived windows (30 / 15 / 7 / today / overdue) ──
+  console.log('■ Review state');
+  {
+    const today = isoDay(0);
+    eq(docs.deriveDocumentReviewState(null, today), null, 'review state: no date → null');
+    eq(docs.deriveDocumentReviewState(isoDay(-30), today), 'OVERDUE', 'review state: past → OVERDUE');
+    eq(docs.deriveDocumentReviewState(isoDay(-1), today), 'OVERDUE', 'review state: yesterday → OVERDUE');
+    eq(docs.deriveDocumentReviewState(isoDay(0), today), 'DUE_TODAY', 'review state: today → DUE_TODAY');
+    eq(docs.deriveDocumentReviewState(isoDay(1), today), 'DUE_7', 'review state: +1 → DUE_7');
+    eq(docs.deriveDocumentReviewState(isoDay(7), today), 'DUE_7', 'review state: +7 → DUE_7');
+    eq(docs.deriveDocumentReviewState(isoDay(8), today), 'DUE_15', 'review state: +8 → DUE_15');
+    eq(docs.deriveDocumentReviewState(isoDay(15), today), 'DUE_15', 'review state: +15 → DUE_15');
+    eq(docs.deriveDocumentReviewState(isoDay(16), today), 'DUE_30', 'review state: +16 → DUE_30');
+    eq(docs.deriveDocumentReviewState(isoDay(30), today), 'DUE_30', 'review state: +30 → DUE_30');
+    eq(docs.deriveDocumentReviewState(isoDay(31), today), 'OK', 'review state: +31 → OK');
+    eq(docs.deriveDocumentReviewState(isoDay(180), today), 'OK', 'review state: +180 → OK');
+  }
+
+  // ── Review windows: per-bucket filters + summary counts ──
+  console.log('■ Review windows');
+  {
+    // Existing active fixture SOP-QC-001 is overdue (review -1). Add one doc per
+    // remaining window — DRAFT WI owned by the supervisor so the earlier
+    // combined-filter expectations (type SOP + status APPROVED + owner manager)
+    // stay untouched.
+    insertDoc({ code: 'WI-REV-TODAY', title: 'Review Due Today', type: 'WI', status: 'DRAFT', ownerId: supervisorId, reviewDue: isoDay(0), version: 1 });
+    insertDoc({ code: 'WI-REV-7D', title: 'Review Due 7 Days', type: 'WI', status: 'DRAFT', ownerId: supervisorId, reviewDue: isoDay(5), version: 1 });
+    insertDoc({ code: 'WI-REV-15D', title: 'Review Due 15 Days', type: 'WI', status: 'DRAFT', ownerId: supervisorId, reviewDue: isoDay(10), version: 1 });
+    insertDoc({ code: 'WI-REV-30D', title: 'Review Due 30 Days', type: 'WI', status: 'DRAFT', ownerId: supervisorId, reviewDue: isoDay(25), version: 1 });
+
+    const byOverdue = docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: 'overdue' });
+    eq(byOverdue.total, 1, 'review filter: overdue → SOP-QC-001 only');
+    eq(byOverdue.rows[0].review_state, 'OVERDUE', 'review filter: overdue row exposes review_state');
+
+    const byToday = docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: 'today' });
+    eq(byToday.total, 1, 'review filter: today → WI-REV-TODAY');
+    eq(byToday.rows[0].review_state, 'DUE_TODAY', 'review filter: today row state');
+
+    const by7 = docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: '7' });
+    eq(by7.total, 1, 'review filter: 7 days → WI-REV-7D');
+    eq(by7.rows[0].review_state, 'DUE_7', 'review filter: 7-day row state');
+
+    const by15 = docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: '15' });
+    eq(by15.total, 1, 'review filter: 15 days → WI-REV-15D');
+    eq(by15.rows[0].review_state, 'DUE_15', 'review filter: 15-day row state');
+
+    const by30 = docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: '30' });
+    eq(by30.total, 1, 'review filter: 30 days → WI-REV-30D');
+    eq(by30.rows[0].review_state, 'DUE_30', 'review filter: 30-day row state');
+
+    // review=due (KPI) = overdue + today after the new fixtures.
+    const due = docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: 'due' });
+    eq(due.total, 2, 'review filter: due = overdue + today (KPI semantics)');
+
+    // Archived/superseded never match any window.
+    const archivedWindow = docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: 'overdue', status: 'ARCHIVED' });
+    eq(archivedWindow.total, 0, 'review filter: archived never matches a window');
+
+    // Rows expose the derived state (and null without a date).
+    const allRows = docs.searchLabDocuments(docs.NO_LAB_DOCUMENT_FILTERS).rows;
+    ok(allRows.some((r) => r.code === 'WI-REV-30D' && r.review_state === 'DUE_30'), 'review state: row exposes DUE_30');
+    ok(allRows.some((r) => r.code === 'SOP-QC-001' && r.review_state === 'OVERDUE'), 'review state: row exposes OVERDUE');
+    ok(allRows.some((r) => r.code === 'WI-QC-002' && r.review_state === null), 'review state: row without date → null');
+
+    // Summary counts the five windows (active only — archives excluded).
+    const summary = docs.getLabDocumentReviewSummary();
+    eq(summary.overdue, 1, 'summary: overdue count');
+    eq(summary.due_today, 1, 'summary: due today count');
+    eq(summary.due_7, 1, 'summary: 7-day count');
+    eq(summary.due_15, 1, 'summary: 15-day count');
+    eq(summary.due_30, 1, 'summary: 30-day count');
+  }
+
+  // ── Review scheduling notifications (reuse createNotification — no cron) ──
+  console.log('■ Review notifications');
+  {
+    // Near window (+10 days → DUE_15) → owner is notified.
+    docs.createLabDocument(
+      { type: 'WI', code: 'WI-REV-010', title: 'Review Due 10 Days', description: null, product_id: null, owner_id: employeeId, effective_date: null, review_due_date: isoDay(10), change_summary: 'Initial.', content: 'x', equipment_ids: [] },
+      supervisorId,
+    );
+    const nearNote = db
+      .prepare("SELECT * FROM notifications WHERE type = 'lab_document_review_due' AND user_id = ? AND title LIKE ?")
+      .get(employeeId, '%WI-REV-010%');
+    ok(nearNote, 'notification: near-window create notifies the owner');
+    ok(String(nearNote.message).includes('due within 15 days'), 'notification: message carries the 15-day bucket');
+
+    // Far-out date (+120 days → OK) → no notification.
+    const farId = docs.createLabDocument(
+      { type: 'WI', code: 'WI-REV-100', title: 'Review Far Out', description: null, product_id: null, owner_id: employeeId, effective_date: null, review_due_date: isoDay(120), change_summary: 'Initial.', content: 'x', equipment_ids: [] },
+      supervisorId,
+    );
+    ok(
+      !db.prepare("SELECT * FROM notifications WHERE type = 'lab_document_review_due' AND user_id = ? AND title LIKE ?").get(employeeId, '%WI-REV-100%'),
+      'notification: far-out date (OK) → no notification',
+    );
+
+    // No review date → no notification.
+    docs.createLabDocument(
+      { type: 'WI', code: 'WI-REV-000', title: 'Review No Date', description: null, product_id: null, owner_id: employeeId, effective_date: null, review_due_date: null, change_summary: 'Initial.', content: 'x', equipment_ids: [] },
+      supervisorId,
+    );
+    ok(
+      !db.prepare("SELECT * FROM notifications WHERE type = 'lab_document_review_due' AND user_id = ? AND title LIKE ?").get(employeeId, '%WI-REV-000%'),
+      'notification: no review date → no notification',
+    );
+
+    // Update into the overdue window (request-triggered re-evaluation) notifies.
+    docs.updateLabDocument(
+      farId,
+      { type: 'WI', code: 'WI-REV-100', title: 'Review Far Out', description: null, product_id: null, owner_id: employeeId, effective_date: null, review_due_date: isoDay(-3), change_summary: 'Moved overdue.', content: 'x', equipment_ids: [] },
+      supervisorId,
+    );
+    const overdueNote = db
+      .prepare("SELECT * FROM notifications WHERE type = 'lab_document_review_due' AND user_id = ? AND title LIKE ?")
+      .get(employeeId, '%overdue%');
+    ok(overdueNote, 'notification: update into overdue window notifies the owner');
+  }
+
   // ── Search (q) ──
   console.log('■ Search');
   {
@@ -335,6 +454,7 @@ try {
 
     ok(docs.hasLabDocumentFilters({ ...docs.NO_LAB_DOCUMENT_FILTERS, q: 'x' }), 'has: q active');
     ok(docs.hasLabDocumentFilters({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: 'due' }), 'has: review active');
+    ok(docs.hasLabDocumentFilters({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: '30' }), 'has: review window active');
     ok(!docs.hasLabDocumentFilters(docs.NO_LAB_DOCUMENT_FILTERS), 'has: defaults inactive');
 
     const qs = docs.labDocumentFiltersToQuery({ ...docs.NO_LAB_DOCUMENT_FILTERS, type: 'SOP', review: 'due', sort: 'code', dir: 'asc' });
@@ -342,6 +462,7 @@ try {
     ok(qs.includes('review=due'), 'query: review encoded');
     ok(qs.includes('sort=code'), 'query: sort encoded');
     ok(qs.includes('dir=asc'), 'query: dir encoded');
+    ok(docs.labDocumentFiltersToQuery({ ...docs.NO_LAB_DOCUMENT_FILTERS, review: '7' }).includes('review=7'), 'query: review window encoded');
     eq(docs.labDocumentFiltersToQuery(docs.NO_LAB_DOCUMENT_FILTERS), '', 'query: defaults → empty');
   }
 
@@ -366,6 +487,13 @@ try {
     eq(f2.review, 'due', 'parse: review=due kept');
     eq(f2.per_page, 50, 'parse: per=50 kept');
     eq(f2.q, null, 'parse: blank q dropped');
+
+    eq(docs.parseLabDocumentSearchFilters(new URL('http://x/lab/documents?review=overdue')).review, 'overdue', 'parse: review=overdue kept');
+    eq(docs.parseLabDocumentSearchFilters(new URL('http://x/lab/documents?review=today')).review, 'today', 'parse: review=today kept');
+    eq(docs.parseLabDocumentSearchFilters(new URL('http://x/lab/documents?review=7')).review, '7', 'parse: review=7 kept');
+    eq(docs.parseLabDocumentSearchFilters(new URL('http://x/lab/documents?review=15')).review, '15', 'parse: review=15 kept');
+    eq(docs.parseLabDocumentSearchFilters(new URL('http://x/lab/documents?review=30')).review, '30', 'parse: review=30 kept');
+    eq(docs.parseLabDocumentSearchFilters(new URL('http://x/lab/documents?review=bogus')).review, null, 'parse: review=bogus dropped');
   }
 
   // ── RBAC ──

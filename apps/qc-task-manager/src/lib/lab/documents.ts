@@ -29,6 +29,7 @@ import { getDb, transaction } from '../db';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
+import { createNotification } from '../notifications';
 import { canCreateLabDocument, canEditLabDocumentRecord } from '../permissions';
 import type { LabDocument, LabDocumentStatus, LabDocumentType, LabDocumentVersion } from '../types';
 import { renderDocumentContent } from './documentContent';
@@ -61,6 +62,84 @@ export const LAB_DOCUMENT_TYPE_LABELS: Record<LabDocumentType, string> = {
   WI: 'WI',
 };
 
+// ─────────────────────────────── Review state (derived) ───────────────────────────────
+
+/**
+ * Derived review-timing state for a controlled document (review management).
+ * Computed at read time from review_due_date — never stored. Windows are
+ * mutually exclusive and mirror the review-scheduling buckets (30 / 15 / 7
+ * days remaining, due today, overdue):
+ *   - OVERDUE      review_due_date < today
+ *   - DUE_TODAY    review_due_date = today
+ *   - DUE_7        today < review_due_date <= today + 7
+ *   - DUE_15       today + 7 < review_due_date <= today + 15
+ *   - DUE_30       today + 15 < review_due_date <= today + 30
+ *   - OK           review_due_date > today + 30
+ * null (no review date) → no state. SUPERSEDED / ARCHIVED documents never
+ * match the review windows (active-only, same KPI semantics as review=due in
+ * overview.ts), though the row badge still shows their factual state.
+ */
+export type LabDocumentReviewState = 'OVERDUE' | 'DUE_TODAY' | 'DUE_7' | 'DUE_15' | 'DUE_30' | 'OK';
+
+export const LAB_DOCUMENT_REVIEW_STATE_LABELS: Record<LabDocumentReviewState, string> = {
+  OVERDUE: 'Overdue',
+  DUE_TODAY: 'Due today',
+  DUE_7: 'Due within 7 days',
+  DUE_15: 'Due within 15 days',
+  DUE_30: 'Due within 30 days',
+  OK: 'Current',
+};
+
+/** Review-window filter values accepted on the register (?review=…). */
+export const LAB_DOCUMENT_REVIEW_FILTERS = ['due', 'overdue', 'today', '7', '15', '30'] as const;
+export type LabDocumentReviewFilter = (typeof LAB_DOCUMENT_REVIEW_FILTERS)[number];
+
+/** Local ISO date offset from a base ISO date by `days` (negative = earlier). */
+function isoOffsetFrom(baseIso: string, days: number): string {
+  const d = new Date(`${baseIso}T00:00:00`);
+  d.setDate(d.getDate() + days);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/**
+ * Derive the review-timing state for one document (null when no date). The
+ * buckets are mutually exclusive; the 7-day window wins inside 15, and 15
+ * wins inside 30 (a due date 5 days out is DUE_7, never DUE_15/DUE_30).
+ */
+export function deriveDocumentReviewState(
+  reviewDueIso: string | null | undefined,
+  today = isoOffsetFrom(isoToday(), 0),
+): LabDocumentReviewState | null {
+  if (!reviewDueIso) return null;
+  if (reviewDueIso < today) return 'OVERDUE';
+  if (reviewDueIso === today) return 'DUE_TODAY';
+  if (reviewDueIso <= isoOffsetFrom(today, 7)) return 'DUE_7';
+  if (reviewDueIso <= isoOffsetFrom(today, 15)) return 'DUE_15';
+  if (reviewDueIso <= isoOffsetFrom(today, 30)) return 'DUE_30';
+  return 'OK';
+}
+
+/**
+ * SQL CASE expression deriving each row's review state (same windows as
+ * deriveDocumentReviewState). The derived alias may be sorted or displayed;
+ * all values ride in the params array — no user input in SQL text.
+ */
+export function documentReviewStateSql(): { sql: string; params: string[] } {
+  const today = isoToday();
+  return {
+    sql: `CASE
+      WHEN d.review_due_date IS NULL THEN NULL
+      WHEN date(d.review_due_date) < date(?) THEN 'OVERDUE'
+      WHEN date(d.review_due_date) = date(?) THEN 'DUE_TODAY'
+      WHEN date(d.review_due_date) <= date(?) THEN 'DUE_7'
+      WHEN date(d.review_due_date) <= date(?) THEN 'DUE_15'
+      WHEN date(d.review_due_date) <= date(?) THEN 'DUE_30'
+      ELSE 'OK'
+    END`,
+    params: [today, today, isoOffsetFrom(today, 7), isoOffsetFrom(today, 15), isoOffsetFrom(today, 30)],
+  };
+}
+
 // ─────────────────────────────── List / search ───────────────────────────────
 
 export type LabDocumentSortField =
@@ -72,6 +151,7 @@ export type LabDocumentSortField =
   | 'owner'
   | 'effective_date'
   | 'review_due_date'
+  | 'review'
   | 'updated_at';
 
 export const LAB_DOCUMENT_SORT_FIELDS: readonly LabDocumentSortField[] = [
@@ -83,6 +163,7 @@ export const LAB_DOCUMENT_SORT_FIELDS: readonly LabDocumentSortField[] = [
   'owner',
   'effective_date',
   'review_due_date',
+  'review',
   'updated_at',
 ];
 
@@ -104,8 +185,13 @@ export interface LabDocumentSearchFilters {
   equipment: number | null;
   /** Restrict to documents for one product id (product_id or PRODUCT link). */
   product: number | null;
-  /** 'due' → active documents whose review_due_date has been reached (KPI). */
-  review: 'due' | null;
+  /**
+   * Review-timing window filter. 'due' → active documents whose review date
+   * has been reached (command-center KPI semantics); 'overdue' / 'today' /
+   * '7' / '15' / '30' → the five mutually exclusive review-scheduling buckets
+   * (review state derivation in this module).
+   */
+  review: LabDocumentReviewFilter | null;
   sort: LabDocumentSortField;
   dir: 'asc' | 'desc';
   page: number;
@@ -162,7 +248,10 @@ export function parseLabDocumentSearchFilters(url: URL): LabDocumentSearchFilter
   if (equipment !== null) f.equipment = equipment;
   const product = positiveInt(sp.get('product') ?? '');
   if (product !== null) f.product = product;
-  if (sp.get('review') === 'due') f.review = 'due';
+  const review = sp.get('review');
+  if (review && (LAB_DOCUMENT_REVIEW_FILTERS as readonly string[]).includes(review)) {
+    f.review = review as LabDocumentReviewFilter;
+  }
   const sort = sp.get('sort');
   if (sort && (LAB_DOCUMENT_SORT_FIELDS as readonly string[]).includes(sort)) f.sort = sort as LabDocumentSortField;
   const dir = sp.get('dir');
@@ -190,7 +279,7 @@ export function labDocumentFiltersToQuery(f: LabDocumentSearchFilters): string {
   if (f.owner !== null) sp.set('owner', String(f.owner));
   if (f.equipment !== null) sp.set('equipment', String(f.equipment));
   if (f.product !== null) sp.set('product', String(f.product));
-  if (f.review === 'due') sp.set('review', 'due');
+  if (f.review !== null) sp.set('review', f.review);
   if (f.sort !== DEFAULT_LAB_DOCUMENT_SORT) sp.set('sort', f.sort);
   if (f.dir !== DEFAULT_LAB_DOCUMENT_DIR) sp.set('dir', f.dir);
   if (f.per_page !== DEFAULT_LAB_DOCUMENT_PER_PAGE) sp.set('per', String(f.per_page));
@@ -221,6 +310,7 @@ const SORT_SQL: Record<LabDocumentSortField, string> = {
   owner: 'owner_name COLLATE NOCASE',
   effective_date: 'd.effective_date',
   review_due_date: 'd.review_due_date',
+  review: 'review_state',
   updated_at: 'd.updated_at',
 };
 
@@ -254,6 +344,8 @@ export interface LabDocumentListRow {
   created_by: number;
   effective_date: string | null;
   review_due_date: string | null;
+  /** Derived review-timing bucket (review management) — null when no date. */
+  review_state: LabDocumentReviewState | null;
   created_at: string;
   updated_at: string;
 }
@@ -311,6 +403,30 @@ export function searchLabDocuments(f: LabDocumentSearchFilters): LabDocumentSear
     // Command-center KPI semantics (overview.ts): active + review date reached.
     conds.push("d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL AND date(d.review_due_date) <= date(?)");
     params.push(isoToday());
+  } else if (f.review === 'overdue') {
+    conds.push("d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL AND date(d.review_due_date) < date(?)");
+    params.push(isoToday());
+  } else if (f.review === 'today') {
+    conds.push("d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL AND date(d.review_due_date) = date(?)");
+    params.push(isoToday());
+  } else if (f.review === '7') {
+    conds.push(
+      "d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL " +
+        "AND date(d.review_due_date) > date(?) AND date(d.review_due_date) <= date(?, '+7 days')",
+    );
+    params.push(isoToday(), isoToday());
+  } else if (f.review === '15') {
+    conds.push(
+      "d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL " +
+        "AND date(d.review_due_date) > date(?, '+7 days') AND date(d.review_due_date) <= date(?, '+15 days')",
+    );
+    params.push(isoToday(), isoToday());
+  } else if (f.review === '30') {
+    conds.push(
+      "d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL " +
+        "AND date(d.review_due_date) > date(?, '+15 days') AND date(d.review_due_date) <= date(?, '+30 days')",
+    );
+    params.push(isoToday(), isoToday());
   }
   const where = conds.length ? `WHERE ${conds.join(' AND ')}` : '';
 
@@ -322,13 +438,58 @@ export function searchLabDocuments(f: LabDocumentSearchFilters): LabDocumentSear
   const page = Math.min(f.page, totalPages);
   const offset = (page - 1) * f.per_page;
   const dir = f.dir === 'asc' ? 'ASC' : 'DESC';
+  const stateSql = documentReviewStateSql();
   const rows = db
     .prepare(
-      `${LAB_DOCUMENT_LIST_SELECT} ${LAB_DOCUMENT_LIST_FROM} ${where}
+      `${LAB_DOCUMENT_LIST_SELECT},\n${stateSql.sql} AS review_state ${LAB_DOCUMENT_LIST_FROM} ${where}
        ORDER BY ${SORT_SQL[f.sort]} ${dir}, d.id DESC LIMIT ? OFFSET ?`,
     )
-    .all(...params, f.per_page, offset) as LabDocumentListRow[];
+    .all(...stateSql.params, ...params, f.per_page, offset) as LabDocumentListRow[];
   return { rows, total, page, per_page: f.per_page, total_pages: totalPages };
+}
+
+// ─────────────────────────────── Review summary ───────────────────────────────
+
+export interface LabDocumentReviewSummary {
+  overdue: number;
+  due_today: number;
+  due_7: number;
+  due_15: number;
+  due_30: number;
+}
+
+/**
+ * Per-window counts of ACTIVE documents for the register's review summary
+ * strip (30 / 15 / 7 days remaining, due today, overdue). Same active-only
+ * semantics as the review filters — SUPERSEDED / ARCHIVED never count.
+ */
+export function getLabDocumentReviewSummary(): LabDocumentReviewSummary {
+  const today = isoToday();
+  const row = getDb()
+    .prepare(
+      `SELECT
+         COALESCE(SUM(CASE WHEN date(d.review_due_date) < date(?) THEN 1 ELSE 0 END), 0) AS overdue,
+         COALESCE(SUM(CASE WHEN date(d.review_due_date) = date(?) THEN 1 ELSE 0 END), 0) AS due_today,
+         COALESCE(SUM(CASE WHEN date(d.review_due_date) > date(?) AND date(d.review_due_date) <= date(?, '+7 days') THEN 1 ELSE 0 END), 0) AS due_7,
+         COALESCE(SUM(CASE WHEN date(d.review_due_date) > date(?, '+7 days') AND date(d.review_due_date) <= date(?, '+15 days') THEN 1 ELSE 0 END), 0) AS due_15,
+         COALESCE(SUM(CASE WHEN date(d.review_due_date) > date(?, '+15 days') AND date(d.review_due_date) <= date(?, '+30 days') THEN 1 ELSE 0 END), 0) AS due_30
+       FROM lab_documents d
+       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL`,
+    )
+    .get(today, today, today, today, today, today, today, today) as {
+    overdue: number;
+    due_today: number;
+    due_7: number;
+    due_15: number;
+    due_30: number;
+  };
+  return {
+    overdue: Number(row.overdue),
+    due_today: Number(row.due_today),
+    due_7: Number(row.due_7),
+    due_15: Number(row.due_15),
+    due_30: Number(row.due_30),
+  };
 }
 
 // ─────────────────────────────── Dropdowns ───────────────────────────────
@@ -469,6 +630,35 @@ function replaceDocumentEquipmentLinks(documentId: number, equipmentIds: number[
   for (const eid of [...new Set(equipmentIds)].sort((a, b) => a - b)) insert.run(documentId, eid, actorId);
 }
 
+/**
+ * Notify the document owner when the document sits in a review window
+ * (30 / 15 / 7 days remaining, due today, overdue). Reuses the existing
+ * notification engine (createNotification, taskId null so the bell link
+ * resolves to /notifications) with the documented `lab_document_review_due`
+ * kind. This is a request-triggered write-time evaluation — the same pattern
+ * as the calibration attention alerts — so NO scheduler cron is introduced:
+ * the review date is evaluated whenever the document is created or edited.
+ */
+function notifyDocumentReviewDue(document: {
+  code: string;
+  title: string;
+  owner_id: number | null;
+  created_by: number;
+  review_due_date: string | null;
+}): void {
+  const state = deriveDocumentReviewState(document.review_due_date);
+  if (!state || state === 'OK') return;
+  const ownerId = document.owner_id ?? document.created_by;
+  if (!ownerId) return;
+  createNotification({
+    userId: ownerId,
+    taskId: null,
+    type: 'lab_document_review_due',
+    title: `Document review ${state === 'OVERDUE' ? 'overdue' : 'due'}: ${document.code}`,
+    message: `${document.code} — ${LAB_DOCUMENT_REVIEW_STATE_LABELS[state].toLowerCase()} (review due ${document.review_due_date}).`,
+  });
+}
+
 function auditLabDocument(
   documentId: number,
   actorId: number,
@@ -554,6 +744,13 @@ export function createLabDocument(data: LabDocumentFormData, actorId: number): n
     db.prepare('UPDATE lab_documents SET current_version_id = ? WHERE id = ?').run(versionId, documentId);
     replaceDocumentEquipmentLinks(documentId, data.equipment_ids, actorId);
     auditLabDocument(documentId, actorId, 'CREATE', documentFormSummary(data, 1));
+    notifyDocumentReviewDue({
+      code: data.code,
+      title: data.title,
+      owner_id: data.owner_id,
+      created_by: actorId,
+      review_due_date: data.review_due_date,
+    });
     return documentId;
   });
 }
@@ -646,6 +843,13 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actorId
       );
     replaceDocumentEquipmentLinks(id, data.equipment_ids, actorId);
     auditLabDocument(id, actorId, action, documentFormSummary(data, versionNumber));
+    notifyDocumentReviewDue({
+      code: data.code,
+      title: data.title,
+      owner_id: data.owner_id,
+      created_by: document.created_by,
+      review_due_date: data.review_due_date,
+    });
   });
 }
 

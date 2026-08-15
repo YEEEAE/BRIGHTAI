@@ -45,7 +45,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 20
 - [✅] Prompt 21
 - [✅] Prompt 22
-- [ ] Prompt 23
+- [✅] Prompt 23
 - [ ] Prompt 24
 - [ ] Prompt 25
 - [ ] Prompt 26
@@ -1416,7 +1416,7 @@ Do not duplicate scheduler infrastructure.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement /lab/search.
