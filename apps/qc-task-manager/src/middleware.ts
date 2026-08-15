@@ -36,6 +36,7 @@ import { handleLabProductCreatePost, handleLabProductEditPost } from './lib/lab/
 import { handleLabTemplateCreatePost, handleLabTemplateEditPost } from './lib/lab/templates';
 import { handleLabEquipmentCreatePost, handleLabEquipmentEditPost } from './lib/lab/equipment';
 import { handleLabCalibrationCreatePost, handleLabCalibrationEditPost } from './lib/lab/calibration';
+import { handleLabDocumentCreatePost, handleLabDocumentEditPost } from './lib/lab/documents';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
@@ -233,6 +234,20 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     const calibrationEdit = pathname.match(/^\/lab\/calibration\/(\d+)\/edit$/);
     if (calibrationEdit) {
       return handleLabCalibrationEditPost(context, Number(calibrationEdit[1]));
+    }
+  }
+
+  // POST /lab/documents/new + /lab/documents/[id]/edit — SOP/WI Document
+  // Editor (PROMPT 41). Same short-circuit pattern; the document id comes from
+  // the path segment only (never the body), and the handler re-checks the
+  // create/record-level edit permission + CSRF + shared Zod validation.
+  if (context.request.method === 'POST' && pathname === '/lab/documents/new') {
+    return handleLabDocumentCreatePost(context);
+  }
+  if (context.request.method === 'POST') {
+    const documentEdit = pathname.match(/^\/lab\/documents\/(\d+)\/edit$/);
+    if (documentEdit) {
+      return handleLabDocumentEditPost(context, Number(documentEdit[1]));
     }
   }
 

@@ -10,8 +10,11 @@
 // owner / equipment / product / review=due), whitelisted sorting, server-side
 // pagination, the dropdown helpers, and the supervisor+ create permission.
 //
-// The register is read-only: approved document versions are immutable
-// (contract §41/§42/§44) and the editor/workflow pages arrive in later prompts.
+// Since PROMPT 41 the editor is also covered: the sanitized content renderer,
+// create (v1 DRAFT), duplicate-code conflict, in-place update of DRAFT/IN_REVIEW
+// versions, the approved→new-draft versioning contract (change summary required,
+// approved v1 immutable, VERSION audit), SUPERSEDED/ARCHIVED immutability, and
+// the record-level edit permission.
 
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -379,6 +382,241 @@ try {
     ok(perms.canEditLabDocument('supervisor'), 'RBAC: supervisor edits');
     eq(perms.canApproveLabDocument('supervisor'), false, 'RBAC: supervisor cannot approve');
     ok(perms.canApproveLabDocument('manager'), 'RBAC: manager approves');
+  }
+
+  // ── Editor (PROMPT 41): renderer ──
+  console.log('■ Renderer');
+  const { renderDocumentContent, isSafeLinkUrl } = await import('../src/lib/lab/documentContent.ts');
+  {
+    const md = `# Step 1 — Setup\n\n1. Switch on the unit.\n2. Press START.\n\n- Bullet A\n- Bullet B\n\n| Column A | Column B |\n| --- | --- |\n| x | y |\n\n> [!WARNING]\n> Keep hands clear.\n\n> [!NOTE]\n> Tester must be certified.\n\n- [x] Done item\n- [ ] Pending item\n\nSee [manual](https://example.com/manual).\n\n<script>alert(1)</script>`;
+    const html = renderDocumentContent(md);
+    ok(html.includes('<h2>'), 'renderer: heading h2');
+    ok(html.includes('<ol>'), 'renderer: numbered steps');
+    ok(html.includes('<ul>'), 'renderer: bullet list');
+    ok(html.includes('<table>'), 'renderer: table');
+    ok(html.includes('doc-callout-warning'), 'renderer: warning callout');
+    ok(html.includes('doc-callout-note'), 'renderer: note callout');
+    ok(html.includes('doc-checklist'), 'renderer: checklist');
+    ok(html.includes('<a href="https://example.com/manual"'), 'renderer: safe link');
+    ok(!html.includes('<script>'), 'renderer: script tags escaped, never emitted');
+    ok(!html.includes('onerror'), 'renderer: no event handlers');
+    ok(html.includes('&lt;script&gt;alert(1)&lt;/script&gt;'), 'renderer: raw HTML shown as escaped text');
+
+    const bare = renderDocumentContent('<img src=x onerror=alert(1)>');
+    ok(!bare.includes('<img'), 'renderer: img never emitted');
+    ok(bare.includes('&lt;img'), 'renderer: img escaped as text');
+
+    ok(isSafeLinkUrl('https://example.com'), 'link: https allowed');
+    ok(isSafeLinkUrl('/relative/path'), 'link: relative allowed');
+    ok(isSafeLinkUrl('#anchor'), 'link: anchor allowed');
+    ok(isSafeLinkUrl('mailto:lab@example.com'), 'link: mailto allowed');
+    ok(!isSafeLinkUrl('javascript:alert(1)'), 'link: javascript: rejected');
+    ok(!isSafeLinkUrl('data:text/html,<b>'), 'link: data: rejected');
+  }
+
+  // ── Editor: create ──
+  console.log('■ Editor create');
+  let createdId;
+  {
+    const formData = {
+      type: 'SOP',
+      code: 'SOP-QC-100',
+      title: 'Editor Created Procedure',
+      description: 'Created via the editor.',
+      product_id: productId,
+      owner_id: supervisorId,
+      effective_date: isoDay(0),
+      review_due_date: isoDay(180),
+      change_summary: 'Initial version.',
+      content: '# Title\n\nStep content here.',
+      equipment_ids: [equipmentId],
+    };
+    createdId = docs.createLabDocument(formData, supervisorId);
+    ok(Number.isInteger(createdId) && createdId > 0, 'create: returns document id');
+
+    const editor = docs.getLabDocumentEditor(createdId);
+    ok(editor, 'create: editor view loads');
+    eq(editor.document.status, 'DRAFT', 'create: status DRAFT');
+    eq(editor.version.version, 1, 'create: version 1');
+    ok(editor.version.content_md.includes('Step content here'), 'create: content stored verbatim');
+    ok(editor.version.content_html_sanitized.includes('<h2>'), 'create: sanitized html cache rendered');
+    ok(editor.equipment_ids.includes(equipmentId), 'create: equipment link written');
+
+    const audit = db.prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'CREATE'").get(createdId);
+    ok(audit, 'create: CREATE audit row written');
+    eq(Number(audit.actor_id), supervisorId, 'create: audit actor');
+
+    const listRow = docs.searchLabDocuments(docs.NO_LAB_DOCUMENT_FILTERS).rows.find((r) => r.id === createdId);
+    eq(listRow.version, 1, 'create: register shows v1');
+    eq(listRow.created_by, supervisorId, 'create: register exposes created_by');
+  }
+
+  // ── Editor: duplicate code ──
+  console.log('■ Editor duplicate code');
+  {
+    let threw = false;
+    try {
+      docs.createLabDocument(
+        { type: 'SOP', code: 'SOP-QC-100', title: 'Duplicate', description: null, product_id: null, owner_id: null, effective_date: null, review_due_date: null, change_summary: null, content: 'x', equipment_ids: [] },
+        supervisorId,
+      );
+    } catch (err) {
+      threw = err instanceof docs.LabDocumentCodeConflictError;
+    }
+    ok(threw, 'duplicate: code conflict throws LabDocumentCodeConflictError');
+  }
+
+  // ── Editor: in-place update of DRAFT (same version, UPDATE audit) ──
+  console.log('■ Editor update (in-place)');
+  {
+    const before = docs.getLabDocumentEditor(createdId);
+    docs.updateLabDocument(
+      createdId,
+      {
+        type: 'SOP',
+        code: 'SOP-QC-100',
+        title: 'Editor Created Procedure (revised)',
+        description: 'Updated in place.',
+        product_id: productId,
+        owner_id: managerId,
+        effective_date: isoDay(1),
+        review_due_date: isoDay(181),
+        change_summary: null,
+        content: '# Title\n\nRevised content.',
+        equipment_ids: [],
+      },
+      supervisorId,
+    );
+    const after = docs.getLabDocumentEditor(createdId);
+    eq(after.version.version, 1, 'update: DRAFT stays version 1');
+    ok(after.version.content_md.includes('Revised content'), 'update: content replaced in place');
+    eq(after.document.title, 'Editor Created Procedure (revised)', 'update: identity updated');
+    eq(after.equipment_ids.length, 0, 'update: equipment links replaced (empty)');
+    ok(before.version.content_html_sanitized !== after.version.content_html_sanitized, 'update: html cache refreshed');
+
+    const audit = db.prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'UPDATE'").get(createdId);
+    ok(audit, 'update: UPDATE audit row written');
+  }
+
+  // ── Editor: approved → new DRAFT version (immutability contract) ──
+  console.log('■ Editor versioning (approved → new draft)');
+  {
+    // Manually approve the created document's current version.
+    db.prepare("UPDATE lab_documents SET status = 'APPROVED' WHERE id = ?").run(createdId);
+    db.prepare("UPDATE lab_document_versions SET status = 'APPROVED' WHERE document_id = ?").run(createdId);
+
+    // Revising without a change summary must be rejected.
+    let threw = false;
+    try {
+      docs.updateLabDocument(createdId, {
+        type: 'SOP',
+        code: 'SOP-QC-100',
+        title: 'Approved Doc Revise',
+        description: null,
+        product_id: null,
+        owner_id: null,
+        effective_date: null,
+        review_due_date: null,
+        change_summary: '',
+        content: 'New approved content.',
+        equipment_ids: [],
+      }, supervisorId);
+    } catch (err) {
+      threw = /change summary is required/i.test(err.message);
+    }
+    ok(threw, 'versioning: change summary required when revising approved');
+
+    const approvedVersionId = docs.getLabDocumentEditor(createdId).version.id;
+    docs.updateLabDocument(createdId, {
+      type: 'SOP',
+      code: 'SOP-QC-100',
+      title: 'Approved Doc Revise',
+      description: null,
+      product_id: null,
+      owner_id: null,
+      effective_date: null,
+      review_due_date: null,
+      change_summary: 'Revised per audit finding.',
+      content: 'New approved content.',
+      equipment_ids: [],
+    }, supervisorId);
+
+    const editor = docs.getLabDocumentEditor(createdId);
+    eq(editor.document.status, 'DRAFT', 'versioning: document returns to DRAFT');
+    eq(editor.version.version, 2, 'versioning: new version 2');
+    ok(editor.version.content_md.includes('New approved content'), 'versioning: draft holds revised content');
+
+    // The approved v1 must be untouched.
+    const v1 = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(approvedVersionId);
+    eq(Number(v1.version), 1, 'versioning: approved v1 version number immutable');
+    eq(v1.status, 'APPROVED', 'versioning: approved v1 status immutable');
+    ok(!String(v1.content_md).includes('New approved content'), 'versioning: approved v1 content immutable');
+
+    const versionAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'VERSION'")
+      .get(createdId);
+    ok(versionAudit, 'versioning: VERSION audit row written');
+  }
+
+  // ── Editor: SUPERSEDED / ARCHIVED are not editable ──
+  console.log('■ Editor immutability (superseded/archived)');
+  {
+    db.prepare("UPDATE lab_documents SET status = 'SUPERSEDED' WHERE id = ?").run(createdId);
+    let threw = false;
+    try {
+      docs.updateLabDocument(createdId, {
+        type: 'SOP',
+        code: 'SOP-QC-100',
+        title: 'x',
+        description: null,
+        product_id: null,
+        owner_id: null,
+        effective_date: null,
+        review_due_date: null,
+        change_summary: 'x',
+        content: 'x',
+        equipment_ids: [],
+      }, supervisorId);
+    } catch (err) {
+      threw = /cannot be edited/i.test(err.message);
+    }
+    ok(threw, 'immutability: SUPERSEDED cannot be edited');
+    db.prepare("UPDATE lab_documents SET status = 'ARCHIVED' WHERE id = ?").run(createdId);
+    threw = false;
+    try {
+      docs.updateLabDocument(createdId, {
+        type: 'SOP',
+        code: 'SOP-QC-100',
+        title: 'x',
+        description: null,
+        product_id: null,
+        owner_id: null,
+        effective_date: null,
+        review_due_date: null,
+        change_summary: 'x',
+        content: 'x',
+        equipment_ids: [],
+      }, supervisorId);
+    } catch (err) {
+      threw = /cannot be edited/i.test(err.message);
+    }
+    ok(threw, 'immutability: ARCHIVED cannot be edited');
+  }
+
+  // ── Editor: record-level permission ──
+  console.log('■ Editor RBAC (record-level)');
+  {
+    // Re-create a fresh doc owned by the supervisor (created by supervisor too).
+    const ownedId = docs.createLabDocument(
+      { type: 'WI', code: 'WI-QC-300', title: 'Supervisor Owned', description: null, product_id: null, owner_id: supervisorId, effective_date: null, review_due_date: null, change_summary: 'Initial.', content: 'Body.', equipment_ids: [] },
+      supervisorId,
+    );
+    const otherDoc = docs.getLabDocumentEditor(ownedId).document;
+    ok(perms.canEditLabDocumentRecord({ id: supervisorId, role: 'supervisor' }, otherDoc), 'RBAC: supervisor edits own doc (DRAFT)');
+    eq(perms.canEditLabDocumentRecord({ id: managerId, role: 'manager' }, otherDoc), true, 'RBAC: manager edits any doc');
+
+    // Employee can never edit.
+    eq(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, otherDoc), false, 'RBAC: employee never edits docs');
   }
 } catch (err) {
   console.error(err);

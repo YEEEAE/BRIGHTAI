@@ -32,6 +32,11 @@ import {
 import { MAX_COMMENT_LENGTH } from './format';
 import {
   LAB_CONNECTOR_TYPES,
+  LAB_DOCUMENT_CHANGE_SUMMARY_MAX,
+  LAB_DOCUMENT_CODE_MAX,
+  LAB_DOCUMENT_CONTENT_MAX,
+  LAB_DOCUMENT_DESCRIPTION_MAX,
+  LAB_DOCUMENT_TITLE_MAX,
   LAB_MAINTENANCE_STATUSES,
   LAB_MEASUREMENT_MAX,
   LAB_PART_NAME_MAX,
@@ -650,6 +655,93 @@ export const labCalibrationSchema = z
   .superRefine((data, ctx) => {
     if (data.calibration_due_at && data.next_due_at && data.next_due_at < data.calibration_due_at) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Next Due Date cannot be before the Calibration Due Date.' });
+    }
+  });
+
+/**
+ * POST /lab/documents/new + /lab/documents/[id]/edit — SOP/WI Document Editor
+ * (page reference §40). Identity fields (type/code/title/description/product/
+ * owner/dates) live on lab_documents; the content + change summary live on the
+ * current lab_document_versions row (or a NEW version when editing an APPROVED
+ * document). `equipment_ids` (the "Related Equipment" checkboxes) is NOT part
+ * of this schema: FormData repeats that key per checkbox, so the handler
+ * collects it from the raw form and the service re-validates existence. Like
+ * labProductSchema, unknown keys are stripped (the parsed `data` only ever
+ * carries schema fields), and the document id always comes from the matched
+ * path, never the body.
+ */
+export const labDocumentSchema = z
+  .object({
+    type: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z.enum(['SOP', 'WI'], { errorMap: () => ({ message: 'Invalid document type.' }) }),
+    ),
+    code: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z
+        .string()
+        .min(1, 'Document Code is required.')
+        .max(LAB_DOCUMENT_CODE_MAX, `Document Code must be ${LAB_DOCUMENT_CODE_MAX} characters or fewer.`)
+        .regex(/^[A-Za-z0-9][A-Za-z0-9._-]*$/, 'Document Code may only contain letters, numbers, _ . and -, and must start with a letter or number.'),
+    ),
+    title: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z
+        .string()
+        .min(1, 'Document Title is required.')
+        .max(LAB_DOCUMENT_TITLE_MAX, `Document Title must be ${LAB_DOCUMENT_TITLE_MAX} characters or fewer.`),
+    ),
+    description: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_DOCUMENT_DESCRIPTION_MAX, `Description must be ${LAB_DOCUMENT_DESCRIPTION_MAX} characters or fewer.`).nullable(),
+    ),
+    product_id: z.preprocess(
+      (v) => (v === '' || v == null ? null : Number(v)),
+      z
+        .number({ errorMap: () => ({ message: 'Invalid product reference.' }) })
+        .int()
+        .positive()
+        .nullable(),
+    ),
+    owner_id: z.preprocess(
+      (v) => (v === '' || v == null ? null : Number(v)),
+      z
+        .number({ errorMap: () => ({ message: 'Invalid owner.' }) })
+        .int()
+        .positive()
+        .nullable(),
+    ),
+    effective_date: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Effective Date must be a valid date (YYYY-MM-DD).')
+        .nullable(),
+    ),
+    review_due_date: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Review Due Date must be a valid date (YYYY-MM-DD).')
+        .nullable(),
+    ),
+    change_summary: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_DOCUMENT_CHANGE_SUMMARY_MAX, `Change Summary must be ${LAB_DOCUMENT_CHANGE_SUMMARY_MAX} characters or fewer.`).nullable(),
+    ),
+    content: z.preprocess(
+      (v) => (v === '' || v == null ? '' : String(v)),
+      z
+        .string()
+        .max(LAB_DOCUMENT_CONTENT_MAX, `Document content must be ${LAB_DOCUMENT_CONTENT_MAX} characters or fewer.`),
+    ),
+  })
+  .superRefine((data, ctx) => {
+    if (data.content.trim() === '') {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Document content is required.' });
+    }
+    if (data.effective_date && data.review_due_date && data.review_due_date < data.effective_date) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Review Due Date cannot be before the Effective Date.' });
     }
   });
 

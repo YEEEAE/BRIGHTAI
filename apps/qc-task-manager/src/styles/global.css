@@ -61,3 +61,191 @@
     scroll-behavior: auto !important;
   }
 }
+
+/*
+ * 3. Sanitized document content (.doc-content) — the SOP/WI preview inside
+ *    LabDocumentEditor.astro and (later) the reader views. The markup is
+ *    produced by src/lib/lab/documentContent.ts: an escape-only renderer that
+ *    only ever emits headings, paragraphs, lists, tables, callouts,
+ *    checklists, code and safe links — no raw HTML passes through. These
+ *    styles make that generated markup readable and distinct from the app UI.
+ */
+.doc-content {
+  color: #0f172a;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.doc-content > *:first-child {
+  margin-top: 0;
+}
+
+.doc-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.doc-content h2,
+.doc-content h3,
+.doc-content h4,
+.doc-content h5,
+.doc-content h6 {
+  color: #0f172a;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.doc-content h2 {
+  font-size: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.375rem;
+}
+
+.doc-content h3 {
+  font-size: 1.125rem;
+}
+
+.doc-content h4,
+.doc-content h5,
+.doc-content h6 {
+  font-size: 1rem;
+}
+
+.doc-content p {
+  margin: 0.625rem 0;
+}
+
+.doc-content ul,
+.doc-content ol {
+  margin: 0.625rem 0;
+  padding-inline-start: 1.5rem;
+}
+
+.doc-content li {
+  margin: 0.25rem 0;
+}
+
+.doc-content ol li::marker,
+.doc-content ul li::marker {
+  color: #64748b;
+}
+
+.doc-content a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.doc-content a:hover {
+  color: #1d4ed8;
+}
+
+.doc-content code {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  color: #be123c;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125em;
+  padding: 0.125rem 0.3125rem;
+}
+
+.doc-content blockquote {
+  border-inline-start: 3px solid #cbd5e1;
+  color: #475569;
+  margin: 0.75rem 0;
+  padding-inline-start: 0.875rem;
+}
+
+.doc-content .doc-table-wrap {
+  margin: 0.875rem 0;
+  overflow-x: auto;
+}
+
+.doc-content table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+.doc-content th,
+.doc-content td {
+  border: 1px solid #e2e8f0;
+  padding: 0.4375rem 0.75rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.doc-content th {
+  background-color: #f8fafc;
+  color: #334155;
+  font-weight: 600;
+}
+
+.doc-content .doc-callout {
+  border-inline-start: 4px solid #64748b;
+  border-radius: 0.5rem;
+  margin: 0.875rem 0;
+  padding: 0.75rem 1rem;
+}
+
+.doc-content .doc-callout-warning {
+  background-color: #fffbeb;
+  border-inline-start-color: #d97706;
+}
+
+.doc-content .doc-callout-note {
+  background-color: #eff6ff;
+  border-inline-start-color: #2563eb;
+}
+
+.doc-content .doc-callout-label {
+  color: inherit;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+}
+
+.doc-content .doc-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.doc-content .doc-checklist {
+  list-style: none;
+  margin: 0.625rem 0;
+  padding-inline-start: 0;
+}
+
+.doc-content .doc-checklist li {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.375rem 0;
+}
+
+.doc-content .doc-checkbox {
+  align-items: center;
+  border: 1.5px solid #94a3b8;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 0.6875rem;
+  height: 1rem;
+  justify-content: center;
+  line-height: 1;
+  margin-top: 0.1875rem;
+  width: 1rem;
+}
+
+.doc-content .doc-checkbox-checked {
+  background-color: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+}
+
+.doc-content .doc-checklist label {
+  display: flex;
+  gap: 0.5rem;
+}

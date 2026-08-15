@@ -80,3 +80,16 @@ export const LAB_MAINTENANCE_STATUS_LABELS: Record<LabMaintenanceStatus, string>
   COMPLETED: 'Completed',
   CANCELLED: 'Cancelled',
 };
+
+// ── Controlled document editor policy (/lab/documents/new + [id]/edit) ────────
+
+/** Max length of the authored Markdown content (lab_document_versions.content_md). */
+export const LAB_DOCUMENT_CONTENT_MAX = 200_000;
+/** Max length of the change summary (required when revising an approved version). */
+export const LAB_DOCUMENT_CHANGE_SUMMARY_MAX = 2000;
+/** Max length of a document description (lab_documents.description). */
+export const LAB_DOCUMENT_DESCRIPTION_MAX = 2000;
+/** Max length of a document title (lab_documents.title). */
+export const LAB_DOCUMENT_TITLE_MAX = 200;
+/** Max length of a document code (lab_documents.code). */
+export const LAB_DOCUMENT_CODE_MAX = 60;

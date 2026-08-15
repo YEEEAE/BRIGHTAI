@@ -1,0 +1,88 @@
+---
+// /lab/documents/new — create a controlled SOP/WI document (PROMPT 41, page
+// reference §40). Supervisor+ only (canCreateLabDocument); the shared editor
+// component posts to this same URL and the middleware short-circuits the POST.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EmptyState from '../../../components/EmptyState.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import LabDocumentEditor from '../../../components/lab/LabDocumentEditor.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import {
+  listLabEquipmentForDocumentForm,
+  listLabProductsForDocumentForm,
+  listLabUsersForDocumentForm,
+} from '../../../lib/lab/documents';
+import { canCreateLabDocument } from '../../../lib/permissions';
+import { setFlash } from '../../../lib/flash';
+import type { Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canCreateLabDocument(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to create controlled documents.');
+  return Astro.redirect('/lab/documents');
+}
+
+const navItems = labNavForRole(role);
+
+let loadError: string | null = null;
+let equipmentOptions: Array<{ id: number; name: string; code: string }> = [];
+let productOptions: Array<{ id: number; name: string; code: string }> = [];
+let userOptions: Array<{ id: number; full_name: string }> = [];
+try {
+  equipmentOptions = listLabEquipmentForDocumentForm();
+  productOptions = listLabProductsForDocumentForm();
+  userOptions = listLabUsersForDocumentForm();
+} catch (err) {
+  console.error('[lab] document create reference load failure', err);
+  loadError = 'Could not load the reference lists. Try reloading — if the problem persists, contact an administrator.';
+}
+---
+
+<BaseLayout title="New Controlled Document">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Documents', href: '/lab/documents' },
+        { label: 'New Document' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Controlled Document</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Create a SOP or WI. The document is saved as a <strong>draft</strong> with version 1 — approval happens through the
+        workflow once it leaves the editor.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/documents/new" />
+
+    {loadError ? (
+      <>
+        <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {loadError}
+        </div>
+        <EmptyState
+          title="Could not load the document editor"
+          hint={loadError}
+          ctaHref="/lab/documents"
+          ctaLabel="Back to the document library"
+        />
+      </>
+    ) : (
+      <LabDocumentEditor
+        mode="create"
+        equipmentOptions={equipmentOptions}
+        selectedEquipmentIds={[]}
+        productOptions={productOptions}
+        userOptions={userOptions}
+      />
+    )}
+  </div>
+</BaseLayout>

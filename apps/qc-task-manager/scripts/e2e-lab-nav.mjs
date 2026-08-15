@@ -99,7 +99,7 @@ for (const roleCase of roleCases) {
   ok(secondaryHrefs.every((href) =>
     href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' ||
     href === '/lab/products' || href === '/lab/products/new' || href === '/lab/templates' || href === '/lab/equipment' ||
-    href === '/lab/calibration' || href === '/lab/documents',
+    href === '/lab/calibration' || href === '/lab/documents' || href === '/lab/documents/new', // Document editor (PROMPT 41)
   ), `${roleCase.username}: no dead links in secondary nav`);
 
   // Command center (PROMPT 04): KPI cards render from real queries, and the
@@ -139,12 +139,15 @@ for (const roleCase of roleCases) {
     href.startsWith('/lab/calibration?') || // live due=1 drill-down
     href === '/lab/documents' || // SOP/WI Library register (§39)
     href.startsWith('/lab/documents?') || // live review=due drill-down
+    href === '/lab/documents/new' || // Document editor (PROMPT 41)
+    href.startsWith('/lab/documents/new?type=') || // live New SOP / New WI quick actions
     /^\/lab\/tests\/\d+$/.test(href), // live per-row View links
   ), `${roleCase.username}: no drill-down links to unimplemented routes`);
   const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();
-  // Calibration is now live too (§37), so employee has no disabled actions;
-  // the other roles still hold several disabled actions.
-  ok(disabledActions >= (roleCase.username === 'employee' ? 0 : 2), `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
+  // Calibration + the Document editor are live now, so employee has no
+  // disabled actions and the other roles hold exactly one: New Retest
+  // (/lab/retests is still coming).
+  ok(disabledActions >= (roleCase.username === 'employee' ? 0 : 1), `${roleCase.username}: not-yet-implemented actions render disabled with hints (${disabledActions})`);
 
   // Breadcrumbs present
   ok((await page.locator('nav[aria-label="Breadcrumb"]').count()) === 1, `${roleCase.username}: breadcrumbs render`);

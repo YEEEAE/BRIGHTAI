@@ -35,7 +35,7 @@ import {
   type LabDocumentSearchFilters,
   type LabDocumentSortField,
 } from '../../../lib/lab/documents';
-import { canCreateLabDocument } from '../../../lib/permissions';
+import { canCreateLabDocument, canEditLabDocumentRecord } from '../../../lib/permissions';
 import type { LabDocumentStatus, LabDocumentType, Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -167,15 +167,12 @@ function fmt(value: unknown): string {
         </p>
       </div>
       {canCreateLabDocument(role) && (
-        <button
-          type="button"
-          disabled
-          title="Coming with the document editor"
-          aria-disabled="true"
-          class="cursor-not-allowed rounded-lg bg-brand-600/50 px-4 py-2 text-sm font-semibold text-white"
+        <a
+          href="/lab/documents/new"
+          class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
         >
           New Document
-        </button>
+        </a>
       )}
     </header>
 
@@ -308,9 +305,16 @@ function fmt(value: unknown): string {
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.review_due_date)}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-500" dir="ltr">{r.updated_at.slice(0, 10)}</td>
                       <td class="px-4 py-2">
-                        <span class="flex items-center gap-2">
-                          <span class="text-slate-400" title="Document details coming with the editor module">View</span>
-                        </span>
+                        {canEditLabDocumentRecord({ id: user.userId, role }, r) ? (
+                          <a
+                            href={`/lab/documents/${r.id}/edit`}
+                            class="font-medium text-brand-600 hover:underline"
+                          >
+                            Edit
+                          </a>
+                        ) : (
+                          <span class="text-slate-400" title="Document details coming with the reader module">View</span>
+                        )}
                       </td>
                     </tr>
                   ))}

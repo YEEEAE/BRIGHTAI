@@ -166,15 +166,16 @@ let manager;
   await login(sup, 'supervisor');
   const res2 = await sup.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
   ok(res2.status() === 200, 'supervisor: document register → 200');
-  eq_(await sup.locator('button[disabled][aria-disabled="true"]').count(), 1, 'supervisor: disabled New Document button present');
-  eq_(await sup.locator('main a[href="/lab/documents/new"]').count(), 0, 'supervisor: no dead link to unimplemented editor');
+  // New Document appears twice for supervisor+: the page header action AND the
+  // secondary nav entry (both now live with the editor).
+  eq_(await sup.locator('main a[href="/lab/documents/new"]').count(), 2, 'supervisor: live New Document links (header + nav)');
   await sup.close();
 
   manager = await browser.newPage();
   await login(manager, 'manager');
   const res3 = await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
   ok(res3.status() === 200, 'manager: document register → 200');
-  eq_(await manager.locator('button[disabled][aria-disabled="true"]').count(), 1, 'manager: disabled New Document button present');
+  eq_(await manager.locator('main a[href="/lab/documents/new"]').count(), 2, 'manager: live New Document links (header + nav)');
 }
 
 // ── C. Register lists fixtures with version/owner/type ──
@@ -189,8 +190,12 @@ let manager;
   ok(body.includes('Approved') && body.includes('Draft') && body.includes('Archived'), 'register: status badges rendered');
   ok(body.includes('E2E-CONN') || body.includes('E2E Connector'), 'register: product name joined');
 
-  // No dead links anywhere in the register table (no /lab/documents/[id] yet).
-  eq_(await manager.locator('main a[href^="/lab/documents/"]').count(), 0, 'register: no detail-page links (editor module later)');
+  // /lab/documents/… links on this page = New Document header action (1) +
+  // New Document secondary-nav entry (1) + a per-row Edit link for each
+  // editable record (manager may edit every non-archived / non-superseded
+  // document → APPROVED + DRAFT = 2; ARCHIVED has none) = 4. No detail-page
+  // (/lab/documents/[id]) links exist yet — the reader lands later.
+  eq_(await manager.locator('main a[href^="/lab/documents/"]').count(), 4, 'register: 2× New Document + 2 editable-row Edit links');
 }
 
 // ── D. Filters ──

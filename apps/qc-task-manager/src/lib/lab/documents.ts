@@ -11,8 +11,12 @@
 // Statuses are the stored five-state values (DRAFT / IN_REVIEW / APPROVED /
 // SUPERSEDED / ARCHIVED) — unlike calibration, nothing is derived. Approved
 // versions are immutable (contract §41/§42/§44): editing an APPROVED document
-// creates a NEW DRAFT version; the approved version never mutates. This module
-// is read-only; the editor/workflow pages arrive in later prompts.
+// creates a NEW DRAFT version; the approved version never mutates.
+//
+// Since PROMPT 41 this module also owns the document editor + versioning: it
+// writes identity (lab_documents) + numbered content (lab_document_versions)
+// + equipment links (lab_document_links) + the qc_audit_log row in a single
+// transaction. The create/edit handlers are shared middleware short-circuits.
 //
 // Filters: type / status / owner / equipment / product / review due (review=due
 // matches the command-center KPI semantics in overview.ts: active documents
@@ -20,8 +24,14 @@
 // product name, and equipment code/name. All values are bound parameters; sort
 // is a whitelisted union; pagination is server-side with total_pages clamping.
 
-import { getDb } from '../db';
-import type { LabDocumentStatus, LabDocumentType } from '../types';
+import type { APIContext } from 'astro';
+import { getDb, transaction } from '../db';
+import { setFlash } from '../flash';
+import { getCurrentUser } from '../session';
+import { requireCsrf } from '../api-security';
+import { canCreateLabDocument, canEditLabDocumentRecord } from '../permissions';
+import type { LabDocument, LabDocumentStatus, LabDocumentType, LabDocumentVersion } from '../types';
+import { renderDocumentContent } from './documentContent';
 
 // ─────────────────────────────── Policy ───────────────────────────────
 
@@ -190,7 +200,7 @@ export function labDocumentFiltersToQuery(f: LabDocumentSearchFilters): string {
 
 const LAB_DOCUMENT_LIST_SELECT = `
   SELECT d.id, d.code, d.title, d.type, d.status,
-         d.effective_date, d.review_due_date, d.owner_id, d.created_at, d.updated_at,
+         d.effective_date, d.review_due_date, d.owner_id, d.created_by, d.created_at, d.updated_at,
          v.version,
          u.full_name AS owner_name,
          p.name AS product_name`;
@@ -241,6 +251,7 @@ export interface LabDocumentListRow {
   owner_id: number | null;
   owner_name: string | null;
   product_name: string | null;
+  created_by: number;
   effective_date: string | null;
   review_due_date: string | null;
   created_at: string;
@@ -356,4 +367,365 @@ export function listLabDocumentProductOptions(): Array<{ id: number; name: strin
        ORDER BY p.name COLLATE NOCASE ASC`,
     )
     .all() as Array<{ id: number; name: string; code: string }>;
+}
+
+// ─────────────────────────────── Editor (PROMPT 41) ───────────────────────────────
+
+/**
+ * One document + its current version + links, ready for the editor page
+ * (/lab/documents/[id]/edit). Editing an APPROVED document creates a NEW DRAFT
+ * version; the approved version never mutates (contract §41/§42/§44). This
+ * module owns document writes (single transaction: row + version + links +
+ * qc_audit_log) — never a second audit system.
+ */
+
+/** Editor form input after Zod validation (labDocumentSchema). */
+export interface LabDocumentFormData {
+  type: LabDocumentType;
+  code: string;
+  title: string;
+  description: string | null;
+  product_id: number | null;
+  owner_id: number | null;
+  effective_date: string | null;
+  review_due_date: string | null;
+  change_summary: string | null;
+  content: string;
+  equipment_ids: number[];
+}
+
+/** Editor page view: identity + current version + related-equipment ids. */
+export interface LabDocumentEditorView {
+  document: LabDocument;
+  version: LabDocumentVersion | null;
+  equipment_ids: number[];
+}
+
+/** Load the editor view for one document (id from the path, never the body). */
+export function getLabDocumentEditor(id: number): LabDocumentEditorView | null {
+  if (!Number.isInteger(id) || id <= 0) return null;
+  const document = getDb()
+    .prepare(
+      `SELECT d.*,
+              (SELECT full_name FROM users u WHERE u.id = d.owner_id) AS owner_name,
+              (SELECT full_name FROM users u WHERE u.id = d.created_by) AS created_by_name
+       FROM lab_documents d WHERE d.id = ?`,
+    )
+    .get(id) as (LabDocument & { owner_name: string | null; created_by_name: string | null }) | undefined;
+  if (!document) return null;
+  const version = document.current_version_id
+    ? (getDb().prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(document.current_version_id) as
+        | LabDocumentVersion
+        | undefined)
+    : null;
+  const equipment_ids = (
+    getDb()
+      .prepare(
+        `SELECT entity_id FROM lab_document_links
+         WHERE document_id = ? AND entity_type = 'EQUIPMENT'
+         ORDER BY entity_id ASC`,
+      )
+      .all(id) as Array<{ entity_id: number }>
+  ).map((r) => Number(r.entity_id));
+  return { document, version: version ?? null, equipment_ids };
+}
+
+/** Thrown on UNIQUE(code) collisions so the handlers can flash a clear message. */
+export class LabDocumentCodeConflictError extends Error {
+  constructor(code: string) {
+    super(`A document with code "${code}" already exists.`);
+    this.name = 'LabDocumentCodeConflictError';
+  }
+}
+
+function assertDocumentCodeAvailable(code: string, excludeId: number | null): void {
+  const row = getDb().prepare('SELECT id FROM lab_documents WHERE code = ? COLLATE NOCASE LIMIT 1').get(code) as
+    | { id: number }
+    | undefined;
+  if (row && Number(row.id) !== excludeId) throw new LabDocumentCodeConflictError(code);
+}
+
+/** Assert every referenced id exists (owner/product/equipment). */
+function assertDocumentReferencesExist(data: LabDocumentFormData): void {
+  const db = getDb();
+  if (data.owner_id !== null && !db.prepare('SELECT 1 FROM users WHERE id = ? AND is_active = 1').get(data.owner_id)) {
+    throw new Error('The selected owner is not an active user.');
+  }
+  if (data.product_id !== null && !db.prepare('SELECT 1 FROM lab_products WHERE id = ?').get(data.product_id)) {
+    throw new Error('The selected product does not exist.');
+  }
+  const invalidEquipment = data.equipment_ids.filter((eid) => !db.prepare('SELECT 1 FROM lab_equipment WHERE id = ?').get(eid));
+  if (invalidEquipment.length > 0) {
+    throw new Error('One or more selected equipment entries do not exist.');
+  }
+}
+
+function replaceDocumentEquipmentLinks(documentId: number, equipmentIds: number[], actorId: number): void {
+  const db = getDb();
+  db.prepare("DELETE FROM lab_document_links WHERE document_id = ? AND entity_type = 'EQUIPMENT'").run(documentId);
+  const insert = db.prepare(
+    "INSERT INTO lab_document_links (document_id, entity_type, entity_id, created_by) VALUES (?, 'EQUIPMENT', ?, ?)",
+  );
+  for (const eid of [...new Set(equipmentIds)].sort((a, b) => a - b)) insert.run(documentId, eid, actorId);
+}
+
+function auditLabDocument(
+  documentId: number,
+  actorId: number,
+  action:
+    | 'CREATE'
+    | 'UPDATE'
+    | 'STATUS_TRANSITION'
+    | 'SUBMIT'
+    | 'REQUEST_CHANGES'
+    | 'SUPERSEDE'
+    | 'ACKNOWLEDGE'
+    | 'VERSION',
+  note: string | null,
+): void {
+  getDb()
+    .prepare(
+      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
+       VALUES ('LAB_DOCUMENT', ?, NULL, ?, ?, NULL, NULL, ?)`,
+    )
+    .run(documentId, actorId, action, note);
+}
+
+function documentFormSummary(data: LabDocumentFormData, version: number): string {
+  return `code=${data.code}; version=v${version}; type=${data.type}; owner=${data.owner_id ?? '—'}; product=${data.product_id ?? '—'}; equipment=${data.equipment_ids.length}`;
+}
+
+/** Active (non-archived) equipment for the editor's Related Equipment checkboxes. */
+export function listLabEquipmentForDocumentForm(): Array<{ id: number; name: string; code: string }> {
+  return getDb()
+    .prepare('SELECT id, name, code FROM lab_equipment WHERE is_archived = 0 ORDER BY name COLLATE NOCASE ASC, id ASC')
+    .all() as Array<{ id: number; name: string; code: string }>;
+}
+
+/** Active products for the editor's Product Reference select. */
+export function listLabProductsForDocumentForm(): Array<{ id: number; name: string; code: string }> {
+  return getDb()
+    .prepare('SELECT id, name, code FROM lab_products WHERE is_active = 1 ORDER BY name COLLATE NOCASE ASC, id ASC')
+    .all() as Array<{ id: number; name: string; code: string }>;
+}
+
+/** Active users for the editor's Owner select. */
+export function listLabUsersForDocumentForm(): Array<{ id: number; full_name: string }> {
+  return getDb()
+    .prepare('SELECT id, full_name FROM users WHERE is_active = 1 ORDER BY full_name COLLATE NOCASE ASC, id ASC')
+    .all() as Array<{ id: number; full_name: string }>;
+}
+
+/**
+ * Create a document + version 1 (DRAFT) + equipment links + CREATE audit (one
+ * transaction). Identity lives on lab_documents; the numbered content + change
+ * summary live on lab_document_versions; current_version_id points at v1.
+ */
+export function createLabDocument(data: LabDocumentFormData, actorId: number): number {
+  return transaction(() => {
+    const db = getDb();
+    assertDocumentReferencesExist(data);
+    assertDocumentCodeAvailable(data.code, null);
+    const html = renderDocumentContent(data.content);
+    const result = db
+      .prepare(
+        `INSERT INTO lab_documents (code, title, type, description, product_id, owner_id, status, effective_date, review_due_date, created_by)
+         VALUES (?, ?, ?, ?, ?, ?, 'DRAFT', ?, ?, ?)`,
+      )
+      .run(
+        data.code,
+        data.title,
+        data.type,
+        data.description,
+        data.product_id,
+        data.owner_id,
+        data.effective_date,
+        data.review_due_date,
+        actorId,
+      );
+    const documentId = Number(result.lastInsertRowid);
+    const v = db
+      .prepare(
+        `INSERT INTO lab_document_versions (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
+         VALUES (?, 1, ?, ?, ?, ?, 'DRAFT')`,
+      )
+      .run(documentId, data.content, html, data.change_summary, actorId);
+    const versionId = Number(v.lastInsertRowid);
+    db.prepare('UPDATE lab_documents SET current_version_id = ? WHERE id = ?').run(versionId, documentId);
+    replaceDocumentEquipmentLinks(documentId, data.equipment_ids, actorId);
+    auditLabDocument(documentId, actorId, 'CREATE', documentFormSummary(data, 1));
+    return documentId;
+  });
+}
+
+/**
+ * Update a document. Editing an APPROVED document creates a NEW DRAFT version
+ * (v+1) — the approved version stays immutable (contract §41/§42/§44); editing
+ * a DRAFT/IN_REVIEW document updates its current version in place. Both paths
+ * write identity + content + links + audit in one transaction.
+ */
+export function updateLabDocument(id: number, data: LabDocumentFormData, actorId: number): void {
+  transaction(() => {
+    const db = getDb();
+    const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(id) as LabDocument | undefined;
+    if (!document) throw new Error('Document not found.');
+    if (document.status === 'ARCHIVED' || document.status === 'SUPERSEDED') {
+      throw new Error('Archived and superseded documents cannot be edited.');
+    }
+    assertDocumentReferencesExist(data);
+    assertDocumentCodeAvailable(data.code, id);
+
+    const html = renderDocumentContent(data.content);
+    const current = document.current_version_id
+      ? (db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(document.current_version_id) as
+          | LabDocumentVersion
+          | undefined)
+      : null;
+
+    let targetVersionId: number;
+    let versionNumber: number;
+    let action: 'UPDATE' | 'VERSION' = 'UPDATE';
+
+    if (current && current.status === 'APPROVED') {
+      // Revising an approved version → new DRAFT version; change summary required.
+      if (!data.change_summary || data.change_summary.trim() === '') {
+        throw new Error('A change summary is required when revising an approved document.');
+      }
+      const next = current.version + 1;
+      const v = db
+        .prepare(
+          `INSERT INTO lab_document_versions (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
+           VALUES (?, ?, ?, ?, ?, ?, 'DRAFT')`,
+        )
+        .run(id, next, data.content, html, data.change_summary, actorId);
+      targetVersionId = Number(v.lastInsertRowid);
+      versionNumber = next;
+      action = 'VERSION';
+    } else {
+      // DRAFT / IN_REVIEW → update the current version in place.
+      if (!current) {
+        const v = db
+          .prepare(
+            `INSERT INTO lab_document_versions (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
+             VALUES (?, 1, ?, ?, ?, ?, 'DRAFT')`,
+          )
+          .run(id, data.content, html, data.change_summary, actorId);
+        targetVersionId = Number(v.lastInsertRowid);
+        versionNumber = 1;
+      } else {
+        db.prepare(
+          `UPDATE lab_document_versions SET content_md = ?, content_html_sanitized = ?, change_summary = ? WHERE id = ?`,
+        ).run(data.content, html, data.change_summary, current.id);
+        targetVersionId = current.id;
+        versionNumber = current.version;
+      }
+    }
+
+    // Editing an approved doc creates a new DRAFT version → the document
+    // returns to DRAFT; in-place edits keep the current status.
+    const nextStatus = action === 'VERSION' ? 'DRAFT' : document.status;
+    db.prepare(
+      `UPDATE lab_documents SET
+         code = ?, title = ?, type = ?, description = ?, product_id = ?, owner_id = ?,
+         effective_date = ?, review_due_date = ?, current_version_id = ?, status = ?,
+         updated_at = datetime('now')
+       WHERE id = ?`,
+    )
+      .run(
+        data.code,
+        data.title,
+        data.type,
+        data.description,
+        data.product_id,
+        data.owner_id,
+        data.effective_date,
+        data.review_due_date,
+        targetVersionId,
+        nextStatus,
+        id,
+      );
+    replaceDocumentEquipmentLinks(id, data.equipment_ids, actorId);
+    auditLabDocument(id, actorId, action, documentFormSummary(data, versionNumber));
+  });
+}
+
+// ─────────────────────────────── POST handlers ───────────────────────────────
+
+/**
+ * Shared POST body for create + edit (middleware short-circuit — same pattern
+ * as handleLabProductPost). The document id comes from the matched path
+ * segment, never the body. Re-checks the permission (create supervisor+ /
+ * record-level edit), CSRF-validates, then flashes + redirects.
+ */
+async function handleLabDocumentPost(context: APIContext, documentId: number | null): Promise<Response> {
+  const user = getCurrentUser(context);
+  if (!user) {
+    return context.redirect(`/login?redirect=${encodeURIComponent(context.url.pathname)}`);
+  }
+  const backUrl = documentId === null ? '/lab/documents/new' : `/lab/documents/${documentId}/edit`;
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+
+  if (documentId === null) {
+    if (!canCreateLabDocument(user.role)) {
+      setFlash(context, 'error', 'You do not have permission to create controlled documents.');
+      return context.redirect('/lab/documents');
+    }
+  } else {
+    const editor = getLabDocumentEditor(documentId);
+    if (!editor) {
+      setFlash(context, 'error', 'Document not found.');
+      return context.redirect('/lab/documents');
+    }
+    if (!canEditLabDocumentRecord(user, editor.document)) {
+      setFlash(context, 'error', 'You do not have permission to edit this document.');
+      return context.redirect('/lab/documents');
+    }
+  }
+
+  // Dynamic import keeps this module loadable in the bundler-less unit tests.
+  const { parseFormData, labDocumentSchema } = await import('../validation');
+  const form = await context.request.formData();
+  const parsed = parseFormData(labDocumentSchema, form);
+  if (!parsed.ok) {
+    setFlash(context, 'error', parsed.error);
+    return context.redirect(backUrl);
+  }
+
+  // The form serializes the "Related Equipment" checkboxes as duplicate
+  // `equipment_ids` entries; collect them before schema-level typing.
+  const equipmentIds = [...form.getAll('equipment_ids')].map((v) => Number(v)).filter((n) => Number.isInteger(n) && n > 0);
+  const data: LabDocumentFormData = {
+    ...(parsed.data as Omit<LabDocumentFormData, 'equipment_ids'>),
+    equipment_ids: equipmentIds,
+  };
+
+  try {
+    if (documentId === null) {
+      const id = createLabDocument(data, user.id);
+      setFlash(context, 'success', `Document ${data.code} created as a draft.`);
+      return context.redirect(`/lab/documents/${id}/edit`);
+    }
+    updateLabDocument(documentId, data, user.id);
+    setFlash(context, 'success', `Document ${data.code} saved.`);
+    return context.redirect(`/lab/documents/${documentId}/edit`);
+  } catch (err) {
+    if (err instanceof LabDocumentCodeConflictError) {
+      setFlash(context, 'error', err.message);
+    } else {
+      console.error('[lab] document form save failure', err);
+      setFlash(context, 'error', err instanceof Error ? err.message : 'Could not save the document.');
+    }
+    return context.redirect(backUrl);
+  }
+}
+
+/** POST /lab/documents/new */
+export async function handleLabDocumentCreatePost(context: APIContext): Promise<Response> {
+  return handleLabDocumentPost(context, null);
+}
+
+/** POST /lab/documents/[id]/edit — the id is extracted by the middleware from the path. */
+export async function handleLabDocumentEditPost(context: APIContext, documentId: number): Promise<Response> {
+  return handleLabDocumentPost(context, documentId);
 }
