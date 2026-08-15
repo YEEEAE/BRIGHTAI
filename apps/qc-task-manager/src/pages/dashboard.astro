@@ -13,10 +13,12 @@
 // 500, keeping the shell (navbar + filters) usable.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DashboardCharts from '../components/DashboardCharts';
+import LabDashboardCharts from '../components/LabDashboardCharts';
 import EmptyState from '../components/EmptyState.astro';
 import { formatDbDate, formatDueDate, statusLabel, priorityLabel } from '../lib/format';
 import { describeAction } from '../lib/taskDetails';
 import * as dash from '../lib/dashboard';
+import { getLabDashboardData, LAB_DASHBOARD_DRILLDOWNS, type LabDashboardData } from '../lib/lab/dashboard';
 import { buildKpiHref, type DashboardKpiKey } from '../lib/reporting/drilldown';
 import { emptyReportFilters, parseReportFilters } from '../lib/reporting/filters';
 import { FINDING_CLASSIFICATIONS, RISK_LEVELS } from '../lib/task-policy';
@@ -65,6 +67,7 @@ let withoutEvidence: ReturnType<typeof dash.getCompletedWithoutEvidence> = [];
 let blockers: ReturnType<typeof dash.getCurrentBlockers> = [];
 let activity: ReturnType<typeof dash.getLatestActivity> = [];
 let reportKpis: ReturnType<typeof getKpiSnapshot> | null = null;
+let lab: LabDashboardData | null = null;
 
 try {
   kpis = dash.getKpis(filters);
@@ -84,6 +87,17 @@ try {
   console.error('[dashboard] query failure', err);
   dataError =
     'Could not load the dashboard data. Try clearing filters or reloading — if the problem persists, contact an administrator.';
+}
+
+// Laboratory integration (PROMPT 28) — separate try/catch: a lab query failure
+// must NOT take down the core dashboard; each side degrades independently.
+let labError: string | null = null;
+try {
+  lab = getLabDashboardData();
+} catch (err) {
+  console.error('[dashboard] lab query failure', err);
+  labError =
+    'Could not load the laboratory metrics. The Laboratory section is temporarily unavailable — the rest of the dashboard is unaffected.';
 }
 
 const assignees = dash.listActiveUsers();
@@ -128,6 +142,97 @@ const kpiCards = kpis
         { id: 'open_capa', key: 'open_capa' as DashboardKpiKey, label: 'Open CAPA', value: reportKpis.open_capa, tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '🧩' },
         { id: 'evidence_compliance', key: 'evidence_compliance' as DashboardKpiKey, label: 'Evidence Compliance', value: formatPercent(reportKpis.evidence_compliance), tone: 'border-cyan-200 bg-cyan-50 text-cyan-700', icon: '📎' },
       ] : []),
+    ]
+  : [];
+
+// ───────────── Laboratory KPI groups (PROMPT 28) ─────────────
+// Every card is a drill-down link into the matching filtered /lab/* register
+// (LAB_DASHBOARD_DRILLDOWNS). Values come from the read-only lab query module;
+// the section degrades to an error banner if the lab queries fail.
+interface LabCard {
+  id: string;
+  label: string;
+  value: number;
+  tone: string;
+  icon: string;
+}
+interface LabGroup {
+  title: string;
+  cards: LabCard[];
+}
+
+const labHref = (id: string) => LAB_DASHBOARD_DRILLDOWNS[id] ?? '/lab';
+
+const labGroups: LabGroup[] = lab
+  ? [
+      {
+        title: 'Tests',
+        cards: [
+          { id: 'lab_total_tests', label: 'Total Tests', value: lab.tests.total, tone: 'border-slate-200 bg-white text-slate-900', icon: '🧪' },
+          { id: 'lab_tests_air', label: 'AIR', value: lab.tests.air, tone: 'border-sky-200 bg-sky-50/70 text-sky-700', icon: '💨' },
+          { id: 'lab_tests_vacuum', label: 'VACUUM', value: lab.tests.vacuum, tone: 'border-indigo-200 bg-indigo-50/70 text-indigo-700', icon: '🌑' },
+          { id: 'lab_tests_draft', label: 'Draft', value: lab.tests.draft, tone: 'border-slate-200 bg-white text-slate-900', icon: '✏️' },
+          { id: 'lab_tests_submitted', label: 'Submitted', value: lab.tests.submitted, tone: 'border-blue-200 bg-blue-50/70 text-blue-700', icon: '📤' },
+          { id: 'lab_tests_under_review', label: 'Under Review', value: lab.tests.under_review, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🔎' },
+          { id: 'lab_tests_approved', label: 'Approved', value: lab.tests.approved, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '✅' },
+          { id: 'lab_tests_rejected', label: 'Rejected', value: lab.tests.rejected, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '❌' },
+          { id: 'lab_tests_void', label: 'Void', value: lab.tests.void, tone: 'border-slate-200 bg-white text-slate-900', icon: '🚫' },
+        ],
+      },
+      {
+        title: 'Results',
+        cards: [
+          { id: 'lab_result_pass', label: 'PASS', value: lab.results.pass, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '🟢' },
+          { id: 'lab_result_fail', label: 'FAIL', value: lab.results.fail, tone: 'border-red-200 bg-red-50/60 text-red-700', icon: '🔴' },
+          { id: 'lab_result_hold', label: 'HOLD', value: lab.results.hold, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🟠' },
+        ],
+      },
+      {
+        title: 'Equipment',
+        cards: [
+          { id: 'lab_equipment_active', label: 'In Use', value: lab.equipment.active, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '🟢' },
+          { id: 'lab_equipment_new', label: 'New', value: lab.equipment.fresh, tone: 'border-sky-200 bg-sky-50/70 text-sky-700', icon: '🆕' },
+          { id: 'lab_equipment_maintenance', label: 'Under Maintenance', value: lab.equipment.maintenance, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🔧' },
+          { id: 'lab_equipment_unused', label: 'Not In Use', value: lab.equipment.unused, tone: 'border-slate-200 bg-white text-slate-900', icon: '📦' },
+          { id: 'lab_calibration_attention', label: 'Calibration Attention', value: lab.equipment.calibration_attention, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '⚠️' },
+          { id: 'lab_calibration_compliant', label: 'Cal. Compliant', value: lab.equipment.calibration_compliant, tone: 'border-emerald-200 bg-emerald-50 text-emerald-700', icon: '✅' },
+        ],
+      },
+      {
+        title: 'Documents',
+        cards: [
+          { id: 'lab_doc_sop', label: 'SOP', value: lab.documents.sop, tone: 'border-blue-200 bg-blue-50/70 text-blue-700', icon: '📕' },
+          { id: 'lab_doc_wi', label: 'WI', value: lab.documents.wi, tone: 'border-cyan-200 bg-cyan-50 text-cyan-700', icon: '📙' },
+          { id: 'lab_doc_draft', label: 'Draft', value: lab.documents.draft, tone: 'border-slate-200 bg-white text-slate-900', icon: '✏️' },
+          { id: 'lab_doc_review', label: 'In Review', value: lab.documents.in_review, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🔎' },
+          { id: 'lab_doc_approved', label: 'Approved', value: lab.documents.approved, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '✅' },
+          { id: 'lab_doc_superseded', label: 'Superseded', value: lab.documents.superseded, tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '🔁' },
+          { id: 'lab_doc_archived', label: 'Archived', value: lab.documents.archived, tone: 'border-slate-200 bg-white text-slate-900', icon: '🗄️' },
+          { id: 'lab_doc_review_due', label: 'Review Due', value: lab.documents.review_due, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '⏰' },
+          { id: 'lab_ack_pending', label: 'Ack Pending', value: lab.documents.ack_pending, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🖊️' },
+        ],
+      },
+      {
+        title: 'Retests',
+        cards: [
+          { id: 'lab_retests_total', label: 'Total Retests', value: lab.retests.total, tone: 'border-slate-200 bg-white text-slate-900', icon: '🔁' },
+          { id: 'lab_retests_open', label: 'Open', value: lab.retests.open, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🟠' },
+          { id: 'lab_retests_completed', label: 'Completed', value: lab.retests.completed, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '✅' },
+          ...lab.retests.by_reason.map((r) => ({
+            id: `lab_retests_reason_${r.key}`,
+            label: r.label,
+            value: r.count,
+            tone: 'border-slate-200 bg-white text-slate-900',
+            icon: '📝',
+          })),
+        ],
+      },
+      {
+        title: 'Data Quality',
+        cards: [
+          { id: 'lab_data_quality', label: 'Open Issues', value: lab.data_quality_open, tone: lab.data_quality_open > 0 ? 'border-rose-200 bg-rose-50 text-rose-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700', icon: '🧹' },
+        ],
+      },
     ]
   : [];
 ---
@@ -305,7 +410,7 @@ const kpiCards = kpis
 
   <nav aria-label="Dashboard sections" class="mb-6 overflow-x-auto rounded-xl border border-slate-200 bg-white p-2">
     <div class="flex min-w-max gap-2 text-sm font-medium">
-      {['Operations', 'SLA', 'Findings', 'CAPA', 'Workforce', 'Evidence', 'Audit'].map((section) => (
+      {['Operations', 'Laboratory', 'SLA', 'Findings', 'CAPA', 'Workforce', 'Evidence', 'Audit'].map((section) => (
         <a href={`#${section.toLowerCase()}`} class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500">{section}</a>
       ))}
       <a href="/reports" class="rounded-lg bg-brand-600 px-3 py-2 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500">Reports</a>
@@ -352,6 +457,57 @@ const kpiCards = kpis
           line={line}
           completionRate={completionRate!}
         />
+      </section>
+
+      {/* ───────────── Laboratory (PROMPT 28 — integrated, never rebuilt) ───────────── */}
+      <section id="laboratory" aria-labelledby="laboratory-heading" class="mt-6">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 id="laboratory-heading" class="text-lg font-semibold text-slate-900">Laboratory</h2>
+            <p class="text-sm text-slate-600">QC laboratory testing, equipment, documents and retests — every card drills into its register.</p>
+          </div>
+          <a href="/lab" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open Lab Command Center</a>
+        </div>
+
+        {labError && (
+          <div aria-label="Laboratory error" class="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+            <p class="font-medium">{labError}</p>
+          </div>
+        )}
+
+        {!labError && lab && (
+          <>
+            {labGroups.map((group) => (
+              <div class="mt-4">
+                <h3 class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">{group.title}</h3>
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                  {group.cards.map((card) => (
+                    <a
+                      href={labHref(card.id)}
+                      data-lab-kpi={card.id}
+                      class={`rounded-xl border p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-500 ${card.tone}`}
+                      aria-label={`${group.title} — ${card.label}: ${card.value}. Open the matching laboratory register`}
+                    >
+                      <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide"><span aria-hidden="true">{card.icon}</span> {card.label}</div>
+                      <div class="mt-2 text-3xl font-semibold tabular-nums">{card.value}</div>
+                      <div class="mt-2 text-[11px] font-medium opacity-70">Open drill-down ↗</div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <LabDashboardCharts
+              client:visible
+              testsByWeek={lab.charts.tests_by_week}
+              testsByType={lab.charts.tests_by_type}
+              results={lab.charts.results}
+              equipmentStatus={lab.equipment.by_status}
+              calibration={lab.equipment.by_calibration}
+              documentStatus={lab.documents.by_status}
+            />
+          </>
+        )}
       </section>
       <section id="findings" aria-labelledby="findings-heading" class="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 id="findings-heading" class="text-lg font-semibold text-slate-900">Findings</h2><p class="text-sm text-slate-600">Review critical and classified QC findings.</p></div><a href="/findings" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open Findings</a></div>

@@ -50,8 +50,8 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 25
 - [✅] Prompt 26
 - [✅] Prompt 27
-- [ ] Prompt 28
-- [ ] Prompt 29
+- [✅] Prompt 28
+- [✅] Prompt 29
 - [ ] Prompt 30
 - [ ] Prompt 31
 - [ ] Prompt 32
@@ -1587,7 +1587,7 @@ Do not silently modify records.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Integrate the laboratory into the existing main dashboard.
@@ -1658,7 +1658,7 @@ Every KPI should support drill-down.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Integrate Laboratory reporting into existing export architecture.

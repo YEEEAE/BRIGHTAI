@@ -55,8 +55,10 @@ export function deriveCalibrationState(dueIso: string | null, today = localToday
  * Latest calibration due date for each equipment row, as a scalar subquery
  * expression: `date(COALESCE(next_due_at, calibration_due_at))` of the most
  * recent record (by created_at, then id) or NULL when none exists.
+ * Exported so other read-only modules (main dashboard integration) reuse the
+ * exact same derivation rule.
  */
-const LATEST_DUE_SQL = `(
+export const LATEST_DUE_SQL = `(
   SELECT date(COALESCE(c.next_due_at, c.calibration_due_at))
   FROM lab_equipment_calibration c
   WHERE c.equipment_id = e.id
@@ -473,7 +475,7 @@ export const LAB_KPI_DRILLDOWNS: Record<keyof LabKpis, LabDrilldown> = {
   calibration_due: { href: '/lab/calibration?due=1', route: '/lab/calibration', hint: 'Opens the calibration register (coming with the Calibration module)' },
   documents_due_for_review: { href: '/lab/documents?review=due', route: '/lab/documents', hint: 'Opens the document library (coming with the Documents module)' },
   retests_open: { href: '/lab/retests?status=OPEN', route: '/lab/retests', hint: 'Opens the retest register (coming with the Retests module)' },
-  data_quality_issues: { href: '/lab/data-quality', route: '/lab/data-quality', hint: 'Opens the data-quality report (coming with the Data Quality module)' },
+  data_quality_issues: { href: '/lab/data-quality', route: '/lab/data-quality', hint: 'Opens the Data Quality Center with per-record findings' },
 };
 
 /** True when the drill-down's target page exists today. */

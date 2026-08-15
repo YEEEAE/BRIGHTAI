@@ -1,0 +1,187 @@
+---
+// /lab/data-quality — QC Laboratory Data Quality Center (PROMPT 27, page
+// reference §56/§75).
+//
+// READ-ONLY informational report: surfaces incomplete or inconsistent lab
+// records (tests, equipment, documents, products) and links each finding to
+// its record in the owning register. The page only ever SELECTs — nothing is
+// modified here; fixing a finding is always a human action in the module that
+// owns the record.
+//
+// Only conditions backed by stored data + established policy are reported
+// (see src/lib/lab/dataQuality.ts header for the full policy list and the
+// deliberate exclusions). Severity: integrity issues (approved without a
+// final result, missing submission timestamps, inconsistent workflow status,
+// inactive product still in use) are marked danger; plain master-data gaps
+// are informational.
+//
+// RBAC: supervisor+ only (canViewLabDataQuality) — the page self-guards and
+// redirects everyone else to /lab. Pure server HTML, zero client JS.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
+import { setFlash } from '../../lib/flash';
+import { labNavForRole } from '../../lib/lab/navigation';
+import { canViewLabDataQuality } from '../../lib/permissions';
+import {
+  LAB_DATA_QUALITY_ISSUE_LABELS,
+  labDataQualitySeverity,
+  runLabDataQualityChecks,
+  type LabDataQualityCategory,
+  type LabDataQualityIssue,
+  type LabDataQualityReport,
+} from '../../lib/lab/dataQuality';
+import type { Role } from '../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+// Page-level guard: the /lab prefix wall only checks LAB_VIEW (all lab roles);
+// the Data Quality Center is supervisor+. Everyone else is bounced to /lab.
+if (!canViewLabDataQuality(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to access the Data Quality Center.');
+  return Astro.redirect('/lab');
+}
+
+const navItems = labNavForRole(role);
+
+let dataError: string | null = null;
+let report: LabDataQualityReport | null = null;
+try {
+  report = runLabDataQualityChecks();
+} catch (err) {
+  console.error('[lab] data quality report failure', err);
+  dataError = 'Could not run the data quality checks. Try reloading — if the problem persists, contact an administrator.';
+}
+
+// Category display order + labels for the summary cards and sections.
+const CATEGORIES: Array<{ key: LabDataQualityCategory; label: string; hint: string }> = [
+  { key: 'tests', label: 'Test Records', hint: 'Required fields at submit/approve time + workflow consistency' },
+  { key: 'equipment', label: 'Equipment', hint: 'Registry identity + calibration state on non-archived devices' },
+  { key: 'documents', label: 'Documents', hint: 'Ownership, dates, version pointer + approval metadata on live SOP/WI' },
+  { key: 'products', label: 'Products', hint: 'Identity + reference setup on active products, stale in-use archives' },
+];
+
+const sections: Array<{ key: LabDataQualityCategory; label: string; hint: string; issues: LabDataQualityIssue[] }> =
+  report ? CATEGORIES.map((c) => ({ ...c, issues: report![c.key] })) : [];
+
+// Severity badges — static classes only (no dynamic class construction).
+const SEVERITY_BADGE: Record<'danger' | 'info', string> = {
+  danger: 'bg-red-50 text-red-800 border-red-200',
+  info: 'bg-slate-50 text-slate-700 border-slate-200',
+};
+const SEVERITY_LABEL: Record<'danger' | 'info', string> = {
+  danger: 'Integrity',
+  info: 'Gap',
+};
+---
+
+<BaseLayout title="Laboratory Data Quality">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Data Quality' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Operations</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Data Quality Center</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Informational report of incomplete or inconsistent laboratory records. This page never modifies anything —
+        every finding links to its record in the owning register, where the responsible owner completes or corrects
+        it. Only conditions backed by stored data and established policy are listed.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/data-quality" />
+
+    {dataError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {dataError}
+      </div>
+    )}
+
+    {!dataError && report && (
+      <>
+        <!-- Summary cards -->
+        <section aria-label="Data quality summary" class="grid grid-cols-2 gap-3 lg:grid-cols-5">
+          <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Total findings</p>
+            <p class="mt-1 text-2xl font-semibold text-slate-900">{report.total}</p>
+            <p class="mt-0.5 text-xs text-slate-500">Across all four registers</p>
+          </div>
+          {CATEGORIES.map((c) => (
+            <a
+              href={`#dq-${c.key}`}
+              class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-brand-300"
+            >
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-500">{c.label}</p>
+              <p class="mt-1 text-2xl font-semibold text-slate-900">{report![c.key].length}</p>
+              <p class="mt-0.5 text-xs text-slate-500">{c.hint}</p>
+            </a>
+          ))}
+        </section>
+
+        {report.total === 0 && (
+          <EmptyState
+            title="No data quality findings"
+            hint="Every active laboratory record carries the required fields, dates and workflow metadata. Nothing needs attention right now."
+            ctaHref="/lab"
+            ctaLabel="Back to Command Center"
+          />
+        )}
+
+        {sections.map(
+          (section) =>
+            section.issues.length > 0 && (
+              <section id={`dq-${section.key}`} aria-label={`${section.label} findings`} class="space-y-2">
+                <div>
+                  <h2 class="text-lg font-semibold text-slate-900">{section.label} — {section.issues.length} finding(s)</h2>
+                  <p class="text-xs text-slate-500">{section.hint}</p>
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <table class="min-w-full divide-y divide-slate-200 text-sm">
+                    <thead class="bg-slate-50">
+                      <tr>
+                        <th scope="col" class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Record</th>
+                        <th scope="col" class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Issue</th>
+                        <th scope="col" class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Details</th>
+                        <th scope="col" class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Severity</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                      {section.issues.map((issue) => (
+                        <tr class="hover:bg-slate-50">
+                          <td class="whitespace-nowrap px-4 py-2.5">
+                            <a href={issue.href} class="font-medium text-brand-700 underline decoration-brand-100 hover:decoration-brand-600">
+                              {issue.record}
+                            </a>
+                          </td>
+                          <td class="whitespace-nowrap px-4 py-2.5 text-slate-700">{LAB_DATA_QUALITY_ISSUE_LABELS[issue.kind]}</td>
+                          <td class="px-4 py-2.5 text-slate-600">{issue.detail}</td>
+                          <td class="whitespace-nowrap px-4 py-2.5">
+                            <span class={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${SEVERITY_BADGE[labDataQualitySeverity(issue.kind)]}`}>
+                              {SEVERITY_LABEL[labDataQualitySeverity(issue.kind)]}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            ),
+        )}
+
+        <p class="text-xs text-slate-500">
+          Findings are recalculated from stored data on every page load. Fixing them happens in the owning register —
+          tests, equipment, documents or products — never on this page.
+        </p>
+      </>
+    )}
+  </div>
+</BaseLayout>

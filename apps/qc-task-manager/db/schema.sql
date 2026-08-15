@@ -638,6 +638,7 @@ CREATE TABLE IF NOT EXISTS lab_documents (
   current_version_id INTEGER REFERENCES lab_document_versions(id) ON DELETE SET NULL,
   status TEXT NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT','IN_REVIEW','APPROVED','SUPERSEDED','ARCHIVED')),
   effective_date TEXT, review_due_date TEXT,
+  approved_at TEXT,
   created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))

@@ -118,6 +118,7 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/saved-views',
   '/lab/calendar',
   '/lab/notifications',
+  '/lab/data-quality',
 ];
 
 /**
