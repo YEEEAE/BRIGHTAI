@@ -1,0 +1,395 @@
+---
+// /lab/search — QC Laboratory Unified Search
+//
+// Cross-entity search across tests, samples, products, equipment, SOPs, WIs,
+// and retests with server-side indexed queries, pagination, and strict RBAC
+// scoping (employees only see their own tests/samples).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
+import { labNavForRole } from '../../lib/lab/navigation';
+import { canViewLab } from '../../lib/permissions';
+import {
+  parseLabSearchFilters,
+  hasLabSearchFilters,
+  labSearchFiltersToQuery,
+  searchLab,
+  LAB_SEARCH_ENTITY_TYPES,
+  LAB_SEARCH_ENTITY_LABELS,
+  LAB_SEARCH_PER_PAGE_OPTIONS,
+  type LabSearchEntityType,
+  type LabSearchFilters,
+  type LabSearchResult,
+  type LabSearchResultItem,
+} from '../../lib/lab/search';
+import type { Role } from '../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canViewLab(role)) {
+  return Astro.redirect('/login');
+}
+
+const navItems = labNavForRole(role);
+const filters: LabSearchFilters = parseLabSearchFilters(Astro.url);
+
+let dataError: string | null = null;
+let result: LabSearchResult = {
+  items: [],
+  total: 0,
+  page: 1,
+  per_page: 25,
+  total_pages: 1,
+  counts: {
+    all: 0,
+    tests: 0,
+    samples: 0,
+    products: 0,
+    equipment: 0,
+    sops: 0,
+    wis: 0,
+    retests: 0,
+  },
+};
+
+try {
+  result = searchLab(filters, { role, userId: user.userId });
+} catch (err) {
+  console.error('[lab] unified search failure', err);
+  dataError = 'Could not execute laboratory search. Please reload or check search terms.';
+}
+
+const filtered = hasLabSearchFilters(filters);
+
+function entityTabHref(entity: LabSearchEntityType): string {
+  const next: LabSearchFilters = {
+    ...filters,
+    entity,
+    page: 1,
+  };
+  return `/lab/search${labSearchFiltersToQuery(next)}`;
+}
+
+function pageHref(p: number): string {
+  const next: LabSearchFilters = {
+    ...filters,
+    page: p,
+  };
+  return `/lab/search${labSearchFiltersToQuery(next)}`;
+}
+
+const pageNumbers: number[] = [];
+{
+  const total = result.total_pages;
+  const cur = result.page;
+  const start = Math.max(1, Math.min(cur - 3, total - 6));
+  const end = Math.min(total, start + 6);
+  for (let p = start; p <= end; p++) pageNumbers.push(p);
+}
+
+const ENTITY_BADGES: Record<LabSearchResultItem['entity_type'], { label: string; cls: string }> = {
+  test: { label: 'Test', cls: 'bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-700/10' },
+  sample: { label: 'Sample', cls: 'bg-cyan-50 text-cyan-700 ring-1 ring-inset ring-cyan-700/10' },
+  product: { label: 'Product', cls: 'bg-purple-50 text-purple-700 ring-1 ring-inset ring-purple-700/10' },
+  equipment: { label: 'Equipment', cls: 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-700/10' },
+  sop: { label: 'SOP', cls: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-700/10' },
+  wi: { label: 'WI', cls: 'bg-teal-50 text-teal-700 ring-1 ring-inset ring-teal-700/10' },
+  retest: { label: 'Retest', cls: 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-700/10' },
+};
+
+function statusBadgeClass(status: string | null, resultVal: string | null): string {
+  const norm = (resultVal || status || '').toUpperCase();
+  if (norm === 'PASS' || norm === 'APPROVED' || norm === 'ACTIVE' || norm === 'COMPLETED') {
+    return 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20';
+  }
+  if (norm === 'FAIL' || norm === 'REJECTED' || norm === 'VOID' || norm === 'ARCHIVED' || norm === 'INACTIVE') {
+    return 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20';
+  }
+  if (norm === 'HOLD' || norm === 'UNDER_REVIEW' || norm === 'IN_REVIEW' || norm === 'OPEN') {
+    return 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20';
+  }
+  if (norm === 'DRAFT' || norm === 'PENDING' || norm === 'SUBMITTED' || norm === 'TESTED') {
+    return 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20';
+  }
+  return 'bg-slate-100 text-slate-700 ring-1 ring-inset ring-slate-600/10';
+}
+---
+
+<BaseLayout title="Laboratory Search">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Search' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Overview</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Search</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Unified server-side search across tests, samples, products, equipment, SOPs, WIs, and retests.
+        Search by test ID, sample ID, product, lot, equipment, code, serial number, or document title.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/search" />
+
+    {dataError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {dataError}
+      </div>
+    )}
+
+    {!dataError && (
+      <>
+        {/* Search Input Bar */}
+        <form method="get" action="/lab/search" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <input type="hidden" name="entity" value={filters.entity} />
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div class="relative flex-1">
+              <label for="lab-search-input" class="sr-only">Search</label>
+              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg class="h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <input
+                id="lab-search-input"
+                type="search"
+                name="q"
+                value={filters.q ?? ''}
+                placeholder="Search by test ID, sample ID, product, lot, equipment, serial #, SOP/WI code, title…"
+                class="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-900 placeholder-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              />
+            </div>
+            <div class="flex items-center gap-2">
+              <label for="lab-search-per" class="sr-only">Items per page</label>
+              <select
+                id="lab-search-per"
+                name="per"
+                class="rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              >
+                {LAB_SEARCH_PER_PAGE_OPTIONS.map((n) => (
+                  <option value={n} selected={filters.per_page === n}>{n} / page</option>
+                ))}
+              </select>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+              >
+                Search
+              </button>
+              {filtered && (
+                <a
+                  href="/lab/search"
+                  class="rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                >
+                  Reset
+                </a>
+              )}
+            </div>
+          </div>
+        </form>
+
+        {/* Entity Type Filter Tabs */}
+        <div class="border-b border-slate-200">
+          <nav class="-mb-px flex flex-wrap gap-2 sm:gap-3" aria-label="Entity Types">
+            {LAB_SEARCH_ENTITY_TYPES.map((typeKey) => {
+              const active = filters.entity === typeKey;
+              const count = result.counts[typeKey] ?? 0;
+              return (
+                <a
+                  href={entityTabHref(typeKey)}
+                  class={`inline-flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
+                    active
+                      ? 'border-brand-600 text-brand-600 font-semibold'
+                      : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'
+                  }`}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  <span>{LAB_SEARCH_ENTITY_LABELS[typeKey]}</span>
+                  <span
+                    class={`rounded-full px-2 py-0.5 text-xs ${
+                      active ? 'bg-brand-50 text-brand-700 font-bold' : 'bg-slate-100 text-slate-600'
+                    }`}
+                  >
+                    {count.toLocaleString('en-US')}
+                  </span>
+                </a>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Results summary */}
+        <div class="flex items-center justify-between text-sm text-slate-600">
+          <p>
+            Showing {result.items.length > 0 ? `${(result.page - 1) * result.per_page + 1}–${Math.min(result.page * result.per_page, result.total)} of ` : ''}
+            <span class="font-semibold text-slate-900">{result.total.toLocaleString('en-US')}</span> record{result.total === 1 ? '' : 's'}
+            {filters.q && <span> matching "<span class="font-medium text-slate-800">{filters.q}</span>"</span>}
+            {filters.entity !== 'all' && <span> in <span class="font-medium text-slate-800">{LAB_SEARCH_ENTITY_LABELS[filters.entity]}</span></span>}
+          </p>
+        </div>
+
+        {/* Results Table */}
+        {result.items.length === 0 ? (
+          <EmptyState
+            title="No matching laboratory records found"
+            description={
+              filtered
+                ? 'Try refining your search terms, searching a different entity category, or clearing the filter.'
+                : 'No laboratory records exist in the selected category.'
+            }
+          />
+        ) : (
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div class="contain-layout contain-paint overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <tr>
+                    <th scope="col" class="px-4 py-3">Type</th>
+                    <th scope="col" class="px-4 py-3">Identifier</th>
+                    <th scope="col" class="px-4 py-3">Title / Context</th>
+                    <th scope="col" class="px-4 py-3">Status / Result</th>
+                    <th scope="col" class="px-4 py-3">Details</th>
+                    <th scope="col" class="px-4 py-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                  {result.items.map((item) => {
+                    const badge = ENTITY_BADGES[item.entity_type];
+                    const displayStatus = item.result ? `${item.result} (${item.status ?? '—'})` : (item.status ?? '—');
+                    const badgeCls = statusBadgeClass(item.status, item.result);
+
+                    return (
+                      <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="whitespace-nowrap px-4 py-3">
+                          <span class={`inline-flex items-center rounded-md px-2 py-1 text-xs font-semibold ${badge.cls}`}>
+                            {badge.label}
+                          </span>
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 font-mono text-xs font-semibold text-slate-900">
+                          <a href={item.href} class="text-brand-600 hover:text-brand-800 hover:underline">
+                            {item.identifier}
+                          </a>
+                        </td>
+                        <td class="px-4 py-3">
+                          <div class="font-medium text-slate-900">
+                            <a href={item.href} class="hover:text-brand-600 hover:underline">
+                              {item.title}
+                            </a>
+                          </div>
+                          {item.subtitle && (
+                            <div class="text-xs text-slate-500 mt-0.5">{item.subtitle}</div>
+                          )}
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3">
+                          <span class={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${badgeCls}`}>
+                            {displayStatus}
+                          </span>
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 text-xs text-slate-500">
+                          {item.detail_meta ?? '—'}
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 text-right text-xs">
+                          <a
+                            href={item.href}
+                            class="inline-flex items-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50"
+                          >
+                            View
+                            <svg class="h-3.5 w-3.5 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
+                              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                            </svg>
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Controls */}
+            {result.total_pages > 1 && (
+              <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3 sm:px-6">
+                <div class="flex flex-1 justify-between sm:hidden">
+                  {result.page > 1 ? (
+                    <a href={pageHref(result.page - 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                      Previous
+                    </a>
+                  ) : (
+                    <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-sm font-medium text-slate-400">
+                      Previous
+                    </span>
+                  )}
+                  {result.page < result.total_pages ? (
+                    <a href={pageHref(result.page + 1)} class="ml-3 rounded-md border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                      Next
+                    </a>
+                  ) : (
+                    <span class="ml-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-sm font-medium text-slate-400">
+                      Next
+                    </span>
+                  )}
+                </div>
+                <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                  <div>
+                    <p class="text-xs text-slate-600">
+                      Page <span class="font-medium text-slate-900">{result.page}</span> of <span class="font-medium text-slate-900">{result.total_pages}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                      {result.page > 1 && (
+                        <a
+                          href={pageHref(result.page - 1)}
+                          class="relative inline-flex items-center rounded-l-md px-2 py-1.5 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20"
+                        >
+                          <span class="sr-only">Previous</span>
+                          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                          </svg>
+                        </a>
+                      )}
+                      {pageNumbers.map((p) => {
+                        const isCurrent = p === result.page;
+                        return (
+                          <a
+                            href={pageHref(p)}
+                            aria-current={isCurrent ? 'page' : undefined}
+                            class={`relative inline-flex items-center px-3 py-1.5 text-xs font-semibold ${
+                              isCurrent
+                                ? 'z-10 bg-brand-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600'
+                                : 'text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20'
+                            }`}
+                          >
+                            {p}
+                          </a>
+                        );
+                      })}
+                      {result.page < result.total_pages && (
+                        <a
+                          href={pageHref(result.page + 1)}
+                          class="relative inline-flex items-center rounded-r-md px-2 py-1.5 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20"
+                        >
+                          <span class="sr-only">Next</span>
+                          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                          </svg>
+                        </a>
+                      )}
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </>
+    )}
+  </div>
+</BaseLayout>
