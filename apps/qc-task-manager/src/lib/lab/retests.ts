@@ -20,6 +20,7 @@ import type BetterSqliteDatabase from 'better-sqlite3';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
+import { createNotification } from '../notifications';
 import { canCreateLabRetest } from '../permissions';
 import {
   LAB_RETEST_REASONS,
@@ -467,6 +468,21 @@ export function createLabRetest(
        VALUES ('LAB_TEST', ?, NULL, ?, 'LINK', NULL, NULL, ?)`,
     ).run(originalTestId, user.id, `retest=${retestNumber}; new_test=${newTestNumber}`);
 
+    // Notify the original test's owner that a retest was opened (reuses the
+    // notification engine; entity_href opens the retest — migration 022).
+    const retestRecipient =
+      original.tested_by == null ? (original.created_by as number | null) : (original.tested_by as number);
+    if (retestRecipient && retestRecipient !== user.id) {
+      createNotification({
+        userId: retestRecipient,
+        taskId: null,
+        type: 'lab_retest_update',
+        title: `Retest opened: ${originalNumber}`,
+        message: `${retestNumber} was opened for ${originalNumber} (reason: ${data.reason}).`,
+        href: `/lab/retests/${retestId}`,
+      });
+    }
+
     return { retest_id: retestId, retest_number: retestNumber, new_test_id: newTestId, new_test_number: newTestNumber };
   });
 }
@@ -486,11 +502,28 @@ export function completeLabRetestsForApproval(
   dbNow: string,
 ): string[] {
   const open = db
-    .prepare(`SELECT id, retest_number FROM lab_test_retests WHERE new_test_id = ? AND status = 'OPEN'`)
-    .all(newTestId) as Array<{ id: number; retest_number: string }>;
+    .prepare(
+      `SELECT r.id, r.retest_number, r.created_by, o.test_number AS original_number
+       FROM lab_test_retests r
+       JOIN lab_test_records o ON o.id = r.original_test_id
+       WHERE r.new_test_id = ? AND r.status = 'OPEN'`,
+    )
+    .all(newTestId) as Array<{ id: number; retest_number: string; created_by: number | null; original_number: string }>;
   for (const row of open) {
     db.prepare(`UPDATE lab_test_retests SET status = 'COMPLETED', updated_at = ? WHERE id = ?`).run(dbNow, row.id);
     auditLabRetest(db, row.id, actorId, 'APPROVAL', `retest completed: new test ${newTestNumber} approved`);
+    // Notify the retest creator that it resolved (entity_href opens the
+    // retest — migration 022).
+    if (row.created_by && row.created_by !== actorId) {
+      createNotification({
+        userId: row.created_by,
+        taskId: null,
+        type: 'lab_retest_update',
+        title: `Retest completed: ${row.retest_number}`,
+        message: `${row.retest_number} for ${row.original_number} completed — retest ${newTestNumber} was approved.`,
+        href: `/lab/retests/${row.id}`,
+      });
+    }
   }
   return open.map((r) => r.retest_number);
 }

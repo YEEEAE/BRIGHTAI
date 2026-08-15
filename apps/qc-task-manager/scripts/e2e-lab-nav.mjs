@@ -106,6 +106,7 @@ for (const roleCase of roleCases) {
     href === '/lab/acknowledgements' || // Acknowledgement register (LAB_DOCUMENT_ACKNOWLEDGE)
     href === '/lab/saved-views' || // Saved views register (PROMPT 24)
     href === '/lab/calendar' || // Laboratory calendar (PROMPT 25)
+    href === '/lab/notifications' || // Lab-filtered notifications (PROMPT 26)
     href === '/lab/retests', // Retest register (§46, supervisor+ nav entry)
   ), `${roleCase.username}: no dead links in secondary nav`);
 
@@ -151,6 +152,7 @@ for (const roleCase of roleCases) {
     href === '/lab/acknowledgements' || // Acknowledgement register (LAB_DOCUMENT_ACKNOWLEDGE)
     href === '/lab/saved-views' || // Saved views register (PROMPT 24)
     href === '/lab/calendar' || // Laboratory calendar (PROMPT 25)
+    href === '/lab/notifications' || // Lab-filtered notifications (PROMPT 26)
     href === '/lab/retests' || // Retest register module (§46)
     href.startsWith('/lab/retests?') || // live open-retests KPI drill-down
     href === '/lab/retests/new' || // Create Retest from a dispositioned test

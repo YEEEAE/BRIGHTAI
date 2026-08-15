@@ -49,7 +49,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 24
 - [✅] Prompt 25
 - [✅] Prompt 26
-- [ ] Prompt 27
+- [✅] Prompt 27
 - [ ] Prompt 28
 - [ ] Prompt 29
 - [ ] Prompt 30
@@ -1544,7 +1544,7 @@ Provide read/unread state and entity links.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement /lab/data-quality.

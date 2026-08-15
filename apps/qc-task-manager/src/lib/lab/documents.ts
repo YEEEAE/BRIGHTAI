@@ -633,13 +633,15 @@ function replaceDocumentEquipmentLinks(documentId: number, equipmentIds: number[
 /**
  * Notify the document owner when the document sits in a review window
  * (30 / 15 / 7 days remaining, due today, overdue). Reuses the existing
- * notification engine (createNotification, taskId null so the bell link
- * resolves to /notifications) with the documented `lab_document_review_due`
- * kind. This is a request-triggered write-time evaluation — the same pattern
- * as the calibration attention alerts — so NO scheduler cron is introduced:
- * the review date is evaluated whenever the document is created or edited.
+ * notification engine (createNotification) with the documented
+ * `lab_document_review_due` kind; entity_href opens the document editor
+ * (migration 022). This is a request-triggered write-time evaluation — the
+ * same pattern as the calibration attention alerts — so NO scheduler cron is
+ * introduced: the review date is evaluated whenever the document is created
+ * or edited.
  */
 function notifyDocumentReviewDue(document: {
+  id: number;
   code: string;
   title: string;
   owner_id: number | null;
@@ -656,6 +658,7 @@ function notifyDocumentReviewDue(document: {
     type: 'lab_document_review_due',
     title: `Document review ${state === 'OVERDUE' ? 'overdue' : 'due'}: ${document.code}`,
     message: `${document.code} — ${LAB_DOCUMENT_REVIEW_STATE_LABELS[state].toLowerCase()} (review due ${document.review_due_date}).`,
+    href: `/lab/documents/${document.id}/edit`,
   });
 }
 
@@ -745,6 +748,7 @@ export function createLabDocument(data: LabDocumentFormData, actorId: number): n
     replaceDocumentEquipmentLinks(documentId, data.equipment_ids, actorId);
     auditLabDocument(documentId, actorId, 'CREATE', documentFormSummary(data, 1));
     notifyDocumentReviewDue({
+      id: documentId,
       code: data.code,
       title: data.title,
       owner_id: data.owner_id,
@@ -844,6 +848,7 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actorId
     replaceDocumentEquipmentLinks(id, data.equipment_ids, actorId);
     auditLabDocument(id, actorId, action, documentFormSummary(data, versionNumber));
     notifyDocumentReviewDue({
+      id,
       code: data.code,
       title: data.title,
       owner_id: data.owner_id,

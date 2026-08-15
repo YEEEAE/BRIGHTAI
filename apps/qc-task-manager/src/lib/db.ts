@@ -52,6 +52,7 @@ import labEquipmentCalibrationStatusSql from '../../db/migrations/018_lab_equipm
 import labRetestOriginalSnapshotSql from '../../db/migrations/019_lab_retest_original_snapshot.sql?raw';
 import labSampleStatusSql from '../../db/migrations/020_lab_sample_status.sql?raw';
 import labTestFindingsSql from '../../db/migrations/021_lab_test_findings.sql?raw';
+import notificationsEntityHrefSql from '../../db/migrations/022_notifications_entity_href.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -282,6 +283,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '019_lab_retest_original_snapshot.sql', source: labRetestOriginalSnapshotSql },
       { file: '020_lab_sample_status.sql', source: labSampleStatusSql },
       { file: '021_lab_test_findings.sql', source: labTestFindingsSql },
+      { file: '022_notifications_entity_href.sql', source: notificationsEntityHrefSql },
     ],
   });
   backfillAuditChain(db);

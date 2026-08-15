@@ -22,6 +22,7 @@ import { getDb, transaction } from '../db';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
+import { createNotification } from '../notifications';
 import { canArchiveLabEquipment, canCreateLabEquipment, canEditLabEquipment } from '../permissions';
 import type { LabEquipment, LabEquipmentMaintenance } from '../types';
 import { statusMatchesLabel } from './equipmentStatus';
@@ -486,8 +487,8 @@ export function createLabEquipmentMaintenance(
   return transaction(() => {
     const db = getDb();
     const equipment = db
-      .prepare('SELECT id, code, is_archived FROM lab_equipment WHERE id = ?')
-      .get(equipmentId) as { id: number; code: string; is_archived: number } | undefined;
+      .prepare('SELECT id, code, name, is_archived, created_by FROM lab_equipment WHERE id = ?')
+      .get(equipmentId) as { id: number; code: string; name: string; is_archived: number; created_by: number | null } | undefined;
     if (!equipment) throw new Error('Equipment not found.');
     if (equipment.is_archived === 1) throw new Error('Archived equipment cannot accept new maintenance events.');
     const result = db
@@ -511,6 +512,18 @@ export function createLabEquipmentMaintenance(
       );
     const id = Number(result.lastInsertRowid);
     auditLabEquipmentMaintenance(id, actorId, `equipment=${equipment.code}; ${maintenanceSummary(data)}`);
+    // Maintenance alert for the equipment owner (reuses the notification engine;
+    // entity_href opens the device maintenance history — migration 022).
+    if (equipment.created_by && equipment.created_by !== actorId) {
+      createNotification({
+        userId: equipment.created_by,
+        taskId: null,
+        type: 'lab_maintenance_event',
+        title: `Maintenance logged: ${equipment.code}`,
+        message: `${equipment.name} (${equipment.code}) has a new maintenance event: ${data.issue}`,
+        href: `/lab/equipment/${equipmentId}/maintenance`,
+      });
+    }
     return id;
   });
 }

@@ -1,0 +1,219 @@
+---
+// /lab/notifications — QC Laboratory notifications (PROMPT 26).
+//
+// A lab-filtered view over the SAME notifications table as /notifications and
+// the navbar bell — never a second system. Data comes from listLabNotifications
+// (src/lib/notifications.ts), which selects only the lab kinds. Read state uses
+// the same is_read column: marking a notification read here also clears it from
+// the global page and the badge (and vice-versa). Each row links to its real
+// source record via entity_href (migration 022).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
+import MarkAllReadButton from '../../components/MarkAllReadButton';
+import MarkReadButton from '../../components/MarkReadButton';
+import { labNavForRole } from '../../lib/lab/navigation';
+import { listLabNotifications } from '../../lib/notifications';
+import type { Role } from '../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+const navItems = labNavForRole(role);
+
+// All / Unread filter — plain query param, server-rendered (no JS needed).
+const filter = Astro.url.searchParams.get('filter') === 'unread' ? 'unread' : 'all';
+
+let dataError: string | null = null;
+let notifications: ReturnType<typeof listLabNotifications>['notifications'] = [];
+let unread = 0;
+let total = 0;
+try {
+  const result = listLabNotifications(user.userId, { unreadOnly: filter === 'unread' });
+  notifications = result.notifications;
+  unread = result.unread;
+  total = result.total;
+} catch (err) {
+  console.error('[lab] notifications query failure', err);
+  dataError = 'Could not load your notifications. Try reloading — if the problem persists, contact an administrator.';
+}
+
+// Presentation maps — kept local to the page (same pattern as /notifications).
+const KIND_ICON: Record<string, string> = {
+  lab_test_review_started: '🔬',
+  lab_test_rejected: '⛔',
+  lab_test_changes_requested: '✏️',
+  lab_test_approved: '✅',
+  lab_document_review_due: '📋',
+  lab_document_acknowledgement: '📖',
+  lab_document_acknowledged: '👍',
+  lab_calibration_due: '⚖️',
+  lab_calibration_overdue: '⚠️',
+  lab_maintenance_event: '🔧',
+  lab_retest_update: '🔁',
+};
+
+const KIND_LABEL: Record<string, string> = {
+  lab_test_review_started: 'Tests under review',
+  lab_test_rejected: 'Tests rejected',
+  lab_test_changes_requested: 'Changes requested',
+  lab_test_approved: 'Tests approved',
+  lab_document_review_due: 'Document reviews due',
+  lab_document_acknowledgement: 'Acknowledgements required',
+  lab_document_acknowledged: 'Acknowledgements completed',
+  lab_calibration_due: 'Calibration due',
+  lab_calibration_overdue: 'Calibration overdue',
+  lab_maintenance_event: 'Equipment maintenance',
+  lab_retest_update: 'Retest updates',
+};
+
+const SEVERITY_CARD: Record<string, string> = {
+  danger: 'border-l-red-400 bg-red-50/60',
+  warning: 'border-l-amber-400 bg-amber-50/60',
+  info: 'border-l-sky-400 bg-white',
+  success: 'border-l-emerald-400 bg-emerald-50/60',
+};
+
+// Section order: danger → warning → info → success.
+const SECTION_ORDER: Record<string, number> = {
+  lab_test_rejected: 0,
+  lab_calibration_overdue: 0,
+  lab_test_review_started: 1,
+  lab_test_changes_requested: 1,
+  lab_document_review_due: 1,
+  lab_document_acknowledgement: 1,
+  lab_calibration_due: 1,
+  lab_maintenance_event: 1,
+  lab_retest_update: 2,
+  lab_test_approved: 3,
+  lab_document_acknowledged: 3,
+};
+
+function sectionOrder(kind: string): number {
+  return SECTION_ORDER[kind] ?? 3;
+}
+
+const grouped = new Map<string, typeof notifications>();
+for (const n of notifications) {
+  const list = grouped.get(n.kind) ?? [];
+  list.push(n);
+  grouped.set(n.kind, list);
+}
+const orderedKinds = [...grouped.keys()].sort((a, b) => sectionOrder(a) - sectionOrder(b));
+---
+
+<BaseLayout title="Lab Notifications">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Notifications' },
+      ]}
+    />
+
+    <header class="flex flex-wrap items-start justify-between gap-3">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Overview</p>
+        <h1 class="mt-1 text-3xl font-semibold text-slate-900">Notifications</h1>
+        <p class="mt-1 max-w-3xl text-sm text-slate-600">
+          Laboratory alerts — review requests, rejections, approvals, document reviews and acknowledgements,
+          calibration reminders, maintenance events and retest updates. Read state is shared with the global
+          notifications page and the navbar badge.
+        </p>
+      </div>
+      {!dataError && total > 0 && <MarkAllReadButton client:visible redirectTo="/lab/notifications" />}
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/notifications" />
+
+    {dataError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {dataError}
+      </div>
+    )}
+
+    {!dataError && (
+      <>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <nav aria-label="Notification filter" class="flex gap-1 rounded-lg border border-slate-200 bg-white p-1">
+            <a
+              href="/lab/notifications"
+              aria-current={filter === 'all' ? 'page' : undefined}
+              class={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                filter === 'all' ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              All ({total})
+            </a>
+            <a
+              href="/lab/notifications?filter=unread"
+              aria-current={filter === 'unread' ? 'page' : undefined}
+              class={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                filter === 'unread' ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              Unread ({unread})
+            </a>
+          </nav>
+          <p class="text-xs text-slate-400">Showing the {notifications.length} most recent</p>
+        </div>
+
+        {notifications.length === 0 ? (
+          <EmptyState
+            title={filter === 'unread' ? 'No unread laboratory notifications 🎉' : 'No laboratory notifications yet 🎉'}
+            hint={
+              filter === 'unread'
+                ? 'You have read every laboratory alert. Switch to “All” to see the full history.'
+                : 'Alerts about test reviews, approvals, documents, calibration, maintenance and retests will appear here.'
+            }
+            ctaHref="/lab"
+            ctaLabel="Back to Laboratory"
+          />
+        ) : (
+          orderedKinds.map((kind) => (
+            <section aria-labelledby={`lab-section-${kind}`}>
+              <h2
+                id={`lab-section-${kind}`}
+                class="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-500"
+              >
+                <span aria-hidden="true">{KIND_ICON[kind] ?? '🔔'}</span>
+                {KIND_LABEL[kind] ?? kind}
+                <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+                  {grouped.get(kind)!.length}
+                </span>
+              </h2>
+              <ul class="space-y-2">
+                {grouped.get(kind)!.map((n) => (
+                  <li>
+                    <div
+                      class={`rounded-lg border border-slate-200 border-l-4 p-4 transition hover:shadow-sm ${
+                        SEVERITY_CARD[n.severity] ?? SEVERITY_CARD.info
+                      } ${n.isRead ? '' : 'ring-1 ring-sky-200'}`}
+                    >
+                      <div class="flex items-start justify-between gap-3">
+                        <a href={n.href} class="min-w-0 flex-1">
+                          <div class="flex items-start justify-between gap-3">
+                            <p class="flex items-center gap-2 font-medium text-slate-900">
+                              {!n.isRead && (
+                                <span aria-hidden="true" class="h-2 w-2 shrink-0 rounded-full bg-sky-500" />
+                              )}
+                              {n.title}
+                            </p>
+                            <span class="shrink-0 text-xs text-slate-400">{n.createdAt.slice(0, 10)}</span>
+                          </div>
+                          <p class="mt-1 text-sm text-slate-600">{n.message}</p>
+                        </a>
+                        {!n.isRead && <MarkReadButton client:visible notificationId={n.id} />}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        )}
+      </>
+    )}
+  </div>
+</BaseLayout>

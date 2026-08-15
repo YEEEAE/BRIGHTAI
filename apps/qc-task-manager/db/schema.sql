@@ -246,6 +246,9 @@ CREATE TABLE IF NOT EXISTS task_dependencies (
 -- ─────────────────────────── 9. notifications ──────────────────────────
 -- Persisted in-app notifications. user_id rows are children of the user;
 -- task_id is SET NULL when the task disappears so notifications survive it.
+-- entity_href (migration 022) carries the real source-record link written by
+-- the same transaction as the notification (lab events have task_id NULL, so
+-- without it every lab alert would link back to the notifications page).
 CREATE TABLE IF NOT EXISTS notifications (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -254,7 +257,8 @@ CREATE TABLE IF NOT EXISTS notifications (
   title      TEXT NOT NULL,
   message    TEXT NOT NULL,
   is_read    INTEGER NOT NULL DEFAULT 0 CHECK (is_read IN (0, 1)),
-  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  entity_href TEXT
 );
 
 -- ─────────────────────────── 10. sessions ──────────────────────────────

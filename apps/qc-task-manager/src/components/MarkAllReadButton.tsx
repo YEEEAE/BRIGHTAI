@@ -5,7 +5,11 @@
 
 import { useState } from 'react';
 
-export default function MarkAllReadButton() {
+// Where to land after marking everything read. The global /notifications page
+// (the default) reloads itself; the lab-filtered view (/lab/notifications)
+// passes its own href so it stays in place. Both hit the SAME read-all
+// endpoint — one table, one read state.
+export default function MarkAllReadButton({ redirectTo = '/notifications' }: { redirectTo?: string }) {
   const [busy, setBusy] = useState(false);
 
   async function markAllRead(ev: React.FormEvent) {
@@ -19,7 +23,7 @@ export default function MarkAllReadButton() {
       });
       const data = (await res.json()) as { ok: boolean };
       if (res.ok && data.ok) {
-        window.location.href = '/notifications';
+        window.location.href = redirectTo;
       }
     } finally {
       setBusy(false);

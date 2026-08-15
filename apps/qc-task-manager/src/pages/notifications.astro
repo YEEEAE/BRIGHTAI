@@ -31,6 +31,16 @@ const KIND_ICON: Record<NotificationKind, string> = {
   task_reopened: '🔄',
   sla_escalation: '🚨',
   lab_document_review_due: '📋',
+  lab_test_review_started: '🔬',
+  lab_test_rejected: '⛔',
+  lab_test_changes_requested: '✏️',
+  lab_test_approved: '✅',
+  lab_document_acknowledgement: '📖',
+  lab_document_acknowledged: '👍',
+  lab_calibration_due: '⚖️',
+  lab_calibration_overdue: '⚠️',
+  lab_maintenance_event: '🔧',
+  lab_retest_update: '🔁',
 };
 
 const KIND_LABEL: Record<NotificationKind, string> = {
@@ -50,6 +60,16 @@ const KIND_LABEL: Record<NotificationKind, string> = {
   task_reopened: 'Reopened tasks',
   sla_escalation: 'SLA escalations',
   lab_document_review_due: 'Document reviews',
+  lab_test_review_started: 'Lab tests under review',
+  lab_test_rejected: 'Lab tests rejected',
+  lab_test_changes_requested: 'Lab test changes requested',
+  lab_test_approved: 'Lab tests approved',
+  lab_document_acknowledgement: 'Document acknowledgements required',
+  lab_document_acknowledged: 'Document acknowledgements',
+  lab_calibration_due: 'Calibration due',
+  lab_calibration_overdue: 'Calibration overdue',
+  lab_maintenance_event: 'Equipment maintenance',
+  lab_retest_update: 'Retest updates',
 };
 
 const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
@@ -76,6 +96,16 @@ const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'task_reopened', order: 3 },
   { key: 'delete_approved', order: 3 },
   { key: 'lab_document_review_due', order: 1 },
+  { key: 'lab_test_rejected', order: 0 },
+  { key: 'lab_calibration_overdue', order: 0 },
+  { key: 'lab_test_review_started', order: 1 },
+  { key: 'lab_test_changes_requested', order: 1 },
+  { key: 'lab_document_acknowledgement', order: 1 },
+  { key: 'lab_calibration_due', order: 1 },
+  { key: 'lab_maintenance_event', order: 1 },
+  { key: 'lab_retest_update', order: 2 },
+  { key: 'lab_test_approved', order: 3 },
+  { key: 'lab_document_acknowledged', order: 3 },
 ];
 
 function sectionOrder(kind: NotificationKind): number {

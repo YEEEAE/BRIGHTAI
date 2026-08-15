@@ -400,25 +400,31 @@ function resolveDocumentForVersion(versionId: number): { code: string; title: st
     .get(versionId) as { code: string; title: string; version: number } | undefined ?? null;
 }
 
-/** Notify each newly assigned employee (reuses the existing notification engine). */
-function notifyAssignedEmployee(userId: number, doc: { code: string; version: number }): void {
+/**
+ * Notify each newly assigned employee (reuses the existing notification
+ * engine). entity_href opens the acknowledgements register pre-filtered to the
+ * version so the employee lands on their pending row (migration 022).
+ */
+function notifyAssignedEmployee(userId: number, doc: { code: string; version: number; versionId: number }): void {
   createNotification({
     userId,
     taskId: null,
-    type: 'lab_document_acknowledgement' as never,
+    type: 'lab_document_acknowledgement',
     title: `Acknowledgement required: ${doc.code} v${doc.version}`,
     message: `Please read and acknowledge ${doc.code} v${doc.version} in the controlled documents register.`,
+    href: `/lab/acknowledgements?version=${doc.versionId}`,
   });
 }
 
 /** Notify the document owner when an employee acknowledges (completion tracking). */
-function notifyOwnerOnAcknowledgement(ownerId: number, doc: { code: string; version: number; employeeName: string }): void {
+function notifyOwnerOnAcknowledgement(ownerId: number, doc: { code: string; version: number; versionId: number; employeeName: string }): void {
   createNotification({
     userId: ownerId,
     taskId: null,
-    type: 'lab_document_acknowledged' as never,
+    type: 'lab_document_acknowledged',
     title: `${doc.code} v${doc.version} acknowledged by ${doc.employeeName}`,
     message: `${doc.employeeName} acknowledged ${doc.code} v${doc.version}.`,
+    href: `/lab/acknowledgements?version=${doc.versionId}`,
   });
 }
 
@@ -503,7 +509,7 @@ export function assignLabDocumentAcknowledgements(
         .map((id) => nameById.get(id) ?? `user#${id}`)
         .join(', ')}`,
     );
-    for (const id of newUsers) notifyAssignedEmployee(id, { code: version.code, version: version.version });
+    for (const id of newUsers) notifyAssignedEmployee(id, { code: version.code, version: version.version, versionId });
     return newUsers.length;
   });
 }
@@ -572,6 +578,7 @@ export function acknowledgeLabDocumentAcknowledgement(acknowledgementId: number,
       notifyOwnerOnAcknowledgement(ownerId, {
         code: row.code,
         version: row.version,
+        versionId: row.document_version_id,
         employeeName: row.employee_name,
       });
     }

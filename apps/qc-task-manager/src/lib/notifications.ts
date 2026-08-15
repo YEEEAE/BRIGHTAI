@@ -38,7 +38,17 @@ export type NotificationKind =
   | 'delete_rejected'
   | 'task_reopened'
   | 'sla_escalation'
-  | 'lab_document_review_due';
+  | 'lab_document_review_due'
+  | 'lab_test_review_started'
+  | 'lab_test_rejected'
+  | 'lab_test_changes_requested'
+  | 'lab_test_approved'
+  | 'lab_document_acknowledgement'
+  | 'lab_document_acknowledged'
+  | 'lab_calibration_due'
+  | 'lab_calibration_overdue'
+  | 'lab_maintenance_event'
+  | 'lab_retest_update';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -81,6 +91,13 @@ export function createNotification(params: {
   message: string;
   /** Who triggered the notification (logged as the actor). Omit to skip logging. */
   actorId?: number;
+  /**
+   * Real source-record link (e.g. /lab/tests/12, /lab/equipment/3). Persisted
+   * into entity_href (migration 022) and preferred over the legacy task link
+   * by every list reader. Lab events carry taskId null, so without this they
+   * would all fall back to the notifications page.
+   */
+  href?: string;
 }): boolean {
   try {
     // Spec: "do not notify inactive users" — enforced centrally so every call
@@ -91,10 +108,17 @@ export function createNotification(params: {
     if (!active) return false;
     getDb()
       .prepare(
-        `INSERT INTO notifications (user_id, task_id, type, title, message)
-         VALUES (?, ?, ?, ?, ?)`,
+        `INSERT INTO notifications (user_id, task_id, type, title, message, entity_href)
+         VALUES (?, ?, ?, ?, ?, ?)`,
       )
-      .run(params.userId, params.taskId, params.type, params.title, params.message);
+      .run(
+        params.userId,
+        params.taskId,
+        params.type,
+        params.title,
+        params.message,
+        params.href ?? null,
+      );
 
     // Activity-log audit (spec): record that this actor notified this user. Only
     // task-scoped notifications are logged — global/bell-only ones have no task.
@@ -132,6 +156,16 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   task_reopened: 'warning',
   sla_escalation: 'danger',
   lab_document_review_due: 'warning',
+  lab_test_review_started: 'warning',
+  lab_test_rejected: 'danger',
+  lab_test_changes_requested: 'warning',
+  lab_test_approved: 'success',
+  lab_document_acknowledgement: 'warning',
+  lab_document_acknowledged: 'success',
+  lab_calibration_due: 'warning',
+  lab_calibration_overdue: 'danger',
+  lab_maintenance_event: 'warning',
+  lab_retest_update: 'info',
 };
 
 /** A raw persisted notification row (with read state) for the UI layers. */
@@ -150,13 +184,14 @@ export interface PersistedNotification {
 /**
  * The signed-in user's persisted notifications (newest first) — the raw rows
  * with read state. Used by the navbar dropdown and the notifications page.
- * Deleted tasks leave task_id NULL via ON DELETE SET NULL, so href falls back
- * to the notifications page (e.g. an approved deletion request).
+ * Link resolution prefers the real source-record link written by the producer
+ * (entity_href, migration 022), then falls back to the task link, then to the
+ * notifications page. Deleted tasks leave task_id NULL via ON DELETE SET NULL.
  */
 export function listPersistedNotifications(userId: number, limit = 10): PersistedNotification[] {
   const rows = getDb()
     .prepare(
-      `SELECT id, task_id, type, title, message, is_read, created_at
+      `SELECT id, task_id, type, title, message, is_read, created_at, entity_href
        FROM notifications
        WHERE user_id = ?
        ORDER BY created_at DESC, id DESC
@@ -170,6 +205,7 @@ export function listPersistedNotifications(userId: number, limit = 10): Persiste
     message: string;
     is_read: number;
     created_at: string;
+    entity_href: string | null;
   }[];
 
   return rows.map((r) => ({
@@ -179,7 +215,7 @@ export function listPersistedNotifications(userId: number, limit = 10): Persiste
     severity: PERSISTED_SEVERITY[r.type] ?? 'info',
     title: r.title,
     message: r.message,
-    href: r.task_id != null ? `/tasks/${r.task_id}` : '/notifications',
+    href: r.entity_href ?? (r.task_id != null ? `/tasks/${r.task_id}` : '/notifications'),
     createdAt: r.created_at,
     isRead: Number(r.is_read) === 1,
   }));
@@ -214,6 +250,94 @@ export function markNotificationRead(userId: number, notificationId: number): bo
     .prepare('UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ? AND is_read = 0')
     .run(notificationId, userId);
   return info.changes === 1;
+}
+
+// ─────────────────────────── Lab notifications (/lab/notifications) ───────────────────────────
+
+/**
+ * Every laboratory notification kind (contract §11). Persisted rows written by
+ * the lab modules with these types are the ONLY source of /lab/notifications —
+ * it is a lab-filtered view over the SAME notifications table, never a second
+ * system (contract §5.2). Older rows written before the kinds were registered
+ * (e.g. the calibration/maintenance alerts cast to `never`) still match,
+ * because `type` is free text and this list is matched against the stored
+ * string.
+ */
+export const LAB_NOTIFICATION_KINDS: readonly NotificationKind[] = [
+  'lab_test_review_started',
+  'lab_test_rejected',
+  'lab_test_changes_requested',
+  'lab_test_approved',
+  'lab_document_review_due',
+  'lab_document_acknowledgement',
+  'lab_document_acknowledged',
+  'lab_calibration_due',
+  'lab_calibration_overdue',
+  'lab_maintenance_event',
+  'lab_retest_update',
+];
+
+const LAB_KIND_SQL_LIST = LAB_NOTIFICATION_KINDS.map(() => '?').join(', ');
+
+/**
+ * The signed-in user's LABORATORY notifications (newest first) with read
+ * state, unread-first ordering and a total — the /lab/notifications page's
+ * data source. `unreadOnly` hides already-read rows (the "Unread" filter).
+ * Read state uses the same is_read column as the global bell: marking a lab
+ * notification read here also clears it from the /notifications page and the
+ * navbar badge (and vice-versa) — one row, one read state.
+ */
+export function listLabNotifications(
+  userId: number,
+  options: { unreadOnly?: boolean } = {},
+): { notifications: PersistedNotification[]; unread: number; total: number } {
+  const db = getDb();
+  const kinds = [...LAB_NOTIFICATION_KINDS];
+
+  const countRow = db
+    .prepare(
+      `SELECT
+         COUNT(*) AS total,
+         SUM(CASE WHEN is_read = 0 THEN 1 ELSE 0 END) AS unread
+       FROM notifications
+       WHERE user_id = ? AND type IN (${LAB_KIND_SQL_LIST})`,
+    )
+    .get(userId, ...kinds) as { total: number; unread: number | null };
+
+  const rows = db
+    .prepare(
+      `SELECT id, task_id, type, title, message, is_read, created_at, entity_href
+       FROM notifications
+       WHERE user_id = ? AND type IN (${LAB_KIND_SQL_LIST})${options.unreadOnly ? ' AND is_read = 0' : ''}
+       ORDER BY is_read ASC, created_at DESC, id DESC
+       LIMIT ?`,
+    )
+    .all(userId, ...kinds, 100) as {
+    id: number;
+    task_id: number | null;
+    type: string;
+    title: string;
+    message: string;
+    is_read: number;
+    created_at: string;
+    entity_href: string | null;
+  }[];
+
+  return {
+    notifications: rows.map((r) => ({
+      id: r.id,
+      taskId: r.task_id,
+      kind: (r.type in PERSISTED_SEVERITY ? r.type : 'assigned') as NotificationKind,
+      severity: PERSISTED_SEVERITY[r.type] ?? 'info',
+      title: r.title,
+      message: r.message,
+      href: r.entity_href ?? (r.task_id != null ? `/tasks/${r.task_id}` : '/notifications'),
+      createdAt: r.created_at,
+      isRead: Number(r.is_read) === 1,
+    })),
+    unread: Number(countRow.unread ?? 0),
+    total: Number(countRow.total ?? 0),
+  };
 }
 
 /** Unread persisted notifications for the badge count. */

@@ -478,9 +478,8 @@ export function listLabEquipmentOptionsForCalibration(): Array<{ id: number; cod
 /**
  * Notify the equipment owner when a calibration record leaves the equipment
  * in an attention state (DUE_SOON / DUE_TODAY / OVERDUE). Reuses the existing
- * notification engine with taskId null so the bell link resolves to
- * /notifications (same known limitation as lab test notifications — the
- * persisted kind falls back to the "Assigned to you" section on read).
+ * notification engine; entity_href points at the equipment record so the bell
+ * and /lab/notifications open the source device (migration 022).
  */
 function notifyCalibrationAttention(equipmentId: number, status: LabCalibrationStatus): void {
   const equipment = getDb()
@@ -491,12 +490,13 @@ function notifyCalibrationAttention(equipmentId: number, status: LabCalibrationS
   createNotification({
     userId: equipment.created_by,
     taskId: null,
-    type: (status === 'OVERDUE' ? 'lab_calibration_overdue' : 'lab_calibration_due') as never,
+    type: status === 'OVERDUE' ? 'lab_calibration_overdue' : 'lab_calibration_due',
     title: `Calibration ${status === 'OVERDUE' ? 'overdue' : 'due'}: ${equipment.code}`,
     message:
       status === 'OVERDUE'
         ? `${equipment.name} (${equipment.code}) calibration is overdue — schedule recalibration.`
         : `${equipment.name} (${equipment.code}) calibration is ${status === 'DUE_TODAY' ? 'due today' : 'due soon'} — schedule recalibration.`,
+    href: `/lab/equipment/${equipmentId}`,
   });
 }
 

@@ -22,7 +22,7 @@
 // so an approved record stays historically correct (§23, §28, §35, §44).
 
 import { getDb, transaction } from '../db';
-import { createNotification } from '../notifications';
+import { createNotification, type NotificationKind } from '../notifications';
 import { deriveCalibrationState } from './overview';
 import { completeLabRetestsForApproval } from './retests';
 import { canApproveLabTestRecord, canReviewLabTestRecord } from '../permissions';
@@ -59,8 +59,8 @@ const AUDIT_ACTION: Record<LabReviewAction, string> = {
   approve: 'APPROVAL',
 };
 
-/** Notification kind stored on the existing notifications table (type is free text). */
-const NOTIFICATION_KIND: Record<LabReviewAction, string> = {
+/** Notification kind stored on the existing notifications table (contract §11). */
+const NOTIFICATION_KIND: Record<LabReviewAction, NotificationKind> = {
   start_review: 'lab_test_review_started',
   request_changes: 'lab_test_changes_requested',
   reject: 'lab_test_rejected',
@@ -597,14 +597,15 @@ export function transitionLabTest(
       reason,
     );
 
-    // Notify the tester (reuse the existing notification engine; taskId is null
-    // for lab events so the bell link resolves to /notifications).
+    // Notify the tester (reuse the existing notification engine). taskId stays
+    // null (lab events are not tasks); entity_href carries the real record link
+    // so the bell and /lab/notifications open the source test (migration 022).
     const recipient = test.tested_by ?? test.created_by;
     if (recipient) {
       createNotification({
         userId: recipient,
         taskId: null,
-        type: NOTIFICATION_KIND[action] as never,
+        type: NOTIFICATION_KIND[action],
         title: NOTIFICATION_TITLE[action],
         message:
           action === 'approve'
@@ -614,6 +615,8 @@ export function transitionLabTest(
               : action === 'request_changes'
                 ? `${testNumber} was returned for changes: ${reason ?? ''}`
                 : `${testNumber} was rejected: ${reason ?? ''}`,
+        actorId: user.id,
+        href: `/lab/tests/${testId}`,
       });
     }
 
