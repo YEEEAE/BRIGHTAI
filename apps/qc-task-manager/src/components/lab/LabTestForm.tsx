@@ -56,6 +56,21 @@ interface Props {
     wi_code: string | null;
   }>;
   connectorTypes: readonly string[];
+  /** ACTIVE templates with their approved current version (§29-§30, PROMPT 10). */
+  templateRefs: Array<{
+    version_id: number;
+    name: string;
+    code: string;
+    test_type: 'air' | 'vacuum';
+    version: number;
+    default_sample_count: number | null;
+    connector_choices_json: string | null;
+    parameters_json: string;
+    sop_title: string | null;
+    sop_code: string | null;
+    wi_title: string | null;
+    wi_code: string | null;
+  }>;
   resultOptions: LabResultOption[];
   reference: LabReferenceValues;
   sampleCountMin: number;
@@ -132,6 +147,7 @@ export default function LabTestForm({
   products,
   productRefs,
   connectorTypes,
+  templateRefs,
   resultOptions,
   reference,
   sampleCountMin,
@@ -155,6 +171,27 @@ export default function LabTestForm({
   // Set once the tester deliberately changes Connector Type — after that the
   // product default never touches it again ("populate, never overwrite", §28).
   const connectorTouchedRef = useRef(false);
+  // Same rule for No. of Samples Tested: template defaults prefill an
+  // untouched field only and never replace a tester-entered count.
+  const sampleCountTouchedRef = useRef(false);
+  const [templateVersionId, setTemplateVersionId] = useState<number | null>(null);
+
+  const matchingTemplates = templateRefs.filter((t) => t.test_type === testType);
+  const selectedTemplate = matchingTemplates.find((t) => t.version_id === templateVersionId) ?? null;
+
+  const selectedTemplateParameters = (() => {
+    if (!selectedTemplate) return null;
+    try {
+      const parsed = JSON.parse(selectedTemplate.parameters_json) as Record<string, unknown>;
+      return {
+        standardParameter: typeof parsed.standard_parameter === 'string' ? parsed.standard_parameter : reference.standardParameter,
+        acceptanceCriteria: typeof parsed.acceptance_criteria === 'string' ? parsed.acceptance_criteria : reference.acceptanceCriteria,
+        holdingTime: typeof parsed.holding_time === 'string' ? parsed.holding_time : reference.holdingTime,
+      };
+    } catch {
+      return null;
+    }
+  })();
 
   const matchedRef = productRefs.find(
     (p) => productDescription.trim() !== '' && p.name.trim().toLowerCase() === productDescription.trim().toLowerCase(),
@@ -212,6 +249,47 @@ export default function LabTestForm({
     setSamples((prev) =>
       Array.from({ length: clamped }, (_, i) => prev[i] ?? emptyRow(i + 1)),
     );
+    markDirty();
+  }
+
+  /**
+   * Template selection (§29-§30): prefills ONLY untouched fields — sample
+   * count and connector type — and never touches any measured value. The
+   * selected version id rides a hidden input; the server re-validates that
+   * it names the approved current version of an ACTIVE template.
+   */
+  function handleTemplateChange(raw: string) {
+    const id = raw === '' ? null : Number(raw);
+    setTemplateVersionId(id);
+    const ref = matchingTemplates.find((t) => t.version_id === id) ?? null;
+    if (!ref) {
+      markDirty();
+      return;
+    }
+    if (!sampleCountTouchedRef.current && ref.default_sample_count !== null) {
+      const clamped = Math.min(Math.max(ref.default_sample_count, sampleCountMin), sampleCountMax);
+      if (clamped !== sampleCount) {
+        setSampleCount(clamped);
+        setSamples((prev) =>
+          Array.from({ length: clamped }, (_, i) => prev[i] ?? emptyRow(i + 1)),
+        );
+      }
+    }
+    if (!connectorTouchedRef.current) {
+      const select = formRef.current?.elements.namedItem('connector_type') as HTMLSelectElement | null;
+      const choices = (() => {
+        if (!ref.connector_choices_json) return [] as string[];
+        try {
+          const parsed = JSON.parse(ref.connector_choices_json) as unknown;
+          return Array.isArray(parsed) ? parsed.filter((c): c is string => typeof c === 'string') : [];
+        } catch {
+          return [];
+        }
+      })();
+      if (select && select.value === '' && choices.length === 1) {
+        select.value = choices[0];
+      }
+    }
     markDirty();
   }
 
@@ -282,6 +360,7 @@ export default function LabTestForm({
     <form ref={formRef} action={`/lab/tests/new?type=${testType}`} method="POST" noValidate>
       <input ref={actionRef} type="hidden" name="form_action" value={formAction} />
       <input ref={samplesJsonRef} type="hidden" name="samples_json" value="" />
+      <input type="hidden" name="template_version_id" value={templateVersionId ?? ''} />
 
       {dirty && (
         <p role="status" className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700">
@@ -305,6 +384,69 @@ export default function LabTestForm({
         <section aria-labelledby="sec-sample-identification" className={sectionCls}>
           <h2 id="sec-sample-identification" className={sectionTitleCls}>Section 1 — Sample Identification</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            {matchingTemplates.length > 0 && (
+              <div className="sm:col-span-2">
+                <label htmlFor="template_version_id" className={labelCls}>Test Template</label>
+                <select
+                  id="template_version_id"
+                  onChange={(e) => handleTemplateChange(e.target.value)}
+                  className={inputCls}
+                >
+                  <option value="">No template — manual entry</option>
+                  {matchingTemplates.map((t) => (
+                    <option key={t.version_id} value={t.version_id}>
+                      {t.name} ({t.code}) — v{t.version}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1 text-xs text-slate-500">
+                  Prefills untouched defaults only — every entry on this form stays editable and is never overwritten.
+                </p>
+              </div>
+            )}
+            {/* Template reference panel (§29-§30): display-only. The template
+                version id is stored on the test record; measured values are
+                never taken from the template. */}
+            {selectedTemplate && (
+              <div className="sm:col-span-2 rounded-md border border-blue-200 bg-blue-50 px-4 py-3" data-testid="template-reference-panel">
+                <p className="text-sm font-semibold text-blue-800">
+                  Template — {selectedTemplate.name} ({selectedTemplate.code}) — v{selectedTemplate.version}
+                </p>
+                <dl className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Default Samples</dt>
+                    <dd className="text-slate-800">{selectedTemplate.default_sample_count ?? '—'}</dd>
+                  </div>
+                  {selectedTemplateParameters && (
+                    <>
+                      <div>
+                        <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Standard Parameter</dt>
+                        <dd className="text-slate-800" dir="ltr">{selectedTemplateParameters.standardParameter}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Acceptance Criteria</dt>
+                        <dd className="text-slate-800" dir="ltr">{selectedTemplateParameters.acceptanceCriteria}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Holding Time</dt>
+                        <dd className="text-slate-800" dir="ltr">{selectedTemplateParameters.holdingTime}</dd>
+                      </div>
+                    </>
+                  )}
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Applicable SOP</dt>
+                    <dd className="text-slate-800">{selectedTemplate.sop_title ? `${selectedTemplate.sop_code} — ${selectedTemplate.sop_title}` : '—'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Applicable WI</dt>
+                    <dd className="text-slate-800">{selectedTemplate.wi_title ? `${selectedTemplate.wi_code} — ${selectedTemplate.wi_title}` : '—'}</dd>
+                  </div>
+                </dl>
+                <p className="mt-2 text-xs text-slate-600">
+                  Reference values from the approved template version — recorded with the test, never validated against measurements.
+                </p>
+              </div>
+            )}
             <div className="sm:col-span-2">
               <label htmlFor="product_description" className={labelCls}>Product Description</label>
               <input
@@ -392,7 +534,10 @@ export default function LabTestForm({
                 min={sampleCountMin}
                 max={sampleCountMax}
                 value={sampleCount}
-                onChange={(e) => handleSampleCountChange(e.target.value)}
+                onChange={(e) => {
+                  sampleCountTouchedRef.current = true;
+                  handleSampleCountChange(e.target.value);
+                }}
                 className={inputCls}
               />
               <p className="mt-1 text-xs text-slate-500">Controls the sample table below ({sampleCountMin}–{sampleCountMax}).</p>

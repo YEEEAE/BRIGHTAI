@@ -19,6 +19,7 @@ const LAB_TABLES = [
   'lab_equipment_calibration',
   'lab_products',
   'lab_product_equipment',
+  'lab_template_equipment',
   'lab_test_records',
   'lab_test_samples',
   'lab_test_retests',
@@ -47,8 +48,8 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 16);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 16);
+    assert.equal(result.applied.length, 17);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 17);
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='tasks'").get());
     for (const table of LAB_TABLES) {
       assert.ok(
@@ -88,7 +89,7 @@ try {
       .all();
 
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 6, 'upgrade applies exactly migrations 011-016');
+    assert.equal(upgraded.applied.length, 7, 'upgrade applies exactly migrations 011-017');
     const after = db
       .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
       .all();
@@ -125,7 +126,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 16);
+    assert.equal(first.applied.length, 17);
     assert.equal(second.applied.length, 0);
     db.close();
   }

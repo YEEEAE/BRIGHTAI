@@ -116,6 +116,37 @@ export function listLabProductsForForm(): LabProductOption[] {
     .all() as LabProductOption[];
 }
 
+/**
+ * Test Template integration (§29-§30, PROMPT 10): the form posts a template
+ * version id; the server resolves it to (template_id, template_version_id)
+ * ONLY when the version exists, its template is ACTIVE with an APPROVED
+ * current version, and the template's test type matches the query's type.
+ * Anything else resolves to null — a forged or stale id never lands on the
+ * record. Measured values are NEVER taken from the template (populate, never
+ * overwrite — the island only prefills untouched fields).
+ */
+export function resolveLabTemplateVersion(
+  templateVersionId: number | null,
+  testType: LabTestType,
+): { template_id: number; template_version_id: number } | null {
+  if (templateVersionId === null) return null;
+  const row = getDb()
+    .prepare(
+      `SELECT v.id AS version_id, v.template_id, t.test_type, t.status, t.current_version_id
+       FROM lab_test_template_versions v
+       JOIN lab_test_templates t ON t.id = v.template_id
+       WHERE v.id = ?`,
+    )
+    .get(templateVersionId) as
+    | { version_id: number; template_id: number; test_type: string; status: string; current_version_id: number | null }
+    | undefined;
+  if (!row) return null;
+  if (row.test_type !== testType) return null;
+  if (row.status !== 'ACTIVE') return null;
+  if (row.current_version_id !== row.version_id) return null;
+  return { template_id: Number(row.template_id), template_version_id: Number(row.version_id) };
+}
+
 /** Normalized form input after Zod validation (labTestFormSchema). */
 export interface LabTestFormData {
   form_action: 'draft' | 'continue' | 'submit';
@@ -161,7 +192,11 @@ export interface LabTestCreateResult {
  * Drafts keep final_result NULL and status DRAFT; submissions freeze the
  * human-entered final result and move to SUBMITTED with submitted_at.
  */
-export function createLabTest(data: LabTestFormData & { product_id: number | null }, actorId: number, testType: LabTestType): LabTestCreateResult {
+export function createLabTest(
+  data: LabTestFormData & { product_id: number | null; template_id?: number | null; template_version_id?: number | null },
+  actorId: number,
+  testType: LabTestType,
+): LabTestCreateResult {
   const submit = data.form_action === 'submit';
   return transaction(() => {
     const db = getDb();
@@ -175,8 +210,9 @@ export function createLabTest(data: LabTestFormData & { product_id: number | nul
            test_number, test_type, product_id, equipment_id, lot_number, sampling_area,
            medium_used, connector_type, sample_count, actual_pressure, torque_in_lb,
            time_sec, angle, temperature_measured, remarks, final_result, status,
-           tested_by, created_by, submitted_at, parameters_snapshot_json
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? = 1 THEN datetime('now') ELSE NULL END, ?)`,
+           tested_by, created_by, submitted_at, parameters_snapshot_json,
+           template_id, template_version_id
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? = 1 THEN datetime('now') ELSE NULL END, ?, ?, ?)`,
       )
       .run(
         placeholder,
@@ -200,6 +236,8 @@ export function createLabTest(data: LabTestFormData & { product_id: number | nul
         actorId,
         submit ? 1 : 0,
         submit ? labParametersSnapshotJson() : null,
+        data.template_id ?? null,
+        data.template_version_id ?? null,
       );
     const id = Number(result.lastInsertRowid);
     const testNumber = `LAB-TEST-${String(id).padStart(5, '0')}`;
@@ -273,7 +311,20 @@ export async function handleLabTestFormPost(context: APIContext): Promise<Respon
   try {
     const data = parsed.data;
     const productId = resolveLabProductId(data.product_description);
-    const created = createLabTest({ ...data, product_id: productId }, user.id, testType);
+    // Template resolution is server-authoritative: the id from the body is only
+    // accepted when it names the approved current version of an ACTIVE
+    // template matching the query's test type.
+    const rawTemplateVersionId = form.get('template_version_id');
+    const templateVersionId =
+      rawTemplateVersionId !== null && rawTemplateVersionId !== '' && Number.isInteger(Number(rawTemplateVersionId)) && Number(rawTemplateVersionId) > 0
+        ? Number(rawTemplateVersionId)
+        : null;
+    const templateRef = resolveLabTemplateVersion(templateVersionId, testType);
+    const created = createLabTest(
+      { ...data, product_id: productId, template_id: templateRef?.template_id ?? null, template_version_id: templateRef?.template_version_id ?? null },
+      user.id,
+      testType,
+    );
     if (data.form_action === 'submit') {
       setFlash(context, 'success', `Test ${created.test_number} submitted for review.`);
       return context.redirect('/lab');

@@ -83,6 +83,8 @@ export interface LabTestSearchFilters {
   tester_id: number | null;
   equipment_id: number | null;
   product_id: number | null;
+  /** Test-template drill-down from /lab/templates (PROMPT 10). */
+  template_id: number | null;
   /** Lot Number (LIKE). */
   lot: string | null;
   /** Created preset — 'today' | 'week'. Normalized into from/to at parse time. */
@@ -104,6 +106,7 @@ export const NO_LAB_TEST_FILTERS: LabTestSearchFilters = {
   tester_id: null,
   equipment_id: null,
   product_id: null,
+  template_id: null,
   lot: null,
   created: null,
   created_from: null,
@@ -224,6 +227,13 @@ export function parseLabTestSearchFilters(url: URL, jar: CookieJar): LabTestSear
     else f.product_id = null;
   }
 
+  const template = sp.get('template');
+  if (template && template.trim() !== '') {
+    const id = positiveInt(template);
+    if (id !== null) f.template_id = id;
+    else f.template_id = null;
+  }
+
   const lot = sp.get('lot');
   if (lot && lot.trim() !== '') f.lot = lot.trim().slice(0, 200);
 
@@ -276,6 +286,7 @@ export function hasLabTestFilters(f: LabTestSearchFilters): boolean {
       f.tester_id !== null ||
       f.equipment_id !== null ||
       f.product_id !== null ||
+      f.template_id !== null ||
       f.lot ||
       f.created ||
       f.created_from ||
@@ -297,6 +308,7 @@ export function labTestFiltersToQuery(f: LabTestSearchFilters): string {
   if (f.tester_id !== null) sp.set('tester', String(f.tester_id));
   if (f.equipment_id !== null) sp.set('equipment', String(f.equipment_id));
   if (f.product_id !== null) sp.set('product', String(f.product_id));
+  if (f.template_id !== null) sp.set('template', String(f.template_id));
   if (f.lot) sp.set('lot', f.lot);
   if (f.created) sp.set('created', f.created);
   else {
@@ -360,6 +372,10 @@ export function buildLabTestWhere(f: LabTestSearchFilters): { sql: string; param
   if (f.product_id !== null) {
     conds.push('t.product_id = ?');
     params.push(f.product_id);
+  }
+  if (f.template_id !== null) {
+    conds.push('t.template_id = ?');
+    params.push(f.template_id);
   }
   if (f.lot) {
     conds.push("t.lot_number LIKE ? ESCAPE '\\'");

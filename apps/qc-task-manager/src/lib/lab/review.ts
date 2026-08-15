@@ -712,21 +712,39 @@ function writeLabTestSnapshots(
   }
 
   // ── Template snapshot (JSON on the record) ──
+  // Captures the version's reference configuration (default sample count +
+  // parameters) so the approved record reconstructs what the test was run
+  // against even if the template later moves to newer versions (§30/§65).
   const templateVersionId = row.template_version_id == null ? null : Number(row.template_version_id);
   if (templateVersionId !== null) {
     const tv = db
       .prepare(
-        `SELECT t.name, t.code, v.version, v.applicable_product_id
+        `SELECT t.name, t.code, v.version, v.applicable_product_id, v.default_sample_count, v.parameters_json
          FROM lab_test_template_versions v
          LEFT JOIN lab_test_templates t ON t.id = v.template_id
          WHERE v.id = ?`,
       )
       .get(templateVersionId) as
-      | { name: string | null; code: string | null; version: number | null; applicable_product_id: number | null }
+      | { name: string | null; code: string | null; version: number | null; applicable_product_id: number | null; default_sample_count: number | null; parameters_json: string | null }
       | undefined;
     if (tv) {
+      let parameters: Record<string, unknown> | null = null;
+      if (tv.parameters_json) {
+        try {
+          const parsed = JSON.parse(tv.parameters_json) as unknown;
+          if (parsed && typeof parsed === 'object') parameters = parsed as Record<string, unknown>;
+        } catch {
+          parameters = null;
+        }
+      }
       db.prepare('UPDATE lab_test_records SET template_snapshot_json = ? WHERE id = ?').run(
-        JSON.stringify({ template_name: tv.name, template_code: tv.code, version: tv.version }),
+        JSON.stringify({
+          template_name: tv.name,
+          template_code: tv.code,
+          version: tv.version,
+          default_sample_count: tv.default_sample_count,
+          ...(parameters ? { parameters } : {}),
+        }),
         testId,
       );
     }

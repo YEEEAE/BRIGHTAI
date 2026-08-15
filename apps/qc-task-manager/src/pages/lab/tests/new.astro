@@ -20,6 +20,7 @@ import LabTestForm from '../../../components/lab/LabTestForm';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import { listLabEquipmentForForm, listLabProductsForForm } from '../../../lib/lab/tests';
 import { listLabProductReferences } from '../../../lib/lab/products';
+import { listLabTemplateReferences } from '../../../lib/lab/templates';
 import {
   LAB_ACTUAL_PRESSURE_REFERENCE,
   LAB_ACCEPTANCE_CRITERIA,
@@ -52,10 +53,12 @@ let loadError: string | null = null;
 let equipment: ReturnType<typeof listLabEquipmentForForm> = [];
 let products: ReturnType<typeof listLabProductsForForm> = [];
 let productRefs: ReturnType<typeof listLabProductReferences> = [];
+let templateRefs: ReturnType<typeof listLabTemplateReferences> = [];
 try {
   equipment = listLabEquipmentForForm();
   products = listLabProductsForForm();
   productRefs = listLabProductReferences();
+  templateRefs = listLabTemplateReferences();
 } catch (err) {
   console.error('[lab] test form load failure', err);
   loadError = 'Could not load the equipment and product lists. Try reloading — if the problem persists, contact an administrator.';
@@ -111,6 +114,7 @@ const resultOptions = LAB_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RES
       products={products}
       productRefs={productRefs}
       connectorTypes={[...LAB_CONNECTOR_TYPES]}
+      templateRefs={templateRefs}
       resultOptions={resultOptions}
       reference={referenceValues}
       sampleCountMin={LAB_SAMPLE_COUNT_MIN}

@@ -508,6 +508,14 @@ CREATE TABLE IF NOT EXISTS lab_product_equipment (
   PRIMARY KEY (product_id, equipment_id)
 );
 
+-- Test Template ↔ Equipment link ("Equipment compatibility", by canonical id).
+CREATE TABLE IF NOT EXISTS lab_template_equipment (
+  template_id INTEGER NOT NULL REFERENCES lab_test_templates(id) ON DELETE CASCADE,
+  equipment_id INTEGER NOT NULL REFERENCES lab_equipment(id) ON DELETE CASCADE,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (template_id, equipment_id)
+);
+
 -- AIR/VACUUM test records. Measurement columns are TEXT (printed-form values,
 -- no invented unit semantics). Authorization identities and snapshots are
 -- written by the service layer; final_result stays NULL until a human decides.
@@ -523,6 +531,7 @@ CREATE TABLE IF NOT EXISTS lab_test_records (
   temperature_measured TEXT, remarks TEXT,
   final_result TEXT CHECK (final_result IN ('PASS','FAIL','HOLD')),
   status TEXT NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT','SUBMITTED','UNDER_REVIEW','REJECTED','APPROVED','VOID')),
+  template_id INTEGER REFERENCES lab_test_templates(id) ON DELETE RESTRICT,
   template_version_id INTEGER REFERENCES lab_test_template_versions(id) ON DELETE RESTRICT,
   sop_version_id INTEGER REFERENCES lab_document_versions(id) ON DELETE RESTRICT,
   wi_version_id INTEGER REFERENCES lab_document_versions(id) ON DELETE RESTRICT,
@@ -638,6 +647,7 @@ CREATE TABLE IF NOT EXISTS lab_saved_views (
 CREATE INDEX IF NOT EXISTS idx_lab_products_code ON lab_products(code);
 CREATE INDEX IF NOT EXISTS idx_lab_products_active ON lab_products(is_active);
 CREATE INDEX IF NOT EXISTS idx_lab_product_equipment_equipment ON lab_product_equipment(equipment_id);
+CREATE INDEX IF NOT EXISTS idx_lab_template_equipment_equipment ON lab_template_equipment(equipment_id);
 CREATE INDEX IF NOT EXISTS idx_lab_equipment_code ON lab_equipment(code);
 CREATE INDEX IF NOT EXISTS idx_lab_equipment_archived ON lab_equipment(is_archived);
 CREATE INDEX IF NOT EXISTS idx_lab_equip_maint_equipment ON lab_equipment_maintenance(equipment_id, maintenance_date);

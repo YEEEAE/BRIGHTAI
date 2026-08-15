@@ -1,0 +1,92 @@
+---
+// /lab/templates/new — create a test template (PROMPT 10).
+// Manager+ only (canCreateLabTemplate); the shared form component posts to
+// this same URL and the middleware short-circuits the POST. Version 1 is
+// created as a DRAFT with the printed reference defaults prefilled.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import LabTemplateForm from '../../../components/lab/LabTemplateForm.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import {
+  listLabDocumentsForTemplateForm,
+  listLabEquipmentForTemplateForm,
+  listLabProductsForTemplateForm,
+  parseTemplateParameters,
+} from '../../../lib/lab/templates';
+import { LAB_CONNECTOR_TYPES, labParametersSnapshotJson } from '../../../lib/lab/policy';
+import { canCreateLabTemplate } from '../../../lib/permissions';
+import type { Role } from '../../../lib/types';
+import { setFlash } from '../../../lib/flash';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canCreateLabTemplate(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to create test templates.');
+  return Astro.redirect('/lab/templates');
+}
+
+const navItems = labNavForRole(role);
+
+// Printed-form reference values (policy.ts) prefill the parameter fields.
+const defaultParameters = parseTemplateParameters(labParametersSnapshotJson());
+
+let loadError: string | null = null;
+let equipment: ReturnType<typeof listLabEquipmentForTemplateForm> = [];
+let products: ReturnType<typeof listLabProductsForTemplateForm> = [];
+let sops: ReturnType<typeof listLabDocumentsForTemplateForm> = [];
+let wis: ReturnType<typeof listLabDocumentsForTemplateForm> = [];
+try {
+  equipment = listLabEquipmentForTemplateForm();
+  products = listLabProductsForTemplateForm();
+  sops = listLabDocumentsForTemplateForm('SOP');
+  wis = listLabDocumentsForTemplateForm('WI');
+} catch (err) {
+  console.error('[lab] template form load failure', err);
+  loadError = 'Could not load the reference lists. Try reloading — if the problem persists, contact an administrator.';
+}
+---
+
+<BaseLayout title="New Test Template">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Test Templates', href: '/lab/templates' },
+        { label: 'New Template' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Test Template</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Create a versioned AIR/VACUUM template with reference parameters and test-form defaults. Version 1 starts as a
+        draft; approving it makes it the current version, and later edits create version 2 — approved versions are immutable.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/templates/new" />
+
+    {loadError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {loadError}
+      </div>
+    )}
+
+    {!loadError && (
+      <LabTemplateForm
+        mode="create"
+        parameters={defaultParameters}
+        products={products}
+        sops={sops}
+        wis={wis}
+        equipmentOptions={equipment}
+        connectorTypes={[...LAB_CONNECTOR_TYPES]}
+        selectedConnectorChoices={[...LAB_CONNECTOR_TYPES]}
+      />
+    )}
+  </div>
+</BaseLayout>

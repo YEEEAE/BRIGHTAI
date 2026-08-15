@@ -46,6 +46,7 @@ import labDocumentsMigrationSql from '../../db/migrations/013_lab_documents.sql?
 import labViewsMigrationSql from '../../db/migrations/014_lab_views.sql?raw';
 import labTestsRegisterIndexesSql from '../../db/migrations/015_lab_tests_register_indexes.sql?raw';
 import labProductEquipmentSql from '../../db/migrations/016_lab_product_equipment.sql?raw';
+import labTemplateEquipmentSql from '../../db/migrations/017_lab_template_equipment.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -112,6 +113,7 @@ const REQUIRED_TABLES = [
   'lab_equipment_calibration',
   'lab_products',
   'lab_product_equipment',
+  'lab_template_equipment',
   'lab_test_records',
   'lab_test_samples',
   'lab_test_retests',
@@ -174,6 +176,7 @@ const REQUIRED_INDEXES = [
   'idx_lab_products_code',
   'idx_lab_products_active',
   'idx_lab_product_equipment_equipment',
+  'idx_lab_template_equipment_equipment',
   'idx_lab_equipment_code',
   'idx_lab_equipment_archived',
   'idx_lab_equip_maint_equipment',
@@ -266,6 +269,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '014_lab_views.sql', source: labViewsMigrationSql },
       { file: '015_lab_tests_register_indexes.sql', source: labTestsRegisterIndexesSql },
       { file: '016_lab_product_equipment.sql', source: labProductEquipmentSql },
+      { file: '017_lab_template_equipment.sql', source: labTemplateEquipmentSql },
     ],
   });
   backfillAuditChain(db);

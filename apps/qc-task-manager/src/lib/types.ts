@@ -312,6 +312,13 @@ export interface LabProductEquipment {
   created_at: string;
 }
 
+/** One "Equipment compatibility" link on a test template (lab_template_equipment). */
+export interface LabTemplateEquipment {
+  template_id: number;
+  equipment_id: number;
+  created_at: string;
+}
+
 /** One AIR/VACUUM test record (lab_test_records). */
 export interface LabTestRecord {
   id: number;
@@ -332,6 +339,7 @@ export interface LabTestRecord {
   remarks: string | null;
   final_result: LabFinalResult | null;
   status: LabTestStatus;
+  template_id: number | null;
   template_version_id: number | null;
   sop_version_id: number | null;
   wi_version_id: number | null;

@@ -255,6 +255,9 @@ export function canEditLabTemplate(role: Role): boolean {
 export function canApproveLabTemplate(role: Role): boolean {
   return hasRankAtLeast(role, 'manager');
 }
+export function canArchiveLabTemplate(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
 
 // ── Lab equipment registry ──
 export function canViewLabEquipment(role: Role): boolean {

@@ -461,6 +461,96 @@ export const labProductSchema = z.object({
 });
 
 /**
+ * POST /lab/templates/new + /lab/templates/[id]/edit — Test Template form
+ * (PROMPT 10). `equipment_ids` (the "Equipment Compatibility" checkboxes)
+ * and `connector_choices` (repeated key per printed connector option) are NOT
+ * part of this schema: FormData repeats those keys, so the handler collects
+ * them from the raw form and the service re-validates existence/membership.
+ * The template id always comes from the matched path, never the body.
+ * Reference parameter strings are free-form display text (max 200 chars) —
+ * the printed defaults come from lab/policy.ts, but a template may carry the
+ * company-approved variant verbatim (never invented).
+ */
+export const labTemplateSchema = z.object({
+  name: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(1, 'Template Name is required.')
+      .max(LAB_SHORT_TEXT_MAX, `Template Name must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+  ),
+  code: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(1, 'Template Code is required.')
+      .max(60, 'Template Code must be 60 characters or fewer.')
+      .regex(/^[A-Za-z0-9][A-Za-z0-9._-]*$/, 'Template Code may only contain letters, numbers, _ . and -, and must start with a letter or number.'),
+  ),
+  test_type: z.preprocess(
+    (v) => (v == null || v === '' ? 'air' : v),
+    z.enum(['air', 'vacuum'], { errorMap: () => ({ message: 'Invalid test type.' }) }),
+  ),
+  default_sample_count: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Default sample count must be a number.' }) })
+      .int('Default sample count must be a whole number.')
+      .min(LAB_SAMPLE_COUNT_MIN, `Default sample count must be at least ${LAB_SAMPLE_COUNT_MIN}.`)
+      .max(LAB_SAMPLE_COUNT_MAX, `Default sample count must be at most ${LAB_SAMPLE_COUNT_MAX}.`)
+      .nullable(),
+  ),
+  standard_parameter: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(200, 'Standard Parameter must be 200 characters or fewer.').nullable(),
+  ),
+  acceptance_criteria: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(200, 'Acceptance Criteria must be 200 characters or fewer.').nullable(),
+  ),
+  holding_time: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(200, 'Holding Time must be 200 characters or fewer.').nullable(),
+  ),
+  actual_pressure_reference: z.preprocess(
+    (v) => (v === '' || v == null ? null : String(v).trim()),
+    z.string().max(200, 'Actual Pressure reference must be 200 characters or fewer.').nullable(),
+  ),
+  applicable_product_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid applicable product.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  applicable_equipment_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid primary equipment.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  sop_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid SOP document.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+  wi_id: z.preprocess(
+    (v) => (v === '' || v == null ? null : Number(v)),
+    z
+      .number({ errorMap: () => ({ message: 'Invalid WI document.' }) })
+      .int()
+      .positive()
+      .nullable(),
+  ),
+});
+
+/**
  * POST /api/filters — save or delete a per-user saved search filter.
  * `name` (save) and `filter_id` (delete) are optional per action; the schema
  * accepts both shapes and the handler validates per action. `next` is the
