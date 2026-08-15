@@ -55,6 +55,16 @@ const resultLabel = (v: unknown) => {
   const s = v == null ? '' : String(v);
   return s ? (LAB_RESULT_LABELS[s as (typeof LAB_RESULT_OPTIONS)[number]] ?? s) : '—';
 };
+const SAMPLE_STATUS_LABELS: Record<string, string> = {
+  PENDING: 'Pending',
+  TESTED: 'Tested',
+  APPROVED: 'Approved',
+  VOID: 'Void',
+};
+const sampleStatusLabel = (v: unknown) => {
+  const s = v == null ? '' : String(v);
+  return s ? (SAMPLE_STATUS_LABELS[s] ?? s) : '—';
+};
 const resultClass = result ? `result-${result.toLowerCase()}` : '';
 
 const PARAM_LABELS: Record<string, string> = {
@@ -174,6 +184,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                   <th>Pressure Diff.</th>
                   <th>Holding (Sec.)</th>
                   <th>Leakage Rate</th>
+                  <th>Status</th>
                   <th>Result</th>
                 </tr>
               </thead>
@@ -188,6 +199,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                     <td>{s.pressure_difference ?? '—'}</td>
                     <td>{s.holding_time_sec ?? '—'}</td>
                     <td>{s.leakage_rate ?? '—'}</td>
+                    <td>{sampleStatusLabel(s.status)}</td>
                     <td>{s.result ? resultLabel(s.result) : '—'}</td>
                   </tr>
                 ))}

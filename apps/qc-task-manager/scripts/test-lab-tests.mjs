@@ -367,6 +367,92 @@ try {
     eq(v3.relatedQuality.length, 1, 'load: related-quality carried into view');
   }
 
+  // ── 9. Sample-level traceability (migration 020) ──
+  console.log('\n■ sample traceability (identifier, status, freeze)');
+  {
+    const review = await import('../src/lib/lab/review.ts');
+    const baseForm = {
+      product_description: 'Seal Product',
+      connector_type: null,
+      sample_count: 3,
+      lot_number: 'LOT-T',
+      sampling_area: 'Bay 9',
+      equipment_id: equipmentId,
+      medium_used: null,
+      actual_pressure: null,
+      torque_in_lb: null,
+      time_sec: null,
+      angle: null,
+      temperature_measured: null,
+      remarks: null,
+      final_result: 'PASS',
+    };
+    const submitted = tests.createLabTest(
+      {
+        ...baseForm,
+        form_action: 'submit',
+        samples_json: [
+          { sample_no: 1, part_name: 'Body', set_pressure: null, actual_pressure: null, volume_sec: null, pressure_difference: null, holding_time_sec: null, leakage_rate: null, result: 'PASS' },
+          { sample_no: 2, part_name: 'Cap', set_pressure: null, actual_pressure: null, volume_sec: null, pressure_difference: null, holding_time_sec: null, leakage_rate: null, result: 'FAIL' },
+          { sample_no: 3, part_name: 'O-ring', set_pressure: null, actual_pressure: null, volume_sec: null, pressure_difference: null, holding_time_sec: null, leakage_rate: null, result: null },
+        ],
+      },
+      employeeId,
+      'air',
+    );
+    ok(submitted.test_number.startsWith('LAB-TEST-'), 'trace: test number format');
+    const samples = tests.listLabTestSamples(submitted.id);
+    eq(samples.length, 3, 'trace: 3 sample rows stored');
+    eq(samples[0].sample_identifier, `${submitted.test_number}-S01`, 'trace: S01 identifier format');
+    eq(samples[1].sample_identifier, `${submitted.test_number}-S02`, 'trace: S02 identifier format');
+    eq(samples[2].sample_identifier, `${submitted.test_number}-S03`, 'trace: S03 identifier format');
+    eq(samples[0].part_name, 'Body', 'trace: part name stored');
+    eq(samples[0].result, 'PASS', 'trace: per-sample result stored');
+    eq(samples[0].status, 'TESTED', 'trace: sample with result → TESTED');
+    eq(samples[2].status, 'PENDING', 'trace: sample without result → PENDING');
+
+    // Identifiers are immutable BEFORE approval too (trigger, migration 020).
+    let identifierBlocked = false;
+    try {
+      db.prepare('UPDATE lab_test_samples SET sample_identifier = ? WHERE test_id = ? AND sample_no = 1')
+        .run('FORGED-ID', submitted.id);
+    } catch {
+      identifierBlocked = true;
+    }
+    ok(identifierBlocked, 'trace: sample_identifier immutable (even pre-approval)');
+
+    // Approve via the real transition (manager, not the tester) → sample rows
+    // reach APPROVED in the same transaction.
+    review.transitionLabTest({ id: managerId, role: 'manager' }, 'approve', submitted.id, null);
+    const approvedSamples = tests.listLabTestSamples(submitted.id);
+    ok(approvedSamples.every((s) => s.status === 'APPROVED'), 'trace: all samples APPROVED after approval');
+    eq(approvedSamples[0].sample_identifier, `${submitted.test_number}-S01`, 'trace: identifier unchanged after approval');
+
+    // After approval the rows are frozen structurally: UPDATE and DELETE abort.
+    let updateBlocked = false;
+    try {
+      db.prepare("UPDATE lab_test_samples SET part_name = 'Tampered' WHERE test_id = ? AND sample_no = 1").run(submitted.id);
+    } catch {
+      updateBlocked = true;
+    }
+    ok(updateBlocked, 'trace: sample UPDATE frozen after approval');
+    let deleteBlocked = false;
+    try {
+      db.prepare('DELETE FROM lab_test_samples WHERE test_id = ? AND sample_no = 1').run(submitted.id);
+    } catch {
+      deleteBlocked = true;
+    }
+    ok(deleteBlocked, 'trace: sample DELETE frozen after approval');
+    eq(tests.listLabTestSamples(submitted.id).length, 3, 'trace: rows intact after blocked attempts');
+
+    // The test record is NOT duplicated: one canonical record, 3 sample rows.
+    eq(
+      Number(db.prepare('SELECT COUNT(*) AS n FROM lab_test_records WHERE id = ?').get(submitted.id).n),
+      1,
+      'trace: single canonical record (no duplication)',
+    );
+  }
+
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) {
     console.error(failures.map((f) => `  - ${f}`).join('\n'));

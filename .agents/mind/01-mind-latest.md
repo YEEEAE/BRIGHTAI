@@ -2,12 +2,22 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-15 08:15 +03:00
+last_updated: 2026-08-15 17:45 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.8.08
+version: 2.8.09
 agent_version: v2.3
 skills_ready: 7
 ---
+
+
+### 2026-08-15 — QC-LAB-SAMPLE-TRACE-001: تتبع على مستوى العينة — عمود status لكل عينة (migration 020) + إرساء بنيوي لاستقرار المعرفات وتجميد صفوف العينات بعد الاعتماد (triggers)
+
+- **Files**: `db/migrations/020_lab_sample_status.sql` (جديد — `ALTER TABLE lab_test_samples ADD COLUMN status TEXT NOT NULL DEFAULT 'PENDING' CHECK IN (PENDING/TESTED/APPROVED/VOID)` + backfill من الحالة المخزّنة (APPROVED للأصل المعتمد / VOID / TESTED عند وجود result / PENDING) + **ثلاثة triggers**: `lab_sample_identifier_immutable` (BEFORE UPDATE: تغيير sample_identifier يُلغى دائمًا — قبل الاعتماد وبعده) + `lab_sample_frozen_after_approval_update`/`_delete` (ABORT لأي UPDATE/DELETE على عينات اختبار حالته APPROVED أو VOID))، `src/lib/db.ts` (تسجيل 020)، `db/schema.sql` (مرآة العمود + الـ triggers)، `src/lib/types.ts` (+`LabSampleStatus` + حقل `status` في `LabTestSample` + توثيق immutable)، `src/lib/lab/tests.ts` (createLabTest يكتب status لكل عينة: TESTED عند وجود result وإلا PENDING)، `src/lib/lab/review.ts` (فرع approve: `UPDATE lab_test_samples SET status='APPROVED'` داخل نفس ترانزاكشن الاعتماد **قبل** قلب حالة السجل إلى APPROVED — الترتيب إلزامي لأن الـ trigger يجمّد العينات فور اعتماد الأصل)، `src/pages/lab/tests/[id].astro` + `[id]/print.astro` (عمود Status جديد بجدول Sample Results + `sampleStatusLabel`)، `scripts/test-lab-tests.mjs` (+قسم sample traceability — 16 فحصًا → **129**).
+- **What**: (1) **كل حقول التتبع المطلوبة مخزّنة لكل عينة** في `lab_test_samples`: test_id (العلاقة الكانونية — لا تكرار لسجل الاختبار أبدًا)، sample_no، sample_identifier (صيغة `LAB-TEST-%05d-SNN` مثل `LAB-TEST-00081-S03` — كان موجودًا ويتولد وقت الإنشاء)، part_name، result، والآن status. (2) **الاستقرار بعد الاعتماد صار بنيويًا مو بالعرف**: triggers تمنع تعديل/حذف صفوف العينات بمجرد اعتماد (أو إبطال) الأصل، وتمنع تغيير المعرف دائمًا — حتى SQL مباشر يُرفض. (3) **دورة حالة العينة**: PENDING → TESTED (تسجيل النتيجة وقت الإنشاء) → APPROVED (داخل ترانزاكشن الاعتماد) — VOID محجوز لمسار الإبطال القادم. (4) **إصلاحان لفحوص قديمة سابقة عند HEAD** (أثبتُّها بـ git stash على HEAD): test-lab-overview كان يتوقع `/lab/retests` معطّلًا وهو منفّذ من QC-LAB-RETESTS-001 (استُبدل بـ `/lab/reports`)، وtest-lab-retests كان يقفل النسخة عند 19 (صار `>= 19`).
+- **Decision (مهم للـ future agents)**: (1) **الترتيب داخل ترانزاكشن الاعتماد حرج**: تحديث حالة العينات يجب أن يسبق `UPDATE lab_test_records SET status='APPROVED'` وإلا أجهض الـ trigger — موثّق بتعليق في review.ts. (2) **immutable للمعرف دائمًا مو فقط بعد الاعتماد** — المعرف محتسب من test_number+sample_no اللذين لا يتغيران مشروعًا أبدًا، فالحظر الدائم أقوى ويطابق المواصفة. (3) **عمود status مخزّن** (PENDING/TESTED/APPROVED/VOID) مو مشتق — قرار مستخدم يناسب سجل الجودة؛ الفحص يؤكد الانتقال عبر الاعتماد الحقيقي (transitionLabTest) مو SQL مباشر. (4) لا مسار تعديل/حذف للعينات موجود في الكود أصلًا — الـ triggers حارس بنيوي ضد أي مسار مستقبلي.
+- **Verification**: `pnpm typecheck` → **0 errors / 0 warnings / 17 hints** ✅؛ `NODE_ENV=production pnpm build` → Server built ✅؛ **`pnpm test` كامل → exit 0** ويشمل **test:lab-tests 129 passed / 0 failed** (16 فحص تتبع جديدة: صيغة المعرفات S01/S02/S03، part_name/result لكل عينة، TESTED/PENDING، حظر تزوير المعرف قبل الاعتماد، APPROVED بعد الاعتماد الحقيقي، تجميد UPDATE/DELETE بعد الاعتماد، سلامة الصفوف، سجل واحد كنوني بلا تكرار) + migrations 20 ✅؛ `architecture-guard` → passed ✅؛ **e2e-lab-tests standalone** (سيرفر حي بقاعدة طازجة) → **78 passed / 0 failed** ✅؛ **e2e-lab-review standalone** → **44 passed / 0 failed** ✅.
+- **Notes**: لا commit ولا push — المستخدم يلتزم. رسالة مقترحة: `feat(lab): add per-sample traceability status + structural identifier stability and post-approval freeze (migration 020)`.
+- **Status**: delivered & verified محليًا (typecheck 0 errors + build + full test chain + architecture-guard + e2e-lab-tests 78/0 + e2e-lab-review 44/0).
 
 
 ### 2026-08-15 — QC-LAB-RETESTS-001: تنفيذ سير عمل الـ Retest المتحكَّم به كامل `/lab/retests` + `/lab/retests/[id]` (§46–§47 — إنشاء من اختبار موجود بحفظ الأصل والسبب والنتيجة والحالة الأصليتين + اختبار تنفيذ جديد + تدقيق كل إنشاء واكتمال)

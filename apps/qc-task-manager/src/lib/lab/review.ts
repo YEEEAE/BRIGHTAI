@@ -554,6 +554,14 @@ export function transitionLabTest(
       // Approval freezes the record + writes immutable historical snapshots in
       // the SAME transaction (§23). No silent mutation of approved data.
       writeLabTestSnapshots(db, testId, testNumber);
+      // Sample rows reach their terminal status BEFORE the record flips to
+      // APPROVED — migration 020 triggers freeze lab_test_samples entirely
+      // once the parent test is APPROVED, so this ordering is required.
+      db.prepare(
+        `UPDATE lab_test_samples
+         SET status = 'APPROVED', updated_at = ?
+         WHERE test_id = ? AND status <> 'APPROVED'`,
+      ).run(dbNow, testId);
       db.prepare(
         `UPDATE lab_test_records
          SET status = 'APPROVED', approved_by = ?, approved_at = ?, updated_at = ?

@@ -360,7 +360,10 @@ export interface LabTestRecord {
   updated_at: string;
 }
 
-/** One sample row of a test (lab_test_samples); sample_identifier is stable after approval. */
+/** Per-sample lifecycle (lab_test_samples.status, migration 020). */
+export type LabSampleStatus = 'PENDING' | 'TESTED' | 'APPROVED' | 'VOID';
+
+/** One sample row of a test (lab_test_samples); sample_identifier is immutable. */
 export interface LabTestSample {
   id: number;
   test_id: number;
@@ -374,6 +377,7 @@ export interface LabTestSample {
   holding_time_sec: string | null;
   leakage_rate: string | null;
   result: LabFinalResult | null;
+  status: LabSampleStatus;
   created_at: string;
   updated_at: string;
 }

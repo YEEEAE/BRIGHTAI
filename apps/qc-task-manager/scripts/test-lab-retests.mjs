@@ -128,7 +128,7 @@ try {
     ok(cols.includes('original_result'), 'lab_test_retests has original_result column');
     ok(cols.includes('original_status'), 'lab_test_retests has original_status column');
     const version = db.prepare('SELECT MAX(version) AS v FROM schema_migrations').get().v;
-    eq(version, 19, 'schema version is 19');
+    ok(version >= 19, 'schema version includes migration 019');
   }
 
   console.log('\n→ Permissions (D-5: supervisor+ create, all view)');

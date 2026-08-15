@@ -106,6 +106,17 @@ const resultLabel = (v: unknown) => {
   return s ? (LAB_RESULT_LABELS[s as (typeof LAB_RESULT_OPTIONS)[number]] ?? s) : '—';
 };
 
+const SAMPLE_STATUS_LABELS: Record<string, string> = {
+  PENDING: 'Pending',
+  TESTED: 'Tested',
+  APPROVED: 'Approved',
+  VOID: 'Void',
+};
+const sampleStatusLabel = (v: unknown) => {
+  const s = v == null ? '' : String(v);
+  return s ? (SAMPLE_STATUS_LABELS[s] ?? s) : '—';
+};
+
 function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, string]> {
   if (!snap) return [];
   return Object.entries(snap).map(([k, v]) => [k, v == null || v === '' ? '—' : String(v)]);
@@ -244,6 +255,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                     <th scope="col" class="px-3 py-2 font-semibold">Pressure Difference</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Holding Time (Sec.)</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Leakage Rate</th>
+                    <th scope="col" class="px-3 py-2 font-semibold">Status</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Result</th>
                   </tr>
                 </thead>
@@ -260,6 +272,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                         <td class="px-3 py-2 text-slate-700">{s.pressure_difference ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.holding_time_sec ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.leakage_rate ?? '—'}</td>
+                        <td class="px-3 py-2 text-slate-700">{sampleStatusLabel(s.status)}</td>
                         <td class={`px-3 py-2 font-semibold ${sr ? resultTone[sr] ?? 'text-slate-500' : 'text-slate-400'}`}>{sr ? resultLabel(sr) : '—'}</td>
                       </tr>
                     );

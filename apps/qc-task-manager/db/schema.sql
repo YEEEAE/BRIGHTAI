@@ -553,10 +553,33 @@ CREATE TABLE IF NOT EXISTS lab_test_samples (
   sample_identifier TEXT, part_name TEXT, set_pressure TEXT, actual_pressure TEXT,
   volume_sec TEXT, pressure_difference TEXT, holding_time_sec TEXT, leakage_rate TEXT,
   result TEXT CHECK (result IN ('PASS','FAIL','HOLD')),
+  status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING','TESTED','APPROVED','VOID')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   UNIQUE (test_id, sample_no)
 );
+-- Sample identifiers are immutable forever; approved/voided tests freeze the
+-- sample rows entirely (migration 020).
+CREATE TRIGGER IF NOT EXISTS lab_sample_identifier_immutable
+BEFORE UPDATE ON lab_test_samples
+WHEN OLD.sample_identifier IS NOT NEW.sample_identifier
+BEGIN
+  SELECT RAISE(ABORT, 'lab_test_samples.sample_identifier is immutable');
+END;
+CREATE TRIGGER IF NOT EXISTS lab_sample_frozen_after_approval_update
+BEFORE UPDATE ON lab_test_samples
+WHEN EXISTS (SELECT 1 FROM lab_test_records t
+             WHERE t.id = OLD.test_id AND t.status IN ('APPROVED','VOID'))
+BEGIN
+  SELECT RAISE(ABORT, 'lab_test_samples rows are frozen after test approval');
+END;
+CREATE TRIGGER IF NOT EXISTS lab_sample_frozen_after_approval_delete
+BEFORE DELETE ON lab_test_samples
+WHEN EXISTS (SELECT 1 FROM lab_test_records t
+             WHERE t.id = OLD.test_id AND t.status IN ('APPROVED','VOID'))
+BEGIN
+  SELECT RAISE(ABORT, 'lab_test_samples rows are frozen after test approval');
+END;
 CREATE TABLE IF NOT EXISTS lab_test_retests (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   retest_number TEXT NOT NULL UNIQUE,

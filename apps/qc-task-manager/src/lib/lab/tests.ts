@@ -247,8 +247,8 @@ export function createLabTest(
     const insertSample = db.prepare(
       `INSERT INTO lab_test_samples (
          test_id, sample_no, sample_identifier, part_name, set_pressure, actual_pressure,
-         volume_sec, pressure_difference, holding_time_sec, leakage_rate, result
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         volume_sec, pressure_difference, holding_time_sec, leakage_rate, result, status
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     );
     for (const row of rows) {
       insertSample.run(
@@ -263,6 +263,7 @@ export function createLabTest(
         row.holding_time_sec,
         row.leakage_rate,
         row.result,
+        row.result != null ? 'TESTED' : 'PENDING',
       );
     }
 
