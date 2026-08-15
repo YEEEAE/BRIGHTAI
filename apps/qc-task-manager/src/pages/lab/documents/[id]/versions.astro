@@ -167,6 +167,7 @@ const canCompare = versionRows.length >= 2;
                       <th scope="col" class="px-4 py-2.5 font-semibold">Approver</th>
                       <th scope="col" class="px-4 py-2.5 font-semibold">Approval Date</th>
                       <th scope="col" class="px-4 py-2.5 font-semibold">Change Summary</th>
+                      <th scope="col" class="px-4 py-2.5 font-semibold"><span class="sr-only">Actions</span></th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-slate-100">
@@ -180,6 +181,14 @@ const canCompare = versionRows.length >= 2;
                         <td class="px-4 py-2 whitespace-nowrap text-slate-700">{v.approver_name ?? '—'}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmtDate(v.approved_at)}</td>
                         <td class="px-4 py-2 text-slate-600">{v.change_summary ?? '—'}</td>
+                        <td class="px-4 py-2 whitespace-nowrap">
+                          <a
+                            href={`/lab/acknowledgements?version=${v.id}`}
+                            class="font-medium text-brand-600 hover:underline"
+                          >
+                            Acknowledgements
+                          </a>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

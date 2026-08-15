@@ -309,6 +309,11 @@ export function canArchiveLabDocument(role: Role): boolean {
 export function canAcknowledgeLabDocument(role: Role): boolean {
   return ALL_ROLES.includes(role);
 }
+/** Assigning employees to acknowledge a document version — supervisor+ bar, the
+ *  same level as document creation/editing (only APPROVED versions assignable). */
+export function canAssignLabDocumentAcknowledgement(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
 
 // ── Retests (D-5: originals never overwritten; supervisor+ may create) ──
 export function canViewLabRetests(role: Role): boolean {

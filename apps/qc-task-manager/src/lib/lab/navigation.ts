@@ -20,6 +20,7 @@ import {
   canReviewLabTest,
   canViewLab,
   canViewLabCalibration,
+  canViewLabDocuments,
   canViewLabDataQuality,
   canViewLabManagementDashboard,
   canViewLabReports,
@@ -72,6 +73,7 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
   // Controlled Documents
   { href: '/lab/documents', label: 'SOP / WI Documents', group: 'Controlled Documents', allowed: canViewLab },
   { href: '/lab/documents/new', label: 'New Document', group: 'Controlled Documents', allowed: canCreateLabDocument },
+  { href: '/lab/acknowledgements', label: 'Acknowledgements', group: 'Controlled Documents', allowed: canViewLabDocuments },
   // Operations
   { href: '/lab/reports', label: 'Reports', group: 'Operations', allowed: canViewLabReports },
   { href: '/lab/data-quality', label: 'Data Quality', group: 'Operations', allowed: canViewLabDataQuality },
@@ -110,6 +112,8 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/documents/new',
   '/lab/documents/[id]/edit',
   '/lab/documents/[id]/versions',
+  '/lab/acknowledgements',
+  '/lab/acknowledgements/assign',
 ];
 
 /**

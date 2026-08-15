@@ -1125,6 +1125,17 @@ export const labRetestSchema = z
   .strict();
 
 /**
+ * POST /lab/acknowledgements/assign — assign a document version to employees
+ * for acknowledgement. `user_ids` (the repeated FormData key per checked
+ * employee) is NOT part of this schema: FormData repeats that key per
+ * checkbox, so the handler collects it from the raw form and the service
+ * re-validates membership + active-user status (same pattern as the
+ * equipment_ids checkboxes on the document/product forms). The version id
+ * always comes from the URL query, never the body.
+ */
+export const labAcknowledgementAssignSchema = z.object({});
+
+/**
  * Lab test ↔ QC Finding link (PROMPT 20). The finding id comes from the form
  * body and must be a positive integer; the note is free-form but bounded.
  * The SAME schema validates both link and unlink POSTs (unlink ignores the

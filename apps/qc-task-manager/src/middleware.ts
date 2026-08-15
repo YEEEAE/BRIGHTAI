@@ -39,6 +39,7 @@ import { handleLabCalibrationCreatePost, handleLabCalibrationEditPost } from './
 import { handleLabRetestCreatePost } from './lib/lab/retests';
 import { handleLabTestFindingLinkPost, handleLabTestFindingUnlinkPost } from './lib/lab/findingLinks';
 import { handleLabDocumentCreatePost, handleLabDocumentEditPost } from './lib/lab/documents';
+import { handleLabAcknowledgementAssignPost, handleLabAcknowledgementPost } from './lib/lab/acknowledgements';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
@@ -268,6 +269,23 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     const documentEdit = pathname.match(/^\/lab\/documents\/(\d+)\/edit$/);
     if (documentEdit) {
       return handleLabDocumentEditPost(context, Number(documentEdit[1]));
+    }
+  }
+
+  // POST /lab/acknowledgements/assign?version=<id> — assign a document version
+  // to employees (supervisor+). The version id comes from the URL query only
+  // (never the body); the employee ids arrive as repeated `user_ids` fields.
+  if (context.request.method === 'POST' && pathname === '/lab/acknowledgements/assign') {
+    const versionParam = context.url.searchParams.get('version');
+    const versionId = versionParam !== null && /^\d+$/.test(versionParam) ? Number(versionParam) : null;
+    return handleLabAcknowledgementAssignPost(context, versionId);
+  }
+  // POST /lab/acknowledgements/[id]/acknowledge — the assigned employee
+  // acknowledges their own pending row (all roles, self-scoped).
+  if (context.request.method === 'POST') {
+    const acknowledgement = pathname.match(/^\/lab\/acknowledgements\/(\d+)\/acknowledge$/);
+    if (acknowledgement) {
+      return handleLabAcknowledgementPost(context, Number(acknowledgement[1]));
     }
   }
 

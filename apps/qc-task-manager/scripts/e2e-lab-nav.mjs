@@ -103,6 +103,7 @@ for (const roleCase of roleCases) {
     href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' ||
     href === '/lab/products' || href === '/lab/products/new' || href === '/lab/templates' || href === '/lab/equipment' ||
     href === '/lab/calibration' || href === '/lab/documents' || href === '/lab/documents/new' || // Document editor (PROMPT 41)
+    href === '/lab/acknowledgements' || // Acknowledgement register (LAB_DOCUMENT_ACKNOWLEDGE)
     href === '/lab/retests', // Retest register (§46, supervisor+ nav entry)
   ), `${roleCase.username}: no dead links in secondary nav`);
 
@@ -145,6 +146,7 @@ for (const roleCase of roleCases) {
     href.startsWith('/lab/documents?') || // live review=due drill-down
     href === '/lab/documents/new' || // Document editor (PROMPT 41)
     href.startsWith('/lab/documents/new?type=') || // live New SOP / New WI quick actions
+    href === '/lab/acknowledgements' || // Acknowledgement register (LAB_DOCUMENT_ACKNOWLEDGE)
     href === '/lab/retests' || // Retest register module (§46)
     href.startsWith('/lab/retests?') || // live open-retests KPI drill-down
     href === '/lab/retests/new' || // Create Retest from a dispositioned test
