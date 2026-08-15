@@ -80,14 +80,22 @@ try {
       </>
     ) : (
       <>
-        <header>
-          <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
-          <h1 class="mt-1 text-3xl font-semibold text-slate-900">Edit Document · <span dir="ltr">{editor.document.code}</span></h1>
-          <p class="mt-1 max-w-3xl text-sm text-slate-600">
-            {editor.document.title} — current version{' '}
-            <strong dir="ltr">v{editor.version?.version ?? 1}</strong> ({editor.version?.status ?? 'DRAFT'}). Every save is
-            audited; approved versions are immutable and revising one opens a new draft version.
-          </p>
+        <header class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
+            <h1 class="mt-1 text-3xl font-semibold text-slate-900">Edit Document · <span dir="ltr">{editor.document.code}</span></h1>
+            <p class="mt-1 max-w-3xl text-sm text-slate-600">
+              {editor.document.title} — current version{' '}
+              <strong dir="ltr">v{editor.version?.version ?? 1}</strong> ({editor.version?.status ?? 'DRAFT'}). Every save is
+              audited; approved versions are immutable and revising one opens a new draft version.
+            </p>
+          </div>
+          <a
+            href={`/lab/documents/${editor.document.id}/versions`}
+            class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+          >
+            Version History
+          </a>
         </header>
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/documents/${editor.document.id}/edit`} />

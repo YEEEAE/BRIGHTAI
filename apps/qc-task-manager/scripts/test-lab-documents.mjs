@@ -618,6 +618,115 @@ try {
     // Employee can never edit.
     eq(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, otherDoc), false, 'RBAC: employee never edits docs');
   }
+
+  // ── Version history (/lab/documents/[id]/versions) ──
+  console.log('■ Version history');
+  {
+    const managerName = String(db.prepare("SELECT full_name FROM users WHERE username='manager'").get().full_name);
+    const supervisorName = String(db.prepare("SELECT full_name FROM users WHERE username='supervisor'").get().full_name);
+
+    // Build a document with three versions: v1 APPROVED (reviewed + approved
+    // with timestamps), v2 SUPERSEDED (no review metadata), v3 APPROVED.
+    const vh = db
+      .prepare(
+        `INSERT INTO lab_documents (code, title, type, owner_id, status, created_by)
+         VALUES (?, ?, 'SOP', ?, 'APPROVED', ?)`,
+      )
+      .run('SOP-VH-001', 'Version History Fixture', managerId, managerId);
+    const vhDocId = Number(vh.lastInsertRowid);
+    const insertVersion = (version, status, opts = {}) => {
+      const r = db
+        .prepare(
+          `INSERT INTO lab_document_versions
+             (document_id, version, content_md, content_html_sanitized, change_summary, author_id,
+              reviewed_by, reviewed_at, approved_by, approved_at, status)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .run(
+          vhDocId,
+          version,
+          opts.content ?? `# v${version} content`,
+          opts.html ?? null,
+          opts.summary ?? `Change summary for v${version}.`,
+          opts.authorId ?? managerId,
+          opts.reviewedBy ?? null,
+          opts.reviewedAt ?? null,
+          opts.approvedBy ?? null,
+          opts.approvedAt ?? null,
+          status,
+        );
+      return Number(r.lastInsertRowid);
+    };
+    const v1Id = insertVersion(1, 'APPROVED', {
+      content: '# v1 content',
+      html: '<h2>v1 cached html</h2>',
+      summary: 'Initial approved release.',
+      reviewedBy: supervisorId,
+      reviewedAt: '2026-01-10 09:00:00',
+      approvedBy: managerId,
+      approvedAt: '2026-01-12 09:00:00',
+    });
+    const v2Id = insertVersion(2, 'SUPERSEDED', {
+      content: '# v2 content',
+      summary: 'Superseded by v3.',
+      authorId: supervisorId,
+    });
+    const v3Id = insertVersion(3, 'APPROVED', {
+      content: '# v3 content',
+      html: '<h2>v3 cached html</h2>',
+      summary: 'Approved after review.',
+      reviewedBy: supervisorId,
+      reviewedAt: '2026-01-18 09:00:00',
+      approvedBy: managerId,
+      approvedAt: '2026-01-20 09:00:00',
+    });
+    db.prepare('UPDATE lab_documents SET current_version_id = ? WHERE id = ?').run(v3Id, vhDocId);
+
+    const view = docs.getLabDocumentVersions(vhDocId);
+    ok(view !== null, 'versions: document loads');
+    eq(view.document.code, 'SOP-VH-001', 'versions: document identity joined');
+    eq(view.versions.length, 3, 'versions: three rows');
+
+    eq(view.versions[0].id, v3Id, 'versions: ordered version DESC (v3 first)');
+    eq(view.versions[1].id, v2Id, 'versions: v2 second');
+    eq(view.versions[2].id, v1Id, 'versions: v1 last');
+
+    const v3 = view.versions[0];
+    eq(v3.status, 'APPROVED', 'versions: status exposed');
+    eq(v3.author_name, managerName, 'versions: author name joined');
+    eq(v3.reviewer_name, supervisorName, 'versions: reviewer name joined');
+    eq(v3.approver_name, managerName, 'versions: approver name joined');
+    eq(String(v3.approved_at).slice(0, 10), '2026-01-20', 'versions: approval date exposed');
+    ok(Boolean(v3.created_at), 'versions: created date exposed');
+    eq(v3.change_summary, 'Approved after review.', 'versions: change summary exposed');
+
+    const v2 = view.versions[1];
+    eq(v2.author_name, supervisorName, 'versions: v2 author is the supervisor');
+    eq(v2.reviewer_name, null, 'versions: unreviewed version → reviewer null');
+    eq(v2.approver_name, null, 'versions: unreviewed version → approver null');
+    eq(v2.approved_at, null, 'versions: unreviewed version → approval date null');
+
+    eq(docs.getLabDocumentVersions(0), null, 'versions: id 0 rejected');
+    eq(docs.getLabDocumentVersions(-3), null, 'versions: negative id rejected');
+    eq(docs.getLabDocumentVersions(999999), null, 'versions: missing doc → null');
+
+    const v3Content = docs.getLabDocumentVersionContent(vhDocId, v3Id);
+    ok(v3Content !== null, 'versions: content loads for cached version');
+    eq(v3Content.version.id, v3Id, 'versions: content version identity');
+    eq(v3Content.html, '<h2>v3 cached html</h2>', 'versions: sanitized cache preferred');
+
+    const v2Content = docs.getLabDocumentVersionContent(vhDocId, v2Id);
+    ok(v2Content !== null, 'versions: content loads for uncached version');
+    ok(v2Content.html.includes('<h2>v2 content</h2>'), 'versions: markdown fallback renders sanitized html');
+
+    eq(docs.getLabDocumentVersionContent(vhDocId, 999999), null, 'versions: foreign version id rejected');
+    eq(docs.getLabDocumentVersionContent(vhDocId, 0), null, 'versions: version id 0 rejected');
+    const otherId = docs.createLabDocument(
+      { type: 'WI', code: 'WI-VH-500', title: 'Other', description: null, product_id: null, owner_id: null, effective_date: null, review_due_date: null, change_summary: 'Initial.', content: 'x', equipment_ids: [] },
+      managerId,
+    );
+    eq(docs.getLabDocumentVersionContent(otherId, v1Id), null, 'versions: cross-document access rejected');
+  }
 } catch (err) {
   console.error(err);
   process.exitCode = 1;

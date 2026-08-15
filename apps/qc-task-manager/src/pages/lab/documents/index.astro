@@ -305,16 +305,24 @@ function fmt(value: unknown): string {
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.review_due_date)}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-500" dir="ltr">{r.updated_at.slice(0, 10)}</td>
                       <td class="px-4 py-2">
-                        {canEditLabDocumentRecord({ id: user.userId, role }, r) ? (
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
                           <a
-                            href={`/lab/documents/${r.id}/edit`}
+                            href={`/lab/documents/${r.id}/versions`}
                             class="font-medium text-brand-600 hover:underline"
                           >
-                            Edit
+                            Versions
                           </a>
-                        ) : (
-                          <span class="text-slate-400" title="Document details coming with the reader module">View</span>
-                        )}
+                          {canEditLabDocumentRecord({ id: user.userId, role }, r) ? (
+                            <a
+                              href={`/lab/documents/${r.id}/edit`}
+                              class="font-medium text-brand-600 hover:underline"
+                            >
+                              Edit
+                            </a>
+                          ) : (
+                            <span class="text-slate-400" title="Document details coming with the reader module">View</span>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}

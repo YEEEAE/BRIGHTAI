@@ -106,6 +106,7 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/documents',
   '/lab/documents/new',
   '/lab/documents/[id]/edit',
+  '/lab/documents/[id]/versions',
 ];
 
 /**

@@ -649,6 +649,85 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actorId
   });
 }
 
+// ─────────────────────────────── Version history (/lab/documents/[id]/versions) ───────────────────────────────
+
+/** One version row for the version-history table (joined author/reviewer/approver names). */
+export interface LabDocumentVersionRow {
+  id: number;
+  version: number;
+  status: LabDocumentStatus;
+  change_summary: string | null;
+  created_at: string;
+  author_id: number;
+  author_name: string | null;
+  reviewed_by: number | null;
+  reviewer_name: string | null;
+  approved_by: number | null;
+  approver_name: string | null;
+  approved_at: string | null;
+}
+
+/** Version-history page view: document identity + versions newest-first. */
+export interface LabDocumentVersionsView {
+  document: LabDocument & { owner_name: string | null; created_by_name: string | null };
+  versions: LabDocumentVersionRow[];
+}
+
+/**
+ * Load the version-history view for one document. Returns null for a missing or
+ * invalid id. Approved versions are immutable (contract §41/§42/§44), so this
+ * page is strictly read-only — every column is a stored value or a user join.
+ */
+export function getLabDocumentVersions(id: number): LabDocumentVersionsView | null {
+  if (!Number.isInteger(id) || id <= 0) return null;
+  const db = getDb();
+  const document = db
+    .prepare(
+      `SELECT d.*,
+              (SELECT full_name FROM users u WHERE u.id = d.owner_id) AS owner_name,
+              (SELECT full_name FROM users u WHERE u.id = d.created_by) AS created_by_name
+       FROM lab_documents d WHERE d.id = ?`,
+    )
+    .get(id) as (LabDocument & { owner_name: string | null; created_by_name: string | null }) | undefined;
+  if (!document) return null;
+  const versions = db
+    .prepare(
+      `SELECT v.id, v.version, v.status, v.change_summary, v.created_at,
+              v.author_id, au.full_name AS author_name,
+              v.reviewed_by, ru.full_name AS reviewer_name,
+              v.approved_by, pr.full_name AS approver_name,
+              v.approved_at
+       FROM lab_document_versions v
+       LEFT JOIN users au ON au.id = v.author_id
+       LEFT JOIN users ru ON ru.id = v.reviewed_by
+       LEFT JOIN users pr ON pr.id = v.approved_by
+       WHERE v.document_id = ?
+       ORDER BY v.version DESC, v.id DESC`,
+    )
+    .all(id) as LabDocumentVersionRow[];
+  return { document, versions };
+}
+
+/**
+ * Load one version's stored sanitized HTML for the read-only comparison panes.
+ * Returns null when the version does not belong to the document. The stored
+ * content_html_sanitized cache is preferred; when absent (older rows), the
+ * markdown is re-rendered through the same escape-only renderer used at write
+ * time, so injected HTML is never passed through.
+ */
+export function getLabDocumentVersionContent(
+  documentId: number,
+  versionId: number,
+): { version: LabDocumentVersion; html: string } | null {
+  if (!Number.isInteger(documentId) || documentId <= 0 || !Number.isInteger(versionId) || versionId <= 0) return null;
+  const version = getDb()
+    .prepare('SELECT * FROM lab_document_versions WHERE id = ? AND document_id = ?')
+    .get(versionId, documentId) as LabDocumentVersion | undefined;
+  if (!version) return null;
+  const html = version.content_html_sanitized ?? renderDocumentContent(version.content_md);
+  return { version, html };
+}
+
 // ─────────────────────────────── POST handlers ───────────────────────────────
 
 /**

@@ -18,6 +18,10 @@
 //   F. Sorting: clicking a column header re-sorts (code asc/desc cycle).
 //   G. Pagination: per=2 over 3+ rows renders Prev/Next + page numbers.
 //   H. No horizontal overflow on the register at 1440 / 390.
+//   I. Version history (/lab/documents/[id]/versions): auth wall, view-only
+//      access for every role, the eight metadata columns, read-only side-by-side
+//      comparison (GET ?a=<id>&b=<id>), invalid/foreign/identical id rejection,
+//      and no horizontal overflow at 1440 / 390.
 //
 // Usage (from the app directory, via e2e-acceptance.mjs):
 //   QC_DATABASE_PATH=<db> PORT=<port> BASE_URL=http://127.0.0.1:<port> \
@@ -193,9 +197,10 @@ let manager;
   // /lab/documents/… links on this page = New Document header action (1) +
   // New Document secondary-nav entry (1) + a per-row Edit link for each
   // editable record (manager may edit every non-archived / non-superseded
-  // document → APPROVED + DRAFT = 2; ARCHIVED has none) = 4. No detail-page
-  // (/lab/documents/[id]) links exist yet — the reader lands later.
-  eq_(await manager.locator('main a[href^="/lab/documents/"]').count(), 4, 'register: 2× New Document + 2 editable-row Edit links');
+  // document → APPROVED + DRAFT = 2; ARCHIVED has none) + a per-row Versions
+  // link for every row (3, view-level) = 7. No detail-page (/lab/documents/[id])
+  // links exist yet — the reader lands later.
+  eq_(await manager.locator('main a[href^="/lab/documents/"]').count(), 7, 'register: 2× New Document + 2 editable-row Edit + 3 row Versions links');
 }
 
 // ── D. Filters ──
@@ -316,6 +321,110 @@ let manager;
   await manager.setViewportSize({ width: 390, height: 844 });
   const overflow390 = await manager.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   ok(!overflow390, 'register: no horizontal overflow at 390px');
+}
+
+// ── I. Version history + read-only compare (/lab/documents/[id]/versions) ──
+// Inserted after the register scenarios so the earlier link-count / pagination
+// assertions are untouched. Two versions of one document: v1 APPROVED (with
+// review + approval metadata and distinct stored HTML) and v2 DRAFT.
+{
+  const vr = db
+    .prepare(
+      `INSERT INTO lab_documents (code, title, type, owner_id, status, created_by, created_at, updated_at)
+       VALUES ('E2E-VERSIONS', 'E2E Versioned Procedure', 'SOP', ?, 'APPROVED', ?, '2026-02-01 09:00:00', '2026-02-01 09:00:00')`,
+    )
+    .run(managerId, managerId);
+  const versionedDocId = Number(vr.lastInsertRowid);
+  const v1 = db
+    .prepare(
+      `INSERT INTO lab_document_versions
+         (document_id, version, content_md, content_html_sanitized, change_summary, author_id,
+          reviewed_by, reviewed_at, approved_by, approved_at, status)
+       VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, 'APPROVED')`,
+    )
+    .run(
+      versionedDocId,
+      '# Step 1\n\nOriginal procedure text for version one.',
+      '<h2>Step 1</h2><p>Original procedure text for version one.</p>',
+      'Initial approved version.',
+      managerId,
+      supervisorId,
+      '2026-02-02 09:00:00',
+      managerId,
+      '2026-02-03 09:00:00',
+    );
+  const v1Id = Number(v1.lastInsertRowid);
+  const v2 = db
+    .prepare(
+      `INSERT INTO lab_document_versions
+         (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
+       VALUES (?, 2, ?, ?, ?, ?, 'DRAFT')`,
+    )
+    .run(
+      versionedDocId,
+      '# Step 1 (revised)\n\nUpdated procedure text for version two.',
+      '<h2>Step 1 (revised)</h2><p>Updated procedure text for version two.</p>',
+      'Revised per audit finding.',
+      supervisorId,
+    );
+  const v2Id = Number(v2.lastInsertRowid);
+  db.prepare('UPDATE lab_documents SET current_version_id = ?, status = ? WHERE id = ?').run(v2Id, 'DRAFT', versionedDocId);
+
+  // Auth wall (same as the register).
+  const ctx = await browser.newContext();
+  const authRes = await ctx.request.get(`${BASE}/lab/documents/${versionedDocId}/versions`, { maxRedirects: 0 });
+  ok(authRes.status() === 302 && (authRes.headers().location ?? '').startsWith('/login'), 'versions: anonymous → login redirect');
+  await ctx.close();
+
+  // All roles may view (LAB_DOCUMENT_VIEW). Using the least-privileged role
+  // (employee) proves the full history + compare are correctly view-scoped.
+  const emp = await browser.newPage();
+  await login(emp, 'employee');
+  const vres = await emp.goto(`${BASE}/lab/documents/${versionedDocId}/versions`, { waitUntil: 'domcontentloaded' });
+  ok(vres.status() === 200, 'versions: employee (view-only role) → 200');
+  const body = await emp.locator('main').innerText();
+  ok(body.includes('Version History') && body.includes('E2E-VERSIONS'), 'versions: header + document code rendered');
+  ok(body.includes('v2') && body.includes('v1'), 'versions: both version rows rendered');
+  ok(body.includes('Initial approved version.') && body.includes('Revised per audit finding.'), 'versions: change summaries rendered');
+  ok(body.includes('Team Supervisor'), 'versions: author/reviewer names joined');
+  ok(body.includes('Department Manager'), 'versions: approver name joined');
+  ok(body.includes('2026-02-03'), 'versions: approval date rendered');
+  ok(body.includes('Draft') && body.includes('Approved'), 'versions: status badges rendered');
+
+  // Read-only compare: two stored contents render side by side.
+  await emp.goto(`${BASE}/lab/documents/${versionedDocId}/versions?a=${v1Id}&b=${v2Id}`, { waitUntil: 'domcontentloaded' });
+  let cmpBody = await emp.locator('main').innerText();
+  ok(cmpBody.includes('Original procedure text for version one.'), 'compare: version A content rendered');
+  ok(cmpBody.includes('Updated procedure text for version two.'), 'compare: version B content rendered');
+  ok(cmpBody.includes('Comparing'), 'compare: comparison summary label rendered');
+  eq_(await emp.locator('main form[method="post"]').count(), 0, 'compare: no POST form (read-only)');
+  const v2After = db.prepare('SELECT content_md FROM lab_document_versions WHERE id = ?').get(v2Id);
+  ok(String(v2After.content_md).includes('Updated procedure text'), 'compare: stored content unchanged after viewing');
+
+  // Selects are pre-selected to the active compare ids.
+  eq_(await emp.locator('main select[name="a"] option[selected]').getAttribute('value'), String(v1Id), 'compare: Version A select pre-selected');
+  eq_(await emp.locator('main select[name="b"] option[selected]').getAttribute('value'), String(v2Id), 'compare: Version B select pre-selected');
+
+  // Invalid / foreign / identical ids never render comparison panes.
+  await emp.goto(`${BASE}/lab/documents/${versionedDocId}/versions?a=${v1Id}&b=999999`, { waitUntil: 'domcontentloaded' });
+  cmpBody = await emp.locator('main').innerText();
+  ok(!cmpBody.includes('Original procedure text for version one.'), 'compare: foreign version id → no panes');
+  await emp.goto(`${BASE}/lab/documents/${versionedDocId}/versions?a=${v1Id}&b=${v1Id}`, { waitUntil: 'domcontentloaded' });
+  cmpBody = await emp.locator('main').innerText();
+  ok(!cmpBody.includes('Original procedure text for version one.'), 'compare: identical ids → no panes');
+
+  // No horizontal overflow on the history table and the compare panes.
+  await emp.setViewportSize({ width: 1440, height: 900 });
+  await emp.goto(`${BASE}/lab/documents/${versionedDocId}/versions`, { waitUntil: 'domcontentloaded' });
+  ok(!(await emp.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)), 'versions: no horizontal overflow at 1440px');
+  await emp.setViewportSize({ width: 390, height: 844 });
+  await emp.goto(`${BASE}/lab/documents/${versionedDocId}/versions?a=${v1Id}&b=${v2Id}`, { waitUntil: 'domcontentloaded' });
+  ok(!(await emp.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)), 'versions: no horizontal overflow at 390px (with compare)');
+  await emp.close();
+
+  // Breadcrumb does not link to the (not-yet-implemented) reader page.
+  await manager.goto(`${BASE}/lab/documents/${versionedDocId}/versions`, { waitUntil: 'domcontentloaded' });
+  eq_(await manager.locator('nav[aria-label="Breadcrumb"] a', { hasText: 'E2E-VERSIONS' }).count(), 0, 'versions: code crumb is not a dead link');
 }
 
 // Cleanup fixtures (leave the shared DB tidy for later suites).
