@@ -87,7 +87,7 @@ for (const roleCase of roleCases) {
   ok(mobileLinks > 0, `${roleCase.username}: mobile menu shows the Laboratory link`);
 
   // Secondary nav: only implemented routes are linked (today: /lab, /lab/tests,
-  // /lab/tests/new, /lab/equipment, /lab/calibration — all live now).
+  // /lab/tests/new, /lab/equipment, /lab/calibration, /lab/documents — all live now).
   const secondary = page.locator('nav[aria-label="Laboratory sections"] a');
   const secondaryHrefs = await secondary.evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
   ok(secondaryHrefs.includes('/lab'), `${roleCase.username}: secondary nav shows the command center`);
@@ -95,10 +95,11 @@ for (const roleCase of roleCases) {
   ok(secondaryHrefs.includes('/lab/tests/new'), `${roleCase.username}: secondary nav shows the new-test link`);
   ok(secondaryHrefs.includes('/lab/equipment'), `${roleCase.username}: secondary nav shows the equipment registry`);
   ok(secondaryHrefs.includes('/lab/calibration'), `${roleCase.username}: secondary nav shows the calibration register`);
+  ok(secondaryHrefs.includes('/lab/documents'), `${roleCase.username}: secondary nav shows the document library`);
   ok(secondaryHrefs.every((href) =>
     href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' ||
     href === '/lab/products' || href === '/lab/products/new' || href === '/lab/templates' || href === '/lab/equipment' ||
-    href === '/lab/calibration',
+    href === '/lab/calibration' || href === '/lab/documents',
   ), `${roleCase.username}: no dead links in secondary nav`);
 
   // Command center (PROMPT 04): KPI cards render from real queries, and the
@@ -117,8 +118,9 @@ for (const roleCase of roleCases) {
   // register + its details page now exist, so test KPI drill-downs and the
   // per-row View links are live (/lab/tests?, /lab/tests/<id>); New Test links
   // to the live form (?type=air|vacuum); the calibration KPI drill-down is now
-  // live too (/lab/calibration, /lab/calibration?due=1). Everything else stays
-  // disabled.
+  // live too (/lab/calibration, /lab/calibration?due=1). The document-library
+  // KPI drill-down is live as well (/lab/documents, /lab/documents?review=due).
+  // Everything else stays disabled.
   const mainHrefs = await page.locator('main a[href^="/lab/"]').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
   ok(mainHrefs.every((href) =>
     href === '/lab' ||
@@ -135,6 +137,8 @@ for (const roleCase of roleCases) {
     href.startsWith('/lab/tests?') ||
     href === '/lab/calibration' || // Calibration Register module (§37)
     href.startsWith('/lab/calibration?') || // live due=1 drill-down
+    href === '/lab/documents' || // SOP/WI Library register (§39)
+    href.startsWith('/lab/documents?') || // live review=due drill-down
     /^\/lab\/tests\/\d+$/.test(href), // live per-row View links
   ), `${roleCase.username}: no drill-down links to unimplemented routes`);
   const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();

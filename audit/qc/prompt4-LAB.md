@@ -37,7 +37,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 12
 - [✅] Prompt 13
 - [✅] Prompt 14
-- [ ] Prompt 15
+- [✅] Prompt 15
 - [ ] Prompt 16
 - [ ] Prompt 17
 - [ ] Prompt 18
@@ -1136,7 +1136,7 @@ Approved versions are immutable.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement:

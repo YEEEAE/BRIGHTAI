@@ -103,6 +103,7 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/calibration/new',
   '/lab/calibration/[id]',
   '/lab/calibration/[id]/edit',
+  '/lab/documents',
 ];
 
 /**
