@@ -60,3 +60,23 @@ export const LAB_REMARKS_MAX = 5000;
 export const LAB_MEASUREMENT_MAX = 50;
 /** Sample Part Name. */
 export const LAB_PART_NAME_MAX = 200;
+
+// ── Maintenance event policy (/lab/equipment/[id]/maintenance) ──────────────
+
+/**
+ * Maintenance event status values — the single source of truth for the
+ * maintenance log's controlled status field (page reference §36). These are
+ * values the application defines for NEW events (never fabricated history),
+ * and COMPLETED + completed_date is what the equipment timeline uses to
+ * derive "returned to service". Store the uppercase token; display via
+ * LAB_MAINTENANCE_STATUS_LABELS.
+ */
+export const LAB_MAINTENANCE_STATUSES = ['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'] as const;
+export type LabMaintenanceStatus = (typeof LAB_MAINTENANCE_STATUSES)[number];
+
+export const LAB_MAINTENANCE_STATUS_LABELS: Record<LabMaintenanceStatus, string> = {
+  PLANNED: 'Planned',
+  IN_PROGRESS: 'In Progress',
+  COMPLETED: 'Completed',
+  CANCELLED: 'Cancelled',
+};

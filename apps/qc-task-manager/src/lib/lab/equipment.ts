@@ -23,7 +23,7 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { canArchiveLabEquipment, canCreateLabEquipment, canEditLabEquipment } from '../permissions';
-import type { LabEquipment } from '../types';
+import type { LabEquipment, LabEquipmentMaintenance } from '../types';
 import { statusMatchesLabel } from './equipmentStatus';
 
 // ─────────────────────────────── Audit ───────────────────────────────
@@ -54,6 +54,19 @@ export function getLabEquipmentAuditTimeline(equipmentId: number): Array<Record<
        ORDER BY a.created_at DESC, a.id DESC`,
     )
     .all(equipmentId) as Array<Record<string, unknown>>;
+}
+
+function auditLabEquipmentMaintenance(
+  maintenanceId: number,
+  actorId: number,
+  note: string | null,
+): void {
+  getDb()
+    .prepare(
+      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
+       VALUES ('LAB_EQUIPMENT_MAINTENANCE', ?, NULL, ?, 'CREATE', NULL, NULL, ?)`,
+    )
+    .run(maintenanceId, actorId, note);
 }
 
 // ─────────────────────────────── List / search ───────────────────────────────
@@ -432,6 +445,226 @@ export function restoreLabEquipment(id: number, actorId: number): void {
     db.prepare("UPDATE lab_equipment SET is_archived = 0, updated_at = datetime('now') WHERE id = ?").run(id);
     auditLabEquipment(id, actorId, 'UPDATE', `restored ${existing.code}`);
   });
+}
+
+// ─────────────────────────────── Maintenance ───────────────────────────────
+
+/** Normalized form input after Zod validation (labMaintenanceSchema). */
+export interface LabMaintenanceFormData {
+  maintenance_date: string;
+  issue: string;
+  maintenance_type: string;
+  description: string | null;
+  technician_vendor: string;
+  status: string;
+  completed_date: string | null;
+  notes: string | null;
+}
+
+function maintenanceSummary(data: LabMaintenanceFormData): string {
+  return [
+    `maintenance_date=${data.maintenance_date}`,
+    `issue=${data.issue}`,
+    `type=${data.maintenance_type}`,
+    `status=${data.status}`,
+    `technician=${data.technician_vendor}`,
+    `completed=${data.completed_date ?? '—'}`,
+  ].join('; ');
+}
+
+/**
+ * Create one append-only maintenance event + CREATE audit (one transaction).
+ * Maintenance history is never seeded and never fabricated — only events a
+ * user actually logs appear. Archived equipment rejects new events (retire
+ * first, then restore to log more).
+ */
+export function createLabEquipmentMaintenance(
+  equipmentId: number,
+  data: LabMaintenanceFormData,
+  actorId: number,
+): number {
+  return transaction(() => {
+    const db = getDb();
+    const equipment = db
+      .prepare('SELECT id, code, is_archived FROM lab_equipment WHERE id = ?')
+      .get(equipmentId) as { id: number; code: string; is_archived: number } | undefined;
+    if (!equipment) throw new Error('Equipment not found.');
+    if (equipment.is_archived === 1) throw new Error('Archived equipment cannot accept new maintenance events.');
+    const result = db
+      .prepare(
+        `INSERT INTO lab_equipment_maintenance (
+           equipment_id, maintenance_date, issue, maintenance_type, description,
+           technician_vendor, status, completed_date, notes, created_by
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        equipmentId,
+        data.maintenance_date,
+        data.issue,
+        data.maintenance_type,
+        data.description,
+        data.technician_vendor,
+        data.status,
+        data.completed_date,
+        data.notes,
+        actorId,
+      );
+    const id = Number(result.lastInsertRowid);
+    auditLabEquipmentMaintenance(id, actorId, `equipment=${equipment.code}; ${maintenanceSummary(data)}`);
+    return id;
+  });
+}
+
+/** All maintenance events for one device, newest first (no fabricated events). */
+export function listLabEquipmentMaintenance(equipmentId: number): LabEquipmentMaintenance[] {
+  return getDb()
+    .prepare(
+      `SELECT * FROM lab_equipment_maintenance
+       WHERE equipment_id = ?
+       ORDER BY maintenance_date DESC, id DESC`,
+    )
+    .all(equipmentId) as LabEquipmentMaintenance[];
+}
+
+export interface LabEquipmentMaintenanceSummary {
+  count: number;
+  latest: LabEquipmentMaintenance | null;
+}
+
+/** Count + latest event for the equipment detail page summary block. */
+export function getLabEquipmentMaintenanceSummary(equipmentId: number): LabEquipmentMaintenanceSummary {
+  const rows = listLabEquipmentMaintenance(equipmentId);
+  return { count: rows.length, latest: rows[0] ?? null };
+}
+
+/**
+ * Audit trail restricted to a device's maintenance events (shared log, same
+ * single audit system). Every maintenance change is written here — events are
+ * append-only, so CREATE covers all changes.
+ */
+export function getLabEquipmentMaintenanceAudit(equipmentId: number): Array<Record<string, unknown>> {
+  return getDb()
+    .prepare(
+      `SELECT a.id, a.entity_id, a.action, a.note, a.created_at, u.full_name AS actor_name
+       FROM qc_audit_log a LEFT JOIN users u ON u.id = a.actor_id
+       WHERE a.entity_type = 'LAB_EQUIPMENT_MAINTENANCE'
+         AND a.entity_id IN (SELECT id FROM lab_equipment_maintenance WHERE equipment_id = ?)
+       ORDER BY a.created_at DESC, a.id DESC`,
+    )
+    .all(equipmentId) as Array<Record<string, unknown>>;
+}
+
+// ─────────────────────────────── Timeline ───────────────────────────────
+
+export type LabTimelineKind = 'USAGE' | 'MAINTENANCE' | 'CALIBRATION' | 'RETURNED_TO_SERVICE';
+
+export interface LabEquipmentTimelineEntry {
+  kind: LabTimelineKind;
+  /** Sortable event date/time (YYYY-MM-DD, or timestamp for usage). */
+  at: string;
+  title: string;
+  detail: string;
+  /** Source row id (test / maintenance / calibration record). */
+  ref_id: number;
+  /** Link target when the source record has a page (tests do today). */
+  href: string | null;
+  /** Maintenance events only — raw status token for the badge. */
+  status?: string | null;
+}
+
+/**
+ * The combined equipment timeline (page reference §33 "related: tests,
+ * maintenance, calibration"): usage (test records referencing this device),
+ * maintenance events, calibration records, and — derived from completed
+ * maintenance — "returned to service" markers. Nothing here is fabricated:
+ * usage/maintenance/calibration come from real rows; returned-to-service is
+ * derived from a COMPLETED event's completed_date. Newest first, bounded.
+ */
+export function getLabEquipmentTimeline(equipmentId: number): LabEquipmentTimelineEntry[] {
+  const db = getDb();
+  const entries: LabEquipmentTimelineEntry[] = [];
+
+  const usage = db
+    .prepare(
+      `SELECT id, test_number, status, final_result, created_at
+       FROM lab_test_records
+       WHERE equipment_id = ?
+       ORDER BY created_at DESC, id DESC
+       LIMIT 50`,
+    )
+    .all(equipmentId) as Array<{
+    id: number;
+    test_number: string;
+    status: string;
+    final_result: string | null;
+    created_at: string;
+  }>;
+  for (const t of usage) {
+    entries.push({
+      kind: 'USAGE',
+      at: t.created_at,
+      title: `${t.test_number} · ${t.status}`,
+      detail: t.final_result ? `Final result: ${t.final_result}` : 'No final result yet',
+      ref_id: t.id,
+      href: `/lab/tests/${t.id}`,
+    });
+  }
+
+  const maintenance = listLabEquipmentMaintenance(equipmentId);
+  for (const m of maintenance) {
+    entries.push({
+      kind: 'MAINTENANCE',
+      at: m.maintenance_date ?? m.created_at,
+      title: m.issue || 'Maintenance event',
+      detail: [m.maintenance_type, m.technician_vendor].filter(Boolean).join(' · '),
+      ref_id: m.id,
+      href: null,
+      status: m.status,
+    });
+    if (m.status === 'COMPLETED' && m.completed_date) {
+      entries.push({
+        kind: 'RETURNED_TO_SERVICE',
+        at: m.completed_date,
+        title: 'Returned to service',
+        detail: `Maintenance completed · ${m.issue || `event #${m.id}`}`,
+        ref_id: m.id,
+        href: null,
+      });
+    }
+  }
+
+  const calibration = db
+    .prepare(
+      `SELECT id, COALESCE(last_calibrated_at, created_at) AS cal_date,
+              provider, certificate_reference, result
+       FROM lab_equipment_calibration
+       WHERE equipment_id = ?
+       ORDER BY cal_date DESC, id DESC
+       LIMIT 50`,
+    )
+    .all(equipmentId) as Array<{
+    id: number;
+    cal_date: string;
+    provider: string | null;
+    certificate_reference: string | null;
+    result: string | null;
+  }>;
+  for (const c of calibration) {
+    entries.push({
+      kind: 'CALIBRATION',
+      at: c.cal_date,
+      title: c.certificate_reference ? `Calibration · ${c.certificate_reference}` : 'Calibration record',
+      detail: [c.provider, c.result].filter(Boolean).join(' · '),
+      ref_id: c.id,
+      href: null,
+    });
+  }
+
+  entries.sort((a, b) => {
+    const diff = b.at.localeCompare(a.at);
+    return diff !== 0 ? diff : b.ref_id - a.ref_id;
+  });
+  return entries;
 }
 
 // ─────────────────────────────── POST handlers ───────────────────────────────

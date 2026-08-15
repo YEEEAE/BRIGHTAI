@@ -12,8 +12,9 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import EmptyState from '../../../components/EmptyState.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
-import { getLabEquipmentAuditTimeline, getLabEquipmentDetail } from '../../../lib/lab/equipment';
+import { getLabEquipmentAuditTimeline, getLabEquipmentDetail, getLabEquipmentMaintenanceSummary } from '../../../lib/lab/equipment';
 import { calibrationLabel, statusLabels } from '../../../lib/lab/equipmentStatus';
+import { LAB_MAINTENANCE_STATUS_LABELS } from '../../../lib/lab/policy';
 import { canArchiveLabEquipment, canEditLabEquipment } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
@@ -22,8 +23,12 @@ const role = user.role as Role;
 
 const id = Number(Astro.params.id);
 let detail: ReturnType<typeof getLabEquipmentDetail> = null;
+let maintenanceSummary: ReturnType<typeof getLabEquipmentMaintenanceSummary> = { count: 0, latest: null };
 try {
   detail = getLabEquipmentDetail(id);
+  if (detail) {
+    maintenanceSummary = getLabEquipmentMaintenanceSummary(id);
+  }
 } catch (err) {
   console.error('[lab] equipment detail query failure', err);
 }
@@ -178,8 +183,41 @@ function fmt(value: unknown): string {
 
         <section aria-labelledby="sec-maintenance" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 id="sec-maintenance" class="text-base font-semibold text-slate-900">Maintenance &amp; Calibration Records</h2>
-          <p class="mt-2 text-sm text-slate-600">
-            Maintenance and dated calibration records are managed by dedicated modules (arriving in later prompts).
+          <dl class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+              <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Maintenance Events</dt>
+              <dd class="mt-1 font-medium text-slate-900">{maintenanceSummary.count.toLocaleString('en-US')}</dd>
+            </div>
+            {maintenanceSummary.latest ? (
+              <div class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Latest Event</dt>
+                <dd class="mt-1 font-medium text-slate-900">{fmt(maintenanceSummary.latest.issue)}</dd>
+                <dd class="mt-1 text-xs text-slate-500" dir="ltr">
+                  {fmt(maintenanceSummary.latest.maintenance_date)}
+                  <span class="ms-2 inline-flex rounded-full px-2 py-0.5 text-xs font-semibold bg-slate-100 text-slate-700">
+                    {maintenanceSummary.latest.status
+                      ? LAB_MAINTENANCE_STATUS_LABELS[maintenanceSummary.latest.status as keyof typeof LAB_MAINTENANCE_STATUS_LABELS] ??
+                        maintenanceSummary.latest.status
+                      : '—'}
+                  </span>
+                </dd>
+              </div>
+            ) : (
+              <div class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Latest Event</dt>
+                <dd class="mt-1 text-slate-900">—</dd>
+              </div>
+            )}
+            <div class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+              <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Calibration</dt>
+              <dd class="mt-1 text-slate-900">{calibrationLabel(detail.equipment.calibration_status_raw)}</dd>
+            </div>
+          </dl>
+          <p class="mt-3 text-sm text-slate-600">
+            <a href={`/lab/equipment/${detail.equipment.id}/maintenance`} class="font-medium text-brand-600 hover:underline">
+              Log maintenance &amp; view the full equipment timeline →
+            </a>
+            <span class="text-slate-500"> (usage, maintenance, calibration and returned-to-service events)</span>
           </p>
         </section>
 

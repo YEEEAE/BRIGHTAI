@@ -32,6 +32,7 @@ import {
 import { MAX_COMMENT_LENGTH } from './format';
 import {
   LAB_CONNECTOR_TYPES,
+  LAB_MAINTENANCE_STATUSES,
   LAB_MEASUREMENT_MAX,
   LAB_PART_NAME_MAX,
   LAB_REMARKS_MAX,
@@ -515,6 +516,79 @@ export const labEquipmentSchema = z.object({
     z.string().max(LAB_REMARKS_MAX, `Notes must be ${LAB_REMARKS_MAX} characters or fewer.`).nullable(),
   ),
 });
+
+/**
+ * POST /api/lab/equipment/[id]/maintenance — add an append-only maintenance
+ * event (page reference §36). `maintenance_date`, `issue`, `maintenance_type`
+ * and `technician_vendor` are required; `description` and `notes` are free
+ * text; `status` is the controlled enum from lab/policy.ts; `completed_date`
+ * is required when the event is COMPLETED (that completion is what the
+ * equipment timeline reports as "returned to service") and must not precede
+ * the maintenance date. The equipment id always comes from the matched path,
+ * never the body. Maintenance events are never edited or deleted — every
+ * event is audited once at creation.
+ */
+export const labMaintenanceSchema = z
+  .object({
+    maintenance_date: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z
+        .string()
+        .min(1, 'Maintenance Date is required.')
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Maintenance Date must be a valid date (YYYY-MM-DD).'),
+    ),
+    issue: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z
+        .string()
+        .min(1, 'Issue is required.')
+        .max(LAB_SHORT_TEXT_MAX, `Issue must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+    ),
+    maintenance_type: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z
+        .string()
+        .min(1, 'Maintenance Type is required.')
+        .max(LAB_SHORT_TEXT_MAX, `Maintenance Type must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+    ),
+    description: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_REMARKS_MAX, `Description must be ${LAB_REMARKS_MAX} characters or fewer.`).nullable(),
+    ),
+    technician_vendor: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z
+        .string()
+        .min(1, 'Technician / Vendor is required.')
+        .max(LAB_SHORT_TEXT_MAX, `Technician / Vendor must be ${LAB_SHORT_TEXT_MAX} characters or fewer.`),
+    ),
+    status: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z.enum([...LAB_MAINTENANCE_STATUSES] as [string, ...string[]], {
+        errorMap: () => ({ message: 'Invalid maintenance status.' }),
+      }),
+    ),
+    completed_date: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Completed Date must be a valid date (YYYY-MM-DD).')
+        .nullable(),
+    ),
+    notes: z.preprocess(
+      (v) => (v === '' || v == null ? null : String(v).trim()),
+      z.string().max(LAB_REMARKS_MAX, `Notes must be ${LAB_REMARKS_MAX} characters or fewer.`).nullable(),
+    ),
+  })
+  .strict()
+  .superRefine((data, ctx) => {
+    if (data.status === 'COMPLETED' && !data.completed_date) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Completed Date is required when the maintenance is completed.' });
+    }
+    if (data.completed_date && data.completed_date < data.maintenance_date) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Completed Date cannot be before the Maintenance Date.' });
+    }
+  });
 
 /**
  * POST /lab/templates/new + /lab/templates/[id]/edit — Test Template form
