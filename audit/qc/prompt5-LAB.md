@@ -22,8 +22,8 @@
 ## Global Prompt Execution Status
 
 - [✅] Prompt 41 — Document Approval Workflow
-- [ ] Prompt 42 — Test VOID Handler
-- [ ] Prompt 43 — Product Archive + Test Draft Editing
+- [✅] Prompt 42 — Test VOID Handler
+- [✅] Prompt 43 — Product Archive + Test Draft Editing
 - [ ] Prompt 44 — Legacy Duplicate File Cleanup
 - [ ] Prompt 45 — e2e-lab-nav Pre-existing Failures
 - [ ] Prompt 46 — Scheduled Notification Jobs
@@ -202,7 +202,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 VOID status exists in the schema (CHECK constraint), filters, reports, and
@@ -243,7 +243,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Two reserved-but-missing mutations:

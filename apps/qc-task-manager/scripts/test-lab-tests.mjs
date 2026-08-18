@@ -881,6 +881,142 @@ try {
     eq(unblockedRes.status, 'VOID', 'void: allowed after open retest is resolved');
   }
 
+  console.log('\n■ DRAFT editing (PROMPT 43-B)');
+  {
+    const draftData = (overrides = {}) => ({
+      form_action: 'draft',
+      product_description: 'Seal Product',
+      product_id: productId,
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count: 2,
+      lot_number: 'LOT-EDIT-1',
+      sampling_area: 'Bay 2',
+      equipment_id: equipmentId,
+      medium_used: 'Air',
+      actual_pressure: '100',
+      torque_in_lb: null,
+      time_sec: '30',
+      angle: null,
+      temperature_measured: '23',
+      samples_json: [
+        { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+        { sample_no: 2, part_name: 'Cap', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: null },
+      ],
+      remarks: null,
+      final_result: null,
+      ...overrides,
+    });
+
+    const draft = tests.createLabTest(draftData(), employeeId, 'air');
+
+    // Loader: creator sees the draft, outsider does not (404-style null)
+    const loaded = tests.getLabTestEditableDraft(draft.id, { id: employeeId, role: 'employee' });
+    ok(loaded !== null, 'edit: creator can load own draft');
+    eq(loaded.test_type, 'air', 'edit: loader returns stored test type');
+    eq(loaded.product_description, 'Seal Product', 'edit: product description prefills from canonical product name');
+    const outsiderId = Number(
+      db
+        .prepare("INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active) VALUES ('employee2', 'unused', 'Second Employee', 'employee', 'QC', 0, 1)")
+        .run().lastInsertRowid,
+    );
+    eq(tests.getLabTestEditableDraft(draft.id, { id: outsiderId, role: 'employee' }), null, 'edit: other employee gets null (404)');
+    eq(tests.getLabTestEditableDraft(999999, { id: employeeId, role: 'employee' }), null, 'edit: missing test → null');
+
+    // Update by creator: lot + a sample value change, audited with old/new diff
+    const updated = tests.updateLabTestDraft(
+      { id: employeeId, role: 'employee' },
+      draft.id,
+      draftData({
+        lot_number: 'LOT-EDIT-2',
+        sample_count: 3,
+        samples_json: [
+          { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+          { sample_no: 2, part_name: 'Cap', set_pressure: '100', actual_pressure: '101', volume_sec: '5', pressure_difference: '1', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+          { sample_no: 3, part_name: 'Cap', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: null },
+        ],
+      }),
+    );
+    eq(updated.test_number, draft.test_number, 'edit: test number unchanged');
+    const rowAfter = db.prepare('SELECT * FROM lab_test_records WHERE id = ?').get(draft.id);
+    eq(rowAfter.status, 'DRAFT', 'edit: stays DRAFT on form_action=draft');
+    eq(rowAfter.lot_number, 'LOT-EDIT-2', 'edit: lot updated');
+    eq(Number(rowAfter.sample_count), 3, 'edit: sample count updated');
+    const samplesAfter = db.prepare('SELECT * FROM lab_test_samples WHERE test_id = ? ORDER BY sample_no').all(draft.id);
+    eq(samplesAfter.length, 3, 'edit: sample grid replaced wholesale');
+    eq(samplesAfter[1].actual_pressure, '101', 'edit: changed sample value stored');
+    eq(samplesAfter[0].sample_identifier, `${draft.test_number}-S01`, 'edit: sample identifiers re-derived stably');
+
+    const updateAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_TEST' AND entity_id = ? AND action = 'UPDATE' ORDER BY id DESC LIMIT 1")
+      .get(draft.id);
+    ok(updateAudit !== undefined, 'edit: LAB_TEST/UPDATE audit row written');
+    eq(Number(updateAudit.actor_id), employeeId, 'edit: audit actor is the creator');
+    const oldDiff = JSON.parse(updateAudit.old_value);
+    const newDiff = JSON.parse(updateAudit.new_value);
+    eq(oldDiff.lot_number, 'LOT-EDIT-1', 'edit: audit old_value carries previous lot');
+    eq(newDiff.lot_number, 'LOT-EDIT-2', 'edit: audit new_value carries new lot');
+    ok(!('remarks' in oldDiff), 'edit: audit diff only includes changed fields');
+
+    // Non-owner update → not-found (no existence leak)
+    let outBlocked = false;
+    try {
+      tests.updateLabTestDraft({ id: outsiderId, role: 'employee' }, draft.id, draftData());
+    } catch (err) {
+      outBlocked = err instanceof tests.LabTestDraftNotFoundError;
+    }
+    ok(outBlocked, 'edit: other employee update → LabTestDraftNotFoundError');
+
+    // Submit from edit: DRAFT → SUBMITTED with SUBMIT audit
+    const submitted = tests.updateLabTestDraft(
+      { id: employeeId, role: 'employee' },
+      draft.id,
+      draftData({
+        form_action: 'submit',
+        final_result: 'PASS',
+        samples_json: [
+          { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+          { sample_no: 2, part_name: 'Cap', set_pressure: '100', actual_pressure: '101', volume_sec: '5', pressure_difference: '1', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+          { sample_no: 3, part_name: 'Cap', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+        ],
+      }),
+    );
+    const rowSubmitted = db.prepare('SELECT status, final_result FROM lab_test_records WHERE id = ?').get(draft.id);
+    eq(rowSubmitted.status, 'SUBMITTED', 'edit: submit moves draft to SUBMITTED');
+    eq(rowSubmitted.final_result, 'PASS', 'edit: submit freezes final result');
+    const submitAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_TEST' AND entity_id = ? AND action = 'SUBMIT' ORDER BY id DESC LIMIT 1")
+      .get(draft.id);
+    eq(submitAudit.old_value, 'DRAFT', 'edit: submit audit old_value DRAFT');
+    eq(submitAudit.new_value, 'SUBMITTED', 'edit: submit audit new_value SUBMITTED');
+
+    // Non-draft (SUBMITTED now) → 400-style LabTestNotDraftError
+    let notDraft = false;
+    try {
+      tests.updateLabTestDraft({ id: employeeId, role: 'employee' }, draft.id, draftData());
+    } catch (err) {
+      notDraft = err instanceof tests.LabTestNotDraftError;
+    }
+    ok(notDraft, 'edit: non-draft test → LabTestNotDraftError');
+    eq(tests.getLabTestEditableDraft(draft.id, { id: employeeId, role: 'employee' }), null, 'edit: loader null for SUBMITTED test');
+
+    // Archived equipment rejected on edit (same guard as create)
+    const draft2 = tests.createLabTest(draftData({ lot_number: 'LOT-EDIT-3' }), employeeId, 'air');
+    const archEq = Number(
+      db.prepare("INSERT INTO lab_equipment (name, code, status_raw, is_archived, created_by) VALUES ('Old Rig', 'EQ-OLD', 'RETIRED', 1, ?)").run(managerId).lastInsertRowid,
+    );
+    let archBlocked = false;
+    try {
+      tests.updateLabTestDraft({ id: employeeId, role: 'employee' }, draft2.id, draftData({ equipment_id: archEq }));
+    } catch (err) {
+      archBlocked = err instanceof Error && err.message.includes('Archived equipment');
+    }
+    ok(archBlocked, 'edit: archived equipment rejected');
+
+    // Manager may edit another user's draft (canEditLabTestRecord manager rule)
+    const mgrEdit = tests.updateLabTestDraft({ id: managerId, role: 'manager' }, draft2.id, draftData({ lot_number: 'LOT-EDIT-4' }));
+    eq(mgrEdit.id, draft2.id, 'edit: manager can edit any DRAFT');
+  }
+
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) {
     console.error(failures.map((f) => `  - ${f}`).join('\n'));

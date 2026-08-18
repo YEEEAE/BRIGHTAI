@@ -18,7 +18,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import LabTestForm from '../../../components/lab/LabTestForm';
 import { labNavForRole } from '../../../lib/lab/navigation';
-import { listLabEquipmentForForm, listLabProductsForForm } from '../../../lib/lab/tests';
+import { listLabEquipmentForForm, listLabProductsForForm, getLabTestEditableDraft } from '../../../lib/lab/tests';
 import { listLabProductReferences } from '../../../lib/lab/products';
 import { listLabTemplateReferences } from '../../../lib/lab/templates';
 import {
@@ -45,6 +45,21 @@ if (rawType !== 'air' && rawType !== 'vacuum') {
 }
 const testType = rawType;
 
+// Edit mode (PROMPT 43-B): ?test=<id> loads the caller's own DRAFT for
+// editing on this same form. The scope + DRAFT-only decision is server-side
+// (tested_by OR created_by for employees); anything else renders the same
+// not-found state as the detail page (no existence leak). In edit mode the
+// test type comes from the stored record, not the query.
+const rawTestId = Astro.url.searchParams.get('test');
+let editDraft: ReturnType<typeof getLabTestEditableDraft> = null;
+if (rawTestId !== null && /^\d+$/.test(rawTestId)) {
+  editDraft = getLabTestEditableDraft(Number(rawTestId), { id: user.userId, role });
+  if (!editDraft) {
+    return Astro.redirect('/lab/tests');
+  }
+}
+const effectiveTestType = (editDraft?.test_type ?? testType) as 'air' | 'vacuum';
+
 if (!canCreateLabTest(role)) {
   return Astro.redirect('/lab');
 }
@@ -65,9 +80,40 @@ try {
 }
 
 const navItems = labNavForRole(role);
-const title = testType === 'air' ? 'New AIR Test' : 'New VACUUM Test';
-const testTypeLabel = testType === 'air' ? 'AIR' : 'VACUUM';
+const title = editDraft ? `Edit Draft ${editDraft.test_number}` : testType === 'air' ? 'New AIR Test' : 'New VACUUM Test';
+const testTypeLabel = effectiveTestType === 'air' ? 'AIR' : 'VACUUM';
 const userName = user.fullName;
+
+const initialValues = editDraft
+  ? {
+      product_description: editDraft.product_description,
+      connector_type: (editDraft.record.connector_type as string | null) ?? null,
+      sample_count: Number(editDraft.record.sample_count),
+      lot_number: (editDraft.record.lot_number as string | null) ?? null,
+      sampling_area: (editDraft.record.sampling_area as string | null) ?? null,
+      equipment_id: editDraft.record.equipment_id == null ? null : Number(editDraft.record.equipment_id),
+      medium_used: (editDraft.record.medium_used as string | null) ?? null,
+      actual_pressure: (editDraft.record.actual_pressure as string | null) ?? null,
+      torque_in_lb: (editDraft.record.torque_in_lb as string | null) ?? null,
+      time_sec: (editDraft.record.time_sec as string | null) ?? null,
+      angle: (editDraft.record.angle as string | null) ?? null,
+      temperature_measured: (editDraft.record.temperature_measured as string | null) ?? null,
+      remarks: (editDraft.record.remarks as string | null) ?? null,
+      final_result: (editDraft.record.final_result as string | null) ?? null,
+      template_version_id: editDraft.record.template_version_id == null ? null : Number(editDraft.record.template_version_id),
+      samples: editDraft.samples.map((s) => ({
+        sample_no: Number(s.sample_no),
+        part_name: s.part_name ?? '',
+        set_pressure: s.set_pressure ?? '',
+        actual_pressure: s.actual_pressure ?? '',
+        volume_sec: s.volume_sec ?? '',
+        pressure_difference: s.pressure_difference ?? '',
+        holding_time_sec: s.holding_time_sec ?? '',
+        leakage_rate: s.leakage_rate ?? '',
+        result: (s.result ?? '') as '' | 'PASS' | 'FAIL' | 'HOLD',
+      })),
+    }
+  : undefined;
 
 const referenceValues = {
   actualPressure: LAB_ACTUAL_PRESSURE_REFERENCE,
@@ -108,8 +154,11 @@ const resultOptions = LAB_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RES
 
     <LabTestForm
       client:visible
-      testType={testType}
+      testType={effectiveTestType}
       userName={userName}
+      testId={editDraft?.id}
+      testNumber={editDraft?.test_number}
+      initial={initialValues}
       equipment={equipment}
       products={products}
       productRefs={productRefs}

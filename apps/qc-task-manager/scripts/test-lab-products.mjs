@@ -285,6 +285,106 @@ try {
     ok(typeof timeline[0].actor_name === 'string', 'history: actor name joined');
   }
 
+  // ── Archive / restore toggle (PROMPT 43-A) ──
+  console.log('■ Archive / restore (PROMPT 43-A)');
+  {
+    const tests = await import('../src/lib/lab/tests.ts');
+    const dataQuality = await import('../src/lib/lab/dataQuality.ts');
+
+    const archivedId = products.createLabProduct(formData({ code: 'PRD-ARCH', name: 'Archivable Product' }), managerId);
+    const eqId = Number(
+      db.prepare("INSERT INTO lab_equipment (name, code, status_raw, created_by) VALUES ('Rig C', 'EQ-C', 'IN_USE', ?)").run(managerId).lastInsertRowid,
+    );
+
+    // A live (SUBMITTED, non-VOID) test references the product by canonical id
+    const ref = tests.createLabTest(
+      {
+        form_action: 'submit',
+        product_description: 'Archivable Product',
+        product_id: archivedId,
+        connector_type: 'Non-locking (Lipid connector)',
+        sample_count: 1,
+        lot_number: 'LOT-ARCH-1',
+        sampling_area: 'Bay 1',
+        equipment_id: eqId,
+        medium_used: 'Air',
+        actual_pressure: '100',
+        torque_in_lb: null,
+        time_sec: '30',
+        angle: null,
+        temperature_measured: '23',
+        samples_json: [
+          { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+        ],
+        remarks: null,
+        final_result: 'PASS',
+      },
+      managerId,
+      'air',
+    );
+
+    // Archive while in use is ALLOWED
+    products.setLabProductActive(archivedId, false, managerId);
+    let row = db.prepare('SELECT is_active FROM lab_products WHERE id = ?').get(archivedId);
+    eq(row.is_active, 0, 'archive: is_active toggled to 0');
+
+    // Reserved audit verb + old/new transition values
+    const audit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_PRODUCT' AND entity_id = ? AND action = 'STATUS_TRANSITION' ORDER BY id DESC LIMIT 1")
+      .get(archivedId);
+    ok(audit !== undefined, 'archive: STATUS_TRANSITION audit row written');
+    eq(audit.old_value, 'ACTIVE', 'archive: audit old_value ACTIVE');
+    eq(audit.new_value, 'INACTIVE', 'archive: audit new_value INACTIVE');
+    ok(String(audit.note).includes('used by non-VOID tests'), 'archive: in-use note references the data-quality guard');
+    eq(Number(audit.actor_id), managerId, 'archive: audit actor recorded');
+
+    // Dropdown exclusion: not offered for NEW tests, but historical test keeps the relation
+    const formProducts = tests.listLabProductsForForm();
+    ok(formProducts.every((p) => p.id !== archivedId), 'archive: inactive product excluded from test-form dropdown');
+    const refs = products.listLabProductReferences();
+    ok(refs.every((p) => p.id !== archivedId), 'archive: inactive product excluded from reference panel');
+    const testRow = db.prepare('SELECT product_id FROM lab_test_records WHERE id = ?').get(ref.id);
+    eq(Number(testRow.product_id), archivedId, 'archive: historical test keeps canonical product_id');
+    const detail = tests.getLabTestRecordById(ref.id);
+    eq(String(detail.product_name), 'Archivable Product', 'archive: historical test still resolves product identity');
+
+    // Data-quality finding appears live (product_inactive_in_use)
+    const issues = dataQuality.detectLabProductIssues();
+    ok(
+      issues.some((i) => i.kind === 'product_inactive_in_use' && i.record.includes('PRD-ARCH')),
+      'archive: product_inactive_in_use data-quality finding emitted',
+    );
+
+    // Double-archive refused
+    let doubleBlocked = false;
+    try {
+      products.setLabProductActive(archivedId, false, managerId);
+    } catch {
+      doubleBlocked = true;
+    }
+    ok(doubleBlocked, 'archive: already-inactive product refused');
+
+    // Missing product → typed not-found error
+    let missing = false;
+    try {
+      products.setLabProductActive(999999, false, managerId);
+    } catch (err) {
+      missing = err instanceof products.LabProductNotFoundError;
+    }
+    ok(missing, 'archive: missing product → LabProductNotFoundError');
+
+    // Restore toggles back with its own audit row
+    products.setLabProductActive(archivedId, true, managerId);
+    row = db.prepare('SELECT is_active FROM lab_products WHERE id = ?').get(archivedId);
+    eq(row.is_active, 1, 'restore: is_active toggled back to 1');
+    const restoreAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_PRODUCT' AND entity_id = ? AND action = 'STATUS_TRANSITION' ORDER BY id DESC LIMIT 1")
+      .get(archivedId);
+    eq(restoreAudit.old_value, 'INACTIVE', 'restore: audit old_value INACTIVE');
+    eq(restoreAudit.new_value, 'ACTIVE', 'restore: audit new_value ACTIVE');
+    ok(tests.listLabProductsForForm().some((p) => p.id === archivedId), 'restore: product back in test-form dropdown');
+  }
+
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) {
     console.error('\nFailures:');

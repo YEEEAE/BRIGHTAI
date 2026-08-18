@@ -31,9 +31,33 @@ export interface LabReferenceValues {
   holdingTime: string;
 }
 
+/** Edit-mode prefill (PROMPT 43-B) — a DRAFT test loaded server-side. */
+export interface LabTestInitialValues {
+  product_description: string;
+  connector_type: string | null;
+  sample_count: number;
+  lot_number: string | null;
+  sampling_area: string | null;
+  equipment_id: number | null;
+  medium_used: string | null;
+  actual_pressure: string | null;
+  torque_in_lb: string | null;
+  time_sec: string | null;
+  angle: string | null;
+  temperature_measured: string | null;
+  remarks: string | null;
+  final_result: string | null;
+  template_version_id: number | null;
+  samples: Array<Omit<SampleRow, 'sample_no'> & { sample_no: number }>;
+}
+
 interface Props {
   testType: 'air' | 'vacuum';
   userName: string;
+  /** When set, the form is in edit mode: it POSTs to /lab/tests/[testId]/edit and prefills the stored DRAFT. */
+  testId?: number;
+  testNumber?: string;
+  initial?: LabTestInitialValues;
   equipment: Array<{
     id: number;
     name: string;
@@ -143,6 +167,9 @@ const SAMPLE_COLUMNS: Array<{ key: keyof Omit<SampleRow, 'sample_no' | 'result'>
 export default function LabTestForm({
   testType,
   userName,
+  testId,
+  testNumber,
+  initial,
   equipment,
   products,
   productRefs,
@@ -174,7 +201,41 @@ export default function LabTestForm({
   // Same rule for No. of Samples Tested: template defaults prefill an
   // untouched field only and never replace a tester-entered count.
   const sampleCountTouchedRef = useRef(false);
-  const [templateVersionId, setTemplateVersionId] = useState<number | null>(null);
+  const [templateVersionId, setTemplateVersionId] = useState<number | null>(initial?.template_version_id ?? null);
+
+  // Edit-mode prefill (PROMPT 43-B): load the stored DRAFT's values into the
+  // uncontrolled inputs and the sample grid once, on mount. The loaded values
+  // are NOT "unsaved changes" — the existing dirty tracking starts clean and
+  // fires only after the tester edits something (reused, not rebuilt).
+  useEffect(() => {
+    if (!initial) return;
+    const el = formRef.current;
+    if (!el) return;
+    const setVal = (name: string, value: string | number | null | undefined) => {
+      if (value === null || value === undefined || value === '') return;
+      const input = el.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+      if (input) input.value = String(value);
+    };
+    setVal('connector_type', initial.connector_type);
+    setVal('lot_number', initial.lot_number);
+    setVal('sampling_area', initial.sampling_area);
+    setVal('equipment_id', initial.equipment_id);
+    setVal('medium_used', initial.medium_used);
+    setVal('actual_pressure', initial.actual_pressure);
+    setVal('torque_in_lb', initial.torque_in_lb);
+    setVal('time_sec', initial.time_sec);
+    setVal('angle', initial.angle);
+    setVal('temperature_measured', initial.temperature_measured);
+    setVal('remarks', initial.remarks);
+    if (initial.final_result) {
+      const radio = el.querySelector(`input[name="final_result"][value="${initial.final_result}"]`) as HTMLInputElement | null;
+      if (radio) radio.checked = true;
+    }
+    setProductDescription(initial.product_description ?? '');
+    setSampleCount(initial.sample_count);
+    setSamples(initial.samples.map((s) => ({ ...s, result: s.result ?? '' })));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const matchingTemplates = templateRefs.filter((t) => t.test_type === testType);
   const selectedTemplate = matchingTemplates.find((t) => t.version_id === templateVersionId) ?? null;
@@ -358,10 +419,16 @@ export default function LabTestForm({
   };
 
   return (
-    <form ref={formRef} action={`/lab/tests/new?type=${testType}`} method="POST" noValidate>
+    <form ref={formRef} action={testId ? `/lab/tests/${testId}/edit` : `/lab/tests/new?type=${testType}`} method="POST" noValidate>
       <input ref={actionRef} type="hidden" name="form_action" value={formAction} />
       <input ref={samplesJsonRef} type="hidden" name="samples_json" value="" />
       <input type="hidden" name="template_version_id" value={templateVersionId ?? ''} />
+
+      {testNumber && (
+        <p className="mb-4 rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-800">
+          Editing draft {testNumber} — every change is audited; Submit sends it for review.
+        </p>
+      )}
 
       {dirty && (
         <p role="status" className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700">

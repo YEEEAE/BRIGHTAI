@@ -31,8 +31,8 @@ import {
 } from './lib/permissions';
 import { handleLoginPost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
-import { handleLabTestFormPost, handleLabTestVoidPost } from './lib/lab/tests';
-import { handleLabProductCreatePost, handleLabProductEditPost } from './lib/lab/products';
+import { handleLabProductCreatePost, handleLabProductEditPost, handleLabProductArchivePost } from './lib/lab/products';
+import { handleLabTestFormPost, handleLabTestVoidPost, handleLabTestEditPost } from './lib/lab/tests';
 import { handleLabTemplateCreatePost, handleLabTemplateEditPost } from './lib/lab/templates';
 import { handleLabEquipmentCreatePost, handleLabEquipmentEditPost } from './lib/lab/equipment';
 import { handleLabCalibrationCreatePost, handleLabCalibrationEditPost } from './lib/lab/calibration';
@@ -194,6 +194,10 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     if (productEdit) {
       return handleLabProductEditPost(context, Number(productEdit[1]));
     }
+    const productArchive = pathname.match(/^\/lab\/products\/(\d+)\/(archive|restore)$/);
+    if (productArchive) {
+      return handleLabProductArchivePost(context, Number(productArchive[1]), productArchive[2] === 'restore');
+    }
   }
 
   // POST /lab/templates/new + /lab/templates/[id]/edit — Test Template form
@@ -258,6 +262,8 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     if (testUnlink) return handleLabTestFindingUnlinkPost(context, Number(testUnlink[1]));
     const testVoid = pathname.match(/^\/lab\/tests\/(\d+)\/void$/);
     if (testVoid) return handleLabTestVoidPost(context, Number(testVoid[1]));
+    const testEdit = pathname.match(/^\/lab\/tests\/(\d+)\/edit$/);
+    if (testEdit) return handleLabTestEditPost(context, Number(testEdit[1]));
   }
 
   // POST /lab/documents/new + /lab/documents/[id]/edit + /lab/documents/[id] — SOP/WI

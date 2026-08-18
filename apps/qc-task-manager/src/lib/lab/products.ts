@@ -447,6 +447,89 @@ export function updateLabProduct(id: number, data: LabProductFormData, actorId: 
   });
 }
 
+// ─────────────────────────────── Archive / restore (PROMPT 43-A) ───────────────────────────────
+
+export class LabProductNotFoundError extends Error {
+  constructor() {
+    super('Product not found.');
+    this.name = 'LabProductNotFoundError';
+  }
+}
+
+/**
+ * Toggle is_active on a Product Master row (PROMPT 43-A) — archive or restore.
+ * Audited with the reserved STATUS_TRANSITION verb (same as template archive;
+ * the qc_audit_log CHECK from migration 011 has no dedicated ARCHIVE verb),
+ * old/new values carry the ACTIVE/INACTIVE transition. Archiving is allowed
+ * even when non-VOID tests reference the product: product_id stays the
+ * canonical relationship, historical tests keep their rows (and approved
+ * tests keep their frozen product snapshot), and the Data Quality Center
+ * already reports `product_inactive_in_use` live — no silent writes.
+ */
+export function setLabProductActive(productId: number, active: boolean, actorId: number): void {
+  transaction(() => {
+    const row = getDb().prepare('SELECT id, code, is_active FROM lab_products WHERE id = ?').get(productId) as
+      | { id: number; code: string; is_active: number }
+      | undefined;
+    if (!row) throw new LabProductNotFoundError();
+    const next = active ? 1 : 0;
+    if (Number(row.is_active) === next) {
+      throw new Error(active ? 'The product is already active.' : 'The product is already inactive.');
+    }
+    getDb().prepare("UPDATE lab_products SET is_active = ?, updated_at = datetime('now') WHERE id = ?").run(next, productId);
+    getDb()
+      .prepare(
+        `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
+         VALUES ('LAB_PRODUCT', ?, NULL, ?, 'STATUS_TRANSITION', ?, ?, ?)`,
+      )
+      .run(
+        productId,
+        actorId,
+        row.is_active === 1 ? 'ACTIVE' : 'INACTIVE',
+        next === 1 ? 'ACTIVE' : 'INACTIVE',
+        active
+          ? `restored ${row.code}`
+          : `archived ${row.code}${nonVoidTestCount(productId) > 0 ? '; used by non-VOID tests (product_inactive_in_use)' : ''}`,
+      );
+  });
+}
+
+function nonVoidTestCount(productId: number): number {
+  return Number(
+    (getDb().prepare("SELECT COUNT(*) AS n FROM lab_test_records WHERE product_id = ? AND status <> 'VOID'").get(productId) as { n: number }).n,
+  );
+}
+
+/**
+ * POST /lab/products/[id]/archive|restore — the dedicated is_active toggle
+ * (canEditLabProduct). Product id from the path segment only; CSRF is the
+ * existing origin check. Flash + redirect back to the product detail.
+ */
+export async function handleLabProductArchivePost(context: APIContext, productId: number, restore: boolean): Promise<Response> {
+  const user = getCurrentUser(context);
+  if (!user) {
+    return context.redirect(`/login?redirect=${encodeURIComponent(`/lab/products/${productId}`)}`);
+  }
+  if (!canEditLabProduct(user.role)) {
+    setFlash(context, 'error', 'You do not have permission to manage the Product Master.');
+    return context.redirect(`/lab/products/${productId}`);
+  }
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+
+  try {
+    setLabProductActive(productId, restore, user.id);
+    setFlash(context, 'success', restore ? 'Product restored to active.' : 'Product archived — it no longer appears on new-test forms.');
+  } catch (err) {
+    if (err instanceof LabProductNotFoundError) {
+      setFlash(context, 'error', 'Product not found.');
+    } else {
+      setFlash(context, 'error', err instanceof Error ? err.message : 'Could not update the product.');
+    }
+  }
+  return context.redirect(`/lab/products/${productId}`);
+}
+
 // ─────────────────────────────── Test-form reference data ───────────────────────────────
 
 export interface LabProductReference {

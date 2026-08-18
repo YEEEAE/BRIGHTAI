@@ -78,6 +78,20 @@ function fmt(value: unknown): string {
           {detail.product.is_active !== 1 && (
             <p class="text-sm text-slate-500">Inactive products are read-only historical records.</p>
           )}
+          {canEditLabProduct(role) && (
+            <form method="post" action={`/lab/products/${detail.product.id}/${detail.product.is_active === 1 ? 'archive' : 'restore'}`}>
+              <button
+                type="submit"
+                class={`rounded-lg px-4 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
+                  detail.product.is_active === 1
+                    ? 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                    : 'bg-brand-600 text-white hover:bg-brand-700'
+                }`}
+              >
+                {detail.product.is_active === 1 ? 'Archive Product' : 'Restore Product'}
+              </button>
+            </form>
+          )}
         </header>
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/products/${detail.product.id}`} />
@@ -157,6 +171,11 @@ function fmt(value: unknown): string {
             )}
             {' '}Approved tests keep their own product snapshot — master edits never alter them.
           </p>
+          {detail.product.is_active !== 1 && detail.test_count > 0 && (
+            <p class="mt-2 text-sm text-amber-700">
+              This inactive product is still referenced by tests — it is flagged in the Data Quality Center (product_inactive_in_use).
+            </p>
+          )}
         </section>
 
         <section aria-labelledby="sec-history" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">

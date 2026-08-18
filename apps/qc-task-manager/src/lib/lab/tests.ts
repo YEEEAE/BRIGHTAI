@@ -17,7 +17,7 @@ import { setFlash } from '../flash';
 import { parseFormData, labTestFormSchema, labTestVoidSchema } from '../validation';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
-import { canCreateLabTest, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
+import { canCreateLabTest, canEditLabTestRecord, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
 import { createNotification } from '../notifications';
 import { deriveCalibrationState, type LabCalibrationState } from './overview';
 import { labParametersSnapshotJson } from './policy';
@@ -362,6 +362,321 @@ export async function handleLabTestFormPost(context: APIContext): Promise<Respon
     console.error('[lab] test form save failure', err);
     setFlash(context, 'error', err instanceof Error ? err.message : 'Could not save the test.');
     return context.redirect(formUrl);
+  }
+}
+
+// ─────────────────────────────── DRAFT editing (PROMPT 43-B) ───────────────────────────────
+
+/** Thrown when the editable draft does not exist or is outside the caller's scope (→ 404). */
+export class LabTestDraftNotFoundError extends Error {
+  constructor() {
+    super('Test not found.');
+    this.name = 'LabTestDraftNotFoundError';
+  }
+}
+
+/** Thrown when the test exists and is in scope but is not editable (→ 400). */
+export class LabTestNotDraftError extends Error {
+  constructor(status: string) {
+    super(`Only DRAFT tests can be edited — this test is ${status}.`);
+    this.name = 'LabTestNotDraftError';
+  }
+}
+
+function loadLabTestAuth(row: Record<string, unknown>) {
+  return {
+    status: row.status as LabTestStatus,
+    tested_by: row.tested_by == null ? null : Number(row.tested_by),
+    reviewed_by: row.reviewed_by == null ? null : Number(row.reviewed_by),
+    created_by: Number(row.created_by),
+  };
+}
+
+/** True when the caller may edit this record AND it is a DRAFT (PROMPT 43-B: DRAFT only — SUBMITTED and beyond belong to the review flow). */
+function canEditLabTestDraft(user: { id: number; role: Role }, auth: ReturnType<typeof loadLabTestAuth>): boolean {
+  return auth.status === 'DRAFT' && canEditLabTestRecord(user, auth);
+}
+
+/**
+ * Prefill payload for the edit-mode test form. Null when the draft is missing
+ * or out of scope (→ not-found page). `product_description` pre-fills from the
+ * canonical product's name — the record stores product_id, not free text
+ * (same contract as create).
+ */
+export function getLabTestEditableDraft(
+  id: number,
+  user: { id: number; role: Role },
+): {
+  id: number;
+  test_number: string;
+  test_type: LabTestType;
+  record: Record<string, unknown>;
+  product_description: string;
+  samples: LabTestSample[];
+} | null {
+  if (!Number.isInteger(id) || id <= 0) return null;
+  const row = getDb()
+    .prepare(
+      `SELECT t.*, p.name AS product_name
+       FROM lab_test_records t LEFT JOIN lab_products p ON p.id = t.product_id
+       WHERE t.id = ?`,
+    )
+    .get(id) as Record<string, unknown> | undefined;
+  if (!row) return null;
+  if (!canEditLabTestDraft(user, loadLabTestAuth(row))) return null;
+  return {
+    id,
+    test_number: String(row.test_number),
+    test_type: row.test_type as LabTestType,
+    record: row,
+    product_description: row.product_name == null ? '' : String(row.product_name),
+    samples: listLabTestSamples(id),
+  };
+}
+
+/** Record fields covered by the shared form — diffed for the UPDATE audit. */
+const EDITABLE_FIELDS = [
+  'connector_type',
+  'sample_count',
+  'lot_number',
+  'sampling_area',
+  'equipment_id',
+  'medium_used',
+  'actual_pressure',
+  'torque_in_lb',
+  'time_sec',
+  'angle',
+  'temperature_measured',
+  'remarks',
+  'final_result',
+] as const;
+
+/**
+ * Update a DRAFT test in ONE transaction (PROMPT 43-B). Scope + DRAFT-only are
+ * enforced server-side: an out-of-scope caller gets LabTestDraftNotFoundError
+ * (404 — the record is not discoverable), an in-scope non-DRAFT gets
+ * LabTestNotDraftError (400). The full payload is revalidated by the caller
+ * with the SAME labTestFormSchema used on create (no partial-update bypass);
+ * the sample grid is replaced wholesale and re-derives the SAME stable
+ * identifiers (LAB-TEST-%05d-SNN from test_number + sample_no). test_type
+ * comes from the stored record, never from the request. On form_action=submit
+ * the draft moves to SUBMITTED exactly like create's submit path. Every
+ * changed field is audited as LAB_TEST/UPDATE with old/new values.
+ */
+export function updateLabTestDraft(
+  user: { id: number; role: Role },
+  testId: number,
+  data: LabTestFormData & { product_id: number | null; template_id?: number | null; template_version_id?: number | null },
+): { id: number; test_number: string } {
+  return transaction(() => {
+    const db = getDb();
+    const row = db.prepare('SELECT * FROM lab_test_records WHERE id = ?').get(testId) as Record<string, unknown> | undefined;
+    if (!row) throw new LabTestDraftNotFoundError();
+    const auth = loadLabTestAuth(row);
+    // Scope first: an out-of-scope record must not reveal whether it exists.
+    // The owner (or manager+) of a non-DRAFT test then gets the explicit
+    // 400 "DRAFT only" error — SUBMITTED and beyond belong to the review flow.
+    const isOwn = auth.tested_by === user.id || auth.created_by === user.id;
+    const isManagerOrAbove = user.role === 'manager' || user.role === 'admin';
+    if (!isOwn && !isManagerOrAbove) throw new LabTestDraftNotFoundError();
+    if (auth.status !== 'DRAFT') throw new LabTestNotDraftError(auth.status);
+
+    const testType = row.test_type as LabTestType;
+    const testNumber = String(row.test_number);
+    const submit = data.form_action === 'submit';
+
+    // Same archived-equipment guard as create.
+    if (data.equipment_id != null) {
+      const equipment = db.prepare('SELECT id, is_archived FROM lab_equipment WHERE id = ?').get(data.equipment_id) as
+        | { id: number; is_archived: number }
+        | undefined;
+      if (!equipment) throw new Error('Invalid equipment.');
+      if (equipment.is_archived === 1) throw new Error('Archived equipment cannot be used for new tests.');
+    }
+
+    const oldSnapshot: Record<string, unknown> = {
+      ...(Object.fromEntries(EDITABLE_FIELDS.map((f) => [f, row[f] ?? null])) as Record<string, unknown>),
+      product_id: row.product_id ?? null,
+      template_id: row.template_id ?? null,
+      template_version_id: row.template_version_id ?? null,
+    };
+    const newSnapshot: Record<string, unknown> = {
+      connector_type: data.connector_type,
+      sample_count: data.sample_count,
+      lot_number: data.lot_number,
+      sampling_area: data.sampling_area,
+      equipment_id: data.equipment_id,
+      medium_used: data.medium_used,
+      actual_pressure: data.actual_pressure,
+      torque_in_lb: data.torque_in_lb,
+      time_sec: data.time_sec,
+      angle: data.angle,
+      temperature_measured: data.temperature_measured,
+      remarks: data.remarks,
+      final_result: data.final_result,
+      product_id: data.product_id,
+      template_id: data.template_id ?? null,
+      template_version_id: data.template_version_id ?? null,
+    };
+    const oldDiff: Record<string, unknown> = {};
+    const newDiff: Record<string, unknown> = {};
+    for (const key of Object.keys(oldSnapshot)) {
+      if (String(oldSnapshot[key] ?? '') !== String(newSnapshot[key] ?? '')) {
+        oldDiff[key] = oldSnapshot[key];
+        newDiff[key] = newSnapshot[key];
+      }
+    }
+
+    db.prepare(
+      `UPDATE lab_test_records SET
+         product_id = ?, equipment_id = ?, lot_number = ?, sampling_area = ?, medium_used = ?,
+         connector_type = ?, sample_count = ?, actual_pressure = ?, torque_in_lb = ?, time_sec = ?,
+         angle = ?, temperature_measured = ?, remarks = ?, final_result = ?,
+         status = CASE WHEN ? = 1 THEN 'SUBMITTED' ELSE status END,
+         submitted_at = CASE WHEN ? = 1 THEN datetime('now') ELSE submitted_at END,
+         parameters_snapshot_json = CASE WHEN ? = 1 THEN ? ELSE parameters_snapshot_json END,
+         template_id = ?, template_version_id = ?, updated_at = datetime('now')
+       WHERE id = ?`,
+    ).run(
+      data.product_id,
+      data.equipment_id,
+      data.lot_number,
+      data.sampling_area,
+      data.medium_used,
+      data.connector_type,
+      data.sample_count,
+      data.actual_pressure,
+      data.torque_in_lb,
+      data.time_sec,
+      data.angle,
+      data.temperature_measured,
+      data.remarks,
+      submit ? data.final_result : null,
+      submit ? 1 : 0,
+      submit ? 1 : 0,
+      submit ? 1 : 0,
+      submit ? labParametersSnapshotJson() : null,
+      data.template_id ?? null,
+      data.template_version_id ?? null,
+      testId,
+    );
+
+    // Replace the sample grid — identifiers re-derive identically from the
+    // immutable test_number + sample_no, so approved-later traceability and
+    // existing identifiers stay stable.
+    db.prepare('DELETE FROM lab_test_samples WHERE test_id = ?').run(testId);
+    const rows = [...(data.samples_json ?? [])].sort((a, b) => a.sample_no - b.sample_no);
+    const insertSample = db.prepare(
+      `INSERT INTO lab_test_samples (
+         test_id, sample_no, sample_identifier, part_name, set_pressure, actual_pressure,
+         volume_sec, pressure_difference, holding_time_sec, leakage_rate, result, status
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    );
+    for (const r of rows) {
+      insertSample.run(
+        testId,
+        r.sample_no,
+        `${testNumber}-S${String(r.sample_no).padStart(2, '0')}`,
+        r.part_name,
+        r.set_pressure,
+        r.actual_pressure,
+        r.volume_sec,
+        r.pressure_difference,
+        r.holding_time_sec,
+        r.leakage_rate,
+        r.result,
+        r.result != null ? 'TESTED' : 'PENDING',
+      );
+    }
+
+    if (Object.keys(oldDiff).length > 0 || rows.length > 0) {
+      auditLabTest(
+        testId,
+        user.id,
+        'UPDATE',
+        `edited draft ${testNumber}; samples=${data.sample_count}`,
+        JSON.stringify(oldDiff),
+        JSON.stringify(newDiff),
+      );
+    }
+    if (submit) {
+      auditLabTest(testId, user.id, 'SUBMIT', `test_number=${testNumber}; final_result=${data.final_result}`, 'DRAFT', 'SUBMITTED');
+    }
+    return { id: testId, test_number: testNumber };
+  });
+}
+
+/**
+ * POST /lab/tests/[id]/edit — the edit-mode submission of the shared form
+ * (PROMPT 43-B). The test id comes from the path segment only; test_type is
+ * re-resolved from the STORED record (never the query/body); the body runs
+ * through the same labTestFormSchema as create, and product/template ids are
+ * re-resolved server-authoritatively exactly like handleLabTestFormPost.
+ */
+export async function handleLabTestEditPost(context: APIContext, testId: number): Promise<Response> {
+  const user = getCurrentUser(context);
+  if (!user) {
+    return context.redirect(`/login?redirect=${encodeURIComponent(`/lab/tests/${testId}/edit`)}`);
+  }
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+
+  // Scope + DRAFT check against the stored record — 404-style flash for
+  // out-of-scope (same IDOR decision as the detail page), error flash for 400.
+  const row = getDb().prepare('SELECT * FROM lab_test_records WHERE id = ?').get(testId) as Record<string, unknown> | undefined;
+  const rowAuth = row ? loadLabTestAuth(row) : null;
+  const inScope = rowAuth
+    ? rowAuth.tested_by === user.id || rowAuth.created_by === user.id || user.role === 'manager' || user.role === 'admin'
+    : false;
+  if (!row || !rowAuth || !inScope) {
+    setFlash(context, 'error', 'Test not found.');
+    return context.redirect('/lab/tests');
+  }
+  if (rowAuth.status !== 'DRAFT') {
+    setFlash(context, 'error', new LabTestNotDraftError(rowAuth.status).message);
+    return context.redirect(`/lab/tests/${testId}`);
+  }
+  const testType = row.test_type as LabTestType;
+  if (testType !== 'air' && testType !== 'vacuum') {
+    setFlash(context, 'error', 'Invalid test type.');
+    return context.redirect('/lab/tests');
+  }
+
+  const form = await context.request.formData();
+  const parsed = parseFormData(labTestFormSchema, form);
+  if (!parsed.ok) {
+    setFlash(context, 'error', parsed.error);
+    return context.redirect(`/lab/tests/new?test=${testId}`);
+  }
+
+  try {
+    const data = parsed.data;
+    const productId = resolveLabProductId(data.product_description);
+    const rawTemplateVersionId = form.get('template_version_id');
+    const templateVersionId =
+      rawTemplateVersionId !== null && rawTemplateVersionId !== '' && Number.isInteger(Number(rawTemplateVersionId)) && Number(rawTemplateVersionId) > 0
+        ? Number(rawTemplateVersionId)
+        : null;
+    const templateRef = resolveLabTemplateVersion(templateVersionId, testType);
+    const updated = updateLabTestDraft(
+      { id: user.id, role: user.role },
+      testId,
+      { ...data, product_id: productId, template_id: templateRef?.template_id ?? null, template_version_id: templateRef?.template_version_id ?? null },
+    );
+    if (data.form_action === 'submit') {
+      setFlash(context, 'success', `Test ${updated.test_number} submitted for review.`);
+      return context.redirect(`/lab/tests/${testId}`);
+    }
+    if (data.form_action === 'continue') {
+      setFlash(context, 'success', `Draft ${updated.test_number} updated.`);
+      return context.redirect(`/lab/tests/new?type=${testType}`);
+    }
+    setFlash(context, 'success', `Draft ${updated.test_number} updated.`);
+    return context.redirect(`/lab/tests/${testId}`);
+  } catch (err) {
+    console.error('[lab] test draft edit failure', err);
+    setFlash(context, 'error', err instanceof Error ? err.message : 'Could not save the test.');
+    return context.redirect(`/lab/tests/new?test=${testId}`);
   }
 }
 

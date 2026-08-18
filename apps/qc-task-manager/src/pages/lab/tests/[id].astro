@@ -26,7 +26,7 @@ import { loadLabTestView } from '../../../lib/lab/tests';
 import { LAB_TEST_STATUS_LABELS } from '../../../lib/lab/testSearch';
 import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../lib/lab/policy';
 import { getLabTestFindingLinkOptions } from '../../../lib/lab/findingLinks';
-import { canCreateLabRetest, canLinkLabTestToFinding, canReviewLabTest, canVoidLabTestRecord } from '../../../lib/permissions';
+import { canCreateLabRetest, canEditLabTestRecord, canLinkLabTestToFinding, canReviewLabTest, canVoidLabTestRecord } from '../../../lib/permissions';
 import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 
@@ -177,6 +177,22 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             {result && <span class={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${resultToneBadge[result] ?? 'bg-slate-100 text-slate-700'}`}>{resultLabel(result)}</span>}
             {immutable && (
               <span class="inline-flex rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" title="Approved and voided records are immutable quality records — they cannot be edited.">Read-only</span>
+            )}
+            {status === 'DRAFT' && canEditLabTestRecord(
+              { id: userId, role },
+              {
+                status: record!.status as never,
+                tested_by: record!.tested_by == null ? null : Number(record!.tested_by),
+                reviewed_by: record!.reviewed_by == null ? null : Number(record!.reviewed_by),
+                created_by: Number(record!.created_by),
+              },
+            ) && (
+              <a
+                href={`/lab/tests/new?test=${recordId}`}
+                class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+              >
+                Edit Draft
+              </a>
             )}
           </div>
         </header>
