@@ -24,6 +24,7 @@
     "test:audit-integrity": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-audit-integrity.mjs",
     "test:ai-foundation": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ai-foundation.mjs",
     "test:ai-features": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ai-features.mjs",
+    "test:ai-lab": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ai-lab.mjs",
     "test:dashboard-reports": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-dashboard-reports.mjs",
     "test:qc-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-qc-operations.mjs",
     "test:templates": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-templates.mjs",
@@ -45,7 +46,7 @@
     "test:lab-reports": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-reports.mjs",
     "test:lab-audit": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-audit.mjs",
     "test:badge-contrast": "node scripts/verify-badge-contrast.mjs",
-    "test": "pnpm test:badge-contrast && pnpm test:migrations && pnpm test:architecture && pnpm test:qc-operations && pnpm test:templates && pnpm test:audit-integrity && pnpm test:ai-foundation && pnpm test:ai-features && pnpm test:domain && pnpm test:sla && pnpm test:workflow && pnpm test:db-rules && pnpm test:lab-overview && pnpm test:lab-form && pnpm test:lab-tests && pnpm test:lab-review && pnpm test:lab-products && pnpm test:lab-equipment && pnpm test:lab-maintenance && pnpm test:lab-calibration && pnpm test:lab-documents && pnpm test:lab-acknowledgements && pnpm test:lab-retests && pnpm test:lab-calendar && pnpm test:lab-notifications && pnpm test:lab-data-quality && pnpm test:lab-reports && pnpm test:lab-audit && pnpm test:dashboard-reports",
+    "test": "pnpm test:badge-contrast && pnpm test:migrations && pnpm test:architecture && pnpm test:qc-operations && pnpm test:templates && pnpm test:audit-integrity && pnpm test:ai-foundation && pnpm test:ai-features && pnpm test:ai-lab && pnpm test:domain && pnpm test:sla && pnpm test:workflow && pnpm test:db-rules && pnpm test:lab-overview && pnpm test:lab-form && pnpm test:lab-tests && pnpm test:lab-review && pnpm test:lab-products && pnpm test:lab-equipment && pnpm test:lab-maintenance && pnpm test:lab-calibration && pnpm test:lab-documents && pnpm test:lab-acknowledgements && pnpm test:lab-retests && pnpm test:lab-calendar && pnpm test:lab-notifications && pnpm test:lab-data-quality && pnpm test:lab-reports && pnpm test:lab-audit && pnpm test:dashboard-reports",
     "e2e:acceptance": "NODE_ENV=production pnpm build && node scripts/e2e-acceptance.mjs"
   },
   "dependencies": {

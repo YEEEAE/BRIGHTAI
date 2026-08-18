@@ -57,6 +57,82 @@ export const evidenceReviewSchema = z.object({
   ...advisoryMeta,
 }).strict();
 
+// ── Laboratory advisory features (controlled AI assistance layer) ────────────
+// Every lab schema enforces the mandatory marking and advisory-only semantics:
+// human_review_required is a literal true, and ai_generated is the fixed
+// banner every response must carry (AI GENERATED — HUMAN REVIEW REQUIRED).
+export const LAB_AI_MARKING = 'AI GENERATED — HUMAN REVIEW REQUIRED';
+const labAdvisoryMeta = {
+  ...advisoryMeta,
+  ai_generated: z.literal(LAB_AI_MARKING),
+};
+
+export const labTestSummarySchema = z.object({
+  summary: z.string().trim().min(1).max(2_000),
+  key_points: z.array(z.string().trim().min(1).max(600)).max(15),
+  notable_items: z.array(z.string().trim().min(1).max(600)).max(10),
+  ...labAdvisoryMeta,
+}).strict();
+export const labEquipmentHistorySchema = z.object({
+  summary: z.string().trim().min(1).max(2_000),
+  key_events: z.array(z.string().trim().min(1).max(600)).max(15),
+  calibration_note: z.string().trim().min(1).max(600),
+  maintenance_notes: z.array(z.string().trim().min(1).max(600)).max(10),
+  ...labAdvisoryMeta,
+}).strict();
+export const labDocumentChangesSchema = z.object({
+  summary: z.string().trim().min(1).max(2_000),
+  changes: z.array(z.string().trim().min(1).max(600)).max(20),
+  review_attention: z.array(z.string().trim().min(1).max(600)).max(10),
+  ...labAdvisoryMeta,
+}).strict();
+export const labMissingFieldsSchema = z.object({
+  missing_fields: z.array(z.string().trim().min(1).max(600)).max(20),
+  data_gaps: z.array(z.string().trim().min(1).max(600)).max(20),
+  notes: z.string().trim().min(1).max(1_000),
+  ...labAdvisoryMeta,
+}).strict();
+export const labReviewQuestionsSchema = z.object({
+  questions: z.array(z.string().trim().min(1).max(600)).max(15),
+  focus_areas: z.array(z.string().trim().min(1).max(600)).max(10),
+  ...labAdvisoryMeta,
+}).strict();
+export const labSopComparisonSchema = z.object({
+  alignment: z.enum(['aligned', 'partial', 'unclear', 'no_reference_content']),
+  observations: z.array(z.string().trim().min(1).max(600)).max(15),
+  discrepancies: z.array(z.string().trim().min(1).max(600)).max(15),
+  criteria_basis: z.string().trim().min(1).max(1_000),
+  ...labAdvisoryMeta,
+}).strict();
+export const labFailPatternsSchema = z.object({
+  patterns: z.array(z.string().trim().min(1).max(600)).max(15),
+  affected_areas: z.array(z.string().trim().min(1).max(600)).max(15),
+  suggested_investigations: z.array(z.string().trim().min(1).max(600)).max(15),
+  ...labAdvisoryMeta,
+}).strict();
+export const labRetestPatternsSchema = z.object({
+  patterns: z.array(z.string().trim().min(1).max(600)).max(15),
+  common_reasons: z.array(z.string().trim().min(1).max(600)).max(10),
+  notes: z.string().trim().min(1).max(1_000),
+  ...labAdvisoryMeta,
+}).strict();
+export const labDataQualitySummarySchema = z.object({
+  summary: z.string().trim().min(1).max(2_000),
+  by_category: z.array(z.object({ category: z.enum(['tests', 'equipment', 'documents', 'products']), findings: z.number().int().min(0), highlights: z.array(z.string().trim().min(1).max(300)).max(5) }).strict()).max(4),
+  top_issues: z.array(z.string().trim().min(1).max(600)).max(15),
+  ...labAdvisoryMeta,
+}).strict();
+
+export type LabTestSummaryAi = z.infer<typeof labTestSummarySchema>;
+export type LabEquipmentHistoryAi = z.infer<typeof labEquipmentHistorySchema>;
+export type LabDocumentChangesAi = z.infer<typeof labDocumentChangesSchema>;
+export type LabMissingFieldsAi = z.infer<typeof labMissingFieldsSchema>;
+export type LabReviewQuestionsAi = z.infer<typeof labReviewQuestionsSchema>;
+export type LabSopComparisonAi = z.infer<typeof labSopComparisonSchema>;
+export type LabFailPatternsAi = z.infer<typeof labFailPatternsSchema>;
+export type LabRetestPatternsAi = z.infer<typeof labRetestPatternsSchema>;
+export type LabDataQualitySummaryAi = z.infer<typeof labDataQualitySummarySchema>;
+
 export type TaskAnalysis = z.infer<typeof taskAnalysisSchema>;
 export type FindingAnalysis = z.infer<typeof findingAnalysisSchema>;
 export type RcaAssistance = z.infer<typeof rcaAssistanceSchema>;

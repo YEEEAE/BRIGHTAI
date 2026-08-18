@@ -45,6 +45,8 @@ import {
   canReviewLabTestRecord,
   canSubmitLabTestRecord,
 } from '../../../lib/permissions';
+import { canViewLabReports } from '../../../lib/permissions';
+import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -401,6 +403,9 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
               <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-400">Next →</span>
             )}
           </nav>
+        )}
+        {canViewLabReports(role) && (
+          <AiReviewPanel feature="lab-fail-patterns" requestBody={{}} title="AI FAIL Patterns" client:visible />
         )}
       </>
     )}

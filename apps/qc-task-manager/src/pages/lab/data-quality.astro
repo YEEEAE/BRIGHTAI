@@ -24,6 +24,7 @@ import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
 import { setFlash } from '../../lib/flash';
 import { labNavForRole } from '../../lib/lab/navigation';
 import { canViewLabDataQuality } from '../../lib/permissions';
+import AiReviewPanel from '../../components/AiReviewPanel';
 import {
   LAB_DATA_QUALITY_ISSUE_LABELS,
   labDataQualitySeverity,
@@ -181,6 +182,8 @@ const SEVERITY_LABEL: Record<'danger' | 'info', string> = {
           Findings are recalculated from stored data on every page load. Fixing them happens in the owning register —
           tests, equipment, documents or products — never on this page.
         </p>
+
+        <AiReviewPanel feature="lab-data-quality-summary" requestBody={{}} title="AI Data-Quality Summary" client:visible />
       </>
     )}
   </div>

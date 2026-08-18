@@ -23,6 +23,7 @@ import {
   LAB_DOCUMENT_TYPE_LABELS,
 } from '../../../../lib/lab/documents';
 import { canViewLabDocuments } from '../../../../lib/permissions';
+import AiReviewPanel from '../../../../components/AiReviewPanel';
 import { setFlash } from '../../../../lib/flash';
 import type { LabDocumentStatus, Role } from '../../../../lib/types';
 
@@ -301,6 +302,7 @@ const canCompare = versionRows.length >= 2;
             )}
           </>
         )}
+        <AiReviewPanel feature="lab-document-changes" requestBody={{ id }} title="AI SOP/WI Change Summary" client:visible />
       </>
     )}
   </div>

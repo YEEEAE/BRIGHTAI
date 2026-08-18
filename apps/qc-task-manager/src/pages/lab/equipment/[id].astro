@@ -18,6 +18,7 @@ import type { LabCalibrationStatus } from '../../../lib/lab/calibration';
 import { calibrationLabel, statusLabels } from '../../../lib/lab/equipmentStatus';
 import { LAB_MAINTENANCE_STATUS_LABELS } from '../../../lib/lab/policy';
 import { canArchiveLabEquipment, canEditLabEquipment } from '../../../lib/permissions';
+import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -282,6 +283,8 @@ function fmt(value: unknown): string {
             );
           })()}
         </section>
+
+        <AiReviewPanel feature="lab-equipment-history" requestBody={{ id }} title="AI Equipment History" client:visible />
       </>
     )}
   </div>

@@ -28,6 +28,7 @@ import {
   type LabRetestSortField,
 } from '../../../lib/lab/retests';
 import type { Role } from '../../../lib/types';
+import AiReviewPanel from '../../../components/AiReviewPanel';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -287,6 +288,8 @@ function fmt(value: unknown): string {
             )}
           </nav>
         )}
+
+        <AiReviewPanel feature="lab-retest-patterns" requestBody={{}} title="AI Retest Patterns" client:visible />
       </>
     )}
   </div>

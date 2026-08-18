@@ -26,7 +26,8 @@ import { loadLabTestView } from '../../../lib/lab/tests';
 import { LAB_TEST_STATUS_LABELS } from '../../../lib/lab/testSearch';
 import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../lib/lab/policy';
 import { getLabTestFindingLinkOptions } from '../../../lib/lab/findingLinks';
-import { canCreateLabRetest, canLinkLabTestToFinding } from '../../../lib/permissions';
+import { canCreateLabRetest, canLinkLabTestToFinding, canReviewLabTest } from '../../../lib/permissions';
+import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -563,6 +564,15 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             <p class="text-sm text-slate-500">Workflow actions (edit, review, approve, retest) are coming with the review/approve module.</p>
           )}
         </div>
+
+        <section class="mt-6 space-y-4" aria-label="AI assistance (advisory only)">
+          <AiReviewPanel feature="lab-test-summary" requestBody={{ id: recordId }} title="AI Test Summary" client:visible />
+          <AiReviewPanel feature="lab-missing-fields" requestBody={{ id: recordId }} title="AI Missing-Fields Check" client:visible />
+          <AiReviewPanel feature="lab-sop-comparison" requestBody={{ id: recordId }} title="AI SOP/WI Comparison" client:visible />
+          {canReviewLabTest(role) && (
+            <AiReviewPanel feature="lab-review-questions" requestBody={{ id: recordId }} title="AI Review Questions" client:visible />
+          )}
+        </section>
       </>
     ) : null}
   </div>
