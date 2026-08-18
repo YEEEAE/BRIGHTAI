@@ -54,6 +54,7 @@ import labSampleStatusSql from '../../db/migrations/020_lab_sample_status.sql?ra
 import labTestFindingsSql from '../../db/migrations/021_lab_test_findings.sql?raw';
 import notificationsEntityHrefSql from '../../db/migrations/022_notifications_entity_href.sql?raw';
 import labDocumentsApprovalMetadataSql from '../../db/migrations/023_lab_documents_approval_metadata.sql?raw';
+import labRegisterPerformanceIndexesSql from '../../db/migrations/024_lab_register_performance_indexes.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -215,6 +216,18 @@ const REQUIRED_INDEXES = [
   'idx_lab_doc_ack_version',
   'idx_lab_doc_ack_user',
   'idx_lab_saved_views_user',
+  'idx_lab_tests_updated_at',
+  'idx_lab_tests_created_by',
+  'idx_lab_tests_template',
+  'idx_lab_tests_template_version',
+  'idx_lab_retests_status',
+  'idx_lab_retests_updated_at',
+  'idx_lab_equip_cal_equipment_created',
+  'idx_lab_doc_ack_status',
+  'idx_lab_doc_ack_assigned_at',
+  'idx_lab_documents_owner',
+  'idx_lab_documents_product',
+  'idx_lab_documents_updated_at',
 ] as const;
 
 /**
@@ -286,6 +299,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '021_lab_test_findings.sql', source: labTestFindingsSql },
       { file: '022_notifications_entity_href.sql', source: notificationsEntityHrefSql },
       { file: '023_lab_documents_approval_metadata.sql', source: labDocumentsApprovalMetadataSql },
+      { file: '024_lab_register_performance_indexes.sql', source: labRegisterPerformanceIndexesSql },
     ],
   });
   backfillAuditChain(db);

@@ -57,7 +57,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 32
 - [✅] Prompt 33
 - [✅] Prompt 34
-- [ ] Prompt 35
+- [✅] Prompt 35
 - [ ] Prompt 36
 - [ ] Prompt 37
 - [ ] Prompt 38
@@ -1931,7 +1931,7 @@ Add only necessary indexes using new migrations.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Perform an accessibility and responsive pass across the complete Laboratory.

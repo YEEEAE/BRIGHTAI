@@ -2,11 +2,20 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-15 23:50 +03:00
+last_updated: 2026-08-18 20:45 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.8.15
+version: 2.8.16
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-18 — QC-LAB-INDEX-AUDIT-001: تدقيق أداء سجلات المختبر — **migration 024: 12 فهرسًا فقط فوق الجداول المتنامية (additive CREATE INDEX IF NOT EXISTS)** — لا إعادة كتابة استعلامات ولا تغيير كود — النتيجة: 25 migration / 48 جدولًا
+
+- **Files**: `db/migrations/024_lab_register_performance_indexes.sql` (**جديد** — 12 index: `idx_lab_tests_updated_at/created_by/template/template_version` على `lab_test_records`؛ `idx_lab_retests_status/updated_at` على `lab_test_retests`؛ `idx_lab_equip_cal_equipment_created (equipment_id, created_at)` على `lab_equipment_calibration`؛ `idx_lab_doc_ack_status/assigned_at` على `lab_document_acknowledgements`؛ `idx_lab_documents_owner/product/updated_at` على `lab_documents`)، `src/lib/db.ts` (+import `?raw` +embeddedMigrations +12 اسمًا في `REQUIRED_INDEXES`)، `db/schema.sql` (مرآة الـ12 CREATE INDEX)، `scripts/test-migrations.mjs` (23→24، 13→14، "011-024")، `scripts/test-dashboard-reports.mjs` (23→24)، `scripts/test.mjs` (schema version 23→24).
+- **What (كل فهرس بمسوّغ query مؤكد من المصدر)**: (1) `updated_at` على lab_test_records — الفرز الافتراضي للسجل `DESC` + موجز "آخر الاختبارات" بـ /lab overview (كل تحميل للصفحة). (2) `created_by` — نطاق الموظف `(tested_by = ? OR created_by = ?)` في testSearch/overview/search. (3) `template_id` — عدّاد الاستخدام لكل صف في قوالب LIST_SELECT + فلتر سجل الاختبارات. (4) `template_version_id` — عدّاد الاستخدام لكل نسخة في تفاصيل القالب (كان full scan لكل نسخة). (5+6) retests `status/updated_at` — عدّادات لوحة التحكم + موجز retests المفتوحة (`ORDER BY updated_at DESC`) + فلتر السجل. (7) `(equipment_id, created_at)` — LATEST_DUE_SQL `ORDER BY created_at DESC LIMIT 1` لكل جهاز على كل تحميل overview/dashboard + ترتيب ملخص المعايرة. (8+9) ack `status/assigned_at` — عدّاد PENDING بلوحة التحكم + الفرز الافتراضي. (10-12) documents `owner/product/updated_at` — فلاتر + dropdowns + الفرز الافتراضي.
+- **Decision (مهم للـ future agents)**: (1) **"فقط الضروري"**: فهارس الفرز الافتراضي على جداول master-data الصغيرة (`lab_equipment`/`lab_products`/`lab_test_templates`) **لم تُضف عمدًا** — جداول دون المائة صف والفرز المؤقت أرخص من تكلفة صيانة الفهرس عند كل تعديل (موثّق في رأس الـ migration). (2) **qc_audit_log لم يُفهرس** — append-heavy والـ `idx_qc_audit_entity` الحالي يخدم استعلاماته. (3) مسائل query-level **خارج النطاق** (لا تُحل بفهرس) وموثقة في رأس الـ migration: `date(...)` على الأعمدة، LEFT JOINs غير المشروطة في COUNT السجل، COUNT الترابطي لكل صف، و`COLLATE NOCASE` لفحص تفرد الكود. (4) أي migration جديد فوق 023 يتبع هذا النمط: ملف `0NN_*.sql` + import `?raw` + embeddedMigrations + REQUIRED_INDEXES + مرآة schema.sql + counter في **ثلاثة** سكربتات (test-migrations / test-dashboard-reports / test.mjs) معًا.
+- **Verification**: `pnpm typecheck` → **0 errors / 0 warnings / 19 hints** ✅؛ `NODE_ENV=production pnpm build` → Complete ✅؛ **test:migrations** (fresh 24 + upgrade 14 + idempotent 0 + rollback + destructive guard) ✅؛ **test:dashboard-reports** ✅؛ **test:architecture** ✅؛ **test:domain 341/0** ✅؛ السلاسل المصابة كلها 0 failed (lab-tests 160/0، overview 88/0، equipment 130/0، calibration 97/0، documents 207/0، acknowledgements 116/0، retests 86/0، review 97/0، db-rules ✅).
+- **Notes**: لا commit ولا push — المستخدم يلتزم. رسالة مقترحة: `perf(db): add migration 024 — 12 targeted lab register indexes (tests/retests/calibration/ack/documents)`. التدقيق الثابت غطى 13 وحدة lab (testSearch/templates/equipment/products/calibration/retests/documents/acknowledgements/dashboard/overview/search/auditTimeline/labReports) — التفاصيل الكاملة بمسوّغ كل index داخل ملف الـ migration.
+- **Status**: delivered & verified محليًا (typecheck 0 + build Complete + كل السلاسل المتأثرة 0 failed).
 
 ### 2026-08-18 — QC-LAB-SEC-AUDIT-001: تدقيق أمني شامل لمختبر QC — **8 ثغرات مؤكدة (1 HIGH + 3 MED + 4 LOW) كلها أُصلحت مع اختبارات regression** — النتيجة: صفر critical/high معروف + صفر ثغرة من هذا التدقيق (النتائج سابقة عند HEAD فقط)
 

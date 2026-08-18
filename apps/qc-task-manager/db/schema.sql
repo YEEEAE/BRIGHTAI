@@ -718,3 +718,15 @@ CREATE INDEX IF NOT EXISTS idx_lab_doc_links_entity ON lab_document_links(entity
 CREATE INDEX IF NOT EXISTS idx_lab_doc_ack_version ON lab_document_acknowledgements(document_version_id);
 CREATE INDEX IF NOT EXISTS idx_lab_doc_ack_user ON lab_document_acknowledgements(user_id);
 CREATE INDEX IF NOT EXISTS idx_lab_saved_views_user ON lab_saved_views(user_id);
+CREATE INDEX IF NOT EXISTS idx_lab_tests_updated_at ON lab_test_records(updated_at);
+CREATE INDEX IF NOT EXISTS idx_lab_tests_created_by ON lab_test_records(created_by);
+CREATE INDEX IF NOT EXISTS idx_lab_tests_template ON lab_test_records(template_id);
+CREATE INDEX IF NOT EXISTS idx_lab_tests_template_version ON lab_test_records(template_version_id);
+CREATE INDEX IF NOT EXISTS idx_lab_retests_status ON lab_test_retests(status);
+CREATE INDEX IF NOT EXISTS idx_lab_retests_updated_at ON lab_test_retests(updated_at);
+CREATE INDEX IF NOT EXISTS idx_lab_equip_cal_equipment_created ON lab_equipment_calibration(equipment_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_lab_doc_ack_status ON lab_document_acknowledgements(status);
+CREATE INDEX IF NOT EXISTS idx_lab_doc_ack_assigned_at ON lab_document_acknowledgements(assigned_at);
+CREATE INDEX IF NOT EXISTS idx_lab_documents_owner ON lab_documents(owner_id);
+CREATE INDEX IF NOT EXISTS idx_lab_documents_product ON lab_documents(product_id);
+CREATE INDEX IF NOT EXISTS idx_lab_documents_updated_at ON lab_documents(updated_at);
