@@ -43,13 +43,13 @@ const tsText = iso(printTimestamp);
       .print-meta strong { color: #111827; }
 
       .print-section { border: 1px solid #d1d5db; margin-bottom: 10px; }
-      .print-section-title { background: #f3f4f6; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; padding: 5px 10px; border-bottom: 1px solid #d1d5db; }
+      .print-section-title { background: #f3f4f6; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; padding: 5px 10px; border-bottom: 1px solid #d1d5db; margin: 0; }
       .print-section-body { padding: 8px 10px; }
 
       .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
       .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px 24px; }
       .dl-item { display: flex; gap: 6px; }
-      .dl-item dt { font-weight: 600; color: #4b5563; min-width: 150px; }
+      .dl-item dt { font-weight: 600; color: #4b5563; min-width: 0; flex: 0 0 auto; max-width: 45%; }
       .dl-item dd { margin: 0; }
 
       table { width: 100%; border-collapse: collapse; }

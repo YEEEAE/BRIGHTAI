@@ -115,16 +115,25 @@ const SEVERITY_LABEL: Record<'danger' | 'info', string> = {
             <p class="mt-1 text-2xl font-semibold text-slate-900">{report.total}</p>
             <p class="mt-0.5 text-xs text-slate-500">Across all four registers</p>
           </div>
-          {CATEGORIES.map((c) => (
-            <a
-              href={`#dq-${c.key}`}
-              class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-brand-300"
-            >
-              <p class="text-xs font-medium uppercase tracking-wide text-slate-500">{c.label}</p>
-              <p class="mt-1 text-2xl font-semibold text-slate-900">{report![c.key].length}</p>
-              <p class="mt-0.5 text-xs text-slate-500">{c.hint}</p>
-            </a>
-          ))}
+          {CATEGORIES.map((c) => {
+            const count = report![c.key].length;
+            return count > 0 ? (
+              <a
+                href={`#dq-${c.key}`}
+                class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-brand-300"
+              >
+                <p class="text-xs font-medium uppercase tracking-wide text-slate-500">{c.label}</p>
+                <p class="mt-1 text-2xl font-semibold text-slate-900">{count}</p>
+                <p class="mt-0.5 text-xs text-slate-500">{c.hint}</p>
+              </a>
+            ) : (
+              <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                <p class="text-xs font-medium uppercase tracking-wide text-slate-500">{c.label}</p>
+                <p class="mt-1 text-2xl font-semibold text-slate-900">{count}</p>
+                <p class="mt-0.5 text-xs text-slate-500">{c.hint}</p>
+              </div>
+            );
+          })}
         </section>
 
         {report.total === 0 && (

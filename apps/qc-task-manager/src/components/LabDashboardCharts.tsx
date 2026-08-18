@@ -22,9 +22,6 @@ interface Props {
   documentStatus: LabChartSlice[];
 }
 
-const TOOLTIP_CLS =
-  'pointer-events-none absolute z-10 -translate-x-1/2 rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white shadow';
-
 // ───────────────────────── Horizontal slice bars ─────────────────────────
 // One horizontal bar per slice (count + share-of-total). SVG attributes only.
 
@@ -256,19 +253,11 @@ function LabLineChart({ data }: { data: LabWeekPoint[] }) {
         ))}
       </svg>
 
-      <p className="mt-2 text-xs text-slate-500">
-        {total} test{total === 1 ? '' : 's'} created in the last 8 weeks.
+      <p className="mt-2 text-xs text-slate-500" aria-live="polite">
+        {activePoint
+          ? `${activePoint.label}: ${activePoint.count} test${activePoint.count === 1 ? '' : 's'} created — selected point`
+          : `${total} test${total === 1 ? '' : 's'} created in the last 8 weeks.`}
       </p>
-
-      {activePoint && (
-        <div
-          className={TOOLTIP_CLS}
-          style={{ left: `${(activePoint.x / LINE_W) * 100}%`, top: '-10px' }}
-          role="tooltip"
-        >
-          {activePoint.label}: {activePoint.count} created
-        </div>
-      )}
     </div>
   );
 }

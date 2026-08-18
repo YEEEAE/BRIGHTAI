@@ -33,9 +33,10 @@ export default function MarkReadButton({ notificationId }: MarkReadButtonProps) 
       type="button"
       onClick={markRead}
       disabled={busy}
-      className="shrink-0 rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+      aria-busy={busy}
+      className="shrink-0 rounded-md border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
     >
-      {busy ? '…' : 'Mark as read'}
+      {busy ? 'Marking…' : 'Mark as read'}
     </button>
   );
 }

@@ -73,7 +73,7 @@ const statusTone: Record<string, string> = {
   UNDER_REVIEW: 'bg-amber-100 text-amber-800',
   REJECTED: 'bg-rose-100 text-rose-800',
   APPROVED: 'bg-emerald-100 text-emerald-800',
-  VOID: 'bg-slate-200 text-slate-500',
+  VOID: 'bg-slate-200 text-slate-700',
 };
 const resultTone: Record<string, string> = { PASS: 'text-green-700', FAIL: 'text-red-700', HOLD: 'text-orange-700' };
 const resultToneBadge: Record<string, string> = {
@@ -250,6 +250,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
           ) : (
             <div class="mt-3 overflow-x-auto contain-layout contain-paint">
               <table class="min-w-[760px] divide-y divide-slate-100 text-sm">
+                <caption class="sr-only">Sample results for {String(record.test_number)}</caption>
                 <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr>
                     <th scope="col" class="px-3 py-2 font-semibold">Sample</th>
@@ -278,7 +279,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                         <td class="px-3 py-2 text-slate-700">{s.holding_time_sec ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.leakage_rate ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{sampleStatusLabel(s.status)}</td>
-                        <td class={`px-3 py-2 font-semibold ${sr ? resultTone[sr] ?? 'text-slate-500' : 'text-slate-400'}`}>{sr ? resultLabel(sr) : '—'}</td>
+                        <td class={`px-3 py-2 font-semibold ${sr ? resultTone[sr] ?? 'text-slate-500' : 'text-slate-500'}`}>{sr ? resultLabel(sr) : '—'}</td>
                       </tr>
                     );
                   })}
@@ -299,7 +300,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
         {/* 9. Final Result */}
         <section aria-label="Final result" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Final Result</h2>
-          <p class={`mt-3 text-sm font-semibold ${result ? resultTone[result] ?? 'text-slate-900' : 'text-slate-400'}`}>
+          <p class={`mt-3 text-sm font-semibold ${result ? resultTone[result] ?? 'text-slate-900' : 'text-slate-500'}`}>
             {result ? resultLabel(result) : 'Pending'}
           </p>
         </section>
@@ -348,7 +349,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
         {/* 12. Equipment + Calibration snapshot */}
         {immutable && view.equipmentSnapshot && (
           <section aria-label="Equipment and calibration snapshot" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Equipment &amp; Calibration Snapshot <span class="text-slate-400">(frozen at approval)</span></h2>
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Equipment &amp; Calibration Snapshot <span class="text-slate-500">(frozen at approval)</span></h2>
             <dl class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
               <div><dt class="text-xs font-medium text-slate-500">Equipment Name</dt><dd class="mt-0.5 text-sm text-slate-900">{String(view.equipmentSnapshot.equipment_name ?? '—')}</dd></div>
               <div><dt class="text-xs font-medium text-slate-500">Equipment Code</dt><dd class="mt-0.5 text-sm text-slate-900">{String(view.equipmentSnapshot.equipment_code ?? '—')}</dd></div>
@@ -380,7 +381,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
         {/* 14. Template snapshot */}
         {view.templateSnapshot && (
           <section aria-label="Template snapshot" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Template Snapshot <span class="text-slate-400">(frozen at approval)</span></h2>
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Template Snapshot <span class="text-slate-500">(frozen at approval)</span></h2>
             <dl class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
               {snapshotEntries(view.templateSnapshot).map(([key, value]) => (
                 <div><dt class="text-xs font-medium text-slate-500">{key.replace(/_/g, ' ')}</dt><dd class="mt-0.5 text-sm text-slate-700">{value}</dd></div>
@@ -396,7 +397,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             {canCreateLabRetest(role) && ['APPROVED', 'REJECTED', 'VOID'].includes(String(view.record?.status)) && (
               <a
                 href={`/lab/retests/new?test=${id}`}
-                class="rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                class="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
               >
                 Create Retest
               </a>
@@ -407,6 +408,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
           ) : (
             <div class="mt-3 overflow-x-auto contain-layout contain-paint">
               <table class="min-w-[620px] divide-y divide-slate-100 text-sm">
+                <caption class="sr-only">Retest history for {String(record.test_number)}</caption>
                 <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr>
                     <th scope="col" class="px-3 py-2 font-semibold">Retest</th>
@@ -446,11 +448,11 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                   <a href={link.href} class="font-semibold text-brand-700 hover:underline">{link.finding_number}</a>
                   <span class="text-slate-600">{link.classification} · {link.severity} · {link.status}</span>
                   {link.note ? <span class="text-slate-500">{link.note}</span> : null}
-                  <span class="text-xs text-slate-400">{link.linked_by_name} · {link.created_at}</span>
+                  <span class="text-xs text-slate-500">{link.linked_by_name} · {link.created_at}</span>
                   {canLinkFindings && (
                     <form method="post" action={`/lab/tests/${recordId}/links/unlink`} class="inline">
                       <input type="hidden" name="finding_id" value={link.finding_id} />
-                      <button type="submit" class="rounded-md border border-slate-300 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50">
+                      <button type="submit" class="rounded-md border border-slate-300 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50">
                         Unlink
                       </button>
                     </form>
@@ -505,7 +507,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
 
           {view.relatedQuality.length > 0 && (
             <div class="mt-4">
-              <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-400">Link activity</h3>
+              <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Link activity</h3>
               <ol class="mt-2 space-y-2">
                 {view.relatedQuality.map((e) => (
                   <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xs text-slate-500">
@@ -539,18 +541,18 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
               {view.timeline.map((e) => (
                 <li class="border-s-2 border-brand-100 ps-3 text-sm">
                   <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span class="font-mono text-xs text-slate-400">{String(e.created_at)}</span>
+                    <span class="font-mono text-xs text-slate-500">{String(e.created_at)}</span>
                     <span class="font-semibold text-slate-900">{String(e.action)}</span>
                     {(e.old_value !== null && e.old_value !== undefined) || (e.new_value !== null && e.new_value !== undefined) ? (
                       <span class="flex flex-wrap items-center gap-1">
                         <span class="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-xs text-slate-700">{String(e.old_value ?? '—')}</span>
-                        <span aria-hidden="true" class="text-slate-400">→</span>
+                        <span aria-hidden="true" class="text-slate-500">→</span>
                         <span class="inline-flex items-center rounded-md border border-brand-100 bg-brand-50 px-1.5 py-0.5 font-mono text-xs text-brand-800">{String(e.new_value ?? '—')}</span>
                       </span>
                     ) : null}
-                    <span class="text-xs text-slate-400">{String(e.actor_name ?? 'System')}</span>
+                    <span class="text-xs text-slate-500">{String(e.actor_name ?? 'System')}</span>
                   </div>
-                  {e.note ? <p class="mt-1 text-slate-600"><span class="text-xs font-medium uppercase tracking-wide text-slate-400">Reason / details</span> <span class="ms-1">{String(e.note)}</span></p> : null}
+                  {e.note ? <p class="mt-1 text-slate-600"><span class="text-xs font-medium uppercase tracking-wide text-slate-500">Reason / details</span> <span class="ms-1">{String(e.note)}</span></p> : null}
                 </li>
               ))}
             </ol>

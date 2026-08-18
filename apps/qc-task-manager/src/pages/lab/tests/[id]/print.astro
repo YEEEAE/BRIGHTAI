@@ -98,7 +98,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
     <>
       <header class="print-header">
         <div>
-          <div class="print-title">QC Laboratory</div>
+          <h1 class="print-title">QC Laboratory</h1>
           <div class="print-sub">Controlled Laboratory Test Record</div>
         </div>
         <div class="print-meta">
@@ -111,64 +111,64 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
 
       {/* Sample Identification */}
       <section class="print-section">
-        <div class="print-section-title">1 · Sample Identification</div>
-        <div class="print-section-body grid2">
+        <h2 class="print-section-title">1 · Sample Identification</h2>
+        <dl class="print-section-body grid2">
           <div class="dl-item"><dt>Product Description</dt><dd>{val('product_name')} {record.product_code ? `(${record.product_code})` : ''}</dd></div>
           <div class="dl-item"><dt>Connector Type</dt><dd>{val('connector_type')}</dd></div>
           <div class="dl-item"><dt>No. of Samples Tested</dt><dd>{val('sample_count')}</dd></div>
           <div class="dl-item"><dt>Lot Number</dt><dd>{val('lot_number')}</dd></div>
           <div class="dl-item"><dt>Sampling Area</dt><dd>{val('sampling_area')}</dd></div>
           <div class="dl-item"><dt>Medium Used</dt><dd>{val('medium_used')}</dd></div>
-        </div>
+        </dl>
       </section>
 
       {/* Equipment Used */}
       <section class="print-section">
-        <div class="print-section-title">2 · Equipment Used</div>
-        <div class="print-section-body grid2">
+        <h2 class="print-section-title">2 · Equipment Used</h2>
+        <dl class="print-section-body grid2">
           <div class="dl-item"><dt>Machine</dt><dd>{val('equipment_name')} {record.equipment_code ? `(${record.equipment_code})` : ''}</dd></div>
           <div class="dl-item"><dt>Medium Used</dt><dd>{val('medium_used')}</dd></div>
-        </div>
+        </dl>
       </section>
 
       {/* Connector Assembly */}
       <section class="print-section">
-        <div class="print-section-title">3 · Connector Assembly</div>
-        <div class="print-section-body grid3">
+        <h2 class="print-section-title">3 · Connector Assembly</h2>
+        <dl class="print-section-body grid3">
           <div class="dl-item"><dt>Actual Pressure</dt><dd>{val('actual_pressure')}</dd></div>
           <div class="dl-item"><dt>Torque (in.lb)</dt><dd>{val('torque_in_lb')}</dd></div>
           <div class="dl-item"><dt>Time (Sec.)</dt><dd>{val('time_sec')}</dd></div>
           <div class="dl-item"><dt>Angle</dt><dd>{val('angle')}</dd></div>
-        </div>
+        </dl>
       </section>
 
       {/* Differential Conversion */}
       <section class="print-section">
-        <div class="print-section-title">4 · Differential Conversion</div>
-        <div class="print-section-body grid2">
+        <h2 class="print-section-title">4 · Differential Conversion</h2>
+        <dl class="print-section-body grid2">
           <div class="dl-item"><dt>Temperature (Measured)</dt><dd>{val('temperature_measured')}</dd></div>
-        </div>
+        </dl>
       </section>
 
       {/* Test Parameters */}
       <section class="print-section">
-        <div class="print-section-title">5 · Test Parameters</div>
-        <div class="print-section-body">
+        <h2 class="print-section-title">5 · Test Parameters</h2>
+        <dl class="print-section-body">
           {view.parametersSnapshot ? (
-            <div class="grid3">
+            <dl class="grid3">
               {snapshotEntries(view.parametersSnapshot).map(([key, value]) => (
                 <div class="dl-item"><dt>{PARAM_LABELS[key] ?? key}</dt><dd>{value}</dd></div>
               ))}
-            </div>
+            </dl>
           ) : (
             <div>Reference parameters are captured when this test is submitted for review.</div>
           )}
-        </div>
+        </dl>
       </section>
 
       {/* Sample Results */}
       <section class="print-section">
-        <div class="print-section-title">6 · Sample Results</div>
+        <h2 class="print-section-title">6 · Sample Results</h2>
         <div class="print-section-body">
           {view.samples.length === 0 ? (
             <div>No sample rows recorded.</div>
@@ -176,16 +176,16 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             <table>
               <thead>
                 <tr>
-                  <th>Sample</th>
-                  <th>Part Name</th>
-                  <th>Set Pressure</th>
-                  <th>Actual Pressure</th>
-                  <th>Volume (Sec.)</th>
-                  <th>Pressure Diff.</th>
-                  <th>Holding (Sec.)</th>
-                  <th>Leakage Rate</th>
-                  <th>Status</th>
-                  <th>Result</th>
+                  <th scope="col">Sample</th>
+                  <th scope="col">Part Name</th>
+                  <th scope="col">Set Pressure</th>
+                  <th scope="col">Actual Pressure</th>
+                  <th scope="col">Volume (Sec.)</th>
+                  <th scope="col">Pressure Diff.</th>
+                  <th scope="col">Holding (Sec.)</th>
+                  <th scope="col">Leakage Rate</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Result</th>
                 </tr>
               </thead>
               <tbody>
@@ -212,7 +212,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
       {/* Remarks */}
       {record.remarks ? (
         <section class="print-section">
-          <div class="print-section-title">7 · Remarks</div>
+          <h2 class="print-section-title">7 · Remarks</h2>
           <div class="print-section-body remark-text">{String(record.remarks)}</div>
         </section>
       ) : null}
@@ -220,17 +220,17 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
       {/* Retest history */}
       {view.retests.length > 0 ? (
         <section class="print-section">
-          <div class="print-section-title">Retest History</div>
+          <h2 class="print-section-title">Retest History</h2>
           <div class="print-section-body">
             <table>
               <thead>
                 <tr>
-                  <th>Retest</th>
-                  <th>Reason</th>
-                  <th>Status</th>
-                  <th>New Test</th>
-                  <th>Result</th>
-                  <th>Created</th>
+                  <th scope="col">Retest</th>
+                  <th scope="col">Reason</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">New Test</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Created</th>
                 </tr>
               </thead>
               <tbody>
@@ -253,18 +253,18 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
       {/* Related Investigation / NCR / CAPA links */}
       {view.findingLinks.length > 0 ? (
         <section class="print-section">
-          <div class="print-section-title">Related Findings (NCR / CAPA)</div>
+          <h2 class="print-section-title">Related Findings (NCR / CAPA)</h2>
           <div class="print-section-body">
             <table>
               <thead>
                 <tr>
-                  <th>Finding</th>
-                  <th>Classification</th>
-                  <th>Severity</th>
-                  <th>Status</th>
-                  <th>Note</th>
-                  <th>Linked By</th>
-                  <th>Linked At</th>
+                  <th scope="col">Finding</th>
+                  <th scope="col">Classification</th>
+                  <th scope="col">Severity</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Note</th>
+                  <th scope="col">Linked By</th>
+                  <th scope="col">Linked At</th>
                 </tr>
               </thead>
               <tbody>
@@ -287,25 +287,25 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
 
       {/* Final Result */}
       <section class="print-section">
-        <div class="print-section-title">Final Result</div>
+        <h2 class="print-section-title">Final Result</h2>
         <div class={`print-section-body final-result ${resultClass}`}>{result ? resultLabel(result) : 'Pending'}</div>
       </section>
 
       {/* Applicable SOP/WI */}
       <section class="print-section">
-        <div class="print-section-title">Applicable SOP / WI</div>
+        <h2 class="print-section-title">Applicable SOP / WI</h2>
         <div class="print-section-body">
           {view.documentSnapshots.length === 0 ? (
             <div>No applicable controlled document recorded for this test.</div>
           ) : (
-            <div class="grid2">
+            <dl class="grid2">
               {view.documentSnapshots.map((doc) => (
                 <div class="dl-item">
                   <dt>{String(doc.role)} {doc.version_number ? `v${String(doc.version_number)}` : ''}</dt>
                   <dd>{String(doc.document_code ?? '—')} — {String(doc.title ?? '—')}</dd>
                 </div>
               ))}
-            </div>
+            </dl>
           )}
         </div>
       </section>
@@ -313,20 +313,20 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
       {/* Equipment + Calibration snapshot */}
       {view.equipmentSnapshot && (
         <section class="print-section">
-          <div class="print-section-title">Equipment &amp; Calibration Snapshot (at test time)</div>
-          <div class="print-section-body grid3">
+          <h2 class="print-section-title">Equipment &amp; Calibration Snapshot (at test time)</h2>
+          <dl class="print-section-body grid3">
             <div class="dl-item"><dt>Equipment</dt><dd>{String(view.equipmentSnapshot.equipment_name ?? '—')} ({String(view.equipmentSnapshot.equipment_code ?? '—')})</dd></div>
             <div class="dl-item"><dt>Serial Number</dt><dd>{String(view.equipmentSnapshot.serial_number ?? '—')}</dd></div>
             <div class="dl-item"><dt>Location</dt><dd>{String(view.equipmentSnapshot.location ?? '—')}</dd></div>
             <div class="dl-item"><dt>Calibration State</dt><dd>{String(view.equipmentSnapshot.calibration_state ?? '—')}</dd></div>
             <div class="dl-item"><dt>Calibration Reference</dt><dd>{String(view.equipmentSnapshot.calibration_reference ?? '—')}</dd></div>
-          </div>
+          </dl>
         </section>
       )}
 
       {/* Authorization */}
       <section class="print-section">
-        <div class="print-section-title">Authorization</div>
+        <h2 class="print-section-title">Authorization</h2>
         <div class="print-section-body auth-grid">
           <div class="auth-box">
             <div class="label">Tested By</div>
@@ -348,13 +348,13 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
 
       {/* Controlled version metadata */}
       <section class="print-section">
-        <div class="print-section-title">Controlled Version Metadata</div>
-        <div class="print-section-body grid3">
+        <h2 class="print-section-title">Controlled Version Metadata</h2>
+        <dl class="print-section-body grid3">
           <div class="dl-item"><dt>Created</dt><dd>{val('created_at')}</dd></div>
           <div class="dl-item"><dt>Updated</dt><dd>{val('updated_at')}</dd></div>
           <div class="dl-item"><dt>Approved</dt><dd>{val('approved_at')}</dd></div>
           <div class="dl-item"><dt>Record Status</dt><dd>{LAB_TEST_STATUS_LABELS[status as keyof typeof LAB_TEST_STATUS_LABELS] ?? status}</dd></div>
-        </div>
+        </dl>
       </section>
     </>
   ) : null}

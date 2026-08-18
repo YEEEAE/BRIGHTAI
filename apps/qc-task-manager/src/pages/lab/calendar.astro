@@ -197,51 +197,66 @@ const groupedEvents = calendar ? [...eventsByDate.values()] : [];
             <!-- Desktop: month grid (7 columns × 6 rows, Monday-first) -->
             <section aria-label="Calendar month grid" class="hidden md:block">
               <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-                <div class="grid grid-cols-7 border-b border-slate-200 bg-slate-50">
-                  {WEEKDAYS.map((wd) => (
-                    <div class="px-2 py-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-600">
-                      {wd}
-                    </div>
-                  ))}
-                </div>
-                <div class="grid grid-cols-7">
-                  {calendar.month.days.map((day) => (
-                    <div
-                      class={`min-h-24 border-b border-r border-slate-100 p-1.5 ${day.inMonth ? 'bg-white' : 'bg-slate-50/60'}`}
-                    >
-                      <p
-                        class={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
-                          day.isToday
-                            ? 'bg-brand-600 text-white'
-                            : day.inMonth
-                              ? 'text-slate-700'
-                              : 'text-slate-400'
-                        }`}
-                      >
-                        {Number(day.iso.slice(8, 10))}
-                      </p>
-                      {day.events.length > 0 && (
-                        <ul class="mt-1 space-y-1">
-                          {day.events.slice(0, 3).map((ev) => (
-                            <li>
-                              <a
-                                href={ev.href}
-                                title={`${ev.label} — ${LAB_CALENDAR_TYPE_LABELS[ev.type]} · ${ev.detail}`}
-                                class={`block rounded border px-1.5 py-0.5 text-xs ${TYPE_BADGE[ev.type]} hover:opacity-80`}
-                              >
-                                <span class="block truncate">{ev.label}</span>
-                                <span class="block truncate text-[10px] leading-tight opacity-75">{ev.detail}</span>
-                              </a>
-                            </li>
-                          ))}
-                          {day.events.length > 3 && (
-                            <li class="px-1.5 text-xs text-slate-500">+{day.events.length - 3} more</li>
-                          )}
-                        </ul>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <table class="w-full">
+                  <caption class="sr-only">Calendar for {calendar.month.label} — weekdays by column, days by row</caption>
+                  <thead>
+                    <tr class="bg-slate-50">
+                      {WEEKDAYS.map((wd) => (
+                        <th scope="col" class="px-2 py-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-600">
+                          {wd}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.from({ length: Math.ceil(calendar.month.days.length / 7) }, (_, rowIdx) => (
+                      <tr>
+                        {calendar.month.days.slice(rowIdx * 7, rowIdx * 7 + 7).map((day) => (
+                          <td
+                            class={`h-24 border-b border-r border-slate-100 p-1.5 align-top ${day.inMonth ? 'bg-white' : 'bg-slate-50/60'}`}
+                          >
+                            <p
+                              class={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
+                                day.isToday
+                                  ? 'bg-brand-600 text-white'
+                                  : day.inMonth
+                                    ? 'text-slate-700'
+                                    : 'text-slate-500'
+                              }`}
+                            >
+                              {Number(day.iso.slice(8, 10))}
+                              {day.isToday && <span class="sr-only"> — today</span>}
+                            </p>
+                            {day.events.length > 0 && (
+                              <ul class="mt-1 space-y-1">
+                                {day.events.slice(0, 3).map((ev) => (
+                                  <li>
+                                    <a
+                                      href={ev.href}
+                                      title={`${ev.label} — ${LAB_CALENDAR_TYPE_LABELS[ev.type]} · ${ev.detail}`}
+                                      class={`block rounded border px-1.5 py-0.5 text-xs ${TYPE_BADGE[ev.type]} hover:opacity-80`}
+                                    >
+                                      <span class="block truncate">{ev.label}</span>
+                                      <span class="block truncate text-xs leading-tight opacity-75">{ev.detail}</span>
+                                    </a>
+                                  </li>
+                                ))}
+                                {day.events.length > 3 && (
+                                  <li class="px-1.5 text-xs text-slate-500">
+                                    +{day.events.length - 3} more
+                                    <span class="sr-only">
+                                      : {day.events.slice(3).map((ev) => ev.label).join(', ')}
+                                    </span>
+                                  </li>
+                                )}
+                              </ul>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </section>
 

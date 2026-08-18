@@ -58,7 +58,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 33
 - [✅] Prompt 34
 - [✅] Prompt 35
-- [ ] Prompt 36
+- [✅] Prompt 36
 - [ ] Prompt 37
 - [ ] Prompt 38
 - [ ] Prompt 39
@@ -1973,7 +1973,7 @@ Do not redesign unrelated application areas.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Create or extend tests for the complete Laboratory.

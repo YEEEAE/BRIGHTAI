@@ -62,7 +62,7 @@ function fmt(value: unknown): string {
             <h1 class="mt-1 text-3xl font-semibold text-slate-900">{detail.product.name}</h1>
             <p class="mt-1 text-sm text-slate-600">
               Code <span class="font-medium text-slate-900" dir="ltr">{detail.product.code}</span>
-              <span class={`ms-3 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${detail.product.is_active === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500'}`}>
+              <span class={`ms-3 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${detail.product.is_active === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'}`}>
                 {detail.product.is_active === 1 ? 'Active' : 'Inactive'}
               </span>
             </p>
@@ -119,17 +119,13 @@ function fmt(value: unknown): string {
                 {detail.wi_title ? `${detail.wi_code} — ${detail.wi_title}` : '—'}
               </dd>
             </div>
-            <div class="sm:col-span-2 lg:col-span-3">
-              <div class={fieldCls}>
-                <dt class={labelCls}>Product Description</dt>
-                <dd class="mt-1 text-slate-900 whitespace-pre-line">{fmt(detail.product.description)}</dd>
-              </div>
+            <div class={`sm:col-span-2 lg:col-span-3 ${fieldCls}`}>
+              <dt class={labelCls}>Product Description</dt>
+              <dd class="mt-1 text-slate-900 whitespace-pre-line">{fmt(detail.product.description)}</dd>
             </div>
-            <div class="sm:col-span-2 lg:col-span-3">
-              <div class={fieldCls}>
-                <dt class={labelCls}>Notes</dt>
-                <dd class="mt-1 text-slate-900 whitespace-pre-line">{fmt(detail.product.notes)}</dd>
-              </div>
+            <div class={`sm:col-span-2 lg:col-span-3 ${fieldCls}`}>
+              <dt class={labelCls}>Notes</dt>
+              <dd class="mt-1 text-slate-900 whitespace-pre-line">{fmt(detail.product.notes)}</dd>
             </div>
           </dl>
         </section>

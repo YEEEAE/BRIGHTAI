@@ -179,7 +179,7 @@ const calibrationLabel: Record<string, string> = {
           return routeEnabled(action.route) ? (
             <a href={action.href} class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">{action.label}</a>
           ) : (
-            <button type="button" disabled title={action.hint} aria-disabled="true" class="cursor-not-allowed rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-400">{action.label}</button>
+            <button type="button" disabled title={action.hint} aria-disabled="true" class="cursor-not-allowed rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-500">{action.label}</button>
           );
         })}
       </div>
@@ -248,13 +248,13 @@ const calibrationLabel: Record<string, string> = {
                       <td class="px-4 py-2 text-slate-700">{t.lot_number ?? '—'}</td>
                       <td class="px-4 py-2 text-slate-700">{t.equipment_code ?? '—'}</td>
                       <td class="px-4 py-2 text-slate-700">{t.tester_name ?? '—'}</td>
-                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-400'}`}>{t.final_result ?? '—'}</td>
+                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-500'}`}>{t.final_result ?? '—'}</td>
                       <td class="px-4 py-2 text-slate-700">{t.status}</td>
                       <td class="px-4 py-2 text-slate-500">{t.updated_at}</td>
                       <td class="px-4 py-2">
                         {routeEnabled('/lab/tests/[id]') && t.id
                           ? <a href={`/lab/tests/${t.id}`} class="font-medium text-brand-600 hover:underline">View</a>
-                          : <span class="text-slate-400" title="Coming with the Tests module">View</span>}
+                          : <span class="text-slate-500" title="Coming with the Tests module">View</span>}
                       </td>
                     </tr>
                   ))}
@@ -288,11 +288,11 @@ const calibrationLabel: Record<string, string> = {
                       <td class="px-4 py-2 text-slate-700">{t.tester_name ?? '—'}</td>
                       <td class="px-4 py-2 text-slate-500">{t.submitted_at}</td>
                       <td class="px-4 py-2 text-slate-700">{t.aging_days}d</td>
-                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-400'}`}>{t.final_result ?? '—'}</td>
+                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-500'}`}>{t.final_result ?? '—'}</td>
                       <td class="px-4 py-2">
                         {routeEnabled('/lab/tests/review')
                           ? <a href="/lab/tests/review" class="font-medium text-brand-600 hover:underline">Review</a>
-                          : <span class="text-slate-400" title="Coming with the Tests module">Review</span>}
+                          : <span class="text-slate-500" title="Coming with the Tests module">Review</span>}
                       </td>
                     </tr>
                   ))}
@@ -328,7 +328,7 @@ const calibrationLabel: Record<string, string> = {
                       <td class="px-4 py-2">
                         {routeEnabled('/lab/equipment/[id]')
                           ? <a href={`/lab/equipment/${e.id}`} class="font-medium text-brand-600 hover:underline">Open</a>
-                          : <span class="text-slate-400" title="Coming with the Equipment module">Open</span>}
+                          : <span class="text-slate-500" title="Coming with the Equipment module">Open</span>}
                       </td>
                     </tr>
                   ))}
@@ -362,7 +362,7 @@ const calibrationLabel: Record<string, string> = {
                       <td class="px-4 py-2">
                         {routeEnabled('/lab/calibration')
                           ? <a href="/lab/calibration" class="font-medium text-brand-600 hover:underline">Open</a>
-                          : <span class="text-slate-400" title="Coming with the Calibration module">Open</span>}
+                          : <span class="text-slate-500" title="Coming with the Calibration module">Open</span>}
                       </td>
                     </tr>
                   ))}
@@ -402,7 +402,7 @@ const calibrationLabel: Record<string, string> = {
                       <td class="px-4 py-2">
                         {routeEnabled('/lab/documents/[id]')
                           ? <a href={`/lab/documents/${d.id}`} class="font-medium text-brand-600 hover:underline">Open</a>
-                          : <span class="text-slate-400" title="Coming with the Documents module">Open</span>}
+                          : <span class="text-slate-500" title="Coming with the Documents module">Open</span>}
                       </td>
                     </tr>
                   ))}
@@ -453,7 +453,7 @@ const calibrationLabel: Record<string, string> = {
                   <span class="font-medium text-slate-900">{a.actor_name}</span>
                   <span class="text-slate-600">{a.action}</span>
                   <span class="text-slate-500">{a.entity_type} #{a.entity_id}</span>
-                  <span class="ms-auto text-xs text-slate-400">{a.created_at}</span>
+                  <span class="ms-auto text-xs text-slate-500">{a.created_at}</span>
                 </li>
               ))}
             </ol>
