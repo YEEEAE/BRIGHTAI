@@ -2,11 +2,24 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-18 21:45 +03:00
+last_updated: 2026-08-18 22:45 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.8.17
+version: 2.8.18
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-18 — QC-LAB-PROMPT41-DOC-WORKFLOW: تنفيذ مسار اعتماد الوثائق المحكومة بالكامل (PROMPT 41 / prompt5-LAB.md) — **SUBMIT / REQUEST_CHANGES / APPROVE / SUPERSEDE / ARCHIVE** + منع الاعتماد الذاتي والمراجعة الذاتية للمؤلف + صفحة القارئ ولوحة التحكم بالمسار `/lab/documents/[id].astro` + إشعارات وتدقيق أوديت لجميع الانتقالات
+
+- **Files**: `apps/qc-task-manager/src/lib/permissions.ts` (إضافة author_id في doc auth ومنع المراجعة الذاتية والاعتماد الذاتي canReviewLabDocumentRecord و canApproveLabDocumentRecord)، `src/lib/notifications.ts` (إضافة 4 أنواع إشعارات: review_started, changes_requested, approved, archived)، `src/pages/notifications.astro` و `src/pages/lab/notifications.astro` (خرائط الأيقونات والأسماء والأقسام)، `src/lib/types.ts` (إضافة approved_at إلى LabDocument)، `src/lib/lab/documents.ts` (دوال مسار العمل submitLabDocument, requestChangesLabDocument, approveLabDocument, archiveLabDocument, getLabDocumentDetail, getLabDocumentInReviewCount, handleLabDocumentWorkflowPost)، `src/middleware.ts` (توجيه POST /lab/documents/:id)، `src/pages/lab/documents/[id].astro` (صفحة قارئ الوثيقة + لوحة التحكم بالمسار مع CSRF والأذونات والتدقيق الزمني)، `src/pages/lab/documents/index.astro` (فلتر In Review Queue + روابط العرض View والنسخ)، `scripts/test-lab-documents.mjs` (توسيع السويت من 207 إلى 256 اختبارًا تغطي كامل المسار وحالات المنع وتجميد النسخ السابقة والأرشفة).
+- **What**: تنفيذ مسار دورة حياة الوثائق المحكومة (SOP / WI):
+  1. SUBMIT: DRAFT → IN_REVIEW للمالك أو مدير الجودة، ملخص التغيير إلزامي.
+  2. REQUEST CHANGES: IN_REVIEW → DRAFT للمراجع/المدير، سبب الإرجاع إلزامي، منع مراجعة المؤلف لوثيقته.
+  3. APPROVE: IN_REVIEW → APPROVED لمدير الجودة فقط، مع منع الاعتماد الذاتي للمؤلف/المنشئ، وتعيين approver_id و approved_at و effective_date.
+  4. SUPERSEDE: اعتماد نسخة جديدة يُلغي ويُحل محل النسخ السابقة (SUPERSEDED) تلقائيًا مع تسجيل أوديت SUPERSEDE وبقاء المحتوى التاريخي واللقطات المأخوذة في الاختبارات التاريخية ثابتة دون تغيير (version-locked snapshots).
+  5. ARCHIVE: نقل الوثيقة وحالاتها إلى ARCHIVED، واستبعادها من القوائم المنسدلة للنماذج والاختبارات مع بقائها مقروءة تاريخيًا.
+- **Verification**: `pnpm test:lab-documents` (256 passed / 0 failed) ✅؛ `pnpm test:lab-acknowledgements` (116 passed / 0 failed) ✅؛ `pnpm test:lab-security` (55 passed / 0 failed) ✅؛ `pnpm test:lab-data-quality` ✅؛ `pnpm test:lab-reports` ✅؛ `pnpm test:domain` (341 passed / 0 failed) ✅؛ `pnpm typecheck` (0 errors / 0 warnings / 19 hints) ✅؛ `NODE_ENV=production pnpm build` (Complete in 4.00s) ✅.
+- **Notes**: لا push ولا unrequested git commit.
+- **Status**: delivered & verified محليًا.
 
 ### 2026-08-18 — QC-LAB-PROMPT5-HARDENED-001: تحسين `prompt5-LAB.md` قبل التنفيذ — **7 تحسينات جوهرية**: قسم Dependencies & Blocking (44 مستقلة يُنفَّذ أولًا، 45 تحجب e2e لـ 47/48/54، 57→58→59 تسلسل صارم، 38–40 من prompt4 ملغاة لصالح 57–59) + ربط prompt4 بـ prompt5 (علّم 38–40 "superseded") + قرارات غامضة انحسمت داخل البرومبتز (acknowledgement بلا auto-assign، سلوك retests المفتوحة عند VOID = block مع رسالة عربية، إعادة تحقق كامل sample grid عند تعديل المسودة، قاعدة root-cause في e2e: إصلاح المنتج أولًا وتحذير من تخفيف assertions) + قوائم "Rerun after this prompt" للبرومبتات 41/42 + system actor للإشعارات المجدولة (ما ينتحل مستخدم حقيقي)
 

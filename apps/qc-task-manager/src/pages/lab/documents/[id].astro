@@ -1,0 +1,420 @@
+---
+// /lab/documents/[id] — QC Laboratory Controlled Document Reader & Workflow (PROMPT 41).
+//
+// Read-only reader + controlled workflow panel:
+//   - DRAFT       → Submit for Review (owner or manager+)
+//   - IN_REVIEW   → Request Changes (supervisor+, author excluded)
+//                   Approve (manager+, author excluded, supersedes previous approved)
+//   - APPROVED    → Assign Acknowledgements / Archive (manager+)
+//   - SUPERSEDED  → Archive (manager+) / Read-only history
+//   - ARCHIVED    → Read-only historical record (excluded from test dropdowns)
+//
+// Server-side authorization on every action via handleLabDocumentWorkflowPost.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EmptyState from '../../../components/EmptyState.astro';
+import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
+import { labNavForRole } from '../../../lib/lab/navigation';
+import { getLabDocumentDetail } from '../../../lib/lab/documents';
+import {
+  canApproveLabDocumentRecord,
+  canArchiveLabDocument,
+  canAssignLabDocumentAcknowledgement,
+  canEditLabDocumentRecord,
+  canReviewLabDocumentRecord,
+} from '../../../lib/permissions';
+import type { LabDocumentStatus, LabDocumentType, Role } from '../../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+const navItems = labNavForRole(role);
+
+const id = Number(Astro.params.id);
+let detail: ReturnType<typeof getLabDocumentDetail> = null;
+try {
+  detail = getLabDocumentDetail(id);
+} catch (err) {
+  console.error('[lab] document detail query failure', err);
+}
+
+const fieldCls = 'rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700';
+const labelCls = 'text-xs font-semibold uppercase tracking-wide text-slate-500';
+
+function fmt(value: unknown): string {
+  return value == null || String(value).trim() === '' ? '—' : String(value);
+}
+
+const STATUS_BADGE_CLS: Record<LabDocumentStatus, string> = {
+  DRAFT: 'bg-slate-100 text-slate-700',
+  IN_REVIEW: 'bg-amber-100 text-amber-800',
+  APPROVED: 'bg-emerald-100 text-emerald-800',
+  SUPERSEDED: 'bg-violet-100 text-violet-800',
+  ARCHIVED: 'bg-slate-200 text-slate-600',
+};
+
+const STATUS_LABELS: Record<LabDocumentStatus, string> = {
+  DRAFT: 'Draft',
+  IN_REVIEW: 'In Review',
+  APPROVED: 'Approved',
+  SUPERSEDED: 'Superseded',
+  ARCHIVED: 'Archived',
+};
+
+const TYPE_BADGE_CLS: Record<LabDocumentType, string> = {
+  SOP: 'bg-sky-100 text-sky-800',
+  WI: 'bg-indigo-100 text-indigo-800',
+};
+
+const docAuth = detail
+  ? {
+      status: detail.document.status,
+      owner_id: detail.document.owner_id,
+      created_by: detail.document.created_by,
+      author_id: detail.currentVersion?.author_id ?? null,
+    }
+  : null;
+
+const canEdit = detail ? canEditLabDocumentRecord({ id: user.userId, role }, detail.document) : false;
+const canReview = detail && docAuth ? canReviewLabDocumentRecord({ id: user.userId, role }, docAuth) : false;
+const canApprove = detail && docAuth ? canApproveLabDocumentRecord({ id: user.userId, role }, docAuth) : false;
+const canArchive = detail ? canArchiveLabDocument(role) : false;
+const canAssignAck = detail ? canAssignLabDocumentAcknowledgement(role) : false;
+
+const isAuthorOrOwner = detail
+  ? detail.document.owner_id === user.userId ||
+    detail.document.created_by === user.userId ||
+    detail.currentVersion?.author_id === user.userId
+  : false;
+---
+
+<BaseLayout title={detail ? `${detail.document.code} · ${detail.document.title}` : 'Document not found'}>
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Documents', href: '/lab/documents' },
+        ...(detail ? [{ label: detail.document.code }] : []),
+      ]}
+    />
+
+    {!detail ? (
+      <EmptyState
+        title="Document not found"
+        hint="This controlled document does not exist — it may have been removed, or the link is stale."
+        ctaHref="/lab/documents"
+        ctaLabel="Back to document library"
+      />
+    ) : (
+      <>
+        <header class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
+            <h1 class="mt-1 text-3xl font-semibold text-slate-900">{detail.document.title}</h1>
+            <p class="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600">
+              <span class="font-medium text-slate-900" dir="ltr">{detail.document.code}</span>
+              <span>·</span>
+              <span class={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${TYPE_BADGE_CLS[detail.document.type]}`}>
+                {detail.document.type}
+              </span>
+              <span>·</span>
+              <span class={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_BADGE_CLS[detail.document.status]}`}>
+                {STATUS_LABELS[detail.document.status]}
+              </span>
+              {detail.currentVersion && (
+                <>
+                  <span>·</span>
+                  <span class="text-slate-700 font-medium" dir="ltr">v{detail.currentVersion.version}</span>
+                </>
+              )}
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              href={`/lab/documents/${detail.document.id}/versions`}
+              class="rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            >
+              Version History
+            </a>
+            {canEdit && detail.document.status !== 'ARCHIVED' && (
+              <a
+                href={`/lab/documents/${detail.document.id}/edit`}
+                class="rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+              >
+                Edit Document
+              </a>
+            )}
+            {canAssignAck && detail.document.status === 'APPROVED' && detail.currentVersion && (
+              <a
+                href={`/lab/acknowledgements/assign?version=${detail.currentVersion.id}`}
+                class="rounded-lg bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Assign Acknowledgements
+              </a>
+            )}
+          </div>
+        </header>
+
+        <LabSecondaryNav items={navItems} currentPath={`/lab/documents/${detail.document.id}`} />
+
+        {/* ── Workflow Action Panel ── */}
+        {detail.document.status === 'DRAFT' && (
+          <section aria-labelledby="sec-workflow" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 id="sec-workflow" class="text-base font-semibold text-slate-900">Document Workflow — Draft</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              This document is currently in draft. Once changes are finalized, submit it for formal review and approval.
+            </p>
+            {canEdit ? (
+              <form method="POST" action={`/lab/documents/${detail.document.id}`} class="mt-4 flex flex-wrap items-end gap-3">
+                <input type="hidden" name="form_action" value="submit" />
+                <label class="flex flex-1 min-w-[280px] flex-col gap-1 text-sm font-medium text-slate-700">
+                  Change Summary {detail.currentVersion?.change_summary ? '(optional update)' : '(required)'}
+                  <input
+                    type="text"
+                    name="change_summary"
+                    value={detail.currentVersion?.change_summary ?? ''}
+                    placeholder="Describe changes in this version..."
+                    class="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                  />
+                </label>
+                <button
+                  type="submit"
+                  class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  Submit for Review
+                </button>
+              </form>
+            ) : (
+              <p class="mt-3 text-sm text-slate-500">Only the document owner or a QC Manager may submit this draft for review.</p>
+            )}
+          </section>
+        )}
+
+        {detail.document.status === 'IN_REVIEW' && (
+          <section aria-labelledby="sec-workflow" class="rounded-xl border border-amber-200 bg-amber-50/70 p-5 shadow-sm">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex h-2.5 w-2.5 rounded-full bg-amber-500"></span>
+              <h2 id="sec-workflow" class="text-base font-semibold text-amber-950">Document Under Review</h2>
+            </div>
+            <p class="mt-1 text-sm text-amber-900">
+              Version <strong dir="ltr">v{detail.currentVersion?.version ?? 1}</strong> is awaiting peer review and managerial approval.
+              {detail.currentVersion?.change_summary && (
+                <span class="block mt-1 text-xs text-amber-800">
+                  <strong>Change summary:</strong> {detail.currentVersion.change_summary}
+                </span>
+              )}
+            </p>
+
+            {isAuthorOrOwner && (
+              <div class="mt-3 rounded-lg border border-amber-200 bg-white/80 p-3 text-xs text-amber-800">
+                You are the author or owner of this document. Quality policy prohibits self-review and self-approval.
+              </div>
+            )}
+
+            {(canReview || canApprove) && (
+              <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                {canReview && (
+                  <div class="rounded-lg border border-slate-200 bg-white p-4">
+                    <h3 class="text-sm font-semibold text-slate-900">Request Changes</h3>
+                    <p class="mt-0.5 text-xs text-slate-500">Return to draft status for author revision.</p>
+                    <form method="POST" action={`/lab/documents/${detail.document.id}`} class="mt-3 space-y-3">
+                      <input type="hidden" name="form_action" value="request_changes" />
+                      <label class="block text-xs font-medium text-slate-700">
+                        Reason for changes (required)
+                        <textarea
+                          name="reason"
+                          rows="2"
+                          required
+                          placeholder="Specify the required corrections or missing sections..."
+                          class="mt-1 w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-900 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        ></textarea>
+                      </label>
+                      <button
+                        type="submit"
+                        class="rounded-lg bg-amber-600 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+                      >
+                        Request Changes
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                {canApprove && (
+                  <div class="rounded-lg border border-slate-200 bg-white p-4">
+                    <h3 class="text-sm font-semibold text-slate-900">Approve Document</h3>
+                    <p class="mt-0.5 text-xs text-slate-500">
+                      Publishes v{detail.currentVersion?.version ?? 1} as active and supersedes older approved versions.
+                    </p>
+                    <form method="POST" action={`/lab/documents/${detail.document.id}`} class="mt-3 space-y-3">
+                      <input type="hidden" name="form_action" value="approve" />
+                      <label class="block text-xs font-medium text-slate-700">
+                        Approval note (optional)
+                        <input
+                          type="text"
+                          name="note"
+                          placeholder="e.g. Verified against compliance specifications"
+                          class="mt-1 w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        />
+                      </label>
+                      <button
+                        type="submit"
+                        class="rounded-lg bg-emerald-600 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                      >
+                        Approve v{detail.currentVersion?.version ?? 1}
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+        )}
+
+        {(detail.document.status === 'APPROVED' || detail.document.status === 'SUPERSEDED') && canArchive && (
+          <section aria-labelledby="sec-archive" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 id="sec-archive" class="text-base font-semibold text-slate-900">Document Lifecycle Management</h2>
+                <p class="mt-1 text-sm text-slate-600">
+                  Archiving removes this document from active test and template selection while preserving complete audit history.
+                </p>
+              </div>
+              <form method="POST" action={`/lab/documents/${detail.document.id}`} class="flex items-center gap-2">
+                <input type="hidden" name="form_action" value="archive" />
+                <button
+                  type="submit"
+                  class="rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  Archive Document
+                </button>
+              </form>
+            </div>
+          </section>
+        )}
+
+        {detail.document.status === 'ARCHIVED' && (
+          <div role="status" class="rounded-xl border border-slate-300 bg-slate-100 p-4 text-sm text-slate-700">
+            <strong>Archived document:</strong> This document is archived. It cannot be used in new test records or templates, but remains fully readable for historical traceability.
+          </div>
+        )}
+
+        {/* ── Document Metadata ── */}
+        <section aria-labelledby="sec-metadata" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 id="sec-metadata" class="text-base font-semibold text-slate-900">Document Metadata</h2>
+          <dl class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div class={fieldCls}>
+              <dt class={labelCls}>Document Code</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{detail.document.code}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Document Type</dt>
+              <dd class="mt-1 font-medium text-slate-900">{detail.document.type}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Status</dt>
+              <dd class="mt-1 font-medium text-slate-900">{STATUS_LABELS[detail.document.status]}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Current Version</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">v{detail.currentVersion?.version ?? 1}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Owner</dt>
+              <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.owner_name)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Reviewer</dt>
+              <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.reviewer_name)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Approver</dt>
+              <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.approver_name)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Approved At</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.approved_at)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Effective Date</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.effective_date)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Review Due Date</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.review_due_date)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Product Reference</dt>
+              <dd class="mt-1 font-medium text-slate-900">
+                {detail.document.product_name ? `${detail.document.product_name} (${detail.document.product_code})` : '—'}
+              </dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Created By</dt>
+              <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.created_by_name)}</dd>
+            </div>
+          </dl>
+
+          {detail.document.description && (
+            <div class="mt-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+              <span class={labelCls}>Description</span>
+              <p class="mt-1">{detail.document.description}</p>
+            </div>
+          )}
+
+          {detail.equipmentLinks.length > 0 && (
+            <div class="mt-4">
+              <span class={labelCls}>Related Equipment</span>
+              <div class="mt-1.5 flex flex-wrap gap-2">
+                {detail.equipmentLinks.map((eq) => (
+                  <a
+                    href={`/lab/equipment/${eq.id}`}
+                    class="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100"
+                  >
+                    <span dir="ltr">{eq.code}</span> — {eq.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* ── Document Content Preview ── */}
+        <section aria-labelledby="sec-content" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex items-baseline justify-between border-b border-slate-200 pb-3">
+            <h2 id="sec-content" class="text-lg font-semibold text-slate-900">
+              Controlled Document Content — <span dir="ltr">v{detail.currentVersion?.version ?? 1}</span>
+            </h2>
+            <span class="text-xs text-slate-500">Sanitized controlled markdown</span>
+          </div>
+          <article class="prose prose-slate mt-5 max-w-none" set:html={detail.contentHtml || '<p class="text-slate-400 italic">No content available for this version.</p>'} />
+        </section>
+
+        {/* ── Audit Timeline ── */}
+        {detail.auditTimeline.length > 0 && (
+          <section aria-labelledby="sec-audit" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 id="sec-audit" class="text-base font-semibold text-slate-900">Document Audit History</h2>
+            <ol class="mt-4 divide-y divide-slate-100">
+              {detail.auditTimeline.map((item) => (
+                <li class="py-3 text-sm">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                      <span class="font-semibold text-slate-900">{item.action}</span>
+                      {item.old_value && item.new_value && (
+                        <span class="text-xs text-slate-500">
+                          ({item.old_value} → {item.new_value})
+                        </span>
+                      )}
+                      <span class="text-slate-600">by {item.actor_name ?? `User #${item.actor_id}`}</span>
+                    </div>
+                    <time class="text-xs text-slate-500" dir="ltr">{item.created_at}</time>
+                  </div>
+                  {item.note && <p class="mt-1 text-xs text-slate-600">{item.note}</p>}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+      </>
+    )}
+  </div>
+</BaseLayout>

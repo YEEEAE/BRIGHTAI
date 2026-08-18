@@ -30,8 +30,14 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { createNotification } from '../notifications';
-import { canCreateLabDocument, canEditLabDocumentRecord } from '../permissions';
-import type { LabDocument, LabDocumentStatus, LabDocumentType, LabDocumentVersion } from '../types';
+import {
+  canApproveLabDocumentRecord,
+  canArchiveLabDocument,
+  canCreateLabDocument,
+  canEditLabDocumentRecord,
+  canReviewLabDocumentRecord,
+} from '../permissions';
+import type { LabDocument, LabDocumentStatus, LabDocumentType, LabDocumentVersion, Role } from '../types';
 import { renderDocumentContent } from './documentContent';
 
 // ─────────────────────────────── Policy ───────────────────────────────
@@ -492,6 +498,12 @@ export function getLabDocumentReviewSummary(): LabDocumentReviewSummary {
   };
 }
 
+/** Count of controlled documents currently IN_REVIEW (In Review queue badge). */
+export function getLabDocumentInReviewCount(): number {
+  const row = getDb().prepare("SELECT COUNT(*) AS n FROM lab_documents WHERE status = 'IN_REVIEW'").get() as { n: number };
+  return Number(row.n ?? 0);
+}
+
 // ─────────────────────────────── Dropdowns ───────────────────────────────
 
 /** Owners that own at least one document (owner filter dropdown). */
@@ -671,17 +683,20 @@ function auditLabDocument(
     | 'STATUS_TRANSITION'
     | 'SUBMIT'
     | 'REQUEST_CHANGES'
+    | 'APPROVAL'
     | 'SUPERSEDE'
     | 'ACKNOWLEDGE'
     | 'VERSION',
   note: string | null,
+  oldValue: string | null = null,
+  newValue: string | null = null,
 ): void {
   getDb()
     .prepare(
       `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_DOCUMENT', ?, NULL, ?, ?, NULL, NULL, ?)`,
+       VALUES ('LAB_DOCUMENT', ?, NULL, ?, ?, ?, ?, ?)`,
     )
-    .run(documentId, actorId, action, note);
+    .run(documentId, actorId, action, oldValue, newValue, note);
 }
 
 function documentFormSummary(data: LabDocumentFormData, version: number): string {
@@ -937,6 +952,383 @@ export function getLabDocumentVersionContent(
   return { version, html };
 }
 
+// ─────────────────────────────── Workflow (PROMPT 41) ───────────────────────────────
+
+/**
+ * Submit a DRAFT document for review (DRAFT → IN_REVIEW).
+ * Requires change_summary (from input or current version).
+ * Actor must have edit authority on the document.
+ */
+export function submitLabDocument(
+  documentId: number,
+  actor: { id: number; role: Role },
+  changeSummary?: string | null,
+): void {
+  transaction(() => {
+    const db = getDb();
+    const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(documentId) as LabDocument | undefined;
+    if (!document) throw new Error('Document not found.');
+    if (document.status !== 'DRAFT') {
+      throw new Error(`Document ${document.code} is not a draft (current status: ${document.status}).`);
+    }
+    if (!canEditLabDocumentRecord(actor, document)) {
+      throw new Error('You do not have permission to submit this document for review.');
+    }
+
+    const current = document.current_version_id
+      ? (db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(document.current_version_id) as
+          | LabDocumentVersion
+          | undefined)
+      : null;
+    if (!current) throw new Error('Document has no version to submit.');
+
+    const summary = changeSummary?.trim() || current.change_summary?.trim() || null;
+    if (!summary) {
+      throw new Error('A change summary is required to submit a document for review.');
+    }
+
+    const dbNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (changeSummary?.trim() && changeSummary.trim() !== current.change_summary) {
+      db.prepare("UPDATE lab_document_versions SET change_summary = ?, status = 'IN_REVIEW' WHERE id = ?").run(
+        changeSummary.trim(),
+        current.id,
+      );
+    } else {
+      db.prepare("UPDATE lab_document_versions SET status = 'IN_REVIEW' WHERE id = ?").run(current.id);
+    }
+
+    db.prepare("UPDATE lab_documents SET status = 'IN_REVIEW', updated_at = ? WHERE id = ?").run(dbNow, documentId);
+
+    auditLabDocument(documentId, actor.id, 'SUBMIT', summary, 'DRAFT', 'IN_REVIEW');
+
+    const ownerId = document.owner_id ?? document.created_by;
+    if (ownerId && ownerId !== actor.id) {
+      createNotification({
+        userId: ownerId,
+        taskId: null,
+        type: 'lab_document_review_started',
+        title: 'Document submitted for review',
+        message: `${document.code} was submitted for review.`,
+        actorId: actor.id,
+        href: `/lab/documents/${documentId}`,
+      });
+    }
+  });
+}
+
+/**
+ * Request changes on an IN_REVIEW document (IN_REVIEW → DRAFT).
+ * Requires mandatory reason.
+ * Approver/reviewer cannot be the author/owner (no self-review).
+ */
+export function requestChangesLabDocument(
+  documentId: number,
+  actor: { id: number; role: Role },
+  reason: string,
+): void {
+  transaction(() => {
+    const db = getDb();
+    const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(documentId) as LabDocument | undefined;
+    if (!document) throw new Error('Document not found.');
+    if (document.status !== 'IN_REVIEW') {
+      throw new Error(`Document ${document.code} is not in review (current status: ${document.status}).`);
+    }
+
+    const current = document.current_version_id
+      ? (db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(document.current_version_id) as
+          | LabDocumentVersion
+          | undefined)
+      : null;
+
+    const docAuth = {
+      status: document.status,
+      owner_id: document.owner_id,
+      created_by: document.created_by,
+      author_id: current?.author_id ?? null,
+    };
+
+    if (!canReviewLabDocumentRecord(actor, docAuth)) {
+      throw new Error('You do not have permission to review this document.');
+    }
+
+    if (!reason || reason.trim() === '') {
+      throw new Error('A reason is required to request changes.');
+    }
+
+    const dbNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (current) {
+      db.prepare("UPDATE lab_document_versions SET status = 'DRAFT', reviewed_by = ?, reviewed_at = ? WHERE id = ?").run(
+        actor.id,
+        dbNow,
+        current.id,
+      );
+    }
+
+    db.prepare("UPDATE lab_documents SET status = 'DRAFT', reviewer_id = ?, updated_at = ? WHERE id = ?").run(
+      actor.id,
+      dbNow,
+      documentId,
+    );
+
+    auditLabDocument(documentId, actor.id, 'REQUEST_CHANGES', reason.trim(), 'IN_REVIEW', 'DRAFT');
+
+    const recipient = current?.author_id ?? document.owner_id ?? document.created_by;
+    if (recipient) {
+      createNotification({
+        userId: recipient,
+        taskId: null,
+        type: 'lab_document_changes_requested',
+        title: 'Changes requested',
+        message: `${document.code} was returned for changes: ${reason.trim()}`,
+        actorId: actor.id,
+        href: `/lab/documents/${documentId}/edit`,
+      });
+    }
+  });
+}
+
+/**
+ * Approve an IN_REVIEW document (IN_REVIEW → APPROVED).
+ * Approver cannot be author/owner (no self-approval).
+ * Sets approver_id + approved_at + effective_date.
+ * Automatically supersedes any previous approved version.
+ */
+export function approveLabDocument(
+  documentId: number,
+  actor: { id: number; role: Role },
+  note?: string | null,
+): void {
+  transaction(() => {
+    const db = getDb();
+    const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(documentId) as LabDocument | undefined;
+    if (!document) throw new Error('Document not found.');
+    if (document.status !== 'IN_REVIEW') {
+      throw new Error(`Document ${document.code} is not in review (current status: ${document.status}).`);
+    }
+
+    const current = document.current_version_id
+      ? (db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(document.current_version_id) as
+          | LabDocumentVersion
+          | undefined)
+      : null;
+    if (!current) throw new Error('Document has no version to approve.');
+
+    const docAuth = {
+      status: document.status,
+      owner_id: document.owner_id,
+      created_by: document.created_by,
+      author_id: current.author_id,
+    };
+
+    if (!canApproveLabDocumentRecord(actor, docAuth)) {
+      throw new Error('You do not have permission to approve this document.');
+    }
+
+    const dbNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const isoDate = dbNow.slice(0, 10);
+
+    // Supersede previous approved versions of this document
+    const prevApproved = db
+      .prepare("SELECT id, version FROM lab_document_versions WHERE document_id = ? AND status = 'APPROVED' AND id <> ?")
+      .all(documentId, current.id) as Array<{ id: number; version: number }>;
+
+    for (const prev of prevApproved) {
+      db.prepare("UPDATE lab_document_versions SET status = 'SUPERSEDED' WHERE id = ?").run(prev.id);
+      auditLabDocument(
+        documentId,
+        actor.id,
+        'SUPERSEDE',
+        `v${prev.version} superseded by v${current.version}`,
+        'APPROVED',
+        'SUPERSEDED',
+      );
+    }
+
+    db.prepare(
+      "UPDATE lab_document_versions SET status = 'APPROVED', approved_by = ?, approved_at = ? WHERE id = ?",
+    ).run(actor.id, dbNow, current.id);
+
+    const effectiveDate = document.effective_date ?? isoDate;
+    db.prepare(
+      `UPDATE lab_documents SET
+         status = 'APPROVED', approver_id = ?, approved_at = ?,
+         reviewer_id = COALESCE(reviewer_id, ?),
+         effective_date = ?, updated_at = ?
+       WHERE id = ?`,
+    ).run(actor.id, dbNow, actor.id, effectiveDate, dbNow, documentId);
+
+    const auditNote = note?.trim() || `Approved v${current.version}`;
+    auditLabDocument(documentId, actor.id, 'APPROVAL', auditNote, 'IN_REVIEW', 'APPROVED');
+
+    const recipient = current.author_id ?? document.owner_id ?? document.created_by;
+    if (recipient) {
+      createNotification({
+        userId: recipient,
+        taskId: null,
+        type: 'lab_document_approved',
+        title: 'Document approved',
+        message: `${document.code} v${current.version} was approved.`,
+        actorId: actor.id,
+        href: `/lab/documents/${documentId}`,
+      });
+    }
+  });
+}
+
+/**
+ * Archive an APPROVED, SUPERSEDED, or DRAFT/IN_REVIEW document.
+ * Sets status = 'ARCHIVED' for document + active versions.
+ * Archived documents never appear in test dropdowns but stay readable.
+ */
+export function archiveLabDocument(
+  documentId: number,
+  actor: { id: number; role: Role },
+  reason?: string | null,
+): void {
+  transaction(() => {
+    const db = getDb();
+    const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(documentId) as LabDocument | undefined;
+    if (!document) throw new Error('Document not found.');
+    if (document.status === 'ARCHIVED') {
+      throw new Error(`Document ${document.code} is already archived.`);
+    }
+    if (!canArchiveLabDocument(actor.role)) {
+      throw new Error('You do not have permission to archive controlled documents.');
+    }
+
+    const prevStatus = document.status;
+    const dbNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    db.prepare("UPDATE lab_documents SET status = 'ARCHIVED', updated_at = ? WHERE id = ?").run(dbNow, documentId);
+    db.prepare(
+      "UPDATE lab_document_versions SET status = 'ARCHIVED' WHERE document_id = ? AND status IN ('APPROVED', 'SUPERSEDED', 'DRAFT', 'IN_REVIEW')",
+    ).run(documentId);
+
+    const note = reason?.trim() || `Archived ${document.code}`;
+    auditLabDocument(documentId, actor.id, 'STATUS_TRANSITION', note, prevStatus, 'ARCHIVED');
+
+    const recipient = document.owner_id ?? document.created_by;
+    if (recipient) {
+      createNotification({
+        userId: recipient,
+        taskId: null,
+        type: 'lab_document_archived',
+        title: 'Document archived',
+        message: `${document.code} was archived.`,
+        actorId: actor.id,
+        href: `/lab/documents/${documentId}`,
+      });
+    }
+  });
+}
+
+// ─────────────────────────────── Detail reader (/lab/documents/[id]) ───────────────────────────────
+
+export interface LabDocumentDetailView {
+  document: LabDocument & {
+    owner_name: string | null;
+    reviewer_name: string | null;
+    approver_name: string | null;
+    created_by_name: string | null;
+    product_name: string | null;
+    product_code: string | null;
+  };
+  currentVersion: (LabDocumentVersion & {
+    author_name: string | null;
+    reviewer_name: string | null;
+    approver_name: string | null;
+  }) | null;
+  contentHtml: string;
+  equipmentLinks: Array<{ id: number; name: string; code: string }>;
+  auditTimeline: Array<{
+    id: number;
+    action: string;
+    actor_id: number;
+    actor_name: string | null;
+    old_value: string | null;
+    new_value: string | null;
+    note: string | null;
+    created_at: string;
+  }>;
+}
+
+export function getLabDocumentDetail(id: number): LabDocumentDetailView | null {
+  if (!Number.isInteger(id) || id <= 0) return null;
+  const db = getDb();
+  const document = db
+    .prepare(
+      `SELECT d.*,
+              ou.full_name AS owner_name,
+              ru.full_name AS reviewer_name,
+              au.full_name AS approver_name,
+              cu.full_name AS created_by_name,
+              p.name AS product_name,
+              p.code AS product_code
+       FROM lab_documents d
+       LEFT JOIN users ou ON ou.id = d.owner_id
+       LEFT JOIN users ru ON ru.id = d.reviewer_id
+       LEFT JOIN users au ON au.id = d.approver_id
+       LEFT JOIN users cu ON cu.id = d.created_by
+       LEFT JOIN lab_products p ON p.id = d.product_id
+       WHERE d.id = ?`,
+    )
+    .get(id) as LabDocumentDetailView['document'] | undefined;
+  if (!document) return null;
+
+  let currentVersion: LabDocumentDetailView['currentVersion'] = null;
+  let contentHtml = '';
+  if (document.current_version_id) {
+    const vRow = db
+      .prepare(
+        `SELECT v.*,
+                au.full_name AS author_name,
+                ru.full_name AS reviewer_name,
+                pu.full_name AS approver_name
+         FROM lab_document_versions v
+         LEFT JOIN users au ON au.id = v.author_id
+         LEFT JOIN users ru ON ru.id = v.reviewed_by
+         LEFT JOIN users pu ON pu.id = v.approved_by
+         WHERE v.id = ?`,
+      )
+      .get(document.current_version_id) as LabDocumentDetailView['currentVersion'] | undefined;
+    currentVersion = vRow ?? null;
+    if (currentVersion) {
+      contentHtml = currentVersion.content_html_sanitized ?? renderDocumentContent(currentVersion.content_md);
+    }
+  }
+
+  const equipmentLinks = db
+    .prepare(
+      `SELECT e.id, e.name, e.code
+       FROM lab_document_links l
+       JOIN lab_equipment e ON e.id = l.entity_id
+       WHERE l.document_id = ? AND l.entity_type = 'EQUIPMENT'
+       ORDER BY e.name COLLATE NOCASE ASC`,
+    )
+    .all(id) as Array<{ id: number; name: string; code: string }>;
+
+  const auditTimeline = db
+    .prepare(
+      `SELECT a.id, a.action, a.actor_id, u.full_name AS actor_name,
+              a.old_value, a.new_value, a.note, a.created_at
+       FROM qc_audit_log a
+       LEFT JOIN users u ON u.id = a.actor_id
+       WHERE a.entity_type = 'LAB_DOCUMENT' AND a.entity_id = ?
+       ORDER BY a.created_at ASC, a.id ASC`,
+    )
+    .all(id) as LabDocumentDetailView['auditTimeline'];
+
+  return {
+    document,
+    currentVersion: currentVersion ?? null,
+    contentHtml,
+    equipmentLinks,
+    auditTimeline,
+  };
+}
+
 // ─────────────────────────────── POST handlers ───────────────────────────────
 
 /**
@@ -992,11 +1384,11 @@ async function handleLabDocumentPost(context: APIContext, documentId: number | n
     if (documentId === null) {
       const id = createLabDocument(data, user.id);
       setFlash(context, 'success', `Document ${data.code} created as a draft.`);
-      return context.redirect(`/lab/documents/${id}/edit`);
+      return context.redirect(`/lab/documents/${id}`);
     }
     updateLabDocument(documentId, data, user.id);
     setFlash(context, 'success', `Document ${data.code} saved.`);
-    return context.redirect(`/lab/documents/${documentId}/edit`);
+    return context.redirect(`/lab/documents/${documentId}`);
   } catch (err) {
     if (err instanceof LabDocumentCodeConflictError) {
       setFlash(context, 'error', err.message);
@@ -1016,4 +1408,50 @@ export async function handleLabDocumentCreatePost(context: APIContext): Promise<
 /** POST /lab/documents/[id]/edit — the id is extracted by the middleware from the path. */
 export async function handleLabDocumentEditPost(context: APIContext, documentId: number): Promise<Response> {
   return handleLabDocumentPost(context, documentId);
+}
+
+/** POST /lab/documents/[id] — workflow transitions (submit / request_changes / approve / archive). */
+export async function handleLabDocumentWorkflowPost(context: APIContext, documentId: number): Promise<Response> {
+  const user = getCurrentUser(context);
+  if (!user) {
+    return context.redirect(`/login?redirect=${encodeURIComponent(context.url.pathname)}`);
+  }
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+
+  const form = await context.request.formData();
+  const formAction = String(form.get('form_action') || '').trim();
+
+  try {
+    if (formAction === 'submit') {
+      const changeSummary = form.get('change_summary') ? String(form.get('change_summary')).trim() : null;
+      submitLabDocument(documentId, { id: user.id, role: user.role }, changeSummary);
+      setFlash(context, 'success', 'Document submitted for review.');
+      return context.redirect(`/lab/documents/${documentId}`);
+    }
+    if (formAction === 'request_changes') {
+      const reason = String(form.get('reason') || '').trim();
+      requestChangesLabDocument(documentId, { id: user.id, role: user.role }, reason);
+      setFlash(context, 'success', 'Document returned for changes.');
+      return context.redirect(`/lab/documents/${documentId}`);
+    }
+    if (formAction === 'approve') {
+      const note = form.get('note') ? String(form.get('note')).trim() : null;
+      approveLabDocument(documentId, { id: user.id, role: user.role }, note);
+      setFlash(context, 'success', 'Document version approved.');
+      return context.redirect(`/lab/documents/${documentId}`);
+    }
+    if (formAction === 'archive') {
+      const reason = form.get('reason') ? String(form.get('reason')).trim() : null;
+      archiveLabDocument(documentId, { id: user.id, role: user.role }, reason);
+      setFlash(context, 'success', 'Document archived.');
+      return context.redirect(`/lab/documents/${documentId}`);
+    }
+    setFlash(context, 'error', 'Invalid workflow action.');
+    return context.redirect(`/lab/documents/${documentId}`);
+  } catch (err) {
+    console.error('[lab] document workflow action failure', err);
+    setFlash(context, 'error', err instanceof Error ? err.message : 'Could not process workflow action.');
+    return context.redirect(`/lab/documents/${documentId}`);
+  }
 }

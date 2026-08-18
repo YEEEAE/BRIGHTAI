@@ -193,7 +193,7 @@ export function canOverrideEvidenceGate(role: Role): boolean {
 /** Minimal shape needed for lab test authorization checks. */
 type LabTestAuth = { status: LabTestStatus; tested_by: number | null; reviewed_by: number | null; created_by: number };
 /** Minimal shape needed for lab document authorization checks. */
-type LabDocumentAuth = { status: LabDocumentStatus; owner_id: number | null; created_by: number };
+type LabDocumentAuth = { status: LabDocumentStatus; owner_id: number | null; created_by: number; author_id?: number | null };
 
 const ALL_ROLES: readonly Role[] = ['admin', 'manager', 'supervisor', 'employee'];
 
@@ -431,7 +431,7 @@ export function canEditLabDocumentRecord(
 
 /**
  * Review authority for a specific document — never the author's own
- * (owner/created_by === actor → denied).
+ * (owner/created_by/author_id === actor → denied).
  */
 export function canReviewLabDocumentRecord(
   user: Pick<User, 'id' | 'role'>,
@@ -439,12 +439,13 @@ export function canReviewLabDocumentRecord(
 ): boolean {
   if (!canReviewLabDocument(user.role)) return false;
   if (doc.owner_id === user.id || doc.created_by === user.id) return false;
+  if (doc.author_id != null && doc.author_id === user.id) return false;
   return doc.status === 'IN_REVIEW' || doc.status === 'DRAFT';
 }
 
 /**
  * Approval authority for a specific document — the editor/author can NEVER
- * approve their own version (hard invariant #2).
+ * approve their own version (hard invariant #2: owner/created_by/author_id === actor → denied).
  */
 export function canApproveLabDocumentRecord(
   user: Pick<User, 'id' | 'role'>,
@@ -452,5 +453,6 @@ export function canApproveLabDocumentRecord(
 ): boolean {
   if (!canApproveLabDocument(user.role)) return false;
   if (doc.owner_id === user.id || doc.created_by === user.id) return false;
+  if (doc.author_id != null && doc.author_id === user.id) return false;
   return doc.status === 'IN_REVIEW';
 }

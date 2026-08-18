@@ -38,7 +38,7 @@ import { handleLabEquipmentCreatePost, handleLabEquipmentEditPost } from './lib/
 import { handleLabCalibrationCreatePost, handleLabCalibrationEditPost } from './lib/lab/calibration';
 import { handleLabRetestCreatePost } from './lib/lab/retests';
 import { handleLabTestFindingLinkPost, handleLabTestFindingUnlinkPost } from './lib/lab/findingLinks';
-import { handleLabDocumentCreatePost, handleLabDocumentEditPost } from './lib/lab/documents';
+import { handleLabDocumentCreatePost, handleLabDocumentEditPost, handleLabDocumentWorkflowPost } from './lib/lab/documents';
 import { handleLabAcknowledgementAssignPost, handleLabAcknowledgementPost } from './lib/lab/acknowledgements';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 
@@ -258,10 +258,10 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     if (testUnlink) return handleLabTestFindingUnlinkPost(context, Number(testUnlink[1]));
   }
 
-  // POST /lab/documents/new + /lab/documents/[id]/edit — SOP/WI Document
-  // Editor (PROMPT 41). Same short-circuit pattern; the document id comes from
-  // the path segment only (never the body), and the handler re-checks the
-  // create/record-level edit permission + CSRF + shared Zod validation.
+  // POST /lab/documents/new + /lab/documents/[id]/edit + /lab/documents/[id] — SOP/WI
+  // Document Editor + Workflow (PROMPT 41). The document id comes from the path
+  // segment only (never the body), and the handler re-checks the permissions +
+  // CSRF + shared validation/invariants.
   if (context.request.method === 'POST' && pathname === '/lab/documents/new') {
     return handleLabDocumentCreatePost(context);
   }
@@ -269,6 +269,10 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     const documentEdit = pathname.match(/^\/lab\/documents\/(\d+)\/edit$/);
     if (documentEdit) {
       return handleLabDocumentEditPost(context, Number(documentEdit[1]));
+    }
+    const documentDetail = pathname.match(/^\/lab\/documents\/(\d+)$/);
+    if (documentDetail) {
+      return handleLabDocumentWorkflowPost(context, Number(documentDetail[1]));
     }
   }
 

@@ -437,6 +437,7 @@ export interface LabDocument {
   status: LabDocumentStatus;
   effective_date: string | null;
   review_due_date: string | null;
+  approved_at: string | null;
   created_by: number;
   created_at: string;
   updated_at: string;

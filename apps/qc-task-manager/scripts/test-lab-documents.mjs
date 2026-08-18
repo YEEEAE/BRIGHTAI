@@ -854,6 +854,262 @@ try {
       managerId,
     );
     eq(docs.getLabDocumentVersionContent(otherId, v1Id), null, 'versions: cross-document access rejected');
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // ■ Controlled Document Workflow (PROMPT 41)
+    // ──────────────────────────────────────────────────────────────────────────
+    console.log('■ Document workflow (PROMPT 41)');
+
+    // 1. Create a DRAFT document authored by supervisor
+    const wfDocId = docs.createLabDocument(
+      {
+        type: 'SOP',
+        code: 'SOP-WF-001',
+        title: 'Workflow Controlled SOP',
+        description: 'Document approval workflow verification.',
+        product_id: null,
+        owner_id: supervisorId,
+        effective_date: null,
+        review_due_date: isoDay(90),
+        change_summary: 'Initial draft for review testing.',
+        content: '# Section 1\nWorkflow test content v1.',
+        equipment_ids: [],
+      },
+      supervisorId,
+    );
+
+    let wfDoc = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(wfDocId);
+    let wfV1 = db.prepare('SELECT * FROM lab_document_versions WHERE document_id = ? AND version = 1').get(wfDocId);
+    eq(wfDoc.status, 'DRAFT', 'workflow: initial status DRAFT');
+    eq(wfV1.status, 'DRAFT', 'workflow: v1 initial status DRAFT');
+
+    // Employee cannot submit
+    let denied = false;
+    try {
+      docs.submitLabDocument(wfDocId, { id: employeeId, role: 'employee' });
+    } catch {
+      denied = true;
+    }
+    ok(denied, 'workflow: employee denied from submitting');
+
+    // Supervisor submits (owner)
+    docs.submitLabDocument(wfDocId, { id: supervisorId, role: 'supervisor' });
+    wfDoc = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(wfDocId);
+    wfV1 = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(wfV1.id);
+    eq(wfDoc.status, 'IN_REVIEW', 'workflow submit: document status IN_REVIEW');
+    eq(wfV1.status, 'IN_REVIEW', 'workflow submit: v1 status IN_REVIEW');
+
+    // Verify SUBMIT audit
+    const submitAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'SUBMIT'")
+      .get(wfDocId);
+    ok(Boolean(submitAudit), 'workflow submit: SUBMIT audit row recorded');
+    eq(submitAudit.old_value, 'DRAFT', 'workflow submit: audit old_value DRAFT');
+    eq(submitAudit.new_value, 'IN_REVIEW', 'workflow submit: audit new_value IN_REVIEW');
+
+    // 2. Request changes: author cannot review own document
+    let selfReviewDenied = false;
+    try {
+      docs.requestChangesLabDocument(wfDocId, { id: supervisorId, role: 'supervisor' }, 'Fix section 1');
+    } catch {
+      selfReviewDenied = true;
+    }
+    ok(selfReviewDenied, 'workflow request_changes: author/owner self-review denied');
+
+    // Manager requests changes without reason -> denied
+    let noReasonDenied = false;
+    try {
+      docs.requestChangesLabDocument(wfDocId, { id: managerId, role: 'manager' }, '');
+    } catch {
+      noReasonDenied = true;
+    }
+    ok(noReasonDenied, 'workflow request_changes: empty reason rejected');
+
+    // Manager requests changes with reason
+    docs.requestChangesLabDocument(wfDocId, { id: managerId, role: 'manager' }, 'Please expand section 1.');
+    wfDoc = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(wfDocId);
+    wfV1 = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(wfV1.id);
+    eq(wfDoc.status, 'DRAFT', 'workflow request_changes: document returned to DRAFT');
+    eq(wfV1.status, 'DRAFT', 'workflow request_changes: v1 returned to DRAFT');
+    eq(Number(wfV1.reviewed_by), managerId, 'workflow request_changes: reviewed_by recorded');
+    ok(Boolean(wfV1.reviewed_at), 'workflow request_changes: reviewed_at recorded');
+
+    // Verify REQUEST_CHANGES audit
+    const reqAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'REQUEST_CHANGES'")
+      .get(wfDocId);
+    ok(Boolean(reqAudit), 'workflow request_changes: REQUEST_CHANGES audit row recorded');
+    eq(reqAudit.note, 'Please expand section 1.', 'workflow request_changes: audit note carries reason');
+
+    // Verify notification sent to author
+    const reqNotif = db
+      .prepare("SELECT * FROM notifications WHERE user_id = ? AND type = 'lab_document_changes_requested'")
+      .get(supervisorId);
+    ok(Boolean(reqNotif), 'workflow request_changes: notification sent to author');
+
+    // Supervisor updates draft and resubmits
+    docs.updateLabDocument(
+      wfDocId,
+      {
+        type: 'SOP',
+        code: 'SOP-WF-001',
+        title: 'Workflow Controlled SOP',
+        description: 'Updated after review.',
+        product_id: null,
+        owner_id: supervisorId,
+        effective_date: null,
+        review_due_date: isoDay(90),
+        change_summary: 'Expanded section 1 based on reviewer feedback.',
+        content: '# Section 1\nExpanded workflow test content v1.',
+        equipment_ids: [],
+      },
+      supervisorId,
+    );
+    docs.submitLabDocument(wfDocId, { id: supervisorId, role: 'supervisor' });
+    wfDoc = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(wfDocId);
+    eq(wfDoc.status, 'IN_REVIEW', 'workflow: resubmitted to IN_REVIEW');
+
+    // 3. Approval: author/owner cannot self-approve
+    let selfApproveDenied = false;
+    try {
+      docs.approveLabDocument(wfDocId, { id: supervisorId, role: 'manager' });
+    } catch {
+      selfApproveDenied = true;
+    }
+    ok(selfApproveDenied, 'workflow approve: self-approval strictly denied for author/owner');
+
+    // Supervisor role (non-manager) cannot approve
+    let supervisorApproveDenied = false;
+    try {
+      const otherSupervisorId = Number(db.prepare("SELECT id FROM users WHERE role = 'supervisor' AND id <> ?").get(supervisorId)?.id ?? 0);
+      if (otherSupervisorId) {
+        docs.approveLabDocument(wfDocId, { id: otherSupervisorId, role: 'supervisor' });
+      } else {
+        supervisorApproveDenied = true;
+      }
+    } catch {
+      supervisorApproveDenied = true;
+    }
+    ok(supervisorApproveDenied, 'workflow approve: supervisor rank denied from approval');
+
+    // Manager approves v1
+    docs.approveLabDocument(wfDocId, { id: managerId, role: 'manager' }, 'Verified compliance.');
+    wfDoc = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(wfDocId);
+    wfV1 = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(wfV1.id);
+    eq(wfDoc.status, 'APPROVED', 'workflow approve: document status APPROVED');
+    eq(wfV1.status, 'APPROVED', 'workflow approve: v1 status APPROVED');
+    eq(Number(wfDoc.approver_id), managerId, 'workflow approve: approver_id set on document');
+    ok(Boolean(wfDoc.approved_at), 'workflow approve: approved_at set on document');
+    ok(Boolean(wfDoc.effective_date), 'workflow approve: effective_date populated');
+    eq(Number(wfV1.approved_by), managerId, 'workflow approve: approved_by set on version');
+    ok(Boolean(wfV1.approved_at), 'workflow approve: approved_at set on version');
+
+    // Verify APPROVAL audit
+    const appAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'APPROVAL'")
+      .get(wfDocId);
+    ok(Boolean(appAudit), 'workflow approve: APPROVAL audit recorded');
+
+    // Verify notification sent
+    const appNotif = db
+      .prepare("SELECT * FROM notifications WHERE user_id = ? AND type = 'lab_document_approved'")
+      .get(supervisorId);
+    ok(Boolean(appNotif), 'workflow approve: notification sent to author');
+
+    // 4. Supersede: editing APPROVED doc creates v2 DRAFT; v1 stays APPROVED and immutable
+    const v1ContentBefore = wfV1.content_md;
+    docs.updateLabDocument(
+      wfDocId,
+      {
+        type: 'SOP',
+        code: 'SOP-WF-001',
+        title: 'Workflow Controlled SOP (v2 revision)',
+        description: 'New v2 revision.',
+        product_id: null,
+        owner_id: supervisorId,
+        effective_date: null,
+        review_due_date: isoDay(90),
+        change_summary: 'Created version 2 with updated methodology.',
+        content: '# Section 1\nCompletely revised v2 content.',
+        equipment_ids: [],
+      },
+      supervisorId,
+    );
+
+    wfDoc = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(wfDocId);
+    wfV1 = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(wfV1.id);
+    const wfV2 = db.prepare('SELECT * FROM lab_document_versions WHERE document_id = ? AND version = 2').get(wfDocId);
+    eq(wfDoc.status, 'DRAFT', 'workflow supersede: document returns to DRAFT on v2 edit');
+    eq(wfV1.status, 'APPROVED', 'workflow supersede: v1 remains APPROVED while v2 is in draft');
+    eq(wfV1.content_md, v1ContentBefore, 'workflow supersede: v1 content remains byte-identical');
+    eq(wfV2.status, 'DRAFT', 'workflow supersede: v2 created as DRAFT');
+
+    // Link a historical test snapshot to v1 before v2 is approved
+    const testRow = db
+      .prepare(
+        `INSERT INTO lab_test_records (test_number, test_type, status, sop_version_id, created_by)
+         VALUES ('TEST-WF-01', 'air', 'APPROVED', ?, ?)`,
+      )
+      .run(wfV1.id, managerId);
+    const testRecordId = Number(testRow.lastInsertRowid);
+    db.prepare(
+      `INSERT INTO lab_test_document_snapshots (test_id, role, document_id, document_code, document_type, version_number, title)
+       VALUES (?, 'SOP', ?, 'SOP-WF-001', 'SOP', 1, 'Workflow Controlled SOP')`,
+    ).run(testRecordId, wfDocId);
+
+    // Submit v2
+    docs.submitLabDocument(wfDocId, { id: supervisorId, role: 'supervisor' });
+    eq(db.prepare('SELECT status FROM lab_documents WHERE id = ?').get(wfDocId).status, 'IN_REVIEW', 'workflow: v2 submitted');
+
+    // Create an admin user or second manager to approve v2
+    const adminUser = db.prepare("SELECT id FROM users WHERE role = 'admin' LIMIT 1").get();
+    const approver2Id = adminUser ? Number(adminUser.id) : managerId;
+    docs.approveLabDocument(wfDocId, { id: approver2Id, role: 'admin' }, 'v2 Approved.');
+
+    // Verify v1 is now SUPERSEDED and v2 is APPROVED
+    const wfV1After = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(wfV1.id);
+    const wfV2After = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(wfV2.id);
+    eq(wfV1After.status, 'SUPERSEDED', 'workflow supersede: v1 automatically becomes SUPERSEDED');
+    eq(wfV2After.status, 'APPROVED', 'workflow supersede: v2 becomes APPROVED');
+    eq(wfV1After.content_md, v1ContentBefore, 'workflow supersede: v1 content remains byte-identical after supersede');
+
+    // Verify SUPERSEDE audit row
+    const supAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'SUPERSEDE'")
+      .get(wfDocId);
+    ok(Boolean(supAudit), 'workflow supersede: SUPERSEDE audit row recorded');
+
+    // Verify historical test snapshot is still locked to v1
+    const snap = db
+      .prepare('SELECT * FROM lab_test_document_snapshots WHERE test_id = ? AND role = \'SOP\'')
+      .get(testRecordId);
+    eq(snap.version_number, 1, 'workflow supersede: historical test snapshot still references v1');
+    eq(snap.document_id, wfDocId, 'workflow supersede: test snapshot references correct doc id');
+
+    // 5. Archive: Archive approved/superseded document
+    docs.archiveLabDocument(wfDocId, { id: managerId, role: 'manager' }, 'Retiring procedure.');
+    wfDoc = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(wfDocId);
+    const v2AfterArchive = db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(wfV2.id);
+    eq(wfDoc.status, 'ARCHIVED', 'workflow archive: document status ARCHIVED');
+    eq(v2AfterArchive.status, 'ARCHIVED', 'workflow archive: active version status ARCHIVED');
+
+    // Verify STATUS_TRANSITION audit
+    const arcAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT' AND entity_id = ? AND action = 'STATUS_TRANSITION'")
+      .get(wfDocId);
+    ok(Boolean(arcAudit), 'workflow archive: STATUS_TRANSITION audit recorded');
+
+    // Verify detail reader loads archived document with full history
+    const detailView = docs.getLabDocumentDetail(wfDocId);
+    ok(detailView !== null, 'workflow: getLabDocumentDetail loads archived document');
+    eq(detailView.document.code, 'SOP-WF-001', 'workflow: detail reader document code');
+    eq(detailView.document.status, 'ARCHIVED', 'workflow: detail reader status ARCHIVED');
+    ok(detailView.contentHtml.length > 0, 'workflow: detail reader contentHtml present');
+    ok(detailView.auditTimeline.length >= 4, 'workflow: detail reader auditTimeline populated');
+
+    // In-review count check
+    const inReviewN = docs.getLabDocumentInReviewCount();
+    ok(typeof inReviewN === 'number', 'workflow: getLabDocumentInReviewCount returns number');
   }
 } catch (err) {
   console.error(err);

@@ -21,6 +21,7 @@ import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import LabSaveViewForm from '../../../components/lab/LabSaveViewForm.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import {
+  getLabDocumentInReviewCount,
   getLabDocumentReviewSummary,
   hasLabDocumentFilters,
   labDocumentFiltersToQuery,
@@ -68,12 +69,14 @@ let reviewSummary: ReturnType<typeof getLabDocumentReviewSummary> = {
   due_15: 0,
   due_30: 0,
 };
+let inReviewCount = 0;
 try {
   result = searchLabDocuments(filters);
   owners = listLabDocumentOwners();
   equipmentOptions = listLabDocumentEquipmentOptions();
   productOptions = listLabDocumentProductOptions();
   reviewSummary = getLabDocumentReviewSummary();
+  inReviewCount = getLabDocumentInReviewCount();
 } catch (err) {
   console.error('[lab] documents register query failure', err);
   dataError = 'Could not load the SOP / WI document library. Try reloading — if the problem persists, contact an administrator.';
@@ -234,9 +237,22 @@ function fmt(value: unknown): string {
     {!dataError && (
       <>
         <section aria-label="Document review status" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div class="mb-3 flex items-baseline justify-between gap-3">
+          <div class="mb-3 flex flex-wrap items-baseline justify-between gap-3">
             <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Review management</h2>
-            <span class="text-xs text-slate-500">Active documents by review window</span>
+            <div class="flex items-center gap-2">
+              <a
+                href="/lab/documents?status=IN_REVIEW"
+                class={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+                  filters.status === 'IN_REVIEW'
+                    ? 'bg-amber-600 text-white'
+                    : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+                }`}
+              >
+                <span>In Review Queue</span>
+                <span class="rounded-full bg-amber-200/80 px-1.5 py-0.2 text-[10px] text-amber-950">{inReviewCount}</span>
+              </a>
+              <span class="text-xs text-slate-500">Active documents by review window</span>
+            </div>
           </div>
           <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
             {REVIEW_WINDOWS.map((w) => {
@@ -368,9 +384,11 @@ function fmt(value: unknown): string {
                 <tbody class="divide-y divide-slate-100">
                   {result.rows.map((r) => (
                     <tr class="align-middle">
-                      <td class="px-4 py-2 font-medium text-slate-900" dir="ltr">{r.code}</td>
+                      <td class="px-4 py-2 font-medium text-slate-900" dir="ltr">
+                        <a href={`/lab/documents/${r.id}`} class="text-brand-600 hover:underline">{r.code}</a>
+                      </td>
                       <td class="px-4 py-2">
-                        <div class="font-medium text-slate-900">{r.title}</div>
+                        <a href={`/lab/documents/${r.id}`} class="font-medium text-slate-900 hover:text-brand-600">{r.title}</a>
                         {r.product_name && <div class="text-xs text-slate-500">Product: {r.product_name}</div>}
                       </td>
                       <td class="px-4 py-2" set:html={typeBadge(r.type)} />
@@ -384,20 +402,24 @@ function fmt(value: unknown): string {
                       <td class="px-4 py-2">
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
                           <a
+                            href={`/lab/documents/${r.id}`}
+                            class="font-medium text-brand-600 hover:underline"
+                          >
+                            View
+                          </a>
+                          <a
                             href={`/lab/documents/${r.id}/versions`}
                             class="font-medium text-brand-600 hover:underline"
                           >
                             Versions
                           </a>
-                          {canEditLabDocumentRecord({ id: user.userId, role }, r) ? (
+                          {canEditLabDocumentRecord({ id: user.userId, role }, r) && r.status !== 'ARCHIVED' && (
                             <a
                               href={`/lab/documents/${r.id}/edit`}
                               class="font-medium text-brand-600 hover:underline"
                             >
                               Edit
                             </a>
-                          ) : (
-                            <span class="text-slate-400" title="Document details coming with the reader module">View</span>
                           )}
                         </div>
                       </td>

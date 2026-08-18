@@ -21,7 +21,7 @@
 
 ## Global Prompt Execution Status
 
-- [ ] Prompt 41 — Document Approval Workflow
+- [✅] Prompt 41 — Document Approval Workflow
 - [ ] Prompt 42 — Test VOID Handler
 - [ ] Prompt 43 — Product Archive + Test Draft Editing
 - [ ] Prompt 44 — Legacy Duplicate File Cleanup
@@ -128,7 +128,7 @@ After every prompt:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Implement the full controlled-document workflow that is currently reserved but
