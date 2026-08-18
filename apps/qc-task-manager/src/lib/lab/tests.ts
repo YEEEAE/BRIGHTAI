@@ -14,25 +14,33 @@
 import type { APIContext } from 'astro';
 import { transaction, getDb } from '../db';
 import { setFlash } from '../flash';
-import { parseFormData, labTestFormSchema } from '../validation';
+import { parseFormData, labTestFormSchema, labTestVoidSchema } from '../validation';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
-import { canCreateLabTest } from '../permissions';
+import { canCreateLabTest, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
+import { createNotification } from '../notifications';
 import { deriveCalibrationState, type LabCalibrationState } from './overview';
 import { labParametersSnapshotJson } from './policy';
 import { getLabTestFindingLinks, type LabTestFindingLink } from './findingLinks';
-import type { LabTestSample, LabTestType } from '../types';
+import type { LabTestSample, LabTestStatus, LabTestType, Role } from '../types';
 
 /** Lab audit actions allowed by the extended qc_audit_log CHECK (migration 011). */
 type LabAuditAction = 'CREATE' | 'SUBMIT' | 'UPDATE' | 'VOID';
 
-function auditLabTest(testId: number, actorId: number, action: LabAuditAction, note: string | null = null): void {
+function auditLabTest(
+  testId: number,
+  actorId: number,
+  action: LabAuditAction,
+  note: string | null = null,
+  oldValue: string | null = null,
+  newValue: string | null = null,
+): void {
   getDb()
     .prepare(
       `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_TEST', ?, NULL, ?, ?, NULL, NULL, ?)`,
+       VALUES ('LAB_TEST', ?, NULL, ?, ?, ?, ?, ?)`,
     )
-    .run(testId, actorId, action, note);
+    .run(testId, actorId, action, oldValue, newValue, note);
 }
 
 /**
@@ -548,4 +556,158 @@ export function loadLabTestView(id: number, allowed: boolean): LabTestView {
     relatedQuality: getLabTestRelatedQualityEntities(id),
     timeline: getLabTestAuditTimeline(id),
   };
+}
+
+export interface LabTestVoidResult {
+  test_id: number;
+  test_number: string;
+  status: 'VOID';
+}
+
+/**
+ * Void a laboratory test (PROMPT 42).
+ * Manager/Admin authority only. Allowed from any non-terminal status except
+ * APPROVED and VOID (approved records are immutable quality records; VOID is
+ * terminal).
+ * Mandatory reason required. Blocked if open retests exist for the test.
+ */
+export function voidLabTest(
+  user: { id: number; role: Role },
+  testId: number,
+  reason: string,
+): LabTestVoidResult {
+  return transaction(() => {
+    const db = getDb();
+    const row = db
+      .prepare('SELECT * FROM lab_test_records WHERE id = ?')
+      .get(testId) as Record<string, unknown> | undefined;
+    if (!row) throw new Error('Test not found.');
+
+    const testAuth = {
+      status: row.status as LabTestStatus,
+      tested_by: row.tested_by == null ? null : Number(row.tested_by),
+      reviewed_by: row.reviewed_by == null ? null : Number(row.reviewed_by),
+      created_by: Number(row.created_by),
+    };
+    const testNumber = String(row.test_number);
+
+    if (!canVoidLabTest(user.role)) {
+      throw new Error('You do not have permission to void laboratory tests.');
+    }
+
+    if (testAuth.status === 'APPROVED') {
+      throw new Error('Approved tests are immutable and cannot be voided.');
+    }
+    if (testAuth.status === 'VOID') {
+      throw new Error('Test is already voided.');
+    }
+
+    if (!canVoidLabTestRecord(user, testAuth)) {
+      throw new Error(`Cannot void test in status ${testAuth.status}.`);
+    }
+
+    const trimmedReason = reason?.trim();
+    if (!trimmedReason || trimmedReason.length < 3) {
+      throw new Error('A reason is required to void this test.');
+    }
+
+    // Check for open retests linked to this test (as original or new test)
+    const openRetests = db
+      .prepare(
+        `SELECT retest_number FROM lab_test_retests WHERE (original_test_id = ? OR new_test_id = ?) AND status = 'OPEN'`,
+      )
+      .all(testId, testId) as Array<{ retest_number: string }>;
+
+    if (openRetests.length > 0) {
+      const nums = openRetests.map((r) => r.retest_number).join(', ');
+      throw new Error(
+        `لا يمكن إلغاء الاختبار لوجود إعادة اختبار مفتوحة (${nums}). يرجى إغلاقها أو معالجتها أولاً.`,
+      );
+    }
+
+    const dbNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    // Void samples
+    db.prepare(
+      `UPDATE lab_test_samples SET status = 'VOID', updated_at = ? WHERE test_id = ? AND status <> 'VOID'`,
+    ).run(dbNow, testId);
+
+    // Void record
+    db.prepare(
+      `UPDATE lab_test_records SET status = 'VOID', updated_at = ? WHERE id = ?`,
+    ).run(dbNow, testId);
+
+    // Audit transition
+    auditLabTest(testId, user.id, 'VOID', trimmedReason, testAuth.status, 'VOID');
+
+    // Notify tester and their supervisor(s)
+    const testerId = testAuth.tested_by ?? testAuth.created_by;
+    const recipientIds = new Set<number>();
+    if (testerId && testerId !== user.id) {
+      recipientIds.add(testerId);
+    }
+
+    // Look up supervisor(s)
+    let testerDept = 'QC';
+    if (testerId) {
+      const uRow = db.prepare('SELECT department FROM users WHERE id = ?').get(testerId) as { department?: string } | undefined;
+      if (uRow?.department) testerDept = uRow.department;
+    }
+    const supervisors = db
+      .prepare("SELECT id FROM users WHERE role = 'supervisor' AND is_active = 1 AND (department = ? OR department = 'QC')")
+      .all(testerDept) as Array<{ id: number }>;
+
+    for (const s of supervisors) {
+      if (s.id !== user.id) {
+        recipientIds.add(s.id);
+      }
+    }
+
+    for (const uid of recipientIds) {
+      createNotification({
+        userId: uid,
+        taskId: null,
+        type: 'lab_test_voided',
+        title: `Test voided: ${testNumber}`,
+        message: `${testNumber} was voided: ${trimmedReason}`,
+        actorId: user.id,
+        href: `/lab/tests/${testId}`,
+      });
+    }
+
+    return { test_id: testId, test_number: testNumber, status: 'VOID' };
+  });
+}
+
+/**
+ * Handle POST /lab/tests/[id]/void or form submission on /lab/tests/[id].
+ */
+export async function handleLabTestVoidPost(context: APIContext, testId: number): Promise<Response> {
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+  const user = getCurrentUser(context);
+  if (!user) {
+    return context.redirect(`/login?redirect=${encodeURIComponent(`/lab/tests/${testId}`)}`);
+  }
+
+  if (!canVoidLabTest(user.role)) {
+    setFlash(context, 'error', 'You do not have permission to void laboratory tests.');
+    return context.redirect(`/lab/tests/${testId}`);
+  }
+
+  const form = await context.request.formData();
+  const parsed = parseFormData(labTestVoidSchema, form);
+  if (!parsed.ok) {
+    setFlash(context, 'error', parsed.error);
+    return context.redirect(`/lab/tests/${testId}`);
+  }
+
+  try {
+    const result = voidLabTest({ id: user.id, role: user.role }, testId, parsed.data.reason);
+    setFlash(context, 'success', `Test ${result.test_number} was voided.`);
+  } catch (err) {
+    setFlash(context, 'error', err instanceof Error ? err.message : 'Could not void this test.');
+  }
+
+  return context.redirect(`/lab/tests/${testId}`);
 }

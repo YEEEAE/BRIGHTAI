@@ -44,6 +44,7 @@ const KIND_ICON: Record<string, string> = {
   lab_test_rejected: '⛔',
   lab_test_changes_requested: '✏️',
   lab_test_approved: '✅',
+  lab_test_voided: '🚫',
   lab_document_review_due: '📋',
   lab_document_acknowledgement: '📖',
   lab_document_acknowledged: '👍',
@@ -62,6 +63,7 @@ const KIND_LABEL: Record<string, string> = {
   lab_test_rejected: 'Tests rejected',
   lab_test_changes_requested: 'Changes requested',
   lab_test_approved: 'Tests approved',
+  lab_test_voided: 'Tests voided',
   lab_document_review_due: 'Document reviews due',
   lab_document_acknowledgement: 'Acknowledgements required',
   lab_document_acknowledged: 'Acknowledgements completed',
@@ -85,6 +87,7 @@ const SEVERITY_CARD: Record<string, string> = {
 // Section order: danger → warning → info → success.
 const SECTION_ORDER: Record<string, number> = {
   lab_test_rejected: 0,
+  lab_test_voided: 0,
   lab_calibration_overdue: 0,
   lab_test_review_started: 1,
   lab_test_changes_requested: 1,

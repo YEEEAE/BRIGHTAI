@@ -398,6 +398,20 @@ export const labReviewActionSchema = z
   });
 
 /**
+ * POST /lab/tests/[id]/void — Test VOID action (PROMPT 42).
+ * Reason is strictly mandatory (non-empty string).
+ */
+export const labTestVoidSchema = z.object({
+  reason: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z
+      .string()
+      .min(3, 'A reason is required to void this test.')
+      .max(500, 'Reason must be 500 characters or fewer.'),
+  ),
+});
+
+/**
  * POST /lab/products/new + /lab/products/[id]/edit — Product Master form
  * (PROMPT 08). `equipment_ids` (the "Related Equipment" checkboxes) is NOT
  * part of this schema: FormData repeats that key per checkbox, so the handler

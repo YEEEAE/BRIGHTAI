@@ -26,7 +26,7 @@ import { loadLabTestView } from '../../../lib/lab/tests';
 import { LAB_TEST_STATUS_LABELS } from '../../../lib/lab/testSearch';
 import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../lib/lab/policy';
 import { getLabTestFindingLinkOptions } from '../../../lib/lab/findingLinks';
-import { canCreateLabRetest, canLinkLabTestToFinding, canReviewLabTest } from '../../../lib/permissions';
+import { canCreateLabRetest, canLinkLabTestToFinding, canReviewLabTest, canVoidLabTestRecord } from '../../../lib/permissions';
 import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 
@@ -66,6 +66,17 @@ const typeLabel = record ? String(record.test_type).toUpperCase() : '';
 const recordId = record ? Number(record.id) : Number.NaN;
 const canLinkFindings = canLinkLabTestToFinding(role);
 const findingLinkOptions = record && canLinkFindings ? getLabTestFindingLinkOptions(recordId) : [];
+const canVoid = record
+  ? canVoidLabTestRecord(
+      { id: userId, role },
+      {
+        status: record.status as any,
+        tested_by: record.tested_by == null ? null : Number(record.tested_by),
+        reviewed_by: record.reviewed_by == null ? null : Number(record.reviewed_by),
+        created_by: Number(record.created_by),
+      },
+    )
+  : false;
 
 const statusTone: Record<string, string> = {
   DRAFT: 'bg-slate-100 text-slate-700',
@@ -558,6 +569,37 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             </ol>
           )}
         </section>
+
+        {canVoid && (
+          <section aria-label="Void test record" class="rounded-xl border border-rose-200 bg-rose-50/40 p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-rose-800">Void Test Record</h2>
+            <p class="mt-1 text-xs text-slate-600">
+              Voiding marks this test record as invalid while preserving full historical traceability and audit logs. A mandatory reason is required.
+            </p>
+            <form method="post" action={`/lab/tests/${recordId}/void`} class="mt-4 space-y-3">
+              <label class="block">
+                <span class="block text-xs font-medium text-slate-700">Reason for voiding <span class="text-rose-600">*</span></span>
+                <input
+                  type="text"
+                  name="reason"
+                  required
+                  minlength="3"
+                  maxlength="500"
+                  placeholder="Explain why this test record is being voided…"
+                  class="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-rose-500 focus:ring-rose-500"
+                />
+              </label>
+              <div class="flex flex-wrap items-center gap-3">
+                <button
+                  type="submit"
+                  class="rounded-md bg-rose-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                >
+                  Void Test
+                </button>
+              </div>
+            </form>
+          </section>
+        )}
 
         <div class="flex flex-wrap items-center gap-3">
           <a href="/lab/tests" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">← Back to the register</a>

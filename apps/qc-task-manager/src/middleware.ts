@@ -31,7 +31,7 @@ import {
 } from './lib/permissions';
 import { handleLoginPost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
-import { handleLabTestFormPost } from './lib/lab/tests';
+import { handleLabTestFormPost, handleLabTestVoidPost } from './lib/lab/tests';
 import { handleLabProductCreatePost, handleLabProductEditPost } from './lib/lab/products';
 import { handleLabTemplateCreatePost, handleLabTemplateEditPost } from './lib/lab/templates';
 import { handleLabEquipmentCreatePost, handleLabEquipmentEditPost } from './lib/lab/equipment';
@@ -256,6 +256,8 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     if (testLink) return handleLabTestFindingLinkPost(context, Number(testLink[1]));
     const testUnlink = pathname.match(/^\/lab\/tests\/(\d+)\/links\/unlink$/);
     if (testUnlink) return handleLabTestFindingUnlinkPost(context, Number(testUnlink[1]));
+    const testVoid = pathname.match(/^\/lab\/tests\/(\d+)\/void$/);
+    if (testVoid) return handleLabTestVoidPost(context, Number(testVoid[1]));
   }
 
   // POST /lab/documents/new + /lab/documents/[id]/edit + /lab/documents/[id] — SOP/WI

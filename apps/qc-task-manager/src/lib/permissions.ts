@@ -414,6 +414,20 @@ export function canApproveLabTestRecord(
 }
 
 /**
+ * Void authority for a specific test (PROMPT 42). Allowed for manager/admin
+ * from any non-terminal status except APPROVED and VOID (approved records are
+ * immutable quality records; VOID is terminal).
+ */
+export function canVoidLabTestRecord(
+  user: Pick<User, 'id' | 'role'>,
+  test: LabTestAuth,
+): boolean {
+  if (!canVoidLabTest(user.role)) return false;
+  if (test.status === 'APPROVED' || test.status === 'VOID') return false;
+  return test.status === 'DRAFT' || test.status === 'SUBMITTED' || test.status === 'UNDER_REVIEW' || test.status === 'REJECTED';
+}
+
+/**
  * Edit authority for a controlled document. Editing an APPROVED document
  * means creating a NEW draft version (contract §9) — the approved version is
  * immutable. Employees never edit documents.

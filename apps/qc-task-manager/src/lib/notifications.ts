@@ -43,6 +43,7 @@ export type NotificationKind =
   | 'lab_test_rejected'
   | 'lab_test_changes_requested'
   | 'lab_test_approved'
+  | 'lab_test_voided'
   | 'lab_document_acknowledgement'
   | 'lab_document_acknowledged'
   | 'lab_document_review_started'
@@ -164,6 +165,7 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   lab_test_rejected: 'danger',
   lab_test_changes_requested: 'warning',
   lab_test_approved: 'success',
+  lab_test_voided: 'danger',
   lab_document_acknowledgement: 'warning',
   lab_document_acknowledged: 'success',
   lab_document_review_started: 'warning',
@@ -276,6 +278,7 @@ export const LAB_NOTIFICATION_KINDS: readonly NotificationKind[] = [
   'lab_test_rejected',
   'lab_test_changes_requested',
   'lab_test_approved',
+  'lab_test_voided',
   'lab_document_review_due',
   'lab_document_acknowledgement',
   'lab_document_acknowledged',

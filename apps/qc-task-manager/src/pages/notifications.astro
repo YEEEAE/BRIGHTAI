@@ -35,6 +35,7 @@ const KIND_ICON: Record<NotificationKind, string> = {
   lab_test_rejected: '⛔',
   lab_test_changes_requested: '✏️',
   lab_test_approved: '✅',
+  lab_test_voided: '🚫',
   lab_document_acknowledgement: '📖',
   lab_document_acknowledged: '👍',
   lab_document_review_started: '📄',
@@ -68,6 +69,7 @@ const KIND_LABEL: Record<NotificationKind, string> = {
   lab_test_rejected: 'Lab tests rejected',
   lab_test_changes_requested: 'Lab test changes requested',
   lab_test_approved: 'Lab tests approved',
+  lab_test_voided: 'Lab tests voided',
   lab_document_acknowledgement: 'Document acknowledgements required',
   lab_document_acknowledged: 'Document acknowledgements',
   lab_document_review_started: 'Document review started',
@@ -91,6 +93,7 @@ const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
 const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'overdue', order: 0 },
   { key: 'delete_rejected', order: 0 },
+  { key: 'lab_test_voided', order: 0 },
   { key: 'due_soon', order: 1 },
   { key: 'due_date_changed', order: 1 },
   { key: 'priority_changed', order: 1 },

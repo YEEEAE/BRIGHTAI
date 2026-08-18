@@ -50,11 +50,15 @@ try {
   // PROMPT 11: keep the empty-DB fixture empty (no 24-device seed).
   process.env.QC_SEED_LAB_EQUIPMENT = '0';
 
-  execFileSync(process.execPath, ['scripts/init-db.mjs'], {
-    cwd: appDir,
-    env: { ...process.env, QC_DATABASE_PATH: dbPath, QC_DB_PATH: '' },
-    stdio: 'ignore',
-  });
+  execFileSync(
+    process.execPath,
+    ['--import', '../../scripts/test-ts-loader.mjs', '--experimental-strip-types', 'scripts/init-db.mjs'],
+    {
+      cwd: appDir,
+      env: { ...process.env, QC_DATABASE_PATH: dbPath, QC_DB_PATH: '' },
+      stdio: 'ignore',
+    },
+  );
 
   const backupDir = join(tempDir, 'backups');
   mkdirSync(backupDir, { recursive: true });
@@ -650,6 +654,231 @@ try {
     ok(good.success && good.data.finding_id === 12 && good.data.note === null, 'links: schema coerces id + empty note → null');
     const tooLong = labTestFindingLinkSchema.safeParse({ finding_id: '12', note: 'x'.repeat(5001) });
     eq(tooLong.success, false, 'links: schema rejects over-long note');
+  }
+
+  // ── VOID test mutation (PROMPT 42) ──
+  console.log('\n■ void test mutation (PROMPT 42)');
+  {
+    const { labTestVoidSchema } = await import('../src/lib/validation.ts');
+
+    // Schema checks: reason is mandatory, min 3, max 500
+    eq(labTestVoidSchema.safeParse({ reason: '' }).success, false, 'void: empty reason rejected');
+    eq(labTestVoidSchema.safeParse({ reason: '  ' }).success, false, 'void: whitespace reason rejected');
+    eq(labTestVoidSchema.safeParse({ reason: 'no' }).success, false, 'void: reason < 3 chars rejected');
+    eq(labTestVoidSchema.safeParse({ reason: 'x'.repeat(501) }).success, false, 'void: reason > 500 chars rejected');
+    const validParsed = labTestVoidSchema.safeParse({ reason: 'Test setup was contaminated' });
+    ok(validParsed.success && validParsed.data.reason === 'Test setup was contaminated', 'void: valid reason accepted');
+
+    // Setup tests in different states: DRAFT, SUBMITTED, UNDER_REVIEW, REJECTED, APPROVED
+    const draftT = tests.createLabTest({
+      form_action: 'draft',
+      product_description: 'Seal Product',
+      product_id: productId,
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count: 3,
+      lot_number: 'LOT-VOID-DRAFT',
+      sampling_area: 'Bay 1',
+      equipment_id: equipmentId,
+      medium_used: 'Air',
+      actual_pressure: '100',
+      torque_in_lb: null,
+      time_sec: '30',
+      angle: null,
+      temperature_measured: '23',
+      samples_json: [
+        { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+        { sample_no: 2, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: null },
+        { sample_no: 3, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: null },
+      ],
+      remarks: null,
+      final_result: null,
+    }, employeeId, 'air');
+
+    // 1. Employee / Supervisor denied
+    let empBlocked = false;
+    try {
+      tests.voidLabTest({ id: employeeId, role: 'employee' }, draftT.id, 'Invalid test');
+    } catch {
+      empBlocked = true;
+    }
+    ok(empBlocked, 'void: employee denied');
+
+    const supervisorUser = db.prepare("SELECT id FROM users WHERE username = 'supervisor'").get();
+    const supervisorId = Number(supervisorUser.id);
+    let supBlocked = false;
+    try {
+      tests.voidLabTest({ id: supervisorId, role: 'supervisor' }, draftT.id, 'Invalid test');
+    } catch {
+      supBlocked = true;
+    }
+    ok(supBlocked, 'void: supervisor denied');
+
+    // 2. Void allowed from DRAFT
+    const voidDraftRes = tests.voidLabTest({ id: managerId, role: 'manager' }, draftT.id, 'Setup equipment miscalibrated');
+    eq(voidDraftRes.status, 'VOID', 'void: DRAFT voided status is VOID');
+    const voidedDraftRow = db.prepare('SELECT status FROM lab_test_records WHERE id = ?').get(draftT.id);
+    eq(voidedDraftRow.status, 'VOID', 'void: record status updated in DB');
+    const voidedDraftSamples = db.prepare('SELECT status FROM lab_test_samples WHERE test_id = ?').all(draftT.id);
+    ok(voidedDraftSamples.every((s) => s.status === 'VOID'), 'void: all sample rows updated to VOID');
+
+    // Audit log check
+    const voidDraftAudit = db.prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_TEST' AND entity_id = ? AND action = 'VOID'").get(draftT.id);
+    ok(voidDraftAudit !== undefined, 'void: audit row written with action VOID');
+    eq(voidDraftAudit.actor_id, managerId, 'void: audit actor_id is manager');
+    eq(voidDraftAudit.old_value, 'DRAFT', 'void: audit old_value is DRAFT');
+    eq(voidDraftAudit.new_value, 'VOID', 'void: audit new_value is VOID');
+    eq(voidDraftAudit.note, 'Setup equipment miscalibrated', 'void: audit note contains reason');
+
+    // Notification check
+    const voidDraftNotif = db.prepare("SELECT * FROM notifications WHERE type = 'lab_test_voided' AND user_id = ? ORDER BY id DESC LIMIT 1").get(employeeId);
+    ok(voidDraftNotif !== undefined, 'void: notification created for tester');
+    ok(voidDraftNotif.message.includes('Setup equipment miscalibrated'), 'void: notification message carries reason');
+
+    // 3. Voiding an already VOID test is refused
+    let revoidBlocked = false;
+    try {
+      tests.voidLabTest({ id: managerId, role: 'manager' }, draftT.id, 'Second void attempt');
+    } catch {
+      revoidBlocked = true;
+    }
+    ok(revoidBlocked, 'void: already VOID test cannot be voided again');
+
+    // 4. Void allowed from SUBMITTED
+    const subT = tests.createLabTest({
+      form_action: 'submit',
+      product_description: 'Seal Product',
+      product_id: productId,
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count: 1,
+      lot_number: 'LOT-VOID-SUBMITTED',
+      sampling_area: 'Bay 1',
+      equipment_id: equipmentId,
+      medium_used: 'Air',
+      actual_pressure: '100',
+      torque_in_lb: null,
+      time_sec: '30',
+      angle: null,
+      temperature_measured: '23',
+      samples_json: [
+        { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+      ],
+      remarks: null,
+      final_result: 'PASS',
+    }, employeeId, 'air');
+
+    const voidSubRes = tests.voidLabTest({ id: managerId, role: 'manager' }, subT.id, 'Submission had wrong lot');
+    eq(voidSubRes.status, 'VOID', 'void: SUBMITTED test voided');
+
+    // 5. Void allowed from UNDER_REVIEW
+    const underReviewT = tests.createLabTest({
+      form_action: 'submit',
+      product_description: 'Seal Product',
+      product_id: productId,
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count: 1,
+      lot_number: 'LOT-VOID-UR',
+      sampling_area: 'Bay 1',
+      equipment_id: equipmentId,
+      medium_used: 'Air',
+      actual_pressure: '100',
+      torque_in_lb: null,
+      time_sec: '30',
+      angle: null,
+      temperature_measured: '23',
+      samples_json: [
+        { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+      ],
+      remarks: null,
+      final_result: 'PASS',
+    }, employeeId, 'air');
+    db.prepare("UPDATE lab_test_records SET status = 'UNDER_REVIEW', reviewed_by = ? WHERE id = ?").run(supervisorId, underReviewT.id);
+
+    const voidUrRes = tests.voidLabTest({ id: managerId, role: 'manager' }, underReviewT.id, 'Voided during review');
+    eq(voidUrRes.status, 'VOID', 'void: UNDER_REVIEW test voided');
+
+    // 6. Void allowed from REJECTED
+    const rejectedT = tests.createLabTest({
+      form_action: 'submit',
+      product_description: 'Seal Product',
+      product_id: productId,
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count: 1,
+      lot_number: 'LOT-VOID-REJ',
+      sampling_area: 'Bay 1',
+      equipment_id: equipmentId,
+      medium_used: 'Air',
+      actual_pressure: '100',
+      torque_in_lb: null,
+      time_sec: '30',
+      angle: null,
+      temperature_measured: '23',
+      samples_json: [
+        { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'FAIL' },
+      ],
+      remarks: null,
+      final_result: 'FAIL',
+    }, employeeId, 'air');
+    db.prepare("UPDATE lab_test_records SET status = 'REJECTED', reviewed_by = ?, rejected_reason = 'Failed' WHERE id = ?").run(supervisorId, rejectedT.id);
+
+    const voidRejRes = tests.voidLabTest({ id: managerId, role: 'manager' }, rejectedT.id, 'Voided rejected record');
+    eq(voidRejRes.status, 'VOID', 'void: REJECTED test voided');
+
+    // 7. Voiding an APPROVED test is strictly FORBIDDEN
+    let approvedVoidBlocked = false;
+    let approvedVoidError = '';
+    try {
+      tests.voidLabTest({ id: managerId, role: 'manager' }, 1, 'Attempt to void approved test');
+    } catch (err) {
+      approvedVoidBlocked = true;
+      approvedVoidError = err instanceof Error ? err.message : '';
+    }
+    ok(approvedVoidBlocked, 'void: APPROVED test cannot be voided');
+    ok(approvedVoidError.includes('Approved tests are immutable'), 'void: immutable approved message');
+
+    // 8. Open retest blocking
+    const testWithRetest = tests.createLabTest({
+      form_action: 'draft',
+      product_description: 'Seal Product',
+      product_id: productId,
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count: 1,
+      lot_number: 'LOT-VOID-OPEN-RETEST',
+      sampling_area: 'Bay 1',
+      equipment_id: equipmentId,
+      medium_used: 'Air',
+      actual_pressure: '100',
+      torque_in_lb: null,
+      time_sec: '30',
+      angle: null,
+      temperature_measured: '23',
+      samples_json: [
+        { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+      ],
+      remarks: null,
+      final_result: null,
+    }, employeeId, 'air');
+
+    // Insert an OPEN retest row
+    db.prepare(
+      `INSERT INTO lab_test_retests (retest_number, original_test_id, reason, status, created_by)
+       VALUES (?, ?, ?, 'OPEN', ?)`,
+    ).run('LAB-RETEST-99999-01', testWithRetest.id, 'FAIL', supervisorId);
+
+    let retestBlocked = false;
+    let retestErrorMsg = '';
+    try {
+      tests.voidLabTest({ id: managerId, role: 'manager' }, testWithRetest.id, 'Void attempt on test with open retest');
+    } catch (err) {
+      retestBlocked = true;
+      retestErrorMsg = err instanceof Error ? err.message : '';
+    }
+    ok(retestBlocked, 'void: blocked when open retest exists');
+    ok(retestErrorMsg.includes('لا يمكن إلغاء الاختبار لوجود إعادة اختبار مفتوحة'), 'void: returns clear Arabic retest block message');
+
+    // Close the retest -> voiding is now allowed
+    db.prepare("UPDATE lab_test_retests SET status = 'CANCELLED' WHERE original_test_id = ?").run(testWithRetest.id);
+    const unblockedRes = tests.voidLabTest({ id: managerId, role: 'manager' }, testWithRetest.id, 'Now closed, can void');
+    eq(unblockedRes.status, 'VOID', 'void: allowed after open retest is resolved');
   }
 
   console.log(`\n${passed} passed, ${failed} failed`);

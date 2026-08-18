@@ -160,6 +160,16 @@ try {
     ok(perms.canApproveLabTestRecord({ id: managerId, role: 'manager' }, { status: 'SUBMITTED', tested_by: employeeId, reviewed_by: supervisorId, created_by: employeeId }), 'guard: unrelated manager can approve');
     ok(perms.canReviewLabTestRecord({ id: managerId, role: 'manager' }, { status: 'SUBMITTED', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), 'guard: manager can review someone elses test');
     eq(perms.canApproveLabTestRecord({ id: managerId, role: 'manager' }, { status: 'APPROVED', tested_by: employeeId, reviewed_by: supervisorId, created_by: employeeId }), false, 'guard: cannot approve an already-approved test');
+
+    // VOID guardrails (PROMPT 42)
+    eq(perms.canVoidLabTestRecord({ id: employeeId, role: 'employee' }, { status: 'DRAFT', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), false, 'guard: employee cannot void own draft');
+    eq(perms.canVoidLabTestRecord({ id: supervisorId, role: 'supervisor' }, { status: 'SUBMITTED', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), false, 'guard: supervisor cannot void test');
+    ok(perms.canVoidLabTestRecord({ id: managerId, role: 'manager' }, { status: 'DRAFT', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), 'guard: manager can void DRAFT');
+    ok(perms.canVoidLabTestRecord({ id: managerId, role: 'manager' }, { status: 'SUBMITTED', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), 'guard: manager can void SUBMITTED');
+    ok(perms.canVoidLabTestRecord({ id: managerId, role: 'manager' }, { status: 'UNDER_REVIEW', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), 'guard: manager can void UNDER_REVIEW');
+    ok(perms.canVoidLabTestRecord({ id: managerId, role: 'manager' }, { status: 'REJECTED', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), 'guard: manager can void REJECTED');
+    eq(perms.canVoidLabTestRecord({ id: managerId, role: 'manager' }, { status: 'APPROVED', tested_by: employeeId, reviewed_by: supervisorId, created_by: employeeId }), false, 'guard: manager cannot void APPROVED test');
+    eq(perms.canVoidLabTestRecord({ id: managerId, role: 'manager' }, { status: 'VOID', tested_by: employeeId, reviewed_by: null, created_by: employeeId }), false, 'guard: manager cannot void already VOID test');
   }
 
   console.log('\n■ Permission matrix — products / templates / equipment / documents');
