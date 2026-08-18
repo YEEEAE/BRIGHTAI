@@ -52,8 +52,8 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 27
 - [✅] Prompt 28
 - [✅] Prompt 29
-- [ ] Prompt 30
-- [ ] Prompt 31
+- [✅] Prompt 30
+- [✅] Prompt 31
 - [ ] Prompt 32
 - [ ] Prompt 33
 - [ ] Prompt 34
@@ -1696,7 +1696,7 @@ Reuse the existing exporter.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Every state-changing laboratory action must use the existing audit architecture.
@@ -1754,7 +1754,7 @@ Do not store secrets in audit records.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Create a readable Laboratory Audit Timeline.
