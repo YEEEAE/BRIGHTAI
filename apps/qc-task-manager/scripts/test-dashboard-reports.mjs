@@ -65,10 +65,23 @@ try {
   ]);
   const csv = rowsToCsv(['Report ID', 'Task'], [['R-1', 'Line, with "quotes"\nnext']]);
   assert.match(csv, /^\uFEFFReport ID,Task\r\nR-1,"Line, with ""quotes""\nnext"\r\n$/);
+  assert.equal(rowsToCsv(['v'], [['=SUM(A1)']]).includes("'=SUM(A1)"), true, 'csv: formula injection neutralized');
+  assert.equal(rowsToCsv(['v'], [['@cmd']]).includes("'@cmd"), true, 'csv: formula injection (leading @) neutralized');
   assert.equal(authorizeReport({ id: 7, role: 'employee', department: 'QC' }, 'overdue', false).allowed, true);
   assert.equal(authorizeReport({ id: 7, role: 'employee', department: 'QC' }, 'employee-performance', true).allowed, false);
   assert.equal(authorizeReport({ id: 3, role: 'supervisor', department: 'QC' }, 'findings', true).scopeKind, 'department');
   assert.equal(authorizeReport({ id: 2, role: 'manager', department: 'QA' }, 'audit-trail', true).scopeKind, 'organization');
+
+  // Supervisor scope must NEVER widen from the query string: a supervisor with
+  // no department cannot fall back to filters.department (attacker-controlled),
+  // and a supervisor WITH a department ignores the query-string department.
+  const forged = parseReportFilters(new URLSearchParams({ department: 'QA' }));
+  const noDept = resolveReportScope({ id: 3, role: 'supervisor', department: null }, forged);
+  assert.equal(noDept.kind, 'own_tasks', 'scope: supervisor without department is restricted to own tasks (no query widening)');
+  assert.equal(noDept.sql, '(t.assigned_to = ? OR t.created_by = ?)', 'scope: supervisor without department scopes to own tasks SQL');
+  const withDept = resolveReportScope({ id: 3, role: 'supervisor', department: 'QC' }, forged);
+  assert.equal(withDept.kind, 'department', 'scope: supervisor with department keeps department scope');
+  assert.deepEqual(withDept.params, ['QC'], 'scope: supervisor department comes from the profile, not the query string');
   console.log('Dashboard reports migration tests passed.');
 } finally {
   rmSync(tempRoot, { recursive: true, force: true });

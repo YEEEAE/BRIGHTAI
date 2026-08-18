@@ -26,6 +26,23 @@
 import { getDb } from '../db';
 import { localToday, resolveRange } from '../dashboard';
 import { IMPLEMENTED_LAB_ROUTES } from './navigation';
+import type { Role } from '../types';
+
+/** Who is requesting the overview — used to scope rows to the same rule as the
+ *  test register (testSearch.ts): employees see only their own tests, while
+ *  supervisor/manager/admin see the full workspace. */
+export interface LabOverviewScope {
+  role: Role;
+  userId: number;
+}
+
+/** Employee row scope — mirror of testSearch.ts scopeClause. */
+function scopeClause(scope: LabOverviewScope): { sql: string; params: unknown[] } {
+  if (scope.role === 'employee') {
+    return { sql: '(t.tested_by = ? OR t.created_by = ?)', params: [scope.userId, scope.userId] };
+  }
+  return { sql: '', params: [] };
+}
 
 /** Due-soon window for derived calibration state (contract: ≤ 30 days). */
 export const CALIBRATION_DUE_SOON_DAYS = 30;
@@ -84,10 +101,12 @@ export interface LabKpis {
   data_quality_issues: number;
 }
 
-export function getLabKpis(): LabKpis {
+export function getLabKpis(scope: LabOverviewScope): LabKpis {
   const db = getDb();
   const today = localToday();
   const { from: weekStart } = resolveRange('week');
+  const employee = scopeClause(scope);
+  const scopeSql = employee.sql ? `WHERE ${employee.sql}` : '';
 
   const tests = db
     .prepare(
@@ -100,9 +119,10 @@ export function getLabKpis(): LabKpis {
          COALESCE(SUM(CASE WHEN t.status <> 'VOID' AND t.final_result = 'PASS' THEN 1 ELSE 0 END), 0) AS pass_tests,
          COALESCE(SUM(CASE WHEN t.status <> 'VOID' AND t.final_result = 'FAIL' THEN 1 ELSE 0 END), 0) AS fail_tests,
          COALESCE(SUM(CASE WHEN t.status <> 'VOID' AND t.final_result = 'HOLD' THEN 1 ELSE 0 END), 0) AS hold_tests
-       FROM lab_test_records t`,
+       FROM lab_test_records t
+       ${scopeSql}`,
     )
-    .get(today, weekStart) as Omit<LabKpis, 'equipment_requiring_attention' | 'calibration_due' | 'documents_due_for_review' | 'retests_open' | 'data_quality_issues'>;
+    .get(today, weekStart, ...employee.params) as Omit<LabKpis, 'equipment_requiring_attention' | 'calibration_due' | 'documents_due_for_review' | 'retests_open' | 'data_quality_issues'>;
 
   // Equipment: attention = open maintenance OR overdue latest calibration.
   // Calibration due = due today or within the 30-day window (not overdue).
@@ -233,8 +253,10 @@ export interface LabRecentTestRow {
   updated_at: string;
 }
 
-/** Latest 8 tests, most recently updated first. */
-export function getLabRecentTests(): LabRecentTestRow[] {
+/** Latest 8 tests, most recently updated first (employee-scoped). */
+export function getLabRecentTests(scope: LabOverviewScope): LabRecentTestRow[] {
+  const employee = scopeClause(scope);
+  const scopeSql = employee.sql ? `WHERE ${employee.sql}` : '';
   return getDb()
     .prepare(
       `SELECT t.id, t.test_number, t.test_type, t.lot_number, t.final_result, t.status, t.updated_at,
@@ -243,10 +265,11 @@ export function getLabRecentTests(): LabRecentTestRow[] {
        LEFT JOIN lab_products p ON p.id = t.product_id
        LEFT JOIN lab_equipment e ON e.id = t.equipment_id
        LEFT JOIN users u ON u.id = t.tested_by
+       ${scopeSql}
        ORDER BY t.updated_at DESC, t.id DESC
        LIMIT 8`,
     )
-    .all() as LabRecentTestRow[];
+    .all(...employee.params) as LabRecentTestRow[];
 }
 
 export interface LabPendingReviewRow {
@@ -261,8 +284,12 @@ export interface LabPendingReviewRow {
   status: string;
 }
 
-/** Tests awaiting a reviewer (SUBMITTED or UNDER_REVIEW), oldest first. */
-export function getLabPendingReviews(): LabPendingReviewRow[] {
+/** Tests awaiting a reviewer (SUBMITTED or UNDER_REVIEW), oldest first —
+ *  employee-scoped to their own tests (the review queue itself is supervisor+,
+ *  permissions.ts canReviewLabTest). */
+export function getLabPendingReviews(scope: LabOverviewScope): LabPendingReviewRow[] {
+  const employee = scopeClause(scope);
+  const scopeSql = employee.sql ? `AND ${employee.sql}` : '';
   return getDb()
     .prepare(
       `SELECT t.id, t.test_number, t.test_type, t.submitted_at, t.final_result, t.status,
@@ -271,10 +298,11 @@ export function getLabPendingReviews(): LabPendingReviewRow[] {
        FROM lab_test_records t
        LEFT JOIN users u ON u.id = t.tested_by
        WHERE t.status IN ('SUBMITTED', 'UNDER_REVIEW')
+         ${scopeSql}
        ORDER BY t.submitted_at ASC, t.id ASC
        LIMIT 8`,
     )
-    .all() as LabPendingReviewRow[];
+    .all(...employee.params) as LabPendingReviewRow[];
 }
 
 export interface LabEquipmentAlertRow {
@@ -402,8 +430,14 @@ export interface LabOpenRetestRow {
   updated_at: string;
 }
 
-/** Open retests, most recently updated first. */
-export function getLabOpenRetests(): LabOpenRetestRow[] {
+/** Open retests, most recently updated first (employee-scoped to retests of
+ *  their own original tests). */
+export function getLabOpenRetests(scope: LabOverviewScope): LabOpenRetestRow[] {
+  const isEmployee = scope.role === 'employee';
+  const scopeSql = isEmployee
+    ? 'AND EXISTS (SELECT 1 FROM lab_test_records own WHERE own.id = r.original_test_id AND (own.tested_by = ? OR own.created_by = ?))'
+    : '';
+  const params = isEmployee ? [scope.userId, scope.userId] : [];
   return getDb()
     .prepare(
       `SELECT r.id, r.retest_number, r.reason, r.status, r.updated_at,
@@ -412,10 +446,11 @@ export function getLabOpenRetests(): LabOpenRetestRow[] {
        JOIN lab_test_records t ON t.id = r.original_test_id
        LEFT JOIN lab_products p ON p.id = t.product_id
        WHERE r.status = 'OPEN'
+         ${scopeSql}
        ORDER BY r.updated_at DESC, r.id DESC
        LIMIT 8`,
     )
-    .all() as LabOpenRetestRow[];
+    .all(...params) as LabOpenRetestRow[];
 }
 
 export interface LabActivityRow {
@@ -430,8 +465,25 @@ export interface LabActivityRow {
 /**
  * Latest 10 laboratory events from the ONE audit system (`qc_audit_log`,
  * extended by migration 011 with the LAB_* entity types). Read-only.
+ * Employee scope: only events on their own tests (LAB_TEST entities they
+ * tested/created) or retests of their tests — the lab-wide audit trail stays
+ * supervisor+ (permissions.ts canViewLabAudit).
  */
-export function getLabRecentActivity(): LabActivityRow[] {
+export function getLabRecentActivity(scope: LabOverviewScope): LabActivityRow[] {
+  const isEmployee = scope.role === 'employee';
+  const scopeSql = isEmployee
+    ? `AND (
+         (a.entity_type = 'LAB_TEST' AND EXISTS (
+           SELECT 1 FROM lab_test_records own WHERE own.id = a.entity_id
+           AND (own.tested_by = ? OR own.created_by = ?)))
+         OR
+         (a.entity_type = 'LAB_RETEST' AND EXISTS (
+           SELECT 1 FROM lab_test_retests r
+           JOIN lab_test_records own ON own.id = r.original_test_id
+           WHERE r.id = a.entity_id AND (own.tested_by = ? OR own.created_by = ?)))
+       )`
+    : '';
+  const activityParams = isEmployee ? [scope.userId, scope.userId, scope.userId, scope.userId] : [];
   return getDb()
     .prepare(
       `SELECT a.id, a.entity_type, a.entity_id, a.action, a.created_at,
@@ -439,10 +491,11 @@ export function getLabRecentActivity(): LabActivityRow[] {
        FROM qc_audit_log a
        JOIN users u ON u.id = a.actor_id
        WHERE a.entity_type LIKE 'LAB\_%' ESCAPE '\\'
+         ${scopeSql}
        ORDER BY a.id DESC
        LIMIT 10`,
     )
-    .all() as LabActivityRow[];
+    .all(...activityParams) as LabActivityRow[];
 }
 
 // ─────────────────────────── Drill-down registry ───────────────────────────

@@ -22,6 +22,7 @@ import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { createNotification } from '../notifications';
 import { canCreateLabRetest } from '../permissions';
+import type { Role } from '../types';
 import {
   LAB_RETEST_REASONS,
   LAB_RETEST_STATUSES,
@@ -195,10 +196,28 @@ export interface LabRetestSearchResult {
   total_pages: number;
 }
 
+/** Who is requesting the retest register — employees only see retests of the
+ *  tests they can already see (same scope rule as testSearch.ts). */
+export interface LabRetestScope {
+  role: Role;
+  userId: number;
+}
+
+/** Employee scope SQL over the register (aliases `r`). */
+function retestScopeClause(scope: LabRetestScope): { sql: string; params: unknown[] } {
+  if (scope.role === 'employee') {
+    return {
+      sql: 'EXISTS (SELECT 1 FROM lab_test_records own WHERE own.id = r.original_test_id AND (own.tested_by = ? OR own.created_by = ?))',
+      params: [scope.userId, scope.userId],
+    };
+  }
+  return { sql: '', params: [] };
+}
+
 /** Bounded, fully parameterized register query (employee sees retests of the
  *  tests they can already see via the test register's scope — the retest view
  *  itself is role-level for all roles, D-5). */
-export function searchLabRetests(f: LabRetestSearchFilters): LabRetestSearchResult {
+export function searchLabRetests(f: LabRetestSearchFilters, scope: LabRetestScope): LabRetestSearchResult {
   const db = getDb();
   const where: string[] = [];
   const params: unknown[] = [];
@@ -216,6 +235,11 @@ export function searchLabRetests(f: LabRetestSearchFilters): LabRetestSearchResu
   if (f.status) {
     where.push('r.status = ?');
     params.push(f.status);
+  }
+  const employee = retestScopeClause(scope);
+  if (employee.sql) {
+    where.push(employee.sql);
+    params.push(...employee.params);
   }
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
 
@@ -259,9 +283,10 @@ export interface LabRetestDetail {
   audit: Array<Record<string, unknown>>;
 }
 
-export function getLabRetestDetail(id: number): LabRetestDetail | null {
+export function getLabRetestDetail(id: number, scope: LabRetestScope): LabRetestDetail | null {
   if (!Number.isInteger(id) || id <= 0) return null;
   const db = getDb();
+  const detailScope = retestScopeClause(scope);
   const retest = db
     .prepare(
       `SELECT r.id, r.retest_number, r.original_test_id, r.reason, r.reason_note, r.status,
@@ -276,9 +301,9 @@ export function getLabRetestDetail(id: number): LabRetestDetail | null {
        LEFT JOIN lab_test_records nt ON nt.id = r.new_test_id
        LEFT JOIN lab_products p ON p.id = ot.product_id
        LEFT JOIN users u ON u.id = r.created_by
-       WHERE r.id = ?`,
+       WHERE r.id = ?${detailScope.sql ? ` AND ${detailScope.sql}` : ''}`,
     )
-    .get(id) as LabRetestRow | undefined;
+    .get(id, ...detailScope.params) as LabRetestRow | undefined;
   if (!retest) return null;
   const original = db
     .prepare('SELECT test_type, lot_number, sampling_area FROM lab_test_records WHERE id = ?')

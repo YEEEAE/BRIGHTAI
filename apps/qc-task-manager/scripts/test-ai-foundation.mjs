@@ -43,6 +43,17 @@ process.env.QC_DATABASE_PATH = dbPath;
 const { runStructuredAi } = await import('../src/lib/ai/service.ts');
 const result = await runStructuredAi({ userId: 1, feature: 'summary', systemPrompt: 'json', userPrompt: 'return summary', schema: z.object({ summary: z.string() }), provider });
 assert.equal(result.data.summary, 'ok');
+
+// Dedicated per-user endpoint limiter for /api/ai/[feature] — protects the
+// expensive AI endpoint independently of the generic mutation limiter. Imported
+// after QC_DATABASE_PATH is set (api-security.ts pulls in the DB layer).
+const { requireAiRateLimit } = await import('../src/lib/api-security.ts');
+let limited = null;
+for (let i = 0; i < 15; i++) limited = requireAiRateLimit(901);
+assert.equal(limited, null, 'AI rate limit allows the first 15 calls per user per minute');
+assert.equal(requireAiRateLimit(901)?.status, 429, 'AI rate limit blocks the 16th call for the same user');
+assert.equal(requireAiRateLimit(902), null, 'AI rate limit is per-user, not global');
+
 const auditDb = new Database(dbPath);
 assert.equal(auditDb.prepare('SELECT success, feature, model, request_reference, response_reference, failure_reason FROM ai_audit_log').get().success, 1);
 auditDb.close();

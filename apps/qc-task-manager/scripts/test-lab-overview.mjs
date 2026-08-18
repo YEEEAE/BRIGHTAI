@@ -67,23 +67,26 @@ try {
   // ── 1. Empty database: zeros everywhere, nothing invented ──
   console.log('\n■ Empty database → zero state');
   {
-    const kpis = overview.getLabKpis();
+    const scope = { role: 'supervisor', userId: 1 };
+    const kpis = overview.getLabKpis(scope);
     for (const [key, value] of Object.entries(kpis)) {
       eq(value, 0, `empty: ${key} = 0`);
     }
-    eq(overview.getLabRecentTests().length, 0, 'empty: recent tests section empty');
-    eq(overview.getLabPendingReviews().length, 0, 'empty: pending reviews empty');
+    eq(overview.getLabRecentTests(scope).length, 0, 'empty: recent tests section empty');
+    eq(overview.getLabPendingReviews(scope).length, 0, 'empty: pending reviews empty');
     eq(overview.getLabEquipmentAlerts().length, 0, 'empty: equipment alerts empty');
     eq(overview.getLabCalibrationAlerts().length, 0, 'empty: calibration alerts empty');
     eq(overview.getLabDocumentReviewsDue().length, 0, 'empty: document reviews empty');
-    eq(overview.getLabOpenRetests().length, 0, 'empty: open retests empty');
-    eq(overview.getLabRecentActivity().length, 0, 'empty: recent activity empty');
+    eq(overview.getLabOpenRetests(scope).length, 0, 'empty: open retests empty');
+    eq(overview.getLabRecentActivity(scope).length, 0, 'empty: recent activity empty');
   }
 
   // ── 2. Controlled fixture ──
   console.log('\n■ Fixture KPIs');
   const db = getDb();
   const employee = db.prepare("SELECT id FROM users WHERE username = 'employee'").get();
+  const employeeId = Number(employee.id);
+  const managerScope = { role: 'manager', userId: employeeId };
 
   // Products: P1 active but without default_test_type → 1 product data-quality issue.
   db.prepare(
@@ -164,9 +167,23 @@ try {
   db.prepare('INSERT INTO qc_audit_log (entity_type, entity_id, actor_id, action) VALUES (?, ?, ?, ?)')
     .run('LAB_TEST', testIds['LAB-TEST-00002'], employee.id, 'SUBMIT');
 
-  const kpis = overview.getLabKpis();
+  const kpis = overview.getLabKpis(managerScope);
   eq(kpis.tests_today, 1, 'kpi: tests today');
-  eq(kpis.tests_this_week, 3, 'kpi: tests this week (T1+T2+T4 since Monday)');
+  // "This week" = since this Monday (ISO weeks, local calendar). The fixture
+  // created tests today, 2 and 3 days ago — how many fall in the current week
+  // depends on the weekday the suite runs on, so compute it rather than
+  // hard-coding 3 (which only holds when the week started ≥3 days ago).
+  {
+    const now = new Date();
+    const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+    const inWeek = (daysAgo) => {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - daysAgo);
+      return d >= monday;
+    };
+    const expectedWeek = Number(inWeek(0)) + Number(inWeek(2)) + Number(inWeek(3));
+    eq(kpis.tests_this_week, expectedWeek, 'kpi: tests this week (fixture tests since Monday)');
+  }
   eq(kpis.draft_tests, 1, 'kpi: draft tests');
   eq(kpis.awaiting_review, 2, 'kpi: awaiting review');
   eq(kpis.approved_tests, 1, 'kpi: approved tests');
@@ -179,15 +196,15 @@ try {
   eq(kpis.retests_open, 1, 'kpi: retests open');
   eq(kpis.data_quality_issues, 5, 'kpi: data quality issues (2 tests + 1 equipment + 1 product + 1 document)');
 
-  console.log('\n■ Sections');
-  const recent = overview.getLabRecentTests();
+  console.log('\n■ Sections (supervisor scope)');
+  const recent = overview.getLabRecentTests(managerScope);
   eq(recent.length, 5, 'section: recent tests rows');
   eq(recent[0].test_number, 'LAB-TEST-00004', 'section: recent tests ordered by updated_at');
   ok(recent[0].product_name === 'Fixture Product', 'section: recent tests join product name');
   ok(recent[0].equipment_code === 'EQ-B', 'section: recent tests join equipment code');
   ok(recent[0].tester_name != null, 'section: recent tests join tester name');
 
-  const pending = overview.getLabPendingReviews();
+  const pending = overview.getLabPendingReviews(managerScope);
   eq(pending.length, 2, 'section: pending reviews rows');
   eq(pending[0].test_number, 'LAB-TEST-00002', 'section: pending reviews oldest first');
   eq(pending[0].aging_days, 3, 'section: review aging 3 days');
@@ -211,16 +228,31 @@ try {
   eq(docReviews[0].code, 'SOP-FIX-01', 'section: document review row content');
   ok(docReviews[0].owner_name != null, 'section: document review joins owner name');
 
-  const retests = overview.getLabOpenRetests();
+  const retests = overview.getLabOpenRetests(managerScope);
   eq(retests.length, 1, 'section: open retests rows');
   eq(retests[0].retest_number, 'LAB-RETEST-00003-01', 'section: retest row joins original test');
   eq(retests[0].original_test_number, 'LAB-TEST-00003', 'section: retest row original test number');
   eq(retests[0].product_name, 'Fixture Product', 'section: retest row product name');
 
-  const activity = overview.getLabRecentActivity();
+  const activity = overview.getLabRecentActivity(managerScope);
   eq(activity.length, 1, 'section: recent activity rows');
   eq(activity[0].entity_type, 'LAB_TEST', 'section: activity reads qc_audit_log LAB_* events');
   eq(activity[0].actor_name != null, true, 'section: activity joins actor name');
+
+  console.log('\n■ RBAC scope: employees see only their own tests');
+  const employeeScope = { role: 'employee', userId: employeeId };
+  // The fixture's tests belong to `employee`; a different employee (the seeded
+  // "employee2" user does not exist — use a fresh id 9999) must see none of them.
+  const outsiderScope = { role: 'employee', userId: 9999 };
+  eq(overview.getLabRecentTests(outsiderScope).length, 0, 'scope: employee sees no others tests');
+  eq(overview.getLabKpis(outsiderScope).tests_today, 0, 'scope: employee KPIs exclude others tests');
+  eq(overview.getLabPendingReviews(outsiderScope).length, 0, 'scope: employee sees no others pending reviews');
+  eq(overview.getLabOpenRetests(outsiderScope).length, 0, 'scope: employee sees no others open retests');
+  eq(overview.getLabRecentActivity(outsiderScope).length, 0, 'scope: employee sees no others activity');
+  // The employee who owns every fixture test sees them all.
+  eq(overview.getLabRecentTests(employeeScope).length, 5, 'scope: employee sees own tests');
+  eq(overview.getLabOpenRetests(employeeScope).length, 1, 'scope: employee sees retests of own tests');
+  eq(overview.getLabRecentActivity(employeeScope).length, 1, 'scope: employee sees own activity');
 
   console.log('\n■ Derived calibration state helper');
   eq(overview.deriveCalibrationState(null), 'UNKNOWN', 'calibration: no due date → UNKNOWN');

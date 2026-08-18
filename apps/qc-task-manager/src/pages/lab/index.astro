@@ -35,6 +35,8 @@ import {
   canCreateLabRetest,
   canCreateLabTemplate,
   canCreateLabTest,
+  canReviewLabTest,
+  canViewLabAudit,
   canViewLabCalibration,
   canViewLabDataQuality,
   canViewLabEquipment,
@@ -43,8 +45,17 @@ import type { Role } from '../../lib/types';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
+const userId = user.userId;
 const navItems = labNavForRole(role);
 const routeEnabled = (route: string) => IMPLEMENTED_LAB_ROUTES.includes(route);
+
+// Overview queries are scoped to the requesting role (overview.ts LabOverviewScope):
+// employees see only their own tests / retests of their tests. The Pending
+// Reviews queue and the lab-wide audit feed are supervisor+ concerns and are
+// not rendered for employees.
+const scope = { role, userId };
+const canSeeReviewQueue = canReviewLabTest(role);
+const canSeeAuditFeed = canViewLabAudit(role);
 
 // Every query is wrapped so a transient DB hiccup renders a banner instead of
 // a 500 — the shell (nav + actions) stays usable (same pattern as /dashboard).
@@ -59,14 +70,14 @@ let openRetests: ReturnType<typeof getLabOpenRetests> = [];
 let recentActivity: ReturnType<typeof getLabRecentActivity> = [];
 
 try {
-  kpis = getLabKpis();
-  recentTests = getLabRecentTests();
-  pendingReviews = getLabPendingReviews();
+  kpis = getLabKpis(scope);
+  recentTests = getLabRecentTests(scope);
+  if (canSeeReviewQueue) pendingReviews = getLabPendingReviews(scope);
   equipmentAlerts = getLabEquipmentAlerts();
   calibrationAlerts = getLabCalibrationAlerts();
   documentReviewsDue = getLabDocumentReviewsDue();
-  openRetests = getLabOpenRetests();
-  recentActivity = getLabRecentActivity();
+  openRetests = getLabOpenRetests(scope);
+  if (canSeeAuditFeed) recentActivity = getLabRecentActivity(scope);
 } catch (err) {
   console.error('[lab] overview query failure', err);
   dataError = 'Could not load laboratory data. Try reloading — if the problem persists, contact an administrator.';

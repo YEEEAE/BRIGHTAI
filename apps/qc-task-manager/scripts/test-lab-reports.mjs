@@ -296,6 +296,10 @@ try {
   ok(cell.includes('& <html>'), 'csv: special chars preserved (no html injection)');
   const csvRow = testReg[0].map((v) => csvCell(v)).join(',');
   ok(typeof csvRow === 'string' && csvRow.length > 0, 'csv: register row serializes');
+  ok(csvCell('=HYPERLINK("http://evil","x")').includes("'=HYPERLINK"), 'csv: formula injection (leading =) neutralized');
+  ok(csvCell('-2+3').startsWith("'-"), 'csv: formula injection (leading -) neutralized');
+  ok(csvCell('@SUM(1,2)').includes("'@SUM"), 'csv: formula injection (leading @) neutralized');
+  ok(csvCell('plain').startsWith('plain'), 'csv: plain cells untouched');
 
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) {

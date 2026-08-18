@@ -13,15 +13,21 @@ import {
 } from './auth';
 import { cleanupExpiredSessions } from './db';
 import { setFlash } from './flash';
+import { safeRedirectTarget } from './redirect';
 import { parseFormData, loginInputSchema } from './validation';
 import type { SessionData, User } from './types';
 
-/** Secure cookies follow the actual request scheme, not the build mode. */
+/** Secure cookies follow the actual request scheme, not the build mode.
+ *  `x-forwarded-proto` is only trusted when the app is explicitly deployed
+ *  behind a trusted reverse proxy (TRUST_PROXY=1) — otherwise a directly
+ *  exposed server would accept a client-supplied header as fact. */
 function isSecureRequest(context: { request: Request; url?: URL }): boolean {
-  return (
-    context.url?.protocol === 'https:' ||
-    context.request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() === 'https'
-  );
+  if (context.url?.protocol === 'https:') return true;
+  const proxyTrusted = process.env.TRUST_PROXY === '1';
+  if (proxyTrusted) {
+    return context.request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() === 'https';
+  }
+  return false;
 }
 
 /** Read the current session from the request cookie, if any. */
@@ -85,8 +91,9 @@ export interface LoginContext {
 export async function handleLoginPost(context: LoginContext): Promise<Response> {
   const form = await context.request.formData();
   const rawTarget = String(form.get('redirect') ?? '');
-  // Only allow internal redirect targets (blocks open-redirect abuse).
-  const safeTarget = rawTarget.startsWith('/') && !rawTarget.startsWith('//') ? rawTarget : '/';
+  // Only allow internal redirect targets (blocks open-redirect abuse, including
+  // the backslash normalization bypass used by browsers).
+  const safeTarget = safeRedirectTarget(rawTarget, '/');
 
   // Shape validation via Zod (src/lib/validation.ts). An empty/malformed body
   // is treated exactly like bad credentials — no user enumeration.

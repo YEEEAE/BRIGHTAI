@@ -32,6 +32,7 @@ import AiReviewPanel from '../../../components/AiReviewPanel';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
+const scope = { role, userId: user.userId };
 
 const navItems = labNavForRole(role);
 const filters: LabRetestSearchFilters = parseLabRetestSearchFilters(Astro.url);
@@ -45,7 +46,7 @@ let result: ReturnType<typeof searchLabRetests> = {
   total_pages: 1,
 };
 try {
-  result = searchLabRetests(filters);
+  result = searchLabRetests(filters, scope);
 } catch (err) {
   console.error('[lab] retest register query failure', err);
   dataError = 'Could not load the Retest Register. Try reloading — if the problem persists, contact an administrator.';

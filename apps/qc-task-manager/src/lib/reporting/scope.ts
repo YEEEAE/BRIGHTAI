@@ -18,10 +18,19 @@ export function resolveReportScope(actor: ReportActor, filters: ReportFilters, r
     };
   }
   if (actor.role === 'supervisor') {
-    const department = actor.department ?? filters.department;
+    // The department is resolved ONLY from the actor's own profile. The query
+    // string (`filters.department`) is never trusted for a supervisor whose
+    // profile has no department — falling back to it would let the request
+    // widen its own scope to any department.
+    if (!actor.department) {
+      return {
+        kind: 'own_tasks', userId: actor.id, department: null,
+        sql: '(t.assigned_to = ? OR t.created_by = ?)', params: [actor.id, actor.id],
+      };
+    }
     return {
-      kind: 'department', userId: actor.id, department,
-      sql: 't.department = ?', params: [department ?? ''],
+      kind: 'department', userId: actor.id, department: actor.department,
+      sql: 't.department = ?', params: [actor.department],
     };
   }
   return { kind: 'organization', userId: actor.id, department: null, sql: '1 = 1', params: [] };

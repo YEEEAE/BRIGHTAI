@@ -121,6 +121,12 @@ try {
       .prepare("INSERT INTO lab_products (name, code, default_test_type, is_active, created_by) VALUES ('Catheter 24G', 'PRD-24G', 'air', 1, ?)")
       .run(managerId).lastInsertRowid,
   );
+  // A second employee who owns none of the fixture tests — for RBAC scope checks.
+  const outsiderId = Number(
+    db
+      .prepare("INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active) VALUES ('outsider_emp', 'unused', 'Outsider Employee', 'employee', 'QC', 0, 1)")
+      .run().lastInsertRowid,
+  );
 
   console.log('\n→ Retest schema (migration 019)');
   {
@@ -277,24 +283,25 @@ try {
 
   console.log('\n→ Register: search / filters / sorting / pagination');
   {
-    const all = retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS);
+    const managerScope = { role: 'manager', userId: managerId };
+    const all = retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, managerScope);
     eq(all.total, 5, 'all retests visible without filters');
-    const byStatus = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, status: 'OPEN' });
+    const byStatus = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, status: 'OPEN' }, managerScope);
     eq(byStatus.total, 4, 'status=OPEN filter');
-    const byReason = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, reason: 'FAIL' });
+    const byReason = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, reason: 'FAIL' }, managerScope);
     eq(byReason.total, 1, 'reason=FAIL filter');
-    const byQ = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: original1.number });
+    const byQ = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: original1.number }, managerScope);
     eq(byQ.total, 2, 'q matches the original test number');
-    const byProduct = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: 'PRD-24G' });
+    const byProduct = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: 'PRD-24G' }, managerScope);
     eq(byProduct.total, 5, 'q matches the product code');
-    const likeEscape = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: '%' });
+    const likeEscape = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: '%' }, managerScope);
     eq(likeEscape.total, 0, 'LIKE wildcards are escaped literally');
-    const paged = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, per_page: 2, page: 2 });
+    const paged = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, per_page: 2, page: 2 }, managerScope);
     eq(paged.rows.length, 2, 'pagination returns bounded rows');
     eq(paged.total_pages, 3, 'total_pages computed');
-    const clamped = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, per_page: 2, page: 99 });
+    const clamped = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, per_page: 2, page: 99 }, managerScope);
     eq(clamped.page, 3, 'page is clamped to the last page');
-    const sorted = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, sort: 'retest_number', dir: 'asc' });
+    const sorted = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, sort: 'retest_number', dir: 'asc' }, managerScope);
     ok(sorted.rows[0].retest_number < sorted.rows[sorted.rows.length - 1].retest_number, 'sortable by retest_number');
     const url = new URL('https://qc.test/lab/retests?q=x&reason=FAIL&status=OPEN&sort=reason&dir=asc&page=2&per=50&status=Bogus&reason=Bogus');
     const parsed = retests.parseLabRetestSearchFilters(url);
@@ -308,19 +315,38 @@ try {
     eq(invalid.sort, retests.DEFAULT_LAB_RETEST_SORT, 'invalid sort drops to default');
     eq(invalid.per_page, retests.DEFAULT_LAB_RETEST_PER_PAGE, 'invalid per drops to default');
     eq(invalid.page, 1, 'invalid page drops to 1');
+
+    console.log('\n→ Register: RBAC scope (employees see only retests of own tests)');
+    const employeeScope = { role: 'employee', userId: employeeId };
+    const outsiderScope = { role: 'employee', userId: outsiderId };
+    eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, employeeScope).total, 5,
+      'employee owning every fixture test sees all retests');
+    eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, outsiderScope).total, 0,
+      'employee with no tests sees no retests');
+    const otherTest = insertTestRow({ tested_by: outsiderId, created_by: outsiderId });
+    const otherRetest = retests.createLabRetest({ id: supervisorId }, otherTest.id, { reason: 'FAIL', reason_note: null });
+    eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, employeeScope).total, 5,
+      'retest of another employee\'s test is hidden from this employee');
+    eq(retests.getLabRetestDetail(otherRetest.retest_id, employeeScope), null,
+      'detail of another employee\'s retest is hidden from this employee (404-equivalent)');
+    eq(retests.getLabRetestDetail(otherRetest.retest_id, outsiderScope)?.retest.id, otherRetest.retest_id,
+      'the owning employee can open their own retest detail');
+    eq(retests.getLabRetestDetail(otherRetest.retest_id, managerScope)?.retest.id, otherRetest.retest_id,
+      'manager can still open any retest detail');
   }
 
   console.log('\n→ Detail + audit trail');
   {
-    const detail = retests.getLabRetestDetail(created1.retest_id);
+    const managerScope = { role: 'manager', userId: managerId };
+    const detail = retests.getLabRetestDetail(created1.retest_id, managerScope);
     ok(!!detail, 'detail loads');
     eq(detail.retest.retest_number, created1.retest_number, 'detail carries the retest number');
     eq(detail.retest.original_result, 'FAIL', 'detail shows the frozen original result');
     eq(detail.retest.new_test_number, created1.new_test_number, 'detail joins the new test');
     eq(detail.original_type, 'AIR', 'detail carries the original type');
     eq(detail.audit.length, 2, 'detail audit trail has creation + completion');
-    ok(retests.getLabRetestDetail(0) === null, 'invalid id → null');
-    ok(retests.getLabRetestDetail(999999) === null, 'missing id → null');
+    ok(retests.getLabRetestDetail(0, managerScope) === null, 'invalid id → null');
+    ok(retests.getLabRetestDetail(999999, managerScope) === null, 'missing id → null');
   }
 
   console.log('\n→ Create context (form pre-flight)');

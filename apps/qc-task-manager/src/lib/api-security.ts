@@ -18,6 +18,27 @@ export function apiJsonError(error: string, status: number): Response {
   });
 }
 
+// AI features call an external provider and are the most expensive, abusive
+// endpoint — they get their own per-user budget (independent of the generic
+// IP+pathname mutation limiter below) so a heavy AI user cannot exhaust the
+// shared bucket, and a leaked session cannot drive unbounded provider spend.
+const MAX_AI_CALLS_PER_MINUTE = 15;
+const aiBuckets = new Map<number, { startedAt: number; count: number }>();
+
+export function requireAiRateLimit(userId: number): Response | null {
+  const now = Date.now();
+  const bucket = aiBuckets.get(userId);
+  if (!bucket || now - bucket.startedAt >= 60_000) {
+    aiBuckets.set(userId, { startedAt: now, count: 1 });
+    return null;
+  }
+  bucket.count += 1;
+  if (bucket.count > MAX_AI_CALLS_PER_MINUTE) {
+    return apiJsonError('AI rate limit exceeded. Try again later.', 429);
+  }
+  return null;
+}
+
 /** Resolve the authoritative user from the persisted server session. */
 export function requireApiUser(context: APIContext): User | Response {
   const user = getCurrentUser(context);

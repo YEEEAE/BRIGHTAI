@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser, requireCsrf, apiJsonError } from '../../../lib/api-security';
+import { isResponse, requireApiUser, requireAiRateLimit, requireCsrf, apiJsonError } from '../../../lib/api-security';
 import { AiServiceError } from '../../../lib/ai/service';
 import { analyzeTask, analyzeFinding, assistRca, assistCapa, buildManagementSummary, reviewEvidence } from '../../../lib/ai/features';
 import { compareLabTestToSop, identifyLabMissingFields, summarizeLabDataQuality, summarizeLabDocumentChanges, summarizeLabEquipmentHistory, summarizeLabFailPatterns, summarizeLabRetestPatterns, summarizeLabTest, suggestLabReviewQuestions } from '../../../lib/ai/labFeatures';
@@ -12,6 +12,7 @@ const json = (body: Record<string, unknown>, status = 200) => new Response(JSON.
 export const POST: APIRoute = async (context) => {
   const csrf = requireCsrf(context); if (csrf) return csrf;
   const auth = requireApiUser(context); if (isResponse(auth)) return auth;
+  const rateLimit = requireAiRateLimit(auth.id); if (rateLimit) return rateLimit;
   const feature = context.params.feature ?? '';
   const supported = ['task-analysis', 'finding-analysis', 'rca-assistance', 'capa-assistance', 'management-summary', 'evidence-review',
     'lab-test-summary', 'lab-equipment-history', 'lab-document-changes', 'lab-missing-fields', 'lab-review-questions', 'lab-sop-comparison', 'lab-fail-patterns', 'lab-retest-patterns', 'lab-data-quality-summary'];

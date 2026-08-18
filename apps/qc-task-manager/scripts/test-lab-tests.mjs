@@ -388,6 +388,30 @@ try {
       remarks: null,
       final_result: 'PASS',
     };
+
+    // Archived equipment must be rejected for new tests (retired devices are
+    // is_archived=1, never hard-deleted, so existence alone is not enough).
+    console.log('\n■ archived equipment is refused for new tests');
+    {
+      const archivedId = Number(db.prepare("INSERT INTO lab_equipment (name, code, status_raw, is_archived, created_by) VALUES ('Retired Rig', 'EQ-RET', 'RETIRED', 1, ?)").run(managerId).lastInsertRowid);
+      let blocked = false;
+      try {
+        tests.createLabTest({ ...baseForm, form_action: 'submit', equipment_id: archivedId, samples_json: [] }, employeeId, 'air');
+      } catch {
+        blocked = true;
+      }
+      ok(blocked, 'archived: createLabTest refuses archived equipment');
+      let nonexistentBlocked = false;
+      try {
+        tests.createLabTest({ ...baseForm, form_action: 'submit', equipment_id: 999999, samples_json: [] }, employeeId, 'air');
+      } catch {
+        nonexistentBlocked = true;
+      }
+      ok(nonexistentBlocked, 'archived: createLabTest refuses nonexistent equipment');
+      const beforeCount = db.prepare('SELECT COUNT(*) AS n FROM lab_test_records').get().n;
+      tests.createLabTest({ ...baseForm, form_action: 'submit', equipment_id: equipmentId, samples_json: [] }, employeeId, 'air');
+      eq(db.prepare('SELECT COUNT(*) AS n FROM lab_test_records').get().n, beforeCount + 1, 'archived: active equipment still accepted');
+    }
     const submitted = tests.createLabTest(
       {
         ...baseForm,

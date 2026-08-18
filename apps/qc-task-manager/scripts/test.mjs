@@ -113,6 +113,7 @@ import {
 import { validateDependencies } from '../src/lib/tasks.ts';
 import { validateEvidenceFile, validateUploadedFile } from '../src/lib/taskUpdates.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
+import { safeRedirectTarget } from '../src/lib/redirect.ts';
 import {
   parseTaskSearchFilters,
   filtersToQuery,
@@ -499,6 +500,24 @@ ok(csvField('a,b') === '"a,b"', 'csv: comma quoted');
 ok(csvField('say "hi"') === '"say ""hi"""', 'csv: quotes doubled');
 ok(csvField(null) === '', 'csv: null → empty');
 ok(csvField(42) === '42', 'csv: number');
+ok(csvField('=SUM(A1:A9)') === "'=SUM(A1:A9)", 'csv: formula injection (leading =) neutralized');
+ok(csvField('+2+3') === "'+2+3", 'csv: formula injection (leading +) neutralized');
+ok(csvField('-1+cmd') === "'-1+cmd", 'csv: formula injection (leading -) neutralized');
+ok(csvField('@import') === "'@import", 'csv: formula injection (leading @) neutralized');
+ok(csvField('\t=1') === "'\t=1", 'csv: formula injection (leading tab) neutralized');
+ok(csvField("'plain") === "'plain", 'csv: legitimate leading apostrophe preserved');
+
+// ── 4a. Safe redirect targets (src/lib/redirect.ts) ──
+section('Safe redirect targets (src/lib/redirect.ts)');
+ok(safeRedirectTarget('/search?q=x') === '/search?q=x', 'redirect: relative path passes');
+ok(safeRedirectTarget(null) === '/', 'redirect: null → fallback');
+ok(safeRedirectTarget('') === '/', 'redirect: empty → fallback');
+ok(safeRedirectTarget('https://evil.example') === '/', 'redirect: absolute URL rejected');
+ok(safeRedirectTarget('//evil.example') === '/', 'redirect: protocol-relative rejected');
+ok(safeRedirectTarget('/\\evil.example') === '/', 'redirect: backslash after slash rejected');
+ok(safeRedirectTarget('\\evil.example') === '/', 'redirect: leading backslash rejected');
+ok(safeRedirectTarget('/good\npayload') === '/', 'redirect: control characters rejected');
+ok(safeRedirectTarget('/lab/views?q=1', '/lab/views') === '/lab/views?q=1', 'redirect: custom fallback keeps valid path');
 
 const csv = tasksToCsv([
   { id: 1, title: 'Calibrate, gauges', description: null, status: 'in_progress', priority: 'high', progress_percent: 40, assignee: 'Sara', created_by_name: 'Manager', due_date: null, created_at: '2026-08-01 10:00:00', completed_at: null, blocker_note: null },

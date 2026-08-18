@@ -1,6 +1,13 @@
+/** Neutralize spreadsheet formula injection (OWASP): a cell that begins with
+ *  `=`, `+`, `-`, `@`, tab or CR is prefixed with a single quote so Excel,
+ *  Google Sheets and LibreOffice treat it as text, not a formula. */
+export function sanitizeCsvFormula(value: string): string {
+  return /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+}
+
 export function csvCell(value: string | number | null | undefined): string {
   if (value === null || value === undefined) return '';
-  const text = String(value);
+  const text = sanitizeCsvFormula(String(value));
   return /[",\r\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 

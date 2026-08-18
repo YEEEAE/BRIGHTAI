@@ -12,13 +12,13 @@
 import type { APIRoute } from 'astro';
 import { isResponse, requireApiUser, requireCsrf } from '../../lib/api-security';
 import { setFlash } from '../../lib/flash';
+import { safeRedirectTarget } from '../../lib/redirect';
 import { parseFormData, savedFilterSchema } from '../../lib/validation';
 import { deleteSavedFilter, saveFilter } from '../../lib/taskSearch';
 
 /** Only same-origin relative paths are accepted as redirect targets. */
 function safeNext(value: string | null | undefined): string {
-  if (value && value.startsWith('/') && !value.startsWith('//')) return value;
-  return '/search';
+  return safeRedirectTarget(value, '/search');
 }
 
 export const POST: APIRoute = async (context) => {

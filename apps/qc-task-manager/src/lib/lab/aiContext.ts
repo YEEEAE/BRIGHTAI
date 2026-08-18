@@ -136,10 +136,14 @@ export function labFailPatternsContext(user: User): LabAiContextResult {
   return { ok: true, context: { scope: 'historical FAIL results (excludes VOID)', fail_tests: rows, total: rows.length } };
 }
 
-/** Summarize repeated retests — any role that can view lab retests. */
+/** Summarize repeated retests — any role that can view lab retests
+ *  (employee-scoped to their own tests' retests). */
 export function labRetestPatternsContext(user: User): LabAiContextResult {
   if (!canViewLabRetests(user.role)) return { ok: false, status: 403, error: 'You are not authorized to use AI assistance for laboratory retests.' };
-  const result = searchLabRetests({ ...NO_LAB_RETEST_FILTERS, per_page: 200, page: 1 });
+  const result = searchLabRetests(
+    { ...NO_LAB_RETEST_FILTERS, per_page: 200, page: 1 },
+    { role: user.role, userId: user.id },
+  );
   return { ok: true, context: { scope: 'retest register', retests: result.rows, total: result.total } };
 }
 

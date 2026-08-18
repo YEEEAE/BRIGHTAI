@@ -14,12 +14,13 @@ import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
+const scope = { role, userId: user.userId };
 const navItems = labNavForRole(role);
 
 const id = Number(Astro.params.id);
 let detail: ReturnType<typeof getLabRetestDetail> = null;
 try {
-  detail = getLabRetestDetail(id);
+  detail = getLabRetestDetail(id, scope);
 } catch (err) {
   console.error('[lab] retest detail query failure', err);
 }

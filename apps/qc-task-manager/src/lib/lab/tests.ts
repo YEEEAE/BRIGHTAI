@@ -202,6 +202,17 @@ export function createLabTest(
   return transaction(() => {
     const db = getDb();
 
+    // Archived equipment must never be used for new tests (same rule as
+    // maintenance/calibration — retired devices are is_archived=1, never hard-
+    // deleted, so existence alone does not mean the device is usable).
+    if (data.equipment_id != null) {
+      const equipment = db
+        .prepare('SELECT id, is_archived FROM lab_equipment WHERE id = ?')
+        .get(data.equipment_id) as { id: number; is_archived: number } | undefined;
+      if (!equipment) throw new Error('Invalid equipment.');
+      if (equipment.is_archived === 1) throw new Error('Archived equipment cannot be used for new tests.');
+    }
+
     // test_number needs the autoincrement id; insert with a unique placeholder
     // then finalize inside the same transaction (no visible intermediate state).
     const placeholder = `PENDING-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;

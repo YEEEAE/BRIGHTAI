@@ -7,6 +7,7 @@
 //   - employee     → tasks assigned to them or created by them
 //   - supervisor+  → every task
 
+import { sanitizeCsvFormula } from './reporting/writers/csv';
 import type { Role } from './types';
 
 export interface ExportTaskRow {
@@ -42,10 +43,12 @@ const HEADERS = [
 /**
  * RFC-4180-ish escaping: fields containing a quote, comma, CR or LF are wrapped
  * in double quotes and embedded quotes are doubled. Null/empty → empty cell.
+ * Cells starting with a formula marker (=, +, -, @, tab, CR) are neutralized
+ * against spreadsheet formula injection (OWASP) before escaping.
  */
 export function csvField(value: string | number | null | undefined): string {
   if (value === null || value === undefined) return '';
-  const s = String(value);
+  const s = sanitizeCsvFormula(String(value));
   if (/[",\r\n]/.test(s)) {
     return `"${s.replace(/"/g, '""')}"`;
   }
