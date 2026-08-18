@@ -478,7 +478,76 @@ try {
     );
   }
 
-  // ── 10. Investigation / NCR / CAPA hooks (migration 021, PROMPT 20) ──
+  // ── 9b. Samples: five by default, controlled extension, validation, ids ──
+  console.log('\n■ samples: five, controlled extension, validation, identifiers');
+  {
+    const { labTestFormSchema } = await import('../src/lib/validation.ts');
+    const { LAB_SAMPLE_COUNT_MAX } = await import('../src/lib/lab/policy.ts');
+    const submitPayload = (sample_count, samples_json) => ({
+      form_action: 'submit',
+      product_description: 'Seal Product',
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count,
+      lot_number: 'LOT-FIVE',
+      sampling_area: 'Bay 5',
+      equipment_id: equipmentId,
+      final_result: 'PASS',
+      samples_json,
+    });
+    const five = Array.from({ length: 5 }, (_, i) => ({ sample_no: i + 1, part_name: `Row ${i+1}`, result: 'PASS' }));
+
+    // A complete, judged five-row grid parses for submission.
+    const full = labTestFormSchema.safeParse(submitPayload(5, five));
+    ok(full.success, 'five: 5 complete judged rows pass submit validation');
+
+    // Grid must exactly match the declared count (controlled extension).
+    const short = labTestFormSchema.safeParse(submitPayload(5, five.slice(0, 3)));
+    eq(short.success, false, 'five: 5 declared / 3 rows rejected');
+
+    // A missing sample ordinal and an unjudged row are both refused.
+    const gap = labTestFormSchema.safeParse(submitPayload(5, five.slice(0, 4)));
+    eq(gap.success, false, 'five: missing sample ordinal refused');
+    const unjudged = labTestFormSchema.safeParse(submitPayload(5, [...five.slice(0, 3), { sample_no: 4, part_name: 'Cap', result: null }, five[4]]));
+    eq(unjudged.success, false, 'five: unjudged row refused');
+
+    // Controlled extension is bounded at LAB_SAMPLE_COUNT_MAX (20) - no growth.
+    const twenty = Array.from({ length: 20 }, (_, i) => ({ sample_no: i + 1, part_name: 'Row', result: 'PASS' }));
+    ok(labTestFormSchema.safeParse(submitPayload(20, twenty)).success, 'five: 20-row grid (the max) passes');
+    eq(labTestFormSchema.safeParse(submitPayload(21, twenty)).success, false, 'five: declared 21 rejected (max 20)');
+    eq(labTestFormSchema.safeParse(submitPayload(0, [])).success, false, 'five: zero samples rejected');
+    eq(LAB_SAMPLE_COUNT_MAX, 20, 'five: shared max constant = 20');
+
+    // Five sample rows persist with S01..S05 identifiers.
+    const created = tests.createLabTest(
+      {
+        product_description: 'Seal Product',
+        connector_type: null,
+        sample_count: 5,
+        lot_number: 'LOT-FIVE',
+        sampling_area: 'Bay 5',
+        equipment_id: equipmentId,
+        medium_used: null,
+        actual_pressure: null,
+        torque_in_lb: null,
+        time_sec: null,
+        angle: null,
+        temperature_measured: null,
+        remarks: null,
+        final_result: 'PASS',
+        form_action: 'submit',
+        samples_json: five,
+        product_id: productId,
+      },
+      employeeId,
+      'air',
+    );
+    const stored = tests.listLabTestSamples(created.id);
+    eq(stored.length, 5, 'five: 5 rows persisted');
+    for (let i = 0; i < 5; i += 1) {
+      eq(stored[i].sample_identifier, `${created.test_number}-S0${i + 1}`, `five: identifier S0${i + 1} (${stored[i].sample_identifier})`);
+      eq(stored[i].result, 'PASS', `five: row ${i + 1} judged`);
+    }
+  }
   console.log('\n■ test ↔ finding traceability links (findingLinks)');
   {
     // Existing quality entities are used as-is: a task + a QC Finding (the

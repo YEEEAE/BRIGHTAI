@@ -59,7 +59,7 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 34
 - [✅] Prompt 35
 - [✅] Prompt 36
-- [ ] Prompt 37
+- [✅] Prompt 37
 - [ ] Prompt 38
 - [ ] Prompt 39
 - [ ] Prompt 40
@@ -2072,7 +2072,7 @@ Never run destructive tests against production data.
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Run and verify complete end-to-end business workflows.
