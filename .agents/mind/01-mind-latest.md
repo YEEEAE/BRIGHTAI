@@ -8,6 +8,33 @@ version: 2.8.17
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-18 — QC-LAB-PROMPT5-HARDENED-001: تحسين `prompt5-LAB.md` قبل التنفيذ — **7 تحسينات جوهرية**: قسم Dependencies & Blocking (44 مستقلة يُنفَّذ أولًا، 45 تحجب e2e لـ 47/48/54، 57→58→59 تسلسل صارم، 38–40 من prompt4 ملغاة لصالح 57–59) + ربط prompt4 بـ prompt5 (علّم 38–40 "superseded") + قرارات غامضة انحسمت داخل البرومبتز (acknowledgement بلا auto-assign، سلوك retests المفتوحة عند VOID = block مع رسالة عربية، إعادة تحقق كامل sample grid عند تعديل المسودة، قاعدة root-cause في e2e: إصلاح المنتج أولًا وتحذير من تخفيف assertions) + قوائم "Rerun after this prompt" للبرومبتات 41/42 + system actor للإشعارات المجدولة (ما ينتحل مستخدم حقيقي)
+
+- **Files**: `audit/qc/prompt5-LAB.md` (قسم جديد + تعزيزات 41/42/43/45/46)، `audit/qc/prompt4-LAB.md` (وسم 38–40 بـ superseded مع مؤشر لـ prompt5)، `.agents/mind/01-mind-latest.md`.
+- **What**: راجعة المنفّذ كشفت: غموض acknowledgement عند الاعتماد، سلوك undefined لـ retests المفتوحة عند void، خطر تعديل اختبارات قائمة بصمت، وازدواجية 38–40 — كلها انحسمت نصًا داخل البرومبتز.
+- **Verification**: تعديلات نصية على ملفات المرجع — بلا build.
+- **Notes**: لا commit ولا push. جاهز للتنفيذ من PROMPT 44 (الأرخص) أو 41 (الأهم) — الترتيب موثق في قسم Dependencies.
+- **Status**: delivered — الحزمة نهائية للتنفيذ.
+
+---
+### 2026-08-18 — QC-LAB-PROMPT5-CREATED-001: إنشاء `audit/qc/prompt5-LAB.md` — **حزمة برومبتز تنفيذية v5 (41–59)** تغطي كل اقتراحات التحليل: سد الفجوات (41–45: اعتماد الوثائق، VOID، أرشفة منتج+تعديل مسودة، تنظيف الملفات المكررة، فشلات e2e) + تحسينات تشغيلية (46–50: إشعارات مجدولة، طباعة A4 موحدة، QR للعينات، بحث أذكى، PDF عربي) + ذكاء جودة (51–56: قراءات بيئة، معايير جانب الإدخال، اتجاهات FAIL، توقيع إلكتروني، retention، تصعيد FAIL المتكرر) + بوابة الإطلاق (57–59 = ترقيم موازٍ لـ 38–40 من prompt4)
+
+- **Files**: `audit/qc/prompt5-LAB.md` (**جديد ~600 سطر**) — بنفس عقد prompt4: MASTER RULES موروثة + شيك ليست + acceptance criteria لكل برومبت + Execution Contract + ملاحظات سياق (نطاق الموظف `tested_by OR created_by`، CSP بلا inline styles، نمط migration الثلاثية، user.userId، أسماء أفعال الأوديت المحجوزة إلزامية).
+- **What**: كل بند من اقتراحات التحليل السابق (19 بند) تحوّل لبرومبت تنفيذي بأرقام متسلسلة 41–59، مع قواعد صارمة: retention بلا حذف أبدًا، FAIL escalation ما يفتح Finding تلقائيًا، e-signature بدون إعادة إصدار session وبدون تخزين كلمة مرور، QR بلا خدمة خارجية.
+- **Verification**: الملف مستند نصي — ما يحتاج build؛ تنسيقه مطابق لبنية prompt4.
+- **Notes**: لا commit ولا push — المستخدم يلتزم. التنفيذ يبدأ من PROMPT 41 (تدفق اعتماد الوثائق).
+- **Status**: delivered — الحزمة جاهزة للتنفيذ التسلسلي.
+
+---
+### 2026-08-18 — QC-LAB-PROMPT4-STATUS-001: تحليل حالة prompt4-LAB.md مقابل الكود الفعلي — **النتيجة: 00–37 منفّذة فعليًا (تم التحقق منها الكود) / 38–39–40 غير منفّذة** + فجوات وظيفية موثقة: لا هاندلر VOID للاختبار، لا أرشفة منتج، تدفق اعتماد الوثائق (submit/request-changes/approve/supersede/archive) غير منفّذ، ملفات مكررة `edit 2.astro` + `LabDocumentEditor 2.astro` باقية، ودوكس Prompt 00/39 (QC-LAB-MASTER-DISCOVERY.md / QC-LAB-PRODUCTION-READINESS.md) غير موجودة
+
+- **Files**: قراءة فقط — `audit/qc/prompt4-LAB.md` + `audit/qc/before/*` + `apps/qc-task-manager/src/pages/lab/**` + `src/lib/lab/*.ts` + `docs/`.
+- **What**: تحقق فعلي: كل مسارات /lab/* من PROMPT 01 موجودة (41 صفحة + 5 API)، migrations حتى 024، الشيك ليست داخل prompt4 تقول ✅ حتى 37 و☐ لـ 38–40 — والكود يؤكد صحة الوسم. الفجوات الوظيفية أعلاه كلها "أفعال محجوزة بلا هاندلر" (موثقة سابقًا في QC-LAB-AUDIT-COVERAGE-001).
+- **Verification**: grep + find مباشر على المصادر — بلا تشغيل build/tests (مهمة قراءة فقط).
+- **Notes**: لا commit ولا push. الفجوات المتبقية = نطاق PROMPT 38 (تنظيف الملفات المكررة) + 39 (تقرير الجاهزية) + 40 (regression نهائي).
+- **Status**: delivered — تحليل فقط، بدون تغيير كود.
+
+---
 ### 2026-08-18 — QC-LAB-TEST-EXT-001: إغلاق فجوات اختبار الـ Laboratory الكاملة (PROMPT 36) — **2 suites جديدة** (`test-lab-templates` 39/0، `test-lab-security` 55/0) + تمديد `test-lab-tests` (179/0) — كل قائمة الـ Checklist مخدومة بسكربتات isolated temp DB، صفر لمسة على بيانات إنتاجية
 
 - **Files**: `apps/qc-task-manager/scripts/test-lab-templates.mjs` (**جديد** — إنشاء تيمبلت DRAFT/version 1/audit CREATE، تعديل غير معتمد في مكانه UPDATE، approve يجمد version+ACTIVE+current، تعديل بعد الاعتماد ينشئ version N+1 (VERSION audit)، v1 immutable، `listLabTemplateReferences` يعرض الحالي فقط، `resolveLabTemplateVersion` (mismatch type/مجهول → null)، و**الربط بالاختبار**: الاختبار يخزّن template_id+version ويبقى عليه بعد ترقية v2 وأرشفة التيمبلت — historical integrity)، `apps/qc-task-manager/scripts/test-lab-security.mjs` (**جديد** — CSRF origin gate (requireCsrf: same-origin null / cross-origin 403 / بلا origin 403) + requireRequestSecurity (415/413)، SQL injection (escapeLike + buildLabTestWhere paramatrized + بحث حي لا يغيّر الجداول)، XSS (خلية العينة bound/enum وسلامة samples_json)، **permission bypass + IDOR** عبر مصفوفة can* وrecord-level guards canEdit/Review/ApproveLabTestRecord — self-approval مستحيل بنيويًا)، `scripts/test-lab-tests.mjs` (تمديد §9b: **five samples** S01..S05، تحقق grid (يجب أن يطابق sample_count)، رفض ترتيب ناقص/نتيجة مفقودة، **تمديد متحكم فيه حتى 20** بدون نمو، ثابتات من policy.ts)، `apps/qc-task-manager/package.json` (سكربتان جديدان + دخولهما في سلسلة `test` بعد test:lab-audit).

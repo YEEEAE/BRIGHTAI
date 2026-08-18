@@ -60,9 +60,9 @@ Mark a prompt only when that prompt itself has been executed and verified.
 - [✅] Prompt 35
 - [✅] Prompt 36
 - [✅] Prompt 37
-- [ ] Prompt 38
-- [ ] Prompt 39
-- [ ] Prompt 40
+- [ ] Prompt 38 — superseded: execute as prompt5-LAB.md PROMPT 57
+- [ ] Prompt 39 — superseded: execute as prompt5-LAB.md PROMPT 58
+- [ ] Prompt 40 — superseded: execute as prompt5-LAB.md PROMPT 59
 
 
 ---
