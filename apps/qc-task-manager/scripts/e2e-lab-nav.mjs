@@ -108,6 +108,7 @@ for (const roleCase of roleCases) {
     href === '/lab/calendar' || // Laboratory calendar (PROMPT 25)
     href === '/lab/notifications' || // Lab-filtered notifications (PROMPT 26)
     href === '/lab/data-quality' || // Data Quality Center (PROMPT 27)
+    href === '/lab/audit' || // Lab-wide audit timeline (shared qc_audit_log)
     href === '/lab/reports' || // Laboratory reports (§13, supervisor+ nav entry)
     href === '/lab/retests', // Retest register (§46, supervisor+ nav entry)
   ), `${roleCase.username}: no dead links in secondary nav`);
@@ -156,6 +157,8 @@ for (const roleCase of roleCases) {
     href === '/lab/calendar' || // Laboratory calendar (PROMPT 25)
     href === '/lab/notifications' || // Lab-filtered notifications (PROMPT 26)
     href === '/lab/data-quality' || // Live data-quality KPI drill-down (PROMPT 27)
+    href === '/lab/audit' || // Lab-wide audit timeline (supervisor+ nav entry)
+    href === '/lab/reports' || // Laboratory reports (§13 — missed in this allowlist by QC-LAB-REPORTS-001)
     href === '/lab/retests' || // Retest register module (§46)
     href.startsWith('/lab/retests?') || // live open-retests KPI drill-down
     href === '/lab/retests/new' || // Create Retest from a dispositioned test

@@ -343,6 +343,12 @@ export function canViewLabDataQuality(role: Role): boolean {
 export function canViewLabManagementDashboard(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
 }
+/** Lab-wide audit timeline — cross-entity read over the shared qc_audit_log.
+ *  Same supervisor+ bar as reports/data-quality (employees still see the
+ *  audit section on their own test records). */
+export function canViewLabAudit(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
 
 // ── AI assist (advisory only — AI NEVER decides PASS/FAIL or approves) ──
 export function canUseLabAiAssist(role: Role): boolean {

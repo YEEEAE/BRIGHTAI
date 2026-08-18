@@ -397,7 +397,7 @@ export function getLabTestAuditTimeline(testId: number): Record<string, unknown>
       `SELECT a.*, u.full_name AS actor_name
        FROM qc_audit_log a LEFT JOIN users u ON u.id = a.actor_id
        WHERE a.entity_type = 'LAB_TEST' AND a.entity_id = ?
-       ORDER BY a.created_at DESC, a.id DESC`,
+       ORDER BY a.created_at ASC, a.id ASC`,
     )
     .all(testId) as Record<string, unknown>[];
 }
@@ -454,7 +454,7 @@ export function getLabTestRelatedQualityEntities(testId: number): Record<string,
        FROM qc_audit_log a LEFT JOIN users u ON u.id = a.actor_id
        WHERE a.entity_type = 'LAB_TEST' AND a.entity_id = ?
          AND a.action IN ('LINK','UNLINK')
-       ORDER BY a.created_at DESC, a.id DESC`,
+       ORDER BY a.created_at ASC, a.id ASC`,
     )
     .all(testId) as Record<string, unknown>[];
 }

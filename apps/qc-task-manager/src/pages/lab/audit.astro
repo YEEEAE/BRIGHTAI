@@ -1,0 +1,231 @@
+---
+// /lab/audit — Laboratory Audit Timeline.
+//
+// A readable, lab-wide audit timeline rendered strictly from the ONE shared
+// qc_audit_log (migration 011): who (actor + role), what (readable action
+// sentence + entity), when (date + time), before → after (old_value →
+// new_value) and the reason (note). There is no parallel history system —
+// every module writes its audit rows inside its own transaction and this page
+// only SELECTs.
+//
+// RBAC: supervisor+ only (canViewLabAudit) — employees still see the audit
+// section on their own test detail pages. Pure server HTML, zero client JS.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
+import { setFlash } from '../../lib/flash';
+import { labNavForRole } from '../../lib/lab/navigation';
+import { canViewLabAudit } from '../../lib/permissions';
+import {
+  LAB_AUDIT_ACTIONS,
+  LAB_AUDIT_ENTITIES,
+  LAB_AUDIT_ENTITY_LABELS,
+  parseLabAuditFilters,
+  labAuditFiltersToQuery,
+  labAuditRoleLabel,
+  labAuditSentence,
+  listLabAuditActors,
+  searchLabAuditTimeline,
+  hasLabAuditFilters,
+  type LabAuditTimelineEntry,
+} from '../../lib/lab/auditTimeline';
+import type { Role } from '../../lib/types';
+
+const user = Astro.locals.user!;
+const role = user.role as Role;
+
+if (!canViewLabAudit(role)) {
+  setFlash(Astro, 'error', 'You do not have permission to access the laboratory audit timeline.');
+  return Astro.redirect('/lab');
+}
+
+const navItems = labNavForRole(role);
+const filters = parseLabAuditFilters(Astro.url.searchParams);
+
+let dataError: string | null = null;
+let result: ReturnType<typeof searchLabAuditTimeline> | null = null;
+let actors: ReturnType<typeof listLabAuditActors> = [];
+try {
+  result = searchLabAuditTimeline(filters);
+  actors = listLabAuditActors();
+} catch (err) {
+  console.error('[lab] audit timeline failure', err);
+  dataError = 'Could not load the audit timeline. Try reloading — if the problem persists, contact an administrator.';
+}
+
+const fmtDate = (value: string) => value.slice(0, 10);
+const fmtTime = (value: string) => (value.length >= 16 ? value.slice(11, 16) : value);
+
+// Group entries by calendar date, newest first (rows already sorted DESC).
+const groups: Array<{ date: string; entries: LabAuditTimelineEntry[] }> = [];
+for (const row of result?.rows ?? []) {
+  const date = fmtDate(row.created_at);
+  const last = groups[groups.length - 1];
+  if (last && last.date === date) last.entries.push(row);
+  else groups.push({ date, entries: [row] });
+}
+
+const pageHref = (page: number) => `/lab/audit${labAuditFiltersToQuery({ ...filters, page })}`;
+const filterAction = '/lab/audit';
+
+const INPUT_CLS =
+  'w-full min-w-0 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
+const LABEL_CLS = 'block text-xs font-medium text-slate-600';
+---
+
+<BaseLayout title="Laboratory Audit Timeline">
+  <div class="space-y-6">
+    <Breadcrumbs
+      items={[
+        { label: 'QC Tasks' },
+        { label: 'Laboratory', href: '/lab' },
+        { label: 'Audit Timeline' },
+      ]}
+    />
+
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Operations</p>
+      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Audit Timeline</h1>
+      <p class="mt-1 max-w-3xl text-sm text-slate-600">
+        Every laboratory action recorded in the shared audit log — who did what, when, the value before and after,
+        and the reason. Entries link to the record they changed. This page is read-only: history is written by the
+        modules themselves, never here.
+      </p>
+    </header>
+
+    <LabSecondaryNav items={navItems} currentPath="/lab/audit" />
+
+    {dataError && (
+      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {dataError}
+      </div>
+    )}
+
+    {!dataError && result && (
+      <>
+        <!-- Filters (GET, server-rendered — register convention) -->
+        <form action={filterAction} method="get" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-6">
+            <div class="sm:col-span-2">
+              <label class={LABEL_CLS} for="audit-q">Search note / values</label>
+              <input id="audit-q" class={INPUT_CLS} type="search" name="q" value={filters.q ?? ''} placeholder="e.g. LAB-TEST, reason text" />
+            </div>
+            <div>
+              <label class={LABEL_CLS} for="audit-entity">Entity</label>
+              <select id="audit-entity" class={INPUT_CLS} name="entity">
+                <option value="">All entities</option>
+                {LAB_AUDIT_ENTITIES.map((e) => (
+                  <option value={e} selected={filters.entity === e}>{LAB_AUDIT_ENTITY_LABELS[e]}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label class={LABEL_CLS} for="audit-action">Action</label>
+              <select id="audit-action" class={INPUT_CLS} name="action">
+                <option value="">All actions</option>
+                {LAB_AUDIT_ACTIONS.map((a) => (
+                  <option value={a} selected={filters.action === a}>{a}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label class={LABEL_CLS} for="audit-actor">Actor</label>
+              <select id="audit-actor" class={INPUT_CLS} name="actor">
+                <option value="">Everyone</option>
+                {actors.map((a) => (
+                  <option value={String(a.id)} selected={filters.actor === a.id}>{a.full_name}</option>
+                ))}
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class={LABEL_CLS} for="audit-from">From</label>
+                <input id="audit-from" class={INPUT_CLS} type="date" name="from" value={filters.from ?? ''} />
+              </div>
+              <div>
+                <label class={LABEL_CLS} for="audit-to">To</label>
+                <input id="audit-to" class={INPUT_CLS} type="date" name="to" value={filters.to ?? ''} />
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap items-center gap-2">
+            <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-700">Apply filters</button>
+            {hasLabAuditFilters(filters) && (
+              <a href="/lab/audit" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Clear</a>
+            )}
+            <span class="text-xs text-slate-500">{result.total} entr{result.total === 1 ? 'y' : 'ies'} — newest first</span>
+          </div>
+        </form>
+
+        {result.total === 0 ? (
+          <EmptyState
+            title="No audit entries yet"
+            hint={hasLabAuditFilters(filters)
+              ? 'No audit entries match the current filters. Clear them to see the full timeline.'
+              : 'Laboratory actions appear here as soon as any module records them — create a test, review one, or log maintenance.'}
+            ctaHref="/lab"
+            ctaLabel="Back to Command Center"
+          />
+        ) : (
+          <section aria-label="Audit timeline" class="space-y-5">
+            {groups.map((group) => (
+              <div>
+                <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">{group.date}</h2>
+                <ol class="mt-2 space-y-3 border-s-2 border-slate-100 ps-4">
+                  {group.entries.map((entry) => (
+                    <li class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="font-mono text-sm font-semibold text-slate-900">{fmtTime(entry.created_at)}</span>
+                        <span class="text-sm font-medium text-slate-900">{entry.actor_name ?? 'System'}</span>
+                        <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600">{labAuditRoleLabel(entry.actor_role)}</span>
+                        <span class="text-sm text-slate-700">{labAuditSentence(entry)}</span>
+                        {entry.href ? (
+                          <a href={entry.href} class="text-sm font-medium text-brand-700 underline decoration-brand-100 hover:decoration-brand-600">View record</a>
+                        ) : (
+                          <span class="text-xs text-slate-400">{LAB_AUDIT_ENTITY_LABELS[entry.entity_type]} #{entry.entity_id}</span>
+                        )}
+                      </div>
+                      {(entry.old_value !== null || entry.new_value !== null) && (
+                        <p class="mt-2 flex flex-wrap items-center gap-2 text-sm">
+                          <span class="text-xs font-medium uppercase tracking-wide text-slate-500">Before</span>
+                          <span class="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 font-mono text-xs text-slate-700">{entry.old_value ?? '—'}</span>
+                          <span aria-hidden="true" class="text-slate-400">→</span>
+                          <span class="text-xs font-medium uppercase tracking-wide text-slate-500">After</span>
+                          <span class="inline-flex items-center rounded-md border border-brand-100 bg-brand-50 px-2 py-0.5 font-mono text-xs text-brand-800">{entry.new_value ?? '—'}</span>
+                        </p>
+                      )}
+                      {entry.note && (
+                        <p class="mt-2 text-sm text-slate-600">
+                          <span class="text-xs font-medium uppercase tracking-wide text-slate-500">Reason / details</span>
+                          <span class="ms-2">{entry.note}</span>
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+
+            {result.total_pages > 1 && (
+              <nav aria-label="Audit timeline pages" class="flex flex-wrap items-center gap-2">
+                {result.page > 1 && (
+                  <a href={pageHref(result.page - 1)} class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">← Previous</a>
+                )}
+                <span class="text-sm text-slate-600">Page {result.page} of {result.total_pages}</span>
+                {result.page < result.total_pages && (
+                  <a href={pageHref(result.page + 1)} class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Next →</a>
+                )}
+              </nav>
+            )}
+          </section>
+        )}
+
+        <p class="text-xs text-slate-500">
+          Sourced entirely from the shared audit log (qc_audit_log) — the same rows shown on each record. Nothing is
+          edited or deleted from this page.
+        </p>
+      </>
+    )}
+  </div>
+</BaseLayout>

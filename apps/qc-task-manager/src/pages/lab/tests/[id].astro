@@ -536,10 +536,20 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
           ) : (
             <ol class="mt-3 space-y-3">
               {view.timeline.map((e) => (
-                <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-l-2 border-brand-100 pl-3 text-sm">
-                  <span class="font-semibold text-slate-900">{String(e.action)}</span>
-                  <span class="text-slate-600">{String(e.note ?? '')}</span>
-                  <span class="text-xs text-slate-400">{String(e.actor_name ?? 'System')} · {String(e.created_at)}</span>
+                <li class="border-s-2 border-brand-100 ps-3 text-sm">
+                  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span class="font-mono text-xs text-slate-400">{String(e.created_at)}</span>
+                    <span class="font-semibold text-slate-900">{String(e.action)}</span>
+                    {(e.old_value !== null && e.old_value !== undefined) || (e.new_value !== null && e.new_value !== undefined) ? (
+                      <span class="flex flex-wrap items-center gap-1">
+                        <span class="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-xs text-slate-700">{String(e.old_value ?? '—')}</span>
+                        <span aria-hidden="true" class="text-slate-400">→</span>
+                        <span class="inline-flex items-center rounded-md border border-brand-100 bg-brand-50 px-1.5 py-0.5 font-mono text-xs text-brand-800">{String(e.new_value ?? '—')}</span>
+                      </span>
+                    ) : null}
+                    <span class="text-xs text-slate-400">{String(e.actor_name ?? 'System')}</span>
+                  </div>
+                  {e.note ? <p class="mt-1 text-slate-600"><span class="text-xs font-medium uppercase tracking-wide text-slate-400">Reason / details</span> <span class="ms-1">{String(e.note)}</span></p> : null}
                 </li>
               ))}
             </ol>

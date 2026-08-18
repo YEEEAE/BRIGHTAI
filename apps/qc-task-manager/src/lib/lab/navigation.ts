@@ -24,6 +24,7 @@ import {
   canViewLabDataQuality,
   canViewLabManagementDashboard,
   canViewLabReports,
+  canViewLabAudit,
 } from '../permissions';
 import type { Role } from '../types';
 
@@ -77,6 +78,7 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
   { href: '/lab/acknowledgements', label: 'Acknowledgements', group: 'Controlled Documents', allowed: canViewLabDocuments },
   // Operations
   { href: '/lab/reports', label: 'Reports', group: 'Operations', allowed: canViewLabReports },
+  { href: '/lab/audit', label: 'Audit Timeline', group: 'Operations', allowed: canViewLabAudit },
   { href: '/lab/data-quality', label: 'Data Quality', group: 'Operations', allowed: canViewLabDataQuality },
   { href: '/lab/management', label: 'Management Dashboard', group: 'Operations', allowed: canViewLabManagementDashboard },
 ];
@@ -116,6 +118,7 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/acknowledgements',
   '/lab/acknowledgements/assign',
   '/lab/reports',
+  '/lab/audit',
   '/lab/saved-views',
   '/lab/calendar',
   '/lab/notifications',
