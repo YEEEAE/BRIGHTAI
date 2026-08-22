@@ -2,11 +2,20 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-23 00:55 +03:00
+last_updated: 2026-08-23 02:00 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-23 — QC-REPORT-REWRITE-001: إعادة كتابة `audit/qc/REPORT.md` كاملًا (v2.0) — وصف حديث للنظام بالسعودي العامي مع تنبيه صريح أن واجهة النظام إنجليزية — كل الأرقام مُتحقَّقة من الكود لحظة الكتابة
+
+- **What**: التقرير القديم (11 أغسطس، 41 قسمًا بأسلوب محادثة) كان يقارن حزم البرومبتات بالتنفيذ يوم كان النظام 12 جدولًا — النظام تضاعف بعده (49 جدولًا/26 migration/مختبر كامل)، فأُعيد بناء الملف كوصف للنظام الحالي حسب طلب المستخدم: وصف "وش هو النظام ووش يسوي" بالعامية السعودية + قسم صريح بأعلى التقرير أن **واجهة النظام كلها بالإنجليزي** والتقرير عربي للفهم فقط. البنية الجديدة: (1) نقطة اللغة، (2) تعريف النظام وفلسفته (Accountability/Evidence/Audit/RBAC) وقطاعيه (مهام+جودة / مختبر)، (3) جدول الأرقام، (4) تحليل مسارات النظام كاملًا (بنية monorepo + خريطة الـ 100 مسار: 51 مهام/جودة مقابل 49 مختبر + منطق التصميم: endpoint تقارير واحد، طباعة بمحمّل مشترك، إشعارات بلا نظام ثانٍ، تقويم مشتق بلا جدول)، (5) الأدوار الأربعة والقواعد الصلبة (Field Locking، منع self-approval، تجميد النهائيات، delete-request، e-signature)، (6) دورة حياة المهمة + SLA/Findings/RCA/CAPA/Evidence، (7) المختبر (snapshots عند الاعتماد، عينات مجمّدة بtriggers، QR، إشعارات مجدولة، كاشف تكرار FAIL، retention بلا حذف)، (8) الـ 15 ميزة AI الاستشارية بقواعدها (AI=توصية، وسم zod إلزامي، rate-limit، فشل آمن) مع التصريح أن التحقق الحي للمزوّد فاشل سابقًا، (9) التقارير الـ 24، (10) الأمان المحدث (8 ثغرات مغلقة + hygiene ملفات DB المتتبعة)، (11) حالة التحقق اليوم (كل شيء أخضر + E2E 490/0 معلق على browser leak)، (12) بوابات الإنتاج الخمس + المؤجلات عن قصد (soft-delete قرار تصميمي)، الخلاصة وتقييم بالمجالات (~85% جاهزية إنتاجية — الناقص إثبات تشغيل مو بناء)، ملحقان (خط البرومبتات الخمسة + أوامر التحقق)، وتنبيه أن العقل مصدر الحقيقة عند التعارض.
+- **Facts verified قبل الكتابة**: 68 صفحة astro + 32 API = 100 مسار (المختبر 43+6=49)؛ lib 102 وحدة (33 lab)؛ scripts 79 ملف mjs و55 أمر (42 test)؛ ReportType = 8 مهام + 16 مختبر = 24؛ NotificationKind = 15 مهام + 17 مختبر = 32؛ AI = 6 + 9 = 15؛ e2e-acceptance يسجل 26 سويت؛ migrations 26 ملفًا؛ الجداول 49 (من سجل QC-FINAL-REGRESSION-AUDIT-001 بنفس اليوم بعد db:init على قاعدة طازجة)؛ `api/tasks/suggestions` = اقتراحات إسناد supervisor+ (`suggestTaskAssignees`)؛ الملف "تم لصق markdown.md" غير موجود في audit/qc اليوم (مذكور في التقرير القديم فقط).
+- **Files**: `audit/qc/REPORT.md` (استبدال كامل — النسخة القديمة محفوظة في تاريخ git) + `.agents/mind/01-mind-latest.md` (هذا السجل).
+- **Verification**: docs-only — قراءة وفحص مصادر فقط (find/grep على pages, lib, package.json, migrations, reporting/types, notifications, ai/features, api/ai/[feature], e2e-acceptance, audit/qc)؛ لا build/tests تلزم لأن لا كود تغيّر.
+- **Notes**: لا commit ولا push — المستخدم يلتزم. رسالة مقترحة: `docs(qc): rewrite audit/qc/REPORT.md as current system description (v2.0) — Saudi-Arabic narrative, English-UI notice, code-verified numbers (100 routes / 49 tables / 26 migrations / 24 reports / 32 notification kinds / 15 AI features)`.
+- **Status**: delivered — التقرير الجديد جاهز للمراجعة.
 
 ### 2026-08-23 — QC-FINAL-REGRESSION-AUDIT-001: تدقيق regression النهائي بعد Laboratory prompts 41–56 — unit/full test وbuild وmigration/seed خضراء، E2E acceptance الكامل BLOCKED بسبب browser handle leak في harness
 
