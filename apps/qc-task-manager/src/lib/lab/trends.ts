@@ -19,8 +19,6 @@ import { parseDbDate } from '../format';
 
 export type LabTrendGranularity = 'week' | 'month';
 
-export const LAB_TREND_GRANULARITIES: LabTrendGranularity[] = ['week', 'month'];
-
 export interface LabFailRatePoint {
   /** Bucket key — Monday date (YYYY-MM-DD) for weeks, YYYY-MM for months. */
   bucket: string;

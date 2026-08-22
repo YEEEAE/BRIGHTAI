@@ -59,12 +59,18 @@ function isoDaysFromToday(n) {
   d.setDate(d.getDate() + n);
   return localIso(d);
 }
-/** UTC timestamp n days ago at noon (TZ-shift safe for date-range filters). */
+/**
+ * Timestamp n days ago at LOCAL noon, stored in UTC rendering. Anchoring to
+ * local noon keeps `date(created_at,'localtime')` on the intended local date
+ * around midnight (UTC-anchored timestamps shifted fixture ages by one day
+ * between 00:00–03:00 local, making date-range windows match two fixtures).
+ */
 function utcDaysAgo(n) {
   const d = new Date();
-  d.setUTCDate(d.getUTCDate() - n);
-  d.setUTCHours(12, 0, 0, 0);
-  return d.toISOString().replace('T', ' ').replace(/\.\d+Z$/, '');
+  d.setDate(d.getDate() - n);
+  d.setHours(12, 0, 0, 0);
+  const p = (x) => String(x).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
 }
 
 const browser = await chromium.launch({ headless: true });

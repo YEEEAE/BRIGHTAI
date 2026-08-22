@@ -64,10 +64,3 @@ export function calibrationLabel(value: string | null | undefined): string {
   if (value === 'no') return 'No';
   return 'Unknown';
 }
-
-/** WHERE clause + params for the status display-label filter (exact raw match). */
-export function statusFilterWhere(raws: string[]): { clause: string; params: string[] } {
-  if (raws.length === 0) return { clause: '1=1', params: [] };
-  const placeholders = raws.map(() => '?').join(', ');
-  return { clause: `status_raw IN (${placeholders})`, params: raws };
-}

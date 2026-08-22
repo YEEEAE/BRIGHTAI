@@ -2,11 +2,28 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-23 00:10 +03:00
+last_updated: 2026-08-23 00:55 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.8.24
+version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-23 — QC-LAB-AUDIT-CLEANUP-001: تدقيق شامل لتنفيذ المختبر (كل الفئات) + إصلاحات تنظيف موجهة لكود Laboratory فقط — صفر مس للوظائف القديمة
+
+- **What**: تدقيق كامل لكل كود المختبر (`src/lib/lab/**`، `src/pages/lab/**`، `src/pages/api/lab/**`، `src/components/lab/**`) عبر 3 وكلاء فحص متوازيين على الفئات المطلوبة، ثم إصلاحات جراحية:
+  1. **notify:daily typo**: `--experimental-strip-types/ scripts/...` (سلش زايدة كانت تكسر الأمر) → أُصلحت في `package.json`.
+  2. **DUPLICATE_AUTHORITY (فشل guard قديم مؤرخ منذ QC-LAB-ENV-READINGS)**: `canEditLabTestDraft` نُقلت من `tests.ts:429` إلى `permissions.ts` (الوحدة الكنسية) مع استيرادها — **architecture-guard صار يعدّي** لأول مرة بعد أسابيع من الفشل الموثق.
+  3. **ثغرة e-signature bypass**: `POST /api/lab/tests/[id]/void.ts` كان endpoint حيًّا غير مستخدم (صفر مراجع في src/scripts) يعمل VOID **بدلا** خطوة إعادة المصادقة المفروضة على المسار الصفحي — **حُذف** (كود مختبر غير ضروري وغير آمن).
+  4. **كود ميت**: `statusFilterWhere` (equipmentStatus.ts، صفر استدعاءات)، `LAB_TREND_GRANULARITIES` (trends.ts)، `LAB_VIEW_TARGET_PATHS` (savedViews.ts) — كلها محذوفة بعد إثبات صفر مراجع.
+  5. **تكرار DB logic**: نسخة `LATEST_DUE_SQL` المحلية الخاصة في tests.ts (مطابقة حرفية للثابت المُصدَّر في overview.ts) → حذفت واستُبدلت بالاستيراد.
+  6. **فجوة عرض إشعارات**: `lab_repeat_failures` كان ناقصًا في KIND_ICON/KIND_LABEL/SECTION_ORDER بصفحة `/lab/notifications.astro` (مسجّل بالصفحة العامة فقط رغم أن سجل QC-LAB-REPEAT-FAIL-001 ادعى تحديث الاثنتين) → أُضيف 📉/'Lab repeated failures'/order 0.
+  7. **اختبارات غير حتمية (flake حدود التاريخ/الوقت — القاعدة 8.3)**: (أ) test-lab-calibration فحص due=1 بتواريخ ثابتة (2026-08-20 صار OVERDUE) → حساب ديناميكي relative-to-today بنفس سابقة lab-overview؛ (ب) test-lab-calendar `utcTs/isoDay` خلط UTC/محلي → anchor على ظهر محلي؛ (ج) **e2e-task-search "C. created-date range" — الـ flake القديم الموثق انحل جذريًا**: `utcDaysAgo` كان يرسو على UTC noon فبين 00:00–03:00 محلي تنزاح أعمار fixtures يومًا كامل وتصطاد نافذة [-29,-21] fixture ثانيًا → أُرسيت على الظهر المحلي.
+  8. **عدّاد تسريب من مهمة retention**: `test-dashboard-reports.mjs` قائمة `Object.keys(REPORT_CATALOG)` deepStrictEqual ناقصها `lab-retention-status` (كان يكسر السلسلة الكاملة) → أُضيف.
+- **Findings موثقة بدون إصلاح (تحتاج قرار/نطاق مستقل)**: تكرار `escapeLike` ×9 بنفس الجسم؛ مكوّن ترقيم صفحات مكرر verbatim ×9 صفحات lab؛ allowlists الحالات/النتائج مكررة (testSearch/review/labReports)؛ خرائط KIND_ICON/KIND_LABEL مكررة بين الصفحتين وRecord<string,string> ضعيف في النسخة المختبرية؛ حدود أكواد غير متسقة (Equipment Code بـ LAB_SHORT_TEXT_MAX=200 بدل 60)؛ templateEditSchema `.passthrough()` (أضعع نمط)؛ savedViews INSERT/DELETE بلا audit pairing؛ حدود zod hardcoded (validation.ts:1025,437,790,808-820)؛ exceljs CJS interop boilerplate ×3؛ صفحات new.astro الثلاث (calibration/retests/equipment) بلا try/catch عزل؛ `e2e-lab-search.mjs` + `test-lab-search.mjs` يتيمان (غير مسجلين — الأول فيه فشل RBAC موثق عند HEAD والسويت الوحدانية test-lab-suggest تغطي نفس السلوك)؛ ملفا `qc_tasks.db`/`"qc_tasks 3.db"` فارغان متتبَّعان (hygiene سابق يحتاج قرار git rm من المستخدم). Dependencies كلها مستخدمة ومبررة (fontkit/qrcode-generator/exceljs/jsqr). لا formatter قياسي بالمشروع (astro check هو المعيار).
+- **Verification**: `pnpm typecheck` → **0 errors / 0 warnings / 20 hints** ✅؛ `pnpm test` السلسلة الكاملة → **EXIT=0، صفر ❌ في اللوج** (شاملة architecture-guard بعد نقل canEditLabTestDraft، وlab-calibration 97/0 بعد التحويل الديناميكي، وdashboard-reports بعد إضافة retention-status) ✅؛ `NODE_ENV=production pnpm build` → Complete ✅؛ Prompt 44: مسح `find` = صفر ملفات " 2.*" ✅. **e2e:acceptance الكامل: UNVERIFIED بعد الإصلاح الأخير** — آخر تشغيل كامل توقف عند search 83/1 (قبل إصلاح utcDaysAgo)؛ suites الأولى كلها ALL PASS (admin-users 49، auth-lockout 44، task-shared 196، delete-request 39، dashboard 51، a11y 14، backup 13)؛ إعادة تشغيل search standalone بعد إصلاحها أُجهضت بأمر المستخدم قبل اكتمالها — لازم إعادة تشغيل e2e:acceptance كامل قبل اعتماد النتيجة.
+- **Notes**: لا commit ولا push — المستخدم يلتزم. رسالة مقترحة: `chore(lab): audit cleanup — fix notify:daily script, move canEditLabTestDraft to permissions (guard green), remove unused void API bypassing e-signature + dead exports, dedupe LATEST_DUE_SQL, complete repeat-failure notification maps in /lab page, deterministic date anchors in calibration/calendar/task-search tests, restore retention report key in dashboard-reports assertions`.
+- **Status**: delivered & verified محليًا (typecheck 0 + full unit chain EXIT=0 + prod build) — **e2e full chain UNVERIFIED** (بانتظار إعادة تشغيل).
+
 
 ### 2026-08-23 — QC-LAB-REPEAT-FAIL-001: كاشف "FAIL متكررة لنفس المنتج خلال 7 أيام" — bucket رابع في runScheduledNotifications (كاشف واحد فقط، بلا findings تلقائية)
 

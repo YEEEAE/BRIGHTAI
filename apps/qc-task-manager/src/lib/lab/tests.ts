@@ -17,9 +17,9 @@ import { setFlash } from '../flash';
 import { parseFormData, labTestFormSchema, labTestVoidSchema } from '../validation';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
-import { canCreateLabTest, canEditLabTestRecord, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
+import { canCreateLabTest, canEditLabTestDraft, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
 import { createNotification } from '../notifications';
-import { deriveCalibrationState, type LabCalibrationState } from './overview';
+import { deriveCalibrationState, LATEST_DUE_SQL, type LabCalibrationState } from './overview';
 import { labParametersSnapshotJson } from './policy';
 import {
   ESIGN_FAILURE_MESSAGE_AR,
@@ -82,15 +82,6 @@ export interface LabEquipmentOption {
   calibration_state: LabCalibrationState;
   calibration_due: string | null;
 }
-
-/** Latest calibration due date per equipment (same derivation as overview.ts). */
-const LATEST_DUE_SQL = `(
-  SELECT date(COALESCE(c.next_due_at, c.calibration_due_at))
-  FROM lab_equipment_calibration c
-  WHERE c.equipment_id = e.id
-  ORDER BY c.created_at DESC, c.id DESC
-  LIMIT 1
-)`;
 
 /**
  * Equipment picker options for the form (Machine Name is backed by
@@ -423,11 +414,6 @@ function loadLabTestAuth(row: Record<string, unknown>) {
     reviewed_by: row.reviewed_by == null ? null : Number(row.reviewed_by),
     created_by: Number(row.created_by),
   };
-}
-
-/** True when the caller may edit this record AND it is a DRAFT (PROMPT 43-B: DRAFT only — SUBMITTED and beyond belong to the review flow). */
-function canEditLabTestDraft(user: { id: number; role: Role }, auth: ReturnType<typeof loadLabTestAuth>): boolean {
-  return auth.status === 'DRAFT' && canEditLabTestRecord(user, auth);
 }
 
 /**

@@ -40,15 +40,26 @@ function eq(actual, expected, label) {
   ok(actual === expected, `${label} (expected ${expected}, got ${actual})`);
 }
 
+// Fixture dates are computed relative to "today" so derived-status assertions
+// stay deterministic regardless of run date (DUE_SOON window = next 30 days).
+function isoOffsetDays(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+const FIX_LAST_CAL = isoOffsetDays(-40);
+const FIX_FAR_DUE = isoOffsetDays(200);
+const FIX_NEXT_DUE = isoOffsetDays(210);
+
 function fd(overrides = {}) {
   const f = new FormData();
   f.set('equipment_id', String(equipmentId));
-  f.set('last_calibrated_at', '2026-07-10');
-  f.set('calibration_due_at', '2026-09-10');
+  f.set('last_calibrated_at', FIX_LAST_CAL);
+  f.set('calibration_due_at', FIX_FAR_DUE);
   f.set('provider', 'Metrology SA');
   f.set('certificate_reference', 'CAL-2026-001');
   f.set('result', 'PASS');
-  f.set('next_due_at', '2027-09-10');
+  f.set('next_due_at', FIX_NEXT_DUE);
   f.set('notes', 'Recertified within tolerance.');
   for (const [k, v] of Object.entries(overrides)) {
     if (v === null) f.delete(k);
@@ -142,7 +153,7 @@ try {
     ok(good.ok, 'schema: complete record passes');
     if (good.ok) {
       eq(good.data.equipment_id, equipmentId, 'schema: equipment_id parsed');
-      eq(good.data.last_calibrated_at, '2026-07-10', 'schema: last_calibrated_at');
+      eq(good.data.last_calibrated_at, FIX_LAST_CAL, 'schema: last_calibrated_at');
       eq(good.data.provider, 'Metrology SA', 'schema: provider');
       eq(good.data.result, 'PASS', 'schema: result');
     }
@@ -196,12 +207,12 @@ try {
 
     const row = db.prepare('SELECT * FROM lab_equipment_calibration WHERE id = ?').get(calibrationId);
     eq(row.equipment_id, equipmentId, 'create: equipment_id stored');
-    eq(row.last_calibrated_at, '2026-07-10', 'create: last_calibrated_at stored');
-    eq(row.calibration_due_at, '2026-09-10', 'create: calibration_due_at stored');
+    eq(row.last_calibrated_at, FIX_LAST_CAL, 'create: last_calibrated_at stored');
+    eq(row.calibration_due_at, FIX_FAR_DUE, 'create: calibration_due_at stored');
     eq(row.provider, 'Metrology SA', 'create: provider stored');
     eq(row.certificate_reference, 'CAL-2026-001', 'create: certificate_reference stored');
     eq(row.result, 'PASS', 'create: result stored');
-    eq(row.next_due_at, '2027-09-10', 'create: next_due_at stored');
+    eq(row.next_due_at, FIX_NEXT_DUE, 'create: next_due_at stored');
     eq(row.notes, 'Recertified within tolerance.', 'create: notes stored');
     eq(Number(row.created_by), managerId, 'create: created_by from actor');
 
@@ -286,11 +297,13 @@ try {
     eq(equipmentOnly.total, 2, 'filter: equipment scope');
 
     // due=1 → the DUE_SOON / DUE_TODAY window only (command-center KPI semantics)
+    // Dates are computed relative to "today" so this fixture stays deterministic
+    // (DUE_SOON = due within 30 days, not yet overdue) regardless of run date.
     const dueSoon = calibration.createLabCalibration(
       {
         equipment_id: equipmentId,
-        last_calibrated_at: '2026-08-01',
-        calibration_due_at: '2026-08-20',
+        last_calibrated_at: isoOffsetDays(-10),
+        calibration_due_at: isoOffsetDays(10),
         provider: 'Metrology SA',
         certificate_reference: 'CAL-2026-003',
         result: null,

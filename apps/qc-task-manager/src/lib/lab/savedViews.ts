@@ -25,7 +25,6 @@ const VIEW_TARGETS: Record<string, readonly string[]> = {
 };
 
 /** All allowed target paths for saved views. */
-export const LAB_VIEW_TARGET_PATHS = Object.keys(VIEW_TARGETS) as string[];
 
 /** Human-readable labels for each saved-view target (display only). */
 export const LAB_VIEW_TARGET_LABELS: Record<string, string> = {

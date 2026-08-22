@@ -373,6 +373,17 @@ export function canEditLabTestRecord(
 }
 
 /**
+ * True when the caller may edit this record AND it is a DRAFT (PROMPT 43-B:
+ * DRAFT only — SUBMITTED and beyond belong to the review flow).
+ */
+export function canEditLabTestDraft(
+  user: Pick<User, 'id' | 'role'>,
+  test: LabTestAuth,
+): boolean {
+  return test.status === 'DRAFT' && canEditLabTestRecord(user, test);
+}
+
+/**
  * Can the user submit this test for review? Own non-terminal, not-yet-submitted
  * workflow states only (DRAFT/REJECTED rework). Never from the session of
  * another tester — tested_by is the authority, not request input.

@@ -68,8 +68,15 @@ try {
   const { getDb } = await import('../src/lib/db.ts');
   const calendar = await import('../src/lib/lab/calendar.ts');
 
-  const isoDay = (days) => new Date(Date.now() + days * 86_400_000).toLocaleDateString('en-CA'); // local YYYY-MM-DD
-  const utcTs = (days) => new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 19).replace('T', ' ');
+  // Anchor at local noon so the UTC calendar date always equals the local date
+  // (avoids midnight-boundary flakes between isoDay and utcTs).
+  const dayAnchorMs = (days) => {
+    const d = new Date();
+    d.setHours(12, 0, 0, 0);
+    return d.getTime() + days * 86_400_000;
+  };
+  const isoDay = (days) => new Date(dayAnchorMs(days)).toLocaleDateString('en-CA'); // local YYYY-MM-DD
+  const utcTs = (days) => new Date(dayAnchorMs(days)).toISOString().slice(0, 19).replace('T', ' ');
 
   // ── 1. Empty database: nothing invented ──
   console.log('\n■ Empty database → zero state');

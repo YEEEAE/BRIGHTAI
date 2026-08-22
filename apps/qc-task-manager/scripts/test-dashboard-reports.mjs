@@ -61,7 +61,7 @@ try {
     'lab-results', 'lab-retests', 'lab-product-history',
     'lab-equipment-register', 'lab-calibration', 'lab-maintenance',
     'lab-sop-register', 'lab-wi-register', 'lab-doc-review-due', 'lab-acknowledgements',
-    'lab-activity', 'lab-data-quality',
+    'lab-activity', 'lab-data-quality', 'lab-retention-status',
   ]);
   const csv = rowsToCsv(['Report ID', 'Task'], [['R-1', 'Line, with "quotes"\nnext']]);
   assert.match(csv, /^\uFEFFReport ID,Task\r\nR-1,"Line, with ""quotes""\nnext"\r\n$/);
