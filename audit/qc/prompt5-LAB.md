@@ -28,8 +28,8 @@
 - [✅] Prompt 45 — e2e-lab-nav Pre-existing Failures
 - [✅] Prompt 46 — Scheduled Notification Jobs
 - [✅] Prompt 47 — Unified A4 Print Layouts
-- [ ] Prompt 48 — Sample QR Codes
-- [ ] Prompt 49 — Smarter Unified Search
+- [✅] Prompt 48 — Sample QR Codes
+- [✅] Prompt 49 — Smarter Unified Search
 - [ ] Prompt 50 — Arabic PDF Reports
 - [ ] Prompt 51 — Session Environmental Readings
 - [ ] Prompt 52 — Live Criteria Side-by-Side Display
@@ -462,7 +462,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Improve /lab/search without a second search system.

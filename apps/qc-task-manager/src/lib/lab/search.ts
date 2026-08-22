@@ -165,12 +165,17 @@ interface EntitySubquery {
   params: unknown[];
 }
 
-function buildTestsSubquery(like: string | null, user: LabSearchUserContext): EntitySubquery {
+function buildTestsSubquery(
+  like: string | null,
+  prefix: string | null,
+  user: LabSearchUserContext,
+): EntitySubquery {
   const conds: string[] = [];
   const params: unknown[] = [];
 
   if (like !== null) {
     conds.push(`(
+      t.test_number LIKE ? ESCAPE '\\' OR
       t.test_number LIKE ? ESCAPE '\\' OR
       CAST(t.id AS TEXT) LIKE ? ESCAPE '\\' OR
       t.lot_number LIKE ? ESCAPE '\\' OR
@@ -179,7 +184,9 @@ function buildTestsSubquery(like: string | null, user: LabSearchUserContext): En
       e.name LIKE ? ESCAPE '\\' OR
       e.code LIKE ? ESCAPE '\\'
     )`);
-    params.push(like, like, like, like, like, like, like);
+    // First param is the anchored prefix pattern (q%) on the identifier
+    // column; the rest are contains patterns — all parameterized.
+    params.push(prefix, like, like, like, like, like, like, like);
   }
 
   if (user.role === 'employee') {
@@ -212,12 +219,17 @@ function buildTestsSubquery(like: string | null, user: LabSearchUserContext): En
   return { sql, params };
 }
 
-function buildSamplesSubquery(like: string | null, user: LabSearchUserContext): EntitySubquery {
+function buildSamplesSubquery(
+  like: string | null,
+  prefix: string | null,
+  user: LabSearchUserContext,
+): EntitySubquery {
   const conds: string[] = [];
   const params: unknown[] = [];
 
   if (like !== null) {
     conds.push(`(
+      s.sample_identifier LIKE ? ESCAPE '\\' OR
       s.sample_identifier LIKE ? ESCAPE '\\' OR
       CAST(s.sample_no AS TEXT) LIKE ? ESCAPE '\\' OR
       s.part_name LIKE ? ESCAPE '\\' OR
@@ -226,7 +238,7 @@ function buildSamplesSubquery(like: string | null, user: LabSearchUserContext): 
       p.name LIKE ? ESCAPE '\\' OR
       p.code LIKE ? ESCAPE '\\'
     )`);
-    params.push(like, like, like, like, like, like, like);
+    params.push(prefix, like, like, like, like, like, like, like);
   }
 
   if (user.role === 'employee') {
@@ -258,17 +270,18 @@ function buildSamplesSubquery(like: string | null, user: LabSearchUserContext): 
   return { sql, params };
 }
 
-function buildProductsSubquery(like: string | null): EntitySubquery {
+function buildProductsSubquery(like: string | null, prefix: string | null): EntitySubquery {
   const conds: string[] = [];
   const params: unknown[] = [];
 
   if (like !== null) {
     conds.push(`(
+      p.code LIKE ? ESCAPE '\\' OR
       p.name LIKE ? ESCAPE '\\' OR
       p.code LIKE ? ESCAPE '\\' OR
       p.description LIKE ? ESCAPE '\\'
     )`);
-    params.push(like, like, like);
+    params.push(prefix, like, like, like);
   }
 
   const where = conds.length ? `WHERE ${conds.join(' AND ')}` : '';
@@ -293,18 +306,19 @@ function buildProductsSubquery(like: string | null): EntitySubquery {
   return { sql, params };
 }
 
-function buildEquipmentSubquery(like: string | null): EntitySubquery {
+function buildEquipmentSubquery(like: string | null, prefix: string | null): EntitySubquery {
   const conds: string[] = [];
   const params: unknown[] = [];
 
   if (like !== null) {
     conds.push(`(
+      e.code LIKE ? ESCAPE '\\' OR
       e.name LIKE ? ESCAPE '\\' OR
       e.code LIKE ? ESCAPE '\\' OR
       e.serial_number LIKE ? ESCAPE '\\' OR
       e.location LIKE ? ESCAPE '\\'
     )`);
-    params.push(like, like, like, like);
+    params.push(prefix, like, like, like, like);
   }
 
   const where = conds.length ? `WHERE ${conds.join(' AND ')}` : '';
@@ -332,6 +346,7 @@ function buildEquipmentSubquery(like: string | null): EntitySubquery {
 function buildDocumentsSubquery(
   type: 'SOP' | 'WI',
   like: string | null,
+  prefix: string | null,
 ): EntitySubquery {
   const conds: string[] = [`d.type = '${type}'`];
   const params: unknown[] = [];
@@ -339,10 +354,11 @@ function buildDocumentsSubquery(
   if (like !== null) {
     conds.push(`(
       d.code LIKE ? ESCAPE '\\' OR
+      d.code LIKE ? ESCAPE '\\' OR
       d.title LIKE ? ESCAPE '\\' OR
       d.description LIKE ? ESCAPE '\\'
     )`);
-    params.push(like, like, like);
+    params.push(prefix, like, like, like);
   }
 
   const where = `WHERE ${conds.join(' AND ')}`;
@@ -370,12 +386,17 @@ function buildDocumentsSubquery(
   return { sql, params };
 }
 
-function buildRetestsSubquery(like: string | null, user: LabSearchUserContext): EntitySubquery {
+function buildRetestsSubquery(
+  like: string | null,
+  prefix: string | null,
+  user: LabSearchUserContext,
+): EntitySubquery {
   const conds: string[] = [];
   const params: unknown[] = [];
 
   if (like !== null) {
     conds.push(`(
+      r.retest_number LIKE ? ESCAPE '\\' OR
       r.retest_number LIKE ? ESCAPE '\\' OR
       ot.test_number LIKE ? ESCAPE '\\' OR
       r.reason LIKE ? ESCAPE '\\' OR
@@ -383,7 +404,7 @@ function buildRetestsSubquery(like: string | null, user: LabSearchUserContext): 
       p.name LIKE ? ESCAPE '\\' OR
       p.code LIKE ? ESCAPE '\\'
     )`);
-    params.push(like, like, like, like, like, like);
+    params.push(prefix, like, like, like, like, like, like);
   }
 
   if (user.role === 'employee') {
@@ -427,15 +448,19 @@ export function buildLabSearchQueries(
   countParams: unknown[];
 } {
   const like = filters.q ? `%${escapeLike(filters.q)}%` : null;
+  // Anchored prefix pattern for identifier columns (test ID, sample ID,
+  // document/product/equipment code, retest number) — parameterized through
+  // the same escapeLike escape as the contains pattern.
+  const prefix = filters.q ? `${escapeLike(filters.q)}%` : null;
 
   const subqueries: Record<Exclude<LabSearchEntityType, 'all'>, EntitySubquery> = {
-    tests: buildTestsSubquery(like, user),
-    samples: buildSamplesSubquery(like, user),
-    products: buildProductsSubquery(like),
-    equipment: buildEquipmentSubquery(like),
-    sops: buildDocumentsSubquery('SOP', like),
-    wis: buildDocumentsSubquery('WI', like),
-    retests: buildRetestsSubquery(like, user),
+    tests: buildTestsSubquery(like, prefix, user),
+    samples: buildSamplesSubquery(like, prefix, user),
+    products: buildProductsSubquery(like, prefix),
+    equipment: buildEquipmentSubquery(like, prefix),
+    sops: buildDocumentsSubquery('SOP', like, prefix),
+    wis: buildDocumentsSubquery('WI', like, prefix),
+    retests: buildRetestsSubquery(like, prefix, user),
   };
 
   let activeSubqueries: EntitySubquery[];
@@ -521,4 +546,83 @@ export function searchLab(
     total_pages: totalPages,
     counts,
   };
+}
+
+// ───────────────── Suggestions (/api/lab/search-suggest) ─────────────────
+//
+// Progressive enhancement for the /lab/search combobox: a debounced GET
+// endpoint returns up to LIMIT-PER-ENTITY matches per entity group. It reuses
+// the exact same entity subqueries as the full search — including the
+// employee record-scope clause — so a suggestion can never reveal a record
+// the full search would hide (404-style non-discovery).
+
+export const LAB_SUGGEST_LIMIT_PER_ENTITY = 5;
+export const LAB_SUGGEST_MIN_QUERY = 2;
+export const LAB_SUGGEST_MAX_QUERY = 100;
+
+export interface LabSuggestItem {
+  entity_type: LabSearchResultItem['entity_type'];
+  identifier: string;
+  title: string;
+  subtitle: string | null;
+  href: string;
+}
+
+export interface LabSuggestGroup {
+  entity: Exclude<LabSearchEntityType, 'all'>;
+  label: string;
+  items: LabSuggestItem[];
+}
+
+/**
+ * Grouped suggestions for the search combobox, at most `limitPerEntity`
+ * rows per entity. Same RBAC record scope as searchLab (employees only see
+ * tests/samples/retests they tested or created).
+ */
+export function suggestLabSearch(
+  q: string,
+  user: LabSearchUserContext,
+  limitPerEntity: number = LAB_SUGGEST_LIMIT_PER_ENTITY,
+): LabSuggestGroup[] {
+  const trimmed = q.trim();
+  if (trimmed.length < LAB_SUGGEST_MIN_QUERY || limitPerEntity < 1) {
+    return [];
+  }
+
+  const built = buildLabSearchQueries(
+    {
+      q: trimmed.slice(0, 300),
+      entity: 'all',
+      page: 1,
+      per_page: limitPerEntity,
+    },
+    user,
+  );
+
+  const db = getDb();
+  const groups: LabSuggestGroup[] = [];
+  for (const [entity, subq] of Object.entries(built.subqueries) as [
+    Exclude<LabSearchEntityType, 'all'>,
+    EntitySubquery,
+  ][]) {
+    const sql = `
+      SELECT * FROM (${subq.sql.trim()}) AS e
+      ORDER BY updated_at DESC, created_at DESC, entity_id DESC
+      LIMIT ?
+    `;
+    const rows = db.prepare(sql).all(...subq.params, limitPerEntity) as LabSearchResultItem[];
+    if (rows.length === 0) continue;
+    groups.push({
+      entity,
+      label: LAB_SEARCH_ENTITY_LABELS[entity],
+      items: rows.map((r) => ({
+        entity_type: r.entity_type,
+        identifier: r.identifier,
+        title: r.title,
+        subtitle: r.subtitle,
+        href: r.href,
+      })),
+    });
+  }
+  return groups;
 }
