@@ -1,378 +1,1232 @@
-# 📋 تقرير نظام QC Task Manager — وصف النظام الشامل
+# التدقيق المستقل — QC Task Manager / BRIGHTAI
 
-> **إصدار التقرير:** 2.0 — محدّث بالكامل يوم 2026-08-23
-> **وش غطّى التقرير:** وصف النظام الحقيقي كما هو في الكود يوم التحديث — كل رقم هنا متحقق من المصدر مباشرة (المسارات، الـ migrations، السكربتات، حزم البرومبتات) ومن آخر سجل تدقيق في `.agents/mind/01-mind-latest.md` بتاريخ نفس اليوم
-> **مكان النظام:** `apps/qc-task-manager` داخل الـ monorepo
-> **ملاحظة عن المصادر القديمة:** التقرير القديم (نسخة 11 أغسطس) كان يقارن حزم البرومبتات بالتنفيذ يوم كانت قاعدة البيانات 12 جدولًا فقط — النظام تضاعف بعدها أكثر من مرة، فرجعنا كتابته من الصفر كوصف للنظام الحالي بدل مقارنة تاريخية عتيقة
+راجعت `REPORT.md` كاملًا أولًا، ثم قارنت محتواه مباشرةً مع `main` في المستودع `YEEEAE/BRIGHTAI`، بما في ذلك `src/pages`, `src/lib`, `db`, `scripts`, `docs`, `render.yaml` وآخر سجلات `.agents/mind/01-mind-latest.md`.
 
----
+**نقطة منهجية مهمة:** المستودع متاح لي قراءةً عبر GitHub، لكن ما عندي checkout محلي authenticated للمستودع الخاص يسمح لي أشغّل `pnpm test` بنفسي. لذلك أفصل بين:
 
-## ⚠️ نقطة مهمة قبل كل شي: النظام بالإنجليزي
+* **Implemented:** تأكدت منه من الكود الحالي.
+* **Verified locally:** توجد نتيجة تشغيل محلية مسجلة في `mind`، لكني لم أعد تشغيلها بنفسي.
+* **Verified in production:** لا يوجد دليل نشر حي لنظام QC حاليًا.
 
-**واجهة النظام كلها بالإنجليزي** — الصفحات، الأزرار، الحالات، التقارير، رسائل الخطأ، الإشعارات، كل شي ي شوفه المستخدم داخل التطبيق English.
-
-ليش كذا؟ لأنه **نظام داخلي تشغيلي** (Internal Operations System) مو موقع عام — الفريق اللي بيشتغل عليه معتاد على المصطلحات التقنية لضبط الجودة (QC / Compliance / Audit)، والإنجليزي هو المعيار في أدوات الجودة والتدقيق عالميًا. أما **هذا التقرير** فمكتوب بالعربي (باللهجة العامية) عشان يسهل فهم النظام وقراراته لأي أحد من الفريق أو الإدارة بدون ما يغوص في المصطلحات.
+والتقرير نفسه يقول إن `mind` هو مصدر الحقيقة الأحدث عند التعارض. 
 
 ---
 
-# 1. وش هو النظام أساسًا؟
+## 1. جدول تحقق الادعاءات
 
-**QC Task Manager** هو نظام داخلي متكامل لإدارة عمليات ضبط الجودة (Quality Control) والامتثال (Compliance) في الشركة — مو مجرد برنامج مهام عادي.
+| الادعاء            |              REPORT.md |                                                                                                                                                             الموجود فعليًا | الحكم       |
+| ------------------ | ---------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | ----------- |
+| إجمالي Routes      | 100 = 68 page + 32 API | **68 `.astro` صحيحة، لكن `/api` يحتوي 30 `.ts` فقط**. يوجد أيضًا 4 endpoint files خارج `/api`؛ أي 98 حسب منهج التقرير، أو **102 routable files** إذا حسبنا كل ملفات routes | ❌           |
+| Lab routes         |            49 = 43 + 6 |                                                                                                                                   **43 `.astro` + 6 `/api/lab/*.ts` = 49** | ✅           |
+| Migrations         |                     26 |                                                                                                                  001→026 موجودة، و`db.ts` يضم الـ26 في embedded migrations | ✅           |
+| DB tables          |                     49 |                                                                            49 جدولًا في المخطط الفعلي/السجل المحلي؛ 26 migration و`db:init` المسجل وصل schema 26/49 tables | ✅ مع ملاحظة |
+| Report types       |              24 = 8+16 |                                                                                                                                `ReportType`/catalog فعليًا 8 task + 16 lab | ✅           |
+| Notification kinds |             32 = 15+17 |                                                                                                                                          `NotificationKind` يحتوي 32 فعلًا | ✅           |
+| AI features        |               15 = 6+9 |                                                                                                                                                             6 task + 9 lab | ✅           |
+| Test commands      |                     42 |                                                      يوجد 41 اسم `test:*` + aggregate `test` = 42، لكن `pnpm test` لا يشغّل الاثنين `test:lab-print` و`test:lab-retention` | ⚠️          |
+| E2E suites         |                     26 |                                                                                                      `suites[]` فيه **25** + restart-persistence كسويت إضافي = 26 تشغيليًا | ✅           |
+| `src/lib` modules  |                    102 |                                                                                                                               **102 `.ts`**؛ منها **33 تحت `src/lib/lab`** | ✅           |
+| Roles              |                      4 |                                                                                                                                    admin / manager / supervisor / employee | ✅           |
+| `scripts/*.mjs`    |                     79 |                                                                                                                                                       مطابق لشجرة المستودع | ✅           |
+| `docs/`            |                     11 |                                                                                                                                                            11 ملفات بالضبط | ✅           |
 
-أبسط وصف له:
+الدليل على 68 صفحة وبنية الملفات موجود في شجرة `src/pages`. الشجرة تكشف كذلك أن `/api` يحتوي 30 endpoint file، وأن `logout.ts` و`admin/templates/api.ts` و`admin/users/api.ts` و`manager/requests/api.ts` موجودة خارج `/api`.
 
-> **كل مهمة أو فحص أو إجراء جودة يمشي في دورة موثّقة ومحكومة: مين سوّاه، متى، وش تغيّر، وين الدليل، مين راجعه، مين اعتمده — وكل حركة مسجّلة ما تنمسح.**
+### الخطأ الأساسي في رقم 100
 
-النظام مبني على فلسفة واضحة:
+السبب صار واضحًا:
 
-- **Accountability (المساءلة):** كل فعل له فاعل وطابع زمني.
-- **Evidence (الدليل):** الإنجاز ما يكتمل بدون دليل موثّق (أو تسجيل صريح لتخطي الدليل).
-- **Audit Trail (سجل التدقيق):** كل تغيير يُسجّل في سلسلة تدقيق محمية ضد التلاعب (hash chain).
-- **RBAC (الصلاحيات حسب الدور):** كل واحد يشوف ويعدّل بس اللي يخص دوره — والحماية على السيرفر مو بس على الواجهة.
+**الموجود حاليًا:**
 
-والنظام اليوم يتكون من **قطاعين رئيسيين**:
+`68 Astro + 30 /api = 98`
 
-| القطاع | وش يغطي |
-| --- | --- |
-| **إدارة المهام والجودة (Tasks + QC Operations)** | المهام، SLA، الملاحظات (Findings)، RCA، CAPA، الأدلة، سير العمل، التقارير، الذكاء الاصطناعي |
-| **مختبر QC (QC Laboratory)** | اختبارات Air/Vacuum على المنتجات، المعدات، المعايرة، وثائق SOP/WI، العينات، إعادة الاختبار، الطباعة، QR |
+لكن التقرير أضاف endpointين غير موجودين:
 
-ووصل النظام لمستوى يوصف بصدق إنه **منصة عمليات جودة وامتثال** (QC Operations & Compliance Platform) — مو Task Manager.
+* `/api/reports/[reportType].[format]`
+* `/api/reports/audit`
 
----
+فصار:
 
-# 2. وش حجم النظام فعليًا؟ (الأرقام)
+`68 + (30 + 2 phantom routes) = 100`
 
-كل الأرقام هذي من فحص مباشر للكود يوم 2026-08-23:
+وفي نفس الوقت تجاهل أربعة endpoint files حقيقية خارج `/api`.
 
-| المقياس | الرقم |
-| --- | --- |
-| مسارات التطبيق (Routes) | **100 مسار** = 68 صفحة + 32 API endpoint |
-| مسارات المختبر `/lab/*` | **49 مسار** = 43 صفحة + 6 API |
-| جداول قاعدة البيانات | **49 جدول** (متأكدة بتهيئة قاعدة طازجة: `integrity_check=ok` و صفر مخالفات FK) |
-| الـ Migrations | **26 migration** مرقّمة (001 → 026) مع نظام ترقية واختبارات خاصة فيها |
-| وحدات الكود في `src/lib` | **102 وحدة** (منها 33 وحدة للمختبر) |
-| سكربتات `scripts/` | **79 ملف .mjs** |
-| أوامر الاختبار في `package.json` | **42 أمر test** + أوامر تشغيل وبناء وبداية |
-| سويتات E2E المسجّلة | **26 سويت** |
-| أنواع التقارير | **24 تقرير** (8 للمهام + 16 للمختبر) بصيغ CSV / XLSX / PDF |
-| أنواع الإشعارات | **32 نوع** (15 للمهام + 17 للمختبر) |
-| ميزات الذكاء الاصطناعي | **15 ميزة** (6 للمهام + 9 للمختبر) — كلها استشارية |
-| مستندات `docs/` داخل التطبيق | **11 ملف** (معمارية، قاعدة بيانات، نشر، أدوار، اختبارات...) |
-| بذرة المختبر | **24 جهاز** معمل معايرة وبيانات كاملة + 4 مستخدمين افتراضيين |
+والأهم أن واجهة `/reports` نفسها تبني روابط مباشرة إلى هذين المسارين غير الموجودين.
+
+هذا مو اختلاف عدّ فقط؛ له أثر وظيفي كما سيأتي.
 
 ---
 
-# 3. تحليل مسارات النظام (System Paths)
+# 2. خريطة المسارات الفعلية
 
-## 3.1 بنية المستودع
+## أ. Task / QC UI — 25 صفحة
 
-النظام يعيش داخل monorepo المشروع الرئيسي:
+الموجود:
 
 ```text
-BRIGHTAI/
-├── apps/
-│   └── qc-task-manager/     ← النظام كله هنا (تطبيق Astro SSR مستقل)
-│       ├── src/
-│       │   ├── pages/       ← الصفحات والـ APIs (100 مسار)
-│       │   ├── lib/         ← منطق النظام (102 وحدة)
-│       │   ├── components/  ← مكونات الواجهة
-│       │   ├── layouts/     ← BaseLayout + PrintLayout
-│       │   └── middleware.ts← الجدران: auth + RBAC + CSP
-│       ├── db/
-│       │   ├── migrations/  ← 26 migration مرقّمة
-│       │   ├── schema.sql   ← مرآة المخطط الكامل
-│       │   └── backups/
-│       ├── scripts/         ← 79 سكربت اختبار وأدوات
-│       └── docs/            ← 11 ملف توثيق
-├── audit/qc/                ← البرومبتات والتقارير (هذا الملف منها)
-└── render.yaml              ← تعريف الخدمة للنشر (مع قرص دائم)
+/
+ /404
+ /login
+ /dashboard
+ /dashboard/drilldown
+ /notifications
+ /search
+ /reports
+ /tasks/[id]
+
+ /employee
+ /employee/new
+
+ /supervisor
+ /supervisor/new
+
+ /manager
+ /manager/new
+ /manager/requests
+ /manager/workload
+
+ /admin
+ /admin/settings
+ /admin/users
+ /admin/templates
+ /admin/templates/new
+ /admin/templates/[id]/edit
+
+ /findings
+ /findings/[id]
 ```
 
-## 3.2 خريطة مسارات المهام والجودة (51 مسار)
+التقرير يقول 25 صفحة، وهذا صحيح رقميًا، لكنه ما يذكر `/404` في خريطته الوصفية.
 
-### صفحات المستخدم (25 صفحة)
+## ب. Laboratory UI — 43 صفحة
 
-| المسار | وظيفته |
-| --- | --- |
-| `/login` | تسجيل الدخول (مع قفل الحساب بعد 5 محاولات فاشلة / 10 دقائق) |
-| `/` | التحويل للصفحة الرئيسية حسب الدور |
-| `/dashboard` + `/dashboard/drilldown` | لوحة المؤشرات (KPIs + رسوم + SLA + قسم مختبر كامل) |
-| `/notifications` | مركز الإشعارات العام |
-| `/search` | البحث المتقدم في المهام + الفلاتر المحفوظة |
-| `/reports` | كتالوج التقارير والتصدير |
-| `/tasks/[id]` | تفاصيل المهمة (التعليقات، الأدلة، سجل التدقيق، دورة الإغلاق) |
-| `/employee` + `/employee/new` | مساحة الموظف (مهامه + إنشاء مهمة لو مسموح له) |
-| `/supervisor` + `/supervisor/new` | مساحة المشرف |
-| `/manager` + `/manager/new` + `/manager/requests` + `/manager/workload` | مساحة المدير (طلبات الحذف + توزيع الأحمال) |
-| `/admin` + `/admin/settings` + `/admin/users` + `/admin/templates/*` | الإدارة (المستخدمون + قوالب المهام + النسخ الاحتياطي) |
-| `/findings` + `/findings/[id]` | سجل الملاحظات (Findings) وربطها بـ RCA و CAPA |
-
-### واجهات الـ API (26 endpoint)
-
-| المجموعة | الـ Endpoints |
-| --- | --- |
-| المهام | إنشاء/تحديث/تعليق/إرفاق أدلة/إغلاق/إلغاء/إعادة فتح/طلب حذف + اقتراحات الإسناد |
-| الملاحظات | Findings + RCA + CAPA + ربط الأدلة |
-| التصدير | `tasks.csv` + `tasks.pdf/[id]` + `search.csv` + `search.xlsx` |
-| التقارير | `[reportType].[format]` (نقطة واحدة تخدم الـ 24 نوعًا بصيغ الثلاث) + `audit` |
-| الإشعارات | قراءة واحدة + قراءة الكل |
-| الذكاء الاصطناعي | `/api/ai/[feature]` (15 ميزة خلف endpoint واحد) |
-| أخرى | `/api/health` (فحص الجاهزية) + `/api/filters` + `/api/admin/backup` |
-
-## 3.3 خريطة مسارات المختبر (49 مسار)
-
-المختبر هو أكبر قطاع في النظام، وهذي مجاميعه:
-
-| المجموعة | المسارات | وش تسوي |
-| --- | --- | --- |
-| **مركز القيادة** | `/lab` | 13 مؤشر KPI + أقسام التشغيل الحية + أزرار الوصول السريع |
-| **الاختبارات** | `/lab/tests` + `new` + `[id]` + `print` + `review` | سجل اختبارات Air/Vacuum، نموذج إدخال موحّد، تفاصيل 18 قسمًا، طباعة A4 متحكّم بها، مركز المراجعة والاعتماد |
-| **العينات والنتائج** | (ضمن الاختبار) | تتبع على مستوى العينة: معرّف ثابت `LAB-TEST-XXXXX-SNN` + حالة لكل عينة + تجميد بعد الاعتماد (triggers بنيوية) |
-| **المنتجات** | `/lab/products` + `new` + `[id]` + `edit` | Product Master + ربط بالمعدات + اقتراحات تعبئة النموذج (تعبئة أولى فقط — ما تستبدل قياس أبدًا) |
-| **القوالب** | `/lab/templates/*` | قوالب اختبار بإصدارات معتمدة مجمدة (نسخة تاريخية لكل اختبار) |
-| **المعدات** | `/lab/equipment/*` + `/lab/maintenance/[id]/print` | سجل معدات (24 جهازًا مزروعين) + أرشفة بلا حذف + سجل صيانة append-only + طباعة تقرير سجل الجهاز |
-| **المعايرة** | `/lab/calibration/*` | سجل معايرات + حالة مشتقة من 6 مستويات (COMPLIANT/DUE_SOON/DUE_TODAY/OVERDUE/NOT_COMPLIANT/UNKNOWN) + طباعة شهادة |
-| **الوثائق** | `/lab/documents` + `new` + `[id]` + `edit` + `versions` | محرر SOP/WI داخلي + إصدارات + مقارنة نسخ read-only + مسار اعتماد كامل (SUBMIT → REVIEW → APPROVE → SUPERSEDE/ARCHIVE) |
-| **الإقرارات** | `/lab/acknowledgements` + `assign` | إقرار الموظفين على نسخة معينة (v3 لا تحسب لـ v4 أبدًا) |
-| **إعادة الاختبار** | `/lab/retests/*` | إنشاء retest يجمد نتيجة وحالة الأصل + اختبار تنفيذ جديد + اكتمال تلقائي عند الاعتماد |
-| **التشغيل** | `/lab/calendar` + `/lab/search` + `/lab/saved-views` + `/lab/notifications` + `/lab/audit` + `/lab/data-quality` + `/lab/reports` | تقويم أحداث مشتقة من تواريخ حقيقية، بحث ذكي باقتراحات حية + مسح QR، عروض محفوظة، إشعارات المختبر، خط زمني للتدقيق، مركز جودة بيانات (19 نوع اكتشاف)، كتالوج 16 تقرير |
-
-## 3.4 ليش هالتصميم في المسارات؟
-
-ملاحظات معمارية مهمة تشرح منطق التوزيع:
-
-- **`/api/reports/[reportType].[format]` نقطة واحدة** تخدم كل أنواع التقارير — إضافة تقرير جديد يعني إضافة نوع في الكتالوج بس، بدون endpoint جديد.
-- **الطباعة على مسار مستقل** (`/lab/tests/[id]/print` مثلًا) بنفس الـ layout — يورث جدار الحماية والمحمّل المشترك مع صفحة التفاصيل، فالقيم المطبوعة مطابقة للمخزنة حرفيًا بنيويًا.
-- **`/lab/notifications` عرض مفلتر فوق نفس جدول الإشعارات** — ما فيه نظام إشعارات ثانٍ، وحالة القراءة مشتركة مع الجرس العام.
-- **التقويم بدون جدول تقويم** — كل الأحداث مشتقة وقت القراءة من تواريخ حقيقية مخزنة (معايرة/صيانة/مراجعة/إقرار)، صفر أحداث مخترعة.
-
----
-
-# 4. مين يستخدم النظام؟ (الأدوار والصلاحيات)
-
-النظام يدعم **4 أدوار**، وكل الصلاحيات محسوبة على السيرفر في وحدة واحدة (`permissions.ts`) — الواجهة مجرد عرض:
-
-| الدور | وش يقدر يسوي |
-| --- | --- |
-| **Admin** | كل شي + إدارة المستخدمين + النسخ الاحتياطي + إعادة فتح المهام المقفلة |
-| **Manager** | إدارة كل المهام + مراجعة/اعتماد + طلبات الحذف + توزيع الأحمال + لوحة المؤشرات |
-| **Supervisor** | مهام فريقه + مراجعة اختبارات المختبر (بدون ما يراجع اختباره بنفسه) + لوحة المؤشرات |
-| **Employee** | مهامه المسندة فقط + تنفيذ + رفع أدلة + تعليقات (بدون لوحة مؤشرات) |
-
-### قواعد صلبة ما تنكسر (بنيوية مو بالواجهة فقط):
-
-1. **Field Locking:** الموظف ما يقدر يعدّل عنوان المهمة أو أولويتها أو تاريخ استحقاقها… يعدّل فقط: الحالة، نسبة التقدم، ملاحظة العائق، التعليقات، الأدلة. السيرفر يستخدم whitelist للحقول — حتى لو أحد فتح DevTools وحاول يرسل طلب مزوّر، يُرفض.
-2. **منع الاعتماد الذاتي:** ما أحد يعتمد أو يراجع شغله بنفسه — لا في المهام ولا في اختبارات المختبر ولا في الوثائق.
-3. **الحالات النهائية مجمّدة:** المهمة/الاختبار المعتمد (APPROVED) أو الملغى (VOID) يصير read-only للجميع — وإعادة الفتح للمدير فما فوق فقط، وتُسجّل في التدقيق.
-4. **الحذف ما يتم مباشرة:** الموظف يقدم **طلب حذف** بسبب إلزامي، والمدير/الأدمن يوافق أو يرفض — والحذف النهائي دايمًا وراء موافقة موثّقة.
-5. **الإجراءات عالية الخطورة تطلب إعادة إصدار كلمة المرور (e-signature):** اعتماد اختبار مختبر أو وثيقة أو إبطال (VOID) يفتح حوار تأكيد بكلمة المرور — تحقق server-side مع rate-limit لكل مستخدم وتدقيق بلا أي مادة سرية.
-
----
-
-# 5. كيف تشتغل المهمة؟ (دورة الحياة)
+### Tests
 
 ```text
-Not Started → In Progress → (On Hold مع ملاحظة عائق إلزامية) → Completed
-                                                                  ↘ Cancelled
+/lab
+/lab/tests
+/lab/tests/new
+/lab/tests/[id]
+/lab/tests/[id]/print
+/lab/tests/review
 ```
 
-- أول انتقال لـ In Progress يسجّل `started_at` و `started_by`.
-- **On Hold ما يدخلها إلا بملاحظة عائق (Blocker Note)** — وهذا جوهري في بيئة الجودة: العائق نفسه معلومة تُدار وتُحلّل.
-- **الإغلاق (Completion) مو تغيير حالة عادي** — هو معالج (Wizard) رسمي:
-  1. مراجعة الأدلة (يمكن تخطيها مع تسجيل صريح `evidence_skipped`)
-  2. تعليق إغلاق **إلزامي**
-  3. تأكيد
-  4. تنفيذ كل شي في **معاملة واحدة (Transaction)**: الحالة + التقدم 100% + `completed_at/by` + التعليق + التدقيق + الإشعارات — أي خطأ يرجع كل شي (ROLLBACK)، ما يصير نصف إغلاق
-  5. المهمة تصير read-only
-- المهمات الدورية (Recurrence: يومي/أسبوعي/شهري) تولّد successor مع ربط بالأم.
-- القوائم المرجعية (Checklists) والاعتماديات (Dependencies: ما تبدأ مهمة قبل ما تكتمل اللي تعتمد عليها) جزء من النموذج.
-
-### نظام الجودة فوق المهمة:
-
-| المكوّن | وش يسوي |
-| --- | --- |
-| **SLA Engine** | أهداف زمنية + نوافذ متأخر/خطر/مخترق + تصعيد تلقائي بالإشعارات (`sla_escalation`) — كله مشتق وقت القراءة |
-| **Findings** | ملاحظات جودة مرقّمة بتصنيف ومستوى خطر، تربط بالمهمة أو باختبار مختبر |
-| **RCA** | تحليل جذري مرتبط بالملاحظة |
-| **CAPA** | إجراءات تصحيحية ووقائية مرتبطة بالملاحظة مع تحقق وإغلاق |
-| **Evidence** | مرفقات BLOB داخل القاعدة مع SHA-256 وMIME وتحقق صلاحية عند التحميل + معالجة AI اختيارية بحالة صريحة (`AI_PENDING` / `AI_REVIEWED` / `UNVERIFIED`) |
-
----
-
-# 6. المختبر (QC Laboratory) — القطاع الأكبر
-
-هذا اللي يحول النظام من "إدارة مهام" إلى "منصة عمليات مختبر فعلية":
-
-### دورة حياة اختبار المختبر
+### Products
 
 ```text
-DRAFT → SUBMITTED → UNDER_REVIEW → APPROVED (يجمّد كل شي)
-                     ↘ REJECTED (يرجع بملاحظات تعديل)   ↘ VOID (إبطال بإعادة مصادقة)
+/lab/products
+/lab/products/new
+/lab/products/[id]
+/lab/products/[id]/edit
 ```
 
-- **عند الاعتماد تُكتب Snapshots مجمّدة:** هوية الجهاز وحالة معايرته، نسخ SOP/WI المرجعية (v3 تبقى v3 حتى لو صدرت v4)، نسخة المنتج والقالب والمعايير — السجل التاريخي ما يتأثر بأي تعديل لاحق في البيانات الأم.
-- **العينات:** كل عينة لها معرّف ثابت وحالة خاصة (PENDING → TESTED → APPROVED) وtriggers بنيوية تمنع تعديلها أو حذفها بعد الاعتماد **حتى بـ SQL مباشر**.
-- **المراجعة:** مركز مراجعة يستثني اختبارات المراجع نفسه بنيويًا، مع 4 إجراءات (بدء مراجعة / طلب تعديلات / رفض / اعتماد) كلها بأسباب موثقة.
-- **القيم العلمية ما تُخترع:** قيم المرجع تعرض من النسخة المعتمدة المخزنة فقط، والقياسات قرار بشري — النظام ما يحسب ولا يفسر نتائج علمية.
+### Templates
 
-### الميزات التشغيلية للمختبر
-
-- **QR للعينات:** كل اختبار وعينة لها QR (SVG داخلي بلا خدمة خارجية) + ورقة طباعة ملصقات + حقل مسح في البحث يوصّلك للسجل مباشرة.
-- **إشعارات مجدولة يومية (idempotent):** تذكيرات معايرة ومراجعة وثائق وإقرارات بنوافذ 30/15/7/اليوم/متأخر — تُزرع مرة واحدة يوميًا (dedupe key) فوق نفس جدول الإشعارات.
-- **كاشف الفشل المتكرر:** نفس المنتج ≥2 نتيجة FAIL خلال 7 أيام → إشعار لصاحب المنتج + علم جودة على صفحته + رابط نموذج Finding معبّأ — **القرار البشري يفتح الـ Finding، النظام ما يفتحه تلقائيًا**.
-- **اتجاهات FAIL:** نسب الفشل أسبوعيًا/شهريًا مع مقارنة نافذتين وتفصيل حسب اللوت.
-- **جودة البيانات:** مركز يعرض 19 نوع اكتشاف (بيانات ناقصة/متناقضة) read-only مع روابط للسجلات المتأثرة — ما يعدّل شي أبدًا.
-- **التوقيع الإلكتروني (e-signature):** إعادة إثبات كلمة المرور للاعتمادات والإبطال.
-- **قراءات البيئة:** سجل قراءات حرارة/رطوبة اختياري كمكمّل للقياس الرئيسي، مجمّد بعد الاعتماد.
-- **تقرير الاحتفاظ (Retention):** وعي read-only للسجلات اللي انتهت فترة احتفاظها الافتراضية (5 سنوات من الاعتماد — رقم أعمال قابل للتغيير من مكان واحد) — **بدون أي حذف تلقائي أبدًا**.
-- **الطباعة A4:** معمارية طباعة موحّدة للاختبار وشهادة المعايرة وسجل الجهاز وسجل الصيانة — نفس محمّل الصفحة = مطابقة حرفية للمخزن.
-
----
-
-# 7. الذكاء الاصطناعي — مساعد ما يحكم
-
-**15 ميزة AI استشارية بحتة** (6 للمهام + 9 للمختبر) فوق مزوّد واحد (Groq) بعقد آمن:
-
-- للمهام: تحليل مهمة، تحليل ملاحظة، مساعدة RCA، مساعدة CAPA، ملخص إداري، مراجعة دليل.
-- للمختبر: تلخيص اختبار/تاريخ جهاز/تغييرات وثيقة، اكتشاف حقول ناقصة، اقتراح أسئلة مراجعة، مقارنة اختبار بـ SOP معتمد، أنماط FAIL، أنماط retest، ملخص جودة بيانات.
-
-### القواعد الحاكمة (مفروضة بنيويًا مو بالواجهة):
-
-1. **AI = توصية، مو سلطة.** ما عند الـ AI أي حقل قرار — المخططات (zod) ما تحتوي أصلًا مكان لـ PASS/FAIL أو اعتماد.
-2. **وسم إلزامي:** كل استجابة تحمل حرفيًا `AI GENERATED — HUMAN REVIEW REQUIRED` — مضمون بالمخطط نفسه.
-3. **حصص وتحديد معدل لكل مستخدم** (15 استدعاء/دقيقة) + تدقيق كامل في `ai_audit_log`.
-4. **تعقيم PII:** الجوالات والإيميلات تُمحى من الـ prompt قبل الإرسال، والبيانات غير الموثوقة تُغلّف بوسم صريح.
-5. **الفشل آمن:** أي عطل يرجع رسالة "أكمل يدويًا" — النظام يشتغل كامل بدون AI.
-
-> ملاحظة صادقة: التحقق **الحي** من مزوّد Groq فشل في محاولة سابقة موثّقة (مفتاح/حصة/شبكة — السبب مخفي عمدًا بالعقد الآمن). الاختبارات المعكوسة (mocked) كلها خضراء، لكن التشغيل الحي للمزوّد ما زال غير مُثبت.
-
----
-
-# 8. التقارير والتصدير
-
-**24 نوع تقرير** (8 مهام + 16 مختبر) كلها عبر pipeline واحد:
-
-- نفس الـ endpoint ونفس كتّاب المخرجات: **CSV (مع تحصين حقن المعادلات) / XLSX (exceljs) / PDF**.
-- **Metadata فقط في تصدير المختبر:** لا محتوى وثائق ولا snapshots ولا BLOBs.
-- **RBAC على طبقة التفويض:** الموظف مرفوض لكل تقارير المختبر مهما صار.
-- **كل توليد يُسجّل** في `report_audit_log`.
-- أمثلة تقارير المهام: `monthly-qc`, `sla`, `findings`, `capa`, `employee-performance`, `audit-trail`, `evidence-compliance`, `overdue`.
-- أمثلة المختبر: سجل الاختبارات (كلها/Air/Vacuum)، النتائج، إعادة الاختبار، سجل المعدات، المعايرة، الصيانة، سجلات SOP/WI، الاستحقاق للمراجعة، الإقرارات، النشاط، جودة البيانات، حالة الاحتفاظ.
-
----
-
-# 9. الأمان — وش الموجود فعلًا؟
-
-تعرّض النظام لتدقيق أمني شامل (2026-08-18) أغلق **8 ثغرات مؤكدة (1 عالية + 3 متوسطة + 4 منخفضة)** مع اختبارات انحدار لكل وحدة، ومنها يومها:
-
-| الطبقة | الوضع |
-| --- | --- |
-| **CSP صارم** | `script-src 'self'` + 3 هاشات ثابتة، `style-src 'self'` + هاش واحد — **صفر unsafe-inline و صفر unsafe-eval** |
-| **المصادقة** | bcrypt + جلسات HttpOnly (12 ساعة) + SameSite + قفل 5 محاولات/10 دقائق + رسالة خطأ موحّدة |
-| **CSRF** | بوابة Origin على كل POST (صفحات و APIs) |
-| **IDOR** | نطاق الموظف على مستوى السجل (404-style بدون كشف الوجود) — مدقّق ومُختبَر |
-| **Rate limiting** | per-user للـ AI + حد رفع الملفات + أنواع MIME وأحجام مقيّدة |
-| **حقن CSV** | معقّم صيغ Excel في كل الكتّاب |
-| **سلامة التدقيق** | سلسلة hash للأحداث (`audit-integrity`) — أي تعديل لحدث قديم يكسر السلسلة ويُكتشف |
-| **الإغلاق الآمن** | redirects آمنة (allowlist) + `x-forwarded-proto` ما يُثق به إلا بـ `TRUST_PROXY=1` |
-| **سياسة الإقلاع** | رفض الإقلاع الإنتاجي بكلمة مرور افتراضية (`ADMIN_DEFAULT_PASSWORD` إلزامي خارج localhost) |
-
-### ملاحظة hygiene معروفة (تحتاج قرارك):
-
-ملفا قاعدة بيانات فارغان (`qc_tasks.db` و `qc_tasks 3.db`) **متتبعان في git** من commit قديم — قرار إزالتهما من التتبع (`git rm --cached`) قرار مستخدم لأنه يلمس تاريخ الريبو.
-
----
-
-# 10. الاختبارات — وش حالة التحقق اليوم؟
-
-آخر جولة تحقق شاملة (2026-08-23، موثقة في عقل المشروع):
-
-| التحقق | النتيجة |
-| --- | --- |
-| `pnpm install --frozen-lockfile` | ✅ exit 0 (1322 حزمة) |
-| اختبارات الجذر (root) | ✅ exit 0 |
-| `typecheck` الجذر والتطبيق | ✅ 0 errors / 0 warnings |
-| سلسلة اختبارات التطبيق كاملة (42 أمر test) | ✅ exit 0 — migrations، معمارية، AI، مختبر، تدقيق، تقارير، لوحات… كلها خضراء |
-| `build` إنتاجي | ✅ Complete |
-| تهيئة قاعدة طازجة | ✅ 26 migration / 49 جدول / 4 مستخدمين / 24 جهازًا / integrity ok / صفر FK |
-| **E2E acceptance الكامل** | ⚠️ **معلّق (مو فاشل)** — 8 سويتات اكتملت كلها خضراء (**490 فحص / صفر فشل**: admin-users 49، auth-lockout 44، task-shared 196، delete-request 39، dashboard 51، a11y 14، backup 13، search 84) ثم علّق الـ runner بسبب **تسريب متصفح في `scripts/e2e-task-search.mjs`** ما يستدعي `browser.close()` — علة في أداة الاختبار نفسها مو في النظام |
-
-يعني: **الوحدات والدومين والبناء والترحيلات كلها مثبتة خضراء**، والناقص الوحيد لإغلاق بند E2E الكامل هو إصلاح سطر واحد في سكربت الاختبار وإعادة التشغيل.
-
----
-
-# 11. النشر والجاهزية للإنتاج
-
-### اللي هو جاهز:
-
-- **`render.yaml`** يعرّف الخدمة كاملة: `qc-task-manager` مع `healthCheckPath: /api/health` + **قرص دائم** (`qc-data` بسعة 1GB) للـ SQLite والنسخ الاحتياطية + متغيرات بيئة بلا قيم (تُضبط من الـ dashboard).
-- **`/api/health`** جاهز: يرجع 200 مع نسخة المخطط، أو 503 صادق إذا القاعدة غير مهيأة — **ما ينشئ القاعدة أبدًا**.
-- **نسخ احتياطي:** أوامر `db:backup` / `db:restore` + مجدول داخلي هادئ + توثيق استرجاع (`docs/RESTORE.md`) + سويت E2E للنسخ (13/0).
-- **توثيق نشر كامل** في `docs/DEPLOYMENT.md` — والنشر نفسه بيد المستخدم (ما فيه أي دفع تلقائي).
-
-### بوابات الجاهزية الإنتاجية الباقية (بالأولوية):
-
-1. **إصلاح تسريب المتصفح في `e2e-task-search.mjs`** (سطر cleanup) وإعادة تشغيل `e2e:acceptance` كاملًا حتى النهاية — البوابة الوحيدة المتبقية لشرط القبول.
-2. **تحقق حي من مزوّد AI** (تدوير/إصلاح مفتاح Groq ثم smoke واحد).
-3. **أول نشر فعلي على Render** والتحقق من الصحة والاستمرارية (health + قرص دائم + backup).
-4. **قرار ملفات الـ DB المتتبعة** في git (نظافة ريبو).
-5. **قرارات جودة كود موثقة ومؤجلة** من تدقيق المختبر: تكرار `escapeLike` في 9 مواضع، مكوّن ترقيم صفحات مكرر في 9 صفحات، خرائط أيقونات/تسميات مكررة بين صفحتي الإشعارات، وغيرها — كلها موثقة بأماكنها في عقل المشروع، ما فيها خطر وظيفي، وتحتاج قرار نطاق تنظيف مستقل.
-
-### عناصر مؤجلة عن قصد (مو فجوات):
-
-- Command Palette واختصارات لوحة المفاتيح — تحسين UX لطيف، مو شرط تشغيلي.
-- Tags/Categories وملفات المستخدمين الشخصية — ما هي Core.
-- Soft Delete بدل الحذف الصلب بعد الموافقة — **قرار تصميمي جوهري يستاهل جلسة قرار** إذا صار النظام مرجع امتثال رسمي.
-- Health Score للمهمة والأسنبة الذكية المتقدمة — الاقتراح الأساسي (اقتراحات إسناد بالقسم) موجود.
-
----
-
-# 12. الخلاصة — وش النظام اليوم؟
-
-> **QC Task Manager هو منصة سعودية داخلية لإدارة عمليات ضبط الجودة والامتثال، بواجهة إنجليزية، تجمع تحت سقف واحد: إدارة مهام محكومة بالصلاحيات والأدلة والتدقيق، ونظام جودة متكامل (SLA + Findings + RCA + CAPA)، ومختبر QC كامل (اختبارات، عينات، معدات، معايرة، وثائق معتمدة، إعادة اختبار، طباعة، QR)، ومساعد ذكاء اصطناعي استشاري بحت — كل شي فوق قاعدة SQLite واحدة بـ 49 جدولًا و26 ترحيلًا، داخل 100 مسار تطبيق، مع 42 سلسلة اختبار خضراء وسجل تدقيق مقيّد ضد التلاعب.**
-
-### التقييم الصادق بالمجالات:
-
-| المجال | التقييم | ملاحظة |
-| --- | --- | --- |
-| المعمارية | **95%** | طبقات نظيفة، وحدات مسؤولة، صفر نظام موازٍ |
-| الوظائف | **95%** | كل الـ Core للمهام والمختبر منفذ ومُختبَر وحدويًا |
-| الأمان | **92%** | مُدقّق، 8 ثغرات مغلقة، CSP صارم — باقي التحقق الحي للمزوّد |
-| الاختبارات | **85%** | الوحدات كلها خضراء؛ الـ E2E الكامل معلّق على علة أداة موزّعة |
-| النشر | **80%** | الـ blueprint والصحة والنسخ جاهزة — أول نشر فعلي ما تم |
-| **الجاهزية الإنتاجية الإجمالية** | **~85%** | الناقص كله "إثبات تشغيل نهائي" (E2E كامل + AI حي + نشر واحد) — مو بناء |
-
-الفرق الجوهري عن تقرير 11 أغسطس: يومها كان النظام "MVP متقدم" وفجواته كانت **بنائية** (لا نظام ترحيلات، لا CSRF، لا SLA، لا Findings/CAPA، لا مختبر أصلًا). اليوم كل هالفجوات مبنية ومختبرة، والناقص تحوّل من "بناء" إلى **"إغلاق بوابات إثبات"** — وأغلبها ساعات مو أسابيع.
-
----
-
-## ملحق أ — من وين جاء النظام (خط البرومبتات)
-
-عشان يبقى السياق موثقًا للمرجعية:
-
-| الملف | المدى | طبيعته |
-| --- |--- | --- |
-| `PROMPTS.md` | PROMPT 00–12 | الجيل الأول: بناء الـ MVP الأساسي |
-| `prompt2.md` | PROMPT 00–18 | الجيل الثاني: توسّع الإنتاج والتصلب الأمني |
-| `prompt3.md` | — | جيل التصلب: baseline تدقيقي + migrations + أمان + اختبارات شاملة |
-| `prompt4-LAB.md` | PROMPT 00–40 (+57–59) | بناء مختبر QC كامل |
-| `prompt5-LAB.md` | PROMPT 41–59 | توسيعات المختبر: اعتماد وثائق، إشعارات مجدولة، QR، طباعة، e-signature، retention، تصعيد الفشل المتكرر |
-
-(الملف `تم لصق markdown.md` المذكور في التقرير القديم ما هو موجود اليوم في `audit/qc/`.)
-
-## ملحق ب — أوامر التحقق السريعة
-
-```bash
-cd apps/qc-task-manager
-
-pnpm typecheck              # 0 errors / 0 warnings
-pnpm test                   # السلسلة كاملة (42 أمر) — exit 0
-NODE_ENV=production pnpm build
-pnpm db:init                # قاعدة طازجة: 26 migration / 49 جدول
-pnpm e2e:acceptance         # بعد إصلاح browser.close() في e2e-task-search.mjs
+```text
+/lab/templates
+/lab/templates/new
+/lab/templates/[id]
+/lab/templates/[id]/edit
 ```
 
+### Equipment / Maintenance
+
+```text
+/lab/equipment
+/lab/equipment/new
+/lab/equipment/[id]
+/lab/equipment/[id]/edit
+/lab/equipment/[id]/maintenance
+/lab/equipment/[id]/print
+/lab/maintenance/[id]/print
+```
+
+### Calibration
+
+```text
+/lab/calibration
+/lab/calibration/new
+/lab/calibration/[id]
+/lab/calibration/[id]/edit
+/lab/calibration/[id]/print
+```
+
+### Controlled documents
+
+```text
+/lab/documents
+/lab/documents/new
+/lab/documents/[id]
+/lab/documents/[id]/edit
+/lab/documents/[id]/versions
+```
+
+### Acknowledgements
+
+```text
+/lab/acknowledgements
+/lab/acknowledgements/assign
+```
+
+### Retests
+
+```text
+/lab/retests
+/lab/retests/new
+/lab/retests/[id]
+```
+
+### Operations
+
+```text
+/lab/audit
+/lab/calendar
+/lab/data-quality
+/lab/notifications
+/lab/reports
+/lab/search
+/lab/saved-views
+```
+
+هذه **43 بالضبط**.
+
 ---
 
-> **تنبيه أخير للقارئ:** هذا التقرير وصفي للنظام كما هو يوم 2026-08-23. إذا قرأته بعد فترة، مصدر الحقيقة الدائم هو `.agents/mind/01-mind-latest.md` (سجل المهام الحي) — أي تعارض بين هذا التقرير والعقل، **العقل يكسب** لأنه الأحدث.
+## ج. `/api` الفعلية — 30 endpoint
+
+### Core / admin / AI
+
+```text
+/api/admin/backup
+/api/ai/[feature]
+/api/health
+/api/filters
+```
+
+### Export
+
+```text
+/api/export/tasks.csv
+/api/export/tasks/pdf/[id]
+/api/export/search.csv
+/api/export/search.xlsx
+```
+
+### Findings / RCA / CAPA
+
+```text
+/api/findings
+/api/findings/[id]
+/api/findings/[id]/rca
+/api/findings/[id]/capa
+/api/findings/[id]/evidence
+```
+
+### Notifications
+
+```text
+/api/notifications/[id]/read
+/api/notifications/read-all
+```
+
+### Tasks
+
+```text
+/api/tasks/suggestions
+/api/tasks/[id]/update
+/api/tasks/[id]/comment
+/api/tasks/[id]/close
+/api/tasks/[id]/cancel
+/api/tasks/[id]/reopen
+/api/tasks/[id]/delete-request
+/api/tasks/[id]/attachments
+/api/tasks/[id]/attachments/[attachmentId]
+```
+
+### Laboratory APIs — 6
+
+```text
+/api/lab/equipment/[id]/maintenance
+/api/lab/saved-views
+/api/lab/search-suggest
+/api/lab/tests/[id]/review
+/api/lab/tests/export.csv
+/api/lab/tests/export.xlsx
+```
+
+الدليل الكامل هو شجرة `src/pages`.
+
+---
+
+## د. Endpoint routes خارج `/api` — أربعة
+
+وهذي نقطة التقرير ما يعكسها في الرقم:
+
+```text
+/logout
+/admin/templates/api
+/admin/users/api
+/manager/requests/api
+```
+
+بل `middleware.ts` عنده allowlist صريح لها على أنها `ENDPOINT_PAGE_PATHS`.
+
+### النتيجة الدقيقة
+
+إذا كان المقصود بـ route = file-based route:
+
+**68 Astro + 34 TS = 102 routable files.**
+
+أما إذا أصرينا على تعريف التقرير: “pages + الملفات الموجودة داخل `/api` فقط”:
+
+**68 + 30 = 98 وليس 100.**
+
+---
+
+## هـ. Routes runtime إضافية ينفذها Middleware
+
+فيه عمليات POST حقيقية لا يوجد لها file مستقل؛ `middleware.ts` يمسكها مباشرة، مثل:
+
+```text
+POST /lab/products/[id]/archive
+POST /lab/products/[id]/restore
+POST /lab/tests/[id]/edit
+POST /lab/tests/[id]/void
+POST /lab/tests/[id]/links
+POST /lab/tests/[id]/links/unlink
+POST /lab/documents/[id]
+POST /lab/acknowledgements/[id]/acknowledge
+```
+
+فعبارة “100 مسار تطبيق” أصلًا ما تمثل كامل **runtime request surface**.
+
+---
+
+# 3. المشكلة الأكبر: Reporting pipeline ناقص Transport layer
+
+التقرير يذكر:
+
+> `/api/reports/[reportType].[format]`
+
+و:
+
+> `/api/reports/audit`
+
+لكن **الملفين غير موجودين في `src/pages` الحالي**. شجرة الصفحات كاملة تؤكد ذلك.
+
+المفارقة أن بقية Reporting subsystem موجود بشكل جيد:
+
+* 24 `ReportType`.
+* Catalog.
+* Authorization.
+* Queries/readers.
+* CSV/XLSX/PDF writers.
+* Lab dispatcher.
+* Report audit table.
+
+مثلًا الكتالوج يحتوي 8 تقارير task و16 lab.
+
+وAuthorization يرفض Lab reports للـ employee server-side.
+
+لكن `/reports` ينشئ روابط:
+
+```text
+/api/reports/${selectedType}.csv
+/api/reports/${selectedType}.xlsx
+/api/reports/${selectedType}.pdf
+/api/reports/audit
+```
+
+وهي Routes غير موجودة.
+
+صفحة Lab عندها نفس المشكلة، وفوقها نص قديم ما زال يقول **15 laboratory reports** رغم أن الـ catalog صار 16.
+
+**الحكم:** report domain **implemented**، لكن report download HTTP surface على `main` الحالي **غير مكتمل/مكسور**.
+
+وهذي لحالها تنفي عبارة التقرير أن الناقص كله “إثبات تشغيل فقط، مو بناء”.
+
+---
+
+# 4. طبقات النظام: Request → DB
+
+المسار العام جيد هندسيًا:
+
+```text
+HTTP Request
+   ↓
+src/middleware.ts
+   ├── session/auth wall
+   ├── top-level RBAC
+   ├── request-size/content-type checks
+   ├── CSP/security headers
+   └── middleware POST handlers
+   ↓
+Page/API handler
+   ↓
+api-security.ts
+   ├── authenticated user
+   ├── Origin/CSRF
+   └── rate limits
+   ↓
+validation.ts / Zod
+   ↓
+permissions.ts + entity policy
+   ↓
+domain lib
+   ├── tasks
+   ├── taskUpdates
+   ├── findings/RCA/CAPA
+   ├── reporting
+   ├── lab/*
+   └── ...
+   ↓
+db.ts / better-sqlite3 prepared statements
+   ↓
+SQLite
+```
+
+`middleware.ts` فعلًا يطبق Auth walls وRBAC الأساسي وCSP على الردود. الـ CSP الحالي لا يحتوي `unsafe-inline` أو `unsafe-eval` في QC middleware.
+
+و`api-security.ts` يعيد الفحص داخل API layer بدل الاعتماد على middleware فقط.
+
+### تقييم الفصل
+
+الهيكل عمومًا جيد جدًا، لكن عندي ثلاث ملاحظات:
+
+1. كثرة POST handlers داخل `middleware.ts` تجعل middleware جزءًا من application controller layer، مو فقط cross-cutting layer.
+2. Reporting domain موجود لكن route adapter مفقود، وهذا مثال واضح أن الطبقات ممكن تتباعد.
+3. بعض الـ side effects مو داخلة فعليًا في نفس transaction رغم وصف التقرير.
+
+---
+
+# 5. قاعدة البيانات
+
+## الجداول — 49
+
+العائلات الفعلية:
+
+**Meta**
+
+```text
+schema_migrations
+schema_migration_failures
+```
+
+**Identity/Auth**
+
+```text
+users
+sessions
+login_attempts
+saved_filters
+```
+
+**Tasks**
+
+```text
+tasks
+task_comments
+task_attachments
+task_activity_log
+task_delete_requests
+task_checklists
+task_dependencies
+notifications
+task_templates
+```
+
+**SLA**
+
+```text
+sla_policies
+escalation_policies
+escalation_events
+```
+
+**QC**
+
+```text
+qc_findings
+qc_rca
+qc_capa
+qc_evidence
+qc_audit_log
+```
+
+**Workflow**
+
+```text
+workflow_definitions
+workflow_steps
+workflow_instances
+workflow_actions
+```
+
+**AI / reporting**
+
+```text
+ai_audit_log
+report_audit_log
+```
+
+**Laboratory — 20**
+
+```text
+lab_test_templates
+lab_test_template_versions
+lab_equipment
+lab_equipment_maintenance
+lab_equipment_calibration
+lab_products
+lab_product_equipment
+lab_template_equipment
+lab_test_records
+lab_test_samples
+lab_test_retests
+lab_test_findings
+lab_test_environment_readings
+lab_test_equipment_snapshots
+lab_test_document_snapshots
+lab_documents
+lab_document_versions
+lab_document_links
+lab_document_acknowledgements
+lab_saved_views
+```
+
+`db.ts` يضم 26 migration من 001 إلى 026 ويعمل startup validation وFK enforcement وWAL.
+
+ملاحظة صغيرة: `REQUIRED_TABLES` في startup validator نفسه يحتوي **47** اسمًا فقط؛ `task_templates` و`report_audit_log` مو ضمن تلك القائمة، رغم استخدام النظام لهما. لذلك عبارة “startup validation يضمن كل 49” غير صحيحة حرفيًا.
+
+---
+
+## FK والعلاقات
+
+الاستخدام واضح لـ:
+
+* task children مع FK إلى `tasks`.
+* user attribution إلى `users`.
+* findings → RCA/CAPA/evidence.
+* workflow definition → steps/instances/actions.
+* lab test → product/template/equipment/user.
+* retest → original/new test.
+* documents → versions/links/acknowledgements.
+* approved test → equipment/document snapshots.
+
+وتفعيل `PRAGMA foreign_keys = ON` يتم عند فتح الاتصال.
+
+---
+
+# 6. Historical snapshots
+
+هذا الجزء في التقرير مدعوم فعلًا.
+
+عند Lab approval، الكود يبني snapshots داخل نفس approval transition، تشمل:
+
+* Equipment/calibration identity.
+* SOP/WI document + version.
+* Product/template/parameter JSON.
+* Sample states.
+
+المخطط يحتوي tables مستقلة:
+
+```text
+lab_test_equipment_snapshots
+lab_test_document_snapshots
+```
+
+ومعها JSON snapshots على test record.
+
+العينات والـ environment readings عندها DB triggers تمنع تعديل/حذف البيانات التابعة بعد APPROVED/VOID.
+
+**الحكم: ✅ snapshot/freeze design implemented فعليًا، مو UI فقط.**
+
+---
+
+# 7. RBAC والقواعد الصلبة
+
+## المصفوفة العملية
+
+| الوظيفة              | Admin |         Manager |                      Supervisor |         Employee |
+| -------------------- | ----: | --------------: | ------------------------------: | ---------------: |
+| Dashboard            |     ✅ |               ✅ |                               ✅ |                ❌ |
+| Admin/users          |     ✅ |               ❌ |                               ❌ |                ❌ |
+| Manager area         |     ✅ |               ✅ |                               ❌ |                ❌ |
+| Task view            |    كل |              كل | **كل حسب `canViewTask` الحالي** | assigned/created |
+| Task structural edit |     ✅ |               ✅ |                           محدود |           locked |
+| Lab view             |     ✅ |               ✅ |                               ✅ |                ✅ |
+| Lab review           |     ✅ |               ✅ |                 ✅ مع separation |                ❌ |
+| Lab approve          |     ✅ | ✅ مع separation |                               ❌ |                ❌ |
+| Lab reports          |     ✅ |               ✅ |                               ✅ |                ❌ |
+
+الأدوار الأربعة معرفة مركزيًا داخل `permissions.ts` كما يدعي التقرير.
+
+### لكن فيه فرق عن وصف التقرير
+
+التقرير يقول عن Supervisor: **“مهام فريقه”**.
+
+بينما:
+
+```ts
+if (actor.role !== 'employee') return true;
+```
+
+في `canViewTask`.
+
+يعني supervisor يقدر يشوف أي Task detail، مو فقط “مهام فريقه”.
+
+هذا إما:
+
+* السياسة الحقيقية أوسع من التقرير،
+* أو enforcement الحالي أوسع من المقصود.
+
+في الحالتين REPORT.md غير دقيق في هذه النقطة.
+
+---
+
+## Field Locking
+
+مطبق server-side فعلًا.
+
+`updateTask()`:
+
+* يتحقق من `canEditTask`.
+* يتحقق من locked fields.
+* يرفض تحديث terminal task.
+* يمنع generic status update إلى completed.
+* يفرض blocker note على `on_hold`.
+* يتحقق من dependencies.
+
+**الحكم: ✅**
+
+---
+
+## Self-review / Self-approval
+
+Lab permission predicates تمنع reviewer أو approver من مراجعة/اعتماد سجله بنفسه، وreview service يعيد تطبيقها عند transition.
+
+**الحكم: ✅ server-side.**
+
+---
+
+## Final-state freeze
+
+APPROVED/VOID في Lab read-only على مستوى service/policy، ومع sample/environment triggers فيه defense-in-depth داخل SQLite أيضًا.
+
+Tasks completed/cancelled كذلك مقيّدة، وreopen manager+.
+
+**الحكم: ✅**
+
+---
+
+## E-signature
+
+الـ approve endpoint يستدعي server-side password verification، والـ e-sign helper يستخدم bcrypt الحالي ويحط failure bucket لكل user. كلمة المرور نفسها لا تُخزن.
+
+**الحكم: ✅ implemented.**
+
+ملاحظة P2: password فارغ يرجع `rate_limited` في implementation الحالي بدل `invalid` بسبب ترتيب الشرط؛ ما فيه bypass، لكنها semantics غلط.
+
+---
+
+# 8. دورة حياة المهمة
+
+المسار الأساسي الموجود:
+
+```text
+NOT_STARTED
+   ↓
+IN_PROGRESS
+   ↓
+ON_HOLD
+   ↓
+COMPLETED
+
+→ CANCELLED
+```
+
+التحقق server-side يشمل:
+
+* أول دخول للحركة يسجل start metadata.
+
+* `ON_HOLD` يحتاج blocker.
+
+* Dependencies gate.
+
+* Checklist/evidence gate.
+
+* completion comment.
+
+* `progress = 100`.
+
+* completion actor/time.
+
+* recurrence successor.
+
+* audit events.
+
+### لكن ادعاء Atomic closure مبالغ فيه
+
+التقرير يقول إن:
+
+> status + progress + comment + audit + **notifications** كلها transaction واحدة وأي خطأ يعمل rollback.
+
+الواقع أدق:
+
+داخل closure transaction تُنفذ أجزاء كثيرة، لكن `createNotification()` **يمسك خطأ الـ INSERT ويرجع false بدل ما يرمي exception**.
+
+يعني فشل كتابة Notification ما يلزم transaction بالـ rollback.
+
+كذلك SLA checkpoint وworkflow close يحصلان بعد completion transaction.
+
+**الحكم على عبارة “أي فشل يرجع كل شيء”: ❌.**
+
+---
+
+# 9. مسار حذف المهام — فجوة تدقيق فعلية
+
+الـ workflow نفسه enforced:
+
+```text
+Employee request
+→ Manager/Admin review
+→ Approved / Rejected
+```
+
+لكن عند approval:
+
+1. يسجل `DELETE_APPROVED`.
+2. يحدّث الطلب approved.
+3. يعمل `DELETE FROM tasks`.
+4. FK CASCADE يحذف:
+
+   * `task_activity_log`
+   * `task_delete_requests`
+   * وغيرهما.
+
+الكود نفسه كاتب:
+
+> approve is logged before the task is deleted, so the row is cascade-removed with the task.
+
+يعني بعد الموافقة والحذف:
+
+**سجل الطلب نفسه وسجل `DELETE_APPROVED` ما يبقون كسجل تاريخي.**
+
+هذا يناقض جوهر وصف REPORT.md:
+
+> “مين اعتمده — وكل حركة مسجّلة ما تنمسح.” 
+
+وفوق هذا، الـ hash chain عالمية على `task_activity_log`. حذف events من وسطها يمكن أن يجعل event التالي يحمل `previous_hash` لصف اختفى، وبالتالي `verifyAuditChain()` يفشل بعد حذف شرعي. آلية التحقق نفسها تسير على كامل السجل حسب ID.
+
+الاختبار الحالي للـ audit يفحص tampering بـ UPDATE، لكنه لا يختبر حذف Task وما ينتج عنه من cascade داخل السلسلة.
+
+هذه من أهم نتائج التدقيق.
+
+---
+
+# 10. دورة حياة Lab Test
+
+الموجود فعليًا:
+
+```text
+DRAFT
+ ↓
+SUBMITTED
+ ↓
+UNDER_REVIEW
+ ├──→ REJECTED
+ └──→ APPROVED
+
+APPROVED / eligible record
+ └──→ VOID
+```
+
+الـ review endpoint:
+
+* Auth
+* CSRF
+* role/entity checks
+* validation
+* e-signature عند APPROVE
+* transition service
+
+والـ approval يكتب snapshots ويحدث samples والتدقيق داخل transition.
+
+**وصف REPORT.md لدورة Lab قريب جدًا من التنفيذ الفعلي.**
+
+---
+
+# 11. الأمان
+
+## CSP
+
+مطابق تقريبًا للتقرير:
+
+```text
+script-src 'self' + hashes
+style-src 'self' + hash
+no unsafe-inline
+no unsafe-eval
+frame-ancestors 'none'
+object-src 'none'
+```
+
+**✅ implemented.**
+
+---
+
+## CSRF
+
+`requireCsrf()` يقارن:
+
+```text
+Origin === context.url.origin
+```
+
+وتطبق `requireRequestSecurity()` على unsafe requests.
+
+**✅ implemented.**
+
+---
+
+## Authentication
+
+الموجود:
+
+* bcrypt.
+* 256-bit random opaque session token.
+* server-side sessions.
+* TTL = 12 hours.
+* 5 consecutive failures → 10 minutes lock.
+* 20 failed attempts/IP/10min.
+* dummy bcrypt لمنع username timing enumeration.
+
+Cookies:
+
+* HttpOnly.
+* SameSite=Lax.
+* Secure حسب actual HTTPS أو trusted proxy.
+
+**✅ قوي إجمالًا.**
+
+---
+
+## IDOR
+
+هنا REPORT.md غير دقيق.
+
+التقرير يقول:
+
+> unauthorized employee gets 404-style بدون كشف وجود السجل.
+
+لكن صفحة Task detail الحالية تعمل:
+
+```text
+missing → 404
+forbidden → 403
+```
+
+والكود يصف هذا صراحةً بأنه “Correct HTTP semantics”.
+
+فالموظف يقدر يفرق بين:
+
+* Task ID غير موجود.
+* Task ID موجود لكنه ممنوع عليه.
+
+**البيانات نفسها غير مكشوفة** لأن rich data ما تُقرأ للممنوع، لكن existence enumeration موجود.
+
+الحكم على ادعاء 404-style: **❌**.
+
+---
+
+## Uploads / body limits
+
+فيه:
+
+* 12 MB request body pre-check.
+* MIME/content-type gating.
+* Task evidence file cap.
+* extension/MIME/signature checks.
+* SHA-256.
+
+ملاحظة P2: الـ global request-size precheck يعتمد على `Content-Length`؛ request بـ chunked transfer ما يحصل له نفس numeric pre-rejection هنا، وإن كانت file-specific limits لاحقًا تقلل الخطر.
+
+---
+
+## Rate limits
+
+الموجود:
+
+* AI: 15/min/user.
+* generic mutations: 120/min/IP+path.
+* e-sign failure bucket.
+
+لكن هذه Maps **in-memory per process**.
+
+مناسب لخدمة single-instance، لكنه مو distributed rate limiter لو تم scaling لاحقًا.
+
+---
+
+# 12. Audit integrity: التقرير أوسع من التنفيذ
+
+هذه نقطة مهمة جدًا.
+
+`task_activity_log` فقط عنده:
+
+```text
+previous_hash
+event_hash
+```
+
+ويتم حساب SHA-256 chain عليه.
+
+أما `qc_audit_log` المستخدم بكثافة في Lab/QC approvals/transitions **ما عنده hash chain**.
+
+يعني:
+
+* Task audit: tamper-evident chain ✅
+* QC/Lab audit: ordinary append log، بدون cryptographic chain ❌
+
+لذلك عبارة التقرير:
+
+> “كل تغيير يُسجّل في سلسلة تدقيق محمية ضد التلاعب”
+
+غير صحيحة على مستوى المنصة كاملة. 
+
+---
+
+# 13. الاختبارات
+
+## Unit/domain/package scripts
+
+العدد **42** صحيح كتسمية scripts:
+
+* 41 `test:*`
+* * aggregate `test`
+
+لكن `pnpm test` نفسه يسلسل **39** subcommands فقط.
+
+اللي ما يدخلون في aggregate:
+
+```text
+test:lab-print
+test:lab-retention
+```
+
+بالتالي عبارة:
+
+> `pnpm test` = سلسلة 42 أمر كلها خضراء
+
+غير صحيحة حرفيًا.
+
+`test:lab-retention` عنده تشغيل standalone أخضر مسجل في mind، لكن هذا مختلف عن كونه داخل aggregate.
+
+---
+
+## E2E
+
+الـ runner يحتوي 25 workflow suites:
+
+```text
+admin-users
+auth-lockout
+task-shared
+delete-request
+dashboard
+a11y
+backup
+search
+findings
+lab-nav
+lab-suggest
+lab-form
+lab-tests
+lab-review
+lab-products
+lab-equipment
+lab-maintenance
+lab-calibration
+lab-documents
+lab-acknowledgements
+lab-calendar
+lab-retests
+lab-notifications
+lab-data-quality
+reports
+```
+
+ثم **restart-persistence** منفصل.
+
+المجموع التشغيلي = **26**.
+
+آخر جولة موثقة في `mind` وصلت فقط إلى:
+
+1. admin-users — 49
+2. auth-lockout — 44
+3. task-shared — 196
+4. delete-request — 39
+5. dashboard — 51
+6. a11y — 14
+7. backup — 13
+8. search — 84
+
+= **490 passed / 0 failed**.
+
+ثم runner علّق بسبب browser handle في `e2e-task-search`. والـ mind نفسه يقول صراحة:
+
+> full e2e set = UNVERIFIED/BLOCKED وليس PASS.
+
+### الأخطر
+
+بعد الثمانية فيه:
+
+* 17 suite عادية لم تعمل.
+* * restart-persistence.
+* يعني **18 من 26 لم تُثبت في الجولة الكاملة**.
+
+وواحدة من الأخيرة هي `reports`.
+
+`e2e-reports.mjs` يتوقع `/api/reports/...` يرجع HTTP 200، بينما endpoint غير موجود في current tree.
+
+يعني بعد إصلاح `browser.close()`، فيه سبب ملموس للاعتقاد أن الـ runner **لن يصير أخضر مباشرة**؛ سويت reports نفسها ستصل لمسار غير موجود.
+
+إذًا عبارة REPORT:
+
+> “الناقص الوحيد لإغلاق E2E هو سطر browser.close()”
+
+**❌ غير مدعومة بالكود الحالي.**
+
+---
+
+# 14. النشر والنسخ الاحتياطي
+
+`render.yaml` فعلًا يعرف خدمة مستقلة:
+
+```text
+name: qc-task-manager
+runtime: node
+healthCheckPath: /api/health
+autoDeploy: false
+
+disk:
+  name: qc-data
+  mountPath: /var/data
+  sizeGB: 1
+```
+
+ومتغيرات:
+
+```text
+QC_DATABASE_PATH
+QC_BACKUP_DIR
+NODE_ENV
+GROQ_API_KEY
+ADMIN_DEFAULT_PASSWORD
+```
+
+### Health
+
+`/api/health`:
+
+* ما ينشئ DB.
+* 503 لو الملف غير موجود.
+* 503 لو schema غير initialized.
+* 200 مع `schemaVersion` عند الجاهزية.
+
+**✅ implemented.**
+
+### Backup/restore
+
+هذي من أقوى أجزاء النظام:
+
+* SQLite online backup API.
+
+* WAL-safe snapshot.
+
+* SHA-256 checksum.
+
+* `PRAGMA integrity_check`.
+
+* `PRAGMA foreign_key_check`.
+
+* metadata/count checks.
+
+* retention.
+
+* safety backup قبل restore.
+
+* restore إلى temp ثم integrity verification ثم atomic rename.
+
+وفيه scheduler يومي داخل العملية عند 02:00 Riyadh.
+
+### لكن Production؟
+
+`mind` يقول بوضوح:
+
+> لا deploy.
+
+إذًا:
+
+* **Implemented:** نعم.
+* **Verified locally:** أجزاء كثيرة نعم حسب السجل.
+* **Verified in production:** **لا**.
+
+---
+
+# 15. مقارنة آخر سجلات `mind`
+
+راجعت أحدث السجلات، وأهمها:
+
+### QC-REPORT-REWRITE-001
+
+يقول:
+
+> 68 Astro + 32 API = 100.
+
+لكن current tree = 68 + 30 داخل `/api`.
+
+**تعارض صريح مع الكود الحالي.**
+
+كما أن Verification للسجل نفسه كان:
+
+> docs-only — find/grep، لا build/tests.
+
+وهذا يفسر كيف مرّ endpoint التقارير المفقود.
+
+---
+
+### QC-FINAL-REGRESSION-AUDIT-001
+
+هذا السجل أكثر تحفظًا ودقة:
+
+* unit/domain/build/migration خضراء محليًا.
+* 49 tables.
+* 26 schema.
+* 490 E2E assertions.
+* full E2E **UNVERIFIED/BLOCKED**.
+* لا deploy.
+
+هذا متفق إجمالًا مع ما وجدته، باستثناء وصف “full `pnpm test`” لأنه aggregate الحالي لا يشمل كل scripts.
+
+---
+
+### QC-LAB-AUDIT-CLEANUP-001
+
+مهم لأنه يسجل اكتشاف **e-signature bypass** سابق في:
+
+```text
+/api/lab/tests/[id]/void.ts
+```
+
+ويقول إنه حُذف.
+
+والـ current tree يؤكد أن الملف فعلًا غير موجود، والـ VOID الحالي يمر عبر middleware handler/e-signature. لذلك هذه الثغرة **ليست موجودة حاليًا**.
+
+---
+
+# 16. Scorecard مستقل
+
+| المجال                   | REPORT |     تقييمي | السبب                                                                                                                                                              |
+| ------------------------ | -----: | ---------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Architecture             |     95 | **87/100** | layering جيد جدًا، centralized permissions/validation/domain libs، لكن report adapter مفقود، middleware يحمل controller logic، وبعض side effects خارج transactions |
+| Functionality            |     95 | **82/100** | Tasks/Lab/QC core واسع ومطبق، لكن reporting downloads الموصوفة كميزة core غير routable حاليًا                                                                      |
+| Security                 |     92 | **81/100** | CSP/CSRF/bcrypt/session/RBAC/e-signature/uploads قوية؛ لكن audit chain لا تشمل Lab، delete يزيل سجل الاعتماد، IDOR 404-style claim غير صحيح                        |
+| Tests                    |     85 | **67/100** | unit surface واسع ونتائج محلية جيدة، لكن aggregate لا يشمل كل scripts و18/26 E2E لم تُثبت، مع مشكلة reports مؤكدة بنيويًا                                          |
+| Deployment               |     80 | **72/100** | Render blueprint/disk/health/backup/restore موجودة؛ ما فيه live deployment proof                                                                                   |
+| **Production readiness** |    ~85 | **68/100** | النظام متقدم، لكن فيه gaps وظيفية وتدقيقية واختبارية حقيقية، مو مجرد “smoke verification”                                                                          |
+
+هذا تقييم للـ **current repository state**، مو لجودة الفكرة أو حجم العمل.
+
+---
+
+# 17. أهم 10 ملاحظات
+
+ما لقيت **P0 confirmed** مثل auth bypass حالي، RCE، SQL injection مؤكد، أو corruption مؤكدة. لكن عندي P1 تمنعني من إعطاء Production GO.
+
+|  # | الأولوية | الملاحظة                                                                                                                                 |
+| -: | -------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+|  1 | **P1**   | `/api/reports/[reportType].[format]` و`/api/reports/audit` مفقودان رغم أن UI والـ E2E يعتمدان عليهما؛ Report export surface مكسور حاليًا |
+|  2 | **P1**   | full E2E غير مثبت: 8/26 فقط وصلت لها الجولة؛ 18 workflow checks بقيت بدون verification                                                   |
+|  3 | **P1**   | عبارة “browser.close هو العائق الوحيد” غير صحيحة؛ `reports` suite سيصل إلى endpoints غير موجودة                                          |
+|  4 | **P1**   | approval على delete يمحو `task_delete_requests` و`DELETE_APPROVED` audit row نفسه عن طريق cascade                                        |
+|  5 | **P1**   | حذف Task event من `task_activity_log` ممكن يكسر الـ global hash chain الشرعية نفسها                                                      |
+|  6 | **P1**   | cryptographic audit chain تطبق فقط على `task_activity_log`، وليس `qc_audit_log` الخاص بالمختبر/QC                                        |
+|  7 | **P1**   | Closure ليست atomic بالكامل كما يصف التقرير: notifications تمتص أخطاء DB، وSLA/workflow finalize خارج main transaction                   |
+|  8 | **P2**   | IDOR data isolation موجود، لكن 403 مقابل 404 يكشف وجود Task ID ويخالف ادعاء التقرير بـ404-style                                          |
+|  9 | **P2**   | `pnpm test` لا يشغّل `test:lab-print` ولا `test:lab-retention` رغم وصفه كسلسلة الاختبارات الكاملة                                        |
+| 10 | **P2**   | Supervisor task-detail visibility أوسع من “مهام فريقه”، إضافة إلى بقاء DB files الفارغة متتبعة وstale UI copy يقول 15 Lab reports بدل 16 |
+
+---
+
+# 18. الفجوات بين REPORT.md والكود
+
+أبرز الفروقات:
+
+| REPORT.md                                  | الكود الحالي                                                             |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
+| 100 route =68+32                           | 68 Astro +30 `/api`؛ أو 102 route files عند حساب الـ4 endpoints الخارجية |
+| Report endpoint واحد موجود                 | endpoint غير موجود                                                       |
+| Report audit endpoint موجود                | غير موجود                                                                |
+| كل movement في hash chain                  | task activity فقط؛ `qc_audit_log` بدون chain                             |
+| deletion approval موثق                     | approval/request history يُحذف مع task                                   |
+| كامل closure transaction يشمل notification | notification failure يمكن ابتلاعه؛ SLA/workflow بعد transaction          |
+| Supervisor يشوف مهام فريقه                 | task detail يسمح لأي non-employee برؤية أي task                          |
+| IDOR يستخدم 404-style                      | forbidden task detail يرجع 403                                           |
+| `pnpm test` كامل 42                        | 42 script names، aggregate يشغّل 39 subtests                             |
+| E2E blocker الوحيد browser leak            | full run لم يصل إلى 18 suite؛ reports endpoint gap موجود فعليًا          |
+| 15 lab reports في بعض الوصف                | الحقيقة الحالية 16؛ صفحة lab نفسها فيها copy قديم “15”                   |
+| الناقص كله إثبات تشغيل                     | فيه على الأقل **functional transport gap + audit durability gaps**       |
+
+---
+
+# 19. الحكم النهائي على REPORT.md
+
+**التقرير جيد جدًا كوصف للـ intent والبنية العامة، لكنه ليس دقيقًا بما يكفي ليُعتبر independent as-built audit.**
+
+الأرقام التالية صحيحة:
+
+* 26 migrations.
+* 49 tables.
+* 102 lib modules.
+* 33 lab modules.
+* 24 ReportType.
+* 32 notifications.
+* 15 AI features.
+* 43+6 lab routes.
+* 4 roles.
+* 26 operational E2E suites.
+* 11 docs.
+
+لكن توجد أخطاء مادية، مو تجميلية:
+
+1. **100 routes غير صحيح.**
+2. **Reporting HTTP endpoints الموصوفة غير موجودة.**
+3. **Audit-chain coverage مبالغ فيها.**
+4. **Delete approval history غير durable.**
+5. **Atomic completion claim أوسع من الواقع.**
+6. **IDOR behavior مو مثل المذكور.**
+7. **Supervisor scope مو مثل الوصف.**
+8. **“42 tests all via pnpm test” غير دقيق.**
+9. **“browser leak هو البوابة الوحيدة” غير صحيح.**
+10. **الجاهزية ~85% متفائلة بالنسبة للحالة الحالية.**
+
+## قراري
+
+**Implemented:** النظام متقدم وواسع فعلًا، ومو MVP بسيط.
+
+**Verified locally:** فيه أدلة محلية قوية في `mind` على build/typecheck/migrations/unit/domain و490 E2E assertion ناجحة، لكن هذه نتائج مسجلة وليست إعادة تشغيل مستقلة مني.
+
+**Verified in production:** **لا.**
+
+### Production verdict
+
+**NO-GO حاليًا للـ production acceptance الصارم.**
+
+مو لأن النظام ناقص من الصفر، لكن لأن فيه أربع بوابات فعلية قبل ما يصير GO منطقي:
+
+1. لازم يكون Reporting HTTP surface مطابق للـ catalog والـ UI ثم يثبت E2E.
+2. لازم يكتمل **26/26 E2E** بدون hang وبدون failures.
+3. لازم يُحسم نموذج deletion/audit بحيث approval history ما يختفي ولا يكسر hash-chain semantics.
+4. بعدها live deployment verification على Render: health، persistence، restart، backup/restore، session security، ثم AI provider smoke منفصل.
+
+بعدها فقط يصير وصف مثل **“production-ready”** مدعوم بالأدلة. في الحالة الحالية، **68/100 readiness** أقرب للواقع من ~85%.
