@@ -2,11 +2,19 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-22 18:35 +03:00
+last_updated: 2026-08-22 18:45 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.8.20
+version: 2.8.21
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-22 — QC-LAB-SAMPLE-QR-001: تنفيذ PROMPT 48 — **QR codes للعينات ومعرّفات الاختبار**: encoder SVG نقي CSP-safe فوق `qrcode-generator` + QR Sheet بصفحة الطباعة + QR مدمج بصفحة التفاصيل + scan input بـ /lab/search يوجّه مباشرة للسجل — مع اختبار offline decoder (jsQR) يثبت فك الترميز للمعرّف الحرفي
+
+- **Files**: `apps/qc-task-manager/src/lib/lab/qrcodes.ts` (**جديد** — `labQrPayload(identifier, url)` = "identifier\nURL"، `labSampleAnchor` (-S03 من لاحقة المعرّف وإلا sample_no مبطّن)، `labSiteOrigin(requestOrigin)` (override عبر `QC_SITE_ORIGIN` وإلا أصل الطلب)، `labQrSvg(payload, label)` — مصفوفة الوحدات تُرسم كـ `<path>` واحد بسمات عرض فقط، quiet zone ‏4 وحدات، auto-version + EC level M)، `apps/qc-task-manager/src/lib/lab/scan.ts` (**جديد** — `normalizeScannedIdentifier` يستخرج `LAB-TEST-\d+(-S\d+)?` من أي مدخل (معرّف مكشوف / payload كامل بسطرين / URL أولًا) وإلا أول token، `resolveLabScan(raw, {role,userId})`: العينة أولًا (الأكثر تحديدًا) عبر JOIN lab_test_samples→lab_test_records ثم رقم الاختبار؛ نطاق الموظف `tested_by OR created_by` حرفيًا وإلا null (non-discovery))، `src/pages/lab/tests/[id]/print.astro` (+قسم **6a · Sample QR Sheet** بعد جدول العينات: QR الاختبار أولًا ثم QR لكل عينة)، `src/layouts/PrintLayout.astro` (+`.qr-grid/.qr-cell/.qr-id` — خلايا 24mm ثابتة، 6 بالصف، `break-inside: avoid` على الخلية)، `src/pages/lab/tests/[id].astro` (+id=`sample-Sxx` على صفوف جدول العينات بحيث الـ anchor قابل للحل + قسم **Sample QR Labels** مدمج ببطاقات 64px Tailwind `[&_svg]` selectors — لا inline styles)، `src/pages/lab/search.astro` (+scan bar أعلى نموذج البحث: GET /lab/search?scan= → resolveLabScan → redirect مباشر للسجل/العينة، غير المحلول = تنبيه amber inline)، `apps/qc-task-manager/scripts/test-lab-qr.mjs` (**جديد — 36 فحصًا**)، `package.json` (+`test:lab-qr` داخل سلسلة `test` بعد lab-calibration، +`qrcode-generator@^2.0.4` dependency و+`jsqr@^1.4.0` devDependency).
+- **Decision (مهم للـ future agents)**: (1) **اختيار الـ encoder = `qrcode-generator`** (MIT، pure JS، **صفر اعتماديات**، ~10KB min، ESM+types رسمية) — أول استخدام QR بالمشروع فما فيه بديل داخلي؛ البدائل المنظورة إما خدمات خارجية (ممنوعة بالبرومبت) أو مكتبات أثقل (qrcode ~5 deps). (2) **jsqr devDependency فقط** لاختبار فك الترميز الأوفلاين — لا يدخل الـ bundle. (3) **SVG يُبنى يدويًا من المصفوفة** (مو createSvgTag) للتحكم الكامل: سمة style محظورة أصلًا (CSP style-src 'self')، الحجم عبر CSS wrapper، `<title>`+role="img" للوصول. (4) **الأصل = `Astro.url.origin` وقت الطلب** — تطبيق qc ما عنده config أصل للموقع؛ `QC_SITE_ORIGIN` env اختياري للنشر خلف proxy. (5) resolveLabScan موظف خارج النطاق = null مثل قرار 404-style non-discovery الموحّد. (6) payload ASCII محض (معرّف + URL) فوضع Byte آمن.
+- **Verification**: `pnpm test:lab-qr` → **36 passed / 0 failed** ✅ (فك ترميز jsQR للـ SVG المولّد يطابق الـ payload الحرفي لـ 5 حالات تشمل أطول payload، بلا سمة style، بلا مراجع خارجية؛ anchors؛ resolver بنطاق الموظف + supervisor+ يحل أي سجل)؛ `pnpm typecheck` → 0 errors ✅؛ `NODE_ENV=production pnpm build` → Complete ✅؛ test:lab-print 51/0 ✅؛ test:lab-tests 231/0 ✅؛ test:lab-security 63/0 ✅؛ **test:architecture فشل واحد DUPLICATE_AUTHORITY tests.ts:396 — سابق موثّق عند HEAD** (مثبت بالسجلين السابقين). الفحص اليدوي بالمتصفح (A4 overflow) لم يُجرَ — الخلايا 24mm ثابتة وbreak-inside: avoid، و21 خلية كحد أقصى (~4 صفوف ≈ 110mm) تبقى داخل صفحة A4.
+- **Notes**: لا commit ولا push — المستخدم يلتزم. رسالة مقترحة: `feat(lab): sample QR codes — CSP-safe inline SVG via qrcode-generator, print QR sheet + compact detail-page QRs, scan-to-record input on /lab/search, offline jsQR decode tests (PROMPT 48)`.
+- **Status**: delivered & verified محليًا.
 
 ### 2026-08-22 — QC-LAB-PRINT-EXT-001: توسيع معمارية الطباعة A4 — **3 صفحات طباعة جديدة** بنفس PrintLayout (بلا layout ثانٍ): شهادة معايرة `/lab/calibration/[id]/print` + تقرير سجل الجهاز `/lab/equipment/[id]/print` + سجل صيانة `/lab/maintenance/[id]/print`
 

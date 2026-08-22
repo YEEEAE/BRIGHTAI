@@ -11,6 +11,7 @@
 // tested or created; anyone else gets the not-found state (IDOR wall, §66).
 import PrintLayout from '../../../../layouts/PrintLayout.astro';
 import { loadLabTestView } from '../../../../lib/lab/tests';
+import { labQrPayload, labQrSvg, labSampleAnchor, labSiteOrigin } from '../../../../lib/lab/qrcodes';
 import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../../lib/lab/policy';
 import { LAB_TEST_STATUS_LABELS } from '../../../../lib/lab/testSearch';
 import type { Role } from '../../../../lib/types';
@@ -86,6 +87,21 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
   if (!snap) return [];
   return Object.entries(snap).map(([k, v]) => [k, v == null || v === '' ? '—' : String(v)]);
 }
+
+// QR payloads: identifier + resolvable absolute URL (PROMPT 48).
+const origin = labSiteOrigin(Astro.url.origin);
+const testNumber = record ? String(record.test_number) : '';
+const testQrSvg = record ? labQrSvg(labQrPayload(testNumber, `${origin}/lab/tests/${record.id}`), `QR: ${testNumber}`) : '';
+const sampleQrs = record
+  ? view.samples.map((s) => {
+      const identifier = s.sample_identifier ?? `${testNumber}-S${String(s.sample_no).padStart(2, '0')}`;
+      const anchor = labSampleAnchor(s.sample_identifier, Number(s.sample_no));
+      return {
+        identifier,
+        svg: labQrSvg(labQrPayload(identifier, `${origin}/lab/tests/${record.id}#${anchor}`), `QR: ${identifier}`),
+      };
+    })
+  : [];
 ---
 
 <PrintLayout title={record ? `${String(record.test_number)} — Laboratory Test` : 'Test not found'} backHref={record ? `/lab/tests/${String(record.id)}` : ''}>
@@ -208,6 +224,25 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
           )}
         </div>
       </section>
+
+      {/* Sample QR Sheet — one scannable QR per identifier (PROMPT 48) */}
+      {sampleQrs.length > 0 ? (
+        <section class="print-section">
+          <h2 class="print-section-title">6a · Sample QR Sheet</h2>
+          <div class="print-section-body qr-grid">
+            <div class="qr-cell">
+              <Fragment set:html={testQrSvg} />
+              <span class="qr-id">{testNumber} (Test)</span>
+            </div>
+            {sampleQrs.map((q) => (
+              <div class="qr-cell">
+                <Fragment set:html={q.svg} />
+                <span class="qr-id">{q.identifier}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Remarks */}
       {record.remarks ? (

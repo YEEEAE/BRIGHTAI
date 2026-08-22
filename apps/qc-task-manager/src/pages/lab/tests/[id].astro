@@ -28,6 +28,7 @@ import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../lib/lab/policy';
 import { getLabTestFindingLinkOptions } from '../../../lib/lab/findingLinks';
 import { canCreateLabRetest, canEditLabTestRecord, canLinkLabTestToFinding, canReviewLabTest, canVoidLabTestRecord } from '../../../lib/permissions';
 import AiReviewPanel from '../../../components/AiReviewPanel';
+import { labQrPayload, labQrSvg, labSampleAnchor, labSiteOrigin } from '../../../lib/lab/qrcodes';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -96,6 +97,22 @@ const resultToneBadge: Record<string, string> = {
 function actor(name: unknown): string {
   return name ? String(name) : '—';
 }
+
+// QR payloads: identifier + resolvable absolute URL (PROMPT 48).
+const origin = labSiteOrigin(Astro.url.origin);
+const testNumber = record ? String(record.test_number) : '';
+const testQrSvg = record ? labQrSvg(labQrPayload(testNumber, `${origin}/lab/tests/${record.id}`), `QR: ${testNumber}`) : '';
+const sampleQrs = record
+  ? view.samples.map((s) => {
+      const identifier = s.sample_identifier ?? `${testNumber}-S${String(s.sample_no).padStart(2, '0')}`;
+      const anchor = labSampleAnchor(s.sample_identifier, Number(s.sample_no));
+      return {
+        anchor,
+        identifier,
+        svg: labQrSvg(labQrPayload(identifier, `${origin}/lab/tests/${record.id}#${anchor}`), `QR: ${identifier}`),
+      };
+    })
+  : [];
 function field(k: string): string {
   const v = record?.[k];
   return v == null || v === '' ? '—' : String(v);
@@ -293,10 +310,10 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                  {view.samples.map((s) => {
+                  {view.samples.map((s, idx) => {
                     const sr = s.result as string | null;
                     return (
-                      <tr>
+                      <tr id={sampleQrs[idx]?.anchor}>
                         <td class="px-3 py-2 font-medium text-slate-900">{s.sample_identifier ?? `S${s.sample_no}`}</td>
                         <td class="px-3 py-2 text-slate-700">{s.part_name ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.set_pressure ?? '—'}</td>
@@ -315,6 +332,36 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             </div>
           )}
         </section>
+
+        {/* 7a. Sample QR labels — compact, scannable identifiers (PROMPT 48) */}
+        {sampleQrs.length > 0 ? (
+          <section aria-label="Sample QR labels" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Sample QR Labels</h2>
+            <p class="mt-1 text-xs text-slate-500">Each QR encodes the sample identifier and its resolvable record URL.</p>
+            <div class="mt-3 flex flex-wrap gap-3">
+              <div class="flex items-center gap-2 rounded-lg border border-slate-200 p-2">
+                <div class="h-16 w-16 shrink-0 [&_svg]:block [&_svg]:h-full [&_svg]:w-full">
+                  <Fragment set:html={testQrSvg} />
+                </div>
+                <div>
+                  <div class="font-mono text-xs font-semibold text-slate-900">{testNumber}</div>
+                  <div class="text-[11px] text-slate-500">Test record</div>
+                </div>
+              </div>
+              {sampleQrs.map((q) => (
+                <div class="flex items-center gap-2 rounded-lg border border-slate-200 p-2">
+                  <div class="h-16 w-16 shrink-0 [&_svg]:block [&_svg]:h-full [&_svg]:w-full">
+                    <Fragment set:html={q.svg} />
+                  </div>
+                  <div>
+                    <div class="font-mono text-xs font-semibold text-slate-900">{q.identifier}</div>
+                    <a href={`#${q.anchor}`} class="text-[11px] text-brand-600 hover:underline">Jump to row</a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         {/* 8. Remarks */}
         {record.remarks ? (

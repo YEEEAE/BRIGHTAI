@@ -274,6 +274,9 @@ importers:
       exceljs:
         specifier: ^4.4.0
         version: 4.4.0
+      qrcode-generator:
+        specifier: ^2.0.4
+        version: 2.0.4
       react:
         specifier: ^19.0.0
         version: 19.0.3
@@ -302,6 +305,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.0
         version: 19.0.3(@types/react@19.0.3)
+      jsqr:
+        specifier: ^1.4.0
+        version: 1.4.0
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -3967,6 +3973,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -4707,6 +4714,9 @@ packages:
 
   jsonc-parser@3.3.1:
     resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
+
+  jsqr@1.4.0:
+    resolution: {integrity: sha512-dxLob7q65Xg2DvstYkRpkYtmKm2sPJ9oFhrhmudT1dZvNFFTlroai3AWSpLey/w5vMcLBXRgOJsbXpdN9HzU/A==}
 
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
@@ -5722,6 +5732,9 @@ packages:
   purgecss@8.0.0:
     resolution: {integrity: sha512-QFJyps9y5oHeXnNA3Ql1EaAqWBivNwQn19Pw1lt9RxfB+4e+bIyqCyuombk79D6Fxe+lPXggVfI1WtRGEBwgbQ==}
     hasBin: true
+
+  qrcode-generator@2.0.4:
+    resolution: {integrity: sha512-mZSiP6RnbHl4xL2Ap5HfkjLnmxfKcPWpWe/c+5XxCuetEenqmNFf1FH/ftXPCtFG5/TDobjsjz6sSNL0Sr8Z9g==}
 
   querystringify@2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
@@ -11966,6 +11979,8 @@ snapshots:
 
   jsonc-parser@3.3.1: {}
 
+  jsqr@1.4.0: {}
+
   jsx-ast-utils@3.3.5:
     dependencies:
       array-includes: 3.1.9
@@ -13085,6 +13100,8 @@ snapshots:
       fast-glob: 3.3.3
       postcss: 8.5.16
       postcss-selector-parser: 7.1.4
+
+  qrcode-generator@2.0.4: {}
 
   querystringify@2.2.0: {}
 

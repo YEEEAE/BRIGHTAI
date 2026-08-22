@@ -57,6 +57,12 @@ const tsText = iso(printTimestamp);
       th { background: #f9fafb; font-weight: 700; }
 
       .remark-text { white-space: pre-wrap; }
+
+      /* Sample QR sheet (PROMPT 48) — fixed 22mm cells, 6 per row max on A4. */
+      .qr-grid { display: flex; flex-wrap: wrap; gap: 6mm; }
+      .qr-cell { width: 24mm; text-align: center; break-inside: avoid; }
+      .qr-cell svg { display: block; width: 22mm; height: 22mm; margin: 0 auto; border: 1px solid #d1d5db; }
+      .qr-id { display: block; margin-top: 1mm; font-family: 'IBM Plex Mono', 'Courier New', monospace; font-size: 8px; color: #111827; word-break: break-all; }
       .auth-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
       .auth-box { border: 1px solid #d1d5db; padding: 8px; min-height: 56px; }
       .auth-box .label { font-size: 10px; text-transform: uppercase; color: #6b7280; }
