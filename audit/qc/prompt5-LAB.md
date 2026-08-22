@@ -33,7 +33,7 @@
 - [✅] Prompt 50 — Arabic PDF Reports
 - [✅] Prompt 51 — Session Environmental Readings
 - [✅] Prompt 52 — Live Criteria Side-by-Side Display
-- [ ] Prompt 53 — Product FAIL Trend Analytics
+- [✅] Prompt 53 — Product FAIL Trend Analytics
 - [ ] Prompt 54 — Electronic Signature on Approvals
 - [ ] Prompt 55 — Records Retention Policy
 - [ ] Prompt 56 — Repeated-FAIL Escalation Rule
@@ -591,7 +591,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Add trend visibility over existing data (no new tables).
