@@ -258,8 +258,15 @@ CREATE TABLE IF NOT EXISTS notifications (
   message    TEXT NOT NULL,
   is_read    INTEGER NOT NULL DEFAULT 0 CHECK (is_read IN (0, 1)),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  entity_href TEXT
+  entity_href TEXT,
+  -- Scheduled-job idempotency key (migration 025): user + kind + entity +
+  -- run date for the daily reminder job; NULL for interactive notifications.
+  dedupe_key TEXT
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_notifications_dedupe_key
+  ON notifications(dedupe_key)
+  WHERE dedupe_key IS NOT NULL;
 
 -- ─────────────────────────── 10. sessions ──────────────────────────────
 -- Opaque token → user_id. Cookie only holds the token; the row is the source

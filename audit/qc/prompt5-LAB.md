@@ -26,7 +26,7 @@
 - [✅] Prompt 43 — Product Archive + Test Draft Editing
 - [✅] Prompt 44 — Legacy Duplicate File Cleanup
 - [✅] Prompt 45 — e2e-lab-nav Pre-existing Failures
-- [ ] Prompt 46 — Scheduled Notification Jobs
+- [✅] Prompt 46 — Scheduled Notification Jobs
 - [ ] Prompt 47 — Unified A4 Print Layouts
 - [ ] Prompt 48 — Sample QR Codes
 - [ ] Prompt 49 — Smarter Unified Search
@@ -353,7 +353,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Today, reminders (calibration due, document review due, acknowledgement
@@ -393,7 +393,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 /lab/tests/[id]/print.astro + PrintLayout.astro already render a compliant

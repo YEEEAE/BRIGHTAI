@@ -894,7 +894,7 @@ try {
   const tables = check.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all().map((r) => r.name);
   ok(tables.length === 48, `init-db: application + migration metadata tables applied (got ${tables.length})`);
   const migrationVersion = check.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version;
-  ok(migrationVersion === 24, 'init-db: schema version recorded as 24');
+  ok(migrationVersion === 25, 'init-db: schema version recorded as 25');
   const fk = check.prepare('PRAGMA foreign_key_check').all();
   ok(fk.length === 0, 'init-db: no foreign-key violations after migration');
   check.close();
