@@ -18,13 +18,14 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import LabTestForm from '../../../components/lab/LabTestForm';
 import { labNavForRole } from '../../../lib/lab/navigation';
-import { listLabEquipmentForForm, listLabProductsForForm, getLabTestEditableDraft } from '../../../lib/lab/tests';
+import { listLabEquipmentForForm, listLabProductsForForm, getLabTestEditableDraft, listLabTestEnvironmentReadings } from '../../../lib/lab/tests';
 import { listLabProductReferences } from '../../../lib/lab/products';
 import { listLabTemplateReferences } from '../../../lib/lab/templates';
 import {
   LAB_ACTUAL_PRESSURE_REFERENCE,
   LAB_ACCEPTANCE_CRITERIA,
   LAB_CONNECTOR_TYPES,
+  LAB_ENV_READINGS_MAX,
   LAB_HOLDING_TIME,
   LAB_RESULT_LABELS,
   LAB_RESULT_OPTIONS,
@@ -101,6 +102,12 @@ const initialValues = editDraft
       remarks: (editDraft.record.remarks as string | null) ?? null,
       final_result: (editDraft.record.final_result as string | null) ?? null,
       template_version_id: editDraft.record.template_version_id == null ? null : Number(editDraft.record.template_version_id),
+      environmentReadings: listLabTestEnvironmentReadings(editDraft.id).map((r) => ({
+        reading_at: r.reading_at,
+        temperature: r.temperature,
+        humidity: r.humidity ?? '',
+        notes: r.notes ?? '',
+      })),
       samples: editDraft.samples.map((s) => ({
         sample_no: Number(s.sample_no),
         part_name: s.part_name ?? '',
@@ -169,6 +176,7 @@ const resultOptions = LAB_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RES
       sampleCountMin={LAB_SAMPLE_COUNT_MIN}
       sampleCountMax={LAB_SAMPLE_COUNT_MAX}
       sampleCountDefault={LAB_SAMPLE_COUNT_DEFAULT}
+      envReadingsMax={LAB_ENV_READINGS_MAX}
     />
   </div>
 </BaseLayout>

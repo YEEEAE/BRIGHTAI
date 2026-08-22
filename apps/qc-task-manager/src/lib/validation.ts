@@ -37,6 +37,9 @@ import {
   LAB_DOCUMENT_CONTENT_MAX,
   LAB_DOCUMENT_DESCRIPTION_MAX,
   LAB_DOCUMENT_TITLE_MAX,
+  LAB_ENV_READING_AT_MAX,
+  LAB_ENV_READING_NOTES_MAX,
+  LAB_ENV_READINGS_MAX,
   LAB_MAINTENANCE_STATUSES,
   LAB_MEASUREMENT_MAX,
   LAB_PART_NAME_MAX,
@@ -1059,6 +1062,37 @@ const samplesField = z.preprocess(
     .refine((rows) => rows !== null, 'Samples payload is invalid.'),
 );
 
+/**
+ * One session environment reading row (PROMPT 51): timestamp + temperature
+ * are the core pair; humidity and a note are optional. Values stay TEXT —
+ * no units or scientific rules invented.
+ */
+export const labEnvironmentReadingRowSchema = z.object({
+  reading_at: optLabText(LAB_ENV_READING_AT_MAX, 'Reading timestamp'),
+  temperature: optLabText(LAB_MEASUREMENT_MAX, 'Reading temperature'),
+  humidity: optLabText(LAB_MEASUREMENT_MAX, 'Reading humidity'),
+  notes: optLabText(LAB_ENV_READING_NOTES_MAX, 'Reading note'),
+});
+
+/** Parse the island's environment_readings_json string into an array (bounded). */
+const environmentReadingsField = z.preprocess(
+  (v) => {
+    if (v === '' || v == null) return [];
+    if (typeof v !== 'string') return v;
+    try {
+      const parsed: unknown = JSON.parse(v);
+      return Array.isArray(parsed) ? parsed : null;
+    } catch {
+      return null;
+    }
+  },
+  z
+    .array(labEnvironmentReadingRowSchema)
+    .max(LAB_ENV_READINGS_MAX, `A test can have at most ${LAB_ENV_READINGS_MAX} environment readings.`)
+    .nullable()
+    .refine((rows) => rows !== null, 'Environment readings payload is invalid.'),
+);
+
 /** Submit-level presence check (fields the printed form marks Required, §11). */
 function labRequired(v: unknown): boolean {
   return v != null && String(v).trim() !== '';
@@ -1108,6 +1142,7 @@ export const labTestFormSchema = z
     angle: optLabText(LAB_SHORT_TEXT_MAX, 'Angle'),
     temperature_measured: optLabText(LAB_MEASUREMENT_MAX, 'Temperature'),
     samples_json: samplesField,
+    environment_readings_json: environmentReadingsField,
     remarks: optLabText(LAB_REMARKS_MAX, 'Remarks'),
     final_result: z.preprocess(
       (v) => (v === '' || v == null ? null : v),
@@ -1119,6 +1154,22 @@ export const labTestFormSchema = z
     ),
   })
   .superRefine((data, ctx) => {
+    // Environment readings (PROMPT 51): a row is either fully empty (ignored)
+    // or complete — a timestamp and a temperature must arrive together. A row
+    // carrying only humidity/notes is an incomplete entry, not a reading.
+    // Applies on EVERY save (draft included): a half-filled reading is a data
+    // entry mistake, not tolerant sparse input like the measured fields.
+    for (const row of data.environment_readings_json ?? []) {
+      const hasCore = row.reading_at != null && row.temperature != null;
+      const hasAny = row.reading_at != null || row.temperature != null || row.humidity != null || row.notes != null;
+      if (hasAny && !hasCore) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Every environment reading needs both a timestamp and a temperature.',
+        });
+        break;
+      }
+    }
     if (data.form_action !== 'submit') return;
     const need = (value: unknown, label: string) => {
       if (!labRequired(value)) {

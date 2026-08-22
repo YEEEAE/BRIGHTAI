@@ -1017,6 +1017,155 @@ try {
     eq(mgrEdit.id, draft2.id, 'edit: manager can edit any DRAFT');
   }
 
+  console.log('\n■ session environment readings (PROMPT 51)');
+  {
+    const review = await import('../src/lib/lab/review.ts');
+    const envOutsiderId = Number(
+      db
+        .prepare("INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active) VALUES ('employee3', 'unused', 'Third Employee', 'employee', 'QC', 0, 1)")
+        .run().lastInsertRowid,
+    );
+    // Draft data WITHOUT readings (baseline for the diff assertions below).
+    const draftData = (overrides = {}) => ({
+      form_action: 'draft',
+      product_description: 'Seal Product',
+      product_id: productId,
+      connector_type: 'Non-locking (Lipid connector)',
+      sample_count: 1,
+      lot_number: 'LOT-ENV-1',
+      sampling_area: 'Bay 5',
+      equipment_id: equipmentId,
+      medium_used: 'Air',
+      actual_pressure: null,
+      torque_in_lb: null,
+      time_sec: null,
+      angle: null,
+      temperature_measured: '23', // headline measured temperature — untouched by the log
+      samples_json: [
+        { sample_no: 1, part_name: null, set_pressure: null, actual_pressure: null, volume_sec: null, pressure_difference: null, holding_time_sec: null, leakage_rate: null, result: null },
+      ],
+      environment_readings_json: [],
+      remarks: null,
+      final_result: null,
+      ...overrides,
+    });
+    const reading = (at, temp, humidity = null, notes = null) => ({ reading_at: at, temperature: temp, humidity, notes });
+
+    const envDraft = tests.createLabTest(
+      draftData({ environment_readings_json: [reading('2026-02-01T08:00', '22.4', '41', 'start of shift')] }),
+      employeeId,
+      'air',
+    );
+    let rows = tests.listLabTestEnvironmentReadings(envDraft.id);
+    eq(rows.length, 1, 'readings: create stores one reading');
+    eq(rows[0].reading_at, '2026-02-01T08:00', 'readings: timestamp stored verbatim');
+    eq(rows[0].temperature, '22.4', 'readings: temperature stored verbatim');
+    eq(rows[0].humidity, '41', 'readings: optional humidity stored');
+    eq(rows[0].notes, 'start of shift', 'readings: optional note stored');
+
+    // Headline field untouched: temperature_measured stays on the record.
+    const envRow = db.prepare('SELECT temperature_measured FROM lab_test_records WHERE id = ?').get(envDraft.id);
+    eq(envRow.temperature_measured, '23', 'readings: headline Temperature (Measured) unchanged');
+
+    // Draft update: add + remove rows wholesale.
+    tests.updateLabTestDraft(
+      { id: employeeId, role: 'employee' },
+      envDraft.id,
+      draftData({
+        environment_readings_json: [
+          reading('2026-02-01T08:00', '22.4', '41'),
+          reading('2026-02-01T09:30', '23.1'),
+          reading('2026-02-01T11:00', '24.0', null, 'pre-submission check'),
+        ],
+      }),
+    );
+    rows = tests.listLabTestEnvironmentReadings(envDraft.id);
+    eq(rows.length, 3, 'readings: draft edit adds rows');
+    ok(rows.some((r) => r.notes === 'pre-submission check'), 'readings: new row content stored');
+    ok(!rows.some((r) => r.notes === 'start of shift'), 'readings: removed row is gone (wholesale replace)');
+
+    // Empty rows are dropped silently; incomplete rows are rejected by the
+    // schema layer (service only receives complete ones — defensive filter).
+    tests.updateLabTestDraft(
+      { id: employeeId, role: 'employee' },
+      envDraft.id,
+      draftData({ environment_readings_json: [reading('', '', '', ''), reading('2026-02-01T12:00', '24.5')] }),
+    );
+    rows = tests.listLabTestEnvironmentReadings(envDraft.id);
+    eq(rows.length, 1, 'readings: fully-empty row dropped, complete row kept');
+
+    // Audit on modification: latest UPDATE diff carries old/new readings.
+    const updAudit = db
+      .prepare("SELECT * FROM qc_audit_log WHERE entity_type = 'LAB_TEST' AND entity_id = ? AND action = 'UPDATE' ORDER BY id DESC LIMIT 1")
+      .get(envDraft.id);
+    ok(updAudit !== undefined, 'readings: LAB_TEST/UPDATE audit written on modification');
+    const oldReadings = JSON.parse(updAudit.old_value).environment_readings;
+    const newReadings = JSON.parse(updAudit.new_value).environment_readings;
+    eq(oldReadings.length, 3, 'readings: audit old_value carries previous rows');
+    eq(newReadings.length, 1, 'readings: audit new_value carries new rows');
+
+    // Employee scope respected: another employee cannot touch this draft.
+    let scopeBlocked = false;
+    try {
+      tests.updateLabTestDraft(
+        { id: envOutsiderId, role: 'employee' },
+        envDraft.id,
+        draftData({ environment_readings_json: [reading('2026-02-01T13:00', '99')] }),
+      );
+    } catch (err) {
+      scopeBlocked = err instanceof tests.LabTestDraftNotFoundError;
+    }
+    ok(scopeBlocked, 'readings: other employee update → LabTestDraftNotFoundError');
+    eq(tests.listLabTestEnvironmentReadings(envDraft.id).length, 1, 'readings: out-of-scope attempt changed nothing');
+
+    // Manager may still edit any DRAFT (same rule as the rest of the form).
+    tests.updateLabTestDraft(
+      { id: managerId, role: 'manager' },
+      envDraft.id,
+      draftData({ environment_readings_json: [reading('2026-02-01T14:00', '25.0', null, 'manager correction')] }),
+    );
+    rows = tests.listLabTestEnvironmentReadings(envDraft.id);
+    eq(rows.length, 1, 'readings: manager can edit any DRAFT');
+    eq(rows[0].created_by, managerId, 'readings: created_by records who logged it');
+
+    // Immutable after approval: submit → approve (manager ≠ tester), then the
+    // structural triggers abort UPDATE and DELETE — even via direct SQL.
+    tests.updateLabTestDraft({ id: managerId, role: 'manager' }, envDraft.id, draftData({
+      form_action: 'submit',
+      final_result: 'PASS',
+      samples_json: [{ sample_no: 1, part_name: null, set_pressure: null, actual_pressure: null, volume_sec: null, pressure_difference: null, holding_time_sec: null, leakage_rate: null, result: 'PASS' }],
+      environment_readings_json: [reading('2026-02-01T14:00', '25.0', null, 'manager correction')],
+    }));
+    review.transitionLabTest({ id: managerId, role: 'manager' }, 'approve', envDraft.id, null);
+
+    const frozenCount = tests.listLabTestEnvironmentReadings(envDraft.id).length;
+    eq(frozenCount, 1, 'readings: approved test keeps its readings');
+
+    let updateBlocked = false;
+    try {
+      db.prepare("UPDATE lab_test_environment_readings SET temperature = '999' WHERE test_id = ?").run(envDraft.id);
+    } catch {
+      updateBlocked = true;
+    }
+    ok(updateBlocked, 'readings: UPDATE after approval aborted (trigger)');
+
+    let deleteBlocked = false;
+    try {
+      db.prepare('DELETE FROM lab_test_environment_readings WHERE test_id = ?').run(envDraft.id);
+    } catch {
+      deleteBlocked = true;
+    }
+    ok(deleteBlocked, 'readings: DELETE after approval aborted (trigger)');
+
+    eq(tests.listLabTestEnvironmentReadings(envDraft.id)[0].temperature, '25.0', 'readings: values intact after blocked mutations');
+
+    // loadLabTestView exposes the readings to detail/print (scope-gated loader).
+    const viewWith = tests.loadLabTestView(envDraft.id, true);
+    eq(viewWith.environmentReadings.length, 1, 'readings: loadLabTestView returns rows');
+    const viewWithout = tests.loadLabTestView(envDraft.id, false);
+    eq(viewWithout.environmentReadings.length, 0, 'readings: out-of-scope loader returns none');
+  }
+
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) {
     console.error(failures.map((f) => `  - ${f}`).join('\n'));

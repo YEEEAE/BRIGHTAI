@@ -77,6 +77,19 @@ export const LAB_MEASUREMENT_MAX = 50;
 /** Sample Part Name. */
 export const LAB_PART_NAME_MAX = 200;
 
+// ── Session environment readings (PROMPT 51) ────────────────────────────────
+
+/**
+ * Bounded readings log per test — supplementary observations only, never a
+ * replacement for the headline temperature_measured field. The bound mirrors
+ * the sample-grid ceiling: no arbitrary row growth.
+ */
+export const LAB_ENV_READINGS_MAX = 20;
+/** Timestamp cell length (datetime-local values are well under this). */
+export const LAB_ENV_READING_AT_MAX = 40;
+/** Free-text note per reading. */
+export const LAB_ENV_READING_NOTES_MAX = 2000;
+
 // ── Maintenance event policy (/lab/equipment/[id]/maintenance) ──────────────
 
 /**

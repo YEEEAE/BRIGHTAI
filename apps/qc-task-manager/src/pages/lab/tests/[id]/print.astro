@@ -166,6 +166,38 @@ const sampleQrs = record
         </dl>
       </section>
 
+      {/* Session environment readings (PROMPT 51) — supplementary log; printed
+          only when readings exist. */}
+      {view.environmentReadings.length > 0 && (
+        <section class="print-section">
+          <h2 class="print-section-title">4a · Session Environment Readings</h2>
+          <div class="print-section-body">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Timestamp</th>
+                  <th scope="col">Temperature</th>
+                  <th scope="col">Humidity</th>
+                  <th scope="col">Notes</th>
+                  <th scope="col">Logged By</th>
+                </tr>
+              </thead>
+              <tbody>
+                {view.environmentReadings.map((r) => (
+                  <tr>
+                    <td>{r.reading_at}</td>
+                    <td>{r.temperature}</td>
+                    <td>{r.humidity ?? '—'}</td>
+                    <td>{r.notes ?? '—'}</td>
+                    <td>{r.created_by_name ?? '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
       {/* Test Parameters */}
       <section class="print-section">
         <h2 class="print-section-title">5 · Test Parameters</h2>

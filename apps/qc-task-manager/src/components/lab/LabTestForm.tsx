@@ -49,6 +49,8 @@ export interface LabTestInitialValues {
   final_result: string | null;
   template_version_id: number | null;
   samples: Array<Omit<SampleRow, 'sample_no'> & { sample_no: number }>;
+  /** Supplementary session environment readings (PROMPT 51). */
+  environmentReadings: Array<{ reading_at: string; temperature: string; humidity: string; notes: string }>;
 }
 
 interface Props {
@@ -100,6 +102,8 @@ interface Props {
   sampleCountMin: number;
   sampleCountMax: number;
   sampleCountDefault: number;
+  /** Bound on the supplementary environment readings list (PROMPT 51). */
+  envReadingsMax: number;
 }
 
 interface SampleRow {
@@ -112,6 +116,14 @@ interface SampleRow {
   holding_time_sec: string;
   leakage_rate: string;
   result: '' | 'PASS' | 'FAIL' | 'HOLD';
+}
+
+/** One session environment reading row (PROMPT 51) — all cells free text. */
+interface ReadingRow {
+  reading_at: string;
+  temperature: string;
+  humidity: string;
+  notes: string;
 }
 
 interface Errors {
@@ -154,6 +166,10 @@ function isRowEmpty(row: SampleRow): boolean {
   );
 }
 
+function isReadingEmpty(row: ReadingRow): boolean {
+  return !row.reading_at.trim() && !row.temperature.trim() && !row.humidity.trim() && !row.notes.trim();
+}
+
 const SAMPLE_COLUMNS: Array<{ key: keyof Omit<SampleRow, 'sample_no' | 'result'>; label: string }> = [
   { key: 'part_name', label: 'Part Name' },
   { key: 'set_pressure', label: 'Set Pressure (in./Hg)' },
@@ -180,16 +196,23 @@ export default function LabTestForm({
   sampleCountMin,
   sampleCountMax,
   sampleCountDefault,
+  envReadingsMax,
 }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const actionRef = useRef<HTMLInputElement>(null);
   const samplesJsonRef = useRef<HTMLInputElement>(null);
+  const readingsJsonRef = useRef<HTMLInputElement>(null);
   const dirtyRef = useRef(false);
 
   const [formAction, setFormAction] = useState<'draft' | 'continue' | 'submit'>('draft');
   const [sampleCount, setSampleCount] = useState<number>(sampleCountDefault);
   const [samples, setSamples] = useState<SampleRow[]>(() =>
     Array.from({ length: sampleCountDefault }, (_, i) => emptyRow(i + 1)),
+  );
+  // Session environment readings (PROMPT 51): supplementary log, draft-stage
+  // only. The headline temperature_measured field stays untouched.
+  const [readings, setReadings] = useState<ReadingRow[]>(
+    () => initial?.environmentReadings?.map((r) => ({ ...r })) ?? [],
   );
   const [errors, setErrors] = useState<Errors>({});
   const [dirty, setDirty] = useState(false);
@@ -289,6 +312,25 @@ export default function LabTestForm({
 
   function updateSampleField(index: number, field: keyof SampleRow, value: string) {
     setSamples((prev) => prev.map((row, i) => (i === index ? { ...row, [field]: value } : row)));
+    markDirty();
+  }
+
+  // Environment readings log (PROMPT 51): accessible dynamic list — every
+  // control is a native input/button (keyboard operable), labels are explicit,
+  // and the remove button carries a visible 44px touch target.
+  function updateReadingField(index: number, field: keyof ReadingRow, value: string) {
+    setReadings((prev) => prev.map((row, i) => (i === index ? { ...row, [field]: value } : row)));
+    markDirty();
+  }
+
+  function addReading() {
+    if (readings.length >= envReadingsMax) return;
+    setReadings((prev) => [...prev, { reading_at: '', temperature: '', humidity: '', notes: '' }]);
+    markDirty();
+  }
+
+  function removeReading(index: number) {
+    setReadings((prev) => prev.filter((_, i) => i !== index));
     markDirty();
   }
 
@@ -403,6 +445,11 @@ export default function LabTestForm({
         samples.slice(0, sampleCount).map((row) => ({ ...row, sample_no: row.sample_no })),
       );
     }
+    if (readingsJsonRef.current) {
+      // Fully-empty rows are dropped; partially-filled rows are sent so the
+      // server's completeness rule can flag them.
+      readingsJsonRef.current.value = JSON.stringify(readings.filter((r) => !isReadingEmpty(r)));
+    }
     // Keep the sample grid in sync with the count for the server (rows are
     // derived from sample_count — the server also re-checks the match).
     formRef.current?.submit();
@@ -422,6 +469,7 @@ export default function LabTestForm({
     <form ref={formRef} action={testId ? `/lab/tests/${testId}/edit` : `/lab/tests/new?type=${testType}`} method="POST" noValidate>
       <input ref={actionRef} type="hidden" name="form_action" value={formAction} />
       <input ref={samplesJsonRef} type="hidden" name="samples_json" value="" />
+      <input ref={readingsJsonRef} type="hidden" name="environment_readings_json" value="" />
       <input type="hidden" name="template_version_id" value={templateVersionId ?? ''} />
 
       {testNumber && (
@@ -724,6 +772,96 @@ export default function LabTestForm({
             <label htmlFor="temperature_measured" className={labelCls}>Temperature (Measured)</label>
             <input id="temperature_measured" name="temperature_measured" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
             <p className="mt-1 text-xs text-slate-500">Measured value only — no conversion is applied.</p>
+          </div>
+
+          {/* Supplementary session environment readings (PROMPT 51). This log
+              NEVER replaces or reinterprets the headline Temperature
+              (Measured) field above — it records extra timestamped
+              observations taken during the session, draft-stage only. */}
+          <div className="mt-6 border-t border-slate-100 pt-5">
+            <h3 className="text-sm font-semibold text-slate-900">Session Environment Readings <span className="font-normal text-slate-500">(optional)</span></h3>
+            <p className="mt-1 text-xs text-slate-500">
+              Timestamped readings taken during the test session. Editable while this test is a draft;
+              frozen once it is approved.
+            </p>
+            {readings.length > 0 && (
+              <ul className="mt-3 space-y-3">
+                {readings.map((row, index) => (
+                  <li key={index} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                      <div>
+                        <label htmlFor={`reading_${index}_at`} className={labelCls}>
+                          Timestamp <span aria-hidden="true">*</span>
+                        </label>
+                        <input
+                          id={`reading_${index}_at`}
+                          type="datetime-local"
+                          maxLength={40}
+                          value={row.reading_at}
+                          onChange={(e) => updateReadingField(index, 'reading_at', e.target.value)}
+                          className={`mt-1 ${inputCls}`}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor={`reading_${index}_temperature`} className={labelCls}>
+                          Temperature <span aria-hidden="true">*</span>
+                        </label>
+                        <input
+                          id={`reading_${index}_temperature`}
+                          type="text"
+                          inputMode="decimal"
+                          maxLength={50}
+                          value={row.temperature}
+                          onChange={(e) => updateReadingField(index, 'temperature', e.target.value)}
+                          className={`mt-1 ${inputCls}`}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor={`reading_${index}_humidity`} className={labelCls}>Humidity</label>
+                        <input
+                          id={`reading_${index}_humidity`}
+                          type="text"
+                          inputMode="decimal"
+                          maxLength={50}
+                          value={row.humidity}
+                          onChange={(e) => updateReadingField(index, 'humidity', e.target.value)}
+                          className={`mt-1 ${inputCls}`}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor={`reading_${index}_notes`} className={labelCls}>Notes</label>
+                        <input
+                          id={`reading_${index}_notes`}
+                          type="text"
+                          maxLength={2000}
+                          value={row.notes}
+                          onChange={(e) => updateReadingField(index, 'notes', e.target.value)}
+                          className={`mt-1 ${inputCls}`}
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeReading(index)}
+                      className="mt-3 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-medium text-red-700 shadow-sm hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                    >
+                      Remove reading {index + 1}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {readings.length >= envReadingsMax ? (
+              <p className="mt-3 text-xs font-medium text-slate-500">Maximum of {envReadingsMax} readings reached.</p>
+            ) : (
+              <button
+                type="button"
+                onClick={addReading}
+                className="mt-3 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-brand-300 bg-white px-4 py-2.5 text-sm font-medium text-brand-700 shadow-sm hover:bg-brand-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+              >
+                Add reading
+              </button>
+            )}
           </div>
         </section>
 

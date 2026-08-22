@@ -31,7 +31,7 @@
 - [✅] Prompt 48 — Sample QR Codes
 - [✅] Prompt 49 — Smarter Unified Search
 - [✅] Prompt 50 — Arabic PDF Reports
-- [ ] Prompt 51 — Session Environmental Readings
+- [✅] Prompt 51 — Session Environmental Readings
 - [ ] Prompt 52 — Live Criteria Side-by-Side Display
 - [ ] Prompt 53 — Product FAIL Trend Analytics
 - [ ] Prompt 54 — Electronic Signature on Approvals
@@ -523,7 +523,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 The test form captures Temperature (Measured) once. Extend to a session

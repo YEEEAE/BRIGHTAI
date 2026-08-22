@@ -182,6 +182,13 @@ export interface LabTestFormData {
     leakage_rate: string | null;
     result: 'PASS' | 'FAIL' | 'HOLD' | null;
   }> | null;
+  /** Supplementary session environment readings (PROMPT 51) — optional. */
+  environment_readings_json: Array<{
+    reading_at: string | null;
+    temperature: string | null;
+    humidity: string | null;
+    notes: string | null;
+  }> | null;
   remarks: string | null;
   final_result: 'PASS' | 'FAIL' | 'HOLD' | null;
 }
@@ -287,7 +294,26 @@ export function createLabTest(
       );
     }
 
-    auditLabTest(id, actorId, 'CREATE', `test_type=${testType}; status=${submit ? 'SUBMITTED' : 'DRAFT'}; samples=${data.sample_count}`);
+    // Supplementary environment readings (PROMPT 51): only complete rows are
+    // stored; fully-empty rows from the island are dropped silently.
+    const readings = (data.environment_readings_json ?? []).filter(isValidEnvironmentReading);
+    if (readings.length > 0) {
+      const insertReading = db.prepare(
+        `INSERT INTO lab_test_environment_readings
+           (test_id, reading_at, temperature, humidity, notes, created_by)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      );
+      for (const r of readings) {
+        insertReading.run(id, r.reading_at, r.temperature, r.humidity, r.notes, actorId);
+      }
+    }
+
+    auditLabTest(
+      id,
+      actorId,
+      'CREATE',
+      `test_type=${testType}; status=${submit ? 'SUBMITTED' : 'DRAFT'}; samples=${data.sample_count}; readings=${readings.length}`,
+    );
     if (submit) {
       auditLabTest(id, actorId, 'SUBMIT', `test_number=${testNumber}; final_result=${data.final_result}`);
     }
@@ -499,6 +525,12 @@ export function updateLabTestDraft(
       product_id: row.product_id ?? null,
       template_id: row.template_id ?? null,
       template_version_id: row.template_version_id ?? null,
+      environment_readings: listLabTestEnvironmentReadings(testId).map((r) => ({
+        reading_at: r.reading_at,
+        temperature: r.temperature,
+        humidity: r.humidity,
+        notes: r.notes,
+      })),
     };
     const newSnapshot: Record<string, unknown> = {
       connector_type: data.connector_type,
@@ -517,11 +549,14 @@ export function updateLabTestDraft(
       product_id: data.product_id,
       template_id: data.template_id ?? null,
       template_version_id: data.template_version_id ?? null,
+      environment_readings: (data.environment_readings_json ?? []).filter(isValidEnvironmentReading),
     };
     const oldDiff: Record<string, unknown> = {};
     const newDiff: Record<string, unknown> = {};
     for (const key of Object.keys(oldSnapshot)) {
-      if (String(oldSnapshot[key] ?? '') !== String(newSnapshot[key] ?? '')) {
+      // JSON.stringify comparison (not String()): the environment_readings
+      // value is an array of rows and must be compared structurally.
+      if (JSON.stringify(oldSnapshot[key] ?? null) !== JSON.stringify(newSnapshot[key] ?? null)) {
         oldDiff[key] = oldSnapshot[key];
         newDiff[key] = newSnapshot[key];
       }
@@ -589,12 +624,28 @@ export function updateLabTestDraft(
       );
     }
 
+    // Replace the environment readings wholesale (PROMPT 51) — same pattern as
+    // the sample grid. DRAFT-only is already guaranteed above; the structural
+    // triggers freeze these rows once the test reaches APPROVED/VOID.
+    db.prepare('DELETE FROM lab_test_environment_readings WHERE test_id = ?').run(testId);
+    const newReadings = (data.environment_readings_json ?? []).filter(isValidEnvironmentReading);
+    if (newReadings.length > 0) {
+      const insertReading = db.prepare(
+        `INSERT INTO lab_test_environment_readings
+           (test_id, reading_at, temperature, humidity, notes, created_by)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      );
+      for (const r of newReadings) {
+        insertReading.run(testId, r.reading_at, r.temperature, r.humidity, r.notes, user.id);
+      }
+    }
+
     if (Object.keys(oldDiff).length > 0 || rows.length > 0) {
       auditLabTest(
         testId,
         user.id,
         'UPDATE',
-        `edited draft ${testNumber}; samples=${data.sample_count}`,
+        `edited draft ${testNumber}; samples=${data.sample_count}; readings=${newReadings.length}`,
         JSON.stringify(oldDiff),
         JSON.stringify(newDiff),
       );
@@ -685,6 +736,43 @@ export function listLabTestSamples(testId: number): LabTestSample[] {
   return getDb()
     .prepare('SELECT * FROM lab_test_samples WHERE test_id = ? ORDER BY sample_no ASC')
     .all(testId) as LabTestSample[];
+}
+
+/**
+ * A readings row is stored only when BOTH core cells are non-blank. Empty
+ * strings (not just null) count as absent — the island sends fully-empty rows
+ * as ''-filled objects before the Zod layer normalizes them.
+ */
+function isValidEnvironmentReading(r: { reading_at: unknown; temperature: unknown }): boolean {
+  const at = r.reading_at == null ? '' : String(r.reading_at).trim();
+  const temperature = r.temperature == null ? '' : String(r.temperature).trim();
+  return at !== '' && temperature !== '';
+}
+
+/** One supplementary session environment reading (PROMPT 51). */
+export interface LabTestEnvironmentReading {
+  id: number;
+  test_id: number;
+  reading_at: string;
+  temperature: string;
+  humidity: string | null;
+  notes: string | null;
+  created_by: number;
+  created_by_name?: string | null;
+  created_at: string;
+}
+
+/** Environment readings of a test, oldest first. */
+export function listLabTestEnvironmentReadings(testId: number): LabTestEnvironmentReading[] {
+  return getDb()
+    .prepare(
+      `SELECT r.*, u.full_name AS created_by_name
+       FROM lab_test_environment_readings r
+       LEFT JOIN users u ON u.id = r.created_by
+       WHERE r.test_id = ?
+       ORDER BY r.reading_at ASC, r.id ASC`,
+    )
+    .all(testId) as LabTestEnvironmentReading[];
 }
 
 /** Full detail row for the read-only test record page (PROMPT 06 /lab/tests/[id]). */
@@ -796,6 +884,7 @@ export function getLabTestRelatedQualityEntities(testId: number): Record<string,
 export interface LabTestView {
   record: Record<string, unknown> | null;
   samples: LabTestSample[];
+  environmentReadings: LabTestEnvironmentReading[];
   equipmentSnapshot: Record<string, unknown> | null;
   documentSnapshots: Record<string, unknown>[];
   productSnapshot: Record<string, unknown> | null;
@@ -831,6 +920,7 @@ export function loadLabTestView(id: number, allowed: boolean): LabTestView {
     return {
       record: null,
       samples: [],
+      environmentReadings: [],
       equipmentSnapshot: null,
       documentSnapshots: [],
       productSnapshot: null,
@@ -847,6 +937,7 @@ export function loadLabTestView(id: number, allowed: boolean): LabTestView {
     return {
       record: null,
       samples: [],
+      environmentReadings: [],
       equipmentSnapshot: null,
       documentSnapshots: [],
       productSnapshot: null,
@@ -861,6 +952,7 @@ export function loadLabTestView(id: number, allowed: boolean): LabTestView {
   return {
     record,
     samples: listLabTestSamples(id),
+    environmentReadings: listLabTestEnvironmentReadings(id),
     equipmentSnapshot: getLabTestEquipmentSnapshot(id) ?? null,
     documentSnapshots: getLabTestDocumentSnapshots(id),
     productSnapshot: parseJsonObject(record.product_snapshot_json),

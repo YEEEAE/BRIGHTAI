@@ -56,6 +56,7 @@ import notificationsEntityHrefSql from '../../db/migrations/022_notifications_en
 import labDocumentsApprovalMetadataSql from '../../db/migrations/023_lab_documents_approval_metadata.sql?raw';
 import labRegisterPerformanceIndexesSql from '../../db/migrations/024_lab_register_performance_indexes.sql?raw';
 import notificationDedupeKeySql from '../../db/migrations/025_notification_dedupe_key.sql?raw';
+import labTestEnvironmentReadingsSql from '../../db/migrations/026_lab_test_environment_readings.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -127,6 +128,7 @@ const REQUIRED_TABLES = [
   'lab_test_samples',
   'lab_test_retests',
   'lab_test_findings',
+  'lab_test_environment_readings',
   'lab_test_equipment_snapshots',
   'lab_test_document_snapshots',
   'lab_documents',
@@ -208,6 +210,7 @@ const REQUIRED_INDEXES = [
   'idx_lab_retests_new',
   'idx_lab_test_findings_test',
   'idx_lab_test_findings_finding',
+  'idx_lab_test_env_readings_test',
   'idx_lab_documents_code',
   'idx_lab_documents_type_status',
   'idx_lab_documents_review_due',
@@ -303,6 +306,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '023_lab_documents_approval_metadata.sql', source: labDocumentsApprovalMetadataSql },
       { file: '024_lab_register_performance_indexes.sql', source: labRegisterPerformanceIndexesSql },
       { file: '025_notification_dedupe_key.sql', source: notificationDedupeKeySql },
+      { file: '026_lab_test_environment_readings.sql', source: labTestEnvironmentReadingsSql },
     ],
   });
   backfillAuditChain(db);

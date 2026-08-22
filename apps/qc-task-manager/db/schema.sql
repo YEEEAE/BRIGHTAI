@@ -621,6 +621,34 @@ CREATE TABLE IF NOT EXISTS lab_test_equipment_snapshots (
   calibration_state TEXT, calibration_reference TEXT,
   captured_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Session environmental readings log (PROMPT 026 / prompt5 PROMPT 51):
+-- supplementary timestamped observations; frozen after test approval/void.
+CREATE TABLE IF NOT EXISTS lab_test_environment_readings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  test_id INTEGER NOT NULL REFERENCES lab_test_records(id) ON DELETE RESTRICT,
+  reading_at TEXT NOT NULL,
+  temperature TEXT NOT NULL,
+  humidity TEXT,
+  notes TEXT,
+  created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TRIGGER IF NOT EXISTS lab_env_reading_frozen_after_approval_update
+BEFORE UPDATE ON lab_test_environment_readings
+WHEN EXISTS (SELECT 1 FROM lab_test_records t
+             WHERE t.id = OLD.test_id AND t.status IN ('APPROVED','VOID'))
+BEGIN
+  SELECT RAISE(ABORT, 'lab_test_environment_readings rows are frozen after test approval');
+END;
+CREATE TRIGGER IF NOT EXISTS lab_env_reading_frozen_after_approval_delete
+BEFORE DELETE ON lab_test_environment_readings
+WHEN EXISTS (SELECT 1 FROM lab_test_records t
+             WHERE t.id = OLD.test_id AND t.status IN ('APPROVED','VOID'))
+BEGIN
+  SELECT RAISE(ABORT, 'lab_test_environment_readings rows are frozen after test approval');
+END;
+
 CREATE TABLE IF NOT EXISTS lab_test_document_snapshots (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   test_id INTEGER NOT NULL REFERENCES lab_test_records(id) ON DELETE CASCADE,
@@ -716,6 +744,7 @@ CREATE INDEX IF NOT EXISTS idx_lab_retests_original ON lab_test_retests(original
 CREATE INDEX IF NOT EXISTS idx_lab_retests_new ON lab_test_retests(new_test_id);
 CREATE INDEX IF NOT EXISTS idx_lab_test_findings_test ON lab_test_findings(test_id);
 CREATE INDEX IF NOT EXISTS idx_lab_test_findings_finding ON lab_test_findings(finding_id);
+CREATE INDEX IF NOT EXISTS idx_lab_test_env_readings_test ON lab_test_environment_readings(test_id);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_code ON lab_documents(code);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_type_status ON lab_documents(type, status);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_review_due ON lab_documents(review_due_date);
