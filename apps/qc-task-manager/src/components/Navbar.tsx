@@ -191,11 +191,14 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
             QC Task Manager
           </a>
           {links.length > 0 && (
-            // Role links live in the header only at lg+ (1024px). Between 640px
-            // and 1023px the full desktop cluster (links + username + sign out)
-            // overflows the viewport, so everything below lg collapses into the
-            // mobile menu (see the toggle + #mobile-menu below).
-            <ul className="hidden items-center gap-4 lg:flex">
+            // Role links live in the header only at xl+ (1280px). Between 640px
+            // and 1279px the full desktop cluster (links + username + sign out)
+            // overflows the viewport — at lg (1024) even the role links alone
+            // fill the content box, so everything below xl collapses into the
+            // mobile menu (see the toggle + #mobile-menu below). The mobile
+            // menu stays in the DOM at every width so the Laboratory link is
+            // always present for assistive tech; it is just hidden by CSS.
+            <ul className="hidden items-center gap-4 xl:flex">
               {links.map((l) => (
                 <li key={l.href}>
                   <a
@@ -311,7 +314,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                 )}
               </div>
 
-              <span className="hidden text-sm text-slate-600 lg:inline">
+              <span className="hidden text-sm text-slate-600 xl:inline">
                 <span className="font-medium text-slate-900">{user.fullName}</span>
                 {/* WCAG AA: slate-500 on slate-100 is 4.34:1 at text-xs —
                     slate-600 raises it to 6.92:1 (normal text threshold). */}
@@ -322,7 +325,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
               {/* Sign out is header-only at lg+; below lg it moves into the
                   mobile menu (keeps the right-side cluster small enough that
                   document scroll width never exceeds the viewport at 768px). */}
-              <form action="/logout" method="POST" className="hidden lg:block">
+              <form action="/logout" method="POST" className="hidden xl:block">
                 <button
                   type="submit"
                   className="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700"
@@ -345,10 +348,10 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
               ref={menuButtonRef}
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="rounded-md p-2 text-slate-600 hover:bg-slate-100 lg:hidden"
+              className="rounded-md p-2 text-slate-600 hover:bg-slate-100 xl:hidden"
               aria-label="Toggle navigation"
               aria-expanded={menuOpen}
-              aria-controls={menuOpen ? 'mobile-menu' : undefined}
+              aria-controls="mobile-menu"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 6h16M4 12h16M4 18h16" />
@@ -358,8 +361,16 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
         </div>
       </nav>
 
-      {menuOpen && links.length > 0 && (
-        <ul id="mobile-menu" className="border-t border-slate-200 bg-white px-4 py-2 lg:hidden">
+      {links.length > 0 && (
+        <ul
+          id="mobile-menu"
+          aria-hidden={!menuOpen}
+          className={
+            menuOpen
+              ? 'border-t border-slate-200 bg-white px-4 py-2 xl:hidden'
+              : 'hidden border-t border-slate-200 bg-white px-4 py-2 xl:hidden'
+          }
+        >
           {links.map((l) => (
             <li key={l.href}>
               <a

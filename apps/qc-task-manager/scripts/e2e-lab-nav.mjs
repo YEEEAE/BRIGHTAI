@@ -197,8 +197,8 @@ for (const roleCase of roleCases) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: BASE },
     maxRedirects: 0,
   });
-  ok([403, 404, 405, 500].includes(forged.status) || forged.status === 303 || forged.status === 302,
-    `forged POST payload does not produce an authorized page effect (status ${forged.status})`);
+  ok([403, 404, 405, 500].includes(forged.status()) || forged.status() === 303 || forged.status() === 302,
+    `forged POST payload does not produce an authorized page effect (status ${forged.status()})`);
   await page.close();
 }
 

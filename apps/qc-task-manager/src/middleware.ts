@@ -315,6 +315,21 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   }
 
   // /employee/* — any authenticated role may view the employee view.
+  //
+  // Unhandled unsafe methods on HTML (.astro) pages must be rejected: Astro's
+  // static .astro pages render with 200 for any method even when only GET is
+  // supported, and every state-changing .astro form POST is short-circuited
+  // above. Endpoint pages (src/pages/**/*.ts|tsx — e.g. /logout, /api/*, */api)
+  // dispatch their own method handlers through next(), so we let those through
+  // and Astro enforces the method itself (405 when no matching export exists).
+  const UNSAFE_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+  const ENDPOINT_PAGE_PATHS = new Set(['/logout', '/admin/templates/api', '/admin/users/api', '/manager/requests/api']);
+  if (UNSAFE_METHODS.has(context.request.method) && !pathname.startsWith('/api/') && !ENDPOINT_PAGE_PATHS.has(pathname)) {
+    return new Response('Method Not Allowed', {
+      status: 405,
+      headers: { Allow: 'GET, HEAD', 'Content-Type': 'text/plain; charset=utf-8' },
+    });
+  }
   return next();
 }
 
