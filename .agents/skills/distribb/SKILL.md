@@ -1,8 +1,13 @@
 ---
 name: distribb
 description: Distribb is an SEO platform that handles keyword research, original data research, content publishing to WordPress/Webflow/Shopify, high-DR backlink exchange network, link building outreach playbooks, internal linking, social media repurposing, Google Business Profile management (live reviews, public review replies, Google posts), and Microworkers campaign management. Use this skill when the user wants to create SEO-optimized articles, find keywords, get real backlinks from other businesses, run link building or backlink outreach campaigns, publish to their CMS, manage their content calendar, manage their Google Business Profile and its reviews, or manage Microworkers campaigns.
-homepage: https://distribb.io
-metadata: {"clawdbot":{"emoji":"🔍","requires":{"env":["DISTRIBB_API_KEY"]}}}
+metadata:
+  homepage: https://distribb.io
+  clawdbot:
+    emoji: "🔍"
+    requires:
+      env:
+        - DISTRIBB_API_KEY
 ---
 
 ## FIRST TIME READING THIS SKILL? STOP. WALK THE USER THROUGH THIS BEFORE ANYTHING ELSE.

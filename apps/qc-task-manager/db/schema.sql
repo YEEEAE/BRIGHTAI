@@ -377,7 +377,7 @@ CREATE TABLE IF NOT EXISTS qc_audit_log (
   -- Extended by migration 011 (guarded row-preserving rebuild) so laboratory
   -- entities/actions share the SAME audit system. Legacy FINDING/RCA/CAPA/
   -- EVIDENCE rows are preserved verbatim.
-  entity_type TEXT NOT NULL CHECK (entity_type IN ('FINDING','RCA','CAPA','EVIDENCE','LAB_TEST','LAB_RETEST','LAB_PRODUCT','LAB_TEMPLATE','LAB_EQUIPMENT','LAB_EQUIPMENT_MAINTENANCE','LAB_EQUIPMENT_CALIBRATION','LAB_DOCUMENT','LAB_DOCUMENT_VERSION')),
+  entity_type TEXT NOT NULL CHECK (entity_type IN ('FINDING','RCA','CAPA','EVIDENCE','LAB_TEST','LAB_RETEST','LAB_PRODUCT','LAB_TEMPLATE','LAB_EQUIPMENT','LAB_EQUIPMENT_MAINTENANCE','LAB_EQUIPMENT_CALIBRATION','LAB_DOCUMENT','LAB_DOCUMENT_VERSION','LAB_CHANGE_REQUEST')),
   entity_id INTEGER NOT NULL, task_id INTEGER REFERENCES tasks(id) ON DELETE CASCADE,
   actor_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   action TEXT NOT NULL CHECK (action IN ('CREATE','UPDATE','STATUS_TRANSITION','APPROVAL','REJECTION','CLOSURE','REOPEN','SUBMIT','REQUEST_CHANGES','VOID','SUPERSEDE','ACKNOWLEDGE','LINK','UNLINK','VERSION')),
@@ -719,6 +719,23 @@ CREATE TABLE IF NOT EXISTS lab_saved_views (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS lab_change_requests (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  entity_type TEXT NOT NULL CHECK (entity_type IN ('EQUIPMENT','PRODUCT','CALIBRATION','RETEST_REQUEST')),
+  operation TEXT NOT NULL CHECK (operation IN ('CREATE','UPDATE')),
+  entity_id INTEGER,
+  base_updated_at TEXT,
+  base_snapshot_json TEXT,
+  proposed_snapshot_json TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING','APPROVED','REJECTED')),
+  requested_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  reviewed_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  review_note TEXT,
+  applied_entity_id INTEGER,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  reviewed_at TEXT
+);
+
 CREATE INDEX IF NOT EXISTS idx_lab_products_code ON lab_products(code);
 CREATE INDEX IF NOT EXISTS idx_lab_products_active ON lab_products(is_active);
 CREATE INDEX IF NOT EXISTS idx_lab_product_equipment_equipment ON lab_product_equipment(equipment_id);
@@ -766,3 +783,6 @@ CREATE INDEX IF NOT EXISTS idx_lab_doc_ack_assigned_at ON lab_document_acknowled
 CREATE INDEX IF NOT EXISTS idx_lab_documents_owner ON lab_documents(owner_id);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_product ON lab_documents(product_id);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_updated_at ON lab_documents(updated_at);
+CREATE INDEX IF NOT EXISTS idx_lab_change_requests_status_created ON lab_change_requests(status, created_at);
+CREATE INDEX IF NOT EXISTS idx_lab_change_requests_requester_status ON lab_change_requests(requested_by, status);
+CREATE INDEX IF NOT EXISTS idx_lab_change_requests_target ON lab_change_requests(entity_type, entity_id, status);

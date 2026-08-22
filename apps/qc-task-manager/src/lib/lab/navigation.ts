@@ -25,6 +25,7 @@ import {
   canViewLabManagementDashboard,
   canViewLabReports,
   canViewLabAudit,
+  canViewOwnLabChangeRequests,
 } from '../permissions';
 import type { Role } from '../types';
 
@@ -61,6 +62,7 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
   { href: '/lab/saved-views', label: 'Saved Views', group: 'Overview', allowed: canViewLab },
   { href: '/lab/calendar', label: 'Calendar', group: 'Overview', allowed: canViewLab },
   { href: '/lab/notifications', label: 'Notifications', group: 'Overview', allowed: canViewLab },
+  { href: '/lab/change-requests', label: 'Change Requests', group: 'Operations', allowed: canViewOwnLabChangeRequests },
   // Testing
   { href: '/lab/tests', label: 'Tests', group: 'Testing', allowed: canViewLab },
   { href: '/lab/tests/new', label: 'New Test', group: 'Testing', allowed: canCreateLabTest },
@@ -126,6 +128,9 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/calendar',
   '/lab/notifications',
   '/lab/data-quality',
+  '/lab/change-requests',
+  '/lab/change-requests/new',
+  '/lab/change-requests/[id]',
 ];
 
 /**

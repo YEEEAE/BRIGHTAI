@@ -27,7 +27,8 @@ export type LabAuditEntity =
   | 'LAB_EQUIPMENT_MAINTENANCE'
   | 'LAB_EQUIPMENT_CALIBRATION'
   | 'LAB_DOCUMENT'
-  | 'LAB_DOCUMENT_VERSION';
+  | 'LAB_DOCUMENT_VERSION'
+  | 'LAB_CHANGE_REQUEST';
 
 export const LAB_AUDIT_ENTITIES: readonly LabAuditEntity[] = [
   'LAB_TEST',
@@ -39,6 +40,7 @@ export const LAB_AUDIT_ENTITIES: readonly LabAuditEntity[] = [
   'LAB_EQUIPMENT_CALIBRATION',
   'LAB_DOCUMENT',
   'LAB_DOCUMENT_VERSION',
+  'LAB_CHANGE_REQUEST',
 ];
 
 /** Actions allowed by the extended qc_audit_log CHECK (migration 011). */
@@ -71,6 +73,7 @@ export const LAB_AUDIT_ENTITY_LABELS: Record<LabAuditEntity, string> = {
   LAB_EQUIPMENT_CALIBRATION: 'Calibration',
   LAB_DOCUMENT: 'Document',
   LAB_DOCUMENT_VERSION: 'Document version',
+  LAB_CHANGE_REQUEST: 'Change request',
 };
 
 /** Sentence verb per audit action — powers the readable "what" phrase. */
@@ -206,6 +209,8 @@ export function labAuditHref(entityType: LabAuditEntity, entityId: number): stri
       return `/lab/calibration/${entityId}`;
     case 'LAB_DOCUMENT':
       return `/lab/documents/${entityId}/edit`;
+    case 'LAB_CHANGE_REQUEST':
+      return `/lab/change-requests/${entityId}`;
     // Maintenance and document versions have no record-scoped route — the
     // owning module pages list them per parent entity.
     default:
@@ -244,6 +249,7 @@ const RECORD_LABEL_SQL = `
     WHEN 'LAB_DOCUMENT_VERSION' THEN (
       SELECT d.code || ' v' || v.version FROM lab_document_versions v JOIN lab_documents d ON d.id = v.document_id
       WHERE v.id = a.entity_id)
+    WHEN 'LAB_CHANGE_REQUEST' THEN ('CR-' || a.entity_id)
   END AS record_label`;
 
 function buildWhere(f: LabAuditTimelineFilters): { where: string; params: unknown[] } {

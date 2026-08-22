@@ -41,6 +41,7 @@ import { handleLabTestFindingLinkPost, handleLabTestFindingUnlinkPost } from './
 import { handleLabDocumentCreatePost, handleLabDocumentEditPost, handleLabDocumentWorkflowPost } from './lib/lab/documents';
 import { handleLabAcknowledgementAssignPost, handleLabAcknowledgementPost } from './lib/lab/acknowledgements';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
+import { handleLabChangeRequestSubmitPost, handleLabChangeRequestReviewPost } from './lib/lab/changeRequests';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
 
@@ -249,6 +250,14 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   // re-checks the supervisor+ create permission + CSRF + shared Zod validation.
   if (context.request.method === 'POST' && pathname === '/lab/retests/new') {
     return handleLabRetestCreatePost(context);
+  }
+
+  if (context.request.method === 'POST' && pathname === '/lab/change-requests/new') {
+    return handleLabChangeRequestSubmitPost(context);
+  }
+  if (context.request.method === 'POST') {
+    const changeReview = pathname.match(/^\/lab\/change-requests\/(\d+)\/(approve|reject)$/);
+    if (changeReview) return handleLabChangeRequestReviewPost(context, Number(changeReview[1]));
   }
 
   // POST /lab/tests/[id]/links + /lab/tests/[id]/links/unlink — lab test ↔ QC

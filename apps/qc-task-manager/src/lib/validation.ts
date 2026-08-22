@@ -414,6 +414,21 @@ export const labTestVoidSchema = z.object({
   ),
 });
 
+/** Review action for the laboratory contributor change queue. */
+export const labChangeRequestReviewSchema = z
+  .object({
+    action: z.enum(['approve', 'reject'], { errorMap: () => ({ message: 'Invalid change request action.' }) }),
+    review_note: z.preprocess(
+      (v) => (v == null ? '' : String(v).trim()),
+      z.string().max(MAX_REASON_LENGTH, `Review note must be ${MAX_REASON_LENGTH} characters or fewer.`),
+    ),
+  })
+  .superRefine((data, ctx) => {
+    if (data.action === 'reject' && data.review_note.length < 3) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['review_note'], message: 'A meaningful review note is required when rejecting a request.' });
+    }
+  });
+
 /**
  * POST /lab/products/new + /lab/products/[id]/edit — Product Master form
  * (PROMPT 08). `equipment_ids` (the "Related Equipment" checkboxes) is NOT

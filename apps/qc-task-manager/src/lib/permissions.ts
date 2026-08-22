@@ -350,6 +350,25 @@ export function canViewLabAudit(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
 }
 
+// ── Laboratory contributor change review queue ───────────────────────────
+// Contributors propose validated master-data changes; only manager/admin can
+// review, and the requester is never allowed to approve their own proposal.
+export function canSubmitLabChangeRequest(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canViewOwnLabChangeRequests(role: Role): boolean {
+  return ALL_ROLES.includes(role);
+}
+export function canReviewLabChangeRequests(role: Role): boolean {
+  return role === 'manager' || role === 'admin';
+}
+export function canApproveLabChangeRequest(
+  user: Pick<User, 'id' | 'role'>,
+  request: Pick<{ requested_by: number }, 'requested_by'>,
+): boolean {
+  return canReviewLabChangeRequests(user.role) && user.id !== request.requested_by;
+}
+
 // ── AI assist (advisory only — AI NEVER decides PASS/FAIL or approves) ──
 export function canUseLabAiAssist(role: Role): boolean {
   return ALL_ROLES.includes(role);
