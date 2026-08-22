@@ -5,6 +5,12 @@ import { parsePositiveId, parseFormData, labReviewActionSchema } from '../../../
 import { canReviewLabTest } from '../../../../../lib/permissions';
 import { transitionLabTest } from '../../../../../lib/lab/review';
 import { LAB_REVIEW_ACTION_LABELS } from '../../../../../lib/lab/review';
+import {
+  ESIGN_FAILURE_MESSAGE_AR,
+  ESIGN_FIELD_NAME,
+  ESIGN_RATE_LIMITED_MESSAGE_AR,
+  requireEsignature,
+} from '../../../../../lib/lab/esignature';
 
 /**
  * POST /api/lab/tests/[id]/review — Review Center actions (PROMPT 07, §26).
@@ -43,7 +49,24 @@ export const POST: APIRoute = async (context) => {
 
   try {
     const { action, reason } = parsed.data;
-    const result = transitionLabTest({ id: auth.id, role: auth.role }, action, id, reason);
+    // E-signature step: test APPROVE is a highest-authority action and requires
+    // re-verifying the current user's password server-side. The session is not
+    // reissued; failures are rate-limited per user and audited without storing
+    // the password anywhere.
+    let esigned = false;
+    if (action === 'approve') {
+      const outcome = requireEsignature(auth.id, form.get(ESIGN_FIELD_NAME)?.toString() ?? null);
+      if (outcome === 'rate_limited') {
+        setFlash(context, 'error', ESIGN_RATE_LIMITED_MESSAGE_AR);
+        return context.redirect('/lab/tests/review');
+      }
+      if (outcome === 'invalid') {
+        setFlash(context, 'error', ESIGN_FAILURE_MESSAGE_AR);
+        return context.redirect('/lab/tests/review');
+      }
+      esigned = true;
+    }
+    const result = transitionLabTest({ id: auth.id, role: auth.role }, action, id, reason, { esigned });
     setFlash(context, 'success', `${result.test_number} · ${LAB_REVIEW_ACTION_LABELS[action]}`);
   } catch (err) {
     setFlash(context, 'error', err instanceof Error ? err.message : 'Could not apply the review action.');

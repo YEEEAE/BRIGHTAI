@@ -39,6 +39,13 @@ import {
 } from '../permissions';
 import type { LabDocument, LabDocumentStatus, LabDocumentType, LabDocumentVersion, Role } from '../types';
 import { renderDocumentContent } from './documentContent';
+import {
+  ESIGN_FAILURE_MESSAGE_AR,
+  ESIGN_FIELD_NAME,
+  ESIGN_RATE_LIMITED_MESSAGE_AR,
+  esignAuditNote,
+  requireEsignature,
+} from './esignature';
 
 // ─────────────────────────────── Policy ───────────────────────────────
 
@@ -1436,8 +1443,21 @@ export async function handleLabDocumentWorkflowPost(context: APIContext, documen
       return context.redirect(`/lab/documents/${documentId}`);
     }
     if (formAction === 'approve') {
+      // E-signature step: document APPROVE is a highest-authority action and
+      // requires re-verifying the current user's password server-side (no
+      // session reissue; failures rate-limited per user + audited without
+      // storing the password anywhere).
+      const outcome = requireEsignature(user.id, form.get(ESIGN_FIELD_NAME)?.toString() ?? null);
+      if (outcome === 'rate_limited') {
+        setFlash(context, 'error', ESIGN_RATE_LIMITED_MESSAGE_AR);
+        return context.redirect(`/lab/documents/${documentId}`);
+      }
+      if (outcome === 'invalid') {
+        setFlash(context, 'error', ESIGN_FAILURE_MESSAGE_AR);
+        return context.redirect(`/lab/documents/${documentId}`);
+      }
       const note = form.get('note') ? String(form.get('note')).trim() : null;
-      approveLabDocument(documentId, { id: user.id, role: user.role }, note);
+      approveLabDocument(documentId, { id: user.id, role: user.role }, esignAuditNote(note));
       setFlash(context, 'success', 'Document version approved.');
       return context.redirect(`/lab/documents/${documentId}`);
     }

@@ -188,6 +188,26 @@ export function verifyCredentials(
   return { status: 'invalid' };
 }
 
+/**
+ * Re-authentication helper for high-authority actions (e-signature step).
+ * Verifies the CURRENT user's password against the stored bcrypt hash with a
+ * constant-time comparison (bcrypt.compareSync). It deliberately does NOT
+ * touch sessions, failed_login_attempts, or login_attempts — the session is
+ * never reissued and login lockout state is unaffected. Unknown ids run a
+ * dummy compare so timing does not reveal whether the id exists.
+ */
+export function verifyPasswordForUser(userId: number, password: string): boolean {
+  const db = getDb();
+  const row = db
+    .prepare('SELECT password_hash FROM users WHERE id = ?')
+    .get(userId) as { password_hash?: unknown } | undefined;
+  if (!row || typeof row.password_hash !== 'string' || row.password_hash.length === 0) {
+    bcrypt.compareSync(password, DUMMY_PASSWORD_HASH);
+    return false;
+  }
+  return bcrypt.compareSync(password, row.password_hash);
+}
+
 /** Create a session row and return the opaque token to store in the cookie. */
 export function createSession(user: User): string {
   const db = getDb();

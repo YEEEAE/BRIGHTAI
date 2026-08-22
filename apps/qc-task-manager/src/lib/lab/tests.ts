@@ -21,6 +21,13 @@ import { canCreateLabTest, canEditLabTestRecord, canVoidLabTest, canVoidLabTestR
 import { createNotification } from '../notifications';
 import { deriveCalibrationState, type LabCalibrationState } from './overview';
 import { labParametersSnapshotJson } from './policy';
+import {
+  ESIGN_FAILURE_MESSAGE_AR,
+  ESIGN_FIELD_NAME,
+  ESIGN_RATE_LIMITED_MESSAGE_AR,
+  esignAuditNote,
+  requireEsignature,
+} from './esignature';
 import { getLabTestFindingLinks, type LabTestFindingLink } from './findingLinks';
 import type { LabTestSample, LabTestStatus, LabTestType, Role } from '../types';
 
@@ -982,6 +989,7 @@ export function voidLabTest(
   user: { id: number; role: Role },
   testId: number,
   reason: string,
+  opts?: { esigned?: boolean },
 ): LabTestVoidResult {
   return transaction(() => {
     const db = getDb();
@@ -1044,8 +1052,16 @@ export function voidLabTest(
       `UPDATE lab_test_records SET status = 'VOID', updated_at = ? WHERE id = ?`,
     ).run(dbNow, testId);
 
-    // Audit transition
-    auditLabTest(testId, user.id, 'VOID', trimmedReason, testAuth.status, 'VOID');
+    // Audit transition — the e-signature marker is appended to the reason;
+    // no secret material is ever recorded in the audit trail.
+    auditLabTest(
+      testId,
+      user.id,
+      'VOID',
+      opts?.esigned ? esignAuditNote(trimmedReason) : trimmedReason,
+      testAuth.status,
+      'VOID',
+    );
 
     // Notify tester and their supervisor(s)
     const testerId = testAuth.tested_by ?? testAuth.created_by;
@@ -1110,7 +1126,19 @@ export async function handleLabTestVoidPost(context: APIContext, testId: number)
   }
 
   try {
-    const result = voidLabTest({ id: user.id, role: user.role }, testId, parsed.data.reason);
+    // E-signature step: VOID is a highest-authority action and requires
+    // re-verifying the current user's password server-side (no session
+    // reissue; failures rate-limited per user + audited without secrets).
+    const outcome = requireEsignature(user.id, form.get(ESIGN_FIELD_NAME)?.toString() ?? null);
+    if (outcome === 'rate_limited') {
+      setFlash(context, 'error', ESIGN_RATE_LIMITED_MESSAGE_AR);
+      return context.redirect(`/lab/tests/${testId}`);
+    }
+    if (outcome === 'invalid') {
+      setFlash(context, 'error', ESIGN_FAILURE_MESSAGE_AR);
+      return context.redirect(`/lab/tests/${testId}`);
+    }
+    const result = voidLabTest({ id: user.id, role: user.role }, testId, parsed.data.reason, { esigned: true });
     setFlash(context, 'success', `Test ${result.test_number} was voided.`);
   } catch (err) {
     setFlash(context, 'error', err instanceof Error ? err.message : 'Could not void this test.');

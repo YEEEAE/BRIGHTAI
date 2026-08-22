@@ -25,6 +25,7 @@ import { getDb, transaction } from '../db';
 import { createNotification, type NotificationKind } from '../notifications';
 import { deriveCalibrationState } from './overview';
 import { completeLabRetestsForApproval } from './retests';
+import { esignAuditNote } from './esignature';
 import { canApproveLabTestRecord, canReviewLabTestRecord } from '../permissions';
 import type { LabFinalResult, LabTestStatus, LabTestType, Role } from '../types';
 
@@ -506,6 +507,7 @@ export function transitionLabTest(
   action: LabReviewAction,
   testId: number,
   reason: string | null,
+  opts?: { esigned?: boolean },
 ): LabReviewTransition {
   return transaction(() => {
     const db = getDb();
@@ -594,7 +596,7 @@ export function transitionLabTest(
         : action === 'start_review'
           ? 'UNDER_REVIEW'
           : 'REJECTED',
-      reason,
+      action === 'approve' && opts?.esigned ? esignAuditNote(reason) : reason,
     );
 
     // Notify the tester (reuse the existing notification engine). taskId stays

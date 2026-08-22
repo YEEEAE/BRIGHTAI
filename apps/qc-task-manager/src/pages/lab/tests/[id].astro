@@ -28,6 +28,7 @@ import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../lib/lab/policy';
 import { getLabTestFindingLinkOptions } from '../../../lib/lab/findingLinks';
 import { canCreateLabRetest, canEditLabTestRecord, canLinkLabTestToFinding, canReviewLabTest, canVoidLabTestRecord } from '../../../lib/permissions';
 import AiReviewPanel from '../../../components/AiReviewPanel';
+import EsignDialog from '../../../components/EsignDialog.astro';
 import { labQrPayload, labQrSvg, labSampleAnchor, labSiteOrigin } from '../../../lib/lab/qrcodes';
 import type { Role } from '../../../lib/types';
 
@@ -689,6 +690,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
               <div class="flex flex-wrap items-center gap-3">
                 <button
                   type="submit"
+                  data-esign-trigger
                   class="rounded-md bg-rose-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
                 >
                   Void Test
@@ -717,4 +719,5 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
       </>
     ) : null}
   </div>
+  <EsignDialog />
 </BaseLayout>
