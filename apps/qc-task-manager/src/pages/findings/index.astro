@@ -9,6 +9,15 @@ import { FINDING_CLASSIFICATIONS, FINDING_STATUSES } from '../../lib/findings';
 const user = Astro.locals.user!;
 const status = Astro.url.searchParams.get('status') || undefined;
 const classification = Astro.url.searchParams.get('classification') || undefined;
+// Pre-fill hooks (e.g. the lab repeated-failures notification deep-link):
+// only these three whitelisted fields are read, trimmed and length-capped —
+// never trusted beyond pre-filling the form; submission still goes through
+// findingCreateSchema server-side.
+const prefill = {
+  inspection_type: (Astro.url.searchParams.get('inspection_type') || '').slice(0, 200),
+  requirement_reference: (Astro.url.searchParams.get('requirement_reference') || '').slice(0, 300),
+  risk_description: (Astro.url.searchParams.get('risk_description') || '').slice(0, 2000),
+};
 const findings = listFindings({ status, classification, owner: user.role === 'employee' ? user.userId : undefined }).filter((finding) => canManageFinding({ id: user.userId, role: user.role }, finding));
 const tasks = getDb().prepare('SELECT id, title FROM tasks ORDER BY id DESC LIMIT 200').all() as { id: number; title: string }[];
 const owners = getDb().prepare("SELECT id, full_name FROM users WHERE is_active=1 ORDER BY full_name").all() as { id: number; full_name: string }[];
@@ -33,12 +42,12 @@ const owners = getDb().prepare("SELECT id, full_name FROM users WHERE is_active=
     <section id="new-finding" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"><h2 class="text-lg font-semibold text-slate-900">Create QC Finding</h2><form method="post" action="/api/findings" class="mt-4 grid gap-4 md:grid-cols-2">
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Finding number<input required name="finding_number" placeholder="F-2026-0001" class="rounded-md border border-slate-300 px-3 py-2" /></label>
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Task<select required name="task_id" class="rounded-md border border-slate-300 px-3 py-2">{tasks.map((task) => <option value={task.id}>#{task.id} — {task.title}</option>)}</select></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Inspection type<input required name="inspection_type" placeholder="Internal audit" class="rounded-md border border-slate-300 px-3 py-2" /></label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Inspection type<input required name="inspection_type" value={prefill.inspection_type} placeholder="Internal audit" class="rounded-md border border-slate-300 px-3 py-2" /></label>
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Owner<select name="owner" required class="rounded-md border border-slate-300 px-3 py-2">{owners.map((owner) => <option value={owner.id} selected={owner.id === user.userId}>{owner.full_name}</option>)}</select></label>
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Classification<select name="classification" class="rounded-md border border-slate-300 px-3 py-2">{FINDING_CLASSIFICATIONS.map((value) => <option value={value}>{value}</option>)}</select></label>
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Severity<select name="severity" class="rounded-md border border-slate-300 px-3 py-2"><option>low</option><option>medium</option><option>high</option><option>critical</option></select></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2">Risk description<textarea required name="risk_description" rows="3" class="rounded-md border border-slate-300 px-3 py-2"></textarea></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Requirement reference<input name="requirement_reference" class="rounded-md border border-slate-300 px-3 py-2" /></label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2">Risk description<textarea required name="risk_description" rows="3" class="rounded-md border border-slate-300 px-3 py-2">{prefill.risk_description}</textarea></label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Requirement reference<input name="requirement_reference" value={prefill.requirement_reference} class="rounded-md border border-slate-300 px-3 py-2" /></label>
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Due date<input type="date" name="due_date" class="rounded-md border border-slate-300 px-3 py-2" /></label>
       <button class="md:col-span-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">Create Finding</button>
     </form></section>

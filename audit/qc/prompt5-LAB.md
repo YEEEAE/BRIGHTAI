@@ -36,7 +36,7 @@
 - [✅] Prompt 53 — Product FAIL Trend Analytics
 - [✅] Prompt 54 — Electronic Signature on Approvals
 - [✅] Prompt 55 — Records Retention Policy
-- [ ] Prompt 56 — Repeated-FAIL Escalation Rule
+- [✅] Prompt 56 — Repeated-FAIL Escalation Rule
 - [ ] Prompt 57 — Final Code Quality Pass
 - [ ] Prompt 58 — Production Readiness Audit
 - [ ] Prompt 59 — Final Master Regression
@@ -690,7 +690,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Detect repeated failure early and connect it to the EXISTING findings/CAPA

@@ -14,7 +14,7 @@ import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
 import MarkAllReadButton from '../../components/MarkAllReadButton';
 import MarkReadButton from '../../components/MarkReadButton';
 import { labNavForRole } from '../../lib/lab/navigation';
-import { listLabNotifications } from '../../lib/notifications';
+import { listLabNotifications, splitMessageLinks } from '../../lib/notifications';
 import type { Role } from '../../lib/types';
 
 const user = Astro.locals.user!;
@@ -221,7 +221,17 @@ const orderedKinds = [...grouped.keys()].sort((a, b) => sectionOrder(a) - sectio
                             </p>
                             <span class="shrink-0 text-xs text-slate-500">{n.createdAt.slice(0, 10)}</span>
                           </div>
-                          <p class="mt-1 text-sm text-slate-600">{n.message}</p>
+                          <p class="mt-1 text-sm text-slate-600">
+                            {splitMessageLinks(n.message).map((part) =>
+                              part.href ? (
+                                <span class="block">
+                                  <a href={part.href} class="font-medium text-brand-600 underline hover:text-brand-700">Open Finding →</a>
+                                </span>
+                              ) : (
+                                part.text
+                              ),
+                            )}
+                          </p>
                         </a>
                         {!n.isRead && <MarkReadButton client:visible notificationId={n.id} />}
                       </div>

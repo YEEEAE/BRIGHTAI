@@ -2,11 +2,19 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-22 23:10 +03:00
+last_updated: 2026-08-23 00:10 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.8.23
+version: 2.8.24
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-23 — QC-LAB-REPEAT-FAIL-001: كاشف "FAIL متكررة لنفس المنتج خلال 7 أيام" — bucket رابع في runScheduledNotifications (كاشف واحد فقط، بلا findings تلقائية)
+
+- **What**: نفس المنتج بـ ≥2 نتيجة FAIL نهائية (non-VOID) داخل نافذة 7 أيام متدحرجة → (1) إشعار لصاحب المنتج (`lab_products.created_by`) عبر نظام الإشعارات القائم، الـ href = السجل المفلتر `/lab/tests?product={id}&result=FAIL` والرسالة تحمل رابط "Open Finding" يعبيّن نموذج `/findings#new-finding` القائم بـ inspection_type/requirement_reference/risk_description يتضمنون ids الاختبارات المتأثرة — **قرار الـ finding بشري دائمًا**. (2) علم data-quality على `/lab/products/[id]` ("Repeated failures in the last 7 days") يربط بالسجل المفلتر + زر Open Finding.
+- **Files**: `apps/qc-task-manager/src/lib/lab/scheduledNotifications.ts` (+REPEAT_FAILURE_WINDOW_DAYS=7، +getRepeatedFailureProducts/getProductRepeatFailure — نفس الـ predicate للاثنين = كاشف واحد، +bucket رابع `lab_repeat_failures` في Summary)، `src/lib/notifications.ts` (+kind `'lab_repeat_failures'` في NotificationKind + PERSISTED_SEVERITY=danger + LAB_NOTIFICATION_KINDS → **16 lab kind**، +splitMessageLinks helper linkify موجّه لروابط `/findings…#new-finding` فقط)، `src/pages/notifications.astro` + `src/pages/lab/notifications.astro` (السجلات الثلاثة KIND_ICON 📉/KIND_LABEL/SECTIONS order 0 + render الرسالة عبر splitMessageLinks بحيث رابط Open Finding قابل للنقض فعليًا)، `src/pages/findings/index.astro` (+prefill من query params بثلاثة حقول whitelist فقط مع slice — الإرسال يمر بـ findingCreateSchema كالعادة)، `src/pages/lab/products/[id].astro` (+علم repeat-failure فوق الأقسام عبر getProductRepeatFailure)، `scripts/test-lab-repeat-failures.mjs` (**جديد** — 25 فحصًا)، `package.json` (+test:lab-repeat-failures داخل سلسلة test)، `scripts/test-scheduled-notifications.mjs` (إصلاح تأكيد schema version 25→26 — كان فاشلًا مسبقًا عند HEAD بسبب migration 026 الموجودة بالريبو).
+- **Decision**: (1) الكاشف عاش في **الـ daily job القائم (Prompt 46)** لا read-time detector ثانٍ — المواصفة حرفيًا "do not build two detectors"، وصفحة المنتج تستدعي getProductRepeatFailure (نفس SQL predicate) للعلم. (2) تاريخ الحسم = COALESCE(approved_at, reviewed_at, submitted_at, created_at) بأول non-null — النتيجة النهائية تتثبت عند الموافقة، والـ created_at آخر fallback. النافذة `> date(today,'-7 days')` (7 أيام تقويمية شاملة اليوم). (3) المستلم = `lab_products.created_by` — ما فيه manager مخزّن على مستوى المنتج ونفس نمط equipment. (4) الرابط الواحد entity_href ما يكفي لرابطين → href=السجل ورابط Open Finding داخل message مع linkify محصور regex على `/findings…#new-finding` (أي رسالة أخرى تنعرض نصًا كما هي). (5) prefill النموذج whitelist فقط + length caps — صفر XSS لأن Astro يهرّب القيم والإرسال يتحقق server-side. (6) idempotency بنفس dedupe_key `sched:{userId}:lab_repeat_failures:product:{id}:{runDate}` — مرة واحدة يوميًا لكل منتج.
+- **Verification**: `pnpm test:lab-repeat-failures` → **25 passed / 0 failed** ✅ (trigger exactly once + idempotent، dispersed/out-of-window صامت، VOID مستبعد، PASS لا يعدّ، no qc_findings/lab_test_findings rows، recipient صحيح لكل منتج بما فيه inactive skip، flag مطابق للـ job)؛ test:scheduled-notifications 69/0 ✅؛ test:lab-notifications 85/0 ✅؛ test:migrations ✅؛ test:lab-data-quality 38/0 ✅؛ test:lab-products 85/0 ✅؛ test:qc-operations ✅؛ `astro check` → 0 errors ✅؛ `pnpm build` → Complete ✅.
+- **Notes**: لا commit ولا push — المستخدم يلتزم. رسالة مقترحة: `feat(lab): repeated-failure detection (≥2 non-VOID FAILs per product in 7 days) via existing daily job — owner notification with FAIL-filtered register link and pre-filled finding form, product-page quality flag; no automatic findings`.
 
 ### 2026-08-22 — QC-LAB-RETENTION-001: تقرير Retention Status (وعي احتفاظ فقط) — النوع السادس عشر في كتالوج التقارير عبر نفس pipeline التقارير القائم، صفر حذف/تنظيف/فعل تلقائي
 

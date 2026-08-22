@@ -40,6 +40,85 @@ import type { NotificationKind } from '../notifications';
 /** Live document statuses — mirrors calendar.ts ACTIVE_DOCUMENT_STATUSES. */
 const ACTIVE_DOCUMENT_STATUSES = `('DRAFT', 'IN_REVIEW', 'APPROVED')`;
 
+// ---------------------------------------------------------------------------
+// Repeated test failures (PROMPT 20 follow-up) — ONE detector, two consumers.
+// The daily job (section 4 below) notifies the product owner; the product
+// page (/lab/products/[id]) reuses getProductRepeatFailure for its
+// data-quality style flag. Both share REPEAT_FAILURE_WINDOW_DAYS and the
+// same SQL predicate — there is no second detector.
+//
+// Window: a FAIL counts when its decision date (approved → reviewed →
+// submitted → created, first non-null) falls within the last 7 days
+// (rolling, inclusive of today). VOID records are excluded everywhere;
+// PASS/HOLD never enter. Findings are NEVER created automatically — the
+// notification only deep-links into the EXISTING finding creation form.
+// ---------------------------------------------------------------------------
+
+export const REPEAT_FAILURE_WINDOW_DAYS = 7;
+
+export interface RepeatedFailureProduct {
+  product_id: number;
+  code: string;
+  name: string;
+  recipient_id: number;
+  fail_count: number;
+  /** Failing test record ids (ASC) — pre-fills the finding form. */
+  test_ids: number[];
+}
+
+/** Shared WHERE fragment — the single source of truth for what a counted FAIL is. */
+const REPEAT_FAIL_PREDICATE = `t.final_result = 'FAIL' AND t.status != 'VOID'
+         AND date(COALESCE(t.approved_at, t.reviewed_at, t.submitted_at, t.created_at), 'localtime')
+             > date(?, '-${REPEAT_FAILURE_WINDOW_DAYS} days')`;
+
+/**
+ * Products with ≥2 non-VOID FAIL results inside the rolling window, with the
+ * affected test ids and the recipient (lab_products.created_by).
+ */
+function getRepeatedFailureProducts(today: string): RepeatedFailureProduct[] {
+  const db = getDb();
+  const rows = db
+    .prepare(
+      `SELECT p.id AS product_id, p.code, p.name, p.created_by AS recipient_id,
+              COUNT(*) AS fail_count,
+              GROUP_CONCAT(t.id) AS test_ids_csv
+       FROM lab_test_records t
+       JOIN lab_products p ON p.id = t.product_id
+       WHERE ${REPEAT_FAIL_PREDICATE}
+       GROUP BY p.id
+       HAVING COUNT(*) >= 2`,
+    )
+    .all(today) as Array<{
+    product_id: number;
+    code: string;
+    name: string;
+    recipient_id: number;
+    fail_count: number;
+    test_ids_csv: string | null;
+  }>;
+  return rows.map((r) => ({
+    ...r,
+    fail_count: Number(r.fail_count),
+    test_ids: (r.test_ids_csv ?? '')
+      .split(',')
+      .map(Number)
+      .filter((n) => Number.isInteger(n) && n > 0)
+      .sort((a, b) => a - b),
+  }));
+}
+
+/**
+ * Read-time flag for /lab/products/[id]: the repeated-failure state of ONE
+ * product (null when under the threshold). Same detector as the daily job.
+ */
+export function getProductRepeatFailure(
+  productId: number,
+  today = isoOffset(0),
+): { fail_count: number; test_ids: number[] } | null {
+  const match = getRepeatedFailureProducts(today).find((p) => p.product_id === productId);
+  return match ? { fail_count: match.fail_count, test_ids: match.test_ids } : null;
+}
+
 /** Local ISO date offset from today by `days` (same as overview.ts). */
 function isoOffset(days: number): string {
   const d = new Date();
@@ -59,6 +138,7 @@ export interface ScheduledNotificationSummary {
   calibration_overdue: number;
   document_review: number;
   acknowledgements: number;
+  lab_repeat_failures: number;
   /** Rows skipped because the recipient is inactive. */
   skipped_inactive: number;
 }
@@ -100,11 +180,17 @@ export function runScheduledNotifications(today = isoOffset(0)): ScheduledNotifi
     calibration_overdue: 0,
     document_review: 0,
     acknowledgements: 0,
+    lab_repeat_failures: 0,
     skipped_inactive: 0,
   };
   const track = (
     outcome: 'inserted' | 'duplicate' | 'inactive',
-    counter: 'calibration_due' | 'calibration_overdue' | 'document_review' | 'acknowledgements',
+    counter:
+      | 'calibration_due'
+      | 'calibration_overdue'
+      | 'document_review'
+      | 'acknowledgements'
+      | 'lab_repeat_failures',
   ) => {
     if (outcome === 'inserted') summary[counter] += 1;
     else if (outcome === 'inactive') summary.skipped_inactive += 1; // duplicates (idempotent re-run) are not skips
@@ -213,6 +299,37 @@ export function runScheduledNotifications(today = isoOffset(0)): ScheduledNotifi
         runDate: today,
       }),
       'acknowledgements',
+    );
+  }
+
+  // 4. Repeated test failures (PROMPT 20 follow-up) — same product, ≥2 FAIL
+  //    final results in the rolling 7-day window (non-VOID). The recipient is
+  //    the product owner (lab_products.created_by). No finding is created
+  //    automatically: the notification deep-links the filtered register AND
+  //    pre-fills the EXISTING /findings creation form with the failing test
+  //    ids — a human decides whether a finding is warranted.
+  for (const row of getRepeatedFailureProducts(today)) {
+    const registerHref = `/lab/tests?product=${row.product_id}&result=FAIL`;
+    const findingHref =
+      `/findings?inspection_type=${encodeURIComponent('Lab repeated test failures')}` +
+      `&requirement_reference=${encodeURIComponent(`lab_test_records: ${row.test_ids.join(', ')}`)}` +
+      `&risk_description=${encodeURIComponent(
+        `Repeated FAIL results for product ${row.code} (${row.name}) within ${REPEAT_FAILURE_WINDOW_DAYS} days — ` +
+          `affected lab_test_records ids: ${row.test_ids.join(', ')}.`,
+      )}#new-finding`;
+    track(
+      insertScheduled({
+        userId: row.recipient_id,
+        kind: 'lab_repeat_failures',
+        title: `Repeated failures: ${row.code}`,
+        message:
+          `${row.fail_count} FAIL results for ${row.name} (${row.code}) in the last ${REPEAT_FAILURE_WINDOW_DAYS} days ` +
+          `(tests #${row.test_ids.join(', #')}). Review before opening a finding. Open Finding: ${findingHref}`,
+        href: registerHref,
+        entity: `product:${row.product_id}`,
+        runDate: today,
+      }),
+      'lab_repeat_failures',
     );
   }
 

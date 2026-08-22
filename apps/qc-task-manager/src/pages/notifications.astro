@@ -7,7 +7,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EmptyState from '../components/EmptyState.astro';
 import MarkAllReadButton from '../components/MarkAllReadButton';
 import MarkReadButton from '../components/MarkReadButton';
-import { getNotificationsForUser, type AppNotification, type NotificationKind } from '../lib/notifications';
+import { getNotificationsForUser, splitMessageLinks, type AppNotification, type NotificationKind } from '../lib/notifications';
 import { roleHome } from '../lib/permissions';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
@@ -46,6 +46,7 @@ const KIND_ICON: Record<NotificationKind, string> = {
   lab_calibration_overdue: '⚠️',
   lab_maintenance_event: '🔧',
   lab_retest_update: '🔁',
+  lab_repeat_failures: '📉',
 };
 
 const KIND_LABEL: Record<NotificationKind, string> = {
@@ -80,6 +81,7 @@ const KIND_LABEL: Record<NotificationKind, string> = {
   lab_calibration_overdue: 'Calibration overdue',
   lab_maintenance_event: 'Equipment maintenance',
   lab_retest_update: 'Retest updates',
+  lab_repeat_failures: 'Lab repeated failures',
 };
 
 const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
@@ -115,6 +117,7 @@ const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'lab_calibration_due', order: 1 },
   { key: 'lab_maintenance_event', order: 1 },
   { key: 'lab_retest_update', order: 2 },
+  { key: 'lab_repeat_failures', order: 0 },
   { key: 'lab_test_approved', order: 3 },
   { key: 'lab_document_acknowledged', order: 3 },
 ];
@@ -203,7 +206,17 @@ const dueSoonCount = notifications.filter((n) => n.kind === 'due_soon').length;
                           {n.createdAt.slice(0, 10)}
                         </span>
                       </div>
-                      <p class="mt-1 text-sm text-slate-600">{n.message}</p>
+                      <p class="mt-1 text-sm text-slate-600">
+                        {splitMessageLinks(n.message).map((part) =>
+                          part.href ? (
+                            <span class="block">
+                              <a href={part.href} class="font-medium text-brand-600 underline hover:text-brand-700">Open Finding →</a>
+                            </span>
+                          ) : (
+                            part.text
+                          ),
+                        )}
+                      </p>
                     </a>
                     {n.notificationId != null && n.isRead === false && (
                       <MarkReadButton client:visible notificationId={n.notificationId} />

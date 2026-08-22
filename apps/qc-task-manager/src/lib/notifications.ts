@@ -53,7 +53,8 @@ export type NotificationKind =
   | 'lab_calibration_due'
   | 'lab_calibration_overdue'
   | 'lab_maintenance_event'
-  | 'lab_retest_update';
+  | 'lab_retest_update'
+  | 'lab_repeat_failures';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -176,6 +177,7 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   lab_calibration_overdue: 'danger',
   lab_maintenance_event: 'warning',
   lab_retest_update: 'info',
+  lab_repeat_failures: 'danger',
 };
 
 /** A raw persisted notification row (with read state) for the UI layers. */
@@ -290,9 +292,23 @@ export const LAB_NOTIFICATION_KINDS: readonly NotificationKind[] = [
   'lab_calibration_overdue',
   'lab_maintenance_event',
   'lab_retest_update',
+  'lab_repeat_failures',
 ];
 
 const LAB_KIND_SQL_LIST = LAB_NOTIFICATION_KINDS.map(() => '?').join(', ');
+
+/**
+ * Split a notification message into text / link parts for rendering.
+ * Only the targeted pre-filled finding-form URLs written by the scheduled
+ * job are linkified — ordinary messages (and any other text) pass through
+ * untouched. Odd indices are links.
+ */
+export function splitMessageLinks(message: string): Array<{ text: string; href?: string }> {
+  const parts = message.split(/(\/findings\S*?#new-finding)/g);
+  return parts
+    .filter((p) => p !== '')
+    .map((text, i) => (i % 2 === 1 ? { text, href: text } : { text }));
+}
 
 /**
  * The signed-in user's LABORATORY notifications (newest first) with read
