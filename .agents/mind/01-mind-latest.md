@@ -8,6 +8,15 @@ version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-FINAL-REGRESSION-AUDIT-001: تدقيق regression النهائي بعد Laboratory prompts 41–56 — unit/full test وbuild وmigration/seed خضراء، E2E acceptance الكامل BLOCKED بسبب browser handle leak في harness
+
+- **Scope**: تحقق read-only من عدم كسر authentication، sessions، users، tasks/task updates، evidence، findings/CAPA، SLA، notifications، dashboard، exports، backup، audit integrity، AI، ومسارات Laboratory/state/RBAC/reports المطلوبة.
+- **Verification (fresh)**: `pnpm install --frozen-lockfile` → **exit 0** (1322 packages، lockfile up-to-date، Prisma generate نجح)؛ `pnpm test` من root → **exit 0** (chat-session 16، CSRF 29، PII 38)؛ `pnpm typecheck` من root → **exit 0** (0 errors، 0 warnings، 20 hints)؛ `pnpm test` داخل `apps/qc-task-manager` → **exit 0**، كل السلسلة الخضراء وتشمل migrations، architecture، AI foundation/features/lab، domain/workflow/SLA، auth/db rules، lab prompts 41–56، audit، reports/exports، dashboard metrics وtrends؛ `NODE_ENV=production pnpm build` → **Complete**؛ post-install `pnpm db:init` على DB مؤقتة → schema **26**، **49 tables**، seed users 4، lab equipment **24**، `integrity_check=ok`، foreign-key violations **0**.
+- **Migration paths**: `test:migrations` ضمن السلسلة → **exit 0** مع fresh database، existing legacy upgrade/data preservation، repeated/checksum، rollback/failure recovery/destructive guard؛ direct empty-db path مع `QC_SEED_LAB_EQUIPMENT=0` → schema 26 و0 equipment (opt-out fixture)، وfresh seed path → 24 equipment intact.
+- **E2E**: elevated `pnpm e2e:acceptance` بدأ فعليًا ونجحت suites: admin-users **49/0**، auth-lockout **44/0**، task-shared **196/0**، delete-request **39/0**، dashboard **51/0**، a11y **14/0**، backup **13/0**، search **84/0** = **490 passed / 0 failed**. Runner لم يكمل findings وباقي 17 suite لأن `scripts/e2e-task-search.mjs` يطلق Playwright browser ولا يستدعي `browser.close()` في cleanup؛ العملية بقيت معلقة بعد طباعة 84/0 واضطررنا لإيقافها. أول تشغيل غير elevated لم ينفذ أي suite بسبب sandbox `listen EPERM` على 127.0.0.1:4500. لذلك **full e2e set = UNVERIFIED/BLOCKED، وليس PASS**.
+- **Environment notes**: `pnpm install --frozen-lockfile --offline` فشل بعد إزالة وإعادة محاولة modules لأن `@astrojs/rss@4.0.19` غير موجود في offline store؛ أُعيد التثبيت online بنجاح. Root AI tests مرّت لكنها سجلت fallback/mock notices (غياب `DATABASE_URL` وGA4 no-op، وعدم إثبات provider live) — لا تُعامل كـ live AI/provider verification.
+- **Status**: **NO-GO for acceptance criteria requiring full E2E 0 failed** بسبب harness blocker فقط؛ local unit/domain/build/migration/seed evidence ناجح. لا deploy، لا push، لا CI/CD تعديل، ولا code changes.
+
 ### 2026-08-23 — QC-LAB-AUDIT-CLEANUP-001: تدقيق شامل لتنفيذ المختبر (كل الفئات) + إصلاحات تنظيف موجهة لكود Laboratory فقط — صفر مس للوظائف القديمة
 
 - **What**: تدقيق كامل لكل كود المختبر (`src/lib/lab/**`، `src/pages/lab/**`، `src/pages/api/lab/**`، `src/components/lab/**`) عبر 3 وكلاء فحص متوازيين على الفئات المطلوبة، ثم إصلاحات جراحية:
