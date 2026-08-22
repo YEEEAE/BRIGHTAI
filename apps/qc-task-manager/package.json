@@ -48,6 +48,7 @@
     "notify:daily": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types/ scripts/scheduled-notifications.mjs",
     "test:lab-data-quality": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-data-quality.mjs",
     "test:lab-reports": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-reports.mjs",
+    "test:lab-retention": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-retention.mjs",
     "test:lab-audit": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-audit.mjs",
     "test:lab-templates": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-templates.mjs",
     "test:lab-reference-panel": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-reference-panel.mjs",

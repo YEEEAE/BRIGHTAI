@@ -72,7 +72,7 @@ try {
 
   // ── 1. Catalog: exactly 15 lab report types ──
   console.log('\n■ Catalog registration');
-  eq(LAB_REPORT_TYPES.length, 15, 'catalog: 15 lab report types');
+  eq(LAB_REPORT_TYPES.length, 16, 'catalog: 16 lab report types');
   for (const key of LAB_REPORT_TYPES) {
     const def = REPORT_CATALOG[key];
     ok(Boolean(def), `catalog: ${key} is registered`);

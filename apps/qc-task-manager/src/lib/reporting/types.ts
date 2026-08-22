@@ -10,7 +10,7 @@ export type ReportType =
   | 'lab-results' | 'lab-retests' | 'lab-product-history'
   | 'lab-equipment-register' | 'lab-calibration' | 'lab-maintenance'
   | 'lab-sop-register' | 'lab-wi-register' | 'lab-doc-review-due' | 'lab-acknowledgements'
-  | 'lab-activity' | 'lab-data-quality';
+  | 'lab-activity' | 'lab-data-quality' | 'lab-retention-status';
 
 /** Laboratory report types rendered from the lab_* tables (§13). */
 export const LAB_REPORT_TYPES: readonly ReportType[] = [
@@ -18,7 +18,7 @@ export const LAB_REPORT_TYPES: readonly ReportType[] = [
   'lab-results', 'lab-retests', 'lab-product-history',
   'lab-equipment-register', 'lab-calibration', 'lab-maintenance',
   'lab-sop-register', 'lab-wi-register', 'lab-doc-review-due', 'lab-acknowledgements',
-  'lab-activity', 'lab-data-quality',
+  'lab-activity', 'lab-data-quality', 'lab-retention-status',
 ];
 
 export function isLabReportType(type: ReportType): boolean {

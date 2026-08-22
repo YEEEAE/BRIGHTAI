@@ -25,6 +25,7 @@ import { runLabDataQualityChecks, labDataQualitySeverity, LAB_DATA_QUALITY_ISSUE
 import { LAB_RESULT_LABELS, LAB_RETEST_REASON_LABELS, LAB_MAINTENANCE_STATUS_LABELS } from './policy';
 import type { LabMaintenanceStatus, LabResultOption, LabRetestReason } from './policy';
 import type { ReportFilters, ReportType } from '../reporting/types';
+import { readLabRetentionStatus } from './retention';
 
 export type ReportCell = string | number | null;
 const LAB_REPORT_CHUNK_SIZE = 500;
@@ -678,6 +679,9 @@ export function* readLabReportRows(reportType: ReportType, reportId: string, fil
       break;
     case 'lab-data-quality':
       yield* readLabDataQualityReport(reportId);
+      break;
+    case 'lab-retention-status':
+      yield* readLabRetentionStatus(reportId, filters);
       break;
   }
 }
