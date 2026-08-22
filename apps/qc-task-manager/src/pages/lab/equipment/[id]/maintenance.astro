@@ -209,6 +209,7 @@ const MAINT_STATUS_CLS: Record<string, string> = {
                     <th scope="col" class="px-3 py-2 font-semibold">Status</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Completed Date</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Logged By</th>
+                    <th scope="col" class="px-3 py-2 font-semibold"><span class="sr-only">Print</span></th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -228,6 +229,14 @@ const MAINT_STATUS_CLS: Record<string, string> = {
                       </td>
                       <td class="px-3 py-2 whitespace-nowrap text-slate-700">{fmt(m.completed_date)}</td>
                       <td class="px-3 py-2 text-slate-700">{fmt(maintenanceAudit.find((a) => Number(a.entity_id) === m.id)?.actor_name)}</td>
+                      <td class="px-3 py-2">
+                        <a
+                          href={`/lab/maintenance/${m.id}/print`}
+                          class="inline-flex rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                        >
+                          Print
+                        </a>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

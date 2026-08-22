@@ -91,6 +91,12 @@ function fmt(value: unknown): string {
               )}
             </p>
           </div>
+          <a
+            href={`/lab/equipment/${detail.equipment.id}/print`}
+            class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+          >
+            Print History Report
+          </a>
           {canEditLabEquipment(role) && detail.equipment.is_archived === 0 && (
             <a
               href={`/lab/equipment/${detail.equipment.id}/edit`}

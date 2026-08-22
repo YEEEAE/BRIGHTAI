@@ -539,6 +539,41 @@ export function listLabEquipmentMaintenance(equipmentId: number): LabEquipmentMa
     .all(equipmentId) as LabEquipmentMaintenance[];
 }
 
+export interface LabEquipmentMaintenanceDetailView {
+  maintenance: LabEquipmentMaintenance;
+  equipment_id: number;
+  equipment_code: string;
+  equipment_name: string;
+  created_by_name: string | null;
+}
+
+/** One maintenance event + resolved equipment + logging actor (print view loader). */
+export function getLabEquipmentMaintenanceDetail(id: number): LabEquipmentMaintenanceDetailView | null {
+  if (!Number.isInteger(id) || id <= 0) return null;
+  const row = getDb()
+    .prepare(
+      `SELECT m.*, e.code AS equipment_code, e.name AS equipment_name, u.full_name AS created_by_name
+       FROM lab_equipment_maintenance m
+       JOIN lab_equipment e ON e.id = m.equipment_id
+       LEFT JOIN users u ON u.id = m.created_by
+       WHERE m.id = ?`,
+    )
+    .get(id) as (LabEquipmentMaintenance & {
+      equipment_code: string;
+      equipment_name: string;
+      created_by_name: string | null;
+    }) | undefined;
+  if (!row) return null;
+  const { equipment_code, equipment_name, created_by_name, ...maintenance } = row;
+  return {
+    maintenance: maintenance as LabEquipmentMaintenance,
+    equipment_id: maintenance.equipment_id,
+    equipment_code,
+    equipment_name,
+    created_by_name,
+  };
+}
+
 export interface LabEquipmentMaintenanceSummary {
   count: number;
   latest: LabEquipmentMaintenance | null;

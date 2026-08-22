@@ -99,6 +99,12 @@ const ROWS: { label: string; value: unknown; ltr?: boolean }[] = detail
             >
               All records for this equipment
             </a>
+            <a
+              href={`/lab/calibration/${detail.calibration.id}/print`}
+              class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            >
+              Print Certificate
+            </a>
             {canEditLabCalibration(role) && (
               <a
                 href={`/lab/calibration/${detail.calibration.id}/edit`}

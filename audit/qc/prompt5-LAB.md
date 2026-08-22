@@ -27,7 +27,7 @@
 - [✅] Prompt 44 — Legacy Duplicate File Cleanup
 - [✅] Prompt 45 — e2e-lab-nav Pre-existing Failures
 - [✅] Prompt 46 — Scheduled Notification Jobs
-- [ ] Prompt 47 — Unified A4 Print Layouts
+- [✅] Prompt 47 — Unified A4 Print Layouts
 - [ ] Prompt 48 — Sample QR Codes
 - [ ] Prompt 49 — Smarter Unified Search
 - [ ] Prompt 50 — Arabic PDF Reports
@@ -427,7 +427,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 Sample identifiers are stable (LAB-TEST-00081-S03). Make them scannable.

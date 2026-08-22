@@ -1,0 +1,174 @@
+---
+// /lab/equipment/[id]/print — controlled Equipment History Report print view.
+// Same print architecture as /lab/tests/[id]/print: server-rendered A4 via
+// PrintLayout (no chrome), reads the SAME loaders as the equipment detail and
+// maintenance pages (getLabEquipmentDetail + getLabEquipmentTimeline) so the
+// printed values match the stored records exactly. The timeline combines the
+// four lifecycle streams: usage, maintenance, calibration, returned-to-service
+// (derived from COMPLETED maintenance events — labeled, never fabricated).
+import PrintLayout from '../../../../layouts/PrintLayout.astro';
+import {
+  getLabEquipmentDetail,
+  getLabEquipmentMaintenanceSummary,
+  getLabEquipmentTimeline,
+} from '../../../../lib/lab/equipment';
+import { statusLabels } from '../../../../lib/lab/equipmentStatus';
+import { getLabCalibrationSummary, LAB_CALIBRATION_STATUS_LABELS } from '../../../../lib/lab/calibration';
+
+const idParam = Astro.params.id;
+const id = idParam ? Number(idParam) : Number.NaN;
+const validId = Number.isInteger(id) && id > 0;
+
+let detail: ReturnType<typeof getLabEquipmentDetail> = null;
+let timeline: ReturnType<typeof getLabEquipmentTimeline> = [];
+let calibrationSummary: ReturnType<typeof getLabCalibrationSummary> | null = null;
+let maintenanceSummary: ReturnType<typeof getLabEquipmentMaintenanceSummary> | null = null;
+let loadError: string | null = null;
+if (validId) {
+  try {
+    detail = getLabEquipmentDetail(id);
+    if (detail) {
+      timeline = getLabEquipmentTimeline(id);
+      calibrationSummary = getLabCalibrationSummary(id);
+      maintenanceSummary = getLabEquipmentMaintenanceSummary(id);
+    }
+  } catch (err) {
+    console.error('[lab] equipment print load failure', err);
+    loadError = 'Could not load this equipment record for printing.';
+  }
+}
+
+function fmt(value: unknown): string {
+  return value == null || String(value).trim() === '' ? '—' : String(value);
+}
+
+const TIMELINE_KIND_LABELS: Record<string, string> = {
+  USAGE: 'Usage',
+  MAINTENANCE: 'Maintenance',
+  CALIBRATION: 'Calibration',
+  RETURNED_TO_SERVICE: 'Returned to Service',
+};
+---
+
+<PrintLayout
+  title={detail ? `Equipment History · ${detail.equipment.code}` : 'Equipment not found'}
+  backHref={detail ? `/lab/equipment/${String(detail.equipment.id)}` : ''}
+>
+  {!detail ? (
+    <section>
+      <h1 class="print-title">Equipment not found</h1>
+      <p>{loadError ?? 'This equipment record does not exist or is not available to you.'}</p>
+    </section>
+  ) : (
+    <>
+      <header class="print-header">
+        <div>
+          <h1 class="print-title">QC Laboratory</h1>
+          <div class="print-sub">Equipment History Report</div>
+        </div>
+        <div class="print-meta">
+          <div><strong>Equipment:</strong> {detail.equipment.name} ({detail.equipment.code})</div>
+          <div><strong>Record ID:</strong> {String(detail.equipment.id)}</div>
+          <div><strong>Status:</strong> {statusLabels(detail.equipment.status_raw)}</div>
+          {detail.equipment.is_archived === 1 && <div><strong>Archived:</strong> Yes</div>}
+        </div>
+      </header>
+
+      <section class="print-section">
+        <h2 class="print-section-title">1 · Equipment Identification</h2>
+        <dl class="print-section-body grid3">
+          <div class="dl-item"><dt>Name</dt><dd>{fmt(detail.equipment.name)}</dd></div>
+          <div class="dl-item"><dt>Code</dt><dd>{fmt(detail.equipment.code)}</dd></div>
+          <div class="dl-item"><dt>Serial Number</dt><dd>{fmt(detail.equipment.serial_number)}</dd></div>
+          <div class="dl-item"><dt>Location</dt><dd>{fmt(detail.equipment.location)}</dd></div>
+          <div class="dl-item"><dt>Status (stored)</dt><dd>{fmt(detail.equipment.status_raw)}</dd></div>
+          <div class="dl-item"><dt>Calibration Flag (stored)</dt><dd>{fmt(detail.equipment.calibration_status_raw)}</dd></div>
+        </dl>
+      </section>
+
+      <section class="print-section">
+        <h2 class="print-section-title">2 · History Summary</h2>
+        <dl class="print-section-body grid3">
+          <div class="dl-item"><dt>Tests Using This Equipment</dt><dd>{String(detail.test_count)}</dd></div>
+          <div class="dl-item"><dt>Maintenance Events</dt><dd>{maintenanceSummary ? String(maintenanceSummary.count) : '—'}</dd></div>
+          <div class="dl-item"><dt>Calibration Records</dt><dd>{calibrationSummary ? String(calibrationSummary.count) : '—'}</dd></div>
+          <div class="dl-item"><dt>Derived Calibration State</dt><dd>{calibrationSummary ? LAB_CALIBRATION_STATUS_LABELS[calibrationSummary.status] : '—'}</dd></div>
+          <div class="dl-item"><dt>Calibration Due</dt><dd>{calibrationSummary ? fmt(calibrationSummary.due_date) : '—'}</dd></div>
+        </dl>
+      </section>
+
+      {detail.equipment.notes ? (
+        <section class="print-section">
+          <h2 class="print-section-title">3 · Equipment Notes</h2>
+          <div class="print-section-body remark-text">{String(detail.equipment.notes)}</div>
+        </section>
+      ) : null}
+
+      <section class="print-section">
+        <h2 class="print-section-title">{detail.equipment.notes ? '4' : '3'} · Lifecycle Timeline (newest first)</h2>
+        <div class="print-section-body">
+          {timeline.length === 0 ? (
+            <div>No timeline activity recorded for this equipment.</div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Date / Time</th>
+                  <th scope="col">Event</th>
+                  <th scope="col">Detail</th>
+                  <th scope="col">Reference</th>
+                </tr>
+              </thead>
+              <tbody>
+                {timeline.map((entry) => (
+                  <tr>
+                    <td>{String(entry.at)}</td>
+                    <td>{TIMELINE_KIND_LABELS[entry.kind] ?? entry.kind}</td>
+                    <td>{entry.title}{entry.detail ? ` — ${entry.detail}` : ''}</td>
+                    <td>#{String(entry.ref_id)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <p class="print-sub">Returned-to-service entries are derived from COMPLETED maintenance events with a completed date.</p>
+        </div>
+      </section>
+
+      {detail.documents.length > 0 ? (
+        <section class="print-section">
+          <h2 class="print-section-title">Linked SOP / WI Documents</h2>
+          <div class="print-section-body">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Code</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {detail.documents.map((doc) => (
+                  <tr>
+                    <td>{String(doc.code)}</td>
+                    <td>{String(doc.title)}</td>
+                    <td>{String(doc.type)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+
+      <section class="print-section">
+        <h2 class="print-section-title">Controlled Version Metadata</h2>
+        <dl class="print-section-body grid3">
+          <div class="dl-item"><dt>Created</dt><dd>{fmt(detail.equipment.created_at)}</dd></div>
+          <div class="dl-item"><dt>Updated</dt><dd>{fmt(detail.equipment.updated_at)}</dd></div>
+          <div class="dl-item"><dt>Archived</dt><dd>{detail.equipment.is_archived === 1 ? 'Yes' : 'No'}</dd></div>
+        </dl>
+      </section>
+    </>
+  )}
+</PrintLayout>

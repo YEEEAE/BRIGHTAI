@@ -37,6 +37,7 @@
     "test:lab-equipment": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-equipment.mjs",
     "test:lab-maintenance": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-maintenance.mjs",
     "test:lab-calibration": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-calibration.mjs",
+    "test:lab-print": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-print.mjs",
     "test:lab-documents": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-documents.mjs",
     "test:lab-acknowledgements": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-acknowledgements.mjs",
     "test:lab-retests": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-retests.mjs",
