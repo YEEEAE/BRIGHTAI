@@ -687,8 +687,12 @@ export interface LabTemplateReference {
   parameters_json: string;
   sop_title: string | null;
   sop_code: string | null;
+  sop_version: number | null;
+  sop_status: string | null;
   wi_title: string | null;
   wi_code: string | null;
+  wi_version: number | null;
+  wi_status: string | null;
 }
 
 /**
@@ -703,11 +707,15 @@ export function listLabTemplateReferences(): LabTemplateReference[] {
       `SELECT t.id, v.id AS version_id, t.name, t.code, t.test_type, v.version,
               v.default_sample_count, v.connector_choices_json, v.parameters_json,
               sop.title AS sop_title, sop.code AS sop_code,
-              wi.title AS wi_title, wi.code AS wi_code
+              sopv.version AS sop_version, sopv.status AS sop_status,
+              wi.title AS wi_title, wi.code AS wi_code,
+              wiv.version AS wi_version, wiv.status AS wi_status
        FROM lab_test_templates t
        JOIN lab_test_template_versions v ON v.id = t.current_version_id
        LEFT JOIN lab_documents sop ON sop.id = v.sop_id
+       LEFT JOIN lab_document_versions sopv ON sopv.id = sop.current_version_id
        LEFT JOIN lab_documents wi ON wi.id = v.wi_id
+       LEFT JOIN lab_document_versions wiv ON wiv.id = wi.current_version_id
        WHERE t.status = 'ACTIVE' AND v.approved_by IS NOT NULL
        ORDER BY t.name COLLATE NOCASE ASC, t.id ASC`,
     )

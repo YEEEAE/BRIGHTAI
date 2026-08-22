@@ -32,7 +32,7 @@
 - [✅] Prompt 49 — Smarter Unified Search
 - [✅] Prompt 50 — Arabic PDF Reports
 - [✅] Prompt 51 — Session Environmental Readings
-- [ ] Prompt 52 — Live Criteria Side-by-Side Display
+- [✅] Prompt 52 — Live Criteria Side-by-Side Display
 - [ ] Prompt 53 — Product FAIL Trend Analytics
 - [ ] Prompt 54 — Electronic Signature on Approvals
 - [ ] Prompt 55 — Records Retention Policy
@@ -558,7 +558,7 @@ Acceptance criteria:
 
 **Execution Checklist**
 
-- [ ] Prompt executed and verified
+- [✅] Prompt executed and verified
 
 ```text
 While entering results, the employee should see the approved acceptance

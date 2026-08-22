@@ -18,6 +18,7 @@
 // this component never compute or suggest them (§19, §76).
 
 import { useEffect, useRef, useState } from 'react';
+import { resolveApprovedReferencePanel } from '../../lib/lab/reference-panel';
 
 export interface LabResultOption {
   value: 'PASS' | 'FAIL' | 'HOLD';
@@ -94,8 +95,12 @@ interface Props {
     parameters_json: string;
     sop_title: string | null;
     sop_code: string | null;
+    sop_version: number | null;
+    sop_status: string | null;
     wi_title: string | null;
     wi_code: string | null;
+    wi_version: number | null;
+    wi_status: string | null;
   }>;
   resultOptions: LabResultOption[];
   reference: LabReferenceValues;
@@ -262,6 +267,12 @@ export default function LabTestForm({
 
   const matchingTemplates = templateRefs.filter((t) => t.test_type === testType);
   const selectedTemplate = matchingTemplates.find((t) => t.version_id === templateVersionId) ?? null;
+
+  // Deterministic (non-AI) approved reference panel beside Sections 5/6:
+  // display-only values from the version-locked approved template version —
+  // never copied into measured fields, never auto-filling results, and the
+  // explicit empty state when nothing approved is linked.
+  const referencePanel = resolveApprovedReferencePanel(templateRefs, templateVersionId, testType);
 
   const selectedTemplateParameters = (() => {
     if (!selectedTemplate) return null;
@@ -865,25 +876,88 @@ export default function LabTestForm({
           </div>
         </section>
 
-        {/* ── Section 5 — Test Parameters (reference display only) ── */}
-        <section aria-labelledby="sec-parameters" className={sectionCls}>
-          <h2 id="sec-parameters" className={sectionTitleCls}>Section 5 — Test Parameters</h2>
-          <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">Controlled reference values — recorded for traceability, not validated against measurements.</p>
-          <dl className="mt-3 grid gap-3 sm:grid-cols-3">
-            <div className={refCls}>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Standard Parameter</dt>
-              <dd className="mt-1 text-sm font-medium text-slate-900" dir="ltr">{reference.standardParameter}</dd>
-            </div>
-            <div className={refCls}>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Acceptance Criteria</dt>
-              <dd className="mt-1 text-sm font-medium text-slate-900" dir="ltr">{reference.acceptanceCriteria}</dd>
-            </div>
-            <div className={refCls}>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Holding Time</dt>
-              <dd className="mt-1 text-sm font-medium text-slate-900" dir="ltr">{reference.holdingTime}</dd>
-            </div>
-          </dl>
-        </section>
+        {/* Section 5 + the deterministic approved-reference aside. The aside is
+            read-only reference for the tester while entering Section 5/6
+            values — it never feeds the measured inputs above or the sample
+            grid below. */}
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
+          {/* ── Section 5 — Test Parameters (reference display only) ── */}
+          <section aria-labelledby="sec-parameters" className={sectionCls}>
+            <h2 id="sec-parameters" className={sectionTitleCls}>Section 5 — Test Parameters</h2>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">Controlled reference values — recorded for traceability, not validated against measurements.</p>
+            <dl className="mt-3 grid gap-3 sm:grid-cols-3">
+              <div className={refCls}>
+                <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Standard Parameter</dt>
+                <dd className="mt-1 text-sm font-medium text-slate-900" dir="ltr">{reference.standardParameter}</dd>
+              </div>
+              <div className={refCls}>
+                <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Acceptance Criteria</dt>
+                <dd className="mt-1 text-sm font-medium text-slate-900" dir="ltr">{reference.acceptanceCriteria}</dd>
+              </div>
+              <div className={refCls}>
+                <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Holding Time</dt>
+                <dd className="mt-1 text-sm font-medium text-slate-900" dir="ltr">{reference.holdingTime}</dd>
+              </div>
+            </dl>
+          </section>
+
+          {/* ── Approved reference panel (deterministic, non-AI) ── */}
+          <aside
+            aria-labelledby="approved-reference-heading"
+            data-testid="approved-reference-panel"
+            className="rounded-xl border border-blue-200 bg-blue-50 p-5 shadow-sm"
+          >
+            <h2 id="approved-reference-heading" className="text-sm font-semibold text-blue-900">
+              Approved Reference <span className="font-normal text-blue-700">(deterministic)</span>
+            </h2>
+            {referencePanel.state === 'linked' ? (
+              <>
+                <p className="mt-2 text-sm font-medium text-blue-900" data-testid="approved-reference-template">
+                  {referencePanel.templateName} ({referencePanel.templateCode}) — v{referencePanel.templateVersion}
+                </p>
+                <dl className="mt-3 space-y-3">
+                  {referencePanel.parameters.map((param) => (
+                    <div key={param.key} data-testid={`approved-reference-${param.key}`}>
+                      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">{param.label}</dt>
+                      <dd className="mt-0.5 text-sm font-medium text-slate-900" dir="ltr">{param.value}</dd>
+                    </div>
+                  ))}
+                  <div data-testid="approved-reference-sop">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Applicable SOP (approved)</dt>
+                    <dd className="mt-0.5 text-sm font-medium text-slate-900">
+                      {referencePanel.sop ? (
+                        <span dir="ltr">{referencePanel.sop.code} — {referencePanel.sop.title} (v{referencePanel.sop.version})</span>
+                      ) : (
+                        '—'
+                      )}
+                    </dd>
+                  </div>
+                  <div data-testid="approved-reference-wi">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">Applicable WI (approved)</dt>
+                    <dd className="mt-0.5 text-sm font-medium text-slate-900">
+                      {referencePanel.wi ? (
+                        <span dir="ltr">{referencePanel.wi.code} — {referencePanel.wi.title} (v{referencePanel.wi.version})</span>
+                      ) : (
+                        '—'
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+                <p className="mt-3 text-xs text-slate-600">
+                  Read-only values stored on the approved template version. They are shown for direct comparison while
+                  you enter results and are never copied into any field on this form.
+                </p>
+              </>
+            ) : (
+              <p
+                data-testid="approved-reference-empty"
+                className="mt-3 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-500"
+              >
+                {referencePanel.emptyStateText}
+              </p>
+            )}
+          </aside>
+        </div>
 
         {/* ── Section 6 — Test Results ── */}
         <section aria-labelledby="sec-results" className={sectionCls}>
