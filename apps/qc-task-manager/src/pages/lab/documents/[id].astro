@@ -368,12 +368,28 @@ const isAuthorOrOwner = detail
               <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.source_register_code)}</dd>
             </div>
             <div class={fieldCls}>
+              <dt class={labelCls}>Source Page</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.source_page)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Source Row</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.source_row_no)}</dd>
+            </div>
+            <div class={fieldCls}>
               <dt class={labelCls}>Source Class</dt>
               <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.source_class)}</dd>
             </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Imported Record</dt>
+              <dd class="mt-1 font-medium text-slate-900">{detail.document.creation_origin === 'SOURCE_IMPORT' ? 'Yes' : 'No'}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Imported At</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.imported_at)}</dd>
+            </div>
               </>
             )}
-            {detail.currentVersion && (
+            {detail.currentVersion && detail.document.creation_origin !== 'SOURCE_IMPORT' && (
             <div class={fieldCls}>
               <dt class={labelCls}>Created By</dt>
               <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.created_by_name)}</dd>

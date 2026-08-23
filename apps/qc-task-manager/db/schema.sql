@@ -700,7 +700,11 @@ CREATE TABLE IF NOT EXISTS lab_documents (
   source_date TEXT,
   source_register_code TEXT,
   source_class TEXT,
-  created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  creation_origin TEXT NOT NULL DEFAULT 'USER' CHECK (creation_origin IN ('USER','SOURCE_IMPORT')),
+  source_page INTEGER,
+  source_row_no INTEGER,
+  imported_at TEXT,
+  created_by INTEGER REFERENCES users(id) ON DELETE RESTRICT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );

@@ -449,7 +449,11 @@ export interface LabDocument {
   source_date: string | null;
   source_register_code: string | null;
   source_class: string | null;
-  created_by: number;
+  creation_origin: 'USER' | 'SOURCE_IMPORT';
+  source_page: number | null;
+  source_row_no: number | null;
+  imported_at: string | null;
+  created_by: number | null;
   created_at: string;
   updated_at: string;
 }

@@ -313,6 +313,7 @@ const LAB_DOCUMENT_LIST_SELECT = `
   SELECT d.id, d.code, d.title, d.type, d.status,
          d.effective_date, d.review_due_date, d.owner_id, d.created_by, d.created_at, d.updated_at,
          d.source_revision, d.source_date, d.source_register_code, d.source_class,
+         d.creation_origin, d.source_page, d.source_row_no, d.imported_at,
          v.version,
          u.full_name AS owner_name,
          p.name AS product_name`;
@@ -364,7 +365,7 @@ export interface LabDocumentListRow {
   owner_id: number | null;
   owner_name: string | null;
   product_name: string | null;
-  created_by: number;
+  created_by: number | null;
   effective_date: string | null;
   review_due_date: string | null;
   /** Derived review-timing bucket (review management) — null when no date. */
@@ -375,6 +376,10 @@ export interface LabDocumentListRow {
   source_date: string | null;
   source_register_code: string | null;
   source_class: string | null;
+  creation_origin: 'USER' | 'SOURCE_IMPORT';
+  source_page: number | null;
+  source_row_no: number | null;
+  imported_at: string | null;
 }
 
 export interface LabDocumentSearchResult {
@@ -693,7 +698,7 @@ function notifyDocumentReviewDue(document: {
   code: string;
   title: string;
   owner_id: number | null;
-  created_by: number;
+  created_by: number | null;
   review_due_date: string | null;
 }): void {
   const state = deriveDocumentReviewState(document.review_due_date);
@@ -783,6 +788,9 @@ export function listLabUsersForDocumentForm(): Array<{ id: number; full_name: st
  */
 export function createLabDocument(data: LabDocumentFormData, actor: DocumentActor): number {
   const sessionActorId = actorId(actor);
+  if (!Number.isInteger(sessionActorId) || sessionActorId <= 0) {
+    throw new Error('A valid session user is required to create a controlled document.');
+  }
   const role = actorRole(actor);
   return transaction(() => {
     const db = getDb();
@@ -1284,7 +1292,7 @@ export function archiveLabDocument(
     const note = reason?.trim() || `Archived ${document.code}`;
     auditLabDocument(documentId, actor.id, 'STATUS_TRANSITION', note, prevStatus, 'ARCHIVED');
 
-    const recipient = document.owner_id ?? document.created_by;
+  const recipient = document.owner_id ?? document.created_by;
     if (recipient) {
       createNotification({
         userId: recipient,

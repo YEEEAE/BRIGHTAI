@@ -139,6 +139,11 @@ try {
   {
     const rows = db.prepare("SELECT * FROM lab_documents WHERE type = 'WI' AND source_register_code = 'F-4-2-1-2'").all();
     eq(rows.length, 33, 'WI catalog: exactly 33 source rows');
+    eq(rows.filter((row) => row.creation_origin === 'SOURCE_IMPORT').length, 33, 'WI catalog: source origin on all rows');
+    eq(rows.filter((row) => row.created_by === null).length, 33, 'WI catalog: no fake created_by');
+    eq(new Set(rows.map((row) => row.source_row_no)).size, 33, 'WI catalog: source rows are unique');
+    ok(rows.every((row) => row.source_page === 1 && row.source_row_no >= 1 && row.source_row_no <= 33), 'WI catalog: page 1 and rows 1..33');
+    ok(rows.every((row) => row.imported_at), 'WI catalog: imported_at is preserved');
     eq(new Set(rows.map((row) => row.code)).size, 33, 'WI catalog: codes are unique');
     eq(rows.filter((row) => row.source_revision === 0).length, 25, 'WI catalog: Rev 0 preserved');
     eq(rows.filter((row) => row.source_date === '2025-09-30').length, 2, 'WI catalog: source dates normalized');
@@ -149,6 +154,8 @@ try {
     eq(docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, q: 'Temperature Prob' }).total, 2, 'WI catalog: searchable without content');
     const imported = db.prepare("SELECT * FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
     ok(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, imported), 'WI catalog: employee may Add Content');
+    ok(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, { ...imported, source_register_code: 'DIFFERENT-REGISTER', creation_origin: 'SOURCE_IMPORT', current_version_id: null, status: 'DRAFT', owner_id: null }), 'WI catalog: future source register uses provenance');
+    ok(!perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, { ...imported, creation_origin: 'USER', source_register_code: null, current_version_id: null, status: 'DRAFT', owner_id: null, created_by: managerId }), 'WI catalog: user-created identity still requires ownership');
     const before = db.prepare("SELECT title, current_version_id, status FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
     const report = wiCatalog.importWICatalog(db);
     eq(report.imported, 0, 'WI catalog: second import is idempotent');

@@ -9,6 +9,7 @@ const DEFAULT_MIGRATIONS_DIR = resolve(__dirname, '../../db/migrations');
 const LEGACY_MARKER = '-- brightai:legacy-reconcile';
 const DESTRUCTIVE = /\b(drop\s+table|drop\s+column|truncate|delete\s+from)\b/i;
 const ALLOW_DESTRUCTIVE = /--\s*brightai:allow-destructive\b/i;
+const FOREIGN_KEYS_OFF = /--\s*brightai:foreign-keys-off\b/i;
 
 export class MigrationError extends Error {
   constructor(message: string, options?: { cause?: unknown }) {
@@ -158,6 +159,8 @@ export function runMigrations(db: BetterSqliteDatabase, options: { migrationsDir
     try {
       if (DESTRUCTIVE.test(migration.source) && !ALLOW_DESTRUCTIVE.test(migration.source)) throw new MigrationError(`Destructive SQL rejected in ${migration.file}`);
       if (DESTRUCTIVE.test(migration.source) && options.backup !== false) backupBeforeMigration(db, options.backupDir ?? join(dirname(typeof db.name === 'string' ? db.name : process.cwd()), 'backups'));
+      const rebuildsReferencedTable = FOREIGN_KEYS_OFF.test(migration.source);
+      if (rebuildsReferencedTable) db.pragma('foreign_keys = OFF');
       db.transaction(() => {
         if (migration.source.includes(LEGACY_MARKER)) {
           const initial = migrations.find((candidate) => candidate.version === 1);
@@ -169,9 +172,15 @@ export function runMigrations(db: BetterSqliteDatabase, options: { migrationsDir
         if (foreignKeys.length > 0) throw new MigrationError(`Foreign key check failed after ${migration.file}`);
         db.prepare('INSERT INTO schema_migrations (version, name, checksum, applied_at) VALUES (?, ?, ?, datetime(\'now\'))').run(migration.version, migration.name, migration.checksum);
       })();
+      if (rebuildsReferencedTable) {
+        db.pragma('foreign_keys = ON');
+        const foreignKeys = db.pragma('foreign_key_check') as unknown[];
+        if (foreignKeys.length > 0) throw new MigrationError(`Foreign key check failed after ${migration.file}`);
+      }
       newlyApplied.push(migration);
       applied.set(migration.version, migration);
     } catch (error) {
+      if (FOREIGN_KEYS_OFF.test(migration.source)) db.pragma('foreign_keys = ON');
       const message = error instanceof Error ? error.message : String(error);
       db.prepare('INSERT INTO schema_migration_failures (version, name, checksum, error_message, failed_at) VALUES (?, ?, ?, ?, datetime(\'now\'))').run(migration.version, migration.name, migration.checksum, message);
       throw error instanceof MigrationError ? error : new MigrationError(`Migration ${migration.file} failed: ${message}`, { cause: error });

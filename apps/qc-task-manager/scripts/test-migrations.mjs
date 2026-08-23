@@ -51,8 +51,8 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 32);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 32);
+    assert.equal(result.applied.length, 33);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 33);
     for (const [table, column] of [
       ['lab_test_records', 'testing_date'], ['lab_test_records', 'actual_force'],
       ['lab_test_records', 'torque_value'], ['lab_test_records', 'humidity_measured'],
@@ -60,6 +60,8 @@ try {
       ['lab_test_template_versions', 'effective_date'],
       ['lab_documents', 'source_revision'], ['lab_documents', 'source_date'],
       ['lab_documents', 'source_register_code'], ['lab_documents', 'source_class'],
+      ['lab_documents', 'creation_origin'], ['lab_documents', 'source_page'],
+      ['lab_documents', 'source_row_no'], ['lab_documents', 'imported_at'],
     ]) {
       assert.ok(db.prepare(`PRAGMA table_info(${table})`).all().some((c) => c.name === column), `${table}.${column} exists`);
     }
@@ -73,6 +75,53 @@ try {
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_tests_status'").get());
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_doc_ack_version'").get());
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_saved_views_user'").get());
+    assert.deepEqual(db.pragma('foreign_key_check'), []);
+    db.close();
+  }
+
+  console.log('■ WI provenance migration preserves identities and removes fake authors');
+  {
+    const v32Dir = join(tempRoot, 'migrations-v32-wi');
+    mkdirSync(v32Dir, { recursive: true });
+    for (const file of readdirSync(migrationDir).filter((f) => /^\d{3}_/.test(f)).sort()) {
+      if (Number(file.slice(0, 3)) <= 32) copyFileSync(join(migrationDir, file), join(v32Dir, file));
+    }
+    const db = database('wi-provenance');
+    runMigrations(db, { migrationsDir: v32Dir, backup: false });
+    db.prepare("INSERT INTO users (id, username, password_hash, full_name, role) VALUES (1, 'legacy', 'hash', 'Legacy User', 'employee')").run();
+    db.prepare(`INSERT INTO lab_documents
+      (id, code, title, type, status, current_version_id, source_revision, source_date, source_register_code, source_class, created_by, created_at, updated_at)
+      VALUES (10, 'WI-LEGACY', 'Legacy WI', 'WI', 'DRAFT', NULL, 0, '2025-01-01', 'F-4-2-1-2', 'Class I', 1, '2026-08-23 10:00:00', '2026-08-23 10:00:00')`).run();
+    db.prepare("INSERT INTO lab_documents (id, code, title, type, status, created_by) VALUES (11, 'SOP-USER', 'User SOP', 'SOP', 'DRAFT', 1)").run();
+    runMigrations(db, { migrationsDir: migrationDir, backup: false });
+    const row = db.prepare("SELECT * FROM lab_documents WHERE id=10").get();
+    assert.equal(row.creation_origin, 'SOURCE_IMPORT');
+    assert.equal(row.created_by, null);
+    assert.equal(row.source_page, 1);
+    assert.equal(row.source_row_no, 1);
+    assert.equal(row.imported_at, '2026-08-23 10:00:00');
+    assert.equal(db.prepare("SELECT creation_origin FROM lab_documents WHERE id=11").get().creation_origin, 'USER');
+    assert.equal(db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='lab_documents'").get().sql.includes('created_by INTEGER REFERENCES'), true);
+    db.close();
+  }
+
+  console.log('■ WI provenance rebuild preserves document children');
+  {
+    const v32Dir = join(tempRoot, 'migrations-v32-wi-children');
+    mkdirSync(v32Dir, { recursive: true });
+    for (const file of readdirSync(migrationDir).filter((f) => /^\d{3}_/.test(f)).sort()) {
+      if (Number(file.slice(0, 3)) <= 32) copyFileSync(join(migrationDir, file), join(v32Dir, file));
+    }
+    const db = database('wi-provenance-children');
+    runMigrations(db, { migrationsDir: v32Dir, backup: false });
+    db.prepare("INSERT INTO users (id, username, password_hash, full_name, role) VALUES (1, 'author', 'hash', 'Author', 'employee')").run();
+    const documentId = Number(db.prepare("INSERT INTO lab_documents (code, title, type, status, owner_id, created_by) VALUES ('WI-CHILD', 'Child WI', 'WI', 'DRAFT', 1, 1)").run().lastInsertRowid);
+    const versionId = Number(db.prepare("INSERT INTO lab_document_versions (document_id, version, content_md, author_id) VALUES (?, 1, 'content', 1)").run(documentId).lastInsertRowid);
+    db.prepare('UPDATE lab_documents SET current_version_id = ? WHERE id = ?').run(versionId, documentId);
+    runMigrations(db, { migrationsDir: migrationDir, backup: false });
+    assert.equal(db.prepare('SELECT title FROM lab_documents WHERE id=?').get(documentId).title, 'Child WI');
+    assert.equal(db.prepare('SELECT content_md FROM lab_document_versions WHERE id=?').get(versionId).content_md, 'content');
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM lab_document_versions WHERE document_id=?').get(documentId).n, 1);
     assert.deepEqual(db.pragma('foreign_key_check'), []);
     db.close();
   }
@@ -92,7 +141,7 @@ try {
     const before = db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId);
     assert.equal(verifyQcAuditChain(db).status, 'PASS');
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 1);
+    assert.equal(upgraded.applied.length, 2);
     assert.deepEqual(db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId), before);
     db.prepare('DELETE FROM tasks WHERE id=1').run();
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log WHERE id=? AND task_id=1').get(qcId).n, 1);
@@ -126,7 +175,7 @@ try {
       .all();
 
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 22, 'upgrade applies exactly migrations 011-032');
+    assert.equal(upgraded.applied.length, 23, 'upgrade applies exactly migrations 011-033');
     const after = db
       .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
       .all();
@@ -166,7 +215,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 32);
+    assert.equal(first.applied.length, 33);
     assert.equal(second.applied.length, 0);
     db.close();
   }

@@ -389,7 +389,11 @@ function fmt(value: unknown): string {
                       <th scope="col" class="px-4 py-2.5 font-semibold" set:html={th(s.field, s.label)} />
                     ))}
                     <th scope="col" class="px-4 py-2.5 font-semibold">Source Rev</th>
+                    <th scope="col" class="px-4 py-2.5 font-semibold">Source Register</th>
                     <th scope="col" class="px-4 py-2.5 font-semibold">Source Date</th>
+                    <th scope="col" class="px-4 py-2.5 font-semibold">Source Page</th>
+                    <th scope="col" class="px-4 py-2.5 font-semibold">Source Row</th>
+                    <th scope="col" class="px-4 py-2.5 font-semibold">Imported Record</th>
                     <th scope="col" class="px-4 py-2.5 font-semibold"><span class="sr-only">Actions</span></th>
                   </tr>
                 </thead>
@@ -412,7 +416,11 @@ function fmt(value: unknown): string {
                       <td class="px-4 py-2" set:html={reviewBadge(r.review_state)} />
                       <td class="px-4 py-2 whitespace-nowrap text-slate-500" dir="ltr">{r.updated_at.slice(0, 10)}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.source_revision)}</td>
+                      <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.source_register_code)}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.source_date)}</td>
+                      <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.source_page)}</td>
+                      <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.source_row_no)}</td>
+                      <td class="px-4 py-2 whitespace-nowrap text-slate-700">{r.creation_origin === 'SOURCE_IMPORT' ? 'Yes' : 'No'}</td>
                       <td class="px-4 py-2">
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
                           <a

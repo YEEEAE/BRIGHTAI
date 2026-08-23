@@ -62,6 +62,7 @@ import labTestFormAlignmentSql from '../../db/migrations/028_lab_test_form_align
 import wiCatalogMigrationSql from '../../db/migrations/029_wi_catalog_import.sql?raw';
 import auditDurabilityMigrationSql from '../../db/migrations/030_audit_durability.sql?raw';
 import qcAuditTaskIdentityMigrationSql from '../../db/migrations/032_qc_audit_task_identity.sql?raw';
+import wiProvenanceMigrationSql from '../../db/migrations/033_wi_provenance.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 import { backfillQcAuditChain } from './audit/qcChain';
 import { importWICatalog } from './lab/wiCatalog';
@@ -328,6 +329,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '030_audit_durability.sql', source: auditDurabilityMigrationSql },
       { file: '031_placeholder.sql', source: '-- reserved migration version 031\n' },
       { file: '032_qc_audit_task_identity.sql', source: qcAuditTaskIdentityMigrationSql },
+      { file: '033_wi_provenance.sql', source: wiProvenanceMigrationSql },
     ],
   });
   backfillAuditChain(db);

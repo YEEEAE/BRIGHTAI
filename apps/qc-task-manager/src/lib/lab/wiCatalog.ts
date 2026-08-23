@@ -61,14 +61,12 @@ export interface WICatalogImportReport {
 /** Import catalog identities only. Existing code rows are never overwritten. */
 export function importWICatalog(db: BetterSqliteDatabase): WICatalogImportReport {
   const report: WICatalogImportReport = { imported: 0, collisions: 0, collisionCodes: [] };
-  const firstUser = db.prepare('SELECT id FROM users ORDER BY id LIMIT 1').get() as { id: number } | undefined;
-  if (!firstUser) throw new Error('Cannot import WI catalog before a legitimate user exists.');
-
   const insert = db.prepare(`
     INSERT INTO lab_documents
       (code, title, type, owner_id, reviewer_id, approver_id, current_version_id, status,
-       created_by, source_revision, source_date, source_register_code, source_class)
-    VALUES (?, ?, 'WI', NULL, NULL, NULL, NULL, 'DRAFT', ?, ?, ?, ?, ?)
+       creation_origin, source_page, source_row_no, imported_at, created_by,
+       source_revision, source_date, source_register_code, source_class)
+    VALUES (?, ?, 'WI', NULL, NULL, NULL, NULL, 'DRAFT', 'SOURCE_IMPORT', 1, ?, datetime('now'), NULL, ?, ?, ?, ?)
   `);
   const existing = db.prepare('SELECT id FROM lab_documents WHERE code = ? COLLATE NOCASE').pluck();
   const fillMetadata = db.prepare(`
@@ -89,7 +87,7 @@ export function importWICatalog(db: BetterSqliteDatabase): WICatalogImportReport
         fillMetadata.run(row.source_revision, row.source_date, WI_SOURCE_REGISTER_CODE, WI_SOURCE_CLASS, id);
         continue;
       }
-      insert.run(row.code, row.title, firstUser.id, row.source_revision, row.source_date, WI_SOURCE_REGISTER_CODE, WI_SOURCE_CLASS);
+      insert.run(row.code, row.title, report.imported + 1, row.source_revision, row.source_date, WI_SOURCE_REGISTER_CODE, WI_SOURCE_CLASS);
       report.imported += 1;
     }
   });

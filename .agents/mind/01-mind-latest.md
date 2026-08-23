@@ -8,6 +8,14 @@ version: 2.8.26
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-WI-PROVENANCE-014: فصل هوية استيراد WI الورقي عن تأليف المستخدم — تحقق محلي مكتمل بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ migration **033** أعادت بناء `lab_documents` بشكل row-preserving مع إبقاء IDs والقيم والنسخ التابعة، وأضافت `creation_origin`, `source_page`, `source_row_no`, `imported_at` وجعلت `created_by` nullable. سجلات F-4-2-1-2 تصير `SOURCE_IMPORT` بلا مؤلف وهمي، page 1 وrows 1..33، و`imported_at=created_at` للبيانات الموجودة.
+- **Application/permissions/UI**: importer ما عاد يبحث عن أول مستخدم؛ التأليف الأول session-bound ويضع owner/version author ولا يغيّر `creation_origin`. صلاحية Add Content تعتمد على provenance + catalog-only state بدل سجل محدد. الواجهة تعرض Source Register/Page/Row/Revision/Date وImported Record/At، ولا تعرض Created By لسجل مستورد بلا محتوى.
+- **Migration runner**: marker محكوم `brightai:foreign-keys-off` مع إعادة تفعيل FK وفحص `foreign_key_check` بعد rebuild، لحفظ `lab_document_versions` التابعة بدل cascade.
+- **Verification**: `pnpm test` **exit 0**؛ `pnpm test:migrations` PASS؛ `pnpm test:lab-documents` **289/0**؛ `pnpm typecheck` **0 errors / 0 warnings / 19 hints**؛ `NODE_ENV=production pnpm build` Complete؛ `git diff --check` PASS. لا production verification.
+- **Status**: delivered locally؛ لا commit ولا push ولا deploy؛ ملفات untracked تحت `.agents/skills/systematic-debugging/` محفوظة لأنها خارج نطاق المهمة.
+
 ### 2026-08-23 — QC-AUDIT-DURABILITY-COMPLETION-013: فصل هوية task التاريخية عن qc_audit_log وإغلاق فجوة الحذف — تحقق محلي مكتمل بدون commit/push/deploy
 
 - **Scope**: `apps/qc-task-manager/`؛ أضيفت migration **032** لإعادة بناء `qc_audit_log` مع إبقاء `task_id` كرقم تاريخي بلا FK cascade، مع إبقاء `actor_id` FK `ON DELETE RESTRICT`، وحفظ كل الأعمدة والـ IDs والقيم والهاشات كما هي وإعادة فهرس `idx_qc_audit_entity`. أضيف slot **031** محجوز فقط لأن migration runner يفرض تسلسلًا متصلًا.
