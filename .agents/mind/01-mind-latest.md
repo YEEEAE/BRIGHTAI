@@ -8,6 +8,15 @@ version: 2.8.26
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-AUDIT-DURABILITY-COMPLETION-013: فصل هوية task التاريخية عن qc_audit_log وإغلاق فجوة الحذف — تحقق محلي مكتمل بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ أضيفت migration **032** لإعادة بناء `qc_audit_log` مع إبقاء `task_id` كرقم تاريخي بلا FK cascade، مع إبقاء `actor_id` FK `ON DELETE RESTRICT`، وحفظ كل الأعمدة والـ IDs والقيم والهاشات كما هي وإعادة فهرس `idx_qc_audit_entity`. أضيف slot **031** محجوز فقط لأن migration runner يفرض تسلسلًا متصلًا.
+- **Integrity**: migration 032 لا تعيد حساب الهاشات ولا تتجاهل tampering؛ اختبار upgrade من v31 إلى v32 يتحقق من سلامة السلسلة قبل/بعد، تطابق `previous_hash/event_hash`، ثم حذف task مع بقاء سجل QC وسلامة السلسلة. اختبار الحذف ينشئ Finding مرتبطًا بالمهمة، QC audit event، وapproved deletion؛ Finding يُحذف كطفل لكن سجل `qc_audit_log` يبقى.
+- **Admin helper**: `verifyAllAuditChains(db)` في `src/lib/audit/qcChain.ts` يعيد حالة task chain وQC/Lab chain و`lastVerifiedAt: null` إلى أن يُحفظ مستقبلًا؛ القراءة كاملة لكن لا تُستدعى من health العام تلقائيًا.
+- **Compatibility**: حُدّث `db/schema.sql` وembedded migrations وعدادات الاختبارات وDB doctor إلى schema version **32** مع بقاء عدد الجداول **51**.
+- **Verification**: `pnpm test` **exit 0**؛ `pnpm test:migrations` PASS؛ `pnpm test:audit-integrity` PASS؛ `pnpm test:delete-durability` PASS؛ `pnpm test:db-doctor` PASS؛ `pnpm test:dashboard-reports` PASS؛ `pnpm typecheck` **0 errors / 0 warnings / 19 hints**؛ `NODE_ENV=production pnpm build` Complete؛ `git diff --check` PASS. لا production verification.
+- **Status**: delivered locally؛ لا commit ولا push ولا deploy؛ المستخدم يراجع ويلتزم بنفسه.
+
 ### 2026-08-23 — QC-POST-IMPLEMENTATION-CORRECTNESS-012: إصلاح correctness بعد Prompts 001–010 — تحقق محلي مكتمل بدون commit/push/deploy
 
 - **Scope**: `apps/qc-task-manager/`؛ لا migration جديدة لأن cancellation API كانت dead/unreferenced فحُذفت بدل إدخال lifecycle غير مستخدم.

@@ -11,7 +11,7 @@ const root = mkdtempSync(join(tmpdir(), 'brightai-audit-'));
 process.env.QC_DATABASE_PATH = join(root, 'activity.db');
 const db = new Database(process.env.QC_DATABASE_PATH);
 const { createAuditEventHash, logActivity, verifyAuditChain } = await import('../src/lib/activity.ts');
-const { appendQcAudit, verifyQcAuditChain } = await import('../src/lib/audit/qcChain.ts');
+const { appendQcAudit, verifyQcAuditChain, verifyAllAuditChains } = await import('../src/lib/audit/qcChain.ts');
 const { closeDatabase } = await import('../src/lib/db.ts');
 
 try {
@@ -54,6 +54,9 @@ try {
   const qc1 = appendQcAudit(db, { entityType: 'LAB_TEST', entityId: 1, actorId: 1, action: 'CREATE', note: 'one', createdAt: '2026-08-23T10:00:00.000Z' });
   appendQcAudit(db, { entityType: 'LAB_TEST', entityId: 1, actorId: 1, action: 'UPDATE', note: 'two', createdAt: '2026-08-23T10:01:00.000Z' });
   assert.equal(verifyQcAuditChain(db).status, 'PASS');
+  assert.equal(verifyAllAuditChains(db).task.status, 'PASS');
+  assert.equal(verifyAllAuditChains(db).qcLab.status, 'PASS');
+  assert.equal(verifyAllAuditChains(db).lastVerifiedAt, null);
   db.prepare("UPDATE qc_audit_log SET note='tampered' WHERE id=?").run(qc1);
   assert.equal(verifyQcAuditChain(db).status, 'FAIL');
   db.prepare("UPDATE qc_audit_log SET note='one' WHERE id=?").run(qc1);

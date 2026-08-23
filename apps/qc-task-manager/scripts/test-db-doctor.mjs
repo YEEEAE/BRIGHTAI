@@ -34,9 +34,9 @@ try {
   const freshResult = runDoctor(fresh);
   assert.equal(freshResult.status, 0, freshResult.stderr);
   assert.match(freshResult.stdout, /PASS/);
-  assert.match(freshResult.stdout, /schema migration version:\s*30/);
-  assert.match(freshResult.stdout, /latest repository migration version:\s*30/);
-  assert.match(freshResult.stdout, /applied migration count:\s*30/);
+  assert.match(freshResult.stdout, /schema migration version:\s*32/);
+  assert.match(freshResult.stdout, /latest repository migration version:\s*32/);
+  assert.match(freshResult.stdout, /applied migration count:\s*32/);
   assert.doesNotMatch(freshResult.stdout, /DRIFT/);
   assert.doesNotMatch(freshResult.stdout, /MISSING/);
 
@@ -54,12 +54,12 @@ try {
   const drift = createMigrated('drift');
   const driftDb = new Database(drift);
   driftDb.prepare('UPDATE schema_migrations SET checksum = ? WHERE version = 3').run('not-the-repository-checksum');
-  driftDb.prepare('DELETE FROM schema_migrations WHERE version = 30').run();
+  driftDb.prepare('DELETE FROM schema_migrations WHERE version = 32').run();
   driftDb.close();
   const driftResult = runDoctor(drift);
   assert.notEqual(driftResult.status, 0);
   assert.match(driftResult.stdout, /003 .* DRIFT/);
-  assert.match(driftResult.stdout, /030 .* MISSING/);
+  assert.match(driftResult.stdout, /032 .* MISSING/);
 
   console.log('■ Foreign-key violation and integrity failure reporting');
   const fk = join(root, 'fk.db');

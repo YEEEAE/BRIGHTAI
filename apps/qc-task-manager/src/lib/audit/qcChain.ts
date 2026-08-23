@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
+import { verifyAuditChain, type AuditVerification } from './chain';
 
 export type QcAuditRow = {
   id: number;
@@ -102,4 +103,19 @@ export function verifyQcAuditChain(db: BetterSqliteDatabase): QcAuditVerificatio
     previous = row.event_hash;
   }
   return { status: 'PASS' };
+}
+
+export type AllAuditChainsVerification = {
+  task: AuditVerification;
+  qcLab: QcAuditVerification;
+  lastVerifiedAt: string | null;
+};
+
+/** Read-only admin diagnostic; callers choose when to run the full scan. */
+export function verifyAllAuditChains(db: BetterSqliteDatabase): AllAuditChainsVerification {
+  return {
+    task: verifyAuditChain(db),
+    qcLab: verifyQcAuditChain(db),
+    lastVerifiedAt: null,
+  };
 }

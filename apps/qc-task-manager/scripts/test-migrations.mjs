@@ -51,8 +51,8 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 30);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 30);
+    assert.equal(result.applied.length, 32);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 32);
     for (const [table, column] of [
       ['lab_test_records', 'testing_date'], ['lab_test_records', 'actual_force'],
       ['lab_test_records', 'torque_value'], ['lab_test_records', 'humidity_measured'],
@@ -74,6 +74,30 @@ try {
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_doc_ack_version'").get());
     assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_lab_saved_views_user'").get());
     assert.deepEqual(db.pragma('foreign_key_check'), []);
+    db.close();
+  }
+
+  console.log('■ qc_audit_log task identity survives 032 and task deletion');
+  {
+    const v31Dir = join(tempRoot, 'migrations-v31');
+    mkdirSync(v31Dir, { recursive: true });
+    for (const file of readdirSync(migrationDir).filter((f) => /^\d{3}_/.test(f)).sort()) {
+      if (Number(file.slice(0, 3)) <= 31) copyFileSync(join(migrationDir, file), join(v31Dir, file));
+    }
+    const db = database('qc-task-identity');
+    runMigrations(db, { migrationsDir: v31Dir, backup: false });
+    db.prepare("INSERT INTO users (id, username, password_hash, full_name, role) VALUES (1, 'auditor', 'hash', 'Audit User', 'admin')").run();
+    db.prepare("INSERT INTO tasks (id, title, created_by) VALUES (1, 'Historical task', 1)").run();
+    const qcId = (await import('../src/lib/audit/qcChain.ts')).appendQcAudit(db, { entityType: 'FINDING', entityId: 1, taskId: 1, actorId: 1, action: 'CREATE', note: 'before 032', createdAt: '2026-08-23T12:00:00.000Z' });
+    const before = db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId);
+    assert.equal(verifyQcAuditChain(db).status, 'PASS');
+    const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
+    assert.equal(upgraded.applied.length, 1);
+    assert.deepEqual(db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId), before);
+    db.prepare('DELETE FROM tasks WHERE id=1').run();
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log WHERE id=? AND task_id=1').get(qcId).n, 1);
+    assert.equal(verifyQcAuditChain(db).status, 'PASS');
+    assert.equal(db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='qc_audit_log'").get().sql.includes('task_id INTEGER REFERENCES'), false);
     db.close();
   }
 
@@ -102,7 +126,7 @@ try {
       .all();
 
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 20, 'upgrade applies exactly migrations 011-030');
+    assert.equal(upgraded.applied.length, 22, 'upgrade applies exactly migrations 011-032');
     const after = db
       .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
       .all();
@@ -142,7 +166,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 30);
+    assert.equal(first.applied.length, 32);
     assert.equal(second.applied.length, 0);
     db.close();
   }
