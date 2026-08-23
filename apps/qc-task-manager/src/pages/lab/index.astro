@@ -25,6 +25,7 @@ import {
   getLabDocumentReviewsDue,
   getLabOpenRetests,
   getLabRecentActivity,
+  getWICatalogSummary,
   LAB_KPI_DRILLDOWNS,
   labDrilldownEnabled,
   type LabKpis,
@@ -70,6 +71,7 @@ let calibrationAlerts: ReturnType<typeof getLabCalibrationAlerts> = [];
 let documentReviewsDue: ReturnType<typeof getLabDocumentReviewsDue> = [];
 let openRetests: ReturnType<typeof getLabOpenRetests> = [];
 let recentActivity: ReturnType<typeof getLabRecentActivity> = [];
+let wiCatalog: ReturnType<typeof getWICatalogSummary> = { total: 0, missing_content: 0, draft_content: 0, under_review: 0, approved: 0 };
 
 try {
   kpis = getLabKpis(scope);
@@ -80,6 +82,7 @@ try {
   documentReviewsDue = getLabDocumentReviewsDue();
   openRetests = getLabOpenRetests(scope);
   if (canSeeAuditFeed) recentActivity = getLabRecentActivity(scope);
+  wiCatalog = getWICatalogSummary();
 } catch (err) {
   console.error('[lab] overview query failure', err);
   dataError = 'Could not load laboratory data. Try reloading — if the problem persists, contact an administrator.';
@@ -196,6 +199,22 @@ const calibrationLabel: Record<string, string> = {
     )}
 
     <LabSecondaryNav items={navItems} currentPath="/lab" />
+
+    <section aria-labelledby="wi-catalog-heading" class="rounded-xl border border-indigo-200 bg-indigo-50/50 p-5 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 id="wi-catalog-heading" class="text-base font-semibold text-slate-900">WI Catalog</h2>
+          <p class="mt-1 text-sm text-slate-600">Content completion: <strong dir="ltr">{wiCatalog.total - wiCatalog.missing_content} / {wiCatalog.total}</strong></p>
+        </div>
+        <a href="/lab/documents?type=WI" class="rounded-lg bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white hover:bg-indigo-700">Open WI Catalog</a>
+      </div>
+      <div class="mt-4 grid gap-2 sm:grid-cols-4">
+        <a href="/lab/documents?type=WI&content=missing" class="rounded-lg border border-slate-200 bg-white p-3 hover:border-indigo-300"><span class="block text-2xl font-semibold" dir="ltr">{wiCatalog.missing_content}</span><span class="text-xs font-medium text-slate-600">WI Missing Content</span></a>
+        <a href="/lab/documents?type=WI&content=draft" class="rounded-lg border border-slate-200 bg-white p-3 hover:border-indigo-300"><span class="block text-2xl font-semibold" dir="ltr">{wiCatalog.draft_content}</span><span class="text-xs font-medium text-slate-600">WI Draft Content</span></a>
+        <a href="/lab/documents?type=WI&content=in_review" class="rounded-lg border border-slate-200 bg-white p-3 hover:border-indigo-300"><span class="block text-2xl font-semibold" dir="ltr">{wiCatalog.under_review}</span><span class="text-xs font-medium text-slate-600">WI Under Review</span></a>
+        <a href="/lab/documents?type=WI&content=approved" class="rounded-lg border border-slate-200 bg-white p-3 hover:border-indigo-300"><span class="block text-2xl font-semibold" dir="ltr">{wiCatalog.approved}</span><span class="text-xs font-medium text-slate-600">WI Approved</span></a>
+      </div>
+    </section>
 
     {dataError && (
       <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

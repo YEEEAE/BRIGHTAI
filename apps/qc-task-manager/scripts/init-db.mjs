@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { mkdirSync, existsSync, rmSync } from 'node:fs';
 import { runMigrations } from '../src/lib/migrations.ts';
 import { seedLabEquipmentIfEmpty } from '../src/lib/lab/seed.ts';
+import { importWICatalog } from '../src/lib/lab/wiCatalog.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_DIR = resolve(__dirname, '../db');
@@ -204,6 +205,7 @@ function main() {
   const migrationResult = runMigrations(db, { backup: true, backupDir: process.env.QC_BACKUP_DIR || resolve(DB_DIR, 'backups') });
   console.log(`[init-db] schema version ${migrationResult.currentVersion}; applied ${migrationResult.applied.length} migration(s).`);
   seedUsersIfEmpty(db);
+  importWICatalog(db);
   seedDemo(db);
   // Canonical 24-device lab equipment registry (PROMPT 11). Idempotent; gated
   // by QC_SEED_LAB_EQUIPMENT !== '0' so empty-DB fixtures can opt out.

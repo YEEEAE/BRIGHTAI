@@ -107,6 +107,7 @@ try {
 
   const { getDb } = await import('../src/lib/db.ts');
   const docs = await import('../src/lib/lab/documents.ts');
+  const wiCatalog = await import('../src/lib/lab/wiCatalog.ts');
   const perms = await import('../src/lib/permissions.ts');
 
   db = getDb();
@@ -133,11 +134,29 @@ try {
     eq(docs.LAB_DOCUMENT_STATUS_LABELS.ARCHIVED, 'Archived', 'policy: ARCHIVED label');
   }
 
-  // ── Register starts empty (no fabricated documents) ──
-  console.log('■ Empty register');
+  // ── Controlled WI catalog import ──
+  console.log('■ WI catalog import');
   {
-    eq(docs.searchLabDocuments(docs.NO_LAB_DOCUMENT_FILTERS).total, 0, 'register: starts empty');
-    eq(docs.listLabDocumentOwners().length, 0, 'dropdown: no owners yet');
+    const rows = db.prepare("SELECT * FROM lab_documents WHERE type = 'WI' AND source_register_code = 'F-4-2-1-2'").all();
+    eq(rows.length, 33, 'WI catalog: exactly 33 source rows');
+    eq(new Set(rows.map((row) => row.code)).size, 33, 'WI catalog: codes are unique');
+    eq(rows.filter((row) => row.source_revision === 0).length, 25, 'WI catalog: Rev 0 preserved');
+    eq(rows.filter((row) => row.source_date === '2025-09-30').length, 2, 'WI catalog: source dates normalized');
+    eq(rows.filter((row) => row.current_version_id === null).length, 33, 'WI catalog: no current versions');
+    eq(db.prepare("SELECT COUNT(*) AS n FROM lab_document_versions WHERE document_id IN (SELECT id FROM lab_documents WHERE source_register_code = 'F-4-2-1-2')").get().n, 0, 'WI catalog: no fake versions');
+    ok(rows.some((row) => row.title === 'Production Procedure for Eye Sheild'), 'WI catalog: source spelling preserved');
+    ok(rows.some((row) => row.title === 'Production Procedure for Mannual Resuscitator'), 'WI catalog: source spelling preserved');
+    eq(docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, q: 'Temperature Prob' }).total, 2, 'WI catalog: searchable without content');
+    const imported = db.prepare("SELECT * FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
+    ok(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, imported), 'WI catalog: employee may Add Content');
+    const before = db.prepare("SELECT title, current_version_id, status FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
+    const report = wiCatalog.importWICatalog(db);
+    eq(report.imported, 0, 'WI catalog: second import is idempotent');
+    eq(report.collisions, 33, 'WI catalog: collisions are reported');
+    const after = db.prepare("SELECT title, current_version_id, status FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
+    eq(JSON.stringify(after), JSON.stringify(before), 'WI catalog: collision preserves document state');
+    // Keep the legacy register assertions isolated from the controlled import.
+    db.prepare("DELETE FROM lab_documents WHERE source_register_code = 'F-4-2-1-2'").run();
   }
 
   // ── Fixtures ──

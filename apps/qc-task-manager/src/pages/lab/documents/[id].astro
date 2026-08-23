@@ -72,6 +72,7 @@ const docAuth = detail
       owner_id: detail.document.owner_id,
       created_by: detail.document.created_by,
       author_id: detail.currentVersion?.author_id ?? null,
+      source_register_code: detail.document.source_register_code,
     }
   : null;
 
@@ -352,10 +353,32 @@ const isAuthorOrOwner = detail
                 {detail.document.product_name ? `${detail.document.product_name} (${detail.document.product_code})` : '—'}
               </dd>
             </div>
+            {detail.document.type === 'WI' && (
+              <>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Source Revision</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.source_revision)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Source Date</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.source_date)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Source Register</dt>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{fmt(detail.document.source_register_code)}</dd>
+            </div>
+            <div class={fieldCls}>
+              <dt class={labelCls}>Source Class</dt>
+              <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.source_class)}</dd>
+            </div>
+              </>
+            )}
+            {detail.currentVersion && (
             <div class={fieldCls}>
               <dt class={labelCls}>Created By</dt>
               <dd class="mt-1 font-medium text-slate-900">{fmt(detail.document.created_by_name)}</dd>
             </div>
+            )}
           </dl>
 
           {detail.document.description && (

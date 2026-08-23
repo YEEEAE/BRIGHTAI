@@ -445,6 +445,10 @@ export interface LabDocument {
   effective_date: string | null;
   review_due_date: string | null;
   approved_at: string | null;
+  source_revision: number | null;
+  source_date: string | null;
+  source_register_code: string | null;
+  source_class: string | null;
   created_by: number;
   created_at: string;
   updated_at: string;

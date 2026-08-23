@@ -8,6 +8,16 @@ version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-LAB-WI-CATALOG-007: استيراد فهرس WI الورقي وتمكين تأليف المحتوى — التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ migration `029_wi_catalog_import.sql` أضافت `source_revision`, `source_date`, `source_register_code`, `source_class` إلى `lab_documents` مع فهرس مصدر. استُخدم `lab_documents` و`lab_document_versions` فقط؛ لا جداول WI موازية.
+- **Import**: استُوردت بالضبط **33** هوية WI من page 1/3، keyed by `lab_documents.code`، `type='WI'`, `status='DRAFT'`, `current_version_id=NULL`, وبدون إنشاء `lab_document_versions` أو `qc_audit_log` actors. Rev 0 محفوظ (25 صفًا)، والتواريخ normalized إلى `YYYY-MM-DD`، وspelling المصدر محفوظ (`Eye Sheild`, `Face Sheild`, `Temperature Prob`, `Mannual Resuscitator`). collisions تحفظ العنوان/المحتوى/الحالة وتملأ metadata الناقصة فقط وتظهر في تقرير الاستيراد.
+- **Authoring/UI**: الموظف يقدر `Add Content` للـ catalog-only WI؛ أول محتوى غير فارغ يبقى عبر `LabDocumentEditor` ويُنشئ v1 DRAFT transactionally وبـ session author/owner. صفحة التفاصيل تعرض metadata المصدر وحالة `No content has been entered yet.` بدون Version 1 أو fake author قبل المحتوى. قائمة المستندات أضيف لها source columns وContent Status/Missing Content filter، والبحث يشمل source metadata. Command Center يعرض WI Catalog/Missing/Draft/Under Review/Approved وcompletion من DB counts.
+- **Data quality/reporting**: catalog-only WIs مستثناة من generic Data Quality gaps حتى لا تتكرر كأخطاء؛ Missing Content هو المسار التشغيلي المقصود. تقارير WI تشمل الكتالوج المستورد.
+- **Files**: `db/migrations/029_wi_catalog_import.sql`, `db/schema.sql`, `src/lib/db.ts`, `src/lib/lab/wiCatalog.ts`, `src/lib/lab/{documents,overview,dataQuality}.ts`, `src/lib/permissions.ts`, `src/lib/types.ts`, صفحات `lab/index`, `lab/documents/index`, `lab/documents/[id]`, `scripts/init-db.mjs`، واختبارات migration/documents/overview/data-quality/reports والنسخ المتأثرة.
+- **Verification**: `pnpm test` = **ناجح بالكامل**؛ `pnpm test:lab-documents` = **282/0**؛ `pnpm test:migrations` = PASS؛ `pnpm test:lab-overview` = **92/0**؛ `pnpm test:lab-data-quality` = **38/0**؛ `pnpm typecheck` = **0 errors / 0 warnings / 19 hints**؛ `pnpm build` = **Complete**؛ `git diff --check` = PASS. لا browser E2E ولا production verification.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ ملفات `.agents/skills/**` المحذوفة بالخطأ أثناء التحقق أُعيدت إلى حالتها الأصلية، وتبقى تغييرات QC فقط للمستخدم.
+
 ### 2026-08-23 — QC-LAB-MANAGEMENT-VISIBILITY-006: شفافية تغييرات مساهمي المختبر — التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy
 
 - **Scope**: `apps/qc-task-manager/`؛ طورت صفحة `/lab/change-requests` لتعرض إدارة المختبر كل الطلبات مع Request ID/entity/operation/target/requester/role/submitted/status/reviewer/reviewed/stale-conflict، وتعرض المساهمين طلباتهم فقط. صفحة التفاصيل تعرض field-level diff للـ UPDATE وraw JSON داخل details تشخيصي ثانوي.

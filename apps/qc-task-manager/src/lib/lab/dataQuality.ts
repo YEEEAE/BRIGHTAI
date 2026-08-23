@@ -307,7 +307,9 @@ function documentRows(where: string): DocumentGapRow[] {
     .prepare(
       `SELECT d.id, d.code
        FROM lab_documents d
-       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND (${where})
+       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED')
+         AND NOT (d.type = 'WI' AND COALESCE(d.source_register_code, '') = 'F-4-2-1-2' AND d.current_version_id IS NULL)
+         AND (${where})
        ORDER BY d.id ASC`,
     )
     .all() as DocumentGapRow[];

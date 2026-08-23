@@ -155,7 +155,7 @@ try {
     ok(Boolean(idx), 'uq_notifications_dedupe_key index exists');
     ok(String(idx.sql).includes('WHERE dedupe_key IS NOT NULL'), 'index is partial (interactive rows unaffected)');
     const version = db.prepare('SELECT MAX(version) AS v FROM schema_migrations').get().v;
-    eq(version, 28, 'schema version is 28');
+    eq(version, 29, 'schema version is 29');
   }
 
   console.log('\n→ Calibration buckets + recipients');

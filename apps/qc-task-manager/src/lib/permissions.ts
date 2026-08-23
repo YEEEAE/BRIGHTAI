@@ -193,7 +193,7 @@ export function canOverrideEvidenceGate(role: Role): boolean {
 /** Minimal shape needed for lab test authorization checks. */
 type LabTestAuth = { status: LabTestStatus; tested_by: number | null; reviewed_by: number | null; created_by: number };
 /** Minimal shape needed for lab document authorization checks. */
-type LabDocumentAuth = { status: LabDocumentStatus; owner_id: number | null; created_by: number; author_id?: number | null };
+type LabDocumentAuth = { status: LabDocumentStatus; owner_id: number | null; created_by: number; author_id?: number | null; source_register_code?: string | null };
 type LabTemplateAuth = { status: string; created_by: number; author_id?: number | null };
 
 const ALL_ROLES: readonly Role[] = ['admin', 'manager', 'supervisor', 'employee'];
@@ -508,7 +508,11 @@ export function canEditLabDocumentRecord(
   if (doc.status === 'ARCHIVED' || doc.status === 'SUPERSEDED') return false;
   if (hasRankAtLeast(user.role, 'manager')) return true;
   // employee/supervisor: only owned/authored DRAFT content may be edited.
-  return doc.status === 'DRAFT' && (doc.owner_id === user.id || doc.created_by === user.id);
+  return doc.status === 'DRAFT' && (
+    doc.owner_id === user.id ||
+    doc.created_by === user.id ||
+    (doc.source_register_code === 'F-4-2-1-2' && doc.owner_id === null && doc.author_id == null)
+  );
 }
 
 /**

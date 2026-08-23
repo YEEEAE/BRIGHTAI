@@ -192,6 +192,8 @@ export interface LabDocumentSearchFilters {
   type: LabDocumentType | null;
   /** Stored status filter — one of LAB_DOCUMENT_STATUSES. */
   status: LabDocumentStatus | null;
+  /** Content-state filter; missing is current_version_id IS NULL. */
+  content: 'missing' | 'draft' | 'in_review' | 'approved' | null;
   /** Restrict to one owner (users.id). */
   owner: number | null;
   /** Restrict to documents linked to one equipment id (lab_document_links). */
@@ -215,6 +217,7 @@ export const NO_LAB_DOCUMENT_FILTERS: LabDocumentSearchFilters = {
   q: null,
   type: null,
   status: null,
+  content: null,
   owner: null,
   equipment: null,
   product: null,
@@ -255,6 +258,10 @@ export function parseLabDocumentSearchFilters(url: URL): LabDocumentSearchFilter
   if (status && (LAB_DOCUMENT_STATUSES as readonly string[]).includes(status)) {
     f.status = status as LabDocumentStatus;
   }
+  const content = sp.get('content');
+  if (content && (['missing', 'draft', 'in_review', 'approved'] as const).includes(content as never)) {
+    f.content = content as LabDocumentSearchFilters['content'];
+  }
   const owner = positiveInt(sp.get('owner') ?? '');
   if (owner !== null) f.owner = owner;
   const equipment = positiveInt(sp.get('equipment') ?? '');
@@ -279,7 +286,7 @@ export function parseLabDocumentSearchFilters(url: URL): LabDocumentSearchFilter
 /** True when any list filter is active (drives the "Reset" affordance). */
 export function hasLabDocumentFilters(f: LabDocumentSearchFilters): boolean {
   return Boolean(
-    f.q || f.type || f.status || f.owner !== null || f.equipment !== null || f.product !== null || f.review !== null,
+    f.q || f.type || f.status || f.content || f.owner !== null || f.equipment !== null || f.product !== null || f.review !== null,
   );
 }
 
@@ -289,6 +296,7 @@ export function labDocumentFiltersToQuery(f: LabDocumentSearchFilters): string {
   if (f.q) sp.set('q', f.q);
   if (f.type) sp.set('type', f.type);
   if (f.status) sp.set('status', f.status);
+  if (f.content) sp.set('content', f.content);
   if (f.owner !== null) sp.set('owner', String(f.owner));
   if (f.equipment !== null) sp.set('equipment', String(f.equipment));
   if (f.product !== null) sp.set('product', String(f.product));
@@ -303,6 +311,7 @@ export function labDocumentFiltersToQuery(f: LabDocumentSearchFilters): string {
 const LAB_DOCUMENT_LIST_SELECT = `
   SELECT d.id, d.code, d.title, d.type, d.status,
          d.effective_date, d.review_due_date, d.owner_id, d.created_by, d.created_at, d.updated_at,
+         d.source_revision, d.source_date, d.source_register_code, d.source_class,
          v.version,
          u.full_name AS owner_name,
          p.name AS product_name`;
@@ -361,6 +370,10 @@ export interface LabDocumentListRow {
   review_state: LabDocumentReviewState | null;
   created_at: string;
   updated_at: string;
+  source_revision: number | null;
+  source_date: string | null;
+  source_register_code: string | null;
+  source_class: string | null;
 }
 
 export interface LabDocumentSearchResult {
@@ -388,9 +401,10 @@ export function searchLabDocuments(f: LabDocumentSearchFilters): LabDocumentSear
       "(d.title LIKE ? ESCAPE '\\' OR d.code LIKE ? ESCAPE '\\' " +
         "OR p.name LIKE ? ESCAPE '\\' OR p.code LIKE ? ESCAPE '\\' " +
         `OR ${PRODUCT_LINK_NAME_EXISTS} AND (lpp.name LIKE ? ESCAPE '\\' OR lpp.code LIKE ? ESCAPE '\\')) ` +
-        `OR ${EQUIPMENT_LINK_EXISTS} AND (e.code LIKE ? ESCAPE '\\' OR e.name LIKE ? ESCAPE '\\')))`,
+        `OR ${EQUIPMENT_LINK_EXISTS} AND (e.code LIKE ? ESCAPE '\\' OR e.name LIKE ? ESCAPE '\\')
+         OR d.source_register_code LIKE ? ESCAPE '\\' OR d.source_class LIKE ? ESCAPE '\\'))`,
     );
-    params.push(like, like, like, like, like, like, like, like);
+    params.push(like, like, like, like, like, like, like, like, like, like);
   }
   if (f.type) {
     conds.push('d.type = ?');
@@ -400,6 +414,10 @@ export function searchLabDocuments(f: LabDocumentSearchFilters): LabDocumentSear
     conds.push('d.status = ?');
     params.push(f.status);
   }
+  if (f.content === 'missing') conds.push('d.current_version_id IS NULL');
+  if (f.content === 'draft') conds.push("d.current_version_id IS NOT NULL AND d.status = 'DRAFT'");
+  if (f.content === 'in_review') conds.push("d.current_version_id IS NOT NULL AND d.status = 'IN_REVIEW'");
+  if (f.content === 'approved') conds.push("d.current_version_id IS NOT NULL AND d.status = 'APPROVED'");
   if (f.owner !== null) {
     conds.push('d.owner_id = ?');
     params.push(f.owner);

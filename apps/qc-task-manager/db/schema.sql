@@ -677,6 +677,10 @@ CREATE TABLE IF NOT EXISTS lab_documents (
   status TEXT NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT','IN_REVIEW','APPROVED','SUPERSEDED','ARCHIVED')),
   effective_date TEXT, review_due_date TEXT,
   approved_at TEXT,
+  source_revision INTEGER,
+  source_date TEXT,
+  source_register_code TEXT,
+  source_class TEXT,
   created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -786,6 +790,7 @@ CREATE INDEX IF NOT EXISTS idx_lab_doc_ack_assigned_at ON lab_document_acknowled
 CREATE INDEX IF NOT EXISTS idx_lab_documents_owner ON lab_documents(owner_id);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_product ON lab_documents(product_id);
 CREATE INDEX IF NOT EXISTS idx_lab_documents_updated_at ON lab_documents(updated_at);
+CREATE INDEX IF NOT EXISTS idx_lab_documents_source_register ON lab_documents(source_register_code, type, source_revision);
 CREATE INDEX IF NOT EXISTS idx_lab_change_requests_status_created ON lab_change_requests(status, created_at);
 CREATE INDEX IF NOT EXISTS idx_lab_change_requests_requester_status ON lab_change_requests(requested_by, status);
 CREATE INDEX IF NOT EXISTS idx_lab_change_requests_target ON lab_change_requests(entity_type, entity_id, status);

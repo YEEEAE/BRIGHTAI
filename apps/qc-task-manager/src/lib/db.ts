@@ -59,7 +59,9 @@ import notificationDedupeKeySql from '../../db/migrations/025_notification_dedup
 import labTestEnvironmentReadingsSql from '../../db/migrations/026_lab_test_environment_readings.sql?raw';
 import labChangeRequestsSql from '../../db/migrations/027_lab_change_requests.sql?raw';
 import labTestFormAlignmentSql from '../../db/migrations/028_lab_test_form_alignment.sql?raw';
+import wiCatalogMigrationSql from '../../db/migrations/029_wi_catalog_import.sql?raw';
 import { backfillAuditChain } from './audit/chain';
+import { importWICatalog } from './lab/wiCatalog';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -239,6 +241,7 @@ const REQUIRED_INDEXES = [
   'idx_lab_change_requests_status_created',
   'idx_lab_change_requests_requester_status',
   'idx_lab_change_requests_target',
+  'idx_lab_documents_source_register',
 ] as const;
 
 /**
@@ -315,11 +318,16 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '026_lab_test_environment_readings.sql', source: labTestEnvironmentReadingsSql },
       { file: '027_lab_change_requests.sql', source: labChangeRequestsSql },
       { file: '028_lab_test_form_alignment.sql', source: labTestFormAlignmentSql },
+      { file: '029_wi_catalog_import.sql', source: wiCatalogMigrationSql },
     ],
   });
   backfillAuditChain(db);
   validateSchema(db, migrationResult.currentVersion);
   seedUsersIfEmpty(db);
+  // Paper WI index import is catalog-only. It runs after legitimate users are
+  // seeded because the legacy created_by column is required for identity rows;
+  // it creates no content/version/audit actor and is idempotent by code.
+  importWICatalog(db);
   // SEED_DEMO=1 → demo team + 12 mixed-status tasks (only on an empty DB).
   seedDemoData(db);
   // Canonical 24-device lab equipment registry (PROMPT 11). Idempotent; gated

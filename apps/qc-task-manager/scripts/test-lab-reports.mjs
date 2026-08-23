@@ -258,7 +258,7 @@ try {
   ok(!sopReg.flat().some((cell) => typeof cell === 'string' && cell.includes('Fixture SOP body')), 'SOP register: document CONTENT never exported');
 
   const wiReg = collect(readLabReportRows('lab-wi-register', RID, noFilters));
-  eq(wiReg.length, 1, 'WI register: 1 WI');
+  eq(wiReg.length, 34, 'WI register: imported catalog plus 1 fixture WI');
   eq(wiReg[0][1], 'WI-RP-01', 'WI register: code');
 
   const reviewDue = collect(readLabReportRows('lab-doc-review-due', RID, noFilters));

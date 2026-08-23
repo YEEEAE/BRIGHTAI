@@ -105,6 +105,35 @@ export interface LabKpis {
   changes_waiting_over_24h: number;
 }
 
+export interface WICatalogSummary {
+  total: number;
+  missing_content: number;
+  draft_content: number;
+  under_review: number;
+  approved: number;
+}
+
+/** DB-backed WI catalog counters; no content/version rows are inferred. */
+export function getWICatalogSummary(): WICatalogSummary {
+  const row = getDb().prepare(`
+    SELECT
+      COUNT(*) AS total,
+      SUM(CASE WHEN current_version_id IS NULL THEN 1 ELSE 0 END) AS missing_content,
+      SUM(CASE WHEN current_version_id IS NOT NULL AND status = 'DRAFT' THEN 1 ELSE 0 END) AS draft_content,
+      SUM(CASE WHEN current_version_id IS NOT NULL AND status = 'IN_REVIEW' THEN 1 ELSE 0 END) AS under_review,
+      SUM(CASE WHEN current_version_id IS NOT NULL AND status = 'APPROVED' THEN 1 ELSE 0 END) AS approved
+    FROM lab_documents
+    WHERE type = 'WI'
+  `).get() as Record<string, number | null>;
+  return {
+    total: Number(row.total ?? 0),
+    missing_content: Number(row.missing_content ?? 0),
+    draft_content: Number(row.draft_content ?? 0),
+    under_review: Number(row.under_review ?? 0),
+    approved: Number(row.approved ?? 0),
+  };
+}
+
 export function getLabKpis(scope: LabOverviewScope): LabKpis {
   const db = getDb();
   const today = localToday();
@@ -231,7 +260,9 @@ export function countLabDataQualityIssues(): number {
     .prepare(
       `SELECT COUNT(*) AS issues
        FROM lab_documents d
-       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND (
+       WHERE d.status NOT IN ('SUPERSEDED', 'ARCHIVED')
+         AND NOT (d.type = 'WI' AND COALESCE(d.source_register_code, '') = 'F-4-2-1-2' AND d.current_version_id IS NULL)
+         AND (
          d.owner_id IS NULL
          OR d.review_due_date IS NULL
          OR d.effective_date IS NULL
