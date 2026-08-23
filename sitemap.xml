@@ -103,7 +103,7 @@
     <loc>https://brightai.site/assessment/ai-governance-readiness/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/assessment/ai-governance-readiness/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/assessment/ai-governance-readiness/" />
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-24</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/authors/</loc>
@@ -739,7 +739,7 @@
     <loc>https://brightai.site/blog/vision-2030-ai-governance-roadmap/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/blog/vision-2030-ai-governance-roadmap/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/blog/vision-2030-ai-governance-roadmap/" />
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-24</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/blog/what-is-ai-governance-saudi-companies/</loc>
@@ -849,7 +849,7 @@
     <loc>https://brightai.site/docs/ai-risk-management/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/ai-risk-management/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/ai-risk-management/" />
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-08-24</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/docs/governance-application/</loc>
@@ -1053,7 +1053,7 @@
     <loc>https://brightai.site/docs/nca-ecc-ai-controls/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/nca-ecc-ai-controls/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/nca-ecc-ai-controls/" />
-    <lastmod>2026-07-14</lastmod>
+    <lastmod>2026-08-24</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/docs/nca-ecc-ai-governance/</loc>
@@ -1174,6 +1174,12 @@
     <loc>https://brightai.site/hub/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/hub/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/hub/" />
+    <lastmod>2026-08-23</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/hub/agentic-ai-governance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/hub/agentic-ai-governance/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/hub/agentic-ai-governance/" />
     <lastmod>2026-08-23</lastmod>
   </url>
   <url>

@@ -17,6 +17,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import AiGovernancePillar from '../../components/hub/AiGovernancePillar.astro';
 import SdaiaAiRiskManagementGuide from '../../components/hub/SdaiaAiRiskManagementGuide.astro';
+import AgenticAiGovernancePillar from '../../components/hub/AgenticAiGovernancePillar.astro';
 import { getPublishedPosts } from '../../data/blog';
 import { SITE } from '../../data/site';
 // BAI-SEO-003-S3 (2026-07-18): ORGANIZATION import removed — foundation
@@ -33,6 +34,15 @@ export function getStaticPaths() {
       tags: ['حوكمة الذكاء الاصطناعي', 'امتثال'],
       eyebrow: 'دليل تنظيمي سعودي',
       icon: 'mdi-shield-check',
+      categoryLinks: [],
+    },
+    {
+      slug: 'agentic-ai-governance',
+      title: 'حوكمة Agentic AI: الملكية والموافقات والأدلة | BrightAI',
+      description: 'دليل تشغيلي لحوكمة الوكلاء: تحديد مالك الأعمال والمالك التقني ومالك المخاطر والمعتمد، ودورة التسجيل والتصنيف والموافقة والمراقبة والمراجعة.',
+      tags: ['حوكمة الذكاء الاصطناعي', 'Agentic AI', 'إدارة المخاطر'],
+      eyebrow: 'حوكمة الوكلاء',
+      icon: 'mdi-account-check',
       categoryLinks: [],
     },
     {
@@ -143,6 +153,7 @@ export function getStaticPaths() {
 const { page } = Astro.props;
 const isAiGovernancePillar = page.slug === 'ai-governance';
 const isSdaiaRiskGuide = page.slug === 'sdaia-ai-risk-management';
+const isAgenticAiGovernance = page.slug === 'agentic-ai-governance';
 
 const relatedPosts = (await getPublishedPosts()).filter(post =>
   page.tags.some(tag => post.tags.some(pt => pt.includes(tag) || tag.includes(pt)))
@@ -191,6 +202,8 @@ const hubSlugJsonLd = {
   <main class="hub-subpage">
     {isSdaiaRiskGuide ? (
       <SdaiaAiRiskManagementGuide />
+    ) : isAgenticAiGovernance ? (
+      <AgenticAiGovernancePillar />
     ) : isAiGovernancePillar ? (
       <AiGovernancePillar />
     ) : (

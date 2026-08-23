@@ -1,7 +1,7 @@
 ---
 /**
  * Hub index — /hub/
- * Lists the four content hubs as a canonical card grid.
+ * Lists the content hubs as a canonical card grid.
  *
  * REPORT-12: Visual refresh — removes the legacy `set:html` of generated
  * Tailwind-flavored HTML in favor of canonical styles. The generated hub
@@ -17,8 +17,8 @@ const collectionLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   url: `${SITE.url}/hub/`,
-  name: 'مراكز محتوى AI | 4 محاور مرجعية',
-  description: '4 مراكز محتوى مرجعية من BrightAI: حوكمة AI وامتثال سعودي وحلول تقنية وحالات استخدام. مرجعك الكامل والشامل في مكان واحد للسوق السعودي بأكمله.',
+  name: 'مراكز محتوى AI | محاور مرجعية',
+  description: 'مراكز محتوى مرجعية من BrightAI: حوكمة AI وامتثال سعودي وحلول تقنية وحالات استخدام وأدلة تشغيلية للوكلاء. مرجع عملي للسوق السعودي.',
   inLanguage: 'ar-SA',
   hasPart: [
     { '@type': 'WebPage', url: `${SITE.url}/hub/ai-governance/`, name: 'حوكمة الذكاء الاصطناعي' },
@@ -26,6 +26,7 @@ const collectionLd = {
     { '@type': 'WebPage', url: `${SITE.url}/hub/solutions/`, name: 'الحلول التقنية' },
     { '@type': 'WebPage', url: `${SITE.url}/hub/use-cases/`, name: 'حالات الاستخدام' },
     { '@type': 'WebPage', url: `${SITE.url}/hub/sdaia-ai-risk-management/`, name: 'الإطار الوطني لإدارة مخاطر الذكاء الاصطناعي' },
+    { '@type': 'WebPage', url: `${SITE.url}/hub/agentic-ai-governance/`, name: 'حوكمة Agentic AI التشغيلية' },
   ],
 };
 
@@ -77,12 +78,20 @@ const hubs = [
     icon: 'mdi-shield-check',
     tint: 'teal',
   },
+  {
+    slug: 'agentic-ai-governance',
+    eyebrow: 'حوكمة الوكلاء',
+    title: 'حوكمة Agentic AI التشغيلية',
+    desc: 'الملكية، الصلاحيات، الموافقات، دورة الحياة، وسجل الأدلة للوكلاء اللي ينفذون خطوات نيابة عن المستخدم.',
+    icon: 'mdi-account-check',
+    tint: 'indigo',
+  },
 ];
 ---
 
 <ArabicLayout
-  title="مراكز محتوى AI | 4 محاور مرجعية"
-   description="4 مراكز محتوى مرجعية من BrightAI: حوكمة AI وامتثال لـ PDPL وNCA وحلول تقنية. مرجعك الكامل للسوق السعودي. ابدأ رحلة التعلم والامتثال من هنا."
+  title="مراكز محتوى AI | محاور مرجعية"
+   description="مراكز محتوى مرجعية من BrightAI: حوكمة AI وامتثال لـ PDPL وNCA وحلول تقنية وأدلة تشغيلية للوكلاء. ابدأ رحلة التعلم والامتثال من هنا."
   canonical={`${SITE.url}/hub/`}
   hreflang={[{ lang: 'ar-SA', href: `${SITE.url}/hub/` }]}
   jsonLd={hubJsonLd as any}
@@ -97,7 +106,7 @@ const hubs = [
       </span>
       <h1>كل شي تبي تعرفه عن حوكمة AI في مكان واحد</h1>
       <p class="hub-page__intro">
-        حوكمة وأمان الذكاء الاصطناعي في السعودية، مرتّب لك في ٤ مراكز موضوعية. اختصر وقتك وابدأ من المركز اللي يخص سؤالك بالضبط.
+        حوكمة وأمان الذكاء الاصطناعي في السعودية، مرتّب لك في مراكز موضوعية. اختصر وقتك وابدأ من المركز اللي يخص سؤالك بالضبط.
       </p>
     </header>
 

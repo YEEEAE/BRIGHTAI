@@ -1,4 +1,14 @@
 ---
+### 2026-08-24 — AGENTIC-AI-GOVERNANCE-PILLAR-001: إضافة محور معلوماتي مستقل لحوكمة Agentic AI — نجاح محلي بدون commit/push/deploy
+
+- **Scope**: أُضيفت صفحة معلوماتية قابلة للفهرسة تحت `/hub/agentic-ai-governance/`، منفصلة عن أي صفحة أمن للوكلاء، تركّز على نموذج التشغيل والمساءلة والموافقات ودورة الحياة والأدلة.
+- **Content/design**: مكوّن `AgenticAiGovernancePillar.astro` باللهجة السعودية يشرح الأدوار الأربعة (مالك الأعمال، المالك التقني، مالك المخاطر والامتثال، المعتمد)، دورة `register → classify → grant tools/data → enforce policies → approve high-risk actions → log → monitor → review`، مخطط دورة بصري، RACI table متجاوب، approval flow، checklist، وأمثلة evidence. أُضيف تنبيه واضح أن قدرات BrightAI لبنات تشغيلية داعمة وليست ضمان امتثال أو بديلًا عن القرار القانوني/المؤسسي.
+- **Architecture/links**: أُسجل المسار في `src/pages/hub/[slug].astro`، وأُضيف لبطاقات وفهرس `/hub/` مع `hasPart` في CollectionPage، ورابط سياقي من محور الحوكمة العام. لا تغيير على صفحة Agentic AI Security ولا نسخ لمحتواها.
+- **SEO/indexability**: title/description طويلة الذيل حول ownership/approvals/evidence، self-canonical و`index, follow` عبر `ArabicLayout`، H1 واحد، sitemap المحلي صار **261 URL** ويشمل المسار الجديد، ولا توجد إشارات noindex أو رابط أمني مباشر داخل الصفحة.
+- **Files**: `src/components/hub/AgenticAiGovernancePillar.astro`, `src/pages/hub/[slug].astro`, `src/pages/hub/index.astro`, `src/components/hub/AiGovernancePillar.astro`, `scripts/agentic-ai-governance.test.mjs`, `public/sitemap.xml`, `sitemap.xml`، ومخرجات build المعتادة `.astro/content-assets.mjs`.
+- **Verification**: contract test **2/2 PASS**؛ `pnpm build` **Complete**؛ built HTML تحقق: H1=1، noindex=0، canonical صحيح، lifecycle/RACI/approval/evidence موجودة، والمسار في sitemap؛ `git diff --check` **PASS**. `node scripts/seo-health-check.mjs` فشل فقط في 3 مشاكل legacy معروفة لمسارات `404.html` و`500.html` كما في baseline، ولا تخص الصفحة الجديدة. بقيت تحذيرات Astro route-collision وVite/Prisma القديمة غير الحاجزة.
+- **Status**: جاهز للمراجعة المحلية؛ لا commit ولا push ولا deploy. تغييرات `audit/SEO-Execution-Prompts.md` كانت موجودة مسبقًا وحُفظت بدون تعديل.
+
 ### 2026-08-24 — SEARCH-RECOVERY-ROOT-CAUSE-001: تدقيق واسترداد بحث شامل ( crawl→index→rank→AI ) — إصلاحات P0 محلية مثبتة + تصنيف خارجي صادق — بدون commit/push/deploy
 
 - **Scope**: تنفيذ برومبت Ultimate Saudi Search Recovery كاملًا على الموقع العام: فحص حي مباشر (curl/WebFetch لعناوين brightai.site) + تحقيق جذري بالبناء المحلي + إصلاح كل القابل للإثبات محليًا + 5 مخرجات (تقرير رئيسي + 3 CSVs + deck). المخرجات: `audit/report/brightai-search-indexing-root-cause-master.md`, `brightai-search-issue-ledger.csv`, `brightai-owner-url-map.csv`, `brightai-arabic-content-language-audit.csv`, `brightai-search-recovery-deck.md`.

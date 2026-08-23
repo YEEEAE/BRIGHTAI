@@ -822,7 +822,7 @@ Design:
 - premium enterprise security visual language.
 
 Do not push.
-- [ ] ✅ Prompt #18 — done & reviewed
+- [✅]  Prompt #18 — done & reviewed
 
 # Prompt #19 — Agentic AI Governance framework page
 
@@ -856,7 +856,7 @@ Design:
 - evidence examples.
 
 Do not push.
-- [ ] ✅ Prompt #19 — done & reviewed
+- [✅ ]  Prompt #19 — done & reviewed
 
 # Prompt #20 — Strengthen Banking AI Governance Riyadh instead of mass city pages
 
@@ -929,7 +929,7 @@ Tasks:
 - Do not add links solely for SEO if context is poor.
 
 Do not push.
-- [ ] ✅ Prompt #21 — done & reviewed
+- [ ✅]  Prompt #21 — done & reviewed
 
 # Prompt #22 — GEO / AEO / AI-search optimization across strategic content
 
