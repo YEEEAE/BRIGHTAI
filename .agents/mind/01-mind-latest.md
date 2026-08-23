@@ -1,4 +1,13 @@
 ---
+### 2026-08-23 — AI-GOVERNANCE-PLATFORM-REDESIGN-001: تحويل صفحة الحوكمة التجارية الرئيسية إلى طبقة تشغيلية للحوكمة — تحقق محلي ناجح بدون commit/push/deploy
+
+- **Scope**: `/solutions/ai-governance-platform/` فقط؛ تحديث metadata/copy وrender branch مخصص داخل `src/pages/solutions/[slug].astro`، CSS scoped RTL، وخطة `docs/superpowers/plans/2026-08-23-ai-governance-platform-implementation.md`. لم تتم إضافة dependency أو route جديد.
+- **Positioning**: الصفحة تشرح BrightAI كطبقة تشغيلية بين الموظفين وأنظمة AI وبيانات المؤسسة والسياسات والموافقات والأدلة. التسلسل المرئي صار `Regulation → Risk → Control → Enforcement → Evidence`، مع pain points للـ Shadow AI وملكية الاستخدام وتسريب البيانات والسياسات الورقية وسجل التدقيق والقرارات عالية الأثر.
+- **UX/design**: هيرو enterprise داكن خفيف بـ CSS/native SVG، CTA أساسي لتقييم الجاهزية وثانوي للدليل، governance console، بطاقات الضوابط/المشاكل/الأدوار/القطاعات، Evidence File visual، FAQ ظاهر، وروابط مباشرة لـ AI Firewall وAI Risk Classification وHuman Approval Layer وAI Audit Trail وEvidence File وReadiness Assessment. تحقق Playwright على 360px و1440px: `h1=1`, `overflow=false`, `flow=5`, `faq=7`.
+- **SEO/legal**: title/H1/description/canonical جديدة؛ بقي schema من نوع `Service` عبر helper الحالي، وFAQ schema مبني فقط على الأسئلة الظاهرة. صيغ PDPL وNCA ECC وSDAIA وISO/IEC 42001 كمرجع جاهزية/سياق وليست شهادة أو ضمان امتثال أو رأي قانوني.
+- **Verification**: `pnpm build` ✅؛ `pnpm seo:check` ✅؛ `pnpm seo:schema` ✅؛ `pnpm seo:hreflang` ✅ (259/0)؛ `pnpm seo:word-count` ✅ (96/96)؛ `git diff --check` ✅. `pnpm exec astro check` ما زال يفشل بـ 127 خطأ/0 تحذير خارج نطاق الصفحة (middleware، answers، Storybook، Kernel/UI)، ولم يظهر خطأ من `[slug].astro` أو البيانات الجديدة. Production/live verification = **N/A/Unverified**.
+- **Status**: delivered locally؛ لا commit ولا push ولا deploy. الملفات: `src/data/solutions.ts`, `src/pages/solutions/[slug].astro`, `docs/superpowers/plans/2026-08-23-ai-governance-platform-implementation.md`, `.agents/mind/01-mind-latest.md`.
+
 ### 2026-08-23 — CURRENT-INDEXING-AUDIT-002: إعادة تشغيل تدقيق الفهرسة الحالي للصفحات الثماني ذات الأولوية — GSC غير متاح، clean build أخضر جزئيًا، وlink-graph gate ما زال غير موثوق
 
 - **Scope**: read-only indexing audit + تحديث تقرير `audit/report/2026-08-23-current-indexing-audit.md`؛ لا تعديل صفحات أو robots أو sitemap أو deploy أو commit أو push. شغّلت clean `npm run build` فقط للتحقق؛ أعيد أثر البناء العرضي في `render.yaml` إلى حالته السابقة.
