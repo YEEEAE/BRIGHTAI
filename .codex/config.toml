@@ -14,5 +14,4 @@ command = "npx"
 args = [
     "-y",
     "caveman-shrink",
-    enabled = false
 ]
