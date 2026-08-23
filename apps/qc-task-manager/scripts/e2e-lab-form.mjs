@@ -167,7 +167,7 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await openForm(page, 'air');
 
   await page.fill('#product_description', 'Fixture Connector');
-  await page.selectOption('#connector_type', { label: 'Non-locking (Lipid connector)' });
+  await page.selectOption('#connector_type', { label: 'Non-locking (rigid) connector' });
   await page.fill('#lot_number', 'LOT-E2E-1');
   await page.fill('#sampling_area', 'Area E2E');
   await page.selectOption('#equipment_id', { label: 'Leak Tester 1 (EQ-LT1)' });
@@ -187,7 +187,7 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await login(page2, 'employee');
   await openForm(page2, 'vacuum');
   await page2.fill('#product_description', 'Fixture Connector');
-  await page2.selectOption('#connector_type', { label: 'Non-locking (Lipid connector)' });
+  await page2.selectOption('#connector_type', { label: 'Non-locking (rigid) connector' });
   await page2.fill('#sample_count', '8');
   await page2.fill('#lot_number', 'LOT-E2E-8');
   await page2.fill('#sampling_area', 'Area E2E');
@@ -226,7 +226,7 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await login(page2, 'employee');
   await openForm(page2, 'air');
   await page2.fill('#product_description', 'Fixture Connector');
-  await page2.selectOption('#connector_type', { label: 'Non-locking (Lipid connector)' });
+  await page2.selectOption('#connector_type', { label: 'Non-locking (rigid) connector' });
   await page2.fill('#lot_number', 'LOT-E2E-SUB');
   await page2.fill('#sampling_area', 'Area E2E');
   await page2.selectOption('#equipment_id', { label: 'Leak Tester 1 (EQ-LT1)' });

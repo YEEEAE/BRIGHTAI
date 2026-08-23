@@ -54,6 +54,10 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
           />
         </div>
         <div>
+          <label for="effective_date" class={labelCls}>Effective Date</label>
+          <input id="effective_date" name="effective_date" type="date" value={version?.effective_date ?? ''} class={inputCls} />
+        </div>
+        <div>
           <label for="code" class={labelCls}>Template Code <span class="text-red-600" aria-hidden="true">*</span></label>
           <input
             id="code"
@@ -146,6 +150,25 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
             class={inputCls}
           />
         </div>
+      </div>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[
+          ['medium_name', 'Medium name'],
+          ['actual_force_reference', 'Actual Force reference'],
+          ['torque_reference', 'Torque reference'],
+          ['time_reference', 'Time reference'],
+          ['angle_reference', 'Angle reference'],
+          ['temperature_reference', 'Temperature reference'],
+          ['humidity_reference', 'Humidity reference'],
+          ['standard_condition', 'Standard condition'],
+          ['leakage_reference', 'Leakage reference'],
+          ['holding_time_reference', 'Holding time reference'],
+        ].map(([key, label]) => (
+          <div>
+            <label for={key} class={labelCls}>{label}</label>
+            <input id={key} name={key} type="text" maxlength="200" value={parameters?.[key] ?? ''} dir="ltr" class={inputCls} />
+          </div>
+        ))}
       </div>
       <fieldset class="mt-4">
         <legend class={labelCls}>Connector Options</legend>

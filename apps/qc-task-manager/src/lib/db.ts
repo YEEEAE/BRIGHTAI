@@ -58,6 +58,7 @@ import labRegisterPerformanceIndexesSql from '../../db/migrations/024_lab_regist
 import notificationDedupeKeySql from '../../db/migrations/025_notification_dedupe_key.sql?raw';
 import labTestEnvironmentReadingsSql from '../../db/migrations/026_lab_test_environment_readings.sql?raw';
 import labChangeRequestsSql from '../../db/migrations/027_lab_change_requests.sql?raw';
+import labTestFormAlignmentSql from '../../db/migrations/028_lab_test_form_alignment.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -313,6 +314,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '025_notification_dedupe_key.sql', source: notificationDedupeKeySql },
       { file: '026_lab_test_environment_readings.sql', source: labTestEnvironmentReadingsSql },
       { file: '027_lab_change_requests.sql', source: labChangeRequestsSql },
+      { file: '028_lab_test_form_alignment.sql', source: labTestFormAlignmentSql },
     ],
   });
   backfillAuditChain(db);

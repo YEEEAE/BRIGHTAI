@@ -213,7 +213,7 @@ try {
     const scripty = labTestFormSchema.safeParse({
       form_action: 'submit',
       product_description: 'P',
-      connector_type: 'Non-locking (Lipid connector)',
+      connector_type: 'Non-locking (rigid) connector',
       lot_number: 'L',
       sampling_area: 'A',
       equipment_id: 1,

@@ -179,7 +179,7 @@ try {
       {
         form_action: 'submit',
         product_description: 'Seal',
-        connector_type: 'Non-locking (Lipid connector)',
+        connector_type: 'Non-locking (rigid) connector',
         sample_count: 5,
         lot_number: 'LOT-T',
         sampling_area: 'Bay 1',

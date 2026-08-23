@@ -22,17 +22,13 @@ import { listLabEquipmentForForm, listLabProductsForForm, getLabTestEditableDraf
 import { listLabProductReferences } from '../../../lib/lab/products';
 import { listLabTemplateReferences } from '../../../lib/lab/templates';
 import {
-  LAB_ACTUAL_PRESSURE_REFERENCE,
-  LAB_ACCEPTANCE_CRITERIA,
   LAB_CONNECTOR_TYPES,
   LAB_ENV_READINGS_MAX,
-  LAB_HOLDING_TIME,
   LAB_RESULT_LABELS,
   LAB_RESULT_OPTIONS,
   LAB_SAMPLE_COUNT_DEFAULT,
   LAB_SAMPLE_COUNT_MAX,
   LAB_SAMPLE_COUNT_MIN,
-  LAB_STANDARD_PARAMETER,
 } from '../../../lib/lab/policy';
 import { canCreateLabTest } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
@@ -95,10 +91,14 @@ const initialValues = editDraft
       equipment_id: editDraft.record.equipment_id == null ? null : Number(editDraft.record.equipment_id),
       medium_used: (editDraft.record.medium_used as string | null) ?? null,
       actual_pressure: (editDraft.record.actual_pressure as string | null) ?? null,
+      actual_force: (editDraft.record.actual_force as string | null) ?? null,
       torque_in_lb: (editDraft.record.torque_in_lb as string | null) ?? null,
+      torque_value: (editDraft.record.torque_value as string | null) ?? null,
       time_sec: (editDraft.record.time_sec as string | null) ?? null,
       angle: (editDraft.record.angle as string | null) ?? null,
       temperature_measured: (editDraft.record.temperature_measured as string | null) ?? null,
+      testing_date: (editDraft.record.testing_date as string | null) ?? null,
+      humidity_measured: (editDraft.record.humidity_measured as string | null) ?? null,
       remarks: (editDraft.record.remarks as string | null) ?? null,
       final_result: (editDraft.record.final_result as string | null) ?? null,
       template_version_id: editDraft.record.template_version_id == null ? null : Number(editDraft.record.template_version_id),
@@ -113,7 +113,9 @@ const initialValues = editDraft
         part_name: s.part_name ?? '',
         set_pressure: s.set_pressure ?? '',
         actual_pressure: s.actual_pressure ?? '',
+        applied_pressure: s.applied_pressure ?? '',
         volume_sec: s.volume_sec ?? '',
+        volume_liter: s.volume_liter ?? '',
         pressure_difference: s.pressure_difference ?? '',
         holding_time_sec: s.holding_time_sec ?? '',
         leakage_rate: s.leakage_rate ?? '',
@@ -123,10 +125,10 @@ const initialValues = editDraft
   : undefined;
 
 const referenceValues = {
-  actualPressure: LAB_ACTUAL_PRESSURE_REFERENCE,
-  standardParameter: LAB_STANDARD_PARAMETER,
-  acceptanceCriteria: LAB_ACCEPTANCE_CRITERIA,
-  holdingTime: LAB_HOLDING_TIME,
+  actualPressure: 'No approved reference available.',
+  standardParameter: 'No approved reference available.',
+  acceptanceCriteria: 'No approved reference available.',
+  holdingTime: 'No approved reference available.',
 };
 
 const resultOptions = LAB_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RESULT_LABELS[value] }));

@@ -232,7 +232,7 @@ try {
   // ── Search ──
   console.log('■ Search');
   {
-    db.prepare("INSERT INTO lab_products (name, code, description, connector_type, default_test_type, is_active, created_by) VALUES ('Seal Gasket', 'PRD-010', '100% silicone gasket', 'Non-locking (Lipid connector)', 'vacuum', 1, ?)").run(managerId);
+    db.prepare("INSERT INTO lab_products (name, code, description, connector_type, default_test_type, is_active, created_by) VALUES ('Seal Gasket', 'PRD-010', '100% silicone gasket', 'Non-locking (rigid) connector', 'vacuum', 1, ?)").run(managerId);
     const all = products.searchLabProducts(products.NO_LAB_PRODUCT_FILTERS);
     eq(all.total, 3, 'search: total counts every product');
     ok(all.total_pages >= 1 && all.page === 1, 'search: pagination defaults');
@@ -264,7 +264,7 @@ try {
     const refs = products.listLabProductReferences();
     eq(refs.length, 2, 'references: only active products listed');
     ok(refs.every((r) => r.code !== 'PRD-001'), 'references: inactive product excluded');
-    ok(refs.some((r) => r.code === 'PRD-010' && r.connector_type === 'Non-locking (Lipid connector)'), 'references: defaults carried');
+    ok(refs.some((r) => r.code === 'PRD-010' && r.connector_type === 'Non-locking (rigid) connector'), 'references: defaults carried');
   }
 
   // ── Form dropdown data ──
@@ -302,7 +302,7 @@ try {
         form_action: 'submit',
         product_description: 'Archivable Product',
         product_id: archivedId,
-        connector_type: 'Non-locking (Lipid connector)',
+        connector_type: 'Non-locking (rigid) connector',
         sample_count: 1,
         lot_number: 'LOT-ARCH-1',
         sampling_area: 'Bay 1',

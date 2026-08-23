@@ -73,7 +73,7 @@ function completeBody(overrides = {}) {
   return {
     form_action: 'submit',
     product_description: 'Fixture Product',
-    connector_type: 'Non-locking (Lipid connector)',
+    connector_type: 'Non-locking (rigid) connector',
     sample_count: String(sampleCount),
     lot_number: 'LOT-FIX-1',
     sampling_area: 'Sampling Area A',
@@ -287,8 +287,8 @@ try {
   eq(submitRow.final_result, 'PASS', 'create: submit final_result stored');
   eq(submitRow.test_type, 'vacuum', 'create: submit test_type vacuum');
   eq(submitRow.product_id, productId, 'create: resolved product_id stored');
-  ok(submitRow.parameters_snapshot_json != null && submitRow.parameters_snapshot_json.includes('acceptance_criteria'),
-    'create: submit has parameters snapshot');
+  eq(submitRow.parameters_snapshot_json, null,
+    'create: submit without approved template has no reference snapshot');
   ok(submitRow.submitted_at != null, 'create: submit submitted_at set');
   const submitSamples = tests.listLabTestSamples(submitted.id);
   eq(submitSamples.length, 5, 'create: submit rows = sample_count');

@@ -8,6 +8,16 @@ version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-LAB-FR-MA-018-ALIGNMENT-005: محاذاة نموذج اختبار المختبر مع transcription الورقي FR-MA-018 بدون اختراع قيم علمية — **التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy**
+
+- **Scope**: `apps/qc-task-manager/`؛ migration `028_lab_test_form_alignment.sql` أضافت additive columns: `testing_date`, `actual_force`, `torque_value`, `humidity_measured` على `lab_test_records`، و`applied_pressure`, `volume_liter` على `lab_test_samples`، و`effective_date` على `lab_test_template_versions`. بقيت `actual_pressure`, `torque_in_lb`, `volume_sec` محفوظة كـ legacy بلا إعادة تفسير.
+- **Scientific/reference rule**: أزيلت fallback constants (`LAB_ACTUAL_PRESSURE_REFERENCE`, `LAB_STANDARD_PARAMETER`, `LAB_ACCEPTANCE_CRITERIA`, `LAB_HOLDING_TIME`) من مسار التنفيذ؛ `parameters_json` في approved/current compatible template هو مصدر المرجع، وبدون template approved لا تُنشأ parameters snapshot ويُعرض `No approved reference available.`. أضيف دعم حقول template الاختيارية (medium/reference/condition/leakage/holding) بدون إلزامها أو تعميم AIR على VACUUM.
+- **Form/print**: connector labels صارت مطابقة للنص المورّد (`Non-locking (rigid) connector`, `Connector with floating or movable collar`, `Locking connector with fixed threads`)؛ الواجهة والطباعة تعرض `Actual Force`, `Torque (N.m)`, `Applied Pressure (kpa)`, `Volume (liter)`، مع عرض legacy fields منفصلة؛ testing date/humidity وحقول العينة الجديدة تُحفظ وتُعدّل وتُطبع، وبقيت نتيجة PASS/FAIL/HOLD قرارًا بشريًا بلا حساب علمي تلقائي.
+- **Snapshots**: submission لا يلتقط reference إلا من approved template المتوافق؛ approval snapshots الحالية للمنتج/template/parameters/equipment/calibration/controlled documents بقيت ضمن transaction ولا تعيد resolve التاريخ المعتمد من master data مستقبلاً.
+- **Files**: `db/migrations/028_lab_test_form_alignment.sql`, `db/schema.sql`, `src/lib/db.ts`, `src/lib/{types,validation}.ts`, `src/lib/lab/{policy,templates,tests}.ts`, `src/components/lab/{LabTestForm,LabTemplateForm}.tsx/.astro`, صفحات `lab/tests/new`, `[id]`, `print`, template new، واختبارات migration/form/tests/products/security/e2e form.
+- **Verification**: `pnpm typecheck` = **0 errors / 0 warnings / 19 hints**؛ `NODE_ENV=production pnpm build` = **Complete**؛ migrations **PASS** (28/28 + new columns + legacy preservation)؛ `test:lab-form` **60/0**؛ `test:lab-tests` **258/0**؛ `test:lab-templates` **39/0**؛ `test:lab-security` **63/0**؛ `test:lab-print` **51/0**؛ `test:lab-review` **97/0**؛ `test:lab-products` **85/0**؛ `git diff --check` لا أخطاء مع تحذير fsmonitor IPC بيئي فقط. لم يُدّعَ browser E2E أو production verification.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ المستخدم يراجع ويلتزم بنفسه.
+
 ### 2026-08-23 — QC-LAB-DOCUMENT-AUTHORING-004: فصل هوية SOP/WI عن أول محتوى مع authoring لجميع الأدوار — **التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy**
 
 - **Scope**: `apps/qc-task-manager/` controlled documents. سمحت الخدمة بإنشاء `lab_documents` كـ catalog-only بدون `current_version_id` أو version مصطنعة؛ أول حفظ محتوى غير فارغ ينشئ v1 DRAFT داخل transaction، يربط `current_version_id`، يثبت author من session، ويسجل `LAB_DOCUMENT_VERSION/VERSION` في `qc_audit_log`.

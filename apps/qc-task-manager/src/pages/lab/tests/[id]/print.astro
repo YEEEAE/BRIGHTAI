@@ -151,8 +151,10 @@ const sampleQrs = record
       <section class="print-section">
         <h2 class="print-section-title">3 · Connector Assembly</h2>
         <dl class="print-section-body grid3">
-          <div class="dl-item"><dt>Actual Pressure</dt><dd>{val('actual_pressure')}</dd></div>
-          <div class="dl-item"><dt>Torque (in.lb)</dt><dd>{val('torque_in_lb')}</dd></div>
+          <div class="dl-item"><dt>Actual Force</dt><dd>{val('actual_force')}</dd></div>
+          <div class="dl-item"><dt>Torque (N.m)</dt><dd>{val('torque_value')}</dd></div>
+          <div class="dl-item"><dt>Actual Pressure (legacy)</dt><dd>{val('actual_pressure')}</dd></div>
+          <div class="dl-item"><dt>Torque (in.lb) (legacy)</dt><dd>{val('torque_in_lb')}</dd></div>
           <div class="dl-item"><dt>Time (Sec.)</dt><dd>{val('time_sec')}</dd></div>
           <div class="dl-item"><dt>Angle</dt><dd>{val('angle')}</dd></div>
         </dl>
@@ -162,7 +164,9 @@ const sampleQrs = record
       <section class="print-section">
         <h2 class="print-section-title">4 · Differential Conversion</h2>
         <dl class="print-section-body grid2">
+          <div class="dl-item"><dt>Testing Date</dt><dd>{val('testing_date')}</dd></div>
           <div class="dl-item"><dt>Temperature (Measured)</dt><dd>{val('temperature_measured')}</dd></div>
+          <div class="dl-item"><dt>Humidity (Measured)</dt><dd>{val('humidity_measured')}</dd></div>
         </dl>
       </section>
 
@@ -227,8 +231,10 @@ const sampleQrs = record
                   <th scope="col">Sample</th>
                   <th scope="col">Part Name</th>
                   <th scope="col">Set Pressure</th>
-                  <th scope="col">Actual Pressure</th>
-                  <th scope="col">Volume (Sec.)</th>
+                  <th scope="col">Applied Pressure (kpa)</th>
+                  <th scope="col">Actual Pressure (legacy)</th>
+                  <th scope="col">Volume (liter)</th>
+                  <th scope="col">Volume (Sec.) (legacy)</th>
                   <th scope="col">Pressure Diff.</th>
                   <th scope="col">Holding (Sec.)</th>
                   <th scope="col">Leakage Rate</th>
@@ -242,7 +248,9 @@ const sampleQrs = record
                     <td>{s.sample_identifier ?? `S${s.sample_no}`}</td>
                     <td>{s.part_name ?? '—'}</td>
                     <td>{s.set_pressure ?? '—'}</td>
+                    <td>{s.applied_pressure ?? '—'}</td>
                     <td>{s.actual_pressure ?? '—'}</td>
+                    <td>{s.volume_liter ?? '—'}</td>
                     <td>{s.volume_sec ?? '—'}</td>
                     <td>{s.pressure_difference ?? '—'}</td>
                     <td>{s.holding_time_sec ?? '—'}</td>

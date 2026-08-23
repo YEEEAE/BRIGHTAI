@@ -35,11 +35,7 @@ import {
   canEditLabTemplateRecord,
 } from '../permissions';
 import {
-  LAB_ACTUAL_PRESSURE_REFERENCE,
-  LAB_ACCEPTANCE_CRITERIA,
   LAB_CONNECTOR_TYPES,
-  LAB_HOLDING_TIME,
-  LAB_STANDARD_PARAMETER,
 } from './policy';
 import type { LabTestTemplate, LabTestTemplateVersion, LabTestType } from '../types';
 
@@ -409,6 +405,17 @@ export interface LabTemplateFormData {
   acceptance_criteria: string | null;
   holding_time: string | null;
   actual_pressure_reference: string | null;
+  medium_name: string | null;
+  actual_force_reference: string | null;
+  torque_reference: string | null;
+  time_reference: string | null;
+  angle_reference: string | null;
+  temperature_reference: string | null;
+  humidity_reference: string | null;
+  standard_condition: string | null;
+  leakage_reference: string | null;
+  holding_time_reference: string | null;
+  effective_date: string | null;
   /** Subset of LAB_CONNECTOR_TYPES (repeated checkbox key — collected raw). */
   connector_choices: string[];
   applicable_product_id: number | null;
@@ -468,15 +475,15 @@ function buildParametersJson(data: LabTemplateFormData): string {
   if (data.acceptance_criteria) params.acceptance_criteria = data.acceptance_criteria;
   if (data.holding_time) params.holding_time = data.holding_time;
   if (data.actual_pressure_reference) params.actual_pressure_reference = data.actual_pressure_reference;
+  for (const key of ['medium_name', 'actual_force_reference', 'torque_reference', 'time_reference', 'angle_reference', 'temperature_reference', 'humidity_reference', 'standard_condition', 'leakage_reference', 'holding_time_reference'] as const) {
+    if (data[key]) params[key] = data[key] as string;
+  }
   return JSON.stringify(params);
 }
 
 /** Parse parameters_json back into the four display strings (with printed defaults). */
 export function parseTemplateParameters(parametersJson: string): {
-  standard_parameter: string;
-  acceptance_criteria: string;
-  holding_time: string;
-  actual_pressure_reference: string;
+  [key: string]: string | null;
 } {
   let parsed: Record<string, unknown> = {};
   try {
@@ -485,12 +492,12 @@ export function parseTemplateParameters(parametersJson: string): {
     parsed = {};
   }
   const str = (key: string): string | null => (typeof parsed[key] === 'string' && parsed[key] !== '' ? (parsed[key] as string) : null);
-  return {
-    standard_parameter: str('standard_parameter') ?? LAB_STANDARD_PARAMETER,
-    acceptance_criteria: str('acceptance_criteria') ?? LAB_ACCEPTANCE_CRITERIA,
-    holding_time: str('holding_time') ?? LAB_HOLDING_TIME,
-    actual_pressure_reference: str('actual_pressure_reference') ?? LAB_ACTUAL_PRESSURE_REFERENCE,
-  };
+  return Object.fromEntries([
+    'medium_name', 'actual_force_reference', 'torque_reference', 'time_reference',
+    'angle_reference', 'temperature_reference', 'humidity_reference',
+    'standard_condition', 'leakage_reference', 'holding_time_reference',
+    'standard_parameter', 'acceptance_criteria', 'holding_time', 'actual_pressure_reference',
+  ].map((key) => [key, str(key)]));
 }
 
 function replaceEquipmentLinks(templateId: number, equipmentIds: number[]): void {
@@ -530,8 +537,8 @@ export function createLabTemplate(data: LabTemplateFormData, actorId: number): n
       .prepare(
         `INSERT INTO lab_test_template_versions (
            template_id, version, default_sample_count, parameters_json, connector_choices_json,
-           applicable_product_id, applicable_equipment_id, sop_id, wi_id, created_by
-         ) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, created_by
+         ) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         templateId,
@@ -542,6 +549,7 @@ export function createLabTemplate(data: LabTemplateFormData, actorId: number): n
         data.applicable_equipment_id,
         data.sop_id,
         data.wi_id,
+        data.effective_date,
         actorId,
       );
     db.prepare('UPDATE lab_test_templates SET current_version_id = ? WHERE id = ?').run(Number(versionResult.lastInsertRowid), templateId);
@@ -583,7 +591,7 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
       db.prepare(
         `UPDATE lab_test_template_versions SET
            default_sample_count = ?, parameters_json = ?, connector_choices_json = ?,
-           applicable_product_id = ?, applicable_equipment_id = ?, sop_id = ?, wi_id = ?,
+           applicable_product_id = ?, applicable_equipment_id = ?, sop_id = ?, wi_id = ?, effective_date = ?,
            updated_at = datetime('now')
          WHERE id = ?`,
       ).run(
@@ -594,6 +602,7 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
         data.applicable_equipment_id,
         data.sop_id,
         data.wi_id,
+        data.effective_date,
         latest.id,
       );
       replaceEquipmentLinks(id, data.equipment_ids);
@@ -609,8 +618,8 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
         .prepare(
           `INSERT INTO lab_test_template_versions (
              template_id, version, default_sample_count, parameters_json, connector_choices_json,
-             applicable_product_id, applicable_equipment_id, sop_id, wi_id, created_by
-           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, created_by
+           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         )
         .run(
           id,
@@ -622,6 +631,7 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
           data.applicable_equipment_id,
           data.sop_id,
           data.wi_id,
+          data.effective_date,
           actorId,
         );
       replaceEquipmentLinks(id, data.equipment_ids);

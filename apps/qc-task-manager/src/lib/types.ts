@@ -239,6 +239,7 @@ export interface LabTestTemplateVersion {
   approved_by: number | null;
   created_at: string;
   updated_at: string;
+  effective_date: string | null;
 }
 
 /** One row of the equipment registry (lab_equipment). status_raw is the verbatim business value. */
@@ -337,6 +338,10 @@ export interface LabTestRecord {
   time_sec: string | null;
   angle: string | null;
   temperature_measured: string | null;
+  testing_date: string | null;
+  actual_force: string | null;
+  torque_value: string | null;
+  humidity_measured: string | null;
   remarks: string | null;
   final_result: LabFinalResult | null;
   status: LabTestStatus;
@@ -373,6 +378,8 @@ export interface LabTestSample {
   set_pressure: string | null;
   actual_pressure: string | null;
   volume_sec: string | null;
+  applied_pressure: string | null;
+  volume_liter: string | null;
   pressure_difference: string | null;
   holding_time_sec: string | null;
   leakage_rate: string | null;

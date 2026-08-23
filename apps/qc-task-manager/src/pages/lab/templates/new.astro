@@ -14,7 +14,7 @@ import {
   listLabProductsForTemplateForm,
   parseTemplateParameters,
 } from '../../../lib/lab/templates';
-import { LAB_CONNECTOR_TYPES, labParametersSnapshotJson } from '../../../lib/lab/policy';
+import { LAB_CONNECTOR_TYPES } from '../../../lib/lab/policy';
 import { canCreateLabTemplate } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 import { setFlash } from '../../../lib/flash';
@@ -29,8 +29,8 @@ if (!canCreateLabTemplate(role)) {
 
 const navItems = labNavForRole(role);
 
-// Printed-form reference values (policy.ts) prefill the parameter fields.
-const defaultParameters = parseTemplateParameters(labParametersSnapshotJson());
+// No scientific values are invented here; managers enter approved template references.
+const defaultParameters = parseTemplateParameters('{}');
 
 let loadError: string | null = null;
 let equipment: ReturnType<typeof listLabEquipmentForTemplateForm> = [];

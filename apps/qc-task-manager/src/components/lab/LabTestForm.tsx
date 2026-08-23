@@ -42,10 +42,14 @@ export interface LabTestInitialValues {
   equipment_id: number | null;
   medium_used: string | null;
   actual_pressure: string | null;
+  actual_force: string | null;
   torque_in_lb: string | null;
+  torque_value: string | null;
   time_sec: string | null;
   angle: string | null;
   temperature_measured: string | null;
+  testing_date: string | null;
+  humidity_measured: string | null;
   remarks: string | null;
   final_result: string | null;
   template_version_id: number | null;
@@ -116,7 +120,9 @@ interface SampleRow {
   part_name: string;
   set_pressure: string;
   actual_pressure: string;
+  applied_pressure: string;
   volume_sec: string;
+  volume_liter: string;
   pressure_difference: string;
   holding_time_sec: string;
   leakage_rate: string;
@@ -150,7 +156,9 @@ function emptyRow(n: number): SampleRow {
     part_name: '',
     set_pressure: '',
     actual_pressure: '',
+    applied_pressure: '',
     volume_sec: '',
+    volume_liter: '',
     pressure_difference: '',
     holding_time_sec: '',
     leakage_rate: '',
@@ -177,9 +185,11 @@ function isReadingEmpty(row: ReadingRow): boolean {
 
 const SAMPLE_COLUMNS: Array<{ key: keyof Omit<SampleRow, 'sample_no' | 'result'>; label: string }> = [
   { key: 'part_name', label: 'Part Name' },
-  { key: 'set_pressure', label: 'Set Pressure (in./Hg)' },
-  { key: 'actual_pressure', label: 'Actual Pressure' },
-  { key: 'volume_sec', label: 'Volume (Sec.)' },
+  { key: 'set_pressure', label: 'Set pressure (kpa)' },
+  { key: 'applied_pressure', label: 'Applied Pressure (kpa)' },
+  { key: 'actual_pressure', label: 'Actual Pressure (legacy)' },
+  { key: 'volume_liter', label: 'Volume (liter)' },
+  { key: 'volume_sec', label: 'Volume (Sec.) (legacy)' },
   { key: 'pressure_difference', label: 'Pressure Difference' },
   { key: 'holding_time_sec', label: 'Holding Time (Sec.)' },
   { key: 'leakage_rate', label: 'Leakage Rate' },
@@ -250,10 +260,14 @@ export default function LabTestForm({
     setVal('equipment_id', initial.equipment_id);
     setVal('medium_used', initial.medium_used);
     setVal('actual_pressure', initial.actual_pressure);
+    setVal('actual_force', initial.actual_force);
     setVal('torque_in_lb', initial.torque_in_lb);
+    setVal('torque_value', initial.torque_value);
     setVal('time_sec', initial.time_sec);
     setVal('angle', initial.angle);
     setVal('temperature_measured', initial.temperature_measured);
+    setVal('testing_date', initial.testing_date);
+    setVal('humidity_measured', initial.humidity_measured);
     setVal('remarks', initial.remarks);
     if (initial.final_result) {
       const radio = el.querySelector(`input[name="final_result"][value="${initial.final_result}"]`) as HTMLInputElement | null;
@@ -279,9 +293,9 @@ export default function LabTestForm({
     try {
       const parsed = JSON.parse(selectedTemplate.parameters_json) as Record<string, unknown>;
       return {
-        standardParameter: typeof parsed.standard_parameter === 'string' ? parsed.standard_parameter : reference.standardParameter,
-        acceptanceCriteria: typeof parsed.acceptance_criteria === 'string' ? parsed.acceptance_criteria : reference.acceptanceCriteria,
-        holdingTime: typeof parsed.holding_time === 'string' ? parsed.holding_time : reference.holdingTime,
+        standardParameter: typeof parsed.standard_parameter === 'string' ? parsed.standard_parameter : 'No approved reference available.',
+        acceptanceCriteria: typeof parsed.acceptance_criteria === 'string' ? parsed.acceptance_criteria : 'No approved reference available.',
+        holdingTime: typeof parsed.holding_time === 'string' ? parsed.holding_time : 'No approved reference available.',
       };
     } catch {
       return null;
@@ -757,13 +771,13 @@ export default function LabTestForm({
           <h2 id="sec-connector-assembly" className={sectionTitleCls}>Section 3 — Connector Assembly</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <label htmlFor="actual_pressure" className={labelCls}>Actual Pressure</label>
-              <input id="actual_pressure" name="actual_pressure" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
+              <label htmlFor="actual_force" className={labelCls}>Actual Force</label>
+              <input id="actual_force" name="actual_force" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
               <p className="mt-1 text-xs text-slate-500">Reference: <span dir="ltr" className="font-medium">{reference.actualPressure}</span></p>
             </div>
             <div>
-              <label htmlFor="torque_in_lb" className={labelCls}>Torque (in.lb)</label>
-              <input id="torque_in_lb" name="torque_in_lb" type="text" inputMode="decimal" maxLength={50} onChange={markDirty} className={inputCls} />
+              <label htmlFor="torque_value" className={labelCls}>Torque (N.m)</label>
+              <input id="torque_value" name="torque_value" type="text" inputMode="decimal" maxLength={50} onChange={markDirty} className={inputCls} />
             </div>
             <div>
               <label htmlFor="time_sec" className={labelCls}>Time (Sec.)</label>
@@ -773,6 +787,14 @@ export default function LabTestForm({
               <label htmlFor="angle" className={labelCls}>Angle</label>
               <input id="angle" name="angle" type="text" maxLength={200} onChange={markDirty} className={inputCls} />
             </div>
+            <div>
+              <label htmlFor="actual_pressure" className={labelCls}>Actual Pressure (legacy)</label>
+              <input id="actual_pressure" name="actual_pressure" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
+            </div>
+            <div>
+              <label htmlFor="torque_in_lb" className={labelCls}>Torque (in.lb) (legacy)</label>
+              <input id="torque_in_lb" name="torque_in_lb" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
+            </div>
           </div>
         </section>
 
@@ -780,9 +802,18 @@ export default function LabTestForm({
         <section aria-labelledby="sec-differential" className={sectionCls}>
           <h2 id="sec-differential" className={sectionTitleCls}>Section 4 — Differential Conversion</h2>
           <div className="mt-4 max-w-sm">
+            <label htmlFor="testing_date" className={labelCls}>Testing Date</label>
+            <input id="testing_date" name="testing_date" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
+            <p className="mt-1 text-xs text-slate-500">Stored as entered; no date normalization is applied.</p>
+          </div>
+          <div className="mt-4 max-w-sm">
             <label htmlFor="temperature_measured" className={labelCls}>Temperature (Measured)</label>
             <input id="temperature_measured" name="temperature_measured" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
             <p className="mt-1 text-xs text-slate-500">Measured value only — no conversion is applied.</p>
+          </div>
+          <div className="mt-4 max-w-sm">
+            <label htmlFor="humidity_measured" className={labelCls}>Humidity (Measured)</label>
+            <input id="humidity_measured" name="humidity_measured" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
           </div>
 
           {/* Supplementary session environment readings (PROMPT 51). This log

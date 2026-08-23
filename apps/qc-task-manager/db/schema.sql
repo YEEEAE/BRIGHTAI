@@ -458,6 +458,7 @@ CREATE TABLE IF NOT EXISTS lab_test_template_versions (
   approved_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  effective_date TEXT,
   UNIQUE (template_id, version)
 );
 
@@ -541,6 +542,7 @@ CREATE TABLE IF NOT EXISTS lab_test_records (
   sample_count INTEGER NOT NULL DEFAULT 5 CHECK (sample_count BETWEEN 1 AND 20),
   actual_pressure TEXT, torque_in_lb TEXT, time_sec TEXT, angle TEXT,
   temperature_measured TEXT, remarks TEXT,
+  testing_date TEXT, actual_force TEXT, torque_value TEXT, humidity_measured TEXT,
   final_result TEXT CHECK (final_result IN ('PASS','FAIL','HOLD')),
   status TEXT NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT','SUBMITTED','UNDER_REVIEW','REJECTED','APPROVED','VOID')),
   template_id INTEGER REFERENCES lab_test_templates(id) ON DELETE RESTRICT,
@@ -563,6 +565,7 @@ CREATE TABLE IF NOT EXISTS lab_test_samples (
   sample_no INTEGER NOT NULL CHECK (sample_no > 0),
   sample_identifier TEXT, part_name TEXT, set_pressure TEXT, actual_pressure TEXT,
   volume_sec TEXT, pressure_difference TEXT, holding_time_sec TEXT, leakage_rate TEXT,
+  applied_pressure TEXT, volume_liter TEXT,
   result TEXT CHECK (result IN ('PASS','FAIL','HOLD')),
   status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING','TESTED','APPROVED','VOID')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),

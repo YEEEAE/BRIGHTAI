@@ -20,7 +20,6 @@ import { requireCsrf } from '../api-security';
 import { canCreateLabTest, canEditLabTestRecord, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
 import { createNotification } from '../notifications';
 import { deriveCalibrationState, LATEST_DUE_SQL, type LabCalibrationState } from './overview';
-import { labParametersSnapshotJson } from './policy';
 import {
   ESIGN_FAILURE_MESSAGE_AR,
   ESIGN_FIELD_NAME,
@@ -48,6 +47,17 @@ function auditLabTest(
        VALUES ('LAB_TEST', ?, NULL, ?, ?, ?, ?, ?)`,
     )
     .run(testId, actorId, action, oldValue, newValue, note);
+}
+
+/** Approved template parameters only; absent/mismatched references stay null. */
+function approvedTemplateParametersSnapshot(db: ReturnType<typeof getDb>, versionId: number | null, testType: LabTestType): string | null {
+  if (versionId === null) return null;
+  const row = db.prepare(`SELECT t.test_type, t.status, t.current_version_id, v.id, v.parameters_json
+    FROM lab_test_template_versions v JOIN lab_test_templates t ON t.id = v.template_id WHERE v.id = ?`).get(versionId) as
+    | { test_type: string; status: string; current_version_id: number | null; id: number; parameters_json: string }
+    | undefined;
+  if (!row || row.test_type !== testType || row.status !== 'ACTIVE' || Number(row.current_version_id) !== Number(row.id)) return null;
+  return row.parameters_json || '{}';
 }
 
 /**
@@ -165,16 +175,22 @@ export interface LabTestFormData {
   equipment_id: number | null;
   medium_used: string | null;
   actual_pressure: string | null;
+  actual_force: string | null;
   torque_in_lb: string | null;
+  torque_value: string | null;
   time_sec: string | null;
   angle: string | null;
   temperature_measured: string | null;
+  testing_date: string | null;
+  humidity_measured: string | null;
   samples_json: Array<{
     sample_no: number;
     part_name: string | null;
     set_pressure: string | null;
     actual_pressure: string | null;
+    applied_pressure: string | null;
     volume_sec: string | null;
+    volume_liter: string | null;
     pressure_difference: string | null;
     holding_time_sec: string | null;
     leakage_rate: string | null;
@@ -234,10 +250,10 @@ export function createLabTest(
         `INSERT INTO lab_test_records (
            test_number, test_type, product_id, equipment_id, lot_number, sampling_area,
            medium_used, connector_type, sample_count, actual_pressure, torque_in_lb,
-           time_sec, angle, temperature_measured, remarks, final_result, status,
+           actual_force, torque_value, time_sec, angle, temperature_measured, testing_date, humidity_measured, remarks, final_result, status,
            tested_by, created_by, submitted_at, parameters_snapshot_json,
            template_id, template_version_id
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? = 1 THEN datetime('now') ELSE NULL END, ?, ?, ?)`,
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? = 1 THEN datetime('now') ELSE NULL END, ?, ?, ?)`,
       )
       .run(
         placeholder,
@@ -251,16 +267,20 @@ export function createLabTest(
         data.sample_count,
         data.actual_pressure,
         data.torque_in_lb,
+        data.actual_force,
+        data.torque_value,
         data.time_sec,
         data.angle,
         data.temperature_measured,
+        data.testing_date,
+        data.humidity_measured,
         data.remarks,
         submit ? data.final_result : null,
         submit ? 'SUBMITTED' : 'DRAFT',
         actorId,
         actorId,
         submit ? 1 : 0,
-        submit ? labParametersSnapshotJson() : null,
+        submit ? approvedTemplateParametersSnapshot(db, data.template_version_id ?? null, testType) : null,
         data.template_id ?? null,
         data.template_version_id ?? null,
       );
@@ -272,8 +292,8 @@ export function createLabTest(
     const insertSample = db.prepare(
       `INSERT INTO lab_test_samples (
          test_id, sample_no, sample_identifier, part_name, set_pressure, actual_pressure,
-         volume_sec, pressure_difference, holding_time_sec, leakage_rate, result, status
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         applied_pressure, volume_sec, volume_liter, pressure_difference, holding_time_sec, leakage_rate, result, status
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     );
     for (const row of rows) {
       insertSample.run(
@@ -283,7 +303,9 @@ export function createLabTest(
         row.part_name,
         row.set_pressure,
         row.actual_pressure,
+        row.applied_pressure,
         row.volume_sec,
+        row.volume_liter,
         row.pressure_difference,
         row.holding_time_sec,
         row.leakage_rate,
@@ -559,8 +581,8 @@ export function updateLabTestDraft(
     db.prepare(
       `UPDATE lab_test_records SET
          product_id = ?, equipment_id = ?, lot_number = ?, sampling_area = ?, medium_used = ?,
-         connector_type = ?, sample_count = ?, actual_pressure = ?, torque_in_lb = ?, time_sec = ?,
-         angle = ?, temperature_measured = ?, remarks = ?, final_result = ?,
+         connector_type = ?, sample_count = ?, actual_pressure = ?, torque_in_lb = ?, actual_force = ?, torque_value = ?, time_sec = ?,
+         angle = ?, temperature_measured = ?, testing_date = ?, humidity_measured = ?, remarks = ?, final_result = ?,
          status = CASE WHEN ? = 1 THEN 'SUBMITTED' ELSE status END,
          submitted_at = CASE WHEN ? = 1 THEN datetime('now') ELSE submitted_at END,
          parameters_snapshot_json = CASE WHEN ? = 1 THEN ? ELSE parameters_snapshot_json END,
@@ -576,15 +598,19 @@ export function updateLabTestDraft(
       data.sample_count,
       data.actual_pressure,
       data.torque_in_lb,
+      data.actual_force,
+      data.torque_value,
       data.time_sec,
       data.angle,
       data.temperature_measured,
+      data.testing_date,
+      data.humidity_measured,
       data.remarks,
       submit ? data.final_result : null,
       submit ? 1 : 0,
       submit ? 1 : 0,
       submit ? 1 : 0,
-      submit ? labParametersSnapshotJson() : null,
+      submit ? approvedTemplateParametersSnapshot(db, data.template_version_id ?? null, testType) : null,
       data.template_id ?? null,
       data.template_version_id ?? null,
       testId,
@@ -598,8 +624,8 @@ export function updateLabTestDraft(
     const insertSample = db.prepare(
       `INSERT INTO lab_test_samples (
          test_id, sample_no, sample_identifier, part_name, set_pressure, actual_pressure,
-         volume_sec, pressure_difference, holding_time_sec, leakage_rate, result, status
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         applied_pressure, volume_sec, volume_liter, pressure_difference, holding_time_sec, leakage_rate, result, status
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     );
     for (const r of rows) {
       insertSample.run(
@@ -609,7 +635,9 @@ export function updateLabTestDraft(
         r.part_name,
         r.set_pressure,
         r.actual_pressure,
+        r.applied_pressure,
         r.volume_sec,
+        r.volume_liter,
         r.pressure_difference,
         r.holding_time_sec,
         r.leakage_rate,
