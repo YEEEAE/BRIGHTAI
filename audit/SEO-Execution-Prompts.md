@@ -460,7 +460,7 @@ Design:
 - No bloated marketing layout.
 
 Do not push.
-- [ ] ✅ Prompt #9 — done & reviewed
+- [ ✅]  Prompt #9 — done & reviewed
 
 # Prompt #10 — Create the SDAIA National AI Risk Management Framework pillar
 

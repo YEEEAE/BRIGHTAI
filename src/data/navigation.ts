@@ -97,19 +97,19 @@ export const FOOTER_NAV = {
       { label: 'Policy-to-Control Mapping', labelAr: 'ربط السياسات بالضوابط', href: '/solutions/policy-to-control-mapping/' },
     ],
   },
-  // BAI-LINK-02 (2026-07-25): Cities section ensures /solutions/cities/<slug>/
-  // pages (301 redirects) have ≥ 2 incoming internal links. These redirect pages
-  // were previously orphaned.
+  // IDX-ARCH-001 (2026-08-23): link straight to the canonical, indexable
+  // sector-city pages. `/solutions/cities/<slug>/` remains only as a legacy
+  // redirect surface and must never receive internal navigation links.
   cities: {
     label: 'Cities',
     labelAr: 'المدن',
     items: [
-      { label: 'Riyadh', labelAr: 'الرياض', href: '/solutions/cities/riyadh/' },
-      { label: 'Jeddah', labelAr: 'جدة', href: '/solutions/cities/jeddah/' },
-      { label: 'Dammam', labelAr: 'الدمام', href: '/solutions/cities/dammam/' },
-      { label: 'Khobar', labelAr: 'الخبر', href: '/solutions/cities/khobar/' },
-      { label: 'Mecca', labelAr: 'مكة', href: '/solutions/cities/mecca/' },
-      { label: 'Madinah', labelAr: 'المدينة', href: '/solutions/cities/madinah/' },
+      { label: 'Riyadh', labelAr: 'الرياض', href: '/solutions/banking-ai-governance/riyadh/' },
+      { label: 'Jeddah', labelAr: 'جدة', href: '/solutions/healthcare-ai-governance/jeddah/' },
+      { label: 'Dammam', labelAr: 'الدمام', href: '/solutions/government-ai-governance/dammam/' },
+      { label: 'Khobar', labelAr: 'الخبر', href: '/solutions/banking-ai-governance/khobar/' },
+      { label: 'Mecca', labelAr: 'مكة', href: '/solutions/healthcare-ai-governance/mecca/' },
+      { label: 'Madinah', labelAr: 'المدينة', href: '/solutions/government-ai-governance/madinah/' },
     ],
   },
   kernel: {

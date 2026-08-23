@@ -1,4 +1,13 @@
 ---
+### 2026-08-23 — INDEXATION-ARCHITECTURE-CLEANUP-001: توحيد الروابط الداخلية مع الـ canonical النهائي والتحقق من سطح الفهرسة — محلي فقط، بدون commit/push/deploy
+
+- **Decision / canonical contract**: صيغة URL الكنسية الوحيدة للصفحات العامة هي `https://brightai.site/<path>/`، مع استثناء الصفحة الرئيسية `/`. `astro.config.mjs` يفرض `trailingSlash: 'always'` و`BaseLayout` يبني self-canonical بنفس الصيغة.
+- **Fix**: `src/data/navigation.ts` صار يربط المدن الست من الـ footer مباشرةً بالصفحات الكنسية indexable (sector-city) بدل `/solutions/cities/<city>/`، وهي redirect stubs تاريخية `noindex` فقط. أُضيف regression `scripts/navigation-canonical-links.test.mjs`: RED موثّق ثم GREEN **1/1**؛ بعد build صار عدد روابط التنقل المبنية للـ legacy city URLs = **0** (كان 6).
+- **Sitemap / noindex**: توليد sitemap جديد = **258 URL**؛ HTTPS، trailing slash، بلا parameters/fragments. مقارنة canonical مطبّعة مع HTML المبني: **0** sitemap URL بلا صفحة self-canonical indexable و**0** sitemap URL ممثّل فقط بـ `noindex`. الـ16 صفحة `noindex` محصورة بالـ error/design/offline/admin/thank-you و6 redirect stubs؛ لا صفحات استراتيجية أُضيف لها `noindex`.
+- **Redirects / hreflang / links**: `redirects:check` = **209** redirects، 0 self/missing/`.html` destinations/chains/cycles؛ `seo:hreflang` = **259 sets / 0 errors**؛ `internal-links:audit` = 0 broken/orphans/canonical issues، 0 outside sitemap، depth ≤3؛ `seo:check` PASS.
+- **Artifact verified**: mass `canonical_mismatch` القديم كان تنافس كتابة report عند تشغيل audit writers بالتوازي؛ تشغيل link-architecture منفردًا على `dist/client` = 0 canonical issues. أما **103 hash** فهي ليست indexation errors؛ أمثلة فُحص DOMها وtarget غائب (بعض IDs الظاهرة فقط داخل code sample مهرب)، فتسجل كـ UX/content cleanup مستقل لا تُخفى كartifact.
+- **Known boundary**: `pnpm build` Complete لكن Astro لا يزال يطبع route-collision warnings قديمة لمسارات legacy؛ لم تُحل لأنها تحتاج قرار consolidation/حذف source routes. أُعيدت تغييرات مولّد redirects العرضية في ملفات الإعدادات بعد التحقق، ولم يبق من ذلك إلا newline نهائي غير وظيفي في `astro.config.mjs`. لا تحقق HTTP حي أو GSC حالي. التقرير: `audit/report/2026-08-23-indexation-architecture-cleanup.md`؛ الخطة: `docs/superpowers/plans/2026-08-23-indexation-architecture-cleanup.md`.
+
 ### 2026-08-23 — AI-GOVERNANCE-READINESS-ASSESSMENT-001: تحويل صفحة التقييم إلى فحص إرشادي مؤسسي قابل للفهرسة — تحقق محلي بدون commit/push/deploy
 
 - **Scope**: إعادة بناء `/assessment/ai-governance-readiness/` مع module صغير في `public/js/ai-governance-readiness.js` واختبار `scripts/assessment-readiness.test.mjs` وخطة تنفيذ. لا dependency أو API أو تخزين إجابات أو deploy أو commit أو push.
