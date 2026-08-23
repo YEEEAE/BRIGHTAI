@@ -4,9 +4,18 @@ project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
 last_updated: 2026-08-23 04:26 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.8.25
+version: 2.8.26
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-23 — QC-AUDIT-DURABILITY-009: حفظ دليل حذف المهام وسلسلة تدقيق Lab/QC — التنفيذ والتحقق المحلي مكتملان بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ migration **030** أضافت `task_deletion_history` كـ snapshot مستقل خارج FK المهمة، مع triggers تمنع UPDATE/DELETE على سجل القرار؛ طلب الحذف الحي يبقى CASCADE كما هو، لكن approval/rejection ينسخ الهوية والعنوان والسبب والمراجع والملاحظة والتوقيت والنتيجة قبل الإنهاء.
+- **Task activity chain**: migration 030 أعادت بناء `task_activity_log` مع `task_id` identity غير cascading، فتبقى سجلات المهمة المحذوفة وسلسلة الهاش العالمية متصلة؛ حذف المهمة المشروع لا يكسر `verifyAuditChain`، بينما UPDATE/DELETE لصف قديم يكشفه التحقق.
+- **QC/Lab chain**: أضيف `src/lib/audit/qcChain.ts` بمحمول canonical ثابت (`entity_type/entity_id/task_id/actor_id/action/old_value/new_value/note/created_at`)، `previous_hash/event_hash`، append transactional موحد، و`verifyQcAuditChain`. كل writers الإنتاجية لـ `qc_audit_log` تمر بالمساعد المشترك. Backfill الصفوف القديمة يبدأ من genesis boundary صريح؛ هذا tamper-evident وليس cryptographic immutability.
+- **Compatibility**: migration backfill تحفظ الصفوف القديمة verbatim، وتعيد بناء `qc_audit_log` السابقة دون إسقاط التاريخ؛ `schema.sql` وembedded migrations وعدادات الاختبارات محدثة إلى **30 migrations / 51 tables**. تاريخ Lab/QC القديم لا يُعاد الادعاء بإثبات ما قبل حد genesis.
+- **Tests**: `pnpm test` **exit 0** شاملًا؛ `pnpm test:migrations` PASS (fresh/upgrade/rollback/FK + legacy audit backfill)، `test:audit-integrity` PASS (normal/update/delete/task deletion)، `test:delete-durability` PASS (approval/rejection survives)، `test:lab-audit` **60/0**، `test:lab-tests` **258/0**، `pnpm typecheck` **0 errors**، `pnpm build` Complete، `git diff --check` PASS. لا production verification.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ المستخدم يراجع ويلتزم بنفسه.
 
 ### 2026-08-23 — QC-REPORTING-TRANSPORT-FIX-008: استعادة/تأكيد نقل تقارير HTTP ومحاذاة catalog/UI/E2E — التنفيذ والتحقق المحلي مكتملان بدون commit/push/deploy
 

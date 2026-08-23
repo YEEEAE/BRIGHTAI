@@ -26,6 +26,7 @@
 
 import type { APIContext } from 'astro';
 import { getDb, transaction } from '../db';
+import { appendQcAudit } from '../audit/qcChain';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
@@ -726,21 +727,11 @@ function auditLabDocument(
   oldValue: string | null = null,
   newValue: string | null = null,
 ): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_DOCUMENT', ?, NULL, ?, ?, ?, ?, ?)`,
-    )
-    .run(documentId, actorId, action, oldValue, newValue, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_DOCUMENT', entityId: documentId, actorId, action, oldValue, newValue, note });
 }
 
 function auditLabDocumentVersion(versionId: number, actorIdValue: number, action: 'CREATE' | 'VERSION', note: string): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_DOCUMENT_VERSION', ?, NULL, ?, ?, NULL, ?, ?)`,
-    )
-    .run(versionId, actorIdValue, action, 'DRAFT', note);
+  appendQcAudit(getDb(), { entityType: 'LAB_DOCUMENT_VERSION', entityId: versionId, actorId: actorIdValue, action, newValue: 'DRAFT', note });
 }
 
 function notifyDocumentContentStarted(documentId: number, code: string, actor: number): void {

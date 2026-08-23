@@ -27,6 +27,7 @@ import { deriveCalibrationState } from './overview';
 import { completeLabRetestsForApproval } from './retests';
 import { esignAuditNote } from './esignature';
 import { canApproveLabTestRecord, canReviewLabTestRecord } from '../permissions';
+import { appendQcAudit } from '../audit/qcChain';
 import type { LabFinalResult, LabTestStatus, LabTestType, Role } from '../types';
 
 /** Minimal record shape the can*LabTestRecord predicates need (matches permissions.ts). */
@@ -583,21 +584,7 @@ export function transitionLabTest(
     }
 
     // Audit every transition (§61) — the shared qc_audit_log, never a second log.
-    db.prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_TEST', ?, NULL, ?, ?, ?, ?, ?)`,
-    ).run(
-      testId,
-      user.id,
-      AUDIT_ACTION[action],
-      test.status,
-      action === 'approve'
-        ? 'APPROVED'
-        : action === 'start_review'
-          ? 'UNDER_REVIEW'
-          : 'REJECTED',
-      action === 'approve' && opts?.esigned ? esignAuditNote(reason) : reason,
-    );
+    appendQcAudit(db, { entityType: 'LAB_TEST', entityId: testId, actorId: user.id, action: AUDIT_ACTION[action], oldValue: test.status, newValue: action === 'approve' ? 'APPROVED' : action === 'start_review' ? 'UNDER_REVIEW' : 'REJECTED', note: action === 'approve' && opts?.esigned ? esignAuditNote(reason) : reason });
 
     // Notify the tester (reuse the existing notification engine). taskId stays
     // null (lab events are not tasks); entity_href carries the real record link

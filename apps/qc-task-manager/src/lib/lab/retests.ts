@@ -24,6 +24,7 @@ import { createNotification } from '../notifications';
 import { canCreateLabRetest, canSubmitLabChangeRequest } from '../permissions';
 import { submitChangeRequest } from './changeRequests';
 import type { Role } from '../types';
+import { appendQcAudit } from '../audit/qcChain';
 import {
   LAB_RETEST_REASONS,
   LAB_RETEST_STATUSES,
@@ -52,10 +53,7 @@ function auditLabRetest(
   action: 'CREATE' | 'APPROVAL',
   note: string,
 ): void {
-  db.prepare(
-    `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-     VALUES ('LAB_RETEST', ?, NULL, ?, ?, NULL, NULL, ?)`,
-  ).run(retestId, actorId, action, note);
+  appendQcAudit(db, { entityType: 'LAB_RETEST', entityId: retestId, actorId, action, note });
 }
 
 /** Audit trail for one retest (shared qc_audit_log, newest first). */
@@ -489,10 +487,7 @@ export function createLabRetest(
         `; original_result=${original.final_result ?? 'NULL'}; original_status=${originalStatus}` +
         `; new_test=${newTestNumber}`,
     );
-    db.prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_TEST', ?, NULL, ?, 'LINK', NULL, NULL, ?)`,
-    ).run(originalTestId, user.id, `retest=${retestNumber}; new_test=${newTestNumber}`);
+    appendQcAudit(db, { entityType: 'LAB_TEST', entityId: originalTestId, actorId: user.id, action: 'LINK', note: `retest=${retestNumber}; new_test=${newTestNumber}` });
 
     // Notify the original test's owner that a retest was opened (reuses the
     // notification engine; entity_href opens the retest — migration 022).

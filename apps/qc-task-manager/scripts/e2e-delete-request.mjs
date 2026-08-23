@@ -5,10 +5,9 @@
 // (with optional rejection reason), C completed blocked, D duplicate blocked,
 // E supervisor cannot review, F role surface.
 //
-// Spec semantics (12-table schema): the request row is a child of its task
-// (task_id ON DELETE CASCADE) — approving deletes task AND request together,
-// so scenario A asserts the row is gone. Rejected requests survive (task
-// alive), keep the reviewer's review_note, and appear in history.
+// The live request row remains task-owned and cascades, while reviewed
+// decisions are copied to task_deletion_history and task activity remains a
+// durable hash-chain record after approval.
 // Usage: QC_DB_PATH=<app>/db/e2e_test.db node scripts/e2e-delete-request.mjs
 
 import { chromium } from 'playwright';
@@ -203,7 +202,9 @@ try {
   ok(taskByTitle('SC-A delete me') === undefined, 'A. task row deleted from DB');
   const aReq = requestForTask(aId);
   ok(aReq === undefined, 'A. request row cascade-deleted with the task (spec: ON DELETE CASCADE)');
-  ok(activityForTask(aId).length === 0, 'A. activity log wiped with the task (cascade)');
+  ok(activityForTask(aId).some((a) => a.action === 'delete_approved'), 'A. approval activity remains durable after task deletion');
+  const aHistory = q('SELECT * FROM task_deletion_history WHERE task_id = ? AND outcome = \'approved\'', aId);
+  ok(aHistory?.requested_by === emp.id && aHistory?.reviewed_by === mgr.id && aHistory?.reason === 'Duplicate task, please remove.', 'A. immutable deletion history preserves identity, reason, requester, and reviewer');
 
   await openRequestsPage(managerPage);
   const aHistGone = await managerPage.locator('section:has-text("History") li', { hasText: 'SC-A delete me' }).count();

@@ -187,11 +187,11 @@ CREATE TABLE IF NOT EXISTS task_attachments (
 
 -- ────────────────────── 5. task_activity_log ──────────────────────────
 -- CORE BUSINESS RULE #6: every action is recorded (who / what / old / new /
--- when / from where). Rows cascade away with their task but the acting user is
--- RESTRICTed so an audit actor can never disappear.
+-- when / from where). Rows deliberately retain their task identity after task
+-- deletion so the activity hash chain remains verifiable.
 CREATE TABLE IF NOT EXISTS task_activity_log (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
-  task_id    INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+  task_id    INTEGER NOT NULL,
   user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   action     TEXT NOT NULL,
   field      TEXT,
@@ -207,8 +207,8 @@ CREATE TABLE IF NOT EXISTS task_activity_log (
 -- ──────────────────── 6. task_delete_requests ─────────────────────────
 -- CORE BUSINESS RULE #4: employees cannot delete; they request, manager/admin
 -- review. Per the production spec the request is a child of its task:
--- task_id is ON DELETE CASCADE — approving a request hard-deletes the task and
--- the request row goes with it (the task's deletion is its own audit event).
+-- task_id is ON DELETE CASCADE for the live workflow row; reviewed snapshots
+-- are copied to task_deletion_history before approval deletes the task.
 -- The unique partial index blocks duplicate pending requests atomically.
 CREATE TABLE IF NOT EXISTS task_delete_requests (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -221,6 +221,16 @@ CREATE TABLE IF NOT EXISTS task_delete_requests (
   reviewed_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
   reviewed_at  TEXT,
   created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS task_deletion_history (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  task_id INTEGER NOT NULL, task_title TEXT NOT NULL,
+  requested_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  reason TEXT, reviewed_by INTEGER REFERENCES users(id) ON DELETE RESTRICT,
+  review_note TEXT, requested_at TEXT NOT NULL, reviewed_at TEXT,
+  outcome TEXT NOT NULL CHECK (outcome IN ('approved', 'rejected')),
+  recorded_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 -- ─────────────────────────── 7. task_checklists ────────────────────────
@@ -328,6 +338,14 @@ CREATE INDEX IF NOT EXISTS idx_delreq_reviewed_by    ON task_delete_requests(rev
 -- (CORE BUSINESS RULE #4: duplicate pending requests are blocked).
 CREATE UNIQUE INDEX IF NOT EXISTS idx_delreq_one_pending
   ON task_delete_requests(task_id) WHERE status = 'pending';
+CREATE INDEX IF NOT EXISTS idx_task_deletion_history_task ON task_deletion_history(task_id, reviewed_at);
+CREATE INDEX IF NOT EXISTS idx_task_deletion_history_reviewed ON task_deletion_history(reviewed_at, id);
+CREATE TRIGGER IF NOT EXISTS task_deletion_history_no_update
+BEFORE UPDATE ON task_deletion_history
+BEGIN SELECT RAISE(ABORT, 'task deletion history is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS task_deletion_history_no_delete
+BEFORE DELETE ON task_deletion_history
+BEGIN SELECT RAISE(ABORT, 'task deletion history is immutable'); END;
 
 CREATE INDEX IF NOT EXISTS idx_checklists_task_id    ON task_checklists(task_id);
 CREATE INDEX IF NOT EXISTS idx_checklists_completed_by ON task_checklists(completed_by);
@@ -381,7 +399,8 @@ CREATE TABLE IF NOT EXISTS qc_audit_log (
   entity_id INTEGER NOT NULL, task_id INTEGER REFERENCES tasks(id) ON DELETE CASCADE,
   actor_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   action TEXT NOT NULL CHECK (action IN ('CREATE','UPDATE','STATUS_TRANSITION','APPROVAL','REJECTION','CLOSURE','REOPEN','SUBMIT','REQUEST_CHANGES','VOID','SUPERSEDE','ACKNOWLEDGE','LINK','UNLINK','VERSION')),
-  old_value TEXT, new_value TEXT, note TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  old_value TEXT, new_value TEXT, note TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  previous_hash TEXT, event_hash TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_qc_findings_task ON qc_findings(task_id);
 CREATE INDEX IF NOT EXISTS idx_qc_findings_owner_status ON qc_findings(owner,status);

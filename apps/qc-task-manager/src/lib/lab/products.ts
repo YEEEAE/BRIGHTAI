@@ -24,18 +24,14 @@ import { requireCsrf } from '../api-security';
 import { canCreateLabProduct, canEditLabProduct, canProposeLabProductCreate, canProposeLabProductEdit } from '../permissions';
 import { submitChangeRequest } from './changeRequests';
 import type { LabProduct, LabTestType } from '../types';
+import { appendQcAudit } from '../audit/qcChain';
 
 // ─────────────────────────────── Audit ───────────────────────────────
 
 type LabProductAuditAction = 'CREATE' | 'UPDATE';
 
 function auditLabProduct(productId: number, actorId: number, action: LabProductAuditAction, note: string | null = null): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_PRODUCT', ?, NULL, ?, ?, NULL, NULL, ?)`,
-    )
-    .run(productId, actorId, action, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_PRODUCT', entityId: productId, actorId, action, note });
 }
 
 /** Change history for one product — the shared audit log, newest first. */
@@ -478,20 +474,11 @@ export function setLabProductActive(productId: number, active: boolean, actorId:
       throw new Error(active ? 'The product is already active.' : 'The product is already inactive.');
     }
     getDb().prepare("UPDATE lab_products SET is_active = ?, updated_at = datetime('now') WHERE id = ?").run(next, productId);
-    getDb()
-      .prepare(
-        `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-         VALUES ('LAB_PRODUCT', ?, NULL, ?, 'STATUS_TRANSITION', ?, ?, ?)`,
-      )
-      .run(
-        productId,
-        actorId,
-        row.is_active === 1 ? 'ACTIVE' : 'INACTIVE',
-        next === 1 ? 'ACTIVE' : 'INACTIVE',
-        active
-          ? `restored ${row.code}`
-          : `archived ${row.code}${nonVoidTestCount(productId) > 0 ? '; used by non-VOID tests (product_inactive_in_use)' : ''}`,
-      );
+    appendQcAudit(getDb(), {
+      entityType: 'LAB_PRODUCT', entityId: productId, actorId, action: 'STATUS_TRANSITION',
+      oldValue: row.is_active === 1 ? 'ACTIVE' : 'INACTIVE', newValue: next === 1 ? 'ACTIVE' : 'INACTIVE',
+      note: active ? `restored ${row.code}` : `archived ${row.code}${nonVoidTestCount(productId) > 0 ? '; used by non-VOID tests (product_inactive_in_use)' : ''}`,
+    });
   });
 }
 

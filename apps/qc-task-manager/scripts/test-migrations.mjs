@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { runMigrations, MigrationError } from '../src/lib/migrations.ts';
+import { backfillQcAuditChain, verifyQcAuditChain } from '../src/lib/audit/qcChain.ts';
 
 const appDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const migrationDir = join(appDir, 'db/migrations');
@@ -50,8 +51,8 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 29);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 29);
+    assert.equal(result.applied.length, 30);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 30);
     for (const [table, column] of [
       ['lab_test_records', 'testing_date'], ['lab_test_records', 'actual_force'],
       ['lab_test_records', 'torque_value'], ['lab_test_records', 'humidity_measured'],
@@ -101,11 +102,14 @@ try {
       .all();
 
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 19, 'upgrade applies exactly migrations 011-029');
+    assert.equal(upgraded.applied.length, 20, 'upgrade applies exactly migrations 011-030');
     const after = db
       .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
       .all();
     assert.deepEqual(after, before, 'qc_audit_log rows are preserved verbatim across the rebuild');
+    backfillQcAuditChain(db);
+    assert.equal(verifyQcAuditChain(db).status, 'PASS', 'legacy rows receive a verified genesis/backfill chain');
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log WHERE event_hash IS NOT NULL').get().n, 3);
     // The rebuilt table accepts the new laboratory vocabulary AND the legacy one.
     db.prepare(
       "INSERT INTO qc_audit_log (entity_type, entity_id, actor_id, action, note) VALUES ('LAB_TEST', 1, 1, 'SUBMIT', 'lab event')",
@@ -138,7 +142,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 29);
+    assert.equal(first.applied.length, 30);
     assert.equal(second.applied.length, 0);
     db.close();
   }

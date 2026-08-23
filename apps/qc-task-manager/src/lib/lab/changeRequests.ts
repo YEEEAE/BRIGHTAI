@@ -6,6 +6,7 @@
 
 import type { APIContext } from 'astro';
 import { getDb, transaction } from '../db';
+import { appendQcAudit } from '../audit/qcChain';
 import { getCurrentUser } from '../session';
 import { setFlash } from '../flash';
 import { requireCsrf } from '../api-security';
@@ -62,10 +63,7 @@ export class LabChangeRequestError extends Error {
 function json(value: unknown): string { return JSON.stringify(value); }
 
 function audit(requestId: number, actorId: number, action: 'SUBMIT' | 'APPROVAL' | 'REJECTION', oldValue: string | null, newValue: string | null, note: string | null): void {
-  getDb().prepare(
-    `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-     VALUES ('LAB_CHANGE_REQUEST', ?, NULL, ?, ?, ?, ?, ?)`,
-  ).run(requestId, actorId, action, oldValue, newValue, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_CHANGE_REQUEST', entityId: requestId, actorId, action, oldValue, newValue, note });
 }
 
 function getTargetSnapshot(type: ChangeEntityType, id: number): { snapshot: Record<string, unknown>; updated_at: string | null } | null {
@@ -253,8 +251,8 @@ function applyCanonical(request: LabChangeRequest, actorId: number, data: Record
     );
     const newTestId = Number(newTest.lastInsertRowid);
     db.prepare('UPDATE lab_test_retests SET new_test_id=?, updated_at=datetime(\'now\') WHERE id=?').run(newTestId, retestId);
-    db.prepare(`INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, note) VALUES ('LAB_RETEST', ?, NULL, ?, 'CREATE', ?)`).run(retestId, actorId, `created by change request #${request.id}`);
-    db.prepare(`INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, note) VALUES ('LAB_TEST', ?, NULL, ?, 'LINK', ?)`).run(originalId, actorId, `retest ${retestNumber} → test ${newTestId}`);
+    appendQcAudit(db, { entityType: 'LAB_RETEST', entityId: retestId, actorId, action: 'CREATE', note: `created by change request #${request.id}` });
+    appendQcAudit(db, { entityType: 'LAB_TEST', entityId: originalId, actorId, action: 'LINK', note: `retest ${retestNumber} → test ${newTestId}` });
     return retestId;
   }
   throw new LabChangeRequestError('Unsupported laboratory change entity.');

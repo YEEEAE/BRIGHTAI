@@ -60,7 +60,9 @@ import labTestEnvironmentReadingsSql from '../../db/migrations/026_lab_test_envi
 import labChangeRequestsSql from '../../db/migrations/027_lab_change_requests.sql?raw';
 import labTestFormAlignmentSql from '../../db/migrations/028_lab_test_form_alignment.sql?raw';
 import wiCatalogMigrationSql from '../../db/migrations/029_wi_catalog_import.sql?raw';
+import auditDurabilityMigrationSql from '../../db/migrations/030_audit_durability.sql?raw';
 import { backfillAuditChain } from './audit/chain';
+import { backfillQcAuditChain } from './audit/qcChain';
 import { importWICatalog } from './lab/wiCatalog';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -101,6 +103,7 @@ const REQUIRED_TABLES = [
   'task_attachments',
   'task_activity_log',
   'task_delete_requests',
+  'task_deletion_history',
   'task_checklists',
   'task_dependencies',
   'notifications',
@@ -162,6 +165,8 @@ const REQUIRED_INDEXES = [
   'idx_delreq_requested_by',
   'idx_delreq_reviewed_by',
   'idx_delreq_one_pending',
+  'idx_task_deletion_history_task',
+  'idx_task_deletion_history_reviewed',
   'idx_checklists_task_id',
   'idx_checklists_completed_by',
   'idx_dependencies_depends_on',
@@ -319,9 +324,11 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '027_lab_change_requests.sql', source: labChangeRequestsSql },
       { file: '028_lab_test_form_alignment.sql', source: labTestFormAlignmentSql },
       { file: '029_wi_catalog_import.sql', source: wiCatalogMigrationSql },
+      { file: '030_audit_durability.sql', source: auditDurabilityMigrationSql },
     ],
   });
   backfillAuditChain(db);
+  backfillQcAuditChain(db);
   validateSchema(db, migrationResult.currentVersion);
   seedUsersIfEmpty(db);
   // Paper WI index import is catalog-only. It runs after legitimate users are
@@ -336,6 +343,7 @@ function initialize(db: BetterSqliteDatabase): void {
     seedLabEquipmentIfEmpty(db);
   }
   backfillAuditChain(db);
+  backfillQcAuditChain(db);
   // Periodic session cleanup: purge expired rows at process start (per spec).
   // Sessions live in SQLite, so this runs naturally once per server boot.
   db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(new Date().toISOString());

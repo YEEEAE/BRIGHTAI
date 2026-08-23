@@ -25,6 +25,7 @@
 
 import type { APIContext } from 'astro';
 import { getDb, transaction } from '../db';
+import { appendQcAudit } from '../audit/qcChain';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
@@ -44,12 +45,7 @@ import type { LabTestTemplate, LabTestTemplateVersion, LabTestType } from '../ty
 type LabTemplateAuditAction = 'CREATE' | 'UPDATE' | 'VERSION' | 'APPROVAL' | 'STATUS_TRANSITION';
 
 function auditLabTemplate(templateId: number, actorId: number, action: LabTemplateAuditAction, note: string | null = null, oldValue: string | null = null, newValue: string | null = null): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_TEMPLATE', ?, NULL, ?, ?, ?, ?, ?)`,
-    )
-    .run(templateId, actorId, action, oldValue, newValue, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_TEMPLATE', entityId: templateId, actorId, action, oldValue, newValue, note });
 }
 
 /** Change history for one template — the shared audit log, newest first. */

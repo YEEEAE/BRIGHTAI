@@ -6,14 +6,12 @@
 //   review  → 'approved' (hard-deletes the task, cascade cleans children) or
 //             'rejected' (task stays untouched)
 //
-// Every transition is written to task_activity_log where the task still exists
-// (submit + reject always; approve is logged before the task is deleted, so the
-// row is cascade-removed with the task — "where possible" per the spec).
+// Every transition is written to task_activity_log and approved/rejected
+// decisions are snapshotted in task_deletion_history.
 //
 // Per the production schema the request row is a child of its task (task_id
 // ON DELETE CASCADE): approving a request deletes the task AND the request row
-// together. Task titles are read live via a JOIN, so history rows always render
-// the current task name (rejected requests keep their task alive).
+// together. The durable history table carries the task snapshot beyond that.
 
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
@@ -187,12 +185,15 @@ export function listPendingDeleteRequests(): DeleteRequestRow[] {
 
 /** Approved/rejected requests (history). Approved tasks may already be deleted. */
 export function listReviewedDeleteRequests(limit = 20): DeleteRequestRow[] {
-  const approved = getDb().prepare(`${REQUEST_LIST_SQL} LIMIT ?`).all('approved', limit) as DeleteRequestRow[];
-  const rejected = getDb().prepare(`${REQUEST_LIST_SQL} LIMIT ?`).all('rejected', limit) as DeleteRequestRow[];
-  return approved
-    .concat(rejected)
-    .sort((a, b) => String(b.reviewed_at).localeCompare(String(a.reviewed_at)))
-    .slice(0, limit);
+  return getDb().prepare(`
+    SELECT h.id, h.task_id, h.task_title, h.reason, h.review_note, h.outcome AS status,
+           h.requested_at AS created_at, h.reviewed_at,
+           req.full_name AS requester_name, rev.full_name AS reviewer_name
+    FROM task_deletion_history h
+    JOIN users req ON req.id = h.requested_by
+    LEFT JOIN users rev ON rev.id = h.reviewed_by
+    ORDER BY h.reviewed_at DESC, h.id DESC LIMIT ?
+  `).all(limit) as DeleteRequestRow[];
 }
 
 /**
@@ -260,6 +261,9 @@ export function reviewDeleteRequest(params: {
       action: Action.DELETE_REJECTED,
       newValue: reviewNote,
     });
+    db.prepare(`INSERT INTO task_deletion_history (id, task_id, task_title, requested_by, reason, reviewed_by, review_note, requested_at, reviewed_at, outcome)
+      SELECT r.id, r.task_id, t.title, r.requested_by, r.reason, r.reviewed_by, r.review_note, r.created_at, r.reviewed_at, r.status
+      FROM task_delete_requests r JOIN tasks t ON t.id = r.task_id WHERE r.id = ?`).run(request.id);
     // The requester is told their request was rejected — with the reviewer's
     // reason when one was given (task stays alive, so the notification links
     // to it).
@@ -276,13 +280,16 @@ export function reviewDeleteRequest(params: {
     return { ok: true, message: `Delete request for "${taskTitle}" rejected.` };
   }
 
-  // approve — log first (the activity row dies with the task), then delete.
+  // approve — snapshot and log before deleting the task.
   const tx = db.transaction(() => {
     logActivity({ taskId: request.task_id, userId: params.reviewer.id, action: Action.DELETE_APPROVED });
-    const info = markReviewed.run('approved', params.reviewer.id, null, request.id);
+    const info = markReviewed.run('approved', params.reviewer.id, reviewNote, request.id);
     if (info.changes !== 1) {
       throw new Error('already reviewed');
     }
+    db.prepare(`INSERT INTO task_deletion_history (id, task_id, task_title, requested_by, reason, reviewed_by, review_note, requested_at, reviewed_at, outcome)
+      SELECT r.id, r.task_id, ?, r.requested_by, r.reason, r.reviewed_by, r.review_note, r.created_at, r.reviewed_at, r.status
+      FROM task_delete_requests r WHERE r.id = ?`).run(taskTitle, request.id);
     // Notify the requester INSIDE the tx — the task is deleted right after,
     // so notifications.task_id → NULL via ON DELETE SET NULL (there is no
     // task left to link to).

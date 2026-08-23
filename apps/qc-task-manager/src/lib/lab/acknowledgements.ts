@@ -26,6 +26,7 @@
 
 import type { APIContext } from 'astro';
 import { getDb, transaction } from '../db';
+import { appendQcAudit } from '../audit/qcChain';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
@@ -382,12 +383,7 @@ function auditAcknowledgement(
   action: 'CREATE' | 'ACKNOWLEDGE',
   note: string,
 ): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_DOCUMENT_VERSION', ?, NULL, ?, ?, NULL, NULL, ?)`,
-    )
-    .run(versionId, actorId, action, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_DOCUMENT_VERSION', entityId: versionId, actorId, action, note });
 }
 
 function resolveDocumentForVersion(versionId: number): { code: string; title: string; version: number } | null {

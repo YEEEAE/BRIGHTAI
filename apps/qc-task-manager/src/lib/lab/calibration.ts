@@ -24,6 +24,7 @@
 
 import type { APIContext } from 'astro';
 import { getDb, transaction } from '../db';
+import { appendQcAudit } from '../audit/qcChain';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
@@ -115,12 +116,7 @@ function auditLabCalibration(
   action: 'CREATE' | 'UPDATE',
   note: string | null,
 ): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_EQUIPMENT_CALIBRATION', ?, NULL, ?, ?, NULL, NULL, ?)`,
-    )
-    .run(calibrationId, actorId, action, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_EQUIPMENT_CALIBRATION', entityId: calibrationId, actorId, action, note });
 }
 
 /** Audit rows for one device's calibration records (shared log, newest first). */

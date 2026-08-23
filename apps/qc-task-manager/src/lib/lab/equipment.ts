@@ -27,6 +27,7 @@ import { canApplyLabEquipmentChange, canArchiveLabEquipment, canCreateLabEquipme
 import { submitChangeRequest } from './changeRequests';
 import type { LabEquipment, LabEquipmentMaintenance } from '../types';
 import { statusMatchesLabel } from './equipmentStatus';
+import { appendQcAudit } from '../audit/qcChain';
 
 // ─────────────────────────────── Audit ───────────────────────────────
 
@@ -38,12 +39,7 @@ function auditLabEquipment(
   action: LabEquipmentAuditAction,
   note: string | null = null,
 ): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_EQUIPMENT', ?, NULL, ?, ?, NULL, NULL, ?)`,
-    )
-    .run(equipmentId, actorId, action, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_EQUIPMENT', entityId: equipmentId, actorId, action, note });
 }
 
 /** Change history for one device — the shared audit log, newest first. */
@@ -63,12 +59,7 @@ function auditLabEquipmentMaintenance(
   actorId: number,
   note: string | null,
 ): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_EQUIPMENT_MAINTENANCE', ?, NULL, ?, 'CREATE', NULL, NULL, ?)`,
-    )
-    .run(maintenanceId, actorId, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_EQUIPMENT_MAINTENANCE', entityId: maintenanceId, actorId, action: 'CREATE', note });
 }
 
 // ─────────────────────────────── List / search ───────────────────────────────

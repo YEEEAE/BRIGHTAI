@@ -22,6 +22,7 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { canLinkLabTestToFinding } from '../permissions';
+import { appendQcAudit } from '../audit/qcChain';
 
 export interface LabTestFindingLink {
   test_id: number;
@@ -56,10 +57,7 @@ function auditFindingLink(
   actorId: number,
   action: 'LINK' | 'UNLINK',
 ): void {
-  db.prepare(
-    `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-     VALUES ('LAB_TEST', ?, NULL, ?, ?, NULL, NULL, ?)`,
-  ).run(testId, actorId, action, `finding=${findingNumber} (id=${findingId})`);
+  appendQcAudit(db, { entityType: 'LAB_TEST', entityId: testId, actorId, action, note: `finding=${findingNumber} (id=${findingId})` });
 }
 
 /**

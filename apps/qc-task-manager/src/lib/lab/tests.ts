@@ -29,6 +29,7 @@ import {
 } from './esignature';
 import { getLabTestFindingLinks, type LabTestFindingLink } from './findingLinks';
 import type { LabTestSample, LabTestStatus, LabTestType, Role } from '../types';
+import { appendQcAudit } from '../audit/qcChain';
 
 /** Lab audit actions allowed by the extended qc_audit_log CHECK (migration 011). */
 type LabAuditAction = 'CREATE' | 'SUBMIT' | 'UPDATE' | 'VOID';
@@ -41,12 +42,7 @@ function auditLabTest(
   oldValue: string | null = null,
   newValue: string | null = null,
 ): void {
-  getDb()
-    .prepare(
-      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
-       VALUES ('LAB_TEST', ?, NULL, ?, ?, ?, ?, ?)`,
-    )
-    .run(testId, actorId, action, oldValue, newValue, note);
+  appendQcAudit(getDb(), { entityType: 'LAB_TEST', entityId: testId, actorId, action, oldValue, newValue, note });
 }
 
 /** Approved template parameters only; absent/mismatched references stay null. */

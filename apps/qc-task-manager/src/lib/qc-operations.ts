@@ -1,6 +1,7 @@
 import { transaction, getDb } from './db';
 import { canCloseCapa, hasCapaClosureGates, canTransitionCapa } from './capa';
 import { canTransitionFinding } from './findings';
+import { appendQcAudit } from './audit/qcChain';
 
 export type EntityType = 'FINDING' | 'RCA' | 'CAPA' | 'EVIDENCE';
 export type AuditAction = 'CREATE' | 'UPDATE' | 'STATUS_TRANSITION' | 'APPROVAL' | 'REJECTION' | 'CLOSURE' | 'REOPEN';
@@ -9,8 +10,7 @@ export type FindingRow = Record<string, unknown> & { id: number; task_id: number
 export type CapaRow = Record<string, unknown> & { id: number; finding_id: number; owner: number; status: string };
 
 function audit(entityType: EntityType, entityId: number, taskId: number | null, actorId: number, action: AuditAction, oldValue: unknown = null, newValue: unknown = null, note: string | null = null): void {
-  getDb().prepare(`INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
-    .run(entityType, entityId, taskId, actorId, action, oldValue == null ? null : JSON.stringify(oldValue), newValue == null ? null : JSON.stringify(newValue), note);
+  appendQcAudit(getDb(), { entityType, entityId, taskId, actorId, action, oldValue: oldValue == null ? null : JSON.stringify(oldValue), newValue: newValue == null ? null : JSON.stringify(newValue), note });
 }
 
 export function listFindings(filters: { status?: string; classification?: string; owner?: number } = {}): FindingRow[] {
