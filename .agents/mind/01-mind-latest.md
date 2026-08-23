@@ -8,6 +8,16 @@ version: 2.8.26
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-FINAL-REGRESSION-GATE-010: تحقق مستقل كامل للنظام — NO-GO محليًا بسبب E2E cleanup failure وreports process hang
+
+- **Scope**: `apps/qc-task-manager/`؛ لا commit ولا push ولا deploy. نفذت `CI=true pnpm install --frozen-lockfile` بنجاح بعد السماح بالشبكة، والـ lockfile بقي up to date.
+- **Migrations**: fresh **30/30**، upgrade صريح **026→027→028→029→030** طبّق `[27,28,29,30]`، latest schema version **30**، table count **51**، `PRAGMA integrity_check=ok`، و`PRAGMA foreign_key_check` = **0**.
+- **Build/typecheck/tests**: `pnpm typecheck` exit 0 = 0 errors/0 warnings/19 hints؛ `NODE_ENV=production pnpm build` Complete مع تحذيري Vite غير حاجزين. Aggregate `pnpm test` exit 0. السكربتان المستثنيتان من aggregate هما `test:lab-print` و`test:lab-retention`، وشغّلتهما منفصلًا: **51/0** و**37/0**.
+- **E2E evidence**: full `pnpm e2e:acceptance` بدأ خارج sandbox، ثم نجح `admin-users` **49/0** و`auth-lockout` **44/0**، وتوقف في `task-shared` بعد assertions ناجحة بسبب `SQLITE_CONSTRAINT_TRIGGER: FOREIGN KEY constraint failed` عند cleanup `e2e-task-shared.mjs:946` أثناء حذف `emp_create`. Overall full E2E = **UNVERIFIED**؛ لم تصل بقية suites ولا persistence phase عبر runner.
+- **Reports**: standalone reports assertions **374/0** وتشمل transport/auth/audit، لكن `scripts/e2e-reports.mjs` لم يغلق `browser`/contexts؛ العملية علقت بعد آخر assertion واضطررت لإيقافها. لذلك ليست E2E PASS.
+- **Backup/persistence**: standalone backup **13/0** مع manual backup verification PASS + integrity check؛ restart persistence create/verify نجح لملف evidence. WI content/change request/approved test لم تدخل في persistence script، فتبقى غير مثبتة.
+- **Health/production**: missing DB أعاد 503؛ لم يُثبت live production. `Verified in production = NO`. قرار البوابة: **NO-GO** بسبب full E2E غير مكتمل/cleanup FK وreports hang، مع عدم وجود production evidence.
+
 ### 2026-08-23 — QC-AUDIT-DURABILITY-009: حفظ دليل حذف المهام وسلسلة تدقيق Lab/QC — التنفيذ والتحقق المحلي مكتملان بدون commit/push/deploy
 
 - **Scope**: `apps/qc-task-manager/`؛ migration **030** أضافت `task_deletion_history` كـ snapshot مستقل خارج FK المهمة، مع triggers تمنع UPDATE/DELETE على سجل القرار؛ طلب الحذف الحي يبقى CASCADE كما هو، لكن approval/rejection ينسخ الهوية والعنوان والسبب والمراجع والملاحظة والتوقيت والنتيجة قبل الإنهاء.
