@@ -1,592 +1,87 @@
-<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — hero + final CTA: "احصل على تقييم فوري" → "احصل على تقييم فوري لمؤسستك" + microcopy. "طلب اجتماع فني مخصص" → "اطلب اجتماعاً فنياً مخصصاً" (article tanween). href (whatsappAssessmentHref/whatsappEngineerHref + /contact/) لم يتغير. -->
 ---
-/**
- * Assessment Page — /assessment/ai-governance-readiness/
- * BrightAI readiness assessment for Saudi AI governance.
- *
- * REPORT-13: Visual refresh using canonical design system.
- * - Uses .page-hero with prominent clipboard badge
- * - NEW: multi-step form visual (.assessment-progress + .assessment-question-group)
- * - All inline `style="..."` removed (gradients, borders, padding) → proper utility classes
- * - All .step-num moved to canonical via .demo-expect-step__num pattern (kept as inline class swap)
- * - All glow/wa-btn inline replaced with .btn--glow / .btn--whatsapp
- * - Forms action / external links preserved verbatim
- * - JSON-LD preserved (Organization + BreadcrumbList + HowTo + FAQPage)
- * - 0 published Arabic text changed
- */
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
-import Icon from '../../../components/Icon.astro';
 
-const targetAudience = [
-  {
-    icon: 'mdi:shield-half-full',
-    bgClass: 'avatar-tile--brand-teal',
-    title: 'CISOs',
-    sub: 'مسؤولو أمن المعلومات',
-    desc: 'الذين يرغبون في رصد كافة تطبيقات الذكاء الاصطناعي غير المصرح بها (Shadow AI)، والتحقق من عدم مغادرة البيانات الحساسة لحدود المؤسسة.',
-    tags: ['رصد البنية التحتية', 'إدارة الثغرات'],
-  },
-  {
-    icon: 'mdi:database',
-    bgClass: 'avatar-tile--brand-purple',
-    title: 'CDOs',
-    sub: 'مسؤولو البيانات',
-    desc: 'الباحثون عن خريطة تدفق واضحة لكافة عمليات التفاعل مع النماذج اللغوية الكبيرة وضمان تصنيف البيانات ومعالجتها وفق المعايير السعودية.',
-    tags: ['تصنيف البيانات', 'خرائط التدفق'],
-  },
-  {
-    icon: 'mdi:scale-balance',
-    bgClass: 'avatar-tile--brand-green',
-    title: 'مسؤولو الامتثال والرقابة',
-    sub: 'Compliance Officers',
-    desc: 'الذين يسعون لتوليد أدلة تشغيلية وسجلات تدقيق فنية غير قابلة للتعديل لإثبات الالتزام بالإجراءات التنظيمية والسياسات الداخلية.',
-    tags: ['سجل التدقيق', 'تقييم المخاطر'],
-  },
+const dimensions = [
+  ['inventory', 'حصر الاستخدامات', 'هل عندكم قائمة محدثة بأدوات وحالات استخدام AI؟'],
+  ['ownership', 'الملكية والمسؤوليات', 'هل كل استخدام مهم له مالك واضح؟'],
+  ['risk', 'إدارة المخاطر', 'هل تراجعون المخاطر قبل الاستخدامات عالية الأثر؟'],
+  ['policy', 'السياسات', 'هل عندكم سياسة واضحة لاستخدام الذكاء الاصطناعي؟'],
+  ['data', 'البيانات والخصوصية', 'هل تعرفون البيانات المسموح إدخالها لكل استخدام؟'],
+  ['approvals', 'الموافقات', 'هل توجد مراجعة بشرية للقرارات عالية الأثر؟'],
+  ['evidence', 'التسجيل والأدلة', 'هل تقدرون تثبتون كيف ولماذا اتخذت القرارات؟'],
+  ['monitoring', 'المراقبة', 'هل تراجعون الاستخدامات والمخاطر والتغييرات دوريًا؟'],
 ];
-
-const auditPillars = [
-  {
-    icon: 'mdi:alert-triangle',
-    accentClass: 'accent-danger',
-    title: 'فحص وتقييم المخاطر',
-    desc: 'تحليل مخاطر النماذج المستخدمة وتحديد الثغرات الأمنية المحتملة في معالجة المدخلات والمخرجات وتصنيف درجات التهديد.',
-  },
-  {
-    icon: 'mdi:shield-alert',
-    accentClass: 'accent-info',
-    title: 'تسريب وحماية البيانات',
-    desc: 'تتبع حركة البيانات الحساسة (PII) مثل سجلات العملاء والبيانات المالية للتأكد من عدم مشاركتها مع أطراف ثالثة خارجية.',
-  },
-  {
-    icon: 'mdi:account-check',
-    accentClass: 'accent-purple',
-    title: 'الموافقات والصلاحيات',
-    desc: 'تقييم هيكل الصلاحيات المعمول به ومسار الموافقات البشرية لضمان أن كل تفاعل مع نماذج الذكاء الاصطناعي معتمد ومراقب.',
-  },
-  {
-    icon: 'mdi:format-list-checks',
-    accentClass: 'accent-success',
-    title: 'سجلات وخطوط التدقيق',
-    desc: 'مراجعة الآليات التقنية لتوثيق وتخزين عمليات الذكاء الاصطناعي في سجل تدقيق محصن ومستدام لمواجهة متطلبات التفتيش الداخلي والخارجي.',
-  },
+const groups = [
+  { title: 'الصورة الحالية', helper: 'وش تستخدمون ومن المسؤول؟', ids: ['inventory', 'ownership'] },
+  { title: 'القرار والسياسة', helper: 'كيف تُدار المخاطر والقواعد التشغيلية؟', ids: ['risk', 'policy'] },
+  { title: 'البيانات والاعتمادات', helper: 'وش حدود البيانات ومتى يتدخل الإنسان؟', ids: ['data', 'approvals'] },
+  { title: 'الأدلة والاستمرار', helper: 'كيف تثبتون وتراجعون عمل الحوكمة؟', ids: ['evidence', 'monitoring'] },
 ];
-
-const outputs = [
-  {
-    num: '01',
-    accent: 'border-cyan',
-    title: 'ملف أدلة تشغيلي (Evidence File)',
-    desc: 'ملف توثيقي شامل يحتوي على البراهين الفنية والتشغيلية التي توضح كيفية إدارة ومراقبة عمليات استخدام نماذج الذكاء الاصطناعي وسلوك موظفيك الفعلي.',
-  },
-  {
-    num: '02',
-    accent: 'border-purple',
-    title: 'تقرير تحليل المخاطر الفنية',
-    desc: 'لوحة تحليلية مفصلة تصنف كافة تطبيقات الذكاء الاصطناعي النشطة في مؤسستك بحسب مستوى خطورتها الفنية، مع إرشادات تصحيح فوري.',
-  },
-  {
-    num: '03',
-    accent: 'border-green',
-    title: 'خطة حوكمة متوافقة محلياً',
-    desc: 'توصيات عملية ومسودة سياسات تقنية مهيأة للتكامل المباشر مع أطر الامتثال لنظام حماية البيانات الشخصية السعودي (PDPL) دون تعقيد.',
-  },
-];
-
-const steps = [
-  {
-    num: '١',
-    title: 'الفحص الفني والاستكشاف الأولي',
-    desc: 'يقوم فريقنا بفحص مسارات تدفق البيانات وتحديد كافة أدوات الذكاء الاصطناعي والشبكات المفتوحة داخل مؤسستك للكشف عن Shadow AI ورصد الثغرات.',
-  },
-  {
-    num: '٢',
-    title: 'تهيئة وهيكلة نظام تصنيف المخاطر',
-    desc: 'بناء وتخصيص مستويات تصنيف المخاطر الأمنية وتحديد القواعد التلقائية التي تفرز البيانات المدخلة والمخرجة بناءً على معايير الحماية الوطنية الخاصة بك.',
-  },
-  {
-    num: '٣',
-    title: 'دمج جدار الحماية (AI Firewall) والتحكم الفعال',
-    desc: 'إدراج طبقة الأمان الذكية لمنع مشاركة البيانات الحساسة أو إرسال المعلومات السرية دون موافقات مسبقة، مع الاحتفاظ بمسار مراجعة بشري مرن.',
-    links: [{ href: '/solutions/ai-firewall/', label: 'اكتشف حلول AI Firewall' }],
-  },
-  {
-    num: '٤',
-    title: 'تشغيل سجل التدقيق وإصدار الأدلة (Evidence)',
-    desc: 'تفعيل Immutable Audit Trail لحفظ قرارات الذكاء الاصطناعي ونشاط الموظفين في سجل تشغيلي مشفر محصن ضد التلاعب، وتوليد تقارير الجاهزية الفنية للجهات التنظيمية.',
-    links: [
-      { href: '/solutions/ai-audit-trail/', label: 'اقرأ عن نظام AI Audit Trail' },
-      { href: '/solutions/ai-governance-platform/', label: 'منصة حوكمة الذكاء الاصطناعي' },
-    ],
-  },
-];
-
-const formSteps = [
-  { n: '1', label: 'معلومات المنشأة', helper: 'القطاع وحجم الفريق' },
-  { n: '2', label: 'استخدامات AI الحالية', helper: 'الأدوات والبيانات' },
-  { n: '3', label: 'الضوابط الحالية', helper: 'سياسات وموافقات' },
-  { n: '4', label: 'النتيجة والتوصيات', helper: 'ملف أدلة + خطة' },
-];
-
-const assessmentQuestions = [
-  {
-    title: 'القطاع وحجم الفريق',
-    helper: 'سؤال واحد يحدد مستوى الخطورة الأساسي لمنشأتك.',
-    fields: [
-      { id: 'industry', label: 'القطاع', type: 'select', options: ['بنك / مالي', 'صحي / مستشفى', 'حكومي', 'صناعة / مصنع', 'تعليم', 'تجزئة', 'تقنية / SaaS', 'غيره'] },
-      { id: 'company-size', label: 'حجم الفريق التقني', type: 'select', options: ['1-10', '11-50', '51-200', '201-1000', '+1000'] },
-    ],
-  },
-];
-
+const answers = [['established', 'مطبق وواضح'], ['partial', 'موجود جزئيًا أو غير ثابت'], ['not_started', 'ما بدأنا فيه']];
 const faqs = [
-  { q: 'ما الذي يقدمه تقييم جاهزية حوكمة الذكاء الاصطناعي من BrightAI؟', a: 'يقدم تقييمًا فنيًا وتشغيليًا شاملًا للمؤسسات السعودية للوقوف على مستوى شفافية وأمان استخدام تطبيقات ونماذج الذكاء الاصطناعي، وفحص مدى تسريب البيانات الحساسة وتحديد مواطن القوة والضعف لتوليد أدلة تدقيق تشغيلية متماشية مع الأطر المحلية.' },
-  { q: 'هل يوفر هذا التقييم شهادة ضمان امتثال قانوني؟', a: 'لا، نحن لا نمنح شهادات أو ضمانات امتثال قانوني قاطعة، بل نوفر الأدوات الفنية التشغيلية وسجلات التدقيق (Audit Trails) التي تدعم جاهزية مؤسستك الفنية للوفاء بمتطلبات اللوائح التنظيمية مثل نظام حماية البيانات الشخصية (PDPL).' },
-  { q: 'كيف يتوافق التقييم مع الضوابط الوطنية في المملكة العربية السعودية؟', a: 'التقييم مبني بالكامل ليتماشى مع متطلبات الهيئة السعودية للبيانات والذكاء الاصطناعي (SDAIA)، ونظام حماية البيانات الشخصية (PDPL)، والضوابط الأساسية للأمن السيبراني الصادرة عن NCA.' },
+  ['هل هذا التقييم شهادة أو موافقة من جهة تنظيمية؟', 'لا. هذا فحص إرشادي من BrightAI يساعدكم ترتبون نقاش الجاهزية. ما يمنح شهادة، ولا يثبت امتثالًا، ولا يحل محل مراجعة قانونية أو تنظيمية.'],
+  ['وش أحصل عليه بعد الإجابة؟', 'بتشوف ملخصًا وصفيًا يفصل نقاط القوة والفجوات وخطوات ضبط مقترحة. ما نطلع درجة رقمية ولا نزعم منهجية تنظيمية معتمدة.'],
+  ['هل تُرسل إجاباتي لكم؟', 'لا. الأسئلة والنتيجة تُعالج داخل متصفحك. التحليلات تقيس مسار الاستخدام على مستوى الحدث فقط، بدون نص الإجابات أو بيانات شخصية.'],
 ];
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    { '@type': 'WebPage', name: 'تقييم جاهزية AI مجاني | فحص في 4 خطوات', url: 'https://brightai.site/assessment/ai-governance-readiness/', description: 'ابدأ تقييم جاهزية AI مجاني من BrightAI اليوم: فحص السياسات والضوابط والبيانات وسجلات التدقيق. احصل على خطة امتثال عملية تناسب منشأتك في السعودية.', inLanguage: 'ar-SA' },
-    { '@type': 'FAQPage', mainEntity: faqs.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
-  ],
-};
-
-const whatsappAssessmentHref = 'https://wa.me/966538229013?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B7%D9%84%D8%A8%20%D8%AA%D9%82%D9%8A%D9%8A%D9%85%20%D8%AC%D8%A7%D9%87%D8%B2%D9%8A%D8%A9%20%D8%AD%D9%88%D9%83%D9%85%D8%A9%20AI%20%D9%84%D9%85%D8%A4%D8%B3%D8%B3%D8%AA%D9%8A';
-const whatsappEngineerHref = 'https://wa.me/966538229013?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%AA%D8%AD%D8%AF%D8%AB%20%D9%85%D8%B9%20%D9%85%D9%87%D9%86%D8%AF%D8%B3%D9%8A%20BrightAI%20%D8%B9%D9%86%20%D8%AA%D9%82%D9%8A%D9%8A%D9%85%20%D8%AC%D8%A7%D9%87%D8%B2%D9%8A%D8%A9%20%D8%AD%D9%88%D9%83%D9%85%D8%A9%20AI';
-
-const checklistItems = [
-  'فحص واستكشاف في غضون أيام',
-  'استضافة سحابية أو محلية كاملة',
-  'فريق تقني سعودي متخصص',
-];
+const jsonLd = { '@context': 'https://schema.org', '@graph': [{ '@type': 'WebPage', name: 'تقييم جاهزية حوكمة الذكاء الاصطناعي للشركات السعودية', url: 'https://brightai.site/assessment/ai-governance-readiness/', description: 'تقييم إرشادي لحوكمة الذكاء الاصطناعي للمؤسسات السعودية يغطي الاستخدامات والملكية والمخاطر والسياسات والبيانات والموافقات والأدلة والمراقبة.', inLanguage: 'ar-SA' }] };
 ---
 
-<ArabicLayout title="تقييم جاهزية AI مجاني | فحص في 4 خطوات" description="ابدأ تقييم جاهزية AI مجاني من BrightAI: فحص السياسات والضوابط والبيانات وسجلات التدقيق وفق PDPL وNCA. احصل على خطة امتثال عملية تناسب منشأتك في دقائق." canonical="https://brightai.site/assessment/ai-governance-readiness/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/assessment/ai-governance-readiness/'},{lang:'x-default',href:'https://brightai.site/assessment/ai-governance-readiness/'}]} jsonLd={jsonLd as any}   currentPath="/assessment/ai-governance-readiness/" extraSpeakableSelectors={['.page-hero__description', 'aside[data-snippet="tl-dr"]']} breadcrumbs={[{ name: 'تقييم الجاهزية', href: '/assessment/ai-governance-readiness/' }]}>
-
-  {/* ═══════════ 1. HERO — page-hero ═══════════ */}
-  <section class="page-hero" aria-label="تقييم الجاهزية">
+<ArabicLayout title="تقييم جاهزية حوكمة AI للمؤسسات السعودية | BrightAI" description="فحص إرشادي لحوكمة الذكاء الاصطناعي: الاستخدامات، الملكية، المخاطر، السياسات، البيانات، الموافقات، الأدلة والمراقبة. نتائج وصفية على جهازك بدون شهادة أو ادعاء امتثال." canonical="https://brightai.site/assessment/ai-governance-readiness/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/assessment/ai-governance-readiness/'},{lang:'x-default',href:'https://brightai.site/assessment/ai-governance-readiness/'}]} jsonLd={jsonLd as any} currentPath="/assessment/ai-governance-readiness/" breadcrumbs={[{ name: 'تقييم الجاهزية', href: '/assessment/ai-governance-readiness/' }]}>
+  <section class="page-hero assessment-hero" aria-labelledby="assessment-title">
     <BackgroundGrid />
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <div class="inner-hero__badge">
-        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-clipboard-check"></use></svg>
-        أدوات وتقنيات مواءمة لنظام PDPL وضوابط NCA
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 assessment-hero__grid">
+      <div>
+        <p class="inner-section__label">فحص إرشادي للمؤسسات السعودية</p>
+        <h1 id="assessment-title" class="page-hero__title"><span class="gradient-text">قيّم جاهزية حوكمة AI</span><br />قبل ما تكبر المخاطر</h1>
+        <p class="page-hero__description">هذا التقييم مناسب لقادة التقنية والمخاطر والبيانات والامتثال اللي يبغون صورة مشتركة عن استخدامات الذكاء الاصطناعي داخل مؤسستهم. جاوب على 8 محاور تشغيلية وخذ ملخصًا واضحًا لنقاط القوة والفجوات وأول الضوابط المقترحة.</p>
+        <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary"><p>تقييم جاهزية حوكمة الذكاء الاصطناعي من BrightAI هو فحص إرشادي يغطي الحصر والملكية والمخاطر والسياسات والبيانات والموافقات والأدلة والمراقبة. تظهر النتيجة في متصفحك كنقاط قوة وفجوات وخطوات تالية؛ ليست شهادة أو موافقة تنظيمية أو حكم امتثال.</p></aside>
       </div>
-      <h1 class="page-hero__title"><span class="gradient-text">تقييم جاهزية حوكمة</span><br />الذكاء الاصطناعي للشركات السعودية</h1>
-      <p class="page-hero__description">هل تستخدم مؤسستك أدوات ونماذج الذكاء الاصطناعي بشكل فاعل وآمن بالكامل؟ يقدم تقييم جاهزية حوكمة الذكاء الاصطناعي من BrightAI رؤية تشغيلية شاملة تتيح لك رصد المخاطر، تصنيف البيانات، وهيكلة سجلات التدقيق لدعم كفاءة أعمالك محلياً.</p>
-      {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
-         Answer-first, self-contained, ≤60 words. Single source of truth:
-         src/data/snippet-pack.ts. */}
-      <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
-        <p>تقييم جاهزية حوكمة الذكاء الاصطناعي من برايت أيه آي يفحص السياسات والضوابط وتدفقات البيانات وسجلات التدقيق في منشأتك. ينتج تقريرا فنيا يحدد الثغرات ويقترح خطة عملية مرحلية. يدعم المنشآت في فهم مستوى الجاهزية قبل الالتزام بأي منصة، ويقدم ملف أدلة فنيا قابلا للمراجعة. ليس شهادة قانونية ولا ضمان امتثال.</p>
+      <aside class="assessment-trust-card" aria-label="حدود التقييم وخصوصيته">
+        <strong>واضح من البداية</strong>
+        <ul><li>بدون درجة رقمية أو ادعاء منهجية معتمدة.</li><li>بدون طلب اسم أو إيميل أو بيانات حساسة.</li><li>إجاباتك تبقى داخل متصفحك.</li></ul>
+        <a href="#assessment" class="btn btn--glow btn--lg" data-cta="assessment_start_click" data-cta-label="ابدأ تقييم الجاهزية" data-position="hero" data-page-type="ai-governance-readiness" data-offer="assessment">ابدأ التقييم</a>
       </aside>
-      <div class="about-hero__actions">
-        <div class="cta-actions">
-          <a href={whatsappAssessmentHref} target="_blank" rel="nofollow noopener noreferrer" class="btn btn--glow">
-            <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-play-circle"></use></svg>
-            احصل على تقييم فوري لمؤسستك
-          </a>
-          <small class="cta-micro" aria-hidden="true">20 دقيقة • تقرير فجوات PDF مجاني</small>
-        </div>
-        <div class="cta-actions">
-          <a href="/contact/" class="btn btn--whatsapp" data-cta="secondary_cta_click" data-cta-label="تواصل مع مهندسينا" data-position="inline" data-page-type="ai-governance-readiness" data-offer="assessment">
-          <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-email"></use></svg>
-          تواصل مع مهندسينا
-        </a>
-          <small class="cta-micro" aria-hidden="true">رد خلال ساعة • يردّك مهندس سعودي</small>
-        </div>
-      </div>
     </div>
   </section>
 
-  {/* ═══════════ 2. MULTI-STEP FORM VISUAL (NEW) ═══════════ */}
-  <section class="inner-section inner-section--alt" aria-labelledby="assessment-form-visual">
+  <section id="assessment" class="inner-section inner-section--alt" aria-labelledby="assessment-form-title">
     <div class="max-w-4xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">كيف يسير التقييم؟</p>
-      <h2 id="assessment-form-visual" class="inner-section__title">أربع مراحل للاجتياز، من السؤال إلى ملف الأدلة</h2>
-      <p class="inner-section__lead">تقدر تختبر الجاهزية بنفسك قبل ما تتواصل معنا. كل مرحلة من المراحل الأربع تركّز على محور مختلف.</p>
-
-      <div class="assessment-progress" aria-hidden="true">
-        <div class="assessment-progress__bar">
-          <div class="assessment-progress__fill assessment-progress__fill--full"></div>
-        </div>
-        <ol class="assessment-progress__steps assessment-progress__steps--reset">
-          {formSteps.map(s => (
-            <li><span>{s.label}</span></li>
-          ))}
-        </ol>
-      </div>
-
-      {/* Sample question group (visual only — no actual handler; marketing preview) */}
-      {assessmentQuestions.map(group => (
-        <div class="assessment-question-group">
-          <h3 class="assessment-question-group__title">{group.title}</h3>
-          <p class="assessment-question-group__helper">{group.helper}</p>
-          <div class="form-row form-row--2">
-            {group.fields.map(f => (
-              <div class="form-field">
-                <label class="form-label" for={f.id}>{f.label}</label>
-                {f.type === 'select' ? (
-                  <select class="field field--select" id={f.id} name={f.id} disabled>
-                    <option value="">— اختر —</option>
-                    {f.options.map(o => <option>{o}</option>)}
-                  </select>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      <div class="assessment-actions-centered">
-        <button type="button" class="btn btn--glow btn--lg" disabled>
-          <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-arrow-right"></use></svg>
-          ابدأ التقييم الكامل (متاح بعد التواصل)
-        </button>
-      </div>
-    </div>
-  </section>
-
-  {/* ═══════════ 3. TARGET AUDIENCE — 3 cards ═══════════ */}
-  <section class="inner-section" aria-labelledby="target-audience-title">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">الفئات المستهدفة</p>
-      <h2 id="target-audience-title" class="inner-section__title">لمن هذا التقييم؟</h2>
-      <p class="inner-section__lead">تم تصميم تقييم الجاهزية خصيصاً للقادة التنفيذيين وصناع القرار في المؤسسات السعودية الكبرى لمساندتهم في إرساء دعائم حوكمة تقنية متكاملة.</p>
-      <p class="inner-section__lead">احصل على خارطة طريق تقنية واضحة تمكنك من بسط سيطرتك الفنية على استخدامات الذكاء الاصطناعي وتطبيق سياساتك الأمنية في الوقت الفعلي.</p>
-      <div class="grid grid--3">
-        {targetAudience.map(a => (
-          <article class="card card--feature card--lg">
-            <div class={`avatar-tile avatar-tile--sm ${a.bgClass}`} aria-hidden="true">
-              <Icon name={a.icon} class="avatar-tile__icon--white icon-size-md" />
-            </div>
-            <h3 class="inner-card__title">{a.title}</h3>
-            <p class="text-cyan-300 font-bold text-sm mb-3">{a.sub}</p>
-            <p class="inner-card__text">{a.desc}</p>
-            <div class="flex flex-wrap gap-2 mt-3">
-              {a.tags.map(t => <span class="assessment-tag">{t}</span>)}
-            </div>
-          </article>
+      <p class="inner-section__label">8 محاور · 4 مراحل</p><h2 id="assessment-form-title" class="inner-section__title">خلنا نرتب الصورة مع بعض</h2>
+      <p class="inner-section__lead">اختر الوصف الأقرب لواقعكم اليوم. النتيجة تساعدكم تبدأون نقاشًا مرتبًا مع الفريق، وليست تدقيقًا أو قرارًا تنظيميًا.</p>
+      <form data-readiness-assessment class="assessment-form" novalidate>
+        <p data-assessment-status class="sr-only" aria-live="polite"></p>
+        <progress data-assessment-progress class="assessment-progress" max="4" value="1">الخطوة 1 من 4</progress>
+        <div data-assessment-error class="assessment-error" role="alert" tabindex="-1" hidden></div>
+        {groups.map((group, groupIndex) => (
+          <fieldset data-assessment-group class="assessment-group">
+            <legend tabindex="-1"><span>المرحلة {groupIndex + 1}</span>{group.title}</legend><p>{group.helper}</p>
+            {group.ids.map((id) => {
+              const dimension = dimensions.find(([dimensionId]) => dimensionId === id)!;
+              return <div class="assessment-question"><h3>{dimension[1]}</h3><p>{dimension[2]}</p><div class="assessment-options">{answers.map(([value, label]) => <label><input type="radio" name={id} value={value} required /><span>{label}</span></label>)}</div></div>;
+            })}
+          </fieldset>
         ))}
-      </div>
+        <div class="assessment-actions"><button data-assessment-back type="button" class="btn btn--secondary btn--lg" hidden>السابق</button><button data-assessment-next type="button" class="btn btn--glow btn--lg">حفظ والانتقال للمرحلة التالية</button><button data-assessment-submit type="submit" class="btn btn--glow btn--lg" hidden>اعرض ملخص الجاهزية</button></div>
+      </form>
     </div>
   </section>
 
-  {/* ═══════════ 4. AUDIT PILLARS — 4 cells ═══════════ */}
-  <section class="inner-section inner-section--alt" aria-labelledby="audit-scope-title">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">آلية الفحص</p>
-      <h2 id="audit-scope-title" class="inner-section__title">ماذا نفحص في تقييم الجاهزية؟</h2>
-      <p class="inner-section__lead">نقوم بفحص ومراجعة أربع ركائز أساسية تغطي كافة جوانب استخدامات الذكاء الاصطناعي داخل بيئتك التقنية.</p>
-      <div class="grid grid--4">
-        {auditPillars.map(p => (
-          <article class={`card card--feature audit-pillar audit-pillar--${p.accentClass}`}>
-            <div class="audit-pillar__icon" aria-hidden="true">
-              <Icon name={p.icon} class="icon-size-md" />
-            </div>
-            <h3 class="inner-card__title">{p.title}</h3>
-            <p class="inner-card__text">{p.desc}</p>
-          </article>
-        ))}
-      </div>
+  <section data-assessment-results class="inner-section assessment-results" aria-labelledby="results-title" hidden>
+    <div class="max-w-6xl mx-auto px-5 lg:px-8"><p class="inner-section__label">ملخصك الإرشادي</p><h2 id="results-title" class="inner-section__title" tabindex="-1">من وين تبدأون؟</h2><p class="inner-section__lead">هذا تلخيص من إجاباتكم فقط؛ راجعوه مع أصحاب المصلحة قبل اعتماد أي قرار أو ادعاء امتثال.</p>
+      <div class="grid grid--3 assessment-results__grid"><article class="card card--feature assessment-result assessment-result--strength"><h3>نقاط قوة معلنة</h3><ul data-result-strengths></ul></article><article class="card card--feature assessment-result assessment-result--gap"><h3>فجوات تحتاج نقاش</h3><ul data-result-gaps></ul></article><article class="card card--feature assessment-result assessment-result--control"><h3>ضوابط تالية مقترحة</h3><ul data-result-controls></ul></article></div>
+      <div class="assessment-results__cta"><h3>تبي تحوّل الملخص لخطة مناسبة لنطاقكم؟</h3><p>احجز جلسة استكشافية مع الفريق. نبدأ من واقع استخداماتكم ونوضح نطاق العمل قبل أي التزام.</p><a href="/contact/" class="btn btn--glow btn--lg" data-cta="assessment_completion_cta" data-cta-label="احجز جلسة استكشافية" data-position="results" data-page-type="ai-governance-readiness" data-offer="assessment">احجز جلسة استكشافية</a></div>
     </div>
   </section>
 
-  {/* ═══════════ 5. OUTPUTS — 3 panels with accent borders ═══════════ */}
-  <section class="inner-section" aria-labelledby="outputs-title">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">نتائج ملموسة</p>
-      <h2 id="outputs-title" class="inner-section__title">مخرجات تقييم الجاهزية</h2>
-      <p class="inner-section__lead">نترجم جهود الفحص والتقييم إلى مخرجات تشغيلية داعمة لمسيرة عملك بدقة واحترافية.</p>
-      <div class="grid grid--3">
-        {outputs.map(o => (
-          <article class={`card card--feature assessment-output assessment-output--${o.accent}`}>
-            <span class="assessment-output__num">{o.num}</span>
-            <h3 class="inner-card__title">{o.title}</h3>
-            <p class="inner-card__text">{o.desc}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
+  <section class="inner-section" aria-labelledby="dimensions-title"><div class="max-w-7xl mx-auto px-5 lg:px-8"><p class="inner-section__label">وش يغطي التقييم؟</p><h2 id="dimensions-title" class="inner-section__title">ثمانية محاور للحوار العملي</h2><p class="inner-section__lead">المحاور ظاهرة قبل بدء النموذج عشان يقدر فريقك يراجعها ويشارك الإجابة على نفس الفهم.</p><div class="grid grid--4">{dimensions.map(([, title, description]) => <article class="card card--feature"><h3 class="inner-card__title">{title}</h3><p class="inner-card__text">{description}</p></article>)}</div></div></section>
 
-  {/* ═══════════ 6. WHY BrightAI — 3 reasons ═══════════ */}
-  <section class="inner-section inner-section--alt" aria-labelledby="why-us-title">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">ريادة محلية</p>
-      <h2 id="why-us-title" class="inner-section__title">لماذا تختار BrightAI لحوكمة الذكاء الاصطناعي؟</h2>
-      <p class="inner-section__lead">نحن نوفر لك حلولاً وحوكمة فنية حقيقية مصممة خصيصاً للمؤسسات التي تتطلب مستويات أمان سيبراني صارمة داخل المملكة.</p>
-      <div class="grid grid--3">
-        <div class="card card--feature card--lg">
-          <h3 class="inner-card__title"><svg class="text-cyan-300" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-server"></use></svg> استضافة محلية 100%</h3>
-          <p class="inner-card__text">تضمن حلولنا بقاء كافة البيانات وعمليات التدقيق والتقارير داخل حدود المملكة العربية السعودية، مما يمنع تسريبها للخارج تماماً.</p>
-        </div>
-        <div class="card card--feature card--lg">
-          <h3 class="inner-card__title"><svg class="text-cyan-300" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-lightning-bolt"></use></svg> لا عرقلة للإنتاجية</h3>
-          <p class="inner-card__text">تعمل أدواتنا كـ Middleware غير مرئي. يستمر موظفوك باستخدام أدوات الذكاء الاصطناعي المفضلة لديهم دون أي بطء أو تعطيل لمهامهم اليومية.</p>
-        </div>
-        <div class="card card--feature card--lg">
-          <h3 class="inner-card__title"><svg class="text-cyan-300" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-laptop"></use></svg> تكامل تقني عميق</h3>
-          <p class="inner-card__text">تتكامل أنظمتنا بسلاسة مع أنظمة ERP الشائعة مثل SAP وOracle وMicrosoft 365 لتسجيل الأنشطة وتتبع البيانات الحساسة تلقائياً.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <section class="inner-section inner-section--alt" aria-labelledby="receive-title"><div class="max-w-6xl mx-auto px-5 lg:px-8"><p class="inner-section__label">بعد الإكمال</p><h2 id="receive-title" class="inner-section__title">وش تستلم من التقييم؟</h2><div class="grid grid--3"><article class="card card--feature"><h3 class="inner-card__title">ملخص مباشر</h3><p class="inner-card__text">تقسيم واضح بين النقاط المعلنة كنقاط قوة والفجوات التي تحتاج مراجعة.</p></article><article class="card card--feature"><h3 class="inner-card__title">خطوات ضبط مبدئية</h3><p class="inner-card__text">توصيات تشغيلية عامة تربط كل فجوة بإجراء أول قابل للنقاش.</p></article><article class="card card--feature"><h3 class="inner-card__title">طريق لجلسة أعمق</h3><p class="inner-card__text">لو احتجت، تقدر تحجز جلسة لاستكشاف النطاق؛ بدون وعود شهادة أو موافقة تنظيمية.</p></article></div></div></section>
 
-  {/* ═══════════ 7. STEPS — 4 cards with proper step numbers ═══════════ */}
-  <section class="inner-section" aria-labelledby="steps-title">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">آلية التنفيذ</p>
-      <h2 id="steps-title" class="inner-section__title">خطوات تقييم الجاهزية والتفعيل</h2>
-      <p class="inner-section__lead">منهجية واضحة ومحددة تمكننا من فهم بيئتك التقنية وبناء جدار الحماية خلال فترة وجيزة.</p>
-      <div class="steps-vertical">
-        {steps.map(s => (
-          <article class="card card--feature assessment-step">
-            <div class="assessment-step__num" aria-hidden="true">{s.num}</div>
-            <div class="assessment-step__body">
-              <h3 class="inner-card__title">{s.title}</h3>
-              <p class="inner-card__text">{s.desc}</p>
-              {s.links && s.links.length > 0 && (
-                <div class="assessment-step__links">
-                  {s.links.map(l => <a href={l.href} class="text-cyan-300 hover:text-white text-sm font-bold underline">{l.label}</a>)}
-                </div>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* ═══════════ 8. RESULT PREVIEW — NEW ═══════════ */}
-  <section class="inner-section inner-section--alt" aria-labelledby="result-preview-title">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">معاينة النتيجة</p>
-      <h2 id="result-preview-title" class="inner-section__title">وش بتشوف في النتيجة بعد التقييم؟</h2>
-      <p class="inner-section__lead">عند انتهاء الفحص تحصل على ملف كامل قابل للتصدير يوضح مستوى الجاهزية، الفجوات، وخارطة الطريق.</p>
-
-      <div class="grid grid--3">
-        <article class="card card--feature card--gradient card--lg">
-          <div class="assessment-result-preview">
-            <span class="assessment-result-preview__label">الجاهزية الإجمالية</span>
-            <div class="assessment-result-preview__score">٧٢<span class="assessment-result-preview__pct">/١٠٠</span></div>
-            <p class="assessment-result-preview__hint">مؤشر مرجعي بناءً على PDPL + NCA + ISO 42001</p>
-          </div>
-          <h3 class="inner-card__title">جاهزية بنطاق</h3>
-          <p class="inner-card__text">البنية التقنية موجودة وقابلة للتفعيل، بس تحتاج ربط واضح بسياسات الحوكمة وسجل التدقيق.</p>
-        </article>
-
-        <article class="card card--feature card--lg">
-          <div class="assessment-result-preview">
-            <span class="assessment-result-preview__label">الفجوات الحرجة</span>
-            <div class="assessment-result-preview__score">٣<span class="assessment-result-preview__pct">فجوات</span></div>
-            <p class="assessment-result-preview__hint">مرتبة حسب الأولوية والوقت اللازم للمعالجة</p>
-          </div>
-          <h3 class="inner-card__title">فجوات قابلة للمعالجة</h3>
-          <p class="inner-card__text">كل فجوة تظهر مع وصفها الفني والضوابط التنظيمية المرتبطة بها وخطة تنفيذ مفصلة.</p>
-        </article>
-
-        <article class="card card--feature card--lg">
-          <div class="assessment-result-preview">
-            <span class="assessment-result-preview__label">خارطة الطريق</span>
-            <div class="assessment-result-preview__score">١٤<span class="assessment-result-preview__pct">يوم</span></div>
-            <p class="assessment-result-preview__hint">زمن مقترح للوصول إلى الجاهزية الكاملة</p>
-          </div>
-          <h3 class="inner-card__title">خارطة طريق مرحلية</h3>
-          <p class="inner-card__text">خطة تنفيذ على ٣ مراحل قصيرة، كل مرحلة تنتهي بمخرج قابل للقياس ومُسلَّم للجهة.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  {/* ═══════════ 9. FAQ ═══════════ */}
-  <section class="inner-section" aria-labelledby="assessment-faq">
-    <div class="max-w-4xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">الأسئلة الشائعة</p>
-      <h2 id="assessment-faq" class="inner-section__title">أسئلة شائعة حول التقييم</h2>
-      <div class="inner-faq" role="list">
-        {faqs.map((item, i) => (
-          <details class="card card--glass home-faq-item" role="listitem" open={i === 0}>
-            <summary>
-              <span>{item.q}</span>
-              <svg class="home-faq-chevron" aria-hidden="true" width="1.25em" height="1.25em"><use href="/icons.svg#mdi-chevron-down"></use></svg>
-            </summary>
-            <div class="home-faq-answer"><p>{item.a}</p></div>
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* ═══════════ 10. FINAL CTA ═══════════ */}
-  <section class="inner-cta-final">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <div class="inner-cta-final__card card card--cta">
-        <h2 class="inner-cta-final__title">احمِ أصول بياناتك وباشر<br /><span class="gradient-text">تقييم جاهزيتك اليوم</span></h2>
-        <p class="inner-cta-final__desc">فريقنا الهندسي في الرياض جاهز لمساعدتك في رصد وإدارة مخاطر الذكاء الاصطناعي وتطبيق سياسات الأمان السيبراني بفعالية تشغيلية تامة.</p>
-        <div class="inner-cta-final__actions">
-          <div class="cta-actions">
-            <a href={whatsappEngineerHref} target="_blank" rel="nofollow noopener noreferrer" class="btn btn--whatsapp">
-              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
-              تحدث مع مهندسينا عبر واتساب
-            </a>
-            <small class="cta-micro" aria-hidden="true">رد سريع • بدون التزام</small>
-          </div>
-          <div class="cta-actions">
-            <a href="/contact/" class="btn btn--glow" data-cta="secondary_cta_click" data-cta-label="اطلب اجتماعاً فنياً مخصصاً" data-position="inline" data-page-type="ai-governance-readiness" data-offer="assessment">
-              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-calendar"></use></svg>
-              اطلب اجتماعاً فنياً مخصصاً
-            </a>
-            <small class="cta-micro" aria-hidden="true">30 دقيقة • نطاق + SLA + milestones</small>
-          </div>
-        </div>
-        <div class="assessment-cta-checklist">
-          {checklistItems.map(item => (
-            <span><svg class="text-cyan-300" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-check"></use></svg> {item}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
+  <section class="inner-section" aria-labelledby="faq-title"><div class="max-w-4xl mx-auto px-5 lg:px-8"><p class="inner-section__label">أسئلة مهمة</p><h2 id="faq-title" class="inner-section__title">قبل ما تبدأ</h2><div class="inner-faq" role="list">{faqs.map(([question, answer], index) => <details class="card card--glass home-faq-item" role="listitem" open={index === 0}><summary><span>{question}</span><svg class="home-faq-chevron" aria-hidden="true" width="1.25em" height="1.25em"><use href="/icons.svg#mdi-chevron-down"></use></svg></summary><div class="home-faq-answer"><p>{answer}</p></div></details>)}</div></div></section>
+  <script is:inline type="module" src="/js/ai-governance-readiness.js"></script>
 </ArabicLayout>
 
 <style>
-  /* Avatar tile color variants (used by target-audience cards).
-     BAI-CLEAN-08 (2026-07-29): violet و pink gradient stops صاروا tokens
-     موحدة (--accent-purple-deep, --accent-pink). الـ "documented exception"
-     القديم ما عاد صالح. */
-  .avatar-tile--brand-teal { background: linear-gradient(135deg, var(--cyan-bright), var(--accent-purple-deep)); color: var(--white) !important; }
-  .avatar-tile--brand-purple { background: linear-gradient(135deg, var(--accent-purple-deep), var(--accent-pink)); color: var(--white) !important; }
-  .avatar-tile--brand-green { background: linear-gradient(135deg, var(--cyan-bright), var(--whatsapp)); color: var(--white) !important; }
-
-  /* Assessment tag (small pill, used inside target audience cards).
-     BAI-CLEAN-08: light cyan tag color → --assessment-tag-color token. */
-  .assessment-tag {
-    font-size: var(--text-xs);
-    padding: var(--space-0-5) var(--space-2-5);
-    border-radius: var(--radius-lg);
-    background: rgba(0, 212, 255, 0.08);
-    border: 1px solid rgba(0, 212, 255, 0.25);
-    color: var(--assessment-tag-color);
-  }
-
-  /* Audit pillar accent variants */
-  .audit-pillar__icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    margin-block-end: var(--space-4);
-  }
-  /* استثناء موثّق: violet و pink rgba stops (لا يوجد token مكافئ).
-     التقريب على status-danger و indigo-300 و accent-400 مقبول حسب القاعدة:
-     "hex القيمة يجب أن تطابق قيمة الـ token (أو تقاربها بفرق غير مداك)". */
-  .audit-pillar--accent-danger .audit-pillar__icon { background: rgba(255, 92, 92, 0.15); border: 1px solid rgba(255, 92, 92, 0.25); color: var(--status-danger); }
-  .audit-pillar--accent-info .audit-pillar__icon { background: rgba(0, 212, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.25); color: var(--brand-300); }
-  .audit-pillar--accent-purple .audit-pillar__icon { background: rgba(124, 92, 255, 0.15); border: 1px solid rgba(124, 92, 255, 0.25); color: var(--indigo-300); }
-  .audit-pillar--accent-success .audit-pillar__icon { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.25); color: var(--accent-400); }
-
-  /* Output card accent border (top edge) */
-  .assessment-output {
-    position: relative;
-  }
-  .assessment-output--border-cyan { border-block-start: 4px solid var(--brand-300); }
-  .assessment-output--border-purple { border-block-start: 4px solid var(--indigo-300); }
-  .assessment-output--border-green { border-block-start: 4px solid var(--accent-400); }
-
-  .assessment-output__num {
-    font-size: var(--text-3xl);
-    font-weight: var(--font-extrabold);
-    color: var(--brand-300);
-    display: block;
-    margin-block-end: var(--space-3);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Step vertical layout (cleaner than the old inline-flex approach) */
-  .assessment-step {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-4);
-  }
-  .assessment-step__num {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    /* BAI-CLEAN-08: violet gradient stop → --accent-purple-deep token (purple-500) */
-    background: linear-gradient(135deg, var(--cyan-bright), var(--accent-purple-deep));
-    display: grid;
-    place-items: center;
-    font-weight: var(--font-extrabold);
-    font-size: var(--text-lg);
-    color: var(--white);
-    font-variant-numeric: tabular-nums;
-    flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(0, 212, 255, 0.12);
-  }
-  .assessment-step__body { flex: 1; min-width: 0; }
-  .assessment-step__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-block-start: var(--space-3);
-    font-size: var(--text-sm);
-  }
-  .assessment-step__links a { text-decoration: none; }
-  .assessment-step__links a:hover { text-decoration: underline; }
-
-  /* Result preview big-number tile */
-  .assessment-result-preview {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding: var(--space-5);
-    margin-block-end: var(--space-4);
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.10), rgba(124, 92, 255, 0.08));
-    border: 1px solid rgba(0, 212, 255, 0.25);
-    border-radius: var(--radius-lg);
-  }
-  .assessment-result-preview__label {
-    font-size: var(--text-xs);
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .assessment-result-preview__score {
-    font-size: var(--text-5xl);
-    font-weight: var(--font-extrabold);
-    color: var(--brand-300);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-  .assessment-result-preview__pct {
-    font-size: var(--text-base);
-    font-weight: var(--font-semibold);
-    color: var(--text-secondary);
-    margin-inline-start: var(--space-1);
-  }
-  .assessment-result-preview__hint {
-    font-size: var(--text-xs);
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  /* CTA checklist (3 inline checks) */
-  .assessment-cta-checklist {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-4) var(--space-6);
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-    margin-block-start: var(--space-5);
-  }
-  .assessment-cta-checklist span {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
+.assessment-hero__grid{display:grid;gap:var(--space-6);align-items:center}.assessment-trust-card{background:color-mix(in srgb,var(--surface-2) 88%,transparent);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-6);box-shadow:var(--shadow-lg)}.assessment-trust-card strong{color:var(--brand-200);font-size:var(--text-lg)}.assessment-trust-card ul{margin:var(--space-4) 0;padding-inline-start:var(--space-5);display:grid;gap:var(--space-3)}.assessment-form{display:grid;gap:var(--space-5)}.assessment-progress{width:100%;height:12px;accent-color:var(--brand-400)}.assessment-group{border:1px solid var(--border);border-radius:var(--radius-xl);padding:clamp(1rem,4vw,2rem);background:var(--surface-1)}.assessment-group legend{padding-inline:var(--space-2);color:var(--text-primary);font-size:var(--text-xl);font-weight:800}.assessment-group legend span{color:var(--brand-300);margin-inline-end:var(--space-2);font-size:var(--text-sm)}.assessment-group>p,.assessment-question p{color:var(--text-muted)}.assessment-question{border-block-start:1px solid var(--border);margin-block-start:var(--space-5);padding-block-start:var(--space-5)}.assessment-question h3{margin:0}.assessment-options{display:grid;gap:var(--space-3)}.assessment-options label{min-height:48px;display:flex;align-items:center;gap:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);cursor:pointer}.assessment-options label:has(input:checked){border-color:var(--brand-300);background:color-mix(in srgb,var(--brand-500) 12%,transparent)}.assessment-options input{inline-size:20px;block-size:20px;accent-color:var(--brand-400)}.assessment-options label:focus-within,.assessment-group legend:focus,.assessment-results h2:focus{outline:3px solid var(--focus-ring);outline-offset:4px}.assessment-actions{display:flex;flex-wrap:wrap;gap:var(--space-3);justify-content:space-between}.assessment-error{border-inline-start:4px solid var(--danger-400);background:color-mix(in srgb,var(--danger-500) 13%,transparent);border-radius:var(--radius-md);padding:var(--space-4)}.assessment-result{border-block-start:4px solid var(--brand-300)}.assessment-result--gap{border-block-start-color:var(--danger-400)}.assessment-result--control{border-block-start-color:var(--accent-400)}.assessment-result ul{padding-inline-start:var(--space-5);display:grid;gap:var(--space-3)}.assessment-results__cta{text-align:center;margin-block-start:var(--space-8);padding:var(--space-7);border-radius:var(--radius-xl);background:var(--surface-2)}.assessment-results__cta p{color:var(--text-muted);max-inline-size:60ch;margin-inline:auto;margin-block:var(--space-3) var(--space-5)}@media(min-width:900px){.assessment-hero__grid{grid-template-columns:1.5fr .75fr}.assessment-options{grid-template-columns:repeat(3,1fr)}}@media(prefers-reduced-motion:reduce){.assessment-results{scroll-behavior:auto}}
 </style>

@@ -336,7 +336,7 @@ Analytics:
 - Track start, step progression, completion, CTA clicks, and abandonment without collecting unnecessary personal data.
 
 Do not push.
-- [ ] ✅ Prompt #6 — done & reviewed
+- [✅]  Prompt #6 — done & reviewed
 
 # Prompt #7 — Mobile LCP and Core Web Vitals P0
 
@@ -378,7 +378,7 @@ Design rule:
 Do not trade away premium visual quality; simplify expensive effects intelligently.
 
 Do not push.
-- [ ] ✅ Prompt #7 — done & reviewed
+- [✅]  Prompt #7 — done & reviewed
 
 # Prompt #8 — Canonicals, noindex, sitemap, redirects and crawl-budget cleanup
 

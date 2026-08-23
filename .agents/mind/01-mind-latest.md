@@ -1,4 +1,13 @@
 ---
+### 2026-08-23 — AI-GOVERNANCE-READINESS-ASSESSMENT-001: تحويل صفحة التقييم إلى فحص إرشادي مؤسسي قابل للفهرسة — تحقق محلي بدون commit/push/deploy
+
+- **Scope**: إعادة بناء `/assessment/ai-governance-readiness/` مع module صغير في `public/js/ai-governance-readiness.js` واختبار `scripts/assessment-readiness.test.mjs` وخطة تنفيذ. لا dependency أو API أو تخزين إجابات أو deploy أو commit أو push.
+- **Trust/content**: أزيلت النتيجة الرقمية الثابتة ومدد الجاهزية ووعود الشهادة/الامتثال. الصفحة توضح جمهورها (قادة التقنية/المخاطر/البيانات/الامتثال)، ومخرجاتها الوصفية، وحدودها: ليست شهادة أو موافقة تنظيمية أو رأيًا قانونيًا. المحاور الثمانية الظاهرة: inventory, ownership, risk, policy, data, approvals, logging/evidence, monitoring.
+- **UX/privacy/analytics**: form من 4 مراحل و8 أسئلة بتجميع واضح، progress native، labels/fieldsets/errors/focus، targets بحد أدنى 48px ومظهر جوال. النتيجة تفصل strengths/gaps/next controls ثم CTA لجلسة استكشافية. الإجابات والنتيجة محلية في المتصفح؛ analytics يرسل أحداثًا allow-listed فقط (`assessment_start`, step progression, completion, abandonment) بمُعرّف خطوة، بلا نص الإجابة أو PII؛ CTA يستخدم unified analytics metadata القائم.
+- **SEO**: الشرح ومحاور التقييم والأسئلة الشائعة كلها SSR في HTML، وJavaScript progressive enhancement فقط. metadata/canonical/hreflang وWebPage schema محدثة، ولا FAQ schema تجاري جديد.
+- **Verification**: TDD RED (`ERR_MODULE_NOT_FOUND`) ثم GREEN: `node --test scripts/assessment-readiness.test.mjs` = **2/2**؛ `pnpm build` = **Complete** مع route-collision warnings قديمة؛ `pnpm seo:check` PASS، `pnpm seo:hreflang` PASS `259/0`، `git diff --check` PASS (fsmonitor IPC تحذير بيئي). لا browser/live/production verification؛ build حدّث timestamps في sitemap files فقط، وأُعيدت خدمة QC التي حذفها مولد redirects تلقائيًا في `render.yaml`.
+- **Status**: delivered locally؛ لا commit ولا push ولا deploy.
+
 ### 2026-08-23 — AI-GOVERNANCE-HUB-PILLAR-001: تحويل `/hub/ai-governance/` إلى المرجع التعليمي الكنسي مع فصل النية التجارية — تحقق محلي ناجح بدون commit/push/deploy
 
 - **Scope**: أُضيف `src/components/hub/AiGovernancePillar.astro`، وربطته بفرع مخصص في `src/pages/hub/[slug].astro`؛ لم تُمسح صفحات `/answer/` ولم تُفرض `noindex`، وبقيت تعديلات `audit/SEO-Execution-Prompts.md` السابقة كما هي.
