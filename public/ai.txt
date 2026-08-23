@@ -116,7 +116,7 @@ Core-Capabilities: AI Firewall, Audit Trail, Human Approval Layer, Evidence File
 # BrightAI explicitly distinguishes between (a) search/grounding crawlers that
 # surface BrightAI content inside AI answer engines, and (b) training crawlers
 # that ingest public web content into model training corpora. Both classes are
-# allowed in robots.txt; the distinction is documented here for transparency.
+# intentionally allowed in robots.txt; this is an explicit open-access policy.
 
 Search-Grounding-Crawlers: Allowed
   # AI answer engines and retrieval-augmented result surfaces.
@@ -151,13 +151,9 @@ Training-Crawlers: Allowed
 # ============================================
 # Google-Extended Policy (explicit semantics)
 # ============================================
-# Google-Extended governs Google's Gemini API and Bard training use ONLY.
-# It does NOT control Google Search indexing.
-# Google Search indexing is governed separately by Googlebot.
-# Allowing Google-Extended therefore signals consent to Gemini/Bard training
-# use of brightai.site content; allowing Googlebot keeps search results intact.
-# If you ever want to opt out of Gemini training while keeping search indexing,
-# change the Google-Extended rule to Disallow: / and leave Googlebot on Allow.
+# Google-Extended governs Google's Gemini training and grounding controls.
+# It does not control Google Search indexing, which is separately governed by
+# Googlebot. BrightAI intentionally allows both controls.
 
 # ============================================
 # Applebot-Extended Policy (explicit semantics)
@@ -172,7 +168,6 @@ Training-Crawlers: Allowed
 LLMs-Index: https://brightai.site/llms.txt
 LLMs-Full: https://brightai.site/llms-full.txt
 Schema: https://brightai.site/schema-saudi-seo.json
-Sitemap: https://brightai.site/sitemap.xml
 Robots: https://brightai.site/robots.txt
 
 # ============================================

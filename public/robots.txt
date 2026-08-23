@@ -1,25 +1,16 @@
-# BrightAI — Saudi AI Safety OS
+# BrightAI — canonical crawler policy
 # https://brightai.site
-# REPORTS-SEO-FOUNDATION (2026-07-07): the foundation robots.txt.
-# BAI-SEO-003-S4 (2026-07-18): grouped AI crawlers into Search/Grounding vs
-# Training. The semantic split matters because Google-Extended governs Gemini
-# API + Bard training only (NOT Google Search indexing, which is Googlebot).
-# Applebot-Extended governs Apple Intelligence training only (NOT Apple
-# Spotlight, which is Applebot). See public/ai.txt for the full policy.
+#
+# All crawlers are intentionally allowed across the public site, including
+# known AI search, grounding, and model-training crawlers. No path-level
+# exclusion is expressed here. Cloudflare Managed robots.txt must be OFF;
+# otherwise its prepended training restrictions would contradict this file.
 
-# ─────────────────────────────────────────────────────────────────────
-# Universal: every well-behaved crawler is allowed everywhere except /api/.
-# ─────────────────────────────────────────────────────────────────────
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
-Disallow: /api/
 
-# ─────────────────────────────────────────────────────────────────────
-# AI crawlers — Search / Grounding class
-# These bots surface BrightAI content inside AI answer engines and
-# retrieval-augmented result surfaces. Allowing them keeps BrightAI
-# eligible for ChatGPT / Perplexity / Copilot / Google SGE citations.
-# ─────────────────────────────────────────────────────────────────────
+# Explicit AI/search tokens: retained as auditable Allow signals.
 User-agent: OAI-SearchBot
 Allow: /
 
@@ -35,25 +26,16 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: Google-CloudVertexBot
 Allow: /
 
 User-agent: YouBot
-Allow: /
-
-# ─────────────────────────────────────────────────────────────────────
-# AI crawlers — Training class
-# These bots ingest public web content into model training corpora.
-# Explicit Allow signals consent. Google-Extended and Applebot-Extended
-# cover ONLY training (not search indexing — see comments above).
-# ─────────────────────────────────────────────────────────────────────
-User-agent: GPTBot
-Allow: /
-
-# Google-Extended controls Gemini API + Bard training; does NOT control
-# Google Search indexing (that's Googlebot below). To opt out of Gemini
-# training while keeping search indexing, change this rule to Disallow: /.
-User-agent: Google-Extended
 Allow: /
 
 User-agent: anthropic-ai
@@ -74,8 +56,6 @@ Allow: /
 User-agent: Meta-ExternalAgent
 Allow: /
 
-# Applebot-Extended controls Apple Intelligence training; does NOT control
-# Apple Spotlight / Siri Web results (that's Applebot below).
 User-agent: Applebot-Extended
 Allow: /
 
@@ -85,12 +65,7 @@ Allow: /
 User-agent: omgili
 Allow: /
 
-# ─────────────────────────────────────────────────────────────────────
-# Major search engines — explicit allow (defensive belt-and-suspenders).
-# Googlebot here governs Google Search indexing. If you later set
-# Google-Extended to Disallow to opt out of Gemini training, Googlebot
-# stays on Allow so Google Search results are unaffected.
-# ─────────────────────────────────────────────────────────────────────
+# Traditional search tokens.
 User-agent: Googlebot
 Allow: /
 
@@ -121,30 +96,8 @@ Crawl-delay: 2
 User-agent: Baiduspider-image
 Allow: /
 
-# ─────────────────────────────────────────────────────────────────────
-# AI search / discovery surface — companion files for AI answer engines.
-# These URLs are reachable from the home page footer; explicit Sitemap:
-# directives for them are intentionally NOT emitted here (see block below).
-# ─────────────────────────────────────────────────────────────────────
-# Sitemap — single canonical declaration.
-# BAI-IDX-03 (2026-07-25): exactly one Sitemap: directive. The unified
-# public sitemap (sitemap.xml) is the single source of truth every
-# crawler reads. It is produced by scripts/generate-sitemap-all-pages.mjs
-# and enforced by the contract in scripts/sitemap-contract.mjs:
-#   - One file, one source of truth (no sitemap-index split, no
-#     sitemap-0.xml, no per-section files advertised here).
-#   - lastmod is derived from git log (or content frontmatter) only;
-#     never from the build timestamp. Page freshness = when the
-#     content actually changed, not when the build ran.
-#   - status pages (/404/, /500/, /offline/, /kernel/offline/),
-#     design utilities (/design/*), dev/admin (/admin/*, /dev/*),
-#     and api routes (/api/*) are excluded by the contract — they
-#     MUST NEVER appear here.
-# Companion files (sitemap-images.xml, blog/feed.xml) are reachable
-# from in-page links and from sitemap.xml itself; they are NOT
-# advertised as separate Sitemap: directives. One declaration only.
-# ─────────────────────────────────────────────────────────────────────
+# One canonical sitemap declaration.
 Sitemap: https://brightai.site/sitemap.xml
 
-# Host
+# Host is retained for compatibility with existing tooling.
 Host: https://brightai.site

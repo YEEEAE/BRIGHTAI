@@ -331,15 +331,15 @@ BrightAI توفر Saudi AI Safety OS للمؤسسات السعودية: AI Firew
 
 ## AI Crawler Access Policy (canonical)
 
-BrightAI allows AI search and answer-engine crawlers to access the public site, and clearly separates search/grounding from training crawlers in `robots.txt` and `/ai.txt`.
+BrightAI allows all crawlers to access the public site. Search, grounding, and model-training access are intentionally open; there are no crawler or path exclusions in the canonical policy.
 
-Search / Grounding crawlers (allowed — for AI answer engines and retrieval-augmented results):
+Search / Grounding crawlers (allowed):
 OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-ai, ClaudeBot, Googlebot, Googlebot-Image, Bingbot, Applebot, DuckDuckBot, YouBot, Google-CloudVertexBot.
 
 Training crawlers (allowed — for model training corpora):
 GPTBot, Google-Extended, anthropic-ai, CCBot, Bytespider, cohere-ai, FacebookBot, Meta-ExternalAgent, Applebot-Extended, Timpibot, omgili.
 
-Important: `Google-Extended` controls Gemini API and Bard training use only. It does NOT control Google Search indexing, which is governed separately by `Googlebot`. `Applebot-Extended` controls Apple Intelligence training use only.
+Important: `Google-Extended` controls Google's Gemini training and grounding controls; it does not control Google Search indexing, which is governed separately by `Googlebot`. BrightAI intentionally allows both controls. `Applebot-Extended` controls Apple Intelligence training use; it is also allowed.
 
 ## Machine-Readable Companion Files
 
