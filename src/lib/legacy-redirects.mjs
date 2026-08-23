@@ -50,6 +50,7 @@
  */
 
 import fs from "node:fs/promises";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -72,8 +73,22 @@ const __dirname = path.dirname(__filename);
  * @returns {string} absolute path to redirects.json
  */
 function resolveRedirectsJsonPath() {
-  // Primary: relative to this file (dev + most build outputs).
+  // Primary: relative to this file (dev + build outputs that ship
+  // redirects.json next to dist/). From dist/server/chunks/<hash>.mjs
+  // this resolves to <root>/dist/redirects.json (copied there by
+  // scripts/patch-server-entry.mjs).
   const fromModule = path.resolve(__dirname, "..", "..", "redirects.json");
+  if (existsSync(fromModule)) {
+    return fromModule;
+  }
+  // Fallback: cwd. Render's startCommand is `node ./dist/server/entry.mjs`
+  // executed from the repo root, where redirects.json exists in the
+  // deployed checkout. Without this fallback the map silently loads
+  // empty (ENOENT → new Map()) and every legacy URL 404s in production.
+  const fromCwd = path.resolve(process.cwd(), "redirects.json");
+  if (existsSync(fromCwd)) {
+    return fromCwd;
+  }
   return fromModule;
 }
 

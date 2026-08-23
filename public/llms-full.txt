@@ -1,22 +1,19 @@
 # BrightAI — Saudi AI Safety OS | Full AI-Readable Site Profile
 
-## Entity Facts (canonical — sourced from schema.org Organization @id https://brightai.site/#organization)
+## Entity Facts (canonical — sourced from schema.org Organization @id https://brightai.site/#organization; updated 2026-08-24)
 
 - Brand: BrightAI (Arabic: برايت أيه آي)
 - Legal name: BrightAI
 - Founding year: 2025
-- Headquarters: الرياض (Riyadh), المملكة العربية السعودية — 6913 المبارك بن فضالة، حي الفيحاء، 14254
+- Headquarters: الرياض (Riyadh), المملكة العربية السعودية
 - Telephone: +966538229013
 - WhatsApp: https://wa.me/966538229013
 - Email: yazeed1job@gmail.com
 - Founder: يزيد — المؤسس والمدير التنفيذي (Founder LinkedIn: https://www.linkedin.com/in/yazeed-brightai)
-- Verified social profiles (sameAs):
-  - LinkedIn (org): https://linkedin.com/company/brightai-site
-  - X / Twitter: https://x.com/BrightAISite
-  - YouTube: https://www.youtube.com/@BrightAiSaudi
-  - TikTok: https://www.tiktok.com/@bright1ai
+- Official social profiles (sameAs — owner-confirmed canonical URLs):
+  - X: https://x.com/brightai_sa
+  - LinkedIn: https://www.linkedin.com/company/brightai-saudi/
   - GitHub: https://github.com/YEEEAE/BRIGHTAI
-  - Crunchbase: https://crunchbase.com/organization/brightai
 - Tagline: Saudi AI Safety OS (Arabic: نظام حماية الذكاء الاصطناعي السعودي)
 - Languages: ar-SA (primary), en-SA (secondary)
 - Machine-readable Organization JSON-LD: https://brightai.site/schema-saudi-seo.json

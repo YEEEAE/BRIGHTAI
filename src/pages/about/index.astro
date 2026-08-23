@@ -14,27 +14,17 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import { LOCAL_BUSINESS_BY_CITY } from '../../data/schema-helpers';
+import { SITE } from '../../data/site';
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   "name": "من نحن | حوكمة AI للشركات السعودية — BrightAI",
-  "description": "تعرّف على BrightAI ومنهجيتنا في حوكمة AI بالسعودية: حوكمة واضحة، حماية بيانات، وأدلة امتثال جاهزة للمدقق وفق نظام PDPL وNCA ECC المعتمد محلياً.",
+  "description": "تعرّف على BrightAI ومنهجيتنا العملية في حوكمة وأمان الذكاء الاصطناعي للمؤسسات في السعودية.",
   "url": "https://brightai.site/about/",
   "mainEntity": {
-    "@type": "Organization",
-    "name": "BrightAI",
-    "url": "https://brightai.site",
-    "logo": "https://brightai.site/favicon.svg",
-    "description": "Saudi AI Safety OS — منصة أمان وحوكمة الذكاء الاصطناعي للشركات السعودية",
-    "address": { "@type": "PostalAddress", "addressCountry": "SA", "addressLocality": "الرياض" },
-    "hasCredential": [
-      { "@type": "EducationalOccupationalCredential", "credentialCategory": "PDPL Compliance", "name": "امتثال نظام حماية البيانات الشخصية السعودي" },
-      { "@type": "EducationalOccupationalCredential", "credentialCategory": "NCA ECC Controls", "name": "ضوابط الأمن السيبراني الوطنية" },
-      { "@type": "EducationalOccupationalCredential", "credentialCategory": "ISO/IEC 42001", "name": "نظام إدارة حوكمة الذكاء الاصطناعي" },
-      { "@type": "EducationalOccupationalCredential", "credentialCategory": "SFDA Medical Quality", "name": "نظام الجودة الطبية السعودي" }
-    ],
-    "knowsAbout": ["SDAIA", "NCA", "SFDA", "ZATCA", "SAMA", "PDPL", "ISO/IEC 42001"]
+    "@id": `${SITE.url}/#organization`,
+    "@type": "Organization"
   },
   "isPartOf": {
     "@type": "DefinedTermSet",
@@ -78,7 +68,7 @@ const pageHeroCTAs = [
 
 <ArabicLayout
   title="من نحن | حوكمة AI للشركات السعودية — BrightAI"
-   description="تعرّف على BrightAI ومنهجيتنا في حوكمة AI بالسعودية: حوكمة واضحة، حماية بيانات، وأدلة امتثال جاهزة وفق PDPL وNCA ECC. احجز استشارة مجانية لفريق الحوكمة اليوم."
+  description="تعرّف على BrightAI ومنهجيتنا العملية في حوكمة وأمان الذكاء الاصطناعي للمؤسسات في السعودية."
   canonical="https://brightai.site/about/"
   hreflang={[{lang:'ar-SA',href:'https://brightai.site/about/'},{lang:'x-default',href:'https://brightai.site/about/'}]}
   jsonLd={enhancedJsonLd as any}
@@ -95,8 +85,8 @@ const pageHeroCTAs = [
           <span>🇸🇦</span>
         </span>
         <span class="ksa-flag-badge__label">
-          <strong>شركة سعودية 100%</strong>
-          <small>Made in KSA — مرخّصة في الرياض</small>
+        <strong>شركة سعودية</strong>
+          <small>Made in KSA — مقر التواصل في الرياض</small>
         </span>
       </div>
 
@@ -106,6 +96,7 @@ const pageHeroCTAs = [
       <p class="page-hero__description">
         <strong>الزبدة:</strong> BrightAI مواليد المملكة، ونبني <strong>Saudi AI Safety OS</strong> — نظام أمان وحوكمة يضمن إن كل استخدام للذكاء الاصطناعي داخل شركتك يكون آمن، موثّق، وخاضع لضوابط واضحة. تستخدم AI بثقة بدون ما تخسر السيطرة على البيانات أو القرارات أو الامتثال.
       </p>
+      <p class="page-hero__meta">آخر تحديث: <time datetime="2026-08-24">24 أغسطس 2026</time> · نوضح المنهجية والمصادر وحدود ما تدّعيه المنصة.</p>
 
       <div class="about-hero__actions">
         {pageHeroCTAs.map(c => (
@@ -127,12 +118,12 @@ const pageHeroCTAs = [
   <section class="inner-section" aria-labelledby="founder-story">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <p class="inner-section__label">القصة</p>
-      <h2 id="founder-story" class="inner-section__title">قصتنا: كيف ولدت فكرة Saudi AI Safety OS كأول نظام أمان AI للشركات في المملكة؟</h2>
+      <h2 id="founder-story" class="inner-section__title">قصتنا: كيف ولدت فكرة Saudi AI Safety OS كنظام أمان AI للشركات في المملكة؟</h2>
       <div class="split-content">
         <article class="card card--feature card--lg">
           <p>بدأت BrightAI لأنّي شفت فجوة واضحة: الشركات تبغى تستخدم الذكاء الاصطناعي، لكن تخاف من تسريب البيانات، القرارات غير الموثقة، والمخاطر التنظيمية. بدل ما يكون AI مجرد أداة دردشة، لازم يصير نظام تشغيل آمن داخل المؤسسة.</p>
           <p>الفكرة بالنسبة لي مو بناء موقع جميل فقط. الفكرة أن شركة سعودية تقدر تبني طبقة ثقة بين الإنسان والذكاء الاصطناعي: من يستخدم AI؟ على أي بيانات؟ من وافق؟ وكيف نثبت أن القرار مرّ بالطريقة الصحيحة؟</p>
-          <p>رحلة يزيد تمثل نموذجاً نادراً في المنطقة: مؤسس سعودي بعمر ٢٧ سنة يحاول بناء شركة ذكاء اصطناعي متكاملة من شخص واحد، بخطوات عملية ومحتوى ومنتج وتصور تجاري واضح.</p>
+          <p>يقود يزيد بناء المنتج والمحتوى التشغيلي من السعودية، مع تركيز واضح على تحويل حوكمة الذكاء الاصطناعي من سياسة مكتوبة إلى ضوابط ومسارات وأدلة قابلة للمراجعة.</p>
         </article>
 
         <aside class="card card--feature card--lg card--glass">
@@ -141,9 +132,9 @@ const pageHeroCTAs = [
           <p class="text-cyan-300 font-bold mb-5">Founder of BrightAI</p>
           <div class="stat-strip">
             <div class="stat-strip__cell">
-              <div class="stat-strip__label">العمر</div>
-              <div class="stat-strip__value">٢٧</div>
-              <div class="stat-strip__helper">سنة</div>
+              <div class="stat-strip__label">بداية BrightAI</div>
+              <div class="stat-strip__value">٢٠٢٥</div>
+              <div class="stat-strip__helper">سنة التأسيس المنشورة</div>
             </div>
             <div class="stat-strip__cell">
               <div class="stat-strip__label">الدور</div>
@@ -158,7 +149,7 @@ const pageHeroCTAs = [
               <div class="stat-strip__value">AI Safety OS</div>
             </div>
           </div>
-          <p class="inner-card__text">بحسب قصة المؤسس، يرى يزيد أن رحلته تجعله من أوائل الأشخاص في الشرق الأوسط والوطن العربي الذين يحاولون بناء شركة ذكاء اصطناعي تشغيلية بهذا الحجم من شخص واحد.</p>
+          <p class="inner-card__text">تركيز المؤسس هو بناء طبقة تشغيل سعودية تربط الاستخدامات والسياسات والمخاطر والموافقات والأدلة داخل مسار واحد قابل للمراجعة.</p>
         </aside>
       </div>
     </div>
@@ -190,7 +181,7 @@ const pageHeroCTAs = [
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <p class="inner-section__label">خبرتنا بالأرقام</p>
       <h2 id="our-expertise" class="inner-section__title">حوكمة تشغيلية موثقة ومعايير قياسية</h2>
-      <p class="inner-section__lead">نمتلك خبرة عميقة وتخصصية في بناء وتطوير جدران الحماية للذكاء الاصطناعي (AI Firewall) وسجلات التدقيق المشفرة. قمنا بتطوير «النواة الأمنية» لتدعم جاهزية الامتثال للمتطلبات التنظيمية الصارمة، بما يؤهلنا لخدمة المؤسسات الحساسة بالمملكة.</p>
+      <p class="inner-section__lead">نحوّل الحوكمة إلى مسار عملي: فحص للطلبات، تصنيف للمخاطر، سياسات، موافقات بشرية، وسجل أدلة يوضح ما حدث. هذه مخرجات يمكن للفريق مراجعتها وتطويرها مع تغيّر الاستخدامات والمتطلبات.</p>
       <p class="inner-section__lead">نحن نؤمن بأن الحوكمة ليست مجرد سياسات مكتوبة بل هي ممارسة تشغيلية يتم تطبيقها وفحصها مع كل طلب ذكاء اصطناعي يمر عبر المنصة.</p>
       <div class="stat-strip">
         <div class="stat-strip__cell">
@@ -221,14 +212,14 @@ const pageHeroCTAs = [
   <section class="inner-section inner-section--alt" aria-labelledby="regulatory-knowledge">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <p class="inner-section__label">ماذا نعرف؟</p>
-      <h2 id="regulatory-knowledge" class="inner-section__title">معرفة تنظيمية شاملة وامتثال تشريعي صارم</h2>
-      <p class="inner-section__lead">صُممت منصة BrightAI لدعم جاهزية الامتثال للأنظمة والضوابط الصادرة عن الجهات التشريعية والتنظيمية في المملكة العربية السعودية والعالم:</p>
+      <h2 id="regulatory-knowledge" class="inner-section__title">مصادر تنظيمية ومنهجية تشغيل واضحة</h2>
+      <p class="inner-section__lead">نستخدم المصادر الرسمية والمعايير ذات الصلة كسياق لتصميم الضوابط، ثم نفصل بينها وبين إرشادات BrightAI التنفيذية. المنصة تدعم الجاهزية ولا تمنح شهادة أو رأياً قانونياً.</p>
       <div class="grid grid--3">
         <article class="card card--feature"><h3 class="inner-card__title">نظام حماية البيانات الشخصية (PDPL)</h3><p class="inner-card__text">معالجة دقيقة لخصوصية البيانات، وإخفاء تلقائي لمعلومات الهوية الشخصية (PII Redaction) لضمان عدم تسريب البيانات الحساسة للجهات الخارجية.</p></article>
         <article class="card card--feature"><h3 class="inner-card__title">ضوابط الأمن السيبراني (NCA ECC)</h3><p class="inner-card__text">دعم الالتزام بضوابط الهيئة الوطنية للأمن السيبراني، مع توفير سجلات وصول وتدقيق مشفرة ومحمية لا يمكن التلاعب بها أو تعديلها.</p></article>
         <article class="card card--feature"><h3 class="inner-card__title">إرشادات سدايا (SDAIA)</h3><p class="inner-card__text">العمل وفق المبادئ التوجيهية للذكاء الاصطناعي التوليدي الصادرة عن الهيئة السعودية للبيانات والذكاء الاصطناعي لضمان الشفافية والعدالة.</p></article>
         <article class="card card--feature"><h3 class="inner-card__title">نظام الجودة الطبية (ISO 13485 & SFDA)</h3><p class="inner-card__text">إدارة دورة حياة المنتجات والجودة للمصانع الطبية والمستشفيات، وسجلات المرفوضات والامتثال لمتطلبات هيئة الغذاء والدواء السعودية.</p></article>
-        <article class="card card--feature"><h3 class="inner-card__title">معيار الحوكمة العالمي (ISO/IEC 42001)</h3><p class="inner-card__text">أول نظام إدارة معتمد عالمياً لحوكمة الذكاء الاصطناعي، يضمن تطبيق أفضل الممارسات الدولية في تقييم المخاطر وتطوير النماذج.</p></article>
+        <article class="card card--feature"><h3 class="inner-card__title">معيار إدارة AI (ISO/IEC 42001)</h3><p class="inner-card__text">نستخدمه كسياق للمفاهيم والأدوار والمخاطر، مع التحقق من النص الرسمي وتحديد ما ينطبق على كل مؤسسة.</p></article>
         <article class="card card--feature"><h3 class="inner-card__title">ممارسات الأمان والتدقيق المؤسسية</h3><p class="inner-card__text">تصميم أمني قوي لحماية البيانات الحساسة وسرية المعلومات وفق ممارسات الضوابط العالمية والمحلية، مع أدلة تدقيق جاهزة للمراجعة.</p></article>
       </div>
     </div>
@@ -237,27 +228,27 @@ const pageHeroCTAs = [
   {/* ═══════════ 6. TEAM — 3-card grid with avatar tiles ═══════════ */}
   <section class="inner-section" aria-labelledby="about-team-title">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <p class="inner-section__label">فريقنا</p>
-      <h2 id="about-team-title" class="inner-section__title">خبراء الأمن السيبراني وحوكمة الذكاء الاصطناعي خلف المنصة</h2>
-      <p class="inner-section__lead">يجمع فريق BrightAI نخبة من المهندسين والمستشارين المتخصصين في حوكمة النظم الذكية، أمن المعلومات، والالتزام التنظيمي لضمان بناء طبقة ثقة متكاملة.</p>
+      <p class="inner-section__label">أدوار العمل</p>
+      <h2 id="about-team-title" class="inner-section__title">أدوار واضحة لبناء وتشغيل طبقة الحوكمة</h2>
+      <p class="inner-section__lead">نعرض الأدوار المتاحة بوضوح بدل استخدام شارات ثقة أو أسماء لا توجد لها صفحات تعريف منشورة. التفاصيل العملية والمصادر وتاريخ التحديث هي أساس الثقة هنا.</p>
       <div class="grid grid--3">
         <div class="card card--feature card--lg about-team__card">
           <div class="avatar-tile avatar-tile--lg about-team__avatar" aria-hidden="true">ي</div>
-          <p class="text-cyan-300 font-bold text-sm mb-1">المؤسس والرئيس التنفيذي للتقنية</p>
+          <p class="text-cyan-300 font-bold text-sm mb-1">المؤسس وباني المنتج</p>
           <h3 class="inner-card__title">يزيد البديوي</h3>
-          <p class="inner-card__text">متخصص في هندسة الأنظمة الذكية وتطوير البرمجيات الآمنة وحوكمة البيانات. قاد بناء النواة البرمجية لـ BrightAI Kernel وحزم الامتثال السعودية.</p>
+          <p class="inner-card__text">مسؤول عن اتجاه المنتج وبناء BrightAI Kernel وصياغة المنهجية المنشورة لحوكمة وأمان الذكاء الاصطناعي.</p>
         </div>
         <div class="card card--feature card--lg about-team__card">
-          <div class="avatar-tile avatar-tile--lg about-team__avatar" aria-hidden="true">ع</div>
-          <p class="text-cyan-300 font-bold text-sm mb-1">مستشار الأمن السيبراني والحوكمة</p>
-          <h3 class="inner-card__title">د. عبد الرحمن الحربي</h3>
-          <p class="inner-card__text">خبرة تزيد عن 15 عاماً في حماية البنى التحتية الحساسة وتصميم أطر الامتثال السيبراني للجهات الحكومية والشركات الكبرى بالمملكة.</p>
+          <div class="avatar-tile avatar-tile--lg about-team__avatar" aria-hidden="true">أ</div>
+          <p class="text-cyan-300 font-bold text-sm mb-1">مراجعة هندسية</p>
+          <h3 class="inner-card__title">دور تقني موثّق</h3>
+          <p class="inner-card__text">يراجع تدفق البيانات، حدود التكامل، الفحص، التسجيل، ومسارات الفشل الآمن قبل اعتماد أي تغيير تشغيلي.</p>
         </div>
         <div class="card card--feature card--lg about-team__card">
-          <div class="avatar-tile avatar-tile--lg about-team__avatar" aria-hidden="true">س</div>
-          <p class="text-cyan-300 font-bold text-sm mb-1">مديرة الالتزام القانوني والجودة</p>
-          <h3 class="inner-card__title">أ. سارة الدوسري</h3>
-          <p class="inner-card__text">متخصصة في تدقيق أنظمة الجودة والالتزام بلوائح PDPL وضوابط NCA وهيئة الغذاء والدواء SFDA للقطاعين الصحي والتجاري.</p>
+          <div class="avatar-tile avatar-tile--lg about-team__avatar" aria-hidden="true">م</div>
+          <p class="text-cyan-300 font-bold text-sm mb-1">مراجعة امتثال ومنهجية</p>
+          <h3 class="inner-card__title">دور مراجعة موثّق</h3>
+          <p class="inner-card__text">يربط المصادر الرسمية بالسياسات والضوابط والأدلة، ويحدد ما هو إرشاد BrightAI وما يحتاج قراراً قانونياً أو تنظيمياً من الجهة.</p>
         </div>
       </div>
     </div>

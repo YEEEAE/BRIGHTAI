@@ -8,7 +8,12 @@ export const SITE = {
   nameAr: 'برايت أيه آي',
   tagline: 'Saudi AI Safety OS',
   taglineAr: 'نظام حماية الذكاء الاصطناعي السعودي',
+  descriptionEn: 'BrightAI is a Saudi AI governance and safety platform for organizations in Saudi Arabia.',
+  descriptionAr: 'BrightAI منصة سعودية لحوكمة وأمان الذكاء الاصطناعي للمؤسسات في المملكة العربية السعودية.',
+  country: 'SA',
+  market: 'Saudi Arabia',
   url: 'https://brightai.site',
+  logo: '/assets/images/logo.png',
   locale: {
     ar: 'ar-SA',
     en: 'en-SA',
@@ -24,8 +29,13 @@ export const SITE = {
     },
   },
   social: {
+    official: [
+      'https://x.com/brightai_sa',
+      'https://www.linkedin.com/company/brightai-saudi/',
+      'https://github.com/YEEEAE/BRIGHTAI',
+    ],
     twitter: 'https://x.com/brightai_sa',
-    linkedin: 'https://linkedin.com/company/brightai-saudi',
+    linkedin: 'https://www.linkedin.com/company/brightai-saudi/',
     github: 'https://github.com/YEEEAE/BRIGHTAI',
   },
   // Verification/tracking IDs — empty until real verified values are provided.

@@ -116,6 +116,7 @@ const PATCH_MARKERS = [
   'BAI-SEC-10:deny-list',
   'BAI-DEPLOY-11:build-info',
   'BAI-DEPLOY-12:hsts',
+  'BAI-IDX-REDIR-001:legacy-redirects',
 ];
 
 function log(msg) { console.log(`[patch-server-entry] ${msg}`); }
@@ -146,6 +147,49 @@ log(`wrote ${path.relative(root, DENY_LIST_DEPLOY)} (${srcContent.length} bytes)
 const securityHeadersContent = fs.readFileSync(SRC_SECURITY_HEADERS, 'utf-8');
 fs.writeFileSync(SECURITY_HEADERS_DEPLOY, securityHeadersContent, 'utf-8');
 log(`wrote ${path.relative(root, SECURITY_HEADERS_DEPLOY)} (${securityHeadersContent.length} bytes)`);
+
+// ── Step 1.2: BAI-IDX-REDIR-001 — copy redirects.json to dist/ ──
+// The runtime legacy-redirect map in src/lib/legacy-redirects.mjs resolves
+// `../../redirects.json` from the compiled chunk (dist/server/chunks/),
+// which lands at dist/redirects.json. Without this copy the map silently
+// loads empty and every legacy URL that misses the static handler 404s
+// (live-verified 2026-08-24: /about.html, /services/finance.html, and the
+// trailing-slash legacy keys all 404'd in production). The middleware
+// resolver also falls back to cwd, but shipping the file keeps the
+// standalone dist self-contained.
+const REDIRECTS_JSON_SRC = path.join(root, 'redirects.json');
+const REDIRECTS_JSON_DEPLOY = path.join(root, 'dist', 'redirects.json');
+if (fs.existsSync(REDIRECTS_JSON_SRC)) {
+  fs.copyFileSync(REDIRECTS_JSON_SRC, REDIRECTS_JSON_DEPLOY);
+  log(`copied redirects.json → ${path.relative(root, REDIRECTS_JSON_DEPLOY)}`);
+} else {
+  warn('redirects.json missing at repo root — runtime legacy-redirect map will rely on the cwd fallback only');
+}
+
+// ── Step 1.3: BAI-IDX-REDIR-001 — ship the sync legacy-redirect map ──
+// The patched listener (below) consults this map for legacy URLs that
+// the static handler and the astro.config manifest do not cover (e.g.
+// every `.html`-suffixed key, which Astro's static build drops). The
+// pure helpers live in src/lib/legacy-redirects.mjs; we ship it as a
+// sibling and rewrite the relative import in the map copy.
+const SRC_LEGACY_LIB = path.join(root, 'src', 'lib', 'legacy-redirects.mjs');
+const SRC_LEGACY_MAP = path.join(root, 'src', 'server', 'legacy-redirect-map.mjs');
+const LEGACY_LIB_DEPLOY = path.join(DIST_SERVER, '_legacy-redirects.mjs');
+const LEGACY_MAP_DEPLOY = path.join(DIST_SERVER, '_legacy-redirect-map.mjs');
+if (fs.existsSync(SRC_LEGACY_LIB) && fs.existsSync(SRC_LEGACY_MAP)) {
+  fs.copyFileSync(SRC_LEGACY_LIB, LEGACY_LIB_DEPLOY);
+  let mapContent = fs.readFileSync(SRC_LEGACY_MAP, 'utf-8');
+  const libImportSrc = "from '../lib/legacy-redirects.mjs';";
+  const libImportDeploy = "from './_legacy-redirects.mjs';";
+  if (!mapContent.includes(libImportSrc)) {
+    die(`src/server/legacy-redirect-map.mjs no longer imports ${libImportSrc} — update the rewrite in this patcher`);
+  }
+  mapContent = mapContent.replace(libImportSrc, libImportDeploy);
+  fs.writeFileSync(LEGACY_MAP_DEPLOY, mapContent, 'utf-8');
+  log(`wrote ${path.relative(root, LEGACY_LIB_DEPLOY)} + ${path.relative(root, LEGACY_MAP_DEPLOY)}`);
+} else {
+  warn('legacy-redirect source modules missing — listener-level legacy redirects disabled');
+}
 
 // ── Step 1.5: BAI-DEPLOY-11 — capture build identity ──
 // Read git SHA + build time at patch time. These are inlined into the
@@ -278,6 +322,7 @@ if (existingMarker) {
     `import { isDenied } from '../_deny-list.mjs';`,
     `import { BUILD_COMMIT, BUILD_TIME } from '../_build-info.mjs';`,
     `import { RESPONSE_SECURITY_HEADERS } from '../_security-headers.mjs';`,
+    `import { getLegacyRedirect } from '../_legacy-redirect-map.mjs';`,
   ];
   let newChunk = chunkContent;
 
@@ -379,11 +424,16 @@ if (existingMarker) {
   // process.env identity for SSR routes).
   const patchedFn = `function createStandaloneHandler(app, options, headersMap) {
   // BAI-SEC-10:deny-list + BAI-DEPLOY-11:build-info (2026-07-25) +
-  // BAI-DEPLOY-12:hsts (2026-07-28) + BAI-P1-SEC-001 (2026-08-09) —
+  // BAI-DEPLOY-12:hsts (2026-07-28) + BAI-P1-SEC-001 (2026-08-09) +
+  // BAI-IDX-REDIR-001:legacy-redirects (2026-08-24) —
   // deployment-surface deny-list + build identity + full security
   // header posture (incl. Content-Security-Policy-Report-Only) at the
-  // listener level. Runs BEFORE staticHandler reads any file from disk.
-  // See src/server/deny-list.mjs, scripts/patch-server-entry.mjs.
+  // listener level, plus the legacy-URL 301 fallback map (the Astro
+  // middleware does NOT run for unmatched paths in the standalone
+  // adapter — verified 2026-08-24). Runs BEFORE staticHandler reads
+  // any file from disk.
+  // See src/server/deny-list.mjs, src/server/legacy-redirect-map.mjs,
+  // scripts/patch-server-entry.mjs.
   // BAI-DEPLOY-11: stamp process.env so SSR routes (api/health.ts) can
   // include the build identity in their JSON response.
   try {
@@ -444,6 +494,36 @@ if (existingMarker) {
       res.writeHead(400);
       res.end("Bad request.");
       return;
+    }
+    // BAI-IDX-REDIR-001: legacy URL fallback 301 — runs ONLY in the
+    // static handler's miss-fallback so it can never shadow a real
+    // static page. Covers every redirects.json variant (including
+    // .html keys the static build drops from the manifest and entries
+    // filtered from astro.config to avoid page-clobbering collisions).
+    // Self-redirect guard: a map variant equal to its destination
+    // (e.g. /blog.html → /blog/ registering the /blog/ variant) must
+    // fall through, never loop. Fail-open on any internal error.
+    try {
+      const lrUrl = typeof req.url === 'string' ? req.url : '/';
+      const lrPath = lrUrl.split('?')[0].split('#')[0];
+      staticHandler(req, res, () => {
+        try {
+          const lrHit = getLegacyRedirect(lrPath);
+          if (lrHit && lrHit.to !== lrPath) {
+            try {
+              res.writeHead(lrHit.status, { Location: lrHit.to });
+            } catch {
+              // headers already sent — fall through
+            }
+            try { res.end(); } catch { /* ignore */ }
+            return;
+          }
+        } catch { /* fail-open */ }
+        appHandler(req, res);
+      });
+      return;
+    } catch {
+      // fall through to the original pipeline shape
     }
     staticHandler(req, res, () => appHandler(req, res));
   };

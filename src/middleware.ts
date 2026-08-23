@@ -60,8 +60,63 @@ function applySecurityHeaders(response) {
 // `renderError` for 404 paths reads the prerendered 404.html from
 // disk via `prerenderedErrorPageFetch` and returns it directly,
 // bypassing the middleware. See DEC-BAI-IDX-22-001.
+//
+// BAI-IDX-REDIR-001 (2026-08-24): the config-only layer is NOT
+// sufficient. Live verification showed (a) Astro's static build drops
+// `.html`-suffixed redirect keys from the server manifest, so legacy
+// .html URLs 404 even locally, and (b) the deployed Render server 404'd
+// trailing-slash legacy keys that work against the identical local dist.
+// src/lib/legacy-redirects.mjs (written for BAI-IDX-22 but never wired
+// in) is now the runtime fallback HERE: for any GET/HEAD request whose
+// pathname misses in the runtime map, we 301 before Astro renders the
+// 404 page. Config redirects remain layer 1; this is layer 2 defense —
+// identical sources (redirects.json), so no conflicting targets.
+
+import { loadLegacyRedirects, findLegacyRedirect } from './lib/legacy-redirects.mjs';
+
+let redirectMapPromise: Promise<Map<string, { to: string; status: number }>> | null = null;
+function getRedirectMap() {
+  if (!redirectMapPromise) {
+    redirectMapPromise = loadLegacyRedirects();
+    // A failed load must not poison the cache — retry on next request.
+    redirectMapPromise.catch(() => {
+      redirectMapPromise = null;
+    });
+  }
+  return redirectMapPromise;
+}
+
+function legacyRedirectResponse(to: string, status: number, requestId: string) {
+  const headers = new Headers({ Location: to, 'x-request-id': requestId });
+  for (const [name, value] of Object.entries(RESPONSE_SECURITY_HEADERS)) {
+    headers.set(name, value);
+  }
+  return new Response(null, { status, headers });
+}
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  // 0. BAI-IDX-REDIR-001: legacy URL fallback redirect. Runs before
+  //    everything else; the static handler has already failed to match
+  //    a file by the time the middleware is invoked, so any map hit is
+  //    a legacy URL that must not 404. Fail-open on any error.
+  let requestIdEarly = '';
+  try {
+    const method = context.request.method.toUpperCase();
+    if (method === 'GET' || method === 'HEAD') {
+      const url = new URL(context.request.url);
+      const map = await getRedirectMap();
+      const hit = findLegacyRedirect(url.pathname, map);
+      // Self-redirect guard: never 301 a path to itself (loop).
+      if (hit && hit.to !== url.pathname) {
+        requestIdEarly =
+          context.request.headers.get('x-request-id') ?? randomUUID();
+        return legacyRedirectResponse(hit.to, hit.status, requestIdEarly);
+      }
+    }
+  } catch {
+    // Fail-open: a broken redirects source must never break routing.
+  }
+
   // 1. Sentry init (idempotent, no-op if DSN unset).
   const { initSentry } = await import('./lib/observability/sentry');
   initSentry();

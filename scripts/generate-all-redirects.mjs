@@ -96,6 +96,38 @@ async function injectAstroConfigRedirects(redirects) {
   }
   await walkSrcPages(path.join(ROOT, "src", "pages"));
 
+  // BAI-IDX-REDIR-002 (2026-08-24): dynamic routes render from content
+  // collections (src/pages/docs/[...slug].astro etc.) — the .astro walk
+  // above never sees them. Enumerate their slugs so the collision filter
+  // can protect real pages like /docs/nca-ecc-ai-controls/ from
+  // .html-suffixed redirect keys that Astro would collapse onto them.
+  const contentDirs = [
+    ["src/content/blog", "/blog"],
+    ["src/content/docs", "/docs"],
+    ["src/content/hub", "/hub"],
+  ];
+  const walkContent = async (dir, prefix) => {
+    let entries;
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await walkContent(full, prefix);
+      } else if (/\.(md|mdx)$/.test(entry.name)) {
+        const slug = entry.name.replace(/\.(md|mdx)$/, "");
+        staticPages.add(`${prefix}/${slug}`);
+        staticPages.add(`${prefix}/${slug}/`);
+      }
+    }
+  };
+  for (const [dir, prefix] of contentDirs) {
+    await walkContent(path.join(ROOT, dir), prefix);
+  }
+
   // Also include dist/client special files that the Node adapter serves
   // directly (404.html, 500.html, index.html).
   staticPages.add("/");
@@ -109,10 +141,44 @@ async function injectAstroConfigRedirects(redirects) {
   // We also skip entries with `*` or `:` in the source (wildcards +
   // placeholders — these work in Netlify _redirects but not in
   // Astro's redirects config which expects literal paths).
+  //
+  // BAI-IDX-REDIR-002 (2026-08-24): the check must cover the route
+  // forms Astro NORMALIZES a key into — not just the raw `from`.
+  // Astro 6 static output strips a trailing `.html` (and `/index.html`)
+  // from redirect keys under `trailingSlash: 'always'` + directory
+  // format, so a key like `/blog.html` (destination `/blog/`) is
+  // emitted at `blog/index.html` — overwriting the REAL /blog/ page
+  // with a self-refresh stub (verified 2026-08-24 for /blog/, /docs/,
+  // /en/, /assessment/ai-governance-readiness/ and
+  // /docs/nca-ecc-ai-controls/). Entries dropped here stay covered by
+  // the runtime listener map (src/server/legacy-redirect-map.mjs) and
+  // public/_redirects.
+  const astroRouteForms = (from) => {
+    const forms = new Set([from]);
+    if (from.endsWith("/index.html")) {
+      const dir = from.slice(0, -"/index.html".length);
+      if (dir) {
+        forms.add(dir);
+        forms.add(dir + "/");
+      }
+    } else if (from.endsWith(".html")) {
+      const stripped = from.slice(0, -".html".length);
+      forms.add(stripped);
+      forms.add(stripped + "/");
+      if (!from.endsWith("/")) forms.add(from + "/");
+    } else if (!from.endsWith("/")) {
+      forms.add(from + "/");
+    }
+    return forms;
+  };
   const safeRedirects = redirects.filter((r) => {
     if (!r || typeof r.from !== "string" || typeof r.to !== "string") return false;
     if (/[*:?]/.test(r.from) || /[*:?]/.test(r.to)) return false;
-    return !staticPages.has(r.from);
+    if (staticPages.has(r.from)) return false;
+    for (const form of astroRouteForms(r.from)) {
+      if (staticPages.has(form)) return false;
+    }
+    return true;
   });
 
   // De-dupe by source path. First wins (existing entries take

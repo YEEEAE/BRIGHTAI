@@ -478,6 +478,11 @@ function groupRelPath(relPath) {
     (normalized.startsWith("blog/category/") && normalized.endsWith("/index.html")) ||
     (normalized.startsWith("blog/") && normalized.endsWith("/index.html")) ||
     (normalized.startsWith("docs/") && normalized.endsWith("/index.html")) ||
+    // BAI-IDX-REDIR-002 (2026-08-24): /tools/ pages are public indexable
+    // content (e.g. /tools/ai-risk-register/). Without this branch the
+    // allowlist silently excluded them from the sitemap while the pages
+    // themselves stayed indexable — orphaned from discovery.
+    (normalized.startsWith("tools/") && normalized.endsWith("/index.html")) ||
     normalized === "blog/ai-governance.html"
   ) {
     return "pages";

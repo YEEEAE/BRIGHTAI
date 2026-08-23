@@ -4,7 +4,7 @@ metaTitle: "رؤية 2030 والذكاء الاصطناعي: خارطة الحو
 description: "خارطة طريق تربط رؤية 2030 بحوكمة AI وفق PDPL وSDAIA وNCA ECC. خطوات تنفيذية للتحول الرقمي السعودي. اكتشف كيف تقود مؤسستك نحو الامتثال والثقة مع BrightAI."
 canonical: "https://brightai.site/blog/vision-2030-ai-governance-roadmap/"
 pubDate: "2026-07-31"
-updatedDate: "2026-07-08"
+updatedDate: "2026-07-31"
 author: "nasser-alabdullah"
 slug: "vision-2030-ai-governance-roadmap"
 readingTime: 14

@@ -31,7 +31,7 @@ import { SITE } from './site';
  * resolve cross-page references (publisher, provider, founder, etc.).
  *
  * Includes: founder, address, contactPoint, sameAs, knowsAbout,
- *           areaServed (6 Saudi cities), awards note.
+ *           and Saudi market positioning.
  */
 /**
  * BAI-SEO-003-S3 (2026-07-18): single source of truth for the BrightAI
@@ -54,13 +54,12 @@ export const ORGANIZATION = {
   url: SITE.url,
   logo: {
     '@type': 'ImageObject',
-    url: `${SITE.url}/assets/images/logo.png`,
-    width: 200,
-    height: 55,
+    url: `${SITE.url}${SITE.logo}`,
+    width: 400,
+    height: 400,
     caption: 'شعار BrightAI',
   },
-  description:
-    'BrightAI شركة سعودية متخصصة في حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات في السعودية — Saudi AI Safety OS.',
+  description: SITE.descriptionEn,
   foundingDate: '2025',
   founder: {
     '@type': 'Person',
@@ -109,10 +108,7 @@ export const ORGANIZATION = {
     { '@type': 'City', name: 'مكة المكرمة' },
     { '@type': 'City', name: 'المدينة المنورة' },
   ],
-  sameAs: [
-    'https://www.tiktok.com/@bright1ai',
-    'https://github.com/YEEEAE/BRIGHTAI',
-  ],
+  sameAs: SITE.social.official,
   knowsAbout: [
     'الذكاء الاصطناعي',
     'AI Governance',

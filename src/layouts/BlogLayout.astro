@@ -109,14 +109,14 @@ const blogPostingLd: Record<string, unknown> = {
   // scripts/_check-duplicate-schema-ids.mjs).
   publisher: {
     '@type': 'Organization',
-    '@id': `${SITE.url}#organization`,
+    '@id': `${SITE.url}/#organization`,
     name: 'BrightAI',
     url: SITE.url,
     logo: {
       '@type': 'ImageObject',
-      url: `${SITE.url}/assets/images/logo.png`,
-      width: 512,
-      height: 512,
+      url: `${SITE.url}${SITE.logo}`,
+      width: 400,
+      height: 400,
     },
   },
   mainEntityOfPage: {

@@ -133,7 +133,7 @@ const localBusiness = {
   '@id': `${SITE.url}/#localbusiness-riyadh`,
   name: 'BrightAI — حوكمة AI في الرياض',
   description:
-    'مكتب BrightAI الرئيسي في الرياض — حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات السعودية. متوافق مع PDPL وNCA ECC. لا يُعد استشارة قانونية.',
+    `${SITE.descriptionAr} مقر التواصل في الرياض. تدعم BrightAI الجاهزية التشغيلية للامتثال ولا تُعد استشارة قانونية.`,
   url: SITE.url,
   telephone: '+966538229013',
   image: `${SITE.url}/assets/images/og/brightai-og-1200x630.png`,
@@ -218,7 +218,7 @@ const pageWebPage = canonical
       name: pageTitle || SITE.name,
       description:
         pageDescription ||
-        'BrightAI — Saudi AI Safety OS، حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات في السعودية.',
+        SITE.descriptionAr,
       inLanguage: language,
       isPartOf: { '@id': `${SITE.url}/#website` },
       about: { '@id': `${SITE.url}/#organization` },
