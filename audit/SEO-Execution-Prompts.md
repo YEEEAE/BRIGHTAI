@@ -709,7 +709,7 @@ SEO:
 Target “AI governance controls”, “Saudi AI governance control matrix”, and Arabic equivalents naturally.
 
 Do not push.
-- [ ] ✅ Prompt #15 — done & reviewed
+- [✅ ]  Prompt #15 — done & reviewed
 
 # Prompt #16 — Create a Saudi AI Risk Register Template
 

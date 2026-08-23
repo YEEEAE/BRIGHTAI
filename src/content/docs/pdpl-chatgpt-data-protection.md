@@ -3,7 +3,7 @@ title: "ChatGPT في المنشآت السعودية: دليل PDPL لحماية
 metaTitle: "ChatGPT والبيانات الشخصية في السعودية: دليل PDPL | BrightAI"
 description: "دليل ChatGPT بالعربي لاستخدام أدوات الذكاء الاصطناعي في المنشآت السعودية بدون تسريب بيانات شخصية، مع ضوابط PDPL واضحة وفحص PII وموافقة بشرية وسجل تدقيق."
 canonical: "https://brightai.site/docs/pdpl-chatgpt-data-protection/"
-updated: "2026-07-08"
+updated: "2026-08-24"
 category: "PDPL"
 tldr: "دليل ChatGPT بالعربي لاستخدام أدوات الذكاء الاصطناعي في المنشآت السعودية بدون تسريب بيانات شخصية، مع ضوابط PDPL واضحة وفحص PII وموافقة بشرية وسجل تدقيق."
 related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
@@ -17,7 +17,17 @@ related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
   <section class="card">
     <h2 id="section-1">المقدمة المختصرة</h2>
     <p>استخدام ChatGPT في الشركات السعودية صار جزءًا من العمل اليومي: تلخيص مستند، صياغة بريد، تحليل شكوى عميل، أو مساعدة موظف خدمة عملاء. المشكلة تبدأ عندما يدخل في الطلب رقم هوية، جوال، بريد عميل، عقد، ملف موظف، أو أي معلومة تكشف شخصًا أو حالة حساسة.</p>
-    <p>الطريقة المهنية ليست منع الذكاء الاصطناعي بالكامل، بل تشغيله بضوابط: تصنيف البيانات، منع أو تنقية PII قبل الإرسال، موافقة بشرية عند المخاطر العالية، وسجل تدقيق يثبت ما حدث. هذا المحتوى توعوي وتشغيلي ولا يعد استشارة قانونية.</p>
+    <p>الطريقة المهنية ليست منع الذكاء الاصطناعي بالكامل، بل تشغيله بضوابط: اكتشاف الاستخدام، تصنيف البيانات، تحديد الأدوات المسموحة، تنقية PII قبل الإرسال، موافقة بشرية عند المخاطر العالية، وسجل تدقيق يثبت ما حدث. هذا المحتوى توعوي وتشغيلي ولا يعد استشارة قانونية؛ تفاصيل التطبيق تعتمد على الغرض، نوع البيانات، المورد، وسياسة مؤسستك.</p>
+  </section>
+
+  <section class="card" aria-labelledby="chatgpt-flow-title">
+    <h2 id="chatgpt-flow-title">قبل ما ينسخ الموظف البيانات إلى ChatGPT</h2>
+    <ol>
+      <li><strong>اكتشف:</strong> هل الاستخدام عبر أداة معتمدة أو Shadow AI؟ ابدأ بـ <a href="/solutions/ai-use-case-discovery/">اكتشاف استخدامات AI</a>.</li>
+      <li><strong>صنّف:</strong> هل النص فيه بيانات شخصية أو حساسة أو سرية تجارية؟</li>
+      <li><strong>قرّر:</strong> اسمح، نقّح، احجب، أو اطلب موافقة حسب السياسة.</li>
+      <li><strong>وثّق:</strong> سجّل القرار والسبب دون تخزين النص الخام إذا ما كان لازمًا.</li>
+    </ol>
   </section>
 
   <section>
@@ -28,6 +38,15 @@ related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
       <div class="card"><h3 id="section-2-3">بيانات موظفين وعملاء</h3><p>تقييم أداء، شكوى عميل، سجل حضور، طلب تأمين، أو محادثة دعم تحتوي تفاصيل شخصية.</p></div>
       <div class="card"><h3 id="section-2-4">بيانات صحية أو حساسة</h3><p>أعراض، تقارير طبية، ملفات مرضى، حالات اجتماعية، أو أي معلومة تحتاج حذرًا إضافيًا قبل المعالجة.</p></div>
     </div>
+  </section>
+
+  <section class="card" aria-labelledby="chatgpt-safe-title">
+    <h2 id="chatgpt-safe-title">آمن أكثر أو غير آمن؟</h2>
+    <table class="docs-table">
+      <thead><tr><th>غير آمن</th><th>آمن أكثر</th></tr></thead>
+      <tbody><tr><td>رفع شكوى كاملة فيها اسم العميل ورقمه وطلب قرار تعويض.</td><td>استخدام معرف داخلي بعد التنقيح وطلب تلخيص وقائعي فقط، ثم مراجعة بشرية للقرار.</td></tr></tbody>
+    </table>
+    <p>التنقيح يقلل التعرض لكنه لا يثبت وحده أن المعالجة مناسبة لكل حالة. راجع الغرض، المورد، الصلاحيات، والاحتفاظ قبل التوسع.</p>
   </section>
 
   <section>
@@ -136,4 +155,10 @@ related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
     <p>إذا كانت شركتك تستخدم ChatGPT أو أدوات ذكاء اصطناعي مشابهة، ابدأ بحماية المدخلات: تنقية PII، منع تسريب البيانات للذكاء الاصطناعي، توثيق القرارات، وموافقة بشرية عند الطلبات الحساسة.</p>
     <a class="btn" href="/solutions/ai-firewall/">استكشف AI Firewall</a>
     <a class="btn secondary" href="/contact/">اطلب جلسة تقييم</a>
+  </section>
+
+  <section class="card" aria-labelledby="chatgpt-sources-title">
+    <h2 id="chatgpt-sources-title">المصدر النظامي والخطوة التالية</h2>
+    <p>للمتطلبات القانونية، ارجع إلى <a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPLCP/" target="_blank" rel="noopener noreferrer">دليل سدايا لنظام حماية البيانات الشخصية لجهات التحكم والمعالجة</a> و<a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/" target="_blank" rel="noopener noreferrer">اللائحة التنفيذية الرسمية</a>. هذه الصفحة تشرح تنفيذًا تقنيًا محتملًا ولا تحسم وضع ChatGPT أو أي مزود بعينه في حالتك.</p>
+    <p>لما تبي تربط الاكتشاف بالتنفيذ: <a href="/solutions/ai-firewall/">AI Firewall</a>، <a href="/solutions/ai-audit-trail/">Audit Trail</a>، <a href="/solutions/ai-governance-platform/">منصة الحوكمة</a>، و<a href="/assessment/ai-governance-readiness/">تقييم الجاهزية</a>.</p>
   </section>

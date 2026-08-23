@@ -3,7 +3,7 @@ title: "دليل PDPL و AI: تطبيق حماية البيانات مع الذ�
 metaTitle: "دليل PDPL و AI: تطبيق حماية البيانات | BrightAI"
 description: "مرجع عملي عميق لتطبيق امتثال PDPL للذكاء الاصطناعي وحماية البيانات الشخصية في AI داخل الجهات السعودية، مع خطوات وجداول وأدلة قابلة للتدقيق."
 canonical: "https://brightai.site/docs/pdpl-ai-complete-guide/"
-updated: "2026-06-07"
+updated: "2026-08-24"
 category: "PDPL"
 tldr: "مرجع عملي عميق لتطبيق امتثال PDPL للذكاء الاصطناعي وحماية البيانات الشخصية\nفي AI داخل الجهات السعودية، مع خطوات وجداول وأدلة قابلة للتدقيق."
 related: ["pdpl-ai-governance","pdpl-chatgpt-data-protection"]
@@ -12,7 +12,7 @@ related: ["pdpl-ai-governance","pdpl-chatgpt-data-protection"]
     <span class="pill">PDPL AI Complete Guide</span>
     
     <p class="muted">مرجع عملي عميق لتطبيق امتثال PDPL للذكاء الاصطناعي وحماية البيانات الشخصية في AI داخل الجهات السعودية، مع خطوات وجداول وأدلة قابلة للتدقيق.</p>
-    <p class="muted">تاريخ النشر: 2026-06-07 | آخر مراجعة تنظيمية: 2026-06-07 | عدد الكلمات التقريبي: 2384</p>
+    <p class="muted">تاريخ النشر: 2026-06-07 | آخر مراجعة تحريرية: 2026-08-24 | عدد الكلمات التقريبي: 3000+</p>
   </section>
 
   
@@ -27,6 +27,21 @@ related: ["pdpl-ai-governance","pdpl-chatgpt-data-protection"]
     <div><strong>04</strong><span>قرارات تشغيلية: سماح، تنقيح، حجب، أو تصعيد</span></div>
   </div>
 </section>
+
+<style>
+  .pdpl-practical-panel { border: 1px solid var(--border-default); border-radius: 18px; padding: clamp(1rem, 3vw, 2rem); background: linear-gradient(135deg, rgba(20, 184, 166, .08), rgba(15, 23, 42, .02)); }
+  .pdpl-practical-panel .card, .scenario-card { height: 100%; }
+  .pdpl-practical-panel a, .pdpl-checklist + p a { font-weight: 700; }
+  .pdpl-flow { display: flex; align-items: stretch; gap: .65rem; overflow-x: auto; padding: 1rem 0 .5rem; direction: rtl; }
+  .pdpl-flow > div { min-width: 130px; flex: 1 0 130px; display: grid; gap: .3rem; align-content: center; padding: 1rem; border: 1px solid var(--border-default); border-radius: 14px; background: var(--surface-2); text-align: center; }
+  .pdpl-flow span { color: var(--color-brand, #14b8a6); font: 700 .78rem/1 ui-monospace, monospace; }
+  .pdpl-flow small { color: var(--text-muted); font-size: .82rem; }
+  .pdpl-flow b { align-self: center; color: var(--color-brand, #14b8a6); }
+  .pdpl-checklist { list-style: none; padding: 0; display: grid; gap: .7rem; }
+  .pdpl-checklist li { position: relative; padding: .85rem 2.4rem .85rem 1rem; border: 1px solid var(--border-subtle, var(--border-default)); border-radius: 12px; background: var(--surface-2); }
+  .pdpl-checklist li::before { content: '✓'; position: absolute; inset-inline-end: .9rem; color: var(--color-brand, #14b8a6); font-weight: 800; }
+  @media (max-width: 640px) { .pdpl-flow { margin-inline: -1rem; padding-inline: 1rem; } .pdpl-flow > div { min-width: 116px; flex-basis: 116px; } .pdpl-flow b { display: none; } }
+</style>
 
 <section class="pdpl-practical-panel" aria-labelledby="pdpl-practical-title">
   <h2 id="pdpl-practical-title">من المتطلب النظامي إلى الإجراء اليومي</h2>
@@ -246,7 +261,7 @@ related: ["pdpl-ai-governance","pdpl-chatgpt-data-protection"]
 
 <section class="sources" aria-labelledby="official-sources">
   <h2 id="section-15">المصادر الرسمية وآلية المراقبة</h2>
-  <p>تمت مراجعة هذه الصفحة مقابل مصادر SDAIA الرسمية في 7 يونيو 2026. هذه الروابط محفوظة أيضًا في كتلة بيانات قابلة للقراءة آليًا داخل الصفحة لمراجعة التحديثات عند النشر.</p>
+  <p>الملخص النظامي هنا مبني على مصادر سدايا الرسمية المتاحة، وآخر مراجعة تحريرية لهذه الصفحة هي 24 أغسطس 2026. الإرشادات التشغيلية أعلاه مقترحات تطبيقية من BrightAI وليست التزامات جديدة ولا ضمان امتثال.</p>
   <ul>
     <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPLCP/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziPR1dzTwMgw2MDMOcTA3MjH39TE29jY0MQsz1w9EUhIZZAhUEGvl6OXoaGwQY60cRo98AB3A0IKTfi5ACoA-MinydfdP1owoSSzJ0M_PS8vUjAlwCfJwDgLZH4dVvYYyhANODYAV4fFCQGxpR5ZMW7JmuqAgAEY2qIg!!/dz/d5/L0lDUmlTUSEhL3dHa0FKRnNBLzROV3FpQSEhL2Vu/" rel="noopener" target="_blank">دليل PDPL للمتحكمين والمعالجين</a></li>
     <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziPR1dzTwMgw2MDMOcTA3MjH39TE29jY0MQsz1w9EUhIZZAhUEGvl6OXoaGwQY60cRo98AB3A0IKTfi5ACoA-MinydfdP1owoSSzJ0M_PS8vUjAlwCfIyAlkfh1W5hjKEA039gBXg8UJAbGlHlkxbsma6oCAA-ytT9/dz/d5/L0lDUmlTUSEhL3dHa0FKRnNBLzROV3FpQSEhL2Vu/" rel="noopener" target="_blank">اللائحة التنفيذية لنظام حماية البيانات الشخصية</a></li>
