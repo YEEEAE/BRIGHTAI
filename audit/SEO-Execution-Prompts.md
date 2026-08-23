@@ -122,6 +122,7 @@ Design baseline:
 - Identify likely high-cost hero assets or hydration affecting mobile LCP.
 
 Do not push.
+- [ ] ✅ Prompt #1 — done & reviewed
 
 Acceptance: عندك خريطة كاملة للروابط + ملفات المصدر + مشاكل SEO + مشاكل التصميم قبل التعديل.
 
@@ -160,6 +161,7 @@ SEO/GEO requirement:
 Allow legitimate answer/search crawlers needed for citations while preventing accidental broad training access if that is the selected policy.
 
 Do not push.
+- [ ] ✅ Prompt #2 — done & reviewed
 
 # Prompt #3 — Fresh indexing audit and GSC remediation plan
 
@@ -197,6 +199,7 @@ Tasks:
 6. Do not bulk-delete or noindex pages solely because an old snapshot showed “crawled not indexed”.
 
 Do not push.
+- [ ] ✅ Prompt #3 — done & reviewed
 
 # Prompt #4 — Upgrade the AI Governance Platform commercial page
 
@@ -243,6 +246,7 @@ SEO:
 - Avoid stuffing city names.
 
 Do not push.
+- [ ] ✅ Prompt #4 — done & reviewed
 
 # Prompt #5 — Rebuild the AI Governance Hub as the main informational pillar
 
@@ -284,6 +288,7 @@ Cannibalization:
 - Recommend merge/noindex/internal-link changes only after comparing intent and unique value.
 
 Do not push.
+- [ ] ✅ Prompt #5 — done & reviewed
 
 # Prompt #6 — Upgrade the AI Governance Readiness Assessment conversion page
 
@@ -331,6 +336,7 @@ Analytics:
 - Track start, step progression, completion, CTA clicks, and abandonment without collecting unnecessary personal data.
 
 Do not push.
+- [ ] ✅ Prompt #6 — done & reviewed
 
 # Prompt #7 — Mobile LCP and Core Web Vitals P0
 
@@ -372,6 +378,7 @@ Design rule:
 Do not trade away premium visual quality; simplify expensive effects intelligently.
 
 Do not push.
+- [ ] ✅ Prompt #7 — done & reviewed
 
 # Prompt #8 — Canonicals, noindex, sitemap, redirects and crawl-budget cleanup
 
@@ -406,6 +413,7 @@ Tasks:
 10. Produce a before/after table.
 
 Do not push.
+- [ ] ✅ Prompt #8 — done & reviewed
 
 # Prompt #9 — Consolidate /answer/ pages and remove cannibalization
 
@@ -452,6 +460,7 @@ Design:
 - No bloated marketing layout.
 
 Do not push.
+- [ ] ✅ Prompt #9 — done & reviewed
 
 # Prompt #10 — Create the SDAIA National AI Risk Management Framework pillar
 
@@ -495,6 +504,7 @@ Design:
 - clear “what BrightAI can help with” section separate from “what the regulation says”.
 
 Do not push.
+- [ ] ✅ Prompt #10 — done & reviewed
 
 # Prompt #11 — Build the NCA AI Cybersecurity Guidelines opportunity page
 
@@ -531,6 +541,7 @@ Design:
 - Strong mobile tables/cards.
 
 Do not push.
+- [ ] ✅ Prompt #11 — done & reviewed
 
 # Prompt #12 — Strengthen the AI Firewall commercial cluster
 
@@ -570,6 +581,7 @@ SEO/AEO:
 - Optimize title/H1/meta without stuffing “Saudi Arabia” repeatedly.
 
 Do not push.
+- [ ] ✅ Prompt #12 — done & reviewed
 
 # Prompt #13 — Build/strengthen the ISO/IEC 42001 pillar
 
@@ -607,6 +619,7 @@ Cannibalization:
 - Review /answer/iso-42001/ against the main guide and assign one canonical owner.
 
 Do not push.
+- [ ] ✅ Prompt #13 — done & reviewed
 
 # Prompt #14 — Rebuild the PDPL + AI compliance cluster
 
@@ -644,6 +657,7 @@ Design:
 - clear source panel.
 
 Do not push.
+- [ ] ✅ Prompt #14 — done & reviewed
 
 # Prompt #15 — Create BrightAI’s Saudi AI Governance Control Matrix
 
@@ -695,6 +709,7 @@ SEO:
 Target “AI governance controls”, “Saudi AI governance control matrix”, and Arabic equivalents naturally.
 
 Do not push.
+- [ ] ✅ Prompt #15 — done & reviewed
 
 # Prompt #16 — Create a Saudi AI Risk Register Template
 
@@ -732,6 +747,7 @@ Design:
 - print-friendly version.
 
 Do not push.
+- [ ] ✅ Prompt #16 — done & reviewed
 
 # Prompt #17 — Entity SEO, Organization schema and trust cleanup
 
@@ -764,6 +780,7 @@ Design:
 - Use real methodology, update dates, sources, and product architecture as trust signals.
 
 Do not push.
+- [ ] ✅ Prompt #17 — done & reviewed
 
 # Prompt #18 — Agentic AI Security pillar
 
@@ -805,6 +822,7 @@ Design:
 - premium enterprise security visual language.
 
 Do not push.
+- [ ] ✅ Prompt #18 — done & reviewed
 
 # Prompt #19 — Agentic AI Governance framework page
 
@@ -838,6 +856,7 @@ Design:
 - evidence examples.
 
 Do not push.
+- [ ] ✅ Prompt #19 — done & reviewed
 
 # Prompt #20 — Strengthen Banking AI Governance Riyadh instead of mass city pages
 
@@ -872,6 +891,7 @@ Design:
 - Riyadh should feel contextual, not like a keyword pasted into headings.
 
 Do not push.
+- [ ] ✅ Prompt #20 — done & reviewed
 
 # Prompt #21 — Internal linking and topical authority architecture
 
@@ -909,6 +929,7 @@ Tasks:
 - Do not add links solely for SEO if context is poor.
 
 Do not push.
+- [ ] ✅ Prompt #21 — done & reviewed
 
 # Prompt #22 — GEO / AEO / AI-search optimization across strategic content
 
@@ -947,6 +968,7 @@ Technical:
 - Do not hide content from users while exposing it to crawlers.
 
 Do not push.
+- [ ] ✅ Prompt #22 — done & reviewed
 
 # Prompt #23 — Global visual design system upgrade
 
@@ -1014,6 +1036,7 @@ Output:
 - screenshots/visual checks if the environment supports them
 
 Do not push.
+- [ ] ✅ Prompt #23 — done & reviewed
 
 # Prompt #24 — Homepage information architecture + conversion redesign
 
@@ -1059,6 +1082,7 @@ SEO:
 - Ensure internal links to primary pillars and commercial pages.
 
 Do not push.
+- [ ] ✅ Prompt #24 — done & reviewed
 
 # Prompt #25 — Conversion architecture and analytics
 
@@ -1099,6 +1123,7 @@ Design:
 - Avoid intrusive popups.
 
 Do not push.
+- [ ] ✅ Prompt #25 — done & reviewed
 
 # Prompt #26 — Competitor differentiation and messaging cleanup
 
@@ -1141,6 +1166,7 @@ Design:
 Use diagrams/product workflows to prove differentiation visually instead of only slogans.
 
 Do not push.
+- [ ] ✅ Prompt #26 — done & reviewed
 
 # Prompt #27 — Content governance: what NOT to create
 
@@ -1172,6 +1198,7 @@ Implement:
 - last-updated owner
 
 Do not push.
+- [ ] ✅ Prompt #27 — done & reviewed
 
 # Prompt #28 — 30/60/90-day remeasurement and final QA
 
@@ -1230,6 +1257,7 @@ Create:
 5. 90-day reprioritization report
 
 Do not push.
+- [ ] ✅ Prompt #28 — done & reviewed
 
 Keyword Portfolio
 
