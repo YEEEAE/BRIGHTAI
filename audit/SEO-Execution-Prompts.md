@@ -5,7 +5,7 @@ Site: https://brightai.site
 Purpose: تنفيذ كامل توصيات تقرير SEO/GEO/AEO/Technical/Content/Design بدون حذف القيمة الحالية للمشروع أو صناعة بيانات غير حقيقية.
 Important: لا تسوي git push ولا تفتح PR ولا تدمج أي تغييرات تلقائيًا. نفّذ محليًا فقط واعرض التغييرات والنتائج للمراجعة.
 
-0) قواعد ثابتة لكل البرومبتات
+# 0) قواعد ثابتة لكل البرومبتات
 
 استخدم القواعد التالية مع كل برومبت في هذا الملف:
 
@@ -81,7 +81,7 @@ Execution Order
 
 نفّذ البرومبتات بالترتيب. لا تبدأ بإنشاء صفحات جديدة قبل إنهاء الأساس التقني والفهرسة.
 
-Prompt #1 — Establish a clean baseline before touching SEO
+# Prompt #1 — Establish a clean baseline before touching SEO
 
 Act as the technical SEO lead for BrightAI.
 
@@ -125,7 +125,7 @@ Do not push.
 
 Acceptance: عندك خريطة كاملة للروابط + ملفات المصدر + مشاكل SEO + مشاكل التصميم قبل التعديل.
 
-Prompt #2 — Fix the Cloudflare / robots / AI crawler policy conflict
+# Prompt #2 — Fix the Cloudflare / robots / AI crawler policy conflict
 
 Audit and normalize BrightAI crawler policy.
 
@@ -161,7 +161,7 @@ Allow legitimate answer/search crawlers needed for citations while preventing ac
 
 Do not push.
 
-Prompt #3 — Fresh indexing audit and GSC remediation plan
+# Prompt #3 — Fresh indexing audit and GSC remediation plan
 
 Run a current indexing-focused audit.
 
@@ -198,7 +198,7 @@ Tasks:
 
 Do not push.
 
-Prompt #4 — Upgrade the AI Governance Platform commercial page
+# Prompt #4 — Upgrade the AI Governance Platform commercial page
 
 Optimize /solutions/ai-governance-platform/ as BrightAI’s primary commercial AI governance page.
 
@@ -244,7 +244,7 @@ SEO:
 
 Do not push.
 
-Prompt #5 — Rebuild the AI Governance Hub as the main informational pillar
+# Prompt #5 — Rebuild the AI Governance Hub as the main informational pillar
 
 Optimize /hub/ai-governance/ as the canonical informational pillar for “AI governance”.
 
@@ -285,7 +285,7 @@ Cannibalization:
 
 Do not push.
 
-Prompt #6 — Upgrade the AI Governance Readiness Assessment conversion page
+# Prompt #6 — Upgrade the AI Governance Readiness Assessment conversion page
 
 Optimize /assessment/ai-governance-readiness/ for conversion and indexability.
 
@@ -332,7 +332,7 @@ Analytics:
 
 Do not push.
 
-Prompt #7 — Mobile LCP and Core Web Vitals P0
+# Prompt #7 — Mobile LCP and Core Web Vitals P0
 
 Treat mobile performance as a P0 task.
 
@@ -373,7 +373,7 @@ Do not trade away premium visual quality; simplify expensive effects intelligent
 
 Do not push.
 
-Prompt #8 — Canonicals, noindex, sitemap, redirects and crawl-budget cleanup
+# Prompt #8 — Canonicals, noindex, sitemap, redirects and crawl-budget cleanup
 
 Perform a technical indexation architecture cleanup.
 
@@ -407,7 +407,7 @@ Tasks:
 
 Do not push.
 
-Prompt #9 — Consolidate /answer/ pages and remove cannibalization
+# Prompt #9 — Consolidate /answer/ pages and remove cannibalization
 
 Audit the entire /answer/ directory for keyword cannibalization and thin content.
 
@@ -453,7 +453,7 @@ Design:
 
 Do not push.
 
-Prompt #10 — Create the SDAIA National AI Risk Management Framework pillar
+# Prompt #10 — Create the SDAIA National AI Risk Management Framework pillar
 
 Create a high-authority Saudi-focused guide for the current SDAIA National AI Risk Management Framework.
 
@@ -496,7 +496,7 @@ Design:
 
 Do not push.
 
-Prompt #11 — Build the NCA AI Cybersecurity Guidelines opportunity page
+# Prompt #11 — Build the NCA AI Cybersecurity Guidelines opportunity page
 
 Create/upgrade a Saudi-focused page targeting NCA AI Cybersecurity Guidelines.
 
@@ -532,7 +532,7 @@ Design:
 
 Do not push.
 
-Prompt #12 — Strengthen the AI Firewall commercial cluster
+# Prompt #12 — Strengthen the AI Firewall commercial cluster
 
 Make /solutions/ai-firewall/ the strongest commercial page for BrightAI’s AI security control layer.
 
@@ -571,7 +571,7 @@ SEO/AEO:
 
 Do not push.
 
-Prompt #13 — Build/strengthen the ISO/IEC 42001 pillar
+# Prompt #13 — Build/strengthen the ISO/IEC 42001 pillar
 
 Optimize BrightAI’s ISO/IEC 42001 content cluster.
 
@@ -608,7 +608,7 @@ Cannibalization:
 
 Do not push.
 
-Prompt #14 — Rebuild the PDPL + AI compliance cluster
+# Prompt #14 — Rebuild the PDPL + AI compliance cluster
 
 Optimize the PDPL + AI content cluster for practical enterprise search intent.
 
@@ -645,7 +645,7 @@ Design:
 
 Do not push.
 
-Prompt #15 — Create BrightAI’s Saudi AI Governance Control Matrix
+# Prompt #15 — Create BrightAI’s Saudi AI Governance Control Matrix
 
 Create an original, genuinely useful “Saudi AI Governance Control Matrix”.
 
@@ -696,7 +696,7 @@ Target “AI governance controls”, “Saudi AI governance control matrix”, a
 
 Do not push.
 
-Prompt #16 — Create a Saudi AI Risk Register Template
+# Prompt #16 — Create a Saudi AI Risk Register Template
 
 Create a practical AI Risk Register template for Saudi enterprises.
 
@@ -733,7 +733,7 @@ Design:
 
 Do not push.
 
-Prompt #17 — Entity SEO, Organization schema and trust cleanup
+# Prompt #17 — Entity SEO, Organization schema and trust cleanup
 
 Strengthen BrightAI’s entity consistency across the website.
 
@@ -765,7 +765,7 @@ Design:
 
 Do not push.
 
-Prompt #18 — Agentic AI Security pillar
+# Prompt #18 — Agentic AI Security pillar
 
 Create an emerging-topic pillar for “Agentic AI Security” aligned with BrightAI’s real capabilities.
 
@@ -806,7 +806,7 @@ Design:
 
 Do not push.
 
-Prompt #19 — Agentic AI Governance framework page
+# Prompt #19 — Agentic AI Governance framework page
 
 Create a separate informational pillar for “Agentic AI Governance”.
 
@@ -839,7 +839,7 @@ Design:
 
 Do not push.
 
-Prompt #20 — Strengthen Banking AI Governance Riyadh instead of mass city pages
+# Prompt #20 — Strengthen Banking AI Governance Riyadh instead of mass city pages
 
 Upgrade /solutions/banking-ai-governance/riyadh/ as BrightAI’s flagship local high-intent page.
 
@@ -873,7 +873,7 @@ Design:
 
 Do not push.
 
-Prompt #21 — Internal linking and topical authority architecture
+# Prompt #21 — Internal linking and topical authority architecture
 
 Rebuild internal linking around five pillars:
 
@@ -910,7 +910,7 @@ Tasks:
 
 Do not push.
 
-Prompt #22 — GEO / AEO / AI-search optimization across strategic content
+# Prompt #22 — GEO / AEO / AI-search optimization across strategic content
 
 Optimize strategic BrightAI content for Google AI answers, Bing/Copilot-style answers, ChatGPT search/grounding, Perplexity and other citation systems without spam.
 
@@ -948,7 +948,7 @@ Technical:
 
 Do not push.
 
-Prompt #23 — Global visual design system upgrade
+# Prompt #23 — Global visual design system upgrade
 
 Act as a senior product designer + frontend engineer and modernize BrightAI’s visual system without turning it into a generic template.
 
@@ -1015,7 +1015,7 @@ Output:
 
 Do not push.
 
-Prompt #24 — Homepage information architecture + conversion redesign
+# Prompt #24 — Homepage information architecture + conversion redesign
 
 Upgrade the BrightAI homepage to clearly communicate the Saudi AI Safety OS / operational governance positioning.
 
@@ -1060,7 +1060,7 @@ SEO:
 
 Do not push.
 
-Prompt #25 — Conversion architecture and analytics
+# Prompt #25 — Conversion architecture and analytics
 
 Improve conversion measurement and CTA architecture across BrightAI.
 
@@ -1100,7 +1100,7 @@ Design:
 
 Do not push.
 
-Prompt #26 — Competitor differentiation and messaging cleanup
+# Prompt #26 — Competitor differentiation and messaging cleanup
 
 Review BrightAI messaging against current Saudi AI consulting/governance competitors and regulatory-information sites.
 
@@ -1142,7 +1142,7 @@ Use diagrams/product workflows to prove differentiation visually instead of only
 
 Do not push.
 
-Prompt #27 — Content governance: what NOT to create
+# Prompt #27 — Content governance: what NOT to create
 
 Create a repository-level content governance checklist to prevent future SEO bloat.
 
@@ -1173,7 +1173,7 @@ Implement:
 
 Do not push.
 
-Prompt #28 — 30/60/90-day remeasurement and final QA
+# Prompt #28 — 30/60/90-day remeasurement and final QA
 
 After the previous prompts are completed locally, perform the final full QA and create a 90-day measurement plan.
 
