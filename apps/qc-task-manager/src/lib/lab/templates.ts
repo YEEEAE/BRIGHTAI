@@ -29,10 +29,10 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import {
-  canApproveLabTemplate,
+  canApproveLabTemplateRecord,
   canArchiveLabTemplate,
   canCreateLabTemplate,
-  canEditLabTemplate,
+  canEditLabTemplateRecord,
 } from '../permissions';
 import {
   LAB_ACTUAL_PRESSURE_REFERENCE,
@@ -646,6 +646,10 @@ export function approveLabTemplate(id: number, actorId: number): void {
     const latest = db
       .prepare('SELECT id, version, approved_by FROM lab_test_template_versions WHERE template_id = ? ORDER BY version DESC LIMIT 1')
       .get(id) as { id: number; version: number; approved_by: number | null };
+    const actor = db.prepare('SELECT id, role FROM users WHERE id = ? AND is_active = 1').get(actorId) as { id: number; role: import('../types').Role } | undefined;
+    if (!actor || !canApproveLabTemplateRecord(actor, { status: latest.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: Number((db.prepare('SELECT created_by FROM lab_test_template_versions WHERE id = ?').get(latest.id) as { created_by: number }).created_by), author_id: null })) {
+      throw new Error('The template author cannot approve this template version.');
+    }
     if (latest.approved_by !== null) throw new Error('The current version is already approved.');
     db.prepare("UPDATE lab_test_template_versions SET approved_by = ?, updated_at = datetime('now') WHERE id = ?").run(actorId, latest.id);
     db.prepare(
@@ -744,12 +748,21 @@ async function handleLabTemplatePost(context: APIContext, templateId: number | n
 
   const allowed =
     formAction === 'approve'
-      ? canApproveLabTemplate(user.role)
+      ? canApproveLabTemplateRecord(
+          { id: user.id, role: user.role },
+          (() => {
+            const view = getLabTemplateForEdit(templateId as number);
+            return view ? { status: view.version.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: view.version.created_by, author_id: null } : { status: 'MISSING', created_by: -1, author_id: null };
+          })(),
+        )
       : formAction === 'archive'
         ? canArchiveLabTemplate(user.role)
         : templateId === null
           ? canCreateLabTemplate(user.role)
-          : canEditLabTemplate(user.role);
+          : (() => {
+              const view = getLabTemplateForEdit(templateId);
+              return Boolean(view && canEditLabTemplateRecord({ id: user.id, role: user.role }, { status: view.version.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: view.version.created_by, author_id: null }));
+            })();
   if (!allowed) {
     setFlash(context, 'error', 'You do not have permission to manage test templates.');
     return context.redirect('/lab/templates');

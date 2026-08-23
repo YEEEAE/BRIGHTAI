@@ -15,7 +15,7 @@ import { getLabProductAuditTimeline, getLabProductDetail } from '../../../lib/la
 import { getProductRepeatFailure } from '../../../lib/lab/scheduledNotifications';
 import { getLabFailRateTrends, labTrendDrilldown, type LabTrendGranularity } from '../../../lib/lab/trends';
 import LabFailRateChart from '../../../components/lab/LabFailRateChart';
-import { canEditLabProduct } from '../../../lib/permissions';
+import { canEditLabProduct, canProposeLabProductEdit } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -103,7 +103,7 @@ function fmt(value: unknown): string {
               </span>
             </p>
           </div>
-          {canEditLabProduct(role) && detail.product.is_active === 1 && (
+          {(canEditLabProduct(role) || canProposeLabProductEdit(role)) && detail.product.is_active === 1 && (
             <a
               href={`/lab/products/${detail.product.id}/edit`}
               class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
@@ -114,7 +114,7 @@ function fmt(value: unknown): string {
           {detail.product.is_active !== 1 && (
             <p class="text-sm text-slate-500">Inactive products are read-only historical records.</p>
           )}
-          {canEditLabProduct(role) && (
+          {(canEditLabProduct(role) || canProposeLabProductEdit(role)) && (
             <form method="post" action={`/lab/products/${detail.product.id}/${detail.product.is_active === 1 ? 'archive' : 'restore'}`}>
               <button
                 type="submit"

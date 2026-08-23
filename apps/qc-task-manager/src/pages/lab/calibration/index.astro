@@ -29,7 +29,7 @@ import {
   type LabCalibrationSortField,
   type LabCalibrationStatus,
 } from '../../../lib/lab/calibration';
-import { canCreateLabCalibration, canEditLabCalibration } from '../../../lib/permissions';
+import { canCreateLabCalibration, canEditLabCalibration, canProposeLabCalibrationCreate, canProposeLabCalibrationEdit } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -145,7 +145,7 @@ function fmt(value: unknown): string {
           Unknown) is derived from the dates and result at read time — missing data is shown as —, never auto-filled.
         </p>
       </div>
-      {canCreateLabCalibration(role) && (
+      {(canCreateLabCalibration(role) || canProposeLabCalibrationCreate(role)) && (
         <a
           href="/lab/calibration/new"
           class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
@@ -256,7 +256,7 @@ function fmt(value: unknown): string {
                       <td class="px-4 py-2">
                         <span class="flex items-center gap-2">
                           <a href={`/lab/calibration/${r.id}`} class="font-medium text-brand-600 hover:underline">View</a>
-                          {canEditLabCalibration(role) && (
+                          {(canEditLabCalibration(role) || canProposeLabCalibrationEdit(role)) && (
                             <a href={`/lab/calibration/${r.id}/edit`} class="font-medium text-slate-600 hover:underline">Edit</a>
                           )}
                         </span>

@@ -8,6 +8,38 @@ version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — SKILL-INSTALL-WEB-DESIGN-GUIDELINES-001: إضافة مهارة `web-design-guidelines` من Vercel — **التثبيت مكتمل والتحقق المحلي مكتمل**
+
+- **Command**: `npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines`
+- **Result**: الأداة اكتشفت Codex وثبّتت مهارة واحدة في `.agents/skills/web-design-guidelines/`، مع تصنيف `Safe` و`0 alerts` و`Med Risk` من Snyk.
+- **Files**: `.agents/skills/web-design-guidelines/SKILL.md` + تحديث `skills-lock.json` من أداة التثبيت.
+- **Verification**: التثبيت exit 0؛ المهارة تستخدم مصدر Vercel الخام وتطلب جلب أحدث الإرشادات قبل كل مراجعة UI. لا build/tests للتطبيق لأن التغيير إضافة Skill فقط.
+- **Status**: installed locally — لا commit ولا push؛ المستخدم يراجع المهارة قبل استخدامها.
+
+### 2026-08-23 — SKILL-INSTALL-PERFORMANCE-001: إضافة مهارة `performance` من Addy Osmani — **التثبيت والتحقق مكتملان**
+
+- **Command**: `npx skills add https://github.com/addyosmani/web-quality-skills --skill performance`
+- **Result**: الأداة اكتشفت Codex وثبّتت مهارة واحدة في `.agents/skills/performance/`، مع تصنيف `Safe` و`0 alerts` و`Low Risk`.
+- **Files**: `.agents/skills/performance/SKILL.md` + تحديث `skills-lock.json` من أداة التثبيت.
+- **Verification**: `quick_validate.py .agents/skills/performance` → `Skill is valid!`؛ لا build/tests للتطبيق لأن التغيير إضافة Skill فقط.
+- **Status**: installed locally — لا commit ولا push؛ المستخدم يراجع المهارة قبل استخدامها.
+
+### 2026-08-23 — QC-LAB-RBAC-EXPANSION-002: توسيع مساهمة أدوار المختبر مع إبقاء الاعتماد والإدارة محكومة — **التنفيذ المحلي والتحقق مكتملان، وإثبات الإنتاج غير منفّذ**
+
+- **Scope**: توسيع RBAC لمسارات اختبارات المختبر، المعدات، المنتجات، المعايرة، الصيانة، المستندات، القوالب وإعادة الاختبار؛ الموظف/المشرف يرسلان proposal عبر Change Review Queue، والمدير/المدير العام يطبّقان التغييرات المعتمدة مباشرة حسب المسار.
+- **Security invariants**: `src/lib/permissions.ts` بقي مصدر الحقيقة؛ منعت self-review/self-approval على مستوى السجل؛ الاختبارات APPROVED/VOID بقيت غير قابلة للتعديل؛ proposal المعدات/المنتجات/المعايرة لا يكتب الجداول canonical؛ طلب RETEST من الموظف يمر بالطابور ولا ينشئ retest فعليًا قبل اعتماد الإدارة؛ الصيانة append-only، والمعدة المؤرشفة تمنع أحداث صيانة جديدة؛ نطاق finding links والتقارير/التصدير الإداري لم يتوسع.
+- **Files**: `apps/qc-task-manager/src/lib/permissions.ts`, `src/lib/lab/{tests,equipment,products,calibration,retests,templates}.ts`, صفحات ومسارات lab المتأثرة، واختبارات RBAC/queue ذات الصلة.
+- **Verification**: `pnpm test` = **ناجح بالكامل (exit 0)**؛ الاختبارات المركزة شملت change requests, tests, templates, documents, maintenance, security, equipment, products, calibration, retests؛ `pnpm typecheck` = **0 errors / 0 warnings / 20 hints**؛ `NODE_ENV=production pnpm build` = **ناجح**؛ `pnpm test:architecture` = **ناجح**؛ `git diff --check` = **ناجح**. تحذيرات build الديناميكية وGit fsmonitor غير مانعة ولم تغيّر الملفات.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ E2E/production verification غير مُدّعى به.
+
+### 2026-08-23 — SKILL-INSTALL-GRILL-ME-001: إضافة مهارة `grill-me` من Matt Pocock — **التثبيت مكتمل، والتحقق كشف مفتاح frontmatter غير مدعوم**
+
+- **Command**: `npx skills add https://github.com/mattpocock/skills --skill grill-me`
+- **Result**: الأداة اكتشفت Codex وثبّتت مهارة واحدة في `.agents/skills/grill-me/`، مع تصنيف `Safe` و`0 alerts` و`Low Risk`.
+- **Files**: `.agents/skills/grill-me/SKILL.md` + `.agents/skills/grill-me/agents/openai.yaml`.
+- **Verification**: التثبيت exit 0؛ `quick_validate.py` فشل لأن المصدر يحتوي `disable-model-invocation`، وهو مفتاح غير مدعوم في validator الحالي (المفاتيح المسموحة: `allowed-tools`, `description`, `license`, `metadata`, `name`). لم تُعدّل ملفات المهارة upstream تلقائيًا.
+- **Status**: installed locally — لا commit ولا push؛ المستخدم يراجع المهارة قبل استخدامها.
+
 ### 2026-08-23 — SKILLS-CODEX-COMPAT-001: تدقيق توافق مهارات BRIGHTAI مع Codex — **65/65 صالحة للاكتشاف والاستخدام**
 
 - **Scope**: مراجعة كل مجلدات `.agents/skills/*` للتأكد من وجود `SKILL.md`، وصحة YAML frontmatter، وتطابق اسم المهارة مع اسم المجلد، وصحة ملفات `agents/openai.yaml` الموجودة، وسلامة المراجع المحلية.

@@ -194,6 +194,7 @@ export function canOverrideEvidenceGate(role: Role): boolean {
 type LabTestAuth = { status: LabTestStatus; tested_by: number | null; reviewed_by: number | null; created_by: number };
 /** Minimal shape needed for lab document authorization checks. */
 type LabDocumentAuth = { status: LabDocumentStatus; owner_id: number | null; created_by: number; author_id?: number | null };
+type LabTemplateAuth = { status: string; created_by: number; author_id?: number | null };
 
 const ALL_ROLES: readonly Role[] = ['admin', 'manager', 'supervisor', 'employee'];
 
@@ -241,22 +242,44 @@ export function canEditLabProduct(role: Role): boolean {
 export function canArchiveLabProduct(role: Role): boolean {
   return hasRankAtLeast(role, 'manager');
 }
+export function canProposeLabProductCreate(role: Role): boolean {
+  return role === 'employee' || role === 'supervisor';
+}
+export function canProposeLabProductEdit(role: Role): boolean {
+  return canProposeLabProductCreate(role);
+}
 
 // ── Lab test templates (≠ /admin/templates task templates) ──
 export function canViewLabTemplates(role: Role): boolean {
   return ALL_ROLES.includes(role);
 }
 export function canCreateLabTemplate(role: Role): boolean {
-  return hasRankAtLeast(role, 'manager');
+  return ALL_ROLES.includes(role);
 }
 export function canEditLabTemplate(role: Role): boolean {
-  return hasRankAtLeast(role, 'manager');
+  return ALL_ROLES.includes(role);
 }
 export function canApproveLabTemplate(role: Role): boolean {
   return hasRankAtLeast(role, 'manager');
 }
 export function canArchiveLabTemplate(role: Role): boolean {
   return hasRankAtLeast(role, 'manager');
+}
+export function canApproveLabTemplateRecord(
+  user: Pick<User, 'id' | 'role'>,
+  template: LabTemplateAuth,
+): boolean {
+  if (!canApproveLabTemplate(user.role)) return false;
+  if (template.created_by === user.id || template.author_id === user.id) return false;
+  return template.status === 'DRAFT';
+}
+export function canEditLabTemplateRecord(
+  user: Pick<User, 'id' | 'role'>,
+  template: LabTemplateAuth,
+): boolean {
+  if (template.status === 'ARCHIVED') return false;
+  if (hasRankAtLeast(user.role, 'manager')) return true;
+  return (template.created_by === user.id || template.author_id === user.id) && template.status === 'DRAFT';
 }
 
 // ── Lab equipment registry ──
@@ -272,8 +295,17 @@ export function canEditLabEquipment(role: Role): boolean {
 export function canArchiveLabEquipment(role: Role): boolean {
   return hasRankAtLeast(role, 'manager');
 }
+export function canProposeLabEquipmentCreate(role: Role): boolean {
+  return role === 'employee' || role === 'supervisor';
+}
+export function canProposeLabEquipmentEdit(role: Role): boolean {
+  return canProposeLabEquipmentCreate(role);
+}
+export function canApplyLabEquipmentChange(role: Role): boolean {
+  return hasRankAtLeast(role, 'manager');
+}
 export function canRecordLabEquipmentMaintenance(role: Role): boolean {
-  return hasRankAtLeast(role, 'supervisor');
+  return ALL_ROLES.includes(role);
 }
 
 // ── Lab calibration (status derived from dates at read time — never stored) ──
@@ -286,16 +318,22 @@ export function canCreateLabCalibration(role: Role): boolean {
 export function canEditLabCalibration(role: Role): boolean {
   return hasRankAtLeast(role, 'manager');
 }
+export function canProposeLabCalibrationCreate(role: Role): boolean {
+  return role === 'employee' || role === 'supervisor';
+}
+export function canProposeLabCalibrationEdit(role: Role): boolean {
+  return canProposeLabCalibrationCreate(role);
+}
 
 // ── Controlled documents (SOP / WI) ──
 export function canViewLabDocuments(role: Role): boolean {
   return ALL_ROLES.includes(role);
 }
 export function canCreateLabDocument(role: Role): boolean {
-  return hasRankAtLeast(role, 'supervisor');
+  return ALL_ROLES.includes(role);
 }
 export function canEditLabDocument(role: Role): boolean {
-  return hasRankAtLeast(role, 'supervisor');
+  return ALL_ROLES.includes(role);
 }
 export function canReviewLabDocument(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
@@ -460,7 +498,7 @@ export function canVoidLabTestRecord(
 /**
  * Edit authority for a controlled document. Editing an APPROVED document
  * means creating a NEW draft version (contract §9) — the approved version is
- * immutable. Employees never edit documents.
+ * immutable. Employees/supervisors are limited to their own editable drafts.
  */
 export function canEditLabDocumentRecord(
   user: Pick<User, 'id' | 'role'>,
@@ -469,7 +507,7 @@ export function canEditLabDocumentRecord(
   if (!canEditLabDocument(user.role)) return false;
   if (doc.status === 'ARCHIVED' || doc.status === 'SUPERSEDED') return false;
   if (hasRankAtLeast(user.role, 'manager')) return true;
-  // supervisor: own document, draft/review states only
+  // employee/supervisor: own document, draft/review states only
   return doc.owner_id === user.id || doc.created_by === user.id;
 }
 

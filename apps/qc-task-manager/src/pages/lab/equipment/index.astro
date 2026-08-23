@@ -26,7 +26,7 @@ import {
   type LabEquipmentSortField,
 } from '../../../lib/lab/equipment';
 import { STATUS_FILTER_LABELS, calibrationLabel, statusLabels } from '../../../lib/lab/equipmentStatus';
-import { canArchiveLabEquipment, canCreateLabEquipment, canEditLabEquipment } from '../../../lib/permissions';
+import { canArchiveLabEquipment, canCreateLabEquipment, canEditLabEquipment, canProposeLabEquipmentCreate, canProposeLabEquipmentEdit } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -126,7 +126,7 @@ function statusBadgeClass(raw: string): string {
           device is archive — never a hard delete. Status and calibration values are stored verbatim.
         </p>
       </div>
-      {canCreateLabEquipment(role) && (
+      {(canCreateLabEquipment(role) || canProposeLabEquipmentCreate(role)) && (
         <a
           href="/lab/equipment/new"
           class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
@@ -247,7 +247,7 @@ function statusBadgeClass(raw: string): string {
                       <td class="px-4 py-2">
                         <span class="flex items-center gap-2">
                           <a href={`/lab/equipment/${e.id}`} class="font-medium text-brand-600 hover:underline">View</a>
-                          {canEditLabEquipment(role) && e.is_archived === 0 && (
+                          {(canEditLabEquipment(role) || canProposeLabEquipmentEdit(role)) && e.is_archived === 0 && (
                             <a href={`/lab/equipment/${e.id}/edit`} class="font-medium text-slate-600 hover:underline">Edit</a>
                           )}
                           {canArchiveLabEquipment(role) && (

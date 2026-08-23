@@ -502,11 +502,11 @@ try {
     ok(perms.canViewLabDocuments('employee'), 'RBAC: every role views documents');
     ok(perms.canViewLabDocuments('supervisor'), 'RBAC: supervisor views documents');
     ok(perms.canViewLabDocuments('manager'), 'RBAC: manager views documents');
-    eq(perms.canCreateLabDocument('employee'), false, 'RBAC: employee cannot create');
+    eq(perms.canCreateLabDocument('employee'), true, 'RBAC: employee may create a draft');
     ok(perms.canCreateLabDocument('supervisor'), 'RBAC: supervisor creates');
     ok(perms.canCreateLabDocument('manager'), 'RBAC: manager creates');
     ok(perms.canCreateLabDocument('admin'), 'RBAC: admin creates');
-    eq(perms.canEditLabDocument('employee'), false, 'RBAC: employee cannot edit');
+    eq(perms.canEditLabDocument('employee'), true, 'RBAC: employee may edit a draft');
     ok(perms.canEditLabDocument('supervisor'), 'RBAC: supervisor edits');
     eq(perms.canApproveLabDocument('supervisor'), false, 'RBAC: supervisor cannot approve');
     ok(perms.canApproveLabDocument('manager'), 'RBAC: manager approves');
@@ -883,14 +883,14 @@ try {
     eq(wfDoc.status, 'DRAFT', 'workflow: initial status DRAFT');
     eq(wfV1.status, 'DRAFT', 'workflow: v1 initial status DRAFT');
 
-    // Employee cannot submit
-    let denied = false;
-    try {
-      docs.submitLabDocument(wfDocId, { id: employeeId, role: 'employee' });
-    } catch {
-      denied = true;
-    }
-    ok(denied, 'workflow: employee denied from submitting');
+    // An employee may submit an owned draft; the same document remains
+    // reviewable only by another authorized role.
+    const employeeDocId = docs.createLabDocument(
+      { type: 'WI', code: 'WI-EMP-WF-001', title: 'Employee draft', description: null, product_id: null, owner_id: employeeId, effective_date: null, review_due_date: null, change_summary: 'Employee draft.', content: 'Draft.', equipment_ids: [] },
+      employeeId,
+    );
+    docs.submitLabDocument(employeeDocId, { id: employeeId, role: 'employee' }, 'Employee submission.');
+    eq(db.prepare('SELECT status FROM lab_documents WHERE id = ?').get(employeeDocId).status, 'IN_REVIEW', 'workflow: employee submits own draft');
 
     // Supervisor submits (owner)
     docs.submitLabDocument(wfDocId, { id: supervisorId, role: 'supervisor' });

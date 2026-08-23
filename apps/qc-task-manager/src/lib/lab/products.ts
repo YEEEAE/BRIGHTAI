@@ -21,7 +21,8 @@ import { getDb, transaction } from '../db';
 import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
-import { canCreateLabProduct, canEditLabProduct } from '../permissions';
+import { canCreateLabProduct, canEditLabProduct, canProposeLabProductCreate, canProposeLabProductEdit } from '../permissions';
+import { submitChangeRequest } from './changeRequests';
 import type { LabProduct, LabTestType } from '../types';
 
 // ─────────────────────────────── Audit ───────────────────────────────
@@ -581,7 +582,9 @@ async function handleLabProductPost(context: APIContext, productId: number | nul
   if (!user) {
     return context.redirect(`/login?redirect=${encodeURIComponent(context.url.pathname)}`);
   }
-  const allowed = productId === null ? canCreateLabProduct(user.role) : canEditLabProduct(user.role);
+  const allowed = productId === null
+    ? canCreateLabProduct(user.role) || canProposeLabProductCreate(user.role)
+    : canEditLabProduct(user.role) || canProposeLabProductEdit(user.role);
   if (!allowed) {
     setFlash(context, 'error', 'You do not have permission to manage the Product Master.');
     return context.redirect('/lab/products');
@@ -610,6 +613,17 @@ async function handleLabProductPost(context: APIContext, productId: number | nul
   };
 
   try {
+    if (!canCreateLabProduct(user.role) && !canEditLabProduct(user.role)) {
+      submitChangeRequest({
+        actor: { id: user.id, role: user.role },
+        entity_type: 'PRODUCT',
+        operation: productId === null ? 'CREATE' : 'UPDATE',
+        entity_id: productId,
+        payload: { entity_type: 'PRODUCT', data },
+      });
+      setFlash(context, 'success', 'Product proposal submitted for management review.');
+      return context.redirect('/lab/change-requests');
+    }
     if (productId === null) {
       const id = createLabProduct(data, user.id);
       setFlash(context, 'success', `Product ${data.code} created.`);

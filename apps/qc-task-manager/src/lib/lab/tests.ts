@@ -17,7 +17,7 @@ import { setFlash } from '../flash';
 import { parseFormData, labTestFormSchema, labTestVoidSchema } from '../validation';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
-import { canCreateLabTest, canEditLabTestDraft, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
+import { canCreateLabTest, canEditLabTestRecord, canVoidLabTest, canVoidLabTestRecord } from '../permissions';
 import { createNotification } from '../notifications';
 import { deriveCalibrationState, LATEST_DUE_SQL, type LabCalibrationState } from './overview';
 import { labParametersSnapshotJson } from './policy';
@@ -442,7 +442,7 @@ export function getLabTestEditableDraft(
     )
     .get(id) as Record<string, unknown> | undefined;
   if (!row) return null;
-  if (!canEditLabTestDraft(user, loadLabTestAuth(row))) return null;
+  if (!canEditLabTestRecord(user, loadLabTestAuth(row))) return null;
   return {
     id,
     test_number: String(row.test_number),
@@ -471,7 +471,7 @@ const EDITABLE_FIELDS = [
 ] as const;
 
 /**
- * Update a DRAFT test in ONE transaction (PROMPT 43-B). Scope + DRAFT-only are
+ * Update a DRAFT or REJECTED test in ONE transaction (PROMPT 43-B/RBAC expansion). Scope + lifecycle are
  * enforced server-side: an out-of-scope caller gets LabTestDraftNotFoundError
  * (404 — the record is not discoverable), an in-scope non-DRAFT gets
  * LabTestNotDraftError (400). The full payload is revalidated by the caller
@@ -494,11 +494,12 @@ export function updateLabTestDraft(
     const auth = loadLabTestAuth(row);
     // Scope first: an out-of-scope record must not reveal whether it exists.
     // The owner (or manager+) of a non-DRAFT test then gets the explicit
-    // 400 "DRAFT only" error — SUBMITTED and beyond belong to the review flow.
+    // 400 lifecycle error — SUBMITTED and beyond belong to the review flow.
     const isOwn = auth.tested_by === user.id || auth.created_by === user.id;
     const isManagerOrAbove = user.role === 'manager' || user.role === 'admin';
     if (!isOwn && !isManagerOrAbove) throw new LabTestDraftNotFoundError();
-    if (auth.status !== 'DRAFT') throw new LabTestNotDraftError(auth.status);
+    if (auth.status !== 'DRAFT' && auth.status !== 'REJECTED') throw new LabTestNotDraftError(auth.status);
+    const previousStatus = auth.status;
 
     const testType = row.test_type as LabTestType;
     const testNumber = String(row.test_number);
@@ -638,13 +639,13 @@ export function updateLabTestDraft(
         testId,
         user.id,
         'UPDATE',
-        `edited draft ${testNumber}; samples=${data.sample_count}; readings=${newReadings.length}`,
+        `edited ${previousStatus.toLowerCase()} test ${testNumber}; samples=${data.sample_count}; readings=${newReadings.length}`,
         JSON.stringify(oldDiff),
         JSON.stringify(newDiff),
       );
     }
     if (submit) {
-      auditLabTest(testId, user.id, 'SUBMIT', `test_number=${testNumber}; final_result=${data.final_result}`, 'DRAFT', 'SUBMITTED');
+      auditLabTest(testId, user.id, 'SUBMIT', `test_number=${testNumber}; final_result=${data.final_result}`, previousStatus, 'SUBMITTED');
     }
     return { id: testId, test_number: testNumber };
   });
@@ -665,7 +666,7 @@ export async function handleLabTestEditPost(context: APIContext, testId: number)
   const csrf = requireCsrf(context);
   if (csrf) return csrf;
 
-  // Scope + DRAFT check against the stored record — 404-style flash for
+  // Scope + DRAFT/REJECTED check against the stored record — 404-style flash for
   // out-of-scope (same IDOR decision as the detail page), error flash for 400.
   const row = getDb().prepare('SELECT * FROM lab_test_records WHERE id = ?').get(testId) as Record<string, unknown> | undefined;
   const rowAuth = row ? loadLabTestAuth(row) : null;
@@ -676,7 +677,7 @@ export async function handleLabTestEditPost(context: APIContext, testId: number)
     setFlash(context, 'error', 'Test not found.');
     return context.redirect('/lab/tests');
   }
-  if (rowAuth.status !== 'DRAFT') {
+  if (rowAuth.status !== 'DRAFT' && rowAuth.status !== 'REJECTED') {
     setFlash(context, 'error', new LabTestNotDraftError(rowAuth.status).message);
     return context.redirect(`/lab/tests/${testId}`);
   }

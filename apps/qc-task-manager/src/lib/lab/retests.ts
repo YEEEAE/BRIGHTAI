@@ -21,7 +21,8 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { createNotification } from '../notifications';
-import { canCreateLabRetest } from '../permissions';
+import { canCreateLabRetest, canSubmitLabChangeRequest } from '../permissions';
+import { submitChangeRequest } from './changeRequests';
 import type { Role } from '../types';
 import {
   LAB_RETEST_REASONS,
@@ -573,7 +574,7 @@ export async function handleLabRetestCreatePost(context: APIContext): Promise<Re
     ? `/lab/retests/new?test=${testParam}`
     : '/lab/retests';
 
-  if (!canCreateLabRetest(user.role)) {
+  if (!canCreateLabRetest(user.role) && !canSubmitLabChangeRequest(user.role)) {
     setFlash(context, 'error', 'You do not have permission to create retests.');
     return context.redirect('/lab/retests');
   }
@@ -593,6 +594,17 @@ export async function handleLabRetestCreatePost(context: APIContext): Promise<Re
   }
 
   try {
+    if (!canCreateLabRetest(user.role)) {
+      submitChangeRequest({
+        actor: { id: user.id, role: user.role },
+        entity_type: 'RETEST_REQUEST',
+        operation: 'CREATE',
+        entity_id: testParam,
+        payload: { entity_type: 'RETEST_REQUEST', data: { ...parsed.data as LabRetestFormData, original_test_id: testParam } },
+      });
+      setFlash(context, 'success', 'Retest request submitted for management review.');
+      return context.redirect('/lab/change-requests');
+    }
     const result = createLabRetest({ id: user.id }, testParam, parsed.data as LabRetestFormData);
     setFlash(
       context,

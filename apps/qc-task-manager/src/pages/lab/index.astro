@@ -40,6 +40,8 @@ import {
   canViewLabCalibration,
   canViewLabDataQuality,
   canViewLabEquipment,
+  canSubmitLabChangeRequest,
+  canProposeLabProductCreate,
 } from '../../lib/permissions';
 import type { Role } from '../../lib/types';
 
@@ -123,8 +125,8 @@ const actions: LabAction[] = [];
 const push = (a: LabAction, allowed: boolean) => { if (allowed) actions.push(a); };
 push({ label: 'New AIR Test', href: '/lab/tests/new?type=air', route: '/lab/tests/new', hint: 'Coming with the Tests module', primary: true }, canCreateLabTest(role));
 push({ label: 'New VACUUM Test', href: '/lab/tests/new?type=vacuum', route: '/lab/tests/new', hint: 'Coming with the Tests module', primary: true }, canCreateLabTest(role));
-push({ label: 'New Retest', href: '/lab/retests', route: '/lab/retests', hint: 'Retest Register — create a retest from a dispositioned test', primary: false }, canCreateLabRetest(role));
-push({ label: 'New Product', href: '/lab/products/new', route: '/lab/products/new', hint: 'Coming with the Products module', primary: false }, canCreateLabProduct(role));
+push({ label: 'New Retest', href: '/lab/retests', route: '/lab/retests', hint: 'Retest Register — create a retest from a dispositioned test', primary: false }, canCreateLabRetest(role) || canSubmitLabChangeRequest(role));
+push({ label: 'New Product', href: '/lab/products/new', route: '/lab/products/new', hint: 'Coming with the Products module', primary: false }, canCreateLabProduct(role) || canProposeLabProductCreate(role));
 push({ label: 'New Template', href: '/lab/templates/new', route: '/lab/templates/new', hint: 'Coming with the Templates module', primary: false }, canCreateLabTemplate(role));
 push({ label: 'New SOP', href: '/lab/documents/new?type=SOP', route: '/lab/documents/new', hint: 'Coming with the Documents module', primary: false }, canCreateLabDocument(role));
 push({ label: 'New WI', href: '/lab/documents/new?type=WI', route: '/lab/documents/new', hint: 'Coming with the Documents module', primary: false }, canCreateLabDocument(role));

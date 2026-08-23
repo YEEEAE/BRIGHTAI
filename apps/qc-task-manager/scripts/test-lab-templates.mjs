@@ -62,6 +62,7 @@ try {
 
   const db = getDb();
   const managerId = Number(db.prepare("SELECT id FROM users WHERE username = 'manager'").get().id);
+  const adminId = Number(db.prepare("SELECT id FROM users WHERE username = 'admin'").get().id);
   const employeeId = Number(db.prepare("SELECT id FROM users WHERE username = 'employee'").get().id);
 
   // A product + a device so a template/test can reference real master data.
@@ -128,13 +129,13 @@ try {
   console.log('\n■ Approve');
   let approvedVersionId;
   {
-    tpl.approveLabTemplate(templateId, managerId);
+    tpl.approveLabTemplate(templateId, adminId);
     const r = db.prepare('SELECT status, current_version_id FROM lab_test_templates WHERE id = ?').get(templateId);
     eq(r.status, 'ACTIVE', 'approve: template ACTIVE');
     approvedVersionId = r.current_version_id;
 
     const v = db.prepare('SELECT approved_by FROM lab_test_template_versions WHERE id = ?').get(approvedVersionId);
-    eq(v.approved_by, managerId, 'approve: version frozen with approver');
+    eq(v.approved_by, adminId, 'approve: version frozen with approver');
     const audit = tpl.getLabTemplateAuditTimeline(templateId);
     ok(audit.some((a) => a.action === 'APPROVAL'), 'approve: LAB_TEMPLATE/APPROVAL audit recorded');
   }
@@ -150,7 +151,7 @@ try {
     eq(versions[1].version, 2, 'versioned: second version is 2');
     eq(versions[1].default_sample_count, 8, 'versioned: v2 carries the new content');
     eq(versions[0].id, approvedVersionId, 'versioned: v1 is untouched (same row)');
-    eq(versions[0].approved_by, managerId, 'versioned: v1 approver immutable');
+    eq(versions[0].approved_by, adminId, 'versioned: v1 approver immutable');
     const audit = tpl.getLabTemplateAuditTimeline(templateId);
     ok(audit.some((a) => a.action === 'VERSION'), 'versioned: LAB_TEMPLATE/VERSION audit recorded');
   }
@@ -205,7 +206,7 @@ try {
 
     // Promote v2 and confirm a NEW resolution moves to v2 while the existing
     // test keeps its v1 snapshot.
-    tpl.approveLabTemplate(templateId, managerId);
+    tpl.approveLabTemplate(templateId, adminId);
     const resolvedV2 = tests.resolveLabTemplateVersion(v2Id, 'air');
     ok(resolvedV2 && resolvedV2.template_version_id === v2Id, 'versioned: after v2 approval, v2 is current');
     eq(tests.resolveLabTemplateVersion(v1Id, 'air'), null, 'versioned: v1 no longer current');

@@ -13,14 +13,14 @@ import {
   listLabTemplatesForProductForm,
 } from '../../../lib/lab/products';
 import { LAB_CONNECTOR_TYPES } from '../../../lib/lab/policy';
-import { canCreateLabProduct } from '../../../lib/permissions';
+import { canCreateLabProduct, canProposeLabProductCreate } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 import { setFlash } from '../../../lib/flash';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
 
-if (!canCreateLabProduct(role)) {
+if (!canCreateLabProduct(role) && !canProposeLabProductCreate(role)) {
   setFlash(Astro, 'error', 'You do not have permission to create products.');
   return Astro.redirect('/lab/products');
 }

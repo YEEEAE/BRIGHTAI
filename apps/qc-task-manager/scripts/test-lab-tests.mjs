@@ -999,6 +999,22 @@ try {
     ok(notDraft, 'edit: non-draft test → LabTestNotDraftError');
     eq(tests.getLabTestEditableDraft(draft.id, { id: employeeId, role: 'employee' }), null, 'edit: loader null for SUBMITTED test');
 
+    // Rejected tests are returned to the original contributor for rework and
+    // may be submitted again; no replacement test is required for correction.
+    db.prepare("UPDATE lab_test_records SET status='REJECTED', rejected_reason='Correct the sample reading' WHERE id=?").run(draft.id);
+    ok(tests.getLabTestEditableDraft(draft.id, { id: employeeId, role: 'employee' }) !== null, 'edit: creator can load own REJECTED test');
+    const reworked = tests.updateLabTestDraft(
+      { id: employeeId, role: 'employee' },
+      draft.id,
+      draftData({ form_action: 'submit', lot_number: 'LOT-REWORKED', final_result: 'PASS', samples_json: [
+        { sample_no: 1, part_name: 'Body', set_pressure: '100', actual_pressure: '100', volume_sec: '5', pressure_difference: '0', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+        { sample_no: 2, part_name: 'Cap', set_pressure: '100', actual_pressure: '101', volume_sec: '5', pressure_difference: '1', holding_time_sec: '30', leakage_rate: '0', result: 'PASS' },
+      ] }),
+    );
+    eq(reworked.id, draft.id, 'edit: rejected rework keeps the original test id');
+    eq(db.prepare('SELECT status, lot_number FROM lab_test_records WHERE id=?').get(draft.id).status, 'SUBMITTED', 'edit: rejected rework resubmits');
+    eq(db.prepare('SELECT lot_number FROM lab_test_records WHERE id=?').get(draft.id).lot_number, 'LOT-REWORKED', 'edit: rejected rework updates the original');
+
     // Archived equipment rejected on edit (same guard as create)
     const draft2 = tests.createLabTest(draftData({ lot_number: 'LOT-EDIT-3' }), employeeId, 'air');
     const archEq = Number(

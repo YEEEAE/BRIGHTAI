@@ -17,7 +17,7 @@ import { getLabCalibrationSummary, LAB_CALIBRATION_STATUS_LABELS } from '../../.
 import type { LabCalibrationStatus } from '../../../lib/lab/calibration';
 import { calibrationLabel, statusLabels } from '../../../lib/lab/equipmentStatus';
 import { LAB_MAINTENANCE_STATUS_LABELS } from '../../../lib/lab/policy';
-import { canArchiveLabEquipment, canEditLabEquipment } from '../../../lib/permissions';
+import { canArchiveLabEquipment, canEditLabEquipment, canProposeLabEquipmentEdit } from '../../../lib/permissions';
 import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 
@@ -97,7 +97,7 @@ function fmt(value: unknown): string {
           >
             Print History Report
           </a>
-          {canEditLabEquipment(role) && detail.equipment.is_archived === 0 && (
+          {(canEditLabEquipment(role) || canProposeLabEquipmentEdit(role)) && detail.equipment.is_archived === 0 && (
             <a
               href={`/lab/equipment/${detail.equipment.id}/edit`}
               class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"

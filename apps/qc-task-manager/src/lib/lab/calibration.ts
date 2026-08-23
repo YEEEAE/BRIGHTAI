@@ -28,7 +28,8 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { createNotification } from '../notifications';
-import { canCreateLabCalibration, canEditLabCalibration } from '../permissions';
+import { canCreateLabCalibration, canEditLabCalibration, canProposeLabCalibrationCreate, canProposeLabCalibrationEdit } from '../permissions';
+import { submitChangeRequest } from './changeRequests';
 import type { LabEquipmentCalibration } from '../types';
 import { CALIBRATION_DUE_SOON_DAYS, deriveCalibrationState, type LabCalibrationState } from './overview';
 
@@ -592,11 +593,11 @@ async function handleLabCalibrationPost(context: APIContext, id: number | null):
   if (csrf) return csrf;
 
   if (id === null) {
-    if (!canCreateLabCalibration(user.role)) {
+    if (!canCreateLabCalibration(user.role) && !canProposeLabCalibrationCreate(user.role)) {
       setFlash(context, 'error', 'You do not have permission to add calibration records.');
       return context.redirect('/lab/calibration');
     }
-  } else if (!canEditLabCalibration(user.role)) {
+  } else if (!canEditLabCalibration(user.role) && !canProposeLabCalibrationEdit(user.role)) {
     setFlash(context, 'error', 'You do not have permission to edit calibration records.');
     return context.redirect(`/lab/calibration/${id}`);
   }
@@ -612,6 +613,17 @@ async function handleLabCalibrationPost(context: APIContext, id: number | null):
   const data = parsed.data as LabCalibrationFormData;
 
   try {
+    if (!canCreateLabCalibration(user.role) && !canEditLabCalibration(user.role)) {
+      submitChangeRequest({
+        actor: { id: user.id, role: user.role },
+        entity_type: 'CALIBRATION',
+        operation: id === null ? 'CREATE' : 'UPDATE',
+        entity_id: id,
+        payload: { entity_type: 'CALIBRATION', data },
+      });
+      setFlash(context, 'success', 'Calibration proposal submitted for management review.');
+      return context.redirect('/lab/change-requests');
+    }
     if (id === null) {
       const newId = createLabCalibration(data, user.id);
       setFlash(context, 'success', 'Calibration record added to the register.');

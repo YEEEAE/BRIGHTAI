@@ -1053,14 +1053,14 @@ ok(!canVoidLabTest('supervisor') && canVoidLabTest('manager') && canVoidLabTest(
 // Products / templates / equipment editing: manager+.
 ok(LAB_ROLES.filter((role) => canCreateLabProduct(role)).join() === 'admin,manager', 'lab: product create is manager+');
 ok(LAB_ROLES.filter((role) => canEditLabProduct(role)).join() === 'admin,manager', 'lab: product edit is manager+');
-ok(LAB_ROLES.filter((role) => canCreateLabTemplate(role)).join() === 'admin,manager', 'lab: template create is manager+');
+ok(LAB_ROLES.filter((role) => canCreateLabTemplate(role)).join() === 'admin,manager,supervisor,employee', 'lab: every role can create a template draft');
 ok(LAB_ROLES.filter((role) => canApproveLabTemplate(role)).join() === 'admin,manager', 'lab: template approval is manager+');
 ok(LAB_ROLES.filter((role) => canCreateLabEquipment(role)).join() === 'admin,manager', 'lab: equipment create is manager+');
 ok(LAB_ROLES.filter((role) => canCreateLabCalibration(role)).join() === 'admin,manager', 'lab: calibration create is manager+');
 // Maintenance: supervisor+.
-ok(!canRecordLabEquipmentMaintenance('employee') && canRecordLabEquipmentMaintenance('supervisor'), 'lab: maintenance recording is supervisor+');
+ok(LAB_ROLES.every((role) => canRecordLabEquipmentMaintenance(role)), 'lab: every role can append maintenance');
 // Documents: create/edit/review supervisor+, approve/archive manager+, acknowledge everyone.
-ok(!canCreateLabDocument('employee') && canCreateLabDocument('supervisor'), 'lab: document create is supervisor+');
+ok(LAB_ROLES.every((role) => canCreateLabDocument(role)), 'lab: every role can create a document draft');
 ok(!canReviewLabDocument('employee') && canReviewLabDocument('supervisor'), 'lab: document review is supervisor+');
 ok(LAB_ROLES.filter((role) => canApproveLabDocument(role)).join() === 'admin,manager', 'lab: document approval is manager+');
 ok(LAB_ROLES.filter((role) => canArchiveLabDocument(role)).join() === 'admin,manager', 'lab: document archive is manager+');
@@ -1108,7 +1108,7 @@ ok(canApproveLabDocumentRecord({ id: 9, role: 'manager' }, { status: 'IN_REVIEW'
 ok(!canApproveLabDocumentRecord({ id: 9, role: 'manager' }, { status: 'DRAFT', owner_id: 7, created_by: 7 }), 'lab: cannot approve a DRAFT document');
 ok(canEditLabDocumentRecord({ id: 7, role: 'supervisor' }, { status: 'DRAFT', owner_id: 7, created_by: 7 }), 'lab: supervisor can edit own draft document');
 ok(!canEditLabDocumentRecord({ id: 7, role: 'supervisor' }, { status: 'DRAFT', owner_id: 8, created_by: 8 }), 'lab: supervisor cannot edit someone else\'s draft document');
-ok(!canEditLabDocumentRecord({ id: 7, role: 'employee' }, { status: 'DRAFT', owner_id: 7, created_by: 7 }), 'lab: employee cannot edit documents');
+ok(canEditLabDocumentRecord({ id: 7, role: 'employee' }, { status: 'DRAFT', owner_id: 7, created_by: 7 }), 'lab: employee can edit own document draft');
 ok(!canEditLabDocumentRecord({ id: 1, role: 'admin' }, { status: 'ARCHIVED', owner_id: 7, created_by: 7 }), 'lab: ARCHIVED documents are immutable');
 ok(!canEditLabDocumentRecord({ id: 1, role: 'admin' }, { status: 'SUPERSEDED', owner_id: 7, created_by: 7 }), 'lab: SUPERSEDED documents are immutable');
 

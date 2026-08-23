@@ -336,7 +336,7 @@ try {
   // ── RBAC ──
   console.log('■ RBAC');
   {
-    eq(perms.canRecordLabEquipmentMaintenance('employee'), false, 'RBAC: employee cannot record maintenance');
+    eq(perms.canRecordLabEquipmentMaintenance('employee'), true, 'RBAC: employee may record maintenance');
     ok(perms.canRecordLabEquipmentMaintenance('supervisor'), 'RBAC: supervisor can record maintenance');
     ok(perms.canRecordLabEquipmentMaintenance('manager'), 'RBAC: manager can record maintenance');
     ok(perms.canRecordLabEquipmentMaintenance('admin'), 'RBAC: admin can record maintenance');

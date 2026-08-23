@@ -13,6 +13,7 @@
 import {
   canCreateLabDocument,
   canCreateLabProduct,
+  canProposeLabProductCreate,
   canCreateLabRetest,
   canCreateLabTemplate,
   canCreateLabTest,
@@ -69,7 +70,7 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
   { href: '/lab/tests/review', label: 'Review Queue', group: 'Testing', allowed: canReviewLabTest },
   { href: '/lab/retests', label: 'Retests', group: 'Testing', allowed: canCreateLabRetest },
   // Master Data
-  { href: '/lab/products', label: 'Products', group: 'Master Data', allowed: canCreateLabProduct },
+  { href: '/lab/products', label: 'Products', group: 'Master Data', allowed: (role) => canCreateLabProduct(role) || canProposeLabProductCreate(role) },
   { href: '/lab/templates', label: 'Test Templates', group: 'Master Data', allowed: canCreateLabTemplate },
   { href: '/lab/equipment', label: 'Equipment', group: 'Master Data', allowed: canViewLab },
   { href: '/lab/equipment/maintenance', label: 'Maintenance', group: 'Master Data', allowed: canRecordLabEquipmentMaintenance },

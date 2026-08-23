@@ -23,7 +23,8 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { createNotification } from '../notifications';
-import { canArchiveLabEquipment, canCreateLabEquipment, canEditLabEquipment } from '../permissions';
+import { canApplyLabEquipmentChange, canArchiveLabEquipment, canCreateLabEquipment, canEditLabEquipment, canProposeLabEquipmentCreate, canProposeLabEquipmentEdit } from '../permissions';
+import { submitChangeRequest } from './changeRequests';
 import type { LabEquipment, LabEquipmentMaintenance } from '../types';
 import { statusMatchesLabel } from './equipmentStatus';
 
@@ -740,7 +741,7 @@ async function handleLabEquipmentPost(context: APIContext, id: number | null): P
   const isArchiveOrRestore = formAction === 'archive' || formAction === 'restore';
 
   if (id === null) {
-    if (!canCreateLabEquipment(user.role)) {
+    if (!canCreateLabEquipment(user.role) && !canProposeLabEquipmentCreate(user.role)) {
       setFlash(context, 'error', 'You do not have permission to add equipment to the registry.');
       return context.redirect('/lab/equipment');
     }
@@ -749,7 +750,7 @@ async function handleLabEquipmentPost(context: APIContext, id: number | null): P
       setFlash(context, 'error', 'You do not have permission to archive equipment.');
       return context.redirect(`/lab/equipment/${id}`);
     }
-  } else if (!canEditLabEquipment(user.role)) {
+  } else if (!canEditLabEquipment(user.role) && !canProposeLabEquipmentEdit(user.role)) {
     setFlash(context, 'error', 'You do not have permission to edit equipment.');
     return context.redirect(`/lab/equipment/${id}`);
   }
@@ -782,6 +783,17 @@ async function handleLabEquipmentPost(context: APIContext, id: number | null): P
   const data = parsed.data as LabEquipmentFormData;
 
   try {
+    if (!canApplyLabEquipmentChange(user.role)) {
+      submitChangeRequest({
+        actor: { id: user.id, role: user.role },
+        entity_type: 'EQUIPMENT',
+        operation: id === null ? 'CREATE' : 'UPDATE',
+        entity_id: id,
+        payload: { entity_type: 'EQUIPMENT', data },
+      });
+      setFlash(context, 'success', 'Equipment proposal submitted for management review.');
+      return context.redirect('/lab/change-requests');
+    }
     if (id === null) {
       const newId = createLabEquipment(data, user.id);
       setFlash(context, 'success', `Equipment ${data.code} added to the registry.`);

@@ -11,14 +11,14 @@ import LabSecondaryNav from '../../../../components/lab/LabSecondaryNav.astro';
 import LabEquipmentForm from '../../../../components/lab/LabEquipmentForm.astro';
 import { labNavForRole } from '../../../../lib/lab/navigation';
 import { getLabEquipmentDetail } from '../../../../lib/lab/equipment';
-import { canArchiveLabEquipment, canEditLabEquipment } from '../../../../lib/permissions';
+import { canArchiveLabEquipment, canEditLabEquipment, canProposeLabEquipmentEdit } from '../../../../lib/permissions';
 import { setFlash } from '../../../../lib/flash';
 import type { Role } from '../../../../lib/types';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
 
-if (!canEditLabEquipment(role)) {
+if (!canEditLabEquipment(role) && !canProposeLabEquipmentEdit(role)) {
   setFlash(Astro, 'error', 'You do not have permission to edit equipment.');
   return Astro.redirect('/lab/equipment');
 }

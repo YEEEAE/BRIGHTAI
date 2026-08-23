@@ -9,7 +9,7 @@ import LabSecondaryNav from '../../../../components/lab/LabSecondaryNav.astro';
 import LabCalibrationForm from '../../../../components/lab/LabCalibrationForm.astro';
 import { labNavForRole } from '../../../../lib/lab/navigation';
 import { getLabCalibrationDetail, listLabEquipmentOptionsForCalibration } from '../../../../lib/lab/calibration';
-import { canEditLabCalibration } from '../../../../lib/permissions';
+import { canEditLabCalibration, canProposeLabCalibrationEdit } from '../../../../lib/permissions';
 import { setFlash } from '../../../../lib/flash';
 import type { Role } from '../../../../lib/types';
 
@@ -25,7 +25,7 @@ try {
   console.error('[lab] calibration edit query failure', err);
 }
 
-if (detail && !canEditLabCalibration(role)) {
+if (detail && !canEditLabCalibration(role) && !canProposeLabCalibrationEdit(role)) {
   setFlash(Astro, 'error', 'You do not have permission to edit calibration records.');
   return Astro.redirect(`/lab/calibration/${id}`);
 }

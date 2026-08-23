@@ -18,14 +18,14 @@ import {
   listLabTemplatesForProductForm,
 } from '../../../../lib/lab/products';
 import { LAB_CONNECTOR_TYPES } from '../../../../lib/lab/policy';
-import { canEditLabProduct } from '../../../../lib/permissions';
+import { canEditLabProduct, canProposeLabProductEdit } from '../../../../lib/permissions';
 import { setFlash } from '../../../../lib/flash';
 import type { Role } from '../../../../lib/types';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
 
-if (!canEditLabProduct(role)) {
+if (!canEditLabProduct(role) && !canProposeLabProductEdit(role)) {
   setFlash(Astro, 'error', 'You do not have permission to edit products.');
   return Astro.redirect('/lab/products');
 }

@@ -4,7 +4,25 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import Database from 'better-sqlite3';
 import { runMigrations } from '../src/lib/migrations.ts';
-import { canSubmitLabChangeRequest, canReviewLabChangeRequests, canApproveLabChangeRequest } from '../src/lib/permissions.ts';
+import {
+  canSubmitLabChangeRequest,
+  canReviewLabChangeRequests,
+  canApproveLabChangeRequest,
+  canProposeLabEquipmentCreate,
+  canProposeLabEquipmentEdit,
+  canApplyLabEquipmentChange,
+  canArchiveLabEquipment,
+  canProposeLabProductCreate,
+  canProposeLabProductEdit,
+  canProposeLabCalibrationCreate,
+  canProposeLabCalibrationEdit,
+  canRecordLabEquipmentMaintenance,
+  canCreateLabDocument,
+  canEditLabDocument,
+  canCreateLabTemplate,
+  canEditLabTemplate,
+  canApproveLabTemplateRecord,
+} from '../src/lib/permissions.ts';
 import { labChangeRequestReviewSchema } from '../src/lib/validation.ts';
 
 const appDir = new URL('../', import.meta.url).pathname;
@@ -20,6 +38,27 @@ try {
   assert.equal(canApproveLabChangeRequest({ id: 7, role: 'manager' }, { requested_by: 8 }), true);
   assert.equal(canApproveLabChangeRequest({ id: 7, role: 'manager' }, { requested_by: 7 }), false);
   assert.equal(labChangeRequestReviewSchema.safeParse({ action: 'reject', review_note: '' }).success, false);
+
+  for (const role of ['employee', 'supervisor']) {
+    assert.equal(canProposeLabEquipmentCreate(role), true, `${role} may propose equipment create`);
+    assert.equal(canProposeLabEquipmentEdit(role), true, `${role} may propose equipment edit`);
+    assert.equal(canProposeLabProductCreate(role), true, `${role} may propose product create`);
+    assert.equal(canProposeLabProductEdit(role), true, `${role} may propose product edit`);
+    assert.equal(canProposeLabCalibrationCreate(role), true, `${role} may propose calibration create`);
+    assert.equal(canProposeLabCalibrationEdit(role), true, `${role} may propose calibration edit`);
+    assert.equal(canRecordLabEquipmentMaintenance(role), true, `${role} may append maintenance`);
+    assert.equal(canCreateLabDocument(role), true, `${role} may create a document draft`);
+    assert.equal(canEditLabDocument(role), true, `${role} may edit a document draft`);
+    assert.equal(canCreateLabTemplate(role), true, `${role} may create a template draft`);
+    assert.equal(canEditLabTemplate(role), true, `${role} may edit a template draft`);
+  }
+  assert.equal(canApplyLabEquipmentChange('employee'), false);
+  assert.equal(canApplyLabEquipmentChange('supervisor'), false);
+  assert.equal(canApplyLabEquipmentChange('manager'), true);
+  assert.equal(canArchiveLabEquipment('employee'), false);
+  assert.equal(canArchiveLabEquipment('manager'), true);
+  assert.equal(canApproveLabTemplateRecord({ id: 7, role: 'manager' }, { status: 'DRAFT', created_by: 7, author_id: 7 }), false);
+  assert.equal(canApproveLabTemplateRecord({ id: 8, role: 'manager' }, { status: 'DRAFT', created_by: 7, author_id: 7 }), true);
 
   const db = new Database(join(tempRoot, 'fresh.db'));
   const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });

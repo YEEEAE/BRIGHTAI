@@ -22,7 +22,7 @@ import {
   type LabProductSortField,
 } from '../../../lib/lab/products';
 import { LAB_CONNECTOR_TYPES } from '../../../lib/lab/policy';
-import { canCreateLabProduct, canEditLabProduct } from '../../../lib/permissions';
+import { canCreateLabProduct, canEditLabProduct, canProposeLabProductCreate, canProposeLabProductEdit } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -113,7 +113,7 @@ const pageNumbers: number[] = [];
           product snapshot, so master changes never alter historical records.
         </p>
       </div>
-      {canCreateLabProduct(role) && (
+      {(canCreateLabProduct(role) || canProposeLabProductCreate(role)) && (
         <a
           href="/lab/products/new"
           class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
@@ -233,7 +233,7 @@ const pageNumbers: number[] = [];
                       <td class="px-4 py-2">
                         <span class="flex items-center gap-2">
                           <a href={`/lab/products/${p.id}`} class="font-medium text-brand-600 hover:underline">View</a>
-                          {canEditLabProduct(role) && p.is_active === 1 && (
+                          {(canEditLabProduct(role) || canProposeLabProductEdit(role)) && p.is_active === 1 && (
                             <a href={`/lab/products/${p.id}/edit`} class="font-medium text-slate-600 hover:underline">Edit</a>
                           )}
                         </span>

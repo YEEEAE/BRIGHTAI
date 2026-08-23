@@ -10,7 +10,7 @@ import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import { getLabCalibrationAudit, getLabCalibrationDetail, LAB_CALIBRATION_STATUS_LABELS } from '../../../lib/lab/calibration';
 import type { LabCalibrationStatus } from '../../../lib/lab/calibration';
-import { canEditLabCalibration } from '../../../lib/permissions';
+import { canEditLabCalibration, canProposeLabCalibrationEdit } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -105,7 +105,7 @@ const ROWS: { label: string; value: unknown; ltr?: boolean }[] = detail
             >
               Print Certificate
             </a>
-            {canEditLabCalibration(role) && (
+            {(canEditLabCalibration(role) || canProposeLabCalibrationEdit(role)) && (
               <a
                 href={`/lab/calibration/${detail.calibration.id}/edit`}
                 class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"

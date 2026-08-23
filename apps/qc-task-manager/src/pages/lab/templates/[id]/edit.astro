@@ -19,17 +19,12 @@ import {
   parseTemplateParameters,
 } from '../../../../lib/lab/templates';
 import { LAB_CONNECTOR_TYPES } from '../../../../lib/lab/policy';
-import { canEditLabTemplate } from '../../../../lib/permissions';
+import { canEditLabTemplateRecord } from '../../../../lib/permissions';
 import type { Role } from '../../../../lib/types';
 import { setFlash } from '../../../../lib/flash';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
-
-if (!canEditLabTemplate(role)) {
-  setFlash(Astro, 'error', 'You do not have permission to edit test templates.');
-  return Astro.redirect('/lab/templates');
-}
 
 const id = Number(Astro.params.id);
 let editView: ReturnType<typeof getLabTemplateForEdit> = null;
@@ -39,6 +34,11 @@ try {
 } catch (err) {
   console.error('[lab] template edit load failure', err);
   loadError = 'Could not load the test template. Try reloading — if the problem persists, contact an administrator.';
+}
+
+if (!editView || !canEditLabTemplateRecord({ id: user.userId, role }, { status: editView.version.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: editView.version.created_by, author_id: null })) {
+  setFlash(Astro, 'error', 'You do not have permission to edit this test template.');
+  return Astro.redirect('/lab/templates');
 }
 
 if (!loadError && !editView) {
