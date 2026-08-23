@@ -216,6 +216,14 @@ try {
       reason_note: null,
     });
     eq(second.retest_number, `LAB-RETEST-${String(original1.id).padStart(5, '0')}-02`, 'second retest number is -02');
+    const concurrent = await Promise.all([
+      Promise.resolve().then(() => retests.createLabRetest({ id: supervisorId }, original1.id, { reason: 'OTHER', reason_note: 'concurrent A' })),
+      Promise.resolve().then(() => retests.createLabRetest({ id: supervisorId }, original1.id, { reason: 'OTHER', reason_note: 'concurrent B' })),
+    ]);
+    ok(JSON.stringify(concurrent.map((row) => row.retest_number).sort()) === JSON.stringify([
+      `LAB-RETEST-${String(original1.id).padStart(5, '0')}-03`,
+      `LAB-RETEST-${String(original1.id).padStart(5, '0')}-04`,
+    ]), 'concurrent sequence allocation remains unique and ordered');
     const other = insertTestRow({ final_result: 'HOLD' });
     const otherRetest = retests.createLabRetest({ id: managerId }, other.id, { reason: 'HOLD', reason_note: null });
     ok(otherRetest.retest_number.endsWith('-01'), 'a different original restarts at -01');
@@ -285,22 +293,22 @@ try {
   {
     const managerScope = { role: 'manager', userId: managerId };
     const all = retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, managerScope);
-    eq(all.total, 5, 'all retests visible without filters');
+    eq(all.total, 7, 'all retests visible without filters');
     const byStatus = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, status: 'OPEN' }, managerScope);
-    eq(byStatus.total, 4, 'status=OPEN filter');
+    eq(byStatus.total, 6, 'status=OPEN filter');
     const byReason = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, reason: 'FAIL' }, managerScope);
     eq(byReason.total, 1, 'reason=FAIL filter');
     const byQ = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: original1.number }, managerScope);
-    eq(byQ.total, 2, 'q matches the original test number');
+    eq(byQ.total, 4, 'q matches the original test number');
     const byProduct = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: 'PRD-24G' }, managerScope);
-    eq(byProduct.total, 5, 'q matches the product code');
+    eq(byProduct.total, 7, 'q matches the product code');
     const likeEscape = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, q: '%' }, managerScope);
     eq(likeEscape.total, 0, 'LIKE wildcards are escaped literally');
     const paged = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, per_page: 2, page: 2 }, managerScope);
     eq(paged.rows.length, 2, 'pagination returns bounded rows');
-    eq(paged.total_pages, 3, 'total_pages computed');
+    eq(paged.total_pages, 4, 'total_pages computed');
     const clamped = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, per_page: 2, page: 99 }, managerScope);
-    eq(clamped.page, 3, 'page is clamped to the last page');
+    eq(clamped.page, 4, 'page is clamped to the last page');
     const sorted = retests.searchLabRetests({ ...retests.NO_LAB_RETEST_FILTERS, sort: 'retest_number', dir: 'asc' }, managerScope);
     ok(sorted.rows[0].retest_number < sorted.rows[sorted.rows.length - 1].retest_number, 'sortable by retest_number');
     const url = new URL('https://qc.test/lab/retests?q=x&reason=FAIL&status=OPEN&sort=reason&dir=asc&page=2&per=50&status=Bogus&reason=Bogus');
@@ -319,13 +327,13 @@ try {
     console.log('\n→ Register: RBAC scope (employees see only retests of own tests)');
     const employeeScope = { role: 'employee', userId: employeeId };
     const outsiderScope = { role: 'employee', userId: outsiderId };
-    eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, employeeScope).total, 5,
+    eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, employeeScope).total, 7,
       'employee owning every fixture test sees all retests');
     eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, outsiderScope).total, 0,
       'employee with no tests sees no retests');
     const otherTest = insertTestRow({ tested_by: outsiderId, created_by: outsiderId });
     const otherRetest = retests.createLabRetest({ id: supervisorId }, otherTest.id, { reason: 'FAIL', reason_note: null });
-    eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, employeeScope).total, 5,
+    eq(retests.searchLabRetests(retests.NO_LAB_RETEST_FILTERS, employeeScope).total, 7,
       'retest of another employee\'s test is hidden from this employee');
     eq(retests.getLabRetestDetail(otherRetest.retest_id, employeeScope), null,
       'detail of another employee\'s retest is hidden from this employee (404-equivalent)');
@@ -353,7 +361,7 @@ try {
   {
     const ctx = retests.getLabRetestCreateContext(original1.id);
     ok(ctx.eligible, 'APPROVED original is eligible in the create context');
-    eq(ctx.existing.length, 2, 'existing retests listed');
+    eq(ctx.existing.length, 4, 'existing retests listed');
     const draft = insertTestRow({ status: 'DRAFT', final_result: null });
     ok(!retests.getLabRetestCreateContext(draft.id).eligible, 'DRAFT original not eligible in the create context');
     ok(retests.getLabRetestCreateContext(0).test === null, 'invalid id → empty context');

@@ -21,6 +21,7 @@ import type { LabRetestFormData } from './retests';
 import { createLabEquipment, updateLabEquipment } from './equipment';
 import { createLabProduct, updateLabProduct } from './products';
 import { createLabCalibration, updateLabCalibration } from './calibration';
+import { createLabRetest } from './retests';
 
 export type ChangeEntityType = 'EQUIPMENT' | 'PRODUCT' | 'CALIBRATION' | 'RETEST_REQUEST';
 export type ChangeOperation = 'CREATE' | 'UPDATE';
@@ -220,7 +221,6 @@ export function getChangeRequestForViewer(id: number, viewer: { id: number; role
 }
 
 function applyCanonical(request: LabChangeRequest, actorId: number, data: Record<string, any>): number {
-  const db = getDb();
   if (request.entity_type === 'EQUIPMENT') {
     return request.operation === 'CREATE'
       ? createLabEquipment(data as LabEquipmentFormData, actorId)
@@ -238,22 +238,7 @@ function applyCanonical(request: LabChangeRequest, actorId: number, data: Record
   }
   if (request.entity_type === 'RETEST_REQUEST') {
     const originalId = Number(data.original_test_id);
-    const original = db.prepare('SELECT * FROM lab_test_records WHERE id = ?').get(originalId) as Record<string, any> | undefined;
-    if (!original) throw new LabChangeRequestError('Original test not found.');
-    if (!['APPROVED', 'REJECTED', 'VOID'].includes(String(original.status))) throw new LabChangeRequestError('The original test is not eligible for a retest.');
-    const count = Number((db.prepare('SELECT COUNT(*) AS n FROM lab_test_retests WHERE original_test_id = ?').get(originalId) as { n: number }).n);
-    const digits = String(original.test_number).replace(/^LAB-TEST-/, '');
-    const retestNumber = `LAB-RETEST-${digits}-${String(count + 1).padStart(2, '0')}`;
-    const retest = db.prepare(`INSERT INTO lab_test_retests (retest_number, original_test_id, reason, reason_note, status, original_result, original_status, created_by) VALUES (?, ?, ?, ?, 'OPEN', ?, ?, ?)`).run(retestNumber, originalId, data.reason, data.reason_note, original.final_result ?? null, original.status, actorId);
-    const retestId = Number(retest.lastInsertRowid);
-    const newTest = db.prepare(`INSERT INTO lab_test_records (test_number, test_type, product_id, equipment_id, lot_number, sampling_area, medium_used, connector_type, sample_count, status, tested_by, created_by, template_id, template_version_id, sop_version_id, wi_version_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'DRAFT', NULL, ?, ?, ?, ?, ?)`).run(
-      `PENDING-CR-${request.id}`, original.test_type, original.product_id ?? null, original.equipment_id ?? null, original.lot_number ?? null, original.sampling_area ?? null, original.medium_used ?? null, original.connector_type ?? null, original.sample_count ?? 5, actorId, original.template_id ?? null, original.template_version_id ?? null, original.sop_version_id ?? null, original.wi_version_id ?? null,
-    );
-    const newTestId = Number(newTest.lastInsertRowid);
-    db.prepare('UPDATE lab_test_retests SET new_test_id=?, updated_at=datetime(\'now\') WHERE id=?').run(newTestId, retestId);
-    appendQcAudit(db, { entityType: 'LAB_RETEST', entityId: retestId, actorId, action: 'CREATE', note: `created by change request #${request.id}` });
-    appendQcAudit(db, { entityType: 'LAB_TEST', entityId: originalId, actorId, action: 'LINK', note: `retest ${retestNumber} → test ${newTestId}` });
-    return retestId;
+    return createLabRetest({ id: actorId }, originalId, data as LabRetestFormData).retest_id;
   }
   throw new LabChangeRequestError('Unsupported laboratory change entity.');
 }
@@ -273,7 +258,7 @@ export function approveChangeRequest(id: number, actor: { id: number; role: Role
     const appliedId = applyCanonical(request, actor.id, proposed);
     const changed = getDb().prepare(`UPDATE lab_change_requests SET status='APPROVED', reviewed_by=?, review_note=?, applied_entity_id=?, reviewed_at=datetime('now') WHERE id=? AND status='PENDING'`).run(actor.id, reviewNote || null, appliedId, id);
     if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
-    audit(id, actor.id, 'APPROVAL', request.proposed_snapshot_json, request.proposed_snapshot_json, reviewNote || null);
+    audit(id, actor.id, 'APPROVAL', 'PENDING', 'APPROVED', reviewNote || null);
     createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_review_approved', title: 'Laboratory change request approved', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was approved.`, href: `/lab/change-requests/${id}` });
     return getChangeRequest(id)!;
   });
@@ -288,14 +273,10 @@ export function rejectChangeRequest(id: number, actor: { id: number; role: Role 
   return transaction(() => {
     const changed = getDb().prepare(`UPDATE lab_change_requests SET status='REJECTED', reviewed_by=?, review_note=?, reviewed_at=datetime('now') WHERE id=? AND status='PENDING'`).run(actor.id, reviewNote.trim(), id);
     if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
-    audit(id, actor.id, 'REJECTION', request.proposed_snapshot_json, null, reviewNote.trim());
+    audit(id, actor.id, 'REJECTION', 'PENDING', 'REJECTED', reviewNote.trim());
     createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_review_rejected', title: 'Laboratory change request rejected', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was rejected: ${reviewNote.trim()}`, href: `/lab/change-requests/${id}` });
     return getChangeRequest(id)!;
   });
-}
-
-export function cancelOwnPendingChangeRequest(id: number, actorId: number): boolean {
-  return getDb().prepare("UPDATE lab_change_requests SET status='REJECTED', reviewed_by=?, review_note='Cancelled by requester', reviewed_at=datetime('now') WHERE id=? AND requested_by=? AND status='PENDING'").run(actorId, id, actorId).changes === 1;
 }
 
 function field(form: FormData, name: string): string | null { const value = form.get(name); return value == null ? null : String(value); }

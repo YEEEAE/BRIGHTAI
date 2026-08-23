@@ -20,9 +20,13 @@ export const LAB_CONNECTOR_TYPES = [
   'Locking connector with fixed threads',
 ] as const;
 
-/** Sample + final result choices. 'HOLD' is stored; the printed label is longer. */
-export const LAB_RESULT_OPTIONS = ['PASS', 'FAIL', 'HOLD'] as const;
-export type LabResultOption = (typeof LAB_RESULT_OPTIONS)[number];
+/** FR-MA-018 sample decisions. Template-specific policies can override this list. */
+export const LAB_SAMPLE_RESULT_OPTIONS = ['PASS', 'FAIL'] as const;
+/** FR-MA-018 final disposition decisions. */
+export const LAB_FINAL_RESULT_OPTIONS = ['PASS', 'FAIL', 'HOLD'] as const;
+export const LAB_RESULT_OPTIONS = LAB_FINAL_RESULT_OPTIONS;
+export type LabResultOption = (typeof LAB_FINAL_RESULT_OPTIONS)[number];
+export type LabSampleResultOption = (typeof LAB_SAMPLE_RESULT_OPTIONS)[number];
 
 /** Printed label shown for the stored 'HOLD' value (§16). */
 export const LAB_RESULT_LABELS: Record<LabResultOption, string> = {

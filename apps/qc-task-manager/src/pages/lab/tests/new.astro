@@ -25,7 +25,8 @@ import {
   LAB_CONNECTOR_TYPES,
   LAB_ENV_READINGS_MAX,
   LAB_RESULT_LABELS,
-  LAB_RESULT_OPTIONS,
+  LAB_SAMPLE_RESULT_OPTIONS,
+  LAB_FINAL_RESULT_OPTIONS,
   LAB_SAMPLE_COUNT_DEFAULT,
   LAB_SAMPLE_COUNT_MAX,
   LAB_SAMPLE_COUNT_MIN,
@@ -131,7 +132,8 @@ const referenceValues = {
   holdingTime: 'No approved reference available.',
 };
 
-const resultOptions = LAB_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RESULT_LABELS[value] }));
+const sampleResultOptions = LAB_SAMPLE_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RESULT_LABELS[value] }));
+const finalResultOptions = LAB_FINAL_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RESULT_LABELS[value] }));
 ---
 
 <BaseLayout title={title}>
@@ -173,7 +175,8 @@ const resultOptions = LAB_RESULT_OPTIONS.map((value) => ({ value, label: LAB_RES
       productRefs={productRefs}
       connectorTypes={[...LAB_CONNECTOR_TYPES]}
       templateRefs={templateRefs}
-      resultOptions={resultOptions}
+      sampleResultOptions={sampleResultOptions}
+      finalResultOptions={finalResultOptions}
       reference={referenceValues}
       sampleCountMin={LAB_SAMPLE_COUNT_MIN}
       sampleCountMax={LAB_SAMPLE_COUNT_MAX}

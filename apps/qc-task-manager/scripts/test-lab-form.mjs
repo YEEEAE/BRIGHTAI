@@ -21,7 +21,7 @@
 //      submit, CREATE/SUBMIT audit events, samples ordered by sample_no.
 
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -113,7 +113,12 @@ try {
 
   const { getDb } = await import('../src/lib/db.ts');
   const tests = await import('../src/lib/lab/tests.ts');
-  const { parseFormData, labTestFormSchema } = await import('../src/lib/validation.ts');
+  const { parseFormData, labTestFormSchema, createLabTestFormSchema } = await import('../src/lib/validation.ts');
+  const policy = await import('../src/lib/lab/policy.ts');
+  const formSource = readFileSync(new URL('../src/components/lab/LabTestForm.tsx', import.meta.url), 'utf8');
+  const emptyRowSource = formSource.slice(formSource.indexOf('function isRowEmpty'), formSource.indexOf('function isReadingEmpty'));
+  ok(emptyRowSource.includes('!row.applied_pressure'), 'sample shrink warning: applied_pressure counts as non-empty');
+  ok(emptyRowSource.includes('!row.volume_liter'), 'sample shrink warning: volume_liter counts as non-empty');
 
   const db = getDb();
   const employee = db.prepare("SELECT id FROM users WHERE username = 'employee'").get();
@@ -242,6 +247,19 @@ try {
       ),
     );
     ok(!badRowResult.ok, 'samples: invalid row result rejected');
+    const sampleHold = parseFormData(labTestFormSchema, formData(completeBody({
+      samples_json: JSON.stringify(Array.from({ length: 5 }, (_, i) => ({ sample_no: i + 1, result: i === 0 ? 'HOLD' : 'PASS' }))),
+    })));
+    ok(!sampleHold.ok, 'sample result: HOLD rejected by FR-MA-018 form policy');
+    const finalHold = parseFormData(labTestFormSchema, formData(completeBody({ final_result: 'HOLD' })));
+    ok(finalHold.ok, 'final result: HOLD accepted');
+    ok(policy.LAB_SAMPLE_RESULT_OPTIONS.join(',') === 'PASS,FAIL', 'policy: sample options are PASS/FAIL');
+    ok(policy.LAB_FINAL_RESULT_OPTIONS.join(',') === 'PASS,FAIL,HOLD', 'policy: final options include HOLD');
+    const templateOverride = createLabTestFormSchema({ sampleResultOptions: ['PASS', 'FAIL', 'HOLD'] });
+    const templateOverrideResult = parseFormData(templateOverride, formData(completeBody({
+      samples_json: JSON.stringify(Array.from({ length: 5 }, (_, i) => ({ sample_no: i + 1, result: i === 0 ? 'HOLD' : 'PASS' }))),
+    })));
+    ok(templateOverrideResult.ok, 'template override: sample result vocabulary can explicitly include HOLD');
   }
 
   // ── 4. createLabTest ──

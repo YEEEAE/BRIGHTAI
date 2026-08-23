@@ -8,6 +8,15 @@ version: 2.8.26
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-POST-IMPLEMENTATION-CORRECTNESS-012: إصلاح correctness بعد Prompts 001–010 — تحقق محلي مكتمل بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ لا migration جديدة لأن cancellation API كانت dead/unreferenced فحُذفت بدل إدخال lifecycle غير مستخدم.
+- **Change requests/retests**: اعتماد `RETEST_REQUEST` صار يستدعي `createLabRetest()` الكنسي فقط؛ أزيلت INSERTs المكررة و`PENDING-CR-*`، واستُعيدت أرقام `LAB-RETEST-*` و`LAB-TEST-xxxxx` والأوديت والإشعار الكنسي. Approval/rejection audit صار `PENDING → APPROVED/REJECTED` مع بقاء proposal/base JSON في الطلب و`review_note`.
+- **Form correctness**: `isRowEmpty()` صار يحتسب `applied_pressure` و`volume_liter`. انفصلت خيارات العينة `LAB_SAMPLE_RESULT_OPTIONS = PASS/FAIL` عن النهائية `LAB_FINAL_RESULT_OPTIONS = PASS/FAIL/HOLD`، مع factory يسمح للـ template بتحديد vocabulary العينة مستقبلًا؛ default FR-MA-018 يرفض sample HOLD ويقبل final HOLD.
+- **Tests**: أضيفت regressions لاعتماد retest من employee→manager، canonical numbers/notification/audit، status audit values، no direct retest INSERT/dead cancellation، sample-row removal warning، result separation/template override، وتسلسل retest المتزامن. `pnpm test` **exit 0**؛ `pnpm typecheck` **0 errors / 0 warnings / 19 hints**؛ `NODE_ENV=production pnpm build` **Complete**؛ `pnpm test:architecture` و`git diff --check` ناجحان. تحذيرات Vite build الحالية غير حاجزة.
+- **Files**: `src/lib/lab/changeRequests.ts`, `src/lib/lab/policy.ts`, `src/lib/validation.ts`, `src/components/lab/LabTestForm.tsx`, `src/pages/lab/tests/new.astro`, والاختبارات `scripts/test-lab-{change-requests,form,retests}.mjs`.
+- **Status**: delivered locally؛ لا production verification، ولا commit أو push أو deploy؛ المستخدم يراجع ويلتزم بنفسه.
+
 ### 2026-08-23 — QC-DB-MIGRATION-DOCTOR-011: تشخيص آمن لوضع قاعدة QC ومنع تشغيل migrations يدويًا — التنفيذ والتحقق المحلي مكتملان بدون commit/push/deploy
 
 - **Scope**: `apps/qc-task-manager/`؛ لا تعديل لمحتوى migrations `001–030`، ولا commit أو push أو deploy.

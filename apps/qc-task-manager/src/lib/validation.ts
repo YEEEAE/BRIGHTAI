@@ -48,6 +48,7 @@ import {
   LAB_SAMPLE_COUNT_DEFAULT,
   LAB_SAMPLE_COUNT_MAX,
   LAB_SAMPLE_COUNT_MIN,
+  LAB_SAMPLE_RESULT_OPTIONS,
   LAB_SHORT_TEXT_MAX,
 } from './lab/policy';
 import type { TaskPriority, TaskRecurrence } from './types';
@@ -1044,7 +1045,8 @@ function optLabText(max: number, label: string) {
 }
 
 /** One sample row (§16 columns). Measurement cells stay TEXT (D-2) — no units invented. */
-export const labTestSampleRowSchema = z.object({
+export function createLabTestSampleRowSchema(sampleResultOptions: readonly [string, ...string[]] = LAB_SAMPLE_RESULT_OPTIONS): z.ZodTypeAny {
+  return z.object({
   sample_no: z.coerce.number().int().min(1, 'Sample numbers must be positive.').max(20, 'Sample numbers must be 20 or fewer.'),
   part_name: optLabText(LAB_PART_NAME_MAX, 'Part name'),
   set_pressure: optLabText(LAB_MEASUREMENT_MAX, 'Set Pressure'),
@@ -1058,19 +1060,23 @@ export const labTestSampleRowSchema = z.object({
   result: z.preprocess(
     (v) => (v === '' || v == null ? null : v),
     z
-      .enum(['PASS', 'FAIL', 'HOLD'], {
+      .enum(sampleResultOptions, {
         errorMap: () => ({ message: 'Invalid sample result.' }),
       })
       .nullable(),
   ),
-});
+  });
+}
+
+export const labTestSampleRowSchema = createLabTestSampleRowSchema();
 
 /**
  * Parse the island's samples_json string into an array (max 20 rows — the DB
  * CHECK bounds sample_count the same way; no arbitrary grid growth).
  */
-const samplesField = z.preprocess(
-  (v) => {
+function createSamplesField(sampleResultOptions: readonly [string, ...string[]] = LAB_SAMPLE_RESULT_OPTIONS) {
+  return z.preprocess(
+    (v) => {
     if (v === '' || v == null) return [];
     if (typeof v !== 'string') return v;
     try {
@@ -1081,11 +1087,14 @@ const samplesField = z.preprocess(
     }
   },
   z
-    .array(labTestSampleRowSchema)
+    .array(createLabTestSampleRowSchema(sampleResultOptions))
     .max(LAB_SAMPLE_COUNT_MAX, `A test can have at most ${LAB_SAMPLE_COUNT_MAX} samples.`)
     .nullable()
     .refine((rows) => rows !== null, 'Samples payload is invalid.'),
-);
+  );
+}
+
+const samplesField = createSamplesField();
 
 /**
  * One session environment reading row (PROMPT 51): timestamp + temperature
@@ -1176,7 +1185,7 @@ export const labTestFormSchema = z
     final_result: z.preprocess(
       (v) => (v === '' || v == null ? null : v),
       z
-        .enum(['PASS', 'FAIL', 'HOLD'], {
+    .enum(['PASS', 'FAIL', 'HOLD'], {
           errorMap: () => ({ message: 'Invalid final result.' }),
         })
         .nullable(),
@@ -1234,6 +1243,21 @@ export const labTestFormSchema = z
       }
     }
   });
+
+/**
+ * Build the form contract for a template that declares a different sample
+ * result vocabulary. The default remains FR-MA-018 (PASS/FAIL); final
+ * disposition stays PASS/FAIL/HOLD unless a future policy explicitly changes it.
+ */
+export function createLabTestFormSchema(options: { sampleResultOptions?: readonly [string, ...string[]] } = {}) {
+  // Zod's superRefine returns ZodEffects, so retain the existing object shape
+  // and refinement while replacing only the template-controlled sample field.
+  const effects = labTestFormSchema as unknown as {
+    _def: { schema: { extend: (shape: Record<string, unknown>) => unknown }; effect: { refinement: (value: unknown, ctx: unknown) => void } };
+  };
+  const schema = effects._def.schema.extend({ samples_json: createSamplesField(options.sampleResultOptions ?? LAB_SAMPLE_RESULT_OPTIONS) });
+  return (schema as { superRefine: (refinement: (value: unknown, ctx: unknown) => void) => unknown }).superRefine(effects._def.effect.refinement);
+}
 
 /**
  * Retest creation (§46–§47). The original test id comes from the URL query —

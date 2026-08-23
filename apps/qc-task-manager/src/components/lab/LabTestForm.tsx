@@ -106,7 +106,8 @@ interface Props {
     wi_version: number | null;
     wi_status: string | null;
   }>;
-  resultOptions: LabResultOption[];
+  sampleResultOptions: LabResultOption[];
+  finalResultOptions: LabResultOption[];
   reference: LabReferenceValues;
   sampleCountMin: number;
   sampleCountMax: number;
@@ -171,7 +172,9 @@ function isRowEmpty(row: SampleRow): boolean {
     !row.part_name &&
     !row.set_pressure &&
     !row.actual_pressure &&
+    !row.applied_pressure &&
     !row.volume_sec &&
+    !row.volume_liter &&
     !row.pressure_difference &&
     !row.holding_time_sec &&
     !row.leakage_rate &&
@@ -206,7 +209,8 @@ export default function LabTestForm({
   productRefs,
   connectorTypes,
   templateRefs,
-  resultOptions,
+  sampleResultOptions,
+  finalResultOptions,
   reference,
   sampleCountMin,
   sampleCountMax,
@@ -1037,7 +1041,7 @@ export default function LabTestForm({
                         className="w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                       >
                         <option value="">Select result</option>
-                        {resultOptions.map((o) => (
+                        {sampleResultOptions.map((o) => (
                           <option key={o.value} value={o.value}>{o.label}</option>
                         ))}
                       </select>
@@ -1090,7 +1094,7 @@ export default function LabTestForm({
               Final Result <span aria-hidden="true">(required to submit)</span>
             </legend>
             <div className="mt-2 flex flex-wrap gap-4">
-              {resultOptions.map((o) => (
+              {finalResultOptions.map((o) => (
                 <label key={o.value} className="flex items-center gap-2 text-sm text-slate-700">
                   <input
                     type="radio"

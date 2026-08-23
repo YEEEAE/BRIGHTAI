@@ -94,6 +94,9 @@ try {
   assert.ok(canonical);
   assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM qc_audit_log WHERE entity_type='LAB_CHANGE_REQUEST' AND entity_id=?").get(created.id).n, 2);
   assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM qc_audit_log WHERE entity_type='LAB_EQUIPMENT' AND entity_id=? AND action='CREATE'").get(canonical.id).n, 1);
+  const approvalAudit = runtime.prepare("SELECT old_value, new_value, note FROM qc_audit_log WHERE entity_type='LAB_CHANGE_REQUEST' AND entity_id=? AND action='APPROVAL'").get(created.id);
+  assert.equal(approvalAudit.old_value, 'PENDING');
+  assert.equal(approvalAudit.new_value, 'APPROVED');
   assert.throws(() => approveChangeRequest(created.id, admin), /already been reviewed/);
   assert.throws(() => submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'UPDATE', entity_id: 999999, payload: { entity_type: 'EQUIPMENT', data: equipmentData } }), /does not exist/);
   assert.throws(() => submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: { ...equipmentData, name: '' } } }), /required/);
@@ -104,11 +107,39 @@ try {
   const rejected = submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: { ...equipmentData, code: 'CR-EQ-2' } } });
   assert.throws(() => rejectChangeRequest(rejected.id, manager, ''), /meaningful/);
   rejectChangeRequest(rejected.id, admin, 'Not needed now');
+  const rejectionAudit = runtime.prepare("SELECT old_value, new_value, note FROM qc_audit_log WHERE entity_type='LAB_CHANGE_REQUEST' AND entity_id=? AND action='REJECTION'").get(rejected.id);
+  assert.equal(rejectionAudit.old_value, 'PENDING');
+  assert.equal(rejectionAudit.new_value, 'REJECTED');
+  assert.equal(rejectionAudit.note, 'Not needed now');
   assert.equal(runtime.prepare('SELECT COUNT(*) AS n FROM lab_equipment WHERE code = ?').get('CR-EQ-2').n, 0);
   runtime.prepare('UPDATE users SET is_active=0 WHERE id=?').run(admin.id);
   const inactiveBefore = runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_review_requested'").get(admin.id).n;
   submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: { ...equipmentData, code: 'CR-EQ-3' } } });
   assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_review_requested'").get(admin.id).n, inactiveBefore);
+
+  runtime.prepare("INSERT INTO lab_test_records (test_number, test_type, sample_count, final_result, status, tested_by, created_by) VALUES ('LAB-TEST-99001', 'air', 1, 'FAIL', 'APPROVED', ?, ?)").run(employee.id, employee.id);
+  const original = runtime.prepare("SELECT id, test_number FROM lab_test_records WHERE test_number='LAB-TEST-99001'").get();
+  assert.ok(original, 'retest fixture exists');
+  const retestRequest = submitChangeRequest({
+    actor: employee,
+    entity_type: 'RETEST_REQUEST',
+    operation: 'CREATE',
+    entity_id: original.id,
+    payload: { entity_type: 'RETEST_REQUEST', data: { original_test_id: original.id, reason: 'FAIL', reason_note: 'Approval path regression' } },
+  });
+  const retestApproval = approveChangeRequest(retestRequest.id, manager, 'Approved retest');
+  assert.equal(retestApproval.status, 'APPROVED');
+  const approvedRetest = runtime.prepare('SELECT retest_number, new_test_id FROM lab_test_retests WHERE id = ?').get(retestApproval.applied_entity_id);
+  assert.match(approvedRetest.retest_number, /^LAB-RETEST-/);
+  const newRetestTest = runtime.prepare('SELECT test_number FROM lab_test_records WHERE id = ?').get(approvedRetest.new_test_id);
+  assert.match(newRetestTest.test_number, /^LAB-TEST-\d{5}$/);
+  assert.equal(/^PENDING-CR-/.test(newRetestTest.test_number), false);
+  const changeRequestSource = readFileSync(new URL('../src/lib/lab/changeRequests.ts', import.meta.url), 'utf8');
+  assert.equal(changeRequestSource.includes('INSERT INTO lab_test_retests'), false);
+  assert.equal(changeRequestSource.includes('INSERT INTO lab_test_records'), false);
+  assert.equal(changeRequestSource.includes('cancelOwnPendingChangeRequest'), false);
+  assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM qc_audit_log WHERE entity_type='LAB_RETEST' AND entity_id=? AND action='CREATE'").get(retestApproval.applied_entity_id).n, 1);
+  assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_retest_update'").get(employee.id).n, 1);
   const archivedEquipment = runtime.prepare('SELECT id FROM lab_equipment WHERE is_archived = 1 LIMIT 1').get();
   if (archivedEquipment) {
     const calibrationData = { equipment_id: archivedEquipment.id, last_calibrated_at: null, calibration_due_at: null, provider: null, certificate_reference: null, result: null, next_due_at: null, notes: null };
