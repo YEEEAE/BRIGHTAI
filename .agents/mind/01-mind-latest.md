@@ -1,4 +1,14 @@
 ---
+### 2026-08-23 — QC-PRODUCTION-OPERATIONS-019: تشغيل SQLite/Astro قابل للرصد والاستعادة — تحقق محلي مكتمل بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ لا deploy ولا commit ولا push. أضيفت صفحة admin-only في `/admin/system-health` تعرض نسخة التطبيق/commit، مسار DB آمنًا مختصرًا، أحجام DB/WAL، schema/latest migration، عدد فشل migrations، حالة FK/integrity، backup age/size/verification، audit chains، وdisk free/warning. صفحة `/admin/settings` صار فيها رابط مباشر لها.
+- **Public health**: `/api/health` بقي GET readiness خفيفًا بلا مسارات أو أسرار أو فحص سلاسل تدقيق؛ يعيد `ready`, `dbInitialized`, و`schemaVersion` مع الحقول الحالية، ولا ينشئ DB ناقصة.
+- **Backups**: `status.json` الموجود يحفظ آخر backup ناجح وآخر verification؛ scheduler صار يعتبر backup صالحًا فقط إذا كانت verification `PASS` وفي يوم الرياض الحالي، و`createBackup()` يمنع التوازي عبر القفل الموجود. عند missed window أو verification غير PASS يعمل catch-up واحد serialized.
+- **Deployment contract**: `assertSqliteDeploymentContract()` يفشل قبل فتح DB عند اكتشاف `QC_HORIZONTAL_SCALING=true` أو `QC_SQLITE_INSTANCE_COUNT>1` أو `RENDER_NUM_INSTANCES>1` أو `WEB_CONCURRENCY>1`. وثّق `docs/DATABASE.md` و`docs/DEPLOYMENT.md` صراحةً single writable instance + persistent disk + منع horizontal write scaling، وأضافا قائمة تحقق live لاحقة بدون تنفيذها.
+- **Restore drill**: أضيف `scripts/test-production-operations.mjs`، ضمن 45 canonical suites؛ يغطي backup حقيقي لقاعدة temp، mutation، restore exact confirmation، restart connection، important record، integrity، FK، schema version 35، وسلسلتي task/QC audit، مع اختبار عقدة single-instance.
+- **Verification**: `pnpm test` = **45 canonical suites / 0 failures** (ومنها domain **342/0** واختبار العمليات الجديد PASS)؛ `pnpm typecheck` = **0 errors / 0 warnings / 17 hints**؛ `NODE_ENV=production pnpm build` = **Complete** مع تحذيرات Vite الديناميكية المعروفة؛ `test:architecture` = **PASS** وroute manifest = **109 file routes / 25 middleware routes / 6 guards**؛ `git diff --check` لم يعرض أخطاء diff، مع تحذير fsmonitor IPC بيئي فقط.
+- **Status**: delivered locally؛ لا production verification، لا deploy، لا commit ولا push. الخطوة التالية للمستخدم: مراجعة التغييرات وتشغيل قائمة التحقق بعد deploy يدوي، مع إبقاء commit/push عليه.
+
 ### 2026-08-23 — QC-ROUTE-AND-REPORTING-SOURCE-TRUTH-017: مطابقة مسارات التقارير مع شجرة Astro الحالية + manifest معماري + مصفوفة E2E كاملة — تحقق محلي ناجح مع قابلية إعادة الإنتاج محجوبة بسبب untracked route-manifest
 
 - **Source of truth / inventory**: الجرد الحالي من `apps/qc-task-manager/src/pages` أعاد **108 file-based routes**. المسارات المطلوبة كلها موجودة فعليًا: `src/pages/api/reports/[reportType].[format].ts` يطابق `/api/reports/<reportType>.csv|xlsx|pdf`، و`src/pages/api/reports/audit.ts` يطابق `/api/reports/audit`. لا endpoint جديد ولا syntax مخترع أُضيف؛ `astro build` وlive E2E أثبتا pattern Astro 6 الحالي.

@@ -774,7 +774,8 @@ section('Backup scheduler');
 ok(getRiyadhDateKey(new Date('2026-08-11T09:34:56.000Z')) === '2026-08-11', 'scheduler: Riyadh date key is stable');
 ok(getNextScheduledBackupAt(new Date('2026-08-10T22:30:00.000Z')).toISOString() === '2026-08-10T23:00:00.000Z', 'scheduler: next run is 02:00 Riyadh');
 ok(shouldRunBackupCatchup({ lastSuccessAt: null }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up runs when no success exists');
-ok(!shouldRunBackupCatchup({ lastSuccessAt: '2026-08-11T09:00:00.000Z' }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up skips after today success');
+ok(!shouldRunBackupCatchup({ lastSuccessAt: '2026-08-11T09:00:00.000Z', lastVerificationResult: 'PASS' }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up skips after today verified success');
+ok(shouldRunBackupCatchup({ lastSuccessAt: '2026-08-11T09:00:00.000Z', lastVerificationResult: 'FAIL' }, new Date('2026-08-11T09:34:56.000Z')), 'scheduler: catch-up runs after failed verification');
 
 // A scheduled/catch-up backup must SKIP — not fail — when the database file
 // is absent (temp test databases are removed between suites, and a fresh disk

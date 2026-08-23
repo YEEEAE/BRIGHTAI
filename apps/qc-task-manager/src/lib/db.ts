@@ -79,6 +79,18 @@ const DB_PATH =
   process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
 const BACKUP_DIR = backupDirectoryForDatabase(DB_PATH);
 
+/** SQLite writes are intentionally single-instance. Reject common scale-out
+ * settings before opening the file when the host exposes them to the process. */
+export function assertSqliteDeploymentContract(env: NodeJS.ProcessEnv = process.env): void {
+  const violations: string[] = [];
+  if (env.QC_HORIZONTAL_SCALING === 'true') violations.push('QC_HORIZONTAL_SCALING=true');
+  for (const key of ['QC_SQLITE_INSTANCE_COUNT', 'RENDER_NUM_INSTANCES', 'WEB_CONCURRENCY']) {
+    const value = Number(env[key]);
+    if (Number.isInteger(value) && value > 1) violations.push(`${key}=${value}`);
+  }
+  if (violations.length > 0) throw new Error(`[db] SQLite deployment contract violation: one writable instance is required (${violations.join(', ')}).`);
+}
+
 let _db: BetterSqliteDatabase | null = null;
 let _initialized = false;
 
@@ -384,6 +396,7 @@ export function cleanupExpiredSessions(): number {
 export function getDb(): BetterSqliteDatabase {
   if (_db) return _db;
 
+  assertSqliteDeploymentContract();
   ensureDir();
   const db = new Database(DB_PATH);
   db.pragma('journal_mode = WAL');

@@ -61,10 +61,27 @@ and ephemeral production storage.
 ## Backups
 
 The process schedules a WAL-safe backup every day at 02:00 Asia/Riyadh and
-runs a catch-up after startup if no successful backup exists for that Riyadh
-day. It retains 14 backup files by default. The scheduler is in-process, so
-the app assumes a single running instance; deploy one replica and keep any
+runs one serialized catch-up after startup if the scheduled window was missed
+or the latest backup is not a verified PASS for the current Riyadh day. Backup
+status and the last verification result are persisted in `status.json`.
+It retains 14 backup files by default. The scheduler is in-process, so the app
+assumes one writable application instance; deploy one replica and keep any
 off-service copy of backups outside the app.
+
+## SQLite deployment contract
+
+This architecture requires exactly one writable application instance and a
+persistent disk for both `QC_DATABASE_PATH` and `QC_BACKUP_DIR`. Do not enable
+horizontal multi-instance write scaling against this SQLite file. When the
+host exposes a detectable scale-out setting (`QC_HORIZONTAL_SCALING=true`,
+`QC_SQLITE_INSTANCE_COUNT>1`, `RENDER_NUM_INSTANCES>1`, or
+`WEB_CONCURRENCY>1`), startup fails before opening the database.
+
+The admin-only `/admin/system-health` page shows the safe DB filename, DB/WAL
+sizes, schema and migration state, migration failures, SQLite integrity/FK
+state, backup age and verification, audit-chain status, and disk capacity
+warning. The public `/api/health` remains a lightweight readiness probe and
+does not scan audit chains or expose filesystem paths.
 
 Create an on-demand backup:
 

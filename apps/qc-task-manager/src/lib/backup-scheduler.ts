@@ -55,8 +55,8 @@ export function getNextScheduledBackupAt(now = new Date()): Date {
   return candidate;
 }
 
-export function shouldRunBackupCatchup(status: Pick<BackupStatus, 'lastSuccessAt'>, now = new Date()): boolean {
-  return !status.lastSuccessAt || getRiyadhDateKey(new Date(status.lastSuccessAt)) !== getRiyadhDateKey(now);
+export function shouldRunBackupCatchup(status: Pick<BackupStatus, 'lastSuccessAt' | 'lastVerificationResult'>, now = new Date()): boolean {
+  return !status.lastSuccessAt || status.lastVerificationResult !== 'PASS' || getRiyadhDateKey(new Date(status.lastSuccessAt)) !== getRiyadhDateKey(now);
 }
 
 let running = false;

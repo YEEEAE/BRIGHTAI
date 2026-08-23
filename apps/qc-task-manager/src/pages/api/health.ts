@@ -49,6 +49,8 @@ export const GET: APIRoute = () => {
       ok: true,
       service: 'qc-task-manager',
       status: 'healthy',
+      ready: true,
+      dbInitialized: true,
       schemaVersion,
     });
   } catch {

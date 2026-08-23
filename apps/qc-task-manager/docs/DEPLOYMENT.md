@@ -78,6 +78,16 @@ Never put `qc_tasks.db`, `qc_tasks.db-wal`, `qc_tasks.db-shm`, or backups on
 Render's ephemeral filesystem. A restart, deploy, or instance replacement can
 discard data stored there.
 
+### SQLite deployment contract
+
+Run exactly one writable QC application instance. SQLite WAL mode is suitable
+for this single-process deployment, but this file architecture does not
+support horizontal multi-instance write scaling. A persistent disk is
+required; the database and backup directory must both be on that disk.
+The application fails startup when it detects `QC_HORIZONTAL_SCALING=true`,
+`QC_SQLITE_INSTANCE_COUNT>1`, `RENDER_NUM_INSTANCES>1`, or
+`WEB_CONCURRENCY>1`.
+
 ## Environment variables
 
 Set these values in the Render service environment. Mark secrets as secret
@@ -119,14 +129,42 @@ an existing account.
 4. Open `https://<your-qc-service>/login` and verify login succeeds.
 5. Reset the seeded admin password immediately at `/admin/users`.
 6. Confirm the database and backup directory exist on the mounted disk.
+7. Open `/admin/system-health` and confirm schema, migration, integrity, FK,
+   audit-chain, backup verification, and disk status are healthy.
 
 ## Backups and recovery
 
 The application makes a WAL-safe backup at 02:00 Asia/Riyadh each day and runs
-a catch-up backup after startup when today's backup is missing. It keeps the
-latest 14 backups by default. This is useful but is not a complete disaster
-recovery plan: schedule an independent copy of `/var/data/backups` to storage
-outside the service and periodically test a restore.
+a serialized catch-up backup after startup when the scheduled window was
+missed or the latest backup is not a recent verified PASS. It keeps the latest
+14 backups by default. This is useful but is not a complete disaster recovery
+plan: schedule an independent copy of `/var/data/backups` to storage outside
+the service and periodically test a restore.
+
+## Production verification checklist (run after a user-controlled deploy)
+
+1. Confirm Render shows one running writable instance and the persistent disk
+   is mounted at `/var/data`.
+2. `GET /api/health` anonymously: HTTP 200, `ready: true`,
+   `dbInitialized: true`, integer `schemaVersion`; no path, secret, or audit
+   chain payload.
+3. Open `/login`, sign in as the rotated admin, then open
+   `/admin/system-health`: verify app version/commit, schema/latest migration,
+   zero migration failures, FK enabled with zero violations, integrity PASS,
+   audit chains PASS, backup verification PASS, and disk warning OK.
+4. Trigger one manual backup from `/admin/settings`; confirm the timestamp,
+   size, and verification change to PASS and that only the configured
+   retention count remains.
+5. Restart the service and confirm the database persists and a missed-window
+   catch-up creates at most one backup (no duplicate concurrent backup files).
+6. From a maintenance shell, run `PRAGMA integrity_check;` and
+   `PRAGMA foreign_key_check;` against the live DB; both must be clean.
+7. Perform the documented restore drill on a maintenance copy, not the live
+   file: backup, mutate a disposable copy, restore with the exact confirmation,
+   reopen the connection, and verify important records, schema version,
+   integrity, FK, and both audit chains.
+8. Confirm no second instance, no ephemeral DB path, no deploy-triggered data
+   reset, and no external SaaS dependency is required for operations.
 
 Run an on-demand backup through the admin settings page or with a Render cron
 job / one-off shell command that uses the same mounted disk:
