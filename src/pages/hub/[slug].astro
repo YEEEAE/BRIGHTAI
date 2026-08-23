@@ -16,6 +16,7 @@
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import AiGovernancePillar from '../../components/hub/AiGovernancePillar.astro';
+import SdaiaAiRiskManagementGuide from '../../components/hub/SdaiaAiRiskManagementGuide.astro';
 import { getPublishedPosts } from '../../data/blog';
 import { SITE } from '../../data/site';
 // BAI-SEO-003-S3 (2026-07-18): ORGANIZATION import removed — foundation
@@ -25,6 +26,15 @@ import DOMPurify from 'isomorphic-dompurify';
 
 export function getStaticPaths() {
   const hubPages = [
+    {
+      slug: 'sdaia-ai-risk-management',
+      title: 'الإطار الوطني لإدارة مخاطر الذكاء الاصطناعي | SDAIA-P145',
+      description: 'دليل سعودي عملي يشرح إطار سدايا الوطني لإدارة مخاطر الذكاء الاصطناعي: المراحل، مصفوفة الاحتمالية والأثر، وقائمة تطبيق مؤسسية منفصلة عن قدرات BrightAI.',
+      tags: ['حوكمة الذكاء الاصطناعي', 'امتثال'],
+      eyebrow: 'دليل تنظيمي سعودي',
+      icon: 'mdi-shield-check',
+      categoryLinks: [],
+    },
     {
       slug: 'ai-governance',
       title: 'وش هي حوكمة الذكاء الاصطناعي؟ | دليل سعودي عملي',
@@ -132,6 +142,7 @@ export function getStaticPaths() {
 
 const { page } = Astro.props;
 const isAiGovernancePillar = page.slug === 'ai-governance';
+const isSdaiaRiskGuide = page.slug === 'sdaia-ai-risk-management';
 
 const relatedPosts = (await getPublishedPosts()).filter(post =>
   page.tags.some(tag => post.tags.some(pt => pt.includes(tag) || tag.includes(pt)))
@@ -178,7 +189,9 @@ const hubSlugJsonLd = {
   breadcrumbs={[{ name: 'مركز المعرفة', href: '/hub/' }, { name: page.title, href: `/hub/${page.slug}/` }]}
 >
   <main class="hub-subpage">
-    {isAiGovernancePillar ? (
+    {isSdaiaRiskGuide ? (
+      <SdaiaAiRiskManagementGuide />
+    ) : isAiGovernancePillar ? (
       <AiGovernancePillar />
     ) : (
       <>

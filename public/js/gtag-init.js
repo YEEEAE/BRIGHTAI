@@ -99,11 +99,18 @@
     return true;
   }
   if (!registerGtagProvider()) {
-    // Runtime not installed yet — wait and retry.
+    // Runtime not installed yet — wait and retry. The unified runtime
+    // (analytics.js) is loaded by noncritical-init.js after window load +
+    // requestIdleCallback(timeout 2500ms), so on a normal visit it appears
+    // several seconds AFTER this defer script runs. The previous 50x20ms
+    // (~1s) window expired before the runtime existed, so the gtag provider
+    // was never registered and every track() event (custom events + soft
+    // navigation page_views) silently never reached GA4. Retry for up to
+    // 60s at a low frequency to also cover slow mobile loads.
     var attempts = 0;
     var iv = setInterval(function () {
-      if (registerGtagProvider() || ++attempts > 50) clearInterval(iv);
-    }, 20);
+      if (registerGtagProvider() || ++attempts > 300) clearInterval(iv);
+    }, 200);
   }
 
   function loadGtag() {

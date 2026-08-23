@@ -77,10 +77,9 @@ export const ORGANIZATION = {
   },
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '6913 المبارك بن فضالة، حي الفيحاء',
+    streetAddress: 'رويغب الفيحاء',
     addressLocality: 'الرياض',
     addressRegion: 'منطقة الرياض',
-    postalCode: '14254',
     addressCountry: 'SA',
   },
   contactPoint: [
@@ -182,10 +181,9 @@ export function getLocalBusinessLd(input: LocalBusinessInput) {
     priceRange: '$$$',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '6913 المبارك بن فضالة، حي الفيحاء',
+      streetAddress: 'رويغب الفيحاء',
       addressLocality: cityAr,
       addressRegion: regionAr,
-      postalCode: '14254',
       addressCountry: 'SA',
     },
     geo: {

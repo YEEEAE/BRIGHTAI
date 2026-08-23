@@ -733,6 +733,26 @@ const relatedSolutions = getRelatedSolutionsForBlog(post.slug);
     )}
     <Content />
 
+    {/* SEO-FAQ-VISIBLE (2026-08-23): FAQ_BY_SLUG entries were previously
+        JSON-LD only — invisible on the page, which violates Google's
+        structured-data policy (markup must mirror visible content) and
+        weakened the FAQ's chance of rich results. Rendered here with the
+        same native <details> pattern used by the hub pillars and the
+        homepage FAQ; the faqNode schema above emits the identical Q&A set. */}
+    {FAQ_BY_SLUG[post.slug] && (
+      <section id="faq" aria-labelledby="post-faq-title" class="post-faq">
+        <h2 id="post-faq-title">أسئلة شائعة</h2>
+        <div class="post-faq__list">
+          {FAQ_BY_SLUG[post.slug].map((item, i) => (
+            <details class="post-faq__item" open={i === 0}>
+              <summary><span>{item.q}</span><svg class="post-faq__chevron" aria-hidden="true" width="1.25em" height="1.25em"><use href="/icons.svg#mdi-chevron-down"></use></svg></summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+
     {relatedSolutions.length > 0 && (
       <section class="article-links" aria-labelledby="related-solutions">
         <h2 id="related-solutions" style="margin-top: 3rem; font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--text-primary);">حلول ذات صلة</h2>

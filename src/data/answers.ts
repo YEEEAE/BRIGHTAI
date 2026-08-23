@@ -15,11 +15,20 @@ export interface AnswerUnit {
   query: string;
   question: string;
   answer: string;
+  /**
+   * SEO-CANNIBALIZATION (2026-08-23): optional pointer to the canonical
+   * pillar that owns this topic. Quick answers are intentionally thin
+   * (120-150 words); linking each governance answer to /hub/ai-governance/
+   * with a descriptive anchor tells both users and search engines where the
+   * comprehensive treatment lives, per the documented pillar decision.
+   */
+  furtherReading?: { href: string; label: string };
 }
 
 /** What is AI Governance in Saudi Arabia? */
 export const answerGov: AnswerUnit = {
   slug: 'ai-governance-saudi-arabia',
+  furtherReading: { href: '/hub/ai-governance/', label: 'الدليل الشامل لحوكمة الذكاء الاصطناعي للمؤسسات السعودية' },
   query: 'AI governance Saudi Arabia',
   question: 'What is AI governance in Saudi Arabia?',
   answer:
@@ -65,8 +74,9 @@ export const answerOs: AnswerUnit = {
 /** What is AI governance in Saudi Arabia in Arabic (full)? */
 export const answerGovAr: AnswerUnit = {
   slug: 'ai-governance-saudi-arabia-ar',
+  furtherReading: { href: '/hub/ai-governance/', label: 'دليل حوكمة الذكاء الاصطناعي في السعودية' },
   query: 'حوكمة الذكاء الاصطناعي في السعودية',
-  question: 'What is حوكمة الذكاء الاصطناعي في السعودية?',
+  question: 'ما هي حوكمة الذكاء الاصطناعي في السعودية؟',
   answer:
     'حوكمة الذكاء الاصطناعي في السعودية هي الإطار التنظيمي والتقني الذي يضمن أن أنظمة الذكاء الاصطناعي آمنة ومتوافقة ويمكن التدقيق فيها. يعتمد النظام السعودي على هيئة سدايا (سلطة البيانات والذكاء الاصطناعي) ومعايير NCA ECC الأمنية وقوانين PDPL لحماية البيانات. BrightAI يوفر المنصة التشغيلية: كل طلب ذكاء اصطناعي يُسجَّل ويُقيَّم للمخاطر ويتطلب موافقة بشرية قبل التنفيذ، مما يُنشئ سجل تدقيق كامل من الطلب إلى الرد. للمؤسسات السعودية في القطاع المصرفي والصحي والحكومي، حوكمة الذكاء الاصطناعي تعني أن كل تفاعل موثَّق وكل مخاطر مُقَّمة وكل قرار قابل للتتبع حتى الإنسان في الحلقة.',
 };
@@ -141,6 +151,7 @@ export const answerHealthcare: AnswerUnit = {
 /** What is an AI governance framework? */
 export const answerGovFramework: AnswerUnit = {
   slug: 'ai-governance-framework',
+  furtherReading: { href: '/hub/ai-governance/', label: 'الدليل الشامل لحوكمة الذكاء الاصطناعي للمؤسسات السعودية' },
   query: 'إطار حوكمة الذكاء الاصطناعي',
   question: 'What is an AI governance framework?',
   answer:

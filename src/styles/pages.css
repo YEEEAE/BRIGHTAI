@@ -4339,6 +4339,70 @@ svg.icon {
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
+/* Post FAQ (SEO-FAQ-VISIBLE 2026-08-23): visible twin of the blog FAQPage
+   JSON-LD (FAQ_BY_SLUG in blog/[...slug].astro). Native <details> so it
+   works without JS; matches the hub/homepage FAQ affordance. */
+.post-faq {
+  margin-block: var(--space-10) var(--space-6);
+}
+
+.post-faq h2 {
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-extrabold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+}
+
+.post-faq__list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.post-faq__item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+}
+
+.post-faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  list-style: none;
+}
+
+.post-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.post-faq__item summary:focus-visible {
+  outline: 3px solid var(--interactive-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.post-faq__chevron {
+  flex-shrink: 0;
+  color: var(--brand-300);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.post-faq__item[open] .post-faq__chevron {
+  transform: rotate(180deg);
+}
+
+.post-faq__item p {
+  margin: var(--space-3) 0 0;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
 /* Demo CTA section (blog post footer) */
 .article-demo-cta {
   width: min(100% - 2rem, 75rem);

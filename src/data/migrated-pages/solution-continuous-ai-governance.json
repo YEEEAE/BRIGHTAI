@@ -130,10 +130,9 @@
           ],
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+            "streetAddress": "رويغب الفيحاء",
             "addressLocality": "الرياض",
             "addressRegion": "منطقة الرياض",
-            "postalCode": "14254",
             "addressCountry": "SA"
           }
         },

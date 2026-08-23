@@ -8,9 +8,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SplitHero from '../components/SplitHero.astro';
 import TrustBadges from '../components/TrustBadges.astro';
-import {
-  appendLd,
-} from '../data/schema-helpers';
 import LeadForm from '../components/LeadForm.astro';
 import { FORM_TAXONOMY, DEFAULT_CONTACT_FIELDS } from '../data/marketing';
 import DOMPurify from 'isomorphic-dompurify';
@@ -114,46 +111,16 @@ const jsonLd = [
 // only the Riyadh LocalBusiness (the HQ, geo.region SA-01). Search engines
 // resolve entities by @id, so removing duplicates from the homepage has no
 // SEO downside and drops ~30KB of HTML.
-// REPORTS-AEO-FAQ-2026-07-08: also append an AEO FAQPage node with the
-// canonical "حوكمة الذكاء الاصطناعي" pillar answers (40-60 words each,
-// Saudi dialect, derived from the existing pillar blog post). This second
-// FAQPage is scoped to AI Governance topic and tagged with its own @id so
-// the existing BrightAI-product FAQPage stays untouched.
-const aiGovernanceFaq = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  '@id': 'https://brightai.site/#faq-ai-governance',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'ما هي حوكمة الذكاء الاصطناعي ولماذا تحتاجها المنشآت السعودية؟',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'حوكمة الذكاء الاصطناعي هي منظومة من الأدوار والسياسات والضوابط والأدلة التي تنظم كيفية اختيار واستخدام ومراقبة AI داخل المنشأة. تحتاجها المنشآت السعودية لأنها: (1) تمكّن الابتكار المتحكم به، (2) تحقق الامتثال لـ PDPL وNCA وSDAIA، (3) تثبت المسؤولية عند الحوادث، (4) تبني ثقة العملاء والمستثمرين، (5) تحمي البيانات الحساسة من التسريب.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'ما مكونات إطار حوكمة الذكاء الاصطناعي الفعّال؟',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'إطار الحوكمة الفعّال يتكون من: (1) جرد حالات الاستخدام والموردين، (2) تصنيف المخاطر حسب نوع البيانات والأثر، (3) سياسات استخدام واضحة، (4) ضوابط تقنية (جدار AI، فحص بيانات)، (5) موافقات بشرية للقرارات الحساسة، (6) سجل تدقيق شامل، (7) ملف أدلة قابل للمراجعة، (8) مؤشرات أداء وتقارير دورية للإدارة العليا.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'كيف تبدأ منشأتك في تطبيق حوكمة الذكاء الاصطناعي؟',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'ابدأ بخمس خطوات: (1) جرد حالات الاستخدام والموردين، (2) تصنيف المخاطر حسب نوع البيانات والأثر، (3) تعيين مسؤول حوكمة AI، (4) صياغة سياسات استخدام قصيرة ومحددة، (5) تطبيق الضوابط التقنية (جدار، سجل تدقيق، موافقات بشرية). ثم وسّع تدريجياً: تدريب الموظفين، ربط بـ PDPL وNCA وSDAIA، قياس النضج، التحسين المستمر كل ربع سنة.',
-      },
-    },
-  ],
-};
-
-const enhancedJsonLd = appendLd(jsonLd, [
-  aiGovernanceFaq,
-]);
+// SEO-DEDUP (2026-08-23): the schema-only governance FAQPage that used to live
+// here was REMOVED. Its 3 questions + answers were byte-identical to the
+// FAQPage emitted by /blog/what-is-ai-governance-saudi-companies/ (see
+// FAQ_BY_SLUG in src/pages/blog/[...slug].astro), and neither was visible on
+// the page — invisible FAQ markup violates Google's structured-data policy
+// (content must be visible) and the duplicate split entity signals between
+// the homepage and the blog post. The blog post (the content owner) keeps the
+// FAQ, now rendered visibly next to its schema. The general BrightAI FAQPage
+// below stays — its questions ARE rendered visibly in section 11 (#faq).
+const enhancedJsonLd = jsonLd;
 ---
 
 {/* REPORTS-SEO-KEYWORDS-2026-07-08: Homepage re-targeted to the AI Governance
@@ -187,8 +154,14 @@ const enhancedJsonLd = appendLd(jsonLd, [
    section in the 16-section rule. */}
 <section class="home-citable-definition" aria-label="تعريف حوكمة الذكاء الاصطناعي" data-speakable>
   <div class="max-w-4xl mx-auto px-5 lg:px-8 py-6 text-center">
+    {/* SEO-TRUST (2026-08-23): the regulatory entities named in the citable
+        definition now link to their official sources — the same verified
+        URLs already referenced by /hub/ai-governance/ (PDPL via سدايا،
+        سدايا regulations page، NCA ECC controls) plus the official
+        ISO/IEC 42001 catalogue page. External authority links from the
+        entity-defining paragraph strengthen E-E-A-T; no claims added. */}
     <p class="text-base lg:text-lg leading-loose text-white/85">
-      <strong>حوكمة الذكاء الاصطناعي</strong> هي مجموعة السياسات والإجراءات والأدوات التي تضمن استخدام الذكاء الاصطناعي بشكل آمن وأخلاقي ومتوافق مع الأنظمة داخل المنشأة. في السعودية، تشمل الامتثال لـ PDPL وسدايا وNCA ECC.
+      <strong>حوكمة الذكاء الاصطناعي</strong> هي مجموعة السياسات والإجراءات والأدوات التي تضمن استخدام الذكاء الاصطناعي بشكل آمن وأخلاقي ومتوافق مع الأنظمة داخل المنشأة، ومنها معيار <a href="https://www.iso.org/standard/42001" target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 hover:decoration-white/70 underline-offset-4">ISO/IEC 42001</a> لإدارة أنظمة الذكاء الاصطناعي. في السعودية، تشمل الامتثال لـ <a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/" target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 hover:decoration-white/70 underline-offset-4">PDPL</a> وإرشادات <a href="https://sdaia.gov.sa/en/SDAIA/about/Pages/RegulationsAndPolicies.aspx" target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 hover:decoration-white/70 underline-offset-4">سدايا</a> و<a href="https://nca.gov.sa/ar/regulatory-documents/controls-list/ecc/" target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 hover:decoration-white/70 underline-offset-4">NCA ECC</a>.
     </p>
   </div>
 </section>

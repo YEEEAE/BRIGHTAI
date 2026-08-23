@@ -73,6 +73,9 @@ const jsonLd = {
     <script defer src="/js/gtag-init.js" data-gtag-id="G-8LLESL207Q"></script>
     <title>{answer.query} — BrightAI</title>
     <meta name="description" content={answer.answer.slice(0, 155)} />
+    {/* SEO (2026-08-23): explicit robots matches the site-wide BaseLayout
+        policy — these standalone pages previously emitted no robots meta. */}
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href={canonical} />
     {hreflangLinks.map(({ lang, href }) => (
       <link rel="alternate" hreflang={lang} href={href} />
@@ -93,6 +96,15 @@ const jsonLd = {
         <h2 class="answer-body__heading">التفاصيل الكاملة</h2>
         <p class="answer-body__text">{answer.answer}</p>
       </section>
+
+      {answer.furtherReading && (
+        <section class="answer-further" aria-label="المرجع الأشمل">
+          <p>
+            للشرح الموسّع — التعريف، مكونات الإطار، خطوات التطبيق، والمراجع التنظيمية السعودية — راجع{' '}
+            <a href={answer.furtherReading.href}>{answer.furtherReading.label}</a>.
+          </p>
+        </section>
+      )}
 
       <section class="answer-actions" aria-label="Related">
         <p>
@@ -185,6 +197,21 @@ const jsonLd = {
       .answer-actions {
         padding-block: var(--space-6);
         text-align: center;
+      }
+      .answer-further {
+        padding-block: var(--space-4);
+        padding-inline: var(--space-6);
+        background: var(--bg-elevated);
+        border-radius: var(--radius-md);
+      }
+      .answer-further p {
+        margin: 0;
+        line-height: 1.8;
+        color: var(--text-secondary);
+      }
+      .answer-further a {
+        color: var(--interactive-primary);
+        font-weight: 600;
       }
       .answer-actions a {
         display: inline-block;

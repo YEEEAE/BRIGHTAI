@@ -504,7 +504,7 @@ Design:
 - clear “what BrightAI can help with” section separate from “what the regulation says”.
 
 Do not push.
-- [ ] ✅ Prompt #10 — done & reviewed
+- [ ✅]  Prompt #10 — done & reviewed
 
 # Prompt #11 — Build the NCA AI Cybersecurity Guidelines opportunity page
 
@@ -581,7 +581,7 @@ SEO/AEO:
 - Optimize title/H1/meta without stuffing “Saudi Arabia” repeatedly.
 
 Do not push.
-- [ ] ✅ Prompt #12 — done & reviewed
+- [ ✅]  Prompt #12 — done & reviewed
 
 # Prompt #13 — Build/strengthen the ISO/IEC 42001 pillar
 

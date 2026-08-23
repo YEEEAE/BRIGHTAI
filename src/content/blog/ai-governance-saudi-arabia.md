@@ -19,7 +19,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
                 الخلاصة السريعة
             </h3>
-            <p>حوكمة الذكاء الاصطناعي في السعودية إطار تنظيمي يضمن الاستخدام الآمن والمتوافق مع ضوابط SDAIA ونظام PDPL. يمكن البدء خلال أيام عبر حلول جاهزة: AI Firewall لحماية البيانات، AI Audit Trail لتوثيق العمليات، Human Approval Layer للتحكم البشري، Evidence File لأدلة الامتثال، وCompliance Packs لـ PDPL وISO 42001. كل هذه تعمل كطبقة وسيطة مع أي نموذج AI خارجي.</p>
+            <p>حوكمة الذكاء الاصطناعي في السعودية إطار تنظيمي يضمن الاستخدام الآمن والمتوافق مع ضوابط SDAIA ونظام PDPL. يمكن البدء خلال أيام عبر حلول جاهزة: AI Firewall لحماية البيانات، AI Audit Trail لتوثيق العمليات، Human Approval Layer للتحكم البشري، Evidence File لأدلة الامتثال، وCompliance Packs لـ PDPL وISO 42001. كل هذه تعمل كطبقة وسيطة مع أي نموذج AI خارجي. للشرح الموسّع للتعريف والمكونات ومراحل التطبيق، راجع <a href="/hub/ai-governance/">دليل حوكمة الذكاء الاصطناعي في السعودية</a> في مركز المعرفة.</p>
         
 </div>
 
