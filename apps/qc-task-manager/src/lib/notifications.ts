@@ -56,9 +56,9 @@ export type NotificationKind =
   | 'lab_maintenance_event'
   | 'lab_retest_update'
   | 'lab_repeat_failures'
-  | 'lab_change_request_submitted'
-  | 'lab_change_request_approved'
-  | 'lab_change_request_rejected';
+  | 'lab_change_review_requested'
+  | 'lab_change_review_approved'
+  | 'lab_change_review_rejected';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
 
@@ -183,9 +183,9 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   lab_maintenance_event: 'warning',
   lab_retest_update: 'info',
   lab_repeat_failures: 'danger',
-  lab_change_request_submitted: 'info',
-  lab_change_request_approved: 'success',
-  lab_change_request_rejected: 'danger',
+  lab_change_review_requested: 'info',
+  lab_change_review_approved: 'success',
+  lab_change_review_rejected: 'danger',
 };
 
 /** A raw persisted notification row (with read state) for the UI layers. */
@@ -302,9 +302,9 @@ export const LAB_NOTIFICATION_KINDS: readonly NotificationKind[] = [
   'lab_maintenance_event',
   'lab_retest_update',
   'lab_repeat_failures',
-  'lab_change_request_submitted',
-  'lab_change_request_approved',
-  'lab_change_request_rejected',
+  'lab_change_review_requested',
+  'lab_change_review_approved',
+  'lab_change_review_rejected',
 ];
 
 const LAB_KIND_SQL_LIST = LAB_NOTIFICATION_KINDS.map(() => '?').join(', ');

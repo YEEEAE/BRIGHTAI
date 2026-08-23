@@ -48,9 +48,9 @@ const KIND_ICON: Record<NotificationKind, string> = {
   lab_maintenance_event: '🔧',
   lab_retest_update: '🔁',
   lab_repeat_failures: '📉',
-  lab_change_request_submitted: '📨',
-  lab_change_request_approved: '✅',
-  lab_change_request_rejected: '⛔',
+  lab_change_review_requested: '📨',
+  lab_change_review_approved: '✅',
+  lab_change_review_rejected: '⛔',
 };
 
 const KIND_LABEL: Record<NotificationKind, string> = {
@@ -87,9 +87,9 @@ const KIND_LABEL: Record<NotificationKind, string> = {
   lab_maintenance_event: 'Equipment maintenance',
   lab_retest_update: 'Retest updates',
   lab_repeat_failures: 'Lab repeated failures',
-  lab_change_request_submitted: 'Lab change requests',
-  lab_change_request_approved: 'Lab change request approved',
-  lab_change_request_rejected: 'Lab change request rejected',
+  lab_change_review_requested: 'Lab change requests',
+  lab_change_review_approved: 'Lab change request approved',
+  lab_change_review_rejected: 'Lab change request rejected',
 };
 
 const SEVERITY_CARD: Record<AppNotification['severity'], string> = {
@@ -118,10 +118,10 @@ const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'delete_approved', order: 3 },
   { key: 'lab_document_review_due', order: 1 },
   { key: 'lab_test_rejected', order: 0 },
-  { key: 'lab_change_request_rejected', order: 0 },
+  { key: 'lab_change_review_rejected', order: 0 },
   { key: 'lab_calibration_overdue', order: 0 },
   { key: 'lab_test_review_started', order: 1 },
-  { key: 'lab_change_request_submitted', order: 1 },
+  { key: 'lab_change_review_requested', order: 1 },
   { key: 'lab_test_changes_requested', order: 1 },
   { key: 'lab_document_acknowledgement', order: 1 },
   { key: 'lab_calibration_due', order: 1 },
@@ -129,7 +129,7 @@ const SECTIONS: { key: NotificationKind; order: number }[] = [
   { key: 'lab_retest_update', order: 2 },
   { key: 'lab_repeat_failures', order: 0 },
   { key: 'lab_test_approved', order: 3 },
-  { key: 'lab_change_request_approved', order: 3 },
+  { key: 'lab_change_review_approved', order: 3 },
   { key: 'lab_document_acknowledged', order: 3 },
 ];
 

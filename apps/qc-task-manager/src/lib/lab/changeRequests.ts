@@ -120,7 +120,7 @@ export function submitChangeRequest(params: { actor: { id: number; role: Role };
     const requestId = Number(inserted.lastInsertRowid);
     audit(requestId, params.actor.id, 'SUBMIT', base ? json(base.snapshot) : null, proposed, null);
     const reviewers = db.prepare("SELECT id FROM users WHERE is_active = 1 AND role IN ('manager','admin') AND id <> ?").all(params.actor.id) as Array<{ id: number }>;
-    for (const reviewer of reviewers) createNotification({ userId: reviewer.id, taskId: null, type: 'lab_change_request_submitted', title: 'Laboratory change request pending', message: `A ${params.operation.toLowerCase()} proposal for ${params.entity_type.toLowerCase()} is awaiting review.`, href: '/lab/change-requests' });
+    for (const reviewer of reviewers) createNotification({ userId: reviewer.id, taskId: null, type: 'lab_change_review_requested', title: 'Laboratory change request pending', message: `A ${params.operation.toLowerCase()} proposal for ${params.entity_type.toLowerCase()} is awaiting review.`, href: `/lab/change-requests/${requestId}` });
     return getChangeRequest(requestId)!;
   });
 }
@@ -132,6 +132,76 @@ export function getChangeRequest(id: number): LabChangeRequest | null {
 
 export function listPendingChangeRequests(): LabChangeRequest[] {
   return getDb().prepare(`SELECT r.*, u.full_name AS requested_by_name, u.role AS requested_by_role FROM lab_change_requests r JOIN users u ON u.id = r.requested_by WHERE r.status = 'PENDING' ORDER BY r.created_at ASC, r.id ASC`).all() as LabChangeRequest[];
+}
+
+/** All requests are visible to management; contributors are scoped elsewhere. */
+export function listAllChangeRequests(): LabChangeRequest[] {
+  return getDb().prepare(`SELECT r.*, u.full_name AS requested_by_name, u.role AS requested_by_role,
+    v.full_name AS reviewed_by_name FROM lab_change_requests r JOIN users u ON u.id = r.requested_by
+    LEFT JOIN users v ON v.id = r.reviewed_by ORDER BY CASE r.status WHEN 'PENDING' THEN 0 ELSE 1 END,
+    r.created_at DESC, r.id DESC`).all() as LabChangeRequest[];
+}
+
+export interface ChangeDiffRow { field: string; before: string; proposed: string; }
+
+function displayValue(value: unknown): string {
+  if (value == null || value === '') return '—';
+  if (typeof value === 'object') return JSON.stringify(value);
+  return String(value);
+}
+
+/** Stable, human-readable top-level diff; raw JSON remains available for diagnostics. */
+export function buildChangeDiff(beforeJson: string | null, proposedJson: string): ChangeDiffRow[] {
+  let before: Record<string, unknown> = {};
+  let proposed: Record<string, unknown> = {};
+  try { before = beforeJson ? JSON.parse(beforeJson) as Record<string, unknown> : {}; } catch { /* diagnostics still render */ }
+  try { proposed = JSON.parse(proposedJson) as Record<string, unknown>; } catch { return []; }
+  const fields = [...new Set([...Object.keys(before), ...Object.keys(proposed)])].sort();
+  return fields.filter((field) => JSON.stringify(before[field]) !== JSON.stringify(proposed[field])).map((field) => ({
+    field,
+    before: displayValue(before[field]),
+    proposed: displayValue(proposed[field]),
+  }));
+}
+
+export interface ChangeRequestPresentation {
+  target_label: string;
+  target_href: string | null;
+  stale: boolean;
+  diff: ChangeDiffRow[];
+}
+
+function targetLabel(type: ChangeEntityType, id: number | null): string {
+  if (id == null) return 'New record';
+  const target = getTargetSnapshot(type, id);
+  if (!target) return `${type} #${id}`;
+  const snapshot = target.snapshot;
+  return String(snapshot.code ?? snapshot.serial_number ?? snapshot.name ?? snapshot.test_number ?? `${type} #${id}`);
+}
+
+export function isChangeRequestStale(request: Pick<LabChangeRequest, 'entity_type' | 'operation' | 'entity_id' | 'base_updated_at' | 'base_snapshot_json'>): boolean {
+  if (request.operation !== 'UPDATE' || request.entity_id == null) return false;
+  const current = getTargetSnapshot(request.entity_type, request.entity_id);
+  return !current || current.updated_at !== request.base_updated_at || json(current.snapshot) !== request.base_snapshot_json;
+}
+
+export function getChangeRequestPresentation(id: number): ChangeRequestPresentation | null {
+  const request = getChangeRequest(id);
+  if (!request) return null;
+  return {
+    target_label: targetLabel(request.entity_type, request.entity_id),
+    target_href: request.entity_id == null ? null : getChangeRequestTargetHref(request.entity_type, request.entity_id),
+    stale: isChangeRequestStale(request),
+    diff: request.operation === 'UPDATE' ? buildChangeDiff(request.base_snapshot_json, request.proposed_snapshot_json) : [],
+  };
+}
+
+function getChangeRequestTargetHref(type: ChangeEntityType, id: number): string | null {
+  if (type === 'EQUIPMENT') return `/lab/equipment/${id}`;
+  if (type === 'PRODUCT') return `/lab/products/${id}`;
+  if (type === 'CALIBRATION') return `/lab/calibration/${id}`;
+  if (type === 'RETEST_REQUEST') return `/lab/tests/${id}`;
+  return null;
 }
 
 export function listUserChangeRequests(userId: number): LabChangeRequest[] {
@@ -206,7 +276,7 @@ export function approveChangeRequest(id: number, actor: { id: number; role: Role
     const changed = getDb().prepare(`UPDATE lab_change_requests SET status='APPROVED', reviewed_by=?, review_note=?, applied_entity_id=?, reviewed_at=datetime('now') WHERE id=? AND status='PENDING'`).run(actor.id, reviewNote || null, appliedId, id);
     if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
     audit(id, actor.id, 'APPROVAL', request.proposed_snapshot_json, request.proposed_snapshot_json, reviewNote || null);
-    createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_request_approved', title: 'Laboratory change request approved', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was approved.`, href: '/lab/change-requests' });
+    createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_review_approved', title: 'Laboratory change request approved', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was approved.`, href: `/lab/change-requests/${id}` });
     return getChangeRequest(id)!;
   });
 }
@@ -221,7 +291,7 @@ export function rejectChangeRequest(id: number, actor: { id: number; role: Role 
     const changed = getDb().prepare(`UPDATE lab_change_requests SET status='REJECTED', reviewed_by=?, review_note=?, reviewed_at=datetime('now') WHERE id=? AND status='PENDING'`).run(actor.id, reviewNote.trim(), id);
     if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
     audit(id, actor.id, 'REJECTION', request.proposed_snapshot_json, null, reviewNote.trim());
-    createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_request_rejected', title: 'Laboratory change request rejected', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was rejected: ${reviewNote.trim()}`, href: '/lab/change-requests' });
+    createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_review_rejected', title: 'Laboratory change request rejected', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was rejected: ${reviewNote.trim()}`, href: `/lab/change-requests/${id}` });
     return getChangeRequest(id)!;
   });
 }

@@ -99,6 +99,10 @@ export interface LabKpis {
   documents_due_for_review: number;
   retests_open: number;
   data_quality_issues: number;
+  pending_master_data_changes: number;
+  contributor_changes_today: number;
+  rejected_changes: number;
+  changes_waiting_over_24h: number;
 }
 
 export function getLabKpis(scope: LabOverviewScope): LabKpis {
@@ -157,6 +161,14 @@ export function getLabKpis(scope: LabOverviewScope): LabKpis {
     .get() as { open: number };
 
   const dataQuality = countLabDataQualityIssues();
+  const changeScope = scope.role === 'employee' || scope.role === 'supervisor' ? ' AND requested_by = ?' : '';
+  const changeParams = changeScope ? [scope.userId] : [];
+  const changes = db.prepare(`SELECT
+    SUM(CASE WHEN status = 'PENDING' THEN 1 ELSE 0 END) AS pending,
+    SUM(CASE WHEN status = 'REJECTED' THEN 1 ELSE 0 END) AS rejected,
+    SUM(CASE WHEN status = 'PENDING' AND created_at < datetime('now', '-1 day') THEN 1 ELSE 0 END) AS waiting,
+    SUM(CASE WHEN status IN ('PENDING','APPROVED','REJECTED') AND date(created_at, 'localtime') = date('now', 'localtime') THEN 1 ELSE 0 END) AS today
+    FROM lab_change_requests WHERE 1 = 1${changeScope}`).get(...changeParams) as { pending: number | null; rejected: number | null; waiting: number | null; today: number | null };
 
   return {
     tests_today: Number(tests.tests_today),
@@ -172,6 +184,10 @@ export function getLabKpis(scope: LabOverviewScope): LabKpis {
     documents_due_for_review: Number(documents.due),
     retests_open: Number(retests.open),
     data_quality_issues: dataQuality,
+    pending_master_data_changes: Number(changes.pending ?? 0),
+    contributor_changes_today: Number(changes.today ?? 0),
+    rejected_changes: Number(changes.rejected ?? 0),
+    changes_waiting_over_24h: Number(changes.waiting ?? 0),
   };
 }
 
@@ -458,7 +474,10 @@ export interface LabActivityRow {
   entity_type: string;
   entity_id: number;
   actor_name: string;
+  actor_role: string;
   action: string;
+  record_label: string | null;
+  href: string | null;
   created_at: string;
 }
 
@@ -481,13 +500,31 @@ export function getLabRecentActivity(scope: LabOverviewScope): LabActivityRow[] 
            SELECT 1 FROM lab_test_retests r
            JOIN lab_test_records own ON own.id = r.original_test_id
            WHERE r.id = a.entity_id AND (own.tested_by = ? OR own.created_by = ?)))
-       )`
+       ) OR
+         (a.entity_type = 'LAB_CHANGE_REQUEST' AND EXISTS (
+           SELECT 1 FROM lab_change_requests cr WHERE cr.id = a.entity_id AND cr.requested_by = ?))`
     : '';
-  const activityParams = isEmployee ? [scope.userId, scope.userId, scope.userId, scope.userId] : [];
+  const activityParams = isEmployee ? [scope.userId, scope.userId, scope.userId, scope.userId, scope.userId] : [];
   return getDb()
     .prepare(
       `SELECT a.id, a.entity_type, a.entity_id, a.action, a.created_at,
-              u.full_name AS actor_name
+              u.full_name AS actor_name, u.role AS actor_role,
+              CASE a.entity_type
+                WHEN 'LAB_TEST' THEN (SELECT test_number FROM lab_test_records WHERE id = a.entity_id)
+                WHEN 'LAB_RETEST' THEN (SELECT retest_number FROM lab_test_retests WHERE id = a.entity_id)
+                WHEN 'LAB_CHANGE_REQUEST' THEN ('CR-' || a.entity_id)
+                WHEN 'LAB_EQUIPMENT' THEN (SELECT code FROM lab_equipment WHERE id = a.entity_id)
+                WHEN 'LAB_PRODUCT' THEN (SELECT code FROM lab_products WHERE id = a.entity_id)
+                WHEN 'LAB_DOCUMENT' THEN (SELECT code FROM lab_documents WHERE id = a.entity_id)
+              END AS record_label,
+              CASE a.entity_type
+                WHEN 'LAB_TEST' THEN '/lab/tests/' || a.entity_id
+                WHEN 'LAB_RETEST' THEN '/lab/retests/' || a.entity_id
+                WHEN 'LAB_CHANGE_REQUEST' THEN '/lab/change-requests/' || a.entity_id
+                WHEN 'LAB_EQUIPMENT' THEN '/lab/equipment/' || a.entity_id
+                WHEN 'LAB_PRODUCT' THEN '/lab/products/' || a.entity_id
+                WHEN 'LAB_DOCUMENT' THEN '/lab/documents/' || a.entity_id
+              END AS href
        FROM qc_audit_log a
        JOIN users u ON u.id = a.actor_id
        WHERE a.entity_type LIKE 'LAB\_%' ESCAPE '\\'
@@ -529,6 +566,10 @@ export const LAB_KPI_DRILLDOWNS: Record<keyof LabKpis, LabDrilldown> = {
   documents_due_for_review: { href: '/lab/documents?review=due', route: '/lab/documents', hint: 'Opens the document library (coming with the Documents module)' },
   retests_open: { href: '/lab/retests?status=OPEN', route: '/lab/retests', hint: 'Opens the retest register (coming with the Retests module)' },
   data_quality_issues: { href: '/lab/data-quality', route: '/lab/data-quality', hint: 'Opens the Data Quality Center with per-record findings' },
+  pending_master_data_changes: { href: '/lab/change-requests?status=PENDING', route: '/lab/change-requests', hint: 'Opens the contributor change queue' },
+  contributor_changes_today: { href: '/lab/change-requests?today=1', route: '/lab/change-requests', hint: 'Opens contributor changes submitted today' },
+  rejected_changes: { href: '/lab/change-requests?status=REJECTED', route: '/lab/change-requests', hint: 'Opens rejected contributor changes' },
+  changes_waiting_over_24h: { href: '/lab/change-requests?aging=24h', route: '/lab/change-requests', hint: 'Opens contributor changes waiting over 24 hours' },
 };
 
 /** True when the drill-down's target page exists today. */

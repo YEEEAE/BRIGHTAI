@@ -70,6 +70,11 @@ try {
   db.close();
 
   process.env.QC_DATABASE_PATH = join(tempRoot, 'runtime.db');
+  const { LAB_NOTIFICATION_KINDS } = await import('../src/lib/notifications.ts');
+  assert.ok(LAB_NOTIFICATION_KINDS.includes('lab_change_review_requested'));
+  assert.ok(LAB_NOTIFICATION_KINDS.includes('lab_change_review_approved'));
+  assert.ok(LAB_NOTIFICATION_KINDS.includes('lab_change_review_rejected'));
+  assert.equal(LAB_NOTIFICATION_KINDS.includes('lab_change_request_submitted'), false);
   const { getDb, closeDatabase } = await import('../src/lib/db.ts');
   const { submitChangeRequest, approveChangeRequest, rejectChangeRequest, CHANGE_REQUEST_CONFLICT } = await import('../src/lib/lab/changeRequests.ts');
   const runtime = getDb();
@@ -101,9 +106,9 @@ try {
   rejectChangeRequest(rejected.id, admin, 'Not needed now');
   assert.equal(runtime.prepare('SELECT COUNT(*) AS n FROM lab_equipment WHERE code = ?').get('CR-EQ-2').n, 0);
   runtime.prepare('UPDATE users SET is_active=0 WHERE id=?').run(admin.id);
-  const inactiveBefore = runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_request_submitted'").get(admin.id).n;
+  const inactiveBefore = runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_review_requested'").get(admin.id).n;
   submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: { ...equipmentData, code: 'CR-EQ-3' } } });
-  assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_request_submitted'").get(admin.id).n, inactiveBefore);
+  assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_review_requested'").get(admin.id).n, inactiveBefore);
   const archivedEquipment = runtime.prepare('SELECT id FROM lab_equipment WHERE is_archived = 1 LIMIT 1').get();
   if (archivedEquipment) {
     const calibrationData = { equipment_id: archivedEquipment.id, last_calibrated_at: null, calibration_due_at: null, provider: null, certificate_reference: null, result: null, next_due_at: null, notes: null };
@@ -124,6 +129,17 @@ try {
   assert.equal(getChangeRequestForViewer(privateRequest.id, supervisor), null);
   assert.ok(getChangeRequestForViewer(privateRequest.id, employee));
   assert.ok(getChangeRequestForViewer(privateRequest.id, manager));
+
+  const { getChangeRequestPresentation, listAllChangeRequests, buildChangeDiff } = await import('../src/lib/lab/changeRequests.ts');
+  const presentation = getChangeRequestPresentation(update.id);
+  assert.equal(presentation?.target_label, 'CR-EQ-1');
+  assert.equal(presentation?.stale, true);
+  assert.ok(buildChangeDiff(JSON.stringify({ serial_number: 'EQ-ABC-100', location: 'Lab 1' }), JSON.stringify({ serial_number: 'EQ-ABC-101', location: 'Lab 2' })).some((row) => row.field === 'serial_number' && row.before === 'EQ-ABC-100' && row.proposed === 'EQ-ABC-101'));
+  assert.ok(listAllChangeRequests().some((row) => row.id === privateRequest.id));
+  assert.ok(listAllChangeRequests().some((row) => row.id === created.id), 'management list includes another contributor request');
+  assert.ok((await import('../src/lib/lab/changeRequests.ts')).listUserChangeRequests(employee.id).every((row) => row.requested_by === employee.id));
+  assert.ok((await import('node:fs')).readFileSync(new URL('../src/pages/api/lab/change-requests/[id]/review.ts', import.meta.url), 'utf8').includes('requireCsrf'));
+  assert.ok((await import('node:fs')).readFileSync(new URL('../src/pages/api/lab/change-requests/[id]/review.ts', import.meta.url), 'utf8').includes('canReviewLabChangeRequests'));
 
   const equipmentForm = readFileSync(new URL('../src/components/lab/LabEquipmentForm.astro', import.meta.url), 'utf8');
   const productForm = readFileSync(new URL('../src/components/lab/LabProductForm.astro', import.meta.url), 'utf8');

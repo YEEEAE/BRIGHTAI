@@ -8,6 +8,16 @@ version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-LAB-MANAGEMENT-VISIBILITY-006: شفافية تغييرات مساهمي المختبر — التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ طورت صفحة `/lab/change-requests` لتعرض إدارة المختبر كل الطلبات مع Request ID/entity/operation/target/requester/role/submitted/status/reviewer/reviewed/stale-conflict، وتعرض المساهمين طلباتهم فقط. صفحة التفاصيل تعرض field-level diff للـ UPDATE وraw JSON داخل details تشخيصي ثانوي.
+- **Review/API**: أضيف `POST /api/lab/change-requests/[id]/review` مع session + origin CSRF + manager/admin RBAC + Zod + PENDING + self-review + stale/conflict عبر خدمة `changeRequests.ts`؛ أزرار الصفحة صارت تشير للمسار الصحيح.
+- **Notifications**: استُخدمت نفس `notifications` table ونفس read state/entity_href، مع استبدال أنواع الطلب القديمة بالأنواع الثلاثة الدقيقة `lab_change_review_requested`, `lab_change_review_approved`, `lab_change_review_rejected`. الطلب يرسل فقط إلى active manager/admin، والاعتماد/الرفض إلى requester، والرفض يحمل السبب.
+- **Command Center/Audit**: أضيفت KPIs المدعومة ببيانات `lab_change_requests` (pending master-data, today, rejected, >24h) ونشاط `qc_audit_log` مع actor role/action/entity/record/href؛ بقيت صفحة audit المشتركة read-only و`LAB_CHANGE_REQUEST` مع label/href الموجودين، بدون نظام تدقيق ثانٍ.
+- **Files**: `src/lib/lab/changeRequests.ts`, `src/lib/lab/overview.ts`, `src/lib/notifications.ts`, `src/pages/api/lab/change-requests/[id]/review.ts`, صفحات `lab/change-requests`, `lab/index`, `lab/notifications`, `notifications`, واختبار `scripts/test-lab-change-requests.mjs`.
+- **Verification**: `pnpm typecheck` = 0 errors / 0 warnings / 19 hints؛ focused change requests PASS، overview **92/0**، notifications **85/0**، audit **60/0**؛ `NODE_ENV=production pnpm build` = Complete؛ Architecture Guard = passed؛ `pnpm test` الكامل = exit 0؛ `git diff --check` = exit 0 مع تحذير fsmonitor IPC بيئي فقط. لا browser E2E ولا production verification.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ المستخدم يراجع ويلتزم بنفسه.
+
 ### 2026-08-23 — QC-LAB-FR-MA-018-ALIGNMENT-005: محاذاة نموذج اختبار المختبر مع transcription الورقي FR-MA-018 بدون اختراع قيم علمية — **التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy**
 
 - **Scope**: `apps/qc-task-manager/`؛ migration `028_lab_test_form_alignment.sql` أضافت additive columns: `testing_date`, `actual_force`, `torque_value`, `humidity_measured` على `lab_test_records`، و`applied_pressure`, `volume_liter` على `lab_test_samples`، و`effective_date` على `lab_test_template_versions`. بقيت `actual_pressure`, `torque_in_lb`, `volume_sec` محفوظة كـ legacy بلا إعادة تفسير.
