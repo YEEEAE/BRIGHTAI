@@ -8,6 +8,15 @@ version: 2.8.26
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-DB-MIGRATION-DOCTOR-011: تشخيص آمن لوضع قاعدة QC ومنع تشغيل migrations يدويًا — التنفيذ والتحقق المحلي مكتملان بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ لا تعديل لمحتوى migrations `001–030`، ولا commit أو push أو deploy.
+- **DB doctor**: أضيف `scripts/db-doctor.mjs` مع `db:status` و`db:verify`؛ يطبع مسار قاعدة البيانات، وجود/حجم الملف، WAL، foreign keys، نسخة schema، آخر migration، عدد migrations/failures، checksum state (`MATCH/MISSING/DRIFT`)، required tables/columns، `PRAGMA integrity_check` و`PRAGMA foreign_key_check`، وحالة `PASS / FAIL` بدون أي mutation.
+- **Guidance**: الطبيب يوجّه لقاعدة موجودة عبر `pnpm db:init`، وللقاعدة المحلية disposable فقط عبر `pnpm db:reset`، ويحذر من بيانات production/user ومن تشغيل ملفات migration منفردة في DataGrip/SQLTools؛ يوضح أن `002` runner marker وليس standalone SQL migration.
+- **Backup edge case**: `backupBeforeMigration()` يتعامل صراحة مع `:memory:` ولا يستدعي `copyFileSync(':memory:', ...)`، مع إبقاء backup الحقيقي لقواعد الملفات كما هو.
+- **Tests**: `test:db-doctor` يغطي fresh/fully migrated/legacy/incompatible shape/checksum drift/missing migration/FK violation/integrity failure وdestructive `:memory:` backup؛ `pnpm test:db-doctor` و`pnpm test:migrations` ناجحان. `pnpm typecheck` = 0 errors / 19 hints؛ `NODE_ENV=production pnpm build` = Complete مع تحذيرات Vite غير حاجزة؛ `git diff --check` نظيف عند تعطيل fsmonitor.
+- **Status**: delivered locally؛ ملفات `.agents/skills/**` غير المتتبعة الموجودة مسبقًا محفوظة كما هي، ولا توجد تغييرات تحت `db/migrations/`.
+
 ### 2026-08-23 — QC-FINAL-REGRESSION-GATE-010: تحقق مستقل كامل للنظام — NO-GO محليًا بسبب E2E cleanup failure وreports process hang
 
 - **Scope**: `apps/qc-task-manager/`؛ لا commit ولا push ولا deploy. نفذت `CI=true pnpm install --frozen-lockfile` بنجاح بعد السماح بالشبكة، والـ lockfile بقي up to date.

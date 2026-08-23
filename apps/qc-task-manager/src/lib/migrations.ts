@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { existsSync, mkdirSync, readdirSync, readFileSync, copyFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -122,14 +122,17 @@ function reconcileLegacy(db: BetterSqliteDatabase, initialSql: string): void {
 }
 
 function backupBeforeMigration(db: BetterSqliteDatabase, backupDir: string): string {
-  mkdirSync(backupDir, { recursive: true });
   const source = typeof db.name === 'string' ? db.name : '';
+  // SQLite's in-memory database has no filesystem representation. A
+  // destructive migration still goes through the same guard, but there is no
+  // source file that can safely be copied.
+  if (source === ':memory:') return '';
+
+  mkdirSync(backupDir, { recursive: true });
   const destination = join(backupDir, `pre-migration-${new Date().toISOString().replace(/[:.]/g, '-')}.db`);
-  if (source && source !== ':memory:') {
+  if (source) {
     db.pragma('wal_checkpoint(TRUNCATE)');
     db.exec(`VACUUM INTO '${destination.replaceAll("'", "''")}'`);
-  } else {
-    copyFileSync(source, destination);
   }
   return destination;
 }
