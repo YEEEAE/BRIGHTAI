@@ -57,6 +57,7 @@ function eq_(actual, expected, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -184,7 +185,7 @@ let manager;
 
 // ── C. Register lists fixtures with version/owner/type ──
 {
-  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
   const body = await manager.locator('main').innerText();
   ok(body.includes(TITLE_AIR), 'register: approved SOP listed');
   ok(body.includes(TITLE_WI), 'register: WI draft listed');
@@ -206,25 +207,25 @@ let manager;
 // ── D. Filters ──
 {
   // type filter
-  await manager.goto(`${BASE}${registerUrl}?type=WI`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-&type=WI`, { waitUntil: 'domcontentloaded' });
   let body = await manager.locator('main').innerText();
   ok(body.includes(TITLE_WI) && body.includes(TITLE_OLD), 'filter: type=WI lists WI docs');
   ok(!body.includes(TITLE_AIR), 'filter: type=WI excludes SOPs');
   ok(body.includes('2 documents found'), 'filter: type=WI count label');
 
   // status filter
-  await manager.goto(`${BASE}${registerUrl}?status=APPROVED`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-&status=APPROVED`, { waitUntil: 'domcontentloaded' });
   body = await manager.locator('main').innerText();
   ok(body.includes(TITLE_AIR) && !body.includes(TITLE_WI), 'filter: status=APPROVED isolates the approved SOP');
 
   // owner filter
-  await manager.goto(`${BASE}${registerUrl}?owner=${managerId}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-&owner=${managerId}`, { waitUntil: 'domcontentloaded' });
   body = await manager.locator('main').innerText();
   ok(body.includes(TITLE_AIR) && body.includes(TITLE_OLD), 'filter: owner=manager lists owned docs');
   ok(!body.includes(TITLE_WI), 'filter: owner=manager excludes supervisor-owned WI');
 
   // review=due → only the active doc whose review date is reached
-  await manager.goto(`${BASE}${registerUrl}?review=due`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-&review=due`, { waitUntil: 'domcontentloaded' });
   body = await manager.locator('main').innerText();
   ok(body.includes(TITLE_AIR), 'filter: review=due includes the due SOP');
   ok(!body.includes(TITLE_OLD), 'filter: review=due excludes ARCHIVED with past review date');
@@ -238,6 +239,7 @@ let manager;
   ok((await drilldown.count()) > 0, 'command center: KPI drill-down links to /lab/documents?review=due');
   await drilldown.first().click();
   await manager.waitForURL((u) => u.pathname === '/lab/documents' && u.search === '?review=due', { timeout: 15_000 });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-&review=due`, { waitUntil: 'domcontentloaded' });
   body = await manager.locator('main').innerText();
   ok(body.includes(TITLE_AIR) && !body.includes(TITLE_OLD), 'drill-down: lands on the review=due filter result');
 }
@@ -264,7 +266,7 @@ let manager;
 // ── F. Sorting ──
 {
   // default sort: updated_at desc → newest first (E2E-SOP-001, 2026-01-06).
-  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
   let firstRow = (await manager.locator('main tbody tr').first().innerText()) ?? '';
   ok(firstRow.includes('E2E-SOP-001'), 'sort: default updated_at desc → SOP first');
 
@@ -296,7 +298,7 @@ let manager;
     });
   }
 
-  await manager.goto(`${BASE}${registerUrl}?per=10`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-&per=10`, { waitUntil: 'domcontentloaded' });
   let body = await manager.locator('main').innerText();
   ok(body.includes('13 documents found'), 'pagination: total count label');
   ok(body.includes('Next'), 'pagination: Next rendered');
@@ -314,7 +316,7 @@ let manager;
 // ── H. No horizontal overflow ──
 {
   await manager.setViewportSize({ width: 1440, height: 900 });
-  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
   const overflow1440 = await manager.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   ok(!overflow1440, 'register: no horizontal overflow at 1440px');
 
@@ -471,7 +473,7 @@ let manager;
 
   // Summary strip: one active doc per window (overdue = E2E-SOP-001; archived
   // E2E-WI-OLD and the no-date fixtures never count).
-  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
   const strip = await manager.locator('main section[aria-label="Document review status"]').innerText();
   const flat = strip.replace(/\s+/g, ' ').trim();
   ok(flat.includes('1 Overdue 1 Due today 1 Due within 7 days 1 Due within 15 days 1 Due within 30 days'), 'review: summary strip counts one doc per window');
@@ -495,7 +497,7 @@ let manager;
     ['15', 'E2E Review Due 15 Days', 'Due within 15 days'],
     ['30', 'E2E Review Due 30 Days', 'Due within 30 days'],
   ]) {
-    await manager.goto(`${BASE}${registerUrl}?review=${window}`, { waitUntil: 'domcontentloaded' });
+    await manager.goto(`${BASE}${registerUrl}?q=E2E-&review=${window}`, { waitUntil: 'domcontentloaded' });
     body = await manager.locator('main').innerText();
     ok(body.includes(title) && !body.includes(TITLE_AIR), `review: ${window}-day filter shows its window doc`);
     ok(body.includes('1 document found'), `review: ${window}-day filter count label`);
@@ -505,7 +507,7 @@ let manager;
 
   // The Review column is sortable (exact sort=review link — "Review Due" is a
   // different column).
-  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
   await manager.locator('main a[href*="sort=review"]').first().click();
   await manager.waitForURL((u) => u.pathname === '/lab/documents' && u.search.includes('sort=review'), { timeout: 15_000 });
   tbody = await manager.locator('main tbody').innerText();
@@ -513,10 +515,10 @@ let manager;
 
   // No horizontal overflow with the summary strip + extra column at 1440/390.
   await manager.setViewportSize({ width: 1440, height: 900 });
-  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
   ok(!(await manager.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)), 'review: no horizontal overflow at 1440px');
   await manager.setViewportSize({ width: 390, height: 844 });
-  await manager.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
+  await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
   ok(!(await manager.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)), 'review: no horizontal overflow at 390px');
 }
 
@@ -526,7 +528,14 @@ db.prepare(`DELETE FROM lab_document_versions WHERE document_id IN (SELECT id FR
 db.prepare(`DELETE FROM lab_documents WHERE code LIKE '${PREFIX}%'`).run();
 db.prepare("DELETE FROM lab_products WHERE code = 'E2E-CONN'").run();
 
-await browser.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

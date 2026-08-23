@@ -509,6 +509,11 @@ try {
   db.prepare('DELETE FROM notifications').run();
   db.prepare('DELETE FROM sessions').run();
   db.prepare('DELETE FROM login_attempts').run();
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
   db.close();
 }
 

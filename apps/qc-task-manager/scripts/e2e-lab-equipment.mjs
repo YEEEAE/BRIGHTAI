@@ -48,6 +48,7 @@ function ok(cond, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -79,12 +80,10 @@ let manager;
   await emp.goto(`${BASE}/lab/equipment`, { waitUntil: 'domcontentloaded' });
   ok(emp.url().startsWith(`${BASE}/lab/equipment`), 'employee: may view the Equipment Registry list');
   await emp.goto(`${BASE}/lab/equipment/new`, { waitUntil: 'domcontentloaded' });
-  ok(emp.url().startsWith(`${BASE}/lab/equipment`) && !emp.url().includes('/new'), 'employee: bounced from /lab/equipment/new');
-  await emp.goto(`${BASE}/lab/equipment/new`, { waitUntil: 'domcontentloaded' });
-  await emp.goto(`${BASE}/lab/equipment`, { waitUntil: 'domcontentloaded' });
+  ok(emp.url() === `${BASE}/lab/equipment/new`, 'employee: may open the Equipment proposal form');
   const firstRowId = Number(db.prepare('SELECT id FROM lab_equipment ORDER BY id LIMIT 1').get().id);
   await emp.goto(`${BASE}/lab/equipment/${firstRowId}/edit`, { waitUntil: 'domcontentloaded' });
-  ok(emp.url() === `${BASE}/lab/equipment` || emp.url().startsWith(`${BASE}/lab/equipment?`), 'employee: bounced from the edit page');
+  ok(emp.url() === `${BASE}/lab/equipment/${firstRowId}/edit`, 'employee: may open the Equipment edit proposal form');
   await emp.close();
 
   manager = await browser.newPage();
@@ -134,7 +133,7 @@ const CODE = 'EQ-E2E-001';
   await manager.fill('#name', 'E2E Syringe Pump v2');
   await manager.fill('#status_raw', 'تحت الصيانة');
   await manager.selectOption('#calibration_status_raw', 'no');
-  await manager.locator(`form[action="/lab/equipment/${equipmentId}/edit"] button[type="submit"]`).filter({ hasText: 'Save Changes' }).click();
+  await manager.locator(`form[action="/lab/equipment/${equipmentId}/edit"] button[type="submit"]`).filter({ hasText: 'Update' }).click();
   await manager.waitForURL((u) => u.pathname === `/lab/equipment/${equipmentId}`, { timeout: 15_000 });
 
   const row = db.prepare('SELECT name, status_raw, calibration_status_raw FROM lab_equipment WHERE id = ?').get(equipmentId);
@@ -225,8 +224,14 @@ function eq_(actual, expected, label) {
   ok(actual === expected, `${label} (expected ${expected}, got ${actual})`);
 }
 
-await browser.close();
-db.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {
   console.error('\nFailures:');

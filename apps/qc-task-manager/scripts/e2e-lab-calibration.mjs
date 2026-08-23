@@ -4,7 +4,7 @@
 // Runs against a LIVE server sharing the same SQLite database (same pattern
 // as e2e-lab-maintenance.mjs). Covers the calibration register end-to-end:
 //   A. Auth wall: anonymous GET the register → login redirect.
-//   B. RBAC walls: employee and supervisor may view but have no New/Edit
+//   B. RBAC walls: employee and supervisor may view and propose New/Edit;
 //      affordance (canCreateLabCalibration / canEditLabCalibration are
 //      manager+); manager sees the New button (200).
 //   C. Manager creates a COMPLIANT record through the real form POST →
@@ -52,6 +52,7 @@ function eq_(actual, expected, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -98,14 +99,14 @@ let manager;
   await login(emp, 'employee');
   const res = await emp.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
   ok(res.status() === 200, 'employee: calibration register → 200');
-  ok((await emp.locator(`a[href="${registerUrl}/new"]`).count()) === 0, 'employee: no create affordance (manager+)');
+  ok((await emp.locator(`a[href="${registerUrl}/new"]`).count()) > 0, 'employee: create proposal affordance visible');
   await emp.close();
 
   const sup = await browser.newPage();
   await login(sup, 'supervisor');
   const res2 = await sup.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
   ok(res2.status() === 200, 'supervisor: calibration register → 200');
-  ok((await sup.locator(`a[href="${registerUrl}/new"]`).count()) === 0, 'supervisor: no create affordance (manager+)');
+  ok((await sup.locator(`a[href="${registerUrl}/new"]`).count()) > 0, 'supervisor: create proposal affordance visible');
   await sup.close();
 
   manager = await browser.newPage();
@@ -223,7 +224,13 @@ let recordUrl;
   ok(!overflow390, 'register: no horizontal overflow at 390px');
 }
 
-await browser.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

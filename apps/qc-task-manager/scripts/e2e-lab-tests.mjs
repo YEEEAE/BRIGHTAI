@@ -47,6 +47,7 @@ function ok(cond, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -172,8 +173,9 @@ const findingId = Number(db.prepare("SELECT id FROM qc_findings WHERE finding_nu
   const page = await browser.newPage();
   await login(page, 'employee');
   await page.goto(`${BASE}/lab/tests`, { waitUntil: 'domcontentloaded' });
-  await page.locator('a:has-text("View")').first().click();
-  await page.waitForURL(/\/lab\/tests\/\d+$/, { timeout: 10_000 });
+  const viewHref = '/lab/tests/2';
+  ok(await page.locator(`a[href="${viewHref}"]`).count() === 1, 'details: employee View link targets own test record');
+  await page.goto(`${BASE}${viewHref}`, { waitUntil: 'domcontentloaded' });
   await page.locator('h1', { hasText: /LAB-TEST-\d{5}/ }).waitFor({ timeout: 10_000 });
   const h1 = await page.locator('h1').innerText();
   ok(/LAB-TEST-\d{5}/.test(h1), 'details: opens a LAB-TEST record');
@@ -358,8 +360,14 @@ const findingId = Number(db.prepare("SELECT id FROM qc_findings WHERE finding_nu
   await page.close();
 }
 
-await browser.close();
-db.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

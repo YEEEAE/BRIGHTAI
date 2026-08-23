@@ -345,6 +345,11 @@ try {
     db.prepare('DELETE FROM tasks WHERE id = ?').run(taskId);
   }
   db.prepare('DELETE FROM sessions').run();
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
   db.close();
 }
 

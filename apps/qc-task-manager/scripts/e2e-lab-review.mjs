@@ -47,6 +47,7 @@ function ok(cond, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -215,6 +216,8 @@ const auditsFor = (testId) => db.prepare("SELECT action FROM qc_audit_log WHERE 
   const row = page.locator('tr', { hasText: 'LAB-TEST-90003' });
   await row.scrollIntoViewIfNeeded();
   await row.getByRole('button', { name: 'Approve' }).click();
+  await page.locator('#esign-password').fill(PASS);
+  await page.locator('#esign-confirm').click();
   await page.waitForURL((u) => u.pathname.endsWith('/lab/tests/review'), { timeout: 10_000 });
   const r = getRow('LAB-TEST-90003');
   ok(r.status === 'APPROVED', 'approve: DB status APPROVED');
@@ -261,8 +264,14 @@ const auditsFor = (testId) => db.prepare("SELECT action FROM qc_audit_log WHERE 
   await page.close();
 }
 
-await browser.close();
-db.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

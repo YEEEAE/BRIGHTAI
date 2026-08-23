@@ -47,6 +47,7 @@ function ok(cond, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -283,8 +284,14 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await page.close();
 }
 
-await browser.close();
-db.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

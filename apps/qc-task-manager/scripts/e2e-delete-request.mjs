@@ -207,8 +207,8 @@ try {
   ok(aHistory?.requested_by === emp.id && aHistory?.reviewed_by === mgr.id && aHistory?.reason === 'Duplicate task, please remove.', 'A. immutable deletion history preserves identity, reason, requester, and reviewer');
 
   await openRequestsPage(managerPage);
-  const aHistGone = await managerPage.locator('section:has-text("History") li', { hasText: 'SC-A delete me' }).count();
-  ok(aHistGone === 0, 'A. approved request absent from history (cascade removed it)');
+  const aHistoryRow = await managerPage.locator('section:has-text("History") li', { hasText: 'SC-A delete me' }).count();
+  ok(aHistoryRow === 1, 'A. approved request remains in immutable history after task cascade');
 // ─────────────── Scenario B: reject path ───────────────
   console.log('\n── Scenario B: employee requests → manager rejects → badge clears ──');
 

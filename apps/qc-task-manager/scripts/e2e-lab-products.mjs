@@ -3,8 +3,8 @@
 // Runs against a LIVE server sharing the same SQLite database (same pattern
 // as e2e-lab-review.mjs). Covers the Product Master end-to-end:
 //   A. Auth wall: anonymous GET /lab/products → login redirect.
-//   B. RBAC walls: employee cannot open /lab/products/new (bounced); manager
-//      reaches the list, new, edit and detail pages (200).
+//   B. RBAC walls: employee may open the proposal form; manager reaches the
+//      list, new, edit and detail pages (200).
 //   C. Manager creates a product through the real form POST → redirected to
 //      the detail page; row + equipment link + CREATE audit exist in the DB.
 //   D. Manager edits the product (name + equipment swap) → UPDATE audit.
@@ -47,6 +47,7 @@ function ok(cond, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -81,7 +82,7 @@ let manager;
   const emp = await browser.newPage();
   await login(emp, 'employee');
   await emp.goto(`${BASE}/lab/products/new`, { waitUntil: 'domcontentloaded' });
-  ok(emp.url().startsWith(`${BASE}/lab/products`) && !emp.url().includes('/new'), 'employee: bounced from /lab/products/new');
+  ok(emp.url() === `${BASE}/lab/products/new`, 'employee: may open the Product Master proposal form');
   await emp.goto(`${BASE}/lab/products`, { waitUntil: 'domcontentloaded' });
   ok(emp.url().startsWith(`${BASE}/lab/products`), 'employee: may view the Product Master list');
   await emp.close();
@@ -184,9 +185,9 @@ let productId;
   } while (tries < 5);
   await panel.waitFor({ state: 'visible', timeout: 10_000 });
   ok((await emp.locator('[data-testid="product-reference-panel"]').getByText('Locking connector with fixed threads').count()) > 0, 'test form: product panel shows the stored connector default');
-  // The measured fields remain editable inputs on the same page.
-  const pressure = emp.locator('#actual_pressure');
-  ok((await pressure.count()) === 1, 'test form: measured Actual Pressure remains an editable input');
+  // Applied pressure is a per-sample measured field on the current form.
+  const pressure = emp.locator('input[id^="sample_"][id$="_applied_pressure"]');
+  ok((await pressure.count()) === 5 && await pressure.first().isEditable(), 'test form: measured Applied Pressure remains editable per sample');
   const conn = emp.locator('#connector_type');
   eq_(await conn.inputValue(), 'Locking connector with fixed threads', 'test form: empty Connector Type prefilled from the Product Master');
   await emp.close();
@@ -209,8 +210,14 @@ function eq_(actual, expected, label) {
   ok(actual === expected, `${label} (expected ${expected}, got ${actual})`);
 }
 
-await browser.close();
-db.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {
   console.error('\nFailures:');

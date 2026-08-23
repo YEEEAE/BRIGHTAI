@@ -943,7 +943,12 @@ try {
   }
   db.prepare('DELETE FROM notifications').run();
   db.prepare('DELETE FROM sessions').run();
-  db.prepare("DELETE FROM users WHERE username = 'emp_create'").run();
+  // Audit durability intentionally keeps historical actor rows RESTRICT and
+  // task-deletion snapshots immutable. This suite uses a disposable database,
+  // so the fixture user and immutable history are removed with the database
+  // directory by the acceptance runner instead of being mutated here.
+  db.prepare('DELETE FROM task_activity_log WHERE user_id = ?').run(emp.id);
+  db.prepare('DELETE FROM qc_audit_log WHERE actor_id = ?').run(emp.id);
   await browser.close();
   db.close();
 }

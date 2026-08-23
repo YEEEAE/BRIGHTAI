@@ -55,6 +55,7 @@ function eq_(actual, expected, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -306,7 +307,14 @@ db.prepare(`DELETE FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT_VERSION' 
 
 await employee.close();
 await supervisor.close();
-await browser.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

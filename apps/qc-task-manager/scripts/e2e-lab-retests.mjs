@@ -54,6 +54,7 @@ function eq_(actual, expected, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -268,7 +269,13 @@ let newTestId;
   ok(!overflow390, 'register: no horizontal overflow at 390px');
 }
 
-await browser.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

@@ -2,7 +2,7 @@
 // Each suite gets a fresh SQLite file and port so fixtures cannot leak between
 // scenarios and a failure identifies one bounded workflow.
 
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,6 +10,8 @@ import { tmpdir } from 'node:os';
 
 const appDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const tempDir = mkdtempSync(join(tmpdir(), 'brightai-qc-acceptance-'));
+const CHILD_TIMEOUT_MS = Number(process.env.E2E_SUITE_TIMEOUT_MS ?? 120_000);
+const suiteResults = [];
 const suites = [
   ['admin-users', 'scripts/e2e-admin-users.mjs'],
   ['auth-lockout', 'scripts/e2e-auth-lockout.mjs'],
@@ -59,19 +61,42 @@ async function waitForServer(child, url) {
   throw new Error(`server did not become ready at ${url}`);
 }
 
-function runChild(script, env) {
+function runChild(script, env, timeoutMs = CHILD_TIMEOUT_MS) {
   return new Promise((resolvePromise, reject) => {
     const child = spawn(process.execPath, [script], {
       cwd: appDir,
       env,
-      stdio: 'inherit',
+      stdio: ['ignore', 'pipe', 'pipe'],
     });
-    child.once('error', reject);
-    child.once('exit', (code, signal) => {
-      if (code === 0) resolvePromise();
-      else reject(new Error(`${script} exited with ${signal ?? `code ${code}`}`));
-    });
+    let stdout = '';
+    let stderr = '';
+    let timedOut = false;
+    let settled = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      child.kill('SIGTERM');
+      setTimeout(() => {
+        if (child.exitCode === null) child.kill('SIGKILL');
+      }, 2_000).unref();
+    }, timeoutMs);
+    child.stdout.on('data', (chunk) => { stdout += chunk; });
+    child.stderr.on('data', (chunk) => { stderr += chunk; });
+    const finish = (result) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolvePromise({ ...result, stdout, stderr, timedOut });
+    };
+    child.once('error', (error) => finish({ code: null, signal: null, error }));
+    child.once('close', (code, signal) => finish({ code, signal }));
   });
+}
+
+function assertionCounts(output) {
+  const matches = [...output.matchAll(/(?:Result:\s*)?(\d+)\s+passed(?:\s*\/|,\s*)(\d+)\s+failed/gi)];
+  if (matches.length === 0) return { passed: null, failed: null };
+  const [, passed, failed] = matches.at(-1);
+  return { passed: Number(passed), failed: Number(failed) };
 }
 
 function suiteEnv(dbPath, port, extra = {}) {
@@ -97,11 +122,22 @@ function startServer(env) {
 }
 
 async function stopServer(server) {
-  if (server.exitCode === null) server.kill('SIGTERM');
-  await sleep(150);
+  if (server.exitCode !== null) return;
+  await new Promise((resolvePromise) => {
+    const timer = setTimeout(() => {
+      if (server.exitCode === null) server.kill('SIGKILL');
+      resolvePromise();
+    }, 2_000);
+    server.once('close', () => {
+      clearTimeout(timer);
+      resolvePromise();
+    });
+    server.kill('SIGTERM');
+  });
 }
 
 async function runSuite(label, script, port) {
+  const startedAt = Date.now();
   const dbPath = join(tempDir, `${label}.db`);
   const env = suiteEnv(dbPath, port);
   const server = startServer(env);
@@ -119,7 +155,14 @@ async function runSuite(label, script, port) {
       redirect: 'manual',
     });
     console.log(`\n▶ Acceptance suite: ${label}`);
-    await runChild(script, env);
+    console.log(`   DB path: ${dbPath}`);
+    const result = await runChild(script, env);
+    if (result.stdout) process.stdout.write(result.stdout);
+    if (result.stderr) process.stderr.write(result.stderr);
+    if (result.timedOut) throw new Error(`${label} TIMEOUT after ${CHILD_TIMEOUT_MS}ms`);
+    if (result.error) throw result.error;
+    if (result.code !== 0) throw new Error(`${script} exited with ${result.signal ?? `code ${result.code}`}`);
+    suiteResults.push({ label, ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
     console.log(`✅ ${label}`);
   } finally {
     await stopServer(server);
@@ -131,9 +174,15 @@ async function runPersistenceSuite(port) {
   const createEnv = suiteEnv(dbPath, port, { PERSISTENCE_STAGE: 'create' });
   let server = startServer(createEnv);
   try {
+    const startedAt = Date.now();
     await waitForServer(server, createEnv.BASE_URL);
     console.log('\n▶ Acceptance suite: restart persistence (create)');
-    await runChild('scripts/e2e-persistence.mjs', createEnv);
+    const result = await runChild('scripts/e2e-persistence.mjs', createEnv);
+    if (result.stdout) process.stdout.write(result.stdout);
+    if (result.stderr) process.stderr.write(result.stderr);
+    if (result.timedOut) throw new Error(`restart persistence (create) TIMEOUT after ${CHILD_TIMEOUT_MS}ms`);
+    if (result.code !== 0) throw new Error(`restart persistence (create) exited with code ${result.code}`);
+    suiteResults.push({ label: 'restart persistence (create)', ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
   } finally {
     await stopServer(server);
   }
@@ -141,9 +190,15 @@ async function runPersistenceSuite(port) {
   const verifyEnv = suiteEnv(dbPath, port, { PERSISTENCE_STAGE: 'verify' });
   server = startServer(verifyEnv);
   try {
+    const startedAt = Date.now();
     await waitForServer(server, verifyEnv.BASE_URL);
     console.log('▶ Acceptance suite: restart persistence (verify after restart)');
-    await runChild('scripts/e2e-persistence.mjs', verifyEnv);
+    const result = await runChild('scripts/e2e-persistence.mjs', verifyEnv);
+    if (result.stdout) process.stdout.write(result.stdout);
+    if (result.stderr) process.stderr.write(result.stderr);
+    if (result.timedOut) throw new Error(`restart persistence (verify) TIMEOUT after ${CHILD_TIMEOUT_MS}ms`);
+    if (result.code !== 0) throw new Error(`restart persistence (verify) exited with code ${result.code}`);
+    suiteResults.push({ label: 'restart persistence (verify)', ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
     console.log('✅ restart persistence');
   } finally {
     await stopServer(server);
@@ -151,12 +206,27 @@ async function runPersistenceSuite(port) {
 }
 
 try {
+  const head = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: appDir, encoding: 'utf8' }).trim();
+  const status = execFileSync('git', ['status', '--porcelain'], { cwd: appDir, encoding: 'utf8' }).trim() || '(clean)';
+  const nodeVersion = process.version;
+  const pnpmVersion = execFileSync('pnpm', ['--version'], { cwd: appDir, encoding: 'utf8' }).trim();
+  console.log('QC acceptance reproducibility');
+  console.log(`HEAD SHA: ${head}`);
+  console.log(`Dirty/untracked status: ${status}`);
+  console.log(`Node version: ${nodeVersion}`);
+  console.log(`pnpm version: ${pnpmVersion}`);
+  console.log(`DB path root: ${tempDir}`);
+  console.log(`Child suite timeout: ${CHILD_TIMEOUT_MS}ms`);
   console.log(`QC acceptance runner using ${suites.length} isolated workflow databases plus one restart-persistence database.`);
   for (let i = 0; i < suites.length; i += 1) {
     const [label, script] = suites[i];
     await runSuite(label, script, 4500 + i);
   }
   await runPersistenceSuite(4512);
+  console.log('\nAcceptance suite summary');
+  for (const result of suiteResults) {
+    console.log(`  ${result.label}: ${result.passed ?? '?'} passed / ${result.failed ?? '?'} failed / ${result.durationMs}ms / timeout=${result.timeout}`);
+  }
   console.log('\n✅ All QC acceptance suites passed.');
 } finally {
   rmSync(tempDir, { recursive: true, force: true });

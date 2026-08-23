@@ -47,6 +47,7 @@ const isoDay = (days) => new Date(Date.now() + days * 86_400_000).toLocaleDateSt
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -213,7 +214,13 @@ for (const username of ['admin', 'manager', 'supervisor']) {
 cleanup();
 
 for (const page of Object.values(pages)) await page.close();
-await browser.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {

@@ -4,7 +4,7 @@
 // Runs against a LIVE server sharing the same SQLite database (same pattern
 // as e2e-lab-equipment.mjs). Covers the maintenance log end-to-end:
 //   A. Auth wall: anonymous GET the maintenance page → login redirect.
-//   B. RBAC walls: employee may view the page but has no logging form;
+//   B. RBAC walls: employee and supervisor may view the page and log events;
 //      supervisor (LAB_EQUIPMENT_MAINTENANCE) sees the form (200).
 //   C. Supervisor logs a COMPLETED maintenance event through the real form
 //      POST → redirected back; row + CREATE audit exist in the DB.
@@ -50,6 +50,7 @@ function eq_(actual, expected, label) {
 
 const db = new Database(DB_PATH, { readonly: false });
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -97,7 +98,7 @@ let supervisor;
   await login(emp, 'employee');
   const res = await emp.goto(`${BASE}${maintenanceUrl}`, { waitUntil: 'domcontentloaded' });
   ok(res.status() === 200, 'employee: maintenance page → 200');
-  ok((await emp.locator('#issue').count()) === 0, 'employee: no maintenance logging form (LAB_EQUIPMENT_MAINTENANCE)');
+  ok((await emp.locator('#issue').count()) === 1, 'employee: maintenance logging form visible');
   await emp.close();
 
   supervisor = await browser.newPage();
@@ -221,8 +222,14 @@ let supervisor;
   }
 }
 
-await browser.close();
-db.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+  db.close();
+}
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {
   console.error('\nFailures:');

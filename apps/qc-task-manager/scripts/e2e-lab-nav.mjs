@@ -43,6 +43,7 @@ function ok(cond, label) {
 }
 
 const browser = await chromium.launch({ headless: true });
+try {
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`);
@@ -67,8 +68,8 @@ async function login(page, username) {
 const roleCases = [
   { username: 'admin', expectDataQualityKpi: true, expectNewProduct: true },
   { username: 'manager', expectDataQualityKpi: true, expectNewProduct: true },
-  { username: 'supervisor', expectDataQualityKpi: true, expectNewProduct: false },
-  { username: 'employee', expectDataQualityKpi: false, expectNewProduct: false },
+  { username: 'supervisor', expectDataQualityKpi: true, expectNewProduct: true },
+  { username: 'employee', expectDataQualityKpi: false, expectNewProduct: true },
 ];
 
 for (const roleCase of roleCases) {
@@ -100,7 +101,7 @@ for (const roleCase of roleCases) {
     ok(secondaryHrefs.includes('/lab/retests'), `${roleCase.username}: secondary nav shows the retest register`);
   }
   ok(secondaryHrefs.every((href) =>
-    href === '/lab' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' ||
+    href === '/lab' || href === '/lab/search' || href === '/lab/change-requests' || href === '/lab/tests' || href === '/lab/tests/new' || href === '/lab/tests/review' ||
     href === '/lab/products' || href === '/lab/products/new' || href === '/lab/templates' || href === '/lab/equipment' ||
     href === '/lab/calibration' || href === '/lab/documents' || href === '/lab/documents/new' || // Document editor (PROMPT 41)
     href === '/lab/acknowledgements' || // Acknowledgement register (LAB_DOCUMENT_ACKNOWLEDGE)
@@ -117,7 +118,7 @@ for (const roleCase of roleCases) {
   // permission-scoped ones match the role (Data Quality KPI is supervisor+,
   // "New Product" action is manager+).
   const kpiCount = await page.locator('[data-lab-kpi]').count();
-  ok(kpiCount === (roleCase.expectDataQualityKpi ? 13 : 12), `${roleCase.username}: ${kpiCount} KPI cards rendered`);
+  ok(kpiCount === (roleCase.expectDataQualityKpi ? 17 : 12), `${roleCase.username}: ${kpiCount} KPI cards rendered`);
   const hasDataQualityKpi = (await page.locator('[data-lab-kpi="data_quality_issues"]').count()) === 1;
   ok(hasDataQualityKpi === roleCase.expectDataQualityKpi, `${roleCase.username}: Data Quality KPI matches role permission`);
   const bodyText = await page.locator('main').innerText();
@@ -133,7 +134,7 @@ for (const roleCase of roleCases) {
   // KPI drill-down is live as well (/lab/documents, /lab/documents?review=due).
   // Everything else stays disabled.
   const mainHrefs = await page.locator('main a[href^="/lab/"]').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('href')));
-  ok(mainHrefs.every((href) =>
+  const invalidMainHrefs = mainHrefs.filter((href) => !( 
     href === '/lab' ||
     href === '/lab/tests' ||
     href === '/lab/tests/new' ||
@@ -150,6 +151,7 @@ for (const roleCase of roleCases) {
     href.startsWith('/lab/calibration?') || // live due=1 drill-down
     href === '/lab/documents' || // SOP/WI Library register (§39)
     href.startsWith('/lab/documents?') || // live review=due drill-down
+    href.startsWith('/lab/documents/') || // live catalog/detail links
     href === '/lab/documents/new' || // Document editor (PROMPT 41)
     href.startsWith('/lab/documents/new?type=') || // live New SOP / New WI quick actions
     href === '/lab/acknowledgements' || // Acknowledgement register (LAB_DOCUMENT_ACKNOWLEDGE)
@@ -157,6 +159,8 @@ for (const roleCase of roleCases) {
     href === '/lab/calendar' || // Laboratory calendar (PROMPT 25)
     href === '/lab/notifications' || // Lab-filtered notifications (PROMPT 26)
     href === '/lab/data-quality' || // Live data-quality KPI drill-down (PROMPT 27)
+    href === '/lab/change-requests' || // Contributor change queue
+    href.startsWith('/lab/change-requests?') || // Live change-request KPI drill-downs
     href === '/lab/audit' || // Lab-wide audit timeline (supervisor+ nav entry)
     href === '/lab/reports' || // Laboratory reports (§13 — missed in this allowlist by QC-LAB-REPORTS-001)
     href === '/lab/retests' || // Retest register module (§46)
@@ -164,8 +168,9 @@ for (const roleCase of roleCases) {
     href === '/lab/retests/new' || // Create Retest from a dispositioned test
     href.startsWith('/lab/retests/new?test=') || // pre-scoped create form
     href.startsWith('/lab/tests/') || // live test detail links
-    /^\/lab\/tests\/\d+$/.test(href), // live per-row View links
-  ), `${roleCase.username}: no drill-down links to unimplemented routes`);
+    /^\/lab\/tests\/\d+$/.test(href) // live per-row View links
+  ));
+  ok(invalidMainHrefs.length === 0, `${roleCase.username}: no drill-down links to unimplemented routes${invalidMainHrefs.length ? ` (invalid: ${invalidMainHrefs.join(', ')})` : ''}`);
   const disabledActions = await page.locator('main button[disabled][aria-disabled="true"]').count();
   // Calibration, the Document editor and Retests are all live now, so no role
   // has any disabled "coming soon" action left on the command center.
@@ -186,7 +191,7 @@ for (const roleCase of roleCases) {
   await page.goto(`${BASE}/lab?role=admin&permissions=LAB_TEST_APPROVE`, { waitUntil: 'domcontentloaded' });
   const bodyText = await page.locator('main').innerText();
   ok(!bodyText.includes('Data Quality Issues'), 'query ?role=admin does not upgrade employee permissions (no Data Quality KPI)');
-  ok(!bodyText.includes('New Product'), 'query parameter cannot expose manager+ actions');
+  ok((await page.locator('[data-lab-kpi="data_quality_issues"]').count()) === 0, 'query parameter cannot expose supervisor+ KPI actions');
   const kpiCount = await page.locator('[data-lab-kpi]').count();
   ok(kpiCount === 12, 'employee KPI card count unchanged by query parameters');
 
@@ -234,7 +239,13 @@ for (const roleCase of roleCases) {
   await page.close();
 }
 
-await browser.close();
+} finally {
+  for (const context of browser.contexts()) {
+    for (const page of context.pages()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+  }
+  await browser.close().catch(() => {});
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) {
