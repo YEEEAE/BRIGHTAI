@@ -106,8 +106,8 @@ try {
   const templateId = Number(db.prepare("SELECT id FROM lab_test_templates WHERE code = 'TPL-REF-AIR'").get().id);
   db.prepare(
     `INSERT INTO lab_test_template_versions
-       (template_id, version, parameters_json, sop_id, wi_id, created_by, approved_by)
-     VALUES (?, 1, ?, ?, ?, ?, ?)`,
+       (template_id, version, parameters_json, sop_id, wi_id, created_by, approved_by, status)
+     VALUES (?, 1, ?, ?, ?, ?, ?, 'APPROVED')`,
   ).run(templateId, parametersJson, sopId, wiId, managerId, managerId);
   const approvedVersionId = Number(
     db.prepare('SELECT id FROM lab_test_template_versions WHERE template_id = ? AND version = 1').get(templateId).id,

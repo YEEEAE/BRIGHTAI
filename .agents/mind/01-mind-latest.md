@@ -1,4 +1,12 @@
 ---
+### 2026-08-23 — QC-LAB-TEMPLATE-WORKFLOW-V2-016: دورة مراجعة واعتماد قوالب المختبر — تحقق محلي مكتمل بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ migration **035** متسلسلة لأن migration 034 مستخدمة مسبقًا لسياسة القالب، وأضافت حالات DRAFT/IN_REVIEW/APPROVED/SUPERSEDED وحقول submit/review/approval مع backfill row-preserving بدون خسارة تاريخ النسخ.
+- **Workflow/RBAC**: صار إنشاء وتعديل وإرسال المسودة للمؤلف، والمراجعة من Supervisor+ لمستخدم آخر، والاعتماد من Manager/Admin لمستخدم آخر فقط؛ `permissions.ts` بقي مصدر الصلاحيات الوحيد، والقالب ARCHIVED مجمّد.
+- **Integrity**: الاعتماد يستخدم بنية e-signature الحالية على مستوى handler، ويسجل submitted/reviewed/approved/superseded؛ النسخة السابقة تصير SUPERSEDED، والمراجع المعتمد فقط يدخل قائمة reference selection. بعد أول اعتماد يصير code وtest_type غير قابلين للتغيير، والتعارض يمنع overwrite عبر updated_at token.
+- **UI/tests**: أضيفت أزرار submit/review/approve، e-signature password، version token، وسجل حالات النسخ. `test:lab-templates` **51/0**؛ `test:migrations` PASS؛ full `pnpm test` **exit 0**؛ reference panel **21/0**؛ security **63/0**؛ esignature **14/0**؛ typecheck **0 errors / 0 warnings / 17 hints**؛ production build Complete؛ `git diff --check` PASS.
+- **Status**: delivered locally؛ لا production verification، ولا commit ولا push ولا deploy؛ migration 035 مقصودة للحفاظ على تاريخ migration 034.
+
 ### 2026-08-23 — QC-LAB-FORM-UX-INTEGRITY-015: نموذج المختبر الآمن والسريع — تحقق محلي مكتمل بدون commit/push/deploy
 
 - **Scope**: `apps/qc-task-manager/`؛ فصل حقول legacy عن إدخال السجل الجديد، عرض `Legacy Recorded Data` للبيانات التاريخية فقط، وتسمية `sampling_area` في الواجهة `Testing Area` مع إبقاء العمود التاريخي.

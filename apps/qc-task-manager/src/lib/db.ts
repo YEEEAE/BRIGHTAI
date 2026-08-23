@@ -64,6 +64,7 @@ import auditDurabilityMigrationSql from '../../db/migrations/030_audit_durabilit
 import qcAuditTaskIdentityMigrationSql from '../../db/migrations/032_qc_audit_task_identity.sql?raw';
 import wiProvenanceMigrationSql from '../../db/migrations/033_wi_provenance.sql?raw';
 import templateSubmissionPolicyMigrationSql from '../../db/migrations/034_template_submission_policy.sql?raw';
+import labTemplateReviewWorkflowMigrationSql from '../../db/migrations/035_lab_template_review_workflow.sql?raw';
 import { backfillAuditChain } from './audit/chain';
 import { backfillQcAuditChain } from './audit/qcChain';
 import { importWICatalog } from './lab/wiCatalog';
@@ -332,6 +333,7 @@ function initialize(db: BetterSqliteDatabase): void {
       { file: '032_qc_audit_task_identity.sql', source: qcAuditTaskIdentityMigrationSql },
       { file: '033_wi_provenance.sql', source: wiProvenanceMigrationSql },
       { file: '034_template_submission_policy.sql', source: templateSubmissionPolicyMigrationSql },
+      { file: '035_lab_template_review_workflow.sql', source: labTemplateReviewWorkflowMigrationSql },
     ],
   });
   backfillAuditChain(db);

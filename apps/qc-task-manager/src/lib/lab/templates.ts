@@ -30,11 +30,20 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import {
-  canApproveLabTemplateRecord,
+  canApproveLabTemplateVersionRecord,
   canArchiveLabTemplate,
   canCreateLabTemplate,
   canEditLabTemplateRecord,
+  canReviewLabTemplateRecord,
+  canSubmitLabTemplateRecord,
 } from '../permissions';
+import {
+  ESIGN_FAILURE_MESSAGE_AR,
+  ESIGN_FIELD_NAME,
+  ESIGN_RATE_LIMITED_MESSAGE_AR,
+  esignAuditNote,
+  requireEsignature,
+} from './esignature';
 import {
   LAB_CONNECTOR_TYPES,
 } from './policy';
@@ -42,7 +51,7 @@ import type { LabTestTemplate, LabTestTemplateVersion, LabTestType } from '../ty
 
 // ─────────────────────────────── Audit ───────────────────────────────
 
-type LabTemplateAuditAction = 'CREATE' | 'UPDATE' | 'VERSION' | 'APPROVAL' | 'STATUS_TRANSITION';
+type LabTemplateAuditAction = 'CREATE' | 'UPDATE' | 'VERSION' | 'APPROVAL' | 'STATUS_TRANSITION' | 'SUBMIT' | 'REQUEST_CHANGES' | 'SUPERSEDE';
 
 function auditLabTemplate(templateId: number, actorId: number, action: LabTemplateAuditAction, note: string | null = null, oldValue: string | null = null, newValue: string | null = null): void {
   appendQcAudit(getDb(), { entityType: 'LAB_TEMPLATE', entityId: templateId, actorId, action, oldValue, newValue, note });
@@ -230,6 +239,8 @@ export function searchLabTemplates(f: LabTemplateSearchFilters): LabTemplateSear
 
 export interface LabTemplateVersionRow extends LabTestTemplateVersion {
   created_by_name: string | null;
+  submitted_by_name: string | null;
+  reviewed_by_name: string | null;
   approved_by_name: string | null;
   test_count: number;
 }
@@ -259,10 +270,13 @@ export function getLabTemplateDetail(id: number): LabTemplateDetailView | null {
 
   const versions = db
     .prepare(
-      `SELECT v.*, cu.full_name AS created_by_name, au.full_name AS approved_by_name,
+      `SELECT v.*, cu.full_name AS created_by_name, su.full_name AS submitted_by_name,
+        ru.full_name AS reviewed_by_name, au.full_name AS approved_by_name,
         (SELECT COUNT(*) FROM lab_test_records r WHERE r.template_version_id = v.id) AS test_count
        FROM lab_test_template_versions v
        LEFT JOIN users cu ON cu.id = v.created_by
+       LEFT JOIN users su ON su.id = v.submitted_by
+       LEFT JOIN users ru ON ru.id = v.reviewed_by
        LEFT JOIN users au ON au.id = v.approved_by
        WHERE v.template_id = ?
        ORDER BY v.version ASC`,
@@ -348,9 +362,12 @@ export function getLabTemplateForEdit(id: number): LabTemplateEditView | null {
   if (!template) return null;
   const row = db
     .prepare(
-      `SELECT v.*, cu.full_name AS created_by_name, au.full_name AS approved_by_name, 0 AS test_count
+      `SELECT v.*, cu.full_name AS created_by_name, su.full_name AS submitted_by_name,
+        ru.full_name AS reviewed_by_name, au.full_name AS approved_by_name, 0 AS test_count
        FROM lab_test_template_versions v
        LEFT JOIN users cu ON cu.id = v.created_by
+       LEFT JOIN users su ON su.id = v.submitted_by
+       LEFT JOIN users ru ON ru.id = v.reviewed_by
        LEFT JOIN users au ON au.id = v.approved_by
        WHERE v.template_id = ? ORDER BY v.version DESC LIMIT 1`,
     )
@@ -427,6 +444,13 @@ export class LabTemplateCodeConflictError extends Error {
   constructor(code: string) {
     super(`A test template with code "${code}" already exists.`);
     this.name = 'LabTemplateCodeConflictError';
+  }
+}
+
+export class LabTemplateConcurrencyError extends Error {
+  constructor() {
+    super('This template changed after you opened it. Reload the latest draft before saving.');
+    this.name = 'LabTemplateConcurrencyError';
   }
 }
 
@@ -563,34 +587,38 @@ export function createLabTemplate(data: LabTemplateFormData, actorId: number): n
  * while it is still a DRAFT, otherwise editing creates version N+1 (VERSION
  * audit) — approved versions are immutable. Archived templates are read-only.
  */
-export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId: number): void {
+export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId: number, expectedUpdatedAt?: string | null): void {
   transaction(() => {
     const db = getDb();
-    const existing = db.prepare('SELECT id, code, status FROM lab_test_templates WHERE id = ?').get(id) as
-      | { id: number; code: string; status: string }
+    const existing = db.prepare('SELECT id, code, test_type, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as
+      | { id: number; code: string; test_type: LabTestType; status: string; updated_at: string }
       | undefined;
     if (!existing) throw new Error('Test template not found.');
     if (existing.status === 'ARCHIVED') throw new Error('Archived test templates are read-only.');
+    if (expectedUpdatedAt != null && expectedUpdatedAt !== existing.updated_at) throw new LabTemplateConcurrencyError();
     assertReferencesExist(data);
     assertCodeAvailable(data.code, id);
 
     const latest = db
-      .prepare('SELECT id, version, approved_by FROM lab_test_template_versions WHERE template_id = ? ORDER BY version DESC LIMIT 1')
-      .get(id) as { id: number; version: number; approved_by: number | null };
+      .prepare('SELECT id, version, status, approved_by FROM lab_test_template_versions WHERE template_id = ? ORDER BY version DESC LIMIT 1')
+      .get(id) as { id: number; version: number; status: string; approved_by: number | null };
+    const hasApprovedVersion = Boolean(db.prepare("SELECT 1 FROM lab_test_template_versions WHERE template_id = ? AND status = 'APPROVED' LIMIT 1").get(id));
+    if (hasApprovedVersion && data.code !== existing.code) throw new Error('Template code is immutable after the first approved version. Create a new template instead.');
+    if (hasApprovedVersion && data.test_type !== existing.test_type) throw new Error('Test type is immutable after the first approved version because it changes historical meaning. Create a new template instead.');
     const connectorJson = normalizeConnectorChoices(data.connector_choices);
     const connectorValue = connectorJson === null ? null : JSON.stringify(connectorJson);
     const parametersJson = buildParametersJson(data);
 
     db.prepare(
-      `UPDATE lab_test_templates SET name = ?, code = ?, test_type = ?, updated_at = datetime('now') WHERE id = ?`,
+      `UPDATE lab_test_templates SET name = ?, code = ?, test_type = ?, updated_at = strftime('%Y-%m-%d %H:%M:%f','now') WHERE id = ?`,
     ).run(data.name, data.code, data.test_type, id);
 
-    if (latest.approved_by === null) {
+    if (latest.status === 'DRAFT') {
       db.prepare(
         `UPDATE lab_test_template_versions SET
            default_sample_count = ?, parameters_json = ?, connector_choices_json = ?,
            applicable_product_id = ?, applicable_equipment_id = ?, sop_id = ?, wi_id = ?, effective_date = ?, requires_approved_template_for_submission = ?,
-           updated_at = datetime('now')
+           updated_at = strftime('%Y-%m-%d %H:%M:%f','now')
          WHERE id = ?`,
       ).run(
         data.default_sample_count,
@@ -605,20 +633,19 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
         latest.id,
       );
       replaceEquipmentLinks(id, data.equipment_ids);
-      const codeChanged = existing.code !== data.code;
       auditLabTemplate(
         id,
         actorId,
         'UPDATE',
-        `${versionSummary(data)}${codeChanged ? `; code_changed_from=${existing.code}` : ''}`,
+        versionSummary(data),
       );
     } else {
-      const versionResult = db
+      db
         .prepare(
           `INSERT INTO lab_test_template_versions (
              template_id, version, default_sample_count, parameters_json, connector_choices_json,
-             applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, requires_approved_template_for_submission, created_by
-           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, requires_approved_template_for_submission, created_by, status
+           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'DRAFT')`,
         )
         .run(
           id,
@@ -645,27 +672,58 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
  * promotes it to current_version_id and sets the template ACTIVE. The approver
  * identity always comes from the session, never the request body.
  */
-export function approveLabTemplate(id: number, actorId: number): void {
+export function submitLabTemplate(id: number, actor: { id: number; role: import('../types').Role }, expectedUpdatedAt?: string | null): void {
   transaction(() => {
     const db = getDb();
-    const template = db.prepare('SELECT id, code, status FROM lab_test_templates WHERE id = ?').get(id) as
-      | { id: number; code: string; status: string }
-      | undefined;
+    const template = db.prepare('SELECT id, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as { id: number; status: string; updated_at: string } | undefined;
     if (!template) throw new Error('Test template not found.');
-    if (template.status === 'ARCHIVED') throw new Error('Archived test templates cannot be approved.');
-    const latest = db
-      .prepare('SELECT id, version, approved_by FROM lab_test_template_versions WHERE template_id = ? ORDER BY version DESC LIMIT 1')
-      .get(id) as { id: number; version: number; approved_by: number | null };
-    const actor = db.prepare('SELECT id, role FROM users WHERE id = ? AND is_active = 1').get(actorId) as { id: number; role: import('../types').Role } | undefined;
-    if (!actor || !canApproveLabTemplateRecord(actor, { status: latest.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: Number((db.prepare('SELECT created_by FROM lab_test_template_versions WHERE id = ?').get(latest.id) as { created_by: number }).created_by), author_id: null })) {
-      throw new Error('The template author cannot approve this template version.');
+    if (template.status === 'ARCHIVED') throw new Error('Archived templates cannot be submitted.');
+    if (expectedUpdatedAt != null && expectedUpdatedAt !== template.updated_at) throw new LabTemplateConcurrencyError();
+    const latest = db.prepare('SELECT id, version, status, created_by FROM lab_test_template_versions WHERE template_id = ? ORDER BY version DESC LIMIT 1').get(id) as { id: number; version: number; status: string; created_by: number };
+    if (!canSubmitLabTemplateRecord(actor, { status: latest.status, created_by: latest.created_by })) throw new Error('Only the template author can submit a draft for review.');
+    const now = new Date().toISOString();
+    db.prepare("UPDATE lab_test_template_versions SET status = 'IN_REVIEW', submitted_by = ?, submitted_at = ?, updated_at = ? WHERE id = ? AND status = 'DRAFT'").run(actor.id, now, now, latest.id);
+    db.prepare('UPDATE lab_test_templates SET updated_at = ? WHERE id = ?').run(now, id);
+    auditLabTemplate(id, actor.id, 'SUBMIT', `submitted v${latest.version}`, 'DRAFT', 'IN_REVIEW');
+  });
+}
+
+/** Record an independent supervisor review while keeping the version IN_REVIEW. */
+export function reviewLabTemplate(id: number, actor: { id: number; role: import('../types').Role }, expectedUpdatedAt?: string | null): void {
+  transaction(() => {
+    const db = getDb();
+    const template = db.prepare('SELECT id, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as { id: number; status: string; updated_at: string } | undefined;
+    if (!template) throw new Error('Test template not found.');
+    if (template.status === 'ARCHIVED') throw new Error('Archived templates are read-only.');
+    if (expectedUpdatedAt != null && expectedUpdatedAt !== template.updated_at) throw new LabTemplateConcurrencyError();
+    const latest = db.prepare('SELECT id, version, status, created_by FROM lab_test_template_versions WHERE template_id = ? ORDER BY version DESC LIMIT 1').get(id) as { id: number; version: number; status: string; created_by: number };
+    if (!canReviewLabTemplateRecord(actor, { status: latest.status, created_by: latest.created_by })) throw new Error('You cannot review this template version.');
+    const now = new Date().toISOString();
+    db.prepare("UPDATE lab_test_template_versions SET reviewed_by = ?, reviewed_at = ?, updated_at = ? WHERE id = ? AND status = 'IN_REVIEW'").run(actor.id, now, now, latest.id);
+    db.prepare('UPDATE lab_test_templates SET updated_at = ? WHERE id = ?').run(now, id);
+    auditLabTemplate(id, actor.id, 'STATUS_TRANSITION', `reviewed v${latest.version}`, 'IN_REVIEW', 'IN_REVIEW');
+  });
+}
+
+/** Approve an IN_REVIEW version; e-signature is verified by the HTTP handler. */
+export function approveLabTemplate(id: number, actor: { id: number; role: import('../types').Role }, expectedUpdatedAt?: string | null, note?: string | null): void {
+  transaction(() => {
+    const db = getDb();
+    const template = db.prepare('SELECT id, code, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as { id: number; code: string; status: string; updated_at: string } | undefined;
+    if (!template) throw new Error('Test template not found.');
+    if (template.status === 'ARCHIVED') throw new Error('Archived templates cannot be approved.');
+    if (expectedUpdatedAt != null && expectedUpdatedAt !== template.updated_at) throw new LabTemplateConcurrencyError();
+    const latest = db.prepare('SELECT id, version, status, created_by FROM lab_test_template_versions WHERE template_id = ? ORDER BY version DESC LIMIT 1').get(id) as { id: number; version: number; status: string; created_by: number };
+    if (!canApproveLabTemplateVersionRecord(actor, { status: latest.status, created_by: latest.created_by })) throw new Error('You cannot approve this template version.');
+    const now = new Date().toISOString();
+    const previous = db.prepare("SELECT id, version FROM lab_test_template_versions WHERE template_id = ? AND status = 'APPROVED' AND id <> ?").all(id, latest.id) as Array<{ id: number; version: number }>;
+    for (const prev of previous) {
+      db.prepare("UPDATE lab_test_template_versions SET status = 'SUPERSEDED', updated_at = ? WHERE id = ?").run(now, prev.id);
+      auditLabTemplate(id, actor.id, 'SUPERSEDE', `v${prev.version} superseded by v${latest.version}`, 'APPROVED', 'SUPERSEDED');
     }
-    if (latest.approved_by !== null) throw new Error('The current version is already approved.');
-    db.prepare("UPDATE lab_test_template_versions SET approved_by = ?, updated_at = datetime('now') WHERE id = ?").run(actorId, latest.id);
-    db.prepare(
-      "UPDATE lab_test_templates SET current_version_id = ?, status = 'ACTIVE', updated_at = datetime('now') WHERE id = ?",
-    ).run(latest.id, id);
-    auditLabTemplate(id, actorId, 'APPROVAL', `approved v${latest.version} (${template.code})`, null, `v${latest.version}`);
+    db.prepare("UPDATE lab_test_template_versions SET status = 'APPROVED', approved_by = ?, approved_at = ?, updated_at = ? WHERE id = ? AND status = 'IN_REVIEW'").run(actor.id, now, now, latest.id);
+    db.prepare("UPDATE lab_test_templates SET current_version_id = ?, status = 'ACTIVE', updated_at = ? WHERE id = ?").run(latest.id, now, id);
+    auditLabTemplate(id, actor.id, 'APPROVAL', esignAuditNote(note) + `; approved v${latest.version} (${template.code})`, 'IN_REVIEW', 'APPROVED');
   });
 }
 
@@ -733,7 +791,7 @@ export function listLabTemplateReferences(): LabTemplateReference[] {
        LEFT JOIN lab_document_versions sopv ON sopv.id = sop.current_version_id
        LEFT JOIN lab_documents wi ON wi.id = v.wi_id
        LEFT JOIN lab_document_versions wiv ON wiv.id = wi.current_version_id
-       WHERE t.status = 'ACTIVE' AND v.approved_by IS NOT NULL
+       WHERE t.status = 'ACTIVE' AND v.status = 'APPROVED'
        ORDER BY t.name COLLATE NOCASE ASC, t.id ASC`,
     )
     .all() as LabTemplateReference[];
@@ -760,21 +818,19 @@ async function handleLabTemplatePost(context: APIContext, templateId: number | n
   const formAction = templateId === null ? 'save' : String(form.get('form_action') ?? 'save');
 
   const allowed =
-    formAction === 'approve'
-      ? canApproveLabTemplateRecord(
-          { id: user.id, role: user.role },
-          (() => {
-            const view = getLabTemplateForEdit(templateId as number);
-            return view ? { status: view.version.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: view.version.created_by, author_id: null } : { status: 'MISSING', created_by: -1, author_id: null };
-          })(),
-        )
+    formAction === 'submit'
+      ? (() => { const view = getLabTemplateForEdit(templateId as number); return Boolean(view && canSubmitLabTemplateRecord({ id: user.id, role: user.role }, { status: view.version.status, created_by: view.version.created_by })); })()
+      : formAction === 'review'
+        ? (() => { const view = getLabTemplateForEdit(templateId as number); return Boolean(view && canReviewLabTemplateRecord({ id: user.id, role: user.role }, { status: view.version.status, created_by: view.version.created_by })); })()
+        : formAction === 'approve'
+          ? (() => { const view = getLabTemplateForEdit(templateId as number); return Boolean(view && canApproveLabTemplateVersionRecord({ id: user.id, role: user.role }, { status: view.version.status, created_by: view.version.created_by })); })()
       : formAction === 'archive'
         ? canArchiveLabTemplate(user.role)
         : templateId === null
           ? canCreateLabTemplate(user.role)
           : (() => {
               const view = getLabTemplateForEdit(templateId);
-              return Boolean(view && canEditLabTemplateRecord({ id: user.id, role: user.role }, { status: view.version.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: view.version.created_by, author_id: null }));
+              return Boolean(view && canEditLabTemplateRecord({ id: user.id, role: user.role }, { status: view.version.status, created_by: view.version.created_by, author_id: null }));
             })();
   if (!allowed) {
     setFlash(context, 'error', 'You do not have permission to manage test templates.');
@@ -784,8 +840,21 @@ async function handleLabTemplatePost(context: APIContext, templateId: number | n
   if (csrf) return csrf;
 
   try {
+    if (formAction === 'submit') {
+      submitLabTemplate(templateId as number, { id: user.id, role: user.role }, String(form.get('version_token') || '') || null);
+      setFlash(context, 'success', 'Test template submitted for review.');
+      return context.redirect(`/lab/templates/${templateId}`);
+    }
+    if (formAction === 'review') {
+      reviewLabTemplate(templateId as number, { id: user.id, role: user.role }, String(form.get('version_token') || '') || null);
+      setFlash(context, 'success', 'Test template review recorded.');
+      return context.redirect(`/lab/templates/${templateId}`);
+    }
     if (formAction === 'approve') {
-      approveLabTemplate(templateId as number, user.id);
+      const outcome = requireEsignature(user.id, form.get(ESIGN_FIELD_NAME)?.toString() ?? null);
+      if (outcome === 'rate_limited') { setFlash(context, 'error', ESIGN_RATE_LIMITED_MESSAGE_AR); return context.redirect(`/lab/templates/${templateId}`); }
+      if (outcome === 'invalid') { setFlash(context, 'error', ESIGN_FAILURE_MESSAGE_AR); return context.redirect(`/lab/templates/${templateId}`); }
+      approveLabTemplate(templateId as number, { id: user.id, role: user.role }, String(form.get('version_token') || '') || null, form.get('note')?.toString() ?? null);
       setFlash(context, 'success', 'Test template version approved.');
       return context.redirect(`/lab/templates/${templateId}`);
     }
@@ -816,7 +885,7 @@ async function handleLabTemplatePost(context: APIContext, templateId: number | n
       setFlash(context, 'success', `Test template ${data.code} created.`);
       return context.redirect(`/lab/templates/${id}`);
     }
-    updateLabTemplate(templateId, data, user.id);
+    updateLabTemplate(templateId, data, user.id, String(form.get('version_token') || '') || null);
     setFlash(context, 'success', `Test template ${data.code} updated.`);
     return context.redirect(`/lab/templates/${templateId}`);
   } catch (err) {

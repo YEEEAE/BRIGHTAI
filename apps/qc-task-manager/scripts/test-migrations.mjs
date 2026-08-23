@@ -51,13 +51,16 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 34);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 34);
+    assert.equal(result.applied.length, 35);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 35);
     for (const [table, column] of [
       ['lab_test_records', 'testing_date'], ['lab_test_records', 'actual_force'],
       ['lab_test_records', 'torque_value'], ['lab_test_records', 'humidity_measured'],
       ['lab_test_samples', 'applied_pressure'], ['lab_test_samples', 'volume_liter'],
       ['lab_test_template_versions', 'effective_date'],
+      ['lab_test_template_versions', 'status'], ['lab_test_template_versions', 'submitted_by'],
+      ['lab_test_template_versions', 'submitted_at'], ['lab_test_template_versions', 'reviewed_by'],
+      ['lab_test_template_versions', 'reviewed_at'], ['lab_test_template_versions', 'approved_at'],
       ['lab_documents', 'source_revision'], ['lab_documents', 'source_date'],
       ['lab_documents', 'source_register_code'], ['lab_documents', 'source_class'],
       ['lab_documents', 'creation_origin'], ['lab_documents', 'source_page'],
@@ -141,7 +144,7 @@ try {
     const before = db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId);
     assert.equal(verifyQcAuditChain(db).status, 'PASS');
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 3);
+    assert.equal(upgraded.applied.length, 4);
     assert.deepEqual(db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId), before);
     db.prepare('DELETE FROM tasks WHERE id=1').run();
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log WHERE id=? AND task_id=1').get(qcId).n, 1);
@@ -175,7 +178,7 @@ try {
       .all();
 
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 24, 'upgrade applies exactly migrations 011-034');
+    assert.equal(upgraded.applied.length, 25, 'upgrade applies exactly migrations 011-035');
     const after = db
       .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
       .all();
@@ -215,7 +218,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 34);
+    assert.equal(first.applied.length, 35);
     assert.equal(second.applied.length, 0);
     db.close();
   }

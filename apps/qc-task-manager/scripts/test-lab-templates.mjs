@@ -59,9 +59,11 @@ try {
   const { getDb } = await import('../src/lib/db.ts');
   const tpl = await import('../src/lib/lab/templates.ts');
   const tests = await import('../src/lib/lab/tests.ts');
+  const perms = await import('../src/lib/permissions.ts');
 
   const db = getDb();
   const managerId = Number(db.prepare("SELECT id FROM users WHERE username = 'manager'").get().id);
+  const supervisorId = Number(db.prepare("SELECT id FROM users WHERE username = 'supervisor'").get().id);
   const adminId = Number(db.prepare("SELECT id FROM users WHERE username = 'admin'").get().id);
   const employeeId = Number(db.prepare("SELECT id FROM users WHERE username = 'employee'").get().id);
 
@@ -129,13 +131,22 @@ try {
   console.log('\n■ Approve');
   let approvedVersionId;
   {
-    tpl.approveLabTemplate(templateId, adminId);
+    tpl.submitLabTemplate(templateId, { id: managerId, role: 'manager' });
+    eq(db.prepare('SELECT status FROM lab_test_template_versions WHERE template_id = ?').get(templateId).status, 'IN_REVIEW', 'submit: version enters IN_REVIEW');
+    tpl.reviewLabTemplate(templateId, { id: supervisorId, role: 'supervisor' });
+    const reviewed = db.prepare('SELECT reviewed_by, reviewed_at FROM lab_test_template_versions WHERE template_id = ?').get(templateId);
+    eq(reviewed.reviewed_by, supervisorId, 'review: version records reviewer');
+    ok(reviewed.reviewed_at, 'review: version records review timestamp');
+    const reviewAudit = tpl.getLabTemplateAuditTimeline(templateId);
+    ok(reviewAudit.some((a) => a.action === 'STATUS_TRANSITION' && String(a.note).includes('reviewed')), 'review: audit recorded');
+    tpl.approveLabTemplate(templateId, { id: adminId, role: 'admin' }, null, 'Verified by QC');
     const r = db.prepare('SELECT status, current_version_id FROM lab_test_templates WHERE id = ?').get(templateId);
     eq(r.status, 'ACTIVE', 'approve: template ACTIVE');
     approvedVersionId = r.current_version_id;
 
-    const v = db.prepare('SELECT approved_by FROM lab_test_template_versions WHERE id = ?').get(approvedVersionId);
+    const v = db.prepare('SELECT approved_by, status FROM lab_test_template_versions WHERE id = ?').get(approvedVersionId);
     eq(v.approved_by, adminId, 'approve: version frozen with approver');
+    eq(v.status, 'APPROVED', 'approve: version status APPROVED');
     const audit = tpl.getLabTemplateAuditTimeline(templateId);
     ok(audit.some((a) => a.action === 'APPROVAL'), 'approve: LAB_TEMPLATE/APPROVAL audit recorded');
   }
@@ -206,7 +217,9 @@ try {
 
     // Promote v2 and confirm a NEW resolution moves to v2 while the existing
     // test keeps its v1 snapshot.
-    tpl.approveLabTemplate(templateId, adminId);
+    tpl.submitLabTemplate(templateId, { id: managerId, role: 'manager' });
+    tpl.reviewLabTemplate(templateId, { id: supervisorId, role: 'supervisor' });
+    tpl.approveLabTemplate(templateId, { id: adminId, role: 'admin' });
     const resolvedV2 = tests.resolveLabTemplateVersion(v2Id, 'air');
     ok(resolvedV2 && resolvedV2.template_version_id === v2Id, 'versioned: after v2 approval, v2 is current');
     eq(tests.resolveLabTemplateVersion(v1Id, 'air'), null, 'versioned: v1 no longer current');
@@ -228,6 +241,27 @@ try {
       archiveBlocked = true;
     }
     ok(archiveBlocked, 'archive: archived template is read-only');
+  }
+
+  // ── RBAC, immutability, and optimistic concurrency ──
+  console.log('\n■ RBAC + immutability + concurrency');
+  {
+    ok(['employee', 'supervisor', 'manager', 'admin'].every((role) => perms.canCreateLabTemplate(role)), 'rbac: all four roles can create own drafts');
+    ok(perms.canReviewLabTemplate('supervisor') && perms.canReviewLabTemplate('manager') && perms.canReviewLabTemplate('admin'), 'rbac: supervisor+ can review');
+    ok(!perms.canReviewLabTemplate('employee'), 'rbac: employee cannot review');
+    ok(perms.canApproveLabTemplate('manager') && perms.canApproveLabTemplate('admin') && !perms.canApproveLabTemplate('supervisor'), 'rbac: manager/admin can approve');
+    ok(!perms.canApproveLabTemplateVersionRecord({ id: managerId, role: 'manager' }, { status: 'IN_REVIEW', created_by: managerId }), 'rbac: author cannot self-approve');
+    const secondId = tpl.createLabTemplate(templateData({ code: 'TPL-SECOND' }), managerId);
+    tpl.submitLabTemplate(secondId, { id: managerId, role: 'manager' });
+    tpl.reviewLabTemplate(secondId, { id: supervisorId, role: 'supervisor' });
+    tpl.approveLabTemplate(secondId, { id: adminId, role: 'admin' });
+    const secondToken = db.prepare('SELECT updated_at FROM lab_test_templates WHERE id = ?').get(secondId).updated_at;
+    let conflict = false;
+    try { tpl.updateLabTemplate(secondId, templateData({ code: 'TPL-SECOND' }), managerId, 'stale-token'); } catch (err) { conflict = err instanceof tpl.LabTemplateConcurrencyError; }
+    ok(conflict, 'concurrency: stale updated_at token rejects overwrite');
+    let identityBlocked = false;
+    try { tpl.updateLabTemplate(secondId, templateData({ code: 'TPL-CHANGED' }), managerId, secondToken); } catch { identityBlocked = true; }
+    ok(identityBlocked, 'identity: code cannot change after first approval');
   }
 
   console.log(`\n${passed} passed, ${failed} failed`);

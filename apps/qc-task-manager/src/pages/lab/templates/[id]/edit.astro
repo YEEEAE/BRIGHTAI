@@ -36,7 +36,7 @@ try {
   loadError = 'Could not load the test template. Try reloading — if the problem persists, contact an administrator.';
 }
 
-if (!editView || !canEditLabTemplateRecord({ id: user.userId, role }, { status: editView.version.approved_by === null ? 'DRAFT' : 'ACTIVE', created_by: editView.version.created_by, author_id: null })) {
+if (!editView || !canEditLabTemplateRecord({ id: user.userId, role }, { status: editView.version.status, created_by: editView.version.created_by, author_id: null })) {
   setFlash(Astro, 'error', 'You do not have permission to edit this test template.');
   return Astro.redirect('/lab/templates');
 }
@@ -81,8 +81,10 @@ if (editView?.version.connector_choices_json) {
 }
 
 const versionNote =
-  editView && editView.version.approved_by !== null
-    ? `The current version v${editView.version.version} is approved and immutable — saving creates draft version v${editView.version.version + 1}.`
+  editView && editView.version.status === 'IN_REVIEW'
+    ? `Version v${editView.version.version} is in review and cannot be edited until the review decision.`
+    : editView && editView.template.status === 'ACTIVE' && editView.version.status === 'DRAFT'
+    ? `Editing draft version v${editView.version.version}. Template code and test type are locked after the first approval.`
     : editView
       ? `Editing draft version v${editView.version.version} in place.`
       : '';
@@ -128,6 +130,8 @@ const versionNote =
         mode="edit"
         template={editView.template}
         version={editView.version}
+        versionToken={editView.template.updated_at}
+        immutableIdentity={editView.template.status === 'ACTIVE'}
         parameters={parameters}
         selectedEquipmentIds={editView.equipmentIds}
         selectedConnectorChoices={selectedConnectorChoices}

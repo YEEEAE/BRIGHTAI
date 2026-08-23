@@ -201,6 +201,7 @@ export type LabFinalResult = 'PASS' | 'FAIL' | 'HOLD';
 export type LabRetestReason = 'FAIL' | 'HOLD' | 'SAMPLE_ISSUE' | 'EQUIPMENT_ISSUE' | 'PROCEDURAL_ISSUE' | 'OTHER';
 // status values match lab_test_templates.status CHECK (migration 011).
 export type LabTemplateStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
+export type LabTemplateVersionStatus = 'DRAFT' | 'IN_REVIEW' | 'APPROVED' | 'SUPERSEDED';
 // type values match lab_documents.type CHECK (migration 013).
 export type LabDocumentType = 'SOP' | 'WI';
 // status values match lab_documents.status / lab_document_versions.status CHECKs (migration 013).
@@ -237,6 +238,12 @@ export interface LabTestTemplateVersion {
   wi_id: number | null;
   created_by: number;
   approved_by: number | null;
+  status: LabTemplateVersionStatus;
+  submitted_by: number | null;
+  submitted_at: string | null;
+  reviewed_by: number | null;
+  reviewed_at: string | null;
+  approved_at: string | null;
   created_at: string;
   updated_at: string;
   effective_date: string | null;

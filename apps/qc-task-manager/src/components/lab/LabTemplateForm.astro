@@ -18,6 +18,8 @@ const {
   parameters = null,
   selectedEquipmentIds = [],
   selectedConnectorChoices = [],
+  versionToken = null,
+  immutableIdentity = false,
   products,
   sops,
   wis,
@@ -37,6 +39,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
 
 <form method="POST" action={actionUrl}>
   {mode === 'edit' && <input type="hidden" name="form_action" value="save" />}
+  {mode === 'edit' && <input type="hidden" name="version_token" value={versionToken ?? ''} />}
   <div class="space-y-6">
     <section aria-labelledby="sec-template-identity" class={sectionCls}>
       <h2 id="sec-template-identity" class={sectionTitleCls}>Template Identity</h2>
@@ -67,17 +70,20 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
             maxlength="60"
             pattern="[A-Za-z0-9][A-Za-z0-9._-]*"
             value={template?.code ?? ''}
+            disabled={immutableIdentity}
             dir="ltr"
             class={inputCls}
           />
+          {immutableIdentity && <input type="hidden" name="code" value={template?.code ?? ''} />}
           <p class="mt-1 text-xs text-slate-500">Unique and stable across versions (e.g. AIR-TEMPLATE-001).</p>
         </div>
         <div>
           <label for="test_type" class={labelCls}>Test Type <span class="text-red-600" aria-hidden="true">*</span></label>
-          <select id="test_type" name="test_type" required class={inputCls}>
+          <select id="test_type" name="test_type" required disabled={immutableIdentity} class={inputCls}>
             <option value="air" selected={template?.test_type !== 'vacuum'}>AIR</option>
             <option value="vacuum" selected={template?.test_type === 'vacuum'}>VACUUM</option>
           </select>
+          {immutableIdentity && <input type="hidden" name="test_type" value={template?.test_type ?? 'air'} />}
         </div>
         <div>
           <label for="default_sample_count" class={labelCls}>Default Sample Count</label>

@@ -18,7 +18,7 @@ import {
   getLabTemplateDetail,
   parseTemplateParameters,
 } from '../../../lib/lab/templates';
-import { canApproveLabTemplate, canArchiveLabTemplate, canEditLabTemplate } from '../../../lib/permissions';
+import { canArchiveLabTemplate, canEditLabTemplate, canSubmitLabTemplateRecord, canReviewLabTemplateRecord, canApproveLabTemplateVersionRecord } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -48,7 +48,11 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 const latestVersion = detail?.versions[detail.versions.length - 1] ?? null;
-const latestIsDraft = latestVersion !== null && latestVersion.approved_by === null;
+const latestIsDraft = latestVersion?.status === 'DRAFT';
+const latestInReview = latestVersion?.status === 'IN_REVIEW';
+const canSubmit = detail && latestVersion ? canSubmitLabTemplateRecord({ id: user.userId, role }, { status: latestVersion.status, created_by: latestVersion.created_by }) : false;
+const canReview = detail && latestVersion ? canReviewLabTemplateRecord({ id: user.userId, role }, { status: latestVersion.status, created_by: latestVersion.created_by }) : false;
+const canApprove = detail && latestVersion ? canApproveLabTemplateVersionRecord({ id: user.userId, role }, { status: latestVersion.status, created_by: latestVersion.created_by }) : false;
 const editUrl = `/lab/templates/${id ?? 0}/edit`;
 
 let currentParams: ReturnType<typeof parseTemplateParameters> | null = null;
@@ -111,13 +115,27 @@ if (latestVersion?.connector_choices_json) {
                 Edit Template
               </a>
             )}
-            {canApproveLabTemplate(role) && detail.template.status !== 'ARCHIVED' && latestIsDraft && (
+            {canSubmit && detail.template.status !== 'ARCHIVED' && latestIsDraft && (
+              <form method="POST" action={editUrl}>
+                <input type="hidden" name="form_action" value="submit" />
+                <input type="hidden" name="version_token" value={detail.template.updated_at} />
+                <button type="submit" class="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">Submit for review</button>
+              </form>
+            )}
+            {canReview && detail.template.status !== 'ARCHIVED' && latestInReview && (
+              <form method="POST" action={editUrl}>
+                <input type="hidden" name="form_action" value="review" />
+                <input type="hidden" name="version_token" value={detail.template.updated_at} />
+                <button type="submit" class="rounded-lg border border-indigo-300 bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-800 shadow-sm hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Mark reviewed</button>
+              </form>
+            )}
+            {canApprove && detail.template.status !== 'ARCHIVED' && latestInReview && (
               <form method="POST" action={editUrl}>
                 <input type="hidden" name="form_action" value="approve" />
-                <button
-                  type="submit"
-                  class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                >
+                <input type="hidden" name="version_token" value={detail.template.updated_at} />
+                <input type="text" name="note" placeholder="Approval note (optional)" aria-label="Approval note" class="rounded-md border border-slate-300 px-3 py-2 text-sm" />
+                <input type="password" name="esignature_password" required autocomplete="current-password" placeholder="E-signature password" aria-label="E-signature password" class="mt-2 rounded-md border border-slate-300 px-3 py-2 text-sm" />
+                <button type="submit" class="mt-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600">
                   Approve v{latestVersion!.version}
                 </button>
               </form>
@@ -244,8 +262,8 @@ if (latestVersion?.connector_choices_json) {
                   <tr>
                     <td class="px-3 py-2 font-medium text-slate-900" dir="ltr">v{v.version}</td>
                     <td class="px-3 py-2">
-                      <span class={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${v.approved_by !== null ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                        {v.approved_by !== null ? 'Approved' : 'Draft'}
+                      <span class={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${v.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : v.status === 'SUPERSEDED' ? 'bg-slate-200 text-slate-700' : v.status === 'IN_REVIEW' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'}`}>
+                        {v.status === 'IN_REVIEW' ? 'In Review' : v.status === 'APPROVED' ? 'Approved' : v.status === 'SUPERSEDED' ? 'Superseded' : 'Draft'}
                       </span>
                       {detail.template.current_version_id === v.id && (
                         <span class="ms-2 text-xs font-medium text-slate-500">current</span>

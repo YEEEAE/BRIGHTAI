@@ -273,12 +273,41 @@ export function canApproveLabTemplateRecord(
   if (template.created_by === user.id || template.author_id === user.id) return false;
   return template.status === 'DRAFT';
 }
+
+/** Template contributors own their draft; review and approval are separate lanes. */
+export function canSubmitLabTemplateRecord(
+  user: Pick<User, 'id' | 'role'>,
+  template: LabTemplateAuth,
+): boolean {
+  return canEditLabTemplateRecord(user, template) && template.status === 'DRAFT';
+}
+
+export function canReviewLabTemplate(role: Role): boolean {
+  return hasRankAtLeast(role, 'supervisor');
+}
+
+export function canReviewLabTemplateRecord(
+  user: Pick<User, 'id' | 'role'>,
+  template: LabTemplateAuth,
+): boolean {
+  if (!canReviewLabTemplate(user.role)) return false;
+  if (template.created_by === user.id || template.author_id === user.id) return false;
+  return template.status === 'IN_REVIEW';
+}
+
+export function canApproveLabTemplateVersionRecord(
+  user: Pick<User, 'id' | 'role'>,
+  template: LabTemplateAuth,
+): boolean {
+  if (!canApproveLabTemplate(user.role)) return false;
+  if (template.created_by === user.id || template.author_id === user.id) return false;
+  return template.status === 'IN_REVIEW';
+}
 export function canEditLabTemplateRecord(
   user: Pick<User, 'id' | 'role'>,
   template: LabTemplateAuth,
 ): boolean {
   if (template.status === 'ARCHIVED') return false;
-  if (hasRankAtLeast(user.role, 'manager')) return true;
   return (template.created_by === user.id || template.author_id === user.id) && template.status === 'DRAFT';
 }
 
