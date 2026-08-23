@@ -1,4 +1,22 @@
 ---
+### 2026-08-23 — CURRENT-INDEXING-AUDIT-002: إعادة تشغيل تدقيق الفهرسة الحالي للصفحات الثماني ذات الأولوية — GSC غير متاح، clean build أخضر جزئيًا، وlink-graph gate ما زال غير موثوق
+
+- **Scope**: read-only indexing audit + تحديث تقرير `audit/report/2026-08-23-current-indexing-audit.md`؛ لا تعديل صفحات أو robots أو sitemap أو deploy أو commit أو push. شغّلت clean `npm run build` فقط للتحقق؛ أعيد أثر البناء العرضي في `render.yaml` إلى حالته السابقة.
+- **GSC/live boundary**: لا يوجد GSC connector/export؛ كل URL status/last crawl/GSC canonical/GSC sitemap/impressions/clicks/query = **N/A**. `curl` فشل DNS لـ `brightai.site`. أداة الويب فتحت homepage فقط (last month) وفشلت الأهداف وrobots/sitemap بـ cache miss أو safe-open؛ لا production proof.
+- **Fresh local evidence**: `npm run build` = Complete (2026-08-23 21:57 +03)، `dist/client` = **275 HTML**، sitemap = **258 URL**، `seo:check` PASS، `seo:schema` PASS بعد توليد 19 FAQ artifacts، `seo:hreflang` PASS (259/0)، `seo:word-count` PASS (96/96). Targeted BFS من `/`: governance platform depth 1/247 incoming، hub depth 2/26، assessment depth 1/245، risk 1/245، firewall 1/250، audit trail 1/248، policy mapping 1/245، Riyadh banking depth 2/8.
+- **Findings**: clean build emits **26 Astro route-collision warnings**؛ `seo:link-graph --strict` exits 1 over 276 files and reports existing root/target paths as broken بسبب path-normalization/validator contract، لذلك لا يُعتبر crawl proof until fixed/clarified. Riyadh target has an `sr-only` H1; live/mobile render remains unverified.
+- **Decision**: NO-GO for publishing more content until link-graph gate is trustworthy, live HTTP + current GSC export are obtained, and route-collision warnings are resolved or explicitly accepted. Strong local signals do not prove indexing; old 2026-07-25 crawled-not-indexed snapshot must not cause bulk delete/noindex.
+- **Status**: report updated locally; no production verification, commit, push, or deploy.
+
+### 2026-08-23 — CURRENT-INDEXING-AUDIT-001: تدقيق فهرسة حالي للصفحات ذات أولوية حوكمة AI — GSC غير متاح، evidence محلي قوي مع P0 لبناء نظيف وSchema
+
+- **Scope**: تدقيق read-only للصفحات الثماني ذات الأولوية؛ أُنشئ `audit/report/2026-08-23-current-indexing-audit.md` فقط، بدون تعديل صفحات أو sitemap أو robots أو deploy أو commit أو push.
+- **GSC/live boundary**: لا يوجد Search Console connector أو export حالي، لذلك status/last crawl/GSC canonical/impressions/clicks/query = **N/A**. `curl` لكل الأهداف و`robots.txt` و`sitemap.xml` فشل بـ `Could not resolve host: brightai.site`؛ الإنتاج وCloudflare غير متحققين.
+- **Local evidence**: build الحالي يحتوي الأهداف الثمانية كـ HTML ثابت؛ كلها self-canonical، `index, follow`، H1 واحد، viewport، `lang=ar`، وموجودة في local sitemap 258 URL. الكلمات بعد إزالة الوسوم تقريبًا 1,136–2,084. `seo:hreflang` PASS (259/0)، `seo:word-count` PASS (96/96).
+- **P0 findings**: `seo:check` FAIL بسبب artifacts `404 2.html`, `500 2.html`, `index 2.html` التي تكسر canonical/path/hreflang checks؛ `seo:schema` FAIL لأن FAQ schema غير متزامن مع صفحات الحلول؛ `seo:link-graph --strict` غير صالح كإثبات site-wide نظيف حتى تُعزل artifacts. لا يوجد دليل يبرر bulk-delete أو noindex للأهداف.
+- **Decision**: NO-GO لنشر محتوى إضافي حتى ينظف build/indexing gate، تتصالح FAQ schema، ويتوفر تصدير GSC + تحقق HTTP إنتاجي. لا تُعامل لقطة 2026-07-25 كحقيقة حالية.
+- **Status**: تقرير audit delivered locally؛ لا production verification، لا commit، لا push، لا deploy.
+
 ### 2026-08-23 — SEO-CRAWLER-POLICY-002: توحيد سياسة الزواحف على فتح الوصول بالكامل بناءً على قرار المستخدم
 
 - **Scope**: `public/robots.txt`, `public/ai.txt`, `public/llms.txt`, `public/llms-full.txt` + تقرير `audit/report/2026-08-23-crawler-policy-normalization.md`؛ لا تعديل Cloudflare ولا deploy ولا commit ولا push.

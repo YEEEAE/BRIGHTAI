@@ -122,7 +122,7 @@ Design baseline:
 - Identify likely high-cost hero assets or hydration affecting mobile LCP.
 
 Do not push.
-- [ ] ✅ Prompt #1 — done & reviewed
+- [✅]  Prompt #1 — done & reviewed
 
 Acceptance: عندك خريطة كاملة للروابط + ملفات المصدر + مشاكل SEO + مشاكل التصميم قبل التعديل.
 
@@ -161,7 +161,7 @@ SEO/GEO requirement:
 Allow legitimate answer/search crawlers needed for citations while preventing accidental broad training access if that is the selected policy.
 
 Do not push.
-- [ ] ✅ Prompt #2 — done & reviewed
+- [✅]  Prompt #2 — done & reviewed
 
 # Prompt #3 — Fresh indexing audit and GSC remediation plan
 
@@ -199,7 +199,7 @@ Tasks:
 6. Do not bulk-delete or noindex pages solely because an old snapshot showed “crawled not indexed”.
 
 Do not push.
-- [ ] ✅ Prompt #3 — done & reviewed
+- [✅]  Prompt #3 — done & reviewed
 
 # Prompt #4 — Upgrade the AI Governance Platform commercial page
 
