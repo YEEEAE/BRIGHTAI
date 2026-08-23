@@ -574,6 +574,16 @@ export interface LabDocumentFormData {
   equipment_ids: number[];
 }
 
+type DocumentActor = number | { id: number; role: Role };
+
+function actorId(actor: DocumentActor): number {
+  return typeof actor === 'number' ? actor : actor.id;
+}
+
+function actorRole(actor: DocumentActor): Role | null {
+  return typeof actor === 'number' ? null : actor.role;
+}
+
 /** Editor page view: identity + current version + related-equipment ids. */
 export interface LabDocumentEditorView {
   document: LabDocument;
@@ -706,6 +716,32 @@ function auditLabDocument(
     .run(documentId, actorId, action, oldValue, newValue, note);
 }
 
+function auditLabDocumentVersion(versionId: number, actorIdValue: number, action: 'CREATE' | 'VERSION', note: string): void {
+  getDb()
+    .prepare(
+      `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note)
+       VALUES ('LAB_DOCUMENT_VERSION', ?, NULL, ?, ?, NULL, ?, ?)`,
+    )
+    .run(versionId, actorIdValue, action, 'DRAFT', note);
+}
+
+function notifyDocumentContentStarted(documentId: number, code: string, actor: number): void {
+  const recipients = getDb()
+    .prepare("SELECT id FROM users WHERE is_active = 1 AND role IN ('manager', 'admin') AND id <> ?")
+    .all(actor) as Array<{ id: number }>;
+  for (const recipient of recipients) {
+    createNotification({
+      userId: recipient.id,
+      taskId: null,
+      type: 'lab_document_content_started',
+      title: 'Document content started',
+      message: `${code} now has its first authored content.`,
+      actorId: actor,
+      href: `/lab/documents/${documentId}`,
+    });
+  }
+}
+
 function documentFormSummary(data: LabDocumentFormData, version: number): string {
   return `code=${data.code}; version=v${version}; type=${data.type}; owner=${data.owner_id ?? '—'}; product=${data.product_id ?? '—'}; equipment=${data.equipment_ids.length}`;
 }
@@ -736,12 +772,14 @@ export function listLabUsersForDocumentForm(): Array<{ id: number; full_name: st
  * transaction). Identity lives on lab_documents; the numbered content + change
  * summary live on lab_document_versions; current_version_id points at v1.
  */
-export function createLabDocument(data: LabDocumentFormData, actorId: number): number {
+export function createLabDocument(data: LabDocumentFormData, actor: DocumentActor): number {
+  const sessionActorId = actorId(actor);
+  const role = actorRole(actor);
   return transaction(() => {
     const db = getDb();
     assertDocumentReferencesExist(data);
     assertDocumentCodeAvailable(data.code, null);
-    const html = renderDocumentContent(data.content);
+    const ownerId = role === 'employee' ? sessionActorId : data.owner_id ?? sessionActorId;
     const result = db
       .prepare(
         `INSERT INTO lab_documents (code, title, type, description, product_id, owner_id, status, effective_date, review_due_date, created_by)
@@ -753,28 +791,33 @@ export function createLabDocument(data: LabDocumentFormData, actorId: number): n
         data.type,
         data.description,
         data.product_id,
-        data.owner_id,
+        ownerId,
         data.effective_date,
         data.review_due_date,
-        actorId,
+        sessionActorId,
       );
     const documentId = Number(result.lastInsertRowid);
-    const v = db
-      .prepare(
-        `INSERT INTO lab_document_versions (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
-         VALUES (?, 1, ?, ?, ?, ?, 'DRAFT')`,
-      )
-      .run(documentId, data.content, html, data.change_summary, actorId);
-    const versionId = Number(v.lastInsertRowid);
-    db.prepare('UPDATE lab_documents SET current_version_id = ? WHERE id = ?').run(versionId, documentId);
-    replaceDocumentEquipmentLinks(documentId, data.equipment_ids, actorId);
-    auditLabDocument(documentId, actorId, 'CREATE', documentFormSummary(data, 1));
+    auditLabDocument(documentId, sessionActorId, 'CREATE', data.content.trim() ? documentFormSummary(data, 1) : 'Document identity created; content not entered.');
+    if (data.content.trim()) {
+      const html = renderDocumentContent(data.content);
+      const v = db
+        .prepare(
+          `INSERT INTO lab_document_versions (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
+           VALUES (?, 1, ?, ?, ?, ?, 'DRAFT')`,
+        )
+        .run(documentId, data.content, html, data.change_summary, sessionActorId);
+      const versionId = Number(v.lastInsertRowid);
+      db.prepare('UPDATE lab_documents SET current_version_id = ? WHERE id = ?').run(versionId, documentId);
+      auditLabDocumentVersion(versionId, sessionActorId, 'VERSION', `Created v1 for ${data.code}.`);
+      notifyDocumentContentStarted(documentId, data.code, sessionActorId);
+    }
+    replaceDocumentEquipmentLinks(documentId, data.equipment_ids, sessionActorId);
     notifyDocumentReviewDue({
       id: documentId,
       code: data.code,
       title: data.title,
-      owner_id: data.owner_id,
-      created_by: actorId,
+      owner_id: ownerId,
+      created_by: sessionActorId,
       review_due_date: data.review_due_date,
     });
     return documentId;
@@ -787,7 +830,9 @@ export function createLabDocument(data: LabDocumentFormData, actorId: number): n
  * a DRAFT/IN_REVIEW document updates its current version in place. Both paths
  * write identity + content + links + audit in one transaction.
  */
-export function updateLabDocument(id: number, data: LabDocumentFormData, actorId: number): void {
+export function updateLabDocument(id: number, data: LabDocumentFormData, actor: DocumentActor): void {
+  const sessionActorId = actorId(actor);
+  const role = actorRole(actor);
   transaction(() => {
     const db = getDb();
     const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(id) as LabDocument | undefined;
@@ -798,6 +843,16 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actorId
     assertDocumentReferencesExist(data);
     assertDocumentCodeAvailable(data.code, id);
 
+    const ownerId = role === 'employee' ? document.owner_id ?? sessionActorId : data.owner_id ?? document.owner_id ?? sessionActorId;
+    if (!data.content.trim() && !document.current_version_id) {
+      db.prepare(
+        `UPDATE lab_documents SET code = ?, title = ?, type = ?, description = ?, product_id = ?, owner_id = ?, effective_date = ?, review_due_date = ?, updated_at = datetime('now') WHERE id = ?`,
+      ).run(data.code, data.title, data.type, data.description, data.product_id, ownerId, data.effective_date, data.review_due_date, id);
+      replaceDocumentEquipmentLinks(id, data.equipment_ids, sessionActorId);
+      auditLabDocument(id, sessionActorId, 'UPDATE', 'Catalog identity updated; content remains unentered.');
+      return;
+    }
+    if (!data.content.trim()) throw new Error('Document content is required to create or update a version.');
     const html = renderDocumentContent(data.content);
     const current = document.current_version_id
       ? (db.prepare('SELECT * FROM lab_document_versions WHERE id = ?').get(document.current_version_id) as
@@ -820,7 +875,7 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actorId
           `INSERT INTO lab_document_versions (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
            VALUES (?, ?, ?, ?, ?, ?, 'DRAFT')`,
         )
-        .run(id, next, data.content, html, data.change_summary, actorId);
+        .run(id, next, data.content, html, data.change_summary, sessionActorId);
       targetVersionId = Number(v.lastInsertRowid);
       versionNumber = next;
       action = 'VERSION';
@@ -832,7 +887,7 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actorId
             `INSERT INTO lab_document_versions (document_id, version, content_md, content_html_sanitized, change_summary, author_id, status)
              VALUES (?, 1, ?, ?, ?, ?, 'DRAFT')`,
           )
-          .run(id, data.content, html, data.change_summary, actorId);
+          .run(id, data.content, html, data.change_summary, sessionActorId);
         targetVersionId = Number(v.lastInsertRowid);
         versionNumber = 1;
       } else {
@@ -860,20 +915,24 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actorId
         data.type,
         data.description,
         data.product_id,
-        data.owner_id,
+        ownerId,
         data.effective_date,
         data.review_due_date,
         targetVersionId,
         nextStatus,
         id,
       );
-    replaceDocumentEquipmentLinks(id, data.equipment_ids, actorId);
-    auditLabDocument(id, actorId, action, documentFormSummary(data, versionNumber));
+    if (!document.current_version_id) {
+      auditLabDocumentVersion(targetVersionId, sessionActorId, 'VERSION', `Created v${versionNumber} for ${data.code}.`);
+      notifyDocumentContentStarted(id, data.code, sessionActorId);
+    }
+    replaceDocumentEquipmentLinks(id, data.equipment_ids, sessionActorId);
+    auditLabDocument(id, sessionActorId, action, documentFormSummary(data, versionNumber));
     notifyDocumentReviewDue({
       id,
       code: data.code,
       title: data.title,
-      owner_id: data.owner_id,
+      owner_id: ownerId,
       created_by: document.created_by,
       review_due_date: data.review_due_date,
     });
@@ -1389,11 +1448,11 @@ async function handleLabDocumentPost(context: APIContext, documentId: number | n
 
   try {
     if (documentId === null) {
-      const id = createLabDocument(data, user.id);
+      const id = createLabDocument(data, { id: user.id, role: user.role });
       setFlash(context, 'success', `Document ${data.code} created as a draft.`);
       return context.redirect(`/lab/documents/${id}`);
     }
-    updateLabDocument(documentId, data, user.id);
+    updateLabDocument(documentId, data, { id: user.id, role: user.role });
     setFlash(context, 'success', `Document ${data.code} saved.`);
     return context.redirect(`/lab/documents/${documentId}`);
   } catch (err) {

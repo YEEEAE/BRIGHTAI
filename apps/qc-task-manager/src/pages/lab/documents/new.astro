@@ -1,6 +1,6 @@
 ---
 // /lab/documents/new — create a controlled SOP/WI document (PROMPT 41, page
-// reference §40). Supervisor+ only (canCreateLabDocument); the shared editor
+// reference §40). All roles may create a catalog identity; the shared editor
 // component posts to this same URL and the middleware short-circuits the POST.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
@@ -56,8 +56,8 @@ try {
       <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
       <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Controlled Document</h1>
       <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Create a SOP or WI. The document is saved as a <strong>draft</strong> with version 1 — approval happens through the
-        workflow once it leaves the editor.
+        Create a SOP or WI identity first, then add content when ready. A numbered version is created only after the first
+        non-empty content save.
       </p>
     </header>
 

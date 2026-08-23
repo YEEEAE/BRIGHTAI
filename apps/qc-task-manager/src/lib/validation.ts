@@ -770,9 +770,6 @@ export const labDocumentSchema = z
     ),
   })
   .superRefine((data, ctx) => {
-    if (data.content.trim() === '') {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Document content is required.' });
-    }
     if (data.effective_date && data.review_due_date && data.review_due_date < data.effective_date) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Review Due Date cannot be before the Effective Date.' });
     }

@@ -8,6 +8,15 @@ version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-LAB-DOCUMENT-AUTHORING-004: فصل هوية SOP/WI عن أول محتوى مع authoring لجميع الأدوار — **التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy**
+
+- **Scope**: `apps/qc-task-manager/` controlled documents. سمحت الخدمة بإنشاء `lab_documents` كـ catalog-only بدون `current_version_id` أو version مصطنعة؛ أول حفظ محتوى غير فارغ ينشئ v1 DRAFT داخل transaction، يربط `current_version_id`، يثبت author من session، ويسجل `LAB_DOCUMENT_VERSION/VERSION` في `qc_audit_log`.
+- **RBAC/lifecycle**: كل الأدوار تنشئ draft identity؛ الموظف يُربط owner له server-side ولا يستطيع إعادة تعيين الملكية؛ employee/supervisor يعدلان فقط owned/authored DRAFT، supervisor يراجع سجلًا آخر، manager/admin يعتمدون فقط بعد منع self-review/self-approval؛ APPROVED بقي immutable وedit ينشئ vN+1 DRAFT.
+- **UI/security**: editor يقبل catalog-only ويعرض `No content has been entered yet.` و`Add Content`؛ detail لا يعرض v1 عند غياب المحتوى؛ middleware أبقى auth + CSRF + path-bound id + Zod، والمحتوى يمر عبر renderer الآمن. أضيف `lab_document_content_started` فقط لإشعار manager/admin عند أول محتوى، مع إعادة استخدام نظام notifications الحالي.
+- **Files**: `apps/qc-task-manager/src/lib/lab/documents.ts`, `src/lib/permissions.ts`, `src/lib/validation.ts`, `src/lib/notifications.ts`, `src/components/lab/LabDocumentEditor.astro`, صفحات `lab/documents/new.astro` و`[id].astro` وصفحات الإشعارات، و`apps/qc-task-manager/scripts/test-lab-documents.mjs`.
+- **Verification**: `pnpm test:lab-documents` = **271 passed / 0 failed**؛ `pnpm typecheck` = **0 errors / 0 warnings / 20 hints**؛ `pnpm build` = **Complete**؛ `pnpm test` = **ناجح بالكامل**؛ `git diff --check` = **ناجح** مع تحذير fsmonitor IPC فقط. لا E2E/production verification.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ المستخدم يراجع ويلتزم بنفسه.
+
 ### 2026-08-23 — QC-LAB-CONTRIBUTOR-MASTER-DATA-003: ربط نماذج Equipment/Product/Calibration بطابور مراجعة المساهمين — **التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy**
 
 - **Scope**: مساهمو employee/supervisor يرسلون CREATE/UPDATE proposal عبر Change Review Queue بدون canonical mutation؛ manager/admin يحتفظون بالسلوك المباشر. ربط اعتماد الطلبات بخدمات `equipment.ts` و`products.ts` و`calibration.ts` بدل تكرار INSERT/UPDATE/audit داخل `changeRequests.ts`.

@@ -507,8 +507,8 @@ export function canEditLabDocumentRecord(
   if (!canEditLabDocument(user.role)) return false;
   if (doc.status === 'ARCHIVED' || doc.status === 'SUPERSEDED') return false;
   if (hasRankAtLeast(user.role, 'manager')) return true;
-  // employee/supervisor: own document, draft/review states only
-  return doc.owner_id === user.id || doc.created_by === user.id;
+  // employee/supervisor: only owned/authored DRAFT content may be edited.
+  return doc.status === 'DRAFT' && (doc.owner_id === user.id || doc.created_by === user.id);
 }
 
 /**

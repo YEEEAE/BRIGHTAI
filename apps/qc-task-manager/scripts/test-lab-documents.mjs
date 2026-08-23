@@ -542,6 +542,31 @@ try {
     ok(!isSafeLinkUrl('data:text/html,<b>'), 'link: data: rejected');
   }
 
+  // ── Catalog-only identity + first content ──
+  console.log('■ Catalog-only authoring');
+  {
+    const catalogId = docs.createLabDocument(
+      { type: 'WI', code: 'WI-QC-CATALOG-001', title: 'Catalog-only Work Instruction', description: 'Identity first.', product_id: null, owner_id: managerId, effective_date: null, review_due_date: null, change_summary: null, content: '', equipment_ids: [] },
+      { id: employeeId, role: 'employee' },
+    );
+    const catalog = docs.getLabDocumentEditor(catalogId);
+    eq(catalog.document.current_version_id, null, 'catalog: current_version_id remains null');
+    eq(catalog.version, null, 'catalog: no fabricated version 1');
+    eq(catalog.document.owner_id, employeeId, 'catalog: employee ownership is session-bound');
+    ok(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, catalog.document), 'catalog: employee edits own draft identity');
+    eq(perms.canEditLabDocumentRecord({ id: supervisorId, role: 'supervisor' }, catalog.document), false, 'catalog: unrelated supervisor cannot edit');
+
+    docs.updateLabDocument(catalogId, {
+      type: 'WI', code: 'WI-QC-CATALOG-001', title: 'Catalog-only Work Instruction', description: 'Identity first.', product_id: null, owner_id: managerId, effective_date: null, review_due_date: null, change_summary: 'Initial content.', content: '# First content', equipment_ids: [],
+    }, { id: employeeId, role: 'employee' });
+    const started = docs.getLabDocumentEditor(catalogId);
+    eq(started.version.version, 1, 'catalog: first valid save creates v1');
+    eq(started.version.author_id, employeeId, 'catalog: v1 author comes from session');
+    eq(started.document.owner_id, employeeId, 'catalog: employee cannot reassign ownership on content save');
+    ok(db.prepare("SELECT 1 FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT_VERSION' AND entity_id = ? AND action = 'VERSION'").get(started.version.id), 'catalog: VERSION audit exists');
+    ok(db.prepare("SELECT 1 FROM notifications WHERE type = 'lab_document_content_started' AND user_id IN (SELECT id FROM users WHERE role IN ('manager','admin'))").get(), 'catalog: management notification exists');
+  }
+
   // ── Editor: create ──
   console.log('■ Editor create');
   let createdId;
@@ -744,7 +769,12 @@ try {
     eq(perms.canEditLabDocumentRecord({ id: managerId, role: 'manager' }, otherDoc), true, 'RBAC: manager edits any doc');
 
     // Employee can never edit.
-    eq(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, otherDoc), false, 'RBAC: employee never edits docs');
+    eq(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, otherDoc), false, 'RBAC: employee cannot edit unrelated draft');
+    ok(perms.canEditLabDocumentRecord({ id: supervisorId, role: 'supervisor' }, otherDoc), 'RBAC: supervisor edits own draft');
+    eq(perms.canReviewLabDocumentRecord({ id: supervisorId, role: 'supervisor' }, { status: 'IN_REVIEW', owner_id: supervisorId, created_by: supervisorId, author_id: supervisorId }), false, 'RBAC: author cannot review own document');
+    ok(perms.canReviewLabDocumentRecord({ id: supervisorId, role: 'supervisor' }, { status: 'IN_REVIEW', owner_id: employeeId, created_by: employeeId, author_id: employeeId }), 'RBAC: supervisor reviews another author');
+    eq(perms.canApproveLabDocumentRecord({ id: managerId, role: 'manager' }, { status: 'IN_REVIEW', owner_id: managerId, created_by: managerId, author_id: managerId }), false, 'RBAC: manager cannot self-approve');
+    eq(perms.canApproveLabDocumentRecord({ id: employeeId, role: 'employee' }, { status: 'IN_REVIEW', owner_id: supervisorId, created_by: supervisorId, author_id: supervisorId }), false, 'RBAC: employee cannot approve');
   }
 
   // ── Version history (/lab/documents/[id]/versions) ──

@@ -18,7 +18,8 @@
 // escape-only renderer stored in content_html_sanitized. Content is never
 // rendered client-side.
 //
-// APPROVED documents are immutable (contract §41/§42/§44): editing one shows a
+// Catalog-only identities may be saved without content; editing one with content
+// creates version 1. APPROVED documents are immutable (contract §41/§42/§44): editing one shows a
 // banner and REQUIRES a change summary — the save creates a NEW DRAFT version
 // while the approved version stays untouched. The document code is immutable
 // on edit (identity referenced by historical snapshots) — read-only here.
@@ -185,19 +186,18 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
         HTML is not allowed — it is escaped and shown as plain text.
       </p>
       <div class="mt-3">
-        <label for="content" class={labelCls}>Content <span class="text-red-600" aria-hidden="true">*</span></label>
+        <label for="content" class={labelCls}>Content</label>
         <textarea
           id="content"
           name="content"
           rows="16"
-          required
           maxlength={LAB_DOCUMENT_CONTENT_MAX}
           class={`${inputCls} font-mono text-xs leading-relaxed`}
           dir="ltr"
         >{currentContentMd}</textarea>
         <p class="mt-1 text-xs text-slate-500">
-          {LAB_DOCUMENT_CONTENT_MAX.toLocaleString('en-US')} characters max. The preview below is rendered server-side and sanitized —
-          only safe HTML (headings, lists, tables, callouts, checklists, safe links) is produced.
+          {LAB_DOCUMENT_CONTENT_MAX.toLocaleString('en-US')} characters max. Leave empty to save a catalog-only identity; the first
+          non-empty save creates version 1. The preview below is rendered server-side and sanitized.
         </p>
       </div>
 

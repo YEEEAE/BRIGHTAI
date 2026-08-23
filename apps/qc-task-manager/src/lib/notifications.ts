@@ -50,6 +50,7 @@ export type NotificationKind =
   | 'lab_document_changes_requested'
   | 'lab_document_approved'
   | 'lab_document_archived'
+  | 'lab_document_content_started'
   | 'lab_calibration_due'
   | 'lab_calibration_overdue'
   | 'lab_maintenance_event'
@@ -176,6 +177,7 @@ const PERSISTED_SEVERITY: Record<string, NotificationSeverity> = {
   lab_document_changes_requested: 'warning',
   lab_document_approved: 'success',
   lab_document_archived: 'info',
+  lab_document_content_started: 'info',
   lab_calibration_due: 'warning',
   lab_calibration_overdue: 'danger',
   lab_maintenance_event: 'warning',
@@ -294,6 +296,7 @@ export const LAB_NOTIFICATION_KINDS: readonly NotificationKind[] = [
   'lab_document_changes_requested',
   'lab_document_approved',
   'lab_document_archived',
+  'lab_document_content_started',
   'lab_calibration_due',
   'lab_calibration_overdue',
   'lab_maintenance_event',

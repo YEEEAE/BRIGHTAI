@@ -142,7 +142,7 @@ const isAuthorOrOwner = detail
                 href={`/lab/documents/${detail.document.id}/edit`}
                 class="rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
               >
-                Edit Document
+                {detail.currentVersion ? 'Edit Document' : 'Add Content'}
               </a>
             )}
             {canAssignAck && detail.document.status === 'APPROVED' && detail.currentVersion && (
@@ -165,7 +165,9 @@ const isAuthorOrOwner = detail
             <p class="mt-1 text-sm text-slate-600">
               This document is currently in draft. Once changes are finalized, submit it for formal review and approval.
             </p>
-            {canEdit ? (
+            {!detail.currentVersion ? (
+              <p class="mt-3 text-sm text-slate-600">No content has been entered yet. Add content before submitting this document for review.</p>
+            ) : canEdit ? (
               <form method="POST" action={`/lab/documents/${detail.document.id}`} class="mt-4 flex flex-wrap items-end gap-3">
                 <input type="hidden" name="form_action" value="submit" />
                 <label class="flex flex-1 min-w-[280px] flex-col gap-1 text-sm font-medium text-slate-700">
@@ -198,7 +200,7 @@ const isAuthorOrOwner = detail
               <h2 id="sec-workflow" class="text-base font-semibold text-amber-950">Document Under Review</h2>
             </div>
             <p class="mt-1 text-sm text-amber-900">
-              Version <strong dir="ltr">v{detail.currentVersion?.version ?? 1}</strong> is awaiting peer review and managerial approval.
+              Version <strong dir="ltr">v{detail.currentVersion?.version ?? '—'}</strong> is awaiting peer review and managerial approval.
               {detail.currentVersion?.change_summary && (
                 <span class="block mt-1 text-xs text-amber-800">
                   <strong>Change summary:</strong> {detail.currentVersion.change_summary}
@@ -318,7 +320,7 @@ const isAuthorOrOwner = detail
             </div>
             <div class={fieldCls}>
               <dt class={labelCls}>Current Version</dt>
-              <dd class="mt-1 font-medium text-slate-900" dir="ltr">v{detail.currentVersion?.version ?? 1}</dd>
+              <dd class="mt-1 font-medium text-slate-900" dir="ltr">{detail.currentVersion ? `v${detail.currentVersion.version}` : '—'}</dd>
             </div>
             <div class={fieldCls}>
               <dt class={labelCls}>Owner</dt>
@@ -382,13 +384,23 @@ const isAuthorOrOwner = detail
 
         {/* ── Document Content Preview ── */}
         <section aria-labelledby="sec-content" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          {!detail.currentVersion ? (
+            <div role="status" class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5">
+              <h2 id="sec-content" class="text-lg font-semibold text-slate-900">Content Status</h2>
+              <p class="mt-2 text-sm text-slate-600">No content has been entered yet.</p>
+              {canEdit && <a href={`/lab/documents/${detail.document.id}/edit`} class="mt-4 inline-flex rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white">Add Content</a>}
+            </div>
+          ) : (
+          <>
           <div class="flex items-baseline justify-between border-b border-slate-200 pb-3">
             <h2 id="sec-content" class="text-lg font-semibold text-slate-900">
-              Controlled Document Content — <span dir="ltr">v{detail.currentVersion?.version ?? 1}</span>
+              Controlled Document Content — <span dir="ltr">v{detail.currentVersion.version}</span>
             </h2>
             <span class="text-xs text-slate-500">Sanitized controlled markdown</span>
           </div>
-          <article class="prose prose-slate mt-5 max-w-none" set:html={detail.contentHtml || '<p class="text-slate-400 italic">No content available for this version.</p>'} />
+          <article class="prose prose-slate mt-5 max-w-none" set:html={detail.contentHtml} />
+          </>
+          )}
         </section>
 
         {/* ── Audit Timeline ── */}
