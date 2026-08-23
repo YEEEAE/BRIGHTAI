@@ -12,6 +12,8 @@ import { getLabCalibrationAudit, getLabCalibrationDetail, LAB_CALIBRATION_STATUS
 import type { LabCalibrationStatus } from '../../../lib/lab/calibration';
 import { canEditLabCalibration, canProposeLabCalibrationEdit } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
+import { countPendingChangeRequests } from '../../../lib/lab/changeRequests';
+import { canReviewLabChangeRequests } from '../../../lib/permissions';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -26,6 +28,9 @@ try {
 } catch (err) {
   console.error('[lab] calibration detail query failure', err);
 }
+const pendingContributorChanges = detail
+  ? countPendingChangeRequests('CALIBRATION', detail.calibration.id, canReviewLabChangeRequests(role) ? undefined : user.userId)
+  : 0;
 
 const STATUS_BADGE_CLS: Record<LabCalibrationStatus, string> = {
   COMPLIANT: 'bg-emerald-100 text-emerald-800',
@@ -117,6 +122,12 @@ const ROWS: { label: string; value: unknown; ltr?: boolean }[] = detail
         </header>
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/calibration/${detail.calibration.id}`} />
+        {pendingContributorChanges > 0 && (
+          <div role="status" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            Pending contributor changes: {pendingContributorChanges}
+            {canReviewLabChangeRequests(role) && <a class="ms-2 font-semibold underline" href="/lab/change-requests">Review</a>}
+          </div>
+        )}
 
         <section aria-labelledby="sec-fields" class={sectionCls}>
           <h2 id="sec-fields" class={sectionTitleCls}>Calibration Details</h2>

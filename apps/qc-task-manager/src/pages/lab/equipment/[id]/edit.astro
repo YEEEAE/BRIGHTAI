@@ -66,6 +66,6 @@ const canArchive = canArchiveLabEquipment(role);
 
     <LabSecondaryNav items={navItems} currentPath={`/lab/equipment/${detail.equipment.id}/edit`} />
 
-    <LabEquipmentForm mode="edit" equipment={detail.equipment} canArchive={canArchive} />
+    <LabEquipmentForm mode="edit" equipment={detail.equipment} canArchive={canArchive} isContributor={canProposeLabEquipmentEdit(role)} />
   </div>
 </BaseLayout>

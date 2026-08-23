@@ -44,6 +44,6 @@ const navItems = labNavForRole(role);
 
     <LabSecondaryNav items={navItems} currentPath="/lab/equipment/new" />
 
-    <LabEquipmentForm mode="create" />
+    <LabEquipmentForm mode="create" isContributor={canProposeLabEquipmentCreate(role)} />
   </div>
 </BaseLayout>

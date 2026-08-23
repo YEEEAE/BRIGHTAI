@@ -614,7 +614,7 @@ async function handleLabCalibrationPost(context: APIContext, id: number | null):
 
   try {
     if (!canCreateLabCalibration(user.role) && !canEditLabCalibration(user.role)) {
-      submitChangeRequest({
+      const request = submitChangeRequest({
         actor: { id: user.id, role: user.role },
         entity_type: 'CALIBRATION',
         operation: id === null ? 'CREATE' : 'UPDATE',
@@ -622,7 +622,7 @@ async function handleLabCalibrationPost(context: APIContext, id: number | null):
         payload: { entity_type: 'CALIBRATION', data },
       });
       setFlash(context, 'success', 'Calibration proposal submitted for management review.');
-      return context.redirect('/lab/change-requests');
+      return context.redirect(`/lab/change-requests/${request.id}`);
     }
     if (id === null) {
       const newId = createLabCalibration(data, user.id);

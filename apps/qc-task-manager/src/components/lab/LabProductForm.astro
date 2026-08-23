@@ -20,10 +20,11 @@ const {
   wis,
   equipmentOptions,
   connectorTypes,
+  isContributor = false,
 } = Astro.props;
 
 const actionUrl = mode === 'create' ? '/lab/products/new' : `/lab/products/${product!.id}/edit`;
-const submitLabel = mode === 'create' ? 'Create Product' : 'Save Changes';
+const submitLabel = isContributor ? 'Submit for Review' : mode === 'create' ? 'Save Product' : 'Update';
 
 const inputCls =
   'mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
@@ -34,6 +35,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
 
 <form method="POST" action={actionUrl}>
   <div class="space-y-6">
+    {isContributor && <p role="note" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">Your change will be reviewed by laboratory management before it becomes active.</p>}
     <section aria-labelledby="sec-product-identity" class={sectionCls}>
       <h2 id="sec-product-identity" class={sectionTitleCls}>Product Identity</h2>
       <div class="mt-4 grid gap-4 sm:grid-cols-2">
@@ -159,16 +161,23 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
     <section aria-labelledby="sec-product-status" class={sectionCls}>
       <h2 id="sec-product-status" class={sectionTitleCls}>Status &amp; Notes</h2>
       <div class="mt-4 space-y-4">
-        <label class="flex items-center gap-2 text-sm font-medium text-slate-700">
-          <input
-            type="checkbox"
-            name="is_active"
-            value="1"
-            checked={product ? product.is_active === 1 : true}
-            class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-          />
-          Active — inactive products are hidden from the test form and cannot be edited
-        </label>
+        {isContributor ? (
+          <>
+            <input type="hidden" name="is_active" value="1" />
+            <p class="text-sm font-medium text-slate-700">Active — deactivation is restricted to laboratory management.</p>
+          </>
+        ) : (
+          <label class="flex items-center gap-2 text-sm font-medium text-slate-700">
+            <input
+              type="checkbox"
+              name="is_active"
+              value="1"
+              checked={product ? product.is_active === 1 : true}
+              class="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+            />
+            Active — inactive products are hidden from the test form and cannot be edited
+          </label>
+        )}
         <div>
           <label for="notes" class={labelCls}>Notes</label>
           <textarea id="notes" name="notes" rows="3" maxlength="5000" class={inputCls}>{product?.notes ?? ''}</textarea>

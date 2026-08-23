@@ -68,7 +68,7 @@ const equipmentOptions = listLabEquipmentOptionsForCalibration();
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/calibration/${detail.calibration.id}/edit`} />
 
-        <LabCalibrationForm mode="edit" calibration={detail.calibration} equipmentOptions={equipmentOptions} />
+        <LabCalibrationForm mode="edit" calibration={detail.calibration} equipmentOptions={equipmentOptions} isContributor={canProposeLabCalibrationEdit(role)} />
       </>
     )}
   </div>

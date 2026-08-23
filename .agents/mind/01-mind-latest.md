@@ -8,6 +8,32 @@ version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
 
+### 2026-08-23 — QC-LAB-CONTRIBUTOR-MASTER-DATA-003: ربط نماذج Equipment/Product/Calibration بطابور مراجعة المساهمين — **التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy**
+
+- **Scope**: مساهمو employee/supervisor يرسلون CREATE/UPDATE proposal عبر Change Review Queue بدون canonical mutation؛ manager/admin يحتفظون بالسلوك المباشر. ربط اعتماد الطلبات بخدمات `equipment.ts` و`products.ts` و`calibration.ts` بدل تكرار INSERT/UPDATE/audit داخل `changeRequests.ts`.
+- **Security/lifecycle**: إعادة التحقق من canonical payload عند الاعتماد، uniqueness وFK/eligibility عبر الخدمات الكنسية، stale protection عبر `base_updated_at` + snapshot comparison، calibration proposal لا يكتب calibration row أو equipment display state قبل APPROVED، generic body UPDATE مرفوض حتى لا يصبح `entity_id` المرسل مسار تعديل، تفاصيل الطلبات scoped لصاحبها أو manager/admin، وpending count scoped للموظف/المشرف.
+- **UI**: نماذج المساهمين تعرض `Submit for Review` والتنبيه `Your change will be reviewed by laboratory management before it becomes active.`؛ direct manager/admin يعرض Save/Update؛ بعد proposal redirect إلى `/lab/change-requests/{id}`؛ صفحات تفاصيل الكيانات تعرض `Pending contributor changes: N` مع رابط Review للإدارة.
+- **Tests/files**: `apps/qc-task-manager/scripts/test-lab-change-requests.mjs`, `src/lib/lab/changeRequests.ts`, خدمات المختبر الثلاث، مكونات النماذج الثلاث، صفحات new/edit/detail للكيانات الثلاثة، وصفحة تفاصيل طلب التغيير.
+- **Verification**: `pnpm typecheck` = 0 errors / 0 warnings / 20 hints؛ `pnpm test` = exit 0؛ focused: change requests PASS، equipment 130/0، products 85/0، calibration 97/0، security 63/0؛ `pnpm test:architecture` PASS؛ `NODE_ENV=production pnpm build` PASS؛ `git diff --check` exit 0 مع تحذير fsmonitor IPC فقط. لا E2E/production claim.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ ملفات `.agents/skills/**` الموجودة كـ dirty state بقيت بدون مساس.
+
+### 2026-08-23 — SKILL-INSTALL-SYSTEMATIC-DEBUGGING-001: إضافة مهارة `systematic-debugging` من magnus919 — **التثبيت مكتمل والتحقق المحلي مكتمل بعد إصلاح توافق Codex**
+
+- **Command**: `npx skills add magnus919/agent-skills --skill systematic-debugging --agent codex --yes`
+- **Result**: الأداة اكتشفت Codex، ونسخت مهارة واحدة إلى `.agents/skills/systematic-debugging/`، مع تقييم `Safe` و`0 alerts` من Gen/Socket و`Med Risk` من Snyk.
+- **Files**: `.agents/skills/systematic-debugging/` ومفتاح المهارة الجديد في `skills-lock.json`؛ التثبيت استبدل النسخة المحلية السابقة وما كان فيها من ملفات إضافية.
+- **Compatibility fix**: حُذف مفتاح frontmatter `compatibility` من `SKILL.md` لأنه غير مدعوم في validator الحالي لـ Codex؛ لم يتغير محتوى التعليمات.
+- **Verification**: التثبيت exit 0؛ `python3 /Users/yzydalshmry/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/systematic-debugging` → `Skill is valid!`؛ `git diff --check` ناجح. لا build/tests للتطبيق لأن التغيير إضافة Skill فقط.
+- **Status**: installed locally — لا commit ولا push؛ المستخدم يراجع المهارة قبل استخدامها.
+
+### 2026-08-23 — SKILL-INSTALL-ASTRO-DEVELOPER-001: إضافة مهارة `astro-developer` من مستودع Astro — **التثبيت والتحقق مكتملان**
+
+- **Command**: `npx skills add https://github.com/withastro/astro --skill astro-developer`
+- **Result**: الأداة اكتشفت Codex وثبّتت مهارة واحدة في `.agents/skills/astro-developer/`، مع تقييم `Safe` و`0 alerts` و`Low Risk` من Snyk.
+- **Files**: `.agents/skills/astro-developer/SKILL.md` و`architecture.md` و`constraints.md` و`debugging.md` و`testing.md` و`evals/evals.json` + تحديث `skills-lock.json`.
+- **Verification**: أمر التثبيت exit 0؛ `quick_validate.py .agents/skills/astro-developer` → `Skill is valid!`. لا build/tests للتطبيق لأن التغيير إضافة Skill فقط.
+- **Status**: installed locally — لا commit ولا push؛ المستخدم يراجع المهارة قبل استخدامها.
+
 ### 2026-08-23 — SKILL-INSTALL-WEB-DESIGN-GUIDELINES-001: إضافة مهارة `web-design-guidelines` من Vercel — **التثبيت مكتمل والتحقق المحلي مكتمل**
 
 - **Command**: `npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines`

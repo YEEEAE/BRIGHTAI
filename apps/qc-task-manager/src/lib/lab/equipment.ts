@@ -784,7 +784,7 @@ async function handleLabEquipmentPost(context: APIContext, id: number | null): P
 
   try {
     if (!canApplyLabEquipmentChange(user.role)) {
-      submitChangeRequest({
+      const request = submitChangeRequest({
         actor: { id: user.id, role: user.role },
         entity_type: 'EQUIPMENT',
         operation: id === null ? 'CREATE' : 'UPDATE',
@@ -792,7 +792,7 @@ async function handleLabEquipmentPost(context: APIContext, id: number | null): P
         payload: { entity_type: 'EQUIPMENT', data },
       });
       setFlash(context, 'success', 'Equipment proposal submitted for management review.');
-      return context.redirect('/lab/change-requests');
+      return context.redirect(`/lab/change-requests/${request.id}`);
     }
     if (id === null) {
       const newId = createLabEquipment(data, user.id);

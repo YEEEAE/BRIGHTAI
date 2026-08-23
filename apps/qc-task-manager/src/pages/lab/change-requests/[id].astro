@@ -3,14 +3,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
-import { getChangeRequest } from '../../../lib/lab/changeRequests';
+import { getChangeRequestForViewer } from '../../../lib/lab/changeRequests';
 import { canApproveLabChangeRequest } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
 const id = Number(Astro.params.id);
-const request = Number.isInteger(id) && id > 0 ? getChangeRequest(id) : null;
+const request = Number.isInteger(id) && id > 0 ? getChangeRequestForViewer(id, { id: user.userId, role }) : null;
 if (!request) return Astro.redirect('/lab/change-requests');
 const pretty = (value: string | null) => { try { return JSON.stringify(JSON.parse(value ?? 'null'), null, 2); } catch { return value ?? '—'; } };
 const mayReview = request.status === 'PENDING' && canApproveLabChangeRequest({ id: user.userId, role }, request);

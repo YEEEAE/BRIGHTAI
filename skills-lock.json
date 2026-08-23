@@ -19,6 +19,12 @@
       "skillPath": "skills/apple-design/SKILL.md",
       "computedHash": "8b94db67cb9edaad5f1501010804caa610131f1d2dfda0a27664b2e858deade3"
     },
+    "astro-developer": {
+      "source": "withastro/astro",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/astro-developer/SKILL.md",
+      "computedHash": "cd767f617a4c2baef1950ab5fe45bc9b5e88d255f3c374e64b7bc1ee929eb920"
+    },
     "brandkit": {
       "source": "Leonxlnx/taste-skill",
       "sourceType": "github",
@@ -162,6 +168,12 @@
       "sourceType": "github",
       "skillPath": "skills/stitch-skill/SKILL.md",
       "computedHash": "13322f38406cd3abf16ba45e35bdc9b18002d0153a79b4612b97aefc65d5a335"
+    },
+    "systematic-debugging": {
+      "source": "magnus919/agent-skills",
+      "sourceType": "github",
+      "skillPath": "systematic-debugging/SKILL.md",
+      "computedHash": "92b4a8bd6d36fbd5a4d34d85abc4783dbc5a55312ec22193279a791f075a1b41"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",

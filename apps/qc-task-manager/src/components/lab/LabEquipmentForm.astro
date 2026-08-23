@@ -14,10 +14,10 @@
 // "BSS-250N, 250N". Archive / restore are separate small POST forms carrying
 // a hidden `form_action`; the edit handler re-checks canArchiveLabEquipment
 // and skips field validation for those actions (pattern: templates.ts).
-const { mode, equipment = null, canArchive = false } = Astro.props;
+const { mode, equipment = null, canArchive = false, isContributor = false } = Astro.props;
 
 const actionUrl = mode === 'create' ? '/lab/equipment/new' : `/lab/equipment/${equipment!.id}/edit`;
-const submitLabel = mode === 'create' ? 'Add to Registry' : 'Save Changes';
+const submitLabel = isContributor ? 'Submit for Review' : mode === 'create' ? 'Save Equipment' : 'Update';
 
 const inputCls =
   'mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
@@ -28,6 +28,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
 
 <form method="POST" action={actionUrl}>
   <div class="space-y-6">
+    {isContributor && <p role="note" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">Your change will be reviewed by laboratory management before it becomes active.</p>}
     <section aria-labelledby="sec-equipment-identity" class={sectionCls}>
       <h2 id="sec-equipment-identity" class={sectionTitleCls}>Equipment Identity</h2>
       <div class="mt-4 grid gap-4 sm:grid-cols-2">

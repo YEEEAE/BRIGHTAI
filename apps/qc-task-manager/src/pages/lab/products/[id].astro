@@ -16,6 +16,8 @@ import { getProductRepeatFailure } from '../../../lib/lab/scheduledNotifications
 import { getLabFailRateTrends, labTrendDrilldown, type LabTrendGranularity } from '../../../lib/lab/trends';
 import LabFailRateChart from '../../../components/lab/LabFailRateChart';
 import { canEditLabProduct, canProposeLabProductEdit } from '../../../lib/permissions';
+import { canReviewLabChangeRequests } from '../../../lib/permissions';
+import { countPendingChangeRequests } from '../../../lib/lab/changeRequests';
 import type { Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
@@ -30,6 +32,9 @@ try {
 }
 
 const navItems = labNavForRole(role);
+const pendingContributorChanges = detail
+  ? countPendingChangeRequests('PRODUCT', detail.product.id, canReviewLabChangeRequests(role) ? undefined : user.userId)
+  : 0;
 
 // FAIL-rate trends (read-only, over existing test records — no new tables).
 // Granularity is switchable via ?trend=week|month (default weekly, same
@@ -131,6 +136,12 @@ function fmt(value: unknown): string {
         </header>
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/products/${detail.product.id}`} />
+        {pendingContributorChanges > 0 && (
+          <div role="status" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            Pending contributor changes: {pendingContributorChanges}
+            {canReviewLabChangeRequests(role) && <a class="ms-2 font-semibold underline" href="/lab/change-requests">Review</a>}
+          </div>
+        )}
 
         {repeatFailure && (
           <div

@@ -17,7 +17,8 @@ import { getLabCalibrationSummary, LAB_CALIBRATION_STATUS_LABELS } from '../../.
 import type { LabCalibrationStatus } from '../../../lib/lab/calibration';
 import { calibrationLabel, statusLabels } from '../../../lib/lab/equipmentStatus';
 import { LAB_MAINTENANCE_STATUS_LABELS } from '../../../lib/lab/policy';
-import { canArchiveLabEquipment, canEditLabEquipment, canProposeLabEquipmentEdit } from '../../../lib/permissions';
+import { countPendingChangeRequests } from '../../../lib/lab/changeRequests';
+import { canArchiveLabEquipment, canEditLabEquipment, canProposeLabEquipmentEdit, canReviewLabChangeRequests } from '../../../lib/permissions';
 import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 
@@ -48,6 +49,9 @@ const CAL_STATUS_BADGE_CLS: Record<LabCalibrationStatus, string> = {
 };
 
 const navItems = labNavForRole(role);
+const pendingContributorChanges = detail
+  ? countPendingChangeRequests('EQUIPMENT', detail.equipment.id, canReviewLabChangeRequests(role) ? undefined : user.userId)
+  : 0;
 
 const fieldCls = 'rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700';
 const labelCls = 'text-xs font-semibold uppercase tracking-wide text-slate-500';
@@ -121,6 +125,12 @@ function fmt(value: unknown): string {
         </header>
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/equipment/${detail.equipment.id}`} />
+        {pendingContributorChanges > 0 && (
+          <div role="status" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            Pending contributor changes: {pendingContributorChanges}
+            {canReviewLabChangeRequests(role) && <a class="ms-2 font-semibold underline" href="/lab/change-requests">Review</a>}
+          </div>
+        )}
 
         <section aria-labelledby="sec-fields" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 id="sec-fields" class="text-base font-semibold text-slate-900">Registry Data</h2>

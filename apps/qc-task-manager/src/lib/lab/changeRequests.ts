@@ -17,6 +17,9 @@ import type { LabEquipmentFormData } from './equipment';
 import type { LabProductFormData } from './products';
 import type { LabCalibrationFormData } from './calibration';
 import type { LabRetestFormData } from './retests';
+import { createLabEquipment, updateLabEquipment } from './equipment';
+import { createLabProduct, updateLabProduct } from './products';
+import { createLabCalibration, updateLabCalibration } from './calibration';
 
 export type ChangeEntityType = 'EQUIPMENT' | 'PRODUCT' | 'CALIBRATION' | 'RETEST_REQUEST';
 export type ChangeOperation = 'CREATE' | 'UPDATE';
@@ -135,33 +138,35 @@ export function listUserChangeRequests(userId: number): LabChangeRequest[] {
   return getDb().prepare(`SELECT r.*, u.full_name AS requested_by_name, u.role AS requested_by_role FROM lab_change_requests r JOIN users u ON u.id = r.requested_by WHERE r.requested_by = ? ORDER BY r.created_at DESC, r.id DESC`).all(userId) as LabChangeRequest[];
 }
 
+export function countPendingChangeRequests(entityType: ChangeEntityType, entityId: number, requesterId?: number): number {
+  const condition = requesterId == null ? 'entity_type = ? AND entity_id = ? AND status = \'PENDING\'' : 'entity_type = ? AND entity_id = ? AND status = \'PENDING\' AND requested_by = ?';
+  const params = requesterId == null ? [entityType, entityId] : [entityType, entityId, requesterId];
+  return Number((getDb().prepare(`SELECT COUNT(*) AS n FROM lab_change_requests WHERE ${condition}`).get(...params) as { n: number }).n);
+}
+
+export function getChangeRequestForViewer(id: number, viewer: { id: number; role: Role }): LabChangeRequest | null {
+  const request = getChangeRequest(id);
+  if (!request) return null;
+  if (canReviewLabChangeRequests(viewer.role) || request.requested_by === viewer.id) return request;
+  return null;
+}
+
 function applyCanonical(request: LabChangeRequest, actorId: number, data: Record<string, any>): number {
   const db = getDb();
   if (request.entity_type === 'EQUIPMENT') {
-    const info = request.operation === 'CREATE'
-      ? db.prepare(`INSERT INTO lab_equipment (name, code, location, status_raw, calibration_status_raw, serial_number, notes, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(data.name, data.code, data.location, data.status_raw, data.calibration_status_raw, data.serial_number, data.notes, actorId)
-      : db.prepare(`UPDATE lab_equipment SET name=?, code=?, location=?, status_raw=?, calibration_status_raw=?, serial_number=?, notes=?, updated_at=datetime('now') WHERE id=?`).run(data.name, data.code, data.location, data.status_raw, data.calibration_status_raw, data.serial_number, data.notes, request.entity_id);
-    const id = request.operation === 'CREATE' ? Number(info.lastInsertRowid) : Number(request.entity_id);
-    db.prepare(`INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, note) VALUES ('LAB_EQUIPMENT', ?, NULL, ?, ?, ?)`).run(id, actorId, request.operation, `applied change request #${request.id}`);
-    return id;
+    return request.operation === 'CREATE'
+      ? createLabEquipment(data as LabEquipmentFormData, actorId)
+      : (updateLabEquipment(Number(request.entity_id), data as LabEquipmentFormData, actorId), Number(request.entity_id));
   }
   if (request.entity_type === 'PRODUCT') {
-    const info = request.operation === 'CREATE'
-      ? db.prepare(`INSERT INTO lab_products (name, code, description, connector_type, default_test_type, default_template_id, applicable_sop_id, applicable_wi_id, is_active, notes, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(data.name, data.code, data.description, data.connector_type, data.default_test_type, data.default_template_id, data.applicable_sop_id, data.applicable_wi_id, data.is_active ? 1 : 0, data.notes, actorId)
-      : db.prepare(`UPDATE lab_products SET name=?, code=?, description=?, connector_type=?, default_test_type=?, default_template_id=?, applicable_sop_id=?, applicable_wi_id=?, is_active=?, notes=?, updated_at=datetime('now') WHERE id=?`).run(data.name, data.code, data.description, data.connector_type, data.default_test_type, data.default_template_id, data.applicable_sop_id, data.applicable_wi_id, data.is_active ? 1 : 0, data.notes, request.entity_id);
-    const id = request.operation === 'CREATE' ? Number(info.lastInsertRowid) : Number(request.entity_id);
-    db.prepare('DELETE FROM lab_product_equipment WHERE product_id = ?').run(id);
-    for (const equipmentId of [...new Set(data.equipment_ids ?? [])]) db.prepare('INSERT INTO lab_product_equipment (product_id, equipment_id) VALUES (?, ?)').run(equipmentId ? id : id, equipmentId);
-    db.prepare(`INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, note) VALUES ('LAB_PRODUCT', ?, NULL, ?, ?, ?)`).run(id, actorId, request.operation, `applied change request #${request.id}`);
-    return id;
+    return request.operation === 'CREATE'
+      ? createLabProduct(data as LabProductFormData, actorId)
+      : (updateLabProduct(Number(request.entity_id), data as LabProductFormData, actorId), Number(request.entity_id));
   }
   if (request.entity_type === 'CALIBRATION') {
-    const info = request.operation === 'CREATE'
-      ? db.prepare(`INSERT INTO lab_equipment_calibration (equipment_id,last_calibrated_at,calibration_due_at,provider,certificate_reference,result,next_due_at,notes,created_by) VALUES (?,?,?,?,?,?,?,?,?)`).run(data.equipment_id, data.last_calibrated_at, data.calibration_due_at, data.provider, data.certificate_reference, data.result, data.next_due_at, data.notes, actorId)
-      : db.prepare(`UPDATE lab_equipment_calibration SET equipment_id=?,last_calibrated_at=?,calibration_due_at=?,provider=?,certificate_reference=?,result=?,next_due_at=?,notes=? WHERE id=?`).run(data.equipment_id, data.last_calibrated_at, data.calibration_due_at, data.provider, data.certificate_reference, data.result, data.next_due_at, data.notes, request.entity_id);
-    const id = request.operation === 'CREATE' ? Number(info.lastInsertRowid) : Number(request.entity_id);
-    db.prepare(`INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, note) VALUES ('LAB_EQUIPMENT_CALIBRATION', ?, NULL, ?, ?, ?)`).run(id, actorId, request.operation, `applied change request #${request.id}`);
-    return id;
+    return request.operation === 'CREATE'
+      ? createLabCalibration(data as LabCalibrationFormData, actorId)
+      : (updateLabCalibration(Number(request.entity_id), data as LabCalibrationFormData, actorId), Number(request.entity_id));
   }
   if (request.entity_type === 'RETEST_REQUEST') {
     const originalId = Number(data.original_test_id);
@@ -194,7 +199,9 @@ export function approveChangeRequest(id: number, actor: { id: number; role: Role
   validatePayload({ entity_type: request.entity_type, data: proposed } as LabChangePayload);
   return transaction(() => {
     const current = request.entity_id == null ? null : getTargetSnapshot(request.entity_type, request.entity_id);
-    if (request.operation === 'UPDATE' && (!current || current.updated_at !== request.base_updated_at)) throw new LabChangeRequestError(CHANGE_REQUEST_CONFLICT);
+    if (request.operation === 'UPDATE' && (!current || current.updated_at !== request.base_updated_at || json(current.snapshot) !== request.base_snapshot_json)) {
+      throw new LabChangeRequestError(CHANGE_REQUEST_CONFLICT);
+    }
     const appliedId = applyCanonical(request, actor.id, proposed);
     const changed = getDb().prepare(`UPDATE lab_change_requests SET status='APPROVED', reviewed_by=?, review_note=?, applied_entity_id=?, reviewed_at=datetime('now') WHERE id=? AND status='PENDING'`).run(actor.id, reviewNote || null, appliedId, id);
     if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
@@ -241,6 +248,7 @@ export async function handleLabChangeRequestSubmitPost(context: APIContext): Pro
     else if (type === 'RETEST_REQUEST') payload = { entity_type: type, data: { ...labRetestSchema.parse(formObject(form, ['reason','reason_note'])), original_test_id: Number(field(form, 'original_test_id')) } as LabRetestFormData & { original_test_id: number } };
     else throw new LabChangeRequestError('Select a valid laboratory entity.');
     if (operation !== 'CREATE' && operation !== 'UPDATE') throw new LabChangeRequestError('Select a valid operation.');
+    if (operation === 'UPDATE') throw new LabChangeRequestError('Edit the canonical record to submit an update proposal.');
     submitChangeRequest({ actor: { id: user.id, role: user.role }, entity_type: type!, operation, entity_id: entityId, payload });
     setFlash(context, 'success', 'Your laboratory change request was submitted for review.');
   } catch (error) { setFlash(context, 'error', error instanceof Error ? error.message : 'Could not submit the change request.'); }

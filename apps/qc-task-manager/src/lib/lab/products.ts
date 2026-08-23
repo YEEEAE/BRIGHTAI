@@ -611,10 +611,11 @@ async function handleLabProductPost(context: APIContext, productId: number | nul
     ...(parsed.data as Omit<LabProductFormData, 'equipment_ids'>),
     equipment_ids: equipmentIds,
   };
+  if (!canCreateLabProduct(user.role) && !canEditLabProduct(user.role)) data.is_active = true;
 
   try {
     if (!canCreateLabProduct(user.role) && !canEditLabProduct(user.role)) {
-      submitChangeRequest({
+      const request = submitChangeRequest({
         actor: { id: user.id, role: user.role },
         entity_type: 'PRODUCT',
         operation: productId === null ? 'CREATE' : 'UPDATE',
@@ -622,7 +623,7 @@ async function handleLabProductPost(context: APIContext, productId: number | nul
         payload: { entity_type: 'PRODUCT', data },
       });
       setFlash(context, 'success', 'Product proposal submitted for management review.');
-      return context.redirect('/lab/change-requests');
+      return context.redirect(`/lab/change-requests/${request.id}`);
     }
     if (productId === null) {
       const id = createLabProduct(data, user.id);

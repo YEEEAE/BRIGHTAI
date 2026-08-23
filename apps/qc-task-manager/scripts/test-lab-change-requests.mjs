@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { readFileSync } from 'node:fs';
 import Database from 'better-sqlite3';
 import { runMigrations } from '../src/lib/migrations.ts';
 import {
@@ -103,6 +104,35 @@ try {
   const inactiveBefore = runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_request_submitted'").get(admin.id).n;
   submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: { ...equipmentData, code: 'CR-EQ-3' } } });
   assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_change_request_submitted'").get(admin.id).n, inactiveBefore);
+  const archivedEquipment = runtime.prepare('SELECT id FROM lab_equipment WHERE is_archived = 1 LIMIT 1').get();
+  if (archivedEquipment) {
+    const calibrationData = { equipment_id: archivedEquipment.id, last_calibrated_at: null, calibration_due_at: null, provider: null, certificate_reference: null, result: null, next_due_at: null, notes: null };
+    const calibration = submitChangeRequest({ actor: employee, entity_type: 'CALIBRATION', operation: 'CREATE', payload: { entity_type: 'CALIBRATION', data: calibrationData } });
+    assert.throws(() => approveChangeRequest(calibration.id, manager), /Archived equipment/);
+    assert.equal(runtime.prepare('SELECT COUNT(*) AS n FROM lab_equipment_calibration WHERE equipment_id=?').get(archivedEquipment.id).n, 0);
+  }
+
+  const invalidProduct = submitChangeRequest({ actor: employee, entity_type: 'PRODUCT', operation: 'CREATE', payload: {
+    entity_type: 'PRODUCT',
+    data: { name: 'Invalid FK product', code: 'CR-PROD-FK', description: null, connector_type: null, default_test_type: null, default_template_id: 999999, applicable_sop_id: null, applicable_wi_id: null, equipment_ids: [], is_active: true, notes: null },
+  } });
+  assert.throws(() => approveChangeRequest(invalidProduct.id, manager), /template does not exist/);
+  assert.equal(runtime.prepare('SELECT COUNT(*) AS n FROM lab_products WHERE code=?').get('CR-PROD-FK').n, 0);
+
+  const privateRequest = submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: { ...equipmentData, code: 'CR-EQ-PRIVATE' } } });
+  const { getChangeRequestForViewer } = await import('../src/lib/lab/changeRequests.ts');
+  assert.equal(getChangeRequestForViewer(privateRequest.id, supervisor), null);
+  assert.ok(getChangeRequestForViewer(privateRequest.id, employee));
+  assert.ok(getChangeRequestForViewer(privateRequest.id, manager));
+
+  const equipmentForm = readFileSync(new URL('../src/components/lab/LabEquipmentForm.astro', import.meta.url), 'utf8');
+  const productForm = readFileSync(new URL('../src/components/lab/LabProductForm.astro', import.meta.url), 'utf8');
+  const calibrationForm = readFileSync(new URL('../src/components/lab/LabCalibrationForm.astro', import.meta.url), 'utf8');
+  for (const source of [equipmentForm, productForm, calibrationForm]) {
+    assert.match(source, /Submit for Review/);
+    assert.match(source, /Your change will be reviewed by laboratory management before it becomes active\./);
+  }
+
   closeDatabase();
   console.log('lab change request tests passed');
 } finally {

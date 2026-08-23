@@ -46,6 +46,6 @@ const equipmentOptions = listLabEquipmentOptionsForCalibration();
 
     <LabSecondaryNav items={navItems} currentPath="/lab/calibration/new" />
 
-    <LabCalibrationForm mode="create" equipmentOptions={equipmentOptions} />
+    <LabCalibrationForm mode="create" equipmentOptions={equipmentOptions} isContributor={canProposeLabCalibrationCreate(role)} />
   </div>
 </BaseLayout>

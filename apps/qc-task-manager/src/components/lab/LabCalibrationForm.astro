@@ -11,9 +11,10 @@ interface Props {
   mode: 'create' | 'edit';
   calibration?: LabEquipmentCalibration | null;
   equipmentOptions: Array<{ id: number; code: string; name: string }>;
+  isContributor?: boolean;
 }
 
-const { mode, calibration = null, equipmentOptions } = Astro.props;
+const { mode, calibration = null, equipmentOptions, isContributor = false } = Astro.props;
 const actionUrl = mode === 'create' ? '/lab/calibration/new' : `/lab/calibration/${calibration!.id}/edit`;
 
 const inputCls =
@@ -25,6 +26,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
 
 <section aria-labelledby="sec-calibration-form" class={sectionCls}>
   <h2 id="sec-calibration-form" class={sectionTitleCls}>{mode === 'create' ? 'Calibration Details' : 'Edit Calibration Record'}</h2>
+  {isContributor && <p role="note" class="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">Your change will be reviewed by laboratory management before it becomes active.</p>}
   <p class="mt-1 text-sm text-slate-600">
     Dates are YYYY-MM-DD. All fields except the equipment are optional — leave them empty when the data is not yet available.
     Every save is written to the audit log.
@@ -79,7 +81,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
         type="submit"
         class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
       >
-        {mode === 'create' ? 'Add Calibration Record' : 'Save Changes'}
+        {isContributor ? 'Submit for Review' : mode === 'create' ? 'Save Calibration' : 'Update'}
       </button>
       <a
         href={mode === 'create' ? '/lab/calibration' : `/lab/calibration/${calibration!.id}`}
