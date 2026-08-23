@@ -23,9 +23,73 @@ related: ["pdpl-ai-governance","pdpl-chatgpt-data-protection"]
   <div class="metric-grid">
     <div><strong>7</strong><span>مبادئ تشغيلية يجب ربطها بدورة حياة AI</span></div>
     <div><strong>6</strong><span>حقوق أساسية لصاحب البيانات يجب أن تكون قابلة للتنفيذ</span></div>
-    <div><strong>72</strong><span>ساعة كمرجع مهم لتجهيز بلاغ خرق البيانات عند انطباقه</span></div>
-    <div><strong>5</strong><span>سنوات لحفظ سجل أنشطة المعالجة بعد انتهاء النشاط حسب اللائحة</span></div>
+    <div><strong>01</strong><span>بطاقة استخدام لكل أداة أو حالة AI قبل اعتمادها</span></div>
+    <div><strong>04</strong><span>قرارات تشغيلية: سماح، تنقيح، حجب، أو تصعيد</span></div>
   </div>
+</section>
+
+<section class="pdpl-practical-panel" aria-labelledby="pdpl-practical-title">
+  <h2 id="pdpl-practical-title">من المتطلب النظامي إلى الإجراء اليومي</h2>
+  <p>المصادر الرسمية تشرح نطاق نظام حماية البيانات الشخصية ومبادئه وحقوق أصحاب البيانات. أما الجدول التالي فهو ترجمة تشغيلية مقترحة لفرق المؤسسة، وليس نصًا نظاميًا ولا رأيًا قانونيًا.</p>
+  <div class="grid">
+    <div class="card"><h3>1. اعرف أين يستخدم AI</h3><p>احصر ChatGPT، المساعدات المدمجة، أدوات البرمجة، وميزات AI داخل الأنظمة؛ بما فيها الاستخدام غير المعلن من الموظفين.</p><a href="/solutions/ai-use-case-discovery/">اكتشف Shadow AI والاستخدامات المضمنة</a></div>
+    <div class="card"><h3>2. صنّف قبل الإرسال</h3><p>ميّز بين بيانات عامة، شخصية، مالية، صحية، وظيفية، أو سرية تجارية. النص الحر والملفات قد يحملان أكثر من تصنيف في نفس الطلب.</p><a href="/solutions/ai-risk-classification/">شاهد تصنيف مخاطر AI</a></div>
+    <div class="card"><h3>3. طبّق القرار عند البوابة</h3><p>اسمح بالبيانات العامة، نقّح المعرفات عند الحاجة، احجب البيانات الحساسة غير المصرح بها، وصعّد الحالات غير الواضحة لمراجع مخول.</p><a href="/solutions/ai-firewall/">تعرّف على AI Firewall</a></div>
+    <div class="card"><h3>4. احتفظ بدليل قابل للمراجعة</h3><p>سجّل من استخدم الأداة، نوع القرار، السياسة، الموافقة، والنسخة المنقحة بدون نسخ بيانات شخصية أكثر من اللازم.</p><a href="/solutions/ai-audit-trail/">استكشف AI Audit Trail</a></div>
+  </div>
+</section>
+
+<section aria-labelledby="pdpl-flow-title">
+  <h2 id="pdpl-flow-title">كيف تتحرك البيانات في استخدام AI محكوم؟</h2>
+  <p>الفكرة العملية: لا تنتظر سجل التدقيق بعد وصول البيانات. ضع الفحص والقرار قبل مزود النموذج، ثم افصل الدليل عن النص الحساس قدر الإمكان.</p>
+  <div class="pdpl-flow" aria-label="مسار بيانات استخدام الذكاء الاصطناعي">
+    <div><span>01</span><strong>الموظف</strong><small>Prompt أو ملف</small></div>
+    <b aria-hidden="true">←</b>
+    <div><span>02</span><strong>الفحص</strong><small>اكتشاف PII وتصنيف</small></div>
+    <b aria-hidden="true">←</b>
+    <div><span>03</span><strong>السياسة</strong><small>سماح / تنقيح / حجب / موافقة</small></div>
+    <b aria-hidden="true">←</b>
+    <div><span>04</span><strong>النموذج</strong><small>نسخة مسموحة فقط</small></div>
+    <b aria-hidden="true">←</b>
+    <div><span>05</span><strong>الدليل</strong><small>قرار وسياق غير حساس</small></div>
+  </div>
+</section>
+
+<section aria-labelledby="pdpl-scenarios-title">
+  <h2 id="pdpl-scenarios-title">سيناريوهات عملية: وش تسوي المؤسسة؟</h2>
+  <div class="grid">
+    <div class="card scenario-card"><h3>شكوى عميل فيها رقم جوال</h3><p><strong>الخطر:</strong> رقم الجوال قد يكون بيانات شخصية داخل نص عادي.</p><p><strong>الإجراء:</strong> اكتشف الرقم، استبدله بمعرف داخلي، وأرسل الملخص المنقح فقط. احتفظ بقرار التنقيح في السجل.</p></div>
+    <div class="card scenario-card"><h3>ملف موظف لتحليل الأداء</h3><p><strong>الخطر:</strong> المخرج قد يؤثر على شخص، وقد يحتوي بيانات وظيفية حساسة.</p><p><strong>الإجراء:</strong> لا تجعل المخرج قرارًا آليًا نهائيًا؛ قيّد الوصول، اطلب موافقة حسب سياسة المؤسسة، وسجّل المراجع البشري.</p></div>
+    <div class="card scenario-card"><h3>مساعد داخلي يبحث في العقود</h3><p><strong>الخطر:</strong> RAG قد يسترجع مستندًا لا يملك الموظف صلاحية قراءته.</p><p><strong>الإجراء:</strong> طبّق صلاحيات المصدر قبل الاسترجاع، واختبر أسئلة الالتفاف، وسجّل المستندات المسموح استخدامها.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="pdpl-safe-title">
+  <h2 id="pdpl-safe-title">مثال آمن ومثال غير آمن</h2>
+  <div class="table-container">
+    <table class="docs-table">
+      <thead><tr><th>الحالة</th><th>الطلب</th><th>القرار التشغيلي</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">غير آمن</th><td>«لخّص شكوى العميل أحمد، جواله 05XXXXXXXX، ورقم هويته 10XXXXXXXX، واقترح هل نعوضه».</td><td>بيانات تعريف + قرار مؤثر + قناة غير مصنفة: حجب أو تصعيد، لا إرسال مباشر.</td></tr>
+        <tr><th scope="row">أكثر أمانًا</th><td>«لخّص الشكوى للمعرف CASE-1842 بعد إزالة الاسم والجوال والهوية. لا تقترح قرار تعويض».</td><td>تقليل بيانات، منع القرار النهائي، ثم مراجعة بشرية إذا كان للمخرج أثر على العميل.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="pdpl-checklist-title">
+  <h2 id="pdpl-checklist-title">قائمة تشغيلية لمسؤول الخصوصية وCIO</h2>
+  <ul class="pdpl-checklist">
+    <li>اكتشف استخدامات AI المعلنة والمخفية، بما فيها الأدوات المضافة للمتصفح أو المضمنة داخل SaaS.</li>
+    <li>صنّف البيانات قبل الإرسال، ولا تفترض أن النص «داخلي» يعني أنه غير شخصي.</li>
+    <li>عرّف الأدوات والمزودين المسموحين لكل فئة بيانات والغرض المحدد.</li>
+    <li>نقّح أو احجب المعرفات والبيانات الحساسة عندما لا تكون لازمة للمهمة.</li>
+    <li>سجّل الاستخدام والقرار والسياسة والموافقة عند الحاجة، مع تقليل البيانات داخل السجل نفسه.</li>
+    <li>اطلب موافقة بشرية للحالات عالية المخاطر أو المخرجات التي قد تؤثر على شخص.</li>
+    <li>حدّد مدد الاحتفاظ وآلية تنفيذ طلبات أصحاب البيانات ومراجعة الموردين وفق حالتك.</li>
+    <li>احتفظ بالأدلة: بطاقة الاستخدام، نتيجة التصنيف، اختبار التنقيح، سجل الموافقات، وعينة من القرار.</li>
+  </ul>
+  <p>لتحويل القائمة إلى برنامج مؤسسي: <a href="/solutions/ai-governance-platform/">منصة حوكمة الذكاء الاصطناعي</a> تجمع السياسات، و<a href="/solutions/ai-firewall/">AI Firewall</a> ينفذ القرار عند البوابة، و<a href="/solutions/ai-audit-trail/">Audit Trail</a> يسجل النشاط، بينما <a href="/assessment/ai-governance-readiness/">التقييم</a> يساعدك تبدأ من الفجوة الفعلية.</p>
 </section>
 
 <section>

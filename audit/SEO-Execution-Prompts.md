@@ -657,7 +657,7 @@ Design:
 - clear source panel.
 
 Do not push.
-- [ ] ✅ Prompt #14 — done & reviewed
+- [ ✅]  Prompt #14 — done & reviewed
 
 # Prompt #15 — Create BrightAI’s Saudi AI Governance Control Matrix
 
