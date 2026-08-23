@@ -747,7 +747,7 @@ Design:
 - print-friendly version.
 
 Do not push.
-- [ ] ✅ Prompt #16 — done & reviewed
+- [ ✅]  Prompt #16 — done & reviewed
 
 # Prompt #17 — Entity SEO, Organization schema and trust cleanup
 
@@ -780,7 +780,7 @@ Design:
 - Use real methodology, update dates, sources, and product architecture as trust signals.
 
 Do not push.
-- [ ] ✅ Prompt #17 — done & reviewed
+- [✅ ]  Prompt #17 — done & reviewed
 
 # Prompt #18 — Agentic AI Security pillar
 
