@@ -1,4 +1,14 @@
 ---
+### 2026-08-24 — FIVE-PILLAR-INTERNAL-LINKING-001: إعادة بناء روابط المحاور الخمسة — نجاح محلي بدون commit/push/deploy
+
+- **Scope**: ربط المحتوى المعلوماتي بخمسة مالكين كنونيين: `/hub/ai-governance/`، `/hub/sdaia-ai-risk-management/`، `/hub/security/`، `/hub/compliance/`، `/hub/agentic-ai-governance/`. قاعدة الـ owner تعمل فقط عند تطابق slug/category/tags مع الموضوع، وتضيف رابطًا واحدًا وصفيًا بدل تكرار anchor exact-match أو حشو روابط غير سياقية.
+- **Answer pages / breadcrumbs**: كل صفحات `/answer/*` الـ17 صارت تملك `furtherReading` لمحورها الكنسي؛ قالب الجواب يعرض breadcrumb مرئيًا ويولد `BreadcrumbList` JSON-LD لنفس السلسلة. هذا يكمل الاستثناء الوحيد من breadcrumbs؛ docs/blog/hub كانت موحدة مسبقًا.
+- **Commercial/context links**: العلاقات المطلوبة مثبتة في السياق: Governance Hub → Governance Platform؛ SDAIA Risk → Risk Classification + Human Approval؛ PDPL/NCA → AI Firewall؛ ISO 42001 → Readiness Assessment (أضيف الرابط الناقص)؛ Agentic → Audit Trail + Human Approval (أضيف الرابط الناقص) + Evidence File؛ Banking Riyadh → Evidence File. ما أضيفت روابط من محتوى لا يخدم الوجهة.
+- **Graph/report**: تقرير before/after في `audit/report/2026-08-24-five-pillar-internal-link-graph.md`؛ الروابط الداخلية المكتشفة **17,125 → 17,133**، owners الصريحة في answers **3 → 17**، breadcrumbs answers **0 → 17**.
+- **Files**: `src/pages/blog/[...slug].astro`, `src/data/answers.ts`, `src/pages/answer/[slug].astro`, `src/components/hub/AgenticAiGovernancePillar.astro`, `src/content/blog/iso-42001-saudi-implementation-guide.md`, والتقرير.
+- **Verification**: `pnpm build` مكتمل (تحذيرات Astro route-collision وVite/Prisma القديمة فقط)؛ `npm run internal-links:audit` PASS: **0 broken / 0 orphans / 0 outside sitemap / depth 3**؛ 17 answer HTML فيها breadcrumb وBreadcrumbList؛ `git diff --check` PASS. بقيت **19 no-href** و**103 hash** findings baseline وليست من هذا التغيير.
+- **Status**: جاهز للمراجعة المحلية؛ لا commit ولا push ولا deploy.
+
 ### 2026-08-24 — AGENTIC-AI-GOVERNANCE-PILLAR-001: إضافة محور معلوماتي مستقل لحوكمة Agentic AI — نجاح محلي بدون commit/push/deploy
 
 - **Scope**: أُضيفت صفحة معلوماتية قابلة للفهرسة تحت `/hub/agentic-ai-governance/`، منفصلة عن أي صفحة أمن للوكلاء، تركّز على نموذج التشغيل والمساءلة والموافقات ودورة الحياة والأدلة.

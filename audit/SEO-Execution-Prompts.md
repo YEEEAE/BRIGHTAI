@@ -968,7 +968,7 @@ Technical:
 - Do not hide content from users while exposing it to crawlers.
 
 Do not push.
-- [ ] ✅ Prompt #22 — done & reviewed
+- [ ✅]  Prompt #22 — done & reviewed
 
 # Prompt #23 — Global visual design system upgrade
 

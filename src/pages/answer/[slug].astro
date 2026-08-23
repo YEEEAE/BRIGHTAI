@@ -43,6 +43,9 @@ const hreflangLinks = getHreflangLinks(canonical);
 
 const faqItems: FaqItem[] = [{ q: answer.question, a: answer.answer }];
 const faqLd = getFaqLd(faqItems);
+const ownerCrumb = answer.furtherReading
+  ? { name: answer.furtherReading.label, href: answer.furtherReading.href }
+  : null;
 const speakableSpec = {
   '@type': 'SpeakableSpecification',
   cssSelector: ['.answer-hero-text', '.answer-body p'],
@@ -58,6 +61,16 @@ const jsonLd = {
       speakable: speakableSpec,
     },
     faqLd,
+    ...(ownerCrumb
+      ? [{
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.site/' },
+            { '@type': 'ListItem', position: 2, name: ownerCrumb.name, item: `https://brightai.site${ownerCrumb.href}` },
+            { '@type': 'ListItem', position: 3, name: answer.query, item: canonical },
+          ],
+        }]
+      : []),
   ],
 };
 ---
@@ -84,6 +97,15 @@ const jsonLd = {
   </head>
   <body>
     <main id="main-content" class="answer-page">
+      {ownerCrumb && (
+        <nav class="answer-breadcrumbs" aria-label="مسار التنقل">
+          <a href="/">الرئيسية</a>
+          <span aria-hidden="true">/</span>
+          <a href={ownerCrumb.href}>{ownerCrumb.name}</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{answer.query}</span>
+        </nav>
+      )}
       <section class="answer-hero" aria-label="Answer">
         <h1 class="answer-hero__q">{answer.query}</h1>
         <p class="answer-hero-text answer-hero__summary">
@@ -123,6 +145,10 @@ const jsonLd = {
         color: var(--text-muted);
         border-inline-start: 3px solid var(--interactive-primary);
       }
+
+      .answer-breadcrumbs { display: flex; flex-wrap: wrap; gap: .45rem; max-width: 54rem; margin: 1rem auto 0; padding: 0 1rem; color: #64748b; font-size: .875rem; line-height: 1.7; }
+      .answer-breadcrumbs a { color: #0f766e; text-decoration: none; }
+      .answer-breadcrumbs a:hover, .answer-breadcrumbs a:focus-visible { color: #115e59; text-decoration: underline; }
       .answer-page__skeleton,
       .answer-hero__skeleton {
         background: var(--bg-elevated);

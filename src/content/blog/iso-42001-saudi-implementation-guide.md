@@ -111,6 +111,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <div class="actions">
 <a class="btn" href="/assessment/ai-governance-readiness/">ابدأ تقييم جاهزية حوكمة AI</a>
 <a class="btn secondary" href="/solutions/ai-governance-platform/">استكشف منصة BrightAI</a>
+<p>إذا تبي تعرف نقطة البداية قبل توزيع المسؤوليات والضوابط، استخدم <a href="/assessment/ai-governance-readiness/">تقييم جاهزية حوكمة الذكاء الاصطناعي</a> لتحديد الفجوات التشغيلية التي تحتاج إغلاقها أولًا.</p>
 <a class="btn secondary" href="/contact/">تحدث مع الفريق</a>
 </div>
 </section>

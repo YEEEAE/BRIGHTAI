@@ -38,6 +38,7 @@ export const answerGov: AnswerUnit = {
 /** What is an AI Firewall? */
 export const answerFirewall: AnswerUnit = {
   slug: 'ai-firewall-saudi',
+  furtherReading: { href: '/hub/security/', label: 'مركز أمان الذكاء الاصطناعي وAI Firewall للمؤسسات السعودية' },
   query: 'AI Firewall Saudi Arabia',
   question: 'What is an AI Firewall?',
   answer:
@@ -47,6 +48,7 @@ export const answerFirewall: AnswerUnit = {
 /** What is PDPL AI compliance? */
 export const answerPdpl: AnswerUnit = {
   slug: 'pdpl-ai-compliance',
+  furtherReading: { href: '/hub/compliance/', label: 'محور الامتثال السعودي للذكاء الاصطناعي: PDPL وNCA وISO 42001' },
   query: 'PDPL AI compliance',
   question: 'What is PDPL compliance for AI systems?',
   answer:
@@ -56,6 +58,7 @@ export const answerPdpl: AnswerUnit = {
 /** What is an AI Safety platform for enterprises? */
 export const answerSafety: AnswerUnit = {
   slug: 'ai-safety-platform-enterprise',
+  furtherReading: { href: '/hub/security/', label: 'مركز أمان الذكاء الاصطناعي للمنشآت السعودية' },
   query: 'AI safety platform for enterprises',
   question: 'What is an AI safety platform for enterprises?',
   answer:
@@ -65,6 +68,7 @@ export const answerSafety: AnswerUnit = {
 /** What is the Saudi AI Safety OS? */
 export const answerOs: AnswerUnit = {
   slug: 'saudi-ai-safety-os',
+  furtherReading: { href: '/hub/security/', label: 'محور أمان الذكاء الاصطناعي وطبقات الحماية التشغيلية' },
   query: 'Saudi AI Safety OS',
   question: 'What is the Saudi AI Safety OS?',
   answer:
@@ -84,6 +88,7 @@ export const answerGovAr: AnswerUnit = {
 /** What is an AI Firewall (Arabic)? */
 export const answerFirewallAr: AnswerUnit = {
   slug: 'ai-firewall-saudi-ar',
+  furtherReading: { href: '/hub/security/', label: 'الدليل الأشمل لأمان AI وجدار الحماية في السعودية' },
   query: 'جدار حماية الذكاء الاصطناعي',
   question: 'What is جدار حماية الذكاء الاصطناعي?',
   answer:
@@ -93,6 +98,7 @@ export const answerFirewallAr: AnswerUnit = {
 /** What is an AI audit trail (Arabic)? */
 export const answerAuditAr: AnswerUnit = {
   slug: 'audit-trail-saudi-ar',
+  furtherReading: { href: '/hub/agentic-ai-governance/', label: 'حوكمة Agentic AI: الملكية والموافقات والأدلة التشغيلية' },
   query: 'سجل تدقيق الذكاء الاصطناعي',
   question: 'What is سجل تدقيق الذكاء الاصطناعي?',
   answer:
@@ -102,6 +108,7 @@ export const answerAuditAr: AnswerUnit = {
 /** What is PDPL compliance for AI? */
 export const answerPdplAr: AnswerUnit = {
   slug: 'pdpl-ai-compliance-ar',
+  furtherReading: { href: '/hub/compliance/', label: 'محور الامتثال السعودي للذكاء الاصطناعي وحماية البيانات' },
   query: 'امتثال PDPL للذكاء الاصطناعي',
   question: 'What is امتثال PDPL للذكاء الاصطناعي?',
   answer:
@@ -111,6 +118,7 @@ export const answerPdplAr: AnswerUnit = {
 /** What are NCA ECC controls? */
 export const answerNca: AnswerUnit = {
   slug: 'nca-ecc-controls',
+  furtherReading: { href: '/hub/compliance/', label: 'دليل امتثال AI السعودي: PDPL وNCA ECC وISO 42001' },
   query: 'ضوابط NCA للذكاء الاصطناعي',
   question: 'What are ضوابط NCA للذكاء الاصطناعي?',
   answer:
@@ -120,6 +128,7 @@ export const answerNca: AnswerUnit = {
 /** What is generative AI guidance from SDAIA? */
 export const answerSdaia: AnswerUnit = {
   slug: 'sdaia-generative-ai',
+  furtherReading: { href: '/hub/sdaia-ai-risk-management/', label: 'دليل سدايا لإدارة مخاطر الذكاء الاصطناعي في المنشآت السعودية' },
   query: 'إرشادات سدايا للذكاء الاصطناعي التوليدي',
   question: 'What are إرشادات سدايا للذكاء الاصطناعي التوليدي?',
   answer:
@@ -133,6 +142,7 @@ export const answerSdaia: AnswerUnit = {
 /** What is AI governance for Saudi banks? */
 export const answerBanking: AnswerUnit = {
   slug: 'ai-banking',
+  furtherReading: { href: '/hub/ai-governance/', label: 'محور حوكمة الذكاء الاصطناعي للمؤسسات السعودية' },
   query: 'حوكمة الذكاء الاصطناعي للبنوك السعودية',
   question: 'What is AI governance for Saudi banks?',
   answer:
@@ -142,6 +152,7 @@ export const answerBanking: AnswerUnit = {
 /** What is AI governance for Saudi healthcare? */
 export const answerHealthcare: AnswerUnit = {
   slug: 'ai-healthcare',
+  furtherReading: { href: '/hub/ai-governance/', label: 'الدليل الكنسي لحوكمة الذكاء الاصطناعي في السعودية' },
   query: 'حوكمة الذكاء الاصطناعي للقطاع الصحي السعودي',
   question: 'What is AI governance for Saudi healthcare?',
   answer:
@@ -161,6 +172,7 @@ export const answerGovFramework: AnswerUnit = {
 /** What is NCA compliance for AI? */
 export const answerNcaCompliance: AnswerUnit = {
   slug: 'nca-compliance',
+  furtherReading: { href: '/hub/compliance/', label: 'محور الامتثال السعودي للذكاء الاصطناعي وضوابط NCA' },
   query: 'امتثال NCA للذكاء الاصطناعي',
   question: 'What is NCA compliance for AI systems?',
   answer:
@@ -170,6 +182,7 @@ export const answerNcaCompliance: AnswerUnit = {
 /** What is SAMA AI governance? */
 export const answerSama: AnswerUnit = {
   slug: 'sama-ai',
+  furtherReading: { href: '/hub/ai-governance/', label: 'دليل الحوكمة التشغيلي للذكاء الاصطناعي في السعودية' },
   query: 'حوكمة الذكاء الاصطناعي SAMA',
   question: 'What is SAMA AI governance for Saudi banks?',
   answer:
@@ -179,6 +192,7 @@ export const answerSama: AnswerUnit = {
 /** What is ISO/IEC 42001 for AI management? */
 export const answerIso42001: AnswerUnit = {
   slug: 'iso-42001',
+  furtherReading: { href: '/hub/compliance/', label: 'محور الامتثال السعودي: ISO 42001 مع PDPL وNCA ECC' },
   query: 'ISO 42001 إدارة الذكاء الاصطناعي',
   question: 'What is ISO/IEC 42001 for AI management systems?',
   answer:

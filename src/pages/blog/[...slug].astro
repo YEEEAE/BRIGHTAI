@@ -209,10 +209,25 @@ const INTERNAL_LINKS_BY_SLUG: Record<string, Array<{ href: string; label: string
   ],
 };
 
+// Five-pillar architecture: one contextual owner link is added only when a
+// supporting post's own topic clearly belongs to that pillar. This keeps the
+// article-to-pillar relationship explicit without turning the related-links
+// block into a generic SEO link list.
+const PILLAR_OWNER_LINKS = [
+  { match: /agentic|وكلاء/, href: '/hub/agentic-ai-governance/', label: 'محور حوكمة Agentic AI والموافقات والأدلة' },
+  { match: /pdpl|nca|ecc|iso|امتثال|خصوصية|data protection|بيانات شخصية/, href: '/hub/compliance/', label: 'محور الامتثال السعودي للذكاء الاصطناعي' },
+  { match: /risk|مخاطر|sdaia|سدايا/, href: '/hub/sdaia-ai-risk-management/', label: 'دليل سدايا لإدارة مخاطر الذكاء الاصطناعي' },
+  { match: /firewall|security|أمن|اختراق|shadow ai/, href: '/hub/security/', label: 'مركز أمان الذكاء الاصطناعي وAI Firewall' },
+  { match: /governance|حوكمة|sama|أخلاقيات/, href: '/hub/ai-governance/', label: 'الدليل الكنسي لحوكمة الذكاء الاصطناعي في السعودية' },
+];
+
+const postTopic = [post.slug, post.category ?? '', ...(post.tags ?? [])].join(' ').toLowerCase();
+const pillarOwnerLink = PILLAR_OWNER_LINKS.find(({ match }) => match.test(postTopic));
 const internalLinks = [
   ...(INTERNAL_LINKS_BY_CATEGORY[post.category] || []),
   ...(INTERNAL_LINKS_BY_SLUG[post.slug] || []),
-];
+  ...(pillarOwnerLink ? [{ href: pillarOwnerLink.href, label: pillarOwnerLink.label }] : []),
+].filter((link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index);
 
 // Prefer same-category related posts; fall back to broader tag-overlap.
 const allRelated = await getRelatedPosts(post.slug, 20);
