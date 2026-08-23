@@ -200,6 +200,7 @@ const locAnswerFirst = loc.answerFirst
         <section> — a single <p> carrying the unique city+sector
         answer. The migrated HTML below it is unchanged. */}
     <p class="answer-first-summary" data-speakable-target="answer-first">{locAnswerFirst}</p>
+    {sector.slug === 'banking-ai-governance' && loc.slug === 'riyadh' && <section class="inner-section" aria-labelledby="riyadh-source-title"><div class="max-w-6xl mx-auto px-5 lg:px-8"><p class="inner-section__label">المصدر الرسمي · آخر تحديث: 2026-08-24</p><h2 id="riyadh-source-title">السياق المصرفي يحدد الضابط؛ لا يكفي اسم الإطار</h2><p><a href="https://www.sama.gov.sa/" target="_blank" rel="noopener noreferrer">البنك المركزي السعودي (SAMA)</a> هو المرجع الأول لسياق القطاع المالي. <strong>متطلب أو إرشاد رسمي:</strong> راجع النصوص الرسمية وفرق البنك لتحديد ما ينطبق. <strong>منهج BrightAI للتنفيذ:</strong> نربط الاستخدام وحدود البيانات والموافقة البشرية والدليل في مسار مراجعة؛ مو اعتماد من SAMA أو ضمان امتثال.</p><table><caption>مصفوفة قرار مصرفية أولية</caption><thead><tr><th>السؤال</th><th>المخرج</th></tr></thead><tbody><tr><td>هل يمس بيانات عميل؟</td><td>فحص وتنقية أو حجب.</td></tr><tr><td>هل يؤثر في قرار عالي الأثر؟</td><td>مراجعة بشرية ودليل.</td></tr></tbody></table></div></section>}
     <main class="migrated-legacy-content" set:html={DOMPurify.sanitize(migratedPage.html)} />
   </>
 ) : (

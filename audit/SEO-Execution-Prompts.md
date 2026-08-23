@@ -1036,7 +1036,7 @@ Output:
 - screenshots/visual checks if the environment supports them
 
 Do not push.
-- [ ] ✅ Prompt #23 — done & reviewed
+- [ ✅]  Prompt #23 — done & reviewed
 
 # Prompt #24 — Homepage information architecture + conversion redesign
 

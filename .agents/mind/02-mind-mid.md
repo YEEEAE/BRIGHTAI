@@ -6,6 +6,16 @@ part: 2/3 — الجزء الأوسط من عقل الوكيل (2026-08-11 → 2
 source: .agents/brain.md v2.7.99 (مقسوم 2026-08-14)
 ---
 
+### 2026-08-23 — SEO-DESIGN-BASELINE-001: baseline محلي للـ SEO والتصميم وخريطة strategic routes قبل أي optimization — تقرير فقط
+
+- **Scope**: قراءة وتحليل فقط؛ لا تعديل على صفحات/مكونات SEO أو Cloudflare أو production. أُنشئ `audit/report/2026-08-23-technical-seo-design-baseline.md`، مع إبقاء التغييرات السابقة في working tree كما هي.
+- **Inventory**: build output الحالي = **275 HTML**؛ sitemap المحلي = **258 URL**. الأقسام المطلوبة: `/answer/` **17 quick answers**، `/hub/` **6 informational pillars**، `/solutions/` **26 commercial**، `/docs/` **49 technical docs**، `/blog/` **102 supporting/category**، `/assessment/` **1 conversion**؛ المجموع **201** URL تحت النطاق المطلوب.
+- **Local SEO evidence**: `pnpm seo:check` PASS (258 sitemap URLs، 275 HTML، content acceptance 4/4)، `pnpm seo:schema` PASS (62 schema pages/262 speakable)، `pnpm seo:gate` PASS (48,190 references/0 broken)، `pnpm seo:hreflang` PASS (259 sets/0 errors)، internal-link graph PASS (0 broken/orphans، max depth 3)، redirects PASS (209 entries/0 chains)، headers check PASS.
+- **Blockers/findings**: `pnpm exec astro check` = **127 errors / 0 warnings / 85 hints**؛ Astro سجّل **26 route collisions** legacy/static (أمثلة `/blog/astr.doc`, `/blog/atou.doc`, `/blog/cloude-opus-4.6`, ومسارات `/services/`). `/answer/*` كلها بين **122–151 كلمة**، وتكرار H1 cross-intent بين `/answer/ai-banking/` و`/lp/banking/` وبين healthcare. `verify:deployment-surface` blocked: server not ready within 10s (0/57).
+- **Design baseline**: CSS = **11,415 source lines** عبر base/components/pages/tokens/critical؛ scan وجد **111 inline style attributes** و**125 script tags** و**2 Astro client directives**. أعلى أصول public المرصودة: `logo.webp` 148K، `assets/images/logo.webp` 136K؛ current LCP/INP/CLS/CrUX = **N/A**.
+- **Production boundary**: web crawl sample فتح homepage و`/en/` لكنه مذكور last month؛ `curl` تعذر بسبب DNS، لذلك live status/headers/robots/sitemap وArabic-English parity **N/A/Unverified**. التقرير لا يثبت claims التنظيمية/الأرقام الظاهرة في live homepage.
+- **Status**: baseline report delivered locally؛ لا commit ولا push ولا deploy. الخطوة التالية: collision matrix read-only ثم إصلاح source/build integrity قبل أي SEO optimization.
+
 ### 2026-08-23 — QC-LAB-REPEAT-FAIL-001: كاشف "FAIL متكررة لنفس المنتج خلال 7 أيام" — bucket رابع في runScheduledNotifications (كاشف واحد فقط، بلا findings تلقائية)
 
 - **What**: نفس المنتج بـ ≥2 نتيجة FAIL نهائية (non-VOID) داخل نافذة 7 أيام متدحرجة → (1) إشعار لصاحب المنتج (`lab_products.created_by`) عبر نظام الإشعارات القائم، الـ href = السجل المفلتر `/lab/tests?product={id}&result=FAIL` والرسالة تحمل رابط "Open Finding" يعبيّن نموذج `/findings#new-finding` القائم بـ inspection_type/requirement_reference/risk_description يتضمنون ids الاختبارات المتأثرة — **قرار الـ finding بشري دائمًا**. (2) علم data-quality على `/lab/products/[id]` ("Repeated failures in the last 7 days") يربط بالسجل المفلتر + زر Open Finding.

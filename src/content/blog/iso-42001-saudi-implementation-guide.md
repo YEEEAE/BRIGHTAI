@@ -3,7 +3,7 @@ title: "ISO 42001 للشركات السعودية: دليل التطبيق ال�
 description: "دليل تطبيق ISO 42001 للشركات السعودية: بناء نظام إدارة ذكاء اصطناعي متوافق مع PDPL وسدايا وقابل للتحسين. اقرأ الدليل الكامل وابدأ رحلة الامتثال مع BrightAI."
 canonical: "https://brightai.site/blog/iso-42001-saudi-implementation-guide/"
 pubDate: "2026-07-03"
-updatedDate: "2026-07-03"
+updatedDate: "2026-08-24"
 author: "nasser-alabdullah"
 slug: "iso-42001-saudi-implementation-guide"
 readingTime: 13
@@ -15,6 +15,16 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
 <p class="ai-citation" data-speakable="true">ISO 42001 هو المعيار الدولي الأول لأنظمة إدارة الذكاء الاصطناعي (AIMS)، صدر عام 2023، ويوفر إطاراً لتقييم مخاطر AI وتوثيقها والتحكم بها. يُعتبر مكملاً لـ ISO 27001 وليس بديلاً عنه.</p>
+
+<section class="iso-answer-framework" aria-labelledby="iso-answer-framework-title">
+<p><strong>آخر تحديث:</strong> 2026-08-24</p>
+<p><strong>المصدر الرسمي:</strong> <a href="https://www.iso.org/standard/42001" target="_blank" rel="noopener noreferrer">ISO/IEC 42001:2023 من المنظمة الدولية للمعايير</a>.</p>
+<h2 id="iso-answer-framework-title">وش يقدّم ISO/IEC 42001 للمنشأة السعودية؟</h2>
+<p>ISO/IEC 42001 يقدّم إطار نظام إدارة للذكاء الاصطناعي يساعد المنشأة على تنظيم السياسات والمخاطر والأدوار والتوثيق والتحسين. لا يحدد وحده كل التزام سعودي؛ راجع PDPL وNCA والجهة القطاعية بحسب نطاق استخدامك.</p>
+<h3>متطلب أو إرشاد رسمي</h3><p>النسخة الرسمية من المعيار والنصوص التنظيمية المحلية هي المرجع لتحديد ما ينطبق عليك، ولا تعني الإشارة إلى المعيار أن الشهادة مطلوبة أو متحققة.</p>
+<h3>منهج BrightAI للتنفيذ</h3><p>نربط الجرد والتصنيف والسياسة والموافقة والسجل والدليل كطريقة تشغيل قابلة للمراجعة؛ المنهج ليس شهادة أو تدقيق اعتماد.</p>
+<table><caption>إطار مبسط لبدء AIMS</caption><thead><tr><th>المرحلة</th><th>ناتج مراجعة عملي</th></tr></thead><tbody><tr><td>النطاق والملكية</td><td>حالات استخدام ومالك واضح.</td></tr><tr><td>المخاطر والضوابط</td><td>قرار موثق وضابط متناسب.</td></tr><tr><td>المراجعة والتحسين</td><td>سجل أدلة ومتابعة للتغيرات.</td></tr></tbody></table>
+</section>
 
 <div class="author">
 <img src="/assets/images/authors/nasser-alabdullah.svg" alt="صورة م. ناصر العبدالله" width="76" height="76" decoding="async" loading="lazy">

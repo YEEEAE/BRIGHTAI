@@ -1,0 +1,23 @@
+source,source_tier,target,target_tier,anchor_suggested,context,intent,priority,note
+/,A (brand owner),/hub/ai-governance/,B (pillar hub),مركز معرفة حوكمة الذكاء الاصطناعي,بطاقات «أدلة مهمة» — منفذ منذ GA-SEO-AUDIT-002,brand→education,P0 (منفذ — تحقق فقط),تم التحقق من وجوده بالرئيسية
+/,A,/solutions/ai-governance-platform/,A (commercial owner),منصة حوكمة الذكاء الاصطناعي,فوق الطية,brand→money,منفذ,يتحقق دوريًا
+/hub/ai-governance/,B,/tools/ai-risk-register/,ASSET (linkable),قالب سجل مخاطر AI جاهز للتنزيل,قسم تصنيف المخاطر — منفذ 2026-08-24,hub→tool,P0 (منفذ),الأصل رقم 1 للروابط — قوَّه بعد إضافة التصدير
+/hub/sdaia-ai-risk-management/,B,/tools/ai-risk-register/,ASSET,نزّل قالب سجل المخاطر مربوطًا بالمنهجية,بعد checklist الإطار,regulatory→tool,P0 — أضف إن لم يكن موجودًا,رحلة «إطار سدايا → أداة» صريحة — الجسر الأقوى للنافذة الزمنية
+/hub/sdaia-ai-risk-management/,B,/solutions/ai-risk-classification/,A,تصنيف المخاطر التجاري,قسم «وش بعد الفهم؟»,hub→money,P1,تأكد من وجود الرابط (المحور يربط الحلول الست بالقالب)
+/tools/ai-risk-register/,ASSET,/solutions/ai-risk-classification/,A,AI Risk Classification,بطاقات الروابط — منفذ,tool→money,منفذ,✓
+/tools/ai-risk-register/,ASSET,/assessment/ai-governance-readiness/,CONVERSION,قيّم جاهزية الحوكمة,بطاقات الروابط + الخاتمة — منفذ,tool→conversion,منفذ,✓
+/docs/ai-risk-management/,C,/tools/ai-risk-register/,ASSET,قالب سجل المخاطر,خطوة 1 — منفذ 2026-08-24,doc→tool,P0 (منفذ),✓
+/docs/ai-risk-management/,C,/hub/sdaia-ai-risk-management/,B,إطار سدايا الوطني,سياق المنهجية,doc→regulatory hub,P1 — أضف إن غاب,الجسر العكسي للإطار الجديد
+/solutions/ai-risk-classification/,A,/hub/sdaia-ai-risk-management/,B,كيف يؤطر سدايا المخاطر,قسم «السياق التنظيمي»,money→hub (تقوية B),P1 — أضف إن غاب,الرحلة: «كيف أصنفه → كيف سدايا تأطره»
+/solutions/ai-firewall/,A,/docs/pdpl-chatgpt-data-protection/,C,حماية البيانات قبل وصولها للنموذج,قسم سيناريوهات التسريب,money→support,P1 — أضف إن غاب,عنقود ChatGPT يدعم الـ firewall
+/docs/pdpl-chatgpt-data-protection/,C,/solutions/ai-firewall/,A,AI Firewall من BrightAI,بعد الجدول الآمن/غير آمن,support→money,تحقق,P0 — تأكد (انفذ بجلسة PDPL؟ تحقق),مسار الخوف→الحل صريح
+/blog/chatgpt-pdpl-data-compliance/,C,/solutions/ai-firewall/,A,AI Firewall,سياق التسريب,blog→money,تحقق,P1,المدونة تسوق للمنتج مو العكس
+/hub/agentic-ai-governance/,B (جديد),/solutions/human-approval-layer/,A,طبقة الموافقات البشرية,قسم الموافقات عالية الخطورة,hub→money,تحقق,P1 (المحور الجديد يربط 4 حلول),✓ وفق تقرير الجلسة السابقة
+/hub/agentic-ai-governance/,B,/solutions/ai-audit-trail/,A,سجل التدقيق,قسم الأدلة,hub→money,تحقق,P1,✓
+/hub/agentic-ai-security/,B (جديد — جلسة موازية),/solutions/ai-firewall/,A,AI Firewall,قسم الضوابط,hub→money,تنسيق,COORDINATE — الجلسة الموازية تبنيها الآن,لا تعديل من هذه الجلسة
+/hub/index,D→B gateway,/hub/security/,B,أمن الذكاء الاصطناعي,بطاقة ثامنة بالفهرس,index→hub,P1 — إضافة بطاقة,المسار موجود بالـ sitemap (261) لكن غايب عن البطاقات — الجلسة الموازية تلمس index.astro الآن
+/solutions/ai-governance-platform/,A,/tools/ai-risk-register/,ASSET,ابدأ بسجل المخاطر مجانًا,قسم «ابدأ من وين»,money→tool (asset تقوية),P1 — أضف إن غاب,المنصة تدعم الأصل المجاني = ثقة + ربط
+/assessment/ai-governance-readiness/,CONVERSION,/tools/ai-risk-register/,ASSET,قالب سجل المخاطر,نتيجة الفحص — منفذ,conversion→tool,منفذ,✓
+/blog/* (96 مقال),C,/hub/ai-governance/ + /solutions/*,A/B,أنكورات وصفية حسب الموضوع,نهاية كل مقال ذات صلة,C→A/B funnel,P2 — تدريجي,المدونة لا تتراكم أثورتي تجارية لنفسها
+/answer/* (19),C,/hub/ai-governance/,B,الدليل الكامل لحوكمة AI,furtherReading — منفذ (GA-BASELINE-001),C→B,منفذ,✓ حلقة answer→pillar قائمة
+,,,,,,,مبادئ الخريطة: (1) TIER A=9 حلول تجارية + الرئيسية · B=محاور hub + محاور docs المرجعية · ASSET=/tools/* + البحوث الأصلية القادمة · CONVERSION=/assessment · C=docs/blog/answer داعمة · D=utililty (2) C تقوي A/B دائمًا — ما نخلّي C تتراكم لنفسها (3) الأصل (ASSET) يستقبل روابط خارجية ويوزع أثورتي على A (4) كل إضافة روابط لازم تعدي عبر internal-links:audit (0 orphans/0 broken/depth≤3) — بوابة إلزامية

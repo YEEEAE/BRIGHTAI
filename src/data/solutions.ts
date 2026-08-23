@@ -222,7 +222,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'يفحص كل طلب AI ويخفي البيانات الشخصية والحساسة قبل وصولها للنموذج. حماية في الزمن الفعلي.',
     whenNeeded:'من اليوم الأول لاستخدام AI.',
     related:['ai-audit-trail','ai-risk-classification','human-approval-layer'],
-    docs:['/docs/ai-firewall/'], blog:['/blog/ai-firewall-why-you-need-it/','/blog/chatgpt-pdpl-data-compliance/','/blog/nca-cybersecurity-requirements-saudi/'], kernel:['/kernel/chat/'],
+    docs:['/docs/ai-firewall/','/docs/pdpl-chatgpt-data-protection/'], blog:['/blog/ai-firewall-why-you-need-it/','/blog/chatgpt-pdpl-data-compliance/','/blog/nca-cybersecurity-requirements-saudi/'], kernel:['/kernel/chat/'],
     content: content_ai_firewall,
   },
   {
