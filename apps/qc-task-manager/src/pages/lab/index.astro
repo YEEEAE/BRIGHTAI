@@ -26,10 +26,13 @@ import {
   getLabOpenRetests,
   getLabRecentActivity,
   getWICatalogSummary,
+  getLabReturnedTests,
+  getLabOwnedWIContent,
   LAB_KPI_DRILLDOWNS,
   labDrilldownEnabled,
   type LabKpis,
 } from '../../lib/lab/overview';
+import { getLabDocumentInReviewCount } from '../../lib/lab/documents';
 import {
   canCreateLabDocument,
   canCreateLabProduct,
@@ -65,6 +68,8 @@ const canSeeAuditFeed = canViewLabAudit(role);
 let dataError: string | null = null;
 let kpis: LabKpis | null = null;
 let recentTests: ReturnType<typeof getLabRecentTests> = [];
+let returnedTests: ReturnType<typeof getLabReturnedTests> = [];
+let ownedWIContent: ReturnType<typeof getLabOwnedWIContent> = [];
 let pendingReviews: ReturnType<typeof getLabPendingReviews> = [];
 let equipmentAlerts: ReturnType<typeof getLabEquipmentAlerts> = [];
 let calibrationAlerts: ReturnType<typeof getLabCalibrationAlerts> = [];
@@ -72,10 +77,13 @@ let documentReviewsDue: ReturnType<typeof getLabDocumentReviewsDue> = [];
 let openRetests: ReturnType<typeof getLabOpenRetests> = [];
 let recentActivity: ReturnType<typeof getLabRecentActivity> = [];
 let wiCatalog: ReturnType<typeof getWICatalogSummary> = { total: 0, missing_content: 0, draft_content: 0, under_review: 0, approved: 0 };
+let documentsInReview = 0;
 
 try {
   kpis = getLabKpis(scope);
   recentTests = getLabRecentTests(scope);
+  returnedTests = getLabReturnedTests(scope);
+  ownedWIContent = getLabOwnedWIContent(scope);
   if (canSeeReviewQueue) pendingReviews = getLabPendingReviews(scope);
   equipmentAlerts = getLabEquipmentAlerts();
   calibrationAlerts = getLabCalibrationAlerts();
@@ -83,6 +91,7 @@ try {
   openRetests = getLabOpenRetests(scope);
   if (canSeeAuditFeed) recentActivity = getLabRecentActivity(scope);
   wiCatalog = getWICatalogSummary();
+  documentsInReview = getLabDocumentInReviewCount();
 } catch (err) {
   console.error('[lab] overview query failure', err);
   dataError = 'Could not load laboratory data. Try reloading — if the problem persists, contact an administrator.';
@@ -199,6 +208,40 @@ const calibrationLabel: Record<string, string> = {
     )}
 
     <LabSecondaryNav items={navItems} currentPath="/lab" />
+
+    <section aria-labelledby="role-priority-heading" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div class="flex flex-wrap items-baseline justify-between gap-3">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">{role === 'employee' ? 'My workspace' : role === 'supervisor' ? 'Team review workspace' : 'Governance workspace'}</p>
+          <h2 id="role-priority-heading" class="mt-1 text-xl font-semibold text-slate-900">Priority work for {role}</h2>
+        </div>
+        {role === 'employee' && <a href="/lab/tests/new?type=air" class="inline-flex min-h-11 items-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">Quick New Test</a>}
+      </div>
+      {role === 'employee' ? (
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <a href="/lab/tests" class="rounded-lg border border-slate-200 p-4 hover:border-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"><span class="block text-2xl font-semibold" dir="ltr">{recentTests.length}</span><span class="mt-1 block text-sm font-medium text-slate-700">My Tests</span></a>
+          <a href="/lab/tests?status=DRAFT" class="rounded-lg border border-slate-200 p-4 hover:border-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"><span class="block text-2xl font-semibold" dir="ltr">{kpis?.draft_tests ?? 0}</span><span class="mt-1 block text-sm font-medium text-slate-700">My Drafts</span></a>
+          <a href="/lab/tests?status=REJECTED" class="rounded-lg border border-red-200 bg-red-50/50 p-4 hover:border-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"><span class="block text-2xl font-semibold text-red-800" dir="ltr">{returnedTests.length}</span><span class="mt-1 block text-sm font-medium text-red-900">Returned for Changes</span></a>
+          <a href={`/lab/documents?type=WI&owner=${userId}`} class="rounded-lg border border-indigo-200 bg-indigo-50/50 p-4 hover:border-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600"><span class="block text-2xl font-semibold text-indigo-900" dir="ltr">{ownedWIContent.length}</span><span class="mt-1 block text-sm font-medium text-indigo-900">My WI Content</span></a>
+          <a href="/lab/change-requests" class="rounded-lg border border-slate-200 p-4 hover:border-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"><span class="block text-2xl font-semibold" dir="ltr">{kpis?.pending_master_data_changes ?? 0}</span><span class="mt-1 block text-sm font-medium text-slate-700">My Change Requests</span></a>
+        </div>
+      ) : role === 'supervisor' ? (
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <a href="/lab/tests/review" class="rounded-lg border border-amber-200 bg-amber-50/60 p-4 hover:border-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-600"><span class="block text-2xl font-semibold text-amber-900" dir="ltr">{pendingReviews.length}</span><span class="mt-1 block text-sm font-medium text-amber-950">Tests Awaiting Review</span></a>
+          <a href="/lab/documents?status=IN_REVIEW" class="rounded-lg border border-amber-200 bg-amber-50/60 p-4 hover:border-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-600"><span class="block text-2xl font-semibold text-amber-900" dir="ltr">{documentsInReview}</span><span class="mt-1 block text-sm font-medium text-amber-950">Documents Awaiting Review</span></a>
+          <a href="/lab/data-quality" class="rounded-lg border border-red-200 bg-red-50/50 p-4 hover:border-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"><span class="block text-2xl font-semibold text-red-800" dir="ltr">{kpis?.data_quality_issues ?? 0}</span><span class="mt-1 block text-sm font-medium text-red-900">Team Risks</span></a>
+          <a href="/lab/retests?status=OPEN" class="rounded-lg border border-orange-200 bg-orange-50/60 p-4 hover:border-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600"><span class="block text-2xl font-semibold text-orange-900" dir="ltr">{openRetests.length}</span><span class="mt-1 block text-sm font-medium text-orange-950">Open Retests</span></a>
+          <a href="/lab/calibration?due=1" class="rounded-lg border border-slate-200 p-4 hover:border-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"><span class="block text-2xl font-semibold" dir="ltr">{calibrationAlerts.length}</span><span class="mt-1 block text-sm font-medium text-slate-700">Calibration Alerts</span></a>
+        </div>
+      ) : (
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <a href="/lab/tests/review" class="rounded-lg border border-amber-200 bg-amber-50/60 p-4 hover:border-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-600"><span class="block text-2xl font-semibold text-amber-900" dir="ltr">{pendingReviews.length}</span><span class="mt-1 block text-sm font-medium text-amber-950">Approval Queue</span></a>
+          <a href="/lab/change-requests?status=PENDING" class="rounded-lg border border-amber-200 bg-amber-50/60 p-4 hover:border-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-600"><span class="block text-2xl font-semibold text-amber-900" dir="ltr">{kpis?.pending_master_data_changes ?? 0}</span><span class="mt-1 block text-sm font-medium text-amber-950">Change Requests</span></a>
+          <a href="/lab/audit" class="rounded-lg border border-slate-200 p-4 hover:border-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"><span class="block text-2xl font-semibold" dir="ltr">{recentActivity.length}</span><span class="mt-1 block text-sm font-medium text-slate-700">Audit Health</span></a>
+          <a href="/lab/data-quality" class="rounded-lg border border-red-200 bg-red-50/50 p-4 hover:border-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"><span class="block text-2xl font-semibold text-red-800" dir="ltr">{kpis?.data_quality_issues ?? 0}</span><span class="mt-1 block text-sm font-medium text-red-900">Data Quality</span></a>
+        </div>
+      )}
+    </section>
 
     <section aria-labelledby="wi-catalog-heading" class="rounded-xl border border-indigo-200 bg-indigo-50/50 p-5 shadow-sm">
       <div class="flex flex-wrap items-center justify-between gap-3">

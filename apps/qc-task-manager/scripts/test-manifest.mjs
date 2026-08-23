@@ -42,6 +42,8 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:lab-esignature',
   'test:lab-suggest',
   'test:badge-contrast',
+  'test:lab-ux-presentation',
+  'test:lab-ux-performance',
   'test:lab-trends',
   'test:lab-change-requests',
   'test:db-doctor',

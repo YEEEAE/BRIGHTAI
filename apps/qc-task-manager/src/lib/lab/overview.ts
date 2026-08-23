@@ -300,6 +300,48 @@ export interface LabRecentTestRow {
   updated_at: string;
 }
 
+export interface LabReturnedTestRow {
+  id: number;
+  test_number: string;
+  test_type: string;
+  final_result: string | null;
+  updated_at: string;
+}
+
+/** Tests returned by review, scoped to the current employee's own work. */
+export function getLabReturnedTests(scope: LabOverviewScope): LabReturnedTestRow[] {
+  if (scope.role !== 'employee') return [];
+  return getDb().prepare(`
+    SELECT id, test_number, test_type, final_result, updated_at
+    FROM lab_test_records
+    WHERE status = 'REJECTED' AND (tested_by = ? OR created_by = ?)
+    ORDER BY updated_at DESC, id DESC
+    LIMIT 8
+  `).all(scope.userId, scope.userId) as LabReturnedTestRow[];
+}
+
+export interface LabOwnedDocumentContentRow {
+  id: number;
+  code: string;
+  title: string;
+  status: string;
+  has_content: number;
+}
+
+/** Employee-owned WI content, including catalog-only rows that need content. */
+export function getLabOwnedWIContent(scope: LabOverviewScope): LabOwnedDocumentContentRow[] {
+  if (scope.role !== 'employee') return [];
+  return getDb().prepare(`
+    SELECT d.id, d.code, d.title, d.status,
+           CASE WHEN d.current_version_id IS NULL THEN 0 ELSE 1 END AS has_content
+    FROM lab_documents d
+    WHERE d.type = 'WI' AND (d.owner_id = ? OR d.created_by = ?)
+      AND d.status NOT IN ('SUPERSEDED', 'ARCHIVED')
+    ORDER BY has_content ASC, d.updated_at DESC, d.id DESC
+    LIMIT 8
+  `).all(scope.userId, scope.userId) as LabOwnedDocumentContentRow[];
+}
+
 /** Latest 8 tests, most recently updated first (employee-scoped). */
 export function getLabRecentTests(scope: LabOverviewScope): LabRecentTestRow[] {
   const employee = scopeClause(scope);

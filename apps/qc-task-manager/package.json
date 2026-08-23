@@ -62,6 +62,8 @@
     "test:lab-esignature": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-esignature.mjs",
     "test:lab-suggest": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-suggest.mjs",
     "test:badge-contrast": "node scripts/verify-badge-contrast.mjs",
+    "test:lab-ux-presentation": "node scripts/test-lab-ux-presentation.mjs",
+    "test:lab-ux-performance": "node scripts/test-lab-ux-performance.mjs",
     "test": "node scripts/run-full-tests.mjs",
     "e2e:acceptance": "NODE_ENV=production pnpm build && node scripts/e2e-acceptance.mjs",
     "test:lab-trends": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-trends.mjs",

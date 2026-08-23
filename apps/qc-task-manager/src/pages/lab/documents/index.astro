@@ -19,6 +19,8 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import EmptyState from '../../../components/EmptyState.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import LabSaveViewForm from '../../../components/lab/LabSaveViewForm.astro';
+import LabDocumentStatusBadge from '../../../components/lab/LabDocumentStatusBadge.astro';
+import LabActionButton from '../../../components/lab/LabActionButton.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import {
   getLabDocumentInReviewCount,
@@ -43,7 +45,7 @@ import {
   type LabDocumentSortField,
 } from '../../../lib/lab/documents';
 import { canCreateLabDocument, canEditLabDocumentRecord } from '../../../lib/permissions';
-import type { LabDocumentStatus, LabDocumentType, Role } from '../../../lib/types';
+import type { LabDocumentType, Role } from '../../../lib/types';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -148,22 +150,10 @@ const pageNumbers: number[] = [];
   for (let p = start; p <= end; p++) pageNumbers.push(p);
 }
 
-const STATUS_BADGE_CLS: Record<LabDocumentStatus, string> = {
-  DRAFT: 'bg-slate-100 text-slate-700',
-  IN_REVIEW: 'bg-amber-100 text-amber-800',
-  APPROVED: 'bg-emerald-100 text-emerald-800',
-  SUPERSEDED: 'bg-violet-100 text-violet-800',
-  ARCHIVED: 'bg-slate-200 text-slate-600',
-};
-
 const TYPE_BADGE_CLS: Record<LabDocumentType, string> = {
   SOP: 'bg-sky-100 text-sky-800',
   WI: 'bg-indigo-100 text-indigo-800',
 };
-
-function statusBadge(status: LabDocumentStatus): string {
-  return `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_BADGE_CLS[status]}">${LAB_DOCUMENT_STATUS_LABELS[status]}</span>`;
-}
 
 function typeBadge(type: LabDocumentType): string {
   return `<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${TYPE_BADGE_CLS[type]}">${LAB_DOCUMENT_TYPE_LABELS[type]}</span>`;
@@ -217,12 +207,7 @@ function fmt(value: unknown): string {
         </p>
       </div>
       {canCreateLabDocument(role) && (
-        <a
-          href="/lab/documents/new"
-          class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-        >
-          New Document
-        </a>
+        <LabActionButton href="/lab/documents/new" kind="primary">New Document</LabActionButton>
       )}
     </header>
 
@@ -381,7 +366,31 @@ function fmt(value: unknown): string {
           />
         ) : (
           <section aria-label="Document Library" class="rounded-xl border border-slate-200 bg-white shadow-sm">
-            <div class="overflow-x-auto contain-layout contain-paint">
+            <div class="divide-y divide-slate-100 md:hidden">
+              {result.rows.map((r) => (
+                <article class="space-y-3 p-4">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="min-w-0">
+                      <a href={`/lab/documents/${r.id}`} class="block truncate font-semibold text-brand-700 hover:underline" dir="ltr">{r.code}</a>
+                      <p class="mt-1 break-words text-sm text-slate-900">{r.title}</p>
+                    </div>
+                    <LabDocumentStatusBadge status={r.status} missingContent={r.version == null} />
+                  </div>
+                  <dl class="grid grid-cols-2 gap-3 text-sm">
+                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Type</dt><dd class="mt-1 text-slate-800">{r.type}</dd></div>
+                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Version</dt><dd class="mt-1 text-slate-800" dir="ltr">{r.version == null ? '—' : `v${r.version}`}</dd></div>
+                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Owner</dt><dd class="mt-1 break-words text-slate-800">{r.owner_name ?? '—'}</dd></div>
+                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Review</dt><dd class="mt-1 text-slate-800">{r.review_state ? LAB_DOCUMENT_REVIEW_STATE_LABELS[r.review_state] : '—'}</dd></div>
+                  </dl>
+                  <div class="flex flex-wrap gap-2">
+                    <LabActionButton href={`/lab/documents/${r.id}`} kind="secondary">View</LabActionButton>
+                    <LabActionButton href={`/lab/documents/${r.id}/versions`} kind="secondary">Versions</LabActionButton>
+                    {canEditLabDocumentRecord({ id: user.userId, role }, r) && r.status !== 'ARCHIVED' && <LabActionButton href={`/lab/documents/${r.id}/edit`} kind="secondary">{r.version == null ? 'Add Content' : 'Edit'}</LabActionButton>}
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div class="hidden overflow-x-auto contain-layout contain-paint md:block">
               <table class="min-w-[1260px] divide-y divide-slate-100 text-sm">
                 <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr>
@@ -409,7 +418,7 @@ function fmt(value: unknown): string {
                       </td>
                       <td class="px-4 py-2" set:html={typeBadge(r.type)} />
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{r.version == null ? '—' : `v${r.version}`}</td>
-                      <td class="px-4 py-2">{r.version == null ? <span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">Missing Content</span> : <span set:html={statusBadge(r.status)} />}</td>
+                      <td class="px-4 py-2"><LabDocumentStatusBadge status={r.status} missingContent={r.version == null} /></td>
                       <td class="px-4 py-2 text-slate-700">{r.owner_name ?? '—'}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.effective_date)}</td>
                       <td class="px-4 py-2 whitespace-nowrap text-slate-700" dir="ltr">{fmt(r.review_due_date)}</td>

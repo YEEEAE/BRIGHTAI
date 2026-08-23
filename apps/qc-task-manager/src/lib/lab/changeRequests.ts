@@ -168,6 +168,7 @@ export interface ChangeRequestPresentation {
   target_href: string | null;
   stale: boolean;
   diff: ChangeDiffRow[];
+  audit: Array<{ id: number; action: string; actor_name: string | null; created_at: string; note: string | null }>;
 }
 
 function targetLabel(type: ChangeEntityType, id: number | null): string {
@@ -187,11 +188,19 @@ export function isChangeRequestStale(request: Pick<LabChangeRequest, 'entity_typ
 export function getChangeRequestPresentation(id: number): ChangeRequestPresentation | null {
   const request = getChangeRequest(id);
   if (!request) return null;
+  const audit = getDb().prepare(`
+    SELECT a.id, a.action, a.created_at, a.note, u.full_name AS actor_name
+    FROM qc_audit_log a
+    LEFT JOIN users u ON u.id = a.actor_id
+    WHERE a.entity_type = 'LAB_CHANGE_REQUEST' AND a.entity_id = ?
+    ORDER BY a.id ASC
+  `).all(id) as ChangeRequestPresentation['audit'];
   return {
     target_label: targetLabel(request.entity_type, request.entity_id),
     target_href: request.entity_id == null ? null : getChangeRequestTargetHref(request.entity_type, request.entity_id),
     stale: isChangeRequestStale(request),
     diff: request.operation === 'UPDATE' ? buildChangeDiff(request.base_snapshot_json, request.proposed_snapshot_json) : [],
+    audit,
   };
 }
 
