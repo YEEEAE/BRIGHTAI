@@ -1,7 +1,7 @@
 ---
 // /lab/reports — QC Laboratory Reports (QC-LAB-ARCHITECTURE.md §13).
 //
-// 15 laboratory reports rendered through the SAME reporting pipeline as the
+// 16 laboratory reports rendered through the SAME reporting pipeline as the
 // task reports (api/reports/[reportType].[format] with the csv/xlsx/pdf
 // writers) — this page is only the catalog + filter form. RBAC is enforced
 // twice: here (canViewLabReports) and again in authorizeReport, which denies
@@ -82,7 +82,7 @@ if (showTrend) {
       <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Operations</p>
       <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Reports</h1>
       <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Generate the 15 laboratory reports (registers, results, calibration, documents, activity, data quality) as
+        Generate the {labReports.length} laboratory reports (registers, results, calibration, documents, activity, data quality, retention status) as
         CSV, Excel, or PDF. Exports respect the selected filters and your data scope, and every generation is
         recorded in the report audit log. Report content is metadata only — document bodies and test snapshots are
         never exported.

@@ -12,6 +12,12 @@ export type ReportType =
   | 'lab-sop-register' | 'lab-wi-register' | 'lab-doc-review-due' | 'lab-acknowledgements'
   | 'lab-activity' | 'lab-data-quality' | 'lab-retention-status';
 
+/** Task-report catalog order used by /reports; lab reports have their own page. */
+export const TASK_REPORT_TYPES: readonly ReportType[] = [
+  'monthly-qc', 'sla', 'findings', 'capa', 'employee-performance',
+  'audit-trail', 'evidence-compliance', 'overdue',
+];
+
 /** Laboratory report types rendered from the lab_* tables (§13). */
 export const LAB_REPORT_TYPES: readonly ReportType[] = [
   'lab-test-register', 'lab-test-register-air', 'lab-test-register-vacuum',

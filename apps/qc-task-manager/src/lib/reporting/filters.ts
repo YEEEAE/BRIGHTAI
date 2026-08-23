@@ -6,6 +6,18 @@ import type { ReportFilters } from './types';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+const REPORT_QUERY_KEYS = new Set([
+  'from', 'to', 'department', 'employee', 'supervisor', 'priority', 'risk',
+  'finding_classification', 'sla_status', 'test_type', 'result', 'status',
+  'reason', 'product', 'equipment', 'scope',
+]);
+
+function rejectUnsupportedParameters(params: URLSearchParams): void {
+  for (const key of params.keys()) {
+    if (!REPORT_QUERY_KEYS.has(key)) throw new Error(`Unsupported report parameter: ${key}`);
+  }
+}
+
 function date(value: string | null, field: string): string | null {
   if (!value) return null;
   if (!DATE_RE.test(value)) throw new Error(`Invalid ${field} date`);
@@ -31,6 +43,9 @@ function positiveId(params: URLSearchParams, key: string): number | null {
 }
 
 export function parseReportFilters(params: URLSearchParams): ReportFilters {
+  rejectUnsupportedParameters(params);
+  const scope = params.get('scope');
+  if (scope && scope !== 'organization') throw new Error('Invalid scope parameter');
   const from = date(params.get('from'), 'from');
   const to = date(params.get('to'), 'to');
   if (from && to && from > to) throw new Error('From date must be on or before the to date');
@@ -54,6 +69,13 @@ export function parseReportFilters(params: URLSearchParams): ReportFilters {
     product: positiveId(params, 'product'),
     equipment: positiveId(params, 'equipment'),
   };
+}
+
+/** Parse the only scope escalation advertised by the reports UI. */
+export function parseReportScope(params: URLSearchParams): boolean {
+  const scope = params.get('scope');
+  if (scope && scope !== 'organization') throw new Error('Invalid scope parameter');
+  return scope === 'organization';
 }
 
 export const emptyReportFilters: ReportFilters = {

@@ -4,6 +4,7 @@ import { REPORT_CATALOG } from '../lib/reporting/catalog';
 import { listActiveUsers } from '../lib/tasks';
 import { FINDING_CLASSIFICATIONS, RISK_LEVELS, TASK_PRIORITIES } from '../lib/task-policy';
 import { SLA_STATUSES } from '../lib/sla';
+import { TASK_REPORT_TYPES } from '../lib/reporting/types';
 
 const user = Astro.locals.user!;
 const selectedType = Astro.url.searchParams.get('report_type') ?? 'monthly-qc';
@@ -26,7 +27,7 @@ const canChooseOrganization = user.role === 'admin' || user.role === 'manager';
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Report type
         <select name="report_type" class="rounded-md border border-slate-300 px-3 py-2">
-          {Object.values(REPORT_CATALOG).map((report) => <option value={report.key} selected={selectedType === report.key}>{report.label}</option>)}
+          {TASK_REPORT_TYPES.map((key) => REPORT_CATALOG[key]).map((report) => <option value={report.key} selected={selectedType === report.key}>{report.label}</option>)}
         </select>
       </label>
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">From date<input type="date" name="from" value={Astro.url.searchParams.get('from') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>

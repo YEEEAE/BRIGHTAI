@@ -45,6 +45,8 @@ try {
     test_type: null, result: null, status: null, reason: null, product: null, equipment: null,
   });
   assert.throws(() => parseReportFilters(new URLSearchParams({ employee: 'not-an-id' })), /employee/i);
+  assert.throws(() => parseReportFilters(new URLSearchParams({ scope: 'department' })), /scope/i);
+  assert.throws(() => parseReportFilters(new URLSearchParams({ page: '2' })), /unsupported|pagination|page/i);
   assert.deepEqual(resolveReportScope({ id: 7, role: 'employee', department: 'QC' }, filters), {
     kind: 'own_tasks', userId: 7, department: 'QC', sql: '(t.assigned_to = ? OR t.created_by = ?)', params: [7, 7],
   });

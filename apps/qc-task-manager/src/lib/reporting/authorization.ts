@@ -7,6 +7,19 @@ export interface ReportAuthorization {
   reason?: string;
 }
 
+export interface ReportAuditAuthorization {
+  allowed: boolean;
+  ownOnly: boolean;
+  reason?: string;
+}
+
+/** Audit visibility follows the same reporting authorization boundary. */
+export function authorizeReportAudit(actor: ReportActor): ReportAuditAuthorization {
+  return actor.role === 'employee'
+    ? { allowed: true, ownOnly: true }
+    : { allowed: true, ownOnly: false };
+}
+
 export function authorizeReport(actor: ReportActor, reportType: ReportType, comprehensive: boolean): ReportAuthorization {
   // Laboratory reports (§13): LAB_REPORT_VIEW / LAB_EXPORT are supervisor+.
   // Employees never see lab registers or lab exports — denied before any

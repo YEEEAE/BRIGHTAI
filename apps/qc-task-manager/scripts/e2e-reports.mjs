@@ -1,4 +1,4 @@
-// E2E spec for the REPORTS surface (/reports + /api/reports/* + task exports).
+// E2E spec for the REPORTS surface (/reports + /lab/reports + /api/reports/* + task exports).
 //
 // Runs against a LIVE server sharing the same SQLite database (same pattern as
 // e2e-task-shared.mjs / e2e-dashboard.mjs). Covers:
@@ -17,6 +17,8 @@
 //      employee exports are scoped to their own tasks; supervisor downloads
 //      are department-scoped; manager downloads are organization-wide.
 //   F. Every download is recorded in the report audit trail.
+//   G. Every catalogued laboratory report supports all three formats, while
+//      employees are denied and malformed route/filter inputs are rejected.
 //
 // Usage (from the app directory, via e2e-acceptance.mjs):
 //   QC_DATABASE_PATH=<db> PORT=<port> BASE_URL=http://127.0.0.1:<port> \
@@ -134,10 +136,17 @@ db.prepare(
 ).run(findingId, tOverdue, mgr.id, utcDaysAgo(4));
 db.prepare(
   `INSERT INTO qc_audit_log (entity_type, entity_id, task_id, actor_id, action, old_value, new_value, created_at)
-   VALUES ('TASK', ?, ?, ?, 'status_changed', 'not_started', 'in_progress', ?)`,
-).run(tOverdue, mgr.id, utcDaysAgo(8));
+   VALUES ('FINDING', ?, ?, ?, 'UPDATE', 'not_started', 'in_progress', ?)`,
+).run(tOverdue, tOverdue, mgr.id, utcDaysAgo(8));
 
 const REPORT_TYPES = ['monthly-qc', 'sla', 'findings', 'capa', 'employee-performance', 'audit-trail', 'evidence-compliance', 'overdue'];
+const LAB_REPORT_TYPES = [
+  'lab-test-register', 'lab-test-register-air', 'lab-test-register-vacuum',
+  'lab-results', 'lab-retests', 'lab-product-history', 'lab-equipment-register',
+  'lab-calibration', 'lab-maintenance', 'lab-sop-register', 'lab-wi-register',
+  'lab-doc-review-due', 'lab-acknowledgements', 'lab-activity', 'lab-data-quality',
+  'lab-retention-status',
+];
 
 console.log(`\n▶ E2E reports — ${BASE}\n`);
 
@@ -164,6 +173,10 @@ try {
   await supPage.goto(`${BASE}/reports`);
   ok((await supPage.locator('h1:has-text("Reports")').count()) === 1, 'A. /reports renders for supervisor');
   ok((await supPage.locator('input[name="scope"][value="organization"]').count()) === 0, 'A. supervisor has no organization-wide checkbox');
+
+  await supPage.goto(`${BASE}/lab/reports`);
+  ok((await supPage.locator('select[name="report_type"] option').count()) === LAB_REPORT_TYPES.length, 'A. lab catalog lists all 16 report types');
+  ok((await supPage.locator('text=Generate the 16 laboratory reports').count()) === 1, 'A. lab report count matches the catalog');
 
   await empPage.goto(`${BASE}/reports`);
   ok((await empPage.locator('h1:has-text("Reports")').count()) === 1, 'A. /reports renders for employee');
@@ -221,7 +234,7 @@ try {
   const findingsCsv = await (await mgrCtx.request.get(`${BASE}/api/reports/findings.csv`)).text();
   ok(findingsCsv.includes('REP-E2E-FINDING-001'), 'C. findings CSV contains the seeded finding');
   const capaCsv = await (await mgrCtx.request.get(`${BASE}/api/reports/capa.csv`)).text();
-  ok(capaCsv.includes('REP capa problem'), 'C. capa CSV contains the seeded CAPA');
+  ok(capaCsv.includes(String(findingId)), 'C. capa CSV contains the seeded CAPA finding id');
   const overdueCsv = await (await mgrCtx.request.get(`${BASE}/api/reports/overdue.csv`)).text();
   ok(overdueCsv.includes('REP overdue task'), 'C. overdue CSV contains the overdue task');
   const evidenceCsv = await (await mgrCtx.request.get(`${BASE}/api/reports/evidence-compliance.csv`)).text();
@@ -279,6 +292,38 @@ try {
   const supCsvBody = await supCsv.text();
   ok(supCsvBody.includes('REP manager-only'), 'E. supervisor department scope includes all QC tasks');
 
+  // Laboratory reports use the same transport, writers, and audit pipeline;
+  // employee access is denied by the reporting authorization service.
+  console.log('\n── Scenario G: laboratory report transport and validation ──');
+  for (const type of LAB_REPORT_TYPES) {
+    for (const format of ['csv', 'xlsx', 'pdf']) {
+      const response = await supCtx.request.get(`${BASE}/api/reports/${type}.${format}`);
+      const body = Buffer.from(await response.body());
+      const contentType = response.headers()['content-type'] ?? '';
+      ok(response.status() === 200, `G. ${type} ${format} 200 for supervisor`);
+      ok(body.length > 0, `G. ${type} ${format} non-empty`);
+      ok(
+        (format === 'csv' && contentType.includes('text/csv')) ||
+          (format === 'xlsx' && contentType.includes('spreadsheetml.sheet')) ||
+          (format === 'pdf' && contentType.includes('application/pdf')),
+        `G. ${type} ${format} content-type`,
+      );
+      ok((response.headers()['content-disposition'] ?? '').includes(`filename="${type}.${format}"`), `G. ${type} ${format} safe filename`);
+    }
+    const employeeResponse = await empCtx.request.get(`${BASE}/api/reports/${type}.csv`);
+    ok(employeeResponse.status() === 403, `G. employee denied ${type}`);
+  }
+  const invalidType = await supCtx.request.get(`${BASE}/api/reports/not-a-report.csv`);
+  ok(invalidType.status() === 404, 'G. invalid report type rejected');
+  const invalidFormat = await supCtx.request.get(`${BASE}/api/reports/sla.zip`);
+  ok(invalidFormat.status() === 404, 'G. unsupported format rejected');
+  const invalidFilter = await supCtx.request.get(`${BASE}/api/reports/sla.csv?from=2026-02-30`);
+  ok(invalidFilter.status() === 400, 'G. invalid date filter rejected');
+  const invalidPagination = await supCtx.request.get(`${BASE}/api/reports/sla.csv?page=2`);
+  ok(invalidPagination.status() === 400, 'G. unsupported pagination input rejected');
+  const employeeLabScope = await empCtx.request.get(`${BASE}/api/reports/lab-test-register.csv?scope=organization`);
+  ok(employeeLabScope.status() === 403, 'G. employee cannot widen Lab report scope');
+
   // ─────────────────── F. Report audit trail ───────────────────
   console.log('\n── Scenario F: downloads recorded in the report audit trail ──');
   const audit = await mgrCtx.request.get(`${BASE}/api/reports/audit`);
@@ -289,6 +334,7 @@ try {
   ok(completed >= REPORT_TYPES.length * 2, `F. downloads completed successfully (${completed} completed rows)`);
   const pdfRows = auditJson.rows.filter((r) => r.format === 'pdf').length;
   ok(pdfRows >= REPORT_TYPES.length + 1, `F. PDF generations recorded (${pdfRows})`);
+  ok(auditJson.rows.some((r) => r.report_type === 'lab-retention-status' && r.format === 'pdf'), 'F. Lab report generation recorded in report_audit_log');
 } catch (err) {
   failed += 1;
   failures.push(`unhandled error: ${err.message}`);

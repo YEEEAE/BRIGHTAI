@@ -2,11 +2,29 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-23 02:00 +03:00
+last_updated: 2026-08-23 04:26 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.8.25
 agent_version: v2.3
 skills_ready: 7---
+
+### 2026-08-23 — QC-REPORTING-TRANSPORT-FIX-008: استعادة/تأكيد نقل تقارير HTTP ومحاذاة catalog/UI/E2E — التنفيذ والتحقق المحلي مكتملان بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ أبقيت منطق القراءة والكتابة الموجود تحت `src/lib/reporting/**` كما هو، وثبّتت النقل عبر `GET /api/reports/[reportType].csv|xlsx|pdf` و`GET /api/reports/audit` الموجودين فعليًا.
+- **Transport/security**: parser التقارير صار يرفض أي query parameter غير مدعوم، ويفرض `scope=organization` فقط، ويرفض pagination غير المدعوم بدل تجاهله. endpoint يستخدم catalog + `authorizeReport`، ولا يوجد dynamic SQL مبني من `reportType`؛ audit visibility نُقلت إلى `authorizeReportAudit` بدل role branching داخل endpoint.
+- **UI/catalog**: أضيف `TASK_REPORT_TYPES` كمصدر ترتيب task reports؛ `/reports` يعرض تقارير المهام الثمانية فقط، و`/lab/reports` يعرض 16 نوع Lab الفعلية، وصُحح نص العدد من 15 إلى العدد المشتق من catalog.
+- **E2E**: حدّثت `scripts/e2e-reports.mjs` ليغطي كل 16 Lab report × الصيغ الثلاث، content types/filenames/non-empty، supervisor/employee/anonymous/invalid inputs، ووجود audit. أصلحت fixtures قديمة لا تطابق `qc_audit_log` CHECK constraints الحالية.
+- **Verification**: `pnpm test:dashboard-reports` PASS؛ `pnpm test:lab-reports` **196/0**؛ `pnpm typecheck` **0 errors / 0 warnings / 19 hints**؛ `pnpm build` Complete؛ isolated live `e2e-reports.mjs` **374/0**؛ لا production verification.
+- **Status**: delivered locally — لا commit ولا push ولا deploy؛ المستخدم يراجع ويلتزم بنفسه.
+
+### 2026-08-23 — QC-MIGRATIONS-VERIFY-002: تحقق أن كل migrations الـ 29 تعمل (كلها خضراء) + تشخيص أخطاء "duplicate column" عند تشغيلها يدويًا من SQL IDE — ليست أعطالًا؛ الملفات تعمل فقط عبر الـ runner
+
+- **Scope**: `apps/qc-task-manager/db/migrations/` — تحقق فقط (read-only). (أ) طلب أول: التأكد أن الـ 29 تعمل. (ب) طلب ثانٍ: المستخدم شغّل ملفات `{002,003,005,006,008,011}.sql` يدويًا من SQL IDE (صيغة رسائل DataGrip) على قاعدة مُهاجرة مسبقًا (نسخة 29) فحصل `SQLITE_MISUSE: not an error` (002) و`duplicate column name` (003 task_type، 005 evidence_type، 006 skills_json، 008 previous_hash، 011 current_version_id).
+- **التحقق الكامل (كلهم يعملون)**: `pnpm test:migrations` = **PASS** كامل (Fresh + حفظ qc_audit_log عبر rebuild 011 + ترقية legacy وحفظ بيانات 19 عمود + repeated/checksum + rollback/recovery + destructive guard)؛ **init-db حي على قاعدة طازجة**: نسخة **29/29**، **50 جدول** (مو 49 — 027 أضافت `lab_change_requests`)، 103 فهرس، `integrity_check=ok`، **0** FK violations، مرآة `schema.sql` محدّثة لأعمدة 028/029. الـ 29 كلهم مسجلون في `embeddedMigrations` بـ `db.ts`.
+- **Root cause لأخطاء التشغيل اليدوي (مُعاد إنتاجه بالدليل)**: (1) SQLite ما يدعم `ADD COLUMN IF NOT EXISTS` — إعادة تنفيذ migration مطبّق على قاعدة فيها الأعمدة تفشل عند أول ALTER. أعدت إنتاج رسائل duplicate الأربعة حرفيًا بـ `db.exec` لملفات 003/005/006/008 على قاعدة طازجة بعد init. (2) `002_legacy_schema_reconciliation.sql` **ملف علامات بلا أي SQL** — الـ runner يرى `-- brightai:legacy-reconcile` ويستدعي `reconcileLegacy()` البرمجي (migrations.ts:159)؛ تنفيذه في IDE = statement فارغ → `SQLITE_MISUSE` خاصة بالعميل.
+- **الحقيقة المعمارية**: الـ migrations ما هي scripts مستقلة idempotent — idempotency يوفرها الـ runner (`src/lib/migrations.ts`): `schema_migrations` تضمن تنفيذ كل ملف مرة واحدة + checksum drift guard + transaction مع FK check بعد كل ملف + backup تلقائي قبل الهدّام + تسجيل فشل في `schema_migration_failures`. المسار الصحيح الوحيد للتشغيل: تلقائي عند إقلاع التطبيق أو `pnpm db:init` — مو DataGrip.
+- **Notes/قرار مهم للـ future agents**: لا تعدّل ملفات الـ migrations لتصير idempotent-standalone (لف كل ALTER بـ probe) — الفشل عند إعادة التشغيل اليدوية حارس صحي، والتعديل يكسر checksums كل القواعد المهاجرة (drift guard يرفض الإقلاع). القواعد المؤقتة حُذفت؛ صفر تغييرات كود.
+- **Status**: verified & diagnosed — لا commit ولا push؛ لا تغييرات كود غير سجل العقل.
 
 ### 2026-08-23 — QC-LAB-WI-CATALOG-007: استيراد فهرس WI الورقي وتمكين تأليف المحتوى — التنفيذ والتحقق المحلي مكتملان، بدون commit/push/deploy
 
