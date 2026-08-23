@@ -413,7 +413,7 @@ Tasks:
 10. Produce a before/after table.
 
 Do not push.
-- [ ] ✅ Prompt #8 — done & reviewed
+- [ ✅]  Prompt #8 — done & reviewed
 
 # Prompt #9 — Consolidate /answer/ pages and remove cannibalization
 

@@ -217,16 +217,14 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        Font files in public/fonts/, @font-face in tokens.css.
        Preloaded for optimal LCP: no FOUT, no FOUT mitigations needed.
        BAI-CWV-LCP-001 (2026-08-08): only IBM Plex Sans Arabic (the Arabic LCP
-       font) is preloaded with fetchpriority="high" — it paints every heading
-       and body run above the fold on every Arabic page. Inter Regular/SemiBold
-       (111KB + 114KB) were preloaded but NEVER applied to any element (no
-       --font-latin consumer exists, and 'Inter' has no direct font-family use).
-       Dropping them removed 225KB from the preload queue so the browser no
-       longer contends for them during the critical font window. The brand
-       subset (9.9KB, Latin-only unicode-range) stays preloaded for the chip/
-       gradient Latin words. -->
+       font) is preloaded with fetchpriority="high" — it paints the primary
+       Arabic text run above the fold. SemiBold is requested by CSS only when
+       needed; competing for the first mobile connection delays regular body
+       text, which can itself be the LCP element. Inter Regular/SemiBold
+       (111KB + 114KB) are not preloaded because no direct consumer exists.
+       The brand subset (9.9KB, Latin-only unicode-range) stays preloaded for
+       the chip/gradient Latin words. -->
   <link rel="preload" href="/fonts/IBMPlexSansArabic-Regular.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
-  <link rel="preload" href="/fonts/IBMPlexSansArabic-SemiBold.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
 
   <!-- Preload custom brand font (subsetted — 58.2KB → 9.9KB) -->
   <link rel="preload" href="/assets/fonts/TheYearofTheCamel-Medium.subset.woff2" as="font" type="font/woff2" crossorigin />
@@ -235,11 +233,6 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <!-- Brand logo preload — AVIF (11.1KB, -33.7%) + WebP fallback.
-       AVIF-001 (2026-07-15): الـ browser يختار AVIF تلقائياً (95%+ دعم).
-       Fallback لـ Safari < 16: WebP. الـ preload الثاني يضمن تغطية كلا الـ paths. -->
-  <link rel="preload" as="image" href="/logo-192.avif" type="image/avif" fetchpriority="high" />
-  <link rel="preload" as="image" href="/logo-192.webp" type="image/webp" fetchpriority="high" />
   <link rel="manifest" href="/manifest.webmanifest" />
 
   <!-- SEO meta + Open Graph + Twitter Cards + hreflang + page-level JSON-LD -->
@@ -322,48 +315,10 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     <meta name="google-site-verification" content={SITE.googleVerification} />
   )}
 
-  {/* Unified analytics runtime — CRO audit Prompt 5 (2026-07-18).
-       Replaces the old page-view.js with the full unified layer:
-       - Installs window.__BRIGHTAI_ANALYTICS__ runtime
-       - Click delegation on [data-cta], [data-cta-secondary], [data-whatsapp]
-       - IntersectionObserver for [data-asset-type] + [data-case-study]
-       - First-focus listener for [data-assessment-form]
-       - Fires page_view on every page load + Astro view transition
-       Providers (gtag, mixpanel, bing) self-register via their init scripts
-       that loaded above. The console debug provider is registered by this
-       runtime on first boot.
-       Loaded as a self-contained ES module (type="module") so the nonce
-       pattern works without the import-bundling issue that hit the other
-       4 scripts (KI-SYNTAX-2026-07-18-001). */}
-  <script type="module" src="/js/analytics.js" nonce={Astro.locals.cspNonce}></script>
-
-  {/* BAI-SEC-18 (2026-07-25): centralised form submit prevention.
-       Replaces the `onsubmit="return false;"` inline event handlers
-       that required `script-src-attr 'unsafe-inline'` in CSP. Any
-       <form data-prevent-default> gets its submit event prevented
-       automatically. Loaded first so the listener is installed
-       before any form-using component mounts via astro:page-load. */}
-  <script type="module" src="/js/prevent-default-forms.js"></script>
-
-  {/* Global centralized scroll-reveal observer — activates the unified motion system
-      (DEC-2026-Motion-001) across every page. Replaces 7 per-page duplicate
-      IntersectionObservers with a single observer that handles every reveal-able element.
-      SSR-safe (script is bundled by Astro and only runs in the browser). Respects
-      prefers-reduced-motion + degrades gracefully without IntersectionObserver support.
-
-      FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): was previously an inline
-      `<script>import '../scripts/scroll-reveal.js';</script>` which the
-      browser couldn't resolve at runtime (relative `import` specifier
-      in an inline module → SyntaxError). Loaded as a static ES module instead. */}
-  <script type="module" src="/js/scroll-reveal.js" nonce={Astro.locals.cspNonce}></script>
-
-  {/* Global focus trap — DEC-A11Y-003 (2026-07-14). Auto-applies a WCAG-compliant
-      focus trap to every [role="dialog"][aria-modal="true"] element on the page.
-      Watches the modal's `hidden` attribute and toggles the trap automatically.
-
-      FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): same root cause as
-      scroll-reveal.js above — moved from inline `import` to static ES module. */}
-  <script type="module" src="/js/focus-trap.js" nonce={Astro.locals.cspNonce}></script>
+  {/* Above-the-fold content is server-rendered. The loader defers analytics,
+       form interception, motion, and modal focus trapping until after load so
+       they cannot compete with the text LCP resource on constrained mobile. */}
+  <script defer src="/js/noncritical-init.js"></script>
 
   {/* BAI-PERF-01 (2026-07-25) — Critical CSS now imported above, NOT inlined.
        The full critical.css content (~1.6KB raw / 0.7KB gz) lives in
