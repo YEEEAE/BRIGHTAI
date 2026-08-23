@@ -9,8 +9,167 @@ const toc = [
   ['controls', 'من السياسة إلى الضابط'],
   ['evidence', 'أدلة التدقيق'],
   ['data-models', 'البيانات والنماذج'],
+  ['control-matrix', 'مصفوفة الضوابط'],
   ['roadmap', 'خارطة الطريق'],
   ['sources', 'المصادر'],
+];
+
+type GovernanceControlRow = {
+  id: string;
+  area: string;
+  objective: string;
+  risk: string;
+  control: string;
+  owner: string;
+  evidence: string;
+  capability: { label: string; href: string };
+  reference: string;
+};
+
+const governanceControlMatrix: GovernanceControlRow[] = [
+  {
+    id: 'control-inventory',
+    area: 'AI inventory',
+    objective: 'معرفة الأدوات وحالات الاستخدام والبيانات والنماذج المستخدمة فعليًا.',
+    risk: 'Shadow AI، أصول مجهولة، وصعوبة تحديد نطاق المراجعة.',
+    control: 'سجل مركزي لكل حالة استخدام مع الغرض، القناة، المالك، النموذج، والبيانات.',
+    owner: 'مكتب البيانات / التحول الرقمي',
+    evidence: 'سجل الاستخدام، تاريخ الاكتشاف، وآخر تحديث.',
+    capability: { label: 'AI Use Case Discovery', href: '/solutions/ai-use-case-discovery/' },
+    reference: 'إرشاد تطبيقي من BrightAI؛ طابقه مع سياسة إدارة الأصول الداخلية.',
+  },
+  {
+    id: 'control-ownership',
+    area: 'Ownership & accountability',
+    objective: 'تحديد من يملك الحالة والضابط وقبول الخطر.',
+    risk: 'قرارات بلا مسؤول واضح أو تمرير المسؤولية بين الفرق.',
+    control: 'تعريف مالك حالة الاستخدام ومالك الضابط ومالك قبول الخطر قبل التشغيل.',
+    owner: 'مالك حالة الاستخدام',
+    evidence: 'سجل المالكين، التفويض، وتاريخ أي تغيير في المسؤولية.',
+    capability: { label: 'AI Governance Platform', href: '/solutions/ai-governance-platform/' },
+    reference: 'مواءمة عملية؛ لا تعني أن BrightAI يحدد الهيكل التنظيمي للجهة.',
+  },
+  {
+    id: 'control-risk',
+    area: 'Risk classification',
+    objective: 'تحديد مستوى التحكم بحسب الأثر والبيانات والاستقلالية.',
+    risk: 'تطبيق نفس الإجراء على تلخيص بسيط وقرار عالي الأثر.',
+    control: 'نموذج تصنيف موثق مع سبب التصنيف ومحفزات لإعادة التقييم.',
+    owner: 'المخاطر والامتثال',
+    evidence: 'نتيجة التصنيف، العوامل، قرار القبول، وتاريخ المراجعة.',
+    capability: { label: 'AI Risk Classification', href: '/solutions/ai-risk-classification/' },
+    reference: 'استخدم المرجع السعودي أو المعيار المناسب لنطاق الجهة، ولا تفترض تصنيفًا موحدًا لكل مؤسسة.',
+  },
+  {
+    id: 'control-approved-use',
+    area: 'Approved use & policy',
+    objective: 'تحويل سياسة استخدام AI إلى حالات مسموحة وممنوعة ومشروطة.',
+    risk: 'سياسة عامة لا يعرف الموظف كيف يطبقها وقت العمل.',
+    control: 'قائمة استخدامات معتمدة وشروط واضحة للتصعيد أو المنع.',
+    owner: 'الامتثال / مالك السياسة',
+    evidence: 'نسخة السياسة، سجل الموافقة، وقواعد الاستخدام الفعالة.',
+    capability: { label: 'Policy-to-Control Mapping', href: '/solutions/policy-to-control-mapping/' },
+    reference: 'مرجع تنظيمي أو معياري حسب نطاق المؤسسة؛ هذه الخلية ليست تفسيرًا قانونيًا.',
+  },
+  {
+    id: 'control-data',
+    area: 'Data handling',
+    objective: 'ضبط نوع البيانات والغرض والوصول ومسار النقل والاحتفاظ.',
+    risk: 'إدخال بيانات شخصية أو سرية في قناة أو نموذج غير مناسب.',
+    control: 'تصنيف البيانات، تقليل المدخلات، قواعد مشاركة، واحتفاظ موثق حسب الغرض.',
+    owner: 'مالك البيانات / الخصوصية',
+    evidence: 'سجل تصنيف البيانات، قرار المشاركة، ونتيجة فحص الخصوصية.',
+    capability: { label: 'AI Firewall', href: '/solutions/ai-firewall/' },
+    reference: 'PDPL وسياق حماية البيانات الشخصية السعودي؛ تحقق من قابلية التطبيق على الحالة.',
+  },
+  {
+    id: 'control-human-approval',
+    area: 'Human approval',
+    objective: 'إبقاء القرار البشري حقيقيًا في المخرجات عالية الأثر.',
+    risk: 'اعتماد مخرج AI تلقائيًا أو مراجعة شكلية بلا صلاحية إيقاف.',
+    control: 'بوابة اعتماد قبل الإرسال أو التنفيذ، مع صلاحية رفض وتصعيد وسبب مسجل.',
+    owner: 'المراجع المخول',
+    evidence: 'هوية المراجع، القرار، التوقيت، السبب، والنسخة المعروضة للمراجعة.',
+    capability: { label: 'Human Approval Layer', href: '/solutions/human-approval-layer/' },
+    reference: 'ضابط حوكمة عملي؛ مستوى المراجعة يحدده أثر الحالة وسياسة الجهة.',
+  },
+  {
+    id: 'control-security-filtering',
+    area: 'Security filtering',
+    objective: 'فحص المدخلات والمخرجات والقنوات قبل وصولها للنموذج أو المستخدم.',
+    risk: 'تسريب أسرار، prompt injection، أو مخرج يتجاوز السياسة الأمنية.',
+    control: 'قواعد تنقيح وحجب ورفع للمراجعة، مع قوائم وجهات ونماذج مسموحة.',
+    owner: 'الأمن السيبراني',
+    evidence: 'قرار الفحص، القاعدة المطابقة، والحدث المصعّد.',
+    capability: { label: 'AI Firewall', href: '/solutions/ai-firewall/' },
+    reference: 'مواءمة أمنية عملية؛ لا تدّعي أن المصفوفة بديل عن ضوابط NCA أو اختبار تهديدات.',
+  },
+  {
+    id: 'control-logging',
+    area: 'Logging',
+    objective: 'تسجيل ما يكفي لفهم القرار بدون جمع بيانات أكثر من اللازم.',
+    risk: 'غياب السياق عند الحادث أو تخزين محتوى حساس بلا ضرورة.',
+    control: 'سجل أحداث يربط الحالة والسياسة والقرار والمالك، مع تقليل المحتوى الحساس.',
+    owner: 'مالك المنصة / الأمن',
+    evidence: 'سجل زمني، معرف ارتباط، وسياسة احتفاظ قابلة للمراجعة.',
+    capability: { label: 'AI Audit Trail', href: '/solutions/ai-audit-trail/' },
+    reference: 'مرجع أمني أو خصوصية حسب النطاق؛ حدد الحد الأدنى المطلوب داخليًا.',
+  },
+  {
+    id: 'control-audit-evidence',
+    area: 'Audit evidence',
+    objective: 'تجميع قصة قابلة للفهم عن الحالة والضبط والنتيجة.',
+    risk: 'أدلة مبعثرة لا تثبت لماذا سُمح أو مُنع الاستخدام.',
+    control: 'حزمة دليل تربط السجل بالتصنيف والسياسة والموافقة والحوادث والمراجعة.',
+    owner: 'المخاطر / التدقيق الداخلي',
+    evidence: 'Evidence File، عينات تشغيل، ونتيجة المراجعة.',
+    capability: { label: 'AI Evidence File', href: '/solutions/ai-evidence-file/' },
+    reference: 'ممارسة إثبات داخلية؛ لا تعتبر الحزمة شهادة امتثال بحد ذاتها.',
+  },
+  {
+    id: 'control-monitoring',
+    area: 'Monitoring',
+    objective: 'اكتشاف الانحراف والحوادث وتغير الاستخدام بعد الإطلاق.',
+    risk: 'استمرار نموذج أو مسار متغير رغم تغير أثره أو جودة مخرجاته.',
+    control: 'مؤشرات ومراجعات دورية ومحفزات تصعيد عند تغير النموذج أو البيانات أو النتائج.',
+    owner: 'مالك المنتج / التشغيل',
+    evidence: 'تقارير المراقبة، سجل التنبيهات، وقرارات المعالجة.',
+    capability: { label: 'Continuous AI Governance', href: '/solutions/continuous-ai-governance/' },
+    reference: 'إرشاد تشغيل مستمر؛ حدد المؤشرات حسب الاستخدام لا حسب اسم النموذج فقط.',
+  },
+  {
+    id: 'control-third-party',
+    area: 'Third-party AI',
+    objective: 'فهم المورد والشروط والبيانات والاعتماديات قبل الاستخدام.',
+    risk: 'مورد غير مناسب، شروط غير واضحة، أو انتقال بيانات خارج النطاق المتوقع.',
+    control: 'تقييم مورد يربط القدرات والبيانات والعقد والوجهات بحالة الاستخدام.',
+    owner: 'المشتريات / الأمن / الخصوصية',
+    evidence: 'استبيان المورد، مراجعة العقد، وقرار القبول أو الاستثناء.',
+    capability: { label: 'AI Governance Platform', href: '/solutions/ai-governance-platform/' },
+    reference: 'راجع متطلبات المورد والعقد والبيانات مع الفرق المختصة؛ لا يوجد اعتماد تلقائي لمورد.',
+  },
+  {
+    id: 'control-incident',
+    area: 'Incident handling',
+    objective: 'إيقاف الأثر واحتواء الحادث ومعرفة ما يجب تغييره بعده.',
+    risk: 'تكرار تسريب أو مخرج ضار بسبب غياب التصعيد والتعلم من الحادث.',
+    control: 'مسار تصعيد يحدد الإيقاف، التوثيق، الإخطار الداخلي، والتحقيق والإجراء التصحيحي.',
+    owner: 'الاستجابة للحوادث / مالك النظام',
+    evidence: 'سجل الحادث، قرار الاحتواء، السبب الجذري، وخطة الإغلاق.',
+    capability: { label: 'AI Audit Trail', href: '/solutions/ai-audit-trail/' },
+    reference: 'اربطه بخطة الحوادث المؤسسية وبأي متطلبات إخطار تنطبق فعليًا.',
+  },
+  {
+    id: 'control-policy-updates',
+    area: 'Policy updates & change review',
+    objective: 'إعادة تقييم الضوابط عند التغيير الجوهري أو تحديث المرجع.',
+    risk: 'سياسة أو تصنيف قديم لا يطابق النموذج أو البيانات أو طريقة التشغيل الحالية.',
+    control: 'مراجعة عند تغيير النموذج أو التكامل أو الغرض، مع اعتماد نسخة جديدة قبل الاستمرار.',
+    owner: 'مالك السياسة / لجنة الحوكمة',
+    evidence: 'طلب تغيير، مقارنة قبل/بعد، إعادة تصنيف، وقرار اعتماد.',
+    capability: { label: 'Readiness Assessment', href: '/assessment/ai-governance-readiness/' },
+    reference: 'دورة مراجعة BrightAI العملية؛ اجعل تكرارها متناسبًا مع التغير والأثر.',
+  },
 ];
 
 const faqs = [
@@ -140,7 +299,7 @@ const faqs = [
           </tbody>
         </table>
       </div>
-      <p>هذا الربط هو قلب الحوكمة التشغيلية. إذا كنت تبحث عن طريقة لتحويله إلى طبقة تشغيل، شوف <a href="/solutions/ai-governance-platform/">منصة حوكمة الذكاء الاصطناعي</a> بعد ما تحدد إطارك واحتياجاتك.</p>
+      <p>هذا الربط هو قلب الحوكمة التشغيلية. إذا كنت تبحث عن طريقة لتحويله إلى طبقة تشغيل، شوف <a href="/solutions/ai-governance-platform/">منصة حوكمة الذكاء الاصطناعي</a>، ثم استخدم <a href="#control-matrix">مصفوفة ضوابط حوكمة AI</a> كمرجع عملي لتوزيع المسؤوليات والأدلة.</p>
     </section>
 
     <section id="evidence" aria-labelledby="evidence-title">
@@ -163,6 +322,49 @@ const faqs = [
         <section><h3>المراقبة</h3><p>راجع الانحراف والحوادث والشكاوى وتغير نمط الاستخدام؛ بعد الإطلاق يبدأ جزء مهم من الحوكمة، ما ينتهي.</p></section>
       </div>
       <p>نظام حماية البيانات الشخصية يضع قواعد لحماية البيانات الشخصية وحقوق أصحابها والتزامات المتحكمين؛ لذلك تقييم قابلية تطبيقه على كل حالة AI يبدأ من فهم البيانات والغرض ومسار المعالجة، وليس من اسم التقنية فقط. <a href="/docs/pdpl-ai-governance/">راجع دليل PDPL وAI</a> للتطبيق الداخلي، وخذ المشورة المتخصصة عند الحاجة.</p>
+    </section>
+
+    <section id="control-matrix" class="control-matrix-section" aria-labelledby="control-matrix-title">
+      <p class="section-label">BrightAI practical implementation matrix</p>
+      <h2 id="control-matrix-title">وش هي مصفوفة ضوابط حوكمة الذكاء الاصطناعي السعودية؟</h2>
+      <p class="control-matrix-lede">
+        هذه المصفوفة مرجع عملي من BrightAI يربط كل عائلة من ضوابط حوكمة الذكاء الاصطناعي بالهدف والخطر والمالك والدليل المتوقع. تقدر تستخدمها كبداية لجرد الاستخدامات، توزيع المسؤوليات، وبناء خطة مراجعة داخلية؛ لكنها ليست وثيقة رسمية أو اعتمادًا أو رأيًا قانونيًا، ولا تغني عن تقييم نطاق مؤسستك.
+      </p>
+      <aside class="control-matrix-note" aria-label="حدود استخدام المصفوفة">
+        <strong>طريقة الاستخدام:</strong> ابدأ بالصفوف الأقرب لحالاتك الحالية، عيّن مالكًا لكل ضابط، ثم اربط الدليل بمراجعة فعلية. المراجع السعودية والمعايير في العمود الأخير سياق للتحقق، وليست قائمة امتثال جاهزة.
+      </aside>
+      <div class="control-matrix-wrap" role="region" aria-label="Saudi AI Governance Control Matrix" tabindex="0">
+        <table class="control-matrix-table">
+          <caption>Saudi AI Governance Control Matrix — BrightAI practical implementation guidance</caption>
+          <thead>
+            <tr>
+              <th scope="col">Control area</th>
+              <th scope="col">Objective</th>
+              <th scope="col">Risk addressed</th>
+              <th scope="col">Example control</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Evidence produced</th>
+              <th scope="col">Related BrightAI capability</th>
+              <th scope="col">Saudi / standard reference note</th>
+            </tr>
+          </thead>
+          <tbody>
+            {governanceControlMatrix.map((row) => (
+              <tr id={row.id}>
+                <th scope="row" data-label="Control area"><span class="control-matrix-area">{row.area}</span></th>
+                <td data-label="Objective">{row.objective}</td>
+                <td data-label="Risk addressed">{row.risk}</td>
+                <td data-label="Example control">{row.control}</td>
+                <td data-label="Owner">{row.owner}</td>
+                <td data-label="Evidence produced">{row.evidence}</td>
+                <td data-label="Related BrightAI capability"><a href={row.capability.href}>{row.capability.label}</a></td>
+                <td data-label="Saudi / standard reference note">{row.reference}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="control-matrix-source-note"><strong>Source note:</strong> صاغت BrightAI هذه المصفوفة كإرشاد تنفيذي مستقل. عند مواءمتها مع PDPL أو وثائق سدايا أو NCA ECC أو ISO/IEC 42001، ارجع للنص الرسمي وحدد ما ينطبق على الجهة وحالة الاستخدام، واستعن بالمختصين عند الحاجة.</p>
     </section>
 
     <section id="roadmap" aria-labelledby="roadmap-title">
@@ -256,6 +458,45 @@ const faqs = [
   .faq-list { display: grid; gap: .75rem; }.faq-list details { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-elevated); padding: 1rem 1.25rem; }.faq-list summary { cursor: pointer; color: var(--text-primary); font-weight: 700; }.faq-list p { margin: 1rem 0 0; }
   .source-list { display: grid; gap: .85rem; padding: 0; list-style: none; }.source-list li { padding: 1rem; border-inline-start: 3px solid var(--interactive-primary); background: var(--bg-elevated); }.source-list span { display: block; color: var(--text-muted); font-size: .95rem; margin-block-start: .3rem; }
   .resource-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-block-start: 1.5rem; }.resource-links a { min-height: 44px; display: inline-flex; align-items: center; padding-inline: 1rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-decoration: none; }.resource-links a:hover { background: var(--brand-soft); }
+  .control-matrix-lede { max-inline-size: 72ch; font-size: 1.08rem; }
+  .control-matrix-note, .control-matrix-source-note { margin-block: 1.25rem; padding: 1rem 1.25rem; border-inline-start: 3px solid var(--interactive-primary); background: var(--brand-soft); border-radius: var(--radius-sm); color: var(--text-primary); line-height: 1.85; }
+  .control-matrix-wrap { overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-elevated); box-shadow: 0 1rem 3rem rgb(15 23 42 / 7%); }
+  .control-matrix-table { width: 100%; min-width: 76rem; border-collapse: collapse; table-layout: fixed; text-align: start; }
+  .control-matrix-table caption { padding: 1rem 1.25rem; color: var(--text-muted); text-align: start; font-size: .86rem; }
+  .control-matrix-table th, .control-matrix-table td { width: 12.5%; padding: 1rem .85rem; border-block-start: 1px solid var(--border-subtle); line-height: 1.75; }
+  .control-matrix-table thead th { color: var(--text-primary); background: #172033; font-size: .82rem; letter-spacing: .02em; }
+  .control-matrix-table tbody th { color: var(--text-primary); background: color-mix(in srgb, var(--brand-soft) 58%, transparent); font-weight: 800; }
+  .control-matrix-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--bg-elevated) 78%, var(--brand-soft)); }
+  .control-matrix-table tbody tr:hover td, .control-matrix-table tbody tr:hover th { background: var(--brand-soft); }
+  .control-matrix-table a { display: inline-block; min-block-size: 2.75rem; color: var(--interactive-primary); font-weight: 700; text-underline-offset: .2em; }
+  .control-matrix-area { display: inline-flex; align-items: center; gap: .45rem; }
+  .control-matrix-area::before { content: ''; inline-size: .5rem; block-size: .5rem; flex: 0 0 auto; border-radius: 50%; background: var(--interactive-primary); box-shadow: 0 0 0 .25rem var(--brand-soft); }
+  .control-matrix-source-note { font-size: .92rem; color: var(--text-secondary); }
+  .control-matrix-source-note strong { color: var(--text-primary); }
+  @media (max-width: 56.25rem) {
+    .control-matrix-wrap { overflow: visible; border: 0; background: transparent; box-shadow: none; }
+    .control-matrix-table { min-width: 0; display: block; }
+    .control-matrix-table caption { padding-inline: 0; }
+    .control-matrix-table thead { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .control-matrix-table tbody, .control-matrix-table tr { display: block; }
+    .control-matrix-table tr { margin-block: 1rem; padding: .35rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-elevated); box-shadow: 0 .75rem 2rem rgb(15 23 42 / 5%); }
+    .control-matrix-table th, .control-matrix-table td { display: grid; grid-template-columns: minmax(7rem, 34%) minmax(0, 1fr); gap: .75rem; width: auto; padding: .8rem .75rem; border-block-start: 1px solid var(--border-subtle); background: transparent !important; }
+    .control-matrix-table tr > :first-child { border-block-start: 0; }
+    .control-matrix-table th::before, .control-matrix-table td::before { content: attr(data-label); color: var(--text-muted); font-size: .78rem; font-weight: 800; line-height: 1.5; }
+    .control-matrix-table th { color: var(--text-primary); }
+    .control-matrix-table a { min-block-size: 2.75rem; }
+  }
+  @media print {
+    .pillar-mobile-nav, .pillar-toc, .control-matrix-note { display: none !important; }
+    .control-matrix-section { break-before: page; }
+    .control-matrix-wrap { overflow: visible; border: 0; box-shadow: none; }
+    .control-matrix-table { min-width: 0; font-size: 8pt; }
+    .control-matrix-table thead { display: table-header-group; }
+    .control-matrix-table tr { break-inside: avoid; }
+    .control-matrix-table th, .control-matrix-table td { padding: .45rem; color: #111827; background: #fff !important; }
+    .control-matrix-table thead th { color: #fff; background: #172033 !important; }
+    .control-matrix-table a { color: #064e3b; }
+  }
   @media (min-width: 900px) { .pillar-layout { grid-template-columns: 14rem minmax(0, 1fr); align-items: start; }.pillar-toc { position: sticky; top: 6rem; display: block; padding: 1rem; border-inline-start: 1px solid var(--border-subtle); }.pillar-toc > p { margin: 0 0 .75rem; color: var(--text-primary); font-weight: 800; }.pillar-toc nav { display: grid; gap: .55rem; }.pillar-toc a { color: var(--text-muted); font-size: .9rem; text-decoration: none; }.pillar-toc a:hover, .pillar-toc a:focus-visible { color: var(--interactive-primary); }.pillar-mobile-nav { display: none; }.definition-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 36rem) { .risk-grid { grid-template-columns: 1fr; }.roadmap li { grid-template-columns: 1fr; gap: .4rem; } }
 </style>

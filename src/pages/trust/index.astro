@@ -37,12 +37,12 @@ const complianceBadges = [
 ];
 
 const trustSignals = [
-  { value: '99.95%', label: 'وقت التشغيل الفعلي' },
-  { value: '24/7', label: 'مراقبة أمنية على مدار الساعة' },
+  { value: '99.5%', label: 'الحد الأدنى لاتفاقية مستوى الخدمة (SLA)' },
+  { value: '24/7', label: 'مراقبة أمنية ضمن باقة المؤسسات' },
   { value: 'AES-256', label: 'تشفير البيانات في حالة السكون' },
   { value: 'TLS 1.3', label: 'تشفير البيانات في حالة الانتقال' },
   { value: 'Zero Trust', label: 'معمارية بدون ثقة افتراضية' },
-  { value: '120ms', label: 'زمن الاستجابة الأمنية الوسطي' },
+  { value: 'RBAC+ABAC', label: 'صلاحيات هجينة مع موافقات بشرية' },
 ];
 
 const securityPractices = [
@@ -74,7 +74,7 @@ const securityPractices = [
     icon: 'mdi-server-network',
     title: 'الاستضافة السيادية داخل المملكة',
     summary: 'بياناتك ما تطلع من حدود المملكة — خيارات نشر مرنة.',
-    detail: 'نوفر 3 خيارات نشر: (1) SaaS سيادي بالكامل على خوادم سحابية موطنة، (2) Hybrid يبقي البيانات الحساسة داخلياً، (3) On-Prem / Air-Gapped للجهات الأكثر حساسية. كل خيارات النشر تخضع لشهادة NCA ECC حول السيادة الرقمية والحدود الجغرافية للبيانات.',
+    detail: 'نوفر 3 خيارات نشر: (1) SaaS سيادي بالكامل على خوادم سحابية موطنة، (2) Hybrid يبقي البيانات الحساسة داخلياً، (3) On-Prem / Air-Gapped للجهات الأكثر حساسية. كل خيارات النشر مصممة لدعم متطلبات السيادة الرقمية والحدود الجغرافية للبيانات وفق ضوابط NCA ECC.',
   },
   {
     icon: 'mdi-alert-octagon-outline',
@@ -95,7 +95,7 @@ const deploymentOptions = [
     icon: 'mdi-server',
     title: 'نشر هجين (Hybrid Deployment)',
     body: 'إبقاء البيانات الحساسة وجدار الحماية داخل بنيتك التحتية الخاصة، مع الاستفادة من التحديثات والتحليلات عبر السحابة الآمنة.',
-    features: ['بقاء البيانات الحساسة داخلياً', 'إدارة سهلة ومراقبة مركزية', 'توافق تام مع الأنظمة السيادية'],
+    features: ['بقاء البيانات الحساسة داخلياً', 'إدارة سهلة ومراقبة مركزية', 'متوافق مع الأنظمة السيادية'],
   },
   {
     icon: 'mdi-shield-airplane',
@@ -169,8 +169,8 @@ const trustLinks = [
         ممارسات أمن تشغيلية وامتثال تشريعي
       </div>
       <h1 class="page-hero__title">مركز الثقة والأمان — <span class="gradient-text">أمان وحوكمة بلا تسويات</span></h1>
-      <p class="page-hero__description">وش يضمن إن بياناتك محمية؟ طبقات حماية متعددة، استضافة سيادية داخل المملكة، وامتثال كامل للأنظمة السعودية. بيئتنا التقنية مصممة للجهات الحكومية والشركات اللي ما تقبل تنازل في الأمان.</p>
-      <p class="page-hero__description">من خلال طبقات الحماية المتعددة وخيارات النشر المرنة، نضمن الامتثال التام للسياسات الوطنية والمعايير العالمية المعتمدة.</p>
+      <p class="page-hero__description">وش يضمن إن بياناتك محمية؟ طبقات حماية متعددة، استضافة سيادية داخل المملكة، ودعم جاهزية الامتثال للأنظمة السعودية. بيئتنا التقنية مصممة للجهات الحكومية والشركات اللي ما تقبل تنازل في الأمان.</p>
+      <p class="page-hero__description">من خلال طبقات الحماية المتعددة وخيارات النشر المرنة، ندعم جاهزية الامتثال للسياسات الوطنية والمعايير العالمية المعتمدة.</p>
       <div class="about-hero__actions">
         <a href="/contact/" class="btn btn--glow" data-cta="secondary_cta_click" data-cta-label="اطلب ملف الأمان المؤسسي" data-position="inline" data-page-type="trust" data-offer="assessment">
           <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-file-document-outline"></use></svg>
@@ -375,8 +375,8 @@ const trustLinks = [
   <section class="inner-cta-final">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="inner-cta-final__card card card--cta">
-        <h2 class="inner-cta-final__title">هل أنت مستعد لتمكين الذكاء الاصطناعي بأمان تام وموثوقية؟</h2>
-        <p class="inner-cta-final__desc">نوفر لك الحماية وحوكمة التشغيل والامتثال الكامل لسياسات أمن المعلومات في المملكة العربية السعودية.</p>
+        <h2 class="inner-cta-final__title">هل أنت مستعد لتمكين الذكاء الاصطناعي بأمان موثوق؟</h2>
+        <p class="inner-cta-final__desc">نوفر لك الحماية وحوكمة التشغيل ودعم جاهزية الامتثال لسياسات أمن المعلومات في المملكة العربية السعودية.</p>
         <div class="inner-cta-final__actions">
           <a href="/contact/" class="btn btn--glow" data-cta="secondary_cta_click" data-cta-label="اطلب ملف الأمان المؤسسي" data-position="inline" data-page-type="trust" data-offer="assessment">
             <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-file-document-outline"></use></svg>

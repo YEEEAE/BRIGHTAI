@@ -13,12 +13,12 @@ import { FORM_TAXONOMY, DEFAULT_CONTACT_FIELDS } from '../data/marketing';
 import DOMPurify from 'isomorphic-dompurify';
 
 const faqItems = [
-  { q: 'وش هي BrightAI؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI هي <strong>Saudi AI Safety OS</strong> — نظام تشغيل أمان وحوكمة للذكاء الاصطناعي داخل المؤسسات السعودية. تشتغل كطبقة وسيطة بين الموظف والـ AI وبيانات الشركة، وتضمن إن كل طلب ذكاء اصطناعي يكون آمن وموثّق وقابل للمراجعة.</p><p>عكس شات بوت عادي، BrightAI تركّب تحت أي نظام AI في شركتك وتفعّل AI Firewall وإخفاء البيانات الشخصية وسجل التدقيق والموافقات البشرية وملفات الأدلة — كلها متوافقة مع PDPL وNCA وSDAIA.</p>' },
-  { q: 'هل BrightAI متوافقة مع نظام حماية البيانات الشخصية PDPL؟', a: '<p><strong class="text-white">الجواب:</strong> نعم، BrightAI متوافقة مع نظام حماية البيانات الشخصية السعودي PDPL من اليوم الأول. يتوفر <strong>PDPL Compliance Pack</strong> جاهز يتضمن إخفاء البيانات الشخصية تلقائياً (PII Redaction)، سجل الموافقات، سجل مشاركة البيانات، وإشعارات أصحاب البيانات.</p><p>النظام ينتج تقارير امتثال جاهزة لتقديمها مباشرة للمدققين أو هيئة سدايا (SDAIA)، مع توقيع رقمي يمنع التعديل.</p>' },
-  { q: 'هل BrightAI يشتغل مع المصانع الطبية؟', a: '<p><strong class="text-white">الجواب:</strong> نعم، <strong>BrightAI QMS AI</strong> مصمم خصيصاً للمصانع الطبية السعودية. يدير المرفوضات (Nonconformities) وCAPA والتدقيق الداخلي مع ربط مباشر مع أنظمة ERP.</p><p>يولّد Evidence File PDF جاهز للمدققين متوافق مع متطلبات SFDA وISO 13485، مع توقيع رقمي وتتبع كامل لكل إجراء.</p>' },
+  { q: 'وش هي BrightAI؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI هي <strong>Saudi AI Safety OS</strong> — نظام تشغيل أمان وحوكمة للذكاء الاصطناعي داخل المؤسسات السعودية. تشتغل كطبقة وسيطة بين الموظف والـ AI وبيانات الشركة، وتضمن إن كل طلب ذكاء اصطناعي يكون آمن وموثّق وقابل للمراجعة.</p><p>عكس شات بوت عادي، BrightAI تركّب تحت أي نظام AI في شركتك وتفعّل AI Firewall وإخفاء البيانات الشخصية وسجل التدقيق والموافقات البشرية وملفات الأدلة — كلها مصممة لدعم متطلبات PDPL وNCA وSDAIA.</p>' },
+  { q: 'هل BrightAI متوافقة مع نظام حماية البيانات الشخصية PDPL؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI صُممت لدعم جاهزية الامتثال لنظام حماية البيانات الشخصية السعودي PDPL من اليوم الأول. يتوفر <strong>PDPL Compliance Pack</strong> جاهز يتضمن إخفاء البيانات الشخصية تلقائياً (PII Redaction)، سجل الموافقات، سجل مشاركة البيانات، وإشعارات أصحاب البيانات.</p><p>النظام ينتج تقارير جاهزية امتثال تقدّمها للمدققين عند الحاجة، مع توقيع رقمي يمنع التعديل — والامتثال النهائي يبقى مسؤولية مؤسستك وتقييمها.</p>' },
+  { q: 'هل BrightAI يشتغل مع المصانع الطبية؟', a: '<p><strong class="text-white">الجواب:</strong> نعم، <strong>BrightAI QMS AI</strong> مصمم خصيصاً للمصانع الطبية السعودية. يدير المرفوضات (Nonconformities) وCAPA والتدقيق الداخلي مع ربط مباشر مع أنظمة ERP.</p><p>يولّد Evidence File PDF جاهز للمدققين يدعم متطلبات SFDA وISO 13485، مع توقيع رقمي وتتبع كامل لكل إجراء.</p>' },
   { q: 'هل الذكاء الاصطناعي يقدر يتخذ قرار خطير بدون موافقة بشرية؟', a: '<p><strong class="text-white">الجواب:</strong> لا، الـ AI في BrightAI <strong>يقترح فقط</strong>. القرارات الخطيرة والعالية المخاطر تتطلب موافقة بشرية موثّقة من المدير المختص عبر <strong>Human Approval Layer</strong>، مع توقيع رقمي وتاريخ وإشعار فوري عبر واتساب أو البريد.</p><p>هذا يضمن بقاء السيطرة في أيدي البشر (Human-in-the-Loop) وعدم تفويض القرارات الحيوية للذكاء الاصطناعي بشكل كامل.</p>' },
   { q: 'هل ينفع نركّب BrightAI On-Premise داخل سيرفراتنا؟', a: '<p><strong class="text-white">الجواب:</strong> نعم، BrightAI يدعم <strong>3 أوضاع نشر</strong> تناسب احتياجات المؤسسات السعودية:</p><ul class="mt-2 space-y-1 list-disc list-inside"><li><strong>Cloud:</strong> مستضاف داخل السعودية</li><li><strong>Hybrid:</strong> نشر هجين بين السحابة والسيرفرات المحلية</li><li><strong>Air-Gapped:</strong> معزول بالكامل داخل شبكتك بدون أي اتصال خارجي — مثالي للجهات الحكومية والمصانع الحساسة</li></ul>' },
-  { q: 'وش يميز BrightAI عن شات بوت AI العادي أو منصات الحوكمة الأجنبية؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI مو شات بوت ولا منصة حوكمة أجنبية. هي <strong>نظام تشغيل أمان سعودي</strong> (Saudi AI Safety OS) تركّب تحت أي نظام AI في شركتك وتفعّل:</p><ul class="mt-2 space-y-1 list-disc list-inside"><li><strong>AI Firewall</strong> مع إخفاء PII تلقائي</li><li><strong>سجل تدقيق</strong> غير قابل للتعديل محمي بـ Hash</li><li><strong>موافقات بشرية</strong> للقرارات عالية المخاطر</li><li><strong>ملفات أدلة PDF</strong> موقّعة رقمياً جاهزة للمدققين</li><li><strong>حزم امتثال</strong> جاهزة لـ PDPL وNCA وSFDA وISO 13485</li></ul><p>كل هذا مصنوع في السعودية، بالعربي، وبدعم سعودي 24/7.</p>' },
+  { q: 'وش يميز BrightAI عن شات بوت AI العادي أو منصات الحوكمة الأجنبية؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI مو شات بوت ولا منصة حوكمة أجنبية. هي <strong>نظام تشغيل أمان سعودي</strong> (Saudi AI Safety OS) تركّب تحت أي نظام AI في شركتك وتفعّل:</p><ul class="mt-2 space-y-1 list-disc list-inside"><li><strong>AI Firewall</strong> مع إخفاء PII تلقائي</li><li><strong>سجل تدقيق</strong> غير قابل للتعديل محمي بـ Hash</li><li><strong>موافقات بشرية</strong> للقرارات عالية المخاطر</li><li><strong>ملفات أدلة PDF</strong> موقّعة رقمياً جاهزة للمدققين</li><li><strong>حزم امتثال</strong> جاهزة لـ PDPL وNCA وSFDA وISO 13485</li></ul><p>كل هذا مصنوع في السعودية، بالعربي، وبدعم سعودي مؤسسي.</p>' },
   { q: 'وش هي حزم الامتثال المتوفرة في BrightAI؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI يوفر <strong>6 حزم امتثال جاهزة</strong> مصممة للسوق السعودي:</p><ul class="mt-2 space-y-1 list-disc list-inside"><li><strong>PDPL Pack:</strong> حماية البيانات الشخصية وإخفاء PII</li><li><strong>NCA ECC Pack:</strong> ضوابط الأمن السيبراني 2-2024</li><li><strong>SFDA/ISO 13485 Pack:</strong> المصانع الطبية والجودة</li><li><strong>SAMA/ZATCA Pack:</strong> القطاع المالي والمصرفي</li><li><strong>Healthcare Pack:</strong> المستشفيات والرعاية الصحية</li><li><strong>Procurement Pack:</strong> المشتريات والمناقصات واعتماد</li></ul>' },
   { q: 'كم ياخذ وقت التركيب؟', a: '<p>الـ Pilot يطلع خلال <strong>30 يوم</strong> على قسم واحد. والنشر الكامل من 60 إلى 120 يوم حسب حجم الشركة.</p>' },
   { q: 'كم التكلفة؟', a: '<p>عندنا باقات حسب حجم الشركة وعدد المستخدمين. كلمنا عبر <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="text-green-400 hover:underline" data-whatsapp data-cta-label="الواتساب" data-position="inline" data-page-type="home">الواتساب</a> للحصول على عرض سعر خلال 24 ساعة.</p>' },
@@ -402,13 +402,13 @@ const enhancedJsonLd = jsonLd;
       <table class="home-comparison-table">
         <thead><tr><th class="text-start">المعيار</th><th class="gradient-text">BrightAI</th><th class="text-white/60">شات بوت عام</th><th class="text-white/60">منصة AI أجنبية</th><th class="text-white/60">حل محلي تقليدي</th></tr></thead>
         <tbody>
-          <tr><td>متوافق PDPL/NCA من اليوم الأول</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-yellow-300">جزئياً</td><td class="text-yellow-300">جزئياً</td></tr>
+          <tr><td>جاهزية امتثال PDPL/NCA من اليوم الأول</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-yellow-300">جزئياً</td><td class="text-yellow-300">جزئياً</td></tr>
           <tr><td>AI Firewall + PII Redaction</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-yellow-300">إضافة</td><td class="text-red-400">✗</td></tr>
           <tr><td>Human Approval على القرارات</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-red-400">✗</td><td class="text-yellow-300">يدوي</td></tr>
           <tr><td>Evidence File PDF موقّع</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-red-400">✗</td><td class="text-red-400">✗</td></tr>
           <tr><td>يشتغل تحت أي نموذج (Gemini/GPT/Claude)</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-red-400">مغلق</td><td class="text-yellow-300">محدود</td></tr>
           <tr><td>On-Premise + Air-Gapped</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-red-400">✗</td><td class="text-emerald-400">✓</td></tr>
-          <tr><td>دعم سعودي 24/7 بالعربي</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-red-400">✗</td><td class="text-yellow-300">محدود</td></tr>
+          <tr><td>دعم سعودي مؤسسي بالعربي</td><td class="text-emerald-400">✓</td><td class="text-red-400">✗</td><td class="text-red-400">✗</td><td class="text-yellow-300">محدود</td></tr>
         </tbody>
       </table>
     </div>
@@ -422,7 +422,7 @@ const enhancedJsonLd = jsonLd;
   <div class="max-w-7xl mx-auto px-5 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
     <div class="card card--metric"><div class="text-3xl sm:text-4xl font-black gradient-text" data-counter="2030">2030</div><div class="text-xs text-white/60 mt-1">رؤية المملكة لقيادة AI عالمياً</div></div>
     <div class="card card--metric"><div class="text-3xl sm:text-4xl font-black gradient-text" data-counter="135" data-prefix="$" data-suffix="B">+135B$</div><div class="text-xs text-white/60 mt-1">حجم اقتصاد AI السعودي المتوقع</div></div>
-    <div class="card card--metric"><div class="text-3xl sm:text-4xl font-black gradient-text" data-counter="99.7" data-suffix="%">99.7%</div><div class="text-xs text-white/60 mt-1">نسبة الامتثال في عملاء BrightAI</div></div>
+    <div class="card card--metric"><div class="text-3xl sm:text-4xl font-black gradient-text" data-counter="9">9</div><div class="text-xs text-white/60 mt-1">حلول حوكمة وتشغيل متكاملة</div></div>
     <div class="card card--metric"><div class="text-3xl sm:text-4xl font-black gradient-text" data-counter="120" data-prefix="<" data-suffix="ms">{'<'}120ms</div><div class="text-xs text-white/60 mt-1">زمن استجابة طبقة الأمان</div></div>
   </div>
 </section>
@@ -445,23 +445,26 @@ const enhancedJsonLd = jsonLd;
           <span class="home-trust__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-medical-bag"></use></svg> هيئة الغذاء والدواء (SFDA)</span>
           <span class="home-trust__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-document-outline"></use></svg> هيئة الزكاة والضريبة والجمارك (ZATCA)</span>
         </div>
-        {/* REPORT-09: Compliance logo row — grayscale by default, colored on hover */}
-        <div class="home-trust__logos" aria-label="الشهادات والمعايير الدولية">
+        {/* REPORT-09: Compliance logo row — grayscale by default, colored on hover.
+            GA-SEO-AUDIT-002 (2026-08-24): label + caption state alignment with
+            standards, NOT certification possession (ai.txt: no cert claims). */}
+        <div class="home-trust__logos" aria-label="معايير أمن وامتثال نعمل وفق مبادئها">
           <span class="home-trust__logo">ISO 27001</span>
           <span class="home-trust__logo">SOC 2</span>
           <span class="home-trust__logo">ISO 13485</span>
           <span class="home-trust__logo">PDPL</span>
         </div>
+        <p class="text-[10px] text-white/40 mt-2">نعمل وفق مبادئ هذه المعايير وندعم جاهزية الامتثال لها — BrightAI ليست جهة اعتماد ولا تدّعي شهادات رسمية.</p>
       </div>
       <div class="lg:col-span-4 grid grid-cols-3 gap-3 text-center">
-        <div class="card card--metric card--sm"><div class="text-2xl sm:text-3xl font-black gradient-text" data-counter="15" data-suffix="+">+١٥</div><div class="text-[10px] sm:text-xs text-white/60 mt-1.5 font-medium">عميل مؤسسي وحكومي</div></div>
-        <div class="card card--metric card--sm"><div class="text-2xl sm:text-3xl font-black gradient-text" data-counter="365" data-suffix="+">+٣٦٥</div><div class="text-[10px] sm:text-xs text-white/60 mt-1.5 font-medium">يوم تشغيل آمن</div></div>
-        <div class="card card--metric card--sm"><div class="text-2xl sm:text-3xl font-black gradient-text" data-counter="12000" data-suffix="+">+١٢K</div><div class="text-[10px] sm:text-xs text-white/60 mt-1.5 font-medium">نقطة تدقيق مفحوصة</div></div>
+        <div class="card card--metric card--sm"><div class="text-2xl sm:text-3xl font-black gradient-text" data-counter="9" data-suffix="+">+٩</div><div class="text-[10px] sm:text-xs text-white/60 mt-1.5 font-medium">حلول حوكمة وتشغيل</div></div>
+        <div class="card card--metric card--sm"><div class="text-2xl sm:text-3xl font-black gradient-text" data-counter="30" data-suffix="+">+٣٠</div><div class="text-[10px] sm:text-xs text-white/60 mt-1.5 font-medium">دليلًا ووثيقة معرفية</div></div>
+        <div class="card card--metric card--sm"><div class="text-2xl sm:text-3xl font-black gradient-text" data-counter="3">٣</div><div class="text-[10px] sm:text-xs text-white/60 mt-1.5 font-medium">أوضاع نشر سيادية</div></div>
       </div>
       <div class="lg:col-span-3 card card--glass p-5 border border-cyan-500/20 bg-cyan-500/[.02] flex flex-col justify-between space-y-4">
         <div class="flex items-start gap-3">
           <span class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-lg shrink-0"><svg class="text-emerald-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-check-circle"></use></svg></span>
-          <div><strong class="block text-white text-sm">حماية بيانات مشفرة</strong><span class="block text-[11px] text-white/50 mt-0.5">AES-256 · ISO 27001 · SOC 2</span></div>
+          <div><strong class="block text-white text-sm">حماية بيانات مشفرة</strong><span class="block text-[11px] text-white/50 mt-0.5">AES-256 · TLS 1.3 · Zero Trust</span></div>
         </div>
         <div class="border-t border-white/5 pt-3 space-y-2">
           <a href="/pdpl-statement/" class="flex items-center justify-between text-xs text-cyan-300 hover:text-white transition-all"><span>بيان الامتثال لنظام PDPL</span><svg class="text-[9px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
@@ -617,12 +620,24 @@ const enhancedJsonLd = jsonLd;
       <article class="card card--feature rounded-2xl p-7 flex flex-col justify-between">
         <div>
           <div class="flex items-center gap-3 mb-4">
-            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-clipboard-check"></use></svg></span>
+            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg class="text-white" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-clipboard-check"></use></svg></span>
             <h3 class="text-xl font-bold">جاهزية التدقيق للذكاء الاصطناعي</h3>
           </div>
           <p class="text-white/70 leading-loose text-sm mb-4">دليل شامل لإعداد مؤسستك لتدقيق استخدامات الذكاء الاصطناعي وضمان الامتثال المستمر.</p>
         </div>
         <a href="/docs/ai-audit-readiness/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="اقرأ الدليل" data-position="section" data-page-type="home"> اقرأ الدليل<svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
+      </article>
+
+      {/* GA-SEO-AUDIT-002 (2026-08-24): hub link — homepage → informational owner /hub/ai-governance/ */}
+      <article class="card card--feature rounded-2xl p-7 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg class="text-white" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-school"></use></svg></span>
+            <h3 class="text-xl font-bold">مركز معرفة حوكمة الذكاء الاصطناعي</h3>
+          </div>
+          <p class="text-white/70 leading-loose text-sm mb-4">المرجع التعليمي الكامل: وش هي حوكمة الذكاء الاصطناعي، الأدوار، دورة الحياة، تصنيف المخاطر، الإشراف البشري، وخارطة تطبيق سعودية.</p>
+        </div>
+        <a href="/hub/ai-governance/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="ابدأ من المركز" data-position="section" data-page-type="home"> ابدأ من المركز<svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
       </article>
     </div>
   </div>
@@ -704,7 +719,17 @@ const enhancedJsonLd = jsonLd;
       <h2 id="explore-more-title" class="section__title">اكتشف المزيد عن حوكمة AI</h2>
       <p class="section__subtitle">مقالات، حلول، ووثائق شاملة لمساعدتك في تطبيق حوكمة الذكاء الاصطناعي في مؤسستك.</p>
     </div>
-    <div class="mt-12 grid md:grid-cols-3 gap-5">
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      {/* GA-SEO-AUDIT-002 (2026-08-24): hub card first — strongest homepage vote to the informational owner */}
+      <a href="/hub/ai-governance/" class="card card--feature rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-500/40 transition-all" data-cta="explore_more" data-cta-label="مركز معرفة حوكمة AI" data-position="section" data-page-type="home">
+        <div>
+          <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold mb-4"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-school"></use></svg></span>
+          <h3 class="text-xl font-bold mb-2">مركز معرفة حوكمة AI</h3>
+          <p class="text-white/70 leading-loose text-sm">وش هي حوكمة الذكاء الاصطناعي؟ مرجع تعليمي سعودي: التعريف، الأدوار، المخاطر، الإشراف البشري، والتطبيق.</p>
+        </div>
+        <span class="section-mini-link mt-4"> ابدأ من الدليل<svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span>
+      </a>
 
       <a href="/blog/" class="card card--feature rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-500/40 transition-all" data-cta="explore_more" data-cta-label="المدونة" data-position="section" data-page-type="home">
         <div>

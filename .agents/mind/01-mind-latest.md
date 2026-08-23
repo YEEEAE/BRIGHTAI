@@ -1,4 +1,14 @@
 ---
+### 2026-08-24 — SAUDI-AI-GOVERNANCE-CONTROL-MATRIX-001: إضافة مصفوفة ضوابط حوكمة AI سعودية عملية قابلة للاقتباس والطباعة — نجاح محلي بدون commit/push/deploy
+
+- **Scope**: أُضيف قسم مرجعي داخل `/hub/ai-governance/` في `src/components/hub/AiGovernancePillar.astro` بعنوان **Saudi AI Governance Control Matrix**. المصفوفة BrightAI practical implementation guidance وليست وثيقة رسمية أو اعتمادًا أو رأيًا قانونيًا، ولا تنسخ نصوص الأنظمة/المعايير.
+- **Content**: **13** عائلة ضبط تشغيلية: inventory، ownership، risk classification، approved use/policy، data handling، human approval، security filtering، logging، audit evidence، monitoring، third-party AI، incident handling، policy updates/change review. كل صف يضم objective/risk/control/owner/evidence/related BrightAI capability/reference note. المراجع السعودية والمعايير صيغت كسياق للتحقق من النطاق، مع تنبيه أن المصفوفة ليست قائمة امتثال جاهزة.
+- **UX/RTL/print**: الجدول semantic مع `caption`, `scope`, روابط capabilities، `data-label` للبطاقات على الجوال، CSS RTL منطقي، سطح مكتب بعرض قابل للتمرير، بطاقات جوال بدون overflow، وprint CSS يعيد رأس الجدول ويمنع انقسام الصفوف قدر الإمكان. أُضيف رابط داخلي من قسم `controls` إلى المصفوفة، وأضيفت للمصفوفة في فهرس الصفحة.
+- **SEO/GEO**: direct-answer heading «وش هي مصفوفة ضوابط حوكمة الذكاء الاصطناعي السعودية؟»، كلمات `AI governance controls` و`Saudi AI governance control matrix` بالعربية والإنجليزية، النص ظاهر في HTML الأولي، بدون FAQ schema جديد أو noindex أو URL جديد.
+- **Files**: `src/components/hub/AiGovernancePillar.astro`, `scripts/saudi-ai-governance-control-matrix.test.mjs`, `docs/superpowers/specs/2026-08-24-saudi-ai-governance-control-matrix-design.md`, `docs/superpowers/plans/2026-08-24-saudi-ai-governance-control-matrix.md`، وملفات sitemap المولدة محليًا بقيت كما أنتجها build مع تغييرات سابقة في working tree محفوظة.
+- **Verification**: TDD contract test مرّ RED قبل التنفيذ ثم GREEN بعده (**1/1**). `node_modules/.bin/astro build` = **Complete**؛ build المحلي فحص **276 HTML** و`pnpm seo:check` = **PASS** (121 sitemap URL في هذا البناء، 270 صفحة كاملة + 6 partial skipped)؛ `pnpm seo:hreflang` = **260 sets / 0 errors**؛ built HTML `/hub/ai-governance/`: matrix text ظاهر بدون JS، H1=1، noindex=0، **13** rows. Playwright عبر HTTP محلي على **360px/1440px**: overflow=false، rows=13، H1=1، matrixVisible=true. ظهرت تحذيرات route-collision وVite/Prisma القديمة الموثقة سابقًا، ولم تُعدّل.
+- **Status**: جاهز للمراجعة المحلية؛ لا commit ولا push ولا deploy. الـcommit على المستخدم.
+
 ### 2026-08-24 — AI-FIREWALL-COMMERCIAL-PAGE-002: تشديد حدود الـ schema والتحقق النهائي للصفحة — نجاح محلي بدون commit/push/deploy
 
 - **Follow-up**: بعد مراجعة الـ HTML المبني، اتضح أن JSON-LD كان يضم FAQ قديمًا من المحتوى المهاجر لصفحة AI Firewall، رغم أن الواجهة الجديدة أضيق وأكثر دقة. تم منع FAQ المهاجر لهذه الصفحة فقط، مع إبقاء FAQ المرئي المقيّد بالتنفيذ الحالي.
