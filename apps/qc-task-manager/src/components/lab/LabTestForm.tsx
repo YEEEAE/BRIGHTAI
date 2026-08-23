@@ -17,7 +17,7 @@
 // Results (sample + final) are HUMAN decisions entered here — the server and
 // this component never compute or suggest them (§19, §76).
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ClipboardEvent, type KeyboardEvent } from 'react';
 import { resolveApprovedReferencePanel } from '../../lib/lab/reference-panel';
 
 export interface LabResultOption {
@@ -105,6 +105,8 @@ interface Props {
     wi_code: string | null;
     wi_version: number | null;
     wi_status: string | null;
+    effective_date: string | null;
+    requires_approved_template_for_submission: number;
   }>;
   sampleResultOptions: LabResultOption[];
   finalResultOptions: LabResultOption[];
@@ -190,9 +192,7 @@ const SAMPLE_COLUMNS: Array<{ key: keyof Omit<SampleRow, 'sample_no' | 'result'>
   { key: 'part_name', label: 'Part Name' },
   { key: 'set_pressure', label: 'Set pressure (kpa)' },
   { key: 'applied_pressure', label: 'Applied Pressure (kpa)' },
-  { key: 'actual_pressure', label: 'Actual Pressure (legacy)' },
   { key: 'volume_liter', label: 'Volume (liter)' },
-  { key: 'volume_sec', label: 'Volume (Sec.) (legacy)' },
   { key: 'pressure_difference', label: 'Pressure Difference' },
   { key: 'holding_time_sec', label: 'Holding Time (Sec.)' },
   { key: 'leakage_rate', label: 'Leakage Rate' },
@@ -244,6 +244,7 @@ export default function LabTestForm({
   // untouched field only and never replace a tester-entered count.
   const sampleCountTouchedRef = useRef(false);
   const [templateVersionId, setTemplateVersionId] = useState<number | null>(initial?.template_version_id ?? null);
+  const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null);
 
   // Edit-mode prefill (PROMPT 43-B): load the stored DRAFT's values into the
   // uncontrolled inputs and the sample grid once, on mount. The loaded values
@@ -341,6 +342,63 @@ export default function LabTestForm({
 
   function updateSampleField(index: number, field: keyof SampleRow, value: string) {
     setSamples((prev) => prev.map((row, i) => (i === index ? { ...row, [field]: value } : row)));
+    markDirty();
+  }
+
+  function sampleFieldId(row: number, col: number): string {
+    const key = col < SAMPLE_COLUMNS.length ? SAMPLE_COLUMNS[col].key : 'result';
+    return `sample_${row + 1}_${String(key)}`;
+  }
+
+  function focusSampleCell(row: number, col: number) {
+    if (row < 0 || row >= sampleCount || col < 0 || col > SAMPLE_COLUMNS.length) return;
+    setSelectedCell({ row, col });
+    document.getElementById(sampleFieldId(row, col))?.focus();
+  }
+
+  function handleSampleKeyDown(event: KeyboardEvent<HTMLInputElement | HTMLSelectElement>, row: number, col: number) {
+    if (event.key === 'ArrowDown') { event.preventDefault(); focusSampleCell(row + 1, col); }
+    if (event.key === 'ArrowUp') { event.preventDefault(); focusSampleCell(row - 1, col); }
+    if (event.key === 'ArrowRight' && event.currentTarget instanceof HTMLInputElement && event.currentTarget.selectionStart === event.currentTarget.value.length) {
+      event.preventDefault(); focusSampleCell(row, col + 1);
+    }
+    if (event.key === 'ArrowLeft' && event.currentTarget instanceof HTMLInputElement && event.currentTarget.selectionStart === 0) {
+      event.preventDefault(); focusSampleCell(row, col - 1);
+    }
+  }
+
+  function handleSamplePaste(event: ClipboardEvent, row: number, col: number) {
+    const text = event.clipboardData.getData('text/plain');
+    if (!text.includes('\t') && !text.includes('\n')) return;
+    event.preventDefault();
+    const matrix = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').filter((line) => line.length > 0).map((line) => line.split('\t'));
+    if (row + matrix.length > sampleCount) {
+      setErrors((prev) => ({ ...prev, Samples: `Paste would exceed No. of Samples Tested (${sampleCount}).` }));
+      return;
+    }
+    setSamples((prev) => prev.map((target, rowIndex) => {
+      const pasted = matrix[rowIndex - row];
+      if (!pasted) return target;
+      const next = { ...target };
+      pasted.slice(0, SAMPLE_COLUMNS.length + 1).forEach((value, offset) => {
+        const key = offset + col < SAMPLE_COLUMNS.length ? SAMPLE_COLUMNS[offset + col].key : offset + col === SAMPLE_COLUMNS.length ? 'result' : null;
+        if (key) next[key] = value.trim() as never;
+      });
+      return next;
+    }));
+    markDirty();
+  }
+
+  function copyDownSelected() {
+    if (!selectedCell) return;
+    const key = selectedCell.col < SAMPLE_COLUMNS.length ? SAMPLE_COLUMNS[selectedCell.col].key : 'result';
+    const value = samples[selectedCell.row]?.[key] ?? '';
+    setSamples((prev) => prev.map((sample, index) => index < selectedCell.row ? sample : { ...sample, [key]: value }));
+    markDirty();
+  }
+
+  function clearSampleRow(index: number) {
+    setSamples((prev) => prev.map((sample, rowIndex) => rowIndex === index ? emptyRow(index + 1) : sample));
     markDirty();
   }
 
@@ -466,6 +524,7 @@ export default function LabTestForm({
       setErrors({});
     }
     setSubmitting(true);
+    setFormAction(action);
     dirtyRef.current = false;
     setDirty(false);
     if (actionRef.current) actionRef.current.value = action;
@@ -484,6 +543,13 @@ export default function LabTestForm({
     formRef.current?.submit();
   }
 
+  function focusErrorField(field: string) {
+    const targetId = field === 'Samples' ? 'sec-results' : field === 'Final Result' ? 'sec-final-result' : field === 'Product Description' ? 'product_description' : field === 'Connector Type' ? 'connector_type' : field === 'Lot Number' ? 'lot_number' : field === 'Sampling Area' ? 'sampling_area' : field === 'Machine Name' ? 'equipment_id' : 'sec-sample-identification';
+    const target = document.getElementById(targetId);
+    target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement) target.focus();
+  }
+
   const equipmentOptionLabel = (e: Props['equipment'][number]) => `${e.name} (${e.code})`;
   const calibrationLabel: Record<string, string> = {
     COMPLIANT: 'Calibration: COMPLIANT',
@@ -500,6 +566,8 @@ export default function LabTestForm({
       <input ref={samplesJsonRef} type="hidden" name="samples_json" value="" />
       <input ref={readingsJsonRef} type="hidden" name="environment_readings_json" value="" />
       <input type="hidden" name="template_version_id" value={templateVersionId ?? ''} />
+      {initial?.actual_pressure && <input type="hidden" name="actual_pressure" value={initial.actual_pressure} />}
+      {initial?.torque_in_lb && <input type="hidden" name="torque_in_lb" value={initial.torque_in_lb} />}
 
       {testNumber && (
         <p className="mb-4 rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-800">
@@ -513,12 +581,45 @@ export default function LabTestForm({
         </p>
       )}
 
+      <nav aria-label="Form sections" className="sticky top-0 z-10 mb-4 rounded-lg border border-slate-200 bg-white/95 p-3 shadow-sm backdrop-blur">
+        <ol className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4 lg:grid-cols-8">
+          {[
+            ['1 Sample Identification', 'sec-sample-identification', Boolean(productDescription && samples.length === sampleCount)],
+            ['2 Equipment', 'sec-equipment', Boolean((formRef.current?.elements.namedItem('equipment_id') as HTMLSelectElement | null)?.value)],
+            ['3 Requirements', 'sec-parameters', Boolean(selectedTemplate || reference.standardParameter !== 'No approved reference available.')],
+            ['4 Connector Assembly', 'sec-connector-assembly', true],
+            ['5 Environment', 'sec-differential', true],
+            ['6 Samples', 'sec-results', samples.every((row) => Boolean(row.result))],
+            ['7 Final Result', 'sec-final-result', Boolean(formRef.current?.querySelector('input[name="final_result"]:checked'))],
+            ['8 Review', 'sec-authorization', true],
+          ].map(([label, id, complete]) => (
+            <li key={id as string}>
+              <a href={`#${id}`} className="block rounded-md px-2 py-2 font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600">
+                <span aria-hidden="true">{complete ? '✓' : '○'}</span> {label as string}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      {initial && (initial.actual_pressure || initial.torque_in_lb || initial.samples.some((row) => row.actual_pressure || row.volume_sec)) && (
+        <details className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+          <summary className="cursor-pointer font-semibold text-amber-900">Legacy Recorded Data</summary>
+          <p className="mt-2 text-sm text-amber-800">Historical values are read-only and preserved exactly as recorded.</p>
+          <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
+            {initial.actual_pressure && <div><dt className="font-medium text-slate-600">Actual Pressure (legacy)</dt><dd dir="ltr">{initial.actual_pressure}</dd></div>}
+            {initial.torque_in_lb && <div><dt className="font-medium text-slate-600">Torque (in.lb) (legacy)</dt><dd dir="ltr">{initial.torque_in_lb}</dd></div>}
+            {initial.samples.some((row) => row.actual_pressure || row.volume_sec) && <div className="sm:col-span-2"><dt className="font-medium text-slate-600">Sample legacy values</dt><dd>Stored per sample row and preserved on save.</dd></div>}
+          </dl>
+        </details>
+      )}
+
       {Object.keys(errors).length > 0 && (
         <div role="alert" className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3">
           <p className="text-sm font-semibold text-red-700">The test could not be submitted:</p>
           <ul className="mt-1 list-inside list-disc text-sm text-red-700">
-            {Object.values(errors).map((message) => (
-              <li key={message}>{message}</li>
+            {Object.entries(errors).map(([field, message]) => (
+              <li key={field}><a className="underline" href={`#${field === 'Samples' ? 'sec-results' : field === 'Final Result' ? 'sec-final-result' : field === 'Product Description' ? 'product_description' : field === 'Connector Type' ? 'connector_type' : field === 'Lot Number' ? 'lot_number' : field === 'Sampling Area' ? 'sampling_area' : field === 'Machine Name' ? 'equipment_id' : 'sec-sample-identification'}`} onClick={(event) => { event.preventDefault(); focusErrorField(field); }}>{message}</a></li>
             ))}
           </ul>
         </div>
@@ -702,7 +803,7 @@ export default function LabTestForm({
               />
             </div>
             <div className="sm:col-span-2">
-              <label htmlFor="sampling_area" className={labelCls}>Sampling Area</label>
+              <label htmlFor="sampling_area" className={labelCls}>Testing Area</label>
               <input
                 id="sampling_area"
                 name="sampling_area"
@@ -711,9 +812,11 @@ export default function LabTestForm({
                 maxLength={200}
                 data-field="Sampling Area"
                 aria-invalid={errors['Sampling Area'] ? 'true' : undefined}
+                aria-describedby={errors['Sampling Area'] ? 'error-sampling-area' : undefined}
                 onChange={markDirty}
                 className={errors['Sampling Area'] ? inputErrorCls : inputCls}
               />
+              {errors['Sampling Area'] && <p id="error-sampling-area" className="mt-1 text-sm text-red-700">{errors['Sampling Area']}</p>}
             </div>
           </div>
         </section>
@@ -790,14 +893,6 @@ export default function LabTestForm({
             <div>
               <label htmlFor="angle" className={labelCls}>Angle</label>
               <input id="angle" name="angle" type="text" maxLength={200} onChange={markDirty} className={inputCls} />
-            </div>
-            <div>
-              <label htmlFor="actual_pressure" className={labelCls}>Actual Pressure (legacy)</label>
-              <input id="actual_pressure" name="actual_pressure" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
-            </div>
-            <div>
-              <label htmlFor="torque_in_lb" className={labelCls}>Torque (in.lb) (legacy)</label>
-              <input id="torque_in_lb" name="torque_in_lb" type="text" maxLength={50} onChange={markDirty} className={inputCls} />
             </div>
           </div>
         </section>
@@ -950,6 +1045,11 @@ export default function LabTestForm({
                 <p className="mt-2 text-sm font-medium text-blue-900" data-testid="approved-reference-template">
                   {referencePanel.templateName} ({referencePanel.templateCode}) — v{referencePanel.templateVersion}
                 </p>
+                <dl className="mt-2 grid gap-2 text-xs text-slate-700 sm:grid-cols-2">
+                  <div><dt className="font-semibold">Template Version</dt><dd>v{referencePanel.templateVersion}</dd></div>
+                  <div><dt className="font-semibold">Effective Date</dt><dd>{referencePanel.effectiveDate ?? 'No approved reference available.'}</dd></div>
+                  <div className="sm:col-span-2"><dt className="font-semibold">Source document reference</dt><dd>{referencePanel.sourceReference ?? 'No approved reference available.'}</dd></div>
+                </dl>
                 <dl className="mt-3 space-y-3">
                   {referencePanel.parameters.map((param) => (
                     <div key={param.key} data-testid={`approved-reference-${param.key}`}>
@@ -1026,6 +1126,9 @@ export default function LabTestForm({
                           maxLength={col.key === 'part_name' ? 200 : 50}
                           value={row[col.key]}
                           onChange={(e) => updateSampleField(index, col.key, e.target.value)}
+                          onFocus={() => setSelectedCell({ row: index, col: SAMPLE_COLUMNS.findIndex((item) => item.key === col.key) })}
+                          onKeyDown={(e) => handleSampleKeyDown(e, index, SAMPLE_COLUMNS.findIndex((item) => item.key === col.key))}
+                          onPaste={(e) => handleSamplePaste(e, index, SAMPLE_COLUMNS.findIndex((item) => item.key === col.key))}
                           className="w-full min-w-24 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                         />
                       </td>
@@ -1038,6 +1141,9 @@ export default function LabTestForm({
                         id={`sample_${row.sample_no}_result`}
                         value={row.result}
                         onChange={(e) => updateSampleField(index, 'result', e.target.value)}
+                        onFocus={() => setSelectedCell({ row: index, col: SAMPLE_COLUMNS.length })}
+                        onKeyDown={(e) => handleSampleKeyDown(e, index, SAMPLE_COLUMNS.length)}
+                        onPaste={(e) => handleSamplePaste(e, index, SAMPLE_COLUMNS.length)}
                         className="w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                       >
                         <option value="">Select result</option>
@@ -1051,8 +1157,13 @@ export default function LabTestForm({
               </tbody>
             </table>
           </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" onClick={copyDownSelected} disabled={!selectedCell} className="min-h-[44px] rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 disabled:opacity-50">Copy down selected value</button>
+            {selectedCell && <button type="button" onClick={() => clearSampleRow(selectedCell.row)} className="min-h-[44px] rounded-md border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-700">Clear row {selectedCell.row + 1}</button>}
+            <span className="self-center text-xs text-slate-500">Paste values from a spreadsheet with tabs/new lines. Server validation still applies.</span>
+          </div>
           {errors['Samples'] && (
-            <p role="alert" className="mt-2 text-sm text-red-700">{errors['Samples']}</p>
+            <p id="error-samples" role="alert" className="mt-2 text-sm text-red-700">{errors['Samples']}</p>
           )}
           <div className="mt-4">
             <label htmlFor="remarks" className={labelCls}>Any Remarks</label>
@@ -1089,7 +1200,7 @@ export default function LabTestForm({
         {/* ── Section 8 — Final Result (human decision only) ── */}
         <section aria-labelledby="sec-final-result" className={sectionCls}>
           <h2 id="sec-final-result" className={sectionTitleCls}>Section 8 — Final Result</h2>
-          <fieldset className="mt-4" data-field="Final Result" aria-invalid={errors['Final Result'] ? 'true' : undefined}>
+          <fieldset className="mt-4" data-field="Final Result" aria-invalid={errors['Final Result'] ? 'true' : undefined} aria-describedby={errors['Final Result'] ? 'error-final-result' : undefined}>
             <legend className="text-sm font-medium text-slate-700">
               Final Result <span aria-hidden="true">(required to submit)</span>
             </legend>
@@ -1108,13 +1219,13 @@ export default function LabTestForm({
               ))}
             </div>
             {errors['Final Result'] && (
-              <p role="alert" className="mt-1 text-sm text-red-700">{errors['Final Result']}</p>
+              <p id="error-final-result" role="alert" className="mt-1 text-sm text-red-700">{errors['Final Result']}</p>
             )}
           </fieldset>
         </section>
 
         {/* ── Actions ── */}
-        <div className="flex flex-wrap items-center justify-end gap-3">
+        <div className="sticky bottom-0 z-20 mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 bg-white/95 px-0 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] backdrop-blur sm:-mx-5 sm:px-5">
           <a
             href="/lab"
             className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
@@ -1143,7 +1254,7 @@ export default function LabTestForm({
             disabled={submitting}
             className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-60"
           >
-            {submitting ? 'Submitting…' : 'Submit'}
+            {submitting ? 'Submitting…' : 'Submit for Review'}
           </button>
         </div>
       </div>

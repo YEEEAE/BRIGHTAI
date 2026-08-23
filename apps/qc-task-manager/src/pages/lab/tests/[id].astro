@@ -118,6 +118,7 @@ function field(k: string): string {
   const v = record?.[k];
   return v == null || v === '' ? '—' : String(v);
 }
+const hasLegacyData = Boolean(record?.actual_pressure || record?.torque_in_lb || view.samples.some((s) => s.actual_pressure || s.volume_sec));
 
 // Human labels for the snapshots_json keys (see policy.ts §5).
 const PARAM_LABELS: Record<string, string> = {
@@ -240,7 +241,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             <div><dt class="text-xs font-medium text-slate-500">Connector Type</dt><dd class="mt-0.5 text-sm text-slate-900">{field('connector_type')}</dd></div>
             <div><dt class="text-xs font-medium text-slate-500">No. of Samples Tested</dt><dd class="mt-0.5 text-sm text-slate-900">{field('sample_count')}</dd></div>
             <div><dt class="text-xs font-medium text-slate-500">Lot Number</dt><dd class="mt-0.5 text-sm text-slate-900">{field('lot_number')}</dd></div>
-            <div><dt class="text-xs font-medium text-slate-500">Sampling Area</dt><dd class="mt-0.5 text-sm text-slate-900">{field('sampling_area')}</dd></div>
+            <div><dt class="text-xs font-medium text-slate-500">Testing Area</dt><dd class="mt-0.5 text-sm text-slate-900">{field('sampling_area')}</dd></div>
             <div><dt class="text-xs font-medium text-slate-500">Medium Used</dt><dd class="mt-0.5 text-sm text-slate-900">{field('medium_used')}</dd></div>
           </dl>
         </section>
@@ -260,8 +261,6 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
           <dl class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
             <div><dt class="text-xs font-medium text-slate-500">Actual Force</dt><dd class="mt-0.5 text-sm text-slate-900">{field('actual_force')}</dd></div>
             <div><dt class="text-xs font-medium text-slate-500">Torque (N.m)</dt><dd class="mt-0.5 text-sm text-slate-900">{field('torque_value')}</dd></div>
-            <div><dt class="text-xs font-medium text-slate-500">Actual Pressure (legacy)</dt><dd class="mt-0.5 text-sm text-slate-900">{field('actual_pressure')}</dd></div>
-            <div><dt class="text-xs font-medium text-slate-500">Torque (in.lb) (legacy)</dt><dd class="mt-0.5 text-sm text-slate-900">{field('torque_in_lb')}</dd></div>
             <div><dt class="text-xs font-medium text-slate-500">Time (Sec.)</dt><dd class="mt-0.5 text-sm text-slate-900">{field('time_sec')}</dd></div>
             <div><dt class="text-xs font-medium text-slate-500">Angle</dt><dd class="mt-0.5 text-sm text-slate-900">{field('angle')}</dd></div>
           </dl>
@@ -340,9 +339,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                     <th scope="col" class="px-3 py-2 font-semibold">Part Name</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Set Pressure</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Applied Pressure (kpa)</th>
-                    <th scope="col" class="px-3 py-2 font-semibold">Actual Pressure (legacy)</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Volume (liter)</th>
-                    <th scope="col" class="px-3 py-2 font-semibold">Volume (Sec.) (legacy)</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Pressure Difference</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Holding Time (Sec.)</th>
                     <th scope="col" class="px-3 py-2 font-semibold">Leakage Rate</th>
@@ -359,9 +356,7 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
                         <td class="px-3 py-2 text-slate-700">{s.part_name ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.set_pressure ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.applied_pressure ?? '—'}</td>
-                        <td class="px-3 py-2 text-slate-700">{s.actual_pressure ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.volume_liter ?? '—'}</td>
-                        <td class="px-3 py-2 text-slate-700">{s.volume_sec ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.pressure_difference ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.holding_time_sec ?? '—'}</td>
                         <td class="px-3 py-2 text-slate-700">{s.leakage_rate ?? '—'}</td>
@@ -375,6 +370,17 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
             </div>
           )}
         </section>
+
+        {hasLegacyData && (
+          <details class="rounded-xl border border-amber-200 bg-amber-50 p-5">
+            <summary class="cursor-pointer font-semibold text-amber-900">Legacy Recorded Data</summary>
+            <p class="mt-2 text-sm text-amber-800">Historical values are read-only and shown separately from current fields.</p>
+            <dl class="mt-3 grid gap-3 sm:grid-cols-2">
+              {record.actual_pressure && <div><dt class="text-xs font-medium text-slate-600">Actual Pressure (legacy)</dt><dd>{field('actual_pressure')}</dd></div>}
+              {record.torque_in_lb && <div><dt class="text-xs font-medium text-slate-600">Torque (in.lb) (legacy)</dt><dd>{field('torque_in_lb')}</dd></div>}
+            </dl>
+          </details>
+        )}
 
         {/* 7a. Sample QR labels — compact, scannable identifiers (PROMPT 48) */}
         {sampleQrs.length > 0 ? (

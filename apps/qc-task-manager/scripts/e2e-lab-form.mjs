@@ -120,11 +120,9 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
     for (const s of sections) {
       ok(mainText.includes(s), `${username}:${type} renders ${s}`);
     }
-    const expectedRef = type === 'air' ? '(-2.5 ~ -4) in./Hg' : '(-2.5 ~ -4) in./Hg';
-    ok(mainText.includes(expectedRef), `${username}:${type} shows Actual Pressure reference`);
-    ok(mainText.includes('Subatmospheric Pressure -40 ~ -80 kPa'), `${username}:${type} shows Standard Parameter reference`);
-    ok(mainText.includes('≤ 800 Pa'), `${username}:${type} shows Acceptance Criteria reference`);
-    ok(mainText.includes('18 ~ 56 Sec.'), `${username}:${type} shows Holding Time reference`);
+    ok(mainText.includes('No approved reference available.'), `${username}:${type} shows explicit missing-reference state`);
+    ok(await page.locator('input[aria-label*="Actual Pressure (legacy)"]').count() === 0, `${username}:${type} hides legacy pressure input on new form`);
+    ok(await page.getByText('Save and Continue').count() === 1 && await page.getByText('Submit for Review').count() === 1, `${username}:${type} shows sticky action bar actions`);
     ok((await page.locator('h1').innerText()).includes(type === 'air' ? 'New AIR Test' : 'New VACUUM Test'),
       `${username}:${type} title matches type`);
     await page.close();
@@ -171,6 +169,9 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await page.fill('#lot_number', 'LOT-E2E-1');
   await page.fill('#sampling_area', 'Area E2E');
   await page.selectOption('#equipment_id', { label: 'Leak Tester 1 (EQ-LT1)' });
+  await page.locator('#sample_1_part_name').focus();
+  await page.keyboard.insertText('Keyboard Part');
+  ok((await page.inputValue('#sample_1_part_name')) === 'Keyboard Part', 'keyboard flow: sample cell accepts focus and typing');
   await page.click('text=Save Draft');
   await page.waitForURL((u) => u.pathname === '/lab', { timeout: 10_000 });
 
@@ -240,8 +241,8 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   const submitted = db.prepare("SELECT * FROM lab_test_records WHERE lot_number='LOT-E2E-SUB'").get();
   ok(submitted.status === 'SUBMITTED', 'submit: status SUBMITTED');
   ok(submitted.submitted_at != null, 'submit: submitted_at set');
-  ok(submitted.parameters_snapshot_json != null && submitted.parameters_snapshot_json.includes('acceptance_criteria'),
-    'submit: parameters snapshot recorded');
+  ok(submitted.parameters_snapshot_json === null,
+    'submit: no global reference fallback is snapshotted');
   const subSamples = Number(db.prepare('SELECT COUNT(*) AS n FROM lab_test_samples WHERE test_id = ?').get(submitted.id).n);
   ok(subSamples === 5, 'submit: all 5 samples judged + persisted');
   await page2.close();

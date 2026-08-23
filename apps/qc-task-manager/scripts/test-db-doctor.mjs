@@ -34,9 +34,9 @@ try {
   const freshResult = runDoctor(fresh);
   assert.equal(freshResult.status, 0, freshResult.stderr);
   assert.match(freshResult.stdout, /PASS/);
-  assert.match(freshResult.stdout, /schema migration version:\s*33/);
-  assert.match(freshResult.stdout, /latest repository migration version:\s*33/);
-  assert.match(freshResult.stdout, /applied migration count:\s*33/);
+  assert.match(freshResult.stdout, /schema migration version:\s*34/);
+  assert.match(freshResult.stdout, /latest repository migration version:\s*34/);
+  assert.match(freshResult.stdout, /applied migration count:\s*34/);
   assert.doesNotMatch(freshResult.stdout, /DRIFT/);
   assert.doesNotMatch(freshResult.stdout, /MISSING/);
 

@@ -240,6 +240,7 @@ export interface LabTestTemplateVersion {
   created_at: string;
   updated_at: string;
   effective_date: string | null;
+  requires_approved_template_for_submission: number;
 }
 
 /** One row of the equipment registry (lab_equipment). status_raw is the verbatim business value. */

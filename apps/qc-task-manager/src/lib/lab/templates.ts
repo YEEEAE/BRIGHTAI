@@ -412,6 +412,7 @@ export interface LabTemplateFormData {
   leakage_reference: string | null;
   holding_time_reference: string | null;
   effective_date: string | null;
+  requires_approved_template_for_submission: boolean;
   /** Subset of LAB_CONNECTOR_TYPES (repeated checkbox key — collected raw). */
   connector_choices: string[];
   applicable_product_id: number | null;
@@ -533,8 +534,8 @@ export function createLabTemplate(data: LabTemplateFormData, actorId: number): n
       .prepare(
         `INSERT INTO lab_test_template_versions (
            template_id, version, default_sample_count, parameters_json, connector_choices_json,
-           applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, created_by
-         ) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, requires_approved_template_for_submission, created_by
+         ) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         templateId,
@@ -546,6 +547,7 @@ export function createLabTemplate(data: LabTemplateFormData, actorId: number): n
         data.sop_id,
         data.wi_id,
         data.effective_date,
+        data.requires_approved_template_for_submission ? 1 : 0,
         actorId,
       );
     db.prepare('UPDATE lab_test_templates SET current_version_id = ? WHERE id = ?').run(Number(versionResult.lastInsertRowid), templateId);
@@ -587,7 +589,7 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
       db.prepare(
         `UPDATE lab_test_template_versions SET
            default_sample_count = ?, parameters_json = ?, connector_choices_json = ?,
-           applicable_product_id = ?, applicable_equipment_id = ?, sop_id = ?, wi_id = ?, effective_date = ?,
+           applicable_product_id = ?, applicable_equipment_id = ?, sop_id = ?, wi_id = ?, effective_date = ?, requires_approved_template_for_submission = ?,
            updated_at = datetime('now')
          WHERE id = ?`,
       ).run(
@@ -599,6 +601,7 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
         data.sop_id,
         data.wi_id,
         data.effective_date,
+        data.requires_approved_template_for_submission ? 1 : 0,
         latest.id,
       );
       replaceEquipmentLinks(id, data.equipment_ids);
@@ -614,8 +617,8 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
         .prepare(
           `INSERT INTO lab_test_template_versions (
              template_id, version, default_sample_count, parameters_json, connector_choices_json,
-             applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, created_by
-           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             applicable_product_id, applicable_equipment_id, sop_id, wi_id, effective_date, requires_approved_template_for_submission, created_by
+           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         )
         .run(
           id,
@@ -628,6 +631,7 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
           data.sop_id,
           data.wi_id,
           data.effective_date,
+          data.requires_approved_template_for_submission ? 1 : 0,
           actorId,
         );
       replaceEquipmentLinks(id, data.equipment_ids);
@@ -703,6 +707,8 @@ export interface LabTemplateReference {
   wi_code: string | null;
   wi_version: number | null;
   wi_status: string | null;
+  effective_date: string | null;
+  requires_approved_template_for_submission: number;
 }
 
 /**
@@ -719,7 +725,8 @@ export function listLabTemplateReferences(): LabTemplateReference[] {
               sop.title AS sop_title, sop.code AS sop_code,
               sopv.version AS sop_version, sopv.status AS sop_status,
               wi.title AS wi_title, wi.code AS wi_code,
-              wiv.version AS wi_version, wiv.status AS wi_status
+              wiv.version AS wi_version, wiv.status AS wi_status,
+              v.effective_date, v.requires_approved_template_for_submission
        FROM lab_test_templates t
        JOIN lab_test_template_versions v ON v.id = t.current_version_id
        LEFT JOIN lab_documents sop ON sop.id = v.sop_id

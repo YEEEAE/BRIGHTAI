@@ -122,6 +122,7 @@ try {
   eq(ref?.sop_status, 'APPROVED', 'linked SOP version status is exposed');
   eq(ref?.wi_status, 'DRAFT', 'unapproved WI version status is exposed (no guessing)');
   eq(ref?.parameters_json, parametersJson, 'stored parameters_json is passed through verbatim');
+  ok('effective_date' in (ref ?? {}), 'reference provenance: effective date is exposed');
 
   // ── Version-locked resolution (server side) still accepts the same version.
   const resolved = resolveLabTemplateVersion(approvedVersionId, 'air');
@@ -136,6 +137,8 @@ try {
     'acceptance criteria shows exactly the stored value');
   eq(linked.state === 'linked' ? linked.parameters.find((p) => p.key === 'holding_time')?.value : '', '30',
     'holding time shows exactly the stored value');
+  ok(linked.state === 'linked' && linked.sourceReference === 'SOP-REF-01 — AIR Leak SOP (v2)',
+    'reference provenance: source document reference is displayed');
   ok(
     linked.state === 'linked' && linked.sop !== null && linked.sop.code === 'SOP-REF-01' && linked.sop.version === 2,
     'approved SOP is surfaced with its approved version number',
@@ -147,14 +150,14 @@ try {
     { ...ref, parameters_json: JSON.stringify({ standard_parameter: '60.0 kPa' }) },
   ];
   const sparse = resolveApprovedReferencePanel(sparseRefs, approvedVersionId, 'air');
-  eq(sparse.state === 'linked' ? sparse.parameters.find((p) => p.key === 'acceptance_criteria')?.value : '', '—',
-    "missing key renders '—' — no fallback");
+  eq(sparse.state === 'linked' ? sparse.parameters.find((p) => p.key === 'acceptance_criteria')?.value : '', 'No approved reference available.',
+    'missing key renders explicit empty state — no fallback');
   // Broken JSON → all parameters '—'.
   const brokenRefs = [{ ...ref, parameters_json: '{not json' }];
   const broken = resolveApprovedReferencePanel(brokenRefs, approvedVersionId, 'air');
   ok(
-    broken.state === 'linked' && broken.parameters.every((p) => p.value === '—'),
-    'malformed parameters_json renders every parameter as — (no guessing)',
+    broken.state === 'linked' && broken.parameters.every((p) => p.value === 'No approved reference available.'),
+    'malformed parameters_json renders every parameter as empty state (no guessing)',
   );
 
   // ── Unlinked cases → the explicit empty state.

@@ -478,6 +478,7 @@ CREATE TABLE IF NOT EXISTS lab_test_template_versions (
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   effective_date TEXT,
+  requires_approved_template_for_submission INTEGER NOT NULL DEFAULT 0 CHECK (requires_approved_template_for_submission IN (0,1)),
   UNIQUE (template_id, version)
 );
 

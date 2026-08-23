@@ -63,7 +63,7 @@ try {
 
   const db = new Database(join(tempRoot, 'fresh.db'));
   const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-  assert.equal(result.currentVersion, 33);
+  assert.equal(result.currentVersion, 34);
   assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='lab_change_requests'").get());
   assert.equal(db.pragma('integrity_check', { simple: true }), 'ok');
   assert.deepEqual(db.pragma('foreign_key_check'), []);

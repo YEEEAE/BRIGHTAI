@@ -67,6 +67,7 @@ const sampleStatusLabel = (v: unknown) => {
   return s ? (SAMPLE_STATUS_LABELS[s] ?? s) : '—';
 };
 const resultClass = result ? `result-${result.toLowerCase()}` : '';
+const hasLegacyData = Boolean(record?.actual_pressure || record?.torque_in_lb || view.samples.some((s) => s.actual_pressure || s.volume_sec));
 
 const PARAM_LABELS: Record<string, string> = {
   standard_parameter: 'Standard Parameter',
@@ -133,7 +134,7 @@ const sampleQrs = record
           <div class="dl-item"><dt>Connector Type</dt><dd>{val('connector_type')}</dd></div>
           <div class="dl-item"><dt>No. of Samples Tested</dt><dd>{val('sample_count')}</dd></div>
           <div class="dl-item"><dt>Lot Number</dt><dd>{val('lot_number')}</dd></div>
-          <div class="dl-item"><dt>Sampling Area</dt><dd>{val('sampling_area')}</dd></div>
+          <div class="dl-item"><dt>Testing Area</dt><dd>{val('sampling_area')}</dd></div>
           <div class="dl-item"><dt>Medium Used</dt><dd>{val('medium_used')}</dd></div>
         </dl>
       </section>
@@ -153,8 +154,6 @@ const sampleQrs = record
         <dl class="print-section-body grid3">
           <div class="dl-item"><dt>Actual Force</dt><dd>{val('actual_force')}</dd></div>
           <div class="dl-item"><dt>Torque (N.m)</dt><dd>{val('torque_value')}</dd></div>
-          <div class="dl-item"><dt>Actual Pressure (legacy)</dt><dd>{val('actual_pressure')}</dd></div>
-          <div class="dl-item"><dt>Torque (in.lb) (legacy)</dt><dd>{val('torque_in_lb')}</dd></div>
           <div class="dl-item"><dt>Time (Sec.)</dt><dd>{val('time_sec')}</dd></div>
           <div class="dl-item"><dt>Angle</dt><dd>{val('angle')}</dd></div>
         </dl>
@@ -232,9 +231,7 @@ const sampleQrs = record
                   <th scope="col">Part Name</th>
                   <th scope="col">Set Pressure</th>
                   <th scope="col">Applied Pressure (kpa)</th>
-                  <th scope="col">Actual Pressure (legacy)</th>
                   <th scope="col">Volume (liter)</th>
-                  <th scope="col">Volume (Sec.) (legacy)</th>
                   <th scope="col">Pressure Diff.</th>
                   <th scope="col">Holding (Sec.)</th>
                   <th scope="col">Leakage Rate</th>
@@ -249,9 +246,7 @@ const sampleQrs = record
                     <td>{s.part_name ?? '—'}</td>
                     <td>{s.set_pressure ?? '—'}</td>
                     <td>{s.applied_pressure ?? '—'}</td>
-                    <td>{s.actual_pressure ?? '—'}</td>
                     <td>{s.volume_liter ?? '—'}</td>
-                    <td>{s.volume_sec ?? '—'}</td>
                     <td>{s.pressure_difference ?? '—'}</td>
                     <td>{s.holding_time_sec ?? '—'}</td>
                     <td>{s.leakage_rate ?? '—'}</td>
@@ -264,6 +259,25 @@ const sampleQrs = record
           )}
         </div>
       </section>
+
+      {hasLegacyData && (
+        <section class="print-section legacy-data">
+          <h2 class="print-section-title">Legacy Data</h2>
+          <div class="print-section-body">
+            <p>Historical legacy values are shown separately and are not mixed with current fields.</p>
+            <dl class="grid3">
+              {record.actual_pressure && <div class="dl-item"><dt>Actual Pressure (legacy)</dt><dd>{val('actual_pressure')}</dd></div>}
+              {record.torque_in_lb && <div class="dl-item"><dt>Torque (in.lb) (legacy)</dt><dd>{val('torque_in_lb')}</dd></div>}
+            </dl>
+            {view.samples.some((s) => s.actual_pressure || s.volume_sec) && (
+              <table>
+                <thead><tr><th scope="col">Sample</th><th scope="col">Actual Pressure (legacy)</th><th scope="col">Volume (Sec.) (legacy)</th></tr></thead>
+                <tbody>{view.samples.filter((s) => s.actual_pressure || s.volume_sec).map((s) => <tr><td>{s.sample_no}</td><td>{s.actual_pressure ?? '—'}</td><td>{s.volume_sec ?? '—'}</td></tr>)}</tbody>
+              </table>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Sample QR Sheet — one scannable QR per identifier (PROMPT 48) */}
       {sampleQrs.length > 0 ? (

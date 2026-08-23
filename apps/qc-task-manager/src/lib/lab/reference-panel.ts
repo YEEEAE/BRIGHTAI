@@ -12,7 +12,7 @@
 // empty state below — it never fabricates a reference.
 
 /** Explicit empty-state text shown when no approved reference is linked. */
-export const LAB_REFERENCE_EMPTY_STATE_TEXT = 'No approved reference linked';
+export const LAB_REFERENCE_EMPTY_STATE_TEXT = 'No approved reference available.';
 
 /** The fields the resolver needs — satisfied structurally by LabTemplateReference. */
 export interface LabTemplateRefLite {
@@ -30,10 +30,11 @@ export interface LabTemplateRefLite {
   wi_title: string | null;
   wi_version: number | null;
   wi_status: string | null;
+  effective_date: string | null;
 }
 
 export interface LabReferenceParameter {
-  key: 'standard_parameter' | 'acceptance_criteria' | 'holding_time';
+  key: string;
   label: string;
   /** Exact stored value, or '—' when absent — never a fallback. */
   value: string;
@@ -56,13 +57,15 @@ export interface LabReferencePanelLinked {
   sop: LabReferenceDocument | null;
   /** Approved WI linked to the approved template version, if any. */
   wi: LabReferenceDocument | null;
+  effectiveDate: string | null;
+  sourceReference: string | null;
 }
 
 export type LabReferencePanel =
   | LabReferencePanelLinked
   | { state: 'unlinked'; emptyStateText: string };
 
-const PARAMETER_LABELS: Record<LabReferenceParameter['key'], string> = {
+const PARAMETER_LABELS: Record<string, string> = {
   standard_parameter: 'Standard Parameter',
   acceptance_criteria: 'Acceptance Criteria',
   holding_time: 'Holding Time',
@@ -71,7 +74,7 @@ const PARAMETER_LABELS: Record<LabReferenceParameter['key'], string> = {
 /** Extracts a parameter exactly as stored; '' / non-string / broken JSON → '—'. */
 function storedParameter(parsed: Record<string, unknown> | null, key: LabReferenceParameter['key']): string {
   const raw = parsed?.[key];
-  return typeof raw === 'string' && raw.trim() !== '' ? raw : '—';
+  return typeof raw === 'string' && raw.trim() !== '' ? raw : 'No approved reference available.';
 }
 
 /**
@@ -110,17 +113,27 @@ export function resolveApprovedReferencePanel(
     status: string | null,
   ): LabReferenceDocument | null =>
     code && title && version !== null && status === 'APPROVED' ? { code, title, version } : null;
+  const sop = approvedDoc(ref.sop_code, ref.sop_title, ref.sop_version, ref.sop_status);
+  const wi = approvedDoc(ref.wi_code, ref.wi_title, ref.wi_version, ref.wi_status);
+  const populatedKeys = Object.keys(parsed ?? {}).filter((key) => typeof (parsed ?? {})[key] !== 'object');
+  const parameterKeys = [...new Set([...Object.keys(PARAMETER_LABELS), ...populatedKeys])];
   return {
     state: 'linked',
     templateName: ref.name,
     templateCode: ref.code,
     templateVersion: ref.version,
-    parameters: (Object.keys(PARAMETER_LABELS) as LabReferenceParameter['key'][]).map((key) => ({
+    parameters: parameterKeys.map((key) => ({
       key,
-      label: PARAMETER_LABELS[key],
+      label: PARAMETER_LABELS[key] ?? key.replaceAll('_', ' '),
       value: storedParameter(parsed, key),
     })),
-    sop: approvedDoc(ref.sop_code, ref.sop_title, ref.sop_version, ref.sop_status),
-    wi: approvedDoc(ref.wi_code, ref.wi_title, ref.wi_version, ref.wi_status),
+    sop,
+    wi,
+    effectiveDate: ref.effective_date,
+    sourceReference: sop
+      ? `${sop.code} — ${sop.title} (v${sop.version})`
+      : wi
+        ? `${wi.code} — ${wi.title} (v${wi.version})`
+        : null,
   };
 }

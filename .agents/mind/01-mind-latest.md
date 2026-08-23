@@ -1,4 +1,13 @@
 ---
+### 2026-08-23 — QC-LAB-FORM-UX-INTEGRITY-015: نموذج المختبر الآمن والسريع — تحقق محلي مكتمل بدون commit/push/deploy
+
+- **Scope**: `apps/qc-task-manager/`؛ فصل حقول legacy عن إدخال السجل الجديد، عرض `Legacy Recorded Data` للبيانات التاريخية فقط، وتسمية `sampling_area` في الواجهة `Testing Area` مع إبقاء العمود التاريخي.
+- **UX/a11y**: أضيف شريط إجراءات sticky يعرض Draft/Unsaved Changes، تنقل أقسام 1–8 deterministic، روابط/focus لملخص الأخطاء، `aria-invalid`/`aria-describedby`، fieldset للنتيجة، وجدول بعناوين scoped. جدول العينات يدعم Tab/native copy، الأسهم، paste TSV/newline bounded بـ `sample_count`، copy-down، ومسح الصف؛ التحقق النهائي ما زال server-side.
+- **References/policy**: reference panel يعرض اسم القالب/الإصدار/effective date/source document وكل المعاملات المعبأة، وحالة `No approved reference available.` بدون fallback. migration **034** أضافت `requires_approved_template_for_submission` default 0، مع checkbox في محرر القالب وحارس template compatibility عند submission، بدون فرض عالمي.
+- **Historical/print**: صفحات detail/print تعرض current fields فقط، وتضع legacy pressure/volume في block منفصل read-only، وتحافظ على قيم التعديل التاريخية.
+- **Verification**: `pnpm test:migrations` PASS؛ `pnpm test:lab-form` **72/0**؛ reference panel **21/0**؛ lab templates **39/0**؛ lab print **51/0**؛ browser `e2e-lab-form.mjs` **133/0** على سيرفر وقاعدة معزولين؛ `pnpm typecheck` **0 errors / 0 warnings / 18 hints**؛ production build Complete؛ `git diff --check` PASS. بوابة `e2e:acceptance` العامة توقفت قبل lab عند blocker قديم في `task-shared` cleanup FK، لذلك لا تُحسب كدليل كامل.
+- **Status**: delivered locally؛ لا production verification، ولا commit أو push أو deploy.
+
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site

@@ -93,6 +93,10 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
           />
           <p class="mt-1 text-xs text-slate-500">Prefills the sample grid on the test form (1–20).</p>
         </div>
+        <label class="flex items-start gap-2 text-sm text-slate-700 sm:col-span-2">
+          <input id="requires_approved_template_for_submission" name="requires_approved_template_for_submission" type="checkbox" value="1" checked={version?.requires_approved_template_for_submission === 1} class="mt-1 h-4 w-4" />
+          <span><span class="font-medium">Require approved template for submission</span><span class="block text-xs text-slate-500">Off by default. Drafts can still save without a template; when enabled, submission requires this compatible approved version.</span></span>
+        </label>
       </div>
     </section>
 

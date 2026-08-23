@@ -141,23 +141,28 @@ export function listLabProductsForForm(): LabProductOption[] {
 export function resolveLabTemplateVersion(
   templateVersionId: number | null,
   testType: LabTestType,
-): { template_id: number; template_version_id: number } | null {
+): { template_id: number; template_version_id: number; requires_approved_template_for_submission: boolean } | null {
   if (templateVersionId === null) return null;
   const row = getDb()
     .prepare(
-      `SELECT v.id AS version_id, v.template_id, t.test_type, t.status, t.current_version_id
+      `SELECT v.id AS version_id, v.template_id, t.test_type, t.status, t.current_version_id,
+              COALESCE(v.requires_approved_template_for_submission, 0) AS requires_approved_template_for_submission
        FROM lab_test_template_versions v
        JOIN lab_test_templates t ON t.id = v.template_id
        WHERE v.id = ?`,
     )
     .get(templateVersionId) as
-    | { version_id: number; template_id: number; test_type: string; status: string; current_version_id: number | null }
+    | { version_id: number; template_id: number; test_type: string; status: string; current_version_id: number | null; requires_approved_template_for_submission: number }
     | undefined;
   if (!row) return null;
   if (row.test_type !== testType) return null;
   if (row.status !== 'ACTIVE') return null;
   if (row.current_version_id !== row.version_id) return null;
-  return { template_id: Number(row.template_id), template_version_id: Number(row.version_id) };
+  return {
+    template_id: Number(row.template_id),
+    template_version_id: Number(row.version_id),
+    requires_approved_template_for_submission: Number(row.requires_approved_template_for_submission) === 1,
+  };
 }
 
 /** Normalized form input after Zod validation (labTestFormSchema). */
@@ -383,6 +388,9 @@ export async function handleLabTestFormPost(context: APIContext): Promise<Respon
         ? Number(rawTemplateVersionId)
         : null;
     const templateRef = resolveLabTemplateVersion(templateVersionId, testType);
+    if (data.form_action === 'submit' && templateVersionId !== null && templateRef === null) {
+      throw new Error('Submit requires a compatible approved template version.');
+    }
     const created = createLabTest(
       { ...data, product_id: productId, template_id: templateRef?.template_id ?? null, template_version_id: templateRef?.template_version_id ?? null },
       user.id,
@@ -727,6 +735,9 @@ export async function handleLabTestEditPost(context: APIContext, testId: number)
         ? Number(rawTemplateVersionId)
         : null;
     const templateRef = resolveLabTemplateVersion(templateVersionId, testType);
+    if (data.form_action === 'submit' && templateVersionId !== null && templateRef === null) {
+      throw new Error('Submit requires a compatible approved template version.');
+    }
     const updated = updateLabTestDraft(
       { id: user.id, role: user.role },
       testId,

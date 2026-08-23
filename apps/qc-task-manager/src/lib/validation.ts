@@ -843,6 +843,7 @@ export const labTemplateSchema = z.object({
   leakage_reference: z.preprocess((v) => (v === '' || v == null ? null : String(v).trim()), z.string().max(200).nullable()),
   holding_time_reference: z.preprocess((v) => (v === '' || v == null ? null : String(v).trim()), z.string().max(200).nullable()),
   effective_date: z.preprocess((v) => (v === '' || v == null ? null : String(v).trim()), z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable()),
+  requires_approved_template_for_submission: z.preprocess((v) => v === true || v === '1' || v === 'on', z.boolean()),
   applicable_product_id: z.preprocess(
     (v) => (v === '' || v == null ? null : Number(v)),
     z

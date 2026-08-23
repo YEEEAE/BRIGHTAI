@@ -119,6 +119,11 @@ try {
   const emptyRowSource = formSource.slice(formSource.indexOf('function isRowEmpty'), formSource.indexOf('function isReadingEmpty'));
   ok(emptyRowSource.includes('!row.applied_pressure'), 'sample shrink warning: applied_pressure counts as non-empty');
   ok(emptyRowSource.includes('!row.volume_liter'), 'sample shrink warning: volume_liter counts as non-empty');
+  ok(!formSource.includes("label: 'Actual Pressure (legacy)'"), 'new form: legacy actual pressure is not an entry column');
+  ok(!formSource.includes("label: 'Volume (Sec.) (legacy)'"), 'new form: legacy volume is not an entry column');
+  ok(formSource.includes('Legacy Recorded Data'), 'historical form: legacy data has a labeled read-only block');
+  ok(formSource.includes('Copy down selected value'), 'sample grid: copy-down action is available');
+  ok(formSource.includes('Paste values'), 'sample grid: spreadsheet paste handling is available');
 
   const db = getDb();
   const employee = db.prepare("SELECT id FROM users WHERE username = 'employee'").get();
