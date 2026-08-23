@@ -1,0 +1,261 @@
+---
+const toc = [
+  ['answer', 'الإجابة المختصرة'],
+  ['difference', 'الفرق العملي'],
+  ['lifecycle', 'دورة حياة الحوكمة'],
+  ['roles', 'الأدوار والمساءلة'],
+  ['risk', 'تصنيف المخاطر'],
+  ['oversight', 'الإشراف البشري'],
+  ['controls', 'من السياسة إلى الضابط'],
+  ['evidence', 'أدلة التدقيق'],
+  ['data-models', 'البيانات والنماذج'],
+  ['roadmap', 'خارطة الطريق'],
+  ['sources', 'المصادر'],
+];
+
+const faqs = [
+  ['هل حوكمة AI تعني منع الموظفين من استخدام الذكاء الاصطناعي؟', 'لا. الحوكمة تحدد الاستخدام المسموح، والبيانات المناسبة، والضابط المطلوب حسب المخاطر؛ الهدف هو تسريع الاستخدام الآمن بدل تركه عشوائيًا.'],
+  ['هل كل حالة استخدام تحتاج موافقة بشرية؟', 'لا. الموافقة البشرية تكون متناسبة مع الأثر. الاستخدامات المنخفضة المخاطر قد تمشي بضوابط أساسية، بينما القرارات التي تمس عميلًا أو حقًا أو مبلغًا أو بيانات حساسة تحتاج مسار مراجعة أو منعًا واضحًا.'],
+  ['هل سياسة استخدام AI لحالها تكفي؟', 'لا. السياسة تحدد القاعدة، لكن الحوكمة تترجمها إلى مالك وضابط وسجل ومراجعة. من دون هذا الربط يصعب إثبات أن السياسة طُبقت فعليًا.'],
+  ['وش أول شيء نبدأ فيه؟', 'ابدأ بجرد حالات الاستخدام والأدوات والبيانات الداخلة لها. بعده صنف المخاطر، عيّن الملاك، وطبق ضوابط أولية على أكثر الحالات حساسية.'],
+];
+---
+
+<section class="pillar-hero" aria-labelledby="governance-hub-title">
+  <p class="pillar-eyebrow">مركز معرفة · حوكمة الذكاء الاصطناعي</p>
+  <h1 id="governance-hub-title">وش هي حوكمة الذكاء الاصطناعي؟</h1>
+  <p class="pillar-lede">
+    حوكمة الذكاء الاصطناعي هي طريقة المؤسسة في معرفة استخداماتها للـAI، وتحديد من يقرر فيها، وعلى أي بيانات، وبأي ضوابط وأدلة. مو المقصود تكديس سياسات أو إيقاف التجارب؛ المقصود أن كل حالة استخدام تمشي بمستوى تحكم يناسب أثرها. إذا كان الاستخدام بسيطًا وبياناته عامة، يكفي له مسار خفيف وواضح. وإذا كان يمس بيانات شخصية، قرار عميل، أو عملية حساسة، يرتفع مستوى المراجعة والحماية والتوثيق. الحوكمة تجمع الإدارة والمخاطر والأمن والبيانات والفرق التقنية في لغة وحدة: حالة استخدام، تصنيف خطر، مالك، ضابط، ودليل. بهالطريقة تقدر المؤسسة السعودية تستفيد من الذكاء الاصطناعي وهي عارفة وش مسموح، وش يحتاج مراجعة، وكيف تثبت اللي صار وقت التدقيق.
+  </p>
+  <div class="pillar-meta" aria-label="معلومات الدليل">
+    <span>محدّث: 23 أغسطس 2026</span>
+    <span>دليل معلوماتي للمؤسسات السعودية</span>
+    <span>مو بديل عن تقييم قانوني أو تنظيمي</span>
+  </div>
+</section>
+
+<details class="pillar-mobile-nav">
+  <summary>تنقّل داخل الدليل</summary>
+  <nav aria-label="فهرس الدليل للجوال">
+    {toc.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
+  </nav>
+</details>
+
+<div class="pillar-layout">
+  <aside class="pillar-toc" aria-label="فهرس الدليل">
+    <p>في هالدليل</p>
+    <nav>
+      {toc.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
+    </nav>
+  </aside>
+
+  <article class="pillar-content">
+    <section id="answer" class="pillar-answer" aria-labelledby="answer-title">
+      <p class="section-label">الجواب اللي يهم الإدارة والفريق</p>
+      <h2 id="answer-title">حوكمة AI: من يقرر، على أي بيانات، وبأي دليل؟</h2>
+      <p>
+        عمليًا، الحوكمة تحول استخدام AI من مبادرات متفرقة إلى نظام عمل: تسجل الحالة، تفهم غرضها وبياناتها، تصنف خطرها، تربطها بسياسة وضابط، وتحتفظ بدليل على القرار. هذا يشمل النماذج الجاهزة، النماذج المخصصة، والتطبيقات أو الوكلاء الذين ينفذون خطوات نيابة عن المستخدم. الحوكمة ما تفترض أن كل خطر متشابه؛ تعطي كل استخدام المسار الذي يناسبه.
+      </p>
+      <blockquote>
+        <strong>تعريف جاهز للاقتباس:</strong> حوكمة الذكاء الاصطناعي هي منظومة أدوار وقرارات وضوابط وأدلة تدير استخدام الذكاء الاصطناعي طوال دورة حياته، بحيث يكون الاستخدام معروفًا ومتناسبًا مع المخاطر وقابلًا للمراجعة.
+      </blockquote>
+    </section>
+
+    <section id="difference" aria-labelledby="difference-title">
+      <p class="section-label">الفرق العملي</p>
+      <h2 id="difference-title">الحوكمة مو هي السلامة أو الأمن أو إدارة المخاطر — لكنها تجمعهم</h2>
+      <div class="table-wrap" role="region" aria-label="مقارنة مفاهيم حوكمة الذكاء الاصطناعي" tabindex="0">
+        <table>
+          <thead><tr><th>المفهوم</th><th>السؤال الأساسي</th><th>مثال على المخرج</th><th>مكانه في البرنامج</th></tr></thead>
+          <tbody>
+            <tr><th>حوكمة AI</th><td>من يملك القرار، وما القاعدة، وكيف نثبت التطبيق؟</td><td>سياسة، أدوار، سجل قرار، مراجعة دورية.</td><td>الإطار الجامع.</td></tr>
+            <tr><th>سلامة AI</th><td>هل المخرج موثوق ومناسب وما يسبب ضررًا متوقعًا؟</td><td>اختبارات، حدود استخدام، مراجعة مخرجات عالية الأثر.</td><td>ضوابط سلوك ومخرجات.</td></tr>
+            <tr><th>أمن AI</th><td>هل النظام والبيانات محميان من التسريب أو الهجوم أو سوء الاستخدام؟</td><td>صلاحيات، حماية مدخلات، مراقبة موصلات، اختبار تهديدات.</td><td>ضوابط تقنية وأمنية.</td></tr>
+            <tr><th>إدارة المخاطر</th><td>وش احتمال الأثر وحجمه، ومن يقبله أو يعالجه؟</td><td>سجل مخاطر، تصنيف، خطة معالجة، قبول معلل.</td><td>طريقة تحديد الأولوية.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="citation-ready"><strong>جملة قابلة للاقتباس:</strong> الأمن يحمي النظام والبيانات، والسلامة تقلل ضرر المخرجات، وإدارة المخاطر تحدد الأولوية؛ أما الحوكمة فتحدد من يقرر وتربط كل هذا بدليل قابل للمراجعة.</p>
+    </section>
+
+    <section id="lifecycle" aria-labelledby="lifecycle-title">
+      <p class="section-label">دورة حياة الحوكمة</p>
+      <h2 id="lifecycle-title">الدورة ما تبدأ عند الإطلاق ولا تنتهي بعده</h2>
+      <ol class="lifecycle">
+        <li><strong>اكتشف وسجّل</strong><span>وش الأداة؟ وش حالة الاستخدام؟ ومن مالكها؟</span></li>
+        <li><strong>افهم السياق</strong><span>حدد الغرض، المستخدمين، البيانات، والمورد أو النموذج.</span></li>
+        <li><strong>صنّف الخطر</strong><span>وازن بين أثر القرار وحساسية البيانات ومستوى الاستقلالية.</span></li>
+        <li><strong>اربط الضوابط</strong><span>حوّل السياسة إلى متطلبات تشغيلية قابلة للتنفيذ والقياس.</span></li>
+        <li><strong>اعتمد وشغّل</strong><span>طبق مستوى المراجعة المناسب قبل الإطلاق أو عند القرار الحساس.</span></li>
+        <li><strong>راقب وراجع</strong><span>تابع التغيرات والحوادث والنتائج ثم حدّث التصنيف والضوابط.</span></li>
+      </ol>
+    </section>
+
+    <section id="roles" aria-labelledby="roles-title">
+      <p class="section-label">الأدوار والمساءلة</p>
+      <h2 id="roles-title">إذا ما فيه مالك واضح، ما فيه حوكمة قابلة للتنفيذ</h2>
+      <div class="definition-grid">
+        <section><h3>مالك حالة الاستخدام</h3><p>يشرح الغرض، يثبت قيمة الاستخدام، ويبلغ عن أي تغير جوهري في البيانات أو النموذج أو الجمهور.</p></section>
+        <section><h3>المخاطر والامتثال</h3><p>يضع منهج التصنيف ومعايير القبول ويحدد متى يلزم التصعيد، بدون ما يصير عنق زجاجة لكل طلب بسيط.</p></section>
+        <section><h3>الأمن والبيانات</h3><p>يتحقق من الوصول والموصلات وحماية البيانات، ويراجع الموردين ومسارات النقل والتخزين حسب نطاقهم.</p></section>
+        <section><h3>المراجع البشري</h3><p>يتدخل في القرارات أو المخرجات المحددة مسبقًا، ويملك صلاحية الإيقاف أو الإرجاع أو التصعيد.</p></section>
+      </div>
+      <aside class="callout"><strong>قاعدة محاسبة بسيطة:</strong> عيّن مالكًا للحالة، ومالكًا للضابط، ومالكًا لقبول الخطر. لا تفترض أن شخصًا واحدًا يملك الثلاثة تلقائيًا.</aside>
+    </section>
+
+    <section id="risk" aria-labelledby="risk-title">
+      <p class="section-label">تصنيف المخاطر</p>
+      <h2 id="risk-title">صنّف الاستخدام، مو اسم الأداة فقط</h2>
+      <p>نفس النموذج ممكن يستخدم في تلخيص نص عام أو في توصية تؤثر على عميل؛ اللي يغير مستوى الحوكمة هو السياق. خذ بعين الاعتبار حساسية البيانات، أثر المخرج، مقدار استقلالية النظام، ومن يتأثر بالقرار.</p>
+      <div class="risk-grid">
+        <section class="risk-card risk-card--low"><p>منخفض</p><h3>محتوى داخلي عام</h3><span>بيانات عامة، مخرج غير ملزم، مراجعة مستخدم عادية.</span></section>
+        <section class="risk-card risk-card--medium"><p>متوسط</p><h3>مساعدات تشغيلية</h3><span>بيانات عمل محدودة أو مخرج يستخدمه فريق قبل النشر.</span></section>
+        <section class="risk-card risk-card--high"><p>عالٍ</p><h3>قرارات أو بيانات حساسة</h3><span>بيانات شخصية/سرية أو أثر مالي أو وظيفي أو خدمي.</span></section>
+        <section class="risk-card risk-card--critical"><p>حرج</p><h3>استقلالية أو أثر كبير</h3><span>تنفيذ تلقائي أو أثر واسع؛ يحتاج قرار صريح أو إيقاف حتى تتوفر الضوابط.</span></section>
+      </div>
+      <p>لو تبي تفصيل تشغيل التصنيف، راجع <a href="/solutions/ai-risk-classification/">دليل تصنيف مخاطر AI</a>؛ هذا الرابط يشرح الحل، بينما هذا الدليل يشرح المنطق التعليمي وراءه.</p>
+    </section>
+
+    <section id="oversight" aria-labelledby="oversight-title">
+      <p class="section-label">الإشراف البشري</p>
+      <h2 id="oversight-title">الإنسان في الحلقة يعني صلاحية حقيقية، مو زر شكلي</h2>
+      <div class="two-up">
+        <div><h3>متى تحتاج مراجعة بشرية؟</h3><ul><li>إذا كان المخرج يؤثر على حق، خدمة، مبلغ، أو قرار موظف/عميل.</li><li>إذا تغير النموذج أو مصدر البيانات أو طريقة التنفيذ بشكل مؤثر.</li><li>إذا ارتفع التصنيف أو ظهر إنذار أو تعارض مع السياسة.</li></ul></div>
+        <div><h3>وش لازم يقدر يسويه المراجع؟</h3><ul><li>يشوف السياق والتصنيف والضابط المطلوب.</li><li>يعتمد أو يرفض أو يطلب تعديل مع سبب مسجل.</li><li>يوقف المسار أو يصعّده عند وجود خطر غير مقبول.</li></ul></div>
+      </div>
+      <p class="citation-ready"><strong>جملة قابلة للاقتباس:</strong> المراجعة البشرية الفعالة تحتاج سياق وصلاحية وسجل قرار؛ مجرد اطلاع متأخر على النتيجة ما يعتبر تحكمًا كافيًا.</p>
+    </section>
+
+    <section id="controls" aria-labelledby="controls-title">
+      <p class="section-label">من السياسة إلى الضابط</p>
+      <h2 id="controls-title">كيف ما تصير السياسة ملفًا منسيًا؟</h2>
+      <div class="table-wrap" role="region" aria-label="ربط السياسة بضوابط تشغيلية" tabindex="0">
+        <table>
+          <thead><tr><th>قاعدة سياسة</th><th>ضابط قابل للتنفيذ</th><th>الدليل المتوقع</th></tr></thead>
+          <tbody>
+            <tr><td>لا تدخل بيانات شخصية في أداة غير معتمدة.</td><td>قائمة أدوات معتمدة + فحص مدخلات أو مسار تصعيد.</td><td>سجل الأداة، قرار السماح/الحجب، ونتيجة الفحص.</td></tr>
+            <tr><td>القرارات عالية الأثر لا تعتمد على AI وحده.</td><td>بوابة موافقة بشرية قبل الإرسال أو التنفيذ.</td><td>هوية المراجع، الوقت، السبب، وقرار المراجعة.</td></tr>
+            <tr><td>كل مورد AI لازم يراجع قبل الاستخدام.</td><td>تقييم مورد وربط موافقته بحالة الاستخدام.</td><td>نموذج التقييم، نطاق البيانات، وقرار القبول.</td></tr>
+            <tr><td>التغيرات الجوهرية تعاد مراجعتها.</td><td>Trigger عند تغيير نموذج أو بيانات أو تكامل.</td><td>سجل تغيير، إعادة تصنيف، ونتيجة اعتماد جديدة.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>هذا الربط هو قلب الحوكمة التشغيلية. إذا كنت تبحث عن طريقة لتحويله إلى طبقة تشغيل، شوف <a href="/solutions/ai-governance-platform/">منصة حوكمة الذكاء الاصطناعي</a> بعد ما تحدد إطارك واحتياجاتك.</p>
+    </section>
+
+    <section id="evidence" aria-labelledby="evidence-title">
+      <p class="section-label">أدلة التدقيق</p>
+      <h2 id="evidence-title">الدليل مو ملف واحد؛ هو قصة قرار كاملة</h2>
+      <div class="evidence-flow" aria-label="مسار أدلة الحوكمة">
+        <span>حالة استخدام</span><b>←</b><span>تصنيف خطر</span><b>←</b><span>ضابط وموافقة</span><b>←</b><span>سجل تشغيل</span><b>←</b><span>مراجعة دورية</span>
+      </div>
+      <p>احتفظ بما يثبت: وصف الاستخدام ومالكه، التصنيف وأسبابه، نسخة السياسة أو الضابط المطبق، نتيجة مراجعة المورد إن وجدت، قرار الإنسان في الحلقة، سجل الأحداث المرتبط، ونتيجة المراجعة أو الحادث. الدليل المفيد يجاوب: وش صار؟ ليش سمحنا أو منعنا؟ ومن كان مسؤول؟</p>
+      <aside class="callout callout--quiet"><strong>تنبيه:</strong> وجود سجل لا يثبت الامتثال لحاله. قيمته تأتي من اكتمال السياق وربطه بالسياسة والمالك والمراجعة.</aside>
+    </section>
+
+    <section id="data-models" aria-labelledby="data-models-title">
+      <p class="section-label">حماية البيانات وحوكمة النماذج والوكلاء</p>
+      <h2 id="data-models-title">وش يتغير إذا كان عندك نموذج أو وكيل ينفذ خطوات؟</h2>
+      <div class="definition-grid">
+        <section><h3>البيانات</h3><p>حدد نوع البيانات، غرض المعالجة، الوصول، المكان الذي تنتقل له، ومدة الاحتفاظ. لا تستخدم التصنيف كافتراض؛ وثقه لكل حالة استخدام.</p></section>
+        <section><h3>النموذج</h3><p>سجل النسخة والمورد والقدرات والقيود ونتائج التقييم. أي تغيير جوهري في النموذج قد يحتاج إعادة تصنيف.</p></section>
+        <section><h3>الوكيل</h3><p>حدد وش يقدر يسوي، وش الأدوات اللي يتصل بها، وحدود التفويض، ومتى يوقف وينتظر إنسانًا.</p></section>
+        <section><h3>المراقبة</h3><p>راجع الانحراف والحوادث والشكاوى وتغير نمط الاستخدام؛ بعد الإطلاق يبدأ جزء مهم من الحوكمة، ما ينتهي.</p></section>
+      </div>
+      <p>نظام حماية البيانات الشخصية يضع قواعد لحماية البيانات الشخصية وحقوق أصحابها والتزامات المتحكمين؛ لذلك تقييم قابلية تطبيقه على كل حالة AI يبدأ من فهم البيانات والغرض ومسار المعالجة، وليس من اسم التقنية فقط. <a href="/docs/pdpl-ai-governance/">راجع دليل PDPL وAI</a> للتطبيق الداخلي، وخذ المشورة المتخصصة عند الحاجة.</p>
+    </section>
+
+    <section id="roadmap" aria-labelledby="roadmap-title">
+      <p class="section-label">خارطة طريق عملية</p>
+      <h2 id="roadmap-title">بداية مناسبة لمؤسسة سعودية: خفيفة أولًا، ثم قابلة للتوسع</h2>
+      <ol class="roadmap">
+        <li><span>الأسبوع 1</span><div><h3>صوّر الواقع</h3><p>اجمع الأدوات وحالات الاستخدام والبيانات والمالكين، وحدد أكثر 3 حالات حساسية بدل محاولة جرد كامل مثالي.</p></div></li>
+        <li><span>الأسبوع 2</span><div><h3>اتفق على القواعد</h3><p>اعتمد تعريفًا واحدًا للمخاطر، وضّح من يقبلها، وحدد متى يلزم الإشراف البشري أو تقييم المورد.</p></div></li>
+        <li><span>الأسبوع 3</span><div><h3>اربط أول ضوابط</h3><p>طبق حماية البيانات والسجل والموافقة على الحالات الأعلى أولوية، ثم اختبر سيناريوهات الإيقاف والتصعيد.</p></div></li>
+        <li><span>الأسبوع 4</span><div><h3>اجمع الأدلة وراجع</h3><p>جهز عينة أدلة، راجع الفجوات مع المالكين، وخطط لدورة مراجعة شهرية أو عند التغيير الجوهري.</p></div></li>
+      </ol>
+      <p>إذا تبي تشخيصًا منظمًا قبل البدء، استخدم <a href="/assessment/ai-governance-readiness/">تقييم جاهزية حوكمة الذكاء الاصطناعي</a>. وإذا تبي تفاصيل تنفيذية أكثر، راجع <a href="/docs/governance-application/">دليل تطبيق الحوكمة</a> و<a href="/docs/ai-risk-management/">دليل إدارة مخاطر AI</a>.</p>
+    </section>
+
+    <section id="faq" aria-labelledby="faq-title">
+      <p class="section-label">أسئلة شائعة</p>
+      <h2 id="faq-title">إجابات قصيرة للأسئلة المتكررة</h2>
+      <div class="faq-list">
+        {faqs.map(([question, answer]) => (
+          <details><summary>{question}</summary><p>{answer}</p></details>
+        ))}
+      </div>
+    </section>
+
+    <section id="sources" aria-labelledby="sources-title">
+      <p class="section-label">السياق السعودي والمصادر</p>
+      <h2 id="sources-title">كيف تقرأ المتطلبات السعودية بدون مبالغة؟</h2>
+      <p>مو كل وثيقة تنطبق على كل منشأة أو كل استخدام AI بنفس الطريقة. خذ المرجع الرسمي كنقطة بداية، وحدد نطاق انطباقه مع فرقك القانونية والامتثال والأمن. ما نعرض هنا شهادة امتثال ولا نفسر النصوص التنظيمية بدل المختص.</p>
+      <ul class="source-list">
+        <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/" target="_blank" rel="noopener noreferrer">نظام حماية البيانات الشخصية PDPL — سدايا</a><span>مرجع رسمي لتعريف البيانات الشخصية وأحكام المعالجة.</span></li>
+        <li><a href="https://sdaia.gov.sa/en/SDAIA/about/Pages/RegulationsAndPolicies.aspx" target="_blank" rel="noopener noreferrer">الأنظمة والسياسات وإرشادات الذكاء الاصطناعي التوليدي — سدايا</a><span>تشمل إرشادات تبني واستخدام الذكاء الاصطناعي التوليدي والمرجع التنظيمي للبيانات.</span></li>
+        <li><a href="https://nca.gov.sa/ar/regulatory-documents/controls-list/ecc/" target="_blank" rel="noopener noreferrer">الضوابط الأساسية للأمن السيبراني ECC 2-2024 — الهيئة الوطنية للأمن السيبراني</a><span>مرجع رسمي للضوابط الأمنية؛ تحقق من نطاق انطباقها على منشأتك.</span></li>
+      </ul>
+      <div class="resource-links">
+        <a href="/docs/ai-governance-saudi-arabia/">دليل الحوكمة في السعودية</a>
+        <a href="/docs/nca-ecc-ai-governance/">دليل NCA ECC وAI</a>
+        <a href="/docs/pdpl-ai-governance/">دليل PDPL وAI</a>
+        <a href="/solutions/ai-audit-trail/">كيف يعمل سجل تدقيق AI</a>
+      </div>
+    </section>
+  </article>
+</div>
+
+<style>
+  .pillar-hero { max-width: 78rem; margin-inline: auto; padding: clamp(2rem, 5vw, 5rem) 0 2rem; }
+  .pillar-eyebrow, .section-label { color: var(--interactive-primary); font-weight: 700; font-size: .875rem; letter-spacing: .02em; }
+  .pillar-hero h1 { max-inline-size: 16ch; margin: .6rem 0 1rem; color: var(--text-primary); font-size: clamp(2.3rem, 5vw, 4.5rem); line-height: 1.1; text-wrap: balance; }
+  .pillar-lede { max-inline-size: 70ch; color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 2; }
+  .pillar-meta { display: flex; flex-wrap: wrap; gap: .5rem 1rem; color: var(--text-muted); font-size: .875rem; }
+  .pillar-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; max-width: 78rem; margin-inline: auto; }
+  .pillar-content { min-inline-size: 0; }
+  .pillar-content > section { scroll-margin-top: 7rem; margin-block: clamp(3.5rem, 7vw, 6rem); }
+  .pillar-content h2 { color: var(--text-primary); font-size: clamp(1.7rem, 3vw, 2.55rem); line-height: 1.25; margin: .5rem 0 1.25rem; text-wrap: balance; }
+  .pillar-content h3 { color: var(--text-primary); margin: 0 0 .6rem; font-size: 1.1rem; }
+  .pillar-content p, .pillar-content li { color: var(--text-secondary); line-height: 1.95; }
+  .pillar-content a { color: var(--interactive-primary); text-decoration-thickness: 1px; text-underline-offset: .18em; }
+  .pillar-answer { border-inline-start: 4px solid var(--interactive-primary); padding: 1.5rem; background: var(--bg-elevated); border-radius: var(--radius-lg); }
+  blockquote { margin: 1.5rem 0 0; padding: 1rem 1.25rem; color: var(--text-primary); background: var(--brand-soft); border-radius: var(--radius-md); line-height: 1.8; }
+  .pillar-toc { display: none; }
+  .pillar-mobile-nav { margin: 1rem auto 0; max-width: 78rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-elevated); }
+  .pillar-mobile-nav summary { cursor: pointer; color: var(--text-primary); font-weight: 700; padding: 1rem; }
+  .pillar-mobile-nav nav { display: grid; padding: 0 1rem 1rem; gap: .65rem; }
+  .pillar-mobile-nav a { color: var(--text-secondary); text-decoration: none; }
+  .definition-grid, .two-up, .risk-grid { display: grid; gap: 1rem; }
+  .definition-grid section, .two-up > div { padding: 1.25rem; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+  .definition-grid p, .two-up p { margin: 0; }
+  .callout { margin-block: 1.25rem; padding: 1rem 1.25rem; border-inline-start: 3px solid var(--accent-warm); background: var(--accent-warm-soft); color: var(--text-primary); border-radius: var(--radius-sm); line-height: 1.8; }
+  .callout--quiet { border-inline-start-color: var(--interactive-primary); background: var(--brand-soft); }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+  table { width: 100%; min-width: 42rem; border-collapse: collapse; text-align: start; }
+  th, td { padding: 1rem; vertical-align: top; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); line-height: 1.7; }
+  thead th { color: var(--text-primary); background: var(--bg-elevated); font-weight: 700; }
+  tbody th { color: var(--text-primary); font-weight: 700; }
+  tr:last-child th, tr:last-child td { border-bottom: 0; }
+  .citation-ready { padding: 1rem; border: 1px dashed var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary) !important; }
+  .lifecycle { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; counter-reset: lifecycle; }
+  .lifecycle li { display: grid; grid-template-columns: 2.25rem 1fr; gap: .8rem; padding: 1rem; background: var(--bg-elevated); border-radius: var(--radius-md); }
+  .lifecycle li::before { counter-increment: lifecycle; content: counter(lifecycle); display: grid; place-items: center; inline-size: 2rem; block-size: 2rem; color: var(--text-primary); background: var(--brand-soft); border-radius: 50%; font-weight: 800; }
+  .lifecycle strong { color: var(--text-primary); display: block; }
+  .lifecycle span { grid-column: 2; color: var(--text-secondary); line-height: 1.7; }
+  .risk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .risk-card { padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-elevated); }
+  .risk-card p { margin: 0 0 .5rem; font-weight: 700; }
+  .risk-card span { color: var(--text-secondary); line-height: 1.7; }
+  .risk-card--low { border-block-start: 3px solid #22c55e; }.risk-card--medium { border-block-start: 3px solid #eab308; }.risk-card--high { border-block-start: 3px solid #f97316; }.risk-card--critical { border-block-start: 3px solid #ef4444; }
+  .evidence-flow { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: 1rem; border-radius: var(--radius-md); background: var(--bg-elevated); }
+  .evidence-flow span { padding: .5rem .7rem; background: var(--brand-soft); color: var(--text-primary); border-radius: var(--radius-sm); font-weight: 700; }.evidence-flow b { color: var(--interactive-primary); }
+  .roadmap { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; }
+  .roadmap li { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem; padding-block-end: 1.25rem; border-block-end: 1px solid var(--border-subtle); }
+  .roadmap li > span { color: var(--interactive-primary); font-weight: 800; font-size: .875rem; }.roadmap p { margin: 0; }
+  .faq-list { display: grid; gap: .75rem; }.faq-list details { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-elevated); padding: 1rem 1.25rem; }.faq-list summary { cursor: pointer; color: var(--text-primary); font-weight: 700; }.faq-list p { margin: 1rem 0 0; }
+  .source-list { display: grid; gap: .85rem; padding: 0; list-style: none; }.source-list li { padding: 1rem; border-inline-start: 3px solid var(--interactive-primary); background: var(--bg-elevated); }.source-list span { display: block; color: var(--text-muted); font-size: .95rem; margin-block-start: .3rem; }
+  .resource-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-block-start: 1.5rem; }.resource-links a { min-height: 44px; display: inline-flex; align-items: center; padding-inline: 1rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-decoration: none; }.resource-links a:hover { background: var(--brand-soft); }
+  @media (min-width: 900px) { .pillar-layout { grid-template-columns: 14rem minmax(0, 1fr); align-items: start; }.pillar-toc { position: sticky; top: 6rem; display: block; padding: 1rem; border-inline-start: 1px solid var(--border-subtle); }.pillar-toc > p { margin: 0 0 .75rem; color: var(--text-primary); font-weight: 800; }.pillar-toc nav { display: grid; gap: .55rem; }.pillar-toc a { color: var(--text-muted); font-size: .9rem; text-decoration: none; }.pillar-toc a:hover, .pillar-toc a:focus-visible { color: var(--interactive-primary); }.pillar-mobile-nav { display: none; }.definition-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 36rem) { .risk-grid { grid-template-columns: 1fr; }.roadmap li { grid-template-columns: 1fr; gap: .4rem; } }
+</style>

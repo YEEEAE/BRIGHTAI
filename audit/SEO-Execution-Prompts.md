@@ -246,7 +246,7 @@ SEO:
 - Avoid stuffing city names.
 
 Do not push.
-- [ ] ✅ Prompt #4 — done & reviewed
+- [✅]  Prompt #4 — done & reviewed
 
 # Prompt #5 — Rebuild the AI Governance Hub as the main informational pillar
 
@@ -288,7 +288,7 @@ Cannibalization:
 - Recommend merge/noindex/internal-link changes only after comparing intent and unique value.
 
 Do not push.
-- [ ] ✅ Prompt #5 — done & reviewed
+- [✅]  Prompt #5 — done & reviewed
 
 # Prompt #6 — Upgrade the AI Governance Readiness Assessment conversion page
 

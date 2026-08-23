@@ -1,4 +1,14 @@
 ---
+### 2026-08-23 — AI-GOVERNANCE-HUB-PILLAR-001: تحويل `/hub/ai-governance/` إلى المرجع التعليمي الكنسي مع فصل النية التجارية — تحقق محلي ناجح بدون commit/push/deploy
+
+- **Scope**: أُضيف `src/components/hub/AiGovernancePillar.astro`، وربطته بفرع مخصص في `src/pages/hub/[slug].astro`؛ لم تُمسح صفحات `/answer/` ولم تُفرض `noindex`، وبقيت تعديلات `audit/SEO-Execution-Prompts.md` السابقة كما هي.
+- **Positioning/content**: الإجابة المباشرة عن «وش هي حوكمة الذكاء الاصطناعي؟» في بداية الصفحة، مع مقارنة governance/safety/security/risk، دورة الحياة، الأدوار، تصنيف المخاطر، الإشراف البشري، policy-to-control mapping، أدلة التدقيق، حماية البيانات، حوكمة النماذج والوكلاء، roadmap سعودية، FAQ، وروابط المنتج والأدلة التنظيمية.
+- **UX/RTL**: knowledge hub بعرض مريح، TOC sticky على سطح المكتب و`details` مختصر على الجوال، بطاقات وتعريفات وجداول وخطوات وcallouts، CSS منطقي RTL، وبدون JavaScript أو dependency جديدة.
+- **Saudi/legal boundary**: المصادر الرسمية المباشرة هي SDAIA/PDPL وSDAIA policies وNCA ECC؛ النص يفرق بين المرجع التنظيمي والجاهزية، ويذكر أن التطبيق يعتمد على نطاق الجهة والاستخدام، ولا يقدم رأيًا قانونيًا أو ادعاء امتثال شامل.
+- **Cannibalization audit**: `/answer/ai-governance-framework/` يبقى quick-answer متخصصًا مع رابط للمحور؛ `/answer/ai-governance-saudi-arabia-ar/` يبقى مؤقتًا مع إعادة توجيه داخلية قوية للمحور؛ `/answer/ai-governance-saudi-arabia/` يبقى للنية الإنجليزية مع ضبط الادعاءات؛ لا merge/noindex الآن لغياب GSC ولحماية الصفحات العامة القابلة للفهرسة.
+- **Verification**: اختبار مخصص `2/2`، build Astro مكتمل وأنشأ `/hub/ai-governance/index.html`، `seo:check` PASS، `seo:hreflang` PASS `259/0`، internal-links PASS `0` broken، schema audit العام PASS `62` صفحة، وفحص Playwright المحلي على `360px/1440px`: `h1=1`, `overflow=false`, تنقل الجوال/TOC صحيح. `astro check` ما زال يظهر `127` خطأ قديم خارج النطاق؛ `pnpm seo:schema` يتوقف عند drift في FAQ schema لـ `19` صفحة حلول؛ `pnpm build` الكامل أُوقف يدويًا، والإنتاج/DNS غير متحقق.
+- **Status**: التغيير جاهز للمراجعة المحلية؛ لا commit ولا push ولا deploy.
+
 ### 2026-08-23 — AI-GOVERNANCE-PLATFORM-REDESIGN-001: تحويل صفحة الحوكمة التجارية الرئيسية إلى طبقة تشغيلية للحوكمة — تحقق محلي ناجح بدون commit/push/deploy
 
 - **Scope**: `/solutions/ai-governance-platform/` فقط؛ تحديث metadata/copy وrender branch مخصص داخل `src/pages/solutions/[slug].astro`، CSS scoped RTL، وخطة `docs/superpowers/plans/2026-08-23-ai-governance-platform-implementation.md`. لم تتم إضافة dependency أو route جديد.

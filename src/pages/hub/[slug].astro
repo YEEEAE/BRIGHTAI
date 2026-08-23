@@ -15,6 +15,7 @@
  *   files are modified by this page.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import AiGovernancePillar from '../../components/hub/AiGovernancePillar.astro';
 import { getPublishedPosts } from '../../data/blog';
 import { SITE } from '../../data/site';
 // BAI-SEO-003-S3 (2026-07-18): ORGANIZATION import removed — foundation
@@ -26,8 +27,8 @@ export function getStaticPaths() {
   const hubPages = [
     {
       slug: 'ai-governance',
-      title: 'حوكمة AI | مركز محتوى BrightAI',
-      description: 'الدليل الشامل لحوكمة الذكاء الاصطناعي وفق ضوابط SDAIA: تعرّف على الأنظمة وخطوات التطبيق وتقييم النضج لمؤسستك السعودية. ابدأ حوكمة AI مع BrightAI اليوم.',
+      title: 'وش هي حوكمة الذكاء الاصطناعي؟ | دليل سعودي عملي',
+      description: 'دليل معلوماتي عملي يشرح حوكمة الذكاء الاصطناعي للمؤسسات السعودية: الفرق عن السلامة والأمن، الأدوار، تصنيف المخاطر، الإشراف البشري، الأدلة، وخارطة البدء.',
       tags: ['حوكمة الذكاء الاصطناعي'],
       eyebrow: 'مركز محتوى BrightAI',
       icon: 'mdi-brain',
@@ -130,6 +131,7 @@ export function getStaticPaths() {
 }
 
 const { page } = Astro.props;
+const isAiGovernancePillar = page.slug === 'ai-governance';
 
 const relatedPosts = (await getPublishedPosts()).filter(post =>
   page.tags.some(tag => post.tags.some(pt => pt.includes(tag) || tag.includes(pt)))
@@ -176,21 +178,21 @@ const hubSlugJsonLd = {
   breadcrumbs={[{ name: 'مركز المعرفة', href: '/hub/' }, { name: page.title, href: `/hub/${page.slug}/` }]}
 >
   <main class="hub-subpage">
-    <header class="hub-subpage__hero">
-      <span class="chip chip--brand hub-subpage__eyebrow">
-        <svg aria-hidden="true" width="14" height="14"><use href={`/icons.svg#${page.icon}`}></use></svg>
-        {page.eyebrow}
-      </span>
-      <h1>{page.title.replace(' | BrightAI', '').replace(' | مركز محتوى BrightAI', '')}</h1>
-      <p>{page.description}</p>
-    </header>
-
-    {/* The sub-page body is generated content (auto-extracted into
-        src/data/hub-content-inline.ts). It contains its own internal
-        Tailwind-flavored class names + inline styles. We render it
-        verbatim below — no content mutations — and let the new
-        canonical wrapper provide padding + max-width. */}
-    <div class="hub-subpage__body article-content" set:html={DOMPurify.sanitize(`<!-- generated -->`)} />
+    {isAiGovernancePillar ? (
+      <AiGovernancePillar />
+    ) : (
+      <>
+        <header class="hub-subpage__hero">
+          <span class="chip chip--brand hub-subpage__eyebrow">
+            <svg aria-hidden="true" width="14" height="14"><use href={`/icons.svg#${page.icon}`}></use></svg>
+            {page.eyebrow}
+          </span>
+          <h1>{page.title.replace(' | BrightAI', '').replace(' | مركز محتوى BrightAI', '')}</h1>
+          <p>{page.description}</p>
+        </header>
+        <div class="hub-subpage__body article-content" set:html={DOMPurify.sanitize(`<!-- generated -->`)} />
+      </>
+    )}
   </main>
 
   {relatedPosts.length > 0 && (
