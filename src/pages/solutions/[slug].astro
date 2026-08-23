@@ -46,6 +46,7 @@ const migratedHtml = migratedPage?.html.replace(
 );
 const relSols = getRelatedSolutions(solution.slug);
 const relSectors = getRelatedSectors(solution.slug);
+const isAiFirewall = solution.slug === 'ai-firewall';
 
 const crumbs = [
   { label: 'الرئيسية', href: '/' },
@@ -75,7 +76,10 @@ const jsonLd = {
   "@context":"https://schema.org",
   "@graph":[
     serviceLd,
-    ...(solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
+    // AI Firewall has a dedicated, implementation-bounded visible FAQ below.
+    // Do not publish the migrated FAQ set: it contains legacy universal claims
+    // that are broader than the current product contract.
+    ...(!isAiFirewall && solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
   ]
 };
 
@@ -265,23 +269,133 @@ const governanceLinks = [
   { href: '/assessment/ai-governance-readiness/', label: 'تقييم جاهزية حوكمة AI', type: 'primary' },
   { href: '/docs/ai-governance-platform/', label: 'اقرأ الدليل التشغيلي', type: 'secondary' },
 ];
+const firewallCapabilities = [
+  { label: 'PROMPTS', title: 'يفحص الطلب قبل ما يكمل', text: 'يمرر الطلب عبر نقطة التكامل ويفحص النص أو الحقول التي تدخل في مسار AI حسب الإعدادات المطبقة.' },
+  { label: 'SENSITIVE DATA', title: 'يحدد PII وأنماط البيانات الحساسة', text: 'الكاشفات الحالية تشمل أنماطاً مثل الهوية، الجوال، البريد، الحسابات، والبيانات الطبية عندما تطابق القواعد المدعومة.' },
+  { label: 'POLICY', title: 'يطبق قرار السياسة', text: 'النتيجة ممكن تكون سماح، تنقية/استبدال، حجب، أو رفع الحالة للمراجعة — القرار يعتمد على السياسة والتكامل.' },
+  { label: 'DESTINATION', title: 'يعطيك نقطة تحكم قبل النموذج', text: 'تقدر تربط القرار بوجهة أو مسار AI معتمد، لكن تقييم المخاطر يعتمد على ما تم تعريفه في بيئتك.' },
+  { label: 'RESPONSES', title: 'ما يختفي بعد الإرسال', text: 'المخرج جزء من قصة التفاعل التي تحتاج مراجعة؛ الفحص الفعلي يعتمد على المسار والقواعد المفعلة، وليس وعداً بفهم كل مخرج.' },
+  { label: 'EVIDENCE', title: 'يسجل القرار وسياقه التشغيلي', text: 'يحفظ معلومات الحدث والقرار غير الحساسة للمراجعة، بينما يبقى تصميم الاحتفاظ والوصول مسؤولية المؤسسة.' },
+];
+const firewallFlow = [
+  { step: '01', label: 'INPUT', title: 'Prompt أو طلب AI', text: 'موظف، تطبيق، أو مسار chat يرسل طلباً يحتاج نموذجاً.' },
+  { step: '02', label: 'INSPECT', title: 'كشف وفحص', text: 'تُطبّق الكاشفات والسياسات على المحتوى والبيانات الموجودة في المسار.' },
+  { step: '03', label: 'DECIDE', title: 'قرار قابل للتفسير', text: 'سماح، تنقية، حجب، أو إشارة لمراجعة بحسب القاعدة.' },
+  { step: '04', label: 'OUTPUT / EVIDENCE', title: 'نتيجة وسجل', text: 'يمر المحتوى المسموح أو المنقى، ويُحفظ سياق القرار للمراجعة.' },
+];
+const firewallPolicies = [
+  { state: 'REDACT', tone: 'teal', title: 'بيانات هوية داخل prompt', rule: 'إذا طابق الطلب نمط هوية أو جوال أو بريد', action: 'استبدل القيمة بـ placeholder قبل وصولها للمسار التالي.' },
+  { state: 'BLOCK', tone: 'red', title: 'طلب يخالف سياسة البيانات', rule: 'إذا كانت القناة أو البيانات غير مسموحة في سياسة المؤسسة', action: 'أوقف الطلب وأظهر سبب القرار للمستخدم.' },
+  { state: 'FLAG', tone: 'amber', title: 'حالة تحتاج نظر بشري', rule: 'إذا تجاوزت الحالة مستوى الخطر أو احتاجت استثناء', action: 'ارفعها للمراجعة بدل تمريرها بصمت.' },
+  { state: 'LOG', tone: 'blue', title: 'حدث يحتاج دليل', rule: 'في كل قرار حماية أو استثناء', action: 'سجّل الحدث والقرار والوقت والسياق غير الحساس.' },
+];
+const firewallNetworkRows = [
+  ['يفهم', 'محتوى prompt وإشارات البيانات داخل تفاعل AI', 'IP، منافذ، بروتوكولات، وقواعد مرور الشبكة'],
+  ['يتدخل عند', 'حدود تفاعل المستخدم مع النموذج أو الخدمة', 'حدود الشبكة والاتصال بين الأنظمة'],
+  ['قراره', 'تنقية، حجب، سماح، أو إشارة لمراجعة حسب السياسة', 'سماح أو منع الاتصال غالباً'],
+  ['يكمل ماذا؟', 'سياسة استخدام AI وسياق القرار والدليل', 'حماية مسار الاتصال والبنية التحتية'],
+];
+const firewallDlpRows = [
+  ['النطاق', 'مركز على تفاعل AI: prompt، مخرج، ونقطة النموذج', 'أوسع: بريد، ملفات، أجهزة، قنوات، وتدفقات بيانات'],
+  ['التميّز', 'يربط الفحص بسياق النموذج والطلب والسياسة', 'يركز على اكتشاف ونقل البيانات عبر قنوات متعددة'],
+  ['العلاقة', 'طبقة متخصصة تكمل DLP في مسار AI', 'ضابط مؤسسي أوسع لا يغني وحده عن فحص تفاعل AI'],
+];
 ---
 <ArabicLayout
-  title={migratedPage?.title ?? solution.title}
-  description={migratedPage?.description ?? solution.description}
+  title={isAiFirewall ? solution.title : migratedPage?.title ?? solution.title}
+  description={isAiFirewall ? solution.description : migratedPage?.description ?? solution.description}
   canonical={migratedPage?.canonical ?? solution.canonical}
   hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:solution.canonical},{lang:'x-default',href:solution.canonical}]}
-  jsonLd={migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]).map((entry) => stripFoundationTypesFromMigratedSlug(entry))] } : (jsonLd as any)}
+  jsonLd={isAiFirewall ? (jsonLd as any) : migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]).map((entry) => stripFoundationTypesFromMigratedSlug(entry))] } : (jsonLd as any)}
   currentPath={solution.href}
   ogImage="/assets/images/og/og-solutions.webp"
-  ogImageAlt={migratedPage?.title ?? solution.title}
+  ogImageAlt={isAiFirewall ? solution.title : migratedPage?.title ?? solution.title}
   breadcrumbs={crumbs.slice(1).map(c => ({ name: c.label, href: c.href }))}
 >
 {!solution.content ? (
   /* legacy migrated fallback — only لو ما في content data */
   <main class="migrated-legacy-content" set:html={DOMPurify.sanitize(migratedHtml)} />
 ) : (
-  isGovernancePlatform ? (
+  isAiFirewall ? (
+    <main class="ai-firewall-page">
+      <section class="ai-firewall-hero" aria-labelledby="ai-firewall-title">
+        <div class="ai-firewall-shell ai-firewall-hero__grid">
+          <div class="ai-firewall-hero__copy">
+            <p class="ai-firewall-kicker"><span aria-hidden="true"></span> AI SECURITY CONTROL LAYER</p>
+            <h1 id="ai-firewall-title">{solution.h1}</h1>
+            <p class="ai-firewall-answer"><strong>وش هو AI Firewall؟</strong> هو طبقة تحكم تمرر تفاعل الذكاء الاصطناعي عبر فحص وسياسة قبل ما يكمل للنموذج أو يرجع للمستخدم. يكتشف أنماط بيانات حساسة، ويقدر ينقّي أو يحجب أو يرفع الحالة للمراجعة، مع تسجيل سياق القرار.</p>
+            <div class="ai-firewall-actions">
+              <a class="ai-firewall-button ai-firewall-button--primary" href="/contact/" data-cta="ai_firewall_demo_click" data-cta-label="اطلب جلسة تصميم ضوابط" data-position="hero" data-page-type="solution">اطلب جلسة تصميم ضوابط <span aria-hidden="true">←</span></a>
+              <a class="ai-firewall-button ai-firewall-button--secondary" href="/docs/ai-firewall/">شوف الدليل التقني</a>
+            </div>
+            <p class="ai-firewall-microcopy">مصمم لفرق الأمن والبيانات والامتثال — يساعدك تقلل المخاطر، مو وعد بمنع كل شيء.</p>
+          </div>
+          <figure class="ai-firewall-console" aria-labelledby="ai-firewall-console-caption">
+            <div class="ai-firewall-console__bar"><span><i aria-hidden="true"></i> CONTROL PLANE / AI FIREWALL</span><b>POLICY ACTIVE</b></div>
+            <div class="ai-firewall-console__prompt"><small>INCOMING PROMPT</small><p>لخّص طلب العميل <em>[PERSON_NAME]</em> ورقم الحساب <em>[ACCOUNT_ID]</em></p></div>
+            <div class="ai-firewall-console__scan"><span>INSPECTION</span><strong>2 matches</strong><b>PII pattern detected</b></div>
+            <div class="ai-firewall-console__decision"><span>DECISION</span><strong>REDACT → ALLOW</strong><small>event_id: fw_••••• · evidence retained</small></div>
+            <figcaption id="ai-firewall-console-caption">مثال توضيحي لمسار تنقية: القيم الفعلية ما تظهر في الطلب اللي يكمل للنموذج.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="ai-firewall-signal-strip" aria-label="سطح تحكم AI Firewall">
+        <div class="ai-firewall-shell"><span>يركز على</span><b>Prompts</b><b>Responses</b><b>Sensitive data</b><b>Policy decisions</b><b>Destinations</b><b>Evidence</b></div>
+      </section>
+
+      <section class="ai-firewall-section" aria-labelledby="ai-firewall-capabilities">
+        <div class="ai-firewall-shell">
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">وش يشوف ووش يسوي؟</p><h2 id="ai-firewall-capabilities">نقطة تحكم واضحة بين بياناتك والنموذج</h2><p>القيمة مو في كلمة “Firewall” لحالها. القيمة إن فريقك يعرف وش دخل المسار، وش القرار اللي صار، ووش الدليل اللي بقى.</p></div>
+          <div class="ai-firewall-capability-grid">{firewallCapabilities.map((item, index) => <article class="ai-firewall-card"><span class="ai-firewall-card__index">0{index + 1}</span><span class="ai-firewall-card__label">{item.label}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+        </div>
+      </section>
+
+      <section class="ai-firewall-section ai-firewall-section--dark" aria-labelledby="ai-firewall-flow-title">
+        <div class="ai-firewall-shell">
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">من الطلب إلى الدليل</p><h2 id="ai-firewall-flow-title">Input → inspection → decision → output/evidence</h2><p>هذا هو المسار التشغيلي المختصر. التطبيق الفعلي يتغير حسب نقطة التكامل والسياسات والكاشفات المفعلة عندك.</p></div>
+          <ol id="ai-firewall-flow" class="ai-firewall-flow">{firewallFlow.map((item, index) => <li><span class="ai-firewall-flow__number">{item.step}</span><span class="ai-firewall-flow__label">{item.label}</span><h3>{item.title}</h3><p>{item.text}</p>{index < firewallFlow.length - 1 && <span class="ai-firewall-flow__arrow" aria-hidden="true">←</span>}</li>)}</ol>
+        </div>
+      </section>
+
+      <section class="ai-firewall-section ai-firewall-section--soft" aria-labelledby="ai-firewall-policy-title">
+        <div class="ai-firewall-shell">
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">سياسات قابلة للتشغيل</p><h2 id="ai-firewall-policy-title">أمثلة على القرار — مو شعارات عامة</h2><p>كل بطاقة تمثل نمط قرار تحتاج فرق الأمن والبيانات تعريفه واعتماده في بيئتها.</p></div>
+          <div class="ai-firewall-policy-grid">{firewallPolicies.map(policy => <article class={`ai-firewall-policy ai-firewall-policy--${policy.tone}`}><span>{policy.state}</span><h3>{policy.title}</h3><p><b>إذا:</b> {policy.rule}</p><p><b>الإجراء:</b> {policy.action}</p></article>)}</div>
+        </div>
+      </section>
+
+      <section id="ai-firewall-scenario" class="ai-firewall-section" aria-labelledby="ai-firewall-scenario-title">
+        <div class="ai-firewall-shell ai-firewall-scenario">
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">سيناريو قبل / بعد</p><h2 id="ai-firewall-scenario-title">من طلب عشوائي إلى مسار قابل للمراجعة</h2><p>خذ مثال فريق خدمة عملاء يستخدم نموذجاً خارجياً لتلخيص شكوى. الحماية هنا تضبط المسار، لكنها ما تلغي مسؤولية اختيار الأداة والسياسة المناسبة.</p></div>
+          <div class="ai-firewall-before-after"><article><span>قبل</span><h3>النص يطلع كما هو</h3><p>موظف يلصق اسم العميل ورقم جواله وتفاصيل الشكوى في prompt. ما فيه نقطة مركزية توضّح وش خرج أو ليه.</p></article><div aria-hidden="true">→</div><article><span>بعد</span><h3>تنقية + قرار + أثر</h3><p>المسار يطابق الأنماط المدعومة، يستبدل المعرفات، يطبق القرار، ويحفظ حدثاً يقدر فريق الأمن يرجع له.</p></article></div>
+        </div>
+      </section>
+
+      <section class="ai-firewall-section ai-firewall-section--dark" aria-labelledby="ai-firewall-vs-network-firewall">
+        <div class="ai-firewall-shell">
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">لا تخلط الطبقات</p><h2 id="ai-firewall-vs-network-firewall">AI Firewall vs traditional firewall</h2><p>الجدار التقليدي يحمي الاتصال والبنية التحتية. AI Firewall يضيف طبقة تفهم تفاعل AI والبيانات اللي داخله.</p></div>
+          <div class="ai-firewall-table-wrap"><table class="ai-firewall-table"><thead><tr><th>السؤال</th><th>AI Firewall</th><th>Traditional firewall</th></tr></thead><tbody>{firewallNetworkRows.map(row => <tr>{row.map((cell, index) => index === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody></table></div>
+        </div>
+      </section>
+
+      <section class="ai-firewall-section ai-firewall-section--soft" aria-labelledby="ai-firewall-vs-dlp">
+        <div class="ai-firewall-shell">
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">AI Firewall vs DLP</p><h2 id="ai-firewall-vs-dlp">مو بديل عن DLP — طبقة متخصصة تكمله</h2><p>DLP يغطي حركة البيانات عبر المؤسسة. AI Firewall يركز على معنى وسياق تفاعل AI. الاثنين ممكن يشتغلون مع بعض، وكل واحد له نطاقه.</p></div>
+          <div class="ai-firewall-table-wrap"><table class="ai-firewall-table ai-firewall-table--light"><thead><tr><th>المحور</th><th>AI Firewall</th><th>DLP</th></tr></thead><tbody>{firewallDlpRows.map(row => <tr>{row.map((cell, index) => index === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody></table></div>
+        </div>
+      </section>
+
+      <section class="ai-firewall-section" aria-labelledby="ai-firewall-alignment-title">
+        <div class="ai-firewall-shell ai-firewall-alignment"><div><p class="ai-firewall-eyebrow">جاهزية مسؤولة</p><h2 id="ai-firewall-alignment-title">يدعم تطبيق السياسات — ما يعطيك شهادة جاهزة</h2><p>تقدر تستخدم طبقة التحكم كجزء من تنفيذ متطلبات حماية البيانات والتسجيل وإدارة المخاطر المرتبطة بـ PDPL وNCA، ومع سياق مبادئ SDAIA. لكن مو كل بيئة مثل الثانية: لازم فريقك يراجع نطاق البيانات، الوجهات، النماذج، الصلاحيات، والاحتفاظ مع المستشار القانوني والجهة المختصة.</p></div><a class="ai-firewall-text-link" href="/assessment/ai-governance-readiness/">قيّم جاهزية الضوابط عندك <span aria-hidden="true">←</span></a></div>
+      </section>
+
+      <section class="ai-firewall-faq" aria-labelledby="ai-firewall-faq-title"><div class="ai-firewall-shell ai-firewall-shell--narrow"><p class="ai-firewall-eyebrow">أسئلة قبل الشراء</p><h2 id="ai-firewall-faq-title">وش يحتاج يعرفه فريق الأمن؟</h2><div class="ai-firewall-faq__list"><details><summary>هل AI Firewall يضمن منع التسريب أو كل prompt ضار؟</summary><p>لا. هو نقطة تحكم تقلل المخاطر ضمن الكاشفات والسياسات ونقطة التكامل المفعلة، ومو ضمان مثالي لمنع كل حادثة. ما يغني عن DLP، إدارة الهوية، اختبار النماذج، تدريب الموظفين، ومراقبة القنوات غير المغطاة.</p></details><details><summary>هل هو نفس جدار حماية الشبكة؟</summary><p>لا. جدار الشبكة يقرر حركة الاتصال، بينما AI Firewall يركز على تفاعل AI ومحتوى الطلب والبيانات والسياسة المرتبطة به.</p></details><details><summary>هل AI Firewall هو DLP؟</summary><p>مو بالضبط. DLP أوسع على مستوى المؤسسة، وAI Firewall طبقة متخصصة لمسار AI. استخدام الاثنين معاً يعطي تغطية أفضل من اعتبار أحدهما بديلاً عن الثاني.</p></details><details><summary>وش يصير إذا اكتشف بيانات حساسة؟</summary><p>حسب السياسة والإعداد: ممكن تنقية أو استبدال القيمة، حجب الطلب، أو رفعه للمراجعة. القرار الفعلي يعتمد على تكامل مؤسستك وقواعدها.</p></details><details><summary>هل يضمن الامتثال لـ PDPL أو NCA أو SDAIA؟</summary><p>لا. يساعد في تنفيذ وتوثيق بعض الضوابط التشغيلية، لكن الجاهزية أو الامتثال النهائي يعتمد على بيئتك وتفسير المتطلبات والضوابط الأخرى.</p></details></div></div></section>
+
+      <RelatedLinks relatedSlugs={solution.related} sectorSlugs={relSectors.map(s=>s.slug)} docs={solution.docs} blog={solution.blog} kernel={solution.kernel} />
+      <section class="ai-firewall-final" aria-labelledby="ai-firewall-final-title"><div class="ai-firewall-shell ai-firewall-final__inner"><p class="ai-firewall-eyebrow">الخطوة الجاية</p><h2 id="ai-firewall-final-title">اعرف وين تحتاج أول نقطة تحكم</h2><p>في جلسة مخصصة، نراجع حالة استخدام واحدة، نوع البيانات، الوجهة، ومسار القرار — ونطلع بنطاق ضوابط واقعي قابل للتنفيذ.</p><a class="ai-firewall-button ai-firewall-button--primary" href="/contact/" data-cta="ai_firewall_contact_click" data-cta-label="اطلب جلسة تصميم ضوابط" data-position="final" data-page-type="solution">اطلب جلسة تصميم ضوابط <span aria-hidden="true">←</span></a></div></section>
+    </main>
+  ) : isGovernancePlatform ? (
     <main class="governance-page">
       <section class="governance-hero" aria-labelledby="governance-title">
         <div class="governance-shell governance-hero__grid">
@@ -820,5 +934,131 @@ const governanceLinks = [
   @media (prefers-reduced-motion: reduce) {
     .governance-button { transition: none; }
     .governance-button:hover { transform: none; }
+  }
+
+  .ai-firewall-page { --fw-ink: #071316; --fw-ink-2: #0b2022; --fw-paper: #f4f7f1; --fw-soft: #e7eee7; --fw-line: rgba(109, 190, 174, .2); --fw-teal: #82e0c9; --fw-muted: #a6c1bd; --fw-red: #f28b7e; --fw-amber: #f1c16e; direction: rtl; color: var(--fw-paper); background: var(--fw-ink); }
+  .ai-firewall-shell { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+  .ai-firewall-shell--narrow { width: min(820px, calc(100% - 40px)); }
+  .ai-firewall-hero { position: relative; overflow: hidden; padding-block: clamp(58px, 9vw, 124px) clamp(54px, 8vw, 100px); background: radial-gradient(circle at 12% 12%, rgba(79, 201, 178, .25), transparent 28%), radial-gradient(circle at 85% 70%, rgba(20, 104, 111, .25), transparent 32%), linear-gradient(135deg, #061013, #0d2525 58%, #102d2c); }
+  .ai-firewall-hero::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .15; background-image: linear-gradient(rgba(130,224,201,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(130,224,201,.16) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(135deg, black, transparent 75%); }
+  .ai-firewall-hero__grid { position: relative; display: grid; gap: 52px; align-items: center; }
+  .ai-firewall-hero__copy { max-width: 690px; }
+  .ai-firewall-kicker, .ai-firewall-eyebrow { margin: 0 0 15px; color: var(--fw-teal); font: 800 .72rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .1em; text-transform: uppercase; }
+  .ai-firewall-kicker { display: inline-flex; align-items: center; gap: 9px; direction: ltr; }
+  .ai-firewall-kicker span { width: 8px; height: 8px; border-radius: 50%; background: var(--fw-teal); box-shadow: 0 0 0 5px rgba(130,224,201,.13); }
+  .ai-firewall-page h1 { max-width: 12ch; margin: 0; color: #f8fcf8; font-size: clamp(2.35rem, 6vw, 5.2rem); line-height: 1.06; letter-spacing: -.055em; text-wrap: balance; }
+  .ai-firewall-answer { max-width: 650px; margin: 27px 0 0; color: #d9eee8; font-size: clamp(1.05rem, 1.8vw, 1.3rem); line-height: 1.85; }
+  .ai-firewall-answer strong { color: var(--fw-teal); }
+  .ai-firewall-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .ai-firewall-button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 12px; padding: 12px 18px; border: 1px solid transparent; border-radius: 999px; font-weight: 800; text-decoration: none; transition: transform 420ms cubic-bezier(.32,.72,0,1), background-color 420ms cubic-bezier(.32,.72,0,1), border-color 420ms cubic-bezier(.32,.72,0,1); }
+  .ai-firewall-button:hover { transform: translateY(-2px); }
+  .ai-firewall-button:focus-visible, .ai-firewall-card:focus-visible, .ai-firewall-text-link:focus-visible, .ai-firewall-faq summary:focus-visible { outline: 3px solid var(--fw-teal); outline-offset: 4px; }
+  .ai-firewall-button--primary { color: #06241e; background: var(--fw-teal); }
+  .ai-firewall-button--primary:hover { background: #b2f2e1; }
+  .ai-firewall-button--secondary { color: #e3f1ed; border-color: var(--fw-line); background: rgba(255,255,255,.05); }
+  .ai-firewall-button--secondary:hover { border-color: rgba(130,224,201,.55); background: rgba(130,224,201,.1); }
+  .ai-firewall-microcopy { margin: 14px 0 0; color: #8eaaa5; font-size: .8rem; }
+  .ai-firewall-console { margin: 0; padding: 10px; background: rgba(3, 13, 15, .78); border: 1px solid rgba(130,224,201,.3); border-radius: 22px; box-shadow: 24px 28px 0 rgba(130,224,201,.06), 0 24px 90px rgba(0,0,0,.3); direction: ltr; }
+  .ai-firewall-console__bar { display: flex; justify-content: space-between; gap: 15px; padding: 10px 11px 15px; color: #71918c; font: 700 .61rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
+  .ai-firewall-console__bar i { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--fw-teal); }
+  .ai-firewall-console__bar b { color: var(--fw-teal); font-weight: 700; }
+  .ai-firewall-console__prompt, .ai-firewall-console__scan, .ai-firewall-console__decision { padding: 17px; border: 1px solid rgba(130,224,201,.13); background: linear-gradient(145deg, #102928, #0b1c1d); }
+  .ai-firewall-console__prompt { border-radius: 13px 13px 4px 4px; }
+  .ai-firewall-console small, .ai-firewall-console span { display: block; color: #71918c; font: 700 .62rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
+  .ai-firewall-console p { margin: 12px 0 0; color: #edf9f4; font: 600 .86rem/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ai-firewall-console em { color: var(--fw-amber); font-style: normal; }
+  .ai-firewall-console__scan { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; margin-top: 8px; border-radius: 4px; }
+  .ai-firewall-console__scan strong { color: var(--fw-amber); font: 700 .75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ai-firewall-console__scan b { grid-column: 1 / -1; color: #c1d5cf; font: 600 .7rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ai-firewall-console__decision { margin-top: 8px; border-radius: 4px 4px 13px 13px; }
+  .ai-firewall-console__decision strong { display: block; margin-top: 8px; color: var(--fw-teal); font: 800 1rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ai-firewall-console__decision small { margin-top: 8px; letter-spacing: 0; text-transform: none; }
+  .ai-firewall-console figcaption { margin-top: 11px; color: #75928d; font-size: .72rem; line-height: 1.7; text-align: right; direction: rtl; }
+  .ai-firewall-signal-strip { color: #a8c6c0; background: #0a1c1d; border-block: 1px solid rgba(130,224,201,.13); }
+  .ai-firewall-signal-strip .ai-firewall-shell { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; padding-block: 18px; font: 700 .7rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ai-firewall-signal-strip span { color: #6e8e89; }
+  .ai-firewall-signal-strip b { color: #d8eee8; font-weight: 700; }
+  .ai-firewall-section { padding-block: clamp(62px, 9vw, 116px); color: #102120; background: var(--fw-paper); }
+  .ai-firewall-section--dark { color: var(--fw-paper); background: #0b1d1e; }
+  .ai-firewall-section--soft { background: var(--fw-soft); }
+  .ai-firewall-section__heading { max-width: 820px; }
+  .ai-firewall-section h2, .ai-firewall-faq h2, .ai-firewall-final h2 { max-width: 820px; margin: 0; color: inherit; font-size: clamp(1.85rem, 3.8vw, 3.5rem); line-height: 1.16; letter-spacing: -.045em; text-wrap: balance; }
+  .ai-firewall-section__heading > p:last-child { max-width: 700px; margin: 18px 0 0; color: #58716d; line-height: 1.9; }
+  .ai-firewall-section--dark .ai-firewall-section__heading > p:last-child { color: var(--fw-muted); }
+  .ai-firewall-capability-grid { display: grid; gap: 12px; margin-top: 40px; }
+  .ai-firewall-card { min-height: 230px; padding: 22px; border: 1px solid rgba(28, 87, 79, .14); border-radius: 18px; background: rgba(255,255,255,.56); transition: transform 500ms cubic-bezier(.32,.72,0,1), border-color 500ms cubic-bezier(.32,.72,0,1), background-color 500ms cubic-bezier(.32,.72,0,1); }
+  .ai-firewall-card:hover { transform: translateY(-4px); border-color: rgba(31, 158, 133, .45); background: #fff; }
+  .ai-firewall-card__index { display: block; color: #a17454; font: 700 .7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ai-firewall-card__label { display: block; margin-top: 29px; color: #21816f; font: 700 .67rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
+  .ai-firewall-card h3, .ai-firewall-policy h3, .ai-firewall-before-after h3 { margin: 12px 0 0; color: inherit; font-size: 1.08rem; line-height: 1.5; }
+  .ai-firewall-card p, .ai-firewall-policy p, .ai-firewall-before-after p { margin: 9px 0 0; color: #5c7470; line-height: 1.8; }
+  .ai-firewall-flow { display: grid; gap: 1px; margin: 42px 0 0; padding: 0; list-style: none; border: 1px solid var(--fw-line); background: var(--fw-line); }
+  .ai-firewall-flow li { position: relative; min-height: 240px; padding: 22px; background: #102728; }
+  .ai-firewall-flow__number { display: block; color: #789a94; font: 700 .72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .ai-firewall-flow__label { display: block; margin-top: 36px; color: var(--fw-teal); font: 700 .68rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .1em; }
+  .ai-firewall-flow h3 { margin: 12px 0 0; color: #effaf6; font-size: 1.08rem; }
+  .ai-firewall-flow p { margin: 10px 0 0; color: #aac5bf; line-height: 1.8; }
+  .ai-firewall-flow__arrow { position: absolute; inset-inline-start: 18px; bottom: 20px; color: var(--fw-teal); font-size: 1.4rem; }
+  .ai-firewall-policy-grid { display: grid; gap: 12px; margin-top: 40px; }
+  .ai-firewall-policy { padding: 22px; border-radius: 18px; background: #f8fbf7; border: 1px solid rgba(28,87,79,.12); }
+  .ai-firewall-policy > span { display: inline-flex; padding: 5px 8px; border-radius: 999px; font: 800 .65rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
+  .ai-firewall-policy--teal > span { color: #13725e; background: rgba(58,190,157,.16); }
+  .ai-firewall-policy--red > span { color: #a23a35; background: rgba(242,139,126,.18); }
+  .ai-firewall-policy--amber > span { color: #8b5c13; background: rgba(241,193,110,.24); }
+  .ai-firewall-policy--blue > span { color: #2c5b8d; background: rgba(113,168,219,.18); }
+  .ai-firewall-policy p b { color: #193d39; }
+  .ai-firewall-before-after { display: grid; gap: 16px; margin-top: 42px; align-items: center; }
+  .ai-firewall-before-after article { padding: 26px; border-radius: 20px; border: 1px solid rgba(28,87,79,.14); background: rgba(255,255,255,.56); }
+  .ai-firewall-before-after article > span { color: #a17454; font: 800 .68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .1em; }
+  .ai-firewall-before-after article:last-child { border-color: rgba(31,158,133,.4); background: #fafff8; }
+  .ai-firewall-before-after article:last-child > span { color: #16856d; }
+  .ai-firewall-before-after > div { color: #16856d; font-size: 2rem; text-align: center; }
+  .ai-firewall-table-wrap { overflow-x: auto; margin-top: 40px; border: 1px solid var(--fw-line); border-radius: 18px; }
+  .ai-firewall-table { width: 100%; min-width: 660px; border-collapse: collapse; direction: rtl; text-align: right; }
+  .ai-firewall-table th, .ai-firewall-table td { padding: 17px 18px; border-block-end: 1px solid rgba(130,224,201,.13); vertical-align: top; line-height: 1.7; }
+  .ai-firewall-table thead th { color: var(--fw-teal); background: #102727; font: 700 .72rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
+  .ai-firewall-table tbody th { width: 20%; color: #dcefe9; background: #102727; font-size: .9rem; }
+  .ai-firewall-table tbody td { color: #b3cbc5; background: #0e2424; font-size: .9rem; }
+  .ai-firewall-table--light { border-color: rgba(28,87,79,.14); }
+  .ai-firewall-table--light thead th, .ai-firewall-table--light tbody th { color: #1b6659; background: #f7fbf5; }
+  .ai-firewall-table--light tbody th, .ai-firewall-table--light td { border-color: rgba(28,87,79,.14); }
+  .ai-firewall-table--light tbody td { color: #52706b; background: #fff; }
+  .ai-firewall-alignment { display: grid; gap: 26px; align-items: end; }
+  .ai-firewall-alignment p:not(.ai-firewall-eyebrow) { max-width: 740px; margin: 18px 0 0; color: #58716d; line-height: 1.95; }
+  .ai-firewall-text-link { display: inline-flex; gap: 8px; align-items: center; color: #147762; font-weight: 800; text-decoration: none; }
+  .ai-firewall-faq { padding-block: clamp(64px, 9vw, 110px); color: #102120; background: var(--fw-paper); }
+  .ai-firewall-faq__list { margin-top: 30px; border-top: 1px solid rgba(28,87,79,.2); }
+  .ai-firewall-faq details { border-bottom: 1px solid rgba(28,87,79,.2); }
+  .ai-firewall-faq summary { min-height: 58px; padding: 18px 0; color: #102120; cursor: pointer; font-weight: 800; line-height: 1.5; }
+  .ai-firewall-faq details p { max-width: 740px; margin: 0 0 20px; color: #58716d; line-height: 1.9; }
+  .ai-firewall-final { padding-block: 82px; color: #f0faf6; background: radial-gradient(circle at 82% 50%, rgba(130,224,201,.18), transparent 34%), #071718; }
+  .ai-firewall-final__inner { text-align: center; }
+  .ai-firewall-final h2 { margin-inline: auto; color: #f6fcf9; }
+  .ai-firewall-final p:not(.ai-firewall-eyebrow) { max-width: 650px; margin: 18px auto 30px; color: var(--fw-muted); line-height: 1.9; }
+  @media (min-width: 720px) {
+    .ai-firewall-shell { width: min(1180px, calc(100% - 72px)); }
+    .ai-firewall-shell--narrow { width: min(820px, calc(100% - 72px)); }
+    .ai-firewall-capability-grid, .ai-firewall-policy-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ai-firewall-before-after { grid-template-columns: 1fr auto 1fr; }
+    .ai-firewall-alignment { grid-template-columns: minmax(0, 1fr) auto; }
+  }
+  @media (min-width: 1080px) {
+    .ai-firewall-hero__grid { grid-template-columns: minmax(0, .94fr) minmax(420px, .76fr); gap: 82px; }
+    .ai-firewall-capability-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ai-firewall-policy-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ai-firewall-flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .ai-firewall-shell, .ai-firewall-shell--narrow { width: min(100% - 32px, 1180px); }
+    .ai-firewall-actions { align-items: stretch; flex-direction: column; }
+    .ai-firewall-button { width: 100%; }
+    .ai-firewall-console__bar { align-items: flex-start; flex-direction: column; }
+    .ai-firewall-signal-strip .ai-firewall-shell { gap: 10px 14px; }
+    .ai-firewall-flow li { min-height: 210px; }
+    .ai-firewall-table { min-width: 620px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ai-firewall-button, .ai-firewall-card { transition: none; }
+    .ai-firewall-button:hover, .ai-firewall-card:hover { transform: none; }
   }
 </style>

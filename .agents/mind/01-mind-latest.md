@@ -1,4 +1,22 @@
 ---
+### 2026-08-24 — AI-FIREWALL-COMMERCIAL-PAGE-002: تشديد حدود الـ schema والتحقق النهائي للصفحة — نجاح محلي بدون commit/push/deploy
+
+- **Follow-up**: بعد مراجعة الـ HTML المبني، اتضح أن JSON-LD كان يضم FAQ قديمًا من المحتوى المهاجر لصفحة AI Firewall، رغم أن الواجهة الجديدة أضيق وأكثر دقة. تم منع FAQ المهاجر لهذه الصفحة فقط، مع إبقاء FAQ المرئي المقيّد بالتنفيذ الحالي.
+- **Fix**: نُقل تعريف `isAiFirewall` قبل بناء `jsonLd` بعد ظهور `ReferenceError` في أول إعادة بناء؛ إعادة البناء اللاحقة مرّت بنجاح.
+- **Verification**: `node_modules/.bin/astro build` = **Complete**؛ `node scripts/sync-dist-flat.mjs` = **PASS**؛ contract test = **2/2**؛ built page: title/meta الجديدان، H1=1، noindex=0، FAQPage legacy=0، الادعاءات القديمة الحساسة=0؛ `seo-health-check` = **PASS**؛ hreflang = **260 sets / 0 errors**؛ internal links = **0 orphans / 0 broken / max depth 3**؛ `git diff --check` = **PASS**.
+- **Environment note**: `pnpm build` لم يُعاد تشغيله في الجولة الأخيرة لأن Corepack حاول تنزيل pnpm 10.19.0 من registry غير متاح؛ تم تشغيل Astro محليًا مباشرة من `node_modules`، ثم فُحصت خطوات المزامنة والصفحة المبنية. تحذيرات route-collision وVite/Prisma الموجودة في المشروع بقيت كما هي ولم تُعدّل.
+- **Status**: الصفحة جاهزة للمراجعة المحلية تحت `/solutions/ai-firewall/`؛ لا commit ولا push ولا deploy. الملفات الجديدة/المتأثرة الأساسية: `src/pages/solutions/[slug].astro`, `src/data/solutions.ts`, `scripts/ai-firewall-commercial-page.test.mjs`, وملفات التصميم/الخطة.
+
+### 2026-08-23 — AI-FIREWALL-COMMERCIAL-PAGE-001: بناء صفحة تجارية مخصصة لـ AI Firewall كطبقة تحكم أمنية للذكاء الاصطناعي — تحقق محلي ناجح بدون commit/push/deploy
+
+- **Scope**: إعادة بناء واجهة `/solutions/ai-firewall/` داخل الفرع المخصص في `src/pages/solutions/[slug].astro` بدل القالب التجاري العام، مع محتوى B2B سعودي عامي يشرح ما يُفحص وما يمكن تنقيته أو حجبه أو رفعه للمراجعة وما يُسجّل، بدون ادعاء منع مثالي أو تغطية كل النماذج/القنوات.
+- **Content truth boundary**: الصفحة تصف prompts، responses، PII/أنماط البيانات الحساسة المدعومة، قرارات policy، destinations/models كسطح تحكم يعتمد على التكامل والسياسة، وسياق evidence غير الحساس. أضيفت مقارنة `AI Firewall vs traditional firewall` ومقارنة `AI Firewall vs DLP` بصياغة تكاملية. PDPL/NCA/SDAIA مذكورة كدعم للتطبيق والمواءمة فقط، مع تنبيه أن الجاهزية/الامتثال النهائي مسؤولية المؤسسة وتقييمها.
+- **UX/design**: اتجاه `industrial security console` مع hero مباشر يبدأ بـ «وش هو AI Firewall؟»، لوحة prompt→inspection→decision→evidence، capability cards، flow diagram بأربع مراحل، policy cards لحالات REDACT/BLOCK/FLAG/LOG، before/after scenario، جدولَي المقارنة، FAQ مرئي وCTA عالي النية. RTL، mobile-first، حالات focus، reduced-motion، بدون client JavaScript أو dependency جديدة.
+- **SEO/AEO**: تحديث title/H1/meta في `src/data/solutions.ts` لإزالة ادعاء التوافق المباشر مع NCA ECC وإدخال AI security/LLM security/data leakage prevention بشكل طبيعي. الصفحة المبنية فيها H1 واحد، direct answer، المقارنتان، CTA، canonical ذاتي، ولا `noindex`.
+- **Files**: `src/pages/solutions/[slug].astro`, `src/data/solutions.ts`, `scripts/ai-firewall-commercial-page.test.mjs`, `docs/superpowers/specs/2026-08-23-ai-firewall-commercial-page-design.md`, `docs/superpowers/plans/2026-08-23-ai-firewall-commercial-page.md`، و`01-mind-latest.md`.
+- **Verification**: contract test = **2/2**؛ `pnpm build` = **Complete** (مع route-collision warnings قديمة وVite warnings الموثقة سابقاً)؛ `pnpm seo:check` = PASS (259 sitemap URLs، 276 HTML، H1/canonical/title/description checks)؛ `pnpm seo:hreflang` = PASS **260 sets / 0 errors**؛ `pnpm internal-links:audit` = PASS **0 orphans / 0 broken / max depth 3**؛ built HTML inspection = **H1 1، direct answer 1، canonical صحيح، noindex 0**؛ `git -c core.fsmonitor=false diff --check` = PASS.
+- **Notes**: build حدّث ملفات sitemap وschema الموجودة في working tree، وبعضها يعكس تعديلات مؤسس/عنوان سابقة؛ لم تُسترجع أو تُحذف حفاظاً على شغل المستخدم. لا commit ولا push ولا deploy.
+
 ### 2026-08-23 — SDAIA-AI-RISK-GUIDE-001: إضافة دليل تنظيمي سعودي مستقل لإطار سدايا الوطني لإدارة مخاطر الذكاء الاصطناعي — تحقق محلي بدون commit/push/deploy
 
 - **Scope**: أُضيفت صفحة مرجعية ثابتة تحت `/hub/sdaia-ai-risk-management/` مع مكوّن `src/components/hub/SdaiaAiRiskManagementGuide.astro`، وربطها بمسار hub الديناميكي وفهرس `/hub/`. لا dependency أو client JavaScript أو deploy أو commit أو push.

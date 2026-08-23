@@ -22,9 +22,10 @@
       "founder": {
         "@type": "Person",
         "@id": "https://brightai.site/#founder",
-        "name": "يزيد الشريف",
+        "name": "يزيد البديوي",
         "givenName": "يزيد",
-        "familyName": "الشريف",
+        "familyName": "البديوي",
+        "nameEn": "Yazeed Albadawy",
         "jobTitle": "المؤسس والمدير التنفيذي",
         "worksFor": { "@id": "https://brightai.site/#organization" },
         "address": {
@@ -38,10 +39,9 @@
       },
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+        "streetAddress": "رويغب الفيحاء",
         "addressLocality": "الرياض",
         "addressRegion": "منطقة الرياض",
-        "postalCode": "14254",
         "addressCountry": "SA"
       },
       "contactPoint": [
@@ -121,10 +121,9 @@
       "priceRange": "$$$",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+        "streetAddress": "رويغب الفيحاء",
         "addressLocality": "الرياض",
         "addressRegion": "منطقة الرياض",
-        "postalCode": "14254",
         "addressCountry": "SA"
       },
       "geo": {

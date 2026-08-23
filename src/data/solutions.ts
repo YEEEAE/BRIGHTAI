@@ -214,9 +214,9 @@ export const solutions: SolutionData[] = [
   },
   {
     slug:'ai-firewall', href:'/solutions/ai-firewall/',
-    title:'AI Firewall: حماية بيانات الشركات من التسريب',
-    h1:'AI Firewall لحماية البيانات الحساسة قبل وصولها للنماذج',
-    description:'AI Firewall للشركات السعودية — يفحص مدخلات ومخرجات LLM ويمنع تسريب البيانات الحساسة متوافقاً مع NCA ECC. احجز ديمو حي لتجربة الحماية على بيئة شركتك اليوم.',
+    title:'AI Firewall لأمن LLM وحماية بيانات المؤسسات | BrightAI',
+    h1:'AI Firewall للتحكم في أمن الذكاء الاصطناعي وتسريب البيانات',
+    description:'طبقة تحكم لأمن LLM والذكاء الاصطناعي تفحص التفاعلات، تكتشف البيانات الحساسة، وتطبق قرارات السماح أو التنقية أو الحجب أو المراجعة حسب سياسات مؤسستك.',
     canonical:`${S}/solutions/ai-firewall/`,
     icon:'mdi:shield-half-full', chip:'حماية البيانات',
     shortDesc:'يفحص كل طلب AI ويخفي البيانات الشخصية والحساسة قبل وصولها للنموذج. حماية في الزمن الفعلي.',
@@ -349,7 +349,7 @@ export const sectors: SectorData[] = [
         // Riyadh banking. Names the city, sector, SAMA + NCA regulators,
         // and the audit-trail problem. NO claim of an office, client, or
         // partnership in Riyadh. SAB honesty: Riyadh IS the company HQ
-        // (حي الفيحاء, 14254) so the LocalBusiness schema stays valid.
+        // (رويغب الفيحاء، الرياض) so the LocalBusiness schema stays valid.
         answerFirst:'حوكمة AI في البنوك والمؤسسات المالية بالرياض، حيث تتركز قرارات الائتمان والـ AML في مقار كبرى البنوك، مع ضرورة إثبات كل استخدام ذكاء اصطناعي أمام ساما وهيئة الأمن السيبراني وقت التدقيق. أداة تشغيلية موصولة بضوابط NCA ECC وملف أدلة موقّع رقمياً.',
       },
       {

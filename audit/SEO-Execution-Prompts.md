@@ -619,7 +619,7 @@ Cannibalization:
 - Review /answer/iso-42001/ against the main guide and assign one canonical owner.
 
 Do not push.
-- [ ] ✅ Prompt #13 — done & reviewed
+- [✅ ]  Prompt #13 — done & reviewed
 
 # Prompt #14 — Rebuild the PDPL + AI compliance cluster
 

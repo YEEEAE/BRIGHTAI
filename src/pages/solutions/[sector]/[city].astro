@@ -52,8 +52,8 @@ const whatsappMsg = encodeURIComponent(`مرحباً، أريد استفسار �
 // page-specific LocalBusiness node here to avoid duplicate @id warnings
 // (verified via scripts/_check-duplicate-schema-ids.mjs).
 // BAI-SEO-003-S6 (2026-07-18): SAB honesty — LocalBusiness type is only
-// valid for Riyadh (the actual company HQ, 6913 المبارك بن فضالة، حي
-// الفيحاء، 14254). For the other 5 cities (khobar, dammam, jeddah,
+// valid for Riyadh (the actual company HQ, رويغب الفيحاء، الرياض —
+// unified founder address 2026-08-23). For the other 5 cities (khobar, dammam, jeddah,
 // mecca, madinah) we emit ProfessionalService + Service — service-area
 // business pattern. We keep geo + serviceArea on all cities (factual
 // reach) but only Riyadh carries a `address` block, and its address is
@@ -74,10 +74,9 @@ const jsonLd = {
       ...(isHQ ? {
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+          "streetAddress": "رويغب الفيحاء",
           "addressLocality": "الرياض",
           "addressRegion": "منطقة الرياض",
-          "postalCode": "14254",
           "addressCountry": "SA"
         }
       } : {}),

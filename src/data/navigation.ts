@@ -163,7 +163,7 @@ export const FOOTER_NAV = {
     label: 'Team',
     labelAr: 'الفريق',
     items: [
-      { label: 'Yazeed AlShareef', labelAr: 'يزيد الشريف', href: '/authors/yazeed-alshareef/' },
+      { label: 'Yazeed Albadawy', labelAr: 'يزيد البديوي', href: '/authors/yazeed-alshareef/' },
       { label: 'Compliance Officer', labelAr: 'موظف الامتثال', href: '/authors/compliance-officer/' },
       { label: 'BrightAI Team', labelAr: 'فريق BrightAI', href: '/authors/brightai-team/' },
     ],

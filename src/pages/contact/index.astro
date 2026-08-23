@@ -46,8 +46,8 @@ const contactMethods = [
     icon: 'mdi-map-marker',
     iconColor: 'var(--indigo-300)',  /* approximation of original violet — ΔR=2 ΔG=-7 ΔB=-2 — imperceptible per design rule */
     title: 'المقر',
-    body: 'شركة سعودية 100%، مقرنا في الرياض.',
-    value: 'الرياض، المملكة العربية السعودية',
+    body: 'شركة سعودية 100%، مقرنا في الرياض — رويغب الفيحاء.',
+    value: 'الرياض — رويغب الفيحاء، المملكة العربية السعودية',
   },
 ];
 
@@ -99,7 +99,7 @@ const jsonLd = {
         name: 'BrightAI',
         telephone: '+966538229013',
         email: 'yazeed1job@gmail.com',
-        address: { '@type': 'PostalAddress', addressLocality: 'الرياض', addressCountry: 'SA' },
+        address: { '@type': 'PostalAddress', streetAddress: 'رويغب الفيحاء', addressLocality: 'الرياض', addressCountry: 'SA' },
         url: 'https://brightai.site',
       },
     },

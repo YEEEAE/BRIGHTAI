@@ -65,7 +65,7 @@ export const ORGANIZATION = {
   founder: {
     '@type': 'Person',
     '@id': 'https://brightai.site/#founder',
-    name: 'يزيد',
+    name: 'يزيد البديوي',
     jobTitle: 'المؤسس والمدير التنفيذي',
     worksFor: { '@id': 'https://brightai.site/#organization' },
     address: {
