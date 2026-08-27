@@ -20,6 +20,22 @@ import type { Role } from './types';
 const DEFAULT_PASSWORD = process.env.ADMIN_DEFAULT_PASSWORD || 'admin123';
 const IS_DEFAULT_PASSWORD = DEFAULT_PASSWORD === 'admin123';
 
+/**
+ * Freshly seeded pilot accounts boot with a shared, operator-chosen password —
+ * that is exactly the credential an outsider must not keep using, so seeded
+ * accounts are flagged must_change_password = 1 and every first login is
+ * forced through the password-change flow.
+ *
+ * The ONLY exception is the explicit E2E/fixture opt-out below: the acceptance
+ * runner (and suites run against disposable fixture databases) set
+ * QC_SEED_MUST_CHANGE_PASSWORD=0 so hundreds of existing scenarios can keep
+ * signing in with the seeded fixtures. NEVER set it on a real deployment —
+ * the enforced default (unset / any other value) is what production gets.
+ */
+function seedMustChangePassword(): number {
+  return process.env.QC_SEED_MUST_CHANGE_PASSWORD === '0' ? 0 : 1;
+}
+
 function assertSafeSeedPassword(): void {
   if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_DEFAULT_PASSWORD) {
     throw new Error(
@@ -83,9 +99,10 @@ export function seedUsersIfEmpty(db: BetterSqliteDatabase): number {
   assertSafeSeedPassword();
 
   const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
+  const mustChange = seedMustChangePassword();
   const insert = db.prepare(
-    `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
-     VALUES (@username, @password_hash, @full_name, @role, @department, @can_create_tasks, @is_active)`,
+    `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active, must_change_password)
+     VALUES (@username, @password_hash, @full_name, @role, @department, @can_create_tasks, @is_active, @must_change_password)`,
   );
   const insertAll = db.transaction(() => {
     for (const u of SEED_USERS) {
@@ -97,12 +114,18 @@ export function seedUsersIfEmpty(db: BetterSqliteDatabase): number {
         department: 'QC',
         can_create_tasks: u.can_create_tasks,
         is_active: 1,
+        must_change_password: mustChange,
       });
     }
   });
   insertAll();
 
   console.warn(`[seed] seeded ${SEED_USERS.length} accounts (admin, manager, supervisor, employee).`);
+  if (mustChange) {
+    console.warn('[seed] every seeded account is flagged must_change_password — first login is forced through the password-change flow.');
+  } else {
+    console.warn('[seed] ⚠️  QC_SEED_MUST_CHANGE_PASSWORD=0 — seeded accounts are NOT flagged (E2E fixture mode only).');
+  }
   if (IS_DEFAULT_PASSWORD) {
     console.warn(
       '[seed] ⚠️  ADMIN_DEFAULT_PASSWORD is not set — every seeded account uses the default "admin123".',
@@ -179,12 +202,13 @@ export function seedDemoData(db: BetterSqliteDatabase): number {
   }
 
   const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
+  const mustChange = seedMustChangePassword();
   const insUser = db.prepare(
-    `INSERT OR IGNORE INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
-     VALUES (?, ?, ?, 'employee', 'QC', ?, 1)`,
+    `INSERT OR IGNORE INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active, must_change_password)
+     VALUES (?, ?, ?, 'employee', 'QC', ?, 1, ?)`,
   );
-  insUser.run('emp_sara', hash, 'Sara Alharbi', 1);
-  insUser.run('emp_omar', hash, 'Omar Alqahtani', 0);
+  insUser.run('emp_sara', hash, 'Sara Alharbi', 1, mustChange);
+  insUser.run('emp_omar', hash, 'Omar Alqahtani', 0, mustChange);
 
   const userId = (username: string): number => {
     const row = db.prepare('SELECT id FROM users WHERE username = ?').get(username) as

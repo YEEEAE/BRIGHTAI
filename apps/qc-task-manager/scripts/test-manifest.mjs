@@ -22,6 +22,7 @@ export const TEST_SCRIPT_CLASSIFICATIONS = new Map([
 
 export const CANONICAL_TEST_SCRIPTS = [
   'test:migrations',
+  'test:auth-password-lifecycle',
   'test:embedded-migration-parity',
   'test:route-manifest',
   'test:domain',

@@ -3,7 +3,10 @@
 // Verifies against a LIVE server sharing the same SQLite DB (QC_DATABASE_PATH):
 //   1. Admin-only access + the full column set (incl. Last login).
 //   2. Create user with a department (defaults to QC when blank).
-//   3. New users can sign in immediately (inserted straight into SQLite).
+//   3. New users can sign in immediately; they land on the forced
+//      password-change flow (/account/security) because an admin-set
+//      temporary password flags must_change_password (lifecycle detail is
+//      covered by scripts/e2e-auth-password-flow.mjs).
 //   4. Duplicate username → safe user-friendly flash error.
 //   5. Password shorter than 8 chars → rejected.
 //   6. Edit user: full name / role / department / can_create_tasks / is_active.
@@ -12,11 +15,15 @@
 //   9. Username is immutable (no update path; survives edits untouched).
 //  10. Password hashes never appear in the page HTML.
 //  11. Zod server-side validation on create / edit / reset-password forms.
-//  12. Reset password lets the user sign in with the new password.
+//  12. Reset password lets the user sign in with the new password and
+//      re-enables must_change_password (forced change on next login).
 //
 // Usage: run against the built server:
-//   pnpm build && PORT=4398 QC_DATABASE_PATH=<tmp.db> node dist/server/entry.mjs
+//   pnpm build && PORT=4398 QC_DATABASE_PATH=<tmp.db> QC_SEED_MUST_CHANGE_PASSWORD=0 node dist/server/entry.mjs
 //   QC_DATABASE_PATH=<tmp.db> node scripts/e2e-admin-users.mjs
+// QC_SEED_MUST_CHANGE_PASSWORD=0 is the documented E2E fixture opt-out of the
+// seeded first-login flag (never set it on a real deployment); this suite
+// exercises the flag itself explicitly in scenarios 3 and 12.
 
 import { chromium } from 'playwright';
 import Database from 'better-sqlite3';
@@ -165,14 +172,21 @@ try {
   if (qcUser) testUsers.push(qcUser.id);
   ok(qcUser.department === 'QC', `2e. blank department defaults to QC (got "${qcUser.department}")`);
 
-  // The new user signs in immediately (no admin approval step).
+  // The new user signs in immediately (no admin approval step). Because the
+  // password was chosen by an ADMIN, the first login is forced through the
+  // password-change flow (must_change_password = 1 at creation).
   const fresh = await browser.newContext();
   const nLogin = await login(fresh, 'e2e_emp', 'pass12345', '/employee');
   ok(
-    nLogin.status === 302 && nLogin.location === '/employee',
-    `3. new user logs in immediately → /employee (got ${nLogin.status} ${nLogin.location})`,
+    nLogin.status === 302 && nLogin.location === '/account/security',
+    `3. new user logs in immediately → forced /account/security (got ${nLogin.status} ${nLogin.location})`,
   );
+  ok(Number(userByName('e2e_emp').must_change_password) === 1, '3b. created user is flagged must_change_password=1');
   await fresh.close();
+  // The dedicated lifecycle suite covers the forced flow itself; clear the
+  // flag here so the following user-management scenarios keep their existing
+  // redirect expectations.
+  db.prepare('UPDATE users SET must_change_password = 0 WHERE username = ?').run('e2e_emp');
 
   // ─────────────── 4 + 5. Duplicate username + short password ───────────────
   console.log('── 4/5. Duplicate username + password min length ──');
@@ -390,10 +404,12 @@ try {
   const rCtx = await browser.newContext();
   const rLogin = await login(rCtx, 'e2e_emp', 'brandnew99', '/employee');
   ok(
-    rLogin.status === 302 && rLogin.location === '/employee',
-    `12. user signs in with the reset password (got ${rLogin.status} ${rLogin.location})`,
+    rLogin.status === 302 && rLogin.location === '/account/security',
+    `12. user signs in with the reset password → forced /account/security (got ${rLogin.status} ${rLogin.location})`,
   );
+  ok(Number(userByName('e2e_emp').must_change_password) === 1, '12b. admin reset re-enabled must_change_password=1');
   await rCtx.close();
+  db.prepare('UPDATE users SET must_change_password = 0 WHERE username = ?').run('e2e_emp');
 
   // ─────────────── Regression: toggle_create still works ───────────────
   console.log('── Regression: toggle_create ──');

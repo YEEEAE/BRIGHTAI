@@ -9,13 +9,18 @@
 //      every attempt is audited in login_attempts.
 //   D. Lock expiry (simulated) → login works again with a fresh counter.
 //   E. Successful login resets the failure counter.
-//   F. Admin password reset clears the lock (sanctioned unblock).
+//   F. Admin password reset clears the lock (sanctioned unblock) and
+//      re-flags must_change_password — the next login is forced through
+//      /account/security (full lifecycle coverage: e2e-auth-password-flow).
 //   G. Admin reactivation clears the lock.
 //   H. Deactivated account → generic failure (no counter bumps).
 //   I. Anonymous request to a protected route → 302 to /login?redirect=…
 //
 // Usage: QC_DB_PATH=<app>/db/e2e_auth.db node scripts/e2e-auth-lockout.mjs
-// (run against the built server: pnpm build && node dist/server/entry.mjs)
+// (run against the built server: pnpm build && QC_SEED_MUST_CHANGE_PASSWORD=0 node dist/server/entry.mjs)
+// QC_SEED_MUST_CHANGE_PASSWORD=0 is the documented E2E fixture opt-out of the
+// seeded first-login flag (never set it on a real deployment); this suite
+// asserts the post-reset flag in scenario F.
 
 import { chromium } from 'playwright';
 import Database from 'better-sqlite3';
@@ -237,13 +242,19 @@ try {
   ok(fReset.status() === 302, `F. admin reset_password → redirect (got ${fReset.status()})`);
   const fUser = userByName('employee');
   ok(!fUser.locked_until && Number(fUser.failed_login_attempts) === 0, 'F. lock + counter cleared after reset');
+  ok(Number(fUser.must_change_password) === 1, 'F. admin reset re-enabled must_change_password=1');
+  // The reset password is temporary: the first login lands on the forced
+  // password-change flow instead of the requested role home.
   const fLogin = await postLogin('employee', 'newpass123', '/employee');
-  ok(fLogin.status === 302 && fLogin.location === '/employee', `F. employee logs in with the new password (got ${fLogin.status} ${fLogin.location})`);
+  ok(fLogin.status === 302 && fLogin.location === '/account/security', `F. employee login after reset → forced /account/security (got ${fLogin.status} ${fLogin.location})`);
   await ctx.request.post(`${BASE}/logout`, {
     form: {},
     headers: CSRF_HEADERS,
     maxRedirects: 0,
   });
+  // The dedicated lifecycle suite covers the forced flow itself; clear the
+  // flag here so scenarios G/H keep their existing redirect expectations.
+  db.prepare('UPDATE users SET must_change_password = 0 WHERE username = ?').run('employee');
 
   // ─────────────── G. Reactivation clears the lock ───────────────
   console.log('── Scenario G: reactivation unblocks the account ──');

@@ -38,6 +38,10 @@ CREATE TABLE IF NOT EXISTS users (
   created_at            TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at            TEXT NOT NULL DEFAULT (datetime('now'))
   ,skills_json          TEXT
+  -- First-login password lifecycle (migration 036): 1 = the current password
+  -- was set by an admin/seeder and must be changed before the app is usable.
+  ,must_change_password INTEGER NOT NULL DEFAULT 0 CHECK (must_change_password IN (0, 1))
+  ,password_changed_at  TEXT
 );
 
 -- ────────────────────────────── 2. tasks ──────────────────────────────

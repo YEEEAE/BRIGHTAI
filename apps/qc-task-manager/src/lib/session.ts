@@ -12,9 +12,11 @@ import {
   verifyCredentials,
 } from './auth';
 import { cleanupExpiredSessions } from './db';
+import { changeOwnPassword } from './auth';
 import { setFlash } from './flash';
+import { roleHome } from './permissions';
 import { safeRedirectTarget } from './redirect';
-import { parseFormData, loginInputSchema } from './validation';
+import { parseFormData, loginInputSchema, passwordChangeSchema } from './validation';
 import type { SessionData, User } from './types';
 
 /** Secure cookies follow the actual request scheme, not the build mode.
@@ -122,6 +124,55 @@ export async function handleLoginPost(context: LoginContext): Promise<Response> 
     path: '/',
     maxAge: Math.round(SESSION_TTL_MS / 1000),
   });
+
+  // First-login password lifecycle: an account whose current password was set
+  // by an admin/seeder is sent straight to the password-change flow instead of
+  // its normal destination. The middleware gate keeps the rest of the app
+  // unreachable for this session until the change completes.
+  if (user.must_change_password) {
+    setFlash(context, 'info', 'For security, set your own password before continuing.');
+    return context.redirect('/account/security');
+  }
+
   setFlash(context, 'success', `Welcome back, ${user.full_name}.`);
   return context.redirect(safeTarget);
+}
+
+/**
+ * Handle the self-submitted POST /account/security form (self-service password
+ * change). Requires an authenticated session; the middleware runs the same
+ * CSRF gate used by the other form endpoints before dispatching here.
+ *
+ * On success the current session SURVIVES (requirement: keep the session or
+ * replace it safely — the existing implementation keeps the opaque token) and
+ * every OTHER session for the user is destroyed inside changeOwnPassword.
+ * Password values are never logged; flash/redirect targets carry no secrets.
+ */
+export async function handlePasswordChangePost(context: APIContext): Promise<Response> {
+  const session = readSession(context);
+  if (!session) {
+    return context.redirect('/login?redirect=%2Faccount%2Fsecurity');
+  }
+
+  const form = await context.request.formData();
+  const parsed = parseFormData(passwordChangeSchema, form);
+  if (!parsed.ok) {
+    setFlash(context, 'error', parsed.error);
+    return context.redirect('/account/security');
+  }
+
+  const token = context.cookies.get(COOKIE_NAME)?.value;
+  const result = changeOwnPassword(
+    session.userId,
+    parsed.data.currentPassword,
+    parsed.data.newPassword,
+    token,
+  );
+  if (!result.ok) {
+    setFlash(context, 'error', result.error);
+    return context.redirect('/account/security');
+  }
+
+  setFlash(context, 'success', 'Password updated. All other sessions were signed out.');
+  return context.redirect(roleHome(session.role));
 }

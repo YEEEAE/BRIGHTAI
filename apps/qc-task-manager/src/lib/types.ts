@@ -41,6 +41,10 @@ export interface User {
   department: string;
   can_create_tasks: boolean;
   is_active: boolean;
+  /** 1 = the current password was set by an admin/seeder and must be changed before the app is usable. */
+  must_change_password: boolean;
+  /** Timestamp of the last user-completed password change; null until then. */
+  password_changed_at: string | null;
   created_at: string;
 }
 
@@ -185,6 +189,12 @@ export interface SessionData {
   username: string;
   role: Role;
   fullName: string;
+  /**
+   * Derived from the live user row on every request (never stored in the
+   * session): when true the middleware restricts this session to the
+   * password-change flow and logout.
+   */
+  mustChangePassword: boolean;
 }
 
 // ─────────────────────── QC Laboratory (lab_* tables) ───────────────────────

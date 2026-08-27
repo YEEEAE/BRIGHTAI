@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { DB_PATH, BACKUP_DIR, getDb } from './db';
 import { getBackupStatus, listBackups } from './backup';
 import { verifyAllAuditChains } from './audit/qcChain';
+import { getAiProviderHealth } from './ai/health';
 
 const DEFAULT_DISK_WARNING_RATIO = 0.8;
 export type DiskHealth = { availableBytes: number | null; capacityBytes: number | null; usedBytes: number | null; appBytes: number; warning: boolean; configuredCapacityBytes: number | null };
@@ -46,5 +47,5 @@ export function getSystemHealth() {
   const backupStatus = getBackupStatus(BACKUP_DIR);
   const backups = listBackups(BACKUP_DIR);
   const audit = verifyAllAuditChains(db);
-  return { identity: applicationIdentity(), dbPath: safeDatabasePath(DB_PATH), dbSize: fileSize(DB_PATH), walSize: fileSize(`${DB_PATH}-wal`), schemaVersion: Number(schema.version), latestMigration: migration ?? null, migrationFailureCount: Number(failures.count), foreignKeys: { enabled: Number(db.pragma('foreign_keys', { simple: true })) === 1, violations: foreignKeyViolations }, integrity: { status: integrity === 'ok' ? 'PASS' : 'FAIL', result: integrity }, backup: { status: backupStatus, latest: backups[0] ?? null }, audit, disk: getDiskHealth() };
+  return { identity: applicationIdentity(), dbPath: safeDatabasePath(DB_PATH), dbSize: fileSize(DB_PATH), walSize: fileSize(`${DB_PATH}-wal`), schemaVersion: Number(schema.version), latestMigration: migration ?? null, migrationFailureCount: Number(failures.count), foreignKeys: { enabled: Number(db.pragma('foreign_keys', { simple: true })) === 1, violations: foreignKeyViolations }, integrity: { status: integrity === 'ok' ? 'PASS' : 'FAIL', result: integrity }, backup: { status: backupStatus, latest: backups[0] ?? null }, audit, disk: getDiskHealth(), ai: getAiProviderHealth() };
 }

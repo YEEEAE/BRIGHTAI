@@ -19,6 +19,7 @@
     "db:backup": "node --experimental-strip-types scripts/backup-db.mjs",
     "db:restore": "node --experimental-strip-types scripts/restore-db.mjs",
     "test:migrations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-migrations.mjs",
+    "test:auth-password-lifecycle": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-auth-password-lifecycle.mjs",
     "test:embedded-migration-parity": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-embedded-migration-parity.mjs",
     "test:route-manifest": "node scripts/route-manifest.mjs --check",
     "test:manifest": "node scripts/test-manifest-guard.mjs",

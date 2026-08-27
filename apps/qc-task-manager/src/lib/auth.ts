@@ -8,6 +8,7 @@
 import bcrypt from 'bcryptjs';
 import { randomBytes } from 'node:crypto';
 import { getDb, toBool } from './db';
+import { passwordResetSchema } from './validation';
 import type { Role, SessionData, User } from './types';
 
 const COOKIE_NAME = 'qc_session';
@@ -33,6 +34,8 @@ function rowToUser(row: Record<string, unknown>): User {
     department: String(row.department),
     can_create_tasks: toBool(Number(row.can_create_tasks)),
     is_active: toBool(Number(row.is_active)),
+    must_change_password: toBool(Number(row.must_change_password ?? 0)),
+    password_changed_at: row.password_changed_at == null ? null : String(row.password_changed_at),
     created_at: String(row.created_at),
   };
 }
@@ -208,6 +211,63 @@ export function verifyPasswordForUser(userId: number, password: string): boolean
   return bcrypt.compareSync(password, row.password_hash);
 }
 
+/** Result of a self-service password change. Errors are user-facing messages
+ * that never echo the password values or the stored hash. */
+export type ChangePasswordResult = { ok: true } | { ok: false; error: string };
+
+/**
+ * Self-service password change (account security page + forced first-login
+ * flow). Verifies the CURRENT password, validates the new password against the
+ * existing policy (passwordResetSchema), clears must_change_password, stamps
+ * password_changed_at, and invalidates every OTHER session for the user —
+ * the session that performed the change stays valid (it is re-issued never;
+ * the existing opaque token simply survives, per the current session model).
+ *
+ * Nothing about the passwords or hashes is ever logged.
+ */
+export function changeOwnPassword(
+  userId: number,
+  currentPassword: string,
+  newPassword: string,
+  currentToken: string | null | undefined,
+): ChangePasswordResult {
+  const validation = passwordResetSchema.safeParse({ newPassword });
+  if (!validation.success) {
+    return { ok: false, error: validation.error.issues[0]?.message ?? 'Invalid password.' };
+  }
+
+  const db = getDb();
+  const row = db
+    .prepare('SELECT password_hash FROM users WHERE id = ?')
+    .get(userId) as { password_hash?: unknown } | undefined;
+  // Unknown id: run the dummy compare so timing does not reveal it, then fail
+  // with the same message as a wrong current password (no enumeration).
+  if (!row || typeof row.password_hash !== 'string' || row.password_hash.length === 0) {
+    bcrypt.compareSync(currentPassword, DUMMY_PASSWORD_HASH);
+    return { ok: false, error: 'Current password is incorrect.' };
+  }
+  if (!bcrypt.compareSync(currentPassword, row.password_hash)) {
+    return { ok: false, error: 'Current password is incorrect.' };
+  }
+
+  const hash = bcrypt.hashSync(newPassword, 10);
+  const now = new Date().toISOString();
+  const apply = db.transaction(() => {
+    db.prepare(
+      `UPDATE users SET password_hash = ?, must_change_password = 0, password_changed_at = ?, updated_at = ?
+       WHERE id = ?`,
+    ).run(hash, now, now, userId);
+    // Requirement: every OTHER session for this user dies immediately; the
+    // current one keeps the user signed in so the flow ends without a re-login.
+    db.prepare('DELETE FROM sessions WHERE user_id = ? AND token != ?').run(
+      userId,
+      currentToken ?? '',
+    );
+  });
+  apply();
+  return { ok: true };
+}
+
 /** Create a session row and return the opaque token to store in the cookie. */
 export function createSession(user: User): string {
   const db = getDb();
@@ -228,7 +288,7 @@ export function getSession(token: string | null | undefined): SessionData | null
     .prepare(
       `SELECT s.expires_at AS expires_at,
               u.id AS user_id, u.username AS username, u.role AS role, u.full_name AS full_name,
-              u.is_active AS is_active
+              u.is_active AS is_active, u.must_change_password AS must_change_password
        FROM sessions s
        JOIN users u ON u.id = s.user_id
        WHERE s.token = ?`,
@@ -241,6 +301,7 @@ export function getSession(token: string | null | undefined): SessionData | null
         role: Role;
         full_name: string;
         is_active: number;
+        must_change_password: number;
       }
     | undefined;
   if (!row) return null;
@@ -261,6 +322,7 @@ export function getSession(token: string | null | undefined): SessionData | null
     username: row.username,
     role: row.role,
     fullName: row.full_name,
+    mustChangePassword: toBool(Number(row.must_change_password)),
   };
 }
 

@@ -1,0 +1,104 @@
+---
+// Account security (authenticated, every role). Self-service password change.
+//
+// GET renders the form; POST /account/security is handled by src/middleware.ts
+// (same short-circuit pattern as POST /login — Astro 6 pages have no named
+// request handlers). The middleware's first-login gate leaves this page and
+// /logout as the ONLY reachable routes while must_change_password is set, so
+// this page doubles as the forced first-login destination.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUserById } from '../../lib/auth';
+import { MIN_PASSWORD_LENGTH } from '../../lib/task-policy';
+
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect('/login?redirect=%2Faccount%2Fsecurity');
+}
+
+const account = getUserById(user.userId);
+const forced = user.mustChangePassword;
+const lastChangedAt = account?.password_changed_at ?? null;
+---
+
+<BaseLayout title={forced ? 'Set your password' : 'Account security'}>
+  <section class="mx-auto mt-8 w-full max-w-md">
+    <h1 class="text-2xl font-semibold text-slate-900">
+      {forced ? 'Set your password' : 'Account security'}
+    </h1>
+
+    {forced ? (
+      <div class="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800" role="alert">
+        Your account currently uses a password chosen by an administrator.
+        Choose your own password to continue — other areas of the app stay
+        locked until then.
+      </div>
+    ) : (
+      <p class="mt-1 text-sm text-slate-600">
+        Change your password. Changing it signs out every other session.
+      </p>
+    )}
+
+    <form action="/account/security" method="POST" class="mt-6 space-y-4">
+      <div>
+        <label for="currentPassword" class="block text-sm font-medium text-slate-700">Current password</label>
+        <input
+          id="currentPassword"
+          name="currentPassword"
+          type="password"
+          autocomplete="current-password"
+          required
+          class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+      </div>
+      <div>
+        <label for="newPassword" class="block text-sm font-medium text-slate-700">New password</label>
+        <input
+          id="newPassword"
+          name="newPassword"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength={MIN_PASSWORD_LENGTH}
+          aria-describedby="newPassword-hint"
+          class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+        <p id="newPassword-hint" class="mt-1 text-xs text-slate-500">
+          At least {MIN_PASSWORD_LENGTH} characters.
+        </p>
+      </div>
+      <div>
+        <label for="confirmPassword" class="block text-sm font-medium text-slate-700">Confirm new password</label>
+        <input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength={MIN_PASSWORD_LENGTH}
+          class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+      >
+        {forced ? 'Set password and continue' : 'Update password'}
+      </button>
+    </form>
+
+    <dl class="mt-8 space-y-2 border-t border-slate-200 pt-4 text-sm">
+      <div class="flex justify-between gap-4">
+        <dt class="text-slate-500">Username</dt>
+        <dd class="font-medium text-slate-900">{user.username}</dd>
+      </div>
+      <div class="flex justify-between gap-4">
+        <dt class="text-slate-500">Role</dt>
+        <dd class="font-medium text-slate-900">{user.role}</dd>
+      </div>
+      <div class="flex justify-between gap-4">
+        <dt class="text-slate-500">Last password change</dt>
+        <dd class="font-medium text-slate-900">{lastChangedAt ?? 'Not recorded yet'}</dd>
+      </div>
+    </dl>
+  </section>
+</BaseLayout>

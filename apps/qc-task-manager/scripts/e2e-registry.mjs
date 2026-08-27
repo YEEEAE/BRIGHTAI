@@ -11,6 +11,7 @@
 export const CANONICAL_E2E_SUITES = [
   ['admin-users', 'scripts/e2e-admin-users.mjs'],
   ['auth-lockout', 'scripts/e2e-auth-lockout.mjs'],
+  ['auth-password-flow', 'scripts/e2e-auth-password-flow.mjs'],
   ['task-shared', 'scripts/e2e-task-shared.mjs'],
   ['delete-request', 'scripts/e2e-delete-request.mjs'],
   ['dashboard', 'scripts/e2e-dashboard.mjs'],

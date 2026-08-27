@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { isResponse, requireApiUser, requireAiRateLimit, requireCsrf, apiJsonError } from '../../../lib/api-security';
-import { AiServiceError } from '../../../lib/ai/service';
+import { AiNotConfiguredError, AiServiceError } from '../../../lib/ai/service';
 import { analyzeTask, analyzeFinding, assistRca, assistCapa, buildManagementSummary, reviewEvidence } from '../../../lib/ai/features';
 import { compareLabTestToSop, identifyLabMissingFields, summarizeLabDataQuality, summarizeLabDocumentChanges, summarizeLabEquipmentHistory, summarizeLabFailPatterns, summarizeLabRetestPatterns, summarizeLabTest, suggestLabReviewQuestions } from '../../../lib/ai/labFeatures';
 import { evidenceAiContext, findingAiContext, managementAiContext, setEvidenceAiStatus, taskAiContext } from '../../../lib/aiQcContext';
@@ -56,6 +56,10 @@ export const POST: APIRoute = async (context) => {
     if (feature === 'rca-assistance') return json({ ok: true, feature, result: await assistRca(auth.id, scope.context) });
     return json({ ok: true, feature, result: await assistCapa(auth.id, scope.context) });
   } catch (error) {
+    // Controlled "not configured" state: no provider credential exists in this
+    // deployment. Distinct from a transient failure so the UI can render a
+    // stable unavailable state; AI is advisory and core QC never depends on it.
+    if (error instanceof AiNotConfiguredError) return json({ ok: false, error: 'AI advisory features are not configured for this deployment. Continue manually.', aiUnavailable: true }, 503);
     if (error instanceof AiServiceError) return json({ ok: false, error: error.message.includes('rate limit') ? 'AI rate limit exceeded.' : 'AI is temporarily unavailable. Continue manually.' }, error.message.includes('rate limit') ? 429 : 503);
     return json({ ok: false, error: 'AI feature failed safely. Continue manually.' }, 503);
   }

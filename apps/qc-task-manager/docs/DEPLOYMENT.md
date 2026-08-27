@@ -107,7 +107,8 @@ Optional variables:
 | Variable | Purpose |
 | --- | --- |
 | `QC_BACKUP_RETENTION` | positive integer backup retention count (default `14`) |
-| `GROQ_API_KEY` | optional — consultative AI features degrade safely without it; never commit the value |
+| `GROQ_API_KEY` | optional — consultative AI features degrade safely without it; never commit the value. Enablement requires the operator checklist in [AI-SAFE-LAUNCH.md](AI-SAFE-LAUNCH.md): **ROTATE THE PROVIDER KEY OUTSIDE THE REPOSITORY BEFORE ENABLEMENT.** |
+| `QC_SEED_MUST_CHANGE_PASSWORD` | E2E FIXTURES ONLY — `0` seeds accounts without the first-login `must_change_password` flag. Never set it on a real deployment (default: enforced). |
 | `QC_DISK_CAPACITY_GB` | reference capacity for the `/admin/system-health` disk warning when filesystem stats are unavailable |
 
 `SESSION_SECRET` is **reserved but not implemented** — the app does not read

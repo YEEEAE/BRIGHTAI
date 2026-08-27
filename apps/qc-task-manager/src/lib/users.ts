@@ -63,6 +63,10 @@ export function validateCreateUser(input: CreateUserInput): { ok: true } | { ok:
  * Create a new user. Username must be unique; the account is created active so
  * it can be used immediately (acceptance: admin creates an employee and signs
  * in with it right away).
+ *
+ * The admin-chosen password is a TEMPORARY credential: the account is flagged
+ * must_change_password = 1 so the first login is forced through the
+ * password-change flow before the app becomes usable.
  */
 export function createUser(actor: { id: number; username: string }, input: CreateUserInput): UserActionResult {
   const validation = validateCreateUser(input);
@@ -76,8 +80,8 @@ export function createUser(actor: { id: number; username: string }, input: Creat
   const hash = bcrypt.hashSync(input.password, 10);
   const info = db
     .prepare(
-      `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, 1)`,
+      `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active, must_change_password)
+       VALUES (?, ?, ?, ?, ?, ?, 1, 1)`,
     )
     .run(
       username,
@@ -89,7 +93,7 @@ export function createUser(actor: { id: number; username: string }, input: Creat
     );
 
   const userId = Number(info.lastInsertRowid);
-  log(actor, `created user id=${userId} username="${username}" role=${input.role} department=${input.department?.trim() || 'QC'} can_create_tasks=${input.canCreateTasks ? 1 : 0}`);
+  log(actor, `created user id=${userId} username="${username}" role=${input.role} department=${input.department?.trim() || 'QC'} can_create_tasks=${input.canCreateTasks ? 1 : 0} must_change_password=1`);
   return { ok: true, userId };
 }
 
@@ -261,7 +265,15 @@ export function updateUser(
   return { ok: true };
 }
 
-/** Set a new password for a user (admin-provided, min 8 chars, bcrypt-hashed). */
+/**
+ * Set a new password for a user (admin-provided, min 8 chars, bcrypt-hashed).
+ *
+ * The admin-chosen password is treated as a TEMPORARY credential: the account
+ * is flagged must_change_password = 1 again so the target user is forced
+ * through the password-change flow on their next login. Existing sessions of
+ * the target stay alive but the middleware immediately confines them to the
+ * password-change flow (the flag is re-read from the users row per request).
+ */
 export function resetPassword(
   actor: { id: number; username: string },
   targetUserId: number,
@@ -280,9 +292,11 @@ export function resetPassword(
   // sanctioned way to unblock an account.
   getDb()
     .prepare(
-      'UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?',
+      `UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL,
+              must_change_password = 1, password_changed_at = NULL
+       WHERE id = ?`,
     )
     .run(hash, targetUserId);
-  log(actor, `reset password for username="${target.username}"(id=${targetUserId})`);
+  log(actor, `reset password for username="${target.username}"(id=${targetUserId}) must_change_password=1`);
   return { ok: true };
 }

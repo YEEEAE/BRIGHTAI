@@ -11,10 +11,11 @@ const rawTarget = Astro.url.searchParams.get('redirect') || '';
 const redirectTarget = rawTarget.startsWith('/') && !rawTarget.startsWith('//') ? rawTarget : '/';
 const error = Astro.url.searchParams.get('error') === '1';
 
-// Already signed in? Bounce to the role home.
+// Already signed in? Bounce to the role home — or straight to the
+// password-change flow when the account still runs on an admin-set password.
 const existing = getSessionUser(Astro.request);
 if (existing) {
-  return Astro.redirect(roleHome(existing.role));
+  return Astro.redirect(existing.mustChangePassword ? '/account/security' : roleHome(existing.role));
 }
 
 // The seeded-accounts hint is a local-dev convenience. It must never render in

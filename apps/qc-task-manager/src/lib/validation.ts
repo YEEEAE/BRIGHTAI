@@ -375,6 +375,37 @@ export const passwordResetSchema = z.object({
 });
 
 /**
+ * Self-service password change (POST /account/security). The NEW password must
+ * satisfy the existing policy (same MIN_PASSWORD_LENGTH as admin resets); the
+ * confirmation must match exactly. Passwords are never trimmed — whitespace is
+ * significant. Field-level limits bound abusive payloads.
+ */
+export const passwordChangeSchema = z
+  .object({
+    currentPassword: z
+      .string({ required_error: 'Current password is required.' })
+      .min(1, 'Current password is required.')
+      .max(200),
+    newPassword: z
+      .string({ required_error: 'New password is required.' })
+      .min(MIN_PASSWORD_LENGTH, `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`)
+      .max(200),
+    confirmPassword: z
+      .string({ required_error: 'Password confirmation is required.' })
+      .min(1, 'Password confirmation is required.')
+      .max(200),
+  })
+  .superRefine((data, ctx) => {
+    if (data.newPassword !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['confirmPassword'],
+        message: 'New password and confirmation do not match.',
+      });
+    }
+  });
+
+/**
  * POST /api/lab/tests/[id]/review — Review Center actions (PROMPT 07, page
  * reference §26). `reason` is required for reject and request_changes (a
  * reviewer must always say why — §22); it is optional and ignored for

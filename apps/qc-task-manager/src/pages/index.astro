@@ -1,11 +1,12 @@
 ---
-// Home page. If signed in, redirect to the role's landing page; otherwise show
-// a placeholder landing that links to login.
+// Home page. If signed in, redirect to the role's landing page (or the
+// password-change flow for accounts flagged must_change_password); otherwise
+// show a placeholder landing that links to login.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { roleHome } from '../lib/permissions';
 
 const user = Astro.locals.user;
-const home = user ? roleHome(user.role) : null;
+const home = user ? (user.mustChangePassword ? '/account/security' : roleHome(user.role)) : null;
 
 if (home) {
   return Astro.redirect(home);

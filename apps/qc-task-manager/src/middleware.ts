@@ -29,7 +29,7 @@ import {
   PERMISSIONS,
   roleHome,
 } from './lib/permissions';
-import { handleLoginPost } from './lib/session';
+import { handleLoginPost, handlePasswordChangePost } from './lib/session';
 import { handleCreateTaskPost } from './lib/tasks';
 import { handleLabProductCreatePost, handleLabProductEditPost, handleLabProductArchivePost } from './lib/lab/products';
 import { handleLabTestFormPost, handleLabTestVoidPost, handleLabTestEditPost } from './lib/lab/tests';
@@ -126,6 +126,27 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   if (!user) {
     const dest = pathname === '/logout' ? '/' : pathname + context.url.search;
     return context.redirect(`/login?redirect=${encodeURIComponent(dest)}`);
+  }
+
+  // Self-service password change (POST /account/security). Dispatched here like
+  // the other page-form POSTs; the handler re-checks the session server-side
+  // and validates the payload through the shared Zod schema. Available to every
+  // authenticated role — flagged or not.
+  if (context.request.method === 'POST' && pathname === '/account/security') {
+    const csrf = requireCsrf(context);
+    if (csrf) return csrf;
+    return handlePasswordChangePost(context);
+  }
+
+  // First-login password lifecycle gate: an account flagged
+  // must_change_password may only reach the password-change flow and logout.
+  // The flag is derived from the live users row on every request (SessionData),
+  // so an admin reset confines even pre-existing sessions immediately. The
+  // gate sits BEFORE the role-prefix guards and form dispatches — no URL,
+  // query parameter, or hidden field can route around it.
+  if (user.mustChangePassword && pathname !== '/account/security' && pathname !== '/logout') {
+    setFlash(context, 'info', 'Set your own password to continue using the app.');
+    return context.redirect('/account/security');
   }
 
   // /dashboard — employees have no dashboard (CORE BUSINESS RULE #1).

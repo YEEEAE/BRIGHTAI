@@ -322,6 +322,14 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                   {user.role}
                 </span>
               </span>
+              {/* Account security (password change) — desktop header, next to
+                  sign out; available to every role. */}
+              <a
+                href="/account/security"
+                className="hidden rounded-md px-2 py-1 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 xl:inline"
+              >
+                Account
+              </a>
               {/* Sign out is header-only at lg+; below lg it moves into the
                   mobile menu (keeps the right-side cluster small enough that
                   document scroll width never exceeds the viewport at 768px). */}
@@ -388,6 +396,14 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                 <span className="rounded bg-slate-100 px-1.5 py-0.5 text-xs uppercase text-slate-600">
                   {user.role}
                 </span>
+              </li>
+              <li className="pt-2">
+                <a
+                  href="/account/security"
+                  className="block rounded-md px-2 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                >
+                  Account security
+                </a>
               </li>
               <li className="pt-2">
                 <form action="/logout" method="POST">

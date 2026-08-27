@@ -84,6 +84,11 @@ function suiteEnv(dbPath, port, extra = {}) {
     ...extra,
     NODE_ENV: 'production',
     ADMIN_DEFAULT_PASSWORD: 'acceptance-only-password-2026',
+    // Fixture-only opt-out of the first-login must_change_password seeding
+    // flag (see src/lib/seed.ts). The password lifecycle itself is covered by
+    // the dedicated `auth-password-flow` suite, which re-enables the flag per
+    // scenario through direct DB fixtures. NEVER set this on a real deployment.
+    QC_SEED_MUST_CHANGE_PASSWORD: '0',
     HOST: '127.0.0.1',
     PORT: String(port),
     BASE_URL: `http://127.0.0.1:${port}`,
