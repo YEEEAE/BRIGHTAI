@@ -4,16 +4,19 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { runMigrations } from '../src/lib/migrations.ts';
 
 const appDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const migrationsDir = join(appDir, 'db/migrations');
 const doctor = join(appDir, 'scripts/db-doctor.mjs');
+// db-doctor imports the embedded migration registry (?raw SQL imports), so it
+// needs the repo test-ts-loader exactly like the pnpm db:status script.
+const tsLoader = pathToFileURL(resolve(appDir, '../../scripts/test-ts-loader.mjs')).href;
 const root = mkdtempSync(join(tmpdir(), 'brightai-db-doctor-'));
 
 function runDoctor(dbPath) {
-  return spawnSync(process.execPath, ['--experimental-strip-types', doctor], {
+  return spawnSync(process.execPath, ['--import', tsLoader, '--experimental-strip-types', doctor], {
     cwd: appDir,
     env: { ...process.env, QC_DATABASE_PATH: dbPath, QC_DB_PATH: '' },
     encoding: 'utf8',

@@ -2,6 +2,7 @@ export const META_TEST_SCRIPTS = new Set(['test', 'test:manifest', 'test:archite
 
 export const CANONICAL_TEST_SCRIPTS = [
   'test:migrations',
+  'test:embedded-migration-parity',
   'test:route-manifest',
   'test:domain',
   'test:sla',

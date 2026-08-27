@@ -1,11 +1,13 @@
 // Read-only migration and SQLite diagnostics for the QC Task Manager.
-// Run with `pnpm db:status` or `pnpm db:verify`.
+// Run with `pnpm db:status` or `pnpm db:verify` (the pnpm scripts register the
+// repo test-ts-loader, required to import the embedded migration registry).
 
 import Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { EMBEDDED_MIGRATIONS } from '../src/lib/migrationRegistry.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appDir = resolve(__dirname, '..');
@@ -37,6 +39,57 @@ function repositoryMigrations() {
       const match = /^(\d{3})_([a-z0-9_]+)\.sql$/.exec(file);
       return { version: Number(match[1]), name: match[2], file, checksum: checksum(source) };
     });
+}
+
+// Disk/bundle parity is INDEPENDENT of the database: it compares the
+// repository migration files against the embedded registry that ships inside
+// the production bundle (src/lib/migrationRegistry.ts). A database can be
+// healthy here while a deployed bundle would still drift at boot, so this is
+// reported as its own section and folded into the overall PASS/FAIL.
+function embeddedBundleParity() {
+  console.log('embedded bundle parity (repository vs embedded registry):');
+  const disk = repositoryMigrations();
+  const embedded = [];
+  let ok = true;
+  for (const entry of EMBEDDED_MIGRATIONS) {
+    const match = /^(\d{3})_([a-z0-9_]+)\.sql$/.exec(entry.file);
+    if (!match) {
+      ok = false;
+      console.log(`${entry.file} MISMATCH (invalid embedded filename)`);
+      continue;
+    }
+    embedded.push({ version: Number(match[1]), name: match[2], file: entry.file, checksum: checksum(entry.source) });
+  }
+  const diskByFile = new Map(disk.map((migration) => [migration.file, migration]));
+  const embeddedByFile = new Map(embedded.map((migration) => [migration.file, migration]));
+  for (const migration of disk) {
+    const bundled = embeddedByFile.get(migration.file);
+    if (!bundled) {
+      ok = false;
+      console.log(`${migration.file} not embedded`);
+    } else if (
+      bundled.checksum !== migration.checksum ||
+      bundled.name !== migration.name ||
+      bundled.version !== migration.version
+    ) {
+      ok = false;
+      console.log(
+        `${migration.file} MISMATCH bundled=${bundled.checksum.slice(0, 12)} repository=${migration.checksum.slice(0, 12)}`,
+      );
+    }
+  }
+  for (const migration of embedded) {
+    if (!diskByFile.has(migration.file)) {
+      ok = false;
+      console.log(`${migration.file} embedded but absent from the repository`);
+    }
+  }
+  if (embedded.length !== disk.length) {
+    ok = false;
+    console.log(`registry count ${embedded.length} != repository count ${disk.length}`);
+  }
+  console.log(`embedded bundle parity: ${ok ? 'PASS' : 'FAIL'}`);
+  return ok;
 }
 
 function print(label, value) {
@@ -146,8 +199,9 @@ function main() {
     db.pragma('foreign_keys = ON');
     print('foreign_keys state', String(db.pragma('foreign_keys', { simple: true })) === '1' ? 'ON' : 'OFF');
     const ok = diagnose(db, repositoryMigrations());
-    console.log(`PASS / FAIL: ${ok ? 'PASS' : 'FAIL'}`);
-    if (!ok) process.exitCode = 1;
+    const parityOk = embeddedBundleParity();
+    console.log(`PASS / FAIL: ${ok && parityOk ? 'PASS' : 'FAIL'}`);
+    if (!ok || !parityOk) process.exitCode = 1;
   } catch (error) {
     print('WAL mode', 'UNKNOWN');
     print('foreign_keys state', 'UNKNOWN');

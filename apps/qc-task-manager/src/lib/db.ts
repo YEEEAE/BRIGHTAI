@@ -31,40 +31,7 @@ import { seedLabEquipmentIfEmpty } from './lab/seed';
 import { startBackupScheduler } from './backup-scheduler';
 import { backupDirectoryForDatabase } from './backup';
 import { runMigrations } from './migrations';
-import initialMigrationSql from '../../db/migrations/001_initial.sql?raw';
-import legacyMigrationSql from '../../db/migrations/002_legacy_schema_reconciliation.sql?raw';
-import slaMigrationSql from '../../db/migrations/003_sla_engine.sql?raw';
-import qcOperationsMigrationSql from '../../db/migrations/004_qc_operations.sql?raw';
-import evidenceTemplatesMigrationSql from '../../db/migrations/005_evidence_templates.sql?raw';
-import workflowMigrationSql from '../../db/migrations/006_workflow_engine.sql?raw';
-import dashboardReportsMigrationSql from '../../db/migrations/007_dashboard_reports.sql?raw';
-import auditIntegrityMigrationSql from '../../db/migrations/008_audit_integrity.sql?raw';
-import aiAuditMigrationSql from '../../db/migrations/009_ai_audit.sql?raw';
-import aiEvidenceStatusMigrationSql from '../../db/migrations/010_ai_evidence_status.sql?raw';
-import labCoreMasterDataMigrationSql from '../../db/migrations/011_lab_core_master_data.sql?raw';
-import labTestsMigrationSql from '../../db/migrations/012_lab_tests.sql?raw';
-import labDocumentsMigrationSql from '../../db/migrations/013_lab_documents.sql?raw';
-import labViewsMigrationSql from '../../db/migrations/014_lab_views.sql?raw';
-import labTestsRegisterIndexesSql from '../../db/migrations/015_lab_tests_register_indexes.sql?raw';
-import labProductEquipmentSql from '../../db/migrations/016_lab_product_equipment.sql?raw';
-import labTemplateEquipmentSql from '../../db/migrations/017_lab_template_equipment.sql?raw';
-import labEquipmentCalibrationStatusSql from '../../db/migrations/018_lab_equipment_calibration_status.sql?raw';
-import labRetestOriginalSnapshotSql from '../../db/migrations/019_lab_retest_original_snapshot.sql?raw';
-import labSampleStatusSql from '../../db/migrations/020_lab_sample_status.sql?raw';
-import labTestFindingsSql from '../../db/migrations/021_lab_test_findings.sql?raw';
-import notificationsEntityHrefSql from '../../db/migrations/022_notifications_entity_href.sql?raw';
-import labDocumentsApprovalMetadataSql from '../../db/migrations/023_lab_documents_approval_metadata.sql?raw';
-import labRegisterPerformanceIndexesSql from '../../db/migrations/024_lab_register_performance_indexes.sql?raw';
-import notificationDedupeKeySql from '../../db/migrations/025_notification_dedupe_key.sql?raw';
-import labTestEnvironmentReadingsSql from '../../db/migrations/026_lab_test_environment_readings.sql?raw';
-import labChangeRequestsSql from '../../db/migrations/027_lab_change_requests.sql?raw';
-import labTestFormAlignmentSql from '../../db/migrations/028_lab_test_form_alignment.sql?raw';
-import wiCatalogMigrationSql from '../../db/migrations/029_wi_catalog_import.sql?raw';
-import auditDurabilityMigrationSql from '../../db/migrations/030_audit_durability.sql?raw';
-import qcAuditTaskIdentityMigrationSql from '../../db/migrations/032_qc_audit_task_identity.sql?raw';
-import wiProvenanceMigrationSql from '../../db/migrations/033_wi_provenance.sql?raw';
-import templateSubmissionPolicyMigrationSql from '../../db/migrations/034_template_submission_policy.sql?raw';
-import labTemplateReviewWorkflowMigrationSql from '../../db/migrations/035_lab_template_review_workflow.sql?raw';
+import { EMBEDDED_MIGRATIONS } from './migrationRegistry';
 import { backfillAuditChain } from './audit/chain';
 import { backfillQcAuditChain } from './audit/qcChain';
 import { importWICatalog } from './lab/wiCatalog';
@@ -310,43 +277,10 @@ function initialize(db: BetterSqliteDatabase): void {
   const migrationResult = runMigrations(db, {
     backup: true,
     backupDir: BACKUP_DIR,
-    embeddedMigrations: [
-      { file: '001_initial.sql', source: initialMigrationSql },
-      { file: '002_legacy_schema_reconciliation.sql', source: legacyMigrationSql },
-      { file: '003_sla_engine.sql', source: slaMigrationSql },
-      { file: '004_qc_operations.sql', source: qcOperationsMigrationSql },
-      { file: '005_evidence_templates.sql', source: evidenceTemplatesMigrationSql },
-      { file: '006_workflow_engine.sql', source: workflowMigrationSql },
-      { file: '007_dashboard_reports.sql', source: dashboardReportsMigrationSql },
-      { file: '008_audit_integrity.sql', source: auditIntegrityMigrationSql },
-      { file: '009_ai_audit.sql', source: aiAuditMigrationSql },
-      { file: '010_ai_evidence_status.sql', source: aiEvidenceStatusMigrationSql },
-      { file: '011_lab_core_master_data.sql', source: labCoreMasterDataMigrationSql },
-      { file: '012_lab_tests.sql', source: labTestsMigrationSql },
-      { file: '013_lab_documents.sql', source: labDocumentsMigrationSql },
-      { file: '014_lab_views.sql', source: labViewsMigrationSql },
-      { file: '015_lab_tests_register_indexes.sql', source: labTestsRegisterIndexesSql },
-      { file: '016_lab_product_equipment.sql', source: labProductEquipmentSql },
-      { file: '017_lab_template_equipment.sql', source: labTemplateEquipmentSql },
-      { file: '018_lab_equipment_calibration_status.sql', source: labEquipmentCalibrationStatusSql },
-      { file: '019_lab_retest_original_snapshot.sql', source: labRetestOriginalSnapshotSql },
-      { file: '020_lab_sample_status.sql', source: labSampleStatusSql },
-      { file: '021_lab_test_findings.sql', source: labTestFindingsSql },
-      { file: '022_notifications_entity_href.sql', source: notificationsEntityHrefSql },
-      { file: '023_lab_documents_approval_metadata.sql', source: labDocumentsApprovalMetadataSql },
-      { file: '024_lab_register_performance_indexes.sql', source: labRegisterPerformanceIndexesSql },
-      { file: '025_notification_dedupe_key.sql', source: notificationDedupeKeySql },
-      { file: '026_lab_test_environment_readings.sql', source: labTestEnvironmentReadingsSql },
-      { file: '027_lab_change_requests.sql', source: labChangeRequestsSql },
-      { file: '028_lab_test_form_alignment.sql', source: labTestFormAlignmentSql },
-      { file: '029_wi_catalog_import.sql', source: wiCatalogMigrationSql },
-      { file: '030_audit_durability.sql', source: auditDurabilityMigrationSql },
-      { file: '031_placeholder.sql', source: '-- reserved migration version 031\n' },
-      { file: '032_qc_audit_task_identity.sql', source: qcAuditTaskIdentityMigrationSql },
-      { file: '033_wi_provenance.sql', source: wiProvenanceMigrationSql },
-      { file: '034_template_submission_policy.sql', source: templateSubmissionPolicyMigrationSql },
-      { file: '035_lab_template_review_workflow.sql', source: labTemplateReviewWorkflowMigrationSql },
-    ],
+    // Byte-for-byte mirror of db/migrations/ — see src/lib/migrationRegistry.ts
+    // for the contract, and scripts/test-embedded-migration-parity.mjs for the
+    // guard that keeps disk and bundle identical.
+    embeddedMigrations: EMBEDDED_MIGRATIONS,
   });
   backfillAuditChain(db);
   backfillQcAuditChain(db);

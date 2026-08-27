@@ -80,7 +80,7 @@ Classification keys: IMPLEMENTED / PARTIAL / MISSING / BLOCKED / RUNTIME-NOT-VER
 ## 5. Topic-Area File Map (exact current files)
 
 - **Reporting transport:** `src/pages/api/reports/[reportType].[format].ts`, `src/pages/api/reports/audit.ts`, `src/lib/reporting/{types,catalog,authorization,filters,scope,queries,reader,audit,drilldown}.ts`, `src/lib/reporting/writers/`, E2E: `scripts/e2e-reports.mjs`.
-- **Migration 031:** `db/migrations/031_reserved.sql` (reserved, intentional), runner: `src/lib/migrations.ts`, registry: `src/lib/db.ts` (embedded migrations), mirror: `db/schema.sql`.
+- **Migration 031:** `db/migrations/031_reserved.sql` (reserved, intentional), runner: `src/lib/migrations.ts`, registry: `src/lib/migrationRegistry.ts` (embedded migrations, guarded by test:embedded-migration-parity), mirror: `db/schema.sql`.
 - **Test manifest:** `scripts/test-manifest-guard.mjs` (47 suites), aggregate runner: `scripts/run-full-tests.mjs`.
 - **E2E acceptance runner:** `scripts/e2e-acceptance.mjs` (+ 23 `e2e-*.mjs` suites, incl. `lab-nav`).
 - **Deployment:** root `render.yaml` (QC service **absent**), `docs/DEPLOYMENT.md`, `docs/DATABASE.md` (single-instance contract, `assertSqliteDeploymentContract`), `scripts/backup-db.mjs`, `scripts/restore-db.mjs`, `scripts/test-production-operations.mjs`.

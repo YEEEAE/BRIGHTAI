@@ -24,8 +24,10 @@ function checksum(source: string): string {
   return createHash('sha256').update(source, 'utf8').digest('hex');
 }
 
-function readMigrations(migrationsDir: string, embeddedMigrations?: { file: string; source: string }[]): Migration[] {
-  let entries: { file: string; source: string }[];
+type MigrationSource = { readonly file: string; readonly source: string };
+
+function readMigrations(migrationsDir: string, embeddedMigrations?: readonly MigrationSource[]): Migration[] {
+  let entries: readonly MigrationSource[];
   if (existsSync(migrationsDir)) {
     entries = readdirSync(migrationsDir).filter((file) => /^\d{3}_[a-z0-9_]+\.sql$/.test(file)).sort().map((file) => ({ file, source: readFileSync(join(migrationsDir, file), 'utf8') }));
   } else if (embeddedMigrations) {
@@ -138,7 +140,7 @@ function backupBeforeMigration(db: BetterSqliteDatabase, backupDir: string): str
   return destination;
 }
 
-export function runMigrations(db: BetterSqliteDatabase, options: { migrationsDir?: string; embeddedMigrations?: { file: string; source: string }[]; backup?: boolean; backupDir?: string } = {}): { applied: Migration[]; currentVersion: number } {
+export function runMigrations(db: BetterSqliteDatabase, options: { migrationsDir?: string; embeddedMigrations?: readonly MigrationSource[]; backup?: boolean; backupDir?: string } = {}): { applied: Migration[]; currentVersion: number } {
   db.pragma('foreign_keys = ON');
   const migrations = readMigrations(options.migrationsDir ?? DEFAULT_MIGRATIONS_DIR, options.embeddedMigrations);
   ensureMetadata(db);
