@@ -1,6 +1,7 @@
 ---
 // Supervisor task list (supervisor + manager + admin). Create/edit/assign scope.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
@@ -46,57 +47,102 @@ const tasks = db
     delete_request_status: 'pending' | 'rejected' | string | null;
     delete_request_note: string | null;
   }[];
+
+// "Needs my attention" strip — review queues first, then the task list.
+const overdueOpen = db.prepare(
+  "SELECT COUNT(*) AS n FROM tasks WHERE status IN ('not_started','in_progress') AND due_date IS NOT NULL AND due_date < date('now')",
+).get() as { n: number };
+const urgentOpen = db.prepare(
+  "SELECT COUNT(*) AS n FROM tasks WHERE status IN ('not_started','in_progress') AND priority = 'urgent'",
+).get() as { n: number };
+const testsAwaitingReview = db.prepare(
+  "SELECT COUNT(*) AS n FROM lab_test_records WHERE status IN ('SUBMITTED','UNDER_REVIEW')",
+).get() as { n: number };
+const docsAwaitingReview = db.prepare(
+  "SELECT COUNT(*) AS n FROM lab_documents WHERE status = 'IN_REVIEW'",
+).get() as { n: number };
+
+const attention = [
+  { label: 'Overdue tasks', n: overdueOpen.n, href: '/dashboard/drilldown?kpi=overdue', tone: overdueOpen.n > 0 ? 'danger' : 'neutral' },
+  { label: 'Urgent open tasks', n: urgentOpen.n, href: '/search?priority=urgent', tone: urgentOpen.n > 0 ? 'warning' : 'neutral' },
+  { label: 'Tests awaiting review', n: testsAwaitingReview.n, href: '/lab/tests/review', tone: testsAwaitingReview.n > 0 ? 'warning' : 'neutral' },
+  { label: 'Documents in review', n: docsAwaitingReview.n, href: '/lab/documents?status=IN_REVIEW', tone: docsAwaitingReview.n > 0 ? 'info' : 'neutral' },
+] as const;
+const attentionTone: Record<string, string> = {
+  danger: 'border-red-200 bg-red-50 text-red-700',
+  warning: 'border-orange-200 bg-orange-50 text-orange-700',
+  info: 'border-sky-200 bg-sky-50 text-sky-700',
+  neutral: 'border-slate-200 bg-white text-slate-700',
+};
 ---
 <BaseLayout title="Tasks">
-  <header class="mb-6 flex items-center justify-between">
-    <div>
-      <h1 class="text-2xl font-semibold text-slate-900">Tasks</h1>
-      <p class="text-sm text-slate-600">Supervisor view (create, edit, assign). Signed in as {user.fullName} ({user.role}).</p>
-    </div>
-    <a href="/supervisor/new" class="rounded-md bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
-      New task
-    </a>
-  </header>
+  <div class="space-y-6">
+    <PageHeader
+      title="Tasks"
+      description={`Supervisor view (create, edit, assign). Signed in as ${user.fullName} (${user.role}).`}
+    >
+      <fragment slot="actions">
+        <a href="/supervisor/new" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+          New task
+        </a>
+      </fragment>
+    </PageHeader>
 
-  {tasks.length === 0 ? (
-    <EmptyState
-      title="No tasks yet"
-      hint="Create the first task for your team to get started."
-      ctaHref="/supervisor/new"
-      ctaLabel="Create your first task"
-    />
-  ) : (
-    <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
-      {tasks.map((t) => {
-        const overdue = isOverdue(t.due_date, t.status);
-        const urgent = isUrgent(t.priority);
-        return (
-          <li class={`flex flex-wrap items-center justify-between gap-3 p-4 ${urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50'}`}>
-            <div class="min-w-0">
-              <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
-              {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
-              <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-                <span>#{t.id}</span>
-                <span>{t.assignee ?? 'Unassigned'}</span>
-                <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>
-                  {priorityLabel(t.priority)}
-                </span>
-                {t.due_date && (
-                  <span class={overdue ? 'font-semibold text-red-600' : ''}>
-                    Due {formatDueDate(t.due_date)}
-                    {overdue && ' ⚠️'}
+    <section aria-label="Needs attention" class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      {attention.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'rounded-xl border p-4 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
+            attentionTone[item.tone],
+          ]}
+        >
+          <p class="text-2xl font-semibold tabular-nums">{item.n}</p>
+          <p class="mt-0.5 text-sm font-medium">{item.label}</p>
+        </a>
+      ))}
+    </section>
+
+    {tasks.length === 0 ? (
+      <EmptyState
+        title="No tasks yet"
+        hint="Create the first task for your team to get started."
+        ctaHref="/supervisor/new"
+        ctaLabel="Create your first task"
+      />
+    ) : (
+      <ul class:list={['divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm', 'list-none p-0']}>
+        {tasks.map((t) => {
+          const overdue = isOverdue(t.due_date, t.status);
+          const urgent = isUrgent(t.priority);
+          return (
+            <li class={`flex flex-wrap items-center justify-between gap-3 p-4 ${urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50/75'}`}>
+              <div class="min-w-0">
+                <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+                {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
+                <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                  <span class="tabular-nums">#{t.id}</span>
+                  <span>{t.assignee ?? 'Unassigned'}</span>
+                  <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>
+                    {priorityLabel(t.priority)}
                   </span>
-                )}
-                <span class="tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
+                  {t.due_date && (
+                    <span class={overdue ? 'font-semibold text-red-600' : ''}>
+                      Due {formatDueDate(t.due_date)}
+                      {overdue && ' ⚠️'}
+                    </span>
+                  )}
+                  <span class="tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
+                </div>
               </div>
-            </div>
-            <div class="flex shrink-0 items-center gap-2">
-              <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />
-              <StatusBadge status={t.status} />
-            </div>
-          </li>
-        );
-      })}
-    </ul>
-  )}
+              <div class="flex shrink-0 items-center gap-2">
+                <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />
+                <StatusBadge status={t.status} />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </div>
 </BaseLayout>

@@ -1,14 +1,82 @@
-نعم. راجعت `main` الحالي قبل تجهيز الحزمة، وما زال عند نفس الـHEAD:
+# BRIGHTAI QC Task Manager
+## Master Pilot Prompt Pack v8 (00 → 21) — Execution Checklist Edition
 
-`1e7bf03d82b1c954a183be563c669dd3d2339877`
-
-وبنيت البرومبتات أدناه على **الكود الحالي الفعلي**، مو على التقرير التاريخي فقط. مثلًا صفحة Reports ما زالت تولد `/api/reports/...`، بينما البحث الحالي ما وجد tracked routes تحت `api/reports`، والـAcceptance Runner الحالي ما زال لا يشغّل `e2e-lab-search.mjs`.
-
-أنصح تشغلها **بالترتيب من 00 إلى 20** على Codex 5.6 Luna، وكل Prompt في جلسة/Task مستقلة. لا تخليه يسوي كل شيء في Prompt واحد؛ التقسيم هذا يقلل regression ويخلي كل مرحلة قابلة للتحقق.
+**Repository:** `YEEEAE/BRIGHTAI`
+**Target application:** `apps/qc-task-manager/`
+**Prompt language:** English (reports to the user in Saudi Arabic)
+**Execution model:** Execute sequentially by priority. Do not skip acceptance criteria.
 
 ---
 
-# Prompt 00 — Baseline + Execution Contract
+# How to Use This Checklist
+
+- Mark `☐` as not completed.
+- Change it to `✅` when the prompt has been implemented and verified.
+- Do not mark a prompt complete until its acceptance criteria and tests pass.
+- If implementation is partial, leave `☐` and record notes in the status area.
+- The executing agent must inspect the current repository before making changes.
+- Existing BRIGHTAI architecture is the source of truth.
+
+## Global Prompt Execution Status
+
+- [✅] Prompt 00 — Baseline + Execution Contract
+- [✅] Prompt 01 — Reporting API Transport
+- [✅] Prompt 02 — Migration Parity
+- [✅] Prompt 03 — Test Registry + Full E2E
+- [✅] Prompt 04 — Deployment Contract
+- [✅] Prompt 05 — Auth + Password Lifecycle + AI Safe Mode
+- [✅] Prompt 06 — Full Product UI/UX Reconstruction
+- [☐] Prompt 07 — Durable User Administration Audit
+- [☐] Prompt 08 — Request Security
+- [☐] Prompt 09 — Dedicated QC CI
+- [☐] Prompt 10 — Accessibility Gate
+- [☐] Prompt 11 — Design System Verification + Navigation Refinement
+- [☐] Prompt 12 — Lab Management Dashboard
+- [☐] Prompt 13 — Forms + Sample Productivity
+- [☐] Prompt 14 — Change Request Withdraw + Notification Reliability
+- [☐] Prompt 15 — Reports UX + Print Quality
+- [☐] Prompt 16 — Observability + Error States
+- [☐] Prompt 17 — Visual Regression + Responsive
+- [☐] Prompt 18 — Performance
+- [☐] Prompt 19 — Onboarding + Human UAT Preparation
+- [☐] Prompt 20 — WI Catalog Source Guard (SOURCE-BLOCKED)
+- [☐] Prompt 21 — Final Company Pilot Gate
+
+## Execution Dependencies & Blocking
+
+- Prompt 06 (full UI/UX reconstruction) MUST land before 11, 13, and 17 —
+  those prompts verify/refine the design system instead of redesigning it.
+  Do not run 11 before 06 exists.
+- Prompt 09 (QC CI) should land after 02 and 03 so the CI gate can include
+  embedded-migration parity and the full test/E2E registry from day one.
+- Prompt 10 (a11y gate) depends on the shared design primitives from 06 —
+  fix accessibility in shared components, not per-page.
+- Prompt 15 (reports/print) requires the reporting transport (01) working.
+- Prompt 12 (lab management) depends on the role-home and navigation
+  patterns established by 06.
+- Prompt 20 (WI catalog) is SOURCE-BLOCKED: controlled source pages 2/3 and
+  3/3 are not supplied. Audit + guard only. Do not invent pages.
+- Prompt 21 (final gate) is strictly last and requires 00–20 done
+  (20 may be exempted as SOURCE-BLOCKED with an explicit gap entry).
+- Status notes for partially completed prompts:
+
+```text
+00 ✅ delivered (baseline + execution contract)
+01 ✅ delivered (reporting transport)
+02 ✅ delivered (migration parity)
+03 ✅ delivered (test/E2E gate)
+04 ✅ delivered (deployment contract)
+05 ✅ delivered (password lifecycle migration 036 + AI safe mode)
+06 ☐ not started
+```
+
+---
+
+هذي النسخة النهائية المرتبة **00 → 21** بعد إضافة برومبت التصميم الشامل كرقم **06**، مع تعديل البرومبتات اللي بعده بحيث ما تعيد نفس الشغل بدون داعي.
+
+---
+
+# 00 — Baseline + Execution Contract
 
 ```text
 TASK ID: QC-PILOT-BASELINE-000
@@ -21,7 +89,9 @@ Primary application:
 apps/qc-task-manager/
 
 Goal:
-Prepare the QC Task Manager for a controlled real-company pilot. This task is the baseline and execution contract for all following tasks.
+Prepare the QC Task Manager for a controlled real-company pilot.
+
+This task establishes the technical baseline and execution contract for all following tasks.
 
 IMPORTANT:
 Do not implement unrelated features in this task.
@@ -38,181 +108,205 @@ Keep application UI text in English.
 Code/comments may remain English.
 
 PROJECT INVARIANTS:
+
 1. Astro SSR remains the application framework.
 2. SQLite + better-sqlite3 remains the database.
 3. One writable application instance.
 4. src/lib/permissions.ts is the only RBAC authority.
 5. qc_audit_log remains the canonical QC/Lab audit system.
-6. Use the existing notifications table; do not introduce another notification system.
-7. APPROVED/VOID/final controlled records remain immutable according to existing workflow rules.
+6. Use the existing notifications table.
+7. APPROVED/VOID/final controlled records remain immutable.
 8. Preserve approval snapshots and historical traceability.
-9. Prevent self-review/self-approval where the existing workflow requires separation.
-10. All unsafe POST/PUT/PATCH/DELETE operations must retain CSRF protection.
+9. Prevent self-review/self-approval where required.
+10. All unsafe mutations retain CSRF protection.
 11. Do not weaken CSP.
-12. Do not introduce unsafe-inline or unsafe-eval into the QC application.
+12. Do not introduce unsafe-inline or unsafe-eval.
 13. No heavy UI framework.
-14. No new cloud service unless absolutely required by an existing feature.
+14. No unnecessary cloud dependency.
 15. No PostgreSQL migration.
 16. No Redis requirement for QC.
 17. No breaking schema reset.
-18. Existing user/company data must survive upgrades.
-19. Existing WI source spelling and provenance must remain intact.
-20. Do not silently “fix” controlled-source data.
+18. Existing company/user data must survive upgrades.
+19. Existing WI source spelling/provenance must remain intact.
+20. Do not silently correct controlled-source data.
 
 FIRST:
-Read the repository instructions that apply to this project.
+
+Read all project instructions that apply.
+
 Inspect:
-- package.json
-- apps/qc-task-manager/package.json
-- apps/qc-task-manager/README.md
-- apps/qc-task-manager/src/
-- apps/qc-task-manager/db/
-- apps/qc-task-manager/scripts/
-- apps/qc-task-manager/docs/ if present
-- repository QC audit/report documents
-- AGENTS.md / CLAUDE.md / project instruction files if present
 
-Then establish current reality by running from the repository/app as appropriate:
-- git rev-parse HEAD
-- git status --short
-- node --version
-- pnpm --version
-- pnpm --filter @brightai/qc-task-manager typecheck
-- pnpm --filter @brightai/qc-task-manager test:manifest
-- pnpm --filter @brightai/qc-task-manager test:route-manifest
-- pnpm --filter @brightai/qc-task-manager test:migrations
-- pnpm --filter @brightai/qc-task-manager build
+package.json
+apps/qc-task-manager/package.json
+apps/qc-task-manager/README.md
+apps/qc-task-manager/src/
+apps/qc-task-manager/db/
+apps/qc-task-manager/scripts/
+apps/qc-task-manager/docs/
+AGENTS.md
+CLAUDE.md
+.agents/
+any QC-specific project instructions
 
-Do NOT fix failures yet unless the failure prevents the baseline inspection.
+Then establish current reality:
+
+git rev-parse HEAD
+git status --short
+node --version
+pnpm --version
+
+Run:
+
+pnpm --filter @brightai/qc-task-manager typecheck
+pnpm --filter @brightai/qc-task-manager test:manifest
+pnpm --filter @brightai/qc-task-manager test:route-manifest
+pnpm --filter @brightai/qc-task-manager test:migrations
+pnpm --filter @brightai/qc-task-manager build
+
+Do not fix failures yet unless a failure prevents inspection.
 
 Create:
+
 apps/qc-task-manager/docs/PILOT-IMPLEMENTATION-STATUS.md
 
-The document must contain:
-- HEAD SHA
-- dirty/clean working-tree state
-- Node/pnpm versions
-- each command
-- exit code
-- PASS/FAIL
-- exact failing suite if any
-- current P0/P1/P2 implementation queue
-- no guessed completion claims
+Document:
 
-Classify every item as:
+HEAD SHA
+dirty/clean state
+Node version
+pnpm version
+commands
+exit codes
+PASS/FAIL
+exact failing suites
+P0/P1/P2 queue
+
+Classify each feature as:
+
 IMPLEMENTED
 PARTIAL
 MISSING
 BLOCKED
 RUNTIME-NOT-VERIFIED
 
-Also capture the exact current files relevant to:
-- reporting transport
-- migration 031
-- test manifest
-- E2E acceptance runner
-- deployment
-- authentication
-- user audit
-- accessibility
-- Lab navigation
-- WI import
+Explicitly inspect:
 
-Final response:
+reporting transport
+migration parity
+test manifest
+E2E acceptance
+deployment
+authentication
+user audit
+accessibility
+navigation
+WI import
+backup
+audit
+permissions
+
+Final response in Saudi Arabic:
+
 1. What you inspected
 2. Commands run
 3. Baseline failures
 4. Files created/changed
 5. Risks
-6. Exact recommendation for the next task
+6. Exact next recommended task
 
-Stop after the baseline.
-Do not commit/push/deploy.
+Stop after baseline.
+
+Do not commit.
+Do not push.
+Do not deploy.
 ```
 
 ---
 
-# Prompt 01 — إصلاح Reporting API بالكامل P0
-
-هذا أول blocker فعلي؛ صفحة Reports الحالية تعتمد على endpoints غير موجودة في الشجرة الحالية.
+# 01 — Reporting API Transport
 
 ```text
 TASK ID: QC-REPORT-TRANSPORT-001
 PRIORITY: P0
 
-Fix the QC Task Manager reporting HTTP transport completely.
+Repository:
+YEEEAE/BRIGHTAI
 
 Application:
 apps/qc-task-manager/
 
-Before changing code, inspect:
-- src/pages/reports.astro
-- src/pages/lab/reports*
-- src/lib/reporting/**
-- src/lib/lab/report*
-- scripts/e2e-reports.mjs
-- scripts/route-manifest.mjs
-- src/lib/permissions.ts
-- src/lib/api-security.ts
-- existing export API routes for patterns
-- all existing report writers/catalogs/types
+MISSION:
 
-Known current contract:
-The UI generates routes shaped like:
-- /api/reports/[reportType].csv
-- /api/reports/[reportType].xlsx
-- /api/reports/[reportType].pdf
-- /api/reports/audit
+Fix the QC Task Manager reporting HTTP transport completely.
 
-Current tracked source must be verified because these HTTP routes were reported missing.
+Before changing code inspect:
+
+src/pages/reports.astro
+src/pages/lab/reports*
+src/lib/reporting/**
+src/lib/lab/report*
+scripts/e2e-reports.mjs
+scripts/route-manifest.mjs
+src/lib/permissions.ts
+src/lib/api-security.ts
+existing export API routes
+
+Expected URL contract:
+
+/api/reports/[reportType].csv
+/api/reports/[reportType].xlsx
+/api/reports/[reportType].pdf
+/api/reports/audit
+
+Verify the real tracked source first.
 
 GOAL:
-Implement/restore the missing report API transport without duplicating report domain logic.
 
-Requirements:
-1. Reuse existing report catalog, scope resolver, query builders and CSV/XLSX/PDF writers.
-2. Do not implement a second reporting engine.
-3. Server must ignore any forged client scope and recalculate authoritative scope from authenticated user + permissions.
-4. Employee: only authorized employee scope.
-5. Supervisor: only allowed department/team scope according to current permissions.
-6. Manager/admin: organization scope only where existing permissions allow it.
-7. Invalid report type => controlled 404/400 JSON response.
-8. Invalid format => controlled response.
-9. Authentication required.
-10. No IDOR.
-11. No scope escalation through query parameters.
-12. Validate all report filters server-side.
-13. Generated files need correct Content-Type.
-14. Generated files need safe Content-Disposition filenames.
-15. No user-input path interpolation.
-16. Report audit event must be persisted using the existing report audit mechanism.
-17. Audit endpoint itself must be permission protected.
-18. No inline scientific/regulatory assumptions.
+Implement or restore missing report API routes without duplicating report-domain logic.
 
-Expected Astro routes should map cleanly to the URL contract, using the minimum number of files.
+REQUIREMENTS:
 
-Update:
-- route manifest
-- report tests
-- E2E where necessary
+1. Reuse existing report catalog.
+2. Reuse existing report authorization.
+3. Reuse existing query/filter logic.
+4. Reuse existing CSV/XLSX/PDF writers.
+5. Do not build another report engine.
+6. Server must resolve authoritative scope.
+7. Ignore forged client-side scope.
+8. Employee only sees authorized employee data.
+9. Supervisor only sees authorized team/department scope.
+10. Manager/admin organization scope only where permissions allow.
+11. Invalid report type gets controlled error.
+12. Invalid format gets controlled error.
+13. Authentication required.
+14. No IDOR.
+15. Validate every filter server-side.
+16. Safe Content-Type.
+17. Safe Content-Disposition.
+18. Never interpolate user input into filesystem paths.
+19. Persist report audit.
+20. Protect audit endpoint.
+21. Do not invent quality/scientific values.
 
-Add tests for:
-- CSV
-- XLSX
-- PDF
-- invalid report
-- anonymous
-- employee forged organization scope
-- supervisor forged organization scope
-- manager valid organization scope
-- audit persistence
-- audit permission
-- Content-Type
-- filename
-- date filters
-- user filters
+TEST:
+
+CSV
+XLSX
+PDF
+invalid report
+anonymous
+employee forged organization scope
+supervisor forged organization scope
+manager valid organization scope
+audit persistence
+audit permission
+Content-Type
+filename
+date filters
+employee filters
 
 Run:
+
 pnpm typecheck
 pnpm test:dashboard-reports
 pnpm test:lab-reports
@@ -220,1106 +314,2189 @@ pnpm test:route-manifest
 pnpm test
 pnpm build
 
-Then run the reports E2E against an isolated database.
+Then execute reporting E2E against isolated SQLite.
 
-Do not alter unrelated UI in this task.
-Do not commit/push/deploy.
+Do not commit.
+Do not push.
+Do not deploy.
 
-Finish with a Saudi-Arabic report:
-- root cause
-- files changed
-- endpoints implemented
-- authorization behavior
-- tests and exact results
-- remaining issues
+Final Saudi-Arabic report:
+
+root cause
+files changed
+routes implemented
+authorization behavior
+tests
+exact results
+remaining issues
 ```
 
 ---
 
-# Prompt 02 — Migration 031 + Embedded Migration Parity P0
-
-`db.ts` الحالي يعرّف 031 بشكل مختلف عن الملف الحقيقي على القرص؛ والـmigration runner حساس للاسم والـchecksum.
+# 02 — Migration Parity
 
 ```text
 TASK ID: QC-MIGRATION-PARITY-002
 PRIORITY: P0
 
-Fix migration source parity in apps/qc-task-manager without rewriting migration history.
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Ensure on-disk migrations and embedded application migrations are identical.
 
 Inspect:
-- db/migrations/001_*.sql through latest
-- specifically db/migrations/031_reserved.sql
-- src/lib/db.ts
-- src/lib/migrations.ts
-- scripts/test-migrations.mjs
-- scripts/db-doctor.mjs
 
-Problem to verify:
-The on-disk migration is:
-031_reserved.sql
+db/migrations/**
+src/lib/db.ts
+src/lib/migrations.ts
+scripts/test-migrations.mjs
+scripts/db-doctor.mjs
 
-The embedded migration list in src/lib/db.ts may define version 031 using a different filename/source string.
+Specifically inspect migration 031.
 
-The migration engine verifies:
-- version
-- name
-- checksum
+RULES:
 
-Therefore disk vs bundled startup behavior must be byte-for-byte/source-equivalent for every embedded migration.
+Do not modify historical migration content merely to make tests pass.
 
-GOAL:
-Make every embedded migration exactly match the repository migration file.
+Do not rewrite applied migrations.
 
-Rules:
-1. Never edit already-applied historical migration contents just to satisfy a test.
-2. Import 031_reserved.sql using ?raw exactly like all other embedded SQL migrations.
-3. Use exactly the same filename/name/source in embeddedMigrations.
-4. Preserve sequential versions.
-5. Do not create migration 036 for this problem unless schema data actually needs changing—it should not.
-6. Preserve migration checksum history.
+Every embedded migration must exactly match:
 
-Create a new test:
+version
+filename
+migration name
+source
+SHA-256 checksum
+
+Fix migration 031 registration if disk and embedded values differ.
+
+Prefer importing the real SQL file using ?raw.
+
+Create:
+
 scripts/test-embedded-migration-parity.mjs
 
-It must:
-- enumerate every repository migration file
-- extract version/name
-- compare against the application embedded migration registry
-- compare exact source content or SHA-256
-- fail on:
-  * missing embedded migration
-  * extra embedded migration
-  * wrong filename
-  * wrong name
-  * wrong version
-  * checksum/source mismatch
-  * non-sequential history
+The test must enumerate repository migrations and compare against the embedded registry.
 
-Refactor only if necessary to expose an immutable embedded migration registry for testing without initializing the production DB.
+FAIL on:
 
-Register the test in:
-- package.json
-- canonical test manifest
-- full test runner
+missing migration
+extra migration
+wrong filename
+wrong name
+wrong version
+source mismatch
+checksum mismatch
+non-sequential history
 
-Update db-doctor if useful so it reports disk/bundle parity separately.
+Expose an immutable embedded migration registry if necessary.
+
+Register the new test in:
+
+package.json
+test manifest
+full test runner
 
 Acceptance:
-- fresh DB migrates to latest
-- existing DB migration history remains valid
-- second migration run applies zero migrations
-- checksum drift test still catches real drift
-- foreign_key_check PASS
-- integrity_check PASS
-- embedded parity PASS
+
+fresh DB migrates to latest
+existing DB remains valid
+second migration run applies zero
+checksum drift detection still works
+foreign_key_check PASS
+integrity_check PASS
+embedded parity PASS
 
 Run:
+
 pnpm test:migrations
 pnpm test:embedded-migration-parity
-pnpm db:status on a disposable initialized database
 pnpm test
 pnpm typecheck
 pnpm build
 
-Do not reset any non-disposable DB.
-Do not commit/push/deploy.
+Never reset a non-disposable DB.
 
-Report exact hashes/names for migration 031 before and after.
+Do not commit.
+Do not push.
+Do not deploy.
+
+Final response:
+
+exact issue
+exact migration mismatch
+files changed
+checksums
+test results
 ```
 
 ---
 
-# Prompt 03 — Test Registry + Lab Search + Full Acceptance P0
-
-الـAcceptance Runner الحالي يحتوي 25 suites ولا يحتوي `e2e-lab-search.mjs`.  كما أن manifest guard الحالي يقارن package scripts بالmanifest فقط، ولا يمسح ملفات الاختبارات نفسها.
+# 03 — Test Registry + Full E2E
 
 ```text
 TASK ID: QC-TEST-GATE-003
 PRIORITY: P0
 
-Make the QC test/acceptance registry impossible to silently drift.
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Make the test and E2E registry impossible to silently drift.
 
 Inspect:
-- apps/qc-task-manager/package.json
-- scripts/test-manifest.mjs
-- scripts/test-manifest-guard.mjs
-- scripts/run-full-tests.mjs
-- scripts/e2e-acceptance.mjs
-- every scripts/test-*.mjs
-- every scripts/e2e-*.mjs
-- specifically scripts/e2e-lab-search.mjs
+
+package.json
+scripts/test-manifest.mjs
+scripts/test-manifest-guard.mjs
+scripts/run-full-tests.mjs
+scripts/e2e-acceptance.mjs
+scripts/test-*.mjs
+scripts/e2e-*.mjs
+
+Specifically inspect:
+
+scripts/e2e-lab-search.mjs
 
 GOALS:
-A. Register the Lab Search E2E in the official acceptance runner.
-B. Detect orphan test/E2E files automatically.
-C. Produce a deterministic full acceptance result.
 
-Modify the test registry guard so it inspects the filesystem.
+A. Register Lab Search E2E.
+B. Detect orphan tests.
+C. Detect orphan E2Es.
+D. Produce deterministic full acceptance.
 
-Required classification:
-- canonical unit/integration test scripts
-- meta tests
-- canonical E2E suites
-- intentional helpers/non-runnable scripts
+Create explicit classifications:
 
-Do not treat every arbitrary .mjs as an executable test. Use explicit filename conventions plus a small documented allowlist where needed.
+canonical tests
+meta tests
+canonical E2Es
+helpers/non-runnable scripts
 
 The guard must fail if:
-1. package.json test:* command is absent from the manifest.
-2. manifest command does not exist in package.json.
-3. scripts/test-*.mjs exists but is unregistered and not explicitly classified.
-4. scripts/e2e-*.mjs exists but is absent from the E2E registry and not explicitly classified.
-5. registered file does not exist.
-6. duplicate canonical entries exist.
 
-Add:
-e2e-lab-search.mjs
-to the main E2E acceptance runner.
+1. package test:* missing from manifest
+2. manifest command absent from package.json
+3. test-*.mjs unregistered
+4. e2e-*.mjs unregistered
+5. registered file missing
+6. duplicate entries
 
-Do not weaken its existing:
-- employee data isolation
-- manager visibility
-- search coverage
-- mobile/desktop overflow checks
-
-Enhance the acceptance summary to include:
-- suite name
-- script
-- passed assertions
-- failed assertions
-- duration
-- timeout status
-- total suites
-- total assertions if parsable
-- HEAD SHA
-- dirty status
+Add lab-search to acceptance.
 
 Preserve:
-- isolated SQLite DB per suite
-- isolated port per suite
-- forced process timeout
-- server teardown
-- browser teardown
-- restart persistence suite
+
+employee data isolation
+manager visibility
+search fields
+mobile/desktop checks
+isolated DB per suite
+isolated port
+timeouts
+server cleanup
+browser cleanup
+restart persistence
+
+Enhance acceptance summary:
+
+suite
+script
+passed assertions
+failed assertions
+duration
+timeout
+total suites
+total assertions
+HEAD SHA
+dirty state
 
 Run:
+
 pnpm test:manifest
 pnpm test
 pnpm build
 pnpm e2e:acceptance
 
-The final task is not complete unless e2e:acceptance actually exits 0.
+The task is incomplete unless:
+
+pnpm e2e:acceptance
+
+exits with code 0.
 
 If it fails:
-debug the exact first failing suite,
-fix real defects,
-rerun from the beginning.
 
-Do not remove assertions merely to make tests green.
-Do not increase timeouts unless you prove the test legitimately needs it.
-Do not commit/push/deploy.
+fix the real first failure
+rerun the complete acceptance suite
 
-Produce a final acceptance table in Saudi Arabic.
+Do not weaken assertions.
+Do not arbitrarily increase timeouts.
+
+Do not commit.
+Do not push.
+Do not deploy.
 ```
 
 ---
 
-# Prompt 04 — Deployment + Persistent SQLite + Backup Contract P0
+# 04 — Deployment Contract
 
 ```text
 TASK ID: QC-DEPLOYMENT-CONTRACT-004
 PRIORITY: P0
 
-Make repository deployment documentation and executable deployment configuration for apps/qc-task-manager match exactly.
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Make repository deployment configuration and documentation match the real QC runtime.
 
 Inspect:
-- root render.yaml
-- apps/qc-task-manager docs deployment files
-- apps/qc-task-manager README.md
-- src/lib/db.ts
-- src/lib/backup.ts
-- src/lib/backup-scheduler.ts
-- src/lib/systemHealth.ts
-- src/pages/api/health.ts
-- package.json scripts
 
-Known requirement:
-QC uses SQLite and MUST run as exactly one writable application instance with persistent storage.
+render.yaml
+apps/qc-task-manager deployment docs
+README
+src/lib/db.ts
+src/lib/backup.ts
+src/lib/backup-scheduler.ts
+src/lib/systemHealth.ts
+src/pages/api/health.ts
+package.json
 
-Do not modify or break the existing public BrightAI site's Render service.
+Do not break the public BrightAI website deployment.
 
-Decide the safest supported configuration:
-- add a second service to the existing Render blueprint if that is the actual repository deployment approach,
+QC REQUIREMENTS:
+
+Astro Node SSR
+Node 22-compatible
+one writable instance
+persistent disk
+SQLite database on persistent disk
+QC_DATABASE_PATH configured
+NODE_ENV=production
+no secrets in repository
+health endpoint
+backup directory persistent
+restart persistence
+
+Determine the safest deployment structure:
+
+existing Render blueprint second service
+
 OR
-- keep a separate QC deployment configuration/documented manual service if the repository deliberately separates them.
 
-Do not invent a deployment mechanism that Render does not support.
+separate QC deployment config/manual service
 
-QC deployment requirements:
-- Node 22 compatible
-- build from monorepo correctly
-- production start command points to apps/qc-task-manager/dist/server/entry.mjs
-- health endpoint checks the QC app, not public BrightAI
-- one writable instance
-- persistent disk
-- QC_DATABASE_PATH on persistent disk, e.g. under /var/data
-- no DB in ephemeral working directory
-- NODE_ENV=production
-- ADMIN_DEFAULT_PASSWORD supplied as secret, never hardcoded
-- AI secrets optional
-- no secret value in repository
-- SQLite horizontal scaling guard remains active
-- backup directory is persistent
-- restart preserves data
+Do not invent unsupported Render behavior.
 
-Fix the QC backup environment contract:
-If docs advertise QC_BACKUP_DIR, either:
-A. implement:
-process.env.QC_BACKUP_DIR ?? backupDirectoryForDatabase(DB_PATH)
-or
-B. remove the unsupported variable everywhere.
+Fix backup env contract.
 
-Prefer supporting QC_BACKUP_DIR while retaining the current fallback.
+If docs advertise:
 
-Add deployment-contract tests covering:
-- one instance accepted
-- WEB_CONCURRENCY >1 rejected
-- RENDER_NUM_INSTANCES >1 rejected
-- QC_HORIZONTAL_SCALING=true rejected
-- DB path resolution
-- backup path resolution
-- no secret logging
+QC_BACKUP_DIR
+
+then support:
+
+process.env.QC_BACKUP_DIR
+?? backupDirectoryForDatabase(DB_PATH)
+
+Preserve current fallback.
+
+Add deployment contract tests:
+
+one instance accepted
+WEB_CONCURRENCY >1 rejected
+RENDER_NUM_INSTANCES >1 rejected
+QC_HORIZONTAL_SCALING=true rejected
+DB path resolution
+backup path resolution
+no secret logging
 
 Update:
+
 DEPLOYMENT.md
-README where necessary
-environment variable reference
+README
+env variable reference
 restore runbook
 
-Add a pre-pilot deployment checklist:
-- persistent disk attached
-- DB path verified
-- backup write verified
-- restart data persistence verified
-- health PASS
-- audit chain PASS
-- DB integrity PASS
+Add pre-pilot checklist:
 
-Do NOT deploy.
-Do NOT create paid resources.
-Do NOT pick an arbitrary paid disk size if repository requirements do not define one; mark that as an operator choice.
+persistent disk
+DB path
+backup write
+restart persistence
+health
+audit chain
+integrity
+foreign keys
 
-Run all affected tests + build.
+Do not deploy.
+Do not create paid resources.
+Do not hardcode disk size unless requirements define it.
 
-Final response:
-show exact config drift you found and how it was eliminated.
+Run affected tests and build.
+
+Final Saudi-Arabic report:
+configuration drift
+changes
+remaining operator steps
 ```
 
 ---
 
-# Prompt 05 — Password Lifecycle + AI Safe Launch + Secret Hygiene P1
+# 05 — Auth + Password Lifecycle + AI Safe Mode
 
 ```text
 TASK ID: QC-AUTH-PILOT-HARDENING-005
 PRIORITY: P1
 
-Harden authentication for real employee pilot use without replacing the existing session/auth architecture.
+Repository:
+YEEEAE/BRIGHTAI
 
-Inspect:
-- src/lib/auth.ts
-- src/lib/seed.ts
-- src/lib/users.ts
-- src/lib/validation.ts
-- src/lib/permissions.ts
-- login/logout routes
-- admin user pages
-- migrations
-- auth E2E
-- any AI provider configuration
-
-Keep:
-- bcrypt
-- server-side sessions
-- current 12h session model unless existing business policy says otherwise
-- lockout
-- IP brute-force protection
-- dummy hash anti-enumeration behavior
-
-Implement a controlled first-login password lifecycle.
-
-Add the minimum DB fields using the NEXT sequential migration only:
-- must_change_password INTEGER/boolean style consistent with schema
-- password_changed_at TEXT nullable
-
-Behavior:
-1. Newly created user with an admin-set temporary password is marked must_change_password.
-2. Fresh seeded pilot accounts are also marked must_change_password.
-3. After valid login, a user with this flag may access only the password-change flow and logout.
-4. Add an authenticated account security/password page.
-5. Require current password.
-6. Require new password + confirmation.
-7. Validate using existing password policy.
-8. Password change clears must_change_password and sets password_changed_at.
-9. Invalidate all other sessions for that user after password change.
-10. Keep the current session or replace it safely according to existing session implementation.
-11. Admin password reset marks must_change_password again.
-12. Never log passwords or hashes.
-
-Do not build email password recovery.
-Do not add an external identity provider.
-
-AI safe launch:
-- Never put GROQ/GEMINI secrets in code/docs/tests.
-- Search repository for accidental provider secrets or suspicious hardcoded tokens.
-- Do not print any discovered secret in the final response.
-- Ensure QC works completely with AI credentials absent.
-- AI UI must show a controlled unavailable state when no provider is configured.
-- Core QC workflows must never depend on AI.
-- Keep AI advisory only.
-- Add provider-health diagnostics without exposing secrets.
-
-If a provider credential has historically leaked, code cannot rotate it.
-Add an explicit operator checklist stating:
-ROTATE THE PROVIDER KEY OUTSIDE THE REPOSITORY BEFORE ENABLEMENT.
-
-Tests:
-- first login redirect
-- cannot bypass password change by direct URL
-- successful change
-- wrong current password
-- confirmation mismatch
-- other sessions invalidated
-- admin reset re-enables must_change_password
-- no password/hash in logs
-- AI absent does not break build/core app
-
-Run typecheck/test/build/E2E auth.
-
-Do not commit/push/deploy.
-```
-
----
-
-# Prompt 06 — Durable User Administration Audit P1
-
-```text
-TASK ID: QC-USER-AUDIT-006
-PRIORITY: P1
-
-Replace console-only administrative user-change auditing with durable database-backed auditing while preserving existing QC/Lab audit architecture.
-
-Inspect:
-- src/lib/users.ts
-- qc_audit_log schema and helpers
-- src/lib/audit/**
-- admin user routes/pages
-- permissions.ts
-- system health/audit pages
-
-Do NOT create another generic audit table if qc_audit_log can safely support these events.
-
-Determine the minimum compatible extension.
-
-Required durable events:
-- USER_CREATE
-- USER_UPDATE
-- USER_ROLE_CHANGE
-- USER_ACTIVATE
-- USER_DEACTIVATE
-- USER_PASSWORD_RESET
-
-Never persist:
-- raw password
-- password hash
-- session token
-
-Record:
-- target user id
-- actor user id
-- action
-- before values when relevant
-- after values when relevant
-- reason/note if supplied
-- timestamp
-- audit chain/hash according to existing qc audit implementation
-
-If qc_audit_log entity/action CHECK constraints need new vocabulary:
-use the next sequential migration.
-Preserve every historical row and verified hash chain.
-Backfill only using the established audit-chain mechanism.
-
-Admin self-protection remains:
-- no self-deactivation
-- no self-demotion
-
-Add an Admin Audit view/filter if the existing audit UI can expose USER events without confusing Lab users.
-
-Tests:
-- each admin operation emits exactly expected audit event
-- no password data
-- unauthorized user cannot access admin audit
-- hash chain PASS
-- historical Lab/QC audit unchanged
-- failed mutation does not emit false successful audit
-
-Run migrations/audit/user tests/full tests/build.
-
-Do not commit/push/deploy.
-```
-
----
-
-# Prompt 07 — Request Security Hardening P1
-
-```text
-TASK ID: QC-REQUEST-SECURITY-007
-PRIORITY: P1
-
-Hardening task only. Do not redesign authentication.
-
-Inspect:
-- src/lib/api-security.ts
-- src/middleware.ts
-- every API mutation route
-- all fetch() calls from React/Astro UI
-- CSRF tests
-- security tests
-
-Improve request protection while preserving existing behavior.
-
-1. Keep current Origin-based CSRF checks.
-2. Add Fetch Metadata defense-in-depth for unsafe requests:
-   - reject Sec-Fetch-Site: cross-site
-   - do not break same-origin requests
-   - handle older clients where header is absent by falling back to current Origin checks.
-3. Ensure ALL POST/PUT/PATCH/DELETE endpoints invoke the canonical request security/CSRF path.
-4. Add an architecture/security test that scans mutation routes for the required protection pattern.
-5. Preserve allowed Content-Types.
-6. Preserve request-size enforcement.
-7. Preserve API authentication.
-
-Rate limiter:
-Current in-memory buckets are appropriate for the one-instance QC architecture.
-Add bounded cleanup so stale entries cannot grow forever.
-Do not add Redis.
-
-Use:
-- periodic opportunistic pruning
-or
-- pruning when maps exceed a safe bounded threshold.
-
-Test:
-- same-origin accepted
-- cross-site rejected
-- invalid Origin rejected
-- old/no Sec-Fetch still protected by Origin
-- mutation content-type
-- request size
-- rate limit
-- stale bucket pruning
-- login lockout unaffected
-- AI limiter unaffected
-
-Do not weaken CSP.
-Do not add unsafe-inline.
-Do not add CORS wildcard.
-
-Run security/unit/typecheck/build.
-```
-
----
-
-# Prompt 08 — Dedicated QC CI / Release Gate P1
-
-```text
-TASK ID: QC-CI-RELEASE-GATE-008
-PRIORITY: P1
-
-Create a dedicated, repository-native CI release gate for:
+Application:
 apps/qc-task-manager/
 
-Inspect existing .github/workflows first.
-Do not break the public BrightAI website workflows.
+MISSION:
 
-Create or extend the smallest appropriate GitHub Actions workflow dedicated to QC.
-
-PR gate must run:
-1. frozen pnpm install
-2. QC typecheck
-3. test manifest guard
-4. route manifest
-5. embedded migration parity
-6. migration tests
-7. full canonical QC test suite
-8. production build
-
-Main/nightly/manual gate:
-run the complete QC E2E acceptance suite.
-
-Use:
-- existing Node version contract
-- pnpm via project/package manager configuration
-- dependency caching where safe
-
-Never require production secrets to run tests.
-Use acceptance-only test password/environment.
-Use isolated temporary SQLite DBs.
-
-Upload useful artifacts on failure where applicable:
-- acceptance summary
-- accessibility report
-- screenshot diff report when added later
-- logs without secrets
-
-Add a single aggregate required job name such as:
-QC / Release Gate
-
-Document recommended GitHub branch protection:
-- require QC / Release Gate
-- require branch up to date if appropriate
-- prohibit direct unreviewed production changes according to team workflow
-
-Do not attempt to modify GitHub repository settings from code.
-Do not deploy.
-
-Make sure current HEAD can run the same commands locally.
-
-Final output:
-workflow path
-jobs
-triggers
-expected secrets (should be none for CI)
-local equivalent commands
-```
-
----
-
-# Prompt 09 — Accessibility Gate P1
-
-```text
-TASK ID: QC-A11Y-GATE-009
-PRIORITY: P1
-
-Upgrade QC accessibility testing from partial/report-only coverage to a real pilot gate.
+Harden authentication for real employee pilot use without replacing the current auth architecture.
 
 Inspect:
-- scripts/e2e-a11y.mjs
-- BaseLayout.astro
-- Navbar.tsx
-- global.css
-- forms/dialogs/tables
-- existing accessibility helpers
 
-Keep the current keyboard tests.
+src/lib/auth.ts
+src/lib/seed.ts
+src/lib/users.ts
+src/lib/validation.ts
+src/lib/permissions.ts
+login/logout
+admin users
+migrations
+auth E2E
+AI provider configuration
 
-Change axe behavior:
-FAIL the acceptance suite if:
-- critical violations > 0
-- serious violations > 0
+KEEP:
 
-Moderate/minor:
-record in report and summary but do not initially block unless they affect a critical workflow.
+bcrypt
+server-side sessions
+lockout
+IP protection
+dummy hash protection
+current role/session architecture
 
-Expand axe coverage to representative authenticated role pages:
-- /login
-- employee home
-- manager/dashboard home
-- task detail
-- /lab
-- /lab/tests
-- /lab/tests/new
-- lab test detail
-- /lab/documents
-- /lab/change-requests
-- /lab/search
-- /reports where authorized
+Add controlled password lifecycle.
 
-Use deterministic test fixtures.
+Using the next sequential migration add:
 
-Also check:
-- input labels
-- aria-describedby for validation errors
-- required state
-- table headers
-- modal names
-- focus management
-- skip link
-- color-independent status labels
-- keyboard navigation
-- focus-visible
-- mobile nav
+must_change_password
+password_changed_at
 
-Fix genuine violations in shared components first.
+Behavior:
 
-Do not “disable” axe rules just to pass.
-If an exception is genuinely necessary, document why and scope it narrowly.
+1. Newly created users with temporary password require change.
+2. Seeded pilot users require change.
+3. User with must_change_password can only access password-change flow and logout.
+4. Add account security/password page.
+5. Require current password.
+6. New password.
+7. Confirm password.
+8. Existing password policy.
+9. Successful change clears must_change_password.
+10. Set password_changed_at.
+11. Invalidate other sessions.
+12. Admin reset sets must_change_password again.
+13. Never log passwords/hashes.
 
-Write machine-readable:
-download/qa/a11y-qc-report.json
+Do not add email recovery.
+Do not add external identity provider.
 
-Acceptance:
-critical=0
-serious=0
+AI:
+
+Search repository for exposed/hardcoded provider secrets.
+
+Do not print discovered secrets.
+
+Ensure application works fully without AI provider.
+
+AI must remain advisory.
+
+If provider unavailable:
+
+show controlled unavailable state.
+
+Core workflows must not depend on AI.
+
+Add provider-health diagnostics without exposing secrets.
+
+Document:
+
+ROTATE ANY PREVIOUSLY EXPOSED AI PROVIDER KEY OUTSIDE THE REPOSITORY BEFORE ENABLEMENT.
+
+Tests:
+
+first login redirect
+bypass prevention
+correct password change
+wrong current password
+confirmation mismatch
+session invalidation
+admin reset
+no secret logging
+AI absent
+build/core app unaffected
 
 Run:
-a11y E2E
-full tests
-build
-full acceptance after changes.
 
-Do not commit/push/deploy.
+typecheck
+tests
+build
+auth E2E
+
+Do not commit.
+Do not push.
+Do not deploy.
 ```
 
 ---
 
-# Prompt 10 — UI Design System + Navbar + Navigation
+# 06 — Full Product UI/UX Reconstruction
 
 ```text
-TASK ID: QC-UI-DESIGN-SYSTEM-010
-PRIORITY: P1/P2
+TASK ID: QC-PRODUCT-UIUX-RECONSTRUCTION-006
+PRIORITY: P1
 
-Improve UI consistency and navigation without changing business logic.
+Repository:
+YEEEAE/BRIGHTAI
 
-This is an internal QC enterprise application:
-clarity, speed and traceability are more important than decorative design.
+Application:
+apps/qc-task-manager/
 
-Inspect all:
-- shared components
-- layouts
-- Navbar.tsx
-- Breadcrumbs
-- EmptyState
-- FlashNotice
-- lab components
-- major pages
-- Tailwind config
-- global.css
+MISSION:
 
-Build a lightweight internal design system using existing Astro/Tailwind.
-Do not add Material UI, Chakra, Ant, Bootstrap or another heavy design system.
+Perform a complete product-level UI/UX/design audit and improvement.
 
-Create/reuse standardized primitives:
-- ActionButton
-- StatusBadge
-- PageHeader
-- SectionHeader
-- FormField
-- FormError
-- ValidationSummary
-- Card
-- MetricCard
-- DataTable wrapper
-- FilterBar
-- Pagination
-- EmptyState
-- ErrorState
-- WarningState
-- ConfirmDialog pattern
+This is NOT merely a CSS task.
 
-Extend LabActionButton or consolidate instead of duplicating components.
+Review and improve literally:
 
-Button hierarchy:
-Primary
-Secondary
-Destructive
-Ghost/text where justified
+Visual design
+UI nature
+Product appearance
+Page composition
+Information hierarchy
+Element placement
+Element sizing
+Spacing
+Typography
+Icons
+Cards
+Tables
+Forms
+Buttons
+Button placement
+Button hierarchy
+Navigation
+Search
+Filters
+Status indicators
+Empty states
+Loading states
+Error states
+Success states
+Dialogs
+Dropdowns
+Dashboards
+Laboratory screens
+Task screens
+Admin screens
+Reports
+Documents
+Mobile
+Tablet
+Desktop
+Ease of use
+Clicks
+Cognitive load
+Discoverability
+Workflow clarity
 
-Minimum touch target:
-44px-ish/current min-h-11 convention.
+The application must feel like one polished internal enterprise product.
 
-Navbar:
-Current role navigation can become crowded.
-Reorganize it into a simpler mental model while preserving all reachable routes.
+CRITICAL:
 
-Preferred top-level structure:
-- Dashboard / My Tasks as role appropriate
-- Tasks
-- Quality
-- Laboratory
-- Reports where permitted
+Do not change business rules for design reasons.
+Do not weaken RBAC.
+Do not move permission logic from permissions.ts.
+Do not break audit.
+Do not break CSRF.
+Do not weaken CSP.
+Do not add unsafe-inline.
+Do not add a heavy UI library.
+Do not replace Astro/Tailwind/React.
+Do not invent scientific values.
+Do not remove functionality just because it is difficult to redesign.
 
-Move administrative utilities to a user/admin menu:
-- Notifications
-- Users
-- Templates/settings where appropriate
-- System Health
-- Sign out
+UI remains English.
 
-Do not expose unauthorized links.
+Final explanation must be Saudi Arabic.
+
+PHASE 1 — INVENTORY
+
+Recursively inspect every user-facing route in src/pages.
+
+Inspect:
+
+src/components/
+src/layouts/
+src/styles/
+src/lib/lab/navigation.ts
+src/lib/permissions.ts
+
+Build a screen matrix:
+
+Route
+Purpose
+Primary role
+Other roles
+Primary action
+Secondary actions
+Destructive actions
+Navigation
+Forms
+Tables
+Filters
+Search
+Empty state
+Error state
+Responsive behavior
+UX problems
+Design inconsistencies
+
+Cover:
+
+Login
+Employee
+Supervisor
+Manager
+Admin
+Tasks
+Search
+Notifications
+Delete requests
+Findings
+RCA
+CAPA
+Evidence
+Reports
+Lab
+Tests
+Test Form
+Review
+Products
+Equipment
+Calibration
+Maintenance
+Templates
+Documents
+WI
+SOP
+Acknowledgements
+Retests
+Change Requests
+Lab Search
+Calendar
+Audit
+Data Quality
+System Health
+Users
+
+PHASE 2 — PRINCIPLES
+
+Use:
+
+clarity over decoration
+one obvious primary action
+destructive actions separated
+users know where they are
+users know current status
+users know next action
+reduce unnecessary scroll
+reduce unnecessary navigation
+progressive disclosure
+dense operational data remains readable
+avoid dashboard card overload
+tables for comparison
+cards for summary
+forms follow real task order
+status not color-only
+mobile actions reachable
+controlled actions unmistakable
+
+PHASE 3 — DESIGN LANGUAGE
+
+Create:
+
+docs/UI-DESIGN-SYSTEM.md
+
+Define:
+
+typography
+spacing
+radius
+shadows
+brand colors
+neutral colors
+info
+success
+warning
+danger
+status semantics
+
+Standardize:
+
+DRAFT
+PENDING
+SUBMITTED
+IN REVIEW
+APPROVED
+REJECTED
+PASS
+FAIL
+HOLD
+VOID
+ARCHIVED
+OVERDUE
+
+PHASE 4 — PRIMITIVES
+
+Audit existing components before adding new ones.
+
+Consolidate/create:
+
+AppButton
+PageHeader
+SectionHeader
+StatusBadge
+DataCard
+MetricCard
+InfoBanner
+WarningBanner
+ErrorBanner
+SuccessBanner
+FormField
+FormHelp
+FormError
+ValidationSummary
+FilterBar
+SearchField
+DataTable
+Pagination
+EmptyState
+LoadingState
+ErrorState
+ConfirmDialog
+DropdownMenu
+ActionMenu
+StickyActionBar
+PageTabs
+SectionNavigation
+
+Avoid duplicate components.
+
+PHASE 5 — BUTTON SYSTEM
+
+Classify all buttons:
+
+PRIMARY
+SECONDARY
+GHOST
+DESTRUCTIVE
+ICON-ONLY
+
+Examples:
+
+Primary:
+Save
+Create
+Submit
+Approve
+Generate
+
+Secondary:
+Save Draft
+Edit
+Export
+Request Changes
+Back
+
+Destructive:
+Delete
+Void
+Archive
+
+Standardize button placement.
+
+Form desktop example:
+
+[Cancel] [Save Draft] [Submit for Review]
+
+Keep destructive actions visually separate.
+
+Use explicit labels:
+
+Submit for Review
+Approve Test
+Save Draft
+Add Equipment
+Generate PDF
+
+Icon-only buttons require aria-label and usable target.
+
+PHASE 6 — PAGE STRUCTURE
+
+Standard page skeleton:
+
+Breadcrumb
+Page Header
+Title
+Description
+Status
+Primary actions
+Important alerts
+Filters/Search
+Main content
+Secondary/history
+Danger actions
+
+Long forms:
+
+Breadcrumb
+Header
+Status
+Section navigation/progress
+Form
+Sticky actions
+
+PHASE 7 — NAVIGATION
+
+Simplify global mental model.
+
+Prefer high-level groups:
+
+Dashboard
+Tasks
+Quality
+Laboratory
+Reports
+
+Administrative utilities should move to secondary/account/admin menus.
 
 Add:
-- clear current-section state
-- aria-current
-- consistent hover/focus
-- mobile equivalent
-- no dead links
 
-Laboratory secondary navigation:
-Preserve the existing grouped concepts:
+active state
+aria-current
+consistent focus
+mobile navigation
+
+LAB:
+
+Preserve:
+
 Overview
 Testing
 Master Data
 Controlled Documents
 Operations
 
-Improve mobile behavior so 20 links do not become an unreadable wrapped wall.
-Use a lightweight responsive section picker or grouped collapsible presentation with no new library.
-
-Do not move authorization into UI components.
-permissions.ts remains authority.
-
-Create:
-docs/UI-DESIGN-SYSTEM.md
-
-Run:
-UI source tests
-a11y
-responsive E2E
-full tests
-build
-
-Do not commit/push/deploy.
-```
-
----
+Desktop:
+structured section nav/sidebar if useful.
 
-# Prompt 11 — Lab Command Center + Management Dashboard
-
-```text
-TASK ID: QC-LAB-MANAGEMENT-UX-011
-PRIORITY: P1/P2
-
-Improve the Laboratory landing experience and implement the currently latent management dashboard only if the current permission/navigation architecture already expects it.
-
-Inspect:
-- src/pages/lab/index.astro
-- src/lib/lab/overview.ts
-- src/lib/lab/navigation.ts
-- src/lib/permissions.ts
-- LabSecondaryNav
-- change requests
-- tests
-- calibration
-- documents
-- data quality
-- audit
-
-PART A — Lab home
-
-Do not remove useful KPIs, but reduce initial cognitive overload.
-
-Change the information hierarchy from:
-“show every metric first”
-to:
-“show what the current role must act on first”.
-
-Employee:
-- My Tests
-- Draft Tests
-- Returned for Changes
-- My WI Content
-- Quick New Test
-
-Supervisor:
-- Tests waiting for review
-- Returned/rework
-- team operational alerts
-- controlled-document review tasks
-
-Manager/Admin:
-Create a prominent:
-Needs your attention
-section including authoritative counts such as:
-- tests awaiting approval/review as applicable
-- pending master data changes
-- overdue calibration
-- documents requiring action
-- unresolved data-quality issues
-
-Put secondary metrics into a lower section.
-
-Do not change query scope rules.
-
-PART B — /lab/management
-
-Verify whether navigation/permissions already define this route.
-If yes, implement it for management roles only.
-
-Manager/Admin management dashboard should contain:
-- Approval/Review queue summary
-- Pending Change Requests
-- Changes waiting >24h
-- Rejected contributor changes
-- Calibration risk
-- Equipment requiring attention
-- Controlled Document health
-- WI content progress
-- FAIL/HOLD trends using existing trend queries
-- Retest/open investigations
-- Data Quality
-- Audit-chain/system-health summary where permission allows
-
-Every metric must be based on existing database records.
-No fake seed numbers.
-
-Every actionable card should link to the correct filtered register.
+Mobile:
+section selector/collapsible groups.
 
-No new analytics library.
+Avoid giant wrapped navigation lists.
 
-Add unit/query tests + RBAC + responsive E2E.
-
-Run full affected tests/build.
-```
+PHASE 8 — ROLE HOME
 
----
+EMPLOYEE:
 
-# Prompt 12 — Forms + Lab Sample Productivity
+My Tasks
+My Draft Tests
+Returned for Changes
+My Pending Change Requests
+My WI Content
+Quick New Test
 
-```text
-TASK ID: QC-FORM-USABILITY-012
-PRIORITY: P2
+SUPERVISOR:
 
-Standardize high-frequency forms for real QC staff usage without changing controlled scientific rules.
+Tests Awaiting Review
+Documents Awaiting Review
+Team Issues
+Overdue Tasks
+Open Retests
+Operational Alerts
 
-Inspect:
-- LabTestForm.tsx
-- Equipment forms
-- Product forms
-- Calibration forms
-- Template forms
-- Controlled Document editor
-- Task create/edit flows
+MANAGER/ADMIN:
 
-Shared UX requirements:
-- consistent required indicators
-- consistent validation messages
-- top validation summary after failed submit
-- focus first invalid field
-- sticky Save/Submit actions for long forms where appropriate
-- unsaved-changes protection
-- clear Save Draft vs Submit semantics
-- no accidental double submission
-- disabled/loading state
-- explicit successful save feedback
-
-Do not autosave controlled workflow transitions.
-Draft autosave may only be added where it is safe and does not create hidden approval/audit actions.
-
-Lab sample table productivity:
-Use the existing data model.
-
-Implement safe convenience tools:
-- Duplicate previous row
-- Fill down selected non-scientific/manual value
-- clear selected range/row
-- paste multiple tabular rows from spreadsheet when schema mapping is unambiguous
-- undo last bulk paste if feasible without a new dependency
-
-Never automatically calculate PASS/FAIL unless an approved existing template rule already does so.
-Never invent acceptance criteria.
-
-For repeated values, optionally provide:
-Apply to all samples
-only for fields where that semantic is valid based on current form model.
+Approvals Waiting
+Change Requests
+Calibration Risks
+FAIL/HOLD Tests
+Document Risks
+Data Quality
+Audit/System Health
 
-Keep paper-aligned field names and legacy compatibility.
-
-Add keyboard tests and 12-sample workflow E2E.
-
-Measure in test output:
-- number of sample rows entered
-- no data loss
-- validation correctness
-
-Do not change scientific reference values.
-```
-
----
-
-# Prompt 13 — Change Request Withdraw + Notification Reliability
-
-```text
-TASK ID: QC-WORKFLOW-NOTIFICATIONS-013
-PRIORITY: P2
-
-Improve contributor change-request lifecycle and notification reliability using existing systems.
-
-Inspect:
-- src/lib/lab/changeRequests.ts
-- migration for lab_change_requests
-- change request pages/API
-- notifications.ts
-- notification UI
-- permissions.ts
-- audit chain
-
-PART A:
-Add controlled withdrawal lifecycle.
-
-New status:
-WITHDRAWN
-
-Requirements:
-- requester may withdraw only their own PENDING request
-- manager/admin may not silently rewrite it as withdrawn on requester behalf unless current business rules explicitly support it
-- APPROVED/REJECTED cannot be withdrawn
-- withdrawal requires CSRF
-- server rechecks ownership/status
-- audit event records PENDING → WITHDRAWN
-- no canonical entity mutation is applied
-- pending queues/counts stop including it
-
-Use next sequential migration if CHECK constraints require schema rebuild.
-Preserve existing data and audit chain.
-
-PART B:
-Review notification transaction semantics.
-
-For workflow-critical persisted notifications:
-- review requested
-- rejected/returned
-- approval outcome
-
-If notification row is part of the same local SQLite business transaction, make its persistence atomic where safe.
-
-Do not make external delivery a transaction dependency.
-Do not introduce another notifications table.
-
-PART C:
-Improve /notifications filtering using existing notification types:
-- All
-- Tasks
-- Tests
-- Documents
-- Change Requests
-- Calibration/Equipment if existing types support it
-- Unread
-
-Do not invent dozens of new notification kinds.
-
-Tests:
-ownership
-CSRF
-forged id
-terminal status
-audit
-notification
-management counts
-employee visibility
-```
-
----
-
-# Prompt 14 — Reports UX + Print Quality
-
-```text
-TASK ID: QC-REPORT-PRINT-UX-014
-PRIORITY: P2
-DEPENDENCY: QC-REPORT-TRANSPORT-001 must already pass.
-
-Improve report-generation UX and controlled printing.
-
-PART A — Reports preview
-
-On /reports and lab report pages:
-Before users download a file, show an authoritative preview summary:
-- report type
-- resolved data scope
-- date range
-- filters
-- estimated/exact matching row count when cheap
-- generated-for role/user context
-
-Do not expose unauthorized counts.
-Server must resolve preview scope using the exact same authorization path used by generation.
-
-Download buttons remain:
+Secondary KPIs lower.
+
+PHASE 9 — INFORMATION DENSITY
+
+If 15 equal cards appear, redesign hierarchy.
+
+Use:
+
+Needs Attention
+Operational Summary
+Secondary Analytics
+
+Do not delete useful data.
+
+PHASE 10 — TABLES
+
+Standardize:
+
+headers
+row height
+hover
+status
+pagination
+filters
+alignment
+action column
+empty state
+
+Avoid multiple buttons per row.
+
+Use detail link + action menu.
+
+Keep important columns first.
+
+Avoid exposing meaningless internal IDs.
+
+Mobile:
+intentional horizontal scroll or compact cards where appropriate.
+
+PHASE 11 — SEARCH/FILTERS
+
+Standard pattern:
+
+Search
+Status
+Type
+Date
+More Filters
+Reset
+
+Show active filters.
+Show result count.
+Collapse advanced filters.
+
+PHASE 12 — DETAIL PAGES
+
+Top block:
+
+Identifier
+Title/Product
+Status
+Result
+Owner/Tester
+Important date
+Primary actions
+
+Then:
+
+Overview
+Workflow
+Related Data
+Evidence/Documents
+History/Audit
+
+Do not let audit history dominate active operations.
+
+PHASE 13 — LAB TEST FORM
+
+Optimize for high-frequency use.
+
+Suggested flow:
+
+1 Sample Identification
+2 Equipment/Product
+3 Approved References
+4 Test Conditions
+5 Samples
+6 Final Result
+7 Review
+
+Separate:
+
+Approved reference values
+
+from
+
+Recorded values
+
+Reference values must look read-only.
+
+Do not invent scientific data.
+
+PHASE 14 — DOCUMENTS / WI / SOP
+
+Clearly distinguish:
+
+Catalog only
+Missing Content
+Draft
+In Review
+Approved
+Superseded
+Archived
+
+Catalog-only WI primary action:
+
+Add Content
+
+not vague Edit.
+
+PHASE 15 — CHANGE REQUESTS
+
+Make review UI diff-oriented.
+
+Header:
+
+Request
+Entity
+Requester
+Submitted
+Status
+Target
+
+Diff:
+
+Field | Current | Proposed
+
+Reviewer actions separated from requester actions.
+
+PHASE 16 — EQUIPMENT/CALIBRATION
+
+Equipment detail must quickly answer:
+
+What equipment?
+Where?
+Can it be used?
+Calibration state?
+Maintenance due?
+Dependencies?
+
+Hierarchy:
+
+Identity
+Operational Status
+Calibration
+Maintenance
+Relations
+History
+
+PHASE 17 — REPORTS UI
+
+Improve:
+
+Report Type
+Basic Filters
+Advanced Filters
+Resolved Scope
+Matching records
+Downloads
+
+Downloads:
+
 CSV
 XLSX
 PDF
 
-PART B — Print validation
+PHASE 18 — ADMIN/SYSTEM HEALTH
 
-Audit print pages for:
-- Lab Test
-- Equipment
-- Maintenance
-- Calibration
-- controlled documents where applicable
+Admin must look operational.
 
-Requirements:
-- A4-friendly
-- no clipped critical columns
-- appropriate portrait/landscape per existing form
-- sensible page breaks
-- authorization/signature metadata retained
-- QR remains printable
-- source/reference metadata retained
-- no navigation/buttons in print
-- no uncontrolled scientific value substitutions
+User management:
 
-Add Playwright print-oriented checks using CSS media=print and screenshots/PDF generation where practical.
+Search
+User
+Role
+Department
+Status
+Actions
 
-Do not introduce a browser PDF dependency if Playwright already provides what is needed for tests.
+Avoid many inline buttons.
 
-Add report preview tests + print regression tests.
+System Health groups:
+
+Application
+Database
+Backup
+Audit
+Storage
+Deployment
+
+Healthy state calm.
+Problems prominent.
+
+PHASE 19 — STATES
+
+Differentiate:
+
+No records
+No search results
+No permission
+Load error
+Pending review
+Missing content
+No assigned work
+
+Give next action.
+
+PHASE 20 — DANGEROUS ACTIONS
+
+Audit:
+
+Delete
+Archive
+Void
+Reject
+Cancel
+Restore
+Approval when irreversible
+
+Use clear accessible confirmations.
+
+PHASE 21 — RESPONSIVE
+
+Audit at:
+
+1440
+1280
+1024
+768
+390
+360
+
+Desktop:
+efficient use.
+
+Tablet:
+avoid squeezed forms.
+
+Mobile:
+single column
+sticky actions
+usable navigation
+no clipped dialogs
+no accidental page overflow
+
+Do not shrink buttons/text excessively.
+
+PHASE 22 — ACCESSIBILITY
+
+Improve:
+
+keyboard
+focus
+labels
+aria
+errors
+dialogs
+reduced motion
+semantic tables
+
+Target:
+
+Critical Axe = 0
+Serious Axe = 0
+
+PHASE 23 — MICRO INTERACTIONS
+
+Allowed:
+
+loading state
+hover
+focus
+collapse
+success feedback
+subtle transitions
+
+Avoid:
+
+decorative animation
+marketing motion
+parallax
+
+PHASE 24 — PRODUCT POLISH
+
+Audit:
+
+capitalization
+terminology
+date formats
+status names
+button labels
+breadcrumbs
+page titles
+help text
+
+Same concept = same wording.
+
+PHASE 25 — FUNCTIONAL UX
+
+Count unnecessary clicks.
+
+High-frequency actions should usually be reachable within 1–2 navigation decisions.
+
+Examples:
+
+Employee → New Test
+Supervisor → Awaiting Review
+Manager → Change Requests
+Admin → Users
+
+PHASE 26 — AUTOMATED UX SAFEGUARDS
+
+Add lightweight semantic checks:
+
+no dead internal links
+no unauthorized nav links
+no page overflow
+icon-only buttons have labels
+major forms have validation summaries
+Critical/Serious Axe zero
+one H1 per major page
+no conflicting primary actions
+
+Avoid brittle Tailwind-class tests.
+
+PHASE 27 — VISUAL QA
+
+Use Playwright screenshots.
+
+Screens:
+
+Login
+Employee home
+Manager home
+Task detail
+Lab home
+Tests
+New Test
+Test Detail
+Products
+Equipment
+Documents
+WI missing content
+Change Request
+Reports
+Admin Users
+System Health
+
+Widths:
+
+1440
+768
+390
+
+Review actual screenshots.
+
+Fix:
+
+overflow
+misalignment
+crowded actions
+weak hierarchy
+bad whitespace
+clipping
+inconsistent cards
+
+PHASE 28 — NO OVER-REDESIGN
+
+Every change must improve:
+
+clarity
+speed
+consistency
+accessibility
+error prevention
+discoverability
+responsive usability
+
+PHASE 29 — VALIDATION
+
+Run:
+
+pnpm typecheck
+pnpm test:manifest
+pnpm test:route-manifest
+pnpm test
+pnpm build
+affected E2Es
+pnpm e2e:acceptance
+
+The task is incomplete if business E2E breaks.
+
+PHASE 30 — REPORT
+
+Create:
+
+apps/qc-task-manager/docs/UI-UX-PRODUCT-AUDIT.md
+
+Include:
+
+screens audited
+problems
+changes
+components
+navigation before/after
+buttons
+tables
+forms
+lab
+mobile
+a11y
+screenshots
+remaining UX risks
+UAT requirements
+
+Score BEFORE/AFTER:
+
+Visual Design
+UI Consistency
+Information Architecture
+Navigation
+Buttons
+Forms
+Tables
+Laboratory UX
+Task UX
+Admin UX
+Mobile
+Accessibility
+Ease of Use
+Error Prevention
+Product Polish
+Overall Product UX
+
+Do NOT claim human UAT.
+
+Mark:
+
+RUNTIME USER UAT REQUIRED
+
+Final response in Saudi Arabic.
+
+Do not commit.
+Do not push.
+Do not deploy.
 ```
 
 ---
 
-# Prompt 15 — Observability + Error/Empty States
+# 07 — Durable User Administration Audit
 
 ```text
-TASK ID: QC-OBSERVABILITY-015
+TASK ID: QC-USER-AUDIT-007
+PRIORITY: P1
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Replace console-only user administration audit with durable database-backed auditing.
+
+Inspect:
+
+src/lib/users.ts
+qc_audit_log
+src/lib/audit/**
+admin user routes/pages
+permissions.ts
+audit views
+
+Do not create another audit system if qc_audit_log can support this safely.
+
+Required events:
+
+USER_CREATE
+USER_UPDATE
+USER_ROLE_CHANGE
+USER_ACTIVATE
+USER_DEACTIVATE
+USER_PASSWORD_RESET
+
+Never persist:
+
+password
+password hash
+session token
+
+Persist:
+
+target user
+actor
+action
+before
+after
+note/reason
+timestamp
+hash chain
+
+If CHECK constraints require new entity/action values:
+
+use the next sequential migration.
+
+Preserve all historical rows and chain integrity.
+
+Self-protection remains:
+
+no self-deactivation
+no self-demotion
+
+Add Admin audit filtering if appropriate.
+
+Tests:
+
+every operation emits expected audit
+no passwords
+unauthorized audit access rejected
+hash chain PASS
+historical audit unchanged
+failed mutation does not emit successful audit
+
+Run:
+
+migrations
+audit tests
+user tests
+full tests
+build
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 08 — Request Security
+
+```text
+TASK ID: QC-REQUEST-SECURITY-008
+PRIORITY: P1
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Strengthen request security without replacing authentication.
+
+Inspect:
+
+src/lib/api-security.ts
+src/middleware.ts
+every mutation API
+UI fetch calls
+CSRF tests
+security tests
+
+Keep current Origin CSRF.
+
+Add Fetch Metadata defense:
+
+Reject:
+
+Sec-Fetch-Site: cross-site
+
+Accept:
+
+same-origin
+
+If Sec-Fetch-Site absent:
+
+fall back to existing Origin logic.
+
+Ensure every:
+
+POST
+PUT
+PATCH
+DELETE
+
+uses canonical request security.
+
+Add architecture/security scanning test.
+
+Preserve:
+
+Content-Type validation
+request size
+auth
+rate limits
+
+Rate-limit buckets:
+
+keep in-memory because QC is one-instance.
+
+Add stale-entry pruning.
+
+Do not add Redis.
+
+Tests:
+
+same-origin accepted
+cross-site rejected
+invalid Origin rejected
+no Fetch Metadata still protected
+content type
+size limit
+rate limit
+pruning
+login lockout
+AI rate limiter
+
+Do not weaken CSP.
+Do not add wildcard CORS.
+
+Run tests/typecheck/build.
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 09 — Dedicated QC CI
+
+```text
+TASK ID: QC-CI-RELEASE-GATE-009
+PRIORITY: P1
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Create a dedicated GitHub Actions release gate for QC.
+
+Inspect all existing .github/workflows.
+
+Do not break public BrightAI workflows.
+
+PR gate:
+
+frozen pnpm install
+QC typecheck
+test manifest
+route manifest
+embedded migration parity
+migration tests
+full QC tests
+production build
+
+Main/nightly/manual:
+
+full QC E2E acceptance
+
+Use repository Node/pnpm versions.
+
+No production secrets required.
+
+Use isolated temporary SQLite DBs.
+
+On failure upload safe artifacts where useful:
+
+acceptance summary
+a11y report
+visual QA report
+safe logs
+
+Add aggregate job:
+
+QC / Release Gate
+
+Document recommended branch protection:
+
+require QC / Release Gate
+
+Do not modify GitHub settings automatically.
+
+Do not deploy.
+
+Final output:
+
+workflow path
+jobs
+triggers
+local equivalent commands
+required secrets
+```
+
+---
+
+# 10 — Accessibility Gate
+
+```text
+TASK ID: QC-A11Y-GATE-010
+PRIORITY: P1
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Turn accessibility from report-only checking into a real pilot gate.
+
+Inspect:
+
+scripts/e2e-a11y.mjs
+BaseLayout
+Navbar
+global.css
+forms
+dialogs
+tables
+new shared design primitives from Task 006
+
+KEEP:
+
+existing keyboard tests.
+
+Axe behavior:
+
+FAIL if:
+
+critical > 0
+serious > 0
+
+Moderate/minor:
+
+report but initially do not block unless affecting core workflow.
+
+Cover:
+
+/login
+employee home
+manager home
+task detail
+/lab
+/lab/tests
+/lab/tests/new
+test detail
+/lab/documents
+/lab/change-requests
+/lab/search
+/reports
+
+Use deterministic fixtures.
+
+Check:
+
+labels
+aria-describedby
+required fields
+headers
+dialog names
+focus
+skip link
+status not color-only
+keyboard
+focus-visible
+mobile navigation
+
+Fix genuine problems in shared components first.
+
+Do not disable rules just to pass.
+
+Create:
+
+download/qa/a11y-qc-report.json
+
+Target:
+
+critical = 0
+serious = 0
+
+Run:
+
+a11y E2E
+full tests
+build
+full acceptance
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 11 — Design System Verification + Navigation Refinement
+
+> هذا صار **Verification/Consolidation** لأن برومبت 06 سوّى الشغل الكبير.
+
+```text
+TASK ID: QC-UI-CONSOLIDATION-011
+PRIORITY: P1/P2
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+DEPENDENCY:
+
+QC-PRODUCT-UIUX-RECONSTRUCTION-006 must already be implemented.
+
+MISSION:
+
+Do NOT redesign the product again.
+
+Verify, consolidate and clean up the UI architecture introduced by Task 006.
+
+Inspect:
+
+docs/UI-DESIGN-SYSTEM.md
+shared UI primitives
+Navbar
+LabSecondaryNav
+all remaining manually styled high-frequency buttons/cards/forms
+Tailwind config
+global.css
+
+GOALS:
+
+1. Remove duplicated design primitives.
+2. Ensure equivalent actions use the same component/pattern.
+3. Ensure legacy button styling does not conflict with the new system.
+4. Ensure navigation remains reachable for every role.
+5. Ensure no permission decision moved into UI.
+6. Ensure active navigation states are correct.
+7. Ensure mobile navigation matches desktop information architecture.
+8. Ensure no dead links were introduced by redesign.
+9. Ensure no major page visually bypasses the design system without reason.
+
+Audit repeated patterns:
+
+buttons
+status badges
+cards
+form errors
+validation summaries
+filter bars
+page headers
+tables
+empty states
+dialogs
+sticky action bars
+
+Do not mechanically replace one-off elements if doing so makes the code worse.
+
+Run:
+
+design-related tests
+navigation E2E
+a11y
+full tests
+build
+acceptance
+
+Update UI-DESIGN-SYSTEM.md with the final canonical components.
+
+Final response:
+what was consolidated
+what remained intentionally custom
+remaining inconsistencies
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 12 — Lab Management Dashboard
+
+```text
+TASK ID: QC-LAB-MANAGEMENT-UX-012
+PRIORITY: P1/P2
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Improve Lab command center and implement management dashboard if current architecture expects it.
+
+Inspect:
+
+src/pages/lab/index.astro
+src/lib/lab/overview.ts
+src/lib/lab/navigation.ts
+permissions.ts
+LabSecondaryNav
+change requests
+tests
+calibration
+documents
+data quality
+audit
+
+PART A — ROLE-BASED LAB HOME
+
+Do not remove useful KPIs.
+
+Prioritize actions.
+
+Employee:
+
+My Tests
+Draft Tests
+Returned for Changes
+My WI Content
+My Change Requests
+Quick New Test
+
+Supervisor:
+
+Tests Awaiting Review
+Documents Awaiting Review
+Team Issues
+Open Retests
+Operational Alerts
+
+Manager/Admin:
+
+Needs Your Attention
+
+Include:
+
+tests requiring action
+pending master-data changes
+overdue calibration
+documents requiring action
+data-quality issues
+
+Move secondary metrics lower.
+
+PART B — /lab/management
+
+If navigation/permissions already define it:
+
+implement Manager/Admin-only dashboard.
+
+Include:
+
+Approval queue
+Change Requests
+Waiting >24h
+Rejected contributor changes
+Calibration risk
+Equipment attention
+Document health
+WI completion
+FAIL/HOLD trends
+Retests
+Data Quality
+Audit/System Health summary
+
+No fake data.
+
+Cards link to real filtered registers.
+
+No new analytics library.
+
+Tests:
+
+RBAC
+queries
+responsive
+navigation
+
+Run affected tests + full tests + build.
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 13 — Forms + Sample Productivity
+
+```text
+TASK ID: QC-FORM-USABILITY-013
 PRIORITY: P2
 
-Make the internal QC application much easier to debug during company pilot.
+Repository:
+YEEEAE/BRIGHTAI
 
-Do not add an external SaaS observability provider.
+Application:
+apps/qc-task-manager/
 
-PART A — request correlation
+DEPENDENCY:
 
-Add a request/correlation ID:
-- generated server-side
-- available to logs
-- included in safe 5xx responses/support messages where useful
-- propagated through major mutation handling
-- never derived from sensitive data
+Task 006 UI/UX reconstruction already implemented.
 
-Structured server logs should include:
-- timestamp
-- request_id
-- method
-- route
-- authenticated actor id when available
-- role when useful
-- status
-- duration_ms
-- safe error code
+MISSION:
+
+Refine real operational form productivity without redoing visual design.
+
+Inspect:
+
+LabTestForm.tsx
+Equipment forms
+Product forms
+Calibration forms
+Template forms
+Document editor
+Task forms
+shared form primitives
+
+Verify all high-frequency forms use:
+
+required indicators
+consistent errors
+validation summary
+first-invalid focus
+sticky actions where useful
+unsaved change protection
+Save Draft vs Submit clarity
+loading state
+double-submit prevention
+successful save feedback
+
+LAB SAMPLE PRODUCTIVITY:
+
+Add/refine safe helpers:
+
+Duplicate previous row
+Fill down
+Clear row
+Paste spreadsheet rows
+Undo last bulk paste if feasible
+
+Never calculate PASS/FAIL unless existing approved logic explicitly defines it.
+
+Never invent scientific criteria.
+
+Allow Apply to all samples only where semantics are already valid.
+
+Preserve paper-aligned fields.
+
+Preserve legacy data.
+
+Add:
+
+keyboard tests
+12-sample E2E
+paste tests
+data-loss tests
+
+Run affected tests, full tests, build, acceptance.
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 14 — Change Request Withdraw + Notification Reliability
+
+```text
+TASK ID: QC-WORKFLOW-NOTIFICATIONS-014
+PRIORITY: P2
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Improve contributor request lifecycle and workflow notifications.
+
+Inspect:
+
+src/lib/lab/changeRequests.ts
+lab_change_requests migration/schema
+change request pages
+notifications.ts
+permissions.ts
+audit
+
+PART A — WITHDRAW
+
+Add status:
+
+WITHDRAWN
+
+Rules:
+
+requester only
+own request only
+PENDING only
+
+Cannot withdraw:
+
+APPROVED
+REJECTED
+already WITHDRAWN
+
+Require CSRF.
+Revalidate server-side.
+
+Audit:
+
+PENDING → WITHDRAWN
+
+No canonical mutation applied.
+
+Remove withdrawn requests from pending counts.
+
+Use next sequential migration if needed.
+
+PART B — NOTIFICATION RELIABILITY
+
+Review workflow-critical notification persistence:
+
+review requested
+returned/rejected
+approval outcome
+
+Where safe:
+
+persist notification in the same SQLite transaction as the workflow mutation.
+
+Do not make external delivery atomic.
+
+Do not add another notifications table.
+
+PART C — NOTIFICATION UX
+
+Filters:
+
+All
+Unread
+Tasks
+Tests
+Documents
+Change Requests
+Calibration/Equipment if existing notification types allow
+
+Do not invent unnecessary notification kinds.
+
+Tests:
+
+ownership
+CSRF
+forged request
+terminal states
+audit
+notifications
+counts
+visibility
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 15 — Reports UX + Print Quality
+
+```text
+TASK ID: QC-REPORT-PRINT-UX-015
+PRIORITY: P2
+
+DEPENDENCY:
+
+Reporting transport must already be working.
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Refine report-generation UX and controlled print quality.
+
+PART A — REPORT PREVIEW
+
+Before download show:
+
+report type
+resolved data scope
+date range
+filters
+matching row count where cheap
+current user/role context
+
+Use same authorization path as actual generation.
+
+Never expose unauthorized counts.
+
+Downloads:
+
+CSV
+XLSX
+PDF
+
+Use shared standardized buttons.
+
+PART B — PRINT
+
+Audit:
+
+Lab Test
+Equipment
+Maintenance
+Calibration
+Controlled Documents where applicable
+
+Print requirements:
+
+A4-friendly
+no clipped critical columns
+appropriate orientation
+page breaks
+authorization metadata
+signature/e-signature metadata
+QR
+reference/source metadata
+no navigation
+no action buttons
+no altered scientific values
+
+Use Playwright print media.
+
+Add print regression checks.
+
+Do not add another PDF framework if Playwright/existing PDF solution suffices.
+
+Run:
+
+report tests
+print tests
+full tests
+build
+acceptance
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 16 — Observability + Error States
+
+```text
+TASK ID: QC-OBSERVABILITY-016
+PRIORITY: P2
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Make the application easy to troubleshoot during company pilot.
+
+Do not add external SaaS monitoring.
+
+PART A — REQUEST ID
+
+Generate server-side request/correlation ID.
+
+Include in safe server logs.
+
+Log:
+
+timestamp
+request_id
+method
+route
+actor_id where available
+role where useful
+HTTP status
+duration_ms
+safe error code
 
 Never log:
+
 password
-hash
+password hash
 session token
-sensitive file contents
+file contents
 AI secrets
 
-PART B — consistent user states
+PART B — UI ERROR STATES
 
-Create/reuse standardized UI states:
-- no records yet
-- no results for filters
-- permission denied
-- load/system error
-- conflict/stale record
-- success
-- warning
+Standardize:
 
-Every state should tell the user what action is available.
+No records
+No search results
+Permission denied
+System error
+Conflict
+Stale record
+Success
+Warning
 
-PART C — mutation error codes
+Every state should suggest available next action.
 
-Where practical, create stable internal error codes for:
+PART C — ERROR CODES
+
+Create stable safe codes where useful:
+
 AUTH
 FORBIDDEN
 VALIDATION
@@ -1330,433 +2507,17 @@ DB
 REPORT
 UPLOAD
 
-Do not leak SQL messages to the browser.
+Do not leak SQLite errors to users.
 
-System Health should retain existing DB/backup/audit status and may expose aggregate recent application error counts only if this can be done without introducing a large logging database.
+System Health may show aggregate operational status without becoming a full logging platform.
 
-Add tests for sanitization and request IDs.
+Tests:
 
-Keep UI English.
-```
-
----
-
-# Prompt 16 — Visual Regression + Responsive Coverage
-
-```text
-TASK ID: QC-VISUAL-RESPONSIVE-016
-PRIORITY: P2
-
-Create lightweight Playwright visual/responsive regression coverage using dependencies already present.
-
-Do not add a heavy visual testing SaaS.
-
-Cover these representative screens:
-- login
-- employee home
-- manager/dashboard
-- task detail
-- lab command center
-- lab tests register
-- new lab test
-- lab test detail
-- documents register
-- document detail/editor state
-- equipment register/detail
-- change request
-- lab search
-- reports
-- lab management if now implemented
-
-Viewports:
-- 1440 desktop
-- 1024 laptop
-- 768 tablet
-- 360 mobile
-
-For each:
-1. assert no unintended horizontal page overflow
-2. important primary actions remain reachable
-3. navigation remains usable
-4. tables use responsive strategy
-5. no dialog goes outside viewport
-6. no clipped validation/error messages
-
-Use deterministic fixtures and disable nondeterministic timestamps/animation as needed.
-
-Store screenshots under a clearly ignored/generated QA artifact directory, not in production assets.
-
-If baseline screenshots are intentionally committed, keep the set small and document update procedure.
-
-Integrate responsive assertions into nightly/full acceptance, not necessarily every fast unit-test run.
-
-Do not redesign pages solely for screenshot similarity.
-Fix actual usability regressions.
-```
-
----
-
-# Prompt 17 — Performance / Realistic Data Load
-
-```text
-TASK ID: QC-PERFORMANCE-017
-PRIORITY: P2
-
-Create evidence-based performance testing for the single-instance SQLite QC application.
-
-Do not optimize blindly.
-Do not add indexes until measurements show need.
-
-Create a disposable performance fixture generator.
-Never use production DB.
-
-Target realistic large local fixture such as approximately:
-- 10k tasks
-- 5k lab tests
-- ~60k samples
-- equipment + maintenance/calibration history
-- controlled documents/versions
-- large audit history
-but parameterize fixture size so CI can use a smaller profile.
-
-Benchmark read paths:
-- global/task dashboard
-- employee task list
-- task search
-- lab command center
-- lab search
-- tests register
-- equipment register
-- documents register
-- change request queue
-- audit timeline
-- reports
-
-Measure:
-- p50
-- p95
-- max
-- query count where measurable
-- generated report duration
-
-Create a readable benchmark report:
-download/qa/qc-performance.json
-and Markdown summary.
-
-Identify slow SQL with EXPLAIN QUERY PLAN where applicable.
-
-Only add an index when:
-- query path is important
-- benchmark demonstrates benefit
-- write overhead is acceptable
-
-Any schema index addition uses the next sequential migration.
-Do not alter historical migrations.
-
-Define reasonable pilot budgets based on observed baseline and existing product expectations—not arbitrary “regulatory” numbers.
-
-Run integrity/FK tests after any schema change.
-```
-
----
-
-# Prompt 18 — Onboarding + UAT + Feedback
-
-Codex ما يقدر يمثل موظفين حقيقيين، لذلك هذا البرومبت يجهز النظام والاختبارات لاستقبال UAT فعلي.
-
-```text
-TASK ID: QC-PILOT-UAT-018
-PRIORITY: P1/P2
-
-Prepare the QC application for structured employee UAT.
-
-Do NOT claim human usability has been validated.
-Codex cannot replace real staff testing.
-
-PART A — lightweight onboarding
-
-Add contextual help only where users commonly need it:
-- first login/password change
-- role home explanation
-- task workflow
-- creating a Lab Test
-- Submit vs Draft
-- review/approval separation
-- controlled document lifecycle
-- contributor change requests
-
-Keep help concise.
-Do not add a tour library.
-
-PART B — UAT runbook
-
-Create:
-apps/qc-task-manager/docs/PILOT-UAT.md
-
-Include role-specific scenarios:
-
-Employee:
-- login + password change
-- find own task
-- update task
-- create permitted task where flag allows
-- create AIR/VACUUM test
-- complete sample rows
-- submit test
-- search lot/test/sample
-- find WI
-- start WI content
-- submit master-data proposal
-
-Supervisor:
-- review appropriate test
-- return for changes
-- review controlled document not owned by self
-- verify team workspace
-
-Manager:
-- approve appropriate test with e-signature
-- review master-data change
-- approve document/template under separation rules
-- run reports
-- inspect calibration risk
-- inspect audit
-
-Admin:
-- create user
-- reset user password
-- role management
-- system health
-- backup status
-
-For each scenario record:
-- success yes/no
-- completion time
-- assistance required
-- error encountered
-- confusing labels/buttons
-- expected button location
-- comments
-
-PART C — feedback classification
-
-Create:
-P0 = blocks work/data integrity/security
-P1 = major workflow friction/wrong behavior
-P2 = usability/polish
-P3 = future enhancement
-
-Do not build a complex feedback platform.
-If an in-app feedback action is added, persist a simple internal issue/feedback record only if a suitable existing table/domain exists; otherwise keep UAT external/document-based.
-
-Do not invent employee feedback results.
-```
-
----
-
-# Prompt 19 — WI Catalog Completion Guard
-
-هذا مهم لأن الموجود حاليًا هو بيانات الصفحة 1/3 فقط، فلا نخلي Codex يخترع الصفحتين الباقية.
-
-```text
-TASK ID: QC-WI-CATALOG-COMPLETION-019
-PRIORITY: SOURCE-BLOCKED
-
-Audit the WI catalog import architecture but DO NOT invent pages 2/3 or 3/3.
-
-Inspect:
-- src/lib/lab/wiCatalog.ts
-- WI migrations
-- lab_documents
-- document versions
-- WI UI
-- existing source provenance fields
-
-Current imported source is page 1/3 only.
-
-Requirements:
-1. Preserve all existing 33 source-exact rows.
-2. Preserve spelling exactly as controlled source.
-3. Preserve:
-   creation_origin
-   source_register_code
-   source_class
-   source_page
-   source_row_no
-   source_revision
-   source_date
-4. No placeholder WI rows.
-5. No guessed code/title/revision/date.
-6. No fake document content.
-7. Catalog-only row remains “Missing Content” until a user creates actual content.
-8. First user content creates a legitimate document version and ownership according to current workflow.
-
-Improve importer so additional controlled pages can later be added cleanly:
-- explicit source_page on every catalog row
-- source_row_no from that page
-- idempotent by document code
-- collision report
-- never overwrite real content/status/version
-- source metadata fill only where safe
-
-Add a validation test that ensures:
-- no duplicate code
-- source page known
-- no blank code/title
-- existing page 1 rows unchanged
-- no invented pages 2/3 or 3/3
-
-Create a clearly marked TODO in the UAT/readiness report:
-“WI register incomplete until controlled source pages 2/3 and 3/3 are supplied.”
-
-Stop there.
-
-When those source images/files are later supplied, transcribe only what the controlled source actually contains.
-```
-
----
-
-# Prompt 20 — Final Company Pilot Acceptance / Re-Audit
-
-هذا آخر برومبت فقط بعد انتهاء 01–19.
-
-```text
-TASK ID: QC-COMPANY-PILOT-GATE-020
-PRIORITY: FINAL GATE
-
-Perform the final, evidence-based pre-pilot audit of:
-apps/qc-task-manager/
-
-Do not implement speculative features during the first pass.
-First verify everything.
-
-Capture:
-- HEAD SHA
-- git status
-- Node
-- pnpm
-
-Run all required gates:
-1. pnpm typecheck
-2. pnpm test:manifest
-3. pnpm test:route-manifest
-4. embedded migration parity test
-5. pnpm test:migrations
-6. pnpm test
-7. pnpm build
-8. complete pnpm e2e:acceptance
-
-Then verify a disposable production-like DB:
-- migration latest version
-- integrity_check
-- foreign_key_check
-- audit chains
-- backup creation
-- backup verification
-- restore to disposable target
-- restart persistence
-
-Security:
-- anonymous route protection
-- RBAC matrix
-- CSRF
-- request limits
-- session
-- password lifecycle
-- no default production credentials
-- no provider secrets in repository
-
-Functional smoke:
-TASK:
-create → assign → progress → comment/evidence → complete/reopen/cancel as allowed
-
-LAB:
-create draft → fill samples → submit → supervisor review where applicable → manager approval/e-sign → immutable approved record → print
-
-DOCUMENT:
-catalog/new draft → content → submit/review → approve → revision
-
-MASTER DATA:
-employee/supervisor proposal → manager review → canonical apply → audit
-
-REPORTS:
-CSV
-XLSX
-PDF
-report audit
-forged scope rejected
-
-WI:
-confirm current source coverage accurately reflects only supplied controlled pages.
-
-UI/UX technical verification:
-- navigation
-- buttons
-- error states
-- empty states
-- mobile
-- desktop
-- critical/serious a11y = 0
-- no dead links
-- no unintended horizontal overflow
-
-Generate:
-apps/qc-task-manager/docs/FINAL-PILOT-READINESS.md
-
-Score these 0-100 using explicit evidence:
-- Backend
-- Database
-- Authentication
-- RBAC
-- Security
-- Tasks
-- QC Operations
-- Laboratory
-- Documents
-- Equipment/Calibration
-- Reporting
-- Audit
-- Notifications
-- Backup/Restore
-- Deployment configuration
-- Test coverage
-- Accessibility
-- UI consistency
-- UX technical readiness
-- Responsive design
-- Performance
-- Operational readiness
-
-For each category provide:
-- percentage
-- evidence
-- remaining gap
-- blocker severity
-
-Final classification must be exactly one:
-GO
-CONDITIONAL GO
-NO-GO
-
-GO is allowed only if:
-- zero P0 defects
-- all required automated gates exit 0
-- DB integrity/FK PASS
-- backup/restore verified
-- no critical/serious a11y violations
-- reporting transport works
-- deployment contract is consistent
-- no known default/exposed production secret
-- real human UAT is either completed successfully OR clearly remains the only external prerequisite before broader rollout
-
-Never claim human UAT passed unless real results are provided.
-
-Finally provide:
-A. completed items
-B. remaining P0/P1/P2
-C. exact company-pilot checklist
-D. exact commands and exit codes
-E. files changed during the full implementation program
+request ID
+sanitization
+safe messages
+no secrets
+conflict states
 
 Do not commit.
 Do not push.
@@ -1765,44 +2526,650 @@ Do not deploy.
 
 ---
 
-## ترتيب التنفيذ المقترح
-
-شغّلها كذا:
+# 17 — Visual Regression + Responsive
 
 ```text
-00 Baseline
+TASK ID: QC-VISUAL-RESPONSIVE-017
+PRIORITY: P2
 
-P0:
-01 Reports
-02 Migration parity
-03 Test/E2E registry
-04 Deployment contract
+Repository:
+YEEEAE/BRIGHTAI
 
-P1:
-05 Auth/password/AI safe mode
-06 User durable audit
-07 Request security
-08 QC CI
-09 Accessibility
+Application:
+apps/qc-task-manager/
 
-UX / Pilot hardening:
-10 Design system/navigation
-11 Lab command center/management
-12 Forms/sample UX
-13 Change requests/notifications
-14 Reports/print UX
-15 Observability
-16 Visual/responsive
-17 Performance
-18 UAT/onboarding
-19 WI source guard
+MISSION:
 
-Final:
-20 Full acceptance + re-audit
+Add lightweight visual/responsive regression checks using Playwright.
+
+Do not add visual-testing SaaS.
+
+Screens:
+
+login
+employee home
+manager home
+task detail
+lab home
+tests register
+new test
+test detail
+documents
+document detail/editor
+equipment
+change request
+lab search
+reports
+lab management if implemented
+admin users
+system health
+
+Viewports:
+
+1440
+1024
+768
+360
+
+For each:
+
+no accidental page overflow
+primary action reachable
+navigation usable
+responsive table strategy
+dialogs inside viewport
+errors not clipped
+
+Use deterministic fixtures.
+
+Disable nondeterministic animation/time where necessary.
+
+Store QA artifacts in generated/ignored directory unless intentionally maintaining small committed baselines.
+
+Integrate major responsive assertions into full/nightly acceptance.
+
+Do not modify UI merely for pixel similarity.
+
+Fix actual usability regressions.
+
+Run full affected E2E and tests.
+
+Do not commit.
+Do not push.
+Do not deploy.
 ```
 
-أهم شيء: **لا تجمع 01–20 في جلسة Luna واحدة.** خله ينفذ كل Task، يشغل اختباراته، يصلح أي Regression، ويعطيك النتيجة قبل ما ترسل اللي بعده. بهذه الطريقة ما يصير عندك Agent يغيّر 70 ملف وبالأخير ما تعرف أي تغيير كسر النظام.
+---
 
-وحسب `package.json` الحالي عندك بالفعل قاعدة اختبار كبيرة جدًا ومجموعة scripts جاهزة، لذلك البرومبتات مصممة لإعادة استخدام الموجود بدل اختراع Testing Framework ثاني.
+# 18 — Performance
 
-ملاحظة واحدة ما يقدر Codex يحلها من الكود نفسه: **تدوير أي API key انكشف سابقًا لازم يتم من لوحة مزود الخدمة**؛ Prompt 05 يخلي النظام آمن بدون المفتاح ويمنع تسريبه، لكنه ما يقدر يخترع أو يدوّر Secret بالنيابة عنك.
+```text
+TASK ID: QC-PERFORMANCE-018
+PRIORITY: P2
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Create evidence-based performance testing for single-instance SQLite QC.
+
+Do not optimize blindly.
+
+Do not use production DB.
+
+Create parameterized disposable fixture generation.
+
+Large profile approximately:
+
+10k tasks
+5k lab tests
+~60k samples
+equipment history
+calibration history
+maintenance
+documents
+versions
+audit events
+
+CI profile may be smaller.
+
+Benchmark:
+
+dashboard
+employee tasks
+task search
+lab home
+lab search
+tests register
+equipment
+documents
+change requests
+audit
+reports
+
+Measure:
+
+p50
+p95
+max
+query counts where possible
+report duration
+
+Generate:
+
+download/qa/qc-performance.json
+Markdown summary
+
+Use EXPLAIN QUERY PLAN for slow SQL.
+
+Only add indexes with evidence.
+
+Any new index uses next sequential migration.
+
+Preserve integrity and FK checks.
+
+Do not create arbitrary regulatory performance thresholds.
+
+Run performance tests + schema tests.
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 19 — Onboarding + Human UAT Preparation
+
+```text
+TASK ID: QC-PILOT-UAT-019
+PRIORITY: P1/P2
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Prepare the QC application for real employee UAT.
+
+Do NOT claim Codex validated human usability.
+
+PART A — ONBOARDING
+
+Add concise contextual help where needed:
+
+first login/password change
+role dashboard
+task workflow
+Lab Test creation
+Save Draft vs Submit
+review/approval
+controlled document lifecycle
+change requests
+
+Do not add a tour library.
+
+PART B — UAT RUNBOOK
+
+Create:
+
+apps/qc-task-manager/docs/PILOT-UAT.md
+
+EMPLOYEE SCENARIOS:
+
+login/password
+find own task
+update task
+create task if allowed
+create lab test
+fill samples
+submit
+search
+find WI
+start WI content
+submit master-data proposal
+
+SUPERVISOR:
+
+review test
+return for changes
+review controlled document
+team workspace
+
+MANAGER:
+
+approve test with e-signature
+change request review
+document/template approval
+reports
+calibration risk
+audit
+
+ADMIN:
+
+create user
+reset password
+role management
+system health
+backup
+
+For every scenario collect:
+
+success yes/no
+completion time
+assistance required
+errors
+confusing labels/buttons
+expected button location
+comments
+
+PART C — CLASSIFICATION
+
+P0:
+blocks work/data/security
+
+P1:
+major workflow issue
+
+P2:
+usability/polish
+
+P3:
+future enhancement
+
+Do not invent UAT results.
+
+Do not build complex feedback software.
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 20 — WI Catalog Source Guard
+
+```text
+TASK ID: QC-WI-CATALOG-COMPLETION-020
+PRIORITY: SOURCE-BLOCKED
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+MISSION:
+
+Audit WI catalog architecture without inventing missing controlled-source pages.
+
+Inspect:
+
+src/lib/lab/wiCatalog.ts
+WI migrations
+lab_documents
+lab_document_versions
+WI pages/UI
+source provenance
+
+Current supplied source:
+
+page 1/3 only.
+
+Requirements:
+
+1. Preserve all existing page-1 rows.
+2. Preserve exact spelling.
+3. Preserve:
+   creation_origin
+   source_register_code
+   source_class
+   source_page
+   source_row_no
+   source_revision
+   source_date
+4. No placeholder rows.
+5. No guessed codes.
+6. No guessed titles.
+7. No guessed revisions.
+8. No guessed dates.
+9. No fake content.
+10. Catalog-only remains Missing Content until authored.
+
+Ensure importer can later handle more pages safely.
+
+Every catalog record should have:
+
+source_page
+source_row_no
+
+Importer must be:
+
+idempotent
+code-based
+collision-aware
+non-destructive
+
+Never overwrite real:
+
+content
+versions
+status
+
+Add validation:
+
+no duplicate code
+no blank code/title
+known source page
+existing page-1 rows unchanged
+no invented page 2/3
+no invented page 3/3
+
+Add readiness TODO:
+
+WI register incomplete until controlled source pages 2/3 and 3/3 are supplied.
+
+Stop there.
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+---
+
+# 21 — Final Company Pilot Gate
+
+```text
+TASK ID: QC-COMPANY-PILOT-GATE-021
+PRIORITY: FINAL
+
+Repository:
+YEEEAE/BRIGHTAI
+
+Application:
+apps/qc-task-manager/
+
+ROLE:
+
+Independent final verifier.
+
+Do not trust previous completion messages.
+
+Do not trust historical reports.
+
+Only current source + actual execution count.
+
+Capture:
+
+HEAD SHA
+git status
+Node
+pnpm
+
+Run:
+
+pnpm typecheck
+pnpm test:manifest
+pnpm test:route-manifest
+embedded migration parity
+pnpm test:migrations
+pnpm test
+pnpm build
+pnpm e2e:acceptance
+
+Verify disposable production-like DB:
+
+latest migration
+integrity_check
+foreign_key_check
+audit chains
+backup
+backup verification
+restore
+restart persistence
+
+SECURITY:
+
+anonymous access
+RBAC
+CSRF
+Fetch Metadata
+request size
+sessions
+password lifecycle
+no default production passwords
+no exposed provider secrets
+
+TASK SMOKE:
+
+create
+assign
+progress
+comment
+evidence
+complete
+reopen/cancel as authorized
+
+LAB SMOKE:
+
+create draft
+fill samples
+submit
+review
+approve/e-sign
+immutable approved state
+print
+
+DOCUMENT:
+
+catalog/new draft
+content
+submit
+review
+approve
+revision
+
+MASTER DATA:
+
+employee/supervisor proposal
+manager review
+canonical apply
+audit
+
+REPORTS:
+
+CSV
+XLSX
+PDF
+audit
+forged scope denied
+
+WI:
+
+confirm source coverage matches supplied controlled pages only
+
+UI/UX TECHNICAL:
+
+navigation
+buttons
+forms
+tables
+error states
+empty states
+mobile
+desktop
+a11y
+dead links
+horizontal overflow
+visual consistency
+
+Accessibility gate:
+
+Critical = 0
+Serious = 0
+
+Generate:
+
+apps/qc-task-manager/docs/FINAL-PILOT-READINESS.md
+
+Score 0–100:
+
+Backend
+Database
+Authentication
+RBAC
+Security
+Tasks
+QC Operations
+Laboratory
+Documents
+Equipment/Calibration
+Reporting
+Audit
+Notifications
+Backup/Restore
+Deployment
+Testing
+Accessibility
+UI Consistency
+UX Technical Readiness
+Responsive Design
+Performance
+Operational Readiness
+
+For each:
+
+percentage
+evidence
+remaining gap
+severity
+
+Final classification exactly one:
+
+GO
+CONDITIONAL GO
+NO-GO
+
+GO requires:
+
+zero P0
+all automated gates exit 0
+DB integrity PASS
+FK PASS
+backup/restore verified
+Critical/Serious a11y = 0
+reporting works
+deployment contract consistent
+no known production default/exposed secret
+
+Human UAT:
+
+Never claim it passed unless real results are supplied.
+
+If UAT has not happened, state clearly:
+
+RUNTIME USER UAT REQUIRED
+
+Final sections:
+
+A. Completed
+B. Remaining P0/P1/P2
+C. Company pilot checklist
+D. Commands and exit codes
+E. Files changed
+F. Final percentage
+G. GO / CONDITIONAL GO / NO-GO
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+## FINAL EXECUTION ORDER
+
+### Phase A — Foundation (delivered ✅)
+
+- [✅] 00 Baseline
+- [✅] 01 Reporting API
+- [✅] 02 Migration Parity
+- [✅] 03 Test/E2E Gate
+- [✅] 04 Deployment
+- [✅] 05 Auth + Password + AI
+
+### Phase B — Product experience (start here)
+
+- [☐] 06 Full Product UI/UX
+
+### Phase C — Hardening + infrastructure
+
+- [☐] 07 User Audit
+- [☐] 08 Request Security
+- [☐] 09 QC CI
+- [☐] 10 Accessibility
+- [☐] 11 UI Consolidation
+
+### Phase D — Operational improvements
+
+- [☐] 12 Lab Management
+- [☐] 13 Forms/Sample Productivity
+- [☐] 14 Change Requests/Notifications
+- [☐] 15 Reports/Print
+- [☐] 16 Observability
+
+### Phase E — Verification + readiness
+
+- [☐] 17 Visual/Responsive
+- [☐] 18 Performance
+- [☐] 19 UAT/Onboarding
+- [☐] 20 WI Source Guard (SOURCE-BLOCKED — audit/guard only)
+- [☐] 21 Final Pilot Gate
+
+---
+
+# DEFINITION OF DONE
+
+The QC pilot prompt pack (v8) is complete only when Prompts 06–21 are
+verified with their acceptance criteria passing (20 may be closed as
+SOURCE-BLOCKED with an explicit gap entry), Prompt 21 classifies at least
+CONDITIONAL GO, and no prior BRIGHTAI functionality is broken.
+
+---
+
+# AGENT EXECUTION CONTRACT
+
+```text
+DO NOT EXECUTE ALL PROMPTS AS ONE BLIND BATCH.
+
+After each prompt:
+
+1. Read .agents/mind/01-mind-latest.md first (project Rule Zero).
+2. Inspect current state.
+3. Implement only the requested scope.
+4. Run relevant tests + typecheck + build.
+5. Verify acceptance criteria.
+6. List changed files, commands executed, actual results.
+7. Update the checklist status in this file.
+8. Append a ledger entry to .agents/mind/01-mind-latest.md.
+9. Continue only after the prompt is verified.
+
+If something already exists: REUSE IT.
+If something partially exists: EXTEND IT.
+If something is missing: IMPLEMENT IT.
+If something conflicts: STOP THAT SUBTASK, EXPLAIN THE CONFLICT, AND CHOOSE
+THE SMALLEST COMPATIBLE CHANGE.
+
+Do not commit.
+Do not push.
+Do not deploy.
+```
+
+وبما إنك نفذت `00–05`، ابدأ الآن مباشرة بـ **06** ثم كمل إلى **21**. أهم فرق في النسخة هذي أن `06` صار المسؤول عن إعادة بناء تجربة المنتج كاملة، بينما `11` و`13` و`17` صار دورهم **تثبيت وتحسين وفحص** بدل ما Codex يعيد نفس التصميم ثلاث مرات.

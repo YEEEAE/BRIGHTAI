@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import AppButton from '../components/ui/AppButton.astro';
 import { REPORT_CATALOG } from '../lib/reporting/catalog';
 import { listActiveUsers } from '../lib/tasks';
 import { FINDING_CLASSIFICATIONS, RISK_LEVELS, TASK_PRIORITIES } from '../lib/task-policy';
@@ -15,53 +17,97 @@ filters.delete('report_type');
 filters.delete('format');
 const query = filters.toString();
 const canChooseOrganization = user.role === 'admin' || user.role === 'manager';
+const inputClass = 'rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
+const scopeLabel = user.role === 'employee' ? 'Your tasks only' : user.role === 'supervisor' ? 'Your department' : 'Organization';
 ---
 
 <BaseLayout title="Reports">
-  <header class="mb-6">
-    <h1 class="text-2xl font-semibold text-slate-900">Reports</h1>
-    <p class="text-sm text-slate-600">Generate English QC reports with a visible, server-enforced data scope.</p>
-  </header>
+  <div class="space-y-6">
+    <PageHeader
+      eyebrow="Reporting"
+      title="Reports"
+      description="Generate English QC reports with a visible, server-enforced data scope. Choose a report, set the period, then download."
+    >
+      <fragment slot="actions">
+        <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">Scope: {scopeLabel}</span>
+      </fragment>
+    </PageHeader>
 
-  <form method="get" action="/reports" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Report type
-        <select name="report_type" class="rounded-md border border-slate-300 px-3 py-2">
-          {TASK_REPORT_TYPES.map((key) => REPORT_CATALOG[key]).map((report) => <option value={report.key} selected={selectedType === report.key}>{report.label}</option>)}
-        </select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">From date<input type="date" name="from" value={Astro.url.searchParams.get('from') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">To date<input type="date" name="to" value={Astro.url.searchParams.get('to') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Department<input name="department" maxlength="50" value={Astro.url.searchParams.get('department') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Employee
-        <select name="employee" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All employees</option>{activeUsers.map((person) => <option value={person.id} selected={Astro.url.searchParams.get('employee') === String(person.id)}>{person.full_name}</option>)}</select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Supervisor
-        <select name="supervisor" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All supervisors</option>{supervisors.map((person) => <option value={person.id} selected={Astro.url.searchParams.get('supervisor') === String(person.id)}>{person.full_name}</option>)}</select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Priority
-        <select name="priority" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All priorities</option>{TASK_PRIORITIES.map((value) => <option value={value} selected={Astro.url.searchParams.get('priority') === value}>{value}</option>)}</select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Risk
-        <select name="risk" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All risk levels</option>{RISK_LEVELS.map((value) => <option value={value} selected={Astro.url.searchParams.get('risk') === value}>{value}</option>)}</select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Finding Classification
-        <select name="finding_classification" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All classifications</option>{FINDING_CLASSIFICATIONS.map((value) => <option value={value} selected={Astro.url.searchParams.get('finding_classification') === value}>{value}</option>)}</select>
-      </label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">SLA Status
-        <select name="sla_status" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All SLA statuses</option>{SLA_STATUSES.map((value) => <option value={value} selected={Astro.url.searchParams.get('sla_status') === value}>{value}</option>)}</select>
-      </label>
-      {canChooseOrganization && <label class="flex items-center gap-2 self-end text-sm font-medium text-slate-700"><input type="checkbox" name="scope" value="organization" checked={Astro.url.searchParams.get('scope') === 'organization'} class="h-4 w-4 rounded border-slate-300" /> Organization-wide scope</label>}
-    </div>
-    <div class="mt-4 flex flex-wrap items-center gap-3"><button type="submit" class="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">Preview scope</button><span class="text-sm text-slate-600">Signed in as {user.fullName} ({user.role}).</span></div>
-  </form>
+    <form method="get" action="/reports" class="space-y-4">
+      {/* Step 1 — report type */}
+      <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm" aria-labelledby="report-type-heading">
+        <h2 id="report-type-heading" class="text-base font-semibold text-slate-900">1 · Report type</h2>
+        <label class="mt-3 flex max-w-md flex-col gap-1 text-sm font-medium text-slate-700">Report
+          <select name="report_type" class={inputClass}>
+            {TASK_REPORT_TYPES.map((key) => REPORT_CATALOG[key]).map((report) => <option value={report.key} selected={selectedType === report.key}>{report.label}</option>)}
+          </select>
+        </label>
+      </section>
 
-  <section class="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby="report-downloads-heading">
-    <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 id="report-downloads-heading" class="text-lg font-semibold text-slate-900">Download report</h2><p class="text-sm text-slate-600">The server will re-check your role and resolve the final scope before generation.</p></div><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">Scope: {user.role === 'employee' ? 'Your tasks only' : user.role === 'supervisor' ? 'Your department' : 'Organization'}</span></div>
-    <div class="mt-4 flex flex-wrap gap-3">
-      {(['csv', 'xlsx', 'pdf'] as const).map((format) => <a href={`/api/reports/${selectedType}.${format}${query ? `?${query}` : ''}`} class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-500">Download {format.toUpperCase()}</a>)}
-    </div>
-  </section>
+      {/* Step 2 — basic filters */}
+      <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm" aria-labelledby="basic-filters-heading">
+        <h2 id="basic-filters-heading" class="text-base font-semibold text-slate-900">2 · Period &amp; scope</h2>
+        <div class="mt-3 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">From date<input type="date" name="from" value={Astro.url.searchParams.get('from') ?? ''} class={inputClass} /></label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">To date<input type="date" name="to" value={Astro.url.searchParams.get('to') ?? ''} class={inputClass} /></label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Department<input name="department" maxlength="50" value={Astro.url.searchParams.get('department') ?? ''} class={inputClass} /></label>
+          {canChooseOrganization && <label class="flex items-center gap-2 self-end text-sm font-medium text-slate-700"><input type="checkbox" name="scope" value="organization" checked={Astro.url.searchParams.get('scope') === 'organization'} class="h-4 w-4 rounded border-slate-300" /> Organization-wide scope</label>}
+        </div>
+      </section>
 
-  <section id="audit" class="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><h2 class="text-lg font-semibold text-slate-900">Audit Trail</h2><p class="mt-1 text-sm text-slate-600">Every generation records Report ID, Generated By, Filters, Timestamp, Format, and Data Scope.</p><a href="/api/reports/audit" class="mt-3 inline-block text-sm font-medium text-brand-700 hover:underline">View report audit JSON</a></section>
+      {/* Step 3 — advanced filters (collapsible) */}
+      <details class="rounded-xl border border-slate-200 bg-white shadow-sm" open={false}>
+        <summary class="cursor-pointer select-none px-5 py-3 text-sm font-semibold text-slate-700 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+          3 · Advanced filters <span class="ml-1 font-normal text-slate-500">(employee, supervisor, priority, risk, finding classification, SLA)</span>
+        </summary>
+        <div class="grid gap-4 border-t border-slate-100 p-5 md:grid-cols-2 lg:grid-cols-4">
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Employee
+            <select name="employee" class={inputClass}><option value="">All employees</option>{activeUsers.map((person) => <option value={person.id} selected={Astro.url.searchParams.get('employee') === String(person.id)}>{person.full_name}</option>)}</select>
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Supervisor
+            <select name="supervisor" class={inputClass}><option value="">All supervisors</option>{supervisors.map((person) => <option value={person.id} selected={Astro.url.searchParams.get('supervisor') === String(person.id)}>{person.full_name}</option>)}</select>
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Priority
+            <select name="priority" class={inputClass}><option value="">All priorities</option>{TASK_PRIORITIES.map((value) => <option value={value} selected={Astro.url.searchParams.get('priority') === value}>{value}</option>)}</select>
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Risk
+            <select name="risk" class={inputClass}><option value="">All risk levels</option>{RISK_LEVELS.map((value) => <option value={value} selected={Astro.url.searchParams.get('risk') === value}>{value}</option>)}</select>
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Finding Classification
+            <select name="finding_classification" class={inputClass}><option value="">All classifications</option>{FINDING_CLASSIFICATIONS.map((value) => <option value={value} selected={Astro.url.searchParams.get('finding_classification') === value}>{value}</option>)}</select>
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">SLA Status
+            <select name="sla_status" class={inputClass}><option value="">All SLA statuses</option>{SLA_STATUSES.map((value) => <option value={value} selected={Astro.url.searchParams.get('sla_status') === value}>{value}</option>)}</select>
+          </label>
+        </div>
+      </details>
+
+      {/* Step 4 — resolve scope */}
+      <div class="flex flex-wrap items-center gap-3">
+        <AppButton type="submit" variant="primary">Preview scope</AppButton>
+        <span class="text-sm text-slate-600">Signed in as {user.fullName} ({user.role}).</span>
+      </div>
+    </form>
+
+    {/* Step 5 — downloads */}
+    <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm" aria-labelledby="report-downloads-heading">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 id="report-downloads-heading" class="text-base font-semibold text-slate-900">4 · Download report</h2>
+          <p class="mt-1 text-sm text-slate-600">The server will re-check your role and resolve the final scope before generation.</p>
+        </div>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-3">
+        {(['csv', 'xlsx', 'pdf'] as const).map((format) => (
+          <AppButton href={`/api/reports/${selectedType}.${format}${query ? `?${query}` : ''}`} variant="secondary">Download {format.toUpperCase()}</AppButton>
+        ))}
+      </div>
+    </section>
+
+    <section id="audit" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 class="text-base font-semibold text-slate-900">Audit Trail</h2>
+      <p class="mt-1 text-sm text-slate-600">Every generation records Report ID, Generated By, Filters, Timestamp, Format, and Data Scope.</p>
+      <a href="/api/reports/audit" class="mt-3 inline-block text-sm font-medium text-brand-700 hover:underline">View report audit JSON</a>
+    </section>
+  </div>
 </BaseLayout>

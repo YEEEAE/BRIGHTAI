@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
 import { getCurrentUser } from '../../lib/session';
 import { canViewTeamWorkload } from '../../lib/permissions';
 import { listEmployeeWorkloads } from '../../lib/workload';
@@ -9,11 +10,45 @@ if (!user || !canViewTeamWorkload(user.role)) return Astro.redirect('/employee')
 const rows = listEmployeeWorkloads();
 ---
 <BaseLayout title="Team workload">
-  <!-- Nested <main> is invalid HTML (BaseLayout already renders <main id="main">). -->
-  <div class="mx-auto max-w-7xl space-y-6 px-4 py-8">
-    <div><p class="text-sm text-slate-500">Operational view</p><h1 class="text-3xl font-bold">Team workload</h1><p class="mt-2 text-slate-600">مقارنة الموظفين متاحة للمشرفين والمدراء فقط.</p></div>
-    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
-      <table class="min-w-full text-left text-sm"><caption class="sr-only">Employee workload comparison</caption><thead class="bg-slate-50"><tr>{['Employee','Active','Overdue','At risk','Critical','On hold','Completion rate','Avg resolution','Score'].map((label) => <th scope="col" class="px-4 py-3 font-semibold">{label}</th>)}</tr></thead><tbody>{rows.map((row) => <tr class="border-t border-slate-100"><th scope="row" class="px-4 py-3 font-medium">{row.full_name}</th><td class="px-4 py-3">{row.active_tasks}</td><td class="px-4 py-3">{row.overdue}</td><td class="px-4 py-3">{row.at_risk}</td><td class="px-4 py-3">{row.critical}</td><td class="px-4 py-3">{row.on_hold}</td><td class="px-4 py-3">{row.completion_rate}%</td><td class="px-4 py-3">{row.average_resolution_seconds == null ? '—' : `${Math.round(row.average_resolution_seconds / 3600)}h`}</td><td class="px-4 py-3 font-semibold">{row.workload_score}</td></tr>)}</tbody>      </table>
+  <!-- BaseLayout already renders <main id="max-w-6xl"> — pages add no second
+       width wrapper (docs/UI-DESIGN-SYSTEM.md §1.2). -->
+  <div class="space-y-6">
+    <PageHeader
+      eyebrow="Operational view"
+      title="Team workload"
+      description="Per-employee workload comparison for supervisors and managers: active load, overdue risk, and resolution pace."
+    />
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+      <table class="min-w-full text-left text-sm">
+        <caption class="sr-only">Employee workload comparison</caption>
+        <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <tr>
+            {['Employee','Active','Overdue','At risk','Critical','On hold','Completion rate','Avg resolution','Score'].map((label) => (
+              <th scope="col" class="px-4 py-2.5">{label}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {rows.map((row) => (
+            <tr class="hover:bg-slate-50/75">
+              <th scope="row" class="px-4 py-2.5 font-medium text-slate-900">{row.full_name}</th>
+              <td class="px-4 py-2.5 tabular-nums text-slate-700">{row.active_tasks}</td>
+              <td class:list={['px-4 py-2.5 tabular-nums font-semibold', row.overdue > 0 ? 'text-red-700' : 'text-slate-500']}>{row.overdue}</td>
+              <td class:list={['px-4 py-2.5 tabular-nums', row.at_risk > 0 ? 'text-orange-700' : 'text-slate-500']}>{row.at_risk}</td>
+              <td class:list={['px-4 py-2.5 tabular-nums', row.critical > 0 ? 'text-red-700' : 'text-slate-500']}>{row.critical}</td>
+              <td class="px-4 py-2.5 tabular-nums text-slate-700">{row.on_hold}</td>
+              <td class="px-4 py-2.5 tabular-nums text-slate-700">{row.completion_rate}%</td>
+              <td class="px-4 py-2.5 tabular-nums text-slate-700">{row.average_resolution_seconds == null ? '—' : `${Math.round(row.average_resolution_seconds / 3600)}h`}</td>
+              <td class="px-4 py-2.5 tabular-nums font-semibold text-slate-900">{row.workload_score}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
+    {rows.length === 0 && (
+      <p class="rounded-xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center text-sm text-slate-500">
+        No employees to compare yet — workload appears once tasks are assigned.
+      </p>
+    )}
   </div>
 </BaseLayout>

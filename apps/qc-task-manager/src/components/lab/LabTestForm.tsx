@@ -1225,7 +1225,10 @@ export default function LabTestForm({
         </section>
 
         {/* ── Actions ── */}
-        <div className="sticky bottom-0 z-20 mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 bg-white/95 px-0 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] backdrop-blur sm:-mx-5 sm:px-5">
+        {/* Bleed matches the page's px-4 (main) exactly — a -mx-5 bleed used
+            to push 4px past the viewport at tablet widths (page-level
+            horizontal overflow guard in scripts/ui-screenshots.mjs). */}
+        <div className="sticky bottom-0 z-20 -mx-4 mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 bg-white/95 px-4 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] backdrop-blur">
           <a
             href="/lab"
             className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"

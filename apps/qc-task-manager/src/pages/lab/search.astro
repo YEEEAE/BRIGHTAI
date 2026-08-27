@@ -5,6 +5,7 @@
 // and retests with server-side indexed queries, pagination, and strict RBAC
 // scoping (employees only see their own tests/samples).
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Pagination from '../../components/ui/Pagination.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
@@ -101,15 +102,6 @@ function pageHref(p: number): string {
     page: p,
   };
   return `/lab/search${labSearchFiltersToQuery(next)}`;
-}
-
-const pageNumbers: number[] = [];
-{
-  const total = result.total_pages;
-  const cur = result.page;
-  const start = Math.max(1, Math.min(cur - 3, total - 6));
-  const end = Math.min(total, start + 6);
-  for (let p = start; p <= end; p++) pageNumbers.push(p);
 }
 
 const ENTITY_BADGES: Record<LabSearchResultItem['entity_type'], { label: string; cls: string }> = {
@@ -392,79 +384,7 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
             </div>
 
             {/* Pagination Controls */}
-            {result.total_pages > 1 && (
-              <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3 sm:px-6">
-                <div class="flex flex-1 justify-between sm:hidden">
-                  {result.page > 1 ? (
-                    <a href={pageHref(result.page - 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-50">
-                      Previous
-                    </a>
-                  ) : (
-                    <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-sm font-medium text-slate-400">
-                      Previous
-                    </span>
-                  )}
-                  {result.page < result.total_pages ? (
-                    <a href={pageHref(result.page + 1)} class="ml-3 rounded-md border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-50">
-                      Next
-                    </a>
-                  ) : (
-                    <span class="ml-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-1 text-sm font-medium text-slate-400">
-                      Next
-                    </span>
-                  )}
-                </div>
-                <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                  <div>
-                    <p class="text-xs text-slate-600">
-                      Page <span class="font-medium text-slate-900">{result.page}</span> of <span class="font-medium text-slate-900">{result.total_pages}</span>
-                    </p>
-                  </div>
-                  <div>
-                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                      {result.page > 1 && (
-                        <a
-                          href={pageHref(result.page - 1)}
-                          class="relative inline-flex items-center rounded-l-md px-2 py-1.5 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20"
-                        >
-                          <span class="sr-only">Previous</span>
-                          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
-                          </svg>
-                        </a>
-                      )}
-                      {pageNumbers.map((p) => {
-                        const isCurrent = p === result.page;
-                        return (
-                          <a
-                            href={pageHref(p)}
-                            aria-current={isCurrent ? 'page' : undefined}
-                            class={`relative inline-flex items-center px-3 py-1.5 text-xs font-semibold ${
-                              isCurrent
-                                ? 'z-10 bg-brand-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600'
-                                : 'text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20'
-                            }`}
-                          >
-                            {p}
-                          </a>
-                        );
-                      })}
-                      {result.page < result.total_pages && (
-                        <a
-                          href={pageHref(result.page + 1)}
-                          class="relative inline-flex items-center rounded-r-md px-2 py-1.5 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20"
-                        >
-                          <span class="sr-only">Next</span>
-                          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-                          </svg>
-                        </a>
-                      )}
-                    </nav>
-                  </div>
-                </div>
-              </div>
-            )}
+            <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="Lab search pagination" class="border-t border-slate-200 px-4 py-3 sm:px-6" />
           </div>
         )}
       </>

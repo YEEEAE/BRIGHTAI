@@ -1,0 +1,26 @@
+---
+// PageHeader — the single page-skeleton header (docs/UI-DESIGN-SYSTEM.md §3.1/§4).
+// Eyebrow (section context) + one H1 + optional description + right-aligned
+// action row. Primary actions belong here; destructive actions belong in a
+// separated danger zone instead.
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  class?: string;
+}
+
+const { eyebrow, title, description, class: className = '' } = Astro.props;
+---
+<header class:list={['flex flex-wrap items-end justify-between gap-4', className]}>
+  <div class="min-w-0">
+    {eyebrow && (
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">{eyebrow}</p>
+    )}
+    <h1 class:list={['font-semibold tracking-tight text-slate-900', eyebrow ? 'mt-1 text-2xl' : 'text-2xl']}>
+      {title}
+    </h1>
+    {description && <p class="mt-1 max-w-3xl text-sm text-slate-600">{description}</p>}
+  </div>
+  <slot name="actions" />
+</header>

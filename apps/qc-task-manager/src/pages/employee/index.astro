@@ -2,6 +2,7 @@
 // Employee landing page. Lists tasks assigned to or created by the user.
 // No dashboard link (CORE BUSINESS RULE #1).
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
@@ -12,6 +13,7 @@ import {
   formatDueDate,
   isOverdue,
   isUrgent,
+  localDateStr,
   priorityLabel,
   priorityBadgeClass,
   URGENT_ROW_CLASS,
@@ -53,66 +55,119 @@ const tasks = db
     delete_request_note: string | null;
   }[];
 
+// "What needs my attention" — personal work signals above the list.
+const openTasks = tasks.filter((t) => t.status === 'not_started' || t.status === 'in_progress');
+const overdueMine = openTasks.filter((t) => isOverdue(t.due_date, t.status)).length;
+const dueTodayMine = openTasks.filter((t) => t.due_date === localDateStr()).length;
+const myDraftLabTests = db.prepare(
+  'SELECT COUNT(*) AS n FROM lab_test_records WHERE created_by = ? AND status = ?',
+).get(user.userId, 'DRAFT') as { n: number };
+const myReturnedLabTests = db.prepare(
+  'SELECT COUNT(*) AS n FROM lab_test_records WHERE created_by = ? AND status = ?',
+).get(user.userId, 'REJECTED') as { n: number };
+const myPendingChangeRequests = db.prepare(
+  'SELECT COUNT(*) AS n FROM lab_change_requests WHERE requested_by = ? AND status = ?',
+).get(user.userId, 'PENDING') as { n: number };
+
+const attention = [
+  { label: 'Overdue', n: overdueMine, href: null, tone: overdueMine > 0 ? 'danger' : 'neutral' },
+  { label: 'Due today', n: dueTodayMine, href: null, tone: 'neutral' },
+  { label: 'Open tasks', n: openTasks.length, href: null, tone: 'neutral' },
+  { label: 'My draft tests', n: myDraftLabTests.n, href: '/lab/tests?status=DRAFT', tone: myDraftLabTests.n > 0 ? 'info' : 'neutral' },
+  { label: 'Returned for changes', n: myReturnedLabTests.n, href: '/lab/tests?status=REJECTED', tone: myReturnedLabTests.n > 0 ? 'warning' : 'neutral' },
+  { label: 'Pending change requests', n: myPendingChangeRequests.n, href: '/lab/change-requests', tone: myPendingChangeRequests.n > 0 ? 'info' : 'neutral' },
+] as const;
+const attentionTone: Record<string, string> = {
+  danger: 'border-red-200 bg-red-50 text-red-700',
+  warning: 'border-orange-200 bg-orange-50 text-orange-700',
+  info: 'border-sky-200 bg-sky-50 text-sky-700',
+  neutral: 'border-slate-200 bg-white text-slate-700',
+};
 ---
 <BaseLayout title="My Tasks">
-  <header class="mb-6 flex items-center justify-between">
-    <div>
-      <h1 class="text-2xl font-semibold text-slate-900">My tasks</h1>
-      <p class="text-sm text-slate-600">Tasks assigned to you or created by you. Signed in as {user.fullName} ({user.role}).</p>
-    </div>
-    {allowCreate && (
-      <a href="/employee/new" class="rounded-md bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
-        New task
-      </a>
-    )}
-  </header>
+  <div class="space-y-6">
+    <PageHeader
+      title="My tasks"
+      description={`Tasks assigned to you or created by you. Signed in as ${user.fullName} (${user.role}).`}
+    >
+      <fragment slot="actions">
+        {allowCreate && (
+          <a href="/employee/new" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+            New task
+          </a>
+        )}
+      </fragment>
+    </PageHeader>
 
-  {tasks.length === 0 ? (
-    <EmptyState
-      title="No tasks yet"
-      hint="Tasks assigned to you or created by you will appear here."
-      ctaHref={allowCreate ? '/employee/new' : undefined}
-      ctaLabel="Create your first task"
-    />
-  ) : (
-    <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
-      {tasks.map((t) => {
-        const overdue = isOverdue(t.due_date, t.status);
-        const urgent = isUrgent(t.priority);
-        return (
-          <li class={`flex flex-wrap items-center justify-between gap-3 p-4 ${urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50'}`}>
-            <div class="min-w-0">
-              <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
-              {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
-              <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-                <span>#{t.id}</span>
-                <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>
-                  {priorityLabel(t.priority)}
-                </span>
-                {t.due_date && (
-                  <span class={overdue ? 'font-semibold text-red-600' : ''}>
-                    Due {formatDueDate(t.due_date)}
-                    {overdue && ' ⚠️'}
+    <section aria-label="Needs my attention" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      {attention.map((item) => (
+        item.href ? (
+          <a
+            href={item.href}
+            class:list={[
+              'rounded-xl border p-4 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
+              attentionTone[item.tone],
+            ]}
+          >
+            <p class="text-2xl font-semibold tabular-nums">{item.n}</p>
+            <p class="mt-0.5 text-sm font-medium">{item.label}</p>
+          </a>
+        ) : (
+          <div class:list={['rounded-xl border p-4 shadow-sm', attentionTone[item.tone]]}>
+            <p class="text-2xl font-semibold tabular-nums">{item.n}</p>
+            <p class="mt-0.5 text-sm font-medium">{item.label}</p>
+          </div>
+        )
+      ))}
+    </section>
+
+    {tasks.length === 0 ? (
+      <EmptyState
+        title="No tasks yet"
+        hint="Tasks assigned to you or created by you will appear here."
+        ctaHref={allowCreate ? '/employee/new' : undefined}
+        ctaLabel="Create your first task"
+      />
+    ) : (
+      <ul class="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm">
+        {tasks.map((t) => {
+          const overdue = isOverdue(t.due_date, t.status);
+          const urgent = isUrgent(t.priority);
+          return (
+            <li class={`flex flex-wrap items-center justify-between gap-3 p-4 ${urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50/75'}`}>
+              <div class="min-w-0">
+                <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+                {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
+                <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                  <span class="tabular-nums">#{t.id}</span>
+                  <span class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${priorityBadgeClass(t.priority)}`}>
+                    {priorityLabel(t.priority)}
                   </span>
-                )}
-                <span>
-                  <span class="inline-block h-1.5 w-24 overflow-hidden rounded-full bg-slate-200 align-middle">
-                    {/* SVG width attribute instead of inline style (CSP style-src 'self'). */}
-                    <svg class="block h-full w-full" aria-hidden="true">
-                      <rect x="0" y="0" width={`${t.progress_percent}%`} height="100%" fill="#3b82f6" rx="9999" />
-                    </svg>
+                  {t.due_date && (
+                    <span class={overdue ? 'font-semibold text-red-600' : ''}>
+                      Due {formatDueDate(t.due_date)}
+                      {overdue && ' ⚠️'}
+                    </span>
+                  )}
+                  <span>
+                    <span class="inline-block h-1.5 w-24 overflow-hidden rounded-full bg-slate-200 align-middle">
+                      {/* SVG width attribute instead of inline style (CSP style-src 'self'). */}
+                      <svg class="block h-full w-full" aria-hidden="true">
+                        <rect x="0" y="0" width={`${t.progress_percent}%`} height="100%" fill="#3b82f6" rx="9999" />
+                      </svg>
+                    </span>
+                    <span class="ml-1 tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
                   </span>
-                  <span class="ml-1 tabular-nums">{t.progress_percent}% <small class="text-slate-400">QC {t.checklist_completed}/{t.checklist_total}</small></span>
-                </span>
+                </div>
               </div>
-            </div>
-            <div class="flex shrink-0 items-center gap-2">
-              <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />
-              <StatusBadge status={t.status} />
-            </div>
-          </li>
-        );
-      })}
-    </ul>
-  )}
+              <div class="flex shrink-0 items-center gap-2">
+                <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />
+                <StatusBadge status={t.status} />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </div>
 </BaseLayout>

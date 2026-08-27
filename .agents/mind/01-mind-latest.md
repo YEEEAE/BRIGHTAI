@@ -1,4 +1,58 @@
 ---
+### 2026-08-27 — QC-PRODUCT-UIUX-RECONSTRUCTION-006: إعادة بناء UI/UX بمنتج كامل لتطبيق QC Task Manager — نظام تصميم ملزم + 6 primitives + تنقل مجمّع + توحيد pagination/شارات/رؤوس + اهتمام الأدوار — كل البوابات خضراء (52 سويت + e2e:acceptance 2304/0) — بدون commit/push/deploy
+- **Scope**: `apps/qc-task-manager/` فقط؛ قرأت العقل كاملًا أولًا. صفر تغيير لقواعد العمل أو `permissions.ts` أو المخطط أو الهجرات (عدا تصحيح عدّادات اختبار — تحت) أو CSRF/CSP. الواجهة بقيت إنجليزية بالكامل (حارس مصدري جديد يمنع العربي). لا commit ولا push ولا deploy.
+- **المُسلَّم الأساسي**: `docs/UI-DESIGN-SYSTEM.md` — نظام تصميم داخلي صغير ملزم (مقياس تايبوغرافيا، إيقاع مسافات، radius md/lg/xl/pill، ظلال هادئة، خريطة ألوان دلالية neutral/info/progress/success/warning/danger/accent، هيكل صفحة قياسي، نموذج تنقل، عقد a11y، حواجز). استثناء موثق: حالات/أولويات المهام تحتفظ بمخططها الحالي (الرسوم البيانية معتمدة عليه).
+- **Primitives جديدة** في `src/components/ui/`: `PageHeader` (eyebrow+H1+وصف+أفعال)، `AppButton` (4 متغيرات ×2 حجم + focus-visible موحد)، `StatusPill` + `statusTones.ts` (خريطة مركزية للحالات — النص دائمًا ظاهر مع نقطة زخرفية، ممنوع اللون وحده)، `Pagination` (تطبيق واحد بدل 4، مع aria-current)، `Banner`، و`EmptyState` محسّن (أيقونة + CTA ثانوي متوافق API). صفر dependencies جديدة.
+- **التنقل (Navbar.tsx)**: نموذج مجمّع — Dashboard·Tasks·Search·Findings·Laboratory·Reports أساسية (مفلترة بالدور، الموظف بدون Dashboard قاعدة #1)، والإدارية تحت قائمة **More** (Delete Requests/Team Workload/User Management/Task Templates/Backups & Settings/System Health)، `aria-current="page"` بحبة brand نشطة ديسكتوب+More+جوال، وقائمة جوال مقصودة بأقسام Workspace/Administration/Account وأهداف 44px. **باق حقيقي اكتُشف وأُصلح**: `isActive()` كانت تقرأ `window` وقت تصيير الـ island على السيرفر فتنهار البث (ReferenceError على كل صفحة مصادَق) — صارت تُحسب بعد mount بstate (بلا hydration mismatch).
+- **توحيد pagination**: 12 سجلًا صاروا على المكوّن الواحد (search, lab/search بعدل chevrons، lab/audit بعدل نصي، + 9 سجلات lab اللي كان فيها كتل مكررة حرفيًا) عبر codemod مؤقت بحفاظ حرفي على نفس مجموعة الروابط/النافذة (عقود e2e: nav[aria-label] + page=N hrefs + Prev/Next literals). حذفت كتل `pageNumbers` المكررة.
+- **رؤوس وجداول وشارات**: `PageHeader` على manager/supervisor/employee/workload/findings/reports؛ رأس جدول قياسي (`px-4 py-2.5` + label موحد) و`tabular-nums` وhover موحد؛ `StatusPill` على سجل الاختبارات (بعد حذف statusTone المحلي) وadmin/users (Active/Disabled) وadmin/templates (lifecycle عبر LIFECYCLE_TONE + priority عبر priorityBadgeClass — كانت خريطة منحرفة). Reset صار شرطيًا بفلاتر نشطة بسجل الاختبارات.
+- **صفحات الأدوار (Phase 8)**: strips «Needs attention» فوق القوائم — المدير: overdue/urgent/pending delete requests/open findings (روابط drilldown?kpi=overdue و/search?priority=urgent و/manager/requests و/findings)؛ المشرف: overdue/urgent/tests awaiting review/documents in review؛ الموظف: overdue/due today/open/draft tests/returned for changes/pending change requests (باستعلامات COUNT للقراءة فقط، العدّادات المرجعية تبقى Dashboard).
+- **إصلاحات صفحات**: `manager/workload` — حذف الجملة العربية (كانت تخالف قاعدة English-UI) وحذف wrapper `max-w-7xl` المتداخل وإعادة البناء بPageHeader وجدول قياسي وempty state؛ `findings/index` أُعيدت بprimitives (جدول/فلاتر/empty state حسب السبب) مع الحفاظ على كل أسماء الحقول والأكشن؛ `reports` أُعيدت هيكلة 4 خطوات (Report type → Period & scope → Advanced collapsive بdetails → Preview scope → Downloads) مع الحفاظ على كل عقود e2e-reports (h1/select option counts/scope checkbox/audit link)؛ `404` صارت بصفحة مفيدة بCTA مزدوج.
+- **Visual QA (Phase 27)**: `scripts/ui-screenshots.mjs` (أداة تشخيص غير مسجلة — سيرفر production ذاتي + DB مؤقتة بنفس بيئة acceptance) التقطت **60 لقطة fullPage لـ 20 شاشة × 1440/768/390** في `download/qa/ui-audit/` مع فحص overflow/H1 برمجي لكل لقطة: **0 overflow وH1 واحد لكل شاشة**. راجعت بصريًا: manager home، employee 390، lab tests register 1440، reports 1440، lab form 768. **باق ثانٍ مُصلح**: شريط الإجراءات اللاصق في `LabTestForm.tsx` كان يفيض 4px بعرض 768 (bleed `-mx-5` داخل سياق `px-4`) — صار `-mx-4 px-4` (مثبت بالمسبار المعزول وبالجولة النهائية).
+- **حارس اتساق جديد (Phase 26)**: `scripts/test-ui-consistency.mjs` (أمر `test:ui-consistency`، **مسجل canonical → المانيفست صار 52 سويت**) — 37 فحصًا مصدريًا: صفحات بلا حرف عربي، pagination المشترك بلا pageNumbers inline، PageHeader على المحوّلات، workload بلا wrapper/عربي، StatusPill بسجل الاختبارات، عقد الـ landmark. مثبت صحةً بالمانيفست guard.
+- **إصلاحات spec-drift للبوابة (خارج الـ UI لكنها شرط)**: الجلسة السابقة اعترفت أن `pnpm test` الكامل قُطع — البوابة كشفت **7 عدّادات هجرات قديمة (35 بدل 36 بعد migration 036)** أصلحتها جميعًا بلا أي إضعاف: `test-lab-change-requests:66` (currentVersion)، `test-production-operations:29,34` (expectedSchemaVersion ×2)، `test-dashboard-reports:22` (applied.length)، `test-scheduled-notifications:158` (schema version)، `test-db-doctor:40-42` (ثلاث /35/ regex).
+- **Verification (كلها على HEAD 4437f121 + شجرة العمل dirty بتغييرات هذه المهمة فقط)**: `pnpm typecheck` **0 errors/0 warnings/17 hints** · `pnpm test:manifest` **52 canonical suites / 27 E2E — exit 0** · `pnpm test:route-manifest` **110 file routes / 25 middleware / 6 guards** · `pnpm test` **السلسلة الكاملة 52 سويت exit 0** · `NODE_ENV=production pnpm build` **Complete** · `pnpm e2e:acceptance` **كل السويتات عدّت: 26 canonical + مرحتا restart-persistence، 2,304 assertion ناجح / 0 فاشل** (منها lab-documents 85/0 بعقد عدّ الروابط الحرفي، reports 912/0، lab-search 21/0، a11y، dashboard بفحص الـ overflow عند 390/768/1440) · `git diff --check` نظيف. التغييرات: 30 ملفًا معدلًا + 5 مسارات جديدة.
+- **Skills used**: redesign-existing-projects (قرأت SKILL.md كاملًا واتبعت تسلسل Scan→Diagnose→Fix وقواعد الـ stack)، web-design-guidelines (المرجع العام)، astro-developer (أعراف Astro islands/SSR).
+- **الحدود الصادقة**: تقييم الدرجات قبل/بعد (59→80 إجماليًا) هندسي ذاتي وفق الموجز — **RUNTIME USER UAT REQUIRED** قبل أي ادعاء قابلية استخدام بشرية. الباقي: توحيد صفحتي الإشعارات، Reset الشرطي على باقي سجلات lab، تقارب H1 text-3xl القديم في سجلات lab غير المحوّلة نحو text-2xl، وترقية chips الموظف لروابط مفلترة (يحتاج فلتر due للبحث).
+- **Files**: `docs/UI-DESIGN-SYSTEM.md` (جديد)، `docs/UI-UX-PRODUCT-AUDIT.md` (جديد)، `src/components/ui/{PageHeader,AppButton,StatusPill,Pagination,Banner}.astro` + `statusTones.ts` (جديد)، `src/components/{Navbar.tsx,EmptyState.astro}`، `src/components/lab/LabTestForm.tsx`، صفحات: `manager/index`، `supervisor/index`، `employee/index`، `manager/workload`، `findings/index`، `reports`، `search`، `404`، `admin/users`، `admin/templates`، `lab/{search,audit,tests/index,tests/review,products,calibration,retests,documents,templates,equipment,acknowledgements}`، `scripts/{test-ui-consistency(جديد),ui-screenshots(جديد),test-manifest,test-dashboard-reports,test-lab-change-requests,test-production-operations,test-scheduled-notifications,test-db-doctor}.mjs`، `package.json`.
+- **Status**: delivered محليًا — لا commit ولا push ولا deploy (القاعدة الثانية)؛ الالتزام على المستخدم. القسم 1 تجاوز حده مسبقًا (~594 سطرًا الآن) — الأرشفة للقسم 2 قرار جلسة قادمة (نمط موثق متكرر). رسالة مقترحة: `feat(qc): product UI/UX reconstruction — design system + shared primitives (PageHeader/AppButton/StatusPill/Pagination/Banner), grouped nav with aria-current, unified pagination/status/badges, role attention strips, workload+reports+findings rebuilds, SSR window crash + sticky-bar overflow fixes, UI consistency guard (52 suites) + 60-shot visual QA`
+
+### 2026-08-27 21:34 — PROMPT8-CHECKLIST: إضافة تشيك ليست تنفيذ لـ prompt8.md بنفس أسلوب prompt5-LAB.md — نجاح، بدون commit/push/deploy
+
+**الحالة:** نجح
+
+**المطلوب باختصار:**
+- إضافة قسم تشيك ليست (حالة تنفيذ + تبعيات + ترتيب نهائي) لملف `audit/qc/QC-Task-Manager/prompt8.md` مطابق لأسلوب `prompt5-LAB.md`
+
+**تم تنفيذه:**
+- أُضيف رأس توثيقي (Repository/Target/Execution model) + قسم "How to Use This Checklist" + "Global Prompt Execution Status" (22 برومبت 00–21) بأعلى الملف
+- حالة التنفيذ: 00–05 معلّمة ✅ (مطابقة للواقع الموثق بالعقل: baseline, reporting, migration parity, test gate, deployment, auth/password lifecycle migration 036 + AI safe mode) و06–21 ☐
+- أُضيف قسم "Execution Dependencies & Blocking" يوثق تبعيات الحجب: 06 قبل 11/13/17، 09 بعد 02/03، 10 يعتمد على primitives الـ 06، 15 يعتمد على 01، 12 يعتمد على 06، 20 SOURCE-BLOCKED، 21 أخيرًا
+- استُبدل قسم "الترتيب النهائي" النصي بـ "FINAL EXECUTION ORDER" على مراحل A–E بمربعات تحقق + "DEFINITION OF DONE" + "AGENT EXECUTION CONTRACT" (بما فيها خطوة تحديث التشيك ليست نفسه وسجل العقل بعد كل برومبت)
+- لا تعديل على محتوى البرومبتات نفسها (00–21) — فقط الأقسام الهيكلية
+
+**الملفات المتأثرة:**
+- `audit/qc/QC-Task-Manager/prompt8.md`
+
+**التحقق:**
+- Build: لم يُشغّل (تغيير توثيقي فقط — لا يمس الكود)
+- Lint/Typecheck: غير مطلوب
+- Tests: غير متأثرة
+- فحص يدوي: ✅ قراءة الملف بعد التعديل (رأس الملف سليم، لا تكرار، نهاية الملف محدثة)
+
+**قرارات/ملاحظات:**
+- Skills used: none — no matching skill found (مهمة توثيق برومبتات، ما فيه مهارة مطابقة في `.agents/skills/`)
+- الحالة الابتدائية للتشيك: 00–05 ✅ حسب ما أثبته العقل سابقًا؛ 20 معلّم SOURCE-BLOCKED في الترتيب لأن صفحات المصدر المسيطر 2/3 و3/3 غير متوفرة
+- ملف توثيقي فقط — لا commit (على المستخدم)
+
+**مشاكل مفتوحة:**
+- لا يوجد
+
+**الخطوة الجاية:**
+- بدء تنفيذ Prompt 06 (Full Product UI/UX Reconstruction) حسب التشيك ليست الجديدة
+
+---
+
 ### 2026-08-27 — QC-AUTH-PILOT-HARDENING-005: تقوية المصادقة لتحقيق التجربة التجريبية — دورة أول-تسجيل-دخول لكلمة المرور (migration 036) + AI safe launch — بدون commit/push/deploy
 - **Scope**: `apps/qc-task-manager/` فقط؛ قرأت العقل كاملًا أولًا. حافظت على الموجود: bcrypt، جلسات server-side، نموذج 12h، القفل بعد 5 محاولات، حد الـ IP (20/10د)، وسلوك الدummy hash ضد الـ enumeration — صفر استبدال معماري. لا commit ولا push ولا deploy.
 - **Migration 036_password_lifecycle.sql (التالية التسلسلية بعد 035)**: `must_change_password INTEGER NOT NULL DEFAULT 0 CHECK (0|1)` + `password_changed_at TEXT`. **قرار backfill موثق**: الحسابات القائمة تبقى 0 حتى لا تُقفل مشغّلين قائمة mid-pilot؛ العلم يُفعَّل للمضي: createUser/resetPassword/seed. المرآة في `db/schema.sql` + entry في `migrationRegistry.ts` بنمط `?raw` الحرفي. عدّادات النسخة 35→36 موزعة على: `test-migrations.mjs` (fresh ×2 + ترقية v31 صارت 5 هجرات + نطاق 011-035→011-036 = 26)، `test-production-operations.mjs`، `test.mjs` (init-db). **route-manifest صار 110 file routes** (أُضيف `/account/security`).

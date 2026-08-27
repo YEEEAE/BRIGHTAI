@@ -17,6 +17,8 @@
 // link (same pattern as /lab). View opens the read-only details page, which
 // IS implemented. Export (CSV/XLSX) is shown only when the user may export.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Pagination from '../../../components/ui/Pagination.astro';
+import StatusPill from '../../../components/ui/StatusPill.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import EmptyState from '../../../components/EmptyState.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
@@ -120,29 +122,8 @@ function th(field: LabTestSortField, label: string): string {
   return `<a href="${sortHref(field)}" class="inline-flex items-center gap-1 hover:text-slate-900">${label}${sortArrow(field)}</a>`;
 }
 
-// Pagination window (up to 7 pages around the current one).
-const pageNumbers: number[] = [];
-{
-  const total = result.total_pages;
-  const cur = result.page;
-  let start = Math.max(1, cur - 3);
-  let end = Math.min(total, cur + 3);
-  if (end - start < 6) {
-    if (start === 1) end = Math.min(total, start + 6);
-    else start = Math.max(1, end - 6);
-  }
-  for (let p = start; p <= end; p++) pageNumbers.push(p);
-}
 
-const resultTone: Record<string, string> = { PASS: 'text-green-700', FAIL: 'text-red-700', HOLD: 'text-orange-700' };
-const statusTone: Record<string, string> = {
-  DRAFT: 'bg-slate-100 text-slate-700',
-  SUBMITTED: 'bg-blue-100 text-blue-800',
-  UNDER_REVIEW: 'bg-amber-100 text-amber-800',
-  REJECTED: 'bg-rose-100 text-rose-800',
-  APPROVED: 'bg-emerald-100 text-emerald-800',
-  VOID: 'bg-slate-200 text-slate-500',
-};
+const resultTone: Record<string, string> = { PASS: 'text-emerald-700', FAIL: 'text-red-700', HOLD: 'text-orange-700' };
 
 // True when the view/details route is implemented (it is — this prompt).
 const viewEnabled = true;
@@ -321,7 +302,7 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
           </div>
           <div class="mt-3 flex flex-wrap items-center gap-2">
             <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">Apply filters</button>
-            <a href="/lab/tests" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Reset</a>
+            {filtered && <a href="/lab/tests" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">Reset</a>}
           </div>
         </form>
 
@@ -365,7 +346,7 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
                       <td class="px-4 py-2 text-slate-700">{t.tester_name ?? '—'}</td>
                       <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-400'}`}>{t.final_result ?? '—'}</td>
                       <td class="px-4 py-2">
-                        <span class={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusTone[t.status] ?? 'bg-slate-100 text-slate-700'}`}>{LAB_TEST_STATUS_LABELS[t.status as keyof typeof LAB_TEST_STATUS_LABELS] ?? t.status}</span>
+                        <StatusPill status={t.status} dot />
                       </td>
                       <td class="px-4 py-2 text-slate-500">{t.created_at}</td>
                       <td class="px-4 py-2 text-slate-500">{t.updated_at}</td>
@@ -379,31 +360,7 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
         )}
 
         {/* Pagination */}
-        {result.total_pages > 1 && (
-          <nav aria-label="Pagination" class="flex flex-wrap items-center justify-center gap-2">
-            {result.page > 1 ? (
-              <a href={pageHref(result.page - 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">← Prev</a>
-            ) : (
-              <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-400">← Prev</span>
-            )}
-            {pageNumbers.map((p) => (
-              <a
-                href={pageHref(p)}
-                aria-current={p === result.page ? 'page' : undefined}
-                class={`rounded-md px-3 py-1.5 text-sm font-medium ${
-                  p === result.page ? 'bg-brand-600 text-white' : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
-                }`}
-              >
-                {p}
-              </a>
-            ))}
-            {result.page < result.total_pages ? (
-              <a href={pageHref(result.page + 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Next →</a>
-            ) : (
-              <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-400">Next →</span>
-            )}
-          </nav>
-        )}
+        <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} />
         {canViewLabReports(role) && (
           <AiReviewPanel feature="lab-fail-patterns" requestBody={{}} title="AI FAIL Patterns" client:visible />
         )}

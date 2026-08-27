@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import AppButton from '../../components/ui/AppButton.astro';
+import EmptyState from '../../components/EmptyState.astro';
 import QcStatusBadge from '../../components/QcStatusBadge.astro';
 import { listFindings } from '../../lib/qc-operations';
 import { getDb } from '../../lib/db';
@@ -21,35 +24,94 @@ const prefill = {
 const findings = listFindings({ status, classification, owner: user.role === 'employee' ? user.userId : undefined }).filter((finding) => canManageFinding({ id: user.userId, role: user.role }, finding));
 const tasks = getDb().prepare('SELECT id, title FROM tasks ORDER BY id DESC LIMIT 200').all() as { id: number; title: string }[];
 const owners = getDb().prepare("SELECT id, full_name FROM users WHERE is_active=1 ORDER BY full_name").all() as { id: number; full_name: string }[];
+const filtered = Boolean(status || classification);
+const inputClass = 'rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 ---
 <BaseLayout title="QC Findings">
   <div class="space-y-6">
-    <header class="flex flex-wrap items-end justify-between gap-4">
-      <div><p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Operations</p><h1 class="mt-1 text-3xl font-semibold text-slate-900">Findings</h1><p class="mt-1 text-sm text-slate-600">Track observations, nonconformities, corrective actions, and closure gates.</p></div>
-      <a href="#new-finding" class="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">New Finding</a>
-    </header>
+    <PageHeader
+      eyebrow="QC Operations"
+      title="Findings"
+      description="Track observations, nonconformities, corrective actions, and closure gates."
+    >
+      <fragment slot="actions">
+        <AppButton href="#new-finding" variant="primary">New Finding</AppButton>
+      </fragment>
+    </PageHeader>
 
-    <form method="get" class="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 bg-white p-4">
-      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">Status<select name="status" class="rounded-md border border-slate-300 px-3 py-2 text-sm"><option value="">All</option>{FINDING_STATUSES.map((value) => <option value={value} selected={status === value}>{value}</option>)}</select></label>
-      <label class="flex flex-col gap-1 text-xs font-medium text-slate-600">Classification<select name="classification" class="rounded-md border border-slate-300 px-3 py-2 text-sm"><option value="">All</option>{FINDING_CLASSIFICATIONS.map((value) => <option value={value} selected={classification === value}>{value}</option>)}</select></label>
-      <button class="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium hover:bg-slate-50">Filter</button>
+    <form method="get" class="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Status<select name="status" class={inputClass}><option value="">All</option>{FINDING_STATUSES.map((value) => <option value={value} selected={status === value}>{value}</option>)}</select></label>
+      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Classification<select name="classification" class={inputClass}><option value="">All</option>{FINDING_CLASSIFICATIONS.map((value) => <option value={value} selected={classification === value}>{value}</option>)}</select></label>
+      <div class="flex items-center gap-2">
+        <AppButton type="submit" variant="primary">Apply filters</AppButton>
+        {filtered && <AppButton href="/findings" variant="secondary">Reset</AppButton>}
+      </div>
     </form>
 
-    <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm" aria-label="Findings list">
-      {findings.length === 0 ? <div class="p-10 text-center text-sm text-slate-500">No Findings match these filters.</div> : <div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-3">Number</th><th class="px-4 py-3">Task</th><th class="px-4 py-3">Classification</th><th class="px-4 py-3">Severity</th><th class="px-4 py-3">Owner</th><th class="px-4 py-3">Due</th><th class="px-4 py-3">Status</th></tr></thead><tbody class="divide-y divide-slate-100">{findings.map((finding) => <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-semibold"><a class="text-brand-700 hover:underline" href={`/findings/${finding.id}`}>{String(finding.finding_number)}</a></td><td class="px-4 py-3">{String(finding.task_title)}</td><td class="px-4 py-3 capitalize">{String(finding.classification)}</td><td class="px-4 py-3 capitalize">{String(finding.severity)}</td><td class="px-4 py-3">{String(finding.owner_name)}</td><td class="px-4 py-3">{String(finding.due_date ?? '—')}</td><td class="px-4 py-3"><QcStatusBadge status={String(finding.status)} /></td></tr>)}</tbody></table></div>}
+    <p class="text-sm text-slate-600">
+      {findings.length.toLocaleString('en-US')} finding{findings.length === 1 ? '' : 's'} found
+      {filtered && <span> (filtered — <a href="/findings" class="text-brand-600 hover:underline">clear all</a>)</span>}
+    </p>
+
+    <section aria-label="Findings list">
+      {findings.length === 0 ? (
+        <EmptyState
+          icon={filtered ? '🔍' : '📋'}
+          title={filtered ? 'No findings match these filters' : 'No findings recorded yet'}
+          hint={filtered ? 'Try adjusting the search or clearing the filters.' : 'Findings appear here once inspections and audits record observations.'}
+          ctaHref={filtered ? '/findings' : undefined}
+          ctaLabel={filtered ? 'Clear filters' : undefined}
+        />
+      ) : (
+        <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm">
+              <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <tr>
+                  <th scope="col" class="px-4 py-2.5">Number</th>
+                  <th scope="col" class="px-4 py-2.5">Task</th>
+                  <th scope="col" class="px-4 py-2.5">Classification</th>
+                  <th scope="col" class="px-4 py-2.5">Severity</th>
+                  <th scope="col" class="px-4 py-2.5">Owner</th>
+                  <th scope="col" class="px-4 py-2.5">Due</th>
+                  <th scope="col" class="px-4 py-2.5">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                {findings.map((finding) => (
+                  <tr class="hover:bg-slate-50/75">
+                    <td class="px-4 py-2.5 font-semibold"><a class="text-brand-700 hover:underline" href={`/findings/${finding.id}`}>{String(finding.finding_number)}</a></td>
+                    <td class="px-4 py-2.5 text-slate-700">{String(finding.task_title)}</td>
+                    <td class="px-4 py-2.5 capitalize text-slate-700">{String(finding.classification)}</td>
+                    <td class="px-4 py-2.5 capitalize text-slate-700">{String(finding.severity)}</td>
+                    <td class="px-4 py-2.5 text-slate-700">{String(finding.owner_name)}</td>
+                    <td class="px-4 py-2.5 text-slate-500">{String(finding.due_date ?? '—')}</td>
+                    <td class="px-4 py-2.5"><QcStatusBadge status={String(finding.status)} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </section>
 
-    <section id="new-finding" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"><h2 class="text-lg font-semibold text-slate-900">Create QC Finding</h2><form method="post" action="/api/findings" class="mt-4 grid gap-4 md:grid-cols-2">
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Finding number<input required name="finding_number" placeholder="F-2026-0001" class="rounded-md border border-slate-300 px-3 py-2" /></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Task<select required name="task_id" class="rounded-md border border-slate-300 px-3 py-2">{tasks.map((task) => <option value={task.id}>#{task.id} — {task.title}</option>)}</select></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Inspection type<input required name="inspection_type" value={prefill.inspection_type} placeholder="Internal audit" class="rounded-md border border-slate-300 px-3 py-2" /></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Owner<select name="owner" required class="rounded-md border border-slate-300 px-3 py-2">{owners.map((owner) => <option value={owner.id} selected={owner.id === user.userId}>{owner.full_name}</option>)}</select></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Classification<select name="classification" class="rounded-md border border-slate-300 px-3 py-2">{FINDING_CLASSIFICATIONS.map((value) => <option value={value}>{value}</option>)}</select></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Severity<select name="severity" class="rounded-md border border-slate-300 px-3 py-2"><option>low</option><option>medium</option><option>high</option><option>critical</option></select></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2">Risk description<textarea required name="risk_description" rows="3" class="rounded-md border border-slate-300 px-3 py-2">{prefill.risk_description}</textarea></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Requirement reference<input name="requirement_reference" value={prefill.requirement_reference} class="rounded-md border border-slate-300 px-3 py-2" /></label>
-      <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Due date<input type="date" name="due_date" class="rounded-md border border-slate-300 px-3 py-2" /></label>
-      <button class="md:col-span-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">Create Finding</button>
-    </form></section>
+    <section id="new-finding" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-base font-semibold text-slate-900">Create QC Finding</h2>
+      <form method="post" action="/api/findings" class="mt-4 grid gap-4 md:grid-cols-2">
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Finding number<input required name="finding_number" placeholder="F-2026-0001" class={inputClass} /></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Task<select required name="task_id" class={inputClass}>{tasks.map((task) => <option value={task.id}>#{task.id} — {task.title}</option>)}</select></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Inspection type<input required name="inspection_type" value={prefill.inspection_type} placeholder="Internal audit" class={inputClass} /></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Owner<select name="owner" required class={inputClass}>{owners.map((owner) => <option value={owner.id} selected={owner.id === user.userId}>{owner.full_name}</option>)}</select></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Classification<select name="classification" class={inputClass}>{FINDING_CLASSIFICATIONS.map((value) => <option value={value}>{value}</option>)}</select></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Severity<select name="severity" class={inputClass}><option>low</option><option>medium</option><option>high</option><option>critical</option></select></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2">Risk description<textarea required name="risk_description" rows="3" class={inputClass}>{prefill.risk_description}</textarea></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Requirement reference<input name="requirement_reference" value={prefill.requirement_reference} class={inputClass} /></label>
+        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Due date<input type="date" name="due_date" class={inputClass} /></label>
+        <div class="md:col-span-2">
+          <AppButton type="submit" variant="primary">Create Finding</AppButton>
+        </div>
+      </form>
+    </section>
   </div>
 </BaseLayout>

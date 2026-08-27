@@ -1,0 +1,37 @@
+---
+// Banner — the one in-page alert banner (docs/UI-DESIGN-SYSTEM.md §3.5).
+// tone="error" renders role="alert"; other tones are status regions.
+// FlashNotice keeps its one-shot cookie contract but shares this language.
+interface Props {
+  tone?: 'info' | 'success' | 'warning' | 'error';
+  title?: string;
+  class?: string;
+}
+
+const { tone = 'info', title, class: className = '' } = Astro.props;
+
+const tones: Record<string, string> = {
+  info: 'border-sky-200 bg-sky-50 text-sky-800',
+  success: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+  warning: 'border-orange-200 bg-orange-50 text-orange-800',
+  error: 'border-red-200 bg-red-50 text-red-800',
+};
+const icons: Record<string, string> = {
+  info: 'ℹ',
+  success: '✓',
+  warning: '⚠',
+  error: '✕',
+};
+---
+<div
+  class:list={['flex items-start gap-2.5 rounded-lg border px-4 py-3 text-sm', tones[tone], className]}
+  role={tone === 'error' ? 'alert' : 'status'}
+>
+  <span aria-hidden="true" class="mt-0.5 font-semibold">{icons[tone]}</span>
+  <div class="min-w-0">
+    {title && <p class="font-semibold">{title}</p>}
+    <div class:list={[title ? 'mt-0.5' : '']}>
+      <slot />
+    </div>
+  </div>
+</div>

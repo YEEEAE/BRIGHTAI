@@ -12,6 +12,7 @@
 //    rebuilding the URL from the stored query JSON.
 
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Pagination from '../components/ui/Pagination.astro';
 import StatusBadge from '../components/StatusBadge.astro';
 import EmptyState from '../components/EmptyState.astro';
 import * as search from '../lib/taskSearch';
@@ -84,15 +85,6 @@ function th(field: search.SearchSortField, label: string): string {
 
 const saveFilterJson = JSON.stringify(Object.fromEntries(qsParams));
 const currentUrl = Astro.url.pathname + Astro.url.search;
-const pageNumbers: number[] = [];
-{
-  const total = result.total_pages;
-  const cur = result.page;
-  // Window of up to 7 pages around the current one.
-  const start = Math.max(1, Math.min(cur - 3, total - 6));
-  const end = Math.min(total, start + 6);
-  for (let p = start; p <= end; p += 1) pageNumbers.push(p);
-}
 ---
 
 <BaseLayout title="Search tasks">
@@ -418,35 +410,7 @@ const pageNumbers: number[] = [];
   )}
 
   {/* ───────────── Pagination (state preserved via URL) ───────────── */}
-  {result.total_pages > 1 && (
-    <nav aria-label="Pagination" class="mt-4 flex flex-wrap items-center justify-center gap-2">
-      {result.page > 1 ? (
-        <a href={pageHref(result.page - 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
-          ← Prev
-        </a>
-      ) : (
-        <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-400">← Prev</span>
-      )}
-      {pageNumbers.map((p) => (
-        <a
-          href={pageHref(p)}
-          aria-current={p === result.page ? 'page' : undefined}
-          class={`rounded-md px-3 py-1.5 text-sm font-medium ${
-            p === result.page
-              ? 'bg-brand-600 text-white'
-              : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
-          }`}
-        >
-          {p}
-        </a>
-      ))}
-      {result.page < result.total_pages ? (
-        <a href={pageHref(result.page + 1)} class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
-          Next →
-        </a>
-      ) : (
-        <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-400">Next →</span>
-      )}
-    </nav>
-  )}
+  <div class="mt-4">
+    <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="Search results pagination" />
+  </div>
 </BaseLayout>

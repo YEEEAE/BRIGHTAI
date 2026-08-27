@@ -1,28 +1,46 @@
 ---
-// EmptyState — consistent "nothing here yet" block used across task lists,
-// comments, attachments, and the admin/requests pages. Optionally shows a CTA
-// link when there is an obvious next action.
+// EmptyState — the single "nothing here yet" block (docs/UI-DESIGN-SYSTEM.md
+// §3.6). Used for no-records and no-results states; the CTA should offer the
+// obvious next action (create the first record, or clear the filters).
+// Backward-compatible API: existing title/hint/ctaHref/ctaLabel pages keep
+// working; icon + secondary CTA are opt-in.
 interface Props {
   title: string;
   hint?: string;
   ctaHref?: string;
   ctaLabel?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+  /** Decorative glyph in the icon well (defaults to 📭). */
+  icon?: string;
 }
 
-const { title, hint, ctaHref, ctaLabel } = Astro.props;
+const { title, hint, ctaHref, ctaLabel, secondaryHref, secondaryLabel, icon = '📭' } = Astro.props;
 ---
 <div class="rounded-xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
   <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-2xl" aria-hidden="true">
-    📭
+    {icon}
   </div>
   <h2 class="mt-4 text-base font-semibold text-slate-900">{title}</h2>
   {hint && <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">{hint}</p>}
-  {ctaHref && (
-    <a
-      href={ctaHref}
-      class="mt-5 inline-block rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
-    >
-      {ctaLabel ?? 'Get started'}
-    </a>
+  {(ctaHref || secondaryHref) && (
+    <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
+      {ctaHref && (
+        <a
+          href={ctaHref}
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+        >
+          {ctaLabel ?? 'Get started'}
+        </a>
+      )}
+      {secondaryHref && (
+        <a
+          href={secondaryHref}
+          class="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+        >
+          {secondaryLabel ?? 'View all'}
+        </a>
+      )}
+    </div>
   )}
 </div>

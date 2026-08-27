@@ -12,6 +12,7 @@
 //   - Username is never editable.
 //   - Password hashes are never selected or displayed.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StatusPill from '../../../components/ui/StatusPill.astro';
 import { getDb, toBool } from '../../../lib/db';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
@@ -151,13 +152,7 @@ const labelCls = 'block text-sm font-medium text-slate-700';
               <td class="px-4 py-2 text-slate-600">{u.department}</td>
               <td class="px-4 py-2 text-slate-600">{toBool(u.can_create_tasks) ? 'Yes' : 'No'}</td>
               <td class="px-4 py-2">
-                <span
-                  class={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
-                    toBool(u.is_active) ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
-                  }`}
-                >
-                  {toBool(u.is_active) ? 'Active' : 'Disabled'}
-                </span>
+                <StatusPill status={toBool(u.is_active) ? 'active' : 'disabled'} dot />
               </td>
               <td class="px-4 py-2 whitespace-nowrap text-slate-500">{formatDate(u.created_at)}</td>
               <td class="px-4 py-2 whitespace-nowrap text-slate-500">{u.last_login_at ? formatDate(u.last_login_at) : '—'}</td>

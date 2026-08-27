@@ -26,12 +26,12 @@ try {
   db.close();
 
   const backup = await createBackup({ dbPath, backupDir, trigger: 'test' });
-  assert.equal((await verifyBackup({ file: backup.file, expectedSchemaVersion: 35 })).result, 'PASS');
+  assert.equal((await verifyBackup({ file: backup.file, expectedSchemaVersion: 36 })).result, 'PASS');
 
   db = new Database(dbPath);
   db.prepare("UPDATE tasks SET title = 'Mutated record' WHERE id = 1").run();
   db.close();
-  const restored = await restoreBackup({ productionDbPath: dbPath, backupFile: backup.file, metadataFile: backup.metadataFile, confirmation: 'RESTORE QC DATABASE', backupDir, expectedSchemaVersion: 35 });
+  const restored = await restoreBackup({ productionDbPath: dbPath, backupFile: backup.file, metadataFile: backup.metadataFile, confirmation: 'RESTORE QC DATABASE', backupDir, expectedSchemaVersion: 36 });
   assert.equal(restored.verification.result, 'PASS');
 
   db = new Database(dbPath);

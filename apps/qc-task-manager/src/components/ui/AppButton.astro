@@ -1,0 +1,81 @@
+---
+// AppButton — the one button primitive (docs/UI-DESIGN-SYSTEM.md §3.2).
+// Renders an <a> when href is set (and not disabled), otherwise a <button>.
+// Variants: primary (one per view) / secondary / tertiary / destructive.
+// Destructive actions never sit beside a primary in the same group.
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'destructive';
+  size?: 'md' | 'sm';
+  type?: 'button' | 'submit';
+  name?: string;
+  value?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  ariaLabel?: string;
+  title?: string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'secondary',
+  size = 'md',
+  type = 'button',
+  name,
+  value,
+  disabled = false,
+  loading = false,
+  ariaLabel,
+  title,
+  class: className = '',
+} = Astro.props;
+
+const variantClasses = {
+  primary: 'bg-brand-600 text-white shadow-sm hover:bg-brand-700 focus-visible:outline-brand-600',
+  secondary:
+    'border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline-brand-600',
+  tertiary:
+    'text-brand-700 hover:underline focus-visible:outline-brand-600 shadow-none',
+  destructive:
+    'bg-red-700 text-white shadow-sm hover:bg-red-800 focus-visible:outline-red-700',
+};
+
+const sizeClasses = {
+  md: 'px-4 py-2 text-sm min-h-11',
+  sm: 'px-2.5 py-1.5 text-xs min-h-7',
+};
+
+const isDisabled = disabled || loading;
+const classes = [
+  'inline-flex items-center justify-center gap-1.5 rounded-lg font-semibold transition-colors',
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+  variantClasses[variant],
+  sizeClasses[size],
+  isDisabled ? 'cursor-not-allowed opacity-50' : '',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+{
+  href && !isDisabled ? (
+    <a href={href} class={classes} aria-label={ariaLabel} title={title}>
+      <slot />
+    </a>
+  ) : (
+    <button
+      type={type}
+      name={name}
+      value={value}
+      class={classes}
+      disabled={isDisabled}
+      aria-disabled={isDisabled ? 'true' : undefined}
+      aria-label={ariaLabel}
+      title={title}
+    >
+      <slot />
+    </button>
+  )
+}

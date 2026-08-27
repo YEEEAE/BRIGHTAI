@@ -72,4 +72,5 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:db-doctor',
   'test:production-operations',
   'test:deployment-contract',
+  'test:ui-consistency',
 ];
