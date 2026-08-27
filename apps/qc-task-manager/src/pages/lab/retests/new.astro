@@ -13,6 +13,8 @@ import { getLabRetestCreateContext, LAB_RETEST_REASONS, LAB_RETEST_REASON_LABELS
 import { canCreateLabRetest } from '../../../lib/permissions';
 import { setFlash } from '../../../lib/flash';
 import type { Role } from '../../../lib/types';
+import PageHeader from '../../../components/ui/PageHeader.astro';
+import { FILTER_CONTROL } from '../../../components/ui/formPresets';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -49,15 +51,7 @@ function fmt(value: unknown): string {
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Testing</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Create Retest</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        A retest never modifies the original test. The original's result and final state are preserved on the retest record, a
-        documented reason is required, and a new DRAFT execution test is created carrying the original's controlled context —
-        measurements are re-taken, never copied.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Testing" title="Create Retest" description="A retest never modifies the original test. The original's result and final state are preserved on the retest record, a documented reason is required, and a new DRAFT execution test is created carrying the original's controlled context — measurements are re-taken, never copied." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/retests/new" />
 
@@ -104,7 +98,7 @@ function fmt(value: unknown): string {
         <div class="mt-4 grid gap-4 md:grid-cols-2">
           <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
             Reason
-            <select id="reason" name="reason" required class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+            <select id="reason" name="reason" required class={FILTER_CONTROL}>
               <option value="">Select a reason…</option>
               {LAB_RETEST_REASONS.map((r) => (
                 <option value={r}>{LAB_RETEST_REASON_LABELS[r]}</option>
@@ -119,7 +113,7 @@ function fmt(value: unknown): string {
               name="reason_note"
               maxlength="200"
               placeholder="Documented detail — sample, equipment or procedural context…"
-              class="mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              class={FILTER_CONTROL}
             />
           </label>
         </div>

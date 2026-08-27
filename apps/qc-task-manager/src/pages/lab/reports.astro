@@ -20,6 +20,9 @@ import { LAB_REPORT_STATUSES, listLabProductsForReports, listLabEquipmentForRepo
 import { getLabFailRateTrends, getLabFailRateByProduct, labTrendDrilldown, type LabTrendGranularity } from '../../lib/lab/trends';
 import LabFailRateChart from '../../components/lab/LabFailRateChart';
 import type { Role } from '../../lib/types';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import { FILTER_TOOLBAR, FILTER_FIELD } from '../../components/ui/formPresets';
+import AppButton from '../../components/ui/AppButton.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -78,49 +81,40 @@ if (showTrend) {
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Operations</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Reports</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Generate the {labReports.length} laboratory reports (registers, results, calibration, documents, activity, data quality, retention status) as
-        CSV, Excel, or PDF. Exports respect the selected filters and your data scope, and every generation is
-        recorded in the report audit log. Report content is metadata only — document bodies and test snapshots are
-        never exported.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Operations" title="Laboratory Reports" description={`Generate the ${labReports.length} laboratory reports (registers, results, calibration, documents, activity, data quality, retention status) as CSV, Excel, or PDF. Exports respect the selected filters and your data scope, and every generation is recorded in the report audit log. Report content is metadata only — document bodies and test snapshots are never exported.`} />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/reports" />
 
     <!-- Filter form -->
-    <form method="get" action="/lab/reports" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <form method="get" action="/lab/reports" class={FILTER_TOOLBAR}>
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Report type
+        <label class={FILTER_FIELD}>Report type
           <select name="report_type" class="rounded-md border border-slate-300 px-3 py-2">
             {labReports.map((report) => <option value={report.key} selected={currentType === report.key}>{report.label}</option>)}
           </select>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">From date<input type="date" name="from" value={Astro.url.searchParams.get('from') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">To date<input type="date" name="to" value={Astro.url.searchParams.get('to') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Test type
+        <label class={FILTER_FIELD}>From date<input type="date" name="from" value={Astro.url.searchParams.get('from') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
+        <label class={FILTER_FIELD}>To date<input type="date" name="to" value={Astro.url.searchParams.get('to') ?? ''} class="rounded-md border border-slate-300 px-3 py-2" /></label>
+        <label class={FILTER_FIELD}>Test type
           <select name="test_type" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All types</option>{['air', 'vacuum'].map((v) => <option value={v} selected={Astro.url.searchParams.get('test_type') === v}>{v.toUpperCase()}</option>)}</select>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Result
+        <label class={FILTER_FIELD}>Result
           <select name="result" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All results</option>{LAB_RESULT_OPTIONS.map((v) => <option value={v} selected={Astro.url.searchParams.get('result') === v}>{v}</option>)}</select>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Status
+        <label class={FILTER_FIELD}>Status
           <select name="status" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All statuses</option>{LAB_REPORT_STATUSES.map((v) => <option value={v} selected={Astro.url.searchParams.get('status') === v}>{v}</option>)}</select>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Retest reason
+        <label class={FILTER_FIELD}>Retest reason
           <select name="reason" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All reasons</option>{LAB_RETEST_REASONS.map((v) => <option value={v} selected={Astro.url.searchParams.get('reason') === v}>{v}</option>)}</select>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Product
+        <label class={FILTER_FIELD}>Product
           <select name="product" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All products</option>{products.map((p) => <option value={p.id} selected={Astro.url.searchParams.get('product') === String(p.id)}>{p.name} ({p.code})</option>)}</select>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Equipment
+        <label class={FILTER_FIELD}>Equipment
           <select name="equipment" class="rounded-md border border-slate-300 px-3 py-2"><option value="">All equipment</option>{equipment.map((e) => <option value={e.id} selected={Astro.url.searchParams.get('equipment') === String(e.id)}>{e.name} ({e.code})</option>)}</select>
         </label>
       </div>
-      <div class="mt-4 flex flex-wrap items-center gap-3"><button type="submit" class="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">Update filters</button><span class="text-sm text-slate-600">Signed in as {user.fullName} ({user.role}).</span></div>
+      <div class="mt-4 flex flex-wrap items-center gap-3"><AppButton type="submit" variant="primary">Update filters</AppButton><span class="text-sm text-slate-600">Signed in as {user.fullName} ({user.role}).</span></div>
     </form>
 
     <!-- Download -->

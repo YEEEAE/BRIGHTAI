@@ -13,6 +13,14 @@ interface Props {
 
 const { items, currentPath = '' } = Astro.props;
 const groupEntries = (group: string) => items.filter((item) => item.group === group);
+
+// Active entry: exact path or a child of the entry (e.g. /lab/tests/12 marks
+// "Tests" active). When several entries match, the longest href wins so
+// /lab/tests/new marks "New Test" rather than "Tests" — exactly one
+// aria-current="page" at any time.
+const activeHref = items
+  .filter((entry) => currentPath === entry.href || currentPath.startsWith(`${entry.href}/`))
+  .sort((a, b) => b.href.length - a.href.length)[0]?.href;
 ---
 {
   items.length > 0 && (
@@ -26,10 +34,10 @@ const groupEntries = (group: string) => items.filter((item) => item.group === gr
               {entries.map((entry) => (
                 <a
                   href={entry.href}
-                  aria-current={currentPath === entry.href ? 'page' : undefined}
+                  aria-current={entry.href === activeHref ? 'page' : undefined}
                   class:list={[
                     'rounded-md px-2.5 py-1.5 text-sm font-medium',
-                    currentPath === entry.href
+                    entry.href === activeHref
                       ? 'bg-brand-50 text-brand-700'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
                   ]}

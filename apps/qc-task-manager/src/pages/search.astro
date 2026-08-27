@@ -16,6 +16,7 @@ import Pagination from '../components/ui/Pagination.astro';
 import StatusBadge from '../components/StatusBadge.astro';
 import EmptyState from '../components/EmptyState.astro';
 import * as search from '../lib/taskSearch';
+import AppButton from '../components/ui/AppButton.astro';
 import {
   formatDbDate,
   formatDueDate,
@@ -252,12 +253,10 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
           Deletion requested
         </label>
         <span class="flex-1"></span>
-        <button type="submit" class="rounded-md bg-brand-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+        <AppButton type="submit" variant="primary">
           Search
-        </button>
-        <a href="/search" class="rounded-md border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
-          Reset filters
-        </a>
+        </AppButton>
+        <AppButton href="/search" variant="secondary">Reset filters</AppButton>
       </div>
     </div>
   </form>

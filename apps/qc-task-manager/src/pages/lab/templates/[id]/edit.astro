@@ -22,6 +22,7 @@ import { LAB_CONNECTOR_TYPES } from '../../../../lib/lab/policy';
 import { canEditLabTemplateRecord } from '../../../../lib/permissions';
 import type { Role } from '../../../../lib/types';
 import { setFlash } from '../../../../lib/flash';
+import Banner from '../../../../components/ui/Banner.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -104,16 +105,14 @@ const versionNote =
 
     <header>
       <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Edit Test Template</h1>
+      <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Edit Test Template</h1>
       {versionNote && <p class="mt-1 max-w-3xl text-sm font-medium text-amber-700">{versionNote}</p>}
     </header>
 
     <LabSecondaryNav items={navItems} currentPath="/lab/templates" />
 
     {loadError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {loadError}
-      </div>
+      <Banner tone="error">{loadError}</Banner>
     )}
 
     {!loadError && !editView && (

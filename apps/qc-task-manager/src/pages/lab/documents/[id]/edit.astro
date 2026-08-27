@@ -22,6 +22,8 @@ import {
 import { canEditLabDocumentRecord } from '../../../../lib/permissions';
 import { setFlash } from '../../../../lib/flash';
 import type { Role } from '../../../../lib/types';
+import Banner from '../../../../components/ui/Banner.astro';
+import PageHeader from '../../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -67,10 +69,7 @@ try {
 
     {!editor ? (
       <>
-        <header>
-          <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
-          <h1 class="mt-1 text-3xl font-semibold text-slate-900">Document not found</h1>
-        </header>
+        <PageHeader eyebrow="QC Laboratory — Controlled Documents" title="Document not found" />
         <EmptyState
           title="Document not found"
           hint="This document does not exist — it may have been removed, or the link is stale."
@@ -83,7 +82,7 @@ try {
         <header class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
-            <h1 class="mt-1 text-3xl font-semibold text-slate-900">Edit Document · <span dir="ltr">{editor.document.code}</span></h1>
+            <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Edit Document · <span dir="ltr">{editor.document.code}</span></h1>
             <p class="mt-1 max-w-3xl text-sm text-slate-600">
               {editor.document.title} — current version{' '}
               <strong dir="ltr">v{editor.version?.version ?? 1}</strong> ({editor.version?.status ?? 'DRAFT'}). Every save is
@@ -102,9 +101,7 @@ try {
 
         {loadError ? (
           <>
-            <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {loadError}
-            </div>
+            <Banner tone="error">{loadError}</Banner>
             <EmptyState
               title="Could not load the document editor"
               hint={loadError}

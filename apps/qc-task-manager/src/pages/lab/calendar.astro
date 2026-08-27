@@ -26,6 +26,8 @@ import {
 } from '../../lib/lab/calendar';
 import { formatDueDate } from '../../lib/format';
 import type { Role } from '../../lib/types';
+import Banner from '../../components/ui/Banner.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -80,22 +82,12 @@ const groupedEvents = calendar ? [...eventsByDate.values()] : [];
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Overview</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Calendar</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Real operational dates only — equipment calibration and maintenance, SOP/WI review deadlines, document
-        acknowledgement deadlines, and supported test/retest dates. Every event is derived from a stored date in its
-        source module; nothing is invented. Click an event to open its source record.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Overview" title="Laboratory Calendar" description="Real operational dates only — equipment calibration and maintenance, SOP/WI review deadlines, document acknowledgement deadlines, and supported test/retest dates. Every event is derived from a stored date in its source module; nothing is invented. Click an event to open its source record." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/calendar" />
 
     {dataError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {dataError}
-      </div>
+      <Banner tone="error">{dataError}</Banner>
     )}
 
     {!dataError && calendar && (

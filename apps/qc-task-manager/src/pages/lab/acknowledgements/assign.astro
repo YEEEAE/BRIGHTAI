@@ -24,6 +24,8 @@ import { getLabAcknowledgementAssignView, LAB_ACKNOWLEDGEMENT_STATUS_LABELS } fr
 import { canAssignLabDocumentAcknowledgement } from '../../../lib/permissions';
 import { setFlash } from '../../../lib/flash';
 import type { LabAcknowledgementStatus, LabDocumentStatus, Role } from '../../../lib/types';
+import PageHeader from '../../../components/ui/PageHeader.astro';
+import { DOCUMENT_STATUS_BADGE_CLS as STATUS_BADGE_CLS, ACKNOWLEDGEMENT_BADGE_CLS as ACK_BADGE_CLS } from '../../../components/ui/labBadgeClasses';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -48,18 +50,7 @@ if (versionId !== null) {
   }
 }
 
-const STATUS_BADGE_CLS: Record<LabDocumentStatus, string> = {
-  DRAFT: 'bg-slate-100 text-slate-700 ring-slate-200',
-  IN_REVIEW: 'bg-amber-50 text-amber-700 ring-amber-200',
-  APPROVED: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
-  SUPERSEDED: 'bg-violet-50 text-violet-700 ring-violet-200',
-  ARCHIVED: 'bg-slate-100 text-slate-500 ring-slate-200',
-};
 
-const ACK_BADGE_CLS: Record<LabAcknowledgementStatus, string> = {
-  PENDING: 'bg-amber-50 text-amber-700 ring-amber-200',
-  ACKNOWLEDGED: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
-};
 
 function ackBadge(status: LabAcknowledgementStatus): string {
   return `<span class="inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${ACK_BADGE_CLS[status]}">${LAB_ACKNOWLEDGEMENT_STATUS_LABELS[status]}</span>`;
@@ -91,10 +82,7 @@ const backHref = view
 
     {!view ? (
       <>
-        <header>
-          <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
-          <h1 class="mt-1 text-3xl font-semibold text-slate-900">Version not found</h1>
-        </header>
+        <PageHeader eyebrow="QC Laboratory — Controlled Documents" title="Version not found" />
         <EmptyState
           title="No version selected"
           hint="Open a version from the document version history and choose “Acknowledgements” to assign employees."
@@ -107,7 +95,7 @@ const backHref = view
         <header class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
-            <h1 class="mt-1 text-3xl font-semibold text-slate-900">
+            <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
               Assign <span dir="ltr">{view.document.code} v{view.version}</span>
             </h1>
             <p class="mt-1 max-w-3xl text-sm text-slate-600">

@@ -14,6 +14,7 @@ import { canEditLabCalibration, canProposeLabCalibrationEdit } from '../../../li
 import type { Role } from '../../../lib/types';
 import { countPendingChangeRequests } from '../../../lib/lab/changeRequests';
 import { canReviewLabChangeRequests } from '../../../lib/permissions';
+import { CALIBRATION_STATUS_BADGE_CLS as STATUS_BADGE_CLS } from '../../../components/ui/labBadgeClasses';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -31,15 +32,6 @@ try {
 const pendingContributorChanges = detail
   ? countPendingChangeRequests('CALIBRATION', detail.calibration.id, canReviewLabChangeRequests(role) ? undefined : user.userId)
   : 0;
-
-const STATUS_BADGE_CLS: Record<LabCalibrationStatus, string> = {
-  COMPLIANT: 'bg-emerald-100 text-emerald-800',
-  DUE_SOON: 'bg-amber-100 text-amber-800',
-  DUE_TODAY: 'bg-orange-100 text-orange-800',
-  OVERDUE: 'bg-rose-100 text-rose-800',
-  NOT_COMPLIANT: 'bg-red-100 text-red-800',
-  UNKNOWN: 'bg-slate-100 text-slate-700',
-};
 
 const sectionCls = 'rounded-xl border border-slate-200 bg-white p-5 shadow-sm';
 const sectionTitleCls = 'text-base font-semibold text-slate-900';
@@ -86,7 +78,7 @@ const ROWS: { label: string; value: unknown; ltr?: boolean }[] = detail
         <header class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-            <h1 class="mt-1 text-3xl font-semibold text-slate-900">Calibration · {detail.equipment_name}</h1>
+            <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Calibration · {detail.equipment_name}</h1>
             <p class="mt-1 text-sm text-slate-600">
               Code <span class="font-medium text-slate-900" dir="ltr">{detail.equipment_code}</span>
               <span class={`ms-3 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_BADGE_CLS[detail.status]}`}>

@@ -18,6 +18,8 @@ import { LAB_CONNECTOR_TYPES } from '../../../lib/lab/policy';
 import { canCreateLabTemplate } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 import { setFlash } from '../../../lib/flash';
+import Banner from '../../../components/ui/Banner.astro';
+import PageHeader from '../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -59,21 +61,12 @@ try {
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Test Template</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Create a versioned AIR/VACUUM template with reference parameters and test-form defaults. Version 1 starts as a
-        draft; approving it makes it the current version, and later edits create version 2 — approved versions are immutable.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Master Data" title="New Test Template" description="Create a versioned AIR/VACUUM template with reference parameters and test-form defaults. Version 1 starts as a draft; approving it makes it the current version, and later edits create version 2 — approved versions are immutable." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/templates/new" />
 
     {loadError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {loadError}
-      </div>
+      <Banner tone="error">{loadError}</Banner>
     )}
 
     {!loadError && (

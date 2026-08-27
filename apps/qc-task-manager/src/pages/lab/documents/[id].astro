@@ -27,6 +27,7 @@ import {
   canReviewLabDocumentRecord,
 } from '../../../lib/permissions';
 import type { LabDocumentStatus, LabDocumentType, Role } from '../../../lib/types';
+import { DOCUMENT_TYPE_BADGE_CLS as TYPE_BADGE_CLS } from '../../../components/ui/labBadgeClasses';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -53,11 +54,6 @@ const STATUS_LABELS: Record<LabDocumentStatus, string> = {
   APPROVED: 'Approved',
   SUPERSEDED: 'Superseded',
   ARCHIVED: 'Archived',
-};
-
-const TYPE_BADGE_CLS: Record<LabDocumentType, string> = {
-  SOP: 'bg-sky-100 text-sky-800',
-  WI: 'bg-indigo-100 text-indigo-800',
 };
 
 const docAuth = detail
@@ -106,7 +102,7 @@ const isAuthorOrOwner = detail
         <header class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
-            <h1 class="mt-1 text-3xl font-semibold text-slate-900">{detail.document.title}</h1>
+            <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900">{detail.document.title}</h1>
             <p class="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600">
               <span class="font-medium text-slate-900" dir="ltr">{detail.document.code}</span>
               <span>·</span>
@@ -404,7 +400,7 @@ const isAuthorOrOwner = detail
             <div role="status" class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5">
               <h2 id="sec-content" class="text-lg font-semibold text-slate-900">Content Status</h2>
               <p class="mt-2 text-sm text-slate-600">No content has been entered yet.</p>
-              {canEdit && <a href={`/lab/documents/${detail.document.id}/edit`} class="mt-4 inline-flex rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white">Add Content</a>}
+              {canEdit && <LabActionButton href={`/lab/documents/${detail.document.id}/edit`} kind="primary">Add Content</LabActionButton>}
             </div>
           ) : (
           <>

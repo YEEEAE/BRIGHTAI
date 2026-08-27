@@ -12,9 +12,17 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import LabSecondaryNav from '../../components/lab/LabSecondaryNav.astro';
 import MarkAllReadButton from '../../components/MarkAllReadButton';
-import MarkReadButton from '../../components/MarkReadButton';
+import NotificationCard from '../../components/NotificationCard.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import Banner from '../../components/ui/Banner.astro';
+import {
+  NOTIFICATION_KIND_ICON,
+  NOTIFICATION_KIND_LABEL,
+  groupNotificationsByKind,
+  orderedNotificationKinds,
+} from '../../components/ui/notificationPresentation';
 import { labNavForRole } from '../../lib/lab/navigation';
-import { listLabNotifications, splitMessageLinks } from '../../lib/notifications';
+import { listLabNotifications } from '../../lib/notifications';
 import type { Role } from '../../lib/types';
 
 const user = Astro.locals.user!;
@@ -38,97 +46,8 @@ try {
   dataError = 'Could not load your notifications. Try reloading — if the problem persists, contact an administrator.';
 }
 
-// Presentation maps — kept local to the page (same pattern as /notifications).
-const KIND_ICON: Record<string, string> = {
-  lab_test_review_started: '🔬',
-  lab_test_rejected: '⛔',
-  lab_test_changes_requested: '✏️',
-  lab_test_approved: '✅',
-  lab_test_voided: '🚫',
-  lab_document_review_due: '📋',
-  lab_document_acknowledgement: '📖',
-  lab_document_acknowledged: '👍',
-  lab_document_review_started: '📄',
-  lab_document_changes_requested: '📝',
-  lab_document_approved: '✅',
-  lab_document_archived: '📦',
-  lab_document_content_started: '📝',
-  lab_calibration_due: '⚖️',
-  lab_calibration_overdue: '⚠️',
-  lab_maintenance_event: '🔧',
-  lab_retest_update: '🔁',
-  lab_repeat_failures: '📉',
-  lab_change_review_requested: '📨',
-  lab_change_review_approved: '✅',
-  lab_change_review_rejected: '⛔',
-};
-
-const KIND_LABEL: Record<string, string> = {
-  lab_test_review_started: 'Tests under review',
-  lab_test_rejected: 'Tests rejected',
-  lab_test_changes_requested: 'Changes requested',
-  lab_test_approved: 'Tests approved',
-  lab_test_voided: 'Tests voided',
-  lab_document_review_due: 'Document reviews due',
-  lab_document_acknowledgement: 'Acknowledgements required',
-  lab_document_acknowledged: 'Acknowledgements completed',
-  lab_document_review_started: 'Documents in review',
-  lab_document_changes_requested: 'Document changes requested',
-  lab_document_approved: 'Documents approved',
-  lab_document_archived: 'Documents archived',
-  lab_document_content_started: 'Document content started',
-  lab_calibration_due: 'Calibration due',
-  lab_calibration_overdue: 'Calibration overdue',
-  lab_maintenance_event: 'Equipment maintenance',
-  lab_retest_update: 'Retest updates',
-  lab_repeat_failures: 'Lab repeated failures',
-  lab_change_review_requested: 'Lab change requests',
-  lab_change_review_approved: 'Lab change request approved',
-  lab_change_review_rejected: 'Lab change request rejected',
-};
-
-const SEVERITY_CARD: Record<string, string> = {
-  danger: 'border-l-red-400 bg-red-50/60',
-  warning: 'border-l-amber-400 bg-amber-50/60',
-  info: 'border-l-sky-400 bg-white',
-  success: 'border-l-emerald-400 bg-emerald-50/60',
-};
-
-// Section order: danger → warning → info → success.
-const SECTION_ORDER: Record<string, number> = {
-  lab_test_rejected: 0,
-  lab_test_voided: 0,
-  lab_calibration_overdue: 0,
-  lab_repeat_failures: 0,
-  lab_change_review_rejected: 0,
-  lab_change_review_requested: 1,
-  lab_change_review_approved: 2,
-  lab_test_review_started: 1,
-  lab_test_changes_requested: 1,
-  lab_document_review_due: 1,
-  lab_document_acknowledgement: 1,
-  lab_document_review_started: 1,
-  lab_document_changes_requested: 1,
-  lab_calibration_due: 1,
-  lab_maintenance_event: 1,
-  lab_retest_update: 2,
-  lab_document_archived: 2,
-  lab_test_approved: 3,
-  lab_document_acknowledged: 3,
-  lab_document_approved: 3,
-};
-
-function sectionOrder(kind: string): number {
-  return SECTION_ORDER[kind] ?? 3;
-}
-
-const grouped = new Map<string, typeof notifications>();
-for (const n of notifications) {
-  const list = grouped.get(n.kind) ?? [];
-  list.push(n);
-  grouped.set(n.kind, list);
-}
-const orderedKinds = [...grouped.keys()].sort((a, b) => sectionOrder(a) - sectionOrder(b));
+const grouped = groupNotificationsByKind(notifications);
+const orderedKinds = orderedNotificationKinds(grouped);
 ---
 
 <BaseLayout title="Lab Notifications">
@@ -141,26 +60,19 @@ const orderedKinds = [...grouped.keys()].sort((a, b) => sectionOrder(a) - sectio
       ]}
     />
 
-    <header class="flex flex-wrap items-start justify-between gap-3">
-      <div>
-        <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Overview</p>
-        <h1 class="mt-1 text-3xl font-semibold text-slate-900">Notifications</h1>
-        <p class="mt-1 max-w-3xl text-sm text-slate-600">
-          Laboratory alerts — review requests, rejections, approvals, document reviews and acknowledgements,
-          calibration reminders, maintenance events and retest updates. Read state is shared with the global
-          notifications page and the navbar badge.
-        </p>
-      </div>
-      {!dataError && total > 0 && <MarkAllReadButton client:visible redirectTo="/lab/notifications" />}
-    </header>
+    <PageHeader
+      eyebrow="QC Laboratory — Overview"
+      title="Notifications"
+      description="Laboratory alerts — review requests, rejections, approvals, document reviews and acknowledgements, calibration reminders, maintenance events and retest updates. Read state is shared with the global notifications page and the navbar badge."
+    >
+      <fragment slot="actions">
+        {!dataError && total > 0 && <MarkAllReadButton client:visible redirectTo="/lab/notifications" />}
+      </fragment>
+    </PageHeader>
 
     <LabSecondaryNav items={navItems} currentPath="/lab/notifications" />
 
-    {dataError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {dataError}
-      </div>
-    )}
+    {dataError && <Banner tone="error">{dataError}</Banner>}
 
     {!dataError && (
       <>
@@ -206,8 +118,8 @@ const orderedKinds = [...grouped.keys()].sort((a, b) => sectionOrder(a) - sectio
                 id={`lab-section-${kind}`}
                 class="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-500"
               >
-                <span aria-hidden="true">{KIND_ICON[kind] ?? '🔔'}</span>
-                {KIND_LABEL[kind] ?? kind}
+                <span aria-hidden="true">{NOTIFICATION_KIND_ICON[kind] ?? '🔔'}</span>
+                {NOTIFICATION_KIND_LABEL[kind] ?? kind}
                 <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
                   {grouped.get(kind)!.length}
                 </span>
@@ -215,41 +127,7 @@ const orderedKinds = [...grouped.keys()].sort((a, b) => sectionOrder(a) - sectio
               <ul class="space-y-2">
                 {grouped.get(kind)!.map((n) => (
                   <li>
-                    <div
-                      class={`rounded-lg border border-slate-200 border-l-4 p-4 transition hover:shadow-sm ${
-                        SEVERITY_CARD[n.severity] ?? SEVERITY_CARD.info
-                      } ${n.isRead ? '' : 'ring-1 ring-sky-200'}`}
-                    >
-                      <span class="sr-only">Severity: {n.severity}</span>
-                      <div class="flex items-start justify-between gap-3">
-                        <a href={n.href} class="min-w-0 flex-1">
-                          <div class="flex items-start justify-between gap-3">
-                            <p class="flex items-center gap-2 font-medium text-slate-900">
-                              {!n.isRead && (
-                                <>
-                                  <span class="sr-only">Unread: </span>
-                                  <span aria-hidden="true" class="h-2 w-2 shrink-0 rounded-full bg-sky-500" />
-                                </>
-                              )}
-                              {n.title}
-                            </p>
-                            <span class="shrink-0 text-xs text-slate-500">{n.createdAt.slice(0, 10)}</span>
-                          </div>
-                          <p class="mt-1 text-sm text-slate-600">
-                            {splitMessageLinks(n.message).map((part) =>
-                              part.href ? (
-                                <span class="block">
-                                  <a href={part.href} class="font-medium text-brand-600 underline hover:text-brand-700">Open Finding →</a>
-                                </span>
-                              ) : (
-                                part.text
-                              ),
-                            )}
-                          </p>
-                        </a>
-                        {!n.isRead && <MarkReadButton client:visible notificationId={n.id} />}
-                      </div>
-                    </div>
+                    <NotificationCard notification={n} notificationId={n.id} />
                   </li>
                 ))}
               </ul>

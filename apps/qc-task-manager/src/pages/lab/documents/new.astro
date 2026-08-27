@@ -16,6 +16,8 @@ import {
 import { canCreateLabDocument } from '../../../lib/permissions';
 import { setFlash } from '../../../lib/flash';
 import type { Role } from '../../../lib/types';
+import Banner from '../../../components/ui/Banner.astro';
+import PageHeader from '../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -52,22 +54,13 @@ try {
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Controlled Documents</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Controlled Document</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Create a SOP or WI identity first, then add content when ready. A numbered version is created only after the first
-        non-empty content save.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Controlled Documents" title="New Controlled Document" description="Create a SOP or WI identity first, then add content when ready. A numbered version is created only after the first non-empty content save." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/documents/new" />
 
     {loadError ? (
       <>
-        <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {loadError}
-        </div>
+        <Banner tone="error">{loadError}</Banner>
         <EmptyState
           title="Could not load the document editor"
           hint={loadError}

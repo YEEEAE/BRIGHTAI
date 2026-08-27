@@ -10,6 +10,7 @@ import { labNavForRole } from '../../../lib/lab/navigation';
 import { canCreateLabEquipment, canProposeLabEquipmentCreate } from '../../../lib/permissions';
 import { setFlash } from '../../../lib/flash';
 import type { Role } from '../../../lib/types';
+import PageHeader from '../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -33,14 +34,7 @@ const navItems = labNavForRole(role);
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Equipment</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Register a device in the laboratory registry. Status and calibration are stored verbatim as company data;
-        every change is written to the audit log.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Master Data" title="New Equipment" description="Register a device in the laboratory registry. Status and calibration are stored verbatim as company data; every change is written to the audit log." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/equipment/new" />
 

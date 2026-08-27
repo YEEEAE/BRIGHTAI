@@ -101,6 +101,171 @@ for (const rel of HEADERED) {
   ok(!src.includes('const statusTone'), 'tests register: no local statusTone color map');
 }
 
+// 6. PageHeader adoption on lab screens (converted 2026-08-28, task 011).
+const LAB_HEADERED = [
+  'src/pages/lab/index.astro',
+  'src/pages/lab/search.astro',
+  'src/pages/lab/audit.astro',
+  'src/pages/lab/calendar.astro',
+  'src/pages/lab/reports.astro',
+  'src/pages/lab/data-quality.astro',
+  'src/pages/lab/saved-views/index.astro',
+  'src/pages/lab/notifications.astro',
+  'src/pages/lab/tests/index.astro',
+  'src/pages/lab/tests/new.astro',
+  'src/pages/lab/tests/review.astro',
+  'src/pages/lab/tests/[id].astro',
+  'src/pages/lab/retests/index.astro',
+  'src/pages/lab/retests/new.astro',
+  'src/pages/lab/products/index.astro',
+  'src/pages/lab/products/new.astro',
+  'src/pages/lab/templates/index.astro',
+  'src/pages/lab/templates/new.astro',
+  'src/pages/lab/equipment/index.astro',
+  'src/pages/lab/equipment/new.astro',
+  'src/pages/lab/calibration/index.astro',
+  'src/pages/lab/calibration/new.astro',
+  'src/pages/lab/documents/index.astro',
+  'src/pages/lab/documents/new.astro',
+  'src/pages/lab/documents/[id]/versions.astro',
+  'src/pages/lab/documents/[id]/edit.astro',
+  'src/pages/lab/acknowledgements/index.astro',
+  'src/pages/lab/acknowledgements/assign.astro',
+  'src/pages/lab/change-requests/index.astro',
+  'src/pages/lab/change-requests/new.astro',
+  'src/pages/lab/change-requests/[id].astro',
+];
+for (const rel of LAB_HEADERED) {
+  ok(read(rel).includes('ui/PageHeader.astro'), `PageHeader used: ${rel}`);
+}
+// Legacy large page-title scale is gone from src/pages (h1s are text-2xl).
+// Documented exception: the 403/404 fallback h1 branches inside detail pages
+// (tasks/[id], findings/[id]) keep the larger error scale by design.
+const H1_SCALE_EXEMPT = ['src/pages/tasks/[id].astro', 'src/pages/findings/[id].astro'];
+for (const file of astroPages) {
+  if (H1_SCALE_EXEMPT.some((rel) => file.endsWith(rel.replace(/\[id\]/, '[id]')))) continue;
+  const src = readFileSync(file, 'utf8');
+  if (/<h1[^>]*text-3xl/.test(src)) {
+    failures.push(`page-title scale: legacy text-3xl h1 in ${file.replace(APP_DIR, '')}`);
+  }
+}
+ok(true, 'h1 scale scan ran');
+
+// 7. One banner: the exact hand-rolled alert recipe does not come back.
+for (const file of astroPages) {
+  const src = readFileSync(file, 'utf8');
+  if (/class="rounded-lg border border-(red|amber|sky|emerald)-200 bg-(?:red|amber|sky|emerald)-50 px-4 py-3 text-sm text-(?:red|amber|sky|emerald)-700"/.test(src)) {
+    failures.push(`banner primitive: hand-rolled alert div in ${file.replace(APP_DIR, '')}`);
+  }
+}
+ok(true, 'banner scan ran');
+
+// 8. Notifications: one presentation module + one card for both screens.
+{
+  const general = read('src/pages/notifications.astro');
+  const lab = read('src/pages/lab/notifications.astro');
+  for (const [label, src] of [['notifications', general], ['lab/notifications', lab]]) {
+    ok(src.includes('ui/notificationPresentation'), `${label}: shared presentation maps`);
+    ok(src.includes('NotificationCard.astro'), `${label}: shared card component`);
+    ok(!src.includes('const KIND_ICON'), `${label}: no local KIND_ICON map`);
+    ok(!src.includes('const SEVERITY_CARD'), `${label}: no local SEVERITY_CARD map`);
+  }
+  ok(
+    read('src/components/NotificationCard.astro').includes('NOTIFICATION_SEVERITY_CARD'),
+    'NotificationCard uses the shared severity map',
+  );
+}
+
+// 9. Filter toolbars use the shared form presets (no third recipe).
+const FILTER_PAGES = [
+  'src/pages/lab/tests/index.astro',
+  'src/pages/lab/tests/review.astro',
+  'src/pages/lab/products/index.astro',
+  'src/pages/lab/calibration/index.astro',
+  'src/pages/lab/retests/index.astro',
+  'src/pages/lab/documents/index.astro',
+  'src/pages/lab/templates/index.astro',
+  'src/pages/lab/equipment/index.astro',
+  'src/pages/lab/acknowledgements/index.astro',
+  'src/pages/lab/search.astro',
+];
+const FILTER_CONTROL =
+  'mt-0.5 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
+for (const rel of FILTER_PAGES) {
+  const src = read(rel);
+  if (src.includes('<form method="get"')) {
+    ok(src.includes('formPresets'), `form presets used: ${rel}`);
+  }
+}
+for (const file of astroPages) {
+  if (readFileSync(file, 'utf8').includes(`class="${FILTER_CONTROL}"`)) {
+    failures.push(`form presets: literal control recipe in ${file.replace(APP_DIR, '')}`);
+  }
+}
+ok(true, 'filter preset scan ran');
+
+// 10. Lab badge class maps live in one module — no per-page re-declarations.
+const BADGE_PAGES = [
+  'src/pages/lab/calibration/index.astro',
+  'src/pages/lab/calibration/[id].astro',
+  'src/pages/lab/equipment/[id].astro',
+  'src/pages/lab/acknowledgements/index.astro',
+  'src/pages/lab/acknowledgements/assign.astro',
+  'src/pages/lab/documents/index.astro',
+  'src/pages/lab/documents/[id].astro',
+  'src/pages/lab/documents/[id]/versions.astro',
+  'src/pages/lab/templates/index.astro',
+  'src/pages/lab/templates/[id].astro',
+  'src/pages/lab/tests/[id].astro',
+  'src/pages/lab/tests/review.astro',
+];
+for (const rel of BADGE_PAGES) {
+  ok(read(rel).includes('labBadgeClasses'), `shared badge maps: ${rel}`);
+  ok(
+    !/const (STATUS_BADGE_CLS|CAL_STATUS_BADGE_CLS|ACK_BADGE_CLS|TYPE_BADGE_CLS|STATUS_STYLES|statusTone|resultTone)[:=]/.test(read(rel)),
+    `no local badge map re-declaration: ${rel}`,
+  );
+}
+
+// 11. LabActionButton delegates to AppButton (one button implementation).
+{
+  const src = read('src/components/lab/LabActionButton.astro');
+  ok(src.includes("from '../ui/AppButton.astro'"), 'LabActionButton delegates to AppButton');
+  ok(!src.includes('inline-flex'), 'LabActionButton owns no styling of its own');
+}
+
+// 12. Table cell padding: the px-4 py-3 header recipe is gone.
+for (const file of astroPages) {
+  const src = readFileSync(file, 'utf8');
+  if (/<th [^>]*class="[^"]*px-4 py-3/.test(src) || /<th class="px-4 py-3">/.test(src)) {
+    failures.push(`table padding: th px-4 py-3 in ${file.replace(APP_DIR, '')}`);
+  }
+}
+ok(true, 'table padding scan ran');
+
+// 13. No dead nav links: every implemented lab route maps to a real page file.
+{
+  const navSrc = read('src/lib/lab/navigation.ts');
+  const implBlock = navSrc.slice(
+    navSrc.indexOf('export const IMPLEMENTED_LAB_ROUTES'),
+    navSrc.indexOf('];', navSrc.indexOf('export const IMPLEMENTED_LAB_ROUTES')),
+  );
+  const routes = [...implBlock.matchAll(/'(\/lab[^']*)'/g)].map((m) => m[1]);
+  ok(routes.length > 30, `lab navigation: implemented routes parsed (${routes.length})`);
+  for (const route of routes) {
+    const candidates = [`src/pages${route}.astro`, `src/pages${route}/index.astro`];
+    const exists = candidates.some((rel) => {
+      try {
+        readFileSync(join(APP_DIR, rel));
+        return true;
+      } catch {
+        return false;
+      }
+    });
+    ok(exists, `lab nav route exists on disk: ${route}`);
+  }
+}
+
 // Report
 console.log(`\ntest:ui-consistency — ${checks - failures.length}/${checks} checks passed`);
 if (failures.length > 0) {

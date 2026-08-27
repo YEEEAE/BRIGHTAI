@@ -3,6 +3,7 @@
 // No dashboard link (CORE BUSINESS RULE #1).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/ui/PageHeader.astro';
+import AppButton from '../../components/ui/AppButton.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
@@ -92,9 +93,9 @@ const attentionTone: Record<string, string> = {
     >
       <fragment slot="actions">
         {allowCreate && (
-          <a href="/employee/new" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+          <AppButton href="/employee/new" variant="primary">
             New task
-          </a>
+          </AppButton>
         )}
       </fragment>
     </PageHeader>

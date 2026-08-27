@@ -33,6 +33,8 @@ import {
 } from '../../../lib/lab/policy';
 import { canCreateLabTest } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
+import Banner from '../../../components/ui/Banner.astro';
+import PageHeader from '../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -146,21 +148,12 @@ const finalResultOptions = LAB_FINAL_RESULT_OPTIONS.map((value) => ({ value, lab
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — {testTypeLabel}</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">{title}</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Records an {testTypeLabel} leak test for a product lot. Sample measurements are entered exactly as taken;
-        results are human decisions. Reference values are shown for traceability only.
-      </p>
-    </header>
+    <PageHeader eyebrow={`QC Laboratory — ${testTypeLabel}`} title={`${title}`} description={`Records an ${testTypeLabel} leak test for a product lot. Sample measurements are entered exactly as taken; results are human decisions. Reference values are shown for traceability only.`} />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/tests/new" />
 
     {loadError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {loadError}
-      </div>
+      <Banner tone="error">{loadError}</Banner>
     )}
 
     <LabTestForm

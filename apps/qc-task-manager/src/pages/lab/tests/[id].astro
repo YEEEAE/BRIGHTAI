@@ -31,6 +31,10 @@ import AiReviewPanel from '../../../components/AiReviewPanel';
 import EsignDialog from '../../../components/EsignDialog.astro';
 import { labQrPayload, labQrSvg, labSampleAnchor, labSiteOrigin } from '../../../lib/lab/qrcodes';
 import type { Role } from '../../../lib/types';
+import Banner from '../../../components/ui/Banner.astro';
+import PageHeader from '../../../components/ui/PageHeader.astro';
+import { TEST_WORKFLOW_TONE as statusTone, TEST_RESULT_TONE as resultTone } from '../../../components/ui/labBadgeClasses';
+import AppButton from '../../../components/ui/AppButton.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -80,15 +84,6 @@ const canVoid = record
     )
   : false;
 
-const statusTone: Record<string, string> = {
-  DRAFT: 'bg-slate-100 text-slate-700',
-  SUBMITTED: 'bg-blue-100 text-blue-800',
-  UNDER_REVIEW: 'bg-amber-100 text-amber-800',
-  REJECTED: 'bg-rose-100 text-rose-800',
-  APPROVED: 'bg-emerald-100 text-emerald-800',
-  VOID: 'bg-slate-200 text-slate-700',
-};
-const resultTone: Record<string, string> = { PASS: 'text-green-700', FAIL: 'text-red-700', HOLD: 'text-orange-700' };
 const resultToneBadge: Record<string, string> = {
   PASS: 'bg-green-100 text-green-800',
   FAIL: 'bg-red-100 text-red-800',
@@ -181,43 +176,33 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
       </section>
     ) : record ? (
       <>
-        <header class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">Laboratory Test Record</p>
-            <h1 class="mt-1 text-3xl font-semibold text-slate-900">{String(record.test_number)}</h1>
-            <p class="mt-1 text-sm text-slate-600">
-              {typeLabel} test · created {field('created_at')} by {actor(record.creator_name)}
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
+        <PageHeader eyebrow="Laboratory Test Record" title={`${String(record.test_number)}`} description={`${typeLabel} test · created ${field('created_at')} by ${actor(record.creator_name)}`}>
+          <fragment slot="actions">
+            <div class="flex flex-wrap items-center gap-2">
             <span class={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusTone[status] ?? 'bg-slate-100 text-slate-700'}`}>
-              {LAB_TEST_STATUS_LABELS[status as keyof typeof LAB_TEST_STATUS_LABELS] ?? status}
+            {LAB_TEST_STATUS_LABELS[status as keyof typeof LAB_TEST_STATUS_LABELS] ?? status}
             </span>
             {result && <span class={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${resultToneBadge[result] ?? 'bg-slate-100 text-slate-700'}`}>{resultLabel(result)}</span>}
             {immutable && (
-              <span class="inline-flex rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" title="Approved and voided records are immutable quality records — they cannot be edited.">Read-only</span>
+            <span class="inline-flex rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" title="Approved and voided records are immutable quality records — they cannot be edited.">Read-only</span>
             )}
             {['DRAFT', 'REJECTED'].includes(status) && canEditLabTestRecord(
-              { id: userId, role },
-              {
-                status: record!.status as never,
-                tested_by: record!.tested_by == null ? null : Number(record!.tested_by),
-                reviewed_by: record!.reviewed_by == null ? null : Number(record!.reviewed_by),
-                created_by: Number(record!.created_by),
-              },
+            { id: userId, role },
+            {
+            status: record!.status as never,
+            tested_by: record!.tested_by == null ? null : Number(record!.tested_by),
+            reviewed_by: record!.reviewed_by == null ? null : Number(record!.reviewed_by),
+            created_by: Number(record!.created_by),
+            },
             ) && (
-              <a
-                href={`/lab/tests/new?test=${recordId}`}
-                class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-              >
-                Edit Draft
-              </a>
+              <AppButton href={`/lab/tests/new?test=${recordId}`} variant="primary">Edit Draft</AppButton>
             )}
-          </div>
-        </header>
+            </div>
+          </fragment>
+        </PageHeader>
 
         {loadError && (
-          <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{loadError}</div>
+          <Banner tone="error">{loadError}</Banner>
         )}
 
         {/* 1. Test Identification */}

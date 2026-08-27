@@ -32,6 +32,8 @@ import {
   type LabAuditTimelineEntry,
 } from '../../lib/lab/auditTimeline';
 import type { Role } from '../../lib/types';
+import Banner from '../../components/ui/Banner.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -85,22 +87,12 @@ const LABEL_CLS = 'block text-xs font-medium text-slate-600';
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Operations</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Audit Timeline</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Every laboratory action recorded in the shared audit log — who did what, when, the value before and after,
-        and the reason. Entries link to the record they changed. This page is read-only: history is written by the
-        modules themselves, never here.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Operations" title="Audit Timeline" description="Every laboratory action recorded in the shared audit log — who did what, when, the value before and after, and the reason. Entries link to the record they changed. This page is read-only: history is written by the modules themselves, never here." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/audit" />
 
     {dataError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {dataError}
-      </div>
+      <Banner tone="error">{dataError}</Banner>
     )}
 
     {!dataError && result && (

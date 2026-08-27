@@ -12,6 +12,7 @@ import { getLabCalibrationDetail, listLabEquipmentOptionsForCalibration } from '
 import { canEditLabCalibration, canProposeLabCalibrationEdit } from '../../../../lib/permissions';
 import { setFlash } from '../../../../lib/flash';
 import type { Role } from '../../../../lib/types';
+import PageHeader from '../../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -58,13 +59,7 @@ const equipmentOptions = listLabEquipmentOptionsForCalibration();
       />
     ) : (
       <>
-        <header>
-          <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-          <h1 class="mt-1 text-3xl font-semibold text-slate-900">Edit Calibration · {detail.equipment_code}</h1>
-          <p class="mt-1 max-w-3xl text-sm text-slate-600">
-            Update the calibration record. Changes are audited with an UPDATE entry and the derived status is recomputed on save.
-          </p>
-        </header>
+        <PageHeader eyebrow="QC Laboratory — Master Data" title={`Edit Calibration · ${detail.equipment_code}`} description="Update the calibration record. Changes are audited with an UPDATE entry and the derived status is recomputed on save." />
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/calibration/${detail.calibration.id}/edit`} />
 

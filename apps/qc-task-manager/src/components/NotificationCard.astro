@@ -1,0 +1,59 @@
+---
+// NotificationCard — the one notification row card (docs/UI-DESIGN-SYSTEM.md
+// §3.9). Used by /notifications and /lab/notifications so both screens render
+// the identical markup from the shared presentation maps. The unread dot and
+// severity text are decorative/labeled pairs — status never relies on color.
+import MarkReadButton from './MarkReadButton';
+import { NOTIFICATION_SEVERITY_CARD } from './ui/notificationPresentation';
+import { splitMessageLinks } from '../lib/notifications';
+
+interface Props {
+  notification: {
+    title: string;
+    message: string;
+    href: string;
+    createdAt: string;
+    severity: string;
+    isRead?: boolean;
+  };
+  /** Persisted notification id — required to render the inline mark-read control. */
+  notificationId?: number | null;
+}
+
+const { notification: n, notificationId } = Astro.props;
+---
+<div class:list={[
+  'rounded-lg border border-slate-200 border-l-4 p-4 transition hover:shadow-sm',
+  NOTIFICATION_SEVERITY_CARD[n.severity] ?? NOTIFICATION_SEVERITY_CARD.info,
+  n.isRead ? '' : 'ring-1 ring-sky-200',
+]}>
+  <span class="sr-only">Severity: {n.severity}</span>
+  <div class="flex items-start justify-between gap-3">
+    <a href={n.href} class="min-w-0 flex-1">
+      <div class="flex items-start justify-between gap-3">
+        <p class="flex items-center gap-2 font-medium text-slate-900">
+          {!n.isRead && (
+            <>
+              <span class="sr-only">Unread: </span>
+              <span aria-hidden="true" class="h-2 w-2 shrink-0 rounded-full bg-sky-500" />
+            </>
+          )}
+          {n.title}
+        </p>
+        <span class="shrink-0 text-xs text-slate-500">{n.createdAt.slice(0, 10)}</span>
+      </div>
+      <p class="mt-1 text-sm text-slate-600">
+        {splitMessageLinks(n.message).map((part) =>
+          part.href ? (
+            <span class="block">
+              <a href={part.href} class="font-medium text-brand-600 underline hover:text-brand-700">Open Finding →</a>
+            </span>
+          ) : (
+            part.text
+          ),
+        )}
+      </p>
+    </a>
+    {notificationId != null && !n.isRead && <MarkReadButton client:visible notificationId={notificationId} />}
+  </div>
+</div>

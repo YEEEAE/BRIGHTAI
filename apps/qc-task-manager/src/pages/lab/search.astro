@@ -26,6 +26,10 @@ import {
 } from '../../lib/lab/search';
 import type { Role } from '../../lib/types';
 import { resolveLabScan } from '../../lib/lab/scan';
+import Banner from '../../components/ui/Banner.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import { FILTER_TOOLBAR } from '../../components/ui/formPresets';
+import AppButton from '../../components/ui/AppButton.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -142,14 +146,7 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Overview</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Laboratory Search</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Unified server-side search across tests, samples, products, equipment, SOPs, WIs, and retests.
-        Search by test ID, sample ID, product, lot, equipment, code, serial number, or document title.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Overview" title="Laboratory Search" description="Unified server-side search across tests, samples, products, equipment, SOPs, WIs, and retests. Search by test ID, sample ID, product, lot, equipment, code, serial number, or document title." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/search" />
 
@@ -160,7 +157,7 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
     )}
 
     {/* Scan bar — scanned QR payload or identifier goes straight to the record (PROMPT 48) */}
-    <form method="get" action="/lab/search" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <form method="get" action="/lab/search" class={FILTER_TOOLBAR}>
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div class="flex-1">
           <label for="lab-scan-input" class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -177,29 +174,24 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
           />
         </div>
         <div class="flex items-end">
-          <button
-            type="submit"
-            class="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
-          >
+          <AppButton type="submit" variant="primary">
             <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M4.25 3A1.75 1.75 0 002.25 4.75v2.5a.75.75 0 001.5 0v-2.5a.25.25 0 01.25-.25h2.5a.75.75 0 000-1.5h-2.5zm11.5 0h-2.5a.75.75 0 000 1.5h2.5a.25.25 0 01.25.25v2.5a.75.75 0 001.5 0v-2.5A1.75 1.75 0 0015.75 3zM3.75 12.5a.75.75 0 00-.75.75v2.5c0 .966.784 1.75 1.75 1.75h2.5a.75.75 0 000-1.5h-2.5a.25.25 0 01-.25-.25v-2.5a.75.75 0 00-.75-.75zm13.5 0a.75.75 0 00-.75.75v2.5a.25.25 0 01-.25.25h-2.5a.75.75 0 000 1.5h2.5A1.75 1.75 0 0018 15.75v-2.5a.75.75 0 00-.75-.75zM7 10a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
             </svg>
             Go to record
-          </button>
+          </AppButton>
         </div>
       </div>
     </form>
 
     {dataError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {dataError}
-      </div>
+      <Banner tone="error">{dataError}</Banner>
     )}
 
     {!dataError && (
       <>
         {/* Search Input Bar */}
-        <form method="get" action="/lab/search" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <form method="get" action="/lab/search" class={FILTER_TOOLBAR}>
           <input type="hidden" name="entity" value={filters.entity} />
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div class="relative flex-1">
@@ -321,12 +313,12 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
               <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
                 <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   <tr>
-                    <th scope="col" class="px-4 py-3">Type</th>
-                    <th scope="col" class="px-4 py-3">Identifier</th>
-                    <th scope="col" class="px-4 py-3">Title / Context</th>
-                    <th scope="col" class="px-4 py-3">Status / Result</th>
-                    <th scope="col" class="px-4 py-3">Details</th>
-                    <th scope="col" class="px-4 py-3 text-right">Action</th>
+                    <th scope="col" class="px-4 py-2.5">Type</th>
+                    <th scope="col" class="px-4 py-2.5">Identifier</th>
+                    <th scope="col" class="px-4 py-2.5">Title / Context</th>
+                    <th scope="col" class="px-4 py-2.5">Status / Result</th>
+                    <th scope="col" class="px-4 py-2.5">Details</th>
+                    <th scope="col" class="px-4 py-2.5 text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 bg-white">

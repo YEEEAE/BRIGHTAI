@@ -16,6 +16,8 @@ import { LAB_CONNECTOR_TYPES } from '../../../lib/lab/policy';
 import { canCreateLabProduct, canProposeLabProductCreate } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 import { setFlash } from '../../../lib/flash';
+import Banner from '../../../components/ui/Banner.astro';
+import PageHeader from '../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -54,21 +56,12 @@ try {
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Product</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Register a tested product with its defaults and linked controlled documents. Tests reference the product by ID;
-        every change is written to the audit log.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Master Data" title="New Product" description="Register a tested product with its defaults and linked controlled documents. Tests reference the product by ID; every change is written to the audit log." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/products/new" />
 
     {loadError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {loadError}
-      </div>
+      <Banner tone="error">{loadError}</Banner>
     )}
 
     {!loadError && (

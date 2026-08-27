@@ -34,6 +34,8 @@ import {
   type LabDataQualityReport,
 } from '../../lib/lab/dataQuality';
 import type { Role } from '../../lib/types';
+import Banner from '../../components/ui/Banner.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -88,22 +90,12 @@ const SEVERITY_LABEL: Record<'danger' | 'info', string> = {
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Operations</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Data Quality Center</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Informational report of incomplete or inconsistent laboratory records. This page never modifies anything —
-        every finding links to its record in the owning register, where the responsible owner completes or corrects
-        it. Only conditions backed by stored data and established policy are listed.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Operations" title="Data Quality Center" description="Informational report of incomplete or inconsistent laboratory records. This page never modifies anything — every finding links to its record in the owning register, where the responsible owner completes or corrects it. Only conditions backed by stored data and established policy are listed." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/data-quality" />
 
     {dataError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {dataError}
-      </div>
+      <Banner tone="error">{dataError}</Banner>
     )}
 
     {!dataError && report && (

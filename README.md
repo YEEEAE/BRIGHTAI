@@ -3,6 +3,16 @@
 
  مشغل عبر render و مستودع github . 
 
+# hostinger domain 
+https://brightai.live
+
+# Cloudflare
+
+  ربطنا `brightai.live` على Cloudflare كـ DNS/CDN وحماية قدّام Render، بدل الاعتماد على Hostinger للـ DNS.
+فعّلنا Client-side Security، وضبطنا الكاش بحيث `/api/*` بدون كاش وملفات `/_astro/*` و`/assets/*` بكاش طويل.
+وضبطنا Rate Limiting على `/api/ai/chat` لحماية استهلاك الـ AI من السبام والطلبات الزايدة.
+
+
 # قواعد البيانات
 DATABASE_URL=postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
 psql postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev

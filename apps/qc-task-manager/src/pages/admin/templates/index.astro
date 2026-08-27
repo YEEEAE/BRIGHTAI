@@ -7,6 +7,7 @@ import StatusPill from '../../../components/ui/StatusPill.astro';
 import { listTemplates } from '../../../lib/templatesStore';
 import { TEMPLATE_LIFECYCLE_LABELS } from '../../../lib/templates';
 import { priorityBadgeClass, priorityLabel } from '../../../lib/format';
+import AppButton from '../../../components/ui/AppButton.astro';
 
 const user = Astro.locals.user!;
 const templates = listTemplates();
@@ -33,7 +34,7 @@ function formatDate(value: string): string {
       <h1 class="text-2xl font-semibold text-slate-900">Task Templates</h1>
       <p class="text-sm text-slate-600">Reusable task configurations with required evidence. Signed in as {user.fullName}.</p>
     </div>
-    <a href="/admin/templates/new" class="inline-flex items-center rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">New template</a>
+    <AppButton href="/admin/templates/new" variant="primary">New template</AppButton>
   </header>
 
   <section class="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
@@ -53,14 +54,14 @@ function formatDate(value: string): string {
           <table class="min-w-full divide-y divide-slate-200 text-sm">
             <thead class="bg-slate-50">
               <tr>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Code</th>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Title</th>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Department</th>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Priority</th>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Required evidence</th>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Status</th>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Updated</th>
-                <th scope="col" class="px-4 py-3 text-right font-medium text-slate-600">Actions</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Code</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Title</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Department</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Priority</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Required evidence</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Status</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Updated</th>
+                <th scope="col" class="px-4 py-2.5 text-right font-medium text-slate-600">Actions</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">

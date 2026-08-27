@@ -11,6 +11,7 @@ import { listLabEquipmentOptionsForCalibration } from '../../../lib/lab/calibrat
 import { canCreateLabCalibration, canProposeLabCalibrationCreate } from '../../../lib/permissions';
 import { setFlash } from '../../../lib/flash';
 import type { Role } from '../../../lib/types';
+import PageHeader from '../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -35,14 +36,7 @@ const equipmentOptions = listLabEquipmentOptionsForCalibration();
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">New Calibration Record</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        Log a dated calibration for laboratory equipment. The status badge is derived from the dates and result — nothing is
-        fabricated or auto-filled.
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Master Data" title="New Calibration Record" description="Log a dated calibration for laboratory equipment. The status badge is derived from the dates and result — nothing is fabricated or auto-filled." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/calibration/new" />
 

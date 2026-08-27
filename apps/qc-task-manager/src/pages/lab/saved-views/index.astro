@@ -19,6 +19,8 @@ import {
   validateLabViewFilter,
 } from '../../../lib/lab/savedViews';
 import type { Role } from '../../../lib/types';
+import Banner from '../../../components/ui/Banner.astro';
+import PageHeader from '../../../components/ui/PageHeader.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -53,21 +55,12 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
       ]}
     />
 
-    <header>
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Overview</p>
-      <h1 class="mt-1 text-3xl font-semibold text-slate-900">Saved Views</h1>
-      <p class="mt-1 max-w-3xl text-sm text-slate-600">
-        One-click access to the filter sets you saved from any laboratory list. Views are private — only you can see,
-        apply, or delete them. Each view stores a validated, structured filter (never raw SQL).
-      </p>
-    </header>
+    <PageHeader eyebrow="QC Laboratory — Overview" title="Saved Views" description="One-click access to the filter sets you saved from any laboratory list. Views are private — only you can see, apply, or delete them. Each view stores a validated, structured filter (never raw SQL)." />
 
     <LabSecondaryNav items={navItems} currentPath="/lab/saved-views" />
 
     {dataError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {dataError}
-      </div>
+      <Banner tone="error">{dataError}</Banner>
     )}
 
     {!dataError && views.length === 0 && (

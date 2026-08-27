@@ -48,6 +48,9 @@ import {
   canProposeLabProductCreate,
 } from '../../lib/permissions';
 import type { Role } from '../../lib/types';
+import Banner from '../../components/ui/Banner.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import AppButton from '../../components/ui/AppButton.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -174,26 +177,21 @@ const calibrationLabel: Record<string, string> = {
   <div class="space-y-6">
     <Breadcrumbs items={[{ label: 'QC Tasks' }, { label: 'Laboratory' }]} />
 
-    <header class="flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory</p>
-        <h1 class="mt-1 text-3xl font-semibold text-slate-900">QC Laboratory</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Product testing, equipment, calibration, controlled documents, and laboratory quality operations.
-        </p>
-      </div>
-      {primaryActions.length > 0 && (
-        <div class="flex flex-wrap gap-2" role="group" aria-label="Primary laboratory actions">
-          {primaryActions.map((action) => {
-            return routeEnabled(action.route) ? (
-              <a href={action.href} class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">{action.label}</a>
-            ) : (
-              <button type="button" disabled title={action.hint} aria-disabled="true" class="cursor-not-allowed rounded-lg bg-brand-600/50 px-4 py-2 text-sm font-semibold text-white">{action.label}</button>
-            );
-          })}
-        </div>
-      )}
-    </header>
+    <PageHeader eyebrow="QC Laboratory" title="QC Laboratory" description="Product testing, equipment, calibration, controlled documents, and laboratory quality operations.">
+      <fragment slot="actions">
+        {primaryActions.length > 0 && (
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Primary laboratory actions">
+            {primaryActions.map((action) => {
+              return routeEnabled(action.route) ? (
+                <AppButton href={action.href} variant="primary">{action.label}</AppButton>
+              ) : (
+                <AppButton type="button" variant="primary" disabled title={action.hint}>{action.label}</AppButton>
+              );
+            })}
+          </div>
+        )}
+      </fragment>
+    </PageHeader>
 
     {secondaryActions.length > 0 && (
       <div class="flex flex-wrap gap-2" role="group" aria-label="Secondary laboratory actions">
@@ -215,7 +213,7 @@ const calibrationLabel: Record<string, string> = {
           <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">{role === 'employee' ? 'My workspace' : role === 'supervisor' ? 'Team review workspace' : 'Governance workspace'}</p>
           <h2 id="role-priority-heading" class="mt-1 text-xl font-semibold text-slate-900">Priority work for {role}</h2>
         </div>
-        {role === 'employee' && <a href="/lab/tests/new?type=air" class="inline-flex min-h-11 items-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">Quick New Test</a>}
+        {role === 'employee' && <AppButton href="/lab/tests/new?type=air" variant="primary">Quick New Test</AppButton>}
       </div>
       {role === 'employee' ? (
         <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -260,9 +258,7 @@ const calibrationLabel: Record<string, string> = {
     </section>
 
     {dataError && (
-      <div role="alert" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-        {dataError}
-      </div>
+      <Banner tone="error">{dataError}</Banner>
     )}
 
     {kpis && kpiCards.length > 0 && (

@@ -20,6 +20,7 @@ import {
 } from '../../../lib/lab/templates';
 import { canArchiveLabTemplate, canEditLabTemplate, canSubmitLabTemplateRecord, canReviewLabTemplateRecord, canApproveLabTemplateVersionRecord } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
+import { TEMPLATE_STATUS_STYLES as STATUS_STYLES } from '../../../components/ui/labBadgeClasses';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -40,12 +41,6 @@ const labelCls = 'text-xs font-semibold uppercase tracking-wide text-slate-500';
 function fmt(value: unknown): string {
   return value == null || String(value).trim() === '' ? '—' : String(value);
 }
-
-const STATUS_STYLES: Record<string, string> = {
-  DRAFT: 'bg-amber-100 text-amber-800',
-  ACTIVE: 'bg-emerald-100 text-emerald-800',
-  ARCHIVED: 'bg-slate-200 text-slate-500',
-};
 
 const latestVersion = detail?.versions[detail.versions.length - 1] ?? null;
 const latestIsDraft = latestVersion?.status === 'DRAFT';
@@ -94,7 +89,7 @@ if (latestVersion?.connector_choices_json) {
         <header class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Laboratory — Master Data</p>
-            <h1 class="mt-1 text-3xl font-semibold text-slate-900">{detail.template.name}</h1>
+            <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900">{detail.template.name}</h1>
             <p class="mt-1 text-sm text-slate-600">
               Code <span class="font-medium text-slate-900" dir="ltr">{detail.template.code}</span>
               <span class="ms-2 uppercase text-slate-500">{detail.template.test_type}</span>
