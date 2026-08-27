@@ -1,0 +1,373 @@
+# BRIGHTAI — QC Release Gate (apps/qc-task-manager)
+#
+# Dedicated release gate for the QC Task Manager application.
+# QC-RELEASE-GATE-009 (2026-08-27). Does not touch any existing public
+# BrightAI workflow (CI Build Guard / A11y / Reports Gate / SEO Guard /
+# Weekly GSC / Production Post-Deploy stay as-is) and does not deploy.
+#
+# Split:
+#   - PR gate (every trigger): frozen pnpm install, QC typecheck,
+#     test manifest guard, route manifest, embedded migration parity,
+#     migration tests, full QC test suite, production build.
+#   - Main / nightly / manual only: full QC E2E acceptance
+#     (the runner itself provisions isolated temp SQLite DBs + isolated
+#     ports per suite; no production secrets are involved).
+#
+# Isolation & safety:
+#   - Node + pnpm come from the repo (.node-version + package.json
+#     `packageManager`), same as local dev.
+#   - No secrets required. AI suites intentionally verify safe-mode
+#     (503 aiUnavailable) without GROQ_API_KEY; DBs are temp/seed-only.
+#   - Unit/migration jobs pin QC_DATABASE_PATH/QC_DB_PATH to runner temp
+#     so nothing can ever fall back to a real database file.
+#   - On failure, uploads SAFE artifacts only: acceptance/runner logs
+#     (no secrets exist in this run), the axe a11y report, and the
+#     visual QA screenshots produced by the run. Temp DBs are never
+#     uploaded.
+#
+# Branch protection (configure manually in GitHub repo settings — this
+# workflow does not change any GitHub setting):
+#   Settings → Branches → main → Require status checks → add:
+#     - QC / Release Gate   (this workflow's aggregate job)
+#   NOTE: with the paths filters below, the workflow does not start for
+#   PRs that touch nothing QC-related, and GitHub blocks merges when a
+#   required check never appears. Either accept that QC-adjacent PRs
+#   must include a lockfile/loader/QC path change (see paths), or remove
+#   the paths filters so the gate always runs. Do NOT enable any
+#   "required workflows" automation without explicit owner approval.
+
+name: QC Release Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - 'apps/qc-task-manager/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'scripts/test-ts-loader.mjs'
+      - '.github/workflows/qc-release-gate.yml'
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'apps/qc-task-manager/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'scripts/test-ts-loader.mjs'
+      - '.github/workflows/qc-release-gate.yml'
+  schedule:
+    # Nightly at 02:30 UTC (05:30 AST) — catches drift within 24h,
+    # staggered away from CI Build Guard's 03:00 UTC cron.
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: qc-release-gate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  # Explicitly NO write permissions and NO secrets — safe on public PRs.
+
+env:
+  ASTRO_TELEMETRY_DISABLED: '1'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # ────────────────────────────────────────────────────────────────
+  # Job 1: Frozen install (foundation for every other job).
+  # Verifies pnpm-lock.yaml is in sync and better-sqlite3/esbuild
+  # build scripts (allowlisted in root package.json) compile.
+  # ────────────────────────────────────────────────────────────────
+  install:
+    name: QC / Install (frozen lockfile)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack + Activate pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Set up Node.js (repo .node-version)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 2: QC typecheck (astro check — 0 errors / 0 warnings budget).
+  # ────────────────────────────────────────────────────────────────
+  typecheck:
+    name: QC / Typecheck
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: QC typecheck
+        run: pnpm --filter @brightai/qc-task-manager typecheck
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 3: Registry/manifest guards (filesystem-only, no DB).
+  #   - test:manifest               → canonical suite manifest guard
+  #   - test:route-manifest         → route inventory (--check)
+  #   - test:embedded-migration-parity → disk ↔ embedded ?raw parity
+  # ────────────────────────────────────────────────────────────────
+  manifests:
+    name: QC / Manifests (test + routes + migration parity)
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Test manifest guard
+        run: pnpm --filter @brightai/qc-task-manager test:manifest
+      - name: Route manifest check
+        run: pnpm --filter @brightai/qc-task-manager test:route-manifest
+      - name: Embedded migration parity
+        run: pnpm --filter @brightai/qc-task-manager test:embedded-migration-parity
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 4: Migration tests (fresh/upgrade/checksum/rollback/destructive
+  # guard). The suite creates its own mkdtemp SQLite DBs; the env pins
+  # any env-fallback resolution to runner temp as a second guard.
+  # ────────────────────────────────────────────────────────────────
+  migrations:
+    name: QC / Migration Tests
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      QC_DATABASE_PATH: ${{ runner.temp }}/qc-gate/qc-tasks.db
+      QC_DB_PATH: ${{ runner.temp }}/qc-gate/qc-tasks.db
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Migration tests
+        run: |
+          set -o pipefail
+          pnpm --filter @brightai/qc-task-manager test:migrations 2>&1 | tee "$RUNNER_TEMP/qc-migrations.log"
+      - name: Upload migration failure log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qc-migrations-log
+          path: ${{ runner.temp }}/qc-migrations.log
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 5: Full QC test suite (run-full-tests.mjs — the canonical
+  # manifest chain, one isolated temp DB per suite).
+  # ────────────────────────────────────────────────────────────────
+  tests:
+    name: QC / Full Test Suite
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      QC_DATABASE_PATH: ${{ runner.temp }}/qc-gate/qc-tasks.db
+      QC_DB_PATH: ${{ runner.temp }}/qc-gate/qc-tasks.db
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Full QC test suite
+        run: |
+          set -o pipefail
+          pnpm --filter @brightai/qc-task-manager test 2>&1 | tee "$RUNNER_TEMP/qc-tests.log"
+      - name: Upload test failure log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qc-tests-log
+          path: ${{ runner.temp }}/qc-tests.log
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 6: QC production build (NODE_ENV=production, SSR entry emitted).
+  # ────────────────────────────────────────────────────────────────
+  build:
+    name: QC / Production Build
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: QC production build
+        run: NODE_ENV=production pnpm --filter @brightai/qc-task-manager build
+      - name: Verify build output
+        run: |
+          test -f apps/qc-task-manager/dist/server/entry.mjs \
+            && echo "✅ dist/server/entry.mjs present" \
+            || (echo "❌ dist/server/entry.mjs missing"; exit 1)
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 7: Full QC E2E acceptance (main / nightly / manual only).
+  # The runner builds production itself, then runs every canonical
+  # E2E suite + restart-persistence phase with an isolated temp SQLite
+  # DB and an isolated port per suite. No production secrets needed.
+  # ────────────────────────────────────────────────────────────────
+  e2e-acceptance:
+    name: QC / E2E Acceptance
+    needs: install
+    if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Install Playwright chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Full QC E2E acceptance
+        run: |
+          set -o pipefail
+          pnpm --filter @brightai/qc-task-manager e2e:acceptance 2>&1 | tee "$RUNNER_TEMP/qc-e2e-acceptance.log"
+      - name: Upload E2E failure artifacts (safe logs + reports)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qc-e2e-acceptance-failure
+          path: |
+            ${{ runner.temp }}/qc-e2e-acceptance.log
+            apps/qc-task-manager/download/qa/a11y-qc-report.json
+            apps/qc-task-manager/download/qa/ui-audit/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 8: Aggregate gate — the single required status check.
+  # Fails if any QC job failed or was cancelled; treats "skipped"
+  # (E2E on PRs) as passing.
+  # ────────────────────────────────────────────────────────────────
+  release-gate:
+    name: QC / Release Gate
+    needs:
+      - typecheck
+      - manifests
+      - migrations
+      - tests
+      - build
+      - e2e-acceptance
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Aggregate QC results
+        run: |
+          echo "## QC / Release Gate Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Job | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| typecheck | ${{ needs.typecheck.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| manifests | ${{ needs.manifests.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| migrations | ${{ needs.migrations.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| tests | ${{ needs.tests.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| build | ${{ needs.build.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| e2e-acceptance | ${{ needs.e2e-acceptance.result }} |" >> "$GITHUB_STEP_SUMMARY"
+
+          failed=0
+          for job in typecheck manifests migrations tests build e2e-acceptance; do
+            case "$job" in
+              typecheck)     r="${{ needs.typecheck.result }}" ;;
+              manifests)     r="${{ needs.manifests.result }}" ;;
+              migrations)    r="${{ needs.migrations.result }}" ;;
+              tests)         r="${{ needs.tests.result }}" ;;
+              build)         r="${{ needs.build.result }}" ;;
+              e2e-acceptance) r="${{ needs.e2e-acceptance.result }}" ;;
+            esac
+            if [ "$r" != "success" ] && [ "$r" != "skipped" ]; then
+              echo "❌ QC Release Gate FAILED at job: $job (result: $r)"
+              failed=1
+            fi
+          done
+          if [ "$failed" -ne 0 ]; then
+            exit 1
+          fi
+          echo "✅ QC Release Gate passed."

@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: Use when implementing any feature or bugfix, BEFORE writing implementation code. Enforces strict TDD: write the test first, watch it fail, then write minimal code to pass. Trigger on new features, bug fixes, behavior-changing refactors, or whenever the user mentions TDD, tests-first, or red-green-refactor.
 ---
 
 # Test-Driven Development (TDD)

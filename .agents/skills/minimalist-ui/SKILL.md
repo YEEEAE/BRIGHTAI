@@ -1,6 +1,6 @@
 ---
 name: minimalist-ui
-description: Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.
+description: Clean editorial-style interfaces: warm monochrome palette, strong typographic contrast, flat bento grids, muted pastels — no gradients, no heavy shadows. Use when the user wants a minimalist, calm, editorial, or typography-led design direction for any UI, landing page, or app screen.
 ---
 
 # Protocol: Premium Utilitarian Minimalism UI Architect

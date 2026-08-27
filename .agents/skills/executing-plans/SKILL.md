@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
+description: Use when you have a written implementation plan (e.g. from docs/superpowers/plans/) to execute, especially in a fresh session. Enforces task-by-task execution with review checkpoints after each task. Trigger when the user says 'execute the plan', 'implement the plan', 'follow the plan', or hands you a plan document to carry out.
 ---
 
 # Executing Plans

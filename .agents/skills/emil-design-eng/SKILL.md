@@ -1,6 +1,6 @@
 ---
 name: emil-design-eng
-description: This skill encodes Emil Kowalski's philosophy on UI polish, component design, animation decisions, and the invisible details that make software feel great.
+description: Encodes Emil Kowalski's philosophy of UI polish: component design, animation decisions, and the invisible details that make software feel great. Use when building or refining UI components, micro-interactions, toasts, modals, dropdowns, or animations — even when the user does not explicitly say 'polish'.
 ---
 
 # Design Engineering

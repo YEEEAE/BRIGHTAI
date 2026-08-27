@@ -1,4 +1,118 @@
 ---
+## [2026-08-27] — QC-CI-RELEASE-GATE-009: بوابة إصدار QC المخصصة على GitHub Actions — بدون commit/push/deploy
+
+### تم التنفيذ
+- فحص الـ workflows الستة الموجودة (ci-build-guard, a11y, deploy, reports-gate, seo-guard, weekly-gsc): ولا واحد يغطي `apps/qc-task-manager` ولا يوجد تعارض أسماء — **لم يُلمس أي ملف قائم**.
+- workflow جديد واحد: `.github/workflows/qc-release-gate.yml` (اسم: QC Release Gate) — صلاحيات `contents: read` فقط، صفر أسرار، صفر deploy، Node من `.node-version` (22.22.2) وpnpm من `packageManager` (10.19.0).
+- **بوابة PR** (8 خطوات): install مجمد + typecheck + `test:manifest` + `test:route-manifest` + `test:embedded-migration-parity` + `test:migrations` + `pnpm test` الكامل (54 سويت canonical) + production build مع تحقق `dist/server/entry.mjs`.
+- **E2E acceptance الكامل** على push main / nightly (cron `30 2 * * *`) / workflow_dispatch فقط — عبر `e2e:acceptance` الذي يبني ويشغّل الـ runner بقواعد SQLite مؤقتة معزولة لكل سويت ومنافذ معزولة؛ على PR يُعامل skipped ويمرره الـ aggregate. Playwright chromium يُثبّت داخل الـ job.
+- عزل إضافي: jobs الوحدات/الهجرات تثبت `QC_DATABASE_PATH`/`QC_DB_PATH` على `runner.temp` كحارس ثانٍ ضد أي fallback لقاعدة حقيقية؛ عند الفشل تُرفع artifacts آمنة فقط (لوجات runner + `download/qa/a11y-qc-report.json` + `download/qa/ui-audit/`) وبدون رفع أي قاعدة بيانات.
+- aggregate job باسم **«QC / Release Gate»** (job id: release-gate) بنمط ci-success: يفشل على أي failure/cancelled، يعامل skipped كنجاح، ويكتب جدول نتائج في GITHUB_STEP_SUMMARY.
+- توصية branch protection موثقة برأس الملف (require «QC / Release Gate» من إعدادات GitHub يدويًا) مع تحذير سلوك paths-filter — **دون تعديل أي إعداد GitHub فعليًا**.
+
+### الملفات المتأثرة
+- `.github/workflows/qc-release-gate.yml` (جديد — الملف الوحيد)
+
+### التحقق
+- YAML parse ✅ (python3 yaml.safe_load) + تحقق بنيوي: triggers (pull_request/push/schedule/dispatch)، needs، اسم الـ aggregate، شرط E2E.
+- الأوامر الثمانية المرجعية موجودة كلها في `apps/qc-task-manager/package.json` ✅
+- تشغيل فعلي للأوامر الخفيفة الثلاثة على الشجرة الحالية: `test:manifest` ✅ (54 canonical suites / 27 E2E)، `test:route-manifest` ✅ (111 file routes / 25 middleware / 6 guards)، `test:embedded-migration-parity` ✅ (37/37 byte-identical).
+- typecheck/build/full-tests/e2e: خضراء موثقة اليوم في سجل QC-REQUEST-SECURITY-008 على نفس الشجرة — لم تُعاد هنا.
+- actionlint غير متوفر محليًا — الاعتماد كان على YAML parse + مراجعة بنمط ci-build-guard الحرفي.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** بوابة QC المخصصة جاهزة كملف workflow واحد جديد لا يمس شيًا قائمًا؛ التفعيل النهائي = commit من المستخدم ثم إضافة «QC / Release Gate» كـ required status check يدويًا من إعدادات GitHub.
+
+### ملاحظات / مشاكل مفتوحة
+- paths-filter: PR لا يلمس QC (ولا lockfile/loader) لن يُنتج الـ check أصلًا — لو وظّفت الحماية كـ required يجب إما قبول هذا السلوك أو إزالة الـ paths (موثق برأس الملف).
+- القسم 1 يتجاوز حده الموثق مسبقًا — الأرشفة للقسم 2 تؤجل كقرار متكرر (نمط الجلسات الأخيرة).
+
+### 2026-08-27 — SKILLS-DESCRIPTION-STRENGTHEN-003: مراجعة وتقوية أوصاف المهارات الـ60 كإشارة تفعيل تلقائي — نجاح
+
+**المطلوب باختصار:**
+- مراجعة أوصاف (description) كل مهارات المشروع وتقوية الضعيفة — الوصف هو إشارة التفعيل الأساسية عند النموذج (يُعرض مقصوصًا ~250 حرفًا، والحد الأقصى 1024).
+
+**تم تنفيذه:**
+- مسح الـ 60 وصفًا: أغلبها قوي أصلًا (أوصاف seo-* الـ10 وdesign-pipeline كتلة `>` طويلة بمشغّلات عربية وإنجليزية — المسح الأولي ضلّلها خطأً ثم تصحح بقراءة frontmatter الفعلي).
+- **تقوية 11 وصفًا ضعيفًا** (سطر قصير بلا «Use when» أو مشغّلات): dispatching-parallel-agents, executing-plans, grill-me, requesting-code-review, subagent-driven-development, systematic-debugging, test-driven-development, writing-plans, writing-skills, emil-design-eng, minimalist-ui — كل وصف جديد front-loaded بالمشغّلات في أول ~250 حرفًا وبطول 255–336 حرفًا.
+- **إصلاح تنسيقي:** وصف systematic-debugging كان multi-line مقتبسًا (شكل ما يضمنه parser وفق diagnosing-skills) — وُحّد لسطر واحد.
+- المزامنة إلى `~/.zcode/skills/` و`~/.agents/skills/` تمت للـ 11 المحدثة حفاظًا على التطابق الثلاثي.
+
+**الملفات المتأثرة:**
+- `.agents/skills/{11 مهارات أعلاه}/SKILL.md`
+- نسخها في `~/.zcode/skills/` و`~/.agents/skills/`
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+**التحقق:**
+- فحص شامل: **187 ملف SKILL.md صالح** (name موجود + description 1–1024 حرفًا) عبر المجلدات الثلاثة ✅
+- تطابق النسخ الثلاث: **0 diffs** ✅
+- الملاحظة الوحيدة: ` rtl-ui-guardian` (مجلد بمسافة — مشكلة تسمية معلقة على المستخدم من SKILLS-DEFAULT-EXPORT-001)
+
+**النتيجة**
+- **الحالة:** نجح
+- **مختصر:** كل مهارات المشروع الآن بأوصاف تفعيل قوية + قاعدة تفعيل تلقائي في AGENTS.md (SKILLS-AUTO-TRIGGER-002) — طبقتا ضمان للتفعيل التلقائي. يسري من الجلسة القادمة.
+
+### ملاحظات / مشاكل مفتوحة
+- ` rtl-ui-guardian` ما زالت بانتظار قرار المستخدم (إعادة تسمية المجلد بإزالة المسافة).
+- `.agents/skills/stitch-design-taste/` الفاضي ما زال بانتظار قرار المستخدم.
+
+ تفعيل تلقائي إلزامي للمهارات في بداية كل برومبت — نجاح
+
+**المطلوب باختصار:**
+- جعل ZCode يستخدم مهارات المشروع تلقائيًا عند بداية أي برومبت.
+
+**تم تنفيذه:**
+- فحص إعدادات ZCode (`~/.zcode/v2/config.json`, `setting.json`) + مهارة diagnosing-skills الرسمية: **ما فيه سwich إعدادات "default skills"** — ZCode يكتشف المهارات تلقائيًا ويعرض name/description/when_to_use للنموذج كل برومبت، والتفعيل قرار النموذج بناءً على الوصف + تعليمات النظام.
+- الرافعة المضمونة: أُضيف قسم **«⚡ التفعيل التلقائي — إلزامي في بداية كل برومبت»** داخل القاعدة التاسعة بملفي AGENTS.md (المستخدم `~/.zcode/AGENTS.md` + المشروع): أول إجراء في أي برومبت = فحص قائمة المهارات واستدعاء المطابقة فورًا عبر Skill tool قبل أي أداة ثانية، مع ترتيب بعد قراءة الـ mind، واستثناء استدعاء المهارة الصريحة.
+
+**الملفات المتأثرة:**
+- `~/.zcode/AGENTS.md` (القاعدة التاسعة)
+- `AGENTS.md` (جذر الريبو — نفس التعديل)
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+**التحقق:**
+- تعديل توثيقي/تعليماتي فقط — لا build/tests. يسري من الجلسة القادمة (AGENTS.md يُحمَّل عند بداية كل جلسة).
+
+**النتيجة**
+- **الحالة:** نجح
+- **مختصر:** كل برومبت جديد سيلتزم فحص المهارات واستدعاء المطابقة تلقائيًا قبل التنفيذ — عبر تعليمات ملزمة محمّلة دائمًا، لأن ZCode ما يوفر سويش "تحميل إجباري" للمهارات.
+
+### ملاحظات / مشاكل مفتوحة
+- قائمة التحقق النهائية في الدستور أُضيفت لها مطابقة ضمنية عبر القاعدة التاسعة المعدلة.
+- لا يوجد.
+
+ نشر كل مهارات المشروع إلى مجلدات المهارات الافتراضية على مستوى المستخدم (Default skills) — نجاح
+
+**المطلوب باختصار:**
+- إضافة كل مهارات المشروع (`.agents/skills/` — 60 مهارة) إلى الـ Default skills عشان تتوفر افتراضيًا في أي جلسة/مشروع.
+
+**تم تنفيذه:**
+- تدقيق مقارن (`diff -rq` لكل مهارة) بين `.agents/skills/` بالمشروع و`~/.zcode/skills/` و`~/.agents/skills/`.
+- **اكتشاف أساسي:** `~/.zcode/skills/` (أعلى أولوية user-level في ZCode) مطابقة **100%** للمشروع (60/60، صفر فروقات محتوى) — مهارات المشروع كانت متاحة أصلًا كـ Default من هذا المجلد.
+- أُضيفت **6 مهارات ناقصة** إلى `~/.agents/skills/` (الموقع القياسي العابر للأدوات): `astro-developer`, `distribb`, `grill-me`, `performance`, `seo-optimizer`, `web-design-guidelines`.
+- زُامنت **7 مهارات** كان محتوى نسخة الـ user أقدم من نسخة المشروع (التي تحمل إصلاحات SKILLS-CODEX-COMPAT-001 الموثقة + النسخة الكاملة الأحدث): `claude-automation-recommender`, `emil-design-eng`, `i-have-adhd`, `pick-ui-library`, `prototype`, `review-animations`, `systematic-debugging`.
+- لم تُلمس مهارات الـ user الخاصة غير الموجودة بالمشروع (apple-design, cognitive-tools, learned, rtl-ui-guardian, imagegen-*, vercel-react-best-practices...)، ولم تُلمس `stitch-design-taste` — لأن مجلدها بالمشروع **فاضي تمامًا** والنسخة الصحيحة الوحيدة في `~/.agents/skills/`.
+
+**الملفات المتأثرة:**
+- `~/.agents/skills/{astro-developer,distribb,grill-me,performance,seo-optimizer,web-design-guidelines}/` (إضافة)
+- `~/.agents/skills/{claude-automation-recommender,emil-design-eng,i-have-adhd,pick-ui-library,prototype,review-animations,systematic-debugging}/` (مزامنة من نسخة المشروع)
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+**التحقق:**
+- `diff -rq` بعد التنفيذ: **59/59 مهارة موجودة ومطابقة حرفيًا** في `~/.agents/skills/` (الاستثناء الموثق: stitch-design-taste) ✅
+- كل المهارات الست الجديدة تحمل `SKILL.md` ✅
+- لا build/tests — التغيير خارج شجرة الريبو (مجلدات مستوى المستخدم) + سجل العقل فقط
+
+**النتيجة**
+- **الحالة:** نجح
+- **مختصر:** كل مهارات المشروع الـ60 متاحة الآن افتراضيًا: 60 في `~/.zcode/skills/` (كانت مطابقة أصلًا) و59 في `~/.agents/skills/` بعد إضافة 6 ومزامنة 7.
+
+### ملاحظات / مشاكل مفتوحة
+- `.agents/skills/stitch-design-taste/` بالمشروع مجلد **فاضي بلا SKILL.md** — يحتاج قرار مستخدم: حذفه أو تعبئته من نسخة `~/.agents/skills/stitch-design-taste/` (الصحيحة).
+- مجلد ` rtl-ui-guardian` في `~/.agents/skills/` اسمه يبدأ **بمسافة** — خطأ تسمية محتمل يمنع الاكتشاف الصحيح؛ يحتاج قرار مستخدم مستقل.
+- الاكتشاف الجديد للـ skills يسري من الجلسة القادمة.
+
 ### 2026-08-27 23:05 — QC-REQUEST-SECURITY-008: طبقة Fetch Metadata فوق CSRF + pruning للـ rate-limit buckets + حارس مصدري canonical لكل mutation — بدون commit/push/deploy
 
 **الحالة:** نجح

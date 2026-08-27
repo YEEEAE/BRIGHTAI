@@ -1,6 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies
+description: Use when facing 2 or more independent tasks that share no state or ordering — dispatch them to parallel subagents instead of working sequentially. Trigger on batch work: multiple files to review, several unrelated fixes, parallel research or searches, or any 'do these N things' request where the items do not depend on each other.
 ---
 
 # Dispatching Parallel Agents

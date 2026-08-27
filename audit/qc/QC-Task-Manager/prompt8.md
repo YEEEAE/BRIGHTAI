@@ -28,7 +28,7 @@
 - [✅] Prompt 06 — Full Product UI/UX Reconstruction
 - [✅] Prompt 07 — Durable User Administration Audit
 - [✅] Prompt 08 — Request Security
-- [☐] Prompt 09 — Dedicated QC CI
+- [✅] Prompt 09 — Dedicated QC CI
 - [☐] Prompt 10 — Accessibility Gate
 - [☐] Prompt 11 — Design System Verification + Navigation Refinement
 - [☐] Prompt 12 — Lab Management Dashboard

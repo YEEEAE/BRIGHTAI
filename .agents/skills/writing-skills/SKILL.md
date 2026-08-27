@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
+description: Use when creating a new skill, editing an existing skill, or verifying a skill works before deployment. Covers SKILL.md structure, frontmatter, description quality, and test prompts. Trigger on any mention of creating, improving, reviewing, or validating agent skills.
 ---
 
 # Writing Skills

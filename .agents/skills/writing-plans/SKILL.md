@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use when you have a spec or requirements for a multi-step task, BEFORE touching code. Produces a comprehensive bite-sized implementation plan document (docs/superpowers/plans/) that assumes the executor has zero context. Trigger when the user asks to plan, break down work, write an implementation plan, or prepare a spec for execution.
 ---
 
 # Writing Plans
