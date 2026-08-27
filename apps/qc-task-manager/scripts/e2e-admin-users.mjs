@@ -129,10 +129,15 @@ try {
     empDenied.status() === 302 && (empDenied.headers()['location'] ?? '').startsWith('/employee'),
     `1b. employee /admin/users → 302 /employee (got ${empDenied.status()} ${empDenied.headers()['location']})`,
   );
+  const auditDenied = await empCtx.request.get(`${BASE}/admin/users/audit`, { maxRedirects: 0 });
+  ok(
+    auditDenied.status() === 302 && (auditDenied.headers()['location'] ?? '').startsWith('/employee'),
+    `1c. employee /admin/users/audit → 302 /employee (got ${auditDenied.status()} ${auditDenied.headers()['location']})`,
+  );
   await empCtx.close();
 
   const aLogin = await login(adminCtx, 'admin', PASS, '/admin/users');
-  ok(aLogin.status === 302 && aLogin.location === '/admin/users', `1c. admin signs in → /admin/users (got ${aLogin.status})`);
+  ok(aLogin.status === 302 && aLogin.location === '/admin/users', `1d. admin signs in → /admin/users (got ${aLogin.status})`);
   const { html: adminHtml } = await adminUsersFlash(adminCtx);
   const requiredCols = ['Username', 'Name', 'Role', 'Department', 'Can create', 'Active', 'Created', 'Last login'];
   for (const col of requiredCols) {

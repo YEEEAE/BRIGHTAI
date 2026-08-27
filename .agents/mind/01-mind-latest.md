@@ -1,4 +1,43 @@
 ---
+### 2026-08-27 22:22 — QC-USER-AUDIT-007: تدقيق دائم لإدارة المستخدمين على qc_audit_log
+
+**الحالة:** نجح
+
+**المطلوب باختصار:**
+- استبدال console-only audit لإدارة المستخدمين بسجل قاعدة بيانات دائم.
+
+**تم تنفيذه:**
+- migration `037_user_audit_log.sql` توسّع `qc_audit_log` بـ entity `USER` وأحداث create/update/role change/activate/deactivate/password reset، مع rebuild يحفظ كل الصفوف والـ IDs والهاشات حرفيًا.
+- عمليات المستخدم أصبحت تكتب before/after مسموحًا به داخل نفس transaction؛ لا password أو hash أو session token، وحمايات self-demotion/self-deactivation بقيت فعالة.
+- صفحة `/admin/users/audit` إدارية read-only بفلاتر action/actor/target/date، من نفس السجل الوحيد.
+- `test:user-audit` يغطي الأحداث، عدم تسريب الأسرار، عدم audit عند فشل mutation، والـhash chain؛ واختبار migration v36→v37 يثبت السجل التاريخي والهاشات unchanged.
+
+**الملفات المتأثرة:**
+- `apps/qc-task-manager/db/migrations/037_user_audit_log.sql`
+- `apps/qc-task-manager/{db/schema.sql,src/lib/migrationRegistry.ts,src/lib/users.ts,src/lib/permissions.ts,src/lib/audit/userTimeline.ts}`
+- `apps/qc-task-manager/src/pages/admin/users/{index,audit}.astro`
+- `apps/qc-task-manager/scripts/{test-user-audit,test-migrations,e2e-admin-users,test-manifest,test}.mjs` والعدادات المتأثرة
+- `apps/qc-task-manager/package.json`
+
+**التحقق:**
+- Migrations: ✅ `pnpm test:migrations`
+- Audit/User: ✅ `pnpm test:user-audit` 21/0 و`pnpm test:audit-integrity`
+- Full tests: ✅ `pnpm test` (53 canonical suites)
+- E2E: ✅ `pnpm e2e:acceptance`، ومنها admin-users 52/0 ورفض employee لمسار audit
+- Typecheck: ✅ 0 errors / 0 warnings / 17 hints
+- Build: ✅ `NODE_ENV=production pnpm build` Complete
+- Diff: ✅ `git diff --check`
+
+**قرارات/ملاحظات:**
+- Skills used: test-driven-development, verification-before-completion, writing-plans, using-superpowers.
+- schema version صار 37 وembedded migration parity = 37/37.
+
+**مشاكل مفتوحة:**
+- لا يوجد
+
+**الخطوة الجاية:**
+- لا يوجد
+
 ### 2026-08-27 — QC-PRODUCT-UIUX-RECONSTRUCTION-006: إعادة بناء UI/UX بمنتج كامل لتطبيق QC Task Manager — نظام تصميم ملزم + 6 primitives + تنقل مجمّع + توحيد pagination/شارات/رؤوس + اهتمام الأدوار — كل البوابات خضراء (52 سويت + e2e:acceptance 2304/0) — بدون commit/push/deploy
 - **Scope**: `apps/qc-task-manager/` فقط؛ قرأت العقل كاملًا أولًا. صفر تغيير لقواعد العمل أو `permissions.ts` أو المخطط أو الهجرات (عدا تصحيح عدّادات اختبار — تحت) أو CSRF/CSP. الواجهة بقيت إنجليزية بالكامل (حارس مصدري جديد يمنع العربي). لا commit ولا push ولا deploy.
 - **المُسلَّم الأساسي**: `docs/UI-DESIGN-SYSTEM.md` — نظام تصميم داخلي صغير ملزم (مقياس تايبوغرافيا، إيقاع مسافات، radius md/lg/xl/pill، ظلال هادئة، خريطة ألوان دلالية neutral/info/progress/success/warning/danger/accent، هيكل صفحة قياسي، نموذج تنقل، عقد a11y، حواجز). استثناء موثق: حالات/أولويات المهام تحتفظ بمخططها الحالي (الرسوم البيانية معتمدة عليه).

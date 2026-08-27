@@ -1,7 +1,7 @@
-// Unit suite: first-login password lifecycle (migration 036).
+// Unit suite: first-login password lifecycle (introduced by migration 036).
 //
 // Covers the service layer against a real temp SQLite database:
-//   1. Migration 036 applied (schema version 36).
+//   1. Password lifecycle migration is applied (schema version 37+).
 //   2. Fresh seeded accounts are flagged must_change_password = 1.
 //   3. Admin-created users are flagged must_change_password = 1.
 //   4. Admin password reset re-flags an unflagged account and clears
@@ -71,9 +71,9 @@ try {
 
   const db = getDb();
 
-  // ── 1. Migration 036 applied ──
+  // ── 1. Password lifecycle migration remains applied ──
   const version = db.prepare('SELECT MAX(version) AS v FROM schema_migrations').get();
-  ok(version.v === 36, `1. schema version is 36 (got ${version.v})`);
+  ok(version.v >= 36, `1. schema version includes password lifecycle (got ${version.v})`);
   const cols = db.prepare('PRAGMA table_info(users)').all().map((c) => c.name);
   ok(cols.includes('must_change_password') && cols.includes('password_changed_at'), '1b. users has lifecycle columns');
 

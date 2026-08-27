@@ -6,15 +6,12 @@
 //     enforce the rule).
 //   - Passwords are bcrypt-hashed; hashes are never returned or logged, and the
 //     reset endpoint never logs the new password.
-//   - User-management actions are NOT task-related, so they are logged to the
-//     console only. task_activity_log is reserved for task mutations
-//     (CORE BUSINESS RULE #6).
-//
-// Every mutation logs the actor + target in a single line so the console forms
-// an audit trail for who changed what and when.
+//   - User-management actions are appended transactionally to qc_audit_log,
+//     the existing durable and hash-chained application audit system.
 
 import bcrypt from 'bcryptjs';
 import { getDb, toBool } from './db';
+import { appendQcAudit } from './audit/qcChain';
 import { passwordResetSchema, userCreateSchema, userEditSchema } from './validation';
 import type { Role } from './types';
 
@@ -41,9 +38,54 @@ export type UserActionResult =
   | { ok: true; userId?: number }
   | { ok: false; error: string };
 
-/** Structured console audit line (never includes password hashes or values). */
-function log(actor: { id: number; username: string }, message: string): void {
-  console.log(`[users] ${new Date().toISOString()} actor=${actor.username}(id=${actor.id}) ${message}`);
+type UserAuditSnapshot = {
+  username: string;
+  fullName: string;
+  role: Role;
+  department: string;
+  canCreateTasks: boolean;
+  isActive: boolean;
+  mustChangePassword: boolean;
+};
+
+function userAuditSnapshot(user: {
+  username: string;
+  full_name: string;
+  role: Role;
+  department: string;
+  can_create_tasks: number;
+  is_active: number;
+  must_change_password?: number;
+}): UserAuditSnapshot {
+  return {
+    username: user.username,
+    fullName: user.full_name,
+    role: user.role,
+    department: user.department,
+    canCreateTasks: toBool(user.can_create_tasks),
+    isActive: toBool(user.is_active),
+    mustChangePassword: toBool(user.must_change_password ?? 0),
+  };
+}
+
+function appendUserAudit(
+  db: ReturnType<typeof getDb>,
+  actor: { id: number },
+  targetUserId: number,
+  action: 'USER_CREATE' | 'USER_UPDATE' | 'USER_ROLE_CHANGE' | 'USER_ACTIVATE' | 'USER_DEACTIVATE' | 'USER_PASSWORD_RESET',
+  before: UserAuditSnapshot | null,
+  after: UserAuditSnapshot,
+  note: string,
+): void {
+  appendQcAudit(db, {
+    entityType: 'USER',
+    entityId: targetUserId,
+    actorId: actor.id,
+    action,
+    oldValue: before ? JSON.stringify(before) : null,
+    newValue: JSON.stringify(after),
+    note,
+  });
 }
 
 /**
@@ -78,22 +120,27 @@ export function createUser(actor: { id: number; username: string }, input: Creat
   if (exists) return { ok: false, error: `Username "${username}" is already taken.` };
 
   const hash = bcrypt.hashSync(input.password, 10);
-  const info = db
-    .prepare(
-      `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active, must_change_password)
-       VALUES (?, ?, ?, ?, ?, ?, 1, 1)`,
-    )
-    .run(
+  const fullName = input.fullName.trim();
+  const department = input.department?.trim() || 'QC';
+  const userId = db.transaction(() => {
+    const info = db
+      .prepare(
+        `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active, must_change_password)
+         VALUES (?, ?, ?, ?, ?, ?, 1, 1)`,
+      )
+      .run(username, hash, fullName, input.role, department, input.canCreateTasks ? 1 : 0);
+    const id = Number(info.lastInsertRowid);
+    appendUserAudit(db, actor, id, 'USER_CREATE', null, {
       username,
-      hash,
-      input.fullName.trim(),
-      input.role,
-      input.department?.trim() || 'QC',
-      input.canCreateTasks ? 1 : 0,
-    );
-
-  const userId = Number(info.lastInsertRowid);
-  log(actor, `created user id=${userId} username="${username}" role=${input.role} department=${input.department?.trim() || 'QC'} can_create_tasks=${input.canCreateTasks ? 1 : 0} must_change_password=1`);
+      fullName,
+      role: input.role,
+      department,
+      canCreateTasks: input.canCreateTasks,
+      isActive: true,
+      mustChangePassword: true,
+    }, `target_username=${username}`);
+    return id;
+  })();
   return { ok: true, userId };
 }
 
@@ -106,10 +153,11 @@ function findUser(targetUserId: number): {
   department: string;
   can_create_tasks: number;
   is_active: number;
+  must_change_password: number;
 } | undefined {
   return getDb()
     .prepare(
-      `SELECT id, username, role, full_name, department, can_create_tasks, is_active
+      `SELECT id, username, role, full_name, department, can_create_tasks, is_active, must_change_password
        FROM users WHERE id = ?`,
     )
     .get(targetUserId) as {
@@ -120,6 +168,7 @@ function findUser(targetUserId: number): {
     department: string;
     can_create_tasks: number;
     is_active: number;
+    must_change_password: number;
   } | undefined;
 }
 
@@ -139,16 +188,23 @@ export function setUserActive(
   }
   // Reactivation also clears any brute-force lock so the account is usable
   // immediately (deactivation leaves the lock untouched until re-enabled).
-  if (active) {
-    getDb()
+  const db = getDb();
+  const before = userAuditSnapshot(target);
+  db.transaction(() => {
+    if (active) {
+      db
       .prepare(
         'UPDATE users SET is_active = 1, failed_login_attempts = 0, locked_until = NULL WHERE id = ?',
       )
       .run(targetUserId);
-  } else {
-    getDb().prepare('UPDATE users SET is_active = 0 WHERE id = ?').run(targetUserId);
-  }
-  log(actor, `set active=${active ? 1 : 0} for username="${target.username}"(id=${targetUserId})`);
+    } else {
+      db.prepare('UPDATE users SET is_active = 0 WHERE id = ?').run(targetUserId);
+    }
+    appendUserAudit(db, actor, targetUserId, active ? 'USER_ACTIVATE' : 'USER_DEACTIVATE', before, {
+      ...before,
+      isActive: active,
+    }, `target_username=${target.username}`);
+  })();
   return { ok: true };
 }
 
@@ -163,10 +219,15 @@ export function setCanCreateTasks(
 ): UserActionResult {
   const target = findUser(targetUserId);
   if (!target) return { ok: false, error: 'User not found.' };
-  getDb()
-    .prepare('UPDATE users SET can_create_tasks = ? WHERE id = ?')
-    .run(value ? 1 : 0, targetUserId);
-  log(actor, `set can_create_tasks=${value ? 1 : 0} for username="${target.username}"(id=${targetUserId}, role=${target.role})`);
+  const db = getDb();
+  const before = userAuditSnapshot(target);
+  db.transaction(() => {
+    db.prepare('UPDATE users SET can_create_tasks = ? WHERE id = ?').run(value ? 1 : 0, targetUserId);
+    appendUserAudit(db, actor, targetUserId, 'USER_UPDATE', before, {
+      ...before,
+      canCreateTasks: value,
+    }, `target_username=${target.username}; fields=canCreateTasks`);
+  })();
   return { ok: true };
 }
 
@@ -218,12 +279,14 @@ export function updateUser(
   // clearing any brute-force lock so the account is usable immediately
   // (otherwise a re-enabled user could stay locked out from old failures).
   const reactivating = !toBool(target.is_active) && next.isActive;
-  if (reactivating) {
-    db.prepare(
+  const before = userAuditSnapshot(target);
+  db.transaction(() => {
+    if (reactivating) {
+      db.prepare(
       `UPDATE users SET full_name = ?, role = ?, department = ?, can_create_tasks = ?, is_active = ?, updated_at = ?,
               failed_login_attempts = 0, locked_until = NULL
        WHERE id = ?`,
-    ).run(
+      ).run(
       next.fullName,
       next.role,
       next.department,
@@ -231,12 +294,12 @@ export function updateUser(
       next.isActive ? 1 : 0,
       now,
       targetUserId,
-    );
-  } else {
-    db.prepare(
+      );
+    } else {
+      db.prepare(
       `UPDATE users SET full_name = ?, role = ?, department = ?, can_create_tasks = ?, is_active = ?, updated_at = ?
        WHERE id = ?`,
-    ).run(
+      ).run(
       next.fullName,
       next.role,
       next.department,
@@ -244,24 +307,23 @@ export function updateUser(
       next.isActive ? 1 : 0,
       now,
       targetUserId,
-    );
-  }
-
-  // Audit: list ONLY the fields that actually changed (never the hash).
-  const changes: string[] = [];
-  if (next.fullName !== target.full_name) changes.push(`full_name: "${target.full_name}" → "${next.fullName}"`);
-  if (next.role !== target.role) changes.push(`role: ${target.role} → ${next.role}`);
-  if (next.department !== target.department) changes.push(`department: "${target.department}" → "${next.department}"`);
-  if (next.canCreateTasks !== toBool(target.can_create_tasks)) {
-    changes.push(`can_create_tasks: ${toBool(target.can_create_tasks) ? 1 : 0} → ${next.canCreateTasks ? 1 : 0}`);
-  }
-  if (next.isActive !== toBool(target.is_active)) {
-    changes.push(`is_active: ${toBool(target.is_active) ? 1 : 0} → ${next.isActive ? 1 : 0}`);
-  }
-  log(
-    actor,
-    `edited user id=${targetUserId} username="${target.username}"${changes.length > 0 ? ` (${changes.join(', ')})` : ' (no changes)'}${reactivating ? ' (lock cleared)' : ''}`,
-  );
+      );
+    }
+    const after: UserAuditSnapshot = {
+      ...before,
+      fullName: next.fullName,
+      role: next.role,
+      department: next.department,
+      canCreateTasks: next.canCreateTasks,
+      isActive: next.isActive,
+    };
+    const action = next.role !== target.role
+      ? 'USER_ROLE_CHANGE'
+      : next.isActive !== toBool(target.is_active)
+        ? (next.isActive ? 'USER_ACTIVATE' : 'USER_DEACTIVATE')
+        : 'USER_UPDATE';
+    appendUserAudit(db, actor, targetUserId, action, before, after, `target_username=${target.username}`);
+  })();
   return { ok: true };
 }
 
@@ -290,13 +352,20 @@ export function resetPassword(
   const hash = bcrypt.hashSync(newPassword, 10);
   // A fresh password also clears any brute-force lock: the admin reset is the
   // sanctioned way to unblock an account.
-  getDb()
-    .prepare(
+  const db = getDb();
+  const before = userAuditSnapshot(target);
+  db.transaction(() => {
+    db
+      .prepare(
       `UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL,
               must_change_password = 1, password_changed_at = NULL
        WHERE id = ?`,
-    )
-    .run(hash, targetUserId);
-  log(actor, `reset password for username="${target.username}"(id=${targetUserId}) must_change_password=1`);
+      )
+      .run(hash, targetUserId);
+    appendUserAudit(db, actor, targetUserId, 'USER_PASSWORD_RESET', before, {
+      ...before,
+      mustChangePassword: true,
+    }, `target_username=${target.username}; password_reset=admin`);
+  })();
   return { ok: true };
 }

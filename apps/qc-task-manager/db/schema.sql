@@ -399,10 +399,10 @@ CREATE TABLE IF NOT EXISTS qc_audit_log (
   -- Extended by migration 011 (guarded row-preserving rebuild) so laboratory
   -- entities/actions share the SAME audit system. Legacy FINDING/RCA/CAPA/
   -- EVIDENCE rows are preserved verbatim.
-  entity_type TEXT NOT NULL CHECK (entity_type IN ('FINDING','RCA','CAPA','EVIDENCE','LAB_TEST','LAB_RETEST','LAB_PRODUCT','LAB_TEMPLATE','LAB_EQUIPMENT','LAB_EQUIPMENT_MAINTENANCE','LAB_EQUIPMENT_CALIBRATION','LAB_DOCUMENT','LAB_DOCUMENT_VERSION','LAB_CHANGE_REQUEST')),
+  entity_type TEXT NOT NULL CHECK (entity_type IN ('FINDING','RCA','CAPA','EVIDENCE','LAB_TEST','LAB_RETEST','LAB_PRODUCT','LAB_TEMPLATE','LAB_EQUIPMENT','LAB_EQUIPMENT_MAINTENANCE','LAB_EQUIPMENT_CALIBRATION','LAB_DOCUMENT','LAB_DOCUMENT_VERSION','LAB_CHANGE_REQUEST','USER')),
   entity_id INTEGER NOT NULL, task_id INTEGER,
   actor_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
-  action TEXT NOT NULL CHECK (action IN ('CREATE','UPDATE','STATUS_TRANSITION','APPROVAL','REJECTION','CLOSURE','REOPEN','SUBMIT','REQUEST_CHANGES','VOID','SUPERSEDE','ACKNOWLEDGE','LINK','UNLINK','VERSION')),
+  action TEXT NOT NULL CHECK (action IN ('CREATE','UPDATE','STATUS_TRANSITION','APPROVAL','REJECTION','CLOSURE','REOPEN','SUBMIT','REQUEST_CHANGES','VOID','SUPERSEDE','ACKNOWLEDGE','LINK','UNLINK','VERSION','USER_CREATE','USER_UPDATE','USER_ROLE_CHANGE','USER_ACTIVATE','USER_DEACTIVATE','USER_PASSWORD_RESET')),
   old_value TEXT, new_value TEXT, note TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')),
   previous_hash TEXT, event_hash TEXT
 );
@@ -414,6 +414,7 @@ CREATE INDEX IF NOT EXISTS idx_qc_capa_finding_status ON qc_capa(finding_id,stat
 CREATE INDEX IF NOT EXISTS idx_qc_evidence_finding ON qc_evidence(finding_id);
 CREATE INDEX IF NOT EXISTS idx_qc_evidence_capa ON qc_evidence(capa_id);
 CREATE INDEX IF NOT EXISTS idx_qc_audit_entity ON qc_audit_log(entity_type,entity_id,created_at);
+CREATE INDEX IF NOT EXISTS idx_qc_audit_user_actor_time ON qc_audit_log(entity_type,actor_id,created_at);
 
 CREATE INDEX IF NOT EXISTS idx_login_attempts_user   ON login_attempts(username, created_at);
 CREATE INDEX IF NOT EXISTS idx_login_attempts_ip_failure

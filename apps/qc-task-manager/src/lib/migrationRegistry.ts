@@ -55,6 +55,7 @@ import wiProvenanceMigrationSql from '../../db/migrations/033_wi_provenance.sql?
 import templateSubmissionPolicyMigrationSql from '../../db/migrations/034_template_submission_policy.sql?raw';
 import labTemplateReviewWorkflowMigrationSql from '../../db/migrations/035_lab_template_review_workflow.sql?raw';
 import passwordLifecycleMigrationSql from '../../db/migrations/036_password_lifecycle.sql?raw';
+import userAuditLogMigrationSql from '../../db/migrations/037_user_audit_log.sql?raw';
 
 export interface EmbeddedMigration {
   readonly file: string;
@@ -98,4 +99,5 @@ export const EMBEDDED_MIGRATIONS: readonly EmbeddedMigration[] = Object.freeze([
   Object.freeze({ file: '034_template_submission_policy.sql', source: templateSubmissionPolicyMigrationSql }),
   Object.freeze({ file: '035_lab_template_review_workflow.sql', source: labTemplateReviewWorkflowMigrationSql }),
   Object.freeze({ file: '036_password_lifecycle.sql', source: passwordLifecycleMigrationSql }),
+  Object.freeze({ file: '037_user_audit_log.sql', source: userAuditLogMigrationSql }),
 ]);

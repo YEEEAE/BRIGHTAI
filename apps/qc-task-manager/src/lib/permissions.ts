@@ -47,6 +47,9 @@ export const PERMISSIONS = {
   /** User management is admin-only (RULE #1). */
   canManageUsers: (role: Role): boolean => role === 'admin',
 
+  /** User administration events reveal staff activity and are admin-only. */
+  canViewUserAudit: (role: Role): boolean => role === 'admin',
+
   /** Task templates are administered by admins only (lifecycle + configuration). */
   canManageTemplates: (role: Role): boolean => role === 'admin',
 

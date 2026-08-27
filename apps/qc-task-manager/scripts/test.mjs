@@ -462,6 +462,7 @@ section('Acceptance unit coverage');
 ok(PERMISSIONS.canViewDashboard('employee') === false, 'permissions: employee dashboard denied');
 ok(PERMISSIONS.canViewDashboard('manager') === true, 'permissions: manager dashboard allowed');
 ok(PERMISSIONS.canManageUsers('admin') === true && PERMISSIONS.canManageUsers('manager') === false, 'permissions: user management is admin-only');
+ok(PERMISSIONS.canViewUserAudit('admin') === true && PERMISSIONS.canViewUserAudit('manager') === false, 'permissions: user audit is admin-only');
 ok(canEditLockedField('supervisor') && !canEditLockedField('employee'), 'permissions: supervisor can edit locked fields, employee cannot');
 ok(isFieldEditableForRole('employee', 'status') && !isFieldEditableForRole('employee', 'title'), 'permissions: employee field whitelist is enforced');
 ok(canEditTask({ id: 7, role: 'employee' }, { status: 'in_progress', created_by: 1, assigned_to: 7 }), 'permissions: employee can edit assigned active task');
@@ -895,7 +896,7 @@ try {
   const tables = check.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all().map((r) => r.name);
   ok(tables.length === 51, `init-db: application + migration metadata tables applied (got ${tables.length})`);
   const migrationVersion = check.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version;
-    ok(migrationVersion === 36, 'init-db: schema version recorded as 36');
+    ok(migrationVersion === 37, 'init-db: schema version recorded as 37');
   const fk = check.prepare('PRAGMA foreign_key_check').all();
   ok(fk.length === 0, 'init-db: no foreign-key violations after migration');
   check.close();

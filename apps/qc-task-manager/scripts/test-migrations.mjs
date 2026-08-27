@@ -51,8 +51,8 @@ try {
   {
     const db = database('fresh');
     const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(result.applied.length, 36);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 36);
+    assert.equal(result.applied.length, 37);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').get().n, 37);
     for (const [table, column] of [
       ['lab_test_records', 'testing_date'], ['lab_test_records', 'actual_force'],
       ['lab_test_records', 'torque_value'], ['lab_test_records', 'humidity_measured'],
@@ -144,12 +144,37 @@ try {
     const before = db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId);
     assert.equal(verifyQcAuditChain(db).status, 'PASS');
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 5);
+    assert.equal(upgraded.applied.length, 6);
     assert.deepEqual(db.prepare('SELECT id, task_id, previous_hash, event_hash FROM qc_audit_log WHERE id=?').get(qcId), before);
     db.prepare('DELETE FROM tasks WHERE id=1').run();
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log WHERE id=? AND task_id=1').get(qcId).n, 1);
     assert.equal(verifyQcAuditChain(db).status, 'PASS');
     assert.equal(db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='qc_audit_log'").get().sql.includes('task_id INTEGER REFERENCES'), false);
+    db.close();
+  }
+
+  console.log('■ user-audit migration preserves pre-existing hashes verbatim');
+  {
+    const v36Dir = join(tempRoot, 'migrations-v36-user-audit');
+    mkdirSync(v36Dir, { recursive: true });
+    for (const file of readdirSync(migrationDir).filter((f) => /^\d{3}_/.test(f)).sort()) {
+      if (Number(file.slice(0, 3)) <= 36) copyFileSync(join(migrationDir, file), join(v36Dir, file));
+    }
+    const db = database('user-audit-hash-preservation');
+    runMigrations(db, { migrationsDir: v36Dir, backup: false });
+    db.prepare("INSERT INTO users (id, username, password_hash, full_name, role) VALUES (1, 'auditor', 'hash', 'Audit User', 'admin')").run();
+    const { appendQcAudit } = await import('../src/lib/audit/qcChain.ts');
+    appendQcAudit(db, { entityType: 'FINDING', entityId: 8, actorId: 1, action: 'CREATE', note: 'pre-user-audit', createdAt: '2026-08-27T10:00:00.000Z' });
+    const before = db.prepare('SELECT id, entity_type, action, old_value, new_value, note, created_at, previous_hash, event_hash FROM qc_audit_log ORDER BY id').all();
+    assert.equal(verifyQcAuditChain(db).status, 'PASS');
+    const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
+    assert.equal(upgraded.applied.length, 1, 'only migration 037 applies to a v36 database');
+    assert.deepEqual(
+      db.prepare('SELECT id, entity_type, action, old_value, new_value, note, created_at, previous_hash, event_hash FROM qc_audit_log ORDER BY id').all(),
+      before,
+      'migration 037 preserves every historical audit field and hash verbatim',
+    );
+    assert.equal(verifyQcAuditChain(db).status, 'PASS', 'historical chain remains valid after migration 037');
     db.close();
   }
 
@@ -178,7 +203,7 @@ try {
       .all();
 
     const upgraded = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(upgraded.applied.length, 26, 'upgrade applies exactly migrations 011-036');
+    assert.equal(upgraded.applied.length, 27, 'upgrade applies exactly migrations 011-037');
     const after = db
       .prepare('SELECT id, entity_type, entity_id, task_id, actor_id, action, old_value, new_value, note, created_at FROM qc_audit_log ORDER BY id')
       .all();
@@ -186,6 +211,9 @@ try {
     backfillQcAuditChain(db);
     assert.equal(verifyQcAuditChain(db).status, 'PASS', 'legacy rows receive a verified genesis/backfill chain');
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log WHERE event_hash IS NOT NULL').get().n, 3);
+    const hashesBefore037 = db.prepare('SELECT id, previous_hash, event_hash FROM qc_audit_log ORDER BY id').all();
+    assert.equal(verifyQcAuditChain(db).status, 'PASS', 'historical audit chain remains valid after migration 037');
+    assert.deepEqual(db.prepare('SELECT id, previous_hash, event_hash FROM qc_audit_log ORDER BY id').all(), hashesBefore037, 'migration 037 leaves historical audit hashes unchanged');
     // The rebuilt table accepts the new laboratory vocabulary AND the legacy one.
     db.prepare(
       "INSERT INTO qc_audit_log (entity_type, entity_id, actor_id, action, note) VALUES ('LAB_TEST', 1, 1, 'SUBMIT', 'lab event')",
@@ -193,8 +221,11 @@ try {
     db.prepare(
       "INSERT INTO qc_audit_log (entity_type, entity_id, actor_id, action) VALUES ('FINDING', 21, 1, 'UPDATE')",
     ).run();
+    db.prepare(
+      "INSERT INTO qc_audit_log (entity_type, entity_id, actor_id, action) VALUES ('USER', 1, 1, 'USER_UPDATE')",
+    ).run();
     const count = db.prepare('SELECT COUNT(*) AS n FROM qc_audit_log').get().n;
-    assert.equal(count, 5);
+    assert.equal(count, 6);
     assert.deepEqual(db.pragma('foreign_key_check'), []);
     db.close();
   }
@@ -218,7 +249,7 @@ try {
     const db = database('repeat');
     const first = runMigrations(db, { migrationsDir: migrationDir, backup: false });
     const second = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-    assert.equal(first.applied.length, 36);
+    assert.equal(first.applied.length, 37);
     assert.equal(second.applied.length, 0);
     db.close();
   }
