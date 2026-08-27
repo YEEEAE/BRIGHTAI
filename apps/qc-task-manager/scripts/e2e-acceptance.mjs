@@ -7,38 +7,17 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
+import { CANONICAL_E2E_SUITES } from './e2e-registry.mjs';
 
 const appDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const tempDir = mkdtempSync(join(tmpdir(), 'brightai-qc-acceptance-'));
 const CHILD_TIMEOUT_MS = Number(process.env.E2E_SUITE_TIMEOUT_MS ?? 120_000);
 const suiteResults = [];
-const suites = [
-  ['admin-users', 'scripts/e2e-admin-users.mjs'],
-  ['auth-lockout', 'scripts/e2e-auth-lockout.mjs'],
-  ['task-shared', 'scripts/e2e-task-shared.mjs'],
-  ['delete-request', 'scripts/e2e-delete-request.mjs'],
-  ['dashboard', 'scripts/e2e-dashboard.mjs'],
-  ['a11y', 'scripts/e2e-a11y.mjs'],
-  ['backup', 'scripts/e2e-backup.mjs'],
-  ['search', 'scripts/e2e-search.mjs'],
-  ['findings', 'scripts/e2e-findings.mjs'],
-  ['lab-nav', 'scripts/e2e-lab-nav.mjs'],
-  ['lab-suggest', 'scripts/e2e-lab-suggest.mjs'],
-  ['lab-form', 'scripts/e2e-lab-form.mjs'],
-  ['lab-tests', 'scripts/e2e-lab-tests.mjs'],
-  ['lab-review', 'scripts/e2e-lab-review.mjs'],
-  ['lab-products', 'scripts/e2e-lab-products.mjs'],
-  ['lab-equipment', 'scripts/e2e-lab-equipment.mjs'],
-  ['lab-maintenance', 'scripts/e2e-lab-maintenance.mjs'],
-  ['lab-calibration', 'scripts/e2e-lab-calibration.mjs'],
-  ['lab-documents', 'scripts/e2e-lab-documents.mjs'],
-  ['lab-acknowledgements', 'scripts/e2e-lab-acknowledgements.mjs'],
-  ['lab-calendar', 'scripts/e2e-lab-calendar.mjs'],
-  ['lab-retests', 'scripts/e2e-lab-retests.mjs'],
-  ['lab-notifications', 'scripts/e2e-lab-notifications.mjs'],
-  ['lab-data-quality', 'scripts/e2e-lab-data-quality.mjs'],
-  ['reports', 'scripts/e2e-reports.mjs'],
-];
+const suites = CANONICAL_E2E_SUITES;
+if (suites.length === 0) {
+  console.error('E2E registry is empty — refusing to run an empty acceptance surface.');
+  process.exit(1);
+}
 
 function sleep(ms) {
   return new Promise((resolvePromise) => setTimeout(resolvePromise, ms));
@@ -162,7 +141,7 @@ async function runSuite(label, script, port) {
     if (result.timedOut) throw new Error(`${label} TIMEOUT after ${CHILD_TIMEOUT_MS}ms`);
     if (result.error) throw result.error;
     if (result.code !== 0) throw new Error(`${script} exited with ${result.signal ?? `code ${result.code}`}`);
-    suiteResults.push({ label, ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
+    suiteResults.push({ label, script, ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
     console.log(`✅ ${label}`);
   } finally {
     await stopServer(server);
@@ -182,7 +161,7 @@ async function runPersistenceSuite(port) {
     if (result.stderr) process.stderr.write(result.stderr);
     if (result.timedOut) throw new Error(`restart persistence (create) TIMEOUT after ${CHILD_TIMEOUT_MS}ms`);
     if (result.code !== 0) throw new Error(`restart persistence (create) exited with code ${result.code}`);
-    suiteResults.push({ label: 'restart persistence (create)', ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
+    suiteResults.push({ label: 'restart persistence (create)', script: 'scripts/e2e-persistence.mjs', ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
   } finally {
     await stopServer(server);
   }
@@ -198,7 +177,7 @@ async function runPersistenceSuite(port) {
     if (result.stderr) process.stderr.write(result.stderr);
     if (result.timedOut) throw new Error(`restart persistence (verify) TIMEOUT after ${CHILD_TIMEOUT_MS}ms`);
     if (result.code !== 0) throw new Error(`restart persistence (verify) exited with code ${result.code}`);
-    suiteResults.push({ label: 'restart persistence (verify)', ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
+    suiteResults.push({ label: 'restart persistence (verify)', script: 'scripts/e2e-persistence.mjs', ...assertionCounts(`${result.stdout}\n${result.stderr}`), durationMs: Date.now() - startedAt, timeout: 'none' });
     console.log('✅ restart persistence');
   } finally {
     await stopServer(server);
@@ -222,10 +201,20 @@ try {
     const [label, script] = suites[i];
     await runSuite(label, script, 4500 + i);
   }
-  await runPersistenceSuite(4512);
-  console.log('\nAcceptance suite summary');
+  await runPersistenceSuite(4500 + suites.length + 1);
+  const totalPassed = suiteResults.reduce((sum, r) => sum + (r.passed ?? 0), 0);
+  const totalFailed = suiteResults.reduce((sum, r) => sum + (r.failed ?? 0), 0);
+  const assertionsParsable = suiteResults.every((r) => r.passed !== null);
+  const totalDurationMs = suiteResults.reduce((sum, r) => sum + r.durationMs, 0);
+  console.log('\nAcceptance summary');
+  console.log(`  HEAD SHA: ${head}`);
+  console.log(`  Dirty/untracked status: ${status}`);
+  console.log(`  Suites: ${suiteResults.length} passed / ${suites.length + 2} total (incl. 2-phase restart persistence)`);
+  console.log(`  Assertions: ${assertionsParsable ? `${totalPassed} passed / ${totalFailed} failed` : `${totalPassed}+ passed / parsability incomplete`} (per-suite counts parsed from suite output)`);
+  console.log(`  Total duration: ${totalDurationMs}ms`);
+  console.log('');
   for (const result of suiteResults) {
-    console.log(`  ${result.label}: ${result.passed ?? '?'} passed / ${result.failed ?? '?'} failed / ${result.durationMs}ms / timeout=${result.timeout}`);
+    console.log(`  ${result.label} | ${result.script} | passed=${result.passed ?? '?'} failed=${result.failed ?? '?'} | ${result.durationMs}ms | timeout=${result.timeout}`);
   }
   console.log('\n✅ All QC acceptance suites passed.');
 } finally {

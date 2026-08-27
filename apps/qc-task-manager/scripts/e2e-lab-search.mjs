@@ -142,14 +142,18 @@ const testOtherId = Number(
 );
 
 // Insert Sample for Employee Test
-const sampleEmpIdent = `LAB-TEST-${testEmpNum.slice(-5)}-S01`;
+// Identifier derives from the FULL discriminating test number — slicing the
+// tag only would make both fixtures' identifiers identical (the A/B
+// discriminator falls outside a 5-char slice window) and the RBAC check
+// below would legitimately match the employee's OWN sample.
+const sampleEmpIdent = `${testEmpNum}-S01`;
 db.prepare(
   `INSERT INTO lab_test_samples (test_id, sample_no, sample_identifier, part_name, result, status)
    VALUES (?, 1, ?, ?, 'PASS', 'APPROVED')`,
 ).run(testEmpId, sampleEmpIdent, `Coupling Ring ${tag}`);
 
 // Insert Sample for Other Employee Test
-const sampleOtherIdent = `LAB-TEST-${testOtherNum.slice(-5)}-S01`;
+const sampleOtherIdent = `${testOtherNum}-S01`;
 db.prepare(
   `INSERT INTO lab_test_samples (test_id, sample_no, sample_identifier, part_name, result, status)
    VALUES (?, 1, ?, ?, 'FAIL', 'APPROVED')`,

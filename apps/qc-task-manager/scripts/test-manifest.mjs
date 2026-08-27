@@ -1,5 +1,25 @@
 export const META_TEST_SCRIPTS = new Set(['test', 'test:manifest', 'test:architecture']);
 
+// scripts/test-*.mjs files that are intentionally NOT canonical suites.
+// `test-manifest-guard.mjs` scans the filesystem, so every file matching the
+// convention must be either the target of a registered test:* command or
+// explicitly classified here with a reason. Keep this list small and honest.
+export const TEST_SCRIPT_CLASSIFICATIONS = new Map([
+  // Pure data module: exports the registry consumed by the guard and
+  // run-full-tests.mjs. Not an executable test.
+  ['scripts/test-manifest.mjs', 'registry-data-module'],
+  // The guard itself; it IS the test:manifest command.
+  ['scripts/test-manifest-guard.mjs', 'meta-guard:command test:manifest'],
+  // Manual PDF diagnostic (PROMPT 50): generates an artifact for visual
+  // inspection via --artifact/--keep-artifact, never part of the canonical
+  // chain. KNOWN BROKEN at HEAD (open defect, do not register silently):
+  // fails "Arabic location drawn visually ordered", "diacritic cell drawn
+  // via mark positioning path", "Report ID data under Report ID header",
+  // then crashes TypeError at scripts/test-report-pdf-arabic.mjs:160
+  // (locData undefined). Fix + registration is a dedicated follow-up task.
+  ['scripts/test-report-pdf-arabic.mjs', 'manual-diagnostic:known-broken (see reason)'],
+]);
+
 export const CANONICAL_TEST_SCRIPTS = [
   'test:migrations',
   'test:embedded-migration-parity',
@@ -42,6 +62,7 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:lab-security',
   'test:lab-esignature',
   'test:lab-suggest',
+  'test:lab-search',
   'test:badge-contrast',
   'test:lab-ux-presentation',
   'test:lab-ux-performance',

@@ -195,13 +195,21 @@ let manager;
   ok(body.includes('Approved') && body.includes('Draft') && body.includes('Archived'), 'register: status badges rendered');
   ok(body.includes('E2E-CONN') || body.includes('E2E Connector'), 'register: product name joined');
 
-  // /lab/documents/… links on this page = New Document header action (1) +
-  // New Document secondary-nav entry (1) + a per-row Edit link for each
-  // editable record (manager may edit every non-archived / non-superseded
-  // document → APPROVED + DRAFT = 2; ARCHIVED has none) + a per-row Versions
-  // link for every row (3, view-level) = 7. No detail-page (/lab/documents/[id])
-  // links exist yet — the reader lands later.
-  eq_(await manager.locator('main a[href^="/lab/documents/"]').count(), 7, 'register: 2× New Document + 2 editable-row Edit + 3 row Versions links');
+  // /lab/documents/… links on this page (manager, 3 fixture rows): the page
+  // renders BOTH a desktop table and a mobile card fallback (the other one is
+  // CSS-hidden per viewport but present in the DOM), so row affordances
+  // appear twice, and every row links to the detail reader page:
+  //   New Document (header action + secondary-nav entry)          = 2
+  //   Versions: 3 rows × (desktop table + mobile card)            = 6
+  //   Edit/Add Content: 2 editable rows (APPROVED + DRAFT; ARCHIVED
+  //   has none) × 2 variants                                      = 4
+  //   Detail reader (code / title / View): desktop code+title+View
+  //   = 3, mobile code+View = 2 → 5 per row × 3 rows              = 15
+  eq_(
+    await manager.locator('main a[href^="/lab/documents/"]').count(),
+    27,
+    'register: 2× New Document + 6× Versions + 4× Edit + 15× detail reader links (desktop + mobile variants)',
+  );
 }
 
 // ── D. Filters ──
@@ -478,7 +486,7 @@ let manager;
   const flat = strip.replace(/\s+/g, ' ').trim();
   ok(flat.includes('1 Overdue 1 Due today 1 Due within 7 days 1 Due within 15 days 1 Due within 30 days'), 'review: summary strip counts one doc per window');
   const stripLinks = manager.locator('main section[aria-label="Document review status"] a');
-  eq_(await stripLinks.count(), 5, 'review: strip has five drill-down links');
+  eq_(await stripLinks.count(), 6, 'review: strip has 5 window drill-downs + the In Review Queue pill');
 
   // Each window link drills into its filter and shows only that document.
   const overdueLink = manager.locator('main section[aria-label="Document review status"] a[href="/lab/documents?review=overdue"]');
@@ -505,10 +513,14 @@ let manager;
     ok(tbody.includes(badge), `review: ${window}-day badge rendered on the row`);
   }
 
-  // The Review column is sortable (exact sort=review link — "Review Due" is a
-  // different column).
+  // The Review column is sortable — target its exact sort=review& link
+  // ("Review Due" sorts by review_due_date and is a different column). The
+  // sort header lives in the desktop table, so restore a desktop viewport
+  // first: the overflow scenario left this page at 390px, where the mobile
+  // card fallback replaces the table.
+  await manager.setViewportSize({ width: 1440, height: 900 });
   await manager.goto(`${BASE}${registerUrl}?q=E2E-`, { waitUntil: 'domcontentloaded' });
-  await manager.locator('main a[href*="sort=review"]').first().click();
+  await manager.locator('main a[href*="sort=review&"]').click();
   await manager.waitForURL((u) => u.pathname === '/lab/documents' && u.search.includes('sort=review'), { timeout: 15_000 });
   tbody = await manager.locator('main tbody').innerText();
   ok(tbody.includes('Overdue'), 'review: sort by review keeps badge rendering');

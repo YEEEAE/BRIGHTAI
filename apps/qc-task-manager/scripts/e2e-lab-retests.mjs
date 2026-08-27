@@ -129,9 +129,20 @@ let manager;
   const res = await emp.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
   ok(res.status() === 200, 'employee: retest register viewable (all roles)');
   ok((await emp.locator('nav[aria-label="Laboratory sections"] a[href="/lab/retests"]').count()) === 0, 'employee: no retests secondary-nav entry (supervisor+)');
+  // RBAC-expansion contract: the employee can open the retest form, but a
+  // submission routes a RETEST_REQUEST change request to the management
+  // review queue — no retest row is ever written directly by a contributor.
   await emp.goto(`${BASE}/lab/retests/new?test=${original.id}`, { waitUntil: 'domcontentloaded' });
-  await emp.waitForURL((u) => u.pathname === '/lab/retests', { timeout: 15_000 });
-  ok(true, 'employee: bounced from the create form to the register');
+  ok((await emp.locator('main').innerText()).includes('Create Retest'), 'employee: retest request form reachable');
+  await emp.selectOption('#reason', 'FAIL');
+  await emp.fill('#reason_note', 'E2E: employee retest request.');
+  await emp.locator(`form[action="/lab/retests/new?test=${original.id}"] button[type="submit"]`).click();
+  await emp.waitForURL((u) => u.pathname === '/lab/change-requests', { timeout: 15_000 });
+  ok((await emp.locator('main').innerText()).includes('Retest request submitted for management review.'), 'employee: submission routed to the management review queue');
+  eq_(retestRows().length, 0, 'employee: no direct retest row written');
+  // The queue row is never approved in this spec — remove it so later
+  // scenarios see the pre-request state.
+  db.prepare("DELETE FROM lab_change_requests WHERE entity_type='RETEST_REQUEST' AND entity_id=?").run(original.id);
   await emp.close();
 
   supervisor = await browser.newPage();
@@ -221,8 +232,10 @@ let newTestId;
 // ── E. Completion: approve the new test through the real review API ──
 {
   db.prepare("UPDATE lab_test_records SET status='SUBMITTED', tested_by=? WHERE id = ?").run(employeeId, newTestId);
+  // Approval is a highest-authority action: the real endpoint requires the
+  // reviewer's e-signature (current password re-verified server-side).
   const res = await manager.request.post(`${BASE}/api/lab/tests/${newTestId}/review`, {
-    form: { action: 'approve' },
+    form: { action: 'approve', esignature_password: PASS },
     headers: { Origin: BASE },
     maxRedirects: 0,
   });

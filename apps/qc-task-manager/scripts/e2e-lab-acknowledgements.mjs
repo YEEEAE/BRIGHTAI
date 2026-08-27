@@ -208,9 +208,12 @@ let supervisor;
   ok(body.includes('Pending'), 'register: status rendered');
   eq_(await employee.locator('main form[action^="/lab/acknowledgements/"]').count(), 1, 'register: exactly one Acknowledge action (own pending row only)');
 
-  // The supervisor sees NO acknowledge button (nothing assigned to them).
+  // The supervisor sees NO acknowledge form (nothing assigned to them). Scope
+  // to the acknowledge action explicitly: the page also renders the
+  // role-visible "Save this view" POST form (saved views), which is unrelated
+  // to acknowledgements.
   await supervisor.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
-  eq_(await supervisor.locator('main form[method="post"]').count(), 0, 'register: non-assigned roles see no acknowledge buttons');
+  eq_(await supervisor.locator('main form[action$="/acknowledge"]').count(), 0, 'register: non-assigned roles see no acknowledge forms');
 }
 
 // ── F. Employee acknowledges via the real button ──
