@@ -1,7 +1,7 @@
 ---
 title: "SAMA والذكاء الاصطناعي في القطاع المصرفي السعودي"
 description: "دليل شامل لاستخدام الذكاء الاصطناعي في القطاع المصرفي السعودي وفق متطلبات SAMA: حالات الاستخدام، الضوابط التنظيمية، وإطار الحوكمة العملي للبنوك."
-canonical: "https://brightai.site/blog/sama-banking/"
+canonical: "https://brightai.live/blog/sama-banking/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

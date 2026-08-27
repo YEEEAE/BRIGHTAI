@@ -130,7 +130,7 @@ function checkCanonicals(dirPath, urlPrefix) {
     const filePath = path.join(dirPath, file);
     const content = fs.readFileSync(filePath, 'utf8');
     const relPath = normalizeRelPath(path.relative(path.join(rootDir, "dist"), filePath));
-    const expectedCanonical = relPathToCanonical(relPath, 'https://brightai.site');
+    const expectedCanonical = relPathToCanonical(relPath, 'https://brightai.live');
     if (!expectedCanonical) continue;
     const canonicalRegex = new RegExp(`<link[^>]+rel=["']canonical["'][^>]*href=["']${expectedCanonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["'][^>]*>`, 'i');
 
@@ -214,7 +214,7 @@ if (sitemapPath) {
   const sitemapRel = path.relative(rootDir, sitemapPath);
 
   // 3a. Empty-stub guard (preserves the prior check)
-  const hasAnyUrl = /<loc>https:\/\/brightai\.site\/[^<]+<\/loc>/.test(sitemapContent);
+  const hasAnyUrl = /<loc>https:\/\/brightai\.live\/[^<]+<\/loc>/.test(sitemapContent);
   if (!hasAnyUrl && !isSitemapIndex(sitemapContent)) {
     sitemapValid = false;
     errors.push({
@@ -224,7 +224,7 @@ if (sitemapPath) {
   } else {
     // 3b. For sitemap-index, expand recursively so every leaf URL is checked.
     const fetchChildFromDist = async (childUrl) => {
-      // childUrl is an absolute URL like https://brightai.site/sitemap-0.xml
+      // childUrl is an absolute URL like https://brightai.live/sitemap-0.xml
       const childPathname = new URL(childUrl).pathname.replace(/^\//, '');
       // Try dist/client/ first (adapter-laid), then dist/
       const candidates = [

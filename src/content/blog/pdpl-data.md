@@ -1,7 +1,7 @@
 ---
 title: "حماية البيانات الشخصية في أنظمة الذكاء الاصطناعي وفق PDPL"
 description: "دليل حماية البيانات الشخصية في أنظمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية. تشفير، تصنيف، وحذف تلقائي."
-canonical: "https://brightai.site/blog/pdpl-data/"
+canonical: "https://brightai.live/blog/pdpl-data/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

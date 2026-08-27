@@ -25,9 +25,9 @@ export const MARKETING = {
   /** Mixpanel project token. Empty = script not emitted. */
   mixpanelToken: '',
   /** Destination inbox for formsubmit.co lead captures. */
-  leadInbox: 'info@brightai.site',
+  leadInbox: 'info@brightai.live',
   /** Default thank-you / redirect target after a lead form submit. */
-  leadThankYou: 'https://brightai.site/thank-you/',
+  leadThankYou: 'https://brightai.live/thank-you/',
 } as const;
 
 /**

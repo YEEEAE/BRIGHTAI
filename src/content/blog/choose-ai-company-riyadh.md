@@ -1,7 +1,7 @@
 ---
 title: "شركات AI في الرياض: دليل اختيار الشريك"
 description: "شركات التقنية في الرياض — كيف تختار شركة ذكاء اصطناعي بمنهجية 10 معايير. السجل، الامتثال، الكفاءات، الأمان، والدعم. دليل عملي لاختيار الشريك المناسب."
-canonical: "https://brightai.site/blog/choose-ai-company-riyadh/"
+canonical: "https://brightai.live/blog/choose-ai-company-riyadh/"
 pubDate: "2026-04-20"
 updatedDate: "2026-04-20"
 author: "nasser-alabdullah"

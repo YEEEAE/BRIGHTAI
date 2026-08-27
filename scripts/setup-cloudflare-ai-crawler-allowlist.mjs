@@ -3,7 +3,7 @@
  * scripts/setup-cloudflare-ai-crawler-allowlist.mjs — BAI-IDX-CRAWL (2026-08-08)
  *
  * Ensures the Cloudflare edge does NOT block legitimate search-engine and
- * AI crawlers from brightai.site. This is the programmatic re-enforcement
+ * AI crawlers from brightai.live. This is the programmatic re-enforcement
  * of the 2026-08-08 emergency unblock documented in
  * report/2026-08-08-cloudflare-crawler-unblock.md.
  *

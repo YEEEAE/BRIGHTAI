@@ -1,7 +1,7 @@
 ---
 title: "إدارة مخاطر الذكاء الاصطناعي وفق SAMA"
 description: "دليل إدارة مخاطر الذكاء الاصطناعي في البنوك السعودية وفق SAMA: تصنيف المخاطر، التحيز، الموثوقية، والقرارات المؤتمتة مع ضوابط تشغيلية قابلة للتدقيق."
-canonical: "https://brightai.site/blog/sama-ai-risk/"
+canonical: "https://brightai.live/blog/sama-ai-risk/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

@@ -2,7 +2,7 @@
 title: "Kernel Evaluation Engine: محرك تقييم مخرجات الذكاء الاصطناعي في BrightAI Kernel"
 metaTitle: "Kernel Evaluation Engine: محرك تقييم مخرجات الذكاء الاصطناعي في BrightAI Kernel"
 description: "دليل محرك التقييم في Kernel: 7 أنواع تشغيل (حالة واحدة، Dataset كامل، مجموعة فرعية، عينة، محادثة متعددة الأدوار، Agent محدود، إعادة الفاشل)، 15 مرحلة خط تشغيل، ضوابط pause/cancel/resume والحفظ الجزئي، وقاعدة لا Passed لشغل ناقص."
-canonical: "https://brightai.site/docs/kernel-eval/"
+canonical: "https://brightai.live/docs/kernel-eval/"
 updated: "2026-08-01"
 category: "Kernel"
 tldr: "محرك التقييم هو الطبقة اللي تشغّل الـ Datasets على الـ Scorers وتنتج قرار بوابة موثّق. سبعة أنواع تشغيل و15 مرحلة لكل حالة مع Trace، وضوابط تشغيل كاملة (توقف، إلغاء، استئناف، حفظ جزئي، concurrency، retry، timeouts، budget). القاعدة الأهم: لا Passed لشغل ناقص — أي تشغيل متوقف أو ملغي أو متجاوز الميزانية = Incomplete بلا شهادة."

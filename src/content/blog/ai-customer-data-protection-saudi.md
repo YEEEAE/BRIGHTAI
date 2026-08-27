@@ -1,7 +1,7 @@
 ---
 title: "حماية بيانات العملاء عند استخدام AI بالسعودية"
 description: "دليل شامل لحماية بيانات العملاء عند استخدام AI في الشركات السعودية. تعلم كيفية منع تسرب البيانات، إخفاء PII، والامتثال لـ PDPL مع حلول BrightAI."
-canonical: "https://brightai.site/blog/ai-customer-data-protection-saudi/"
+canonical: "https://brightai.live/blog/ai-customer-data-protection-saudi/"
 pubDate: "2026-05-31"
 updatedDate: "2026-05-31"
 author: "nasser-alabdullah"

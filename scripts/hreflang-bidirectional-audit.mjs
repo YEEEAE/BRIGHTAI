@@ -32,7 +32,7 @@ import { isExplicitBilingualPair } from "../src/data/hreflang-pairs.ts";
 function parseArgs(argv) {
   const args = {
     live: false,
-    host: 'https://brightai.site',
+    host: 'https://brightai.live',
     sample: 200,
     concurrency: 10,
     timeout: 15000,
@@ -85,7 +85,7 @@ Hreflang bidirectional audit (BAI-IDX-14)
 Options:
   --live                   Fetch from production via Playwright (default: filesystem)
   --local                  Force filesystem mode (parity with check-mobile-375)
-  --host <url>             Production host (default: https://brightai.site)
+  --host <url>             Production host (default: https://brightai.live)
   --sample <n>             Pages to sample (default: 200; 0 = all)
   --concurrency <n>        Parallel browser contexts (default: 10)
   --timeout <ms>           Per-page navigation timeout (default: 15000)
@@ -104,7 +104,7 @@ Exit codes:
 `);
 }
 
-const BASE_URL = "https://brightai.site";
+const BASE_URL = "https://brightai.live";
 const ROOT = process.cwd();
 
 // Lazy resolve the client build root. The filesystem audit (and the test
@@ -259,7 +259,7 @@ function checkXDefault(index) {
 
 // BAI-SEO-003-S3 REGRESSION FIXTURE — checkEnPageContract.
 //
-// Original bug: the EN page at https://brightai.site/en/ (and the 6 other
+// Original bug: the EN page at https://brightai.live/en/ (and the 6 other
 // EN pages — 5 legal + sales-deck) emitted only ar-SA=self + x-default=self
 // because EXPLICIT_HREFLANG_PAIRS in src/data/hreflang-pairs.ts was keyed
 // only by the AR URL. The EN canonical missed the map lookup, fell through
@@ -382,7 +382,7 @@ async function fetchLive({ host, sample, concurrency, timeout }) {
   let context = null;
   try {
     context = await browser.newContext({
-      userAgent: "BrightAI-Hreflang-Audit/1.0 (+https://brightai.site)",
+      userAgent: "BrightAI-Hreflang-Audit/1.0 (+https://brightai.live)",
     });
     // Abort static assets to save bandwidth + time
     await context.route("**/*", (route) => {

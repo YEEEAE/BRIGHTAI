@@ -1,7 +1,7 @@
 ---
 title: "إدارة حوادث الأمن السيبراني في أنظمة AI وفق ECC"
 description: "دليل إدارة حوادث الأمن السيبراني لأنظمة الذكاء الاصطناعي وفق ضوابط ECC. خطة استجابة عملية للحوادث."
-canonical: "https://brightai.site/blog/ecc-incident/"
+canonical: "https://brightai.live/blog/ecc-incident/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

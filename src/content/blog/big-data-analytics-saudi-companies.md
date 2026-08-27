@@ -1,7 +1,7 @@
 ---
 title: "تحليل البيانات الضخمة للشركات السعودية"
 description: "دليل عملي لبدء تحليل البيانات الضخمة في الشركات السعودية، يشمل البنية التحتية، الأدوات، الكفاءات، والتحديات التنظيمية وفق PDPL."
-canonical: "https://brightai.site/blog/big-data-analytics-saudi-companies/"
+canonical: "https://brightai.live/blog/big-data-analytics-saudi-companies/"
 pubDate: "2026-06-04"
 updatedDate: "2026-06-04"
 author: "nasser-alabdullah"

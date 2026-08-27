@@ -1,7 +1,7 @@
 ---
 title: "إدارة دورة حياة AI وفق ISO 42001 في السعودية"
 description: "دليل إدارة دورة حياة الذكاء الاصطناعي الكاملة وفق ISO 42001 للمؤسسات السعودية: من التخطيط والتطوير إلى النشر والمراقبة والتقاعد."
-canonical: "https://brightai.site/blog/iso-42001-ai-lifecycle-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-ai-lifecycle-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

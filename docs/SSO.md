@@ -27,7 +27,7 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│ Browser (User on brightai.site/sign-in or tenant.brightai.site)  │
+│ Browser (User on brightai.live/sign-in or tenant.brightai.live)  │
 └────────────────────────────────────────────────────────────────┘
             │
             │ Email entry
@@ -172,14 +172,14 @@ Phase 2 wires this into a client form that calls Clerk's `authenticateWithRedire
 - Audit entry written: `SSO_CONNECTION_CONFIGURED`
 
 ### 4. Clerk webhook verification
-- Webhook URL: `https://brightai.site/api/webhooks/clerk`
+- Webhook URL: `https://brightai.live/api/webhooks/clerk`
 - Events to subscribe: `organization.created`, `organization.updated`,
   `organizationMembership.created`, `organizationMembership.updated`,
   `session.created`
 - Svix verification via `CLERK_WEBHOOK_SECRET`
 
 ### 5. Test SSO login
-- User from `acme.com` navigates to `acme.brightai.site/sign-in`
+- User from `acme.com` navigates to `acme.brightai.live/sign-in`
 - Enters email
 - Auto-redirect to IdP login page (via Clerk Enterprise SSO)
 - After IdP auth → `session.created` webhook → `SSO_LOGIN_SUCCESS` audit

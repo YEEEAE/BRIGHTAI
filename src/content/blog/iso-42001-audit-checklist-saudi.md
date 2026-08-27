@@ -1,7 +1,7 @@
 ---
 title: "قائمة تدقيق ISO 42001 للمؤسسات السعودية"
 description: "قائمة تدقيق ISO 42001 شاملة للمؤسسات السعودية: 80+ بند تغطي السياسات، المخاطر، الضوابط، التوثيق، والمراجعة. جاهز للاستخدام المباشر في تحضير شهادة AIMS."
-canonical: "https://brightai.site/blog/iso-42001-audit-checklist-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-audit-checklist-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

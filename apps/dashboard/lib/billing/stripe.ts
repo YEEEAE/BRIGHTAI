@@ -70,7 +70,7 @@ export function getStripeClient(): Stripe | null {
       appInfo: {
         name: 'brightai-dashboard',
         version: '0.1.0',
-        url: 'https://brightai.site',
+        url: 'https://brightai.live',
       },
       maxNetworkRetries: 2, // Stripe retries transient failures automatically
       timeout: 15_000, // 15s — well under Render's 30s request budget

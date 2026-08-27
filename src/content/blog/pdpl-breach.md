@@ -1,7 +1,7 @@
 ---
 title: "إبلاغ تسريب البيانات في أنظمة AI وفق PDPL"
 description: "دليل إبلاغ تسريب البيانات في أنظمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية. كيف تكتشف وتبلغ وتتعامل مع التسريبات."
-canonical: "https://brightai.site/blog/pdpl-breach/"
+canonical: "https://brightai.live/blog/pdpl-breach/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

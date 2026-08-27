@@ -1,7 +1,7 @@
 ---
 title: "دليل امتثال PDPL للمنشآت السعودية 2026"
 description: "دليل امتثال PDPL للمنشآت السعودية 2026: خطوات تطبيقية وقوالب سياسات وعقوبات عدم الالتزام. اقرأ الدليل الكامل وحقق الامتثال لحماية البيانات الشخصية مع BrightAI."
-canonical: "https://brightai.site/blog/pdpl-compliance-guide-saudi-companies/"
+canonical: "https://brightai.live/blog/pdpl-compliance-guide-saudi-companies/"
 pubDate: "2026-06-28"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

@@ -36,7 +36,7 @@ export async function auditLegacyPaths({ root = ROOT } = {}) {
     const content = await fs.readFile(path.join(root, relPath), "utf8");
     const values = [
       ...content.matchAll(/\b(?:href|src|action|data-href|data-src)\s*=\s*["']([^"']+)["']/gi),
-      ...content.matchAll(/https:\/\/brightai\.site\/[^\s<>"')\]]+/gi),
+      ...content.matchAll(/https:\/\/brightai\.live\/[^\s<>"')\]]+/gi),
     ].map((match) => match[1] || match[0]);
     for (const legacyPath of LEGACY_PATHS) {
       for (const value of values) {

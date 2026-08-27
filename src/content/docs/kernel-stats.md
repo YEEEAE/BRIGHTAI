@@ -2,7 +2,7 @@
 title: "Kernel Stats: لوحة إحصائيات استخدام الذكاء الاصطناعي"
 metaTitle: "Kernel Stats: لوحة إحصائيات استخدام الذكاء الاصطناعي"
 description: "شرح عملي للوحة الإحصائيات في BrightAI Kernel: كيف تتابع استخدامات AI، المخاطر، الموافقات، والأقسام في مكان واحد."
-canonical: "https://brightai.site/docs/kernel-stats/"
+canonical: "https://brightai.live/docs/kernel-stats/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "شرح عملي للوحة الإحصائيات في BrightAI Kernel: كيف تتابع\nاستخدامات AI، المخاطر، الموافقات، والأقسام في مكان واحد."

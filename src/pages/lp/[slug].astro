@@ -36,7 +36,7 @@ export function getStaticPaths() {
 }
 
 const { lp } = Astro.props as { lp: LandingPage };
-const canonical = `https://brightai.site/lp/${lp.slug}/`;
+const canonical = `https://brightai.live/lp/${lp.slug}/`;
 const hreflangLinks = getHreflangLinks(canonical);
 
 const faqItems: FaqItem[] = lp.faq.map((f) => ({ q: f.q, a: f.a }));
@@ -48,7 +48,7 @@ const serviceLd = {
   name: lp.title,
   description: lp.description,
   url: canonical,
-  provider: { '@id': 'https://brightai.site/#organization' },
+  provider: { '@id': 'https://brightai.live/#organization' },
   areaServed: { '@type': 'Country', name: 'المملكة العربية السعودية' },
 };
 

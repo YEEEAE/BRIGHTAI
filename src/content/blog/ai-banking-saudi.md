@@ -1,7 +1,7 @@
 ---
 title: "الذكاء الاصطناعي في القطاع المصرفي السعودي"
 description: "تطبيقات الذكاء الاصطناعي في البنوك السعودية: الائتمان، مكافحة الاحتيال، خدمة العملاء، والامتثال لـ SAMA وFATF. دليل شامل مع دراسات حالة."
-canonical: "https://brightai.site/blog/ai-banking-saudi/"
+canonical: "https://brightai.live/blog/ai-banking-saudi/"
 pubDate: "2026-06-12"
 updatedDate: "2026-06-12"
 author: "nasser-alabdullah"

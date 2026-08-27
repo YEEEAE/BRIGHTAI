@@ -2,7 +2,7 @@
 title: "Kernel Compliance: حزم الامتثال التنظيمي"
 metaTitle: "Kernel Compliance: حزم الامتثال التنظيمي"
 description: "شرح عملي لحزم الامتثال في BrightAI Kernel: كيف تتابع حالة الامتثال لـ PDPL وNCA ECC وISO في مكان واحد."
-canonical: "https://brightai.site/docs/kernel-compliance/"
+canonical: "https://brightai.live/docs/kernel-compliance/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "شرح عملي لحزم الامتثال في BrightAI Kernel: كيف تتابع حالة\nالامتثال لـ PDPL وNCA ECC وISO في مكان واحد."

@@ -1,6 +1,6 @@
 Saudi AI Safety OS
 
-الموقع: https://brightai.site/
+الموقع: https://brightai.live/
 اللغة: العربية السعودية
 السوق: المملكة العربية السعودية
 المدينة الأساسية: الرياض
@@ -9,7 +9,7 @@ Saudi AI Safety OS
 تصميم وتطوير وتحسين تقني لموقع Saudi AI Safety OS.
 
 التواصل:
-https://brightai.site/contact/
+https://brightai.live/contact/
 https://api.whatsapp.com/send?phone=966538229013
 
 التقنيات:

@@ -1,4 +1,90 @@
 ---
+## [2026-08-28] — BAI-DOMAIN-MIGRATION-001: ترحيل النطاق الإنتاجي بالكامل brightai.site → brightai.live (محليًا فقط — بدون commit/push)
+
+### تم التنفيذ
+- **جرد شامل** قبل أي تعديل: 382 ملفًا يحتوي `brightai.site|brightaii.com` (باستثناء node_modules/.git/dist/.astro/.lighthouseci/.pnpm-store/.vercel/pnpm-lock). صُنّفت إلى **319 ملفًا للترحيل** + مجموعة محفوظة كأدلة تاريخية (§21). تصحيح افتراضين من الجرد الأولي: `render.yaml` **ما فيه** نطاق قديم أصلًا (يُعاد توليده من مولّد التحويلات ومزامنة الهيدرز)، و`brightaii.com` موجود **مرة واحدة فقط** في المستودع (مثال CORS مُعلَّق داخل `public/_headers`).
+- **مصدر الحقيقة الواحد**: `src/data/site.ts` → `url: 'https://brightai.live'`، و`astro.config.mjs:175` → `site: 'https://brightai.live'` (ومنها canonical/sitemap/OG/RSS/hreflang كلها تلقائيًا) + 10 روابط prerender للـ kernel. ما أُنشئ أي متغير مكرر.
+- **استبدال مُدار** (مو blind) على الـ 319 ملفًا: `src/data/schema-helpers.ts`، `public/{robots.txt,ai.txt,llms.txt,llms-full.txt,humans.txt,500.html,js/*}`، `.well-known/{agent.json,ai-plugin.json,openapi.yaml,security.txt}`، `public/CNAME` (أُعيدت كتابته `brightai.live` — كان فيه مسافة زائدة)، `schema-saudi-seo.json` (public + src)، ~40 سكربت في `scripts/`، `apps/dashboard/{middleware.ts,next.config.mjs,app/**,lib/tenant.ts,lib/billing/stripe.ts,.env.example,README.md,tests/api/middleware-auth.test.ts}`، `packages/config/src/env.ts`، `packages/db/{schema.prisma,seed.ts,src/client.ts}`، `~60 src/pages/**`، `~26 src/data/migrated-pages/*.json`، `~100 src/content/blog/*.md`، `~45 src/content/docs/*.md`، `AGENTS.md`/`CLAUDE.md`/`docs/*`.
+- **CORS/Origin بلا توسيع**: `src/pages/api/ai/chat.ts` → `ALLOWED_ORIGINS = ['https://brightai.live','https://www.brightai.live','http://localhost:4321','http://127.0.0.1:4321']` (أصول التطوير ما تغيّرت، ولا wildcard). `apps/dashboard/middleware.ts:31` → `ROOT_DOMAIN ?? 'brightai.live'` (فرع `.localhost` كما هو). `packages/config/src/env.ts` → افتراضات `ROOT_DOMAIN`/`NEXT_PUBLIC_ROOT_DOMAIN` + `SENDGRID_FROM_EMAIL=noreply@brightai.live`.
+- **CSP بلا إضعاف**: التعديل الوحيد في `public/_headers` هو مثال CORS **مُعلَّق** (`# Access-Control-Allow-Origin: https://brightai.live`) — وهو الموضع الوحيد لـ `brightaii.com` في المستودع. `headers:check` بلا drift قبل وبعد.
+- **تحويلات 301 داخل المستودع**: عُدّل `scripts/generate-all-redirects.mjs` ليولّد 7 قواعد مضيف مطلقة — تطبيع الكنسي (http→https، www→non-www على brightai.live) + ترحيل النطاق القديم بأربع صيغ (`http/https × root/www` على brightai.site) **كلها تشير مباشرة للكنسي = قفزة واحدة بلا سلاسل**، مع `:splat` لحفظ المسار. أُعيد التوليد: `public/_redirects` (7 قواعد بالأعلى + 209 قاعدة)، `render.yaml` (250 قاعدة)، `astro.config.mjs` (200 redirect، 9 مُستبعدة لتعارض صفحات ثابتة).
+- **إعادة توليد المولَّدات بدل تعديلها يدويًا**: sitemaps عبر `npm run build`، fixture الاختبار عبر `scripts/__fixtures__/build-output/build-fixture.mjs` (190 HTML / 166 loc / 23 بديل en-SA)، الهيدرز عبر `sync-headers-from-csp.mjs`.
+- **بوابات كانت تثبّت النطاق القديم بصيغة regex مهروبة** (ما التقطها grep العادي) — عُدّلت لتثبت النطاق الجديد بعد أن صارت الـ implementation صحيحة: `seo-schema-audit.mjs:85` (BreadcrumbList absolute items — هو سبب فشل `seo:all`)، `verify-all.mjs:217`، `legacy-seo-surface-audit.mjs:132`، `legacy-paths-audit.mjs:39`، `link-graph-validator.mjs:93`، `strategic-ai-answer-content.test.mjs:42`، `trigger-indexnow.test.mjs:117`.
+- **ما اتعدّل**: `.github/workflows/{ci-build-guard,reports-gate,weekly-gsc}.yml` (يحتاج إذن صريح — القاعدة 14)، `apps/dashboard/.env.local` (ممنوع لمس `.env*`)، وكل الأدلة التاريخية.
+
+### الملفات المتأثرة
+- `git diff --stat` = **329 ملفًا، +3279/−3448**
+- الأهم: `src/data/site.ts`، `astro.config.mjs`، `src/data/schema-helpers.ts`، `public/{CNAME,robots.txt,ai.txt,llms.txt,llms-full.txt,_headers,_redirects,sitemap.xml,sitemap-images.xml}`، `.well-known/*`، `render.yaml`، `scripts/generate-all-redirects.mjs`، `src/pages/api/ai/chat.ts`، `apps/dashboard/middleware.ts`، `packages/config/src/env.ts`، `packages/db/prisma/schema.prisma`
+
+### الأرقام
+- `brightai.live` في المجموعة المُرحّلة: **1561** موضعًا · نطاق قديم في نفس المجموعة: **0**
+- sitemap: `public/sitemap.xml` = `dist/client/sitemap.xml` = **262 `<loc>`**، 0 نطاق قديم · `sitemap-images.xml` 0
+- `dist/` بعد البناء: النطاق القديم في **ملف واحد فقط** = `dist/client/_redirects` (قواعد 301 المقصودة)
+- بقايا في الشجرة (متتبعة): **60 ملفًا** — كلها أدلة تاريخية أو قواعد تحويل أو workflows موقوفة على إذن
+
+### التحقق
+- `pnpm typecheck` ✅ 0 أخطاء (24 hints)
+- `npm run build` ✅ · `npm run headers:check` ✅ بلا drift
+- `npm run seo:all` ✅ (كان **exit 1** قبل إصلاح `seo-schema-audit.mjs` — ~17 صفحة "Missing BreadcrumbList schema with valid absolute items")
+- `npm run seo:hreflang` ✅ 263 مجموعة / 0 أخطاء · `npm run redirects:check` ✅ 209 قاعدة، صفر سلاسل/دوائر/مكررات
+- `npm run verify:crawler-access` ✅ 17 زاحفًا + sitemap 200 (host: brightai.live، محليًا)
+- `pnpm test` ✅ 83/83 (chat-session 16، csrf 29، pii 38) · `node --test scripts/trigger-indexnow.test.mjs` ✅ 9/9 · `strategic-ai-answer-content.test.mjs` ✅ 3/3
+- `npm run verify:all` ⚠️ exit 1 — الفشل من `lint:tokens` (227 مخالفة raw hex)، **موجود قبل الترحيل** (نفس الأسطر في HEAD، وأحد الملفين ما اتعدّل أصلًا). الأجزاء الأخرى: verify 5/5 ✅ + headers:check ✅ + test:chat-session 16/16 ✅
+- `node --test scripts/entity-consistency.test.mjs` ⚠️ فشل واحد — يطالب `public/{ai,llms,llms-full}.txt` بروابط `x.com/brightai_sa`/LinkedIn؛ `ai.txt` في HEAD أصلًا فيه **0** إشارة لـ x.com ⇒ **فشل سابق للترحيل**
+- `apps/dashboard: pnpm test` ⚠️ 12 فشلًا / 193 نجاحًا — كلها في `tests/firewall/audit-durability.test.ts` (تسمية أكواد Prisma) و`tests/api/chat-streaming.test.ts` (نوع محتوى 429)، **صفر علاقة بالنطاق** وملفاتها ما اتعدّلت؛ `tests/api/middleware-auth.test.ts` (المعدّل) ناجح
+- فحص §25 على `dist/client` (الرئيسية، about، blog، en/، en/privacy-policy، solutions/ai-firewall): canonical + hreflang (ar-SA/en-SA/x-default) + `og:url` + `og:image` المطلق + `twitter:url` + `@id` في JSON-LD **كلها brightai.live** بلا خلط نطاقات
+
+### النتيجة
+- **الحالة:** نجح داخل حدود المستودع
+- **مختصر:** brightai.live صار النطاق الكنسي الوحيد في كل ما يخدمه المستودع (canonical/hreflang/sitemap/robots/schema/OG/CORS/دashboard/سكربتات Cloudflare وRender)، وقواعد 301 من النطاق القديم مكتوبة بقفزة واحدة. تفعيل التحويل فعليًا يتطلب تحكّم بالنطاق القديم في Cloudflare/Render — **غير مُنفَّذ ولا يُدّعى تنفيذه**. ما صار commit ولا push ولا merge.
+
+### ملاحظات / مشاكل مفتوحة
+- **خطوات خارج Git (إلزامية لإكمال الترحيل):** Cloudflare: 301 لـ `brightai.site/*` (+www) → `https://brightai.live/:splat` وwww→non-www وHSTS وpurge cache وAI Crawl Control OFF · Render: إضافة `brightai.live` كنطاق مخصص + TLS · GSC: property جديدة + **Change of Address** من `sc-domain:brightai.site` · Bing Webmaster: Site Move · SendGrid: توثيق نطاق `noreply@brightai.live`.
+- **موقوف على إذن صريح:** `.github/workflows/ci-build-guard.yml` (سطور 63/65/659/671 host افتراضي)، `weekly-gsc.yml` (21/93/105 — `sc-domain:brightai.site`)، `reports-gate.yml:94` (نص رسالة).
+- **يحتاج قرار المستخدم:** `apps/dashboard/.env.local` فيه `ROOT_DOMAIN="brightai.site"` (ممنوع أعدّل `.env*` — يحدّثه المستخدم)؛ **Prisma migration** لتغيير default العمود `cnameTarget` إلى `proxy.brightai.live` (الـ schema اتحدّث، وبوابة `verify-prisma-drift.mjs` ما تفحص defaults ⇒ ما انكسر شي، لكن DB-level default لسه القديم)؛ `sitemap.xml` بجذر المستودع نسخة قديمة مكررة ما يكتبها أي مولّد (المولّد يكتب `public/` و`dist/client/`) — مرشحة للحذف بعد موافقتك.
+- **فشل سابق للترحيل (مو من هذه المهمة):** `lint:tokens` 227 مخالفة hex · `entity-consistency.test.mjs` يطالب روابط سوشيال مفقودة من `ai.txt` · 12 فشلًا في vitest الداشبورد (firewall/streaming).
+
+---
+## [2026-08-28] — QC-UI-CONSOLIDATION-011: توحيد وتنظيف بنية UI فوق نظام التصميم من 006 (بدون إعادة تصميم) — البوابات الثابتة خضراء، e2e:acceptance متبقٍ — بدون commit/push/deploy
+
+### تم التنفيذ
+- **Audit شامل** (وكيل استكشاف read-only) للأنماط المكررة في src/pages: Pagination كان الوحيد المؤسس 100%؛ PageHeader متبني بـ 6 صفحات فقط مقابل ~45 صفحة lab تدوي نفس الكتلة (h1 text-3xl + eyebrow مكرر بـ 44 ملف)؛ **Banner.astro مبنية بصفر استخدام** (24 كتلة خطأ متطابقة)؛ 13 فورم فلترة copy-paste؛ صفحتا إشعارات مكررتان بخرائط drift؛ 23 خريطة status→class منها 6 مكررة حرفيًا؛ LabActionButton شبه نسخة AppButton.
+- **الإشعارات موحدة**: `src/components/ui/notificationPresentation.ts` جديد (KIND_ICON/KIND_LABEL/SEVERITY_CARD/SECTION_ORDER + groupNotificationsByKind/orderedNotificationKinds — مصدر واحد) + `src/components/NotificationCard.astro` جديد (كارت موحد مع sr-only severity + unread dot + MarkReadButton + splitMessageLinks) — أُعيدت كتابة /notifications و/lab/notifications عليهما وأنحلت drift نصوص KIND_LABEL (تُوحّد على نصوص الصفحة العامة، e.g. 'Lab tests under review' بدل 'Tests under review') وtimestamp slate-400→500.
+- **تبنّي Banner**: codemod حوّل 23 كتلة بنر متطابقة (`rounded-lg border border-{red|amber|sky|emerald}-200...role="alert"`) إلى `<Banner tone="error|warning|info|success">` مع الحفاظ على النص وrole="alert" عند error؛ الشواذ المتبقية (KPI cards، login hint، أقسام emerald في tasks/[id]) تُركت عمدًا.
+- **PageHeader على lab**: codemod حوّل 31 هيدر مطابقًا (eyebrow+title+description بسيطة+actions div → PageHeader مع fragment slot="actions")؛ 10 صفحات تفاصيل ببنية identity معقدة (وصف فيه markup/pills) بقيت identity blocks مقصودة (§4) مع **تقارب الحجم فقط**: كل h1 في src/pages/lab + 404 صارت text-2xl tracking-tight (نهاية متبقية 006 الموثقة)؛ 4 صفحات print مستثناة عمدًا؛ فروع 403/404 الشرطية داخل tasks/[id] وfindings/[id] استثنائية موثقة بالحارس.
+- **الفلاتر**: `src/components/ui/formPresets.ts` جديد (FILTER_TOOLBAR/FILTER_FIELD/FILTER_CONTROL بنفس الكلاسات الحرفية — markup-neutral)؛ 13 ملفًا تبنّته (12 سجلًا + retests/new)؛ وصفة w-full في acknowledgements بقيت variant مقصود.
+- **الأزرار**: LabActionButton صارت wrapper نقي على AppButton (صفر ستايل مملوك)؛ CTA الثلاثي المتطابق حرفيًا (manager/employee/supervisor "New task") → AppButton primary؛ زر "Apply filters" المتطابق بـ 9 سجلات → `<AppButton type="submit" variant="primary">` وReset → variant="secondary"؛ الشواذ الموثقة انحلت: lab/search bg-slate-900 submit → AppButton primary، lab/index actions loop + Quick New Test، change-requests/new زوج Submit/Cancel بلا focus، admin/templates legacy `focus:ring-2` → AppButton، search.astro زر صغير غير قياسي → md، lab/reports "Update filters"، documents/[id] "Add Content" بلا focus → LabActionButton. saved-views Delete الصغير (hover أحمر دلالي) بقى one-off مقصود.
+- **خرائط الحالة**: `src/components/ui/labBadgeClasses.ts` جديد يضم CALIBRATION_STATUS_BADGE_CLS / DOCUMENT_STATUS_BADGE_CLS / ACKNOWLEDGEMENT_BADGE_CLS / DOCUMENT_TYPE_BADGE_CLS / TEMPLATE_STATUS_STYLES / TEST_WORKFLOW_TONE / TEST_RESULT_TONE — 12 صفحة استبدلت التصريحات المحلية باستيراد alias (نفس القيم الحرفية — صفر تغيير مظهر)؛ خرائط statusTones.ts وformat.ts (الاستثناء الموثق) لم تُلمس ف badge-contrast سليم.
+- **جداول**: كل th `px-4 py-3` → `px-4 py-2.5` (change-requests، drilldown، admin/templates، lab/search) — وصفة رأس موحدة.
+- **التنقل**: كل أهداف Navbar ROLE_NAV الـ 15 + /logout تحقق وجودها على القرص (صفر dead links)؛ mobileGroups = نفس primary+more بالضبط (mobile=desktop IA ✅ محقق من 006)؛ **تحسين active states في LabSecondaryNav**: أطول href مطابق يفوز (exact أو child path) → /lab/tests/[id] تفعّل "Tests"، /lab/tests/new تفعّل "New Test" فقط، وaria-current واحد دائمًا؛ لا قرارات permissions في UI (كلها lib/permissions + props — محقّق قراءةً).
+- **الحارس توسّع**: test-ui-consistency من 37 → **162 فحصًا**: PageHeader على 31 صفحة lab، منع رجوع h1 text-3xl، منع رجوع وصفة البنر اليدوية، الإشعارات بالمصدر الموحد بلا خرائط محلية، formPresets على سجلات الفلاتر بلا وصفة حرفية، labBadgeClasses بلا إعادة تصريح، LabActionButton يفوض AppButton، th padding موحد، و**حارس dead links**: كل route في IMPLEMENTED_LAB_ROUTES لازم يكون له ملف صفحة فعلي (route.astro أو route/index.astro).
+- **إصلاحات أثناء التحويل**: 118+ خطأ استيراد من حساب عمق خاطئ بالـ codemods — صححتها جميعًا (تحقق آلي أن كل import لحل ملف موجود)؛ أصلحت 4 بنى fragment كسرها codemod الهيدر (lab/index، tests/index، tests/[id]، change-requests/[id] — الأخير أُعيدت كتابة description كمتغير frontmatter) وimport { شارد في search.astro.
+
+### الملفات المتأثرة
+- جديد: `src/components/ui/{notificationPresentation,formPresets,labBadgeClasses}.ts`، `src/components/NotificationCard.astro`
+- موسع: `scripts/test-ui-consistency.mjs` (162 فحصًا)، `src/components/lab/LabSecondaryNav.astro` (active longest-match)، `src/components/lab/LabActionButton.astro` (wrapper)
+- مُحوّلة (59 ملفًا إجمالًا): 23 صفحة Banner، 31+4 صفحات PageHeader/h1، 13 فورم فلترة، 12 صفحة خرائط حالة، 14 صفحة أزرار/Apply/Reset، 4 جداول padding، 2 إشعارات، 404.astro
+
+### التحقق
+- `pnpm typecheck` ✅ 0 errors / 0 warnings / 24 hints (271 ملفًا)
+- `pnpm test:ui-consistency` ✅ **162/162** (موسّع)
+- `pnpm test:badge-contrast` ✅ · `pnpm test:lab-ux-presentation` ✅ 6/6 · `pnpm test:lab-ux-performance` ✅ 7/7
+- `pnpm test:manifest` ✅ 54 canonical suites / 27 E2E · `pnpm test:route-manifest` ✅ 111 file routes / 25 middleware / 6 guards
+- `pnpm test` ✅ **السلسلة الكاملة 54 سويت exit 0**
+- `NODE_ENV=production pnpm build` ✅ Complete
+- `pnpm e2e:acceptance` ⚠️ **انلغى قبل الاكتمال بأمر المستخدم — غير مُثبت هذه الجلسة** (يشمل a11y axe gate + navigation E2E) — لازم إعادة تشغيل كاملة قبل الاعتماد النهائي
+- فحص a11y المنفصل يتطلب سيرفر+قاعدة (بيئة الـ runner) — مغطى داخل acceptance فقط
+
+### النتيجة
+- **الحالة:** جزئي — كل البوابات الثابتة والسلسلة الكاملة والبناء خضراء على شجرة العمل؛ e2e:acceptance (بما فيه a11y) متبقٍ إعادة تشغيل.
+- **مختصر:** التوحيد المطلوب من 011 منفذ بالكامل: مصدر واحد للإشعارات/خرائط الحالة/الفلاتر/الأزرار/البنرات/الرؤوس، وحارس 162 فحصًا يمنع الانحدار — والبوابة الإقليمية الوحيدة المتبقية هي إعادة e2e:acceptance حتى النهاية.
+
+### ملاحظات / مشاكل مفتوحة
+- **متبقٍ مقصود (موثق بالنظام والـ guard):** صفحات التفاصيل ببنية identity (وصف فيه markup)؛ فروع 403/404 داخل tasks/[id] وfindings/[id]؛ صفحات print؛ وصفة w-full في acknowledgements؛ زر Delete الصغير في saved-views؛ بنرات KPI/dashboard؛ TSX error panels داخل React islands (rounded-md — 4 مواضع)؛ خرائط format.ts للمهام (الاستثناء الموثق §2).
+- **متبقٍ من 006 الآن مغلق:** توحيد صفحتي الإشعارات ✅، تقارب H1 text-3xl → text-2xl ✅. (ترقية chips الموظف لروابط مفلترة بقت من 006 — تحتاج فلتر due للبحث، خارج نطاق 011.)
+- **مطلوب للجلسة الجاية:** إعادة `pnpm e2e:acceptance` كاملة + تحديث `docs/UI-DESIGN-SYSTEM.md` بالكنسي النهائي (notificationPresentation/NotificationCard/formPresets/labBadgeClasses + LabActionButton=wrapper + قاعدة PageHeader للـ lab) — التوثيق لم يُحدّث بعد.
+- القسم 1 يتجاوز حده الموثق مسبقًا — الأرشفة للقسم 2 تؤجل كقرار متكرر (نمط الجلسات الأخيرة).
+
 ## [2026-08-27] — QC-A11Y-GATE-010: الإتاحة صارت بوابة إقلاع حقيقية (axe gate) في تطبيق QC — بدون commit/push/deploy
 
 ### تم التنفيذ

@@ -10,7 +10,7 @@ import {
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_ROOT = path.resolve(SCRIPT_DIR, "..");
-const SITE_ORIGIN = "https://brightai.site";
+const SITE_ORIGIN = "https://brightai.live";
 const IGNORED_DIRS = new Set([
   ".git",
   ".agents",
@@ -129,7 +129,7 @@ function extractPublicLegacyLinks(content, relPath) {
 }
 
 function extractBrightAiUrls(content) {
-  return [...content.matchAll(/https:\/\/brightai\.site\/[^\s<>"')\]]*/gi)]
+  return [...content.matchAll(/https:\/\/brightai\.live\/[^\s<>"')\]]*/gi)]
     .map((match) => match[0].replace(/[.,;:]$/, ""));
 }
 

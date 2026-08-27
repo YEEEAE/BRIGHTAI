@@ -1,7 +1,7 @@
 ---
 title: "AI في القطاع الصحي السعودي: تطبيقات وفرص"
 description: "تطبيقات الذكاء الاصطناعي في المستشفيات السعودية: التشخيص وإدارة الموارد وتجربة المريض مع SFDA وPDPL. اقرأ الدليل الشامل لحوكمة AI الصحي في المملكة مع BrightAI."
-canonical: "https://brightai.site/blog/ai-healthcare-saudi/"
+canonical: "https://brightai.live/blog/ai-healthcare-saudi/"
 pubDate: "2026-06-24"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

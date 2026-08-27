@@ -84,7 +84,7 @@ try {
     'LAB-TEST-00123-S20',
     'LAB-TEST-00081',
   ];
-  const origin = 'https://qc.example-brightai.site';
+  const origin = 'https://qc.example-brightai.live';
   for (const identifier of identifiers) {
     const anchor = /-S\d+$/.test(identifier) ? `#${labSampleAnchor(identifier, 3)}` : '';
     const payload = labQrPayload(identifier, `${origin}/lab/tests/81${anchor}`);

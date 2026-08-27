@@ -1,7 +1,7 @@
 ---
 title: "حوكمة الذكاء الاصطناعي وفق متطلبات SAMA"
 description: "دليل حوكمة الذكاء الاصطناعي وفق متطلبات SAMA للبنوك السعودية: إطار الحوكمة، إدارة المخاطر، حماية البيانات، والتدقيق الداخلي لأنظمة AI المصرفية."
-canonical: "https://brightai.site/blog/sama-ai/"
+canonical: "https://brightai.live/blog/sama-ai/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

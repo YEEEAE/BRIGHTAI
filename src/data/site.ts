@@ -12,7 +12,7 @@ export const SITE = {
   descriptionAr: 'BrightAI منصة سعودية لحوكمة وأمان الذكاء الاصطناعي للمؤسسات في المملكة العربية السعودية.',
   country: 'SA',
   market: 'Saudi Arabia',
-  url: 'https://brightai.site',
+  url: 'https://brightai.live',
   logo: '/assets/images/logo.png',
   locale: {
     ar: 'ar-SA',

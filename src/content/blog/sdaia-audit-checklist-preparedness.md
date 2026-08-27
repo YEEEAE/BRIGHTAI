@@ -1,7 +1,7 @@
 ---
 title: "جاهزية تدقيق سدايا — قائمة فحص شاملة للمنشآت السعودية"
 description: "قائمة فحص شاملة للاستعداد لتدقيق سدايا: Policy gaps, Control gaps, Evidence gaps. دليل عملي يعرفك وش يتوقعه المدقق وكيف تجهز ملف الأدلة خلال 30 يوم."
-canonical: "https://brightai.site/blog/sdaia-audit-checklist-preparedness/"
+canonical: "https://brightai.live/blog/sdaia-audit-checklist-preparedness/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

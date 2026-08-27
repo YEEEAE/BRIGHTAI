@@ -9,10 +9,10 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://brightai.site/.well-known/openapi.yaml",
+    "url": "https://brightai.live/.well-known/openapi.yaml",
     "has_user_authentication": false
   },
-  "logo_url": "https://brightai.site/assets/images/logo.png",
-  "contact_email": "hello@brightai.site",
-  "legal_info_url": "https://brightai.site/terms/"
+  "logo_url": "https://brightai.live/assets/images/logo.png",
+  "contact_email": "hello@brightai.live",
+  "legal_info_url": "https://brightai.live/terms/"
 }

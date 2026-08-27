@@ -1,7 +1,7 @@
 ---
 title: "إرشادات سدايا للذكاء التوليدي: دليل عملي"
 description: "إرشادات سدايا للذكاء الاصطناعي التوليدي: دليل امتثال عملي للمنشآت السعودية مع مبادئ وضوابط تشغيلية. اقرأ الدليل الكامل لتحويل الإرشادات إلى ضوابط يومية."
-canonical: "https://brightai.site/blog/sdaia-generative-ai-guidelines-practical-compliance/"
+canonical: "https://brightai.live/blog/sdaia-generative-ai-guidelines-practical-compliance/"
 pubDate: "2026-06-30"
 updatedDate: "2026-06-30"
 author: "nasser-alabdullah"

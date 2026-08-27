@@ -6,7 +6,7 @@
  * to an Organization via the database, and returns a typed object.
  *
  * Two paths:
- *   1. Subdomain (acme.brightai.site) — slug is the organization slug
+ *   1. Subdomain (acme.brightai.live) — slug is the organization slug
  *   2. Custom domain (client.com) — Domain table lookup
  *
  * Uses the service-role client because tenant resolution happens

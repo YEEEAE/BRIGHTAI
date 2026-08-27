@@ -2,7 +2,7 @@
 title: "Kernel Red Team: ساحة الفريق الأحمر في BrightAI Kernel"
 metaTitle: "Kernel Red Team: ساحة الفريق الأحمر في BrightAI Kernel"
 description: "دليل ساحة الفريق الأحمر في Kernel: 40 تقنية هجوم مصنّفة بـ OWASP LLM Top 10 قابلة للتجربة بنقرة، شفافية كاملة في الدفاع، وبلاغ تلقائي عند نجاح الاختراق."
-canonical: "https://brightai.site/docs/kernel-redteam/"
+canonical: "https://brightai.live/docs/kernel-redteam/"
 updated: "2026-07-31"
 category: "Kernel"
 tldr: "ساحة الفريق الأحمر تختبر أمان Kernel: 40 تقنية هجوم مصنّفة بـ OWASP LLM Top 10 قابلة للتجربة بنقرة، شفافية كاملة في الدفاع (الطبقة والسياسة والسبب)، وبلاغ تلقائي وسياسة مقترحة عند نجاح الاختراق."

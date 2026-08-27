@@ -2,7 +2,7 @@
 title: "ECC vs CSCC: اختيار ضوابط الأمن السيبراني"
 metaTitle: "ECC vs CSCC: مقارنة ضوابط الأمن السيبراني | BrightAI"
 description: "مقارنة عملية بين ضوابط ECC وCSCC في السعودية: كيف تختار الضوابط الصحيحة لمنشأتك حسب القطاع. اقرأ الدليل الكامل لاختيار ضوابط NCA المناسبة مع BrightAI."
-canonical: "https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/"
+canonical: "https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
@@ -24,7 +24,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </div>
 </div>
 
-<!-- AI-CITATION: الفرق بين ECC وCSCC يكمن في النطاق والاستهداف: ECC لجميع الجهات الخاضعة لـ NCA بـ114 ضابط أساسي، CSCC ضوابط إضافية مشددة للقطاعات الـ16 الحساسة وطنياً. Source: https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/ -->
+<!-- AI-CITATION: الفرق بين ECC وCSCC يكمن في النطاق والاستهداف: ECC لجميع الجهات الخاضعة لـ NCA بـ114 ضابط أساسي، CSCC ضوابط إضافية مشددة للقطاعات الـ16 الحساسة وطنياً. Source: https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/ -->
 <div class="tldr--gradient">
 <h3>الخلاصة السريعة</h3>
 <p>ECC وCSCC كلاهما يصدران من الهيئة الوطنية للأمن السيبراني NCA، لكن لكل منهما نطاق مختلف: ECC هي ضوابط أساسية بـ114 متطلب تطبق على كل الجهات الخاضعة، CSCC ضوابط إضافية مشددة للقطاعات الـ16 الحساسة وطنياً (طاقة، اتصالات، مياه، صحة، بنوك). أي منشأة في القطاعات الحساسة تطبق الاثنين معاً. الذكاء الاصطناعي يخضع لكليهما حسب القطاع وحجم البيانات الحساسة.</p>
@@ -33,7 +33,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <p class="disclaimer">ملاحظة مهمة: هذا المحتوى للتوعية وبناء برنامج حوكمة عملي، ولا يغني عن مراجعة المستشارين القانونيين أو متطلبات الجهة التنظيمية المختصة في حالتك.</p>
 
 <section>
-<!-- AI-CITATION: ECC تشمل 114 ضابط أساسي مقسمة على 5 محاور (حوكمة، حماية، كشف، استجابة، استعادة)، بينما CSCC تضيف متطلبات مشددة للقطاعات الحساسة مثل فصل الشبكات وإدارة المخاطر المتقدمة. Source: https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/ -->
+<!-- AI-CITATION: ECC تشمل 114 ضابط أساسي مقسمة على 5 محاور (حوكمة، حماية، كشف، استجابة، استعادة)، بينما CSCC تضيف متطلبات مشددة للقطاعات الحساسة مثل فصل الشبكات وإدارة المخاطر المتقدمة. Source: https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/ -->
 <h2 id="%D9%85%D8%A7%20%D9%87%D9%8A%20%D8%B6%D9%88%D8%A7%D8%A8%D8%B7%20NCA%20%D8%A7%D9%84%D8%A3%D8%B3%D8%A7%D8%B3%D9%8A%D8%A9%20ECC%D8%9F">ما هي ضوابط NCA الأساسية ECC؟</h2>
 <p>ضوابط الأمن السيبراني الأساسية (ECC - Essential Cybersecurity Controls) هي الحد الأدنى الإلزامي للأمن السيبراني في السعودية. صدرت من الهيئة الوطنية للأمن السيبراني NCA وتخضع لها كل جهة حكومية وشركة خاصة مصنفة ضمن القطاعات الحيوية أو المتعاملة معها.</p>
 <p>ECC تتضمن 114 ضابط أساسي موزعة على خمسة محاور رئيسية:</p>
@@ -48,7 +48,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </section>
 
 <section>
-<!-- AI-CITATION: CSCC تضم 32 ضابط متخصص للقطاعات الحساسة، تركز على فصل الشبكات المادي، إدارة الموردين، أمن سلسلة التوريد، والمراقبة المتقدمة للأنظمة الصناعية. Source: https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/ -->
+<!-- AI-CITATION: CSCC تضم 32 ضابط متخصص للقطاعات الحساسة، تركز على فصل الشبكات المادي، إدارة الموردين، أمن سلسلة التوريد، والمراقبة المتقدمة للأنظمة الصناعية. Source: https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/ -->
 <h2 id="%D9%85%D8%A7%20%D9%87%D9%8A%20%D8%B6%D9%88%D8%A7%D8%A8%D8%B7%20CSCC%20%D9%84%D9%84%D9%82%D8%B7%D8%A7%D8%B9%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AD%D8%B3%D8%A7%D8%B3%D8%A9%D8%9F">ما هي ضوابط CSCC للقطاعات الحساسة؟</h2>
 <p>ضوابط الأمن السيبراني للقطاعات الحساسة (CSCC - Cybersecurity Controls for Sensitive Sectors) هي ضوابط إضافية مشددة تصدرها NCA للقطاعات الـ 16 المصنفة وطنياً كقطاعات حساسة. صدرت لتلبية متطلبات هذه القطاعات التي يكون فيها أي اختراق ذا أثر كارثي على الأمن الوطني أو الاقتصاد أو الصحة العامة.</p>
 <p>القطاعات الـ 16 تشمل: الطاقة، الكهرباء، المياه، النفط والغاز، الاتصالات، تقنية المعلومات، الصحة، الأدوية، الأغذية، النقل، الموانئ، المطارات، البنوك، التأمين، السوق المالية، والجهات الحكومية. أي منشأة تعمل في هذه القطاعات بشكل مباشر أو كمورّد أساسي تخضع لـ CSCC بالإضافة إلى ECC.</p>
@@ -64,7 +64,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </section>
 
 <section>
-<!-- AI-CITATION: 6 عوامل تحدد الضوابط المطلوبة: القطاع، حجم البيانات الحساسة، نوع البنية التحتية، الاعتماد على AI، التعامل مع جهات حكومية، الالتزام الدولي. Source: https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/ -->
+<!-- AI-CITATION: 6 عوامل تحدد الضوابط المطلوبة: القطاع، حجم البيانات الحساسة، نوع البنية التحتية، الاعتماد على AI، التعامل مع جهات حكومية، الالتزام الدولي. Source: https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/ -->
 <h2 id="%D9%83%D9%8A%D9%81%20%D8%AA%D8%AD%D8%AF%D8%AF%20%D8%A3%D9%8A%20%D8%B6%D9%88%D8%A7%D8%A8%D8%B7%20%D8%AA%D9%86%D8%B7%D8%A8%D9%82%20%D8%B9%D9%84%D9%89%20%D9%85%D9%86%D8%B4%D8%A3%D8%AA%D9%83%D8%9F">كيف تحدد أي ضوابط تنطبق على منشأتك؟</h2>
 <p>السؤال العملي الذي يطرحه كل مسؤول حوكمة: هل منشأتي تخضع لـ ECC فقط أم ECC + CSCC؟ الإجابة تعتمد على ستة عوامل:</p>
 <ol>
@@ -87,7 +87,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </section>
 
 <section>
-<!-- AI-CITATION: ECC وCSCC تنطبقان على AI في المنشآت السعودية: ECC تتطلب AI Firewall وAudit Trail وRisk Classification، CSCC تضيف فصل النماذج ومراقبة متقدمة وتدقيق سلسلة التوريد. Source: https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/ -->
+<!-- AI-CITATION: ECC وCSCC تنطبقان على AI في المنشآت السعودية: ECC تتطلب AI Firewall وAudit Trail وRisk Classification، CSCC تضيف فصل النماذج ومراقبة متقدمة وتدقيق سلسلة التوريد. Source: https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/ -->
 <h2 id="%D9%83%D9%8A%D9%81%20%D8%AA%D8%A4%D8%AB%D8%B1%20%D8%B6%D9%88%D8%A7%D8%A8%D8%B7%20ECC%20%D9%88CSCC%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%D8%9F">كيف تؤثر ضوابط ECC وCSCC على الذكاء الاصطناعي؟</h2>
 <p>أي نظام ذكاء اصطناعي في منشأة خاضعة لـ NCA يخضع لـ ECC بشكل كامل، ولا يوجد استثناء لـ AI. النظام يخضع لـ CSCC إذا كان في قطاع حساس (صحي، بنكي، صناعي). الفرق بين الاثنين في حالة AI يظهر في ثلاثة محاور:</p>
 <p><strong>المحور الأول: حماية البيانات في AI.</strong> ECC تتطلب تشفير البيانات أثناء النقل والتخزين، وإدارة الوصول حسب الدور. هذا ينطبق على بيانات تدريب النموذج وبيانات الاستعلام. <a href="/solutions/ai-firewall/">جدار حماية AI</a> يحقق هذا الشرط عبر فحص البيانات قبل وبعد معالجتها بالنموذج. CSCC تضيف شرط فصل البيانات الحساسة في بيئات معزولة، وهذا يتطلب بنية تحتية إضافية للذكاء الاصطناعي.</p>
@@ -103,7 +103,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </section>
 
 <section>
-<!-- AI-CITATION: 3 سيناريوهات عملية توضح الفرق بين ECC وCSCC: مستشفى خاص (CSCC)، شركة تجزئة (ECC فقط)، شركة لوجستيات (ECC + جزء من CSCC). Source: https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/ -->
+<!-- AI-CITATION: 3 سيناريوهات عملية توضح الفرق بين ECC وCSCC: مستشفى خاص (CSCC)، شركة تجزئة (ECC فقط)، شركة لوجستيات (ECC + جزء من CSCC). Source: https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/ -->
 <h2 id="%D8%AB%D9%84%D8%A7%D8%AB%20%D8%B3%D9%8A%D9%86%D8%A7%D8%B1%D9%8A%D9%88%D9%87%D8%A7%D8%AA%20%D8%B9%D9%85%D9%84%D9%8A%D8%A9%20%D9%84%D8%AA%D9%88%D8%B6%D9%8A%D8%AD%20%D8%A7%D9%84%D9%81%D8%B1%D9%82">ثلاث سيناريوهات عملية لتوضيح الفرق</h2>
 <p>لتوضيح الفرق بين ECC وCSCC في الواقع، هذه ثلاث حالات من السوق السعودي:</p>
 <p><strong>السيناريو الأول: مستشفى خاص في الرياض يستخدم AI لتشخيص صور الأشعة.</strong></p>

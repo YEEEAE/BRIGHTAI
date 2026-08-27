@@ -1,7 +1,7 @@
 ---
 title: "مكتب NDMO: الأدوار وحوكمة البيانات بالسعودية"
 description: "مكتب إدارة البيانات الوطنية NDMO ودوره في حوكمة البيانات وفق الإطار الوطني NDMF. خطوات تطبيقية، الأدوار، التحديات، وأفضل الممارسات. دليل 2026."
-canonical: "https://brightai.site/blog/ndmo-data-governance-saudi/"
+canonical: "https://brightai.live/blog/ndmo-data-governance-saudi/"
 pubDate: "2026-05-18"
 updatedDate: "2026-05-18"
 author: "nasser-alabdullah"

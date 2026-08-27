@@ -1,7 +1,7 @@
 ---
 title: "عقوبات PDPL في السعودية — الغرامات وكيفية تجنبها"
 description: "عقوبات PDPL السعودي: أنواع المخالفات وسقف الغرامات 5 ملايين ريال وحالات التشديد. اقرأ الدليل الكامل وتعرف على خطوات الامتثال الوقائي لحماية مؤسستك مع BrightAI."
-canonical: "https://brightai.site/blog/pdpl-penalties-saudi-fines/"
+canonical: "https://brightai.live/blog/pdpl-penalties-saudi-fines/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"

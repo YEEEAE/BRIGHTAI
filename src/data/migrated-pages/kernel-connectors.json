@@ -2,15 +2,15 @@
   "source": "kernel/connectors.html",
   "title": "موصلات الذكاء الاصطناعي للأنظمة المؤسسية | BrightAI",
   "description": "اربط بوابة الذكاء الاصطناعي بأنظمة المؤسسة ومصادر البيانات عبر موصلات محكومة، مع إدارة حالة الاتصال والوصول لكل تكامل.",
-  "canonical": "https://brightai.site/kernel/connectors/",
+  "canonical": "https://brightai.live/kernel/connectors/",
   "hreflang": [
     {
       "lang": "ar-SA",
-      "href": "https://brightai.site/kernel/connectors/"
+      "href": "https://brightai.live/kernel/connectors/"
     },
     {
       "lang": "x-default",
-      "href": "https://brightai.site/kernel/connectors/"
+      "href": "https://brightai.live/kernel/connectors/"
     }
   ],
   "jsonLd": [
@@ -22,21 +22,21 @@
             "SoftwareApplication",
             "WebApplication"
           ],
-          "@id": "https://brightai.site/#product",
+          "@id": "https://brightai.live/#product",
           "name": "BrightAI Kernel",
-          "url": "https://brightai.site/kernel/",
+          "url": "https://brightai.live/kernel/",
           "applicationCategory": "BusinessApplication",
           "operatingSystem": "Cloud, Hybrid, On-Premise",
           "description": "تطبيق ويب مؤسسي لحوكمة وأمان الذكاء الاصطناعي، يوفّر جدار حماية للذكاء الاصطناعي وسجل تدقيق وموافقات بشرية وملفات أدلة وضوابط امتثال للمنشآت السعودية.",
           "provider": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "offers": {
             "@type": "Offer",
             "price": 0,
             "priceCurrency": "SAR",
             "availability": "https://schema.org/InStock",
-            "url": "https://brightai.site/kernel/",
+            "url": "https://brightai.live/kernel/",
             "description": "ديمو عام مجاني لواجهة BrightAI Kernel"
           }
         }
@@ -45,7 +45,7 @@
     {
       "@context": "https://schema.org",
       "@type": "DefinedTermSet",
-      "@id": "https://brightai.site/#technical-ai-governance-terms",
+      "@id": "https://brightai.live/#technical-ai-governance-terms",
       "name": "BrightAI technical AI governance terms",
       "inLanguage": [
         "en",

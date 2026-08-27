@@ -1,7 +1,7 @@
 ---
 title: "ChatGPT والبيانات الشخصية: امتثال PDPL للسعودية"
 description: "مخاطر إدخال بيانات شخصية في ChatGPT ومتطلبات PDPL. كيف يمنع AI Firewall التسريب وإجراءات عملية لمسؤولي الامتثال السعوديين."
-canonical: "https://brightai.site/blog/chatgpt-pdpl-data-compliance/"
+canonical: "https://brightai.live/blog/chatgpt-pdpl-data-compliance/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"

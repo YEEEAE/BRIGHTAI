@@ -1,7 +1,7 @@
 ---
 title: "تدقيق ECC لأنظمة الذكاء الاصطناعي"
 description: "دليل تدقيق ضوابط ECC لأنظمة الذكاء الاصطناعي في السعودية. قائمة فحص شاملة للمدققين والمراجعين."
-canonical: "https://brightai.site/blog/ecc-audit/"
+canonical: "https://brightai.live/blog/ecc-audit/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

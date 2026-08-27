@@ -89,7 +89,7 @@ export async function checkRedirectDestinations({ root = ROOT } = {}) {
     path.join(root, "public", "sitemap.xml"),
     path.join(root, "sitemap.xml"),
   ].filter(Boolean);
-  const SITE_ORIGIN = "https://brightai.site";
+  const SITE_ORIGIN = "https://brightai.live";
   for (const sitemapPath of sitemapCandidates) {
     try {
       const sitemapXml = await fs.readFile(sitemapPath, "utf8");

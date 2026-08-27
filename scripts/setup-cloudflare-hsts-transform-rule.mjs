@@ -3,7 +3,7 @@
  * scripts/setup-cloudflare-hsts-transform-rule.mjs — BAI-SEC-11 (2026-07-25)
  *
  * Ensures the Cloudflare edge adds Strict-Transport-Security to every
- * response on brightai.site. This is the HTTP layer enforcement that
+ * response on brightai.live. This is the HTTP layer enforcement that
  * completes the canonical posture in scripts/security-headers.mjs:
  *
  *   - SSR routes (/api/*)        — HTTP headers via src/middleware.ts
@@ -117,7 +117,7 @@ function buildDesiredRule() {
  * BAI-SEC-11 fix (2026-07-25): Cloudflare returns HTTP 404 + error code
  * 10003 ("could not find entrypoint ruleset in the http_response_headers_transform
  * phase") when no rules have ever been created for this phase on the zone.
- * This is the normal "fresh zone" state on brightai.site. The PUT path
+ * This is the normal "fresh zone" state on brightai.live. The PUT path
  * creates the entrypoint atomically with the first rule, so we treat
  * this specific 404 as "no existing rules" and return defaults instead
  * of aborting. Any other HTTP error is re-thrown.

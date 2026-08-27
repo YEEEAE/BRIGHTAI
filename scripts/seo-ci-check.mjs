@@ -27,7 +27,7 @@ import {
 import { runAudit as runInternalLinksAudit } from "./internal-links-common.mjs";
 import { resolveClientBuildRoot } from "./_build-output.mjs";
 
-const BASE_URL = "https://brightai.site";
+const BASE_URL = "https://brightai.live";
 const ROOT = process.cwd();
 const clientBuild = resolveClientBuildRoot(ROOT);
 if (!clientBuild.root) {

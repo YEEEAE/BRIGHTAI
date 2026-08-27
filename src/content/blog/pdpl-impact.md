@@ -1,7 +1,7 @@
 ---
 title: "تقييم أثر البيانات على الخصوصية في أنظمة AI وفق PDPL"
 description: "دليل تقييم أثر البيانات (DPIA) على الخصوصية في أنظمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية."
-canonical: "https://brightai.site/blog/pdpl-impact/"
+canonical: "https://brightai.live/blog/pdpl-impact/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

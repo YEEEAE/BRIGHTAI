@@ -33,7 +33,7 @@ BrightAI ships as a Render Web Service (Node runtime, `output: 'static'` + `@ast
 
 `public/_headers` is the Netlify / Cloudflare Pages / Render Static Sites convention. BrightAI does not use any of those three platforms in the current stack, so the file is not read by anything at request time.
 
-A live curl check of `https://brightai.site/` confirms this — only `x-content-type-options: nosniff` is present on the response, alongside the Cloudflare-front defaults (`server: cloudflare`, `cf-ray`, `cf-cache-status`). The full BrightAI security posture is therefore enforced by the new authoritative layer described below.
+A live curl check of `https://brightai.live/` confirms this — only `x-content-type-options: nosniff` is present on the response, alongside the Cloudflare-front defaults (`server: cloudflare`, `cf-ray`, `cf-cache-status`). The full BrightAI security posture is therefore enforced by the new authoritative layer described below.
 
 ---
 
@@ -76,7 +76,7 @@ HSTS does not work in `<meta http-equiv>`. The browser ignores it. HSTS on prere
 
 **Manual setup (Cloudflare dashboard, one-time):**
 
-1. Log in to Cloudflare, select `brightai.site`.
+1. Log in to Cloudflare, select `brightai.live`.
 2. Navigate to **Rules → Transform Rules → Modify Response Headers**.
 3. Click **Create rule**.
 4. Name: `BrightAI — Security Headers (static)`.
@@ -133,7 +133,7 @@ BASE_URL=http://localhost:4321 node scripts/verify-live-security-headers.mjs
 ```
 ================================================================================
 BrightAI Live Security Header Verification — 2026-07-25T...
-Base URL: https://brightai.site
+Base URL: https://brightai.live
 Cache buster: _t=...
 ================================================================================
 

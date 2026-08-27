@@ -1,7 +1,7 @@
 ---
 title: "أتمتة RPA: توفير ملايين الريالات للشركات"
 description: "دليل شامل لأتمتة العمليات الروبوتية RPA في الشركات السعودية: التطبيقات، التوفير، حالات الاستخدام، وكيفية البدء بأقل مخاطر."
-canonical: "https://brightai.site/blog/rpa-automation-saudi-savings/"
+canonical: "https://brightai.live/blog/rpa-automation-saudi-savings/"
 pubDate: "2026-05-26"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

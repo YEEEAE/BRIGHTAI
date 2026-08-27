@@ -1,7 +1,7 @@
 ---
 title: "حقوق الموظفين في نظام PDPL السعودي — حماية بيانات القوى العاملة"
 description: "دليل شامل لحقوق الموظفين في PDPL السعودي: كيف تحمي بيانات موظفيك وفق النظام، مسؤوليات صاحب العمل، ضوابط المراقبة، ومعالجة البيانات الحساسة في ملفات الموظفين."
-canonical: "https://brightai.site/blog/pdpl-employee-data-rights-saudi/"
+canonical: "https://brightai.live/blog/pdpl-employee-data-rights-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

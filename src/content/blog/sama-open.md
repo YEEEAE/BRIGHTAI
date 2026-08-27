@@ -1,7 +1,7 @@
 ---
 title: "Open Banking والذكاء الاصطناعي وفق SAMA"
 description: "دليل Open Banking والذكاء الاصطناعي في البنوك السعودية وفق SAMA: مشاركة البيانات عبر APIs، حماية بيانات العملاء، وإطار حوكمة AI للتطبيقات المصرفية المفتوحة."
-canonical: "https://brightai.site/blog/sama-open/"
+canonical: "https://brightai.live/blog/sama-open/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

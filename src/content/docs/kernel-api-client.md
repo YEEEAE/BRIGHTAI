@@ -2,7 +2,7 @@
 title: "Kernel API Client: التكامل البرمجي مع BrightAI Kernel"
 metaTitle: "Kernel API Client: التكامل البرمجي مع BrightAI Kernel"
 description: "شرح استخدام Kernel API Client لربط تطبيقاتك وأنظمتك بخدمات BrightAI: التوثيق، الأمان، وأمثلة عملية."
-canonical: "https://brightai.site/docs/kernel-api-client/"
+canonical: "https://brightai.live/docs/kernel-api-client/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "شرح استخدام Kernel API Client لربط تطبيقاتك وأنظمتك بخدمات BrightAI: التوثيق، الأمان، وأمثلة عملية."

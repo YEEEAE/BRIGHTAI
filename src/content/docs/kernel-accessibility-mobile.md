@@ -2,7 +2,7 @@
 title: "Kernel Accessibility & Mobile - إمكانية الوصول للجوال"
 metaTitle: "Kernel Accessibility & Mobile - إمكانية الوصول للجوال"
 description: "شرح كيفية ضمان إمكانية الوصول والتوافق مع الأجهزة المحمولة في BrightAI Kernel: معايير WCAG، التصميم المتجاوب، والتجربة على الهواتف."
-canonical: "https://brightai.site/docs/kernel-accessibility-mobile/"
+canonical: "https://brightai.live/docs/kernel-accessibility-mobile/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "شرح كيفية ضمان إمكانية الوصول والتوافق مع الأجهزة المحمولة في BrightAI Kernel: معايير WCAG، التصميم المتجاوب، والتجربة على الهواتف."

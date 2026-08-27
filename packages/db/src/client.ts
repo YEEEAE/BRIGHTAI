@@ -126,7 +126,7 @@ export async function withServiceRole<T>(
 }
 
 /**
- * Resolves a tenant from a subdomain like `acme.brightai.site`.
+ * Resolves a tenant from a subdomain like `acme.brightai.live`.
  * Returns the organization id or null.
  *
  * Uses the service-role client because the request hasn't been

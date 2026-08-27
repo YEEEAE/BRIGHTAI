@@ -39,7 +39,7 @@ test('the hub route and index register Agentic AI Security', () => {
 test('machine-readable files cite only the approved strategic set', () => {
   for (const relativePath of ['public/llms.txt', 'public/llms-full.txt', 'public/ai.txt']) {
     const source = read(relativePath);
-    assert.match(source, /https:\/\/brightai\.site\/hub\/agentic-ai-security\//, `${relativePath} must include the Agentic security owner`);
+    assert.match(source, /https:\/\/brightai\.live\/hub\/agentic-ai-security\//, `${relativePath} must include the Agentic security owner`);
     assert.doesNotMatch(source, /Cloud \(KSA\)|Air-Gapped/, `${relativePath} must not state unsupported deployment modes`);
   }
 });

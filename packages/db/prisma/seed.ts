@@ -14,7 +14,7 @@
  *   - 1 integration (Slack)
  *   - 1 api key (status ACTIVE)
  *   - Onboarding progress at step 3
- *   - 1 verified primary domain (acme.brightai.site)
+ *   - 1 verified primary domain (acme.brightai.live)
  *   - 5 audit log entries
  *
  * Idempotent: re-running the seed wipes the seeded org + recreates it.
@@ -118,11 +118,11 @@ async function main() {
   });
   console.log(`  ✓ org id=${org.id}`);
 
-  // ── 2. Domain (acme.brightai.site, primary + verified)
+  // ── 2. Domain (acme.brightai.live, primary + verified)
   await prisma.domain.create({
     data: {
       organizationId: org.id,
-      domain: 'acme.brightai.site',
+      domain: 'acme.brightai.live',
       isPrimary: true,
       isVerified: true,
       verifiedAt: new Date(),
@@ -130,10 +130,10 @@ async function main() {
       sslStatus: 'SSL_ACTIVE',
       sslIssuedAt: new Date(),
       sslExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-      cnameTarget: 'proxy.brightai.site',
+      cnameTarget: 'proxy.brightai.live',
     },
   });
-  console.log('  ✓ acme.brightai.site (verified + SSL active)');
+  console.log('  ✓ acme.brightai.live (verified + SSL active)');
 
   // ── 3. Users + Memberships
   console.log('\n[3/8] Creating 5 users with RBAC…');

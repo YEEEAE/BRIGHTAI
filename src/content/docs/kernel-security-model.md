@@ -2,7 +2,7 @@
 title: "Kernel Security Model: نموذج الأمان في BrightAI Kernel"
 metaTitle: "Kernel Security Model: نموذج الأمان في BrightAI Kernel"
 description: "شرح نموذج الأمان في BrightAI Kernel: طبقات الحماية، تشفير البيانات، إدارة الصلاحيات، ومعايير الأمان المطبقة."
-canonical: "https://brightai.site/docs/kernel-security-model/"
+canonical: "https://brightai.live/docs/kernel-security-model/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "شرح نموذج الأمان في BrightAI Kernel: طبقات الحماية، تشفير البيانات، إدارة الصلاحيات، ومعايير الأمان المطبقة."

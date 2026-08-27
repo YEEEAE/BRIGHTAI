@@ -45,13 +45,13 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": ["SoftwareApplication", "WebApplication"],
-    "@id": "https://brightai.site/#product",
+    "@id": "https://brightai.live/#product",
     "name": "BrightAI Kernel",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Cloud, Hybrid, On-Premise",
     "description": "نواة حوكمة الذكاء الاصطناعي للمنشآت السعودية — تدعم جاهزية الامتثال وتشغيل AI Firewall وسجل التدقيق والموافقات البشرية وملفات الأدلة. ليست استشارة قانونية.",
-    "url": "https://brightai.site/kernel/",
-    "provider": {"@id": "https://brightai.site/#organization"},
+    "url": "https://brightai.live/kernel/",
+    "provider": {"@id": "https://brightai.live/#organization"},
     "featureList": [
       "AI Firewall — فحص الطلبات ومنع تسريب البيانات",
       "PII Redaction — إخفاء البيانات الشخصية تلقائياً",
@@ -68,7 +68,7 @@ const jsonLd = [
       "priceCurrency": "SAR",
       "price": 0,
       "availability": "https://schema.org/InStock",
-      "url": "https://brightai.site/contact/",
+      "url": "https://brightai.live/contact/",
       "description": "تواصل عبر /contact/ للحصول على عرض سعر مخصص لحجم المنشأة"
     }
   },
@@ -87,7 +87,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "DefinedTermSet",
-    "@id": "https://brightai.site/#technical-ai-governance-terms",
+    "@id": "https://brightai.live/#technical-ai-governance-terms",
     "name": "BrightAI technical AI governance terms",
     "inLanguage": ["en", "ar-SA"],
     "hasDefinedTerm": [
@@ -134,11 +134,11 @@ const enhancedJsonLd = jsonLd;
 <BaseLayout
   title="حوكمة الذكاء الاصطناعي السعودية | BrightAI"
    description="حوكمة الذكاء الاصطناعي في السعودية مع BrightAI — منصة سعودية تجمع AI Firewall وسجلات تدقيق وموافقات بشرية وفق PDPL وNCA. احجز تقييم جاهزية مجاني لشركتك اليوم."
-  canonical="https://brightai.site/"
+  canonical="https://brightai.live/"
   hreflang={[
-    {lang:'ar-SA',href:'https://brightai.site/'},
-    {lang:'en-SA',href:'https://brightai.site/en/'},
-    {lang:'x-default',href:'https://brightai.site/'}
+    {lang:'ar-SA',href:'https://brightai.live/'},
+    {lang:'en-SA',href:'https://brightai.live/en/'},
+    {lang:'x-default',href:'https://brightai.live/'}
   ]}
   jsonLd={enhancedJsonLd as any}
   extraSpeakableSelectors={['.home-citable-definition', 'aside[data-snippet="tl-dr"]']}

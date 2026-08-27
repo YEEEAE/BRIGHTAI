@@ -58,7 +58,7 @@ const SKIP_PREFIXES = [
 ];
 
 const API_PREFIXES = ["/api/", "api/", "/backend/", "backend/"];
-const SITE_ORIGIN = "https://brightai.site";
+const SITE_ORIGIN = "https://brightai.live";
 const TRACKING_PARAM_NAMES = new Set(["gclid", "fbclid", "msclkid"]);
 
 const HTML_FILE_REGEX = /\.(?:html?|xhtml)$/i;
@@ -1095,7 +1095,7 @@ async function readMigratedPageRoutes(root) {
     // normalizeSitePath() both collapse "https://" → "https:/" via a generic
     // "//" → "/" rule before their URL branch runs, so neither can parse a
     // full-URL canonical. migrated-page JSON files store canonicals as full
-    // URLs (e.g. https://brightai.site/solutions/ai-firewall/).
+    // URLs (e.g. https://brightai.live/solutions/ai-firewall/).
     const originStripped = canonical.replace(/^https?:\/\/[^/]+/i, "");
     const sitePath = canonicalizeSitePath(originStripped);
     if (!sitePath || sitePath === "/") continue;

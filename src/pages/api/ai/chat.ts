@@ -192,8 +192,8 @@ const ALLOWED_PROMPT_IDS = [
 // Origin allowlist + optional API key (KRN-003 / EXEC-03 — open LLM proxy auth)
 // ─────────────────────────────────────────────────────────────────────────
 const ALLOWED_ORIGINS = [
-  'https://brightai.site',
-  'https://www.brightai.site',
+  'https://brightai.live',
+  'https://www.brightai.live',
   // Dev origins
   'http://localhost:4321',
   'http://127.0.0.1:4321',
@@ -249,7 +249,7 @@ function checkOriginAndAuth(req: Request): { ok: true } | { ok: false; res: Resp
       res: new Response(
         JSON.stringify({
           error: 'origin_not_allowed',
-          hint: 'Send requests from https://brightai.site (or include x-brightai-chat-key header).',
+          hint: 'Send requests from https://brightai.live (or include x-brightai-chat-key header).',
         }),
         {
           status: 403,

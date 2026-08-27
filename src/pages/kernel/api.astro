@@ -156,7 +156,7 @@ const endpoints = [
 
 // ── كود اللوحة الحية (نقطة inspect) ────────────────────────────────────────
 const codeSamples: Record<string, string> = {
-  curl: `curl -X POST https://api.brightai.site/v1/guard/inspect \\
+  curl: `curl -X POST https://api.brightai.live/v1/guard/inspect \\
   -H "Authorization: Bearer br_k_demo_a7c8...d41b" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -166,7 +166,7 @@ const codeSamples: Record<string, string> = {
   python: `import requests
 
 resp = requests.post(
-    "https://api.brightai.site/v1/guard/inspect",
+    "https://api.brightai.live/v1/guard/inspect",
     headers={
         "Authorization": "Bearer br_k_demo_a7c8...d41b",
         "Content-Type": "application/json",
@@ -178,7 +178,7 @@ resp = requests.post(
 )
 print(resp.json())`,
   typescript: `const resp = await fetch(
-  "https://api.brightai.site/v1/guard/inspect",
+  "https://api.brightai.live/v1/guard/inspect",
   {
     method: "POST",
     headers: {
@@ -206,7 +206,7 @@ const sampleResponse = `{
 }`;
 
 // ── فاحص الـ Webhook (بيانات توضيحية لحظية) ────────────────────────────────
-const WEBHOOK_URL = 'https://hooks.brightai.site/w/8f2e9d41b7c3';
+const WEBHOOK_URL = 'https://hooks.brightai.live/w/8f2e9d41b7c3';
 const webhookPayloads = [
   {
     event: 'decision.created',
@@ -264,7 +264,7 @@ const migrationSteps = [
   {
     title: '1. وجّه حركة المرور لـ Kernel',
     before: 'fetch("https://api.openai.com/v1/chat/completions", ...)',
-    after: 'fetch("https://api.brightai.site/v1/guard/inspect", ...)',
+    after: 'fetch("https://api.brightai.live/v1/guard/inspect", ...)',
     note: 'بدّل نقطة النهاية من المزوّد مباشرة إلى بوابة الحوكمة. نفس فكرة الـ proxy.',
   },
   {

@@ -82,7 +82,7 @@ export function auditHtml(relPath, html) {
           hasType(item, "ListItem") &&
           item.position === index + 1 &&
           normalizeText(item.name) &&
-          /^https:\/\/brightai\.site\//.test(item.item),
+          /^https:\/\/brightai\.live\//.test(item.item),
       ),
   );
   if (!hasValidBreadcrumb) {

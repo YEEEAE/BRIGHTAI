@@ -13,7 +13,7 @@
 import { readdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 
-const SITE_URL = 'https://brightai.site';
+const SITE_URL = 'https://brightai.live';
 const OUTPUT = 'public/sitemap-images.xml';
 const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif', '.ico']);
 const SKIP_DIRS = new Set(['node_modules', '.git', '.agents', 'report', '.kilo', 'tests']);

@@ -55,7 +55,7 @@
  *     - Business / Enterprise: 1000+ rules
  *   This script generates 207 rules (current redirects.json size after
  *   filtering wildcards and http variants — see `loadAndFilter()`).
- *   brightai.site is on a Pro-or-higher plan per the BAI-REDIRECT-001
+ *   brightai.live is on a Pro-or-higher plan per the BAI-REDIRECT-001
  *   investigation; if the limit is hit, the Cloudflare API returns
  *   HTTP 400 and the script exits 1 with the API error visible.
  *

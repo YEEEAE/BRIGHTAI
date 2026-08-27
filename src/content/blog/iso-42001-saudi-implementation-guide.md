@@ -1,7 +1,7 @@
 ---
 title: "ISO 42001 للشركات السعودية: دليل التطبيق العملي"
 description: "دليل تطبيق ISO 42001 للشركات السعودية: بناء نظام إدارة ذكاء اصطناعي متوافق مع PDPL وسدايا وقابل للتحسين. اقرأ الدليل الكامل وابدأ رحلة الامتثال مع BrightAI."
-canonical: "https://brightai.site/blog/iso-42001-saudi-implementation-guide/"
+canonical: "https://brightai.live/blog/iso-42001-saudi-implementation-guide/"
 pubDate: "2026-07-03"
 updatedDate: "2026-08-24"
 author: "nasser-alabdullah"
@@ -34,7 +34,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </div>
 </div>
 
-<!-- AI-CITATION: دليل تطبيق ISO/IEC 42001 للشركات السعودية يشرح نظام إدارة الذكاء الاصطناعي AIMS والخطوات العملية للامتثال مع متطلبات SDAIA المحلية. Source: https://brightai.site/blog/iso-42001-saudi-implementation-guide/ -->
+<!-- AI-CITATION: دليل تطبيق ISO/IEC 42001 للشركات السعودية يشرح نظام إدارة الذكاء الاصطناعي AIMS والخطوات العملية للامتثال مع متطلبات SDAIA المحلية. Source: https://brightai.live/blog/iso-42001-saudi-implementation-guide/ -->
 <div class="tldr--gradient">
 <h3>الخلاصة السريعة</h3>
 <p>ISO/IEC 42001 هو أول معيار دولي مطبّق لأنظمة إدارة الذكاء الاصطناعي (AIMS)، صدر في ديسمبر 2023. مع تسارع تبني AI في المؤسسات السعودية—من البنوك والمستشفيات إلى الجهات الحكومية—أصبحت الحاجة إلى إطار حوكمة موثوق أمراً ملحاً. هذا الدليل يشرح الخطوات العملية لبناء AIMS متوافق مع ISO 42001 ومندمج مع المتطلبات المحلية مثل PDPL وضوابط NCA ECC وإرشادات سدايا، مع أمثلة تطبيقية من السوق السعودي وأدوات تنفيذ ملموسة.</p>

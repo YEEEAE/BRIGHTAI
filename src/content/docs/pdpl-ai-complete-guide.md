@@ -2,7 +2,7 @@
 title: "دليل PDPL و AI: تطبيق حماية البيانات مع الذكاء الاصطناعي"
 metaTitle: "دليل PDPL و AI: تطبيق حماية البيانات | BrightAI"
 description: "مرجع عملي عميق لتطبيق امتثال PDPL للذكاء الاصطناعي وحماية البيانات الشخصية في AI داخل الجهات السعودية، مع خطوات وجداول وأدلة قابلة للتدقيق."
-canonical: "https://brightai.site/docs/pdpl-ai-complete-guide/"
+canonical: "https://brightai.live/docs/pdpl-ai-complete-guide/"
 updated: "2026-08-24"
 category: "PDPL"
 tldr: "مرجع عملي عميق لتطبيق امتثال PDPL للذكاء الاصطناعي وحماية البيانات الشخصية\nفي AI داخل الجهات السعودية، مع خطوات وجداول وأدلة قابلة للتدقيق."

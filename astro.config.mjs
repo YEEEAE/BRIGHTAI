@@ -172,7 +172,7 @@ function injectSecurityMeta() {
  *    before the KRN-016 change — only the documentation was tightened.
  */
 export default defineConfig({
-  site: 'https://brightai.site',
+  site: 'https://brightai.live',
   // KRN-016: Astro 6.4.6 removed literal 'hybrid'. Output 'static' +
   // adapter IS the hybrid model since Astro 5 (every page prerenders
   // by default; individual routes opt in to SSR via `prerender = false`).
@@ -1028,16 +1028,16 @@ export default defineConfig({
       // (the offline page is intentionally indexable — it's a real
       // marketing page, not a service-worker fallback).
       customPages: [
-        'https://brightai.site/kernel/chat/',
-        'https://brightai.site/kernel/audit/',
-        'https://brightai.site/kernel/approvals/',
-        'https://brightai.site/kernel/stats/',
-        'https://brightai.site/kernel/connectors/',
-        'https://brightai.site/kernel/scenarios/',
-        'https://brightai.site/kernel/policies/',
-        'https://brightai.site/kernel/evidence/',
-        'https://brightai.site/kernel/compliance/',
-        'https://brightai.site/kernel/reports/',
+        'https://brightai.live/kernel/chat/',
+        'https://brightai.live/kernel/audit/',
+        'https://brightai.live/kernel/approvals/',
+        'https://brightai.live/kernel/stats/',
+        'https://brightai.live/kernel/connectors/',
+        'https://brightai.live/kernel/scenarios/',
+        'https://brightai.live/kernel/policies/',
+        'https://brightai.live/kernel/evidence/',
+        'https://brightai.live/kernel/compliance/',
+        'https://brightai.live/kernel/reports/',
       ],
       changefreq: 'weekly',
       priority: 0.7,

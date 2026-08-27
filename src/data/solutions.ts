@@ -119,7 +119,7 @@ export interface LocalData {
   answerFirst?: string;
 }
 
-const S = 'https://brightai.site';
+const S = 'https://brightai.live';
 
 export const solutions: SolutionData[] = [
   {

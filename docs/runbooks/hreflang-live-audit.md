@@ -19,7 +19,7 @@ The script supports two modes:
 | Mode | Source | Use case |
 |------|--------|----------|
 | `--local` (default) | `dist/client/**/*.html` (filesystem) | PRs, post-build local validation, `verify:all` |
-| `--live` | Playwright fetches `https://brightai.site/<page>` | Production drift detection, scheduled CI Job 10 |
+| `--live` | Playwright fetches `https://brightai.live/<page>` | Production drift detection, scheduled CI Job 10 |
 
 ## Running locally
 
@@ -31,7 +31,7 @@ node scripts/hreflang-bidirectional-audit.mjs
 node scripts/hreflang-bidirectional-audit.mjs --live
 
 # Live mode, custom host (staging)
-node scripts/hreflang-bidirectional-audit.mjs --live --host=https://staging.brightai.site
+node scripts/hreflang-bidirectional-audit.mjs --live --host=https://staging.brightai.live
 
 # Sample 50 pages with JSON report
 node scripts/hreflang-bidirectional-audit.mjs --live --sample=50 --report=report/hreflang-live.json
@@ -48,7 +48,7 @@ The script runs via `pnpm run verify:all` (added in `package.json:83`). Workflow
 
 ### Push to main / schedule (daily 03:00 UTC) / workflow_dispatch
 
-Workflow: `ci-build-guard.yml` → `hreflang-live` job (Job 10). Mode = live via Playwright. Runs against `https://brightai.site` (or `host` input on dispatch).
+Workflow: `ci-build-guard.yml` → `hreflang-live` job (Job 10). Mode = live via Playwright. Runs against `https://brightai.live` (or `host` input on dispatch).
 
 The job is gated by `if: push || schedule || workflow_dispatch` — it does NOT run on pull requests (PRs use the filesystem audit via `verify:all`).
 

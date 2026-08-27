@@ -1,7 +1,7 @@
 ---
 title: "تعيين مسؤول حماية البيانات (DPO) في السعودية"
 description: "دليل عملي لتعيين مسؤول حماية البيانات (DPO) في المنشآت السعودية وفق اللائحة التنفيذية لنظام PDPL: الحالات الإلزامية، الشروط، المهام، والإخطار لسدايا."
-canonical: "https://brightai.site/blog/appointing-dpo-saudi-data-protection/"
+canonical: "https://brightai.live/blog/appointing-dpo-saudi-data-protection/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "yazeed-alshareef"

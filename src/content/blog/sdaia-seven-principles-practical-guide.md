@@ -1,7 +1,7 @@
 ---
 title: "مبادئ سدايا السبعة لأخلاقيات AI: دليل عملي"
 description: "امتثال سدايا للذكاء الاصطناعي التوليدي وفق المبادئ السبعة لأخلاقيات AI: العدالة والخصوصية والموثوقية والمساءلة. اقرأ الدليل العملي لتطبيق مبادئ سدايا في مؤسستك."
-canonical: "https://brightai.site/blog/sdaia-seven-principles-practical-guide/"
+canonical: "https://brightai.live/blog/sdaia-seven-principles-practical-guide/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"

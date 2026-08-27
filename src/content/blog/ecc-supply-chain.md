@@ -1,7 +1,7 @@
 ---
 title: "أمن سلاسل الإمداد لأنظمة AI وفق ECC"
 description: "دليل أمن سلاسل الإمداد لأنظمة الذكاء الاصطناعي وفق ضوابط ECC. حماية موردي AI والنماذج الخارجية."
-canonical: "https://brightai.site/blog/ecc-supply-chain/"
+canonical: "https://brightai.live/blog/ecc-supply-chain/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

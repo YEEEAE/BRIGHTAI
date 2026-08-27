@@ -2,7 +2,7 @@
 title: "Kernel Production vs Demo: الفرق بين بيئة الإنتاج والتجريبية"
 metaTitle: "Kernel Production vs Demo: الفرق بين بيئة الإنتاج والتجريبية"
 description: "مقارنة واضحة بين بيئة الإنتاج والتجريبية في BrightAI Kernel: الفروقات التقنية، مستوى الأمان، البيانات، والاستخدام."
-canonical: "https://brightai.site/docs/kernel-production-vs-demo/"
+canonical: "https://brightai.live/docs/kernel-production-vs-demo/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "مقارنة واضحة بين بيئة الإنتاج والتجريبية في BrightAI Kernel: الفروقات التقنية، مستوى الأمان، البيانات، والاستخدام."

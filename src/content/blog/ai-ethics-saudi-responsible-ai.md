@@ -1,7 +1,7 @@
 ---
 title: "أخلاقيات AI في السعودية: بين الابتكار والمسؤولية"
 description: "أخلاقيات AI في السعودية بين الابتكار والمسؤولية: العدالة والشفافية والخصوصية والمساءلة وفق مبادئ SDAIA. اقرأ الدليل العملي للذكاء الاصطناعي المسؤول اليوم."
-canonical: "https://brightai.site/blog/ai-ethics-saudi-responsible-ai/"
+canonical: "https://brightai.live/blog/ai-ethics-saudi-responsible-ai/"
 pubDate: "2026-07-21"
 updatedDate: "2026-07-21"
 author: "nasser-alabdullah"

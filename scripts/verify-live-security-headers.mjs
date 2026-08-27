@@ -38,7 +38,7 @@ import {
   expectedHttpHeaderNames,
 } from './security-headers.mjs';
 
-const BASE = (process.env.BASE_URL || 'https://brightai.site').replace(/\/$/, '');
+const BASE = (process.env.BASE_URL || 'https://brightai.live').replace(/\/$/, '');
 const PROBE = Date.now();
 const TIMEOUT_MS = 15000;
 

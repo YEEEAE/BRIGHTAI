@@ -1,7 +1,7 @@
 ---
 title: "5 مخاطر خفية للذكاء الاصطناعي في الشركات السعودية"
 description: "خمسة مخاطر قد لا تظهر في العروض التجريبية للذكاء الاصطناعي، لكنها تظهر عند التشغيل الحقيقي داخل المؤسسات السعودية."
-canonical: "https://brightai.site/blog/hidden-ai-risks-saudi-organizations/"
+canonical: "https://brightai.live/blog/hidden-ai-risks-saudi-organizations/"
 pubDate: "2026-06-12"
 updatedDate: "2026-06-12"
 author: "nasser-alabdullah"
@@ -21,7 +21,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </div>
 </div>
 
-<!-- AI-CITATION: خمسة مخاطر خفية للذكاء الاصطناعي في المؤسسات السعودية تشمل تسرب البيانات والقرارات المنحازة وغياب التتبع وتكاليف غير محسوبة وتصنيف مخاطر AI. Source: https://brightai.site/blog/hidden-ai-risks-saudi-organizations/ -->
+<!-- AI-CITATION: خمسة مخاطر خفية للذكاء الاصطناعي في المؤسسات السعودية تشمل تسرب البيانات والقرارات المنحازة وغياب التتبع وتكاليف غير محسوبة وتصنيف مخاطر AI. Source: https://brightai.live/blog/hidden-ai-risks-saudi-organizations/ -->
 <div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,rgba(159,18,57,.06),rgba(249,115,22,.06));border:1px solid var(--line);border-radius:10px">
 <h3 style="margin-top:0;font-size:1.15rem">الخلاصة السريعة</h3>
 <p style="margin:0;font-size:1.02rem;color:#283142">خمسة مخاطر خفية للذكاء الاصطناعي في المؤسسات السعودية لا تظهر في العروض التجريبية: تسرب البيانات الحساسة عبر نماذج خارجية، قرارات منحازة بدون رقابة، هلوسات النماذج، غياب التتبع والتدقيق، وتكاليف غير محسوبة. كل خطر يحتاج طبقة حماية محددة: AI Firewall للبيانات، Risk Classification للمخاطر، Audit Trail للتتبع، وHuman Approval Layer للقرارات الحساسة.</p>

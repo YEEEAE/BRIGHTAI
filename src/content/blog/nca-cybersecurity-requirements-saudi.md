@@ -1,7 +1,7 @@
 ---
 title: "الهيئة الوطنية للأمن السيبراني: متطلبات الشركات"
 description: "الهيئة الوطنية للأمن السيبراني (NCA): ضوابط ECC وCSCC وCCC وDCC وكيف تؤثر على أنظمة AI، مع خطوات تطبيق وعقوبات الامتثال."
-canonical: "https://brightai.site/blog/nca-cybersecurity-requirements-saudi/"
+canonical: "https://brightai.live/blog/nca-cybersecurity-requirements-saudi/"
 pubDate: "2026-06-08"
 updatedDate: "2026-08-24"
 author: "nasser-alabdullah"

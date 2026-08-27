@@ -1,7 +1,7 @@
 ---
 title: "سدايا والمعايير الدولية — التوافق مع UNESCO و OECD"
 description: "مقارنة منهجية بين مبادئ سدايا السبعة لأخلاقيات AI ومعايير UNESCO و OECD للذكاء الاصطناعي. جدول توافق كامل ودليل للمؤسسات السعودية اللي تتعامل دولياً."
-canonical: "https://brightai.site/blog/sdaia-international-standards-unesco-oecd/"
+canonical: "https://brightai.live/blog/sdaia-international-standards-unesco-oecd/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

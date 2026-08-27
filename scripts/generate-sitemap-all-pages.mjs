@@ -55,7 +55,7 @@ import {
   resolveClientBuildRoot,
 } from "./_build-output.mjs";
 
-const BASE_URL = "https://brightai.site";
+const BASE_URL = "https://brightai.live";
 const ROOT = process.cwd();
 const execFileAsync = promisify(execFile);
 const gitLastmodCache = new Map();
@@ -759,7 +759,7 @@ async function main() {
   //   - Once astro.config.mjs is updated (KI-054), the @astrojs/sitemap
   //     plugin will emit the same shape and this override becomes redundant
   //     (idempotent overwrite)
-  const cleanSitemapUrl = "https://brightai.site/sitemap.xml";
+  const cleanSitemapUrl = "https://brightai.live/sitemap.xml";
   const sitemapIndexContent = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

@@ -1,7 +1,7 @@
 ---
 title: "الجهات التنظيمية لـ AI: سدايا وNCA وساما"
 description: "الجهات التنظيمية للذكاء الاصطناعي في السعودية: سدايا وNCA وساما وNDMO وSFDA وأدوار كل جهة. اقرأ الدليل الشامل لتفهم المشهد التنظيمي لحوكمة AI في المملكة."
-canonical: "https://brightai.site/blog/saudi-ai-regulators-guide/"
+canonical: "https://brightai.live/blog/saudi-ai-regulators-guide/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"

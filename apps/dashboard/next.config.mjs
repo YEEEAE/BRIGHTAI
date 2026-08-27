@@ -34,7 +34,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'img.clerk.com' },
       { protocol: 'https', hostname: 'images.clerk.dev' },
       // Common content sources
-      { protocol: 'https', hostname: 'cdn.brightai.site' },
+      { protocol: 'https', hostname: 'cdn.brightai.live' },
     ],
   },
   transpilePackages: ['@brightai/config', '@brightai/db'],

@@ -1,7 +1,7 @@
 ---
 title: "بناء إطار سياسات AI وفق ISO 42001 في السعودية"
 description: "دليل عملي لبناء إطار سياسات حوكمة الذكاء الاصطناعي المتوافق مع ISO 42001 للمؤسسات السعودية، مع قوالب جاهزة وربط بمتطلبات NCA وSDAIA."
-canonical: "https://brightai.site/blog/iso-42001-policy-framework-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-policy-framework-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

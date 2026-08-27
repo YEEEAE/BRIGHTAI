@@ -2,7 +2,7 @@
 title: "وثائق AI Governance Platform"
 metaTitle: "دليل منصة حوكمة الذكاء الاصطناعي للشركات السعودية"
 description: "استعرض مكونات منصة حوكمة الذكاء الاصطناعي من السياسات إلى الأدلة والموافقات، وكيف تساعد الجهات السعودية على تشغيل AI بثقة قابلة للتدقيق، دون تعقيد زائد."
-canonical: "https://brightai.site/docs/ai-governance-platform/"
+canonical: "https://brightai.live/docs/ai-governance-platform/"
 updated: "2026-06-10"
 category: "General"
 tldr: "استعرض مكونات منصة حوكمة الذكاء الاصطناعي من السياسات إلى الأدلة والموافقات، وكيف\nتساعد الجهات السعودية على تشغيل AI بثقة قابلة للتدقيق، دون تعقيد زائد."

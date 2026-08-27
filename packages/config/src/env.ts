@@ -54,7 +54,7 @@ const serverSchema = z.object({
 
   // Email (SendGrid)
   SENDGRID_API_KEY: z.string().min(10).optional(),
-  SENDGRID_FROM_EMAIL: z.string().email().default('noreply@brightai.site'),
+  SENDGRID_FROM_EMAIL: z.string().email().default('noreply@brightai.live'),
   SENDGRID_FROM_NAME_AR: z.string().default('BrightAI - ذكاء اصطناعي آمن'),
 
   // SMS (Unifonic - Saudi Arabia)
@@ -66,7 +66,7 @@ const serverSchema = z.object({
   RATE_LIMIT_REDIS_URL: redisUrlSchema.optional(),
 
   // Subdomain routing
-  ROOT_DOMAIN: z.string().default('brightai.site'),
+  ROOT_DOMAIN: z.string().default('brightai.live'),
   RESERVED_SUBDOMAINS: z
     .string()
     .default('www,api,admin,app,dashboard,docs,status,mail,cdn')
@@ -122,7 +122,7 @@ const serverSchema = z.object({
 // ─────────────────────────────────────────────────────────────────
 
 const publicSchema = z.object({
-  NEXT_PUBLIC_ROOT_DOMAIN: z.string().default('brightai.site'),
+  NEXT_PUBLIC_ROOT_DOMAIN: z.string().default('brightai.live'),
   NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(10),
   NEXT_PUBLIC_ENABLE_SIGNUP: z

@@ -1,7 +1,7 @@
 ---
 title: "AI Red Teaming: اختبار أمان أنظمة الذكاء"
 description: "طريقة منظمة لاختبار أمان AI ضد تسريب البيانات وprompt injection وفق ضوابط NCA ECC. احمي مؤسستك السعودية. اقرأ الدليل الكامل لاختبار الاختراق مع BrightAI."
-canonical: "https://brightai.site/blog/ai-red-teaming-security-testing/"
+canonical: "https://brightai.live/blog/ai-red-teaming-security-testing/"
 pubDate: "2026-07-28"
 updatedDate: "2026-07-28"
 author: "nasser-alabdullah"

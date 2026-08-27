@@ -1,7 +1,7 @@
 ---
 title: "حوكمة الذكاء الاصطناعي: التعريف ودليل المنشآت"
 description: "حوكمة الذكاء الاصطناعي — ما هي ولماذا تحتاجها المنشآت السعودية. دليل تنفيذي يربط السياسات والمخاطر والامتثال بضوابط تشغيلية وفق PDPL وNCA وسدايا."
-canonical: "https://brightai.site/blog/what-is-ai-governance-saudi-companies/"
+canonical: "https://brightai.live/blog/what-is-ai-governance-saudi-companies/"
 pubDate: "2026-06-09"
 updatedDate: "2026-06-09"
 author: "nasser-alabdullah"

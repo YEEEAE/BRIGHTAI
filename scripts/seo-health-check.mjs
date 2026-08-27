@@ -22,7 +22,7 @@ import {
   resolveClientBuildRoot,
 } from "./_build-output.mjs";
 
-const BASE_URL = "https://brightai.site";
+const BASE_URL = "https://brightai.live";
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(SCRIPT_DIR, "..");
 
@@ -172,7 +172,7 @@ function extractInternalHrefTargets(html) {
   return matches
     .map((match) => (match[1] || "").trim())
     .filter(Boolean)
-    .filter((href) => href.startsWith("/") || href.startsWith("https://brightai.site/"));
+    .filter((href) => href.startsWith("/") || href.startsWith("https://brightai.live/"));
 }
 
 function normalizeInternalHrefToCanonical(href) {
@@ -308,7 +308,7 @@ async function auditHtmlFile(filePath, publicRegistry) {
   // which matches what the rest of the registry/relPathToCanonical pipeline
   // expects. Previously we computed against ROOT, which yielded
   // "dist/client/about/index.html" and produced canonicals like
-  // "https://brightai.site/dist/client/about" — every page failed.
+  // "https://brightai.live/dist/client/about" — every page failed.
   const relPath = formatPath(path.relative(CLIENT_ROOT, filePath));
   const html = await fs.readFile(filePath, "utf8");
 

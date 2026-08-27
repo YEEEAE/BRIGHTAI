@@ -1,7 +1,7 @@
 ---
 title: "أفضل 6 شركات AI في السعودية لعام 2026"
 description: "شركات الذكاء الاصطناعي في السعودية 2026 — مقارنة شاملة بين 6 أنواع من المزودين مع معايير التقييم والقطاعات والامتثال. دليل اختيار الشريك التقني المناسب."
-canonical: "https://brightai.site/blog/best-ai-companies-saudi-2026/"
+canonical: "https://brightai.live/blog/best-ai-companies-saudi-2026/"
 pubDate: "2026-07-05"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

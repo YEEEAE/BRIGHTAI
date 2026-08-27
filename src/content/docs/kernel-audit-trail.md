@@ -2,7 +2,7 @@
 title: "Kernel Audit Trail: سجل التدقيق اللي ما ينعدل"
 metaTitle: "Kernel Audit Trail: سجل التدقيق اللي ما ينعدل"
 description: "شرح عملي لسجل التدقيق في BrightAI Kernel: كيف توثق كل طلب، تتبع القرارات، وتثبت الامتثال بسجل غير قابل للتعديل."
-canonical: "https://brightai.site/docs/kernel-audit-trail/"
+canonical: "https://brightai.live/docs/kernel-audit-trail/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "شرح عملي لسجل التدقيق في BrightAI Kernel: كيف توثق كل\nطلب، تتبع القرارات، وتثبت الامتثال بسجل غير قابل للتعديل."

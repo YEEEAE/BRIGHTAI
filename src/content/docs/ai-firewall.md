@@ -2,7 +2,7 @@
 title: "وثائق AI Firewall"
 metaTitle: "دليل AI Firewall لحماية البيانات الحساسة | BrightAI"
 description: "شرح عملي لدور AI Firewall في منع تسريب البيانات الحساسة قبل وصولها للنماذج، مع ضوابط تساعد فرق السعودية على استخدام AI بأمان، مع خطوة تالية واضحة."
-canonical: "https://brightai.site/docs/ai-firewall/"
+canonical: "https://brightai.live/docs/ai-firewall/"
 updated: "2026-06-10"
 category: "General"
 tldr: "شرح عملي لدور AI Firewall في منع تسريب البيانات الحساسة قبل وصولها للنماذج،\nمع ضوابط تساعد فرق السعودية على استخدام AI بأمان، مع خطوة تالية واضحة."

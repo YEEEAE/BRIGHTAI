@@ -2,7 +2,7 @@
 title: "Kernel Operations Runbook: دليل تشغيل BrightAI Kernel"
 metaTitle: "Kernel Operations Runbook: دليل تشغيل BrightAI Kernel"
 description: "دليل عملي لتشغيل BrightAI Kernel: المراقبة، استجابة الحوادث، الصيانة الدورية، وإجراءات الطوارئ."
-canonical: "https://brightai.site/docs/kernel-operations-runbook/"
+canonical: "https://brightai.live/docs/kernel-operations-runbook/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "دليل عملي لتشغيل BrightAI Kernel: المراقبة، استجابة الحوادث، الصيانة الدورية، وإجراءات الطوارئ."

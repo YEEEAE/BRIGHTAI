@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const HOST = "brightai.site";
+const HOST = "brightai.live";
 const BASE_URL = `https://${HOST}`;
 const KEY_FILE = "e158df443f2742d281a02c4aeecb4a60.txt";
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";

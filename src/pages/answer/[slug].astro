@@ -38,7 +38,7 @@ export function getStaticPaths() {
 }
 
 const { answer } = Astro.props as { answer: AnswerUnit };
-const canonical = `https://brightai.site/answer/${answer.slug}/`;
+const canonical = `https://brightai.live/answer/${answer.slug}/`;
 const hreflangLinks = getHreflangLinks(canonical);
 
 const faqItems: FaqItem[] = [{ q: answer.question, a: answer.answer }];
@@ -65,8 +65,8 @@ const jsonLd = {
       ? [{
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.site/' },
-            { '@type': 'ListItem', position: 2, name: ownerCrumb.name, item: `https://brightai.site${ownerCrumb.href}` },
+            { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.live/' },
+            { '@type': 'ListItem', position: 2, name: ownerCrumb.name, item: `https://brightai.live${ownerCrumb.href}` },
             { '@type': 'ListItem', position: 3, name: answer.query, item: canonical },
           ],
         }]

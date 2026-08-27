@@ -1,7 +1,7 @@
 ---
 title: "الخريطة التنظيمية للذكاء الاصطناعي في السعودية: سدايا + NCA + PDPL"
 description: "الخريطة التنظيمية الكاملة للذكاء الاصطناعي في السعودية: كيف تتكامل سدايا وNCA وPDPL. دليل عملي يشرح مسؤوليات كل جهة والتداخلات التنظيمية للمنشآت السعودية."
-canonical: "https://brightai.site/blog/sdaia-nca-pdpl-regulatory-map/"
+canonical: "https://brightai.live/blog/sdaia-nca-pdpl-regulatory-map/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

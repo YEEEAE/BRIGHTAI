@@ -2,9 +2,9 @@
  * @brightai/dashboard — Root page
  *
  * Renders a landing experience that adapts to the request:
- *   - On the root domain (brightai.site, www.brightai.site):
+ *   - On the root domain (brightai.live, www.brightai.live):
  *     marketing-style page pointing to the dashboard + sign-in CTA.
- *   - On a tenant subdomain (acme.brightai.site):
+ *   - On a tenant subdomain (acme.brightai.live):
  *     redirect to /dashboard.
  *   - Custom domains: same as tenant subdomain.
  */
@@ -34,7 +34,7 @@ export default async function HomePage() {
         </h1>
         <p className={styles.lead}>
           حوكمة وأمان وامتثال استخدامات الذكاء الاصطناعي داخل المؤسسات السعودية.
-          ادخل من subdomain شركتك — مثل <code>acme.brightai.site</code> — أو سجّل الدخول إلى
+          ادخل من subdomain شركتك — مثل <code>acme.brightai.live</code> — أو سجّل الدخول إلى
           حسابك إن كنت عندك واحد.
         </p>
 
@@ -48,7 +48,7 @@ export default async function HomePage() {
         </div>
 
         <p className={styles.small}>
-          <Link href="https://brightai.site" className={styles.link}>
+          <Link href="https://brightai.live" className={styles.link}>
             ← العودة للموقع الرئيسي
           </Link>
         </p>

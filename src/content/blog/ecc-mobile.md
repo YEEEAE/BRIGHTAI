@@ -1,7 +1,7 @@
 ---
 title: "أمن تطبيقات AI المحمولة وفق ضوابط ECC"
 description: "دليل أمن تطبيقات الذكاء الاصطناعي المحمولة وفق ضوابط ECC في السعودية. حماية بيانات المستخدمين على الأجهزة المحمولة."
-canonical: "https://brightai.site/blog/ecc-mobile/"
+canonical: "https://brightai.live/blog/ecc-mobile/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

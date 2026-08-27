@@ -2,7 +2,7 @@
 title: "Kernel Models: سجل النماذج وقواعد التوجيه في BrightAI Kernel"
 metaTitle: "Kernel Models: سجل النماذج وقواعد التوجيه في BrightAI Kernel"
 description: "دليل سجل النماذج في Kernel: وثّق كل نموذج AI متصل بمنشأتك مع الزمن والتكلفة ومعدل الهلوسة ومكان البيانات، ووجّه الطلبات بصرياً حسب الحساسية."
-canonical: "https://brightai.site/docs/kernel-models/"
+canonical: "https://brightai.live/docs/kernel-models/"
 updated: "2026-07-31"
 category: "Kernel"
 tldr: "سجل النماذج يوثّق كل نموذج AI متصل بمنشأتك: زمن الاستجابة، التكلفة لكل 1000 توكن، معدل النجاح في السيناريوهات، معدل الهلوسة، ومكان البيانات (سعودي/محلي/أجنبي). قواعد التوجيه تحل مشكلة إرسال البيانات الحساسة للنموذج الخطأ."

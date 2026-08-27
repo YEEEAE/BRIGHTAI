@@ -5,27 +5,27 @@ Last reviewed: 2026-08-24
 
 ## Governance and agents
 
-- [AI Governance Hub](https://brightai.site/hub/ai-governance/): Informational owner for Saudi AI governance, controls, roles, risk, and evidence.
-- [Agentic AI Security](https://brightai.site/hub/agentic-ai-security/): Informational owner for agent identity, least privilege, data boundaries, prompt/output safety, and monitoring.
-- [Agentic AI Governance](https://brightai.site/hub/agentic-ai-governance/): Informational owner for agent accountability, approvals, lifecycle, and evidence.
-- [AI Governance Platform](https://brightai.site/solutions/ai-governance-platform/): Product implementation approach that connects policy, risk, controls, enforcement, and evidence.
+- [AI Governance Hub](https://brightai.live/hub/ai-governance/): Informational owner for Saudi AI governance, controls, roles, risk, and evidence.
+- [Agentic AI Security](https://brightai.live/hub/agentic-ai-security/): Informational owner for agent identity, least privilege, data boundaries, prompt/output safety, and monitoring.
+- [Agentic AI Governance](https://brightai.live/hub/agentic-ai-governance/): Informational owner for agent accountability, approvals, lifecycle, and evidence.
+- [AI Governance Platform](https://brightai.live/solutions/ai-governance-platform/): Product implementation approach that connects policy, risk, controls, enforcement, and evidence.
 
 ## Saudi regulation and standards
 
-- [SDAIA AI Risk Guide](https://brightai.site/hub/sdaia-ai-risk-management/): National AI risk-management framework explanation; official framework first, BrightAI method second.
-- [PDPL and AI Guide](https://brightai.site/docs/pdpl-ai-complete-guide/): Personal-data context for AI use in Saudi Arabia. Primary authority is SDAIA/NDMO material linked on the page.
-- [NCA Cybersecurity Guide](https://brightai.site/blog/nca-cybersecurity-requirements-saudi/): Cybersecurity-control context. Primary authority is NCA ECC linked on the page.
-- [ISO/IEC 42001 Guide](https://brightai.site/blog/iso-42001-saudi-implementation-guide/): AI management-system context. Primary authority is ISO/IEC 42001 linked on the page.
+- [SDAIA AI Risk Guide](https://brightai.live/hub/sdaia-ai-risk-management/): National AI risk-management framework explanation; official framework first, BrightAI method second.
+- [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/): Personal-data context for AI use in Saudi Arabia. Primary authority is SDAIA/NDMO material linked on the page.
+- [NCA Cybersecurity Guide](https://brightai.live/blog/nca-cybersecurity-requirements-saudi/): Cybersecurity-control context. Primary authority is NCA ECC linked on the page.
+- [ISO/IEC 42001 Guide](https://brightai.live/blog/iso-42001-saudi-implementation-guide/): AI management-system context. Primary authority is ISO/IEC 42001 linked on the page.
 
 ## Products, sector context, and readiness
 
-- [AI Firewall](https://brightai.site/solutions/ai-firewall/): Policy inspection and decision evidence for configured AI interaction paths; not a substitute for every security control.
-- [Banking AI Governance — Riyadh](https://brightai.site/solutions/banking-ai-governance/riyadh/): Banking-sector decision matrix, SAMA context, data boundaries, human review, and evidence.
-- [AI Governance Readiness Assessment](https://brightai.site/assessment/ai-governance-readiness/): Eight visible diagnostic dimensions; results stay in the browser and do not establish compliance.
+- [AI Firewall](https://brightai.live/solutions/ai-firewall/): Policy inspection and decision evidence for configured AI interaction paths; not a substitute for every security control.
+- [Banking AI Governance — Riyadh](https://brightai.live/solutions/banking-ai-governance/riyadh/): Banking-sector decision matrix, SAMA context, data boundaries, human review, and evidence.
+- [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/): Eight visible diagnostic dimensions; results stay in the browser and do not establish compliance.
 
 ## BrightAI entity
 
-- [Homepage](https://brightai.site/)
-- [Contact](https://brightai.site/contact/)
-- [Organization JSON-LD](https://brightai.site/schema-saudi-seo.json)
-- [robots.txt](https://brightai.site/robots.txt)
+- [Homepage](https://brightai.live/)
+- [Contact](https://brightai.live/contact/)
+- [Organization JSON-LD](https://brightai.live/schema-saudi-seo.json)
+- [robots.txt](https://brightai.live/robots.txt)

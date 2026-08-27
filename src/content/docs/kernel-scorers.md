@@ -2,7 +2,7 @@
 title: "Kernel Scorers: سجل ومشغّل مقاييس تقييم مخرجات الذكاء الاصطناعي في BrightAI Kernel"
 metaTitle: "Kernel Scorers: سجل ومشغّل مقاييس تقييم مخرجات الذكاء الاصطناعي في BrightAI Kernel"
 description: "دليل Scorer Registry في Kernel: 33 مقيّماً عبر خمس فئات (الدقة، الهلوسة، PII، الحقن، الامتثال)، أنواع PII السعودية العشر، control mapping للامتثال، ومشغّل تقييم تفاعلي يوضح الدرجة والحالة والأدلة لكل نتيجة."
-canonical: "https://brightai.site/docs/kernel-scorers/"
+canonical: "https://brightai.live/docs/kernel-scorers/"
 updated: "2026-07-31"
 category: "Kernel"
 tldr: "سجل الـ Scorers هو مجموعة 33 مقيّماً قياسياً (دقة 8 · هلوسة 6 · PII 4 · حقن 9 · امتثال 6) يحكم على جودة وسلامة مخرجات الذكاء الاصطناعي. كل نتيجة تعرض الدرجة والحالة والمتوقع والفعلي والخطورة والشرح والسياسة والـ Trace والتوصية والأدلة. تسريب PII حرج يمنع الإنتاج، وفشل أي Scorer يجعل التشغيل Incomplete، ولا تُعرض Compliant بدون ضوابط مرقّمة."

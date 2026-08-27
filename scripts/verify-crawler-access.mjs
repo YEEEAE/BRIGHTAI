@@ -2,7 +2,7 @@
 /**
  * scripts/verify-crawler-access.mjs — BAI-IDX-CRAWL (2026-08-08)
  *
- * Synthetic monitor: fetches brightai.site (or HOST) as each major search
+ * Synthetic monitor: fetches brightai.live (or HOST) as each major search
  * engine and AI crawler and asserts every response is HTTP 200.
  *
  * WHY THIS EXISTS:
@@ -25,7 +25,7 @@
  *
  * USAGE:
  *   node scripts/verify-crawler-access.mjs
- *   HOST=https://brightai.site node scripts/verify-crawler-access.mjs
+ *   HOST=https://brightai.live node scripts/verify-crawler-access.mjs
  *   EXPECTED_SITEMAP_URLS=251 node scripts/verify-crawler-access.mjs
  *
  * Run locally after deploys, or wire into CI / a cron monitor. Pair with
@@ -33,7 +33,7 @@
  * edge config if this monitor fails.
  */
 
-const HOST = (process.env.HOST || "https://brightai.site").replace(/\/$/, "");
+const HOST = (process.env.HOST || "https://brightai.live").replace(/\/$/, "");
 const TIMEOUT_MS = Number(process.env.TIMEOUT_MS || 15000);
 const EXPECTED_SITEMAP_URLS = Number(process.env.EXPECTED_SITEMAP_URLS || 200);
 

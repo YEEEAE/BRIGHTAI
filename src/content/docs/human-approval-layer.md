@@ -2,7 +2,7 @@
 title: "وثائق Human Approval Layer"
 metaTitle: "دليل طبقة الموافقة البشرية لأنظمة AI | BrightAI"
 description: "افهم كيف تضيف طبقة موافقة بشرية للقرارات الحساسة في أنظمة الذكاء الاصطناعي، مع مسارات مراجعة واضحة تناسب بيئات العمل السعودية، مع خطوة تالية واضحة."
-canonical: "https://brightai.site/docs/human-approval-layer/"
+canonical: "https://brightai.live/docs/human-approval-layer/"
 updated: "2026-06-10"
 category: "General"
 tldr: "افهم كيف تضيف طبقة موافقة بشرية للقرارات الحساسة في أنظمة الذكاء الاصطناعي،\nمع مسارات مراجعة واضحة تناسب بيئات العمل السعودية، مع خطوة تالية واضحة."

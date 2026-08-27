@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-export const SITE_ORIGIN = "https://brightai.site";
+export const SITE_ORIGIN = "https://brightai.live";
 // REPORTS-SEO-FOUNDATION (2026-07-07): added agent / worktree dirs to the
 // ignorelist so audit output isn't polluted by code living inside tool
 // sandboxes (mavis, hermes, kiro, kilo, roo, claude, opencode worktrees).

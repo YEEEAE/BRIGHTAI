@@ -146,13 +146,13 @@ const PUBLIC_PATHS = [
 // =========================================================================
 describe('Public route enumeration (isPublicRoute matcher)', () => {
   it.each(PUBLIC_PATHS)('does not invoke auth.protect() on public path %s', async (pathname) => {
-    const res = await middleware(buildRequest(pathname, 'brightai.site'));
+    const res = await middleware(buildRequest(pathname, 'brightai.live'));
     expect(res.status).toBe(200);
     expect(protectCalls).toHaveLength(0);
   });
 
   it('invokes auth.protect() on a protected dashboard route', async () => {
-    const res = await middleware(buildRequest('/dashboard/overview', 'brightai.site'));
+    const res = await middleware(buildRequest('/dashboard/overview', 'brightai.live'));
     expect(res.status).toBe(200);
     expect(protectCalls.length).toBeGreaterThanOrEqual(1);
     expect(protectCalls[0]?.pathname).toBe('/dashboard/overview');
@@ -161,21 +161,21 @@ describe('Public route enumeration (isPublicRoute matcher)', () => {
   it('still protects an organization-scoped path even with a tenant subdomain', async () => {
     // Regression for Clerk organization / billing auth bypass (GHSA-9mp4-77wg-rwx9).
     // Organization routes must NOT be silently public.
-    await middleware(buildRequest('/api/organizations/org_abc/members', 'acme.brightai.site'));
+    await middleware(buildRequest('/api/organizations/org_abc/members', 'acme.brightai.live'));
     expect(protectCalls.length).toBeGreaterThanOrEqual(1);
   });
 
   it('still protects the billing surface on a tenant subdomain', async () => {
     // Regression for the same Clerk auth-bypass family — covers the
     // billing / revocation attack surface documented in the upstream advisory.
-    await middleware(buildRequest('/api/billing/subscription', 'acme.brightai.site'));
+    await middleware(buildRequest('/api/billing/subscription', 'acme.brightai.live'));
     expect(protectCalls.length).toBeGreaterThanOrEqual(1);
   });
 
   it('does NOT silently whitelist a /api/firewall/ path that does not match the public prefix', async () => {
     // Sanity check: /api/firewall-events/something should still be protected,
     // because the public matcher is /api/firewall/(.*), not /api/firewall*.
-    await middleware(buildRequest('/api/firewall-events/dump', 'brightai.site'));
+    await middleware(buildRequest('/api/firewall-events/dump', 'brightai.live'));
     expect(protectCalls.length).toBeGreaterThanOrEqual(1);
   });
 });
@@ -185,30 +185,30 @@ describe('Public route enumeration (isPublicRoute matcher)', () => {
 // =========================================================================
 describe('extractTenantFromHost', () => {
   it('returns null for the root domain', () => {
-    expect(extractTenantFromHost('brightai.site')).toEqual({
+    expect(extractTenantFromHost('brightai.live')).toEqual({
       slug: null,
       isCustomDomain: false,
     });
   });
 
-  it('returns null for www.brightai.site (reserved)', () => {
-    expect(extractTenantFromHost('www.brightai.site')).toEqual({
+  it('returns null for www.brightai.live (reserved)', () => {
+    expect(extractTenantFromHost('www.brightai.live')).toEqual({
       slug: null,
       isCustomDomain: false,
     });
   });
 
-  it('extracts tenant slug from <tenant>.brightai.site', () => {
-    expect(extractTenantFromHost('acme.brightai.site')).toEqual({
+  it('extracts tenant slug from <tenant>.brightai.live', () => {
+    expect(extractTenantFromHost('acme.brightai.live')).toEqual({
       slug: 'acme',
       isCustomDomain: false,
     });
   });
 
   it.each(['api', 'admin', 'dashboard', 'docs', 'status'])(
-    'returns null for reserved subdomain %s.brightai.site',
+    'returns null for reserved subdomain %s.brightai.live',
     (r) => {
-      expect(extractTenantFromHost(`${r}.brightai.site`)).toEqual({
+      expect(extractTenantFromHost(`${r}.brightai.live`)).toEqual({
         slug: null,
         isCustomDomain: false,
       });
@@ -239,7 +239,7 @@ describe('extractTenantFromHost', () => {
 // =========================================================================
 describe('Tenant context propagation', () => {
   it('forwards x-tenant-slug when host is a tenant subdomain', async () => {
-    const res = await middleware(buildRequest('/api/health', 'acme.brightai.site'));
+    const res = await middleware(buildRequest('/api/health', 'acme.brightai.live'));
     expect(res.headers.get('x-tenant-slug')).toBe('acme');
     expect(res.headers.get('x-tenant-custom-domain')).toBeNull();
   });
@@ -251,7 +251,7 @@ describe('Tenant context propagation', () => {
   });
 
   it('does not forward tenant headers on the root domain', async () => {
-    const res = await middleware(buildRequest('/api/health', 'brightai.site'));
+    const res = await middleware(buildRequest('/api/health', 'brightai.live'));
     expect(res.headers.get('x-tenant-slug')).toBeNull();
     expect(res.headers.get('x-tenant-custom-domain')).toBeNull();
   });

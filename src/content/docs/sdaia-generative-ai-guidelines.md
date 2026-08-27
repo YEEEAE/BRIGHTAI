@@ -2,7 +2,7 @@
 title: "إرشادات سدايا للذكاء الاصطناعي التوليدي: شرح عملي"
 metaTitle: "إرشادات سدايا للذكاء الاصطناعي التوليدي: شرح عملي"
 description: "شرح عملي لإرشادات سدايا للذكاء الاصطناعي وSDAIA generative AI guidelines للقطاعين العام والخاص، مع سياسات استخدام وتصنيف مخاطر وجداول تطبيق."
-canonical: "https://brightai.site/docs/sdaia-generative-ai-guidelines/"
+canonical: "https://brightai.live/docs/sdaia-generative-ai-guidelines/"
 updated: "2026-07-08"
 category: "SDAIA"
 tldr: "شرح عملي لإرشادات سدايا للذكاء الاصطناعي وSDAIA generative AI guidelines\nللقطاعين العام والخاص، مع سياسات استخدام وتصنيف مخاطر وجداول تطبيق."

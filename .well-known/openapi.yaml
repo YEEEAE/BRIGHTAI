@@ -4,7 +4,7 @@ info:
   version: "1.0.0"
   description: API بسيط لاسترجاع قوائم حوكمة الذكاء الاصطناعي ومتطلبات الامتثال في المملكة العربية السعودية.
 servers:
-  - url: https://brightai.site
+  - url: https://brightai.live
 paths:
   /api/governance/checklist:
     get:

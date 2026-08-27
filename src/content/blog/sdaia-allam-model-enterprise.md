@@ -1,7 +1,7 @@
 ---
 title: "نموذج ALLaM من سدايا — وش يعني للمؤسسات السعودية؟"
 description: "نموذج ALLaM من سدايا: النموذج السيادي السعودي للذكاء الاصطناعي التوليدي. دليل عملي للمؤسسات السعودية عن متى تستخدم ALLaM، متطلبات الحوكمة، والتكامل مع أنظمة الامتثال."
-canonical: "https://brightai.site/blog/sdaia-allam-model-enterprise/"
+canonical: "https://brightai.live/blog/sdaia-allam-model-enterprise/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

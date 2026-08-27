@@ -63,7 +63,7 @@
     return JSON.stringify(
       {
         template: 'BrightAI AI Risk Register',
-        url: 'https://brightai.site/tools/ai-risk-register/',
+        url: 'https://brightai.live/tools/ai-risk-register/',
         note: data.note || '',
         exportedAt: new Date().toISOString().slice(0, 10),
         fields: data.fields,

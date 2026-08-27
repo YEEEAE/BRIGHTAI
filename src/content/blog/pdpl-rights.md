@@ -1,7 +1,7 @@
 ---
 title: "حقوق المتعاملين في أنظمة الذكاء الاصطناعي وفق PDPL"
 description: "دليل حقوق المتعاملين في أنظمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية. الوصول، التصحيح، والحذف."
-canonical: "https://brightai.site/blog/pdpl-rights/"
+canonical: "https://brightai.live/blog/pdpl-rights/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

@@ -3,14 +3,14 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://brightai.site/#organization",
+      "@id": "https://brightai.live/#organization",
       "name": "BrightAI",
       "alternateName": "برايت أيه آي",
       "legalName": "BrightAI",
-      "url": "https://brightai.site",
+      "url": "https://brightai.live",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://brightai.site/assets/images/logo.png",
+        "url": "https://brightai.live/assets/images/logo.png",
         "width": 400,
         "height": 400,
         "caption": "شعار BrightAI"
@@ -19,13 +19,13 @@
       "foundingDate": "2025",
       "founder": {
         "@type": "Person",
-        "@id": "https://brightai.site/#founder",
+        "@id": "https://brightai.live/#founder",
         "name": "يزيد البديوي",
         "givenName": "يزيد",
         "familyName": "البديوي",
         "nameEn": "Yazeed Albadawy",
         "jobTitle": "المؤسس والمدير التنفيذي",
-        "worksFor": { "@id": "https://brightai.site/#organization" },
+        "worksFor": { "@id": "https://brightai.live/#organization" },
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "الرياض",
@@ -98,21 +98,21 @@
     },
     {
       "@type": "WebSite",
-      "@id": "https://brightai.site/#website",
-      "url": "https://brightai.site",
+      "@id": "https://brightai.live/#website",
+      "url": "https://brightai.live",
       "name": "BrightAI",
       "alternateName": "برايت أيه آي",
-      "publisher": { "@id": "https://brightai.site/#organization" },
+      "publisher": { "@id": "https://brightai.live/#organization" },
       "inLanguage": ["ar-SA", "en-SA"]
     },
     {
       "@type": ["LocalBusiness", "ProfessionalService"],
-      "@id": "https://brightai.site/#localbusiness-riyadh",
+      "@id": "https://brightai.live/#localbusiness-riyadh",
       "name": "BrightAI — حوكمة AI في الرياض",
       "description": "BrightAI منصة سعودية لحوكمة وأمان الذكاء الاصطناعي للمؤسسات في المملكة العربية السعودية. تدعم الجاهزية التشغيلية للامتثال ولا تُعد استشارة قانونية.",
-      "url": "https://brightai.site",
+      "url": "https://brightai.live",
       "telephone": "+966538229013",
-      "image": "https://brightai.site/assets/images/og/brightai-og-1200x630.png",
+      "image": "https://brightai.live/assets/images/og/brightai-og-1200x630.png",
       "priceRange": "$$$",
       "address": {
         "@type": "PostalAddress",
@@ -145,7 +145,7 @@
       ],
       "currenciesAccepted": "SAR",
       "paymentAccepted": "Cash, Credit Card, Bank Transfer",
-      "parentOrganization": { "@id": "https://brightai.site/#organization" }
+      "parentOrganization": { "@id": "https://brightai.live/#organization" }
     }
   ]
 }

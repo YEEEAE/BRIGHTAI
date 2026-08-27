@@ -1,7 +1,7 @@
 ---
 title: "تقييم جاهزية ECC للذكاء الاصطناعي"
 description: "دليل تقييم جاهزية ضوابط ECC لأنظمة الذكاء الاصطناعي في المؤسسات السعودية. تعرف على الفجوات وكيفية سدها مع BrightAI."
-canonical: "https://brightai.site/blog/ecc-assess/"
+canonical: "https://brightai.live/blog/ecc-assess/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

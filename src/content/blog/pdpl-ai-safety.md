@@ -1,7 +1,7 @@
 ---
 title: "كيف يحمي PDPL الشركات السعودية في استخدام AI"
 description: "دليل عملي يوضح كيف تستخدم شركتك الذكاء الاصطناعي مع حماية البيانات الشخصية والالتزام بمتطلبات PDPL في السعودية، من جمع البيانات حتى المراجعة، بوضوح."
-canonical: "https://brightai.site/blog/pdpl-ai-safety/"
+canonical: "https://brightai.live/blog/pdpl-ai-safety/"
 pubDate: "2026-06-01"
 updatedDate: "2026-06-01"
 author: "nasser-alabdullah"

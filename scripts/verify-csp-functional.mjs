@@ -30,8 +30,8 @@ page.on('requestfailed', (req) => {
   }
 });
 
-console.log('=== Functional check on https://brightai.site/ ===');
-await page.goto('https://brightai.site/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+console.log('=== Functional check on https://brightai.live/ ===');
+await page.goto('https://brightai.live/', { waitUntil: 'domcontentloaded', timeout: 30000 });
 await page.waitForTimeout(5000);
 
 console.log('GA4/GTM requests loaded:', ga4Loaded.length);

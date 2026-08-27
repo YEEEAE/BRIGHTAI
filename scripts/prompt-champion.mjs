@@ -49,8 +49,8 @@ const KERNEL_DIR = join(ROOT, 'src', 'pages', 'kernel');
 const PACKAGE_JSON = join(ROOT, 'package.json');
 
 const RENDER_BLOCKER_NOTE =
-  'KI-RENDER-CACHE-2026-07-28-001: brightai.site كله 404 بسبب Render Static Site persistent-storage blocker. ' +
-  'أي measurement مباشر على brightai.site راح يفشل إلى أن يتم Manual Deploy → Clear build cache من Render Dashboard.';
+  'KI-RENDER-CACHE-2026-07-28-001: brightai.live كله 404 بسبب Render Static Site persistent-storage blocker. ' +
+  'أي measurement مباشر على brightai.live راح يفشل إلى أن يتم Manual Deploy → Clear build cache من Render Dashboard.';
 
 const KERNEL_PAGES = [
   'chat.astro',
@@ -309,7 +309,7 @@ async function probeLive() {
     probedAt: new Date().toISOString(),
   };
   try {
-    const healthResp = sh('curl -sI -m 5 https://brightai.site/api/health/ 2>/dev/null || echo "FAILED"', {
+    const healthResp = sh('curl -sI -m 5 https://brightai.live/api/health/ 2>/dev/null || echo "FAILED"', {
       timeout: 8_000,
     });
     if (typeof healthResp === 'object' && healthResp.error) {
@@ -324,7 +324,7 @@ async function probeLive() {
 
   try {
     const chatResp = sh(
-      'curl -s -m 5 -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Content-Type: application/json" -d \'{"message":"ping"}\' 2>/dev/null || echo "FAILED"',
+      'curl -s -m 5 -X POST https://brightai.live/api/ai/chat/ -H "Origin: https://brightai.live" -H "Content-Type: application/json" -d \'{"message":"ping"}\' 2>/dev/null || echo "FAILED"',
       { timeout: 10_000 },
     );
     if (typeof chatResp === 'object' && chatResp.error) {
@@ -339,7 +339,7 @@ async function probeLive() {
   }
 
   try {
-    const indexResp = sh('curl -sI -m 5 https://brightai.site/ 2>/dev/null || echo "FAILED"', { timeout: 8_000 });
+    const indexResp = sh('curl -sI -m 5 https://brightai.live/ 2>/dev/null || echo "FAILED"', { timeout: 8_000 });
     if (typeof indexResp === 'string') {
       const lm = indexResp.match(/last-modified:\s*([^\r\n]+)/i);
       if (lm) result.lastModified = lm[1].trim();
@@ -582,7 +582,7 @@ ${KERNEL_PAGES.map((f) => {
 
 ## Risks Remaining
 
-- **Render Static Site blocker** (KI-RENDER-CACHE-2026-07-28-001): live measurements against brightai.site return 404. Verified via production endpoints in this script.
+- **Render Static Site blocker** (KI-RENDER-CACHE-2026-07-28-001): live measurements against brightai.live return 404. Verified via production endpoints in this script.
 - **Brain.md v2.7.58**: 1.2MB single file in public repo (BAI-SEC-21 tracks moving to private repo).
 - **No Playwright auto-screenshots**: BAI-CHAMPION-02 backlog.
 - **No GSC integration**: Saudi SERP position not measured in this run.

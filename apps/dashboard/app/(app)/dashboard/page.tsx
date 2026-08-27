@@ -29,7 +29,7 @@ export default async function DashboardPage() {
       <header className={styles.header}>
         <h1 className={styles.title}>لوحة التحكم</h1>
         <p className={styles.subtitle}>
-          {ctx.tenant.nameAr ?? ctx.tenant.name} • {ctx.tenant.slug}.brightai.site
+          {ctx.tenant.nameAr ?? ctx.tenant.name} • {ctx.tenant.slug}.brightai.live
         </p>
       </header>
 

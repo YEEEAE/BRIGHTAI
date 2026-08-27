@@ -1,7 +1,7 @@
 ---
 title: "مواءمة ISO 42001 مع متطلبات SDAIA في السعودية"
 description: "دليل مواءمة ISO 42001 مع إرشادات ومبادئ سدايا للذكاء الاصطناعي في المؤسسات السعودية. مصفوفة ربط شاملة مع خطوات التطبيق العملي."
-canonical: "https://brightai.site/blog/iso-42001-sdaia-alignment-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-sdaia-alignment-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

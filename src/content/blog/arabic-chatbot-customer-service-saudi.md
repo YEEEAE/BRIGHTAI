@@ -1,7 +1,7 @@
 ---
 title: "شات بوت عربي لخدمة العملاء في السعودية"
 description: "شات بوت عربي لخدمة العملاء في السعودية — المزايا، التحديات، الأنواع، وحالات الاستخدام. دليل عملي شامل لاختيار الحل المناسب لمنشأتك."
-canonical: "https://brightai.site/blog/arabic-chatbot-customer-service-saudi/"
+canonical: "https://brightai.live/blog/arabic-chatbot-customer-service-saudi/"
 pubDate: "2026-06-20"
 updatedDate: "2026-06-20"
 author: "nasser-alabdullah"

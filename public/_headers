@@ -82,5 +82,5 @@
   Cache-Control: public, max-age=0, must-revalidate
 
 # CORS scoped to API routes only — regular pages are NOT subject to CORS restrictions
-# Access-Control-Allow-Origin: https://www.brightaii.com
+# Access-Control-Allow-Origin: https://brightai.live
 # (This header is set per-route in vercel.json; Netlify-style _headers does not support regex scopes)

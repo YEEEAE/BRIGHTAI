@@ -28,7 +28,7 @@ function getArg(name, fallback) {
 // for backward compatibility.
 const ROOT = path.resolve(getArg("source", process.cwd()));
 const SITEMAP_PATH = path.resolve(getArg("sitemap", path.join(ROOT, "sitemap.xml")));
-const BASE_URL = "https://brightai.site";
+const BASE_URL = "https://brightai.live";
 // BAI-IDX-04: report directory is anchored at the project root (not ROOT)
 // so dist/ rebuilds don't delete past reports. `--source` only changes
 // which HTML files the audit reads — outputs stay in the project tree.

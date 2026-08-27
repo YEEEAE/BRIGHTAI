@@ -2,7 +2,7 @@
 title: "Kernel Replay: آلة الزمن في BrightAI Kernel"
 metaTitle: "Kernel Replay: آلة الزمن في BrightAI Kernel"
 description: "دليل آلة الزمن (Replay) في Kernel: اختبر أثر أي سياسة حوكمة جديدة على الطلبات التاريخية قبل التفعيل، مع مقارنة قبل/بعد وكشف الإيجابيات الكاذبة ومذكرة قرار PDF."
-canonical: "https://brightai.site/docs/kernel-replay/"
+canonical: "https://brightai.live/docs/kernel-replay/"
 updated: "2026-07-31"
 category: "Kernel"
 tldr: "آلة الزمن (Replay) تجاوب على أخطر سؤال في الحوكمة: لو كانت سياستنا الجديدة مفعّلة الشهر الماضي، وش كان بيتغير؟ تعيد تشغيل السياسات المقترحة على الطلبات التاريخية وتعرض كم حظر إضافي وكم إيجابية كاذبة — قبل التفعيل على الإنتاج."

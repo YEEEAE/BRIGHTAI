@@ -1,5 +1,5 @@
 # BrightAI — canonical crawler policy
-# https://brightai.site
+# https://brightai.live
 #
 # All crawlers are intentionally allowed across the public site, including
 # known AI search, grounding, and model-training crawlers. No path-level
@@ -97,7 +97,7 @@ User-agent: Baiduspider-image
 Allow: /
 
 # One canonical sitemap declaration.
-Sitemap: https://brightai.site/sitemap.xml
+Sitemap: https://brightai.live/sitemap.xml
 
 # Host is retained for compatibility with existing tooling.
-Host: https://brightai.site
+Host: https://brightai.live

@@ -111,7 +111,7 @@ after(async () => {
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────
 
-const BRIGHTAI_ORIGIN = "https://brightai.site";
+const BRIGHTAI_ORIGIN = "https://brightai.live";
 
 // Per-test IP counter. The chat endpoint rate-limits per IP, and the
 // test suite issues many calls from the same Node process. Without
@@ -128,7 +128,7 @@ function nextIp() {
 }
 
 function makeRequest(body, origin = BRIGHTAI_ORIGIN) {
-  return new Request("https://brightai.site/api/ai/chat/", {
+  return new Request("https://brightai.live/api/ai/chat/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

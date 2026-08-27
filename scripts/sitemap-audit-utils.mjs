@@ -1,6 +1,6 @@
 import path from "node:path";
 
-const DEFAULT_BASE_URL = "https://brightai.site";
+const DEFAULT_BASE_URL = "https://brightai.live";
 
 export function extractCanonicalHref(html) {
   if (!html || typeof html !== "string") return "";

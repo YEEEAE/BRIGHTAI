@@ -4,7 +4,7 @@
  * Responsibilities (in order):
  *   1. Clerk auth (authMiddleware) — protect everything except /api/health,
  *      /sign-in, /sign-up, /unauthorized, and static files.
- *   2. Subdomain extraction — `acme.brightai.site` → tenant slug `acme`.
+ *   2. Subdomain extraction — `acme.brightai.live` → tenant slug `acme`.
  *      The slug is set as a request header so server components can read
  *      it via `headers()` without re-parsing the host.
  *   3. Reserved-subdomain guard — if the user hits www/api/admin/etc.,
@@ -28,7 +28,7 @@ import type { NextRequest } from 'next/server';
 import { randomUUID } from 'node:crypto';
 import { runWithRequestContext } from '@/lib/observability/request-context';
 
-const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'brightai.site';
+const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'brightai.live';
 const RESERVED_SUBDOMAINS = new Set(
   (process.env.RESERVED_SUBDOMAINS ?? 'www,api,admin,app,dashboard,docs,status,mail,cdn')
     .split(',')
@@ -50,9 +50,9 @@ const isPublicRoute = createRouteMatcher([
 /**
  * Extract the tenant slug from the request host.
  *
- *   brightai.site              → null (root, marketing site territory)
- *   www.brightai.site          → null (reserved)
- *   acme.brightai.site         → 'acme'
+ *   brightai.live              → null (root, marketing site territory)
+ *   www.brightai.live          → null (reserved)
+ *   acme.brightai.live         → 'acme'
  *   acme.localhost:3000        → 'acme'  (dev)
  *   custom-domain.com          → 'custom-domain.com'  (we resolve via Domain table)
  *   localhost:3000             → null (dev root)

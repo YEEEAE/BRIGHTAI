@@ -128,8 +128,8 @@ function snapshot($, htmlPath) {
 
   s.aCount         = $('a').length;
   s.aInternalCount = $('a[href^="/"]').length;
-  s.aExternalCount = $('a[href^="http"]:not([href*="brightai.site"])').length;
-  s.aNoRelExt      = $('a[href^="http"]:not([href*="brightai.site"]):not([rel*="noopener"])').length;
+  s.aExternalCount = $('a[href^="http"]:not([href*="brightai.live"])').length;
+  s.aNoRelExt      = $('a[href^="http"]:not([href*="brightai.live"]):not([rel*="noopener"])').length;
 
   s.buttonCount = $('button').length;
   s.formCount   = $('form').length;

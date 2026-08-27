@@ -2,15 +2,15 @@
   "source": "solutions/human-approval-layer/index.html",
   "title": "طبقة الموافقات البشرية لقرارات الذكاء الاصطناعي | BrightAI",
   "description": "أضف مسارات موافقة بشرية للقرارات عالية المخاطر قبل تنفيذ مخرجات الذكاء الاصطناعي داخل المؤسسة.",
-  "canonical": "https://brightai.site/solutions/human-approval-layer/",
+  "canonical": "https://brightai.live/solutions/human-approval-layer/",
   "hreflang": [
     {
       "lang": "ar-SA",
-      "href": "https://brightai.site/solutions/human-approval-layer/"
+      "href": "https://brightai.live/solutions/human-approval-layer/"
     },
     {
       "lang": "x-default",
-      "href": "https://brightai.site/solutions/human-approval-layer/"
+      "href": "https://brightai.live/solutions/human-approval-layer/"
     }
   ],
   "jsonLd": [
@@ -22,19 +22,19 @@
           "@type": "ListItem",
           "position": 1,
           "name": "الرئيسية",
-          "item": "https://brightai.site/"
+          "item": "https://brightai.live/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "الخدمات",
-          "item": "https://brightai.site/services/"
+          "item": "https://brightai.live/services/"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "طبقة الموافقة البشرية",
-          "item": "https://brightai.site/solutions/human-approval-layer/"
+          "item": "https://brightai.live/solutions/human-approval-layer/"
         }
       ]
     },
@@ -49,19 +49,19 @@
               "h1"
             ]
           },
-          "@id": "https://brightai.site/solutions/human-approval-layer/#webpage",
-          "url": "https://brightai.site/solutions/human-approval-layer/",
+          "@id": "https://brightai.live/solutions/human-approval-layer/#webpage",
+          "url": "https://brightai.live/solutions/human-approval-layer/",
           "name": "طبقة الموافقة البشرية للقرارات الحساسة في أنظمة AI | BrightAI",
           "description": "لا قرار AI حساس يمر بدون موافقة بشرية. BrightAI يضع طبقة Human-in-the-Loop تلقائية على كل قرار يتجاوز حد المخاطرة المحدد، مع توثيق كامل للموافقة.",
           "isPartOf": {
-            "@id": "https://brightai.site/#website"
+            "@id": "https://brightai.live/#website"
           },
           "about": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": "ar-SA",
           "breadcrumb": {
-            "@id": "https://brightai.site/solutions/human-approval-layer/#breadcrumb"
+            "@id": "https://brightai.live/solutions/human-approval-layer/#breadcrumb"
           }
         },
         {
@@ -69,14 +69,14 @@
             "Organization",
             "LocalBusiness"
           ],
-          "@id": "https://brightai.site/#organization",
+          "@id": "https://brightai.live/#organization",
           "name": "BrightAI",
           "alternateName": [
             "برايت آي",
             "Saudi AI Safety OS"
           ],
-          "url": "https://brightai.site/",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "url": "https://brightai.live/",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "sameAs": [
             "https://x.com/brightai_sa",
             "https://www.linkedin.com/company/brightai-saudi/",
@@ -100,11 +100,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
+          "@id": "https://brightai.live/#website",
+          "url": "https://brightai.live",
           "name": "BrightAI",
           "publisher": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": [
             "ar-SA",
@@ -121,10 +121,10 @@
             "Organization",
             "LocalBusiness"
           ],
-          "@id": "https://brightai.site/#organization",
+          "@id": "https://brightai.live/#organization",
           "name": "BrightAI",
-          "url": "https://brightai.site",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "url": "https://brightai.live",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "areaServed": "SA",
           "sameAs": [
             "https://x.com/brightai_sa",
@@ -149,11 +149,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
+          "@id": "https://brightai.live/#website",
+          "url": "https://brightai.live",
           "name": "BrightAI",
           "publisher": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": [
             "ar-SA",
@@ -162,45 +162,45 @@
         },
         {
           "@type": "WebPage",
-          "@id": "https://brightai.site/solutions/human-approval-layer/#webpage",
-          "url": "https://brightai.site/solutions/human-approval-layer/",
+          "@id": "https://brightai.live/solutions/human-approval-layer/#webpage",
+          "url": "https://brightai.live/solutions/human-approval-layer/",
           "name": "طبقة الموافقة البشرية للقرارات الحساسة في أنظمة AI | BrightAI",
           "description": "لا قرار AI حساس يمر بدون موافقة بشرية. BrightAI يضع طبقة Human-in-the-Loop تلقائية على كل قرار يتجاوز حد المخاطرة المحدد، مع توثيق كامل للموافقة.",
           "isPartOf": {
-            "@id": "https://brightai.site/#website"
+            "@id": "https://brightai.live/#website"
           },
           "about": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": "ar-SA"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://brightai.site/solutions/human-approval-layer/#breadcrumb",
+          "@id": "https://brightai.live/solutions/human-approval-layer/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "BrightAI",
-              "item": "https://brightai.site/"
+              "item": "https://brightai.live/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "solutions",
-              "item": "https://brightai.site/solutions/"
+              "item": "https://brightai.live/solutions/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "طبقة الموافقة البشرية للقرارات الحساسة في أنظمة AI | BrightAI",
-              "item": "https://brightai.site/solutions/human-approval-layer/"
+              "item": "https://brightai.live/solutions/human-approval-layer/"
             }
           ]
         },
         {
           "@type": "FAQPage",
-          "@id": "https://brightai.site/solutions/human-approval-layer/#faq",
+          "@id": "https://brightai.live/solutions/human-approval-layer/#faq",
           "mainEntity": [
             {
               "@type": "Question",
@@ -249,7 +249,7 @@
     {
       "@context": "https://schema.org",
       "@type": "DefinedTermSet",
-      "@id": "https://brightai.site/#technical-ai-governance-terms",
+      "@id": "https://brightai.live/#technical-ai-governance-terms",
       "name": "BrightAI technical AI governance terms",
       "inLanguage": [
         "en",

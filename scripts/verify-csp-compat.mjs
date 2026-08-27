@@ -28,10 +28,10 @@ page.on('response', (res) => {
 });
 
 const urls = [
-  'https://brightai.site/',
-  'https://brightai.site/kernel/',
-  'https://brightai.site/blog/',
-  'https://brightai.site/contact/',
+  'https://brightai.live/',
+  'https://brightai.live/kernel/',
+  'https://brightai.live/blog/',
+  'https://brightai.live/contact/',
 ];
 
 for (const url of urls) {

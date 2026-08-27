@@ -12,7 +12,7 @@
  * because the canonicalized route `/about/` doesn't match the project-
  * rooted route `/dist/about/`).
  *
- * dist/ + public/ is exactly what gets deployed to brightai.site.
+ * dist/ + public/ is exactly what gets deployed to brightai.live.
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -90,7 +90,7 @@ export async function validateLinkGraph({ root = PROJECT_ROOT } = {}) {
     if (/(?:^|\/)(?:404|500|error)\.html$/i.test(relPath)) continue;
     for (const match of html.matchAll(/<a\b[^>]*\bhref\s*=\s*["']([^"'#]+)["']/gi)) {
       const href = match[1].trim();
-      if (/^(?:mailto:|tel:|javascript:|https?:\/\/(?!brightai\.site)|\/\/)/i.test(href)) continue;
+      if (/^(?:mailto:|tel:|javascript:|https?:\/\/(?!brightai\.live)|\/\/)/i.test(href)) continue;
       if (href.includes("${")) continue;
       const normalized = canonicalPath(href);
       if (!normalized) continue;

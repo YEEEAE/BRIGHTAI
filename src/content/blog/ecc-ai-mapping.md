@@ -1,7 +1,7 @@
 ---
 title: "ربط ضوابط ECC بأنظمة الذكاء الاصطناعي"
 description: "دليل ربط ضوابط NCA ECC بأنظمة الذكاء الاصطناعي في السعودية. خريطة تطبيق عملية لكل ضابط على تفاعلات AI."
-canonical: "https://brightai.site/blog/ecc-ai-mapping/"
+canonical: "https://brightai.live/blog/ecc-ai-mapping/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

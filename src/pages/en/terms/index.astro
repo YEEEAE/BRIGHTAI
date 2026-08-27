@@ -4,7 +4,7 @@ import { getLanguageCounterpart, getLegalAlternates } from '../../../data/i18n-p
 import { legal_en_terms } from '../../../data/legal-content-en-inline';
 import DOMPurify from 'isomorphic-dompurify';
 const route = '/en/terms/';
-const canonical = `https://brightai.site${route}`;
+const canonical = `https://brightai.live${route}`;
 const legalContent = legal_en_terms;
 const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'WebPage', name: legalContent.h1, url: canonical, inLanguage: 'en-SA' },

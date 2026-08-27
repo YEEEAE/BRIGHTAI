@@ -2,11 +2,11 @@
 /**
  * scripts/purge-cloudflare-cache.mjs — BAI-DEPLOY-11 (2026-07-25)
  *
- * Purges Cloudflare's edge cache for brightai.site so a fresh Render
+ * Purges Cloudflare's edge cache for brightai.live so a fresh Render
  * deploy is not hidden behind stale cf-cache HIT responses.
  *
  * Why this exists:
- *   Cloudflare sits in front of brightai.site and serves cached
+ *   Cloudflare sits in front of brightai.live and serves cached
  *   responses (cf-cache HIT) for HTML/JS/CSS. The default cache TTL
  *   in render.yaml is `s-maxage=300` (5 minutes) — but Cloudflare
  *   also honours the `Cache-Control` header from origin, and the
@@ -25,8 +25,8 @@
  *
  * Configuration (env vars):
  *   CLOUDFLARE_API_TOKEN  required — must have Zone.Cache Purge permission
- *   CLOUDFLARE_ZONE_ID    required — the brightai.site zone ID
- *   HOST                  default: https://brightai.site (used for --files
+ *   CLOUDFLARE_ZONE_ID    required — the brightai.live zone ID
+ *   HOST                  default: https://brightai.live (used for --files
  *                         to construct full URLs)
  *
  * Usage:
@@ -53,7 +53,7 @@ import path from 'node:path';
 const __filename = fileURLToPath(import.meta.url);
 const root = path.resolve(path.dirname(__filename), '..');
 
-const HOST = process.env.HOST || 'https://brightai.site';
+const HOST = process.env.HOST || 'https://brightai.live';
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN;
 const ZONE_ID = process.env.CLOUDFLARE_ZONE_ID;
 const TIMEOUT_MS = Number(process.env.TIMEOUT_MS || 15000);
@@ -75,13 +75,13 @@ if (!TOKEN) {
   die(
     'CLOUDFLARE_API_TOKEN env var is required. Generate one at\n' +
     '  https://dash.cloudflare.com/profile/api-tokens\n' +
-    'with the "Zone.Cache Purge" permission on the brightai.site zone.'
+    'with the "Zone.Cache Purge" permission on the brightai.live zone.'
   );
 }
 if (!ZONE_ID) {
   die(
     'CLOUDFLARE_ZONE_ID env var is required. Find it at\n' +
-    '  https://dash.cloudflare.com → brightai.site → Overview → API → Zone ID.'
+    '  https://dash.cloudflare.com → brightai.live → Overview → API → Zone ID.'
   );
 }
 

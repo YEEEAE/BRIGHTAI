@@ -1,7 +1,7 @@
 ---
 title: "إطار حوكمة AI للمنشآت السعودية — مكونات وأمثلة"
 description: "إطار حوكمة AI للمنشآت السعودية متوافق مع PDPL وسدايا وISO 42001. سياسات وأدوار وأدوات بناء على 90 يوماً. اقرأ الدليل العملي لبناء إطار الحوكمة مع BrightAI."
-canonical: "https://brightai.site/blog/ai-governance-framework-saudi-model/"
+canonical: "https://brightai.live/blog/ai-governance-framework-saudi-model/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
@@ -27,7 +27,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 إطار حوكمة الذكاء الاصطناعي (AI Governance Framework) هو البنية المؤسسية المتكاملة التي تربط بين السياسات والأدوار والأدوات والقياس في منظومة واحدة متناغمة. الإطار ليس مجرد وثيقة سياسة واحدة ولا أداة تقنية واحدة، بل هو نظام متكامل يأخذ المنشأة من مرحلة الاستخدام العشوائي لـ AI إلى مرحلة الاستخدام المسؤول والمُوثَّق والقابل للمراجعة.
 
-في السوق السعودي، الإطار يختلف عن الإطار العام في الأسواق العالمية بسبب خصوصيات ثلاث: أولاً، [نظام PDPL](https://brightai.site/blog/pdpl-and-ai-saudi/) يفرض ضوابط صارمة على البيانات الشخصية بمعالجة دقيقة وحقوق أصحاب بيانات محددة. ثانياً، [ضوابط سدايا لأخلاقيات AI](https://brightai.site/blog/sdaia-seven-principles-practical-guide/) تضيف مبادئ أخلاقية وطنية ترتبط بالقيم الثقافية للمملكة. ثالثاً، القطاعات المنظمة كالصحة والمالية تخضع لجهات إضافية (SFDA، SAMA) تشترط متطلبات فوق المتطلبات العامة.
+في السوق السعودي، الإطار يختلف عن الإطار العام في الأسواق العالمية بسبب خصوصيات ثلاث: أولاً، [نظام PDPL](https://brightai.live/blog/pdpl-and-ai-saudi/) يفرض ضوابط صارمة على البيانات الشخصية بمعالجة دقيقة وحقوق أصحاب بيانات محددة. ثانياً، [ضوابط سدايا لأخلاقيات AI](https://brightai.live/blog/sdaia-seven-principles-practical-guide/) تضيف مبادئ أخلاقية وطنية ترتبط بالقيم الثقافية للمملكة. ثالثاً، القطاعات المنظمة كالصحة والمالية تخضع لجهات إضافية (SFDA، SAMA) تشترط متطلبات فوق المتطلبات العامة.
 
 الإطار الناجح لا يفصل بين الحوكمة والتقنية. السياسات تبقى حبراً على ورق دون الأدوات التي تطبقها، والأدوات تصبح عبئاً بدون السياسات التي تحدد حدود استخدامها، وكلاهما يتوقف بدون القياس الذي يكشف النجاح والفشل.
 
@@ -39,7 +39,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 ### 2. تجاوز حدود سياسات IT التقليدية
 
-سياسات [أمن المعلومات](https://brightai.site/solutions/ai-firewall/) التقليدية تحمي الشبكات والأنظمة والبيانات في حالة السكون. لكنها لا تعرف كيف تتعامل مع نموذج لغوي ينتج نصاً يحتمل تسريب بيانات، أو نموذج رؤية حاسوبية يصدر قراراً منحازاً، أو نموذج توليدي ينتج محتوى يتعدى حقوق ملكية فكرية. [حوكمة AI](https://brightai.site/blog/ai-governance-saudi-arabia/) تتطلب ضوابط جديدة مصممة لهذه المخاطر الجديدة.
+سياسات [أمن المعلومات](https://brightai.live/solutions/ai-firewall/) التقليدية تحمي الشبكات والأنظمة والبيانات في حالة السكون. لكنها لا تعرف كيف تتعامل مع نموذج لغوي ينتج نصاً يحتمل تسريب بيانات، أو نموذج رؤية حاسوبية يصدر قراراً منحازاً، أو نموذج توليدي ينتج محتوى يتعدى حقوق ملكية فكرية. [حوكمة AI](https://brightai.live/blog/ai-governance-saudi-arabia/) تتطلب ضوابط جديدة مصممة لهذه المخاطر الجديدة.
 
 ### 3. الاستجابة لمتطلبات تنظيمية متسارعة
 
@@ -91,15 +91,15 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 السياسات والأدوار تبقى بدون أدوات تقنية تطبقها فعلياً. الإطار السعودي يستند إلى خمس أدوات متكاملة:
 
-1. **[AI Firewall](https://brightai.site/solutions/ai-firewall/)**: بوابة وسيطة بين موظفي المنشأة ونماذج AI. يفحص كل prompt قبل إرساله للنموذج، يكشف بيانات الهوية والحساسة، يحجبها أو يخفيها تلقائياً، ويمنع الاستخدامات عالية المخاطر. بدون AI Firewall، المنشأة تفتقر للقدرة على تطبيق سياساتها فعلياً.
+1. **[AI Firewall](https://brightai.live/solutions/ai-firewall/)**: بوابة وسيطة بين موظفي المنشأة ونماذج AI. يفحص كل prompt قبل إرساله للنموذج، يكشف بيانات الهوية والحساسة، يحجبها أو يخفيها تلقائياً، ويمنع الاستخدامات عالية المخاطر. بدون AI Firewall، المنشأة تفتقر للقدرة على تطبيق سياساتها فعلياً.
 
-2. **[AI Audit Trail](https://brightai.site/solutions/ai-audit-trail/)**: سجل رقمي موثّق لكل عملية AI. يحتفظ بنسخة غير قابلة للتلاعب (SHA-256 hash) لكل prompt ومخرج، ومعلومات المستخدم والوقت والسياق. هذا السجل هو أساس أي تدقيق لاحق.
+2. **[AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/)**: سجل رقمي موثّق لكل عملية AI. يحتفظ بنسخة غير قابلة للتلاعب (SHA-256 hash) لكل prompt ومخرج، ومعلومات المستخدم والوقت والسياق. هذا السجل هو أساس أي تدقيق لاحق.
 
-3. **[Human Approval Layer](https://brightai.site/solutions/human-approval-layer/)**: طبقة تحكم بشرية تُدرج تلقائياً في القرارات عالية المخاطر (مثلاً: قرار توظيف، رفض ائتمان، قرار طبي). النظام يحدد مستوى الخطورة ويطلب موافقة بشرية قبل التنفيذ.
+3. **[Human Approval Layer](https://brightai.live/solutions/human-approval-layer/)**: طبقة تحكم بشرية تُدرج تلقائياً في القرارات عالية المخاطر (مثلاً: قرار توظيف، رفض ائتمان، قرار طبي). النظام يحدد مستوى الخطورة ويطلب موافقة بشرية قبل التنفيذ.
 
-4. **[AI Evidence File](https://brightai.site/solutions/ai-evidence-file/)**: حقيبة أدلة قابلة للتجميع عند التدقيق. تحتوي تقييمات المخاطر، اختبارات الانحياز، سجلات المراجعة البشرية، شهادات النماذج، وثائق الامتثال. تُولَّد تلقائياً ولا تُجمَع يدوياً تحت الضغط.
+4. **[AI Evidence File](https://brightai.live/solutions/ai-evidence-file/)**: حقيبة أدلة قابلة للتجميع عند التدقيق. تحتوي تقييمات المخاطر، اختبارات الانحياز، سجلات المراجعة البشرية، شهادات النماذج، وثائق الامتثال. تُولَّد تلقائياً ولا تُجمَع يدوياً تحت الضغط.
 
-5. **[Compliance Packs](https://brightai.site/solutions/)**: حزم امتثال جاهزة تترجم متطلبات الجهات (PDPL، سدايا، NCA ECC، ISO 42001، SAMA، SFDA) إلى ضوابط تقنية محددة داخل المنصة. الحزم تُحدَّث عندما تتغير الأنظمة.
+5. **[Compliance Packs](https://brightai.live/solutions/)**: حزم امتثال جاهزة تترجم متطلبات الجهات (PDPL، سدايا، NCA ECC، ISO 42001، SAMA، SFDA) إلى ضوابط تقنية محددة داخل المنصة. الحزم تُحدَّث عندما تتغير الأنظمة.
 
 الأدوات الخمس تعمل معاً. مثلاً: عند محاولة موظف إرسال بيانات عميل إلى ChatGPT، AI Firewall يكشف البيانات ويحجبها، يسجل المحاولة في Audit Trail، يضيف الحادثة إلى Evidence File، ويصدر تنبيهاً لضابط AI. كل خطوة من الإطار تظهر في الأداة.
 
@@ -138,11 +138,11 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 ISO 42001 صدر في ديسمبر 2023، وهو أول معيار دولي لنظام إدارة AI (AIMS). يستفيد من خبرة ISO 27001 في أمن المعلومات. يتضمن متطلبات إلزامية للسياسات والأهداف والمخاطر والتدقيق والمراجعة.
 
-الإطار السعودي يتوافق تماماً مع [متطلبات ISO 42001](https://brightai.site/blog/iso-42001-saudi-implementation-guide/)، بل يضيف طبقة تنظيمية محلية غير موجودة في المعيار الدولي. المنشآت التي تطبق ISO 42001 تحصل على أساس قوي للإطار السعودي، والعكس صحيح.
+الإطار السعودي يتوافق تماماً مع [متطلبات ISO 42001](https://brightai.live/blog/iso-42001-saudi-implementation-guide/)، بل يضيف طبقة تنظيمية محلية غير موجودة في المعيار الدولي. المنشآت التي تطبق ISO 42001 تحصل على أساس قوي للإطار السعودي، والعكس صحيح.
 
 ## التوافق مع PDPL وضوابط سدايا
 
-الإطار السعودي مصمم ليتوافق تلقائياً مع [PDPL](https://brightai.site/blog/pdpl-compliance-guide-saudi-companies/) من خلال:
+الإطار السعودي مصمم ليتوافق تلقائياً مع [PDPL](https://brightai.live/blog/pdpl-compliance-guide-saudi-companies/) من خلال:
 
 - **المادة 5 (الموافقة)**: النظام يطلب موافقة صريحة قبل معالجة البيانات في AI. الإطار يفرض هذه الموافقة عبر Human Approval Layer.
 - **المادة 16 (تقليل البيانات)**: PDPL يطلب جمع البيانات الضرورية فقط. الإطار يفرض تصنيف بيانات قبل إدخالها للنموذج، ويُنفَّذ في AI Firewall تلقائياً.
@@ -205,15 +205,15 @@ ISO 42001 صدر في ديسمبر 2023، وهو أول معيار دولي لن
 
 ## كيف يدعم BrightAI تطبيق إطار الحوكمة السعودي؟
 
-منصة [BrightAI للحوكمة](https://brightai.site/solutions/ai-governance-platform/) تترجم الإطار السعودي إلى ضوابط تقنية جاهزة:
+منصة [BrightAI للحوكمة](https://brightai.live/solutions/ai-governance-platform/) تترجم الإطار السعودي إلى ضوابط تقنية جاهزة:
 
-- **[منصة حوكمة AI](https://brightai.site/solutions/ai-governance-platform/)**: تجمع السياسات والأدوار والأدوات والقياس في نظام واحد، مع تكامل مع Bitbucket وSharePoint والأدوات المؤسسية الموجودة.
-- **[تصنيف مخاطر AI](https://brightai.site/solutions/ai-risk-classification/)**: يطبق منهجية NIST + EU AI Act + PDPL لتقييم كل حالة استخدام تلقائياً.
-- **[AI Firewall](https://brightai.site/solutions/ai-firewall/)**: الأداة الأكثر استخداماً في الإطار، تكشف وتحجب بيانات الهوية وتمنع النقل غير المعتمد.
-- **[AI Audit Trail](https://brightai.site/solutions/ai-audit-trail/)**: سجل رقمي موثّق مع SHA-256 للعمليات الحساسة.
-- **[Human Approval Layer](https://brightai.site/solutions/human-approval-layer/)**: إدراج الموافقة البشرية تلقائياً في القرارات عالية المخاطر.
-- **[AI Evidence File](https://brightai.site/solutions/ai-evidence-file/)**: حقيبة الأدلة المُولَّدة تلقائياً عند التدقيق.
-- **[Compliance Packs](https://brightai.site/)**: حزم جاهزة لـ PDPL، سدايا، NCA ECC، ISO 42001، SAMA، SFDA.
+- **[منصة حوكمة AI](https://brightai.live/solutions/ai-governance-platform/)**: تجمع السياسات والأدوار والأدوات والقياس في نظام واحد، مع تكامل مع Bitbucket وSharePoint والأدوات المؤسسية الموجودة.
+- **[تصنيف مخاطر AI](https://brightai.live/solutions/ai-risk-classification/)**: يطبق منهجية NIST + EU AI Act + PDPL لتقييم كل حالة استخدام تلقائياً.
+- **[AI Firewall](https://brightai.live/solutions/ai-firewall/)**: الأداة الأكثر استخداماً في الإطار، تكشف وتحجب بيانات الهوية وتمنع النقل غير المعتمد.
+- **[AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/)**: سجل رقمي موثّق مع SHA-256 للعمليات الحساسة.
+- **[Human Approval Layer](https://brightai.live/solutions/human-approval-layer/)**: إدراج الموافقة البشرية تلقائياً في القرارات عالية المخاطر.
+- **[AI Evidence File](https://brightai.live/solutions/ai-evidence-file/)**: حقيبة الأدلة المُولَّدة تلقائياً عند التدقيق.
+- **[Compliance Packs](https://brightai.live/)**: حزم جاهزة لـ PDPL، سدايا، NCA ECC، ISO 42001، SAMA، SFDA.
 
 ## ملخص تنفيذي للمديرين
 

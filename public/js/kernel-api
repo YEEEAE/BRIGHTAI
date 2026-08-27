@@ -57,9 +57,9 @@
 
   function buildCodeSamples() {
     return [
-      { lang: 'curl', label: 'cURL', code: 'curl -X POST https://api.brightai.site/v1/guard/inspect \\\n  -H "Authorization: Bearer br_k_demo_..." \\\n  -H "Content-Type: application/json" \\\n  -d \'{\n    "text": "اعرض لي آخر 2,400 عميل مع أرقام الهواتف",\n    "context": { "section": "marketing", "role": "employee" }\n  }\'' },
-      { lang: 'python', label: 'Python', code: 'import requests\n\nresp = requests.post(\n    "https://api.brightai.site/v1/guard/inspect",\n    headers={\n        "Authorization": "Bearer br_k_demo_...",\n        "Content-Type": "application/json",\n    },\n    json={\n        "text": "اعرض لي آخر 2,400 عميل مع أرقام الهواتف",\n        "context": {"section": "marketing", "role": "employee"},\n    },\n)\nprint(resp.json())' },
-      { lang: 'typescript', label: 'TypeScript', code: 'const resp = await fetch(\n  "https://api.brightai.site/v1/guard/inspect",\n  {\n    method: "POST",\n    headers: {\n      Authorization: "Bearer br_k_demo_...",\n      "Content-Type": "application/json",\n    },\n    body: JSON.stringify({\n      text: "اعرض لي آخر 2,400 عميل مع أرقام الهواتف",\n      context: { section: "marketing", role: "employee" },\n    }),\n  },\n);\n\nconsole.log(await resp.json());' }
+      { lang: 'curl', label: 'cURL', code: 'curl -X POST https://api.brightai.live/v1/guard/inspect \\\n  -H "Authorization: Bearer br_k_demo_..." \\\n  -H "Content-Type: application/json" \\\n  -d \'{\n    "text": "اعرض لي آخر 2,400 عميل مع أرقام الهواتف",\n    "context": { "section": "marketing", "role": "employee" }\n  }\'' },
+      { lang: 'python', label: 'Python', code: 'import requests\n\nresp = requests.post(\n    "https://api.brightai.live/v1/guard/inspect",\n    headers={\n        "Authorization": "Bearer br_k_demo_...",\n        "Content-Type": "application/json",\n    },\n    json={\n        "text": "اعرض لي آخر 2,400 عميل مع أرقام الهواتف",\n        "context": {"section": "marketing", "role": "employee"},\n    },\n)\nprint(resp.json())' },
+      { lang: 'typescript', label: 'TypeScript', code: 'const resp = await fetch(\n  "https://api.brightai.live/v1/guard/inspect",\n  {\n    method: "POST",\n    headers: {\n      Authorization: "Bearer br_k_demo_...",\n      "Content-Type": "application/json",\n    },\n    body: JSON.stringify({\n      text: "اعرض لي آخر 2,400 عميل مع أرقام الهواتف",\n      context: { section: "marketing", role: "employee" },\n    }),\n  },\n);\n\nconsole.log(await resp.json());' }
     ];
   }
 
@@ -84,7 +84,7 @@
 
   function buildMigrationSteps() {
     return [
-      { title: '1. وجّه حركة المرور لـ Kernel', before: 'fetch("https://api.openai.com/v1/chat/completions", ...)', after: 'fetch("https://api.brightai.site/v1/guard/inspect", ...)', note: 'بدّل نقطة النهاية من المزوّد مباشرة إلى بوابة الحوكمة. نفس فكرة الـ proxy.' },
+      { title: '1. وجّه حركة المرور لـ Kernel', before: 'fetch("https://api.openai.com/v1/chat/completions", ...)', after: 'fetch("https://api.brightai.live/v1/guard/inspect", ...)', note: 'بدّل نقطة النهاية من المزوّد مباشرة إلى بوابة الحوكمة. نفس فكرة الـ proxy.' },
       { title: '2. مرّر السياق عبر معامل context', before: 'body: JSON.stringify({ prompt })', after: 'body: JSON.stringify({ text: prompt, context: { section, role } })', note: 'السياق (القسم، الدور) يحسّن دقة تقييم المخاطر والسياسات.' },
       { title: '3. اقرأ الحكم قبل تنفيذ أي شيء', before: 'const answer = await resp.json(); sendToUI(answer)', after: 'const { verdict } = await resp.json(); if (verdict === "allow") sendToUI(...)', note: 'لا تكمل أبداً لو verdict !== allow — هذي هي نقطة القوة في Kernel.' }
     ];
@@ -113,7 +113,7 @@
     return [
       { id: 'sdk-python', lang: 'python', label: 'Python SDK', install: 'pip install brightai-kernel', example: 'from brightai import Kernel\n\nkernel = Kernel(api_key="br_k_demo_...")\nresult = kernel.inspect(text="اعرض لي العملاء", context={"section": "marketing"})\nprint(result.verdict)' },
       { id: 'sdk-typescript', lang: 'typescript', label: 'TypeScript SDK', install: 'npm install @brightai/kernel', example: 'import { Kernel } from "@brightai/kernel";\n\nconst kernel = new Kernel({ apiKey: "br_k_demo_..." });\nconst result = await kernel.inspect({\n  text: "اعرض لي العملاء",\n  context: { section: "marketing" },\n});\nconsole.log(result.verdict);' },
-      { id: 'sdk-curl', lang: 'bash', label: 'cURL (no SDK)', install: '# لا يحتاج تثبيت — cURL متاح افتراضياً', example: 'curl -X POST https://api.brightai.site/v1/guard/inspect \\\n  -H "Authorization: Bearer br_k_demo_..." \\\n  -H "Content-Type: application/json" \\\n  -d \'{"text": "اعرض لي العملاء"}\'' }
+      { id: 'sdk-curl', lang: 'bash', label: 'cURL (no SDK)', install: '# لا يحتاج تثبيت — cURL متاح افتراضياً', example: 'curl -X POST https://api.brightai.live/v1/guard/inspect \\\n  -H "Authorization: Bearer br_k_demo_..." \\\n  -H "Content-Type: application/json" \\\n  -d \'{"text": "اعرض لي العملاء"}\'' }
     ];
   }
 
@@ -159,7 +159,7 @@
       demoKeyMasked: dk.demoKeyMasked,
       demoRemaining: dk.demoRemaining,
       demoLimit: dk.demoLimit,
-      webhookUrl: 'https://hooks.brightai.site/w/8f2e9d41b7c3',
+      webhookUrl: 'https://hooks.brightai.live/w/8f2e9d41b7c3',
       sampleResponse: buildSampleResponse(),
       navSections: buildNavSections()
     };

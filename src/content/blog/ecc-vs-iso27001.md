@@ -1,7 +1,7 @@
 ---
 title: "ECC vs ISO 27001: الفروق والتكامل"
 description: "مقارنة عملية بين ضوابط ECC و ISO 27001 للذكاء الاصطناعي في السعودية. كيف تتكامل المعيارين في برنامج حوكمة AI."
-canonical: "https://brightai.site/blog/ecc-vs-iso27001/"
+canonical: "https://brightai.live/blog/ecc-vs-iso27001/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

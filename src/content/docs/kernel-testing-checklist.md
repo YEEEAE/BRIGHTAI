@@ -2,7 +2,7 @@
 title: "Kernel Testing Checklist: قائمة اختبار BrightAI Kernel"
 metaTitle: "Kernel Testing Checklist: قائمة اختبار BrightAI Kernel"
 description: "قائمة تحقق شاملة لاختبار BrightAI Kernel قبل الاعتماد: اختبارات الوظائف، الأمان، الأداء، والتوافق."
-canonical: "https://brightai.site/docs/kernel-testing-checklist/"
+canonical: "https://brightai.live/docs/kernel-testing-checklist/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "قائمة تحقق شاملة لاختبار BrightAI Kernel قبل الاعتماد: اختبارات الوظائف، الأمان، الأداء، والتوافق."

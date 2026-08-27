@@ -1,7 +1,7 @@
 ---
 title: "AI في التعليم السعودي: تطبيقات وحماية"
 description: "الذكاء الاصطناعي في التعليم السعودي: التعلم التكيفي، المعلم الافتراضي، وتصميم المناهج، مع ضوابط PDPL لحماية بيانات الطلاب."
-canonical: "https://brightai.site/blog/generative-ai-education-saudi/"
+canonical: "https://brightai.live/blog/generative-ai-education-saudi/"
 pubDate: "2026-05-30"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

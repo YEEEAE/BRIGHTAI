@@ -349,7 +349,7 @@ if (fatalCount > 0) {
   err(`❌ REPORT GATE FAILED — ${fatalCount} report(s) have ✅ claims without verified_production: yes.`);
   err(`To fix: add to the report frontmatter or a "Verification" section:`);
   err(`  verified_local: yes/no`);
-  err(`  verified_production: yes    # only if you ran pnpm run verify:production against live brightai.site`);
+  err(`  verified_production: yes    # only if you ran pnpm run verify:production against live brightai.live`);
   err(`  verified_production_commit: <40-char SHA>`);
   err(`  verified_production_at: <UTC timestamp>`);
   process.exit(1);

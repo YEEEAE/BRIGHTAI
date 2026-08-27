@@ -1,7 +1,7 @@
 ---
 title: "تطبيق الذكاء الاصطناعي في البنوك السعودية وفق SAMA"
 description: "دليل تطبيق الذكاء الاصطناعي في البنوك السعودية وفق SAMA: خارطة طريق تنفيذية، اختيار النماذج، دمج الضوابط، وقياس النتائج مع أمثلة عملية."
-canonical: "https://brightai.site/blog/sama-ai-implementation/"
+canonical: "https://brightai.live/blog/sama-ai-implementation/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

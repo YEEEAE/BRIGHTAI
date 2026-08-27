@@ -1,7 +1,7 @@
 ---
 title: "الذكاء الاصطناعي في القطاع العقاري السعودي"
 description: "دليل شامل لتطبيقات الذكاء الاصطناعي في السوق العقاري السعودي، يشمل التقييم، التسويق، إدارة العقارات، وخدمة العملاء، مع نصائح للامتثال والحوكمة."
-canonical: "https://brightai.site/blog/ai-real-estate-saudi/"
+canonical: "https://brightai.live/blog/ai-real-estate-saudi/"
 pubDate: "2026-04-24"
 updatedDate: "2026-04-24"
 author: "nasser-alabdullah"

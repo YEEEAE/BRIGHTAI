@@ -1,7 +1,7 @@
 ---
 title: "تكلفة تطبيق AI للشركات السعودية: دليل الأسعار"
 description: "دليل شامل لتكاليف تطبيق الذكاء الاصطناعي في الشركات السعودية، يشمل التراخيص، البنية التحتية، الكفاءات، والحوكمة، مع نصائح لتحسين العائد."
-canonical: "https://brightai.site/blog/ai-implementation-cost-saudi/"
+canonical: "https://brightai.live/blog/ai-implementation-cost-saudi/"
 pubDate: "2026-05-02"
 updatedDate: "2026-05-02"
 author: "nasser-alabdullah"

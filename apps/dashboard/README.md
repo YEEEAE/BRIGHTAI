@@ -87,7 +87,7 @@ Then visit:
 
 - **Root domain** (marketing, no auth): `http://localhost:3000`
 - **Tenant subdomain** (dashboard, needs auth): `http://acme.localhost:3000`
-  (We added `acme.brightai.site` to /etc/hosts in the seed — it works at `acme.localhost:3000` in dev.)
+  (We added `acme.brightai.live` to /etc/hosts in the seed — it works at `acme.localhost:3000` in dev.)
 - **MailHog** (dev email catcher): `http://localhost:8025`
 - **Prisma Studio** (DB inspector): `http://localhost:5555` (run `pnpm --filter @brightai/db db:studio`)
 
@@ -151,7 +151,7 @@ apps/dashboard/
 
 ## How multi-tenancy works
 
-1. Request comes in. Middleware extracts the host (`acme.brightai.site` or `client.com`).
+1. Request comes in. Middleware extracts the host (`acme.brightai.live` or `client.com`).
 2. Middleware sets `x-tenant-slug` (and `x-tenant-custom-domain` if it's not a subdomain).
 3. Middleware runs `clerkMiddleware.protect()` on every non-public route.
 4. Server components / route handlers call `getTenantFromHeaders()` → resolves the slug to an Organization.

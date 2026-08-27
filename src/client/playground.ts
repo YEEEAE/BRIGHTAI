@@ -718,9 +718,9 @@ interface PlaygroundConfig {
     const panel = $('#pg-export-panel');
     if (!panel) return;
     const payload = JSON.stringify({ prompt: r.modelInput, policies: r.packs, trace: r.trace, model: r.model ? r.model.id : 'default' });
-    const curl = `curl -X POST https://api.brightai.site/v1/govern \\n  -H "Content-Type: application/json" \\n  -d '${payload}'`;
-    const py = `import requests\n\nr = requests.post(\n    "https://api.brightai.site/v1/govern",\n    json=${payload.replace(/'/g, '"')},\n)\nprint(r.json())`;
-    const ts = `const res = await fetch("https://api.brightai.site/v1/govern", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify(${payload.replace(/'/g, '"')}),\n});\nconst data = await res.json();`;
+    const curl = `curl -X POST https://api.brightai.live/v1/govern \\n  -H "Content-Type: application/json" \\n  -d '${payload}'`;
+    const py = `import requests\n\nr = requests.post(\n    "https://api.brightai.live/v1/govern",\n    json=${payload.replace(/'/g, '"')},\n)\nprint(r.json())`;
+    const ts = `const res = await fetch("https://api.brightai.live/v1/govern", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify(${payload.replace(/'/g, '"')}),\n});\nconst data = await res.json();`;
     _exportCodes = { curl, py, ts };
     const pre = panel.querySelector('.pg-export__pre');
     const setActive = (lang: string) => {

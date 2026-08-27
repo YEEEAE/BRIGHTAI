@@ -27,12 +27,12 @@
  * Usage:
  *   import { isAllowedSitemapUrl, extractSitemapUrls, validateSitemap, validatePageCanonical } from "./sitemap-contract.mjs";
  *   const urls = extractSitemapUrls(sitemapXml);
- *   const errors = validateSitemap(urls, { baseUrl: "https://brightai.site" });
+ *   const errors = validateSitemap(urls, { baseUrl: "https://brightai.live" });
  *
  * Module is pure (no I/O) so it can be tested without filesystem mocking.
  */
 
-const BASE_URL = "https://brightai.site";
+const BASE_URL = "https://brightai.live";
 
 /**
  * URL patterns that MUST NEVER appear in the sitemap.
@@ -115,7 +115,7 @@ export const ALLOWED_REASON_BY_PATTERN = (() => {
  * validator does its own normalisation).
  *
  * Returns:
- *   "/" for the homepage (e.g. "https://brightai.site/" → "/")
+ *   "/" for the homepage (e.g. "https://brightai.live/" → "/")
  *   The pathname as-is (no auto-trailing-slash) for everything else, so
  *   that `validateSitemapUrls` can flag missing trailing slashes.
  *   null for cross-origin or malformed URLs.
@@ -248,7 +248,7 @@ export async function extractSitemapUrls(xmlText, options = {}) {
  *
  * @param {string[]} urls - List of sitemap URLs.
  * @param {object} [options]
- * @param {string} [options.baseUrl] - Site origin (default https://brightai.site).
+ * @param {string} [options.baseUrl] - Site origin (default https://brightai.live).
  * @param {RegExp[]} [options.additionalForbiddenPatterns] - Extra patterns to
  *   forbid (e.g. from a custom config).
  * @param {boolean} [options.requireTrailingSlash=true] - Require URLs to end with "/".

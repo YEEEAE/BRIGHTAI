@@ -136,7 +136,7 @@ const blogPostingLd: Record<string, unknown> = {
  * WebPage@id={post.canonical}#webpage plus a separate ORGANIZATION node
  * in @graph. Both were duplicates of the foundation nodes emitted by
  * Schema.astro (`WebPage @id={canonical}#webpage` and
- * `Organization @id=https://brightai.site/#organization`). The duplicates
+ * `Organization @id=https://brightai.live/#organization`). The duplicates
  * caused `scripts/_check-duplicate-schema-ids.mjs` to flag every blog
  * post. The speakable is now declared via `extraSpeakableSelectors` on
  * BaseLayout (`<BlogLayout ... extraSpeakableSelectors={['.article-hero__desc']} />`)

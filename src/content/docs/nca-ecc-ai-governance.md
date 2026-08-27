@@ -2,7 +2,7 @@
 title: "حوكمة الذكاء الاصطناعي وفق متطلبات NCA ECC"
 metaTitle: "حوكمة الذكاء الاصطناعي وفق NCA ECC | جاهزية الأمن السيبراني"
 description: "حوكمة الذكاء الاصطناعي وفق NCA ECC: ربط الأمن بالعمليات التشغيلية، توثيق المخاطر، وتقارير قابلة للمراجعة من فريق GRC."
-canonical: "https://brightai.site/docs/nca-ecc-ai-governance/"
+canonical: "https://brightai.live/docs/nca-ecc-ai-governance/"
 updated: "2026-07-08"
 category: "NCA"
 tldr: "حوكمة الذكاء الاصطناعي وفق NCA ECC: كيف تربط الضوابط بالأثر، تُوثّق المخاطر، وتعرض أدلة تشغيلية قابلة للمراجعة الأمنية بدل تقارير سنوية متأخرة."

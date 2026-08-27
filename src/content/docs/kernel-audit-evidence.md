@@ -2,7 +2,7 @@
 title: "Kernel Audit Evidence: إنشاء وإدارة أدلة التدقيق"
 metaTitle: "Kernel Audit Evidence: إنشاء وإدارة أدلة التدقيق"
 description: "شرح عملي لكيفية إنشاء وإدارة ملفات أدلة التدقيق في BrightAI Kernel: تجميع السجلات، التوثيق الرقمي، وتصدير الملفات للجهات التنظيمية."
-canonical: "https://brightai.site/docs/kernel-audit-evidence/"
+canonical: "https://brightai.live/docs/kernel-audit-evidence/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "شرح عملي لكيفية إنشاء وإدارة ملفات أدلة التدقيق في BrightAI Kernel: تجميع السجلات، التوثيق الرقمي، وتصدير الملفات."

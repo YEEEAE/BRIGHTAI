@@ -1,7 +1,7 @@
 ---
 title: "AI في الموارد البشرية: التوظيف الذكي بالسعودية"
 description: "دليل شامل لتطبيقات الذكاء الاصطناعي في الموارد البشرية بالسعودية، يشمل التوظيف، التدريب، تقييم الأداء، مع مراعاة PDPL ومكافحة التمييز."
-canonical: "https://brightai.site/blog/ai-hr-recruitment-saudi/"
+canonical: "https://brightai.live/blog/ai-hr-recruitment-saudi/"
 pubDate: "2026-05-06"
 updatedDate: "2026-05-06"
 author: "nasser-alabdullah"

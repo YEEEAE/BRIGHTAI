@@ -1,7 +1,7 @@
 ---
 title: "تكلفة شهادة ISO 42001 في السعودية 2026"
 description: "دليل شامل لتكلفة الحصول على شهادة ISO 42001 في السعودية: رسوم التدقيق، الاستشارات، الأدوات التقنية، والتدريب. مقارنة بين جهات المنح مع نصائح لتحسين العائد على الاستثمار."
-canonical: "https://brightai.site/blog/iso-42001-certification-cost-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-certification-cost-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

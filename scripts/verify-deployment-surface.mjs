@@ -26,7 +26,7 @@
  *   - Avoids exposing the unauthenticated test instance to the network.
  *   - The CI host is trusted; we only need to verify the Node layer
  *     behavior. Edge caching (Cloudflare) is verified separately by
- *     `verify:live:headers` against brightai.site.
+ *     `verify:live:headers` against brightai.live.
  *
  * Integration:
  *   - `pnpm run verify:deployment-surface` is the preDeployCommand on

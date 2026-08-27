@@ -89,45 +89,45 @@ test("loads loc values from sitemap XML", async () => {
     [
       '<?xml version="1.0" encoding="UTF-8"?>',
       "<urlset>",
-      "  <url><loc>https://brightai.site/</loc></url>",
-      "  <url><loc>https://brightai.site/solutions/</loc></url>",
+      "  <url><loc>https://brightai.live/</loc></url>",
+      "  <url><loc>https://brightai.live/solutions/</loc></url>",
       "</urlset>",
     ].join("\n"),
     "utf8",
   );
 
   assert.deepEqual(await loadSitemapUrls(root), [
-    "https://brightai.site/",
-    "https://brightai.site/solutions/",
+    "https://brightai.live/",
+    "https://brightai.live/solutions/",
   ]);
 });
 
 test("normalizes, deduplicates, and rejects URLs outside the site host", () => {
   assert.deepEqual(
     normalizeUrls([
-      "https://brightai.site/",
-      "https://brightai.site/solutions/",
-      "https://brightai.site/solutions/",
+      "https://brightai.live/",
+      "https://brightai.live/solutions/",
+      "https://brightai.live/solutions/",
     ]),
-    ["https://brightai.site/", "https://brightai.site/solutions/"],
+    ["https://brightai.live/", "https://brightai.live/solutions/"],
   );
 
   assert.throws(
     () => normalizeUrls(["https://example.com/"]),
-    /must belong to brightai\.site/i,
+    /must belong to brightai\.live/i,
   );
   assert.throws(
-    () => normalizeUrls(["http://brightai.site/"]),
+    () => normalizeUrls(["http://brightai.live/"]),
     /must use https/i,
   );
 });
 
 test("builds an IndexNow payload with the public key location", () => {
   const key = "e158df443f2742d281a02c4aeecb4a60";
-  assert.deepEqual(buildPayload(key, ["https://brightai.site/"]), {
-    host: "brightai.site",
+  assert.deepEqual(buildPayload(key, ["https://brightai.live/"]), {
+    host: "brightai.live",
     key,
-    keyLocation: `https://brightai.site/${key}.txt`,
-    urlList: ["https://brightai.site/"],
+    keyLocation: `https://brightai.live/${key}.txt`,
+    urlList: ["https://brightai.live/"],
   });
 });

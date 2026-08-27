@@ -1,7 +1,7 @@
 ---
 title: "حوكمة AI المصرفي وفق إطار SAMA"
 description: "دليل حوكمة الذكاء الاصطناعي المصرفي وفق إطار SAMA: الأدوار والمسؤوليات، السياسات، الرقابة الداخلية، والتدقيق لبناء برنامج حوكمة AI متكامل للبنوك السعودية."
-canonical: "https://brightai.site/blog/sama-ai-governance/"
+canonical: "https://brightai.live/blog/sama-ai-governance/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

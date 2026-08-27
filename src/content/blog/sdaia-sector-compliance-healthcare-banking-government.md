@@ -1,7 +1,7 @@
 ---
 title: "سدايا في القطاعات: تطبيق إرشادات الذكاء الاصطناعي في الصحة والبنوك والحكومة"
 description: "تطبيق إرشادات سدايا في القطاعات السعودية: الصحة (مع SFDA)، البنوك (مع SAMA)، والحكومة (مع DGA). حالات تطبيقية واقعية لكل قطاع مع الضوابط التشغيلية والمخرجات."
-canonical: "https://brightai.site/blog/sdaia-sector-compliance-healthcare-banking-government/"
+canonical: "https://brightai.live/blog/sdaia-sector-compliance-healthcare-banking-government/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

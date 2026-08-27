@@ -1,7 +1,7 @@
 ---
 title: "الأمن السيبراني المصرفي وفق SAMA لأنظمة AI"
 description: "دليل الأمن السيبراني لأنظمة الذكاء الاصطناعي في البنوك السعودية وفق SAMA و NCA ECC: حماية النماذج، فحص الطلبات، ومنع تسرب البيانات المصرفية."
-canonical: "https://brightai.site/blog/sama-cyber/"
+canonical: "https://brightai.live/blog/sama-cyber/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

@@ -1,7 +1,7 @@
 ---
 title: "الذكاء الاصطناعي في التجارة الإلكترونية السعودية"
 description: "دليل شامل لتطبيقات الذكاء الاصطناعي في التجارة الإلكترونية السعودية، يشمل التوصيات، التسعير الديناميكي، خدمة العملاء، وتحسين تجربة المتسوق."
-canonical: "https://brightai.site/blog/ai-ecommerce-saudi/"
+canonical: "https://brightai.live/blog/ai-ecommerce-saudi/"
 pubDate: "2026-05-14"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

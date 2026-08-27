@@ -2,7 +2,7 @@
 title: "Superpowers: قدرات BrightAI الإضافية"
 metaTitle: "Superpowers - قدرات BrightAI الإضافية | BrightAI"
 description: "نظرة شاملة على القدرات الإضافية في BrightAI: خطط التطوير، المواصفات التقنية، والميزات المستقبلية."
-canonical: "https://brightai.site/docs/superpowers/"
+canonical: "https://brightai.live/docs/superpowers/"
 updated: "2026-06-10"
 category: "Kernel"
 tldr: "نظرة شاملة على القدرات الإضافية في BrightAI: خطط التطوير، المواصفات التقنية، والميزات المستقبلية."

@@ -1,7 +1,7 @@
 ---
 title: "السحابة والذكاء الاصطناعي وفق متطلبات SAMA"
 description: "دليل استخدام السحابة والذكاء الاصطناعي في البنوك السعودية وفق SAMA: متطلبات سيادة البيانات، CCC، حماية البيانات المصرفية في البيئات السحابية."
-canonical: "https://brightai.site/blog/sama-cloud/"
+canonical: "https://brightai.live/blog/sama-cloud/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

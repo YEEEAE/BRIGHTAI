@@ -27,7 +27,7 @@ import { SITE } from './site';
 
 /**
  * The single canonical Organization node for BrightAI.
- * Reuses `@id: https://brightai.site/#organization` so Google can
+ * Reuses `@id: https://brightai.live/#organization` so Google can
  * resolve cross-page references (publisher, provider, founder, etc.).
  *
  * Includes: founder, address, contactPoint, sameAs, knowsAbout,
@@ -37,7 +37,7 @@ import { SITE } from './site';
  * BAI-SEO-003-S3 (2026-07-18): single source of truth for the BrightAI
  * Organization node. The Schema.astro foundation component imports this
  * constant directly so every page in the site emits the EXACT same
- * Organization @id (https://brightai.site/#organization) with no field drift.
+ * Organization @id (https://brightai.live/#organization) with no field drift.
  *
  * IMPORTANT: `sameAs` lists only verifiable social profiles owned by the
  * company. wa.me is a contact channel, not a social identity profile, so it
@@ -47,7 +47,7 @@ import { SITE } from './site';
 export const ORGANIZATION = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  '@id': 'https://brightai.site/#organization',
+  '@id': 'https://brightai.live/#organization',
   name: SITE.name,
   alternateName: SITE.nameAr,
   legalName: 'BrightAI',
@@ -63,10 +63,10 @@ export const ORGANIZATION = {
   foundingDate: '2025',
   founder: {
     '@type': 'Person',
-    '@id': 'https://brightai.site/#founder',
+    '@id': 'https://brightai.live/#founder',
     name: 'يزيد البديوي',
     jobTitle: 'المؤسس والمدير التنفيذي',
-    worksFor: { '@id': 'https://brightai.site/#organization' },
+    worksFor: { '@id': 'https://brightai.live/#organization' },
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'الرياض',
@@ -192,8 +192,8 @@ export function getLocalBusinessLd(input: LocalBusinessInput) {
       name: cityAr,
       ...(wikidataId ? { '@id': `https://www.wikidata.org/wiki/${wikidataId}` } : {}),
     },
-    provider: { '@id': 'https://brightai.site/#organization' },
-    parentOrganization: { '@id': 'https://brightai.site/#organization' },
+    provider: { '@id': 'https://brightai.live/#organization' },
+    parentOrganization: { '@id': 'https://brightai.live/#organization' },
     serviceArea: {
       '@type': 'GeoCircle',
       geoMidpoint: {
@@ -361,15 +361,15 @@ export function getFaqLd(items: FaqItem[]) {
 export const KERNEL_PRODUCT = {
   '@context': 'https://schema.org',
   '@type': ['SoftwareApplication', 'WebApplication'],
-  '@id': 'https://brightai.site/#product',
+  '@id': 'https://brightai.live/#product',
   name: 'BrightAI Kernel',
   applicationCategory: 'BusinessApplication',
   applicationSubCategory: 'AI Governance Platform',
   operatingSystem: 'Cloud, Hybrid, On-Premise, Air-Gapped',
   description:
     'نواة حوكمة الذكاء الاصطناعي للمنشآت السعودية — تدعم جاهزية الامتثال وتشغيل AI Firewall وسجل التدقيق والموافقات البشرية وملفات الأدلة. ليست استشارة قانونية.',
-  url: 'https://brightai.site/kernel/',
-  provider: { '@id': 'https://brightai.site/#organization' },
+  url: 'https://brightai.live/kernel/',
+  provider: { '@id': 'https://brightai.live/#organization' },
   featureList: [
     'AI Firewall — فحص الطلبات ومنع تسريب البيانات',
     'PII Redaction — إخفاء البيانات الشخصية تلقائياً',
@@ -387,7 +387,7 @@ export const KERNEL_PRODUCT = {
     priceCurrency: 'SAR',
     price: 0,
     availability: 'https://schema.org/InStock',
-    url: 'https://brightai.site/contact/',
+    url: 'https://brightai.live/contact/',
     description: 'تواصل عبر /contact/ للحصول على عرض سعر مخصص لحجم المنشأة',
   },
   inLanguage: 'ar-SA',
@@ -413,9 +413,9 @@ export function getWebPageLd(opts: {
     name,
     description,
     inLanguage,
-    isPartOf: { '@id': 'https://brightai.site/#website' },
-    about: { '@id': 'https://brightai.site/#organization' },
-    publisher: { '@id': 'https://brightai.site/#organization' },
+    isPartOf: { '@id': 'https://brightai.live/#website' },
+    about: { '@id': 'https://brightai.live/#organization' },
+    publisher: { '@id': 'https://brightai.live/#organization' },
     ...(breadcrumbs ? { breadcrumb: getBreadcrumbLd(breadcrumbs) } : {}),
   };
 }
@@ -619,7 +619,7 @@ export function getEventLd(input: EventInput) {
     eventAttendanceMode,
     ...(eventStatus ? { eventStatus } : {}),
     location: locationNode,
-    organizer: { '@id': 'https://brightai.site/#organization' },
+    organizer: { '@id': 'https://brightai.live/#organization' },
     inLanguage,
     ...(offers
       ? {
@@ -707,7 +707,7 @@ export function getArticleLd(input: ArticleLdInput) {
       '@id': `${SITE.url}/authors/${authorSlug}#person`,
       name: authorName,
     },
-    publisher: { '@id': 'https://brightai.site/#organization' },
+    publisher: { '@id': 'https://brightai.live/#organization' },
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': canonical,
@@ -751,7 +751,7 @@ export function getServiceLd(input: ServiceLdInput) {
     name,
     description,
     serviceType,
-    provider: { '@id': 'https://brightai.site/#organization' },
+    provider: { '@id': 'https://brightai.live/#organization' },
     areaServed,
     ...(offers
       ? {

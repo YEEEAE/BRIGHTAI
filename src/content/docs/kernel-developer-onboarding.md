@@ -2,7 +2,7 @@
 title: "Kernel Developer Onboarding: دليل مطور BrightAI Kernel"
 metaTitle: "Kernel Developer Onboarding: دليل مطور BrightAI Kernel"
 description: "دليل شامل لdevelopers الجدد على BrightAI Kernel: البيئة التقنية، بنية الكود، سير العمل، وأفضل الممارسات."
-canonical: "https://brightai.site/docs/kernel-developer-onboarding/"
+canonical: "https://brightai.live/docs/kernel-developer-onboarding/"
 updated: "2026-07-15"
 category: "Kernel"
 tldr: "دليل شامل لdevelopers الجدد على BrightAI Kernel: البيئة التقنية، بنية الكود، سير العمل، وأفضل الممارسات."

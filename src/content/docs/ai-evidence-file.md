@@ -2,7 +2,7 @@
 title: "وثائق AI Evidence File"
 metaTitle: "دليل ملف أدلة الذكاء الاصطناعي السعودية | BrightAI"
 description: "تعرف على ملف الأدلة الذي يجمع سياسات الذكاء الاصطناعي، الموافقات، وسجلات التشغيل في مكان واحد، ليسهل التدقيق الداخلي والخارجي في السعودية، بوضوح."
-canonical: "https://brightai.site/docs/ai-evidence-file/"
+canonical: "https://brightai.live/docs/ai-evidence-file/"
 updated: "2026-06-10"
 category: "General"
 tldr: "تعرف على ملف الأدلة الذي يجمع سياسات الذكاء الاصطناعي، الموافقات، وسجلات\nالتشغيل في مكان واحد، ليسهل التدقيق الداخلي والخارجي في السعودية، بوضوح."

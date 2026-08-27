@@ -1,7 +1,7 @@
 ---
 title: "كيف يدعم الذكاء الاصطناعي رؤية السعودية 2030"
 description: "شرح العلاقة بين تقنيات الذكاء الاصطناعي ومستهدفات رؤية السعودية 2030 في الاقتصاد الرقمي والحوكمة والقطاعات الحيوية. مع إحصاءات ومحاور عملية."
-canonical: "https://brightai.site/blog/ai-vision-2030-saudi/"
+canonical: "https://brightai.live/blog/ai-vision-2030-saudi/"
 pubDate: "2026-07-02"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

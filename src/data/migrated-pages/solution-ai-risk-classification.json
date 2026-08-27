@@ -2,15 +2,15 @@
   "source": "solutions/ai-risk-classification/index.html",
   "title": "تصنيف مخاطر الذكاء الاصطناعي للمنشآت | BrightAI",
   "description": "صنف استخدامات الذكاء الاصطناعي حسب حساسية البيانات والأثر التشغيلي، ثم اربط كل مستوى مخاطرة بضوابط وموافقات مناسبة للمنشآت السعودية، مع خطوة تالية واضحة.",
-  "canonical": "https://brightai.site/solutions/ai-risk-classification/",
+  "canonical": "https://brightai.live/solutions/ai-risk-classification/",
   "hreflang": [
     {
       "lang": "ar-SA",
-      "href": "https://brightai.site/solutions/ai-risk-classification/"
+      "href": "https://brightai.live/solutions/ai-risk-classification/"
     },
     {
       "lang": "x-default",
-      "href": "https://brightai.site/solutions/ai-risk-classification/"
+      "href": "https://brightai.live/solutions/ai-risk-classification/"
     }
   ],
   "jsonLd": [
@@ -22,19 +22,19 @@
           "@type": "ListItem",
           "position": 1,
           "name": "الرئيسية",
-          "item": "https://brightai.site/"
+          "item": "https://brightai.live/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "الحلول",
-          "item": "https://brightai.site/solutions/ai-governance-platform/"
+          "item": "https://brightai.live/solutions/ai-governance-platform/"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "تصنيف مخاطر الذكاء الاصطناعي",
-          "item": "https://brightai.site/solutions/ai-risk-classification/"
+          "item": "https://brightai.live/solutions/ai-risk-classification/"
         }
       ]
     },
@@ -43,14 +43,14 @@
       "@graph": [
         {
           "@type": "Organization",
-          "@id": "https://brightai.site/#organization",
+          "@id": "https://brightai.live/#organization",
           "name": "BrightAI",
           "alternateName": [
             "برايت آي",
             "Saudi AI Safety OS"
           ],
-          "url": "https://brightai.site/",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "url": "https://brightai.live/",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "areaServed": {
             "@type": "Country",
             "name": "Saudi Arabia"
@@ -77,16 +77,16 @@
               "h1"
             ]
           },
-          "@id": "https://brightai.site/solutions/ai-risk-classification/#webpage",
-          "url": "https://brightai.site/solutions/ai-risk-classification/",
+          "@id": "https://brightai.live/solutions/ai-risk-classification/#webpage",
+          "url": "https://brightai.live/solutions/ai-risk-classification/",
           "name": "تصنيف مخاطر الذكاء الاصطناعي حسب الاستخدام والبيانات | BrightAI",
           "description": "صنّف كل استخدام للذكاء الاصطناعي تلقائياً حسب درجة المخاطرة. BrightAI يحلل الاستخدام والبيانات ونوع القرار ويعطي Risk Score موثّق لكل عملية.",
           "inLanguage": "ar-SA",
           "isPartOf": {
-            "@id": "https://brightai.site/#website"
+            "@id": "https://brightai.live/#website"
           },
           "about": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -95,19 +95,19 @@
                 "@type": "ListItem",
                 "position": 1,
                 "name": "الرئيسية",
-                "item": "https://brightai.site/"
+                "item": "https://brightai.live/"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "الحلول",
-                "item": "https://brightai.site/solutions/ai-governance-platform/"
+                "item": "https://brightai.live/solutions/ai-governance-platform/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "تصنيف مخاطر الذكاء الاصطناعي",
-                "item": "https://brightai.site/solutions/ai-risk-classification/"
+                "item": "https://brightai.live/solutions/ai-risk-classification/"
               }
             ]
           }
@@ -122,10 +122,10 @@
             "Organization",
             "LocalBusiness"
           ],
-          "@id": "https://brightai.site/#organization",
+          "@id": "https://brightai.live/#organization",
           "name": "BrightAI",
-          "url": "https://brightai.site",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "url": "https://brightai.live",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "areaServed": "SA",
           "sameAs": [
             "https://x.com/brightai_sa",
@@ -150,11 +150,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
+          "@id": "https://brightai.live/#website",
+          "url": "https://brightai.live",
           "name": "BrightAI",
           "publisher": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": [
             "ar-SA",
@@ -163,45 +163,45 @@
         },
         {
           "@type": "WebPage",
-          "@id": "https://brightai.site/solutions/ai-risk-classification/#webpage",
-          "url": "https://brightai.site/solutions/ai-risk-classification/",
+          "@id": "https://brightai.live/solutions/ai-risk-classification/#webpage",
+          "url": "https://brightai.live/solutions/ai-risk-classification/",
           "name": "تصنيف مخاطر الذكاء الاصطناعي حسب الاستخدام والبيانات | BrightAI",
           "description": "صنّف كل استخدام للذكاء الاصطناعي تلقائياً حسب درجة المخاطرة. BrightAI يحلل الاستخدام والبيانات ونوع القرار ويعطي Risk Score موثّق لكل عملية.",
           "isPartOf": {
-            "@id": "https://brightai.site/#website"
+            "@id": "https://brightai.live/#website"
           },
           "about": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": "ar-SA"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://brightai.site/solutions/ai-risk-classification/#breadcrumb",
+          "@id": "https://brightai.live/solutions/ai-risk-classification/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "BrightAI",
-              "item": "https://brightai.site/"
+              "item": "https://brightai.live/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "solutions",
-              "item": "https://brightai.site/solutions/"
+              "item": "https://brightai.live/solutions/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "تصنيف مخاطر الذكاء الاصطناعي حسب الاستخدام والبيانات | BrightAI",
-              "item": "https://brightai.site/solutions/ai-risk-classification/"
+              "item": "https://brightai.live/solutions/ai-risk-classification/"
             }
           ]
         },
         {
           "@type": "FAQPage",
-          "@id": "https://brightai.site/solutions/ai-risk-classification/#faq",
+          "@id": "https://brightai.live/solutions/ai-risk-classification/#faq",
           "mainEntity": [
             {
               "@type": "Question",
@@ -258,7 +258,7 @@
     {
       "@context": "https://schema.org",
       "@type": "DefinedTermSet",
-      "@id": "https://brightai.site/#technical-ai-governance-terms",
+      "@id": "https://brightai.live/#technical-ai-governance-terms",
       "name": "BrightAI technical AI governance terms",
       "inLanguage": [
         "en",

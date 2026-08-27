@@ -1,7 +1,7 @@
 ---
 title: "حوكمة AI التوليدي: كيف تختلف عن الحوكمة التقليدية"
 description: "حوكمة GenAI تختلف عن حوكمة AI التقليدية: مواجهة الهلوسة، منع تسريب البيانات، حماية الملكية الفكرية، وتطبيق إرشادات سدايا التوليدية."
-canonical: "https://brightai.site/blog/generative-ai-governance-vs-traditional/"
+canonical: "https://brightai.live/blog/generative-ai-governance-vs-traditional/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
@@ -19,7 +19,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <div class="short-answer-box">
 
 <h3>الخلاصة السريعة</h3>
-<p>الذكاء الاصطناعي التوليدي (GenAI) — مثل ChatGPT وClaude وGemini — يخلق مخاطر فريدة لا تغطيها أطر الحوكمة التقليدية: (1) <strong>الهلوسة</strong> (Hallucination): النموذج يولّد معلومات خاطئة بثقة عالية، (2) <strong>تسريب البيانات</strong>: كل prompt يرسل البيانات للخوادم الخارجية، (3) <strong>حقوق الملكية</strong>: المخرجات قد تنتهك حقوق الغير، (4) <strong>الإفصاح</strong>: يجب إبلاغ المستخدم أن المحتوى مولد. الحوكمة التقليدية لا تكفي، تحتاج ضوابط متخصصة: [AI Firewall](https://brightai.site/solutions/ai-firewall/) يمنع التسريب، Guardrails يتحقق من المخرجات، [سجل التدقيق](https://brightai.site/solutions/ai-audit-trail/) يوثق كل عملية. [سدايا أصدرت إرشادات رسمية لـ GenAI](https://brightai.site/docs/sdaia-generative-ai-guidelines/) يجب على المنشآت السعودية الالتزام بها.</p>
+<p>الذكاء الاصطناعي التوليدي (GenAI) — مثل ChatGPT وClaude وGemini — يخلق مخاطر فريدة لا تغطيها أطر الحوكمة التقليدية: (1) <strong>الهلوسة</strong> (Hallucination): النموذج يولّد معلومات خاطئة بثقة عالية، (2) <strong>تسريب البيانات</strong>: كل prompt يرسل البيانات للخوادم الخارجية، (3) <strong>حقوق الملكية</strong>: المخرجات قد تنتهك حقوق الغير، (4) <strong>الإفصاح</strong>: يجب إبلاغ المستخدم أن المحتوى مولد. الحوكمة التقليدية لا تكفي، تحتاج ضوابط متخصصة: [AI Firewall](https://brightai.live/solutions/ai-firewall/) يمنع التسريب، Guardrails يتحقق من المخرجات، [سجل التدقيق](https://brightai.live/solutions/ai-audit-trail/) يوثق كل عملية. [سدايا أصدرت إرشادات رسمية لـ GenAI](https://brightai.live/docs/sdaia-generative-ai-guidelines/) يجب على المنشآت السعودية الالتزام بها.</p>
 
 </div>
 
@@ -49,7 +49,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 **الحل العملي**:
 - لا تعتمد على مخرج AI في الحقائق بدون التحقق من مصدر بشري مستقل.
-- طبّق [Human Approval Layer](https://brightai.site/solutions/human-approval-layer/) على المخرجات التي تُستخدم في قرارات أو محتوى منشور.
+- طبّق [Human Approval Layer](https://brightai.live/solutions/human-approval-layer/) على المخرجات التي تُستخدم في قرارات أو محتوى منشور.
 - استخدم تقنيات مثل Retrieval-Augmented Generation (RAG) لإجبار النموذج على الاستناد إلى مصادر موثوقة محددة.
 - وثّق في Prompt مستوى الثقة المرغوب ("إذا لم تكن متأكداً، قل أنك لا تعرف").
 
@@ -60,10 +60,10 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 **لماذا التسريب في GenAI أوسع**: في AI التقليدي، النموذج عادةً محلي (يعمل على خوادم المنشأة) أو في API محدد. في GenAI، الموظف يستخدم النموذج عبر واجهة سحابية عامة (chat.openai.com) أو API دون فهم كامل لمخاطر النقل. سهولة الاستخدام هي نفسها التي تجعل التسريب سهلاً.
 
 **الحل العملي**:
-- طبّق [AI Firewall](https://brightai.site/solutions/ai-firewall/) كطبقة وسيطة تكشف وتحجب البيانات الحساسة قبل الإرسال.
+- طبّق [AI Firewall](https://brightai.live/solutions/ai-firewall/) كطبقة وسيطة تكشف وتحجب البيانات الحساسة قبل الإرسال.
 - اعتمد أدوات AI مؤسسية (Enterprise plans) التي لا تستخدم البيانات للتدريب.
 - فعّل تعطيل تدريب النموذج على البيانات (Data Controls: "Improve the model for everyone" في ChatGPT).
-- استخدام نماذج محلية للبيانات الحساسة جداً (مثلاً: [نماذج سدايا السيادية](https://brightai.site/blog/saudi-ai-landscape-sdaia-humain-allam-scai/) ALLaM).
+- استخدام نماذج محلية للبيانات الحساسة جداً (مثلاً: [نماذج سدايا السيادية](https://brightai.live/blog/saudi-ai-landscape-sdaia-humain-allam-scai/) ALLaM).
 
 ### المخاطر 3: حقوق الملكية الفكرية (IP & Copyright)
 
@@ -81,13 +81,13 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 في GenAI، المستخدم النهائي (العميل، الجمهور، الموظف) قد لا يدرك أن المحتوى مولد آلياً. بدون إفصاح، يفترض أن المحتوى بشري، وهذا يؤثر على الثقة.
 
-**لماذا الإفصاح في GenAI ضروري**: المبادئ الأخلاقية لـ AI (بما فيها [مبادئ سدايا السبعة](https://brightai.site/blog/sdaia-seven-principles-practical-guide/)) تشترط الشفافية. الأنظمة في بعض القطاعات تشترط الإفصاح الصريح (مثلاً: المحتوى المُولَّد في الرعاية الصحية).
+**لماذا الإفصاح في GenAI ضروري**: المبادئ الأخلاقية لـ AI (بما فيها [مبادئ سدايا السبعة](https://brightai.live/blog/sdaia-seven-principles-practical-guide/)) تشترط الشفافية. الأنظمة في بعض القطاعات تشترط الإفصاح الصريح (مثلاً: المحتوى المُولَّد في الرعاية الصحية).
 
 **الحل العملي**:
 - ضع إفصاحاً واضحاً في أي محتوى منشور يحمل اسم المنشأة.
 - أضف علامات مائية للمحتوى المرئي.
 - أخبر المستخدم في خدمة العملاء أو الأدوات التفاعلية أنه يتحدث مع AI.
-- وثّق الاستخدام في [سجل التدقيق](https://brightai.site/solutions/ai-audit-trail/) للإثبات عند الحاجة.
+- وثّق الاستخدام في [سجل التدقيق](https://brightai.live/solutions/ai-audit-trail/) للإثبات عند الحاجة.
 
 ### المخاطر 5: الحقن والاستغلال (Prompt Injection)
 
@@ -96,7 +96,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 **الحل العملي**:
 - استخدم نماذج مؤسسية مع حماية ضد الحقن.
 - لا تربط نموذج AI بإجراءات حساسة بدون تأكيد بشري.
-- استخدم [AI Firewall](https://brightai.site/solutions/ai-firewall/) يكشف أنماط الحقن المعروفة.
+- استخدم [AI Firewall](https://brightai.live/solutions/ai-firewall/) يكشف أنماط الحقن المعروفة.
 
 ## أين تفشل أطر الحوكمة القديمة؟
 
@@ -118,7 +118,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 ### ISO 42001
 
-[ISO 42001](https://brightai.site/blog/iso-42001-saudi-implementation-guide/) يوفر نظام إدارة شامل لـ AI، لكنه:
+[ISO 42001](https://brightai.live/blog/iso-42001-saudi-implementation-guide/) يوفر نظام إدارة شامل لـ AI، لكنه:
 
 - **عام جداً**: لا يحدد ضوابط خاصة بـ GenAI.
 - **بطيء التطبيق**: يفترض عمليات تدقيق سنوية، بينما مخاطر GenAI تتطلب استجابة يومية.
@@ -138,7 +138,7 @@ PDPL يغطي البيانات الشخصية لكنه:
 
 ### 1. AI Firewall (جدار حماية AI)
 
-[AI Firewall](https://brightai.site/solutions/ai-firewall/) هو الأداة الأولى والأهم. يعمل كطبقة وسيطة بين المستخدم والنموذج:
+[AI Firewall](https://brightai.live/solutions/ai-firewall/) هو الأداة الأولى والأهم. يعمل كطبقة وسيطة بين المستخدم والنموذج:
 
 - يكشف بيانات الهوية (PII) في الـ prompt قبل الإرسال.
 - يحجب البيانات الحساسة أو يخفيها تلقائياً.
@@ -152,7 +152,7 @@ PDPL يغطي البيانات الشخصية لكنه:
 
 - التحقق من عدم احتواء المخرج على بيانات حساسة.
 - التحقق من امتثال المخرج للسياسات (اللغة، النبرة، الافصاح).
-- ربط المخرج [بقواعد عمل مؤسسية](https://brightai.site/solutions/) (مثلاً: الأسعار، السياسات الداخلية).
+- ربط المخرج [بقواعد عمل مؤسسية](https://brightai.live/solutions/) (مثلاً: الأسعار، السياسات الداخلية).
 - منع المخرجات التي تنتهك حقوق الغير أو ضوابط تنظيمية.
 
 ### 3. Human-in-the-Loop
@@ -195,7 +195,7 @@ PDPL يغطي البيانات الشخصية لكنه:
 
 ## إرشادات سدايا للذكاء الاصطناعي التوليدي
 
-[سدايا أصدرت في 2024 إرشادات رسمية لـ GenAI](https://brightai.site/docs/sdaia-generative-ai-guidelines/) في نسختين: نسخة عامة ونسخة حكومية. الإرشادات تحدد:
+[سدايا أصدرت في 2024 إرشادات رسمية لـ GenAI](https://brightai.live/docs/sdaia-generative-ai-guidelines/) في نسختين: نسخة عامة ونسخة حكومية. الإرشادات تحدد:
 
 1. **الاستخدام المسؤول**: يجب أن يكون استخدام GenAI لمصلحة المستخدم والمجتمع، مع الإفصاح والشفافية.
 2. **حماية البيانات**: عدم إدخال بيانات سرية أو شخصية في نماذج غير معتمدة.
@@ -223,15 +223,15 @@ PDPL يغطي البيانات الشخصية لكنه:
 
 ### الأسبوع 3-4: السياسات والضوابط
 
-- اعتماد [سياسة استخدام AI](https://brightai.site/blog/ai-usage-policy-template-saudi/) بند بند.
+- اعتماد [سياسة استخدام AI](https://brightai.live/blog/ai-usage-policy-template-saudi/) بند بند.
 - اعتماد سياسات خاصة بـ GenAI.
 - تحديد القائمة المعتمدة من نماذج GenAI.
 - تخصيص الأدوات.
 
 ### الأسبوع 5-6: الأدوات التقنية
 
-- تفعيل [AI Firewall](https://brightai.site/solutions/ai-firewall/) لمنع التسريب واكتشاف PII.
-- تفعيل [AI Audit Trail](https://brightai.site/solutions/ai-audit-trail/) لتوثيق كل عملية.
+- تفعيل [AI Firewall](https://brightai.live/solutions/ai-firewall/) لمنع التسريب واكتشاف PII.
+- تفعيل [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/) لتوثيق كل عملية.
 - تفعيل Human-in-the-Loop للقرارات المؤثرة.
 - ربط الأدوات بالأنظمة المؤسسية.
 
@@ -246,22 +246,22 @@ PDPL يغطي البيانات الشخصية لكنه:
 
 - مراجعة المؤشرات شهرياً.
 - اختبار النماذج ربع سنوياً (انحياز، هلوسة).
-- تحديث السياسات عند تغير [إرشادات سدايا](https://brightai.site/blog/sdaia-generative-ai-guidelines-practical-compliance/).
+- تحديث السياسات عند تغير [إرشادات سدايا](https://brightai.live/blog/sdaia-generative-ai-guidelines-practical-compliance/).
 - إعادة تقييم الأدوات المعتمدة مع تطور السوق.
 
 ## كيف يدعم BrightAI حوكمة GenAI؟
 
-منصة [BrightAI للحوكمة](https://brightai.site/solutions/ai-governance-platform/) تترجم إرشادات سدايا التوليدية إلى ضوابط تقنية جاهزة:
+منصة [BrightAI للحوكمة](https://brightai.live/solutions/ai-governance-platform/) تترجم إرشادات سدايا التوليدية إلى ضوابط تقنية جاهزة:
 
-- **[AI Firewall](https://brightai.site/solutions/ai-firewall/)** يكشف PII ويسربها ويحجب الإرسال غير المعتمد.
-- **[AI Audit Trail](https://brightai.site/solutions/ai-audit-trail/)** يوثق كل prompt ومخرج للبصمة الرقمية.
-- **[Human Approval Layer](https://brightai.site/solutions/human-approval-layer/)** يفرض مراجعة بشرية للقرارات عالية المخاطر.
-- **[AI Evidence File](https://brightai.site/solutions/ai-evidence-file/)** يجمع الأدلة لإثبات الالتزام بالإرشادات.
-- **حزم امتثال خاصة بـ GenAI** تربط الضوابط التقنية بمتطلبات [سدايا](https://brightai.site/blog/sdaia-seven-principles-practical-guide/) و PDPL.
+- **[AI Firewall](https://brightai.live/solutions/ai-firewall/)** يكشف PII ويسربها ويحجب الإرسال غير المعتمد.
+- **[AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/)** يوثق كل prompt ومخرج للبصمة الرقمية.
+- **[Human Approval Layer](https://brightai.live/solutions/human-approval-layer/)** يفرض مراجعة بشرية للقرارات عالية المخاطر.
+- **[AI Evidence File](https://brightai.live/solutions/ai-evidence-file/)** يجمع الأدلة لإثبات الالتزام بالإرشادات.
+- **حزم امتثال خاصة بـ GenAI** تربط الضوابط التقنية بمتطلبات [سدايا](https://brightai.live/blog/sdaia-seven-principles-practical-guide/) و PDPL.
 
 ## ملخص تنفيذي للمديرين
 
-الذكاء الاصطناعي التوليدي يخلق مخاطر فريدة لا تغطيها أطر الحوكمة التقليدية. الهلوسة، تسريب البيانات، حقوق الملكية، الإفصاح — كل واحدة تحتاج ضوابط متخصصة. الحوكمة التقليدية (لوائح AI، أمن المعلومات) شرط ضروري لكنه غير كافٍ. تحتاج حوكمة GenAI مخصصة: AI Firewall للحماية، Guardrails للمخرجات، Human-in-the-Loop للقرارات، سجل تدقيق كامل، تصنيف مخاطر خاص. [سدايا أصدرت إرشادات رسمية](https://brightai.site/docs/sdaia-generative-ai-guidelines/) يجب الالتزام بها. المنشآت السعودية التي ستقود السوق في 2027-2030 هي التي تطبق حوكمة GenAI الآن، قبل أن تفرضها الأنظمة أو تُجبرها الحوادث.
+الذكاء الاصطناعي التوليدي يخلق مخاطر فريدة لا تغطيها أطر الحوكمة التقليدية. الهلوسة، تسريب البيانات، حقوق الملكية، الإفصاح — كل واحدة تحتاج ضوابط متخصصة. الحوكمة التقليدية (لوائح AI، أمن المعلومات) شرط ضروري لكنه غير كافٍ. تحتاج حوكمة GenAI مخصصة: AI Firewall للحماية، Guardrails للمخرجات، Human-in-the-Loop للقرارات، سجل تدقيق كامل، تصنيف مخاطر خاص. [سدايا أصدرت إرشادات رسمية](https://brightai.live/docs/sdaia-generative-ai-guidelines/) يجب الالتزام بها. المنشآت السعودية التي ستقود السوق في 2027-2030 هي التي تطبق حوكمة GenAI الآن، قبل أن تفرضها الأنظمة أو تُجبرها الحوادث.
 
 ## أسئلة شائعة حول حوكمة الذكاء الاصطناعي التوليدي
 
@@ -275,7 +275,7 @@ PDPL يغطي البيانات الشخصية لكنه:
 
 **ما هي أهم أداة لـ GenAI Governance؟**
 
-لا توجد أداة واحدة، لكن [AI Firewall](https://brightai.site/solutions/ai-firewall/) هو الأكثر أثراً وفورية. يمنع تسريب البيانات قبل حدوثه، ويسجل كل محاولة، ويفرض السياسات على مستوى الشبكة. بدون AI Firewall، كل الحوكمة الأخرى تبقى نظرية. الأدوات الأخرى (Guardrails، Human-in-the-Loop، Audit Trail) تُبنى حوله.
+لا توجد أداة واحدة، لكن [AI Firewall](https://brightai.live/solutions/ai-firewall/) هو الأكثر أثراً وفورية. يمنع تسريب البيانات قبل حدوثه، ويسجل كل محاولة، ويفرض السياسات على مستوى الشبكة. بدون AI Firewall، كل الحوكمة الأخرى تبقى نظرية. الأدوات الأخرى (Guardrails، Human-in-the-Loop، Audit Trail) تُبنى حوله.
 
 **كم يستغرق تطبيق حوكمة GenAI؟**
 

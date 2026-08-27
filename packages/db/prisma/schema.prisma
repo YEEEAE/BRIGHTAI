@@ -902,7 +902,7 @@ model Domain {
   sslIssuedAt       DateTime?
   sslExpiresAt      DateTime?
   // CNAME
-  cnameTarget       String       @default("proxy.brightai.site")
+  cnameTarget       String       @default("proxy.brightai.live")
   // Primary flag (only one per org)
   isPrimary         Boolean      @default(false)
   // Timestamps

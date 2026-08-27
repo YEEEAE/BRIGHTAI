@@ -266,8 +266,18 @@ async function main() {
     netlifyRedirects += `# BRIGHTAI - Static Redirects Configuration (AUTO-GENERATED DO NOT EDIT)\n`;
     netlifyRedirects += `# Source: redirects.json\n`;
     netlifyRedirects += `# ==============================================================================\n\n`;
-    netlifyRedirects += `http://brightai.site/*        https://brightai.site/:splat  301\n`;
-    netlifyRedirects += `https://www.brightai.site/*    https://brightai.site/:splat  301\n\n`;
+    // Canonical host normalization: HTTPS + non-www on the production domain.
+    netlifyRedirects += `http://brightai.live/*        https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `http://www.brightai.live/*    https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `https://www.brightai.live/*    https://brightai.live/:splat  301\n`;
+    // Legacy domain migration (brightai.site → brightai.live). Single hop per
+    // request — every legacy variant points straight at the canonical host so
+    // no redirect chain is created. :splat preserves path; query is preserved
+    // by the redirect engine.
+    netlifyRedirects += `http://brightai.site/*        https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `https://brightai.site/*        https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `http://www.brightai.site/*    https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `https://www.brightai.site/*    https://brightai.live/:splat  301\n\n`;
 
     for (const r of redirects) {
       netlifyRedirects += `${r.from} ${r.to} ${r.status || 301}\n`;

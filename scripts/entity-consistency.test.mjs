@@ -11,11 +11,11 @@ const llms = fs.readFileSync('public/llms.txt', 'utf8');
 const llmsFull = fs.readFileSync('public/llms-full.txt', 'utf8');
 const publicSchema = JSON.parse(fs.readFileSync('public/schema-saudi-seo.json', 'utf8'));
 
-const organization = publicSchema['@graph'].find((node) => node['@id'] === 'https://brightai.site/#organization');
+const organization = publicSchema['@graph'].find((node) => node['@id'] === 'https://brightai.live/#organization');
 assert.ok(organization, 'public schema must expose the canonical Organization node');
 assert.equal(organization['@type'], 'Organization');
-assert.equal(organization.url, 'https://brightai.site');
-assert.equal(organization.logo.url, 'https://brightai.site/assets/images/logo.png');
+assert.equal(organization.url, 'https://brightai.live');
+assert.equal(organization.logo.url, 'https://brightai.live/assets/images/logo.png');
 assert.equal(organization.description, 'BrightAI is a Saudi AI governance and safety platform for organizations in Saudi Arabia.');
 assert.deepEqual(organization.sameAs, [
   'https://x.com/brightai_sa',

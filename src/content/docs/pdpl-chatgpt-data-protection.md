@@ -2,7 +2,7 @@
 title: "ChatGPT في المنشآت السعودية: دليل PDPL لحماية البيانات"
 metaTitle: "ChatGPT والبيانات الشخصية في السعودية: دليل PDPL | BrightAI"
 description: "دليل ChatGPT بالعربي لاستخدام أدوات الذكاء الاصطناعي في المنشآت السعودية بدون تسريب بيانات شخصية، مع ضوابط PDPL واضحة وفحص PII وموافقة بشرية وسجل تدقيق."
-canonical: "https://brightai.site/docs/pdpl-chatgpt-data-protection/"
+canonical: "https://brightai.live/docs/pdpl-chatgpt-data-protection/"
 updated: "2026-08-24"
 category: "PDPL"
 tldr: "دليل ChatGPT بالعربي لاستخدام أدوات الذكاء الاصطناعي في المنشآت السعودية بدون تسريب بيانات شخصية، مع ضوابط PDPL واضحة وفحص PII وموافقة بشرية وسجل تدقيق."

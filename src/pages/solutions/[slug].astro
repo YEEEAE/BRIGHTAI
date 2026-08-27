@@ -68,7 +68,7 @@ const serviceLd = getServiceLd({
   serviceType: solution.h1.split('(')[0].trim(),
   areaServed: 'Saudi Arabia',
   offers: {
-    url: 'https://brightai.site/contact/',
+    url: 'https://brightai.live/contact/',
     description: 'تواصل عبر /contact/ للحصول على عرض توضيحي مخصص لحجم المنشأة',
   },
 });
@@ -88,7 +88,7 @@ const jsonLd = {
  * pages contains Organization / WebSite / LocalBusiness / WebPage /
  * BreadcrumbList nodes that DUPLICATE the foundation Schema.astro
  * emission. Without stripping them, the merged @graph would carry
- * `https://brightai.site/#organization` 2-3× per page (verified via
+ * `https://brightai.live/#organization` 2-3× per page (verified via
  * scripts/_check-duplicate-schema-ids.mjs). This helper mirrors the
  * stripping used in /solutions/[sector].astro and /solutions/[sector]/[city].astro.
  */
@@ -559,7 +559,7 @@ const firewallDlpRows = [
           <span class="product-mockup__dot"></span>
           <span class="product-mockup__dot"></span>
           <span class="product-mockup__dot"></span>
-          <span class="product-mockup__url">kernel.brightai.site/solutions/{solution.slug}/</span>
+          <span class="product-mockup__url">kernel.brightai.live/solutions/{solution.slug}/</span>
         </div>
         <div class="product-mockup__panel">
           {mockupRows.map(row => (

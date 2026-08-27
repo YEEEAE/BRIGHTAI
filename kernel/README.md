@@ -52,7 +52,7 @@ Kernel هي طبقة الحوكمة والأمان بين المستخدم ون�
 ## الأمان
 
 - **API keys**: تُقرأ من `process.env` في وقت التشغيل (runtime) — مو في وقت البناء (build time).
-- **Origin allowlist**: `https://brightai.site`, `localhost:4321`.
+- **Origin allowlist**: `https://brightai.live`, `localhost:4321`.
 - **API key auth** (اختياري): `x-brightai-chat-key` header.
 - **AI Firewall (K3)**: يكشف PII قبل وصول الطلب للنموذج. يمنع: SAUDI_ID, IQAMA, IBAN, CREDENTIAL, PATIENT_ID.
 - **Rate limiting**: K4 quota layer (Redis-backed).

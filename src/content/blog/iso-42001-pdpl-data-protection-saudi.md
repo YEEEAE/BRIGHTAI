@@ -1,7 +1,7 @@
 ---
 title: "دمج ISO 42001 مع PDPL: حوكمة AI وحماية البيانات"
 description: "دليل دمج ISO 42001 مع نظام حماية البيانات الشخصية (PDPL) في المؤسسات السعودية. مصفوفة ربط شاملة لتغطية متطلبات AI وحماية البيانات في نظام واحد."
-canonical: "https://brightai.site/blog/iso-42001-pdpl-data-protection-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-pdpl-data-protection-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

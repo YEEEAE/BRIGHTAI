@@ -1,7 +1,7 @@
 ---
 title: "تدقيق الامتثال لـ PDPL في أنظمة الذكاء الاصطناعي"
 description: "دليل تدقيق الامتثال للائحة السعودية لحماية البيانات الشخصية في أنظمة الذكاء الاصطناعي. قائمة فحص شاملة للمدققين."
-canonical: "https://brightai.site/blog/pdpl-audit/"
+canonical: "https://brightai.live/blog/pdpl-audit/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

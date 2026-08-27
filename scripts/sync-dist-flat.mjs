@@ -63,7 +63,7 @@
  * ─────────────────────────────────────────────────────────────────────
  * BAI-DEPLOY-12 (2026-07-28) — RETAIN _headers + _redirects for Static Site
  * ─────────────────────────────────────────────────────────────────────
- * brightai.site is deployed on Render as a STATIC SITE service (not a
+ * brightai.live is deployed on Render as a STATIC SITE service (not a
  * Node Web Service — verified 2026-07-28 via rndr-id + 404 on /api/*).
  * The original exclusion of `/_headers` and `/_redirects` was based on
  * the assumption that the Node Web Service runtime ignores them
@@ -79,7 +79,7 @@
  * via CNAME setup) and the underlying nameservers, which an attacker
  * could correlate with subdomain-takeover or DNS-rebinding reconnaissance.
  * It is never used by Render Static Site for serving — only by the
- * GitHub Pages deploy flow which is not in scope for brightai.site.
+ * GitHub Pages deploy flow which is not in scope for brightai.live.
  *
  * The runtime `src/server/deny-list.mjs` (deployed as
  * `dist/server/_deny-list.mjs` and wired into `dist/server/entry.mjs` via

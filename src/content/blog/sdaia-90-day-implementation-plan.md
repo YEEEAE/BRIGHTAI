@@ -1,7 +1,7 @@
 ---
 title: "خطة 90 يوم لتطبيق إرشادات سدايا في منشأتك"
 description: "خطة تطبيق إرشادات سدايا للذكاء الاصطناعي خلال 90 يوم: تقييم، سياسات، ضوابط، اختبار، إطلاق. دليل عملي خطوة بخطوة للمنشآت السعودية لتحقيق الامتثال لسدايا."
-canonical: "https://brightai.site/blog/sdaia-90-day-implementation-plan/"
+canonical: "https://brightai.live/blog/sdaia-90-day-implementation-plan/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

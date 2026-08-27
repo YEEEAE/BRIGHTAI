@@ -5,21 +5,21 @@ Last reviewed: 2026-08-24
 
 ## Canonical high-value pages
 
-- [AI Governance Hub](https://brightai.site/hub/ai-governance/): Saudi-enterprise governance owner; roles, risk, controls, evidence, and official-source context.
-- [SDAIA AI Risk Guide](https://brightai.site/hub/sdaia-ai-risk-management/): Explains the national AI risk-management framework and separates the official reference from BrightAI operating guidance.
-- [Agentic AI Security](https://brightai.site/hub/agentic-ai-security/): Security boundaries for agent identity, tool permissions, data, prompt safety, monitoring, and incident evidence.
-- [Agentic AI Governance](https://brightai.site/hub/agentic-ai-governance/): Ownership, approvals, lifecycle, and evidence for AI agents.
-- [AI Governance Platform](https://brightai.site/solutions/ai-governance-platform/): BrightAI product page for connecting policy, risk, control, enforcement, and evidence.
-- [AI Firewall](https://brightai.site/solutions/ai-firewall/): BrightAI product page for policy checks on configured AI interactions; it does not guarantee prevention or compliance.
-- [PDPL and AI Guide](https://brightai.site/docs/pdpl-ai-complete-guide/): Saudi data-protection guide with an official-source panel and implementation boundary.
-- [NCA Cybersecurity Guide](https://brightai.site/blog/nca-cybersecurity-requirements-saudi/): NCA cybersecurity context for AI systems; consult the official controls for applicability.
-- [ISO/IEC 42001 Guide](https://brightai.site/blog/iso-42001-saudi-implementation-guide/): AIMS implementation guide with ISO as the primary source.
-- [Banking AI Governance — Riyadh](https://brightai.site/solutions/banking-ai-governance/riyadh/): Saudi banking context, including SAMA reference and human-review/evidence patterns.
-- [AI Governance Readiness Assessment](https://brightai.site/assessment/ai-governance-readiness/): Browser-local, indicative eight-dimension diagnostic; not a regulatory finding or certification.
+- [AI Governance Hub](https://brightai.live/hub/ai-governance/): Saudi-enterprise governance owner; roles, risk, controls, evidence, and official-source context.
+- [SDAIA AI Risk Guide](https://brightai.live/hub/sdaia-ai-risk-management/): Explains the national AI risk-management framework and separates the official reference from BrightAI operating guidance.
+- [Agentic AI Security](https://brightai.live/hub/agentic-ai-security/): Security boundaries for agent identity, tool permissions, data, prompt safety, monitoring, and incident evidence.
+- [Agentic AI Governance](https://brightai.live/hub/agentic-ai-governance/): Ownership, approvals, lifecycle, and evidence for AI agents.
+- [AI Governance Platform](https://brightai.live/solutions/ai-governance-platform/): BrightAI product page for connecting policy, risk, control, enforcement, and evidence.
+- [AI Firewall](https://brightai.live/solutions/ai-firewall/): BrightAI product page for policy checks on configured AI interactions; it does not guarantee prevention or compliance.
+- [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/): Saudi data-protection guide with an official-source panel and implementation boundary.
+- [NCA Cybersecurity Guide](https://brightai.live/blog/nca-cybersecurity-requirements-saudi/): NCA cybersecurity context for AI systems; consult the official controls for applicability.
+- [ISO/IEC 42001 Guide](https://brightai.live/blog/iso-42001-saudi-implementation-guide/): AIMS implementation guide with ISO as the primary source.
+- [Banking AI Governance — Riyadh](https://brightai.live/solutions/banking-ai-governance/riyadh/): Saudi banking context, including SAMA reference and human-review/evidence patterns.
+- [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/): Browser-local, indicative eight-dimension diagnostic; not a regulatory finding or certification.
 
 ## Entity and access
 
-- [BrightAI](https://brightai.site/): Saudi AI governance and safety platform.
-- [Contact](https://brightai.site/contact/): Contact BrightAI.
-- [Organization schema](https://brightai.site/schema-saudi-seo.json): Canonical entity data.
-- [robots.txt](https://brightai.site/robots.txt): Public crawler policy.
+- [BrightAI](https://brightai.live/): Saudi AI governance and safety platform.
+- [Contact](https://brightai.live/contact/): Contact BrightAI.
+- [Organization schema](https://brightai.live/schema-saudi-seo.json): Canonical entity data.
+- [robots.txt](https://brightai.live/robots.txt): Public crawler policy.

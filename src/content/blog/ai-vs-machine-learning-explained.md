@@ -1,7 +1,7 @@
 ---
 title: "الفرق بين الذكاء الاصطناعي والتعلم الآلي والعميق"
 description: "ما الفرق بين الذكاء الاصطناعي AI، والتعلم الآلي ML، والتعلم العميق؟ شرح مبسط مع أمثلة عملية في الشركات السعودية."
-canonical: "https://brightai.site/blog/ai-vs-machine-learning-explained/"
+canonical: "https://brightai.live/blog/ai-vs-machine-learning-explained/"
 pubDate: "2026-04-28"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"

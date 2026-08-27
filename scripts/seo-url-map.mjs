@@ -1,6 +1,6 @@
 import path from "node:path";
 
-const BASE_URL = "https://brightai.site";
+const BASE_URL = "https://brightai.live";
 const DEFAULT_COUNTERPART_OPTIONS = Object.freeze({});
 
 const ROOT_INDEX_DIRS = new Set([

@@ -2,7 +2,7 @@
 title: "Kernel Playground: ملعب الحوكمة التفاعلي في BrightAI Kernel"
 metaTitle: "Kernel Playground: ملعب الحوكمة التفاعلي في BrightAI Kernel"
 description: "دليل ملعب Kernel التفاعلي: جرّب حوكمة الذكاء الاصطناعي على طلباتك الخاصة مع 6 مراحل خط أنابيب حية، فحص PII، تقييم مخاطر، وتطبيق سياسات — بدون إرسال بيانات لأي نموذج خارجي."
-canonical: "https://brightai.site/docs/kernel-playground/"
+canonical: "https://brightai.live/docs/kernel-playground/"
 updated: "2026-07-31"
 category: "Kernel"
 tldr: "الملعب أداة تفاعلية داخل Kernel لتجربة حوكمة الذكاء الاصطناعي على طلباتك الخاصة: 6 مراحل خط أنابيب حية (استلام، فحص PII، تقييم مخاطر، مطابقة سياسات، استدعاء نموذج، توليد دليل) مع تظليل PII و11 سياسة وكتاب 20 وصفة."

@@ -47,7 +47,7 @@ const KERNEL_DIR = join(ROOT, 'src', 'pages', 'kernel');
 const OUT_HTML = join(ROOT, 'brightai-audit-reports', 'brightai-audit-report-v4-champion.html');
 
 const RENDER_BLOCKER =
-  'KI-RENDER-CACHE-2026-07-28-001: brightai.site كله 404 بسبب Render Static Site persistent-storage blocker. أي measurement مباشر على brightai.site يفشل إلى أن يتم Manual Deploy → Clear build cache من Render Dashboard.';
+  'KI-RENDER-CACHE-2026-07-28-001: brightai.live كله 404 بسبب Render Static Site persistent-storage blocker. أي measurement مباشر على brightai.live يفشل إلى أن يتم Manual Deploy → Clear build cache من Render Dashboard.';
 
 const KERNEL_PAGES = [
   'chat.astro', 'audit.astro', 'approvals.astro', 'evidence.astro', 'policies.astro',
@@ -389,7 +389,7 @@ function buildHTML(data) {
 
   // Executive summary (3 paragraphs, Saudi dialect)
   const execSummary = `
-    <p><strong>وضع المشروع بعد CHAMPION-01..03:</strong> الكيرنل قفز من <span class="delta-up">26/100</span> إلى <span class="delta-up">100/100</span> في درجة الـ Mobile Championship — يعني كل صفحات الـ kernel الـ 11 صارت تملك empty state + skeleton + mobile-first + RTL logical properties + touch targets ≥44px. هذا تحسّن جبّاري خلّى الـ Kernel Championship جاهز محلياً. لكن كل القياسات على الإنتاج محظورة (blocker) لأن <code>brightai.site</code> كله يرجع 404 بسبب مشكلة Render Static Site، فأي verification مباشر يفشل إلى أن يصير Manual Deploy.</p>
+    <p><strong>وضع المشروع بعد CHAMPION-01..03:</strong> الكيرنل قفز من <span class="delta-up">26/100</span> إلى <span class="delta-up">100/100</span> في درجة الـ Mobile Championship — يعني كل صفحات الـ kernel الـ 11 صارت تملك empty state + skeleton + mobile-first + RTL logical properties + touch targets ≥44px. هذا تحسّن جبّاري خلّى الـ Kernel Championship جاهز محلياً. لكن كل القياسات على الإنتاج محظورة (blocker) لأن <code>brightai.live</code> كله يرجع 404 بسبب مشكلة Render Static Site، فأي verification مباشر يفشل إلى أن يصير Manual Deploy.</p>
 
     <p><strong>الفجوة نحو الأول في السعودية:</strong> العمود الفقري اللي يفصلنا عن المركز الأول في نتائج بحث السعودية هو <span class="tag t-red">الـ Saudi Championship</span> و <span class="tag t-red">Gemini live</span>. Gemini للحين 0 → 0 في كل الـ runs (ما ربطناه بـ <code>GEMINI_API_KEY</code> على Render)، وموضعنا في نتائج بحث السعودية غير مُقاس نهائياً لأن ما عندنا GSC integration. الـ kernel حالياً demo-only (11 صفحة ببيانات وهمية، real: 0) — لازم نربطه ببيانات حقيقية عشان يصير منتج فعلي ينافس.</p>
 
@@ -566,7 +566,7 @@ footer{color:var(--muted);margin-top:20px;font-size:8pt;text-align:center;border
 
 <section class="pagebreak">
   <h2>🧪 جدول تحقّق curl لكل CHAMPION prompt</h2>
-  <p class="small">قياس حي (best-effort) على https://brightai.site وقت التوليد. كل النتائج متأثرة بالـ Render blocker (متوقّع FAIL/404 على المسارات المنشورة).</p>
+  <p class="small">قياس حي (best-effort) على https://brightai.live وقت التوليد. كل النتائج متأثرة بالـ Render blocker (متوقّع FAIL/404 على المسارات المنشورة).</p>
   <table>
     <tr><th>المسار</th><th>المتوقّع</th><th>الفعلي</th><th>ملاحظة</th></tr>
     ${curlRows}
@@ -648,7 +648,7 @@ function main() {
     if (path.includes('POST')) {
       liveProbes[path] = 'POST';
     } else {
-      liveProbes[path] = probe('https://brightai.site' + path);
+      liveProbes[path] = probe('https://brightai.live' + path);
     }
   }
 

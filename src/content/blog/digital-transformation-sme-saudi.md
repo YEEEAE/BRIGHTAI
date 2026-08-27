@@ -1,7 +1,7 @@
 ---
 title: "التحول الرقمي للشركات الصغيرة بالسعودية"
 description: "دليل عملي للتحول الرقمي للشركات الصغيرة والمتوسطة في السعودية، يشمل المراحل، التحديات، والفرص، مع نصائح للامتثال لـ PDPL ودعم رؤية 2030."
-canonical: "https://brightai.site/blog/digital-transformation-sme-saudi/"
+canonical: "https://brightai.live/blog/digital-transformation-sme-saudi/"
 pubDate: "2026-06-16"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

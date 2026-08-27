@@ -1,7 +1,7 @@
 ---
 title: "حوكمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية (PDPL)"
 description: "دليل حوكمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية. كيف تحمي بيانات المتعاملين في أنظمة AI."
-canonical: "https://brightai.site/blog/pdpl-ai/"
+canonical: "https://brightai.live/blog/pdpl-ai/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

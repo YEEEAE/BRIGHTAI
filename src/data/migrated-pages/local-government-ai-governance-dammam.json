@@ -2,15 +2,15 @@
   "source": "solutions/government-ai-governance/dammam/index.html",
   "title": "حوكمة AI للجهات الحكومية في الدمام | PDPL وDGA | BrightAI",
   "description": "BrightAI يساعد الجهات الحكومية وشبه الحكومية في الدمام والمنطقة الشرقية على حوكمة الذكاء الاصطناعي، حماية بيانات المستفيدين، وتجهيز أدلة امتثال.",
-  "canonical": "https://brightai.site/solutions/government-ai-governance/dammam/",
+  "canonical": "https://brightai.live/solutions/government-ai-governance/dammam/",
   "hreflang": [
     {
       "lang": "ar-SA",
-      "href": "https://brightai.site/solutions/government-ai-governance/dammam/"
+      "href": "https://brightai.live/solutions/government-ai-governance/dammam/"
     },
     {
       "lang": "x-default",
-      "href": "https://brightai.site/solutions/government-ai-governance/dammam/"
+      "href": "https://brightai.live/solutions/government-ai-governance/dammam/"
     }
   ],
   "jsonLd": [
@@ -19,11 +19,11 @@
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#service",
+          "@id": "https://brightai.live/solutions/government-ai-governance/dammam/#service",
           "name": "حوكمة الذكاء الاصطناعي للجهات الحكومية في الدمام",
           "serviceType": "Government AI Governance",
           "provider": {
-            "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#local-business"
+            "@id": "https://brightai.live/solutions/government-ai-governance/dammam/#local-business"
           },
           "areaServed": {
             "@type": "City",
@@ -44,14 +44,14 @@
             "ProfessionalService",
             "Service"
           ],
-          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#professional-service",
+          "@id": "https://brightai.live/solutions/government-ai-governance/dammam/#professional-service",
           "name": "BrightAI - Government AI Governance Dammam",
           "alternateName": "برايت آي لحوكمة الذكاء الاصطناعي في الدمام",
-          "url": "https://brightai.site/solutions/government-ai-governance/dammam/",
+          "url": "https://brightai.live/solutions/government-ai-governance/dammam/",
           "telephone": "+966-538-229-013",
           "email": "yazeed1job@gmail.com",
-          "image": "https://brightai.site/assets/images/og/brightai-og-1200x630.png",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "image": "https://brightai.live/assets/images/og/brightai-og-1200x630.png",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "priceRange": "SAR 20,000-120,000+",
           "geo": {
             "@type": "GeoCoordinates",
@@ -94,31 +94,31 @@
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#breadcrumb",
+          "@id": "https://brightai.live/solutions/government-ai-governance/dammam/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "الرئيسية",
-              "item": "https://brightai.site/"
+              "item": "https://brightai.live/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "الحلول",
-              "item": "https://brightai.site/solutions/"
+              "item": "https://brightai.live/solutions/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "حوكمة AI الحكومية",
-              "item": "https://brightai.site/solutions/government-ai-governance/"
+              "item": "https://brightai.live/solutions/government-ai-governance/"
             },
             {
               "@type": "ListItem",
               "position": 4,
               "name": "الدمام",
-              "item": "https://brightai.site/solutions/government-ai-governance/dammam/"
+              "item": "https://brightai.live/solutions/government-ai-governance/dammam/"
             }
           ]
         }
@@ -132,10 +132,10 @@
             "Organization",
             "LocalBusiness"
           ],
-          "@id": "https://brightai.site/#organization",
+          "@id": "https://brightai.live/#organization",
           "name": "BrightAI",
-          "url": "https://brightai.site",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "url": "https://brightai.live",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "areaServed": "SA",
           "sameAs": [],
           "address": {
@@ -148,11 +148,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
+          "@id": "https://brightai.live/#website",
+          "url": "https://brightai.live",
           "name": "BrightAI",
           "publisher": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": [
             "ar-SA",
@@ -161,51 +161,51 @@
         },
         {
           "@type": "WebPage",
-          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#webpage",
-          "url": "https://brightai.site/solutions/government-ai-governance/dammam/",
+          "@id": "https://brightai.live/solutions/government-ai-governance/dammam/#webpage",
+          "url": "https://brightai.live/solutions/government-ai-governance/dammam/",
           "name": "حوكمة AI للجهات الحكومية في الدمام | PDPL وDGA | BrightAI",
           "description": "BrightAI يساعد الجهات الحكومية وشبه الحكومية في الدمام والمنطقة الشرقية على حوكمة الذكاء الاصطناعي، حماية بيانات المستفيدين، وتجهيز أدلة امتثال.",
           "isPartOf": {
-            "@id": "https://brightai.site/#website"
+            "@id": "https://brightai.live/#website"
           },
           "about": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": "ar-SA"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#breadcrumb",
+          "@id": "https://brightai.live/solutions/government-ai-governance/dammam/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "BrightAI",
-              "item": "https://brightai.site/"
+              "item": "https://brightai.live/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "solutions",
-              "item": "https://brightai.site/solutions/"
+              "item": "https://brightai.live/solutions/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "government ai governance",
-              "item": "https://brightai.site/solutions/government-ai-governance/"
+              "item": "https://brightai.live/solutions/government-ai-governance/"
             },
             {
               "@type": "ListItem",
               "position": 4,
               "name": "حوكمة AI للجهات الحكومية في الدمام | PDPL وDGA | BrightAI",
-              "item": "https://brightai.site/solutions/government-ai-governance/dammam/"
+              "item": "https://brightai.live/solutions/government-ai-governance/dammam/"
             }
           ]
         },
         {
           "@type": "FAQPage",
-          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#faq",
+          "@id": "https://brightai.live/solutions/government-ai-governance/dammam/#faq",
           "mainEntity": [
             {
               "@type": "Question",

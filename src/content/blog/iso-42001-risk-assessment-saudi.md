@@ -1,7 +1,7 @@
 ---
 title: "تقييم مخاطر ISO 42001 لأنظمة AI في السعودية"
 description: "دليل تطبيق تقييم مخاطر ISO 42001 لأنظمة الذكاء الاصطناعي في المؤسسات السعودية: المنهجية، الخطوات، الأدوات، والتكامل مع متطلبات NCA وPDPL."
-canonical: "https://brightai.site/blog/iso-42001-risk-assessment-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-risk-assessment-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"

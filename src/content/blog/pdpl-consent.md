@@ -1,7 +1,7 @@
 ---
 title: "إدارة الموافقة على استخدام البيانات في أنظمة AI وفق PDPL"
 description: "دليل إدارة الموافقة على استخدام البيانات في أنظمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية. كيف تحصل وتدير وتسحب الموافقة."
-canonical: "https://brightai.site/blog/pdpl-consent/"
+canonical: "https://brightai.live/blog/pdpl-consent/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

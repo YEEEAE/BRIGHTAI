@@ -1,7 +1,7 @@
 ---
 title: "رؤية حاسوبية للمصانع السعودية: تطبيقات عملية"
 description: "دليل شامل لتطبيقات الرؤية الحاسوبية في المصانع السعودية، يشمل مراقبة الجودة، السلامة، والصيانة التنبؤية، مع نصائح للامتثال والحوكمة."
-canonical: "https://brightai.site/blog/computer-vision-saudi-factories/"
+canonical: "https://brightai.live/blog/computer-vision-saudi-factories/"
 pubDate: "2026-05-10"
 updatedDate: "2026-07-07"
 author: "nasser-alabdullah"

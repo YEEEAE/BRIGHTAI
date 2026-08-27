@@ -1,7 +1,7 @@
 ---
 title: "NDMO: الأدوار والمتطلبات في السعودية"
 description: "مكتب إدارة البيانات الوطنية NDMO: الأدوار، السياسات الوطنية السبع، متطلبات التسجيل في NDGP، والعلاقة مع PDPL وسدايا."
-canonical: "https://brightai.site/blog/ndmo-roles-requirements-guide/"
+canonical: "https://brightai.live/blog/ndmo-roles-requirements-guide/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"

@@ -1,6 +1,6 @@
 # BRIGHTAI Workspace Agent — System Prompt
 ### Version 2.3 — 2026-06-29
-### Project: BrightAI — Saudi AI Safety OS (https://brightai.site)
+### Project: BrightAI — Saudi AI Safety OS (https://brightai.live)
 ### Agent Class: Senior Staff Engineer / Autonomous Multi-File Operator
 ### Voice: Saudi Dialect (العامية السعودية) — Mandatory for all user-facing output
 ### Tools: Sequential Thinking + Playwright (analyzed in Section 6.5)
@@ -351,7 +351,7 @@ The brain file follows this top-level structure (sections in this exact order):
 ---
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
-site: https://brightai.site
+site: https://brightai.live
 last_updated: YYYY-MM-DD HH:MM +03:00
 maintained_by: BrightAI Workspace Agent
 version: 1.0
@@ -398,7 +398,7 @@ version: 1.0
 
 | ID | Issue | Priority | Status | Since | Notes |
 |---|---|---|---|---|---|
-| KI-001 | frontend/ leaked as static on brightai.site | high | open | 2026-06-29 | curl /frontend/server.js → 200 |
+| KI-001 | frontend/ leaked as static on brightai.live | high | open | 2026-06-29 | curl /frontend/server.js → 200 |
 | KI-002 | 3 cities only (need 6: +Khobar, Mecca, Medina) | medium | open | 2026-06-29 | affects Local SEO |
 | KI-003 | No Microsoft Clarity tag | low | open | 2026-06-29 | loses session replay data |
 | KI-004 | No Bing Webmaster verification | low | open | 2026-06-29 | loses ~15% Saudi search |
@@ -796,7 +796,7 @@ If something fails (build, test, verification, deploy), the agent reports it imm
 
 | Field | Value |
 |---|---|
-| Site | https://brightai.site |
+| Site | https://brightai.live |
 | Tagline | Saudi AI Safety OS — نظام حماية الذكاء الاصطناعي السعودي |
 | Audience | Saudi enterprises (government, banking, healthcare, manufacturing) |
 | Founder | Yazeed (يزيد), 27, Saudi |
@@ -905,7 +905,7 @@ These rules are absolute. Violating them — even with good intentions, even wit
 
 ❌ **Never use inline `style="..."` attributes in `.astro` files.** All styling in scoped `<style>` or `src/styles/*.css`.
 
-❌ **Never publish `frontend/` as static files on `brightai.site`.** It is the Express backend — leaking it is a security hole.
+❌ **Never publish `frontend/` as static files on `brightai.live`.** It is the Express backend — leaking it is a security hole.
 
 ❌ **Never publish `_archive/` as static.**
 
@@ -1557,9 +1557,9 @@ thought 5: قرأت `src/layouts/BaseLayout.astro:55`:
            surprise: الـ `.otf` fallback في `src` يعني المتصفح يحمّل ملفين لو فشل woff2.
            next: افحص حجم الملفين.
 
-thought 6: `curl -I https://brightai.site/frontend/assets/fonts/TheYearofTheCamel-Medium.woff2`
+thought 6: `curl -I https://brightai.live/frontend/assets/fonts/TheYearofTheCamel-Medium.woff2`
            → Content-Length: 142KB
-           `curl -I https://brightai.site/frontend/assets/fonts/TheYearofTheCamel-Medium.otf`
+           `curl -I https://brightai.live/frontend/assets/fonts/TheYearofTheCamel-Medium.otf`
            → Content-Length: 380KB
            conclusion: الخط 142KB (woff2) + 380KB (otf fallback) = 522KB من الخطوط.
            هذا يضر LCP لأن المتصفح ينتظر الخط قبل ما يرسم الـ `<h1>`.
@@ -1627,7 +1627,7 @@ The BrightAI project already has Playwright installed (`package.json` devDepende
 The agent writes a temporary Playwright script (saved under `/home/z/my-project/scripts/`) that:
 
 1. Launches a headless browser (Chromium by default, mobile emulation optional).
-2. Navigates to a URL (local `dist/` via `npm run preview`, or the live `https://brightai.site`).
+2. Navigates to a URL (local `dist/` via `npm run preview`, or the live `https://brightai.live`).
 3. Performs assertions or captures data.
 4. Exits with code 0 (success) or non-zero (failure).
 
@@ -2482,32 +2482,32 @@ npm run seo:content         # ensures published text is not changed
 
 ```bash
 # 1. Main routes
-curl -I https://brightai.site/                                    # 200
-curl -I https://brightai.site/about/                              # 200
-curl -I https://brightai.site/kernel/                             # 200
-curl -I https://brightai.site/solutions/                          # 200
+curl -I https://brightai.live/                                    # 200
+curl -I https://brightai.live/about/                              # 200
+curl -I https://brightai.live/kernel/                             # 200
+curl -I https://brightai.live/solutions/                          # 200
 
 # 2. Legacy redirects (must be 301, not 404)
-curl -I https://brightai.site/about.html                          # 301 → /about/
-curl -I https://brightai.site/contact.html                        # 301 → /contact/
-curl -I https://brightai.site/index.html                          # 301 → /
+curl -I https://brightai.live/about.html                          # 301 → /about/
+curl -I https://brightai.live/contact.html                        # 301 → /contact/
+curl -I https://brightai.live/index.html                          # 301 → /
 
 # 3. File leakage (must be 404)
-curl -I https://brightai.site/frontend/server.js                  # 404 (not 200!)
-curl -I https://brightai.site/frontend/package.json               # 404
+curl -I https://brightai.live/frontend/server.js                  # 404 (not 200!)
+curl -I https://brightai.live/frontend/package.json               # 404
 
 # 4. SEO files
-curl -I https://brightai.site/robots.txt                          # 200
-curl -I https://brightai.site/sitemap.xml                         # 200
-curl -I https://brightai.site/sitemap-images.xml                  # 200
-curl -I https://brightai.site/manifest.webmanifest                # 200
-curl -I https://brightai.site/llms.txt                            # 200
+curl -I https://brightai.live/robots.txt                          # 200
+curl -I https://brightai.live/sitemap.xml                         # 200
+curl -I https://brightai.live/sitemap-images.xml                  # 200
+curl -I https://brightai.live/manifest.webmanifest                # 200
+curl -I https://brightai.live/llms.txt                            # 200
 
 # 5. IndexNow key
-curl -I https://brightai.site/e158df443f2742d281a02c4aeecb4a60.txt  # 200
+curl -I https://brightai.live/e158df443f2742d281a02c4aeecb4a60.txt  # 200
 
 # 6. EN pages
-curl -I https://brightai.site/en/privacy-policy/                  # 200
+curl -I https://brightai.live/en/privacy-policy/                  # 200
 ```
 
 ### 14.6 Lighthouse Targets

@@ -101,12 +101,12 @@ const SECURITY_HEADERS_DEPLOY = path.join(DIST_SERVER, '_security-headers.mjs');
 //   - public/_headers is the Netlify / Cloudflare Pages / Render Static
 //     convention. Render Web Service (Node) does not read it.
 //   - Cloudflare Transform Rule (scripts/setup-cloudflare-hsts-transform-rule.mjs)
-//     is the design-intended layer, but brightai.site is on CNAME setup
+//     is the design-intended layer, but brightai.live is on CNAME setup
 //     at Cloudflare — the rule is created successfully but never executes
 //     on responses. Cloudflare Workers Custom Domains work (proven on
-//     hsts.brightai.site) but Workers Routes are also inert under CNAME
+//     hsts.brightai.live) but Workers Routes are also inert under CNAME
 //     setup (proven 2026-07-28 — Route binds in dashboard but is not
-//     invoked for brightai.site traffic).
+//     invoked for brightai.live traffic).
 // The only remaining HTTP-layer hook for the prerendered HTML responses
 // is the Node server listener itself — the createStandaloneHandler
 // returned function. Setting Strict-Transport-Security via res.setHeader

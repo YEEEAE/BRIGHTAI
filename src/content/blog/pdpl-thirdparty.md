@@ -1,7 +1,7 @@
 ---
 title: "مشاركة البيانات مع أطراف ثالثة في أنظمة AI وفق PDPL"
 description: "دليل مشاركة البيانات مع أطراف ثالثة في أنظمة الذكاء الاصطناعي وفق اللائحة السعودية لحماية البيانات الشخصية. كيف تتعامل مع موردي AI والخدمات السحابية."
-canonical: "https://brightai.site/blog/pdpl-thirdparty/"
+canonical: "https://brightai.live/blog/pdpl-thirdparty/"
 pubDate: "2026-07-30"
 updatedDate: "2026-07-30"
 author: "nasser-alabdullah"

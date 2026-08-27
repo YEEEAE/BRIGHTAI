@@ -3,8 +3,13 @@
 # Source: redirects.json
 # ==============================================================================
 
-http://brightai.site/*        https://brightai.site/:splat  301
-https://www.brightai.site/*    https://brightai.site/:splat  301
+http://brightai.live/*        https://brightai.live/:splat  301
+http://www.brightai.live/*    https://brightai.live/:splat  301
+https://www.brightai.live/*    https://brightai.live/:splat  301
+http://brightai.site/*        https://brightai.live/:splat  301
+https://brightai.site/*        https://brightai.live/:splat  301
+http://www.brightai.site/*    https://brightai.live/:splat  301
+https://www.brightai.site/*    https://brightai.live/:splat  301
 
 /report /trust/ 301
 /report.html /trust/ 301

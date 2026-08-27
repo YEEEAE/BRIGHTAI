@@ -8,8 +8,6 @@
  * DO NOT edit the queries — they match llms.txt Target AI Search Queries exactly.
  * DO NOT change published Arabic text in the answers without user approval.
  */
-import type { AnswerUnit } from './types';
-
 export interface AnswerUnit {
   slug: string;
   query: string;
@@ -72,7 +70,7 @@ export const answerOs: AnswerUnit = {
   query: 'Saudi AI Safety OS',
   question: 'What is the Saudi AI Safety OS?',
   answer:
-    'BrightAI is the Saudi AI Safety OS — a governance, security, and compliance platform that sits between employees and AI models inside Saudi enterprises. It ensures every AI request is safe, documented, and auditable. BrightAI supports compliance packs for PDPL (Saudi data protection), NCA ECC (cybersecurity controls), SFDA (healthcare AI), SAMA (financial AI), ISO 13485 (medical devices), and ISO/IEC 42001 (AI management systems). Each AI interaction is risk-scored, requires human approval when needed, and produces permanent evidence files. It runs on brightai.site — a static Astro site served via Render with Cloudflare edge security and Saudi data routing.',
+    'BrightAI is the Saudi AI Safety OS — a governance, security, and compliance platform that sits between employees and AI models inside Saudi enterprises. It ensures every AI request is safe, documented, and auditable. BrightAI supports compliance packs for PDPL (Saudi data protection), NCA ECC (cybersecurity controls), SFDA (healthcare AI), SAMA (financial AI), ISO 13485 (medical devices), and ISO/IEC 42001 (AI management systems). Each AI interaction is risk-scored, requires human approval when needed, and produces permanent evidence files. It runs on brightai.live — a static Astro site served via Render with Cloudflare edge security and Saudi data routing.',
 };
 
 /** What is AI governance in Saudi Arabia in Arabic (full)? */

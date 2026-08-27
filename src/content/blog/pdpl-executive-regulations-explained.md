@@ -1,7 +1,7 @@
 ---
 title: "اللائحة التنفيذية لـ PDPL — شرح عملي للمنشآت"
 description: "شرح عملي للائحة التنفيذية لـ PDPL: تعيين مسؤول حماية البيانات، الإبلاغ عن الاختراقات خلال 72 ساعة، وحقوق أصحاب البيانات."
-canonical: "https://brightai.site/blog/pdpl-executive-regulations-explained/"
+canonical: "https://brightai.live/blog/pdpl-executive-regulations-explained/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"
 author: "nasser-alabdullah"

@@ -74,7 +74,7 @@
 /solutions/**
 
 # Frontend (legacy backend, deleted per DEC-011 — residual paths
-# would be leaked to brightai.site if .renderignore did not catch them)
+# would be leaked to brightai.live if .renderignore did not catch them)
 /frontend
 /frontend/**
 

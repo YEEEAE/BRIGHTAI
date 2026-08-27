@@ -3,7 +3,7 @@
  * scripts/verify-post-deploy.mjs — BAI-DEPLOY-11 (2026-07-25)
  *                            + BAI-PROC-12 (2026-07-25) — production content gate
  *
- * Post-deploy + content gate. Proves the live brightai.site reflects the
+ * Post-deploy + content gate. Proves the live brightai.live reflects the
  * local git HEAD AND that critical production surfaces (hreflang, forbidden
  * paths, canonical, security headers) are still in place. Exits 0 only when
  * ALL probes pass; exits 1 on any failure with a clear diagnostic.
@@ -37,7 +37,7 @@
  *     would still pass drift probes but fail content probes.
  *
  * Configuration:
- *   - HOST     default: https://brightai.site
+ *   - HOST     default: https://brightai.live
  *   - TIMEOUT  default: 15000ms (per request)
  *
  * Flags:
@@ -52,7 +52,7 @@
  *   pnpm run verify:production             # alias for the default
  *   pnpm run verify:post-deploy --skip-content
  *   pnpm run verify:post-deploy --skip-drift --skip-forbidden
- *   HOST=https://staging.brightai.site pnpm run verify:post-deploy
+ *   HOST=https://staging.brightai.live pnpm run verify:post-deploy
  *   node scripts/verify-post-deploy.mjs --json
  *
  * Exit codes:
@@ -77,7 +77,7 @@ import process from 'node:process';
 const __filename = fileURLToPath(import.meta.url);
 const root = path.resolve(path.dirname(__filename), '..');
 
-const HOST = process.env.HOST || 'https://brightai.site';
+const HOST = process.env.HOST || 'https://brightai.live';
 const TIMEOUT_MS = Number(process.env.TIMEOUT_MS || 15000);
 const WANT_JSON = process.argv.includes('--json');
 const SKIP_DRIFT = process.argv.includes('--skip-drift');
@@ -135,7 +135,7 @@ const HREFLANG_PAGES = [
       'hreflang="en-SA"',
       'hreflang="ar-SA"',
       'hreflang="x-default"',
-      'href="https://brightai.site/en/"',
+      'href="https://brightai.live/en/"',
     ],
   },
   {
@@ -144,7 +144,7 @@ const HREFLANG_PAGES = [
       'hreflang="en-SA"',
       'hreflang="ar-SA"',
       'hreflang="x-default"',
-      'href="https://brightai.site/en/"',
+      'href="https://brightai.live/en/"',
     ],
   },
 ];

@@ -2,15 +2,15 @@
   "source": "solutions/continuous-ai-governance/index.html",
   "title": "حوكمة مستمرة للذكاء الاصطناعي في المنشآت | BrightAI",
   "description": "شغل حوكمة الذكاء الاصطناعي بشكل مستمر بعد الإطلاق، مع متابعة المخاطر والموافقات والأدلة لضمان التزام عملي داخل المنشآت السعودية، مع خطوة تالية واضحة.",
-  "canonical": "https://brightai.site/solutions/continuous-ai-governance/",
+  "canonical": "https://brightai.live/solutions/continuous-ai-governance/",
   "hreflang": [
     {
       "lang": "ar-SA",
-      "href": "https://brightai.site/solutions/continuous-ai-governance/"
+      "href": "https://brightai.live/solutions/continuous-ai-governance/"
     },
     {
       "lang": "x-default",
-      "href": "https://brightai.site/solutions/continuous-ai-governance/"
+      "href": "https://brightai.live/solutions/continuous-ai-governance/"
     }
   ],
   "jsonLd": [
@@ -22,19 +22,19 @@
           "@type": "ListItem",
           "position": 1,
           "name": "الرئيسية",
-          "item": "https://brightai.site/"
+          "item": "https://brightai.live/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "الحلول",
-          "item": "https://brightai.site/solutions/ai-governance-platform/"
+          "item": "https://brightai.live/solutions/ai-governance-platform/"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "حوكمة الذكاء الاصطناعي المستمرة",
-          "item": "https://brightai.site/solutions/continuous-ai-governance/"
+          "item": "https://brightai.live/solutions/continuous-ai-governance/"
         }
       ]
     },
@@ -49,28 +49,28 @@
               "h1"
             ]
           },
-          "@id": "https://brightai.site/solutions/continuous-ai-governance/#webpage",
-          "url": "https://brightai.site/solutions/continuous-ai-governance/",
+          "@id": "https://brightai.live/solutions/continuous-ai-governance/#webpage",
+          "url": "https://brightai.live/solutions/continuous-ai-governance/",
           "name": "تشغيل حوكمة الذكاء الاصطناعي بشكل مستمر في مؤسستك | BrightAI",
           "description": "لا تنتظر التدقيق السنوي لتكتشف ثغرات حوكمة AI. BrightAI يشغّل دورة حوكمة مستمرة: رصد، تقييم، تدخل، تحسين - كل يوم.",
           "isPartOf": {
-            "@id": "https://brightai.site/#website"
+            "@id": "https://brightai.live/#website"
           },
           "about": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": "ar-SA"
         },
         {
           "@type": "Organization",
-          "@id": "https://brightai.site/#organization",
+          "@id": "https://brightai.live/#organization",
           "name": "BrightAI",
           "alternateName": [
             "برايت آي",
             "Saudi AI Safety OS"
           ],
-          "url": "https://brightai.site/",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "url": "https://brightai.live/",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "sameAs": [
             "https://x.com/brightai_sa",
             "https://www.linkedin.com/company/brightai-saudi/",
@@ -87,11 +87,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
+          "@id": "https://brightai.live/#website",
+          "url": "https://brightai.live",
           "name": "BrightAI",
           "publisher": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": [
             "ar-SA",
@@ -108,10 +108,10 @@
             "Organization",
             "LocalBusiness"
           ],
-          "@id": "https://brightai.site/#organization",
+          "@id": "https://brightai.live/#organization",
           "name": "BrightAI",
-          "url": "https://brightai.site",
-          "logo": "https://brightai.site/assets/images/logo.png",
+          "url": "https://brightai.live",
+          "logo": "https://brightai.live/assets/images/logo.png",
           "areaServed": "SA",
           "sameAs": [
             "https://x.com/brightai_sa",
@@ -136,11 +136,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
+          "@id": "https://brightai.live/#website",
+          "url": "https://brightai.live",
           "name": "BrightAI",
           "publisher": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": [
             "ar-SA",
@@ -149,45 +149,45 @@
         },
         {
           "@type": "WebPage",
-          "@id": "https://brightai.site/solutions/continuous-ai-governance/#webpage",
-          "url": "https://brightai.site/solutions/continuous-ai-governance/",
+          "@id": "https://brightai.live/solutions/continuous-ai-governance/#webpage",
+          "url": "https://brightai.live/solutions/continuous-ai-governance/",
           "name": "تشغيل حوكمة الذكاء الاصطناعي بشكل مستمر في مؤسستك | BrightAI",
           "description": "لا تنتظر التدقيق السنوي لتكتشف ثغرات حوكمة AI. BrightAI يشغّل دورة حوكمة مستمرة: رصد، تقييم، تدخل، تحسين - كل يوم.",
           "isPartOf": {
-            "@id": "https://brightai.site/#website"
+            "@id": "https://brightai.live/#website"
           },
           "about": {
-            "@id": "https://brightai.site/#organization"
+            "@id": "https://brightai.live/#organization"
           },
           "inLanguage": "ar-SA"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://brightai.site/solutions/continuous-ai-governance/#breadcrumb",
+          "@id": "https://brightai.live/solutions/continuous-ai-governance/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "BrightAI",
-              "item": "https://brightai.site/"
+              "item": "https://brightai.live/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "solutions",
-              "item": "https://brightai.site/solutions/"
+              "item": "https://brightai.live/solutions/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "تشغيل حوكمة الذكاء الاصطناعي بشكل مستمر في مؤسستك | BrightAI",
-              "item": "https://brightai.site/solutions/continuous-ai-governance/"
+              "item": "https://brightai.live/solutions/continuous-ai-governance/"
             }
           ]
         },
         {
           "@type": "FAQPage",
-          "@id": "https://brightai.site/solutions/continuous-ai-governance/#faq",
+          "@id": "https://brightai.live/solutions/continuous-ai-governance/#faq",
           "mainEntity": [
             {
               "@type": "Question",
@@ -236,7 +236,7 @@
     {
       "@context": "https://schema.org",
       "@type": "DefinedTermSet",
-      "@id": "https://brightai.site/#technical-ai-governance-terms",
+      "@id": "https://brightai.live/#technical-ai-governance-terms",
       "name": "BrightAI technical AI governance terms",
       "inLanguage": [
         "en",

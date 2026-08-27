@@ -3,7 +3,7 @@
  * src/pages/en/index.astro — English-language homepage stub.
  *
  * Purpose (REPORTS-SEO-KEYWORDS-2026-07-08):
- *   Anchor for the homepage hreflang en-SA → https://brightai.site/en/ signal
+ *   Anchor for the homepage hreflang en-SA → https://brightai.live/en/ signal
  *   requested by the founder to support the bilingual SERP targeting of the
  *   Arabic homepage ("حوكمة الذكاء الاصطناعي في السعودية" cluster).
  *
@@ -24,14 +24,14 @@
 import EnglishLayout from '../../layouts/EnglishLayout.astro';
 
 const route = '/en/';
-const canonical = `https://brightai.site${route}`;
+const canonical = `https://brightai.live${route}`;
 
 // hreflang: ar-SA points back to the full Arabic homepage, x-default mirrors it.
 // en-SA is the current page's self-reference.
 const hreflang = [
   { lang: 'en-SA', href: canonical },
-  { lang: 'ar-SA', href: 'https://brightai.site/' },
-  { lang: 'x-default', href: 'https://brightai.site/' },
+  { lang: 'ar-SA', href: 'https://brightai.live/' },
+  { lang: 'x-default', href: 'https://brightai.live/' },
 ];
 
 const title = 'BrightAI — AI Governance & Safety for Saudi Arabia';

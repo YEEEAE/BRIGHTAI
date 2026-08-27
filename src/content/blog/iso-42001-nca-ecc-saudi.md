@@ -1,7 +1,7 @@
 ---
 title: "ربط ISO 42001 بضوابط NCA ECC في السعودية"
 description: "دليل ربط ISO 42001 بضوابط الأمن السيبراني الوطنية (NCA ECC) للمؤسسات السعودية. مصفوفة شاملة تغطي 114 ضابطاً مع خطوات التطبيق المشترك."
-canonical: "https://brightai.site/blog/iso-42001-nca-ecc-saudi/"
+canonical: "https://brightai.live/blog/iso-42001-nca-ecc-saudi/"
 pubDate: "2026-07-25"
 updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
