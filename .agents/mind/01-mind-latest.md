@@ -1,4 +1,39 @@
 ---
+## [2026-08-27] — QC-A11Y-GATE-010: الإتاحة صارت بوابة إقلاع حقيقية (axe gate) في تطبيق QC — بدون commit/push/deploy
+
+### تم التنفيذ
+- أُعيدت كتابة `scripts/e2e-a11y.mjs` من report-only إلى **بوابة فاشلة**: axe scan (wcag2a/2aa/21a/21aa/22aa) على 12 صفحة pilot — /login (زائر)، /employee (بجلسة employee)، /manager، /tasks/[id]، /lab، /lab/tests، /lab/tests/new?type=air، /lab/tests/[id]، /lab/documents، /lab/change-requests، /lab/search، /reports — **FAIL عند critical>0 أو serious>0**؛ moderate/minor تُبلَّغ بدون حجب. لم تُعطَّل أو تُعدَّل أي قاعدة axe.
+- **الحفاظ الكامل** على سيناريوهات الكيبورد الأربعة القائمة (skip link، notification dropdown، completion wizard، cancel dialog) مع إضافات: التحقق من اسم الـ dialogs (aria-labelledby → heading حقيقي غير فارغ)، focus-visible ring للـ skip link وللـ navbar (Shift+Tab من #main للهيدر — Tab بعد القفز يروح للمحتوى)، وسيناريو تنقل الجوال 390×844 (toggle keyboard operable، aria-expanded يتبع الحالة، الروابط المجمعة شاملة Laboratory، Escape يغلق ويرجع focus للـ toggle).
+- **فحوصات بنيوية فاشلة لكل صفحة**: H1 ظاهر واحد بالضبط، لا قفز بمستويات العناوين، status pills تحمل نصًا (غير معتمدة على اللون فقط — كل span.rounded-full ظاهر غير aria-hidden لازم له نص)، كل aria-describedby يحل لعنصر موجود، كل form control ظاهر له اسم متاح (label/aria-label/aria-labelledby).
+- **إصلاح 73 عقدة color-contrast حقيقية** (السبب الجذري الوحيد للـ serious قبل البوابة، على 10 من الصفحات الـ12): text-slate-400→500/600 للنصوص المرئية على خلفيات فاتحة في المكونات المشتركة (LabSecondaryNav eyebrows، Pagination Prev/Next inert، Navbar timestamp + عناوين قائمة الجوال، TaskLifecycle، TaskUpdatePanel، CommentBox) والصفحات (employee/manager QC counters، tasks/[id] helpers+hashes، lab tests register disabled actions+Read-only pill+dash، login hint)؛ أزرار Complete/Confirm في TaskLifecycle: bg-emerald-600→700 + hover-800 (3.77:1→5.15:1)؛ text-emerald-600→700 للنصوص؛ إزالة opacity-80 من بطاقات KPI بلاب/index؛ **h3→h2 في AiReviewPanel** (كان يسبب قفز h1→h3 في سجل الاختبارات و7 صفحات ثانية تستخدم المكوّن)؛ aria-hidden لدائرة أيقونة النشاط في tasks/[id] (rounded-full بلا نص).
+- **fixtures حتمية** بمعرفات ثابتة (A11Y gate fixture / NOTIF / LAB-TEST-A11Y-GATE-01 / PROD-A11Y-GATE-01 / EQ-A11Y-GATE-01) مع pre/post cleanup idempotent؛ تجاوز trigger «lab_test_samples rows are frozen after approval» بقلب حالة صف fixture الخاص بنا إلى DRAFT قبل حذفه فقط؛ warmup POST ذاتي قبل فتح قاعدة البيانات (نفس نمط الـ acceptance runner) فالعزل اليدوي يشتغل بدون خطوات خارجية.
+- تقرير دائم `download/qa/a11y-qc-report.json` (gitignored): gate summary + policy + 12 صفحة بعدّاداتها وviolations مع WCAG tags + assertions بالفشلات مصنفة (keyboard/structure/gate) — **يُكتب حتى عند فشل البوابة**، وهو نفسه الملف الذي يرفعه QC Release Gate workflow كـ artifact عند الفشل.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/scripts/e2e-a11y.mjs` (إعادة كتابة — البوابة)
+- `apps/qc-task-manager/src/components/{AiReviewPanel,CommentBox,Navbar,TaskLifecycle,TaskUpdatePanel}.tsx`
+- `apps/qc-task-manager/src/components/lab/LabSecondaryNav.astro` + `src/components/ui/Pagination.astro`
+- `apps/qc-task-manager/src/pages/{employee/index,manager/index,login,tasks/[id],lab/index,lab/tests/index,lab/documents/index}.astro`
+
+### التحقق
+- a11y E2E معزول: **86/0 ALL PASS، exit 0** — وتشغيل سابق أثبت أن البوابة توقف فعليًا (exit 1 عند فشل بنيوي قبل الإصلاح)
+- `pnpm typecheck` ✅ 0 errors / 0 warnings / 17 hints
+- `pnpm test:manifest` ✅ 54 canonical suites / 27 canonical E2E (التسجيل بدون تغيير)
+- `pnpm test` ✅ السلسلة الكاملة 54 سويت exit 0 (منها test:ui-consistency 37/37 على نفس تغييرات المصدر)
+- `NODE_ENV=production pnpm build` ✅ Complete
+- `pnpm e2e:acceptance` ✅ **29/29 سويت (27 canonical + مرحتا persistence)، 2377+ assertion، exit 0** — ومنها a11y 86/0 داخل القبول
+- `git diff --check` نظيف؛ التغييرات 15 ملفًا كلها داخل apps/qc-task-manager؛ السيرفر المؤقت وقواعد /tmp نُظفت
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** الإتاحة صارت بوابة pilot فعلية: critical=0 وserious=0 على الـ 12 صفحة بعد إصلاحات حقيقية بالمكونات المشتركة أولًا (73 عقدة تباين + قفز عناوين + pill بلا نص)، بدون تعطيل أي قاعدة، والكيبورد/focus/الجوال/التراكيب كلها مغطاة باختبارات فاشلة عند الانحدار.
+
+### ملاحظات / مشاكل مفتوحة
+- /lab/tests/new يتطلب `?type=air|vacuum` (بدونه redirect لـ/lab) — البوابة تفحص النموذج بالـ query الصحيح.
+- نطاق البوابة الحالي = صفحات الـ pilot الـ12؛ التوسيع مستقبلًا = إضافة سطر في SCAN_PAGES فقط.
+- Skills used: verification-before-completion (قُرئت كاملة وطُبقت: لا ادعاء بدون إثبات تشغيل حديث)؛ ما فيه مهارة a11y مخصصة في `.agents/skills/`.
+- القسم 1 يتجاوز حده الموثق مسبقًا — الأرشفة للقسم 2 تؤجل كقرار متكرر (نمط الجلسات الأخيرة).
+
 ## [2026-08-27] — QC-CI-RELEASE-GATE-009: بوابة إصدار QC المخصصة على GitHub Actions — بدون commit/push/deploy
 
 ### تم التنفيذ

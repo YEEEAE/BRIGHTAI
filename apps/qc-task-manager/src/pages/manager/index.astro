@@ -150,7 +150,7 @@ const attentionTone: Record<string, string> = {
                       {priorityLabel(t.priority)}
                     </span>
                   </td>
-                  <td class="whitespace-nowrap px-4 py-2.5 text-slate-600 tabular-nums">{t.progress_percent}%<span class="block text-xs text-slate-400">QC {t.checklist_completed}/{t.checklist_total} ({t.checklist_total ? Math.round((t.checklist_completed / t.checklist_total) * 100) : 0}%)</span></td>
+                  <td class="whitespace-nowrap px-4 py-2.5 text-slate-600 tabular-nums">{t.progress_percent}%<span class="block text-xs text-slate-500">QC {t.checklist_completed}/{t.checklist_total} ({t.checklist_total ? Math.round((t.checklist_completed / t.checklist_total) * 100) : 0}%)</span></td>
                   <td class="px-4 py-2.5">
                     <div class="flex items-center gap-2">
                       <DeleteRequestBadge status={t.delete_request_status} reason={t.delete_request_note} />

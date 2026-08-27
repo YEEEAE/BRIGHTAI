@@ -94,7 +94,7 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
             className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
           />
           <div className="mt-2 flex items-center justify-between gap-3">
-            <span className={`text-xs ${text.length > MAX_LENGTH - 100 ? 'text-amber-600' : 'text-slate-400'}`}>
+            <span className={`text-xs ${text.length > MAX_LENGTH - 100 ? 'text-amber-700' : 'text-slate-500'}`}>
               {text.length}/{MAX_LENGTH}
             </span>
             {error && <span className="text-xs font-medium text-red-600">{error}</span>}

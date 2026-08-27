@@ -448,7 +448,7 @@ function svgIcon(inner: string, cls = ''): string {
                 </span>
                 <span class="text-xs font-medium">{coveredEvidenceTypes.has(r.type) ? 'Collected' : 'Missing'}</span>
                 {r.allowedExtensions && r.allowedExtensions.length > 0 && (
-                  <span class="text-xs text-slate-400">.{r.allowedExtensions.join(', .')}</span>
+                  <span class="text-xs text-slate-500">.{r.allowedExtensions.join(', .')}</span>
                 )}
                 {r.description && <span class="text-xs text-slate-500">— {r.description}</span>}
               </li>
@@ -595,7 +595,7 @@ function svgIcon(inner: string, cls = ''): string {
                   class="h-4 w-4 rounded border-slate-300 text-emerald-600"
                   aria-label={c.title}
                 />
-                <span class={c.is_completed ? 'text-slate-400 line-through' : 'text-slate-800'}>{c.title}</span>
+                <span class={c.is_completed ? 'text-slate-500 line-through' : 'text-slate-800'}>{c.title}</span>
               </li>
             ))}
           </ul>
@@ -616,7 +616,7 @@ function svgIcon(inner: string, cls = ''): string {
                   </a>
                   <span
                     class={`text-xs uppercase ${
-                      blocked ? 'font-semibold text-red-600' : 'text-emerald-600'
+                      blocked ? 'font-semibold text-red-600' : 'text-emerald-700'
                     }`}
                   >
                     {d.status.replace(/_/g, ' ')}
@@ -666,7 +666,7 @@ function svgIcon(inner: string, cls = ''): string {
                       {humanFileSize(a.file_size)} · uploaded by {a.uploader} on {formatDbDate(a.uploaded_at)}
                     </p>
                     {a.file_hash && (
-                      <p class="mt-0.5 font-mono text-[11px] text-slate-400" title={`SHA-256: ${a.file_hash}`}>
+                      <p class="mt-0.5 font-mono text-[11px] text-slate-500" title={`SHA-256: ${a.file_hash}`}>
                         sha256:{a.file_hash.slice(0, 12)}…
                       </p>
                     )}
@@ -701,7 +701,7 @@ function svgIcon(inner: string, cls = ''): string {
               const cat = actionCategory(a.action);
               return (
                 <li class="flex gap-3">
-                  <span class={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${ICON_TONE[cat] ?? 'bg-slate-100 text-slate-500'}`} set:html={svgIcon(ICON_SVG[cat] ?? ICON_SVG.other)} />
+                  <span aria-hidden="true" class={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${ICON_TONE[cat] ?? 'bg-slate-100 text-slate-500'}`} set:html={svgIcon(ICON_SVG[cat] ?? ICON_SVG.other)} />
                   <div class="min-w-0">
                     <p class="text-sm text-slate-800">
                       <span class="font-semibold text-slate-900">{a.user_name}</span>{' '}
@@ -740,7 +740,7 @@ function svgIcon(inner: string, cls = ''): string {
                       </a>
                       <span class="text-xs text-slate-500">({humanFileSize(ef.file_size)} · {ef.uploader})</span>
                       {ef.file_hash && (
-                        <span class="font-mono text-[11px] text-slate-400" title={`SHA-256: ${ef.file_hash}`}>
+                        <span class="font-mono text-[11px] text-slate-500" title={`SHA-256: ${ef.file_hash}`}>
                           sha256:{ef.file_hash.slice(0, 12)}…
                         </span>
                       )}

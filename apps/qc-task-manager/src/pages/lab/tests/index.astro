@@ -136,10 +136,10 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
   // the future workflow handlers, which re-check against the full record.
   const view = viewEnabled
     ? `<a href="/lab/tests/${row.id}" class="font-medium text-brand-600 hover:underline">View</a>`
-    : `<span class="text-slate-400" title="Coming with the Tests module">View</span>`;
+    : `<span class="text-slate-500" title="Coming with the Tests module">View</span>`;
   const immutable = row.status === 'APPROVED' || row.status === 'VOID';
   if (immutable) {
-    return `<span class="flex items-center gap-2">${view}<span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500">Read-only</span></span>`;
+    return `<span class="flex items-center gap-2">${view}<span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">Read-only</span></span>`;
   }
   const canEdit = canEditLabTestRecord({ id: userId, role }, test);
   const canSubmit = canSubmitLabTestRecord({ id: userId, role }, test);
@@ -147,10 +147,10 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
   const canApprove = canApproveLabTestRecord({ id: userId, role }, test);
   const hint = 'Workflow actions land with the review/approve module.';
   const parts: string[] = [];
-  if (canEdit) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-400">Edit</button>`);
-  if (canSubmit) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-400">Submit</button>`);
-  if (canReview) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-400">Review</button>`);
-  if (canApprove) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-400">Approve</button>`);
+  if (canEdit) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Edit</button>`);
+  if (canSubmit) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Submit</button>`);
+  if (canReview) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Review</button>`);
+  if (canApprove) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Approve</button>`);
   const actions = parts.length ? parts.join('') : '';
   return `<span class="flex items-center gap-2">${view}${actions}</span>`;
 }
@@ -344,7 +344,7 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
                       <td class="px-4 py-2 text-slate-700">{t.sampling_area ?? '—'}</td>
                       <td class="px-4 py-2 text-slate-700">{t.equipment_code ?? t.equipment_name ?? '—'}</td>
                       <td class="px-4 py-2 text-slate-700">{t.tester_name ?? '—'}</td>
-                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-400'}`}>{t.final_result ?? '—'}</td>
+                      <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-500'}`}>{t.final_result ?? '—'}</td>
                       <td class="px-4 py-2">
                         <StatusPill status={t.status} dot />
                       </td>

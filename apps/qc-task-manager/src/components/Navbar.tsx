@@ -418,7 +418,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                                 {n.title}
                               </span>
                               <span className="mt-0.5 block truncate text-xs text-slate-500">{n.message}</span>
-                              <span className="mt-0.5 block text-[11px] text-slate-400">{timeAgo(n.createdAt)}</span>
+                              <span className="mt-0.5 block text-[11px] text-slate-500">{timeAgo(n.createdAt)}</span>
                             </span>
                           </a>
                         </li>
@@ -515,7 +515,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
         >
           {mobileGroups(user!.role).map((group) => (
             <div key={group.heading} className="mb-1">
-              <p className="px-2 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <p className="px-2 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {group.heading}
               </p>
               <ul>

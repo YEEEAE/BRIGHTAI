@@ -22,7 +22,7 @@ const groupEntries = (group: string) => items.filter((item) => item.group === gr
           const entries = groupEntries(group);
           return entries.length > 0 ? (
             <li class="flex flex-wrap items-center gap-2">
-              <span class="text-xs font-semibold uppercase tracking-wide text-slate-400" aria-hidden="true">{group}</span>
+              <span class="text-xs font-semibold uppercase tracking-wide text-slate-500" aria-hidden="true">{group}</span>
               {entries.map((entry) => (
                 <a
                   href={entry.href}

@@ -291,8 +291,8 @@ export default function TaskUpdatePanel({
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-slate-400">
-              Mark as <span className="font-medium text-emerald-600">Completed</span> using the Complete task button.
+            <p className="mt-1 text-xs text-slate-500">
+              Mark as <span className="font-medium text-emerald-700">Completed</span> using the Complete task button.
             </p>
             {holdNeedsBlocker && (
               <p className="mt-1 text-xs font-medium text-red-600">
@@ -349,7 +349,7 @@ export default function TaskUpdatePanel({
 
         <div className="mt-4">
           <label htmlFor={`blocker-${task.id}`} className={labelCls}>
-            Blocker note <span className="font-normal text-slate-400">(optional)</span>
+            Blocker note <span className="font-normal text-slate-500">(optional)</span>
           </label>
           <textarea
             id={`blocker-${task.id}`}
@@ -360,7 +360,7 @@ export default function TaskUpdatePanel({
             placeholder="Anything blocking this task?"
             className={`${inputCls} mt-1`}
           />
-          <p className="mt-1 text-right text-xs text-slate-400">{blocker.length}/{MAX_BLOCKER}</p>
+          <p className="mt-1 text-right text-xs text-slate-500">{blocker.length}/{MAX_BLOCKER}</p>
         </div>
 
         <button
@@ -480,7 +480,7 @@ export default function TaskUpdatePanel({
                 onChange={(e) => setRecurrenceEndDate(e.target.value)}
                 className={`${inputCls} mt-1`}
               />
-              <p className="mt-1 text-xs text-slate-400">Empty = keep recurring (on completion) indefinitely.</p>
+              <p className="mt-1 text-xs text-slate-500">Empty = keep recurring (on completion) indefinitely.</p>
             </div>
           </div>
 
@@ -531,7 +531,7 @@ export default function TaskUpdatePanel({
                   className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                   aria-label={`Mark "${item.title}" as ${item.is_completed ? 'not done' : 'done'}`}
                 />
-                <span className={`flex-1 text-sm ${item.is_completed ? 'text-slate-400 line-through' : 'text-slate-800'}`}>
+                <span className={`flex-1 text-sm ${item.is_completed ? 'text-slate-500 line-through' : 'text-slate-800'}`}>
                   {item.title}
                 </span>
           {canEditChecklistStructure && (
@@ -539,7 +539,7 @@ export default function TaskUpdatePanel({
                     type="button"
                     onClick={() => removeChecklistItem(item.id)}
                     aria-label={`Remove checklist item "${item.title}"`}
-                    className="rounded-md px-1.5 py-0.5 text-sm text-slate-400 hover:bg-red-50 hover:text-red-600"
+                    className="rounded-md px-1.5 py-0.5 text-sm text-slate-500 hover:bg-red-50 hover:text-red-600"
                   >
                     ✕
             </button>
@@ -602,14 +602,14 @@ export default function TaskUpdatePanel({
                       #{d.task_id} {d.title}
                     </a>
                     <span className="flex items-center gap-2">
-                      <span className={`text-xs uppercase ${blocked ? 'font-semibold text-red-600' : 'text-emerald-600'}`}>
+                      <span className={`text-xs uppercase ${blocked ? 'font-semibold text-red-600' : 'text-emerald-700'}`}>
                         {d.status.replace(/_/g, ' ')}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeDependency(d.task_id)}
                         aria-label={`Remove dependency #${d.task_id}`}
-                        className="rounded-md px-1.5 py-0.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                        className="rounded-md px-1.5 py-0.5 text-slate-500 hover:bg-red-50 hover:text-red-600"
                       >
                         ✕
                       </button>

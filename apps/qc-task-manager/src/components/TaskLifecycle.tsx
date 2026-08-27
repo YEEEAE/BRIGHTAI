@@ -352,7 +352,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
               setStep(0);
               setError(null);
             }}
-            className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+            className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
           >
             ✅ Complete task
           </button>
@@ -430,7 +430,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                         ? 'bg-emerald-100 text-emerald-700'
                         : i === step
                           ? 'bg-brand-600 text-white'
-                          : 'bg-slate-100 text-slate-400'
+                          : 'bg-slate-100 text-slate-600'
                     }`}
                     aria-hidden="true"
                   >
@@ -589,7 +589,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                       }}
                       className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                     />
-                    Skip evidence upload <span className="text-xs text-slate-400">(recorded in the activity log)</span>
+                    Skip evidence upload <span className="text-xs text-slate-500">(recorded in the activity log)</span>
                   </label>
                 </div>
               )}
@@ -602,7 +602,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                     comment.
                   </p>
                   <label className={`${labelCls} mt-3`} htmlFor="wizard-comment">
-                    Completion comment <span className="text-emerald-600">*</span>
+                    Completion comment <span className="text-emerald-700">*</span>
                   </label>
                   <textarea
                     id="wizard-comment"
@@ -613,7 +613,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                     placeholder="What was accomplished, and what are the next steps?"
                     className={`${inputCls} mt-1`}
                   />
-                  <p className="mt-1 text-right text-xs text-slate-400">{comment.length}/2000</p>
+                  <p className="mt-1 text-right text-xs text-slate-500">{comment.length}/2000</p>
                 </div>
               )}
 
@@ -714,7 +714,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                     type="button"
                     onClick={confirmCompletion}
                     disabled={submitting}
-                    className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {submitting ? 'Completing…' : 'Confirm completion'}
                   </button>
@@ -771,7 +771,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                 placeholder="Why is this task being cancelled?"
                 className={`${inputCls} mt-1`}
               />
-              <p className="mt-1 text-right text-xs text-slate-400">{cancelReason.length}/1000</p>
+              <p className="mt-1 text-right text-xs text-slate-500">{cancelReason.length}/1000</p>
             </div>
             <div className="flex items-center justify-end gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4">
               <button
