@@ -25,10 +25,53 @@ export function apiJsonError(error: string, status: number): Response {
 const MAX_AI_CALLS_PER_MINUTE = 15;
 const aiBuckets = new Map<number, { startedAt: number; count: number }>();
 
+// All limiter state is in-memory because QC runs as a single writable
+// instance (enforced by the deployment contract). Buckets live for one rate
+// window, so they are pruned to keep the maps bounded for the process
+// lifetime: opportunistically at most once per window, or immediately if a
+// map grows past the safety threshold (e.g. a spoofed-IP flood).
+const RATE_WINDOW_MS = 60_000;
+const PRUNE_MIN_INTERVAL_MS = 60_000;
+const BUCKET_MAP_PRUNE_THRESHOLD = 4096;
+let lastPruneAt = 0;
+
+/**
+ * Delete every expired bucket from the in-memory limiter maps and return how
+ * many entries were removed per limiter. Exported for deterministic tests —
+ * `now` is injectable so the test never sleeps.
+ */
+export function pruneRateLimitBuckets(now: number = Date.now()): { mutations: number; ai: number } {
+  let mutations = 0;
+  for (const [key, bucket] of mutationBuckets) {
+    if (now - bucket.startedAt >= RATE_WINDOW_MS) {
+      mutationBuckets.delete(key);
+      mutations += 1;
+    }
+  }
+  let ai = 0;
+  for (const [key, bucket] of aiBuckets) {
+    if (now - bucket.startedAt >= RATE_WINDOW_MS) {
+      aiBuckets.delete(key);
+      ai += 1;
+    }
+  }
+  return { mutations, ai };
+}
+
+function maybePrune(now: number): void {
+  const due = now - lastPruneAt >= PRUNE_MIN_INTERVAL_MS;
+  const oversized =
+    mutationBuckets.size > BUCKET_MAP_PRUNE_THRESHOLD || aiBuckets.size > BUCKET_MAP_PRUNE_THRESHOLD;
+  if (!due && !oversized) return;
+  lastPruneAt = now;
+  pruneRateLimitBuckets(now);
+}
+
 export function requireAiRateLimit(userId: number): Response | null {
   const now = Date.now();
+  maybePrune(now);
   const bucket = aiBuckets.get(userId);
-  if (!bucket || now - bucket.startedAt >= 60_000) {
+  if (!bucket || now - bucket.startedAt >= RATE_WINDOW_MS) {
     aiBuckets.set(userId, { startedAt: now, count: 1 });
     return null;
   }
@@ -46,13 +89,31 @@ export function requireApiUser(context: APIContext): User | Response {
 }
 
 /**
- * CSRF gate for unsafe API methods. Astro also performs its own protection for
- * form requests; this explicit check protects handlers if that configuration
- * changes and makes the API contract independently auditable.
+ * CSRF gate for unsafe API methods. Two independent layers:
+ *
+ * 1. Fetch Metadata (defense-in-depth): browsers attach `Sec-Fetch-Site` to
+ *    every request and cross-site JavaScript/forms cannot forge it. A
+ *    `cross-site` value is rejected outright; `same-origin` is accepted
+ *    immediately. Any other value (`same-site`, `none`, unknown) or an absent
+ *    header (older browsers, non-browser clients) falls back to layer 2.
+ * 2. Origin check: the request `Origin` header must exactly match the site
+ *    origin, so a forged cross-origin submission is refused even when Fetch
+ *    Metadata is unavailable.
+ *
+ * Accepts any object carrying `request` and `url` so both full APIContext
+ * dispatchers and minimal page-form contexts can share one implementation.
  */
-export function requireCsrf(context: APIContext): Response | null {
-  const origin = context.request.headers.get('origin');
-  if (origin === context.url.origin) return null;
+export function requireCsrf(context: { request: Request; url: URL }): Response | null {
+  return requireCsrfForRequest(context.request, context.url.origin);
+}
+
+/** Request-level variant for dispatchers without an Astro URL object. */
+export function requireCsrfForRequest(request: Request, siteOrigin: string): Response | null {
+  const secFetchSite = (request.headers.get('sec-fetch-site') ?? '').trim().toLowerCase();
+  if (secFetchSite === 'same-origin') return null;
+  if (secFetchSite === 'cross-site') return apiJsonError('Cross-site request rejected.', 403);
+  const origin = request.headers.get('origin');
+  if (origin === siteOrigin) return null;
   return apiJsonError('Invalid request origin.', 403);
 }
 
@@ -93,9 +154,10 @@ function applyMutationRateLimit(context: APIContext): Response | null {
   const ip = context.clientAddress;
   if (!ip) return null;
   const now = Date.now();
+  maybePrune(now);
   const key = `${ip}:${context.url.pathname}`;
   const bucket = mutationBuckets.get(key);
-  if (!bucket || now - bucket.startedAt >= 60_000) {
+  if (!bucket || now - bucket.startedAt >= RATE_WINDOW_MS) {
     mutationBuckets.set(key, { startedAt: now, count: 1 });
     return null;
   }

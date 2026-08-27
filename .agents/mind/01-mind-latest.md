@@ -1,4 +1,47 @@
 ---
+### 2026-08-27 23:05 — QC-REQUEST-SECURITY-008: طبقة Fetch Metadata فوق CSRF + pruning للـ rate-limit buckets + حارس مصدري canonical لكل mutation — بدون commit/push/deploy
+
+**الحالة:** نجح
+
+**المطلوب باختصار:**
+- تقوية أمن الطلبات في `apps/qc-task-manager` بدون استبدال المصادقة: Fetch Metadata defense فوق Origin CSRF الحالي، canonical security لكل POST/PUT/PATCH/DELETE، pruning للـ in-memory buckets، سويت scanning معماري، بدون Redis وبدون إضعاف CSP/CORS.
+
+**تم تنفيذه:**
+- `requireCsrf` صارت طبقتين: `Sec-Fetch-Site: same-origin` → قبول فوري، `cross-site` → 403 («Cross-site request rejected.»)، وأي قيمة أخرى (same-site/none/unknown) أو غياب الهيدر → fallback حرفي لمنطق Origin الأصلي (نفس الرسالة والسلوك — صفر كسر للسلوك القائم). انقسمت داخليًا إلى `requireCsrfForRequest(request, siteOrigin)` لتخدم الـ APIContext والـ LoginContext البسيط معًا.
+- Pruning جديد للـ buckets الذاكرة (mutation IP+path وAI per-user): `pruneRateLimitBuckets(now)` مُصدَّرة بساعة قابلة للحقن (اختبار حتمي)، و`maybePrune` تلقائي مرة كل 60 ثانية أو فورًا عند تجاوز 4096 إدخال (حماية من flood مزيف الـ IP). Buckets بقيت in-memory — QC instance واحد، لا Redis.
+- **فجوة اتساق أُغلقت**: `handleCreateTaskPost` (tasks.ts) كان المعالج الوحيد بلا `requireCsrf` canonical (حمايته الوحيدة طبقة Astro الضمنية) — صار يطبقها بنفسه كنمط معالجات المختبر.
+- سويت جديد `scripts/test-request-security.mjs` (أمر `test:request-security`، مسجل canonical → **54 suites**): **56/0** — سلوكي (same-origin/cross-site/invalid-origin/لا-metadata يحمي/415/413/rate-limit 121st و16th/pruning بساعة مستقبلية + إعادة قبول بعد التصفير/قفل الحساب بالخامسة/بوابة الـ IP بالعشرين) + **scan معماري** يفشل على أي انحدار: كل unsafe api export لازم يستدعي `requireCsrf`، كل endpoint لازم `requireApiUser` (health.ts الاستثناء الموثق)، لا منطق origin/sec-fetch خارج api-security، كل handle*Post يطبق requireCsrf (استثناء session.ts موثق بترتيب middleware المُثبت نصيًا)، CSP بلا unsafe-inline/eval مع بقاء default-src self وframe-ancestors none وconnect-src self، لا Access-Control-Allow أصلًا، limiters Maps بلا redis في package.json، وكل fetch بالمكونات relative فقط.
+- الـ UI islands لم تُلمس: كل الـ fetch نفسها نسبية same-origin والمتصفح يرفق `Sec-Fetch-Site: same-origin` تلقائيًا — التدفق القائم يمر كما هو.
+- session.ts لم يُلم عمدًا: إضافة استيراد لخلق دورة session↔api-security؛ مساراها محميان بـ requireCsrf صريح داخل middleware (الموجود مسبقًا) والفحص المصدري يثبت الترتيب.
+
+**الملفات المتأثرة:**
+- `apps/qc-task-manager/src/lib/api-security.ts`
+- `apps/qc-task-manager/src/lib/tasks.ts`
+- `apps/qc-task-manager/scripts/test-request-security.mjs` (جديد)
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/package.json`
+
+**التحقق:**
+- `pnpm test:request-security` ✅ 56/0 (من أول تشغيل)
+- `pnpm test:lab-security` ✅ 63/0 (الـ refactor لم يكسر السويت القديم)
+- `pnpm test:manifest` ✅ 54 canonical suites / 27 E2E — exit 0
+- `pnpm typecheck` ✅ 0 errors / 0 warnings / 17 hints (267 ملفًا)
+- `NODE_ENV=production pnpm build` ✅ Complete
+- E2E معزول حي: `e2e-auth-lockout` ✅ **45/0** على سيرفر `dist/server/entry.mjs` بقاعدة temp (قُطع ونُظف بعدها)
+- إثبات حي بـ curl بجلسة صالحة: same-origin metadata → **200** `{ok:true}`؛ cross-site metadata → **403** «Cross-site request rejected.»؛ بلا metadata وبلا Origin → **403** «Invalid request origin.» (fallback)
+- `git diff --check` نظيف؛ السيرفر والقاعدة المؤقتة حُذفا
+
+**قرارات/ملاحظات:**
+- غياب `Sec-Fetch-Site` = نفس سلوك Origin القديم بالحرف، فلا مسار قائم تغيّر رفضه أو قبوله — الطبقة تضيف رفضًا جديدًا (cross-site حتى لو Origin مزيف مطابق) وقبولًا مبكرًا (same-origin) فقط.
+- القيد 52→54 في المانيفست: 53 كانت بعد QC-USER-AUDIT-007، وهذا السويت جعلها 54.
+- القسم 1 تجاوز حده (~620 سطرًا الآن) — الأرشفة للقسم 2 تؤجل كقرار موثق متكرر (نمط الجلسات الأخيرة).
+
+**مشاكل مفتوحة:**
+- لا يوجد.
+
+**الخطوة الجاية:**
+- لا يوجد — جاهز للمراجعة، والـ commit على المستخدم.
+
 ### 2026-08-27 22:22 — QC-USER-AUDIT-007: تدقيق دائم لإدارة المستخدمين على qc_audit_log
 
 **الحالة:** نجح

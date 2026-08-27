@@ -15,6 +15,7 @@
 import type { APIContext } from 'astro';
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
+import { requireCsrf } from './api-security';
 import { getCurrentUser } from './session';
 import { setFlash } from './flash';
 import { PERMISSIONS } from './permissions';
@@ -356,6 +357,11 @@ export async function handleCreateTaskPost(
   context: APIContext,
   opts: CreateTaskOptions,
 ): Promise<Response> {
+  // Same canonical CSRF gate every other mutation handler applies itself — the
+  // middleware dispatch here must never be the only origin defense.
+  const csrf = requireCsrf(context);
+  if (csrf) return csrf;
+
   const user = getCurrentUser(context);
   if (!user) {
     return context.redirect(`/login?redirect=${encodeURIComponent(context.url.pathname)}`);
