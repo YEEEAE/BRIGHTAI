@@ -769,7 +769,9 @@ duplicate SHA-256, and persisted metadata/status.
 - `ADMIN_DEFAULT_PASSWORD` — seed password (default `admin123`, warns if unset)
 - `QC_DATABASE_PATH` — absolute path to an alternate SQLite database
   (`QC_DB_PATH` accepted as a legacy alias)
-- `QC_BACKUP_DIR` — backup output directory for `db:backup` (default `<app>/db/backups`)
+- `QC_BACKUP_DIR` — backup output directory for the app runtime (scheduler, admin
+  backups, migration pre-backups) and the `db:backup`/`db:restore`/`db:init` CLI
+  (default: a `backups/` directory next to the database file)
 - `QC_BACKUP_RETENTION` — positive integer retention count (default `14`)
 - `SEED_DEMO=1` — seed demo team + 12 tasks on an empty DB
 
@@ -799,7 +801,8 @@ pnpm --filter @brightai/qc-task-manager db:backup
 
 Backups land in `db/backups/` (gitignored — the folder is kept via `.gitkeep`).
 Retention defaults to 14 (`--keep=30` or `QC_BACKUP_RETENTION=30` to change).
-`QC_BACKUP_DIR` overrides the output directory. Verify/restore behavior and
+`QC_BACKUP_DIR` overrides the output directory for every caller (runtime and
+CLI — see `docs/DEPLOYMENT.md` for the production setting). Verify/restore behavior and
 failure handling are documented in `../../docs/DISASTER-RECOVERY.md` and
 `docs/RESTORE.md`.
 

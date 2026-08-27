@@ -29,7 +29,7 @@ import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 import { seedDemoData, seedUsersIfEmpty } from './seed';
 import { seedLabEquipmentIfEmpty } from './lab/seed';
 import { startBackupScheduler } from './backup-scheduler';
-import { backupDirectoryForDatabase } from './backup';
+import { configuredBackupDirectory } from './backup';
 import { runMigrations } from './migrations';
 import { EMBEDDED_MIGRATIONS } from './migrationRegistry';
 import { backfillAuditChain } from './audit/chain';
@@ -40,11 +40,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Resolve to <app>/db/qc_tasks.db. From src/lib/ that's ../../db/qc_tasks.db.
 const DB_DIR = resolve(__dirname, '..', '..', 'db');
-// Spec env var first; QC_DB_PATH stays as a legacy alias (documented in the
-// README, used by scripts/init-db.mjs, scripts/backup-db.mjs and the e2e runs).
-const DB_PATH =
-  process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
-const BACKUP_DIR = backupDirectoryForDatabase(DB_PATH);
+
+/**
+ * Pure resolution of the SQLite database path so tests can assert the exact
+ * precedence without reloading the module: `QC_DATABASE_PATH` (spec name)
+ * first, then the legacy `QC_DB_PATH` alias (kept for existing
+ * scripts/README/e2e flows), then <app>/db/qc_tasks.db.
+ */
+export function resolveDatabasePath(env: NodeJS.ProcessEnv = process.env): string {
+  return env.QC_DATABASE_PATH ?? env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
+}
+
+const DB_PATH = resolveDatabasePath();
+const BACKUP_DIR = configuredBackupDirectory(DB_PATH);
 
 /** SQLite writes are intentionally single-instance. Reject common scale-out
  * settings before opening the file when the host exposes them to the process. */

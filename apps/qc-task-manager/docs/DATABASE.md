@@ -91,6 +91,10 @@ pnpm --filter @brightai/qc-task-manager db:backup -- --keep=30
 ```
 
 Set `QC_BACKUP_DIR` when backups must be stored separately from the database.
+The app runtime (scheduler, admin backups, migration pre-backups) and the CLI
+scripts all resolve the directory through one shared helper
+(`configuredBackupDirectory()` in `src/lib/backup.ts`), so status history and
+restore drills always see the same backup set.
 The backup implementation uses SQLite's online backup API, so it captures
 committed WAL data and creates a standalone `.db` restore unit. Do not copy
 the live `.db` file by itself while the service is running.

@@ -4,7 +4,7 @@
 
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { backupDirectoryForDatabase, restoreBackup } from '../src/lib/backup.ts';
+import { configuredBackupDirectory, restoreBackup } from '../src/lib/backup.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dbPath = process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(__dirname, '../db/qc_tasks.db');
@@ -21,7 +21,7 @@ try {
     backupFile: backupFileArg.slice('--backup='.length),
     metadataFile: `${backupFileArg.slice('--backup='.length)}.json`,
     confirmation: confirmationArg?.slice('--confirm='.length),
-    backupDir: process.env.QC_BACKUP_DIR ?? backupDirectoryForDatabase(dbPath),
+    backupDir: configuredBackupDirectory(dbPath),
   });
   console.log(`[restore] PASS production=${result.productionDbPath} safetyBackup=${result.safetyBackup?.name ?? 'none'}`);
 } catch (error) {

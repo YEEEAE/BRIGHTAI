@@ -7,12 +7,12 @@
 
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { backupDirectoryForDatabase, createBackup } from '../src/lib/backup.ts';
+import { configuredBackupDirectory, createBackup } from '../src/lib/backup.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_DIR = resolve(__dirname, '../db');
 const DB_PATH = process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH ?? resolve(DB_DIR, 'qc_tasks.db');
-const BACKUP_DIR = process.env.QC_BACKUP_DIR || backupDirectoryForDatabase(DB_PATH);
+const BACKUP_DIR = configuredBackupDirectory(DB_PATH);
 
 const keepArg = process.argv.find((arg) => arg.startsWith('--keep='));
 const keep = keepArg ? Number(keepArg.slice('--keep='.length)) : undefined;

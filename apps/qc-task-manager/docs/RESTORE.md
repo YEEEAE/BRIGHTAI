@@ -12,6 +12,11 @@ pnpm --filter @brightai/qc-task-manager db:restore -- \
   --confirm="RESTORE QC DATABASE"
 ```
 
+Set `QC_BACKUP_DIR` to the same directory the running app used (its resolved
+backup directory — `QC_BACKUP_DIR` when set, otherwise a `backups/` sibling of
+the database), so the safety backup and the restored snapshot share one
+status history.
+
 The command refuses missing, corrupt, wrong-schema, checksum-mismatched, or count-mismatched backups. It never replaces production without the exact confirmation string. Do not manually copy a `.db` file over production and do not reuse old `-wal`/`-shm` sidecars.
 
 See the repository-level [Disaster Recovery runbook](../../docs/DISASTER-RECOVERY.md) for verification, retention, failure modes, and post-restore checks.

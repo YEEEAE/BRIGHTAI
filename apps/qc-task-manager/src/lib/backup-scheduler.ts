@@ -7,7 +7,7 @@ import { statSync } from 'node:fs';
 
 import {
   BACKUP_TIME_ZONE,
-  backupDirectoryForDatabase,
+  configuredBackupDirectory,
   createBackup,
   getBackupStatus,
   type BackupOptions,
@@ -115,7 +115,8 @@ export function stopBackupScheduler(): void {
   timer = null;
 }
 
-/** Resolve the standard backup directory for callers that only know the DB. */
+/** Resolve the standard scheduler options for callers that only know the DB.
+ * Honors QC_BACKUP_DIR through the same shared resolution as the app runtime. */
 export function schedulerOptionsForDatabase(dbPath: string): BackupOptions {
-  return { dbPath, backupDir: backupDirectoryForDatabase(dbPath) };
+  return { dbPath, backupDir: configuredBackupDirectory(dbPath) };
 }

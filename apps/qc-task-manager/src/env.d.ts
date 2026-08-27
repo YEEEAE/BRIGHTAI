@@ -6,6 +6,8 @@ interface ImportMetaEnv {
   readonly QC_DATABASE_PATH?: string;
   /** Legacy alias for QC_DATABASE_PATH, kept for backward compatibility. */
   readonly QC_DB_PATH?: string;
+  /** Explicit backup output directory (see configuredBackupDirectory in
+   *  src/lib/backup.ts); falls back to a backups/ sibling of the database. */
   readonly QC_BACKUP_DIR?: string;
   readonly QC_BACKUP_RETENTION?: string;
 }

@@ -4,7 +4,7 @@
 import type { APIRoute } from 'astro';
 import { apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../lib/api-security';
 import { BACKUP_DIR, DB_PATH } from '../../../lib/db';
-import { backupDirectoryForDatabase, createBackup, getBackupStatus, listBackups } from '../../../lib/backup';
+import { createBackup, getBackupStatus, listBackups } from '../../../lib/backup';
 import { PERMISSIONS } from '../../../lib/permissions';
 import { setFlash } from '../../../lib/flash';
 
@@ -16,7 +16,10 @@ export const POST: APIRoute = async (context) => {
   if (isResponse(actor)) return actor;
   if (!PERMISSIONS.canManageUsers(actor.role)) return apiJsonError('Forbidden.', 403);
 
-  const backupDir = BACKUP_DIR || backupDirectoryForDatabase(DB_PATH);
+  // BACKUP_DIR is always resolved in lib/db.ts (QC_BACKUP_DIR or the DB
+  // sibling default), so the manual trigger writes to the same directory as
+  // the scheduler — otherwise status.json would report two disjoint histories.
+  const backupDir = BACKUP_DIR;
   try {
     const result = await createBackup({ dbPath: DB_PATH, backupDir, trigger: 'manual' });
     if (context.request.headers.get('accept')?.includes('text/html')) {

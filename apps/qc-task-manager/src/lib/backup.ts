@@ -351,6 +351,22 @@ export function backupDirectoryForDatabase(dbPath: string): string {
   return resolve(join(dirname(resolve(dbPath)), 'backups'));
 }
 
+/**
+ * Resolve the effective backup directory for a database path. An explicitly
+ * configured `QC_BACKUP_DIR` always wins (this is the documented Render
+ * production setting, e.g. /var/data/backups); otherwise backups live in a
+ * `backups/` sibling of the database file. A blank value is treated as unset
+ * so an empty env var can never silently redirect backups to a relative path.
+ *
+ * Single source of truth for the app runtime (db.ts), the scheduler, and the
+ * CLI scripts — every caller must agree on one directory or backup status,
+ * retention, and restore drills diverge.
+ */
+export function configuredBackupDirectory(dbPath: string, env: NodeJS.ProcessEnv = process.env): string {
+  const configured = env.QC_BACKUP_DIR?.trim();
+  return configured ? resolve(configured) : backupDirectoryForDatabase(dbPath);
+}
+
 export function backupRetention(override?: number): number {
   const raw = override ?? Number(process.env.QC_BACKUP_RETENTION ?? BACKUP_RETENTION);
   if (!Number.isInteger(raw) || raw < 1) throw new Error('Backup retention must be a positive integer.');

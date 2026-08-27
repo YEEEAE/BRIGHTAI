@@ -154,7 +154,7 @@ Environment:
 | Var | Meaning | Default |
 | --- | --- | --- |
 | `QC_DB_PATH` | Absolute path to an alternate SQLite database | `<app>/db/qc_tasks.db` |
-| `QC_BACKUP_DIR` | Backup output directory (`db:backup`) | `<app>/db/backups` |
+| `QC_BACKUP_DIR` | Backup output directory — app runtime (scheduler, admin backups, migration pre-backups) and `db:*` CLI; single source: `configuredBackupDirectory()` in `src/lib/backup.ts` | `<db-dir>/backups` |
 | `ADMIN_DEFAULT_PASSWORD` | Seed password for all seeded accounts | `admin123` (warns) |
 | `SEED_DEMO=1` | Seed demo team + 12 mixed-status tasks on an empty DB | off |
 

@@ -11,6 +11,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdirSync, existsSync, rmSync } from 'node:fs';
 import { runMigrations } from '../src/lib/migrations.ts';
+import { configuredBackupDirectory } from '../src/lib/backup.ts';
 import { seedLabEquipmentIfEmpty } from '../src/lib/lab/seed.ts';
 import { importWICatalog } from '../src/lib/lab/wiCatalog.ts';
 
@@ -202,7 +203,8 @@ function main() {
   db.pragma('synchronous = NORMAL');
 
   // Use the same migration runner as application startup.
-  const migrationResult = runMigrations(db, { backup: true, backupDir: process.env.QC_BACKUP_DIR || resolve(DB_DIR, 'backups') });
+  // Same backup-directory resolution as the app runtime (QC_BACKUP_DIR wins).
+  const migrationResult = runMigrations(db, { backup: true, backupDir: configuredBackupDirectory(DB_PATH) });
   console.log(`[init-db] schema version ${migrationResult.currentVersion}; applied ${migrationResult.applied.length} migration(s).`);
   seedUsersIfEmpty(db);
   importWICatalog(db);

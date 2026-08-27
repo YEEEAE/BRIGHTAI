@@ -71,7 +71,8 @@
     "test:lab-trends": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-trends.mjs",
     "test:lab-change-requests": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-change-requests.mjs",
     "test:db-doctor": "node --experimental-strip-types scripts/test-db-doctor.mjs",
-    "test:production-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-production-operations.mjs"
+    "test:production-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-production-operations.mjs",
+    "test:deployment-contract": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-deployment-contract.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^10.1.0",

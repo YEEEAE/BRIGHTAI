@@ -70,4 +70,5 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:lab-change-requests',
   'test:db-doctor',
   'test:production-operations',
+  'test:deployment-contract',
 ];
