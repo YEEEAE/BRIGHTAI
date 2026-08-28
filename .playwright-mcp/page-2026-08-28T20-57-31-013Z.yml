@@ -1,0 +1,20 @@
+- generic [ref=f3e2]:
+  - link "Skip to content" [ref=f3e3] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f3e5]:
+    - navigation "Primary" [ref=f3e6]:
+      - link "QC Task Manager" [ref=f3e8] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f3e9]:
+        - button "Notifications (0 active)" [ref=f3e11] [cursor=pointer]
+        - button "Open navigation" [ref=f3e15] [cursor=pointer]
+  - main [ref=f3e18]:
+    - generic [ref=f3e19]:
+      - paragraph [ref=f3e20]: Error 404
+      - heading "Page not found" [level=1] [ref=f3e21]
+      - paragraph [ref=f3e22]: The page you're looking for doesn't exist or may have moved. Check the address, or start again from your home page.
+      - generic [ref=f3e23]:
+        - link "Go home" [ref=f3e24] [cursor=pointer]:
+          - /url: /
+        - link "Search tasks" [ref=f3e25] [cursor=pointer]:
+          - /url: /search

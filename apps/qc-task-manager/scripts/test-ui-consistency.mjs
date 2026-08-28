@@ -81,10 +81,17 @@ ok(read('src/styles/global.css').includes('--color-text-primary'), 'semantic tok
     ok(src.includes('<SystemBackground />'), `system background rendered: ${layout}`);
   }
   ok(background.includes('/media/qc-system-background.mp4'), 'system background uses the approved local video');
+  ok(background.includes('width: 1600px') && background.includes('height: 1200px'), 'system background preserves the approved video native dimensions');
+  ok(background.includes('object-fit: contain') && !background.includes('object-fit: cover'), 'system background is never resized with cover');
+  ok(background.includes('position: fixed'), 'system background remains fixed to the viewport');
+  ok(background.includes('opacity: 1') && background.includes('filter: none'), 'system background preserves the source video colors');
+  ok(!background.includes('qc-system-background__scrim'), 'system background has no color-altering scrim');
   ok(background.includes('prefers-reduced-motion: reduce'), 'system background respects reduced motion');
   ok(background.includes('@media print'), 'system background stays out of controlled print output');
   ok(statSync(join(APP_DIR, 'public/media/qc-system-background.mp4')).size > 0, 'system background video exists');
   ok(statSync(join(APP_DIR, 'public/media/qc-system-background-poster.jpg')).size > 0, 'system background poster exists');
+  const login = read('src/pages/login.astro');
+  ok(login.includes('<BaseLayout title="Sign in" hideNav>'), 'login remains inside the shared background layout');
 }
 
 // Navigation uses disclosure semantics: native links stay native and the

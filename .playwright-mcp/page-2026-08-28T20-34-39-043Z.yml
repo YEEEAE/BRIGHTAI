@@ -1,0 +1,15 @@
+- generic [ref=f3e2]:
+  - link "Skip to content" [ref=f3e3] [cursor=pointer]:
+    - /url: "#main"
+  - main [ref=f3e4]:
+    - generic [ref=f3e5]:
+      - heading "Sign in" [level=1] [ref=f3e6]
+      - paragraph [ref=f3e7]: Use your QC Tasks account.
+      - generic [ref=f3e8]:
+        - generic [ref=f3e9]:
+          - generic [ref=f3e10]: Username
+          - textbox "Username" [ref=f3e11]
+        - generic [ref=f3e12]:
+          - generic [ref=f3e13]: Password
+          - textbox "Password" [ref=f3e14]
+        - button "Sign in" [ref=f3e15] [cursor=pointer]

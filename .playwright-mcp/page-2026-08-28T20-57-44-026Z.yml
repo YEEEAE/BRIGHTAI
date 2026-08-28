@@ -1,0 +1,945 @@
+- generic [ref=f4e2]:
+  - link "Skip to content" [ref=f4e3] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f4e5]:
+    - navigation "Primary" [ref=f4e6]:
+      - generic [ref=f4e7]:
+        - link "QC Task Manager" [ref=f4e8] [cursor=pointer]:
+          - /url: /
+        - list [ref=f4e9]:
+          - listitem [ref=f4e10]:
+            - link "Dashboard" [ref=f4e11] [cursor=pointer]:
+              - /url: /dashboard
+          - listitem [ref=f4e12]:
+            - link "Tasks" [ref=f4e13] [cursor=pointer]:
+              - /url: /manager
+          - listitem [ref=f4e14]:
+            - link "Search" [ref=f4e15] [cursor=pointer]:
+              - /url: /search
+          - listitem [ref=f4e16]:
+            - link "Findings" [ref=f4e17] [cursor=pointer]:
+              - /url: /findings
+          - listitem [ref=f4e18]:
+            - link "Laboratory" [ref=f4e19] [cursor=pointer]:
+              - /url: /lab
+          - listitem [ref=f4e20]:
+            - link "Reports" [ref=f4e21] [cursor=pointer]:
+              - /url: /reports
+        - button "More" [ref=f4e23] [cursor=pointer]
+      - generic [ref=f4e26]:
+        - button "Notifications (0 active)" [ref=f4e28] [cursor=pointer]
+        - generic [ref=f4e32]: Administratoradmin
+        - link "Account" [ref=f4e33] [cursor=pointer]:
+          - /url: /account/security
+        - button "Sign out" [ref=f4e35] [cursor=pointer]
+  - main [ref=f4e36]:
+    - generic [ref=f4e37]:
+      - generic [ref=f4e38]:
+        - paragraph [ref=f4e39]: QC Operations
+        - heading "Dashboard" [level=1] [ref=f4e40]
+        - paragraph [ref=f4e41]: Live overview of all QC tasks. Signed in as Administrator (admin).
+      - link "Open reports" [ref=f4e43] [cursor=pointer]:
+        - /url: /reports
+    - generic [ref=f4e45]:
+      - generic [ref=f4e46]:
+        - text: Range
+        - combobox "Range" [ref=f4e47]:
+          - option "All time" [selected]
+          - option "Today"
+          - option "This week"
+          - option "This month"
+          - option "Custom range…"
+      - generic [ref=f4e48]:
+        - text: Employee
+        - combobox "Employee" [ref=f4e49]:
+          - option "All employees" [selected]
+          - option "Administrator"
+          - option "Department Manager"
+          - option "QC Employee"
+          - option "Team Supervisor"
+      - generic [ref=f4e50]:
+        - text: Department
+        - textbox "Department" [ref=f4e51]:
+          - /placeholder: e.g. QC
+      - generic [ref=f4e52]:
+        - text: Supervisor
+        - combobox "Supervisor" [ref=f4e53]:
+          - option "All supervisors" [selected]
+          - option "Team Supervisor"
+      - generic [ref=f4e54]:
+        - text: Priority
+        - combobox "Priority" [ref=f4e55]:
+          - option "All priorities" [selected]
+          - option "Low"
+          - option "Medium"
+          - option "High"
+          - option "Urgent"
+      - generic [ref=f4e56]:
+        - text: Status
+        - combobox "Status" [ref=f4e57]:
+          - option "All statuses" [selected]
+          - option "Not started"
+          - option "In progress"
+          - option "On hold"
+          - option "Completed"
+          - option "Cancelled"
+      - generic [ref=f4e58]:
+        - checkbox "Overdue only" [ref=f4e59]
+        - text: Overdue only
+      - generic [ref=f4e60]:
+        - text: Risk
+        - combobox "Risk" [ref=f4e61]:
+          - option "All risk levels" [selected]
+          - option "low"
+          - option "medium"
+          - option "high"
+          - option "critical"
+      - generic [ref=f4e62]:
+        - text: Finding Classification
+        - combobox "Finding Classification" [ref=f4e63]:
+          - option "All classifications" [selected]
+          - option "conforming"
+          - option "minor"
+          - option "major"
+          - option "critical"
+          - option "observation"
+      - generic [ref=f4e64]:
+        - text: SLA Status
+        - combobox "SLA Status" [ref=f4e65]:
+          - option "All SLA statuses" [selected]
+          - option "NORMAL"
+          - option "AT_RISK"
+          - option "CRITICAL"
+          - option "BREACHED"
+          - option "PAUSED"
+      - button "Apply filters" [ref=f4e66] [cursor=pointer]
+    - navigation "Dashboard sections" [ref=f4e67]:
+      - generic [ref=f4e68]:
+        - link "Action required" [ref=f4e69] [cursor=pointer]:
+          - /url: "#action-required"
+        - link "Today" [ref=f4e70] [cursor=pointer]:
+          - /url: "#today"
+        - link "Trends" [ref=f4e71] [cursor=pointer]:
+          - /url: "#trends"
+        - link "Laboratory" [ref=f4e72] [cursor=pointer]:
+          - /url: "#laboratory"
+        - link "SLA" [ref=f4e73] [cursor=pointer]:
+          - /url: "#sla"
+        - link "Findings" [ref=f4e74] [cursor=pointer]:
+          - /url: "#findings"
+        - link "CAPA" [ref=f4e75] [cursor=pointer]:
+          - /url: "#capa"
+        - link "Workforce" [ref=f4e76] [cursor=pointer]:
+          - /url: "#workforce"
+        - link "Evidence" [ref=f4e77] [cursor=pointer]:
+          - /url: "#evidence"
+        - link "Audit" [ref=f4e78] [cursor=pointer]:
+          - /url: "#audit"
+        - link "Reports" [ref=f4e79] [cursor=pointer]:
+          - /url: /reports
+    - region [ref=f4e80]:
+      - generic [ref=f4e81]:
+        - paragraph [ref=f4e82]: Tier 1 · Action required
+        - heading "Start with work that needs a decision" [level=2] [ref=f4e83]
+        - paragraph [ref=f4e84]: Open the matching register to investigate, assign, or resolve each item.
+      - generic [ref=f4e85]:
+        - link "Overdue tasks 0 Due before today · Open register ↗" [ref=f4e86] [cursor=pointer]:
+          - /url: /dashboard/drilldown?kpi=overdue
+          - generic [ref=f4e87]:
+            - generic [ref=f4e88]: Overdue tasks
+            - generic [ref=f4e89]: "0"
+          - paragraph [ref=f4e90]: Due before today · Open register ↗
+        - link "Blocked tasks 0 Tasks on hold · Open register ↗" [ref=f4e91] [cursor=pointer]:
+          - /url: /dashboard/drilldown?kpi=on_hold
+          - generic [ref=f4e92]:
+            - generic [ref=f4e93]: Blocked tasks
+            - generic [ref=f4e94]: "0"
+          - paragraph [ref=f4e95]: Tasks on hold · Open register ↗
+        - link "Missing evidence 0 Completed without proof · Open register ↗" [ref=f4e96] [cursor=pointer]:
+          - /url: /dashboard/drilldown?kpi=completed_without_evidence
+          - generic [ref=f4e97]:
+            - generic [ref=f4e98]: Missing evidence
+            - generic [ref=f4e99]: "0"
+          - paragraph [ref=f4e100]: Completed without proof · Open register ↗
+        - link "Urgent open 0 Open urgent work · Open register ↗" [ref=f4e101] [cursor=pointer]:
+          - /url: /dashboard/drilldown?kpi=urgent_open
+          - generic [ref=f4e102]:
+            - generic [ref=f4e103]: Urgent open
+            - generic [ref=f4e104]: "0"
+          - paragraph [ref=f4e105]: Open urgent work · Open register ↗
+    - region [ref=f4e106]:
+      - generic [ref=f4e107]:
+        - paragraph [ref=f4e108]: Tier 2 · Today’s operations
+        - heading "Operational pulse" [level=2] [ref=f4e109]
+        - paragraph [ref=f4e110]: A quick read of workload, status, and service-level health for the selected scope.
+      - region "Key metrics" [ref=f4e111]:
+        - 'link "Total Tasks: 0. Open matching tasks" [ref=f4e112] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=total
+          - generic [ref=f4e113]:
+            - generic [ref=f4e114]: 📋
+            - text: Total Tasks
+          - generic [ref=f4e115]: "0"
+          - generic [ref=f4e116]: Open drill-down ↗
+        - 'link "Not Started: 0. Open matching tasks" [ref=f4e117] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=not_started
+          - generic [ref=f4e118]:
+            - generic [ref=f4e119]: 🔴
+            - text: Not Started
+          - generic [ref=f4e120]: "0"
+          - generic [ref=f4e121]: Open drill-down ↗
+        - 'link "In Progress: 0. Open matching tasks" [ref=f4e122] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=in_progress
+          - generic [ref=f4e123]:
+            - generic [ref=f4e124]: 🟡
+            - text: In Progress
+          - generic [ref=f4e125]: "0"
+          - generic [ref=f4e126]: Open drill-down ↗
+        - 'link "On Hold: 0. Open matching tasks" [ref=f4e127] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=on_hold
+          - generic [ref=f4e128]:
+            - generic [ref=f4e129]: 🟠
+            - text: On Hold
+          - generic [ref=f4e130]: "0"
+          - generic [ref=f4e131]: Open drill-down ↗
+        - 'link "Completed: 0. Open matching tasks" [ref=f4e132] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=completed
+          - generic [ref=f4e133]:
+            - generic [ref=f4e134]: 🟢
+            - text: Completed
+          - generic [ref=f4e135]: "0"
+          - generic [ref=f4e136]: Open drill-down ↗
+        - 'link "Overdue: 0. Open matching tasks" [ref=f4e137] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=overdue
+          - generic [ref=f4e138]:
+            - generic [ref=f4e139]: ⚠️
+            - text: Overdue
+          - generic [ref=f4e140]: "0"
+          - generic [ref=f4e141]: Open drill-down ↗
+        - 'link "Urgent Open: 0. Open matching tasks" [ref=f4e142] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=urgent_open
+          - generic [ref=f4e143]:
+            - generic [ref=f4e144]: 🚨
+            - text: Urgent Open
+          - generic [ref=f4e145]: "0"
+          - generic [ref=f4e146]: Open drill-down ↗
+        - 'link "Completed Without Evidence: 0. Open matching tasks" [ref=f4e147] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=completed_without_evidence
+          - generic [ref=f4e148]:
+            - generic [ref=f4e149]: 📎
+            - text: Completed Without Evidence
+          - generic [ref=f4e150]: "0"
+          - generic [ref=f4e151]: Open drill-down ↗
+        - 'link "Average Completion Time: —. Open matching tasks" [ref=f4e152] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=average_resolution
+          - generic [ref=f4e153]:
+            - generic [ref=f4e154]: ⏱️
+            - text: Average Completion Time
+          - generic [ref=f4e155]: —
+          - generic [ref=f4e156]: Open drill-down ↗
+        - 'link "SLA Compliance: 0.0%. Open matching tasks" [ref=f4e157] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=sla_compliance
+          - generic [ref=f4e158]:
+            - generic [ref=f4e159]: ✅
+            - text: SLA Compliance
+          - generic [ref=f4e160]: 0.0%
+          - generic [ref=f4e161]: Open drill-down ↗
+        - 'link "At Risk: 0. Open matching tasks" [ref=f4e162] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=sla_at_risk
+          - generic [ref=f4e163]:
+            - generic [ref=f4e164]: ⚠️
+            - text: At Risk
+          - generic [ref=f4e165]: "0"
+          - generic [ref=f4e166]: Open drill-down ↗
+        - 'link "Critical: 0. Open matching tasks" [ref=f4e167] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=sla_critical
+          - generic [ref=f4e168]:
+            - generic [ref=f4e169]: 🔥
+            - text: Critical
+          - generic [ref=f4e170]: "0"
+          - generic [ref=f4e171]: Open drill-down ↗
+        - 'link "SLA Breached: 0. Open matching tasks" [ref=f4e172] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=sla_breached
+          - generic [ref=f4e173]:
+            - generic [ref=f4e174]: 🚨
+            - text: SLA Breached
+          - generic [ref=f4e175]: "0"
+          - generic [ref=f4e176]: Open drill-down ↗
+        - 'link "Average Resolution: —. Open matching tasks" [ref=f4e177] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=average_resolution
+          - generic [ref=f4e178]:
+            - generic [ref=f4e179]: ⏱️
+            - text: Average Resolution
+          - generic [ref=f4e180]: —
+          - generic [ref=f4e181]: Open drill-down ↗
+        - 'link "Average SLA Consumption: —. Open matching tasks" [ref=f4e182] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=sla_started
+          - generic [ref=f4e183]:
+            - generic [ref=f4e184]: 📊
+            - text: Average SLA Consumption
+          - generic [ref=f4e185]: —
+          - generic [ref=f4e186]: Open drill-down ↗
+        - 'link "Completion Rate: 0.0%. Open matching tasks" [ref=f4e187] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=completion_rate
+          - generic [ref=f4e188]:
+            - generic [ref=f4e189]: 📈
+            - text: Completion Rate
+          - generic [ref=f4e190]: 0.0%
+          - generic [ref=f4e191]: Open drill-down ↗
+        - 'link "Critical Findings: 0. Open matching tasks" [ref=f4e192] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=critical_findings
+          - generic [ref=f4e193]:
+            - generic [ref=f4e194]: 🔎
+            - text: Critical Findings
+          - generic [ref=f4e195]: "0"
+          - generic [ref=f4e196]: Open drill-down ↗
+        - 'link "Open CAPA: 0. Open matching tasks" [ref=f4e197] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=open_capa
+          - generic [ref=f4e198]:
+            - generic [ref=f4e199]: 🧩
+            - text: Open CAPA
+          - generic [ref=f4e200]: "0"
+          - generic [ref=f4e201]: Open drill-down ↗
+        - 'link "Evidence Compliance: 0.0%. Open matching tasks" [ref=f4e202] [cursor=pointer]':
+          - /url: /dashboard/drilldown?kpi=evidence_compliance
+          - generic [ref=f4e203]:
+            - generic [ref=f4e204]: 📎
+            - text: Evidence Compliance
+          - generic [ref=f4e205]: 0.0%
+          - generic [ref=f4e206]: Open drill-down ↗
+      - generic [ref=f4e207]:
+        - generic [ref=f4e208]:
+          - heading "QC checklist progress" [level=2] [ref=f4e209]
+          - generic [ref=f4e210]: 0%
+        - paragraph [ref=f4e211]: 0/0 checklist items complete in the current filter scope.
+    - region [ref=f4e212]:
+      - generic [ref=f4e213]:
+        - paragraph [ref=f4e214]: Tier 3 · Trends
+        - heading "What is changing?" [level=2] [ref=f4e215]
+        - paragraph [ref=f4e216]: Use trends and comparisons to spot movement, imbalance, or emerging risk.
+      - region "Analytics" [ref=f4e218]:
+        - generic [ref=f4e219]:
+          - heading "Tasks by status" [level=2] [ref=f4e220]
+          - paragraph [ref=f4e221]: Distribution across all statuses
+          - generic [ref=f4e222]:
+            - 'img "Tasks by status: Not started 0, In progress 0, On hold 0, Completed 0, Cancelled 0" [ref=f4e223]':
+              - generic: "0"
+              - generic: tasks
+            - list [ref=f4e225]:
+              - listitem [ref=f4e226]:
+                - generic [ref=f4e229]: Not started
+                - generic [ref=f4e230]: "0"
+              - listitem [ref=f4e231]:
+                - generic [ref=f4e234]: In progress
+                - generic [ref=f4e235]: "0"
+              - listitem [ref=f4e236]:
+                - generic [ref=f4e239]: On hold
+                - generic [ref=f4e240]: "0"
+              - listitem [ref=f4e241]:
+                - generic [ref=f4e244]: Completed
+                - generic [ref=f4e245]: "0"
+              - listitem [ref=f4e246]:
+                - generic [ref=f4e249]: Cancelled
+                - generic [ref=f4e250]: "0"
+        - generic [ref=f4e251]:
+          - heading "Completion rate" [level=2] [ref=f4e252]
+          - paragraph [ref=f4e253]: Completed vs total, current vs previous period
+          - generic [ref=f4e254]:
+            - generic "Completion rate — percent" [ref=f4e256]: —
+            - paragraph [ref=f4e257]: vs previous period (—)
+            - paragraph [ref=f4e260]: "Current: 2026-07-30 → 2026-08-28Previous: 2026-06-30 → 2026-07-29"
+        - generic [ref=f4e261]:
+          - heading "Tasks by priority" [level=2] [ref=f4e262]
+          - paragraph [ref=f4e263]: Count and share per priority
+          - generic [ref=f4e264]:
+            - list [ref=f4e265]:
+              - listitem [ref=f4e266]:
+                - generic [ref=f4e267]:
+                  - generic [ref=f4e268]: Low
+                  - generic [ref=f4e269]:
+                    - text: "0"
+                    - generic [ref=f4e270]: (0%)
+              - listitem [ref=f4e273]:
+                - generic [ref=f4e274]:
+                  - generic [ref=f4e275]: Medium
+                  - generic [ref=f4e276]:
+                    - text: "0"
+                    - generic [ref=f4e277]: (0%)
+              - listitem [ref=f4e280]:
+                - generic [ref=f4e281]:
+                  - generic [ref=f4e282]: High
+                  - generic [ref=f4e283]:
+                    - text: "0"
+                    - generic [ref=f4e284]: (0%)
+              - listitem [ref=f4e287]:
+                - generic [ref=f4e288]:
+                  - generic [ref=f4e289]: Urgent
+                  - generic [ref=f4e290]:
+                    - text: "0"
+                    - generic [ref=f4e291]: (0%)
+            - paragraph [ref=f4e294]: No tasks match the current filters.
+        - generic [ref=f4e295]:
+          - heading "Completed per week" [level=2] [ref=f4e296]
+          - paragraph [ref=f4e297]: Completions from completed_at, last 8 weeks
+          - generic [ref=f4e298]:
+            - 'img "Tasks completed per week (last 8 weeks): 6 Jul 0, 13 Jul 0, 20 Jul 0, 27 Jul 0, 3 Aug 0, 10 Aug 0, 17 Aug 0, 24 Aug 0" [ref=f4e299]':
+              - generic [ref=f4e300]: "0"
+              - generic [ref=f4e302]: "1"
+              - generic [ref=f4e304]: "2"
+              - generic [ref=f4e306]: "3"
+              - generic [ref=f4e308]: "4"
+              - generic [ref=f4e310] [cursor=pointer]:
+                - 'generic "6 Jul: 0 completed" [ref=f4e311]'
+                - generic [ref=f4e312]: 6 Jul
+              - generic [ref=f4e313] [cursor=pointer]:
+                - 'generic "13 Jul: 0 completed" [ref=f4e314]'
+                - generic [ref=f4e315]: 13 Jul
+              - generic [ref=f4e316] [cursor=pointer]:
+                - 'generic "20 Jul: 0 completed" [ref=f4e317]'
+                - generic [ref=f4e318]: 20 Jul
+              - generic [ref=f4e319] [cursor=pointer]:
+                - 'generic "27 Jul: 0 completed" [ref=f4e320]'
+                - generic [ref=f4e321]: 27 Jul
+              - generic [ref=f4e322] [cursor=pointer]:
+                - 'generic "3 Aug: 0 completed" [ref=f4e323]'
+                - generic [ref=f4e324]: 3 Aug
+              - generic [ref=f4e325] [cursor=pointer]:
+                - 'generic "10 Aug: 0 completed" [ref=f4e326]'
+                - generic [ref=f4e327]: 10 Aug
+              - generic [ref=f4e328] [cursor=pointer]:
+                - 'generic "17 Aug: 0 completed" [ref=f4e329]'
+                - generic [ref=f4e330]: 17 Aug
+              - generic [ref=f4e331] [cursor=pointer]:
+                - 'generic "24 Aug: 0 completed" [ref=f4e332]'
+                - generic [ref=f4e333]: 24 Aug
+            - paragraph [ref=f4e334]: 0 tasks completed in the last 8 weeks.
+        - generic [ref=f4e335]:
+          - heading "Tasks per employee" [level=2] [ref=f4e336]
+          - paragraph [ref=f4e337]: Assigned tasks, split by status
+          - paragraph [ref=f4e338]: No tasks assigned to active users match the current filters.
+        - generic [ref=f4e339]:
+          - heading "Overdue by employee" [level=2] [ref=f4e340]
+          - paragraph [ref=f4e341]: Overdue tasks assigned to each active user
+          - paragraph [ref=f4e342]: No overdue tasks — great job! 🎉
+    - region [ref=f4e343]:
+      - generic [ref=f4e344]:
+        - paragraph [ref=f4e345]: Tier 4 · Analysis / drilldowns
+        - heading "Explore the underlying registers" [level=2] [ref=f4e346]
+        - paragraph [ref=f4e347]: Open a focused workspace when the operational pulse needs deeper investigation.
+      - region "AI Executive Summary AI assistant" [ref=f4e349]:
+        - generic [ref=f4e350]:
+          - generic [ref=f4e351]:
+            - generic [ref=f4e352]:
+              - heading "AI Executive Summary" [level=2] [ref=f4e353]
+              - generic [ref=f4e354]:
+                - generic [ref=f4e355]: ✦
+                - generic [ref=f4e356]: AI advisory
+            - paragraph [ref=f4e357]: AI-generated suggestions · Human review required · Advisory only
+            - paragraph [ref=f4e358]: AI does not approve, reject, or decide QC outcomes.
+          - button "Run AI review" [ref=f4e359] [cursor=pointer]
+        - status [ref=f4e360]
+        - status [ref=f4e361]
+        - alert [ref=f4e362]
+        - alert [ref=f4e363]
+      - region [ref=f4e364]:
+        - generic [ref=f4e365]:
+          - generic [ref=f4e366]:
+            - heading "Laboratory" [level=2] [ref=f4e367]
+            - paragraph [ref=f4e368]: QC laboratory testing, equipment, documents and retests — every card drills into its register.
+          - link "Open Lab Command Center" [ref=f4e369] [cursor=pointer]:
+            - /url: /lab
+        - generic [ref=f4e370]:
+          - heading "Tests" [level=3] [ref=f4e371]
+          - generic [ref=f4e372]:
+            - 'link "Tests — Total Tests: 0. Open the matching laboratory register" [ref=f4e373] [cursor=pointer]':
+              - /url: /lab/tests
+              - generic [ref=f4e374]:
+                - generic [ref=f4e375]: 🧪
+                - text: Total Tests
+              - generic [ref=f4e376]: "0"
+              - generic [ref=f4e377]: Open drill-down ↗
+            - 'link "Tests — AIR: 0. Open the matching laboratory register" [ref=f4e378] [cursor=pointer]':
+              - /url: /lab/tests?type=air
+              - generic [ref=f4e379]:
+                - generic [ref=f4e380]: 💨
+                - text: AIR
+              - generic [ref=f4e381]: "0"
+              - generic [ref=f4e382]: Open drill-down ↗
+            - 'link "Tests — VACUUM: 0. Open the matching laboratory register" [ref=f4e383] [cursor=pointer]':
+              - /url: /lab/tests?type=vacuum
+              - generic [ref=f4e384]:
+                - generic [ref=f4e385]: 🌑
+                - text: VACUUM
+              - generic [ref=f4e386]: "0"
+              - generic [ref=f4e387]: Open drill-down ↗
+            - 'link "Tests — Draft: 0. Open the matching laboratory register" [ref=f4e388] [cursor=pointer]':
+              - /url: /lab/tests?status=DRAFT
+              - generic [ref=f4e389]:
+                - generic [ref=f4e390]: ✏️
+                - text: Draft
+              - generic [ref=f4e391]: "0"
+              - generic [ref=f4e392]: Open drill-down ↗
+            - 'link "Tests — Submitted: 0. Open the matching laboratory register" [ref=f4e393] [cursor=pointer]':
+              - /url: /lab/tests?status=SUBMITTED
+              - generic [ref=f4e394]:
+                - generic [ref=f4e395]: 📤
+                - text: Submitted
+              - generic [ref=f4e396]: "0"
+              - generic [ref=f4e397]: Open drill-down ↗
+            - 'link "Tests — Under Review: 0. Open the matching laboratory register" [ref=f4e398] [cursor=pointer]':
+              - /url: /lab/tests?status=UNDER_REVIEW
+              - generic [ref=f4e399]:
+                - generic [ref=f4e400]: 🔎
+                - text: Under Review
+              - generic [ref=f4e401]: "0"
+              - generic [ref=f4e402]: Open drill-down ↗
+            - 'link "Tests — Approved: 0. Open the matching laboratory register" [ref=f4e403] [cursor=pointer]':
+              - /url: /lab/tests?status=APPROVED
+              - generic [ref=f4e404]:
+                - generic [ref=f4e405]: ✅
+                - text: Approved
+              - generic [ref=f4e406]: "0"
+              - generic [ref=f4e407]: Open drill-down ↗
+            - 'link "Tests — Rejected: 0. Open the matching laboratory register" [ref=f4e408] [cursor=pointer]':
+              - /url: /lab/tests?status=REJECTED
+              - generic [ref=f4e409]:
+                - generic [ref=f4e410]: ❌
+                - text: Rejected
+              - generic [ref=f4e411]: "0"
+              - generic [ref=f4e412]: Open drill-down ↗
+            - 'link "Tests — Void: 0. Open the matching laboratory register" [ref=f4e413] [cursor=pointer]':
+              - /url: /lab/tests?status=VOID
+              - generic [ref=f4e414]:
+                - generic [ref=f4e415]: 🚫
+                - text: Void
+              - generic [ref=f4e416]: "0"
+              - generic [ref=f4e417]: Open drill-down ↗
+        - generic [ref=f4e418]:
+          - heading "Results" [level=3] [ref=f4e419]
+          - generic [ref=f4e420]:
+            - 'link "Results — PASS: 0. Open the matching laboratory register" [ref=f4e421] [cursor=pointer]':
+              - /url: /lab/tests?result=PASS
+              - generic [ref=f4e422]:
+                - generic [ref=f4e423]: 🟢
+                - text: PASS
+              - generic [ref=f4e424]: "0"
+              - generic [ref=f4e425]: Open drill-down ↗
+            - 'link "Results — FAIL: 0. Open the matching laboratory register" [ref=f4e426] [cursor=pointer]':
+              - /url: /lab/tests?result=FAIL
+              - generic [ref=f4e427]:
+                - generic [ref=f4e428]: 🔴
+                - text: FAIL
+              - generic [ref=f4e429]: "0"
+              - generic [ref=f4e430]: Open drill-down ↗
+            - 'link "Results — HOLD: 0. Open the matching laboratory register" [ref=f4e431] [cursor=pointer]':
+              - /url: /lab/tests?result=HOLD
+              - generic [ref=f4e432]:
+                - generic [ref=f4e433]: 🟠
+                - text: HOLD
+              - generic [ref=f4e434]: "0"
+              - generic [ref=f4e435]: Open drill-down ↗
+        - generic [ref=f4e436]:
+          - heading "Equipment" [level=3] [ref=f4e437]
+          - generic [ref=f4e438]:
+            - 'link "Equipment — In Use: 7. Open the matching laboratory register" [ref=f4e439] [cursor=pointer]':
+              - /url: /lab/equipment?status=In Use
+              - generic [ref=f4e440]:
+                - generic [ref=f4e441]: 🟢
+                - text: In Use
+              - generic [ref=f4e442]: "7"
+              - generic [ref=f4e443]: Open drill-down ↗
+            - 'link "Equipment — New: 2. Open the matching laboratory register" [ref=f4e444] [cursor=pointer]':
+              - /url: /lab/equipment?status=New
+              - generic [ref=f4e445]:
+                - generic [ref=f4e446]: 🆕
+                - text: New
+              - generic [ref=f4e447]: "2"
+              - generic [ref=f4e448]: Open drill-down ↗
+            - 'link "Equipment — Under Maintenance: 11. Open the matching laboratory register" [ref=f4e449] [cursor=pointer]':
+              - /url: /lab/equipment?status=Under Maintenance
+              - generic [ref=f4e450]:
+                - generic [ref=f4e451]: 🔧
+                - text: Under Maintenance
+              - generic [ref=f4e452]: "11"
+              - generic [ref=f4e453]: Open drill-down ↗
+            - 'link "Equipment — Not In Use: 4. Open the matching laboratory register" [ref=f4e454] [cursor=pointer]':
+              - /url: /lab/equipment?status=Not In Use
+              - generic [ref=f4e455]:
+                - generic [ref=f4e456]: 📦
+                - text: Not In Use
+              - generic [ref=f4e457]: "4"
+              - generic [ref=f4e458]: Open drill-down ↗
+            - 'link "Equipment — Calibration Attention: 0. Open the matching laboratory register" [ref=f4e459] [cursor=pointer]':
+              - /url: /lab/calibration?due=1
+              - generic [ref=f4e460]:
+                - generic [ref=f4e461]: ⚠️
+                - text: Calibration Attention
+              - generic [ref=f4e462]: "0"
+              - generic [ref=f4e463]: Open drill-down ↗
+            - 'link "Equipment — Cal. Compliant: 0. Open the matching laboratory register" [ref=f4e464] [cursor=pointer]':
+              - /url: /lab/calibration
+              - generic [ref=f4e465]:
+                - generic [ref=f4e466]: ✅
+                - text: Cal. Compliant
+              - generic [ref=f4e467]: "0"
+              - generic [ref=f4e468]: Open drill-down ↗
+        - generic [ref=f4e469]:
+          - heading "Documents" [level=3] [ref=f4e470]
+          - generic [ref=f4e471]:
+            - 'link "Documents — SOP: 0. Open the matching laboratory register" [ref=f4e472] [cursor=pointer]':
+              - /url: /lab/documents?type=SOP
+              - generic [ref=f4e473]:
+                - generic [ref=f4e474]: 📕
+                - text: SOP
+              - generic [ref=f4e475]: "0"
+              - generic [ref=f4e476]: Open drill-down ↗
+            - 'link "Documents — WI: 33. Open the matching laboratory register" [ref=f4e477] [cursor=pointer]':
+              - /url: /lab/documents?type=WI
+              - generic [ref=f4e478]:
+                - generic [ref=f4e479]: 📙
+                - text: WI
+              - generic [ref=f4e480]: "33"
+              - generic [ref=f4e481]: Open drill-down ↗
+            - 'link "Documents — Draft: 33. Open the matching laboratory register" [ref=f4e482] [cursor=pointer]':
+              - /url: /lab/documents?status=DRAFT
+              - generic [ref=f4e483]:
+                - generic [ref=f4e484]: ✏️
+                - text: Draft
+              - generic [ref=f4e485]: "33"
+              - generic [ref=f4e486]: Open drill-down ↗
+            - 'link "Documents — In Review: 0. Open the matching laboratory register" [ref=f4e487] [cursor=pointer]':
+              - /url: /lab/documents?status=IN_REVIEW
+              - generic [ref=f4e488]:
+                - generic [ref=f4e489]: 🔎
+                - text: In Review
+              - generic [ref=f4e490]: "0"
+              - generic [ref=f4e491]: Open drill-down ↗
+            - 'link "Documents — Approved: 0. Open the matching laboratory register" [ref=f4e492] [cursor=pointer]':
+              - /url: /lab/documents?status=APPROVED
+              - generic [ref=f4e493]:
+                - generic [ref=f4e494]: ✅
+                - text: Approved
+              - generic [ref=f4e495]: "0"
+              - generic [ref=f4e496]: Open drill-down ↗
+            - 'link "Documents — Superseded: 0. Open the matching laboratory register" [ref=f4e497] [cursor=pointer]':
+              - /url: /lab/documents?status=SUPERSEDED
+              - generic [ref=f4e498]:
+                - generic [ref=f4e499]: 🔁
+                - text: Superseded
+              - generic [ref=f4e500]: "0"
+              - generic [ref=f4e501]: Open drill-down ↗
+            - 'link "Documents — Archived: 0. Open the matching laboratory register" [ref=f4e502] [cursor=pointer]':
+              - /url: /lab/documents?status=ARCHIVED
+              - generic [ref=f4e503]:
+                - generic [ref=f4e504]: 🗄️
+                - text: Archived
+              - generic [ref=f4e505]: "0"
+              - generic [ref=f4e506]: Open drill-down ↗
+            - 'link "Documents — Review Due: 0. Open the matching laboratory register" [ref=f4e507] [cursor=pointer]':
+              - /url: /lab/documents?review=due
+              - generic [ref=f4e508]:
+                - generic [ref=f4e509]: ⏰
+                - text: Review Due
+              - generic [ref=f4e510]: "0"
+              - generic [ref=f4e511]: Open drill-down ↗
+            - 'link "Documents — Ack Pending: 0. Open the matching laboratory register" [ref=f4e512] [cursor=pointer]':
+              - /url: /lab/acknowledgements?status=PENDING
+              - generic [ref=f4e513]:
+                - generic [ref=f4e514]: 🖊️
+                - text: Ack Pending
+              - generic [ref=f4e515]: "0"
+              - generic [ref=f4e516]: Open drill-down ↗
+        - generic [ref=f4e517]:
+          - heading "Retests" [level=3] [ref=f4e518]
+          - generic [ref=f4e519]:
+            - 'link "Retests — Total Retests: 0. Open the matching laboratory register" [ref=f4e520] [cursor=pointer]':
+              - /url: /lab/retests
+              - generic [ref=f4e521]:
+                - generic [ref=f4e522]: 🔁
+                - text: Total Retests
+              - generic [ref=f4e523]: "0"
+              - generic [ref=f4e524]: Open drill-down ↗
+            - 'link "Retests — Open: 0. Open the matching laboratory register" [ref=f4e525] [cursor=pointer]':
+              - /url: /lab/retests?status=OPEN
+              - generic [ref=f4e526]:
+                - generic [ref=f4e527]: 🟠
+                - text: Open
+              - generic [ref=f4e528]: "0"
+              - generic [ref=f4e529]: Open drill-down ↗
+            - 'link "Retests — Completed: 0. Open the matching laboratory register" [ref=f4e530] [cursor=pointer]':
+              - /url: /lab/retests?status=COMPLETED
+              - generic [ref=f4e531]:
+                - generic [ref=f4e532]: ✅
+                - text: Completed
+              - generic [ref=f4e533]: "0"
+              - generic [ref=f4e534]: Open drill-down ↗
+            - 'link "Retests — FAIL result: 0. Open the matching laboratory register" [ref=f4e535] [cursor=pointer]':
+              - /url: /lab/retests?reason=FAIL
+              - generic [ref=f4e536]:
+                - generic [ref=f4e537]: 📝
+                - text: FAIL result
+              - generic [ref=f4e538]: "0"
+              - generic [ref=f4e539]: Open drill-down ↗
+            - 'link "Retests — HOLD / Further evaluation: 0. Open the matching laboratory register" [ref=f4e540] [cursor=pointer]':
+              - /url: /lab/retests?reason=HOLD
+              - generic [ref=f4e541]:
+                - generic [ref=f4e542]: 📝
+                - text: HOLD / Further evaluation
+              - generic [ref=f4e543]: "0"
+              - generic [ref=f4e544]: Open drill-down ↗
+            - 'link "Retests — Sample issue: 0. Open the matching laboratory register" [ref=f4e545] [cursor=pointer]':
+              - /url: /lab/retests?reason=SAMPLE_ISSUE
+              - generic [ref=f4e546]:
+                - generic [ref=f4e547]: 📝
+                - text: Sample issue
+              - generic [ref=f4e548]: "0"
+              - generic [ref=f4e549]: Open drill-down ↗
+            - 'link "Retests — Equipment issue: 0. Open the matching laboratory register" [ref=f4e550] [cursor=pointer]':
+              - /url: /lab/retests?reason=EQUIPMENT_ISSUE
+              - generic [ref=f4e551]:
+                - generic [ref=f4e552]: 📝
+                - text: Equipment issue
+              - generic [ref=f4e553]: "0"
+              - generic [ref=f4e554]: Open drill-down ↗
+            - 'link "Retests — Procedural issue: 0. Open the matching laboratory register" [ref=f4e555] [cursor=pointer]':
+              - /url: /lab/retests?reason=PROCEDURAL_ISSUE
+              - generic [ref=f4e556]:
+                - generic [ref=f4e557]: 📝
+                - text: Procedural issue
+              - generic [ref=f4e558]: "0"
+              - generic [ref=f4e559]: Open drill-down ↗
+            - 'link "Retests — Other documented reason: 0. Open the matching laboratory register" [ref=f4e560] [cursor=pointer]':
+              - /url: /lab/retests?reason=OTHER
+              - generic [ref=f4e561]:
+                - generic [ref=f4e562]: 📝
+                - text: Other documented reason
+              - generic [ref=f4e563]: "0"
+              - generic [ref=f4e564]: Open drill-down ↗
+        - generic [ref=f4e565]:
+          - heading "Data Quality" [level=3] [ref=f4e566]
+          - 'link "Data Quality — Open Issues: 0. Open the matching laboratory register" [ref=f4e568] [cursor=pointer]':
+            - /url: /lab/data-quality
+            - generic [ref=f4e569]:
+              - generic [ref=f4e570]: 🧹
+              - text: Open Issues
+            - generic [ref=f4e571]: "0"
+            - generic [ref=f4e572]: Open drill-down ↗
+        - generic [ref=f4e574]:
+          - generic [ref=f4e575]:
+            - heading "Tests by date" [level=3] [ref=f4e576]
+            - paragraph [ref=f4e577]: Tests created per week, last 8 weeks
+            - generic [ref=f4e578]:
+              - 'img "Tests created per week (last 8 weeks): 6 Jul 0, 13 Jul 0, 20 Jul 0, 27 Jul 0, 3 Aug 0, 10 Aug 0, 17 Aug 0, 24 Aug 0" [ref=f4e579]':
+                - generic [ref=f4e580]: "0"
+                - generic [ref=f4e582]: "1"
+                - generic [ref=f4e584]: "2"
+                - generic [ref=f4e586]: "3"
+                - generic [ref=f4e588]: "4"
+                - generic [ref=f4e590] [cursor=pointer]:
+                  - 'generic "6 Jul: 0 tests created" [ref=f4e591]'
+                  - generic [ref=f4e592]: 6 Jul
+                - generic [ref=f4e593] [cursor=pointer]:
+                  - 'generic "13 Jul: 0 tests created" [ref=f4e594]'
+                  - generic [ref=f4e595]: 13 Jul
+                - generic [ref=f4e596] [cursor=pointer]:
+                  - 'generic "20 Jul: 0 tests created" [ref=f4e597]'
+                  - generic [ref=f4e598]: 20 Jul
+                - generic [ref=f4e599] [cursor=pointer]:
+                  - 'generic "27 Jul: 0 tests created" [ref=f4e600]'
+                  - generic [ref=f4e601]: 27 Jul
+                - generic [ref=f4e602] [cursor=pointer]:
+                  - 'generic "3 Aug: 0 tests created" [ref=f4e603]'
+                  - generic [ref=f4e604]: 3 Aug
+                - generic [ref=f4e605] [cursor=pointer]:
+                  - 'generic "10 Aug: 0 tests created" [ref=f4e606]'
+                  - generic [ref=f4e607]: 10 Aug
+                - generic [ref=f4e608] [cursor=pointer]:
+                  - 'generic "17 Aug: 0 tests created" [ref=f4e609]'
+                  - generic [ref=f4e610]: 17 Aug
+                - generic [ref=f4e611] [cursor=pointer]:
+                  - 'generic "24 Aug: 0 tests created" [ref=f4e612]'
+                  - generic [ref=f4e613]: 24 Aug
+              - paragraph [ref=f4e614]: 0 tests created in the last 8 weeks.
+          - generic [ref=f4e615]:
+            - heading "AIR vs VACUUM" [level=3] [ref=f4e616]
+            - paragraph [ref=f4e617]: Tests by type
+            - generic [ref=f4e618]:
+              - list [ref=f4e619]:
+                - listitem [ref=f4e620]:
+                  - generic [ref=f4e621]:
+                    - generic [ref=f4e622]: AIR
+                    - generic [ref=f4e623]:
+                      - text: "0"
+                      - generic [ref=f4e624]: (0%)
+                - listitem [ref=f4e627]:
+                  - generic [ref=f4e628]:
+                    - generic [ref=f4e629]: VACUUM
+                    - generic [ref=f4e630]:
+                      - text: "0"
+                      - generic [ref=f4e631]: (0%)
+              - paragraph [ref=f4e634]: No tests recorded yet.
+          - generic [ref=f4e635]:
+            - heading "Final results" [level=3] [ref=f4e636]
+            - paragraph [ref=f4e637]: PASS / FAIL / HOLD (excludes voided)
+            - generic [ref=f4e638]:
+              - list [ref=f4e639]:
+                - listitem [ref=f4e640]:
+                  - generic [ref=f4e641]:
+                    - generic [ref=f4e642]: PASS
+                    - generic [ref=f4e643]:
+                      - text: "0"
+                      - generic [ref=f4e644]: (0%)
+                - listitem [ref=f4e647]:
+                  - generic [ref=f4e648]:
+                    - generic [ref=f4e649]: FAIL
+                    - generic [ref=f4e650]:
+                      - text: "0"
+                      - generic [ref=f4e651]: (0%)
+                - listitem [ref=f4e654]:
+                  - generic [ref=f4e655]:
+                    - generic [ref=f4e656]: HOLD
+                    - generic [ref=f4e657]:
+                      - text: "0"
+                      - generic [ref=f4e658]: (0%)
+              - paragraph [ref=f4e661]: No final results yet.
+          - generic [ref=f4e662]:
+            - heading "Equipment status" [level=3] [ref=f4e663]
+            - paragraph [ref=f4e664]: Non-archived equipment by registry status
+            - list [ref=f4e666]:
+              - listitem [ref=f4e667]:
+                - generic [ref=f4e668]:
+                  - generic [ref=f4e669]: In Use
+                  - generic [ref=f4e670]:
+                    - text: "7"
+                    - generic [ref=f4e671]: (29%)
+              - listitem [ref=f4e675]:
+                - generic [ref=f4e676]:
+                  - generic [ref=f4e677]: New
+                  - generic [ref=f4e678]:
+                    - text: "2"
+                    - generic [ref=f4e679]: (8%)
+              - listitem [ref=f4e683]:
+                - generic [ref=f4e684]:
+                  - generic [ref=f4e685]: Under Maintenance
+                  - generic [ref=f4e686]:
+                    - text: "11"
+                    - generic [ref=f4e687]: (46%)
+              - listitem [ref=f4e691]:
+                - generic [ref=f4e692]:
+                  - generic [ref=f4e693]: Not In Use
+                  - generic [ref=f4e694]:
+                    - text: "4"
+                    - generic [ref=f4e695]: (17%)
+          - generic [ref=f4e699]:
+            - heading "Calibration" [level=3] [ref=f4e700]
+            - paragraph [ref=f4e701]: Derived from the latest calibration due date
+            - generic [ref=f4e702]:
+              - 'img "equipment: Compliant 0, Due within 30 days 0, Due today 0, Overdue 0, No calibration record 24" [ref=f4e703]':
+                - 'generic "No calibration record: 24 (100%)" [ref=f4e705] [cursor=pointer]'
+                - generic: "24"
+                - generic: equipment
+              - list [ref=f4e706]:
+                - listitem [ref=f4e707]:
+                  - generic [ref=f4e710]: Compliant
+                  - generic [ref=f4e711]: "0"
+                - listitem [ref=f4e712]:
+                  - generic [ref=f4e715]: Due within 30 days
+                  - generic [ref=f4e716]: "0"
+                - listitem [ref=f4e717]:
+                  - generic [ref=f4e720]: Due today
+                  - generic [ref=f4e721]: "0"
+                - listitem [ref=f4e722]:
+                  - generic [ref=f4e725]: Overdue
+                  - generic [ref=f4e726]: "0"
+                - listitem [ref=f4e727]:
+                  - generic [ref=f4e730]: No calibration record
+                  - generic [ref=f4e731]: "24"
+          - generic [ref=f4e732]:
+            - heading "Document review status" [level=3] [ref=f4e733]
+            - paragraph [ref=f4e734]: Controlled documents (SOP / WI) by lifecycle status
+            - list [ref=f4e736]:
+              - listitem [ref=f4e737]:
+                - generic [ref=f4e738]:
+                  - generic [ref=f4e739]: Draft
+                  - generic [ref=f4e740]:
+                    - text: "33"
+                    - generic [ref=f4e741]: (100%)
+              - listitem [ref=f4e745]:
+                - generic [ref=f4e746]:
+                  - generic [ref=f4e747]: In Review
+                  - generic [ref=f4e748]:
+                    - text: "0"
+                    - generic [ref=f4e749]: (0%)
+              - listitem [ref=f4e752]:
+                - generic [ref=f4e753]:
+                  - generic [ref=f4e754]: Approved
+                  - generic [ref=f4e755]:
+                    - text: "0"
+                    - generic [ref=f4e756]: (0%)
+              - listitem [ref=f4e759]:
+                - generic [ref=f4e760]:
+                  - generic [ref=f4e761]: Superseded
+                  - generic [ref=f4e762]:
+                    - text: "0"
+                    - generic [ref=f4e763]: (0%)
+              - listitem [ref=f4e766]:
+                - generic [ref=f4e767]:
+                  - generic [ref=f4e768]: Archived
+                  - generic [ref=f4e769]:
+                    - text: "0"
+                    - generic [ref=f4e770]: (0%)
+      - region [ref=f4e773]:
+        - generic [ref=f4e774]:
+          - generic [ref=f4e775]:
+            - heading "Findings" [level=2] [ref=f4e776]
+            - paragraph [ref=f4e777]: Review critical and classified QC findings.
+          - link "Open Findings" [ref=f4e778] [cursor=pointer]:
+            - /url: /findings
+      - region [ref=f4e779]:
+        - generic [ref=f4e780]:
+          - generic [ref=f4e781]:
+            - heading "CAPA" [level=2] [ref=f4e782]
+            - paragraph [ref=f4e783]: Track corrective and preventive actions linked to findings.
+          - link "Open CAPA Tasks" [ref=f4e784] [cursor=pointer]:
+            - /url: /dashboard/drilldown?kpi=open_capa
+      - region [ref=f4e785]:
+        - generic [ref=f4e786]:
+          - generic [ref=f4e787]:
+            - heading "Workforce" [level=2] [ref=f4e788]
+            - paragraph [ref=f4e789]: Use Employee and Supervisor filters to inspect workload performance.
+          - link "Open Workforce" [ref=f4e790] [cursor=pointer]:
+            - /url: /manager/workload
+    - region "Most overdue tasks" [ref=f4e791]:
+      - generic [ref=f4e792]:
+        - heading "Most overdue tasks" [level=2] [ref=f4e793]
+        - generic [ref=f4e794]: Due before today and not completed
+      - generic [ref=f4e795]:
+        - generic [ref=f4e796]: 📭
+        - heading "No overdue tasks — great job! 🎉" [level=2] [ref=f4e797]
+    - region "Current blockers" [ref=f4e798]:
+      - generic [ref=f4e799]:
+        - heading "Current blockers" [level=2] [ref=f4e800]
+        - generic [ref=f4e801]: Tasks on hold
+      - generic [ref=f4e802]:
+        - generic [ref=f4e803]: 📭
+        - heading "No tasks are currently blocked. 🚀" [level=2] [ref=f4e804]
+    - region "Recently completed" [ref=f4e805]:
+      - generic [ref=f4e806]:
+        - heading "Recently completed" [level=2] [ref=f4e807]
+        - generic [ref=f4e808]: Last 10 completions
+      - generic [ref=f4e809]:
+        - generic [ref=f4e810]: 📭
+        - heading "No completed tasks yet." [level=2] [ref=f4e811]
+    - region "Completed without evidence" [ref=f4e812]:
+      - generic [ref=f4e813]:
+        - heading "Completed without evidence" [level=2] [ref=f4e814]
+        - generic [ref=f4e815]: Missing proof-of-work on completed tasks
+      - generic [ref=f4e816]:
+        - generic [ref=f4e817]: 📭
+        - heading "Every completed task has evidence attached. ✅" [level=2] [ref=f4e818]
+    - region "Latest activity" [ref=f4e819]:
+      - generic [ref=f4e820]:
+        - heading "Latest activity" [level=2] [ref=f4e821]
+        - generic [ref=f4e822]: Most recent 20 events
+      - generic [ref=f4e823]:
+        - generic [ref=f4e824]: 📭
+        - heading "No activity recorded yet." [level=2] [ref=f4e825]
