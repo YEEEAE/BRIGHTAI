@@ -1073,7 +1073,7 @@ ok(!canCreateLabRetest('employee') && canCreateLabRetest('supervisor'), 'lab: re
 ok(!canViewLabReports('employee') && canViewLabReports('supervisor'), 'lab: reports are supervisor+');
 ok(!canExportLabData('employee') && canExportLabData('supervisor'), 'lab: exports are supervisor+');
 ok(!canViewLabDataQuality('employee') && canViewLabDataQuality('supervisor'), 'lab: data quality is supervisor+');
-ok(!canViewLabManagementDashboard('employee') && canViewLabManagementDashboard('supervisor'), 'lab: management dashboard is supervisor+');
+ok(!canViewLabManagementDashboard('employee') && !canViewLabManagementDashboard('supervisor') && canViewLabManagementDashboard('manager') && canViewLabManagementDashboard('admin'), 'lab: management dashboard is manager/admin only');
 // AI assist: advisory-only, every role.
 ok(LAB_ROLES.every((role) => canUseLabAiAssist(role)), 'lab: AI assist is available to every role (advisory only)');
 

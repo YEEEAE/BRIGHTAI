@@ -66,10 +66,10 @@ async function login(page, username) {
 
 // ── B + C + D. Every role reaches /lab; navbar + secondary nav behavior ──
 const roleCases = [
-  { username: 'admin', expectDataQualityKpi: true, expectNewProduct: true },
-  { username: 'manager', expectDataQualityKpi: true, expectNewProduct: true },
-  { username: 'supervisor', expectDataQualityKpi: true, expectNewProduct: true },
-  { username: 'employee', expectDataQualityKpi: false, expectNewProduct: true },
+  { username: 'admin', expectDataQualityKpi: true, expectNewProduct: true, expectManagement: true },
+  { username: 'manager', expectDataQualityKpi: true, expectNewProduct: true, expectManagement: true },
+  { username: 'supervisor', expectDataQualityKpi: true, expectNewProduct: true, expectManagement: false },
+  { username: 'employee', expectDataQualityKpi: false, expectNewProduct: true, expectManagement: false },
 ];
 
 for (const roleCase of roleCases) {
@@ -97,6 +97,7 @@ for (const roleCase of roleCases) {
   ok(secondaryHrefs.includes('/lab/equipment'), `${roleCase.username}: secondary nav shows the equipment registry`);
   ok(secondaryHrefs.includes('/lab/calibration'), `${roleCase.username}: secondary nav shows the calibration register`);
   ok(secondaryHrefs.includes('/lab/documents'), `${roleCase.username}: secondary nav shows the document library`);
+  ok(secondaryHrefs.includes('/lab/management') === roleCase.expectManagement, `${roleCase.username}: management dashboard nav matches RBAC`);
   if (roleCase.username !== 'employee') {
     ok(secondaryHrefs.includes('/lab/retests'), `${roleCase.username}: secondary nav shows the retest register`);
   }
@@ -110,6 +111,7 @@ for (const roleCase of roleCases) {
     href === '/lab/notifications' || // Lab-filtered notifications (PROMPT 26)
     href === '/lab/data-quality' || // Data Quality Center (PROMPT 27)
     href === '/lab/audit' || // Lab-wide audit timeline (shared qc_audit_log)
+    href === '/lab/management' || // Manager/Admin management dashboard
     href === '/lab/reports' || // Laboratory reports (§13, supervisor+ nav entry)
     href === '/lab/retests', // Retest register (§46, supervisor+ nav entry)
   ), `${roleCase.username}: no dead links in secondary nav`);
@@ -124,6 +126,18 @@ for (const roleCase of roleCases) {
   const bodyText = await page.locator('main').innerText();
   const hasNewProduct = bodyText.includes('New Product');
   ok(hasNewProduct === roleCase.expectNewProduct, `${roleCase.username}: New Product action matches role permission`);
+
+  if (roleCase.expectManagement) {
+    const managementResponse = await page.goto(`${BASE}/lab/management`, { waitUntil: 'domcontentloaded' });
+    ok(managementResponse.status() === 200, `${roleCase.username}: management dashboard renders 200`);
+    const managementHeading = await page.locator('h1').filter({ hasText: 'Laboratory Management' }).count();
+    ok(managementHeading === 1, `${roleCase.username}: management dashboard has one heading`);
+    ok((await page.locator('[data-management-card]').count()) >= 10, `${roleCase.username}: management dashboard renders live action cards`);
+    await page.goto(`${BASE}/lab`, { waitUntil: 'domcontentloaded' });
+  } else {
+    const denied = await page.request.get(`${BASE}/lab/management?role=admin`, { maxRedirects: 0 });
+    ok(denied.status() === 302 && (denied.headers().location ?? '') === '/lab', `${roleCase.username}: direct management access redirects to /lab`);
+  }
 
   // No drill-down may link to an unimplemented route (no dead links) — every
   // KPI/action href inside main must target an implemented lab route. The test
@@ -162,6 +176,7 @@ for (const roleCase of roleCases) {
     href === '/lab/change-requests' || // Contributor change queue
     href.startsWith('/lab/change-requests?') || // Live change-request KPI drill-downs
     href === '/lab/audit' || // Lab-wide audit timeline (supervisor+ nav entry)
+    href === '/lab/management' || // Manager/Admin management dashboard
     href === '/lab/reports' || // Laboratory reports (§13 — missed in this allowlist by QC-LAB-REPORTS-001)
     href === '/lab/retests' || // Retest register module (§46)
     href.startsWith('/lab/retests?') || // live open-retests KPI drill-down

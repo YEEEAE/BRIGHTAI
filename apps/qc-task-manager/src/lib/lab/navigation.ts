@@ -132,6 +132,7 @@ export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab/change-requests',
   '/lab/change-requests/new',
   '/lab/change-requests/[id]',
+  '/lab/management',
 ];
 
 /**

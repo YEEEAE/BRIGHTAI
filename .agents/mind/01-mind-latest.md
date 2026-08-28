@@ -1,3 +1,32 @@
+## [2026-08-28] — URLS-FILE-001: إنشاء ملف `urls.txt` يدويًا بكل روابط الموقع (262 رابطًا — روابط فقط بدون أي كلمات)
+
+### تم التنفيذ
+- أنشأت ملف `urls.txt` في جذر المستودع بطلب صريح من المستخدم: سطر واحد لكل رابط، بدون عناوين أو تعليقات أو كلمات.
+- جمعت الروابط من مصدر الحقيقة `sitemap.xml` الجذري (آخر حالة معتمدة: 262/262 بعد ترتيب SITEMAP-ORDER-002) وكتبتها يدويًا عبر محرر الملفات على 3 دفعات — بدون أي سكربت توليد داخل المشروع.
+- الملف يغطي كل الصفحات القابلة للفهرسة: الرئيسية، answer (18)، assessment، authors (5)، blog + تصنيفاته، calculator، الشركة والثقة (about/contact/customers/trust/partners...)، القانونية، docs (44)، EN (7)، events (4)، hub (9)، kernel (20)، lp (5)، solutions + مدنها، tools، والصفحات الخدمية (sitemap/referral/sales-deck/newsletter).
+- النطاق هو الجديد `https://brightai.live` بعد ترحيل BAI-DOMAIN-MIGRATION-001 — لا يوجد أي رابط بـ `brightai.site`.
+
+### الملفات المتأثرة
+- `urls.txt` (جديد — جذر المستودع)
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+### التحقق
+- عدد الأسطر: **262** = 262 رابط sitemap ✅
+- تطابق مجموعة الروابط (sort + diff) مع sitemap: **IDENTICAL** ✅
+- كل سطر يبدأ بـ `https://brightai.live/`: **0 استثناءات** ✅
+- صفر أسطر فاضية بعد التنظيف ✅
+- build/tests: لم تُشغَّل — الملف نصي مرجعي خارج البناء ولا يمس أي كود
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** `urls.txt` جاهز بكل الـ 262 رابطًا الفعلية للموقع (روابط فقط، سطر لكل رابط)، مطابق تمامًا لمجموعة روابط `sitemap.xml` على النطاق الجديد brightai.live.
+
+### ملاحظات / مشاكل مفتوحة
+- الملف ثابت (snapshot يدوي): أي صفحة جديدة مستقبلًا تتطلب تحديثه يدويًا أو إعادة استخراجها من sitemap بعد التوليد.
+- الملف في جذر المستودع وليس في `public/` — لا يُنشر على الموقع (إن كان المطلوب نشره كصفحة روابط، يُنقل لـ `public/` بقرار موثق).
+
+---
+
 ## [2026-08-28] — SITEMAP-ORDER-002-MANUAL: ترتيب يدوي لـ sitemap.xml الجذري حسب أهمية الصفحات — بدون سكربت وبدون بناء — 262/262 رابطًا
 
 ### تم التنفيذ
@@ -1031,3 +1060,38 @@ skills_ready: 7---
 - **Verification**: `git -c core.fsmonitor=false diff --check` = PASS؛ `node_modules/.bin/astro build` = Complete؛ HTML المبني لمحوري docs: H1=1 لكل صفحة، noindex=0، مصادر SDAIA موجودة، وروابط AI Firewall موجودة. بقيت تحذيرات route-collision وVite/Prisma القديمة غير الحاجزة كما هي. لا production/GSC verification.
 - **Files**: `src/content/docs/pdpl-ai-complete-guide.md`, `src/content/docs/pdpl-chatgpt-data-protection.md`, `src/content/blog/chatgpt-pdpl-data-compliance.md`.
 - **Status**: جاهز للمراجعة المحلية؛ لا commit ولا push ولا deploy.
+## [2026-08-28] — QC-LAB-MANAGEMENT-UX-012: تخصيص الصفحة الرئيسية للمختبر ولوحة إدارة Manager/Admin
+
+### تم التنفيذ
+- أضفت ملخص إجراءات role-based دقيق في `/lab` مع ترتيب Employee/Supervisor/Manager/Admin وإبقاء مؤشرات الأداء التفصيلية أسفل كتلة الإجراءات.
+- أنشأت `src/lib/lab/management.ts` و`/lab/management` بلوحة SSR للمدير/الأدمن فقط: approval/change queues، الانتظار فوق 24 ساعة، تغييرات مرفوضة، مخاطر المعايرة والمعدات، صحة المستندات، WI completion، FAIL/HOLD trends، retests، data quality، وسلامة سجل التدقيق.
+- ربطت كل بطاقة بسجل حي بفلتر حقيقي، وأضافت فلترة `status` و`aging=24h` لطابور Change Requests وفلتر `attention=1` لسجل المعدات.
+- شددت صلاحية لوحة الإدارة إلى Manager/Admin، وأضفت المسار إلى navigation والـ route manifest وغطاء E2E/RBAC.
+- أصلحت affordances قائمة المعايرة والمستندات للـ proposal/new links حتى تتوافق مع صلاحيات المساهمين والمسارات الحية.
+- أضفت اختبارات contract/query للوحة الإدارة وضمّنتها في manifest، وحدثت اختبارات permission/overview/UX/E2E ذات الصلة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/pages/lab/index.astro`
+- `apps/qc-task-manager/src/pages/lab/management.astro`
+- `apps/qc-task-manager/src/lib/lab/{overview,management,changeRequests,equipment,navigation}.ts`
+- `apps/qc-task-manager/src/lib/permissions.ts`
+- `apps/qc-task-manager/src/pages/lab/{calibration,documents,change-requests}/index.astro`
+- `apps/qc-task-manager/scripts/{test-lab-management,e2e-lab-nav,test-lab-overview,test-lab-ux-performance,test-manifest,test}.mjs`
+- `apps/qc-task-manager/package.json`
+
+### التحقق
+- `pnpm test` ✅ — **55/55** سويت كاملة.
+- `pnpm e2e:acceptance` ✅ — كل suites القبول نجحت، بما فيها `lab-nav 93/0`, `lab-calibration 32/0`, `lab-documents 85/0`.
+- `pnpm typecheck` ✅ — 0 أخطاء؛ تحذيرات/هِنْتات قديمة فقط.
+- `NODE_ENV=production pnpm build` ✅
+- `pnpm test:ui-consistency`, `test:lab-ux-presentation`, `test:lab-ux-performance`, `test:badge-contrast`, `test:architecture` ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** الصفحة الرئيسية صارت تركز على الإجراء حسب الدور، ولوحة `/lab/management` صارت حقيقية ومحمية Manager/Admin ومتصلة بالسجلات المفلترة بدون بيانات وهمية أو مكتبات تحليل جديدة.
+
+### ملاحظات / مشاكل مفتوحة
+- توجد تحذيرات Astro/Vite وGit fsmonitor موجودة مسبقًا، وما منعت typecheck أو build أو الاختبارات.
+- لم يحدث commit أو push أو deploy؛ الشجرة الحالية تحتوي كذلك تغييرات المستخدم السابقة وتم الحفاظ عليها.
+
+---

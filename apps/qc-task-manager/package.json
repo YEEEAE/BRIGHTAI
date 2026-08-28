@@ -39,6 +39,7 @@
     "test:templates": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-templates.mjs",
     "test:db-rules": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-db-rules.mjs",
     "test:lab-overview": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-overview.mjs",
+    "test:lab-management": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-management.mjs",
     "test:lab-form": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-form.mjs",
     "test:lab-tests": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-tests.mjs",
     "test:lab-review": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-review.mjs",

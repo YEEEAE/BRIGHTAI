@@ -9,8 +9,8 @@
 // renders as "—". Server-side search, safe sorting and pagination live in
 // src/lib/lab/calibration.ts — the URL is the source of truth, every SQL
 // value is a bound parameter, and sorting is a whitelisted union. Employees
-// may view; only manager+ get New / Edit affordances (canCreateLabCalibration
-// / canEditLabCalibration).
+// and supervisors can propose changes for manager review; managers/admins can
+// apply approved records directly.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Pagination from '../../../components/ui/Pagination.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
@@ -122,7 +122,13 @@ function fmt(value: unknown): string {
       ]}
     />
 
-    <PageHeader eyebrow="QC Laboratory — Master Data" title="Calibration Register" description="Dated calibration records for laboratory equipment. Status (Compliant / Due Soon / Due Today / Overdue / Not Compliant / Unknown) is derived from the dates and result at read time — missing data is shown as —, never auto-filled." />
+    <PageHeader eyebrow="QC Laboratory — Master Data" title="Calibration Register" description="Dated calibration records for laboratory equipment. Status (Compliant / Due Soon / Due Today / Overdue / Not Compliant / Unknown) is derived from the dates and result at read time — missing data is shown as —, never auto-filled.">
+      {(canCreateLabCalibration(role) || canProposeLabCalibrationCreate(role)) && (
+        <AppButton slot="actions" href="/lab/calibration/new" variant="primary">
+          {canCreateLabCalibration(role) ? 'New Calibration Record' : 'Propose Calibration Change'}
+        </AppButton>
+      )}
+    </PageHeader>
 
     <LabSecondaryNav items={navItems} currentPath="/lab/calibration" />
 

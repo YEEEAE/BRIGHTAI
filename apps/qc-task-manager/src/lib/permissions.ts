@@ -411,7 +411,7 @@ export function canViewLabDataQuality(role: Role): boolean {
   return hasRankAtLeast(role, 'supervisor');
 }
 export function canViewLabManagementDashboard(role: Role): boolean {
-  return hasRankAtLeast(role, 'supervisor');
+  return role === 'manager' || role === 'admin';
 }
 /** Lab-wide audit timeline — cross-entity read over the shared qc_audit_log.
  *  Same supervisor+ bar as reports/data-quality (employees still see the

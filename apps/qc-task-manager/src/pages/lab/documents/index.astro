@@ -11,9 +11,8 @@
 // product/equipment), filters (type/status/owner/equipment/product/review=due),
 // safe sorting and pagination live in src/lib/lab/documents.ts — the URL is
 // the source of truth, every SQL value is a bound parameter, and sorting is a
-// whitelisted union. All roles may view (canViewLab); the New Document action
-// is supervisor+ (canCreateLabDocument) and stays disabled until the editor
-// page lands (no dead links).
+// whitelisted union. All roles may view (canViewLab); supervisor+ users get a
+// live New Document entry that opens the controlled editor workflow.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Pagination from '../../../components/ui/Pagination.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
@@ -187,7 +186,11 @@ function fmt(value: unknown): string {
       ]}
     />
 
-    <PageHeader eyebrow="QC Laboratory — Controlled Documents" title="SOP / WI Documents" description="The controlled document library (SOP and WI). Status is stored (Draft / In Review / Approved / Superseded / Archived) and approved versions are immutable — the register shows the current version number, never fabricated history." />
+    <PageHeader eyebrow="QC Laboratory — Controlled Documents" title="SOP / WI Documents" description="The controlled document library (SOP and WI). Status is stored (Draft / In Review / Approved / Superseded / Archived) and approved versions are immutable — the register shows the current version number, never fabricated history.">
+      {canCreateLabDocument(role) && (
+        <AppButton slot="actions" href="/lab/documents/new" variant="primary">New Document</AppButton>
+      )}
+    </PageHeader>
 
     <LabSecondaryNav items={navItems} currentPath="/lab/documents" />
 

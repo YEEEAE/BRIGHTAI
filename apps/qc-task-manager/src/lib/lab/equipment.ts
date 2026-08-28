@@ -28,6 +28,7 @@ import { submitChangeRequest } from './changeRequests';
 import type { LabEquipment, LabEquipmentMaintenance } from '../types';
 import { statusMatchesLabel } from './equipmentStatus';
 import { appendQcAudit } from '../audit/qcChain';
+import { LATEST_DUE_SQL } from './overview';
 
 // ─────────────────────────────── Audit ───────────────────────────────
 
@@ -92,6 +93,8 @@ export interface LabEquipmentSearchFilters {
   /** Display label ("In Use", "Under Maintenance", ...) mapped to raw statuses. */
   status: string | null;
   calibration: 'yes' | 'no' | null;
+  /** Attention = open maintenance or overdue latest calibration. */
+  attention: boolean;
   /** '0' (active only, default) | '1' (archived only) | null (both). */
   archived: '0' | '1' | null;
   sort: LabEquipmentSortField;
@@ -104,6 +107,7 @@ export const NO_LAB_EQUIPMENT_FILTERS: LabEquipmentSearchFilters = {
   q: null,
   status: null,
   calibration: null,
+  attention: false,
   archived: '0',
   sort: DEFAULT_LAB_EQUIPMENT_SORT,
   dir: DEFAULT_LAB_EQUIPMENT_DIR,
@@ -135,6 +139,7 @@ export function parseLabEquipmentSearchFilters(url: URL): LabEquipmentSearchFilt
   if (status && status.trim() !== '') f.status = status.trim().slice(0, 200);
   const calibration = sp.get('calibration');
   if (calibration === 'yes' || calibration === 'no') f.calibration = calibration;
+  f.attention = sp.get('attention') === '1';
   const archived = sp.get('archived');
   if (archived === '1') f.archived = '1';
   else if (archived === 'all') f.archived = null;
@@ -151,7 +156,7 @@ export function parseLabEquipmentSearchFilters(url: URL): LabEquipmentSearchFilt
 
 /** True when any list filter is active (drives the "Reset" affordance). */
 export function hasLabEquipmentFilters(f: LabEquipmentSearchFilters): boolean {
-  return Boolean(f.q || f.status || f.calibration !== null || f.archived !== '0');
+  return Boolean(f.q || f.status || f.calibration !== null || f.attention || f.archived !== '0');
 }
 
 /** Rebuild the querystring for the current filters (sort/pagination links). */
@@ -160,6 +165,7 @@ export function labEquipmentFiltersToQuery(f: LabEquipmentSearchFilters): string
   if (f.q) sp.set('q', f.q);
   if (f.status) sp.set('status', f.status);
   if (f.calibration !== null) sp.set('calibration', f.calibration);
+  if (f.attention) sp.set('attention', '1');
   if (f.archived === '1') sp.set('archived', '1');
   else if (f.archived === null) sp.set('archived', 'all');
   if (f.sort !== DEFAULT_LAB_EQUIPMENT_SORT) sp.set('sort', f.sort);
@@ -214,6 +220,10 @@ export function buildLabEquipmentWhere(f: LabEquipmentSearchFilters): { sql: str
   if (f.archived !== null) {
     conds.push('e.is_archived = ?');
     params.push(Number(f.archived));
+  }
+  if (f.attention) {
+    conds.push(`(EXISTS (SELECT 1 FROM lab_equipment_maintenance m WHERE m.equipment_id = e.id AND m.completed_date IS NULL)
+      OR (${LATEST_DUE_SQL} IS NOT NULL AND ${LATEST_DUE_SQL} < date('now', 'localtime')))`);
   }
   return { sql: conds.length ? `WHERE ${conds.join(' AND ')}` : '', params };
 }

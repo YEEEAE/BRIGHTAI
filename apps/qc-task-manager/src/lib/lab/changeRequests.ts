@@ -28,6 +28,21 @@ export type ChangeOperation = 'CREATE' | 'UPDATE';
 export type ChangeStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 export const CHANGE_REQUEST_CONFLICT = 'The target changed after this request was submitted. Review the latest record and resubmit the change.';
 
+export interface ChangeRequestFilters {
+  status?: ChangeStatus;
+  aging?: '24h';
+}
+
+/** Parse the small, allow-listed filter surface used by management cards. */
+export function parseChangeRequestFilters(params: URLSearchParams): ChangeRequestFilters {
+  const status = params.get('status');
+  const aging = params.get('aging');
+  return {
+    ...(status === 'PENDING' || status === 'APPROVED' || status === 'REJECTED' ? { status } : {}),
+    ...(aging === '24h' ? { aging } : {}),
+  };
+}
+
 export type LabChangePayload =
   | { entity_type: 'EQUIPMENT'; data: LabEquipmentFormData }
   | { entity_type: 'PRODUCT'; data: LabProductFormData }
@@ -134,11 +149,16 @@ export function listPendingChangeRequests(): LabChangeRequest[] {
 }
 
 /** All requests are visible to management; contributors are scoped elsewhere. */
-export function listAllChangeRequests(): LabChangeRequest[] {
+export function listAllChangeRequests(filters: ChangeRequestFilters = {}): LabChangeRequest[] {
+  const clauses: string[] = [];
+  const params: unknown[] = [];
+  if (filters.status) { clauses.push('r.status = ?'); params.push(filters.status); }
+  if (filters.aging === '24h') { clauses.push("r.status = 'PENDING' AND r.created_at < datetime('now', '-1 day')"); }
+  const where = clauses.length ? `WHERE ${clauses.join(' AND ')}` : '';
   return getDb().prepare(`SELECT r.*, u.full_name AS requested_by_name, u.role AS requested_by_role,
     v.full_name AS reviewed_by_name FROM lab_change_requests r JOIN users u ON u.id = r.requested_by
-    LEFT JOIN users v ON v.id = r.reviewed_by ORDER BY CASE r.status WHEN 'PENDING' THEN 0 ELSE 1 END,
-    r.created_at DESC, r.id DESC`).all() as LabChangeRequest[];
+    LEFT JOIN users v ON v.id = r.reviewed_by ${where} ORDER BY CASE r.status WHEN 'PENDING' THEN 0 ELSE 1 END,
+    r.created_at DESC, r.id DESC`).all(...params) as LabChangeRequest[];
 }
 
 export interface ChangeDiffRow { field: string; before: string; proposed: string; }
@@ -212,8 +232,12 @@ function getChangeRequestTargetHref(type: ChangeEntityType, id: number): string 
   return null;
 }
 
-export function listUserChangeRequests(userId: number): LabChangeRequest[] {
-  return getDb().prepare(`SELECT r.*, u.full_name AS requested_by_name, u.role AS requested_by_role FROM lab_change_requests r JOIN users u ON u.id = r.requested_by WHERE r.requested_by = ? ORDER BY r.created_at DESC, r.id DESC`).all(userId) as LabChangeRequest[];
+export function listUserChangeRequests(userId: number, filters: ChangeRequestFilters = {}): LabChangeRequest[] {
+  const clauses = ['r.requested_by = ?'];
+  const params: unknown[] = [userId];
+  if (filters.status) { clauses.push('r.status = ?'); params.push(filters.status); }
+  if (filters.aging === '24h') clauses.push("r.status = 'PENDING' AND r.created_at < datetime('now', '-1 day')");
+  return getDb().prepare(`SELECT r.*, u.full_name AS requested_by_name, u.role AS requested_by_role FROM lab_change_requests r JOIN users u ON u.id = r.requested_by WHERE ${clauses.join(' AND ')} ORDER BY r.created_at DESC, r.id DESC`).all(...params) as LabChangeRequest[];
 }
 
 export function countPendingChangeRequests(entityType: ChangeEntityType, entityId: number, requesterId?: number): number {

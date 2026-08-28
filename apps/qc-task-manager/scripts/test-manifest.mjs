@@ -39,6 +39,7 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:templates',
   'test:db-rules',
   'test:lab-overview',
+  'test:lab-management',
   'test:lab-form',
   'test:lab-tests',
   'test:lab-review',

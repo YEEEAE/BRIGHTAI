@@ -113,6 +113,111 @@ export interface WICatalogSummary {
   approved: number;
 }
 
+export interface LabRoleActionSummary {
+  employee: {
+    myTests: number;
+    draftTests: number;
+    returnedForChanges: number;
+    myWIContent: number;
+    myChangeRequests: number;
+  };
+  supervisor: {
+    testsAwaitingReview: number;
+    documentsAwaitingReview: number;
+    teamIssues: number;
+    openRetests: number;
+    operationalAlerts: number;
+  };
+  management: {
+    testsRequiringAction: number;
+    pendingMasterDataChanges: number;
+    overdueCalibration: number;
+    documentsRequiringAction: number;
+    dataQualityIssues: number;
+  };
+}
+
+/** Exact action counts for the role-priority block on `/lab`. */
+export function getLabRoleActionSummary(scope: LabOverviewScope): LabRoleActionSummary {
+  const db = getDb();
+  const zero: LabRoleActionSummary = {
+    employee: { myTests: 0, draftTests: 0, returnedForChanges: 0, myWIContent: 0, myChangeRequests: 0 },
+    supervisor: { testsAwaitingReview: 0, documentsAwaitingReview: 0, teamIssues: 0, openRetests: 0, operationalAlerts: 0 },
+    management: { testsRequiringAction: 0, pendingMasterDataChanges: 0, overdueCalibration: 0, documentsRequiringAction: 0, dataQualityIssues: 0 },
+  };
+
+  const employeeTests = db.prepare(`
+    SELECT
+      COUNT(*) AS total,
+      SUM(CASE WHEN t.status = 'DRAFT' THEN 1 ELSE 0 END) AS drafts,
+      SUM(CASE WHEN t.status = 'REJECTED' THEN 1 ELSE 0 END) AS returned
+    FROM lab_test_records t
+    WHERE t.tested_by = ? OR t.created_by = ?
+  `).get(scope.userId, scope.userId) as { total: number | null; drafts: number | null; returned: number | null };
+  zero.employee.myTests = Number(employeeTests.total ?? 0);
+  zero.employee.draftTests = Number(employeeTests.drafts ?? 0);
+  zero.employee.returnedForChanges = Number(employeeTests.returned ?? 0);
+  zero.employee.myWIContent = Number((db.prepare(`
+    SELECT COUNT(*) AS n FROM lab_documents
+    WHERE type = 'WI' AND (owner_id = ? OR created_by = ?)
+      AND current_version_id IS NOT NULL AND status NOT IN ('SUPERSEDED', 'ARCHIVED')
+  `).get(scope.userId, scope.userId) as { n: number }).n ?? 0);
+  zero.employee.myChangeRequests = Number((db.prepare(
+    'SELECT COUNT(*) AS n FROM lab_change_requests WHERE requested_by = ?',
+  ).get(scope.userId) as { n: number }).n ?? 0);
+
+  if (scope.role === 'supervisor') {
+    zero.supervisor.testsAwaitingReview = Number((db.prepare(`
+      SELECT COUNT(*) AS n FROM lab_test_records
+      WHERE status IN ('SUBMITTED', 'UNDER_REVIEW')
+        AND NOT (tested_by = ? OR created_by = ?)
+    `).get(scope.userId, scope.userId) as { n: number }).n ?? 0);
+    zero.supervisor.documentsAwaitingReview = Number((db.prepare(`
+      SELECT COUNT(*) AS n FROM lab_documents
+      WHERE status = 'IN_REVIEW' AND NOT (owner_id = ? OR created_by = ?)
+    `).get(scope.userId, scope.userId) as { n: number }).n ?? 0);
+    zero.supervisor.teamIssues = countLabDataQualityIssues();
+    zero.supervisor.openRetests = Number((db.prepare(
+      "SELECT COUNT(*) AS n FROM lab_test_retests WHERE status = 'OPEN'",
+    ).get() as { n: number }).n ?? 0);
+    const alertCutoff = isoOffset(CALIBRATION_DUE_SOON_DAYS);
+    zero.supervisor.operationalAlerts = Number((db.prepare(`
+      SELECT COUNT(*) AS n FROM lab_equipment e
+      WHERE e.is_archived = 0 AND (
+        EXISTS (
+          SELECT 1 FROM lab_equipment_maintenance m
+          WHERE m.equipment_id = e.id AND m.completed_date IS NULL
+        )
+        OR (${LATEST_DUE_SQL}) IS NOT NULL AND (${LATEST_DUE_SQL}) <= date(?)
+      )
+    `).get(alertCutoff) as { n: number }).n ?? 0);
+  }
+
+  if (scope.role === 'manager' || scope.role === 'admin') {
+    zero.management.testsRequiringAction = Number((db.prepare(`
+      SELECT COUNT(*) AS n FROM lab_test_records
+      WHERE status = 'UNDER_REVIEW'
+        AND NOT (tested_by = ? OR created_by = ? OR reviewed_by = ?)
+    `).get(scope.userId, scope.userId, scope.userId) as { n: number }).n ?? 0);
+    zero.management.pendingMasterDataChanges = Number((db.prepare(
+      "SELECT COUNT(*) AS n FROM lab_change_requests WHERE status = 'PENDING'",
+    ).get() as { n: number }).n ?? 0);
+    const today = localToday();
+    zero.management.overdueCalibration = Number((db.prepare(`
+      SELECT COUNT(*) AS n FROM lab_equipment e
+      WHERE e.is_archived = 0 AND ${LATEST_DUE_SQL} IS NOT NULL AND ${LATEST_DUE_SQL} < date(?)
+    `).get(today) as { n: number }).n ?? 0);
+    zero.management.documentsRequiringAction = Number((db.prepare(`
+      SELECT COUNT(*) AS n FROM lab_documents d
+      WHERE d.status = 'IN_REVIEW'
+         OR (d.status NOT IN ('SUPERSEDED', 'ARCHIVED') AND d.review_due_date IS NOT NULL AND date(d.review_due_date) <= date(?))
+    `).get(today) as { n: number }).n ?? 0);
+    zero.management.dataQualityIssues = countLabDataQualityIssues();
+  }
+
+  return zero;
+}
+
 /** DB-backed WI catalog counters; no content/version rows are inferred. */
 export function getWICatalogSummary(): WICatalogSummary {
   const row = getDb().prepare(`

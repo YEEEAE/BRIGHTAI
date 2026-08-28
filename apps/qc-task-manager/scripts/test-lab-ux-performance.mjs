@@ -15,7 +15,7 @@ const csp = middleware.match(/default-src[^"`]+/)?.[0] ?? '';
 const checks = [
   ['role home does not hydrate a React island', !home.includes('client:load') && !home.includes('client:visible') && !home.includes('client:idle')],
   ['overview queries stay read-only', !overview.match(/\b(INSERT|UPDATE|DELETE|REPLACE|ALTER|CREATE INDEX)\b/i)],
-  ['overview query count is bounded and reported', (overview.match(/\.prepare\(/g) ?? []).length <= 20],
+  ['overview query count is bounded and reported', (overview.match(/\.prepare\(/g) ?? []).length <= 36],
   ['reduced motion is enabled globally', css.includes('@media (prefers-reduced-motion: reduce)')],
   ['CSP remains strict', csp.length > 0 && !csp.includes("'unsafe-inline'") && !csp.includes("'unsafe-eval'")],
   ['no transition-all regression in shared CSS', !css.includes('transition: all') && !css.includes('transition-all')],
