@@ -2,10 +2,13 @@ import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 
 export const WI_SOURCE_REGISTER_CODE = 'F-4-2-1-2';
 export const WI_SOURCE_CLASS = 'Class I';
+export const WI_CATALOG_READINESS_TODO = 'WI register incomplete until controlled source pages 2/3 and 3/3 are supplied.';
 
 export interface WICatalogRow {
   code: string;
   title: string;
+  source_page: number;
+  source_row_no: number;
   source_revision: number;
   source_date: string;
 }
@@ -45,12 +48,53 @@ export const WI_CATALOG_ROWS: readonly WICatalogRow[] = ([
   ['WI-8-2-2-M37-1', 'Inspection Procedure for IV Arm Board', 0, '2024-01-27'],
   ['WI-8-2-2-M38', 'Production & Test Procedure for Positioning Aid', 0, '2023-05-20'],
   ['WI-8-2-2-M39', 'Production Procedure for Mannual Resuscitator', 0, '2023-11-23'],
-] as const).map(([code, title, source_revision, source_date]) => ({
+ ] as const).map(([code, title, source_revision, source_date], index) => ({
   code,
   title,
+  source_page: 1,
+  source_row_no: index + 1,
   source_revision,
   source_date,
 }));
+
+const WI_CATALOG_KNOWN_SOURCE_PAGES = new Set(WI_CATALOG_ROWS.map((row) => row.source_page));
+
+/**
+ * Reject incomplete or invented controlled-source identities before any SQL
+ * runs. New source pages become eligible only by being added as supplied rows
+ * to WI_CATALOG_ROWS with their exact page and row provenance.
+ */
+export function validateWICatalogRows(rows: readonly WICatalogRow[]): { knownPages: number[] } {
+  const codes = new Set<string>();
+  const sourceLocations = new Set<string>();
+
+  for (const row of rows) {
+    if (!row.code.trim()) throw new Error('WI catalog row has blank code');
+    if (!row.title.trim()) throw new Error(`WI catalog row ${row.code} has blank title`);
+    if (!WI_CATALOG_KNOWN_SOURCE_PAGES.has(row.source_page)) {
+      throw new Error(`WI catalog row ${row.code} references unknown controlled source page ${row.source_page}`);
+    }
+    if (!Number.isInteger(row.source_row_no) || row.source_row_no < 1) {
+      throw new Error(`WI catalog row ${row.code} has invalid source row number`);
+    }
+    if (!Number.isInteger(row.source_revision) || row.source_revision < 0) {
+      throw new Error(`WI catalog row ${row.code} has invalid source revision`);
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.source_date)) {
+      throw new Error(`WI catalog row ${row.code} has invalid source date`);
+    }
+
+    const code = row.code.toLocaleUpperCase('en-US');
+    if (codes.has(code)) throw new Error(`WI catalog has duplicate code ${row.code}`);
+    codes.add(code);
+
+    const sourceLocation = `${row.source_page}:${row.source_row_no}`;
+    if (sourceLocations.has(sourceLocation)) throw new Error(`WI catalog has duplicate source location ${sourceLocation}`);
+    sourceLocations.add(sourceLocation);
+  }
+
+  return { knownPages: [...WI_CATALOG_KNOWN_SOURCE_PAGES].sort((a, b) => a - b) };
+}
 
 export interface WICatalogImportReport {
   imported: number;
@@ -60,23 +104,16 @@ export interface WICatalogImportReport {
 
 /** Import catalog identities only. Existing code rows are never overwritten. */
 export function importWICatalog(db: BetterSqliteDatabase): WICatalogImportReport {
+  validateWICatalogRows(WI_CATALOG_ROWS);
   const report: WICatalogImportReport = { imported: 0, collisions: 0, collisionCodes: [] };
   const insert = db.prepare(`
     INSERT INTO lab_documents
       (code, title, type, owner_id, reviewer_id, approver_id, current_version_id, status,
        creation_origin, source_page, source_row_no, imported_at, created_by,
        source_revision, source_date, source_register_code, source_class)
-    VALUES (?, ?, 'WI', NULL, NULL, NULL, NULL, 'DRAFT', 'SOURCE_IMPORT', 1, ?, datetime('now'), NULL, ?, ?, ?, ?)
+    VALUES (?, ?, 'WI', NULL, NULL, NULL, NULL, 'DRAFT', 'SOURCE_IMPORT', ?, ?, datetime('now'), NULL, ?, ?, ?, ?)
   `);
   const existing = db.prepare('SELECT id FROM lab_documents WHERE code = ? COLLATE NOCASE').pluck();
-  const fillMetadata = db.prepare(`
-    UPDATE lab_documents SET
-      source_revision = COALESCE(source_revision, ?),
-      source_date = COALESCE(source_date, ?),
-      source_register_code = COALESCE(source_register_code, ?),
-      source_class = COALESCE(source_class, ?)
-    WHERE id = ?
-  `);
 
   const run = db.transaction(() => {
     for (const row of WI_CATALOG_ROWS) {
@@ -84,10 +121,9 @@ export function importWICatalog(db: BetterSqliteDatabase): WICatalogImportReport
       if (id) {
         report.collisions += 1;
         report.collisionCodes.push(row.code);
-        fillMetadata.run(row.source_revision, row.source_date, WI_SOURCE_REGISTER_CODE, WI_SOURCE_CLASS, id);
         continue;
       }
-      insert.run(row.code, row.title, report.imported + 1, row.source_revision, row.source_date, WI_SOURCE_REGISTER_CODE, WI_SOURCE_CLASS);
+      insert.run(row.code, row.title, row.source_page, row.source_row_no, row.source_revision, row.source_date, WI_SOURCE_REGISTER_CODE, WI_SOURCE_CLASS);
       report.imported += 1;
     }
   });

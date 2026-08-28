@@ -1,3 +1,33 @@
+## [2026-08-28] — QC-WI-CATALOG-COMPLETION-020: تدقيق كتالوج WI مع حجب الصفحات غير المورّدة
+
+### تم التنفيذ
+- أبقيت كتالوج الصفحة 1/3 كما هو: 33 هوية فقط، مع تثبيت بصمة SHA-256 لاكتشاف أي تغيير في الكود أو العنوان أو الإملاء أو المراجعة أو التاريخ أو مصدر الصف.
+- أضفت `source_page` و`source_row_no` لكل سجل كتالوج صراحةً؛ جميع الصفوف الحالية page 1 والصفوف 1..33.
+- أضفت تحققًا قبل الاستيراد يمنع code/title الفارغين، تكرار الكود أو موقع المصدر، رقم صف غير صالح، revision/date غير صالحين، وأي source page غير مورّدة؛ حاليًا الصفحة الوحيدة المعروفة هي 1.
+- جعلت تصادم الكود report-only وغير مدمّر: لا يغيّر العنوان أو provenance أو المحتوى أو `lab_document_versions` أو status، بينما يبقى الاستيراد idempotent وcode-based.
+- أبقيت السجلات catalog-only بلا محتوى أو versions وبحالة Missing Content في الواجهة، وأضافت readiness TODO: `WI register incomplete until controlled source pages 2/3 and 3/3 are supplied.`
+- راجعت migrations 029 و033 و`lab_documents`/`lab_document_versions` وواجهات WI؛ الحقول اللازمة موجودة، وما أضفت migration أو أي صفوف placeholder/مخمّنة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/lab/wiCatalog.ts`
+- `apps/qc-task-manager/scripts/test-lab-documents.mjs`
+
+### التحقق
+- `test:lab-documents` ✅ — 303 passed / 0 failed، يشمل page-1 fingerprint، منع pages 2/3، والتصادم مع مستند مؤلف فعليًا.
+- `test:migrations` ✅
+- `test:manifest` ✅ — 60 canonical suites و28 E2E suites.
+- `astro check` ✅ — 0 errors / 0 warnings؛ 26 hints قديمة.
+- `NODE_ENV=production astro build` ✅ — Complete؛ تحذيرات Vite المعروفة بقيت.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** المصدر المتاح فقط محفوظ حرفيًا ويمتنع التطبيق عن اختراع الصفحتين 2/3؛ وصولهما لاحقًا يتطلب إضافة صفوفهما المصدرية الدقيقة فقط.
+
+### ملاحظات / مشاكل مفتوحة
+- WI register ما زال غير مكتمل حتى يتم توريد controlled source pages 2/3 و3/3.
+- ما صار commit أو push أو deploy.
+
 ## [2026-08-28] — QC-VISUAL-RESPONSIVE-017: فحوص Playwright للاستجابة وسهولة الاستخدام
 
 ### تم التنفيذ

@@ -17,6 +17,7 @@
 // the record-level edit permission.
 
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -41,6 +42,14 @@ function ok(cond, label) {
 }
 function eq(actual, expected, label) {
   ok(actual === expected, `${label} (expected ${expected}, got ${actual})`);
+}
+function throws(fn, pattern, label) {
+  try {
+    fn();
+    ok(false, `${label} (expected throw)`);
+  } catch (error) {
+    ok(pattern.test(String(error)), `${label} (got ${String(error)})`);
+  }
 }
 
 function isoDay(offsetDays) {
@@ -137,10 +146,42 @@ try {
   // ── Controlled WI catalog import ──
   console.log('■ WI catalog import');
   {
+    eq(wiCatalog.WI_CATALOG_READINESS_TODO, 'WI register incomplete until controlled source pages 2/3 and 3/3 are supplied.', 'WI catalog: controlled-source readiness TODO is explicit');
+    eq(wiCatalog.WI_CATALOG_ROWS.length, 33, 'WI catalog: page 1 source row count stays fixed');
+    ok(wiCatalog.WI_CATALOG_ROWS.every((row, index) => row.source_page === 1 && row.source_row_no === index + 1), 'WI catalog: every source record carries its page and exact row number');
+    const sourceFingerprint = createHash('sha256').update(JSON.stringify(wiCatalog.WI_CATALOG_ROWS)).digest('hex');
+    eq(sourceFingerprint, '05d4b3ba65662a2df4b1266ca4e82d1d79e4b7dbfa3fe64bf3f5f3ab9f106413', 'WI catalog: supplied page-1 rows remain source-exact');
+    eq(wiCatalog.validateWICatalogRows(wiCatalog.WI_CATALOG_ROWS).knownPages.join(','), '1', 'WI catalog: only supplied source page is known');
+    throws(
+      () => wiCatalog.validateWICatalogRows([{ ...wiCatalog.WI_CATALOG_ROWS[0], source_page: 2 }]),
+      /unknown controlled source page 2/i,
+      'WI catalog: page 2 cannot be invented before its controlled source is supplied',
+    );
+    throws(
+      () => wiCatalog.validateWICatalogRows([{ ...wiCatalog.WI_CATALOG_ROWS[0], source_page: 3 }]),
+      /unknown controlled source page 3/i,
+      'WI catalog: page 3 cannot be invented before its controlled source is supplied',
+    );
+    throws(
+      () => wiCatalog.validateWICatalogRows([{ ...wiCatalog.WI_CATALOG_ROWS[0], code: '' }]),
+      /blank code/i,
+      'WI catalog: blank source code is rejected',
+    );
+    throws(
+      () => wiCatalog.validateWICatalogRows([{ ...wiCatalog.WI_CATALOG_ROWS[0], title: '  ' }]),
+      /blank title/i,
+      'WI catalog: blank source title is rejected',
+    );
+    throws(
+      () => wiCatalog.validateWICatalogRows([wiCatalog.WI_CATALOG_ROWS[0], { ...wiCatalog.WI_CATALOG_ROWS[0] }]),
+      /duplicate code/i,
+      'WI catalog: duplicate source code is rejected',
+    );
     const rows = db.prepare("SELECT * FROM lab_documents WHERE type = 'WI' AND source_register_code = 'F-4-2-1-2'").all();
     eq(rows.length, 33, 'WI catalog: exactly 33 source rows');
     eq(rows.filter((row) => row.creation_origin === 'SOURCE_IMPORT').length, 33, 'WI catalog: source origin on all rows');
     eq(rows.filter((row) => row.created_by === null).length, 33, 'WI catalog: no fake created_by');
+    eq(rows.filter((row) => row.source_class === 'Class I').length, 33, 'WI catalog: source class on all rows');
     eq(new Set(rows.map((row) => row.source_row_no)).size, 33, 'WI catalog: source rows are unique');
     ok(rows.every((row) => row.source_page === 1 && row.source_row_no >= 1 && row.source_row_no <= 33), 'WI catalog: page 1 and rows 1..33');
     ok(rows.every((row) => row.imported_at), 'WI catalog: imported_at is preserved');
@@ -149,6 +190,11 @@ try {
     eq(rows.filter((row) => row.source_date === '2025-09-30').length, 2, 'WI catalog: source dates normalized');
     eq(rows.filter((row) => row.current_version_id === null).length, 33, 'WI catalog: no current versions');
     eq(db.prepare("SELECT COUNT(*) AS n FROM lab_document_versions WHERE document_id IN (SELECT id FROM lab_documents WHERE source_register_code = 'F-4-2-1-2')").get().n, 0, 'WI catalog: no fake versions');
+    const importedFingerprint = createHash('sha256').update(JSON.stringify(
+      db.prepare(`SELECT code, title, source_page, source_row_no, source_revision, source_date
+        FROM lab_documents WHERE source_register_code = 'F-4-2-1-2' ORDER BY source_row_no`).all(),
+    )).digest('hex');
+    eq(importedFingerprint, sourceFingerprint, 'WI catalog: imported page-1 rows preserve exact supplied identities and provenance');
     ok(rows.some((row) => row.title === 'Production Procedure for Eye Sheild'), 'WI catalog: source spelling preserved');
     ok(rows.some((row) => row.title === 'Production Procedure for Mannual Resuscitator'), 'WI catalog: source spelling preserved');
     eq(docs.searchLabDocuments({ ...docs.NO_LAB_DOCUMENT_FILTERS, q: 'Temperature Prob' }).total, 2, 'WI catalog: searchable without content');
@@ -156,14 +202,27 @@ try {
     ok(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, imported), 'WI catalog: employee may Add Content');
     ok(perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, { ...imported, source_register_code: 'DIFFERENT-REGISTER', creation_origin: 'SOURCE_IMPORT', current_version_id: null, status: 'DRAFT', owner_id: null }), 'WI catalog: future source register uses provenance');
     ok(!perms.canEditLabDocumentRecord({ id: employeeId, role: 'employee' }, { ...imported, creation_origin: 'USER', source_register_code: null, current_version_id: null, status: 'DRAFT', owner_id: null, created_by: managerId }), 'WI catalog: user-created identity still requires ownership');
-    const before = db.prepare("SELECT title, current_version_id, status FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
+    const before = db.prepare("SELECT title, current_version_id, status, source_page, source_row_no, source_revision, source_date, source_register_code, source_class, creation_origin FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
     const report = wiCatalog.importWICatalog(db);
     eq(report.imported, 0, 'WI catalog: second import is idempotent');
     eq(report.collisions, 33, 'WI catalog: collisions are reported');
-    const after = db.prepare("SELECT title, current_version_id, status FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
-    eq(JSON.stringify(after), JSON.stringify(before), 'WI catalog: collision preserves document state');
+    const after = db.prepare("SELECT title, current_version_id, status, source_page, source_row_no, source_revision, source_date, source_register_code, source_class, creation_origin FROM lab_documents WHERE code = 'WI-8-2-2-M01'").get();
+    eq(JSON.stringify(after), JSON.stringify(before), 'WI catalog: collision preserves document state and provenance');
     // Keep the legacy register assertions isolated from the controlled import.
     db.prepare("DELETE FROM lab_documents WHERE source_register_code = 'F-4-2-1-2'").run();
+
+    const realDocumentId = insertDoc({ code: 'WI-8-2-2-M01', title: 'Authored collision', type: 'WI', status: 'APPROVED', ownerId: managerId, version: 1, versionStatus: 'APPROVED' });
+    const realBefore = db.prepare(`SELECT d.title, d.status, d.current_version_id, d.source_page, d.source_row_no,
+      (SELECT content_md FROM lab_document_versions WHERE id = d.current_version_id) AS content
+      FROM lab_documents d WHERE d.id = ?`).get(realDocumentId);
+    const collisionReport = wiCatalog.importWICatalog(db);
+    const realAfter = db.prepare(`SELECT d.title, d.status, d.current_version_id, d.source_page, d.source_row_no,
+      (SELECT content_md FROM lab_document_versions WHERE id = d.current_version_id) AS content
+      FROM lab_documents d WHERE d.id = ?`).get(realDocumentId);
+    ok(collisionReport.collisionCodes.includes('WI-8-2-2-M01'), 'WI catalog: authored code collision is reported');
+    eq(JSON.stringify(realAfter), JSON.stringify(realBefore), 'WI catalog: authored content, version, status, and provenance never change on collision');
+    db.prepare("DELETE FROM lab_documents WHERE source_register_code = 'F-4-2-1-2'").run();
+    db.prepare('DELETE FROM lab_documents WHERE id = ?').run(realDocumentId);
   }
 
   // ── Fixtures ──
