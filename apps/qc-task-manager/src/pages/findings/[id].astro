@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import QcStatusBadge from '../../components/QcStatusBadge.astro';
 import { getFinding } from '../../lib/qc-operations';
 import { canManageFinding, canApproveFinding } from '../../lib/permissions';
@@ -16,6 +17,7 @@ const criticalGates = finding?.classification === 'critical' ? [!!capa, !!capa?.
 ---
 {!finding ? <BaseLayout title="Finding not found"><section class="py-16 text-center"><h1 class="text-3xl font-semibold">404 — Finding not found</h1><a href="/findings" class="mt-6 inline-block text-brand-700 hover:underline">Back to Findings</a></section></BaseLayout> : !permitted ? <BaseLayout title="Forbidden"><section class="py-16 text-center"><h1 class="text-3xl font-semibold">403 — Forbidden</h1><p class="mt-2 text-slate-600">Employees can access assigned Findings only.</p></section></BaseLayout> : <BaseLayout title={`${finding.finding_number} · QC Finding`}>
   <div class="space-y-6">
+    <Breadcrumbs items={[{ label: 'QC Tasks' }, { label: 'Findings', href: '/findings' }, { label: String(finding.finding_number) }]} />
     <header class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"><a href="/findings" class="text-sm text-brand-700 hover:underline">← All Findings</a><div class="mt-3 flex flex-wrap items-start justify-between gap-4"><div><p class="text-xs font-semibold uppercase tracking-wide text-brand-600">QC Finding</p><h1 class="mt-1 text-3xl font-semibold">{String(finding.finding_number)}</h1><p class="mt-1 text-sm text-slate-600">Task #{String(finding.task_id)} — {String(finding.task_title)}</p></div><div class="flex gap-2"><QcStatusBadge status={String(finding.status)} /><span class="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold capitalize text-red-700">{String(finding.classification)} / {String(finding.severity)}</span></div></div><dl class="mt-5 grid gap-4 text-sm sm:grid-cols-3"><div><dt class="text-slate-500">Inspection type</dt><dd class="font-medium">{String(finding.inspection_type)}</dd></div><div><dt class="text-slate-500">Owner</dt><dd class="font-medium">{String(finding.owner_name)}</dd></div><div><dt class="text-slate-500">Due date</dt><dd class="font-medium">{String(finding.due_date ?? '—')}</dd></div><div class="sm:col-span-3"><dt class="text-slate-500">Risk description</dt><dd class="mt-1 whitespace-pre-wrap font-medium">{String(finding.risk_description)}</dd></div></dl></header>
     <AiReviewPanel feature="finding-analysis" requestBody={{ id: finding.id }} title="Finding Analysis" client:visible />
     <AiReviewPanel feature="rca-assistance" requestBody={{ id: finding.id }} title="RCA Assistance" client:visible />

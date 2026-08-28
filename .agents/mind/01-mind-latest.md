@@ -1,3 +1,40 @@
+## [2026-08-28] — QC-IA-NAV-WAYFINDING-001: تنظيم IA وتحسين التنقل والـ breadcrumbs
+
+### تم التنفيذ
+- وثّقت inventory فعلي للمسارات، التنقل العام والمحلي للمختبر، تنقل الأدوار، روابط الأدوات، والعلاقات التشغيلية بين السجلات في وثيقة IA مستقلة.
+- ربطت نموذج التنقل بالمهام الفعلية ومسارات `Task → Finding → CAPA → Evidence` و`Product → Test → Review → Retest → Report` وغيرها، مع تثبيت أن RBAC على الخادم هو المصدر authoritative.
+- أضفت breadcrumbs مشتركة لصفحات تفاصيل Tasks وFindings مع الحفاظ على الروابط الحالية وسلوك الرجوع الخاص بالدور.
+- حسّنت أهداف اللمس وحالات التركيز في مكوّن Breadcrumbs لتناسب الجوال ولوحة المفاتيح.
+- أضفت حراسة consistency تمنع رجوع صفحات تفاصيل Tasks وFindings بدون Breadcrumbs.
+- أصلحت تباين أزرار Pagination المعطّلة في السطح المحايد، بعد ما كشف فحص الوصول الحالة المشتركة في `/lab/documents` و`/lab/search`.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/INFORMATION-ARCHITECTURE.md`
+- `apps/qc-task-manager/src/components/Breadcrumbs.astro`
+- `apps/qc-task-manager/src/pages/tasks/[id].astro`
+- `apps/qc-task-manager/src/pages/findings/[id].astro`
+- `apps/qc-task-manager/src/components/ui/Pagination.astro`
+- `apps/qc-task-manager/scripts/test-ui-consistency.mjs`
+
+### التحقق
+- `node scripts/test-ui-consistency.mjs` ✅ — 179/179
+- `node scripts/architecture-guard.mjs` ✅
+- `node scripts/test-lab-ux-presentation.mjs` ✅ — 14/14
+- `node scripts/test-responsive-e2e-contract.mjs` ✅
+- `node scripts/verify-badge-contrast.mjs` ✅
+- `astro check` ✅ — 0 errors، 0 warnings، 26 hints موجودة مسبقًا
+- `NODE_ENV=production astro build` ✅
+- `node scripts/e2e-acceptance.mjs` ✅ — 30/30 suites، 3047+ assertions parsed، و86/86 accessibility و648/648 responsive
+- `git diff --check` ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** اكتمل workstream تنظيم IA والـ wayfinding بدون تغيير URLs أو RBAC أو workflows أو DB أو CSRF، مع اجتياز بوابة القبول الكاملة.
+
+### ملاحظات / مشاكل مفتوحة
+- ما تم تنفيذ جلسة card sort/tree testing بشرية ولا فحص VoiceOver كامل أو اختبار zoom بنسبة 200%؛ تبقى ضمن UAT اليدوي.
+- ما صار `git commit` ولا `git push`؛ التغييرات المحلية جاهزة للمراجعة.
+
 ## [2026-08-28] — QC-STATUS-SEMANTICS-001: توحيد دلالات الحالات في QC Task Manager
 
 ### تم التنفيذ

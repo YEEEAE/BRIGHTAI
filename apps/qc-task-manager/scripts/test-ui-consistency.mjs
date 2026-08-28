@@ -108,6 +108,13 @@ for (const rel of HEADERED) {
   ok(read(rel).includes('ui/PageHeader.astro'), `PageHeader used: ${rel}`);
 }
 
+// Detail routes must preserve orientation as well as their existing
+// task-specific back links. Breadcrumbs are server-rendered and do not alter
+// authorization or URL semantics.
+for (const rel of ['src/pages/tasks/[id].astro', 'src/pages/findings/[id].astro']) {
+  ok(read(rel).includes('components/Breadcrumbs.astro'), `breadcrumbs used on detail route: ${rel}`);
+}
+
 // 4. Workload page: no second width wrapper, English copy only.
 {
   const src = read('src/pages/manager/workload.astro');

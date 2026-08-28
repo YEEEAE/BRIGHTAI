@@ -23,14 +23,14 @@ const current = items[items.length - 1];
         {trail.map((crumb) => (
           <li class="flex items-center gap-1.5">
             {crumb.href ? (
-              <a href={crumb.href} class="text-brand-700 hover:underline">{crumb.label}</a>
+              <a href={crumb.href} class="inline-flex min-h-11 items-center text-brand-700 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">{crumb.label}</a>
             ) : (
               <span class="text-slate-600">{crumb.label}</span>
             )}
             <span aria-hidden="true" class="text-slate-300">/</span>
           </li>
         ))}
-        <li aria-current="page" class="font-medium text-slate-700">{current.label}</li>
+        <li aria-current="page" class="flex min-h-11 items-center font-medium text-slate-700">{current.label}</li>
       </ol>
     </nav>
   )
