@@ -1,3 +1,62 @@
+## [2026-08-28] — SITEMAP-ORDER-002-MANUAL: ترتيب يدوي لـ sitemap.xml الجذري حسب أهمية الصفحات — بدون سكربت وبدون بناء — 262/262 رابطًا
+
+### تم التنفيذ
+- أُعيد ترتيب بلوكات `sitemap.xml` في جذر المستودع **يدويًا** (تعديل مباشر للملف — بدون تشغيل `sitemap:generate` ولا `build`) بطلب صريح من المستخدم، حسب أهمية الأعمال: الرئيسية → التجارية الأساسية (`/solutions/` `/pricing/` `/demo/` `/contact/`) → صفحات الحلول → التقييم → منصة kernel → محاور hub → الشركة والثقة (about/services/customers/trust/partners) → docs → مقالات blog → تصنيفات blog → answer → أدوات/lp/events/newsletter → authors → EN → القانونية → الخدمية (sitemap/sales-deck/referral) — وأبجدي داخل كل طبقة.
+- كل بلوك `<url>` انتقل بكامل محتواه حرفيًا (loc + hreflang + lastmod) — إعادة ترتيب فقط، حارس برمجي داخل عملية التحويل يفشل على أي تغيير في مجموعة الروابط أو بايتات البلوكات.
+- `public/sitemap.xml` لم يُلمس (الطلب كان لملف الجذر فقط) — ما زال بترتيب أبجدي.
+- تعديل `scripts/generate-sitemap-all-pages.mjs` غير الملتزم (SITEMAP-ORDER-002 بمنطق طبقات مشابه — من جلسة سابقة) بقي كما هو **ولم يُشغَّل**؛ أي `sitemap:generate`/`build` مستقبلي سيعيد توليد الملف بترتيب السكربت (مشابه لكن غير مطابق: يضع `/en/` بالطبقة 0 وصفحات kernel الفرعية بالأسفل) ويكتب root وpublic معًا.
+- نسخة احتياطية قبل التعديل: `/tmp/sitemap-before-backup.xml`.
+
+### الملفات المتأثرة
+- `sitemap.xml` (جذر المستودع)
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+### التحقق
+- عدد الروابط: **262 قبل = 262 بعد** ✅
+- تطابق مجموعة الروابط (sort + diff) قبل/بعد: **IDENTICAL** — لا إضافة ولا حذف ✅
+- `xmllint --noout sitemap.xml`: **VALID** ✅
+- أسطر hreflang/lastmod: **783 قبل = 783 بعد** ✅
+- بنية الملف (رأس urlset وذيله وسطور البلوكات) سليمة ✅
+- `git diff --stat`: 861 إضافة / 861 حذف = إعادة ترتيب نقي ✅
+- build/tests: لم تُشغَّل — تعديل ترتيب XML يدوي فقط لا يمس أي كود
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** `sitemap.xml` الجذري صار مرتبًا بالصفحات الأهم أولًا (262 رابطًا كاملة ومحتوى البلوكات حرفيًا كما هو) بتعديل يدوي مباشر بدون مولّد وبدون بناء.
+
+### ملاحظات / مشاكل مفتوحة
+- لو شُغّل `sitemap:generate` أو `build` لاحقًا، الملف ينعاد توليده بترتيب المولّد (شجرة العمل تحمل SITEMAP-ORDER-002 غير الملتزم) — مطلوب قرار: الالتزام بمنطق السكربت أو مواءمته مع الترتيب اليدوي قبل أي توليد قادم.
+- ترتيب الإدخالات داخل sitemap لا يغيّر أولوية الزحف الفعلية لدى Google (priority/changefreq مهملة) — الأثر تنظيمي/بشري بالأساس، والملف يظل صالحًا 100%.
+
+---
+## [2026-08-28] — BAI-DOMAIN-MIGRATION-001: إعادة تحقق إنتاجي ومحلي بعد ترحيل brightai.site → brightai.live
+
+### تم التنفيذ
+- راجعت حالة Git ومصادر الحقيقة الفعلية: الشجرة نظيفة، و`src/data/site.ts` و`astro.config.mjs` يثبتان `https://brightai.live` كنطاق أساسي.
+- تحققت من مخرجات `dist/client`: صفر إشارات للنطاق القديم خارج قواعد التحويل المقصودة؛ وsitemap/canonical/OpenGraph/JSON-LD خالية من `brightai.site` و`brightaii.com`.
+- ثُبّت أن البقايا غير المولدة تنحصر في قواعد تحويل 301، وثائق/تقارير تاريخية، و3 workflows محجوبة عن التعديل بلا إذن؛ ولا توجد بقايا production فعّالة.
+- لم تُعدّل ملفات تنفيذ الترحيل في هذه الجولة، ولم يحدث commit أو push أو deploy.
+
+### الملفات المتأثرة
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `npm run build` ✅
+- `pnpm typecheck` ✅ (0 أخطاء؛ تحذيرات قائمة مسبقًا في QC)
+- `pnpm test` ✅ (83/83)
+- `npm run seo:all` ✅ (بعد اكتمال البناء؛ محاولة متوازية سابقة قرأت `dist` قبل إنشاء `404.html`)
+- `npm run seo:hreflang` ✅ (263 مجموعة / 0 أخطاء)
+- `npm run headers:check` ✅ · `npm run redirects:check` ✅
+- `npm run verify:crawler-access` ✅ (17 زاحفًا + sitemap = 200 على `https://brightai.live`)
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** ترحيل الدومين الموجود في HEAD يمر جميع بوابات البناء وSEO والتحويلات والفحص الحي للزواحف، وبلا مراجع قديمة فعّالة في artifact الإنتاجي.
+
+### ملاحظات / مشاكل مفتوحة
+- **تحقق حي:** `https://www.brightai.live/domain-migration-probe?keep=1` → 301 مباشر إلى النسخة non-www مع حفظ المسار والـ query. أما `brightai.site` و`www.brightai.site` فيفشلان قبل HTTP بـ TLS handshake من شبكة التحقق؛ لذلك تحويل النطاق القديم **غير متحقق/غير مكتمل خارجيًا** حتى يُصلح DNS/TLS/Cloudflare.
+- المطلوب خارجيًا: تفعيل TLS و301 على `brightai.site` و`www.brightai.site` إلى `https://brightai.live/:splat`، ثم Change of Address في GSC وBing.
+
 ---
 ## [2026-08-28] — GA4-LITERAL-SNIPPET-002: استبدال محمّل gtag.js المؤجل بمقتطف Google الحرفي G-9LMB4PGTWJ على كل صفحات الزوار — بدون commit/push/deploy
 

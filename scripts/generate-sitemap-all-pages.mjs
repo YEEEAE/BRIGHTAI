@@ -57,6 +57,65 @@ import {
 
 const BASE_URL = "https://brightai.live";
 const ROOT = process.cwd();
+
+// SITEMAP-ORDER-002 (2026-08-28): order URLs by business importance so
+// crawlers (and humans) see the highest-value pages first. Sorting is
+// purely a reordering — no URL is ever added or removed here. Tiers:
+//   0 homepage · 1 core product/commercial · 2 company & section hubs
+//   3 solution/hub subpages · 4 docs · 5 content (blog/answer) ·
+//   6 lead-gen & secondary · 7 legal & utility.
+// Within a tier, alphabetical order is kept (deterministic output).
+function importanceTier(pathname) {
+  const p = pathname.endsWith("/") ? pathname : `${pathname}/`;
+  const exact = (x) => p === x;
+  const pre = (x) => p.startsWith(x);
+
+  if (exact("/") || exact("/en/")) return 0;
+  if (
+    exact("/kernel/") ||
+    exact("/solutions/") ||
+    exact("/pricing/") ||
+    exact("/demo/") ||
+    exact("/contact/")
+  ) {
+    return 1;
+  }
+  if (
+    exact("/about/") ||
+    exact("/services/") ||
+    exact("/hub/") ||
+    exact("/blog/") ||
+    exact("/docs/") ||
+    exact("/customers/") ||
+    exact("/trust/") ||
+    exact("/partners/")
+  ) {
+    return 2;
+  }
+  if (pre("/solutions/") || pre("/hub/")) return 3;
+  if (pre("/docs/")) return 4;
+  if (pre("/blog/category/")) return 6;
+  if (pre("/blog/") || pre("/answer/") || pre("/assessment/")) return 5;
+  if (
+    pre("/lp/") ||
+    pre("/tools/") ||
+    pre("/calculator/") ||
+    pre("/events/") ||
+    pre("/customers/") ||
+    pre("/authors/") ||
+    pre("/newsletter/")
+  ) {
+    return 6;
+  }
+  return 7;
+}
+
+function importanceComparator(a, b) {
+  const tierA = importanceTier(new URL(a.loc).pathname);
+  const tierB = importanceTier(new URL(b.loc).pathname);
+  if (tierA !== tierB) return tierA - tierB;
+  return a.loc.localeCompare(b.loc, "en");
+}
 const execFileAsync = promisify(execFile);
 const gitLastmodCache = new Map();
 
@@ -718,13 +777,16 @@ async function main() {
   const finalSolutions = processEntries(solutionsList);
 
   // A single canonical sitemap is easier to validate and prevents stale split sitemap references.
+  // SITEMAP-ORDER-002 (2026-08-28): ordered by business importance
+  // (importanceComparator) instead of plain alphabetical. Same URL set —
+  // nothing added, nothing removed.
   const primarySitemapEntries = [
     ...finalPages,
     ...finalKernel,
     ...finalLegal,
     ...finalDemo,
     ...finalSolutions,
-  ].sort((a, b) => a.loc.localeCompare(b.loc, "en"));
+  ].sort(importanceComparator);
 
   // SITEMAP-GEN-001 (2026-07-18): 0-URL guard. Before this guard, the
   // generator would happily write an empty <urlset/> if all HTML files
