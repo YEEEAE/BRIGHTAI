@@ -279,18 +279,18 @@ try {
 
     // Employee searches for other employee's test
     await page.goto(`${BASE}/lab/search?q=${testOtherNum}`);
-    let noRows = await page.locator('text=No matching laboratory records found').isVisible();
-    ok(noRows, 'Employee cannot see other employee test');
+    let noResultsState = page.locator('section').filter({ has: page.getByRole('heading', { name: 'No search results' }) });
+    ok(await noResultsState.isVisible() && await page.locator('tbody tr').count() === 0, 'Employee cannot see other employee test');
 
     // Employee searches for other employee's sample
     await page.goto(`${BASE}/lab/search?q=${sampleOtherIdent}`);
-    noRows = await page.locator('text=No matching laboratory records found').isVisible();
-    ok(noRows, 'Employee cannot see other employee sample');
+    noResultsState = page.locator('section').filter({ has: page.getByRole('heading', { name: 'No search results' }) });
+    ok(await noResultsState.isVisible() && await page.locator('tbody tr').count() === 0, 'Employee cannot see other employee sample');
 
     // Employee searches for other employee's lot
     await page.goto(`${BASE}/lab/search?q=${lotOther}`);
-    noRows = await page.locator('text=No matching laboratory records found').isVisible();
-    ok(noRows, 'Employee cannot search other employee lot');
+    noResultsState = page.locator('section').filter({ has: page.getByRole('heading', { name: 'No search results' }) });
+    ok(await noResultsState.isVisible() && await page.locator('tbody tr').count() === 0, 'Employee cannot search other employee lot');
 
     // Employee searches for their own test
     await page.goto(`${BASE}/lab/search?q=${testEmpNum}`);

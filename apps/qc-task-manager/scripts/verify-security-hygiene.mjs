@@ -54,8 +54,23 @@ for (const path of files(join(root, 'src')).filter((p) => /\.(ts|tsx|astro)$/.te
 }
 
 const tracked = execFileSync('git', ['ls-files'], { cwd: repoRoot, encoding: 'utf8' }).split('\n');
+const privateKeyPattern = new RegExp(
+  ['BEGIN(?: [A-Z0-9]+)?', ['PRIVATE', 'KEY'].join(' ')].join(' '),
+  'i',
+);
 for (const path of tracked) {
   if (!path) continue;
+  const absolutePath = join(repoRoot, path);
+  let trackedSource = '';
+  try {
+    trackedSource = readFileSync(absolutePath, 'utf8');
+  } catch {
+    // Binary/unreadable tracked files are handled by Git's own hygiene checks.
+  }
+  check(
+    !privateKeyPattern.test(trackedSource),
+    `tracked file contains private-key material: ${path}`,
+  );
   check(!/\.(?:db|sqlite|sqlite3)$/i.test(path), `database file is tracked: ${path}`);
   // Templates contain no values and are deliberately committed for deployment
   // documentation; real .env files are never allowed.

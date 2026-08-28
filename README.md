@@ -14,8 +14,8 @@ https://brightai.live
 
 
 # قواعد البيانات
-DATABASE_URL=postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
-psql postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
+DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<database>
+psql postgresql://<user>:<password>@localhost:5432/<database>
 {
   "ssh": "Disabled",
   "previewLimit": 50,
@@ -30,12 +30,12 @@ psql postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
 # EVAL-CERT signing key (Ed25519) — keyId=v1
 # Add this to .env (or the hosting dashboard). Keep private key secret.
 # To support rotation, include prior { keyId, publicKey } entries (no privateKey).
-EVAL_CERT_SIGNING_KEY_RING=[{"keyId":"v1","privateKey":"-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIHioxL2b3D8deycBhPpOqALAuurqwLJF0CaudpNF4r88\n-----END PRIVATE KEY-----\n","publicKey":"-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAkiByuRoOmNSsm2kb5vznjyD8WqJn89jnUyLg+i9VoWA=\n-----END PUBLIC KEY-----\n"}]
+EVAL_CERT_SIGNING_KEY_RING=[{"keyId":"v1","publicKey":"<generate with scripts/generate-eval-cert-key.mjs>"}]
 
 # Or flat env (single key):
 EVAL_CERT_KEY_ID=v1
-EVAL_CERT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAkiByuRoOmNSsm2kb5vznjyD8WqJn89jnUyLg+i9VoWA=\n-----END PUBLIC KEY-----\n
-# EVAL_CERT_PRIVATE_KEY=<private PEM — keep secret>
+EVAL_CERT_PUBLIC_KEY=<generate with scripts/generate-eval-cert-key.mjs>
+# EVAL_CERT_PRIVATE_KEY=<set only in the local environment/hosting secret store>
 
 
 
@@ -43,6 +43,11 @@ EVAL_CERT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAkiByuRoOmNSsm2k
 node scripts/generate-eval-cert-key.mjs   
 
 node scripts/generate-eval-cert-key.mjs --key-id v2      # لو حبيت يدور المفتاح بعدين
+
+المالك يولّد المفتاح محليًا بالأمر أعلاه، ثم يحفظ المفتاح الخاص في `.env` أو في
+مخزن أسرار الاستضافة فقط، ويضع المفتاح العام ومعرّف المفتاح في `EVAL_CERT_SIGNING_KEY_RING`.
+لا تنسخ المفتاح الخاص إلى README أو أي ملف متتبع. عند الاشتباه بتسريب مفتاح سابق،
+دوّر المفتاح خارجيًا وألغِ/عطّل المفتاح القديم قبل اعتماد المفتاح الجديد.
 
 أو عبر psql للتجربة المباشرة إن القاعدة مخزّنة:
 psql "postgresql://brightai:brightai@localhost:5432/brightai_dev" -c 'SELECT "keyId","algorithm","active" FROM signing_keys;'

@@ -50,7 +50,7 @@ secret_hits="$(
     -g '!package-lock.json' \
     -g '!pnpm-lock.yaml' \
     -g '!yarn.lock' \
-    '(sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE KEY-----)' \
+    '(sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE[[:space:]]+KEY-----)' \
     "$project_dir" || true
 )"
 

@@ -123,7 +123,9 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
     }
     ok(mainText.includes('No approved reference available.'), `${username}:${type} shows explicit missing-reference state`);
     ok(await page.locator('input[aria-label*="Actual Pressure (legacy)"]').count() === 0, `${username}:${type} hides legacy pressure input on new form`);
-    ok(await page.getByText('Save and Continue').count() === 1 && await page.getByText('Submit for Review').count() === 1, `${username}:${type} shows sticky action bar actions`);
+    // Scope to real buttons: the ContextualHelp disclosure keeps the same
+    // labels in its hidden DOM text, so page-wide getByText over-counts.
+    ok(await page.getByRole('button', { name: 'Save and Continue' }).count() === 1 && await page.getByRole('button', { name: 'Submit for Review' }).count() === 1, `${username}:${type} shows sticky action bar actions`);
     ok((await page.locator('h1').innerText()).includes(type === 'air' ? 'New AIR Test' : 'New VACUUM Test'),
       `${username}:${type} title matches type`);
     await page.close();
@@ -173,7 +175,7 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await page.locator('#sample_1_part_name').focus();
   await page.keyboard.insertText('Keyboard Part');
   ok((await page.inputValue('#sample_1_part_name')) === 'Keyboard Part', 'keyboard flow: sample cell accepts focus and typing');
-  await page.click('text=Save Draft');
+  await page.getByRole('button', { name: 'Save Draft' }).click();
   await page.waitForURL((u) => u.pathname === '/lab', { timeout: 10_000 });
 
   const draft = db.prepare("SELECT * FROM lab_test_records WHERE lot_number='LOT-E2E-1'").get();
@@ -255,7 +257,7 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await login(page, 'employee');
   await openForm(page, 'air');
   await page.fill('#product_description', 'Fixture Connector');
-  await page.click('text=Save and Continue');
+  await page.getByRole('button', { name: 'Save and Continue' }).click();
   await page.waitForURL((u) => u.pathname === '/lab/tests/new', { timeout: 10_000 });
   ok(new URL(page.url()).searchParams.get('type') === 'air', 'continue: stays on same-type form');
   const value = await page.inputValue('#product_description');

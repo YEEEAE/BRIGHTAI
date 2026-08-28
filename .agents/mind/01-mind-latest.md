@@ -1,3 +1,137 @@
+## [2026-08-28] — OP-01: إزالة مفتاح تقييم خاص من الملفات المتتبعة وتشديد فحص hygiene
+
+### تم التنفيذ
+- استبدلت قيمة `EVAL_CERT_SIGNING_KEY_RING` الخاصة في `README.md` بمثال public-only يستخدم placeholder التوليد.
+- أزلت بيانات اتصال قاعدة البيانات المكتوبة بصيغة credentials من README واستبدلتها بقيم تعليمية placeholder.
+- وثّقت للمالك توليد المفتاح محليًا، حفظ المفتاح الخاص خارج الملفات المتتبعة، وخطوة التدوير الخارجي عند الاشتباه بالتسريب.
+- أضفت إلى فحص QC مسحًا لمحتوى كل ملف متتبع يرفض أي marker لمادة private key، مع إبقاء تقرير الفشل مقتصرًا على المسار دون القيمة.
+- عدّلت regex في أداة تدقيق النشر لتفادي تطابق `git grep` مع كود الكاشف نفسه.
+
+### الملفات المتأثرة
+- `README.md`
+- `apps/qc-task-manager/scripts/verify-security-hygiene.mjs`
+- `.agents/skills/publish-project-to-github/scripts/audit_public_project.sh`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `node apps/qc-task-manager/scripts/verify-security-hygiene.mjs` ✅ — Security hygiene passed.
+- `node --check apps/qc-task-manager/scripts/verify-security-hygiene.mjs` ✅
+- فحص Git للـ private-key marker ✅ — لا نتائج حالية.
+- `git diff --check` ✅
+- فحص تاريخي بدون طباعة قيم ✅ — بقيت واقعة التسريب التاريخي معروفة؛ التدوير الخارجي ما زال إلزاميًا.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** لا توجد مادة private-key في الملفات المتتبعة حاليًا، والمثال التعليمي صار public-only مع فحص regression دائم.
+
+### ملاحظات / مشاكل مفتوحة
+- وجود المفتاح في تاريخ Git لا يُلغى بتعديل الملفات الحالية؛ يلزم تدوير/إبطال المفتاح خارجيًا وفق OP-01.
+
+## [2026-08-28] — CP-01: تحديث تأكيدات بحث المختبر وإخضرار بوابة القبول
+
+### تم التنفيذ
+- استبدلت التأكيدات الثلاثة المتقادمة في سيناريو E داخل `e2e-lab-search.mjs` بتأكيد على section حالة `OperationalState` التي تحتوي heading `No search results`.
+- أبقيت تحقق عزل RBAC فعليًا بإضافة شرط عدم وجود أي صفوف `tbody tr` لكل بحث موظف عن اختبار/عينة/lot مملوك لموظف آخر.
+- لم أعدّل `src/lib/lab/search.ts` أو نص الواجهة، وأبقيت إصلاح locators الموجود في `e2e-lab-form.mjs` كما هو.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/scripts/e2e-lab-search.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### الأرقام
+- `test:manifest`: 60 suite canonical و28 suite E2E، خلال 0.40 ثانية.
+- `e2e:acceptance`: 28 suite workflow + مرحلتا restart-persistence = 30/30 مرحلة ناجحة.
+- التأكيدات: `3047+` ناجحة حسب ملخص runner؛ `lab-search` = 21/21.
+- المدة: 166.804 ثانية داخل runner، و178.20 ثانية للعميلة كاملةً شاملًا البناء.
+
+### التحقق
+- `pnpm test:manifest` ✅
+- `pnpm e2e:acceptance` ✅ — exit 0، وكل suites والـ persistence ناجحة.
+- `astro build` ضمن بوابة القبول ✅ — تحذيرات Vite الديناميكية المعروفة فقط.
+- فحص عدم لمس منطق العزل ✅ — التغيير محصور في سكربت E2E.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** بوابة القبول صارت خضراء بالكامل، مع بقاء تحقق عدم ظهور نتائج الموظف الآخر بدل تخفيف السيناريو إلى مجرد فتح الصفحة.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد ضمن نطاق CP-01؛ ما فيه commit أو push أو deploy.
+
+## [2026-08-28] — QC-ARCH-UIUX-REVIEW-024: تدقيق معماري وواجهة وتجربة كامل لتطبيق QC Task Manager
+
+### تم التنفيذ
+- نفذت تدقيقًا تحليليًا فقط للمصدر الحالي تحت `apps/qc-task-manager/` بدون تعديل كود المنتج أو refactor أو commit أو push.
+- قرأت العقل الحي وتعليمات المشروع وREADME/config/skills المناسبة، ثم راجعت بنية Astro SSR، الصفحات، layouts، React islands، UI primitives، domain libs، APIs، middleware، DB، الاختبارات والوثائق.
+- تحققت من التشغيل الفعلي عبر production build وأداة screenshots على 60 شاشة/دور بعروض 390/768/1440؛ لا overflow على مستوى الصفحة ولا أخطاء H1 في العينة.
+- وثقت 14 finding مرتبة: أبرزها طول dashboard، كثافة LabTestForm، hydration عالمي لـ Navbar، تكرار status/action systems، touch targets أصغر من 44px، وdrift بين PageHeader الموثق والمستخدم فعليًا.
+- ولدت 8 implementation prompts مستقلة تغطي P1/P2 وبعض P3، بدون تنفيذ أي prompt.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/FULL-ARCHITECTURE-UI-UX-REVIEW.md`
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+### التحقق
+- `pnpm --filter @brightai/qc-task-manager typecheck` ✅ — 0 errors، 26 hints.
+- `pnpm --filter @brightai/qc-task-manager test:architecture` ✅ — route manifest + architecture guard.
+- `pnpm --filter @brightai/qc-task-manager test:ui-consistency` ✅ — 164/164.
+- `pnpm --filter @brightai/qc-task-manager test:responsive-e2e-contract` ✅.
+- `pnpm --filter @brightai/qc-task-manager test:badge-contrast` ✅ — 13/13.
+- `pnpm --filter @brightai/qc-task-manager test:lab-ux-presentation` ✅ — 14 checks.
+- `pnpm --filter @brightai/qc-task-manager test:lab-ux-performance` ✅ — 7 checks.
+- `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` ✅ — build نجح مع تحذيرات Vite عن dynamic imports غير القابلة للتقسيم.
+- `node scripts/ui-screenshots.mjs` بصلاحية تشغيل localhost ✅ — 60 screenshot/route checks على 390/768/1440، بدون page overflow أو H1 failures في التقرير.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** التقرير التحليلي مكتمل ومبني على المصدر الحالي والتشغيل الفعلي؛ الحكم هو CONDITIONAL GO للاستمرار، مع أولوية لمعالجة كثافة العمل والـdesign-system drift قبل أي refactor واسع.
+
+### ملاحظات / مشاكل مفتوحة
+- لم تُنفذ أي إصلاحات؛ الـimplementation prompts للتنفيذ اللاحق فقط.
+- الفحص اليدوي الكامل لقارئ الشاشة، 200% zoom، high-contrast، وقيم القياس/النصوص المختلطة القصوى ما زال يحتاج UAT مركزًا.
+- بقيت حالة الشجرة السابقة كما هي: تعديل `e2e-lab-form.mjs`، حذف ملفات DB المرحّل، وتقارير ULTIMATE والـfixtures غير المتتبعة؛ لم ألمسها.
+
+## [2026-08-28] — QC-ULTIMATE-AUDIT-023: تدقيق جنائي شامل ثالث (ULTIMATE) — CONDITIONAL GO مع تبرئة RBAC بحث المختبر وإثبات أن بوابة القبول معطلة بسبب اختبار متقادم
+
+### تم التنفيذ
+- جمّدت الواقع: HEAD `3b25585b` على `main`، شجرة dirty (تعديل `e2e-lab-form.mjs` المعلق + حذف staged لملفي DB + `scripts/__fixtures__/` غير متتبع).
+- شغّلت 17 بوابة/أمر بأكواد خروج موثقة في `/tmp/qc-gates{,2,5,6}.log`: typecheck ✅ · manifest ✅ (60/28) · route-manifest ✅ (114/25/6) · parity ✅ (38/38) · migrations ✅ · architecture ✅ · ui-consistency ✅ (164) · full-test ✅ (60/60) · build ✅ · db-doctor ✅ · production-operations ✅ (restore/restart/integrity/FK/chains) · deployment-contract ✅ (21) · performance ✅ · security-hygiene ✅ · e2e-reports ✅ (standalone) · e2e-responsive ✅ (648/648) — و**e2e:acceptance ❌ exit 1** (26/29 suite قبل التوقف).
+- **P1-001 بجذر جديد موثق:** فشل القبول سببه 3 تأكيدات متقادمة في `e2e-lab-search.mjs:282,287,292` تنتظر نص `No matching laboratory records found` بينما الفعلي `No search results` (OperationalState.astro:8). **عزل RBAC نفسه بُرّئ تشغيليًا** بمسبار مباشر على `searchLab()`: موظف→اختبار/عينة/lot زميله = 0 نتائج؛ مدير = يراها (شرط tested_by/created_by في search.ts:192-195 يعمل).
+- **P1-002 مُعاد التحقق مستقلًا:** `README.md:33` يحوي Ed25519 **خاص** حقيقي (تحقق برمجي بلا طباعة القيمة) — الإزالة كودية + التدوير فعل مشغّل.
+- اكتشافات جديدة: skills-lock.json منهار (164/164 هاش لا يطابق، 11 مدخلًا ميتًا، 201 غير مسجل مقابل 364 مجلدًا سليمة ذاتيًا) · schema.sql ينقصه 11 كائنًا حيًا (ai_audit_log + 7 فهارس + uq_notifications_dedupe_key) · .gitignore لا يغطي .db بجذر التطبيق (سبب تسرب `qc_tasks 3.db` أصلًا) · مسار ميت `/api/tasks/suggestions` بلا مستهلك · مثال DEPLOYMENT.md schemaVersion:10≠38 · إحالات مهارات ميتة في design-pipeline.
+- وكلاء التدقيق المتوازيون الستة فشلوا جميعًا (Provider authentication failed) — نفّذت التدقيق كاملًا بالجلسة الرئيسية (فحوص ساكنة + مسبار RBAC + مقارنة schema + مسح sha256 للمهارات).
+- أنشأت 4 ملفات: `docs/ULTIMATE-EVIDENCE-LEDGER.md` (كل الأدلة/الأوامر/الأكواد) · `docs/ULTIMATE-SYSTEM-AUDIT.md` (الدرجات) · `docs/ULTIMATE-SKILL-COVERAGE.md` (364 مهارة كاملة) · `docs/ULTIMATE-CLOSING-PROMPTS.md` (10 مولدة من النتائج: CP-01..06 + OP-01..03 + CG-01 + مصفوفة تتبع صفر يتيمة).
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/ULTIMATE-EVIDENCE-LEDGER.md`
+- `apps/qc-task-manager/docs/ULTIMATE-SYSTEM-AUDIT.md`
+- `apps/qc-task-manager/docs/ULTIMATE-SKILL-COVERAGE.md`
+- `apps/qc-task-manager/docs/ULTIMATE-CLOSING-PROMPTS.md`
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+### الأرقام
+- البوابات: 16 ✅ / 1 ❌ (القبول — اختباري لا أمني) | P0=0 · P1=2 · P2=4 · P3=6
+- المهارات: 364 مجلدًا (تطابق name=100%) مقابل 175 مدخل سجل منهار | APPLIED=38 · NOT_APPLICABLE=326 · مراجع ميتة=2
+- الدرجات: Technical Completeness **92%** · Company Pilot Readiness **80%** · Overall **92%**
+
+### القرارات
+- **تصنيف CONDITIONAL GO** (لا P0؛ الحجب: إخضار القبول CP-01، تدوير المفتاح OP-01، UAT بشري OP-02، نشر حي OP-03).
+- فصل برومبتات الإصلاح عن أفعال المشغّل: كل ما هو خارج قدرة الوكيل (تدوير/نشر/UAT/توريد WI) صار حزم OP صريحة — لا ادعاء تنفيذ آلي لها.
+
+### التحقق
+- 17 أمرًا بتواريخ بداية/نهاية وأكواد خروج في سجلات /tmp qc-gates*.log.
+- مسبار RBAC على قاعدة /tmp مؤقتة عبر الدالة الحقيقية (نُظفت بعد الفحص) — القاعدة الحقيقية `db/qc_tasks.db` لم تُلمس (mtime سابق لأي إقلاع خادم).
+- مسح sha256 برمجي كامل للمهارات + مقارنة sqlite_master لقاعدة طازجة ضد schema.sql.
+
+### النتيجة
+- **الحالة:** نجح (التدقيق مكتمل بالأدلة) — حكم النظام: **CONDITIONAL GO**
+- **مختصر:** كل البوابات خضراء ما عدا بوابة قبول معطلة بتأكيد نصي متقادم (إصلاحها سطر واحد CP-01) ومفتاح خاص بانتظار التدوير؛ لا يوجد أي P0.
+
+### ملاحظات / مشاكل مفتوحة
+- إصلاح `e2e-lab-form.mjs` الموجود في شجرة العمل تحقق ضمن هذا التدقيق (141/141) ويبقى غير ملتزم — الالتزام على المستخدم.
+- حذف ملفي DB المُرحّل (staged) ينتظر commit المستخدم.
+- WI ما زال SOURCE-BLOCKED (صفحات 2/3 و3/3) وسياسة حجب/تحذير المعايرة المنتهية قرار إدارة.
+- UAT البشري والنشر الحي غير منجزين — شرطان للترقية إلى GO.
+
 ## [2026-08-28] — COPY-SKILLS-002: نسخ `.agents/skills` إلى دليل المستخدم المنزلي
 
 ### تم التنفيذ
