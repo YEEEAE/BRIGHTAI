@@ -1,3 +1,66 @@
+## [2026-08-28] — إنشاء إضافة BRIGHTAI SEO لأبحاث السعودية وGEO
+
+### تم التنفيذ
+- أنشأت إضافة Codex شخصية باسم `brightai-seo` ضمن `~/plugins/brightai-seo`.
+- أضفت أربع مهارات تشغيلية: `saudi-keyword-research` و`seo-audit` و`topical-authority` و`ai-visibility`.
+- ربطت الإضافة بالـ marketplace الشخصي `personal` مع سياسة تثبيت `AVAILABLE` ومصادقة `ON_INSTALL`.
+- صممت المهارات لتستخدم نطاق BRIGHTAI المعتمد `https://brightai.live`، وتستفيد من DataForSEO MCP الموجود في إعداد المشروع بدون تخزين أسرار.
+- غطت المهارات بحث الكلمات السعودية، التدقيق الشامل، خريطة السلطة الموضوعية، وقياس ظهور BRIGHTAI في منصات الذكاء مع فصل القياس الفعلي عن الاستنتاج.
+
+### الملفات المتأثرة
+- `/Users/yzydalshmry/plugins/brightai-seo/.codex-plugin/plugin.json`
+- `/Users/yzydalshmry/plugins/brightai-seo/skills/saudi-keyword-research/SKILL.md`
+- `/Users/yzydalshmry/plugins/brightai-seo/skills/seo-audit/SKILL.md`
+- `/Users/yzydalshmry/plugins/brightai-seo/skills/topical-authority/SKILL.md`
+- `/Users/yzydalshmry/plugins/brightai-seo/skills/ai-visibility/SKILL.md`
+- `/Users/yzydalshmry/.agents/plugins/marketplace.json`
+
+### التحقق
+- `validate_plugin.py /Users/yzydalshmry/plugins/brightai-seo` ✅
+- فحص JSON للـmanifest والـmarketplace ✅
+- عدد المهارات المنشأة: 4 ✅
+- لا توجد أسرار أو بيانات اعتماد داخل الإضافة ✅
+- لم يُنفذ build للمشروع؛ الإضافة مستقلة عن كود الموقع ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** الإضافة جاهزة للاستخدام في Codex كحزمة SEO/GEO متخصصة لـBRIGHTAI، والـcommit أو push غير منفذين.
+
+### ملاحظات / مشاكل مفتوحة
+- تشغيل DataForSEO الفعلي يحتاج وجود `DATAFORSEO_LOGIN` و`DATAFORSEO_PASSWORD` في البيئة وإعادة تشغيل Codex إذا لم يظهر الخادم.
+
+## [2026-08-28] — QC-AI-SECURITY-UX-001: توضيح حدود AI وحالات الجلسة والصلاحيات
+
+### تم التنفيذ
+- وحّدت عرض `AiReviewPanel` بإضافة مؤشر ثابت يوضح أن AI advisory فقط.
+- فصلت نتيجة AI بصريًا إلى `System data` و`AI suggestion` و`User decision`، مع إبقاء تفاصيل JSON داخل disclosure قابل للفتح.
+- أضفت حالة آمنة لانتهاء الجلسة (401) مع رابط تسجيل دخول، وحالة صلاحية (403) تمنع إعادة المحاولة العمياء وتشرح مسار طلب الوصول.
+- أبقيت حالة مزود AI غير المهيأ منفصلة، بحيث يتعطل تشغيل AI فقط وتستمر مسارات QC الأساسية يدويًا.
+- أضفت حراسة UX Writing تمنع رجوع حدود القرار البشري ورسائل الاسترجاع الأساسية.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/AiReviewPanel.tsx`
+- `apps/qc-task-manager/scripts/test-ux-writing.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager run test:ux-writing` ✅ — 14/14.
+- `pnpm --dir apps/qc-task-manager run test:interaction-feedback` ✅ — 25/25.
+- `pnpm --dir apps/qc-task-manager run test:ai-foundation` ✅.
+- `pnpm --dir apps/qc-task-manager run test:ai-features` ✅.
+- `pnpm --dir apps/qc-task-manager run test:ai-lab` ✅.
+- `pnpm --dir apps/qc-task-manager run typecheck` ✅ — 0 errors، 0 warnings، 27 hints قديمة.
+- `NODE_ENV=production pnpm --dir apps/qc-task-manager run build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `git -c core.fsmonitor=false diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار AI أوضح كاقتراح غير ملزم، مع مسارات استرجاع آمنة لانتهاء الجلسة وفشل الصلاحية، بدون تغيير API أو RBAC أو workflow أو قرار QC بشري.
+
+### ملاحظات / مشاكل مفتوحة
+- ما زال فحص UAT البشري وVoiceOver على أجهزة فعلية مطلوبًا؛ لم يُجرَ في هذه الدفعة.
+- لم يحدث commit أو push أو deploy.
+
 ## [2026-08-28] — SEO-DOMAIN-CANONICAL-002: قرار النطاق المعتمد brightai.live + بناء ملف الكلمات عليه
 
 ### تم التنفيذ
@@ -2361,3 +2424,39 @@ skills_ready: 7---
 
 ### ملاحظات / مشاكل مفتوحة
 - بعض raw form controls ما زالت تستخدم وصفات focus قديمة خارج نطاق هذه الدفعة.
+## [2026-08-28] — QC-SERVICE-DESIGN-HANDOFF-001: توحيد سياق التسليم بين رحلات QC
+
+### تم التنفيذ
+- أنشأت `WorkflowContext.astro` كمكوّن SSR مشترك يعرض المرحلة الحالية، المالك، الدور المسؤول التالي، العائق، الإجراء التالي المصرّح به، والروابط ذات العلاقة.
+- ربطت السياق بصفحات تفاصيل اختبار المختبر، المعدّة، المستند المضبوط، وFinding، باستخدام loaders والعلاقات الحالية فقط.
+- أضفت روابط مباشرة آمنة للاختبار ← المعدّة/المنتج/Finding، المعدّة ← الاختبارات/المستندات/الصيانة، المستند ← المعدّات، وFinding ← المهمة/CAPA أو RCA.
+- أضفت `SERVICE-BLUEPRINT.md` يوثق current → target لكل من test lifecycle وFinding → CAPA → Evidence وEquipment → Calibration → Maintenance وControlled Document lifecycle.
+- حافظت على RBAC والـworkflow وقواعد التدقيق والإشعارات والمخطط؛ اللوحة لا تغيّر الحالة ولا تنشئ علاقة أو رابطًا لبيانات غير موجودة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/ui/WorkflowContext.astro`
+- `apps/qc-task-manager/src/pages/lab/tests/[id].astro`
+- `apps/qc-task-manager/src/pages/lab/equipment/[id].astro`
+- `apps/qc-task-manager/src/pages/lab/documents/[id].astro`
+- `apps/qc-task-manager/src/pages/findings/[id].astro`
+- `apps/qc-task-manager/docs/SERVICE-BLUEPRINT.md`
+
+### التحقق
+- `git -c core.fsmonitor=false diff --check` ✅
+- `test:ui-consistency` ✅ — 192/192
+- `test:status-semantics` ✅
+- `astro check` ✅ — 0 errors / 0 warnings / 27 hints قائمة مسبقًا
+- `NODE_ENV=production astro build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط
+- `test-lab-tests` ✅ — 258/0
+- `test-lab-equipment` ✅
+- `test-lab-documents` ✅ — 303/0
+- `test-qc-operations` ✅
+- `test-manifest` ✅ — 65 canonical suites و28 E2E
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صارت صفحات التفاصيل تعطي أقل سياق لازم لاستكمال العمل بأمان عبر المسارات، مع بقاء كل قرارات المجال والصلاحيات والتدقيق في طبقاتها الأصلية.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم UAT بشري وVoiceOver واختبار tree testing للتأكد من أن تسميات الأدوار والخطوات التالية مفهومة لفرق QC.
+- ما صار commit أو push أو deploy.

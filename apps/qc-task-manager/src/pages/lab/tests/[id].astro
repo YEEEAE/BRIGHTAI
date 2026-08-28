@@ -35,6 +35,7 @@ import Banner from '../../../components/ui/Banner.astro';
 import PageHeader from '../../../components/ui/PageHeader.astro';
 import { TEST_WORKFLOW_TONE as statusTone, TEST_RESULT_TONE as resultTone } from '../../../components/ui/labBadgeClasses';
 import AppButton from '../../../components/ui/AppButton.astro';
+import WorkflowContext from '../../../components/ui/WorkflowContext.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -136,6 +137,24 @@ const resultLabel = (v: unknown) => {
   return s ? (LAB_RESULT_LABELS[s as (typeof LAB_RESULT_OPTIONS)[number]] ?? s) : '—';
 };
 
+const testContext = record ? (() => {
+  const stageMap: Record<string, { label: string; tone: 'neutral' | 'pending' | 'warning' | 'success' | 'blocked'; role: string; blocker?: string }> = {
+    DRAFT: { label: 'Draft', tone: 'neutral', role: 'Tester', blocker: 'Complete the required sections before submitting for review.' },
+    SUBMITTED: { label: 'Submitted for review', tone: 'pending', role: 'Supervisor / reviewer' },
+    UNDER_REVIEW: { label: 'Under review', tone: 'pending', role: 'Supervisor / reviewer' },
+    REJECTED: { label: 'Returned for changes', tone: 'warning', role: 'Tester', blocker: 'Review the reviewer feedback before resubmitting.' },
+    APPROVED: { label: 'Approved', tone: 'success', role: 'Records owner' },
+    VOID: { label: 'Voided', tone: 'blocked', role: 'Records owner' },
+  };
+  const current = stageMap[status] ?? { label: status, tone: 'neutral' as const, role: 'QC team' };
+  const related = [
+    ...(record.equipment_id ? [{ label: `Equipment ${record.equipment_code ?? record.equipment_id}`, href: `/lab/equipment/${record.equipment_id}` }] : []),
+    ...(record.product_id ? [{ label: `Product ${record.product_code ?? record.product_id}`, href: `/lab/products/${record.product_id}` }] : []),
+    ...view.findingLinks.slice(0, 3).map((link) => ({ label: `Finding ${link.finding_number}`, href: link.href, meta: String(link.status) })),
+  ];
+  return { ...current, related };
+})() : null;
+
 const SAMPLE_STATUS_LABELS: Record<string, string> = {
   PENDING: 'Pending',
   TESTED: 'Tested',
@@ -203,6 +222,19 @@ function snapshotEntries(snap: Record<string, unknown> | null): Array<[string, s
 
         {loadError && (
           <Banner tone="error">{loadError}</Banner>
+        )}
+
+        {testContext && (
+          <WorkflowContext
+            stage={testContext.label}
+            stageTone={testContext.tone}
+            owner={actor(record.tester_name ?? record.creator_name)}
+            nextRole={testContext.role}
+            blocker={testContext.blocker}
+            nextAction={status === 'DRAFT' || status === 'REJECTED' ? (canEditLabTestRecord({ id: userId, role }, { status: record.status as never, tested_by: record.tested_by == null ? null : Number(record.tested_by), reviewed_by: record.reviewed_by == null ? null : Number(record.reviewed_by), created_by: Number(record.created_by) }) ? 'Edit test' : undefined) : status === 'SUBMITTED' || status === 'UNDER_REVIEW' ? (canReviewLabTest(role) ? 'Open review queue' : undefined) : undefined}
+            nextActionHref={status === 'DRAFT' || status === 'REJECTED' ? `/lab/tests/new?test=${recordId}` : status === 'SUBMITTED' || status === 'UNDER_REVIEW' ? '/lab/tests/review' : undefined}
+            related={testContext.related}
+          />
         )}
 
         {/* 1. Test Identification */}

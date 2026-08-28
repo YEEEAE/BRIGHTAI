@@ -1,0 +1,70 @@
+---
+interface RelatedLink {
+  label: string;
+  href: string;
+  meta?: string;
+}
+
+interface Props {
+  stage: string;
+  stageTone?: 'neutral' | 'info' | 'pending' | 'warning' | 'success' | 'danger' | 'blocked';
+  owner?: string;
+  nextRole?: string;
+  nextAction?: string;
+  nextActionHref?: string;
+  blocker?: string;
+  related?: RelatedLink[];
+}
+
+const {
+  stage,
+  stageTone = 'info',
+  owner = 'Not assigned',
+  nextRole = '—',
+  nextAction,
+  nextActionHref,
+  blocker,
+  related = [],
+} = Astro.props;
+
+const toneClasses: Record<NonNullable<Props['stageTone']>, string> = {
+  neutral: 'border-slate-200 bg-slate-50 text-slate-900',
+  info: 'border-blue-200 bg-blue-50 text-blue-950',
+  pending: 'border-amber-200 bg-amber-50 text-amber-950',
+  warning: 'border-orange-200 bg-orange-50 text-orange-950',
+  success: 'border-emerald-200 bg-emerald-50 text-emerald-950',
+  danger: 'border-red-200 bg-red-50 text-red-950',
+  blocked: 'border-slate-300 bg-slate-100 text-slate-900',
+};
+---
+
+<section aria-labelledby="workflow-context-title" class={`rounded-xl border p-5 shadow-sm ${toneClasses[stageTone]}`}>
+  <div class="flex flex-wrap items-start justify-between gap-4">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-wide opacity-70">Continue this work</p>
+      <h2 id="workflow-context-title" class="mt-1 text-base font-semibold">Current stage: {stage}</h2>
+    </div>
+    {nextAction && nextActionHref && (
+      <a href={nextActionHref} class="inline-flex min-h-11 items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">
+        {nextAction}
+      </a>
+    )}
+  </div>
+
+  <dl class="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+    <div><dt class="text-xs font-medium opacity-70">Current owner</dt><dd class="mt-1 font-medium">{owner}</dd></div>
+    <div><dt class="text-xs font-medium opacity-70">Next responsible role</dt><dd class="mt-1 font-medium">{nextRole}</dd></div>
+    <div><dt class="text-xs font-medium opacity-70">Blocker</dt><dd class="mt-1 font-medium">{blocker ?? 'None recorded'}</dd></div>
+  </dl>
+
+  {related.length > 0 && (
+    <div class="mt-4 border-t border-current/10 pt-4">
+      <h3 class="text-xs font-semibold uppercase tracking-wide opacity-70">Related records</h3>
+      <ul class="mt-2 flex flex-wrap gap-2">
+        {related.map((link) => (
+          <li><a href={link.href} class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-current/15 bg-white/70 px-3 py-2 text-sm font-medium underline decoration-current/30 underline-offset-2 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"><span>{link.label}</span>{link.meta && <span class="text-xs opacity-70">{link.meta}</span>}</a></li>
+        ))}
+      </ul>
+    </div>
+  )}
+</section>

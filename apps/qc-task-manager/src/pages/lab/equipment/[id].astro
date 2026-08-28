@@ -22,6 +22,7 @@ import { canArchiveLabEquipment, canEditLabEquipment, canProposeLabEquipmentEdit
 import AiReviewPanel from '../../../components/AiReviewPanel';
 import type { Role } from '../../../lib/types';
 import { CALIBRATION_STATUS_BADGE_CLS as CAL_STATUS_BADGE_CLS } from '../../../components/ui/labBadgeClasses';
+import WorkflowContext from '../../../components/ui/WorkflowContext.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -123,6 +124,21 @@ function fmt(value: unknown): string {
             {canReviewLabChangeRequests(role) && <a class="ms-2 font-semibold underline" href="/lab/change-requests">Review</a>}
           </div>
         )}
+
+        <WorkflowContext
+          stage={detail.equipment.is_archived === 1 ? 'Archived' : calibrationSummary.status === 'OVERDUE' || calibrationSummary.status === 'NOT_COMPLIANT' ? 'Calibration attention needed' : 'Available for controlled use'}
+          stageTone={detail.equipment.is_archived === 1 ? 'blocked' : calibrationSummary.status === 'OVERDUE' || calibrationSummary.status === 'NOT_COMPLIANT' ? 'danger' : 'success'}
+          owner={fmt(detail.created_by_name)}
+          nextRole={detail.equipment.is_archived === 1 ? 'Manager / administrator' : calibrationSummary.status === 'OVERDUE' || calibrationSummary.status === 'NOT_COMPLIANT' ? 'Calibration owner' : 'Test operator'}
+          blocker={detail.equipment.is_archived === 1 ? 'Equipment is archived.' : calibrationSummary.status === 'OVERDUE' || calibrationSummary.status === 'NOT_COMPLIANT' ? 'Calibration record needs attention before relying on this equipment.' : undefined}
+          nextAction={detail.equipment.is_archived === 1 ? 'Review equipment' : calibrationSummary.status === 'OVERDUE' || calibrationSummary.status === 'NOT_COMPLIANT' ? 'Open calibration records' : 'View test usage'}
+          nextActionHref={detail.equipment.is_archived === 1 ? `/lab/equipment/${detail.equipment.id}` : calibrationSummary.status === 'OVERDUE' || calibrationSummary.status === 'NOT_COMPLIANT' ? `/lab/calibration?equipment=${detail.equipment.id}` : `/lab/tests?equipment=${detail.equipment.id}`}
+          related={[
+            ...(detail.test_count > 0 ? [{ label: `${detail.test_count} related tests`, href: `/lab/tests?equipment=${detail.equipment.id}` }] : []),
+            ...detail.documents.slice(0, 3).map((document) => ({ label: document.code, href: `/lab/documents/${document.id}`, meta: document.type })),
+            ...(maintenanceSummary.count > 0 ? [{ label: 'Maintenance history', href: `/lab/equipment/${detail.equipment.id}/maintenance` }] : []),
+          ]}
+        />
 
         <section aria-labelledby="sec-fields" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 id="sec-fields" class="text-base font-semibold text-slate-900">Registry Data</h2>

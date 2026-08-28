@@ -21,6 +21,10 @@ const sourceChecks = [
   ['task cancellation escape', 'src/components/TaskLifecycle.tsx', 'Keep task'],
   ['deletion confirmation', 'src/components/ReviewDeleteRequestDialog.tsx', 'Confirm deletion'],
   ['AI advisory label', 'src/components/AiReviewPanel.tsx', 'Human review required'],
+  ['AI decision boundary', 'src/components/AiReviewPanel.tsx', 'User decision'],
+  ['AI session recovery', 'src/components/AiReviewPanel.tsx', 'Your session has expired'],
+  ['AI permission recovery', 'src/components/AiReviewPanel.tsx', 'You do not have access to use this advisory feature'],
+  ['AI result disclosure', 'src/components/AiReviewPanel.tsx', 'View AI suggestion details'],
 ];
 
 for (const [name, file, text] of sourceChecks) {

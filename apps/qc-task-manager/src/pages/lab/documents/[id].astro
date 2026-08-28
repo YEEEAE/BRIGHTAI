@@ -28,6 +28,7 @@ import {
 } from '../../../lib/permissions';
 import type { LabDocumentStatus, LabDocumentType, Role } from '../../../lib/types';
 import { DOCUMENT_TYPE_BADGE_CLS as TYPE_BADGE_CLS } from '../../../components/ui/labBadgeClasses';
+import WorkflowContext from '../../../components/ui/WorkflowContext.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -132,6 +133,17 @@ const isAuthorOrOwner = detail
         </header>
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/documents/${detail.document.id}`} />
+
+        <WorkflowContext
+          stage={detail.document.status === 'DRAFT' && !detail.currentVersion ? 'Draft — content required' : STATUS_LABELS[detail.document.status]}
+          stageTone={detail.document.status === 'APPROVED' ? 'success' : detail.document.status === 'IN_REVIEW' ? 'pending' : detail.document.status === 'ARCHIVED' || detail.document.status === 'SUPERSEDED' ? 'blocked' : 'info'}
+          owner={fmt(detail.document.owner_name)}
+          nextRole={detail.document.status === 'DRAFT' ? 'Document owner' : detail.document.status === 'IN_REVIEW' ? 'Reviewer, then manager / administrator' : detail.document.status === 'APPROVED' ? 'Document users' : 'Records owner'}
+          blocker={!detail.currentVersion ? 'Add content before submitting this document for review.' : detail.document.status === 'IN_REVIEW' && isAuthorOrOwner ? 'Self-review and self-approval are not allowed.' : undefined}
+          nextAction={detail.document.status === 'DRAFT' && canEdit ? (detail.currentVersion ? 'Edit document' : 'Add content') : detail.document.status === 'IN_REVIEW' && canReview ? 'Review document' : detail.document.status === 'APPROVED' && canAssignAck ? 'Assign acknowledgements' : undefined}
+          nextActionHref={detail.document.status === 'DRAFT' && canEdit ? `/lab/documents/${detail.document.id}/edit` : detail.document.status === 'IN_REVIEW' && canReview ? `/lab/documents/${detail.document.id}` : detail.document.status === 'APPROVED' && canAssignAck && detail.currentVersion ? `/lab/acknowledgements/assign?version=${detail.currentVersion.id}` : undefined}
+          related={detail.equipmentLinks.slice(0, 4).map((equipment) => ({ label: equipment.code, href: `/lab/equipment/${equipment.id}`, meta: equipment.name }))}
+        />
 
         {/* ── Workflow Action Panel ── */}
         {detail.document.status === 'DRAFT' && (
