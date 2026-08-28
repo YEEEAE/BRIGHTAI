@@ -2,21 +2,48 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getUserById } from '../../lib/auth';
 import { parseReportFilters } from '../../lib/reporting/filters';
-import { listDrilldownTasks, type DrilldownKpi } from '../../lib/reporting/queries';
+import { DRILLDOWN_KPIS, listDrilldownTasks, type DrilldownKpi } from '../../lib/reporting/queries';
 import { resolveReportScope } from '../../lib/reporting/scope';
 import { formatDueDate, priorityLabel, statusLabel } from '../../lib/format';
+import { TASK_STATUSES } from '../../lib/task-policy';
+import type { TaskStatus } from '../../lib/types';
 
 const user = Astro.locals.user!;
 const actor = getUserById(user.userId);
 if (!actor) return Astro.redirect('/login');
 
-const filters = parseReportFilters(Astro.url.searchParams);
-const allowedKpis: DrilldownKpi[] = ['total', 'completion_rate', 'sla_compliance', 'overdue', 'on_hold', 'critical_findings', 'open_capa', 'evidence_compliance', 'average_resolution'];
 const requestedKpi = Astro.url.searchParams.get('kpi') as DrilldownKpi | null;
-const kpi: DrilldownKpi = requestedKpi && allowedKpis.includes(requestedKpi) ? requestedKpi : 'total';
+if (!requestedKpi || !DRILLDOWN_KPIS.includes(requestedKpi)) {
+  return new Response('Invalid dashboard drill-down.', { status: 400 });
+}
+const kpi = requestedKpi;
+const reportParams = new URLSearchParams(Astro.url.searchParams);
+reportParams.delete('kpi');
+const rawTaskStatus = reportParams.get('task_status');
+reportParams.delete('task_status');
+const rawOverdueFilter = reportParams.get('overdue_filter');
+reportParams.delete('overdue_filter');
+if (rawTaskStatus && !TASK_STATUSES.includes(rawTaskStatus as TaskStatus)) {
+  return new Response('Invalid task status filter.', { status: 400 });
+}
+if (rawOverdueFilter && rawOverdueFilter !== '1') {
+  return new Response('Invalid overdue filter.', { status: 400 });
+}
+const filters = parseReportFilters(reportParams);
 const scope = resolveReportScope({ id: actor.id, role: actor.role, department: actor.department }, filters);
-const tasks = listDrilldownTasks(filters, scope, kpi, null, 500);
-const label = kpi.replaceAll('_', ' ');
+const tasks = listDrilldownTasks(filters, scope, kpi, null, 500, {
+  taskStatus: rawTaskStatus as TaskStatus | null,
+  overdueOnly: rawOverdueFilter === '1',
+});
+const KPI_LABELS: Record<DrilldownKpi, string> = {
+  total: 'All', not_started: 'Not started', in_progress: 'In progress', on_hold: 'On hold', completed: 'Completed',
+  completion_rate: 'Completed', overdue: 'Overdue', urgent_open: 'Urgent open', completed_without_evidence: 'Completed without evidence',
+  average_resolution: 'Resolved', sla_compliance: 'SLA compliant', sla_started: 'SLA tracked', sla_at_risk: 'SLA at risk',
+  sla_critical: 'SLA critical', sla_breached: 'SLA breached', critical_findings: 'Critical finding', open_capa: 'Open CAPA',
+  evidence_compliance: 'Completed with evidence',
+};
+const label = KPI_LABELS[kpi];
+const reportsQuery = reportParams.toString();
 ---
 
 <BaseLayout title="KPI drill-down">
@@ -26,7 +53,7 @@ const label = kpi.replaceAll('_', ' ');
       <h1 class="mt-2 text-2xl font-semibold capitalize text-slate-900">{label} tasks</h1>
       <p class="mt-1 text-sm text-slate-600">{tasks.length} matching task{tasks.length === 1 ? '' : 's'} in your authorized scope.</p>
     </div>
-    <a href={`/reports?${Astro.url.searchParams.toString()}`} class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open reports</a>
+    <a href={reportsQuery ? `/reports?${reportsQuery}` : '/reports'} class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open reports</a>
   </header>
 
   <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm" aria-label="Matching tasks">

@@ -25,7 +25,20 @@ export interface DrilldownTask {
   sla_status: string;
 }
 
-export type DrilldownKpi = 'total' | 'completion_rate' | 'sla_compliance' | 'overdue' | 'on_hold' | 'critical_findings' | 'open_capa' | 'evidence_compliance' | 'average_resolution';
+export const DRILLDOWN_KPIS = [
+  'total', 'not_started', 'in_progress', 'on_hold', 'completed',
+  'completion_rate', 'overdue', 'urgent_open', 'completed_without_evidence',
+  'average_resolution', 'sla_compliance', 'sla_started', 'sla_at_risk',
+  'sla_critical', 'sla_breached', 'critical_findings', 'open_capa',
+  'evidence_compliance',
+] as const;
+
+export type DrilldownKpi = (typeof DRILLDOWN_KPIS)[number];
+
+export interface DrilldownContextFilters {
+  taskStatus: 'not_started' | 'in_progress' | 'on_hold' | 'completed' | 'cancelled' | null;
+  overdueOnly: boolean;
+}
 
 interface QueryPart { sql: string; params: (string | number)[] }
 
@@ -46,10 +59,19 @@ export function buildReportWhere(filters: ReportFilters, scope: ResolvedDataScop
 
 function metricPredicate(kpi: DrilldownKpi): QueryPart | null {
   switch (kpi) {
+    case 'not_started': return { sql: "t.status = 'not_started'", params: [] };
+    case 'in_progress': return { sql: "t.status = 'in_progress'", params: [] };
+    case 'completed':
     case 'completion_rate': return { sql: "t.status = 'completed'", params: [] };
-    case 'sla_compliance': return { sql: "t.sla_started_at IS NOT NULL AND t.sla_status <> 'BREACHED'", params: [] };
     case 'overdue': return { sql: "t.due_date IS NOT NULL AND date(t.due_date) < date('now', 'localtime') AND t.status NOT IN ('completed', 'cancelled')", params: [] };
     case 'on_hold': return { sql: "t.status = 'on_hold'", params: [] };
+    case 'urgent_open': return { sql: "t.priority = 'urgent' AND t.status NOT IN ('completed', 'cancelled')", params: [] };
+    case 'completed_without_evidence': return { sql: "t.status = 'completed' AND NOT EXISTS (SELECT 1 FROM task_attachments a WHERE a.task_id = t.id AND a.is_evidence = 1)", params: [] };
+    case 'sla_compliance': return { sql: "t.status = 'completed' AND t.sla_started_at IS NOT NULL AND t.sla_percent_used <= 100", params: [] };
+    case 'sla_started': return { sql: 't.sla_started_at IS NOT NULL', params: [] };
+    case 'sla_at_risk': return { sql: "t.sla_status = 'AT_RISK'", params: [] };
+    case 'sla_critical': return { sql: "t.sla_status = 'CRITICAL'", params: [] };
+    case 'sla_breached': return { sql: "t.sla_status = 'BREACHED'", params: [] };
     case 'critical_findings': return { sql: "EXISTS (SELECT 1 FROM qc_findings f WHERE f.task_id = t.id AND (f.severity = 'critical' OR f.classification = 'critical') AND f.status <> 'CLOSED')", params: [] };
     case 'open_capa': return { sql: "EXISTS (SELECT 1 FROM qc_capa c JOIN qc_findings f ON f.id = c.finding_id WHERE f.task_id = t.id AND c.status <> 'CLOSED')", params: [] };
     case 'evidence_compliance': return { sql: "t.status = 'completed' AND EXISTS (SELECT 1 FROM task_attachments a WHERE a.task_id = t.id AND a.is_evidence = 1)", params: [] };
@@ -81,11 +103,22 @@ export function getKpiSnapshot(filters: ReportFilters, scope: ResolvedDataScope)
   };
 }
 
-export function listDrilldownTasks(filters: ReportFilters, scope: ResolvedDataScope, kpi: DrilldownKpi, cursor: number | null = null, requestedLimit = 50): DrilldownTask[] {
+export function listDrilldownTasks(
+  filters: ReportFilters,
+  scope: ResolvedDataScope,
+  kpi: DrilldownKpi,
+  cursor: number | null = null,
+  requestedLimit = 50,
+  context: DrilldownContextFilters = { taskStatus: null, overdueOnly: false },
+): DrilldownTask[] {
   const limit = Math.min(Math.max(Math.trunc(requestedLimit), 1), 500);
   const predicate = metricPredicate(kpi);
   const extra: QueryPart[] = [];
   if (predicate) extra.push(predicate);
+  if (context.taskStatus) extra.push({ sql: 't.status = ?', params: [context.taskStatus] });
+  if (context.overdueOnly) {
+    extra.push({ sql: "t.due_date IS NOT NULL AND date(t.due_date) < date('now', 'localtime') AND t.status NOT IN ('completed', 'cancelled')", params: [] });
+  }
   if (cursor !== null && Number.isInteger(cursor) && cursor > 0) extra.push({ sql: 't.id < ?', params: [cursor] });
   const where = buildReportWhere(filters, scope, extra);
   return getDb().prepare(`

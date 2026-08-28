@@ -8,6 +8,7 @@ import { runMigrations } from '../src/lib/migrations.ts';
 import { parseReportFilters } from '../src/lib/reporting/filters.ts';
 import { resolveReportScope } from '../src/lib/reporting/scope.ts';
 import { buildKpiHref } from '../src/lib/reporting/drilldown.ts';
+import { NO_FILTERS } from '../src/lib/dashboard.ts';
 import { REPORT_CATALOG } from '../src/lib/reporting/catalog.ts';
 import { rowsToCsv } from '../src/lib/reporting/writers/csv.ts';
 import { authorizeReport } from '../src/lib/reporting/authorization.ts';
@@ -52,10 +53,16 @@ try {
   });
   assert.deepEqual(resolveReportScope({ id: 2, role: 'manager', department: 'QA' }, filters).kind, 'organization');
   assert.equal(
-    buildKpiHref('sla_breached', new URLSearchParams({ from: '2026-08-01', department: 'QC' })),
-    '/dashboard/drilldown?from=2026-08-01&department=QC&sla_status=BREACHED&dashboard=1',
+    buildKpiHref('sla_breached', { ...NO_FILTERS, from: '2026-08-01', department: 'QC' }),
+    '/dashboard/drilldown?from=2026-08-01&department=QC&kpi=sla_breached',
   );
-  assert.equal(buildKpiHref('overdue', new URLSearchParams()), '/dashboard/drilldown?overdue=1&dashboard=1');
+  assert.equal(buildKpiHref('overdue', NO_FILTERS), '/dashboard/drilldown?kpi=overdue');
+  assert.equal(
+    buildKpiHref('total', { ...NO_FILTERS, range: 'today', from: '2026-08-12', to: '2026-08-12', assignee: 42, status: 'in_progress', overdue_only: true }),
+    '/dashboard/drilldown?from=2026-08-12&to=2026-08-12&employee=42&task_status=in_progress&overdue_filter=1&kpi=total',
+    'dashboard presets and aliases are translated to validated drill-down parameters',
+  );
+  assert.equal(buildKpiHref('completed_without_evidence', NO_FILTERS), '/dashboard/drilldown?kpi=completed_without_evidence');
   assert.deepEqual(Object.keys(REPORT_CATALOG), [
     'monthly-qc', 'sla', 'findings', 'capa', 'employee-performance', 'audit-trail', 'evidence-compliance', 'overdue',
     // Laboratory reports (§13 — same pipeline, rendered by the same writers)

@@ -1,0 +1,72 @@
+---
+// Decorative, app-wide video atmosphere. The source is intentionally local so
+// it remains compatible with the application's strict same-origin CSP.
+---
+
+<div class="qc-system-background" aria-hidden="true">
+  <video
+    class="qc-system-background__video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    poster="/media/qc-system-background-poster.jpg"
+    tabindex="-1"
+    disablepictureinpicture
+  >
+    <source src="/media/qc-system-background.mp4" type="video/mp4" />
+  </video>
+  <div class="qc-system-background__scrim"></div>
+</div>
+
+<style is:global>
+  .qc-system-background {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: #e2e8f0 url('/media/qc-system-background-poster.jpg') center / cover no-repeat;
+  }
+
+  .qc-system-background__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.45;
+    filter: contrast(1.06) saturate(0.85);
+    transform: scale(1.01);
+  }
+
+  .qc-system-background__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(248 250 252 / 0.62) 0%, rgb(248 250 252 / 0.72) 100%),
+      radial-gradient(circle at 50% 20%, rgb(255 255 255 / 0.2), transparent 58%);
+  }
+
+  .qc-app-layer {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .qc-system-background__video {
+      display: none;
+    }
+  }
+
+  @media print {
+    .qc-system-background {
+      display: none !important;
+    }
+
+    .qc-app-layer {
+      min-height: 0;
+    }
+  }
+</style>

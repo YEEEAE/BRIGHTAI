@@ -23,7 +23,7 @@ import { describeAction } from '../lib/taskDetails';
 import * as dash from '../lib/dashboard';
 import { getLabDashboardData, LAB_DASHBOARD_DRILLDOWNS, type LabDashboardData } from '../lib/lab/dashboard';
 import { buildKpiHref, type DashboardKpiKey } from '../lib/reporting/drilldown';
-import { emptyReportFilters, parseReportFilters } from '../lib/reporting/filters';
+import { emptyReportFilters } from '../lib/reporting/filters';
 import { FINDING_CLASSIFICATIONS, RISK_LEVELS } from '../lib/task-policy';
 import { SLA_STATUSES } from '../lib/sla';
 import { getUserById } from '../lib/auth';
@@ -105,13 +105,18 @@ try {
 
 const assignees = dash.listActiveUsers();
 const supervisors = assignees.filter((person) => person.role === 'supervisor');
-let reportFilters = emptyReportFilters;
-try {
-  reportFilters = parseReportFilters(Astro.url.searchParams);
-} catch {
-  // The legacy dashboard parser owns the flash message; keep the page usable
-  // when a report-only filter is invalid.
-}
+const reportFilters = {
+  ...emptyReportFilters,
+  from: filters.from,
+  to: filters.to,
+  department: filters.department,
+  employee: filters.assignee,
+  supervisor: filters.supervisor,
+  priority: filters.priority,
+  risk: filters.risk,
+  finding_classification: filters.finding_classification,
+  sla_status: filters.sla_status,
+};
 const reportActor = getUserById(user.userId);
 if (reportActor) {
   try {
@@ -120,31 +125,24 @@ if (reportActor) {
     console.error('[dashboard] reporting KPI query failure', err);
   }
 }
-const kpiParams = new URLSearchParams(Astro.url.searchParams);
-const kpiHref = (key: DashboardKpiKey) => buildKpiHref(key, kpiParams);
-const urgentHref = () => {
-  const params = new URLSearchParams(Astro.url.searchParams);
-  params.set('priority', 'urgent');
-  params.set('dashboard', '1');
-  return `/dashboard/drilldown?${params.toString()}`;
-};
+const kpiHref = (key: DashboardKpiKey) => buildKpiHref(key, filters);
 const kpiCards = kpis
   ? [
       { id: 'total', key: 'total' as DashboardKpiKey, label: 'Total Tasks', value: kpis.total, tone: 'border-slate-200 bg-white text-slate-900', icon: '📋' },
-      { id: 'not_started', key: 'total' as DashboardKpiKey, label: 'Not Started', value: kpis.not_started, tone: 'border-red-200 bg-red-50/60 text-red-700', icon: '🔴' },
-      { id: 'in_progress', key: 'total' as DashboardKpiKey, label: 'In Progress', value: kpis.in_progress, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🟡' },
+      { id: 'not_started', key: 'not_started' as DashboardKpiKey, label: 'Not Started', value: kpis.not_started, tone: 'border-red-200 bg-red-50/60 text-red-700', icon: '🔴' },
+      { id: 'in_progress', key: 'in_progress' as DashboardKpiKey, label: 'In Progress', value: kpis.in_progress, tone: 'border-amber-200 bg-amber-50/70 text-amber-700', icon: '🟡' },
       { id: 'on_hold', key: 'on_hold' as DashboardKpiKey, label: 'On Hold', value: kpis.on_hold, tone: 'border-orange-200 bg-orange-50/70 text-orange-700', icon: '🟠' },
-      { id: 'completed', key: 'completion_rate' as DashboardKpiKey, label: 'Completed', value: kpis.completed, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '🟢' },
+      { id: 'completed', key: 'completed' as DashboardKpiKey, label: 'Completed', value: kpis.completed, tone: 'border-green-200 bg-green-50/70 text-green-700', icon: '🟢' },
       { id: 'overdue', key: 'overdue' as DashboardKpiKey, label: 'Overdue', value: kpis.overdue, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '⚠️' },
-      { id: 'urgent_open', key: 'total' as DashboardKpiKey, label: 'Urgent Open', value: kpis.urgent_open, tone: 'border-red-300 bg-red-100 text-red-800', icon: '🚨' },
-      { id: 'completed_without_evidence', key: 'evidence_compliance' as DashboardKpiKey, label: 'Completed Without Evidence', value: kpis.completed_without_evidence, tone: 'border-slate-200 bg-white text-slate-900', icon: '📎' },
+      { id: 'urgent_open', key: 'urgent_open' as DashboardKpiKey, label: 'Urgent Open', value: kpis.urgent_open, tone: 'border-red-300 bg-red-100 text-red-800', icon: '🚨' },
+      { id: 'completed_without_evidence', key: 'completed_without_evidence' as DashboardKpiKey, label: 'Completed Without Evidence', value: kpis.completed_without_evidence, tone: 'border-slate-200 bg-white text-slate-900', icon: '📎' },
       { id: 'avg_completion_time', key: 'average_resolution' as DashboardKpiKey, label: 'Average Completion Time', value: formatDuration(kpis.avg_completion_seconds), tone: 'border-slate-200 bg-white text-slate-900', icon: '⏱️' },
       { id: 'sla_compliance', key: 'sla_compliance' as DashboardKpiKey, label: 'SLA Compliance', value: formatPercent(kpis.sla_compliance_percent), tone: 'border-emerald-200 bg-emerald-50 text-emerald-700', icon: '✅' },
-      { id: 'sla_at_risk', key: 'sla_compliance' as DashboardKpiKey, label: 'At Risk', value: kpis.sla_at_risk, tone: 'border-amber-200 bg-amber-50 text-amber-700', icon: '⚠️' },
-      { id: 'sla_critical', key: 'critical_findings' as DashboardKpiKey, label: 'Critical', value: kpis.sla_critical, tone: 'border-orange-200 bg-orange-50 text-orange-700', icon: '🔥' },
+      { id: 'sla_at_risk', key: 'sla_at_risk' as DashboardKpiKey, label: 'At Risk', value: kpis.sla_at_risk, tone: 'border-amber-200 bg-amber-50 text-amber-700', icon: '⚠️' },
+      { id: 'sla_critical', key: 'sla_critical' as DashboardKpiKey, label: 'Critical', value: kpis.sla_critical, tone: 'border-orange-200 bg-orange-50 text-orange-700', icon: '🔥' },
       { id: 'sla_breached', key: 'sla_breached' as DashboardKpiKey, label: 'SLA Breached', value: kpis.sla_breached, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '🚨' },
       { id: 'avg_resolution', key: 'average_resolution' as DashboardKpiKey, label: 'Average Resolution', value: formatDuration(kpis.avg_completion_seconds), tone: 'border-slate-200 bg-white text-slate-900', icon: '⏱️' },
-      { id: 'avg_sla_consumption', key: 'sla_compliance' as DashboardKpiKey, label: 'Average SLA Consumption', value: formatPercent(kpis.avg_sla_consumption_percent), tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '📊' },
+      { id: 'avg_sla_consumption', key: 'sla_started' as DashboardKpiKey, label: 'Average SLA Consumption', value: formatPercent(kpis.avg_sla_consumption_percent), tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '📊' },
       ...(reportKpis ? [
         { id: 'completion_rate', key: 'completion_rate' as DashboardKpiKey, label: 'Completion Rate', value: formatPercent(reportKpis.completion_rate), tone: 'border-green-200 bg-green-50 text-green-700', icon: '📈' },
         { id: 'critical_findings', key: 'critical_findings' as DashboardKpiKey, label: 'Critical Findings', value: reportKpis.critical_findings, tone: 'border-red-200 bg-red-50 text-red-700', icon: '🔎' },
@@ -158,8 +156,8 @@ const actionCards = kpis
   ? [
       { id: 'action-overdue', label: 'Overdue tasks', value: kpis.overdue, href: kpiHref('overdue'), tone: 'border-rose-200 bg-rose-50 text-rose-800', description: 'Due before today' },
       { id: 'action-blocked', label: 'Blocked tasks', value: kpis.on_hold, href: kpiHref('on_hold'), tone: 'border-amber-200 bg-amber-50 text-amber-800', description: 'Tasks on hold' },
-      { id: 'action-evidence', label: 'Missing evidence', value: kpis.completed_without_evidence, href: kpiHref('evidence_compliance'), tone: 'border-violet-200 bg-violet-50 text-violet-800', description: 'Completed without proof' },
-      { id: 'action-urgent', label: 'Urgent open', value: kpis.urgent_open, href: urgentHref(), tone: 'border-red-300 bg-red-100 text-red-900', description: 'Open urgent work' },
+      { id: 'action-evidence', label: 'Missing evidence', value: kpis.completed_without_evidence, href: kpiHref('completed_without_evidence'), tone: 'border-violet-200 bg-violet-50 text-violet-800', description: 'Completed without proof' },
+      { id: 'action-urgent', label: 'Urgent open', value: kpis.urgent_open, href: kpiHref('urgent_open'), tone: 'border-red-300 bg-red-100 text-red-900', description: 'Open urgent work' },
     ]
   : [];
 

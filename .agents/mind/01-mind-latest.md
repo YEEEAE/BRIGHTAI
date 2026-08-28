@@ -2740,3 +2740,79 @@ skills_ready: 7---
 ### ملاحظات / مشاكل مفتوحة
 - لم يحدث commit أو push أو deploy.
 - تغييرات المستخدم السابقة في ملف العقل وملفات `audit/website-builder-SEO/` بقيت كما هي.
+## [2026-08-28] — QC-SYSTEM-VIDEO-BACKGROUND-001: اعتماد الفيديو المورّد خلفية موحّدة لكل صفحات QC
+
+### تم التنفيذ
+- نقلت `4.mp4` إلى أصول تطبيق QC باسم ثابت، وأنشأت poster خفيفًا من نفس الفيديو لضمان ظهور المشهد قبل التشغيل وعند تقليل الحركة.
+- أنشأت `SystemBackground.astro` كطبقة ثابتة تغطي كامل الـviewport، مع فيديو H.264 محلي autoplay/muted/loop وscrim فاتح يحافظ على وضوح واجهة النظام.
+- ربطت الخلفية مركزيًا بـ`BaseLayout` و`PrintLayout`، فشملت كل الصفحات المرئية؛ وتبقى مخرجات الطباعة الفعلية بيضاء ونظيفة عبر `@media print`.
+- أضفت fallback ثابتًا لـ`prefers-reduced-motion`، وحافظت على CSP الحالي عبر مصادر same-origin فقط بدون dependency أو JavaScript جديد.
+- حسّنت صفحات login/home/404 بألواح زجاجية فاتحة بعد فحص بصري فعلي، حتى تبقى القراءة والتفاعل واضحين فوق الفيديو.
+- وسّعت حارس UI ليثبت ربط الخلفية في الـlayoutين ووجود الفيديو والـposter وعقدي reduced-motion والطباعة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/public/media/qc-system-background.mp4`
+- `apps/qc-task-manager/public/media/qc-system-background-poster.jpg`
+- `apps/qc-task-manager/src/components/SystemBackground.astro`
+- `apps/qc-task-manager/src/layouts/{BaseLayout,PrintLayout}.astro`
+- `apps/qc-task-manager/src/pages/{login,index,404}.astro`
+- `apps/qc-task-manager/scripts/test-ui-consistency.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### الأرقام
+- الفيديو: H.264، 1560×1100، 9.33 ثوانٍ، 441KB؛ poster: 19KB.
+- الصفحات المصدرية المرئية: 75 صفحة تستخدم أحد الـlayoutين؛ صفحة `/admin` المتبقية redirect فقط ولا تنتج واجهة.
+
+### التحقق
+- `pnpm run test:ui-consistency` ✅ — 201/201.
+- `pnpm run typecheck` ✅ — 0 errors، 0 warnings، 27 hints قديمة.
+- `NODE_ENV=production pnpm run build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `pnpm run test:responsive-e2e-contract` ✅.
+- `pnpm run test:request-security` ✅ — 56/56 وCSP بقي سليمًا.
+- فحص Playwright بصري فعلي على 360×800 و1440×1000 ✅ — تغطية كاملة، بدون حجب للنص أو الحقول.
+- `git -c core.fsmonitor=false diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** الفيديو المورّد صار خلفية فعلية متجاوبة لكل واجهات QC من مصدر مركزي، مع وضوح أعلى للصفحات المستقلة واحترام الوصول والطباعة والأمان.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد ضمن نطاق الخلفية. لم يحدث commit أو push أو deploy.
+- محاولة أرشفة القسم الحي لتجاوزه 500 سطر حُضّرت حرفيًا، لكن بيئة الملفات رفضت الكتابة إلى `.agents/mind` عبر أوامر النقل؛ أبقيت السجلات بلا حذف أو فقدان.
+## [2026-08-28] — QC-PILOT-READINESS-001: تدقيق ما قبل الإطلاق وإصلاح روابط لوحة التحكم والاستجابة
+
+### تم التنفيذ
+- أصلحت روابط بطاقات Dashboard وTier 1 التي كانت ترسل معاملات غير مدعومة إلى صفحة drill-down وتؤدي إلى انتقال خاطئ أو استجابة خطأ؛ الروابط الآن تستخدم عقدًا موحدًا ومعاملات متحققة.
+- صححت ربط كل KPI باستعلامه الدقيق بدل سقوط عدة بطاقات على `total`، بما يشمل Not Started وIn Progress وUrgent Open وSLA At Risk وSLA Critical.
+- عكست استعلام `Completed Without Evidence` ليعرض المهام المكتملة بلا دليل فعلًا، بدل عرض المكتملة التي لديها دليل.
+- حافظت على فلاتر الموظف والحالة والتأخير عند فتح التفاصيل، وأضفت رفضًا واضحًا لقيم KPI غير المعروفة بدل تنفيذ استعلام مبهم.
+- أضفت اختبارات نقر حية لبطاقات Overdue وBlocked وMissing Evidence وUrgent Open، مع مطابقة عدد السجلات ومنع ظهور سجل الدليل المعاكس.
+- اكتشفت أثناء القبول تمدد جدول Recent Tests في صفحة المختبر، وأصلحته بجدول ثابت متجاوب يعرض الأعمدة الأساسية على الجوال ويكشف البقية تدريجيًا على الشاشات الأوسع.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/reporting/drilldown.ts`
+- `apps/qc-task-manager/src/lib/reporting/queries.ts`
+- `apps/qc-task-manager/src/pages/dashboard.astro`
+- `apps/qc-task-manager/src/pages/dashboard/drilldown.astro`
+- `apps/qc-task-manager/src/pages/lab/index.astro`
+- `apps/qc-task-manager/scripts/e2e-dashboard.mjs`
+- `apps/qc-task-manager/scripts/test-dashboard-reports.mjs`
+
+### التحقق
+- `pnpm test` ✅ — 65/65 حزمة اختبار canonical نجحت.
+- `pnpm run typecheck` ✅ — 0 errors و0 warnings؛ بقيت 27 hints قديمة غير حاجبة.
+- `pnpm run test:dashboard-reports` ✅.
+- `pnpm run test:ui-consistency` ✅ — 201/201.
+- `pnpm run build` ✅.
+- `pnpm run e2e:responsive` ✅ — 648/648 على 360 و768 و1024 و1440.
+- `pnpm e2e:acceptance` ✅ — 30/30 حزمة قبول، تشمل 28 workflow مع مرحلتي restart persistence؛ Dashboard 63/63 والتقارير 912/912 والوصول الآلي بلا مخالفات axe مسجلة.
+- `git diff --check` ✅.
+- جرى تجاوز إعادة أخيرة مكررة لـ typecheck/dashboard-reports/ui-consistency بطلب المستخدم بعد نجاحها سابقًا ونجاح دورة القبول النهائية بعدها.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** أُصلحت أسباب الانتقال الخاطئ من بطاقات اللوحة، صارت الأرقام والتفاصيل متطابقة مع الفلاتر، وانغلقت فجوة تمدد صفحة المختبر على الجوال. النسخة المحلية اجتازت دورة القبول الكاملة وجاهزة للإطلاق التجريبي الإداري.
+
+### ملاحظات / مشاكل مفتوحة
+- تحذيرا Vite عن خلط الاستيراد الثابت والديناميكي، و27 Astro hints قديمة، غير حاجبة ولا تنتج أخطاء build أو فشلًا وظيفيًا.
+- لم يحدث commit أو push أو deploy.

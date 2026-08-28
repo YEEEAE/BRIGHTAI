@@ -7,6 +7,8 @@
 // `inlineStylesheets: 'never'` in astro.config ensures the <style> below is
 // emitted as a same-origin stylesheet, so the strict CSP (style-src 'self')
 // in src/middleware.ts is not violated.
+import SystemBackground from '../components/SystemBackground.astro';
+
 interface Props {
   title: string;
   /** Screen-only "back to details" target (hidden when printed). */
@@ -35,13 +37,15 @@ const tsText = iso(printTimestamp);
     <title>{title}</title>
     <style is:global>
       * { box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; background: #ffffff; color: #111827; }
+      html, body { margin: 0; padding: 0; background: #e2e8f0; color: #111827; }
       body { font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif; font-size: 12px; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
       .print-page {
         max-width: 210mm;
         margin: 0 auto;
         padding: 14mm;
+        background: #ffffff;
+        box-shadow: 0 20px 60px rgb(15 23 42 / 0.16);
       }
       .print-landscape { page: landscape; max-width: none; }
       .print-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111827; padding-bottom: 10px; margin-bottom: 14px; }
@@ -99,8 +103,9 @@ const tsText = iso(printTimestamp);
       @page landscape { size: A4 landscape; margin: 10mm; }
       @media print {
         .no-print { display: none !important; }
+        html, body { background: #ffffff; }
         body { font-size: 11px; }
-        .print-page { max-width: none; padding: 0; }
+        .print-page { max-width: none; padding: 0; box-shadow: none; }
         .print-section { break-inside: avoid; }
         table { break-inside: auto; }
         thead { display: table-header-group; }
@@ -110,26 +115,29 @@ const tsText = iso(printTimestamp);
     </style>
   </head>
   <body>
-    <div class="no-print">
-      {backHref ? <a href={backHref}>← Back to test details</a> : <span>Controlled print view</span>}
-    </div>
-    <main class={`print-page ${orientation === 'landscape' ? 'print-landscape' : ''}`}>
-      <slot />
-      <section class="print-control-metadata" aria-label="Controlled print metadata">
-        {qrSvg && <div class="print-control-qr"><Fragment set:html={qrSvg} /></div>}
-        <dl>
-          <div><dt>Record type</dt><dd>{recordType}</dd></div>
-          <div><dt>Record ID</dt><dd dir="ltr">{recordId}</dd></div>
-          <div><dt>Authorization</dt><dd>{authorization}</dd></div>
-          <div><dt>Signature / e-signature</dt><dd>{signature}</dd></div>
-          <div><dt>Reference / source</dt><dd>{sourceReference}</dd></div>
-          <div><dt>Viewer context</dt><dd>{Astro.locals.user ? `${Astro.locals.user.fullName} · ${Astro.locals.user.role}` : 'Authenticated user'}</dd></div>
-        </dl>
-      </section>
-      <div class="print-footer">
-        <span>Generated {tsText}</span>
-        <span>Controlled laboratory record — printed copy</span>
+    <SystemBackground />
+    <div class="qc-app-layer">
+      <div class="no-print">
+        {backHref ? <a href={backHref}>← Back to test details</a> : <span>Controlled print view</span>}
       </div>
-    </main>
+      <main class={`print-page ${orientation === 'landscape' ? 'print-landscape' : ''}`}>
+        <slot />
+        <section class="print-control-metadata" aria-label="Controlled print metadata">
+          {qrSvg && <div class="print-control-qr"><Fragment set:html={qrSvg} /></div>}
+          <dl>
+            <div><dt>Record type</dt><dd>{recordType}</dd></div>
+            <div><dt>Record ID</dt><dd dir="ltr">{recordId}</dd></div>
+            <div><dt>Authorization</dt><dd>{authorization}</dd></div>
+            <div><dt>Signature / e-signature</dt><dd>{signature}</dd></div>
+            <div><dt>Reference / source</dt><dd>{sourceReference}</dd></div>
+            <div><dt>Viewer context</dt><dd>{Astro.locals.user ? `${Astro.locals.user.fullName} · ${Astro.locals.user.role}` : 'Authenticated user'}</dd></div>
+          </dl>
+        </section>
+        <div class="print-footer">
+          <span>Generated {tsText}</span>
+          <span>Controlled laboratory record — printed copy</span>
+        </div>
+      </main>
+    </div>
   </body>
 </html>

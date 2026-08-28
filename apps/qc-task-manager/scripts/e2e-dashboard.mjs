@@ -504,7 +504,36 @@ try {
     ok(firstTitle !== 'DASH done+evidence', `1. task with evidence excluded from without-evidence table`);
   }
 
+  // Decision cards must open the exact population represented by their count.
+  // This guards against both navigation-parameter 500s and semantic inversions
+  // such as "missing evidence" opening tasks that already have evidence.
+  console.log('\n── Scenario 1b: action-card drill-downs match their counters ──');
+  for (const [cardId, expectedCount, expectedKpi] of [
+    ['action-overdue', expect.overdue, 'overdue'],
+    ['action-blocked', expect.on_hold, 'on_hold'],
+    ['action-evidence', expect.completed_without_evidence, 'completed_without_evidence'],
+    ['action-urgent', expect.urgent_open, 'urgent_open'],
+  ]) {
+    await mgrPage.goto(`${BASE}/dashboard`);
+    const card = mgrPage.locator(`[data-action-card="${cardId}"]`);
+    await card.click();
+    await mgrPage.waitForURL((url) => url.pathname === '/dashboard/drilldown', { timeout: 15_000 });
+    ok(new URL(mgrPage.url()).searchParams.get('kpi') === expectedKpi, `1b. ${cardId} opens ${expectedKpi}`);
+    await mgrPage.waitForSelector('section[aria-label="Matching tasks"]', { timeout: 15_000 });
+    eq(await mgrPage.locator('section[aria-label="Matching tasks"] tbody tr').count(), expectedCount, `1b. ${cardId} row count matches card`);
+  }
+  const evidenceDrilldownText = await mgrPage.locator('section[aria-label="Matching tasks"]').innerText();
+  ok(evidenceDrilldownText.includes('DASH urgent open'), '1b. final urgent drill-down contains the urgent fixture');
+
+  await mgrPage.goto(`${BASE}/dashboard`);
+  await mgrPage.locator('[data-action-card="action-evidence"]').click();
+  await mgrPage.waitForURL((url) => url.pathname === '/dashboard/drilldown', { timeout: 15_000 });
+  const missingEvidenceText = await mgrPage.locator('section[aria-label="Matching tasks"]').innerText();
+  ok(missingEvidenceText.includes('DASH done-no-evidence'), '1b. missing-evidence drill-down includes completed work without proof');
+  ok(!missingEvidenceText.includes('DASH done+evidence'), '1b. missing-evidence drill-down excludes work that has proof');
+
   // Latest activity
+  await mgrPage.goto(`${BASE}/dashboard`);
   const activityRows = mgrPage.locator('section[aria-label="Latest activity"] tbody tr');
   const expectedActivity = all(`SELECT a.id FROM task_activity_log a JOIN tasks t ON t.id = a.task_id ORDER BY a.created_at DESC, a.id DESC LIMIT 20`);
   eq(await activityRows.count(), expectedActivity.length, '1. activity feed row count matches SQL');
@@ -521,6 +550,9 @@ try {
   const ipKpis = await readKpis(mgrPage);
   eq(ipKpis.total, expectedKpis(F_STATUS_IP).total, '2b. status=in_progress total matches SQL');
   ok(ipKpis.total === ipKpis.in_progress, '2b. status=in_progress → total == in_progress');
+  await mgrPage.locator('[data-kpi="total"]').click();
+  await mgrPage.waitForURL((url) => url.pathname === '/dashboard/drilldown', { timeout: 15_000 });
+  eq(await mgrPage.locator('section[aria-label="Matching tasks"] tbody tr').count(), ipKpis.total, '2b. total drill-down preserves the dashboard status filter');
 
   // overdue-only: every widget scoped to overdue tasks.
   await mgrPage.goto(`${BASE}/dashboard?overdue=1`);

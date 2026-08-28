@@ -70,6 +70,23 @@ for (const rel of [
 }
 ok(read('src/styles/global.css').includes('--color-text-primary'), 'semantic token source exists');
 
+// The approved visual background is owned by both document shells so every
+// rendered system page gets it from a single component. Print media explicitly
+// hides the decorative layer to preserve controlled A4 output.
+{
+  const background = read('src/components/SystemBackground.astro');
+  for (const layout of ['src/layouts/BaseLayout.astro', 'src/layouts/PrintLayout.astro']) {
+    const src = read(layout);
+    ok(src.includes("components/SystemBackground.astro"), `system background imported: ${layout}`);
+    ok(src.includes('<SystemBackground />'), `system background rendered: ${layout}`);
+  }
+  ok(background.includes('/media/qc-system-background.mp4'), 'system background uses the approved local video');
+  ok(background.includes('prefers-reduced-motion: reduce'), 'system background respects reduced motion');
+  ok(background.includes('@media print'), 'system background stays out of controlled print output');
+  ok(statSync(join(APP_DIR, 'public/media/qc-system-background.mp4')).size > 0, 'system background video exists');
+  ok(statSync(join(APP_DIR, 'public/media/qc-system-background-poster.jpg')).size > 0, 'system background poster exists');
+}
+
 // Navigation uses disclosure semantics: native links stay native and the
 // disclosure panel follows the normal Tab order. A partial ARIA menu model
 // would require arrow-key navigation and is intentionally not allowed here.

@@ -4,6 +4,7 @@
 // (success/error) without each page importing it manually.
 import Navbar from '../components/Navbar';
 import FlashNotice from '../components/FlashNotice.astro';
+import SystemBackground from '../components/SystemBackground.astro';
 import { countNotifications, listPersistedNotifications } from '../lib/notifications';
 // Global a11y styles (skip link + prefers-reduced-motion). Bundled by Astro
 // as a same-origin stylesheet so the strict CSP in src/middleware.ts stays
@@ -40,20 +41,23 @@ const recentNotifications = navUser
     <script src="/scripts/ux-telemetry.js" data-enabled={!hideNav && !!Astro.locals.user} data-route={Astro.url.pathname} defer></script>
   </head>
   <body class="min-h-screen bg-surface-page text-content antialiased">
-    <!-- Skip link — first focusable element on every page (WCAG 2.4.1).
-         Hidden until focused; styling lives in src/styles/global.css. -->
-    <a class="skip-link" href="#main">Skip to content</a>
-    {!hideNav && (
-      <Navbar
-        client:load
-        user={Astro.locals.user}
-        notificationCount={notificationCount}
-        recentNotifications={recentNotifications}
-      />
-    )}
-    <main id="main" tabindex="-1" class="mx-auto min-w-0 w-full max-w-6xl overflow-x-hidden px-4 py-8 focus:outline-none">
-      <FlashNotice />
-      <slot />
-    </main>
+    <SystemBackground />
+    <div class="qc-app-layer">
+      <!-- Skip link — first focusable element on every page (WCAG 2.4.1).
+           Hidden until focused; styling lives in src/styles/global.css. -->
+      <a class="skip-link" href="#main">Skip to content</a>
+      {!hideNav && (
+        <Navbar
+          client:load
+          user={Astro.locals.user}
+          notificationCount={notificationCount}
+          recentNotifications={recentNotifications}
+        />
+      )}
+      <main id="main" tabindex="-1" class="mx-auto min-w-0 w-full max-w-6xl overflow-x-hidden px-4 py-8 focus:outline-none">
+        <FlashNotice />
+        <slot />
+      </main>
+    </div>
   </body>
 </html>

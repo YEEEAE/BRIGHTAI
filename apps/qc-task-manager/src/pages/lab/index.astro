@@ -294,38 +294,38 @@ const calibrationLabel: Record<string, string> = {
         hint="Numbers and lists appear here as soon as the first tests, equipment, and controlled documents are recorded. Nothing was migrated or seeded — data starts from zero."
       />
     ) : (
-      <div class="grid min-w-0 gap-6 lg:grid-cols-2">
+      <div class="grid w-full min-w-0 max-w-full gap-6 lg:grid-cols-2">
         {recentTests.length > 0 && (
-          <section aria-label="Recent Tests" class="min-w-0 max-w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
+          <section aria-label="Recent Tests" class="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
             <h2 class="border-b border-slate-100 px-4 py-3 text-base font-semibold text-slate-900">Recent Tests</h2>
-            <div class="min-w-0 max-w-full overflow-x-auto">
-              <table class="min-w-full divide-y divide-slate-100 text-sm">
+            <div class="w-full min-w-0 max-w-full overflow-x-auto overscroll-x-contain">
+              <table class="w-full table-fixed divide-y divide-slate-100 text-sm">
                 <thead class="text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr>
                     <th scope="col" class="px-4 py-2 font-semibold">Test ID</th>
-                    <th scope="col" class="px-4 py-2 font-semibold">Type</th>
-                    <th scope="col" class="px-4 py-2 font-semibold">Product</th>
-                    <th scope="col" class="px-4 py-2 font-semibold">Lot</th>
-                    <th scope="col" class="px-4 py-2 font-semibold">Equipment</th>
-                    <th scope="col" class="px-4 py-2 font-semibold">Tester</th>
+                    <th scope="col" class="hidden px-4 py-2 font-semibold md:table-cell">Type</th>
+                    <th scope="col" class="hidden px-4 py-2 font-semibold sm:table-cell">Product</th>
+                    <th scope="col" class="hidden px-4 py-2 font-semibold lg:table-cell">Lot</th>
+                    <th scope="col" class="hidden px-4 py-2 font-semibold lg:table-cell">Equipment</th>
+                    <th scope="col" class="hidden px-4 py-2 font-semibold xl:table-cell">Tester</th>
                     <th scope="col" class="px-4 py-2 font-semibold">Result</th>
                     <th scope="col" class="px-4 py-2 font-semibold">Status</th>
-                    <th scope="col" class="px-4 py-2 font-semibold">Updated</th>
+                    <th scope="col" class="hidden px-4 py-2 font-semibold md:table-cell">Updated</th>
                     <th scope="col" class="px-4 py-2 font-semibold"><span class="sr-only">View</span></th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                   {recentTests.map((t) => (
                     <tr>
-                      <td class="px-4 py-2 font-medium text-slate-900">{t.test_number}</td>
-                      <td class="px-4 py-2 uppercase text-slate-600">{t.test_type}</td>
-                      <td class="px-4 py-2 text-slate-700">{t.product_name ?? '—'}</td>
-                      <td class="px-4 py-2 text-slate-700">{t.lot_number ?? '—'}</td>
-                      <td class="px-4 py-2 text-slate-700">{t.equipment_code ?? '—'}</td>
-                      <td class="px-4 py-2 text-slate-700">{t.tester_name ?? '—'}</td>
+                      <td class="break-words px-4 py-2 font-medium text-slate-900">{t.test_number}</td>
+                      <td class="hidden px-4 py-2 uppercase text-slate-600 md:table-cell">{t.test_type}</td>
+                      <td class="hidden break-words px-4 py-2 text-slate-700 sm:table-cell">{t.product_name ?? '—'}</td>
+                      <td class="hidden break-words px-4 py-2 text-slate-700 lg:table-cell">{t.lot_number ?? '—'}</td>
+                      <td class="hidden break-words px-4 py-2 text-slate-700 lg:table-cell">{t.equipment_code ?? '—'}</td>
+                      <td class="hidden break-words px-4 py-2 text-slate-700 xl:table-cell">{t.tester_name ?? '—'}</td>
                       <td class={`px-4 py-2 font-semibold ${t.final_result ? resultTone[t.final_result] ?? 'text-slate-500' : 'text-slate-500'}`}>{t.final_result ?? '—'}</td>
-                      <td class="px-4 py-2 text-slate-700">{t.status}</td>
-                      <td class="px-4 py-2 text-slate-500">{t.updated_at}</td>
+                      <td class="break-words px-4 py-2 text-slate-700">{t.status}</td>
+                      <td class="hidden break-words px-4 py-2 text-slate-500 md:table-cell">{t.updated_at}</td>
                       <td class="px-4 py-2">
                         {routeEnabled('/lab/tests/[id]') && t.id
                           ? <a href={`/lab/tests/${t.id}`} class="font-medium text-brand-600 hover:underline">View</a>
