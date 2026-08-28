@@ -13,11 +13,11 @@ const user = Astro.locals.user!;
 const templates = listTemplates();
 
 // Lifecycle tone per the central design system: Active=success, Draft=neutral,
-// Archived=terminal neutral-strong (never danger — archiving is not a failure).
-const LIFECYCLE_TONE: Record<string, 'neutral' | 'success' | 'neutral-strong'> = {
+// Archived=blocked (never danger — archiving is not a failure).
+const LIFECYCLE_TONE: Record<string, 'neutral' | 'success' | 'blocked'> = {
   DRAFT: 'neutral',
   ACTIVE: 'success',
-  ARCHIVED: 'neutral-strong',
+  ARCHIVED: 'blocked',
 };
 
 function formatDate(value: string): string {

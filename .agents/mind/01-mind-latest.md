@@ -1,3 +1,48 @@
+## [2026-08-28] — QC-STATUS-SEMANTICS-001: توحيد دلالات الحالات في QC Task Manager
+
+### تم التنفيذ
+- وحّدت أدوار العرض إلى `neutral`, `info`, `pending`, `warning`, `success`, `danger`, و`blocked` داخل `statusTones.ts`، مع إبقاء aliases قديمة معلنة للتوافق فقط.
+- أضفت adapters مستقلة لـ Tasks وFindings وCAPA وEvidence وLab Tests وDocuments وEquipment وCalibration وMaintenance وRetests وNotifications وAccount وAI، بدون تغيير raw enums أو قواعد المجال.
+- حوّلت `StatusBadge` و`QcStatusBadge` و`LabDocumentStatusBadge` إلى wrappers فوق `StatusPill`؛ خرائط المختبر القديمة صارت تشتق classes من الطبقة المركزية.
+- جعلت fallback للحالات غير المعروفة label مقروءًا بدل عرض raw enum فقط، مع بقاء النص دائمًا حاضرًا والإشارة البصرية decorative.
+- ربطت notification severity بالـsemantic tokens، وأضفت `test:status-semantics` لحراسة adapters، delegation، fallback labels، ومنع raw status colors في wrappers.
+- وثقت inventory كاملًا وقواعد الترحيل والتوافق في `docs/STATUS-SEMANTICS.md` وحدّثت وثائق design-system وmigration.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/ui/statusTones.ts`
+- `apps/qc-task-manager/src/components/ui/{StatusPill,labBadgeClasses,notificationPresentation}.astro` / `.ts`
+- `apps/qc-task-manager/src/components/{StatusBadge,QcStatusBadge,NotificationCard}.astro`
+- `apps/qc-task-manager/src/components/lab/LabDocumentStatusBadge.astro`
+- `apps/qc-task-manager/src/pages/admin/templates/index.astro`
+- `apps/qc-task-manager/scripts/test-status-semantics.mjs`
+- `apps/qc-task-manager/{package.json,scripts/test-manifest.mjs}`
+- `apps/qc-task-manager/docs/{STATUS-SEMANTICS,UI-DESIGN-SYSTEM,DESIGN-SYSTEM-MIGRATION}.md`
+
+### الأرقام
+- أدوار العرض: 8 مسميات قديمة/مختلطة → 7 أدوار semantic canonical.
+- الاختبارات: 62 canonical suites كاملة بدون فشل.
+- typecheck: 0 errors، 0 warnings، 26 hints قديمة.
+
+### القرارات
+- فصل raw domain enums عن presentation semantics؛ السبب الحفاظ على RBAC والـworkflow والـdatabase integrity مع توحيد المعنى البصري.
+- إبقاء compatibility adapters مؤقتًا بدل حذف imports دفعة واحدة؛ السبب ترحيل آمن route-sized ومنع كسر الشاشات القديمة.
+
+### التحقق
+- `pnpm test` ✅ — 62/62 canonical suites.
+- `pnpm typecheck` ✅ — 0 أخطاء، 0 تحذيرات، 26 hints قائمة.
+- `NODE_ENV=production pnpm build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `pnpm test:status-semantics` ✅؛ `test:ui-consistency` ✅؛ `test:badge-contrast` ✅؛ `test:manifest` ✅.
+- اختبارات `test:lab-tests` و`test:lab-documents` و`test:lab-calibration` ✅ — calibration 97/0.
+- `git diff --check` ✅؛ لم يحدث commit أو push.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار عند التطبيق عقد semantic موحّد للحالات مع adapters واضحة وحراسة regression، بدون تعديل قواعد العمل أو الصلاحيات أو بيانات SQLite.
+
+### ملاحظات / مشاكل مفتوحة
+- ما زالت بعض الشاشات الطرفية تستخدم raw status markup أو خرائط محلية خارج wrappers؛ ترحيلها هو المرحلة التالية حسب المخاطر.
+- الفحص اليدوي الكامل لقارئ الشاشة والـprint/ألوان الوضع الداكن يحتاج UAT مستقل؛ الاختبارات المصدرية والتباين الآلي نجحت.
+
 ## [2026-08-28] — QC-DESIGN-SYSTEM-FOUNDATION-001: تأسيس طبقة التوكنز والعقود المشتركة
 
 ### تم التنفيذ

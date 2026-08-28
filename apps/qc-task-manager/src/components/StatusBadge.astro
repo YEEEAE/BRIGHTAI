@@ -2,15 +2,14 @@
 // StatusBadge — reusable status pill (emoji + label) using the app-wide
 // 🔴🟡🟠🟢 scheme from src/lib/format.ts. Use on every task list + details page
 // so the colors never drift between pages.
-import { statusBadgeClass, statusEmoji, statusLabel } from '../lib/format';
+import StatusPill from './ui/StatusPill.astro';
+import { statusAdapters } from './ui/statusTones';
 
 interface Props {
   status: string;
 }
 
 const { status } = Astro.props;
+const presentation = statusAdapters.task(status);
 ---
-<span class={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${statusBadgeClass(status)}`}>
-  <span aria-hidden="true">{statusEmoji(status)}</span>
-  {statusLabel(status)}
-</span>
+<StatusPill tone={presentation.tone} label={presentation.label} dot />

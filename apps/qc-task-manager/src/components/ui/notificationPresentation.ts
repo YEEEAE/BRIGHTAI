@@ -3,6 +3,7 @@
 // /lab/notifications — the two pages previously kept drifted copies of these
 // maps locally. Pure data + pure functions: no DB, no server imports, no
 // permissions imports (the architecture guard enforces that for UI).
+import { humanizeStatusCode, TONE_PILL_CLASSES, type StatusTone } from './statusTones';
 
 /** Decorative per-kind glyph, always aria-hidden next to the visible label. */
 export const NOTIFICATION_KIND_ICON: Record<string, string> = {
@@ -86,11 +87,20 @@ export const NOTIFICATION_KIND_LABEL: Record<string, string> = {
 
 /** Left-border + surface treatment per severity. */
 export const NOTIFICATION_SEVERITY_CARD: Record<string, string> = {
-  danger: 'border-l-red-400 bg-red-50/60',
-  warning: 'border-l-amber-400 bg-amber-50/60',
-  info: 'border-l-sky-400 bg-white',
-  success: 'border-l-emerald-400 bg-emerald-50/60',
+  danger: 'border-l-danger bg-danger-soft',
+  warning: 'border-l-warning bg-warning-soft',
+  info: 'border-l-info bg-info-soft',
+  success: 'border-l-success bg-success-soft',
 };
+
+export const NOTIFICATION_SEVERITY_TONE: Record<string, StatusTone> = {
+  danger: 'danger', warning: 'warning', info: 'info', success: 'success',
+};
+
+export function notificationSeverityPresentation(severity: string) {
+  const tone = NOTIFICATION_SEVERITY_TONE[severity] ?? 'neutral';
+  return { tone, classes: TONE_PILL_CLASSES[tone], label: humanizeStatusCode(severity || 'notification') };
+}
 
 // Section order: danger → warning → info → success.
 const SECTION_ORDER: Record<string, number> = {

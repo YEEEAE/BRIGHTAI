@@ -1,8 +1,7 @@
 ---
-// StatusPill — the one status pill for workflow/result/account statuses
-// (docs/UI-DESIGN-SYSTEM.md §3.3). Text is always rendered; the dot is
-// decorative so status never relies on color alone. Task statuses keep the
-// legacy StatusBadge scheme (documented design-system exception).
+// StatusPill — the one status pill for every visible status presentation.
+// Text is always rendered; the dot is decorative so status never relies on
+// color alone. Domain adapters are resolved before this component is called.
 import { statusPresentation, TONE_PILL_CLASSES, type StatusTone } from './statusTones';
 
 interface Props {

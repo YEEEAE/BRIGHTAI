@@ -101,19 +101,17 @@ family, one accent. Semantics:
 
 | Tone | Soft pill (default) | Border/banner | Means |
 | --- | --- | --- | --- |
-| `neutral` | `bg-slate-100 text-slate-700 ring-slate-200` | `border-slate-200 bg-white` | Draft, informational metadata |
-| `neutral-strong` | `bg-slate-200 text-slate-700 ring-slate-300` | — | Archived, Void, Disabled (terminal but not failed) |
-| `info` | `bg-sky-50 text-sky-700 ring-sky-200` | `border-sky-200 bg-sky-50 text-sky-800` | Submitted, Pending, in-flight states |
-| `progress` | `bg-amber-50 text-amber-700 ring-amber-200` | `border-amber-200 bg-amber-50 text-amber-800` | Under review, needs action soon |
-| `success` | `bg-emerald-50 text-emerald-700 ring-emerald-200` | `border-emerald-200 bg-emerald-50 text-emerald-800` | Approved, Completed, Pass, Active |
-| `warning` | `bg-orange-50 text-orange-700 ring-orange-200` | `border-orange-200 bg-orange-50 text-orange-800` | On hold, Hold, due/overdue risk |
-| `danger` | `bg-red-50 text-red-700 ring-red-200` | `border-red-200 bg-red-50 text-red-800` | Rejected, Fail, Overdue, destructive context |
-| `accent` (superseded) | `bg-violet-50 text-violet-700 ring-violet-200` | — | Superseded versions only |
+| `neutral` | `bg-surface-muted text-content-secondary ring-border` | `border-border bg-surface` | No action or unknown |
+| `info` | `bg-info-soft text-info ring-info-border` | `border-info-border bg-info-soft text-info` | Informational or newly available |
+| `pending` | `bg-warning-soft text-warning ring-warning-border` | `border-warning-border bg-warning-soft text-warning` | Waiting, in progress, verification |
+| `success` | `bg-success-soft text-success ring-success-border` | `border-success-border bg-success-soft text-success` | Accepted, valid, compliant, complete |
+| `warning` | `bg-warning-soft text-warning ring-warning-border` | `border-warning-border bg-warning-soft text-warning` | Attention required |
+| `danger` | `bg-danger-soft text-danger ring-danger-border` | `border-danger-border bg-danger-soft text-danger` | Failed, rejected, overdue, critical |
+| `blocked` | `bg-border text-content-secondary ring-border-strong` | — | Archived, withdrawn, void, cancelled, disabled |
 
-Legacy exception kept deliberately: **task** statuses/priorities keep their existing app-wide
-scheme (`STATUS_BADGE`/`PRIORITY_BADGE` in `src/lib/format.ts`, 🔴🟡🟠🟢 + chart colors in
-`dashboard.ts`). Task screens and lab screens therefore stay internally consistent; do not
-half-migrate one task list to lab tones.
+Task status labels and priority formatting remain domain-owned for compatibility, but visible task
+status badges now delegate to `StatusPill` through the `task` adapter. Chart colors remain a
+separate visualization concern and must not be reused as UI status tokens.
 
 **Status never relies on color alone:** every status pill renders its text label (and status dots
 are always paired with text). Emoji/dots are decorative (`aria-hidden`).
@@ -174,10 +172,10 @@ Placement rules:
 <StatusPill tone="warning" label="Hold" />  <!-- explicit escape hatch -->
 ```
 
-Central map (`src/components/ui/statusTones.ts`) covers workflow statuses (Draft/Submitted/Under
-Review/Approved/Rejected/Void), results (Pass/Fail/Hold), account/backup states (Active/Disabled),
-Overdue/Pending, priorities. Text always visible; dot decorative. Task statuses keep `StatusBadge`
-(§2 legacy exception).
+Central map (`src/components/ui/statusTones.ts`) covers workflow, result, account, evidence,
+equipment, calibration, maintenance, retest, notification, and AI presentation through explicit
+domain adapters. Text is always visible; dots are decorative. `StatusBadge`, `QcStatusBadge`,
+and `LabDocumentStatusBadge` remain compatibility wrappers over this primitive.
 
 ### 3.4 Pagination
 

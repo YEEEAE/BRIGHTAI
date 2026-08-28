@@ -8,7 +8,7 @@ not permission to rewrite stable screens in bulk.
 | Primitive | Owns | Compatibility / domain adapters |
 | --- | --- | --- |
 | `AppButton.astro` | Action hierarchy, focus, disabled/loading states | `LabActionButton.astro` delegates to it |
-| `StatusPill.astro` | Workflow/result/account state presentation | Status badges remain domain adapters while migrating |
+| `StatusPill.astro` | All visible status presentation roles | `StatusBadge`, `QcStatusBadge`, and lab badges remain compatibility adapters |
 | `Banner.astro` | Inline notices and recoverable route messages | `FlashNotice.astro` keeps one-shot transport |
 | `OperationalState.astro` | Empty, error, conflict, and route outcomes | `EmptyState.astro` remains the explicit empty adapter |
 | `PageHeader.astro` | Top-level title hierarchy and action placement | Auth, print, and special detail/error headers |
@@ -21,8 +21,8 @@ not permission to rewrite stable screens in bulk.
 2. High-frequency filter toolbars use `formPresets` and `qc-focus`.
 3. Dashboard, search, admin lists, and task creation adopt `PageHeader`/`AppButton` in
    separate route-sized changes.
-4. Domain badge adapters move to `StatusPill` only when the status vocabulary is equivalent;
-   task legacy status presentation stays behind its documented adapter.
+4. Domain badge adapters move to `StatusPill` when their vocabulary is equivalent; domain
+   adapters in `statusTones.ts` keep different raw enums separate.
 5. Remaining leaf screens migrate when touched for a feature or bug fix.
 
 ## Guardrails

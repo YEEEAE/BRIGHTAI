@@ -74,6 +74,7 @@
     "test:lab-suggest": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-suggest.mjs",
     "test:lab-search": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-search.mjs",
     "test:badge-contrast": "node scripts/verify-badge-contrast.mjs",
+    "test:status-semantics": "node scripts/test-status-semantics.mjs",
     "test:lab-ux-presentation": "node scripts/test-lab-ux-presentation.mjs",
     "test:lab-ux-performance": "node scripts/test-lab-ux-performance.mjs",
     "test": "node scripts/run-full-tests.mjs",

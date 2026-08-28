@@ -1,6 +1,7 @@
 ---
 import type { LabDocumentStatus } from '../../lib/types';
-import { LAB_DOCUMENT_STATUS_LABELS } from '../../lib/lab/documents';
+import StatusPill from '../ui/StatusPill.astro';
+import { statusAdapters } from '../ui/statusTones';
 
 interface Props {
   status: LabDocumentStatus;
@@ -8,17 +9,8 @@ interface Props {
 }
 
 const { status, missingContent = false } = Astro.props;
-const palette: Record<LabDocumentStatus | 'MISSING', string> = {
-  MISSING: 'border-slate-300 bg-white text-slate-700 ring-slate-300',
-  DRAFT: 'border-slate-300 bg-slate-100 text-slate-800 ring-slate-300',
-  IN_REVIEW: 'border-amber-300 bg-amber-50 text-amber-900 ring-amber-300',
-  APPROVED: 'border-emerald-300 bg-emerald-50 text-emerald-900 ring-emerald-300',
-  SUPERSEDED: 'border-violet-300 bg-violet-50 text-violet-900 ring-violet-300',
-  ARCHIVED: 'border-slate-400 bg-slate-200 text-slate-800 ring-slate-400',
-};
-const key = missingContent ? 'MISSING' : status;
-const label = missingContent ? 'Missing Content' : LAB_DOCUMENT_STATUS_LABELS[status];
+const presentation = missingContent
+  ? { tone: 'warning' as const, label: 'Missing Content' }
+  : statusAdapters.document(status);
 ---
-<span class={`inline-flex min-h-7 items-center whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${palette[key]}`} aria-label={`Document status: ${label}`}>
-  {label}
-</span>
+<StatusPill tone={presentation.tone} label={presentation.label} dot />
