@@ -1,3 +1,41 @@
+## [2026-08-28] — QC-AUTH-RECOVERY-001: مسار استرجاع كلمة مرور admin عبر CLI (بدل إلغاء المصادقة)
+
+### تم التنفيذ
+- المستخدم طلب أول الأمر إلغاء اشتراط كلمة المرور في `https://qc-task-manager.onrender.com/login` (دخول باسم `admin` فقط)، ورفضتُ التنفيذ المباشر لأنه إزالة مصادقة على رابط عام لتطبيق فيه e-signature وaudit chain وRBAC، ثم اختار المستخدم بديل «كلمة مرور تعرفها».
+- أضفت سكربت `scripts/reset-user-password.mjs` يعيد تعيين كلمة مرور أي حساب على قاعدة البيانات المنشورة، ويقرأ الكلمة من `QC_NEW_PASSWORD` (مو من argv) حتى ما تدخل shell history أو قائمة العمليات.
+- السكربت يستخدم `resetPassword()` نفسها اللي يستخدمها `/admin/users` — فيتحقق من السياسة (8 أحرف)، يفك قفل brute-force، يكتب صفًا في سلسلة تدقيق المستخدمين، ويعيد رفع `must_change_password = 1`.
+- أضفت أمر `auth:reset-password` في `package.json`.
+- وثّقت المسار في `docs/DEPLOYMENT.md` تحت قسم جديد «Recovering a service nobody can sign in to»، وشرحت ليش `ADMIN_DEFAULT_PASSWORD` ما ينفع لقاعدة بيانات فيها حسابات (يُقرأ فقط لما جدول `users` فارغ).
+- ما كتبتُ أي كلمة مرور داخل الكود أو الوثائق أو العقل — الكلمة المؤقتة أُعطيت للمستخدم في المحادثة فقط.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/scripts/reset-user-password.mjs` (جديد)
+- `apps/qc-task-manager/package.json`
+- `apps/qc-task-manager/docs/DEPLOYMENT.md`
+- `.agents/mind/01-mind-latest.md`
+
+### القرارات
+- **رفض إلغاء كلمة المرور:** الخدمة منشورة على رابط عام، وإلغاء المصادقة يفتح صلاحيات admin كاملة (حذف/موافقات/تصدير) لأي أحد، ويفرّغ التوقيع الإلكتروني وسلسلة التدقيق من معناها، ويكسر 3 حزم اختبار مصادقة قائمة.
+- **إبقاء `must_change_password = 1` بعد الاسترجاع:** الكلمة المؤقتة مرّت عبر قناة محادثة، فلازم تُستبدل من صاحب الحساب في أول دخول.
+- **الكلمة من متغير بيئة مو من argv:** منع تسريبها في history وقائمة العمليات على مضيف مشترك.
+
+### التحقق
+- تشغيل فعلي على قاعدة مؤقتة (`/tmp`) بعد `db:init` ✅ — الهاش الجديد يطابق، `admin123` صار غير صالح، `must_change_password=1`، `failed_login_attempts=0`، `locked_until=null`، وصف `USER_PASSWORD_RESET` مكتوب في `qc_audit_log`.
+- `pnpm run test:auth-password-lifecycle` ✅ — 23/23.
+- `pnpm run test:manifest` ✅ — 65 suite + 28 E2E.
+- `pnpm run test:deployment-contract` ✅ — 22 فحصًا.
+- `node scripts/verify-security-hygiene.mjs` ✅.
+- `pnpm run typecheck` ✅ — 0 errors، 0 warnings، 27 hints قديمة.
+- حذفت ملفات الاختبار المؤقتة من `/tmp` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار فيه مسار استرجاع دخول موثّق ومختبر بدون إضعاف المصادقة، لكنه ما يسري على الخدمة المنشورة إلا بعد commit + push + deploy من المستخدم (وكيل ما يدفع ولا ينشر).
+
+### ملاحظات / مشاكل مفتوحة
+- **قاعدة البيانات المحلية `apps/qc-task-manager/db/qc_tasks.db` فيها checksum drift على migration `011_lab_core_master_data.sql`** — ظهر عند فتحها بالسكربت، وهو خلل سابق مستقل عن هذه المهمة ولم أعالجه. أي أداة تفتح هالقاعدة محليًا بترمي `MigrationError`.
+- لم يحدث commit ولا push ولا deploy.
+
 ## [2026-08-28] — QC-UX-RESEARCH-PROGRAM-001: تجهيز برنامج أبحاث UX تشغيلي حسب الأدوار
 
 ### تم التنفيذ

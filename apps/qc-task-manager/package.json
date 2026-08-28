@@ -17,6 +17,7 @@
     "db:verify": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/db-doctor.mjs",
     "db:seed": "node scripts/init-db.mjs",
     "db:schema:generate": "node scripts/generate-schema-reference.mjs",
+    "auth:reset-password": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/reset-user-password.mjs",
     "db:backup": "node --experimental-strip-types scripts/backup-db.mjs",
     "db:restore": "node --experimental-strip-types scripts/restore-db.mjs",
     "test:migrations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-migrations.mjs",

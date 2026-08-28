@@ -123,6 +123,31 @@ the first boot, sign in as `admin`, open `/admin/users`, and reset the admin
 password immediately. Updating the environment variable later does not update
 an existing account.
 
+### Recovering a service nobody can sign in to
+
+Because the seed password is read only on an empty `users` table, editing
+`ADMIN_DEFAULT_PASSWORD` cannot rescue a running deployment whose admin
+password was lost. Open a Render Shell on the QC service and reset the account
+against the database on the mounted disk:
+
+```bash
+QC_NEW_PASSWORD='<generated-password>' pnpm --dir apps/qc-task-manager auth:reset-password -- --user=admin
+```
+
+The password is passed through the environment, not through argv, so it does
+not land in shell history or the process list. The script reuses the same
+`resetPassword()` path as `/admin/users`: the brute-force lock is cleared, the
+change is appended to the user audit chain, and the account is re-flagged
+`must_change_password`, so the first sign-in lands on `/account/security` and
+the operator-generated password is replaced by the account owner's own.
+
+Generate the temporary password outside source control and treat it as a
+secret; never commit it:
+
+```bash
+openssl rand -base64 18 | tr -d '/+=' | cut -c1-16
+```
+
 ## HTTPS and first deployment
 
 1. Enable Render-managed HTTPS and use the HTTPS service URL or a custom domain
