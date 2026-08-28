@@ -25,7 +25,7 @@ const { notification: n, notificationId } = Astro.props;
 const severityPresentation = notificationSeverityPresentation(n.severity);
 ---
 <div class:list={[
-  'rounded-lg border border-slate-200 border-l-4 p-4 transition hover:shadow-sm',
+  'rounded-lg border border-slate-200 border-l-4 p-4 transition-shadow duration-qc-standard ease-qc-standard hover:shadow-sm',
   NOTIFICATION_SEVERITY_CARD[n.severity] ?? NOTIFICATION_SEVERITY_CARD.info,
   n.isRead ? '' : 'ring-1 ring-sky-200',
 ]}>

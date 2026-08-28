@@ -274,7 +274,7 @@ const calibrationLabel: Record<string, string> = {
           const drilldown = LAB_KPI_DRILLDOWNS[card.id];
           const enabled = labDrilldownEnabled(drilldown);
           return enabled ? (
-            <a href={drilldown.href} title={`Open filtered records — ${drilldown.hint}`} class={`block rounded-xl border p-4 shadow-sm transition hover:shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${card.tone}`}>
+            <a href={drilldown.href} title={`Open filtered records — ${drilldown.hint}`} class={`block rounded-xl border p-4 shadow-sm transition-shadow duration-qc-standard ease-qc-standard hover:shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${card.tone}`}>
               <p class="text-2xl font-semibold" data-lab-kpi={card.id}>{card.value}</p>
               <p class="mt-1 text-xs font-medium">{card.label}</p>
             </a>

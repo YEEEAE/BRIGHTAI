@@ -52,14 +52,14 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
       });
       const data = (await res.json()) as { ok: boolean; error?: string; comment?: CommentItem };
       if (!res.ok || !data.ok || !data.comment) {
-        setError(data.error ?? 'Could not post the comment. Please try again.');
+        setError(data.error ?? 'We couldn’t post the comment. Check the text and try again.');
         return;
       }
       setItems((prev) => [...prev, data.comment as CommentItem]);
       setText('');
       setNotice('Comment posted.');
     } catch {
-      setError('Network error while posting the comment. Check your connection, then try Post comment again.');
+      setError('We couldn’t post the comment because the connection was interrupted. Check your connection and try again.');
     } finally {
       setSubmitting(false);
     }

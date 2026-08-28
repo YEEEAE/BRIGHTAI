@@ -30,7 +30,7 @@ export default function AttachmentUploader({ taskId }: Props) {
   async function upload() {
     if (uploading || !file) return;
     if (file.size > MAX_BYTES) {
-      setError('The file exceeds the 10 MB upload limit.');
+      setError('This file is larger than the 10 MB limit. Choose a smaller file.');
       return;
     }
     setUploading(true);
@@ -45,13 +45,13 @@ export default function AttachmentUploader({ taskId }: Props) {
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? 'Could not upload the file. Check the file and try Upload again.');
+        setError(data.error ?? 'We couldn’t upload the file. Check the file and try again.');
         return;
       }
       setNotice('File uploaded. Refreshing the attachment list…');
       reload();
     } catch {
-      setError('Network error while uploading the file. Check your connection, then try Upload again.');
+      setError('We couldn’t upload the file because the connection was interrupted. Check your connection and try again.');
       setUploading(false);
     }
   }

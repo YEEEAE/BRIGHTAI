@@ -1,3 +1,76 @@
+## [2026-08-28] — QC-UX-WRITING-001: توحيد لغة المنتج والـmicrocopy
+
+### تم التنفيذ
+- أضفت عقد UX Writing موحّدًا يغطي النبرة، قاموس المصطلحات، الأفعال، الأخطاء، الحالات الفارغة، الصلاحيات، AI، التوطين، وإمكانية الوصول.
+- عرّفت المصطلحات التشغيلية الأساسية: Save draft، Submit for review، Approve، Reject، Return for changes، Reopen task، Complete task، Pass/Fail/Hold، وRetest required.
+- حسّنت رسائل `OperationalState` لتشرح الحالة والخطوة التالية بدون لوم المستخدم أو كشف تفاصيل داخلية.
+- حسّنت رسائل أخطاء وإجراءات `TaskLifecycle` و`CommentBox` و`AttachmentUploader` لتوضح ما حدث وما الإجراء التالي، ووضحت تسميات evidence وoverride.
+- وضحت في `AiReviewPanel` أن المخرجات اقتراحات advisory فقط، وأن AI لا يعتمد أو يرفض أو يقرر نتائج QC.
+- وضحت `ReviewDeleteRequestDialog` أن الإجراء هو الموافقة على الحذف الدائم، مع صياغة أوضح لسبب الرفض.
+- أضفت حارس `test:ux-writing` وربطته بالـmanifest، وحدّثت عقد interaction feedback بعد إزالة عبارات recovery القديمة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/UX-WRITING.md`
+- `apps/qc-task-manager/scripts/test-ux-writing.mjs`
+- `apps/qc-task-manager/scripts/test-interaction-feedback.mjs`
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/package.json`
+- `apps/qc-task-manager/src/components/{OperationalState,TaskLifecycle,CommentBox,AttachmentUploader,AiReviewPanel,ReviewDeleteRequestDialog}`
+
+### التحقق
+- `pnpm run test:ux-writing` ✅ — 10/10.
+- `pnpm run test:interaction-feedback` ✅ — 25/25.
+- `pnpm run test:ui-consistency` ✅ — 181/181.
+- `pnpm run test:manifest` ✅ — 64 canonical suites و28 canonical E2E.
+- `pnpm run typecheck` ✅ — 0 errors، 0 warnings، 26 hints قديمة.
+- `NODE_ENV=production pnpm run build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** توحّدت لغة العمليات والرسائل الحساسة للمستخدم في الأسطح المشتركة، مع توثيق قاموس قابل للتوسع وحراسة تمنع رجوع المصطلحات القديمة، بدون تغيير RBAC أو workflows أو business rules أو API contracts.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم UAT بشري للتأكد من أن المصطلحات الإنجليزية الحالية تطابق لغة فرق QC، وفحص VoiceOver على الأجهزة الفعلية حسب السجلات السابقة.
+- توجد تغييرات مستخدم سابقة في الشجرة وتم الحفاظ عليها؛ لم يحدث commit أو push.
+
+## [2026-08-28] — QC-MOTION-DIGITAL-ART-001: توحيد لغة الحركة التشغيلية في QC Task Manager
+
+### تم التنفيذ
+- أزلت حركة رفع البطاقات (`hover:-translate-y`) من dashboard وLab Management، وأبقيت feedback بصريًا عبر shadow transition صريح.
+- استبدلت الانتقالات العامة بخصائص محددة مع `duration-qc-standard` و`ease-qc-standard` في بطاقات dashboard وLab وdocuments وnotifications.
+- أزلت `transition-all` من نقاط الرسوم التفاعلية؛ تغيّر نصف قطر الدائرة صار فوريًا بدل تحريك خاصية غير مطلوبة تشغيليًا.
+- أضفت حراسة مصدرية للحركة تمنع `transition-all` وgeneric transitions وhover translate/scale داخل التطبيق، مع استمرار حراسة reduced motion العامة.
+- وثّقت motion language: 120ms للحركة السريعة، 180ms للحركة القياسية، حد تشغيلي 240ms، ورفض page entrance/parallax/loops/KPI animation والـ decorative art في الشاشات الحرجة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/pages/dashboard.astro`
+- `apps/qc-task-manager/src/pages/lab/{index,management}.astro`
+- `apps/qc-task-manager/src/pages/lab/documents/index.astro`
+- `apps/qc-task-manager/src/components/{DashboardCharts,LabDashboardCharts}.tsx`
+- `apps/qc-task-manager/src/components/NotificationCard.astro`
+- `apps/qc-task-manager/src/components/lab/LabFailRateChart.tsx`
+- `apps/qc-task-manager/scripts/test-lab-ux-performance.mjs`
+- `apps/qc-task-manager/docs/UI-DESIGN-SYSTEM.md`
+
+### التحقق
+- `pnpm run test:lab-ux-performance` ✅ — 9/9.
+- `pnpm run test:ui-consistency` ✅ — 181/181، و`test:manifest` ✅ — 63 canonical و28 E2E.
+- `pnpm run test:badge-contrast` ✅ — 13/13، و`test:responsive-e2e-contract` ✅.
+- `pnpm test` ✅ — 63 canonical suites بدون فشل.
+- `NODE_ENV=production pnpm build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `pnpm run e2e:acceptance` ✅ — 30/30 suite، 3047+ assertion، وresponsive 648/0 وa11y 86/0.
+- `git -c core.fsmonitor=false diff --check` ✅، وmotion inventory بعد التعديل بلا violations مستهدفة.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صارت الحركة في واجهة QC مقصودة ومحدودة لدعم فهم الحالة، بدون حركة زخرفية أو تغيير في RBAC أو workflows أو database أو business rules أو dependencies.
+
+### ملاحظات / مشاكل مفتوحة
+- ما زال UAT البشري على أجهزة حقيقية وVoiceOver مطلوبًا؛ الاختبارات الآلية لا تستبدله.
+- مهارة `motion-and-zoom` المطلوبة غير متاحة في جلسة التنفيذ؛ تم تطبيق المهارات المتاحة ذات الصلة.
+- لم يحدث commit أو push أو deploy.
+
 ## [2026-08-28] — QC-INTERACTION-FEEDBACK-001: توحيد حالات التفاعل والتغذية الراجعة
 
 ### تم التنفيذ

@@ -78,9 +78,9 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
           onClick={() => open('approve')}
           data-review-action="approve"
           className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
-          title="Delete the task and approve this request"
+          title="Approve permanent deletion of this task"
         >
-          Approve
+          Approve deletion
         </button>
         <button
           type="button"
@@ -134,7 +134,7 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
                 maxLength={MAX_NOTE}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="Why was this request rejected?"
+                placeholder="Explain why this request is being rejected (optional)."
                 className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
               />
               <p className="mt-1 text-right text-xs text-slate-400">{note.length}/{MAX_NOTE}</p>

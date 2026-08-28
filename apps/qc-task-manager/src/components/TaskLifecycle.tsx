@@ -64,18 +64,18 @@ function extOf(name: string): string {
 
 /** Client-side evidence check — a friendly first line; the server is final. */
 async function evidenceError(file: File): Promise<string | null> {
-  if (file.size === 0) return 'The file is empty.';
-  if (file.size > MAX_BYTES) return 'The file exceeds the 10 MB upload limit.';
+  if (file.size === 0) return 'This file is empty. Choose a different file.';
+  if (file.size > MAX_BYTES) return 'This file is larger than the 10 MB limit. Choose a smaller file.';
   const ext = extOf(file.name);
   if (!EVIDENCE_EXTS.includes(ext)) {
-    return `File type ".${ext || 'unknown'}" is not allowed for evidence. Allowed: ${HINT}.`;
+    return `This file type is not allowed for evidence. Use one of these types: ${HINT}.`;
   }
   const sig = SIGS[ext];
   if (sig) {
     const head = new Uint8Array(await file.slice(0, sig.length).arrayBuffer());
     for (let i = 0; i < sig.length; i++) {
       if (head[i] !== sig[i]) {
-        return `The file's content does not match a ".${ext}" file — upload a valid file.`;
+        return `This file’s content does not match its .${ext} extension. Choose a valid file.`;
       }
     }
   }
@@ -252,13 +252,13 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
       const res = await fetch(`/api/tasks/${taskId}/close`, { method: 'POST', body: form });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? 'Could not complete the task.');
+        setError(data.error ?? 'We couldn’t complete the task. Check the details and try again.');
         setSubmitting(false);
         return;
       }
       reload();
     } catch {
-      setError('Network error while completing the task.');
+      setError('We couldn’t complete the task because the connection was interrupted. Check your connection and try again.');
       setSubmitting(false);
     }
   }
@@ -266,7 +266,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
   async function submitCancel() {
     if (cancelSubmitting) return;
     if (!cancelReason.trim()) {
-      setCancelError('A cancellation reason is required.');
+      setCancelError('Add a cancellation reason before cancelling the task.');
       return;
     }
     setCancelSubmitting(true);
@@ -279,13 +279,13 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setCancelError(data.error ?? 'Could not cancel the task.');
+        setCancelError(data.error ?? 'We couldn’t cancel the task. Check the reason and try again.');
         setCancelSubmitting(false);
         return;
       }
       reload();
     } catch {
-      setCancelError('Network error while cancelling the task.');
+      setCancelError('We couldn’t cancel the task because the connection was interrupted. Check your connection and try again.');
       setCancelSubmitting(false);
     }
   }
@@ -301,13 +301,13 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
       const res = await fetch(`/api/tasks/${taskId}/reopen`, { method: 'POST' });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setReopenError(data.error ?? 'Could not reopen the task.');
+        setReopenError(data.error ?? 'We couldn’t reopen the task. Check the current status and try again.');
         setReopening(false);
         return;
       }
       reload();
     } catch {
-      setReopenError('Network error while reopening the task.');
+      setReopenError('We couldn’t reopen the task because the connection was interrupted. Check your connection and try again.');
       setReopening(false);
     }
   }
@@ -354,7 +354,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
             }}
             className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
           >
-            ✅ Complete task
+            Complete task
           </button>
         )}
         {canCancel && active && (
@@ -521,7 +521,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                                     return next;
                                   });
                                 }}
-                                aria-label={`Remove ${f.name}`}
+                            aria-label={`Remove evidence file ${f.name}`}
                                 className="rounded-md px-1 text-slate-400 hover:text-red-600"
                               >
                                 ✕
@@ -560,7 +560,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                   {missingRequired.length > 0 && canOverrideEvidence && (
                     <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3">
                       <label className={`${labelCls} text-amber-900`} htmlFor="evidence-override-reason">
-                        Manager/admin override reason
+                        Override reason
                       </label>
                       <input
                         id="evidence-override-reason"
@@ -568,7 +568,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                         maxLength={500}
                         value={evidenceOverrideReason}
                         onChange={(e) => setEvidenceOverrideReason(e.target.value)}
-                        placeholder="Explain why the missing required evidence is waived."
+                        placeholder="Explain why the required evidence is unavailable."
                         className={`${inputCls} mt-1`}
                       />
                       <p className="mt-1 text-xs text-amber-800">Required to complete without: {missingRequired.map((r) => r.label).join(', ')}.</p>
@@ -589,7 +589,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                       }}
                       className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                     />
-                    Skip evidence upload <span className="text-xs text-slate-500">(recorded in the activity log)</span>
+                    Skip evidence upload <span className="text-xs text-slate-500">(this choice is recorded)</span>
                   </label>
                 </div>
               )}
@@ -621,8 +621,8 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                   <>
                     {incompleteChecklist > 0 && (
                       <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-                        <p>{incompleteChecklist} checklist item(s) remain incomplete.</p>
-                        {canOverrideChecklist ? <label className={`${labelCls} mt-2`}>Manager/admin override reason<input value={checklistOverrideReason} onChange={(e) => setChecklistOverrideReason(e.target.value)} maxLength={500} className={`${inputCls} mt-1`} required /></label> : <p className="mt-1">Complete the checklist before confirming.</p>}
+                          <p>{incompleteChecklist} checklist item(s) are still incomplete.</p>
+                        {canOverrideChecklist ? <label className={`${labelCls} mt-2`}>Override reason<input value={checklistOverrideReason} onChange={(e) => setChecklistOverrideReason(e.target.value)} maxLength={500} className={`${inputCls} mt-1`} required /></label> : <p className="mt-1">Complete the checklist before confirming.</p>}
                       </div>
                     )}
                   </>
@@ -631,7 +631,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                 <div>
                   <h3 className="text-sm font-semibold text-slate-900">Step 3 — Confirm</h3>
                   <p className="mt-1 text-xs text-slate-500">
-                    Everything is saved in a single transaction. This cannot be undone (only an admin/manager may reopen).
+                    This action saves the task, evidence, and comment together. It cannot be undone from the edit form; a manager or administrator can reopen the task.
                   </p>
                   <dl className="mt-3 space-y-2 rounded-md border border-slate-200 bg-slate-50 p-4 text-sm">
                     <div className="flex justify-between gap-3">
@@ -698,7 +698,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                       if (step === 0 && !canGoNext) {
                         setInvalid((prev) => [
                           ...prev,
-                          skipEvidence ? '' : 'Add at least one evidence file or choose to skip.',
+                          skipEvidence ? '' : 'Add at least one evidence file or choose Skip evidence upload.',
                         ]);
                         return;
                       }

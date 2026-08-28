@@ -420,7 +420,7 @@ const labGroups: LabGroup[] = lab
       {/* ───────────── KPI cards ───────────── */}
       <section aria-label="Key metrics" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {kpiCards.map((card) => (
-          <a data-kpi={card.id} href={kpiHref(card.key)} class={`rounded-xl border p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-500 ${card.tone}`} aria-label={`${card.label}: ${card.value}. Open matching tasks`}>
+          <a data-kpi={card.id} href={kpiHref(card.key)} class={`rounded-xl border p-4 shadow-sm transition-shadow duration-qc-standard ease-qc-standard hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${card.tone}`} aria-label={`${card.label}: ${card.value}. Open matching tasks`}>
             <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide"><span aria-hidden="true">{card.icon}</span> {card.label}</div>
             <div class="mt-2 text-3xl font-semibold tabular-nums">{card.value}</div>
             <div class="mt-2 text-[11px] font-medium opacity-70">Open drill-down ↗</div>
@@ -472,7 +472,7 @@ const labGroups: LabGroup[] = lab
                     <a
                       href={labHref(card.id)}
                       data-lab-kpi={card.id}
-                      class={`rounded-xl border p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-500 ${card.tone}`}
+                      class={`rounded-xl border p-4 shadow-sm transition-shadow duration-qc-standard ease-qc-standard hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${card.tone}`}
                       aria-label={`${group.title} — ${card.label}: ${card.value}. Open the matching laboratory register`}
                     >
                       <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide"><span aria-hidden="true">{card.icon}</span> {card.label}</div>

@@ -234,7 +234,6 @@ function LabLineChart({ data }: { data: LabWeekPoint[] }) {
               fill="#fff"
               stroke="#6366f1"
               strokeWidth="2.5"
-              className="transition-all duration-150"
               tabIndex={0}
             >
               <title>{`${p.label}: ${p.count} tests created`}</title>

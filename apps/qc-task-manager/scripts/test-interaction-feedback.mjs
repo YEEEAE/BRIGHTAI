@@ -31,8 +31,8 @@ for (const relative of [
 }
 
 const recoveryCopy = [
-  ['CommentBox.tsx', 'try Post comment again'],
-  ['AttachmentUploader.tsx', 'try Upload again'],
+  ['CommentBox.tsx', 'try again'],
+  ['AttachmentUploader.tsx', 'try again'],
   ['AiReviewPanel.tsx', 'try Run AI review again'],
   ['MarkReadButton.tsx', 'try Mark as read again'],
   ['MarkAllReadButton.tsx', 'try Mark all as read again'],

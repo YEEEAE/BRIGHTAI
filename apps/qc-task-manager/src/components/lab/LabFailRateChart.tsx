@@ -97,7 +97,6 @@ export default function LabFailRateChart({ points, granularity }: Props) {
                 fill="#fff"
                 stroke="#ef4444"
                 strokeWidth="2.5"
-                className="transition-all duration-150"
                 tabIndex={0}
               >
                 <title>{`${p.label}: ${p.failRate}% FAIL (${p.fail} of ${p.total} decided tests, VOID excluded)`}</title>

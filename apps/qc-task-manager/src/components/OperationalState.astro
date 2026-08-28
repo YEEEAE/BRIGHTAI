@@ -3,14 +3,14 @@
 interface Props { state: 'no-records' | 'no-results' | 'forbidden' | 'system-error' | 'conflict' | 'stale-record' | 'success' | 'warning'; title?: string; detail?: string; actionHref?: string; actionLabel?: string; }
 const { state, title, detail, actionHref, actionLabel } = Astro.props;
 const copy = {
-  'no-records': ['No records yet', 'Create the first record to get started.', 'Create record'],
-  'no-results': ['No search results', 'Try a broader search or clear the filters.', 'Clear filters'],
-  forbidden: ['Permission denied', 'Ask an administrator for access or return to your home page.', 'Go to home'],
-  'system-error': ['System error', 'We could not complete this request. Try again or contact an administrator.', 'Try again'],
-  conflict: ['Conflict', 'This record changed before you saved it. Review the current record and try again.', 'Review record'],
-  'stale-record': ['Stale record', 'The page is out of date. Reload it before making another change.', 'Reload'],
-  success: ['Success', 'Your change was saved successfully.', 'Continue'],
-  warning: ['Warning', 'Review the highlighted issue before continuing.', 'Review issue'],
+  'no-records': ['No records yet', 'Create the first record to get started.', 'Create first record'],
+  'no-results': ['No search results', 'No records match these filters. Broaden your search or clear the filters.', 'Clear filters'],
+  forbidden: ['Access needed', 'You need the required access to view this page. Return to your home page or ask an administrator for help.', 'Go to home'],
+  'system-error': ['We couldn’t complete that', 'A temporary problem prevented this request. Try again or contact an administrator if it continues.', 'Try again'],
+  conflict: ['This record changed', 'This record changed before you saved it. Review the latest record, then try again.', 'Review record'],
+  'stale-record': ['This page is out of date', 'Reload the page before making another change.', 'Reload'],
+  success: ['Change saved', 'Your change was saved. You can continue working.', 'Continue'],
+  warning: ['Review needed', 'Review the highlighted issue before continuing.', 'Review issue'],
 } as const;
 const [defaultTitle, defaultDetail, defaultAction] = copy[state];
 ---
@@ -18,5 +18,5 @@ const [defaultTitle, defaultDetail, defaultAction] = copy[state];
   <h2 class="text-base font-semibold text-slate-900">{title ?? defaultTitle}</h2>
   <p class="mt-1 text-sm text-slate-600">{detail ?? defaultDetail}</p>
   {actionHref && <a href={actionHref} class="mt-4 inline-flex min-h-11 items-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">{actionLabel ?? defaultAction}</a>}
-  {!actionHref && <p class="mt-4 text-sm font-medium text-slate-700">Available next action: {defaultAction}.</p>}
+  {!actionHref && <p class="mt-4 text-sm font-medium text-slate-700">Next step: {defaultAction}.</p>}
 </section>

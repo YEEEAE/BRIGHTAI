@@ -544,7 +544,6 @@ function LineChart({ data }: { data: WeekPoint[] }) {
               fill="#fff"
               stroke="#22c55e"
               strokeWidth="2.5"
-              className="transition-all duration-150"
               tabIndex={0}
             >
               <title>{`${p.label}: ${p.count} completed`}</title>
