@@ -34,7 +34,7 @@
 - [✅] Prompt 12 — Lab Management Dashboard
 - [✅] Prompt 13 — Forms + Sample Productivity
 - [✅] Prompt 14 — Change Request Withdraw + Notification Reliability
-- [☐] Prompt 15 — Reports UX + Print Quality
+- [✅] Prompt 15 — Reports UX + Print Quality
 - [☐] Prompt 16 — Observability + Error States
 - [☐] Prompt 17 — Visual Regression + Responsive
 - [☐] Prompt 18 — Performance

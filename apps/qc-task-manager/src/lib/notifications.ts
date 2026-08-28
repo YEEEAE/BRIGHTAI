@@ -61,6 +61,23 @@ export type NotificationKind =
   | 'lab_change_review_rejected';
 
 export type NotificationSeverity = 'danger' | 'warning' | 'info' | 'success';
+export type NotificationFilter = 'all' | 'unread' | 'tasks' | 'tests' | 'documents' | 'change-requests' | 'calibration-equipment';
+
+const NOTIFICATION_FILTERS: readonly NotificationFilter[] = ['all', 'unread', 'tasks', 'tests', 'documents', 'change-requests', 'calibration-equipment'];
+
+export function parseNotificationFilter(value: string | null): NotificationFilter {
+  return NOTIFICATION_FILTERS.includes(value as NotificationFilter) ? value as NotificationFilter : 'all';
+}
+
+export function notificationMatchesFilter(notification: Pick<AppNotification, 'kind' | 'isRead'>, filter: NotificationFilter): boolean {
+  if (filter === 'all') return true;
+  if (filter === 'unread') return notification.isRead !== true;
+  if (filter === 'tasks') return !notification.kind.startsWith('lab_');
+  if (filter === 'tests') return notification.kind.startsWith('lab_test_') || notification.kind === 'lab_retest_update' || notification.kind === 'lab_repeat_failures';
+  if (filter === 'documents') return notification.kind.startsWith('lab_document_');
+  if (filter === 'change-requests') return notification.kind.startsWith('lab_change_review_');
+  return notification.kind === 'lab_calibration_due' || notification.kind === 'lab_calibration_overdue' || notification.kind === 'lab_maintenance_event';
+}
 
 export interface AppNotification {
   /** Stable unique key for list rendering. */
@@ -93,7 +110,7 @@ const MAX_NOTIFICATIONS = 50;
  * to the actor (spec: "notification_created" must be recorded). The recipient's
  * name is resolved for a human-readable message ("notified Sara: …").
  */
-export function createNotification(params: {
+type NotificationParams = {
   userId: number;
   taskId: number | null;
   type: NotificationKind;
@@ -108,7 +125,9 @@ export function createNotification(params: {
    * would all fall back to the notifications page.
    */
   href?: string;
-}): boolean {
+};
+
+function writeNotification(params: NotificationParams, strict: boolean): boolean {
   try {
     // Spec: "do not notify inactive users" — enforced centrally so every call
     // site is covered (the single active-user query is cheap and indexed).
@@ -146,9 +165,23 @@ export function createNotification(params: {
     }
     return true;
   } catch (err) {
+    if (strict) throw err;
     console.error('[notifications] failed to create notification:', err);
     return false;
   }
+}
+
+export function createNotification(params: NotificationParams): boolean {
+  return writeNotification(params, false);
+}
+
+/**
+ * Persist a workflow-critical notification in the caller's active SQLite
+ * transaction. A write failure is rethrown so the workflow mutation rolls
+ * back; this does not attempt external delivery.
+ */
+export function createNotificationOrThrow(params: NotificationParams): void {
+  writeNotification(params, true);
 }
 
 /** Severity used for persisted notifications (derived ones set their own). */

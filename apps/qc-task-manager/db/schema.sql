@@ -769,7 +769,7 @@ CREATE TABLE IF NOT EXISTS lab_change_requests (
   base_updated_at TEXT,
   base_snapshot_json TEXT,
   proposed_snapshot_json TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING','APPROVED','REJECTED')),
+  status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING','APPROVED','REJECTED','WITHDRAWN')),
   requested_by INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
   reviewed_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
   review_note TEXT,

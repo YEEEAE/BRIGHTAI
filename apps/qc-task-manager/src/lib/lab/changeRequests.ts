@@ -10,7 +10,7 @@ import { appendQcAudit } from '../audit/qcChain';
 import { getCurrentUser } from '../session';
 import { setFlash } from '../flash';
 import { requireCsrf } from '../api-security';
-import { createNotification } from '../notifications';
+import { createNotificationOrThrow } from '../notifications';
 import { canApproveLabChangeRequest, canReviewLabChangeRequests, canSubmitLabChangeRequest } from '../permissions';
 import type { Role } from '../types';
 import { labEquipmentSchema, labProductSchema, labCalibrationSchema, labRetestSchema, parseFormData } from '../validation';
@@ -25,7 +25,7 @@ import { createLabRetest } from './retests';
 
 export type ChangeEntityType = 'EQUIPMENT' | 'PRODUCT' | 'CALIBRATION' | 'RETEST_REQUEST';
 export type ChangeOperation = 'CREATE' | 'UPDATE';
-export type ChangeStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+export type ChangeStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN';
 export const CHANGE_REQUEST_CONFLICT = 'The target changed after this request was submitted. Review the latest record and resubmit the change.';
 
 export interface ChangeRequestFilters {
@@ -38,7 +38,7 @@ export function parseChangeRequestFilters(params: URLSearchParams): ChangeReques
   const status = params.get('status');
   const aging = params.get('aging');
   return {
-    ...(status === 'PENDING' || status === 'APPROVED' || status === 'REJECTED' ? { status } : {}),
+    ...(status === 'PENDING' || status === 'APPROVED' || status === 'REJECTED' || status === 'WITHDRAWN' ? { status } : {}),
     ...(aging === '24h' ? { aging } : {}),
   };
 }
@@ -78,7 +78,7 @@ export class LabChangeRequestError extends Error {
 
 function json(value: unknown): string { return JSON.stringify(value); }
 
-function audit(requestId: number, actorId: number, action: 'SUBMIT' | 'APPROVAL' | 'REJECTION', oldValue: string | null, newValue: string | null, note: string | null): void {
+function audit(requestId: number, actorId: number, action: 'SUBMIT' | 'APPROVAL' | 'REJECTION' | 'STATUS_TRANSITION', oldValue: string | null, newValue: string | null, note: string | null): void {
   appendQcAudit(getDb(), { entityType: 'LAB_CHANGE_REQUEST', entityId: requestId, actorId, action, oldValue, newValue, note });
 }
 
@@ -134,7 +134,7 @@ export function submitChangeRequest(params: { actor: { id: number; role: Role };
     const requestId = Number(inserted.lastInsertRowid);
     audit(requestId, params.actor.id, 'SUBMIT', base ? json(base.snapshot) : null, proposed, null);
     const reviewers = db.prepare("SELECT id FROM users WHERE is_active = 1 AND role IN ('manager','admin') AND id <> ?").all(params.actor.id) as Array<{ id: number }>;
-    for (const reviewer of reviewers) createNotification({ userId: reviewer.id, taskId: null, type: 'lab_change_review_requested', title: 'Laboratory change request pending', message: `A ${params.operation.toLowerCase()} proposal for ${params.entity_type.toLowerCase()} is awaiting review.`, href: `/lab/change-requests/${requestId}` });
+    for (const reviewer of reviewers) createNotificationOrThrow({ userId: reviewer.id, taskId: null, type: 'lab_change_review_requested', title: 'Laboratory change request pending', message: `A ${params.operation.toLowerCase()} proposal for ${params.entity_type.toLowerCase()} is awaiting review.`, href: `/lab/change-requests/${requestId}` });
     return getChangeRequest(requestId)!;
   });
 }
@@ -292,7 +292,7 @@ export function approveChangeRequest(id: number, actor: { id: number; role: Role
     const changed = getDb().prepare(`UPDATE lab_change_requests SET status='APPROVED', reviewed_by=?, review_note=?, applied_entity_id=?, reviewed_at=datetime('now') WHERE id=? AND status='PENDING'`).run(actor.id, reviewNote || null, appliedId, id);
     if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
     audit(id, actor.id, 'APPROVAL', 'PENDING', 'APPROVED', reviewNote || null);
-    createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_review_approved', title: 'Laboratory change request approved', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was approved.`, href: `/lab/change-requests/${id}` });
+    createNotificationOrThrow({ userId: request.requested_by, taskId: null, type: 'lab_change_review_approved', title: 'Laboratory change request approved', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was approved.`, href: `/lab/change-requests/${id}` });
     return getChangeRequest(id)!;
   });
 }
@@ -307,7 +307,21 @@ export function rejectChangeRequest(id: number, actor: { id: number; role: Role 
     const changed = getDb().prepare(`UPDATE lab_change_requests SET status='REJECTED', reviewed_by=?, review_note=?, reviewed_at=datetime('now') WHERE id=? AND status='PENDING'`).run(actor.id, reviewNote.trim(), id);
     if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
     audit(id, actor.id, 'REJECTION', 'PENDING', 'REJECTED', reviewNote.trim());
-    createNotification({ userId: request.requested_by, taskId: null, type: 'lab_change_review_rejected', title: 'Laboratory change request rejected', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was rejected: ${reviewNote.trim()}`, href: `/lab/change-requests/${id}` });
+    createNotificationOrThrow({ userId: request.requested_by, taskId: null, type: 'lab_change_review_rejected', title: 'Laboratory change request rejected', message: `Your laboratory ${request.entity_type.toLowerCase()} proposal was rejected: ${reviewNote.trim()}`, href: `/lab/change-requests/${id}` });
+    return getChangeRequest(id)!;
+  });
+}
+
+/** Requesters may withdraw only their own still-pending proposal. */
+export function withdrawChangeRequest(id: number, actor: { id: number; role: Role }): LabChangeRequest {
+  return transaction(() => {
+    const request = getChangeRequest(id);
+    if (!request) throw new LabChangeRequestError('Change request not found.');
+    if (request.requested_by !== actor.id) throw new LabChangeRequestError('You can only withdraw your own change request.');
+    if (request.status !== 'PENDING') throw new LabChangeRequestError('This change request has already been reviewed.');
+    const changed = getDb().prepare(`UPDATE lab_change_requests SET status='WITHDRAWN', reviewed_at=datetime('now') WHERE id=? AND requested_by=? AND status='PENDING'`).run(id, actor.id);
+    if (changed.changes !== 1) throw new LabChangeRequestError('This change request has already been reviewed.');
+    audit(id, actor.id, 'STATUS_TRANSITION', 'PENDING', 'WITHDRAWN', null);
     return getChangeRequest(id)!;
   });
 }

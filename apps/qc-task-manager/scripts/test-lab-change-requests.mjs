@@ -63,7 +63,7 @@ try {
 
   const db = new Database(join(tempRoot, 'fresh.db'));
   const result = runMigrations(db, { migrationsDir: migrationDir, backup: false });
-  assert.equal(result.currentVersion, 37);
+  assert.equal(result.currentVersion, 38);
   assert.ok(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='lab_change_requests'").get());
   assert.equal(db.pragma('integrity_check', { simple: true }), 'ok');
   assert.deepEqual(db.pragma('foreign_key_check'), []);
@@ -76,7 +76,7 @@ try {
   assert.ok(LAB_NOTIFICATION_KINDS.includes('lab_change_review_rejected'));
   assert.equal(LAB_NOTIFICATION_KINDS.includes('lab_change_request_submitted'), false);
   const { getDb, closeDatabase } = await import('../src/lib/db.ts');
-  const { submitChangeRequest, approveChangeRequest, rejectChangeRequest, CHANGE_REQUEST_CONFLICT } = await import('../src/lib/lab/changeRequests.ts');
+  const { submitChangeRequest, approveChangeRequest, rejectChangeRequest, withdrawChangeRequest, CHANGE_REQUEST_CONFLICT } = await import('../src/lib/lab/changeRequests.ts');
   const runtime = getDb();
   const users = runtime.prepare("SELECT id, role FROM users WHERE role IN ('employee','supervisor','manager','admin') ORDER BY id").all();
   const employee = users.find((u) => u.role === 'employee');
@@ -85,6 +85,14 @@ try {
   const admin = users.find((u) => u.role === 'admin');
   assert.ok(employee && supervisor && manager && admin);
   const equipmentData = { name: 'Proposed Equipment', code: 'CR-EQ-1', location: 'Lab A', status_raw: 'New', calibration_status_raw: 'yes', serial_number: 'S-1', notes: null };
+  const withdrawal = submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: { ...equipmentData, code: 'CR-EQ-WITHDRAW' } } });
+  assert.throws(() => withdrawChangeRequest(withdrawal.id, supervisor), /only withdraw your own/);
+  assert.equal(withdrawChangeRequest(withdrawal.id, employee).status, 'WITHDRAWN');
+  assert.equal(runtime.prepare('SELECT COUNT(*) AS n FROM lab_equipment WHERE code = ?').get('CR-EQ-WITHDRAW').n, 0);
+  const withdrawalAudit = runtime.prepare("SELECT old_value, new_value FROM qc_audit_log WHERE entity_type='LAB_CHANGE_REQUEST' AND entity_id=? AND action='STATUS_TRANSITION'").get(withdrawal.id);
+  assert.deepEqual(withdrawalAudit, { old_value: 'PENDING', new_value: 'WITHDRAWN' });
+  assert.throws(() => withdrawChangeRequest(withdrawal.id, employee), /already been reviewed/);
+  assert.equal((await import('../src/lib/lab/changeRequests.ts')).countPendingChangeRequests('EQUIPMENT', 0, employee.id), 0);
   const created = submitChangeRequest({ actor: employee, entity_type: 'EQUIPMENT', operation: 'CREATE', payload: { entity_type: 'EQUIPMENT', data: equipmentData } });
   assert.equal(runtime.prepare('SELECT COUNT(*) AS n FROM lab_equipment WHERE code = ?').get('CR-EQ-1').n, 0);
   assert.throws(() => approveChangeRequest(created.id, supervisor), /cannot approve/);
@@ -138,6 +146,7 @@ try {
   assert.equal(changeRequestSource.includes('INSERT INTO lab_test_retests'), false);
   assert.equal(changeRequestSource.includes('INSERT INTO lab_test_records'), false);
   assert.equal(changeRequestSource.includes('cancelOwnPendingChangeRequest'), false);
+  assert.equal(changeRequestSource.match(/createNotificationOrThrow/g)?.length, 4, 'all three change-request workflow notifications use strict persistence');
   assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM qc_audit_log WHERE entity_type='LAB_RETEST' AND entity_id=? AND action='CREATE'").get(retestApproval.applied_entity_id).n, 1);
   assert.equal(runtime.prepare("SELECT COUNT(*) AS n FROM notifications WHERE user_id=? AND type='lab_retest_update'").get(employee.id).n, 1);
   const archivedEquipment = runtime.prepare('SELECT id FROM lab_equipment WHERE is_archived = 1 LIMIT 1').get();
@@ -171,6 +180,12 @@ try {
   assert.ok((await import('../src/lib/lab/changeRequests.ts')).listUserChangeRequests(employee.id).every((row) => row.requested_by === employee.id));
   assert.ok((await import('node:fs')).readFileSync(new URL('../src/pages/api/lab/change-requests/[id]/review.ts', import.meta.url), 'utf8').includes('requireCsrf'));
   assert.ok((await import('node:fs')).readFileSync(new URL('../src/pages/api/lab/change-requests/[id]/review.ts', import.meta.url), 'utf8').includes('canReviewLabChangeRequests'));
+  const withdrawRoute = (await import('node:fs')).readFileSync(new URL('../src/pages/api/lab/change-requests/[id]/withdraw.ts', import.meta.url), 'utf8');
+  assert.ok(withdrawRoute.includes('requireCsrf'), 'withdraw route requires CSRF');
+  assert.ok(withdrawRoute.includes('requireApiUser'), 'withdraw route requires an authenticated user');
+  const requestPage = (await import('node:fs')).readFileSync(new URL('../src/pages/lab/change-requests/[id].astro', import.meta.url), 'utf8');
+  assert.match(requestPage, /mayWithdraw/);
+  assert.match(requestPage, /No laboratory master record will be changed/);
 
   const equipmentForm = readFileSync(new URL('../src/components/lab/LabEquipmentForm.astro', import.meta.url), 'utf8');
   const productForm = readFileSync(new URL('../src/components/lab/LabProductForm.astro', import.meta.url), 'utf8');

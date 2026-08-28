@@ -116,6 +116,23 @@ try {
 
   const { getDb } = await import('../src/lib/db.ts');
   const notifications = await import('../src/lib/notifications.ts');
+  const filters = ['all', 'unread', 'tasks', 'tests', 'documents', 'change-requests', 'calibration-equipment'];
+  for (const filter of filters) {
+    ok(notifications.parseNotificationFilter(filter) === filter, `notification filter parses ${filter}`);
+  }
+  ok(notifications.parseNotificationFilter('forged') === 'all', 'forged notification filter falls back to all');
+  const filterProbe = (kind, isRead = false) => ({ kind, isRead });
+  ok(notifications.notificationMatchesFilter(filterProbe('assigned'), 'tasks'), 'task filter shows task notifications');
+  ok(!notifications.notificationMatchesFilter(filterProbe('lab_document_approved'), 'tasks'), 'task filter hides document notifications');
+  ok(notifications.notificationMatchesFilter(filterProbe('lab_test_approved'), 'tests'), 'test filter shows test notifications');
+  ok(notifications.notificationMatchesFilter(filterProbe('lab_document_approved'), 'documents'), 'document filter shows document notifications');
+  ok(notifications.notificationMatchesFilter(filterProbe('lab_change_review_rejected'), 'change-requests'), 'change-request filter shows change notifications');
+  ok(notifications.notificationMatchesFilter(filterProbe('lab_calibration_due'), 'calibration-equipment'), 'calibration filter shows calibration notifications');
+  ok(!notifications.notificationMatchesFilter(filterProbe('lab_test_approved', true), 'unread'), 'unread filter hides read notifications');
+  const notificationPage = (await import('node:fs')).readFileSync(new URL('../src/pages/notifications.astro', import.meta.url), 'utf8');
+  for (const label of ['All', 'Unread', 'Tasks', 'Tests', 'Documents', 'Change Requests', 'Calibration / Equipment']) {
+    ok(notificationPage.includes(label), `global notification page exposes ${label} filter`);
+  }
   const review = await import('../src/lib/lab/review.ts');
   const calibration = await import('../src/lib/lab/calibration.ts');
   const equipment = await import('../src/lib/lab/equipment.ts');

@@ -16,7 +16,7 @@ const filters = parseChangeRequestFilters(Astro.url.searchParams);
 const requests = management ? listAllChangeRequests(filters) : listUserChangeRequests(user.userId, filters);
 const title = management ? 'All contributor change requests' : 'My change requests';
 const fmt = (value: string | null) => value ? value.replace('T', ' ').slice(0, 16) : '—';
-const statusClass = (status: string) => status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700' : status === 'REJECTED' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700';
+const statusClass = (status: string) => status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700' : status === 'REJECTED' ? 'bg-red-100 text-red-700' : status === 'WITHDRAWN' ? 'bg-slate-100 text-slate-700' : 'bg-amber-100 text-amber-700';
 ---
 <BaseLayout title="Laboratory Change Requests">
   <div class="space-y-6">

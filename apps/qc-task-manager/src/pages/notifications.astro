@@ -15,11 +15,23 @@ import {
   groupNotificationsByKind,
   orderedNotificationKinds,
 } from '../components/ui/notificationPresentation';
-import { getNotificationsForUser } from '../lib/notifications';
+import { getNotificationsForUser, notificationMatchesFilter, parseNotificationFilter, type NotificationFilter } from '../lib/notifications';
 import { roleHome } from '../lib/permissions';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
-const notifications = getNotificationsForUser({ id: user.userId, role: user.role });
+const filter = parseNotificationFilter(Astro.url.searchParams.get('filter'));
+const allNotifications = getNotificationsForUser({ id: user.userId, role: user.role });
+const filterOptions: Array<{ value: NotificationFilter; label: string }> = [
+  { value: 'all', label: 'All' },
+  { value: 'unread', label: 'Unread' },
+  { value: 'tasks', label: 'Tasks' },
+  { value: 'tests', label: 'Tests' },
+  { value: 'documents', label: 'Documents' },
+  { value: 'change-requests', label: 'Change Requests' },
+  { value: 'calibration-equipment', label: 'Calibration / Equipment' },
+];
+const notifications = allNotifications.filter((n) => notificationMatchesFilter(n, filter));
+const filterCount = (value: NotificationFilter) => allNotifications.filter((n) => notificationMatchesFilter(n, value)).length;
 
 const grouped = groupNotificationsByKind(notifications);
 const orderedKinds = orderedNotificationKinds(grouped);
@@ -39,10 +51,14 @@ const dueSoonCount = notifications.filter((n) => n.kind === 'due_soon').length;
     </fragment>
   </PageHeader>
 
+  <nav aria-label="Notification filter" class="mb-6 flex flex-wrap gap-1 rounded-lg border border-slate-200 bg-white p-1">
+    {filterOptions.map((option) => <a href={option.value === 'all' ? '/notifications' : `/notifications?filter=${option.value}`} aria-current={filter === option.value ? 'page' : undefined} class:list={['rounded-md px-3 py-1.5 text-sm font-medium', filter === option.value ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-100']}>{option.label} ({filterCount(option.value)})</a>)}
+  </nav>
+
   {total === 0 ? (
     <EmptyState
       title="You're all caught up 🎉"
-      hint="No overdue tasks, upcoming due dates, or recent activity need your attention right now."
+      hint={filter === 'all' ? 'No overdue tasks, upcoming due dates, or recent activity need your attention right now.' : `No ${filterOptions.find((option) => option.value === filter)?.label.toLowerCase()} notifications need your attention right now.`}
       ctaHref={roleHome(user.role)}
       ctaLabel="Back to my home"
     />

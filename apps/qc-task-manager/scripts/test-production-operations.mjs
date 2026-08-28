@@ -26,18 +26,18 @@ try {
   db.close();
 
   const backup = await createBackup({ dbPath, backupDir, trigger: 'test' });
-  assert.equal((await verifyBackup({ file: backup.file, expectedSchemaVersion: 37 })).result, 'PASS');
+  assert.equal((await verifyBackup({ file: backup.file, expectedSchemaVersion: 38 })).result, 'PASS');
 
   db = new Database(dbPath);
   db.prepare("UPDATE tasks SET title = 'Mutated record' WHERE id = 1").run();
   db.close();
-  const restored = await restoreBackup({ productionDbPath: dbPath, backupFile: backup.file, metadataFile: backup.metadataFile, confirmation: 'RESTORE QC DATABASE', backupDir, expectedSchemaVersion: 37 });
+  const restored = await restoreBackup({ productionDbPath: dbPath, backupFile: backup.file, metadataFile: backup.metadataFile, confirmation: 'RESTORE QC DATABASE', backupDir, expectedSchemaVersion: 38 });
   assert.equal(restored.verification.result, 'PASS');
 
   db = new Database(dbPath);
   db.pragma('foreign_keys = ON');
   assert.equal(db.prepare('SELECT title FROM tasks WHERE id = 1').get().title, 'Restore drill record');
-  assert.equal(db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version, 37);
+  assert.equal(db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version, 38);
   assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
   assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
   assert.equal(verifyAllAuditChains(db).task.status, 'PASS');

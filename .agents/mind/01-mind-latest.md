@@ -1130,3 +1130,44 @@ skills_ready: 7---
 - لم يحدث commit أو push أو deploy؛ الشجرة الحالية تحتوي كذلك تغييرات المستخدم السابقة وتم الحفاظ عليها.
 
 ---
+## [2026-08-28] — QC-WORKFLOW-NOTIFICATIONS-014: سحب طلبات التغيير وتحسين موثوقية وفلاتر الإشعارات
+
+### تم التنفيذ
+- أضفت حالة `WITHDRAWN` عبر migration 038 متسلسلة، مع تحديث registry المضمّن و`db/schema.sql` والحفاظ على بيانات الطلبات والفهارس القائمة.
+- أضفت `withdrawChangeRequest` بقيد مالك الطلب و`PENDING` داخل معاملة SQLite؛ لا يستدعي أي mutation كنسي، ويسجل `STATUS_TRANSITION` من `PENDING` إلى `WITHDRAWN`.
+- أضفت endpoint POST للسحب محميًا بـ CSRF و`requireApiUser`، وأظهرت زر السحب للمالك فقط أثناء الانتظار؛ الحالات APPROVED/REJECTED/WITHDRAWN لا تقبل السحب، والعدادات المعلقة تستبعدها تلقائيًا.
+- أضفت `createNotificationOrThrow` فوق جدول الإشعارات نفسه، واستخدمته لإشعارات طلب المراجعة والاعتماد والرفض لطلبات التغيير داخل نفس معاملات workflow؛ فشل الحفظ يلغي mutation، بدون ربط التسليم الخارجي بالمعاملة.
+- أضفت فلاتر SSR لصفحة الإشعارات: All، Unread، Tasks، Tests، Documents، Change Requests، وCalibration / Equipment، مع allowlist وعدادات ورؤية مشتركة لحالة القراءة.
+- أضفت اختبارات الملكية، الحالة النهائية، التدقيق، عدم mutation الكنسي، CSRF/API guards، الفلاتر، الرؤية والعدادات، وحدثت توقعات رقم migration إلى 38.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/db/migrations/038_lab_change_request_withdrawal.sql`
+- `apps/qc-task-manager/src/lib/lab/changeRequests.ts`
+- `apps/qc-task-manager/src/lib/notifications.ts`
+- `apps/qc-task-manager/src/pages/api/lab/change-requests/[id]/withdraw.ts`
+- `apps/qc-task-manager/src/pages/lab/change-requests/{index,[id]}.astro`
+- `apps/qc-task-manager/src/pages/notifications.astro`
+- `apps/qc-task-manager/src/lib/migrationRegistry.ts`
+- `apps/qc-task-manager/scripts/test-lab-change-requests.mjs`
+- `apps/qc-task-manager/scripts/test-lab-notifications.mjs`
+- `apps/qc-task-manager/scripts/test-migrations.mjs`
+- `apps/qc-task-manager/scripts/test-dashboard-reports.mjs`
+- `apps/qc-task-manager/scripts/{test-db-doctor,test-production-operations,test-scheduled-notifications,test}.mjs`
+- `docs/superpowers/plans/2026-08-28-qc-workflow-notifications-014.md`
+
+### التحقق
+- `pnpm test:lab-change-requests` ✅ — ناجح.
+- `pnpm test:lab-notifications` ✅ — 107/0.
+- `pnpm test:migrations` ✅ و`pnpm test:embedded-migration-parity` ✅ — 38/38 مطابق.
+- `pnpm typecheck` ✅ — 0 أخطاء، 0 تحذيرات، 26 hints قائمة.
+- `pnpm test` ✅ — 56 canonical suites بدون فشل.
+- `NODE_ENV=production pnpm build` ✅ — Complete.
+- `pnpm test:route-manifest` و`pnpm test:manifest` ✅؛ `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** دورة طلب التغيير تدعم السحب الآمن للطلبات المعلقة فقط، وإشعارات workflow الحرجة تُحفظ ذريًا مع mutation، وصفحة الإشعارات توفر الفلاتر المطلوبة باستخدام النظام الحالي.
+
+### ملاحظات / مشاكل مفتوحة
+- لم يُنفّذ commit أو push أو deploy حسب الطلب.
+- بقيت 26 hints قديمة في `astro check` بدون أخطاء حاجبة.
