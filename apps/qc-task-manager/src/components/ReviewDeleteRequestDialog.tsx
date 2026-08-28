@@ -29,15 +29,23 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
   const [note, setNote] = useState('');
   const [error, setError] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const lastTriggerRef = useRef<HTMLButtonElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const actionRef = useRef<HTMLInputElement>(null);
-  const noteRef = useRef<HTMLInputElement>(null);
+  const noteInputRef = useRef<HTMLInputElement>(null);
+  const noteRef = useRef<HTMLTextAreaElement>(null);
 
   // Native <dialog> needs showModal()/close() for correct modal behaviour.
   useEffect(() => {
     const dlg = dialogRef.current;
     if (!dlg) return;
-    if (mode && !dlg.open) dlg.showModal();
+    if (mode && !dlg.open) {
+      dlg.showModal();
+      window.requestAnimationFrame(() => {
+        if (mode === 'reject') noteRef.current?.focus();
+        else dialogRef.current?.querySelector<HTMLButtonElement>('button[data-dialog-confirm]')?.focus();
+      });
+    }
     if (!mode && dlg.open) dlg.close();
   }, [mode]);
 
@@ -46,25 +54,29 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
   useEffect(() => {
     const dlg = dialogRef.current;
     if (!dlg) return;
-    const onClose = () => setMode(null);
+    const onClose = () => {
+      setMode(null);
+      lastTriggerRef.current?.focus();
+    };
     dlg.addEventListener('close', onClose);
     return () => dlg.removeEventListener('close', onClose);
   }, []);
 
-  function open(m: 'approve' | 'reject') {
+  function open(m: 'approve' | 'reject', trigger: HTMLButtonElement) {
+    lastTriggerRef.current = trigger;
     setError(null);
     setNote('');
     setMode(m);
   }
 
   function confirm() {
-    if (!mode || !formRef.current || !actionRef.current || !noteRef.current) return;
+    if (!mode || !formRef.current || !actionRef.current || !noteInputRef.current) return;
     if (mode === 'reject' && note.length > MAX_NOTE) {
       setError(`Reason must be ${MAX_NOTE} characters or fewer.`);
       return;
     }
     actionRef.current.value = mode;
-    noteRef.current.value = mode === 'reject' ? note.trim() : '';
+    noteInputRef.current.value = mode === 'reject' ? note.trim() : '';
     formRef.current.submit();
   }
 
@@ -75,18 +87,18 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
       <div className="flex shrink-0 gap-2">
         <button
           type="button"
-          onClick={() => open('approve')}
+          onClick={(event) => open('approve', event.currentTarget)}
           data-review-action="approve"
-          className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
+          className="min-h-11 rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           title="Approve permanent deletion of this task"
         >
           Approve deletion
         </button>
         <button
           type="button"
-          onClick={() => open('reject')}
+          onClick={(event) => open('reject', event.currentTarget)}
           data-review-action="reject"
-          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400/40"
+          className="min-h-11 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
           title="Keep the task and reject this request"
         >
           Reject
@@ -97,7 +109,7 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
       <form ref={formRef} method="POST" action="/manager/requests/api" className="hidden" aria-hidden="true">
         <input ref={actionRef} type="hidden" name="action" value="approve" />
         <input type="hidden" name="request_id" value={requestId} />
-        <input ref={noteRef} type="hidden" name="review_note" value="" />
+        <input ref={noteInputRef} type="hidden" name="review_note" value="" />
       </form>
 
       <dialog
@@ -134,10 +146,12 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
                 maxLength={MAX_NOTE}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
+                ref={noteRef}
+                aria-describedby={`review-note-count-${requestId}`}
                 placeholder="Explain why this request is being rejected (optional)."
                 className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
               />
-              <p className="mt-1 text-right text-xs text-slate-400">{note.length}/{MAX_NOTE}</p>
+              <p id={`review-note-count-${requestId}`} className="mt-1 text-right text-xs text-slate-500">{note.length}/{MAX_NOTE} characters</p>
             </>
           )}
 
@@ -151,17 +165,18 @@ export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle
             <button
               type="button"
               onClick={() => setMode(null)}
-              className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="min-h-11 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={confirm}
+              data-dialog-confirm
               className={
                 mode === 'approve'
-                  ? 'rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700'
-                  : 'rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700'
+                  ? 'min-h-11 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600'
+                  : 'min-h-11 rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800'
               }
             >
               {confirmLabel}

@@ -27,6 +27,8 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const reasonRef = useRef<HTMLTextAreaElement>(null);
 
   // Native <dialog> needs showModal()/close() for correct modal behaviour.
   useEffect(() => {
@@ -45,6 +47,11 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
     }
     if (!open && dlg.open) dlg.close();
   }, [open]);
+
+  useEffect(() => {
+    if (open) reasonRef.current?.focus();
+    else if (!requested) triggerRef.current?.focus();
+  }, [open, requested]);
 
   if (requested) {
     return (
@@ -85,6 +92,7 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
     <>
       <button
         type="button"
+        ref={triggerRef}
         onClick={() => {
           setError(null);
           setOpen(true);
@@ -113,14 +121,16 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
           </label>
           <textarea
             id={`delete-reason-${taskId}`}
+            ref={reasonRef}
             rows={3}
             maxLength={MAX_REASON}
             value={reason}
+            aria-describedby={`delete-reason-count-${taskId}`}
             onChange={(e) => setReason(e.target.value)}
             placeholder="Why should this task be deleted?"
             className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
           />
-          <p className="mt-1 text-right text-xs text-slate-400">{reason.length}/{MAX_REASON}</p>
+          <p id={`delete-reason-count-${taskId}`} className="mt-1 text-right text-xs text-slate-500">{reason.length}/{MAX_REASON} characters</p>
 
           <ActionFeedback tone="error" message={error} />
 

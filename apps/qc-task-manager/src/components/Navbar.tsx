@@ -203,33 +203,6 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
     };
   }, [moreOpen]);
 
-  // Move focus into a menu when it opens (standard menu pattern).
-  useEffect(() => {
-    if (!open) return;
-    const first = bellDropdownRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
-    first?.focus();
-  }, [open]);
-
-  // Trap Tab/Shift+Tab inside an open menu so keyboard users cannot tab into
-  // the page behind it (WCAG 2.1.2 No Keyboard Trap in reverse).
-  function trapDropdownTab(e: React.KeyboardEvent<HTMLDivElement>) {
-    if (e.key !== 'Tab') return;
-    const container = e.currentTarget;
-    const focusables = Array.from(container.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter(
-      (el) => el.offsetParent !== null || el === document.activeElement,
-    );
-    if (focusables.length === 0) return;
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  }
-
   // Mobile role menu: Escape closes it and returns focus to the toggle.
   useEffect(() => {
     if (!menuOpen) return;
@@ -268,7 +241,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
   const primaryLinkClass = (href: string) => {
     const active = isActive(href, currentPath);
     return [
-      'rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
+      'rounded-md px-2.5 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
       active ? 'bg-brand-50 font-semibold text-brand-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
     ].join(' ');
   };
@@ -305,9 +278,8 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                 type="button"
                 onClick={() => setMoreOpen((v) => !v)}
                 aria-expanded={moreOpen}
-                aria-haspopup="true"
                 aria-controls={moreOpen ? 'more-menu' : undefined}
-                className="rounded-md px-2.5 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                className="min-h-11 rounded-md px-2.5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
               >
                 More
                 <svg aria-hidden="true" className="ml-1 inline" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -318,19 +290,17 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                 <div
                   ref={moreDropdownRef}
                   id="more-menu"
-                  role="menu"
+                  role="region"
                   aria-label="More sections"
-                  onKeyDown={trapDropdownTab}
                   className="absolute right-0 top-full z-40 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg"
                 >
                   {nav.more.map((l) => (
                     <a
                       key={l.href}
                       href={l.href}
-                      role="menuitem"
                       aria-current={isActive(l.href, currentPath) ? 'page' : undefined}
                       className={[
-                        'block px-4 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-600',
+                        'block min-h-11 px-4 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-600',
                         isActive(l.href, currentPath) ? 'bg-brand-50 font-semibold text-brand-700' : 'text-slate-700 hover:bg-slate-50',
                       ].join(' ')}
                     >
@@ -354,9 +324,8 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                   onClick={() => setOpen((v) => !v)}
                   aria-label={`Notifications (${notificationCount} active)`}
                   aria-expanded={open}
-                  aria-haspopup="true"
                   aria-controls={open ? 'notification-dropdown' : undefined}
-                  className="relative rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                  className="relative flex min-h-11 min-w-11 items-center justify-center rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                     <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -375,13 +344,12 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                   <div
                     ref={bellDropdownRef}
                     id="notification-dropdown"
-                    role="menu"
-                    aria-label="Recent notifications"
-                    onKeyDown={trapDropdownTab}
+                    role="region"
+                    aria-labelledby="notification-panel-title"
                     className="fixed inset-x-4 top-16 z-40 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg md:absolute md:inset-x-auto md:right-0 md:top-full md:mt-2 md:w-80 md:max-w-[calc(100vw-2rem)]"
                   >
                     <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2.5">
-                      <p className="text-sm font-semibold text-slate-900">Notifications</p>
+                      <p id="notification-panel-title" className="text-sm font-semibold text-slate-900">Notifications</p>
                       {notificationCount > 0 && (
                         // WCAG AA contrast: red-600 on red-50 is 4.41:1 at this
                         // size — red-700 raises it to 5.91:1 (normal text threshold).
@@ -401,9 +369,8 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                         <li key={n.id} className="border-b border-slate-50 last:border-b-0">
                           <a
                             href={n.href}
-                            role="menuitem"
                             onClick={() => openNotification(n)}
-                            className="flex items-start gap-2.5 px-4 py-3 text-left hover:bg-slate-50"
+                            className="flex min-h-11 items-start gap-2.5 px-4 py-3 text-left hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-600"
                           >
                             <span
                               aria-hidden="true"
@@ -426,7 +393,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                     </ul>
 
                     <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2">
-                      <a href="/notifications" className="text-sm font-medium text-brand-600 hover:text-brand-700">
+                      <a href="/notifications" className="min-h-11 inline-flex items-center text-sm font-medium text-brand-600 hover:text-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
                         View all
                       </a>
                       {notificationCount > 0 && (
@@ -434,7 +401,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
                           type="button"
                           onClick={markAllRead}
                           disabled={markingAll}
-                          className="text-sm font-medium text-slate-600 hover:text-slate-900 disabled:opacity-50"
+                          className="min-h-11 px-1 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-50"
                         >
                           {markingAll ? 'Marking…' : 'Mark all as read'}
                         </button>
@@ -486,12 +453,12 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
               ref={menuButtonRef}
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="rounded-md p-2 text-slate-600 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 xl:hidden"
-              aria-label="Toggle navigation"
+              className="flex min-h-11 min-w-11 items-center justify-center rounded-md p-2 text-slate-600 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 xl:hidden"
+              aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>

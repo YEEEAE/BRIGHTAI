@@ -70,6 +70,17 @@ for (const rel of [
 }
 ok(read('src/styles/global.css').includes('--color-text-primary'), 'semantic token source exists');
 
+// Navigation uses disclosure semantics: native links stay native and the
+// disclosure panel follows the normal Tab order. A partial ARIA menu model
+// would require arrow-key navigation and is intentionally not allowed here.
+{
+  const navbar = read('src/components/Navbar.tsx');
+  ok(!navbar.includes('role="menu"'), 'navigation: no incomplete menu role');
+  ok(!navbar.includes('role="menuitem"'), 'navigation: native links remain native');
+  ok(navbar.includes("aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}"), 'navigation: toggle exposes its current action');
+  ok(navbar.includes('min-h-11 min-w-11'), 'navigation: icon controls meet the 44px hit-area contract');
+}
+
 // 2. Shared pagination everywhere.
 const PAGINATED = [
   'src/pages/search.astro',

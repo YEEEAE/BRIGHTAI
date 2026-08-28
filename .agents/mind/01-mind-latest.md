@@ -1,3 +1,57 @@
+## [2026-08-28] — SEO-DOMAIN-CANONICAL-002: قرار النطاق المعتمد brightai.live + بناء ملف الكلمات عليه
+
+### تم التنفيذ
+- المستخدم حسم القرار: **`brightai.live` هو النطاق المعتمد والوحيد** — أي تحليل سابق افترض `brightai.site` كنطاق تجاري ظاهر أُلغي.
+- تحققت قراءةً فقط أن المصدر مبني بالفعل على `brightai.live` (`astro.config.mjs: site: 'https://brightai.live'` + كل إدخالات kernel/سايت ماب) — **صفر تعديل مطلوب في المصدر**.
+- حدّثت `target_url` في CSV الكلمات من مسارات نسبية إلى روابط مطلقة على `https://brightai.live/...` — 45/45 صف، و0 ذكر لـ`brightai.site`.
+- لم أتلمس أي ملف مشروع آخر — لا build ولا إعدادات ولا صفحات، بالأمر الصريح من المستخدم.
+
+### الملفات المتأثرة
+- `download/seo/brightai-sa-keyword-research.csv`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `grep -c 'https://brightai.live'` = 45 ✅ و`grep -c 'brightai.site'` = 0 ✅
+- `pending_credentials` = 45 (أعمدة DataForSEO محفوظة كما هي) ✅
+- قراءة `astro.config.mjs` ✅ — النطاق `brightai.live` مؤكد من المصدر
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** ملف الكلمات صار مبنيًا صراحةً على النطاق المعتمد `brightai.live`، والمصدر أصلًا متوافق معه — ظهور `brightai.site` في نتائج البحث مسألة إشارات خارجية (فهرسة/ملكية النطاق الثاني عند Google) مو تعارض داخل الكود.
+
+### ملاحظات / مشاكل مفتوحة
+- أُغلق سؤال النطاق P1 المسجل في SEO-KEYWORD-RESEARCH-001 بقرار المستخدم.
+- بقي مفتوحًا (خارج نطاق اليوم): تعامل محركات البحث مع `brightai.site` (إعادة توجيه 301 أو إزالة فهرسته) — يُنفّذ فقط إذا طلب المستخدم.
+- DataForSEO ما زال `pending_credentials` (45 صفًا) — ترتيب الأولوية بالـvolume ينتظر تفعيل الاعتماد.
+
+
+## [2026-08-28] — SEO-KEYWORD-RESEARCH-001: تحليل الصفحات الأساسية وتجهيز CSV لكلمات السعودية
+
+### تم التنفيذ
+- حللت الصفحات الأساسية محليًا: الرئيسية، `about`, `services`, `solutions`, صفحة الحل، `trust`, `contact`, `blog`, `pricing`, وتقييم جاهزية حوكمة AI.
+- قارنت إشارات المصدر مع نتائج البحث الحية؛ النطاق الظاهر للجمهور هو `brightai.site` بينما المصدر يضع `brightai.live` في `astro.config.mjs` وcanonical وsitemap، وسُجّلت كنقطة P1 قبل الاعتماد على إشارات البحث.
+- راجعت إشارات المحتوى الحالية: حوكمة AI، AI Firewall، PDPL، NCA ECC، SDAIA، ISO 42001، ملفات الأدلة، الموافقات البشرية، القطاعات والمدن السعودية.
+- أنشأت CSV يضم 45 فرصة كلمات مفتاحية عربية/إنجليزية، مع التجميع، نية البحث، صفحة الهدف، مرحلة القمع، الأولوية، long-tail، وطريقة السيطرة المقترحة.
+- امتنعت عن اختلاق volume أو CPC أو competition؛ كل أعمدة DataForSEO موسومة `pending_credentials` لأن أداة DataForSEO غير ظاهرة كأداة MCP قابلة للاستدعاء في الجلسة وبيئتا `DATAFORSEO_LOGIN` و`DATAFORSEO_PASSWORD` غير موجودتين.
+
+### الملفات المتأثرة
+- `download/seo/brightai-sa-keyword-research.csv`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- فحص CSV ✅ — 45 صف بيانات + رأس الملف.
+- `git -c core.fsmonitor=false diff --check` — لم يُنفّذ بعد هذا السجل؛ فحص Git العادي تأثر بخطأ بيئي في `fsmonitor_ipc`.
+- تحليل حي عبر نتائج البحث ✅ — تم التحقق من ظهور `brightai.site` وصفحة الحل الرئيسية.
+- DataForSEO API ⚠️ — لم يُنفّذ بسبب غياب الأداة القابلة للاستدعاء والاعتمادات، بدون طباعة أو تخزين أسرار.
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** تحليل الصفحات وCSV الاستراتيجي جاهزان، لكن ترتيب الكلمات حسب أعلى volume ومؤشرات السوق السعودية ينتظر تفعيل DataForSEO بعد توفير الاعتمادات وإعادة تحميل MCP.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم توحيد النطاق canonical بين `brightai.site` و`brightai.live` قبل ضخ بيانات الكلمات في قرارات الصفحات أو بناء الروابط.
+- يلزم تشغيل DataForSEO على بذور CSV نفسها، ثم ملء `monthly_searches_sa`, `competition`, و`cpc_sar` وإعادة ترتيب الأولوية بالبيانات الفعلية.
+
 ## [2026-08-28] — DATAFORSEO-MCP-001: ربط خادم DataForSEO الرسمي بإعداد Codex المحلي
 
 ### تم التنفيذ
@@ -2244,3 +2298,66 @@ skills_ready: 7---
 - baseline الفعلي ما انقاس بعد؛ لازم تشغيل القياس 14 يومًا قبل تقرير أثر تصميمي.
 - UAT البشري على أجهزة فعلية وفحص VoiceOver ما زال مطلوبًا حسب السجلات السابقة.
 - ما صار commit أو push؛ وتغييرات المستخدم السابقة في `01-mind-latest.md` و`test-ui-consistency.mjs` محفوظة.
+## [2026-08-28] — QC-A11Y-ERGONOMICS-002: توحيد دلالات تنقل disclosure وإدارة تركيز حوارات الحذف
+
+### تم التنفيذ
+- حوّلت القائمتين المنسدلتين في `Navbar` من `role="menu"`/`menuitem` مع trapping ناقص إلى disclosure panels native بروابط HTML عادية ومسار Tab طبيعي.
+- أبقيت Escape يغلق قائمة الجوال وMore والإشعارات ويرجع التركيز إلى زر الفتح عند الحاجة، وأزلت `aria-haspopup` غير المناسب لنمط disclosure.
+- رفعت أهداف اللمس للأيقونات وروابط اللوحات والإجراءات المهمة إلى حد `min-h-11`/`min-w-11` (44px تقريبًا)، مع تسمية زر الجوال حسب الحالة: Open/Close navigation.
+- أضفت إدارة تركيز لحوارات طلب/مراجعة الحذف: التركيز يدخل للحقل أو زر التأكيد، ويرجع لزر الفتح بعد الإغلاق، بدون تغيير endpoint أو workflow.
+- ربطت عدادات الأحرف في حقول الأسباب بـ`aria-describedby` وبنص مفهوم لقارئ الشاشة.
+- أضفت regression guards تمنع رجوع hybrid menu semantics وتثبت عقد hit-area والتسمية الحالية.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/Navbar.tsx`
+- `apps/qc-task-manager/src/components/DeleteRequestDialog.tsx`
+- `apps/qc-task-manager/src/components/ReviewDeleteRequestDialog.tsx`
+- `apps/qc-task-manager/scripts/test-ui-consistency.mjs`
+
+### التحقق
+- `pnpm --filter @brightai/qc-task-manager typecheck` ✅ — 0 أخطاء، 0 تحذيرات، 27 hints قديمة.
+- `pnpm --filter @brightai/qc-task-manager test:ui-consistency` ✅ — 192/192.
+- `pnpm --filter @brightai/qc-task-manager test:interaction-feedback` ✅ — 25/25.
+- `pnpm --filter @brightai/qc-task-manager test:responsive-e2e-contract` ✅.
+- `pnpm --filter @brightai/qc-task-manager test:lab-ux-presentation` ✅ — 14/14.
+- `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `pnpm --filter @brightai/qc-task-manager test` ✅ — 65 canonical suites.
+- `e2e:acceptance` وفحص يدوي 320px/200%/VoiceOver/UAT فعلي: لم تُشغّل هذه المهمة.
+- `git diff --check` ✅؛ لا commit أو push.
+
+### النتيجة
+- **الحالة:** نجح جزئيًا
+- **مختصر:** تحسنت دلالات التنقل، hit areas، وإدارة التركيز في الحوارات بدون المساس بقواعد المجال أو RBAC أو CSRF. التحقق الآلي كامل، أما التحقق البشري وE2E الحي فباقيان مطلوبين.
+
+### ملاحظات / مشاكل مفتوحة
+- ما زالت بعض raw form controls في الصفحات تستخدم وصفات focus قديمة خارج نطاق هذه الدفعة؛ الترحيل يحتاج route-sized workstream لاحق.
+- بقيت التغييرات غير المتعلقة الموجودة مسبقًا في الشجرة كما هي، ومنها `download/seo/` غير المتتبع.
+## [2026-08-28] — QC-A11Y-ERGONOMICS-002: توحيد دلالات تنقل disclosure وإدارة تركيز حوارات الحذف
+
+### تم التنفيذ
+- حوّلت قوائم `Navbar` من `role="menu"`/`menuitem` مع trapping ناقص إلى disclosure panels native بروابط HTML عادية ومسار Tab طبيعي.
+- أبقيت Escape وإدارة التركيز في قائمة الجوال وMore والإشعارات، وأزلت `aria-haspopup` غير المناسب لنمط disclosure.
+- رفعت أهداف اللمس للأيقونات والإجراءات المهمة إلى 44px تقريبًا، وجعلت تسمية زر الجوال تعكس Open/Close navigation.
+- أضفت إدارة تركيز لحوارات طلب/مراجعة الحذف، وربطت عدادات الأحرف بـ`aria-describedby`.
+- أضفت regression guards تمنع رجوع hybrid menu semantics وتثبت عقد hit-area والتسمية.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/Navbar.tsx`
+- `apps/qc-task-manager/src/components/DeleteRequestDialog.tsx`
+- `apps/qc-task-manager/src/components/ReviewDeleteRequestDialog.tsx`
+- `apps/qc-task-manager/scripts/test-ui-consistency.mjs`
+
+### التحقق
+- `typecheck` ✅ — 0 أخطاء، 0 تحذيرات، 27 hints قديمة.
+- `test:ui-consistency` ✅ — 192/192؛ `test:interaction-feedback` ✅ — 25/25.
+- `test:responsive-e2e-contract` ✅؛ `test:lab-ux-presentation` ✅ — 14/14.
+- `NODE_ENV=production build` ✅؛ `pnpm test` ✅ — 65 canonical suites.
+- `e2e:acceptance` وفحص 320px/200%/VoiceOver/UAT فعلي: لم تُشغّل.
+- `git diff --check` ✅؛ لا commit أو push.
+
+### النتيجة
+- **الحالة:** نجح جزئيًا
+- **مختصر:** تحسنت دلالات التنقل، hit areas، وإدارة التركيز بدون المساس بقواعد المجال أو RBAC أو CSRF؛ التحقق البشري وE2E الحي باقيان.
+
+### ملاحظات / مشاكل مفتوحة
+- بعض raw form controls ما زالت تستخدم وصفات focus قديمة خارج نطاق هذه الدفعة.
