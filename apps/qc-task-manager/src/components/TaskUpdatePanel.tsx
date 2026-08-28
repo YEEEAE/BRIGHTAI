@@ -16,6 +16,7 @@
 // (status badges, activity timeline, attachments) stay in sync.
 
 import { useState } from 'react';
+import ActionFeedback from './ui/ActionFeedback';
 
 export interface TaskSnapshot {
   id: number;
@@ -163,14 +164,14 @@ export default function TaskUpdatePanel({
       });
       const data = (await res.json()) as { ok: boolean; error?: string; message?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? 'Could not save the changes.');
+        setError(data.error ?? 'Could not save the changes. Check the fields above, then try Save changes again.');
         setSaving(null);
         return;
       }
       setNotice(data.message ?? 'Task updated.');
       reload();
     } catch {
-      setError('Network error while saving the changes.');
+      setError('Network error while saving the changes. Check your connection, then try Save changes again.');
       setSaving(null);
     }
   }
@@ -258,16 +259,8 @@ export default function TaskUpdatePanel({
 
   return (
     <div className="space-y-5">
-      {error && (
-        <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700" role="alert">
-          {error}
-        </p>
-      )}
-      {notice && (
-        <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700" role="status">
-          {notice}
-        </p>
-      )}
+      <ActionFeedback tone="error" message={error} />
+      <ActionFeedback tone="success" message={notice} />
 
       {/* ── Progress group ── */}
       <form onSubmit={saveProgress} className="rounded-lg border border-slate-200 bg-white p-5">
@@ -366,7 +359,8 @@ export default function TaskUpdatePanel({
         <button
           type="submit"
           disabled={saving !== null}
-          className="mt-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
+          aria-busy={saving === 'update'}
+          className="mt-2 min-h-11 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-content-inverse transition-colors hover:bg-accent-hover active:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-50"
         >
           {saving === 'update' ? 'Saving…' : 'Save changes'}
         </button>

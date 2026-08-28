@@ -1,3 +1,36 @@
+## [2026-08-28] — QC-INTERACTION-FEEDBACK-001: توحيد حالات التفاعل والتغذية الراجعة
+
+### تم التنفيذ
+- أضفت `ActionFeedback` مشتركًا لمناطق live ثابتة، مع أدوار مختلفة للأخطاء والتحديثات الروتينية، ونبرات semantic متوافقة مع نظام التصميم.
+- وحّدت feedback المحلي في التعليقات، المرفقات، مراجعة AI، الإشعارات، طلبات الحذف، وتحديث المهمة، مع رسائل نجاح وفشل تشرح الخطوة التالية وتحافظ على المدخلات.
+- أضفت `aria-busy` وحالات loading محلية، ووضّحت labels أثناء التنفيذ، وحسّنت أزرار الإجراءات بحالات focus-visible وpressed وهدف لمس لا يقل عن 44px.
+- أضفت حراسة مصدرية `test-interaction-feedback` وربطتها بالـ manifest لضمان وجود feedback قابل للاسترجاع في الـ React islands الحرجة.
+- حدّثت `AppButton` ليعرض حالة pressed بوضوح عبر الـ variants الحالية، بدون إضافة dependency أو تغيير endpoint أو workflow أو RBAC.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/ui/ActionFeedback.tsx`
+- `apps/qc-task-manager/src/components/ui/AppButton.astro`
+- `apps/qc-task-manager/src/components/{CommentBox,AttachmentUploader,AiReviewPanel,MarkReadButton,MarkAllReadButton,DeleteRequestDialog,TaskUpdatePanel}.tsx`
+- `apps/qc-task-manager/scripts/test-interaction-feedback.mjs`
+- `apps/qc-task-manager/package.json`
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager test:interaction-feedback` ✅ — 25/25.
+- `pnpm typecheck` ✅ — 0 errors، 0 warnings، و26 hints غير حاجبة موجودة مسبقًا.
+- `pnpm test` ✅ — 63 canonical suites بدون فشل.
+- `pnpm build` ✅ — Complete؛ تحذيرات Astro/Vite الديناميكية المعروفة فقط.
+- `pnpm e2e:acceptance` ✅ — 30/30 suite، 3047+ assertion، مع اختبار restart persistence؛ احتاج تشغيل الخادم المحلي خارج sandbox بعد فشل EPERM قبل بدء الاختبارات.
+- `pnpm test:ui-consistency` ✅ — 181/181، و`git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار عند المستخدم feedback متوقع ومباشر للأفعال المحلية عالية التكرار والحساسية، مع recovery واضح، بدون المساس بقواعد المجال أو سلامة التدقيق.
+
+### ملاحظات / مشاكل مفتوحة
+- ما زال UAT البشري على أجهزة حقيقية وVoiceOver مطلوبًا حسب سجل المشروع؛ الاختبارات الآلية لا تستبدله.
+- لم يحدث commit أو push أو deploy.
+
 ## [2026-08-28] — QC-ADVANCED-FORM-UX-001: رحلة أقسام آمنة ومراجعة صريحة لنموذج اختبارات المختبر
 
 ### تم التنفيذ

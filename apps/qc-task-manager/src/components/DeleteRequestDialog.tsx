@@ -10,6 +10,7 @@
 // Props are plain serializable data so the island hydrates cleanly (client:visible).
 
 import { useEffect, useRef, useState } from 'react';
+import ActionFeedback from './ui/ActionFeedback';
 
 interface Props {
   taskId: number;
@@ -67,14 +68,14 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? 'Could not submit the request. Please try again.');
+        setError(data.error ?? 'Could not submit the deletion request. Review the reason, then try Submit request again.');
         return;
       }
       setRequested(true);
       setOpen(false);
       setReason('');
     } catch {
-      setError('Network error while submitting the request.');
+      setError('Network error while submitting the request. Check your connection, then try Submit request again.');
     } finally {
       setSubmitting(false);
     }
@@ -121,17 +122,13 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
           />
           <p className="mt-1 text-right text-xs text-slate-400">{reason.length}/{MAX_REASON}</p>
 
-          {error && (
-            <p className="mt-2 rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-600" role="alert">
-              {error}
-            </p>
-          )}
+          <ActionFeedback tone="error" message={error} />
 
           <div className="mt-4 flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="min-h-11 rounded-md border border-border-strong bg-surface px-4 py-2 text-sm font-semibold text-content-secondary transition-colors hover:bg-surface-muted active:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
             >
               Cancel
             </button>
@@ -139,7 +136,8 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
               type="button"
               onClick={submit}
               disabled={submitting}
-              className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+              aria-busy={submitting}
+              className="min-h-11 rounded-md bg-danger px-4 py-2 text-sm font-semibold text-content-inverse transition-colors hover:bg-danger-hover active:bg-danger-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-danger disabled:cursor-not-allowed disabled:opacity-50"
             >
               {submitting ? 'Submitting…' : 'Submit request'}
             </button>

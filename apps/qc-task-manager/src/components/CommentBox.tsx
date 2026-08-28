@@ -9,6 +9,7 @@
 
 import { useState } from 'react';
 import { formatDbDate } from '../lib/format';
+import ActionFeedback from './ui/ActionFeedback';
 
 export interface CommentItem {
   id: number;
@@ -32,6 +33,7 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
   const [text, setText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const readOnly = taskStatus === 'completed' || taskStatus === 'cancelled';
 
@@ -41,6 +43,7 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
 
     setSubmitting(true);
     setError(null);
+    setNotice(null);
     try {
       const res = await fetch(`/api/tasks/${taskId}/comment`, {
         method: 'POST',
@@ -54,8 +57,9 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
       }
       setItems((prev) => [...prev, data.comment as CommentItem]);
       setText('');
+      setNotice('Comment posted.');
     } catch {
-      setError('Network error while posting the comment.');
+      setError('Network error while posting the comment. Check your connection, then try Post comment again.');
     } finally {
       setSubmitting(false);
     }
@@ -97,13 +101,15 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
             <span className={`text-xs ${text.length > MAX_LENGTH - 100 ? 'text-amber-700' : 'text-slate-500'}`}>
               {text.length}/{MAX_LENGTH}
             </span>
-            {error && <span className="text-xs font-medium text-red-600">{error}</span>}
           </div>
+          <ActionFeedback tone="error" message={error} />
+          <ActionFeedback tone="success" message={notice} />
           <button
             type="button"
             onClick={submit}
             disabled={submitting || text.trim().length === 0}
-            className="mt-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-busy={submitting}
+            className="mt-2 min-h-11 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-content-inverse transition-colors hover:bg-accent-hover active:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-50"
           >
             {submitting ? 'Posting…' : 'Post comment'}
           </button>

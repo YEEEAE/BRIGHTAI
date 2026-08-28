@@ -27,6 +27,7 @@
     "test:route-manifest": "node scripts/route-manifest.mjs --check",
     "test:manifest": "node scripts/test-manifest-guard.mjs",
     "test:ui-consistency": "node scripts/test-ui-consistency.mjs",
+    "test:interaction-feedback": "node scripts/test-interaction-feedback.mjs",
     "test:architecture": "pnpm test:route-manifest && node scripts/architecture-guard.mjs",
     "test:domain": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs",
     "test:sla": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-sla.mjs",

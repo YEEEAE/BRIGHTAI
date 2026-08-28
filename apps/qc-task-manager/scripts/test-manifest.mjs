@@ -84,4 +84,5 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:responsive-e2e-contract',
   'test:performance',
   'test:ui-consistency',
+  'test:interaction-feedback',
 ];

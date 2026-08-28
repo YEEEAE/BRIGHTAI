@@ -7,6 +7,7 @@
 // appear inline (no page navigation).
 
 import { useState } from 'react';
+import ActionFeedback from './ui/ActionFeedback';
 
 interface Props {
   taskId: number;
@@ -20,6 +21,7 @@ export default function AttachmentUploader({ taskId }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   function reload() {
     window.location.href = window.location.pathname;
@@ -33,6 +35,7 @@ export default function AttachmentUploader({ taskId }: Props) {
     }
     setUploading(true);
     setError(null);
+    setNotice(null);
     try {
       const form = new FormData();
       form.set('file', file);
@@ -42,12 +45,13 @@ export default function AttachmentUploader({ taskId }: Props) {
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? 'Could not upload the file.');
+        setError(data.error ?? 'Could not upload the file. Check the file and try Upload again.');
         return;
       }
+      setNotice('File uploaded. Refreshing the attachment list…');
       reload();
     } catch {
-      setError('Network error while uploading the file.');
+      setError('Network error while uploading the file. Check your connection, then try Upload again.');
       setUploading(false);
     }
   }
@@ -70,7 +74,8 @@ export default function AttachmentUploader({ taskId }: Props) {
           type="button"
           onClick={upload}
           disabled={uploading || !file}
-          className="rounded-md bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+          aria-busy={uploading}
+          className="min-h-11 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-content-inverse transition-colors hover:bg-accent-hover active:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-50"
         >
           {uploading ? 'Uploading…' : 'Upload'}
         </button>
@@ -83,11 +88,8 @@ export default function AttachmentUploader({ taskId }: Props) {
           Selected: {file.name} ({Math.round(file.size / 1024)} KB)
         </p>
       )}
-      {error && (
-        <p className="mt-2 rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-700" role="alert">
-          {error}
-        </p>
-      )}
+      <ActionFeedback tone="error" message={error} />
+      <ActionFeedback tone="success" message={notice} />
     </div>
   );
 }

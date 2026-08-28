@@ -32,13 +32,13 @@ const {
 } = Astro.props;
 
 const variantClasses = {
-  primary: 'bg-accent text-content-inverse shadow-sm hover:bg-accent-hover focus-visible:outline-focus',
+  primary: 'bg-accent text-content-inverse shadow-sm hover:bg-accent-hover active:bg-accent-hover focus-visible:outline-focus',
   secondary:
-    'border border-border-strong bg-surface text-content-secondary shadow-sm hover:bg-surface-muted focus-visible:outline-focus',
+    'border border-border-strong bg-surface text-content-secondary shadow-sm hover:bg-surface-muted active:bg-surface-muted focus-visible:outline-focus',
   tertiary:
-    'text-accent-hover hover:underline focus-visible:outline-focus shadow-none',
+    'text-accent-hover hover:underline active:text-accent focus-visible:outline-focus shadow-none',
   destructive:
-    'bg-danger text-content-inverse shadow-sm hover:bg-danger-hover focus-visible:outline-danger',
+    'bg-danger text-content-inverse shadow-sm hover:bg-danger-hover active:bg-danger-hover focus-visible:outline-danger',
 };
 
 const sizeClasses = {
