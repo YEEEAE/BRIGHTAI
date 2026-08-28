@@ -14,6 +14,7 @@ import {
 } from '../../../../lib/lab/equipment';
 import { statusLabels } from '../../../../lib/lab/equipmentStatus';
 import { getLabCalibrationSummary, LAB_CALIBRATION_STATUS_LABELS } from '../../../../lib/lab/calibration';
+import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
 
 const idParam = Astro.params.id;
 const id = idParam ? Number(idParam) : Number.NaN;
@@ -48,6 +49,7 @@ const TIMELINE_KIND_LABELS: Record<string, string> = {
   CALIBRATION: 'Calibration',
   RETURNED_TO_SERVICE: 'Returned to Service',
 };
+const qrSvg = detail ? labQrSvg(labQrPayload(detail.equipment.code, `${labSiteOrigin(Astro.url.origin)}/lab/equipment/${detail.equipment.id}`), `QR: ${detail.equipment.code}`) : '';
 ---
 
 <PrintLayout
@@ -58,6 +60,7 @@ const TIMELINE_KIND_LABELS: Record<string, string> = {
   authorization="Equipment record access policy"
   signature="Lifecycle audit metadata"
   sourceReference={detail ? `${detail.equipment.code} · lab_equipment` : 'lab_equipment'}
+  qrSvg={qrSvg}
 >
   {!detail ? (
     <section>

@@ -12,6 +12,7 @@ import {
   getLabCalibrationDetail,
   LAB_CALIBRATION_STATUS_LABELS,
 } from '../../../../lib/lab/calibration';
+import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
 
 const idParam = Astro.params.id;
 const id = idParam ? Number(idParam) : Number.NaN;
@@ -28,6 +29,7 @@ if (validId) {
   }
 }
 const audit = detail ? getLabCalibrationAudit(detail.calibration.equipment_id) : [];
+const qrSvg = detail ? labQrSvg(labQrPayload(`CAL-${detail.calibration.id}`, `${labSiteOrigin(Astro.url.origin)}/lab/calibration/${detail.calibration.id}`), `QR: CAL-${detail.calibration.id}`) : '';
 
 function fmt(value: unknown): string {
   return value == null || String(value).trim() === '' ? '—' : String(value);
@@ -42,6 +44,7 @@ function fmt(value: unknown): string {
   authorization="Recorded-by actor and calibration workflow"
   signature="Calibration approval metadata where recorded"
   sourceReference={detail ? `${detail.equipment_code} · lab_calibrations` : 'lab_calibrations'}
+  qrSvg={qrSvg}
 >
   {!detail ? (
     <section>

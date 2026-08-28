@@ -1,9 +1,10 @@
+---
 // Controlled, chrome-free print view for an SOP/WI. Content comes from the
 // same sanitized detail loader as the reader; workflow and source metadata are
 // printed verbatim without exposing document bodies to export endpoints.
----
 import PrintLayout from '../../../../layouts/PrintLayout.astro';
 import { getLabDocumentDetail, LAB_DOCUMENT_STATUS_LABELS } from '../../../../lib/lab/documents';
+import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
 
 const id = Number(Astro.params.id);
 let detail: ReturnType<typeof getLabDocumentDetail> = null;
@@ -19,6 +20,7 @@ if (Number.isInteger(id) && id > 0) {
 const doc = detail?.document;
 const version = detail?.currentVersion;
 const fmt = (value: unknown) => value == null || String(value).trim() === '' ? '—' : String(value);
+const qrSvg = doc ? labQrSvg(labQrPayload(doc.code, `${labSiteOrigin(Astro.url.origin)}/lab/documents/${doc.id}`), `QR: ${doc.code}`) : '';
 ---
 
 <PrintLayout
@@ -29,6 +31,7 @@ const fmt = (value: unknown) => value == null || String(value).trim() === '' ? '
   authorization="Document reader access policy"
   signature={doc ? `Approval: ${fmt(doc.approver_name)} · ${fmt(doc.approved_at)}` : 'Approval metadata unavailable'}
   sourceReference={doc ? `${doc.code} · lab_documents${version ? ` · version ${version.version}` : ''}` : 'lab_documents'}
+  qrSvg={qrSvg}
 >
   {!doc ? (
     <section><h1 class="print-title">Document not found</h1><p>{loadError ?? 'This controlled document does not exist or is not available to you.'}</p></section>
@@ -61,12 +64,12 @@ const fmt = (value: unknown) => value == null || String(value).trim() === '' ? '
 
       <section class="print-section">
         <h2 class="print-section-title">Controlled Content {version ? `(v${version.version})` : ''}</h2>
-        <article class="print-section-body remark-text" set:html={detail.contentHtml || '<p>No content has been entered.</p>'} />
+        <article class="print-section-body remark-text" set:html={detail!.contentHtml || '<p>No content has been entered.</p>'} />
       </section>
 
-      {detail.equipmentLinks.length > 0 && <section class="print-section"><h2 class="print-section-title">Linked Equipment</h2><div class="print-section-body"><table><thead><tr><th scope="col">Code</th><th scope="col">Name</th></tr></thead><tbody>{detail.equipmentLinks.map((equipment) => <tr><td>{equipment.code}</td><td>{equipment.name}</td></tr>)}</tbody></table></div></section>}
+      {detail!.equipmentLinks.length > 0 && <section class="print-section"><h2 class="print-section-title">Linked Equipment</h2><div class="print-section-body"><table><thead><tr><th scope="col">Code</th><th scope="col">Name</th></tr></thead><tbody>{detail!.equipmentLinks.map((equipment) => <tr><td>{equipment.code}</td><td>{equipment.name}</td></tr>)}</tbody></table></div></section>}
 
-      {detail.auditTimeline.length > 0 && <section class="print-section"><h2 class="print-section-title">Authorization Audit Trail</h2><div class="print-section-body"><table><thead><tr><th scope="col">When</th><th scope="col">Actor</th><th scope="col">Action</th><th scope="col">Detail</th></tr></thead><tbody>{detail.auditTimeline.map((item) => <tr><td>{item.created_at}</td><td>{fmt(item.actor_name)}</td><td>{item.action}</td><td>{fmt(item.note)}</td></tr>)}</tbody></table></div></section>}
+      {detail!.auditTimeline.length > 0 && <section class="print-section"><h2 class="print-section-title">Authorization Audit Trail</h2><div class="print-section-body"><table><thead><tr><th scope="col">When</th><th scope="col">Actor</th><th scope="col">Action</th><th scope="col">Detail</th></tr></thead><tbody>{detail!.auditTimeline.map((item) => <tr><td>{item.created_at}</td><td>{fmt(item.actor_name)}</td><td>{item.action}</td><td>{fmt(item.note)}</td></tr>)}</tbody></table></div></section>}
     </>
   )}
 </PrintLayout>

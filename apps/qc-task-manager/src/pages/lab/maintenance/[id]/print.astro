@@ -9,6 +9,7 @@
 import PrintLayout from '../../../../layouts/PrintLayout.astro';
 import { getLabEquipmentMaintenanceDetail } from '../../../../lib/lab/equipment';
 import { LAB_MAINTENANCE_STATUS_LABELS } from '../../../../lib/lab/policy';
+import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
 
 const idParam = Astro.params.id;
 const id = idParam ? Number(idParam) : Number.NaN;
@@ -30,6 +31,7 @@ function fmt(value: unknown): string {
 }
 const statusLabel = (status: string | null) =>
   status ? (LAB_MAINTENANCE_STATUS_LABELS[status as keyof typeof LAB_MAINTENANCE_STATUS_LABELS] ?? status) : '—';
+const qrSvg = detail ? labQrSvg(labQrPayload(`MAINT-${detail.maintenance.id}`, `${labSiteOrigin(Astro.url.origin)}/lab/maintenance/${detail.maintenance.id}`), `QR: MAINT-${detail.maintenance.id}`) : '';
 ---
 
 <PrintLayout
@@ -40,6 +42,7 @@ const statusLabel = (status: string | null) =>
   authorization="Logged-by actor and maintenance workflow"
   signature="Maintenance completion metadata where recorded"
   sourceReference={detail ? `${detail.equipment_code} · lab_equipment_maintenance` : 'lab_equipment_maintenance'}
+  qrSvg={qrSvg}
 >
   {!detail ? (
     <section>

@@ -9,11 +9,12 @@ import { SLA_STATUSES } from '../lib/sla';
 import { TASK_REPORT_TYPES } from '../lib/reporting/types';
 import { parseReportFilters, parseReportScope } from '../lib/reporting/filters';
 import { resolveReportPreview } from '../lib/reporting/preview';
+import { getUserById } from '../lib/auth';
 
 const user = Astro.locals.user!;
 const selectedType = Astro.url.searchParams.get('report_type') ?? 'monthly-qc';
 const activeUsers = listActiveUsers();
-const currentUser = activeUsers.find((person) => person.id === user.userId);
+const currentUser = getUserById(user.userId);
 const supervisors = activeUsers.filter((person) => person.role === 'supervisor');
 const filters = new URLSearchParams(Astro.url.searchParams);
 filters.delete('report_type');
@@ -109,11 +110,11 @@ const previewFilters = preview && preview.allowed
 
     {/* Step 5 — preview and downloads */}
     {preview?.allowed && (
-      <section class="rounded-xl border border-brand-200 bg-brand-50/40 p-5 shadow-sm" aria-labelledby="report-preview-heading">
+      <section class="rounded-xl border border-slate-300 bg-white p-5 shadow-sm" aria-labelledby="report-preview-heading">
         <h2 id="report-preview-heading" class="text-base font-semibold text-slate-900">Report preview</h2>
         <dl class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Report type</dt><dd class="mt-1 font-medium text-slate-900">{REPORT_CATALOG[selectedType as keyof typeof REPORT_CATALOG]?.label ?? selectedType}</dd></div>
-          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Resolved data scope</dt><dd class="mt-1 font-medium text-slate-900">{preview.scope.kind === 'own_tasks' ? 'Your tasks only' : preview.scope.kind === 'department' ? `Department: ${preview.scope.department}` : 'Organization'}</dd></div>
+          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Resolved data scope</dt><dd class="mt-1 font-medium text-slate-900">{preview.scope.kind === 'own_tasks' ? 'Assigned and created tasks' : preview.scope.kind === 'department' ? `Department: ${preview.scope.department}` : 'Organization'}</dd></div>
           <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Date range</dt><dd class="mt-1 font-medium text-slate-900" dir="ltr">{preview.filters.from ?? 'Any'} → {preview.filters.to ?? 'Any'}</dd></div>
           <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Filters</dt><dd class="mt-1 font-medium text-slate-900">{previewFilters.length ? previewFilters.join(' · ') : 'None'}</dd></div>
           <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Matching rows</dt><dd class="mt-1 font-medium text-slate-900">{preview.matchingRowCount === null ? 'Not calculated for large result' : preview.matchingRowCount}</dd></div>

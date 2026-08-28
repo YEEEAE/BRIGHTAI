@@ -17,8 +17,9 @@ interface Props {
   signature?: string;
   sourceReference?: string;
   orientation?: 'portrait' | 'landscape';
+  qrSvg?: string;
 }
-const { title, backHref = '', recordType = 'Controlled record', recordId = '—', authorization = 'Authorization recorded in the source workflow', signature = 'Electronic signature metadata recorded in the source workflow', sourceReference = 'Source record and audit trail', orientation = 'portrait' } = Astro.props;
+const { title, backHref = '', recordType = 'Controlled record', recordId = '—', authorization = 'Authorization recorded in the source workflow', signature = 'Electronic signature metadata recorded in the source workflow', sourceReference = 'Source record and audit trail', orientation = 'portrait', qrSvg = '' } = Astro.props;
 const printTimestamp = new Date();
 function iso(ts: Date): string {
   const p = (n: number) => String(n).padStart(2, '0');
@@ -86,6 +87,8 @@ const tsText = iso(printTimestamp);
       .print-control-metadata dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; margin: 0; }
       .print-control-metadata dt { color: #4b5563; font-weight: 600; font-size: 10px; }
       .print-control-metadata dd { margin: 2px 0 0; font-size: 11px; }
+      .print-control-qr { float: right; width: 22mm; margin-inline-start: 8mm; }
+      .print-control-qr svg { width: 22mm; height: 22mm; }
 
       /* Screen-only "back" affordance — never printed. */
       .no-print { padding: 10px 0; }
@@ -113,6 +116,7 @@ const tsText = iso(printTimestamp);
     <main class={`print-page ${orientation === 'landscape' ? 'print-landscape' : ''}`}>
       <slot />
       <section class="print-control-metadata" aria-label="Controlled print metadata">
+        {qrSvg && <div class="print-control-qr"><Fragment set:html={qrSvg} /></div>}
         <dl>
           <div><dt>Record type</dt><dd>{recordType}</dd></div>
           <div><dt>Record ID</dt><dd dir="ltr">{recordId}</dd></div>

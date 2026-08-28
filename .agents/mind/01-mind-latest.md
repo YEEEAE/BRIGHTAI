@@ -1,3 +1,40 @@
+## [2026-08-28] — QC-REPORT-PRINT-UX-015: تحسين معاينة التقارير وجودة الطباعة المضبوطة
+
+### تم التنفيذ
+- أضفت معاينة قبل تنزيل التقارير تعرض نوع التقرير، نطاق البيانات المحلولة، الفترة الزمنية، الفلاتر، عدد الصفوف إذا كان حسابه منخفض التكلفة، وسياق المستخدم/الدور.
+- وحّدت مسار التفويض بين المعاينة وتوليد التقرير الفعلي، مع إيقاف حساب الصفوف قبل كشف أي نتيجة لمستخدم غير مصرح له.
+- أبقيت تنزيلات CSV وXLSX وPDF على أزرار الواجهة المشتركة، بدون إضافة إطار PDF جديد.
+- حسّنت `PrintLayout` لطباعة A4 بالاتجاه المناسب، تكرار رؤوس الجداول، منع قص الصفوف الحرجة، وإخفاء التنقل وأزرار الإجراءات في print media.
+- أضفت metadata للطباعة تشمل نوع/معرّف السجل، التفويض، التوقيع أو التوقيع الإلكتروني، المصدر/المرجع، سياق المشاهد، وQR حيث ينطبق.
+- غطّيت صفحات الطباعة للمختبر، المعدات، الصيانة، المعايرة، والمستندات المضبوطة، مع اختبار Playwright فعلي لـ `emulateMedia('print')` وPDF A4.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/reporting/preview.ts`
+- `apps/qc-task-manager/src/pages/reports.astro`
+- `apps/qc-task-manager/src/pages/lab/reports.astro`
+- `apps/qc-task-manager/src/layouts/PrintLayout.astro`
+- `apps/qc-task-manager/src/pages/lab/{calibration,equipment,maintenance,documents}/[id]/print.astro`
+- `apps/qc-task-manager/scripts/{test-report-preview,test-lab-print,e2e-lab-tests,test-manifest}.mjs`
+
+### التحقق
+- `pnpm run test:report-preview` ✅
+- `pnpm run test:dashboard-reports` ✅
+- `pnpm run test:lab-reports` ✅ — 196 ناجحة / 0 فاشلة
+- `pnpm run test:lab-print` ✅ — 68 ناجحة / 0 فاشلة
+- `pnpm typecheck` ✅ — 0 أخطاء، 0 تحذيرات، مع 26 hint غير حاجب
+- `NODE_ENV=production pnpm build` ✅
+- `pnpm test` ✅ — 57 مجموعة canonical بدون فشل
+- `pnpm e2e:acceptance` ✅ — 29/29 suite، و2399+ assertion بدون فشل
+- `git diff --check` ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صارت معاينة التقارير مرتبطة بالتفويض الفعلي، وصارت مخرجات الطباعة المضبوطة A4-friendly مع metadata وQR واختبارات regression وPlaywright print media.
+
+### ملاحظات / مشاكل مفتوحة
+- بقيت تحذيرات البناء المعروفة ورسائل Vite الخاصة بالـ dynamic/static imports، إضافة إلى 26 hint غير حاجب؛ ما فيه أخطاء فاشلة.
+- ما صار commit أو push أو deploy حسب الطلب.
+
 ## [2026-08-28] — QC-FORM-USABILITY-013: تحسين إنتاجية النماذج التشغيلية واختبارات المختبر
 
 ### تم التنفيذ
