@@ -49,6 +49,27 @@ function read(rel) {
   return readFileSync(join(APP_DIR, rel), 'utf8');
 }
 
+// Shared primitives must consume the semantic token layer. Leaf-route migration
+// is intentionally incremental and is not bulk-enforced here.
+for (const rel of [
+  'src/components/ui/AppButton.astro',
+  'src/components/ui/Banner.astro',
+  'src/components/ui/PageHeader.astro',
+  'src/components/ui/Pagination.astro',
+  'src/components/ui/StatusPill.astro',
+  'src/components/ui/formPresets.ts',
+]) {
+  const src = read(rel);
+  ok(
+    /(?:bg|text|border|ring|outline)-(?:surface|content|accent|focus|success|warning|danger|info)/.test(src) ||
+      src.includes('type-page-') ||
+      src.includes('statusTones'),
+    `semantic tokens used by shared primitive: ${rel}`,
+  );
+  ok(!src.includes('focus:ring-'), `canonical focus contract: ${rel}`);
+}
+ok(read('src/styles/global.css').includes('--color-text-primary'), 'semantic token source exists');
+
 // 2. Shared pagination everywhere.
 const PAGINATED = [
   'src/pages/search.astro',

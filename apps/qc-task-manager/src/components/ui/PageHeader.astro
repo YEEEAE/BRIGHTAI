@@ -15,12 +15,12 @@ const { eyebrow, title, description, class: className = '' } = Astro.props;
 <header class:list={['flex flex-wrap items-end justify-between gap-4', className]}>
   <div class="min-w-0">
     {eyebrow && (
-      <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">{eyebrow}</p>
+      <p class="type-page-eyebrow">{eyebrow}</p>
     )}
-    <h1 class:list={['font-semibold tracking-tight text-slate-900', eyebrow ? 'mt-1 text-2xl' : 'text-2xl']}>
+    <h1 class:list={['type-page-title', eyebrow ? 'mt-1' : '']}>
       {title}
     </h1>
-    {description && <p class="mt-1 max-w-3xl text-sm text-slate-600">{description}</p>}
+    {description && <p class="type-page-subtitle">{description}</p>}
   </div>
   <slot name="actions" />
 </header>

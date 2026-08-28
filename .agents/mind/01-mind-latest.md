@@ -1,3 +1,38 @@
+## [2026-08-28] — QC-DESIGN-SYSTEM-FOUNDATION-001: تأسيس طبقة التوكنز والعقود المشتركة
+
+### تم التنفيذ
+- أضفت semantic design tokens للألوان في `global.css` وربطتها بـ Tailwind aliases للـsurface/content/accent/focus وحالات success/warning/danger/info.
+- أضفت vocabulary مقيّدًا للـspacing (`qc-*`)، radius، motion، وأدوار typography المسماة، مع عقد `qc-focus` موحّد.
+- حدّثت `AppButton` و`Banner` و`PageHeader` و`Pagination` و`StatusPill` و`formPresets` لاستهلاك التوكنز semantic بدل قيم المظهر المباشرة، مع الحفاظ على اللغة والشكل الحاليين.
+- أبقيت adapters القديمة مثل `LabActionButton` وstatus badges متوافقة، ووثقت ownership/deprecation وخطة ترحيل تدريجية بدون حذف أو rewrite واسع.
+- أضفت حارسًا داخل `test-ui-consistency` يثبت وجود semantic tokens في الـprimitives ويمنع رجوع `focus:ring-*` داخلها.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/tailwind.config.mjs`
+- `apps/qc-task-manager/src/styles/global.css`
+- `apps/qc-task-manager/src/components/ui/{AppButton,Banner,ContextualHelp,PageHeader,Pagination,StatusPill,formPresets,statusTones}`
+- `apps/qc-task-manager/src/layouts/BaseLayout.astro`
+- `apps/qc-task-manager/docs/{UI-DESIGN-SYSTEM,DESIGN-SYSTEM-MIGRATION}.md`
+- `apps/qc-task-manager/scripts/test-ui-consistency.mjs`
+
+### التحقق
+- `pnpm --filter @brightai/qc-task-manager typecheck` ✅ — 0 أخطاء و0 تحذيرات، 26 hints قديمة.
+- `test:ui-consistency` ✅ — 177/177.
+- `test:badge-contrast` ✅ — كل أزواج WCAG AA ناجحة.
+- `test:architecture` ✅ — 114 route، وarchitecture guard ناجح.
+- `test:responsive-e2e-contract` ✅؛ `test:lab-ux-presentation` ✅ — 14؛ `test:lab-ux-performance` ✅ — 7.
+- `pnpm --filter @brightai/qc-task-manager test` ✅ — 61 canonical suites بدون فشل.
+- `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `git diff --check` ✅؛ ما صار commit أو push.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار عند التطبيق أساس semantic موحّد وعقود واضحة للـprimitives عالية الاستخدام، مع ترحيل آمن تدريجي للشاشات بدل تغيير قواعد المجال أو البنية.
+
+### ملاحظات / مشاكل مفتوحة
+- بقيت الشاشات الطرفية التي تستخدم raw Tailwind classes خارج نطاق الترحيل الأول؛ ترحيلها يكون route-sized حسب الخطة والاختبارات.
+- الفحص اليدوي الفعلي على 360/1440 وقارئ الشاشة يحتاج UAT مستقل؛ اختبارات responsive العقدية نجحت.
+
 ## [2026-08-28] — QC-DB-HYGIENE-025: تغطية ملفات SQLite المتتبعة في تطبيق QC
 
 ### تم التنفيذ

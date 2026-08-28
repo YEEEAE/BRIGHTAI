@@ -37,12 +37,12 @@ if (totalPages > 1) {
       {page > 1 ? (
         <a
           href={hrefFor(page - 1)}
-          class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+          class="rounded-qc-sm border border-border-strong bg-surface px-3 py-1.5 text-sm font-medium text-content-secondary hover:bg-surface-muted qc-focus"
         >
           ← Prev
         </a>
       ) : (
-        <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-500">
+        <span class="rounded-qc-sm border border-border bg-surface-muted px-3 py-1.5 text-sm font-medium text-content-muted">
           ← Prev
         </span>
       )}
@@ -51,10 +51,10 @@ if (totalPages > 1) {
           href={hrefFor(p)}
           aria-current={p === page ? 'page' : undefined}
           class:list={[
-            'rounded-md px-3 py-1.5 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
+            'rounded-qc-sm px-3 py-1.5 text-sm font-medium qc-focus',
             p === page
-              ? 'bg-brand-600 text-white'
-              : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50',
+              ? 'bg-accent text-content-inverse'
+              : 'border border-border-strong bg-surface text-content-secondary hover:bg-surface-muted',
           ]}
         >
           {p}
@@ -63,12 +63,12 @@ if (totalPages > 1) {
       {page < totalPages ? (
         <a
           href={hrefFor(page + 1)}
-          class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+          class="rounded-qc-sm border border-border-strong bg-surface px-3 py-1.5 text-sm font-medium text-content-secondary hover:bg-surface-muted qc-focus"
         >
           Next →
         </a>
       ) : (
-        <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-500">
+        <span class="rounded-qc-sm border border-border bg-surface-muted px-3 py-1.5 text-sm font-medium text-content-muted">
           Next →
         </span>
       )}

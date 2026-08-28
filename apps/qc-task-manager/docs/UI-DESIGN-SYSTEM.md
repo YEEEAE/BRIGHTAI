@@ -11,6 +11,29 @@ calm by default, problems prominent when they exist.
 
 ## 1. Foundations
 
+### 1.0 Semantic token contract
+
+The visual language has three tiers: the Tailwind palette is the primitive tier, CSS custom
+properties in `src/styles/global.css` are the semantic tier, and component class maps are the
+component tier. New or edited shared components use semantic aliases (`surface-*`, `content-*`,
+`border-*`, `accent`, `focus`, and status roles) rather than applying raw palette values.
+
+| Role | Tailwind alias | Current meaning |
+| --- | --- | --- |
+| Page / surface / muted surface | `surface-page` / `surface` / `surface-muted` | Canvas, cards, quiet fills |
+| Border / strong border | `border` / `border-strong` | Default and emphasized separation |
+| Primary / secondary / muted text | `content` / `content-secondary` / `content-muted` | Text hierarchy and metadata |
+| Accent / focus | `accent`, `accent-hover`, `focus` | Primary action, links, keyboard focus |
+| Status roles | `success-*`, `warning-*`, `danger-*`, `info-*` | State communication |
+
+Spacing uses the constrained `qc-*` scale (`qc-1` = 4px through `qc-16` = 64px), radius
+uses `qc-sm`, `qc-md`, `qc-lg`, and `qc-pill`, and motion uses `qc-fast` / `qc-standard`.
+Typography roles are available as `.type-page-title`, `.type-page-eyebrow`,
+`.type-page-subtitle`, `.type-section-heading`, `.type-card-heading`, `.type-body`,
+`.type-secondary`, `.type-caption`, and `.type-data-id`; `qc-focus` is the shared keyboard
+focus contract. Existing Tailwind utilities remain supported for compatibility while routes
+are migrated incrementally.
+
 ### 1.1 Typography scale
 
 | Token | Classes | Used for |
@@ -117,6 +140,11 @@ Owns: eyebrow + H1 (`text-2xl`) + optional description + right-aligned responsiv
 `<header>` blocks. Breadcrumbs render above it (`Breadcrumbs.astro`, lab pattern) — detail/register
 pages inside a section must include them.
 
+Migration note: older hand-rolled headings remain compatible while routes are migrated in
+risk-ranked batches. New top-level screens use `PageHeader`; auth, print, and special
+detail/error headers are documented exceptions. Do not delete legacy markup until its route
+has adopted the primitive and its route-level tests pass.
+
 ### 3.2 Buttons (`AppButton`)
 
 | Variant | Look | Use for |
@@ -196,6 +224,14 @@ shrink text/buttons to force fit.
   ("13 documents found (filtered — clear all)").
 - Primary action right-most in action rows; destructive controls never live inside forms that
   also carry a primary submit.
+
+### 3.9 Ownership and deprecation
+
+`AppButton`, `StatusPill`, `Banner`, `OperationalState`, `PageHeader`, `Pagination`, and
+`ContextualHelp` are the canonical shared primitives. `LabActionButton`, `StatusBadge`,
+`QcStatusBadge`, and `EmptyState` remain compatibility/domain adapters and must consume the
+same token language. Legacy equivalents are deprecated by documentation first, migrated by
+route, and removed only after their consumers and consistency checks are gone.
 
 ---
 

@@ -1,4 +1,60 @@
 /*
+ * QC semantic design tokens.
+ *
+ * Palette values intentionally mirror the active UI system. Components use
+ * semantic Tailwind aliases (surface, content, accent, and status roles),
+ * while this layer remains the single place to change the visual language.
+ */
+:root {
+  --color-surface-page: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #ffffff;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-soft: #eff6ff;
+  --color-focus: #2563eb;
+  --color-success: #047857;
+  --color-success-soft: #ecfdf5;
+  --color-success-border: #a7f3d0;
+  --color-warning: #c2410c;
+  --color-warning-soft: #fff7ed;
+  --color-warning-border: #fed7aa;
+  --color-danger: #b91c1c;
+  --color-danger-hover: #991b1b;
+  --color-danger-soft: #fef2f2;
+  --color-danger-border: #fecaca;
+  --color-info: #0369a1;
+  --color-info-soft: #f0f9ff;
+  --color-info-border: #bae6fd;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-pill: 9999px;
+  --motion-fast: 120ms;
+  --motion-standard: 180ms;
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Named type roles keep hierarchy stable when the typeface or scale changes. */
+.type-page-title { @apply text-2xl font-semibold tracking-tight text-content; }
+.type-page-eyebrow { @apply text-xs font-semibold uppercase tracking-wide text-accent; }
+.type-page-subtitle { @apply mt-1 max-w-3xl text-sm text-content-secondary; }
+.type-section-heading { @apply text-base font-semibold text-content; }
+.type-card-heading { @apply text-sm font-semibold text-content; }
+.type-body { @apply text-sm text-content; }
+.type-secondary { @apply text-sm text-content-secondary; }
+.type-caption { @apply text-xs text-content-muted; }
+.type-data-id { @apply text-sm font-medium tabular-nums text-content; }
+.qc-focus { @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus; }
+
+/*
  * Global accessibility styles (WCAG 2.2 AA basics).
  *
  * Bundled by Astro as a same-origin stylesheet (/_astro/*.css), which keeps
@@ -39,15 +95,15 @@
   white-space: normal;
   padding: 0.5rem 0.875rem;
   border-radius: 0.5rem;
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
   box-shadow:
     0 10px 15px -3px rgb(15 23 42 / 0.15),
     0 4px 6px -4px rgb(15 23 42 / 0.15);
-  outline: 2px solid #2563eb; /* brand-600 */
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
