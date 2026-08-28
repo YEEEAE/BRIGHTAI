@@ -330,7 +330,7 @@ const findingId = Number(db.prepare("SELECT id FROM qc_findings WHERE finding_nu
   ok(linkedText.includes('NCR-E2E-0001'), 'links: linked finding number shown');
   ok(linkedText.includes('burst on S03'), 'links: note shown');
   ok(linkedText.includes('Unlink'), 'links: unlink affordance shown');
-  const linkHref = await page.locator('a:has-text("NCR-E2E-0001")').getAttribute('href');
+  const linkHref = await page.getByRole('link', { name: 'NCR-E2E-0001', exact: true }).getAttribute('href');
   ok(linkHref === `/findings/${findingId}`, 'links: link targets the existing finding page');
   const linkRow = db.prepare('SELECT COUNT(*) AS n FROM lab_test_findings WHERE test_id = 2 AND finding_id = ?').get(findingId).n;
   ok(Number(linkRow) === 1, 'links: lab_test_findings row persisted');

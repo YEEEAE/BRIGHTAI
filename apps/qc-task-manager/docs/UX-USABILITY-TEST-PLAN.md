@@ -1,5 +1,11 @@
 # QC Task Manager — Usability Test Plan
 
+For the complete role-separated research program, including participant
+criteria, the full task matrix, interview/survey instruments, observation
+template, severity model, and baseline/comparison readout, use
+[`UX-RESEARCH-PROGRAM.md`](UX-RESEARCH-PROGRAM.md). This document remains the
+short operational summary and pilot checklist.
+
 ## Objectives
 
 1. Can each role identify the next operational action without scanning low-priority analytics?

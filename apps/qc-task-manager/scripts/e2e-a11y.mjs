@@ -10,7 +10,7 @@
 //   1. Skip link — the first Tab on any page focuses it (focus-visible ring
 //      verified); Enter jumps to #main; the next Tab reaches the navbar.
 //   2. Notification dropdown — Enter opens it and focus moves into the menu;
-//      Tab wraps inside the open menu (focus trap); Escape closes it and
+//      Tab enters the open disclosure; Escape closes it and
 //      returns focus to the bell trigger.
 //   3. Completion wizard — opens with focus inside, announces a programmatically
 //      associated name (aria-labelledby → real heading), traps Tab, returns
@@ -302,7 +302,7 @@ try {
   });
   ok(navRing, '1f. navbar links show a visible focus ring');
 
-  // ─────────────────── 2. Notification dropdown: focus in, trap, Escape back ───────────────────
+  // ─────────────────── 2. Notification disclosure: native Tab flow, Escape back ───────────────────
   console.log('\n── Scenario 2: notification dropdown keyboard behaviour ──');
   const bell = page.locator('button[aria-label^="Notifications"]');
   await bell.focus();
@@ -313,22 +313,9 @@ try {
 
   await page.keyboard.press('Enter');
   await page.waitForSelector('#notification-dropdown', { state: 'visible', timeout: 5_000 });
-  ok(await waitFocusInside(page, '#notification-dropdown'), '2b. opening the dropdown moves focus into it');
-
-  let trapped = true;
-  for (let i = 0; i < 8; i += 1) {
-    await page.keyboard.press('Tab');
-    const inside = await page.evaluate(() => {
-      const el = document.activeElement;
-      const menu = document.getElementById('notification-dropdown');
-      return !!el && !!menu && menu.contains(el);
-    });
-    if (!inside) {
-      trapped = false;
-      break;
-    }
-  }
-  ok(trapped, '2c. Tab wraps inside the open dropdown (focus trap)');
+  ok(await page.evaluate(() => document.activeElement === document.querySelector('button[aria-label^="Notifications"]')), '2b. opening the disclosure keeps focus on its trigger');
+  await page.keyboard.press('Tab');
+  ok(await waitFocusInside(page, '#notification-dropdown'), '2c. Tab enters the open disclosure naturally');
 
   await page.keyboard.press('Escape');
   await page.waitForSelector('#notification-dropdown', { state: 'detached', timeout: 5_000 });

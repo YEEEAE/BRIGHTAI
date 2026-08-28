@@ -1,3 +1,33 @@
+## [2026-08-28] — QC-UX-RESEARCH-PROGRAM-001: تجهيز برنامج أبحاث UX تشغيلي حسب الأدوار
+
+### تم التنفيذ
+- أنشأت برنامج بحث موحّد لتطبيق `apps/qc-task-manager` يغطي أسئلة البحث، معايير المشاركين، السكربت، السيناريوهات، المقاييس، نموذج الملاحظة، synthesis، severity، وimpact readout.
+- فصلت شرائح Employee وSupervisor وManager وLab operator/reviewer وAdmin، مع هدف 5–8 مشاركين لكل شريحة عند الحاجة، ومنعت خلط النتائج بين الأدوار.
+- غطيت رحلات create/save/resume/submit/review/reject-rework/approve/search/investigate failure/calibration/report-export، وربطت كل مهمة بنتيجة قابلة للملاحظة بدون تغيير business rules.
+- أضفت SEQ بعد كل مهمة وSUS القياسي بعد الجلسة، مع تعريف task success/time/errors/assistance/recovery وقواعد التقرير حسب الدور.
+- ثبّتُّ أن النتائج البشرية وbaseline/comparison غير موجودة قبل تنفيذ الجلسات، وأن الاختبارات الآلية لا تكفي لإعلان UX success؛ baseline telemetry يستمر وفق عقد الخصوصية ومدته 14 يومًا.
+- ربطت الخطة المختصرة الحالية بالبرنامج الكامل، مع بقاء `PILOT-UAT.md` و`UX-MEASUREMENT.md` مصادر تشغيلية مكملة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/UX-RESEARCH-PROGRAM.md`
+- `apps/qc-task-manager/docs/UX-USABILITY-TEST-PLAN.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager run test:lab-ux-presentation` ✅ — 14/14.
+- `pnpm --dir apps/qc-task-manager run test:ux-telemetry` ✅.
+- `git -c core.fsmonitor=false diff --check` ✅.
+- لم يُشغّل build/typecheck: التغيير وثائقي فقط ولا يلمس كود التطبيق.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** برنامج البحث جاهز للتنفيذ الفعلي، بدون اختلاق نتائج أو إعلان نجاح UX قبل جلسات المشاركين وتحليلها حسب الدور.
+
+### ملاحظات / مشاكل مفتوحة
+- UAT البشري، VoiceOver، baseline الفعلي، ونتائج المشاركين ما زالت مطلوبة ولم تُنفّذ في هذه الدفعة.
+- بقي حذف غير متعلق ظاهرًا في `audit/brightai-sa-keyword-research.csv` كما هو ولم ألمسه.
+- لم يحدث commit أو push أو deploy.
+
 ## [2026-08-28] — إنشاء إضافة BRIGHTAI SEO لأبحاث السعودية وGEO
 
 ### تم التنفيذ
@@ -2459,4 +2489,64 @@ skills_ready: 7---
 
 ### ملاحظات / مشاكل مفتوحة
 - يلزم UAT بشري وVoiceOver واختبار tree testing للتأكد من أن تسميات الأدوار والخطوات التالية مفهومة لفرق QC.
+- ما صار commit أو push أو deploy.
+## [2026-08-28] — إعادة بناء بحث الكلمات السعودية لـBRIGHTAI وتجهيز DataForSEO
+
+### تم التنفيذ
+- حللت الصفحات الأساسية محليًا: الرئيسية، `about`, `services`, `solutions`, صفحات الحلول، `trust`, `contact`, `blog`, `pricing`, وتقييم جاهزية حوكمة AI.
+- ثبّتُّ محاور البحث حسب المحتوى الفعلي: حوكمة AI، AI Firewall، PDPL، NCA ECC، SDAIA، ISO 42001، التدقيق، الموافقة البشرية، الأدلة، والقطاعات السعودية.
+- أزلت محتوى ملف الكلمات السابق وأعدت إنشاء CSV من الصفر بـ48 فرصة: 40 أولوية `1` و41 كلمة `long_tail`، مع ربط كل كلمة بصفحة هدف.
+- أضفت أعمدة اللغة والموقع ومصدر القياس وحالة DataForSEO وملاحظات SERP وطريقة السيطرة، وفصلت التقدير الاستراتيجي عن القياسات الفعلية.
+- لم أختلق `monthly_searches_sa` أو `competition` أو `cpc_sar`: بقيت `pending_credentials` لأن أداة DataForSEO غير قابلة للاستدعاء في الجلسة ولا توجد اعتمادات في البيئة.
+
+### الملفات المتأثرة
+- `audit/brightai-sa-keyword-research.csv`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- فحص CSV ✅ — 48 صف بيانات، 16 عمودًا، وصفر صفوف بعرض غير صحيح.
+- حالات DataForSEO ✅ — كل الصفوف `pending_credentials` بدون أرقام مختلقة.
+- فحص المسارات ✅ — كل `target_url` مبني على النطاق المعتمد `https://brightai.live`.
+- `git diff --check` — لم يُشغّل بعد هذا السجل.
+- DataForSEO API ⚠️ — لم يُنفّذ؛ خادم MCP موجود في `.codex/config.toml` لكن الموصل غير ظاهر في الجلسة والاعتمادات غير موجودة.
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** تحليل الصفحات وملف CSV الاستراتيجي جاهزان، أما ترتيب أعلى الكلمات بأرقام البحث السعودية الفعلية فينتظر إعادة تشغيل جلسة MCP مع اعتماد DataForSEO.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد رقم موثوق حاليًا لأعلى حجم بحث؛ الأولوية الحالية مبنية على ملاءمة الأعمال ووضوح النية وفجوة المحتوى، وليست بديلًا عن قياس DataForSEO.
+- لم يحدث commit أو push أو deploy.
+## [2026-08-28] — QC-FINAL-DESIGN-QA-GOVERNANCE-001: تدقيق التصميم النهائي وحوكمة منع الانحراف
+
+### تم التنفيذ
+- راجعت النظام كاملًا على محاور design system وUI/UX/IA والتفاعل والنسخ والنماذج والـ data visualisation والوصولية والإرجونومكس والحركة والأمان والاستجابة وسلامة نطاق QC.
+- وثّقت النتيجة في `apps/qc-task-manager/docs/FINAL-DESIGN-QA-GOVERNANCE.md` كـ conditional pass هندسي، مع فصل واضح بين أدلة الاختبارات وبين UX البشري غير المنفذ.
+- أصلحت assertion قديمًا في `e2e-task-shared.mjs` وassertions قديمة في `e2e-a11y.mjs` لتطابق سلوك native disclosure المقصود لقائمة الإشعارات.
+- أصلحت selector قديمًا في `e2e-lab-tests.mjs` بعد ظهور رابط الـ finding مرتين بشكل صحيح في واجهة التفاصيل، وصار الاختبار يحدد الرابط exact.
+- ثبّتُّ قواعد حوكمة مستقبلية تمنع raw status/button drift، وتلزم reduced-motion، وتحافظ على RBAC ومسارات QC اليدوية والمعلومات التشغيلية.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/FINAL-DESIGN-QA-GOVERNANCE.md`
+- `apps/qc-task-manager/scripts/e2e-task-shared.mjs`
+- `apps/qc-task-manager/scripts/e2e-a11y.mjs`
+- `apps/qc-task-manager/scripts/e2e-lab-tests.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager run test` ✅ — 65/65 canonical suites.
+- `pnpm --dir apps/qc-task-manager run typecheck` ✅ — 0 errors و0 warnings.
+- `NODE_ENV=production pnpm --dir apps/qc-task-manager run build` ✅ — تحذيرات Vite المعروفة فقط بخصوص dynamic imports.
+- UI consistency ✅ — 192/192؛ manifest ✅ — 65 canonical و28 E2E؛ architecture ✅؛ badge contrast ✅؛ responsive contract ✅؛ lab presentation ✅ — 14/14؛ lab performance ✅ — 9/9.
+- `pnpm --dir apps/qc-task-manager run e2e:acceptance` ✅ — 30/30 suites، 3,047+ assertions، responsive 648/0، وrestart persistence ناجح.
+- security hygiene ✅ بعد تعطيل استعلام Git fsmonitor المعطوب محليًا؛ `git -c core.fsmonitor=false diff --check` ✅.
+
+### النتيجة
+- **الحالة:** جزئي / conditional pass
+- **مختصر:** كل الـ engineering gates المتاحة وacceptance صارت خضراء، لكن ما زال اعتماد design system غير مكتمل في بعض detail/admin routes، وما فيه دليل UX بشري فعلي بعد.
+
+### ملاحظات / مشاكل مفتوحة
+- مطلوب UAT حسب الدور، VoiceOver، keyboard review بشري، اختبار 320px و200% zoom فعلي، وأجهزة حقيقية مع 4G قبل إعلان human UX sign-off.
+- بقيت raw presentation styles/status maps في `findings/[id]` وبعض صفحات lab/admin كدين تصميمي P1.
+- تحذيرات Vite الخاصة بـ `db.ts` و`validation.ts` مو فشل build لكنها تحتاج متابعة أداء مستقلة.
 - ما صار commit أو push أو deploy.

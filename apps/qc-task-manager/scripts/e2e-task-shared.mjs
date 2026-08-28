@@ -927,7 +927,7 @@ try {
   await empPage.goto(`${BASE}/employee`);
   const notificationBell = empPage.locator('button[aria-label^="Notifications"]');
   ok((await notificationBell.count()) === 1, '10h. SSR renders the notifications control');
-  ok((await notificationBell.getAttribute('aria-haspopup')) === 'true', '10h. notifications control exposes aria-haspopup');
+  ok((await notificationBell.getAttribute('aria-haspopup')) === null, '10h. notifications control uses native disclosure semantics');
   ok((await notificationBell.getAttribute('aria-expanded')) === 'false', '10h. notifications control starts collapsed');
   ok((await empPage.locator('a[href^="/tasks/"]').count()) >= 1, '10h. SSR task links are present for notifications');
 } catch (err) {
