@@ -1,3 +1,39 @@
+## [2026-08-28] — QC-OBSERVABILITY-016: قابلية تتبع آمنة وحالات أخطاء موحّدة لتجربة الشركة التجريبية
+
+### تم التنفيذ
+- أضفت توليد request/correlation ID آمنًا لكل طلب، مع قبول معرف وارد بصيغة آمنة أو استبداله بـ UUID، وإرجاعه في `X-Request-ID` وفي أخطاء 500.
+- أضفت سجلًا خادميًا منظمًا كسطر JSON يحوي timestamp و`request_id` وmethod وroute والفاعل/الدور عند توفرهما وحالة HTTP والمدة وكود خطأ آمن، بدون تسجيل payload أو أسرار أو رسائل استثناء.
+- أضفت أكواد أخطاء ثابتة `AUTH` و`FORBIDDEN` و`VALIDATION` و`NOT_FOUND` و`CONFLICT` و`STALE_CHANGE` و`DB` و`REPORT` و`UPLOAD` إلى استجابات API المشتركة.
+- منعت مسارات مراجعة/سحب طلبات التغيير من تسريب نصوص الاستثناء أو تفاصيل SQLite، وأبقيت رسالة المستخدم عامة مع code آمن.
+- أضفت `OperationalState.astro` كلغة موحدة لحالات عدم السجلات، عدم نتائج البحث، المنع، الخطأ، التعارض، السجل القديم، النجاح والتحذير، وكل حالة تقترح إجراءً تاليًا؛ وربطت به بحث المختبر.
+- وسّعت FlashNotice لدعم حالة التحذير.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/observability.ts`
+- `apps/qc-task-manager/src/middleware.ts`
+- `apps/qc-task-manager/src/lib/api-security.ts`
+- `apps/qc-task-manager/src/components/OperationalState.astro`
+- `apps/qc-task-manager/src/pages/api/lab/change-requests/[id]/{review,withdraw}.ts`
+- `apps/qc-task-manager/src/pages/lab/search.astro`
+- `apps/qc-task-manager/scripts/test-observability.mjs`
+- `apps/qc-task-manager/{package.json,scripts/test-manifest.mjs,src/env.d.ts}`
+
+### التحقق
+- `test-observability` ✅ — request ID، sanitization، safe codes/messages، structured logs، وكل حالات UI.
+- `test-manifest-guard` ✅ — 58 suite canonical.
+- `test-request-security` ✅ — 56/56.
+- `astro check` ✅ — 0 أخطاء، 0 warnings، 26 hints قديمة.
+- `astro build` ✅ — Complete؛ بقيت تحذيرات Vite المعروفة الخاصة بالاستيرادات الديناميكية.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار عند التطبيق request ID قابل للتتبع وسجلات تشغيلية آمنة، مع أكواد أخطاء مستقرة ورسائل لا تكشف SQLite أو الأسرار، وحالات UI موحدة قابلة للتصرف.
+
+### ملاحظات / مشاكل مفتوحة
+- التشغيل باستخدام `pnpm` تعذر في البيئة بسبب محاولة Corepack الكتابة إلى cache خارج مساحة المشروع؛ تم تشغيل الاختبارات والبناء مباشرة عبر Node و`node_modules/.bin/astro`.
+- ما صار commit أو push أو deploy حسب الطلب.
+
 ## [2026-08-28] — QC-REPORT-PRINT-UX-015: تحسين معاينة التقارير وجودة الطباعة المضبوطة
 
 ### تم التنفيذ

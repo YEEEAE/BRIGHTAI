@@ -7,11 +7,11 @@ import type { AstroCookies } from 'astro';
 const FLASH_COOKIE = 'qc_flash';
 
 export interface Flash {
-  type: 'success' | 'error' | 'info';
+  type: 'success' | 'error' | 'info' | 'warning';
   message: string;
 }
 
-const VALID_TYPES = new Set(['success', 'error', 'info']);
+const VALID_TYPES = new Set(['success', 'error', 'info', 'warning']);
 
 /** Anything that exposes the Astro cookies API (context, page, component). */
 interface CookieJar {

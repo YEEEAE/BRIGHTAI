@@ -42,6 +42,7 @@ import { handleLabDocumentCreatePost, handleLabDocumentEditPost, handleLabDocume
 import { handleLabAcknowledgementAssignPost, handleLabAcknowledgementPost } from './lib/lab/acknowledgements';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 import { handleLabChangeRequestSubmitPost, handleLabChangeRequestReviewPost } from './lib/lab/changeRequests';
+import { createRequestId, createRequestLog, getSafeErrorCode, logRequest, safeErrorMessage } from './lib/observability';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health']);
 
@@ -106,6 +107,7 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   // Always attach the resolved user to locals (null when anonymous), so public
   // pages (e.g. "/") can redirect signed-in users to their role home.
   context.locals.user = user;
+  context.locals.requestId = context.locals.requestId ?? createRequestId(context.request.headers.get('x-request-id'));
 
   const requestSecurity = requireRequestSecurity(context);
   if (requestSecurity) return requestSecurity;
@@ -364,6 +366,19 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
 }
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const response = await handle(context, next);
-  return withSecurityHeaders(response);
+  const startedAt = performance.now();
+  const requestId = createRequestId(context.request.headers.get('x-request-id'));
+  context.locals.requestId = requestId;
+  let response: Response;
+  let errorCode = null;
+  try {
+    response = await handle(context, next);
+  } catch (error) {
+    errorCode = getSafeErrorCode(error);
+    response = new Response(JSON.stringify({ ok: false, error: safeErrorMessage(error), code: errorCode, request_id: requestId }), { status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
+  }
+  response = withSecurityHeaders(response);
+  response.headers.set('X-Request-ID', requestId);
+  logRequest(createRequestLog({ requestId, method: context.request.method, route: context.url.pathname, actorId: context.locals.user?.userId, role: context.locals.user?.role, status: response.status, durationMs: performance.now() - startedAt, errorCode }));
+  return response;
 });

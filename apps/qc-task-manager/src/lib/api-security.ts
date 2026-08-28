@@ -5,14 +5,15 @@
 import type { APIContext } from 'astro';
 import { getCurrentUser } from './session';
 import type { User } from './types';
+import type { SafeErrorCode } from './observability';
 
 /** Multipart overhead is allowed around the existing 10 MB file limit. */
 export const MAX_REQUEST_BODY_BYTES = 12 * 1024 * 1024;
 const MAX_MUTATIONS_PER_MINUTE = 120;
 const mutationBuckets = new Map<string, { startedAt: number; count: number }>();
 
-export function apiJsonError(error: string, status: number): Response {
-  return new Response(JSON.stringify({ ok: false, error }), {
+export function apiJsonError(error: string, status: number, code: SafeErrorCode = status === 403 ? 'FORBIDDEN' : status === 401 ? 'AUTH' : status === 404 ? 'NOT_FOUND' : status === 409 ? 'CONFLICT' : status >= 500 ? 'DB' : 'VALIDATION'): Response {
+  return new Response(JSON.stringify({ ok: false, error, code }), {
     status,
     headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
   });

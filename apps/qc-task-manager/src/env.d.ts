@@ -27,5 +27,6 @@ interface ImportMeta {
 declare namespace App {
   interface Locals {
     user: import('./lib/types').SessionData | null;
+    requestId: string;
   }
 }

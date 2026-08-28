@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
+import { apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
+import { getSafeErrorCode } from '../../../../../lib/observability';
 import { parseFormData, parsePositiveId, labChangeRequestReviewSchema } from '../../../../../lib/validation';
 import { canReviewLabChangeRequests } from '../../../../../lib/permissions';
 import { approveChangeRequest, rejectChangeRequest } from '../../../../../lib/lab/changeRequests';
@@ -12,12 +13,12 @@ export const POST: APIRoute = async (context) => {
   const auth = requireApiUser(context);
   if (isResponse(auth)) return auth;
   if (!canReviewLabChangeRequests(auth.role)) {
-    return new Response(JSON.stringify({ ok: false, error: 'Manager or administrator review is required.' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+    return apiJsonError('Manager or administrator review is required.', 403);
   }
   const id = parsePositiveId(context.params.id);
-  if (id == null) return new Response(JSON.stringify({ ok: false, error: 'Invalid change request id.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+  if (id == null) return apiJsonError('Invalid change request id.', 400);
   const parsed = parseFormData(labChangeRequestReviewSchema, await context.request.formData());
-  if (!parsed.ok) return new Response(JSON.stringify({ ok: false, error: parsed.error }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+  if (!parsed.ok) return apiJsonError(parsed.error, 400);
   try {
     const request = parsed.data.action === 'approve'
       ? approveChangeRequest(id, { id: auth.id, role: auth.role }, parsed.data.review_note)
@@ -26,9 +27,10 @@ export const POST: APIRoute = async (context) => {
       setFlash(context, 'success', `Change request ${parsed.data.action}d.`);
       return context.redirect(`/lab/change-requests/${request.id}`);
     }
-    return new Response(JSON.stringify({ ok: true, request }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ ok: true, request }), { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Could not review the change request.';
-    return new Response(JSON.stringify({ ok: false, error: message }), { status: message.includes('not found') ? 404 : 409, headers: { 'Content-Type': 'application/json' } });
+    const status = message.includes('not found') ? 404 : 409;
+    return apiJsonError(status === 404 ? 'Change request not found.' : 'The change request could not be reviewed in its current state.', status, getSafeErrorCode(error));
   }
 };

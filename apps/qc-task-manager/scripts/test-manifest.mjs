@@ -66,6 +66,7 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:lab-reference-panel',
   'test:lab-security',
   'test:request-security',
+  'test:observability',
   'test:lab-esignature',
   'test:lab-suggest',
   'test:lab-search',
