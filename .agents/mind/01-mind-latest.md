@@ -1,3 +1,39 @@
+## [2026-08-28] — QC-ADVANCED-FORM-UX-001: رحلة أقسام آمنة ومراجعة صريحة لنموذج اختبارات المختبر
+
+### تم التنفيذ
+- حسّنت `LabTestForm` بعقد حالات حفظ صريحة (`saved`, `unsaved`, `saving`, `failed`) مع رسالة حالة live واضحة وحماية فقدان التعديلات القائمة.
+- صححت تنقل الأقسام ليطابق ترتيب النموذج الفعلي من 1 إلى 8، ويعرض نص الحالة `Not started` / `In progress` / `Complete` / `Error` بدل الاعتماد على رمز أو لون فقط.
+- أضفت خطوة مراجعة قابلة للتركيز قبل إرسال اختبار عالي الأثر إلى طابور المراجعة، مع ملخص المنتج وعدد العينات والنتيجة، وإرجاع التركيز إلى زر الإرسال عند اختيار `Keep editing`.
+- حسّنت ملخص أخطاء الإرسال ليكون focusable، وربطت أخطاء الحقول المطلوبة المجاورة بالـ controls عبر `aria-describedby`، وجعلت رابط أخطاء شبكة العينات يركز أول control قابل للاستخدام داخل القسم.
+- ثبّتُّ أن تغيير Connector Type يسجل أن المستخدم لمس الحقل، فلا يعيد Product Master الكتابة فوق اختياره.
+- حدّثت اختبار E2E لنموذج المختبر ليؤكد خطوة `Confirm and send for review`، وأضافت حراسة form productivity لعقد المراجعة وحالات الحفظ وحالات الأقسام.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/lab/LabTestForm.tsx`
+- `apps/qc-task-manager/scripts/e2e-lab-form.mjs`
+- `apps/qc-task-manager/scripts/test-form-productivity.mjs`
+
+### التحقق
+- `pnpm run test:form-productivity` ✅ — 20/20.
+- `pnpm run test:lab-form` ✅ — 72/72.
+- `pnpm run test:lab-ux-presentation` ✅ — 14/14.
+- `pnpm run test:ui-consistency` ✅ — 181/181.
+- `pnpm run test:responsive-e2e-contract` ✅.
+- `pnpm run typecheck` ✅ — 0 errors، 0 warnings، 26 hints غير حاجبة.
+- `NODE_ENV=production pnpm run build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `pnpm run e2e:acceptance` ✅ — 30/30 suite، 3047+ assertion، و`lab-form` 141/0 وresponsive 648/0 وa11y 86/0.
+- `pnpm test` ✅ — 62 canonical suites، بدون فشل.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار نموذج اختبار المختبر يوجّه المستخدم عبر أقسام صحيحة، يحافظ على سياقه عند الخطأ، ويطلب تأكيدًا صريحًا قبل الإرسال، بدون تغيير قواعد المجال أو RBAC أو CSRF أو schema.
+
+### ملاحظات / مشاكل مفتوحة
+- مهارة `zeigarnik-effect` غير متاحة في جلسة التنفيذ؛ تم تطبيق مبادئ chunking/progressive disclosure من المهارات المتاحة.
+- ما زال فحص UAT البشري الفعلي على أجهزة حقيقية وVoiceOver مطلوبًا حسب سجل المشروع؛ الاختبارات الآلية لا تستبدله.
+- لم يحدث commit أو push أو deploy.
+
 ## [2026-08-28] — QC-CORE-UI-CONSOLIDATION-001: توحيد headers/actions/alerts/empty states في الأسطح عالية الاستخدام
 
 ### تم التنفيذ

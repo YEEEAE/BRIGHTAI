@@ -202,7 +202,8 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
     await page2.selectOption(`#sample_${n}_result`, { label: 'PASS' });
   }
   await page2.check('input[name="final_result"][value="PASS"]');
-  await page2.click('button:has-text("Submit")');
+  await page2.getByRole('button', { name: 'Submit for Review' }).click();
+  await page2.getByRole('button', { name: 'Confirm and send for review' }).click();
   await page2.waitForURL((u) => u.pathname === '/lab', { timeout: 10_000 });
   const eight = db.prepare("SELECT * FROM lab_test_records WHERE lot_number='LOT-E2E-8'").get();
   ok(eight != null, 'count-8: row created');
@@ -219,7 +220,7 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await openForm(page, 'air');
   await page.fill('#product_description', 'Fixture Connector');
   // Deliberately leave required fields empty and click Submit.
-  await page.click('button:has-text("Submit")');
+  await page.getByRole('button', { name: 'Submit for Review' }).click();
   await page.waitForTimeout(300);
   ok(page.url().includes('/lab/tests/new'), 'incomplete submit stays on the form page');
   const missing = await page.locator('[role="alert"]:has-text("could not be submitted")').innerText();
@@ -239,7 +240,8 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
     await page2.selectOption(`#sample_${n}_result`, { label: 'PASS' });
   }
   await page2.check('input[name="final_result"][value="PASS"]');
-  await page2.click('button:has-text("Submit")');
+  await page2.getByRole('button', { name: 'Submit for Review' }).click();
+  await page2.getByRole('button', { name: 'Confirm and send for review' }).click();
   await page2.waitForURL((u) => u.pathname === '/lab', { timeout: 10_000 });
   const submitted = db.prepare("SELECT * FROM lab_test_records WHERE lot_number='LOT-E2E-SUB'").get();
   ok(submitted.status === 'SUBMITTED', 'submit: status SUBMITTED');
@@ -326,7 +328,8 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   }
   ok(await batch.locator('#sample_12_part_name').count() === 1, '12-sample: grid expands to twelve rows');
   await batch.check('input[name="final_result"][value="PASS"]');
-  await batch.click('button:has-text("Submit")');
+  await batch.getByRole('button', { name: 'Submit for Review' }).click();
+  await batch.getByRole('button', { name: 'Confirm and send for review' }).click();
   await batch.waitForURL((u) => u.pathname === '/lab', { timeout: 10_000 });
   const twelve = db.prepare("SELECT * FROM lab_test_records WHERE lot_number='LOT-E2E-12'").get();
   ok(twelve?.sample_count === 12, '12-sample: sample_count persists');

@@ -144,6 +144,8 @@ interface Errors {
   [field: string]: string;
 }
 
+type SaveState = 'saved' | 'unsaved' | 'saving' | 'failed';
+
 const inputCls =
   'w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 const inputErrorCls =
@@ -152,6 +154,11 @@ const labelCls = 'block text-sm font-medium text-slate-700';
 const sectionCls = 'rounded-xl border border-slate-200 bg-white p-5 shadow-sm';
 const sectionTitleCls = 'text-base font-semibold text-slate-900';
 const refCls = 'rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700';
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return <p id={id} role="alert" className="mt-1 text-sm text-red-700">{message}</p>;
+}
 
 function emptyRow(n: number): SampleRow {
   return {
@@ -236,6 +243,10 @@ export default function LabTestForm({
   const [errors, setErrors] = useState<Errors>({});
   const [dirty, setDirty] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [saveState, setSaveState] = useState<SaveState>('saved');
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const reviewConfirmRef = useRef<HTMLButtonElement>(null);
+  const reviewTriggerRef = useRef<HTMLButtonElement>(null);
   const [productDescription, setProductDescription] = useState('');
   // Set once the tester deliberately changes Connector Type — after that the
   // product default never touches it again ("populate, never overwrite", §28).
@@ -327,6 +338,7 @@ export default function LabTestForm({
   const markDirty = () => {
     dirtyRef.current = true;
     setDirty(true);
+    setSaveState('unsaved');
   };
 
   // Unsaved-change detection: warn before leaving with unsaved edits. The
@@ -528,7 +540,7 @@ export default function LabTestForm({
     return next;
   }
 
-  function submit(action: 'draft' | 'continue' | 'submit') {
+  function submit(action: 'draft' | 'continue' | 'submit', confirmed = false) {
     if (submitting) return;
     if (action === 'submit') {
       const next = validateSubmit();
@@ -539,10 +551,16 @@ export default function LabTestForm({
         el?.focus();
         return;
       }
+      if (!confirmed) {
+        setReviewOpen(true);
+        return;
+      }
     } else {
       setErrors({});
     }
     setSubmitting(true);
+    setSaveState('saving');
+    setReviewOpen(false);
     setFormAction(action);
     dirtyRef.current = false;
     setDirty(false);
@@ -566,8 +584,61 @@ export default function LabTestForm({
     const targetId = field === 'Samples' ? 'sec-results' : field === 'Final Result' ? 'sec-final-result' : field === 'Product Description' ? 'product_description' : field === 'Connector Type' ? 'connector_type' : field === 'Lot Number' ? 'lot_number' : field === 'Sampling Area' ? 'sampling_area' : field === 'Machine Name' ? 'equipment_id' : 'sec-sample-identification';
     const target = document.getElementById(targetId);
     target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement) target.focus();
+    const focusTarget = target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement
+      ? target
+      : target?.querySelector('input, select, textarea, button') as HTMLElement | null;
+    focusTarget?.focus();
   }
+
+  useEffect(() => {
+    if (!reviewOpen) return;
+    reviewConfirmRef.current?.focus();
+  }, [reviewOpen]);
+
+  function sectionStatus(section: string): 'not-started' | 'in-progress' | 'complete' | 'error' {
+    const hasError = Object.keys(errors).some((field) => {
+      if (section === 'identity') return ['Product Description', 'Connector Type', 'Lot Number', 'Sampling Area'].includes(field);
+      if (section === 'equipment') return field === 'Machine Name';
+      if (section === 'results') return field === 'Samples';
+      if (section === 'final') return field === 'Final Result';
+      return false;
+    });
+    if (hasError) return 'error';
+    const hasContent = section === 'identity'
+      ? Boolean(productDescription.trim() || matchedRef || (formRef.current?.elements.namedItem('lot_number') as HTMLInputElement | null)?.value)
+      : section === 'equipment'
+        ? Boolean((formRef.current?.elements.namedItem('equipment_id') as HTMLSelectElement | null)?.value)
+        : section === 'results'
+          ? samples.some((row) => !isRowEmpty(row))
+          : section === 'final'
+            ? Boolean(formRef.current?.querySelector('input[name="final_result"]:checked'))
+            : section === 'parameters'
+              ? Boolean(selectedTemplate || reference.standardParameter !== 'No approved reference available.')
+              : section === 'environment'
+                ? Boolean(readings.length || (formRef.current?.elements.namedItem('testing_date') as HTMLInputElement | null)?.value)
+                : false;
+    const complete = section === 'identity'
+      ? Boolean(productDescription.trim() && (formRef.current?.elements.namedItem('connector_type') as HTMLSelectElement | null)?.value && (formRef.current?.elements.namedItem('lot_number') as HTMLInputElement | null)?.value && (formRef.current?.elements.namedItem('sampling_area') as HTMLInputElement | null)?.value)
+      : section === 'equipment'
+        ? Boolean((formRef.current?.elements.namedItem('equipment_id') as HTMLSelectElement | null)?.value)
+        : section === 'results'
+          ? samples.length === sampleCount && samples.every((row) => Boolean(row.result))
+          : section === 'final'
+            ? Boolean(formRef.current?.querySelector('input[name="final_result"]:checked'))
+            : false;
+    return complete ? 'complete' : hasContent ? 'in-progress' : 'not-started';
+  }
+
+  const sectionLabels: Array<{ label: string; id: string; key: string }> = [
+    { label: '1 Sample Identification', id: 'sec-sample-identification', key: 'identity' },
+    { label: '2 Equipment Used', id: 'sec-equipment', key: 'equipment' },
+    { label: '3 Connector Assembly', id: 'sec-connector-assembly', key: 'connector' },
+    { label: '4 Environment', id: 'sec-differential', key: 'environment' },
+    { label: '5 Test Parameters', id: 'sec-parameters', key: 'parameters' },
+    { label: '6 Test Results', id: 'sec-results', key: 'results' },
+    { label: '7 Authorization', id: 'sec-authorization', key: 'authorization' },
+    { label: '8 Final Result', id: 'sec-final-result', key: 'final' },
+  ];
 
   const equipmentOptionLabel = (e: Props['equipment'][number]) => `${e.name} (${e.code})`;
   const calibrationLabel: Record<string, string> = {
@@ -594,30 +665,24 @@ export default function LabTestForm({
         </p>
       )}
 
-      {dirty && (
-        <p role="status" className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700">
-          Unsaved changes — save before leaving this page.
-        </p>
-      )}
+      <p role="status" aria-live="polite" className={`mb-4 rounded-md border px-3 py-2 text-sm font-medium ${saveState === 'saving' ? 'border-blue-200 bg-blue-50 text-blue-800' : saveState === 'failed' ? 'border-red-200 bg-red-50 text-red-700' : saveState === 'unsaved' ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>
+        {saveState === 'saving' ? 'Saving…' : saveState === 'failed' ? 'Save failed. Your entries are still here — try again.' : saveState === 'unsaved' || dirty ? 'Unsaved changes — save before leaving this page.' : 'Saved — no unsaved changes.'}
+      </p>
 
       <nav aria-label="Form sections" className="sticky top-0 z-10 mb-4 rounded-lg border border-slate-200 bg-white/95 p-3 shadow-sm backdrop-blur">
         <ol className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4 lg:grid-cols-8">
-          {[
-            ['1 Sample Identification', 'sec-sample-identification', Boolean(productDescription && samples.length === sampleCount)],
-            ['2 Equipment', 'sec-equipment', Boolean((formRef.current?.elements.namedItem('equipment_id') as HTMLSelectElement | null)?.value)],
-            ['3 Requirements', 'sec-parameters', Boolean(selectedTemplate || reference.standardParameter !== 'No approved reference available.')],
-            ['4 Connector Assembly', 'sec-connector-assembly', true],
-            ['5 Environment', 'sec-differential', true],
-            ['6 Samples', 'sec-results', samples.every((row) => Boolean(row.result))],
-            ['7 Final Result', 'sec-final-result', Boolean(formRef.current?.querySelector('input[name="final_result"]:checked'))],
-            ['8 Review', 'sec-authorization', true],
-          ].map(([label, id, complete]) => (
-            <li key={id as string}>
-              <a href={`#${id}`} className="block rounded-md px-2 py-2 font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600">
-                <span aria-hidden="true">{complete ? '✓' : '○'}</span> {label as string}
+          {sectionLabels.map(({ label, id, key }) => {
+            const state = sectionStatus(key);
+            const stateLabel = state === 'complete' ? 'Complete' : state === 'in-progress' ? 'In progress' : state === 'error' ? 'Error' : 'Not started';
+            return (
+            <li key={id}>
+              <a href={`#${id}`} className="block min-h-11 rounded-md px-2 py-2 font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600">
+                <span aria-hidden="true">{state === 'complete' ? '✓' : state === 'error' ? '!' : '○'}</span> {label}
+                <span className="mt-0.5 block text-[11px] font-normal text-slate-500">{stateLabel}</span>
               </a>
             </li>
-          ))}
+            );
+          })}
         </ol>
       </nav>
 
@@ -634,7 +699,7 @@ export default function LabTestForm({
       )}
 
       {Object.keys(errors).length > 0 && (
-        <div role="alert" className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3">
+        <div id="form-error-summary" role="alert" tabIndex={-1} className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3">
           <p className="text-sm font-semibold text-red-700">The test could not be submitted:</p>
           <ul className="mt-1 list-inside list-disc text-sm text-red-700">
             {Object.entries(errors).map(([field, message]) => (
@@ -729,6 +794,7 @@ export default function LabTestForm({
                   markDirty();
                 }}
                 className={errors['Product Description'] ? inputErrorCls : inputCls}
+                aria-describedby={errors['Product Description'] ? 'error-product-description' : undefined}
               />
               <datalist id="lab-product-options">
                 {products.map((p) => (
@@ -736,6 +802,7 @@ export default function LabTestForm({
                 ))}
               </datalist>
               <p className="mt-1 text-xs text-slate-500">Start typing to pick from the Product Master.</p>
+              <FieldError id="error-product-description" message={errors['Product Description']} />
             </div>
             {/* Product Master suggestions (§28): populated when the typed
                 description matches an active product; every measured value
@@ -781,7 +848,11 @@ export default function LabTestForm({
                 required
                 data-field="Connector Type"
                 aria-invalid={errors['Connector Type'] ? 'true' : undefined}
-                onChange={markDirty}
+                aria-describedby={errors['Connector Type'] ? 'error-connector-type' : undefined}
+                onChange={() => {
+                  connectorTouchedRef.current = true;
+                  markDirty();
+                }}
                 className={errors['Connector Type'] ? inputErrorCls : inputCls}
               >
                 <option value="">Select connector type</option>
@@ -789,6 +860,7 @@ export default function LabTestForm({
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
+              <FieldError id="error-connector-type" message={errors['Connector Type']} />
             </div>
             <div>
               <label htmlFor="sample_count" className={labelCls}>No. of Samples Tested</label>
@@ -817,9 +889,11 @@ export default function LabTestForm({
                 maxLength={200}
                 data-field="Lot Number"
                 aria-invalid={errors['Lot Number'] ? 'true' : undefined}
+                aria-describedby={errors['Lot Number'] ? 'error-lot-number' : undefined}
                 onChange={markDirty}
                 className={errors['Lot Number'] ? inputErrorCls : inputCls}
               />
+              <FieldError id="error-lot-number" message={errors['Lot Number']} />
             </div>
             <div className="sm:col-span-2">
               <label htmlFor="sampling_area" className={labelCls}>Testing Area</label>
@@ -854,6 +928,7 @@ export default function LabTestForm({
                 aria-invalid={errors['Machine Name'] ? 'true' : undefined}
                 onChange={markDirty}
                 className={errors['Machine Name'] ? inputErrorCls : inputCls}
+                aria-describedby={errors['Machine Name'] ? 'error-machine-name' : undefined}
               >
                 <option value="">Select machine</option>
                 {equipment.map((e) => (
@@ -864,7 +939,7 @@ export default function LabTestForm({
                 <p className="mt-1 text-xs text-amber-700">No equipment registered yet — tests can be saved as drafts, but submission needs a machine from the equipment registry.</p>
               )}
               {errors['Machine Name'] && (
-                <p className="mt-1 text-xs text-red-700">{errors['Machine Name']}</p>
+                <p id="error-machine-name" className="mt-1 text-sm text-red-700">{errors['Machine Name']}</p>
               )}
             </div>
             <div>
@@ -1245,6 +1320,48 @@ export default function LabTestForm({
           </fieldset>
         </section>
 
+        {reviewOpen && (
+          <div className="fixed inset-0 z-30 flex items-center justify-center bg-slate-950/40 p-4" role="presentation">
+            <section
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="submit-review-heading"
+              aria-describedby="submit-review-description"
+              className="w-full max-w-lg rounded-xl border border-slate-200 bg-white p-6 shadow-xl"
+            >
+              <h2 id="submit-review-heading" className="text-lg font-semibold text-slate-900">Review before sending</h2>
+              <p id="submit-review-description" className="mt-2 text-sm leading-6 text-slate-600">
+                This action sends the test to the reviewer queue and cannot be casually undone. Check the details below before confirming.
+              </p>
+              <dl className="mt-4 grid gap-3 rounded-lg bg-slate-50 p-4 text-sm sm:grid-cols-3">
+                <div><dt className="text-slate-500">Product</dt><dd className="font-medium text-slate-900">{productDescription || '—'}</dd></div>
+                <div><dt className="text-slate-500">Samples</dt><dd className="font-medium text-slate-900">{sampleCount}</dd></div>
+                <div><dt className="text-slate-500">Final result</dt><dd className="font-medium text-slate-900">{(formRef.current?.querySelector('input[name="final_result"]:checked') as HTMLInputElement | null)?.value ?? '—'}</dd></div>
+              </dl>
+              <div className="mt-6 flex flex-wrap justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setReviewOpen(false);
+                    reviewTriggerRef.current?.focus();
+                  }}
+                  className="min-h-11 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  Keep editing
+                </button>
+                <button
+                  ref={reviewConfirmRef}
+                  type="button"
+                  onClick={() => submit('submit', true)}
+                  className="min-h-11 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  Confirm and send for review
+                </button>
+              </div>
+            </section>
+          </div>
+        )}
+
         {/* ── Actions ── */}
         {/* Bleed matches the page's px-4 (main) exactly — a -mx-5 bleed used
             to push 4px past the viewport at tablet widths (page-level
@@ -1275,6 +1392,7 @@ export default function LabTestForm({
           </button>
           <button
             type="button"
+            ref={reviewTriggerRef}
             onClick={() => submit('submit')}
             disabled={submitting}
             className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-60"
