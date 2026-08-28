@@ -2550,3 +2550,155 @@ skills_ready: 7---
 - بقيت raw presentation styles/status maps في `findings/[id]` وبعض صفحات lab/admin كدين تصميمي P1.
 - تحذيرات Vite الخاصة بـ `db.ts` و`validation.ts` مو فشل build لكنها تحتاج متابعة أداء مستقلة.
 - ما صار commit أو push أو deploy.
+## [2026-08-28] — محاولة ربط وتشغيل DataForSEO MCP بالاعتماد المرسل
+
+### تم التنفيذ
+- تحققت من إعداد `.codex/config.toml`: خادم `dataforseo-mcp-server@latest` مربوط أصلًا ويقرأ `DATAFORSEO_LOGIN` و`DATAFORSEO_PASSWORD` من البيئة فقط؛ ما خزّنت أي اعتماد في المشروع.
+- حاولت تشغيل الحزمة الرسمية عبر `npx` في كاش مؤقت معزول، وتجاوزت تعارض كاش npm المحلي؛ الحزمة نزلت لكن جلسة stdio لم تُرجع MCP handshake.
+- اختبرت endpoint الرسمي لـDataForSEO ببيانات API المرسلة كتحقق احتياطي، بدون طباعة أو حفظ بيانات الدخول.
+- نتيجة الاعتماد الأول: HTTP `403`. نتيجة الاعتماد البديل: DataForSEO `40100` — الاعتماد غير مخول للوصول إلى API.
+- أوقفت جلسة MCP التجريبية ونظفت الكاش المؤقت؛ لم أعدّل CSV أو أرقام الكلمات لأن القياس الفعلي غير متاح.
+
+### الملفات المتأثرة
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- إعداد MCP موجود وصيغته سليمة ✅.
+- حزمة `dataforseo-mcp-server@latest` قابلة للتنزيل ✅.
+- MCP stdio handshake ⚠️ — لم يُرجع استجابة.
+- DataForSEO API ⚠️ — مرفوض: HTTP `403` و`40100`.
+- لم تُخزّن الأسرار ولم يتغير ملف CSV ✅.
+
+### النتيجة
+- **الحالة:** جزئي / محجوب باعتماد DataForSEO
+- **مختصر:** الموصل مربوط محليًا، لكن لا يمكن تشغيل بحث الكلمات حتى يُفعّل API access أو تُرسل بيانات API صحيحة من صفحة الوصول الرسمية.
+
+### ملاحظات / مشاكل مفتوحة
+- لا تعيد إرسال كلمات المرور هنا. فعّل أو أعد توليد API credentials من `app.dataforseo.com/api-access` ثم أعد تشغيل Codex بمتغيرات البيئة `DATAFORSEO_LOGIN` و`DATAFORSEO_PASSWORD`.
+- بما أن بيانات الدخول ظهرت في المحادثة، يُنصح بتدويرها بعد التأكد من الحساب.
+- لم يحدث commit أو push.
+## [2026-08-28] — إعادة اختبار DataForSEO بصيغة Basic Base64
+
+### تم التنفيذ
+- أعدت اختبار DataForSEO باستخدام ترويسة `Authorization: Basic` بالقيمة التي زود بها المستخدم، بدون تخزين أو عرض بيانات الاعتماد.
+- أرسلت طلبًا فعليًا إلى `google_ads/search_volume/live` لخمس كلمات أولية للسوق السعودي.
+- تغيّرت نتيجة التحقق من رفض الاعتماد السابق إلى `40104`: الحساب يحتاج توثيقًا قبل استخدام API.
+- لم أعبّئ أرقام CSV لأن API لم يرجع نتائج كلمات فعلية.
+
+### الملفات المتأثرة
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- تنسيق Base64/Basic ✅ — وصل الطلب إلى DataForSEO.
+- DataForSEO API ⚠️ — `40104: Please verify your account before using the API`.
+- لم تُخزّن الأسرار ولم يتغير CSV ✅.
+
+### النتيجة
+- **الحالة:** محجوب بتوثيق الحساب
+- **مختصر:** بيانات API صارت تُقرأ بصيغة صحيحة، لكن DataForSEO يمنع البحث حتى يكتمل توثيق الحساب من لوحة المستخدم.
+
+### ملاحظات / مشاكل مفتوحة
+- أكمل التوثيق من `https://app.dataforseo.com/` ثم أعد تشغيل Codex؛ بعدها يمكن تشغيل MCP وملء أحجام البحث والمنافسة وCPC الفعلية.
+- يُنصح بتدوير بيانات الاعتماد بعد ظهورها في المحادثة.
+- لم يحدث commit أو push.
+## [2026-08-28] — إعادة محاولة بحث DataForSEO بعد طلب المستخدم
+
+### تم التنفيذ
+- قرأت `01-mind-latest.md` كاملًا قبل المحاولة.
+- أعدت إرسال طلب اختبار فعلي إلى `google_ads/search_volume/live` لخمس كلمات BRIGHTAI في السعودية باستخدام Basic Base64.
+- لم أعدّل CSV ولم أستخدم أرقامًا تقديرية بدل بيانات DataForSEO.
+
+### الملفات المتأثرة
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `git diff --check` ✅.
+- DataForSEO API ⚠️ — ما زال يرجع `40104: Please verify your account before using the API`.
+- لم تُخزّن الأسرار ولم يتغير CSV ✅.
+
+### النتيجة
+- **الحالة:** محجوب
+- **مختصر:** الحساب لم يكتمل توثيقه بعد؛ لا يمكن تشغيل بحث الكلمات أو تعبئة المقاييس حتى يتم التوثيق من لوحة DataForSEO.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم إكمال التوثيق من `https://app.dataforseo.com/` ثم إعادة المحاولة.
+- لم يحدث commit أو push.
+## [2026-08-28] — SEO-PHASE-1-TRUTH-CLAIMS: توثيق حقيقة BRIGHT AI وحدود الادعاءات
+
+### تم التنفيذ
+- أنشأت brief للمرحلة الأولى يستند إلى مصادر المشروع المحلية وremote GitHub فقط، وثبّتُّ `brightai.live` كنطاق وBrightAI كعلامة ظاهرة، بدون ادعاء تحقق خارجي.
+- صغت نموذج العمل كمنصة/خدمة B2B/B2G لحوكمة وأمان AI مع فصل صريح بين الجاهزية التشغيلية وبين الاستشارة القانونية أو الشهادة أو موافقة المنظّم أو ضمان النتيجة.
+- أنشأت claims matrix يغطي الهوية، السوق، الخدمات، AI Firewall، الامتثال، العنوان، الأسعار، الشهادات، التقييمات، الشراكات، والتحويلات؛ كل ما لا يملك دليل مالك/خارجي بقي `pending` أو `prohibited`.
+- سجّلت أن `N/A` للتحويل لا يثبت أن CTAs الحالية مسار leads حقيقي؛ يلزم تحديد الوجهة والمالك والخصوصية والاستجابة قبل أي ادعاء تشغيلي.
+- لم أبحث كلمات أو SERP أو منافسين، ولم أكتب محتوى تسويقي أو ألمس كود الموقع أو schema القائم.
+
+### الملفات المتأثرة
+- `docs/00-project-brief.md`
+- `docs/claims-matrix.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- قراءة محلية لـ`README.md` و`astro.config.mjs` و`public/llms.txt` و`public/schema-saudi-seo.json` و`src/pages/index.astro` ✅.
+- تحقق remote GitHub: `https://github.com/YEEEAE/BRIGHTAI.git` ✅.
+- لم يُشغّل build أو اختبارات: التغيير توثيقي ولا يلمس كود التنفيذ.
+
+### النتيجة
+- **الحالة:** نجح جزئيًا
+- **مختصر:** حدود الادعاءات صارت موثقة وجاهزة لاعتماد المالك، لكن حقائق الكيان والعنوان والخدمات التجارية والتحويل ما زالت تحتاج أدلة وقرارات من المالك قبل الانتقال للبحث.
+
+### ملاحظات / مشاكل مفتوحة
+- توجد حقول `LocalBusiness` وسعر وعنوان وساعات ومؤسس في schema الحالي لا يمكن اعتبارها موثقة بهذه المرحلة؛ لم أعدّلها لأن النطاق توثيق فقط.
+- تغييرات المستخدم الموجودة مسبقًا في ملف العقل و`audit/website-builder-SEO/Siteic.docx` بقيت كما هي.
+- لم يحدث commit أو push أو deploy.
+## [2026-08-28] — SEO-PHASE-1-LOCATION: نقل وثائق المرحلة إلى حزمة website-builder-SEO
+
+### تم التنفيذ
+- نقلت وثيقتي حقيقة النشاط ومصفوفة الادعاءات للمرحلة الأولى إلى مجلد الحزمة الذي حدده المستخدم.
+- لم يتغير أي محتوى أو قرار أو كود؛ تغيّر المسار فقط.
+
+### الملفات المتأثرة
+- `audit/website-builder-SEO/00-project-brief.md`
+- `audit/website-builder-SEO/claims-matrix.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `git -c core.fsmonitor=false diff --check` ✅.
+- تأكدت أن الملفات لم تعد موجودة في `docs/` وأن النسخ موجودة داخل `audit/website-builder-SEO/` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** كل وثائق المرحلة الأولى صارت بجانب حزمة `website-builder-SEO` حسب الطلب.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit أو push أو deploy.
+## [2026-08-28] — QC-RENDER-HEALTH-FIRST-DEPLOY-001: فك حلقة فشل health check الأولى
+
+### تم التنفيذ
+- شخّصت سجل Render: الخدمة فتحت المنفذ `10000` لكن `/api/health` أعاد `503` باستمرار، لذا كان فشل النشر من readiness التطبيق لا من port binding.
+- حوّلت `/api/health` إلى liveness probe خفيف يرجع `200` بمجرد عمل Astro SSR، حتى لا يمنع Render أول طلب يهيّئ SQLite على القرص الدائم.
+- أضفت `/api/readiness` كـ probe منفصل وصارم يتحقق من وجود SQLite، الهجرات، و`schema_migrations`؛ ويبقي `503` عند عدم جاهزية القاعدة بدون كشف أسرار أو مسارات.
+- سمحت للمسارين العامّين في middleware وحراس الأمان، وحدّثت عقد النشر ووثائق التشغيل لفصل liveness عن database readiness.
+- تحققت محليًا بقاعدة جديدة غير مهيأة: `/api/health` = `200` و`/api/readiness` = `503`، وهو السلوك المطلوب قبل أول login.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/pages/api/health.ts`
+- `apps/qc-task-manager/src/pages/api/readiness.ts`
+- `apps/qc-task-manager/src/middleware.ts`
+- `apps/qc-task-manager/{docs/DEPLOYMENT.md,docs/DATABASE.md,scripts/verify-security-hygiene.mjs,scripts/test-request-security.mjs,scripts/test-deployment-contract.mjs}`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager run test:deployment-contract` ✅ — 22 checks.
+- `node apps/qc-task-manager/scripts/verify-security-hygiene.mjs` ✅.
+- `pnpm --dir apps/qc-task-manager run test:request-security` ✅ — 56/56.
+- `pnpm --dir apps/qc-task-manager run typecheck` ✅ — 0 errors، 0 warnings، 27 hints قديمة.
+- `NODE_ENV=production pnpm --dir apps/qc-task-manager run build` ✅ — تحذيرات Vite الديناميكية المعروفة فقط.
+- فحص HTTP محلي بقاعدة SQLite جديدة ✅ — health `200`، readiness `503` قبل initialization.
+
+### النتيجة
+- **الحالة:** نجح محليًا.
+- **مختصر:** إعادة النشر لن تتعطل بسبب غياب ملف SQLite في أول إقلاع؛ يلزم إبقاء القرص الدائم ومتغيرات مساراته مضبوطة، ثم التحقق من `/api/readiness` بعد أول login.
+
+### ملاحظات / مشاكل مفتوحة
+- لم يحدث commit أو push أو deploy.
+- تغييرات المستخدم السابقة في ملف العقل وملفات `audit/website-builder-SEO/` بقيت كما هي.

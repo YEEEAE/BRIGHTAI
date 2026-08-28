@@ -262,13 +262,13 @@ try {
         csrfOk = false;
         csrfMisses.push(`${relOf(file)} [${unsafe.join(',')}]`);
       }
-      if (!content.includes('requireApiUser(') && !file.endsWith('health.ts')) {
+      if (!content.includes('requireApiUser(') && !['health.ts', 'readiness.ts'].some((name) => file.endsWith(name))) {
         authOk = false;
         authMisses.push(relOf(file));
       }
     }
     ok(csrfOk, `scan: every unsafe api export applies requireCsrf${csrfMisses.length ? ` — missing: ${csrfMisses.join(', ')}` : ''}`);
-    ok(authOk, `scan: every api endpoint applies requireApiUser (health.ts is the documented public probe)${authMisses.length ? ` — missing: ${authMisses.join(', ')}` : ''}`);
+    ok(authOk, `scan: every api endpoint applies requireApiUser (health.ts and readiness.ts are documented public probes)${authMisses.length ? ` — missing: ${authMisses.join(', ')}` : ''}`);
   }
 
   {

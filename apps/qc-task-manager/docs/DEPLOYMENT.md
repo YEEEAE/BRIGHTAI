@@ -28,37 +28,33 @@ Do not use `astro preview` as the production start command. Render supplies
 `PORT`; do not hard-code a public port for production. Set `HOST=0.0.0.0` if
 the service environment requires it.
 
-## Health check endpoint
+## Health and readiness endpoints
 
-`GET /api/health` is the Render readiness probe (`healthCheckPath: /api/health`).
-It is public (no session or CSRF required, like `/login`) and performs no state
-changes, so Render can call it without a cookie.
+`GET /api/health` is Render's liveness probe (`healthCheckPath: /api/health`).
+It is public, requires no session or CSRF, performs no state change, and returns
+`200` when the Astro SSR process can receive traffic:
 
-- `200` — the SQLite database is reachable and migrated:
+```json
+{ "ok": true, "service": "qc-task-manager", "status": "healthy", "live": true }
+```
+
+Do **not** make Render's deployment check depend on SQLite. On a fresh service,
+the database is created at the first database-touching application request; a
+strict DB health check would return `503` first and Render would block that
+request, causing a deploy-time deadlock.
+
+`GET /api/readiness` is the separate public database readiness probe for
+operators and external monitoring. It never creates a database and returns:
+
+- `200` only when SQLite is reachable and migrations are applied:
 
   ```json
-  { "ok": true, "service": "qc-task-manager", "status": "healthy", "schemaVersion": 10 }
+  { "ok": true, "service": "qc-task-manager", "status": "ready", "ready": true, "dbInitialized": true, "schemaVersion": 38 }
   ```
 
-  `schemaVersion` is the latest applied version from the real
-  `schema_migrations` table.
-- `503` — the database file is missing/unreachable or the schema is not
-  initialized:
+- `503` when the database is missing, unreachable, or not migrated.
 
-  ```json
-  { "ok": false, "status": "unhealthy", "reason": "database unavailable" }
-  ```
-
-The response never includes file paths, environment values, or secrets. The
-probe is read-only and never creates the database: it reports `503` whenever
-the database file is missing or unreachable, and `200` only once the file
-exists and is migrated. The database is created by the application on the first
-database-touching request (for example the first login POST), so on a fresh
-deployment verify login once (step 4 below) before expecting the health check
-to report healthy — and after the first deploy the persistent disk keeps the
-database, so later deploys are healthy immediately. A moved/deleted database
-file is reported as `503` — the correct signal for a service that cannot serve
-work without its database.
+Neither response includes filesystem paths, environment values, or secrets.
 
 ## Persistent SQLite disk
 
@@ -134,7 +130,7 @@ an existing account.
 2. Attach the persistent disk and configure the variables above.
 3. Deploy the Node Web Service using the build and start commands in this
    document.
-4. Open `https://<your-qc-service>/login` and verify login succeeds.
+4. Open `https://<your-qc-service>/login` and verify login succeeds; this initializes a brand-new database on the mounted disk.
 5. Reset the seeded admin password immediately at `/admin/users`.
 6. Confirm the database and backup directory exist on the mounted disk.
 7. Open `/admin/system-health` and confirm schema, migration, integrity, FK,
@@ -153,7 +149,8 @@ the service and periodically test a restore.
 
 1. Confirm Render shows one running writable instance and the persistent disk
    is mounted at `/var/data`.
-2. `GET /api/health` anonymously: HTTP 200, `ready: true`,
+2. `GET /api/health` anonymously: HTTP 200 with `live: true`. Then `GET /api/readiness`:
+   HTTP 200, `ready: true`,
    `dbInitialized: true`, integer `schemaVersion`; no path, secret, or audit
    chain payload.
 3. Open `/login`, sign in as the rotated admin, then open
@@ -163,7 +160,8 @@ the service and periodically test a restore.
 4. Trigger one manual backup from `/admin/settings`; confirm the timestamp,
    size, and verification change to PASS and that only the configured
    retention count remains.
-5. Restart the service and confirm the database persists and a missed-window
+5. Restart the service and confirm the database persists, `/api/readiness`
+   returns `200` immediately after boot, and a missed-window
    catch-up creates at most one backup (no duplicate concurrent backup files).
 6. From a maintenance shell, run `PRAGMA integrity_check;` and
    `PRAGMA foreign_key_check;` against the live DB; both must be clean.
@@ -232,8 +230,11 @@ the pilot starts. Do not check an item from documentation alone.
 - [ ] Restart data persistence verified: manually restart the service and
       confirm pre-restart tasks/records are still present and `/api/health`
       returns `200` immediately after boot.
-- [ ] Health PASS: anonymous `GET /api/health` returns HTTP `200` with
-      `ready: true`, `dbInitialized: true`, and an integer `schemaVersion`.
+- [ ] Liveness PASS: anonymous `GET /api/health` returns HTTP `200` with
+      `live: true`.
+- [ ] Database readiness PASS: anonymous `GET /api/readiness` returns HTTP
+      `200` with `ready: true`, `dbInitialized: true`, and an integer
+      `schemaVersion`.
 - [ ] Audit chain PASS: `/admin/system-health` shows both audit chains
       (`task` and `qcLab`) with status `PASS`.
 - [ ] DB integrity PASS: `/admin/system-health` shows `integrity_check` PASS,

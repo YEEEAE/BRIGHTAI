@@ -80,8 +80,9 @@ host exposes a detectable scale-out setting (`QC_HORIZONTAL_SCALING=true`,
 The admin-only `/admin/system-health` page shows the safe DB filename, DB/WAL
 sizes, schema and migration state, migration failures, SQLite integrity/FK
 state, backup age and verification, audit-chain status, and disk capacity
-warning. The public `/api/health` remains a lightweight readiness probe and
-does not scan audit chains or expose filesystem paths.
+warning. The public `/api/health` is a lightweight liveness probe and does not
+touch SQLite; `/api/readiness` verifies SQLite and migrations without exposing
+filesystem paths or creating a database. Neither endpoint scans audit chains.
 
 Create an on-demand backup:
 

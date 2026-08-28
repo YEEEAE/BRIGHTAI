@@ -185,6 +185,15 @@ ok('the public health probe never reads process.env and identifies the QC servic
   const source = readFileSync(join(appRoot, 'src/pages/api/health.ts'), 'utf8');
   assert.doesNotMatch(source, /process\.env/);
   assert.match(source, /qc-task-manager/);
+  assert.match(source, /live:\s*true/);
+  assert.doesNotMatch(source, /getDb\(/, 'Render liveness must not be blocked by first-boot database state');
+});
+
+ok('the separate readiness probe verifies the database without exposing env values', () => {
+  const source = readFileSync(join(appRoot, 'src/pages/api/readiness.ts'), 'utf8');
+  assert.match(source, /getDb\(/);
+  assert.match(source, /schema_migrations/);
+  assert.doesNotMatch(source, /process\.env/);
 });
 
 // ─────────────────────── 5. Repository deployment topology ──────────────────
