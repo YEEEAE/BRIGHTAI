@@ -7,10 +7,13 @@ import { listActiveUsers } from '../lib/tasks';
 import { FINDING_CLASSIFICATIONS, RISK_LEVELS, TASK_PRIORITIES } from '../lib/task-policy';
 import { SLA_STATUSES } from '../lib/sla';
 import { TASK_REPORT_TYPES } from '../lib/reporting/types';
+import { parseReportFilters, parseReportScope } from '../lib/reporting/filters';
+import { resolveReportPreview } from '../lib/reporting/preview';
 
 const user = Astro.locals.user!;
 const selectedType = Astro.url.searchParams.get('report_type') ?? 'monthly-qc';
 const activeUsers = listActiveUsers();
+const currentUser = activeUsers.find((person) => person.id === user.userId);
 const supervisors = activeUsers.filter((person) => person.role === 'supervisor');
 const filters = new URLSearchParams(Astro.url.searchParams);
 filters.delete('report_type');
@@ -19,6 +22,21 @@ const query = filters.toString();
 const canChooseOrganization = user.role === 'admin' || user.role === 'manager';
 const inputClass = 'rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 const scopeLabel = user.role === 'employee' ? 'Your tasks only' : user.role === 'supervisor' ? 'Your department' : 'Organization';
+let preview: Awaited<ReturnType<typeof resolveReportPreview>> | null = null;
+try {
+  const parsedFilters = parseReportFilters(Astro.url.searchParams);
+  preview = await resolveReportPreview({
+    actor: { id: user.userId, role: user.role, department: currentUser?.department ?? null },
+    reportType: selectedType as typeof TASK_REPORT_TYPES[number],
+    filters: parsedFilters,
+    comprehensive: parseReportScope(Astro.url.searchParams),
+  });
+} catch {
+  preview = null;
+}
+const previewFilters = preview && preview.allowed
+  ? Object.entries(preview.filters).filter(([, value]) => value !== null && value !== '').map(([key, value]) => `${key.replaceAll('_', ' ')}: ${String(value)}`)
+  : [];
 ---
 
 <BaseLayout title="Reports">
@@ -89,7 +107,21 @@ const scopeLabel = user.role === 'employee' ? 'Your tasks only' : user.role === 
       </div>
     </form>
 
-    {/* Step 5 — downloads */}
+    {/* Step 5 — preview and downloads */}
+    {preview?.allowed && (
+      <section class="rounded-xl border border-brand-200 bg-brand-50/40 p-5 shadow-sm" aria-labelledby="report-preview-heading">
+        <h2 id="report-preview-heading" class="text-base font-semibold text-slate-900">Report preview</h2>
+        <dl class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Report type</dt><dd class="mt-1 font-medium text-slate-900">{REPORT_CATALOG[selectedType as keyof typeof REPORT_CATALOG]?.label ?? selectedType}</dd></div>
+          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Resolved data scope</dt><dd class="mt-1 font-medium text-slate-900">{preview.scope.kind === 'own_tasks' ? 'Your tasks only' : preview.scope.kind === 'department' ? `Department: ${preview.scope.department}` : 'Organization'}</dd></div>
+          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Date range</dt><dd class="mt-1 font-medium text-slate-900" dir="ltr">{preview.filters.from ?? 'Any'} → {preview.filters.to ?? 'Any'}</dd></div>
+          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Filters</dt><dd class="mt-1 font-medium text-slate-900">{previewFilters.length ? previewFilters.join(' · ') : 'None'}</dd></div>
+          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Matching rows</dt><dd class="mt-1 font-medium text-slate-900">{preview.matchingRowCount === null ? 'Not calculated for large result' : preview.matchingRowCount}</dd></div>
+          <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Generated as</dt><dd class="mt-1 font-medium text-slate-900">{user.fullName} · {user.role}</dd></div>
+        </dl>
+        <p class="mt-4 text-xs text-slate-600">This preview uses the same server authorization and scope resolution as the final download. Unauthorized counts are never shown.</p>
+      </section>
+    )}
     <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm" aria-labelledby="report-downloads-heading">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>

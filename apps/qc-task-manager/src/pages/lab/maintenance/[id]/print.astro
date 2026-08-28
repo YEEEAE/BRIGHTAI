@@ -35,6 +35,11 @@ const statusLabel = (status: string | null) =>
 <PrintLayout
   title={detail ? `Maintenance · ${detail.equipment_code}` : 'Maintenance record not found'}
   backHref={detail ? `/lab/equipment/${String(detail.equipment_id)}/maintenance` : ''}
+  recordType="Equipment maintenance"
+  recordId={detail ? String(detail.maintenance.id) : '—'}
+  authorization="Logged-by actor and maintenance workflow"
+  signature="Maintenance completion metadata where recorded"
+  sourceReference={detail ? `${detail.equipment_code} · lab_equipment_maintenance` : 'lab_equipment_maintenance'}
 >
   {!detail ? (
     <section>

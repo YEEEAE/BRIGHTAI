@@ -168,6 +168,7 @@ try {
     ['src/pages/lab/calibration/[id]/print.astro', 'calibration print'],
     ['src/pages/lab/equipment/[id]/print.astro', 'equipment print'],
     ['src/pages/lab/maintenance/[id]/print.astro', 'maintenance print'],
+    ['src/pages/lab/documents/[id]/print.astro', 'controlled document print'],
   ];
   for (const [rel, label] of pages) {
     const src = readFileSync(join(appDir, rel), 'utf8');
@@ -179,7 +180,13 @@ try {
     ok(h1s.length <= 2 && h1s.every((t) => t.includes('print-title')), `${label}: one h1 per rendered page (print-title)`);
     const thTags = (src.match(/<th[\s>][^>]*>/g) ?? []).filter((t) => !t.includes('scope='));
     eq(thTags.length, 0, `${label}: every table th carries scope`);
+    ok(src.includes('authorization') || src.includes('Authorization'), `${label}: authorization metadata is printed`);
+    ok(src.includes('source') || src.includes('Source'), `${label}: source/reference metadata is printed`);
   }
+  const printLayout = readFileSync(join(appDir, 'src/layouts/PrintLayout.astro'), 'utf8');
+  ok(printLayout.includes('@media print'), 'print layout: Playwright print media rules exist');
+  ok(printLayout.includes('thead { display: table-header-group; }'), 'print layout: table headers repeat across pages');
+  ok(printLayout.includes('break-inside: avoid'), 'print layout: critical blocks avoid clipping');
 } catch (err) {
   console.error(err);
   process.exitCode = 1;

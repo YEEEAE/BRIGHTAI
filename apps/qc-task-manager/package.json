@@ -35,6 +35,7 @@
     "test:ai-features": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ai-features.mjs",
     "test:ai-lab": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ai-lab.mjs",
     "test:dashboard-reports": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-dashboard-reports.mjs",
+    "test:report-preview": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-report-preview.mjs",
     "test:qc-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-qc-operations.mjs",
     "test:templates": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-templates.mjs",
     "test:db-rules": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-db-rules.mjs",

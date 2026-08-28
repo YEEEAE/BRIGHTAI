@@ -37,6 +37,11 @@ function fmt(value: unknown): string {
 <PrintLayout
   title={detail ? `Calibration · ${detail.equipment_code}` : 'Calibration record not found'}
   backHref={detail ? `/lab/calibration/${String(detail.calibration.id)}` : ''}
+  recordType="Equipment calibration"
+  recordId={detail ? String(detail.calibration.id) : '—'}
+  authorization="Recorded-by actor and calibration workflow"
+  signature="Calibration approval metadata where recorded"
+  sourceReference={detail ? `${detail.equipment_code} · lab_calibrations` : 'lab_calibrations'}
 >
   {!detail ? (
     <section>

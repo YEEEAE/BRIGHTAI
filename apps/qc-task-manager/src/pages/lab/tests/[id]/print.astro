@@ -105,7 +105,7 @@ const sampleQrs = record
   : [];
 ---
 
-<PrintLayout title={record ? `${String(record.test_number)} — Laboratory Test` : 'Test not found'} backHref={record ? `/lab/tests/${String(record.id)}` : ''}>
+<PrintLayout title={record ? `${String(record.test_number)} — Laboratory Test` : 'Test not found'} backHref={record ? `/lab/tests/${String(record.id)}` : ''} recordType="Laboratory test" recordId={record ? String(record.test_number) : '—'} authorization="Tester / reviewer / approver workflow" signature="Approval and e-signature timestamps" sourceReference={record ? `${String(record.test_number)} · lab_test_records` : 'lab_test_records'} orientation="landscape">
   {notFound ? (
     <section>
       <h1 class="print-title">Test not found</h1>

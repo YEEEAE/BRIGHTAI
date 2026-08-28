@@ -120,6 +120,7 @@ const isAuthorOrOwner = detail
             </p>
           </div>
           <div class="flex flex-wrap items-center gap-3">
+            <LabActionButton href={`/lab/documents/${detail.document.id}/print`} kind="secondary">Print Controlled Copy</LabActionButton>
             <LabActionButton href={`/lab/documents/${detail.document.id}/versions`} kind="secondary">Version History</LabActionButton>
             {canEdit && detail.document.status !== 'ARCHIVED' && (
               <LabActionButton href={`/lab/documents/${detail.document.id}/edit`} kind="primary">{detail.currentVersion ? 'Edit Document' : 'Add Content'}</LabActionButton>

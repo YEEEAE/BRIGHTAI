@@ -53,6 +53,11 @@ const TIMELINE_KIND_LABELS: Record<string, string> = {
 <PrintLayout
   title={detail ? `Equipment History · ${detail.equipment.code}` : 'Equipment not found'}
   backHref={detail ? `/lab/equipment/${String(detail.equipment.id)}` : ''}
+  recordType="Equipment history"
+  recordId={detail ? String(detail.equipment.id) : '—'}
+  authorization="Equipment record access policy"
+  signature="Lifecycle audit metadata"
+  sourceReference={detail ? `${detail.equipment.code} · lab_equipment` : 'lab_equipment'}
 >
   {!detail ? (
     <section>

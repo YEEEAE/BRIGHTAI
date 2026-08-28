@@ -280,6 +280,11 @@ const findingId = Number(db.prepare("SELECT id FROM qc_findings WHERE finding_nu
   ok(!hasNav, 'print: no navigation chrome');
   const hasSkipLink = await page.evaluate(() => !!document.querySelector('.skip-link'));
   ok(!hasSkipLink, 'print: no skip-link/dashboard chrome');
+  await page.emulateMedia({ media: 'print' });
+  const controlledPdf = await page.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
+  ok(controlledPdf.length > 1000, 'print: Playwright print media produces a non-empty A4 PDF');
+  const printDisplay = await page.locator('.no-print').evaluate((node) => getComputedStyle(node).display);
+  ok(printDisplay === 'none', 'print: navigation/back affordance is hidden in print media');
   const a4 = await page.evaluate(() => {
     const match = [...document.styleSheets].map((s) => {
       try { return Array.from(s.cssRules || []).map((r) => r.cssText).join('\n'); } catch { return ''; }

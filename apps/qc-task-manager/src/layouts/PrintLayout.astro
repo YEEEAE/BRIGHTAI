@@ -11,8 +11,14 @@ interface Props {
   title: string;
   /** Screen-only "back to details" target (hidden when printed). */
   backHref?: string;
+  recordType?: string;
+  recordId?: string;
+  authorization?: string;
+  signature?: string;
+  sourceReference?: string;
+  orientation?: 'portrait' | 'landscape';
 }
-const { title, backHref = '' } = Astro.props;
+const { title, backHref = '', recordType = 'Controlled record', recordId = '—', authorization = 'Authorization recorded in the source workflow', signature = 'Electronic signature metadata recorded in the source workflow', sourceReference = 'Source record and audit trail', orientation = 'portrait' } = Astro.props;
 const printTimestamp = new Date();
 function iso(ts: Date): string {
   const p = (n: number) => String(n).padStart(2, '0');
@@ -36,6 +42,7 @@ const tsText = iso(printTimestamp);
         margin: 0 auto;
         padding: 14mm;
       }
+      .print-landscape { page: landscape; max-width: none; }
       .print-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111827; padding-bottom: 10px; margin-bottom: 14px; }
       .print-title { font-size: 18px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
       .print-sub { font-size: 11px; color: #4b5563; margin-top: 2px; }
@@ -75,19 +82,27 @@ const tsText = iso(printTimestamp);
       .result-hold { color: #c2410c; }
 
       .print-footer { margin-top: 20px; padding-top: 8px; border-top: 1px solid #d1d5db; display: flex; justify-content: space-between; font-size: 10px; color: #6b7280; }
+      .print-control-metadata { margin-top: 10px; border: 1px solid #d1d5db; padding: 8px 10px; break-inside: avoid; }
+      .print-control-metadata dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; margin: 0; }
+      .print-control-metadata dt { color: #4b5563; font-weight: 600; font-size: 10px; }
+      .print-control-metadata dd { margin: 2px 0 0; font-size: 11px; }
 
       /* Screen-only "back" affordance — never printed. */
       .no-print { padding: 10px 0; }
       .no-print a { color: #0f766e; text-decoration: underline; }
 
       /* A4 page rules for real printing. */
-      @page { size: A4; margin: 12mm; }
+      @page { size: A4 portrait; margin: 12mm; }
+      @page landscape { size: A4 landscape; margin: 10mm; }
       @media print {
         .no-print { display: none !important; }
         body { font-size: 11px; }
         .print-page { max-width: none; padding: 0; }
         .print-section { break-inside: avoid; }
         table { break-inside: auto; }
+        thead { display: table-header-group; }
+        tr { break-inside: avoid; page-break-inside: avoid; }
+        .print-control-metadata { break-inside: avoid; }
       }
     </style>
   </head>
@@ -95,8 +110,18 @@ const tsText = iso(printTimestamp);
     <div class="no-print">
       {backHref ? <a href={backHref}>← Back to test details</a> : <span>Controlled print view</span>}
     </div>
-    <main class="print-page">
+    <main class={`print-page ${orientation === 'landscape' ? 'print-landscape' : ''}`}>
       <slot />
+      <section class="print-control-metadata" aria-label="Controlled print metadata">
+        <dl>
+          <div><dt>Record type</dt><dd>{recordType}</dd></div>
+          <div><dt>Record ID</dt><dd dir="ltr">{recordId}</dd></div>
+          <div><dt>Authorization</dt><dd>{authorization}</dd></div>
+          <div><dt>Signature / e-signature</dt><dd>{signature}</dd></div>
+          <div><dt>Reference / source</dt><dd>{sourceReference}</dd></div>
+          <div><dt>Viewer context</dt><dd>{Astro.locals.user ? `${Astro.locals.user.fullName} · ${Astro.locals.user.role}` : 'Authenticated user'}</dd></div>
+        </dl>
+      </section>
       <div class="print-footer">
         <span>Generated {tsText}</span>
         <span>Controlled laboratory record — printed copy</span>

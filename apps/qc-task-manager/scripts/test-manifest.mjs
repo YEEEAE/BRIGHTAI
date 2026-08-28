@@ -35,6 +35,7 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:ai-features',
   'test:ai-lab',
   'test:dashboard-reports',
+  'test:report-preview',
   'test:qc-operations',
   'test:templates',
   'test:db-rules',
