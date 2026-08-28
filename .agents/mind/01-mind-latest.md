@@ -1,3 +1,247 @@
+## [2026-08-28] — QC-POST-IMPLEMENTATION-MASTER-AUDIT-022: تدقيق جنائي مستقل شامل بعد التنفيذ — CONDITIONAL GO مع اكتشاف بوابة القبول مكسورة فعليًا
+
+### تم التنفيذ
+- جمدت الواقع: HEAD `b51504b7` على `main`، Node v22.22.3، pnpm 10.19.0؛ الشجرة فيها بس العقل المعدّل + تقرير untracked — **ما فيه كود تنفيذ غير ملتزم** (لا reproducibility finding).
+- شغلت كل البوابات بتحقق طازج: typecheck ✅، manifest ✅ (60/28)، route-manifest ✅ (114/25/6)، parity ✅ (38/38)، migrations ✅، full test chain ✅ (60/60)، production build ✅ — **وe2e:acceptance ❌ exit 1** (P1-001).
+- **اكتشاف جوهري P1-001:** سويت `e2e-lab-form` تنهار — نص ContextualHelp المضاف في QC-PILOT-UAT-019 (`lab/tests/new.astro:154`) يحتوي "Save Draft"/"Submit for Review" حرفيًا فيكسر 8 تأكيدات sticky-bar (count()===1) و`page.click('text=Save Draft')` يحل لـ3 عناصر (أولها فقرة مساعدة مخفية) → Timeout غير مُلتقط → `e2e-acceptance.mjs:148` ترمي وتوقف البوابة؛ 12 سويت عدّت (823 assertion) و15 سويت + مرحلتا persistence **ما نُفذت** هذا التدقيق. ادعاء 021 أن القبول خضراء = STALE/FALSE على نفس HEAD.
+- فحص DB جنائي على قواعد مؤقتة: init نظيف (schema v38، 51 جدول)، db-doctor PASS (integrity/FK/checksum/parity)، ودريل معزول backup→mutate→restore→restart→chains→deployment-contract **PASS** بنسخ حقيقية 856KB.
+- تدقيق أمني شامل (وكيل + مسح ثابت): SQLi/XSS/CSRF/IDOR/redirects/path-traversal نظيفة (36/36 API محمية، CSP بلا unsafe-inline/eval، renderer الوثائق escape-only)؛ **P1-002: مفتاح Ed25519 خاص حقيقي مضمّن في `README.md:33`** (ROTATION REQUIRED) + token شبه حي في `.claude/settings.local.json` (untracked).
+- أكدت باغات hygiene وdrift: الملفان `qc_tasks.db` و`qc_tasks 3.db` متتبعان (`.gitignore` يغطي `db/*.db` فقط — P2-003)، و`db/schema.sql` مفقود منه `ai_audit_log` + 6 فهارس وفيه فهرس غير موجود بالهجرات (P2-008)، ومسار ميت `GET /api/tasks/suggestions` (P3-012).
+- أنشأت 6 ملفات تدقيق في `docs/final-audit/`: FILE-COVERAGE (457 ملف، تغطية 100%: 426 CLEAN/15 ISSUE/16 REQUIRES-RUNTIME-EVIDENCE)، ROUTE-COVERAGE، POST-IMPLEMENTATION-REFERENCE-AUDIT (48 قسمًا + 42 سجل ملاحظات: P0=0/P1=2/P2=9/P3=11)، POST-IMPLEMENTATION-AUDIT.json، PILOT-READINESS-SCORECARD، وFINAL-CLOSING-PROMPTS (5 برومبتات إغلاق + QC-FINAL-CLOSING-VERIFICATION).
+- الدرجات: الإجمالي الموزون **91.6%** (بالأوزان الإلزامية وبإظهار الحساب)؛ اكتمال الكود 96%، ثقة التحقق الآلي 84%، أمان 91%، سلامة بيانات 97%، UI 90%، جاهزية pilot 82%، production 78%، **HUMAN UAT: NOT VERIFIED** (صفر نتائج بشرية)، **LIVE DEPLOYMENT: NOT VERIFIED**.
+- ما عدلت أي كود منتج، وما صار commit أو push أو deploy (وضع التدقيق الصارم). القواعد المؤقتة نُظفت.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/final-audit/{FILE-COVERAGE,ROUTE-COVERAGE,POST-IMPLEMENTATION-REFERENCE-AUDIT,PILOT-READINESS-SCORECARD,FINAL-CLOSING-PROMPTS}.md`
+- `apps/qc-task-manager/docs/final-audit/POST-IMPLEMENTATION-AUDIT.json`
+- `.agents/mind/01-mind-latest.md` (هذا السجل)
+
+### التحقق
+- 10 بوابات/أوامر بـstart/end وexit codes موثقة في `/tmp/qc-audit-gates.log` و`/tmp/qc-prodops.log` (9 ✅ و1 ❌).
+- db:status + test:production-operations معزولان على قواعد `/tmp` مؤقتة ✅ (حُذفت بعد الفحص).
+- 3 وكلاء تدقيق قراءة-فقط (جرد/RBAC/أمان + UI/UX) بأدلة file:line.
+- المسح الثابت: @ts-ignore=0، eval=0، any=8، eslint-disable=3، TODO فعلي=1 (قراءة WI المتعمدة).
+
+### النتيجة
+- **الحالة:** نجح (التدقيق نفسه مكتمل بالأدلة) — الحكم على النظام: **CONDITIONAL GO**
+- **مختصر:** ما فيه P0؛ الحكم محجوب عن GO بسبب P1-001 (بوابة القبول مكسورة بسبب تصادم locators مع نص المساعدة)، P1-002 (تدوير مفتاح README)، غياب UAT بشري فعلي، وعدم التحقق الحي من النشر. الترتيب المقترح: إصلاح البوابة وتشغيل قبول كامل أخضر ← تدوير المفتاح + إزالة تتبع DB ← UAT ← تحقق نشر حي.
+
+### ملاحظات / مشاكل مفتوحة
+- 15 سويت E2E + مرحلتا persistence غير متحققة تشغيليًا في هذا التدقيق (حجبها انهيار P1-001) — تقفلها تلقائي بعد إصلاح البوابة.
+- WI ما زال SOURCE-BLOCKED (الصفحات 2/3 و3/3 غير موردة)، وسياسة تجاوز المعايرة (تحذير أم حجب) ما زالت قرار إدارة QC.
+- مفتاح README يجب تدويره خارج المستودع؛ قيمة المفتاح لم تُطبع في أي تقرير.
+
+## [2026-08-28] — SKILLS-RESTORE-026: التراجع عن التقليم واستيراد كل مهارات الإضافات
+
+### تم التنفيذ
+- بطلب المستخدم تراجعت عن تقليم `SKILLS-CONSOLIDATE-025`: أرجعت **121 مجلد مهارة** من النسخة الاحتياطية `/tmp/brightai-skills-backup/agents-skills-20260828-071029.tgz` — لا حذف متبقٍ في `git status`.
+- استوردت **94 مهارة إضافية** لم تُنقل سابقًا، من clone مباشر لريبوهات المتجر: `Owl-Listener/designer-skills` و`Owl-Listener/inclusive-design-skills` — يعني الـ158 مهارة حق الإضافات كلها صارت جوة الريبو.
+- عالجت 11 مهارة بأسماء عامة متصادمة (`review`, `audit`, `simplify`, `document`, `handoff`, `generate`, `specify`, `structure`, `rewrite`) بإعادة تسميتها بسابقة الحزمة، مثل `accessible-content-review` و`inclusive-personas-generate`، وحدّثت حقل `name:` داخل كل SKILL.md ليطابق اسم المجلد.
+- أصلحت عيبًا في المصدر: `adaptive-personalisation/SKILL.md` كان يحمل `name: contextual-help-design` فيتصادم مع مهارة حقيقية بنفس الاسم — صار `name: adaptive-personalisation`.
+- أرجعت `skills-lock.json` لـ175 مدخلًا، وزامنت `.claude/skills/` بإضافة 215 symlink — 371 symlink مقابل 371 مهارة، صفر رابط مكسور.
+- نظام الإضافات باقٍ مُلغى من `SKILLS-CONSOLIDATE-025`: `enabledPlugins: {}` والمتجر محذوف — المهارات كلها ملفات حقيقية داخل الريبو.
+
+### الملفات المتأثرة
+- `.agents/skills/` — 156 → **371** مهارة
+- `.claude/skills/` — 371 symlink
+- `skills-lock.json` — 50 → 175 مدخل
+
+### الأرقام
+- مهارات: 156 → **371** (121 مُرجَعة + 94 مستوردة)
+- مهارات مُعاد تسميتها لتفادي التصادم: 11 | تصادم أسماء متبقٍ: **0**
+- `git status`: 316 غير متتبّع، 6 تعديل، **0 حذف**
+
+### القرارات
+- **إلغاء معيار التقليم** — المستخدم يفضّل التغطية الكاملة على القائمة المركّزة؛ قرار `SKILLS-CONSOLIDATE-025` بحذف الألعاب/WebGL/الثيمات مُلغى.
+- **الأسماء العامة تُسبق بالحزمة** — مهارات مثل `review` و`audit` كانت تتصادم بين حزم متعددة في مجلد مسطّح واحد؛ السابقة تحل التصادم وتحفظ المصدر في الاسم.
+- **الاستيراد من clone مو من الكاش** — كاش الإضافات كان محذوفًا، فالـclone المباشر هو المصدر الوحيد المتاح وأيضًا أوثق.
+
+### التحقق
+- `ls .agents/skills | wc -l` ✅ = 371
+- تصادم `name:` بين كل المهارات ✅ = 0
+- `name:` != اسم المجلد ✅ = 0
+- symlinks مكسورة ✅ = 0
+- `git status` ✅ — 0 حذف (كل المتتبّع مُرجَع)
+- SKILL.md مفقود: 1 — `stitch-design-taste` (مجلد فاضي سابق للمهمة، غير فعّال)
+- ما شغّلت build/tests — لا مساس بكود المشروع.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** 371 مهارة كلها في `.agents/skills/` كملفات حقيقية بمسار واحد، بلا تصادم أسماء وبلا اعتماد على نظام الإضافات. ما صار commit ولا push.
+
+### ملاحظات / مشاكل مفتوحة
+- **حجم قائمة المهارات كبير جدًا (371)** — يثقّل اكتشاف المهارات والسياق. لو ظهر تدهور في اختيار المهارة الصح، التقليم خيار متاح ولستا `keep`/`delete` محفوظتان.
+- `stitch-design-taste` مجلد فاضٍ بلا SKILL.md، و`design-pipeline/SKILL.md` يشير له ولـ`image-to-code` غير الموجودة — عيب سابق، يحتاج إصلاح أو إزالة الإشارات.
+- **4 ملفات SKILL.md موجودة أصلًا انكتب فوقها** من `npx skills add`: `emil-design-eng`, `pick-ui-library`, `prototype`, `review-animations` — راجع `git diff` قبل الـ commit.
+- الدستور `CLAUDE.md` مكتوب فيه "67 مهارة" — الرقم الصحيح الآن **371**.
+
+## [2026-08-28] — SKILLS-CONSOLIDATE-025: توحيد المهارات في مسار واحد وتقليم غير المفيد
+
+### تم التنفيذ
+- أخذت نسخة احتياطية كاملة قبل أي حذف: `/tmp/brightai-skills-backup/agents-skills-20260828-071029.tgz` (85MB) تشمل `.agents/skills`, `.claude/skills`, `skills-lock.json`, `.claude/settings.json`.
+- نقلت **71 مهارة منتقاة** من إضافات `designer-skills` جوة `.agents/skills/` كملفات حقيقية (64 من كاش الإضافات + 7 نقد بصري من ريبو المتجر) — صفر تصادم أسماء.
+- حذفت **121 مجلد مهارة** غير مفيدة للمشروع: ألعاب Three.js (~22)، WebGL/3D/شيدرز (~23)، جزيئات وتأثيرات زخرفية (~7)، ثيمات جمالية جاهزة (~30)، منصات ثانية (`write-swift`, `animate-expo`, `performance-profiling` الخاصة بـApple)، سوشال/شخصي، ومهارات مكرّرة (`make-interfaces-feel-better` كانت نسخة مطابقة لـ`better-ui`).
+- أبقيت المهارات ما قبل التثبيتات اللي فيها تخصيص للمشروع: `design-pipeline`, `design-md` (فيه triggers عربية), `awesome-design-md`, `grill-me`, `i-have-adhd`.
+- نظّفت `skills-lock.json` من 125 مدخلًا لمهارات محذوفة.
+- زامنت `.claude/skills/`: حذفت 114 symlink معلّق وأضفت 117 جديد — صار 156 symlink يطابق 156 مهارة، صفر رابط مكسور.
+- ألغيت تثبيت الـ15 إضافة وحذفت متجر `designer-skills` وكاشه — `.claude/settings.json` صار `enabledPlugins: {}`؛ ما بقي إلا `claude-plugins-official`.
+
+### الملفات المتأثرة
+- `.agents/skills/` — 277 → **156** مهارة (كلها ملفات حقيقية بمسار واحد)
+- `.claude/skills/` — 156 symlink فقط، تشير لـ`.agents/skills/`
+- `skills-lock.json` — 175 → 50 مدخل
+- `.claude/settings.json` — `enabledPlugins` صار فارغًا
+
+### الأرقام
+- مهارات: 206 (قبل النقل) → 277 (بعد النقل) → **156** (بعد التقليم)
+- محذوف: 121 مجلد | منقول: 71 | باقٍ من الأصل: 85
+- إضافات Claude: 15 → **0** | متاجر: 2 → 1
+
+### القرارات
+- **مصدر حقيقة واحد = `.agents/skills/`** — ملفات حقيقية هناك فقط، و`.claude/skills/` symlinks بحتة. بكذا الريبو يحمل المهارات، وما يعتمد على كاش إضافات خارج المشروع.
+- **إلغاء نظام الإضافات كليًا** — الإضافات تخزّن مهاراتها في `~/.claude/plugins/cache/` خارج الريبو، يعني أي وكيل ثاني أو جهاز ثاني ما يشوفها. النقل جوة الريبو يحل هذا.
+- **معيار التقليم:** BRIGHTAI موقع Astro ثابت عربي RTL + لوحة Next.js + QC SSR. أي مهارة عن ألعاب أو 3D/WebGL أو منصات ثانية (Swift/RN) أو ثيمة جمالية جاهزة = بلا فائدة، وتزحم اكتشاف المهارات وتثقّل السياق.
+
+### التحقق
+- `ls .agents/skills | wc -l` ✅ = 156
+- كل مجلد فيه `SKILL.md` ✅ (0 مفقود)
+- symlinks مكسورة في `.claude/skills/` ✅ = 0
+- `claude plugin marketplace list` ✅ — `designer-skills` مُزال
+- `git status` ✅ — 18 حذف متتبّع، 6 تعديل، 110 غير متتبّع
+- ما شغّلت build/tests — لا مساس بكود المشروع.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** المهارات موحّدة في `.agents/skills/` بـ156 مهارة مركّزة على SEO/GEO والوصول والأداء وAstro/Tailwind وسير العمل وجودة الواجهة؛ نظام الإضافات مُلغى بالكامل. ما صار commit ولا push.
+
+### ملاحظات / مشاكل مفتوحة
+- **8 مهارات متتبّعة في git انحذفت** (قابلة للاسترجاع بـ`git checkout --`): `12-principles-of-animation`, `animation-vocabulary`, `find-animation-opportunities`, `industrial-brutalist-ui`, `llm-council`, `make-interfaces-feel-better`, `minimalist-ui`, `transformer-workspace-auditor`.
+- **4 ملفات SKILL.md موجودة أصلًا انكتب فوقها** من `npx skills add`: `emil-design-eng`, `pick-ui-library`, `prototype`, `review-animations` — راجع `git diff` قبل الـ commit.
+- `design-pipeline/SKILL.md` يشير لمهارتين غير موجودتين: `stitch-design-taste` (كان مجلدًا فاضيًا وانحذف) و`image-to-code` (ما كانت موجودة من الأصل) — عيب سابق للمهمة، يحتاج إصلاح أو إزالة الإشارات.
+- الدستور `CLAUDE.md` مكتوب فيه "67 مهارة" — الرقم الصحيح الآن **156**.
+
+## [2026-08-28] — SKILLS-INSTALL-024: إضافة متجر designer-skills وتثبيت 15 إضافة تصميم/وصول
+
+### تم التنفيذ
+- أضفت المتجر: `claude plugin marketplace add Owl-Listener/designer-skills` — نجح، مُعلن في user settings (clone عبر HTTPS لعدم توفر SSH).
+- المتجر يعرض 33 إضافة إجمالًا (منها فئات: تصميم/UX، إدارة برامج، قيادة تصميم، AI product design، وصول شامل).
+- بقرار المستخدم ثبّتنا 15 إضافة فقط بنطاق **project** — تجنّبًا لتضخيم قائمة المهارات:
+  - تصميم/UX (9): `design-research`, `design-systems`, `ux-strategy`, `ui-design`, `interaction-design`, `prototyping-testing`, `design-ops`, `designer-toolkit`, `visual-critique`
+  - وصول شامل (6): `cognitive-accessibility`, `inclusive-interaction`, `accessible-content`, `inclusive-personas`, `adaptive-interfaces`, `accessibility-decisions`
+- الـ18 الباقية (إدارة برامج، قيادة، AI product design) ما ثبّتناها — متاحة بالمتجر وقت الحاجة.
+
+### الملفات المتأثرة
+- `.claude/settings.json` — أُنشئ/حُدّث بـ `enabledPlugins` (15 مفتاحًا)
+- `~/.claude/settings.json` — إعلان المتجر (خارج الريبو)
+- `~/.claude/plugins/marketplaces/designer-skills/` — كاش المتجر (خارج الريبو)
+
+### الأرقام
+- إضافات مثبّتة: 0 → **15** من أصل 33 متاحة
+- مهارات `.agents/skills/`: 206 (لم تتغير — الإضافات مسار مستقل عن مجلد المهارات)
+
+### القرارات
+- **نطاق project مو user** — لأن الإضافات مرتبطة بشغل BRIGHTAI تحديدًا، وبكذا الإعداد يتوثّق داخل الريبو ويشوفه أي وكيل يشتغل عليه.
+- **تثبيت جزئي مو كامل** — 33 إضافة تعني مئات مهارات تحمّل السياق بلا فائدة مباشرة للمشروع.
+
+### التحقق
+- `claude plugin marketplace list` ✅ — designer-skills مضاف
+- كل أمر تثبيت رجّع `✔ Successfully installed` ✅ (15/15)
+- `.claude/settings.json` ✅ يحتوي 15 إضافة مفعّلة
+- ما شغّلت build/tests — التغيير إعدادات أدوات فقط، لا يمس كود المشروع.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** المتجر مضاف و15 إضافة تصميم/وصول مفعّلة بنطاق المشروع؛ ما صار commit ولا push.
+
+### ملاحظات / مشاكل مفتوحة
+- **ملاحظة مهمة:** التثبيتات السابقة (`npx skills add`) عدّلت 4 ملفات SKILL.md موجودة أصلًا: `emil-design-eng`, `pick-ui-library`, `prototype`, `review-animations` — أي نسخ فوق نسخ سابقة. يفضّل مراجعة `git diff` عليها قبل الـ commit.
+- الدستور `CLAUDE.md` ما زال مكتوب فيه "67 مهارة" — الرقم الفعلي 206 مهارة + 15 إضافة.
+
+## [2026-08-28] — SKILLS-INSTALL-023: تركيب حزمة jakubkrehel/skills (مهارات واجهة وتصميم)
+
+### تم التنفيذ
+- شغّلت `npx skills@latest add jakubkrehel/skills` — نزلت 11 مهارة.
+- المهارات: `better-accessibility`, `better-colors`, `better-interface`, `better-layout`, `better-typography`, `better-ui`, `better-writing`, `break`, `explain-interface`, `interface-review`, `variant`.
+- الأداة عرضت تقرير فحص أمني: كل المهارات Safe / 0 alerts — عشرة منها Low Risk و`explain-interface` مصنّفة Med Risk.
+- كل مهارة انزلت universal (Antigravity, Cline, Codex, Cursor, Gemini CLI +12) مع symlinks لـ Claude Code و ZCode.
+
+### الملفات المتأثرة
+- `.agents/skills/` — أصبح 206 مجلد مهارة
+
+### الأرقام
+- عدد المهارات: 195 → **206**
+
+### التحقق
+- `ls .agents/skills | wc -l` ✅ = 206
+- فحص الأداة الأمني ✅ Safe / 0 alerts لكل المهارات الـ11.
+- ما شغّلت build/tests — التغيير مقصور على مجلد المهارات.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** 11 مهارة واجهة/تصميم مركّبة محليًا؛ ما صار commit ولا push.
+
+### ملاحظات / مشاكل مفتوحة
+- `explain-interface` مصنّفة Med Risk من الأداة — يفضّل قراءة `SKILL.md` قبل استخدامها.
+- الدستور `CLAUDE.md` ما زال مكتوب فيه "67 مهارة" — يحتاج تحديث للرقم الفعلي 206.
+
+## [2026-08-28] — SKILLS-INSTALL-022: تركيب حزمتي مهارات خارجيتين (emilkowalski + MengTo)
+
+### تم التنفيذ
+- شغّلت `npx skills@latest add emilkowalski/skills` — نزلت 12 مهارة (animate, animate-expo, animation-vocabulary, improve-animations, find-animation-opportunities, review-animations, apple-design, emil-design-eng, prototype, pick-ui-library, ask-sonner, write-swift).
+- شغّلت `npx skills@latest add MengTo/Skills` — نزلت حزمة كبيرة تشمل مهارات WebGL/Three.js، GSAP، أنظمة تصميم/لاندنق، بناء ألعاب ويب، وحزمة SEO كاملة (`seo-*`).
+- كل مهارة انزلت بصيغة universal (Antigravity, Cline, Codex, Cursor, Gemini CLI +12) مع symlinks لـ Claude Code و ZCode.
+- ما قرأت محتوى المهارات ولا راجعتها أمنيًا — الأداة نفسها تنبّه إنها تشتغل بكامل صلاحيات الوكيل.
+
+### الملفات المتأثرة
+- `.agents/skills/` — 195 مجلد مهارة إجمالًا بعد التركيب (كان ~67 حسب الدستور)
+
+### الأرقام
+- عدد المهارات: ~67 → **195**
+
+### التحقق
+- `ls .agents/skills | wc -l` ✅ = 195
+- ما شغّلت build/tests — التغيير مقصور على مجلد المهارات ولا يمس كود المشروع.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** الحزمتان مركّبتان محليًا وجاهزتان للاستخدام؛ ما صار commit ولا push.
+
+### ملاحظات / مشاكل مفتوحة
+- **مراجعة أمنية معلّقة:** محتوى المهارات الجديدة (خصوصًا اللي فيها سكربتات) ما راجعته — يفضّل فحصها قبل الاعتماد عليها.
+- الدستور `CLAUDE.md` يقول "67 مهارة" — الرقم صار قديم ويحتاج تحديث.
+
+## [2026-08-28] — QC-COMPANY-PILOT-GATE-021: تحقق نهائي مستقل لجاهزية تجربة الشركة
+
+### تم التنفيذ
+- تحققت من المصدر الحالي على HEAD `b51504b7ae4e0b8a424a23c6190a43de9a0d2670` وشجرة العمل كانت نظيفة قبل إنشاء تقرير التحقق.
+- شغلت بوابات pnpm المطلوبة فعليًا: typecheck وmanifest وroute-manifest وتطابق migrations والهجرات وfull tests وproduction build وE2E acceptance؛ كلها exit 0.
+- تحققت من 38/38 migration مضمّنة، ومن restore drill مؤقت يشمل schema v38 و`integrity_check` و`foreign_key_check` وسلاسلي تدقيق وbackup/verify/restore/restart.
+- تحققت من acceptance المعزول (28 suites + مرحلتا restart-persistence) ومن axe: 12 صفحة pilot، Critical=0 وSerious=0.
+- تحققت من WI: صفحة 1 فقط (33 صفًا source-exact)؛ التطبيق يمنع اختراع الصفحتين 2/3 و3/3.
+- سجلت فشل hygiene مستقل: ملفا `apps/qc-task-manager/qc_tasks.db` و`qc_tasks 3.db` متتبّعان رغم أنهما صفريان بلا tables؛ لذلك التصنيف النهائي CONDITIONAL GO وليس GO.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/FINAL-PILOT-READINESS.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm typecheck` ✅ — 0 errors / 0 warnings / 26 hints.
+- `pnpm test:manifest` ✅ — 60 canonical suites و28 E2E.
+- `pnpm test:route-manifest` ✅ — 114 routes، 25 middleware، 6 guards.
+- `pnpm test:embedded-migration-parity` ✅ — 38/38.
+- `pnpm test:migrations` و`pnpm test` و`pnpm build` و`pnpm e2e:acceptance` ✅.
+- `pnpm test:production-operations` و`pnpm test:deployment-contract` و`pnpm test:db-doctor` و`pnpm test:lab-documents` ✅.
+- `node scripts/verify-security-hygiene.mjs` ⚠️ exit 1 — فقط ملفا SQLite المتتبّعان المذكوران.
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** التطبيق اجتاز كل بوابات التشغيل المطلوبة محليًا لكن GO محجوب حتى إزالة artifacts الـSQLite المتتبعة، تنفيذ restore/live deployment الحقيقي، وتوفير نتائج UAT بشري فعلية.
+
+### ملاحظات / مشاكل مفتوحة
+- **RUNTIME USER UAT REQUIRED** — لا توجد نتيجة UAT بشرية مُدعاة.
+- WI register لا يكتمل حتى توريد controlled pages 2/3 و3/3.
+- ما صار commit أو push أو deploy.
+
 ## [2026-08-28] — QC-WI-CATALOG-COMPLETION-020: تدقيق كتالوج WI مع حجب الصفحات غير المورّدة
 
 ### تم التنفيذ

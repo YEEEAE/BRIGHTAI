@@ -1,0 +1,73 @@
+{
+  "task_id": "QC-POST-IMPLEMENTATION-MASTER-AUDIT-022",
+  "baseline": {
+    "head": "b51504b7ae4e0b8a424a23c6190a43de9a0d2670",
+    "branch": "main",
+    "audit_date": "2026-08-28",
+    "node": "v22.22.3",
+    "pnpm": "10.19.0",
+    "dirty_files": [".agents/mind/01-mind-latest.md (tracked, modified — project log)", "apps/qc-task-manager/docs/FINAL-PILOT-READINESS.md (untracked report)"],
+    "untracked_runtime_code": false
+  },
+  "files_reviewed": 457,
+  "file_coverage": 100,
+  "file_status_counts": { "CLEAN": 426, "ISSUE": 15, "REQUIRES-RUNTIME-EVIDENCE": 16 },
+  "routes": { "file_routes": 114, "pages": 76, "api_get": 12, "api_mutation": 26, "middleware_short_circuit": 25, "form_post_surfaces": 27, "guards": 6, "dead_routes": ["GET /api/tasks/suggestions (P3-012)"] },
+  "database_counts": {
+    "migrations": 38,
+    "embedded_parity": "38/38 PASS",
+    "tables_fresh_init": 51,
+    "indexes_in_migrations": 127,
+    "triggers": 7,
+    "integrity_check": "PASS",
+    "foreign_key_check": "PASS",
+    "doctor": "PASS",
+    "schema_mirror_drift": "P2-008 (missing ai_audit_log + 6 indexes; extra idx_tasks_template)"
+  },
+  "test_results": [
+    { "command": "pnpm typecheck", "exit": 0, "result": "PASS", "detail": "0 errors / 0 warnings / 26 hints", "duration_s": 13 },
+    { "command": "pnpm test:manifest", "exit": 0, "result": "PASS", "detail": "60 canonical suites / 28 canonical E2E" },
+    { "command": "pnpm test:route-manifest", "exit": 0, "result": "PASS", "detail": "114 file routes / 25 middleware / 6 guards" },
+    { "command": "pnpm test:embedded-migration-parity", "exit": 0, "result": "PASS", "detail": "38/38 byte-identical" },
+    { "command": "pnpm test:migrations", "exit": 0, "result": "PASS" },
+    { "command": "pnpm test (full chain)", "exit": 0, "result": "PASS", "detail": "60 canonical suites, exit 0" },
+    { "command": "pnpm build (NODE_ENV=production)", "exit": 0, "result": "PASS", "duration_s": 6 },
+    { "command": "pnpm e2e:acceptance", "exit": 1, "result": "FAIL", "detail": "12 suites passed (823 assertions), e2e-lab-form aborted: 8 sticky-bar assertion failures + uncaught Playwright timeout on text=Save Draft (3 matches, first hidden help paragraph); remaining 15 suites + 2 persistence phases NOT EXECUTED", "duration_s": 86 },
+    { "command": "db:init + db:status on disposable DB", "exit": 0, "result": "PASS", "detail": "schema v38, 51 tables, integrity/FK/parity PASS" },
+    { "command": "test:production-operations (isolated, disposable DB)", "exit": 0, "result": "PASS", "detail": "backup 856KB (test+manual), restore drill, restart, integrity, FK, audit chains, deployment contract" }
+  ],
+  "scores": {
+    "formula": "40% implementation + 30% verification + 20% quality + 10% ux/ops per category; weights per Phase 37",
+    "weighted_overall": 91.6,
+    "code_implementation_completeness": 96,
+    "automated_verification_confidence": 84,
+    "security_readiness": 91,
+    "data_integrity_readiness": 97,
+    "ui_design_maturity": 90,
+    "ux_technical_readiness": 88,
+    "operational_readiness": 87,
+    "deployment_config_readiness": 89,
+    "human_uat_readiness": 40,
+    "pilot_readiness": 82,
+    "production_readiness": 78
+  },
+  "findings": {
+    "counts": { "P0": 0, "P1": 2, "P2": 9, "P3": 11 },
+    "P1": [
+      { "id": "P1-001", "title": "Mandatory e2e:acceptance gate aborts in e2e-lab-form", "evidence": "scripts/e2e-lab-form.mjs:126 (count()===1 now 2), scripts/e2e-lab-form.mjs:176 (text=Save Draft → 3 matches, first hidden), src/pages/lab/tests/new.astro:154 (help copy contains 'Save Draft'/'Submit for Review')", "impact": "gate exit 1; 15 suites + 2 persistence phases unexecuted; prior claim of green acceptance (021) is STALE/FALSE at same HEAD" },
+      { "id": "P1-002", "title": "SECRET-LIKE VALUE FOUND — ROTATION REQUIRED", "evidence": "README.md:33 real Ed25519 private key PEM in EVAL_CERT_SIGNING_KEY_RING example (value withheld)", "impact": "eval signature forgery wherever documented key ring deployed; rotate + placeholder" }
+    ],
+    "P2": ["P2-003 tracked zero-byte SQLite artifacts (qc_tasks.db, qc_tasks 3.db; .gitignore gap)", "P2-004 15 E2E suites + 2 persistence phases not runtime-verified this audit", "P2-005 chunked bodies bypass Content-Length cap (src/lib/api-security.ts:125-131)", "P2-006 production guards hinge solely on NODE_ENV (seed.ts:40,55; login.astro:25)", "P2-007 change-requests/new + retests/new forms lack double-submit protection", "P2-008 db/schema.sql mirror drift vs migrations", "P2-009 design-system rollout incomplete outside lab (35 pages; StatusPill 3 pages)", "P2-010 axe gate covers 12/76 pages", "P2-011 cookie Secure not forced for plain-HTTP deployments (session.ts)"],
+    "P3": ["P3-012 dead route GET /api/tasks/suggestions", "P3-013 login.astro:11 weaker duplicate redirect check", "P3-014 lockout enables targeted 10-min account DoS (per spec)", "P3-015 bcrypt cost 10", "P3-016 misleading middleware comment re Astro checkOrigin", "P3-017 UI-DESIGN-SYSTEM.md missing canonical-final section", "P3-018 test-report-pdf-arabic.mjs known-broken manual diagnostic", "P3-019 ContextualHelp on 6 screens only", "P3-020 emoji in enterprise UI copy", "P3-021 .claude/settings.local.json token (untracked; relocate+rotate)", "P3-022 4.5GB local db/backups runtime artifacts"]
+  },
+  "runtime_unverified": {
+    "human_uat": "NOT VERIFIED (runbook exists, zero results)",
+    "live_deployment": "NOT LIVE VERIFIED",
+    "wi_source_pages": "SOURCE-BLOCKED (pages 2/3, 3/3 not supplied)",
+    "calibration_overdue_policy": "HUMAN-VALIDATION-REQUIRED (warn vs block)"
+  },
+  "pilot_readiness": 82,
+  "production_readiness": 78,
+  "final_verdict": "CONDITIONAL GO",
+  "verdict_basis": "No verified P0. Held from GO by: P1-001 failing mandatory gate, P1-002 key rotation, HUMAN UAT NOT VERIFIED, live deployment NOT VERIFIED."
+}
