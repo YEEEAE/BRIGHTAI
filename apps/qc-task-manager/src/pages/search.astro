@@ -17,6 +17,7 @@ import StatusBadge from '../components/StatusBadge.astro';
 import EmptyState from '../components/EmptyState.astro';
 import * as search from '../lib/taskSearch';
 import AppButton from '../components/ui/AppButton.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
 import {
   formatDbDate,
   formatDueDate,
@@ -89,29 +90,12 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
 ---
 
 <BaseLayout title="Search tasks">
-  <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
-    <div>
-      <h1 class="text-2xl font-semibold text-slate-900">Search tasks</h1>
-      <p class="text-sm text-slate-600">
-        Advanced search across title, description, blockers and comments.
-        Signed in as {user.fullName} ({user.role}).
-      </p>
+  <PageHeader eyebrow="QC Operations" title="Search tasks" description={`Advanced search across title, description, blockers and comments. Signed in as ${user.fullName} (${user.role}).`}>
+    <div slot="actions" class="flex flex-wrap items-center gap-3">
+      <AppButton href={`/api/export/search.csv${qsBase}`} variant="secondary">Export CSV</AppButton>
+      <AppButton href={`/api/export/search.xlsx${qsBase}`} variant="secondary">Export XLSX</AppButton>
     </div>
-    <div class="flex gap-2">
-      <a
-        href={`/api/export/search.csv${qsBase}`}
-        class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-      >
-        Export CSV
-      </a>
-      <a
-        href={`/api/export/search.xlsx${qsBase}`}
-        class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-      >
-        Export XLSX
-      </a>
-    </div>
-  </header>
+  </PageHeader>
 
   {/* ───────────── Filters (GET — server-side, state preserved in the URL) ───────────── */}
   <form
@@ -277,9 +261,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
           placeholder="Name this filter set…"
           class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
         />
-        <button type="submit" class="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">
-          Save current filters
-        </button>
+        <AppButton type="submit" variant="secondary" size="sm">Save current filters</AppButton>
       </form>
     </div>
     {savedFilters.length === 0 ? (
@@ -300,13 +282,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
               <input type="hidden" name="action" value="delete" />
               <input type="hidden" name="filter_id" value={sf.id} />
               <input type="hidden" name="next" value={currentUrl} />
-              <button
-                type="submit"
-                class="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-600 hover:bg-red-50 hover:text-red-700"
-                aria-label={`Delete saved filter ${sf.name}`}
-              >
-                Delete
-              </button>
+              <AppButton type="submit" variant="tertiary" size="sm" ariaLabel={`Delete saved filter ${sf.name}`} title={`Delete saved filter ${sf.name}`}>Delete</AppButton>
             </form>
           </li>
         ))}

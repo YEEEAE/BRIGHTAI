@@ -1,3 +1,36 @@
+## [2026-08-28] — QC-CORE-UI-CONSOLIDATION-001: توحيد headers/actions/alerts/empty states في الأسطح عالية الاستخدام
+
+### تم التنفيذ
+- رحّلت header صفحة `/dashboard` و`/search` إلى `PageHeader` مع eyebrow ووصف وaction row متجاوب، بدون تغيير المسارات أو محتوى التشغيل.
+- رحّلت actions الأساسية في dashboard (فتح التقارير، تطبيق الفلاتر، المسح) وعمليات التصدير/حفظ الفلاتر في البحث إلى `AppButton` مع ترتيب primary/secondary واضح.
+- رحّلت أزرار CTA في `EmptyState` إلى `AppButton`، فصار نمط الحالة الفارغة يعتمد على نفس focus/height/semantic token contract.
+- استبدلت focus ring اليدوي في روابط تنقل أقسام dashboard بعقد `qc-focus`، مع إبقاء روابط الأقسام والـanchors كما هي.
+- وحّدت خطأ dashboard مع `Banner` بحالة error وعنوان واضح، بدل alert markup محلي.
+- وسّعت `test-ui-consistency` ليحرس استخدام `PageHeader` في dashboard/search.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/pages/dashboard.astro`
+- `apps/qc-task-manager/src/pages/search.astro`
+- `apps/qc-task-manager/src/components/EmptyState.astro`
+- `apps/qc-task-manager/scripts/test-ui-consistency.mjs`
+
+### التحقق
+- `pnpm --filter @brightai/qc-task-manager test:ui-consistency` ✅ — 181/181.
+- `pnpm --filter @brightai/qc-task-manager test:responsive-e2e-contract` ✅.
+- `pnpm --filter @brightai/qc-task-manager test:badge-contrast` ✅ — كل الأزواج ضمن WCAG 2.2 AA.
+- `pnpm --filter @brightai/qc-task-manager typecheck` ✅ — 0 errors، 0 warnings، 26 hints قديمة.
+- `NODE_ENV=production pnpm --filter @brightai/qc-task-manager build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `git -c core.fsmonitor=false diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** توحّدت أعلى أنماط العرض تكرارًا في dashboard/search وEmptyState باستخدام primitives الحالية، مع بقاء server-side filtering وRBAC وPOST/GET contracts وسلوك workflow بدون تغيير.
+
+### ملاحظات / مشاكل مفتوحة
+- بقيت بعض raw controls وcard/action markup في dashboard/search، إضافةً إلى صفحات الإدارة، ضمن الترحيل التدريجي route-sized؛ لم يتم اختراع abstraction عام جديد لها.
+- لم يتم تشغيل full `pnpm test` أو `pnpm e2e:acceptance` في هذا workstream؛ تم تشغيل البوابات المتأثرة مباشرة وbuild/typecheck.
+- لم يحدث commit أو push أو deploy.
+
 ## [2026-08-28] — QC-IA-NAV-WAYFINDING-001: تنظيم IA وتحسين التنقل والـ breadcrumbs
 
 ### تم التنفيذ

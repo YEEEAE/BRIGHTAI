@@ -4,6 +4,8 @@
 // obvious next action (create the first record, or clear the filters).
 // Backward-compatible API: existing title/hint/ctaHref/ctaLabel pages keep
 // working; icon + secondary CTA are opt-in.
+import AppButton from './ui/AppButton.astro';
+
 interface Props {
   title: string;
   hint?: string;
@@ -26,20 +28,10 @@ const { title, hint, ctaHref, ctaLabel, secondaryHref, secondaryLabel, icon = 'ð
   {(ctaHref || secondaryHref) && (
     <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
       {ctaHref && (
-        <a
-          href={ctaHref}
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-        >
-          {ctaLabel ?? 'Get started'}
-        </a>
+        <AppButton href={ctaHref} variant="primary">{ctaLabel ?? 'Get started'}</AppButton>
       )}
       {secondaryHref && (
-        <a
-          href={secondaryHref}
-          class="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-        >
-          {secondaryLabel ?? 'View all'}
-        </a>
+        <AppButton href={secondaryHref} variant="secondary">{secondaryLabel ?? 'View all'}</AppButton>
       )}
     </div>
   )}

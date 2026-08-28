@@ -97,6 +97,8 @@ ok(
 
 // 3. PageHeader adoption on converted screens.
 const HEADERED = [
+  'src/pages/dashboard.astro',
+  'src/pages/search.astro',
   'src/pages/manager/index.astro',
   'src/pages/supervisor/index.astro',
   'src/pages/employee/index.astro',
