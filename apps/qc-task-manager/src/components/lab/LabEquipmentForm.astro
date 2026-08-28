@@ -26,7 +26,7 @@ const sectionCls = 'rounded-xl border border-slate-200 bg-white p-5 shadow-sm';
 const sectionTitleCls = 'text-base font-semibold text-slate-900';
 ---
 
-<form method="POST" action={actionUrl}>
+<form method="POST" action={actionUrl} data-qc-form>
   <div class="space-y-6">
     {isContributor && <p role="note" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">Your change will be reviewed by laboratory management before it becomes active.</p>}
     <section aria-labelledby="sec-equipment-identity" class={sectionCls}>
@@ -124,7 +124,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
       </div>
     </section>
 
-    <div class="flex flex-wrap items-center justify-end gap-3">
+    <div class="sticky bottom-0 z-20 -mx-5 flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 bg-white/95 px-5 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] backdrop-blur" data-qc-actions>
       <input type="hidden" name="form_action" value="save" />
       <a
         href={mode === 'create' ? '/lab/equipment' : `/lab/equipment/${equipment!.id}`}

@@ -284,6 +284,54 @@ for (const username of ['admin', 'manager', 'supervisor', 'employee']) {
   await page.close();
 }
 
+// ── J. Productivity helpers: keyboard, spreadsheet paste/undo, duplicate row,
+// and a real twelve-sample batch. ──
+{
+  const page = await browser.newPage();
+  await login(page, 'employee');
+  await openForm(page, 'air');
+  await page.fill('#sample_1_part_name', 'Keyboard 1');
+  await page.locator('#sample_1_part_name').press('ArrowDown');
+  ok(await page.locator('#sample_2_part_name').evaluate((el) => document.activeElement === el), 'keyboard: ArrowDown moves to next sample');
+  await page.evaluate(() => {
+    const target = document.querySelector('#sample_3_part_name');
+    const transfer = new DataTransfer();
+    transfer.setData('text/plain', 'Paste 3\t10\t20\t1\t2\t60\t0.1\nPaste 4\t11\t21\t1\t2\t60\t0.1');
+    target.dispatchEvent(new ClipboardEvent('paste', { bubbles: true, clipboardData: transfer }));
+  });
+  ok((await page.inputValue('#sample_3_part_name')) === 'Paste 3', 'paste: tab/newline matrix fills first target row');
+  ok((await page.inputValue('#sample_4_part_name')) === 'Paste 4', 'paste: tab/newline matrix fills following row');
+  await page.click('text=Undo last paste');
+  ok((await page.inputValue('#sample_3_part_name')) === '', 'paste: undo restores pre-paste values');
+  await page.fill('#sample_1_part_name', 'Source row');
+  await page.locator('#sample_2_part_name').focus();
+  await page.click('text=Duplicate previous row');
+  ok((await page.inputValue('#sample_2_part_name')) === 'Source row', 'duplicate: copies previous row into selected row');
+  await page.close();
+
+  const batch = await browser.newPage();
+  await login(batch, 'employee');
+  await openForm(batch, 'vacuum');
+  await batch.fill('#product_description', 'Fixture Connector');
+  await batch.selectOption('#connector_type', { label: 'Non-locking (rigid) connector' });
+  await batch.fill('#sample_count', '12');
+  await batch.fill('#lot_number', 'LOT-E2E-12');
+  await batch.fill('#sampling_area', 'Area E2E');
+  await batch.selectOption('#equipment_id', { label: 'Leak Tester 1 (EQ-LT1)' });
+  for (let n = 1; n <= 12; n += 1) {
+    await batch.fill(`#sample_${n}_part_name`, `Batch ${n}`);
+    await batch.selectOption(`#sample_${n}_result`, { label: 'PASS' });
+  }
+  ok(await batch.locator('#sample_12_part_name').count() === 1, '12-sample: grid expands to twelve rows');
+  await batch.check('input[name="final_result"][value="PASS"]');
+  await batch.click('button:has-text("Submit")');
+  await batch.waitForURL((u) => u.pathname === '/lab', { timeout: 10_000 });
+  const twelve = db.prepare("SELECT * FROM lab_test_records WHERE lot_number='LOT-E2E-12'").get();
+  ok(twelve?.sample_count === 12, '12-sample: sample_count persists');
+  ok(Number(db.prepare('SELECT COUNT(*) AS n FROM lab_test_samples WHERE test_id = ?').get(twelve.id).n) === 12, '12-sample: all rows persist');
+  await batch.close();
+}
+
 } finally {
   for (const context of browser.contexts()) {
     for (const page of context.pages()) await page.close().catch(() => {});

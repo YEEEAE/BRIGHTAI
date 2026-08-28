@@ -31,7 +31,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
     Dates are YYYY-MM-DD. All fields except the equipment are optional — leave them empty when the data is not yet available.
     Every save is written to the audit log.
   </p>
-  <form method="POST" action={actionUrl} class="mt-4">
+  <form method="POST" action={actionUrl} class="mt-4" data-qc-form>
     <div class="grid gap-4 sm:grid-cols-2">
       <div class="sm:col-span-2">
         <label for="equipment_id" class={labelCls}>Equipment <span class="text-red-600" aria-hidden="true">*</span></label>
@@ -76,7 +76,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
         <textarea id="notes" name="notes" rows="3" maxlength="5000" class={inputCls}>{calibration?.notes ?? ''}</textarea>
       </div>
     </div>
-    <div class="mt-5 flex flex-wrap items-center gap-3">
+    <div class="sticky bottom-0 z-20 -mx-5 mt-5 flex flex-wrap items-center gap-3 border-t border-slate-200 bg-white/95 px-5 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] backdrop-blur" data-qc-actions>
       <button
         type="submit"
         class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"

@@ -245,6 +245,7 @@ export default function LabTestForm({
   const sampleCountTouchedRef = useRef(false);
   const [templateVersionId, setTemplateVersionId] = useState<number | null>(initial?.template_version_id ?? null);
   const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null);
+  const [pasteUndo, setPasteUndo] = useState<SampleRow[] | null>(null);
 
   // Edit-mode prefill (PROMPT 43-B): load the stored DRAFT's values into the
   // uncontrolled inputs and the sample grid once, on mount. The loaded values
@@ -376,7 +377,9 @@ export default function LabTestForm({
       setErrors((prev) => ({ ...prev, Samples: `Paste would exceed No. of Samples Tested (${sampleCount}).` }));
       return;
     }
-    setSamples((prev) => prev.map((target, rowIndex) => {
+    setSamples((prev) => {
+      setPasteUndo(prev.map((sample) => ({ ...sample })));
+      return prev.map((target, rowIndex) => {
       const pasted = matrix[rowIndex - row];
       if (!pasted) return target;
       const next = { ...target };
@@ -385,7 +388,23 @@ export default function LabTestForm({
         if (key) next[key] = value.trim() as never;
       });
       return next;
-    }));
+      });
+    });
+    markDirty();
+  }
+
+  function duplicatePreviousRow() {
+    if (!selectedCell || selectedCell.row < 1) return;
+    setSamples((prev) => prev.map((sample, index) => index === selectedCell.row ? {
+      ...prev[selectedCell.row - 1], sample_no: sample.sample_no,
+    } : sample));
+    markDirty();
+  }
+
+  function undoLastPaste() {
+    if (!pasteUndo) return;
+    setSamples(pasteUndo);
+    setPasteUndo(null);
     markDirty();
   }
 
@@ -1158,7 +1177,9 @@ export default function LabTestForm({
             </table>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            <button type="button" onClick={copyDownSelected} disabled={!selectedCell} className="min-h-[44px] rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 disabled:opacity-50">Copy down selected value</button>
+            <button type="button" onClick={duplicatePreviousRow} disabled={!selectedCell || selectedCell.row < 1} className="min-h-[44px] rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 disabled:opacity-50">Duplicate previous row</button>
+            <button type="button" onClick={copyDownSelected} disabled={!selectedCell} className="min-h-[44px] rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 disabled:opacity-50">Copy down selected value / Fill down</button>
+            <button type="button" onClick={undoLastPaste} disabled={!pasteUndo} className="min-h-[44px] rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 disabled:opacity-50">Undo last paste</button>
             {selectedCell && <button type="button" onClick={() => clearSampleRow(selectedCell.row)} className="min-h-[44px] rounded-md border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-700">Clear row {selectedCell.row + 1}</button>}
             <span className="self-center text-xs text-slate-500">Paste values from a spreadsheet with tabs/new lines. Server validation still applies.</span>
           </div>

@@ -1,3 +1,38 @@
+## [2026-08-28] — QC-FORM-USABILITY-013: تحسين إنتاجية النماذج التشغيلية واختبارات المختبر
+
+### تم التنفيذ
+- أضفت progressive enhancement مشتركًا للنماذج المعلّمة بـ `data-qc-form`: مؤشرات الأخطاء، ملخص التحقق، تركيز أول حقل غير صالح، حماية فقدان التعديلات، حالة الحفظ، ومنع الإرسال المزدوج.
+- طبّقت الحارس المشترك على نماذج المعدات والمنتجات والمعايرة والقوالب ومحرر المستندات والمهام، مع شريط إجراءات sticky ومؤشرات required الموجودة/المضافة.
+- حسّنت `LabTestForm` بمساعدات Duplicate previous row وFill down وClear row وPaste spreadsheet rows وUndo last paste، بدون إضافة معايير علمية أو منطق PASS/FAIL جديد.
+- حافظت على الحقول المتوافقة مع الورق، المخطط الحالي، والبيانات legacy؛ وواصلت رسائل النجاح الموجودة عبر `FlashNotice` مع حالة `Saving…` أثناء الإرسال.
+- أضفت اختبارات keyboard وpaste وdata-loss واختبار E2E لـ 12 عينة، وسجلتها ضمن manifest والاختبارات الكاملة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/public/scripts/form-productivity.js`
+- `apps/qc-task-manager/src/components/lab/LabTestForm.tsx`
+- `apps/qc-task-manager/src/components/lab/{LabEquipmentForm,LabProductForm,LabCalibrationForm,LabTemplateForm,LabDocumentEditor}.astro`
+- `apps/qc-task-manager/src/components/NewTaskForm.astro`
+- `apps/qc-task-manager/src/layouts/BaseLayout.astro`
+- `apps/qc-task-manager/scripts/{test-form-productivity.mjs,e2e-lab-form.mjs,test-manifest.mjs}`
+- `apps/qc-task-manager/package.json`
+
+### التحقق
+- `node scripts/test-form-productivity.mjs` ✅ — 17 ناجحة / 0 فاشلة
+- `pnpm run test:lab-form` ✅ — 72 ناجحة / 0 فاشلة
+- `pnpm typecheck` ✅ — 0 أخطاء، 0 تحذيرات، مع 26 hint غير حاجب
+- `NODE_ENV=production pnpm build` ✅
+- `pnpm test` ✅ — 56 مجموعة canonical، بدون فشل
+- `pnpm e2e:acceptance` ✅ — 29/29 مجموعة ناجحة؛ `lab-form` فيها 141 ناجحة / 0 فاشلة
+- `git diff --check` ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صارت النماذج التشغيلية أوضح وأأمن من ناحية الحفظ والإرسال، وصارت شبكة عينات المختبر تدعم عمليات الدفعات المتكررة مع اختبارات تغطي الاستخدام الفعلي.
+
+### ملاحظات / مشاكل مفتوحة
+- بقيت تحذيرات البناء/الـ typecheck الموجودة سابقًا (dynamic/static imports، hints غير مستخدمة، وتنبيه Astro للسكريبت الخارجي) بدون أخطاء حاجبة.
+- لم يُنفّذ commit أو push أو deploy حسب الطلب.
+
 ## [2026-08-28] — URLS-FILE-001: إنشاء ملف `urls.txt` يدويًا بكل روابط الموقع (262 رابطًا — روابط فقط بدون أي كلمات)
 
 ### تم التنفيذ
