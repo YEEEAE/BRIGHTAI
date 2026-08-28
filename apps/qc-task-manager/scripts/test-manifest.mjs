@@ -26,6 +26,7 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:auth-password-lifecycle',
   'test:user-audit',
   'test:embedded-migration-parity',
+  'test:schema-reference',
   'test:route-manifest',
   'test:domain',
   'test:sla',

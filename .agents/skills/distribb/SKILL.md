@@ -1687,7 +1687,7 @@ This skill ships with structured sub-workflows for opinionated multi-week SEO pr
 
 | Sub-skill folder | When to invoke |
 |---|---|
-| [`90-day-seo-sprint/`](./90-day-seo-sprint/SKILL.md) | User asks for an SEO sprint, a 90-day SEO plan, an SEO tracker / roadmap, "where do I start with SEO", "how do I get my first 1,000 organic visitors", or anything similar. Sub-skill opens the Distribb tracker Google Sheet in their browser and walks them through 4 phases (Pre-launch / Foundation / Content Engine / Authority) using the API endpoints below. |
+| [`distribb-90-day-seo-sprint/`](../distribb-90-day-seo-sprint/SKILL.md) | User asks for an SEO sprint, a 90-day SEO plan, an SEO tracker / roadmap, "where do I start with SEO", "how do I get my first 1,000 organic visitors", or anything similar. Sub-skill opens the Distribb tracker Google Sheet in their browser and walks them through 4 phases (Pre-launch / Foundation / Content Engine / Authority) using the API endpoints below. |
 
 If a sub-skill applies, **read its `SKILL.md` first** before calling any endpoint. Each sub-skill assumes you already have a Distribb API key set and the parent skill loaded for the actual API surface, sub-skills only add structure, content, and execution discipline.
 

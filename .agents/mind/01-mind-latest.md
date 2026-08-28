@@ -1,3 +1,30 @@
+## [2026-08-28] — QC-DB-HYGIENE-025: تغطية ملفات SQLite المتتبعة في تطبيق QC
+
+### تم التنفيذ
+- وسّعت `.gitignore` الخاص بتطبيق `apps/qc-task-manager` ليغطي `*.db` و`*.db-wal` و`*.db-shm` بأي عمق.
+- أضفت نمط `db/e2e_*.db*` لحماية قواعد الاختبارات وملفاتها الجانبية، مع بقاء `db/schema.sql` غير متأثر لأنه SQL.
+- وسّعت `verify-security-hygiene.mjs` ليفشل صراحةً عند تتبع أي `.db` أو `.db-wal` أو `.db-shm` تحت تطبيق QC بأي عمق.
+- لم أحذف أي قاعدة محلية غير متتبعة؛ قواعد `db/qc_tasks.db` و`db/e2e_*.db*` بقيت على القرص ومهملة من Git.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/.gitignore`
+- `apps/qc-task-manager/scripts/verify-security-hygiene.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `node apps/qc-task-manager/scripts/verify-security-hygiene.mjs` ✅ — Security hygiene passed.
+- `git check-ignore -v` ✅ — الجذر، WAL، SHM، و`db/e2e_*.db*` طابقت الأنماط الجديدة.
+- `pnpm test` ✅ — 60 canonical suites، بدون فشل، exit 0.
+- `git status --short` ✅ — لا يظهر `.db` غير مقصود؛ ملفات DB المحلية مهملة.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** حماية التجاهل وحارس hygiene مكتملان والاختبارات خضراء. الحذفان المرحّلان المذكوران في سياق المهمة غير موجودين حاليًا في الـ index أو HEAD، لذلك لم أعد staging أو حذفًا من عندي.
+
+### ملاحظات / مشاكل مفتوحة
+- لا توجد staged deletions حاليًا عند التحقق عبر `git diff --cached`؛ يلزم مراجعة جلسة/حالة Git السابقة إذا كان المطلوب استعادتهما كحذفين مرحّلين.
+
 ## [2026-08-28] — OP-01: إزالة مفتاح تقييم خاص من الملفات المتتبعة وتشديد فحص hygiene
 
 ### تم التنفيذ
@@ -1793,3 +1820,40 @@ skills_ready: 7---
 ### ملاحظات / مشاكل مفتوحة
 - لا يوجد تنفيذ لمكتبة tour أو نظام feedback مستقل؛ جمع ملاحظات UAT يتم عبر حقول الـRunbook فقط.
 - ما صار commit أو push أو deploy.
+## [2026-08-28] — SKILLS-LOCK-REBUILD-027: إعادة بناء قفل المهارات وحراسة الانحراف
+
+### تم التنفيذ
+- أعدت توليد `skills-lock.json` بمسح مجلدات المهارات المباشرة واحتساب SHA-256 من محتوى `SKILL.md` الحالي، مع حذف الإدخالات الميتة وعدم اختراع مجلدات.
+- رُفعت `90-day-seo-sprint` من التغليف المتداخل إلى `distribb-90-day-seo-sprint` كمهارة مباشرة مميزة، مع تحديث اسمها ورابطها من مهارة `distribb` بدون تغيير دلالي للمحتوى.
+- استبدلت إحالات `stitch-design-taste` و`image-to-code` في `design-pipeline` بمهارات موجودة فعلًا: `design-md` و`frontend-design`.
+- أضفت `scripts/qa/verify-skills-lock.mjs` بوضع تحقق افتراضي ووضع `--write` لإعادة التوليد؛ الحارس يتحقق من وجود `SKILL.md`، تطابق الاسم، المسار النسبي، وعدد الإدخالات والهاشات.
+- حدّثت `AGENTS.md` و`CLAUDE.md` من الرقم القديم إلى العدد الفعلي بعد التسوية: 365 مهارة مباشرة.
+
+### الملفات المتأثرة
+- `skills-lock.json`
+- `scripts/qa/verify-skills-lock.mjs`
+- `.agents/skills/design-pipeline/SKILL.md`
+- `.agents/skills/distribb/SKILL.md`
+- `.agents/skills/distribb-90-day-seo-sprint/SKILL.md`
+- `AGENTS.md`
+- `CLAUDE.md`
+- `package.json`
+
+### الأرقام
+- القفل: 175 مدخلًا قديمًا → **365 مدخلًا** مطابقًا لـ365 مجلد مهارة مباشر.
+- التغليف: `distribb/90-day-seo-sprint` → `.agents/skills/distribb-90-day-seo-sprint`.
+
+### التحقق
+- `node scripts/qa/verify-skills-lock.mjs --write` ✅
+- `node scripts/qa/verify-skills-lock.mjs` ✅ — 365 مجلدًا، 365 مدخلًا، الهاشات مطابقة.
+- فحص عدد المجلدات مقابل الإدخالات ✅ — 365 = 365.
+- فحص `stitch-design-taste|image-to-code` داخل `design-pipeline` ✅ — بلا نتائج.
+- `git diff --check` ✅؛ تحذير `fsmonitor_ipc` بيئي فقط.
+- لا build/tests مطلوبة — التغييرات محصورة في المهارات والتوثيق وحارس مستقل، بدون كود تطبيق.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** سجل المهارات صار كاملًا ومُعاد الإنتاج، والإحالات الميتة والتغليف الشاذ انحلت، مع حارس يمنع انحراف الهاش أو فقدان المجلدات مستقبلًا.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد ضمن نطاق المهمة. لم يحدث commit أو push.

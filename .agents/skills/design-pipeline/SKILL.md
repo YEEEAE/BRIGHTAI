@@ -3,11 +3,11 @@ name: design-pipeline
 description: |
   End-to-end design-to-code orchestrator for premium websites and apps. Runs a
   5-stage pipeline that coordinates brand foundation, taste selection, reference
-  image generation, image-to-code conversion, and output discipline. Use when the
+  image generation, reference-to-code conversion, and output discipline. Use when the
   user asks to "design a landing page", "build a complete homepage from scratch",
   "make our marketing site premium", "redesign this site end-to-end", or wants a
   full journey from brand identity to shippable code. Do NOT use for single-
-  section tweaks (use design-taste-frontend or image-to-code directly), copy/
+  section tweaks (use design-taste-frontend or frontend-design directly), copy/
   content edits only, or backend-only work — this skill is for the full journey.
 ---
 
@@ -25,10 +25,10 @@ skills). The orchestrator references them by name; do not duplicate their rules.
 
 | Stage | Skill | Purpose |
 |---|---|---|
-| 1 — Brand | `brandkit`, `design-md`, `awesome-design-md`, `stitch-design-taste` | Build / analyze brand identity and DESIGN.md |
+| 1 — Brand | `brandkit`, `design-md`, `awesome-design-md`, `design-taste-frontend` | Build / analyze brand identity and DESIGN.md |
 | 2 — Taste | `design-taste-frontend` (+v1 fallback), `gpt-taste`, `high-end-visual-design`, `minimalist-ui`, `industrial-brutalist-ui`, `redesign-existing-projects`, `frontend-design` | Pick the aesthetic direction and tokens |
 | 3 — Images | `imagegen-frontend-web` (web) or `imagegen-frontend-mobile` (mobile) | Produce premium reference images, ONE per section |
-| 4 — Code | `image-to-code` | Convert reference images to shippable code |
+| 4 — Code | `frontend-design` | Convert reference images to shippable code |
 | 5 — Discipline | `full-output-enforcement` | Guarantee no truncation, complete delivery |
 
 If a companion skill is missing, tell the user which one to install before
@@ -88,7 +88,7 @@ Goal: produce a `DESIGN.md` that downstream stages can read.
    philosophy, anti-patterns.
 
 **Exit gate**: `DESIGN.md` exists at the project root and includes the 7
-sections from `stitch-design-taste` § Output Format.
+sections from `design-md`'s output format.
 
 Reason: stages 3-4 read this file as ground truth. Skipping it forces them to
 guess, which is exactly the generic look you're trying to avoid.
@@ -143,7 +143,7 @@ premium result and a generic AI look.
 
 Goal: shippable, production-grade implementation matching the references.
 
-1. Load `image-to-code`. Follow its anti-slop rules (no `Inter`, no centered
+1. Load `frontend-design`. Follow its anti-slop rules (no `Inter`, no centered
    hero at high variance, no 3-equal-card grids, no emojis).
 2. Process images **one section at a time** in page-plan order.
 3. For each section, output: the markup, the scoped CSS (using the project's
@@ -221,7 +221,7 @@ off-black base, cyan accent (matching Saudi AI safety vibe), bilingual typo
 with 6 sections (hero, problem, solution, compliance packs, demo CTA, footer)
 → Stage 3 loads `imagegen-frontend-web`, generates 6 separate horizontal
 images under `design/`
-→ Stage 4 loads `image-to-code`, builds each section as RTL-aware Astro
+→ Stage 4 loads `frontend-design`, builds each section as RTL-aware Astro
 components
 → Stage 5 verifies build + audits, delivers Saudi-dialect summary.
 

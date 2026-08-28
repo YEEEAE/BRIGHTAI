@@ -78,6 +78,8 @@
     "lhci:assert": "bash scripts/run-lhci.sh --assert",
     "lhci:psi": "bash scripts/run-lhci.sh --psi",
     "verify:all": "node scripts/verify-all.mjs && npm run headers:check && npm run test:chat-session && npm run lint:tokens && npm run sitemap:generate && npm run seo:schema && npm run seo:gate && npm run seo:hreflang",
+    "verify:skills-lock": "node scripts/qa/verify-skills-lock.mjs",
+    "generate:skills-lock": "node scripts/qa/verify-skills-lock.mjs --write",
     "preview": "astro preview",
     "clean": "rm -rf .next .render-static reports/ dist/ .vercel/",
     "performance:budget": "node scripts/check-performance-budget.js",

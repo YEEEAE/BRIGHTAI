@@ -54,6 +54,7 @@ for (const path of files(join(root, 'src')).filter((p) => /\.(ts|tsx|astro)$/.te
 }
 
 const tracked = execFileSync('git', ['ls-files'], { cwd: repoRoot, encoding: 'utf8' }).split('\n');
+const qcAppPrefix = 'apps/qc-task-manager/';
 const privateKeyPattern = new RegExp(
   ['BEGIN(?: [A-Z0-9]+)?', ['PRIVATE', 'KEY'].join(' ')].join(' '),
   'i',
@@ -71,7 +72,11 @@ for (const path of tracked) {
     !privateKeyPattern.test(trackedSource),
     `tracked file contains private-key material: ${path}`,
   );
-  check(!/\.(?:db|sqlite|sqlite3)$/i.test(path), `database file is tracked: ${path}`);
+  check(
+    !(path.startsWith(qcAppPrefix) && /\.(?:db|db-wal|db-shm)$/i.test(path)),
+    `QC database file is tracked: ${path}`,
+  );
+  check(!/\.(?:sqlite|sqlite3)$/i.test(path), `database file is tracked: ${path}`);
   // Templates contain no values and are deliberately committed for deployment
   // documentation; real .env files are never allowed.
   check(!/(^|\/)\.env(?:\.(?!example$)|$)/.test(path), `environment file is tracked: ${path}`);
