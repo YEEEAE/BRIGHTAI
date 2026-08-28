@@ -37,7 +37,7 @@
 - [✅] Prompt 15 — Reports UX + Print Quality
 - [✅] Prompt 16 — Observability + Error States
 - [✅] Prompt 17 — Visual Regression + Responsive
-- [☐] Prompt 18 — Performance
+- [✅] Prompt 18 — Performance
 - [☐] Prompt 19 — Onboarding + Human UAT Preparation
 - [☐] Prompt 20 — WI Catalog Source Guard (SOURCE-BLOCKED)
 - [☐] Prompt 21 — Final Company Pilot Gate

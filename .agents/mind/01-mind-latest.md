@@ -1,3 +1,39 @@
+## [2026-08-28] — QC-VISUAL-RESPONSIVE-017: فحوص Playwright للاستجابة وسهولة الاستخدام
+
+### تم التنفيذ
+- أضفت جناح Playwright خفيفًا يفحص 18 شاشة عبر 4 مقاسات (1440، 1024، 768، 360) = 648 حالة، بدون SaaS أو baselines بصرية كبيرة.
+- أضفت fixtures حتمية ومعزولة للمهام والاختبارات والعينات والمنتجات والمعدات والوثائق، مع تنظيف idempotent بعد التشغيل.
+- أضفت فحوص عدم تجاوز عرض الصفحة، وصول الإجراء الأساسي، قابلية استخدام التنقل، استراتيجية تمرير الجداول، احتواء الحوارات، وعدم قص رسائل الأخطاء.
+- عطّلت الحركة غير الحتمية عبر `prefers-reduced-motion`، وجعلت لقطات الفشل فقط داخل `download/qa/responsive/` المهمل.
+- أصلحت تسربات عرض فعلية في صفحة المختبر وسجل الاختبارات ومحرر الوثائق، مع الحفاظ على تمرير الجداول أفقيًا داخل حاوياتها.
+- ربطت الجناح بالـ E2E registry والـ acceptance runner، وأضفت contract/manifest guard لضمان بقاء التسجيل.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/scripts/e2e-responsive.mjs`
+- `apps/qc-task-manager/scripts/test-responsive-e2e-contract.mjs`
+- `apps/qc-task-manager/{package.json,scripts/e2e-registry.mjs,scripts/test-manifest.mjs}`
+- `apps/qc-task-manager/src/layouts/BaseLayout.astro`
+- `apps/qc-task-manager/src/pages/lab/index.astro`
+- `apps/qc-task-manager/src/pages/lab/tests/index.astro`
+- `apps/qc-task-manager/src/components/lab/LabDocumentEditor.astro`
+
+### التحقق
+- `pnpm test` ✅ — 59/59 suite canonical.
+- `pnpm typecheck` ✅ — 0 أخطاء، 26 hints قديمة.
+- `astro build` ✅ — Complete؛ تحذيرات Vite المعروفة بقيت بدون تغيير.
+- `test:responsive-e2e-contract` ✅ و`test:manifest` ✅ — 28 جناح E2E canonical.
+- responsive Playwright ✅ — 648 passed، 0 failed.
+- full acceptance جزئي ⚠️ — وصل للجناح الجديد ونجح، ثم توقف عند `e2e-lab-search` بنتيجة 18/21؛ الإخفاقات الثلاثة تخص عزل RBAC القائم، ولم تتأثر ملفات البحث بهذا التغيير.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** فحوص الاستجابة الجديدة وإصلاحات العرض الفعلية ناجحة بالكامل، لكن بوابة القبول الكاملة ما زالت متوقفة على 3 إخفاقات baseline في `lab-search` خارج نطاق التغيير.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم حسم إخفاقات RBAC الثلاثة في `scripts/e2e-lab-search.mjs`/طبقة البحث في مهمة منفصلة قبل اعتبار full acceptance أخضر بالكامل.
+- ما صار commit أو push أو deploy.
+
 ## [2026-08-28] — QC-OBSERVABILITY-016: قابلية تتبع آمنة وحالات أخطاء موحّدة لتجربة الشركة التجريبية
 
 ### تم التنفيذ

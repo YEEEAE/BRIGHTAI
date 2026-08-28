@@ -18,6 +18,7 @@ export const TEST_SCRIPT_CLASSIFICATIONS = new Map([
   // then crashes TypeError at scripts/test-report-pdf-arabic.mjs:160
   // (locData undefined). Fix + registration is a dedicated follow-up task.
   ['scripts/test-report-pdf-arabic.mjs', 'manual-diagnostic:known-broken (see reason)'],
+  ['scripts/test-responsive-e2e-contract.mjs', 'contract-guard:responsive E2E wiring'],
 ]);
 
 export const CANONICAL_TEST_SCRIPTS = [
@@ -78,5 +79,6 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:db-doctor',
   'test:production-operations',
   'test:deployment-contract',
+  'test:responsive-e2e-contract',
   'test:ui-consistency',
 ];

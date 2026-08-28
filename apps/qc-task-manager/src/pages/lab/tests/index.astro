@@ -161,7 +161,7 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
 ---
 
 <BaseLayout title="Laboratory Test Register">
-  <div class="space-y-6">
+  <div class="min-w-0 max-w-full space-y-6">
     <Breadcrumbs
       items={[
         { label: 'QC Tasks' },
@@ -319,8 +319,8 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
             ctaLabel={filtered ? 'Clear filters' : 'New AIR Test'}
           />
         ) : (
-          <section aria-label="Test register" class="rounded-xl border border-slate-200 bg-white shadow-sm">
-            <div class="overflow-x-auto contain-layout contain-paint">
+          <section aria-label="Test register" class="min-w-0 max-w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div class="min-w-0 max-w-full overflow-x-auto contain-layout contain-paint">
               <table class="min-w-[1080px] divide-y divide-slate-100 text-sm">
                 <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr>

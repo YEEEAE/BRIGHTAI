@@ -36,6 +36,7 @@ export const CANONICAL_E2E_SUITES = [
   ['lab-data-quality', 'scripts/e2e-lab-data-quality.mjs'],
   ['lab-search', 'scripts/e2e-lab-search.mjs'],
   ['reports', 'scripts/e2e-reports.mjs'],
+  ['responsive', 'scripts/e2e-responsive.mjs'],
 ];
 
 // scripts/e2e-*.mjs files that are intentionally NOT standalone suites.
