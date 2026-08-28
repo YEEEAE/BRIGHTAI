@@ -37,7 +37,7 @@
 #     * c.bing.com                 (IndexNow is server-side, no browser fetch)
 #     * region1.google-analytics.com (duplicate of google-analytics.com)
 #   - Kept the actually-loaded domains:
-#     * googletagmanager.com + google-analytics.com + stats.g.doubleclick.net  (GA4: G-8LLESL207Q)
+#     * googletagmanager.com + google-analytics.com + stats.g.doubleclick.net  (GA4: G-9LMB4PGTWJ)
 #     * clarity.ms + *.clarity.ms  (Microsoft Clarity — loaded when SITE.clarityId is non-empty)
 #     * fonts.googleapis.com + fonts.gstatic.com  (IBM Plex Sans Arabic + Inter)
 #     * js.hs-scripts.com            (HubSpot tracking — loaded when TRACKING.hubspot is non-empty)

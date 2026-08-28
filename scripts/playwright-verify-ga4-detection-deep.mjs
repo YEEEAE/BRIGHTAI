@@ -159,8 +159,8 @@ const checks = [
     pass: gaHits.some((h) => h.phase === 'response' && h.status >= 200 && h.status < 300),
   },
   {
-    name: 'GA4 DebugView: hit carries correct G-ID (G-8LLESL207Q)',
-    pass: gaHits.some((h) => h.url.includes('tid=G-8LLESL207Q')),
+    name: 'GA4 DebugView: hit carries correct G-ID (G-9LMB4PGTWJ)',
+    pass: gaHits.some((h) => h.url.includes('tid=G-9LMB4PGTWJ')),
   },
   {
     name: 'GA4 DebugView: hit carries en=page_view event',

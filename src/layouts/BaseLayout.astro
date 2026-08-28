@@ -281,12 +281,21 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        a prior is:inline script to remove unsafe-inline from CSP script-src. */}
   <script defer src="/js/sw-register.js"></script>
 
-  {/* Google tag (gtag.js) — REPORTS-20: deferred loader. The 182KB gtag.js is loaded
-       lazily via requestIdleCallback inside gtag-init.js (fallback: setTimeout 1500ms)
-       so it never competes with the LCP element. External file replaces a prior
-       is:inline script to remove unsafe-inline from CSP script-src. The gtag ID is
-       passed as a data attribute (HTML attrs are not governed by script-src CSP). */}
-  <script defer src="/js/gtag-init.js" data-gtag-id={SITE.googleTagId}></script>
+  {/* Google tag (gtag.js) — OWNER REQUEST (2026-08-28): the literal Google
+       snippet, verbatim, on every page for every visitor. No consent gating,
+       no deferred loader, no requestIdleCallback. is:inline keeps the snippet
+       byte-exact in the served HTML; CSP already allows 'unsafe-inline' and
+       www.googletagmanager.com in script-src (Report-Only header).
+       gtag-init.js is retired; the unified analytics runtime (analytics.js)
+       registers its gtag provider internally. */}
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9LMB4PGTWJ');
+  </script>
 
   {/* Microsoft Clarity — only when a real ID is configured (skip on placeholder).
        External file replaces a prior is:inline script to remove unsafe-inline from

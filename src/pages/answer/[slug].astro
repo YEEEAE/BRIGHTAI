@@ -79,11 +79,17 @@ const jsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {/* Google tag (gtag.js) — same centralized loader as BaseLayout (REPORTS-20
-        deferred pattern). These standalone static pages have no Layout, so
-        without this line the 17 /answer/* pages would carry no GA4 tag.
-        gtag-init.js handles Consent Mode v2 default-denied + async load. */}
-    <script defer src="/js/gtag-init.js" data-gtag-id="G-8LLESL207Q"></script>
+    {/* Google tag (gtag.js) — OWNER REQUEST (2026-08-28): literal Google snippet,
+        verbatim, same as BaseLayout. These standalone static pages have no
+        Layout, so without this block the /answer/* pages would carry no GA4 tag. */}
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9LMB4PGTWJ');
+    </script>
     <title>{answer.query} — BrightAI</title>
     <meta name="description" content={answer.answer.slice(0, 155)} />
     {/* SEO (2026-08-23): explicit robots matches the site-wide BaseLayout

@@ -1,4 +1,33 @@
 ---
+## [2026-08-28] — GA4-LITERAL-SNIPPET-002: استبدال محمّل gtag.js المؤجل بمقتطف Google الحرفي G-9LMB4PGTWJ على كل صفحات الزوار — بدون commit/push/deploy
+
+### تم التنفيذ
+- استبدال الـ loader القديم (`/js/gtag-init.js` deferred + Consent Mode v2) بمقتطف gtag.js **الحرفي** من Google (`async googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ` + inline `js`/`config`) في 4 مواضع: `BaseLayout.astro` (كل الموقع بما فيه صفحات kernel عبر KernelLayout)، `answer/[slug].astro`، `lp/[slug].astro`، و`public/500.html` — الكود byte-exact بـ `is:inline` (CSP Report-Only مسموح فيه `unsafe-inline` + `googletagmanager.com` فلا كسر).
+- **لكل الزيارات بلا قيود**: لا consent gating (الكود الحرفي بلا `consent default`)، لا تأخير requestIdleCallback، لا retry — أول تحميل يبعث page_view فورًا. (الرفض بالبانر كان أصلًا تجميليًا بقرار مالك موثق BAI-ANALYTICS-2026-08-03-B داخل analytics.js — لم يُلمس).
+- **تكملة الوظيفة الموحدة**: `analytics.js` صار يسجّل gtag provider داخليًا (كان يسجله gtag-init.js) حتى تكمل أحداث `track()` المخصصة وpage_view للتنقل الناعم (ClientRouter) توصل GA4، مع **كتم أول page_view** قادم من الـ runtime لأن `gtag('config')` الحرفي يبعثه تلقائيًا — يمنع الازدواج.
+- تحديث المعرف في كل الأماكن: `site.ts` googleTagId، fallback `GA4_MEASUREMENT_SECRET` في `ga4-server.ts:114` (أحداث server-side تروح لنفس الـ property الجديد)، تعليقات `SEOHead.astro` و`public/_headers`، وسكربت التحقق `playwright-verify-ga4-detection-deep.mjs`. صفر إشارات للـ ID القديم `G-8LLESL207Q` في src/public/scripts.
+- `gtag-init.js` صار يتيمًا (لا يُحمّل من أي مكان) — عُلّم DEPRECATED برأسه وبقي على القرص، حذفه قرار مستخدم.
+
+### الملفات المتأثرة
+- `src/data/site.ts`, `src/layouts/BaseLayout.astro`, `src/pages/answer/[slug].astro`, `src/pages/lp/[slug].astro`, `public/500.html`, `public/js/analytics.js`, `public/js/gtag-init.js` (علامة deprecated فقط), `src/lib/ga4-server.ts`, `src/components/SEOHead.astro`, `public/_headers`, `scripts/playwright-verify-ga4-detection-deep.mjs`
+
+### الأرقام
+- **272/279** صفحة HTML مبنية تحمل المقتطف الحرفي = **100% من صفحات الزوار**؛ الـ 7 المستثناة مشروعة: 6 صفحات `/solutions/cities/*` هي 301 نقي بلا HTML (`Astro.redirect` فقط) + `kernel/admin/quota` شاشة إدارة noindex بقرار معماري موثق برأس الملف ("No analytics — internal operator screen").
+- صفر بقايا `gtag-init`/`G-8LLESL207Q` في HTML المبني.
+
+### التحقق
+- `npm run build` ✅ Complete · `pnpm typecheck` ✅ 0 errors / 0 warnings / 24 hints
+- `npm run headers:check` ✅ بلا drift (بعد تحديث تعليق `_headers`)
+- فحص HTML المبني ✅: الرئيسية/answer/lp/500/kernel تحمل `<script async src=...G-9LMB4PGTWJ>` قبل inline config بالترتيب الصحيح
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** مقتطف gtag.js الحرفي بالمعرف G-9LMB4PGTWJ يعمل على كل صفحات الزوار بلا consent ولا تأخير، وأحداث الـ unified analytics تكمل توصل GA4 عبر provider مدمج — والبناء والفحوص خضراء.
+
+### ملاحظات / مشاكل مفتوحة
+- **على المستخدم (خارج المستودع):** (1) متغير البيئة `GA4_MEASUREMENT_SECRET` في Render لو مضبوط بالقديم لازم يتحدث لـ `G-9LMB4PGTWJ` (الـ fallback بالكود صار الجديد، فالمشكلة تظهر فقط لو الـ env مثبت بالقديم). (2) حذف `public/js/gtag-init.js` اليتيم اختياري. (3) الـ GA4 API Secret (Measurement Protocol) يبقى مرتبطًا بالـ property الجديد — لو الـ secret من property القديم، أحداث server-side (leads) راح تُرفض.
+- القسم 1 يتجاوز حده الموثق مسبقًا — الأرشفة للقسم 2 تؤجل كقرار متكرر (نمط الجلسات الأخيرة).
+
 ## [2026-08-28] — BAI-DOMAIN-MIGRATION-001: ترحيل النطاق الإنتاجي بالكامل brightai.site → brightai.live (محليًا فقط — بدون commit/push)
 
 ### تم التنفيذ

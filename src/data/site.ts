@@ -19,7 +19,7 @@ export const SITE = {
     en: 'en-SA',
   },
   defaultLang: 'ar',
-  googleTagId: 'G-8LLESL207Q',
+  googleTagId: 'G-9LMB4PGTWJ',
   whatsapp: {
     number: '966538229013',
     url: 'https://wa.me/966538229013',

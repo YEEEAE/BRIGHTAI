@@ -462,6 +462,28 @@ function bootOnce() {
     },
   });
 
+  // Google Analytics 4 provider (2026-08-28). gtag.js now ships as the literal
+  // Google snippet from BaseLayout (gtag-init.js retired), which already defines
+  // window.gtag/dataLayer and fires the initial page_view via gtag('config').
+  // The first page_view routed through this runtime is therefore dropped to
+  // avoid double-counting; soft-navigation page_views (ClientRouter view
+  // transitions) and every track() event pass through to GA4 normally.
+  let initialPageViewDropped = false;
+  registerProvider({
+    name: 'gtag',
+    fn: function (event, payload) {
+      if (event === ANALYTICS_EVENTS.PAGE_VIEW && !initialPageViewDropped) {
+        initialPageViewDropped = true;
+        return;
+      }
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', event, payload);
+      } else if (Array.isArray(window.dataLayer)) {
+        window.dataLayer.push(Object.assign({ event: event }, payload));
+      }
+    },
+  });
+
   // Mark page_type on <body> if the page didn't already.
   const body = document.body;
   if (body && !body.hasAttribute('data-page-type')) {

@@ -1,6 +1,11 @@
 /**
  * gtag-init.js — Google Analytics (gtag.js) loader + provider.
  *
+ * DEPRECATED (2026-08-28): no longer loaded anywhere. Owner replaced the
+ * deferred loader with the literal Google gtag.js snippet in BaseLayout.astro
+ * (and the standalone answer/lp/500 pages). The gtag provider now lives
+ * inside public/js/analytics.js. Kept on disk pending owner deletion.
+ *
  * Loaded with `defer` from BaseLayout.astro. Replaces a prior is:inline script
  * to remove the need for `unsafe-inline` in CSP script-src. The Google Tag ID
  * is read from the `data-gtag-id` attribute on this <script> tag (HTML

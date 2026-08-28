@@ -23,7 +23,7 @@
  *                               choose stream → Measurement Protocol API
  *                               secrets → Create).
  *   - GA4_MEASUREMENT_SECRET — the Measurement ID (stream id), e.g.
- *                               `G-8LLESL207Q`. Named `*_SECRET` per the
+ *                               `G-9LMB4PGTWJ`. Named `*_SECRET` per the
  *                               EXEC-10 prompt, though it is not actually
  *                               sensitive (it is public in the gtag URL).
  *
@@ -88,7 +88,7 @@ function stripPii(params?: Record<string, unknown>): Record<string, unknown> {
  * Resolve GA4 config from env. Returns null if not configured (safe
  * fallback). The Measurement ID has two env names: the canonical
  * `GA4_MEASUREMENT_SECRET` (per EXEC-10 prompt) and a fallback to the
- * public site tag `G-8LLESL207Q` so production works even if only the
+ * public site tag `G-9LMB4PGTWJ` so production works even if only the
  * API secret is set.
  */
 function resolveConfig(): { apiSecret: string; measurementId: string } | null {
@@ -111,7 +111,7 @@ function resolveConfig(): { apiSecret: string; measurementId: string } | null {
   // not actually secret — it ships in every page's gtag URL.
   const finalMeasurementId = measurementId && !PLACEHOLDER.test(measurementId)
     ? measurementId
-    : 'G-8LLESL207Q';
+    : 'G-9LMB4PGTWJ';
 
   return { apiSecret, measurementId: finalMeasurementId };
 }
