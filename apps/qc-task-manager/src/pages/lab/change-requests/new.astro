@@ -7,6 +7,7 @@ import { labNavForRole } from '../../../lib/lab/navigation';
 import type { Role } from '../../../lib/types';
 import PageHeader from '../../../components/ui/PageHeader.astro';
 import AppButton from '../../../components/ui/AppButton.astro';
+import ContextualHelp from '../../../components/ui/ContextualHelp.astro';
 const user = Astro.locals.user!;
 const role = user.role as Role;
 const cls = 'w-full rounded-lg border border-slate-300 px-3 py-2 text-sm';
@@ -29,6 +30,7 @@ const selected = (name: string, option: string, fallback = false): boolean => na
 <BaseLayout title="New Laboratory Change Request">
   <div class="space-y-6"><Breadcrumbs items={[{ label: 'QC Tasks' }, { label: 'Laboratory', href: '/lab' }, { label: 'Change Requests', href: '/lab/change-requests' }, { label: 'New' }]} /><LabSecondaryNav items={labNavForRole(role)} currentPath="/lab/change-requests" />
     <PageHeader eyebrow="Validated proposal intake" title={`${isResubmit ? 'Resubmit Change Request' : 'New Change Request'}`} description={`${isResubmit ? 'The rejected proposal is prefilled for correction. The original review reason remains on the previous request.' : 'Choose an entity and enter only canonical form fields.'} The server validates and snapshots the proposal; it never trusts a browser-supplied snapshot.`} />
+    <ContextualHelp title="Change request workflow">This form proposes a controlled master-data change; it does not change the live record immediately. Choose Create for a new item or Update for an existing record, explain the reason, then submit for review. If it is returned or rejected, correct the proposal and resubmit it from the request history.</ContextualHelp>
     {isResubmit && <div class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-900" role="note"><strong>Resubmitting CR-{rejected.id}.</strong> Previous review reason: {rejected.review_note ?? 'No reason was recorded.'}</div>}
     <form method="post" action="/lab/change-requests/new" class="space-y-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div class="grid gap-4 sm:grid-cols-3"><div><label class={label} for="entity_type">Entity</label><select class={cls} id="entity_type" name="entity_type"><option value="EQUIPMENT" selected={selected('entity_type', 'EQUIPMENT', true)}>Equipment</option><option value="PRODUCT" selected={selected('entity_type', 'PRODUCT')}>Product</option><option value="CALIBRATION" selected={selected('entity_type', 'CALIBRATION')}>Calibration</option><option value="RETEST_REQUEST" selected={selected('entity_type', 'RETEST_REQUEST')}>Retest request</option></select></div><div><label class={label} for="operation">Operation</label><select class={cls} id="operation" name="operation"><option value="CREATE" selected={isResubmit ? rejected.operation === 'CREATE' : true}>Create</option><option value="UPDATE" selected={isResubmit ? rejected.operation === 'UPDATE' : false}>Update</option></select></div><div><label class={label} for="entity_id">Existing record ID (updates)</label><input class={cls} id="entity_id" name="entity_id" inputmode="numeric" value={isResubmit ? String(rejected.entity_id ?? '') : ''} /></div></div>

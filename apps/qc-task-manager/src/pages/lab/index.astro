@@ -52,6 +52,7 @@ import type { Role } from '../../lib/types';
 import Banner from '../../components/ui/Banner.astro';
 import PageHeader from '../../components/ui/PageHeader.astro';
 import AppButton from '../../components/ui/AppButton.astro';
+import ContextualHelp from '../../components/ui/ContextualHelp.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -195,6 +196,8 @@ const calibrationLabel: Record<string, string> = {
         )}
       </fragment>
     </PageHeader>
+
+    <ContextualHelp title="Your role dashboard">Start with the action cards and queues shown for your role. Counts are links to underlying records; use only the actions you are authorized to perform, and open a record before making a workflow decision.</ContextualHelp>
 
     {secondaryActions.length > 0 && (
       <div class="flex flex-wrap gap-2" role="group" aria-label="Secondary laboratory actions">

@@ -1250,6 +1250,7 @@ export default function LabTestForm({
             to push 4px past the viewport at tablet widths (page-level
             horizontal overflow guard in scripts/ui-screenshots.mjs). */}
         <div className="sticky bottom-0 z-20 -mx-4 mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 bg-white/95 px-4 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] backdrop-blur">
+          <p className="mr-auto max-w-md text-xs leading-5 text-slate-600"><strong>Save draft</strong> keeps this test editable. <strong>Submit for review</strong> checks required fields and sends the test to the reviewer queue; make sure the samples and final result are complete first.</p>
           <a
             href="/lab"
             className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"

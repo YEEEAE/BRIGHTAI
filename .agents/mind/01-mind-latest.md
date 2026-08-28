@@ -1309,3 +1309,34 @@ skills_ready: 7---
 ### ملاحظات / مشاكل مفتوحة
 - لا توجد عتبات نجاح/فشل مفروضة؛ أي index لاحق يحتاج إعادة القياس وEXPLAIN evidence من نفس الأداة.
 - ما صار commit أو push أو deploy.
+## [2026-08-28] — QC-PILOT-UAT-019: تهيئة تطبيق QC لاختبار قبول الموظفين
+
+### تم التنفيذ
+- أضفت مكوّن مساعدة سياقية قابلًا لإعادة الاستخدام ومبنيًا على disclosure أصلي، بدون مكتبة tour أو JavaScript جديد.
+- أضفت إرشادات قصيرة لأول تسجيل دخول وتغيير كلمة المرور، لوحة الدور، إنشاء اختبار المختبر، الفرق بين حفظ المسودة والإرسال للمراجعة، المراجعة/الاعتماد والتوقيع الإلكتروني، ودورة المستندات المضبوطة وطلبات التغيير.
+- أنشأت Runbook تجريبيًا شاملًا للموظف والمشرف والمدير والأدمن، مع حقول جمع الأدلة الإلزامية لكل سيناريو.
+- وثّقت تصنيف نتائج UAT إلى P0/P1/P2/P3 ومنعت الـRunbook صراحةً من تسجيل أي نتيجة قبل تنفيذ مشارك فعلي للسيناريو.
+- وسّعت فحص UX presentation ليتحقق من ظهور المساعدات والـRunbook ومحتوى الأدوار والتصنيف.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/components/ui/ContextualHelp.astro`
+- `apps/qc-task-manager/src/pages/account/security.astro`
+- `apps/qc-task-manager/src/pages/lab/{index,tests/new,tests/review,change-requests/new}.astro`
+- `apps/qc-task-manager/src/components/lab/{LabTestForm.tsx,LabDocumentEditor.astro}`
+- `apps/qc-task-manager/docs/PILOT-UAT.md`
+- `apps/qc-task-manager/scripts/test-lab-ux-presentation.mjs`
+
+### التحقق
+- `node scripts/test-lab-ux-presentation.mjs` ✅ — 14/14 تحققًا، ومنها المساعدات والـRunbook.
+- `node_modules/.bin/astro check` ✅ — 0 أخطاء و0 تحذيرات؛ 26 hint قديمة.
+- `node_modules/.bin/astro build` ✅ — Complete؛ بقيت تحذيرات Vite المعروفة للاستيرادات الديناميكية.
+- `git diff --check` ✅.
+- `pnpm typecheck`/`pnpm build` لم يُشغّلا عبر pnpm: Corepack حاول الكتابة إلى cache خارج مساحة المشروع؛ استُخدمت أدوات Astro المحلية المكافئة بنجاح.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** التطبيق والـRunbook جاهزان لبدء UAT منظّم، لكن ما نُفّذ UAT بشري ولم تُسجّل أو تُستنتج أي نتائج قابلية استخدام.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد تنفيذ لمكتبة tour أو نظام feedback مستقل؛ جمع ملاحظات UAT يتم عبر حقول الـRunbook فقط.
+- ما صار commit أو push أو deploy.

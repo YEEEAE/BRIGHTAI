@@ -50,6 +50,7 @@ import PageHeader from '../../../components/ui/PageHeader.astro';
 import { FILTER_TOOLBAR, FILTER_FIELD, FILTER_CONTROL } from '../../../components/ui/formPresets';
 import AppButton from '../../../components/ui/AppButton.astro';
 import { TEST_WORKFLOW_TONE as statusTone, TEST_RESULT_TONE as resultTone } from '../../../components/ui/labBadgeClasses';
+import ContextualHelp from '../../../components/ui/ContextualHelp.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -190,6 +191,8 @@ function actionForm(row: LabReviewRow): string {
     />
 
     <PageHeader eyebrow="QC Laboratory — Testing" title="Review Center" description="Reviewer queue for submitted AIR and VACUUM tests. A tester can never review or approve their own test; rejected and returned tests require a reason; approved records are immutable." />
+
+    <ContextualHelp title="Review and approval">Start Review before making a review decision. Request Changes or Reject requires a reason the tester can act on. Electronic signature is requested only when an authorized approver selects Approve; enter your own current password to confirm that decision.</ContextualHelp>
 
     <LabSecondaryNav items={navItems} currentPath="/lab/tests/review" />
 

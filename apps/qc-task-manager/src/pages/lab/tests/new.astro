@@ -35,6 +35,7 @@ import { canCreateLabTest } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 import Banner from '../../../components/ui/Banner.astro';
 import PageHeader from '../../../components/ui/PageHeader.astro';
+import ContextualHelp from '../../../components/ui/ContextualHelp.astro';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -149,6 +150,8 @@ const finalResultOptions = LAB_FINAL_RESULT_OPTIONS.map((value) => ({ value, lab
     />
 
     <PageHeader eyebrow={`QC Laboratory — ${testTypeLabel}`} title={`${title}`} description={`Records an ${testTypeLabel} leak test for a product lot. Sample measurements are entered exactly as taken; results are human decisions. Reference values are shown for traceability only.`} />
+
+    <ContextualHelp title="Before you start">Record values exactly as observed and choose the result yourself. Add the required sample rows before submitting. Save Draft keeps the record editable; Submit for Review sends the completed record to the review queue.</ContextualHelp>
 
     <LabSecondaryNav items={navItems} currentPath="/lab/tests/new" />
 

@@ -26,6 +26,7 @@
 import type { LabDocument, LabDocumentVersion } from '../../lib/types';
 import { LAB_DOCUMENT_CODE_MAX, LAB_DOCUMENT_CONTENT_MAX, LAB_DOCUMENT_DESCRIPTION_MAX, LAB_DOCUMENT_TITLE_MAX } from '../../lib/lab/policy';
 import { LAB_DOCUMENT_STATUS_LABELS } from '../../lib/lab/documents';
+import ContextualHelp from '../ui/ContextualHelp.astro';
 
 interface Props {
   mode: 'create' | 'edit';
@@ -61,6 +62,8 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
         The approved version stays immutable. A change summary is required.
       </div>
     )}
+
+    <ContextualHelp title="Document lifecycle">Draft documents can be edited. Submit the document for review only when its identity, content, and references are ready. Reviewers may return it with a reason; approved versions are immutable, and any later edit creates a new draft version while the approved version remains the controlled record.</ContextualHelp>
 
     <section aria-labelledby="sec-doc-identity" class={sectionCls}>
       <h2 id="sec-doc-identity" class={sectionTitleCls}>Document Identity</h2>
