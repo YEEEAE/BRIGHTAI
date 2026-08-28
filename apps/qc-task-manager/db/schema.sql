@@ -215,6 +215,10 @@ CREATE INDEX idx_tasks_status ON tasks(status);
 
 CREATE INDEX idx_users_created_by ON users(created_by);
 
+CREATE INDEX idx_ux_events_name_time ON ux_events(event_name, created_at);
+
+CREATE INDEX idx_ux_events_route_time ON ux_events(route, created_at);
+
 CREATE INDEX idx_workflow_actions_instance_time ON workflow_actions(instance_id, acted_at);
 
 CREATE INDEX idx_workflow_instances_status ON workflow_instances(status, current_step_order);
@@ -809,6 +813,18 @@ CREATE TABLE users (
   locked_until TEXT, last_login_at TEXT, created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
   created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 , skills_json TEXT, must_change_password INTEGER NOT NULL DEFAULT 0 CHECK (must_change_password IN (0, 1)), password_changed_at TEXT);
+
+CREATE TABLE ux_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  event_name TEXT NOT NULL,
+  route TEXT NOT NULL,
+  actor_role TEXT NOT NULL CHECK (actor_role IN ('admin','manager','supervisor','employee')),
+  outcome TEXT NOT NULL CHECK (outcome IN ('success','error','abandoned','neutral')),
+  duration_ms INTEGER CHECK (duration_ms IS NULL OR (duration_ms >= 0 AND duration_ms <= 86400000)),
+  flow_id TEXT CHECK (flow_id IS NULL OR (length(flow_id) BETWEEN 8 AND 64)),
+  metadata_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 
 CREATE TABLE workflow_actions (id INTEGER PRIMARY KEY AUTOINCREMENT, instance_id INTEGER NOT NULL REFERENCES workflow_instances(id) ON DELETE CASCADE, step_order INTEGER NOT NULL CHECK (step_order > 0), action TEXT NOT NULL CHECK (action IN ('SUBMITTED','APPROVED','REJECTED','CLOSED')), previous_state TEXT NOT NULL, next_state TEXT NOT NULL, reason TEXT, actor_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT, acted_at TEXT NOT NULL DEFAULT (datetime('now')));
 

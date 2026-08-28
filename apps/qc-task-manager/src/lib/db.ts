@@ -135,6 +135,7 @@ const REQUIRED_TABLES = [
   'lab_document_acknowledgements',
   'lab_saved_views',
   'lab_change_requests',
+  'ux_events',
 ] as const;
 
 /** Every index required by the application (FK lookups + dashboard filters). */
@@ -238,6 +239,8 @@ const REQUIRED_INDEXES = [
   'idx_lab_change_requests_requester_status',
   'idx_lab_change_requests_target',
   'idx_lab_documents_source_register',
+  'idx_ux_events_name_time',
+  'idx_ux_events_route_time',
 ] as const;
 
 /**
@@ -313,6 +316,11 @@ function initialize(db: BetterSqliteDatabase): void {
   // Audit retention: login_attempts rows older than 90 days are pruned so the
   // audit table cannot grow without bound in a long-lived database.
   db.prepare('DELETE FROM login_attempts WHERE created_at < ?').run(
+    new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+  );
+  // UX telemetry is a separate, privacy-minimized measurement surface. Keep
+  // only the bounded 90-day window; it is never part of the audit chain.
+  db.prepare('DELETE FROM ux_events WHERE created_at < ?').run(
     new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
   );
   _initialized = true;

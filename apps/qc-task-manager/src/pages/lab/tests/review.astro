@@ -172,7 +172,7 @@ function actionForm(row: LabReviewRow): string {
         <input type="text" name="reason" maxlength="2000" placeholder="Reason (required for Request Changes / Reject)" class="w-full rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
       </label>`
     : '';
-  return `<form method="POST" action="/api/lab/tests/${row.id}/review" class="flex flex-col items-stretch gap-1.5">
+  return `<form method="POST" action="/api/lab/tests/${row.id}/review" data-ux-flow="review" data-ux-surface="review-center" class="flex flex-col items-stretch gap-1.5">
     <div class="flex flex-wrap gap-1.5">${start}${changes}${reject}${approve}</div>
     ${needsReason}
   </form>`;

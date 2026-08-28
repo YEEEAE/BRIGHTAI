@@ -11,6 +11,7 @@ import {
   ESIGN_RATE_LIMITED_MESSAGE_AR,
   requireEsignature,
 } from '../../../../../lib/lab/esignature';
+import { recordUxEvent } from '../../../../../lib/uxTelemetry';
 
 /**
  * POST /api/lab/tests/[id]/review — Review Center actions (PROMPT 07, §26).
@@ -67,8 +68,28 @@ export const POST: APIRoute = async (context) => {
       esigned = true;
     }
     const result = transitionLabTest({ id: auth.id, role: auth.role }, action, id, reason, { esigned });
+    try {
+      recordUxEvent({
+        event_name: 'review_decision_success',
+        route: '/lab/tests/review',
+        outcome: 'success',
+        metadata: { surface: 'review-center', action },
+      }, auth.role);
+    } catch (telemetryError) {
+      console.error('[ux-telemetry] review success event failed', telemetryError);
+    }
     setFlash(context, 'success', `${result.test_number} · ${LAB_REVIEW_ACTION_LABELS[action]}`);
   } catch (err) {
+    try {
+      recordUxEvent({
+        event_name: 'review_decision_error',
+        route: '/lab/tests/review',
+        outcome: 'error',
+        metadata: { surface: 'review-center', action: parsed.data.action },
+      }, auth.role);
+    } catch (telemetryError) {
+      console.error('[ux-telemetry] review error event failed', telemetryError);
+    }
     setFlash(context, 'error', err instanceof Error ? err.message : 'Could not apply the review action.');
   }
   return context.redirect('/lab/tests/review');

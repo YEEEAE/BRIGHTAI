@@ -1,3 +1,28 @@
+## [2026-08-28] — DATAFORSEO-MCP-001: ربط خادم DataForSEO الرسمي بإعداد Codex المحلي
+
+### تم التنفيذ
+- أضفت خادم MCP الرسمي `dataforseo-mcp-server@latest` إلى إعداد المشروع عبر بروتوكول stdio.
+- ضبطت التشغيل ليقرأ `DATAFORSEO_LOGIN` و`DATAFORSEO_PASSWORD` من بيئة العملية فقط.
+- امتنعت عن كتابة بيانات الدخول أو أي secret داخل المستودع أو ملف العقل أو إعداد MCP.
+- تحققت من صحة صيغة TOML وظهور خادمي MCP: `caveman-shrink` و`dataforseo`.
+
+### الملفات المتأثرة
+- `.codex/config.toml`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- تحليل TOML ✅ — `TOML_OK`.
+- فحص `git diff --check` ✅.
+- لم يُشغّل اتصال API فعليًا: متغيرات الاعتماد لم تُخزّن أو تُطبع حفاظًا على السرية.
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** إعداد DataForSEO MCP صار مربوطًا محليًا، ويبقى تفعيل الاعتماد وإعادة تشغيل Codex بمتغيرات البيئة، ثم اختبار `api_request`.
+
+### ملاحظات / مشاكل مفتوحة
+- بيانات الدخول التي أُرسلت في المحادثة يُفضّل تدويرها من لوحة DataForSEO بعد التحقق.
+- لا يوجد commit أو push.
+
 ## [2026-08-28] — QC-UX-WRITING-001: توحيد لغة المنتج والـmicrocopy
 
 ### تم التنفيذ
@@ -2149,3 +2174,73 @@ skills_ready: 7---
 
 ### ملاحظات / مشاكل مفتوحة
 - لا يوجد ضمن نطاق المهمة. لم يحدث commit أو push.
+## [2026-08-28] — QC-DASHBOARD-DATA-VIZ-001: تحويل Dashboard المدير إلى سطح قرارات
+
+### تم التنفيذ
+- رتبت صفحة `/dashboard` إلى أربع طبقات مرئية بالترتيب: `Action required` ثم `Today’s operations` ثم `Trends` ثم `Analysis / drilldowns`.
+- أضفت أربع بطاقات إجراء للمتأخر، والمعلّق، والمهام بدون evidence، وurgent المفتوح؛ كل بطاقة تعرض العدد الحقيقي وتفتح drilldown مفلترًا أو register واضحًا.
+- أبقيت كل مؤشرات KPI والرسوم والمختبر والـregisters الحالية، لكن صارت مؤشرات التشغيل تحت طبقة اليوم والتحليلات بعد طبقة الاتجاهات.
+- نقلت ملخص AI إلى طبقة التحليل حتى ما ينافس العمل العاجل عند الدخول للصفحة.
+- أضفت حراسة UI تمنع رجوع ترتيب الطبقات أو فقدان بطاقات الإجراء أو anchor navigation غير الصالح.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/pages/dashboard.astro`
+- `apps/qc-task-manager/scripts/test-ui-consistency.mjs`
+
+### التحقق
+- `pnpm run test:ui-consistency` ✅ — 188/188.
+- `pnpm run test:dashboard-reports` ✅.
+- `pnpm run test:responsive-e2e-contract` ✅.
+- `pnpm run typecheck` ✅ — 0 errors، 0 warnings، 26 hints قديمة.
+- `NODE_ENV=production pnpm run build` ✅ — Complete؛ تحذيرات Vite الديناميكية المعروفة فقط.
+- `pnpm test` ✅ — 64/64 canonical suites بدون فشل.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار dashboard يقدّم العمل الذي يحتاج قرار قبل المؤشرات والتحليلات، مع بقاء البيانات والروابط والـdrilldowns الحالية بدون تغيير في منطق المجال.
+
+### ملاحظات / مشاكل مفتوحة
+- التحقق المتجاوب الآلي مرّ؛ فحص UAT اليدوي على أجهزة فعلية وVoiceOver ما زال مطلوبًا حسب السجلات السابقة.
+- ما صار commit أو push أو deploy.
+## [2026-08-28] — QC-UX-MEASUREMENT-001: إطلاق قياس UX تشغيلي يحافظ على الخصوصية
+
+### تم التنفيذ
+- أضفت وثائق تعريف المقاييس، تقرير الأثر، وخطة usability test؛ وثبّتُّ أن baseline يُجمع 14 يومًا قبل أي ادعاء بتحسن.
+- أضفت migration `039_ux_events.sql` وجدول UX منفصلًا عن audit/observability، مع actor role وoutcome ومدة محدودة وmetadata allowlist فقط.
+- أضفت endpoint محميًا بـ CSRF وRBAC، وbrowser collector للأحداث الآمنة عبر `page_view` وlab/dashboard/search/review، بدون payloads أو كلمات بحث أو أرقام سجلات حساسة.
+- ربطت الأحداث بالـ dashboard وsearch وlab form وreview، وأضفت أحداث نجاح/فشل خادمية لا تغيّر قواعد العمل أو workflows أو RBAC.
+- طبقت retention تلقائيًا لمدة 90 يومًا، وحدّثت schema/registry واختبارات migration الحالية من الإصدار 38 إلى 39.
+- أضفت contract test يمنع الأحداث غير المسموحة والبيانات الحساسة، وربطته بالـ test manifest.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/UX-MEASUREMENT.md`
+- `apps/qc-task-manager/docs/UX-USABILITY-TEST-PLAN.md`
+- `apps/qc-task-manager/db/migrations/039_ux_events.sql`
+- `apps/qc-task-manager/src/lib/uxTelemetry.ts`
+- `apps/qc-task-manager/src/pages/api/ux/events.ts`
+- `apps/qc-task-manager/public/scripts/ux-telemetry.js`
+- `apps/qc-task-manager/src/layouts/BaseLayout.astro`
+- `apps/qc-task-manager/src/pages/{dashboard,search}.astro`
+- `apps/qc-task-manager/src/{lib/lab/tests.ts,pages/api/lab/tests/[id]/review.ts}`
+- `apps/qc-task-manager/{db/schema.sql,src/lib/db.ts,src/lib/migrationRegistry.ts}`
+- `apps/qc-task-manager/scripts/test-ux-telemetry.mjs`
+
+### التحقق
+- `pnpm test` ✅ — 65 canonical suites، 0 failures.
+- `pnpm run test:ux-telemetry` ✅.
+- `pnpm run test:embedded-migration-parity` ✅ — 39/39 byte-identical.
+- `pnpm run test:schema-reference` ✅ — 165 objects.
+- `pnpm run test:manifest` ✅ — 65 canonical suites و28 E2E.
+- `pnpm run typecheck` ✅ — 0 errors؛ ظهرت 27 hints غير مانعة، بينها Astro hint معروف للسكريبت الخارجي.
+- `NODE_ENV=production pnpm run build` ✅ — اكتمل؛ بقيت تحذيرات Vite الديناميكية المعروفة فقط.
+- `git -c core.fsmonitor=false diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار عند QC Task Manager قياس UX تشغيلي قليل البيانات، منفصل عن audit، وجاهز لجمع baseline قبل تقييم أي تدخل تصميمي؛ schema ارتفع من 38 إلى 39 وجدول قاعدة البيانات من 51 إلى 52.
+
+### ملاحظات / مشاكل مفتوحة
+- baseline الفعلي ما انقاس بعد؛ لازم تشغيل القياس 14 يومًا قبل تقرير أثر تصميمي.
+- UAT البشري على أجهزة فعلية وفحص VoiceOver ما زال مطلوبًا حسب السجلات السابقة.
+- ما صار commit أو push؛ وتغييرات المستخدم السابقة في `01-mind-latest.md` و`test-ui-consistency.mjs` محفوظة.

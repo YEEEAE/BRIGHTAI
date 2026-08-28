@@ -37,6 +37,7 @@ const recentNotifications = navUser
     <meta name="generator" content={Astro.generator} />
     <title>{siteTitle}</title>
     <script src="/scripts/form-productivity.js" defer></script>
+    <script src="/scripts/ux-telemetry.js" data-enabled={!hideNav && !!Astro.locals.user} data-route={Astro.url.pathname} defer></script>
   </head>
   <body class="min-h-screen bg-surface-page text-content antialiased">
     <!-- Skip link — first focusable element on every page (WCAG 2.4.1).

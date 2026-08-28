@@ -15,7 +15,7 @@ The current source passes the requested application gates, production-like SQLit
 ## A. Completed
 
 - Ran the required type, manifest, route, migration, full-test, production-build, and full E2E acceptance gates on the stated HEAD.
-- Confirmed embedded migration parity: all 38 migrations are byte-identical to the embedded registry; current schema version is 38.
+- Confirmed embedded migration parity: all 39 migrations are byte-identical to the embedded registry; current schema version is 39.
 - Ran a fresh production-like SQLite drill: migrations, `integrity_check`, `foreign_key_check`, both audit chains, backup creation/verification, restore, and post-restore persistence all passed.
 - Confirmed the E2E acceptance runner completed with exit 0 using 28 isolated workflow databases plus its two-phase restart-persistence database. Its suite catalog covers task workflow, laboratory, documents, master data, reports, backup, auth/RBAC/security, responsive UI, and a11y.
 - Confirmed the a11y report for 12 pilot pages: Critical `0`, Serious `0`, Moderate `0`, Minor `0`.
@@ -87,12 +87,12 @@ Scores reflect current-source and local-runtime evidence only. They are not a su
 | `pnpm typecheck` | 0 | 279 files; 0 errors, 0 warnings, 26 hints |
 | `pnpm test:manifest` | 0 | 60 canonical suites; 28 canonical E2E suites |
 | `pnpm test:route-manifest` | 0 | 114 file routes; 25 middleware routes; 6 guards |
-| `pnpm test:embedded-migration-parity` | 0 | 38/38 byte-identical migrations |
+| `pnpm test:embedded-migration-parity` | 0 | 39/39 byte-identical migrations |
 | `pnpm test:migrations` | 0 | Fresh, upgrade, rollback, checksum and destructive guards pass |
 | `pnpm test` | 0 | Full canonical suite passes |
 | `pnpm build` | 0 | Production server build complete (known Vite import warnings only) |
 | `pnpm e2e:acceptance` | 0 | 28 isolated workflow suites + two restart-persistence phases pass |
-| `pnpm test:production-operations` | 0 | Backup/verify/restore, migration 38, integrity, FK, audit chains pass |
+| `pnpm test:production-operations` | 0 | Backup/verify/restore, migration 39, integrity, FK, audit chains pass |
 | `pnpm test:deployment-contract` | 0 | 21 deployment/secret-hygiene contract checks pass |
 | `pnpm test:db-doctor` | 0 | DB integrity/FK and migration diagnostics pass |
 | `pnpm test:lab-documents` | 0 | 303 passed, 0 failed; only supplied WI page 1 accepted |

@@ -101,6 +101,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
   <form
     method="get"
     action="/search"
+    data-ux-surface="search"
     class="mb-6 rounded-xl border border-slate-200 bg-white p-4"
   >
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -303,6 +304,8 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
     )}
   </div>
 
+  <div class="sr-only" data-ux-search-results data-result-count={result.total} data-filter-count={Object.values(filters).filter(Boolean).length} data-has-filters={filtered ? 'true' : 'false'} aria-hidden="true"></div>
+
   {result.rows.length === 0 ? (
     <EmptyState
       title="No tasks match your search"
@@ -335,7 +338,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
               <tr class={urgent ? URGENT_ROW_CLASS : 'transition-colors hover:bg-slate-50'}>
                 <td class="px-4 py-2.5 text-slate-500">{t.id}</td>
                 <td class="px-4 py-2.5">
-                  <a href={`/tasks/${t.id}`} class="font-medium text-slate-900 hover:underline">{t.title}</a>
+                  <a href={`/tasks/${t.id}`} data-ux-event="search_result_open" data-ux-surface="search" data-ux-target="task-result" class="font-medium text-slate-900 hover:underline">{t.title}</a>
                   {t.recurrence !== 'none' && <span title="Recurring task" aria-label="Recurring task"> 🔁</span>}
                   {t.delete_pending === 1 && (
                     <span class="ml-1" title="Pending deletion request">🗑️</span>

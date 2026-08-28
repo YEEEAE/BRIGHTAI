@@ -57,6 +57,7 @@ import labTemplateReviewWorkflowMigrationSql from '../../db/migrations/035_lab_t
 import passwordLifecycleMigrationSql from '../../db/migrations/036_password_lifecycle.sql?raw';
 import userAuditLogMigrationSql from '../../db/migrations/037_user_audit_log.sql?raw';
 import labChangeRequestWithdrawalSql from '../../db/migrations/038_lab_change_request_withdrawal.sql?raw';
+import uxEventsSql from '../../db/migrations/039_ux_events.sql?raw';
 
 export interface EmbeddedMigration {
   readonly file: string;
@@ -102,4 +103,5 @@ export const EMBEDDED_MIGRATIONS: readonly EmbeddedMigration[] = Object.freeze([
   Object.freeze({ file: '036_password_lifecycle.sql', source: passwordLifecycleMigrationSql }),
   Object.freeze({ file: '037_user_audit_log.sql', source: userAuditLogMigrationSql }),
   Object.freeze({ file: '038_lab_change_request_withdrawal.sql', source: labChangeRequestWithdrawalSql }),
+  Object.freeze({ file: '039_ux_events.sql', source: uxEventsSql }),
 ]);

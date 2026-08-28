@@ -30,6 +30,7 @@ import {
 import { getLabTestFindingLinks, type LabTestFindingLink } from './findingLinks';
 import type { LabTestSample, LabTestStatus, LabTestType, Role } from '../types';
 import { appendQcAudit } from '../audit/qcChain';
+import { recordUxEvent } from '../uxTelemetry';
 
 /** Lab audit actions allowed by the extended qc_audit_log CHECK (migration 011). */
 type LabAuditAction = 'CREATE' | 'SUBMIT' | 'UPDATE' | 'VOID';
@@ -396,6 +397,16 @@ export async function handleLabTestFormPost(context: APIContext): Promise<Respon
       user.id,
       testType,
     );
+    try {
+      recordUxEvent({
+        event_name: 'lab_form_submit_success',
+        route: '/lab/tests/new',
+        outcome: 'success',
+        metadata: { surface: 'lab-test-form', form_type: testType, action: data.form_action },
+      }, user.role);
+    } catch (telemetryError) {
+      console.error('[ux-telemetry] lab success event failed', telemetryError);
+    }
     if (data.form_action === 'submit') {
       setFlash(context, 'success', `Test ${created.test_number} submitted for review.`);
       return context.redirect('/lab');
@@ -410,6 +421,16 @@ export async function handleLabTestFormPost(context: APIContext): Promise<Respon
     return context.redirect('/lab');
   } catch (err) {
     console.error('[lab] test form save failure', err);
+    try {
+      recordUxEvent({
+        event_name: 'lab_form_submit_error',
+        route: '/lab/tests/new',
+        outcome: 'error',
+        metadata: { surface: 'lab-test-form', form_type: testType, action: 'unknown' },
+      }, user.role);
+    } catch (telemetryError) {
+      console.error('[ux-telemetry] lab error event failed', telemetryError);
+    }
     setFlash(context, 'error', err instanceof Error ? err.message : 'Could not save the test.');
     return context.redirect(formUrl);
   }

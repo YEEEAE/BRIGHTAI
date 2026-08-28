@@ -29,6 +29,7 @@
     "test:ui-consistency": "node scripts/test-ui-consistency.mjs",
     "test:interaction-feedback": "node scripts/test-interaction-feedback.mjs",
     "test:ux-writing": "node scripts/test-ux-writing.mjs",
+    "test:ux-telemetry": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ux-telemetry.mjs",
     "test:architecture": "pnpm test:route-manifest && node scripts/architecture-guard.mjs",
     "test:domain": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs",
     "test:sla": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-sla.mjs",

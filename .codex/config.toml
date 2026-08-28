@@ -15,3 +15,12 @@ args = [
     "-y",
     "caveman-shrink",
 ]
+
+# Official DataForSEO MCP server. Credentials must be supplied in the
+# parent environment as DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD.
+[mcp_servers.dataforseo]
+command = "npx"
+args = [
+    "-y",
+    "dataforseo-mcp-server@latest",
+]

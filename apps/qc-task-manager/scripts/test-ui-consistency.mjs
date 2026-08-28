@@ -258,6 +258,20 @@ for (const rel of BADGE_PAGES) {
 }
 
 // 11. LabActionButton delegates to AppButton (one button implementation).
+// 12. Manager dashboard hierarchy: action work must precede operational
+// metrics, trends, and drill-down analysis in the server-rendered source.
+{
+  const dashboard = read('src/pages/dashboard.astro');
+  const tiers = ['data-dashboard-tier="action-required"', 'data-dashboard-tier="today"', 'data-dashboard-tier="trends"', 'data-dashboard-tier="analysis"'];
+  const positions = tiers.map((tier) => dashboard.indexOf(tier));
+  ok(positions.every((position) => position >= 0), 'dashboard: all decision-support tiers are present');
+  ok(positions.every((position, index) => index === 0 || position > positions[index - 1]), 'dashboard: tiers follow action → today → trends → analysis order');
+  for (const id of ['action-overdue', 'action-blocked', 'action-evidence', 'action-urgent']) {
+    ok(dashboard.includes(`id: '${id}'`), `dashboard: action card present: ${id}`);
+  }
+  ok(!dashboard.includes('href="#action required"'), 'dashboard: action navigation uses a valid anchor');
+}
+
 {
   const src = read('src/components/lab/LabActionButton.astro');
   ok(src.includes("from '../ui/AppButton.astro'"), 'LabActionButton delegates to AppButton');

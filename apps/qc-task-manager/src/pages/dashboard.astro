@@ -122,6 +122,12 @@ if (reportActor) {
 }
 const kpiParams = new URLSearchParams(Astro.url.searchParams);
 const kpiHref = (key: DashboardKpiKey) => buildKpiHref(key, kpiParams);
+const urgentHref = () => {
+  const params = new URLSearchParams(Astro.url.searchParams);
+  params.set('priority', 'urgent');
+  params.set('dashboard', '1');
+  return `/dashboard/drilldown?${params.toString()}`;
+};
 const kpiCards = kpis
   ? [
       { id: 'total', key: 'total' as DashboardKpiKey, label: 'Total Tasks', value: kpis.total, tone: 'border-slate-200 bg-white text-slate-900', icon: '📋' },
@@ -145,6 +151,15 @@ const kpiCards = kpis
         { id: 'open_capa', key: 'open_capa' as DashboardKpiKey, label: 'Open CAPA', value: reportKpis.open_capa, tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '🧩' },
         { id: 'evidence_compliance', key: 'evidence_compliance' as DashboardKpiKey, label: 'Evidence Compliance', value: formatPercent(reportKpis.evidence_compliance), tone: 'border-cyan-200 bg-cyan-50 text-cyan-700', icon: '📎' },
       ] : []),
+    ]
+  : [];
+
+const actionCards = kpis
+  ? [
+      { id: 'action-overdue', label: 'Overdue tasks', value: kpis.overdue, href: kpiHref('overdue'), tone: 'border-rose-200 bg-rose-50 text-rose-800', description: 'Due before today' },
+      { id: 'action-blocked', label: 'Blocked tasks', value: kpis.on_hold, href: kpiHref('on_hold'), tone: 'border-amber-200 bg-amber-50 text-amber-800', description: 'Tasks on hold' },
+      { id: 'action-evidence', label: 'Missing evidence', value: kpis.completed_without_evidence, href: kpiHref('evidence_compliance'), tone: 'border-violet-200 bg-violet-50 text-violet-800', description: 'Completed without proof' },
+      { id: 'action-urgent', label: 'Urgent open', value: kpis.urgent_open, href: urgentHref(), tone: 'border-red-300 bg-red-100 text-red-900', description: 'Open urgent work' },
     ]
   : [];
 
@@ -402,14 +417,23 @@ const labGroups: LabGroup[] = lab
 
   <nav aria-label="Dashboard sections" class="mb-6 overflow-x-auto rounded-xl border border-slate-200 bg-white p-2">
     <div class="flex min-w-max gap-2 text-sm font-medium">
-      {['Operations', 'Laboratory', 'SLA', 'Findings', 'CAPA', 'Workforce', 'Evidence', 'Audit'].map((section) => (
-        <a href={`#${section.toLowerCase()}`} class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 qc-focus">{section}</a>
+      {[
+        ['Action required', 'action-required'],
+        ['Today', 'today'],
+        ['Trends', 'trends'],
+        ['Laboratory', 'laboratory'],
+        ['SLA', 'sla'],
+        ['Findings', 'findings'],
+        ['CAPA', 'capa'],
+        ['Workforce', 'workforce'],
+        ['Evidence', 'evidence'],
+        ['Audit', 'audit'],
+      ].map(([label, id]) => (
+        <a href={`#${id}`} class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 qc-focus">{label}</a>
       ))}
       <a href="/reports" class="rounded-lg bg-brand-600 px-3 py-2 text-white hover:bg-brand-700 qc-focus">Reports</a>
     </div>
   </nav>
-  <AiReviewPanel feature="management-summary" requestBody={{}} title="AI Executive Summary" client:visible />
-
   {/* ───────────── Error state (queries failed but the shell stays usable) ───────────── */}
   {dataError && (
     <Banner tone="error" title="Dashboard unavailable" class="mb-6">{dataError}</Banner>
@@ -417,6 +441,31 @@ const labGroups: LabGroup[] = lab
 
   {!dataError && kpis && (
     <>
+      <section id="action-required" aria-labelledby="action-required-heading" data-dashboard-tier="action-required" class="mb-8">
+        <div class="mb-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-rose-700">Tier 1 · Action required</p>
+          <h2 id="action-required-heading" class="mt-1 text-xl font-semibold text-slate-950">Start with work that needs a decision</h2>
+          <p class="mt-1 text-sm text-slate-600">Open the matching register to investigate, assign, or resolve each item.</p>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {actionCards.map((card) => (
+            <a data-action-card={card.id} data-ux-event="dashboard_urgent_discovery" data-ux-surface="dashboard" data-ux-target={card.id} href={card.href} class={`rounded-xl border p-4 shadow-sm transition-shadow duration-qc-standard ease-qc-standard hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${card.tone}`}>
+              <div class="flex items-baseline justify-between gap-3">
+                <span class="text-sm font-semibold">{card.label}</span>
+                <span class="text-3xl font-semibold tabular-nums">{card.value}</span>
+              </div>
+              <p class="mt-2 text-xs opacity-80">{card.description} · Open register ↗</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section id="today" aria-labelledby="today-heading" data-dashboard-tier="today">
+        <div class="mb-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-brand-700">Tier 2 · Today’s operations</p>
+          <h2 id="today-heading" class="mt-1 text-xl font-semibold text-slate-950">Operational pulse</h2>
+          <p class="mt-1 text-sm text-slate-600">A quick read of workload, status, and service-level health for the selected scope.</p>
+        </div>
       {/* ───────────── KPI cards ───────────── */}
       <section aria-label="Key metrics" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {kpiCards.map((card) => (
@@ -431,10 +480,15 @@ const labGroups: LabGroup[] = lab
         <div class="flex flex-wrap items-center justify-between gap-2"><h2 class="text-sm font-semibold text-violet-900">QC checklist progress</h2><span class="text-2xl font-semibold tabular-nums text-violet-800">{checklistCompletion.percent}%</span></div>
         <p class="mt-1 text-xs text-violet-700">{checklistCompletion.completed}/{checklistCompletion.total} checklist items complete in the current filter scope.</p>
       </section>
+      </section>
 
-      {/* ───────────── Charts (React island, pure SVG) ───────────── */}
-      <section id="operations" aria-labelledby="operations-heading" class="mt-6">
-        <h2 id="operations-heading" class="sr-only">Operations</h2>
+      {/* ───────────── Tier 3: trends and comparisons ───────────── */}
+      <section id="trends" aria-labelledby="trends-heading" data-dashboard-tier="trends" class="mt-8">
+        <div class="mb-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Tier 3 · Trends</p>
+          <h2 id="trends-heading" class="mt-1 text-xl font-semibold text-slate-950">What is changing?</h2>
+          <p class="mt-1 text-sm text-slate-600">Use trends and comparisons to spot movement, imbalance, or emerging risk.</p>
+        </div>
         <DashboardCharts
           client:load
           donut={donut}
@@ -445,6 +499,14 @@ const labGroups: LabGroup[] = lab
           completionRate={completionRate!}
         />
       </section>
+
+      <section id="analysis" aria-labelledby="analysis-heading" data-dashboard-tier="analysis" class="mt-10">
+        <div class="mb-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Tier 4 · Analysis / drilldowns</p>
+          <h2 id="analysis-heading" class="mt-1 text-xl font-semibold text-slate-950">Explore the underlying registers</h2>
+          <p class="mt-1 text-sm text-slate-600">Open a focused workspace when the operational pulse needs deeper investigation.</p>
+        </div>
+        <AiReviewPanel feature="management-summary" requestBody={{}} title="AI Executive Summary" client:visible />
 
       {/* ───────────── Laboratory (PROMPT 28 — integrated, never rebuilt) ───────────── */}
       <section id="laboratory" aria-labelledby="laboratory-heading" class="mt-6">
@@ -505,6 +567,7 @@ const labGroups: LabGroup[] = lab
       <section id="workforce" aria-labelledby="workforce-heading" class="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 id="workforce-heading" class="text-lg font-semibold text-slate-900">Workforce</h2><p class="text-sm text-slate-600">Use Employee and Supervisor filters to inspect workload performance.</p></div><a href="/manager/workload" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open Workforce</a></div>
       </section>
+      </section>
     </>
   )}
 
@@ -556,7 +619,7 @@ const labGroups: LabGroup[] = lab
       </section>
 
       {/* ───────────── Current blockers ───────────── */}
-      <section aria-label="Current blockers" class="mt-8">
+      <section id="blockers" aria-label="Current blockers" class="mt-8">
         <div class="mb-3 flex items-baseline justify-between">
           <h2 class="text-lg font-semibold text-slate-900">Current blockers</h2>
           <span class="text-xs text-slate-500">Tasks on hold</span>
