@@ -82,7 +82,9 @@
     "test:production-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-production-operations.mjs",
     "test:deployment-contract": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-deployment-contract.mjs",
     "e2e:responsive": "node scripts/e2e-responsive.mjs",
-    "test:responsive-e2e-contract": "node scripts/test-responsive-e2e-contract.mjs"
+    "test:responsive-e2e-contract": "node scripts/test-responsive-e2e-contract.mjs",
+    "test:performance": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-performance.mjs",
+    "performance": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/run-performance.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^10.1.0",

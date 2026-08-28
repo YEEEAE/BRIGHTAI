@@ -80,5 +80,6 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:production-operations',
   'test:deployment-contract',
   'test:responsive-e2e-contract',
+  'test:performance',
   'test:ui-consistency',
 ];

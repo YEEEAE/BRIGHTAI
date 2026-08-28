@@ -1280,3 +1280,32 @@ skills_ready: 7---
 ### ملاحظات / مشاكل مفتوحة
 - لم يُنفّذ commit أو push أو deploy حسب الطلب.
 - بقيت 26 hints قديمة في `astro check` بدون أخطاء حاجبة.
+## [2026-08-28] — QC-PERFORMANCE-018: قياس أداء SQLite أحادي النسخة مبني على الدليل
+
+### تم التنفيذ
+- أضفت مولّد benchmark قابل للضبط ببروفايلين: `large` (10,000 مهمة، 5,000 اختبار، 60,000 عينة) و`ci` الأخف؛ وكل تشغيل ينشئ قاعدة SQLite مؤقتة جديدة ثم يحذفها، ولا يقرأ أو يكتب قاعدة الإنتاج.
+- شملت البيانات المرافقة المعدات وسجل المعايرة والصيانة، المستندات وإصداراتها، طلبات التغيير، وأحداث التدقيق، مع تفعيل migrations الكنسية وفحص `integrity_check` و`foreign_key_check`.
+- قست 11 سطحًا مطلوبًا: dashboard، employee tasks، task search، lab home/search، tests register، equipment، documents، change requests، audit، وreports؛ المخرجات تسجل p50/p95/max وعدد استعلامات كل سيناريو.
+- أُنتجت مخرجات قابلة للمراجعة في `download/qa/qc-performance.json` و`download/qa/qc-performance.md`، وتضم `EXPLAIN QUERY PLAN` للثلاثة الأعلى p95 بدون وضع thresholds تنظيمية أو مصطنعة.
+- لم أضف فهرسًا أو migration: التقرير كان الأعلى p95 بـ 4.639ms ويستخدم `idx_lab_tests_created_at`، وبحث المهام رغم `SCAN tasks` بقي p95=1.921ms على 10k مهمة؛ الدليل الحالي لا يبرر تغيير المخطط.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/scripts/run-performance.mjs`
+- `apps/qc-task-manager/scripts/test-performance.mjs`
+- `apps/qc-task-manager/{package.json,scripts/test-manifest.mjs}`
+- `download/qa/{qc-performance.json,qc-performance.md}`
+
+### التحقق
+- `test-performance` ✅ — عقد CI: 11 سيناريو، مقاييس p50/p95/max، JSON/Markdown، وFK/integrity.
+- `run-performance --profile=large --runs=9` ✅ — 10k مهمة / 5k اختبار / 60k عينة؛ `integrity_check=ok` و0 مخالفات FK.
+- `test-migrations` ✅ و`test-embedded-migration-parity` ✅ — 38/38 migration متطابقة.
+- `test-manifest-guard` ✅ — 60 suite canonical و28 E2E.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار عند QC benchmark محلي متكرر وآمن لنسخة SQLite واحدة، بمخرجات أدلة وخطط استعلام، بدون تحسين أو migration غير مبرر.
+
+### ملاحظات / مشاكل مفتوحة
+- لا توجد عتبات نجاح/فشل مفروضة؛ أي index لاحق يحتاج إعادة القياس وEXPLAIN evidence من نفس الأداة.
+- ما صار commit أو push أو deploy.
