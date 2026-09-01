@@ -1,0 +1,44 @@
+/*
+ * Page-level background. Kept in a CSS module so the class names cannot collide
+ * with the app's global styles, and so the video geometry lives next to the
+ * component that owns it.
+ *
+ * The video is presented at its native 1600x1200. Viewports wider or taller than
+ * the source show the fallback colour around it; smaller viewports show the
+ * centred region. There is deliberately no overlay — contrast is the job of the
+ * opaque card and panel surfaces inside the app shell.
+ */
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg-base, #0a0e1a) url('/media/brightai-background-poster.jpg') center / 1600px 1200px no-repeat;
+}
+
+.video {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: 1600px;
+  height: 1200px;
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+  opacity: 1;
+  filter: none;
+  transform: translate(-50%, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    display: none;
+  }
+}
+
+@media print {
+  .background {
+    display: none !important;
+  }
+}

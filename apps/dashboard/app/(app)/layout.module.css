@@ -1,8 +1,11 @@
+/* BAI-BG-VIDEO-001 (2026-08-29): page-level fill removed so the shared
+   background video shows through. The sticky header and every card keep
+   --bg-surface, which is what carries text contrast. */
 .root {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-base);
+  background: transparent;
 }
 
 .header {

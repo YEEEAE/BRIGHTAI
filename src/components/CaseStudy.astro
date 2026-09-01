@@ -5,7 +5,6 @@
  * Used by /customers/{bank,hospital,pharma}/. Follows canonical design system.
  */
 import Breadcrumbs from './Breadcrumbs.astro';
-import BackgroundGrid from './BackgroundGrid.astro';
 
 interface Metric {
   value: string;
@@ -44,7 +43,6 @@ const {
 ---
 
 <section class="page-hero" aria-label={title}>
-  <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <Breadcrumbs crumbs={[{ label: 'الرئيسية', href: '/' }, { label: 'عملاؤنا', href: '/customers/' }, { label: breadcrumbLabel }]} />
     <div class="inner-hero__badge">

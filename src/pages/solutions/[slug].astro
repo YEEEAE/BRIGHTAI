@@ -22,7 +22,6 @@
  *   - JSON-LD محفوظ verbatim
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import { solutions, getRelatedSolutions, getRelatedSectors } from '../../data/solutions';
 import { migratedSolutionPages } from '../../data/migratedSolutionPages';
@@ -535,7 +534,6 @@ const firewallDlpRows = [
 <>
 {/* ─── Section 1 · Hero (split: text + browser mockup) ─────────────── */}
 <section class="inner-hero inner-hero--split bg-ambient-teal-top" aria-label={solution.h1}>
-  <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="grid gap-10 lg:gap-12 lg:grid-cols-2 items-center">
       <div>

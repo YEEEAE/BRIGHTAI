@@ -18,7 +18,7 @@
  *
  * PRESERVED (no regression):
  *   - SEOHead still owns title/description/OG/Twitter meta.
- *   - Header, MobileNav, Footer, WhatsAppCTA, CookieConsent, DottedBackground,
+ *   - Header, MobileNav, Footer, WhatsAppCTA, CookieConsent, SiteBackground,
  *     ClientRouter, gtag, scroll-reveal, CSS layers, brand @font-face are
  *     all kept exactly as before.
  *   - ArabicLayout and EnglishLayout continue to be thin wrappers that
@@ -29,7 +29,7 @@ import Header from '../components/Header.astro';
 import MobileNav from '../components/MobileNav.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppCTA from '../components/WhatsAppCTA.astro';
-import DottedBackground from '../components/DottedBackground.astro';
+import SiteBackground from '../components/SiteBackground.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import FoundationSchema from '../components/seo/Schema.astro';
 import MarketingScripts from '../components/MarketingScripts.astro';
@@ -346,13 +346,22 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
 
     @import '../styles/tokens.css' layer(tokens);
     @import '../styles/base.css' layer(base);
+    /* BAI-CSS-DELIVERY-001 (2026-08-29): components.css and pages.css used to be
+       imported by ArabicLayout only. Every page that wraps BaseLayout directly —
+       the homepage, the 7 /en/ pages, and the 21 /kernel/ pages — therefore
+       shipped without them and rendered with collapsed grids, unstyled buttons
+       and surface-less cards. They belong on the shared shell, not on one locale
+       variant. Layer positions are unchanged, so the cascade is identical for the
+       Arabic pages that already received them. */
+    @import '../styles/components.css' layer(components);
+    @import '../styles/pages.css' layer(pages);
     @import '../styles/utilities.css' layer(utilities);
     @import '../styles/color-usage.css' layer(color);
     @import '../styles/animations.css' layer(animations);
   </style>
 </head>
 <body>
-  <DottedBackground />
+  <SiteBackground />
   <a href="#main" class="skip-link">
     {lang === 'ar' ? 'تخطي إلى المحتوى' : 'Skip to content'}
   </a>

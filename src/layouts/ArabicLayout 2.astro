@@ -1,0 +1,63 @@
+---
+/**
+ * ArabicLayout — Arabic (RTL) pages layout.
+ * Defaults: lang="ar", dir="rtl", locale ar-SA.
+ */
+import BaseLayout from './BaseLayout.astro';
+import type { SEOProps } from '../data/site';
+
+interface Props extends SEOProps {
+  currentPath?: string;
+  languageCounterpart?: string;
+  robots?: string;
+  /**
+   * BAI-VOC-001-B (2026-07-18): forwarded to BaseLayout → FoundationSchema
+   * to extend the WebPage `speakable.cssSelector` array. See Schema.astro.
+   */
+  extraSpeakableSelectors?: string[];
+  /**
+   * Page-level breadcrumbs (without the home crumb — added by FoundationSchema).
+   * Each breadcrumb should include a concrete href for schema and navigation output.
+   */
+  breadcrumbs?: Array<{ name: string; href: string }>;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  hreflang = [],
+  ogImage,
+  ogImageAlt,
+  jsonLd,
+  currentPath = '/',
+  languageCounterpart,
+  robots,
+  extraSpeakableSelectors = [],
+  breadcrumbs = [],
+} = Astro.props;
+---
+
+<BaseLayout
+  lang="ar"
+  dir="rtl"
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+  jsonLd={jsonLd}
+  currentPath={currentPath}
+  languageCounterpart={languageCounterpart}
+  robots={robots}
+  extraSpeakableSelectors={extraSpeakableSelectors}
+  breadcrumbs={breadcrumbs}
+>
+  <slot />
+</BaseLayout>
+
+<style is:global>
+  @import '../styles/components.css' layer(components);
+  @import '../styles/pages.css' layer(pages);
+</style>

@@ -129,3 +129,15 @@ sectors/logistics-en/index.html
 sectors/manufacturing-en/index.html
 docs/privacy-policy-en/index.html
 artifacts/
+
+# BAI-BG-VIDEO-001 — the background video is committed once at the repo root
+# (9.mp4). scripts/sync-background-media.mjs copies it into each app's public/
+# tree at prebuild and verifies SHA-256, so the generated copies must not be
+# committed a second and third time (~16MB of duplicate blobs).
+public/media/brightai-background.mp4
+public/media/brightai-background-poster.jpg
+apps/dashboard/public/media/brightai-background.mp4
+apps/dashboard/public/media/brightai-background-poster.jpg
+# avif:generate derives this from the ignored poster on every build.
+public/media/brightai-background-poster.avif
+apps/dashboard/public/media/brightai-background-poster.avif

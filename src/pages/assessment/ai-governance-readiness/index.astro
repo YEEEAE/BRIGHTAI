@@ -1,6 +1,5 @@
 ---
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 
 const dimensions = [
   ['inventory', 'حصر الاستخدامات', 'هل عندكم قائمة محدثة بأدوات وحالات استخدام AI؟'],
@@ -29,7 +28,6 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [{ '@type': 'WebPag
 
 <ArabicLayout title="تقييم جاهزية حوكمة AI للمؤسسات السعودية | BrightAI" description="فحص إرشادي لحوكمة الذكاء الاصطناعي: الاستخدامات، الملكية، المخاطر، السياسات، البيانات، الموافقات، الأدلة والمراقبة. نتائج وصفية على جهازك بدون شهادة أو ادعاء امتثال." canonical="https://brightai.live/assessment/ai-governance-readiness/" hreflang={[{lang:'ar-SA',href:'https://brightai.live/assessment/ai-governance-readiness/'},{lang:'x-default',href:'https://brightai.live/assessment/ai-governance-readiness/'}]} jsonLd={jsonLd as any} currentPath="/assessment/ai-governance-readiness/" breadcrumbs={[{ name: 'تقييم الجاهزية', href: '/assessment/ai-governance-readiness/' }]}>
   <section class="page-hero assessment-hero" aria-labelledby="assessment-title">
-    <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8 assessment-hero__grid">
       <div>
         <p class="inner-section__label">فحص إرشادي للمؤسسات السعودية</p>

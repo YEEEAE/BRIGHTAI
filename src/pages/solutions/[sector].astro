@@ -15,7 +15,6 @@
  *   8. Final CTA — preserved
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import SectorCard from '../../components/SectorCard.astro';
 import { sectors, solutions, getRelatedSectors } from '../../data/solutions';
@@ -210,7 +209,6 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
 <>
 {/* ─── Section 1 · Hero ───────────────────────────────────────────── */}
 <section class="inner-hero inner-hero--split bg-ambient-teal-top" aria-label={sector.h1}>
-  <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="grid gap-10 lg:gap-12 lg:grid-cols-2 items-center">
       <div>

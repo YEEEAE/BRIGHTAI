@@ -9,6 +9,13 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
+    <loc>https://brightai.live/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/" />
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.live/contact/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/contact/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/contact/" />
@@ -21,6 +28,12 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
+    <loc>https://brightai.live/kernel/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/" />
+    <lastmod>2026-08-09</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.live/pricing/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/pricing/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/pricing/" />
@@ -31,6 +44,102 @@
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/solutions/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/solutions/" />
     <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/about/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/about/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/blog/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/blog/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/customers/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/docs/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/docs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/docs/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/partners/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/partners/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/partners/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/services/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/services/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/trust/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/trust/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/trust/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/agentic-ai-governance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/agentic-ai-governance/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/agentic-ai-governance/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/agentic-ai-security/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/agentic-ai-security/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/agentic-ai-security/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/ai-governance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/ai-governance/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/ai-governance/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/compliance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/compliance/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/compliance/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/sdaia-ai-risk-management/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/sdaia-ai-risk-management/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/sdaia-ai-risk-management/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/security/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/security/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/security/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/solutions/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/solutions/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/solutions/" />
+    <lastmod>2026-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/hub/use-cases/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/use-cases/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/use-cases/" />
+    <lastmod>2026-08-24</lastmod>
   </url>
   <url>
     <loc>https://brightai.live/solutions/ai-audit-trail/</loc>
@@ -144,234 +253,6 @@
     <loc>https://brightai.live/solutions/policy-to-control-mapping/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/solutions/policy-to-control-mapping/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/solutions/policy-to-control-mapping/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/assessment/ai-governance-readiness/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/assessment/ai-governance-readiness/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/assessment/ai-governance-readiness/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/" />
-    <lastmod>2026-08-09</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/api/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/api/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/api/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/approvals/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/approvals/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/approvals/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/audit/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/audit/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/audit/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/chat/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/chat/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/chat/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/compliance/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/compliance/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/compliance/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/connectors/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/connectors/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/connectors/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/datasets/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/datasets/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/datasets/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/eval/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/eval/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/eval/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/evidence/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/evidence/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/evidence/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/models/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/models/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/models/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/playground/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/playground/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/playground/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/policies/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/policies/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/policies/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/redteam/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/redteam/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/redteam/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/replay/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/replay/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/replay/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/reports/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/reports/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/reports/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/scenarios/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/scenarios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/scenarios/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/scorers/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/scorers/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/scorers/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/kernel/stats/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/stats/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/stats/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/agentic-ai-governance/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/agentic-ai-governance/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/agentic-ai-governance/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/agentic-ai-security/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/agentic-ai-security/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/agentic-ai-security/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/ai-governance/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/ai-governance/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/ai-governance/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/compliance/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/compliance/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/compliance/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/sdaia-ai-risk-management/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/sdaia-ai-risk-management/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/sdaia-ai-risk-management/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/security/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/security/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/security/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/solutions/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/solutions/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/solutions/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/hub/use-cases/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/hub/use-cases/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/hub/use-cases/" />
-    <lastmod>2026-08-24</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/about/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/about/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/about/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/customers/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/customers/bank/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/bank/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/bank/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/customers/hospital/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/hospital/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/hospital/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/customers/pharma/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/pharma/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/pharma/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/partners/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/partners/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/partners/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/services/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/services/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/services/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/trust/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/trust/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/trust/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/docs/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/docs/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/docs/" />
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
@@ -663,9 +544,94 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/blog/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/blog/" />
+    <loc>https://brightai.live/answer/ai-banking/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-banking/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-banking/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/ai-firewall-saudi-ar/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-firewall-saudi-ar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-firewall-saudi-ar/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/ai-firewall-saudi/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-firewall-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-firewall-saudi/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/ai-governance-framework/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-governance-framework/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-governance-framework/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/ai-governance-saudi-arabia-ar/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-governance-saudi-arabia-ar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-governance-saudi-arabia-ar/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/ai-governance-saudi-arabia/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-governance-saudi-arabia/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-governance-saudi-arabia/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/ai-healthcare/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-healthcare/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-healthcare/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/ai-safety-platform-enterprise/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-safety-platform-enterprise/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-safety-platform-enterprise/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/audit-trail-saudi-ar/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/audit-trail-saudi-ar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/audit-trail-saudi-ar/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/iso-42001/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/iso-42001/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/iso-42001/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/nca-compliance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/nca-compliance/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/nca-compliance/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/nca-ecc-controls/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/nca-ecc-controls/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/nca-ecc-controls/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/pdpl-ai-compliance-ar/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/pdpl-ai-compliance-ar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/pdpl-ai-compliance-ar/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/pdpl-ai-compliance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/pdpl-ai-compliance/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/pdpl-ai-compliance/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/sama-ai/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/sama-ai/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/sama-ai/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/saudi-ai-safety-os/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/saudi-ai-safety-os/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/saudi-ai-safety-os/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/answer/sdaia-generative-ai/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/sdaia-generative-ai/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/sdaia-generative-ai/" />
+  </url>
+  <url>
+    <loc>https://brightai.live/assessment/ai-governance-readiness/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/assessment/ai-governance-readiness/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/assessment/ai-governance-readiness/" />
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
@@ -1245,6 +1211,36 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
+    <loc>https://brightai.live/authors/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/authors/brightai-team/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/brightai-team/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/brightai-team/" />
+    <lastmod>2026-07-25</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/authors/compliance-officer/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/compliance-officer/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/compliance-officer/" />
+    <lastmod>2026-07-25</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/authors/nasser-alabdullah/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/nasser-alabdullah/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/nasser-alabdullah/" />
+    <lastmod>2026-07-25</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/authors/yazeed-alshareef/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/yazeed-alshareef/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/yazeed-alshareef/" />
+    <lastmod>2026-07-25</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.live/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/" />
@@ -1275,94 +1271,27 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/answer/ai-banking/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-banking/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-banking/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/ai-firewall-saudi-ar/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-firewall-saudi-ar/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-firewall-saudi-ar/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/ai-firewall-saudi/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-firewall-saudi/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-firewall-saudi/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/ai-governance-framework/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-governance-framework/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-governance-framework/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/ai-governance-saudi-arabia-ar/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-governance-saudi-arabia-ar/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-governance-saudi-arabia-ar/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/ai-governance-saudi-arabia/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-governance-saudi-arabia/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-governance-saudi-arabia/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/ai-healthcare/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-healthcare/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-healthcare/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/ai-safety-platform-enterprise/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/ai-safety-platform-enterprise/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/ai-safety-platform-enterprise/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/audit-trail-saudi-ar/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/audit-trail-saudi-ar/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/audit-trail-saudi-ar/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/iso-42001/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/iso-42001/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/iso-42001/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/nca-compliance/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/nca-compliance/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/nca-compliance/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/nca-ecc-controls/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/nca-ecc-controls/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/nca-ecc-controls/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/pdpl-ai-compliance-ar/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/pdpl-ai-compliance-ar/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/pdpl-ai-compliance-ar/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/pdpl-ai-compliance/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/pdpl-ai-compliance/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/pdpl-ai-compliance/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/sama-ai/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/sama-ai/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/sama-ai/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/saudi-ai-safety-os/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/saudi-ai-safety-os/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/saudi-ai-safety-os/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/answer/sdaia-generative-ai/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/answer/sdaia-generative-ai/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/answer/sdaia-generative-ai/" />
-  </url>
-  <url>
     <loc>https://brightai.live/calculator/roi/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/calculator/roi/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/calculator/roi/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/customers/bank/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/bank/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/bank/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/customers/hospital/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/hospital/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/hospital/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/customers/pharma/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/customers/pharma/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/customers/pharma/" />
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
@@ -1432,40 +1361,17 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/authors/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/" />
+    <loc>https://brightai.live/cookie-policy/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/cookie-policy/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/cookie-policy/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/cookie-policy/" />
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/authors/brightai-team/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/brightai-team/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/brightai-team/" />
-    <lastmod>2026-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/authors/compliance-officer/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/compliance-officer/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/compliance-officer/" />
-    <lastmod>2026-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/authors/nasser-alabdullah/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/nasser-alabdullah/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/nasser-alabdullah/" />
-    <lastmod>2026-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/authors/yazeed-alshareef/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/authors/yazeed-alshareef/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/authors/yazeed-alshareef/" />
-    <lastmod>2026-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/en/</loc>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/" />
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/" />
+    <loc>https://brightai.live/data-processing-agreement/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/data-processing-agreement/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/data-processing-agreement/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/data-processing-agreement/" />
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
@@ -1511,18 +1417,112 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/cookie-policy/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/cookie-policy/" />
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/cookie-policy/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/cookie-policy/" />
+    <loc>https://brightai.live/kernel/api/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/api/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/api/" />
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/data-processing-agreement/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/data-processing-agreement/" />
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/data-processing-agreement/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/data-processing-agreement/" />
-    <lastmod>2026-08-28</lastmod>
+    <loc>https://brightai.live/kernel/approvals/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/approvals/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/approvals/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/audit/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/audit/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/audit/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/chat/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/chat/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/chat/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/compliance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/compliance/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/compliance/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/connectors/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/connectors/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/connectors/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/datasets/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/datasets/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/datasets/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/eval/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/eval/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/eval/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/evidence/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/evidence/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/evidence/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/models/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/models/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/models/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/playground/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/playground/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/playground/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/policies/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/policies/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/policies/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/redteam/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/redteam/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/redteam/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/replay/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/replay/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/replay/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/reports/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/reports/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/reports/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/scenarios/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/scenarios/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/scenarios/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/scorers/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/scorers/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/scorers/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/kernel/stats/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/stats/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/stats/" />
+    <lastmod>2026-07-30</lastmod>
   </url>
   <url>
     <loc>https://brightai.live/pdpl-statement/</loc>
@@ -1545,13 +1545,6 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/terms/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/terms/" />
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/terms/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/terms/" />
-    <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
     <loc>https://brightai.live/referral/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/referral/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/referral/" />
@@ -1568,6 +1561,13 @@
     <loc>https://brightai.live/sitemap/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/sitemap/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/sitemap/" />
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/terms/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/terms/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/terms/" />
     <lastmod>2026-08-28</lastmod>
   </url>
 

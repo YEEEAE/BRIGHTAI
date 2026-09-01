@@ -792,15 +792,9 @@ button.btn--primary {                              /* legacy single-dash alias *
     padding-block: var(--space-3);
     padding-inline: var(--space-4);
   }
-  /* REPORT-33 — Hide the React-rendered DottedSurface canvas entirely on mobile.
-     client:media="(min-width:768px)" already blocks the ~58KB JS chunk
-     (DEC-017), but the SSR-rendered <canvas> still occupies the page.
-     Apply via a non-scoped global rule because the canvas is rendered by a
-     React island (DottedSurface.tsx) that does not carry the SplitHero
-     data-astro-cid scope attribute, so scoped rules in SplitHero.astro
-     never match. */
-  .dotted-surface-canvas { display: none !important; }
-  .split-hero__visual { display: none; }
+  /* BAI-BG-VIDEO-001 (2026-08-29): the mobile kill-switches for
+     .dotted-surface-canvas and .split-hero__visual went with the hero canvas
+     markup they hid. Neither element is rendered any more. */
 }
 
 /* Tablet (769-1023px): نفس الـ hierarchy لكن inline */
@@ -1231,13 +1225,18 @@ button.btn--primary {                              /* legacy single-dash alias *
   background: linear-gradient(180deg, var(--surface-3) 0%, var(--surface-2) 100%);
 }
 
+/* BAI-REVEAL-FALLBACK-001 (2026-08-29): the entry state is gated on
+   html.reveal-ready, which public/js/scroll-reveal.js sets as its first action.
+   Without the gate these rules hid primary content permanently whenever the
+   observer did not run (swallowed dynamic import, JS off, crawler, slow link) —
+   26 cards on /about/ alone measured opacity 0 with no reveal in flight. */
 /* Reveal animation: applies to .card--feature and the legacy .feature-card */
 /* Entry state — opacity 0 + small upward offset. The .is-visible class added by the
    centralized BaseLayout observer (DEC-015) reveals them with a smooth transition that
    respects --reveal-delay (set by .reveal-stagger containers for grid staggering). */
-.feature-card,
-.card--feature,
-.inner-card {
+html.reveal-ready .feature-card,
+html.reveal-ready .card--feature,
+html.reveal-ready .inner-card {
   opacity: 0;
   transform: translateY(16px);
 }
@@ -2481,7 +2480,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 /* Entry animation for FAQ items (if used) */
-.home-faq-item {
+html.reveal-ready .home-faq-item {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
@@ -3047,19 +3046,14 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 /* ============================================================
-   13. DOTTED BACKGROUND + DECORATIVE
+   13. DECORATIVE
    ============================================================ */
 
-.dotted-bg {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-  pointer-events: none;
-  z-index: 0;
-}
+/* BAI-BG-VIDEO-001 (2026-08-29): `.dotted-bg` was deleted here. It was a
+   name collision: DottedBackground.astro's wrapper carried the same class, so
+   every page painted this slate-grey 32px dot grid on top of the six layers the
+   component actually intended. The component is now unmounted and the shared
+   background video replaces it, leaving this rule with no markup at all. */
 
 /* Gradient Text — used for branded numbers and labels.
     DEC-2026-032: smoother stops (3-color transition) + 145deg (more readable
@@ -3192,7 +3186,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 /* Inner Reveal — inner-page equivalent of feature-card entrance animation */
-.inner-reveal {
+html.reveal-ready .inner-reveal {
   opacity: 0;
   transform: translateY(16px);
   transition:
@@ -3206,10 +3200,10 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 /* Home stat card + FAQ + evidence mockup + comparison wrap — same shared animation */
-.home-stat-card,
-.home-faq-item,
-.home-evidence-mockup,
-.home-comparison-wrap {
+html.reveal-ready .home-stat-card,
+html.reveal-ready .home-faq-item,
+html.reveal-ready .home-evidence-mockup,
+html.reveal-ready .home-comparison-wrap {
   opacity: 0;
   transform: translateY(16px);
   transition:
@@ -3263,10 +3257,16 @@ button.btn--primary {                              /* legacy single-dash alias *
   overflow: hidden;
 }
 
-/* GSAP-style fade — alias for legacy pages */
+/* GSAP-style fade — alias for legacy pages.
+   BAI-REVEAL-FALLBACK-001 (2026-08-29): the `opacity: 0` entry state hid content
+   permanently. It only reveals on `[data-revealed]`, and nothing in the repository
+   ever sets that attribute — GSAP was removed from the project (see the ban in
+   global.css) and this CSS/markup pairing was left behind. Its only consumer,
+   src/pages/kernel/index.astro:565, therefore rendered its entire k-unit-card grid
+   invisible. Gating on html.reveal-ready would not help: `.gsap-fade` is not in
+   scroll-reveal.js's target list either, so no observer would ever reveal it. The
+   entry state is removed; the transition stays for a future opt-in. */
 .gsap-fade {
-  opacity: 0;
-  transform: translateY(20px);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
 }
 

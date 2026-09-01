@@ -16,6 +16,7 @@ import type { Metadata, Viewport } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
 import { arSA, enUS } from '@clerk/localizations';
 import '../styles/globals.css';
+import SiteBackground from '../components/SiteBackground';
 
 export const metadata: Metadata = {
   title: {
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <html lang="ar" dir="rtl" suppressHydrationWarning>
         <body>
+          <SiteBackground />
           <a href="#main-content" className="skip-link">
             تخطي إلى المحتوى
           </a>

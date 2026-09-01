@@ -1,10 +1,11 @@
+/* BAI-BG-VIDEO-001 (2026-08-29): page-level fill and ambient gradient removed so
+   the shared background video shows through on sign-in/sign-up. The Clerk card
+   itself is opaque, which is what carries contrast on this screen. */
 .root {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background:
-    radial-gradient(ellipse at top, rgba(34, 211, 238, 0.06), transparent 50%),
-    var(--bg-base);
+  background: transparent;
 }
 
 .header {

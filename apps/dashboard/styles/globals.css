@@ -36,6 +36,15 @@ body {
   color: var(--text-primary);
 }
 
+/* BAI-BG-VIDEO-001 (2026-08-29): the page-level background video is the first
+   child of <body> and pins itself to z-index 0; every other body child stacks
+   above it. `body`'s own colour stays as the fallback painted around the video
+   on viewports larger than its native 1600x1200. */
+body > *:not([aria-hidden='true']) {
+  position: relative;
+  z-index: 2;
+}
+
 [dir='rtl'] body {
   font-family:
     'IBM Plex Sans Arabic', 'Noto Sans Arabic', -apple-system,

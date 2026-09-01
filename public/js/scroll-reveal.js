@@ -206,14 +206,21 @@ function isAboveViewport(el) {
  *   2. DOMContentLoaded (fallback لو الـ event فاتنا)
  */
 function initReveal() {
-  // ❶ Stagger containers — نحسب delays قبل ما الـ observer يبدأ
+  // ❶ BAI-REVEAL-FALLBACK-001 (2026-08-29): claim the entry state only once this
+  //    observer is actually running. The CSS entry state (opacity: 0) is scoped to
+  //    html.reveal-ready, so when this module never runs — a swallowed dynamic
+  //    import, JS disabled, a crawler, or simply a slow connection — the content
+  //    stays visible instead of being permanently hidden.
+  document.documentElement.classList.add('reveal-ready');
+
+  // ❷ Stagger containers — نحسب delays قبل ما الـ observer يبدأ
   document.querySelectorAll('.reveal-stagger').forEach(applyStagger);
 
-  // ❷ نجمع الأهداف (data-reveal + legacy) مرة وحدة
+  // ❸ نجمع الأهداف (data-reveal + legacy) مرة وحدة
   const targets = collectTargets();
   if (!targets.length) return;
 
-  // ❸ Reduced-motion: نفتح كل شي مباشرة بدون animation، نرجع.
+  // ❹ Reduced-motion: نفتح كل شي مباشرة بدون animation، نرجع.
   if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
     targets.forEach(revealImmediately);
     return;

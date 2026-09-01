@@ -2,7 +2,6 @@
 <!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — service cards: 14 بطاقة vague → action-oriented + microcopy ≤12 كلمة. Final CTA: "واتساب" → "احصل على رد عبر واتساب" + microcopy. href/action لم يتغير. -->
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import BackgroundGrid from '../../components/BackgroundGrid.astro';
 
 import Icon from '../../components/Icon.astro';
 import { getFaqLd } from '../../data/schema-helpers';
@@ -52,7 +51,6 @@ const servicesJsonLd = {
 
 <ArabicLayout title="خدمات حوكمة AI | تقييم، حماية، تدقيق — BrightAI" description="خدمات BrightAI الـ 15 تغطي تقييم جاهزية AI وحماية البيانات وسجلات التدقيق. خدمات مخصصة للسوق السعودي وفق PDPL وNCA ECC. اكتشف الخدمة المناسبة لشركتك." canonical="https://brightai.live/services/" hreflang={[{lang:'ar-SA',href:'https://brightai.live/services/'},{lang:'x-default',href:'https://brightai.live/services/'}]} jsonLd={servicesJsonLd as any} currentPath="/services/" extraSpeakableSelectors={['.inner-hero__desc', 'aside[data-snippet="tl-dr"]']} breadcrumbs={[{ name: 'الخدمات', href: '/services/' }]}>
 <section class="inner-hero" aria-label="خدمات BrightAI">
-  <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-cogs"></use></svg> تنفيذ Saudi AI Safety OS للسوق السعودي</div>
     <h1>خدمات تنفيذ <span class="gradient-text">Saudi AI Safety OS</span> داخل شركتك <span class="inner-hero__h1-suffix">بجرد AI ومالك مسؤول ومسار إشراف بشري</span></h1>

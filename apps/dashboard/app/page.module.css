@@ -1,13 +1,14 @@
+/* BAI-BG-VIDEO-001 (2026-08-29): the page-level fill and its two ambient radial
+   gradients were removed so the shared background video is visible. Card and
+   header surfaces still carry --bg-surface, which is what keeps text readable —
+   there is deliberately no overlay on the video itself. */
 .root {
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-8) var(--space-4);
-  background:
-    radial-gradient(ellipse at top, rgba(34, 211, 238, 0.08), transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(129, 140, 248, 0.06), transparent 50%),
-    var(--bg-base);
+  background: transparent;
 }
 
 .inner {

@@ -73,6 +73,7 @@ const jsonLd = {
       : []),
   ],
 };
+import SiteBackground from '../../components/SiteBackground.astro';
 ---
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -102,6 +103,7 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <SiteBackground />
     <main id="main-content" class="answer-page">
       {ownerCrumb && (
         <nav class="answer-breadcrumbs" aria-label="مسار التنقل">
@@ -142,6 +144,13 @@ const jsonLd = {
     </main>
 
     <style>
+      /* BAI-BG-VIDEO-001 (2026-08-29): this page owns its own <html> shell, so it
+         needs its own stacking rule — the fixed background layer sits at z-index 0
+         and every other body child has to paint above it. */
+      :global(body > *:not([aria-hidden='true'])) {
+        position: relative;
+        z-index: 2;
+      }
       /* Mobile-first + RTL baseline for /answer/* pages (BAI-SAID-03). */
       .answer-hero__empty-state,
       .answer-page__empty-state {

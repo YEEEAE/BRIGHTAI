@@ -14,7 +14,6 @@
  *   8. CTA النهائي             — gradient banner
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import SolutionCard from '../../components/SolutionCard.astro';
 import SectorCard from '../../components/SectorCard.astro';
 import { solutions, sectors } from '../../data/solutions';
@@ -32,7 +31,6 @@ const jsonLd = {
 
 {/* ─── Section 1 · Hero ─────────────────────────────────────────────────────── */}
 <section class="inner-hero bg-ambient-teal-top" aria-label="حلول BrightAI">
-  <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <span class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-wrench"></use></svg> مركز محتوى تقني · Solutions Hub</span>
     <h1>حلول <span class="gradient-text">حوكمة وأمان</span> الذكاء الاصطناعي</h1>

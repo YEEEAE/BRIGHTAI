@@ -23,6 +23,7 @@
  * screen, not a marketing surface.
  */
 const title = 'BrightAI — Quota Dashboard (admin)';
+import SiteBackground from '../../../components/SiteBackground.astro';
 ---
 
 <!doctype html>
@@ -38,6 +39,7 @@ const title = 'BrightAI — Quota Dashboard (admin)';
     <link rel="icon" href="/favicon.svg" />
   </head>
   <body>
+    <SiteBackground />
     <main class="qd">
       <header class="qd__top">
         <h1 class="qd__title">لوحة حصة الـ Kernel</h1>
@@ -94,6 +96,14 @@ const title = 'BrightAI — Quota Dashboard (admin)';
     <style>
       :global(html) {
         background: var(--bg-base);
+      }
+      /* BAI-BG-VIDEO-001 (2026-08-29): this page owns its own <html> shell, so it
+         needs its own stacking rule — the fixed background layer sits at z-index 0
+         and every other body child has to paint above it. The html background
+         above stays as the fallback colour painted around the video. */
+      :global(body > *:not([aria-hidden='true'])) {
+        position: relative;
+        z-index: 2;
       }
       .qd {
         max-width: 920px;

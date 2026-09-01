@@ -34,30 +34,12 @@ import TrustBadges from './TrustBadges.astro';
 ---
 
 <section class="split-hero" aria-label="BrightAI الرئيسية">
-  {/* ─── Interactive Dotted-Surface (vanilla JS canvas — REPORTS-20)
-        Replaces the prior DottedSurface React island. Removes the React
-        renderer payload (~185KB raw / ~58KB gzipped) from the homepage
-        critical path. The canvas stays inert until JS hydrates
-        src/scripts/dotted-surface.js via astro:page-load. CSS controls
-        the ambient opacity/positioning; the script handles pointer
-        interaction and frame timing. ─── */}
-  <div class="split-hero__visual" aria-hidden="true">
-    <canvas class="dotted-surface-canvas"></canvas>
-  </div>
-
-  {/* ─── Gradient beam accents (pure CSS, enhanced) ─── */}
-  <div class="split-hero__beams" aria-hidden="true">
-    <div class="split-hero__beam split-hero__beam--wide-blur"></div>
-    <div class="split-hero__beam split-hero__beam--wide"></div>
-    <div class="split-hero__beam split-hero__beam--narrow-blur"></div>
-    <div class="split-hero__beam split-hero__beam--narrow"></div>
-  </div>
-
-  {/* ─── Mouse-following spotlight (desktop only, CSS-driven) ─── */}
-  <div class="split-hero__spotlight" aria-hidden="true"></div>
-
-  {/* ─── Vignette overlay for text legibility ─── */}
-  <div class="split-hero__vignette" aria-hidden="true"></div>
+  {/* BAI-BG-VIDEO-001 (2026-08-29): the hero's own background stack — the
+      interactive dotted-surface canvas, the four gradient beams, the
+      pointer-following spotlight, and the vignette — was removed. All four were
+      page-level background layers, and the vignette in particular painted a
+      translucent dark wash that would have altered the approved background
+      video's colours. The shared SiteBackground now supplies the atmosphere. */}
 
   {/* ─── Hero Content Grid ─── */}
   <div class="split-hero__grid">
@@ -218,27 +200,8 @@ import TrustBadges from './TrustBadges.astro';
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: transparent; /* DottedBackground shows through */
-  }
-
-  /* ─── Premium Canvas Visual Scene ─── */
-  .split-hero__visual {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .dotted-surface-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    will-change: transform;
-    transform: translateZ(0);
-    opacity: 0.9;
+    /* BAI-BG-VIDEO-001: the shared SiteBackground video shows through. */
+    background: transparent;
   }
 
   /* ─── THE STAR — wraps the BrightStar.astro SVG at the top of the main column ─── */
@@ -275,80 +238,11 @@ import TrustBadges from './TrustBadges.astro';
     .split-hero__star { margin-top: 0; }
   }
 
-  /* On the homepage, dim the background canvas so The Star wins the visual hierarchy.
-     Spotlight + beams + vignette still operate — only the dotted canvas dims. */
-  @media (min-width: 768px) {
-    .split-hero .dotted-surface-canvas { opacity: 0.32; }
-  }
-
-  /* ─── Gradient Beams (REPORT-09: less distraction, more directional) ───
-     Directional accent: a single soft beam from the top with focused blur,
-     replaced the original 4-beam clutter. Keeps the "Sovereign Calm" feel. */
-  .split-hero__beams {
-    position: absolute;
-    top: 18%;
-    inset-inline: 0;
-    height: 2px;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .split-hero__beam {
-    position: absolute;
-    top: 0;
-    inset-inline-start: 50%;
-    transform: translateX(-50%);
-  }
-  /* Soft wide beam — primary direction marker */
-  .split-hero__beam--wide-blur {
-    width: 60%;
-    height: 40px;
-    background: radial-gradient(ellipse 50% 100% at 50% 0%, rgba(42, 138, 126, 0.18), transparent 70%);
-    filter: blur(2px);
-    opacity: 0.7;
-  }
-  /* Crisp narrow accent line — the actual beam */
-  .split-hero__beam--wide {
-    width: 40%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(75, 166, 156, 0.7), transparent);
-  }
-  /* Kept narrow variants but reduced opacity (decorative depth) */
-  .split-hero__beam--narrow-blur {
-    width: 18%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, rgba(75, 166, 156, 0.35), transparent);
-    filter: blur(3px);
-    opacity: 0.6;
-  }
-  .split-hero__beam--narrow {
-    display: none; /* REPORT-09: removed — was redundant and distracting */
-  }
-
-  /* ─── Spotlight (mouse-follow, desktop only) ─── */
-  .split-hero__spotlight {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background: transparent;
-    transition: background 0.3s ease;
-  }
-
-  /* ─── Vignette overlay for text legibility ─── */
-  .split-hero__vignette {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-    background:
-      radial-gradient(ellipse 100% 80% at 30% 50%, rgba(4,7,17,0.5), transparent 70%),
-      linear-gradient(180deg, transparent 0%, rgba(4,7,17,0.2) 100%);
-  }
-  [dir="rtl"] .split-hero__vignette {
-    background:
-      radial-gradient(ellipse 100% 80% at 70% 50%, rgba(4,7,17,0.5), transparent 70%),
-      linear-gradient(180deg, transparent 0%, rgba(4,7,17,0.2) 100%);
-  }
+  /* BAI-BG-VIDEO-001 (2026-08-29): the rules for .split-hero__visual,
+     .dotted-surface-canvas, .split-hero__beams / __beam*, .split-hero__spotlight
+     and .split-hero__vignette were deleted together with their markup. The
+     vignette's two dark gradients in particular were a translucent wash over the
+     page background; the background contract forbids covering the video. */
 
   /* ─── Grid Layout (7fr 5fr split) ─── */
   .split-hero__grid {
@@ -870,14 +764,10 @@ import TrustBadges from './TrustBadges.astro';
       padding-top: 5.5rem;
       padding-bottom: 3rem;
     }
-    /* REPORT-33: The .dotted-surface-canvas + .split-hero__visual display:none
-       rules live in components.css (Global) because the canvas markup
-       inside .split-hero__visual is shared across hero layouts. */
-    .split-hero__vignette {
-      background:
-        radial-gradient(ellipse 100% 60% at 50% 30%, rgba(4,7,17,0.7), transparent 80%),
-        linear-gradient(180deg, rgba(4,7,17,0.3) 0%, transparent 50%);
-    }
+    /* BAI-BG-VIDEO-001 (2026-08-29): the mobile vignette override went with the
+       vignette layer itself. The mobile kill-switches for
+       .dotted-surface-canvas / .split-hero__visual in components.css are also
+       gone now that neither element is rendered. */
     /* Hide decorative panel sheen on mobile (one less compositing layer) */
     .home-kernel-panel::after { display: none; }
     /* Tighten showcase spacing on small screens */
@@ -960,13 +850,6 @@ import TrustBadges from './TrustBadges.astro';
 
   /* ─── Reduced Motion ─── */
   @media (prefers-reduced-motion: reduce) {
-    .dotted-surface-canvas {
-      opacity: 0.4;
-    }
-    /* Ensure static frame is visible */
-    .split-hero__visual {
-      opacity: 1;
-    }
     /* Kill 3D tilt entirely under reduced motion */
     .home-kernel-panel {
       transform: none !important;
@@ -996,66 +879,9 @@ import TrustBadges from './TrustBadges.astro';
   }
 </style>
 
-<script>
-  // Spotlight effect — desktop only, ~20 lines vanilla JS.
-  // BAI-CWV-TBT-001 (2026-08-08): deferred via requestIdleCallback so the
-  // mouse-move handler + querySelector work never blocks first paint / LCP.
-  // The spotlight is purely decorative (only visible on pointer interaction),
-  // so deferring it to idle has zero perceptual cost. scheduleIdle is inlined
-  // because Astro compiles every <script> into an isolated module scope.
-  const scheduleIdle =
-    typeof window.requestIdleCallback === 'function'
-      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
-      : (work) => setTimeout(work, 1200);
-  (function setupSpotlight() {
-    let raf = 0;
-    let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-
-    function update() {
-      currentX += (targetX - currentX) * 0.15;
-      currentY += (targetY - currentY) * 0.15;
-      if (spotlight) {
-        spotlight.style.background = `radial-gradient(300px circle at ${currentX}px ${currentY}px, rgba(34,211,238,0.08), transparent 70%)`;
-      }
-      if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
-        raf = requestAnimationFrame(update);
-      } else {
-        raf = 0;
-      }
-    }
-
-    let hero: HTMLElement | null = null;
-    let spotlight: HTMLElement | null = null;
-
-    function init() {
-      hero = document.querySelector('.split-hero');
-      spotlight = document.querySelector('.split-hero__spotlight');
-      if (!hero || !spotlight || !window.matchMedia('(min-width: 768px)').matches) return;
-
-      const heroEl = hero;
-      const spotlightEl = spotlight;
-      heroEl.addEventListener('mousemove', (e: MouseEvent) => {
-        const rect = heroEl.getBoundingClientRect();
-        targetX = e.clientX - rect.left;
-        targetY = e.clientY - rect.top;
-        if (!raf) raf = requestAnimationFrame(update);
-      });
-      heroEl.addEventListener('mouseleave', () => {
-        spotlightEl.style.background = 'transparent';
-      });
-    }
-
-    function destroy() {
-      if (raf) cancelAnimationFrame(raf);
-      raf = 0;
-      hero = null;
-      spotlight = null;
-    }
-
-    document.addEventListener('astro:page-load', () => scheduleIdle(init));
-    document.addEventListener('astro:before-swap', destroy);
-  })();
-</script>
+{/* BAI-BG-VIDEO-001 (2026-08-29): the pointer-following spotlight script was
+    removed with the .split-hero__spotlight layer it painted into. It was the
+    hero's only rAF loop; the shared background video replaces the effect. */}
 
 <script>
   // Kernel panel 3D tilt — vanilla JS, max 6deg, respects prefers-reduced-motion.
@@ -1189,23 +1015,8 @@ import TrustBadges from './TrustBadges.astro';
   })();
 </script>
 
-<script>
-  // Dotted-surface canvas — vanilla JS port (REPORTS-20).
-  // Replaces the prior React island. Bundled only on pages that mount SplitHero.
-  // BAI-CWV-TBT-001 (2026-08-08): deferred via dynamic import + requestIdleCallback.
-  // The dotted grid is an ambient background (no content), and grid construction
-  // + the first frame accounted for ~225ms of bootup on the homepage (per
-  // lh-home-desktop.json bootup-time audit). Loading the module only when the
-  // main thread is idle moves that work out of the first-paint critical path
-  // without any perceptual loss — the canvas is invisible until dots animate.
-  // scheduleIdle is inlined (every <script> is an isolated module scope).
-  const scheduleIdle =
-    typeof window.requestIdleCallback === 'function'
-      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
-      : (work) => setTimeout(work, 1200);
-  document.addEventListener('astro:page-load', () => {
-    scheduleIdle(async () => {
-      await import('../scripts/dotted-surface.js');
-    });
-  });
-</script>
+{/* BAI-BG-VIDEO-001 (2026-08-29): the dynamic import of
+    src/scripts/dotted-surface.js was removed together with the canvas it
+    animated. It shipped 321 lines of requestAnimationFrame + pointer work to
+    every homepage visitor; with no .dotted-surface-canvas in the DOM it would
+    now load and do nothing. */}

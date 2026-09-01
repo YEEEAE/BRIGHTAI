@@ -53,6 +53,7 @@ const serviceLd = {
 };
 
 const jsonLd = [serviceLd, faqLd].filter(Boolean);
+import SiteBackground from '../../components/SiteBackground.astro';
 ---
 
 <!DOCTYPE html>
@@ -83,6 +84,7 @@ const jsonLd = [serviceLd, faqLd].filter(Boolean);
     ))}
   </head>
   <body>
+    <SiteBackground />
     <main id="main-content" class="lp-page">
       <section class="lp-hero" aria-label={lp.title}>
         <h1 class="lp-hero__h1">{lp.h1}</h1>
@@ -136,13 +138,23 @@ const jsonLd = [serviceLd, faqLd].filter(Boolean);
     </main>
 
     <style>
+      /* BAI-BG-VIDEO-001 (2026-08-29): this page owns its own <html> shell, so it
+         needs its own stacking rule — the fixed background layer sits at z-index 0
+         and every other body child has to paint above it. */
+      :global(body > *:not([aria-hidden='true'])) {
+        position: relative;
+        z-index: 2;
+      }
       .lp-page {
         max-inline-size: 72ch;
         margin-inline: auto;
         padding-block: var(--space-8);
         padding-inline: var(--space-4);
         color: var(--text-primary);
-        background: var(--bg-base);
+        /* Page-level fill removed so the background video shows through. .lp-hero
+           and the section surfaces below still carry --bg-surface, which is what
+           keeps the text readable. */
+        background: transparent;
       }
       .lp-hero {
         padding-block: var(--space-10);

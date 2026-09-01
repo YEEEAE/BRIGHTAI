@@ -1,0 +1,555 @@
+{
+  "$schema": "internal://brightai/repository-design-ux-audit/1.0",
+  "metadata": {
+    "auditId": "RDX-2026-08-29",
+    "generatedAt": "2026-08-29T00:15:00Z",
+    "repo": "/Users/yzydalshmry/Desktop/BRIGHTAI",
+    "workingTreeBase": "6ee711c5",
+    "workingTreeCleanAtStart": true,
+    "auditorMode": "single-session automated measurement + Chromium inspection",
+    "humanValidation": "none",
+    "note": "Coverage, measurement and gate figures below are the raw counts the Markdown percentages are computed from. The 17 field scores live only in REPOSITORY-DESIGN-UX-AUDIT.md section 7; this file does not duplicate them. NOT_VERIFIED never scores as a pass.",
+    "corrections": [
+      "Overall score corrected 125.5/54.1% -> 126.0/54.3% (the field table sums to 126.0).",
+      "Evidence Confidence corrected 6/12=50.0% -> 4/12=33.3% (byType lists four VERIFIED).",
+      "qc-task-manager Template Coverage corrected 53/53=100% -> 53/76=69.7%; overall Template Coverage 133/153=86.9% -> 133/176=75.6%. The earlier figure removed the same 23 templates the harness skipped.",
+      "shotsBefore relocated: the 818 baseline screenshots are in baseline-site/shots, not before-site (which is measurements-only). baseline-site used looser harness filters and is not numerically comparable.",
+      "The claim that the video was playing on the site was false. paused:true on 2184/2184; root cause ClientRouter re-insertion; fixed by BAI-BG-VIDEO-002 and re-verified.",
+      "The claim of no regression was false: groupSplits 41 -> 43 in the matched pair."
+    ]
+  },
+  "environment": {
+    "node": "22.22.3",
+    "pnpm": "10.19.0",
+    "browser": "Playwright Chromium (headless shell 1228)",
+    "mainSite": {
+      "mode": "production build served by dist/server/entry.mjs",
+      "base": "http://127.0.0.1:4331"
+    },
+    "qcTaskManager": {
+      "mode": "production build served by dist/server/entry.mjs",
+      "base": "http://127.0.0.1:4341",
+      "authenticated": "admin",
+      "devServerBroken": "vite: Internal server error: Missing field moduleType — stylesheets 500 in dev; production unaffected"
+    },
+    "dashboard": {
+      "mode": "BLOCKED",
+      "reason": "webpack UnhandledSchemeError reading node:crypto via @sentry/nextjs -> @opentelemetry/instrumentation -> require-in-the-middle",
+      "preExisting": true,
+      "evidence": "next dev returns 500 on every route; next build exits 1; git status apps/dashboard empty before any change"
+    },
+    "viewports": [
+      "360x800",
+      "375x812",
+      "768x1024",
+      "1024x900",
+      "1440x1000",
+      "1600x1200",
+      "1920x1080",
+      "2048x1178"
+    ],
+    "conditions": [
+      "default",
+      "prefers-reduced-motion:reduce",
+      "print",
+      "text-zoom-200%"
+    ],
+    "directions": {
+      "rtl": 266,
+      "ltr": 7
+    }
+  },
+  "inventory": {
+    "visibleRoutes": 369,
+    "uniqueTemplates": 176,
+    "excludedNonHtmlEndpoints": 62,
+    "byApp": {
+      "site": 273,
+      "qc-task-manager": 76,
+      "dashboard": 20
+    },
+    "source": "download/qa/global-bg-audit/route-inventory.json",
+    "exclusionReasons": [
+      "API route handlers (JSON)",
+      "RSS / XML feeds",
+      "sitemap.xml (generated)",
+      "redirect-only routes that emit no HTML",
+      "print output (excluded from background by contract, still audited for layout)"
+    ]
+  },
+  "coverage": {
+    "routeCoverage": {
+      "site": {
+        "audited": 273,
+        "discovered": 273,
+        "percent": 100,
+        "method": "automated, 2184 runs"
+      },
+      "qc-task-manager": {
+        "audited": 53,
+        "discovered": 76,
+        "percent": 69.7,
+        "method": "automated, 424 runs, authenticated",
+        "gap": "23 [id]-parameterised detail/print routes have no seeded fixture id"
+      },
+      "dashboard": {
+        "audited": 0,
+        "discovered": 20,
+        "percent": 0,
+        "method": "BLOCKED"
+      },
+      "overall": {
+        "audited": 326,
+        "discovered": 369,
+        "percent": 88.3
+      }
+    },
+    "templateCoverage": {
+      "site": {
+        "audited": 80,
+        "discovered": 80,
+        "percent": 100
+      },
+      "qc-task-manager": {
+        "audited": 53,
+        "discovered": 76,
+        "percent": 69.7,
+        "gap": "23 [id]-parameterised templates are skipped by layout-audit.mjs:91 (filters any route containing \"[\")"
+      },
+      "dashboard": {
+        "audited": 0,
+        "discovered": 20,
+        "percent": 0
+      },
+      "overall": {
+        "audited": 133,
+        "discovered": 176,
+        "percent": 75.6
+      }
+    },
+    "visualScreenshotCoverage": {
+      "shotsAfter": 818,
+      "viewportsCaptured": [
+        "360x800",
+        "1440x1000",
+        "1920x1080"
+      ],
+      "percentOfRunsCaptured": 37.5,
+      "rationale": "Full-page capture at all eight sizes costs ~1GB and ~1h per pass; numeric measurement covers all eight.",
+      "shotsBaseline": 818,
+      "baselineDirectory": "download/qa/global-bg-audit/baseline-site/shots",
+      "caveat": "baseline-site predates the harness filter tightening (escapees 255, clipped 89) and is NOT numerically comparable with before-site/after-site. Captures use animations:disabled, which forces CSS transitions to their end state, so a screenshot can show content the numeric measurement correctly reports as invisible."
+    }
+  },
+  "evidenceConfidence": {
+    "required": 12,
+    "verified": 4,
+    "percent": 33.3,
+    "byType": {
+      "sourceReview": "VERIFIED",
+      "chromeInspection": "VERIFIED",
+      "automatedTests": "VERIFIED",
+      "responsiveScreenshots": "VERIFIED",
+      "keyboardTesting": "NOT_VERIFIED",
+      "axeAccessibilityAutomation": "NOT_VERIFIED",
+      "screenReaderTesting": "NOT_VERIFIED",
+      "realDeviceTesting": "NOT_VERIFIED",
+      "realUserResearch": "NOT_VERIFIED",
+      "uat": "NOT_VERIFIED",
+      "productionAnalytics": "NOT_VERIFIED",
+      "stakeholderValidation": "NOT_VERIFIED"
+    },
+    "partial": {
+      "layoutMeasurement": "VERIFIED — 2184 + 424 + 640x4 runs",
+      "backgroundContract": "VERIFIED — 0 violations in 2608 runs",
+      "printBehaviour": "SOURCE_VERIFIED_ONLY — the harness counts video elements, which CSS display:none does not remove"
+    }
+  },
+  "measurements": {
+    "site": {
+      "before": {
+        "label": "before-site",
+        "runs": 2184,
+        "routes": 273,
+        "templates": 80,
+        "errored": 0,
+        "nonOk": 8,
+        "horizontalOverflow": 0,
+        "escapees": 48,
+        "clipped": 33,
+        "stuck": 5,
+        "srLeak": 0,
+        "bigVoids": 0,
+        "groupSplits": 41,
+        "globalScrim": 0,
+        "multipleVideos": 0,
+        "noVideo": 2184,
+        "duplicateVideoRequests": 0,
+        "missingAssets": 0,
+        "h1NotOne": 0,
+        "lostCss": 416
+      },
+      "after": {
+        "label": "after-site",
+        "runs": 2184,
+        "routes": 273,
+        "templates": 80,
+        "errored": 1,
+        "nonOk": 8,
+        "horizontalOverflow": 0,
+        "escapees": 48,
+        "clipped": 33,
+        "stuck": 3,
+        "srLeak": 0,
+        "bigVoids": 0,
+        "groupSplits": 43,
+        "globalScrim": 0,
+        "multipleVideos": 0,
+        "noVideo": 0,
+        "duplicateVideoRequests": 0,
+        "missingAssets": 0,
+        "h1NotOne": 0,
+        "lostCss": 192,
+        "backgroundContractViolations": 0,
+        "videosPerRunDistribution": {
+          "1": 2184
+        },
+        "notes": [
+          "errored=1 is a 30s screenshot timeout on one very tall blog page at 1920x1080 — harness artifact.",
+          "nonOk=8 is the /404/ route correctly returning HTTP 404 at all eight viewports.",
+          "lostCss=192 is 24 routes x 8 viewports that own their own <html> shell and never used pages.css: answer/[slug] (17), lp/[slug] (5), kernel/admin/quota (1), 500.html (1). Correct, not a defect.",
+          "groupSplits 41->43 was later proven to be a measurement artifact; the corrected metric reports 10. See templatePassesCorrected."
+        ],
+        "videoPlayback": {
+          "pausedRuns": 2184,
+          "totalRuns": 2184,
+          "readyStateZeroRuns": 2178,
+          "intrinsicZeroRuns": 2178,
+          "verdict": "FAIL at measurement time",
+          "rootCause": "Astro ClientRouter re-inserts body nodes; Chromium honours autoplay only for elements inserted during parsing",
+          "fixedBy": "BAI-BG-VIDEO-002",
+          "reverifiedAfterFix": {
+            "site /about/": {
+              "readyState": 4,
+              "paused": false,
+              "currentTime": 1.475
+            },
+            "site /500.html": {
+              "readyState": 4,
+              "paused": false,
+              "currentTime": 1.684
+            },
+            "qc /login": {
+              "readyState": 4,
+              "paused": false,
+              "currentTime": 0.946
+            }
+          }
+        },
+        "regressions": {
+          "groupSplits": {
+            "before": 41,
+            "after": 43,
+            "delta": 2,
+            "status": "REGRESSION — neither reproduced nor refuted by the corrected metric, which was written after the change"
+          },
+          "errored": {
+            "before": 0,
+            "after": 1,
+            "delta": 1,
+            "cause": "30s screenshot timeout; the after run used --shots and the before run did not, so the two runs are not flag-identical"
+          }
+        }
+      },
+      "templatePassesCorrected": {
+        "note": "80 templates x 8 viewports = 640 runs per condition, with the corrected empty-band groupSplit metric.",
+        "default": {
+          "escapees": 20,
+          "clipped": 30,
+          "stuck": 3,
+          "groupSplits": 10,
+          "horizontalOverflow": 0,
+          "noVideo": 0,
+          "globalScrim": 0,
+          "lostCss": 32
+        },
+        "reducedMotion": {
+          "escapees": 20,
+          "clipped": 30,
+          "stuck": 3,
+          "groupSplits": 10,
+          "horizontalOverflow": 0,
+          "noVideo": 0,
+          "globalScrim": 0,
+          "lostCss": 32
+        },
+        "print": {
+          "escapees": 21,
+          "clipped": 27,
+          "stuck": 3,
+          "groupSplits": 10,
+          "horizontalOverflow": 0,
+          "noVideo": 0,
+          "globalScrim": 0,
+          "lostCss": 32
+        },
+        "zoom200": {
+          "escapees": 123,
+          "clipped": 88,
+          "stuck": 7,
+          "groupSplits": 90,
+          "horizontalOverflow": 0,
+          "noVideo": 0,
+          "globalScrim": 0,
+          "lostCss": 32
+        }
+      },
+      "cssDelivery": {
+        "homepage": {
+          "rulesBefore": 562,
+          "rulesAfter": 1509,
+          "docHeightBefore": 19959,
+          "docHeightAfter": 19487
+        },
+        "enPages": {
+          "rulesBefore": 388,
+          "rulesAfter": 1350,
+          "docHeightBefore": 3216,
+          "docHeightAfter": 2593
+        },
+        "kernelPages": {
+          "rulesBefore": 1781,
+          "rulesAfter": 2743,
+          "docHeightBefore": 6186,
+          "docHeightAfter": 5452
+        },
+        "arabicControl": {
+          "rulesBefore": 1366,
+          "rulesAfter": 1345,
+          "docHeightBefore": 5758,
+          "docHeightAfter": 7432
+        },
+        "kernelIndexDocHeight": {
+          "before": 29712,
+          "after": 9875
+        }
+      },
+      "residualInvisibleContent": {
+        "runs": 170,
+        "totalRuns": 640,
+        "nodes": 9581,
+        "revealNotReadyRuns": 32,
+        "worstRoutes": {
+          "/": 287,
+          "/demo/": 156,
+          "/services/": 144,
+          "/kernel/": 126,
+          "/about/": 96
+        },
+        "status": "OPEN — not a harness artifact; the harness waits up to 6s for html.reveal-ready then sweeps in 90%-viewport steps",
+        "instability": "three nominally identical 640-run passes reported stuck=3,4,5 and invisibleContent=-,184,170; figures cite the latest pass (verify-site)"
+      }
+    },
+    "qcTaskManager": {
+      "label": "qc-prod-auth",
+      "runs": 424,
+      "routes": 53,
+      "templates": 53,
+      "errored": 0,
+      "nonOk": 0,
+      "horizontalOverflow": 0,
+      "escapees": 0,
+      "clipped": 0,
+      "stuck": 0,
+      "srLeak": 0,
+      "bigVoids": 0,
+      "groupSplits": 0,
+      "globalScrim": 0,
+      "multipleVideos": 0,
+      "noVideo": 0,
+      "duplicateVideoRequests": 0,
+      "missingAssets": 0,
+      "h1NotOne": 0,
+      "backgroundContractViolations": 0,
+      "consoleErrors": 70,
+      "consoleErrorCause": "HTTP 429 rate limiting triggered by the audit's own concurrency — test artifact"
+    },
+    "dashboard": {
+      "status": "NOT_VERIFIED",
+      "reason": "app does not build or serve (pre-existing)"
+    }
+  },
+  "backgroundAsset": {
+    "sourceVideo": {
+      "path": "9.mp4",
+      "bytes": 7958354,
+      "sha256": "2ea48871471a43fe59773356bfa548679053e9075263f91a0feef04bf5f4bb97",
+      "width": 1600,
+      "height": 1200,
+      "durationSeconds": 5.016667,
+      "fps": 60,
+      "frames": 301,
+      "bitrate": 12691062,
+      "audioStreams": 0
+    },
+    "poster": {
+      "path": "apps/qc-task-manager/public/media/qc-system-background-poster.jpg",
+      "bytes": 144321,
+      "sha256Prefix": "ae20f8f0c0d2c015",
+      "width": 1600,
+      "height": 1200
+    },
+    "copies": [
+      {
+        "role": "site",
+        "path": "public/media/brightai-background.mp4",
+        "bytes": 7958354,
+        "matchesSource": true,
+        "gitignored": true
+      },
+      {
+        "role": "dashboard",
+        "path": "apps/dashboard/public/media/brightai-background.mp4",
+        "bytes": 7958354,
+        "matchesSource": true,
+        "gitignored": true
+      },
+      {
+        "role": "qc-task-manager",
+        "path": "apps/qc-task-manager/public/media/qc-system-background.mp4",
+        "bytes": 7958354,
+        "matchesSource": true,
+        "gitignored": false
+      }
+    ],
+    "reEncoded": false,
+    "compressed": false,
+    "cropped": false,
+    "recoloured": false,
+    "performanceException": {
+      "accepted": true,
+      "reason": "user instruction: keep the file unchanged",
+      "pageWeightBudgetBytes": 2097152,
+      "assetBytes": 7958354,
+      "overBudgetFactor": 3.8,
+      "requestsPerPage": 1,
+      "lcpMeasured": false,
+      "clsMeasured": false,
+      "inpMeasured": false
+    }
+  },
+  "verificationGates": [
+    {
+      "gate": "pnpm build (main site)",
+      "result": "PASS",
+      "detail": "exit 0"
+    },
+    {
+      "gate": "pnpm --dir apps/qc-task-manager build",
+      "result": "PASS",
+      "detail": "exit 0"
+    },
+    {
+      "gate": "scripts/qa/verify-background-contract.mjs",
+      "result": "PASS",
+      "detail": "95/95"
+    },
+    {
+      "gate": "pnpm bg:verify",
+      "result": "PASS",
+      "detail": "7 assets byte-identical"
+    },
+    {
+      "gate": "pnpm test (chat-session, csrf, pii)",
+      "result": "PASS",
+      "detail": "38/38"
+    },
+    {
+      "gate": "qc test:ui-consistency",
+      "result": "PASS",
+      "detail": "207/207"
+    },
+    {
+      "gate": "qc typecheck",
+      "result": "PASS",
+      "detail": "0 errors, 0 warnings, 27 pre-existing hints"
+    },
+    {
+      "gate": "pnpm headers:check",
+      "result": "PASS",
+      "detail": "no CSP drift"
+    },
+    {
+      "gate": "git diff --check",
+      "result": "PASS",
+      "detail": "clean"
+    },
+    {
+      "gate": "pnpm lint:tokens",
+      "result": "FAIL",
+      "preExisting": true,
+      "detail": "raw hex in src/pages/tools/ai-risk-register/index.astro:145 — file byte-identical to HEAD"
+    },
+    {
+      "gate": "astro check (main site)",
+      "result": "FAIL",
+      "preExisting": true,
+      "detail": "126 errors; edited-file errors are pre-existing implicit-any on scheduleIdle(work); one pre-existing ts(2306) was cleared by this task"
+    },
+    {
+      "gate": "apps/dashboard build",
+      "result": "FAIL",
+      "preExisting": true,
+      "detail": "webpack node:crypto UnhandledSchemeError"
+    },
+    {
+      "gate": "pnpm e2e:acceptance",
+      "result": "NOT_VERIFIED",
+      "detail": "not run"
+    },
+    {
+      "gate": "pnpm a11y:scan",
+      "result": "NOT_VERIFIED",
+      "detail": "not run"
+    },
+    {
+      "gate": "pnpm seo:gate",
+      "result": "NOT_VERIFIED",
+      "detail": "not run"
+    },
+    {
+      "gate": "Lighthouse / lhci",
+      "result": "NOT_VERIFIED",
+      "detail": "not run"
+    }
+  ],
+  "scoring": {
+    "applicable": 232,
+    "earned": 126,
+    "overallPercent": 54.31,
+    "note": "Recompute from the 17-row table in the Markdown. PASS=1, PARTIAL=0.5, FAIL=0, N/A excluded from the denominator, NOT_VERIFIED kept in the denominator and scored 0."
+  },
+  "guardCaveat": {
+    "script": "scripts/qa/verify-background-contract.mjs",
+    "reports": "95/95",
+    "weaknesses": [
+      "denominator derived from executed checks (total = pass + failures), so a fixed target can never be missed",
+      "most assertions are string presence, not behaviour",
+      "reduced-motion and print checks only prove the at-rule text exists, not that the video is hidden inside it",
+      "no assertion covers stacking order or z-index",
+      "several assertions test strings written in the same session"
+    ],
+    "verdict": "regression tripwire, not proof of correctness"
+  },
+  "strayFiles": [
+    {
+      "path": "src/layouts/ArabicLayout 2.astro",
+      "mtime": "2026-08-05",
+      "note": "pre-existing duplicate; still contains the old components.css/pages.css imports this task relocated"
+    },
+    {
+      "path": "scripts/qa/layout-audit 2.mjs",
+      "note": "created and removed during this session"
+    }
+  ]
+}

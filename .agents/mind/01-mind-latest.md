@@ -1,3 +1,66 @@
+## [2026-08-29] — BAI-BG-VIDEO-001: تعميم خلفية 9.mp4 على كل الواجهات + إصلاح انحدار توصيل CSS + تدقيق شامل
+
+### تم التنفيذ
+- **اكتشفت وأصلحت انحدار P0 في توصيل CSS:** 52 من 273 مسارًا في الموقع الرئيسي كانت تُشحن بدون `components.css` (105KB) و`pages.css` (164KB)، لأن `ArabicLayout` هو الوحيد اللي يستوردهم و`index.astro` و`en/*` و`kernel/*` تستخدم `BaseLayout` مباشرة. نقلت الاستيرادين إلى `BaseLayout` بنفس ترتيب الـlayers. **هذا سبب الصور اللي أرسلها المستخدم** (شبكات منهارة، أزرار كروابط، بطاقات بلا أسطح، فقرة مقصوصة من اليسار).
+- **اكتشفت وأصلحت إخفاء محتوى P0:** `.gsap-fade` كانت `opacity: 0` وتُكشف بـ`[data-revealed]` — سمة **ما يضبطها أي شي في المستودع** (GSAP محذوف من المشروع)، فشبكة `k-unit-card` في `/kernel/` كانت مخفية كليًا. وحالة الدخول لـ`.card--feature` وعائلتها صارت مشروطة بـ`html.reveal-ready` اللي يضبطها `scroll-reveal.js` كأول إجراء، فلو ما اشتغل السكربت يبقى المحتوى ظاهرًا.
+- **عمّمت `9.mp4`** كخلفية طبقة الصفحة الوحيدة: `SiteBackground.astro` في `BaseLayout`، مكوّن React في `apps/dashboard/app/layout.tsx`، تركيب مستقل في الـ3 صفحات اللي تملك `<html>` خاص، وعقد مضمّن يدويًا في `public/500.html`. نسخة واحدة مُلتزمة + `scripts/sync-background-media.mjs` ينسخ ويتحقق SHA-256 في `prebuild`، والنسخ المولّدة في `.gitignore` (صفر MB إضافية في git).
+- **اكتشفت أن الفيديو كان يحمّل ولا يشتغل:** `paused: true` في 2184/2184 على الموقع مقابل 0/424 على QC. السبب: `ClientRouter` يعيد إدراج عقد `<body>` و Chromium يحترم `autoplay` فقط للعنصر المُدرج وقت التحليل. أضفت `play()` صريح في الثلاثة (`BAI-BG-VIDEO-002`) مع تجاهل الرفض عمدًا لأن الـposter هو البديل المصمم.
+- **أزلت طبقة الخلفية القديمة:** `DottedBackground` (6 طبقات)، canvas الهيرو + 4 beams + spotlight + vignette + سكربت rAF + الاستيراد الديناميكي لـ`dotted-surface.js` (321 سطر)، طبقة noise الثابتة `body::before` (كان `mix-blend-mode: overlay` بيغيّر لون الفيديو)، تعارض اسم `.dotted-bg` في `components.css:3047`، و`BackgroundGrid` من 26 ملفًا (كان يرسم div بلا أي CSS في المستودع).
+- **بنيت أدوات قياس:** `route-inventory.mjs` (369 مسارًا، 176 قالبًا، 62 endpoint مستبعدًا)، `layout-audit.mjs` (harness في Chromium حقيقي)، `verify-background-contract.mjs` (95 فحصًا)، `qc-login-state.mjs`.
+- **شغّلت مدققًا مستقلًا** على التقارير، ولقى 4 ادعاءات غير مدعومة في المسودة الأولى — صحّحتها كلها وسجّلت التصحيحات صراحةً داخل التقارير نفسها.
+
+### الملفات المتأثرة
+- `src/layouts/{BaseLayout,ArabicLayout}.astro` · `src/components/{SiteBackground.astro,SplitHero.astro}`
+- `src/styles/{base.css,components.css}` · `public/js/scroll-reveal.js` · `public/500.html`
+- `src/pages/{answer/[slug],lp/[slug],kernel/admin/quota}.astro` + 26 ملفًا أُزيل منها `BackgroundGrid`
+- `apps/dashboard/{app/layout.tsx,components/SiteBackground.{tsx,module.css},styles/globals.css,app/page.module.css,app/(app|auth|onboarding)/layout.module.css}`
+- `scripts/sync-background-media.mjs` · `scripts/qa/{route-inventory,layout-audit,verify-background-contract,qc-login-state}.mjs`
+- `docs/audits/{GLOBAL-VIDEO-BACKGROUND-IMPLEMENTATION-REPORT.md,REPOSITORY-DESIGN-UX-AUDIT.md,REPOSITORY-DESIGN-UX-AUDIT.json,REPOSITORY-DESIGN-EXECUTION-PROMPTS.md}`
+- `package.json` (`bg:sync`, `bg:verify`, `prebuild`) · `.gitignore`
+
+### الأرقام
+- **الجرد:** 369 مسارًا مرئيًا (موقع 273، QC 76، dashboard 20)، 176 قالبًا، 62 endpoint مستبعدًا.
+- **الخلفية:** `noVideo` من **2184/2184 → 0/2184**، فيديو واحد بالضبط في كل الـ2184 run، صفر مخالفة بنيوية للعقد، صفر scrim، صفر تحميل مكرر. `9.mp4` = 1600×1200، 7,958,354B، `2ea48871…bb97`، والنسخ الأربع متطابقة byte-for-byte.
+- **CSS:** الرئيسية 562 → **1509** قاعدة · `/en/*` 388 → **1350** · `/kernel/*` 1781 → **2743** · المجموعة الضابطة `/about/` 1366 → 1345 (−21 كلها CSS ميت محذوف). `lostCss` 416 → 192 (والـ192 = 24 مسارًا يملك `<html>` خاصًا وما استخدم `pages.css` أصلًا — سليم مو عيب).
+- **ارتفاع `/kernel/`:** 29,712px → **9,875px** (شبكة البطاقات رجعت grid).
+- **QC:** 53 قالبًا × 8 مقاسات = **424 run** مصادَقة — صفر overflow/escapee/clip/scrim/مخالفة عقد.
+- **التغطية:** موقع 273/273 و80/80 = **100%**. QC 53/76 = **69.7%** (مسار وقالب). dashboard **0/20**. الإجمالي: مسارات 88.3%، قوالب 75.6%.
+- **درجة التدقيق:** **54.3%** — 126.0 من 232 نقطة منطبقة. **Evidence Confidence 33.3%** (4 من 12). **Human Validation 0%**.
+
+### القرارات
+- **إزالة طبقة الصفحة فقط** (قرار المستخدم): أسطح الأقسام والبطاقات تبقى كسطح محلي للتباين، فما فيه overlay عام فوق الفيديو ولا إعادة تصميم للموقع العام.
+- **نسخة واحدة + نسخ وقت البناء:** يضمن تطابق SHA-256 بالبناء مو بالفحص اليدوي، ويمنع +16MB في تاريخ git.
+- **ما لمست `next.config.mjs` للـdashboard:** إصلاح `serverExternalPackages` يخرج عن نطاق مهمة بصرية؛ كتبت له برومبت `RDX-P0-DASH-BUILD` بدل التنفيذ.
+- **ما حذفت أي ملف من القرص:** `DottedBackground.astro` و`dotted-surface.js` و`BackgroundGrid.astro` و`BaseLayout.astro.noapp` غير مركّبة بس باقية، والحذف يحتاج تأكيد المستخدم.
+
+### التحقق
+- `pnpm build` (الموقع) ✅ exit 0 · `pnpm --dir apps/qc-task-manager build` ✅ exit 0
+- `verify-background-contract.mjs` ✅ 95/95 · `pnpm bg:verify` ✅ 7 أصول متطابقة
+- `pnpm test` ✅ 38/38 · QC `test:ui-consistency` ✅ 207/207 · QC `typecheck` ✅ 0 errors
+- `pnpm headers:check` ✅ لا drift · `git diff --check` ✅ نظيف
+- Chromium فعلي: **2184 run** (موقع) + **424** (QC) + **640×4** conditions (default / reduced-motion / print / zoom 200%)
+- تشغيل الفيديو بعد الإصلاح ✅ — `/about/` `currentTime 1.48`، `/500.html` `1.68`، QC `/login` `0.95`
+- ❌ `pnpm lint:tokens` — **فشل سابق للمهمة**، مُثبت: `src/pages/tools/ai-risk-register/index.astro` مطابق byte-for-byte لـ`HEAD`
+- ❌ `astro check` (الموقع) — 126 خطأ، نمط سابق؛ سكربت `typecheck` الجذري ما يشغّله أصلًا
+- ❌ `apps/dashboard` build — **فشل سابق للمهمة**: `node:crypto` UnhandledSchemeError عبر `@sentry/nextjs → @opentelemetry/instrumentation → require-in-the-middle`. مُثبت بالتوقيتات وبأن الملفات الست المعدلة كلها CSS/layout خارج سلسلة الاستيراد
+- لم يُشغّل: `e2e:acceptance`، `a11y:scan`، `seo:gate`، Lighthouse، LCP/INP/CLS
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** الخلفية تعمل وتشتغل فعليًا على 349 من 369 مسارًا مرئيًا بعقدها الكامل وصفر مخالفة، وانحدارَي CSS وإخفاء المحتوى انحلّا بأدلة مقاسة. الـ20 مسار المتبقية في `apps/dashboard` منفَّذة في المصدر وغير متحقَّقة تشغيليًا لأن التطبيق ما يبني — وهو خلل سابق للمهمة. الحكم في التدقيق: **CONDITIONAL GO**.
+
+### ملاحظات / مشاكل مفتوحة
+- **P0 مفتوح:** بناء `apps/dashboard` (`RDX-P0-DASH-BUILD`) — سطر واحد في `serverExternalPackages`.
+- **P0 مفتوح:** معمارية الـreveal — 170 من 640 run لسه فيها محتوى مخفي (9,581 عقدة) بعد بوابة `html.reveal-ready`. **مو خلل قياس** — الـharness ينتظر البوابة 6 ثوان ثم يمشي الصفحة كاملة. الحل: الحركة تبدأ من حالة ظاهرة (`RDX-P0-REVEAL-ARCH`).
+- **P1:** zoom 200% يتدهور بحدة (123 escapee / 88 clipped مقابل 20/30) — WCAG 1.4.4 + 1.4.10.
+- **انحدار معلن:** `groupSplits` 41 → 43 في الزوج المتماثل؛ المقياس المصحّح يقول 10 لكنه كُتب بعد التعديل فما فيه رقم "before" مصحّح.
+- **الأداء:** 7.96MB = 3.79× ميزانية الصفحة على كل مسار. استثناء مقصود بأمر المستخدم، وأثره على LCP **لم يُقس** — `RDX-PERF-001`.
+- **حارس ضعيف:** `verify-background-contract.mjs` يشتق مقامه من الفحوص المنفذة وأغلبه string-presence — `RDX-P0-GUARD-STRENGTH`.
+- **ملفات متروكة:** `src/layouts/ArabicLayout 2.astro` (2026-08-05) لسه فيه الاستيرادين القديمين — فخ للقارئ التالي.
+- `public/sitemap.xml` و`sitemap.xml` أعاد كتابتهما `sitemap:generate` (إعادة ترتيب، 1200 داخل/1200 خارج).
+- **حجم هذا الملف 412KB** — فوق حد 150KB في الدستور. يلزم نقل أقدم السجلات إلى القسم 2، وما نفّذته بدون إذن.
+- لم يحدث commit ولا push ولا deploy.
+
 ## [2026-08-28] — QC-SYSTEM-VIDEO-BACKGROUND-002: استبدال الخلفية بـ9.mp4 بألوانها وأبعادها الأصلية
 
 ### تم التنفيذ

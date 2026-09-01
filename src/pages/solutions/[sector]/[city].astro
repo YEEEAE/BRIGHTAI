@@ -2,7 +2,6 @@
 <!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — hero + final: "اطلب عرض توضيحي" → "اطلب عرض توضيحي مخصص" + microcopy. href (wa.me مع whatsappMsg dynamic + /contact/) لم يتغير. -->
 ---
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../../components/RelatedLinks.astro';
 import { sectors, solutions } from '../../../data/solutions';
 import { migratedLocalPages } from '../../../data/migratedSolutionPages';
@@ -206,7 +205,6 @@ const locAnswerFirst = loc.answerFirst
 ) : (
 <>
 <section class="inner-hero" aria-label={loc.h1}>
-  <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-map-marker-radius"></use></svg> {loc.cityAr} — {sector.chip}</div>
     <h1>{loc.h1}</h1>

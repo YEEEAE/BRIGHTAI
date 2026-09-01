@@ -387,6 +387,20 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.live/media/brightai-background-poster.avif</loc>
+    <image:image>
+      <image:loc>https://brightai.live/media/brightai-background-poster.avif</image:loc>
+      <image:title>brightai background poster</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.live/media/brightai-background-poster.jpg</loc>
+    <image:image>
+      <image:loc>https://brightai.live/media/brightai-background-poster.jpg</image:loc>
+      <image:title>brightai background poster</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.live/noise.svg</loc>
     <image:image>
       <image:loc>https://brightai.live/noise.svg</image:loc>

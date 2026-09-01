@@ -57,7 +57,6 @@ const {
   <slot />
 </BaseLayout>
 
-<style is:global>
-  @import '../styles/components.css' layer(components);
-  @import '../styles/pages.css' layer(pages);
-</style>
+{/* BAI-CSS-DELIVERY-001 (2026-08-29): components.css and pages.css moved to
+    BaseLayout so every shell-based page receives them, not just Arabic pages.
+    See src/layouts/BaseLayout.astro. */}

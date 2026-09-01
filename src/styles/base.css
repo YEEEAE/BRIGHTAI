@@ -490,38 +490,18 @@ pre code {
   white-space: normal !important;
 }
 
-/* 11. Body Noise + Radial Depth (DEC-2026-030) */
-/*    Page-wide subtle film grain, ~1.5% opacity. Inlined SVG, zero HTTP.
-      pointer-events: none and isolation: isolate keep it from intercepting clicks. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background-image: var(--noise-svg);
-  background-size: 200px 200px;
-  background-repeat: repeat;
-  opacity: var(--noise-body);
-  mix-blend-mode: overlay;
-  /* Fades noise at edges so it never sits on top of viewport chrome */
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 90%, transparent 100%);
-          mask-image: linear-gradient(to bottom, black 0%, black 90%, transparent 100%);
-  isolation: isolate;
-}
+/* 11. Content stacking above the page-level background (BAI-BG-VIDEO-001)
+      ─────────────────────────────────────────────────────────────────────
+      The page-wide film-grain overlay (`body::before`, fixed inset-0, z-index 1,
+      mix-blend-mode: overlay) was removed on 2026-08-29. It is a page-level
+      background layer, and mix-blend-mode over the approved background video
+      would alter the video's colours — which the background contract forbids.
+      Section-scoped grain in pages.css is unaffected and still provides texture
+      on top of local surfaces.
 
-@media (prefers-reduced-motion: reduce) {
-  body::before { animation: none; }
-}
-
-/* When the user explicitly opts out of translucency, kill the body grain entirely
-   (the dry pixel-noise is jarring for sensitive viewers) and disable backdrop-filter
-   on any layer that uses it. See also individual component rules below. */
-@media (prefers-reduced-transparency: reduce) {
-  body::before { display: none; }
-}
-
-/* Ensure page content stacks above the fixed noise overlay. */
+      This rule stays: it lifts every body child above the background layer
+      (src/components/SiteBackground.astro, which pins itself to z-index 0 with a
+      class selector that outranks this one). */
 body > * { position: relative; z-index: 2; }
 
 /* 12. Typography Utilities (DEC-2026-032)
