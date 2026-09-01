@@ -97,7 +97,8 @@ for (const [file, pattern, label] of REMOVED) {
 ok(read('src/styles/base.css').includes('body > * { position: relative; z-index: 2; }'),
   'base.css still lifts body children above the background layer');
 
-// BackgroundGrid rendered an unstyled div on 25 pages; nothing should mount it.
+// BackgroundGrid rendered an unstyled div on 25 pages. The component itself was
+// deleted on 2026-08-29, so any surviving reference is a broken import.
 const srcFiles = [];
 (function walk(dir) {
   for (const n of readdirSync(dir)) {
@@ -107,7 +108,7 @@ const srcFiles = [];
     else if (/\.(astro|css|ts|tsx)$/.test(p)) srcFiles.push(p);
   }
 }(join(REPO, 'src')));
-const gridUsers = srcFiles.filter((p) => !p.endsWith('BackgroundGrid.astro') && readFileSync(p, 'utf8').includes('BackgroundGrid'));
+const gridUsers = srcFiles.filter((p) => readFileSync(p, 'utf8').includes('BackgroundGrid'));
 ok(gridUsers.length === 0, `BackgroundGrid is unmounted everywhere (found ${gridUsers.length}: ${gridUsers.map((p) => relative(REPO, p)).join(', ')})`);
 
 /* ───────────────── 4. CSS delivery: no shell page may lose components/pages */
