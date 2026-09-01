@@ -25,6 +25,8 @@ import { canCreateLabProduct, canEditLabProduct, canProposeLabProductCreate, can
 import { submitChangeRequest } from './changeRequests';
 import type { LabProduct, LabTestType } from '../types';
 import { appendQcAudit } from '../audit/qcChain';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { labProductSchema, parseFormData } from '../validation';
 
 // ─────────────────────────────── Audit ───────────────────────────────
 
@@ -59,8 +61,8 @@ export const LAB_PRODUCT_SORT_FIELDS: readonly LabProductSortField[] = [
   'updated_at',
 ];
 
-export const LAB_PRODUCT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_PRODUCT_PER_PAGE = 25;
+export const LAB_PRODUCT_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_PRODUCT_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_PRODUCT_SORT: LabProductSortField = 'updated_at';
 export const DEFAULT_LAB_PRODUCT_DIR: 'asc' | 'desc' = 'desc';
 
@@ -581,10 +583,9 @@ async function handleLabProductPost(context: APIContext, productId: number | nul
 
   const backUrl = productId === null ? '/lab/products/new' : `/lab/products/${productId}/edit`;
   const form = await context.request.formData();
-  // Dynamic import keeps this module loadable in the bundler-less unit tests
+
   // the same way testSearch.ts does (validation.ts has no ?raw imports, but
   // the pattern is consistent and cheap).
-  const { parseFormData, labProductSchema } = await import('../validation');
   const parsed = parseFormData(labProductSchema, form);
   if (!parsed.ok) {
     setFlash(context, 'error', parsed.error);

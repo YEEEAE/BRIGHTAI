@@ -14,6 +14,7 @@
 // runs when the users table is empty).
 
 import bcrypt from 'bcryptjs';
+import { BCRYPT_ROUNDS } from './auth';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
 import type { Role } from './types';
 
@@ -79,7 +80,7 @@ const SEED_USERS: SeedUser[] = [
 ];
 
 /** True if the users table has zero rows (i.e. fresh database). */
-export function isUsersEmpty(db: BetterSqliteDatabase): boolean {
+function isUsersEmpty(db: BetterSqliteDatabase): boolean {
   const { n } = db.prepare('SELECT COUNT(*) AS n FROM users').get() as { n: number };
   return n === 0;
 }
@@ -98,7 +99,7 @@ export function seedUsersIfEmpty(db: BetterSqliteDatabase): number {
 
   assertSafeSeedPassword();
 
-  const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
+  const hash = bcrypt.hashSync(DEFAULT_PASSWORD, BCRYPT_ROUNDS);
   const mustChange = seedMustChangePassword();
   const insert = db.prepare(
     `INSERT INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active, must_change_password)
@@ -201,7 +202,7 @@ export function seedDemoData(db: BetterSqliteDatabase): number {
     return 0;
   }
 
-  const hash = bcrypt.hashSync(DEFAULT_PASSWORD, 10);
+  const hash = bcrypt.hashSync(DEFAULT_PASSWORD, BCRYPT_ROUNDS);
   const mustChange = seedMustChangePassword();
   const insUser = db.prepare(
     `INSERT OR IGNORE INTO users (username, password_hash, full_name, role, department, can_create_tasks, is_active, must_change_password)

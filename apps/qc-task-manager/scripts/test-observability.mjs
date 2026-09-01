@@ -12,7 +12,7 @@ assert.match(createRequestId(), /^[0-9a-f-]{36}$/i, 'request IDs are UUID-shaped
 assert.equal(createRequestId('incoming-id'), 'incoming-id', 'valid incoming IDs are preserved');
 assert.notEqual(createRequestId('not safe'), 'not safe', 'invalid incoming IDs are replaced');
 
-assert.deepEqual(Object.keys(ERROR_CODES).sort(), ['AUTH', 'CONFLICT', 'DB', 'FORBIDDEN', 'NOT_FOUND', 'REPORT', 'STALE_CHANGE', 'UPLOAD', 'VALIDATION']);
+assert.deepEqual(Object.keys(ERROR_CODES).sort(), ['AI', 'AUTH', 'CONFLICT', 'DB', 'FORBIDDEN', 'NOT_FOUND', 'REPORT', 'STALE_CHANGE', 'UPLOAD', 'VALIDATION']);
 assert.equal(getSafeErrorCode(new Error('SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username')), 'CONFLICT');
 assert.equal(getSafeErrorCode(new Error('SQLITE_BUSY: database is locked')), 'DB');
 assert.equal(safeErrorMessage(new Error('SQLITE_ERROR: password_hash=secret')), 'Something went wrong. Please try again.');

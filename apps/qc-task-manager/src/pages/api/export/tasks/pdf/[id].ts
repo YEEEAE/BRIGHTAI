@@ -7,7 +7,7 @@
 // may only export tasks assigned to them or created by them; 403 otherwise.
 
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser } from '../../../../../lib/api-security';
+import { apiJsonError, isResponse, requireApiUser } from '../../../../../lib/api-security';
 import { canViewTask, getTaskDetail } from '../../../../../lib/taskDetails';
 import { getTaskPdfData } from '../../../../../lib/pdfData';
 import { buildTaskPdf } from '../../../../../lib/pdf';
@@ -20,33 +20,21 @@ export const GET: APIRoute = async (context) => {
 
   const id = parsePositiveId(context.params.id);
   if (id == null) {
-    return new Response(JSON.stringify({ ok: false, error: 'Invalid task id.' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return apiJsonError('Invalid task id.', 400);
   }
 
   // Access control first (mirrors /tasks/[id]): 404 missing, 403 forbidden.
   const detail = getTaskDetail(id);
   if (!detail) {
-    return new Response(JSON.stringify({ ok: false, error: 'Task not found.' }), {
-      status: 404,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return apiJsonError('Task not found.', 404);
   }
   if (!canViewTask({ id: user.id, role: user.role }, detail)) {
-    return new Response(JSON.stringify({ ok: false, error: 'Forbidden.' }), {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return apiJsonError('Forbidden.', 403);
   }
 
   const data = getTaskPdfData(id);
   if (!data) {
-    return new Response(JSON.stringify({ ok: false, error: 'Task not found.' }), {
-      status: 404,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return apiJsonError('Task not found.', 404);
   }
 
   const buffer = buildTaskPdf(data);

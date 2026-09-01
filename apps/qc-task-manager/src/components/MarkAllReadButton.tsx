@@ -30,7 +30,8 @@ export default function MarkAllReadButton({ redirectTo = '/notifications' }: { r
         return;
       }
       setError(data.error ?? 'Could not mark notifications as read. Try again.');
-    } catch {
+    } catch (err) {
+      console.error('[notifications] mark-all-read request failed', err);
       setError('Network error. Check your connection, then try Mark all as read again.');
     } finally {
       setBusy(false);

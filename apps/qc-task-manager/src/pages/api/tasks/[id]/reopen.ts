@@ -7,17 +7,10 @@
 // Returns JSON for the island.
 
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser, requireCsrf } from '../../../../lib/api-security';
+import { apiJson, apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../lib/api-security';
 import { reopenTask } from '../../../../lib/taskUpdates';
 import { setFlash } from '../../../../lib/flash';
 import { parsePositiveId } from '../../../../lib/validation';
-
-function json(body: Record<string, unknown>, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
 
 export const POST: APIRoute = async (context) => {
   const csrf = requireCsrf(context);
@@ -28,14 +21,14 @@ export const POST: APIRoute = async (context) => {
 
   const taskId = parsePositiveId(context.params.id);
   if (taskId == null) {
-    return json({ ok: false, error: 'Invalid task id.' }, 404);
+    return apiJsonError('Invalid task id.', 404);
   }
 
   const result = reopenTask({ taskId, actor: { id: user.id, role: user.role } });
   if (!result.ok) {
     const status = result.error === 'Task not found.' ? 404 : 400;
-    return json({ ok: false, error: result.error }, status);
+    return apiJsonError(result.error, status);
   }
   setFlash(context, 'success', result.message);
-  return json({ ok: true, message: result.message });
+  return apiJson({ message: result.message });
 };

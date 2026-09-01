@@ -345,7 +345,6 @@ function getRetestCounts() {
 
 /** Full read-only laboratory dataset for the main dashboard. Never mutates. */
 export function getLabDashboardData(): LabDashboardData {
-  const db = getDb();
 
   const statusCounts = getTestCounts();
   const typeCounts = getTypeCounts();

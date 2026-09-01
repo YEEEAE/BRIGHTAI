@@ -17,6 +17,9 @@
 import type { LabFinalResult, LabTestStatus, LabTestType, Role } from '../types';
 import { setFlash } from '../flash';
 import { LAB_RESULT_OPTIONS } from './policy';
+import { LAB_TEST_ROW_SCOPE_SQL, rowScopeParams } from '../scope';
+import { buildOrderClause, DEFAULT_PER_PAGE, isPerPage, isSortDir, mergeWheres, PER_PAGE_OPTIONS } from '../pagination';
+import { getDb } from '../db';
 
 // ─────────────────────────────── Filter model ───────────────────────────────
 
@@ -67,8 +70,8 @@ export const LAB_TEST_STATUS_LABELS: Record<LabTestStatus, string> = {
   VOID: 'Void',
 };
 
-export const LAB_TEST_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_TEST_PER_PAGE = 25;
+export const LAB_TEST_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_TEST_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_TEST_SORT: LabTestSortField = 'updated_at';
 export const DEFAULT_LAB_TEST_DIR: 'asc' | 'desc' = 'desc';
 /** Safety cap for the register export — never dumps more than this. */
@@ -140,14 +143,6 @@ function isResult(v: string): v is LabFinalResult {
 
 function isSortField(v: string): v is LabTestSortField {
   return (LAB_TEST_SORT_FIELDS as readonly string[]).includes(v);
-}
-
-function isDir(v: string): v is 'asc' | 'desc' {
-  return v === 'asc' || v === 'desc';
-}
-
-function isPerPage(v: number): v is (typeof LAB_TEST_PER_PAGE_OPTIONS)[number] {
-  return (LAB_TEST_PER_PAGE_OPTIONS as readonly number[]).includes(v);
 }
 
 function positiveInt(v: string): number | null {
@@ -260,7 +255,7 @@ export function parseLabTestSearchFilters(url: URL, jar: CookieJar): LabTestSear
   const sort = sp.get('sort');
   if (sort && isSortField(sort)) f.sort = sort;
   const dir = sp.get('dir');
-  if (dir && isDir(dir)) f.dir = dir;
+  if (dir && isSortDir(dir)) f.dir = dir;
 
   const page = sp.get('page');
   if (page) {
@@ -396,7 +391,7 @@ export function buildLabTestWhere(f: LabTestSearchFilters): { sql: string; param
 /** Role scope: employees see only their own tests (same rule as the lists). */
 function scopeClause(role: Role, userId: number): { sql: string; params: unknown[] } {
   if (role === 'employee') {
-    return { sql: '(t.tested_by = ? OR t.created_by = ?)', params: [userId, userId] };
+    return { sql: LAB_TEST_ROW_SCOPE_SQL, params: rowScopeParams(userId) };
   }
   return { sql: '', params: [] };
 }
@@ -420,10 +415,7 @@ const SORT_SQL: Record<LabTestSortField, string> = {
 };
 
 function orderClause(f: LabTestSearchFilters): string {
-  const dir = f.dir === 'asc' ? 'ASC' : 'DESC';
-  // Stable tiebreaker: id DESC always breaks ties so pagination never
-  // duplicates or skips rows when two tests share the sort value.
-  return `ORDER BY ${SORT_SQL[f.sort]} ${dir}, t.id DESC`;
+  return buildOrderClause(SORT_SQL[f.sort], f.dir);
 }
 
 // ─────────────────────────────── Search query ───────────────────────────────
@@ -463,21 +455,6 @@ export interface LabTestSearchResult {
   total_pages: number;
 }
 
-/** Merge two WHERE fragments into one with their params in text order. */
-function mergeWheres(
-  a: { sql: string; params: unknown[] },
-  b: { sql: string; params: unknown[] },
-): { sql: string; params: unknown[] } {
-  const conds: string[] = [];
-  const params: unknown[] = [];
-  for (const part of [a, b]) {
-    if (!part.sql) continue;
-    conds.push(part.sql.replace(/^WHERE /, ''));
-    params.push(...part.params);
-  }
-  return { sql: conds.length ? `WHERE ${conds.join(' AND ')}` : '', params };
-}
-
 /**
  * Paged, sorted, filtered test-register search. `scope` carries the requesting
  * user so employees only see their own tests. All SQL is parameterized.
@@ -486,7 +463,7 @@ export async function searchLabTests(
   f: LabTestSearchFilters,
   scope: { role: Role; userId: number },
 ): Promise<LabTestSearchResult> {
-  const db = await getSearchDb();
+  const db = getDb();
   const merged = mergeWheres(buildLabTestWhere(f), scopeClause(scope.role, scope.userId));
 
   // The WHERE builder may reference joined tables (p/e/u), so the count query
@@ -522,7 +499,7 @@ export async function searchLabTestRows(
   f: LabTestSearchFilters,
   scope: { role: Role; userId: number },
 ): Promise<LabTestSearchRow[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   const merged = mergeWheres(buildLabTestWhere(f), scopeClause(scope.role, scope.userId));
   return db
     .prepare(`${LAB_TEST_SELECT} ${merged.sql} ${orderClause(f)} LIMIT ?`)
@@ -531,20 +508,12 @@ export async function searchLabTestRows(
 
 // ─────────────────────────── Filter dropdown data ───────────────────────────
 
-// NOTE on DB access: the SQLite connection is pulled via a lazy dynamic import
 // (same pattern as taskSearch.ts) so this module stays loadable in the
-// server-less test runner — db.ts imports schema.sql?raw which plain Node
-// cannot resolve. Only the DB-touching functions below are async.
 
-/** Lazy getDb — keeps this module importable without a bundler/loader. */
-async function getSearchDb() {
-  const { getDb } = await import('../db');
-  return getDb();
-}
 
 /** Testers that appear on at least one test (tester filter dropdown). */
 export async function listLabTesters(): Promise<{ id: number; full_name: string }[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   return db
     .prepare(
       `SELECT DISTINCT u.id, u.full_name
@@ -556,7 +525,7 @@ export async function listLabTesters(): Promise<{ id: number; full_name: string 
 
 /** Equipment that appears on at least one test (equipment filter dropdown). */
 export async function listLabTestEquipment(): Promise<{ id: number; name: string; code: string }[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   return db
     .prepare(
       `SELECT DISTINCT e.id, e.name, e.code
@@ -568,7 +537,7 @@ export async function listLabTestEquipment(): Promise<{ id: number; name: string
 
 /** Products referenced by at least one test (product filter dropdown). */
 export async function listLabTestProducts(): Promise<{ id: number; name: string; code: string }[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   return db
     .prepare(
       `SELECT DISTINCT p.id, p.name, p.code

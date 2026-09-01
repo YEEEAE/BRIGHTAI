@@ -28,7 +28,8 @@ export default function MarkReadButton({ notificationId }: MarkReadButtonProps) 
         return;
       }
       setError(data.error ?? 'Could not mark this notification as read. Try again.');
-    } catch {
+    } catch (err) {
+      console.error('[notifications] mark-read request failed', err);
       setError('Network error. Check your connection, then try Mark as read again.');
     } finally {
       setBusy(false);

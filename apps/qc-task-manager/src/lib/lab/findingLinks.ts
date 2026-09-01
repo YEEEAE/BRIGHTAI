@@ -23,6 +23,7 @@ import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { canLinkLabTestToFinding } from '../permissions';
 import { appendQcAudit } from '../audit/qcChain';
+import { labTestFindingLinkSchema, parseFormData } from '../validation';
 
 export interface LabTestFindingLink {
   test_id: number;
@@ -188,7 +189,6 @@ export async function handleLabTestFindingLinkPost(context: APIContext, testId: 
     return context.redirect(backUrl);
   }
 
-  const { parseFormData, labTestFindingLinkSchema } = await import('../validation');
   const form = await context.request.formData();
   const parsed = parseFormData(labTestFindingLinkSchema, form);
   if (!parsed.ok) {
@@ -226,7 +226,6 @@ export async function handleLabTestFindingUnlinkPost(context: APIContext, testId
     return context.redirect(backUrl);
   }
 
-  const { parseFormData, labTestFindingLinkSchema } = await import('../validation');
   const form = await context.request.formData();
   const parsed = parseFormData(labTestFindingLinkSchema, form);
   if (!parsed.ok) {

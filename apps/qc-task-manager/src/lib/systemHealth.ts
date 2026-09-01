@@ -9,8 +9,8 @@ import { getAiProviderHealth } from './ai/health';
 const DEFAULT_DISK_WARNING_RATIO = 0.8;
 export type DiskHealth = { availableBytes: number | null; capacityBytes: number | null; usedBytes: number | null; appBytes: number; warning: boolean; configuredCapacityBytes: number | null };
 
-export function safeDatabasePath(path: string): string { return `${basename(dirname(path))}/${basename(path)}`; }
-export function fileSize(path: string): number { try { return statSync(path).size; } catch { return 0; } }
+function safeDatabasePath(path: string): string { return `${basename(dirname(path))}/${basename(path)}`; }
+function fileSize(path: string): number { try { return statSync(path).size; } catch { return 0; } }
 function directoryBytes(path: string): number { if (!existsSync(path)) return 0; return listBackups(path).reduce((sum, backup) => sum + backup.size + fileSize(backup.metadataFile), 0); }
 function configuredCapacity(): number | null {
   const bytes = Number(process.env.QC_DISK_CAPACITY_BYTES);
@@ -18,7 +18,7 @@ function configuredCapacity(): number | null {
   const gigabytes = Number(process.env.QC_DISK_CAPACITY_GB);
   return Number.isFinite(gigabytes) && gigabytes > 0 ? Math.floor(gigabytes * 1024 ** 3) : null;
 }
-export function getDiskHealth(dbPath = DB_PATH, backupDir = BACKUP_DIR): DiskHealth {
+function getDiskHealth(dbPath = DB_PATH, backupDir = BACKUP_DIR): DiskHealth {
   const appBytes = fileSize(dbPath) + fileSize(`${dbPath}-wal`) + fileSize(`${dbPath}-shm`) + directoryBytes(backupDir);
   try {
     const stats = statfsSync(dirname(dbPath));
@@ -32,7 +32,7 @@ export function getDiskHealth(dbPath = DB_PATH, backupDir = BACKUP_DIR): DiskHea
     return { availableBytes: null, capacityBytes: null, usedBytes: null, appBytes, configuredCapacityBytes: configured, warning: configured !== null && appBytes >= configured * DEFAULT_DISK_WARNING_RATIO };
   }
 }
-export function applicationIdentity(): { version: string; commit: string } {
+function applicationIdentity(): { version: string; commit: string } {
   let version = 'unknown';
   try { const packagePath = fileURLToPath(new URL('../../package.json', import.meta.url)); version = String((JSON.parse(readFileSync(packagePath, 'utf8')) as { version?: string }).version ?? version); } catch { /* diagnostics stay available if metadata is absent */ }
   return { version, commit: process.env.RENDER_GIT_COMMIT ?? process.env.GIT_COMMIT ?? process.env.COMMIT_SHA ?? 'unknown' };

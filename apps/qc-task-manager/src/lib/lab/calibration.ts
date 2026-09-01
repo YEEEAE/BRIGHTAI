@@ -33,6 +33,8 @@ import { canCreateLabCalibration, canEditLabCalibration, canProposeLabCalibratio
 import { submitChangeRequest } from './changeRequests';
 import type { LabEquipmentCalibration } from '../types';
 import { CALIBRATION_DUE_SOON_DAYS, deriveCalibrationState, type LabCalibrationState } from './overview';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { labCalibrationSchema, parseFormData } from '../validation';
 
 export type LabCalibrationStatus = LabCalibrationState | 'NOT_COMPLIANT';
 
@@ -178,8 +180,8 @@ export const LAB_CALIBRATION_SORT_FIELDS: readonly LabCalibrationSortField[] = [
   'created_at',
 ];
 
-export const LAB_CALIBRATION_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_CALIBRATION_PER_PAGE = 25;
+export const LAB_CALIBRATION_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_CALIBRATION_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_CALIBRATION_SORT: LabCalibrationSortField = 'created_at';
 export const DEFAULT_LAB_CALIBRATION_DIR: 'asc' | 'desc' = 'desc';
 
@@ -598,8 +600,6 @@ async function handleLabCalibrationPost(context: APIContext, id: number | null):
     return context.redirect(`/lab/calibration/${id}`);
   }
 
-  // Dynamic import keeps this module loadable in the bundler-less unit tests.
-  const { parseFormData, labCalibrationSchema } = await import('../validation');
   const form = await context.request.formData();
   const parsed = parseFormData(labCalibrationSchema, form);
   if (!parsed.ok) {

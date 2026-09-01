@@ -107,3 +107,38 @@ export const LAB_DOCUMENT_DESCRIPTION_MAX = 2000;
 export const LAB_DOCUMENT_TITLE_MAX = 200;
 /** Max length of a document code (lab_documents.code). */
 export const LAB_DOCUMENT_CODE_MAX = 60;
+
+/** Short retest-reason labels used on the test record + print views (the
+ *  longer canonical labels in LAB_RETEST_REASON_LABELS serve the retest pages). */
+export const LAB_RETEST_REASON_SHORT_LABELS: Record<string, string> = {
+  FAIL: 'FAIL',
+  HOLD: 'HOLD / Further Evaluation',
+  SAMPLE_ISSUE: 'Sample Issue',
+  EQUIPMENT_ISSUE: 'Equipment Issue',
+  PROCEDURAL_ISSUE: 'Procedural Issue',
+  OTHER: 'Other',
+};
+
+/** Sample-row status labels for the test record + print views. */
+export const LAB_SAMPLE_STATUS_LABELS: Record<string, string> = {
+  PENDING: 'Pending',
+  TESTED: 'Tested',
+  APPROVED: 'Approved',
+  VOID: 'Void',
+};
+
+/** Snapshot parameter labels for the test record + print views. */
+export const LAB_TEST_PARAM_LABELS: Record<string, string> = {
+  standard_parameter: 'Standard Parameter',
+  acceptance_criteria: 'Acceptance Criteria',
+  holding_time: 'Holding Time',
+  actual_pressure_reference: 'Actual Pressure Reference',
+};
+
+/** Approved and voided lab records are frozen (§49 immutability rule). */
+export function isLabTestRecordImmutable(status: string): boolean {
+  return status === 'APPROVED' || status === 'VOID';
+}
+
+/** Product-fail-rate ratio (%) above which the lab surfaces turn red. */
+export const LAB_FAIL_RATE_ALERT_THRESHOLD = 50;

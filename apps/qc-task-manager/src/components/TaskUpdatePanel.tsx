@@ -227,7 +227,7 @@ export default function TaskUpdatePanel({
     await postUpdate({ checklist_add: newChecklistItem.trim() });
   }
 
-  async function toggleChecklist(id: number, checked: boolean) {
+  async function toggleChecklist(id: number, _checked: boolean) {
     if (saving) return;
     await postUpdate({ checklist_toggle: String(id) });
   }

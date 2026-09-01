@@ -13,21 +13,13 @@
 //   - Every SQL path is parameterized; q is truncated before use.
 
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser, apiJsonError } from '../../../lib/api-security';
+import { apiJson, apiJsonError, isResponse, requireApiUser } from '../../../lib/api-security';
 import { canViewLab } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 import {
   suggestLabSearch,
   LAB_SUGGEST_MAX_QUERY,
-  type LabSuggestGroup,
 } from '../../../lib/lab/search';
-
-function suggestJson(groups: LabSuggestGroup[], status = 200): Response {
-  return new Response(JSON.stringify({ ok: true, groups }), {
-    status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
-  });
-}
 
 export const GET: APIRoute = async (context) => {
   const auth = requireApiUser(context);
@@ -43,12 +35,12 @@ export const GET: APIRoute = async (context) => {
   // Below the minimum length the combobox shows nothing — no query is run,
   // so short keystrokes can never probe for record existence.
   if (q.length < 2) {
-    return suggestJson([]);
+    return apiJson({ groups: [] });
   }
 
   try {
     const groups = suggestLabSearch(q, { role: user.role as Role, userId: user.id });
-    return suggestJson(groups);
+    return apiJson({ groups });
   } catch (err) {
     console.error('[lab] search suggest failure', err);
     return apiJsonError('Suggestion lookup failed.', 500);

@@ -3,7 +3,7 @@
 // confirm and reload (the middleware adds the security headers).
 
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser, requireCsrf } from '../../../lib/api-security';
+import { apiJson, isResponse, requireApiUser, requireCsrf } from '../../../lib/api-security';
 import { markAllNotificationsRead } from '../../../lib/notifications';
 
 export const POST: APIRoute = async (context) => {
@@ -13,8 +13,5 @@ export const POST: APIRoute = async (context) => {
   if (isResponse(auth)) return auth;
   const user = auth;
   const marked = markAllNotificationsRead(user.id);
-  return new Response(JSON.stringify({ ok: true, marked }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return apiJson({ marked });
 };

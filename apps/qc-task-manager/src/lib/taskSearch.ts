@@ -22,6 +22,9 @@
 
 import { setFlash } from './flash';
 import { localDateStr } from './format';
+import { TASK_ROW_SCOPE_SQL, rowScopeParams } from './scope';
+import { getDb } from './db';
+import { buildOrderClause, DEFAULT_PER_PAGE, isPerPage, isSortDir, mergeWheres, PER_PAGE_OPTIONS } from './pagination';
 import {
   MAX_SAVED_FILTER_NAME as MAX_SAVED_FILTER_NAME_POLICY,
   TASK_PRIORITIES,
@@ -64,8 +67,8 @@ export const SEARCH_SORT_FIELDS: readonly SearchSortField[] = [
   'completed_at',
 ];
 
-export const SEARCH_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_PER_PAGE = 25;
+export const SEARCH_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export { DEFAULT_PER_PAGE };
 export const DEFAULT_SORT: SearchSortField = 'updated_at';
 export const DEFAULT_DIR: 'asc' | 'desc' = 'desc';
 /** Safety cap for exports — a filtered export never returns more than this. */
@@ -147,14 +150,6 @@ function isRecurrenceValue(v: string): v is TaskRecurrence {
 
 function isSortField(v: string): v is SearchSortField {
   return (SEARCH_SORT_FIELDS as readonly string[]).includes(v);
-}
-
-function isDir(v: string): v is 'asc' | 'desc' {
-  return v === 'asc' || v === 'desc';
-}
-
-function isPerPage(v: number): v is (typeof SEARCH_PER_PAGE_OPTIONS)[number] {
-  return (SEARCH_PER_PAGE_OPTIONS as readonly number[]).includes(v);
 }
 
 function positiveInt(v: string): number | null {
@@ -267,7 +262,7 @@ export function parseTaskSearchFilters(url: URL, jar: CookieJar): TaskSearchFilt
   const sort = sp.get('sort');
   if (sort && isSortField(sort)) f.sort = sort;
   const dir = sp.get('dir');
-  if (dir && isDir(dir)) f.dir = dir;
+  if (dir && isSortDir(dir)) f.dir = dir;
 
   const page = sp.get('page');
   if (page) {
@@ -441,7 +436,7 @@ export function buildSearchWhere(f: TaskSearchFilters): { sql: string; params: u
 /** Role scope: employees see only their own tasks (same rule as the lists). */
 function scopeClause(role: Role, userId: number): { sql: string; params: unknown[] } {
   if (role === 'employee') {
-    return { sql: '(t.assigned_to = ? OR t.created_by = ?)', params: [userId, userId] };
+    return { sql: TASK_ROW_SCOPE_SQL, params: rowScopeParams(userId) };
   }
   return { sql: '', params: [] };
 }
@@ -462,10 +457,7 @@ const SORT_SQL: Record<SearchSortField, string> = {
 };
 
 function orderClause(f: TaskSearchFilters): string {
-  const dir = f.dir === 'asc' ? 'ASC' : 'DESC';
-  // Stable tiebreaker: id DESC always breaks ties so pagination never
-  // duplicates or skips rows when two tasks share the sort value.
-  return `ORDER BY ${SORT_SQL[f.sort]} ${dir}, t.id DESC`;
+  return buildOrderClause(SORT_SQL[f.sort], f.dir);
 }
 
 // ─────────────────────────────── Search query ───────────────────────────────
@@ -524,7 +516,7 @@ export async function searchTasks(
   f: TaskSearchFilters,
   scope: { role: Role; userId: number },
 ): Promise<SearchResult> {
-  const db = await getSearchDb();
+  const db = getDb();
   // Scope condition ANDs with the filters; params are bound in text order.
   const merged = mergeWheres(buildSearchWhere(f), scopeClause(scope.role, scope.userId));
 
@@ -544,21 +536,6 @@ export async function searchTasks(
   return { rows, total, page, per_page: f.per_page, total_pages: totalPages };
 }
 
-/** Merge two WHERE fragments into one with their params in text order. */
-function mergeWheres(
-  a: { sql: string; params: unknown[] },
-  b: { sql: string; params: unknown[] },
-): { sql: string; params: unknown[] } {
-  const conds: string[] = [];
-  const params: unknown[] = [];
-  for (const part of [a, b]) {
-    if (!part.sql) continue;
-    conds.push(part.sql.replace(/^WHERE /, ''));
-    params.push(...part.params);
-  }
-  return { sql: conds.length ? `WHERE ${conds.join(' AND ')}` : '', params };
-}
-
 /**
  * Every row matching the filters (no pagination) — used by the CSV/XLSX
  * exports. Capped at EXPORT_MAX_ROWS so a careless query cannot dump the whole
@@ -568,7 +545,7 @@ export async function searchTaskRows(
   f: TaskSearchFilters,
   scope: { role: Role; userId: number },
 ): Promise<SearchTaskRow[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   const merged = mergeWheres(buildSearchWhere(f), scopeClause(scope.role, scope.userId));
   return db
     .prepare(`${SEARCH_SELECT} ${merged.sql} ${orderClause(f)} LIMIT ?`)
@@ -577,22 +554,12 @@ export async function searchTaskRows(
 
 // ─────────────────────────── Filter dropdown data ───────────────────────────
 
-// NOTE on DB access: the SQLite connection is pulled via a lazy dynamic import
-// (same pattern as export.ts) so this module stays loadable in the server-less
-// test runner — db.ts imports schema.sql?raw which plain Node cannot resolve.
-// Only the DB-touching functions below are async.
-
-/** Lazy getDb — keeps this module importable without a bundler/loader. */
-async function getSearchDb() {
-  const { getDb } = await import('./db');
-  return getDb();
-}
 
 /** Active users (assignee filter dropdown) — same rule as listActiveUsers. */
 export async function listSearchAssignees(): Promise<
   { id: number; full_name: string; role: string }[]
 > {
-  const db = await getSearchDb();
+  const db = getDb();
   return db
     .prepare('SELECT id, full_name, role FROM users WHERE is_active = 1 ORDER BY full_name ASC')
     .all() as { id: number; full_name: string; role: string }[];
@@ -600,7 +567,7 @@ export async function listSearchAssignees(): Promise<
 
 /** Distinct departments present on tasks (for the department filter). */
 export async function listSearchDepartments(): Promise<string[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   return (
     db
       .prepare('SELECT DISTINCT department FROM tasks ORDER BY department COLLATE NOCASE ASC')
@@ -610,7 +577,7 @@ export async function listSearchDepartments(): Promise<string[]> {
 
 /** Distinct task creators (for the creator filter). */
 export async function listSearchCreators(): Promise<{ id: number; full_name: string }[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   return db
     .prepare(
       `SELECT DISTINCT u.id, u.full_name
@@ -634,7 +601,7 @@ export interface SavedFilter {
 
 /** All saved filters of a user, newest first. */
 export async function listSavedFilters(userId: number): Promise<SavedFilter[]> {
-  const db = await getSearchDb();
+  const db = getDb();
   return db
     .prepare(
       `SELECT id, name, filter_json, created_at
@@ -650,7 +617,7 @@ export async function saveFilter(
   name: string,
   filterJson: string,
 ): Promise<number> {
-  const db = await getSearchDb();
+  const db = getDb();
   const res = db
     .prepare('INSERT INTO saved_filters (user_id, name, filter_json) VALUES (?, ?, ?)')
     .run(userId, name, filterJson);
@@ -659,7 +626,7 @@ export async function saveFilter(
 
 /** Delete a saved filter — owner only (returns false when not owned). */
 export async function deleteSavedFilter(userId: number, id: number): Promise<boolean> {
-  const db = await getSearchDb();
+  const db = getDb();
   const res = db
     .prepare('DELETE FROM saved_filters WHERE id = ? AND user_id = ?')
     .run(id, userId);

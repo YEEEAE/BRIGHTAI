@@ -4,7 +4,6 @@
 // form stays self-submitting with no separate API endpoint.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getSessionUser } from '../lib/auth';
-import { roleHome } from '../lib/permissions';
 
 // Only allow internal redirect targets (blocks open-redirect abuse).
 const rawTarget = Astro.url.searchParams.get('redirect') || '';

@@ -1,9 +1,7 @@
 // DB-side assembly of the task PDF report data.
 //
 // Kept in its OWN module (separate from the pure buildTaskPdf builder) so the
-// server-less test runner can import pdf.ts without loading db.ts — db.ts
-// imports schema.sql?raw, which plain Node cannot resolve (same constraint as
-// taskSearch.ts / export.ts).
+// pure PDF writer stays free of database concerns.
 
 import {
   formatDbDate,

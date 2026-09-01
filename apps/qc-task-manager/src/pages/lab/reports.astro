@@ -25,6 +25,7 @@ import { FILTER_TOOLBAR, FILTER_FIELD } from '../../components/ui/formPresets';
 import AppButton from '../../components/ui/AppButton.astro';
 import { parseReportFilters, parseReportScope } from '../../lib/reporting/filters';
 import { resolveReportPreview } from '../../lib/reporting/preview';
+import { LAB_FAIL_RATE_ALERT_THRESHOLD } from '../../lib/lab/policy';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -240,7 +241,7 @@ if (showTrend) {
                         <td class="px-3 py-2 font-medium text-slate-900">{row.name} <span class="font-normal text-slate-500" dir="ltr">({row.code})</span></td>
                         <td class="px-3 py-2 text-slate-700">{row.total}</td>
                         <td class="px-3 py-2 text-slate-700">{row.fail}</td>
-                        <td class={`px-3 py-2 font-semibold ${row.failRate !== null && row.failRate >= 50 ? 'text-red-600' : 'text-slate-700'}`}>
+                        <td class={`px-3 py-2 font-semibold ${row.failRate !== null && row.failRate >= LAB_FAIL_RATE_ALERT_THRESHOLD ? 'text-red-600' : 'text-slate-700'}`}>
                           {row.failRate === null ? '—' : `${row.failRate}%`}
                         </td>
                         <td class="px-3 py-2">

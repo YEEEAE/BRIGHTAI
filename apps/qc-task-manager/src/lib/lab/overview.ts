@@ -24,6 +24,7 @@
 //   this module never mutates data.
 
 import { getDb } from '../db';
+import { LAB_DOCUMENT_OWNERSHIP_SQL, LAB_TEST_OWNERSHIP_SQL, LAB_TEST_ROW_SCOPE_SQL, rowScopeParams } from '../scope';
 import { localToday, resolveRange } from '../dashboard';
 import { IMPLEMENTED_LAB_ROUTES } from './navigation';
 import type { Role } from '../types';
@@ -39,7 +40,7 @@ export interface LabOverviewScope {
 /** Employee row scope — mirror of testSearch.ts scopeClause. */
 function scopeClause(scope: LabOverviewScope): { sql: string; params: unknown[] } {
   if (scope.role === 'employee') {
-    return { sql: '(t.tested_by = ? OR t.created_by = ?)', params: [scope.userId, scope.userId] };
+    return { sql: LAB_TEST_ROW_SCOPE_SQL, params: rowScopeParams(scope.userId) };
   }
   return { sql: '', params: [] };
 }
@@ -152,14 +153,14 @@ export function getLabRoleActionSummary(scope: LabOverviewScope): LabRoleActionS
       SUM(CASE WHEN t.status = 'DRAFT' THEN 1 ELSE 0 END) AS drafts,
       SUM(CASE WHEN t.status = 'REJECTED' THEN 1 ELSE 0 END) AS returned
     FROM lab_test_records t
-    WHERE t.tested_by = ? OR t.created_by = ?
-  `).get(scope.userId, scope.userId) as { total: number | null; drafts: number | null; returned: number | null };
+    WHERE ${LAB_TEST_ROW_SCOPE_SQL}
+  `).get(...rowScopeParams(scope.userId)) as { total: number | null; drafts: number | null; returned: number | null };
   zero.employee.myTests = Number(employeeTests.total ?? 0);
   zero.employee.draftTests = Number(employeeTests.drafts ?? 0);
   zero.employee.returnedForChanges = Number(employeeTests.returned ?? 0);
   zero.employee.myWIContent = Number((db.prepare(`
     SELECT COUNT(*) AS n FROM lab_documents
-    WHERE type = 'WI' AND (owner_id = ? OR created_by = ?)
+    WHERE type = 'WI' AND ${LAB_DOCUMENT_OWNERSHIP_SQL}
       AND current_version_id IS NOT NULL AND status NOT IN ('SUPERSEDED', 'ARCHIVED')
   `).get(scope.userId, scope.userId) as { n: number }).n ?? 0);
   zero.employee.myChangeRequests = Number((db.prepare(
@@ -170,11 +171,11 @@ export function getLabRoleActionSummary(scope: LabOverviewScope): LabRoleActionS
     zero.supervisor.testsAwaitingReview = Number((db.prepare(`
       SELECT COUNT(*) AS n FROM lab_test_records
       WHERE status IN ('SUBMITTED', 'UNDER_REVIEW')
-        AND NOT (tested_by = ? OR created_by = ?)
+        AND NOT ${LAB_TEST_OWNERSHIP_SQL}
     `).get(scope.userId, scope.userId) as { n: number }).n ?? 0);
     zero.supervisor.documentsAwaitingReview = Number((db.prepare(`
       SELECT COUNT(*) AS n FROM lab_documents
-      WHERE status = 'IN_REVIEW' AND NOT (owner_id = ? OR created_by = ?)
+      WHERE status = 'IN_REVIEW' AND NOT ${LAB_DOCUMENT_OWNERSHIP_SQL}
     `).get(scope.userId, scope.userId) as { n: number }).n ?? 0);
     zero.supervisor.teamIssues = countLabDataQualityIssues();
     zero.supervisor.openRetests = Number((db.prepare(
@@ -403,48 +404,6 @@ export interface LabRecentTestRow {
   final_result: string | null;
   status: string;
   updated_at: string;
-}
-
-export interface LabReturnedTestRow {
-  id: number;
-  test_number: string;
-  test_type: string;
-  final_result: string | null;
-  updated_at: string;
-}
-
-/** Tests returned by review, scoped to the current employee's own work. */
-export function getLabReturnedTests(scope: LabOverviewScope): LabReturnedTestRow[] {
-  if (scope.role !== 'employee') return [];
-  return getDb().prepare(`
-    SELECT id, test_number, test_type, final_result, updated_at
-    FROM lab_test_records
-    WHERE status = 'REJECTED' AND (tested_by = ? OR created_by = ?)
-    ORDER BY updated_at DESC, id DESC
-    LIMIT 8
-  `).all(scope.userId, scope.userId) as LabReturnedTestRow[];
-}
-
-export interface LabOwnedDocumentContentRow {
-  id: number;
-  code: string;
-  title: string;
-  status: string;
-  has_content: number;
-}
-
-/** Employee-owned WI content, including catalog-only rows that need content. */
-export function getLabOwnedWIContent(scope: LabOverviewScope): LabOwnedDocumentContentRow[] {
-  if (scope.role !== 'employee') return [];
-  return getDb().prepare(`
-    SELECT d.id, d.code, d.title, d.status,
-           CASE WHEN d.current_version_id IS NULL THEN 0 ELSE 1 END AS has_content
-    FROM lab_documents d
-    WHERE d.type = 'WI' AND (d.owner_id = ? OR d.created_by = ?)
-      AND d.status NOT IN ('SUPERSEDED', 'ARCHIVED')
-    ORDER BY has_content ASC, d.updated_at DESC, d.id DESC
-    LIMIT 8
-  `).all(scope.userId, scope.userId) as LabOwnedDocumentContentRow[];
 }
 
 /** Latest 8 tests, most recently updated first (employee-scoped). */

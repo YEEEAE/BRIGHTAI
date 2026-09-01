@@ -3,6 +3,19 @@ import { canCloseCapa, hasCapaClosureGates, canTransitionCapa } from './capa';
 import { canTransitionFinding } from './findings';
 import { appendQcAudit } from './audit/qcChain';
 
+/**
+ * A QC policy rejection (invalid transition, unmet closure gate, missing
+ * required field). Its message is user-facing policy text, so endpoints may
+ * surface it verbatim with a 400 — unlike an unexpected fault, which stays a
+ * generic 500. Keeps "expected rejection" and "server error" distinguishable.
+ */
+export class DomainRuleError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'DomainRuleError';
+  }
+}
+
 export type EntityType = 'FINDING' | 'RCA' | 'CAPA' | 'EVIDENCE';
 export type AuditAction = 'CREATE' | 'UPDATE' | 'STATUS_TRANSITION' | 'APPROVAL' | 'REJECTION' | 'CLOSURE' | 'REOPEN';
 
@@ -11,6 +24,16 @@ export type CapaRow = Record<string, unknown> & { id: number; finding_id: number
 
 function audit(entityType: EntityType, entityId: number, taskId: number | null, actorId: number, action: AuditAction, oldValue: unknown = null, newValue: unknown = null, note: string | null = null): void {
   appendQcAudit(getDb(), { entityType, entityId, taskId, actorId, action, oldValue: oldValue == null ? null : JSON.stringify(oldValue), newValue: newValue == null ? null : JSON.stringify(newValue), note });
+}
+
+/** Dropdown options for the new-finding form (task picker + active owners).
+ *  Read model for /findings; previously inlined as SQL in the page frontmatter. */
+export function listFindingFormOptions(): { tasks: { id: number; title: string }[]; owners: { id: number; full_name: string }[] } {
+  const db = getDb();
+  return {
+    tasks: db.prepare('SELECT id, title FROM tasks ORDER BY id DESC LIMIT 200').all() as { id: number; title: string }[],
+    owners: db.prepare('SELECT id, full_name FROM users WHERE is_active=1 ORDER BY full_name').all() as { id: number; full_name: string }[],
+  };
 }
 
 export function listFindings(filters: { status?: string; classification?: string; owner?: number } = {}): FindingRow[] {
@@ -48,7 +71,7 @@ export function createFinding(input: Record<string, unknown>, actorId: number): 
 
 export function updateFinding(id: number, input: Record<string, unknown>, actorId: number): void {
   const finding = getFinding(id);
-  if (!finding) throw new Error('Finding not found.');
+  if (!finding) throw new DomainRuleError('Finding not found.');
   const allowed = ['inspection_type','classification','severity','risk_description','requirement_reference','owner','due_date','closure_evidence'];
   const entries = Object.entries(input).filter(([key, value]) => allowed.includes(key) && value !== undefined);
   if (!entries.length) return;
@@ -61,11 +84,11 @@ export function updateFinding(id: number, input: Record<string, unknown>, actorI
 
 export function transitionFinding(id: number, status: string, actorId: number, note?: string): void {
   const finding = getFinding(id);
-  if (!finding || !canTransitionFinding(String(finding.status), status)) throw new Error('Invalid Finding status transition.');
+  if (!finding || !canTransitionFinding(String(finding.status), status)) throw new DomainRuleError('Invalid Finding status transition.');
   if (status === 'CLOSED') {
     const capa = finding.capa;
-    if (finding.classification === 'critical' && (!capa || !hasCapaClosureGates(capa as { corrective_action?: string; evidence?: string; effectiveness_check?: string; approval?: string }) || !['EFFECTIVE','CLOSED'].includes(String(capa.status)))) throw new Error('Critical Findings require corrective action, evidence, verification, and approval before closure.');
-    if (!String(finding.closure_evidence ?? '').trim()) throw new Error('Closure evidence is required.');
+    if (finding.classification === 'critical' && (!capa || !hasCapaClosureGates(capa as { corrective_action?: string; evidence?: string; effectiveness_check?: string; approval?: string }) || !['EFFECTIVE','CLOSED'].includes(String(capa.status)))) throw new DomainRuleError('Critical Findings require corrective action, evidence, verification, and approval before closure.');
+    if (!String(finding.closure_evidence ?? '').trim()) throw new DomainRuleError('Closure evidence is required.');
   }
   transaction(() => {
     getDb().prepare(`UPDATE qc_findings SET status=?, closed_by=CASE WHEN ?='CLOSED' THEN ? ELSE NULL END, closed_at=CASE WHEN ?='CLOSED' THEN datetime('now') ELSE NULL END, updated_at=datetime('now') WHERE id=?`).run(status, status, actorId, status, id);
@@ -74,7 +97,7 @@ export function transitionFinding(id: number, status: string, actorId: number, n
 }
 
 export function upsertRca(findingId: number, input: Record<string, unknown>, actorId: number): void {
-  const finding = getFinding(findingId); if (!finding) throw new Error('Finding not found.');
+  const finding = getFinding(findingId); if (!finding) throw new DomainRuleError('Finding not found.');
   transaction(() => {
     getDb().prepare(`INSERT INTO qc_rca (finding_id, method, free_form, why_1, why_2, why_3, why_4, why_5, fishbone_json, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(finding_id) DO UPDATE SET method=excluded.method, free_form=excluded.free_form, why_1=excluded.why_1, why_2=excluded.why_2, why_3=excluded.why_3, why_4=excluded.why_4, why_5=excluded.why_5, fishbone_json=excluded.fishbone_json, updated_by=excluded.updated_by, updated_at=datetime('now')`).run(findingId, input.method, input.free_form ?? null, input.why_1 ?? null, input.why_2 ?? null, input.why_3 ?? null, input.why_4 ?? null, input.why_5 ?? null, input.fishbone_json ?? null, actorId);
     const rca = getDb().prepare('SELECT id FROM qc_rca WHERE finding_id=?').get(findingId) as { id: number };
@@ -83,7 +106,7 @@ export function upsertRca(findingId: number, input: Record<string, unknown>, act
 }
 
 export function upsertCapa(findingId: number, input: Record<string, unknown>, actorId: number): number {
-  const finding = getFinding(findingId); if (!finding) throw new Error('Finding not found.');
+  const finding = getFinding(findingId); if (!finding) throw new DomainRuleError('Finding not found.');
   return transaction(() => {
     const db = getDb();
     // `evidence` and `effectiveness_check` are part of capaSchema and the CAPA
@@ -99,15 +122,15 @@ export function upsertCapa(findingId: number, input: Record<string, unknown>, ac
 }
 
 export function updateCapa(id: number, input: Record<string, unknown>, actorId: number): void {
-  const capa = getDb().prepare('SELECT * FROM qc_capa WHERE id=?').get(id) as CapaRow | undefined; if (!capa) throw new Error('CAPA not found.');
+  const capa = getDb().prepare('SELECT * FROM qc_capa WHERE id=?').get(id) as CapaRow | undefined; if (!capa) throw new DomainRuleError('CAPA not found.');
   const fields = ['problem_statement','root_cause','corrective_action','preventive_action','owner','due_date','evidence','effectiveness_check'];
   const entries = Object.entries(input).filter(([key, value]) => fields.includes(key) && value !== undefined); if (!entries.length) return;
   transaction(() => { getDb().prepare(`UPDATE qc_capa SET ${entries.map(([key]) => `${key}=?`).join(', ')}, updated_at=datetime('now') WHERE id=?`).run(...entries.map(([, value]) => value), id); audit('CAPA', id, null, actorId, 'UPDATE', null, input); });
 }
 
 export function transitionCapa(id: number, status: string, actorId: number, decision?: string): void {
-  const capa = getDb().prepare('SELECT * FROM qc_capa WHERE id=?').get(id) as CapaRow | undefined; if (!capa || !canTransitionCapa(String(capa.status), status)) throw new Error('Invalid CAPA status transition.');
-  if (status === 'CLOSED' && !canCloseCapa(capa as { corrective_action?: string; evidence?: string; effectiveness_check?: string; approval?: string })) throw new Error('CAPA requires completed action, evidence, effectiveness review, and approval before closure.');
+  const capa = getDb().prepare('SELECT * FROM qc_capa WHERE id=?').get(id) as CapaRow | undefined; if (!capa || !canTransitionCapa(String(capa.status), status)) throw new DomainRuleError('Invalid CAPA status transition.');
+  if (status === 'CLOSED' && !canCloseCapa(capa as { corrective_action?: string; evidence?: string; effectiveness_check?: string; approval?: string })) throw new DomainRuleError('CAPA requires completed action, evidence, effectiveness review, and approval before closure.');
   if (status === 'VERIFICATION' && decision) getDb().prepare(`UPDATE qc_capa SET reviewer=?, effectiveness_check=?, updated_at=datetime('now') WHERE id=?`).run(actorId, decision, id);
   if (status === 'EFFECTIVE' || status === 'CLOSED') getDb().prepare(`UPDATE qc_capa SET approval=?, reviewer=?, updated_at=datetime('now') WHERE id=?`).run(decision ?? 'Approved', actorId, id);
   getDb().prepare(`UPDATE qc_capa SET status=?, updated_at=datetime('now') WHERE id=?`).run(status, id);
@@ -115,7 +138,7 @@ export function transitionCapa(id: number, status: string, actorId: number, deci
 }
 
 export function addEvidence(input: { findingId?: number; capaId?: number; description: string; reference?: string | null }, actorId: number): number {
-  if (!input.findingId && !input.capaId) throw new Error('Evidence must be linked to a Finding or CAPA.');
+  if (!input.findingId && !input.capaId) throw new DomainRuleError('Evidence must be linked to a Finding or CAPA.');
   const findingId = input.findingId ?? Number((getDb().prepare('SELECT finding_id FROM qc_capa WHERE id=?').get(input.capaId) as { finding_id: number }).finding_id);
   const result = getDb().prepare('INSERT INTO qc_evidence (finding_id, capa_id, description, reference, created_by) VALUES (?, ?, ?, ?, ?)').run(input.capaId ? null : input.findingId, input.capaId ?? null, input.description, input.reference ?? null, actorId);
   const id = Number(result.lastInsertRowid); audit('EVIDENCE', id, Number((getDb().prepare('SELECT task_id FROM qc_findings WHERE id=?').get(findingId) as { task_id: number }).task_id), actorId, 'CREATE', null, input); return id;

@@ -111,7 +111,7 @@ import {
   canApproveLabDocumentRecord,
 } from '../src/lib/permissions.ts';
 import { validateDependencies } from '../src/lib/tasks.ts';
-import { validateEvidenceFile, validateUploadedFile } from '../src/lib/taskUpdates.ts';
+import { validateEvidenceFile, validateUploadedFile } from '../src/lib/taskUpdates/index.ts';
 import { csvField, tasksToCsv } from '../src/lib/export.ts';
 import { safeRedirectTarget } from '../src/lib/redirect.ts';
 import {

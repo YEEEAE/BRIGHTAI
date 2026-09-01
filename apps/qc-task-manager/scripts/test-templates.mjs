@@ -355,7 +355,7 @@ try {
   // Move to in_progress so close is reachable.
   db.prepare("UPDATE tasks SET status = 'in_progress', started_at = datetime('now') WHERE id = ?").run(gatedTaskId);
 
-  const { closeTask } = await import('../src/lib/taskUpdates.ts');
+  const { closeTask } = await import('../src/lib/taskUpdates/index.ts');
 
   const pdfBytes = Buffer.from('%PDF-1.7\n% material lab report\n%%EOF\n');
   const pngBytes = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x01, 0x02]);
@@ -442,7 +442,7 @@ try {
   assert.equal(res.ok, true);
   // Reopen via manager and try to re-close uploading the SAME pdf bytes under a new name → duplicate.
   db.prepare("UPDATE tasks SET status = 'completed', completed_at = datetime('now') WHERE id = ?").run(gatedTaskId);
-  const { reopenTask } = await import('../src/lib/taskUpdates.ts');
+  const { reopenTask } = await import('../src/lib/taskUpdates/index.ts');
   const reopened = reopenTask({ taskId: gatedTaskId, actor: { id: manager.id, role: 'manager' } });
   assert.equal(reopened.ok, true);
   // Now attempt a second close with the same pdf bytes (duplicate hash) → rejected.

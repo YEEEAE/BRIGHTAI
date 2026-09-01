@@ -13,7 +13,7 @@ import { requireCsrf } from '../api-security';
 import { createNotificationOrThrow } from '../notifications';
 import { canApproveLabChangeRequest, canReviewLabChangeRequests, canSubmitLabChangeRequest } from '../permissions';
 import type { Role } from '../types';
-import { labEquipmentSchema, labProductSchema, labCalibrationSchema, labRetestSchema, parseFormData } from '../validation';
+import { labCalibrationSchema, labChangeRequestReviewSchema, labEquipmentSchema, labProductSchema, labRetestSchema, parseFormData } from '../validation';
 import type { LabEquipmentFormData } from './equipment';
 import type { LabProductFormData } from './products';
 import type { LabCalibrationFormData } from './calibration';
@@ -356,7 +356,7 @@ export async function handleLabChangeRequestReviewPost(context: APIContext, id: 
   const csrf = requireCsrf(context); if (csrf) return csrf;
   if (!canReviewLabChangeRequests(user.role)) { setFlash(context, 'error', 'Only managers and administrators can review change requests.'); return context.redirect('/lab/change-requests'); }
   const form = await context.request.formData();
-  const parsed = parseFormData((await import('../validation')).labChangeRequestReviewSchema, form);
+  const parsed = parseFormData(labChangeRequestReviewSchema, form);
   if (!parsed.ok) { setFlash(context, 'error', parsed.error); return context.redirect('/lab/change-requests'); }
   const { action, review_note: note } = parsed.data;
   try { if (action === 'approve') approveChangeRequest(id, { id: user.id, role: user.role }, note); else rejectChangeRequest(id, { id: user.id, role: user.role }, note); setFlash(context, 'success', `Change request ${action}d.`); }

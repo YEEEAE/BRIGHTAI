@@ -29,6 +29,7 @@
 // enforces it for /lab/calendar).
 
 import { getDb } from '../db';
+import { LAB_TEST_ROW_SCOPE_SQL, rowScopeParams } from '../scope';
 import { localToday } from '../dashboard';
 import { LAB_MAINTENANCE_STATUS_LABELS } from './policy';
 
@@ -371,8 +372,8 @@ function testEvents(
   toIso: string,
   opts: { scopeToUser: boolean; userId: number },
 ): LabCalendarEvent[] {
-  const scope = opts.scopeToUser ? 'AND (t.tested_by = ? OR t.created_by = ?)' : '';
-  const scopeParams = opts.scopeToUser ? [opts.userId, opts.userId] : [];
+  const scope = opts.scopeToUser ? `AND ${LAB_TEST_ROW_SCOPE_SQL}` : '';
+  const scopeParams = opts.scopeToUser ? rowScopeParams(opts.userId) : [];
   const rows = getDb()
     .prepare(
       `SELECT

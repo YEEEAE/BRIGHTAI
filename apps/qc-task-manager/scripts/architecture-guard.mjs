@@ -143,11 +143,105 @@ function checkMutationPolicyImports() {
   }
 }
 
+// ─────────────── QC-100-ARCHITECTURE-002 boundary rules ───────────────
+
+/** The employee row-scope rule is SQL owned by src/lib/scope.ts alone. */
+function checkRowScopeOwnership() {
+  const scopeFile = join(SRC_DIR, 'lib', 'scope.ts');
+  const pattern = /\((?:t\.)?(?:assigned_to|tested_by)\s*=\s*\?\s*OR\s*(?:t\.)?created_by\s*=\s*\?\)/i;
+  for (const file of sourceFiles()) {
+    if (file === scopeFile) continue;
+    linesOf(file).forEach((line, index) => {
+      if (pattern.test(line)) {
+        fail('SCOPE_AUTHORITY', file, index + 1, 'employee row-scope SQL belongs to src/lib/scope.ts (import TASK_ROW_SCOPE_SQL / LAB_TEST_ROW_SCOPE_SQL)');
+      }
+    });
+  }
+}
+
+/** Pages and layouts render data; they never open the database themselves. */
+function checkNoDatabaseInPages() {
+  const pagesDir = join(SRC_DIR, 'pages');
+  const layoutsDir = join(SRC_DIR, 'layouts');
+  const files = [
+    ...filesUnder(pagesDir, (file) => file.endsWith('.astro')),
+    ...filesUnder(layoutsDir, (file) => file.endsWith('.astro')),
+  ];
+  for (const file of files) {
+    linesOf(file).forEach((line, index) => {
+      // Pure helpers/constants from lib/db (toBool, BACKUP_DIR, DB_PATH) are
+      // fine; opening a connection or preparing a statement is not.
+      const importsConnection = /from ['"].*\/lib\/db['"]/.test(line) && /\b(getDb|transaction|query|db)\b\s*[,}]/.test(line);
+      if (/\bgetDb\s*\(/.test(line) || /\.prepare\s*\(/.test(line) || importsConnection) {
+        fail('PAGE_DB_ACCESS', file, index + 1, 'pages/layouts must read through a src/lib service, not the SQLite connection');
+      }
+    });
+  }
+}
+
+/**
+ * One JSON response contract for every API endpoint: the shared apiJson /
+ * apiJsonError builders (they own the content type + no-store policy).
+ * Local `json()` helpers and hand-built ok:true/false literals are how the
+ * contract fragmented before. Public probes keep their documented shapes.
+ */
+function checkApiResponseContract() {
+  const apiDir = join(SRC_DIR, 'pages', 'api');
+  const allowlist = new Set([
+    join(apiDir, 'health.ts'),
+    join(apiDir, 'readiness.ts'),
+  ]);
+  for (const file of filesUnder(apiDir, (candidate) => candidate.endsWith('.ts'))) {
+    if (allowlist.has(file)) continue;
+    linesOf(file).forEach((line, index) => {
+      if (/(?:const|function)\s+json\s*[=(]/.test(line)) {
+        fail('API_CONTRACT', file, index + 1, 'use apiJson/apiJsonError from lib/api-security instead of a local json() helper');
+      }
+      if (/JSON\.stringify\(\s*\{\s*ok:\s*(?:true|false)/.test(line)) {
+        fail('API_CONTRACT', file, index + 1, 'build JSON bodies with apiJson/apiJsonError so every response carries code + no-store');
+      }
+      if (/new Response\(\s*['"`]/.test(line)) {
+        fail('API_CONTRACT', file, index + 1, 'no plain-text response bodies — errors are JSON via apiJsonError');
+      }
+    });
+  }
+}
+
+/** Every API route file must be referenced by a page, script, or test. */
+function checkNoOrphanApiRoutes() {
+  const apiDir = join(SRC_DIR, 'pages', 'api');
+  const consumers = [
+    ...filesUnder(SRC_DIR, (file) => /\.(ts|tsx|astro)$/.test(file) && !file.startsWith(apiDir)),
+    ...filesUnder(join(APP_DIR, 'public'), (file) => file.endsWith('.js')),
+    ...filesUnder(join(APP_DIR, 'scripts'), (file) => file.endsWith('.mjs')),
+  ];
+  const haystack = consumers.map((file) => readFileSync(file, 'utf8')).join('\n');
+  for (const file of filesUnder(apiDir, (candidate) => candidate.endsWith('.ts'))) {
+    const route = `/api/${relative(apiDir, file).replaceAll('\\', '/').replace(/\.ts$/, '')}`;
+    // Callers build these URLs from template literals or string concatenation,
+    // so each dynamic segment matches any non-slash run, and an /index route
+    // matches its directory with or without the trailing segment.
+    const pattern = route
+      .replace(/\/index$/, '')
+      .split('/')
+      .filter(Boolean)
+      .map((part) => (/^\[.+\]$/.test(part) ? '[^/\'"`\\s]+' : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+      .join('/');
+    if (!new RegExp(`/${pattern}`).test(haystack)) {
+      fail('ORPHAN_ROUTE', file, 1, `no page, client script, or test references ${route}`);
+    }
+  }
+}
+
 checkRequiredFiles();
 checkDuplicateAuthority();
 checkLayerBoundaries();
 checkDatabaseInvariants();
 checkMutationPolicyImports();
+checkRowScopeOwnership();
+checkNoDatabaseInPages();
+checkApiResponseContract();
+checkNoOrphanApiRoutes();
 
 if (failures.length > 0) {
   console.error(`Architecture Guard failed with ${failures.length} violation(s):`);

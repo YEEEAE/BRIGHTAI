@@ -50,7 +50,8 @@ export default function AttachmentUploader({ taskId }: Props) {
       }
       setNotice('File uploaded. Refreshing the attachment list…');
       reload();
-    } catch {
+    } catch (err) {
+      console.error('[task] attachment upload failed', err);
       setError('We couldn’t upload the file because the connection was interrupted. Check your connection and try again.');
       setUploading(false);
     }

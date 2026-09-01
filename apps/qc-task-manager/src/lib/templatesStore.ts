@@ -222,7 +222,7 @@ export function createTemplate(input: TemplateInput, actorId: number): number {
  * Update a template's editable fields. ARCHIVED templates are read-only. The
  * `code` is immutable after creation (it is the stable external identifier).
  */
-export function updateTemplate(id: number, input: TemplateInput, actorId: number): void {
+export function updateTemplate(id: number, input: TemplateInput, _actorId: number): void {
   const existing = getTemplate(id);
   if (!existing) throw new Error('Template not found.');
   if (existing.lifecycle_status === 'ARCHIVED') {

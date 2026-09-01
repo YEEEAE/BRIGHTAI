@@ -7,83 +7,28 @@ import AppButton from '../../components/ui/AppButton.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
-import { getDb } from '../../lib/db';
 import { getUserById } from '../../lib/auth';
 import { PERMISSIONS } from '../../lib/permissions';
+import { employeeAttention, listMyTasks } from '../../lib/roleWorkspace';
+import { ATTENTION_TONE } from '../../components/ui/statusTones';
 import {
   formatDueDate,
   isOverdue,
   isUrgent,
-  localDateStr,
   priorityLabel,
   priorityBadgeClass,
   URGENT_ROW_CLASS,
 } from '../../lib/format';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
-const db = getDb();
 
 // Session payload has no can_create_tasks, so load the real user row
 // (CORE BUSINESS RULE #1: employees create tasks only if can_create_tasks = 1).
 const fullUser = getUserById(user.userId);
 const allowCreate = fullUser ? PERMISSIONS.canCreateTask(fullUser) : false;
 
-const tasks = db
-  .prepare(
-    `SELECT id, title, status, priority, progress_percent, due_date, recurrence,
-            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
-            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
-            (SELECT r.status FROM task_delete_requests r
-              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_status,
-            (SELECT r.review_note FROM task_delete_requests r
-              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_note
-     FROM tasks t
-     WHERE t.assigned_to = ? OR t.created_by = ?
-     ORDER BY t.updated_at DESC
-     LIMIT 50`,
-  )
-  .all(user.userId, user.userId) as {
-    id: number;
-    title: string;
-    status: string;
-    priority: string;
-    progress_percent: number;
-    due_date: string | null;
-    recurrence: string;
-    checklist_total: number;
-    checklist_completed: number;
-    delete_request_status: 'pending' | 'rejected' | string | null;
-    delete_request_note: string | null;
-  }[];
-
-// "What needs my attention" — personal work signals above the list.
-const openTasks = tasks.filter((t) => t.status === 'not_started' || t.status === 'in_progress');
-const overdueMine = openTasks.filter((t) => isOverdue(t.due_date, t.status)).length;
-const dueTodayMine = openTasks.filter((t) => t.due_date === localDateStr()).length;
-const myDraftLabTests = db.prepare(
-  'SELECT COUNT(*) AS n FROM lab_test_records WHERE created_by = ? AND status = ?',
-).get(user.userId, 'DRAFT') as { n: number };
-const myReturnedLabTests = db.prepare(
-  'SELECT COUNT(*) AS n FROM lab_test_records WHERE created_by = ? AND status = ?',
-).get(user.userId, 'REJECTED') as { n: number };
-const myPendingChangeRequests = db.prepare(
-  'SELECT COUNT(*) AS n FROM lab_change_requests WHERE requested_by = ? AND status = ?',
-).get(user.userId, 'PENDING') as { n: number };
-
-const attention = [
-  { label: 'Overdue', n: overdueMine, href: null, tone: overdueMine > 0 ? 'danger' : 'neutral' },
-  { label: 'Due today', n: dueTodayMine, href: null, tone: 'neutral' },
-  { label: 'Open tasks', n: openTasks.length, href: null, tone: 'neutral' },
-  { label: 'My draft tests', n: myDraftLabTests.n, href: '/lab/tests?status=DRAFT', tone: myDraftLabTests.n > 0 ? 'info' : 'neutral' },
-  { label: 'Returned for changes', n: myReturnedLabTests.n, href: '/lab/tests?status=REJECTED', tone: myReturnedLabTests.n > 0 ? 'warning' : 'neutral' },
-  { label: 'Pending change requests', n: myPendingChangeRequests.n, href: '/lab/change-requests', tone: myPendingChangeRequests.n > 0 ? 'info' : 'neutral' },
-] as const;
-const attentionTone: Record<string, string> = {
-  danger: 'border-red-200 bg-red-50 text-red-700',
-  warning: 'border-orange-200 bg-orange-50 text-orange-700',
-  info: 'border-sky-200 bg-sky-50 text-sky-700',
-  neutral: 'border-slate-200 bg-white text-slate-700',
-};
+const tasks = listMyTasks(user.userId);
+const attention = employeeAttention(user.userId, tasks);
 ---
 <BaseLayout title="My Tasks">
   <div class="space-y-6">
@@ -107,14 +52,14 @@ const attentionTone: Record<string, string> = {
             href={item.href}
             class:list={[
               'rounded-xl border p-4 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
-              attentionTone[item.tone],
+              ATTENTION_TONE[item.tone],
             ]}
           >
             <p class="text-2xl font-semibold tabular-nums">{item.n}</p>
             <p class="mt-0.5 text-sm font-medium">{item.label}</p>
           </a>
         ) : (
-          <div class:list={['rounded-xl border p-4 shadow-sm', attentionTone[item.tone]]}>
+          <div class:list={['rounded-xl border p-4 shadow-sm', ATTENTION_TONE[item.tone]]}>
             <p class="text-2xl font-semibold tabular-nums">{item.n}</p>
             <p class="mt-0.5 text-sm font-medium">{item.label}</p>
           </div>

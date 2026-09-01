@@ -24,7 +24,7 @@ interface Props {
 
 const MAX_NOTE = 500;
 
-export default function ReviewDeleteRequestDialog({ requestId, taskId, taskTitle }: Props) {
+export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Props) {
   const [mode, setMode] = useState<'approve' | 'reject' | null>(null);
   const [note, setNote] = useState('');
   const [error, setError] = useState<string | null>(null);

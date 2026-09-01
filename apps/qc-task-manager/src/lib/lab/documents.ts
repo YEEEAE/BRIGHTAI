@@ -47,6 +47,8 @@ import {
   esignAuditNote,
   requireEsignature,
 } from './esignature';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { labDocumentSchema, parseFormData } from '../validation';
 
 // ─────────────────────────────── Policy ───────────────────────────────
 
@@ -181,8 +183,8 @@ export const LAB_DOCUMENT_SORT_FIELDS: readonly LabDocumentSortField[] = [
   'updated_at',
 ];
 
-export const LAB_DOCUMENT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_DOCUMENT_PER_PAGE = 25;
+export const LAB_DOCUMENT_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_DOCUMENT_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_DOCUMENT_SORT: LabDocumentSortField = 'updated_at';
 export const DEFAULT_LAB_DOCUMENT_DIR: 'asc' | 'desc' = 'desc';
 
@@ -1446,8 +1448,6 @@ async function handleLabDocumentPost(context: APIContext, documentId: number | n
     }
   }
 
-  // Dynamic import keeps this module loadable in the bundler-less unit tests.
-  const { parseFormData, labDocumentSchema } = await import('../validation');
   const form = await context.request.formData();
   const parsed = parseFormData(labDocumentSchema, form);
   if (!parsed.ok) {

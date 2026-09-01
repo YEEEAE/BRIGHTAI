@@ -37,8 +37,8 @@ const recentNotifications = navUser
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{siteTitle}</title>
-    <script src="/scripts/form-productivity.js" defer></script>
-    <script src="/scripts/ux-telemetry.js" data-enabled={!hideNav && !!Astro.locals.user} data-route={Astro.url.pathname} defer></script>
+    <script is:inline src="/scripts/form-productivity.js" defer></script>
+    <script is:inline src="/scripts/ux-telemetry.js" data-enabled={!hideNav && !!Astro.locals.user} data-route={Astro.url.pathname} defer></script>
   </head>
   <body class="min-h-screen bg-surface-page text-content antialiased">
     <SystemBackground />

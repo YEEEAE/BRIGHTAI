@@ -25,6 +25,17 @@ export const TONE_PILL_CLASSES: Record<StatusTone, string> = {
   blocked: 'bg-border text-content-secondary ring-border-strong',
 };
 
+/** Role-home "needs attention" card surfaces (single source — was duplicated
+ *  byte-identically on /manager, /supervisor and /employee). Legacy literal
+ *  Tailwind classes kept verbatim: migrating them to semantic tokens is a
+ *  design-system change and must not ride along a refactor. */
+export const ATTENTION_TONE: Record<'danger' | 'warning' | 'info' | 'neutral', string> = {
+  danger: 'border-red-200 bg-red-50 text-red-700',
+  warning: 'border-orange-200 bg-orange-50 text-orange-700',
+  info: 'border-sky-200 bg-sky-50 text-sky-700',
+  neutral: 'border-slate-200 bg-white text-slate-700',
+};
+
 /**
  * Status codes seen across the product. Keys are the exact DB/UI codes; where
  * the same code means the same thing everywhere (APPROVED, REJECTED, VOID…)

@@ -7,16 +7,9 @@
 // uploads. Returns JSON for the AttachmentUploader island.
 
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
+import { apiJson, apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
 import { uploadAttachment, MAX_UPLOAD_BYTES } from '../../../../../lib/taskUpdates';
 import { parsePositiveId } from '../../../../../lib/validation';
-
-function json(body: Record<string, unknown>, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
 
 export const POST: APIRoute = async (context) => {
   const csrf = requireCsrf(context);
@@ -27,27 +20,26 @@ export const POST: APIRoute = async (context) => {
 
   const taskId = parsePositiveId(context.params.id);
   if (taskId == null) {
-    return json({ ok: false, error: 'Invalid task id.' }, 404);
+    return apiJsonError('Invalid task id.', 404);
   }
 
   const form = await context.request.formData();
   const rawFile = form.get('file');
   if (typeof rawFile !== 'object' || rawFile === null || !('size' in rawFile)) {
-    return json({ ok: false, error: 'No file provided.' }, 400);
+    return apiJsonError('No file provided.', 400);
   }
   const file = rawFile as File;
   if (file.size === 0) {
-    return json({ ok: false, error: 'The file is empty.' }, 400);
+    return apiJsonError('The file is empty.', 400);
   }
 
   const result = await uploadAttachment({ taskId, actor: { id: user.id, role: user.role }, file });
   if (!result.ok) {
     const status = result.error === 'Task not found.' ? 404 : 400;
-    return json({ ok: false, error: result.error }, status);
+    return apiJsonError(result.error, status);
   }
 
-  return json({
-    ok: true,
+  return apiJson({
     attachmentId: result.attachmentId,
     fileName: result.fileName,
     maxBytes: MAX_UPLOAD_BYTES,

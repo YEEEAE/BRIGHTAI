@@ -51,7 +51,7 @@ import {
 import { listBlockingDependencies } from '../../lib/taskUpdates';
 import { taskListFor, listActiveUsers, listTasksForDependency } from '../../lib/tasks';
 import { canEditTask, canEditLockedField, canEditChecklistStructure, hasRankAtLeast, canOverrideEvidenceGate } from '../../lib/permissions';
-import { EMPLOYEE_LOCKED_FIELDS } from '../../lib/task-policy';
+import { EMPLOYEE_LOCKED_FIELDS, canRequestTaskDeletion } from '../../lib/task-policy';
 import { getTaskTemplateSnapshot } from '../../lib/templatesStore';
 import { normalizeEvidenceRequirements } from '../../lib/evidence';
 import {
@@ -147,13 +147,7 @@ const canOverrideEvidence = canOverrideEvidenceGate(user.role);
 // Delete-request workflow (CORE BUSINESS RULE #4): employees request deletion of
 // their own tasks that are not started or in progress. Completed tasks are never
 // requestable (CORE BUSINESS RULE #3); manager/admin delete directly instead.
-const canRequestDeletion =
-  !notFound &&
-  !forbidden &&
-  user.role === 'employee' &&
-  !!task &&
-  (task.status === 'not_started' || task.status === 'in_progress') &&
-  canViewTask({ id: user.userId, role: user.role }, task);
+const canRequestDeletion = canRequestTaskDeletion(user, task ?? null) && !notFound && !forbidden;
 const deleteRequestPending =
   !notFound && !forbidden && !!task ? hasPendingDeleteRequest(rawId) : false;
 // The DeleteRequestDialog island owns the interactive pending badge; the

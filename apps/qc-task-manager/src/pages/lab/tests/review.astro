@@ -42,6 +42,7 @@ import {
   type LabReviewRow,
   type LabReviewSortField,
 } from '../../../lib/lab/review';
+import { LAB_REVIEW_PER_PAGE_OPTIONS } from '../../../lib/lab/review';
 import { LAB_RESULT_OPTIONS, LAB_RESULT_LABELS } from '../../../lib/lab/policy';
 import { LAB_TEST_STATUS_LABELS } from '../../../lib/lab/testSearch';
 import type { Role } from '../../../lib/types';
@@ -293,7 +294,7 @@ function actionForm(row: LabReviewRow): string {
             <label class={FILTER_FIELD}>
               Per page
               <select name="per" class={FILTER_CONTROL}>
-                {[10, 25, 50, 100].map((n) => (
+                {LAB_REVIEW_PER_PAGE_OPTIONS.map((n) => (
                   <option value={n} selected={filters.per_page === n}>{n} per page</option>
                 ))}
               </select>

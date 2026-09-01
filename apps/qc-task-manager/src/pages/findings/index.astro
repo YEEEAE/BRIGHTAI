@@ -4,8 +4,7 @@ import PageHeader from '../../components/ui/PageHeader.astro';
 import AppButton from '../../components/ui/AppButton.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import QcStatusBadge from '../../components/QcStatusBadge.astro';
-import { listFindings } from '../../lib/qc-operations';
-import { getDb } from '../../lib/db';
+import { listFindings, listFindingFormOptions } from '../../lib/qc-operations';
 import { canManageFinding } from '../../lib/permissions';
 import { FINDING_CLASSIFICATIONS, FINDING_STATUSES } from '../../lib/findings';
 
@@ -22,8 +21,7 @@ const prefill = {
   risk_description: (Astro.url.searchParams.get('risk_description') || '').slice(0, 2000),
 };
 const findings = listFindings({ status, classification, owner: user.role === 'employee' ? user.userId : undefined }).filter((finding) => canManageFinding({ id: user.userId, role: user.role }, finding));
-const tasks = getDb().prepare('SELECT id, title FROM tasks ORDER BY id DESC LIMIT 200').all() as { id: number; title: string }[];
-const owners = getDb().prepare("SELECT id, full_name FROM users WHERE is_active=1 ORDER BY full_name").all() as { id: number; full_name: string }[];
+const { tasks, owners } = listFindingFormOptions();
 const filtered = Boolean(status || classification);
 const inputClass = 'rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 ---

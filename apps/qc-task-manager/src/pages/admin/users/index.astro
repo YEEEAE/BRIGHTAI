@@ -13,26 +13,11 @@
 //   - Password hashes are never selected or displayed.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import StatusPill from '../../../components/ui/StatusPill.astro';
-import { getDb, toBool } from '../../../lib/db';
+import { toBool } from '../../../lib/db';
+import { listAdminUsers } from '../../../lib/users';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
-const db = getDb();
-const users = db
-  .prepare(
-    `SELECT id, username, full_name, department, role, can_create_tasks, is_active, created_at, last_login_at
-     FROM users ORDER BY id`,
-  )
-  .all() as {
-    id: number;
-    username: string;
-    full_name: string;
-    department: string;
-    role: string;
-    can_create_tasks: number;
-    is_active: number;
-    created_at: string;
-    last_login_at: string | null;
-  }[];
+const users = listAdminUsers();
 
 const ROLE_BADGE: Record<string, string> = {
   admin: 'bg-purple-100 text-purple-700',

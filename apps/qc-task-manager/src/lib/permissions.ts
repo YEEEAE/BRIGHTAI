@@ -166,6 +166,12 @@ export function canApproveFinding(role: Role): boolean {
   return role === 'manager' || role === 'admin';
 }
 
+/** Supervisor review gate for Findings (reject/rework path). Single authority —
+ *  previously duplicated in lib/findings. */
+export function canReviewFinding(role: Role): boolean {
+  return role === 'supervisor' || role === 'manager' || role === 'admin';
+}
+
 export function canEditChecklistStructure(user: Pick<User, 'id' | 'role'>, task: Pick<Task, 'created_by' | 'assigned_to'>): boolean {
   if (hasRankAtLeast(user.role, 'manager')) return true;
   return user.role === 'supervisor' && (task.created_by === user.id || task.assigned_to === user.id);
@@ -425,6 +431,30 @@ export function canViewLabAudit(role: Role): boolean {
 // review, and the requester is never allowed to approve their own proposal.
 export function canSubmitLabChangeRequest(role: Role): boolean {
   return ALL_ROLES.includes(role);
+}
+
+/** Composite gate for the retest creation surface (GET form + POST handler):
+ *  supervisor+ creates directly; other roles enter via the change-request
+ *  queue. Previously re-derived independently in the page and the handler. */
+export function canOpenLabRetestForm(role: Role): boolean {
+  return canCreateLabRetest(role) || canSubmitLabChangeRequest(role);
+}
+
+/** Row-level read gate for a lab test record: staff see every record;
+ *  employees only records they tested or created. Single authority for the
+ *  page-level `loadLabTestView(id, allowed)` decision. A null record keeps
+ *  the legacy behavior: visible to staff, hidden from employees. Accepts
+ *  either a User ({id}) or a session ({userId}). */
+export function canViewLabTestRecord(
+  user: { id?: number; userId?: number; role: Role },
+  record: { tested_by?: unknown; created_by?: unknown } | null,
+): boolean {
+  if (user.role !== 'employee') return true;
+  if (!record) return false;
+  const uid = user.id ?? user.userId;
+  const testedBy = record.tested_by == null ? null : Number(record.tested_by);
+  const createdBy = record.created_by == null ? null : Number(record.created_by);
+  return testedBy === uid || createdBy === uid;
 }
 export function canViewOwnLabChangeRequests(role: Role): boolean {
   return ALL_ROLES.includes(role);

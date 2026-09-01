@@ -20,6 +20,7 @@
 import { getDb } from './db';
 import { logActivity, Action } from './activity';
 import { dueSoonEnd, isDueSoon, isOverdue, localDateStr } from './sla';
+import { TASK_ROW_SCOPE_SQL, rowScopeParams } from './scope';
 import type { Role } from './types';
 
 export type NotificationKind =
@@ -434,7 +435,7 @@ function taskScope(user: { id: number; role: Role }): { clause: string; params: 
   // Supervisors, managers and admins watch the whole team.
   if (user.role !== 'employee') return { clause: '', params: [] };
   // Employees care about tasks they own or were handed.
-  return { clause: 'AND (t.assigned_to = ? OR t.created_by = ?)', params: [user.id, user.id] };
+  return { clause: `AND ${TASK_ROW_SCOPE_SQL}`, params: rowScopeParams(user.id) };
 }
 
 interface TaskRow {

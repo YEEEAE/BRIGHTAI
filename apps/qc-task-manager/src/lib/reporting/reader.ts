@@ -69,3 +69,26 @@ export async function* readReportRows(reportType: ReportType, filters: ReportFil
     if (rows.length < CHUNK_SIZE) return;
   }
 }
+
+export interface ReportAuditLogRow {
+  report_id: string;
+  report_type: string;
+  generated_by: number;
+  filters_json: string;
+  generated_at: string;
+  format: string;
+  data_scope_json: string;
+  status: string;
+  row_count: number | null;
+  failure_reason: string | null;
+}
+
+/** Read model for GET /api/reports/audit — own-only scope binds generated_by. */
+export function listReportAuditLog(ownOnly: boolean, userId: number | null): ReportAuditLogRow[] {
+  const sql = `SELECT report_id, report_type, generated_by, filters_json, generated_at, format, data_scope_json, status, row_count, failure_reason
+               FROM report_audit_log ${ownOnly ? 'WHERE generated_by = ?' : ''} ORDER BY generated_at DESC LIMIT 100`;
+  const rows = ownOnly
+    ? getDb().prepare(sql).all(userId) as ReportAuditLogRow[]
+    : getDb().prepare(sql).all() as ReportAuditLogRow[];
+  return rows;
+}

@@ -33,6 +33,8 @@ import { requireCsrf } from '../api-security';
 import { createNotification } from '../notifications';
 import { canAcknowledgeLabDocument, canAssignLabDocumentAcknowledgement } from '../permissions';
 import type { LabAcknowledgementStatus, LabDocumentStatus, LabDocumentType } from '../types';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { labAcknowledgementAssignSchema, parseFormData } from '../validation';
 
 // ─────────────────────────────── Policy ───────────────────────────────
 
@@ -63,8 +65,8 @@ export const LAB_ACKNOWLEDGEMENT_SORT_FIELDS: readonly LabAcknowledgementSortFie
   'status',
 ];
 
-export const LAB_ACKNOWLEDGEMENT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_ACKNOWLEDGEMENT_PER_PAGE = 25;
+export const LAB_ACKNOWLEDGEMENT_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_ACKNOWLEDGEMENT_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_ACKNOWLEDGEMENT_SORT: LabAcknowledgementSortField = 'assigned_at';
 export const DEFAULT_LAB_ACKNOWLEDGEMENT_DIR: 'asc' | 'desc' = 'desc';
 
@@ -613,8 +615,6 @@ export async function handleLabAcknowledgementAssignPost(
     return context.redirect('/lab/acknowledgements');
   }
 
-  // Dynamic import keeps this module loadable in the bundler-less unit tests.
-  const { parseFormData, labAcknowledgementAssignSchema } = await import('../validation');
   const form = await context.request.formData();
   const parsed = parseFormData(labAcknowledgementAssignSchema, form);
   if (!parsed.ok) {

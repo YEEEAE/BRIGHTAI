@@ -81,7 +81,8 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
       setRequested(true);
       setOpen(false);
       setReason('');
-    } catch {
+    } catch (err) {
+      console.error('[task] delete-request submission failed', err);
       setError('Network error while submitting the request. Check your connection, then try Submit request again.');
     } finally {
       setSubmitting(false);

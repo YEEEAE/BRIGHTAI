@@ -1,3 +1,68 @@
+## [2026-09-02] — QC-100-ARCHITECTURE-002: رفع المعمارية وجودة الكود وسلامة الأنواع ومعالجة الأخطاء إلى إثبات مدعوم بالأدلة
+
+### تم التنفيذ
+- شغّلت ثلاثة وكلاء تدقيق متوازيين على `apps/qc-task-manager/` وأنتجت `audit/qc/QC-Task-Manager/REPORT3.md` بأدلة file:line لكل بند من قائمة التدقيق، مع أول توثيق كامل للـ27 hint.
+- **حذفت الكود الميت بموافقة صريحة:** مسار `api/tasks/suggestions.ts` (صفر مراجع) + `scripts/smoke-task-detail.mjs` + `auth.ts:requireRole` + دالتي `lab/overview` المتقادمتين (كانتا تُنفّذان بلا مستهلك منذ `05a32acd`) + إلغاء تصدير 8 صادرات داخلية. صحّحت تقرير الوكيل: 5 صادرات كان يعتبرها ميتة تستخدمها سويتات الاختبار فعليًا.
+- **وحّدت سلطة الصلاحيات:** `canApproveFinding` كانت معرّفة مرتين بجسمين مستقلين → تعريف واحد؛ ونقلت `canReviewFinding` و`canOpenLabRetestForm` و`canViewLabTestRecord` و`canRequestTaskDeletion` و`isLabTestRecordImmutable` من الصفحات إلى المالكين الكنسيين.
+- **أنشأت 3 وحدات مشتركة:** `lib/scope.ts` (عبارة ملكية الموظف منسوخة في 13 موضعًا → واحد بستة أشكال)، `lib/pagination.ts` (25 إعلان ترقيم → واحد)، `lib/roleWorkspace.ts` (SQL صفحات الأدوار — المدير والمشرف كانا توأمًا).
+- **أخرجت كل SQL من طبقة العرض:** 17 statement في 5 صفحات + 3 endpoints → صفر داخل `src/pages/**` (الاستثناء الموثق `readiness.ts`).
+- **وحّدت عقد API بـTDD:** `test-api-contract.mjs` كُتب أولًا ففشل بـ38 مخالفة، ثم أضفت `apiJson()` بجانب `apiJsonError()` ورحّلت 35 endpoint — صفر helper محلي، صفر body نصي، صفر خطأ بلا `code`.
+- **صححت خطأ ذاتيًا:** تحويل كل catch من 400 إلى 500 كسر 3 assertions في `e2e-findings` لأن مخالفات قواعد QC رفضٌ متوقع لا عطل. الحل: صنف `DomainRuleError` في `qc-operations.ts` (10 مواضع)، والـendpoints ترد 400 برسالة القاعدة و500 عامة للأعطال.
+- **typecheck 0/0/0** (كانت 0/0/27) و**تحذيرا Vite → صفر**: كانا من 13 استيراد ديناميكي زائد؛ حُوِّلت إلى static وأُزيلت الأغلفة العدمية. أُغلقت PERF-001.
+- **فكّكت `taskUpdates.ts`** (1,556 سطرًا) إلى ستة ملفات عند عناوين أقسامه الأصلية مع `index.ts` يفرض الواجهة العامة حرفيًا. الوحدات الضخمة الأربع الأخرى بقيت بقرار المالك وتُوثَّق ملكيتها.
+- **قوّيت `architecture-guard.mjs` من 5 إلى 9 قواعد** — وقاعدة ORPHAN_ROUTE كشفت **خللًا حقيقيًا**: زرّا Export CSV/XLSX في سجل اختبارات المختبر كانا يشيران إلى `/lab/tests/export.*` وهو غير موجود (404 على كل تصدير)؛ أُصلح وأُضيف فحص regression.
+- ثوابت مسماة (`BCRYPT_ROUNDS` 6→1، `RETENTION_WINDOW_MS`، `LAB_FAIL_RATE_ALERT_THRESHOLD`) و12 catch مبتلع صار يسجّل `console.error` بدون تغيير نص المستخدم.
+
+### الملفات المتأثرة
+- جديد: `src/lib/{scope,pagination,roleWorkspace}.ts` · `src/lib/taskUpdates/{index,shared,update,closure,lifecycle,attachments}.ts` · `scripts/test-api-contract.mjs` · `audit/qc/QC-Task-Manager/{REPORT3,ARCHITECTURE-100-EVIDENCE}.md`
+- محذوف: `src/pages/api/tasks/suggestions.ts` · `scripts/smoke-task-detail.mjs` · `src/lib/taskUpdates.ts`
+- موسّط: `scripts/architecture-guard.mjs` (9 قواعد) · `scripts/test-{manifest,ui-consistency,lab-ux-presentation}.mjs` · `src/lib/{permissions,api-security,observability,qc-operations,task-policy,lab/policy}.ts` · `package.json`
+- معدّل: `docs/ARCHITECTURE.md` + 35 endpoint + 10 وحدات lab + الصفحات المتأثرة
+- الإجمالي: **110 ملفًا، +804 / −2508**
+
+### الأرقام
+- typecheck: `0/0/27` → **`0/0/0`** · Vite warnings: `2` → **`0`** · guard rules: `5` → **`9`**
+- canonical suites: `65` → **`67`** · file routes: `116` → **`115`** · ui-consistency: `207` → **`212`**
+- scope-SQL: `13` → `1` · per-page decls: `25` → `2` · SQL في الصفحات: `17` → `0` · API error dialects: `4` → `1` · أخطاء بلا code: `53` → `0`
+
+### التحقق
+- `npx astro check` ✅ 0/0/0 · `NODE_ENV=production astro build` ✅ exit 0 وصفر تحذير
+- `architecture-guard` ✅ (9) · `route-manifest --check` ✅ 115/25/6 · `test-manifest-guard` ✅ 67+28
+- `test-api-contract` ✅ 159 فحصًا · `test-ui-consistency` ✅ 212/212 · `verify-security-hygiene` ✅ · `test-qc-operations` ✅
+- `run-full-tests` — آخر تشغيل كامل 66/67؛ الفشل الوحيد (`test:lab-ux-presentation`: نص انتقل لمالكه الكنسي) أُصلح وشُغّل وحده ✅ 14/14؛ **لم تُعَد السلسلة كاملة بعد تعديل `DomainRuleError`**
+- `e2e:acceptance` ⚠️ **غير مُتحقَّق على الشجرة النهائية** — تشغيل ما قبل التصحيح فشل بـ3 assertions في `e2e-findings` تطلب 400 (وهي ما يعالجه التصحيح)، ولم يُعَد التشغيل
+- `git diff --check` ✅ · لا commit ولا push ولا deploy
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** كل الأهداف الصلبة القابلة للقياس ساكنًا تحققت (0/0/0، بناء نظيف بلا تحذيرات، حارس 9 قواعد، صفر ازدواجية صلاحيات، صفر كود ميت غير مبرر، عقد API واحد)، وأُصلح خلل 404 حقيقي في تصدير المختبر. البوابة المتبقية للاعتماد النهائي هي `e2e:acceptance` كاملة.
+
+### ملاحظات / مشاكل مفتوحة
+- **إلزامي قبل أي نشر:** `pnpm e2e:acceptance` في runner يسمح بـlocalhost للتحقق من تصحيح `DomainRuleError` (3 assertions) وبقية الـ28 suite.
+- **مؤجّل موثق:** دورات الاستيراد `lab/changeRequests ↔ {equipment, products, calibration, retests}` تحتاج inversion عبر sink module.
+- تعديلان على ملفي حراسة بسبب موثق (النص الكنسي + `DomainRuleError` كرفض مشروع بـ400)؛ لم يُعطَّل أو يُخفَّف أي assertion.
+- الفجوات الخارجية من PROMPT 00 (G-01…G-05) بلا تغيير — المهمة داخلية معمارية.
+
+## [2026-09-02] — إعداد نماذج Claude في `.claude/settings.local.json`
+
+### تم التنفيذ
+- أضفت المفتاح `"model": "claude-opus-5"` كالنموذج الافتراضي.
+- أضفت `ANTHROPIC_MODEL_THINKING: "claude-opus-5-thinking"` داخل `env` كمرجع لنموذج التفكير.
+
+### الملفات المتأثرة
+- `.claude/settings.local.json`
+
+### التحقق
+- قراءة الملف بعد التعديل ✅ — JSON سليم.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** أُضيفا النموذجان كما طلب المستخدم؛ ملاحظة أن `ANTHROPIC_MODEL_THINKING` ليس متغيرًا معتمدًا رسميًا في Claude Code — التبديل الفعلي للـ thinking يُدار بالأوامر داخل الجلسة (`/model`) أو عبر خصائص reasoning للنموذج نفسه.
+
+### ملاحظات / مشاكل مفتوحة
+- ⚠️ الملف يحتوي `ANTHROPIC_API_KEY` في نص صريح و`ANTHROPIC_BASE_URL` لطرف ثالث (`api.justwoker.icu`) — تأكد المستخدم هو من وضعها؛ لا يُنشر ولا يُcommit للريبو العام.
+
+
 ## [2026-09-02] — QC-100-BASELINE-001: تجميد الحقيقة الحالية قبل المعالجة
 
 ### تم التنفيذ

@@ -24,9 +24,9 @@ import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import { loadLabTestView } from '../../../lib/lab/tests';
 import { LAB_TEST_STATUS_LABELS } from '../../../lib/lab/testSearch';
-import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS } from '../../../lib/lab/policy';
+import { LAB_RESULT_LABELS, LAB_RESULT_OPTIONS, LAB_RETEST_REASON_SHORT_LABELS as RETEST_REASON_LABELS, LAB_SAMPLE_STATUS_LABELS as SAMPLE_STATUS_LABELS, LAB_TEST_PARAM_LABELS as PARAM_LABELS, isLabTestRecordImmutable } from '../../../lib/lab/policy';
 import { getLabTestFindingLinkOptions } from '../../../lib/lab/findingLinks';
-import { canCreateLabRetest, canEditLabTestRecord, canLinkLabTestToFinding, canReviewLabTest, canVoidLabTestRecord } from '../../../lib/permissions';
+import { canCreateLabRetest, canEditLabTestRecord, canLinkLabTestToFinding, canReviewLabTest, canViewLabTestRecord, canVoidLabTestRecord } from '../../../lib/permissions';
 import AiReviewPanel from '../../../components/AiReviewPanel';
 import EsignDialog from '../../../components/EsignDialog.astro';
 import { labQrPayload, labQrSvg, labSampleAnchor, labSiteOrigin } from '../../../lib/lab/qrcodes';
@@ -53,10 +53,7 @@ let loadError: string | null = null;
 if (validId) {
   try {
     const record = loadLabTestView(id, true).record;
-    const testedBy = record?.tested_by == null ? null : Number(record.tested_by);
-    const createdBy = record?.created_by == null ? null : Number(record.created_by);
-    const isOwn = role === 'employee' && (testedBy === userId || createdBy === userId);
-    view = loadLabTestView(id, role !== 'employee' || isOwn);
+    view = loadLabTestView(id, canViewLabTestRecord(user, record));
   } catch (err) {
     console.error('[lab] test details load failure', err);
     loadError = 'Could not load this test record. Try reloading — if the problem persists, contact an administrator.';
@@ -68,7 +65,7 @@ const notFound = !validId || record === null;
 
 const status = record ? String(record.status) : '';
 const result = record ? String(record.final_result ?? '') : '';
-const immutable = status === 'APPROVED' || status === 'VOID';
+const immutable = isLabTestRecordImmutable(status);
 const typeLabel = record ? String(record.test_type).toUpperCase() : '';
 const recordId = record ? Number(record.id) : Number.NaN;
 const canLinkFindings = canLinkLabTestToFinding(role);
@@ -116,21 +113,8 @@ function field(k: string): string {
 }
 const hasLegacyData = Boolean(record?.actual_pressure || record?.torque_in_lb || view.samples.some((s) => s.actual_pressure || s.volume_sec));
 
-// Human labels for the snapshots_json keys (see policy.ts §5).
-const PARAM_LABELS: Record<string, string> = {
-  standard_parameter: 'Standard Parameter',
-  acceptance_criteria: 'Acceptance Criteria',
-  holding_time: 'Holding Time',
-  actual_pressure_reference: 'Actual Pressure Reference',
-};
-const RETEST_REASON_LABELS: Record<string, string> = {
-  FAIL: 'FAIL',
-  HOLD: 'HOLD / Further Evaluation',
-  SAMPLE_ISSUE: 'Sample Issue',
-  EQUIPMENT_ISSUE: 'Equipment Issue',
-  PROCEDURAL_ISSUE: 'Procedural Issue',
-  OTHER: 'Other',
-};
+// Human labels for the snapshots_json keys (see policy.ts §5) — shared with
+// the print view via lib/lab/policy.
 
 const resultLabel = (v: unknown) => {
   const s = v == null ? '' : String(v);
@@ -155,12 +139,6 @@ const testContext = record ? (() => {
   return { ...current, related };
 })() : null;
 
-const SAMPLE_STATUS_LABELS: Record<string, string> = {
-  PENDING: 'Pending',
-  TESTED: 'Tested',
-  APPROVED: 'Approved',
-  VOID: 'Void',
-};
 const sampleStatusLabel = (v: unknown) => {
   const s = v == null ? '' : String(v);
   return s ? (SAMPLE_STATUS_LABELS[s] ?? s) : '—';

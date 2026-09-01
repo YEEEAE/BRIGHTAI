@@ -257,7 +257,8 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
         return;
       }
       reload();
-    } catch {
+    } catch (err) {
+      console.error('[task] close request failed', err);
       setError('We couldn’t complete the task because the connection was interrupted. Check your connection and try again.');
       setSubmitting(false);
     }
@@ -284,7 +285,8 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
         return;
       }
       reload();
-    } catch {
+    } catch (err) {
+      console.error('[task] cancel request failed', err);
       setCancelError('We couldn’t cancel the task because the connection was interrupted. Check your connection and try again.');
       setCancelSubmitting(false);
     }
@@ -306,7 +308,8 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
         return;
       }
       reload();
-    } catch {
+    } catch (err) {
+      console.error('[task] reopen request failed', err);
       setReopenError('We couldn’t reopen the task because the connection was interrupted. Check your connection and try again.');
       setReopening(false);
     }

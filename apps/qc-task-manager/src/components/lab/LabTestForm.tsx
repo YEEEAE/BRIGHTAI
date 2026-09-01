@@ -347,7 +347,6 @@ export default function LabTestForm({
     const handler = (event: BeforeUnloadEvent) => {
       if (!dirtyRef.current) return;
       event.preventDefault();
-      event.returnValue = '';
     };
     window.addEventListener('beforeunload', handler);
     return () => window.removeEventListener('beforeunload', handler);

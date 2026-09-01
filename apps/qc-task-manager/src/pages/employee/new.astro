@@ -11,7 +11,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewTaskForm from '../../components/NewTaskForm.astro';
 import { getUserById } from '../../lib/auth';
-import { PERMISSIONS, roleHome } from '../../lib/permissions';
+import { PERMISSIONS } from '../../lib/permissions';
 import { listTemplates } from '../../lib/templatesStore';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session

@@ -2,7 +2,7 @@
 // pure module; AI may suggest a finding but cannot make it authoritative.
 
 import { FINDING_CLASSIFICATIONS, MAX_QC_METADATA_LENGTH, RISK_LEVELS } from '../task-policy';
-import type { FindingClassification, RiskLevel, Role } from '../types';
+import type { FindingClassification, RiskLevel } from '../types';
 
 export { FINDING_CLASSIFICATIONS, RISK_LEVELS };
 
@@ -27,14 +27,6 @@ export function isFindingStatus(value: string): value is FindingStatus {
 
 export function canTransitionFinding(from: string, to: string): boolean {
   return isFindingStatus(from) && isFindingStatus(to) && (from === to || FINDING_TRANSITIONS[from].includes(to));
-}
-
-export function canReviewFinding(role: Role): boolean {
-  return role === 'supervisor' || role === 'manager' || role === 'admin';
-}
-
-export function canApproveFinding(role: Role): boolean {
-  return role === 'manager' || role === 'admin';
 }
 
 export function normalizeFindingText(value: unknown): string | null {

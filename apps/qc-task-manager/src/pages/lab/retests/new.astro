@@ -10,7 +10,7 @@ import EmptyState from '../../../components/EmptyState.astro';
 import LabSecondaryNav from '../../../components/lab/LabSecondaryNav.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
 import { getLabRetestCreateContext, LAB_RETEST_REASONS, LAB_RETEST_REASON_LABELS } from '../../../lib/lab/retests';
-import { canCreateLabRetest } from '../../../lib/permissions';
+import { canOpenLabRetestForm } from '../../../lib/permissions';
 import { setFlash } from '../../../lib/flash';
 import type { Role } from '../../../lib/types';
 import PageHeader from '../../../components/ui/PageHeader.astro';
@@ -19,7 +19,7 @@ import { FILTER_CONTROL } from '../../../components/ui/formPresets';
 const user = Astro.locals.user!;
 const role = user.role as Role;
 
-if (!canCreateLabRetest(role) && role !== 'employee') {
+if (!canOpenLabRetestForm(role)) {
   setFlash(Astro, 'error', 'You do not have permission to create retests.');
   return Astro.redirect('/lab/retests');
 }

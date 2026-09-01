@@ -29,6 +29,8 @@ import type { LabEquipment, LabEquipmentMaintenance } from '../types';
 import { statusMatchesLabel } from './equipmentStatus';
 import { appendQcAudit } from '../audit/qcChain';
 import { LATEST_DUE_SQL } from './overview';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { labEquipmentSchema, parseFormData } from '../validation';
 
 // ─────────────────────────────── Audit ───────────────────────────────
 
@@ -82,8 +84,8 @@ export const LAB_EQUIPMENT_SORT_FIELDS: readonly LabEquipmentSortField[] = [
   'updated_at',
 ];
 
-export const LAB_EQUIPMENT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_EQUIPMENT_PER_PAGE = 25;
+export const LAB_EQUIPMENT_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_EQUIPMENT_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_EQUIPMENT_SORT: LabEquipmentSortField = 'updated_at';
 export const DEFAULT_LAB_EQUIPMENT_DIR: 'asc' | 'desc' = 'desc';
 
@@ -774,8 +776,6 @@ async function handleLabEquipmentPost(context: APIContext, id: number | null): P
     }
   }
 
-  // Dynamic import keeps this module loadable in the bundler-less unit tests.
-  const { parseFormData, labEquipmentSchema } = await import('../validation');
   const parsed = parseFormData(labEquipmentSchema, form);
   if (!parsed.ok) {
     setFlash(context, 'error', parsed.error);

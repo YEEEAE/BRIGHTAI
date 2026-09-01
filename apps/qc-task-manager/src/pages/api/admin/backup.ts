@@ -2,7 +2,7 @@
 // Backup files never leave the server; this endpoint returns metadata only.
 
 import type { APIRoute } from 'astro';
-import { apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../lib/api-security';
+import { apiJson, apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../lib/api-security';
 import { BACKUP_DIR, DB_PATH } from '../../../lib/db';
 import { createBackup, getBackupStatus, listBackups } from '../../../lib/backup';
 import { PERMISSIONS } from '../../../lib/permissions';
@@ -26,10 +26,11 @@ export const POST: APIRoute = async (context) => {
       setFlash(context, 'success', `Backup created: ${result.name}.`);
       return context.redirect('/admin/settings');
     }
-    return new Response(
-      JSON.stringify({ ok: true, backup: { name: result.name, size: result.size, pruned: result.pruned, metadata: result.metadata, verification: result.verification }, status: getBackupStatus(backupDir), count: listBackups(backupDir).length }),
-      { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } },
-    );
+    return apiJson({
+      backup: { name: result.name, size: result.size, pruned: result.pruned, metadata: result.metadata, verification: result.verification },
+      status: getBackupStatus(backupDir),
+      count: listBackups(backupDir).length,
+    });
   } catch {
     if (context.request.headers.get('accept')?.includes('text/html')) {
       setFlash(context, 'error', 'Backup failed. Check the server logs or admin settings.');

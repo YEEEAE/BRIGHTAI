@@ -9,16 +9,16 @@
 import { csvField } from './export';
 import type { SearchTaskRow } from './taskSearch';
 
-export interface ExportColumn {
+interface ExportColumn {
   header: string;
   key: keyof ExportCellMap;
   width: number;
 }
 
 /** Cell values are pre-formatted strings/numbers — the writers never coerce. */
-export type ExportCellMap = Record<string, string | number>;
+type ExportCellMap = Record<string, string | number>;
 
-export const SEARCH_EXPORT_COLUMNS: ExportColumn[] = [
+const SEARCH_EXPORT_COLUMNS: ExportColumn[] = [
   { header: 'ID', key: 'id', width: 8 },
   { header: 'Title', key: 'title', width: 40 },
   { header: 'Description', key: 'description', width: 50 },
@@ -40,7 +40,7 @@ export const SEARCH_EXPORT_COLUMNS: ExportColumn[] = [
 ];
 
 /** Map a search row onto the export cells (single source for CSV + XLSX). */
-export function searchRowToCells(row: SearchTaskRow): ExportCellMap {
+function searchRowToCells(row: SearchTaskRow): ExportCellMap {
   return {
     id: row.id,
     title: row.title ?? '',

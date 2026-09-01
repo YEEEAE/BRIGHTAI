@@ -18,7 +18,7 @@ import EsignDialog from '../../../components/EsignDialog.astro';
 import LabDocumentStatusBadge from '../../../components/lab/LabDocumentStatusBadge.astro';
 import LabActionButton from '../../../components/lab/LabActionButton.astro';
 import { labNavForRole } from '../../../lib/lab/navigation';
-import { getLabDocumentDetail } from '../../../lib/lab/documents';
+import { LAB_DOCUMENT_STATUS_LABELS, getLabDocumentDetail } from '../../../lib/lab/documents';
 import {
   canApproveLabDocumentRecord,
   canArchiveLabDocument,
@@ -26,7 +26,7 @@ import {
   canEditLabDocumentRecord,
   canReviewLabDocumentRecord,
 } from '../../../lib/permissions';
-import type { LabDocumentStatus, LabDocumentType, Role } from '../../../lib/types';
+import type { Role } from '../../../lib/types';
 import { DOCUMENT_TYPE_BADGE_CLS as TYPE_BADGE_CLS } from '../../../components/ui/labBadgeClasses';
 import WorkflowContext from '../../../components/ui/WorkflowContext.astro';
 
@@ -49,13 +49,7 @@ function fmt(value: unknown): string {
   return value == null || String(value).trim() === '' ? '—' : String(value);
 }
 
-const STATUS_LABELS: Record<LabDocumentStatus, string> = {
-  DRAFT: 'Draft',
-  IN_REVIEW: 'In Review',
-  APPROVED: 'Approved',
-  SUPERSEDED: 'Superseded',
-  ARCHIVED: 'Archived',
-};
+const STATUS_LABELS = LAB_DOCUMENT_STATUS_LABELS;
 
 const docAuth = detail
   ? {

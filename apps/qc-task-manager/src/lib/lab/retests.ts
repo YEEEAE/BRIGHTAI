@@ -21,7 +21,7 @@ import { setFlash } from '../flash';
 import { getCurrentUser } from '../session';
 import { requireCsrf } from '../api-security';
 import { createNotification } from '../notifications';
-import { canCreateLabRetest, canSubmitLabChangeRequest } from '../permissions';
+import { canCreateLabRetest, canOpenLabRetestForm } from '../permissions';
 import { submitChangeRequest } from './changeRequests';
 import type { Role } from '../types';
 import { appendQcAudit } from '../audit/qcChain';
@@ -32,6 +32,8 @@ import {
   type LabRetestReason,
   type LabRetestStatus,
 } from './policy';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { labRetestSchema, parseFormData } from '../validation';
 
 export { LAB_RETEST_REASONS, LAB_RETEST_STATUSES, LAB_RETEST_REASON_LABELS };
 export type { LabRetestReason, LabRetestStatus };
@@ -79,10 +81,10 @@ export const LAB_RETEST_SORT_FIELDS: readonly LabRetestSortField[] = [
   'created_at',
   'updated_at',
 ];
-export const LAB_RETEST_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
+export const LAB_RETEST_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
 export const DEFAULT_LAB_RETEST_SORT: LabRetestSortField = 'created_at';
 export const DEFAULT_LAB_RETEST_DIR: 'asc' | 'desc' = 'desc';
-export const DEFAULT_LAB_RETEST_PER_PAGE = 25;
+export const DEFAULT_LAB_RETEST_PER_PAGE = DEFAULT_PER_PAGE;
 
 export interface LabRetestSearchFilters {
   /** Free text — retest number, original test number, original product name/code. */
@@ -569,13 +571,11 @@ export async function handleLabRetestCreatePost(context: APIContext): Promise<Re
     ? `/lab/retests/new?test=${testParam}`
     : '/lab/retests';
 
-  if (!canCreateLabRetest(user.role) && !canSubmitLabChangeRequest(user.role)) {
+  if (!canOpenLabRetestForm(user.role)) {
     setFlash(context, 'error', 'You do not have permission to create retests.');
     return context.redirect('/lab/retests');
   }
 
-  // Dynamic import keeps this module loadable in the bundler-less unit tests.
-  const { parseFormData, labRetestSchema } = await import('../validation');
   const form = await context.request.formData();
   const parsed = parseFormData(labRetestSchema, form);
   if (!parsed.ok) {

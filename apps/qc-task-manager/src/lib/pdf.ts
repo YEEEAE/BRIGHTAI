@@ -173,7 +173,7 @@ export function buildTaskPdf(data: TaskPdfData): Buffer {
     `2 0 obj\n<< /Type /Pages /Kids [${pages.map((_, i) => `${pageObjId(i)} 0 R`).join(' ')}] /Count ${n} >>\nendobj\n`,
   );
   objects.push('3 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>\nendobj\n');
-  pages.forEach((pageLines, i) => {
+  pages.forEach((_pageLines, i) => {
     objects.push(
       `${pageObjId(i)} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_W} ${PAGE_H}]` +
         ` /Resources << /Font << /F1 3 0 R >> >> /Contents ${streamObjId(i)} 0 R >>\nendobj\n`,

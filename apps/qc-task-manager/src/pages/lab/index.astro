@@ -26,14 +26,11 @@ import {
   getLabOpenRetests,
   getLabRecentActivity,
   getWICatalogSummary,
-  getLabReturnedTests,
-  getLabOwnedWIContent,
   getLabRoleActionSummary,
   LAB_KPI_DRILLDOWNS,
   labDrilldownEnabled,
   type LabKpis,
 } from '../../lib/lab/overview';
-import { getLabDocumentInReviewCount } from '../../lib/lab/documents';
 import {
   canCreateLabDocument,
   canCreateLabProduct,
@@ -73,8 +70,6 @@ const canSeeAuditFeed = canViewLabAudit(role);
 let dataError: string | null = null;
 let kpis: LabKpis | null = null;
 let recentTests: ReturnType<typeof getLabRecentTests> = [];
-let returnedTests: ReturnType<typeof getLabReturnedTests> = [];
-let ownedWIContent: ReturnType<typeof getLabOwnedWIContent> = [];
 let pendingReviews: ReturnType<typeof getLabPendingReviews> = [];
 let equipmentAlerts: ReturnType<typeof getLabEquipmentAlerts> = [];
 let calibrationAlerts: ReturnType<typeof getLabCalibrationAlerts> = [];
@@ -82,14 +77,11 @@ let documentReviewsDue: ReturnType<typeof getLabDocumentReviewsDue> = [];
 let openRetests: ReturnType<typeof getLabOpenRetests> = [];
 let recentActivity: ReturnType<typeof getLabRecentActivity> = [];
 let wiCatalog: ReturnType<typeof getWICatalogSummary> = { total: 0, missing_content: 0, draft_content: 0, under_review: 0, approved: 0 };
-let documentsInReview = 0;
 let roleSummary: ReturnType<typeof getLabRoleActionSummary> | null = null;
 
 try {
   kpis = getLabKpis(scope);
   recentTests = getLabRecentTests(scope);
-  returnedTests = getLabReturnedTests(scope);
-  ownedWIContent = getLabOwnedWIContent(scope);
   if (canSeeReviewQueue) pendingReviews = getLabPendingReviews(scope);
   equipmentAlerts = getLabEquipmentAlerts();
   calibrationAlerts = getLabCalibrationAlerts();
@@ -97,7 +89,6 @@ try {
   openRetests = getLabOpenRetests(scope);
   if (canSeeAuditFeed) recentActivity = getLabRecentActivity(scope);
   wiCatalog = getWICatalogSummary();
-  documentsInReview = getLabDocumentInReviewCount();
   roleSummary = getLabRoleActionSummary(scope);
 } catch (err) {
   console.error('[lab] overview query failure', err);

@@ -29,6 +29,7 @@ import { esignAuditNote } from './esignature';
 import { canApproveLabTestRecord, canReviewLabTestRecord } from '../permissions';
 import { appendQcAudit } from '../audit/qcChain';
 import type { LabFinalResult, LabTestStatus, LabTestType, Role } from '../types';
+import { DEFAULT_PER_PAGE, isPerPage, PER_PAGE_OPTIONS } from '../pagination';
 
 /** Minimal record shape the can*LabTestRecord predicates need (matches permissions.ts). */
 interface LabTestAuth {
@@ -157,8 +158,8 @@ export const LAB_REVIEW_SORT_FIELDS: readonly LabReviewSortField[] = [
 
 export const DEFAULT_LAB_REVIEW_SORT: LabReviewSortField = 'submitted_at';
 export const DEFAULT_LAB_REVIEW_DIR: 'asc' | 'desc' = 'asc';
-export const LAB_REVIEW_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_REVIEW_PER_PAGE = 25;
+export const LAB_REVIEW_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_REVIEW_PER_PAGE = DEFAULT_PER_PAGE;
 
 export interface LabReviewFilters {
   test_type: LabTestType | null;
@@ -209,10 +210,6 @@ function positiveInt(v: string): number | null {
 
 function isReviewSortField(v: string): v is LabReviewSortField {
   return (LAB_REVIEW_SORT_FIELDS as readonly string[]).includes(v);
-}
-
-function isPerPage(v: number): v is (typeof LAB_REVIEW_PER_PAGE_OPTIONS)[number] {
-  return (LAB_REVIEW_PER_PAGE_OPTIONS as readonly number[]).includes(v);
 }
 
 function isStatus(v: string): v is LabTestStatus {
@@ -430,7 +427,7 @@ export async function searchReviewQueue(
   f: LabReviewFilters,
   scope: { userId: number },
 ): Promise<LabReviewResult> {
-  const db = await getReviewDb();
+  const db = getDb();
   const where = buildLabReviewWhere(f);
   const conds = [where.sql.replace(/^WHERE /, '')];
   const params = [...where.params];
@@ -454,15 +451,9 @@ export async function searchReviewQueue(
   return { rows, total, page, per_page: f.per_page, total_pages: totalPages };
 }
 
-/** Lazy getDb — keeps this module importable without a bundler/loader. */
-async function getReviewDb() {
-  const { getDb } = await import('../db');
-  return getDb();
-}
-
 /** Testers present on reviewable tests (filter dropdown). */
 export async function listReviewTesters(): Promise<{ id: number; full_name: string }[]> {
-  const db = await getReviewDb();
+  const db = getDb();
   return db
     .prepare(
       `SELECT DISTINCT u.id, u.full_name
@@ -475,7 +466,7 @@ export async function listReviewTesters(): Promise<{ id: number; full_name: stri
 
 /** Products present on reviewable tests (filter dropdown). */
 export async function listReviewProducts(): Promise<{ id: number; name: string; code: string }[]> {
-  const db = await getReviewDb();
+  const db = getDb();
   return db
     .prepare(
       `SELECT DISTINCT p.id, p.name, p.code
@@ -625,7 +616,7 @@ export function transitionLabTest(
 function writeLabTestSnapshots(
   db: ReturnType<typeof getDb>,
   testId: number,
-  testNumber: string,
+  _testNumber: string,
 ): void {
   const row = db
     .prepare('SELECT * FROM lab_test_records WHERE id = ?')

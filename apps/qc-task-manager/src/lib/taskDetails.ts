@@ -46,6 +46,13 @@ export type TaskDetail = Task & {
 };
 
 /** Load a single task with creator/assignee/completer/canceller display names. */
+/** Minimal task columns for view-gating in comment/attachment flows. */
+export function getTaskCore(id: number): Pick<Task, 'id' | 'status' | 'created_by' | 'assigned_to' | 'title'> | undefined {
+  return getDb()
+    .prepare('SELECT id, status, created_by, assigned_to, title FROM tasks WHERE id = ?')
+    .get(id) as Pick<Task, 'id' | 'status' | 'created_by' | 'assigned_to' | 'title'> | undefined;
+}
+
 export function getTaskDetail(id: number): TaskDetail | null {
   const db = getDb();
   const row = db

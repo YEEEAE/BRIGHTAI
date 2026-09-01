@@ -17,6 +17,7 @@
 
 import type { Database as Db } from 'better-sqlite3';
 import { getDb } from '../db';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
 
 export type LabAuditEntity =
   | 'LAB_TEST'
@@ -103,8 +104,8 @@ export const LAB_AUDIT_ROLE_LABELS: Record<string, string> = {
   admin: 'Administrator',
 };
 
-export const LAB_AUDIT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_AUDIT_PER_PAGE = 25;
+export const LAB_AUDIT_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_AUDIT_PER_PAGE = DEFAULT_PER_PAGE;
 
 export interface LabAuditTimelineEntry {
   id: number;

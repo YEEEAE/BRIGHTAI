@@ -3,7 +3,7 @@
 // own rows). Returns JSON so the MarkReadButton island can confirm and reload.
 
 import type { APIRoute } from 'astro';
-import { isResponse, requireApiUser, requireCsrf } from '../../../../lib/api-security';
+import { apiJson, apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../lib/api-security';
 import { markNotificationRead } from '../../../../lib/notifications';
 import { parsePositiveId } from '../../../../lib/validation';
 
@@ -16,15 +16,9 @@ export const POST: APIRoute = async (context) => {
 
   const id = parsePositiveId(context.params.id);
   if (id == null) {
-    return new Response(JSON.stringify({ ok: false, error: 'Invalid notification id.' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return apiJsonError('Invalid notification id.', 400);
   }
 
   const marked = markNotificationRead(user.id, id);
-  return new Response(JSON.stringify({ ok: true, marked }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return apiJson({ marked });
 };

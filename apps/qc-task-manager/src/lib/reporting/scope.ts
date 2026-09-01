@@ -1,7 +1,8 @@
 import { isLabReportType } from './types';
+import { TASK_ROW_SCOPE_SQL, rowScopeParams } from '../scope';
 import type { ReportActor, ReportFilters, ReportType, ResolvedDataScope } from './types';
 
-export function resolveReportScope(actor: ReportActor, filters: ReportFilters, reportType?: ReportType): ResolvedDataScope {
+export function resolveReportScope(actor: ReportActor, _filters: ReportFilters, reportType?: ReportType): ResolvedDataScope {
   // Laboratory reports (§13): lab data has no department dimension and the
   // employee role is already denied upstream in authorizeReport, so every
   // authorized caller (supervisor/manager/admin) reads the full lab scope.
@@ -14,7 +15,7 @@ export function resolveReportScope(actor: ReportActor, filters: ReportFilters, r
   if (actor.role === 'employee') {
     return {
       kind: 'own_tasks', userId: actor.id, department: actor.department,
-      sql: '(t.assigned_to = ? OR t.created_by = ?)', params: [actor.id, actor.id],
+      sql: TASK_ROW_SCOPE_SQL, params: rowScopeParams(actor.id),
     };
   }
   if (actor.role === 'supervisor') {
@@ -25,7 +26,7 @@ export function resolveReportScope(actor: ReportActor, filters: ReportFilters, r
     if (!actor.department) {
       return {
         kind: 'own_tasks', userId: actor.id, department: null,
-        sql: '(t.assigned_to = ? OR t.created_by = ?)', params: [actor.id, actor.id],
+        sql: TASK_ROW_SCOPE_SQL, params: rowScopeParams(actor.id),
       };
     }
     return {

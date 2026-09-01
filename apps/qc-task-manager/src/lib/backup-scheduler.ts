@@ -7,7 +7,6 @@ import { statSync } from 'node:fs';
 
 import {
   BACKUP_TIME_ZONE,
-  configuredBackupDirectory,
   createBackup,
   getBackupStatus,
   type BackupOptions,
@@ -96,7 +95,7 @@ export function startBackupScheduler(options: BackupOptions): () => void {
   if (shouldRunBackupCatchup(status)) {
     if (dbFileExists(options.dbPath)) {
       void createBackup({ ...options, trigger: 'scheduled' })
-        .catch(() => {})
+        .catch((err) => console.error('[backup] catch-up run failed', err))
         .finally(() => scheduleNext(options));
     } else {
       // Same quiet skip as the daily timer: absent file is not a failure.
@@ -113,10 +112,4 @@ export function stopBackupScheduler(): void {
   running = false;
   if (timer) clearTimeout(timer);
   timer = null;
-}
-
-/** Resolve the standard scheduler options for callers that only know the DB.
- * Honors QC_BACKUP_DIR through the same shared resolution as the app runtime. */
-export function schedulerOptionsForDatabase(dbPath: string): BackupOptions {
-  return { dbPath, backupDir: configuredBackupDirectory(dbPath) };
 }

@@ -6,7 +6,8 @@ import AppButton from '../../components/ui/AppButton.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import DeleteRequestBadge from '../../components/DeleteRequestBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
-import { getDb } from '../../lib/db';
+import { listTeamTasks, managerAttention } from '../../lib/roleWorkspace';
+import { ATTENTION_TONE } from '../../components/ui/statusTones';
 import {
   formatDueDate,
   isOverdue,
@@ -17,66 +18,8 @@ import {
 } from '../../lib/format';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session
-const db = getDb();
-
-const tasks = db
-  .prepare(
-    `SELECT t.id, t.title, t.status, t.priority, t.progress_percent, t.due_date, t.recurrence,
-            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id) AS checklist_total,
-            (SELECT COUNT(*) FROM task_checklists c WHERE c.task_id = t.id AND c.is_completed = 1) AS checklist_completed,
-            u.full_name AS assignee,
-            (SELECT r.status FROM task_delete_requests r
-              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_status,
-            (SELECT r.review_note FROM task_delete_requests r
-              WHERE r.task_id = t.id ORDER BY r.id DESC LIMIT 1) AS delete_request_note
-     FROM tasks t
-     LEFT JOIN users u ON u.id = t.assigned_to
-     ORDER BY t.updated_at DESC
-     LIMIT 100`,
-  )
-  .all() as {
-    id: number;
-    title: string;
-    status: string;
-    priority: string;
-    progress_percent: number;
-    due_date: string | null;
-    recurrence: string;
-    assignee: string | null;
-    delete_request_status: 'pending' | 'rejected' | string | null;
-    delete_request_note: string | null;
-    checklist_total: number;
-    checklist_completed: number;
-  }[];
-
-// "Needs my attention" strip (Phase: role home — answer first, list below).
-// Counts mirror the operational definitions; links lead to the existing
-// authoritative lists (drilldown KPI, search filter, review registers).
-const overdueOpen = db.prepare(
-  "SELECT COUNT(*) AS n FROM tasks WHERE status IN ('not_started','in_progress') AND due_date IS NOT NULL AND due_date < date('now')",
-).get() as { n: number };
-const urgentOpen = db.prepare(
-  "SELECT COUNT(*) AS n FROM tasks WHERE status IN ('not_started','in_progress') AND priority = 'urgent'",
-).get() as { n: number };
-const pendingDeleteRequests = db.prepare(
-  "SELECT COUNT(*) AS n FROM task_delete_requests WHERE status = 'pending'",
-).get() as { n: number };
-const openFindings = db.prepare(
-  "SELECT COUNT(*) AS n FROM qc_findings WHERE status NOT IN ('CLOSED','CANCELLED')",
-).get() as { n: number };
-
-const attention = [
-  { label: 'Overdue tasks', n: overdueOpen.n, href: '/dashboard/drilldown?kpi=overdue', tone: overdueOpen.n > 0 ? 'danger' : 'neutral' },
-  { label: 'Urgent open tasks', n: urgentOpen.n, href: '/search?priority=urgent', tone: urgentOpen.n > 0 ? 'warning' : 'neutral' },
-  { label: 'Pending delete requests', n: pendingDeleteRequests.n, href: '/manager/requests', tone: pendingDeleteRequests.n > 0 ? 'warning' : 'neutral' },
-  { label: 'Open findings', n: openFindings.n, href: '/findings', tone: openFindings.n > 0 ? 'info' : 'neutral' },
-] as const;
-const attentionTone: Record<string, string> = {
-  danger: 'border-red-200 bg-red-50 text-red-700',
-  warning: 'border-orange-200 bg-orange-50 text-orange-700',
-  info: 'border-sky-200 bg-sky-50 text-sky-700',
-  neutral: 'border-slate-200 bg-white text-slate-700',
-};
+const tasks = listTeamTasks();
+const attention = managerAttention();
 ---
 <BaseLayout title="Tasks">
   <div class="space-y-6">
@@ -100,7 +43,7 @@ const attentionTone: Record<string, string> = {
           href={item.href}
           class:list={[
             'rounded-xl border p-4 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
-            attentionTone[item.tone],
+            ATTENTION_TONE[item.tone],
           ]}
         >
           <p class="text-2xl font-semibold tabular-nums">{item.n}</p>

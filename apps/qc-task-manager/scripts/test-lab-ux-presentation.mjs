@@ -15,6 +15,9 @@ const files = {
   documents: join(root, 'src/pages/lab/documents/index.astro'),
   detail: join(root, 'src/pages/lab/documents/[id].astro'),
   badge: join(root, 'src/components/lab/LabDocumentStatusBadge.astro'),
+  // Canonical owner of the document status label text (QC-100-ARCHITECTURE-002
+  // de-duplicated the copy that used to live in the detail page).
+  documentLabels: join(root, 'src/lib/lab/documents.ts'),
   versions: join(root, 'src/pages/lab/documents/[id]/versions.astro'),
   changes: join(root, 'src/pages/lab/change-requests/[id].astro'),
 };
@@ -29,7 +32,7 @@ const checks = [
   ['controlled-document lifecycle help is present', source.documentEditor.includes('Document lifecycle')],
   ['change-request help explains proposal handling', source.newChangeRequest.includes('Change request workflow')],
   ['pilot UAT runbook covers roles, capture fields, and classifications', ['Employee scenarios', 'Supervisor scenarios', 'Manager scenarios', 'Admin scenarios', 'Success (Yes / No)', 'P0 — Blocks work, data integrity, or security', 'Do not record results in this runbook before a participant performs the scenario'].every((text) => source.pilotUat.includes(text))],
-  ['document states remain explicit', ['Missing Content', 'Draft', 'In Review', 'Approved', 'Superseded', 'Archived'].every((label) => source.documents.includes(label) && (source.detail.includes(label) || source.badge.includes(label)))],
+  ['document states remain explicit', ['Missing Content', 'Draft', 'In Review', 'Approved', 'Superseded', 'Archived'].every((label) => source.documents.includes(label) && (source.detail.includes(label) || source.badge.includes(label) || source.documentLabels.includes(label)))],
   ['shared document badge is used', Object.values(source).some((text) => text.includes('LabDocumentStatusBadge'))],
   ['mobile fallback exists for document list', source.documents.includes('md:hidden') && /hidden[\s\S]{0,100}md:block/.test(source.documents)],
   ['change request exposes audit correlation', source.changes.includes('Audit correlation') || source.changes.includes('audit correlation')],

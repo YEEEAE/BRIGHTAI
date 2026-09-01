@@ -261,3 +261,16 @@ export function normalizeOptionalMetadata(value: unknown): string | null | undef
   if (!trimmed) return null;
   return trimmed.length <= MAX_QC_METADATA_LENGTH ? trimmed : undefined;
 }
+
+/** Delete-request eligibility (CORE BUSINESS RULE #4): employees may request
+ *  deletion of their own tasks only while they are not started or in progress;
+ *  completed tasks are never requestable (#3) and manager/admin delete directly.
+ *  Single authority — the page renders this decision, the workflow enforces it. */
+export function canRequestTaskDeletion(
+  user: { userId: number; role: string },
+  task: { status: string; created_by: number | null; assigned_to: number | null } | null,
+): boolean {
+  if (!task || user.role !== 'employee') return false;
+  if (task.status !== 'not_started' && task.status !== 'in_progress') return false;
+  return task.created_by === user.userId || task.assigned_to === user.userId;
+}

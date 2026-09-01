@@ -10,6 +10,7 @@
 //     the existing durable and hash-chained application audit system.
 
 import bcrypt from 'bcryptjs';
+import { BCRYPT_ROUNDS } from './auth';
 import { getDb, toBool } from './db';
 import { appendQcAudit } from './audit/qcChain';
 import { passwordResetSchema, userCreateSchema, userEditSchema } from './validation';
@@ -89,6 +90,39 @@ function appendUserAudit(
 }
 
 /**
+ * The admin users table (no password hashes — never selected). Read model for
+ * /admin/users; previously inlined as SQL in the page frontmatter.
+ */
+export function listAdminUsers(): {
+  id: number;
+  username: string;
+  full_name: string;
+  department: string;
+  role: string;
+  can_create_tasks: number;
+  is_active: number;
+  created_at: string;
+  last_login_at: string | null;
+}[] {
+  return getDb()
+    .prepare(
+      `SELECT id, username, full_name, department, role, can_create_tasks, is_active, created_at, last_login_at
+       FROM users ORDER BY id`,
+    )
+    .all() as {
+      id: number;
+      username: string;
+      full_name: string;
+      department: string;
+      role: string;
+      can_create_tasks: number;
+      is_active: number;
+      created_at: string;
+      last_login_at: string | null;
+    }[];
+}
+
+/**
  * Validate the create-user payload before touching the database.
  * Rules live in the Zod schema (src/lib/validation.ts); this wrapper keeps the
  * existing `{ ok, error }` contract so callers never change.
@@ -119,7 +153,7 @@ export function createUser(actor: { id: number; username: string }, input: Creat
   const exists = db.prepare('SELECT id FROM users WHERE username = ?').get(username);
   if (exists) return { ok: false, error: `Username "${username}" is already taken.` };
 
-  const hash = bcrypt.hashSync(input.password, 10);
+  const hash = bcrypt.hashSync(input.password, BCRYPT_ROUNDS);
   const fullName = input.fullName.trim();
   const department = input.department?.trim() || 'QC';
   const userId = db.transaction(() => {
@@ -349,7 +383,7 @@ export function resetPassword(
   const target = findUser(targetUserId);
   if (!target) return { ok: false, error: 'User not found.' };
 
-  const hash = bcrypt.hashSync(newPassword, 10);
+  const hash = bcrypt.hashSync(newPassword, BCRYPT_ROUNDS);
   // A fresh password also clears any brute-force lock: the admin reset is the
   // sanctioned way to unblock an account.
   const db = getDb();

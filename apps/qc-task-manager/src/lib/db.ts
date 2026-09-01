@@ -41,6 +41,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // Resolve to <app>/db/qc_tasks.db. From src/lib/ that's ../../db/qc_tasks.db.
 const DB_DIR = resolve(__dirname, '..', '..', 'db');
 
+/** Telemetry/session retention window (90 days) used by the startup purge. */
+const RETENTION_WINDOW_MS = 90 * 24 * 60 * 60 * 1000;
+
 /**
  * Pure resolution of the SQLite database path so tests can assert the exact
  * precedence without reloading the module: `QC_DATABASE_PATH` (spec name)
@@ -316,12 +319,12 @@ function initialize(db: BetterSqliteDatabase): void {
   // Audit retention: login_attempts rows older than 90 days are pruned so the
   // audit table cannot grow without bound in a long-lived database.
   db.prepare('DELETE FROM login_attempts WHERE created_at < ?').run(
-    new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+    new Date(Date.now() - RETENTION_WINDOW_MS).toISOString(),
   );
   // UX telemetry is a separate, privacy-minimized measurement surface. Keep
   // only the bounded 90-day window; it is never part of the audit chain.
   db.prepare('DELETE FROM ux_events WHERE created_at < ?').run(
-    new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+    new Date(Date.now() - RETENTION_WINDOW_MS).toISOString(),
   );
   _initialized = true;
 }
@@ -392,7 +395,7 @@ export function closeDatabase(): void {
  * in every environment, so app code should use it.
  */
 export const db = new Proxy({} as BetterSqliteDatabase, {
-  get(_target, prop, receiver) {
+  get(_target, prop, _receiver) {
     const instance = getDb();
     const value = Reflect.get(instance, prop, instance);
     // Bind methods so `db.prepare(...)`/`db.transaction(...)` keep `this` on

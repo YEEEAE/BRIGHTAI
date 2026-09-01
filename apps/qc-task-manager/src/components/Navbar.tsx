@@ -221,7 +221,7 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
     if (!n.isRead) {
       // keepalive: the navigation below must not abort the mark-read POST
       // before it reaches the server.
-      fetch(`/api/notifications/${n.id}/read`, { method: 'POST', keepalive: true }).catch(() => {});
+      fetch(`/api/notifications/${n.id}/read`, { method: 'POST', keepalive: true }).catch((err) => console.error('[notifications] background mark-read failed', err));
     }
     window.location.href = n.href;
   }

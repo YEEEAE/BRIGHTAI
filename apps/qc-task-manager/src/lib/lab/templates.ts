@@ -48,6 +48,8 @@ import {
   LAB_CONNECTOR_TYPES,
 } from './policy';
 import type { LabTestTemplate, LabTestTemplateVersion, LabTestType } from '../types';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { labTemplateSchema, parseFormData } from '../validation';
 
 // ─────────────────────────────── Audit ───────────────────────────────
 
@@ -81,8 +83,8 @@ export const LAB_TEMPLATE_SORT_FIELDS: readonly LabTemplateSortField[] = [
   'updated_at',
 ];
 
-export const LAB_TEMPLATE_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_TEMPLATE_PER_PAGE = 25;
+export const LAB_TEMPLATE_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_TEMPLATE_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_TEMPLATE_SORT: LabTemplateSortField = 'updated_at';
 export const DEFAULT_LAB_TEMPLATE_DIR: 'asc' | 'desc' = 'desc';
 
@@ -864,7 +866,6 @@ async function handleLabTemplatePost(context: APIContext, templateId: number | n
       return context.redirect(`/lab/templates/${templateId}`);
     }
 
-    const { parseFormData, labTemplateSchema } = await import('../validation');
     const parsed = parseFormData(labTemplateSchema, form);
     if (!parsed.ok) {
       setFlash(context, 'error', parsed.error);

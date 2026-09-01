@@ -106,7 +106,6 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
   // Always attach the resolved user to locals (null when anonymous), so public
   // pages (e.g. "/") can redirect signed-in users to their role home.
   context.locals.user = user;
-  context.locals.requestId = context.locals.requestId ?? createRequestId(context.request.headers.get('x-request-id'));
 
   const requestSecurity = requireRequestSecurity(context);
   if (requestSecurity) return requestSecurity;

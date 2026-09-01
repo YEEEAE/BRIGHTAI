@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
+import { apiJson, apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
 import { getSafeErrorCode } from '../../../../../lib/observability';
 import { parsePositiveId } from '../../../../../lib/validation';
 import { withdrawChangeRequest } from '../../../../../lib/lab/changeRequests';
@@ -19,7 +19,7 @@ export const POST: APIRoute = async (context) => {
       setFlash(context, 'success', 'Change request withdrawn.');
       return context.redirect(`/lab/change-requests/${request.id}`);
     }
-    return new Response(JSON.stringify({ ok: true, request }), { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
+    return apiJson({ request });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Could not withdraw the change request.';
     const status = message.includes('not found') ? 404 : message.includes('only withdraw') ? 403 : 409;

@@ -345,6 +345,22 @@ ok(true, 'table padding scan ran');
   }
 }
 
+// 6. Download/export links point at real API routes. The lab register linked
+//    to /lab/tests/export.csv|xlsx for which no page or endpoint exists (the
+//    real routes live under /api/lab/tests/), so both buttons 404'd.
+{
+  const exportPages = ['lab/tests/index.astro', 'search.astro', 'lab/reports.astro', 'reports.astro'];
+  for (const rel of exportPages) {
+    const file = join(PAGES, rel);
+    let src;
+    try { src = readFileSync(file, 'utf8'); } catch { continue; }
+    const hrefs = [...src.matchAll(/href=\{?`?(\/[\w./\[\]$-]*export[\w.]*)/g)].map((m) => m[1]);
+    for (const href of hrefs) {
+      ok(href.startsWith('/api/'), `${rel}: export link ${href} targets an /api/ route`);
+    }
+  }
+}
+
 // Report
 console.log(`\ntest:ui-consistency — ${checks - failures.length}/${checks} checks passed`);
 if (failures.length > 0) {

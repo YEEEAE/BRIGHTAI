@@ -58,7 +58,8 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
       setItems((prev) => [...prev, data.comment as CommentItem]);
       setText('');
       setNotice('Comment posted.');
-    } catch {
+    } catch (err) {
+      console.error('[task] comment request failed', err);
       setError('We couldn’t post the comment because the connection was interrupted. Check your connection and try again.');
     } finally {
       setSubmitting(false);

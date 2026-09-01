@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 export const ERROR_CODES = {
   AUTH: 'AUTH', FORBIDDEN: 'FORBIDDEN', VALIDATION: 'VALIDATION', NOT_FOUND: 'NOT_FOUND',
-  CONFLICT: 'CONFLICT', STALE_CHANGE: 'STALE_CHANGE', DB: 'DB', REPORT: 'REPORT', UPLOAD: 'UPLOAD',
+  CONFLICT: 'CONFLICT', STALE_CHANGE: 'STALE_CHANGE', DB: 'DB', REPORT: 'REPORT', UPLOAD: 'UPLOAD', AI: 'AI',
 } as const;
 export type SafeErrorCode = keyof typeof ERROR_CODES;
 const REQUEST_ID_RE = /^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/;

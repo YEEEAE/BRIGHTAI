@@ -5,7 +5,7 @@ import { getCurrentUser } from '../../lib/session';
 import { canViewTeamWorkload } from '../../lib/permissions';
 import { listEmployeeWorkloads } from '../../lib/workload';
 
-const user = await getCurrentUser(Astro);
+const user = getCurrentUser(Astro);
 if (!user || !canViewTeamWorkload(user.role)) return Astro.redirect('/employee');
 const rows = listEmployeeWorkloads();
 ---

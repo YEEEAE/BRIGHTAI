@@ -5,18 +5,9 @@
 // is the only way to download it. Responses are private and never cached.
 
 import type { APIRoute } from 'astro';
-import { getDb } from '../../../../../lib/db';
-import { isResponse, requireApiUser } from '../../../../../lib/api-security';
-import { getAttachment, canViewTask } from '../../../../../lib/taskDetails';
-import type { Task } from '../../../../../lib/types';
+import { apiJsonError, isResponse, requireApiUser } from '../../../../../lib/api-security';
+import { getAttachment, canViewTask, getTaskCore } from '../../../../../lib/taskDetails';
 import { parsePositiveId } from '../../../../../lib/validation';
-
-function json(body: Record<string, unknown>, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
 
 export const GET: APIRoute = async (context) => {
   const auth = requireApiUser(context);
@@ -26,19 +17,17 @@ export const GET: APIRoute = async (context) => {
   const taskId = parsePositiveId(context.params.id);
   const attachmentId = parsePositiveId(context.params.attachmentId);
   if (taskId == null || attachmentId == null) {
-    return json({ ok: false, error: 'Invalid task or attachment id.' }, 404);
+    return apiJsonError('Invalid task or attachment id.', 404);
   }
 
-  const task = getDb().prepare('SELECT id, created_by, assigned_to FROM tasks WHERE id = ?').get(taskId) as
-    | Pick<Task, 'id' | 'created_by' | 'assigned_to'>
-    | undefined;
-  if (!task) return json({ ok: false, error: 'Task not found.' }, 404);
+  const task = getTaskCore(taskId);
+  if (!task) return apiJsonError('Task not found.', 404);
   if (!canViewTask({ id: user.id, role: user.role }, task)) {
-    return json({ ok: false, error: 'You cannot view this task.' }, 403);
+    return apiJsonError('You cannot view this task.', 403);
   }
 
   const attachment = getAttachment(attachmentId, taskId);
-  if (!attachment) return json({ ok: false, error: 'Attachment not found.' }, 404);
+  if (!attachment) return apiJsonError('Attachment not found.', 404);
 
   // RFC 5987 encodes non-ASCII file names safely; an ASCII filename= fallback
   // keeps very old browsers working.

@@ -12,8 +12,20 @@ export const MAX_REQUEST_BODY_BYTES = 12 * 1024 * 1024;
 const MAX_MUTATIONS_PER_MINUTE = 120;
 const mutationBuckets = new Map<string, { startedAt: number; count: number }>();
 
-export function apiJsonError(error: string, status: number, code: SafeErrorCode = status === 403 ? 'FORBIDDEN' : status === 401 ? 'AUTH' : status === 404 ? 'NOT_FOUND' : status === 409 ? 'CONFLICT' : status >= 500 ? 'DB' : 'VALIDATION'): Response {
-  return new Response(JSON.stringify({ ok: false, error, code }), {
+export function apiJsonError(error: string, status: number, code: SafeErrorCode = status === 403 ? 'FORBIDDEN' : status === 401 ? 'AUTH' : status === 404 ? 'NOT_FOUND' : status === 409 ? 'CONFLICT' : status >= 500 ? 'DB' : 'VALIDATION', extra: Record<string, unknown> = {}): Response {
+  return new Response(JSON.stringify({ ok: false, error, code, ...extra }), {
+    status,
+    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
+  });
+}
+
+/**
+ * Success-shape JSON response: `{ ok: true, ...payload }` with the same
+ * content-type and private no-store caching policy as apiJsonError. The one
+ * shared builder for every JSON endpoint's happy path.
+ */
+export function apiJson(body: Record<string, unknown>, status = 200): Response {
+  return new Response(JSON.stringify({ ok: true, ...body }), {
     status,
     headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
   });

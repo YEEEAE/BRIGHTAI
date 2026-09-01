@@ -17,13 +17,16 @@ const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours (per spec)
 // Brute-force protection (per spec): lock the account for 10 minutes after
 // five consecutive failed login attempts.
 const MAX_FAILED_ATTEMPTS = 5;
+
+/** bcrypt cost factor for every password hash in the app (auth, users admin, seed). */
+export const BCRYPT_ROUNDS = 10;
 const LOCK_DURATION_MS = 10 * 60 * 1000; // 10 minutes
 const MAX_FAILED_ATTEMPTS_PER_IP = 20;
 // A real bcrypt hash of a throwaway string. Used on the unknown-username path
 // so login takes the same time whether or not the account exists — otherwise
 // the missing-user branch returns before bcrypt runs and an attacker can
 // enumerate usernames by timing.
-const DUMMY_PASSWORD_HASH = bcrypt.hashSync('brightai-qc-dummy-password', 10);
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync('brightai-qc-dummy-password', BCRYPT_ROUNDS);
 
 function rowToUser(row: Record<string, unknown>): User {
   return {
@@ -250,7 +253,7 @@ export function changeOwnPassword(
     return { ok: false, error: 'Current password is incorrect.' };
   }
 
-  const hash = bcrypt.hashSync(newPassword, 10);
+  const hash = bcrypt.hashSync(newPassword, BCRYPT_ROUNDS);
   const now = new Date().toISOString();
   const apply = db.transaction(() => {
     db.prepare(
@@ -358,18 +361,6 @@ export function getSessionUser(request: Pick<Request, 'headers'>): SessionData |
   const header = request.headers.get('cookie') ?? '';
   const token = cookieValue(header, COOKIE_NAME);
   return getSession(token);
-}
-
-/**
- * Authorization gate: true only when the user exists AND their role is in the
- * allowed list. Accepts either a SessionData (middleware/locals) or a User.
- */
-export function requireRole(
-  user: SessionData | User | null | undefined,
-  roles: Role[],
-): boolean {
-  if (!user) return false;
-  return roles.includes(user.role);
 }
 
 export { COOKIE_NAME, SESSION_TTL_MS, MAX_FAILED_ATTEMPTS, LOCK_DURATION_MS };

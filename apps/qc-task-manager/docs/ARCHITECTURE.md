@@ -43,7 +43,7 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 | `capa/` | Corrective/preventive action domain rules |
 | `qc-operations.ts` | Finding/CAPA/RCA persistence, lifecycle gates, evidence, and server-side audit transactions |
 | `tasks.ts` | Task creation + assignment-scope validation + `handleCreateTaskPost` |
-| `taskUpdates.ts` | Update / closure flow / attachment upload (atomic, permission-gated) |
+| `taskUpdates/` | Task mutations, split by concern behind one public API (`index.ts`): `update.ts` (field updates + checklist), `closure.ts` (completion + evidence gate), `lifecycle.ts` (cancel / reopen), `attachments.ts` (uploads + comments), `shared.ts` (result types, activity boundary, file validation) |
 | `evidence/` | Canonical evidence requirements, verification statuses, extension/magic-byte policy, and completion-gate arithmetic |
 | `templates/` + `templatesStore.ts` | Template validation/lifecycle, persistence, instantiation, and immutable task configuration snapshots |
 | `taskDetails.ts` | Read queries + `canViewTask` + activity timeline text |
@@ -55,6 +55,10 @@ TypeScript runs in **strict** mode (`tsconfig.json`).
 | `deleteRequests.ts` | Employee delete-request workflow (submit / review) |
 | `dashboard.ts` | Read-only KPI / chart / table queries for `/dashboard` |
 | `format.ts` | Pure formatting + status color/emoji maps (server + client safe) |
+| `scope.ts` | **Single authority for the employee row-scope rule** — the ownership SQL fragments (`TASK_ROW_SCOPE_SQL`, `LAB_TEST_ROW_SCOPE_SQL`, `LAB_DOCUMENT_*`, unprefixed variants) plus `rowScopeParams()`. The guard fails on any copy elsewhere |
+| `pagination.ts` | Shared register pagination: `PER_PAGE_OPTIONS`, `DEFAULT_PER_PAGE`, `isPerPage`, `isSortDir`, `buildOrderClause` (stable `id DESC` tiebreaker), `mergeWheres` |
+| `roleWorkspace.ts` | Role-home read model: team/own task lists + the "needs attention" counters for `/manager`, `/supervisor`, `/employee` |
+| `api-security.ts` | Request gates (auth, CSRF + Fetch Metadata, body size, rate limits) **and the two JSON response builders `apiJson` / `apiJsonError`** |
 | `seed.ts` | Role seed + `SEED_DEMO=1` demo team/tasks |
 | `types.ts` | Shared domain types (mirrors `db/schema.sql`) |
 | `scripts/architecture-guard.mjs` | Dependency-free static guard for rule ownership and trust boundaries |
@@ -127,6 +131,33 @@ UI controls are advisory, API handlers re-check session and domain policy,
 AI code is suggestion-only, SQLite protects critical invariants, and audit is
 created server-side. The Architecture Guard checks these boundaries and the
 absence of copied role/status/field-lock/SLA authority.
+
+`scripts/architecture-guard.mjs` enforces nine rules (all static, no app code
+executed). Five are the original ownership/trust checks; four came with
+QC-100-ARCHITECTURE-002:
+
+| Rule | Contract |
+| --- | --- |
+| `SCOPE_AUTHORITY` | The employee row-scope SQL lives only in `src/lib/scope.ts` |
+| `PAGE_DB_ACCESS` | `src/pages/**` and `src/layouts/**` never open a connection or prepare a statement — they call a `src/lib` service (pure helpers such as `toBool` / `BACKUP_DIR` stay allowed) |
+| `API_CONTRACT` | No local `json()` helpers, no hand-built `{ ok: … }` literals, no plain-text bodies. Public probes `api/health.ts` and `api/readiness.ts` keep their documented shapes |
+| `ORPHAN_ROUTE` | Every file under `src/pages/api/**` is referenced by a page, a client script, or a test |
+
+### API response contract
+
+Every JSON endpoint answers through `src/lib/api-security.ts`:
+
+- success → `apiJson(body[, status])` → `{ ok: true, …payload }`
+- failure → `apiJsonError(message, status[, code][, extra])` → `{ ok: false, error, code }`
+
+Both set `Content-Type: application/json; charset=utf-8` and
+`Cache-Control: no-store`. `code` is a `SafeErrorCode` (`AUTH`, `FORBIDDEN`,
+`VALIDATION`, `NOT_FOUND`, `CONFLICT`, `STALE_CHANGE`, `DB`, `REPORT`,
+`UPLOAD`, `AI`) — never an exception message. Server faults are 5xx; 400 is
+reserved for request/schema validation. Documented non-JSON contracts:
+attachment/report downloads (binary), form endpoints that flash + redirect,
+`api/ux/events.ts` (204 No Content), and the two public probes.
+`scripts/test-api-contract.mjs` is the behavioural guard (159 checks).
 
 ## Workflow Engine
 

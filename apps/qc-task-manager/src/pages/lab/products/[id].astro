@@ -19,6 +19,7 @@ import { canEditLabProduct, canProposeLabProductEdit } from '../../../lib/permis
 import { canReviewLabChangeRequests } from '../../../lib/permissions';
 import { countPendingChangeRequests } from '../../../lib/lab/changeRequests';
 import type { Role } from '../../../lib/types';
+import { LAB_FAIL_RATE_ALERT_THRESHOLD } from '../../../lib/lab/policy';
 
 const user = Astro.locals.user!;
 const role = user.role as Role;
@@ -322,7 +323,7 @@ function fmt(value: unknown): string {
                             <td class="px-3 py-2 font-medium text-slate-900" dir="ltr">{lot.lotNumber}</td>
                             <td class="px-3 py-2 text-slate-700">{lot.total}</td>
                             <td class="px-3 py-2 text-slate-700">{lot.fail}</td>
-                            <td class={`px-3 py-2 font-semibold ${lot.failRate !== null && lot.failRate >= 50 ? 'text-red-600' : 'text-slate-700'}`}>
+                            <td class={`px-3 py-2 font-semibold ${lot.failRate !== null && lot.failRate >= LAB_FAIL_RATE_ALERT_THRESHOLD ? 'text-red-600' : 'text-slate-700'}`}>
                               {lot.failRate === null ? '—' : `${lot.failRate}%`}
                             </td>
                             <td class="px-3 py-2">

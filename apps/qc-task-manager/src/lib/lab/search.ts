@@ -28,6 +28,8 @@
 
 import type { Role } from '../types';
 import { getDb } from '../db';
+import { LAB_TEST_ROW_SCOPE_SQL, rowScopeParams } from '../scope';
+import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
 
 export type LabSearchEntityType =
   | 'all'
@@ -61,8 +63,8 @@ export const LAB_SEARCH_ENTITY_LABELS: Record<LabSearchEntityType, string> = {
   retests: 'Retests',
 };
 
-export const LAB_SEARCH_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
-export const DEFAULT_LAB_SEARCH_PER_PAGE = 25;
+export const LAB_SEARCH_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const DEFAULT_LAB_SEARCH_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_SEARCH_ENTITY: LabSearchEntityType = 'all';
 
 export interface LabSearchFilters {
@@ -190,8 +192,8 @@ function buildTestsSubquery(
   }
 
   if (user.role === 'employee') {
-    conds.push('(t.tested_by = ? OR t.created_by = ?)');
-    params.push(user.userId, user.userId);
+    conds.push(LAB_TEST_ROW_SCOPE_SQL);
+    params.push(...rowScopeParams(user.userId));
   }
 
   const where = conds.length ? `WHERE ${conds.join(' AND ')}` : '';
@@ -242,8 +244,8 @@ function buildSamplesSubquery(
   }
 
   if (user.role === 'employee') {
-    conds.push('(t.tested_by = ? OR t.created_by = ?)');
-    params.push(user.userId, user.userId);
+    conds.push(LAB_TEST_ROW_SCOPE_SQL);
+    params.push(...rowScopeParams(user.userId));
   }
 
   const where = conds.length ? `WHERE ${conds.join(' AND ')}` : '';

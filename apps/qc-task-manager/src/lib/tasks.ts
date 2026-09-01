@@ -29,6 +29,7 @@ import {
 } from './task-policy';
 import { parseFormData, taskCreateInputSchema } from './validation';
 import type { TaskPriority, TaskRecurrence } from './types';
+import { getTemplate, instantiateTemplate } from './templatesStore';
 
 /** Active users, used to populate the assignee dropdown (manager/admin). */
 export function listActiveUsers(): { id: number; full_name: string; role: string }[] {
@@ -396,7 +397,6 @@ export async function handleCreateTaskPost(
       return context.redirect(context.url.pathname);
     }
     try {
-      const { instantiateTemplate, getTemplate } = await import('./templatesStore');
       const existing = getTemplate(templateId);
       if (!existing) {
         setFlash(context, 'error', 'Template not found.');
@@ -415,7 +415,7 @@ export async function handleCreateTaskPost(
         user.id,
       );
       // Assignment notification for the auto-assigned / overridden assignee.
-      const row = (await import('./db')).getDb().prepare('SELECT assigned_to FROM tasks WHERE id = ?').get(taskId) as { assigned_to: number | null } | undefined;
+      const row = getDb().prepare('SELECT assigned_to FROM tasks WHERE id = ?').get(taskId) as { assigned_to: number | null } | undefined;
       if (row?.assigned_to) {
         notifyAssigned({ taskId, assigneeId: row.assigned_to, title, actorId: user.id });
       }

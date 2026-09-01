@@ -7,7 +7,9 @@
 //   - employee     → tasks assigned to them or created by them
 //   - supervisor+  → every task
 
+import { getDb } from './db';
 import { sanitizeCsvFormula } from './reporting/writers/csv';
+import { TASK_ROW_SCOPE_SQL, rowScopeParams } from './scope';
 import type { Role } from './types';
 
 export interface ExportTaskRow {
@@ -87,12 +89,10 @@ export function tasksToCsv(rows: ExportTaskRow[]): string {
  * Node test runner without a database.
  */
 export async function exportTasksForRole(role: Role, userId: number): Promise<string> {
-  const { getDb } = await import('./db');
   const db = getDb();
 
-  const scopeClause =
-    role === 'employee' ? 'WHERE (t.assigned_to = ? OR t.created_by = ?)' : '';
-  const scopeParams = role === 'employee' ? [userId, userId] : [];
+  const scopeClause = role === 'employee' ? `WHERE ${TASK_ROW_SCOPE_SQL}` : '';
+  const scopeParams = role === 'employee' ? rowScopeParams(userId) : [];
 
   const rows = db
     .prepare(
