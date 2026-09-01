@@ -1,3 +1,66 @@
+
+## [2026-09-01] — نقل مخرجات تدقيق QC إلى audit/qc/QC-Task-Manager
+
+### تم التنفيذ
+- نقلت 9 ملفات من مخرجات التدقيق الأخيرة من `apps/qc-task-manager/docs/` إلى `audit/qc/QC-Task-Manager/`.
+- شملت الملفات التقرير النهائي، سجل الأدلة، تغطية الملفات والمسارات وقاعدة البيانات والاختبارات، مصفوفة المهارات، إجراءات الإغلاق، وprompts الإغلاق.
+- لم أكتب فوق أي ملف موجود مسبقًا في المجلد الهدف؛ ملف `CLAIMS-VS-REALITY.md` لم يكن موجودًا بالمصدر، لذلك لم يُنقل.
+- حدّثت مراجع المسارات داخل التقرير الرئيسي لتشير للموقع الجديد.
+
+### الملفات المتأثرة
+- `audit/qc/QC-Task-Manager/`
+- `audit/qc/QC-Task-Manager/ULTIMATE-SYSTEM-AUDIT.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- تحقق من اختفاء الملفات التسعة من المصدر ووجودها غير فارغة في الهدف ✅
+- تحقق من عدم وجود تعارض مع ملفات الهدف الموجودة ✅
+- لم يُنفذ commit أو push ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** نُقلت مخرجات التدقيق المطلوبة للمجلد المحدد، مع الحفاظ على الملفات السابقة وتحديث مرجع التقرير الرئيسي.
+
+### ملاحظات / مشاكل مفتوحة
+- `CLAIMS-VS-REALITY.md` غير موجود بالمصدر الحالي، لذلك بقي بدون نقل.
+
+## [2026-09-01] — QC-ULTIMATE-INDEPENDENT-AUDIT-001: تدقيق جنائي مستقل طازج للنظام كاملًا
+
+### تم التنفيذ
+- جمدت baseline على HEAD `77bf18b6592dbb91ddace645347b4e893efbabea`، وراجعت حالة الشجرة بدون commit أو push أو deploy.
+- أعدت جرد QC من المصدر: 489 ملفًا متتبعًا، 116 route file، 36 API file، 39 migration، 365 skill، 65 canonical test suite، و28 canonical E2E.
+- نفذت typecheck/build/manifest/route-manifest/schema-reference/embedded-parity/security-hygiene/deployment-contract/production-operations/badge-contrast طازجًا؛ نفذت `pnpm test` كاملًا و`e2e:acceptance` كاملًا في runner مسموح.
+- تحققت من قاعدة SQLite مؤقتة معزولة: schema 39، 39/39 checksum، WAL وforeign keys، integrity وforeign-key checks PASS.
+- أنشأت تقارير التدقيق والتغطية وسجل الأدلة ومصفوفة المهارات وادعاءات مقابل الواقع وإجراءات الإغلاق وprompts الإغلاق؛ لم أعدل سلوك المنتج.
+- صححت نتيجة سابقة: `skills-lock.json` الحالي 365/365 exact و`test:schema-reference` PASS؛ لا يوجد دليل حالي على drift القديم المذكور في تقارير سابقة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/ULTIMATE-SYSTEM-AUDIT.md`
+- `apps/qc-task-manager/docs/FINAL-EVIDENCE-LEDGER.md`
+- `apps/qc-task-manager/docs/{FILE-COVERAGE,ROUTE-COVERAGE,DB-COVERAGE,TEST-COVERAGE,SKILL-USAGE-MATRIX,CLAIMS-VS-REALITY,MANUAL-CLOSURE-ACTIONS}.md`
+- `apps/qc-task-manager/docs/ULTIMATE-CLOSING-PROMPTS.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager typecheck` ✅ 0 errors / 0 warnings / 27 hints.
+- `pnpm --dir apps/qc-task-manager build` ✅ exit 0.
+- `pnpm --dir apps/qc-task-manager test` ✅ 65 canonical suites.
+- `pnpm --dir apps/qc-task-manager e2e:acceptance` ✅ كل الأجنحة + restart persistence في runner مسموح؛ sandbox وحده فشل `listen EPERM` قبل التشغيل.
+- `test:manifest` ✅ 65 unit + 28 E2E؛ `test:route-manifest` ✅ 116/25/6؛ migration parity ✅ 39/39؛ schema reference ✅ 165 objects.
+- `test:deployment-contract` ✅ 22؛ `test:production-operations` ✅؛ security hygiene ✅؛ badge contrast ✅.
+- `git diff --check` ✅ بعد إنشاء التقارير؛ لا commit ولا push ولا deploy.
+
+### النتيجة
+- **الحالة:** جزئي — التقنية والاختبارات الطازجة ناجحة، لكن جاهزية الشركة مشروطة.
+- **مختصر:** الحكم الحالي `CONDITIONAL GO` بسبب credential محلي يحتاج تدوير، غياب live deployment evidence وUAT بشري، ونقص مصدر WI pages 2/3 و3/3. لا يوجد P0 مثبت.
+
+### ملاحظات / مشاكل مفتوحة
+- `RUNTIME USER UAT REQUIRED` لكل الأدوار؛ الأتمتة ليست بديلًا.
+- credential محلي غير متتبع في `.claude/settings.local.json` يحتاج revoke/rotate وتنظيفًا من مالك البيئة؛ لم تُسجل قيمته.
+- لا يوجد نشر حي أو restore drill على staging/production مثبت ضمن هذه المهمة.
+- عدّ الدستور «67 skill» متقادم مقابل الواقع 365؛ يحتاج prompt توثيقي.
+- قسم mind تجاوز حد الحجم التاريخي؛ الأرشفة للقسم 2 ما زالت قرارًا مستقلًا ولم تُنفذ.
+
 ## [2026-08-29] — BAI-BG-VIDEO-001: تعميم خلفية 9.mp4 على كل الواجهات + إصلاح انحدار توصيل CSS + تدقيق شامل
 
 ### تم التنفيذ
@@ -1707,4 +1770,3 @@
 
 **الخطوة الجاية:**
 - بدء تنفيذ Prompt 06 (Full Product UI/UX Reconstruction) حسب التشيك ليست الجديدة
-

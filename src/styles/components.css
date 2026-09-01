@@ -312,6 +312,29 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
+  /* BAI-BG-CONTRAST-001 (2026-09-01): section headers sit directly on the
+     background video, where the line-art behind a glyph swings from near-black to
+     pure white between frames. This gives every eyebrow/title/subtitle a surface
+     with a known alpha so the contrast ratio is a fixed number instead of a
+     per-frame accident. */
+  padding-block: var(--space-6);
+  padding-inline: var(--space-6);
+  border-radius: var(--surface-on-media-radius);
+  background: var(--surface-on-media);
+  -webkit-backdrop-filter: var(--surface-on-media-blur);
+  backdrop-filter: var(--surface-on-media-blur);
+  border: 1px solid var(--surface-on-media-border);
+}
+
+/* Readers who opt out of translucency get a fully opaque surface rather than a
+   thinner one — the point of the surface is legibility, not decoration. */
+@media (prefers-reduced-transparency: reduce) {
+  .section__header,
+  .inner-section__header {
+    background: var(--bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 /* Start-aligned variant — header sits on the start side, used on asymmetric

@@ -168,6 +168,21 @@
 --noise-card: 0.022;         /* card surface grain */
 --noise-hero: 0.028;         /* hero panel grain */
 
+/* Reading surface over the background video (BAI-BG-CONTRAST-001, 2026-09-01).
+   Text contrast cannot be certified against a moving image: the background is
+   301 frames of line-art whose luminance runs from near-black to pure white, so
+   a given glyph's ratio changes frame to frame. The only compliant answer is a
+   surface with a known alpha, which makes the worst case computable.
+
+   At 0.86 the composite over a pure-white frame is rgb(45,50,64) — light text
+   still clears WCAG AA with a wide margin — while 14% of the video reads through,
+   so the atmosphere survives. scripts/qa/verify-contrast-on-media.mjs recomputes
+   both extremes and fails if any text pair drops below AA. */
+--surface-on-media: rgba(10,16,32,0.86);
+--surface-on-media-blur: blur(14px) saturate(140%);
+--surface-on-media-border: rgba(255,255,255,0.09);
+--surface-on-media-radius: 1.25rem;
+
 /* Glass — strengthened frosted layers (used by header, dropdown, drawer) */
 --glass-strong: rgba(15,21,37,0.72);
 --glass-blur: blur(16px) saturate(180%);
