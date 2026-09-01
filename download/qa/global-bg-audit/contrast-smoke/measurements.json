@@ -1,0 +1,4021 @@
+{
+  "summary": {
+    "label": "contrast-smoke",
+    "generatedAt": "2026-09-01T18:39:05.785Z",
+    "conditions": {
+      "app": "site",
+      "viewports": [
+        "360x800",
+        "1440x1000",
+        "1920x1080"
+      ],
+      "reducedMotion": false,
+      "print": false,
+      "zoom": 1,
+      "shots": false,
+      "templatesOnly": false
+    },
+    "runs": 9,
+    "routes": 3,
+    "templates": 1,
+    "failures": {
+      "errored": 0,
+      "nonOk": 3,
+      "horizontalOverflow": 0,
+      "escapees": 1,
+      "escapeesIncludingDecor": 1,
+      "clipped": 4,
+      "stuck": 1,
+      "srLeak": 0,
+      "bareTextOnMedia": 0,
+      "bareTextOnMediaNodes": 0,
+      "bigVoids": 0,
+      "groupSplits": 0,
+      "globalScrim": 0,
+      "multipleVideos": 0,
+      "noVideo": 0,
+      "duplicateVideoRequests": 0,
+      "missingAssets": 0,
+      "consoleErrors": 9,
+      "h1NotOne": 0,
+      "lostCss": 3,
+      "invisibleContent": 6,
+      "invisibleContentNodes": 900,
+      "revealNotReady": 3
+    }
+  },
+  "results": [
+    {
+      "app": "site",
+      "url": "/404/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 404,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 380,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 5568
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, 800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 4,
+            "paused": false,
+            "naturalW": 1600,
+            "naturalH": 1200
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 15,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 15,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 9,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1366,
+        "h1Count": 1,
+        "h1": [
+          "الصفحة مو موجودة"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 155,
+            "text": "الأسعارشوف الباقات والأسعار"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 51,
+            "text": "الأسعار"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "شوف الباقات والأسعار"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 155,
+            "text": "أمثلة من السوقشركات سعودية استخدمت الحلو"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 51,
+            "text": "أمثلة من السوق"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "شركات سعودية استخدمت الحلول"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 155,
+            "text": "تواصل واتسابكلمنا مباشرة"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 51,
+            "text": "تواصل واتساب"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "كلمنا مباشرة"
+          }
+        ],
+        "invisibleContentCount": 9,
+        "revealReady": true,
+        "isVisibleCount": 5,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.CNvPDzqM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788287931096&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=1264938933.1788287933&frm=0&ngs=1&pscdl=noapi&rcb=19&sr=360x800&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115938465~115938469~118897920~118897930~120385422&sid=1788287932&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F404%2F&dt=%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9%20%D8%BA%D9%8A%D8%B1%20%D9%85%D9%88%D8%AC%D9%88%D8%AF%D8%A9%20%7C%20BrightAI&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1792",
+          "err": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/",
+      "templateFile": "(explicit)",
+      "viewport": "1920x1080",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1920,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 1549,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "delta": 0
+        },
+        "docHeight": 19473
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, 800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 4,
+            "paused": false,
+            "naturalW": 1600,
+            "naturalH": 1200
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 15,
+          ".home-cta-primary": 20,
+          ".home-cta-strip": 15,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 9,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1529,
+        "h1Count": 1,
+        "h1": [
+          "حوكمة الذكاء الاصطناعي\nللشركات\nالسعودية بجرد AI ومالك مسؤول "
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الموظف يرفع بيانات حساسة؟أرقام هويات،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الموظف يرفع بيانات حساسة؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "أرقام هويات، ملفات مرضى، عقود، أسعار... "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وش لو الـ AI أعطى جواب غلط؟خطأ في النموذ"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وش لو الـ AI أعطى جواب غلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خطأ في النموذج يوصل لقرار خاطئ = خسارة ف"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وين سجل التدقيق؟لما يجي المدقق ويسأل: مي"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وين سجل التدقيق؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "لما يجي المدقق ويسأل: مين سأل، متى، وش ر"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل متوافق مع PDPL؟نظام حماية البيانات ما"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل متوافق مع PDPL؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "نظام حماية البيانات ما يمزح. غرامات تصل "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟خصم مخزون،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خصم مخزون، تحديث عقد... بدون موافقة؟"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الطبيب/المحاسب يثق فيه؟بدون شفافية وم"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الطبيب/المحاسب يثق فيه؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "بدون شفافية ومصادر، ما حد بيستخدمه."
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 308,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 190,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 34,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.text-white/70.leading-loose.text-sm",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 28,
+            "text": "طبقة تشغيلية لإدارة استخدامات ومخاطر AI "
+          },
+          {
+            "el": "ul.space-y-1.5.text-xs.text-white/60",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 58,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ رصد وتحليل المخاطر الأمنية والتشغيلية"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ يدعم جاهزية ضوابط SDAIA و NCA"
+          },
+          {
+            "el": "a.section-mini-link.mt-auto",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 44,
+            "text": "استكشف منصة الحوكمة"
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 308,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 190,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "AI Firewall"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 34,
+            "text": "AI Firewall"
+          }
+        ],
+        "invisibleContentCount": 286,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/LeadForm.Bzvbz7AX.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/_astro/index.BY_fdr2V.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.CNvPDzqM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "videoRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788287931096&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=281540184.1788287933&frm=0&ngs=1&pscdl=noapi&rcb=16&sr=1920x1080&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115616985~115938465~115938469~118012007~118897920~118897930~119259605~120385423&sid=1788287932&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F&dt=%D8%AD%D9%88%D9%83%D9%85%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%20%7C%20BrightAI&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1795",
+          "err": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 1549,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 19497
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, 800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 4,
+            "paused": false,
+            "naturalW": 1600,
+            "naturalH": 1200
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 15,
+          ".home-cta-primary": 20,
+          ".home-cta-strip": 15,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 9,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1529,
+        "h1Count": 1,
+        "h1": [
+          "حوكمة الذكاء الاصطناعي\nللشركات\nالسعودية بجرد AI ومالك مسؤول "
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الموظف يرفع بيانات حساسة؟أرقام هويات،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الموظف يرفع بيانات حساسة؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "أرقام هويات، ملفات مرضى، عقود، أسعار... "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وش لو الـ AI أعطى جواب غلط؟خطأ في النموذ"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وش لو الـ AI أعطى جواب غلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خطأ في النموذج يوصل لقرار خاطئ = خسارة ف"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وين سجل التدقيق؟لما يجي المدقق ويسأل: مي"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وين سجل التدقيق؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "لما يجي المدقق ويسأل: مين سأل، متى، وش ر"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل متوافق مع PDPL؟نظام حماية البيانات ما"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل متوافق مع PDPL؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "نظام حماية البيانات ما يمزح. غرامات تصل "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟خصم مخزون،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خصم مخزون، تحديث عقد... بدون موافقة؟"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الطبيب/المحاسب يثق فيه؟بدون شفافية وم"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الطبيب/المحاسب يثق فيه؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "بدون شفافية ومصادر، ما حد بيستخدمه."
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 308,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 190,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 34,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.text-white/70.leading-loose.text-sm",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 28,
+            "text": "طبقة تشغيلية لإدارة استخدامات ومخاطر AI "
+          },
+          {
+            "el": "ul.space-y-1.5.text-xs.text-white/60",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 58,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ رصد وتحليل المخاطر الأمنية والتشغيلية"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ يدعم جاهزية ضوابط SDAIA و NCA"
+          },
+          {
+            "el": "a.section-mini-link.mt-auto",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 44,
+            "text": "استكشف منصة الحوكمة"
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 308,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 190,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "AI Firewall"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 34,
+            "text": "AI Firewall"
+          }
+        ],
+        "invisibleContentCount": 286,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/LeadForm.Bzvbz7AX.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/index.BY_fdr2V.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.CNvPDzqM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "videoRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788287931188&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=1339651631.1788287933&frm=0&ngs=1&pscdl=noapi&rcb=6&sr=1440x1000&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115938465~115938468~118897920~118897930~120385423&sid=1788287932&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F&dt=%D8%AD%D9%88%D9%83%D9%85%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%20%7C%20BrightAI&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1793",
+          "err": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/404/",
+      "templateFile": "(explicit)",
+      "viewport": "1920x1080",
+      "httpStatus": 404,
+      "error": null,
+      "layout": {
+        "vw": 1920,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 380,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "delta": 0
+        },
+        "docHeight": 3389
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, 800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 15,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 15,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 9,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1366,
+        "h1Count": 1,
+        "h1": [
+          "الصفحة مو موجودة"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "a.inner-card.error-page__link",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 108,
+            "text": "النواة"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 26,
+            "text": "النواة"
+          },
+          {
+            "el": "a.inner-card.error-page__link",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 108,
+            "text": "المدونة"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 26,
+            "text": "المدونة"
+          },
+          {
+            "el": "a.inner-card.error-page__link",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 108,
+            "text": "الوثائق"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 26,
+            "text": "الوثائق"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 186,
+            "text": "الأسعارشوف الباقات والأسعار"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 82,
+            "text": "الأسعار"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "شوف الباقات والأسعار"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 186,
+            "text": "أمثلة من السوقشركات سعودية استخدمت الحلو"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 82,
+            "text": "أمثلة من السوق"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "شركات سعودية استخدمت الحلول"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 186,
+            "text": "تواصل واتسابكلمنا مباشرة"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 82,
+            "text": "تواصل واتساب"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "كلمنا مباشرة"
+          }
+        ],
+        "invisibleContentCount": 15,
+        "revealReady": true,
+        "isVisibleCount": 2,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/_astro/BaseLayout.CNvPDzqM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/404/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 404,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 380,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 3389
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, 800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 15,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 15,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 9,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1366,
+        "h1Count": 1,
+        "h1": [
+          "الصفحة مو موجودة"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "a.inner-card.error-page__link",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 108,
+            "text": "الحلول"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 26,
+            "text": "الحلول"
+          },
+          {
+            "el": "a.inner-card.error-page__link",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 108,
+            "text": "النواة"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 26,
+            "text": "النواة"
+          },
+          {
+            "el": "a.inner-card.error-page__link",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 108,
+            "text": "المدونة"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 26,
+            "text": "المدونة"
+          },
+          {
+            "el": "a.inner-card.error-page__link",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 108,
+            "text": "الوثائق"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "a.inner-card.error-page__link",
+            "h": 26,
+            "text": "الوثائق"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 186,
+            "text": "الأسعارشوف الباقات والأسعار"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 82,
+            "text": "الأسعار"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "شوف الباقات والأسعار"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 186,
+            "text": "أمثلة من السوقشركات سعودية استخدمت الحلو"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 82,
+            "text": "أمثلة من السوق"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "شركات سعودية استخدمت الحلول"
+          },
+          {
+            "el": "a.inner-card.error-page__legacy-link",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 186,
+            "text": "تواصل واتسابكلمنا مباشرة"
+          },
+          {
+            "el": "h2",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 82,
+            "text": "تواصل واتساب"
+          },
+          {
+            "el": "p",
+            "hiddenBy": "a.inner-card.error-page__legacy-link",
+            "h": 22,
+            "text": "كلمنا مباشرة"
+          }
+        ],
+        "invisibleContentCount": 17,
+        "revealReady": true,
+        "isVisibleCount": 1,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.CNvPDzqM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [
+          {
+            "el": "div.split-hero__main",
+            "position": "relative",
+            "decorative": false,
+            "x": -78,
+            "y": 243,
+            "w": 418,
+            "h": 820
+          },
+          {
+            "el": "div.split-hero__title-wrap",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 436,
+            "w": 368,
+            "h": 87
+          },
+          {
+            "el": "h1#hero-title.split-hero__h1",
+            "position": "static",
+            "decorative": false,
+            "x": -53,
+            "y": 436,
+            "w": 368,
+            "h": 87
+          },
+          {
+            "el": "span.split-hero__h1-voc",
+            "position": "static",
+            "decorative": false,
+            "x": -53,
+            "y": 507,
+            "w": 368,
+            "h": 16
+          },
+          {
+            "el": "p.split-hero__lead",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 537,
+            "w": 368,
+            "h": 74
+          },
+          {
+            "el": "strong.text-white",
+            "position": "static",
+            "decorative": false,
+            "x": -46,
+            "y": 538,
+            "w": 337,
+            "h": 47
+          },
+          {
+            "el": "strong.text-white",
+            "position": "static",
+            "decorative": false,
+            "x": -26,
+            "y": 662,
+            "w": 72,
+            "h": 22
+          },
+          {
+            "el": "div.home-hero-actions",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 632,
+            "w": 368,
+            "h": 270
+          },
+          {
+            "el": "a.wa-btn",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 768,
+            "w": 368,
+            "h": 61
+          },
+          {
+            "el": "a.home-cta-primary",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 840,
+            "w": 368,
+            "h": 61
+          },
+          {
+            "el": "a.home-cta-secondary",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 632,
+            "w": 368,
+            "h": 56
+          },
+          {
+            "el": "a.home-cta-secondary",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 700,
+            "w": 368,
+            "h": 56
+          },
+          {
+            "el": "div.trust-badges",
+            "position": "static",
+            "decorative": false,
+            "x": -53,
+            "y": 921,
+            "w": 368,
+            "h": 96
+          },
+          {
+            "el": "span.trust-badge",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 929,
+            "w": 80,
+            "h": 80
+          },
+          {
+            "el": "img.trust-badge__icon",
+            "position": "static",
+            "decorative": false,
+            "x": -53,
+            "y": 929,
+            "w": 80,
+            "h": 80
+          },
+          {
+            "el": "aside.home-kernel-showcase",
+            "position": "relative",
+            "decorative": false,
+            "x": -78,
+            "y": 1103,
+            "w": 418,
+            "h": 1573
+          },
+          {
+            "el": "div.home-kernel-panel",
+            "position": "relative",
+            "decorative": false,
+            "x": -78,
+            "y": 1103,
+            "w": 418,
+            "h": 515
+          },
+          {
+            "el": "div.home-kernel-bar",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 1128,
+            "w": 368,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-path",
+            "position": "static",
+            "decorative": false,
+            "x": -37,
+            "y": 1140,
+            "w": 156,
+            "h": 21
+          },
+          {
+            "el": "div.home-kernel-body",
+            "position": "relative",
+            "decorative": false,
+            "x": -53,
+            "y": 1174,
+            "w": 368,
+            "h": 419
+          },
+          {
+            "el": "h2#kernel-demo-title.home-kernel-title",
+            "position": "static",
+            "decorative": false,
+            "x": -37,
+            "y": 1239,
+            "w": 336,
+            "h": 54
+          },
+          {
+            "el": "p.home-kernel-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -37,
+            "y": 1305,
+            "w": 336,
+            "h": 105
+          },
+          {
+            "el": "div.home-kernel-actions",
+            "position": "static",
+            "decorative": false,
+            "x": -37,
+            "y": 1446,
+            "w": 336,
+            "h": 110
+          },
+          {
+            "el": "div.home-kernel-features",
+            "position": "static",
+            "decorative": false,
+            "x": -78,
+            "y": 1638,
+            "w": 418,
+            "h": 1038
+          },
+          {
+            "el": "div.home-kernel-feature-header",
+            "position": "static",
+            "decorative": false,
+            "x": -61,
+            "y": 1655,
+            "w": 384,
+            "h": 108
+          },
+          {
+            "el": "p",
+            "position": "static",
+            "decorative": false,
+            "x": -61,
+            "y": 1691,
+            "w": 384,
+            "h": 21
+          },
+          {
+            "el": "span.home-kernel-feature-count",
+            "position": "static",
+            "decorative": false,
+            "x": -61,
+            "y": 1723,
+            "w": 59,
+            "h": 27
+          },
+          {
+            "el": "div.home-kernel-feature-grid",
+            "position": "static",
+            "decorative": false,
+            "x": -61,
+            "y": 1779,
+            "w": 384,
+            "h": 792
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 1779,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1792,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1792,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1814,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 1859,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1872,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1872,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1894,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 1939,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1952,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1952,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 1974,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 2019,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2032,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2032,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2054,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 2099,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2112,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2112,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2134,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 2179,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2192,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2192,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2214,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 2259,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2272,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2272,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2294,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 2339,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2352,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2352,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2374,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 2419,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2432,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2432,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2454,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "position": "relative",
+            "decorative": false,
+            "x": -61,
+            "y": 2499,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2512,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2512,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "position": "static",
+            "decorative": false,
+            "x": -44,
+            "y": 2534,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "p.home-kernel-footnote",
+            "position": "static",
+            "decorative": false,
+            "x": -61,
+            "y": 2587,
+            "w": 384,
+            "h": 56
+          }
+        ],
+        "clipped": [
+          {
+            "el": "div.split-hero__main",
+            "by": "section.split-hero",
+            "dx": 78,
+            "dy": 0,
+            "x": -78,
+            "y": 243,
+            "w": 418,
+            "h": 820
+          },
+          {
+            "el": "div.split-hero__title-wrap",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 436,
+            "w": 368,
+            "h": 87
+          },
+          {
+            "el": "h1#hero-title.split-hero__h1",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 436,
+            "w": 368,
+            "h": 87
+          },
+          {
+            "el": "span.split-hero__h1-voc",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 507,
+            "w": 368,
+            "h": 16
+          },
+          {
+            "el": "span.text-white",
+            "by": "p.split-hero__lead",
+            "dx": 0,
+            "dy": 48,
+            "x": 105,
+            "y": 637,
+            "w": 149,
+            "h": 22
+          },
+          {
+            "el": "strong.text-white",
+            "by": "p.split-hero__lead",
+            "dx": 0,
+            "dy": 73,
+            "x": 241,
+            "y": 662,
+            "w": 73,
+            "h": 22
+          },
+          {
+            "el": "strong.text-white",
+            "by": "p.split-hero__lead",
+            "dx": 0,
+            "dy": 73,
+            "x": 73,
+            "y": 662,
+            "w": 112,
+            "h": 22
+          },
+          {
+            "el": "strong.text-white",
+            "by": "p.split-hero__lead",
+            "dx": 0,
+            "dy": 73,
+            "x": -26,
+            "y": 662,
+            "w": 72,
+            "h": 22
+          },
+          {
+            "el": "div.home-hero-actions",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 632,
+            "w": 368,
+            "h": 270
+          },
+          {
+            "el": "a.wa-btn",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 768,
+            "w": 368,
+            "h": 61
+          },
+          {
+            "el": "a.home-cta-primary",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 840,
+            "w": 368,
+            "h": 61
+          },
+          {
+            "el": "a.home-cta-secondary",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 632,
+            "w": 368,
+            "h": 56
+          },
+          {
+            "el": "a.home-cta-secondary",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 700,
+            "w": 368,
+            "h": 56
+          },
+          {
+            "el": "div.trust-badges",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 921,
+            "w": 368,
+            "h": 96
+          },
+          {
+            "el": "span.trust-badge",
+            "by": "section.split-hero",
+            "dx": 53,
+            "dy": 0,
+            "x": -53,
+            "y": 929,
+            "w": 80,
+            "h": 80
+          },
+          {
+            "el": "aside.home-kernel-showcase",
+            "by": "section.split-hero",
+            "dx": 78,
+            "dy": 0,
+            "x": -78,
+            "y": 1103,
+            "w": 418,
+            "h": 1573
+          },
+          {
+            "el": "div.home-kernel-panel",
+            "by": "section.split-hero",
+            "dx": 78,
+            "dy": 0,
+            "x": -78,
+            "y": 1103,
+            "w": 418,
+            "h": 515
+          },
+          {
+            "el": "div.home-kernel-features",
+            "by": "section.split-hero",
+            "dx": 78,
+            "dy": 0,
+            "x": -78,
+            "y": 1638,
+            "w": 418,
+            "h": 1038
+          },
+          {
+            "el": "div.home-kernel-feature-header",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 1655,
+            "w": 384,
+            "h": 108
+          },
+          {
+            "el": "p",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 1691,
+            "w": 384,
+            "h": 21
+          },
+          {
+            "el": "span.home-kernel-feature-count",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 1723,
+            "w": 59,
+            "h": 27
+          },
+          {
+            "el": "div.home-kernel-feature-grid",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 1779,
+            "w": 384,
+            "h": 792
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 1779,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1792,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1792,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1814,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 1859,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1872,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1872,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1894,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 1939,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1952,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1952,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 1974,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2019,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2032,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2032,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2054,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2099,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2112,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2112,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2134,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2179,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2192,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2192,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2214,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2259,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2272,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2272,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2294,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2339,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2352,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2352,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2374,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2419,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2432,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2432,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2454,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "a.home-kernel-feature-link",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2499,
+            "w": 384,
+            "h": 72
+          },
+          {
+            "el": "span",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2512,
+            "w": 302,
+            "h": 46
+          },
+          {
+            "el": "span.home-kernel-feature-title",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2512,
+            "w": 302,
+            "h": 20
+          },
+          {
+            "el": "span.home-kernel-feature-copy",
+            "by": "section.split-hero",
+            "dx": 44,
+            "dy": 0,
+            "x": -44,
+            "y": 2534,
+            "w": 302,
+            "h": 19
+          },
+          {
+            "el": "p.home-kernel-footnote",
+            "by": "section.split-hero",
+            "dx": 61,
+            "dy": 0,
+            "x": -61,
+            "y": 2587,
+            "w": 384,
+            "h": 56
+          }
+        ],
+        "stuck": [
+          {
+            "el": "span.split-hero__chip-word",
+            "reason": "opacity:0",
+            "x": 76,
+            "y": 396,
+            "w": 136,
+            "h": 16
+          }
+        ],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 1549,
+        "escapeesContent": 69,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 19148
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, 800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 4,
+            "paused": false,
+            "naturalW": 1600,
+            "naturalH": 1200
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 15,
+          ".home-cta-primary": 20,
+          ".home-cta-strip": 15,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 9,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1529,
+        "h1Count": 1,
+        "h1": [
+          "حوكمة الذكاء الاصطناعي\nللشركات\nالسعودية بجرد AI ومالك مسؤول "
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "span.split-hero__chip-word",
+            "hiddenBy": "span.split-hero__chip-word",
+            "h": 16,
+            "text": "AI Governance Platform"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 180,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 180,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 213,
+            "text": "هل الموظف يرفع بيانات حساسة؟أرقام هويات،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الموظف يرفع بيانات حساسة؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 45,
+            "text": "أرقام هويات، ملفات مرضى، عقود، أسعار... "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وش لو الـ AI أعطى جواب غلط؟خطأ في النموذ"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وش لو الـ AI أعطى جواب غلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خطأ في النموذج يوصل لقرار خاطئ = خسارة ف"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وين سجل التدقيق؟لما يجي المدقق ويسأل: مي"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وين سجل التدقيق؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "لما يجي المدقق ويسأل: مين سأل، متى، وش ر"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل متوافق مع PDPL؟نظام حماية البيانات ما"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل متوافق مع PDPL؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "نظام حماية البيانات ما يمزح. غرامات تصل "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟خصم مخزون،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خصم مخزون، تحديث عقد... بدون موافقة؟"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الطبيب/المحاسب يثق فيه؟بدون شفافية وم"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الطبيب/المحاسب يثق فيه؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "بدون شفافية ومصادر، ما حد بيستخدمه."
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 393,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 275,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 68,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 68,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.text-white/70.leading-loose.text-sm",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 84,
+            "text": "طبقة تشغيلية لإدارة استخدامات ومخاطر AI "
+          },
+          {
+            "el": "ul.space-y-1.5.text-xs.text-white/60",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 67,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 22,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 22,
+            "text": "✓ رصد وتحليل المخاطر الأمنية والتشغيلية"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 22,
+            "text": "✓ يدعم جاهزية ضوابط SDAIA و NCA"
+          },
+          {
+            "el": "a.section-mini-link.mt-auto",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 44,
+            "text": "استكشف منصة الحوكمة"
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 396,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 278,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "AI Firewall"
+          }
+        ],
+        "invisibleContentCount": 287,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/LeadForm.Bzvbz7AX.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/index.BY_fdr2V.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.CNvPDzqM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "videoRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788287931278&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=2039551214.1788287933&frm=0&ngs=1&pscdl=noapi&rcb=8&sr=360x800&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115938466~115938468~118897920~118897930~120385423&sid=1788287932&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F&dt=%D8%AD%D9%88%D9%83%D9%85%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%20%7C%20BrightAI&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1792",
+          "err": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/500.html",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [
+          {
+            "el": "h2#brightai-raw-internal-links-title",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 0,
+            "dy": 48,
+            "x": 352,
+            "y": 27,
+            "w": 1,
+            "h": 29
+          },
+          {
+            "el": "ul",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 19,
+            "dy": 288,
+            "x": 333,
+            "y": 76,
+            "w": 20,
+            "h": 220
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 77,
+            "dy": 88,
+            "x": 275,
+            "y": 76,
+            "w": 78,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 44,
+            "dy": 108,
+            "x": 308,
+            "y": 96,
+            "w": 45,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 41,
+            "dy": 128,
+            "x": 311,
+            "y": 116,
+            "w": 42,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 41,
+            "dy": 148,
+            "x": 311,
+            "y": 136,
+            "w": 42,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 36,
+            "dy": 168,
+            "x": 316,
+            "y": 156,
+            "w": 37,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 35,
+            "dy": 188,
+            "x": 317,
+            "y": 176,
+            "w": 36,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 33,
+            "dy": 208,
+            "x": 319,
+            "y": 196,
+            "w": 34,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 28,
+            "dy": 228,
+            "x": 324,
+            "y": 216,
+            "w": 29,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 43,
+            "dy": 248,
+            "x": 309,
+            "y": 236,
+            "w": 44,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 39,
+            "dy": 268,
+            "x": 313,
+            "y": 256,
+            "w": 40,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 35,
+            "dy": 288,
+            "x": 317,
+            "y": 276,
+            "w": 36,
+            "h": 20
+          }
+        ],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 67,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 1335
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 0,
+          ".home-cta-primary": 0,
+          ".home-cta-strip": 0,
+          ".bg-ambient-dots": 0,
+          ".section__title": 0,
+          ".section__eyebrow": 0,
+          ".card--glass": 0,
+          ".page-hero__title": 0,
+          ".k-units": 0,
+          ".k-unit-card": 0,
+          ".inner-section": 0,
+          ".sr-only": 0,
+          ".legal-page": 0
+        },
+        "totalRules": 72,
+        "h1Count": 1,
+        "h1": [
+          "500"
+        ],
+        "bodyBg": "rgb(2, 6, 23)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [],
+        "invisibleContentCount": 0,
+        "revealReady": false,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/images/logo.png",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "warning",
+          "text": "The resource http://localhost:4321/assets/images/logo.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is prelo"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        },
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788287937910&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&are=1&cid=2039551214.1788287933&frm=0&ngs=1&pscdl=noapi&rcb=1&sr=360x800&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115616986~115938465~115938469~118897920~118897930~120385422&sid=1788287932&sct=1&seg=1&dl=http%3A%2F%2Flocalhost%2F500.html&dt=%D8%AE%D8%B7%D8%A3%20%D8%AE%D8%A7%D8%AF%D9%85%20BrightAI%20%D9%88%D8%AE%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%AA%D8%A7%D8%A8%D8%B9%D8%A9%20%D8%A7%D9%84%D8%A2%D9%85%D9%86%D8%A9%20%7C%20BrightAI&en=page_view&_ee=1&tfd=5121",
+          "err": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/500.html",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [
+          {
+            "el": "h2#brightai-raw-internal-links-title",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 0,
+            "dy": 48,
+            "x": 1432,
+            "y": 27,
+            "w": 1,
+            "h": 29
+          },
+          {
+            "el": "ul",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 19,
+            "dy": 288,
+            "x": 1413,
+            "y": 76,
+            "w": 20,
+            "h": 220
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 77,
+            "dy": 88,
+            "x": 1355,
+            "y": 76,
+            "w": 78,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 44,
+            "dy": 108,
+            "x": 1388,
+            "y": 96,
+            "w": 45,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 41,
+            "dy": 128,
+            "x": 1391,
+            "y": 116,
+            "w": 42,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 41,
+            "dy": 148,
+            "x": 1391,
+            "y": 136,
+            "w": 42,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 36,
+            "dy": 168,
+            "x": 1396,
+            "y": 156,
+            "w": 37,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 35,
+            "dy": 188,
+            "x": 1397,
+            "y": 176,
+            "w": 36,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 33,
+            "dy": 208,
+            "x": 1399,
+            "y": 196,
+            "w": 34,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 28,
+            "dy": 228,
+            "x": 1404,
+            "y": 216,
+            "w": 29,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 43,
+            "dy": 248,
+            "x": 1389,
+            "y": 236,
+            "w": 44,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 39,
+            "dy": 268,
+            "x": 1393,
+            "y": 256,
+            "w": 40,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 35,
+            "dy": 288,
+            "x": 1397,
+            "y": 276,
+            "w": 36,
+            "h": 20
+          }
+        ],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 67,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 1217
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 0,
+          ".home-cta-primary": 0,
+          ".home-cta-strip": 0,
+          ".bg-ambient-dots": 0,
+          ".section__title": 0,
+          ".section__eyebrow": 0,
+          ".card--glass": 0,
+          ".page-hero__title": 0,
+          ".k-units": 0,
+          ".k-unit-card": 0,
+          ".inner-section": 0,
+          ".sr-only": 0,
+          ".legal-page": 0
+        },
+        "totalRules": 72,
+        "h1Count": 1,
+        "h1": [
+          "500"
+        ],
+        "bodyBg": "rgb(2, 6, 23)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [],
+        "invisibleContentCount": 0,
+        "revealReady": false,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/assets/images/logo.png",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "warning",
+          "text": "The resource http://localhost:4321/assets/images/logo.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is prelo"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        },
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788287938479&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&are=1&cid=2039551214.1788287933&frm=0&ngs=1&pscdl=noapi&rcb=9&sr=1440x1000&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115938466~115938469~118897920~118897930~119381662~119791748~120385422&sid=1788287932&sct=1&seg=1&dl=http%3A%2F%2Flocalhost%2F500.html&dt=%D8%AE%D8%B7%D8%A3%20%D8%AE%D8%A7%D8%AF%D9%85%20BrightAI%20%D9%88%D8%AE%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%AA%D8%A7%D8%A8%D8%B9%D8%A9%20%D8%A7%D9%84%D8%A2%D9%85%D9%86%D8%A9%20%7C%20BrightAI&en=page_view&_ee=1&tfd=5140",
+          "err": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "app": "site",
+      "url": "/500.html",
+      "templateFile": "(explicit)",
+      "viewport": "1920x1080",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1920,
+        "escapees": [],
+        "clipped": [
+          {
+            "el": "h2#brightai-raw-internal-links-title",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 0,
+            "dy": 48,
+            "x": 1912,
+            "y": 27,
+            "w": 1,
+            "h": 29
+          },
+          {
+            "el": "ul",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 19,
+            "dy": 288,
+            "x": 1893,
+            "y": 76,
+            "w": 20,
+            "h": 220
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 77,
+            "dy": 88,
+            "x": 1835,
+            "y": 76,
+            "w": 78,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 44,
+            "dy": 108,
+            "x": 1868,
+            "y": 96,
+            "w": 45,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 41,
+            "dy": 128,
+            "x": 1871,
+            "y": 116,
+            "w": 42,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 41,
+            "dy": 148,
+            "x": 1871,
+            "y": 136,
+            "w": 42,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 36,
+            "dy": 168,
+            "x": 1876,
+            "y": 156,
+            "w": 37,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 35,
+            "dy": 188,
+            "x": 1877,
+            "y": 176,
+            "w": 36,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 33,
+            "dy": 208,
+            "x": 1879,
+            "y": 196,
+            "w": 34,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 28,
+            "dy": 228,
+            "x": 1884,
+            "y": 216,
+            "w": 29,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 43,
+            "dy": 248,
+            "x": 1869,
+            "y": 236,
+            "w": 44,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 39,
+            "dy": 268,
+            "x": 1873,
+            "y": 256,
+            "w": 40,
+            "h": 20
+          },
+          {
+            "el": "a",
+            "by": "section.brightai-raw-internal-links",
+            "dx": 35,
+            "dy": 288,
+            "x": 1877,
+            "y": 276,
+            "w": 36,
+            "h": 20
+          }
+        ],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 67,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "delta": 0
+        },
+        "docHeight": 1217
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 0,
+          ".home-cta-primary": 0,
+          ".home-cta-strip": 0,
+          ".bg-ambient-dots": 0,
+          ".section__title": 0,
+          ".section__eyebrow": 0,
+          ".card--glass": 0,
+          ".page-hero__title": 0,
+          ".k-units": 0,
+          ".k-unit-card": 0,
+          ".inner-section": 0,
+          ".sr-only": 0,
+          ".legal-page": 0
+        },
+        "totalRules": 72,
+        "h1Count": 1,
+        "h1": [
+          "500"
+        ],
+        "bodyBg": "rgb(2, 6, 23)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [],
+        "invisibleContentCount": 0,
+        "revealReady": false,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/assets/images/logo.png",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "warning",
+          "text": "The resource http://localhost:4321/assets/images/logo.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is prelo"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        },
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788287938554&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAAQ&are=1&cid=2039551214.1788287933&frm=0&ngs=1&pscdl=noapi&rcb=7&sr=1920x1080&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115938465~115938468~118897920~118897930~119259606~120385423&sid=1788287932&sct=1&seg=1&dl=http%3A%2F%2Flocalhost%2F500.html&dt=%D8%AE%D8%B7%D8%A3%20%D8%AE%D8%A7%D8%AF%D9%85%20BrightAI%20%D9%88%D8%AE%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%AA%D8%A7%D8%A8%D8%B9%D8%A9%20%D8%A7%D9%84%D8%A2%D9%85%D9%86%D8%A9%20%7C%20BrightAI&en=page_view&_ee=1&tfd=5162",
+          "err": "net::ERR_ABORTED"
+        }
+      ]
+    }
+  ]
+}

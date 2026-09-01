@@ -326,15 +326,96 @@
   border: 1px solid var(--surface-on-media-border);
 }
 
+/* RDX-CONTRAST-ON-MEDIA: these are reading groups that can overlap the video.
+   The surface stays in normal flow; it is never a page-wide scrim. */
+.split-hero__main,
+.page-hero,
+.inner-hero,
+.inner-section__lead,
+.prose,
+.legal-page,
+.k-section-title,
+.k-section-intro,
+.home-citable-definition,
+.home-trust__badges,
+.home-trust__logos,
+.home-flow-kernel,
+.home-comparison-wrap {
+  padding: var(--space-5);
+  border: 1px solid var(--surface-on-media-border);
+  border-radius: var(--surface-on-media-radius);
+  background: var(--surface-on-media);
+  -webkit-backdrop-filter: var(--surface-on-media-blur);
+  backdrop-filter: var(--surface-on-media-blur);
+}
+
+/* Last-resort shell groups: the route audit discovered that several legacy
+   templates put text directly in a main child, header, or footer. These are
+   normal-flow blocks (never fixed) and intentionally omit backdrop-filter: a
+   dense page can have many of them in one viewport, so alpha carries contrast
+   without creating a compositor-heavy blur stack. */
+.site-header,
+.site-footer,
+main > * {
+  background-color: var(--surface-on-media);
+}
+
+.k-section-title { margin-block-end: var(--space-3); }
+.k-section-intro { margin-block-start: 0; }
+
 /* Readers who opt out of translucency get a fully opaque surface rather than a
    thinner one — the point of the surface is legibility, not decoration. */
 @media (prefers-reduced-transparency: reduce) {
   .section__header,
-  .inner-section__header {
+  .inner-section__header,
+  .split-hero__main,
+  .page-hero,
+  .inner-hero,
+  .inner-section__lead,
+  .prose,
+  .legal-page,
+  .k-section-title,
+  .k-section-intro,
+  .home-citable-definition,
+  .home-trust__badges,
+  .home-trust__logos,
+  .home-flow-kernel,
+  .home-comparison-wrap {
     background: var(--bg-surface);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
+
+  .site-header,
+  .site-footer,
+  main > * { background-color: var(--bg-surface); }
+}
+
+@media print {
+  .section__header,
+  .inner-section__header,
+  .split-hero__main,
+  .page-hero,
+  .inner-hero,
+  .inner-section__lead,
+  .prose,
+  .legal-page,
+  .k-section-title,
+  .k-section-intro,
+  .home-citable-definition,
+  .home-trust__badges,
+  .home-trust__logos,
+  .home-flow-kernel,
+  .home-comparison-wrap {
+    background: transparent;
+    border-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .site-header,
+  .site-footer,
+  main > * { background-color: transparent; }
 }
 
 /* Start-aligned variant — header sits on the start side, used on asymmetric
@@ -3457,4 +3538,3 @@ button {
 /* AEO Speakable Specification summary element target */
 /* Semantic marker class for schema.org SpeakableSpecification target elements.
    Intentionally left unstyled; it serves as a semantic hook for structured data. */
-

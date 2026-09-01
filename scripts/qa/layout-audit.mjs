@@ -117,7 +117,7 @@ const MEASURE = function measure() {
   const box = (r) => ({ x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) });
   const nodes = Array.from(document.querySelectorAll('body *'));
 
-  const escapees = []; const clipped = []; const stuck = []; const srLeak = [];
+  const escapees = []; const clipped = []; const stuck = []; const srLeak = []; const bareTextOnMedia = [];
   for (const el of nodes) {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden') continue;
@@ -178,7 +178,34 @@ const MEASURE = function measure() {
       }
     }
   }
-  return { vw, escapees, clipped, stuck, srLeak, nodeCount: nodes.length,
+
+  /* A text node is safe only when an ancestor before <body> paints an opaque or
+     alpha-known background. Body is deliberately excluded: its fallback paint
+     does not protect text once the video layer is behind the content. */
+  const video = document.querySelector('video');
+  const videoBox = video?.getBoundingClientRect();
+  const overlaps = (a, b) => b && a.right > b.left && a.left < b.right && a.bottom > b.top && a.top < b.bottom;
+  const hasSurface = (el) => {
+    const cs = getComputedStyle(el);
+    const bg = cs.backgroundColor.match(/^rgba?\(([^)]+)\)$/)?.[1]?.split(',').map(Number);
+    const alpha = bg?.length === 4 ? bg[3] : bg?.length === 3 ? 1 : 0;
+    return alpha > 0.01 || cs.backgroundImage !== 'none';
+  };
+  const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let node = textWalker.nextNode(); node; node = textWalker.nextNode()) {
+    if (!node.textContent?.trim()) continue;
+    const parent = node.parentElement;
+    if (!parent || /^(SCRIPT|STYLE|NOSCRIPT|SVG)$/i.test(parent.tagName) || designed(parent)) continue;
+    const range = document.createRange(); range.selectNodeContents(node);
+    const rect = range.getBoundingClientRect();
+    if (rect.height <= 12 || !overlaps(rect, videoBox)) continue;
+    let surface = null;
+    for (let p = parent; p && p !== document.body; p = p.parentElement) {
+      if (hasSurface(p)) { surface = p; break; }
+    }
+    if (!surface) bareTextOnMedia.push({ el: name(parent), text: node.textContent.trim().slice(0, 80), ...box(rect) });
+  }
+  return { vw, escapees, clipped, stuck, srLeak, bareTextOnMedia, nodeCount: nodes.length,
     escapeesContent: escapees.filter((e) => !e.decorative).length,
     overflowX: { scrollWidth: de.scrollWidth, clientWidth: de.clientWidth, delta: de.scrollWidth - de.clientWidth },
     docHeight: de.scrollHeight };
@@ -430,6 +457,8 @@ const summary = {
     clipped: results.filter((r) => num(r, (l) => l.clipped.length) > 0).length,
     stuck: results.filter((r) => num(r, (l) => l.stuck.length) > 0).length,
     srLeak: results.filter((r) => num(r, (l) => l.srLeak.length) > 0).length,
+    bareTextOnMedia: results.filter((r) => num(r, (l) => l.bareTextOnMedia.length) > 0).length,
+    bareTextOnMediaNodes: results.reduce((s, r) => s + num(r, (l) => l.bareTextOnMedia.length), 0),
     bigVoids: results.filter((r) => r.bg && r.bg.voids.length > 0).length,
     groupSplits: results.filter((r) => r.bg && r.bg.groupSplits.length > 0).length,
     globalScrim: results.filter((r) => r.bg && r.bg.scrims.length > 0).length,

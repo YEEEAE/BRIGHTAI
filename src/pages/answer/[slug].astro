@@ -224,6 +224,11 @@ import SiteBackground from '../../components/SiteBackground.astro';
       .answer-body {
         padding-block: var(--space-6);
         padding-inline: var(--space-4);
+        background: var(--surface-on-media);
+        border: 1px solid var(--surface-on-media-border);
+        border-radius: var(--surface-on-media-radius);
+        -webkit-backdrop-filter: var(--surface-on-media-blur);
+        backdrop-filter: var(--surface-on-media-blur);
       }
       .answer-body__heading {
         margin: 0 0 var(--space-4);
@@ -266,6 +271,8 @@ import SiteBackground from '../../components/SiteBackground.astro';
         text-decoration: none;
       }
       .answer-actions a:hover { background: var(--bg-elevated); }
+      @media (prefers-reduced-transparency: reduce) { .answer-body { background: var(--bg-surface); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+      @media print { .answer-body { background: transparent; border-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; } }
     </style>
   </body>
 </html>

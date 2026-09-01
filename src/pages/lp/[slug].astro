@@ -217,6 +217,12 @@ import SiteBackground from '../../components/SiteBackground.astro';
       }
       .lp-body {
         margin-block-end: var(--space-8);
+        padding: var(--space-6);
+        background: var(--surface-on-media);
+        border: 1px solid var(--surface-on-media-border);
+        border-radius: var(--surface-on-media-radius);
+        -webkit-backdrop-filter: var(--surface-on-media-blur);
+        backdrop-filter: var(--surface-on-media-blur);
       }
       .lp-body__heading {
         margin: 0 0 var(--space-4);
@@ -292,6 +298,8 @@ import SiteBackground from '../../components/SiteBackground.astro';
       @media (prefers-reduced-motion: reduce) {
         * { transition: none !important; animation: none !important; }
       }
+      @media (prefers-reduced-transparency: reduce) { .lp-body { background: var(--bg-surface); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+      @media print { .lp-body { background: transparent; border-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; } }
     </style>
   </body>
 </html>

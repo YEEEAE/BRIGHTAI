@@ -12,7 +12,7 @@ interface Props {
 
 const { eyebrow, title, description, class: className = '' } = Astro.props;
 ---
-<header class:list={['flex flex-wrap items-end justify-between gap-4', className]}>
+<header class:list={['media-reading-surface flex flex-wrap items-end justify-between gap-4', className]}>
   <div class="min-w-0">
     {eyebrow && (
       <p class="type-page-eyebrow">{eyebrow}</p>

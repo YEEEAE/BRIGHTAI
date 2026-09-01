@@ -1,4 +1,33 @@
 
+## [2026-09-01] — تحليل شامل وصياغة برومبت تحسين أقسام ومحتوى BRIGHTAI
+
+### تم التنفيذ
+- حللت عقل المشروع والجرد الحالي وتقارير التصميم السابقة وتغييرات أسطح القراءة المحلية غير الملتزمة، بدون تعديل كود المنتج.
+- فحصت صور المستخدم الأصلية والنسخة الحية `brightai.live` داخل Chrome على 1440×1000 و360×800، مع فصل محتوى الصفحة عن تعليمات المهمة.
+- وثقت مشاكل مثبتة: قص H1 عند `x=-28px` على الجوال، هيرو بطول ~2743px، أقسام متكررة بارتفاع 728–1056px، نصوص عارية فوق الفيديو، أهداف لمس صغيرة، وفقرات صفحة الحلول بعرض يصل 1176px وطول 372 حرفًا.
+- أنشأت برومبت تنفيذي مخصص لـGPT-5.6 Terra يحافظ على عقد الخلفية حرفيًا، ويبني أسطح قراءة محلية دلالية، ويحسن بنية الأقسام والنصوص عبر عائلات المسارات الثلاثة.
+- ضمّنت معايير قبول رقمية للتباين والاستجابة والوصول وSEO والبناء، مع إلزام Chrome وroute inventory وlayout-audit والتغطية الكاملة بدل اللقطات الانتقائية.
+
+### الملفات المتأثرة
+- `docs/audits/BRIGHTAI-GLOBAL-SECTIONS-CONTENT-PROMPT.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- قراءة `.agents/mind/01-mind-latest.md` كاملة على دفعات ✅
+- قراءة مهارات `redesign-existing-projects` و`accessible-content-rewrite` ومراجعها ✅
+- Chrome حي: الرئيسية 1440×1000 و360×800 + صفحة الحلول 1440×1000 ✅
+- مطابقة البرومبت مع جرد 369 مسارًا / 176 قالبًا ومع عقد الخلفية 95/95 ✅
+- `git diff --check` ✅
+- لم يُشغّل build/tests: المهمة تحليلية وتوثيقية ولم تعدّل كود المنتج.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** البرومبت النهائي جاهز للتنفيذ داخل Codex 5.6 Terra، مبني على المصدر المحلي والصور وفحص Chrome الحي، ويمنع تغيير الخلفية أو الاكتفاء بتعتيم عام.
+
+### ملاحظات / مشاكل مفتوحة
+- انقطع اتصال Chrome بعد فحص الرئيسية والحلول؛ لم أستبدله بمتصفح آخر التزامًا بطلب المستخدم، وبقية العائلات مغطاة من جرد المصدر وتقارير Chromium المحلية ويُلزم البرومبت بإعادة فحصها حيًا أثناء التنفيذ.
+- تغييرات `RDX-CONTRAST-ON-MEDIA` المحلية تخص المستخدم وبقيت محفوظة بدون تعديل.
+
 ## [2026-09-01] — نقل مخرجات تدقيق QC إلى audit/qc/QC-Task-Manager
 
 ### تم التنفيذ
@@ -1770,3 +1799,37 @@
 
 **الخطوة الجاية:**
 - بدء تنفيذ Prompt 06 (Full Product UI/UX Reconstruction) حسب التشيك ليست الجديدة
+## [2026-09-01] — RDX-CONTRAST-ON-MEDIA: أسطح قراءة مضمونة فوق فيديو الخلفية
+
+### تم التنفيذ
+- رفعت `--surface-on-media` من `rgba(10,16,32,0.86)` إلى `0.90`؛ أسوأ حالة على إطار أبيض صارت `rgb(34,40,54)`، ورفعت `--text-muted` إلى `#94a3b8` لأن قيمته السابقة لم تكن تحقق AA فوق هذا السطح.
+- وسعت أسطح القراءة محليًا للرئيسية، الـhero، المقالات/القانونية، Kernel، الصفحات المستقلة `answer` و`lp`، صفحة 500، و`PageHeader` في QC؛ أضفت فروع reduced-transparency وprint لكلها.
+- أضفت `scripts/qa/verify-contrast-on-media.mjs` وربطته في `package.json` عبر `contrast:verify` و`bg:contract`؛ يقرأ التوكنات فعليًا ويحسب النسب فوق طرفي الفيديو بدل لقطة واحدة.
+- وسعت `layout-audit.mjs` بحقل `bareTextOnMedia` الذي يمشي على عقد النص ويبحث عن أقرب سطح خلفية؛ صححت regex في الحارس بعدما ولّد نتائج كاذبة بسبب قراءة `rgba()` المحسوب بشكل خاطئ.
+- لم أغير عقد الفيديو أو أضف scrim ثابت أو dependency أو commit/push/deploy.
+
+### الملفات المتأثرة
+- `src/styles/{tokens,components,pages}.css`
+- `src/pages/{answer/[slug],lp/[slug]}.astro` و`public/500.html`
+- `apps/qc-task-manager/src/{components/ui/PageHeader.astro,styles/global.css}`
+- `scripts/qa/{verify-contrast-on-media,layout-audit}.mjs` و`package.json`
+
+### الأرقام
+- `--text-primary`: 17.55:1 (أسود) / 13.45:1 (أبيض).
+- `--text-secondary` و`--text-muted`: 7.50:1 / 5.75:1.
+- `--brand-300`: 6.62:1 / 5.08:1؛ `--interactive-primary`: 6.31:1 / 4.84:1.
+- فحص Chromium المصغّر: 3 routes × 3 مقاسات = 9 runs، `bareTextOnMedia: 0` و`horizontalOverflow: 0`.
+
+### التحقق
+- `pnpm build` ✅.
+- `pnpm --dir apps/qc-task-manager build` ✅ و`typecheck` ✅ (0 errors/warnings، 27 hints سابقة).
+- `pnpm --dir apps/qc-task-manager test:ui-consistency` ✅ 207/207.
+- `pnpm bg:verify` ✅ 7/7؛ `pnpm bg:contract` ✅ (background 95/95 + contrast PASS)؛ `pnpm headers:check` ✅؛ `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** جزئي.
+- **مختصر:** الحارس الحسابي والأسطح والتدقيق التشغيلي للعينة ناجحة، لكن إعادة المسح الكامل 80 template × 8 viewport والحالات reduced-motion/print/zoom بعد تصحيح الحارس ما زالت غير منفذة؛ لا تدّعي تغطية كاملة قبلها.
+
+### ملاحظات / مشاكل مفتوحة
+- مخرجات الفحص تولّدت في `download/qa/global-bg-audit/` وغير متتبعة؛ لا تحذفها بدون قرار المالك.
+- لا توجد لقطات before/after الكاملة لكل العائلات بعد.

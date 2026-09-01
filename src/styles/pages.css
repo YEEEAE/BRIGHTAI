@@ -16,11 +16,6 @@
 .home-citable-definition {
   position: relative;
   padding: var(--space-6) 0;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 21, 37, 0.55) 0%,
-    rgba(15, 21, 37, 0) 100%
-  );
   border-block-end: 1px solid var(--line, rgba(255, 255, 255, 0.06));
 }
 .home-citable-definition p {

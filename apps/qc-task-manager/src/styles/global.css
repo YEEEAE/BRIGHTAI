@@ -44,6 +44,16 @@
 
 /* Named type roles keep hierarchy stable when the typeface or scale changes. */
 .type-page-title { @apply text-2xl font-semibold tracking-tight text-content; }
+
+.media-reading-surface {
+  @apply rounded-2xl border p-5;
+  background: rgba(10, 16, 32, 0.90);
+  border-color: rgba(255, 255, 255, 0.09);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+@media (prefers-reduced-transparency: reduce) { .media-reading-surface { background: #0f1525; -webkit-backdrop-filter: none; backdrop-filter: none; } }
+@media print { .media-reading-surface { background: transparent; border-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; } }
 .type-page-eyebrow { @apply text-xs font-semibold uppercase tracking-wide text-accent; }
 .type-page-subtitle { @apply mt-1 max-w-3xl text-sm text-content-secondary; }
 .type-section-heading { @apply text-base font-semibold text-content; }

@@ -48,7 +48,7 @@
 
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
-  --text-muted: #7a8ba5;         /* BAI-A11Y-05 (2026-07-29): upgraded from #64748b (4.05:1 ❌) to #7a8ba5 (5.56:1 ✅ AA) على --bg-base */
+--text-muted: #94a3b8;         /* RDX-CONTRAST-ON-MEDIA: 5.75:1 on the guaranteed media surface. */
   --text-inverse: #0a0e1a;
 
   --border-subtle: rgba(148,163,184,0.1);
@@ -174,11 +174,11 @@
    a given glyph's ratio changes frame to frame. The only compliant answer is a
    surface with a known alpha, which makes the worst case computable.
 
-   At 0.86 the composite over a pure-white frame is rgb(45,50,64) — light text
-   still clears WCAG AA with a wide margin — while 14% of the video reads through,
+   At 0.90 the composite over a pure-white frame is rgb(34,40,54) — every approved
+   text token clears WCAG AA even on the video's brightest frame — while 10% reads through,
    so the atmosphere survives. scripts/qa/verify-contrast-on-media.mjs recomputes
    both extremes and fails if any text pair drops below AA. */
---surface-on-media: rgba(10,16,32,0.86);
+--surface-on-media: rgba(10,16,32,0.90);
 --surface-on-media-blur: blur(14px) saturate(140%);
 --surface-on-media-border: rgba(255,255,255,0.09);
 --surface-on-media-radius: 1.25rem;
