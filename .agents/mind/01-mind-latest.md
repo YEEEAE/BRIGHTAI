@@ -1,4 +1,112 @@
 
+## [2026-09-01] — QC-PILOT-UAT-EXECUTION-BLOCKED-001: التحقق من جاهزية UAT البشري
+
+### تم التنفيذ
+- قرأت `apps/qc-task-manager/docs/PILOT-UAT.md` كاملًا وحددت أنه runbook لجلسات موظفين حقيقيين، وليس تقرير نتائج.
+- راجعت تعليمات اختبار الوصول اليدوي؛ نتائج VoiceOver/NVDA والكيبورد لا تُستنتج من الاختبارات الآلية.
+- تحققت من أدوات المتصفح؛ الصفحة الوحيدة المفتوحة `about:blank`، ولا توجد جلسة موظف أو بيئة staging موصولة.
+- تحققت من وثائق التشغيل؛ حسابات `admin`/`manager`/`supervisor`/`employee` المتاحة محلية/demo وليست موظفين QC حقيقيين.
+- لم أسجل نتائج success/time/assistance/errors/recovery/confusion/comments، ولم أنشئ وثيقة موقعة أو أدّعي UAT مكتملًا.
+
+### الملفات المتأثرة
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- قراءة `PILOT-UAT.md` وتعليمات الوصول ✅
+- فحص جلسة المتصفح ✅ — لا توجد جلسة بشرية
+- فحص وثائق الأدوار وحسابات التشغيل ✅
+- automated tests ❌ لم تُستخدم كبديل عن UAT البشري
+
+### النتيجة
+- **الحالة:** جزئي — متوقف بانتظار مشاركين وبيئة تشغيل وتفويض توقيع.
+- **مختصر:** لم تُنفذ جلسات UAT فعلية، لذلك لا توجد نتائج صالحة للرفع أو التوقيع.
+
+### ملاحظات / مشاكل مفتوحة
+- المطلوب خارجيًا: مشارك QC حقيقي واحد على الأقل لكل دور، رابط staging أو جلسة مشتركة، بيانات اختبار غير إنتاجية، وهوية صاحب التوقيع.
+- لا يجوز اعتماد حسابات demo أو أي اختبار آلي كنتيجة UAT.
+
+## [2026-09-01] — QC-STAGING-READINESS-EVIDENCE-001: تحقق provenance والهجرة والـUI والتصدير والتدقيق وتشغيل SQLite محليًا
+
+### تم التنفيذ
+- لم أنشئ WI pages 2/3 أو 3/3، ولم أغيّر سياسة أو semantics المعايرة؛ المصدر الحالي يثبت فقط 33 صفًا مضبوطًا للصفحة 1 ويرفض الصفحات غير الموردة.
+- شغّلت provenance/conflicts والهجرة: `test:migrations` نجح، وembedded migration parity تحقق `39/39` byte-identical.
+- شغّلت فحوص WI UI والتصدير والتدقيق والمعايرة؛ فحوص `lab-documents`, `lab-reports`, `lab-audit`, `lab-calibration`, و`audit-integrity` نجحت مع RBAC وsafe CSV وimmutability.
+- نفذت `test:production-operations` طازجًا؛ restore drill وbackup verification وintegrity/FK/migrations/audit chains وdeployment contract نجحت.
+- شغّلت acceptance في runner يسمح بـlocalhost: `30/30`، و`3059+` assertion، وresponsive `648/0`، وa11y `86/0`، مع التصدير وRBAC وrestart persistence.
+- شغّلت خادمًا محليًا مع SQLite مؤقتة؛ `/api/health` و`/api/readiness` أعادا HTTP 200، وreadiness أكد `schemaVersion=39`، ثم نُظفت البيئة.
+
+### الملفات المتأثرة
+- `audit/qc/QC-Task-Manager/STAGING-READINESS-EVIDENCE-2026-09-01.md`
+- `apps/qc-task-manager/_reports/qa/acceptance-20260901/e2e-acceptance.log`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- migration/provenance ✅؛ embedded parity `39/39` ✅
+- WI UI `test:lab-documents` ✅؛ calibration `97/0` ✅؛ reports `196/0` ✅؛ audit `60/0` ✅
+- `test:production-operations` ✅؛ deployment contract `22` checks ✅
+- `pnpm e2e:acceptance` ✅ — `30/30`; `3059+`; restart persistence ناجح
+- health/readiness smoke ✅ — HTTP `200`، schema `39`
+- `git -c core.fsmonitor=false diff --check` ✅
+- لا commit ولا push ولا deploy ولا production mutation ✅
+
+### النتيجة
+- **الحالة:** جزئي — البوابات المحلية ناجحة، لكن staging الحقيقي والـpersistent disk والـoperator restore read-back غير مثبتة لأنها تحتاج operator deploy.
+- **مختصر:** كل الفحوص المحلية المطلوبة مثبتة بأدلة جديدة؛ النشر الخارجي بقي محجوبًا حسب التفويض.
+
+### ملاحظات / مشاكل مفتوحة
+- المصدر المضبوط لـWI pages 2/3 و3/3 ما زال غير مورّد؛ لا يجوز ملء النقص أو استنتاج الصفحات.
+- direct `e2e-backup.mjs` بدون `QC_DATABASE_PATH` أعاد خطأ إعداد متوقع؛ acceptance backup suite نجحت `13/0`.
+- لا يوجد staging deployment evidence أو operator UAT أو production mutation.
+
+## [2026-09-01] — QC-TEST-MANIFEST-E2E-ACCEPTANCE-001: تحقق manifest وكل E2E في runner يسمح بـlocalhost
+
+### تم التنفيذ
+- راجعت `apps/qc-task-manager/scripts/test-manifest.mjs` و`test-manifest-guard.mjs` و`e2e-registry.mjs` و`e2e-acceptance.mjs`، وجردت كل ملفات `e2e-*.mjs`؛ لا يوجد suite orphan أو registry drift.
+- شغّلت `pnpm test:manifest` في `apps/qc-task-manager`: اجتاز الحارس 65 canonical unit suites و28 canonical E2E suites، exit code 0.
+- شغّلت `pnpm e2e:acceptance` في runner يسمح للـAstro production server بالـbind على `127.0.0.1`; الـbuild اكتمل ثم نفّذ 28 workflow suites مع SQLite وport معزولين، إضافة إلى create/verify restart persistence.
+- كل الـworkflow suites نجحت: 3,059 assertion ناجحة و0 فاشلة، بدون timeout؛ مرحلتا restart persistence نجحتا وتحققتا من بقاء ملف PDF وتنزيل نفس bytes بعد إعادة تشغيل السيرفر.
+- راجعت السويتات كاملة عبر registry والتنفيذ الفعلي وجرد line/assertion markers؛ شملت `a11y` (keyboard/focus/ARIA/axe) و`responsive` (360/390/768/1024/1440) و`reports` وباقي عائلات auth/task/lab.
+- لم يحصل أي تعديل على assertions أو كود المنتج؛ ما كان فيه فشل يبرر إصلاحًا جذريًا.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/scripts/test-manifest-guard.mjs`
+- `apps/qc-task-manager/scripts/e2e-registry.mjs`
+- `apps/qc-task-manager/scripts/e2e-acceptance.mjs`
+- `apps/qc-task-manager/scripts/e2e-*.mjs` (فحص وتنفيذ كامل، بدون تعديل)
+- `apps/qc-task-manager/_reports/qa/acceptance-20260901/test-manifest.log`
+- `apps/qc-task-manager/_reports/qa/acceptance-20260901/e2e-acceptance.log`
+
+### الأرقام
+- Manifest: `65` canonical unit suites، `28` canonical E2E suites، exit `0`.
+- Acceptance: `30/30` executions ناجحة (28 workflow + مرحلتا persistence)، exit `0`.
+- Assertions القابلة للعد من الـworkflow output: `3059 passed / 0 failed`.
+- Persistence: `2/2` operational checks ناجحة؛ السكربت ما يطبع صيغة رقمية، لذلك orchestrator سجّل aggregate بصيغة `3059+ passed / parsability incomplete` بدل ادعاء رقم غير مطبوع.
+- الزمن الكلي المسجل: `250979ms`.
+- HEAD وقت التشغيل: `269e207ad4a717d33f8dd47abade83e5ba468c09`؛ الشجرة كانت نظيفة.
+
+### القرارات
+- استخدمت runner بصلاحية bind محلي لأن sandbox العادي كان معروفًا أنه يمنع `listen`؛ هذا غيّر بيئة التشغيل فقط وما غيّر الاختبارات.
+- أبقيت تحذيرات Vite الخاصة بالـdynamic/static imports كما هي؛ البناء نجح ولا يوجد دليل أنها سبب خلل في acceptance.
+- لم أعتبر logs المتوقعة لمسارات الرفض (`404/405` ومحاولة retest غير مؤهلة) فشلًا؛ الـassertions الخاصة بها نجحت.
+
+### التحقق
+- `pnpm test:manifest` ✅ exit 0 — manifest guard passed.
+- `pnpm e2e:acceptance` ✅ exit 0 — build + 30 executions، 0 failed، 0 timeout.
+- `a11y` E2E ✅ `86/0`؛ axe critical/serious/moderate/minor كلها `0`.
+- `responsive` E2E ✅ `648/0` عبر المقاسات المسجلة.
+- `git -c core.fsmonitor=false status --short` ✅ قبل تحديث mind كانت الشجرة نظيفة؛ التغيير النهائي الوحيد هو سجل هذا الملف.
+- لا commit ولا push ولا deploy ✅.
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** manifest وكل acceptance suites اجتازت في runner قادر على localhost binding، بدون إضعاف assertions أو الحاجة لإصلاح كود؛ السجل الكامل محفوظ في logs المذكورة.
+
+### ملاحظات / مشاكل مفتوحة
+- `e2e-acceptance.mjs` لا يفسر مخرجات persistence الرقمية، فبقي aggregate الرسمي `3059+ / parsability incomplete` رغم نجاح المرحلتين؛ هذه ملاحظة reporting وليست فشل اختبار، ولم أغيّر runner لأن الطلب كان فحصًا لا إعادة تصميم صيغة العد.
+- نجاح `a11y` الآلي لا يغني عن manual expert testing أو UAT مع مستخدمين ذوي إعاقة.
+- لا يوجد فشل مفتوح من هذه المهمة.
+
 ## [2026-09-01] — BAI-SECTION-UNIFICATION-001: توحيد إيقاع الأقسام وسلامة ظهور البطاقات
 
 ### تم التنفيذ
