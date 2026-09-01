@@ -16,6 +16,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import SolutionCard from '../../components/SolutionCard.astro';
 import SectorCard from '../../components/SectorCard.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
 import { solutions, sectors } from '../../data/solutions';
 
 // BAI-SEO-003-S3 (2026-07-18): WebPage and BreadcrumbList are emitted
@@ -64,11 +65,7 @@ const jsonLd = {
 {/* ─── Section 3 · كيف يشتغلون مع بعض — flow steps timeline ─────────────── */}
 <section class="inner-section" aria-labelledby="how-together">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <div class="section__header section__header--start">
-      <span class="section__eyebrow" lang="en">How it works together</span>
-      <h2 id="how-together" class="section__title section__title--start">كيف يشتغلون مع بعض؟</h2>
-      <p class="section__subtitle section__subtitle--start">رحلة طلب AI واحد داخل شركتك مع BrightAI — من كتابة الطلب حتى ملف التدقيق.</p>
-    </div>
+    <SectionHeading id="how-together" eyebrow="How it works together" title="كيف يشتغلون مع بعض؟" subtitle="رحلة طلب AI واحد داخل شركتك مع BrightAI — من كتابة الطلب حتى ملف التدقيق." align="start" />
 
     <ol class="flow-steps" aria-label="رحلة طلب AI">
       <li class="flow-step">
@@ -98,11 +95,7 @@ const jsonLd = {
 {/* ─── Section 4 · الحلول كلها (3-col grid · SolutionCard) ──────────────── */}
 <section class="inner-section inner-section--alt" aria-labelledby="all-solutions">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <div class="section__header section__header--start">
-      <span class="section__eyebrow" lang="en">{solutions.length} Products</span>
-      <h2 id="all-solutions" class="section__title section__title--start">الحلول كلها</h2>
-      <p class="section__subtitle section__subtitle--start">كل حل يغطي طبقة معيّنة في رحلة حوكمة AI — من رصد Shadow AI إلى ملف التدقيق.</p>
-    </div>
+    <SectionHeading id="all-solutions" eyebrow={`${solutions.length} Products`} title="الحلول كلها" subtitle="كل حل يغطي طبقة معيّنة في رحلة حوكمة AI — من رصد Shadow AI إلى ملف التدقيق." align="start" />
     <div class="inner-grid inner-grid--3">
       {solutions.map(s => <SolutionCard solution={s} />)}
     </div>
@@ -112,11 +105,7 @@ const jsonLd = {
 {/* ─── Section 5 · الحلول القطاعية (2-col grid · SectorCard) ────────────── */}
 <section class="inner-section" aria-labelledby="sector-solutions">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <div class="section__header section__header--start">
-      <span class="section__eyebrow" lang="en">{sectors.length} Sectors</span>
-      <h2 id="sector-solutions" class="section__title section__title--start">الحلول القطاعية</h2>
-      <p class="section__subtitle section__subtitle--start">ضوابط حوكمة AI مطبّقة على سياق كل قطاع: بنوك، جهات حكومية، صحة، صناعة.</p>
-    </div>
+    <SectionHeading id="sector-solutions" eyebrow={`${sectors.length} Sectors`} title="الحلول القطاعية" subtitle="ضوابط حوكمة AI مطبّقة على سياق كل قطاع: بنوك، جهات حكومية، صحة، صناعة." align="start" />
     <div class="inner-grid inner-grid--2">
       {sectors.map(s => <SectorCard sector={s} />)}
     </div>
@@ -126,11 +115,7 @@ const jsonLd = {
 {/* ─── Section 6 · أي حل يناسبني؟ — scenario cards (decision tree visual) ── */}
 <section class="inner-section inner-section--alt" aria-labelledby="guide-title">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <div class="section__header section__header--start">
-      <span class="section__eyebrow" lang="en">Decision Tree</span>
-      <h2 id="guide-title" class="section__title section__title--start">أي حل يناسبني؟ دليل سريع</h2>
-      <p class="section__subtitle section__subtitle--start">اختر السيناريو الأقرب لواقعك، وستجد التوصية مع روابط مباشرة لكل منتج.</p>
-    </div>
+    <SectionHeading id="guide-title" eyebrow="Decision Tree" title="أي حل يناسبني؟ دليل سريع" subtitle="اختر السيناريو الأقرب لواقعك، وستجد التوصية مع روابط مباشرة لكل منتج." align="start" />
 
     <div class="scenario-grid">
 

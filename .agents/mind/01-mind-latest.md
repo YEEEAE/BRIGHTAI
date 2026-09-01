@@ -1,4 +1,48 @@
 
+## [2026-09-01] — BAI-SECTION-UNIFICATION-001: توحيد إيقاع الأقسام وسلامة ظهور البطاقات
+
+### تم التنفيذ
+- أنشأت جردًا تنفيذيًا لـ185 ملف Astro و450 قسمًا، ووثقت انقسام padding بين `home-section--padded` و`inner-section` وخطة التوحيد الآمنة في `_reports/section-unification-audit.md`.
+- وحّدت عقد التباعد إلى 64px على الجوال و128px من 1024px عبر `section--padded` مع إبقاء الاسمين السابقين aliases توافقية؛ وأزلت آخر قيم Tailwind اليدوية من أقسام الرئيسية.
+- حسّنت قابلية قراءة العناوين والأوصاف فوق الفيديو: حد subtitle صار `65ch`، ظل نص محافظ، وإضافة فحص صريح لتباين عنوان/eyebrow/وصف القسم في `calc-contrast`.
+- فعّلت `SectionHeading` في أربعة أقسام نصية مناسبة في hub الحلول مع `id` للوصول؛ أبقيت البطاقات الغنية على markup القائم لحماية عقود CTA و`data-*` وعدم فقد slots أو روابط مركبة.
+- أصلحت انحدار ظهور: بطاقات `.feature-card` و`.card--feature` و`.inner-card` لم تعد تبدأ مخفية عبر reveal؛ فحص Chromium النهائي جعل `/solutions/` بلا محتوى غير مرئي في الجوال والديسكتوب.
+- لم تُمس `SiteBackground.astro` أو أصول `brightai-background*`، ولم تتغير روابط أو خصائص التحليلات أو النصوص المحمية.
+
+### الملفات المتأثرة
+- `_reports/section-unification-audit.md`
+- `src/styles/{components,animations}.css`
+- `src/components/ui/SectionHeading.astro`
+- `src/pages/{index,solutions/index}.astro`
+- `scripts/calc-contrast.mjs`
+- `download/qa/global-bg-audit/section-unification-final-20260901/`
+
+### الأرقام
+- 185 ملف Astro، 450 `<section>`، و121 استخدامًا لـ`inner-section` في 37 ملفًا جُردت.
+- التباين المحافظ: title `13.42:1`، eyebrow `8.57:1`، subtitle `5.73:1`.
+- فحص Chromium النهائي: 4/4 على `/` و`/solutions/` بمقاسي 360×800 و1440×1000؛ صفر overflow/escapees/big voids/bare text on media/CSS مفقود، و`/solutions/` صفر محتوى مخفي.
+
+### القرارات
+- الخلفيات ambient تبقى opt-in للأسطح التسويقية فقط؛ لا تعميم للـdocs أو القانوني أو Kernel لأن هذا يضيف طبقات بصرية بلا معنى للمحتوى المرجعي.
+- `Card.astro` يبقى primitive اختياريًا، ولا يُرحّل عليه markup البطاقات الغني حتى يدعم تمرير عقود attributes وslots بأمان.
+
+### التحقق
+- `pnpm build` ✅ (تحذيرات تصادم مسارات Astro قديمة فقط).
+- `pnpm typecheck` ✅.
+- `pnpm test` ✅ — 38 اختبارًا.
+- `pnpm contrast:verify` و`node scripts/calc-contrast.mjs` ✅.
+- `git diff --check` ✅.
+- فحص بصري Chromium 360px و1440px ✅.
+- `pnpm lint` ❌ بسبب خطأين قائمين خارج نطاق المهمة في `apps/dashboard/lib/observability/logger.ts:81` (`no-explicit-any`).
+
+### النتيجة
+- **الحالة:** جزئي.
+- **مختصر:** توحيد الأقسام وقراءة النص وظهور البطاقات اكتمل محليًا وتحقق بصريًا؛ تسليم lint الكامل متوقف على خطأي dashboard القائمين غير المرتبطين بالتغييرات.
+
+### ملاحظات / مشاكل مفتوحة
+- بقيت إشارتا Chromium في الرئيسية لعناصر مقصودة خارج تدفق القراءة: chip متحرك وtooltip مخفي حتى hover؛ لا تظهر في `/solutions/` ولا تمثل محتوى مفقودًا.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-01] — تحليل شامل وصياغة برومبت تحسين أقسام ومحتوى BRIGHTAI
 
 ### تم التنفيذ

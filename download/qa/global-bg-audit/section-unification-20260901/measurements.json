@@ -1,0 +1,4906 @@
+{
+  "summary": {
+    "label": "section-unification-20260901",
+    "generatedAt": "2026-09-01T20:04:01.274Z",
+    "conditions": {
+      "app": "site",
+      "viewports": [
+        "360x800",
+        "1440x1000"
+      ],
+      "reducedMotion": false,
+      "print": false,
+      "zoom": 1,
+      "shots": true,
+      "templatesOnly": false
+    },
+    "runs": 14,
+    "routes": 7,
+    "templates": 1,
+    "failures": {
+      "errored": 0,
+      "nonOk": 0,
+      "horizontalOverflow": 0,
+      "escapees": 0,
+      "escapeesIncludingDecor": 0,
+      "clipped": 1,
+      "stuck": 1,
+      "srLeak": 0,
+      "bareTextOnMedia": 0,
+      "bareTextOnMediaNodes": 0,
+      "bigVoids": 0,
+      "groupSplits": 1,
+      "globalScrim": 0,
+      "multipleVideos": 0,
+      "noVideo": 0,
+      "duplicateVideoRequests": 0,
+      "missingAssets": 0,
+      "consoleErrors": 14,
+      "h1NotOne": 0,
+      "lostCss": 0,
+      "invisibleContent": 12,
+      "invisibleContentNodes": 1375,
+      "revealNotReady": 0
+    }
+  },
+  "results": [
+    {
+      "app": "site",
+      "url": "/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [
+          {
+            "el": "span.text-white",
+            "by": "p.split-hero__lead",
+            "dx": 0,
+            "dy": 23,
+            "x": 38,
+            "y": 584,
+            "w": 281,
+            "h": 47
+          },
+          {
+            "el": "strong.text-white",
+            "by": "p.split-hero__lead",
+            "dx": 0,
+            "dy": 48,
+            "x": 229,
+            "y": 633,
+            "w": 73,
+            "h": 22
+          },
+          {
+            "el": "strong.text-white",
+            "by": "p.split-hero__lead",
+            "dx": 0,
+            "dy": 48,
+            "x": 58,
+            "y": 633,
+            "w": 72,
+            "h": 22
+          },
+          {
+            "el": "span.trust-badge",
+            "by": "section.split-hero",
+            "dx": 4,
+            "dy": 0,
+            "x": 284,
+            "y": 983,
+            "w": 80,
+            "h": 80
+          },
+          {
+            "el": "span.trust-badge",
+            "by": "section.split-hero",
+            "dx": 4,
+            "dy": 0,
+            "x": -4,
+            "y": 983,
+            "w": 80,
+            "h": 80
+          }
+        ],
+        "stuck": [
+          {
+            "el": "span.split-hero__chip-word",
+            "reason": "opacity:0",
+            "x": 125,
+            "y": 392,
+            "w": 136,
+            "h": 16
+          }
+        ],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 1547,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 19306
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 4,
+            "paused": false,
+            "naturalW": 1600,
+            "naturalH": 1200
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 20,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1521,
+        "h1Count": 1,
+        "h1": [
+          "حوكمة الذكاء الاصطناعي\nللشركات\nالسعودية بجرد AI ومالك مسؤول "
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "span.split-hero__chip-word",
+            "hiddenBy": "span.split-hero__chip-word",
+            "h": 16,
+            "text": "AI Governance Platform"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 180,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 162,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 180,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 213,
+            "text": "هل الموظف يرفع بيانات حساسة؟أرقام هويات،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الموظف يرفع بيانات حساسة؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 45,
+            "text": "أرقام هويات، ملفات مرضى، عقود، أسعار... "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وش لو الـ AI أعطى جواب غلط؟خطأ في النموذ"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وش لو الـ AI أعطى جواب غلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خطأ في النموذج يوصل لقرار خاطئ = خسارة ف"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وين سجل التدقيق؟لما يجي المدقق ويسأل: مي"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وين سجل التدقيق؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "لما يجي المدقق ويسأل: مين سأل، متى، وش ر"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل متوافق مع PDPL؟نظام حماية البيانات ما"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل متوافق مع PDPL؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "نظام حماية البيانات ما يمزح. غرامات تصل "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟خصم مخزون،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خصم مخزون، تحديث عقد... بدون موافقة؟"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الطبيب/المحاسب يثق فيه؟بدون شفافية وم"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الطبيب/المحاسب يثق فيه؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "بدون شفافية ومصادر، ما حد بيستخدمه."
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 393,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 275,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 68,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 68,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.text-white/70.leading-loose.text-sm",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 84,
+            "text": "طبقة تشغيلية لإدارة استخدامات ومخاطر AI "
+          },
+          {
+            "el": "ul.space-y-1.5.text-xs.text-white/60",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 67,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 22,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 22,
+            "text": "✓ رصد وتحليل المخاطر الأمنية والتشغيلية"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 22,
+            "text": "✓ يدعم جاهزية ضوابط SDAIA و NCA"
+          },
+          {
+            "el": "a.section-mini-link.mt-auto",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 44,
+            "text": "استكشف منصة الحوكمة"
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 396,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 278,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "AI Firewall"
+          }
+        ],
+        "invisibleContentCount": 287,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/index.DPR0Vv0x.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/_astro/LeadForm.Bzvbz7AX.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788293012996&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=62909558.1788293014&frm=0&ngs=1&pscdl=noapi&rcb=9&sr=360x800&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115616986~115938465~115938469~118897920~118897930~120385423&sid=1788293014&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F&dt=%D8%AD%D9%88%D9%83%D9%85%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%20%7C%20BrightAI&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1742",
+          "err": "net::ERR_ABORTED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site@360x800.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 1547,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 19677
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 4,
+            "paused": false,
+            "naturalW": 1600,
+            "naturalH": 1200
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 20,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1521,
+        "h1Count": 1,
+        "h1": [
+          "حوكمة الذكاء الاصطناعي\nللشركات\nالسعودية بجرد AI ومالك مسؤول "
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لإرشادات سدايا للذكا"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لضوابط NCA ECC للأمن"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمعيار ISO/IEC 42001"
+          },
+          {
+            "el": "span.trust-badge__tooltip",
+            "hiddenBy": "span.trust-badge__tooltip",
+            "h": 36,
+            "text": "دعم جاهزية الامتثال لمتطلبات SAMA لأمن ا"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الموظف يرفع بيانات حساسة؟أرقام هويات،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الموظف يرفع بيانات حساسة؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "أرقام هويات، ملفات مرضى، عقود، أسعار... "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وش لو الـ AI أعطى جواب غلط؟خطأ في النموذ"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وش لو الـ AI أعطى جواب غلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خطأ في النموذج يوصل لقرار خاطئ = خسارة ف"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "وين سجل التدقيق؟لما يجي المدقق ويسأل: مي"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "وين سجل التدقيق؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "لما يجي المدقق ويسأل: مين سأل، متى، وش ر"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل متوافق مع PDPL؟نظام حماية البيانات ما"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل متوافق مع PDPL؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "نظام حماية البيانات ما يمزح. غرامات تصل "
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟خصم مخزون،"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل AI يعدّل في الـ ERP بالغلط؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "خصم مخزون، تحديث عقد... بدون موافقة؟"
+          },
+          {
+            "el": "li.feature-card.rounded-2xl.p-6",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 191,
+            "text": "هل الطبيب/المحاسب يثق فيه؟بدون شفافية وم"
+          },
+          {
+            "el": "h3.mt-3.font-bold.text-lg",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 31,
+            "text": "هل الطبيب/المحاسب يثق فيه؟"
+          },
+          {
+            "el": "p.text-white/60.text-sm.mt-1",
+            "hiddenBy": "li.feature-card.rounded-2xl.p-6",
+            "h": 22,
+            "text": "بدون شفافية ومصادر، ما حد بيستخدمه."
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 308,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 190,
+            "text": "منصة حوكمة الذكاء الاصطناعيطبقة تشغيلية "
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 34,
+            "text": "منصة حوكمة الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.text-white/70.leading-loose.text-sm",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 28,
+            "text": "طبقة تشغيلية لإدارة استخدامات ومخاطر AI "
+          },
+          {
+            "el": "ul.space-y-1.5.text-xs.text-white/60",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 58,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ إدارة وتتبع استخدامات الذكاء الاصطناعي"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ رصد وتحليل المخاطر الأمنية والتشغيلية"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 19,
+            "text": "✓ يدعم جاهزية ضوابط SDAIA و NCA"
+          },
+          {
+            "el": "a.section-mini-link.mt-auto",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 44,
+            "text": "استكشف منصة الحوكمة"
+          },
+          {
+            "el": "div.card.card--feature.rounded-2xl",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 308,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 190,
+            "text": "AI Firewallفحص وحماية البيانات الحساسة ق"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 48,
+            "text": "AI Firewall"
+          },
+          {
+            "el": "h3.text-xl.font-bold",
+            "hiddenBy": "div.card.card--feature.rounded-2xl",
+            "h": 34,
+            "text": "AI Firewall"
+          }
+        ],
+        "invisibleContentCount": 286,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/index.DPR0Vv0x.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/LeadForm.Bzvbz7AX.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "status": 206,
+          "type": "media"
+        }
+      ],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-9LMB4PGTWJ&gtm=45je68v0v9262515171za200zd9262515171&_p=1788293012996&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=79690702.1788293014&frm=0&ngs=1&pscdl=noapi&rcb=7&sr=1440x1000&uaa=arm&uab=64&uafvl=HeadlessChrome%3B149.0.7827.55%7CChromium%3B149.0.7827.55%7CNot)A%253BBrand%3B24.0.0.0&uam=&uamb=0&uap=macOS&uapv=26.5.1&uaw=0&ul=en-us&_s=1&tag_exp=115938465~115938469~118897920~118897930~119381662~120385423&sid=1788293014&sct=1&seg=0&dl=http%3A%2F%2Flocalhost%2F&dt=%D8%AD%D9%88%D9%83%D9%85%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%20%7C%20BrightAI&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1741",
+          "err": "net::ERR_ABORTED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site@1440x1000.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/solutions/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 662,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 12837
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 4,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1395,
+        "h1Count": 1,
+        "h1": [
+          "حلول حوكمة وأمان الذكاء الاصطناعي"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 400,
+            "text": "المنصة الأم منصة حوكمة الذكاء الاصطناعي "
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "المنصة الأم"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 27,
+            "text": "منصة حوكمة الذكاء الاصطناعي التشغيلية لل"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 28,
+            "text": "طبقة حوكمة تشغيلية تربط استخدامات AI بال"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجه؟  إذا صار عندك أكثر من استخدا"
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "إذا صار عندك أكثر من استخدام AI، أو صار "
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "تعرّف على منصة الحوكمة الكاملة"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 400,
+            "text": "حماية البيانات AI Firewall للتحكم في أمن"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "حماية البيانات"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 27,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 28,
+            "text": "يفحص كل طلب AI ويخفي البيانات الشخصية وا"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجه؟  من اليوم الأول لاستخدام AI."
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "من اليوم الأول لاستخدام AI."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "اكتشف كيف يحمي AI Firewall بياناتك"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 400,
+            "text": "التوثيق سجل تدقيق الذكاء الاصطناعي (AI A"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "التوثيق"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 27,
+            "text": "سجل تدقيق الذكاء الاصطناعي (AI Audit Tra"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 28,
+            "text": "سجل تدقيق غير قابل للتعديل (Append-only)"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجه؟  لو شركتك تحت NCA أو SFDA."
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "لو شركتك تحت NCA أو SFDA."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "تعرّف على سجل تدقيق AI غير القابل للتعدي"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 400,
+            "text": "الإثبات ملف أدلة الامتثال للذكاء الاصطنا"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "الإثبات"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 27,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي (AI E"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 28,
+            "text": "ملف PDF موقّع رقمياً يجمع كل البيانات وا"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجه؟  قبل أي تدقيق خارجي."
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "قبل أي تدقيق خارجي."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "شوف كيف يُصدّر ملف الأدلة للمدققين"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 400,
+            "text": "السيطرة طبقة الموافقة البشرية القرارات ا"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "السيطرة"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 27,
+            "text": "طبقة الموافقة البشرية"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 28,
+            "text": "القرارات الحساسة تتوقف لين يراجعها شخص م"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجها؟  لما AI يأثر على قرارات مال"
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجها؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "لما AI يأثر على قرارات مالية أو طبية."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "اكتشف طبقة الموافقة البشرية للقرارات الح"
+          }
+        ],
+        "invisibleContentCount": 80,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/index.CKdjuRO_.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-solutions@1440x1000.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/solutions/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 662,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 16685
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 7,
+          ".section__eyebrow": 4,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1395,
+        "h1Count": 1,
+        "h1": [
+          "حلول حوكمة وأمان الذكاء الاصطناعي"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 458,
+            "text": "المنصة الأم منصة حوكمة الذكاء الاصطناعي "
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "المنصة الأم"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 54,
+            "text": "منصة حوكمة الذكاء الاصطناعي التشغيلية لل"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 56,
+            "text": "طبقة حوكمة تشغيلية تربط استخدامات AI بال"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 78,
+            "text": "متى تحتاجه؟  إذا صار عندك أكثر من استخدا"
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 38,
+            "text": "إذا صار عندك أكثر من استخدام AI، أو صار "
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "تعرّف على منصة الحوكمة الكاملة"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 467,
+            "text": "حماية البيانات AI Firewall للتحكم في أمن"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "حماية البيانات"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 54,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 84,
+            "text": "يفحص كل طلب AI ويخفي البيانات الشخصية وا"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجه؟  من اليوم الأول لاستخدام AI."
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "من اليوم الأول لاستخدام AI."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "اكتشف كيف يحمي AI Firewall بياناتك"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 467,
+            "text": "التوثيق سجل تدقيق الذكاء الاصطناعي (AI A"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "التوثيق"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 54,
+            "text": "سجل تدقيق الذكاء الاصطناعي (AI Audit Tra"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 84,
+            "text": "سجل تدقيق غير قابل للتعديل (Append-only)"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجه؟  لو شركتك تحت NCA أو SFDA."
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "لو شركتك تحت NCA أو SFDA."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "تعرّف على سجل تدقيق AI غير القابل للتعدي"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 467,
+            "text": "الإثبات ملف أدلة الامتثال للذكاء الاصطنا"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "الإثبات"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 54,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي (AI E"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 84,
+            "text": "ملف PDF موقّع رقمياً يجمع كل البيانات وا"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجه؟  قبل أي تدقيق خارجي."
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجه؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "قبل أي تدقيق خارجي."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "شوف كيف يُصدّر ملف الأدلة للمدققين"
+          },
+          {
+            "el": "a.card.card--feature.card--interactive",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 412,
+            "text": "السيطرة طبقة الموافقة البشرية القرارات ا"
+          },
+          {
+            "el": "span.card__eyebrow",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "السيطرة"
+          },
+          {
+            "el": "h3.card__title",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 27,
+            "text": "طبقة الموافقة البشرية"
+          },
+          {
+            "el": "p.card__desc",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 56,
+            "text": "القرارات الحساسة تتوقف لين يراجعها شخص م"
+          },
+          {
+            "el": "span.card__meta",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 59,
+            "text": "متى تحتاجها؟  لما AI يأثر على قرارات مال"
+          },
+          {
+            "el": "span.card__meta-label",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "متى تحتاجها؟"
+          },
+          {
+            "el": "span.card__meta-value",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 19,
+            "text": "لما AI يأثر على قرارات مالية أو طبية."
+          },
+          {
+            "el": "span.card__action",
+            "hiddenBy": "a.card.card--feature.card--interactive",
+            "h": 25,
+            "text": "اكتشف طبقة الموافقة البشرية للقرارات الح"
+          }
+        ],
+        "invisibleContentCount": 80,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/index.CKdjuRO_.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-solutions@360x800.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/solutions/banking-ai-governance/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 601,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 12297
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1369,
+        "h1Count": 1,
+        "h1": [
+          "حوكمة الذكاء الاصطناعي في القطاع المالي والبنكي"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "div.inner-card.p-8",
+            "hiddenBy": "div.inner-card.p-8",
+            "h": 242,
+            "text": "ضوابط استخدام AI مع بيانات العملاء، امتث"
+          },
+          {
+            "el": "p.inner-card__text.text-base.leading-loose",
+            "hiddenBy": "div.inner-card.p-8",
+            "h": 160,
+            "text": "ضوابط استخدام AI مع بيانات العملاء، امتث"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 207,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 51,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 43,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 74,
+            "text": "يفحص كل طلب AI ويخفي البيانات الشخصية وا"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 194,
+            "text": "سجل تدقيق الذكاء الاصطناعي  سجل تدقيق غي"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 38,
+            "text": "سجل تدقيق الذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 22,
+            "text": "سجل تدقيق الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 74,
+            "text": "سجل تدقيق غير قابل للتعديل (Append-only)"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 182,
+            "text": "طبقة الموافقات البشرية لقرارات الذكاء ال"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 51,
+            "text": "طبقة الموافقات البشرية لقرارات الذكاء ال"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 43,
+            "text": "طبقة الموافقات البشرية لقرارات الذكاء ال"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 49,
+            "text": "القرارات الحساسة تتوقف لين يراجعها شخص م"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 169,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي  ملف "
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 38,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 22,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 49,
+            "text": "ملف PDF موقّع رقمياً يجمع كل البيانات وا"
+          },
+          {
+            "el": "a.inner-card.p-6.text-center",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 189,
+            "text": "الرياض الرياض"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 24,
+            "text": "الرياض"
+          },
+          {
+            "el": "p.inner-card__text.text-xs.mt-2",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 21,
+            "text": "الرياض"
+          },
+          {
+            "el": "a.inner-card.p-6.text-center",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 189,
+            "text": "الخبر الخبر"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 24,
+            "text": "الخبر"
+          },
+          {
+            "el": "p.inner-card__text.text-xs.mt-2",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 21,
+            "text": "الخبر"
+          }
+        ],
+        "invisibleContentCount": 24,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-solutions-banking-ai-governance@360x800.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/solutions/banking-ai-governance/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 601,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 8293
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1369,
+        "h1Count": 1,
+        "h1": [
+          "حوكمة الذكاء الاصطناعي في القطاع المالي والبنكي"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "div.inner-card.p-8",
+            "hiddenBy": "div.inner-card.p-8",
+            "h": 114,
+            "text": "ضوابط استخدام AI مع بيانات العملاء، امتث"
+          },
+          {
+            "el": "p.inner-card__text.text-base.leading-loose",
+            "hiddenBy": "div.inner-card.p-8",
+            "h": 32,
+            "text": "ضوابط استخدام AI مع بيانات العملاء، امتث"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 145,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 38,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 22,
+            "text": "AI Firewall للتحكم في أمن الذكاء الاصطنا"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 25,
+            "text": "يفحص كل طلب AI ويخفي البيانات الشخصية وا"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 145,
+            "text": "سجل تدقيق الذكاء الاصطناعي  سجل تدقيق غي"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 38,
+            "text": "سجل تدقيق الذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 22,
+            "text": "سجل تدقيق الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 25,
+            "text": "سجل تدقيق غير قابل للتعديل (Append-only)"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 145,
+            "text": "طبقة الموافقات البشرية لقرارات الذكاء ال"
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 38,
+            "text": "طبقة الموافقات البشرية لقرارات الذكاء ال"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 22,
+            "text": "طبقة الموافقات البشرية لقرارات الذكاء ال"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 25,
+            "text": "القرارات الحساسة تتوقف لين يراجعها شخص م"
+          },
+          {
+            "el": "a.inner-card.p-6.text-decoration-reset",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 145,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي  ملف "
+          },
+          {
+            "el": "div.flex.items-center.gap-3",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 38,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي"
+          },
+          {
+            "el": "h3.inner-card__title.text-base",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 22,
+            "text": "ملف أدلة الامتثال للذكاء الاصطناعي"
+          },
+          {
+            "el": "p.inner-card__text.text-sm",
+            "hiddenBy": "a.inner-card.p-6.text-decoration-reset",
+            "h": 25,
+            "text": "ملف PDF موقّع رقمياً يجمع كل البيانات وا"
+          },
+          {
+            "el": "a.inner-card.p-6.text-center",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 189,
+            "text": "الرياض الرياض"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 24,
+            "text": "الرياض"
+          },
+          {
+            "el": "p.inner-card__text.text-xs.mt-2",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 21,
+            "text": "الرياض"
+          },
+          {
+            "el": "a.inner-card.p-6.text-center",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 189,
+            "text": "الخبر الخبر"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 24,
+            "text": "الخبر"
+          },
+          {
+            "el": "p.inner-card__text.text-xs.mt-2",
+            "hiddenBy": "a.inner-card.p-6.text-center",
+            "h": 21,
+            "text": "الخبر"
+          }
+        ],
+        "invisibleContentCount": 24,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-solutions-banking-ai-governance@1440x1000.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/docs/ai-governance-saudi-arabia/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 471,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 5359
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1355,
+        "h1Count": 1,
+        "h1": [
+          "دليل تطبيق حوكمة الذكاء الاصطناعي في السعودية"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [],
+        "invisibleContentCount": 0,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-docs-ai-governance-saudi-arabia@1440x1000.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/docs/ai-governance-saudi-arabia/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 471,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 9120
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1355,
+        "h1Count": 1,
+        "h1": [
+          "دليل تطبيق حوكمة الذكاء الاصطناعي في السعودية"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [],
+        "invisibleContentCount": 0,
+        "revealReady": true,
+        "isVisibleCount": 0,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-docs-ai-governance-saudi-arabia@360x800.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/about/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 549,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 8710
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1355,
+        "h1Count": 1,
+        "h1": [
+          "شركة سعودية تبني طبقة أمان AI بين الموظف وبيانات الشركة"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "article.card.card--feature.card--lg",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 224,
+            "text": "رسالتنا تمكين المؤسسات بثقة وأمان توفير "
+          },
+          {
+            "el": "p.text-cyan-300.font-bold.mb-3",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 26,
+            "text": "رسالتنا"
+          },
+          {
+            "el": "h3.inner-card__title.text-xl",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 27,
+            "text": "تمكين المؤسسات بثقة وأمان"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 49,
+            "text": "توفير طبقة حماية وحوكمة تشغيلية متطورة ("
+          },
+          {
+            "el": "article.card.card--feature.card--lg",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 224,
+            "text": "رؤيتنا لـ 2030 بناء السيادة الرقمية والا"
+          },
+          {
+            "el": "p.text-emerald-300.font-bold.mb-3",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 26,
+            "text": "رؤيتنا لـ 2030"
+          },
+          {
+            "el": "h3.inner-card__title.text-xl",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 27,
+            "text": "بناء السيادة الرقمية والابتكار المسؤول"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 49,
+            "text": "أن نكون المعيار الأول والمعتمد لحوكمة ال"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 188,
+            "text": "نظام حماية البيانات الشخصية (PDPL)معالجة"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "نظام حماية البيانات الشخصية (PDPL)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "معالجة دقيقة لخصوصية البيانات، وإخفاء تل"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 188,
+            "text": "ضوابط الأمن السيبراني (NCA ECC)دعم الالت"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "ضوابط الأمن السيبراني (NCA ECC)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 49,
+            "text": "دعم الالتزام بضوابط الهيئة الوطنية للأمن"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 188,
+            "text": "إرشادات سدايا (SDAIA)العمل وفق المبادئ ا"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "إرشادات سدايا (SDAIA)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "العمل وفق المبادئ التوجيهية للذكاء الاصط"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 188,
+            "text": "نظام الجودة الطبية (ISO 13485 & SFDA)إدا"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "نظام الجودة الطبية (ISO 13485 & SFDA)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "إدارة دورة حياة المنتجات والجودة للمصانع"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 188,
+            "text": "معيار إدارة AI (ISO/IEC 42001)نستخدمه كس"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "معيار إدارة AI (ISO/IEC 42001)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 49,
+            "text": "نستخدمه كسياق للمفاهيم والأدوار والمخاطر"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 188,
+            "text": "ممارسات الأمان والتدقيق المؤسسيةتصميم أم"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "ممارسات الأمان والتدقيق المؤسسية"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "تصميم أمني قوي لحماية البيانات الحساسة و"
+          },
+          {
+            "el": "div.card.card--feature.card--lg",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 318,
+            "text": "ي المؤسس وباني المنتج يزيد البديوي مسؤول"
+          },
+          {
+            "el": "p.text-cyan-300.font-bold.text-sm",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "المؤسس وباني المنتج"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "يزيد البديوي"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 49,
+            "text": "مسؤول عن اتجاه المنتج وبناء BrightAI Ker"
+          },
+          {
+            "el": "div.card.card--feature.card--lg",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 318,
+            "text": "أ مراجعة هندسية دور تقني موثّق يراجع تدف"
+          },
+          {
+            "el": "p.text-cyan-300.font-bold.text-sm",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "مراجعة هندسية"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "دور تقني موثّق"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 49,
+            "text": "يراجع تدفق البيانات، حدود التكامل، الفحص"
+          },
+          {
+            "el": "div.card.card--feature.card--lg",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 318,
+            "text": "م مراجعة امتثال ومنهجية دور مراجعة موثّق"
+          },
+          {
+            "el": "p.text-cyan-300.font-bold.text-sm",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "مراجعة امتثال ومنهجية"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "دور مراجعة موثّق"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 49,
+            "text": "يربط المصادر الرسمية بالسياسات والضوابط "
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 139,
+            "text": "الهيئة السعودية للبيانات (SDAIA)نعمل وفق"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "الهيئة السعودية للبيانات (SDAIA)"
+          }
+        ],
+        "invisibleContentCount": 78,
+        "revealReady": true,
+        "isVisibleCount": 2,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-about@1440x1000.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/about/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 549,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 15445
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1355,
+        "h1Count": 1,
+        "h1": [
+          "شركة سعودية تبني طبقة أمان AI بين الموظف وبيانات الشركة"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "aside.card.card--feature.card--lg",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 836,
+            "text": "ي يزيد البديوي Founder of BrightAI   بدا"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 24,
+            "text": "يزيد البديوي"
+          },
+          {
+            "el": "p.text-cyan-300.font-bold.mb-5",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 26,
+            "text": "Founder of BrightAI"
+          },
+          {
+            "el": "div.stat-strip",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 478,
+            "text": "بداية BrightAI ٢٠٢٥ سنة التأسيس المنشورة"
+          },
+          {
+            "el": "div.stat-strip__cell",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 126,
+            "text": "بداية BrightAI ٢٠٢٥ سنة التأسيس المنشورة"
+          },
+          {
+            "el": "div.stat-strip__label",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 22,
+            "text": "بداية BrightAI"
+          },
+          {
+            "el": "div.stat-strip__value",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 33,
+            "text": "٢٠٢٥"
+          },
+          {
+            "el": "div.stat-strip__helper",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 17,
+            "text": "سنة التأسيس المنشورة"
+          },
+          {
+            "el": "div.stat-strip__cell",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 101,
+            "text": "الدور Founder"
+          },
+          {
+            "el": "div.stat-strip__label",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الدور"
+          },
+          {
+            "el": "div.stat-strip__value",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 33,
+            "text": "Founder"
+          },
+          {
+            "el": "div.stat-strip__cell",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 101,
+            "text": "الموقع السعودية"
+          },
+          {
+            "el": "div.stat-strip__label",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الموقع"
+          },
+          {
+            "el": "div.stat-strip__value",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 33,
+            "text": "السعودية"
+          },
+          {
+            "el": "div.stat-strip__cell",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 101,
+            "text": "التركيز AI Safety OS"
+          },
+          {
+            "el": "div.stat-strip__label",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 22,
+            "text": "التركيز"
+          },
+          {
+            "el": "div.stat-strip__value",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 33,
+            "text": "AI Safety OS"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "aside.card.card--feature.card--lg",
+            "h": 74,
+            "text": "تركيز المؤسس هو بناء طبقة تشغيل سعودية ت"
+          },
+          {
+            "el": "article.card.card--feature.card--lg",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 257,
+            "text": "رسالتنا تمكين المؤسسات بثقة وأمان توفير "
+          },
+          {
+            "el": "p.text-cyan-300.font-bold.mb-3",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 26,
+            "text": "رسالتنا"
+          },
+          {
+            "el": "h3.inner-card__title.text-xl",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 27,
+            "text": "تمكين المؤسسات بثقة وأمان"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 98,
+            "text": "توفير طبقة حماية وحوكمة تشغيلية متطورة ("
+          },
+          {
+            "el": "article.card.card--feature.card--lg",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 257,
+            "text": "رؤيتنا لـ 2030 بناء السيادة الرقمية والا"
+          },
+          {
+            "el": "p.text-emerald-300.font-bold.mb-3",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 26,
+            "text": "رؤيتنا لـ 2030"
+          },
+          {
+            "el": "h3.inner-card__title.text-xl",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 27,
+            "text": "بناء السيادة الرقمية والابتكار المسؤول"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature.card--lg",
+            "h": 98,
+            "text": "أن نكون المعيار الأول والمعتمد لحوكمة ال"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 172,
+            "text": "نظام حماية البيانات الشخصية (PDPL)معالجة"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "نظام حماية البيانات الشخصية (PDPL)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "معالجة دقيقة لخصوصية البيانات، وإخفاء تل"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 172,
+            "text": "ضوابط الأمن السيبراني (NCA ECC)دعم الالت"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "ضوابط الأمن السيبراني (NCA ECC)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "دعم الالتزام بضوابط الهيئة الوطنية للأمن"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 172,
+            "text": "إرشادات سدايا (SDAIA)العمل وفق المبادئ ا"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "إرشادات سدايا (SDAIA)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "العمل وفق المبادئ التوجيهية للذكاء الاصط"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 172,
+            "text": "نظام الجودة الطبية (ISO 13485 & SFDA)إدا"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "نظام الجودة الطبية (ISO 13485 & SFDA)"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "article.card.card--feature",
+            "h": 74,
+            "text": "إدارة دورة حياة المنتجات والجودة للمصانع"
+          },
+          {
+            "el": "article.card.card--feature",
+            "hiddenBy": "article.card.card--feature",
+            "h": 172,
+            "text": "معيار إدارة AI (ISO/IEC 42001)نستخدمه كس"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "article.card.card--feature",
+            "h": 24,
+            "text": "معيار إدارة AI (ISO/IEC 42001)"
+          }
+        ],
+        "invisibleContentCount": 96,
+        "revealReady": true,
+        "isVisibleCount": 1,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-about@360x800.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/services/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 714,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 15951
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1357,
+        "h1Count": 1,
+        "h1": [
+          "خدمات تنفيذ Saudi AI Safety OS داخل شركتك بجرد AI ومالك مسؤو"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "AI Firewall & Data Protection طبقة تفحص "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Firewall & Data Protection"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "طبقة تفحص الطلبات قبل وصولها للنماذج وتس"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "اختبر منع تسرب PII"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "AI Audit Trail توثيق من استخدم AI، ماذا "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Audit Trail"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "توثيق من استخدم AI، ماذا أرسل، ما الرد، "
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "افهم سجل التدقيق"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "Human Approval Workflow مسارات موافقة بش"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Human Approval Workflow"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "مسارات موافقة بشرية للقرارات العالية الم"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "شاهد مسار الموافقة"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "AI Evidence File ملف أدلة يجمع المدخلات،"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Evidence File"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "ملف أدلة يجمع المدخلات، السياسة المطبقة،"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "افتح ملف الأدلة"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "Enterprise AI Assistants مساعدون داخليون"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Enterprise AI Assistants"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "مساعدون داخليون للموارد البشرية، المبيعا"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "افتح ديمو تفاعلي"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "AI Automation for Operations أتمتة مهام "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Automation for Operations"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "أتمتة مهام تشغيلية مثل الفرز، التلخيص، ا"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "ابدأ تقييم جاهزية"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "Compliance Packs for Saudi Market حزم تس"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Compliance Packs for Saudi Market"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "حزم تساعد فرقك على رفع جاهزية الخصوصية و"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "ناقش حزمة امتثال"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "ERP / CRM / HIS Integrations ربط آمن مع "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "ERP / CRM / HIS Integrations"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "ربط آمن مع أنظمة المؤسسة وواجهات APIs وق"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "خطط تكامل ERP/HIS/SIEM"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "Controlled AI Workflows تصميم مسارات AI "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Controlled AI Workflows"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "تصميم مسارات AI خاصة بالقطاع لكن داخل نف"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "صمّم مسار AI محكوم"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 309,
+            "text": "تصنيف مخاطر الذكاء الاصطناعي تصنيف تلقائ"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "تصنيف مخاطر الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 25,
+            "text": "تصنيف تلقائي لمخاطر استخدامات AI حسب نوع"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "استكشف تصنيف المخاطر"
+          }
+        ],
+        "invisibleContentCount": 144,
+        "revealReady": true,
+        "isVisibleCount": 1,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-services@1440x1000.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/services/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 714,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 19690
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1357,
+        "h1Count": 1,
+        "h1": [
+          "خدمات تنفيذ Saudi AI Safety OS داخل شركتك بجرد AI ومالك مسؤو"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 334,
+            "text": "AI Firewall & Data Protection طبقة تفحص "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Firewall & Data Protection"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 49,
+            "text": "طبقة تفحص الطلبات قبل وصولها للنماذج وتس"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "اختبر منع تسرب PII"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 334,
+            "text": "AI Audit Trail توثيق من استخدم AI، ماذا "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Audit Trail"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 49,
+            "text": "توثيق من استخدم AI، ماذا أرسل، ما الرد، "
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "افهم سجل التدقيق"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 334,
+            "text": "Human Approval Workflow مسارات موافقة بش"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Human Approval Workflow"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 49,
+            "text": "مسارات موافقة بشرية للقرارات العالية الم"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "شاهد مسار الموافقة"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 334,
+            "text": "AI Evidence File ملف أدلة يجمع المدخلات،"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Evidence File"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 49,
+            "text": "ملف أدلة يجمع المدخلات، السياسة المطبقة،"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "افتح ملف الأدلة"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 358,
+            "text": "Enterprise AI Assistants مساعدون داخليون"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Enterprise AI Assistants"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 74,
+            "text": "مساعدون داخليون للموارد البشرية، المبيعا"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "افتح ديمو تفاعلي"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 334,
+            "text": "AI Automation for Operations أتمتة مهام "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "AI Automation for Operations"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 49,
+            "text": "أتمتة مهام تشغيلية مثل الفرز، التلخيص، ا"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "ابدأ تقييم جاهزية"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 358,
+            "text": "Compliance Packs for Saudi Market حزم تس"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Compliance Packs for Saudi Market"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 74,
+            "text": "حزم تساعد فرقك على رفع جاهزية الخصوصية و"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "ناقش حزمة امتثال"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 334,
+            "text": "ERP / CRM / HIS Integrations ربط آمن مع "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "ERP / CRM / HIS Integrations"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 49,
+            "text": "ربط آمن مع أنظمة المؤسسة وواجهات APIs وق"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "خطط تكامل ERP/HIS/SIEM"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 358,
+            "text": "Controlled AI Workflows تصميم مسارات AI "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "Controlled AI Workflows"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 74,
+            "text": "تصميم مسارات AI خاصة بالقطاع لكن داخل نف"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "صمّم مسار AI محكوم"
+          },
+          {
+            "el": "a.inner-card.text-decoration-reset",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 334,
+            "text": "تصنيف مخاطر الذكاء الاصطناعي تصنيف تلقائ"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 24,
+            "text": "تصنيف مخاطر الذكاء الاصطناعي"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 49,
+            "text": "تصنيف تلقائي لمخاطر استخدامات AI حسب نوع"
+          },
+          {
+            "el": "span.inner-card__cta",
+            "hiddenBy": "a.inner-card.text-decoration-reset",
+            "h": 26,
+            "text": "استكشف تصنيف المخاطر"
+          }
+        ],
+        "invisibleContentCount": 144,
+        "revealReady": true,
+        "isVisibleCount": 1,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-services@360x800.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/contact/",
+      "templateFile": "(explicit)",
+      "viewport": "1440x1000",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 1440,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 599,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "delta": 0
+        },
+        "docHeight": 7311
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1403,
+        "h1Count": 1,
+        "h1": [
+          "كلم فريق الحوكمة مباشرة"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "div.card.card--feature.card--lg",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 349,
+            "text": "وش تتوقع بعد التواصل؟       واتساب (أسرع"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "وش تتوقع بعد التواصل؟"
+          },
+          {
+            "el": "ul.contact-info-list",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 234,
+            "text": "واتساب (أسرع) +966 538 229 013        ال"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 74,
+            "text": "واتساب (أسرع) +966 538 229 013"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 74,
+            "text": "واتساب (أسرع) +966 538 229 013"
+          },
+          {
+            "el": "strong.block.text-white",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 26,
+            "text": "واتساب (أسرع)"
+          },
+          {
+            "el": "a",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 44,
+            "text": "+966 538 229 013"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 74,
+            "text": "البريد الإلكتروني yazeed1job@gmail.com"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 74,
+            "text": "البريد الإلكتروني yazeed1job@gmail.com"
+          },
+          {
+            "el": "strong.block.text-white",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 26,
+            "text": "البريد الإلكتروني"
+          },
+          {
+            "el": "a",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 44,
+            "text": "yazeed1job@gmail.com"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 55,
+            "text": "اللغات المتاحة العربية والإنجليزية"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 55,
+            "text": "اللغات المتاحة العربية والإنجليزية"
+          },
+          {
+            "el": "strong.block.text-white",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 26,
+            "text": "اللغات المتاحة"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "العربية والإنجليزية"
+          },
+          {
+            "el": "div.card.card--feature.card--lg",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 516,
+            "text": "ساعات العمل فريقنا يرد على الطلبات خلال "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "ساعات العمل"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 25,
+            "text": "فريقنا يرد على الطلبات خلال 24 ساعة في أ"
+          },
+          {
+            "el": "div.office-hours",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 345,
+            "text": "الأحد 9:00 ص – 6:00 م  الإثنين 9:00 ص – "
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الأحد 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الأحد"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الإثنين 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الإثنين"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الثلاثاء 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الثلاثاء"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الأربعاء 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الأربعاء"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الخميس 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الخميس"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row.office-hours__row--closed",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الجمعة إجازة — مغلق"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الجمعة"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "إجازة — مغلق"
+          },
+          {
+            "el": "div.office-hours__row.office-hours__row--closed",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 42,
+            "text": "السبت إجازة — مغلق"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "السبت"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "إجازة — مغلق"
+          }
+        ],
+        "invisibleContentCount": 66,
+        "revealReady": true,
+        "isVisibleCount": 3,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/_astro/LeadForm.Bzvbz7AX.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-contact@1440x1000.jpg"
+    },
+    {
+      "app": "site",
+      "url": "/contact/",
+      "templateFile": "(explicit)",
+      "viewport": "360x800",
+      "httpStatus": 200,
+      "error": null,
+      "layout": {
+        "vw": 360,
+        "escapees": [],
+        "clipped": [],
+        "stuck": [],
+        "srLeak": [],
+        "bareTextOnMedia": [],
+        "nodeCount": 599,
+        "escapeesContent": 0,
+        "overflowX": {
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "delta": 0
+        },
+        "docHeight": 13262
+      },
+      "bg": {
+        "videos": [
+          {
+            "el": "video.bai-site-background__video",
+            "src": "/media/brightai-background.mp4",
+            "poster": "/media/brightai-background-poster.jpg",
+            "cssWidth": "1600px",
+            "cssHeight": "1200px",
+            "renderedW": 1600,
+            "renderedH": 1200,
+            "opacity": "1",
+            "filter": "none",
+            "position": "absolute",
+            "objectFit": "contain",
+            "mixBlendMode": "normal",
+            "transform": "matrix(1, 0, 0, 1, -800, -600)",
+            "pointerEvents": "none",
+            "zIndex": "auto",
+            "display": "block",
+            "wrapperPosition": "fixed",
+            "wrapperPointerEvents": "none",
+            "wrapperOverflow": "hidden",
+            "wrapperZIndex": "0",
+            "ariaHidden": true,
+            "autoplay": true,
+            "muted": true,
+            "loop": true,
+            "playsInline": true,
+            "readyState": 0,
+            "paused": false,
+            "naturalW": 0,
+            "naturalH": 0
+          }
+        ],
+        "scrims": [],
+        "voids": [],
+        "groupSplits": [
+          {
+            "heading": "كيف نخلي أول مكالمة مفيدة من البداية؟",
+            "gap": 242,
+            "emptyBand": true
+          }
+        ],
+        "ruleCounts": {
+          ".home-trust": 16,
+          ".home-cta-primary": 12,
+          ".home-cta-strip": 18,
+          ".bg-ambient-dots": 3,
+          ".section__title": 4,
+          ".section__eyebrow": 2,
+          ".card--glass": 2,
+          ".page-hero__title": 3,
+          ".k-units": 1,
+          ".k-unit-card": 13,
+          ".inner-section": 17,
+          ".sr-only": 3,
+          ".legal-page": 3
+        },
+        "totalRules": 1403,
+        "h1Count": 1,
+        "h1": [
+          "كلم فريق الحوكمة مباشرة"
+        ],
+        "bodyBg": "rgb(10, 14, 26)",
+        "htmlBg": "rgba(0, 0, 0, 0)",
+        "invisibleContent": [
+          {
+            "el": "div.card.card--feature.card--lg",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 320,
+            "text": "وش تتوقع بعد التواصل؟       واتساب (أسرع"
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "وش تتوقع بعد التواصل؟"
+          },
+          {
+            "el": "ul.contact-info-list",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 222,
+            "text": "واتساب (أسرع) +966 538 229 013        ال"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 70,
+            "text": "واتساب (أسرع) +966 538 229 013"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 70,
+            "text": "واتساب (أسرع) +966 538 229 013"
+          },
+          {
+            "el": "strong.block.text-white",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "واتساب (أسرع)"
+          },
+          {
+            "el": "a",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 44,
+            "text": "+966 538 229 013"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 70,
+            "text": "البريد الإلكتروني yazeed1job@gmail.com"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 70,
+            "text": "البريد الإلكتروني yazeed1job@gmail.com"
+          },
+          {
+            "el": "strong.block.text-white",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "البريد الإلكتروني"
+          },
+          {
+            "el": "a",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 44,
+            "text": "yazeed1job@gmail.com"
+          },
+          {
+            "el": "li",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 49,
+            "text": "اللغات المتاحة العربية والإنجليزية"
+          },
+          {
+            "el": "div",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 49,
+            "text": "اللغات المتاحة العربية والإنجليزية"
+          },
+          {
+            "el": "strong.block.text-white",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "اللغات المتاحة"
+          },
+          {
+            "el": "span",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 21,
+            "text": "العربية والإنجليزية"
+          },
+          {
+            "el": "div.card.card--feature.card--lg",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 500,
+            "text": "ساعات العمل فريقنا يرد على الطلبات خلال "
+          },
+          {
+            "el": "h3.inner-card__title",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 24,
+            "text": "ساعات العمل"
+          },
+          {
+            "el": "p.inner-card__text",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 25,
+            "text": "فريقنا يرد على الطلبات خلال 24 ساعة في أ"
+          },
+          {
+            "el": "div.office-hours",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 345,
+            "text": "الأحد 9:00 ص – 6:00 م  الإثنين 9:00 ص – "
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الأحد 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الأحد"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الإثنين 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الإثنين"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الثلاثاء 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الثلاثاء"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الأربعاء 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الأربعاء"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الخميس 9:00 ص – 6:00 م"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الخميس"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "9:00 ص – 6:00 م"
+          },
+          {
+            "el": "div.office-hours__row.office-hours__row--closed",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 43,
+            "text": "الجمعة إجازة — مغلق"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "الجمعة"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "إجازة — مغلق"
+          },
+          {
+            "el": "div.office-hours__row.office-hours__row--closed",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 42,
+            "text": "السبت إجازة — مغلق"
+          },
+          {
+            "el": "span.office-hours__day",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "السبت"
+          },
+          {
+            "el": "span.office-hours__time",
+            "hiddenBy": "div.card.card--feature.card--lg",
+            "h": 22,
+            "text": "إجازة — مغلق"
+          }
+        ],
+        "invisibleContentCount": 66,
+        "revealReady": true,
+        "isVisibleCount": 3,
+        "canvases": []
+      },
+      "requests": [
+        {
+          "url": "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/_astro/BaseLayout.BGR7G-OM.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/media/brightai-background-poster.jpg",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/logo-96.avif",
+          "status": 200,
+          "type": "image"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-Regular.woff2",
+          "status": 200,
+          "type": "font"
+        },
+        {
+          "url": "/_astro/LeadForm.Bzvbz7AX.css",
+          "status": 200,
+          "type": "stylesheet"
+        },
+        {
+          "url": "/fonts/IBMPlexSansArabic-SemiBold.woff2",
+          "status": 200,
+          "type": "font"
+        }
+      ],
+      "videoRequests": [],
+      "missingAssets": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "X-Frame-Options may only be set via an HTTP header sent along with a document. It may not be set inside <meta>."
+        },
+        {
+          "type": "error",
+          "text": "The Content Security Policy directive 'upgrade-insecure-requests' is ignored when delivered in a report-only policy."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [
+        {
+          "url": "/media/brightai-background.mp4",
+          "err": "net::ERR_FAILED"
+        }
+      ],
+      "shot": "download/qa/global-bg-audit/section-unification-20260901/shots/site-contact@360x800.jpg"
+    }
+  ]
+}

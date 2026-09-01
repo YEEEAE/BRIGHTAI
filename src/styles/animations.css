@@ -172,9 +172,6 @@
    كل العناصر القديمة تستفيد من نفس الـ system تلقائياً:
    .feature-card / .inner-card / .home-stat-card / ...
    تشتغل كـ "fade-up" لأن ده الـ default behavior. */
-.feature-card,
-.card--feature,
-.inner-card,
 .home-stat-card,
 .home-faq-item,
 .home-evidence-mockup,
@@ -188,9 +185,6 @@
     opacity var(--reveal-duration, 600ms) var(--ease-emphasized) var(--reveal-delay, 0ms),
     transform var(--reveal-duration, 600ms) var(--ease-emphasized) var(--reveal-delay, 0ms);
 }
-.feature-card.is-visible,
-.card--feature.is-visible,
-.inner-card.is-visible,
 .home-stat-card.is-visible,
 .home-faq-item.is-visible,
 .home-evidence-mockup.is-visible,

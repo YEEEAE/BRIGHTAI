@@ -48,14 +48,31 @@
    2. SECTIONS
    ============================================================ */
 
-/* Canonical: .section */
-.section { padding-block: var(--space-16); }
+/*
+ * BAI-SECTION-UNIFICATION-001 (2026-09-01)
+ *
+ * One responsive section rhythm for every route family.  The legacy names
+ * remain aliases because several generated and content-driven templates use
+ * them, but they no longer describe competing systems.
+ */
+.section,
+.section--padded,
+.section--inner,
+.home-section--padded,
+.inner-section { padding-block: 4rem; }
+
+@media (min-width: 1024px) {
+  .section,
+  .section--padded,
+  .section--inner,
+  .home-section--padded,
+  .inner-section { padding-block: 8rem; }
+}
+
 .section--alt { background: var(--bg-surface); }
 .section--dark { background: var(--bg-base); }
-.section--inner { padding-block: var(--space-16); }   /* inner pages */
 
-/* Aliases (legacy from pages.css) */
-.inner-section { padding-block: var(--space-16); }
+/* Compatibility aliases (legacy from pages.css). */
 .inner-section--alt { background: var(--bg-surface); }
 /* Centered variant — for sections whose header + content should be centered
    (partnerships, audiences, etc.). Replaces inline `style="text-align:center;"`. */
@@ -362,6 +379,7 @@
    made unrelated DOM nodes look like independent cards. */
 .site-header,
 .site-footer,
+.section--padded,
 .home-section--padded,
 .inner-section,
 .home-cta-strip,
@@ -423,6 +441,7 @@
 
   .site-header,
   .site-footer,
+  .section--padded,
   .home-section--padded,
   .inner-section,
   .home-cta-strip,
@@ -460,6 +479,7 @@
 
   .site-header,
   .site-footer,
+  .section--padded,
   .home-section--padded,
   .inner-section,
   .home-cta-strip,
@@ -526,6 +546,8 @@
   color: var(--text-primary);
   margin-bottom: var(--space-4);
   text-wrap: balance;
+  /* Safe fallback when a legacy title has no local reading surface. */
+  text-shadow: 0 2px 24px rgba(4, 7, 17, 0.6);
 }
 
 /* Section title scales to text-4xl on tablet+ for visual prominence */
@@ -543,7 +565,7 @@
   font-weight: var(--font-normal);
   line-height: var(--leading-relaxed);        /* 1.75 — Arabic breathing */
   color: var(--text-secondary);
-  max-width: var(--container-reading);
+  max-inline-size: min(100%, 65ch);
   margin-inline: auto;
   text-wrap: pretty;
 }
@@ -1377,20 +1399,15 @@ button.btn--primary {                              /* legacy single-dash alias *
   background: linear-gradient(180deg, var(--surface-3) 0%, var(--surface-2) 100%);
 }
 
-/* BAI-REVEAL-FALLBACK-001 (2026-08-29): the entry state is gated on
-   html.reveal-ready, which public/js/scroll-reveal.js sets as its first action.
-   Without the gate these rules hid primary content permanently whenever the
-   observer did not run (swallowed dynamic import, JS off, crawler, slow link) —
-   26 cards on /about/ alone measured opacity 0 with no reveal in flight. */
-/* Reveal animation: applies to .card--feature and the legacy .feature-card */
-/* Entry state — opacity 0 + small upward offset. The .is-visible class added by the
-   centralized BaseLayout observer (DEC-015) reveals them with a smooth transition that
-   respects --reveal-delay (set by .reveal-stagger containers for grid staggering). */
-html.reveal-ready .feature-card,
-html.reveal-ready .card--feature,
-html.reveal-ready .inner-card {
-  opacity: 0;
-  transform: translateY(16px);
+/* BAI-SECTION-UNIFICATION-001: sections must preserve their reading rhythm
+   even when IntersectionObserver settles after the screenshot/viewport reaches
+   a later section. Feature cards therefore start visible; reveal classes remain
+   harmless enhancement hooks instead of controlling content visibility. */
+.feature-card,
+.card--feature,
+.inner-card {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .feature-card.is-visible,

@@ -33,6 +33,8 @@ interface Props {
   as?: 'h1' | 'h2' | 'h3';
   /** Pass-through class */
   class?: string;
+  /** Stable heading id for the owning section's aria-labelledby contract. */
+  id?: string;
 }
 
 const {
@@ -42,6 +44,7 @@ const {
   align = 'center',
   as: HeadingTag = 'h2',
   class: className = '',
+  id,
 } = Astro.props;
 
 const classes = [
@@ -53,7 +56,7 @@ const classes = [
 
 <header class={classes}>
   {eyebrow && <span class="section__eyebrow">{eyebrow}</span>}
-  <HeadingTag class="section__title">{title}</HeadingTag>
+  <HeadingTag id={id} class="section__title">{title}</HeadingTag>
   {subtitle && <p class="section__subtitle">{subtitle}</p>}
 </header>
 

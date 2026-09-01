@@ -61,3 +61,24 @@ console.log(`\n--text-secondary (#94a3b8): ${secondaryCR.toFixed(2)}:1 ✅`);
 const primaryLum = relativeLuminance(0xf1, 0xf5, 0xf9);
 const primaryCR = contrastRatio(primaryLum, bgLum);
 console.log(`--text-primary (#f1f5f9): ${primaryCR.toFixed(2)}:1 ✅`);
+
+// BAI-SECTION-UNIFICATION-001: section headings can sit over the background
+// video. The canonical reading surface is rgba(10, 16, 32, 0.90); test its
+// lightest possible video frame, which is the worst case for light text.
+const mediaSurface = [
+  Math.round(10 * 0.9 + 255 * 0.1),
+  Math.round(16 * 0.9 + 255 * 0.1),
+  Math.round(32 * 0.9 + 255 * 0.1),
+];
+const mediaSurfaceLum = relativeLuminance(...mediaSurface);
+const headingCR = contrastRatio(primaryLum, mediaSurfaceLum);
+const eyebrowLum = relativeLuminance(0x5e, 0xd9, 0xc9); // --brand-300
+const eyebrowCR = contrastRatio(eyebrowLum, mediaSurfaceLum);
+const subtitleCR = contrastRatio(secondaryLum, mediaSurfaceLum);
+
+console.log('\nSection-heading worst case (white video frame + --surface-on-media):');
+console.log(`surface rgb(${mediaSurface.join(', ')}), title: ${headingCR.toFixed(2)}:1 ${headingCR >= 3 ? '✅ large-text AA' : '❌'}`);
+console.log(`surface rgb(${mediaSurface.join(', ')}), eyebrow: ${eyebrowCR.toFixed(2)}:1 ${eyebrowCR >= 4.5 ? '✅ normal-text AA' : '❌'}`);
+console.log(`surface rgb(${mediaSurface.join(', ')}), subtitle: ${subtitleCR.toFixed(2)}:1 ${subtitleCR >= 4.5 ? '✅ normal-text AA' : '❌'}`);
+
+if (headingCR < 3 || eyebrowCR < 4.5 || subtitleCR < 4.5) process.exitCode = 1;
