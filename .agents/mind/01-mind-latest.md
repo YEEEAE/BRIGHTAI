@@ -1833,3 +1833,31 @@
 ### ملاحظات / مشاكل مفتوحة
 - مخرجات الفحص تولّدت في `download/qa/global-bg-audit/` وغير متتبعة؛ لا تحذفها بدون قرار المالك.
 - لا توجد لقطات before/after الكاملة لكل العائلات بعد.
+## [2026-09-01] — RDX-READING-SURFACES-001: توحيد أسطح القراءة وإصلاح هيرو الجوال
+
+### تم التنفيذ
+- استبدلت fallback العام `main > *` بأسطح محلية صريحة للأقسام الرئيسية والداخلية وCTA والخلاصة؛ ما عاد كل عنصر في الصفحة يعامل كبطاقة مستقلة.
+- أضفت variants دلالية مركزية: hero وsection وprose وcompact وproof وcta، مع fallback واضح لـreduced-transparency والطباعة.
+- عدلت `SplitHero` ليعتمد ارتفاعًا ناتجًا من المحتوى على الجوال، وطبقت حماية عرض/wrapping للـH1 مع padding أفقي 16px.
+- حسّنت نص هيرو الرئيسية وإجابة صفحة الحلول ليكونان مباشرين وأقصر، بدون claims امتثال أو عملاء جديدة.
+- حوّلت النص الطويل في `/solutions/` إلى سطح prose واحد بدل أسطح منفصلة لكل فقرة.
+
+### الملفات المتأثرة
+- `src/styles/components.css`
+- `src/components/SplitHero.astro`
+- `src/pages/solutions/index.astro`
+- `docs/audits/RDX-READING-SURFACES-IMPLEMENTATION-REPORT.{md,json}`
+
+### التحقق
+- `pnpm bg:contract` ✅ — 95/95 وcontrast PASS؛ أقل نسبة للنص التفاعلي على الإطار الأبيض 4.84:1.
+- `git diff --check` ✅.
+- `pnpm build` ⚠️ وصل Astro إلى Complete؛ مرحلة sitemap داخل أمر الجذر لم تنتهِ ضمن دورة runner. تحذيرات duplicate routes موجودة قبل المسارات المعدلة.
+- لم يكتمل Chrome/layout-audit الشامل: خادم المعاينة المحلي لا يستمر داخل runner الحالي.
+
+### النتيجة
+- **الحالة:** جزئي.
+- **مختصر:** نظام الأسطح وإصلاح الهيرو للصفحات ذات الأولوية موجودان ويجتازان عقد الخلفية والتباين، لكن تغطية كل route family وQC وDashboard تحتاج تشغيل معاينة مستمر وفحص كامل.
+
+### ملاحظات / مشاكل مفتوحة
+- `download/qa/global-bg-audit/route-inventory.json` تغيّر عند إعادة الجرد؛ أبقيته كأثر جرد ولا حذفت أي مخرج QA قائم.
+- لا commit ولا push ولا deploy.

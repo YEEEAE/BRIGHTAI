@@ -326,8 +326,16 @@
   border: 1px solid var(--surface-on-media-border);
 }
 
-/* RDX-CONTRAST-ON-MEDIA: these are reading groups that can overlap the video.
-   The surface stays in normal flow; it is never a page-wide scrim. */
+/* Reading surfaces are local, semantic groups—not a page-wide dimmer. New
+   templates should use a named variant; legacy selectors below keep their
+   proven owners readable while route families migrate gradually. */
+.media-reading-surface,
+.media-reading-surface--hero,
+.media-reading-surface--section,
+.media-reading-surface--prose,
+.media-reading-surface--compact,
+.media-reading-surface--proof,
+.media-reading-surface--cta,
 .split-hero__main,
 .page-hero,
 .inner-hero,
@@ -349,15 +357,35 @@
   backdrop-filter: var(--surface-on-media-blur);
 }
 
-/* Last-resort shell groups: the route audit discovered that several legacy
-   templates put text directly in a main child, header, or footer. These are
-   normal-flow blocks (never fixed) and intentionally omit backdrop-filter: a
-   dense page can have many of them in one viewport, so alpha carries contrast
-   without creating a compositor-heavy blur stack. */
+/* Normal-flow shells protect their related content without creating a blur
+   layer for every child. This replaces the former `main > *` fallback, which
+   made unrelated DOM nodes look like independent cards. */
 .site-header,
 .site-footer,
-main > * {
+.home-section--padded,
+.inner-section,
+.home-cta-strip,
+.answer-first-summary {
   background-color: var(--surface-on-media);
+}
+
+.media-reading-surface--hero { padding: clamp(1.25rem, 3vw, 2rem); }
+.media-reading-surface--section { padding: clamp(1rem, 2.5vw, 1.5rem); }
+.media-reading-surface--prose { max-inline-size: min(100%, 65ch); }
+.media-reading-surface--compact,
+.media-reading-surface--proof { padding: var(--space-4); }
+.media-reading-surface--cta { padding: clamp(1.25rem, 3vw, 2rem); }
+
+/* Long-form sections get one reading plane. Individual paragraphs retain
+   spacing and link treatment without becoming a stack of nested glass cards. */
+.media-reading-surface--prose .inner-section__lead {
+  max-inline-size: none;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .k-section-title { margin-block-end: var(--space-3); }
@@ -366,6 +394,13 @@ main > * {
 /* Readers who opt out of translucency get a fully opaque surface rather than a
    thinner one — the point of the surface is legibility, not decoration. */
 @media (prefers-reduced-transparency: reduce) {
+  .media-reading-surface,
+  .media-reading-surface--hero,
+  .media-reading-surface--section,
+  .media-reading-surface--prose,
+  .media-reading-surface--compact,
+  .media-reading-surface--proof,
+  .media-reading-surface--cta,
   .section__header,
   .inner-section__header,
   .split-hero__main,
@@ -388,10 +423,20 @@ main > * {
 
   .site-header,
   .site-footer,
-  main > * { background-color: var(--bg-surface); }
+  .home-section--padded,
+  .inner-section,
+  .home-cta-strip,
+  .answer-first-summary { background-color: var(--bg-surface); }
 }
 
 @media print {
+  .media-reading-surface,
+  .media-reading-surface--hero,
+  .media-reading-surface--section,
+  .media-reading-surface--prose,
+  .media-reading-surface--compact,
+  .media-reading-surface--proof,
+  .media-reading-surface--cta,
   .section__header,
   .inner-section__header,
   .split-hero__main,
@@ -415,7 +460,10 @@ main > * {
 
   .site-header,
   .site-footer,
-  main > * { background-color: transparent; }
+  .home-section--padded,
+  .inner-section,
+  .home-cta-strip,
+  .answer-first-summary { background-color: transparent; }
 }
 
 /* Start-aligned variant — header sits on the start side, used on asymmetric

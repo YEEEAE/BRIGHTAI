@@ -89,16 +89,14 @@ import TrustBadges from './TrustBadges.astro';
         {/* GA-SEO-AUDIT-002 (2026-08-24): fixed garbled run + unified brand casing
             (was "بيانات الشركةمن ... BRIGHT AI") and softened "بلا مخاطر" → "آمن". */}
         <strong>BrightAI</strong> تقدم <strong class="text-white">Saudi AI Safety OS</strong>:
-        <strong class="text-white"> ذكاء اصطناعي آمن… لأعمالك</strong> — طبقة تشغيلية تقف بين الموظف وأنظمة الذكاء الاصطناعي وبيانات الشركة، وتمنح الشركات السعودية نظاماً واحداً متكاملاً للتحكم الكامل في كل ما يخص الذكاء الاصطناعي داخل مؤسستها.
-        
-        <span class="text-white">آمن، موثّق، وقابل للمراجعة</span>.
+        طبقة تشغيلية تساعد فرق العمل على إدارة استخدام الذكاء الاصطناعي وبيانات الشركة من نقطة واحدة.
+        <span class="text-white">النتيجة: استخدام أوضح، موثّق، وقابل للمراجعة</span>.
         {/* BAI-VOC-001-A (2026-07-18): 3 additional VOC pillars injected into
             the lead paragraph (AI risk register + audit-ready evidence +
             human oversight). Combined with the H1 suffix, the hero now
             carries all 5 VOC pillars required by the task. */}
-        تساعد المنشأة على تشغيل <strong class="text-white">سجل مخاطر</strong> محدّث،
-        و<strong class="text-white">أدلة جاهزة للتدقيق</strong>، مع
-        <strong class="text-white">إشراف بشري</strong> على القرارات عالية المخاطر.
+        وتدعم بناء <strong class="text-white">سجل مخاطر</strong> وتوثيق الأدلة، مع
+        <strong class="text-white">إشراف بشري</strong> للقرارات عالية المخاطر.
       </p>
 
       <div class="home-hero-actions">
@@ -194,7 +192,7 @@ import TrustBadges from './TrustBadges.astro';
   /* ─── SplitHero Container ─── */
   .split-hero {
     position: relative;
-    min-height: 100vh;
+    min-height: min(100dvh, 58rem);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -356,6 +354,8 @@ import TrustBadges from './TrustBadges.astro';
     font-weight: var(--font-extrabold);                  /* 800 — DEC-2026-032 */
     letter-spacing: var(--tracking-tight);              /* -0.02em — DEC-2026-032 */
     text-wrap: balance;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
     text-shadow: 0 2px 24px rgba(4,7,17,0.6);
   }
   /* Tablet — let it scale up naturally */
@@ -764,6 +764,12 @@ import TrustBadges from './TrustBadges.astro';
       padding-top: 5.5rem;
       padding-bottom: 3rem;
     }
+    .split-hero__grid {
+      padding-inline: 1rem;
+      padding-bottom: 3rem;
+      gap: 1.5rem;
+    }
+    .split-hero__main { min-inline-size: 0; }
     /* BAI-BG-VIDEO-001 (2026-08-29): the mobile vignette override went with the
        vignette layer itself. The mobile kill-switches for
        .dotted-surface-canvas / .split-hero__visual in components.css are also
