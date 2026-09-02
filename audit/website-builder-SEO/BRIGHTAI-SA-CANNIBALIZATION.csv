@@ -1,9 +1,0 @@
-keyword,url_a,url_b,overlap,risk,recommended_resolution
-حوكمة الذكاء الاصطناعي (تعريف شامل),/blog/ai-governance-saudi-arabia/,/docs/ai-governance-saudi-arabia/,نفس النية المعلوماتية + محتوى متقارب,مرتفع,تحديد مالك واحد (المقال) وتحويل docs إلى دعم تنفيذي أو دمج بعد فحص GSC
-حوكمة الذكاء الاصطناعي,/ /,/blog/ai-governance-saudi-arabia/,خطر تكرار H1/عنوان بين الرئيسية والمقال,متوسط,الرئيسية تبقى بوابة العلامة بدون نفس H1 أو الافتتاحية
-NCA ECC + AI (نية عامة),/solutions/nca-ecc-ai-controls/,/solutions/nca-compliance/ (وجود مرجّح),صفحتان تجاريتان لنفس الكلمة العامة,مرتفع,فحص المحتوى والنية ثم اختيار مالك واحد أو إعادة تموضع إحداهما
-PDPL + AI,/blog/pdpl-ai/,/blog/pdpl-and-ai-saudi/ + /blog/pdpl-ai-compliance-guide/,3 صفحات لنفس النية,مرتفع,توحيد pillar واحد + توجيه الفرعيات بـmodifiers واضحة (موافقة/نقل/عقوبات)
-AI audit trail,/solutions/ai-audit-trail/,/blog/ai-audit-trail-saudi/ + /blog/ai-audit-trail-compliance-path/,خطر تكرار العرض التجاري,متوسط,الحل للقدرة/الشراء، المقال للقيمة ومسار الامتثال، docs للحقول
-تقييم الجاهزية,/assessment/ai-governance-readiness/,أي مقال جاهزية مستقبلي,قد يكرر نية التحويل,متوسط,المقالات ترتبط بالتقييم ولا تنافسه
-ISO 42001 (pillar),/blog/iso-42001-saudi-implementation-guide/,9 مقالات ISO فرعية,بدون ربط هرمي تحدّد المالك,متوسط,تثبيت pillar + روابط كل فرع لأعلى
-AI Firewall vs LLM Firewall,/solutions/ai-firewall/,أي صفحة LLM Firewall مستقبلية,نفس النية التجارية,منخفض حاليًا,لا صفحة منفصلة؛ LLM Firewall مرادف جزئي داخل صفحة المالك

@@ -29,7 +29,7 @@
 import type { Role } from '../types';
 import { getDb } from '../db';
 import { LAB_TEST_ROW_SCOPE_SQL, rowScopeParams } from '../scope';
-import { DEFAULT_PER_PAGE, PER_PAGE_OPTIONS } from '../pagination';
+import { DEFAULT_PER_PAGE, SEARCH_PAGE_SIZE_OPTIONS, parsePageSize, parsePositivePage } from '../pagination';
 
 export type LabSearchEntityType =
   | 'all'
@@ -63,7 +63,7 @@ export const LAB_SEARCH_ENTITY_LABELS: Record<LabSearchEntityType, string> = {
   retests: 'Retests',
 };
 
-export const LAB_SEARCH_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const LAB_SEARCH_PER_PAGE_OPTIONS = SEARCH_PAGE_SIZE_OPTIONS;
 export const DEFAULT_LAB_SEARCH_PER_PAGE = DEFAULT_PER_PAGE;
 export const DEFAULT_LAB_SEARCH_ENTITY: LabSearchEntityType = 'all';
 
@@ -135,13 +135,9 @@ export function parseLabSearchFilters(url: URL): LabSearchFilters {
     f.entity = entity as LabSearchEntityType;
   }
 
-  const page = positiveInt(sp.get('page'));
-  if (page !== null) f.page = page;
+  f.page = parsePositivePage(sp.get('page'));
 
-  const per = positiveInt(sp.get('per'));
-  if (per !== null && (LAB_SEARCH_PER_PAGE_OPTIONS as readonly number[]).includes(per)) {
-    f.per_page = per;
-  }
+  f.per_page = parsePageSize(sp.get('per'));
 
   return f;
 }

@@ -8,11 +8,34 @@
 // caller's whitelisted SORT_SQL map (never user input).
 
 /** Allowed page sizes for every register. */
+// Registers that predate the search UX still accept 10 internally, but the
+// public search/data-grid controls intentionally expose only these sizes.
 export const PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
 export type PerPageOption = (typeof PER_PAGE_OPTIONS)[number];
 
 /** Default page size when the request does not ask for one. */
 export const DEFAULT_PER_PAGE = 25;
+
+export const SEARCH_PAGE_SIZE_OPTIONS = [25, 50, 100] as const;
+export type SearchPageSize = (typeof SEARCH_PAGE_SIZE_OPTIONS)[number];
+
+export function parsePositivePage(value: string | null): number {
+  if (!value || !/^\d+$/.test(value)) return 1;
+  const page = Number(value);
+  return Number.isSafeInteger(page) && page > 0 ? page : 1;
+}
+
+export function parsePageSize(value: string | null): SearchPageSize {
+  const pageSize = Number(value);
+  return (SEARCH_PAGE_SIZE_OPTIONS as readonly number[]).includes(pageSize)
+    ? (pageSize as SearchPageSize)
+    : DEFAULT_PER_PAGE;
+}
+
+export function pageRange(page: number, pageSize: number, total: number): { start: number; end: number } {
+  if (total <= 0) return { start: 0, end: 0 };
+  return { start: (page - 1) * pageSize + 1, end: Math.min(page * pageSize, total) };
+}
 
 export function isPerPage(v: number): v is PerPageOption {
   return (PER_PAGE_OPTIONS as readonly number[]).includes(v);

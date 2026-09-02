@@ -24,7 +24,7 @@ import { setFlash } from './flash';
 import { localDateStr } from './format';
 import { TASK_ROW_SCOPE_SQL, rowScopeParams } from './scope';
 import { getDb } from './db';
-import { buildOrderClause, DEFAULT_PER_PAGE, isPerPage, isSortDir, mergeWheres, PER_PAGE_OPTIONS } from './pagination';
+import { buildOrderClause, DEFAULT_PER_PAGE, isSortDir, mergeWheres, SEARCH_PAGE_SIZE_OPTIONS, parsePageSize, parsePositivePage } from './pagination';
 import {
   MAX_SAVED_FILTER_NAME as MAX_SAVED_FILTER_NAME_POLICY,
   TASK_PRIORITIES,
@@ -67,7 +67,7 @@ export const SEARCH_SORT_FIELDS: readonly SearchSortField[] = [
   'completed_at',
 ];
 
-export const SEARCH_PER_PAGE_OPTIONS = PER_PAGE_OPTIONS;
+export const SEARCH_PER_PAGE_OPTIONS = SEARCH_PAGE_SIZE_OPTIONS;
 export { DEFAULT_PER_PAGE };
 export const DEFAULT_SORT: SearchSortField = 'updated_at';
 export const DEFAULT_DIR: 'asc' | 'desc' = 'desc';
@@ -266,13 +266,12 @@ export function parseTaskSearchFilters(url: URL, jar: CookieJar): TaskSearchFilt
 
   const page = sp.get('page');
   if (page) {
-    const n = positiveInt(page);
-    if (n !== null) f.page = n;
+    f.page = parsePositivePage(page);
   }
   const per = sp.get('per');
   if (per) {
     const n = positiveInt(per);
-    if (n !== null && isPerPage(n)) f.per_page = n;
+    f.per_page = parsePageSize(per);
   }
 
   return f;
@@ -342,6 +341,29 @@ export function escapeLike(value: string): string {
   return value.replace(/[\\%_]/g, (m) => `\\${m}`);
 }
 
+/** Canonical Arabic search form: hamza/alef, taa marbuta and yaa variants
+ * are folded, and tashkeel is ignored. This is deliberately exported so the
+ * same rule can be tested and reused by other search surfaces. */
+export function normalizeArabic(value: string): string {
+  return value
+    .normalize('NFKC')
+    .replace(/[\u064B-\u065F\u0670]/g, '')
+    .replace(/[أإآا]/g, 'ا')
+    .replace(/[ةه]/g, 'ه')
+    .replace(/[ىي]/g, 'ي');
+}
+
+function normalizedSql(column: string): string {
+  let expression = column;
+  for (const [from, to] of [['أ', 'ا'], ['إ', 'ا'], ['آ', 'ا'], ['ة', 'ه'], ['ى', 'ي']] as const) {
+    expression = `REPLACE(${expression}, '${from}', '${to}')`;
+  }
+  for (const mark of ['ً','ٌ','ٍ','َ','ُ','ِ','ّ','ْ','ٰ']) {
+    expression = `REPLACE(${expression}, '${mark}', '')`;
+  }
+  return expression;
+}
+
 /**
  * Build the shared, fully parameterized WHERE clause for a filter set.
  * Exported for unit tests: the SQL text NEVER contains user input — every
@@ -352,10 +374,14 @@ export function buildSearchWhere(f: TaskSearchFilters): { sql: string; params: u
   const params: unknown[] = [];
 
   if (f.q) {
-    const like = `%${escapeLike(f.q)}%`;
+    const like = `%${escapeLike(normalizeArabic(f.q))}%`;
+    const title = normalizedSql('t.title');
+    const description = normalizedSql('t.description');
+    const blocker = normalizedSql('t.blocker_note');
+    const comment = normalizedSql('c.comment');
     conds.push(
-      `(t.title LIKE ? ESCAPE '\\' OR t.description LIKE ? ESCAPE '\\' OR t.blocker_note LIKE ? ESCAPE '\\'
-        OR EXISTS (SELECT 1 FROM task_comments c WHERE c.task_id = t.id AND c.comment LIKE ? ESCAPE '\\'))`,
+      `(${title} LIKE ? ESCAPE '\\' OR ${description} LIKE ? ESCAPE '\\' OR ${blocker} LIKE ? ESCAPE '\\'
+        OR EXISTS (SELECT 1 FROM task_comments c WHERE c.task_id = t.id AND ${comment} LIKE ? ESCAPE '\\'))`,
     );
     params.push(like, like, like, like);
   }

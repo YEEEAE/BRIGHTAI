@@ -17,6 +17,7 @@ import StatusBadge from '../components/StatusBadge.astro';
 import EmptyState from '../components/EmptyState.astro';
 import * as search from '../lib/taskSearch';
 import AppButton from '../components/ui/AppButton.astro';
+import { pageRange } from '../lib/pagination';
 import PageHeader from '../components/ui/PageHeader.astro';
 import {
   formatDbDate,
@@ -53,6 +54,7 @@ function pageHref(p: number): string {
   const qs = sp.toString();
   return qs ? `/search?${qs}` : '/search';
 }
+const range = pageRange(result.page, result.per_page, result.total);
 
 /** Sort header link: toggles asc/desc for the clicked column. */
 function sortHref(field: search.SearchSortField): string {
@@ -294,7 +296,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
   {/* ───────────── Results ───────────── */}
   <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
     <p class="text-sm text-slate-600">
-      <span class="font-semibold text-slate-900">{result.total}</span> task{result.total === 1 ? '' : 's'} found
+      عرض {range.start} إلى {range.end} من أصل <span class="font-semibold text-slate-900">{result.total}</span> نتيجة
       {filtered && (
         <span class="text-slate-400"> (filtered — <a href="/search" class="underline hover:text-slate-600">clear all</a>)</span>
       )}
@@ -315,19 +317,20 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
     />
   ) : (
     <div class="qc-table-panel">
-      <table class="w-full min-w-max text-sm">
-        <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+      <div class="max-h-[70vh] overflow-auto"><table class="w-full min-w-max text-sm">
+        <caption class="sr-only">نتائج البحث عن المهام</caption>
+        <thead class="sticky top-0 z-10 bg-slate-50 text-left text-xs uppercase text-slate-500">
           <tr>
             {SORTABLE.map((s) => (
-              <th class="px-4 py-2.5">
+              <th scope="col" class="px-4 py-2.5">
                 <span set:html={th(s.field, s.label)} />
               </th>
             ))}
-            <th class="px-4 py-2.5">Creator</th>
-            <th class="px-4 py-2.5">Dept</th>
-            <th class="px-4 py-2.5">Updated</th>
-            <th class="px-4 py-2.5">Files</th>
-            <th class="px-4 py-2.5">Actions</th>
+            <th scope="col" class="px-4 py-2.5">Creator</th>
+            <th scope="col" class="px-4 py-2.5">Dept</th>
+            <th scope="col" class="px-4 py-2.5">Updated</th>
+            <th scope="col" class="px-4 py-2.5">Files</th>
+            <th scope="col" class="px-4 py-2.5">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-200">
@@ -383,12 +386,12 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
             );
           })}
         </tbody>
-      </table>
+      </table></div>
     </div>
   )}
 
   {/* ───────────── Pagination (state preserved via URL) ───────────── */}
   <div class="mt-4">
-    <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="Search results pagination" />
+    <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="تنقل بين الصفحات" summary={`عرض ${range.start} إلى ${range.end} من أصل ${result.total} نتيجة`} />
   </div>
 </BaseLayout>

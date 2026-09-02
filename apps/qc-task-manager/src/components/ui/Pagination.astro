@@ -11,11 +11,12 @@ interface Props {
   hrefFor: (page: number) => string;
   /** Accessible name for the nav landmark (e.g. "Test register pagination"). */
   label?: string;
+  summary?: string;
   /** Optional layout classes (e.g. card-footer padding on lab search). */
   class?: string;
 }
 
-const { page, totalPages, hrefFor, label = 'Pagination', class: className = '' } = Astro.props;
+const { page, totalPages, hrefFor, label = 'تنقل بين الصفحات', summary, class: className = '' } = Astro.props;
 
 // Window logic identical to the historical per-page implementations so
 // existing URLs/expectations are preserved (up to 7 pages around current).
@@ -39,11 +40,11 @@ if (totalPages > 1) {
           href={hrefFor(page - 1)}
           class="rounded-qc-sm border border-border-strong bg-surface px-3 py-1.5 text-sm font-medium text-content-secondary hover:bg-surface-muted qc-focus"
         >
-          ← Prev
+          الصفحة السابقة
         </a>
       ) : (
         <span class="rounded-qc-sm border border-border bg-surface-muted px-3 py-1.5 text-sm font-medium text-content-secondary">
-          ← Prev
+          الصفحة السابقة
         </span>
       )}
       {pageNumbers.map((p) => (
@@ -65,13 +66,14 @@ if (totalPages > 1) {
           href={hrefFor(page + 1)}
           class="rounded-qc-sm border border-border-strong bg-surface px-3 py-1.5 text-sm font-medium text-content-secondary hover:bg-surface-muted qc-focus"
         >
-          Next →
+          الصفحة التالية
         </a>
       ) : (
         <span class="rounded-qc-sm border border-border bg-surface-muted px-3 py-1.5 text-sm font-medium text-content-secondary">
-          Next →
+          الصفحة التالية
         </span>
       )}
+      {summary && <span class="sr-only">{summary}</span>}
     </nav>
   )
 }

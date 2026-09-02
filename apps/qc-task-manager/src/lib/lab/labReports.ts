@@ -619,13 +619,13 @@ export function* readLabDataQualityReport(reportId: string): Generator<readonly 
 
 export function listLabProductsForReports(): Array<{ id: number; name: string; code: string }> {
   return getDb()
-    .prepare('SELECT id, name, code FROM lab_products WHERE is_active = 1 ORDER BY name ASC LIMIT 500')
+    .prepare('SELECT id, name, code FROM lab_products WHERE is_active = 1 ORDER BY name ASC')
     .all() as Array<{ id: number; name: string; code: string }>;
 }
 
 export function listLabEquipmentForReports(): Array<{ id: number; name: string; code: string }> {
   return getDb()
-    .prepare('SELECT id, name, code FROM lab_equipment WHERE is_archived = 0 ORDER BY name ASC LIMIT 500')
+    .prepare('SELECT id, name, code FROM lab_equipment WHERE is_archived = 0 ORDER BY name ASC')
     .all() as Array<{ id: number; name: string; code: string }>;
 }
 
