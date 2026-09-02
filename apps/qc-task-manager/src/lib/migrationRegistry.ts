@@ -58,6 +58,7 @@ import passwordLifecycleMigrationSql from '../../db/migrations/036_password_life
 import userAuditLogMigrationSql from '../../db/migrations/037_user_audit_log.sql?raw';
 import labChangeRequestWithdrawalSql from '../../db/migrations/038_lab_change_request_withdrawal.sql?raw';
 import uxEventsSql from '../../db/migrations/039_ux_events.sql?raw';
+import dashboardCreatedAtIndexSql from '../../db/migrations/040_dashboard_created_at_index.sql?raw';
 
 export interface EmbeddedMigration {
   readonly file: string;
@@ -104,4 +105,5 @@ export const EMBEDDED_MIGRATIONS: readonly EmbeddedMigration[] = Object.freeze([
   Object.freeze({ file: '037_user_audit_log.sql', source: userAuditLogMigrationSql }),
   Object.freeze({ file: '038_lab_change_request_withdrawal.sql', source: labChangeRequestWithdrawalSql }),
   Object.freeze({ file: '039_ux_events.sql', source: uxEventsSql }),
+  Object.freeze({ file: '040_dashboard_created_at_index.sql', source: dashboardCreatedAtIndexSql }),
 ]);

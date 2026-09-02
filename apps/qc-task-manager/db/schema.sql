@@ -199,6 +199,8 @@ CREATE INDEX idx_tasks_assigned_to ON tasks(assigned_to);
 
 CREATE INDEX idx_tasks_completed_at ON tasks(completed_at);
 
+CREATE INDEX idx_tasks_created_at ON tasks(created_at);
+
 CREATE INDEX idx_tasks_created_by ON tasks(created_by);
 
 CREATE INDEX idx_tasks_due_date ON tasks(due_date);

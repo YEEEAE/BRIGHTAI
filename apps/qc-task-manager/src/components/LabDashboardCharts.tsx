@@ -11,6 +11,13 @@
 // equipment status bars, calibration donut, document review-status bars.
 
 import { useState } from 'react';
+import ChartTableToggle from './charts/ChartTableToggle';
+import {
+  labSliceTable,
+  labWeeklyTable,
+  chartTakeaway,
+  type SliceLike,
+} from '../lib/chartTables';
 import type { LabChartSlice, LabWeekPoint } from '../lib/lab/dashboard';
 
 interface Props {
@@ -25,7 +32,7 @@ interface Props {
 // ───────────────────────── Horizontal slice bars ─────────────────────────
 // One horizontal bar per slice (count + share-of-total). SVG attributes only.
 
-function SliceBars({ data, emptyText }: { data: LabChartSlice[]; emptyText: string }) {
+function SliceBars({ data, emptyText, tableId, tableCaption }: { data: LabChartSlice[]; emptyText: string; tableId: string; tableCaption: string }) {
   const [hover, setHover] = useState<string | null>(null);
   const total = data.reduce((sum, d) => sum + d.count, 0);
   const max = Math.max(1, ...data.map((d) => d.count));
@@ -71,6 +78,7 @@ function SliceBars({ data, emptyText }: { data: LabChartSlice[]; emptyText: stri
         })}
       </ul>
       {total === 0 && <p className="mt-2 text-center text-xs text-slate-400">{emptyText}</p>}
+      <ChartTableToggle spec={labSliceTable(tableCaption, data)} tableId={tableId} />
     </div>
   );
 }
@@ -99,7 +107,7 @@ function LabDonut({ data, centerLabel }: { data: LabChartSlice[]; centerLabel: s
         viewBox="0 0 200 200"
         className="h-52 w-52"
         role="img"
-        aria-label={`${centerLabel}: ${data.map((d) => `${d.label} ${d.count}`).join(', ')}`}
+        aria-label={`${centerLabel} calibration (${chartTakeaway(data as SliceLike[])}): ${data.map((d) => `${d.label} ${d.count}`).join(', ')}`}
       >
         <circle cx="100" cy="100" r={R} fill="none" stroke="#f1f5f9" strokeWidth="30" />
         {segments.map((s, i) => (
@@ -144,6 +152,13 @@ function LabDonut({ data, centerLabel }: { data: LabChartSlice[]; centerLabel: s
           </li>
         ))}
       </ul>
+
+      <div className="w-full">
+        <ChartTableToggle
+          spec={labSliceTable(`${centerLabel} calibration status`, data)}
+          tableId="chart-table-lab-calibration"
+        />
+      </div>
     </div>
   );
 }
@@ -181,7 +196,7 @@ function LabLineChart({ data }: { data: LabWeekPoint[] }) {
         viewBox={`0 0 ${LINE_W} ${LINE_H}`}
         className="w-full"
         role="img"
-        aria-label={`Tests created per week (last 8 weeks): ${data
+        aria-label={`Tests created per week, last 8 weeks (${chartTakeaway(data)}): ${data
           .map((d) => `${d.label} ${d.count}`)
           .join(', ')}`}
       >
@@ -257,6 +272,8 @@ function LabLineChart({ data }: { data: LabWeekPoint[] }) {
           ? `${activePoint.label}: ${activePoint.count} test${activePoint.count === 1 ? '' : 's'} created — selected point`
           : `${total} test${total === 1 ? '' : 's'} created in the last 8 weeks.`}
       </p>
+
+      <ChartTableToggle spec={labWeeklyTable(data)} tableId="chart-table-lab-weekly" />
     </div>
   );
 }
@@ -282,19 +299,19 @@ export default function LabDashboardCharts({
       <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
         <h3 className="text-sm font-semibold text-slate-900">AIR vs VACUUM</h3>
         <p className="mb-4 text-xs text-slate-500">Tests by type</p>
-        <SliceBars data={testsByType} emptyText="No tests recorded yet." />
+        <SliceBars data={testsByType} emptyText="No tests recorded yet." tableId="chart-table-lab-type" tableCaption="Tests by type" />
       </div>
 
       <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
         <h3 className="text-sm font-semibold text-slate-900">Final results</h3>
         <p className="mb-4 text-xs text-slate-500">PASS / FAIL / HOLD (excludes voided)</p>
-        <SliceBars data={results} emptyText="No final results yet." />
+        <SliceBars data={results} emptyText="No final results yet." tableId="chart-table-lab-results" tableCaption="Final results" />
       </div>
 
       <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
         <h3 className="text-sm font-semibold text-slate-900">Equipment status</h3>
         <p className="mb-4 text-xs text-slate-500">Non-archived equipment by registry status</p>
-        <SliceBars data={equipmentStatus} emptyText="No equipment registered." />
+        <SliceBars data={equipmentStatus} emptyText="No equipment registered." tableId="chart-table-lab-equipment" tableCaption="Equipment status" />
       </div>
 
       <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5">
@@ -306,7 +323,7 @@ export default function LabDashboardCharts({
       <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 lg:col-span-2">
         <h3 className="text-sm font-semibold text-slate-900">Document review status</h3>
         <p className="mb-4 text-xs text-slate-500">Controlled documents (SOP / WI) by lifecycle status</p>
-        <SliceBars data={documentStatus} emptyText="No controlled documents yet." />
+        <SliceBars data={documentStatus} emptyText="No controlled documents yet." tableId="chart-table-lab-documents" tableCaption="Document review status" />
       </div>
     </div>
   );

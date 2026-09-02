@@ -1,0 +1,19 @@
+source_url,target_url,anchor_concept,relationship,priority
+/blog/ai-governance-saudi-arabia/,/solutions/ai-governance-platform/,منصة حوكمة الذكاء الاصطناعي,pillar-informational -> commercial-owner,P0
+/blog/ai-governance-saudi-arabia/,/assessment/ai-governance-readiness/,ابدأ تقييم الجاهزية,pillar -> conversion,P0
+/solutions/ai-governance-platform/,/blog/ai-governance-saudi-arabia/,دليل حوكمة الذكاء الاصطناعي في السعودية,commercial -> pillar (support evidence),P0
+/solutions/ai-firewall/,/solutions/ai-audit-trail/,سجل تدقيق الذكاء الاصطناعي,product-complement (firewall decision -> evidence),P0
+/solutions/ai-audit-trail/,/docs/ai-audit-trail/,حقول سجل التدقيق,product -> implementation doc,P0
+/blog/pdpl-ai-compliance-guide/,/solutions/ai-firewall/,جدار حماية الذكاء الاصطناعي,regulatory requirement -> technical control,P1
+/blog/pdpl-cross-border-data-transfer-ai/,/docs/pdpl-chatgpt-data-protection/,حماية البيانات قبل إرسالها إلى ChatGPT,regulation -> operational guide,P1
+/blog/ecc-ai-mapping/,/solutions/nca-ecc-ai-controls/,ضوابط NCA ECC للذكاء الاصطناعي,framework -> product mapping,P1
+/blog/iso-42001-risk-assessment-saudi/,/solutions/ai-risk-classification/,تصنيف مخاطر الذكاء الاصطناعي,standard -> product,P1
+/blog/iso-42001-risk-assessment-saudi/,/tools/ai-risk-register/,سجل مخاطر AI المجاني,standard -> free tool (conversion),P1
+/blog/sama-ai-risk/,/solutions/banking-ai-governance/,حوكمة الذكاء الاصطناعي للبنوك,regulator -> sector solution,P1
+/blog/ndmo-roles-requirements-guide/,/solutions/government-ai-governance/,حوكمة الذكاء الاصطناعي للجهات الحكومية,regulator -> sector solution,P1
+/blog/ai-usage-policy-template-saudi/,/solutions/ai-governance-platform/,شاهد قدرات المنصة,template -> product, P2
+/blog/ai-implementation-cost-saudi/,/assessment/ai-governance-readiness/,قيّم الفجوات,cost inquiry -> assessment,P2
+/blog/best-ai-companies-saudi-2026/,/blog/choose-ai-company-riyadh/,كيف تختار شركة AI,cluster cross-link,P2
+/blog/what-is-ai-governance-saudi-companies/,/blog/ai-governance-saudi-arabia/,دليل حوكمة AI السعودية,definition -> pillar,P2
+/solutions/ai-use-case-discovery/,/solutions/ai-governance-platform/,منصة الحوكمة الموحدة,product-family sibling,P2
+/assessment/ai-governance-readiness/,/contact/,اطلب عرضًا,assessment result -> sales,P0

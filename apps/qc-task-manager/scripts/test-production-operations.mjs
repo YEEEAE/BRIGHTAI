@@ -37,7 +37,7 @@ try {
   db = new Database(dbPath);
   db.pragma('foreign_keys = ON');
   assert.equal(db.prepare('SELECT title FROM tasks WHERE id = 1').get().title, 'Restore drill record');
-  assert.equal(db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version, 39);
+  assert.equal(db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version, 40);
   assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
   assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
   assert.equal(verifyAllAuditChains(db).task.status, 'PASS');

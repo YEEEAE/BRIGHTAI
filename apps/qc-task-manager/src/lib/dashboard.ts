@@ -463,13 +463,32 @@ export interface Kpis {
   urgent_open: number;
   /** status = 'completed' with NO is_evidence=1 attachment */
   completed_without_evidence: number;
-  /** Average completion time in seconds (completed_at − started_at), or null. */
+  /**
+   * KPI canonical definition (PROMPT-07 / P2-2): Average Completion Time =
+   * AVG(completed_at − created_at) — task creation → technician completion.
+   * null when no completed task qualifies.
+   */
   avg_completion_seconds: number | null;
+  /** Denominator of avg_completion_seconds (completed tasks in scope). */
+  avg_completion_n: number;
+  /**
+   * Average Work Duration = AVG(completed_at − started_at) — work start →
+   * technician completion (excludes queue wait). This replaces the former
+   * duplicate "Average Resolution" card, which showed the same number as
+   * Average Completion Time.
+   */
+  avg_work_seconds: number | null;
+  /** Denominator of avg_work_seconds (completed tasks with started_at). */
+  avg_work_n: number;
   sla_compliance_percent: number;
+  /** Denominator of sla_compliance_percent (completed tasks with an SLA). */
+  sla_compliance_n: number;
   sla_at_risk: number;
   sla_critical: number;
   sla_breached: number;
   avg_sla_consumption_percent: number | null;
+  /** Denominator of avg_sla_consumption_percent (SLA-tracked tasks). */
+  avg_sla_consumption_n: number;
 }
 
 /**
@@ -555,26 +574,49 @@ export function getKpis(f: DashboardFilters): Kpis {
     completed_without_evidence: number;
   };
 
-  // Average completion time = AVG(completed_at − started_at) in seconds, for
-  // completed tasks that have both timestamps. Computed separately so the
-  // heavyweight AVG/julianday does not interfere with the COUNT query's
-  // placeholder order. The status/timestamp conditions ride in `extra` so the
-  // WHERE/AND shape stays correct whether or not the user picked filters.
+  // Average Completion Time (creation → technician completion) = AVG(
+  // completed_at − created_at) for completed tasks, plus its denominator N.
+  // Computed separately so the heavyweight AVG/julianday does not interfere
+  // with the COUNT query's placeholder order. The status/timestamp conditions
+  // ride in `extra` so the WHERE/AND shape stays correct whether or not the
+  // user picked filters.
   const { sql: avgSql, params: avgParams } = whereClause(f, [
     {
-      sql: "t.status = 'completed' AND t.completed_at IS NOT NULL AND t.started_at IS NOT NULL",
+      sql: "t.status = 'completed' AND t.completed_at IS NOT NULL",
       params: [],
     },
   ]);
   const avgRow = db
     .prepare(
-      `SELECT AVG((julianday(t.completed_at) - julianday(t.started_at)) * 86400.0) AS avg_seconds
+      `SELECT AVG((julianday(t.completed_at) - julianday(t.created_at)) * 86400.0) AS avg_seconds,
+              COUNT(*) AS n
        FROM tasks t
        ${avgSql}`,
     )
-    .get(...avgParams) as { avg_seconds: number | null } | undefined;
+    .get(...avgParams) as { avg_seconds: number | null; n: number } | undefined;
 
   const avgSeconds = avgRow?.avg_seconds ?? null;
+  const avgCompletionN = Number(avgRow?.n ?? 0);
+
+  // Average Work Duration (work start → completion) — the metric the former
+  // duplicate "Average Resolution" card mislabeled.
+  const { sql: workSql, params: workParams } = whereClause(f, [
+    {
+      sql: "t.status = 'completed' AND t.completed_at IS NOT NULL AND t.started_at IS NOT NULL",
+      params: [],
+    },
+  ]);
+  const workRow = db
+    .prepare(
+      `SELECT AVG((julianday(t.completed_at) - julianday(t.started_at)) * 86400.0) AS avg_seconds,
+              COUNT(*) AS n
+       FROM tasks t
+       ${workSql}`,
+    )
+    .get(...workParams) as { avg_seconds: number | null; n: number } | undefined;
+
+  const avgWorkSeconds = workRow?.avg_seconds ?? null;
+  const avgWorkN = Number(workRow?.n ?? 0);
 
   const { sql: slaSql, params: slaParams } = whereClause(f);
   const slaRow = db.prepare(
@@ -583,11 +625,21 @@ export function getKpis(f: DashboardFilters): Kpis {
        COALESCE(SUM(CASE WHEN t.sla_status = 'CRITICAL' THEN 1 ELSE 0 END), 0) AS critical,
        COALESCE(SUM(CASE WHEN t.sla_status = 'BREACHED' THEN 1 ELSE 0 END), 0) AS breached,
        AVG(CASE WHEN t.sla_started_at IS NOT NULL THEN t.sla_percent_used END) AS avg_consumption,
+       COALESCE(SUM(CASE WHEN t.sla_started_at IS NOT NULL THEN 1 ELSE 0 END), 0) AS consumption_n,
+       COALESCE(SUM(CASE WHEN t.status = 'completed' AND t.sla_started_at IS NOT NULL THEN 1 ELSE 0 END), 0) AS compliance_n,
        CASE WHEN SUM(CASE WHEN t.status = 'completed' AND t.sla_started_at IS NOT NULL THEN 1 ELSE 0 END) = 0 THEN 0
             ELSE ROUND(100.0 * SUM(CASE WHEN t.status = 'completed' AND t.sla_started_at IS NOT NULL AND t.sla_percent_used <= 100 THEN 1 ELSE 0 END)
               / SUM(CASE WHEN t.status = 'completed' AND t.sla_started_at IS NOT NULL THEN 1 ELSE 0 END), 2) END AS compliance
      FROM tasks t ${slaSql}`,
-  ).get(...slaParams) as { at_risk: number; critical: number; breached: number; avg_consumption: number | null; compliance: number };
+  ).get(...slaParams) as {
+    at_risk: number;
+    critical: number;
+    breached: number;
+    avg_consumption: number | null;
+    consumption_n: number;
+    compliance_n: number;
+    compliance: number;
+  };
 
   return {
     total: Number(row.total),
@@ -600,12 +652,47 @@ export function getKpis(f: DashboardFilters): Kpis {
     urgent_open: Number(row.urgent_open),
     completed_without_evidence: Number(row.completed_without_evidence),
     avg_completion_seconds: avgSeconds == null ? null : Number(avgSeconds),
+    avg_completion_n: avgCompletionN,
+    avg_work_seconds: avgWorkSeconds == null ? null : Number(avgWorkSeconds),
+    avg_work_n: avgWorkN,
     sla_compliance_percent: Number(slaRow.compliance),
+    sla_compliance_n: Number(slaRow.compliance_n),
     sla_at_risk: Number(slaRow.at_risk),
     sla_critical: Number(slaRow.critical),
     sla_breached: Number(slaRow.breached),
     avg_sla_consumption_percent: slaRow.avg_consumption == null ? null : Number(slaRow.avg_consumption),
+    avg_sla_consumption_n: Number(slaRow.consumption_n),
   };
+}
+
+// ───────────────────── Executive-metric formatting (PROMPT-07) ─────────────────────
+// Business rule: a KPI whose denominator is zero renders "N/A (N=0)" — never a
+// misleading 0 hours / 0% / 100%. The denominators come from the same queries
+// as the values, so the number and its N can never drift apart.
+
+/** "2d 6h"-style duration used by the dashboard KPI cards. */
+export function formatDuration(seconds: number | null): string {
+  if (seconds === null || !Number.isFinite(seconds)) return '—';
+  if (seconds < 60) return '< 1m';
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  const remHours = hours % 24;
+  return remHours === 0 ? `${days}d` : `${days}d ${remHours}h`;
+}
+
+/** Duration KPI with its denominator; N = 0 → "N/A (N=0)". */
+export function formatKpiDuration(seconds: number | null, n: number): string {
+  if (n <= 0) return 'N/A (N=0)';
+  return formatDuration(seconds);
+}
+
+/** Percentage KPI with its denominator; N = 0 → "N/A (N=0)". */
+export function formatKpiPercent(value: number | null, n: number): string {
+  if (n <= 0) return 'N/A (N=0)';
+  return value === null || !Number.isFinite(value) ? '—' : `${value.toFixed(1)}%`;
 }
 
 /** Average checklist completion across tasks in the current dashboard scope. */

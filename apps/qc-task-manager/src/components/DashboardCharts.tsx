@@ -10,6 +10,16 @@
 // completion-rate-vs-previous-period card.
 
 import { useState } from 'react';
+import ChartTableToggle from './charts/ChartTableToggle';
+import {
+  statusDistributionTable,
+  priorityDistributionTable,
+  perEmployeeTable,
+  overdueByEmployeeTable,
+  completedPerWeekTable,
+  completionRateTable,
+  chartTakeaway,
+} from '../lib/chartTables';
 
 // ── shared prop types (mirror src/lib/dashboard.ts) ──
 export interface DonutSlice {
@@ -87,11 +97,13 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
 
   return (
     <div className="relative flex flex-col items-center">
+      {/* aria-label = takeaway summary first, then the full data listing —
+          screen readers hear the headline before the numbers. */}
       <svg
         viewBox="0 0 200 200"
         className="h-52 w-52"
         role="img"
-        aria-label={`Tasks by status: ${data
+        aria-label={`Tasks by status (${chartTakeaway(data)}): ${data
           .map((d) => `${d.label} ${d.count}`)
           .join(', ')}`}
       >
@@ -158,6 +170,8 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
           </li>
         ))}
       </ul>
+
+      <ChartTableToggle spec={statusDistributionTable(data)} tableId="chart-table-tasks-status" />
     </div>
   );
 }
@@ -216,6 +230,7 @@ function PriorityChart({ data }: { data: PrioritySlice[] }) {
           No tasks match the current filters.
         </p>
       )}
+      <ChartTableToggle spec={priorityDistributionTable(data)} tableId="chart-table-tasks-priority" />
       {hover && (() => {
         const d = data.find((x) => x.priority === hover)!;
         const pct = total > 0 ? Math.round((d.count / total) * 100) : 0;
@@ -260,18 +275,18 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
   return (
     <div className="relative min-w-0">
       <div className="min-w-0 overflow-x-auto">
-        <svg
-          viewBox={`0 0 ${width} ${BAR_H}`}
-          // Natural size: the width attribute (not an inline style) keeps the
-          // chart at its designed pixel width, and the overflow-x-auto wrapper
-          // scrolls when the team is large, so labels never get squashed by a
-          // viewBox downscale (CSP style-src 'self' allows SVG attributes).
-          width={width}
-          role="img"
-          aria-label={`Tasks per employee: ${data
-            .map((d) => `${d.full_name} ${d.total}`)
-            .join(', ')}`}
-        >
+      <svg
+        viewBox={`0 0 ${width} ${BAR_H}`}
+        // Natural size: the width attribute (not an inline style) keeps the
+        // chart at its designed pixel width, and the overflow-x-auto wrapper
+        // scrolls when the team is large, so labels never get squashed by a
+        // viewBox downscale (CSP style-src 'self' allows SVG attributes).
+        width={width}
+        role="img"
+        aria-label={`Tasks per employee (${chartTakeaway(data.map((d) => ({ label: d.full_name, count: d.total })))}): ${data
+          .map((d) => `${d.full_name} ${d.total}`)
+          .join(', ')}`}
+      >
           {/* gridlines + y labels */}
           {gridVals.map((g, gi) => (
             <g key={`y-${gi}`}>
@@ -370,6 +385,8 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
         })}
       </ul>
 
+      <ChartTableToggle spec={perEmployeeTable(data)} tableId="chart-table-tasks-employee" />
+
       {hover && (() => {
         const userIdx = data.findIndex((d) => d.user_id === hover.user);
         const leftPct =
@@ -444,6 +461,7 @@ function OverdueByEmployeeChart({ data }: { data: OverdueEmployee[] }) {
           );
         })}
       </ul>
+      <ChartTableToggle spec={overdueByEmployeeTable(data)} tableId="chart-table-overdue-employee" />
       {hover !== null &&
         (() => {
           const d = data.find((x) => x.user_id === hover);
@@ -491,7 +509,7 @@ function LineChart({ data }: { data: WeekPoint[] }) {
         viewBox={`0 0 ${LINE_W} ${LINE_H}`}
         className="w-full"
         role="img"
-        aria-label={`Tasks completed per week (last 8 weeks): ${data
+        aria-label={`Tasks completed per week, last 8 weeks (${chartTakeaway(data)}): ${data
           .map((d) => `${d.label} ${d.count}`)
           .join(', ')}`}
       >
@@ -566,6 +584,8 @@ function LineChart({ data }: { data: WeekPoint[] }) {
         {total} task{total === 1 ? '' : 's'} completed in the last 8 weeks.
       </p>
 
+      <ChartTableToggle spec={completedPerWeekTable(data)} tableId="chart-table-completed-week" />
+
       {activePoint && (
         <div
           className={TOOLTIP_CLS}
@@ -598,11 +618,13 @@ function CompletionRateCard({ data }: { data: CompletionRateProps }) {
   return (
     <div className="flex h-full flex-col" data-completion-card data-current={curPct ?? ''} data-previous={prevPct ?? ''} data-delta={delta ?? ''}>
       <div className="flex items-baseline gap-3">
+        {/* current === null ⇔ the period has zero tasks (N=0): the executive
+            rule forbids a misleading 0% or 100% here. */}
         <span
           className="text-4xl font-semibold tabular-nums text-slate-900"
-          aria-label={`Completion rate ${curPct ?? '—'} percent`}
+          aria-label={`Completion rate ${curPct !== null ? `${curPct} percent` : 'not available (N=0)'}`}
         >
-          {curPct !== null ? `${curPct}%` : '—'}
+          {curPct !== null ? `${curPct}%` : 'N/A (N=0)'}
         </span>
         {delta !== null && (
           <span className={`text-sm font-semibold tabular-nums ${deltaColor}`}>
@@ -612,7 +634,7 @@ function CompletionRateCard({ data }: { data: CompletionRateProps }) {
         )}
       </div>
       <p className="mt-1 text-xs text-slate-500">
-        vs previous period ({prevPct !== null ? `${prevPct}%` : '—'})
+        vs previous period ({prevPct !== null ? `${prevPct}%` : 'N/A (N=0)'})
       </p>
       {/* progress bar representing the current rate */}
       <div className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
@@ -626,6 +648,9 @@ function CompletionRateCard({ data }: { data: CompletionRateProps }) {
         <br />
         Previous: {data.previous_from} → {data.previous_to}
       </p>
+      <div className="mt-auto pt-3">
+        <ChartTableToggle spec={completionRateTable(data)} tableId="chart-table-completion-rate" />
+      </div>
     </div>
   );
 }

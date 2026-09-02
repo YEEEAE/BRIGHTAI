@@ -68,7 +68,7 @@ try {
 
   assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
   assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
-  assert.equal(Number(db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version), 39);
+  assert.equal(Number(db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version), 40);
   pass('SQLite integrity check');
   pass('foreign key integrity');
   pass('restored schema version prerequisite');
@@ -94,7 +94,7 @@ try {
   db.close();
 
   const backup = await createBackup({ dbPath, backupDir, trigger: 'test' });
-  assert.equal((await verifyBackup({ file: backup.file, metadataFile: backup.metadataFile, expectedSchemaVersion: 39 })).result, 'PASS');
+  assert.equal((await verifyBackup({ file: backup.file, metadataFile: backup.metadataFile, expectedSchemaVersion: 40 })).result, 'PASS');
   pass('backup creation and validation');
 
   const restored = await restoreBackup({
@@ -103,7 +103,7 @@ try {
     metadataFile: backup.metadataFile,
     confirmation: 'RESTORE QC DATABASE',
     backupDir,
-    expectedSchemaVersion: 39,
+    expectedSchemaVersion: 40,
   });
   assert.equal(restored.verification.result, 'PASS');
   const restoredDb = new Database(restorePath, { readonly: true });
@@ -111,7 +111,7 @@ try {
   assert.deepEqual(restoredDb.prepare('SELECT id, title, description, created_by FROM tasks WHERE id = ?').get(markerId), beforeRestore);
   assert.equal(restoredDb.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
   assert.deepEqual(restoredDb.prepare('PRAGMA foreign_key_check').all(), []);
-  assert.equal(Number(restoredDb.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version), 39);
+  assert.equal(Number(restoredDb.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version), 40);
   restoredDb.close();
   pass('restore into clean environment');
   pass('restored DB integrity');

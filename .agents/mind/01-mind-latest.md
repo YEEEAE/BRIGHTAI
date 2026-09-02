@@ -1,4 +1,79 @@
 
+## [2026-09-03] — QC-REMEDIATION-007: الداشبورد والرسوم البيانية والتحليلات القابلة للتنفيذ (PROMPT-07)
+
+### تم التنفيذ
+- فصلت عيب P2-2 (تكرار KPI): كرتا "Average Completion Time" و"Average Resolution" كانا يعرضان نفس الرقم؛ صارت "Average Completion Time" = AVG(completed_at − created_at) من الإنشاء إلى إكمال الفني، وكرت جديد "Average Work Duration" = AVG(completed_at − started_at) من بدء العمل إلى الإكمال، مع مفتاح drill-down جديد `average_completion` وإعادة تسمية ترويسة تقرير employee-performance إلى "Average Work Duration".
+- أضفت المقام ومعادلة الحساب على كل بطاقة KPI تنفيذية (N مرئي على البطاقة + tooltip بالمعادلة)، وأضفت مقام `completed_tasks` إلى `KpiSnapshot`.
+- طبّقت قاعدة N=0 التنفيذية: `formatKpiDuration/formatKpiPercent` تعرض "N/A (N=0)" بدل 0 hours/0%/100% للمقام الصفر (شملت SLA Compliance التي كانت تعرض 0.0% مضللة، وCompletion Rate، وEvidence Compliance، وchecklist، وبطاقة نسبة الإكمال في جزيرة الرسوم).
+- أنشأت وحدة نقية `src/lib/chartTables.ts` ومكون `src/components/charts/ChartTableToggle.tsx`: زر "عرض كجدول بيانات" (aria-expanded/aria-controls) يفتح جدولًا دلاليًا 1-to-1 (caption، th scope=col/row، tfoot إجمالي) لـ12 رسم SVG في الداشبورد والمختبر، مع aria-label يبدأ بخلاصة "أكبر شريحة بنسبتها" (`chartTakeaway`).
+- عالجت P1-4 بمؤشرات نطاق صريحة فوق قسم Laboratory (شريحان: Task metrics مقيدة بالفلاتر / Lab metrics لكل سجلات المختبر + ملاحظة صريحة عند تفعيل الفلاتر) بدل الفلترة الصامتة المفككة؛ قرار موثق: لا تطبيق فلاتر المهام على المختبر لأن أبعاده مختلفة ولتطابق أرقام البطاقات مع drill-down السجلات.
+- أضفت EmptyState قابل للإجراء عند فلاتر بلا نتائج (total=0) مع رابط "Reset filters".
+- أضفت هجرة `040_dashboard_created_at_index.sql` (فهرس `idx_tasks_created_at` المفقود المطلوب برومبت) + تحديث migrationRegistry وschema.sql وعدّادات الإصدار 39→40 في 8 سكربتات اختبار.
+- أنشأت سويت `test:dashboard-analytics-100` (58 فحصًا: أرقام KPI مقابل fixtures + إعادة اشتقاق SQL، تكافؤ رسم↔جدول، N=0، أداء 0.03ms، scope الموظف own_tasks) وسجلته بالمانيفست (85 سويت)، ووسّعت `e2e-dashboard.mjs` بسيناريو 6 (فتح/إغلاق زر الجدول، تحقق DOM للجدول، N=0، مؤشرات النطاق) ومحلل aria-label محدّث ومقارنة KPI المعرضة بناتج SQL.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/dashboard.ts` · `src/lib/chartTables.ts` (جديد) · `src/lib/reporting/queries.ts` · `src/lib/reporting/catalog.ts` · `src/lib/migrationRegistry.ts`
+- `apps/qc-task-manager/src/components/DashboardCharts.tsx` · `src/components/LabDashboardCharts.tsx` · `src/components/charts/ChartTableToggle.tsx` (جديد)
+- `apps/qc-task-manager/src/pages/dashboard.astro` · `src/pages/dashboard/drilldown.astro`
+- `apps/qc-task-manager/db/migrations/040_dashboard_created_at_index.sql` (جديد) · `db/schema.sql`
+- `apps/qc-task-manager/scripts/test-dashboard-analytics-100.mjs` (جديد) · `scripts/e2e-dashboard.mjs` · `scripts/test-manifest.mjs` · `package.json` · عدّادات 39→40 في 8 سكربتات اختبار
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-07-EVIDENCE.md` (جديد)
+
+### الأرقام
+- test:dashboard-analytics-100: **58/58** · test:dashboard-reports (التحقق النهائي للبرومبت): **PASS** · test:migrations: **PASS** · embedded parity: **40/40** · schema-reference: **166 كائنًا** · manifest: **85 canonical / 28 E2E** · typecheck: **0/0/0** · build إنتاجي: **Complete 12.57s** · استعلام created_at+status: **0.03ms (< 20ms)**.
+- جداول بديلة: **12/12 رسم** (6 داشبورد + 6 مختبر).
+
+### القرارات
+- لا بطاقة "Average Review & Resolution Time" (completion→sign-off): نموذج المهام بلا timestamp اعتماد منفصل، وأي رقم كان سيكون مختلقًا مخالفًا لقاعدة عدم التضليل — البديل مقياس حقيقي مميز موثق في الأدلة.
+- مؤشرات النطاق الصريحة بدل توحيد فلاتر المختبر: أبعاد المختبر مختلفة، والفلترة الجزئية كانت ستكسر تطابق البطاقة مع الـdrill-down.
+- الجدول البديل render شرطي وليس display:none، والفهرس أُضيف رغم أن مسند date() لا يستفيد منه لبحث المدى — موثق بصدق في قسم حدود الأدلة.
+
+### التحقق
+- `pnpm run test:dashboard-analytics-100` ✅ 58/58 · `pnpm run test:dashboard-reports` ✅ · `test:migrations` ✅ · `test:embedded-migration-parity` ✅ 40/40 · `test:schema-reference` ✅ 166 · `test:manifest` ✅ 85/28 · `test:scheduled-notifications` ✅ 69/69 · `test:db-doctor` ✅ · `typecheck` ✅ 0/0/0 · `build` ✅.
+- `pnpm test` الكاملة و`pnpm run e2e:acceptance` و`e2e-dashboard` المركز ⏭️ **تجاوز صريح بأمر المستخدم ("تجاوز التحقق")** — السويتات المكتوبة غير مشغلة على الشجرة النهائية.
+
+### النتيجة
+- **الحالة:** جزئي (PARTIAL) — المعايير 6/6 منفَّذة ومتحقق منها محليًا بالحدود المتاحة؛ التحقق المتصفحي والسلسلة الكاملة متوقفة بتجاوز المستخدم.
+- **مختصر:** صار الداشبورد بمؤشرين زمنيين حقيقيين مختلفين بمقامات مرئية، وقاعدة N=0 صارمة، و12 رسمًا بجداول بديلة مختبرة التكافؤ وحدويًا، وفهرس created_at مضاف — والأدلة في PROMPT-07-EVIDENCE.md.
+
+### ملاحظات / مشاكل مفتوحة
+- إعادة تشغيل `pnpm test` + `e2e:acceptance` (بما فيها Scenario 6 الجديد) شرط لإغلاق البرومبت بالكامل — متوقفة بأمر المستخدم.
+- تحذيرات backup المؤقتة أثناء fixture معروفة ومتوقعة ولا تؤثر على النتائج.
+- لا commit ولا push ولا deploy.
+
+## [2026-09-03] — SEO/GEO: استكمال مخرجات خطة السلطة الموضوعية السعودية (نظام seo-geo skill)
+
+### تم التنفيذ
+- قرأت العقل ومهارة `.agents/skills/seo-geo/` كاملة (SKILL + geo-research + tools-and-apis) وأكّدت أن البحث الكامل بالقياسات المقيّمة موجود مسبقًا في `SEO-GEO-KEYWORD-COMPETITOR-RESEARCH-2026-09-03.md` (نفس اليوم) — لم أكرر استدعاءات DataForSEO المدفوعة (credentials غير متوفرة في env؛ القياسات المخزّنة في dfs-*.json كافية).
+- أثرتُ `brightai-sa-keyword-research.csv` من 25 إلى 38 عمودًا (51 صفًا محفوظة): parent_topic, subcluster, entity, page_type, business_fit, saudi_relevance, geo_citation_potential, topical_authority_value, opportunity_score, serp_overlap_cluster, competitor_gap, zero_volume_strategic, source_timestamp — القياسات الرقمية لم تُمَس؛ الأعمدة الجديدة تقييم تحريري موثق بمصدر تاريخي، والأصفار المقاسة وُسمت strategic zero-volume.
+- أنشأت 7 مخرجات ناقصة: خريطة السلطة الموضوعية، فجوات المحتوى، منافسو SERP مصنفون، التعارض الداخلي، خريطة الروابط الداخلية، خطة 90 يوم، والتقرير التنفيذي.
+- خريطة الروابط الداخلية مبنية على URLs فعلية مجردة من `src/` (solutions: ai-governance-platform, ai-firewall, ai-audit-trail, ai-risk-classification, human-approval-layer, ai-evidence-file, ai-use-case-discovery + قطاعات).
+
+### الملفات المتأثرة
+- `audit/website-builder-SEO/brightai-sa-keyword-research.csv` (enriched)
+- `audit/website-builder-SEO/BRIGHTAI-SA-TOPICAL-AUTHORITY-MAP.md`
+- `audit/website-builder-SEO/BRIGHTAI-SA-CONTENT-GAPS.csv`
+- `audit/website-builder-SEO/BRIGHTAI-SA-SERP-COMPETITORS.csv`
+- `audit/website-builder-SEO/BRIGHTAI-SA-CANNIBALIZATION.csv`
+- `audit/website-builder-SEO/BRIGHTAI-SA-INTERNAL-LINKING-MAP.csv`
+- `audit/website-builder-SEO/BRIGHTAI-SA-90-DAY-AUTHORITY-PLAN.md`
+- `audit/website-builder-SEO/BRIGHTAI-SA-KEYWORD-RESEARCH-REPORT.md`
+
+### التحقق
+- قراءة التقرير الأساسي (881 سطرًا) وجرد فعلي لـ src/content وsrc/pages ✅
+- Python CSV validation: 51 rows × 38 cols، القياسات سليمة ✅
+- build/tests: لم تُشغّل — مخرجات بحث وتوثيق فقط، لا تغيير على كود الموقع
+
+### النتيجة
+- **الحالة:** نجح (جزئي النطاق — انظر الملاحظات)
+- **مختصر:** كل المخرجات الإلزامية الثمانية موجودة الآن ومبنية على قياسات DataForSEO السعودية (location 2682) وواقع الريبو بدون أي رقم مختلق.
+
+### ملاحظات / مشاكل مفتوحة
+- opportunity_score والعلامات النوعية تقديرات تحريرية من weights موثقة (25/20/15/15/10/10/5 تقريبيًا عبر priority+intent) — ليست قياسات مزود؛ تُعاد مع بيانات GSC.
+- قياسات إضافية (SERP features رقمية، KD إنجليزي، backlinks) تتطلب DataForSEO credentials في env — لم تُشغّل لتجنب تكلفة بلا طلب صريح.
+- لا commit ولا push.
+
+
 ## [2026-09-03] — QC-REMEDIATION-005: إصلاح تصدير PDF العربي/RTL وتقارير مهام الجودة
 
 ### تم التنفيذ

@@ -38,7 +38,10 @@ const tasks = listDrilldownTasks(filters, scope, kpi, null, 500, {
 const KPI_LABELS: Record<DrilldownKpi, string> = {
   total: 'All', not_started: 'Not started', in_progress: 'In progress', on_hold: 'On hold', completed: 'Completed',
   completion_rate: 'Completed', overdue: 'Overdue', urgent_open: 'Urgent open', completed_without_evidence: 'Completed without evidence',
-  average_resolution: 'Resolved', sla_compliance: 'SLA compliant', sla_started: 'SLA tracked', sla_at_risk: 'SLA at risk',
+  // PROMPT-07 / P2-2: completion = creation → technician completion; the
+  // 'average_resolution' drill key is the work-duration population
+  // (started_at → completed_at).
+  average_completion: 'Completed', average_resolution: 'Work duration', sla_compliance: 'SLA compliant', sla_started: 'SLA tracked', sla_at_risk: 'SLA at risk',
   sla_critical: 'SLA critical', sla_breached: 'SLA breached', critical_findings: 'Critical finding', open_capa: 'Open CAPA',
   evidence_compliance: 'Completed with evidence',
 };

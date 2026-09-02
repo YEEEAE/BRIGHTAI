@@ -1,0 +1,13 @@
+competitor,category,primary_intent_they_target,evidence_basis,observed_strategy,strength,exploitable_gap
+crux.sa,commercial,Saudi AI governance consulting,"SERP/WebSearch review 2026-09-03",Service pages per intent with Saudi modifiers (SDAIA/PDPL/NCA/ISO 42001/Vision 2030),Strong intent match for Saudi enterprise queries,Product-level proof; Arabic hands-on examples; assessment-to-control-to-evidence journey
+withai.solutions,commercial,Sovereign AI control plane,"SERP review 2026-09-03",Product-led; Shadow AI pain narrative; redaction/policies/audit,Clear runtime-control story,Separating governance from runtime protection; per-request human approval and evidence trail
+ossus.ai,international-vendor,Compliance automation (sovereign),"SERP review 2026-09-03",AI-assisted evidence analysis and control mapping across frameworks,Clear compliance-acceleration narrative,Own AI-usage governance category instead of broad GRC; runtime controls and interaction logs
+nodj.sa,commercial,Saudi compliance maturity journey,"SERP review 2026-09-03",Arabic-first; NIDLP-aligned assessment/gap/remediation journey,Strong match for readiness/maturity Arabic queries,Assessment specialized for AI use cases linked to concrete capabilities
+ibm.com/sa-ar,international-vendor,AI governance definition + watsonx.governance,"SERP review 2026-09-03",Arabic definitional depth + product pages + global brand authority,Deep Arabic content and topical breadth,Saudi-specific operating answers; simpler language; local regulator maps; free assessment
+bayseian.com,informational-publisher,AI governance thought leadership,"SERP review 2026-09-03",Long technical authored posts linking SDAIA/NDMO/PDPL to engineering (PII redaction),High GEO citability,Original Arabic content; operational templates; UI/log examples
+nabds.ai,adjacent,Sovereign transformation and orchestration,"SERP review 2026-09-03",Broad vision-2030 positioning; assessment-to-scale journey,Enterprise buyer overlap,BRIGHTAI narrower sharper: state/policy/approval/evidence per AI request
+getsahl.io,adjacent,Multi-framework GRC platform,"SERP review 2026-09-03",NCA/PDPL/ISO 27001/SOC2 controls-evidence platform,Audit-readiness tooling overlap,Clarify AI-use-case governance vs general GRC program scope
+sdaia.gov.sa,authority,Official AI regulation and guidelines,Official source,Primary regulator; cited not competed,Authoritative source of truth,Cite in every regulatory page with access date
+nca.gov.sa,authority,Cybersecurity controls,Official source,ECC/ECC-2-2024 owner,Cite not compete
+phe.gov.sa,authority,PDPL data protection,Official source,PDPL regulator,Cite not compete
+sama.gov.sa,authority,Financial sector rules,Official source,SAMA AI/cyber guidance,Cite not compete

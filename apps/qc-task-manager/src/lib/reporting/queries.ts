@@ -4,6 +4,7 @@ import type { ResolvedDataScope } from './types';
 
 export interface KpiSnapshot {
   total_tasks: number;
+  completed_tasks: number;
   completion_rate: number;
   sla_compliance: number;
   overdue: number;
@@ -28,7 +29,7 @@ export interface DrilldownTask {
 export const DRILLDOWN_KPIS = [
   'total', 'not_started', 'in_progress', 'on_hold', 'completed',
   'completion_rate', 'overdue', 'urgent_open', 'completed_without_evidence',
-  'average_resolution', 'sla_compliance', 'sla_started', 'sla_at_risk',
+  'average_completion', 'average_resolution', 'sla_compliance', 'sla_started', 'sla_at_risk',
   'sla_critical', 'sla_breached', 'critical_findings', 'open_capa',
   'evidence_compliance',
 ] as const;
@@ -75,6 +76,10 @@ function metricPredicate(kpi: DrilldownKpi): QueryPart | null {
     case 'critical_findings': return { sql: "EXISTS (SELECT 1 FROM qc_findings f WHERE f.task_id = t.id AND (f.severity = 'critical' OR f.classification = 'critical') AND f.status <> 'CLOSED')", params: [] };
     case 'open_capa': return { sql: "EXISTS (SELECT 1 FROM qc_capa c JOIN qc_findings f ON f.id = c.finding_id WHERE f.task_id = t.id AND c.status <> 'CLOSED')", params: [] };
     case 'evidence_compliance': return { sql: "t.status = 'completed' AND EXISTS (SELECT 1 FROM task_attachments a WHERE a.task_id = t.id AND a.is_evidence = 1)", params: [] };
+    // PROMPT-07 / P2-2: Average Completion Time = creation → technician
+    // completion (completed_at set); Average Work Duration ('average_resolution',
+    // kept as the drill key) additionally requires started_at.
+    case 'average_completion': return { sql: "t.status = 'completed' AND t.completed_at IS NOT NULL", params: [] };
     case 'average_resolution': return { sql: "t.status = 'completed' AND t.completed_at IS NOT NULL AND t.started_at IS NOT NULL", params: [] };
     default: return null;
   }
@@ -86,6 +91,7 @@ export function getKpiSnapshot(filters: ReportFilters, scope: ResolvedDataScope)
   const row = db.prepare(`
     SELECT
       COUNT(*) AS total_tasks,
+      COALESCE(SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END), 0) AS completed_tasks,
       COALESCE(ROUND(100.0 * SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 2), 0) AS completion_rate,
       COALESCE(ROUND(100.0 * SUM(CASE WHEN t.sla_started_at IS NOT NULL AND t.sla_status <> 'BREACHED' THEN 1 ELSE 0 END) / NULLIF(SUM(CASE WHEN t.sla_started_at IS NOT NULL THEN 1 ELSE 0 END), 0), 2), 0) AS sla_compliance,
       COALESCE(SUM(CASE WHEN t.due_date IS NOT NULL AND date(t.due_date) < date('now', 'localtime') AND t.status NOT IN ('completed', 'cancelled') THEN 1 ELSE 0 END), 0) AS overdue,
@@ -97,7 +103,7 @@ export function getKpiSnapshot(filters: ReportFilters, scope: ResolvedDataScope)
     FROM tasks t ${base.sql}
   `).get(...base.params) as KpiSnapshot;
   return {
-    total_tasks: Number(row.total_tasks), completion_rate: Number(row.completion_rate), sla_compliance: Number(row.sla_compliance),
+    total_tasks: Number(row.total_tasks), completed_tasks: Number(row.completed_tasks), completion_rate: Number(row.completion_rate), sla_compliance: Number(row.sla_compliance),
     overdue: Number(row.overdue), on_hold: Number(row.on_hold), critical_findings: Number(row.critical_findings), open_capa: Number(row.open_capa),
     evidence_compliance: Number(row.evidence_compliance), average_resolution_seconds: row.average_resolution_seconds == null ? null : Number(row.average_resolution_seconds),
   };

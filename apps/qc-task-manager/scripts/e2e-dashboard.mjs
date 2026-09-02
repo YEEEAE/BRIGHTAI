@@ -122,16 +122,28 @@ function expectedKpis(extraWhere = '', params = []) {
   };
 }
 
-/** Expected avg completion time (seconds) from raw SQL. */
-function expectedAvgSeconds(extraWhere = '', params = []) {
+/** Expected avg seconds between two task timestamps for completed tasks. */
+function expectedAvgSecondsBetween(fromCol, toCol) {
   const row = q(
-    `SELECT AVG((julianday(t.completed_at) - julianday(t.started_at)) * 86400.0) AS avg_seconds
+    `SELECT AVG((julianday(t.${toCol}) - julianday(t.${fromCol})) * 86400.0) AS s
      FROM tasks t
-     WHERE t.status = 'completed' AND t.completed_at IS NOT NULL AND t.started_at IS NOT NULL
-       ${extraWhere ? `AND ${extraWhere.replace(/^WHERE\s/i, '')}` : ''}`,
-    ...params,
+     WHERE t.status = 'completed' AND t.completed_at IS NOT NULL AND t.${fromCol} IS NOT NULL`,
   );
-  return row?.avg_seconds == null ? null : Number(row.avg_seconds);
+  return row?.s == null ? null : Number(row.s);
+}
+
+/** Mirror of src/lib/dashboard.ts formatDuration — used to assert the exact
+ * rendered KPI string against SQL-derived seconds. */
+function formatDuration(seconds) {
+  if (seconds === null || !Number.isFinite(seconds)) return '—';
+  if (seconds < 60) return '< 1m';
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  const remHours = hours % 24;
+  return remHours === 0 ? `${days}d` : `${days}d ${remHours}h`;
 }
 
 /** Expected "tasks by priority" counts in PRIORITY_ORDER. */
@@ -255,12 +267,16 @@ async function readKpis(page) {
 
 /**
  * Read the trailing numeric value from each "<label> <count>" part of a chart
- * SVG's aria-label. Returns null when the chart did not render.
+ * SVG's aria-label. aria-labels are "<title> (<takeaway>): a 1, b 2, …" — the
+ * data listing starts after the first ": " separator. Returns null when the
+ * chart did not render.
  */
 async function svgCounts(page, ariaPrefix) {
   const label = await page.locator(`svg[aria-label^="${ariaPrefix}"]`).first().getAttribute('aria-label');
   if (!label) return null;
-  const parts = label.split(', ');
+  const colon = label.indexOf(': ');
+  const dataPart = colon >= 0 ? label.slice(colon + 2) : label;
+  const parts = dataPart.split(', ');
   return parts.map((p) => {
     const m = /(\d+)\s*$/.exec(p);
     return m ? Number(m[1]) : null;
@@ -352,7 +368,8 @@ db.transaction(() => {
 
 // Expected values must be computed AFTER seeding (the unfiltered baseline).
 const expect = expectedKpis();
-const expectAvg = expectedAvgSeconds();
+const expectAvgCompletion = expectedAvgSecondsBetween('created_at', 'completed_at');
+const expectAvgWork = expectedAvgSecondsBetween('started_at', 'completed_at');
 const expectPriority = expectedPriority();
 const expectOverdueEmp = expectedOverdueByEmployee();
 const expectRate = expectedCompletionRate();
@@ -376,20 +393,16 @@ try {
   const kpis = await readKpis(mgrPage);
   const { avg_completion_time: _avgLabel, ...numericKpis } = kpis;
   eq(numericKpis, expect, '1. KPI cards (8 numeric) match raw SQL counts');
-  // avg completion time: must be a non-dash value, and the underlying seconds
-  // must match SQL within 1 hour (rounding in the JS formatter).
-  ok(_avgLabel !== '—', `1. avg completion time rendered (${_avgLabel})`);
-  const avgSecondsMatch = await mgrPage
-    .locator('[data-kpi="avg_completion_time"] .text-3xl')
-    .evaluate((el) => el.textContent);
-  void avgSecondsMatch;
-  // Compare the server-side avg against the expected avg (±1h tolerance).
-  // We can't read the raw seconds from the DOM, so we verify the label reflects
-  // the magnitude of the expected average (non-dash + sane bucket).
-  if (expectAvg !== null) {
-    const expectedHours = expectAvg / 3600;
-    ok(expectedHours > 0, `1. expected avg completion (${expectedHours.toFixed(1)}h) is positive`);
-  }
+  // PROMPT-07 KPI definitions: Average Completion Time = created_at →
+  // completed_at, Average Work Duration = started_at → completed_at. The
+  // rendered strings must equal the SQL-derived seconds, exactly.
+  eq(_avgLabel, formatDuration(expectAvgCompletion), '1. avg completion time = format(AVG(completed_at − created_at))');
+  const avgWorkLabel = (await mgrPage.locator('[data-kpi="avg_resolution"] .text-3xl').innerText()).trim();
+  eq(avgWorkLabel, formatDuration(expectAvgWork), '1. avg work duration = format(AVG(completed_at − started_at))');
+  ok(_avgLabel !== avgWorkLabel, '1. the two duration KPIs are distinct numbers (no duplicate card)');
+  // Denominator is rendered on the completion KPI card.
+  const denomText = (await mgrPage.locator('[data-kpi-denominator="avg_completion_time"]').innerText()).trim();
+  ok(new RegExp(`^N = \\d+ completed tasks$`).test(denomText), `1. completion KPI shows its denominator (${denomText})`);
 
   // Donut: tasks by status
   const donutCounts = await svgCounts(mgrPage, 'Tasks by status');
@@ -425,7 +438,8 @@ try {
   const barLabel = await mgrPage.locator('svg[aria-label^="Tasks per employee"]').first().getAttribute('aria-label');
   ok(barLabel !== null, '1. per-employee bar chart rendered');
   if (barLabel) {
-    const barParts = barLabel.replace(/^Tasks per employee:\s*/, '').split(', ');
+    // aria-label = "Tasks per employee (<takeaway>): Alice 12, Bob 8, …"
+    const barParts = barLabel.replace(/^Tasks per employee[^:]*:\s*/, '').split(', ');
     eq(barParts.length, expectedBar.length, '1. bar chart has one entry per active user');
     if (barParts.length === expectedBar.length) {
       for (let i = 0; i < expectedBar.length; i++) {
@@ -644,6 +658,55 @@ try {
   await mobile.waitForTimeout(600);
   await mobile.screenshot({ path: join(SHOT_DIR, 'dashboard-mobile.png'), fullPage: true });
   console.log('   📸 screenshots → download/qa/dashboard-{desktop,mobile}.png');
+
+  // ─────────────────── 6. Chart→table toggle + N=0 executive rule ───────────────────
+  console.log('\n── Scenario 6: عرض كجدول بيانات toggle + zero-denominator KPIs ──');
+  await mgrPage.setViewportSize({ width: 1440, height: 900 });
+  await mgrPage.goto(`${BASE}/dashboard`);
+  await mgrPage.waitForSelector('[data-kpi="total"]', { timeout: 15_000 });
+  await mgrPage.waitForTimeout(800); // allow the charts island to hydrate
+
+  // 6a. Toggle opens a 1-to-1 semantic table; clicking again hides it.
+  const toggle = mgrPage.locator('[data-chart-table-toggle="chart-table-tasks-status"]');
+  ok((await toggle.count()) === 1, '6a. status chart renders the "عرض كجدول بيانات" toggle');
+  eq(await toggle.getAttribute('aria-expanded'), 'false', '6a. toggle starts collapsed (aria-expanded=false)');
+  eq(await mgrPage.locator('[data-chart-table="chart-table-tasks-status"]').count(), 0, '6a. table absent before the toggle');
+  await toggle.click();
+  const statusTable = mgrPage.locator('[data-chart-table="chart-table-tasks-status"]');
+  await statusTable.waitFor({ state: 'visible', timeout: 5_000 });
+  eq(await toggle.getAttribute('aria-expanded'), 'true', '6a. aria-expanded=true after click');
+  eq(await statusTable.locator('caption').count(), 1, '6a. table has a <caption>');
+  eq(await statusTable.locator('thead th[scope="col"]').count(), 3, '6a. column headers use scope="col"');
+  eq(await statusTable.locator('tbody th[scope="row"]').count(), 5, '6a. body rows use scope="row" (one per status slice)');
+  eq(await statusTable.locator('tfoot th[scope="row"]').count(), 1, '6a. summary footer row present');
+  // 1-to-1: table body rows equal the donut's status slices; footer total equals donut total.
+  const donutLabel = await mgrPage.locator('svg[aria-label^="Tasks by status"]').first().getAttribute('aria-label');
+  const donutTotal = Number(/\((\d+) total/.exec(donutLabel)[1]);
+  const tableTotal = Number((await statusTable.locator('tfoot td').first().innerText()).trim());
+  eq(tableTotal, donutTotal, '6a. table footer total = chart total');
+  await toggle.click();
+  eq(await mgrPage.locator('[data-chart-table="chart-table-tasks-status"]').count(), 0, '6a. second click hides the table again');
+  eq(await toggle.getAttribute('aria-expanded'), 'false', '6a. aria-expanded back to false');
+
+  // 6b. Every dashboard chart widget exposes its table toggle.
+  const dashToggles = await mgrPage.locator('[data-chart-table-toggle]').count();
+  ok(dashToggles >= 6, `6b. all dashboard chart widgets expose a table toggle (got ${dashToggles})`);
+
+  // 6c. Zero-denominator KPIs render "N/A (N=0)" + reset empty state + scope indicators.
+  await mgrPage.goto(`${BASE}/dashboard?department=NO_SUCH_DEPARTMENT`);
+  await mgrPage.waitForSelector('[data-kpi="avg_completion_time"]', { timeout: 15_000 });
+  eq((await mgrPage.locator('[data-kpi="avg_completion_time"] .text-3xl').innerText()).trim(), 'N/A (N=0)', '6c. avg completion shows N/A (N=0), not 0 hours');
+  eq((await mgrPage.locator('[data-kpi="avg_resolution"] .text-3xl').innerText()).trim(), 'N/A (N=0)', '6c. avg work duration shows N/A (N=0)');
+  eq((await mgrPage.locator('[data-kpi="sla_compliance"] .text-3xl').innerText()).trim(), 'N/A (N=0)', '6c. SLA compliance shows N/A (N=0), not 0.0%/100%');
+  eq(await mgrPage.locator('text=No tasks match the selected filters.').count(), 1, '6c. filtered-zero empty state renders');
+  eq(await mgrPage.locator('a:has-text("Reset filters")').count(), 1, '6c. empty state offers an actionable reset-filters link');
+  eq(await mgrPage.locator('[data-metric-scope="tasks"]').count(), 1, '6c. task-metric scope indicator present');
+  eq(await mgrPage.locator('[data-metric-scope="lab"]').count(), 1, '6c. lab-metric scope indicator present');
+  eq(await mgrPage.locator('[data-lab-scope-note]').count(), 1, '6c. lab scope note shown while filters are active');
+
+  // 6d. With data, the lab charts island also exposes its toggles (SSR markup).
+  await mgrPage.goto(`${BASE}/dashboard`);
+  await mgrPage.waitForSelector('[data-kpi="total"]', { timeout: 15_000 });
 
   // ─────────────────── 5. No horizontal overflow (nav regression guard) ───────────────────
   console.log('\n── Scenario 5: document width never exceeds the viewport ──');

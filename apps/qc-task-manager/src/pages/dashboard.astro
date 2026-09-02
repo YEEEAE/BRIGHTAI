@@ -20,6 +20,7 @@ import LabDashboardCharts from '../components/LabDashboardCharts';
 import EmptyState from '../components/EmptyState.astro';
 import { formatDbDate, formatDueDate, statusLabel, priorityLabel } from '../lib/format';
 import { describeAction } from '../lib/taskDetails';
+import { formatKpiDuration, formatKpiPercent } from '../lib/dashboard';
 import * as dash from '../lib/dashboard';
 import { getLabDashboardData, LAB_DASHBOARD_DRILLDOWNS, type LabDashboardData } from '../lib/lab/dashboard';
 import { buildKpiHref, type DashboardKpiKey } from '../lib/reporting/drilldown';
@@ -32,23 +33,6 @@ import { resolveReportScope } from '../lib/reporting/scope';
 import AiReviewPanel from '../components/AiReviewPanel';
 
 const user = Astro.locals.user!; // protected route — middleware guarantees a session + role
-
-// Pretty-print an "average completion time" in seconds as e.g. "2d 6h".
-function formatDuration(seconds: number | null): string {
-  if (seconds === null || !Number.isFinite(seconds)) return '—';
-  if (seconds < 60) return '< 1m';
-  const minutes = Math.round(seconds / 60);
-  if (minutes < 60) return `${minutes}m`;
-  const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours}h`;
-  const days = Math.floor(hours / 24);
-  const remHours = hours % 24;
-  return remHours === 0 ? `${days}d` : `${days}d ${remHours}h`;
-}
-
-function formatPercent(value: number | null): string {
-  return value === null || !Number.isFinite(value) ? '—' : `${value.toFixed(1)}%`;
-}
 
 const filters = dash.parseDashboardFilters(Astro.url, Astro);
 const filtered = dash.hasActiveFilters(filters);
@@ -126,7 +110,29 @@ if (reportActor) {
   }
 }
 const kpiHref = (key: DashboardKpiKey) => buildKpiHref(key, filters);
-const kpiCards = kpis
+// PROMPT-07 / P2-2 — KPI canonical definitions (formulas shown as card
+// tooltips, denominators rendered on the card):
+//   * Average Completion Time = created_at → completed_at (task creation to
+//     technician completion), N = completed tasks in scope.
+//   * Average Work Duration  = started_at → completed_at (work start to
+//     completion; replaces the former duplicate "Average Resolution" card
+//     that displayed the same number as completion time). The task model has
+//     no separate manager sign-off timestamp, so a "completion → sign-off"
+//     duration would be fabricated — review stages live in Findings/Lab.
+//   * Executive rule: any KPI with denominator 0 renders "N/A (N=0)".
+interface KpiCard {
+  id: string;
+  key: DashboardKpiKey;
+  label: string;
+  value: string | number;
+  tone: string;
+  icon: string;
+  /** Exact denominator, rendered on the card (e.g. "N = 12 completed tasks"). */
+  denominator?: string;
+  /** Formula tooltip (native title) documenting the exact calculation. */
+  formula?: string;
+}
+const kpiCards: KpiCard[] = kpis
   ? [
       { id: 'total', key: 'total' as DashboardKpiKey, label: 'Total Tasks', value: kpis.total, tone: 'border-slate-200 bg-white text-slate-900', icon: '📋' },
       { id: 'not_started', key: 'not_started' as DashboardKpiKey, label: 'Not Started', value: kpis.not_started, tone: 'border-red-200 bg-red-50/60 text-red-700', icon: '🔴' },
@@ -136,18 +142,72 @@ const kpiCards = kpis
       { id: 'overdue', key: 'overdue' as DashboardKpiKey, label: 'Overdue', value: kpis.overdue, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '⚠️' },
       { id: 'urgent_open', key: 'urgent_open' as DashboardKpiKey, label: 'Urgent Open', value: kpis.urgent_open, tone: 'border-red-300 bg-red-100 text-red-800', icon: '🚨' },
       { id: 'completed_without_evidence', key: 'completed_without_evidence' as DashboardKpiKey, label: 'Completed Without Evidence', value: kpis.completed_without_evidence, tone: 'border-slate-200 bg-white text-slate-900', icon: '📎' },
-      { id: 'avg_completion_time', key: 'average_resolution' as DashboardKpiKey, label: 'Average Completion Time', value: formatDuration(kpis.avg_completion_seconds), tone: 'border-slate-200 bg-white text-slate-900', icon: '⏱️' },
-      { id: 'sla_compliance', key: 'sla_compliance' as DashboardKpiKey, label: 'SLA Compliance', value: formatPercent(kpis.sla_compliance_percent), tone: 'border-emerald-200 bg-emerald-50 text-emerald-700', icon: '✅' },
+      {
+        id: 'avg_completion_time',
+        key: 'average_completion' as DashboardKpiKey,
+        label: 'Average Completion Time',
+        value: formatKpiDuration(kpis.avg_completion_seconds, kpis.avg_completion_n),
+        tone: 'border-slate-200 bg-white text-slate-900',
+        icon: '⏱️',
+        denominator: `N = ${kpis.avg_completion_n} completed tasks`,
+        formula: 'Average time from task creation (created_at) to technician completion (completed_at).',
+      },
+      {
+        id: 'sla_compliance',
+        key: 'sla_compliance' as DashboardKpiKey,
+        label: 'SLA Compliance',
+        value: formatKpiPercent(kpis.sla_compliance_percent, kpis.sla_compliance_n),
+        tone: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+        icon: '✅',
+        denominator: `N = ${kpis.sla_compliance_n} completed tasks with SLA`,
+        formula: 'Completed tasks whose SLA consumption stayed ≤ 100% ÷ completed SLA-tracked tasks.',
+      },
       { id: 'sla_at_risk', key: 'sla_at_risk' as DashboardKpiKey, label: 'At Risk', value: kpis.sla_at_risk, tone: 'border-amber-200 bg-amber-50 text-amber-700', icon: '⚠️' },
       { id: 'sla_critical', key: 'sla_critical' as DashboardKpiKey, label: 'Critical', value: kpis.sla_critical, tone: 'border-orange-200 bg-orange-50 text-orange-700', icon: '🔥' },
       { id: 'sla_breached', key: 'sla_breached' as DashboardKpiKey, label: 'SLA Breached', value: kpis.sla_breached, tone: 'border-rose-200 bg-rose-50 text-rose-700', icon: '🚨' },
-      { id: 'avg_resolution', key: 'average_resolution' as DashboardKpiKey, label: 'Average Resolution', value: formatDuration(kpis.avg_completion_seconds), tone: 'border-slate-200 bg-white text-slate-900', icon: '⏱️' },
-      { id: 'avg_sla_consumption', key: 'sla_started' as DashboardKpiKey, label: 'Average SLA Consumption', value: formatPercent(kpis.avg_sla_consumption_percent), tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '📊' },
+      {
+        id: 'avg_resolution',
+        key: 'average_resolution' as DashboardKpiKey,
+        label: 'Average Work Duration',
+        value: formatKpiDuration(kpis.avg_work_seconds, kpis.avg_work_n),
+        tone: 'border-slate-200 bg-white text-slate-900',
+        icon: '⏱️',
+        denominator: `N = ${kpis.avg_work_n} completed tasks with started_at`,
+        formula: 'Average time from work start (started_at) to technician completion (completed_at) — excludes queue wait.',
+      },
+      {
+        id: 'avg_sla_consumption',
+        key: 'sla_started' as DashboardKpiKey,
+        label: 'Average SLA Consumption',
+        value: formatKpiPercent(kpis.avg_sla_consumption_percent, kpis.avg_sla_consumption_n),
+        tone: 'border-violet-200 bg-violet-50 text-violet-700',
+        icon: '📊',
+        denominator: `N = ${kpis.avg_sla_consumption_n} SLA-tracked tasks`,
+        formula: 'Average sla_percent_used across SLA-tracked tasks in scope.',
+      },
       ...(reportKpis ? [
-        { id: 'completion_rate', key: 'completion_rate' as DashboardKpiKey, label: 'Completion Rate', value: formatPercent(reportKpis.completion_rate), tone: 'border-green-200 bg-green-50 text-green-700', icon: '📈' },
+        {
+          id: 'completion_rate',
+          key: 'completion_rate' as DashboardKpiKey,
+          label: 'Completion Rate',
+          value: formatKpiPercent(reportKpis.completion_rate, reportKpis.total_tasks),
+          tone: 'border-green-200 bg-green-50 text-green-700',
+          icon: '📈',
+          denominator: `N = ${reportKpis.total_tasks} tasks`,
+          formula: 'Completed tasks ÷ total tasks created in the selected window.',
+        },
         { id: 'critical_findings', key: 'critical_findings' as DashboardKpiKey, label: 'Critical Findings', value: reportKpis.critical_findings, tone: 'border-red-200 bg-red-50 text-red-700', icon: '🔎' },
         { id: 'open_capa', key: 'open_capa' as DashboardKpiKey, label: 'Open CAPA', value: reportKpis.open_capa, tone: 'border-violet-200 bg-violet-50 text-violet-700', icon: '🧩' },
-        { id: 'evidence_compliance', key: 'evidence_compliance' as DashboardKpiKey, label: 'Evidence Compliance', value: formatPercent(reportKpis.evidence_compliance), tone: 'border-cyan-200 bg-cyan-50 text-cyan-700', icon: '📎' },
+        {
+          id: 'evidence_compliance',
+          key: 'evidence_compliance' as DashboardKpiKey,
+          label: 'Evidence Compliance',
+          value: formatKpiPercent(reportKpis.evidence_compliance, reportKpis.completed_tasks),
+          tone: 'border-cyan-200 bg-cyan-50 text-cyan-700',
+          icon: '📎',
+          denominator: `N = ${reportKpis.completed_tasks} completed tasks`,
+          formula: 'Completed tasks with is_evidence=1 attachment ÷ completed tasks.',
+        },
       ] : []),
     ]
   : [];
@@ -439,6 +499,17 @@ const labGroups: LabGroup[] = lab
 
   {!dataError && kpis && (
     <>
+      {/* Negative-filter empty state: zero matching tasks must render an
+          actionable reset — never silent zeros across every widget. */}
+      {filtered && kpis.total === 0 && (
+        <EmptyState
+          title="No tasks match the selected filters."
+          hint="Every widget below is scoped to the selected tasks. Try widening the date range or removing a filter."
+          ctaHref="/dashboard"
+          ctaLabel="Reset filters"
+        />
+      )}
+
       <section id="action-required" aria-labelledby="action-required-heading" data-dashboard-tier="action-required" class="mb-8">
         <div class="mb-3">
           <p class="text-xs font-semibold uppercase tracking-wide text-rose-700">Tier 1 · Action required</p>
@@ -467,16 +538,31 @@ const labGroups: LabGroup[] = lab
       {/* ───────────── KPI cards ───────────── */}
       <section aria-label="Key metrics" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {kpiCards.map((card) => (
-          <a data-kpi={card.id} href={kpiHref(card.key)} class={`rounded-xl border p-4 shadow-sm transition-shadow duration-qc-standard ease-qc-standard hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${card.tone}`} aria-label={`${card.label}: ${card.value}. Open matching tasks`}>
+          <a
+            data-kpi={card.id}
+            href={kpiHref(card.key)}
+            title={card.formula}
+            class={`rounded-xl border p-4 shadow-sm transition-shadow duration-qc-standard ease-qc-standard hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${card.tone}`}
+            aria-label={`${card.label}: ${card.value}.${card.denominator ? ` ${card.denominator}.` : ''} Open matching tasks`}
+          >
             <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-wide"><span aria-hidden="true">{card.icon}</span> {card.label}</div>
             <div class="mt-2 text-3xl font-semibold tabular-nums">{card.value}</div>
+            {card.denominator && (
+              <div class="mt-1 text-[11px] font-medium opacity-70" data-kpi-denominator={card.id}>{card.denominator}</div>
+            )}
             <div class="mt-2 text-[11px] font-medium opacity-70">Open drill-down ↗</div>
           </a>
         ))}
       </section>
       <section data-checklist-dashboard class="rounded-xl border border-violet-200 bg-violet-50 p-4 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-2"><h2 class="text-sm font-semibold text-violet-900">QC checklist progress</h2><span class="text-2xl font-semibold tabular-nums text-violet-800">{checklistCompletion.percent}%</span></div>
-        <p class="mt-1 text-xs text-violet-700">{checklistCompletion.completed}/{checklistCompletion.total} checklist items complete in the current filter scope.</p>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="text-sm font-semibold text-violet-900">QC checklist progress</h2>
+          {/* N = 0 must not render a misleading 0% (PROMPT-07 executive rule). */}
+          <span class="text-2xl font-semibold tabular-nums text-violet-800">{checklistCompletion.total > 0 ? `${checklistCompletion.percent}%` : 'N/A (N=0)'}</span>
+        </div>
+        <p class="mt-1 text-xs text-violet-700">{checklistCompletion.total > 0
+          ? `${checklistCompletion.completed}/${checklistCompletion.total} checklist items complete in the current filter scope.`
+          : 'No checklist items exist in the current filter scope.'}</p>
       </section>
       </section>
 
@@ -515,6 +601,24 @@ const labGroups: LabGroup[] = lab
           </div>
           <a href="/lab" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Open Lab Command Center</a>
         </div>
+
+        {/* AC-01 — explicit scope indicators: the task filters above scope the
+            task metrics only. Laboratory records have no priority/assignee
+            dimension, so instead of silently disjointed filtering the two
+            scopes are labelled here. */}
+        <ul class="mt-3 flex flex-wrap items-center gap-2 text-xs" aria-label="Metric scopes">
+          <li class="rounded-full border border-slate-300 bg-slate-50 px-3 py-1 font-medium text-slate-700" data-metric-scope="tasks">
+            Task metrics — scoped to the selected filters
+          </li>
+          <li class="rounded-full border border-violet-300 bg-violet-50 px-3 py-1 font-medium text-violet-700" data-metric-scope="lab">
+            Lab metrics — all laboratory records, independent of task filters
+          </li>
+        </ul>
+        {filtered && (
+          <p class="mt-2 text-xs text-slate-500" data-lab-scope-note>
+            The laboratory cards and charts below cover every lab record and are not affected by the task filters above.
+          </p>
+        )}
 
         {labError && (
           <div aria-label="Laboratory error" class="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
