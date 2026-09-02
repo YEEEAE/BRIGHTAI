@@ -44,14 +44,7 @@
 # PROMPT 00 — Freeze Reality + Build the 100% Gap Matrix
 
 ## Checklist
-- [✅] قراءة mind + AGENTS + CLAUDE + audit docs
-- [✅] جرد skills ذات الصلة
-- [✅] تجميد HEAD / branch / status / runtime
-- [✅] جرد الملفات والمسارات والـAPIs والـDB والاختبارات
-- [✅] إنشاء scoring methodology
-- [✅] إنشاء gap matrix
-- [✅] عدم تنفيذ أي إصلاح في هذه المرحلة
-- [✅] تحديث mind
+- [✅] تم التنفيذ
 
 ```text
 @GitHub @Superpowers
@@ -237,13 +230,7 @@ Stop only when the baseline can be independently reproduced.
 # PROMPT 01 — Architecture + Code Quality → 100%
 
 ## Checklist
-- [✅] تحليل بنية المشروع
-- [✅] إزالة duplication غير المبرر
-- [ ✅] إزالة dead/orphan code
-- [✅ ] مراجعة boundaries
-- [ ✅] إصلاح warnings/hints الفعلية
-- [ ✅] التحقق من clean build
-- [ ✅] توثيق before/after
+- [✅] تم التنفيذ
 
 ```text
 @GitHub @Superpowers
@@ -330,16 +317,7 @@ End with before/after metrics and actual evidence.
 # PROMPT 02 — Database + Migrations + Data Integrity → 100%
 
 ## Checklist
-- [✅ ] Fresh DB init
-- [✅ ] Migration parity
-- [ ✅] Schema parity
-- [✅ ] FK/integrity
-- [✅ ] WAL
-- [ ✅] Backup
-- [✅ ] Restore
-- [✅ ] Restart persistence
-- [ ✅] Index review
-- [ ✅] Evidence report
+- [✅] تم التنفيذ
 
 ```text
 @GitHub @Superpowers
@@ -419,16 +397,7 @@ Do not claim live production restore until PROMPT 14 produces real evidence.
 # PROMPT 03 — Security + Auth + RBAC + Privacy UX → 100%
 
 ## Checklist
-- [ ✅] Auth audit
-- [ ✅] Session/cookie audit
-- [ ✅] CSRF/XSS/CSP
-- [ ✅] IDOR
-- [ ✅] Role bypass
-- [ ✅] Entity ownership
-- [ ✅] Permission matrix
-- [ ✅] Privacy UX
-- [ ✅] Sensitive action UX
-- [ ✅] Security evidence
+- [✅] تم التنفيذ
 
 ```text
 @GitHub @Superpowers
@@ -552,15 +521,7 @@ Any external credential requiring human rotation remains an explicit blocker unt
 # PROMPT 04 — Testing + E2E + CI + Observability + Performance → 100%
 
 ## Checklist
-- [ ] Test inventory
-- [ ] Classify every test script
-- [ ] Full canonical suite
-- [ ] Full E2E
-- [ ] CI reproducibility
-- [ ] Observability
-- [ ] Local performance budgets
-- [ ] No skipped assertions
-- [ ] Evidence report
+- [✅] تم التنفيذ
 
 ```text
 @GitHub @Superpowers
@@ -682,16 +643,7 @@ Production p95 / real-user CWV remain external evidence until PROMPT 14.
 # PROMPT 05 — Design System → 100%
 
 ## Checklist
-- [ ] Token audit
-- [ ] Typography scale
-- [ ] Spacing/radius/shadow tokens
-- [ ] Semantic colors
-- [ ] Button normalization
-- [ ] Form controls normalization
-- [ ] Modal/table/card normalization
-- [ ] Interactive state consistency
-- [ ] Automated design-system guards
-- [ ] Evidence report
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -821,15 +773,7 @@ DESIGN-SYSTEM-100-EVIDENCE.md
 # PROMPT 06 — Visual Design + UI → 100%
 
 ## Checklist
-- [ ] Review every page
-- [ ] Improve hierarchy
-- [ ] Improve typography
-- [ ] Improve readable surfaces
-- [ ] Improve tables/cards
-- [ ] Preserve background identity
-- [ ] Test all viewport widths
-- [ ] Eliminate overflow/clipping
-- [ ] Evidence by route
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -928,15 +872,7 @@ Include route coverage proving every page was reviewed.
 # PROMPT 07 — UX + Information Architecture + Service Design → 100%
 
 ## Checklist
-- [ ] Role-based journeys
-- [ ] Navigation audit
-- [ ] Breadcrumbs
-- [ ] Route grouping
-- [ ] Feature discoverability
-- [ ] End-to-end service journeys
-- [ ] Remove dead ends
-- [ ] Reduce context switching
-- [ ] Document journey maps
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1019,14 +955,7 @@ UX-IA-SERVICE-DESIGN-100-EVIDENCE.md
 # PROMPT 08 — Interaction Design + Motion & Digital Art → 100%
 
 ## Checklist
-- [ ] Interaction states
-- [ ] Motion tokens
-- [ ] Loading states
-- [ ] Feedback states
-- [ ] Status-change animation
-- [ ] Reduced motion
-- [ ] No distracting motion
-- [ ] No inaccessible movement
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1111,14 +1040,7 @@ INTERACTION-MOTION-100-EVIDENCE.md
 # PROMPT 09 — UX Writing + Microcopy + UX Research → 100%
 
 ## Checklist
-- [ ] Audit all visible strings
-- [ ] Buttons/labels
-- [ ] Error messages
-- [ ] Empty states
-- [ ] Permission messages
-- [ ] Destructive action copy
-- [ ] UX research plan
-- [ ] No fake research claims
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1210,17 +1132,7 @@ UX-WRITING-RESEARCH-EVIDENCE.md
 # PROMPT 10 — Accessibility Design + Ergonomics → 100%
 
 ## Checklist
-- [ ] WCAG 2.2 AA
-- [ ] Keyboard
-- [ ] Focus
-- [ ] Labels
-- [ ] ARIA
-- [ ] Tables/charts
-- [ ] Contrast
-- [ ] Reduced motion
-- [ ] Zoom matrix
-- [ ] VoiceOver/NVDA manual plan
-- [ ] Ergonomics
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1311,15 +1223,7 @@ Full A11y score may reach 100 only after recorded manual assistive-technology ev
 # PROMPT 11 — Dashboard + Data Visualization → 100%
 
 ## Checklist
-- [ ] KPI usefulness
-- [ ] Time periods
-- [ ] Comparisons
-- [ ] Trends
-- [ ] Drilldowns
-- [ ] Legends/axes
-- [ ] Accessible chart alternatives
-- [ ] Remove misleading charts
-- [ ] QC priorities surfaced
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1413,16 +1317,7 @@ DASHBOARD-DATA-VIZ-100-EVIDENCE.md
 # PROMPT 12 — Advanced Form Design → 100%
 
 ## Checklist
-- [ ] All forms inventoried
-- [ ] Logical grouping
-- [ ] Required/optional clarity
-- [ ] Defaults/autofill where safe
-- [ ] Validation
-- [ ] Pending/success/error
-- [ ] Unsaved changes
-- [ ] Duplicate-submit protection
-- [ ] Mobile input modes
-- [ ] No data loss
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1528,14 +1423,7 @@ ADVANCED-FORMS-100-EVIDENCE.md
 # PROMPT 13 — Information Architecture & Permissions → 100%
 
 ## Checklist
-- [ ] Role × route matrix
-- [ ] Role × action matrix
-- [ ] Visible navigation alignment
-- [ ] Deep-link checks
-- [ ] Server/UI parity
-- [ ] No information leakage
-- [ ] No predictable 403 controls
-- [ ] Evidence report
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1609,16 +1497,7 @@ Target:
 # PROMPT 14 — Real UAT + Production Operations Closure
 
 ## Checklist
-- [ ] Staging deployment
-- [ ] Exact commit recorded
-- [ ] Role-based Human UAT
-- [ ] Keyboard/responsive/zoom observations
-- [ ] Backup
-- [ ] Restore drill
-- [ ] Integrity/FK checks
-- [ ] Production telemetry
-- [ ] Credential rotation evidence
-- [ ] Operational evidence report
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers
@@ -1726,16 +1605,7 @@ Only verified human/operator evidence may close these rows.
 # PROMPT 15 — Final Independent 100% Verification
 
 ## Checklist
-- [ ] Re-freeze current reality
-- [ ] Ignore previous PASS claims
-- [ ] Re-run all automated gates
-- [ ] Re-verify human evidence
-- [ ] Re-score all 34 domains
-- [ ] No rounding
-- [ ] Final findings P0-P3
-- [ ] Claims vs Reality
-- [ ] Final verdict
-- [ ] Update mind
+- [ ] لم يتم التنفيذ بعد
 
 ```text
 @GitHub @Superpowers

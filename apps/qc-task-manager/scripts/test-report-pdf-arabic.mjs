@@ -136,6 +136,7 @@ try {
   // ── 2. Shaping + bidi visual order through the real pipeline ──
   console.log('\n■ Arabic shaping + RTL visual order (decoded draw order)');
   const { lines, toUni } = decodeDrawnLines(pdf);
+  if (process.env.QC_PDF_DEBUG === '1') console.log(lines.map((line) => JSON.stringify(line)).join('\n'));
   const byChars = (chars) => lines.find((l) => l.chars === chars);
   ok(lines.some((l) => l.chars === 'Name'), 'Latin header drawn verbatim');
   ok(Boolean(byChars(rev('جهاز قياس الضغط'))), `equipment name drawn visually ordered (${rev('جهاز قياس الضغط')})`);
@@ -152,12 +153,14 @@ try {
   const nameData = byChars(rev('جهاز قياس الضغط'));
   ok(Math.abs(nameHeader.x - nameData.x) < 0.5, `data sits under its header (x ${nameData.x.toFixed(1)} ≈ ${nameHeader.x.toFixed(1)})`);
   const idHeader = lines.find((l) => l.chars === 'Report ID');
-  const idData = lines.find((l) => l.chars === 'AR-PDF-01');
+  const idData = lines.find((l) => l.chars === 'RPT-PDF-AR-001');
   ok(idHeader.x < nameHeader.x, 'LTR catalog keeps historical column order');
-  ok(Math.abs(idHeader.x - idData.x) < 0.5, 'Report ID data under Report ID header');
+  ok(Boolean(idHeader && idData), 'Report ID header and generated report ID both decode');
+  if (idHeader && idData) ok(Math.abs(idHeader.x - idData.x) < 0.5, 'Report ID data under Report ID header');
   const locHeader = lines.find((l) => l.chars === 'Location');
   const locData = byChars(rev('مختبر الرياض'));
-  ok(Math.abs(locHeader.x - locData.x) < 0.5, 'Arabic location data under Location header');
+  ok(Boolean(locHeader && locData), 'Location header and Arabic location data both decode');
+  if (locHeader && locData) ok(Math.abs(locHeader.x - locData.x) < 0.5, 'Arabic location data under Location header');
 
   // ── 4. Writer-level RTL table mirroring (Arabic headers) ──
   console.log('\n■ RTL column mirroring (Arabic-header tables)');
@@ -171,11 +174,13 @@ try {
   const d1 = rtl.lines.find((l) => l.chars === rev('قيمة أولى'));
   const d2 = rtl.lines.find((l) => l.chars === rev('قيمة ثانية'));
   ok(Boolean(h1 && h2 && d1 && d2), 'all mirrored cells decode');
-  ok(h1.x > h2.x, `first logical header rightmost (${h1.x.toFixed(1)} > ${h2.x.toFixed(1)})`);
-  ok(d1.x > d2.x, `matching data stays under mirrored headers (${d1.x.toFixed(1)} > ${d2.x.toFixed(1)})`);
-  ok(Math.abs(h1.x - d1.x) < 0.5 && Math.abs(h2.x - d2.x) < 0.5, 'each value aligned under its own Arabic header');
+  if (h1 && h2 && d1 && d2) {
+    ok(h1.x > h2.x, `first logical header rightmost (${h1.x.toFixed(1)} > ${h2.x.toFixed(1)})`);
+    ok(d1.x > d2.x, `matching data stays under mirrored headers (${d1.x.toFixed(1)} > ${d2.x.toFixed(1)})`);
+    ok(Math.abs(h1.x - d1.x) < 0.5 && Math.abs(h2.x - d2.x) < 0.5, 'each value aligned under its own Arabic header');
+  }
   const midline = (MARGIN_X = 36, USABLE = 595 - 72) => MARGIN_X + USABLE / 2;
-  ok(d1.x > midline() && d2.x < midline(), 'mirrored halves split at page center');
+  if (d1 && d2) ok(d1.x > midline() && d2.x < midline(), 'mirrored halves split at page center');
 
   // LTR control: Latin headers must stay in logical order.
   const ltrPdf = await (await import('../src/lib/reporting/writers/pdf.ts')).rowsToPdf(['Col A', 'Col B'], [['a1', 'b1']]);

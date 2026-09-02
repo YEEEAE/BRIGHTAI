@@ -1023,3 +1023,33 @@
 
 ### ملاحظات / مشاكل مفتوحة
 - لا توجد staged deletions حاليًا عند التحقق عبر `git diff --cached`؛ يلزم مراجعة جلسة/حالة Git السابقة إذا كان المطلوب استعادتهما كحذفين مرحّلين.
+## [2026-09-02] — QC-100-VERIFICATION-005: جرد أدلة التحقق الآلي وعقود CI
+
+### تم التنفيذ
+- أنشأت دليل أدلة محليًا باسم `AUTOMATED-VERIFICATION-100-EVIDENCE.md` يفصل بين PASS المنفذ، الفشل الصريح، والفحوص المتجاوزة بطلب المستخدم؛ ولا يدّعي RUM/CWV إنتاجية قبل PROMPT 14.
+- تحققت من manifest: **69** suite كنسية و**28** E2E، مع 4 ملفات test و4 ملفات E2E مصنفة صراحةً؛ الحارس يمنع أي `test-*` أو `e2e-*` يتيم أو registry/drift صامت.
+- تحققت من route/architecture (**115** file routes، **25** middleware routes، **6** guards)، وschema reference (**165** objects)، وembedded parity (**39/39** migrations)، وبدأت السلسلة الكنسية حتى اجتياز domain/RBAC/audit الظاهر في التشغيل.
+- صححت تشخيص PDF العربي: كان يتوقع equipment code في عمود Report ID ويعطل بـ`TypeError` عند خلية غير مفكوكة؛ صار يفحص الحضور أولًا ويكشف الفشل الفعلي بدل الانهيار.
+- راجعت عقد `qc-release-gate.yml`: install frozen + typecheck + manifest/routes/parity + migrations SQLite معزولة + canonical test + production build + E2E على push/nightly/manual، بدون تعديل workflow أو نشر.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/AUTOMATED-VERIFICATION-100-EVIDENCE.md`
+- `apps/qc-task-manager/scripts/test-report-pdf-arabic.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager test:manifest` ✅ — 69/28 وبدون orphan.
+- `test:architecture` ✅ — 115/25/6 وArchitecture Guard.
+- `test:migrations` ✅، `test:embedded-migration-parity` ✅ 39/39، `test:schema-reference` ✅ 165.
+- `test:domain` ✅ — 343/0؛ `test:auth-password-lifecycle` ✅ 23/23؛ `test:user-audit` ✅ 21/21؛ `test:audit-integrity` ✅.
+- `test-report-pdf-arabic` ❌ — لم يعد crash، لكن بقيت فحوص RTL/marks/pagination فاشلة صراحة.
+- `pnpm test` و`pnpm e2e:acceptance` ⏭️ — المتبقي المتزامن الثقيل تجاوز بطلب المستخدم الصريح.
+
+### النتيجة
+- **الحالة:** جزئي.
+- **مختصر:** الجرد وعقد عدم وجود orphan موثقان، ومشكلة PDF صارت failure قابلًا للتشخيص لا crash؛ لا يوجد ادعاء قبول نهائي أو صفر budget failures لأن E2E والسلسلة الكاملة وبناء ميزانيات p95 لم تكتمل بعد تجاوز وقت التشغيل.
+
+### ملاحظات / مشاكل مفتوحة
+- `test-report-pdf-arabic.mjs` ما زال manual diagnostic مصنفًا ويفشل في RTL wrapping/mark/pagination؛ يلزم إصلاحه ثم تقرير هل يصبح canonical.
+- `test:performance` يجمع p50/p95/max وplans للـ11 scenario، لكنه لا يفرض رقم budget بعد؛ يلزم baseline وthresholds قبل ادعاء صفر local performance failures.
+- توجد تغييرات وحذوفات غير مرتبطة مسبقًا في الشجرة؛ بقيت بدون لمس. لا commit ولا push ولا deploy.
