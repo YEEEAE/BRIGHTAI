@@ -1,4 +1,87 @@
 
+## [2026-09-02] — QC-REMEDIATION-004: سير عمل ضبط الجودة، التوقيع الإلكتروني المزدوج وختم السجلات وتحديثات طلبات التغيير
+
+### تم التنفيذ
+- أعدت هيكلة وتصميم نموذج طلبات التغيير المخبرية في `src/pages/lab/change-requests/new.astro` من عرض حقول الجداول المسطحة إلى مسار نية المستخدم (Intent-Driven Wizard) من 3 خطوات واضحة (الهدف والنطاق، تقييم مخاطر GMP وخطة التراجع، وخطة العمل وتعيين المسؤولين) مع دعم كامل للوصولية وقارئات الشاشة عبر `aria-current="step"` ونصوص المساعدة السياقية `ContextualHelp.astro`.
+- صممت ونفّذت مخطط التحقق الشامل `labChangeRequestIntentSchema` في `src/lib/validation.ts` ودمجه في خدمة `src/lib/lab/changeRequests.ts` لحفظ بيانات النية مع تفاصيل التغيير.
+- أسست وحدة التحكم بسير العمل المخبري `src/lib/qcWorkflow.ts` التي تطبق العزل الصارم للمهام (Segregation of Duties)، وتمنع الفاحص أو منشئ الفحص من اعتماده إطلاقاً (`Segregation of duties violation: Analyst cannot approve own test.`) وتعيد كود المنع `403 Forbidden` عند استدعاء نقطة النهاية `/api/lab/tests/[id]/review` عبر المتصفح أو API مباشرة.
+- نفّذت التوقيع الإلكتروني ثنائي النية (Dual-Intent E-Signature): التحقق من كلمة المرور من جهة الخادم وطلب سبب الاعتماد الإلزامي، مع تسلسل السجل وتشفيره وحساب بصمة `SHA-256` وتخزينه في جدول `lab_test_approvals`.
+- وفّرت آلية التحقق من السلامة `verifyLabTestApprovalSealing` لكشف أي تلاعب لاحق بالبيانات المخبرية فوراً.
+- ربطت ترقية الإصدارات الرئيسية للأدلة والإجراءات (SOP Major Version Bump) بتفعيل إشعارات الإقرار الإلزامية للمشغلين والمحللين تلقائياً في `lab_document_acknowledgements`.
+- أنشأت الـ View الكنسي `lab_audit_log` وتريجرات الحماية الصارمة في SQLite (`qc_audit_log_no_delete`, `lab_test_approvals_no_delete`, `lab_test_approvals_no_update`, `lab_test_records_frozen_after_approval_update`) لمنع أي حذف أو تعديل لسجلات التدقيق والتوقيعات بعد الاعتماد.
+- أنشأت 4 سويتات اختبارات كنسية جديدة: `test:qc-compliance-100` (16 فحصاً)، `test:lab-workflows-100` (13 فحصاً)، `test:e-signature-integrity` (8 فحوص)، `test:lab-change-request-intent` (14 فحصاً)، وسجلتها في `package.json` و `test-manifest.mjs`.
+- حررت وثيقة الأدلة التشغيلية الرسمية في `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-04-EVIDENCE.md`.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/qcWorkflow.ts` (جديد)
+- `apps/qc-task-manager/src/pages/lab/change-requests/new.astro`
+- `apps/qc-task-manager/src/lib/validation.ts`
+- `apps/qc-task-manager/src/lib/lab/changeRequests.ts`
+- `apps/qc-task-manager/src/lib/lab/review.ts`
+- `apps/qc-task-manager/src/pages/api/lab/tests/[id]/review.ts`
+- `apps/qc-task-manager/src/components/EsignDialog.astro`
+- `apps/qc-task-manager/public/scripts/esign-confirm.js`
+- `apps/qc-task-manager/src/lib/lab/documents.ts`
+- `apps/qc-task-manager/scripts/test-qc-compliance-100.mjs` (جديد)
+- `apps/qc-task-manager/scripts/test-lab-workflows-100.mjs` (جديد)
+- `apps/qc-task-manager/scripts/test-e-signature-integrity.mjs` (جديد)
+- `apps/qc-task-manager/scripts/test-lab-change-request-intent.mjs` (جديد)
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/package.json`
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-04-EVIDENCE.md` (جديد)
+
+### التحقق
+- `pnpm run test:manifest` ✅ (81 canonical suites, 28 canonical E2E suites)
+- `pnpm run test:qc-compliance-100` ✅ (16/16 checks passed)
+- `pnpm run test:lab-workflows-100` ✅ (13/13 checks passed)
+- `pnpm run test:e-signature-integrity` ✅ (8/8 checks passed)
+- `pnpm run test:lab-change-request-intent` ✅ (14/14 checks passed)
+- `pnpm run test:lab-review` ✅ (97/97 tests passed)
+- `pnpm run test:lab-documents` ✅ (303/303 tests passed)
+- `pnpm run test:lab-acknowledgements` ✅ (116/116 tests passed)
+- `pnpm run test:embedded-migration-parity` ✅ (39/39 byte-identical)
+- `pnpm run test:schema-reference` ✅ (165 catalog objects)
+- `pnpm run test:database-100` ✅ (23/23 checks passed)
+- `pnpm run test:architecture` ✅ (115 file routes, 25 middleware routes, 6 guards passed)
+- `ASTRO_TELEMETRY_DISABLED=1 pnpm run typecheck` ✅ (310 files checked: 0 errors, 0 warnings, 0 hints)
+- `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` ✅ (Production server build succeeded in 14.62s)
+- `pnpm test` ✅ (81/81 canonical suites passed)
+
+### النتيجة
+- **الحالة:** نجح (100%).
+- **مختصر:** تم إنجاز جميع متطلبات PROMPT 04 وتجاوزت كافة معايير القبول AC-01 إلى AC-06 بنجاح مع ثبات كامل وتطابق تام للهجرات والمخططات دون أي دفع للريبو (No Push).
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد. كل متطلبات الـ QC/QMS وسير العمل المخبري مكتملة بنسبة 100%.
+
+## [2026-09-02] — إضافة/تحديث مهارة SEO-GEO من opc-skills لـZed
+
+### تم التنفيذ
+- شغّلت `npx skills add https://github.com/resciencelab/opc-skills --skill seo-geo` مع كاش npm مؤقت مستقل بسبب صلاحيات كاش npm القديم.
+- ثبّتُّ المهارة `seo-geo` للمشروع تحت `.agents/skills/seo-geo` بنسخة مستقلة (`--copy`) ومخصصة لـZed.
+- حدّثت محتوى `SKILL.md` وأضافت الأداة ملفات `.claude-plugin/` و`examples/` و`references/` و`scripts/`.
+- حدّثت `skills-lock.json` لتسجيل مصدر المهارة وتثبيتها.
+- حافظت على ملف التكامل المتتبّع `.agents/skills/seo-geo/agents/openai.yaml` بعد أن أزالته أداة التثبيت، وأعدته لمحتوى النسخة الأصلية.
+
+### الملفات المتأثرة
+- `.agents/skills/seo-geo/`
+- `skills-lock.json`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- أمر الإضافة النهائي ✅ — `Installation complete`, `Installed 1 skill: seo-geo (copied)`.
+- قراءة `.agents/skills/seo-geo/SKILL.md` ✅ — frontmatter صالح والمهارة تحتوي تعليمات SEO/GEO ومراجعها.
+- `skills list --json` ✅ — المهارة موجودة ومربوطة بالوكيل `Zed`.
+- `git status` ✅ — تغييرات الإضافة محصورة في `seo-geo` و`skills-lock.json` وmind؛ ملف `agents/openai.yaml` رجع مطابقًا للنسخة الأصلية.
+- تحذيرات YAML من مهارتي `dispatching-parallel-agents` و`minimalist-ui` ظهرت أثناء الفهرسة؛ خارج نطاق هذه المهمة ولم تُعدّل.
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** مهارة `seo-geo` صارت مثبتة محليًا ومكتشفة لـZed، بدون commit أو push.
+
+### ملاحظات / مشاكل مفتوحة
+- كاش npm الأصلي `~/.npm` ما زال يحتوي ملفات مملوكة لـroot؛ تم تجاوز المشكلة بكاش مؤقت بدون تغيير صلاحيات النظام.
+
 ## [2026-09-02] — QC-REMEDIATION-002: اعتمادية قاعدة البيانات والتزامن ومفاتيح منع التكرار (Idempotency)
 
 ### تم التنفيذ

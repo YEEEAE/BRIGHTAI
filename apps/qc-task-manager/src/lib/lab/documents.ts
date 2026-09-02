@@ -38,6 +38,7 @@ import {
   canEditLabDocumentRecord,
   canReviewLabDocumentRecord,
 } from '../permissions';
+import { triggerSopMajorVersionAcknowledgements } from '../qcWorkflow';
 import type { LabDocument, LabDocumentStatus, LabDocumentType, LabDocumentVersion, Role } from '../types';
 import { renderDocumentContent } from './documentContent';
 import {
@@ -1246,6 +1247,18 @@ export function approveLabDocument(
 
     const auditNote = note?.trim() || `Approved v${current.version}`;
     auditLabDocument(documentId, actor.id, 'APPROVAL', auditNote, 'IN_REVIEW', 'APPROVED');
+
+    // AC-04: SOP major version bumps trigger mandatory operator acknowledgements
+    if (document.type === 'SOP' && (prevApproved.length > 0 || current.version > 1)) {
+      triggerSopMajorVersionAcknowledgements(db, {
+        documentId,
+        newVersionId: current.id,
+        newVersionNumber: current.version,
+        actorId: actor.id,
+        documentType: document.type,
+        documentCode: document.code,
+      });
+    }
 
     const recipient = current.author_id ?? document.owner_id ?? document.created_by;
     if (recipient) {

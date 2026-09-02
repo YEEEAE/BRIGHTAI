@@ -28,6 +28,7 @@ import { completeLabRetestsForApproval } from './retests';
 import { esignAuditNote } from './esignature';
 import { canApproveLabTestRecord, canReviewLabTestRecord } from '../permissions';
 import { appendQcAudit } from '../audit/qcChain';
+import { enforceSegregationOfDuties, sealLabTestApproval, ensureLabApprovalsAndAudit } from '../qcWorkflow';
 import type { LabFinalResult, LabTestStatus, LabTestType, Role } from '../types';
 import { DEFAULT_PER_PAGE, isPerPage, PER_PAGE_OPTIONS } from '../pagination';
 
@@ -499,10 +500,11 @@ export function transitionLabTest(
   action: LabReviewAction,
   testId: number,
   reason: string | null,
-  opts?: { esigned?: boolean },
+  opts?: { esigned?: boolean; signatureReason?: string },
 ): LabReviewTransition {
   return transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const row = db
       .prepare('SELECT * FROM lab_test_records WHERE id = ?')
       .get(testId) as Record<string, unknown> | undefined;
@@ -524,6 +526,7 @@ export function transitionLabTest(
     // Authorization — hard invariants enforced here (tester can never review/
     // approve their own test; supervisor denied from approval by default D-4).
     if (action === 'approve') {
+      enforceSegregationOfDuties(user, test);
       if (!canApproveLabTestRecord(user, test)) {
         throw new Error('You do not have permission to approve this test.');
       }
@@ -565,6 +568,12 @@ export function transitionLabTest(
       // execution record, the retest moves OPEN → COMPLETED in the SAME
       // transaction, with a LAB_RETEST/APPROVAL audit row for the completion.
       completeLabRetestsForApproval(db, testId, testNumber, user.id, dbNow);
+      // Dual-intent signature & SHA-256 record sealing (PROMPT-04, AC-03)
+      sealLabTestApproval(db, {
+        testId,
+        approverId: user.id,
+        signatureReason: opts?.signatureReason || reason || 'I approve this test result for release',
+      });
     } else {
       // reject / request_changes → REJECTED with the required reason.
       db.prepare(

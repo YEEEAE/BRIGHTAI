@@ -99,4 +99,8 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:api-contract',
   'test:security-hygiene',
   'test:security-adversarial',
+  'test:qc-compliance-100',
+  'test:lab-workflows-100',
+  'test:e-signature-integrity',
+  'test:lab-change-request-intent',
 ];

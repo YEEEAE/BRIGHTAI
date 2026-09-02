@@ -462,6 +462,70 @@ export const labChangeRequestReviewSchema = z
   });
 
 /**
+ * Intent-driven Change Request Schema (PROMPT-04, P2-3, AC-01).
+ * 3 structured intent steps:
+ * Step 1: Objective & Scope (title, change_reason, urgency, affected_areas, entity_type, operation)
+ * Step 2: Risk & Quality Impact (gmp_impact, validation_required, rollback_plan)
+ * Step 3: Action Plan & Stakeholders (assignee, target_completion_date, attachments_note)
+ */
+export const labChangeRequestIntentSchema = z.object({
+  // Step 1: Objective & Scope
+  title: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z.string().min(3, 'Title must be at least 3 characters.').max(200, 'Title must be 200 characters or fewer.'),
+  ),
+  change_reason: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z.string().min(5, 'A clear reason for change is required (at least 5 characters).').max(1000, 'Reason must be 1000 characters or fewer.'),
+  ),
+  urgency: z.enum(['ROUTINE', 'URGENT', 'EMERGENCY'], {
+    errorMap: () => ({ message: 'Select a valid urgency level.' }),
+  }).default('ROUTINE'),
+  affected_areas: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z.string().min(2, 'Specify the affected laboratory or production area.').max(200),
+  ),
+  entity_type: z.enum(['EQUIPMENT', 'PRODUCT', 'CALIBRATION', 'RETEST_REQUEST'], {
+    errorMap: () => ({ message: 'Select a valid target entity.' }),
+  }),
+  operation: z.enum(['CREATE', 'UPDATE'], {
+    errorMap: () => ({ message: 'Select a valid operation.' }),
+  }).default('CREATE'),
+  entity_id: z.preprocess(
+    (v) => (v == null || v === '' ? null : Number(v)),
+    z.number().int().positive().nullable().optional(),
+  ),
+
+  // Step 2: Risk & Quality Impact Assessment
+  gmp_impact: z.enum(['NONE', 'MINOR', 'DIRECT_GMP'], {
+    errorMap: () => ({ message: 'Select a valid GMP impact assessment.' }),
+  }).default('NONE'),
+  validation_required: z.enum(['YES', 'NO'], {
+    errorMap: () => ({ message: 'Select whether validation is required.' }),
+  }).default('NO'),
+  rollback_plan: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z.string().min(5, 'A rollback plan is required in case of change failure.').max(1000),
+  ),
+
+  // Step 3: Action Plan & Stakeholder Reviewers
+  assignee: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z.string().max(100).optional(),
+  ),
+  target_completion_date: z.preprocess(
+    (v) => (v == null || v === '' ? null : String(v).trim()),
+    z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Target completion date must be in YYYY-MM-DD format.').nullable().optional(),
+  ),
+  attachments_note: z.preprocess(
+    (v) => (v == null ? '' : String(v).trim()),
+    z.string().max(500).optional(),
+  ),
+});
+
+export type LabChangeRequestIntentFormData = z.infer<typeof labChangeRequestIntentSchema>;
+
+/**
  * POST /lab/products/new + /lab/products/[id]/edit — Product Master form
  * (PROMPT 08). `equipment_ids` (the "Related Equipment" checkboxes) is NOT
  * part of this schema: FormData repeats that key per checkbox, so the handler

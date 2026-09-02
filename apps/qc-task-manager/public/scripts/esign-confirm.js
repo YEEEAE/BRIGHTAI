@@ -11,6 +11,7 @@
     dialog.dataset.esignBound = '1';
 
     const input = document.getElementById('esign-password');
+    const reasonInput = document.getElementById('esign-reason');
     const errorEl = document.getElementById('esign-error');
     const cancelBtn = document.getElementById('esign-cancel');
     let pendingForm = null;
@@ -57,6 +58,16 @@
         if (input) input.focus();
         return;
       }
+      const reasonVal = reasonInput && reasonInput.value.trim() ? reasonInput.value.trim() : 'I approve this test result for release';
+      let hiddenReason = pendingForm.querySelector('input[name="signature_reason"]');
+      if (!hiddenReason) {
+        hiddenReason = document.createElement('input');
+        hiddenReason.type = 'hidden';
+        hiddenReason.name = 'signature_reason';
+        pendingForm.appendChild(hiddenReason);
+      }
+      hiddenReason.value = reasonVal;
+
       let hidden = pendingForm.querySelector('input[name="esignature_password"]');
       if (!hidden) {
         hidden = document.createElement('input');

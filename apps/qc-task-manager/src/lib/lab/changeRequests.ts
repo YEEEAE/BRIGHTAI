@@ -13,7 +13,7 @@ import { requireCsrf } from '../api-security';
 import { createNotificationOrThrow } from '../notifications';
 import { canApproveLabChangeRequest, canReviewLabChangeRequests, canSubmitLabChangeRequest } from '../permissions';
 import type { Role } from '../types';
-import { labCalibrationSchema, labChangeRequestReviewSchema, labEquipmentSchema, labProductSchema, labRetestSchema, parseFormData } from '../validation';
+import { labCalibrationSchema, labChangeRequestIntentSchema, labChangeRequestReviewSchema, labEquipmentSchema, labProductSchema, labRetestSchema, parseFormData } from '../validation';
 import type { LabEquipmentFormData } from './equipment';
 import type { LabProductFormData } from './products';
 import type { LabCalibrationFormData } from './calibration';
@@ -337,14 +337,30 @@ export async function handleLabChangeRequestSubmitPost(context: APIContext): Pro
   const operation = field(form, 'operation') as ChangeOperation | null;
   const entityIdRaw = field(form, 'entity_id'); const entityId = entityIdRaw ? Number(entityIdRaw) : null;
   try {
+    const titleVal = field(form, 'title');
+    let intentData: Record<string, unknown> | null = null;
+    if (titleVal) {
+      const intentParsed = labChangeRequestIntentSchema.safeParse(Object.fromEntries(form.entries()));
+      if (!intentParsed.success) {
+        throw new LabChangeRequestError(intentParsed.error.issues[0]?.message ?? 'Invalid change request intent.');
+      }
+      intentData = intentParsed.data;
+    }
+
     let payload: LabChangePayload;
-    if (type === 'EQUIPMENT') payload = { entity_type: type, data: (labEquipmentSchema.parse(formObject(form, ['name','code','location','status_raw','calibration_status_raw','serial_number','notes']))) as LabEquipmentFormData };
-    else if (type === 'PRODUCT') payload = { entity_type: type, data: { ...labProductSchema.parse(formObject(form, ['name','code','description','connector_type','default_test_type','default_template_id','applicable_sop_id','applicable_wi_id','is_active','notes'])), equipment_ids: form.getAll('equipment_ids').map(Number) } as LabProductFormData };
-    else if (type === 'CALIBRATION') payload = { entity_type: type, data: labCalibrationSchema.parse(formObject(form, ['equipment_id','last_calibrated_at','calibration_due_at','provider','certificate_reference','result','next_due_at','notes'])) as LabCalibrationFormData };
-    else if (type === 'RETEST_REQUEST') payload = { entity_type: type, data: { ...labRetestSchema.parse(formObject(form, ['reason','reason_note'])), original_test_id: Number(field(form, 'original_test_id')) } as LabRetestFormData & { original_test_id: number } };
+    if (type === 'EQUIPMENT') {
+      const rawEq = formObject(form, ['name','code','location','status_raw','calibration_status_raw','serial_number','notes']);
+      if (!rawEq.name && intentData?.title) rawEq.name = intentData.title;
+      if (!rawEq.code && intentData?.title) rawEq.code = 'EQ-' + String(intentData.title).slice(0, 6).toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (!rawEq.location) rawEq.location = (intentData?.affected_areas as string) || 'Main Quality Lab';
+      payload = { entity_type: type, data: { ...labEquipmentSchema.parse(rawEq), ...(intentData ? { intent: intentData } : {}) } as LabEquipmentFormData };
+    }
+    else if (type === 'PRODUCT') payload = { entity_type: type, data: { ...labProductSchema.parse(formObject(form, ['name','code','description','connector_type','default_test_type','default_template_id','applicable_sop_id','applicable_wi_id','is_active','notes'])), equipment_ids: form.getAll('equipment_ids').map(Number), ...(intentData ? { intent: intentData } : {}) } as LabProductFormData };
+    else if (type === 'CALIBRATION') payload = { entity_type: type, data: { ...labCalibrationSchema.parse(formObject(form, ['equipment_id','last_calibrated_at','calibration_due_at','provider','certificate_reference','result','next_due_at','notes'])), ...(intentData ? { intent: intentData } : {}) } as LabCalibrationFormData };
+    else if (type === 'RETEST_REQUEST') payload = { entity_type: type, data: { ...labRetestSchema.parse(formObject(form, ['reason','reason_note'])), original_test_id: Number(field(form, 'original_test_id')), ...(intentData ? { intent: intentData } : {}) } as LabRetestFormData & { original_test_id: number } };
     else throw new LabChangeRequestError('Select a valid laboratory entity.');
     if (operation !== 'CREATE' && operation !== 'UPDATE') throw new LabChangeRequestError('Select a valid operation.');
-    if (operation === 'UPDATE') throw new LabChangeRequestError('Edit the canonical record to submit an update proposal.');
+    if (operation === 'UPDATE' && !entityId) throw new LabChangeRequestError('Edit the canonical record to submit an update proposal.');
     submitChangeRequest({ actor: { id: user.id, role: user.role }, entity_type: type!, operation, entity_id: entityId, payload });
     setFlash(context, 'success', 'Your laboratory change request was submitted for review.');
   } catch (error) { setFlash(context, 'error', error instanceof Error ? error.message : 'Could not submit the change request.'); }

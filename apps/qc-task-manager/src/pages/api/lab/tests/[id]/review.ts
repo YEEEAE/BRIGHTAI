@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
+import { apiJson, apiJsonError, isResponse, requireApiUser, requireCsrf } from '../../../../../lib/api-security';
 import { setFlash } from '../../../../../lib/flash';
 import { parsePositiveId, parseFormData, labReviewActionSchema } from '../../../../../lib/validation';
 import { canReviewLabTest } from '../../../../../lib/permissions';
@@ -32,13 +32,22 @@ export const POST: APIRoute = async (context) => {
   const auth = requireApiUser(context);
   if (isResponse(auth)) return auth;
 
+  const isApiRequest =
+    Boolean(context.request.headers.get('accept')?.includes('application/json')) ||
+    Boolean(context.request.headers.get('user-agent')?.toLowerCase().includes('curl')) ||
+    Boolean(context.request.headers.get('content-type')?.includes('application/json'));
+
   if (!canReviewLabTest(auth.role)) {
+    if (isApiRequest) {
+      return apiJsonError('Forbidden: Analyst role cannot invoke test review endpoint.', 403, 'FORBIDDEN');
+    }
     setFlash(context, 'error', 'You do not have permission to review laboratory tests.');
     return context.redirect('/lab');
   }
 
   const id = parsePositiveId(context.params.id);
   if (!id) {
+    if (isApiRequest) return apiJsonError('Invalid test id.', 400, 'VALIDATION');
     setFlash(context, 'error', 'Invalid test id.');
     return context.redirect('/lab/tests/review');
   }
@@ -46,6 +55,7 @@ export const POST: APIRoute = async (context) => {
   const form = await context.request.formData();
   const parsed = parseFormData(labReviewActionSchema, form);
   if (!parsed.ok) {
+    if (isApiRequest) return apiJsonError(parsed.error, 400, 'VALIDATION');
     setFlash(context, 'error', parsed.error);
     return context.redirect('/lab/tests/review');
   }
@@ -61,19 +71,23 @@ export const POST: APIRoute = async (context) => {
         // reissued; failures are rate-limited per user and audited without storing
         // the password anywhere.
         let esigned = false;
+        let signatureReason: string | undefined;
         if (action === 'approve') {
+          signatureReason = form.get('signature_reason')?.toString()?.trim() || 'I approve this test result for release';
           const outcome = requireEsignature(auth.id, form.get(ESIGN_FIELD_NAME)?.toString() ?? null);
           if (outcome === 'rate_limited') {
+            if (isApiRequest) return apiJsonError(ESIGN_RATE_LIMITED_MESSAGE_AR, 429, 'AUTH');
             setFlash(context, 'error', ESIGN_RATE_LIMITED_MESSAGE_AR);
             return context.redirect('/lab/tests/review');
           }
           if (outcome === 'invalid') {
+            if (isApiRequest) return apiJsonError('Unauthorized: Invalid e-signature password.', 401, 'AUTH');
             setFlash(context, 'error', ESIGN_FAILURE_MESSAGE_AR);
             return context.redirect('/lab/tests/review');
           }
           esigned = true;
         }
-        const result = transitionLabTest({ id: auth.id, role: auth.role }, action, id, reason, { esigned });
+        const result = transitionLabTest({ id: auth.id, role: auth.role }, action, id, reason, { esigned, signatureReason });
         try {
           recordUxEvent({
             event_name: 'review_decision_success',
@@ -84,8 +98,20 @@ export const POST: APIRoute = async (context) => {
         } catch (telemetryError) {
           console.error('[ux-telemetry] review success event failed', telemetryError);
         }
+        if (isApiRequest) {
+          return apiJson({ ok: true, result });
+        }
         setFlash(context, 'success', `${result.test_number} · ${LAB_REVIEW_ACTION_LABELS[action]}`);
       } catch (err) {
+        const isSodViolation =
+          err instanceof Error && err.message.includes('Segregation of duties violation');
+        if (isSodViolation) {
+          if (isApiRequest) {
+            return apiJsonError(err.message, 403, 'FORBIDDEN');
+          }
+          setFlash(context, 'error', err.message);
+          return apiJsonError(err.message, 403, 'FORBIDDEN');
+        }
         const isBusy = (err && typeof err === 'object' && ('code' in err && err.code === 'SQLITE_BUSY')) ||
           (err instanceof Error && /sqlite_busy|database is locked/i.test(err.message));
         if (isBusy) {
@@ -102,6 +128,9 @@ export const POST: APIRoute = async (context) => {
           }, auth.role);
         } catch (telemetryError) {
           console.error('[ux-telemetry] review error event failed', telemetryError);
+        }
+        if (isApiRequest) {
+          return apiJsonError(err instanceof Error ? err.message : 'Could not apply the review action.', 400, 'VALIDATION');
         }
         setFlash(context, 'error', err instanceof Error ? err.message : 'Could not apply the review action.');
       }

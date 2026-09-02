@@ -20,6 +20,17 @@
     <p id="esign-description" class="mt-1 text-sm text-slate-600">
       هذا الإجراء من الإجراءات عالية الصلاحية ولا يمكن التراجع عنه. أدخل كلمة مرورك الحالية لتأكيد التنفيذ.
     </p>
+    <label class="mt-4 block text-sm font-medium text-slate-700" for="esign-reason">
+      سبب التوقيع الإلكتروني (Signature Reason) <span class="text-rose-600">*</span>
+    </label>
+    <input
+      type="text"
+      id="esign-reason"
+      name="signature_reason_input"
+      value="I approve this test result for release"
+      required
+      class="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+    />
     <label class="mt-4 block text-sm font-medium text-slate-700" for="esign-password">
       كلمة المرور الحالية <span class="text-rose-600">*</span>
     </label>
