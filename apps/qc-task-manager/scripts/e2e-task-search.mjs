@@ -11,7 +11,7 @@
 //   D. Pagination + sorting (state preserved in the URL).
 //   E. Saved filters per user: save, apply link, delete (ownership).
 //   F. Exports: CSV (no BLOB content), XLSX (exceljs), PDF report for one task
-//      (+ employee 403 on a foreign task).
+//      (+ employee generic 404 on a foreign task, without enumeration).
 //   G. Employee role scoping on the page + CSV export.
 //
 // Usage (from the app directory):
@@ -474,9 +474,10 @@ try {
   ok(pdfText.includes('Generated:'), 'F. PDF has the generated date');
   ok(pdfText.trimEnd().endsWith('%%EOF'), 'F. PDF EOF marker');
 
-  // Employee PDF of a foreign task (T8: created by admin, unassigned) → 403.
+  // Employee PDF of a foreign task (T8: created by admin, unassigned) stays
+  // non-discoverable rather than exposing its existence.
   const foreignPdf = await empCtx.request.get(`${BASE}/api/export/tasks/pdf/${fixtures.T8}`);
-  ok(foreignPdf.status() === 403, 'F. employee gets 403 for a foreign task PDF');
+  ok(foreignPdf.status() === 404, 'F. employee gets generic 404 for a foreign task PDF');
 
   // ─────────────────── G. Employee role scoping ───────────────────
   console.log('\n── Scenario G: employees only see/export their own tasks ──');

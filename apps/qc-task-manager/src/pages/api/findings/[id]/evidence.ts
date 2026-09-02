@@ -19,7 +19,7 @@ export const POST: APIRoute = async (context) => {
   const finding = getFinding(id);
   if (!finding) return apiJsonError('Finding not found.', 404);
   if (!canEditFindingContent(auth, finding)) {
-    return apiJsonError('Supervisors review Findings; content edits require an assigned employee, manager, or admin.', 403);
+    return apiJsonError('Finding not found.', 404);
   }
 
   const parsed = evidenceSchema.safeParse(Object.fromEntries(await context.request.formData()));
@@ -27,7 +27,7 @@ export const POST: APIRoute = async (context) => {
 
   try {
     addEvidence(
-      { findingId: parsed.data.capa_id ? undefined : id, capaId: parsed.data.capa_id, description: parsed.data.description, reference: parsed.data.reference },
+      { findingId: id, capaId: parsed.data.capa_id, description: parsed.data.description, reference: parsed.data.reference },
       auth.id,
     );
     return Response.redirect(new URL(`/findings/${id}`, context.url), 303);

@@ -31,7 +31,7 @@ export const POST: APIRoute = async (context) => {
   if (!task) return apiJsonError('Task not found.', 404);
 
   if (!canViewTask({ id: user.id, role: user.role }, task)) {
-    return apiJsonError('You cannot view this task.', 403);
+    return apiJsonError('Task not found.', 404);
   }
   if (task.status === 'completed') {
     return apiJsonError('This task is completed and is read-only.', 403);

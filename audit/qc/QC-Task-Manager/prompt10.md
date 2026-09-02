@@ -18,7 +18,7 @@
 - [✅] PROMPT 00 — Freeze Reality + 100% Gap Matrix
 - [✅] PROMPT 01 — Architecture + Code Quality
 - [✅] PROMPT 02 — Database + Migrations + Data Integrity
-- [ ] PROMPT 03 — Security + Auth + RBAC + Privacy UX
+- [✅] PROMPT 03 — Security + Auth + RBAC + Privacy UX
 - [ ] PROMPT 04 — Testing + E2E + CI + Observability + Performance
 - [ ] PROMPT 05 — Design System
 - [ ] PROMPT 06 — Visual Design + UI
@@ -44,14 +44,14 @@
 # PROMPT 00 — Freeze Reality + Build the 100% Gap Matrix
 
 ## Checklist
-- [ ] قراءة mind + AGENTS + CLAUDE + audit docs
-- [ ] جرد skills ذات الصلة
-- [ ] تجميد HEAD / branch / status / runtime
-- [ ] جرد الملفات والمسارات والـAPIs والـDB والاختبارات
-- [ ] إنشاء scoring methodology
-- [ ] إنشاء gap matrix
-- [ ] عدم تنفيذ أي إصلاح في هذه المرحلة
-- [ ] تحديث mind
+- [✅] قراءة mind + AGENTS + CLAUDE + audit docs
+- [✅] جرد skills ذات الصلة
+- [✅] تجميد HEAD / branch / status / runtime
+- [✅] جرد الملفات والمسارات والـAPIs والـDB والاختبارات
+- [✅] إنشاء scoring methodology
+- [✅] إنشاء gap matrix
+- [✅] عدم تنفيذ أي إصلاح في هذه المرحلة
+- [✅] تحديث mind
 
 ```text
 @GitHub @Superpowers
@@ -237,13 +237,13 @@ Stop only when the baseline can be independently reproduced.
 # PROMPT 01 — Architecture + Code Quality → 100%
 
 ## Checklist
-- [ ] تحليل بنية المشروع
-- [ ] إزالة duplication غير المبرر
-- [ ] إزالة dead/orphan code
-- [ ] مراجعة boundaries
-- [ ] إصلاح warnings/hints الفعلية
-- [ ] التحقق من clean build
-- [ ] توثيق before/after
+- [✅] تحليل بنية المشروع
+- [✅] إزالة duplication غير المبرر
+- [ ✅] إزالة dead/orphan code
+- [✅ ] مراجعة boundaries
+- [ ✅] إصلاح warnings/hints الفعلية
+- [ ✅] التحقق من clean build
+- [ ✅] توثيق before/after
 
 ```text
 @GitHub @Superpowers
@@ -330,16 +330,16 @@ End with before/after metrics and actual evidence.
 # PROMPT 02 — Database + Migrations + Data Integrity → 100%
 
 ## Checklist
-- [ ] Fresh DB init
-- [ ] Migration parity
-- [ ] Schema parity
-- [ ] FK/integrity
-- [ ] WAL
-- [ ] Backup
-- [ ] Restore
-- [ ] Restart persistence
-- [ ] Index review
-- [ ] Evidence report
+- [✅ ] Fresh DB init
+- [✅ ] Migration parity
+- [ ✅] Schema parity
+- [✅ ] FK/integrity
+- [✅ ] WAL
+- [ ✅] Backup
+- [✅ ] Restore
+- [✅ ] Restart persistence
+- [ ✅] Index review
+- [ ✅] Evidence report
 
 ```text
 @GitHub @Superpowers
@@ -419,16 +419,16 @@ Do not claim live production restore until PROMPT 14 produces real evidence.
 # PROMPT 03 — Security + Auth + RBAC + Privacy UX → 100%
 
 ## Checklist
-- [ ] Auth audit
-- [ ] Session/cookie audit
-- [ ] CSRF/XSS/CSP
-- [ ] IDOR
-- [ ] Role bypass
-- [ ] Entity ownership
-- [ ] Permission matrix
-- [ ] Privacy UX
-- [ ] Sensitive action UX
-- [ ] Security evidence
+- [ ✅] Auth audit
+- [ ✅] Session/cookie audit
+- [ ✅] CSRF/XSS/CSP
+- [ ✅] IDOR
+- [ ✅] Role bypass
+- [ ✅] Entity ownership
+- [ ✅] Permission matrix
+- [ ✅] Privacy UX
+- [ ✅] Sensitive action UX
+- [ ✅] Security evidence
 
 ```text
 @GitHub @Superpowers

@@ -139,9 +139,24 @@ export function transitionCapa(id: number, status: string, actorId: number, deci
 
 export function addEvidence(input: { findingId?: number; capaId?: number; description: string; reference?: string | null }, actorId: number): number {
   if (!input.findingId && !input.capaId) throw new DomainRuleError('Evidence must be linked to a Finding or CAPA.');
-  const findingId = input.findingId ?? Number((getDb().prepare('SELECT finding_id FROM qc_capa WHERE id=?').get(input.capaId) as { finding_id: number }).finding_id);
-  const result = getDb().prepare('INSERT INTO qc_evidence (finding_id, capa_id, description, reference, created_by) VALUES (?, ?, ?, ?, ?)').run(input.capaId ? null : input.findingId, input.capaId ?? null, input.description, input.reference ?? null, actorId);
-  const id = Number(result.lastInsertRowid); audit('EVIDENCE', id, Number((getDb().prepare('SELECT task_id FROM qc_findings WHERE id=?').get(findingId) as { task_id: number }).task_id), actorId, 'CREATE', null, input); return id;
+  const db = getDb();
+  let findingId: number;
+  if (input.capaId) {
+    const capa = db.prepare('SELECT finding_id FROM qc_capa WHERE id=?').get(input.capaId) as { finding_id: number } | undefined;
+    // The parent route is the authorization boundary. A caller must not use a
+    // valid CAPA id from another Finding to smuggle evidence across entities.
+    if (!capa || (input.findingId != null && capa.finding_id !== input.findingId)) {
+      throw new DomainRuleError('Evidence target not found.');
+    }
+    findingId = capa.finding_id;
+  } else {
+    findingId = input.findingId!;
+    if (!db.prepare('SELECT 1 FROM qc_findings WHERE id=?').get(findingId)) {
+      throw new DomainRuleError('Evidence target not found.');
+    }
+  }
+  const result = db.prepare('INSERT INTO qc_evidence (finding_id, capa_id, description, reference, created_by) VALUES (?, ?, ?, ?, ?)').run(input.capaId ? null : findingId, input.capaId ?? null, input.description, input.reference ?? null, actorId);
+  const id = Number(result.lastInsertRowid); audit('EVIDENCE', id, Number((db.prepare('SELECT task_id FROM qc_findings WHERE id=?').get(findingId) as { task_id: number }).task_id), actorId, 'CREATE', null, input); return id;
 }
 
 export { audit as recordQcAudit };

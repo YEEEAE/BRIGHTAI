@@ -12,11 +12,11 @@ const user = Astro.locals.user!;
 const id = Number(Astro.params.id); const finding = Number.isInteger(id) && id > 0 ? getFinding(id) : undefined;
 if (!finding) Astro.response.status = 404;
 const permitted = !!finding && canManageFinding({ id: user.userId, role: user.role }, finding);
-if (finding && !permitted) Astro.response.status = 403;
+if (finding && !permitted) Astro.response.status = 404;
 const capa = finding?.capa;
 const criticalGates = finding?.classification === 'critical' ? [!!capa, !!capa?.corrective_action, !!capa?.evidence, !!capa?.effectiveness_check, !!capa?.approval, ['EFFECTIVE','CLOSED'].includes(String(capa?.status))] : [];
 ---
-{!finding ? <BaseLayout title="Finding not found"><section class="py-16 text-center"><h1 class="text-3xl font-semibold">404 — Finding not found</h1><a href="/findings" class="mt-6 inline-block text-brand-700 hover:underline">Back to Findings</a></section></BaseLayout> : !permitted ? <BaseLayout title="Forbidden"><section class="py-16 text-center"><h1 class="text-3xl font-semibold">403 — Forbidden</h1><p class="mt-2 text-slate-600">Employees can access assigned Findings only.</p></section></BaseLayout> : <BaseLayout title={`${finding.finding_number} · QC Finding`}>
+{!finding || !permitted ? <BaseLayout title="Finding not found"><section class="py-16 text-center"><h1 class="text-3xl font-semibold">404 — Finding not found</h1><a href="/findings" class="mt-6 inline-block text-brand-700 hover:underline">Back to Findings</a></section></BaseLayout> : <BaseLayout title={`${finding.finding_number} · QC Finding`}>
   <div class="space-y-6">
     <Breadcrumbs items={[{ label: 'QC Tasks' }, { label: 'Findings', href: '/findings' }, { label: String(finding.finding_number) }]} />
     <WorkflowContext

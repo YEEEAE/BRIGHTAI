@@ -63,6 +63,7 @@ try {
   const perms = await import('../src/lib/permissions.ts');
   const apiSec = await import('../src/lib/api-security.ts');
   const search = await import('../src/lib/lab/testSearch.ts');
+  const qcOps = await import('../src/lib/qc-operations.ts');
   const { labTestFormSchema, labTestSampleRowSchema } = await import('../src/lib/validation.ts');
   const { LAB_SAMPLE_COUNT_MAX, LAB_PART_NAME_MAX, LAB_SAMPLE_COUNT_DEFAULT } = await import('../src/lib/lab/policy.ts');
 
@@ -70,6 +71,19 @@ try {
   const employeeId = Number(db.prepare("SELECT id FROM users WHERE username = 'employee'").get().id);
   const supervisorId = Number(db.prepare("SELECT id FROM users WHERE username = 'supervisor'").get().id);
   const managerId = Number(db.prepare("SELECT id FROM users WHERE username = 'manager'").get().id);
+
+  // Cross-entity evidence is an IDOR boundary: the route's Finding id must
+  // agree with the supplied CAPA id, otherwise an employee could attach data
+  // to a different Finding by guessing a valid CAPA identifier.
+  const existingTask = db.prepare('SELECT id FROM tasks ORDER BY id LIMIT 1').get();
+  const fixtureTaskId = existingTask
+    ? Number(existingTask.id)
+    : Number(db.prepare("INSERT INTO tasks (title, description, created_by, assigned_to) VALUES ('Security fixture', 'test only', ?, ?)").run(employeeId, employeeId).lastInsertRowid);
+  const insertFinding = db.prepare(`INSERT INTO qc_findings (finding_number, task_id, inspection_type, classification, severity, risk_description, owner, created_by) VALUES (?, ?, 'SECURITY', 'minor', 'medium', 'fixture', ?, ?)`);
+  const findingA = Number(insertFinding.run('SEC-IDOR-A', fixtureTaskId, employeeId, employeeId).lastInsertRowid);
+  const findingB = Number(insertFinding.run('SEC-IDOR-B', fixtureTaskId, supervisorId, supervisorId).lastInsertRowid);
+  const insertCapa = db.prepare(`INSERT INTO qc_capa (finding_id, problem_statement, root_cause, corrective_action, preventive_action, owner, created_by) VALUES (?, 'p', 'r', 'c', 'p', ?, ?)`);
+  const capaB = Number(insertCapa.run(findingB, supervisorId, supervisorId).lastInsertRowid);
 
   // ── 1. CSRF + request security ──
   console.log('\n■ CSRF origin gate');
@@ -240,6 +254,21 @@ try {
     const after = Number(db.prepare('SELECT COUNT(*) AS n FROM lab_test_records').get().n);
     eq(after, before, 'sqli: live search does not change the table');
     ok(db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='lab_test_records'").get(), 'sqli: lab_test_records still exists');
+  }
+
+  console.log('\n■ Entity ownership — cross-Finding CAPA IDOR');
+  {
+    const before = Number(db.prepare('SELECT COUNT(*) AS n FROM qc_evidence').get().n);
+    let rejected = false;
+    try {
+      qcOps.addEvidence({ findingId: findingA, capaId: capaB, description: 'cross-entity probe' }, employeeId);
+    } catch (error) {
+      rejected = error instanceof qcOps.DomainRuleError && error.message === 'Evidence target not found.';
+    }
+    eq(rejected, true, 'idor: CAPA from another Finding is rejected without existence leakage');
+    eq(Number(db.prepare('SELECT COUNT(*) AS n FROM qc_evidence').get().n), before, 'idor: rejected cross-entity request creates no evidence');
+    const evidenceId = qcOps.addEvidence({ findingId: findingA, description: 'same-Finding evidence' }, employeeId);
+    ok(evidenceId > 0, 'idor: same-Finding evidence remains allowed');
   }
 
   console.log(`\n${passed} passed, ${failed} failed`);

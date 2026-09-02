@@ -4,7 +4,8 @@
 // date, completion details + comment, evidence file names, comments, activity
 // history and the generated date (see src/lib/pdf.ts). Attachment BLOB content
 // is never included. Access control mirrors the task details page: employees
-// may only export tasks assigned to them or created by them; 403 otherwise.
+// may only export tasks assigned to them or created by them. Inaccessible
+// records use the same 404 response as missing records to avoid enumeration.
 
 import type { APIRoute } from 'astro';
 import { apiJsonError, isResponse, requireApiUser } from '../../../../../lib/api-security';
@@ -23,13 +24,14 @@ export const GET: APIRoute = async (context) => {
     return apiJsonError('Invalid task id.', 400);
   }
 
-  // Access control first (mirrors /tasks/[id]): 404 missing, 403 forbidden.
+  // Access control first: inaccessible records are indistinguishable from
+  // missing records so the export endpoint cannot be used as an oracle.
   const detail = getTaskDetail(id);
   if (!detail) {
     return apiJsonError('Task not found.', 404);
   }
   if (!canViewTask({ id: user.id, role: user.role }, detail)) {
-    return apiJsonError('Forbidden.', 403);
+    return apiJsonError('Task not found.', 404);
   }
 
   const data = getTaskPdfData(id);

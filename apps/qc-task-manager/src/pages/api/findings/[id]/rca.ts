@@ -20,7 +20,7 @@ export const POST: APIRoute = async (context) => {
   const finding = getFinding(id);
   if (!finding) return apiJsonError('Finding not found.', 404);
   if (!canEditFindingContent(auth, finding)) {
-    return apiJsonError('Supervisors review Findings; content edits require an assigned employee, manager, or admin.', 403);
+    return apiJsonError('Finding not found.', 404);
   }
 
   const parsed = rcaSchema.safeParse(Object.fromEntries(await context.request.formData()));

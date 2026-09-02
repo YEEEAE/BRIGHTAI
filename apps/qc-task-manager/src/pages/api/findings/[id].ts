@@ -7,7 +7,7 @@ import { parsePositiveId } from '../../../lib/validation';
 export const PATCH: APIRoute = async (context) => {
   const csrf = requireCsrf(context); if (csrf) return csrf; const auth = requireApiUser(context); if (isResponse(auth)) return auth;
   const id = parsePositiveId(context.params.id); if (!id) return apiJsonError('Invalid Finding id.', 400); const finding = getFinding(id); if (!finding) return apiJsonError('Finding not found.', 404);
-  if (!canManageFinding(auth, finding)) return apiJsonError('You cannot update this Finding.', 403);
+  if (!canManageFinding(auth, finding)) return apiJsonError('Finding not found.', 404);
   const body = Object.fromEntries(await context.request.formData()); const action = findingActionSchema.safeParse(body);
   try {
     if (!body.action && !canEditFindingContent(auth, finding)) return apiJsonError('Supervisors review Findings; content edits require an assigned employee, manager, or admin.', 403);

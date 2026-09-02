@@ -2,8 +2,8 @@
 // Task details page — accessible to every role.
 //
 // Access rule (CORE): employees may view only tasks assigned to them or created
-// by them; every other role sees any task. Unauthorized employees get 403 and
-// missing tasks get 404.
+// by them; every other role sees any task. Unauthorized employees receive the
+// same 404 surface as missing tasks to prevent record enumeration.
 //
 // Sections (top to bottom):
 //   1. Header: title, status + priority badges, progress bar, due date,
@@ -50,7 +50,7 @@ import {
 } from '../../lib/taskDetails';
 import { listBlockingDependencies } from '../../lib/taskUpdates';
 import { taskListFor, listActiveUsers, listTasksForDependency } from '../../lib/tasks';
-import { canEditTask, canEditLockedField, canEditChecklistStructure, hasRankAtLeast, canOverrideEvidenceGate } from '../../lib/permissions';
+import { canEditTask, canEditLockedField, canEditChecklistStructure, hasRankAtLeast, PERMISSIONS } from '../../lib/permissions';
 import { EMPLOYEE_LOCKED_FIELDS, canRequestTaskDeletion } from '../../lib/task-policy';
 import { getTaskTemplateSnapshot } from '../../lib/templatesStore';
 import { normalizeEvidenceRequirements } from '../../lib/evidence';
@@ -73,10 +73,10 @@ const task = detail;
 const notFound = !detail;
 const forbidden = !notFound && !canViewTask({ id: user.userId, role: user.role }, task!);
 
-// Correct HTTP semantics: 404 for a missing task, 403 for a forbidden one.
+// Missing and inaccessible tasks intentionally share the same HTTP surface.
 // The body is still rendered so the user gets a styled page, not a bare code.
 if (notFound) Astro.response.status = 404;
-if (forbidden) Astro.response.status = 403;
+if (forbidden) Astro.response.status = 404;
 
 // Only pull the rich data when we will actually render the page.
 let comments: CommentWithAuthor[] = [];
@@ -141,7 +141,7 @@ const existingEvidenceTypes = evidenceFiles
   .filter((file) => file.verification_status !== 'REJECTED' && file.evidence_type)
   .map((file) => file.evidence_type as string);
 const coveredEvidenceTypes = new Set(existingEvidenceTypes);
-const canOverrideEvidence = canOverrideEvidenceGate(user.role);
+const canOverrideEvidence = PERMISSIONS.canOverrideEvidenceGate(user.role);
 
 
 // Delete-request workflow (CORE BUSINESS RULE #4): employees request deletion of
@@ -231,10 +231,10 @@ function svgIcon(inner: string, cls = ''): string {
     </section>
   </BaseLayout>
 ) : forbidden ? (
-  <BaseLayout title="Forbidden">
+  <BaseLayout title="Task not found">
     <section class="py-16 text-center">
-      <h1 class="text-3xl font-semibold text-slate-900">403 — Forbidden</h1>
-      <p class="mt-2 text-slate-600">You can only view tasks assigned to you or created by you.</p>
+      <h1 class="text-3xl font-semibold text-slate-900">404 — Task not found</h1>
+      <p class="mt-2 text-slate-600">That task doesn&rsquo;t exist or may have been deleted.</p>
       <a href={backHref} class="mt-6 inline-block rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
         Back to tasks
       </a>

@@ -23,7 +23,7 @@ export const GET: APIRoute = async (context) => {
   const task = getTaskCore(taskId);
   if (!task) return apiJsonError('Task not found.', 404);
   if (!canViewTask({ id: user.id, role: user.role }, task)) {
-    return apiJsonError('You cannot view this task.', 403);
+    return apiJsonError('Task not found.', 404);
   }
 
   const attachment = getAttachment(attachmentId, taskId);

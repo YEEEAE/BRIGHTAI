@@ -177,16 +177,6 @@ export function canEditChecklistStructure(user: Pick<User, 'id' | 'role'>, task:
   return user.role === 'supervisor' && (task.created_by === user.id || task.assigned_to === user.id);
 }
 
-/** Admin-only gate for the /admin/templates area + template CRUD. */
-export function canManageTemplates(role: Role): boolean {
-  return role === 'admin';
-}
-
-/** Manager/admin may override the required-evidence completion gate with a reason. */
-export function canOverrideEvidenceGate(role: Role): boolean {
-  return hasRankAtLeast(role, 'manager');
-}
-
 // ───────────────────────── QC Laboratory RBAC ─────────────────────────────
 // Mirrors docs/QC-LAB-ARCHITECTURE.md §6.2 (the binding contract). All LAB_*
 // permission authority lives HERE and nowhere else (architecture-guard).

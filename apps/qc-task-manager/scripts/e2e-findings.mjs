@@ -6,21 +6,23 @@
 //      FINDING CREATE audit event).
 //   B. Employee authorization wall: cannot create a foreign-owned finding,
 //      cannot manage/close/review a finding they do not own, and the detail
-//      page renders 403. (Employees may only create/access ASSIGNED findings.)
+//      page and APIs render 404. (Employees may only create/access ASSIGNED
+//      findings; a hidden record must not be enumerable.)
 //   C. RCA: save 5-Whys analysis (303 + persisted row + audit).
 //   D. CAPA: create the corrective action (303 + DRAFT row) INCLUDING the
 //      evidence + effectiveness fields that feed the critical closure gate.
 //   E. CAPA lifecycle DRAFT → OPEN → IMPLEMENTATION → VERIFICATION → EFFECTIVE
 //      with manager-only approval, invalid backward transitions rejected, and
-//      employee approval denied (403).
+//      a foreign CAPA remains non-discoverable to employees (404).
 //   F. Evidence: add finding evidence (303 + qc_evidence row).
-//   G. Approval lane: employee cannot approve (403); approve → VERIFICATION;
+//   G. Approval lane: employee cannot discover or approve a foreign finding
+//      (404); approve → VERIFICATION;
 //      close without closure evidence is rejected; closing before approval is
 //      rejected (critical gate).
 //   H. Closure: critical finding closes only after CAPA effective + approval +
 //      closure evidence (200 + CLOSED row + CLOSURE audit).
 //   I. Pages: anonymous /findings → 302 to login; manager sees the finding;
-//      employee gets a 403 page for the foreign finding.
+//      employee gets a generic 404 page for the foreign finding.
 //
 // Usage (from the app directory, via e2e-acceptance.mjs):
 //   QC_DATABASE_PATH=<db> PORT=<port> BASE_URL=http://127.0.0.1:<port> \
@@ -179,18 +181,18 @@ try {
   ok(q('SELECT 1 FROM qc_findings WHERE finding_number = ?', 'E2E-STEAL-001') === undefined, 'B. steal attempt persisted nothing');
 
   const empClose = await patchForm(empCtx, `${BASE}/api/findings/${findingId}`, { action: 'close', closure_evidence: 'hax' });
-  ok(empClose.status() === 403, 'B. employee cannot close a foreign finding (403)');
+  ok(empClose.status() === 404, 'B. employee cannot discover a foreign finding through close (404)');
   const empApprove = await patchForm(empCtx, `${BASE}/api/findings/${findingId}`, { action: 'approve' });
-  ok(empApprove.status() === 403, 'B. employee cannot approve a foreign finding (403)');
+  ok(empApprove.status() === 404, 'B. employee cannot discover a foreign finding through approval (404)');
   const empRca = await postForm(empCtx, `${BASE}/api/findings/${findingId}/rca`, { method: '5_WHYS', free_form: 'no' });
-  ok(empRca.status() === 403, 'B. employee cannot post RCA on a foreign finding (403)');
+  ok(empRca.status() === 404, 'B. employee cannot discover a foreign finding through RCA (404)');
   const empCapa = await postForm(empCtx, `${BASE}/api/findings/${findingId}/capa`, { problem_statement: 'no', root_cause: 'no', corrective_action: 'no', preventive_action: 'no', owner: String(emp.id) });
-  ok(empCapa.status() === 403, 'B. employee cannot create CAPA on a foreign finding (403)');
+  ok(empCapa.status() === 404, 'B. employee cannot discover a foreign finding through CAPA (404)');
   const empEvidence = await postForm(empCtx, `${BASE}/api/findings/${findingId}/evidence`, { description: 'no' });
-  ok(empEvidence.status() === 403, 'B. employee cannot add evidence to a foreign finding (403)');
+  ok(empEvidence.status() === 404, 'B. employee cannot discover a foreign finding through evidence (404)');
   const empPageRes = await empCtx.request.get(`${BASE}/findings/${findingId}`);
-  ok(empPageRes.status() === 403, 'B. employee /findings/[id] page → 403');
-  ok((await empPageRes.text()).includes('Forbidden'), 'B. employee 403 page explains the boundary');
+  ok(empPageRes.status() === 404, 'B. employee /findings/[id] page → generic 404');
+  ok((await empPageRes.text()).includes('Finding not found'), 'B. employee sees no finding-existence signal');
   ok(q('SELECT status FROM qc_findings WHERE id = ?', findingId).status === 'OPEN', 'B. finding state untouched by employee attempts');
 
   // ─────────────────── C. RCA ───────────────────
@@ -236,7 +238,7 @@ try {
   // ─────────────────── E. CAPA lifecycle + approvals ───────────────────
   console.log('\n── Scenario E: CAPA lifecycle DRAFT → OPEN → IMPLEMENTATION → VERIFICATION → EFFECTIVE ──');
   const empEffective = await postForm(empCtx, `${BASE}/api/findings/${findingId}/capa`, { status: 'EFFECTIVE', decision: 'Approved' });
-  ok(empEffective.status() === 403, 'E. employee cannot approve CAPA (403)');
+  ok(empEffective.status() === 404, 'E. employee cannot discover or approve a foreign CAPA (404)');
   const walk = [
     ['OPEN', ''],
     ['IMPLEMENTATION', ''],
@@ -284,7 +286,7 @@ try {
     'G. APPROVAL audit event recorded',
   );
   const empApprove2 = await patchForm(empCtx, `${BASE}/api/findings/${findingId}`, { action: 'approve' });
-  ok(empApprove2.status() === 403, 'G. employee still cannot approve (403)');
+  ok(empApprove2.status() === 404, 'G. employee still cannot discover or approve the foreign finding (404)');
   // In VERIFICATION with all CAPA gates met, closure still requires evidence.
   const noEvidenceClose = await patchForm(mgrCtx, `${BASE}/api/findings/${findingId}`, { action: 'close' });
   ok(noEvidenceClose.status() === 400, 'G. closure without closure evidence rejected (400)');
@@ -317,7 +319,7 @@ try {
   );
 
   // ─────────────────── I. Page surfaces ───────────────────
-  console.log('\n── Scenario I: pages — anonymous redirect, manager view, employee 403 ──');
+  console.log('\n── Scenario I: pages — anonymous redirect, manager view, employee non-discovery ──');
   const anon = await browser.newPage();
   await anon.goto(`${BASE}/findings`);
   ok(anon.url().includes('/login'), 'I. anonymous /findings redirects to login');
@@ -327,7 +329,7 @@ try {
   ok((await mgrPage.locator('text=Critical closure gate').count()) === 1, 'I. critical closure gate panel rendered');
   ok((await mgrPage.locator('text=CLOSURE').count()) >= 1, 'I. manager sees the CLOSURE event in the audit trail');
   const empPageView = await empCtx.request.get(`${BASE}/findings/${findingId}`);
-  ok(empPageView.status() === 403, 'I. employee page for the foreign finding → 403');
+  ok(empPageView.status() === 404, 'I. employee page for the foreign finding → generic 404');
 } catch (err) {
   failed += 1;
   failures.push(`unhandled error: ${err.message}`);

@@ -19,7 +19,7 @@ export const POST: APIRoute = async (context) => {
 
   const finding = getFinding(id);
   if (!finding) return apiJsonError('Finding not found.', 404);
-  if (!canManageFinding(auth, finding)) return apiJsonError('You cannot update this Finding.', 403);
+  if (!canManageFinding(auth, finding)) return apiJsonError('Finding not found.', 404);
 
   const body = Object.fromEntries(await context.request.formData());
   try {

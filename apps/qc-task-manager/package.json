@@ -73,6 +73,7 @@
     "test:lab-reference-panel": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-reference-panel.mjs",
     "test:lab-security": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-security.mjs",
     "test:request-security": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-request-security.mjs",
+    "test:security-rbac-privacy-100": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-security-rbac-privacy-100.mjs",
     "test:observability": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-observability.mjs",
     "test:lab-esignature": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-esignature.mjs",
     "test:lab-suggest": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-suggest.mjs",

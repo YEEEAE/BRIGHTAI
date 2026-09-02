@@ -7,6 +7,7 @@ import { statSync } from 'node:fs';
 
 import {
   BACKUP_TIME_ZONE,
+  configuredBackupDirectory,
   createBackup,
   getBackupStatus,
   type BackupOptions,
@@ -87,23 +88,27 @@ function scheduleNext(options: BackupOptions): void {
 /** Start the singleton scheduler; repeated calls are harmless. */
 export function startBackupScheduler(options: BackupOptions): () => void {
   if (running) return stopBackupScheduler;
+  const effectiveOptions = {
+    ...options,
+    backupDir: configuredBackupDirectory(options.dbPath, { QC_BACKUP_DIR: options.backupDir }),
+  };
   running = true;
   // The timer is unref'ed, and this exit hook clears it explicitly during a
   // normal process shutdown without intercepting SIGTERM/SIGINT semantics.
   process.once('exit', stopBackupScheduler);
-  const status = getBackupStatus(options.backupDir);
+  const status = getBackupStatus(effectiveOptions.backupDir);
   if (shouldRunBackupCatchup(status)) {
-    if (dbFileExists(options.dbPath)) {
-      void createBackup({ ...options, trigger: 'scheduled' })
+    if (dbFileExists(effectiveOptions.dbPath)) {
+      void createBackup({ ...effectiveOptions, trigger: 'scheduled' })
         .catch((err) => console.error('[backup] catch-up run failed', err))
-        .finally(() => scheduleNext(options));
+        .finally(() => scheduleNext(effectiveOptions));
     } else {
       // Same quiet skip as the daily timer: absent file is not a failure.
-      logSkipped(options.dbPath);
-      scheduleNext(options);
+      logSkipped(effectiveOptions.dbPath);
+      scheduleNext(effectiveOptions);
     }
   } else {
-    scheduleNext(options);
+    scheduleNext(effectiveOptions);
   }
   return stopBackupScheduler;
 }

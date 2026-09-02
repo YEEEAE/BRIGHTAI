@@ -1,5 +1,5 @@
 import { getDb } from './db';
-import { canManageFinding } from './permissions';
+import { canManageFinding, PERMISSIONS } from './permissions';
 import { canViewTask, getAttachment, getTaskDetail, listActivity, listComments, listDependencies, listEvidenceFiles } from './taskDetails';
 import { getFinding } from './qc-operations';
 import { EVIDENCE_EXTENSIONS } from './task-policy';
@@ -10,7 +10,7 @@ type ContextResult = { ok: true; context: Record<string, unknown> } | { ok: fals
 export function taskAiContext(taskId: number, user: User): ContextResult {
   const task = getTaskDetail(taskId);
   if (!task) return { ok: false, status: 404, error: 'Task not found.' };
-  if (!canViewTask({ id: user.id, role: user.role }, task)) return { ok: false, status: 403, error: 'You are not authorized to analyze this task.' };
+  if (!canViewTask({ id: user.id, role: user.role }, task)) return { ok: false, status: 404, error: 'Task not found.' };
   return { ok: true, context: {
     task: { id: task.id, title: task.title, description: task.description, department: task.department, status: task.status, priority: task.priority, progress_percent: task.progress_percent, due_date: task.due_date, blocker_note: task.blocker_note, sla_status: task.sla_status, sla_percent_used: task.sla_percent_used },
     dependencies: listDependencies(taskId).map(({ depends_on_task_id, title, status, progress_percent, due_date }) => ({ depends_on_task_id, title, status, progress_percent, due_date })),
@@ -23,7 +23,7 @@ export function taskAiContext(taskId: number, user: User): ContextResult {
 export function findingAiContext(findingId: number, user: User): ContextResult {
   const finding = getFinding(findingId);
   if (!finding) return { ok: false, status: 404, error: 'Finding not found.' };
-  if (!canManageFinding(user, finding)) return { ok: false, status: 403, error: 'You are not authorized to analyze this Finding.' };
+  if (!canManageFinding(user, finding)) return { ok: false, status: 404, error: 'Finding not found.' };
   return { ok: true, context: {
     finding: { id: finding.id, finding_number: finding.finding_number, task_id: finding.task_id, inspection_type: finding.inspection_type, classification: finding.classification, severity: finding.severity, risk_description: finding.risk_description, requirement_reference: finding.requirement_reference, status: finding.status, due_date: finding.due_date },
     existing_rca: finding.rca ? { method: finding.rca.method, free_form: finding.rca.free_form, why_1: finding.rca.why_1, why_2: finding.rca.why_2, why_3: finding.rca.why_3, why_4: finding.rca.why_4, why_5: finding.rca.why_5, fishbone_json: finding.rca.fishbone_json } : null,
@@ -33,7 +33,7 @@ export function findingAiContext(findingId: number, user: User): ContextResult {
 }
 
 export function managementAiContext(user: User): ContextResult {
-  if (!['admin', 'manager', 'supervisor'].includes(user.role)) return { ok: false, status: 403, error: 'Management summary is not available for this role.' };
+  if (!PERMISSIONS.canViewDashboard(user.role)) return { ok: false, status: 403, error: 'Management summary is not available for this role.' };
   const db = getDb();
   const scoped = user.role === 'supervisor';
   const scopeSql = scoped ? ' AND t.department = ?' : '';
@@ -50,7 +50,7 @@ export function evidenceAiContext(taskId: number, attachmentId: number, user: Us
   if (!allowAiProcessing) return { ok: false, status: 400, error: 'AI processing consent is required.' };
   const task = getTaskDetail(taskId);
   if (!task) return { ok: false, status: 404, error: 'Task not found.' };
-  if (!canViewTask({ id: user.id, role: user.role }, task)) return { ok: false, status: 403, error: 'You are not authorized to review this evidence.' };
+  if (!canViewTask({ id: user.id, role: user.role }, task)) return { ok: false, status: 404, error: 'Task not found.' };
   const attachment = getAttachment(attachmentId, taskId);
   if (!attachment) return { ok: false, status: 404, error: 'Evidence not found.' };
   const extension = attachment.file_name.toLowerCase().split('.').pop() ?? '';

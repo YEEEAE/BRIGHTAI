@@ -13,7 +13,7 @@
 //      /api/export/tasks/pdf/[id] (200 + application/pdf + filename) — the
 //      PDF surface used by the "Download PDF" button on /tasks/[id].
 //   E. Role gating: anonymous → 302; employee cannot request an
-//      organization-wide report (403) and task PDFs of foreign tasks (403);
+//      organization-wide report (403) and task PDFs of foreign tasks (404);
 //      employee exports are scoped to their own tasks; supervisor downloads
 //      are department-scoped; manager downloads are organization-wide.
 //   F. Every download is recorded in the report audit trail.
@@ -293,7 +293,7 @@ try {
   );
 
   const empForeignPdf = await empCtx.request.get(`${BASE}/api/export/tasks/pdf/${tManagerOnly}`);
-  ok(empForeignPdf.status() === 403, 'E. employee task PDF of a foreign task → 403');
+  ok(empForeignPdf.status() === 404, 'E. employee task PDF of a foreign task → generic 404');
   const empOwnPdf = await empCtx.request.get(`${BASE}/api/export/tasks/pdf/${tEvidence}`);
   ok(empOwnPdf.status() === 200, 'E. employee task PDF of their own task → 200');
 
