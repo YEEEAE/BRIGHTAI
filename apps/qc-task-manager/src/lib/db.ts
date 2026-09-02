@@ -35,6 +35,11 @@ import { EMBEDDED_MIGRATIONS } from './migrationRegistry';
 import { backfillAuditChain } from './audit/chain';
 import { backfillQcAuditChain } from './audit/qcChain';
 import { importWICatalog } from './lab/wiCatalog';
+import { assertProductionSecretPolicy } from './security-config';
+
+// Evaluate at server startup so an unsafe production configuration cannot
+// serve even a health or login request. The check never prints secret values.
+assertProductionSecretPolicy();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

@@ -38,7 +38,10 @@ function seedMustChangePassword(): number {
 }
 
 function assertSafeSeedPassword(): void {
-  if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_DEFAULT_PASSWORD) {
+  if (process.env.NODE_ENV === 'production' && process.env.QC_SEED_MUST_CHANGE_PASSWORD === '0') {
+    throw new Error('QC_SEED_MUST_CHANGE_PASSWORD=0 is forbidden in production.');
+  }
+  if (process.env.NODE_ENV === 'production' && (!process.env.ADMIN_DEFAULT_PASSWORD || IS_DEFAULT_PASSWORD)) {
     throw new Error(
       'ADMIN_DEFAULT_PASSWORD must be set before seeding a production database: ' +
         'the app refuses to create accounts with the default "admin123" password when NODE_ENV=production.',

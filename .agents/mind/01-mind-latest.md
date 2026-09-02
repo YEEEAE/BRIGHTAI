@@ -1,3 +1,4 @@
+
 ## [2026-09-02] — QC-REMEDIATION-002: اعتمادية قاعدة البيانات والتزامن ومفاتيح منع التكرار (Idempotency)
 
 ### تم التنفيذ
@@ -1593,4 +1594,39 @@
 
 ### ملاحظات / مشاكل مفتوحة
 - full accessibility score غير مُدّعى؛ يلزم تسجيل manual assistive-technology evidence قبل إعلان 100% الكامل.
+- لا commit ولا push ولا deploy.
+## [2026-09-02] — QC-REMEDIATION-003: Security / IAM / Secrets / Adversarial Hardening
+
+### تم التنفيذ
+- ثبّتُّ فحصًا وقت تشغيل الخادم يرفض `SESSION_SECRET` و`JWT_SECRET` إذا كانت قيمتهما fallback تطويرية مع منع تسريب قيمة السر في الخطأ.
+- منعت تشغيل `QC_SEED_MUST_CHANGE_PASSWORD=0` في production، ومنعت seed الإنتاج باستخدام `admin123`؛ بقي إجبار تغيير كلمة المرور للحسابات المزروعة عند أول دخول.
+- شددت تحقق الرفع: SVG مرفوض صراحةً، وmarkers المحتوى النشط/polyglot والتنفيذية تُرفض قبل تخزين BLOB، مع بقاء فحص MIME والـmagic bytes.
+- أضفت سويت adversarial تثبت bcrypt `$2a$/$2b$` cost 10، رفض SVG وpolyglot وعدم إنشاء attachment، رفض Employee لنسخ admin الاحتياطي بـ403، إلغاء session عند logout، وحواجز production السلبية.
+- أضفت `PROMPT-03-EVIDENCE.md` بمصفوفة قبول صريحة وحدود الأدلة المحلية مقابل اختبارات المتصفح وبيئة production.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/security-config.ts`
+- `apps/qc-task-manager/src/lib/db.ts`
+- `apps/qc-task-manager/src/lib/seed.ts`
+- `apps/qc-task-manager/src/lib/taskUpdates/shared.ts`
+- `apps/qc-task-manager/scripts/test-security-adversarial.mjs`
+- `apps/qc-task-manager/package.json`
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/SECURITY.md`
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-03-EVIDENCE.md`
+
+### التحقق
+- `pnpm run test:security-adversarial` ✅ — 9/9.
+- `pnpm run test:security-hygiene` ✅؛ `pnpm run test:security-rbac-privacy-100` ✅؛ `pnpm run test:architecture` ✅.
+- `pnpm run test:auth-password-lifecycle` ✅ — 23/23؛ `pnpm run test:request-security` ✅ — 56/56.
+- `pnpm run test:manifest` ✅ — 77 canonical suites و28 E2E.
+- `pnpm run typecheck` ✅ — 0 errors / 0 warnings / 0 hints.
+- `NODE_ENV=production pnpm run build` ✅.
+
+### النتيجة
+- **الحالة:** جزئي / CONDITIONAL GO محليًا.
+- **مختصر:** ضوابط الأمان المحلية والحواجز العدائية خضراء، لكن full browser E2E للـlogin/session-expiry/re-authentication وتدوير الأسرار فعليًا عند مزود production ما زالت أدلة خارجية معلقة.
+
+### ملاحظات / مشاكل مفتوحة
+- لم تُعد تشغيل سلسلة 76 unit / 30 E2E كاملة بعد هذا التغيير الأمني؛ baseline الأخير قبل PROMPT-03 كان أخضر.
 - لا commit ولا push ولا deploy.

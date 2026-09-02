@@ -115,6 +115,9 @@ export function validateUploadedFile(
   }
   const dot = fileName.lastIndexOf('.');
   const ext = dot >= 0 ? fileName.slice(dot + 1).toLowerCase() : '';
+  if (ext === 'svg') {
+    return { ok: false, error: 'SVG uploads are not allowed.' };
+  }
   const allowedTypes = EXT_MIME[ext];
   if (!allowedTypes) {
     return {
@@ -131,7 +134,7 @@ export function validateUploadedFile(
   }
   if (bytes) {
     const signature = GENERIC_SIGNATURES[ext];
-    if (isExecutableBytes(bytes)) {
+    if (isExecutableBytes(bytes) || containsActiveContent(bytes)) {
       return { ok: false, error: 'Executable files are not allowed.' };
     }
     if (signature && !matchesSignature(bytes, signature)) {
@@ -142,6 +145,13 @@ export function validateUploadedFile(
     }
   }
   return { ok: true, fileName, mimeType: declared };
+}
+
+/** Reject executable/polyglot markers even when they are appended to a valid container. */
+function containsActiveContent(bytes: Buffer): boolean {
+  const text = bytes.toString('latin1').toLowerCase();
+  return text.includes('<script') || text.includes('javascript:') || text.includes('onload=') ||
+    text.includes('<?php') || text.includes('#!/bin/') || text.includes('#!/usr/bin/');
 }
 
 const TEXT_EXTENSIONS = new Set(['txt', 'md', 'csv', 'json', 'log', 'xml', 'sql']);

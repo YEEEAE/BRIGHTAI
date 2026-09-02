@@ -39,7 +39,7 @@ scanning, host hardening, or a managed web application firewall.
   change task state, assign a task, close/reopen/cancel a task, or create an
   audit event.
 - Uploads are restricted by sanitized filename, extension, declared MIME type,
-  maximum size (10 MiB) and, for evidence formats, magic bytes. File size is
+  maximum size (10 MiB), active-content/polyglot marker rejection, and magic bytes. File size is
   checked before BLOB allocation/insertion. Files are served as attachments
   with sanitized `Content-Disposition` names and private/no-store caching.
 - Responses use CSP, `X-Content-Type-Options: nosniff`,
@@ -101,4 +101,6 @@ Do not open a public issue containing proof-of-concept credentials, session
 tokens, database files or customer evidence. Report privately to the project
 owner with affected route, impact, minimal reproduction and contact details.
 The owner should acknowledge, triage, patch, validate and rotate exposed
-credentials before public disclosure.
+   credentials before public disclosure.
+5. `SESSION_SECRET` and `JWT_SECRET`, when configured, must not use known
+   development fallback values; production startup fails closed if they do.
