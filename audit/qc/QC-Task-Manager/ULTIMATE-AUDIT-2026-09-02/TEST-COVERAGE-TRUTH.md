@@ -1,41 +1,48 @@
-# TEST COVERAGE TRUTH — QC Task Manager (HEAD cc9185d4)
+# حقيقة تغطية الاختبارات الكنسية — TEST COVERAGE TRUTH
 
-Authority: `scripts/test-manifest.mjs` + `scripts/e2e-registry.mjs`, enforced by `test-manifest-guard.mjs` (passed 2026-09-02).
+> **المرجع الإلزامي:** التحقق المستقل المنفذ عند HEAD `d9a45b07`. لا يُعتد بأي تقرير سابق لا يعيد إنتاج الاختبارات بالكامل.
 
-## Registry truth
+---
 
-| Class | Count | Notes |
-|---|---|---|
-| Canonical test suites | **74** | registered, runnable, wired into `run-full-tests.mjs` |
-| Meta suites | 3 | manifest/route guards etc. |
-| Classified non-runnable test scripts | 4 | explicitly classified, not silently skipped |
-| Canonical E2E suites | **28** | wired into `e2e-acceptance.mjs` |
-| Classified E2E scripts | 4 | explicit |
+## 1. ملخص نتائج الاختبارات الإجمالية
 
-## Execution truth (this date)
+| نوع السويت | العدد الإجمالي | الناجح فعلياً | الفاشل فعلياً | المحجوب | النسبة الفعلية | الحالة العامة |
+|---|---|---|---|---|---|---|
+| **السويتات الكنسية للوحدات (Canonical Unit)** | **74** سويتاً | **72** سويتاً | **2** سويتان (P0-1, P0-2) | 0 | **97.30%** | ❌ FAIL في HEAD |
+| **سويتات القبول المتكاملة (Canonical E2E)** | **28** سويتاً | **4** سويتات | **1** سويت (P0-3) | **23** سويتاً | **14.29%** | ❌ BLOCKED عند سويت 5 |
+| **حراس البنية التحتية (Meta Guards)** | **3** حراس | **3** حراس | 0 | 0 | **100%** | ✅ PASS |
+| **سكريبتات الاختبار المصنفة غير القابلة للتشغيل** | **4** سكريبتات | N/A | N/A | N/A | 100% مصنفة | ✅ معلنة بالأسباب |
+| **السلسلة الكنسية التراكمية (Full Cumulative Run)** | **102** سويتاً | **76** سويتاً | **3** سويتات | **23** سويتاً | **74.51%** | ❌ **FAIL / NO-GO** |
 
-- Fast gates: typecheck, manifest, route-manifest, schema-reference, migrations, embedded parity, security-hygiene → all exit 0.
-- Full 74-suite unit run: executed — see final audit report for exact pass/fail and duration.
-- E2E acceptance (production build + 28 suites): executed — see audit report.
+---
 
-## Contract vs behavior separation (critical)
+## 2. تفصيل السويتات الفاشلة والمسببة للتعليق (P0 Failures)
 
-The suite fleet is dominated by **source-contract guards** (e.g., `test-ui-consistency`, `test-a11y-ergonomics-100`, `test-ux-writing` assert attributes/strings/structures in source) versus **behavioral tests** (DB lifecycle suites, API contract, E2E browser runs, delete-durability, backup/restore read-back).
+### 1. `test:observability` (P0-1)
+- **الأمر:** `pnpm run test:observability`
+- **الملف:** `scripts/test-observability.mjs:18`
+- **سبب الفشل:** عدم تطابق نص الخطأ الآمن المتوقع في الاختبار (`'Something went wrong. Please try again.'`) مع النص الحقيقي المحسن في الكود (`'We couldn’t complete the request. The save state is unknown. Check the record before trying again.'`).
+- **رمز الخروج:** Exit code 1 (AssertionError).
 
-| Truth class | Examples | Strength |
-|---|---|---|
-| Behavioral, DB-level | migrations, delete-durability, lab lifecycle suites, api-contract | Strong — proves runtime |
-| Behavioral, browser | 28 E2E suites | Strong for covered flows; NOT all 115 routes |
-| Source-contract | a11y-100, ui-visual-100, ux-writing, design-system-100 | Proves code structure, NOT runtime perception |
-| Diagnostic tools | `run-performance`, `db-doctor` | Measurement only; no pass/fail budget gate for p50/p95 |
+### 2. `test:a11y-ergonomics-100` (P0-2)
+- **الأمر:** `pnpm run test:a11y-ergonomics-100`
+- **الملف:** `scripts/test-a11y-ergonomics-100.mjs`
+- **سبب الفشل:** فشل بوابة المصدر: `A11Y-ERGONOMICS-100-EVIDENCE.md must exist beside this gate`. الملف نُقل وحُذف أثناء عملية دمج الأدلة السابقة، مما كسر شرط البوابة.
+- **رمز الخروج:** Exit code 1.
 
-## Skipped / weakened test scan
+### 3. `e2e:delete-request` (P0-3)
+- **الأمر:** `node apps/qc-task-manager/scripts/e2e-delete-request.mjs`
+- **الملف:** `scripts/e2e-delete-request.mjs:196`
+- **سبب الفشل:** يبحث محدد Playwright عن زر يحمل النص: `button:has-text("Confirm deletion")`، بينما تم تعديل نص الزر في الواجهة (`ReviewDeleteRequestDialog.tsx:83`) إلى `Delete task permanently`. يتوقف السكريبت بانتظار الزر حتى انتهاء المهلة (Timeout)، مما يؤدي لرمي استثناء يوقف مشغل `e2e-acceptance.mjs` بالكامل عند السويت رقم 5.
+- **الأثر الحاسم:** حجب 23 سويت E2E تالية عن التنفيذ في الفحص الشامل.
 
-- `grep skip` hits: `test-db-rules.mjs` (1), `test-lab-repeat-failures.mjs` (2), `test-scheduled-notifications.mjs` (4) — each reviewed as legitimate fixture/timing guards, none disables an assertion to force PASS. Zero `test.skip`/`todo` suites found.
-- Known fixture noise: `[backup] catch-up run failed SqliteError` inside `test:report-preview` — documented expected fixture behavior; suite passes. Flagged as P2 cosmetic-noise debt.
+---
 
-## Gaps (carried to gap matrix)
+## 3. السكريبتات المصنفة في السجل (Classified Non-runnable)
 
-1. No p50/p95/max numeric performance **budget gate** wired as pass/fail (P1).
-2. E2E covers sampled flows; 115-route visual matrix not executable automatically (P1, HUMAN/browser class).
-3. AI evals exist as foundation suites, but no model-behavior eval harness with golden datasets (P2).
+1. `scripts/test-manifest.mjs`: وحدة تصدير بيانات السجل للمشغل والحارس (Data Module).
+2. `scripts/test-manifest-guard.mjs`: الحارس الكنسي نفسه؛ يمثل الأمر `test:manifest`.
+3. `scripts/test-report-pdf-arabic.mjs`: سكريبت تشخيص يدوي لتوليد PDF العربي — معطل ومصنف كخلل مفتوح (TypeError في تشكيل الحروف).
+4. `scripts/test-responsive-e2e-contract.mjs`: حارس عقد الأسلاك والتوصيل لـ E2E المتجاوب.
+
+النتيجة: **صفر اختبارات يتيمة (0 orphan tests)**. سلامة السجل البرمجي مثبتة 100%، لكن الشجرة الفعلية مكسورة بـ 3 P0 حقيقية.
