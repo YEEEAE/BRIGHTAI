@@ -1,3 +1,66 @@
+## [2026-09-02] — QC-100-FORMS-013: تدقيق شامل وتحسين مواصفات كل نماذج QC
+
+### تم التنفيذ
+- جردت كل أسطح النماذج في تطبيق `apps/qc-task-manager` من المصدر؛ وُجدت **51 ملفًا** يحتوي على `<form`، وشملت المهام، Findings/RCA/CAPA، المختبر، master data، الوثائق، الاعتمادات، retest، change requests، المستخدمين، الإعدادات، الفلاتر والبحث.
+- أنشأت `12-ADVANCED-FORMS-100-EVIDENCE.md` كمصفوفة أدلة مستقلة تفصل الوضع المثبت آليًا عن UAT اليدوي غير المنفذ.
+- وثقت findings مع RCA/CAPA مرتبة P0–P2، أبرزها: عدم شمول عقد `data-qc-form` لكل mutations، عدم ضمان `aria-describedby` لأخطاء الحقول، وتكرار شكل قاعدة البيانات داخل نموذج change request.
+- صممت بنية intent-first باستخدام sections وprogressive disclosure وconditional fields وlookup/search وdate/numeric helpers، مع متطلبات pending/duplicate protection/success/recovery/unsaved protection.
+- أضفت خطة LAB-F-01 إلى LAB-F-12 لتغطية validation، server rejection، duplicate submit، failure recovery، keyboard، mobile، zoom، screen reader، conditional fields، والإجراءات المدمرة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/12-ADVANCED-FORMS-100-EVIDENCE.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm run test:form-productivity` ✅ — 20/20.
+- `pnpm run typecheck` ✅ — 0 errors / 0 warnings / 0 hints.
+- `pnpm run build` ✅ — Complete.
+- جرد المصدر ✅ — 51 ملف form.
+- `git -c core.fsmonitor=false diff --check` ✅.
+
+### النتيجة
+- **الحالة:** جزئي / CONDITIONAL GO للتوثيق.
+- **مختصر:** اكتمل التدقيق وخطة CAPA، لكن لا يجوز ادعاء 100% form UX أو zero data-loss قبل تطبيق العقد الموحد وتشغيل مصفوفة الاختبارات اليدوية والآلية على كل النماذج.
+
+### ملاحظات / مشاكل مفتوحة
+- VoiceOver/NVDA، UAT حسب الدور، اختبار 360/1440/200% لكل نموذج، وstaging/production evidence غير متوفرة.
+- لم يتغير سلوك المنتج في هذه المهمة التوثيقية.
+- لا commit ولا push ولا deploy.
+
+## [2026-09-02] — QC-100-DATA-VIZ-012: تدقيق لوحات البيانات والـKPI والرسوم والتقارير
+
+### تم التنفيذ
+- جردت كل أسطح التحليل في `apps/qc-task-manager`: `/dashboard`، `/lab`، لوحات الأدوار Employee/Supervisor/Manager، `/manager/workload`، `/reports`، `/lab/reports`، KPI drilldown، ومصادر الرسوم والجداول.
+- أنشأت `11-DASHBOARD-DATA-VIZ-100-EVIDENCE.md` بمصفوفة KPI تجيب سؤال المقياس، المستخدم، الإجراء، المقارنة، الفترة، ومعنى الجيد/السيئ.
+- وثقت 20 KPI رئيسية للمهام ومجموعات KPI المختبر، وجردت 14 visualization، 8 تقارير مهام، 16 تقرير مختبر، ومسارات drilldown والجداول التشغيلية.
+- حدّدت تكرارًا فعليًا بين `Average Completion Time` و`Average Resolution`، وتضخمًا في صف KPI، ومقاييس حجم/نشاط ينبغي demote لها بدل اعتبارها قرارات.
+- حددت فجوات القرار: غياب denominator/target/as-of لبعض المقاييس، اختلاف عقد الفترة بين dashboard والمختبر، غياب جدول بديل كامل لبعض الرسوم، وقص drilldown عند 500 بلا pagination.
+- فصلت الأدلة الآلية عن الاعتماد البشري: أسماء SVG و`title` وملخصات نصية وجداول موجودة جزئيًا، لكن VoiceOver/NVDA والـUAT الإنتاجي غير مثبتين.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/11-DASHBOARD-DATA-VIZ-100-EVIDENCE.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm run test:dashboard-reports` ✅
+- `pnpm run test:report-preview` ✅ — ظهرت رسائل WI catalog collisions وbackup catch-up متوقعة من fixture، والسويت نجحت.
+- `pnpm run test:lab-reports` ✅ — 196 passed / 0 failed.
+- `pnpm run test:lab-trends` ✅ — 45 passed / 0 failed.
+- `pnpm run test:a11y-ergonomics-100` ✅ — 76 صفحة و59 مكونًا؛ العقد الآلي 100%، وAT اليدوي ما زال منفصلًا.
+- `pnpm run test:manifest` ✅ — 74 suite كنسية و28 E2E.
+- `pnpm run typecheck` ✅ — 0 errors / 0 warnings / 0 hints.
+- `pnpm run build` ✅ — Complete.
+- `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** جزئي.
+- **مختصر:** اكتمل التدقيق التوثيقي الشامل وخرجت قائمة remediation مرتبة P0–P2؛ التطبيق لا يحقق بعد شرط المستخدم النهائي صفر misleading/مقاييس بلا معنى/رسوم بلا بديل وصول كامل، لذلك لم أدّعِ 100% ولم أغيّر منطق المنتج.
+
+### ملاحظات / مشاكل مفتوحة
+- P0/P1 الموثقة في الدليل: تقليل KPI tier، إزالة التكرار، إظهار الفترة/المقام/الهدف، جدول HTML لكل رسم، توضيح استقلال مختبر dashboard عن فلاتر المهام أو توحيد العقد.
+- VoiceOver/NVDA وUAT البشري والإثبات على بيانات staging/production غير منفذة.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-02] — QC-100-CONTENT-UX-010: تدقيق وتحسين النصوص الظاهرة وخطة البحث التجريبي
 
 ### تم التنفيذ
