@@ -19,10 +19,10 @@
 - [✅] PROMPT 01 — Architecture + Code Quality
 - [✅] PROMPT 02 — Database + Migrations + Data Integrity
 - [✅] PROMPT 03 — Security + Auth + RBAC + Privacy UX
-- [ ] PROMPT 04 — Testing + E2E + CI + Observability + Performance
-- [ ] PROMPT 05 — Design System
-- [ ] PROMPT 06 — Visual Design + UI
-- [ ] PROMPT 07 — UX + Information Architecture + Service Design
+- [✅] PROMPT 04 — Testing + E2E + CI + Observability + Performance
+- [✅] PROMPT 05 — Design System
+- [✅] PROMPT 06 — Visual Design + UI
+- [✅] PROMPT 07 — UX + Information Architecture + Service Design
 - [ ] PROMPT 08 — Interaction Design + Motion & Digital Art
 - [ ] PROMPT 09 — UX Writing + Microcopy + UX Research
 - [ ] PROMPT 10 — Accessibility Design + Ergonomics
@@ -773,7 +773,7 @@ DESIGN-SYSTEM-100-EVIDENCE.md
 # PROMPT 06 — Visual Design + UI → 100%
 
 ## Checklist
-- [ ] Not executed
+- [✅] Executed
 
 ```text
 @GitHub @Superpowers
@@ -872,7 +872,7 @@ Include route coverage proving every page was reviewed.
 # PROMPT 07 — UX + Information Architecture + Service Design → 100%
 
 ## Checklist
-- [ ] Not executed
+- [ ✅]executed
 
 ```text
 @GitHub @Superpowers
@@ -947,7 +947,7 @@ Target:
 - complete route/navigation traceability
 
 Create:
-UX-IA-SERVICE-DESIGN-100-EVIDENCE.md
+7-UX-IA-SERVICE-DESIGN-100-EVIDENCE.md
 ```
 
 ---
@@ -1032,7 +1032,7 @@ Target:
 - zero interaction without a perceivable result
 
 Create:
-INTERACTION-MOTION-100-EVIDENCE.md
+8-INTERACTION-MOTION-100-EVIDENCE.md
 ```
 
 ---
@@ -1102,7 +1102,7 @@ Do not fabricate user research.
 Instead:
 
 Create:
-docs/PILOT-UX-RESEARCH.md
+9-PILOT-UX-RESEARCH.md
 
 containing:
 - research goals
@@ -1309,7 +1309,7 @@ Target:
 - zero meaningless metrics
 
 Create:
-DASHBOARD-DATA-VIZ-100-EVIDENCE.md
+11-DASHBOARD-DATA-VIZ-100-EVIDENCE.md
 ```
 
 ---
@@ -1415,7 +1415,7 @@ TARGET
 - zero ambiguous required fields
 
 Create:
-ADVANCED-FORMS-100-EVIDENCE.md
+12-ADVANCED-FORMS-100-EVIDENCE.md
 ```
 
 ---
@@ -1483,7 +1483,7 @@ A user must not gain access by manually entering URLs.
 Test all role × route × action combinations.
 
 Generate:
-PERMISSION-IA-100-EVIDENCE.md
+13-PERMISSION-IA-100-EVIDENCE.md
 
 Target:
 - 100% route authorization mapping
@@ -1595,7 +1595,7 @@ Verify all previously exposed credentials have actually been revoked/rotated by 
 Do not record secret values.
 
 Produce:
-OPERATIONAL-100-EVIDENCE.md
+14-OPERATIONAL-100-EVIDENCE.md
 
 Only verified human/operator evidence may close these rows.
 ```
@@ -1742,7 +1742,7 @@ If external/manual evidence is missing, state exactly what blocks 100%.
 FINAL REPORT
 
 Create:
-audit/qc/QC-Task-Manager/FINAL-100-PERCENT-SYSTEM-REPORT.md
+audit/qc/QC-Task-Manager/15-FINAL-100-PERCENT-SYSTEM-REPORT.md
 
 It must contain:
 

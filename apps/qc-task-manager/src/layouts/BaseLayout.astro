@@ -54,9 +54,9 @@ const recentNotifications = navUser
           recentNotifications={recentNotifications}
         />
       )}
-      <main id="main" tabindex="-1" class="mx-auto min-w-0 w-full max-w-6xl overflow-x-hidden px-4 py-8 focus:outline-none">
+      <main id="main" tabindex="-1" class="mx-auto min-w-0 w-full max-w-7xl overflow-x-hidden px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 focus:outline-none">
         <FlashNotice />
-        <slot />
+        <div class="qc-page-content"><slot /></div>
       </main>
     </div>
   </body>

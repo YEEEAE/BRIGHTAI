@@ -1110,3 +1110,37 @@
 ### ملاحظات / مشاكل مفتوحة
 - لا commit ولا push ولا deploy.
 - `01-mind-latest.md` متجاوز حد الحجم الإرشادي التاريخي؛ الأرشفة إلى القسم 2 قرار منفصل ولم تُنفّذ ضمن هذه المهمة كي لا تخلط أرشفة واسعة مع تغيير تصميمي.
+## [2026-09-02] — QC-100-UI-VISUAL-007: ترقية الأسطح والهرمية البصرية لكل مسارات QC
+
+### تم التنفيذ
+- أضفت `qc-page-content` إلى `BaseLayout` مع حاوية موحدة بعرض `max-w-7xl` وهوامش متجاوبة، فصار الإيقاع الرأسي والأفقي مشتركًا لكل الصفحات القياسية بدون تغيير الخلفية أو الـslot.
+- أضفت وصفات semantic جديدة في `global.css`: `qc-page-stack` و`qc-surface-panel` و`qc-table-panel` و`type-metadata`، مع تنسيق موحّد لرؤوس الجداول وخلاياها وحالات hover.
+- رحّلت جداول البحث والاختبارات والمستندات إلى `qc-table-panel` مع إبقاء query filters وpagination والروابط وحالات StatusPill كما هي.
+- رحّلت `/login` و`/404` إلى أسطح وPage title وFormField وBanner وAppButton الكنسية، ووسّعت `Input` لدعم autocomplete بدون تغيير مسار المصادقة.
+- حسّنت `WorkflowContext` بإزالة `opacity-70` منخفض التباين واستبداله بدور `type-metadata` المقروء.
+- أنشأت مواصفة وخطة تنفيذ ودليل `UI-VISUAL-100-EVIDENCE.md`؛ حارس `test:ui-visual-100` يجرد **76** صفحة Astro (منها **5** طباعة وredirect واحد) ويثبت تصنيفها.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/layouts/BaseLayout.astro`
+- `apps/qc-task-manager/src/styles/global.css`
+- `apps/qc-task-manager/src/components/ui/{Input,WorkflowContext}.astro`
+- `apps/qc-task-manager/src/pages/{login,404,search}.astro`
+- `apps/qc-task-manager/src/pages/lab/{tests,index,documents/index}.astro`
+- `apps/qc-task-manager/scripts/{test-ui-visual-100,test-manifest}.mjs`
+- `apps/qc-task-manager/{UI-VISUAL-100-EVIDENCE.md,docs/superpowers/specs/2026-09-02-qc-ui-visual-007-design.md,docs/superpowers/plans/2026-09-02-qc-ui-visual-007.md,package.json}`
+
+### التحقق
+- `pnpm test:ui-visual-100` ✅ — 171/171 فحصًا، 76 صفحة Astro.
+- `pnpm test:ui-consistency` ✅ — 212/212؛ `test:design-system-100` ✅؛ `test:interaction-feedback` ✅ 25/25؛ `test:responsive-e2e-contract` ✅؛ `test:manifest` ✅ 71/28.
+- `pnpm typecheck` ✅ — 0 أخطاء / 0 تحذيرات / 0 hints.
+- `NODE_ENV=production pnpm build` ✅ — Complete.
+- `git diff --check` ✅.
+- `pnpm e2e:acceptance` ⏭️ — أُلغي بناءً على طلب المستخدم بعد بدء أول ثلاث suites؛ لا يوجد ادعاء acceptance كامل.
+
+### النتيجة
+- **الحالة:** جزئي.
+- **مختصر:** طبقة العرض المشتركة والجداول والأسطح عالية الاستخدام تحسنت، والتغطية المصدرية كاملة. لقطات browser لكل المقاسات العشرة ومراجعة بشرية/قارئ شاشة ما زالت غير منفذة، وacceptance الكامل أُلغي بطلب المستخدم.
+
+### ملاحظات / مشاكل مفتوحة
+- `apps/qc-task-manager/DESIGN-SYSTEM-100-EVIDENCE.md` كان حذفًا سابقًا للمهمة وبقي بدون لمس، وكذلك تعديل `prompt10.md` ونسخة الدليل المنقولة تحت `audit/qc/`.
+- لا commit ولا push ولا deploy.

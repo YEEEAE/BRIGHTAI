@@ -4,6 +4,10 @@
 // form stays self-submitting with no separate API endpoint.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getSessionUser } from '../lib/auth';
+import AppButton from '../components/ui/AppButton.astro';
+import Banner from '../components/ui/Banner.astro';
+import FormField from '../components/ui/FormField.astro';
+import Input from '../components/ui/Input.astro';
 
 // Only allow internal redirect targets (blocks open-redirect abuse).
 const rawTarget = Astro.url.searchParams.get('redirect') || '';
@@ -25,50 +29,40 @@ const showSeededHint = process.env.NODE_ENV !== 'production';
 ---
 
 <BaseLayout title="Sign in" hideNav>
-  <section class="mx-auto mt-12 w-full max-w-sm rounded-xl border border-white/80 bg-white/85 p-6 shadow-xl shadow-slate-900/10 backdrop-blur-md">
-    <h1 class="text-2xl font-semibold text-slate-900">Sign in</h1>
-    <p class="mt-1 text-sm text-slate-600">Use your QC Tasks account.</p>
+  <section class="qc-surface-panel mx-auto mt-8 w-full max-w-md p-6 sm:mt-12 sm:p-8" aria-labelledby="sign-in-title">
+    <p class="type-page-eyebrow">QC Tasks</p>
+    <h1 id="sign-in-title" class="type-page-title mt-1">Sign in</h1>
+    <p class="type-page-subtitle">Use your QC Tasks account.</p>
 
     {error && (
-      <div class="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-        Invalid username or password.
-      </div>
+      <Banner tone="error" title="Sign-in unsuccessful" class="mt-5">Invalid username or password.</Banner>
     )}
 
     <form action="/login" method="POST" class="mt-6 space-y-4">
       <input type="hidden" name="redirect" value={redirectTarget} />
-      <div>
-        <label for="username" class="block text-sm font-medium text-slate-700">Username</label>
-        <input
+      <FormField label="Username" forId="username">
+        <Input
           id="username"
           name="username"
           type="text"
           autocomplete="username"
           required
-          class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
         />
-      </div>
-      <div>
-        <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-        <input
+      </FormField>
+      <FormField label="Password" forId="password">
+        <Input
           id="password"
           name="password"
           type="password"
           autocomplete="current-password"
           required
-          class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
         />
-      </div>
-      <button
-        type="submit"
-        class="w-full rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
-      >
-        Sign in
-      </button>
+      </FormField>
+      <AppButton type="submit" variant="primary" class="w-full">Sign in</AppButton>
     </form>
 
     {showSeededHint && (
-      <p class="mt-6 text-xs text-slate-500">
+      <p class="mt-6 border-t border-border pt-5 type-caption">
         Seeded accounts — password <code>admin123</code> by default:
         <code>admin</code> → /admin/users, <code>manager</code> → /manager,
         <code>supervisor</code> → /supervisor, <code>employee</code> → /employee.

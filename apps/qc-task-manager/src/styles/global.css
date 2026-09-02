@@ -119,8 +119,19 @@
 .type-secondary { @apply text-sm text-content-secondary; }
 .type-caption { @apply text-xs text-content-muted; }
 .type-data-id { @apply text-sm font-medium tabular-nums text-content; }
+.type-metadata { @apply text-xs tabular-nums text-content-muted; }
 .qc-focus { @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus; }
 .qc-surface-card { @apply rounded-qc-lg border border-border bg-surface shadow-sm; }
+.qc-page-content,
+.qc-page-stack { @apply space-y-6 sm:space-y-7; }
+.qc-surface-panel { @apply rounded-qc-lg border border-border bg-surface shadow-sm; }
+.qc-table-panel { @apply overflow-x-auto rounded-qc-lg border border-border bg-surface shadow-sm; }
+.qc-table-panel > table { @apply min-w-full divide-y divide-border text-sm; }
+.qc-table-panel > table thead { @apply bg-surface-muted; }
+.qc-table-panel > table th { @apply whitespace-nowrap px-4 py-3 text-start text-xs font-semibold uppercase tracking-wide text-content-muted; }
+.qc-table-panel > table td { @apply px-4 py-3 align-middle text-content-secondary; }
+.qc-table-panel > table tbody { @apply divide-y divide-border; }
+.qc-table-panel > table tbody > tr { @apply transition-colors duration-qc-fast hover:bg-surface-muted; }
 .qc-surface-overlay { box-shadow: var(--shadow-overlay); }
 .qc-overlay { background: var(--color-overlay); }
 .qc-glass { background: var(--color-glass); -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%); }

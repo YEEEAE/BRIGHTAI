@@ -3,10 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AppButton from '../components/ui/AppButton.astro';
 ---
 <BaseLayout title="Not found">
-  <section class="mx-auto max-w-2xl rounded-xl border border-white/80 bg-white/85 px-6 py-16 text-center shadow-xl shadow-slate-900/10 backdrop-blur-md">
-    <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">Error 404</p>
-    <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Page not found</h1>
-    <p class="mx-auto mt-2 max-w-md text-slate-600">
+  <section class="qc-surface-panel mx-auto max-w-2xl px-6 py-12 text-center sm:py-16" aria-labelledby="not-found-title">
+    <p class="type-page-eyebrow">Error 404</p>
+    <h1 id="not-found-title" class="type-page-title mt-1">Page not found</h1>
+    <p class="mx-auto mt-2 max-w-md type-page-subtitle">
       The page you're looking for doesn't exist or may have moved. Check the address, or start again from your home page.
     </p>
     <div class="mt-6 flex flex-wrap items-center justify-center gap-2">

@@ -344,7 +344,7 @@ function fmt(value: unknown): string {
             ctaLabel={filtered ? 'Clear filters' : 'Back to the command center'}
           />
         ) : (
-          <section aria-label="Document Library" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <section aria-label="Document Library" class="qc-table-panel">
             <div class="divide-y divide-slate-100 md:hidden">
               {result.rows.map((r) => (
                 <article class="space-y-3 p-4">
