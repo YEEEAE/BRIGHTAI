@@ -241,7 +241,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
         <AppButton type="submit" variant="primary">
           Search
         </AppButton>
-        <AppButton href="/search" variant="secondary">Reset filters</AppButton>
+        <AppButton href="/search" variant="secondary">Clear filters</AppButton>
       </div>
     </div>
   </form>
@@ -283,7 +283,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
               <input type="hidden" name="action" value="delete" />
               <input type="hidden" name="filter_id" value={sf.id} />
               <input type="hidden" name="next" value={currentUrl} />
-              <AppButton type="submit" variant="tertiary" size="sm" ariaLabel={`Delete saved filter ${sf.name}`} title={`Delete saved filter ${sf.name}`}>Delete</AppButton>
+              <AppButton type="submit" variant="tertiary" size="sm" ariaLabel={`Delete saved filter ${sf.name}`} title={`Delete saved filter ${sf.name}`}>Delete saved filter</AppButton>
             </form>
           </li>
         ))}
@@ -311,7 +311,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
       title="No tasks match your search"
       hint="Try removing some filters, or clear the search text."
       ctaHref="/search"
-      ctaLabel="Reset search"
+      ctaLabel="Clear search"
     />
   ) : (
     <div class="qc-table-panel">

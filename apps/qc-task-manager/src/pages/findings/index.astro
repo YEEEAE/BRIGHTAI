@@ -42,7 +42,7 @@ const inputClass = 'rounded-md border border-slate-300 px-3 py-2 text-sm text-sl
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Classification<select name="classification" class={inputClass}><option value="">All</option>{FINDING_CLASSIFICATIONS.map((value) => <option value={value} selected={classification === value}>{value}</option>)}</select></label>
       <div class="flex items-center gap-2">
         <AppButton type="submit" variant="primary">Apply filters</AppButton>
-        {filtered && <AppButton href="/findings" variant="secondary">Reset</AppButton>}
+        {filtered && <AppButton href="/findings" variant="secondary">Clear filters</AppButton>}
       </div>
     </form>
 

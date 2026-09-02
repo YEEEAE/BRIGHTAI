@@ -80,7 +80,7 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
     formRef.current.submit();
   }
 
-  const confirmLabel = mode === 'approve' ? 'Confirm deletion' : 'Reject request';
+  const confirmLabel = mode === 'approve' ? 'Delete task permanently' : 'Reject deletion request';
 
   return (
     <>
@@ -92,7 +92,7 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
           className="min-h-11 rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           title="Approve permanent deletion of this task"
         >
-          Approve deletion
+          Review and delete task
         </button>
         <button
           type="button"
@@ -101,7 +101,7 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
           className="min-h-11 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
           title="Keep the task and reject this request"
         >
-          Reject
+          Keep task and reject request
         </button>
       </div>
 
@@ -121,21 +121,21 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
           {mode === 'approve' ? (
             <>
               <h2 id={`review-dialog-title-${requestId}`} className="text-lg font-semibold text-slate-900">
-                Confirm deletion
+                Delete task permanently?
               </h2>
               <p className="mt-2 text-sm text-slate-600">
                 This will <span className="font-semibold text-red-700">permanently delete</span> the task{' '}
                 <span className="font-medium text-slate-900">“{taskTitle}”</span> along with its comments,
-                attachments, and activity history. This cannot be undone.
+                attachments, and activity history. This cannot be undone. The deletion request will be recorded after confirmation. Retrying is not safe once deletion starts.
               </p>
             </>
           ) : (
             <>
               <h2 id={`review-dialog-title-${requestId}`} className="text-lg font-semibold text-slate-900">
-                Reject deletion request
+                Keep the task and reject the request
               </h2>
               <p className="mt-1 text-sm text-slate-600">
-                The task “{taskTitle}” will be kept. Tell the requester why (optional).
+                The task “{taskTitle}” will be kept. Add a reason so the requester knows what to change (optional).
               </p>
               <label htmlFor={`review-note-${requestId}`} className="mt-4 block text-sm font-medium text-slate-700">
                 Reason <span className="font-normal text-slate-400">(optional)</span>

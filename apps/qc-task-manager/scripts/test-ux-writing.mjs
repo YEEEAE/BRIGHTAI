@@ -19,7 +19,7 @@ for (const [name, text] of checks) {
 const sourceChecks = [
   ['task completion action', 'src/components/TaskLifecycle.tsx', 'Complete task'],
   ['task cancellation escape', 'src/components/TaskLifecycle.tsx', 'Keep task'],
-  ['deletion confirmation', 'src/components/ReviewDeleteRequestDialog.tsx', 'Confirm deletion'],
+  ['deletion confirmation', 'src/components/ReviewDeleteRequestDialog.tsx', 'Delete task permanently?'],
   ['AI advisory label', 'src/components/AiReviewPanel.tsx', 'Human review required'],
   ['AI decision boundary', 'src/components/AiReviewPanel.tsx', 'User decision'],
   ['AI session recovery', 'src/components/AiReviewPanel.tsx', 'Your session has expired'],

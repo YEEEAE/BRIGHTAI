@@ -67,6 +67,12 @@ Examples:
 
 Do not expose stack traces, internal permission function names, raw enum values, or security-sensitive details.
 
+Every user-facing error must answer four questions whenever the application knows the answer: what happened, what to do next, whether data was saved, and whether retrying is safe. If the save state is unknown, say that it is unknown and direct the user to review the record before retrying. Never imply a successful save when the request failed.
+
+## Audit coverage for QC-100-CONTENT-UX-010
+
+The audit covers visible text and accessible names in `src/pages`, `src/components`, and `src/lib`, including headings, descriptions, actions, form labels, helper text, placeholders, tooltips, validation, warnings, confirmations, empty states, permission errors, success messages, failure messages, and destructive actions. The automated guard reports its declared source inventory and fails on bare high-risk action labels. Human comprehension remains unverified until participants complete `9-PILOT-UX-RESEARCH.md`; evidence is recorded in `UX-WRITING-RESEARCH-EVIDENCE.md`.
+
 ## AI assistance
 
 Every AI surface must include:

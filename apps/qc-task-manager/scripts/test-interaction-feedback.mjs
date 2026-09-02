@@ -36,7 +36,7 @@ const recoveryCopy = [
   ['AiReviewPanel.tsx', 'try Run AI review again'],
   ['MarkReadButton.tsx', 'try Mark as read again'],
   ['MarkAllReadButton.tsx', 'try Mark all as read again'],
-  ['DeleteRequestDialog.tsx', 'try Submit request again'],
+  ['DeleteRequestDialog.tsx', 'retrying is safe'],
   ['TaskUpdatePanel.tsx', 'try Save changes again'],
 ];
 for (const [file, phrase] of recoveryCopy) {

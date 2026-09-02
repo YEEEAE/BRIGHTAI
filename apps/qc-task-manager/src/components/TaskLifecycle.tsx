@@ -252,14 +252,14 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
       const res = await fetch(`/api/tasks/${taskId}/close`, { method: 'POST', body: form });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? 'We couldn’t complete the task. Check the details and try again.');
+        setError(data.error ?? 'We couldn’t complete the task. Nothing was saved. Review the details and try again; retrying is safe.');
         setSubmitting(false);
         return;
       }
       reload();
     } catch (err) {
       console.error('[task] close request failed', err);
-      setError('We couldn’t complete the task because the connection was interrupted. Check your connection and try again.');
+      setError('We couldn’t complete the task because the connection was interrupted. No task, evidence, or comment was saved. Check your connection and try again; retrying is safe.');
       setSubmitting(false);
     }
   }
@@ -280,21 +280,21 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setCancelError(data.error ?? 'We couldn’t cancel the task. Check the reason and try again.');
+        setCancelError(data.error ?? 'We couldn’t cancel the task. No change was saved. Check the reason and try again; retrying is safe.');
         setCancelSubmitting(false);
         return;
       }
       reload();
     } catch (err) {
       console.error('[task] cancel request failed', err);
-      setCancelError('We couldn’t cancel the task because the connection was interrupted. Check your connection and try again.');
+      setCancelError('We couldn’t cancel the task because the connection was interrupted. The task remains active and your reason was not saved. Check your connection and try again; retrying is safe.');
       setCancelSubmitting(false);
     }
   }
 
   async function confirmReopen() {
     if (reopening) return;
-    if (!window.confirm('Reopen this completed task? It will return to In Progress and become editable again.')) {
+    if (!window.confirm('Reopen this completed task? It will return to In Progress and become editable again. No data will be deleted.')) {
       return;
     }
     setReopening(true);
@@ -303,14 +303,14 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
       const res = await fetch(`/api/tasks/${taskId}/reopen`, { method: 'POST' });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setReopenError(data.error ?? 'We couldn’t reopen the task. Check the current status and try again.');
+        setReopenError(data.error ?? 'We couldn’t reopen the task. No change was saved. Check the current status and try again; retrying is safe.');
         setReopening(false);
         return;
       }
       reload();
     } catch (err) {
       console.error('[task] reopen request failed', err);
-      setReopenError('We couldn’t reopen the task because the connection was interrupted. Check your connection and try again.');
+      setReopenError('We couldn’t reopen the task because the connection was interrupted. The task remains completed and no change was saved. Check your connection and try again; retrying is safe.');
       setReopening(false);
     }
   }
@@ -414,7 +414,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
               <button
                 type="button"
                 onClick={closeWizard}
-                aria-label="Cancel completion (discard changes)"
+                  aria-label="Cancel task completion and discard changes"
                 className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -454,7 +454,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
 
               {step === 0 && (
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-900">Step 1 — Evidence</h3>
+                  <h3 className="text-sm font-semibold text-slate-900">Step 1 — Add evidence</h3>
                   <p className="mt-1 text-xs text-slate-500">
                     Upload proof of completion ({HINT}, max 10 MB per file — extension, MIME type and file signature are
                     validated). {requiredTypes.length > 0 ? 'Required items cannot be skipped unless a manager/admin override is supplied.' : 'You may skip; the skip is recorded in the activity log.'}
@@ -599,7 +599,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
 
               {step === 1 && (
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-900">Step 2 — Completion comment</h3>
+                  <h3 className="text-sm font-semibold text-slate-900">Step 2 — Add a completion comment</h3>
                   <p className="mt-1 text-xs text-slate-500">
                     Mandatory. Summarize the outcome, results, or next steps — it is stored as the task's completion
                     comment.
@@ -632,7 +632,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                 )}
                 {step === 2 && (
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-900">Step 3 — Confirm</h3>
+                  <h3 className="text-sm font-semibold text-slate-900">Step 3 — Confirm completion</h3>
                   <p className="mt-1 text-xs text-slate-500">
                     This action saves the task, evidence, and comment together. It cannot be undone from the edit form; a manager or administrator can reopen the task.
                   </p>

@@ -75,7 +75,7 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? 'Could not submit the deletion request. Review the reason, then try Submit request again.');
+        setError(data.error ?? 'We couldn’t send the deletion request. No change was saved. Review the reason and try again; retrying is safe.');
         return;
       }
       setRequested(true);
@@ -83,7 +83,7 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
       setReason('');
     } catch (err) {
       console.error('[task] delete-request submission failed', err);
-      setError('Network error while submitting the request. Check your connection, then try Submit request again.');
+      setError('We couldn’t send the deletion request because the connection was interrupted. Your task was not deleted. Check your connection and try again; retrying is safe.');
     } finally {
       setSubmitting(false);
     }
@@ -150,7 +150,7 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
               aria-busy={submitting}
               className="min-h-11 rounded-md bg-danger px-4 py-2 text-sm font-semibold text-content-inverse transition-colors hover:bg-danger-hover active:bg-danger-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-danger disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {submitting ? 'Submitting…' : 'Submit request'}
+              {submitting ? 'Sending request…' : 'Send deletion request'}
             </button>
           </div>
         </form>

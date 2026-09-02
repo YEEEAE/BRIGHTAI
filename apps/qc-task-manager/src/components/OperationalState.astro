@@ -3,14 +3,14 @@
 interface Props { state: 'no-records' | 'no-results' | 'forbidden' | 'system-error' | 'conflict' | 'stale-record' | 'success' | 'warning'; title?: string; detail?: string; actionHref?: string; actionLabel?: string; }
 const { state, title, detail, actionHref, actionLabel } = Astro.props;
 const copy = {
-  'no-records': ['No records yet', 'Create the first record to get started.', 'Create first record'],
-  'no-results': ['No search results', 'No records match these filters. Broaden your search or clear the filters.', 'Clear filters'],
-  forbidden: ['Access needed', 'You need the required access to view this page. Return to your home page or ask an administrator for help.', 'Go to home'],
-  'system-error': ['We couldn’t complete that', 'A temporary problem prevented this request. Try again or contact an administrator if it continues.', 'Try again'],
-  conflict: ['This record changed', 'This record changed before you saved it. Review the latest record, then try again.', 'Review record'],
-  'stale-record': ['This page is out of date', 'Reload the page before making another change.', 'Reload'],
-  success: ['Change saved', 'Your change was saved. You can continue working.', 'Continue'],
-  warning: ['Review needed', 'Review the highlighted issue before continuing.', 'Review issue'],
+  'no-records': ['No records yet', 'There are no records in this area. Create the first record to get started.', 'Create the first record'],
+  'no-results': ['No matching records', 'No records match these filters. Broaden your search or clear the filters.', 'Clear filters'],
+  forbidden: ['Access not available', 'You do not have permission to view this page. Return to your home page or contact an administrator. No data was changed.', 'Go to home'],
+  'system-error': ['We couldn’t complete that request', 'A temporary problem prevented the request. No changes were saved. Check your connection and try again; retrying is safe.', 'Try again'],
+  conflict: ['This record changed', 'Someone changed this record before you saved it. Your changes were not saved. Review the latest record, then try again.', 'Review the latest record'],
+  'stale-record': ['This page is out of date', 'This page may show older information. Your last change was not submitted. Reload the page before making another change.', 'Reload the page'],
+  success: ['Change saved', 'Your change was saved successfully. You can continue working.', 'Continue working'],
+  warning: ['Review needed', 'Review the highlighted issue before continuing. Nothing has been changed yet.', 'Review the issue'],
 } as const;
 const [defaultTitle, defaultDetail, defaultAction] = copy[state];
 ---

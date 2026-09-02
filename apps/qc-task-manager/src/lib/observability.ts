@@ -21,7 +21,7 @@ export function getSafeErrorCode(error: unknown): SafeErrorCode {
   if (/valid|required|invalid/i.test(message)) return 'VALIDATION';
   return 'DB';
 }
-export function safeErrorMessage(_error: unknown): string { return 'Something went wrong. Please try again.'; }
+export function safeErrorMessage(_error: unknown): string { return 'We couldn’t complete the request. The save state is unknown. Check the record before trying again.'; }
 export interface RequestLogInput { requestId: string; method: string; route: string; actorId?: number | null; role?: string | null; status: number; durationMs: number; errorCode?: SafeErrorCode | null; timestamp?: string; }
 export function createRequestLog(input: RequestLogInput): Record<string, unknown> {
   const entry: Record<string, unknown> = { timestamp: input.timestamp ?? new Date().toISOString(), request_id: input.requestId, method: input.method, route: input.route };

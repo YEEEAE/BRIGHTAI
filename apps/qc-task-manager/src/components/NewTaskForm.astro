@@ -52,9 +52,9 @@ const f = {
 <form action={action} method="POST" class="space-y-5 rounded-lg border border-slate-200 bg-white p-6" data-qc-form>
   {templates.length > 0 && (
     <div class="rounded-md border border-brand-200 bg-brand-50 p-4">
-      <label for="template_id" class={labelCls}>Start from a template (optional)</label>
+      <label for="template_id" class={labelCls}>Start from a template <span class="font-normal text-slate-500">(optional)</span></label>
       <select id="template_id" name="template_id" class={inputCls}>
-        <option value="">— Blank task —</option>
+        <option value="">Start with a blank task</option>
         {templates.map((t) => (
           <option value={t.id}>{t.title} ({t.code})</option>
         ))}
@@ -67,26 +67,26 @@ const f = {
   )}
 
   <div>
-    <label for={f.title} class={labelCls}>Title <span class="text-red-600" aria-hidden="true">*</span></label>
+    <label for={f.title} class={labelCls}>Task title <span class="text-red-600" aria-hidden="true">*</span></label>
     <input
       id={f.title}
       name="title"
       type="text"
       required
       maxlength="200"
-      placeholder="e.g. Review inspection report Q3"
+      placeholder="Example: Review the Q3 inspection report"
       class={inputCls}
     />
   </div>
 
   <div>
-    <label for={f.description} class={labelCls}>Description</label>
+    <label for={f.description} class={labelCls}>Task description <span class="font-normal text-slate-500">(optional)</span></label>
     <textarea
       id={f.description}
       name="description"
       rows="4"
       maxlength="5000"
-      placeholder="Optional details, acceptance criteria, links…"
+      placeholder="Add context, acceptance criteria, or links"
       class={inputCls}
     ></textarea>
   </div>
@@ -118,11 +118,11 @@ const f = {
 
   <div class="grid gap-5 sm:grid-cols-2">
     <div>
-      <label for={f.assigned_to} class={labelCls}>Assignee</label>
+      <label for={f.assigned_to} class={labelCls}>Assign to <span class="font-normal text-slate-500">(optional)</span></label>
       {selfAssignOnly ? (
         <>
           <select id={f.assigned_to} name="assigned_to" class={inputCls}>
-            <option value="">Unassigned</option>
+            <option value="">Leave unassigned</option>
             {users.map((u) => (
               <option value={u.id}>Me ({u.full_name})</option>
             ))}
@@ -131,7 +131,7 @@ const f = {
         </>
       ) : (
         <select id={f.assigned_to} name="assigned_to" class={inputCls}>
-          <option value="">Unassigned</option>
+          <option value="">Leave unassigned</option>
           {users.map((u) => (
             <option value={u.id}>{u.full_name} ({u.role})</option>
           ))}
@@ -152,32 +152,32 @@ const f = {
 
   <div class="grid gap-5 sm:grid-cols-2">
     <div>
-      <label for={f.recurrence} class={labelCls}>Recurrence</label>
+      <label for={f.recurrence} class={labelCls}>Repeat task</label>
       <select id={f.recurrence} name="recurrence" class={inputCls}>
-        <option value="none" selected>No recurrence</option>
+        <option value="none" selected>Do not repeat</option>
         <option value="daily">Daily</option>
         <option value="weekly">Weekly</option>
         <option value="monthly">Monthly</option>
       </select>
       <p class="mt-1 text-xs text-slate-500">
-        The next occurrence is created only when this task is completed — never up front.
+        The next task is created only after this task is completed.
       </p>
     </div>
 
     <div>
-      <label for={f.recurrence_end_date} class={labelCls}>Recurrence end date</label>
+      <label for={f.recurrence_end_date} class={labelCls}>Repeat until <span class="font-normal text-slate-500">(optional)</span></label>
       <input
         id={f.recurrence_end_date}
         name="recurrence_end_date"
         type="date"
         class={inputCls}
       />
-      <p class="mt-1 text-xs text-slate-500">Leave empty to keep recurring (on completion) indefinitely.</p>
+      <p class="mt-1 text-xs text-slate-500">Leave blank to repeat the task until someone stops it.</p>
     </div>
   </div>
 
   <fieldset class="rounded-md border border-slate-200 p-4">
-    <legend class="px-1 text-sm font-semibold text-slate-700">QC metadata (optional)</legend>
+    <legend class="px-1 text-sm font-semibold text-slate-700">Quality details <span class="font-normal text-slate-500">(optional)</span></legend>
     <div class="grid gap-4 sm:grid-cols-2">
       <label class={labelCls}>Inspection type<input name="inspection_type" maxlength="200" class={inputCls} /></label>
       <label class={labelCls}>Finding classification<select name="finding_classification" class={inputCls}><option value="">Not set</option><option value="conforming">Conforming</option><option value="minor">Minor</option><option value="major">Major</option><option value="critical">Critical</option><option value="observation">Observation</option></select></label>
@@ -212,7 +212,7 @@ const f = {
       href={action.replace(/\/new$/, '')}
       class="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
     >
-      Cancel
+      Cancel task creation
     </a>
     <button type="submit" class="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
       Create task

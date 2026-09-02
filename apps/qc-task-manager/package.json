@@ -33,6 +33,7 @@
     "test:interaction-feedback": "node scripts/test-interaction-feedback.mjs",
     "test:interaction-motion-100": "node scripts/test-interaction-motion-100.mjs",
     "test:ux-writing": "node scripts/test-ux-writing.mjs",
+    "test:content-quality-100": "node scripts/test-content-quality-100.mjs",
     "test:ux-telemetry": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ux-telemetry.mjs",
     "test:architecture": "pnpm test:route-manifest && node scripts/architecture-guard.mjs",
     "test:domain": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test.mjs",

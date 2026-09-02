@@ -152,9 +152,9 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
   const hint = 'Workflow actions land with the review/approve module.';
   const parts: string[] = [];
   if (canEdit) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Edit</button>`);
-  if (canSubmit) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Submit</button>`);
+  if (canSubmit) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Submit test</button>`);
   if (canReview) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Review</button>`);
-  if (canApprove) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Approve</button>`);
+  if (canApprove) parts.push(`<button type="button" disabled title="${hint}" class="cursor-not-allowed text-xs font-medium text-slate-500">Approve test</button>`);
   const actions = parts.length ? parts.join('') : '';
   return `<span class="flex items-center gap-2">${view}${actions}</span>`;
 }
@@ -298,7 +298,7 @@ function actionCell(row: Awaited<ReturnType<typeof searchLabTests>>['rows'][numb
           </div>
           <div class="mt-3 flex flex-wrap items-center gap-2">
             <AppButton type="submit" variant="primary">Apply filters</AppButton>
-            {filtered && <AppButton href="/lab/tests" variant="secondary">Reset</AppButton>}
+            {filtered && <AppButton href="/lab/tests" variant="secondary">Clear filters</AppButton>}
           </div>
         </form>
 

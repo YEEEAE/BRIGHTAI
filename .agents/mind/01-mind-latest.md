@@ -1,3 +1,40 @@
+## [2026-09-02] — QC-100-CONTENT-UX-010: تدقيق وتحسين النصوص الظاهرة وخطة البحث التجريبي
+
+### تم التنفيذ
+- راجعت عقد UX Writing والجرد البرمجي للنصوص الظاهرة في `apps/qc-task-manager/src/pages` و`src/components`، ووسّعت التغطية لتشمل العناوين والأوصاف والأفعال والحقول والحالات الفارغة والأخطاء والصلاحيات والإجراءات الحساسة.
+- حسّنت لغة إنشاء المهام، الحقول الاختيارية، التكرار، الإسناد، حالات السجلات، إغلاق المهمة، وإعادة فتحها؛ صارت الأفعال تسمّي النتيجة والكائن بدل العبارات العامة.
+- حسّنت حوار الحذف الدائم وطلب الحذف، مع تسمية صريحة للعاقبة ورسائل أوضح لرفض الطلب، بدون تغيير workflow أو RBAC أو API.
+- حدّثت رسائل فشل الإكمال/الإلغاء/إعادة الفتح ورسالة الخطأ العامة لتوضح ما حدث، وهل حُفظت البيانات، وأن إعادة المحاولة آمنة عندما تكون الحالة معروفة؛ وإذا كانت غير معروفة تطلب مراجعة السجل قبل المحاولة.
+- أنشأت خطة بحث دورية صريحة في `9-PILOT-UX-RESEARCH.md` تغطي المشاركين، السيناريوهات، ورقة الملاحظة، معايير النجاح، الوقت، المساعدة، الأخطاء، الالتباس، SUS-style والأسئلة النوعية؛ لا توجد نتائج بشرية مختلقة.
+- أنشأت `UX-WRITING-RESEARCH-EVIDENCE.md` لتفصل دليل المصدر والفحوص الآلية عن UAT البشري، وأضفت حارس `test-content-quality-100` بعقد 9/9 وجرد 137 ملف واجهة، وربطته بالـmanifest.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/9-PILOT-UX-RESEARCH.md`
+- `apps/qc-task-manager/UX-WRITING-RESEARCH-EVIDENCE.md`
+- `apps/qc-task-manager/docs/UX-WRITING.md`
+- `apps/qc-task-manager/scripts/test-content-quality-100.mjs`
+- `apps/qc-task-manager/scripts/test-ux-writing.mjs`
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/src/components/{OperationalState,NewTaskForm,TaskLifecycle,DeleteRequestDialog,ReviewDeleteRequestDialog}`
+- `apps/qc-task-manager/src/pages/{findings,search,lab}` (copy-only updates)
+- `apps/qc-task-manager/src/lib/observability.ts`
+
+### التحقق
+- `pnpm run test:content-quality-100` ✅ — 9/9 rules، 306 ملف مصدر مفحوص.
+- `pnpm run test:ux-writing` ✅ — 14/14.
+- `pnpm run test:manifest` ✅ — 73 suite كنسية و28 E2E، بدون orphan.
+- `pnpm run typecheck` ✅ — 0 errors / 0 warnings / 0 hints.
+- `pnpm run build` ✅ — Complete.
+- `git diff --check` ⚠️ — trailing whitespace موجود مسبقًا في `audit/qc/QC-Task-Manager/prompt10.md`، خارج نطاق المهمة ولم ألمسه.
+
+### النتيجة
+- **الحالة:** نجح محليًا آليًا.
+- **مختصر:** تحسنت النصوص عالية المخاطر، وصار عند المشروع حارس آلي معلن التغطية وخطة بحث قابلة للتنفيذ؛ جودة الفهم البشرية وSUS وtime-on-task ما زالت غير مقاسة حتى ينفذ المشاركون الجلسات.
+
+### ملاحظات / مشاكل مفتوحة
+- `git status` ما زال يعرض حذفَي أدلة وتغييرات أخرى سابقة للمهمة؛ تم الحفاظ عليها بدون لمس.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-02] — QC-100-INTERACTION-MOTION-009: تغطية حالات التفاعل ونظام الحركة
 
 ### تم التنفيذ
