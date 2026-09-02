@@ -48,6 +48,20 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
     if (!open && dlg.open) dlg.close();
   }, [open]);
 
+  // Keep React state in sync with native dialog dismissal (Escape/backdrop).
+  // Without this, the browser can close the dialog while `open` remains true,
+  // leaving focus restoration and the next open cycle out of sync.
+  useEffect(() => {
+    const dlg = dialogRef.current;
+    if (!dlg) return;
+    const onClose = () => {
+      setOpen(false);
+      triggerRef.current?.focus();
+    };
+    dlg.addEventListener('close', onClose);
+    return () => dlg.removeEventListener('close', onClose);
+  }, []);
+
   useEffect(() => {
     if (open) reasonRef.current?.focus();
     else if (!requested) triggerRef.current?.focus();
@@ -105,14 +119,19 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
 
       <dialog
         ref={dialogRef}
+        onCancel={(event) => {
+          event.preventDefault();
+          setOpen(false);
+        }}
         aria-labelledby={`delete-request-title-${taskId}`}
+        aria-describedby={`delete-request-description-${taskId}`}
         className="m-auto w-full max-w-md rounded-lg border border-slate-200 bg-white p-0 shadow-xl backdrop:bg-slate-900/40"
       >
         <form method="dialog" className="p-5">
           <h2 id={`delete-request-title-${taskId}`} className="text-lg font-semibold text-slate-900">
             Request deletion
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p id={`delete-request-description-${taskId}`} className="mt-1 text-sm text-slate-600">
             A manager will review this request. Your task stays in place until it is
             approved or rejected.
           </p>

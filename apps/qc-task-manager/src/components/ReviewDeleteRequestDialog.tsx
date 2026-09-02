@@ -114,7 +114,12 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
 
       <dialog
         ref={dialogRef}
+        onCancel={(event) => {
+          event.preventDefault();
+          setMode(null);
+        }}
         aria-labelledby={`review-dialog-title-${requestId}`}
+        aria-describedby={`review-dialog-description-${requestId}`}
         className="m-auto w-full max-w-md rounded-lg border border-slate-200 bg-white p-0 shadow-xl backdrop:bg-slate-900/40"
       >
         <div className="p-5">
@@ -123,7 +128,7 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
               <h2 id={`review-dialog-title-${requestId}`} className="text-lg font-semibold text-slate-900">
                 Delete task permanently?
               </h2>
-              <p className="mt-2 text-sm text-slate-600">
+              <p id={`review-dialog-description-${requestId}`} className="mt-2 text-sm text-slate-600">
                 This will <span className="font-semibold text-red-700">permanently delete</span> the task{' '}
                 <span className="font-medium text-slate-900">“{taskTitle}”</span> along with its comments,
                 attachments, and activity history. This cannot be undone. The deletion request will be recorded after confirmation. Retrying is not safe once deletion starts.
@@ -134,7 +139,7 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
               <h2 id={`review-dialog-title-${requestId}`} className="text-lg font-semibold text-slate-900">
                 Keep the task and reject the request
               </h2>
-              <p className="mt-1 text-sm text-slate-600">
+              <p id={`review-dialog-description-${requestId}`} className="mt-1 text-sm text-slate-600">
                 The task “{taskTitle}” will be kept. Add a reason so the requester knows what to change (optional).
               </p>
               <label htmlFor={`review-note-${requestId}`} className="mt-4 block text-sm font-medium text-slate-700">

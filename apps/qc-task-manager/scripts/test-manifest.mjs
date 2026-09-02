@@ -90,6 +90,7 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:design-system-100',
   'test:interaction-feedback',
   'test:interaction-motion-100',
+  'test:a11y-ergonomics-100',
   'test:ux-writing',
   'test:content-quality-100',
   'test:ux-telemetry',

@@ -1244,3 +1244,33 @@
 ### ملاحظات / مشاكل مفتوحة
 - `apps/qc-task-manager/DESIGN-SYSTEM-100-EVIDENCE.md` كان حذفًا سابقًا للمهمة وبقي بدون لمس، وكذلك تعديل `prompt10.md` ونسخة الدليل المنقولة تحت `audit/qc/`.
 - لا commit ولا push ولا deploy.
+## [2026-09-02] — QC-100-A11Y-011: تدقيق WCAG والـergonomics وبوابة الأدلة
+
+### تم التنفيذ
+- أضفت حارس `test:a11y-ergonomics-100` يجرد كل ملفات صفحات ومكونات QC (76 صفحة و59 مكونًا) ويتحقق من skip link، landmark الرئيسي، لغة الصفحة، علاقات dialog، إعلان الحالات، بدائل الرسوم، focus-visible، reduced-motion، وzoom-safe dialogs.
+- أضفت الحارس إلى `package.json` و`test-manifest.mjs` حتى ما يصير orphan أو drift في سلسلة الاختبارات.
+- أصلحت حواري طلب الحذف ومراجعة طلب الحذف: مزامنة الإغلاق الأصلي مع حالة React، Escape/cancel، وإضافة `aria-describedby`.
+- أضفت `aria-describedby` لحواري دورة حياة المهمة، وربطت Toast بـ`role=status` و`aria-live`.
+- قوّيت CSS العام بعقد focus-visible احتياطي، أهداف لمس على pointer coarse، وحاويات حوار قابلة للتمرير عند التكبير؛ بدون تغيير workflow أو RBAC أو URLs.
+- أنشأت `A11Y-ERGONOMICS-100-EVIDENCE.md` بمصفوفة المقاسات 320–1920 و100/150/200/400%، رحلات الكيبورد، ومصفوفتي VoiceOver وNVDA فارغتين للتعبئة اليدوية.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/A11Y-ERGONOMICS-100-EVIDENCE.md`
+- `apps/qc-task-manager/scripts/test-a11y-ergonomics-100.mjs`
+- `apps/qc-task-manager/{package.json,scripts/test-manifest.mjs}`
+- `apps/qc-task-manager/src/{styles/global.css,components/DeleteRequestDialog.tsx,components/ReviewDeleteRequestDialog.tsx,components/TaskLifecycle.tsx,components/ui/Toast.astro}`
+
+### التحقق
+- `pnpm --dir apps/qc-task-manager test:a11y-ergonomics-100` ✅ — 76 page sources / 59 component sources، automated contract 100%.
+- `pnpm --dir apps/qc-task-manager test:manifest` ✅ — 74 canonical suites / 28 E2E.
+- `pnpm --dir apps/qc-task-manager typecheck` ✅ — 0 errors / 0 warnings / 0 hints.
+- `git diff --check` ✅؛ build وE2E الثقيلان ⏭️ بتوجيه المستخدم.
+- VoiceOver/NVDA والفحص اليدوي 320–1920 والـzoom ⏭️ — لم تُنفذ، ولا يوجد ادعاء manual AT.
+
+### النتيجة
+- **الحالة:** جزئي.
+- **مختصر:** عقد الوصول الآلي الجديد والإصلاحات عالية الأثر ناجحة محليًا، لكن اعتماد WCAG الكامل متوقف على build/E2E اليدوي واستمارات VoiceOver/NVDA الموقعة.
+
+### ملاحظات / مشاكل مفتوحة
+- full accessibility score غير مُدّعى؛ يلزم تسجيل manual assistive-technology evidence قبل إعلان 100% الكامل.
+- لا commit ولا push ولا deploy.

@@ -399,6 +399,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
             role="dialog"
             aria-modal="true"
             aria-labelledby="completion-wizard-title"
+            aria-describedby="completion-wizard-description"
             onKeyDown={trapDialogTab}
             className={panelCls}
           >
@@ -407,7 +408,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
                 <h2 id="completion-wizard-title" className="text-base font-semibold text-slate-900">
                   Complete this task
                 </h2>
-                <p className="mt-0.5 truncate text-xs text-slate-500" title={title}>
+                <p id="completion-wizard-description" className="mt-0.5 truncate text-xs text-slate-500" title={title}>
                   {title}
                 </p>
               </div>
@@ -741,6 +742,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
             role="dialog"
             aria-modal="true"
             aria-labelledby="cancel-dialog-title"
+            aria-describedby="cancel-dialog-description"
             onKeyDown={trapDialogTab}
             className={panelCls}
           >
@@ -748,7 +750,7 @@ export default function TaskLifecycle({ taskId, title, status, canComplete, canC
               <h2 id="cancel-dialog-title" className="text-base font-semibold text-slate-900">
                 Cancel this task
               </h2>
-              <p className="mt-0.5 truncate text-xs text-slate-500" title={title}>
+              <p id="cancel-dialog-description" className="mt-0.5 truncate text-xs text-slate-500" title={title}>
                 {title}
               </p>
             </div>

@@ -229,6 +229,29 @@
   }
 }
 
+/* A final safety net for route-level controls that have not yet migrated to
+ * the shared UI primitives. Component-specific focus styles can still refine
+ * the colour, but no keyboard focus is allowed to become invisible. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Operational screens are used on touch laptops/tablets as well as phones.
+ * Keep small controls comfortable without changing desktop density. */
+@media (pointer: coarse) {
+  :where(a, button, summary, [role='button']) {
+    min-block-size: 2.75rem;
+  }
+}
+
+/* Dialog content must remain usable at 200–400% zoom. Native dialogs and
+ * custom modal surfaces share this bounded, scrollable contract. */
+:where(dialog, [role='dialog']) {
+  max-block-size: calc(100dvh - 2rem);
+  overflow: auto;
+}
+
 /*
  * 3. Sanitized document content (.doc-content) — the SOP/WI preview inside
  *    LabDocumentEditor.astro and (later) the reader views. The markup is
