@@ -1,3 +1,35 @@
+## [2026-09-02] — QC-100-DATABASE-003: رفع قاعدة البيانات والهجرات والتكامل والنسخ الاحتياطي والاستعادة إلى بوابة 100%
+
+### تم التنفيذ
+- أضفت بوابة معزولة موحدة `test-database-100.mjs` تجمع اختبارات fresh initialization، 001→latest، parity، schema، integrity، constraints، retention، backup/restore، restart، والفشل.
+- رفعت عقد startup validation في `src/lib/db.ts` من تغطية جزئية إلى **106/106 index** الموجود في `db/schema.sql`؛ لم تُضف فهارس speculative جديدة.
+- تحققت من **39/39** migration مضمّنة byte-identical مع SHA-256، ومن **165** schema object متطابق مع المرجع.
+- تحققت من WAL وforeign keys وbusy timeout وsynchronous، rollback transactional، منع التكرار، منع الحالات غير الصالحة، وفشل الهجرة مع recovery.
+- نفذت backup/verify/restore إلى مسارات temp نظيفة، مع integrity/FK/schema version 39 ومساواة سجل restore marker قبل/بعد.
+- أنشأت `DATABASE-100-EVIDENCE.md` مع مصفوفة المتطلبات وحدود الادعاء؛ لا يوجد ادعاء live production restore.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/db.ts`
+- `apps/qc-task-manager/scripts/test-database-100.mjs`
+- `apps/qc-task-manager/package.json`
+- `apps/qc-task-manager/DATABASE-100-EVIDENCE.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-database-100.mjs` ✅ — `DATABASE-100: PASS (23 checks)`، وكل قواعد البيانات معزولة ومؤقتة.
+- `node_modules/.bin/astro check` ✅ — 0 errors / 0 warnings / 0 hints.
+- `node_modules/.bin/astro build` ✅ — Complete.
+- `git diff --check` ✅.
+- `pnpm test:database-100` لم يُشغّل بسبب منع Corepack من تنزيل pnpm عبر npm؛ نفس entrypoint نُفّذ مباشرة بـNode ونجح.
+
+### النتيجة
+- **الحالة:** نجح محليًا آليًا.
+- **مختصر:** متطلبات DATABASE-100 المحلية والـisolated backup/restore مثبتة؛ التحقق الحي في staging/production وPROMPT 14 ما زال خارج النطاق ولم يُدّعَ.
+
+### ملاحظات / مشاكل مفتوحة
+- لا توجد فجوة محلية معروفة في نطاق المهمة. يلزم فقط دليل PROMPT 14 الحقيقي إذا أُريد اعتماد live restore.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-02] — QC-100-ARCHITECTURE-002: رفع المعمارية وجودة الكود وسلامة الأنواع ومعالجة الأخطاء إلى إثبات مدعوم بالأدلة
 
 ### تم التنفيذ
