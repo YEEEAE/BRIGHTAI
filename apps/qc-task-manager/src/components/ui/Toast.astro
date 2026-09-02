@@ -1,0 +1,6 @@
+---
+import Banner from './Banner.astro';
+interface Props { tone?: 'info' | 'success' | 'warning' | 'error'; title?: string; }
+const { tone = 'info', title } = Astro.props;
+---
+<div class="fixed bottom-4 end-4 z-50 w-full max-w-sm"><Banner tone={tone} title={title}><slot /></Banner></div>

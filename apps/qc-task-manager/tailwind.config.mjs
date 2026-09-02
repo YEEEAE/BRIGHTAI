@@ -57,6 +57,21 @@ export default {
           soft: 'var(--color-info-soft)',
           border: 'var(--color-info-border)',
         },
+        neutral: {
+          DEFAULT: 'var(--color-neutral)',
+          soft: 'var(--color-neutral-soft)',
+          border: 'var(--color-neutral-border)',
+        },
+        disabled: 'var(--color-disabled)',
+        overlay: 'var(--color-overlay)',
+        glass: 'var(--color-glass)',
+        chart: {
+          primary: 'var(--color-chart-primary)',
+          secondary: 'var(--color-chart-secondary)',
+          success: 'var(--color-chart-success)',
+          warning: 'var(--color-chart-warning)',
+          danger: 'var(--color-chart-danger)',
+        },
       },
       spacing: {
         'qc-0': '0px',
@@ -82,6 +97,7 @@ export default {
       },
       transitionTimingFunction: {
         'qc-standard': 'cubic-bezier(0.2, 0, 0, 1)',
+        'qc-emphasized': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
       },
     },
   },

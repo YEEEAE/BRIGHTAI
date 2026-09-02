@@ -44,7 +44,7 @@
 # PROMPT 00 — Freeze Reality + Build the 100% Gap Matrix
 
 ## Checklist
-- [✅] تم التنفيذ
+- [✅] Executed
 
 ```text
 @GitHub @Superpowers
@@ -230,7 +230,7 @@ Stop only when the baseline can be independently reproduced.
 # PROMPT 01 — Architecture + Code Quality → 100%
 
 ## Checklist
-- [✅] تم التنفيذ
+- [✅] Executed
 
 ```text
 @GitHub @Superpowers
@@ -317,7 +317,7 @@ End with before/after metrics and actual evidence.
 # PROMPT 02 — Database + Migrations + Data Integrity → 100%
 
 ## Checklist
-- [✅] تم التنفيذ
+- [✅] Executed
 
 ```text
 @GitHub @Superpowers
@@ -397,7 +397,7 @@ Do not claim live production restore until PROMPT 14 produces real evidence.
 # PROMPT 03 — Security + Auth + RBAC + Privacy UX → 100%
 
 ## Checklist
-- [✅] تم التنفيذ
+- [✅] Executed
 
 ```text
 @GitHub @Superpowers
@@ -521,7 +521,7 @@ Any external credential requiring human rotation remains an explicit blocker unt
 # PROMPT 04 — Testing + E2E + CI + Observability + Performance → 100%
 
 ## Checklist
-- [✅] تم التنفيذ
+- [✅] Executed
 
 ```text
 @GitHub @Superpowers
@@ -643,7 +643,7 @@ Production p95 / real-user CWV remain external evidence until PROMPT 14.
 # PROMPT 05 — Design System → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [✅] Executed
 
 ```text
 @GitHub @Superpowers
@@ -773,7 +773,7 @@ DESIGN-SYSTEM-100-EVIDENCE.md
 # PROMPT 06 — Visual Design + UI → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -872,7 +872,7 @@ Include route coverage proving every page was reviewed.
 # PROMPT 07 — UX + Information Architecture + Service Design → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -955,7 +955,7 @@ UX-IA-SERVICE-DESIGN-100-EVIDENCE.md
 # PROMPT 08 — Interaction Design + Motion & Digital Art → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -1040,7 +1040,7 @@ INTERACTION-MOTION-100-EVIDENCE.md
 # PROMPT 09 — UX Writing + Microcopy + UX Research → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -1132,7 +1132,7 @@ UX-WRITING-RESEARCH-EVIDENCE.md
 # PROMPT 10 — Accessibility Design + Ergonomics → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -1223,7 +1223,7 @@ Full A11y score may reach 100 only after recorded manual assistive-technology ev
 # PROMPT 11 — Dashboard + Data Visualization → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -1317,7 +1317,7 @@ DASHBOARD-DATA-VIZ-100-EVIDENCE.md
 # PROMPT 12 — Advanced Form Design → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -1423,7 +1423,7 @@ ADVANCED-FORMS-100-EVIDENCE.md
 # PROMPT 13 — Information Architecture & Permissions → 100%
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -1497,7 +1497,7 @@ Target:
 # PROMPT 14 — Real UAT + Production Operations Closure
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers
@@ -1605,7 +1605,7 @@ Only verified human/operator evidence may close these rows.
 # PROMPT 15 — Final Independent 100% Verification
 
 ## Checklist
-- [ ] لم يتم التنفيذ بعد
+- [ ] Not executed
 
 ```text
 @GitHub @Superpowers

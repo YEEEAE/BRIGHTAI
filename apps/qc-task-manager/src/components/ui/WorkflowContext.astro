@@ -28,13 +28,13 @@ const {
 } = Astro.props;
 
 const toneClasses: Record<NonNullable<Props['stageTone']>, string> = {
-  neutral: 'border-slate-200 bg-slate-50 text-slate-900',
-  info: 'border-blue-200 bg-blue-50 text-blue-950',
-  pending: 'border-amber-200 bg-amber-50 text-amber-950',
-  warning: 'border-orange-200 bg-orange-50 text-orange-950',
-  success: 'border-emerald-200 bg-emerald-50 text-emerald-950',
-  danger: 'border-red-200 bg-red-50 text-red-950',
-  blocked: 'border-slate-300 bg-slate-100 text-slate-900',
+  neutral: 'border-border bg-surface-muted text-content',
+  info: 'border-info-border bg-info-soft text-info',
+  pending: 'border-warning-border bg-warning-soft text-warning',
+  warning: 'border-warning-border bg-warning-soft text-warning',
+  success: 'border-success-border bg-success-soft text-success',
+  danger: 'border-danger-border bg-danger-soft text-danger',
+  blocked: 'border-border-strong bg-surface-muted text-content-secondary',
 };
 ---
 
@@ -45,7 +45,7 @@ const toneClasses: Record<NonNullable<Props['stageTone']>, string> = {
       <h2 id="workflow-context-title" class="mt-1 text-base font-semibold">Current stage: {stage}</h2>
     </div>
     {nextAction && nextActionHref && (
-      <a href={nextActionHref} class="inline-flex min-h-11 items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">
+    <a href={nextActionHref} class="inline-flex min-h-11 items-center rounded-qc-md bg-accent px-4 py-2 text-sm font-semibold text-content-inverse shadow-sm hover:bg-accent-hover qc-focus">
         {nextAction}
       </a>
     )}

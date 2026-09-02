@@ -1,0 +1,6 @@
+---
+import Input from './Input.astro';
+interface Props { id?: string; name?: string; value?: string; required?: boolean; disabled?: boolean; invalid?: boolean; describedBy?: string; class?: string; }
+const props = Astro.props;
+---
+<Input {...props} type="date" />

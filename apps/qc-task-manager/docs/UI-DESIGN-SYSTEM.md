@@ -1,6 +1,6 @@
 # QC Task Manager — UI Design System
 
-> **Version:** 1.0 · **Status:** Active — applies to every user-facing screen.
+> **Version:** 2.0 · **Status:** Active — applies to every user-facing screen.
 > **Scope:** `apps/qc-task-manager/` (Astro SSR + Tailwind + React islands). The application UI is **English only**.
 > **Rule:** a screen that cannot follow this system must document why, next to the deviation.
 
@@ -10,6 +10,22 @@ calm by default, problems prominent when they exist.
 ---
 
 ## 1. Foundations
+
+### 1.0 Canonical token tiers
+
+Every new or edited visual rule uses one of three tiers, in order: foundation
+custom properties in `global.css`, semantic aliases in `tailwind.config.mjs`, then
+the component recipe that owns the pattern. Raw Tailwind palettes, arbitrary spacing,
+and ad-hoc shadows are legacy-only and are never acceptable in a shared primitive.
+
+| Foundation family | Semantic roles | Rule |
+| --- | --- | --- |
+| Typography, spacing, radius, border, elevation, icons, containers, breakpoints, motion, focus | `content`, `surface`, `border`, `accent`, `neutral`, `success`, `warning`, `danger`, `info`, `disabled`, `overlay`, `glass`, `chart` | Components consume semantic roles only. |
+| Status | default/neutral, primary/accent, secondary/content-secondary, success, warning, danger, info, disabled | Status includes visible text; color is never the only signal. |
+| Data visualisation | `chart-primary`, `chart-secondary`, `chart-success`, `chart-warning`, `chart-danger` | Chart colors are not reused as UI workflow status. |
+
+`--color-overlay` and `--color-glass` are reserved for legitimate layered surfaces;
+they are not a substitute for contrast. The default product surface remains opaque.
 
 ### 1.0 Semantic token contract
 
@@ -243,7 +259,34 @@ route, and removed only after their consumers and consistency checks are gone.
 
 ---
 
-## 4. Page skeleton
+## 4. Canonical component catalogue
+
+| Component | Canonical owner / contract |
+| --- | --- |
+| Button / IconButton | `AppButton` / `IconButton`; use a semantic action variant and a 44px target for standalone actions. |
+| Input / Textarea / Select / Checkbox / Radio / Switch | `Input`, `Textarea`, `Select`, `Checkbox`, `Radio`, `Switch`, backed by `controls.ts`. |
+| Date / Search / Form field | `DateControl`, `SearchInput`, `FormField`; the route owns validation and descriptive text. |
+| Badge / Alert / Banner / Toast | `StatusPill`, `Banner`, `Toast`; `FlashNotice` and domain badges are adapters, not alternatives. |
+| Card / data card / table | `Card`, `DATA_CARD`, `TABLE_PANEL`; table semantics and column scope remain native HTML. |
+| Modal / dialog / drawer / dropdown / tooltip | Existing React dialogs and native `<details>` stay behavior owners; their shell must use card, overlay, focus, and action contracts. Do not add a second interaction framework. |
+| Tabs / pagination / breadcrumb | Native tablist contract when needed, `Pagination`, and `Breadcrumbs`; no per-route pagination variants. |
+| Empty / loading / notification | `EmptyState`, `Skeleton`, `OperationalState`, `Toast`, and `NotificationCard`; each has a distinct operational meaning. |
+| Page / section headers | `PageHeader` owns the H1; `SectionHeader` owns H2 section hierarchy. |
+
+### Legacy migration boundary
+
+The application contains legacy page markup that predates v2.0. It is inventoried by
+`test:design-system-100` and may retain raw palette classes only until its route is
+migrated. This is a controlled compatibility boundary, not a new-code exception:
+
+- Shared files in `src/components/ui/` are a zero-raw-palette zone, enforced in CI.
+- New shared controls must use `controls.ts` or a documented component recipe.
+- Existing pages migrate route-by-route only with their workflow, responsive, and access
+  regression tests; no visual sweep may change forms, RBAC, URLs, or audit behavior.
+- A raw palette in a new shared primitive fails the guard. A legacy page is reported as
+  outstanding migration work rather than silently treated as canonical.
+
+## 5. Page skeleton
 
 ```text
 Breadcrumbs (section pages)

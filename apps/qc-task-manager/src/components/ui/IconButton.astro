@@ -1,0 +1,6 @@
+---
+import { ICON_BUTTON } from './controls';
+interface Props { label: string; type?: 'button' | 'submit'; disabled?: boolean; class?: string; }
+const { label, type = 'button', disabled = false, class: className = '' } = Astro.props;
+---
+<button type={type} disabled={disabled} aria-label={label} title={label} class:list={[ICON_BUTTON, className]}><slot /></button>

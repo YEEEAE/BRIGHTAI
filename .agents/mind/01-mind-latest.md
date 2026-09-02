@@ -1,3 +1,26 @@
+## [2026-09-02] — توحيد قوائم الـ Checklist في prompt10.md
+
+### تم التنفيذ
+- استبدلت قوائم الـ Checklist التفصيلية لكل برومبت داخل `audit/qc/QC-Task-Manager/prompt10.md` ببند واحد فقط.
+- الصيغة النهائية بالإنجليزي: `- [✅] Executed` للبرومبتات المنفذة (00–03) و`- [ ] Not executed` للباقي (04–15)، مطابقة لحالة القائمة الرئيسية (Master Execution Checklist).
+- المجموع: 16 قائمة Checklist معالجة — 6 ✅ و10 غير منفذة.
+- لم يُعدَّل أي محتوى داخل بلوكات أوامر البرومبتات نفسها.
+
+### الملفات المتأثرة
+- `audit/qc/QC-Task-Manager/prompt10.md`
+
+### التحقق
+- `grep -n -A1 '^## Checklist'` ✅ — 16/16 بالصيغة الجديدة.
+- لا build/اختبارات: التغيير توثيقي فقط.
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** قوائم الـ Checklist للبرومبتات صارت بندًا واحدًا (Executed / Not executed) بعلامة صح للمنجز.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد.
+
+
 ## [2026-09-02] — QC-100-SECURITY-004: تثبيت عقود Security / RBAC / Privacy القابلة للأتمتة
 
 ### تم التنفيذ
@@ -1053,3 +1076,37 @@
 - `test-report-pdf-arabic.mjs` ما زال manual diagnostic مصنفًا ويفشل في RTL wrapping/mark/pagination؛ يلزم إصلاحه ثم تقرير هل يصبح canonical.
 - `test:performance` يجمع p50/p95/max وplans للـ11 scenario، لكنه لا يفرض رقم budget بعد؛ يلزم baseline وthresholds قبل ادعاء صفر local performance failures.
 - توجد تغييرات وحذوفات غير مرتبطة مسبقًا في الشجرة؛ بقيت بدون لمس. لا commit ولا push ولا deploy.
+## [2026-09-02] — QC-100-DESIGN-SYSTEM-006: تثبيت نظام تصميم QC الكنسي وحراسته
+
+### تم التنفيذ
+- وسّعت طبقة التوكنز إلى v2: typography، spacing، radius، borders، elevation/shadows، surfaces/overlay/glass، icon/container/breakpoint، motion/focus، chart، وحالات semantic كاملة.
+- أنشأت primitives موحّدة للتحكمات والنماذج (`Input`/`Textarea`/`Select`/`Checkbox`/`Radio`/`Switch`/Date/Search/FormField) والإجراءات والعرض (`IconButton`/`Card`/`Skeleton`/`Toast`/`SectionHeader`) فوق وصفة CSS واحدة.
+- رحّلت `WorkflowContext` وContextualHelp وattention/status/lab badge maps من ألوان Tailwind الخام إلى الأدوار الدلالية، بدون تغيير RBAC أو workflow أو URLs.
+- وثّقت catalogue لكل المكونات المطلوبة وعقد dialogs/drawers/dropdowns/tables/charts، وحدود ترحيل legacy بوضوح بدل ادعاء 100% غير مثبت.
+- أضفت `test:design-system-100` وربطته بالـmanifest: يفحص 29 token family، 21 primitive، ويمنع raw palette و`transition-all` داخل طبقة `src/components/ui/`.
+- أنشأت `apps/qc-task-manager/DESIGN-SYSTEM-100-EVIDENCE.md` بجرد فعلي وحدود الادعاء وخطوات الحراسة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/styles/global.css` و`tailwind.config.mjs`
+- `apps/qc-task-manager/src/components/ui/` (primitives + contracts)
+- `apps/qc-task-manager/{docs/UI-DESIGN-SYSTEM.md,DESIGN-SYSTEM-100-EVIDENCE.md}`
+- `apps/qc-task-manager/{scripts/test-design-system-100.mjs,scripts/test-manifest.mjs,package.json}`
+
+### الأرقام
+- primitive catalog: **8 سابقًا → 21** عناصر كنسية محروسة.
+- canonical test suites: **69 → 70**؛ E2E بقيت **28**.
+- legacy raw-palette queue: **98 ملفًا**؛ موثقة كترحيل لاحق ولا تُحسب كالتزام semantic كامل.
+
+### التحقق
+- `pnpm test:design-system-100` ✅ — 29 token checks / 21 primitives / 27 canonical files.
+- `pnpm test:ui-consistency` ✅ — 212/212؛ `pnpm test:status-semantics` ✅؛ `pnpm test:manifest` ✅ — 70/28.
+- `pnpm typecheck` ✅ — 0 errors / 0 warnings / 0 hints.
+- `NODE_ENV=production pnpm build` ✅؛ `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح محليًا آليًا.
+- **مختصر:** الطبقة الكنسية والحراسة مكتملتان من دون تعديل سلوك المنتج؛ ترحيل الـ98 ملف legacy يحتاج batches حسب المسار مع تحقق متصفح، ولا يوجد ادعاء 100% route-level قبل ذلك.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+- `01-mind-latest.md` متجاوز حد الحجم الإرشادي التاريخي؛ الأرشفة إلى القسم 2 قرار منفصل ولم تُنفّذ ضمن هذه المهمة كي لا تخلط أرشفة واسعة مع تغيير تصميمي.

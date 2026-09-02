@@ -1,0 +1,6 @@
+---
+import { CONTROL_BASE } from './controls';
+interface Props { id?: string; name?: string; type?: 'text' | 'email' | 'number' | 'tel' | 'password' | 'date' | 'search'; value?: string | number; placeholder?: string; required?: boolean; disabled?: boolean; invalid?: boolean; describedBy?: string; class?: string; }
+const { id, name, type = 'text', value, placeholder, required, disabled, invalid, describedBy, class: className = '' } = Astro.props;
+---
+<input id={id} name={name} type={type} value={value} placeholder={placeholder} required={required} disabled={disabled} aria-invalid={invalid ? 'true' : undefined} aria-describedby={describedBy} class:list={[CONTROL_BASE, className]} />

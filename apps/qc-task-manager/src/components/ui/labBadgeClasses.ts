@@ -41,15 +41,15 @@ export const ACKNOWLEDGEMENT_BADGE_CLS: Record<LabAcknowledgementStatus, string>
 
 /** Controlled-document type → solid badge classes. */
 export const DOCUMENT_TYPE_BADGE_CLS: Record<LabDocumentType, string> = {
-  SOP: 'bg-sky-100 text-sky-800',
-  WI: 'bg-indigo-100 text-indigo-800',
+  SOP: 'bg-info-soft text-info',
+  WI: 'bg-accent-soft text-accent',
 };
 
 /** Task-template lifecycle → solid badge classes. */
 export const TEMPLATE_STATUS_STYLES: Record<string, string> = {
-  DRAFT: 'bg-amber-100 text-amber-800',
-  ACTIVE: 'bg-emerald-100 text-emerald-800',
-  ARCHIVED: 'bg-slate-200 text-slate-500',
+  DRAFT: 'bg-warning-soft text-warning',
+  ACTIVE: 'bg-success-soft text-success',
+  ARCHIVED: 'bg-surface-muted text-content-muted',
 };
 
 /** Lab test workflow status → solid badge classes (detail + review queue). */

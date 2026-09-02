@@ -30,10 +30,10 @@ export const TONE_PILL_CLASSES: Record<StatusTone, string> = {
  *  Tailwind classes kept verbatim: migrating them to semantic tokens is a
  *  design-system change and must not ride along a refactor. */
 export const ATTENTION_TONE: Record<'danger' | 'warning' | 'info' | 'neutral', string> = {
-  danger: 'border-red-200 bg-red-50 text-red-700',
-  warning: 'border-orange-200 bg-orange-50 text-orange-700',
-  info: 'border-sky-200 bg-sky-50 text-sky-700',
-  neutral: 'border-slate-200 bg-white text-slate-700',
+  danger: 'border-danger-border bg-danger-soft text-danger',
+  warning: 'border-warning-border bg-warning-soft text-warning',
+  info: 'border-info-border bg-info-soft text-info',
+  neutral: 'border-border bg-surface text-content-secondary',
 };
 
 /**

@@ -6,6 +6,32 @@
  * while this layer remains the single place to change the visual language.
  */
 :root {
+  /* Foundation: keep raw values here; application code consumes semantic roles. */
+  --font-sans: "IBM Plex Sans Arabic", Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
   --color-surface-page: #f8fafc;
   --color-surface: #ffffff;
   --color-surface-elevated: #ffffff;
@@ -33,13 +59,44 @@
   --color-info: #0369a1;
   --color-info-soft: #f0f9ff;
   --color-info-border: #bae6fd;
+  --color-neutral: #475569;
+  --color-neutral-soft: #f1f5f9;
+  --color-neutral-border: #cbd5e1;
+  --color-disabled: #94a3b8;
+  --color-overlay: rgb(15 23 42 / 0.48);
+  --color-glass: rgb(255 255 255 / 0.86);
+  --color-chart-primary: #2563eb;
+  --color-chart-secondary: #7c3aed;
+  --color-chart-success: #047857;
+  --color-chart-warning: #c2410c;
+  --color-chart-danger: #b91c1c;
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-pill: 9999px;
+  --border-width-default: 1px;
+  --shadow-none: none;
+  --shadow-raised: 0 1px 2px rgb(15 23 42 / 0.06);
+  --shadow-overlay: 0 16px 32px rgb(15 23 42 / 0.16);
+  --elevation-base: 0;
+  --elevation-raised: 10;
+  --elevation-overlay: 50;
+  --icon-size-sm: 1rem;
+  --icon-size-md: 1.25rem;
+  --icon-size-lg: 1.5rem;
+  --container-content: 72rem;
+  --container-reading: 48rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 90rem;
   --motion-fast: 120ms;
   --motion-standard: 180ms;
+  --motion-slow: 240ms;
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
 }
 
 /* Named type roles keep hierarchy stable when the typeface or scale changes. */
@@ -63,6 +120,10 @@
 .type-caption { @apply text-xs text-content-muted; }
 .type-data-id { @apply text-sm font-medium tabular-nums text-content; }
 .qc-focus { @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus; }
+.qc-surface-card { @apply rounded-qc-lg border border-border bg-surface shadow-sm; }
+.qc-surface-overlay { box-shadow: var(--shadow-overlay); }
+.qc-overlay { background: var(--color-overlay); }
+.qc-glass { background: var(--color-glass); -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%); }
 
 /*
  * Global accessibility styles (WCAG 2.2 AA basics).
