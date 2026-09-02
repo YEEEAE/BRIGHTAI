@@ -56,6 +56,7 @@
     "test:lab-management": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-management.mjs",
     "test:lab-form": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-form.mjs",
     "test:form-productivity": "node scripts/test-form-productivity.mjs",
+    "test:forms-advanced-100": "node scripts/test-forms-advanced-100.mjs",
     "test:lab-tests": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-tests.mjs",
     "test:lab-review": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-review.mjs",
     "test:lab-products": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-products.mjs",

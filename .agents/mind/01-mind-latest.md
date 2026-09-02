@@ -1807,3 +1807,38 @@
 ### ملاحظات / مشاكل مفتوحة
 - لم تُعد تشغيل سلسلة 76 unit / 30 E2E كاملة بعد هذا التغيير الأمني؛ baseline الأخير قبل PROMPT-03 كان أخضر.
 - لا commit ولا push ولا deploy.
+## [2026-09-03] — QC-REMEDIATION-006: العقد canonical للنماذج وحماية المسودات
+
+### تم التنفيذ
+- استبدلت helper النماذج الجزئي في `apps/qc-task-manager/public/scripts/form-productivity.js` بكنترولر canonical واحد يكتشف كل نماذج التطبيق، ويتابع dirty state ويحفظ المسودات بعد 500ms ويستعيدها.
+- عزلت مفاتيح `localStorage` حسب `userId` والمسار والفعل، ومنعت حفظ password/passcode/PIN/secret/token/signature/file، وأضافت تنظيف مسودات المستخدم عند logout.
+- أضفت `beforeunload`، تركيز أول حقل غير صالح، `aria-invalid` و`aria-describedby` للأخطاء، وقفل الإرسال الفوري مع `aria-busy` وspinner ونسخة `جاري الحفظ...`.
+- أضفت `data-qc-user-id` من `BaseLayout` ووسمت `LabTestForm` كـ canonical consumer، مع إبقاء Zod في الخادم مصدر التحقق النهائي.
+- أضفت `test:forms-advanced-100` واختبار Playwright سلوكي يغطي الاستعادة، التحذير، الوصول، القفل، logout، وجرد 51 ملف نموذج.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/public/scripts/form-productivity.js`
+- `apps/qc-task-manager/src/layouts/BaseLayout.astro`
+- `apps/qc-task-manager/src/components/lab/LabTestForm.tsx`
+- `apps/qc-task-manager/src/styles/global.css`
+- `apps/qc-task-manager/scripts/test-forms-advanced-100.mjs`
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/package.json`
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-06-EVIDENCE.md`
+
+### التحقق
+- `pnpm run test:forms-advanced-100` ✅ — 9/9.
+- `pnpm run test:form-productivity` ✅ — 20/20.
+- `pnpm run test:manifest` ✅ — 84 canonical unit suites و28 E2E suites.
+- `pnpm typecheck` ✅ — 311 ملفات، 0 أخطاء/تحذيرات/hints.
+- `pnpm build` ✅.
+- `pnpm test` ✅ — كل السويتات المسجلة اكتملت بـ0 assertions فاشلة.
+- `pnpm e2e:acceptance` ✅ — 28 سويت E2E + مرحلتا restart persistence.
+
+### النتيجة
+- **الحالة:** نجح (PASS — 6/6).
+- **مختصر:** صار فيه عقد موحد يحمي إدخال المستخدم والمسودات لكل 51 ملف نموذج، مع تغطية متصفح وفحوص regression كاملة، بدون commit أو push.
+
+### ملاحظات / مشاكل مفتوحة
+- `git diff --check` العام ما زال يبلّغ عن trailing whitespace قديم في `audit/website-builder-SEO/SEO-GEO-KEYWORD-COMPETITOR-RESEARCH-2026-09-03.md` خارج نطاق المهمة؛ diff ملفات المهمة سليم.
+- لا توجد مشكلة مفتوحة ضمن نطاق PROMPT-06.

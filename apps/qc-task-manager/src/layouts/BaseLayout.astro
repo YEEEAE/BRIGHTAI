@@ -40,7 +40,7 @@ const recentNotifications = navUser
     <script is:inline src="/scripts/form-productivity.js" defer></script>
     <script is:inline src="/scripts/ux-telemetry.js" data-enabled={!hideNav && !!Astro.locals.user} data-route={Astro.url.pathname} defer></script>
   </head>
-  <body class="min-h-screen bg-surface-page text-content antialiased">
+  <body class="min-h-screen bg-surface-page text-content antialiased" data-qc-user-id={Astro.locals.user?.userId ?? 'anonymous'}>
     <SystemBackground />
     <div class="qc-app-layer">
       <!-- Skip link — first focusable element on every page (WCAG 2.4.1).

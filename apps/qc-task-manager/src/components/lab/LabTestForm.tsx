@@ -665,7 +665,7 @@ export default function LabTestForm({
   };
 
   return (
-    <form ref={formRef} action={testId ? `/lab/tests/${testId}/edit` : `/lab/tests/new?type=${testType}`} method="POST" noValidate data-ux-flow="lab-test" data-ux-surface="lab-test-form">
+    <form ref={formRef} action={testId ? `/lab/tests/${testId}/edit` : `/lab/tests/new?type=${testType}`} method="POST" noValidate data-qc-form="canonical" data-ux-flow="lab-test" data-ux-surface="lab-test-form">
       <input ref={actionRef} type="hidden" name="form_action" value={formAction} />
       <input ref={samplesJsonRef} type="hidden" name="samples_json" value="" />
       <input ref={readingsJsonRef} type="hidden" name="environment_readings_json" value="" />

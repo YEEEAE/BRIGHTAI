@@ -155,6 +155,19 @@
 .qc-motion-enter {
   animation: qc-motion-enter var(--duration-moderate) var(--ease-decelerate) both;
 }
+.qc-form-spinner {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-inline-end: 0.4rem;
+  vertical-align: -0.12rem;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: 999px;
+  animation: qc-form-spin 0.7s linear infinite;
+}
+@keyframes qc-form-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .qc-form-spinner { animation: none; } }
 @keyframes qc-motion-enter {
   from { opacity: 0; transform: translateY(0.25rem); }
   to { opacity: 1; transform: translateY(0); }
