@@ -582,7 +582,10 @@ export default function LabTestForm({
   function focusErrorField(field: string) {
     const targetId = field === 'Samples' ? 'sec-results' : field === 'Final Result' ? 'sec-final-result' : field === 'Product Description' ? 'product_description' : field === 'Connector Type' ? 'connector_type' : field === 'Lot Number' ? 'lot_number' : field === 'Sampling Area' ? 'sampling_area' : field === 'Machine Name' ? 'equipment_id' : 'sec-sample-identification';
     const target = document.getElementById(targetId);
-    target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'center',
+    });
     const focusTarget = target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement
       ? target
       : target?.querySelector('input, select, textarea, button') as HTMLElement | null;
@@ -592,6 +595,18 @@ export default function LabTestForm({
   useEffect(() => {
     if (!reviewOpen) return;
     reviewConfirmRef.current?.focus();
+  }, [reviewOpen]);
+
+  useEffect(() => {
+    if (!reviewOpen) return;
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setReviewOpen(false);
+        reviewTriggerRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [reviewOpen]);
 
   function sectionStatus(section: string): 'not-started' | 'in-progress' | 'complete' | 'error' {

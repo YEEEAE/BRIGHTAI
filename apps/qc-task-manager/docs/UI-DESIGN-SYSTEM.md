@@ -107,14 +107,14 @@ Never mix `rounded-2xl` or arbitrary radii. Nested radius follows the parent (co
 - Loading (buttons): disabled + label swap to an explicit gerund ("Submitting…", "Saving…").
 - Transitions: named properties only (`transition-colors` or `transition-shadow`) where feedback
   helps; never `transition-all`. Operational controls and data cards do not move on hover. Motion
-  uses `duration-qc-fast`/`duration-qc-standard` and the shared easing token, with a 240ms maximum
+  uses `duration-qc-fast`/`duration-qc-standard`/`duration-qc-moderate` and the shared easing tokens, with a 240ms maximum
   for routine UI feedback. `prefers-reduced-motion` is globally honored (see `src/styles/global.css`).
 
 ### 1.6 Motion language
 
 Motion is reserved for feedback and state comprehension. High-frequency keyboard and data-entry
 flows stay immediate; occasional surfaces may use a short color or shadow transition. The current
-system uses 120ms for fast feedback and 180ms for standard feedback, never animates layout
+system uses 120ms for fast feedback, 180ms for standard feedback, and 240ms for moderate entry, never animates layout
 dimensions, and never uses hover translate/scale, decorative loops, parallax, page entrance motion,
 or animated KPI values. Reduced-motion users receive the same state change without movement.
 

@@ -1,3 +1,66 @@
+## [2026-09-02] — QC-100-INTERACTION-MOTION-009: تغطية حالات التفاعل ونظام الحركة
+
+### تم التنفيذ
+- وحّدت توكنز الحركة الكنسية إلى `duration-instant/fast/standard/moderate` و`ease-standard/decelerate/accelerate/linear` بقيم 0/120/180/240ms، مع إبقاء aliases القديمة للتوافق.
+- ربطت توكنز الحركة بـTailwind (`duration-qc-*` و`ease-qc-*`) وأضفت وصفتي `qc-motion-feedback` و`qc-motion-enter`؛ أضفت Toast entry motion بدون تغيير workflow.
+- قوّيت `prefers-reduced-motion` على مستوى النظام: اختصار المدد إلى 1ms، تعطيل smooth scrolling، ومنع تكرار الحركة؛ ومررت التركيز في نموذج المختبر عبر scroll فوري عند تفعيل تقليل الحركة.
+- أضفت دعم Escape لحوار مراجعة اختبار المختبر، وبدّلت انتقالات الرسوم المباشرة `duration-150` إلى توكن الحركة الكنسي.
+- أنشأت `8-INTERACTION-MOTION-100-EVIDENCE.md` بمصفوفة حالات default/hover/focus/active/selected/loading/success/error/disabled/destructive/pending وحدود الأدلة البشرية المطلوبة.
+- أضفت حارس `test-interaction-motion-100.mjs` وفحصت 10 مالكي feedback و5 مالكي dialogs، ومنعت `transition-all` وhover translate/scale والحركة غير المسمّاة.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/styles/global.css`
+- `apps/qc-task-manager/tailwind.config.mjs`
+- `apps/qc-task-manager/src/components/{ui/Toast,DashboardCharts,LabDashboardCharts}.tsx` / `.astro`
+- `apps/qc-task-manager/src/components/lab/LabTestForm.tsx`
+- `apps/qc-task-manager/scripts/test-interaction-motion-100.mjs`
+- `apps/qc-task-manager/{package.json,scripts/test-manifest.mjs,docs/UI-DESIGN-SYSTEM.md,8-INTERACTION-MOTION-100-EVIDENCE.md}`
+
+### التحقق
+- `pnpm run test:interaction-motion-100` ✅ — 75/75.
+- `pnpm run test:interaction-feedback` ✅ — 25/25؛ `test:ui-consistency` ✅ — 212/212.
+- `pnpm run test:lab-form` ✅ — 72/72؛ `test:form-productivity` ✅ — 20/20.
+- `pnpm run test:manifest` ✅ — 72 canonical suites و28 E2E.
+- `pnpm run typecheck` ✅ — 0 أخطاء؛ `pnpm run build` ✅ — Complete.
+- `git diff --check` ✅؛ لم تُشغّل full test وE2E acceptance لهذه الدفعة.
+
+### النتيجة
+- **الحالة:** نجح محليًا آليًا.
+- **مختصر:** صار عند QC عقد حركة موحّد وحارس قابل لإعادة التنفيذ يغطي feedback والحالات عالية الأثر مع reduced-motion؛ التحقق اليدوي عبر الأجهزة وقارئات الشاشة ما زال مطلوبًا.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+- فحص `test:form-productivity` طبع رسائل backup مؤقتة متوقعة أثناء الـfixture، لكن السويت نفسها نجحت 20/20.
+- UAT البشري وVoiceOver/NVDA واختبار جهاز منخفض الطاقة لم تُنفذ، فلا تُحسب ضمن إثبات 100% الخارجي.
+
+## [2026-09-02] — QC-100-UX-IA-008: تدقيق IA وتصميم الخدمة حسب الأدوار
+
+### تم التنفيذ
+- أنشأت دليلًا مستقلًا لتدقيق المنتج كاملًا من منظور Employee وSupervisor وManager وAdmin، مبنيًا على jobs-to-be-done بدل بنية الكود.
+- وثقت الوضع الحالي للـglobal navigation وLaboratory secondary navigation والـbreadcrumbs والعناوين وdashboard/search/reports/notifications/settings/admin، مع أدلة مسارات ومراجع file:line.
+- عرّفت IA مستهدفًا موحدًا يفرّق بين My Work وTeam Review وCommand Center وAdministration، ويقترح إعادة تسمية/تجميع تقلل ازدواجية Search وReports وNotifications بدون تغيير URLs أو RBAC.
+- رسمت 7 رحلات end-to-end: tasks، findings/RCA/CAPA، lab tests، equipment/calibration/maintenance، SOP/WI، change requests، notifications؛ وحددت الملكية، نقاط التسليم، الاسترجاع، والفجوات الحالية.
+- أضفت cross-workflow service blueprint، route/navigation traceability contract، قاعدة قابلة للاختبار لـzero orphan/dead-end، وخطة remediation مرتبة P0–P2.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/7-UX-IA-SERVICE-DESIGN-100-EVIDENCE.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- قراءة `.agents/mind/01-mind-latest.md` كاملة على دفعات ✅
+- قراءة مهارات `information-architecture` و`service-blueprint` و`journey-map` و`heuristic-evaluation` ✅
+- جرد routes/navigation/source/docs ✅ — لا تغييرات على كود المنتج أو URLs أو الصلاحيات
+- `git diff --check` ✅
+- build/tests: لم تُشغّل — المهمة توثيقية فقط
+
+### النتيجة
+- **الحالة:** جزئي
+- **مختصر:** الدليل مكتمل ويثبت أساس IA الحالي والفجوات القابلة للتنفيذ، لكنه لا يدّعي أن zero orphan/dead-end أو UX success تحققت قبل route registry واختبارات tree/UAT البشرية.
+
+### ملاحظات / مشاكل مفتوحة
+- ازدواجية Search/Reports/Notifications، ومسار Apply في change requests، وتغطية traceability الكاملة بقيت كـP0/P1 remediation موثقة.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-02] — توحيد قوائم الـ Checklist في prompt10.md
 
 ### تم التنفيذ

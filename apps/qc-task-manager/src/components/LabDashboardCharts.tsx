@@ -120,7 +120,7 @@ function LabDonut({ data, centerLabel }: { data: LabChartSlice[]; centerLabel: s
             onFocus={() => setActive(i)}
             onBlur={() => setActive(null)}
             tabIndex={0}
-            className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            className="cursor-pointer transition-opacity duration-qc-fast ease-qc-standard outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
           >
             <title>{`${s.label}: ${s.count} (${total > 0 ? Math.round(s.frac * 100) : 0}%)`}</title>
           </circle>

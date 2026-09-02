@@ -117,7 +117,7 @@ function DonutChart({ data }: { data: DonutSlice[] }) {
             tabIndex={0}
             // outline-none already carries outline-offset 2px in Tailwind v3.4,
             // so no inline style attribute is needed here (CSP style-src 'self').
-            className="cursor-pointer transition-opacity duration-150 outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            className="cursor-pointer transition-opacity duration-qc-fast ease-qc-standard outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
           >
             <title>{`${s.label}: ${s.count} (${total > 0 ? Math.round(s.frac * 100) : 0}%)`}</title>
           </circle>
@@ -313,7 +313,7 @@ function BarChart({ data }: { data: EmployeeBar[] }) {
                     fill={s.color}
                     rx={2}
                     opacity={hover ? (hover.user === user.user_id && hover.status === s.status ? 1 : 0.65) : 1}
-                    className="cursor-pointer transition-opacity duration-150"
+                    className="cursor-pointer transition-opacity duration-qc-fast ease-qc-standard"
                     onMouseEnter={() =>
                       setHover({ user: user.user_id, status: s.status, label: s.label, value: s.count, color: s.color })
                     }

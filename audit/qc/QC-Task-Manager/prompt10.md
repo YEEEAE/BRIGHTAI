@@ -23,8 +23,8 @@
 - [✅] PROMPT 05 — Design System
 - [✅] PROMPT 06 — Visual Design + UI
 - [✅] PROMPT 07 — UX + Information Architecture + Service Design
-- [ ] PROMPT 08 — Interaction Design + Motion & Digital Art
-- [ ] PROMPT 09 — UX Writing + Microcopy + UX Research
+- [ ✅] PROMPT 08 — Interaction Design + Motion & Digital Art
+- [✅] PROMPT 09 — UX Writing + Microcopy + UX Research
 - [ ] PROMPT 10 — Accessibility Design + Ergonomics
 - [ ] PROMPT 11 — Dashboard + Data Visualization
 - [ ] PROMPT 12 — Advanced Form Design
@@ -955,7 +955,7 @@ Create:
 # PROMPT 08 — Interaction Design + Motion & Digital Art → 100%
 
 ## Checklist
-- [ ] Not executed
+- [ ✅]executed
 
 ```text
 @GitHub @Superpowers
@@ -1040,7 +1040,8 @@ Create:
 # PROMPT 09 — UX Writing + Microcopy + UX Research → 100%
 
 ## Checklist
-- [ ] Not executed
+- [ ✅]executed
+
 
 ```text
 @GitHub @Superpowers
