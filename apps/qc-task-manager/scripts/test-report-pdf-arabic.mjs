@@ -15,13 +15,33 @@
 //   node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-report-pdf-arabic.mjs --artifact /tmp/arabic-pdf-report.pdf
 //   qlmanage -t -s 2200 -o /tmp /tmp/arabic-pdf-report.pdf && open /tmp/arabic-pdf-report.pdf.png
 
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 
 const appDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
+
+// The required direct command is `node scripts/test-report-pdf-arabic.mjs`.
+// Re-enter once with the repository's TypeScript loader so native Node can
+// resolve the app's extensionless .ts imports without changing the command.
+const hasProjectTsLoader = process.execArgv.some((arg) => arg.endsWith('test-ts-loader.mjs'));
+if (!hasProjectTsLoader) {
+  const child = spawnSync(
+    process.execPath,
+    [
+      '--import',
+      resolve(appDir, '../../scripts/test-ts-loader.mjs'),
+      '--experimental-strip-types',
+      fileURLToPath(import.meta.url),
+      ...process.argv.slice(2),
+    ],
+    { cwd: appDir, env: process.env, stdio: 'inherit' },
+  );
+  process.exit(child.status ?? 1);
+}
+
 const tempDir = mkdtempSync(join(tmpdir(), 'brightai-pdf-arabic-'));
 const dbPath = join(tempDir, 'pdf-arabic.db');
 const artifactPath = process.argv.includes('--artifact')
@@ -177,7 +197,11 @@ try {
   if (h1 && h2 && d1 && d2) {
     ok(h1.x > h2.x, `first logical header rightmost (${h1.x.toFixed(1)} > ${h2.x.toFixed(1)})`);
     ok(d1.x > d2.x, `matching data stays under mirrored headers (${d1.x.toFixed(1)} > ${d2.x.toFixed(1)})`);
-    ok(Math.abs(h1.x - d1.x) < 0.5 && Math.abs(h2.x - d2.x) < 0.5, 'each value aligned under its own Arabic header');
+    const { FONT_BASE64 } = await import('../src/lib/reporting/writers/fonts/fontData.ts');
+    const { create: createFont } = await import('fontkit');
+    const rtlFont = createFont(Buffer.from(FONT_BASE64, 'base64'));
+    const rightEdge = (line) => line.x + (rtlFont.layout(rev(line.chars)).advanceWidth * 8) / 1000;
+    ok(Math.abs(rightEdge(h1) - rightEdge(d1)) < 0.5 && Math.abs(rightEdge(h2) - rightEdge(d2)) < 0.5, 'each value right-aligned under its own Arabic header');
   }
   const midline = (MARGIN_X = 36, USABLE = 595 - 72) => MARGIN_X + USABLE / 2;
   if (d1 && d2) ok(d1.x > midline() && d2.x < midline(), 'mirrored halves split at page center');
@@ -216,7 +240,7 @@ try {
   const bigPages = (bigPdf.toString('latin1').match(/\/Type \/Page[^s]/g) ?? []).length;
   ok(bigPages >= 2, `multi-page report generated (${bigPages} pages)`);
   const bigDecoded = decodeDrawnLines(bigPdf);
-  const headerRepeats = bigDecoded.lines.filter((l) => l.chars === 'Equipment Name').length;
+  const headerRepeats = bigDecoded.lines.filter((l) => l.chars === 'Name').length;
   ok(headerRepeats === bigPages, `header row repeated on every page (${headerRepeats}/${bigPages})`);
 
   console.log(`\n${passed} passed, ${failed} failed${failures.length ? ': ' + failures.join(' | ') : ''}`);

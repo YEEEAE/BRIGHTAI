@@ -1,4 +1,63 @@
 
+## [2026-09-03] — QC-REMEDIATION-005: إصلاح تصدير PDF العربي/RTL وتقارير مهام الجودة
+
+### تم التنفيذ
+- وحّدت تصدير تقارير المهام مع كاتب PDF Unicode الموجود في `apps/qc-task-manager/src/lib/reporting/writers/pdf.ts`، وأضافت المعالجة تشكيل العربية، ترتيب BiDi، خرائط ToUnicode، تضمين خط IBM Plex Sans Arabic المحلي، `/Lang (ar)`، اتجاه القراءة `/R2L`، وإصلاح حفظ كل صفحات التقارير الطويلة.
+- أنشأت `apps/qc-task-manager/src/lib/taskPdf.ts` لتجميع تقرير ثنائي اللغة بترويسة QC/CoA احترافية تشمل Task ID وStatus وPriority وInspector Name وDate/Generated ووسم `E-SIGNATURE BADGE: VERIFIED` وبيانات الأدلة.
+- حدّثت مسار `src/pages/api/export/tasks/pdf/[id].ts` ليعيد PDF بـ `charset=utf-8` و`Content-Disposition: inline` ويسجل حدث `report_exported` في `task_activity_log`، مع بقاء المصادقة وRBAC و404 العام للمهام غير المصرح بها.
+- شدّدت print CSS و`PrintLayout.astro` لإخفاء chrome، منع تقطيع الصفوف والأقسام، استخدام A4، وتحميل الخط المحلي بـ `font-display: swap`.
+- أضفت suite كنسي `test:export-reports-100`، وربطت diagnostic العربي بالأمر المباشر `node scripts/test-report-pdf-arabic.mjs`، وحدّثت manifest وfixture runner ليستخدم `NODE_ENV=test` فقط لقواعد بيانات الاختبار المعزولة.
+- وثّقت الأدلة التشغيلية في `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-05-EVIDENCE.md`.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/reporting/writers/pdf.ts`
+- `apps/qc-task-manager/src/lib/taskPdf.ts`
+- `apps/qc-task-manager/src/pages/api/export/tasks/pdf/[id].ts`
+- `apps/qc-task-manager/src/lib/activity.ts`
+- `apps/qc-task-manager/src/lib/taskDetails.ts`
+- `apps/qc-task-manager/src/layouts/PrintLayout.astro`
+- `apps/qc-task-manager/src/styles/global.css`
+- `apps/qc-task-manager/scripts/test-report-pdf-arabic.mjs`
+- `apps/qc-task-manager/scripts/test-export-reports-100.mjs`
+- `apps/qc-task-manager/scripts/e2e-acceptance.mjs`
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/package.json`
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-05-EVIDENCE.md`
+
+### الأرقام
+- تشخيص PDF العربي: **34/34**.
+- اختبار التصدير المخصص: **20/20**.
+- الاختبارات الوحدوية الكنسية: **83/83**.
+- full E2E: **30/30 suites، صفر فشل، 3059+ assertion ناجح**؛ مرحلتا restart persistence نجحتا لكنهما لا تطبعان عدادات رقمية، لذلك ظهر الإجمالي بصيغة `3059+`.
+- focused lab E2E: **94/94**، وresponsive E2E: **648/648**، وreports E2E: **912/912**.
+
+### القرارات
+- أبقيت `src/lib/pdf.ts` القديم للتوافق مع اختبار المجال الموجود، واستخدمت writer Unicode المشترك لمسار task export الجديد حتى ما يصير pipeline ثاني منفصل لمعالجة العربية.
+- اعتبرت دور `employee` هو Inspector في طبقة الصلاحيات الحالية بدل إضافة role جديد؛ هذا يطابق نموذج المستخدمين القائم ويمنع تغيير schema.
+- عدّلت runner فقط في بيئة fixture المعزولة إلى `NODE_ENV=test` لأن `QC_SEED_MUST_CHANGE_PASSWORD=0` ممنوع في production؛ build نفسه ظل production-compatible.
+
+### المشاكل / الحلول
+- فشل `test-report-pdf-arabic.mjs` المباشر سابقًا بسبب غياب TS loader عولج بbootstrap يعيد تشغيل الأمر نفسه مع loader المشروع.
+- فشل عقد PDF في full E2E بسبب غياب النص الحرفي `Generated:` عولج بإضافته إلى metadata مع بقاء الحقل العربي/الثنائي في الترويسة.
+- ظهرت مرة مشكلة chunks مؤقتة أثناء E2E؛ إعادة التشغيل النهائية تجاوزتها ونجحت كل suites بدون فشل.
+
+### التحقق
+- `node scripts/test-report-pdf-arabic.mjs` ✅
+- `pnpm run test:export-reports-100` ✅
+- `node scripts/test-manifest-guard.mjs` ✅ — 83 canonical / 28 E2E
+- `node_modules/.bin/astro check` ✅ — 0 أخطاء، 0 تحذيرات، 0 hints
+- `node_modules/.bin/astro build` ✅
+- `pnpm test` ✅ — 83/83
+- focused `/lab/tests/1/print` E2E ✅ — print emulation + A4 PDF
+- `pnpm e2e:acceptance` ✅ — 30/30 suites، 0 failed
+
+### النتيجة
+- **الحالة:** نجح (100%).
+- **مختصر:** تم إصلاح عيب تشكيل العربية وBiDi في تصدير PDF، إضافة ترويسة QC/CoA ثنائية اللغة وتدقيق التصدير، وتجاوزت اختبارات الوحدة وE2E والبناء كاملة بدون دفع أو commit.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد. تحذيرات backup التي ظهرت أثناء اختبارات قواعد البيانات المؤقتة متوقعة ولا تؤثر على النتيجة.
+
 ## [2026-09-02] — QC-REMEDIATION-004: سير عمل ضبط الجودة، التوقيع الإلكتروني المزدوج وختم السجلات وتحديثات طلبات التغيير
 
 ### تم التنفيذ
@@ -53,6 +112,41 @@
 
 ### ملاحظات / مشاكل مفتوحة
 - لا يوجد. كل متطلبات الـ QC/QMS وسير العمل المخبري مكتملة بنسبة 100%.
+
+## [2026-09-02] — تدقيق SEO/GEO حي شامل للنطاق brightai.live
+
+### تم التنفيذ
+- شغّلت مهارة `seo-geo` على `https://brightai.live` وفحصت الصفحة الرئيسية والميتا وH1 وcanonical وOpen Graph وhreflang وJSON-LD ووقت النقل الاصطناعي.
+- تحققت من `robots.txt` عمليًا: 17/17 زاحف بحث وAI رجع HTTP 200 وكان مسموحًا، وشملت Googlebot وBingbot وGPTBot وChatGPT-User وOAI-SearchBot وPerplexityBot وClaudeBot وanthropic-ai.
+- حللت `sitemap.xml`: 262 رابطًا، كلها على `brightai.live`، وصفر ذكر لـ`brightai.site`؛ مسح الصفحات الحية لم يجد `noindex` أو canonical مفقود.
+- تحققت من `/llms.txt` و`/llms-full.txt` (200)، ومن عينة الصفحات الأساسية العربية والإنجليزية (200، H1 واحد، canonical وJSON-LD صالحان).
+- راجعت قرار حذف `SearchAction` من `WebSite` schema وتأكدت أنه مقصود وصحيح لعدم وجود مسار `/search` عام، بدل إنشاء schema يشير إلى 404.
+- فصلت عطل بوابات SEO المحلية عن الإنتاج: `dist/client` ignored يحتوي artifacts متقادمة بأسماء مثل `index 2.html`؛ المسارات المكافئة غير منشورة وترجع 404 ولا تظهر في sitemap.
+- أنشأت تقرير الأدلة والأولويات في `audit/website-builder-SEO/SEO-GEO-AUDIT-2026-09-02.md` بدون تعديل كود الموقع أو النشر.
+
+### الملفات المتأثرة
+- `audit/website-builder-SEO/SEO-GEO-AUDIT-2026-09-02.md`
+- `.agents/mind/01-mind-latest.md`
+
+### الأرقام
+- زواحف البحث وAI: **17/17 HTTP 200 + robots allowed**.
+- sitemap: **262/262** على `brightai.live`، و**0** على `brightai.site`.
+- الرئيسية: title 42 حرفًا، description 158 حرفًا، H1 واحد، JSON-LD واحد مدمج بعدة عقد، TTFB اصطناعي 0.317s وإجمالي نقل 0.337s؛ ليست قياسات CWV.
+
+### التحقق
+- `python3 scripts/seo_audit.py https://brightai.live` ✅ — load 0.62s، metadata/robots/sitemap موجودة.
+- فحص crawler حي عبر Python/curl ✅ — 17/17؛ `node scripts/verify-crawler-access.mjs` ❌ بيئيًا لأن Node fetch لم يستخدم مسار البروكسي وأعاد `fetch failed` لكل الشبكة.
+- `pnpm seo:schema` ✅ — schema 62 صفحة وspeakable 283 صفحة.
+- `pnpm seo:all` و`pnpm seo:gate` ❌ محليًا — 50 خطأ مشتقة من artifacts قديمة داخل `dist/client` ignored، وليست أخطاء إنتاجية.
+- إعادة فحص `/kernel/reports/` و`/terms/` بعد تعثر المسح المتوازي ✅ — كلاهما 200.
+
+### النتيجة
+- **الحالة:** جزئي / PASS للإنتاج الحي.
+- **مختصر:** ما فيه P0 يمنع الزحف أو الفهرسة؛ الميتا والـschema والـrobots والـsitemap ووصول AI سليمة حيًا. البوابة المحلية الكاملة تحتاج تنظيف `dist/` بموافقة المستخدم ثم build وإعادة الفحص.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد دليل Search Console/Bing على الفهرسة والترتيب ضمن هذه المهمة، ولا Lighthouse/PSI لـLCP وINP وCLS.
+- لم أحذف `dist/` التزامًا بمنع الحذف بدون تأكيد، ولم يحدث commit أو push أو deploy.
 
 ## [2026-09-02] — إضافة/تحديث مهارة SEO-GEO من opc-skills لـZed
 

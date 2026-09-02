@@ -38,7 +38,8 @@ const tsText = iso(printTimestamp);
     <style is:global>
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; background: #e2e8f0; color: #111827; }
-      body { font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif; font-size: 12px; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @font-face { font-family: 'IBM Plex Sans Arabic'; src: url('../lib/reporting/writers/fonts/IBMPlexSansArabic-Regular.ttf') format('truetype'); font-weight: 400 700; font-display: swap; }
+      body { font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif; font-size: 12px; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
       .print-page {
         max-width: 210mm;
@@ -102,10 +103,12 @@ const tsText = iso(printTimestamp);
       @page { size: A4 portrait; margin: 12mm; }
       @page landscape { size: A4 landscape; margin: 10mm; }
       @media print {
-        .no-print { display: none !important; }
+        nav, aside, .navbar, .sidebar, .no-print, .print-actions, .action-dialog, dialog, [role='dialog'], [data-print-hidden] { display: none !important; }
         html, body { background: #ffffff; }
         body { font-size: 11px; }
         .print-page { max-width: none; padding: 0; box-shadow: none; }
+        *, *::before, *::after { box-shadow: none !important; text-shadow: none !important; }
+        a { color: #000 !important; text-decoration: none !important; }
         .print-section { break-inside: avoid; }
         table { break-inside: auto; }
         thead { display: table-header-group; }

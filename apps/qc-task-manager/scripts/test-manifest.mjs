@@ -10,14 +10,6 @@ export const TEST_SCRIPT_CLASSIFICATIONS = new Map([
   ['scripts/test-manifest.mjs', 'registry-data-module'],
   // The guard itself; it IS the test:manifest command.
   ['scripts/test-manifest-guard.mjs', 'meta-guard:command test:manifest'],
-  // Manual PDF diagnostic (PROMPT 50): generates an artifact for visual
-  // inspection via --artifact/--keep-artifact, never part of the canonical
-  // chain. KNOWN BROKEN at HEAD (open defect, do not register silently):
-  // fails "Arabic location drawn visually ordered", "diacritic cell drawn
-  // via mark positioning path", "Report ID data under Report ID header",
-  // then crashes TypeError at scripts/test-report-pdf-arabic.mjs:160
-  // (locData undefined). Fix + registration is a dedicated follow-up task.
-  ['scripts/test-report-pdf-arabic.mjs', 'manual-diagnostic:known-broken (see reason)'],
   ['scripts/test-responsive-e2e-contract.mjs', 'contract-guard:responsive E2E wiring'],
 ]);
 
@@ -38,6 +30,8 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:ai-lab',
   'test:dashboard-reports',
   'test:report-preview',
+  'test:report-pdf-arabic',
+  'test:export-reports-100',
   'test:qc-operations',
   'test:templates',
   'test:db-rules',

@@ -2,7 +2,7 @@
 //
 // The report covers task metadata, status, priority, assignee, creator, due
 // date, completion details + comment, evidence file names, comments, activity
-// history and the generated date (see src/lib/pdf.ts). Attachment BLOB content
+// history and the generated date (see src/lib/taskPdf.ts). Attachment BLOB content
 // is never included. Access control mirrors the task details page: employees
 // may only export tasks assigned to them or created by them. Inaccessible
 // records use the same 404 response as missing records to avoid enumeration.
@@ -11,7 +11,8 @@ import type { APIRoute } from 'astro';
 import { apiJsonError, isResponse, requireApiUser } from '../../../../../lib/api-security';
 import { canViewTask, getTaskDetail } from '../../../../../lib/taskDetails';
 import { getTaskPdfData } from '../../../../../lib/pdfData';
-import { buildTaskPdf } from '../../../../../lib/pdf';
+import { buildTaskPdf } from '../../../../../lib/taskPdf';
+import { Action, logActivity } from '../../../../../lib/activity';
 import { parsePositiveId } from '../../../../../lib/validation';
 
 export const GET: APIRoute = async (context) => {
@@ -39,14 +40,23 @@ export const GET: APIRoute = async (context) => {
     return apiJsonError('Task not found.', 404);
   }
 
-  const buffer = buildTaskPdf(data);
+  const buffer = await buildTaskPdf(data);
   const filename = `task-${id}.pdf`;
+
+  // Only successful exports are audit events.
+  logActivity({
+    taskId: id,
+    userId: user.id,
+    action: Action.REPORT_EXPORTED,
+    newValue: filename,
+    note: 'PDF task report exported',
+  });
 
   return new Response(new Uint8Array(buffer), {
     status: 200,
     headers: {
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="${filename}"`,
+      'Content-Type': 'application/pdf; charset=utf-8',
+      'Content-Disposition': `inline; filename="${filename}"`,
       'Cache-Control': 'no-store',
     },
   });

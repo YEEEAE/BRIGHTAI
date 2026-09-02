@@ -82,7 +82,11 @@ function suiteEnv(dbPath, port, extra = {}) {
   return {
     ...process.env,
     ...extra,
-    NODE_ENV: 'production',
+    // Acceptance children use isolated fixture databases. Keep the server
+    // build production-compatible, but run the fixture seeder in test mode so
+    // QC_SEED_MUST_CHANGE_PASSWORD=0 is valid and cannot be mistaken for a
+    // real production deployment.
+    NODE_ENV: 'test',
     ADMIN_DEFAULT_PASSWORD: 'acceptance-only-password-2026',
     // Fixture-only opt-out of the first-login must_change_password seeding
     // flag (see src/lib/seed.ts). The password lifecycle itself is covered by

@@ -1,7 +1,7 @@
 # BrightAI — Saudi AI governance and safety
 > BrightAI is a Saudi platform for operational AI governance and safety. It describes implementation approaches; it is not legal advice, a certification body, or a claim of regulator approval.
 
-Last reviewed: 2026-08-24
+Last reviewed: 2026-09-03
 
 ## Canonical high-value pages
 
@@ -10,12 +10,29 @@ Last reviewed: 2026-08-24
 - [Agentic AI Security](https://brightai.live/hub/agentic-ai-security/): Security boundaries for agent identity, tool permissions, data, prompt safety, monitoring, and incident evidence.
 - [Agentic AI Governance](https://brightai.live/hub/agentic-ai-governance/): Ownership, approvals, lifecycle, and evidence for AI agents.
 - [AI Governance Platform](https://brightai.live/solutions/ai-governance-platform/): BrightAI product page for connecting policy, risk, control, enforcement, and evidence.
-- [AI Firewall](https://brightai.live/solutions/ai-firewall/): BrightAI product page for policy checks on configured AI interactions; it does not guarantee prevention or compliance.
+- [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/): جدار حماية الذكاء الاصطناعي للمنشآت السعودية؛ يفحص مسارات LLM المهيأة ويطبق قرارات السماح أو التنقيح أو الحجب أو المراجعة. هو ليس WAF تقليدياً ولا يضمن منع كل حادثة أو تحقيق الامتثال تلقائياً.
 - [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/): Saudi data-protection guide with an official-source panel and implementation boundary.
 - [NCA Cybersecurity Guide](https://brightai.live/blog/nca-cybersecurity-requirements-saudi/): NCA cybersecurity context for AI systems; consult the official controls for applicability.
 - [ISO/IEC 42001 Guide](https://brightai.live/blog/iso-42001-saudi-implementation-guide/): AIMS implementation guide with ISO as the primary source.
 - [Banking AI Governance — Riyadh](https://brightai.live/solutions/banking-ai-governance/riyadh/): Saudi banking context, including SAMA reference and human-review/evidence patterns.
 - [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/): Browser-local, indicative eight-dimension diagnostic; not a regulatory finding or certification.
+- [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/): سجل تدقيق الذكاء الاصطناعي لتوثيق الاستخدامات والقرارات والموافقات والأدلة في المسارات المهيأة.
+
+## Saudi Arabic query ownership
+
+- **حوكمة الذكاء الاصطناعي** و**حوكمة الذكاء الاصطناعي في السعودية** → [AI Governance Hub](https://brightai.live/hub/ai-governance/)
+- **منصة حوكمة الذكاء الاصطناعي** → [AI Governance Platform](https://brightai.live/solutions/ai-governance-platform/)
+- **امتثال الذكاء الاصطناعي في السعودية** و**PDPL AI compliance** → [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/)
+- **جدار حماية الذكاء الاصطناعي** و**AI Firewall** و**LLM Firewall** → [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/)
+- **تقييم جاهزية حوكمة الذكاء الاصطناعي** → [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/)
+- **سجل تدقيق الذكاء الاصطناعي** و**AI audit trail Saudi Arabia** → [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/)
+
+## Term boundaries
+
+- `AI Firewall` and `LLM Firewall` here mean a policy and data-control layer for configured model interactions.
+- It is not an `AI-powered WAF`, which protects websites and network traffic.
+- It is not merely an `AI Gateway`; gateways commonly focus on routing, credentials, quotas, observability, and cost, though products may overlap.
+- `OPC` is not a BrightAI target term; in Saudi industrial searches it commonly refers to Open Platform Communications.
 
 ## Entity and access
 

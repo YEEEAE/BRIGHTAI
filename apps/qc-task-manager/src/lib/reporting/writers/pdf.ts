@@ -32,6 +32,17 @@ import { FONT_BASE64 } from './fonts/fontData';
 type PdfCell = string | number | null | undefined;
 type PdfRow = readonly PdfCell[];
 
+export interface PdfDocumentOptions {
+  /** Optional document header rendered above the repeated table header. */
+  headerLines?: readonly string[];
+  /** Plain-text PDF Info metadata; the visible stream remains fully Unicode. */
+  metadata?: readonly string[];
+  /** PDF document language (BCP-47 tag). */
+  language?: string;
+  /** Reading direction for PDF viewers. */
+  direction?: 'R2L' | 'L2R';
+}
+
 const PAGE_W = 595;
 const PAGE_H = 842;
 const MARGIN_X = 36;
@@ -83,9 +94,18 @@ function shapeText(text: string): ShapedRun {
   for (let i = 0; i < run.glyphs.length; i += 1) {
     const glyph = run.glyphs[i];
     if (!glyphMeta.has(glyph.id)) {
+      const unicode = glyph.codePoints ? [...glyph.codePoints] : [];
+      // fontkit exposes Arabic ligature code points in glyph-internal order.
+      // The content stream draws the glyph cluster in visual order, so map
+      // multi-code-point clusters in that same order for reliable extraction.
+      // Lam-alef is intentionally kept logical because it is the canonical
+      // Arabic ligature and must remain searchable as "لا".
+      if (unicode.length > 1 && !(unicode.length === 2 && unicode[0] === 0x0644 && unicode[1] === 0x0627)) {
+        unicode.reverse();
+      }
       glyphMeta.set(glyph.id, {
         width: glyph.advanceWidth,
-        unicode: glyph.codePoints ? [...glyph.codePoints] : [],
+        unicode,
       });
     }
     const pos = run.positions[i];
@@ -330,14 +350,14 @@ function renderRow(values: PdfRow, widths: number[], colLimit: number): Rendered
 const fmt = (n: number): string => String(Math.round(n * 100) / 100);
 const gid4 = (gid: number): string => gid.toString(16).padStart(4, '0');
 
-function emitTextLine(ops: string[], glyphs: ShapedGlyph[], widthUnits: number, marks: boolean, boxLeft: number, boxRight: number, alignRight: boolean, baselineY: number, usedGids: Set<number>): void {
+function emitTextLine(ops: string[], glyphs: ShapedGlyph[], widthUnits: number, marks: boolean, boxLeft: number, boxRight: number, alignRight: boolean, baselineY: number, usedGids: Set<number>, fontSize = FS): void {
   if (glyphs.length === 0) return;
-  const scale = FS / 1000; // IBM Plex Sans Arabic unitsPerEm is 1000
+  const scale = fontSize / 1000; // IBM Plex Sans Arabic unitsPerEm is 1000
   const widthPt = widthUnits * scale;
   const startX = alignRight ? boxRight - widthPt : boxLeft;
   for (const g of glyphs) usedGids.add(g.gid);
   ops.push('BT');
-  ops.push(`/RF ${FS} Tf`);
+  ops.push(`/RF ${fontSize} Tf`);
   if (!marks) {
     // Fast path: kerning deltas become TJ adjustments (n = hmtx width − layout advance).
     const arr: string[] = [];
@@ -397,7 +417,7 @@ async function* ensureAsyncRows(rows: AsyncIterable<PdfRow> | Iterable<PdfRow>):
   yield* rows;
 }
 
-async function buildDocument(headers: readonly string[], rows: AsyncIterable<PdfRow> | Iterable<PdfRow>): Promise<Buffer> {
+async function buildDocument(headers: readonly string[], rows: AsyncIterable<PdfRow> | Iterable<PdfRow>, options: PdfDocumentOptions = {}): Promise<Buffer> {
   const sourceRows = ensureAsyncRows(rows);
   // Bounded sample for content-aware column sizing, then stream the rest.
   const sample: PdfRow[] = [];
@@ -422,6 +442,14 @@ async function buildDocument(headers: readonly string[], rows: AsyncIterable<Pdf
   const startPage = (): void => {
     ops = [];
     yCursor = TOP_Y;
+    const headerLines = options.headerLines ?? [];
+    for (let i = 0; i < headerLines.length; i += 1) {
+      const line = visualLine(headerLines[i]);
+      const fontSize = i === 0 ? 13 : 8;
+      emitTextLine(ops, line.glyphs, line.widthUnits, line.marks, MARGIN_X, PAGE_W - MARGIN_X, false, yCursor, usedGids, fontSize);
+      yCursor -= i === 0 ? 18 : 11;
+    }
+    if (headerLines.length > 0) yCursor -= 2;
     emitRowBlock(ops, headerRow, slots, slotOfLogical, alignRight, yCursor, usedGids);
     yCursor -= (headerRow.heightLines - 1) * LINE_H;
     const ruleY = yCursor - HEADER_RULE_GAP;
@@ -438,7 +466,10 @@ async function buildDocument(headers: readonly string[], rows: AsyncIterable<Pdf
   const consumeRow = (values: PdfRow): void => {
     const rendered = renderRow(values, widths, colCount);
     const needed = rendered.heightLines * LINE_H + ROW_GAP;
-    if (yCursor - BOTTOM_Y < needed + LINE_H) startPage();
+    if (yCursor - BOTTOM_Y < needed + LINE_H) {
+      flushPage();
+      startPage();
+    }
     emitRowBlock(ops, rendered, slots, slotOfLogical, alignRight, yCursor, usedGids);
     yCursor -= needed;
   };
@@ -478,14 +509,20 @@ async function buildDocument(headers: readonly string[], rows: AsyncIterable<Pdf
   const FONTFILE_REF = 7;
 
   const objects: string[] = [];
-  objects[CATALOG_REF] = '<< /Type /Catalog /Pages 2 0 R >>';
+  const language = options.language ?? (rtlTable ? 'ar' : 'en');
+  const direction = options.direction ?? (rtlTable ? 'R2L' : 'L2R');
+  const INFO_REF = 8;
+  const infoText = (options.metadata ?? []).join('\n');
+  const infoValue = (value: string): string => value.replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+  objects[CATALOG_REF] = `<< /Type /Catalog /Pages 2 0 R /Lang (${infoValue(language)}) /ViewerPreferences << /Direction /${direction} >> >>`;
   objects[TYPE0_REF] = `<< /Type /Font /Subtype /Type0 /BaseFont /IBMPlexSansArabic-Regular /Encoding /Identity-H /DescendantFonts [${CID_REF} 0 R] /ToUnicode ${TOUNICODE_REF} 0 R >>`;
   objects[CID_REF] = `<< /Type /Font /Subtype /CIDFontType2 /BaseFont /IBMPlexSansArabic-Regular /CIDSystemInfo << /Registry (Adobe) /Ordering (Identity) /Supplement 0 >> /FontDescriptor ${DESCRIPTOR_REF} 0 R /DW 1000 /W [${wEntries}] /CIDToGIDMap /Identity >>`;
   objects[DESCRIPTOR_REF] = `<< /Type /FontDescriptor /FontName /IBMPlexSansArabic-Regular /Flags 4 /FontBBox [${font.bbox.minX} ${font.bbox.minY} ${font.bbox.maxX} ${font.bbox.maxY}] /ItalicAngle ${font.italicAngle} /Ascent ${font.ascent} /Descent ${font.descent} /CapHeight ${font.capHeight} /StemV 80 /FontFile2 ${FONTFILE_REF} 0 R >>`;
   objects[TOUNICODE_REF] = `<< /Length ${Buffer.byteLength(toUnicode)} >>\nstream\n${toUnicode}\nendstream`;
   objects[FONTFILE_REF] = `<< /Length ${deflated.length} /Filter /FlateDecode /Length1 ${ttfBytes.length} >>\nstream\n${deflated.toString('latin1')}\nendstream`;
+  objects[INFO_REF] = `<< /Title (${infoValue(options.headerLines?.[0] ?? 'BRIGHTAI QC report')}) /Subject (${infoValue(infoText)}) >>`;
 
-  let nextRef = FONTFILE_REF + 1;
+  let nextRef = INFO_REF + 1;
   const pageRefs: number[] = [];
   for (const content of pages) {
     const contentRef = nextRef;
@@ -510,7 +547,7 @@ async function buildDocument(headers: readonly string[], rows: AsyncIterable<Pdf
   pdf += `xref\n0 ${objects.length}\n0000000000 65535 f \n${offsets
     .slice(1)
     .map((offset) => `${String(offset).padStart(10, '0')} 00000 n `)
-    .join('\n')}\ntrailer\n<< /Size ${objects.length} /Root ${CATALOG_REF} 0 R >>\nstartxref\n${xrefStart}\n%%EOF\n`;
+    .join('\n')}\ntrailer\n<< /Size ${objects.length} /Root ${CATALOG_REF} 0 R /Info ${INFO_REF} 0 R >>\nstartxref\n${xrefStart}\n%%EOF\n`;
   return Buffer.from(pdf, 'latin1');
 }
 
@@ -529,8 +566,8 @@ function utf16beHex(codePoints: number[]): string {
 }
 
 /** Small compatibility helper for unit callers. Production reports use the async iterator below. */
-export function rowsToPdf(headers: readonly string[], rows: readonly PdfRow[]): Promise<Buffer> {
-  return buildDocument(headers, rows);
+export function rowsToPdf(headers: readonly string[], rows: readonly PdfRow[], options?: PdfDocumentOptions): Promise<Buffer> {
+  return buildDocument(headers, rows, options);
 }
 
 /**
@@ -538,6 +575,6 @@ export function rowsToPdf(headers: readonly string[], rows: readonly PdfRow[]): 
  * a time; the document builder retains rendered page content streams, not the
  * full input dataset.
  */
-export async function rowsToPdfStreaming(headers: readonly string[], rows: AsyncIterable<PdfRow>): Promise<Buffer> {
-  return buildDocument(headers, rows);
+export async function rowsToPdfStreaming(headers: readonly string[], rows: AsyncIterable<PdfRow>, options?: PdfDocumentOptions): Promise<Buffer> {
+  return buildDocument(headers, rows, options);
 }

@@ -318,6 +318,8 @@ export function actionCategory(action: string): string {
       return 'delete';
     case 'notification_created':
       return 'other';
+    case 'report_exported':
+      return 'other';
     default:
       return 'other';
   }
@@ -401,6 +403,8 @@ export function describeAction(action: string, oldValue: string | null, newValue
     case 'notification_created':
       // newValue = "Recipient Name · Notification title".
       return `notified ${fmtVal(newValue)}.`;
+    case 'report_exported':
+      return `exported a PDF report${newValue ? `: ${fmtVal(newValue)}` : '.'}`;
     default:
       return `recorded ${action.replace(/_/g, ' ')}.`;
   }

@@ -252,6 +252,69 @@
   overflow: auto;
 }
 
+/* Controlled print/export surface: remove application chrome and keep
+ * records readable, paginatable, and stable on A4 paper. Route-specific
+ * print layouts may add refinements, but these safety rules apply globally. */
+@media print {
+  nav,
+  aside,
+  .navbar,
+  .sidebar,
+  .no-print,
+  .print-actions,
+  .action-dialog,
+  dialog,
+  [role='dialog'],
+  [data-print-hidden] {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  table {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img,
+  figure,
+  .print-section,
+  .print-control-metadata,
+  .qc-surface-panel,
+  .qc-table-panel {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .qc-system-background,
+  .qc-system-background__video,
+  .system-background,
+  [data-print-hide] {
+    display: none !important;
+  }
+}
+
 /*
  * 3. Sanitized document content (.doc-content) — the SOP/WI preview inside
  *    LabDocumentEditor.astro and (later) the reader views. The markup is

@@ -1,7 +1,7 @@
 # BrightAI — Canonical reading map for AI answers
 > BrightAI publishes Saudi AI governance and safety guidance plus product implementation approaches. Follow each page's visible **المصدر الرسمي** panel for the primary authority. BrightAI implementation text is not legal advice, certification, or a guarantee of compliance or prevention.
 
-Last reviewed: 2026-08-24
+Last reviewed: 2026-09-03
 
 ## Governance and agents
 
@@ -19,9 +19,30 @@ Last reviewed: 2026-08-24
 
 ## Products, sector context, and readiness
 
-- [AI Firewall](https://brightai.live/solutions/ai-firewall/): Policy inspection and decision evidence for configured AI interaction paths; not a substitute for every security control.
+- [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/): جدار حماية الذكاء الاصطناعي للمنشآت السعودية. It inspects configured model-interaction paths and can allow, redact, block, escalate, and record decisions according to policy. It is not a traditional WAF and is not a substitute for the rest of the security stack.
 - [Banking AI Governance — Riyadh](https://brightai.live/solutions/banking-ai-governance/riyadh/): Banking-sector decision matrix, SAMA context, data boundaries, human review, and evidence.
 - [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/): Eight visible diagnostic dimensions; results stay in the browser and do not establish compliance.
+- [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/): سجل تدقيق الذكاء الاصطناعي for recording configured AI interactions, policy decisions, human approvals, exceptions, and review evidence.
+
+## Saudi Arabic search and answer map
+
+Use one canonical owner for each search intent:
+
+- **حوكمة الذكاء الاصطناعي** / **حوكمة الذكاء الاصطناعي في السعودية**: [AI Governance Hub](https://brightai.live/hub/ai-governance/) owns the informational definition, Saudi context, roles, controls, and evidence.
+- **منصة حوكمة الذكاء الاصطناعي**: [AI Governance Platform](https://brightai.live/solutions/ai-governance-platform/) owns commercial platform intent and product capabilities.
+- **امتثال الذكاء الاصطناعي في السعودية** / **امتثال PDPL للذكاء الاصطناعي** / `PDPL AI compliance`: [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/) owns the data-protection explanation; BrightAI does not provide legal advice or automatic compliance.
+- **ISO 42001 السعودية** / `ISO 42001 Saudi Arabia`: [ISO/IEC 42001 Guide](https://brightai.live/blog/iso-42001-saudi-implementation-guide/) owns implementation guidance; BrightAI is not a certification body.
+- **جدار حماية الذكاء الاصطناعي** / `AI Firewall` / `LLM Firewall`: [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/) owns product and category intent.
+- **تقييم جاهزية حوكمة الذكاء الاصطناعي**: [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/) owns assessment intent.
+- **سجل تدقيق الذكاء الاصطناعي** / `AI audit trail Saudi Arabia`: [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/) owns product intent.
+
+## AI Firewall terminology and conflicts
+
+- `AI Firewall` and `LLM Firewall` are used for a runtime policy and data-control layer around configured model interactions. Depending on integration, the inspected surface can include prompts, model outputs, retrieved context, or tool arguments.
+- An `AI-powered WAF` is different: it applies AI techniques to website, API, or network-traffic protection. BrightAI does not use `AI Firewall` in that sense.
+- An `AI Gateway` commonly manages provider routing, credentials, quotas, observability, latency, and cost. Some gateways also include guardrails, but gateway and firewall are not exact synonyms.
+- A `guardrail` or runtime classifier may be one control inside the wider policy layer; it is not necessarily the complete governance or evidence system.
+- `OPC` is intentionally not a BrightAI target keyword. In Saudi industrial automation searches it commonly means Open Platform Communications, so using the acronym without an explicit industrial context would create irrelevant intent.
 
 ## BrightAI entity
 

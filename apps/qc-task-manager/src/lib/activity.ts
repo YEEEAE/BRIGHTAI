@@ -61,6 +61,7 @@ export const Action = {
   WORKFLOW_APPROVED: 'workflow_approved',
   WORKFLOW_REJECTED: 'workflow_rejected',
   WORKFLOW_CLOSED: 'workflow_closed',
+  REPORT_EXPORTED: 'report_exported',
 } as const;
 
 export type ActionType = (typeof Action)[keyof typeof Action];
