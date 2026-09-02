@@ -15,8 +15,8 @@ assert.notEqual(createRequestId('not safe'), 'not safe', 'invalid incoming IDs a
 assert.deepEqual(Object.keys(ERROR_CODES).sort(), ['AI', 'AUTH', 'CONFLICT', 'DB', 'FORBIDDEN', 'NOT_FOUND', 'REPORT', 'STALE_CHANGE', 'UPLOAD', 'VALIDATION']);
 assert.equal(getSafeErrorCode(new Error('SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username')), 'CONFLICT');
 assert.equal(getSafeErrorCode(new Error('SQLITE_BUSY: database is locked')), 'DB');
-assert.equal(safeErrorMessage(new Error('SQLITE_ERROR: password_hash=secret')), 'Something went wrong. Please try again.');
-assert.equal(safeErrorMessage({ message: 'API key sk-live-secret password=foo' }), 'Something went wrong. Please try again.');
+assert.equal(safeErrorMessage(new Error('SQLITE_ERROR: password_hash=secret')), 'We couldn’t complete the request. The save state is unknown. Check the record before trying again.');
+assert.equal(safeErrorMessage({ message: 'API key sk-live-secret password=foo' }), 'We couldn’t complete the request. The save state is unknown. Check the record before trying again.');
 
 const entry = createRequestLog({ requestId: 'req-123', method: 'POST', route: '/api/tasks/1/update', actorId: 7, role: 'manager', status: 409, durationMs: 12.7, errorCode: 'CONFLICT', timestamp: '2026-08-28T10:00:00.000Z' });
 assert.deepEqual(entry, { timestamp: '2026-08-28T10:00:00.000Z', request_id: 'req-123', method: 'POST', route: '/api/tasks/1/update', actor_id: 7, role: 'manager', status: 409, duration_ms: 13, error_code: 'CONFLICT' });

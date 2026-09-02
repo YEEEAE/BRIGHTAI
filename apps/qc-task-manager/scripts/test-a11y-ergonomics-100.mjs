@@ -8,6 +8,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const root = resolve('src');
 const failures = [];
@@ -67,8 +68,10 @@ for (const required of [':focus-visible', 'prefers-reduced-motion: reduce', 'scr
 
 // Keep the manual boundary explicit in the report: these checks are source
 // evidence only and do not inflate a manual AT score.
-if (!existsSync(resolve('A11Y-ERGONOMICS-100-EVIDENCE.md'))) {
-  fail('A11Y-ERGONOMICS-100-EVIDENCE.md must exist beside this gate');
+const consolidatedEvidence = fileURLToPath(new URL('../../../audit/qc/QC-Task-Manager/Evidences/QC-TASK-MANAGER-ALL-EVIDENCES-COMBINED.md', import.meta.url));
+const localEvidence = resolve('A11Y-ERGONOMICS-100-EVIDENCE.md');
+if (!existsSync(consolidatedEvidence) && !existsSync(localEvidence)) {
+  fail('Consolidated evidence file (audit/qc/QC-Task-Manager/Evidences/QC-TASK-MANAGER-ALL-EVIDENCES-COMBINED.md) or local A11Y-ERGONOMICS-100-EVIDENCE.md must exist');
 }
 
 if (failures.length) {

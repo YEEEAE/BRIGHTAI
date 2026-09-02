@@ -53,7 +53,11 @@ for (const path of files(join(root, 'src')).filter((p) => /\.(ts|tsx|astro)$/.te
   check(!/console\.(?:log|info|debug)\([^\n]*(?:password|cookie|token|file_data|arrayBuffer)/i.test(source), `${label} may log sensitive data`);
 }
 
-const tracked = execFileSync('git', ['ls-files'], { cwd: repoRoot, encoding: 'utf8' }).split('\n');
+const tracked = execFileSync('git', ['ls-files'], {
+  cwd: repoRoot,
+  encoding: 'utf8',
+  env: { ...process.env, GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' },
+}).split('\n');
 const qcAppPrefix = 'apps/qc-task-manager/';
 const privateKeyPattern = new RegExp(
   ['BEGIN(?: [A-Z0-9]+)?', ['PRIVATE', 'KEY'].join(' ')].join(' '),

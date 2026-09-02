@@ -14,6 +14,7 @@ import { apiJson, apiJsonError, isResponse, requireApiUser, requireCsrf } from '
 import { closeTask } from '../../../../lib/taskUpdates';
 import { setFlash } from '../../../../lib/flash';
 import { parseFormData, parsePositiveId, closeTaskInputSchema } from '../../../../lib/validation';
+import { withIdempotency } from '../../../../lib/idempotency';
 
 export const POST: APIRoute = async (context) => {
   const csrf = requireCsrf(context);
@@ -30,19 +31,27 @@ export const POST: APIRoute = async (context) => {
   const form = await context.request.formData();
   const parsed = parseFormData(closeTaskInputSchema, form);
   if (!parsed.ok) return apiJsonError(parsed.error, 400);
-  const result = await closeTask({
-    taskId,
-    actor: { id: user.id, role: user.role },
-    form,
-  });
-  if (!result.ok) {
-    const status = result.error === 'Task not found.' ? 404 : 400;
-    return apiJsonError(result.error, status);
-  }
-  // Completing a recurring task may have spawned the next occurrence — surface
-  // it as a one-shot flash so the reloaded page tells the user.
-  if (result.nextTaskId != null) {
-    setFlash(context, 'success', `Next recurring task created (#${result.nextTaskId}).`);
-  }
-  return apiJson({ taskId: result.taskId, nextTaskId: result.nextTaskId });
+
+  return await withIdempotency(
+    context,
+    user,
+    async () => {
+      const result = await closeTask({
+        taskId,
+        actor: { id: user.id, role: user.role },
+        form,
+      });
+      if (!result.ok) {
+        const status = result.error === 'Task not found.' ? 404 : 400;
+        return apiJsonError(result.error, status);
+      }
+      // Completing a recurring task may have spawned the next occurrence — surface
+      // it as a one-shot flash so the reloaded page tells the user.
+      if (result.nextTaskId != null) {
+        setFlash(context, 'success', `Next recurring task created (#${result.nextTaskId}).`);
+      }
+      return apiJson({ taskId: result.taskId, nextTaskId: result.nextTaskId });
+    },
+    { payload: form },
+  );
 };

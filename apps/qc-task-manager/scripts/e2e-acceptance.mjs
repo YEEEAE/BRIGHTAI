@@ -190,8 +190,9 @@ async function runPersistenceSuite(port) {
 }
 
 try {
-  const head = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: appDir, encoding: 'utf8' }).trim();
-  const status = execFileSync('git', ['status', '--porcelain'], { cwd: appDir, encoding: 'utf8' }).trim() || '(clean)';
+  const gitEnv = { ...process.env, GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
+  const head = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: appDir, encoding: 'utf8', env: gitEnv }).trim();
+  const status = execFileSync('git', ['status', '--porcelain'], { cwd: appDir, encoding: 'utf8', env: gitEnv }).trim() || '(clean)';
   const nodeVersion = process.version;
   const pnpmVersion = execFileSync('pnpm', ['--version'], { cwd: appDir, encoding: 'utf8' }).trim();
   console.log('QC acceptance reproducibility');

@@ -96,6 +96,8 @@
     "test:db-doctor": "node --experimental-strip-types scripts/test-db-doctor.mjs",
     "test:production-operations": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-production-operations.mjs",
     "test:database-100": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-database-100.mjs",
+    "test:idempotency": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-idempotency.mjs",
+    "test:concurrency-transactions-100": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-concurrency-transactions-100.mjs",
     "test:deployment-contract": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-deployment-contract.mjs",
     "e2e:responsive": "node scripts/e2e-responsive.mjs",
     "test:responsive-e2e-contract": "node scripts/test-responsive-e2e-contract.mjs",

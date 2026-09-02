@@ -131,10 +131,12 @@ export function updateCapa(id: number, input: Record<string, unknown>, actorId: 
 export function transitionCapa(id: number, status: string, actorId: number, decision?: string): void {
   const capa = getDb().prepare('SELECT * FROM qc_capa WHERE id=?').get(id) as CapaRow | undefined; if (!capa || !canTransitionCapa(String(capa.status), status)) throw new DomainRuleError('Invalid CAPA status transition.');
   if (status === 'CLOSED' && !canCloseCapa(capa as { corrective_action?: string; evidence?: string; effectiveness_check?: string; approval?: string })) throw new DomainRuleError('CAPA requires completed action, evidence, effectiveness review, and approval before closure.');
-  if (status === 'VERIFICATION' && decision) getDb().prepare(`UPDATE qc_capa SET reviewer=?, effectiveness_check=?, updated_at=datetime('now') WHERE id=?`).run(actorId, decision, id);
-  if (status === 'EFFECTIVE' || status === 'CLOSED') getDb().prepare(`UPDATE qc_capa SET approval=?, reviewer=?, updated_at=datetime('now') WHERE id=?`).run(decision ?? 'Approved', actorId, id);
-  getDb().prepare(`UPDATE qc_capa SET status=?, updated_at=datetime('now') WHERE id=?`).run(status, id);
-  audit('CAPA', id, null, actorId, status === 'CLOSED' ? 'CLOSURE' : status === 'REOPENED' ? 'REOPEN' : status === 'EFFECTIVE' ? 'APPROVAL' : decision?.toLowerCase().includes('reject') ? 'REJECTION' : 'STATUS_TRANSITION', capa.status, status, decision ?? null);
+  transaction(() => {
+    if (status === 'VERIFICATION' && decision) getDb().prepare(`UPDATE qc_capa SET reviewer=?, effectiveness_check=?, updated_at=datetime('now') WHERE id=?`).run(actorId, decision, id);
+    if (status === 'EFFECTIVE' || status === 'CLOSED') getDb().prepare(`UPDATE qc_capa SET approval=?, reviewer=?, updated_at=datetime('now') WHERE id=?`).run(decision ?? 'Approved', actorId, id);
+    getDb().prepare(`UPDATE qc_capa SET status=?, updated_at=datetime('now') WHERE id=?`).run(status, id);
+    audit('CAPA', id, null, actorId, status === 'CLOSED' ? 'CLOSURE' : status === 'REOPENED' ? 'REOPEN' : status === 'EFFECTIVE' ? 'APPROVAL' : decision?.toLowerCase().includes('reject') ? 'REJECTION' : 'STATUS_TRANSITION', capa.status, status, decision ?? null);
+  });
 }
 
 export function addEvidence(input: { findingId?: number; capaId?: number; description: string; reference?: string | null }, actorId: number): number {
@@ -155,8 +157,12 @@ export function addEvidence(input: { findingId?: number; capaId?: number; descri
       throw new DomainRuleError('Evidence target not found.');
     }
   }
-  const result = db.prepare('INSERT INTO qc_evidence (finding_id, capa_id, description, reference, created_by) VALUES (?, ?, ?, ?, ?)').run(input.capaId ? null : findingId, input.capaId ?? null, input.description, input.reference ?? null, actorId);
-  const id = Number(result.lastInsertRowid); audit('EVIDENCE', id, Number((db.prepare('SELECT task_id FROM qc_findings WHERE id=?').get(findingId) as { task_id: number }).task_id), actorId, 'CREATE', null, input); return id;
+  return transaction(() => {
+    const result = db.prepare('INSERT INTO qc_evidence (finding_id, capa_id, description, reference, created_by) VALUES (?, ?, ?, ?, ?)').run(input.capaId ? null : findingId, input.capaId ?? null, input.description, input.reference ?? null, actorId);
+    const id = Number(result.lastInsertRowid);
+    audit('EVIDENCE', id, Number((db.prepare('SELECT task_id FROM qc_findings WHERE id=?').get(findingId) as { task_id: number }).task_id), actorId, 'CREATE', null, input);
+    return id;
+  });
 }
 
 export { audit as recordQcAudit };

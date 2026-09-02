@@ -349,6 +349,35 @@ export function cleanupExpiredSessions(): number {
 }
 
 /**
+ * Enforce deterministic SQLite WAL connection pragmas:
+ * - journal_mode = WAL: non-blocking concurrent reads during writes.
+ * - foreign_keys = ON: relational integrity enforced on every connection.
+ * - busy_timeout = 5000: wait up to 5000ms for busy lock instead of failing with SQLITE_BUSY.
+ * - synchronous = NORMAL: durability without full fsync penalty for WAL mode.
+ */
+export function applyConnectionPragmas(db: BetterSqliteDatabase): void {
+  db.pragma('journal_mode = WAL');
+  db.pragma('foreign_keys = ON');
+  db.pragma('busy_timeout = 5000');
+  db.pragma('synchronous = NORMAL');
+}
+
+/** Verify that the active connection enforces the mandatory pragmas. */
+export function verifyConnectionPragmas(db: BetterSqliteDatabase): {
+  journal_mode: string;
+  foreign_keys: number;
+  busy_timeout: number;
+  synchronous: number;
+} {
+  return {
+    journal_mode: String(db.pragma('journal_mode', { simple: true })).toLowerCase(),
+    foreign_keys: Number(db.pragma('foreign_keys', { simple: true })),
+    busy_timeout: Number(db.pragma('busy_timeout', { simple: true })),
+    synchronous: Number(db.pragma('synchronous', { simple: true })),
+  };
+}
+
+/**
  * Open (or reuse) the SQLite connection. WAL + foreign_keys + busy_timeout +
  * synchronous are applied once per connection; schema + seed run once per
  * process. Safe to call repeatedly — returns the same instance.
@@ -359,15 +388,7 @@ export function getDb(): BetterSqliteDatabase {
   assertSqliteDeploymentContract();
   ensureDir();
   const db = new Database(DB_PATH);
-  db.pragma('journal_mode = WAL');
-  db.pragma('foreign_keys = ON');
-  // Concurrent readers/writers wait up to 5s for the lock instead of failing
-  // immediately with SQLITE_BUSY.
-  db.pragma('busy_timeout = 5000');
-  // WAL + synchronous=NORMAL: durability is "app might lose recent
-  // transactions on power loss" — never corruption — at a fraction of the
-  // FULL fsync cost. This is the recommended setting for WAL databases.
-  db.pragma('synchronous = NORMAL');
+  applyConnectionPragmas(db);
 
   initialize(db);
 

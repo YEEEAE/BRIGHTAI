@@ -1,3 +1,121 @@
+## [2026-09-02] — QC-REMEDIATION-002: اعتمادية قاعدة البيانات والتزامن ومفاتيح منع التكرار (Idempotency)
+
+### تم التنفيذ
+- ثبّت واستخرجت إعدادات SQLite WAL pragmas الحتمية في `src/lib/db.ts` (`WAL`, `foreign_keys=ON`, `busy_timeout=5000`, `synchronous=NORMAL`) مع دالة تحقق فوري من صحة إعدادات الاتصال.
+- صممت ونفّذت المعمارية الكنسية لمفاتيح منع التكرار في `src/lib/idempotency.ts` مدعومة بجدول `idempotency_keys` وفهارس فريدة ومفهرسة للمفاتيح الأجنبية `(user_id, key)` لمنع تضارب المفاتيح بين المستخدمين.
+- طبقت حساب البصمة الرقمية للبيانات (SHA-256) لمنع هجمات التعديل (`400 Mismatched Payload`)، وحفظ الردود وإعادتها فورياً مع ترويسة `X-Idempotent-Replay: true` خلال نافذة صلاحية 24 ساعة، وكشف وتفادي التعارض اللحظي أثناء المعالجة (`409 Conflict`).
+- حصّنت نقاط نهاية التعديل الحساسة بتغليفها بـ `withIdempotency`: إغلاق المهام (`/api/tasks/[id]/close`)، ومراجعة الفحوص المخبرية (`/api/lab/tests/[id]/review`)، وتعديل وتحديث دورة حياة الـ CAPA (`/api/findings/[id]/capa`).
+- غلّفت جميع العمليات المعدلة لجداول متعددة داخل معاملات ذرية حتمية `db.transaction()` في `uploadAttachment` و `transitionCapa` و `addEvidence` و `createDeleteRequest` ومسار رفض طلبات الحذف في `reviewDeleteRequest`.
+- عالجت مهلة قفل قاعدة البيانات (`SQLITE_BUSY`) بأمان عبر الوسيط والواجهات بإرجاع `503 Service Unavailable` مع ترويسة `Retry-After: 2` لمنع انهيار التطبيق والسماح بالمعاودة التلقائية.
+- أنشأت سويت اختبار منع التكرار `scripts/test-idempotency.mjs` (11 فحصاً شاملاً) وسويت إجهاد التزامن والمعاملات `scripts/test-concurrency-transactions-100.mjs` (20 خيط متزامن بدون أي خطأ `SQLITE_BUSY`، ومطابقة عدد السجلات بنسبة 20/20، واجتياز `integrity_check` و `foreign_key_check` بـ 0 انتهاكات، وفحص سلبي لمهلة القفل).
+- وثقت الأدلة التشغيلية في `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-02-EVIDENCE.md` مع استيفاء كافة المعايير 6/6 دون أي commit أو push.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/db.ts`
+- `apps/qc-task-manager/src/lib/idempotency.ts`
+- `apps/qc-task-manager/src/lib/taskUpdates/attachments.ts`
+- `apps/qc-task-manager/src/lib/qc-operations.ts`
+- `apps/qc-task-manager/src/lib/deleteRequests.ts`
+- `apps/qc-task-manager/src/pages/api/tasks/[id]/close.ts`
+- `apps/qc-task-manager/src/pages/api/lab/tests/[id]/review.ts`
+- `apps/qc-task-manager/src/pages/api/findings/[id]/capa.ts`
+- `apps/qc-task-manager/src/middleware.ts`
+- `apps/qc-task-manager/scripts/test-idempotency.mjs`
+- `apps/qc-task-manager/scripts/test-concurrency-transactions-100.mjs`
+- `apps/qc-task-manager/scripts/test-manifest.mjs`
+- `apps/qc-task-manager/package.json`
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-02-EVIDENCE.md`
+
+### التحقق
+- `pnpm run test:manifest` ✅ (76 canonical suites, 28 canonical E2E suites)
+- `pnpm run test:idempotency` ✅ (11/11 checks passed)
+- `pnpm run test:concurrency-transactions-100` ✅ (7/7 checks passed, 20 parallel threads, 0 SQLITE_BUSY)
+- `pnpm run test:database-100` ✅ (23/23 checks passed)
+- `pnpm run test:embedded-migration-parity` ✅ (39/39 byte-identical)
+- `pnpm run test:schema-reference` ✅ (165 catalog objects)
+- `pnpm run test` ✅ (76/76 canonical unit suites passed)
+- `ASTRO_TELEMETRY_DISABLED=1 pnpm astro check` ✅ (0 errors, 0 warnings, 0 hints across 308 files)
+- `ASTRO_TELEMETRY_DISABLED=1 pnpm build` ✅ (Complete in 5.52s)
+- `node scripts/e2e-acceptance.mjs` ✅ (30/30 suites passed, 3059+ assertions, 0 failures)
+
+### النتيجة
+- **الحالة:** نجح بالكامل (PASS - 6/6 المعايير مستوفاة)
+- **مختصر:** تم تحصين قاعدة بيانات SQLite بنمط WAL ومهلة انشغال 5000ms، وتطبيق منع التكرار الحتمي بـ Idempotency-Key مع عزل الجلسات ونافذة 24 ساعة، وتأكيد ذرية المعاملات والتزامن لـ 20 خيط بدون أي تراجع.
+
+### ملاحظات / مشاكل مفتوحة
+- تم حل العيبين P1-7 و P2-6 بالكامل.
+- تم رفع عدد السويتات الكنسية من 74 إلى 76 سويتاً بنجاح.
+- جاهز للانتقال إلى PROMPT-03 أو البوابات التالية.
+
+## [2026-09-02] — QC-REMEDIATION-001: معالجة عيوب P0 وفك حجب بوابات القبول الكنسية بالكامل
+
+### تم التنفيذ
+- أعدت إنتاج عيوب P0 الثلاثة في HEAD بشكل مستقل وموثق بالأدلة (Red-Green TDD).
+- أصلحت عيب P0-1 في `scripts/test-observability.mjs`: حدّثت نص التحقق ليطابق رسالة الخطأ الآمنة المحسنة الصادرة من `src/lib/observability.ts`.
+- أصلحت عيب P0-2 في `scripts/test-a11y-ergonomics-100.mjs`: حدّثت مسار فحص ملف الأدلة ليتعرف على ملف الأدلة الموحد `QC-TASK-MANAGER-ALL-EVIDENCES-COMBINED.md` مع استمرار دعم المسار المحلي.
+- أصلحت عيب P0-3 في `scripts/e2e-delete-request.mjs`: صحّحت محدد زر تأكيد الحذف ليطابق نص الزر الفعلي `Delete task permanently` في `ReviewDeleteRequestDialog.tsx:83` ومحدد الرفض ليطابق `Reject deletion request`.
+- عالجت التداعيات الإضافية لمحددات الواجهة بعد تحسينات النصوص السابقة: حدّثت محدد `Clear filters` في `e2e-task-search.mjs` ومحدد `No matching records` في `e2e-lab-search.mjs`.
+- أنجزت فك الحظر الكامل لمنظومة الاختبارات: شغّلت كافة السويتات الكنسية الـ 74 للوحدات بنجاح 100%، وكامل سويتات القبول E2E الـ 28 مع مرحلتي فحص استمرارية إعادة التشغيل (إجمالي 30 سويت) بنجاح تام 0 أخطاء و 0 timeouts.
+- وثقت كامل النتائج والأدلة التشغيلية في `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-01-EVIDENCE.md` مع استيفاء 6/6 من معايير القبول دون أي commit أو push.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/scripts/test-observability.mjs`
+- `apps/qc-task-manager/scripts/test-a11y-ergonomics-100.mjs`
+- `apps/qc-task-manager/scripts/e2e-delete-request.mjs`
+- `apps/qc-task-manager/scripts/e2e-task-search.mjs`
+- `apps/qc-task-manager/scripts/e2e-lab-search.mjs`
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-01-EVIDENCE.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm run test:observability` ✅ (0 assertions failed, exit code 0)
+- `pnpm run test:a11y-ergonomics-100` ✅ (0 errors, 76 pages + 59 components verified)
+- `node scripts/e2e-delete-request.mjs` ✅ (40/40 passed, duration 8.35s < 15s)
+- `pnpm run test:manifest` ✅ (74 canonical suites, 28 canonical E2E suites)
+- `pnpm run test` ✅ (74/74 canonical unit suites passed)
+- `ASTRO_TELEMETRY_DISABLED=1 pnpm astro check` ✅ (0 errors, 0 warnings, 0 hints)
+- `ASTRO_TELEMETRY_DISABLED=1 pnpm build` ✅ (Complete in 5.29s)
+- `node scripts/e2e-acceptance.mjs` ✅ (30/30 acceptance suites passed, 3059+ assertions, 0 timeouts)
+
+### النتيجة
+- **الحالة:** نجح بالكامل (PASS - 6/6 المعايير مستوفاة)
+- **مختصر:** عيوب P0 أغلقت رسمياً، وبوابات القبول تعمل الآن تتابعياً حتى النهاية بنجاح 100% وبدون أي حجب أو تعليق، والنظام جاهز للبوابات اللاحقة.
+
+### ملاحظات / مشاكل مفتوحة
+- تم تصفير جميع معوقات P0 في HEAD بنجاح (Remaining P0 Blockers = 0).
+- جاهز للانتقال لـ PROMPT-02 ومتابعة خطة العلاج.
+
+## [2026-09-02] — QC-REMEDIATION-000: تجميد خط الأساس لبرنامج العلاج والتحقق الشامل من البيئة
+
+### تم التنفيذ
+- جمّدت خط الأساس البرمجي والبيئي لبدء برنامج العلاج الشامل عند HEAD `9bba1817acf92ffba48cd318a55580e8192a4a7d`.
+- تحققت من اشتراطات بيئة التشغيل: Node.js `v22.22.3` (>= 20)، pnpm `10.19.0` (>= 9)، macOS ARM64، وتفعيل `ASTRO_TELEMETRY_DISABLED=1`.
+- شغّلت حارس المانيفست `test:manifest` وتحققت من مطابقة 74 سويتاً كنسياً للوحدات و 28 سويتاً لـ E2E مع 0 سكريبتات يتيمة (Orphans).
+- شغّلت حارس المسارات `route-manifest.mjs --check` وتأكدت من مطابقة 115 مسار ملف و 25 مسار وسيط محمي و 6 حراس رقابية.
+- تحققت من تطابق هجرات قاعدة البيانات المضمنة بنسبة 100% (39/39 هجرة متطابقة sha256 بايت لبايت) ومطابقة كتالوج قاعدة البيانات (165 كائناً).
+- أجريت الاختبار السلبي للحارس وتأكدت من فشله الفوري (Exit code 1) عند وجود أي سكريبت اختبار غير مسجل، وفحصت النظافة الأمنية للريبو.
+- أنشأت مجلد وملف الأدلة غير القابل للتعديل في `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-00-EVIDENCE.md` مع توثيق التجزئات وحالة المعايير (6/6 PASS) دون أي تعديل على كود المنتج.
+
+### الملفات المتأثرة
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-00-EVIDENCE.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm run test:manifest` ✅ (74 canonical suites, 28 E2E, 0 orphans)
+- `node scripts/route-manifest.mjs --check` ✅ (115 file routes, 25 middleware routes, 6 guards)
+- `pnpm run test:embedded-migration-parity` ✅ (39/39 sha256 byte-identical)
+- `pnpm run test:schema-reference` ✅ (165 catalog objects)
+- `node scripts/verify-security-hygiene.mjs` ✅ (Security hygiene passed)
+- الاختبار السلبي لحارس المانيفست ✅ (Rejected unlisted script with exit code 1)
+- فحص بقاء عيوب P0 المعلقة ✅ (P0-1, P0-2, P0-3 مؤكدة ومستعدة للعلاج في PROMPT-01)
+
+### النتيجة
+- **الحالة:** نجح بالكامل (PASS - 6/6 المعايير مستوفاة)
+- **مختصر:** اكتمل تجميد خط الأساس وتوثيق البيئة بنجاح، وجميع بوابات المرحلة 0 اجتازت التحقق تمهيداً لفك حجب PROMPT-01.
+
+### ملاحظات / مشاكل مفتوحة
+- خط الأساس جاهز رسمياً؛ البداية المباشرة في تنفيذ `PROMPT-01` لإصلاح عيوب P0 الثلاثة.
+
 ## [2026-09-02] — QC-ULTIMATE-REMEDIATION-PROMPT-GENERATOR: توليد برنامج العلاج الشامل وبرومبتات التنفيذ للوصول إلى 100%
 
 ### تم التنفيذ

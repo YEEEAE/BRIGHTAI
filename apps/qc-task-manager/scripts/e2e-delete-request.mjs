@@ -193,7 +193,7 @@ try {
   ok(approveDlgText.includes('permanently delete') && approveDlgText.includes('SC-A delete me'), 'A. approval dialog explains the permanent deletion');
   ok(taskByTitle('SC-A delete me') !== undefined, 'A. task NOT deleted before confirmation');
   ok(requestForTask(aId)?.status === 'pending', 'A. request still pending before confirmation');
-  await managerPage.locator('dialog[open] button:has-text("Confirm deletion")').click();
+  await managerPage.locator('dialog[open] button:has-text("Delete task permanently")').click();
   await managerPage.waitForSelector('text=Deletion approved', { timeout: 15_000 });
 
   await managerPage.goto(`${BASE}/tasks/${aId}`);
@@ -230,7 +230,7 @@ try {
   await openReviewDialog(managerPage, bPendingRow, 'reject');
   await managerPage.fill(`#review-note-${bReq0.id}`, 'Keep this task — still needed');
   ok((await managerPage.locator('dialog[open] textarea').inputValue()) === 'Keep this task — still needed', 'B. rejection reason entered in the dialog');
-  await managerPage.locator('dialog[open] button:has-text("Reject request")').click();
+  await managerPage.locator('dialog[open] button:has-text("Reject deletion request")').click();
   await managerPage.waitForSelector('text=Delete request for "SC-B keep me" rejected', { timeout: 15_000 });
 
   const bReq = requestForTask(bId);

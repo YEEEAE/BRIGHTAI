@@ -41,7 +41,7 @@ import { handleLabDocumentCreatePost, handleLabDocumentEditPost, handleLabDocume
 import { handleLabAcknowledgementAssignPost, handleLabAcknowledgementPost } from './lib/lab/acknowledgements';
 import { requireCsrf, requireRequestSecurity } from './lib/api-security';
 import { handleLabChangeRequestSubmitPost, handleLabChangeRequestReviewPost } from './lib/lab/changeRequests';
-import { createRequestId, createRequestLog, getSafeErrorCode, logRequest, safeErrorMessage } from './lib/observability';
+import { createRequestId, createRequestLog, getSafeErrorCode, logRequest, safeErrorMessage, type SafeErrorCode } from './lib/observability';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/api/health', '/api/readiness']);
 
@@ -368,12 +368,34 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const requestId = createRequestId(context.request.headers.get('x-request-id'));
   context.locals.requestId = requestId;
   let response: Response;
-  let errorCode = null;
+  let errorCode: SafeErrorCode | null = null;
   try {
     response = await handle(context, next);
   } catch (error) {
-    errorCode = getSafeErrorCode(error);
-    response = new Response(JSON.stringify({ ok: false, error: safeErrorMessage(error), code: errorCode, request_id: requestId }), { status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
+    const isBusy = (error && typeof error === 'object' && ('code' in error && (error.code === 'SQLITE_BUSY' || error.code === 'SQLITE_BUSY_TIMEOUT'))) ||
+      (error instanceof Error && /sqlite_busy|database is locked/i.test(error.message));
+    if (isBusy) {
+      errorCode = 'DB';
+      response = new Response(
+        JSON.stringify({
+          ok: false,
+          error: 'Database is currently busy. Please retry your request shortly.',
+          code: 'DB_BUSY',
+          request_id: requestId,
+        }),
+        {
+          status: 503,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-store',
+            'Retry-After': '2',
+          },
+        },
+      );
+    } else {
+      errorCode = getSafeErrorCode(error);
+      response = new Response(JSON.stringify({ ok: false, error: safeErrorMessage(error), code: errorCode, request_id: requestId }), { status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
+    }
   }
   response = withSecurityHeaders(response);
   response.headers.set('X-Request-ID', requestId);

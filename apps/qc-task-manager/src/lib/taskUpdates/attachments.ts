@@ -75,19 +75,23 @@ export async function uploadAttachment(params: {
   const validated = validateUploadedFile(params.file, bytes);
   if (!validated.ok) return { ok: false, error: validated.error };
   const hash = sha256Hex(bytes);
-  const info = db
-    .prepare(
-      `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, file_hash)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    )
-    .run(task.id, params.actor.id, validated.fileName, validated.mimeType, bytes, bytes.length, hash);
+  const info = db.transaction(() => {
+    const insertResult = db
+      .prepare(
+        `INSERT INTO task_attachments (task_id, uploaded_by, file_name, mime_type, file_data, file_size, file_hash)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(task.id, params.actor.id, validated.fileName, validated.mimeType, bytes, bytes.length, hash);
 
-  logActivity({
-    taskId: task.id,
-    userId: params.actor.id,
-    action: Action.ATTACHMENT_UPLOADED,
-    newValue: validated.fileName,
-  });
+    logActivity({
+      taskId: task.id,
+      userId: params.actor.id,
+      action: Action.ATTACHMENT_UPLOADED,
+      newValue: validated.fileName,
+    });
+
+    return insertResult;
+  })();
 
   return { ok: true, attachmentId: Number(info.lastInsertRowid), fileName: validated.fileName };
 }

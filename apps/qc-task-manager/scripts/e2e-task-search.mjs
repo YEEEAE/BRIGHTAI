@@ -298,7 +298,7 @@ try {
   ok((await mgrPage.locator('text=13 tasks found').count()) === 1, 'A. unfiltered search counts all 13 tasks');
   ok((await mgrPage.locator('a[href^="/api/export/search.csv"]').count()) === 1, 'A. CSV export link present');
   ok((await mgrPage.locator('a[href^="/api/export/search.xlsx"]').count()) === 1, 'A. XLSX export link present');
-  ok((await mgrPage.locator('a[href="/search"]:has-text("Reset filters")').count()) === 1, 'A. reset-filters button present');
+  ok((await mgrPage.locator('a[href="/search"]:has-text("Clear filters")').count()) === 1, 'A. reset-filters button present');
   ok((await mgrPage.locator('nav a[href="/search"]').count()) === 1, 'A. navbar has the Search link');
   ok((await mgrPage.locator('tbody tr').count()) === 13, 'A. all 13 rows rendered');
 

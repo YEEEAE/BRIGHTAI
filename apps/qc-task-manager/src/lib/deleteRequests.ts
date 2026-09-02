@@ -106,15 +106,43 @@ export function submitDeleteRequest(params: {
     return { ok: false, error: `Reason must be ${REASON_MAX_LENGTH} characters or fewer.` };
   }
 
-  let requestId: number;
+  let requestId = 0;
   try {
-    const info = db
-      .prepare(
-        `INSERT INTO task_delete_requests (task_id, requested_by, reason)
-         VALUES (?, ?, ?)`,
-      )
-      .run(params.taskId, params.userId, reason);
-    requestId = Number(info.lastInsertRowid);
+    db.transaction(() => {
+      const info = db
+        .prepare(
+          `INSERT INTO task_delete_requests (task_id, requested_by, reason)
+           VALUES (?, ?, ?)`,
+        )
+        .run(params.taskId, params.userId, reason);
+      requestId = Number(info.lastInsertRowid);
+
+      logActivity({
+        taskId: params.taskId,
+        userId: params.userId,
+        action: Action.DELETE_REQUESTED,
+        newValue: reason ?? 'no reason given',
+      });
+
+      // Notify every active manager/admin — they are the approvers (spec: "a
+      // deletion request is submitted"). Inactive users are skipped centrally.
+      const requesterName =
+        (db.prepare('SELECT full_name FROM users WHERE id = ?').get(params.userId) as
+          | { full_name: string }
+          | undefined)?.full_name ?? 'An employee';
+      const reviewers = db
+        .prepare("SELECT id FROM users WHERE is_active = 1 AND role IN ('manager', 'admin')")
+        .all() as { id: number }[];
+      for (const r of reviewers) {
+        createNotification({
+          userId: r.id,
+          taskId: params.taskId,
+          type: 'delete_requested',
+          title: 'Deletion request submitted',
+          message: `${requesterName} requested deletion of "${task.title}"${reason ? `: “${reason}”` : '.'}`,
+        });
+      }
+    })();
   } catch (err) {
     // Defense in depth: the partial unique index
     // (task_id) WHERE status = 'pending' makes duplicate blocking atomic.
@@ -124,31 +152,6 @@ export function submitDeleteRequest(params: {
     throw err;
   }
 
-  logActivity({
-    taskId: params.taskId,
-    userId: params.userId,
-    action: Action.DELETE_REQUESTED,
-    newValue: reason ?? 'no reason given',
-  });
-
-  // Notify every active manager/admin — they are the approvers (spec: "a
-  // deletion request is submitted"). Inactive users are skipped centrally.
-  const requesterName =
-    (db.prepare('SELECT full_name FROM users WHERE id = ?').get(params.userId) as
-      | { full_name: string }
-      | undefined)?.full_name ?? 'An employee';
-  const reviewers = db
-    .prepare("SELECT id FROM users WHERE is_active = 1 AND role IN ('manager', 'admin')")
-    .all() as { id: number }[];
-  for (const r of reviewers) {
-    createNotification({
-      userId: r.id,
-      taskId: params.taskId,
-      type: 'delete_requested',
-      title: 'Deletion request submitted',
-      message: `${requesterName} requested deletion of "${task.title}"${reason ? `: “${reason}”` : '.'}`,
-    });
-  }
   return { ok: true, requestId };
 }
 
@@ -248,36 +251,34 @@ export function reviewDeleteRequest(params: {
   );
 
   if (params.decision === 'rejected') {
-    // Conditional update: if the row was already reviewed between our SELECT
-    // and this UPDATE, changes === 0 and we bail instead of overwriting.
-    const info = markReviewed.run('rejected', params.reviewer.id, reviewNote, request.id);
-    if (info.changes !== 1) {
-      return { ok: false, error: 'This request has already been reviewed.' };
-    }
-    // The rejection reason (if any) rides in the activity log's new_value.
-    logActivity({
-      taskId: request.task_id,
-      userId: params.reviewer.id,
-      action: Action.DELETE_REJECTED,
-      newValue: reviewNote,
-    });
-    db.prepare(`INSERT INTO task_deletion_history (id, task_id, task_title, requested_by, reason, reviewed_by, review_note, requested_at, reviewed_at, outcome)
-      SELECT r.id, r.task_id, t.title, r.requested_by, r.reason, r.reviewed_by, r.review_note, r.created_at, r.reviewed_at, r.status
-      FROM task_delete_requests r JOIN tasks t ON t.id = r.task_id WHERE r.id = ?`).run(request.id);
-    // The requester is told their request was rejected — with the reviewer's
-    // reason when one was given (task stays alive, so the notification links
-    // to it).
-    createNotification({
-      userId: request.requested_by,
-      taskId: request.task_id,
-      type: 'delete_rejected',
-      title: 'Deletion request rejected',
-      message: `The deletion request for "${taskTitle}" was rejected${reviewNote ? `: “${reviewNote}”` : '.'}`,
-    });
+    const outcome = db.transaction(() => {
+      const info = markReviewed.run('rejected', params.reviewer.id, reviewNote, request.id);
+      if (info.changes !== 1) {
+        return { ok: false as const, error: 'This request has already been reviewed.' };
+      }
+      logActivity({
+        taskId: request.task_id,
+        userId: params.reviewer.id,
+        action: Action.DELETE_REJECTED,
+        newValue: reviewNote,
+      });
+      db.prepare(`INSERT INTO task_deletion_history (id, task_id, task_title, requested_by, reason, reviewed_by, review_note, requested_at, reviewed_at, outcome)
+        SELECT r.id, r.task_id, t.title, r.requested_by, r.reason, r.reviewed_by, r.review_note, r.created_at, r.reviewed_at, r.status
+        FROM task_delete_requests r JOIN tasks t ON t.id = r.task_id WHERE r.id = ?`).run(request.id);
+      createNotification({
+        userId: request.requested_by,
+        taskId: request.task_id,
+        type: 'delete_rejected',
+        title: 'Deletion request rejected',
+        message: `The deletion request for "${taskTitle}" was rejected${reviewNote ? `: “${reviewNote}”` : '.'}`,
+      });
+      return { ok: true as const, message: `Delete request for "${taskTitle}" rejected.` };
+    })();
+    if (!outcome.ok) return outcome;
     console.log(
       `[tasks] deletion request #${request.id} (task #${request.task_id}) rejected by ${params.reviewer.username}`,
     );
-    return { ok: true, message: `Delete request for "${taskTitle}" rejected.` };
+    return outcome;
   }
 
   // approve — snapshot and log before deleting the task.
