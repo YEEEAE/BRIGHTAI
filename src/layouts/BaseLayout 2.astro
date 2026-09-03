@@ -1,0 +1,423 @@
+---
+/**
+ * BaseLayout — Root layout for every page in BrightAI.
+ *
+ * REPORTS-SEO-FOUNDATION (2026-07-07):
+ *   - Accepts canonical, ogImage, and optional extra schema via props.
+ *   - Emits geo.* meta tags for Riyadh (geo.region SA-01, geo.placename Riyadh).
+ *   - Forces <html lang="ar" dir="rtl"> as the site default (Arabic, Saudi).
+ *   - Always emits hreflang ar-SA + x-default. Adds en-SA + x-default when
+ *     a language counterpart exists (via i18n-pairs.ts LEGAL_I18N_PAIRS).
+ *   - Emits the foundation schema (Organization + WebSite + LocalBusiness)
+ *     from src/components/seo/Schema.astro, and merges any page-provided
+ *     extra schema into a single @graph (no duplicate <script> blocks).
+ *   - Hard rule: NO `meta name="robots" content="noindex"` is ever emitted
+ *     here. If a page tries to pass `robots="noindex, ..."`, the prop is
+ *     ignored with a console warning. Pages are crawled and indexed by
+ *     default — see REPORTS-SEO-FOUNDATION.
+ *
+ * PRESERVED (no regression):
+ *   - SEOHead still owns title/description/OG/Twitter meta.
+ *   - Header, MobileNav, Footer, WhatsAppCTA, CookieConsent, SiteBackground,
+ *     ClientRouter, gtag, scroll-reveal, CSS layers, brand @font-face are
+ *     all kept exactly as before.
+ *   - ArabicLayout and EnglishLayout continue to be thin wrappers that
+ *     forward their props here.
+ */
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import MobileNav from '../components/MobileNav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppCTA from '../components/WhatsAppCTA.astro';
+import SiteBackground from '../components/SiteBackground.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import FoundationSchema from '../components/seo/Schema.astro';
+import MarketingScripts from '../components/MarketingScripts.astro';
+// BAI-LINK-03 (2026-07-29): auto-render visual breadcrumbs when `breadcrumbs`
+// prop is present. FoundationSchema (Schema.astro) already emits the matching
+// BreadcrumbList JSON-LD from the same prop, so the structured data lives in
+// ONE place and the visual lives here.
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../data/site';
+import type { SEOProps } from '../data/site';
+import { ClientRouter } from 'astro:transitions';
+
+// CSP nonce augmentation is in src/env.d.ts (App.Locals.cspNonce) — declaring
+// `namespace App` here breaks the Astro frontmatter esbuild pass.
+
+// BAI-PERF-01 (2026-07-25) — Astro-native critical CSS delivery.
+// Was: inline <style is:inline> block in <head> (required style-src 'unsafe-inline'
+// in CSP, blocked strict-CSP goal). Now: imported as a real stylesheet, bundled +
+// hashed by Astro into /_astro/critical.*.css, emitted as a normal render-blocking
+// <link rel="stylesheet">. This eliminates the post-build regex mutation in
+// astro.config.mjs (perfCssDefer) and removes the need for public/js/css-defer.js.
+// LCP is preserved because the critical.css file (1.6KB raw / 0.7KB gz) ships
+// synchronously alongside BaseLayout.css (~12KB gz) — both small enough to load
+// in parallel over the same HTTP/2 connection. FOUC is structurally impossible
+// because every CSS rule the page needs arrives via render-blocking link.
+import '../styles/critical.css';
+
+interface Props extends SEOProps {
+  lang?: 'ar' | 'en';
+  dir?: 'rtl' | 'ltr';
+  currentPath?: string;
+  languageCounterpart?: string;
+  /**
+   * @deprecated Indexing is forced by the SEO foundation (2026-07-07).
+   * Pass-through kept for backward compatibility; the layout ignores any
+   * "noindex" value and emits the canonical `index, follow, max-...` set.
+   */
+  robots?: string;
+  /** Suppress hreflang on error/utility pages that have no language cluster. */
+  omitHreflang?: boolean;
+  /**
+   * Optional page-level breadcrumbs (without the home crumb — added by
+   * FoundationSchema automatically). Order: ancestors first, current last.
+   *
+   * BAI-LINK-03 (2026-07-29): when set, BaseLayout auto-renders a visual
+   * `<nav class="breadcrumbs">` above the page slot. To suppress the visual
+   * (e.g. when a wrapper layout like BlogLayout renders its own version),
+   * pass `omitBreadcrumbsUI={true}`. FoundationSchema still emits the
+   * matching BreadcrumbList JSON-LD from this prop regardless.
+   */
+  breadcrumbs?: Array<{ name: string; href: string }>;
+  /**
+   * BAI-LINK-03 (2026-07-29): opt-out flag for the auto-rendered visual
+   * breadcrumbs. Use when a child layout (e.g. BlogLayout) renders its own
+   * `<Breadcrumbs>` to avoid duplicate visual navigation.
+   * JSON-LD emission is NOT affected — FoundationSchema always honours
+   * `breadcrumbs` for the structured-data side.
+   */
+  omitBreadcrumbsUI?: boolean;
+  /**
+   * Optional extra schema nodes to merge into the foundation @graph
+   * (FAQPage, Article, Service, HowTo, …).
+   */
+  extraJsonLd?: Array<Record<string, unknown> | null | undefined>;
+  /**
+   * When true, the foundation LocalBusiness node is omitted from the @graph.
+   * Used by product-style pages (e.g. /kernel/*) — see Schema.astro.
+   */
+  omitLocalBusiness?: boolean;
+  /**
+   * BAI-VOC-001-B (2026-07-18): extra cssSelector entries for the
+   * foundation `WebPage.speakable` node (forwarded to FoundationSchema).
+   * Each entry must match a real visible element on the rendered page.
+   * Default `[]` keeps the existing 419-page Speakable audit untouched.
+   */
+  extraSpeakableSelectors?: string[];
+}
+
+const {
+  lang = 'ar',
+  dir = 'rtl',
+  title,
+  description,
+  canonical,
+  hreflang = [],
+  ogImage,
+  ogImageAlt,
+  jsonLd,
+  currentPath = '/',
+  languageCounterpart,
+  robots,
+  omitHreflang = false,
+  breadcrumbs = [],
+  omitBreadcrumbsUI = false,
+  extraJsonLd = [],
+  omitLocalBusiness = false,
+  extraSpeakableSelectors = [],
+} = Astro.props;
+
+// BAI-IDX-25 (2026-07-25): defensive guard for prerendering redirect pages
+// (e.g. /solutions/cities/[city].astro uses Astro.redirect() without a layout).
+// During prerender, Astro.props.currentPath can be undefined for redirect-only
+// pages that don't explicitly pass it. Default to '/' to prevent
+// "Cannot read properties of undefined (reading 'startsWith')" at
+// normalizedCurrentPath.startsWith(p) below.
+const safeCurrentPath = currentPath ?? '/';
+
+// REPORTS-SEO-FOUNDATION: canonical auto-derivation. If a page forgets to
+// pass a canonical, we derive one from Astro.url using the SITE.url host.
+const finalCanonical =
+  canonical ||
+  new URL(safeCurrentPath, SITE.url).toString().replace(/\/$/, '/').replace(/([^:])\/{2,}/g, '$1/');
+
+// Robots policy (BAI-SEO-003-S1, 2026-07-18, updated P0-2 2026-07-18):
+//   Default: "index, follow, max-..." (per REPORTS-SEO-FOUNDATION).
+//   Exception (allowlisted): only the paths below may emit "noindex, follow".
+//   Each is a utility/confirmation/offline page with no search value; its
+//   presence in the index wastes crawl budget. Adding a new path here
+//   requires a documented SEO decision in the worklog AND the matching page
+//   must pass `robots="noindex, follow"` explicitly. No other page may
+//   opt-in to noindex — the SEOHead/SEO foundation rule that all public
+//   content is indexable remains in force.
+//   P0-2 (2026-07-18): added /offline/, /kernel/offline/, /design/* to the
+//   allowlist so these non-search utility pages stop being crawlable.
+const NOINDEX_ALLOWLIST_PREFIXES = ['/thank-you/', '/offline/', '/kernel/offline/', '/design/'];
+const normalizedCurrentPath = safeCurrentPath.endsWith('/') ? safeCurrentPath : `${safeCurrentPath}/`;
+const isNoindexAllowed = NOINDEX_ALLOWLIST_PREFIXES.some((p) => normalizedCurrentPath.startsWith(p));
+const wantsNoindex = typeof robots === 'string' && /noindex/i.test(robots);
+const finalRobots = isNoindexAllowed && wantsNoindex
+  ? 'noindex, follow'
+  : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+
+// Build the @graph: foundation nodes + breadcrumbs + page extras + page jsonLd
+// All in a single block (avoids duplicate <script type="application/ld+json">).
+//
+// SEMRUSH-FIX-2026-07-08 (#45 structured data): flatten any node that is itself
+// a `{@context, @graph: [...]}` wrapper so inner nodes become top-level entries
+// in the foundation @graph. Some pages (e.g. /kernel/* migrated pages, /demo/)
+// historically nested their @graph inside another @graph, which made Schema.org
+// validators (and Semrush) treat the inner nodes as unreachable — losing REQUIRED
+// fields like SoftwareApplication.aggregateRating and SoftwareApplication.offers.
+// This flattens recursively so the final @graph contains ONE nested level only.
+function flattenGraphNodes(
+  entries: Array<Record<string, unknown> | null | undefined>,
+  seen: WeakSet<object> = new WeakSet(),
+): Array<Record<string, unknown>> {
+  const out: Array<Record<string, unknown>> = [];
+  for (const entry of entries) {
+    if (!entry || typeof entry !== 'object') continue;
+    if (seen.has(entry)) continue;
+    seen.add(entry);
+    const graph = (entry as Record<string, unknown>)['@graph'];
+    if (Array.isArray(graph) && graph.length > 0) {
+      // Recurse into the wrapper's children
+      const inner = flattenGraphNodes(graph as Array<Record<string, unknown>>, seen);
+      out.push(...inner);
+    } else {
+      // Semrush and Schema.org treat SoftwareApplication as a product type
+      // that needs review/aggregateRating data. BrightAI Kernel is a hosted
+      // web application and has no source-backed reviews, so normalize legacy
+      // migrated nodes at the final graph boundary instead of fabricating
+      // ratings or leaving stale type arrays in older JSON files.
+      const entryType = entry['@type'];
+      if (Array.isArray(entryType) && entryType.includes('SoftwareApplication')) {
+        const nextType = entryType.filter((type) => type !== 'SoftwareApplication');
+        out.push({ ...entry, '@type': nextType.length === 1 ? nextType[0] : nextType });
+      } else if (entryType === 'SoftwareApplication') {
+        out.push({ ...entry, '@type': 'WebApplication' });
+      } else {
+        out.push(entry);
+      }
+    }
+  }
+  return out;
+}
+
+const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
+  ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd as Record<string, unknown>] : []),
+  ...extraJsonLd,
+]);
+---
+
+<!DOCTYPE html>
+<html lang={lang} dir={dir}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- Geo tags — Riyadh HQ (REPORTS-SEO-FOUNDATION, 2026-07-07) -->
+  <meta name="geo.region" content="SA-01" />
+  <meta name="geo.placename" content="Riyadh" />
+  <meta name="geo.position" content="24.7136;46.6753" />
+  <meta name="ICBM" content="24.7136, 46.6753" />
+  <meta name="language" content={lang === 'ar' ? 'Arabic' : 'English'} />
+  <meta name="distribution" content="global" />
+  <meta name="rating" content="general" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- BAI-PERF-02 (2026-07-25): Self-hosted fonts — no Google Fonts requests.
+       Font files in public/fonts/, @font-face in tokens.css.
+       Preloaded for optimal LCP: no FOUT, no FOUT mitigations needed.
+       BAI-CWV-LCP-001 (2026-08-08): only IBM Plex Sans Arabic (the Arabic LCP
+       font) is preloaded with fetchpriority="high" — it paints the primary
+       Arabic text run above the fold. SemiBold is requested by CSS only when
+       needed; competing for the first mobile connection delays regular body
+       text, which can itself be the LCP element. Inter Regular/SemiBold
+       (111KB + 114KB) are not preloaded because no direct consumer exists.
+       The brand subset (9.9KB, Latin-only unicode-range) stays preloaded for
+       the chip/gradient Latin words. -->
+  <link rel="preload" href="/fonts/IBMPlexSansArabic-Regular.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
+
+  <!-- Preload custom brand font (subsetted — 58.2KB → 9.9KB) -->
+  <link rel="preload" href="/assets/fonts/TheYearofTheCamel-Medium.subset.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+
+  <!-- SEO meta + Open Graph + Twitter Cards + hreflang + page-level JSON-LD -->
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={finalCanonical}
+    hreflang={hreflang}
+    ogImage={ogImage}
+    ogImageAlt={ogImageAlt}
+    jsonLd={undefined}
+    locale={lang}
+    robots={finalRobots}
+    omitHreflang={omitHreflang}
+  />
+
+  <!-- Foundation schema (Organization + WebSite + SearchAction + LocalBusiness
+       + WebPage with speakable) merged with the page's extra schema in a
+       single @graph. Speakable is the foundation for AI voice / TTS engines
+       (Google Assistant, Siri, Alexa) — emitting it site-wide satisfies the
+       ≥30 pages Speakable audit (REPORTS-SEO-FOUNDATION, 2026-07-07). -->
+  <FoundationSchema
+    canonical={finalCanonical}
+    breadcrumbs={breadcrumbs}
+    pageTitle={title}
+    pageDescription={description}
+    language={lang}
+    omitLocalBusiness={omitLocalBusiness}
+    extra={graphExtras}
+    extraSpeakableSelectors={extraSpeakableSelectors}
+  />
+
+  <ClientRouter />
+
+  {/* CSP-HARDENING-001 (2026-07-15): كل الـ <script> النشطة لازم تكون عندها nonce.
+       الـ middleware في src/middleware.ts يولّد nonce لكل request ويحقنه في
+       Astro.locals.cspNonce. الـ Report-Only header (الـ current Phase 1) يجمع
+       violations بدون ما يكسر الموقع. بعد أسبوع 0 violations → enforcement
+       + إزالة 'unsafe-inline' من CSP. */}
+
+  {/* BAI-PERF-02 (2026-07-25): font-async-loader.js removed — no longer needed.
+       Google Fonts are self-hosted, no media="print" flip required.
+       All fonts load via preload + @font-face in tokens.css. */}
+
+  {/* Service Worker registration — REPORTS-20: deferred via setTimeout (100ms after
+       window.load) so it never competes with the LCP element. External file replaces
+       a prior is:inline script to remove unsafe-inline from CSP script-src. */}
+  <script defer src="/js/sw-register.js"></script>
+
+  {/* Google tag (gtag.js) — OWNER REQUEST (2026-08-28): the literal Google
+       snippet, verbatim, on every page for every visitor. No consent gating,
+       no deferred loader, no requestIdleCallback. is:inline keeps the snippet
+       byte-exact in the served HTML; CSP already allows 'unsafe-inline' and
+       www.googletagmanager.com in script-src (Report-Only header).
+       gtag-init.js is retired; the unified analytics runtime (analytics.js)
+       registers its gtag provider internally. */}
+  {/* BAI-PERF-LCP-001 (2026-09-03): preconnect so the owner-mandated gtag
+        request (async, every page) handshakes in parallel with the
+        render-blocking CSS/font fetch instead of stalling ~3.7s on
+        throttled mobile. No visual or behavioural change. */}
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9LMB4PGTWJ');
+  </script>
+
+  {/* Microsoft Clarity — only when a real ID is configured (skip on placeholder).
+       External file replaces a prior is:inline script to remove unsafe-inline from
+       CSP script-src. The Clarity ID is passed as a data attribute (HTML attrs are
+       not governed by script-src CSP). */}
+  {SITE.clarityId && (
+    <script defer src="/js/clarity-init.js" data-clarity-id={SITE.clarityId}></script>
+  )}
+
+  {/* Growth-stack tracking (HubSpot / Bing UET / Mixpanel) — conditional on
+       configured IDs. Scaffolded inert until credentials + CSP are set. */}
+  <MarketingScripts />
+
+  <!-- Additional production meta tags -->
+  <meta name="theme-color" content="#060914" />
+  <meta name="format-detection" content="telephone=no" />
+
+  {/* Verification meta — only emit when a real verified value exists */}
+  {SITE.bingVerification && (
+    <meta name="msvalidate.01" content={SITE.bingVerification} />
+  )}
+  {SITE.yandexVerification && (
+    <meta name="yandex-verification" content={SITE.yandexVerification} />
+  )}
+  {SITE.googleVerification && (
+    <meta name="google-site-verification" content={SITE.googleVerification} />
+  )}
+
+  {/* Above-the-fold content is server-rendered. The loader defers analytics,
+       form interception, motion, and modal focus trapping until after load so
+       they cannot compete with the text LCP resource on constrained mobile. */}
+  <script defer src="/js/noncritical-init.js"></script>
+
+  {/* BAI-PERF-01 (2026-07-25) — Critical CSS now imported above, NOT inlined.
+       The full critical.css content (~1.6KB raw / 0.7KB gz) lives in
+       src/styles/critical.css and ships as a normal <link rel="stylesheet"
+       href="/_astro/critical.*.css"> emitted by Astro. No <style is:inline>
+       blocks remain in the homepage head, so `style-src 'unsafe-inline'` can
+       be removed from CSP. FOUC is structurally impossible because both
+       critical.css and BaseLayout.css are render-blocking. */}
+
+  <!-- Styles — V3 Unified Design System -->
+  <!-- REPORTS-20: Wrapped in CSS layers so the cascade is predictable.
+       Lower layers win when specificity is equal (override-by-layer).
+       Order (low → high priority): tokens < base < components < pages < animations < kernel < utilities -->
+  <style is:global>
+    @layer tokens, base, components, pages, utilities, color, animations;
+
+    @import '../styles/tokens.css' layer(tokens);
+    @import '../styles/base.css' layer(base);
+    /* BAI-CSS-DELIVERY-001 (2026-08-29): components.css and pages.css used to be
+       imported by ArabicLayout only. Every page that wraps BaseLayout directly —
+       the homepage, the 7 /en/ pages, and the 21 /kernel/ pages — therefore
+       shipped without them and rendered with collapsed grids, unstyled buttons
+       and surface-less cards. They belong on the shared shell, not on one locale
+       variant. Layer positions are unchanged, so the cascade is identical for the
+       Arabic pages that already received them. */
+    @import '../styles/components.css' layer(components);
+    @import '../styles/pages.css' layer(pages);
+    @import '../styles/utilities.css' layer(utilities);
+    @import '../styles/color-usage.css' layer(color);
+    @import '../styles/animations.css' layer(animations);
+  </style>
+</head>
+<body>
+  <SiteBackground />
+  <a href="#main" class="skip-link">
+    {lang === 'ar' ? 'تخطي إلى المحتوى' : 'Skip to content'}
+  </a>
+
+  <div class="page">
+    <Header lang={lang} currentPath={safeCurrentPath} />
+    <MobileNav lang={lang} currentPath={safeCurrentPath} />
+
+    <main id="main" class="page__main">
+      {/*
+        BAI-LINK-03 (2026-07-29): auto-render visual breadcrumbs when the page
+        passes a `breadcrumbs` prop. Home (/) is excluded because it never sets
+        the prop. The home crumb is prepended here so the visual matches the
+        JSON-LD that FoundationSchema emits (home at position 1). When a child
+        layout (e.g. BlogLayout) renders its own `<Breadcrumbs>`, the parent
+        passes `omitBreadcrumbsUI={true}` to avoid duplicate visual nav.
+      */}
+      {!omitBreadcrumbsUI && breadcrumbs.length > 0 && (
+        <Breadcrumbs
+          crumbs={[
+            { label: 'الرئيسية', href: '/' },
+            ...breadcrumbs.map((c) => ({ label: c.name, href: c.href })),
+          ]}
+        />
+      )}
+      <slot />
+    </main>
+
+    <Footer lang={lang} currentPath={safeCurrentPath} languageCounterpart={languageCounterpart} />
+  </div>
+
+  <aside class="whatsapp-cta-landmark" aria-label={lang === 'ar' ? 'تواصل سريع' : 'Quick contact'}>
+    <WhatsAppCTA lang={lang} />
+  </aside>
+  <CookieConsent />
+</body>
+</html>

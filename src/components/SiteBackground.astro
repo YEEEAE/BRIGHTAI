@@ -38,8 +38,19 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    opacity: 1;
+    /* BAI-PERF-LCP-001 (2026-09-03): the canvas fades in only after the
+       DotLottie artwork is ready. The boot itself is idle-deferred (see
+       script below) so the 1.2MB .lottie + 1.2MB .wasm never compete with
+       the text LCP element on constrained mobile. The solid #0a0e1a behind
+       it is identical to the artwork composite colour, so first paint is
+       visually seamless — no poster swap, no layout change. */
+    opacity: 0;
     filter: none;
+    transition: opacity 0.8s ease-out;
+  }
+
+  .bai-site-background__canvas.is-ready {
+    opacity: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -77,8 +88,24 @@
         freezeOnOffscreen: false,
       },
     });
+    // Fade the canvas in once the player owns it (see CSS .is-ready).
+    requestAnimationFrame(() => canvas.classList.add('is-ready'));
   }
 
-  mountBackgroundAnimation();
-  document.addEventListener('astro:page-load', mountBackgroundAnimation);
+  // BAI-PERF-LCP-001 (2026-09-03): idle-deferred boot. The module script
+  // itself is deferred by the browser, but fetching the .lottie artwork
+  // (1.2MB) + .wasm runtime (1.2MB) immediately still saturates mobile
+  // connections inside the LCP window (lab: mobile LCP ~4.7s vs desktop
+  // ~0.2s, LCP element is hero text). Waiting for an idle callback keeps
+  // the LCP window to fonts + render-blocking CSS only. Timeout caps the
+  // delay so the artwork still appears promptly on idle-poor pages.
+  // scheduleIdle is inlined because Astro compiles every <script> into an
+  // isolated module scope.
+  const scheduleIdle =
+    typeof window.requestIdleCallback === 'function'
+      ? (work: () => void) => window.requestIdleCallback(work, { timeout: 3000 })
+      : (work: () => void) => window.setTimeout(work, 1500);
+
+  scheduleIdle(mountBackgroundAnimation);
+  document.addEventListener('astro:page-load', () => scheduleIdle(mountBackgroundAnimation));
 </script>

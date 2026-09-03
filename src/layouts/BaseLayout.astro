@@ -305,6 +305,11 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        www.googletagmanager.com in script-src (Report-Only header).
        gtag-init.js is retired; the unified analytics runtime (analytics.js)
        registers its gtag provider internally. */}
+  {/* BAI-PERF-LCP-001 (2026-09-03): preconnect so the owner-mandated gtag
+        request (async, every page) handshakes in parallel with the
+        render-blocking CSS/font fetch instead of stalling ~3.7s on
+        throttled mobile. No visual or behavioural change. */}
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
   <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
