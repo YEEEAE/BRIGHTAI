@@ -11,6 +11,8 @@ const toc = [
   ['data-models', 'البيانات والنماذج'],
   ['control-matrix', 'مصفوفة الضوابط'],
   ['roadmap', 'خارطة الطريق'],
+  ['checklist', 'قائمة التحقق'],
+  ['faq', 'أسئلة شائعة'],
   ['sources', 'المصادر'],
 ];
 
@@ -177,7 +179,21 @@ const faqs = [
   ['هل كل حالة استخدام تحتاج موافقة بشرية؟', 'لا. الموافقة البشرية تكون متناسبة مع الأثر. الاستخدامات المنخفضة المخاطر قد تمشي بضوابط أساسية، بينما القرارات التي تمس عميلًا أو حقًا أو مبلغًا أو بيانات حساسة تحتاج مسار مراجعة أو منعًا واضحًا.'],
   ['هل سياسة استخدام AI لحالها تكفي؟', 'لا. السياسة تحدد القاعدة، لكن الحوكمة تترجمها إلى مالك وضابط وسجل ومراجعة. من دون هذا الربط يصعب إثبات أن السياسة طُبقت فعليًا.'],
   ['وش أول شيء نبدأ فيه؟', 'ابدأ بجرد حالات الاستخدام والأدوات والبيانات الداخلة لها. بعده صنف المخاطر، عيّن الملاك، وطبق ضوابط أولية على أكثر الحالات حساسية.'],
+  ['وش الفرق السريع بين الحوكمة والسلامة والأمن وإدارة المخاطر؟', 'الحوكمة تحدد من يقرر وكيف يُثبت القرار، والسلامة تهتم بموثوقية المخرج وحدود استخدامه، والأمن يحمي النظام والبيانات من التسريب والهجوم، وإدارة المخاطر تحدد احتمال الأثر وحجمه ومن يقبله.'],
+  ['كيف نجهز دليل يقنع المدقق؟', 'اجمع وصف الاستخدام ومالكه، وسبب تصنيف الخطر، ونسخة السياسة المطبقة، وقرار المراجعة البشرية، وسجل الأحداث المرتبط، ونتيجة المراجعة الدورية في قصة واحدة تجاوب: وش صار، وليش سُمح أو مُنع، ومن كان مسؤولًا.'],
+  ['وش اللي ينطبق علينا من الأنظمة السعودية؟', 'يعتمد على قطاعك وبياناتك وطريقة تشغيلك. ابدأ من النص الرسمي لنظام حماية البيانات الشخصية وضوابط الأمن السيبراني وإرشادات سدايا، وحدد نطاق الانطباق مع فرقك القانونية والامتثال قبل اعتماد أي ضابط.'],
 ];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'ar-SA',
+  mainEntity: faqs.map(([question, answer]) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
+};
 ---
 
 <section class="pillar-hero" aria-labelledby="governance-hub-title">
@@ -218,6 +234,7 @@ const faqs = [
       <blockquote>
         <strong>تعريف جاهز للاقتباس:</strong> حوكمة الذكاء الاصطناعي هي منظومة أدوار وقرارات وضوابط وأدلة تدير استخدام الذكاء الاصطناعي طوال دورة حياته، بحيث يكون الاستخدام معروفًا ومتناسبًا مع المخاطر وقابلًا للمراجعة.
       </blockquote>
+      <aside class="callout callout--quiet intent-note"><strong>هالدليل تعليمي، مو صفحة بيع:</strong> هنا نشرح المنطق والمصطلحات والخطوات لأي مؤسسة سعودية. وإذا تدور طبقة تشغيل تطبق هالمنطق داخل شركتك، شوف <a href="/solutions/ai-governance-platform/">منصة حوكمة الذكاء الاصطناعي</a> — هي صفحة الحل التجاري، وهذا الدليل هو المرجع المعرفي لها.</aside>
         </section>
 
         <section class="pillar-source-panel" aria-labelledby="official-source-title">
@@ -320,7 +337,7 @@ const faqs = [
       <p class="section-label">أدلة التدقيق</p>
       <h2 id="evidence-title">الدليل مو ملف واحد؛ هو قصة قرار كاملة</h2>
       <div class="evidence-flow" aria-label="مسار أدلة الحوكمة">
-        <span>حالة استخدام</span><b>←</b><span>تصنيف خطر</span><b>←</b><span>ضابط وموافقة</span><b>←</b><span>سجل تشغيل</span><b>←</b><span>مراجعة دورية</span>
+        <span>حالة استخدام</span><b aria-hidden="true">←</b><span>تصنيف خطر</span><b aria-hidden="true">←</b><span>ضابط وموافقة</span><b aria-hidden="true">←</b><span>سجل تشغيل</span><b aria-hidden="true">←</b><span>مراجعة دورية</span>
       </div>
       <p>احتفظ بما يثبت: وصف الاستخدام ومالكه، التصنيف وأسبابه، نسخة السياسة أو الضابط المطبق، نتيجة مراجعة المورد إن وجدت، قرار الإنسان في الحلقة، سجل الأحداث المرتبط، ونتيجة المراجعة أو الحادث. الدليل المفيد يجاوب: وش صار؟ ليش سمحنا أو منعنا؟ ومن كان مسؤول؟</p>
       <aside class="callout callout--quiet"><strong>تنبيه:</strong> وجود سجل لا يثبت الامتثال لحاله. قيمته تأتي من اكتمال السياق وربطه بالسياسة والمالك والمراجعة.</aside>
@@ -393,6 +410,25 @@ const faqs = [
       <p>إذا تبي تشخيصًا منظمًا قبل البدء، استخدم <a href="/assessment/ai-governance-readiness/">تقييم جاهزية حوكمة الذكاء الاصطناعي</a>. وإذا تبي تفاصيل تنفيذية أكثر، راجع <a href="/docs/governance-application/">دليل تطبيق الحوكمة</a> و<a href="/docs/ai-risk-management/">دليل إدارة مخاطر AI</a>.</p>
     </section>
 
+    <section id="checklist" aria-labelledby="checklist-title">
+      <p class="section-label">قائمة تحقق</p>
+      <h2 id="checklist-title">هل برنامج الحوكمة عندك مكتمل؟ عشر علامات سريعة</h2>
+      <p>مر على هالقائمة مع مالك كل حالة استخدام. إذا جاوبت «لا» على أي بند، فهذا هو أول شيء تشتغل عليه قبل ما توسع استخدام AI.</p>
+      <ul class="checklist">
+        <li><strong>سجلنا كل الاستخدامات:</strong><span> نعرف وش الأدوات وحالات الاستخدام والبيانات الداخلة لها ومن مالكها.</span></li>
+        <li><strong>صنفنا الخطر حسب السياق:</strong><span> حساسية البيانات وأثر المخرج ومستوى الاستقلالية موثقة لكل حالة.</span></li>
+        <li><strong>عينا الملاك الثلاثة:</strong><span> مالك الحالة ومالك الضابط ومالك قبول الخطر واضحون ومقبولون داخليًا.</span></li>
+        <li><strong>حولنا السياسة لمسارات:</strong><span> كل قاعدة لها سماح أو منع أو مراجعة واضحة يعرفها الموظف وقت العمل.</span></li>
+        <li><strong>ضبطنا البيانات والاحتفاظ:</strong><span> نوع البيانات والغرض والوصول ومسار النقل ومدة الاحتفاظ محددة وموثقة.</span></li>
+        <li><strong>حددنا متى تلزم موافقة بشرية:</strong><span> صاحب الصلاحية وسياق المراجعة وسبب القرار مسجل قبل التنفيذ.</span></li>
+        <li><strong>نسجل بسياق كافٍ:</strong><span> السجل يربط الحالة والسياسة والقرار والمالك بدون جمع بيانات أكثر من اللازم.</span></li>
+        <li><strong>نجمع الدليل في قصة واحدة:</strong><span> التصنيف والضابط والموافقة والسجل والمراجعة مربوطة في ملف قابل للفهم.</span></li>
+        <li><strong>نراقب بعد الإطلاق:</strong><span> فيه مؤشرات ومراجعات دورية ومحفزات تصعيد عند تغير النموذج أو البيانات.</span></li>
+        <li><strong>نراجع المورد والتغيير:</strong><span> أي مورد جديد أو تغيير جوهري يعيد التقييم والاعتماد قبل الاستمرار.</span></li>
+      </ul>
+      <p class="citation-ready"><strong>جملة قابلة للاقتباس:</strong> برنامج حوكمة AI المكتمل يعني كل استخدام معروف ومصنف وله مالك وضابط ودليل ومراجعة — وأي حلقة ناقصة هي أولوية الإصلاح قبل التوسع.</p>
+    </section>
+
     <section id="faq" aria-labelledby="faq-title">
       <p class="section-label">أسئلة شائعة</p>
       <h2 id="faq-title">إجابات قصيرة للأسئلة المتكررة</h2>
@@ -422,6 +458,8 @@ const faqs = [
   </article>
 </div>
 
+<script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
 <style>
   .pillar-hero { max-width: 78rem; margin-inline: auto; padding: clamp(2rem, 5vw, 5rem) 0 2rem; }
   .pillar-eyebrow, .section-label { color: var(--interactive-primary); font-weight: 700; font-size: .875rem; letter-spacing: .02em; }
@@ -429,8 +467,10 @@ const faqs = [
   .pillar-lede { max-inline-size: 70ch; color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 2; }
   .pillar-meta { display: flex; flex-wrap: wrap; gap: .5rem 1rem; color: var(--text-muted); font-size: .875rem; }
   .pillar-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; max-width: 78rem; margin-inline: auto; }
-  .pillar-content { min-inline-size: 0; }
+  .pillar-content { min-inline-size: 0; min-width: 0; }
   .pillar-content > section { scroll-margin-top: 7rem; margin-block: clamp(3.5rem, 7vw, 6rem); }
+  .pillar-content > section:not(.control-matrix-section) { max-inline-size: 75ch; }
+  .pillar-content > section.control-matrix-section { max-inline-size: none; }
   .pillar-content h2 { color: var(--text-primary); font-size: clamp(1.7rem, 3vw, 2.55rem); line-height: 1.25; margin: .5rem 0 1.25rem; text-wrap: balance; }
   .pillar-content h3 { color: var(--text-primary); margin: 0 0 .6rem; font-size: 1.1rem; }
   .pillar-content p, .pillar-content li { color: var(--text-secondary); line-height: 1.95; }
@@ -439,9 +479,17 @@ const faqs = [
   blockquote { margin: 1.5rem 0 0; padding: 1rem 1.25rem; color: var(--text-primary); background: var(--brand-soft); border-radius: var(--radius-md); line-height: 1.8; }
   .pillar-toc { display: none; }
   .pillar-mobile-nav { margin: 1rem auto 0; max-width: 78rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-elevated); }
-  .pillar-mobile-nav summary { cursor: pointer; color: var(--text-primary); font-weight: 700; padding: 1rem; }
-  .pillar-mobile-nav nav { display: grid; padding: 0 1rem 1rem; gap: .65rem; }
-  .pillar-mobile-nav a { color: var(--text-secondary); text-decoration: none; }
+  .pillar-mobile-nav summary { cursor: pointer; color: var(--text-primary); font-weight: 700; padding: 1rem; min-height: 44px; display: flex; align-items: center; }
+  .pillar-mobile-nav nav { display: grid; padding: 0 1rem 1rem; gap: .25rem; }
+  .pillar-mobile-nav a { color: var(--text-secondary); text-decoration: none; min-height: 44px; display: flex; align-items: center; padding-block: .35rem; }
+  .pillar-mobile-nav a:hover, .pillar-mobile-nav a:focus-visible { color: var(--interactive-primary); }
+  .intent-note { margin-block-start: 1.25rem; }
+  .intent-note a { font-weight: 700; }
+  .checklist { list-style: none; padding: 0; margin: 1.25rem 0 0; display: grid; gap: .75rem; }
+  .checklist li { display: grid; grid-template-columns: 1.75rem 1fr; gap: .6rem; align-items: start; padding: 1rem 1.1rem; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); line-height: 1.8; }
+  .checklist li::before { content: '✓'; display: grid; place-items: center; inline-size: 1.6rem; block-size: 1.6rem; border-radius: 50%; background: var(--brand-soft); color: var(--interactive-primary); font-weight: 800; }
+  .checklist strong { color: var(--text-primary); }
+  .checklist span { color: var(--text-secondary); }
   .definition-grid, .two-up, .risk-grid { display: grid; gap: 1rem; }
   .definition-grid section, .two-up > div { padding: 1.25rem; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
   .definition-grid p, .two-up p { margin: 0; }
@@ -469,7 +517,7 @@ const faqs = [
   .roadmap { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; }
   .roadmap li { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem; padding-block-end: 1.25rem; border-block-end: 1px solid var(--border-subtle); }
   .roadmap li > span { color: var(--interactive-primary); font-weight: 800; font-size: .875rem; }.roadmap p { margin: 0; }
-  .faq-list { display: grid; gap: .75rem; }.faq-list details { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-elevated); padding: 1rem 1.25rem; }.faq-list summary { cursor: pointer; color: var(--text-primary); font-weight: 700; }.faq-list p { margin: 1rem 0 0; }
+  .faq-list { display: grid; gap: .75rem; }.faq-list details { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-elevated); padding: 1rem 1.25rem; }.faq-list summary { cursor: pointer; color: var(--text-primary); font-weight: 700; min-height: 44px; display: flex; align-items: center; }.faq-list summary:focus-visible { outline: 2px solid var(--interactive-primary); outline-offset: 2px; border-radius: var(--radius-sm); }.faq-list p { margin: 1rem 0 0; }
   .source-list { display: grid; gap: .85rem; padding: 0; list-style: none; }.source-list li { padding: 1rem; border-inline-start: 3px solid var(--interactive-primary); background: var(--bg-elevated); }.source-list span { display: block; color: var(--text-muted); font-size: .95rem; margin-block-start: .3rem; }
   .resource-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-block-start: 1.5rem; }.resource-links a { min-height: 44px; display: inline-flex; align-items: center; padding-inline: 1rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-decoration: none; }.resource-links a:hover { background: var(--brand-soft); }
   .control-matrix-lede { max-inline-size: 72ch; font-size: 1.08rem; }
@@ -511,6 +559,6 @@ const faqs = [
     .control-matrix-table thead th { color: #fff; background: #172033 !important; }
     .control-matrix-table a { color: #064e3b; }
   }
-  @media (min-width: 900px) { .pillar-layout { grid-template-columns: 14rem minmax(0, 1fr); align-items: start; }.pillar-toc { position: sticky; top: 6rem; display: block; padding: 1rem; border-inline-start: 1px solid var(--border-subtle); }.pillar-toc > p { margin: 0 0 .75rem; color: var(--text-primary); font-weight: 800; }.pillar-toc nav { display: grid; gap: .55rem; }.pillar-toc a { color: var(--text-muted); font-size: .9rem; text-decoration: none; }.pillar-toc a:hover, .pillar-toc a:focus-visible { color: var(--interactive-primary); }.pillar-mobile-nav { display: none; }.definition-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 900px) { .pillar-layout { grid-template-columns: 15rem minmax(0, 1fr); align-items: start; }.pillar-toc { position: sticky; top: 6rem; display: block; padding: 1rem; border-inline-start: 1px solid var(--border-subtle); max-height: calc(100vh - 8rem); overflow-y: auto; }.pillar-toc > p { margin: 0 0 .75rem; color: var(--text-primary); font-weight: 800; }.pillar-toc nav { display: grid; gap: .25rem; }.pillar-toc a { color: var(--text-muted); font-size: .9rem; text-decoration: none; min-height: 44px; display: flex; align-items: center; padding-block: .3rem; line-height: 1.5; }.pillar-toc a:hover, .pillar-toc a:focus-visible { color: var(--interactive-primary); }.pillar-mobile-nav { display: none; }.definition-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 36rem) { .risk-grid { grid-template-columns: 1fr; }.roadmap li { grid-template-columns: 1fr; gap: .4rem; } }
 </style>

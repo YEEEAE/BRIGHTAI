@@ -1,3 +1,91 @@
+## [2026-09-03] — تحسين /assessment/ai-governance-readiness/ للتحويل والفهرسة (واجهة تقييم مؤسسية عالية الثقة)
+
+### تم التنفيذ
+- طبقت مهارات `seo-page` و`seo-geo` و`seo-content` و`form-design`: قسم جديد "لمن هذا التقييم؟" (4 أدوار + تنبيه أنه مو بديل عن التدقيق/الشهادة)، وقسم "كيف يشتغل؟" (3 خطوات + توقع 5 دقائق)، وقسم شفافية "وش اللي ما يسويه التقييم؟" (مو شهادة/موافقة/درجة — عمدًا بدون درجة رقمية)، وFAQ رابعة عن المدة — كله سعودي حواري بدون منهجية أو اعتماد مختلق.
+- وسعت JSON-LD من WebPage فقط إلى WebPage (مع dateModified) + WebApplication وصفية + `extraSpeakableSelectors` لخلاصة tl-dr؛ الـbreadcrumbs تكمل BreadcrumbList تلقائيًا عبر FoundationSchema، وبدون FAQ schema تجاري جديد (قرار سابق محفوظ).
+- قويت الفورم: مؤشر مرحلة مرئي (`data-assessment-step-label`)، كل سؤال `role=radiogroup` مع `aria-labelledby`، أهداف لمس 52px، أزرار مكدسة كاملة العرض على الجوال، `auto-fit minmax(220px,1fr)` للخيارات على الواسع، ونتائج بأيقونات وفصل بصري (قوة/فجوة/ضوابط) + CTA رئيسي لجلسة استكشافية وثانوي لمنصة الحوكمة.
+- شددت التحليلات بدون PII: `ALLOWED_KEYS` (step/dimension/position فقط)، بدء/تقدم/إكمال/تخلي كما قبل + `pagehide` مع حارس once (إضافة لـvisibilitychange)، واحترام `prefers-reduced-motion` عند التمرير للنتيجة؛ نقرات CTA مغطاة أصلًا عبر تفويض `[data-cta]` العام في `public/js/analytics.js`.
+- وسعت اختبار `assessment-readiness` من 2 إلى 5 (تجميع/تقدم مرئي، كامل القمع بدون PII، وربط CTA بالـtaxonomy الموحد) مع بقاء ضمانات عدم الدرجة الرقمية.
+
+### الملفات المتأثرة
+- `src/pages/assessment/ai-governance-readiness/index.astro` (محتوى + سكيما + CSS)
+- `public/js/ai-governance-readiness.js` (step label + pagehide + reduced-motion + allowlist)
+- `scripts/assessment-readiness.test.mjs` (2→5 فحوصات)
+
+### التحقق
+- `node --test scripts/assessment-readiness.test.mjs` ✅ — 5/5
+- `pnpm build` ✅ — Complete (تحذيرات route-collision قديمة فقط)
+- `pnpm seo:schema` ✅ — 62 صفحة + speakable 267
+- `pnpm seo:hreflang` ✅ — 0 أخطاء
+- `pnpm seo:gate` ✅ — 0 أخطاء (broken 0/47885، noindex/canonical نظيفة)
+- فحص HTML المبني ✅ — H1 واحد، canonical ذاتي، `index, follow`، الأسئلة الثمانية SSR بدون JS، وWebApplication + BreadcrumbList حاضرة
+- `git diff --check` ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صفحة التقييم صارت أغنى شرحًا (جمهور/خطوات/حدود/روابط داخلية) وبواجهة تقييم أرقى وقمع تحليلي كامل بدون PII، وكل البوابات خضرا.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+- ملاحظة: `src/data/solutions.ts` و`src/pages/solutions/[slug].astro` و`AiGovernancePillar.astro` عليها تعديلات محلية سابقة من مهام اليوم — لم تُمس في هذه المهمة.
+
+## [2026-09-03] — ترقية /hub/ai-governance/ كركيزة معرفية للحوكمة (فصل النية عن صفحة الشراء)
+
+### تم التنفيذ
+- طبقت مهارات `seo-geo` و`seo-page` و`seo-content`: إجابة أولى موجزة (lede 102 + فقرة 53 = 155 كلمة ضمن 150-250)، تعريف جاهز للاقتباس، جدول مقارنة حوكمة/سلامة/أمن/مخاطر، و3 جمل citation-ready بدون أرقام مختلقة.
+- أضفت قسم `checklist` جديد (10 بنود) في الـTOC والمتن، ووسعت FAQ من 4 إلى 7 (فرق المفاهيم، تجهيز الدليل، نطاق الأنظمة السعودية) مع FAQPage JSON-LD متزامن 7/7 مع المرئي.
+- أضفت تنبيه نية صريح (تعليمي vs تجاري) يربط بـ`/solutions/ai-governance-platform/`، وأبقيت روابط المنتج والأدلة التنظيمية (matrix + docs + assessment + tools) بدون حشو.
+- حسنت القراءة والتصميم: عرض مريح 75ch لكل الأقسام عدا المصفوفة الواسعة، TOC sticky مع scroll و44px touch، تنقل جوال مضغوط 44px، أسهم evidence بـ`aria-hidden`، وfocus-visible لأسئلة FAQ — كله logical properties وRTL سليم.
+- دققت الـcannibalization: الـ6 إجابات الحوكمة (`ai-governance-saudi-arabia`, `-ar`, `-framework`, `ai-banking`, `ai-healthcare`, `sama-ai`) كلها thin + تشير بـfurtherReading للركيزة؛ والحل التجاري بنية شراء مميزة — **التوصية: إبقاء الكل مفهرسًا بدون دمج أو noindex**، وتقوية الربط الصاعد فقط (تم).
+
+### الملفات المتأثرة
+- `src/components/hub/AiGovernancePillar.astro` (TOC + checklist + FAQ + intent-note + FAQPage + CSS)
+
+### التحقق
+- `pnpm build` ✅
+- `pnpm seo:schema` ✅ — 62 صفحة + speakable 267
+- `pnpm seo:gate` ✅ — 0 أخطاء (sitemap 263، broken 0/47881)
+- `pnpm seo:hreflang` ✅ — 0 أخطاء
+- `pnpm test` ✅ — 38/38
+- فحص HTML المبني ✅ — H1 واحد، canonical ذاتي، noindex صفر، TOC 14 بند، FAQ sync 7/7، وأول 155 كلمة تجاوب مباشرة
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صفحة الحوكمة صارت ركيزة تعليمية مكتملة (checklist + أسئلة + مصفوفة + خارطة) بفصل نية واضح عن صفحة الشراء، وكل البوابات خضرا.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+- ملاحظة: `src/data/solutions.ts` و`src/pages/solutions/[slug].astro` عليها تعديلات محلية سابقة من مهمة اليوم (صفحة المنصة التجارية) — لم تُمس في هذه المهمة.
+
+## [2026-09-03] — تحسين صفحة منصة حوكمة AI كصفحة تجارية رئيسية
+
+### تم التنفيذ
+- طبقت مهارات `seo-page` و`seo-schema` و`seo-geo`: إجابات مباشرة أول الفقرات، عناوين H2 بصيغة أسئلة، وكتل Q&A قصيرة قابلة للاقتباس (40-60 كلمة) بدون أي رقم أو شهادة مختلقة.
+- قصرت الهيرو فوق الـfold: سطر القيمة الواحد بقي بارزًا، والوصف صار جملة واحدة من `shortDesc` بدل فقرتين، مع تضييق H1 والـpadding على الجوال (360px) وتكديس CTA كامل العرض.
+- حسنت قسم الفلو البصري Regulation → Risk → Control → Enforcement → Evidence: أيقونات SVG موجودة فعليًا في `icons.svg` (استبدلت 4 أسماء مفقودة) + أسهم اتجاه خفيفة CSS فقط تتجه للأسفل تلقائيًا على الجوال، بدون أنيميشن ثقيل.
+- أضفت روابط داخلية سياقية لكل المطلوب: Firewall وRisk Classification وHuman Approval وAudit Trail وEvidence File وتقييم الجاهزية داخل متن الأقسام، وأضفت `ai-risk-classification` لقائمة `related` عشان يظهر في RelatedLinks.
+- لينت إجابة FAQ الأولى قانونيًا ("حماية كاملة" و"Immutable Audit Log" صارت "سجل مراجعة واحد" و"داخل حدود واضحة") مع بقاء تنبيه عدم الاستغناء عن التقييم القانوني/الشهادة.
+- أبقيت Service schema (صحيح دلاليًا لصفحة خدمة) وFAQPage المتزامن مع الأسئلة المرئية (7/7) لأن `seo-schema-audit` يشترطه؛ إزالته كانت ستكسر البوابة — موثق كقرار.
+
+### الملفات المتأثرة
+- `src/data/solutions.ts` (related + إجابة FAQ الأولى)
+- `src/pages/solutions/[slug].astro` (فرع الحوكمة: هيرو، إجابات، عناوين أسئلة، فلو بالأيقونات، روابط، CSS جوال)
+
+### التحقق
+- `pnpm build` ✅
+- `pnpm seo:schema` ✅ — 62 صفحة + speakable 267، وFAQ sync بدون drift
+- `pnpm seo:gate` ✅ — 0 أخطاء
+- `pnpm seo:hreflang` ✅ — 0 أخطاء
+- `pnpm test` ✅ — 38/38
+- فحص HTML المبني ✅ — H1 واحد، canonical ذاتي، noindex صفر، الروابط الستة كلها 6-7 مرات، ولا حشو مدن (المدن بس في Organization areaServed العامة)
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صفحة الحوكمة صارت أقصر فوق الـfold، بفلو مرئي وأسئلة GEO وروابط داخلية كاملة وصياغة آمنة قانونيًا، وكل بوابات SEO والاختبارات خضرا.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-03] — توحيد سياسة الزواحف: تدريب Disallow وبحث/استشهاد Allow
 
 ### تم التنفيذ

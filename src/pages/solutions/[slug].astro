@@ -78,6 +78,9 @@ const jsonLd = {
     // AI Firewall has a dedicated, implementation-bounded visible FAQ below.
     // Do not publish the migrated FAQ set: it contains legacy universal claims
     // that are broader than the current product contract.
+    // NOTE: visible solution FAQs stay in sync with FAQPage via
+    // scripts/sync-solution-faq-schema.mjs (required by seo-schema-audit);
+    // FAQPage is valid schema.org and only affects rich-result eligibility.
     ...(!isAiFirewall && solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
   ]
 };
@@ -233,10 +236,10 @@ const useCases = buildScenarios(solution);
 const isGovernancePlatform = solution.slug === 'ai-governance-platform';
 const governanceFlow = [
   { label: 'Regulation', arabic: 'التنظيم', title: 'حوّل المرجع إلى متطلب مفهوم', text: 'اربط سياسة المؤسسة بسياق PDPL وNCA ECC وإرشادات SDAIA أو ISO/IEC 42001 حيث ينطبق.', icon: 'mdi-scale-balance' },
-  { label: 'Risk', arabic: 'المخاطر', title: 'اعرف وش ممكن يصير قبل التشغيل', text: 'سجّل استخدام AI وحدد مالكه وبياناته وتأثيره ومستوى المخاطر قبل ما يكبر نطاقه.', icon: 'mdi-alert-outline' },
-  { label: 'Control', arabic: 'الضابط', title: 'اختَر الضابط المناسب للحالة', text: 'حدّد هل المسار يسمح، يخفي البيانات، يوقف الطلب، أو يحتاج موافقة بشرية حسب السياسة.', icon: 'mdi-tune-vertical' },
-  { label: 'Enforcement', arabic: 'التطبيق', title: 'خلّ الضابط يشتغل وقت الطلب', text: 'طبّق القرار على مسار العمل نفسه، مع رسالة مفهومة للموظف وتصعيد للحالات الاستثنائية.', icon: 'mdi-shield-check-outline' },
-  { label: 'Evidence', arabic: 'الدليل', title: 'احتفظ بما يثبت وش صار', text: 'اجمع الطلب والقرار والمالك والموافقة والاستثناء في سجل واحد قابل للمراجعة.', icon: 'mdi-file-check-outline' },
+  { label: 'Risk', arabic: 'المخاطر', title: 'اعرف وش ممكن يصير قبل التشغيل', text: 'سجّل استخدام AI وحدد مالكه وبياناته وتأثيره ومستوى المخاطر قبل ما يكبر نطاقه.', icon: 'mdi-alert-triangle' },
+  { label: 'Control', arabic: 'الضابط', title: 'اختَر الضابط المناسب للحالة', text: 'حدّد هل المسار يسمح، يخفي البيانات، يوقف الطلب، أو يحتاج موافقة بشرية حسب السياسة.', icon: 'mdi-tune' },
+  { label: 'Enforcement', arabic: 'التطبيق', title: 'خلّ الضابط يشتغل وقت الطلب', text: 'طبّق القرار على مسار العمل نفسه، مع رسالة مفهومة للموظف وتصعيد للحالات الاستثنائية.', icon: 'mdi-shield-check' },
+  { label: 'Evidence', arabic: 'الدليل', title: 'احتفظ بما يثبت وش صار', text: 'اجمع الطلب والقرار والمالك والموافقة والاستثناء في سجل واحد قابل للمراجعة.', icon: 'mdi-clipboard-check' },
 ];
 const governanceProblems = [
   { title: 'Shadow AI بلا مالك', text: 'أدوات يستخدمها الموظفون خارج القائمة المعتمدة، وما عندك صورة كاملة عن نطاقها أو بياناتها.' },
@@ -404,7 +407,7 @@ const firewallDlpRows = [
             <p class="governance-kicker"><span class="governance-kicker__mark" aria-hidden="true"></span> AI governance operating layer</p>
             <h1 id="governance-title">{solution.h1}</h1>
             <p class="governance-hero__value">خلّ كل استخدام AI يمر من سياسة واضحة إلى قرار قابل للتنفيذ ودليل قابل للمراجعة.</p>
-            <p class="governance-hero__desc">{solution.description} BrightAI تربط الموظف، نظام AI، بيانات المؤسسة، السياسة، الموافقة، والدليل في مسار واحد مفهوم.</p>
+            <p class="governance-hero__desc">{solution.shortDesc} تشبك الموظف ونظام AI والبيانات والسياسة والموافقة والدليل في مسار واحد.</p>
             <div class="governance-hero__actions">
               <a class="governance-button governance-button--primary" href={governanceLinks[0].href} data-cta="governance_readiness_click" data-cta-label={governanceLinks[0].label} data-position="hero" data-page-type="solution">
                 {governanceLinks[0].label}<span aria-hidden="true">←</span>
@@ -447,6 +450,10 @@ const firewallDlpRows = [
           <p class="governance-eyebrow">إجابة مباشرة</p>
           <h2 id="governance-answer-title">وش تسوي منصة حوكمة الذكاء الاصطناعي؟</h2>
           <p>منصة حوكمة الذكاء الاصطناعي هي طبقة تشغيلية بين الموظفين وأنظمة AI وبيانات المؤسسة وسياساتها. تسجّل الاستخدام، تحدد المالك والمخاطر، تطبق الضابط المناسب، توقف الحالات التي تحتاج موافقة بشرية، وتحفظ الدليل الذي يشرح وش صار ومَن اعتمد القرار.</p>
+          <div class="governance-qa">
+            <article><h3>متى تحتاجها مؤسستك؟</h3><p>إذا صار عندك أكثر من استخدام AI، أو لامس أحدها بيانات حساسة أو قرارًا يأثر على عميل أو موظف أو مستفيد — خصوصًا مع Shadow AI أو سياسة ما تنطبق وقت الاستخدام. ابدأ بـ<a class="governance-inline-link" href="/assessment/ai-governance-readiness/">تقييم الجاهزية</a> عشان تحدد أول استخدام يستحق الضبط.</p></article>
+            <article><h3>وش الفرق بين سياسة مكتوبة وطبقة حوكمة؟</h3><p>السياسة تقول وش المسموح. طبقة الحوكمة تربط السياسة بالمسار وقت الطلب: فحص أو إخفاء أو إيقاف أو <a class="governance-inline-link" href="/solutions/human-approval-layer/">موافقة بشرية</a>، مع سجل يوضح القرار ومعتمده.</p></article>
+          </div>
         </div>
       </section>
 
@@ -464,8 +471,10 @@ const firewallDlpRows = [
               <li class="governance-flow__item">
                 <span class="governance-flow__number">0{index + 1}</span>
                 <span class="governance-flow__label">{step.label}</span>
+                <span class="governance-flow__icon" aria-hidden="true"><svg width="26" height="26"><use href={`/icons.svg#${step.icon}`}></use></svg></span>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
+                {index < governanceFlow.length - 1 && <span class="governance-flow__arrow" aria-hidden="true">←</span>}
               </li>
             ))}
           </ol>
@@ -475,8 +484,8 @@ const firewallDlpRows = [
       <section class="governance-section" aria-labelledby="governance-problems-title">
         <div class="governance-shell">
           <div class="governance-section__heading governance-section__heading--split">
-            <div><p class="governance-eyebrow">المشكلة التشغيلية</p><h2 id="governance-problems-title">لما تكون السياسة موجودة، بس ما توصل لوقت الاستخدام</h2></div>
-            <p>الهدف مو إيقاف الذكاء الاصطناعي. الهدف تعرف وين يستخدم، وش المخاطر، ومتى يتدخل الإنسان، وش الدليل اللي بيبقى بعد القرار.</p>
+            <div><p class="governance-eyebrow">المشكلة التشغيلية</p><h2 id="governance-problems-title">ليه السياسة المكتوبة لحالها ما تكفي؟</h2></div>
+            <p>الهدف مو إيقاف الذكاء الاصطناعي. الهدف تعرف وين يستخدم، <a class="governance-inline-link" href="/solutions/ai-risk-classification/">وش مستوى خطورته</a>، ومتى يتدخل الإنسان، وش الدليل اللي بيبقى بعد القرار — و<a class="governance-inline-link" href="/solutions/ai-firewall/">وين تحتاج أول نقطة فحص للبيانات</a>.</p>
           </div>
           <div class="governance-card-grid governance-card-grid--problems">
             {governanceProblems.map((problem, index) => (
@@ -488,7 +497,7 @@ const firewallDlpRows = [
 
       <section class="governance-section governance-section--soft" aria-labelledby="governance-controls-title">
         <div class="governance-shell">
-          <div class="governance-section__heading"><p class="governance-eyebrow">طبقة التحكم</p><h2 id="governance-controls-title">من سجل المخاطر إلى ضابط يشتغل فعلاً</h2><p>كل وحدة لها وظيفة واضحة داخل المسار. تقدر تبدأ بحالة استخدام واحدة، ثم توسع الحوكمة بدون ما تعيد بناء المنظومة.</p></div>
+          <div class="governance-section__heading"><p class="governance-eyebrow">طبقة التحكم</p><h2 id="governance-controls-title">كيف تتحول السياسة إلى ضابط يشتغل فعلاً؟</h2><p>كل وحدة لها وظيفة واضحة داخل المسار. تقدر تبدأ بحالة استخدام واحدة، ثم توسع الحوكمة بدون ما تعيد بناء المنظومة.</p></div>
           <div class="governance-card-grid governance-card-grid--controls">
             {governanceControls.map(control => (
               <a class="governance-card governance-card--control" href={control.href}><span class="governance-card__label">{control.label}</span><h3>{control.title}</h3><p>{control.text}</p><span class="governance-card__link">اعرف أكثر <span aria-hidden="true">←</span></span></a>
@@ -499,7 +508,7 @@ const firewallDlpRows = [
 
       <section class="governance-section" aria-labelledby="governance-personas-title">
         <div class="governance-shell governance-two-column">
-          <div class="governance-section__heading"><p class="governance-eyebrow">لمن صُممت؟</p><h2 id="governance-personas-title">لغة مشتركة بين الأمن والبيانات والامتثال والتشغيل</h2><p>المنصة تخلي كل فريق يشوف الجزء اللي يخصه، مع بقاء سياق الاستخدام الكامل متصل.</p></div>
+          <div class="governance-section__heading"><p class="governance-eyebrow">لمن صُممت؟</p><h2 id="governance-personas-title">من يستخدم المنصة داخل المؤسسة؟</h2><p>المنصة تخلي كل فريق يشوف الجزء اللي يخصه، مع بقاء سياق الاستخدام الكامل متصل — من <a class="governance-inline-link" href="/solutions/ai-audit-trail/">سجل التدقيق</a> إلى <a class="governance-inline-link" href="/solutions/human-approval-layer/">بوابة الاعتماد</a>.</p></div>
           <div class="governance-list">
             {governancePersonas.map(persona => <article><h3>{persona.label}</h3><p>{persona.text}</p></article>)}
           </div>
@@ -508,7 +517,7 @@ const firewallDlpRows = [
 
       <section class="governance-section governance-section--soft" aria-labelledby="governance-sectors-title">
         <div class="governance-shell">
-          <div class="governance-section__heading"><p class="governance-eyebrow">سياقات الاستخدام</p><h2 id="governance-sectors-title">حوكمة تناسب أثر القرار والبيانات في كل قطاع</h2></div>
+          <div class="governance-section__heading"><p class="governance-eyebrow">سياقات الاستخدام</p><h2 id="governance-sectors-title">وين تنفع حوكمة AI عملياً؟</h2><p>حوكمة تناسب أثر القرار وحساسية البيانات في كل قطاع — ابدأ بـ<a class="governance-inline-link" href="/assessment/ai-governance-readiness/">تقييم الجاهزية</a> عشان تحدد أول استخدام يستحق الضبط.</p></div>
           <div class="governance-card-grid governance-card-grid--sectors">
             {governanceSectors.map(sector => <article class="governance-card governance-card--sector"><h3>{sector.title}</h3><p>{sector.text}</p></article>)}
           </div>
@@ -517,7 +526,7 @@ const firewallDlpRows = [
 
       <section class="governance-section governance-evidence" aria-labelledby="governance-evidence-title">
         <div class="governance-shell governance-evidence__grid">
-          <div><p class="governance-eyebrow">Evidence by design</p><h2 id="governance-evidence-title">الدليل ما ينكتب آخر الشهر؛ يتكوّن مع كل قرار</h2><p>بدل تجميع لقطات وشيتات وقت المراجعة، يحفظ المسار التشغيلي سياق القرار من البداية: المستخدم، الغرض، البيانات، النموذج، الضابط، الموافقة، والاستثناء.</p><a class="governance-text-link" href="/solutions/ai-evidence-file/">استكشف Evidence File <span aria-hidden="true">←</span></a></div>
+          <div><p class="governance-eyebrow">Evidence by design</p><h2 id="governance-evidence-title">وش يبقى كدليل بعد كل قرار؟</h2><p>بدل تجميع لقطات وشيتات وقت المراجعة، يحفظ المسار التشغيلي سياق القرار من البداية: المستخدم، الغرض، البيانات، النموذج، الضابط، الموافقة، والاستثناء — الدليل ما ينكتب آخر الشهر، يتكوّن مع كل قرار.</p><a class="governance-text-link" href="/solutions/ai-evidence-file/">استكشف Evidence File <span aria-hidden="true">←</span></a> <a class="governance-text-link" href="/solutions/ai-audit-trail/">وش يسجل Audit Trail <span aria-hidden="true">←</span></a></div>
           <div class="governance-evidence-file" aria-label="مكونات ملف الأدلة"><div class="governance-evidence-file__header"><span>AI GOVERNANCE / EVIDENCE</span><span>READY FOR REVIEW</span></div><div class="governance-evidence-file__title">Decision record</div><ul><li><span>Owner</span><b>Assigned</b></li><li><span>Risk context</span><b>Mapped</b></li><li><span>Control action</span><b>Enforced</b></li><li><span>Approval</span><b>Recorded</b></li></ul><div class="governance-evidence-file__footer"><span>Traceable context</span><span>●</span></div></div>
         </div>
       </section>
@@ -813,7 +822,7 @@ const firewallDlpRows = [
   .governance-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
   .governance-button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 13px; padding: 12px 18px; border: 1px solid transparent; border-radius: 9px; font-size: .95rem; font-weight: 800; line-height: 1.4; text-decoration: none; transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease; }
   .governance-button:hover { transform: translateY(-2px); }
-  .governance-button:focus-visible, .governance-card:focus-visible, .governance-text-link:focus-visible, .governance-faq summary:focus-visible { outline: 3px solid var(--gov-accent); outline-offset: 3px; }
+  .governance-button:focus-visible, .governance-card:focus-visible, .governance-text-link:focus-visible, .governance-inline-link:focus-visible, .governance-faq summary:focus-visible { outline: 3px solid var(--gov-accent); outline-offset: 3px; }
   .governance-button--primary { color: #06231e; background: var(--gov-accent); }
   .governance-button--primary:hover { background: #9ae7da; }
   .governance-button--secondary { color: #e2f0ed; background: rgba(255,255,255,.045); border-color: var(--gov-line); }
@@ -844,6 +853,11 @@ const firewallDlpRows = [
   .governance-answer { padding-block: 56px; color: var(--gov-ink); background: var(--gov-paper); }
   .governance-answer h2, .governance-section h2, .governance-faq h2, .governance-final h2 { max-width: 780px; margin: 0; color: inherit; font-size: clamp(1.75rem, 3.3vw, 3rem); line-height: 1.2; letter-spacing: -.035em; text-wrap: balance; }
   .governance-answer p:last-child { max-width: 780px; margin: 18px 0 0; font-size: clamp(1.05rem, 1.8vw, 1.24rem); line-height: 1.95; }
+  .governance-qa { display: grid; gap: 12px; margin-top: 28px; }
+  .governance-qa article { padding: 20px 22px; background: rgba(255,255,255,.6); border: 1px solid rgba(35,76,79,.14); border-radius: 10px; }
+  .governance-qa h3 { margin: 0; font-size: 1.02rem; line-height: 1.6; }
+  .governance-qa p { margin: 8px 0 0; color: #5c7470; font-size: .95rem; line-height: 1.9; }
+  .governance-qa article p:last-child { max-width: none; margin: 8px 0 0; font-size: .95rem; }
   .governance-section { padding-block: clamp(60px, 9vw, 112px); color: var(--gov-ink); background: var(--gov-paper); }
   .governance-section--dark { color: var(--gov-paper); background: #0c1d23; }
   .governance-section--soft { background: var(--gov-paper-soft); }
@@ -853,9 +867,12 @@ const firewallDlpRows = [
   .governance-section__heading--split { display: grid; gap: 22px; }
   .governance-section__heading--split > p { align-self: end; margin: 0; color: #56706c; line-height: 1.9; }
   .governance-flow { display: grid; gap: 1px; margin: 42px 0 0; padding: 0; list-style: none; background: var(--gov-line); border: 1px solid var(--gov-line); }
-  .governance-flow__item { min-height: 220px; padding: 22px; background: #10252b; }
+  .governance-flow__item { position: relative; min-height: 220px; padding: 22px; background: #10252b; }
   .governance-flow__number { display: block; margin-bottom: 28px; color: #71928e; font: 700 .72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; direction: ltr; }
   .governance-flow__label { display: block; margin-bottom: 10px; color: var(--gov-accent); font: 700 .72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .1em; text-transform: uppercase; direction: ltr; }
+  .governance-flow__icon { display: inline-flex; margin: 14px 0 2px; color: var(--gov-accent); }
+  .governance-flow__icon svg { fill: currentColor; }
+  .governance-flow__arrow { position: absolute; inset-inline-start: 18px; bottom: 14px; color: var(--gov-accent); font-size: 1.25rem; opacity: .8; }
   .governance-flow h3 { margin: 0; color: #ecf5f2; font-size: 1.07rem; line-height: 1.5; }
   .governance-flow p { margin: 10px 0 0; color: #a7c1bd; font-size: .92rem; line-height: 1.8; }
 
@@ -871,6 +888,8 @@ const firewallDlpRows = [
   .governance-card--control:hover { border-color: var(--gov-accent-strong); background: #fff; }
   .governance-card__label { color: #267f70; font: 700 .68rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; direction: ltr; }
   .governance-card__link, .governance-text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; color: #207c6d; font-size: .83rem; font-weight: 800; }
+  .governance-inline-link { color: #207c6d; font-weight: 800; text-decoration: underline; text-decoration-color: rgba(42,169,145,.55); text-underline-offset: 3px; }
+  .governance-inline-link:hover { color: #145f53; }
   .governance-two-column { display: grid; gap: 36px; }
   .governance-list { display: grid; gap: 8px; }
   .governance-list article { padding: 18px 0; border-block-end: 1px solid rgba(35,76,79,.18); }
@@ -908,11 +927,16 @@ const firewallDlpRows = [
     .governance-shell { width: min(1180px, calc(100% - 72px)); }
     .governance-shell--narrow { width: min(820px, calc(100% - 72px)); }
     .governance-flow { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .governance-qa { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .governance-section__heading--split { grid-template-columns: minmax(0, 1.4fr) minmax(260px, .8fr); align-items: end; }
     .governance-card-grid--problems { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .governance-card--problem:nth-child(4), .governance-card--problem:nth-child(5) { grid-column: span 1; }
     .governance-two-column { grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr); align-items: start; }
     .governance-evidence__grid { grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); }
+  }
+
+  @media (max-width: 719px) {
+    .governance-flow__arrow { transform: rotate(-90deg); }
   }
 
   @media (min-width: 1080px) {
@@ -923,6 +947,10 @@ const firewallDlpRows = [
 
   @media (max-width: 520px) {
     .governance-shell, .governance-shell--narrow { width: min(100% - 32px, 1180px); }
+    .governance-hero { padding-block: 44px 40px; }
+    .governance-hero h1 { font-size: clamp(1.9rem, 9vw, 2.4rem); }
+    .governance-hero__value { margin-top: 18px; font-size: 1.12rem; }
+    .governance-hero__desc { font-size: .95rem; }
     .governance-hero__actions { align-items: stretch; flex-direction: column; }
     .governance-button { width: 100%; }
     .governance-console__body { padding: 12px; }

@@ -32,3 +32,35 @@ test('keeps the assessment explanation crawlable and its boundaries explicit', (
   assert.match(source, /ليست شهادة أو موافقة تنظيمية أو حكم امتثال/);
   assert.doesNotMatch(source, /\b72\b|١٤<span/);
 });
+
+test('exposes a visible progress state and accessible question grouping', () => {
+  const source = fs.readFileSync(path.join(process.cwd(), 'src/pages/assessment/ai-governance-readiness/index.astro'), 'utf8');
+  assert.match(source, /data-assessment-step-label/);
+  assert.match(source, /role="radiogroup"/);
+  assert.match(source, /aria-labelledby=\{`q-/);
+  assert.match(source, /data-assessment-status[^>]*aria-live="polite"/);
+  assert.match(source, /data-assessment-error[^>]*role="alert"/);
+});
+
+test('tracks the full funnel without collecting personal data', () => {
+  const client = fs.readFileSync(path.join(process.cwd(), 'public/js/ai-governance-readiness.js'), 'utf8');
+  for (const event of ['assessment_start', 'assessment_step_progress', 'assessment_complete', 'assessment_abandon']) {
+    assert.ok(client.includes(`'${event}'`), `missing ${event}`);
+  }
+  // Abandonment must survive mobile browser suspension, sent only once.
+  assert.match(client, /pagehide/);
+  assert.match(client, /abandoned/);
+  // Reduced motion must be respected on result scroll.
+  assert.match(client, /prefers-reduced-motion/);
+  // Privacy allowlist: step/dimension/position identifiers only.
+  assert.match(client, /ALLOWED_KEYS/);
+  assert.doesNotMatch(client, /localStorage|sessionStorage|fetch\(|XMLHttpRequest/);
+});
+
+test('keeps conversion CTAs wired to the unified analytics taxonomy', () => {
+  const source = fs.readFileSync(path.join(process.cwd(), 'src/pages/assessment/ai-governance-readiness/index.astro'), 'utf8');
+  assert.match(source, /data-cta="assessment_start_click"/);
+  assert.match(source, /data-cta="assessment_completion_cta"/);
+  assert.match(source, /href="#assessment"/);
+  assert.match(source, /href="\/contact\/"/);
+});

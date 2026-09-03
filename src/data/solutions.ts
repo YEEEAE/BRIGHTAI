@@ -131,7 +131,7 @@ export const solutions: SolutionData[] = [
     icon:'mdi:scale-balance', chip:'المنصة الأم',
     shortDesc:'طبقة حوكمة تشغيلية تربط استخدامات AI بالمخاطر والضوابط والموافقات وسجل الأدلة.',
     whenNeeded:'إذا صار عندك أكثر من استخدام AI، أو صار أحدها يلامس بيانات حساسة أو قراراً عالي الأثر.',
-    related:['ai-firewall','ai-audit-trail','human-approval-layer','ai-evidence-file'],
+    related:['ai-firewall','ai-risk-classification','human-approval-layer','ai-audit-trail','ai-evidence-file'],
     docs:['/docs/ai-governance-platform/'], blog:['/blog/ai-governance/','/blog/what-is-ai-governance-saudi-companies/','/blog/best-ai-governance-platforms-2026/','/blog/sdaia-generative-ai-guidelines-practical-compliance/'], kernel:['/kernel/'],
     content: {
       lead: [
@@ -200,7 +200,7 @@ export const solutions: SolutionData[] = [
         },
       ],
       faqs: [
-        { question: 'ما الفرق بين BrightAI ونماذج AI التجارية مثل ChatGPT وCopilot؟', answer: 'BrightAI طبقة وسيطة (Middleware Layer) لا تستبدل نماذج الذكاء الاصطناعي التجارية، بل تتحكم في كيفية استخدامها داخل مؤسستك. تراقب الاستخدام، تطبق سياساتك، وتسجّل كل قرار في Immutable Audit Log. موظفوك يستمرون باستخدام الأدوات التي يحبونها، لكن تحت رقابة ومع حماية كاملة.' },
+        { question: 'ما الفرق بين BrightAI ونماذج AI التجارية مثل ChatGPT وCopilot؟', answer: 'BrightAI طبقة تشغيلية ما تستبدل نماذج الذكاء الاصطناعي اللي تستخدمها، بل تنظم استخدامها داخل مؤسستك حسب التكاملات والسياسات اللي تفعلها. تساعدك تسجل الاستخدام والقرارات والموافقات في سجل مراجعة واحد، وموظفينك يكملون شغلهم داخل حدود واضحة بدل المنع الكامل.' },
         { question: 'وش المقصود بمنصة حوكمة الذكاء الاصطناعي؟', answer: 'هي طبقة تشغيلية بين الموظفين وأدوات AI وبيانات المؤسسة. تسجل الاستخدامات، تصنّف مخاطرها، تربطها بالسياسات والضوابط، توقف الحالات التي تحتاج مراجعة، وتحفظ دليلاً يوضح وش صار ومَن اعتمد القرار.' },
         { question: 'هل BrightAI تغني عن التقييم القانوني أو شهادة ISO/IEC 42001؟', answer: 'لا. BrightAI تساعد فريقك يترجم متطلبات الحوكمة إلى إجراءات وضوابط وسجلات قابلة للمراجعة، لكنها ما تقدم رأياً قانونياً ولا تدّعي إصدار شهادة. نطاق الجاهزية النهائي يعتمد على بيئتك وتقييم الجهة المختصة.' },
         { question: 'كيف تتعامل المنصة مع Shadow AI وتسريب البيانات الحساسة؟', answer: 'تبدأ بجرد الاستخدامات والأدوات المعتمدة وغير المعتمدة، ثم تربط كل مسار بضابط مناسب. عند رصد بيانات حساسة أو استخدام عالي المخاطر، يمكن تطبيق الإخفاء أو الحجب أو تحويل الطلب لموافقة بشرية حسب السياسة التي تعتمدها مؤسستك.' },
