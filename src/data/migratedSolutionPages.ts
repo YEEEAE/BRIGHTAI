@@ -24,7 +24,30 @@ export interface MigratedPage {
   html: string;
 }
 
-export const migratedSolutionPages: Record<string, MigratedPage> = {
+// SEMRUSH-STRUCTURED-DATA-2026-09-04: legacy migrated Service nodes omitted
+// their canonical URL. Normalize them once at the data boundary.
+function withServiceUrls(value: unknown, canonical: string, seen = new WeakSet<object>()): unknown {
+  if (!value || typeof value !== 'object') return value;
+  if (seen.has(value as object)) return value;
+  seen.add(value as object);
+  if (Array.isArray(value)) return value.map((entry) => withServiceUrls(entry, canonical, seen));
+  const source = value as Record<string, unknown>;
+  const next: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(source)) next[key] = withServiceUrls(child, canonical, seen);
+  const type = source['@type'];
+  const isService = type === 'Service' || (Array.isArray(type) && type.includes('Service'));
+  if (isService && typeof next.url !== 'string') next.url = canonical;
+  return next;
+}
+
+function normalizeMigratedPages(pages: Record<string, MigratedPage>): Record<string, MigratedPage> {
+  return Object.fromEntries(Object.entries(pages).map(([key, page]) => [key, {
+    ...page,
+    jsonLd: withServiceUrls(page.jsonLd, page.canonical) as Record<string, unknown>[],
+  }])) as Record<string, MigratedPage>;
+}
+
+export const migratedSolutionPages: Record<string, MigratedPage> = normalizeMigratedPages({
   'ai-firewall': aiFirewall,
   'ai-audit-trail': aiAuditTrail,
   'ai-evidence-file': aiEvidenceFile,
@@ -33,17 +56,17 @@ export const migratedSolutionPages: Record<string, MigratedPage> = {
   'ai-risk-classification': aiRiskClassification,
   'ai-use-case-discovery': aiUseCaseDiscovery,
   'policy-to-control-mapping': policyToControlMapping,
-};
+});
 
-export const migratedSectorPages: Record<string, MigratedPage> = {
+export const migratedSectorPages: Record<string, MigratedPage> = normalizeMigratedPages({
   'banking-ai-governance': banking,
   'government-ai-governance': government,
   'healthcare-ai-governance': healthcare,
   'manufacturing-ai-governance': manufacturing,
-};
+});
 
-export const migratedLocalPages: Record<string, MigratedPage> = {
+export const migratedLocalPages: Record<string, MigratedPage> = normalizeMigratedPages({
   'banking-ai-governance/riyadh': bankingRiyadh,
   'government-ai-governance/dammam': governmentDammam,
   'healthcare-ai-governance/jeddah': healthcareJeddah,
-};
+});

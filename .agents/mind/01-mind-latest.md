@@ -2583,3 +2583,80 @@
 ### ملاحظات / مشاكل مفتوحة
 - تحذيرات Astro route collision القديمة ما زالت موجودة خارج نطاق المهمة.
 - لا commit ولا push ولا deploy.
+## [2026-09-03] — إصلاح جذور تحذيرات وأخطاء Semrush Site Audit
+
+### تم التنفيذ
+- حللت أحدث snapshot لحملة Semrush `31075135` للموقع `brightai.live`: **94 Error، 929 Warning، 405 Notice، و314 صفحة مفحوصة**؛ وفصلت المشاكل القابلة للإصلاح عن صفحات الأدوات والـquery والصفحات الخدمية المقصودة.
+- أزلت رابط GitHub غير الصحيح من `sameAs` والـfooter وملف schema الثابت، ومنعت ظهوره داخل JSON-LD الموروث لصفحات الحلول والقطاعات والمدن؛ وأزلت روابط GitHub edit التي كانت تنتج 404.
+- أزلت `nofollow` من روابط واتساب الخارجية مع إبقاء `noopener noreferrer`، لتفادي تحذير الروابط الخارجية غير المتبوعة.
+- صححت صفحات `/answer/*` الإنجليزية الخمس لتخرج `lang="en"` و`dir="ltr"` و`en-SA` ذاتية صحيحة، وطوّرت فحص hreflang ليتحقق أيضًا من صفحات الإنجليزية المستقلة بدون اختراع peer عربي.
+- أضفت `scripts/minify-public-js.mjs` إلى build لتصغير JavaScript العام المنشور؛ build أكد تصغير **57 ملف JavaScript**.
+
+### الملفات المتأثرة
+- `src/pages/answer/[slug].astro`
+- `src/pages/solutions/[slug].astro`
+- `src/pages/solutions/[sector].astro`
+- `src/pages/solutions/[sector]/[city].astro`
+- `scripts/hreflang-bidirectional-audit.mjs`
+- `scripts/minify-public-js.mjs`
+- `src/data/site.ts` و`src/components/Footer.astro`
+- `src/components/{Header,LeadForm,MobileNav,SplitHero,WhatsAppCTA}.astro`
+- `src/pages/{about,contact,demo,design/buttons,en,index,pricing,services,sitemap,404}.astro`
+- `src/data/{hub-content-inline,legal-content-inline}.ts`
+- `public/{500.html,schema-saudi-seo.json}` و`package.json`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل؛ sitemap **263 URL**، وAstro ولّد **280 HTML**، مع تحذيرات route collision قديمة فقط.
+- `node scripts/hreflang-bidirectional-audit.mjs` ✅ — **0 أخطاء** في 264 مجموعة.
+- `pnpm seo:schema` ✅ — Schema **64 صفحة** وSpeakable **267 صفحة** بدون فشل.
+- `pnpm seo:gate` ✅ — **0 Errors، 0 Warnings، 0 روابط مكسورة**؛ 48,195 مرجعًا مفحوصًا.
+- فحص artifact ✅ — لا GitHub URL غير صحيح ولا `nofollow` على روابط واتساب؛ `git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح محليًا / مشروط خارجيًا.
+- **مختصر:** تم إصلاح جذور المشاكل القابلة للإثبات وإخراج deploy محلي نظيف. أرقام Semrush البعيدة ما تتغير إلا بعد نشر الناتج ثم إعادة crawl للحملة.
+
+### ملاحظات / مشاكل مفتوحة
+- HSTS يحتاج تحققًا من بيئة الاستضافة بعد النشر؛ الكود المحلي يضيف الهيدر لكن Semrush السابق كان يقرأ snapshot قديمًا.
+- تحذيرات low text/HTML ratio وlow word count والروابط الداخلية للصفحات parameterized وبعض صفحات utility هي heuristics مقصودة؛ ما ضفت حشو أو محتوى مكرر لإخفائها.
+- لا commit ولا push ولا deploy.
+## [2026-09-04] — إصلاح جذور أخطاء وتحذيرات Semrush Site Audit
+
+### تم التنفيذ
+- أضفت `url` و`@id` الصحيحة لعُقد `Service` في صفحات الأسعار، وطبّعت عُقد `Service` الموروثة داخل صفحات الحلول على الرابط canonical الخاص بكل صفحة.
+- أصلحت تسريب تعليقات HTML داخل عناوين صفحات الحلول القطاعية، بحيث ما عاد نص JSON-LD يظهر داخل `<title>`.
+- وحّدت عناوين metadata الطويلة: حدّ أقصى 60 حرفًا، وفصلت عنوان docs عن H1، فصار ما فيه تكرار H1/title في HTML المبني.
+- صححت `og:locale` للصفحات الإنجليزية إلى `en_US`، وأكملت `address` في بيانات `LocalBusiness` لصفحة 500.
+- أبقيت تحسينات JavaScript المصغّر والـ hreflang والروابط الداخلية القائمة كما هي؛ ما أضفت محتوى أو روابط وهمية فقط لإرضاء مؤشرات Semrush.
+
+### الملفات المتأثرة
+- `src/data/schema-helpers.ts`
+- `src/data/migratedSolutionPages.ts`
+- `src/data/landing-pages.ts`
+- `src/pages/pricing/index.astro`
+- `src/pages/solutions/[slug].astro`
+- `src/pages/solutions/[sector].astro`
+- `src/pages/solutions/[sector]/[city].astro`
+- `src/components/SEOHead.astro`
+- `src/layouts/DocsLayout.astro`
+- `src/content/docs/kernel-accessibility-mobile.md`
+- `public/500.html`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل، 263 رابط sitemap و57 ملف JavaScript مصغّر.
+- `pnpm seo:schema` ✅ — تدقيق 64 صفحة، وSpeakable على 267 صفحة.
+- `pnpm seo:hreflang` ✅ — 264 مجموعة، 0 أخطاء.
+- `pnpm seo:gate` ✅ — 0 أخطاء، 0 تحذيرات، 0 روابط مكسورة ضمن 48,195 مرجعًا.
+- `pnpm test` ✅ — 83 اختبارًا ناجحًا، 0 فشل.
+- `pnpm typecheck` ✅ — 0 أخطاء و0 تحذيرات، مع تلميحين قائمين في qc-task-manager.
+- فحص HTML المبني ✅ — 278 ملفًا، 0 عنوان أطول من 60، 0 تكرار H1/title، 0 Service بدون url، 0 LocalBusiness بدون address.
+
+### النتيجة
+- **الحالة:** جزئي خارجيًا / ناجح محليًا
+- **مختصر:** جذور أخطاء schema وhreflang وعناوين metadata انحلت في المصدر والبناء المحلي. أرقام Semrush الخارجية تحتاج deployment ثم إعادة crawl حتى تتحدث فعليًا.
+
+### ملاحظات / مشاكل مفتوحة
+- صفحة Semrush الحالية لم تعرض بيانات الحملة، وملفات API التاريخية الموجودة للمشروع لا تحتوي URLs داخل `data`؛ لذلك ما يصح ادعاء تحديد أو تصفير 340 رابطًا خارجيًا أو 57 صفحة من دون crawl جديد.
+- ما زالت تحذيرات route collision القديمة وتحذير Vite الخاص بـ `PiiTypeId` ظاهرة أثناء البناء، لكنها لم تمنع النجاح.
+- HSTS للنطاقات الفرعية وفحص الروابط الخارجية الحية يحتاجان deployment وفحص Semrush/HTTP من خارج بيئة البناء.
+- لا commit ولا push ولا deploy.

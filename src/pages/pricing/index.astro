@@ -236,8 +236,10 @@ const decisionHelper = [
 // Service Schema للعروض الثلاثة — schema.org/Service
 const serviceSchemas = offers.map((o) => ({
   '@type': 'Service',
+  '@id': `${canonical}#service-${o.id}`,
   name: o.name,
   description: o.description,
+  url: canonical,
   provider: { '@id': 'https://brightai.live/#organization' },
   serviceType: 'AI Governance & Safety',
   areaServed: { '@type': 'Country', name: 'المملكة العربية السعودية' },

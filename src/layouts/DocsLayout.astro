@@ -117,11 +117,12 @@ const jsonLd = {
 
 // Update timestamp formatted for the docs-meta widget (e.g. "2026-06-30").
 const updatedAtLabel = updated.toISOString().slice(0, 10);
+const seoMetaTitle = metaTitle === title ? `${title} | BAI` : metaTitle;
 
 ---
 
 <ArabicLayout
-  title={metaTitle}
+  title={seoMetaTitle}
   description={description}
   canonical={canonical}
   hreflang={[{ lang: 'ar-SA', href: canonical }]}

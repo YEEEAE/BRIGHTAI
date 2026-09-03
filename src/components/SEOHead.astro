@@ -77,10 +77,19 @@ const uniqueHreflang = Array.from(
 );
 const finalHreflang = isNoindexPage || omitHreflang ? [] : uniqueHreflang;
 const finalHasXDefault = finalHreflang.some((link) => link.lang === 'x-default');
+
+function seoTitle(value: string): string {
+  if (value.length <= 60) return value;
+  const suffix = ' | BAI';
+  const budget = 60 - suffix.length;
+  const prefix = value.slice(0, budget).replace(/\s+\S*$/, '').trim();
+  return `${prefix || value.slice(0, budget).trim()}${suffix}`;
+}
+const finalTitle = seoTitle(title);
 ---
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
+<title>{finalTitle}</title>
 <meta name="description" content={description} />
 <meta name="robots" content={safeRobots} />
 <link rel="canonical" href={canonical} />
@@ -88,20 +97,20 @@ const finalHasXDefault = finalHreflang.some((link) => link.lang === 'x-default')
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonical} />
-<meta property="og:title" content={title} />
+<meta property="og:title" content={finalTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={fullOgImage} />
 <meta property="og:image:alt" content={ogImageAlt} />
 <meta property="og:site_name" content={siteName} />
-<meta property="og:locale" content={locale === 'en' ? 'en_SA' : 'ar_SA'} />
-<meta property="og:locale:alternate" content={locale === 'en' ? 'ar_SA' : 'en_SA'} />
+<meta property="og:locale" content={locale === 'en' ? 'en_US' : 'ar_SA'} />
+<meta property="og:locale:alternate" content={locale === 'en' ? 'ar_SA' : 'en_US'} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@brightai_sa" />
 <meta name="twitter:creator" content="@brightai_sa" />
 <meta name="twitter:url" content={canonical} />
-<meta name="twitter:title" content={title} />
+<meta name="twitter:title" content={finalTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={fullOgImage} />
 <meta name="twitter:image:alt" content={ogImageAlt} />

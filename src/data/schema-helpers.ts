@@ -754,6 +754,7 @@ export function getServiceLd(input: ServiceLdInput) {
     name,
     description,
     serviceType,
+    url: canonical,
     provider: { '@id': 'https://brightai.live/#organization' },
     areaServed,
     ...(offers

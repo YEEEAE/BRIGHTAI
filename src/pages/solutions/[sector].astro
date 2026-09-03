@@ -1,5 +1,3 @@
-<!-- BAI-VOC-001-A (2026-07-18): VOC injection في hero lead — يستبدل `sector.description` بـ `sector.vocLead` (per-sector، 5 ركائز) عند التوفر. H1 = `sector.h1` (keyword-rich, unchanged). الـ `<title>`/`<meta description>` JSON-LD يستخدمون `migratedPage?.description ?? sector.description` (لم يتغيّر). -->
-<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — hero + final: "اطلب عرض توضيحي" → "اطلب عرض توضيحي مخصص" + microcopy. href (wa.me/... + /contact/) لم يتغير. -->
 ---
 /**
  * /solutions/[sector]/ — Sector page (REPORT-10 redesign).
@@ -123,6 +121,10 @@ function sanitiseMigratedForFoundation(
     if (key === '@type') {
       if (typeof value === 'string' && (value === 'FAQPage' || FOUNDATION_TYPES.has(value))) continue;
       if (Array.isArray(value) && value.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES.has(x)))) continue;
+    }
+    if (key === 'sameAs' && Array.isArray(value)) {
+      next[key] = value.filter((entry) => entry !== 'https://github.com/YEEEAE/BRIGHTAI');
+      continue;
     }
     next[key] = sanitiseMigratedForFoundation(value, seen);
   }
