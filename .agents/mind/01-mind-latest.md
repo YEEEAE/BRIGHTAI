@@ -1,3 +1,39 @@
+## [2026-09-03] — تدقيق cannibalization لمجلد /answer/ ودمج المكرر + قالب خفيف
+
+### تم التنفيذ
+- فحصت 17 صفحة `/answer/*` (كلها 57–106 كلمات، بدون GSC وبدون equity: النطاق rank 1.5M وكلمة واحدة pos 62 و0 زيارات، وbacklinks ascore 2) ضد المالكين (hub/solutions/docs/blog) — القرار بالأدلة لا بعدد الكلمات.
+- **KEEP (13):** كل الأزواج EN/AR (نية SERP مختلفة)، و`ai-governance-framework` (نية مكونات الإطار)، و`ai-safety-platform-enterprise` + `saudi-ai-safety-os` (ميزتهما: فئة عامة vs وصف منتج)، و`audit-trail-saudi-ar` و`sdaia-generative-ai` و`iso-42001` — كل واحدة تجيب سؤالًا واحدًا وتربط للركيزة.
+- **REDIRECT (2) بعد دمج المحتوى:** `nca-compliance` → `nca-ecc-controls` (نفس النية ونفس الضوابط، لا محتوى فريد يُنقل)، و`sama-ai` → `ai-banking` (نُقلت نقطتها الفريدة "تقارير دورية للإدارة العليا" لـ keyPoints البنوك) — أضفت 4 entries في `redirects.json` (مع/بدون slash) وحدّثت 5 روابط FAQ في `blog/[...slug].astro` للوجهات الجديدة.
+- **NOINDEX (0):** لا مبرر — كل الباقي له سؤال مستقل، وسياسة المشروع تمنع noindex للصفحات العامة.
+- صححت `furtherReading`: البنوك → `/solutions/banking-ai-governance/` والصحة → `/solutions/healthcare-ai-governance/` (بدل hub العام)، وISO → `/blog/iso-42001-saudi-implementation-guide/` (المالك P1 الفعلي حسب خريطة الملكية).
+- بنيت قالب answer الخفيف في `answer/[slug].astro`: إجابة مباشرة (H1 = السؤال) ← ليش يهمك بالسعودية ← أهم النقاط ← المصادر (مالك داخلي + جهات رسمية roots فقط) ← رابط next-step واحد + تقييم الجاهزية — بدون صندوق Kernel التسويقي، وzero-JS كما قبل.
+- مددت `AnswerUnit` بحقول `saudiNote/keyPoints/sources` (مشتقة من النصوص المعتمدة فقط، والنصوص العربية المنشورة لم تُمس حرفًا)، وعبأتها لكل الـ15 صفحة.
+
+### الملفات المتأثرة
+- `src/data/answers.ts` (حقول + تعبئة 15 صفحة + حذف وحدتين + 3 تصحيحات furtherReading)
+- `src/pages/answer/[slug].astro` (القالب الخفيف)
+- `redirects.json` (+4 entries → 213)
+- `src/pages/blog/[...slug].astro` (5 روابط FAQ للوجهات الجديدة)
+- `public/sitemap.xml` (17→15 answer URLs، توليد تلقائي)
+
+### التحقق
+- `pnpm build` ✅
+- `pnpm seo:gate` ✅ — 0 أخطاء (278 HTML، broken 0/48148)
+- `pnpm redirects:check` ✅ — 213 بدون chains/cycles/missing
+- `pnpm seo:schema` ✅ — 62 صفحة + speakable 265
+- `pnpm seo:hreflang` ✅ — 0 أخطاء
+- `pnpm internal-links:audit` ✅ — 0 orphans، depth ≤3، sitemap 261
+- `pnpm test` ✅ — 38/38
+- فحص HTML مبني (`ai-banking`) ✅ — H1 سؤال، الأقسام الخمسة، FAQPage+BreadcrumbList، canonical ذاتي، index/follow
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** مجلد answer صار 15 صفحة متمايزة بقالب خفيف وروابط صاعدة صحيحة، والتكراران الحقيقيان الوحيدان اندمجا بتوجيه 301 موثق بدون أي redirect جماعي.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+- GSC/impressions غير متوفرة — القرارات مبنية على النية والمحتوى والروابط الداخلية؛ تُراجع بعد توفر بيانات Search Console.
+
 ## [2026-09-03] — تنظيف معمارية الفهرسة التقنية (canonical/sitemap/redirects/hreflang)
 
 ### تم التنفيذ

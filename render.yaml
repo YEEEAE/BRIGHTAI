@@ -958,6 +958,18 @@ services:
         source: /client/index.html
         destination: /404/
       - type: redirect
+        source: /answer/nca-compliance
+        destination: /answer/nca-ecc-controls/
+      - type: redirect
+        source: /answer/nca-compliance/
+        destination: /answer/nca-ecc-controls/
+      - type: redirect
+        source: /answer/sama-ai
+        destination: /answer/ai-banking/
+      - type: redirect
+        source: /answer/sama-ai/
+        destination: /answer/ai-banking/
+      - type: redirect
         source: /frontend
         destination: /404/
       - type: redirect

@@ -835,6 +835,22 @@
     {
       "from": "/client/index.html",
       "to": "/404/"
+    },
+    {
+      "from": "/answer/nca-compliance",
+      "to": "/answer/nca-ecc-controls/"
+    },
+    {
+      "from": "/answer/nca-compliance/",
+      "to": "/answer/nca-ecc-controls/"
+    },
+    {
+      "from": "/answer/sama-ai",
+      "to": "/answer/ai-banking/"
+    },
+    {
+      "from": "/answer/sama-ai/",
+      "to": "/answer/ai-banking/"
     }
   ]
 }

@@ -220,4 +220,8 @@ https://www.brightai.site/*    https://brightai.live/:splat  301
 /blog/sdaia-generative-ai-guidelines.html /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
 /blog.html /blog/ 301
 /client/index.html /404/ 301
+/answer/nca-compliance /answer/nca-ecc-controls/ 301
+/answer/nca-compliance/ /answer/nca-ecc-controls/ 301
+/answer/sama-ai /answer/ai-banking/ 301
+/answer/sama-ai/ /answer/ai-banking/ 301
 /frontend/* /404/ 301

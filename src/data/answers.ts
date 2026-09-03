@@ -21,11 +21,35 @@ export interface AnswerUnit {
    * comprehensive treatment lives, per the documented pillar decision.
    */
   furtherReading?: { href: string; label: string };
+  /**
+   * ANSWER-TEMPLATE (2026-09-03): lightweight answer layout needs structured
+   * fields beyond the single paragraph. All values below are derived from the
+   * approved `answer` text — no new factual claims. Arabic `answer` strings
+   * are never rewritten here; differentiation happens via these fields.
+   */
+  /** Why this matters specifically in Saudi Arabia (1-2 sentences). */
+  saudiNote?: string;
+  /** Key takeaways extracted from the approved answer (3-6 bullets). */
+  keyPoints?: string[];
+  /** Source links: internal canonical owner first, then official regulators. */
+  sources?: { href: string; label: string }[];
 }
 
 /** What is AI Governance in Saudi Arabia? */
 export const answerGov: AnswerUnit = {
   slug: 'ai-governance-saudi-arabia',
+  saudiNote:
+    'For Saudi enterprises in banking, healthcare, and government, governance is the operating requirement behind every AI interaction: documented, risk-scored, and traceable to a human decision-maker.',
+  keyPoints: [
+    'Framed by SDAIA guidelines, NCA ECC cybersecurity standards, and PDPL data protection rules.',
+    'Every AI request is logged, risk-scored, and requires human approval before execution.',
+    'Produces a complete audit trail from prompt to response for regulator inspection.',
+  ],
+  sources: [
+    { href: '/hub/ai-governance/', label: 'BRIGHTAI hub: AI governance pillar' },
+    { href: 'https://sdaia.gov.sa', label: 'SDAIA — Saudi Data & AI Authority' },
+    { href: 'https://www.nca.gov.sa', label: 'NCA — National Cybersecurity Authority' },
+  ],
   furtherReading: { href: '/hub/ai-governance/', label: 'الدليل الشامل لحوكمة الذكاء الاصطناعي للمؤسسات السعودية' },
   query: 'AI governance Saudi Arabia',
   question: 'What is AI governance in Saudi Arabia?',
@@ -36,6 +60,18 @@ export const answerGov: AnswerUnit = {
 /** What is an AI Firewall? */
 export const answerFirewall: AnswerUnit = {
   slug: 'ai-firewall-saudi',
+  saudiNote:
+    'Saudi enterprises handling customer and citizen data need content-aware inspection in Arabic and English — a network firewall cannot see PII leaking inside an AI prompt.',
+  keyPoints: [
+    'Inspects every request before it reaches the model and every response before it reaches the employee.',
+    'Blocks PII leaks, prevents prompt injection attacks, and enforces PDPL data-handling rules.',
+    'Flags high-risk interactions for human review with a risk rating on each one.',
+    'Keeps a tamper-proof hash-chain audit log that regulators can inspect.',
+  ],
+  sources: [
+    { href: '/solutions/ai-firewall/', label: 'BRIGHTAI solution: AI Firewall' },
+    { href: '/hub/security/', label: 'BRIGHTAI hub: AI security' },
+  ],
   furtherReading: { href: '/hub/security/', label: 'مركز أمان الذكاء الاصطناعي وAI Firewall للمؤسسات السعودية' },
   query: 'AI Firewall Saudi Arabia',
   question: 'What is an AI Firewall?',
@@ -46,6 +82,18 @@ export const answerFirewall: AnswerUnit = {
 /** What is PDPL AI compliance? */
 export const answerPdpl: AnswerUnit = {
   slug: 'pdpl-ai-compliance',
+  saudiNote:
+    'Any Saudi enterprise processing personal data through AI models must show a lawful basis, subject notices, and technical proof that PII cannot leak to unauthorized parties.',
+  keyPoints: [
+    'Requires a legal basis for processing and informing data subjects how their data is used.',
+    'Real-time PII detection in prompts with automated redaction before data reaches the model.',
+    'Consent tracking backed by audit trails.',
+    'Evidence files that prove compliance during regulator inspection.',
+  ],
+  sources: [
+    { href: '/docs/pdpl-ai-complete-guide/', label: 'BRIGHTAI docs: PDPL & AI complete guide' },
+    { href: 'https://sdaia.gov.sa', label: 'SDAIA — Saudi Data & AI Authority' },
+  ],
   furtherReading: { href: '/hub/compliance/', label: 'محور الامتثال السعودي للذكاء الاصطناعي: PDPL وNCA وISO 42001' },
   query: 'PDPL AI compliance',
   question: 'What is PDPL compliance for AI systems?',
@@ -56,6 +104,18 @@ export const answerPdpl: AnswerUnit = {
 /** What is an AI Safety platform for enterprises? */
 export const answerSafety: AnswerUnit = {
   slug: 'ai-safety-platform-enterprise',
+  saudiNote:
+    'Saudi enterprises need one governed path to AI models — covering PDPL, NCA ECC, SFDA, SAMA, ISO 13485, and ISO/IEC 42001 — instead of scattered per-team AI usage.',
+  keyPoints: [
+    'Category definition: a centralized system governing how employees interact with AI models.',
+    'Risk scoring on every prompt plus human approval workflows for high-risk interactions.',
+    'Compliance packs for PDPL, NCA ECC, SFDA, SAMA, ISO 13485, and ISO/IEC 42001.',
+    'Tamper-proof audit logs for internal security teams and external Saudi regulators.',
+  ],
+  sources: [
+    { href: '/hub/security/', label: 'BRIGHTAI hub: AI security' },
+    { href: '/solutions/ai-governance-platform/', label: 'BRIGHTAI solution: AI governance platform' },
+  ],
   furtherReading: { href: '/hub/security/', label: 'مركز أمان الذكاء الاصطناعي للمنشآت السعودية' },
   query: 'AI safety platform for enterprises',
   question: 'What is an AI safety platform for enterprises?',
@@ -66,6 +126,17 @@ export const answerSafety: AnswerUnit = {
 /** What is the Saudi AI Safety OS? */
 export const answerOs: AnswerUnit = {
   slug: 'saudi-ai-safety-os',
+  saudiNote:
+    'Product definition: BrightAI as the operating layer between employees and AI models inside Saudi enterprises — distinct from the generic safety-platform category.',
+  keyPoints: [
+    'BrightAI product: governance, security, and compliance layer for employee-to-model traffic.',
+    'Compliance packs for PDPL, NCA ECC, SFDA, SAMA, ISO 13485, and ISO/IEC 42001.',
+    'Each interaction is risk-scored, human-approved when needed, and evidenced permanently.',
+  ],
+  sources: [
+    { href: '/solutions/ai-governance-platform/', label: 'BRIGHTAI solution: AI governance platform' },
+    { href: '/hub/security/', label: 'BRIGHTAI hub: AI security' },
+  ],
   furtherReading: { href: '/hub/security/', label: 'محور أمان الذكاء الاصطناعي وطبقات الحماية التشغيلية' },
   query: 'Saudi AI Safety OS',
   question: 'What is the Saudi AI Safety OS?',
@@ -76,6 +147,18 @@ export const answerOs: AnswerUnit = {
 /** What is AI governance in Saudi Arabia in Arabic (full)? */
 export const answerGovAr: AnswerUnit = {
   slug: 'ai-governance-saudi-arabia-ar',
+  saudiNote:
+    'المنشآت السعودية تحتاج تعرف أين تستخدم AI ومن يملك كل حالة استخدام، لأن ما ينطبق عليها يختلف حسب القطاع والسياق — من PDPL وضوابط NCA إلى إرشادات سدايا.',
+  keyPoints: [
+    'أدوار وسياسات وضوابط تجيب عن: أين يُستخدم AI، ومن يملكه، وما بياناته ومخاطره.',
+    'قد تشمل PDPL وضوابط NCA وإرشادات سدايا حسب القطاع والسياق.',
+    'طبقة التشغيل تربط الجرد وتصنيف المخاطر والسياسات والموافقات البشرية وسجل التدقيق.',
+    'لا تستبدل التقييم القانوني ولا تمنح اعتماداً تنظيمياً.',
+  ],
+  sources: [
+    { href: '/hub/ai-governance/', label: 'دليل حوكمة الذكاء الاصطناعي في السعودية' },
+    { href: 'https://sdaia.gov.sa', label: 'سدايا — الهيئة السعودية للبيانات والذكاء الاصطناعي' },
+  ],
   furtherReading: { href: '/hub/ai-governance/', label: 'دليل حوكمة الذكاء الاصطناعي في السعودية' },
   query: 'حوكمة الذكاء الاصطناعي في السعودية',
   question: 'ما هي حوكمة الذكاء الاصطناعي في السعودية؟',
@@ -86,6 +169,17 @@ export const answerGovAr: AnswerUnit = {
 /** What is an AI Firewall (Arabic)? */
 export const answerFirewallAr: AnswerUnit = {
   slug: 'ai-firewall-saudi-ar',
+  saudiNote:
+    'المنشأة السعودية تحتاج تمييز طبقة التحكم في تفاعلات النماذج عن جدار الشبكة وبوابة الـ API، حتى تطبق سياستها الخاصة على المسارات المهيأة فقط.',
+  keyPoints: [
+    'يفحص تفاعلات النماذج في المسارات المهيأة: سماح أو تنقيح أو حجب أو تحويل للمراجعة.',
+    'يختلف عن جدار الشبكة وعن AI-powered WAF.',
+    'ليس مرادفاً كاملاً لـ AI Gateway الذي يركز على التوجيه والمفاتيح والحصص.',
+    'لا يضمن منع كل حادثة أو تحقيق الامتثال تلقائياً.',
+  ],
+  sources: [
+    { href: '/solutions/ai-firewall/', label: 'جدار حماية الذكاء الاصطناعي للمنشآت السعودية' },
+  ],
   furtherReading: { href: '/solutions/ai-firewall/', label: 'جدار حماية الذكاء الاصطناعي للمنشآت السعودية' },
   query: 'جدار حماية الذكاء الاصطناعي',
   question: 'ما هو جدار حماية الذكاء الاصطناعي؟',
@@ -96,6 +190,18 @@ export const answerFirewallAr: AnswerUnit = {
 /** What is an AI audit trail (Arabic)? */
 export const answerAuditAr: AnswerUnit = {
   slug: 'audit-trail-saudi-ar',
+  saudiNote:
+    'جهات التنظيم السعودية تطلب إثباتاً قابلاً للمراجعة على استخدامات AI — والسجل المنظم هو ما يحوّل القرارات اليومية إلى أدلة.',
+  keyPoints: [
+    'يوثق الأحداث والقرارات: المستخدم أو النظام، النموذج، الغرض، الوقت.',
+    'يشمل تصنيف المخاطر والسياسة المطبقة وقرار السماح أو الحجب والموافقة ومرجع الدليل.',
+    'المؤسسة تحدد الحقول والاحتفاظ والتشفير والصلاحيات وفق بيئتها.',
+    'وجود السجل وحده لا يثبت الامتثال.',
+  ],
+  sources: [
+    { href: '/solutions/ai-audit-trail/', label: 'حل سجل تدقيق الذكاء الاصطناعي' },
+    { href: '/docs/ai-audit-trail/', label: 'BRIGHTAI docs: AI audit trail' },
+  ],
   furtherReading: { href: '/solutions/ai-audit-trail/', label: 'حل سجل تدقيق الذكاء الاصطناعي' },
   query: 'سجل تدقيق الذكاء الاصطناعي',
   question: 'ما هو سجل تدقيق الذكاء الاصطناعي؟',
@@ -106,6 +212,17 @@ export const answerAuditAr: AnswerUnit = {
 /** What is PDPL compliance for AI? */
 export const answerPdplAr: AnswerUnit = {
   slug: 'pdpl-ai-compliance-ar',
+  saudiNote:
+    'عند إدخال الذكاء الاصطناعي على بيانات العملاء والموظفين، يلزم إثبات الأساس النظامي والغرض المحدد وضبط دورة البيانات كاملة — التقنية تدعم ولا تمنح الامتثال.',
+  keyPoints: [
+    'معالجة البيانات الشخصية وفق أساس نظامي وغرض محدد.',
+    'ضبط الوصول والمشاركة والاحتفاظ وحقوق أصحاب البيانات حسب الحالة.',
+    'اكتشاف PII والتنقيح والموافقات وسجل التدقيق تدعم التنفيذ وإنتاج الأدلة.',
+    'يلزم تقييم تدفق البيانات والمورد والعقود والسياسات مع المختصين.',
+  ],
+  sources: [
+    { href: '/docs/pdpl-ai-complete-guide/', label: 'دليل PDPL والذكاء الاصطناعي في السعودية' },
+  ],
   furtherReading: { href: '/docs/pdpl-ai-complete-guide/', label: 'دليل PDPL والذكاء الاصطناعي في السعودية' },
   query: 'امتثال PDPL للذكاء الاصطناعي',
   question: 'وش يعني امتثال PDPL عند استخدام الذكاء الاصطناعي؟',
@@ -116,6 +233,20 @@ export const answerPdplAr: AnswerUnit = {
 /** What are NCA ECC controls? */
 export const answerNca: AnswerUnit = {
   slug: 'nca-ecc-controls',
+  saudiNote:
+    'NCA ECC controls are the mandatory cybersecurity baseline for Saudi institutions — any AI deployment inside them inherits the same control obligations.',
+  keyPoints: [
+    'Classify training data and inputs by sensitivity: what may and may not be trained on.',
+    'Screen malicious requests, including prompt injection attacks.',
+    'Separate development environments from production.',
+    'Periodic security review of AI systems with risk-tiered human approvals.',
+    'Audit log evidence proving compliance during NCA inspection.',
+  ],
+  sources: [
+    { href: '/hub/compliance/', label: 'BRIGHTAI hub: Saudi AI compliance' },
+    { href: '/docs/nca-ecc-ai-governance/', label: 'BRIGHTAI docs: NCA ECC & AI governance' },
+    { href: 'https://www.nca.gov.sa', label: 'NCA — National Cybersecurity Authority' },
+  ],
   furtherReading: { href: '/hub/compliance/', label: 'دليل امتثال AI السعودي: PDPL وNCA ECC وISO 42001' },
   query: 'ضوابط NCA للذكاء الاصطناعي',
   question: 'What are ضوابط NCA للذكاء الاصطناعي?',
@@ -126,6 +257,19 @@ export const answerNca: AnswerUnit = {
 /** What is generative AI guidance from SDAIA? */
 export const answerSdaia: AnswerUnit = {
   slug: 'sdaia-generative-ai',
+  saudiNote:
+    'Saudi government and enterprise deployments of generative models fall under SDAIA data-and-AI governance — risk assessment and human approval are expected before rollout.',
+  keyPoints: [
+    'Risk assessment required before deploying any generative system.',
+    'Human approval layer for high-risk interactions.',
+    'Transparency in AI decisions alongside PDPL compliance.',
+    'Operational evidence files ready for SDAIA inspection.',
+  ],
+  sources: [
+    { href: '/hub/sdaia-ai-risk-management/', label: 'BRIGHTAI hub: SDAIA risk management' },
+    { href: '/docs/sdaia-generative-ai-guidelines/', label: 'BRIGHTAI docs: SDAIA generative AI guidelines' },
+    { href: 'https://sdaia.gov.sa', label: 'SDAIA — Saudi Data & AI Authority' },
+  ],
   furtherReading: { href: '/hub/sdaia-ai-risk-management/', label: 'دليل سدايا لإدارة مخاطر الذكاء الاصطناعي في المنشآت السعودية' },
   query: 'إرشادات سدايا للذكاء الاصطناعي التوليدي',
   question: 'What are إرشادات سدايا للذكاء الاصطناعي التوليدي?',
@@ -140,7 +284,19 @@ export const answerSdaia: AnswerUnit = {
 /** What is AI governance for Saudi banks? */
 export const answerBanking: AnswerUnit = {
   slug: 'ai-banking',
-  furtherReading: { href: '/hub/ai-governance/', label: 'محور حوكمة الذكاء الاصطناعي للمؤسسات السعودية' },
+  furtherReading: { href: '/solutions/banking-ai-governance/', label: 'حوكمة الذكاء الاصطناعي للقطاع المصرفي السعودي — SAMA' },
+  saudiNote:
+    'SAMA supervises AI use in Saudi banks under its information-security requirements — customer financial data protection and human sign-off on credit decisions are non-negotiable.',
+  keyPoints: [
+    'Screens every AI request before it reaches the model; redacts personal and financial data automatically.',
+    'Human approval on high-risk credit and investment decisions.',
+    'Tamper-proof audit log on every AI-proposed decision plus periodic reports to senior management.',
+    'Banking compliance pack producing SAMA-ready evidence files.',
+  ],
+  sources: [
+    { href: '/solutions/banking-ai-governance/', label: 'BRIGHTAI solution: banking AI governance' },
+    { href: 'https://www.sama.gov.sa', label: 'SAMA — Saudi Central Bank' },
+  ],
   query: 'حوكمة الذكاء الاصطناعي للبنوك السعودية',
   question: 'What is AI governance for Saudi banks?',
   answer:
@@ -150,7 +306,19 @@ export const answerBanking: AnswerUnit = {
 /** What is AI governance for Saudi healthcare? */
 export const answerHealthcare: AnswerUnit = {
   slug: 'ai-healthcare',
-  furtherReading: { href: '/hub/ai-governance/', label: 'الدليل الكنسي لحوكمة الذكاء الاصطناعي في السعودية' },
+  furtherReading: { href: '/solutions/healthcare-ai-governance/', label: 'حوكمة الذكاء الاصطناعي للقطاع الصحي السعودي — SFDA' },
+  saudiNote:
+    'Saudi hospitals answer to PDPL for patient data, SFDA for AI-enabled medical use, and ISO 13485 for devices — one diagnostic suggestion without a human sign-off is a compliance event.',
+  keyPoints: [
+    'Protects patient health data (PHI) from leaking to external models.',
+    'Human approval on high-risk diagnostic decisions.',
+    'Documents every doctor-to-model interaction for later review.',
+    'Healthcare pack producing SFDA-ready evidence files.',
+  ],
+  sources: [
+    { href: '/solutions/healthcare-ai-governance/', label: 'BRIGHTAI solution: healthcare AI governance' },
+    { href: 'https://www.sfda.gov.sa', label: 'SFDA — Saudi Food & Drug Authority' },
+  ],
   query: 'حوكمة الذكاء الاصطناعي للقطاع الصحي السعودي',
   question: 'What is AI governance for Saudi healthcare?',
   answer:
@@ -160,6 +328,18 @@ export const answerHealthcare: AnswerUnit = {
 /** What is an AI governance framework? */
 export const answerGovFramework: AnswerUnit = {
   slug: 'ai-governance-framework',
+  saudiNote:
+    'A framework turns governance principles into an operating routine — inventory, risk tiers, policies, controls, approvals, and evidence — mapped to PDPL, NCA ECC, SDAIA guidance, and ISO/IEC 42001.',
+  keyPoints: [
+    'Starts with a use-case inventory: where AI is used, who owns each case, what data it touches.',
+    'Risk classification decides which controls and approval levels each case gets.',
+    'Technical controls plus human approvals for sensitive decisions.',
+    'Audit log, reviewable evidence files, and periodic performance indicators close the loop.',
+  ],
+  sources: [
+    { href: '/hub/ai-governance/', label: 'BRIGHTAI hub: AI governance pillar' },
+    { href: '/docs/governance-application/', label: 'BRIGHTAI docs: applying governance' },
+  ],
   furtherReading: { href: '/hub/ai-governance/', label: 'الدليل الشامل لحوكمة الذكاء الاصطناعي للمؤسسات السعودية' },
   query: 'إطار حوكمة الذكاء الاصطناعي',
   question: 'What is an AI governance framework?',
@@ -167,30 +347,31 @@ export const answerGovFramework: AnswerUnit = {
     'إطار حوكمة الذكاء الاصطناعي هو منظومة متكاملة من السياسات والأدوار والضوابط التقنية والأدلة التي تنظم كيفية اختيار واستخدام ومراقبة أنظمة الذكاء الاصطناعي داخل المؤسسة. يتكون الإطار الفعّال من: جرد حالات الاستخدام، تصنيف المخاطر، سياسات استخدام واضحة، ضوابط تقنية (AI Firewall، فحص بيانات)، موافقات بشرية للقرارات الحساسة، سجل تدقيق شامل، ملفات أدلة قابلة للمراجعة، ومؤشرات أداء دورية. في السعودية، يجب أن يتوافق الإطار مع PDPL وNCA ECC وإرشادات سدايا وISO/IEC 42001. BrightAI يوفر هذا الإطار كمنصة تشغيلية جاهزة بدل بنائه من الصفر.',
 };
 
-/** What is NCA compliance for AI? */
-export const answerNcaCompliance: AnswerUnit = {
-  slug: 'nca-compliance',
-  furtherReading: { href: '/hub/compliance/', label: 'محور الامتثال السعودي للذكاء الاصطناعي وضوابط NCA' },
-  query: 'امتثال NCA للذكاء الاصطناعي',
-  question: 'What is NCA compliance for AI systems?',
-  answer:
-    'امتثال NCA (الهيئة الوطنية للأمن السيبراني) لأنظمة الذكاء الاصطناعي يعني تطبيق ضوابط الأمن السيبراني الأساسية (ECC) على كل جانب من جوانب استخدام AI داخل المؤسسة. يشمل: تصنيف بيانات التدريب والمدخلات حسب الحساسية، فحص الطلبات الخبيثة (injection attacks)، فصل بيئات التطوير عن الإنتاج، مراجعة أمنية دورية، وتوثيق كامل لكل تفاعل. BrightAI يدمج ضوابط NCA ECC مباشرة في المنصة: كل طلب يُصنَّف بمستوى مخاطر، يتطلب مستوى موافقة يتناسب مع المخاطر، ويحتفظ بسجل تدقيق يُثبت الامتثال عند تفتيش الهيئة.',
-};
-
-/** What is SAMA AI governance? */
-export const answerSama: AnswerUnit = {
-  slug: 'sama-ai',
-  furtherReading: { href: '/hub/ai-governance/', label: 'دليل الحوكمة التشغيلي للذكاء الاصطناعي في السعودية' },
-  query: 'حوكمة الذكاء الاصطناعي SAMA',
-  question: 'What is SAMA AI governance for Saudi banks?',
-  answer:
-    'حوكمة الذكاء الاصطناعي SAMA تشير إلى متطلبات البنك المركزي السعودي لاستخدام الذكاء الاصطناعي في القطاع المصرفي. تشمل متطلبات SAMA لأمن المعلومات: حماية البيانات المالية للعملاء، منع تسريب المعلومات الحساسة للنماذج الخارجية، موافقة بشرية على القرارات الائتمانية والاستثمارية، سجل تدقيق كامل لكل قرار يتخذه أو يقترحه AI، وتقارير دورية للإدارة العليا. BrightAI يوفر SAMA Pack جاهز يطبق هذه المتطلبات تشغيليًا: AI Firewall يحمي بيانات العملاء، Human Approval Layer يضمن مراجعة بشرية، وملفات الأدلة جاهزة لتفتيش البنك المركزي.',
-};
+// ANSWER-AUDIT (2026-09-03): `nca-compliance` removed — same query intent and
+// near-identical coverage as `nca-ecc-controls` (kept as canonical). No unique
+// content to merge; both pointed at /hub/compliance/. Served via 301 in
+// redirects.json: /answer/nca-compliance/ -> /answer/nca-ecc-controls/.
+// ANSWER-AUDIT (2026-09-03): `sama-ai` removed — same sector+regulator intent
+// as `ai-banking` (kept as canonical). Unique point merged into ai-banking
+// keyPoints ("periodic reports to senior management"). Served via 301 in
+// redirects.json: /answer/sama-ai/ -> /answer/ai-banking/.
 
 /** What is ISO/IEC 42001 for AI management? */
 export const answerIso42001: AnswerUnit = {
   slug: 'iso-42001',
-  furtherReading: { href: '/hub/compliance/', label: 'محور الامتثال السعودي: ISO 42001 مع PDPL وNCA ECC' },
+  furtherReading: { href: '/blog/iso-42001-saudi-implementation-guide/', label: 'دليل تطبيق ISO 42001 في السعودية' },
+  saudiNote:
+    'ISO/IEC 42001 gives Saudi institutions an auditable management system for AI that sits alongside — not instead of — PDPL, NCA ECC, and SDAIA requirements.',
+  keyPoints: [
+    'Covers AI policy, risk classification, model lifecycle management, and impact assessment.',
+    'Requires transparency, accountability, and continual improvement.',
+    'Integrates with PDPL, NCA ECC, and SDAIA guidance in the Saudi context.',
+    'Each clause maps to an auditable technical control inside the platform.',
+  ],
+  sources: [
+    { href: '/blog/iso-42001-saudi-implementation-guide/', label: 'BRIGHTAI guide: ISO 42001 Saudi implementation' },
+    { href: 'https://www.iso.org', label: 'ISO — International Organization for Standardization' },
+  ],
   query: 'ISO 42001 إدارة الذكاء الاصطناعي',
   question: 'What is ISO/IEC 42001 for AI management systems?',
   answer:
@@ -212,8 +393,6 @@ export const answers = [
   answerBanking,
   answerHealthcare,
   answerGovFramework,
-  answerNcaCompliance,
-  answerSama,
   answerIso42001,
 ];
 export default answers;
