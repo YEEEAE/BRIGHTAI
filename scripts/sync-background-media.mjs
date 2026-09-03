@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Fan the single committed background video out to every app's public/ directory.
+ * Fan the committed DotLottie background and renderer runtime out to each app.
  *
  * The video is committed once at the repo root. Each app deploys independently and
  * therefore needs the asset inside its own public/ tree, but committing a second
@@ -20,26 +20,27 @@ import { join, dirname, relative } from 'node:path';
 const REPO = new URL('..', import.meta.url).pathname.replace(/\/$/, '');
 const CHECK_ONLY = process.argv.includes('--check');
 
-// Source of truth. `9.mp4` is the file the user supplied; the poster was extracted
-// from that exact file at its native 1600x1200 and is reused verbatim.
+// The user-supplied DotLottie is the animation source of truth. The runtime stays
+// local so all apps keep their same-origin CSP.
 const SOURCES = {
-  video: join(REPO, '9.mp4'),
-  poster: join(REPO, 'apps/qc-task-manager/public/media/qc-system-background-poster.jpg'),
+  animation: join(REPO, 'Bubble sticky.lottie'),
+  wasm: join(REPO, 'public/media/dotlottie-player.wasm'),
 };
 
 const TARGETS = [
   { app: 'site', dir: join(REPO, 'public/media') },
   { app: 'dashboard', dir: join(REPO, 'apps/dashboard/public/media') },
+  { app: 'qc-task-manager', dir: join(REPO, 'apps/qc-task-manager/public/media') },
 ];
 
-const NAMES = { video: 'brightai-background.mp4', poster: 'brightai-background-poster.jpg' };
+const NAMES = { animation: 'bubble-sticky.lottie', wasm: 'dotlottie-player.wasm' };
 
 const sha256 = (p) => createHash('sha256').update(readFileSync(p)).digest('hex');
 
 let failed = 0;
 const report = [];
 
-for (const key of ['video', 'poster']) {
+for (const key of ['animation', 'wasm']) {
   const src = SOURCES[key];
   if (!existsSync(src)) {
     console.error(`✖ missing source: ${relative(REPO, src)}`);
@@ -69,16 +70,6 @@ for (const key of ['video', 'poster']) {
     }
     report.push({ role: `${t.app}:${key}`, path: relative(REPO, dest), bytes: statSync(dest).size, sha256: destHash, matchesSource: destHash === srcHash });
   }
-}
-
-// The QC app already owns a committed copy; verify it still matches rather than
-// overwriting a file that is under version control.
-const QC = join(REPO, 'apps/qc-task-manager/public/media/qc-system-background.mp4');
-if (existsSync(QC)) {
-  const h = sha256(QC);
-  const ok = h === sha256(SOURCES.video);
-  report.push({ role: 'qc-task-manager:video (committed)', path: relative(REPO, QC), bytes: statSync(QC).size, sha256: h, matchesSource: ok });
-  if (!ok) { console.error('✖ qc-task-manager committed video no longer matches 9.mp4'); failed += 1; }
 }
 
 for (const r of report) {

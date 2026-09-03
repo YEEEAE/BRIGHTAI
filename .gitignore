@@ -92,6 +92,9 @@ reports/
 *.tar.gz
 /seo_gate_log.txt
 
+# SEO audit raw responses and generated reports
+seo/raw/
+
 # Demo/Development directories (contain exposed API keys)
 h/
 Customer/

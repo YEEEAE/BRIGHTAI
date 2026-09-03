@@ -51,31 +51,23 @@
             flex-direction: column;
         }
 
-        /* BAI-BG-VIDEO-001 (2026-08-29): this file is hand-maintained static HTML
-           outside the Astro pipeline, so the shared background contract is
-           reproduced inline. The `background` on body above stays as the fallback
-           colour painted around the video's native 1600x1200 frame. */
+        /* Static fallback shell: mounts the same self-hosted DotLottie background
+           used by the application layouts without relying on Astro. */
         .bai-site-background {
             position: fixed;
             inset: 0;
             z-index: 0;
             overflow: hidden;
             pointer-events: none;
-            background: var(--primary-bg) url('/media/brightai-background-poster.jpg') center / 1600px 1200px no-repeat;
+            background: var(--primary-bg);
         }
 
-        .bai-site-background__video {
+        .bai-site-background__canvas {
             position: absolute;
-            inset-block-start: 50%;
-            inset-inline-start: 50%;
-            width: 1600px;
-            height: 1200px;
-            max-width: none;
-            object-fit: contain;
-            object-position: center;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             opacity: 1;
-            filter: none;
-            transform: translate(-50%, -50%);
         }
 
         body > *:not([aria-hidden="true"]) {
@@ -84,7 +76,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .bai-site-background__video { display: none; }
+            .bai-site-background__canvas { display: none; }
         }
 
         @media print {
@@ -446,22 +438,19 @@
 </head>
 <body class="antialiased bright-page--error" data-bright-page-type="error">
 <div class="bai-site-background" aria-hidden="true">
-  <video class="bai-site-background__video" autoplay muted loop playsinline preload="auto"
-         poster="/media/brightai-background-poster.jpg" tabindex="-1" disablepictureinpicture>
-    <source src="/media/brightai-background.mp4" type="video/mp4">
-  </video>
+  <canvas class="bai-site-background__canvas" tabindex="-1"></canvas>
 </div>
-<script>
-  /* BAI-BG-VIDEO-002 (2026-08-29): the autoplay attribute alone left this video
-     loaded but paused (readyState 4, currentTime 0). A rejected play() is a valid
-     outcome — blocked autoplay or reduced motion — and the poster covers both, so
-     the rejection is ignored. */
-  (function () {
-    var v = document.querySelector('.bai-site-background__video');
-    if (!v || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var p = v.play();
-    if (p && p.catch) p.catch(function () {});
-  })();
+<script type="module">
+  import { DotLottie } from '/js/dotlottie-web.js';
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const canvas = document.querySelector('.bai-site-background__canvas');
+    if (canvas instanceof HTMLCanvasElement) {
+      DotLottie.setWasmUrl('/media/dotlottie-player.wasm');
+      new DotLottie({ canvas, src: '/media/bubble-sticky.lottie', autoplay: true, loop: true,
+        layout: { fit: 'contain', align: [0.5, 0.5] },
+        renderConfig: { autoResize: true, devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2), freezeOnOffscreen: false } });
+    }
+  }
 </script>
 <span aria-hidden="true" class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
 جدار حماية الذكاء الاصطناعي، سجل تدقيق AI، طبقة الموافقة البشرية للذكاء الاصطناعي، ملف أدلة الامتثال، تقييم وتصنيف مخاطر الذكاء الاصطناعي، إخفاء البيانات الشخصية في الذكاء الاصطناعي، حزم الامتثال التنظيمي، الاستخدام الخفي للذكاء الاصطناعي، الإنسان في الحلقة

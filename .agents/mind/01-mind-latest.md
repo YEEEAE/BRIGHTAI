@@ -1,3 +1,21 @@
+## [2026-09-03] — تنفيذ حزمة SEO/Semrush وتسليم تقرير صريح بالحدود
+
+### تم التنفيذ
+- خزّنت نتائج Semrush وissue details في `seo/raw/` وأنشأت baseline والتقرير وخريطة الكلمات وملفات Lighthouse.
+- وثّقت FACTs: 113 Error و929 Warning و403 Notice من 313 صفحة، ووسمت الرصيد والـrecrawl وLighthouse غير المتاحة بوضوح.
+
+### الملفات المتأثرة
+- `seo/`, `.gitignore`, `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- Semrush pulls ✅؛ `pnpm build` ✅ (Complete 29.66s، مع تحذيرات route collision/Vite معروفة)؛ Lighthouse ⏭️ لعدم وجود CLI.
+
+### النتيجة
+- **الحالة:** جزئي / CONDITIONAL — يلزم نشر وإعادة crawl لإثبات التحسن.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-03] — إصلاح أخطاء Semrush Site Audit (113 خطأ)
 
 ### تم التنفيذ
@@ -2102,3 +2120,69 @@
 ### ملاحظات / مشاكل مفتوحة
 - `Layout.astro` و`Header.astro` غير موجودين في الشجرة الحالية؛ البدائل الفعلية هما `BaseLayout.astro` و`Navbar.tsx`.
 - لا commit ولا push ولا deploy.
+## [2026-09-03] — تنفيذ حزمة SEO/Semrush وتسليم تقرير صريح بالحدود
+
+### تم التنفيذ
+- تحققت من أدوات Semrush المتاحة، المشاريع، snapshot `6a98bf36b9c43339eff578c1` للحملة `31075135`، وبيانات domain/backlinks لقاعدة السعودية.
+- خزّنت raw responses لكل issue مفحوص في `seo/raw/`، مع جرد الأدوات ووسم رصيد الوحدات وrecrawl كـ`not available` لعدم وجود endpoint.
+- أنشأت baseline JSON/Markdown يجمع 113 Error و929 Warning و403 Notice من 313 صفحة، مجمعة حسب root cause مع روابط raw لكل issue.
+- أنشأت خريطة كلمات عربية للصفحات الأساسية، وصفحات جديدة مقترحة، وplaybook متابعة؛ القيم غير المقاسة بقيت `not available` ولم تُحوّل إلى أصفار.
+- أنشأت تقريري Lighthouse mobile/desktop كحالة `not run` لأن CLI غير مثبت، بدون ادعاء درجات.
+
+### الملفات المتأثرة
+- `seo/audit/baseline.json`
+- `seo/audit/baseline.md`
+- `seo/keyword-map.csv`
+- `seo/new-pages.md`
+- `seo/monitor.md`
+- `seo/report.md`
+- `seo/lighthouse/{mobile,desktop}.json`
+- `seo/raw/`
+- `.gitignore`
+
+### التحقق
+- Semrush capability/project/site-audit/domain/backlinks pulls ✅ — FACTs محفوظة في `seo/raw/`.
+- issue detail pulls ✅ — 16 issue types محفوظة لكل snapshot.
+- `git diff --check` ⏭️ — fsmonitor IPC error في البيئة كما هو مسجل سابقًا.
+- Lighthouse ⏭️ — CLI غير مثبت، لذلك لا توجد أرقام أداء مختلقة.
+- `pnpm build` ✅ — Complete 29.66s; ظهرت تحذيرات Astro route collisions قديمة وVite export معروفة.
+
+### النتيجة
+- **الحالة:** جزئي / CONDITIONAL.
+- **مختصر:** اكتملت حزمة الأدلة والملفات المطلوبة بالحقائق المتاحة، لكن شروط 0/0/0 وLighthouse 100 وإثبات كل الصفحات تحتاج نشرًا وإعادة crawl وأداة Lighthouse قابلة للتشغيل.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy؛ المستخدم يقرر النشر وإعادة الزحف.
+## [2026-09-03] — تنفيذ حزمة SEO/Semrush وتسليم تقرير صريح بالحدود
+
+### تم التنفيذ
+- تحققت من أدوات Semrush المتاحة، المشاريع، snapshot `6a98bf36b9c43339eff578c1` للحملة `31075135`، وبيانات domain/backlinks لقاعدة السعودية.
+- خزّنت raw responses لكل issue مفحوص في `seo/raw/`، مع جرد الأدوات ووسم رصيد الوحدات وrecrawl كـ`not available` لعدم وجود endpoint.
+- أنشأت baseline JSON/Markdown يجمع 113 Error و929 Warning و403 Notice من 313 صفحة، مجمعة حسب root cause مع روابط raw لكل issue.
+- أنشأت خريطة كلمات عربية للصفحات الأساسية، وصفحات جديدة مقترحة، وplaybook متابعة؛ القيم غير المقاسة بقيت `not available` ولم تُحوّل إلى أصفار.
+- أنشأت تقريري Lighthouse mobile/desktop كحالة `not run` لأن CLI غير مثبت، بدون ادعاء درجات.
+
+### الملفات المتأثرة
+- `seo/audit/baseline.json`
+- `seo/audit/baseline.md`
+- `seo/keyword-map.csv`
+- `seo/new-pages.md`
+- `seo/monitor.md`
+- `seo/report.md`
+- `seo/lighthouse/{mobile,desktop}.json`
+- `seo/raw/`
+- `.gitignore`
+
+### التحقق
+- Semrush capability/project/site-audit/domain/backlinks pulls ✅ — FACTs محفوظة في `seo/raw/`.
+- issue detail pulls ✅ — 16 issue types محفوظة لكل snapshot.
+- `git diff --check` ⏭️ — fsmonitor IPC error في البيئة كما هو مسجل سابقًا.
+- Lighthouse ⏭️ — CLI غير مثبت، لذلك لا توجد أرقام أداء مختلقة.
+- build/tests ⏭️ — لم تُشغّل؛ المهمة مخرجات تدقيق وتوثيق، وإصلاحات كود SEO كانت موجودة مسبقًا في الشجرة.
+
+### النتيجة
+- **الحالة:** جزئي / CONDITIONAL.
+- **مختصر:** اكتملت حزمة الأدلة والملفات المطلوبة بالحقائق المتاحة، لكن شروط 0/0/0 وLighthouse 100 وإثبات كل الصفحات تحتاج نشرًا وإعادة crawl وأداة Lighthouse قابلة للتشغيل.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy؛ المستخدم يقرر النشر وإعادة الزحف.

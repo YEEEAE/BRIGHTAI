@@ -20,44 +20,35 @@ const ok = (cond, label) => { if (cond) pass += 1; else failures.push(label); };
 
 /* ─────────────────────────────── 1. background components exist and comply */
 const CONTRACT = [
-  ['src/components/SiteBackground.astro', '/media/brightai-background.mp4', '/media/brightai-background-poster.jpg'],
-  ['apps/dashboard/components/SiteBackground.module.css', null, null],
-  ['apps/qc-task-manager/src/components/SystemBackground.astro', '/media/qc-system-background.mp4', '/media/qc-system-background-poster.jpg'],
-  ['public/500.html', '/media/brightai-background.mp4', '/media/brightai-background-poster.jpg'],
+  ['src/components/SiteBackground.astro', '/media/bubble-sticky.lottie'],
+  ['apps/dashboard/components/SiteBackground.tsx', '/media/bubble-sticky.lottie'],
+  ['apps/qc-task-manager/src/components/SystemBackground.astro', '/media/bubble-sticky.lottie'],
+  ['public/500.html', '/media/bubble-sticky.lottie'],
 ];
 
-for (const [file, video, poster] of CONTRACT) {
+for (const [file, animation] of CONTRACT) {
   ok(exists(file), `background source exists: ${file}`);
   if (!exists(file)) continue;
   const raw = read(file);
-  // Only inspect the background rules themselves. These files also contain
-  // unrelated CSS (500.html carries a large inlined critical stylesheet) and
-  // prose comments that would otherwise trip the substring checks.
-  const bgRules = (raw.match(/\.(bai-site-background|qc-system-background|background|video)[^{]*\{[^}]*\}/g) || []).join('\n');
-  const src = bgRules || raw;
-  ok(src.includes('position: fixed'), `${file}: background layer is viewport-fixed`);
-  ok(src.includes('width: 1600px') && src.includes('height: 1200px'), `${file}: video keeps its native 1600x1200`);
-  ok(src.includes('object-fit: contain'), `${file}: uses object-fit: contain`);
-  ok(!/object-fit:\s*cover/.test(src), `${file}: never uses object-fit: cover`);
-  ok(!/transform:\s*scale\(/.test(src) && !/\bzoom:/.test(src), `${file}: never scales or zooms the video`);
-  ok(src.includes('opacity: 1'), `${file}: opacity is 1`);
-  ok(src.includes('filter: none'), `${file}: filter is none`);
-  ok(!/mix-blend-mode/.test(src), `${file}: no colour-altering blend mode`);
+  const styles = file === 'apps/dashboard/components/SiteBackground.tsx'
+    ? `${raw}\n${read('apps/dashboard/components/SiteBackground.module.css')}`
+    : raw;
+  ok(styles.includes('position: fixed'), `${file}: background layer is viewport-fixed`);
+  ok(styles.includes('pointer-events: none'), `${file}: background never intercepts input`);
+  ok(raw.includes('DotLottie'), `${file}: uses the local DotLottie renderer`);
+  ok(raw.includes('/media/dotlottie-player.wasm'), `${file}: loads the same-origin WASM runtime`);
+  ok(raw.includes(animation), `${file}: points at ${animation}`);
   ok(!/(class|className)="[^"]*scrim|\.\w*scrim/.test(raw), `${file}: no scrim element or class`);
-  ok(src.includes('pointer-events: none'), `${file}: background never intercepts input`);
-  ok(raw.includes('prefers-reduced-motion: reduce'), `${file}: honours reduced motion`);
-  ok(raw.includes('@media print'), `${file}: excluded from print`);
-  if (video) ok(raw.includes(video), `${file}: points at ${video}`);
-  if (poster) ok(raw.includes(poster), `${file}: uses the matching poster`);
+  ok(styles.includes('prefers-reduced-motion: reduce'), `${file}: honours reduced motion`);
+  ok(styles.includes('@media print'), `${file}: excluded from print`);
 }
 
 // The dashboard component markup lives beside its CSS module.
 if (exists('apps/dashboard/components/SiteBackground.tsx')) {
   const s = read('apps/dashboard/components/SiteBackground.tsx');
-  ok(s.includes('/media/brightai-background.mp4'), 'dashboard component points at the synced video');
+  ok(s.includes('/media/bubble-sticky.lottie'), 'dashboard component points at the synced animation');
   ok(s.includes('aria-hidden="true"'), 'dashboard background is hidden from assistive tech');
-  ok(s.includes('autoPlay') && s.includes('muted') && s.includes('loop') && s.includes('playsInline'),
-    'dashboard video autoplays muted and looping inline');
+  ok(s.includes('autoplay: true') && s.includes('loop: true'), 'dashboard animation autoplays and loops');
 }
 
 /* ───────────────────────────── 2. one mount point per shell, no duplication */
@@ -133,11 +124,13 @@ const pkg = JSON.parse(read('package.json'));
 ok(/bg:sync/.test(pkg.scripts.prebuild), 'prebuild syncs the background media');
 ok(pkg.scripts['bg:verify'] === 'node scripts/sync-background-media.mjs --check',
   'bg:verify exists for CI byte-identity checks');
-const ignore = read('.gitignore');
-for (const p of ['public/media/brightai-background.mp4', 'apps/dashboard/public/media/brightai-background.mp4']) {
-  ok(ignore.includes(p), `generated copy is gitignored: ${p}`);
-}
-ok(exists('9.mp4'), 'the single committed source video is present at the repo root');
+ok(exists('Bubble sticky.lottie'), 'the committed DotLottie source is present at the repo root');
+for (const p of [
+  'public/media/bubble-sticky.lottie',
+  'apps/dashboard/public/media/bubble-sticky.lottie',
+  'apps/qc-task-manager/public/media/bubble-sticky.lottie',
+  'public/media/dotlottie-player.wasm',
+]) ok(exists(p), `synced runtime asset exists: ${p}`);
 
 /* ─────────────────────────────────────────────────────────────────── report */
 for (const f of failures) console.error(`  ✖ ${f}`);

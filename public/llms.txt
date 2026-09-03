@@ -21,6 +21,7 @@ Last reviewed: 2026-09-03
 ## Saudi Arabic query ownership
 
 - **حوكمة الذكاء الاصطناعي** و**حوكمة الذكاء الاصطناعي في السعودية** → [AI Governance Hub](https://brightai.live/hub/ai-governance/)
+- **نظام حماية البيانات الشخصية** و**كيفية تعزيز خصوصيتك** → [PDPL Privacy Guide](https://brightai.live/blog/enhance-privacy-pdpl-saudi/)
 - **منصة حوكمة الذكاء الاصطناعي** → [AI Governance Platform](https://brightai.live/solutions/ai-governance-platform/)
 - **امتثال الذكاء الاصطناعي في السعودية** و**PDPL AI compliance** → [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/)
 - **جدار حماية الذكاء الاصطناعي** و**AI Firewall** و**LLM Firewall** → [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/)

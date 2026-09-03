@@ -1,22 +1,10 @@
 ---
-// Decorative, app-wide video atmosphere. The source is intentionally local so
-// it remains compatible with the application's strict same-origin CSP.
+// Decorative, app-wide DotLottie atmosphere. The renderer and WASM stay local
+// so the application's strict same-origin CSP remains unchanged.
 ---
 
 <div class="qc-system-background" aria-hidden="true">
-  <video
-    class="qc-system-background__video"
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="auto"
-    poster="/media/qc-system-background-poster.jpg"
-    tabindex="-1"
-    disablepictureinpicture
-  >
-    <source src="/media/qc-system-background.mp4" type="video/mp4" />
-  </video>
+  <canvas class="qc-system-background__canvas" tabindex="-1"></canvas>
 </div>
 
 <style is:global>
@@ -26,21 +14,15 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    background: #0b0b0b url('/media/qc-system-background-poster.jpg') center / 1600px 1200px no-repeat;
+    background: #0b0b0b;
   }
 
-  .qc-system-background__video {
+  .qc-system-background__canvas {
     position: absolute;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    width: 1600px;
-    height: 1200px;
-    max-width: none;
-    object-fit: contain;
-    object-position: center;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     opacity: 1;
-    filter: none;
-    transform: translate(-50%, -50%);
   }
 
   .qc-app-layer {
@@ -50,7 +32,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .qc-system-background__video {
+    .qc-system-background__canvas {
       display: none;
     }
   }
@@ -65,3 +47,26 @@
     }
   }
 </style>
+
+<script>
+  import { DotLottie } from '@lottiefiles/dotlottie-web';
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const canvas = document.querySelector('.qc-system-background__canvas');
+    if (canvas instanceof HTMLCanvasElement) {
+      DotLottie.setWasmUrl('/media/dotlottie-player.wasm');
+      new DotLottie({
+        canvas,
+        src: '/media/bubble-sticky.lottie',
+        autoplay: true,
+        loop: true,
+        layout: { fit: 'contain', align: [0.5, 0.5] },
+        renderConfig: {
+          autoResize: true,
+          devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+          freezeOnOffscreen: false,
+        },
+      });
+    }
+  }
+</script>

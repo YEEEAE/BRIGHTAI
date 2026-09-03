@@ -19,8 +19,8 @@
     "db:reset": "pnpm --filter @brightai/db db:reset",
     "db:rls:test": "pnpm --filter @brightai/db db:rls:test",
     "pretypecheck": "pnpm db:generate",
-  "typecheck": "pnpm -r --parallel typecheck",
-  "e2e:acceptance": "pnpm --filter @brightai/qc-task-manager e2e:acceptance",
+    "typecheck": "pnpm -r --parallel typecheck",
+    "e2e:acceptance": "pnpm --filter @brightai/qc-task-manager e2e:acceptance",
     "pretest:chat-session": "pnpm db:generate",
     "preverify:all": "pnpm db:generate",
     "lint": "pnpm -r --parallel lint",
@@ -31,9 +31,9 @@
     "avif:generate": "node scripts/generate-avif-variants.mjs",
     "prebuild": "npm run bg:sync && npm run fonts:subset && node scripts/generate-all-redirects.mjs",
     "bg:sync": "node scripts/sync-background-media.mjs",
-  "bg:verify": "node scripts/sync-background-media.mjs --check",
-  "contrast:verify": "node scripts/qa/verify-contrast-on-media.mjs",
-  "bg:contract": "node scripts/qa/verify-background-contract.mjs && pnpm contrast:verify",
+    "bg:verify": "node scripts/sync-background-media.mjs --check",
+    "contrast:verify": "node scripts/qa/verify-contrast-on-media.mjs",
+    "bg:contract": "node scripts/qa/verify-background-contract.mjs && pnpm contrast:verify",
     "build:client": "tsc -p tsconfig.client.json",
     "build": "npm run build:client && npm run image-sitemap && astro build && npm run avif:generate && npm run sitemap:generate && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css && npm run build:patch-entry",
     "sync:dist:flat": "node scripts/sync-dist-flat.mjs",
@@ -81,7 +81,7 @@
     "lhci:all": "bash scripts/run-lhci.sh --all",
     "lhci:assert": "bash scripts/run-lhci.sh --assert",
     "lhci:psi": "bash scripts/run-lhci.sh --psi",
-  "verify:all": "node scripts/verify-all.mjs && npm run headers:check && npm run bg:contract && npm run test:chat-session && npm run lint:tokens && npm run sitemap:generate && npm run seo:schema && npm run seo:gate && npm run seo:hreflang",
+    "verify:all": "node scripts/verify-all.mjs && npm run headers:check && npm run bg:contract && npm run test:chat-session && npm run lint:tokens && npm run sitemap:generate && npm run seo:schema && npm run seo:gate && npm run seo:hreflang",
     "verify:skills-lock": "node scripts/qa/verify-skills-lock.mjs",
     "generate:skills-lock": "node scripts/qa/verify-skills-lock.mjs --write",
     "preview": "astro preview",
@@ -139,6 +139,7 @@
     "@brightai/db": "workspace:*",
     "@brightai/firewall-detectors": "workspace:*",
     "@brightai/lead-queue": "workspace:*",
+    "@lottiefiles/dotlottie-web": "^0.80.0",
     "@sentry/node": "^8.47.0",
     "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
@@ -176,6 +177,9 @@
     "overrides": {
       "js-cookie": ">=3.0.7"
     },
-    "onlyBuiltDependencies": ["better-sqlite3", "esbuild"]
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild"
+    ]
   }
 }

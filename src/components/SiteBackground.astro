@@ -2,37 +2,14 @@
 /**
  * SiteBackground — the single page-level background for every visible surface.
  *
- * Replaces the previous page-level background stack (DottedBackground, the hero
- * canvas/beams/spotlight/vignette, and the fixed body noise overlay) with the
- * approved video, matching the contract already shipping in
- * apps/qc-task-manager/src/components/SystemBackground.astro.
- *
- * The video is presented at its native 1600x1200 and is never scaled, cropped
- * with `cover`, tinted, filtered, or covered by a scrim. Viewports larger than
- * the source show the surrounding fallback colour; smaller viewports show the
- * centred region of the frame. Section and card surfaces remain responsible for
- * text contrast — there is deliberately no global overlay.
- *
- * The asset is copied into public/media by scripts/sync-background-media.mjs at
- * prebuild time and served same-origin, which the site CSP (media-src 'self')
- * requires.
+ * Renders the approved Bubble Sticky DotLottie asset as the fixed, decorative
+ * background for every marketing-page shell. The player and its WASM runtime
+ * are both self-hosted so the strict same-origin CSP stays intact.
  */
 ---
 
 <div class="bai-site-background" aria-hidden="true">
-  <video
-    class="bai-site-background__video"
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="auto"
-    poster="/media/brightai-background-poster.jpg"
-    tabindex="-1"
-    disablepictureinpicture
-  >
-    <source src="/media/brightai-background.mp4" type="video/mp4" />
-  </video>
+  <canvas class="bai-site-background__canvas" tabindex="-1"></canvas>
 </div>
 
 <style is:global>
@@ -44,25 +21,19 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    background: var(--bg-base, #0a0e1a) url('/media/brightai-background-poster.jpg') center / 1600px 1200px no-repeat;
+    background: var(--bg-base, #0a0e1a);
   }
 
-  .bai-site-background__video {
+  .bai-site-background__canvas {
     position: absolute;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    width: 1600px;
-    height: 1200px;
-    max-width: none;
-    object-fit: contain;
-    object-position: center;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     opacity: 1;
-    filter: none;
-    transform: translate(-50%, -50%);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bai-site-background__video {
+    .bai-site-background__canvas {
       display: none;
     }
   }
@@ -75,28 +46,29 @@
 </style>
 
 <script>
-  // BAI-BG-VIDEO-002 (2026-08-29): `autoplay` alone does not start this video on
-  // the marketing site. Astro's ClientRouter re-inserts body nodes on
-  // `astro:page-load`, and Chromium only honours the autoplay attribute for an
-  // element inserted during parsing — a re-inserted <video> stays paused with a
-  // fully loaded buffer. Measured: readyState 4, intrinsic 1600x1200, no media
-  // error, `paused: true`, `currentTime: 0` on every main-site route, while the
-  // same component in apps/qc-task-manager (no ClientRouter) reports
-  // `paused: false`.
-  //
-  // A rejected play() is a legitimate outcome — a browser that blocks autoplay,
-  // or a reader who asked for reduced motion — and the poster is the designed
-  // fallback for both, so the rejection is intentionally ignored rather than
-  // retried or reported.
-  function startBackgroundVideo() {
-    const video = document.querySelector('.bai-site-background__video');
-    if (!video || !(video instanceof HTMLVideoElement)) return;
+  import { DotLottie } from '@lottiefiles/dotlottie-web';
+
+  function mountBackgroundAnimation() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (!video.paused) return;
-    const attempt = video.play();
-    if (attempt && typeof attempt.catch === 'function') attempt.catch(() => {});
+    const canvas = document.querySelector('.bai-site-background__canvas');
+    if (!(canvas instanceof HTMLCanvasElement) || canvas.dataset.dotlottieMounted) return;
+
+    canvas.dataset.dotlottieMounted = 'true';
+    DotLottie.setWasmUrl('/media/dotlottie-player.wasm');
+    new DotLottie({
+      canvas,
+      src: '/media/bubble-sticky.lottie',
+      autoplay: true,
+      loop: true,
+      layout: { fit: 'contain', align: [0.5, 0.5] },
+      renderConfig: {
+        autoResize: true,
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+        freezeOnOffscreen: false,
+      },
+    });
   }
 
-  startBackgroundVideo();
-  document.addEventListener('astro:page-load', startBackgroundVideo);
+  mountBackgroundAnimation();
+  document.addEventListener('astro:page-load', mountBackgroundAnimation);
 </script>

@@ -1,0 +1,15 @@
+{
+  "fact": true,
+  "source": "Semrush Site Audit",
+  "project_id": 31075135,
+  "project_name": "k",
+  "domain": "brightai.live",
+  "snapshot_id": "6a98bf36b9c43339eff578c1",
+  "status": "FINISHED",
+  "crawl": {"pages_crawled": 313, "pages_limit": 500, "total_checks": 440575},
+  "counts": {"errors": 113, "warnings": 929, "notices": 403},
+  "status_counters": {"broken": 0, "blocked": 10, "redirected": 1, "healthy": 8},
+  "issue_counts": {"102":6,"105":32,"112":143,"117":17,"12":339,"135":392,"16":1,"202":302,"204":5,"205":2,"213":27,"222":1,"223":56,"24":35,"4":10,"45":77},
+  "api_unit_balance": "not available: Semrush MCP exposes no balance endpoint",
+  "recrawl": "not available: no recrawl mutation exposed; snapshot is historical"
+}
