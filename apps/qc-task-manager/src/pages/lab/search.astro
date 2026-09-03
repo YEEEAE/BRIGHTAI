@@ -292,7 +292,7 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
         {/* Results summary */}
         <div class="flex items-center justify-between text-sm text-slate-600">
           <p>
-            عرض {range.start} إلى {range.end} من أصل <span class="font-semibold text-slate-900">{result.total.toLocaleString('en-US')}</span> نتيجة
+            Showing {range.start} to {range.end} of <span class="font-semibold text-slate-900">{result.total.toLocaleString('en-US')}</span> results
             {filters.q && <span> matching "<span class="font-medium text-slate-800">{filters.q}</span>"</span>}
             {filters.entity !== 'all' && <span> in <span class="font-medium text-slate-800">{LAB_SEARCH_ENTITY_LABELS[filters.entity]}</span></span>}
           </p>
@@ -310,7 +310,7 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
           <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
             <div class="contain-layout contain-paint overflow-x-auto">
               <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
-                <caption class="sr-only">نتائج البحث المخبري</caption>
+                <caption class="sr-only">Laboratory search results</caption>
                 <thead class="sticky top-0 z-10 bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   <tr>
                     <th scope="col" class="px-4 py-2.5">Type</th>
@@ -376,7 +376,7 @@ function statusBadgeClass(status: string | null, resultVal: string | null): stri
             </div>
 
             {/* Pagination Controls */}
-            <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="تنقل بين الصفحات" summary={`عرض ${range.start} إلى ${range.end} من أصل ${result.total} نتيجة`} class="border-t border-slate-200 px-4 py-3 sm:px-6" />
+            <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="Laboratory search pagination" summary={`Showing ${range.start} to ${range.end} of ${result.total} results`} class="border-t border-slate-200 px-4 py-3 sm:px-6" />
           </div>
         )}
       </>

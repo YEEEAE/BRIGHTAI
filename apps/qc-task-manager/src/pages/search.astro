@@ -296,7 +296,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
   {/* ───────────── Results ───────────── */}
   <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
     <p class="text-sm text-slate-600">
-      عرض {range.start} إلى {range.end} من أصل <span class="font-semibold text-slate-900">{result.total}</span> نتيجة
+      Showing {range.start} to {range.end} of <span class="font-semibold text-slate-900">{result.total}</span> results
       {filtered && (
         <span class="text-slate-400"> (filtered — <a href="/search" class="underline hover:text-slate-600">clear all</a>)</span>
       )}
@@ -318,7 +318,7 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
   ) : (
     <div class="qc-table-panel">
       <div class="max-h-[70vh] overflow-auto"><table class="w-full min-w-max text-sm">
-        <caption class="sr-only">نتائج البحث عن المهام</caption>
+        <caption class="sr-only">Task search results</caption>
         <thead class="sticky top-0 z-10 bg-slate-50 text-left text-xs uppercase text-slate-500">
           <tr>
             {SORTABLE.map((s) => (
@@ -392,6 +392,6 @@ const currentUrl = Astro.url.pathname + Astro.url.search;
 
   {/* ───────────── Pagination (state preserved via URL) ───────────── */}
   <div class="mt-4">
-    <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="تنقل بين الصفحات" summary={`عرض ${range.start} إلى ${range.end} من أصل ${result.total} نتيجة`} />
+    <Pagination page={result.page} totalPages={result.total_pages} hrefFor={pageHref} label="Search results pagination" summary={`Showing ${range.start} to ${range.end} of ${result.total} results`} />
   </div>
 </BaseLayout>

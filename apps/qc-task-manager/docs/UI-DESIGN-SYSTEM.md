@@ -234,8 +234,9 @@ Header: `bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide tex
 `td class="px-4 py-2.5"`, optional `hover:bg-slate-50/75` rows. Sortable headers are links with
 `▲/▼` markers (existing pattern). Numeric columns right-aligned; identifiers first, actions last
 (one primary row link + at most one small menu — action buttons never fill every row). Mobile:
-registers may scroll horizontally by design; simple lists may switch to card fallbacks — never
-shrink text/buttons to force fit.
+registers may scroll horizontally only inside a contained panel; simple lists switch to card
+fallbacks below `md`. At 320 CSS px (the 400% zoom reflow baseline), content must wrap or use
+that card fallback — never widen the root viewport or shrink text/buttons to force fit.
 
 ### 3.8 Forms & filters
 
@@ -342,7 +343,7 @@ actions) → overview → workflow → related data → history.
 1. Use a primitive before inventing markup; extend the primitive before duplicating it.
 2. One primary action per view; destructive actions isolated.
 3. Status text is mandatory; color is decoration.
-4. Every screen must survive 390px and 1440px without horizontal page overflow (data tables
+4. Every screen must survive 320px, 375px, 768px, and 1440px without horizontal page overflow (data tables
    may scroll inside their panel intentionally).
 5. UI components never import `src/lib/permissions.ts` (architecture guard) — authorization is
    resolved server-side and passed in as props/flags.

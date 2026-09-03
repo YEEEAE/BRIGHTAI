@@ -63,6 +63,10 @@ for (const recipe of ['qc-page-stack', 'qc-surface-panel', 'qc-table-panel', 'ty
 ok(BASE_LAYOUT.includes('qc-page-content'), 'all standard routes receive the shared page content flow');
 ok(BASE_LAYOUT.includes('max-w-7xl'), 'content shell has one enterprise-wide desktop width');
 ok(!GLOBAL_CSS.includes('transition-all'), 'global visual layer does not reintroduce generic transition-all');
+ok(GLOBAL_CSS.includes('@media (max-width: 40rem)'), 'small-viewport reflow contract exists');
+ok(GLOBAL_CSS.includes('.qc-table-panel {\n    min-inline-size: 0;'), 'table panels cannot widen the root viewport at 400% zoom');
+ok(GLOBAL_CSS.includes('overflow-wrap: anywhere;'), 'table cell content wraps instead of overlapping at narrow widths');
+ok(GLOBAL_CSS.includes("input[type='checkbox'], input[type='radio']"), 'checkable controls expose a 44px coarse-pointer hit area');
 
 for (const route of REGISTER_EXEMPLARS) {
   const source = sourceAt(route);

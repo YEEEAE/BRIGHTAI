@@ -102,7 +102,7 @@ export default {
         'qc-decelerate': 'var(--ease-decelerate)',
         'qc-accelerate': 'var(--ease-accelerate)',
         'qc-linear': 'var(--ease-linear)',
-        'qc-emphasized': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+        'qc-emphasized': 'var(--ease-emphasized)',
       },
     },
   },

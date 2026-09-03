@@ -153,6 +153,7 @@ const REQUIRED_INDEXES = [
   'idx_tasks_assigned_to',
   'idx_tasks_created_by',
   'idx_tasks_due_date',
+  'idx_tasks_created_at',
   'idx_tasks_completed_at',
   'idx_tasks_recurrence',
   'idx_comments_task_id',

@@ -14,14 +14,18 @@ const tokenNames = [
   'font-sans', 'font-size-xs', 'font-size-2xl', 'line-height-relaxed', 'font-weight-semibold',
   'space-1', 'space-16', 'radius-sm', 'radius-pill', 'border-width-default', 'shadow-raised',
   'shadow-overlay', 'elevation-overlay', 'color-surface-page', 'color-surface-elevated', 'color-overlay',
-  'color-glass', 'icon-size-md', 'container-content', 'breakpoint-lg', 'motion-fast',
-  'motion-ease-standard', 'focus-ring-width', 'color-success', 'color-warning', 'color-danger',
+  'color-glass', 'icon-size-md', 'container-content', 'breakpoint-lg', 'duration-fast',
+  'ease-standard', 'ease-emphasized', 'focus-ring-width', 'color-success', 'color-warning', 'color-danger',
   'color-info', 'color-neutral', 'color-disabled',
 ];
 for (const token of tokenNames) assert(global.includes(`--${token}:`), `Missing token --${token}`);
 
 for (const alias of ['surface', 'content', 'accent', 'success', 'warning', 'danger', 'info', 'neutral', 'disabled', 'overlay', 'glass', 'chart']) {
   assert(tailwind.includes(`${alias}:`), `Missing Tailwind semantic alias ${alias}`);
+}
+
+for (const deprecated of ['--motion-fast:', '--motion-standard:', '--motion-slow:', '--motion-ease-standard:', '--motion-ease-emphasized:', 'duration-150']) {
+  assert(!global.includes(deprecated) && !tailwind.includes(deprecated), `Deprecated token alias remains: ${deprecated}`);
 }
 
 const requiredPrimitives = [
@@ -45,6 +49,15 @@ for (const file of uiFiles) {
   assert(!source.includes('transition-all'), `Unbounded transition in canonical primitive: src/components/ui/${file}`);
 }
 
+const sourceDirectory = path.join(root, 'src');
+const sourceFiles = fs.readdirSync(sourceDirectory, { recursive: true })
+  .filter((file) => /\.(astro|tsx|ts|css)$/.test(file));
+for (const file of sourceFiles) {
+  const source = fs.readFileSync(path.join(sourceDirectory, file), 'utf8');
+  assert(!source.includes('duration-150'), `Deprecated duration class in ${file}`);
+  assert(!/class(?:Name)?=\{[^}]*\b(?:params|searchParams|formData|request\.body|userInput)\b/.test(source), `Untrusted input must not form CSS classes: ${file}`);
+}
+
 const docs = read('docs/UI-DESIGN-SYSTEM.md');
 assert(docs.includes('Canonical component catalogue'), 'Design-system documentation lacks component catalogue');
 assert(docs.includes('Legacy migration boundary'), 'Design-system documentation lacks legacy migration boundary');
@@ -54,4 +67,4 @@ if (failures.length) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log(`DESIGN-SYSTEM-100: PASS (${tokenNames.length} token checks, ${requiredPrimitives.length} primitive checks, ${uiFiles.length} canonical files)`);
+console.log(`DESIGN-SYSTEM-100: PASS (${tokenNames.length} token checks, ${requiredPrimitives.length} primitive checks, ${uiFiles.length} canonical files, ${sourceFiles.length} source files)`);

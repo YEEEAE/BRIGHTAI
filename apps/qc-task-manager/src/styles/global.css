@@ -100,12 +100,7 @@
   --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
   --ease-accelerate: cubic-bezier(0.3, 0, 1, 0.3);
   --ease-linear: linear;
-  /* Compatibility names for existing route-sized migrations. */
-  --motion-fast: var(--duration-fast);
-  --motion-standard: var(--duration-standard);
-  --motion-slow: var(--duration-moderate);
-  --motion-ease-standard: var(--ease-standard);
-  --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 }
@@ -136,7 +131,7 @@
 .qc-page-content,
 .qc-page-stack { @apply space-y-6 sm:space-y-7; }
 .qc-surface-panel { @apply rounded-qc-lg border border-border bg-surface shadow-sm; }
-.qc-table-panel { @apply overflow-x-auto rounded-qc-lg border border-border bg-surface shadow-sm; }
+.qc-table-panel { @apply min-w-0 max-w-full overflow-x-auto rounded-qc-lg border border-border bg-surface shadow-sm; }
 .qc-table-panel > table { @apply min-w-full divide-y divide-border text-sm; }
 .qc-table-panel > table thead { @apply bg-surface-muted; }
 .qc-table-panel > table th { @apply whitespace-nowrap px-4 py-3 text-start text-xs font-semibold uppercase tracking-wide text-content-muted; }
@@ -259,8 +254,31 @@
 /* Operational screens are used on touch laptops/tablets as well as phones.
  * Keep small controls comfortable without changing desktop density. */
 @media (pointer: coarse) {
-  :where(a, button, summary, [role='button']) {
+  :where(a[href], button, summary, [role='button']) {
     min-block-size: 2.75rem;
+  }
+
+  :where(input[type='checkbox'], input[type='radio']) {
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+  }
+}
+
+/* A table never gets to widen the document at high zoom. Registers that need
+ * a card representation already render one below `md`; this panel contract
+ * keeps their desktop tables contained while the mobile cards take over. */
+@media (max-width: 40rem) {
+  .qc-table-panel {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  .qc-table-panel > table {
+    min-inline-size: 100%;
+  }
+
+  .qc-table-panel :where(th, td) {
+    overflow-wrap: anywhere;
   }
 }
 

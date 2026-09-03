@@ -42,7 +42,7 @@ await fetch(`${BASE}/login`, {
 
 // Stable, isolated records make detail/editor routes available on every runner.
 const FIXTURE = {
-  task: 'Responsive E2E task fixture',
+  task: 'Responsive fixture with an intentionally very long operational task name that must wrap without widening the page at 400 percent zoom',
   product: 'PROD-RESPONSIVE-E2E-01',
   equipment: 'EQ-RESPONSIVE-E2E-01',
   test: 'LAB-TEST-RESPONSIVE-E2E-01',
@@ -114,7 +114,7 @@ const SCREENS = [
   { name: 'admin users', path: '/admin/users', role: 'admin' },
   { name: 'system health', path: '/admin/system-health', role: 'admin' },
 ];
-const VIEWPORTS = [1440, 1024, 768, 360].map((width) => ({ width, height: width <= 768 ? 844 : 900 }));
+const VIEWPORTS = [1440, 1024, 768, 375, 320].map((width) => ({ width, height: width <= 768 ? 844 : 900 }));
 
 async function login(page, username) {
   await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded' });

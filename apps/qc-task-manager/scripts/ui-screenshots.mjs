@@ -1,5 +1,5 @@
 // Visual QA tool (docs phase 27): captures full-page screenshots of the
-// representative screens at 1440 / 768 / 390 px against a LIVE server with a
+// representative screens at 1440 / 768 / 375 px against a LIVE server with a
 // disposable database, and records programmatic overflow checks
 // (documentElement.scrollWidth <= innerWidth). NOT a test suite — a review
 // aid for the UI/UX audit; output lands in download/qa/ui-audit/.
@@ -96,7 +96,7 @@ const SCREENS = {
     ['404', '/definitely-not-a-page'],
   ],
 };
-const WIDTHS = [1440, 768, 390];
+const WIDTHS = [1440, 768, 375];
 
 const overflowReport = [];
 let captured = 0;
