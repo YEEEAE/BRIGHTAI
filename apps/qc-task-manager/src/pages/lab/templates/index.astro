@@ -21,7 +21,7 @@ import {
   type LabTemplateSearchFilters,
   type LabTemplateSortField,
 } from '../../../lib/lab/templates';
-import { canCreateLabTemplate, canEditLabTemplate } from '../../../lib/permissions';
+import { canCreateLabTemplate, canEditLabTemplateRecord } from '../../../lib/permissions';
 import type { Role } from '../../../lib/types';
 import Banner from '../../../components/ui/Banner.astro';
 import PageHeader from '../../../components/ui/PageHeader.astro';
@@ -201,7 +201,7 @@ function th(field: LabTemplateSortField, label: string): string {
                       <td class="px-4 py-2">
                         <span class="flex items-center gap-2">
                           <a href={`/lab/templates/${t.id}`} class="font-medium text-brand-600 hover:underline">View</a>
-                          {canEditLabTemplate(role) && t.status !== 'ARCHIVED' && (
+                          {canEditLabTemplateRecord({ id: user.userId, role }, { status: t.status, created_by: t.version_created_by ?? -1, author_id: null }) && (
                             <a href={`/lab/templates/${t.id}/edit`} class="font-medium text-slate-600 hover:underline">Edit</a>
                           )}
                         </span>

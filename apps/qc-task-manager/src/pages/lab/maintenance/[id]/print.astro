@@ -10,6 +10,13 @@ import PrintLayout from '../../../../layouts/PrintLayout.astro';
 import { getLabEquipmentMaintenanceDetail } from '../../../../lib/lab/equipment';
 import { LAB_MAINTENANCE_STATUS_LABELS } from '../../../../lib/lab/policy';
 import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
+import { canViewLab } from '../../../../lib/permissions';
+
+// Intentional UI↔server mapping: maintenance events have no standalone
+// detail page, so this print surface enforces the laboratory workspace
+// entry permission — deep links cannot bypass it.
+const printUser = Astro.locals.user!;
+if (!canViewLab(printUser.role)) return Astro.redirect('/lab/equipment');
 
 const idParam = Astro.params.id;
 const id = idParam ? Number(idParam) : Number.NaN;

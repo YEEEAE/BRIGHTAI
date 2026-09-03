@@ -25,6 +25,7 @@ import {
   canAccessManagerArea,
   canAccessSupervisorArea,
   canViewLab,
+  canViewTeamWorkload,
   PERMISSIONS,
   roleHome,
 } from './lib/permissions';
@@ -166,8 +167,22 @@ async function handle(context: APIContext, next: MiddlewareNext): Promise<Respon
     }
   }
 
-  // /manager/* — manager + admin.
-  if (pathname.startsWith('/manager')) {
+  // /manager/workload — team workload comparison. The canonical rule
+  // canViewTeamWorkload grants supervisor+ (not just manager+), so this
+  // single route is exempt from the /manager prefix guard below and
+  // enforces its own canonical gate instead. The supervisor nav
+  // (ROLE_NAV) and the dashboard link here — without this carve-out the
+  // prefix guard would bounce supervisors with a flash message for a
+  // control the permission matrix explicitly grants them.
+  if (pathname === '/manager/workload') {
+    if (!canViewTeamWorkload(user.role)) {
+      setFlash(context, 'error', 'You do not have permission to view team workload.');
+      return context.redirect(roleHome(user.role));
+    }
+  }
+
+  // /manager/* — manager + admin (except /manager/workload, gated above).
+  if (pathname.startsWith('/manager') && pathname !== '/manager/workload') {
     if (!canAccessManagerArea(user.role)) {
       setFlash(context, 'error', 'You do not have permission to access the manager area.');
       return context.redirect(roleHome(user.role));

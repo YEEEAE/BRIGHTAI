@@ -13,6 +13,12 @@ import {
   LAB_CALIBRATION_STATUS_LABELS,
 } from '../../../../lib/lab/calibration';
 import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
+import { canViewLabCalibration } from '../../../../lib/permissions';
+
+// Intentional UI↔server mapping: same canonical view permission as the
+// calibration detail page — deep links cannot bypass it.
+const printUser = Astro.locals.user!;
+if (!canViewLabCalibration(printUser.role)) return Astro.redirect('/lab/calibration');
 
 const idParam = Astro.params.id;
 const id = idParam ? Number(idParam) : Number.NaN;

@@ -1,3 +1,28 @@
+## [2026-09-04] — QC-100-PERMISSION-IA-014: مطابقة ما يراه المستخدم مع ما يقدر يسويه (Permission↔UI)
+
+### تم التنفيذ
+- بنيت المصفوفة الكاملة للأدوار الأربعة (تنقل/صفحات/أكشن/ممنوع/اعتماد/ملكية/بيانات حساسة) في `apps/qc-task-manager/13-PERMISSION-IA-100-EVIDENCE.md` — كل `can*` في `permissions.ts` صار لها تمثيل UI مقصود.
+- أصلحت 7 تناقضات مثبتة file:line: استثناء `/manager/workload` من حارس prefix لصالح `canViewTeamWorkload` (السوبرفايزر كان ينطرد)، وإظهار Reports للموظف (نطاق own موجود بالسيرفر)، وإظهار `/lab/search` اليتيمة وحذف رابط maintenance الميت، وقفل مالك الـFinding للموظف + نطاق مهامه، وبوابة RCA/CAPA/Evidence + زر Reject جديد + بوابة EFFECTIVE/CLOSED، وبوابة Edit للتمبلت لكل صف، وبوابات عرض صريحة لصفحات الطباعة الأربع.
+- ما مسّيت `permissions.ts` ولا أي handler بالسيرفر — السيرفر يبقى المرجع، التعديل UI فقط.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/13-PERMISSION-IA-100-EVIDENCE.md` (جديد)
+- `apps/qc-task-manager/src/{middleware.ts,components/Navbar.tsx,lib/lab/navigation.ts,lib/qc-operations.ts,lib/lab/templates.ts}`
+- `apps/qc-task-manager/src/pages/{findings/index.astro,findings/[id].astro,lab/templates/index.astro,lab/{equipment,calibration,documents,maintenance}/[id]/print.astro}`
+
+### التحقق
+- `test-ui-consistency` ✅ 214/214 · `route-manifest --check` ✅ · `test-manifest-guard` ✅ · `architecture-guard` ✅
+- `test-security-rbac-privacy-100` ✅ · `test-lab-security` ✅ 66/0 · `test-lab-templates` + `test-templates` ✅ · `test-qc-operations` ✅
+- `astro check` ✅ 0 errors (تشخيصا LSP الظاهران stale)
+- full `pnpm test` + production build + نقرة متصفح لكل دور: لم تُشغّل (مخاطر UI فقط — السيرفر لم يُمس)
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صفر تناقضات تفويض معروفة بين UI والسيرفر، والمصفوفة 100% route/action مع deep-link audit موثق.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-04] — تحسين عنقود PDPL + AI لنية بحث المؤسسات العملية
 
 ### تم التنفيذ

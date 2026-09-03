@@ -21,7 +21,13 @@ const prefill = {
   risk_description: (Astro.url.searchParams.get('risk_description') || '').slice(0, 2000),
 };
 const findings = listFindings({ status, classification, owner: user.role === 'employee' ? user.userId : undefined }).filter((finding) => canManageFinding({ id: user.userId, role: user.role }, finding));
-const { tasks, owners } = listFindingFormOptions();
+const { tasks, owners } = listFindingFormOptions(
+  user.role === 'employee' ? { role: user.role, userId: user.userId } : undefined,
+);
+// Employees may only own their own findings (the server rejects any other
+// owner with 403), so the owner picker is locked to self — never a
+// clickable control that predictably fails.
+const employeeOwner = owners.find((owner) => owner.id === user.userId);
 const filtered = Boolean(status || classification);
 const inputClass = 'rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500';
 ---
@@ -100,7 +106,15 @@ const inputClass = 'rounded-md border border-slate-300 px-3 py-2 text-sm text-sl
         <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Finding number<input required name="finding_number" placeholder="F-2026-0001" class={inputClass} /></label>
         <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Task<select required name="task_id" class={inputClass}>{tasks.map((task) => <option value={task.id}>#{task.id} — {task.title}</option>)}</select></label>
         <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Inspection type<input required name="inspection_type" value={prefill.inspection_type} placeholder="Internal audit" class={inputClass} /></label>
-        <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Owner<select name="owner" required class={inputClass}>{owners.map((owner) => <option value={owner.id} selected={owner.id === user.userId}>{owner.full_name}</option>)}</select></label>
+        {user.role === 'employee' ? (
+          <div class="flex flex-col gap-1 text-sm font-medium text-slate-700">Owner
+            <span class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">{employeeOwner?.full_name ?? user.fullName} (you)</span>
+            <input type="hidden" name="owner" value={user.userId} />
+            <span class="text-xs font-normal text-slate-500">Employees create findings assigned to themselves only.</span>
+          </div>
+        ) : (
+          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Owner<select name="owner" required class={inputClass}>{owners.map((owner) => <option value={owner.id} selected={owner.id === user.userId}>{owner.full_name}</option>)}</select></label>
+        )}
         <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Classification<select name="classification" class={inputClass}>{FINDING_CLASSIFICATIONS.map((value) => <option value={value}>{value}</option>)}</select></label>
         <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">Severity<select name="severity" class={inputClass}><option>low</option><option>medium</option><option>high</option><option>critical</option></select></label>
         <label class="flex flex-col gap-1 text-sm font-medium text-slate-700 md:col-span-2">Risk description<textarea required name="risk_description" rows="3" class={inputClass}>{prefill.risk_description}</textarea></label>

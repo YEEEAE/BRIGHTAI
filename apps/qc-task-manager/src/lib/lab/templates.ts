@@ -205,6 +205,8 @@ export interface LabTemplateListRow {
   default_sample_count: number | null;
   updated_at: string;
   test_count: number;
+  /** Author of the current version — the record-level edit authority. */
+  version_created_by: number | null;
 }
 
 export interface LabTemplateSearchResult {
@@ -216,7 +218,7 @@ export interface LabTemplateSearchResult {
 }
 
 const LIST_SELECT = `SELECT t.id, t.code, t.name, t.test_type, t.status, t.updated_at,
-  cv.version AS current_version, cv.default_sample_count,
+  cv.version AS current_version, cv.default_sample_count, cv.created_by AS version_created_by,
   (SELECT COUNT(*) FROM lab_test_records r WHERE r.template_id = t.id) AS test_count
 FROM lab_test_templates t
 LEFT JOIN lab_test_template_versions cv ON cv.id = t.current_version_id`;

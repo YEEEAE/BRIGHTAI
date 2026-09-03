@@ -5,6 +5,12 @@
 import PrintLayout from '../../../../layouts/PrintLayout.astro';
 import { getLabDocumentDetail, LAB_DOCUMENT_STATUS_LABELS } from '../../../../lib/lab/documents';
 import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
+import { canViewLabDocuments } from '../../../../lib/permissions';
+
+// Intentional UI↔server mapping: same canonical view permission as the
+// document reader — deep links cannot bypass it.
+const printUser = Astro.locals.user!;
+if (!canViewLabDocuments(printUser.role)) return Astro.redirect('/lab/documents');
 
 const id = Number(Astro.params.id);
 let detail: ReturnType<typeof getLabDocumentDetail> = null;

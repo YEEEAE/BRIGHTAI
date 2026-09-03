@@ -17,7 +17,6 @@ import {
   canCreateLabRetest,
   canCreateLabTemplate,
   canCreateLabTest,
-  canRecordLabEquipmentMaintenance,
   canReviewLabTest,
   canViewLab,
   canViewLabCalibration,
@@ -73,7 +72,6 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
   { href: '/lab/products', label: 'Products', group: 'Master Data', allowed: (role) => canCreateLabProduct(role) || canProposeLabProductCreate(role) },
   { href: '/lab/templates', label: 'Test Templates', group: 'Master Data', allowed: canCreateLabTemplate },
   { href: '/lab/equipment', label: 'Equipment', group: 'Master Data', allowed: canViewLab },
-  { href: '/lab/equipment/maintenance', label: 'Maintenance', group: 'Master Data', allowed: canRecordLabEquipmentMaintenance },
   { href: '/lab/calibration', label: 'Calibration', group: 'Master Data', allowed: canViewLabCalibration },
   // Controlled Documents
   { href: '/lab/documents', label: 'SOP / WI Documents', group: 'Controlled Documents', allowed: canViewLab },
@@ -89,6 +87,7 @@ const ALL_ENTRIES: readonly LabNavEntry[] = [
 /** Routes whose pages exist today. Extended as implementation prompts land. */
 export const IMPLEMENTED_LAB_ROUTES: readonly string[] = [
   '/lab',
+  '/lab/search',
   '/lab/products',
   '/lab/products/new',
   '/lab/products/[id]',

@@ -15,6 +15,13 @@ import {
 import { statusLabels } from '../../../../lib/lab/equipmentStatus';
 import { getLabCalibrationSummary, LAB_CALIBRATION_STATUS_LABELS } from '../../../../lib/lab/calibration';
 import { labQrPayload, labQrSvg, labSiteOrigin } from '../../../../lib/lab/qrcodes';
+import { canViewLabEquipment } from '../../../../lib/permissions';
+
+// Intentional UI↔server mapping: this print surface enforces the same
+// canonical view permission as the equipment detail page, so deep-linking
+// the URL cannot bypass it (the middleware prefix alone is not the authority).
+const printUser = Astro.locals.user!;
+if (!canViewLabEquipment(printUser.role)) return Astro.redirect('/lab/equipment');
 
 const idParam = Astro.params.id;
 const id = idParam ? Number(idParam) : Number.NaN;

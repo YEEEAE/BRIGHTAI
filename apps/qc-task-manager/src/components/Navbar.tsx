@@ -95,6 +95,10 @@ const ROLE_NAV: Record<SessionLike['role'], RoleNav> = {
       { href: '/search', label: 'Search' },
       { href: '/findings', label: 'Findings' },
       { href: '/lab', label: 'Laboratory' },
+      // Reports is visible: the server resolves an employee-own scope
+      // ("Your tasks only"), so this is an intentional representation —
+      // not a hidden-but-deep-linkable capability.
+      { href: '/reports', label: 'Reports' },
     ],
     more: [],
   },

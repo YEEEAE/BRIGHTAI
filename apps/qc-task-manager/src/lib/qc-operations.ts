@@ -27,11 +27,17 @@ function audit(entityType: EntityType, entityId: number, taskId: number | null, 
 }
 
 /** Dropdown options for the new-finding form (task picker + active owners).
- *  Read model for /findings; previously inlined as SQL in the page frontmatter. */
-export function listFindingFormOptions(): { tasks: { id: number; title: string }[]; owners: { id: number; full_name: string }[] } {
+ *  Read model for /findings; previously inlined as SQL in the page frontmatter.
+ *  When an employee scope is passed, the task picker is limited to tasks
+ *  assigned to or created by that employee — otherwise the picker would leak
+ *  titles of tasks the employee cannot open (the detail page 404s them). */
+export function listFindingFormOptions(scope?: { role: string; userId: number }): { tasks: { id: number; title: string }[]; owners: { id: number; full_name: string }[] } {
   const db = getDb();
+  const tasks = scope?.role === 'employee'
+    ? db.prepare('SELECT id, title FROM tasks WHERE assigned_to = ? OR created_by = ? ORDER BY id DESC LIMIT 200').all(scope.userId, scope.userId) as { id: number; title: string }[]
+    : db.prepare('SELECT id, title FROM tasks ORDER BY id DESC LIMIT 200').all() as { id: number; title: string }[];
   return {
-    tasks: db.prepare('SELECT id, title FROM tasks ORDER BY id DESC LIMIT 200').all() as { id: number; title: string }[],
+    tasks,
     owners: db.prepare('SELECT id, full_name FROM users WHERE is_active=1 ORDER BY full_name').all() as { id: number; full_name: string }[],
   };
 }
