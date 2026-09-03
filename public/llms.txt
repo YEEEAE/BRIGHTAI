@@ -7,6 +7,7 @@ Last reviewed: 2026-09-03
 
 - [AI Governance Hub](https://brightai.live/hub/ai-governance/): Saudi-enterprise governance owner; roles, risk, controls, evidence, and official-source context.
 - [SDAIA AI Risk Guide](https://brightai.live/hub/sdaia-ai-risk-management/): Explains the national AI risk-management framework and separates the official reference from BrightAI operating guidance.
+- [SDAIA AI Risk Deep Guide](https://brightai.live/docs/sdaia-ai-risk-management-framework/): Authoritative deep dive on SDAIA-P145 v1.0 — four stages, four pillars, seven principles, seven risk categories, 4×4 matrix, treatment strategies, decision table, and checklist.
 - [Agentic AI Security](https://brightai.live/hub/agentic-ai-security/): Security boundaries for agent identity, tool permissions, data, prompt safety, monitoring, and incident evidence.
 - [Agentic AI Governance](https://brightai.live/hub/agentic-ai-governance/): Ownership, approvals, lifecycle, and evidence for AI agents.
 - [AI Governance Platform](https://brightai.live/solutions/ai-governance-platform/): BrightAI product page for connecting policy, risk, control, enforcement, and evidence.
@@ -27,6 +28,7 @@ Last reviewed: 2026-09-03
 - **جدار حماية الذكاء الاصطناعي** و**AI Firewall** و**LLM Firewall** → [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/)
 - **تقييم جاهزية حوكمة الذكاء الاصطناعي** → [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/)
 - **سجل تدقيق الذكاء الاصطناعي** و**AI audit trail Saudi Arabia** → [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/)
+- **إطار سدايا لإدارة المخاطر** و**SDAIA AI Risk Management Framework** و**إدارة مخاطر الذكاء الاصطناعي** → [SDAIA AI Risk Deep Guide](https://brightai.live/docs/sdaia-ai-risk-management-framework/)
 
 ## Term boundaries
 
