@@ -1,3 +1,32 @@
+## [2026-09-03] — توحيد سياسة الزواحف: تدريب Disallow وبحث/استشهاد Allow
+
+### تم التنفيذ
+- طبّقت مهارة `seo-technical` (AI Crawler Management) وحوّلت `public/robots.txt` من allow-all شامل التدريب إلى سياسة مقصودة: بحث تقليدي Allow، وبحث/تأريض/استشهاد AI Allow فقط حيث توثيق المزود يؤكد الدور، وتدريب فقط Disallow افتراضيًا.
+- سمحت صراحة: `OAI-SearchBot` و`ChatGPT-User` (OpenAI)، و`PerplexityBot` و`Perplexity-User` (Perplexity)، و`Claude-SearchBot` و`Claude-User` (Anthropic)، و`YouBot`، مع `Disallow: /api/` مكرر Disallow-first في كل مجموعة Allow.
+- منعت صراحة: `GPTBot` و`ClaudeBot` و`Google-Extended` و`Applebot-Extended` و`CCBot` و`Bytespider` و`Meta-ExternalAgent` عبر `Disallow: /` بناءً على توثيق رسمي تم التحقق منه.
+- أزلت توكنز legacy/غير موثقة (`Perplexity-ai` و`anthropic-ai` و`Google-CloudVertexBot` و`cohere-ai` و`FacebookBot` و`Timpibot` و`omgili`) لتغطيها `*` بدل ادعاء دور غير مثبت، وحذفت `Host:` وأبقيت `Sitemap` واحدًا بدون `Content-Signal`.
+- حدّثت `public/ai.txt` (التدريب صار Disallowed + تاريخ 2026-09-03)، وأنشأت تقرير `audit/report/2026-09-03-crawler-policy-training-disallow.md` بمقارنة لايف سطر بسطر وجدول توثيق المزودين وخطوات Cloudflare اليدوية بدون أي تغيير وهمي لإعدادات الحساب.
+
+### الملفات المتأثرة
+- `public/robots.txt`
+- `public/ai.txt`
+- `audit/report/2026-09-03-crawler-policy-training-disallow.md`
+
+### التحقق
+- `urllib.robotparser` ✅ — 19/19 (بحث/استشهاد يسمح ويُمنع من /api/، وتدريب ممنوع).
+- فحص تكرار ✅ — 24 وكيلًا بدون تكرار، Sitemap واحد، Host صفر، ولا سطر توجيه Content-Signal.
+- لايف ✅ — `https://brightai.live/robots.txt` كان 102 سطرًا مطابقًا للنسخة القديمة بدون managed prepend ظاهر؛ الجديد 113 سطرًا بانتظار النشر وpurge.
+- `pnpm build` ✅ — نجح بدون أخطاء.
+- فحص يدوي ✅ — diff يوضح عكس قرار 2026-08-23 المفتوح عمدًا لصالح منع التدريب مع بقاء الاستشهاد.
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صارت سياسة الزواحف واحدة ومقصودة تسمح بالبحث والاستشهاد وتمنع التدريب افتراضيًا، مع خطوات Cloudflare اليدوية موثقة بدون دفع.
+
+### ملاحظات / مشاكل مفتوحة
+- يحتاج نشرًا ثم purge لـ robots.txt وإعادة جلب خارجي للتأكيد، ومراجعة سجلات Bytespider لأنه مختلط التدريب/البحث.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-03] — توحيد لون البراند وظلال النصوص الخفيفة للأقسام
 
 ### تم التنفيذ

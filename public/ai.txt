@@ -1,7 +1,7 @@
 # BrightAI — AI discovery and citation profile
 Site: https://brightai.live
-Last-Major-Update: 2026-08-24
-Topic-Coverage-Last-Reviewed: 2026-08-24
+Last-Major-Update: 2026-09-03
+Topic-Coverage-Last-Reviewed: 2026-09-03
 
 Name: BrightAI
 Type: Saudi AI governance and safety platform
@@ -35,4 +35,4 @@ Machine-Readable-Files:
   - Robots: https://brightai.live/robots.txt
 
 Search-Grounding-Crawlers: Allowed by robots.txt
-Training-Crawlers: Allowed by robots.txt
+Training-Crawlers: Disallowed by robots.txt (training-only tokens are Disallow; see robots.txt)

@@ -1,102 +1,113 @@
 # BrightAI — canonical crawler policy
 # https://brightai.live
 #
-# All crawlers are intentionally allowed across the public site, including
-# known AI search, grounding, and model-training crawlers. No path-level
-# exclusion is expressed here. Cloudflare Managed robots.txt must be OFF;
-# otherwise its prepended training restrictions would contradict this file.
+# Intentional policy (2026-09-03):
+# - Traditional search crawlers: allow.
+# - AI search / grounding / citation crawlers: allow only where provider
+#   documentation confirms that role.
+# - Model-training-only crawlers: disallow by default.
+# - /api/ is not crawlable. Every Allow group repeats Disallow: /api/
+#   because a named User-agent group does not inherit * rules.
+# - Cloudflare Managed robots.txt must stay OFF. When ON it prepends its own
+#   training Disallow + Content Signals block before this file, creating
+#   duplicate/conflicting directives for the same tokens.
+# - No Content-Signal directive here on purpose (validators flag it).
+# - Single canonical Sitemap below. No Host directive.
 
 User-agent: *
+Disallow: /api/
 Allow: /
 
-# Explicit AI/search tokens: retained as auditable Allow signals.
+# AI search / grounding / citation — allowed per verified provider docs.
 User-agent: OAI-SearchBot
+Disallow: /api/
 Allow: /
 
 User-agent: ChatGPT-User
+Disallow: /api/
 Allow: /
 
 User-agent: PerplexityBot
+Disallow: /api/
 Allow: /
 
-User-agent: Perplexity-ai
+User-agent: Perplexity-User
+Disallow: /api/
 Allow: /
 
-User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+Disallow: /api/
 Allow: /
 
-User-agent: GPTBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Google-CloudVertexBot
+User-agent: Claude-User
+Disallow: /api/
 Allow: /
 
 User-agent: YouBot
+Disallow: /api/
 Allow: /
 
-User-agent: anthropic-ai
-Allow: /
+# Model-training-only — disallowed by default per verified provider docs.
+User-agent: GPTBot
+Disallow: /
 
-User-agent: CCBot
-Allow: /
+User-agent: ClaudeBot
+Disallow: /
 
-User-agent: Bytespider
-Allow: /
-
-User-agent: cohere-ai
-Allow: /
-
-User-agent: FacebookBot
-Allow: /
-
-User-agent: Meta-ExternalAgent
-Allow: /
+User-agent: Google-Extended
+Disallow: /
 
 User-agent: Applebot-Extended
-Allow: /
+Disallow: /
 
-User-agent: Timpibot
-Allow: /
+User-agent: CCBot
+Disallow: /
 
-User-agent: omgili
-Allow: /
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
 
 # Traditional search tokens.
 User-agent: Googlebot
+Disallow: /api/
 Allow: /
 
 User-agent: Googlebot-Image
+Disallow: /api/
 Allow: /
 
 User-agent: Bingbot
+Disallow: /api/
 Allow: /
 Crawl-delay: 1
 
 User-agent: Applebot
+Disallow: /api/
 Allow: /
 
 User-agent: MSNBot-Media
+Disallow: /api/
 Allow: /
 
 User-agent: YandexBot
+Disallow: /api/
 Allow: /
 Crawl-delay: 2
 
 User-agent: DuckDuckBot
+Disallow: /api/
 Allow: /
 
 User-agent: Baiduspider
+Disallow: /api/
 Allow: /
 Crawl-delay: 2
 
 User-agent: Baiduspider-image
+Disallow: /api/
 Allow: /
 
 # One canonical sitemap declaration.
 Sitemap: https://brightai.live/sitemap.xml
-
-# Host is retained for compatibility with existing tooling.
-Host: https://brightai.live
