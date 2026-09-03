@@ -14,6 +14,7 @@ Last reviewed: 2026-09-03
 - [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/): جدار حماية الذكاء الاصطناعي للمنشآت السعودية؛ يفحص مسارات LLM المهيأة ويطبق قرارات السماح أو التنقيح أو الحجب أو المراجعة. هو ليس WAF تقليدياً ولا يضمن منع كل حادثة أو تحقيق الامتثال تلقائياً.
 - [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/): Saudi data-protection guide with an official-source panel and implementation boundary.
 - [NCA Cybersecurity Guide](https://brightai.live/blog/nca-cybersecurity-requirements-saudi/): NCA cybersecurity context for AI systems; consult the official controls for applicability.
+- [NCA AI Cybersecurity Draft Guide](https://brightai.live/docs/nca-ai-cybersecurity-guidelines/): Saudi guide to the NCA draft AI Cybersecurity Guidelines (consultation Jul–Aug 2026, not final or binding); four domains, threat-control-evidence matrix, and implementation boundary.
 - [ISO/IEC 42001 Guide](https://brightai.live/blog/iso-42001-saudi-implementation-guide/): AIMS implementation guide with ISO as the primary source.
 - [Banking AI Governance — Riyadh](https://brightai.live/solutions/banking-ai-governance/riyadh/): Saudi banking context, including SAMA reference and human-review/evidence patterns.
 - [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/): Browser-local, indicative eight-dimension diagnostic; not a regulatory finding or certification.
@@ -28,6 +29,7 @@ Last reviewed: 2026-09-03
 - **جدار حماية الذكاء الاصطناعي** و**AI Firewall** و**LLM Firewall** → [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/)
 - **تقييم جاهزية حوكمة الذكاء الاصطناعي** → [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/)
 - **سجل تدقيق الذكاء الاصطناعي** و**AI audit trail Saudi Arabia** → [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/)
+- **أمن الذكاء الاصطناعي** و**NCA AI cybersecurity guidelines** و**AI security Saudi Arabia** → [NCA AI Cybersecurity Draft Guide](https://brightai.live/docs/nca-ai-cybersecurity-guidelines/)
 - **إطار سدايا لإدارة المخاطر** و**SDAIA AI Risk Management Framework** و**إدارة مخاطر الذكاء الاصطناعي** → [SDAIA AI Risk Deep Guide](https://brightai.live/docs/sdaia-ai-risk-management-framework/)
 
 ## Term boundaries

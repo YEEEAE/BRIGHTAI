@@ -16,6 +16,7 @@ Last reviewed: 2026-09-03
 - [SDAIA AI Risk Deep Guide](https://brightai.live/docs/sdaia-ai-risk-management-framework/): Authoritative deep dive on SDAIA-P145 v1.0 — stages, pillars, principles, risk categories, 4×4 matrix, treatment, decision table, checklist.
 - [PDPL and AI Guide](https://brightai.live/docs/pdpl-ai-complete-guide/): Personal-data context for AI use in Saudi Arabia. Primary authority is SDAIA/NDMO material linked on the page.
 - [NCA Cybersecurity Guide](https://brightai.live/blog/nca-cybersecurity-requirements-saudi/): Cybersecurity-control context. Primary authority is NCA ECC linked on the page.
+- [NCA AI Cybersecurity Draft Guide](https://brightai.live/docs/nca-ai-cybersecurity-guidelines/): Draft-guidelines context (consultation closed Aug 2026, not binding). Primary authority is the NCA consultation announcement linked on the page.
 - [ISO/IEC 42001 Guide](https://brightai.live/blog/iso-42001-saudi-implementation-guide/): AI management-system context. Primary authority is ISO/IEC 42001 linked on the page.
 
 ## Products, sector context, and readiness
@@ -36,6 +37,7 @@ Use one canonical owner for each search intent:
 - **جدار حماية الذكاء الاصطناعي** / `AI Firewall` / `LLM Firewall`: [AI Firewall / LLM Firewall](https://brightai.live/solutions/ai-firewall/) owns product and category intent.
 - **تقييم جاهزية حوكمة الذكاء الاصطناعي**: [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/) owns assessment intent.
 - **سجل تدقيق الذكاء الاصطناعي** / `AI audit trail Saudi Arabia`: [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/) owns product intent.
+- **أمن الذكاء الاصطناعي** / `NCA AI cybersecurity guidelines` / `AI security Saudi Arabia`: [NCA AI Cybersecurity Draft Guide](https://brightai.live/docs/nca-ai-cybersecurity-guidelines/) owns the draft-guidelines explanation; the ECC docs own the binding baseline.
 - **إطار سدايا لإدارة المخاطر** / **إدارة مخاطر الذكاء الاصطناعي** / `SDAIA AI Risk Management Framework`: [SDAIA AI Risk Deep Guide](https://brightai.live/docs/sdaia-ai-risk-management-framework/) owns the deep framework explanation; the hub guide owns the concise overview.
 
 ## AI Firewall terminology and conflicts
