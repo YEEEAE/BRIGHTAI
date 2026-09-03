@@ -1,6 +1,10 @@
 ---
 // Decorative, app-wide DotLottie atmosphere. The renderer and WASM stay local
 // so the application's strict same-origin CSP remains unchanged.
+//
+// Same artwork, geometry and page colour as the marketing site
+// (src/components/SiteBackground.astro): a 1080x1080 transparent composition
+// held whole and centred with `contain`, never cropped, never tinted.
 ---
 
 <div class="qc-system-background" aria-hidden="true">
@@ -14,7 +18,8 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    background: #0b0b0b;
+    /* Same pinned tone as the marketing site and the dashboard. */
+    background: #0a0e1a;
   }
 
   .qc-system-background__canvas {
@@ -23,6 +28,7 @@
     width: 100%;
     height: 100%;
     opacity: 1;
+    filter: none;
   }
 
   .qc-app-layer {
@@ -57,7 +63,7 @@
       DotLottie.setWasmUrl('/media/dotlottie-player.wasm');
       new DotLottie({
         canvas,
-        src: '/media/bubble-sticky.lottie',
+        src: '/media/brightai-background.lottie',
         autoplay: true,
         loop: true,
         layout: { fit: 'contain', align: [0.5, 0.5] },

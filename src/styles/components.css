@@ -519,10 +519,10 @@
      text. --brand-300 (teal-400) on the same background gives ~7.1:1 (AAA).
      Visually nearly identical (one Teal shade lighter) but accessibility-clean. */
   color: var(--brand-300);
-  background: rgba(42, 138, 126, 0.08);      /* Teal at 8% */
+  background: rgba(32, 165, 151, 0.08);      /* Teal at 8% */
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
-  border: 1px solid rgba(42, 138, 126, 0.18);
+  border: 1px solid rgba(32, 165, 151, 0.18);
   margin-bottom: 0;                           /* gap handled by parent flex */
 }
 
@@ -560,7 +560,9 @@
 
 .section__subtitle {
   /* DEC-2026-032: lg + secondary + relaxed (1.75) line-height for Arabic.
-     Same hierarchy as base.css p but with `pretty` wrap and centered layout. */
+     Same hierarchy as base.css p but with `pretty` wrap and centered layout.
+     Light text-shadow matching .section__title so the muted description stays
+     legible over the animated page background (no local surface guaranteed). */
   font-size: var(--text-lg);                  /* 18px */
   font-weight: var(--font-normal);
   line-height: var(--leading-relaxed);        /* 1.75 — Arabic breathing */
@@ -568,6 +570,7 @@
   max-inline-size: min(100%, 65ch);
   margin-inline: auto;
   text-wrap: pretty;
+  text-shadow: 0 2px 24px rgba(4, 7, 17, 0.6);
 }
 
 /* Page Hero (inner page banner) */
@@ -736,7 +739,7 @@ button.btn--primary {                              /* legacy single-dash alias *
     box-shadow var(--duration-base) var(--ease-out),
     background var(--duration-base) var(--ease-out),
     filter var(--duration-base) var(--ease-out);
-  box-shadow: 0 0 20px rgba(42,138,126,0.3);
+  box-shadow: 0 0 20px rgba(32,165,151,0.3);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -748,13 +751,13 @@ button.btn--primary {                              /* legacy single-dash alias *
 @keyframes glow-breathe {
   0%, 100% {
     box-shadow:
-      0 0 20px rgba(42,138,126,0.30),
-      0 0 0 0 rgba(42,138,126,0.18);
+      0 0 20px rgba(32,165,151,0.30),
+      0 0 0 0 rgba(32,165,151,0.18);
   }
   50% {
     box-shadow:
-      0 0 26px rgba(42,138,126,0.45),
-      0 0 0 6px rgba(42,138,126,0.05);
+      0 0 26px rgba(32,165,151,0.45),
+      0 0 0 6px rgba(32,165,151,0.05);
   }
 }
 
@@ -770,7 +773,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 .glow-btn:hover,
 .home-cta-primary:hover {
   box-shadow:
-    0 0 32px rgba(42,138,126,0.55),
+    0 0 32px rgba(32,165,151,0.55),
     0 0 0 1px rgba(255, 255, 255, 0.08) inset;
   transform: translateY(-2px);
   background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
@@ -837,7 +840,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 .btn--outline:hover {
-  background: rgba(42,138,126,0.1);
+  background: rgba(32,165,151,0.1);
 }
 
 /* Accent — green (WhatsApp / success CTA) */
@@ -1444,12 +1447,12 @@ button.btn--primary {                              /* legacy single-dash alias *
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg,
-    rgba(59, 163, 149, 0.12) 0%,
+    rgba(32, 165, 151, 0.12) 0%,
     rgba(129, 140, 248, 0.10) 100%);
   border: 1px solid var(--border-brand);
   border-radius: var(--radius-lg);
   color: var(--brand-300);
-  box-shadow: 0 0 16px -6px rgba(59, 163, 149, 0.4);
+  box-shadow: 0 0 16px -6px rgba(32, 165, 151, 0.4);
   margin-bottom: var(--space-4);
   flex-shrink: 0;
 }
@@ -1468,12 +1471,12 @@ button.btn--primary {                              /* legacy single-dash alias *
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg,
-    rgba(59, 163, 149, 0.12) 0%,
+    rgba(32, 165, 151, 0.12) 0%,
     rgba(129, 140, 248, 0.10) 100%);
   border: 1px solid var(--border-brand);
   border-radius: var(--radius-lg);
   color: var(--brand-300);
-  box-shadow: 0 0 16px -6px rgba(59, 163, 149, 0.4);
+  box-shadow: 0 0 16px -6px rgba(32, 165, 151, 0.4);
   margin-bottom: var(--space-4);
 }
 
@@ -1957,8 +1960,8 @@ button.btn--primary {                              /* legacy single-dash alias *
 .home-cta-card,
 .inner-cta-final,
 .inner-cta-final__card {
-  background: linear-gradient(135deg, rgba(42,138,126,0.08), rgba(99, 102, 241, 0.08));
-  border: 1px solid rgba(42,138,126,0.15);
+  background: linear-gradient(135deg, rgba(32,165,151,0.08), rgba(99, 102, 241, 0.08));
+  border: 1px solid rgba(32,165,151,0.15);
   border-radius: var(--radius-2xl);
   padding: var(--space-12) var(--space-8);
   text-align: center;
@@ -1972,7 +1975,7 @@ button.btn--primary {                              /* legacy single-dash alias *
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, rgba(42,138,126,0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(32,165,151,0.06) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -2004,13 +2007,13 @@ button.btn--primary {                              /* legacy single-dash alias *
   background: var(--glass);
   border-radius: var(--radius-2xl);
   padding: var(--space-6);
-  border: 1px solid rgba(42,138,126,0.2);
+  border: 1px solid rgba(32,165,151,0.2);
   background-clip: padding-box;
 }
 
 .glass-panel--cyan {
-  background: rgba(42,138,126,0.02);
-  border-color: rgba(42,138,126,0.2);
+  background: rgba(32,165,151,0.02);
+  border-color: rgba(32,165,151,0.2);
 }
 
 /* ============================================================
@@ -2867,7 +2870,7 @@ html.reveal-ready .home-faq-item {
 .footer {
   position: relative;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(42, 138, 126, 0.04), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(32, 165, 151, 0.04), transparent 70%),
     linear-gradient(180deg, rgba(6, 9, 20, 0.95), rgba(4, 6, 12, 0.99));
   margin-top: auto;
   padding-block: var(--space-12) var(--space-8);
@@ -3307,14 +3310,14 @@ html.reveal-ready .home-faq-item {
   color: var(--brand-300);
   padding: var(--space-1-5) var(--space-3);
   border-radius: var(--radius-lg);
-  background: rgba(42,138,126,0.06);
-  border: 1px solid rgba(42,138,126,0.1);
+  background: rgba(32,165,151,0.06);
+  border: 1px solid rgba(32,165,151,0.1);
   text-decoration: none;
   transition: all var(--duration-fast) var(--ease-out);
 }
 
 .section-mini-link:hover {
-  background: rgba(42,138,126,0.12);
+  background: rgba(32,165,151,0.12);
   color: white;
   text-decoration: none;
 }
@@ -3336,8 +3339,8 @@ html.reveal-ready .home-faq-item {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: rgba(42,138,126,0.2);
-  box-shadow: 0 0 40px rgba(42,138,126,0.1);
+  background: rgba(32,165,151,0.2);
+  box-shadow: 0 0 40px rgba(32,165,151,0.1);
 }
 
 /* ============================================================

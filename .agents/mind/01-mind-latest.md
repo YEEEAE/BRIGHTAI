@@ -1,3 +1,92 @@
+## [2026-09-03] — توحيد لون البراند وظلال النصوص الخفيفة للأقسام
+
+### تم التنفيذ
+- طبّقت مهارة `redesign-existing-projects` (تشخيص ثم إصلاحات مركزة بدون إعادة كتابة).
+- وحّدت 69 موضع teal خام قديم في `components.css` و`pages.css` من `(42,138,126)` و`(59,163,149)` إلى لون البراند المعتمد `(32,165,151)` per DEC-A11Y-001 — نفس الـalpha والهندسة؛ الحدود والتوهجات والخلفيات الزجاجية صارت بلون واحد.
+- أضفت ظل نص خفيف على `.section__subtitle` بنفس قيمة `.section__title` (`0 2px 24px rgba(4,7,17,0.6)`) لوضوح الوصف الرمادي فوق الخلفية المتحركة.
+- فحصت بالمتصفح (Playwright headless + preview محلي): الرئيسية والحلول على 1440 و360 قبل/بعد — لا كسر بصري، وقسم "الإجابة المختصرة" تأكد أنه مليء (732px، المحتوى تحت الـfold مو خلل).
+- حذفت 4 سكربتات فحص مؤقتة أنشأتها بنفسي وأطفأت سيرفر المعاينة.
+
+### الملفات المتأثرة
+- `src/styles/components.css` (25 موضع + ظل الـsubtitle)
+- `src/styles/pages.css` (44 موضع)
+
+### التحقق
+- `node scripts/calc-contrast.mjs` ✅ — title 13.42:1، eyebrow 8.57:1، subtitle 5.73:1 (كلها AA حتى بأسوأ إطار)
+- `pnpm build` ✅ — exit 0 (تحذيرات route collision قديمة فقط)
+- `pnpm test` ✅ — 38 pass / 0 fail
+- فحص بصري Chromium 1440 + 360 قبل/بعد ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** الحدود والتوهجات والخلفيات الزجاجية صارت بلون براند واحد، ووصف الأقسام أوضح فوق الخلفية المتحركة بدون أي كسر.
+
+### ملاحظات / مشاكل مفتوحة
+- حدود البطاقات الأساسية كانت موحدة أصلًا (1px slate 0.1) — لم تُمس.
+- لا commit ولا push ولا deploy.
+
+## [2026-09-03] — توحيد خلفية الموقع على 5CrsnzDP8H-3.lottie ثابتة بالمنتصف
+
+### تم التنفيذ
+- ثبتُّ `5CrsnzDP8H-3.lottie` كمصدر موحد بنسخها إلى `brightai-background.lottie` (البصمة `59bee6ba…` متطابقة، 1197133B).
+- زامنت الأصل عبر `sync-background-media.mjs` إلى `public/media` والـdashboard والـQC (8 أصول متطابقة byte-for-byte).
+- أكدت الهندسة الموحدة القائمة: `position: fixed` + `contain` + `align: [0.5, 0.5]` + لون مثبت `#0a0e1a` بدون scrim أو cover أو فلتر، وتغطي BaseLayout و3 صفحات `<html>` مستقلة والـdashboard والـQC و`500.html`.
+- لم أغيّر كود العرض لأن العقد يحقق طلب "ثابتة وبالمنتصف" حرفيًا؛ ولم أحذف ملف المستخدم الأصلي.
+
+### الملفات المتأثرة
+- `5CrsnzDP8H-3.lottie` (مصدر المستخدم)
+- `brightai-background.lottie`
+- `public/media/brightai-background.lottie`
+- `apps/dashboard/public/media/brightai-background.lottie`
+- `apps/qc-task-manager/public/media/brightai-background.lottie`
+
+### التحقق
+- `node scripts/sync-background-media.mjs` ✅ — 8/8 متطابقة
+- `node scripts/qa/verify-background-contract.mjs` ✅ — 95/95
+- `pnpm build` ✅ — اكتمل بدون أخطاء
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** كل صفحات المشروع صارت على نفس الخلفية الجديدة، ثابتة ومتمركزة بهندسة واحدة.
+
+### ملاحظات / مشاكل مفتوحة
+- ملف `5CrsnzDP8H-3.lottie` بقي في الجذر كمصدر مرفوع؛ الحذف يحتاج تأكيد المستخدم.
+- لا commit ولا push ولا deploy.
+
+## [2026-09-03] — تثبيت baseline SEO التقني للمستودع والـlive architecture
+
+### تم التنفيذ
+- أنشأت تقرير baseline مستقلًا قبل أي optimization في `audit/report/2026-09-03-technical-seo-baseline.md`، بدون تعديل layouts أو صفحات أو CSS أو إعدادات Cloudflare.
+- جردت sitemap والـHTML الناتج: **263 URL** في sitemap، **280 HTML** محليًا، و**0** duplicate titles أو canonical مفقود؛ صنفت عائلات `/answer/`, `/hub/`, `/solutions/`, `/docs/`, `/blog/`, `/assessment/` وربطتها بمالكيها الفعليين.
+- وثقت 6 city redirect aliases بلا H1 وموسومة `noindex`، و13 HTML outputs تحت 300 كلمة منها redirect/utility وquick answers قصيرة؛ مقالات المصدر **97/97** اجتازت حد 1200 كلمة.
+- وثقت architecture الحالية للـrobots/llms/sitemap/redirects/headers وCloudflare: 209 redirects مفحوصة بدون chains/cycles، وCloudflare HTTP enforcement بقي غير مثبت live.
+- سجلت تصميم baseline: CSS layers متعددة، page-scoped styles وraw utility/inline patterns، `ClientRouter`/hydration، وحجم `9.mp4` المسجل سابقًا **~7.96MB** مع CWV الفعلية `N/A`.
+
+### الملفات المتأثرة
+- `audit/report/2026-09-03-technical-seo-baseline.md`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm build` ✅ — exit 0؛ تحذيرات route collisions legacy وVite موثقة في التقرير.
+- `pnpm typecheck` ✅ — 0 errors، 0 warnings، 2 hints.
+- `pnpm test` ✅ — 70/70 root tests.
+- `pnpm seo:hreflang` ✅ — 264 sets، 0 errors.
+- `pnpm seo:schema` ✅ — schema 62 صفحة وspeakable 267 صفحة.
+- `pnpm seo:gate` ✅ — 263 sitemap URLs، 0 broken/canonical/noindex policy errors.
+- `pnpm redirects:check` ✅ — 209 redirects، 0 chains/cycles/missing/duplicates.
+- `pnpm internal-links:audit` ⚠️ — architecture gate PASS، لكن source audit وجد عطلين CSS داخل demos لمهارة تحت `.agents/skills/scroll-world-storytelling/`.
+- `pnpm lint` ❌ — خطآن قائمين في `apps/dashboard/lib/observability/logger.ts:81`.
+- `pnpm verify:live:headers` ⏭️ — DNS غير متاح؛ 20/20 fetches فشلت، لذلك live HTTP/CWV/indexing = `N/A`.
+
+### النتيجة
+- **الحالة:** جزئي / CONDITIONAL baseline.
+- **مختصر:** صار عند المشروع baseline محلي قابل لإعادة التشغيل ومربوط بمصادر الملكية الفعلية، لكن route collisions وقياسات live/CWV تحتاج جولة لاحقة قبل أي optimization أو ادعاء جاهزية إنتاجية.
+
+### ملاحظات / مشاكل مفتوحة
+- الـbuild أنشأ آثارًا محلية في sitemap وبعض نسخ media؛ ما تم commit أو push، ويجب تنظيف artifacts قبل أي commit.
+- اختلاف `og:locale` للإنجليزية (`en_SA` في التنفيذ مقابل policy `en_US`) وتعدد مصادر hreflang موثقين كـP1، بدون تعديل ضمن مهمة baseline.
+- لا Search Console/CrUX/PSI/Lighthouse أو production HTTP evidence: `N/A`.
+
 ## [2026-09-03] — تنفيذ حزمة SEO/Semrush وتسليم تقرير صريح بالحدود
 
 ### تم التنفيذ

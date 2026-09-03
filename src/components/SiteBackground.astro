@@ -2,9 +2,16 @@
 /**
  * SiteBackground — the single page-level background for every visible surface.
  *
- * Renders the approved Bubble Sticky DotLottie asset as the fixed, decorative
- * background for every marketing-page shell. The player and its WASM runtime
- * are both self-hosted so the strict same-origin CSP stays intact.
+ * Renders the approved BRIGHTAI DotLottie artwork as the fixed, decorative
+ * background for every page shell. The player and its WASM runtime are both
+ * self-hosted so the strict same-origin CSP stays intact.
+ *
+ * The artwork is a 1080x1080 transparent composition, so `contain` + centre
+ * alignment keeps it whole and centred at every viewport instead of cropping or
+ * stretching it, and the page colour it composites onto is identical in all
+ * three apps. apps/dashboard/components/SiteBackground.tsx,
+ * apps/qc-task-manager/src/components/SystemBackground.astro and public/500.html
+ * carry the same geometry; scripts/qa/verify-background-contract.mjs enforces it.
  */
 ---
 
@@ -21,7 +28,9 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    background: var(--bg-base, #0a0e1a);
+    /* Pinned, not var(--bg-base): kernel pages re-declare that token, which would
+       put the same artwork on a different tone than the rest of the project. */
+    background: #0a0e1a;
   }
 
   .bai-site-background__canvas {
@@ -30,6 +39,7 @@
     width: 100%;
     height: 100%;
     opacity: 1;
+    filter: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -57,7 +67,7 @@
     DotLottie.setWasmUrl('/media/dotlottie-player.wasm');
     new DotLottie({
       canvas,
-      src: '/media/bubble-sticky.lottie',
+      src: '/media/brightai-background.lottie',
       autoplay: true,
       loop: true,
       layout: { fit: 'contain', align: [0.5, 0.5] },

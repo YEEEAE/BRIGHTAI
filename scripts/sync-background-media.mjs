@@ -2,11 +2,10 @@
 /**
  * Fan the committed DotLottie background and renderer runtime out to each app.
  *
- * The video is committed once at the repo root. Each app deploys independently and
- * therefore needs the asset inside its own public/ tree, but committing a second
- * and third 8 MB copy would triple the video weight in git history. Copying at
- * prebuild time keeps one source of truth and makes byte-identity a property of
- * the build rather than something a reviewer has to remember to check.
+ * The animation is committed once at the repo root. Each app deploys independently
+ * and therefore needs the asset inside its own public/ tree. Copying at prebuild
+ * time keeps one source of truth and makes byte-identity a property of the build
+ * rather than something a reviewer has to remember to check.
  *
  * Fails the build on any mismatch — a silently stale copy would ship a different
  * background to one app.
@@ -23,7 +22,7 @@ const CHECK_ONLY = process.argv.includes('--check');
 // The user-supplied DotLottie is the animation source of truth. The runtime stays
 // local so all apps keep their same-origin CSP.
 const SOURCES = {
-  animation: join(REPO, 'Bubble sticky.lottie'),
+  animation: join(REPO, 'brightai-background.lottie'),
   wasm: join(REPO, 'public/media/dotlottie-player.wasm'),
 };
 
@@ -33,7 +32,7 @@ const TARGETS = [
   { app: 'qc-task-manager', dir: join(REPO, 'apps/qc-task-manager/public/media') },
 ];
 
-const NAMES = { animation: 'bubble-sticky.lottie', wasm: 'dotlottie-player.wasm' };
+const NAMES = { animation: 'brightai-background.lottie', wasm: 'dotlottie-player.wasm' };
 
 const sha256 = (p) => createHash('sha256').update(readFileSync(p)).digest('hex');
 

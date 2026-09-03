@@ -73,6 +73,11 @@ ok(read('src/styles/global.css').includes('--color-text-primary'), 'semantic tok
 // The approved visual background is owned by both document shells so every
 // rendered system page gets it from a single component. Print media explicitly
 // hides the decorative layer to preserve controlled A4 output.
+//
+// The asset is the project-wide DotLottie artwork synced by
+// scripts/sync-background-media.mjs; it replaced the earlier MP4, and these checks
+// assert the same properties against the current renderer: one source, contained
+// and centred geometry, untouched colours, no scrim.
 {
   const background = read('src/components/SystemBackground.astro');
   for (const layout of ['src/layouts/BaseLayout.astro', 'src/layouts/PrintLayout.astro']) {
@@ -80,16 +85,17 @@ ok(read('src/styles/global.css').includes('--color-text-primary'), 'semantic tok
     ok(src.includes("components/SystemBackground.astro"), `system background imported: ${layout}`);
     ok(src.includes('<SystemBackground />'), `system background rendered: ${layout}`);
   }
-  ok(background.includes('/media/qc-system-background.mp4'), 'system background uses the approved local video');
-  ok(background.includes('width: 1600px') && background.includes('height: 1200px'), 'system background preserves the approved video native dimensions');
-  ok(background.includes('object-fit: contain') && !background.includes('object-fit: cover'), 'system background is never resized with cover');
+  ok(background.includes('/media/brightai-background.lottie'), 'system background uses the approved local animation');
+  ok(background.includes('/media/dotlottie-player.wasm'), 'system background loads the same-origin WASM runtime');
+  ok(background.includes("fit: 'contain'") && !/fit:\s*'cover'/.test(background), 'system background is contained, never resized with cover');
+  ok(background.includes('align: [0.5, 0.5]'), 'system background stays centred in the viewport');
   ok(background.includes('position: fixed'), 'system background remains fixed to the viewport');
-  ok(background.includes('opacity: 1') && background.includes('filter: none'), 'system background preserves the source video colors');
+  ok(background.includes('opacity: 1') && background.includes('filter: none'), 'system background preserves the source colors');
   ok(!background.includes('qc-system-background__scrim'), 'system background has no color-altering scrim');
   ok(background.includes('prefers-reduced-motion: reduce'), 'system background respects reduced motion');
   ok(background.includes('@media print'), 'system background stays out of controlled print output');
-  ok(statSync(join(APP_DIR, 'public/media/qc-system-background.mp4')).size > 0, 'system background video exists');
-  ok(statSync(join(APP_DIR, 'public/media/qc-system-background-poster.jpg')).size > 0, 'system background poster exists');
+  ok(statSync(join(APP_DIR, 'public/media/brightai-background.lottie')).size > 0, 'system background animation exists');
+  ok(statSync(join(APP_DIR, 'public/media/dotlottie-player.wasm')).size > 0, 'system background renderer runtime exists');
   const login = read('src/pages/login.astro');
   ok(login.includes('<BaseLayout title="Sign in" hideNav>'), 'login remains inside the shared background layout');
 }

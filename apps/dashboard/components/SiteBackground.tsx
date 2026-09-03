@@ -1,8 +1,9 @@
 /**
  * SiteBackground — page-level background for every dashboard surface.
  *
- * Uses the self-hosted Bubble Sticky DotLottie asset. Its WASM runtime stays
+ * Uses the self-hosted BRIGHTAI DotLottie artwork. Its WASM runtime stays
  * same-origin so the dashboard keeps its strict CSP without a CDN exception.
+ * Geometry matches src/components/SiteBackground.astro exactly.
  */
 'use client';
 
@@ -24,7 +25,7 @@ export default function SiteBackground() {
       DotLottie.setWasmUrl('/media/dotlottie-player.wasm');
       player = new DotLottie({
         canvas,
-        src: '/media/bubble-sticky.lottie',
+        src: '/media/brightai-background.lottie',
         autoplay: true,
         loop: true,
         layout: { fit: 'contain', align: [0.5, 0.5] },

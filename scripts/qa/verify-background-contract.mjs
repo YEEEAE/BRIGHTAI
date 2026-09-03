@@ -19,11 +19,16 @@ const failures = [];
 const ok = (cond, label) => { if (cond) pass += 1; else failures.push(label); };
 
 /* ─────────────────────────────── 1. background components exist and comply */
+// One artwork, one geometry, one page colour across every shell. The artwork is a
+// 1080x1080 transparent composition, so `contain` + centre alignment is what keeps
+// it whole and centred instead of cropped or stretched, and the colour is pinned
+// rather than read from --bg-base (kernel pages re-declare that token).
+const ANIMATION = '/media/brightai-background.lottie';
 const CONTRACT = [
-  ['src/components/SiteBackground.astro', '/media/bubble-sticky.lottie'],
-  ['apps/dashboard/components/SiteBackground.tsx', '/media/bubble-sticky.lottie'],
-  ['apps/qc-task-manager/src/components/SystemBackground.astro', '/media/bubble-sticky.lottie'],
-  ['public/500.html', '/media/bubble-sticky.lottie'],
+  ['src/components/SiteBackground.astro', ANIMATION],
+  ['apps/dashboard/components/SiteBackground.tsx', ANIMATION],
+  ['apps/qc-task-manager/src/components/SystemBackground.astro', ANIMATION],
+  ['public/500.html', ANIMATION],
 ];
 
 for (const [file, animation] of CONTRACT) {
@@ -38,6 +43,12 @@ for (const [file, animation] of CONTRACT) {
   ok(raw.includes('DotLottie'), `${file}: uses the local DotLottie renderer`);
   ok(raw.includes('/media/dotlottie-player.wasm'), `${file}: loads the same-origin WASM runtime`);
   ok(raw.includes(animation), `${file}: points at ${animation}`);
+  ok(raw.includes("fit: 'contain'"), `${file}: artwork is contained, never cropped`);
+  ok(raw.includes('align: [0.5, 0.5]'), `${file}: artwork is centred in the viewport`);
+  ok(!/fit:\s*'cover'/.test(raw), `${file}: artwork is never scaled with cover`);
+  ok(styles.includes('background: #0a0e1a'), `${file}: page colour behind the artwork is the pinned project tone`);
+  ok(styles.includes('opacity: 1') && styles.includes('filter: none'),
+    `${file}: artwork keeps its source colours (no fade, no filter)`);
   ok(!/(class|className)="[^"]*scrim|\.\w*scrim/.test(raw), `${file}: no scrim element or class`);
   ok(styles.includes('prefers-reduced-motion: reduce'), `${file}: honours reduced motion`);
   ok(styles.includes('@media print'), `${file}: excluded from print`);
@@ -46,7 +57,7 @@ for (const [file, animation] of CONTRACT) {
 // The dashboard component markup lives beside its CSS module.
 if (exists('apps/dashboard/components/SiteBackground.tsx')) {
   const s = read('apps/dashboard/components/SiteBackground.tsx');
-  ok(s.includes('/media/bubble-sticky.lottie'), 'dashboard component points at the synced animation');
+  ok(s.includes(ANIMATION), 'dashboard component points at the synced animation');
   ok(s.includes('aria-hidden="true"'), 'dashboard background is hidden from assistive tech');
   ok(s.includes('autoplay: true') && s.includes('loop: true'), 'dashboard animation autoplays and loops');
 }
@@ -124,11 +135,11 @@ const pkg = JSON.parse(read('package.json'));
 ok(/bg:sync/.test(pkg.scripts.prebuild), 'prebuild syncs the background media');
 ok(pkg.scripts['bg:verify'] === 'node scripts/sync-background-media.mjs --check',
   'bg:verify exists for CI byte-identity checks');
-ok(exists('Bubble sticky.lottie'), 'the committed DotLottie source is present at the repo root');
+ok(exists('brightai-background.lottie'), 'the committed DotLottie source is present at the repo root');
 for (const p of [
-  'public/media/bubble-sticky.lottie',
-  'apps/dashboard/public/media/bubble-sticky.lottie',
-  'apps/qc-task-manager/public/media/bubble-sticky.lottie',
+  'public/media/brightai-background.lottie',
+  'apps/dashboard/public/media/brightai-background.lottie',
+  'apps/qc-task-manager/public/media/brightai-background.lottie',
   'public/media/dotlottie-player.wasm',
 ]) ok(exists(p), `synced runtime asset exists: ${p}`);
 
