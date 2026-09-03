@@ -213,9 +213,33 @@ function isSafeDisallowLine(line) {
   return SAFE_DISALLOW_PATTERN.test(line) || SAFE_DISALLOW_DYNAMIC.test(line);
 }
 
+const TRAINING_CRAWLER_PATTERN = /^(?:GPTBot|ClaudeBot|Google-Extended|Applebot-Extended|CCBot|Bytespider|Meta-ExternalAgent)$/i;
+
 function checkRobots(content) {
   const lines = normalizeRobotsLines(content);
-  const disallowLines = lines.filter((line) => /^disallow:\s*/i.test(line));
+  const groups = [];
+  let currentGroup = null;
+  for (const line of lines) {
+    const userAgent = line.match(/^user-agent:\s*(.+)$/i);
+    if (userAgent) {
+      if (!currentGroup || currentGroup.hasDirectives) {
+        currentGroup = { userAgents: [], directives: [], hasDirectives: false };
+        groups.push(currentGroup);
+      }
+      currentGroup.userAgents.push(userAgent[1].trim());
+      continue;
+    }
+    if (!currentGroup) continue;
+    currentGroup.directives.push(line);
+    currentGroup.hasDirectives = true;
+  }
+
+  const indexableGroups = groups.filter((group) =>
+    group.userAgents.some((agent) => !TRAINING_CRAWLER_PATTERN.test(agent)),
+  );
+  const disallowLines = indexableGroups.flatMap((group) =>
+    group.directives.filter((line) => /^disallow:\s*/i.test(line)),
+  );
   const unsafeDisallowLines = disallowLines.filter((line) => !isSafeDisallowLine(line));
   const sitemapLine = lines.find((line) => /^sitemap:\s*/i.test(line)) || "";
   // BAI-IDX-03 (2026-07-25): accept any sitemap URL ending in a

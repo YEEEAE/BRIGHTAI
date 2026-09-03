@@ -75,15 +75,10 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": [
-            "SoftwareApplication",
-            "WebApplication"
-          ],
+          "@type": "Service",
           "@id": "https://brightai.live/#product",
           "name": "BrightAI Kernel",
           "url": "https://brightai.live/kernel/",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "Cloud, Hybrid, On-Premise",
           "description": "تطبيق ويب مؤسسي لحوكمة وأمان الذكاء الاصطناعي، يوفّر جدار حماية للذكاء الاصطناعي وسجل تدقيق وموافقات بشرية وملفات أدلة وضوابط امتثال للمنشآت السعودية.",
           "provider": {
             "@id": "https://brightai.live/#organization"
@@ -95,6 +90,11 @@
             "availability": "https://schema.org/InStock",
             "url": "https://brightai.live/kernel/",
             "description": "ديمو عام مجاني لواجهة BrightAI Kernel"
+          },
+          "serviceType": "AI Governance Platform",
+          "areaServed": {
+            "@type": "Country",
+            "name": "المملكة العربية السعودية"
           }
         }
       ]

@@ -34,35 +34,30 @@ const faqItems = [
 // HTML by ~30KB. Each city page has its own canonical LocalBusiness @id, so
 // search engines get the same entity information without the homepage bloat.
 // We keep only entities that FoundationSchema does NOT emit:
-//   - SoftwareApplication (Kernel product)
+//   - Service (Kernel product — Service, not SoftwareApplication:
+//     no fabricated ratings, see SEMRUSH-FIX-2026-09-04 below)
 //   - FAQPage (homepage Q&A)
 //   - DefinedTermSet (technical AI governance terms)
 // See /BRIGHTAI/.agents/brain.md Section 5.8 for the schema-helpers contract.
 // BAI-SEO-003-S3 (2026-07-18): aggregateRating was removed (4.8/47 was
 // fabricated — no source-backed reviews for Kernel). Re-add when a real
 // review source is integrated (e.g. verified G2 / Capterra listing).
+// SEMRUSH-FIX-2026-09-04: @type was WebApplication (SoftwareApplication
+// subtype) — Google requires aggregateRating/review for Software App rich
+// results, so every rating-less page flagged "Software App: 1 field
+// invalid" in Semrush. Service carries the same commercial meaning with
+// NO rating requirement. Never re-add a rating without a real source.
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
+    "@type": "Service",
     "@id": "https://brightai.live/#product",
     "name": "BrightAI Kernel",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Cloud, Hybrid, On-Premise",
+    "serviceType": "AI Governance Platform",
     "description": "نواة حوكمة الذكاء الاصطناعي للمنشآت السعودية — تدعم جاهزية الامتثال وتشغيل AI Firewall وسجل التدقيق والموافقات البشرية وملفات الأدلة. ليست استشارة قانونية.",
     "url": "https://brightai.live/kernel/",
     "provider": {"@id": "https://brightai.live/#organization"},
-    "featureList": [
-      "AI Firewall — فحص الطلبات ومنع تسريب البيانات",
-      "PII Redaction — إخفاء البيانات الشخصية تلقائياً",
-      "Audit Trail — سجل تدقيق غير قابل للتعديل",
-      "Human Approval Layer — موافقات بشرية للقرارات عالية المخاطر",
-      "AI Evidence File — ملفات أدلة PDF موقّعة رقمياً",
-      "Risk Scoring — تصنيف مخاطر كل طلب",
-      "Compliance Packs — حزم امتثال PDPL وNCA وSFDA وSAMA",
-      "Policy Editor — محرر سياسات بدون تعقيد تقني",
-      "Enterprise Connectors — ربط آمن مع ERP وCRM وHIS"
-    ],
+    "areaServed": {"@type": "Country", "name": "المملكة العربية السعودية"},
     "offers": {
       "@type": "Offer",
       "priceCurrency": "SAR",

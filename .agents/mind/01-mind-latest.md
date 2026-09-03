@@ -1,3 +1,36 @@
+## [2026-09-04] — إصلاح أخطاء Semrush: 60 structured data items invalid (Software App + Local Business)
+
+### تم التنفيذ
+- شخصت السبب الجذري من الـHTML الحي (نفس ما يزحفه Semrush): عقد `WebApplication` بدون `aggregateRating/review` تُقرأ كـSoftware App ناقص حقل التقييم (الرئيسية وكل `/kernel/*` → 1 field، وصفحة التقييم بدون `offers` → 2 fields)، وعقد `ProfessionalService` (subtype من LocalBusiness) بدون `address` في مدن غير الرياض → 1 field.
+- حولت `KERNEL_PRODUCT` وكل صفحات `/kernel/*` والرئيسية وصفحة التقييم من `WebApplication` إلى `Service` (بدون أي تقييم مفبرك — `aggregateRating` المفبرك 4.8/47 محذوف منذ BAI-SEO-003-S3 ولا يعود)، مع `serviceType` و`areaServed: SA` و`offers` بسعر 0.
+- حولت مدن غير الرياض (الخبر، الدمام، جدة، مكة، المدينة) من `ProfessionalService+Service` إلى `Service` فقط، ووسعت مصفاة الـmigrated JSON لتسقط عقد `ProfessionalService/Service` المكررة بدون عنوان (الدمام وجدة)، وأصلحت wikidata المدينة `Q35484` → `Q334084`.
+- حولت عقدة `kernel-offline.json` المهاجرة من `SoftwareApplication+WebApplication` إلى `Service` (صفحة offline لا تدمج غيرها؛ باقي kernel JSONs المهاجرة بيانات ميتة لا تُعرض).
+- جربت Semrush API بالتوكن المعطى: رد `403` على classic API و`401/400` على management/siteaudit — التوكن لا يملك صلاحية Site Audit، فالتشخيص تم من الـHTML الحي وهو مصدر الحقيقة الذي يزحفه Semrush.
+
+### الملفات المتأثرة
+- `src/data/schema-helpers.ts` (KERNEL_PRODUCT + تعليق getKernelSubPageJsonLd)
+- `src/pages/index.astro` (WebApplication → Service)
+- `src/pages/assessment/ai-governance-readiness/index.astro` (WebApplication → Service مع offers)
+- `src/pages/solutions/[sector]/[city].astro` (نوع المدن + wikidata + مصفاة migrated)
+- `src/pages/kernel/index.astro` (تعليق فقط)
+- `src/data/migrated-pages/kernel-offline.json` (عقدة واحدة → Service)
+
+### التحقق
+- `pnpm build` ✅ — exit 0 (تحذيرات route collision القديمة فقط)
+- `pnpm seo:schema` ✅ — 64 صفحة + speakable 267
+- `pnpm seo:gate` ✅ — 0 أخطاء
+- `pnpm seo:hreflang` ✅ — 0 أخطاء
+- `pnpm test` ✅ — 16+29+38 pass / 0 fail
+- فحص `dist/client` ✅ — صفر `WebApplication`/`SoftwareApplication` في كل الـHTML، وصفر `ProfessionalService` إلا عقدة الرياض الصالحة بعنوان
+
+### النتيجة
+- **الحالة:** نجح محليًا / يحتاج نشرًا ثم إعادة زحف Semrush
+- **مختصر:** كل الـ60 عنصرًا المبلغ عنها سقط سببها من القوالب (نفس القالب يغطي كل روابط `?trace=` و`?scenario=` و`?pack=`)، لكن تقرير Semrush البعيد يبقى قديمًا حتى النشر وإعادة تشغيل الحملة.
+
+### ملاحظات / مشاكل مفتوحة
+- توكن Semrush أُرسل مكشوفًا بالمحادثة ولم يُخزن في المستودع — يُوصى بتدويره من لوحة Semrush.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-03] — دليل مسودة NCA لإرشادات الأمن السيبراني للذكاء الاصطناعي
 
 ### تم التنفيذ
@@ -2660,3 +2693,61 @@
 - ما زالت تحذيرات route collision القديمة وتحذير Vite الخاص بـ `PiiTypeId` ظاهرة أثناء البناء، لكنها لم تمنع النجاح.
 - HSTS للنطاقات الفرعية وفحص الروابط الخارجية الحية يحتاجان deployment وفحص Semrush/HTTP من خارج بيئة البناء.
 - لا commit ولا push ولا deploy.
+## [2026-09-04] — تشغيل منظومة Semrush SEO الكاملة ومطابقة live مع المصدر المحلي
+
+### تم التنفيذ
+- استخدمت اتصال Semrush الفعلي لحملة `31075135` والمشروع `k` على `brightai.live`، واستخرجت `snapshots`, `info`, `meta_issues`, `snapshot`, و`issue_details` لكل issue غير صفري.
+- ثبّتُّ أحدث snapshot `6a99df64360b06655c4f0b0e`: **Quality 89، 312 صفحة، 95 Error، 924 Warning، 405 Notice**؛ وفصلت نتائج live القديمة عن الإصلاحات الموجودة محليًا.
+- استخرجت الصفحات المتأثرة فعليًا: 35 hreflang، 60 structured-data markup، 340 external-link، 6 title طويل، 32 H1/title، 139 text/HTML، 15 word count، 392 JS/CSS unminified، 303 nofollow خارجي، 5 language mismatch، 2 HSTS، 27 one-link، صفحة semantic واحدة، و57 content optimization.
+- شغّلت تقارير Semrush المتاحة خارج Site Audit: `domain_rank` للسعودية (1 keyword، traffic 0)، `resource_organic`، `backlinks_overview` (67 links / 30 referring domains / Authority score 2)، واكتشفت أن `domain_organic_organic` بلا بيانات وأن `position_tracking` غير مفعّل للحملة.
+- أصلحت false positive في `scripts/seo-health-check.mjs`: صار يفرّق بين `Disallow: /` لزواحف تدريب AI وبين قواعد منع Google/search، مع إبقاء منع التدريب مقصودًا.
+
+### الملفات المتأثرة
+- `scripts/seo-health-check.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm seo:all` ✅ — لا مشاكل محلية ضمن الفحوصات المطلوبة، وcontent acceptance 4/4.
+- `pnpm seo:schema` ✅ — 64 صفحة، وSpeakable 267 صفحة.
+- `pnpm seo:hreflang` ✅ — 264 مجموعة، 0 أخطاء.
+- `pnpm seo:gate` ✅ — 0 أخطاء، 0 تحذيرات، 0 روابط مكسورة ضمن 48,195 مرجعًا.
+- Semrush Site Audit API ✅ — issue details مكتملة لكل الـ15 issue النشطة.
+
+### النتيجة
+- **الحالة:** ناجح محليًا / مشروط بالنشر
+- **مختصر:** صارت نتائج Semrush مفهومة على مستوى الصفحة والسبب، والحارس المحلي صار متوافقًا مع سياسة AI crawler الحالية. معظم أرقام live ناتجة من deployment أقدم وتحتاج نشر ثم إعادة crawl.
+
+### ملاحظات / مشاكل مفتوحة
+- الـ60 structured-data و340 external links و303 nofollow و392 unminified التي ظهرت في Semrush مرتبطة بنسخة live القديمة؛ المصدر المحلي الحالي عالج الجذور القابلة للإثبات.
+- `brightai.live` عنده organic visibility ضعيفة جدًا: كلمة واحدة بالمركز 62 وorganic traffic تقديري 0، و67 backlink من 30 domain مع Authority score 2؛ تحتاج خطة authority/content بعد توفر أدوات Semrush الأخرى.
+- Semrush Position Tracking غير موجود في المشروع، و`domain_organic_organic` بلا بيانات؛ لا توجد بيانات ranking history يمكن اختلاقها.
+- لا commit ولا push ولا deploy.
+## [2026-09-04] — تحقق نهائي من خطأ Semrush Structured Data (issue 45)
+
+### تم التنفيذ
+- راجعت لقطة Semrush الأحدث المسجلة للحملة `31075135`: issue 45 ما زال يعرض **60** عنصر Structured Data في نسخة live؛ نتائج السحب التاريخية لا تحتوي صفوف الروابط (`data: []`)، لذلك لم أخمّن صفحات متأثرة.
+- جرّبت المفتاح المرسل بصيغ `Apikey` و`Bearer` على Projects API الرسمي وPAT على MCP الرسمي؛ جميعها أعادت `401`، لذلك لم يُحفظ المفتاح ولم يُستخدم في أي ملف أو إعداد.
+- بنيت الموقع محليًا ثم تحققت من مخرجات JSON-LD الفعلية: مزامنة FAQ وDocs نظيفة، تدقيق schema نجح على **64** صفحة، وSpeakable schema نجح على **267** صفحة.
+- شغّلت بوابة SEO على **280** ملف HTML و**48,195** مرجعًا: 0 أخطاء، 0 تحذيرات، و0 روابط مكسورة؛ ما ظهر خلل schema محلي إضافي يستلزم تعديل المصدر.
+- أعاد البناء توليد `sitemap.xml` و`public/sitemap.xml` لتحديث تواريخ `lastmod` للصفحات التي تعدّلت مصادرها في 4 سبتمبر.
+
+### الملفات المتأثرة
+- `sitemap.xml`
+- `public/sitemap.xml`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل؛ مع تحذيرات route collision قائمة خارج نطاق المهمة.
+- `pnpm schema:solutions:check` ✅
+- `pnpm schema:docs:check` ✅
+- `node scripts/seo-schema-audit.mjs` ✅ — 64 صفحة.
+- `node scripts/check-speakable-schema.mjs` ✅ — 267 صفحة.
+- `pnpm seo:gate` ✅ — 0 errors / 0 warnings / 0 broken links.
+
+### النتيجة
+- **الحالة:** ناجح محليًا / مشروط خارجيًا.
+- **مختصر:** المصدر الحالي ومخرجاته لا تحتوي خطأ Structured Data قابلًا للإصلاح؛ تصفير عداد Semrush يتطلب نشر التغييرات المحلية ثم إعادة crawl، أو مفتاح Projects API صالح لاستخراج روابط اللقطة مباشرة.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+- لا تحفظ مفتاح Semrush المرسل في المستودع؛ يلزم مفتاح API من صفحة Semrush API Keys بصيغة مدعومة إذا احتجنا استخراج URLs من Projects API.

@@ -49,7 +49,9 @@ const unit = getKernelUnit('index')!;
  * descriptions, two different sameAs lists, two different BreadcrumbLists).
  *
  * The page now only adds page-specific nodes:
- *   - KERNEL_PRODUCT  (SoftwareApplication — the kernel product entity)
+ *   - KERNEL_PRODUCT  (Service — the kernel product entity; Service, not
+ *     SoftwareApplication, because we carry no fabricated ratings —
+ *     see SEMRUSH-FIX-2026-09-04 in schema-helpers.ts)
  *   - page-level FAQPage (only when there are ≥5 visible Q/A)
  * Each city-local LocalBusiness is intentionally NOT emitted on /kernel/
  * — Schema.org guidance puts LocalBusiness on the *city's own page*, not

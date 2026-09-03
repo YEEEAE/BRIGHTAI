@@ -38,7 +38,7 @@ const wikiId = loc.cityEn === 'Riyadh' ? 'Q3674'
   : loc.cityEn === 'Dammam' ? 'Q41630'
   : loc.cityEn === 'Jeddah' ? 'Q39547'
   : loc.cityEn === 'Mecca' ? 'Q35484'
-  : loc.cityEn === 'Madinah' ? 'Q35484'
+  : loc.cityEn === 'Madinah' ? 'Q334084'
   : loc.cityEn === 'Khobar' ? 'Q810482'
   : 'Q3674';
 
@@ -51,16 +51,19 @@ const whatsappMsg = encodeURIComponent(`مرحباً، أريد استفسار �
 // BAI-SEO-003-S6 (2026-07-18): SAB honesty — LocalBusiness type is only
 // valid for Riyadh (the actual company HQ, رويغب الفيحاء، الرياض —
 // unified founder address 2026-08-23). For the other 5 cities (khobar, dammam, jeddah,
-// mecca, madinah) we emit ProfessionalService + Service — service-area
-// business pattern. We keep geo + serviceArea on all cities (factual
-// reach) but only Riyadh carries a `address` block, and its address is
+// mecca, madinah) we emit plain `Service` — NOT ProfessionalService —
+// because ProfessionalService is a LocalBusiness subtype and validators
+// (Semrush "Local Business: 1 field invalid") then demand an `address`
+// we do not have (no fake branch offices, ever). Plain Service needs no
+// address and validates clean with geo + serviceArea (factual reach).
+// Only Riyadh carries an `address` block, and its address is
 // the real HQ street, NOT a fabricated branch office.
 const isHQ = loc.cityEn === 'Riyadh';
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": isHQ ? ["LocalBusiness", "Service"] : ["ProfessionalService", "Service"],
+      "@type": isHQ ? ["LocalBusiness", "Service"] : "Service",
       "@id": loc.canonical + (isHQ ? "#localbusiness" : "#service"),
       "name": `BrightAI — ${sector.h1}`,
       "description": loc.description,
@@ -121,6 +124,16 @@ const locFaqLd = loc.faqs && loc.faqs.length > 0
 // produced a duplicate @id in the merged @graph (verified via
 // scripts/_check-duplicate-schema-ids.mjs).
 const FOUNDATION_TYPES_CITY = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage', 'BreadcrumbList']);
+// SEMRUSH-FIX-2026-09-04: legacy migrated city JSONs (dammam, jeddah) carry
+// their own `ProfessionalService + Service` node WITHOUT an `address` block.
+// ProfessionalService is a LocalBusiness subtype, so validators flag it as
+// "Local Business: 1 field invalid". The template above already emits the
+// canonical service node for the page (HQ LocalBusiness+Service for Riyadh,
+// plain Service for the other cities), so any migrated service-typed node
+// is a stale duplicate and must be dropped — same pattern as the
+// foundation types above. Plain `Service` needs no address and would be
+// valid, but keeping both would duplicate the service entity.
+const MIGRATED_SERVICE_TYPES_DROP = new Set(['ProfessionalService', 'Service']);
 
 function stripFoundationTypesFromMigrated(
   node: unknown,
@@ -139,8 +152,8 @@ function stripFoundationTypesFromMigrated(
   const isFoundationNode = (n: unknown): boolean => {
     if (!n || typeof n !== 'object') return false;
     const t = (n as Record<string, unknown>)['@type'];
-    if (typeof t === 'string') return t === 'FAQPage' || FOUNDATION_TYPES_CITY.has(t);
-    if (Array.isArray(t)) return t.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES_CITY.has(x)));
+    if (typeof t === 'string') return t === 'FAQPage' || FOUNDATION_TYPES_CITY.has(t) || MIGRATED_SERVICE_TYPES_DROP.has(t);
+    if (Array.isArray(t)) return t.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES_CITY.has(x) || MIGRATED_SERVICE_TYPES_DROP.has(x)));
     return false;
   };
 
@@ -154,8 +167,8 @@ function stripFoundationTypesFromMigrated(
   const next: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(obj)) {
     if (key === '@type') {
-      if (typeof value === 'string' && (value === 'FAQPage' || FOUNDATION_TYPES_CITY.has(value))) continue;
-      if (Array.isArray(value) && value.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES_CITY.has(x)))) continue;
+      if (typeof value === 'string' && (value === 'FAQPage' || FOUNDATION_TYPES_CITY.has(value) || MIGRATED_SERVICE_TYPES_DROP.has(value))) continue;
+      if (Array.isArray(value) && value.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES_CITY.has(x) || MIGRATED_SERVICE_TYPES_DROP.has(x)))) continue;
     }
     if (key === 'sameAs' && Array.isArray(value)) {
       next[key] = value.filter((entry) => entry !== 'https://github.com/YEEEAE/BRIGHTAI');

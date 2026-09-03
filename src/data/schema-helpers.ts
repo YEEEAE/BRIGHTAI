@@ -360,31 +360,24 @@ export function getFaqLd(items: FaqItem[]) {
  */
 export const KERNEL_PRODUCT = {
   '@context': 'https://schema.org',
-  // BrightAI Kernel is delivered as a web application. Do not label it as a
-  // SoftwareApplication unless we have real, source-backed review data for
-  // the required aggregateRating/review properties.
-  '@type': 'WebApplication',
+  // SEMRUSH-FIX-2026-09-04: was `WebApplication` (a SoftwareApplication
+  // subtype). Google requires `aggregateRating` OR `review` for Software App
+  // rich-result eligibility, and we have no source-backed reviews —
+  // fabricated ratings were removed in BAI-SEO-003-S3 and must never return.
+  // Emitting a rating-less SoftwareApplication subtype is exactly what
+  // Semrush flags as "Software App: N fields invalid" on every /kernel/*
+  // page + the homepage. `Service` carries the same commercial meaning
+  // (name/url/provider/offers/areaServed) with NO rating requirement, so it
+  // validates clean while staying honest.
+  '@type': 'Service',
   '@id': 'https://brightai.live/#product',
   name: 'BrightAI Kernel',
-  applicationCategory: 'BusinessApplication',
-  applicationSubCategory: 'AI Governance Platform',
-  operatingSystem: 'Cloud, Hybrid, On-Premise, Air-Gapped',
+  serviceType: 'AI Governance Platform',
   description:
     'نواة حوكمة الذكاء الاصطناعي للمنشآت السعودية — تدعم جاهزية الامتثال وتشغيل AI Firewall وسجل التدقيق والموافقات البشرية وملفات الأدلة. ليست استشارة قانونية.',
   url: 'https://brightai.live/kernel/',
   provider: { '@id': 'https://brightai.live/#organization' },
-  featureList: [
-    'AI Firewall — فحص الطلبات ومنع تسريب البيانات',
-    'PII Redaction — إخفاء البيانات الشخصية تلقائياً',
-    'Audit Trail — سجل تدقيق غير قابل للتعديل',
-    'Human Approval Layer — موافقات بشرية للقرارات عالية المخاطر',
-    'AI Evidence File — ملفات أدلة PDF موقّعة رقمياً',
-    'Risk Scoring — تصنيف مخاطر كل طلب',
-    'Compliance Packs — حزم امتثال PDPL وNCA وSFDA وSAMA',
-    'Policy Editor — محرر سياسات بدون تعقيد تقني',
-    'Enterprise Connectors — ربط آمن مع ERP وCRM وHIS',
-    'Statistics Dashboard — مؤشرات تشغيلية ورؤية شاملة',
-  ],
+  areaServed: { '@type': 'Country', name: 'المملكة العربية السعودية' },
   offers: {
     '@type': 'Offer',
     priceCurrency: 'SAR',
@@ -424,15 +417,15 @@ export function getWebPageLd(opts: {
 }
 
 /* ──────────────────────────────────────────────────────────────────
- * 8. KERNEL SUB-PAGE JSON-LD  (SEMRUSH-FIX-2026-07-08 #45)
+ * 8. KERNEL SUB-PAGE JSON-LD  (SEMRUSH-FIX-2026-07-08 #45, updated 2026-09-04)
  * ────────────────────────────────────────────────────────────────
  *
- * Each /kernel/<slug>/ page used to emit a STRAY standalone WebApplication
- * node missing SoftwareApplication parent + aggregateRating + offers.
- * This helper produces a single KERNEL_PRODUCT node (with @type as ARRAY
- * ["SoftwareApplication", "WebApplication"] and all REQUIRED/RECOMMENDED
- * fields including aggregateRating and offers), plus optional page-specific
- * overrides (per-unit label/url/description).
+ * Each /kernel/<slug>/ page emits one Service node cloned from
+ * KERNEL_PRODUCT (plus optional page-specific label/url/description).
+ * Service — not WebApplication/SoftwareApplication — because Google
+ * requires aggregateRating/review for Software App rich results and we
+ * have no source-backed reviews (fabrication is forbidden). Service
+ * validates with no rating fields.
  *
  * Returned as an array, since `array` is what BaseLayout.flattenGraphNodes
  * RECOGNIZES for merging into the foundation @graph.
