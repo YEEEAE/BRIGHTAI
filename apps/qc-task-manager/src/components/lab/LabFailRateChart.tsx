@@ -116,7 +116,7 @@ export default function LabFailRateChart({ points, granularity }: Props) {
         ))}
       </svg>
 
-      <p className="mt-2 text-xs text-slate-500" aria-live="polite">
+      <p className="mt-2 text-xs text-slate-500" aria-live="polite" aria-atomic="true">
         {activePoint
           ? activePoint.failRate === null
             ? `${activePoint.label}: no decided tests — selected point`

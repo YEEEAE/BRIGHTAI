@@ -118,7 +118,7 @@ function fmt(value: unknown): string {
 
         <LabSecondaryNav items={navItems} currentPath={`/lab/equipment/${detail.equipment.id}`} />
         {pendingContributorChanges > 0 && (
-          <div role="status" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <div role="status" aria-live="polite" aria-atomic="true" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
             Pending contributor changes: {pendingContributorChanges}
             {canReviewLabChangeRequests(role) && <a class="ms-2 font-semibold underline" href="/lab/change-requests">Review</a>}
           </div>

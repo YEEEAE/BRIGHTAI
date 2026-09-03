@@ -68,6 +68,8 @@ interface Props extends SEOProps {
    * "noindex" value and emits the canonical `index, follow, max-...` set.
    */
   robots?: string;
+  /** Suppress hreflang on error/utility pages that have no language cluster. */
+  omitHreflang?: boolean;
   /**
    * Optional page-level breadcrumbs (without the home crumb — added by
    * FoundationSchema automatically). Order: ancestors first, current last.
@@ -119,6 +121,7 @@ const {
   currentPath = '/',
   languageCounterpart,
   robots,
+  omitHreflang = false,
   breadcrumbs = [],
   omitBreadcrumbsUI = false,
   extraJsonLd = [],
@@ -184,7 +187,20 @@ function flattenGraphNodes(
       const inner = flattenGraphNodes(graph as Array<Record<string, unknown>>, seen);
       out.push(...inner);
     } else {
-      out.push(entry);
+      // Semrush and Schema.org treat SoftwareApplication as a product type
+      // that needs review/aggregateRating data. BrightAI Kernel is a hosted
+      // web application and has no source-backed reviews, so normalize legacy
+      // migrated nodes at the final graph boundary instead of fabricating
+      // ratings or leaving stale type arrays in older JSON files.
+      const entryType = entry['@type'];
+      if (Array.isArray(entryType) && entryType.includes('SoftwareApplication')) {
+        const nextType = entryType.filter((type) => type !== 'SoftwareApplication');
+        out.push({ ...entry, '@type': nextType.length === 1 ? nextType[0] : nextType });
+      } else if (entryType === 'SoftwareApplication') {
+        out.push({ ...entry, '@type': 'WebApplication' });
+      } else {
+        out.push(entry);
+      }
     }
   }
   return out;
@@ -246,6 +262,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     jsonLd={undefined}
     locale={lang}
     robots={finalRobots}
+    omitHreflang={omitHreflang}
   />
 
   <!-- Foundation schema (Organization + WebSite + SearchAction + LocalBusiness

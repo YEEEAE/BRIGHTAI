@@ -465,6 +465,9 @@ export default function Navbar({ user, notificationCount = 0, recentNotification
           )}
         </div>
       </nav>
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {notificationCount > 0 ? `${notificationCount} unread notifications` : 'No unread notifications'}
+      </div>
 
       {nav && (
         // Mobile menu — intentionally designed: grouped sections with

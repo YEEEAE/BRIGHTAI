@@ -8,7 +8,7 @@
 //
 // Keyboard + interaction scenarios (fatal):
 //   1. Skip link — the first Tab on any page focuses it (focus-visible ring
-//      verified); Enter jumps to #main; the next Tab reaches the navbar.
+//      verified); Enter jumps to #main-content; the next Tab reaches the navbar.
 //   2. Notification dropdown — Enter opens it and focus moves into the menu;
 //      Tab enters the open disclosure; Escape closes it and
 //      returns focus to the bell trigger.
@@ -250,7 +250,7 @@ const SEVERITY_ORDER = ['critical', 'serious', 'moderate', 'minor'];
 const axeReport = [];
 
 try {
-  // ─────────────────── 1. Skip link (first focusable, Enter → #main) ───────────────────
+  // ─────────────────── 1. Skip link (first focusable, Enter → #main-content) ───────────────────
   console.log('── Scenario 1: skip link ──');
   // Pages must come from a context — axe-core 4.x rejects browser.newPage().
   const ctx = await browser.newContext();
@@ -286,11 +286,11 @@ try {
   ok(skipAgain, '1d. Shift+Tab returns to the skip link');
 
   await page.keyboard.press('Enter');
-  const jumped = await page.evaluate(() => document.activeElement?.id === 'main' || location.hash === '#main');
-  ok(jumped, '1e. Enter on the skip link jumps to #main');
+  const jumped = await page.evaluate(() => document.activeElement?.id === 'main-content' || location.hash === '#main-content');
+  ok(jumped, '1e. Enter on the skip link jumps to #main-content');
 
   // Primary nav carries a visible focus ring (focus-visible contract of the
-  // shared Navbar/AppButton primitives). Shift+Tab from #main walks backward
+  // shared Navbar/AppButton primitives). Shift+Tab from #main-content walks backward
   // into the header's last focusable — a keyboard-initiated focus, so
   // :focus-visible applies deterministically.
   await page.keyboard.press('Shift+Tab');

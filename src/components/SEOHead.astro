@@ -28,6 +28,7 @@ interface Props extends SEOProps {
    */
   robots?: string;
   hreflang?: HreflangLink[];
+  omitHreflang?: boolean;
 }
 
 const {
@@ -40,6 +41,7 @@ const {
   jsonLd,
   locale = 'ar',
   robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
+  omitHreflang = false,
 } = Astro.props as Props;
 
 // Robots directive (BAI-SEO-003-S1, 2026-07-18):
@@ -66,7 +68,14 @@ const explicitHreflang = canonical ? getHreflangLinks(canonical) : [...hreflang]
 // hreflang links at all — neither the explicit ones from the map nor any
 // passed-in prop, and we do not emit x-default. This keeps the
 // noindex contract consistent across crawlers.
-const finalHreflang = isNoindexPage ? [] : explicitHreflang;
+const validHreflang = explicitHreflang.filter(
+  (link) => typeof link.lang === 'string' && link.lang.trim().length > 0 &&
+    typeof link.href === 'string' && link.href.trim().length > 0,
+);
+const uniqueHreflang = Array.from(
+  new Map(validHreflang.map((link) => [`${link.lang}:${link.href}`, link])).values(),
+);
+const finalHreflang = isNoindexPage || omitHreflang ? [] : uniqueHreflang;
 const finalHasXDefault = finalHreflang.some((link) => link.lang === 'x-default');
 ---
 

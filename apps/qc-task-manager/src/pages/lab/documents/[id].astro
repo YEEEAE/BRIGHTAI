@@ -278,7 +278,7 @@ const isAuthorOrOwner = detail
         )}
 
         {detail.document.status === 'ARCHIVED' && (
-          <div role="status" class="rounded-xl border border-slate-300 bg-slate-100 p-4 text-sm text-slate-700">
+          <div role="status" aria-live="polite" aria-atomic="true" class="rounded-xl border border-slate-300 bg-slate-100 p-4 text-sm text-slate-700">
             <strong>Archived document:</strong> This document is archived. It cannot be used in new test records or templates, but remains fully readable for historical traceability.
           </div>
         )}
@@ -404,7 +404,7 @@ const isAuthorOrOwner = detail
         {/* ── Document Content Preview ── */}
         <section aria-labelledby="sec-content" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           {!detail.currentVersion ? (
-            <div role="status" class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5">
+            <div role="status" aria-live="polite" aria-atomic="true" class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5">
               <h2 id="sec-content" class="text-lg font-semibold text-slate-900">Content Status</h2>
               <p class="mt-2 text-sm text-slate-600">No content has been entered yet.</p>
               {canEdit && <LabActionButton href={`/lab/documents/${detail.document.id}/edit`} kind="primary">Add Content</LabActionButton>}

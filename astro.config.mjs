@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
 import { STATIC_SECURITY_META_OTHER } from './scripts/security-headers.mjs';
+import { rehypeStripLegacyFaqMicrodata } from './scripts/rehype-strip-legacy-faq-microdata.mjs';
 
 /**
  * BAI-PERF-01 (2026-07-25) — perf-css-defer removed.
@@ -110,7 +111,16 @@ function injectSecurityMeta() {
           const metaBlock =
             MARKER + staticMetaBlock + '<!-- /brightai-security-meta -->';
 
-          const newHtml = html.replace('</head>', `${metaBlock}</head>`);
+          // BAI-SEO-ERR-45: legacy blog HTML contains malformed FAQ
+          // microdata (FAQPage wrapper + sibling acceptedAnswer without a
+          // Question/mainEntity). JSON-LD is the maintained FAQ source, so
+          // strip only the obsolete microdata attributes from the final HTML
+          // while keeping every visible question and answer intact.
+          const withoutLegacyMicrodata = html.replace(
+            /\s(?:itemscope|itemtype|itemprop)(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi,
+            '',
+          );
+          const newHtml = withoutLegacyMicrodata.replace('</head>', `${metaBlock}</head>`);
           writeFileSync(file, newHtml, 'utf-8');
           totalInjected += 1;
         }
@@ -180,6 +190,9 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   compressHTML: true,
+  markdown: {
+    rehypePlugins: [rehypeStripLegacyFaqMicrodata],
+  },
   redirects: {
     // BAI-IDX-22 (2026-07-25) — auto-generated legacy redirects.
     // Source of truth: redirects.json (run scripts/generate-all-redirects.mjs

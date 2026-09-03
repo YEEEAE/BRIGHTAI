@@ -33,6 +33,8 @@
     "test:interaction-feedback": "node scripts/test-interaction-feedback.mjs",
     "test:interaction-motion-100": "node scripts/test-interaction-motion-100.mjs",
     "test:a11y-ergonomics-100": "node scripts/test-a11y-ergonomics-100.mjs",
+    "test:keyboard-ux-100": "node scripts/test-keyboard-ux-100.mjs",
+    "test:screen-reader-semantic-100": "node scripts/test-screen-reader-semantic-100.mjs",
     "test:ux-writing": "node scripts/test-ux-writing.mjs",
     "test:content-quality-100": "node scripts/test-content-quality-100.mjs",
     "test:ux-telemetry": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-ux-telemetry.mjs",

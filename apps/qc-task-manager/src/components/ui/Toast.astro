@@ -3,4 +3,4 @@ import Banner from './Banner.astro';
 interface Props { tone?: 'info' | 'success' | 'warning' | 'error'; title?: string; }
 const { tone = 'info', title } = Astro.props;
 ---
-<div class="qc-motion-enter fixed bottom-4 end-4 z-50 w-full max-w-sm" role="status" aria-live={tone === 'error' ? 'assertive' : 'polite'}><Banner tone={tone} title={title}><slot /></Banner></div>
+<div class="qc-motion-enter fixed bottom-4 end-4 z-50 w-full max-w-sm" role="status" aria-live={tone === 'error' ? 'assertive' : 'polite'} aria-atomic="true"><Banner tone={tone} title={title}><slot /></Banner></div>

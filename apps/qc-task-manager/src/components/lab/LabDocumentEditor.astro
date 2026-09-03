@@ -57,7 +57,7 @@ const sectionTitleCls = 'text-base font-semibold text-slate-900';
 <form method="POST" action={actionUrl} data-qc-form>
   <div class="space-y-6">
     {isRevisingApproved && (
-      <div role="status" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+      <div role="status" aria-live="polite" aria-atomic="true" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
         You are revising an <strong>approved</strong> document — saving creates a <strong>new draft version</strong>.
         The approved version stays immutable. A change summary is required.
       </div>

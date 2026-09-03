@@ -119,6 +119,8 @@ export default function DeleteRequestDialog({ taskId, canRequest, hasPendingRequ
 
       <dialog
         ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
         onCancel={(event) => {
           event.preventDefault();
           setOpen(false);

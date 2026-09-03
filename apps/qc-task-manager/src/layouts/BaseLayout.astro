@@ -45,7 +45,7 @@ const recentNotifications = navUser
     <div class="qc-app-layer">
       <!-- Skip link — first focusable element on every page (WCAG 2.4.1).
            Hidden until focused; styling lives in src/styles/global.css. -->
-      <a class="skip-link" href="#main">Skip to content</a>
+      <a class="skip-link" href="#main-content">تخطي إلى المحتوى الرئيسي</a>
       {!hideNav && (
         <Navbar
           client:load
@@ -54,10 +54,14 @@ const recentNotifications = navUser
           recentNotifications={recentNotifications}
         />
       )}
-      <main id="main" tabindex="-1" class="mx-auto min-w-0 w-full max-w-7xl overflow-x-hidden px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 focus:outline-none">
+      <main id="main-content" tabindex="-1" class="mx-auto min-w-0 w-full max-w-7xl overflow-x-hidden px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 focus:outline-none">
         <FlashNotice />
         <div class="qc-page-content"><slot /></div>
       </main>
+      <footer class="border-t border-slate-200 bg-white px-4 py-6 text-center text-sm text-slate-600" aria-label="Site footer">
+        <p>QC Task Manager</p>
+      </footer>
+      <div id="qc-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
     </div>
   </body>
 </html>

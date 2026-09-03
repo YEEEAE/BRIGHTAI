@@ -68,7 +68,7 @@ export default function CommentBox({ taskId, taskStatus, comments }: Props) {
 
   return (
     <div>
-      <div className="space-y-3" aria-live="polite">
+      <div className="space-y-3" aria-live="polite" aria-atomic="true">
         {items.map((c) => (
           <div key={c.id} className="rounded-md border border-slate-200 bg-slate-50 px-4 py-3">
             <div className="flex items-center justify-between gap-2">

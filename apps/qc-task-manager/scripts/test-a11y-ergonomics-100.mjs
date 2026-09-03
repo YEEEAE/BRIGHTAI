@@ -35,13 +35,15 @@ const all = [...pageSources, ...componentSources];
 
 // Shared bypass/landmark contract.
 const layout = await readFile(resolve(root, 'layouts/BaseLayout.astro'), 'utf8');
-if (!layout.includes('class="skip-link"') || !layout.includes('href="#main"')) fail('BaseLayout must expose a first-focusable skip link to #main');
-if (!layout.includes('<main id="main"') || !layout.includes('tabindex="-1"')) fail('BaseLayout main landmark must be targetable by the skip link');
+if (!layout.includes('class="skip-link"') || !layout.includes('href="#main-content"') || !layout.includes('تخطي إلى المحتوى الرئيسي')) fail('BaseLayout must expose a first-focusable Arabic skip link to #main-content');
+if (!layout.includes('<main id="main-content"') || !layout.includes('tabindex="-1"')) fail('BaseLayout main landmark must be targetable by the skip link');
+if (!layout.includes('<footer') || !layout.includes('aria-live="polite"')) fail('BaseLayout must expose footer and stable polite live region landmarks');
 if (!layout.includes('<html lang="en"') || !layout.includes('dir="ltr"')) fail('BaseLayout must declare document language and direction');
 
 // Dialog relationship + dismissal contract.
 for (const [path, source] of all.filter(([, source]) => source.includes('<dialog') || source.includes('role="dialog"'))) {
   if (!source.includes('aria-labelledby')) fail(`${relative(process.cwd(), path)}: dialog is missing aria-labelledby`);
+  if (!source.includes('aria-modal="true"')) fail(`${relative(process.cwd(), path)}: modal dialog is missing aria-modal=true`);
   if (!source.includes('aria-describedby')) fail(`${relative(process.cwd(), path)}: dialog is missing aria-describedby`);
   if (path.endsWith('.tsx') && !source.includes('Escape') && !source.includes('onCancel')) {
     fail(`${relative(process.cwd(), path)}: interactive React dialog needs Escape/cancel handling`);

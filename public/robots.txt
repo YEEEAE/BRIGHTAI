@@ -7,7 +7,6 @@
 # otherwise its prepended training restrictions would contradict this file.
 
 User-agent: *
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 # Explicit AI/search tokens: retained as auditable Allow signals.

@@ -360,7 +360,10 @@ export function getFaqLd(items: FaqItem[]) {
  */
 export const KERNEL_PRODUCT = {
   '@context': 'https://schema.org',
-  '@type': ['SoftwareApplication', 'WebApplication'],
+  // BrightAI Kernel is delivered as a web application. Do not label it as a
+  // SoftwareApplication unless we have real, source-backed review data for
+  // the required aggregateRating/review properties.
+  '@type': 'WebApplication',
   '@id': 'https://brightai.live/#product',
   name: 'BrightAI Kernel',
   applicationCategory: 'BusinessApplication',

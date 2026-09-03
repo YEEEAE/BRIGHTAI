@@ -1,3 +1,40 @@
+## [2026-09-03] — إصلاح أخطاء Semrush Site Audit (113 خطأ)
+
+### تم التنفيذ
+- حذفت توجيه `Content-Signal` غير المدعوم من `public/robots.txt`، مع الإبقاء على سياسة السماح والـ sitemap.
+- حصّنت مولّد hreflang ضد القيم الفاضية والتكرار، وأبقيت صفحة 404 على self-reference صحيح حتى يمر تدقيق التبادلية.
+- غيّرت تعريف Kernel من `SoftwareApplication` إلى `WebApplication` لأن تقييمات المراجعات غير متوفرة بمصدر حقيقي؛ ما فيه أي أرقام تقييم مفبركة.
+- عطّلت LocalBusiness العام في صفحات المدن غير الرياض، لأن الصفحة تمثل نطاق خدمة وتستخدم `ProfessionalService` مع service area بدون عنوان فرع وهمي.
+- أزلت microdata FAQ القديمة غير الصحيحة من HTML النهائي للمقالات؛ أسئلة وأجوبة المقالات المرئية بقيت كما هي، وJSON-LD المنظم هو المصدر المعتمد.
+
+### الملفات المتأثرة
+- `public/robots.txt`
+- `astro.config.mjs`
+- `scripts/rehype-strip-legacy-faq-microdata.mjs`
+- `src/components/SEOHead.astro`
+- `src/layouts/BaseLayout.astro`
+- `src/layouts/ArabicLayout.astro`
+- `src/data/schema-helpers.ts`
+- `src/pages/index.astro`
+- `src/pages/404.astro`
+- `src/pages/solutions/[sector]/[city].astro`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل بنجاح.
+- `pnpm astro build` ✅ — اكتمل بنجاح بعد آخر تعديل.
+- `pnpm seo:hreflang` ✅ — 263 مجموعة، 0 أخطاء.
+- فحص HTML المولّد ✅ — 0 ملفات فيها hreflang فاضي، 0 ملفات فيها `SoftwareApplication`، و0 مقالات فيها microdata FAQ قديمة.
+- `pnpm astro check` ⚠️ — ما زال يفشل بأخطاء TypeScript قديمة خارج نطاق أخطاء Semrush، منها Storybook وملفات API وملفات client.
+- `node scripts/seo-schema-audit.mjs` ⚠️ — أظهر مشكلة سابقة منفصلة في `solutions/ai-firewall` (FAQPage مفقود بعد build؛ ليست من أخطاء Semrush الثلاثة المعالجة هنا).
+
+### النتيجة
+- **الحالة:** جزئي محليًا / إصلاحات Semrush منفذة.
+- **مختصر:** تم إصلاح جذور أخطاء Semrush الـ113 المستهدفة في الكود والناتج المولّد. لازم نشر التغييرات ثم إعادة تشغيل الحملة `31075135` عشان يتحدث التقرير البعيد؛ ما تم أي commit أو push.
+
+### ملاحظات / مشاكل مفتوحة
+- Snapshot Semrush الحالي قديم وسيظل يعرض 113 إلى أن تتم إعادة الزحف بعد النشر.
+- بقيت تحذيرات Semrush الأخرى خارج طلب “Errors” مثل روابط GitHub 404 وملفات JavaScript، وتحتاج جولة مستقلة.
+
 ## [2026-09-03] — بحث Semrush عربي وخريطة سلطة موضوعية سعودية لـ BRIGHTAI
 
 ### تم التنفيذ
@@ -2005,3 +2042,63 @@
 ### ملاحظات / مشاكل مفتوحة
 - `git diff --check` العام ما زال يبلّغ عن trailing whitespace قديم في `audit/website-builder-SEO/SEO-GEO-KEYWORD-COMPETITOR-RESEARCH-2026-09-03.md` خارج نطاق المهمة؛ diff ملفات المهمة سليم.
 - لا توجد مشكلة مفتوحة ضمن نطاق PROMPT-06.
+## [2026-09-03] — استخراج Errors من Semrush Site Audit للحملة k
+
+### تم التنفيذ
+- استدعيت Semrush Site Audit للحملة `31075135` باسم `k`، وآخر snapshot هو `6a98bf36b9c43339eff578c1`، بعد فحص **313 صفحة من أصل 500**.
+- تأكدت أن رقم Errors **113** يتطابق حسابيًا مع: robots.txt = **1**، hreflang conflicts = **35**، structured data markup errors = **77**.
+- حددت خطأ robots في `https://brightai.live/robots.txt`، وSemrush أشار تحديدًا إلى السطر غير القياسي `Content-Signal: search=yes, ai-input=yes, ai-train=yes`.
+- حددت 35 صفحة hreflang: **34** ضمن `/kernel/*` وواحدة `/404/`؛ بيانات Semrush تعرض `errorType=7` وحقل `hreflang` فارغ، لذلك لم أفترض سببًا غير مثبت.
+- حللت 77 خطأ structured data حسب المكان: **53** في `/kernel/*`، **18** في `/blog/*`، **5** في صفحات المدن تحت `/solutions/*`، وواحد في الرئيسية.
+- كشفت أسبابًا مؤكدة من `page_info`: الرئيسية تحمل `SOFTWARE_APP` بدون `aggregateRating` و`review`؛ صفحة مكة تحمل `LOCAL_BUSINESS` بدون `address`؛ وصفحات Kernel تكرر مشكلة SoftwareApplication؛ أما صفحات المدن الأخرى فتحتاج مراجعة عقد JSON-LD النهائي قبل أي تعديل.
+- لم أعدل كودًا أو أضف بيانات تقييم مختلقة؛ لأن حل aggregateRating/review الصحيح يتطلب مصدر مراجعات حقيقي أو إزالة/تغيير نوع schema المتأثر.
+
+### الملفات المتأثرة
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- Semrush `snapshots` ✅ — snapshot محدد.
+- Semrush `info` ✅ — 113 errors، 929 warnings، 403 notices، quality 84، و313 صفحة.
+- Semrush `snapshot` ✅ — توزيع الأخطاء 1 + 35 + 77 = 113.
+- Semrush `meta_issues` + `issue_details` + `page_info` ✅ — الروابط والأماكن والأسباب/الحقول المتاحة.
+- build/tests: لم تُشغّل — تشخيص خارجي فقط، بدون تعديل كود الموقع.
+
+### النتيجة
+- **الحالة:** نجح التشخيص.
+- **مختصر:** صار عند المشروع تفصيل كامل لرقم 113 Error مع مصدر كل مجموعة وروابط الصفحات المتأثرة وسبب Semrush المباشر، مع فصل الأخطاء الحقيقية عن صفحات Kernel/query والبيانات المنظمة غير المكتملة.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy.
+- لا يُضاف `aggregateRating` أو `review` بأرقام افتراضية؛ يلزم مصدر تقييم منشور أو قرار schema بديل.
+## [2026-09-03] — QC-REMEDIATION-009: الوصولية، تنقل الكيبورد، والدلالات الداعمة
+
+### تم التنفيذ
+- غيّرت `BaseLayout` إلى skip link عربي يوجّه إلى `#main-content`، وأضفت footer وstable polite live region مع بقاء Navbar كـheader/nav مشترك.
+- ثبّتُّ focus ring عالميًا بـ`*:focus-visible` باستخدام `--color-primary-500`، مع إبقاء reduced-motion وحواجز التكبير السابقة.
+- أضفت `role="dialog"` و`aria-modal="true"` للحورات الأصلية، وأضفت focus trap للـreview dialog في `LabTestForm` مع Escape واستعادة focus الموجودة في الحوارات.
+- أضفت `aria-atomic="true"` لمناطق الحالة الديناميكية، وإعلانًا ثابتًا لعدد إشعارات Navbar، ووسمت غلاف chart table باسم دلالي.
+- أنشأت حارسي `test:keyboard-ux-100` و`test:screen-reader-semantic-100` وسجلتهما في manifest، وحدّثت اختبار axe/keyboard الموجود لاسم main الجديد.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/layouts/BaseLayout.astro`
+- `apps/qc-task-manager/src/styles/global.css`
+- `apps/qc-task-manager/src/components/{DeleteRequestDialog,ReviewDeleteRequestDialog,EsignDialog,Navbar}.tsx` / `.astro`
+- `apps/qc-task-manager/src/components/lab/LabTestForm.tsx` ومناطق الحالة الديناميكية
+- `apps/qc-task-manager/scripts/{test-a11y-ergonomics-100,test-keyboard-ux-100,test-screen-reader-semantic-100,e2e-a11y}.mjs`
+- `apps/qc-task-manager/{package.json,scripts/test-manifest.mjs}`
+- `audit/qc/QC-Task-Manager/Remediation/Evidence/PROMPT-09-EVIDENCE.md`
+
+### التحقق
+- `test:a11y-ergonomics-100` ✅ — 76 صفحة / 60 مكوّنًا.
+- `test:keyboard-ux-100` ✅ — 138 مصدرًا؛ `test:screen-reader-semantic-100` ✅ — 138 مصدرًا.
+- `test:badge-contrast` ✅ — 13/13؛ `test:manifest` ✅ — 87/28.
+- `typecheck` ✅ — 0 أخطاء، 0 تحذيرات، 2 hints قائمة؛ `NODE_ENV=production build` ✅؛ `git diff --check` ✅.
+- full Playwright/axe لكل 115 route وVoiceOver/NVDA ⏭️ — لم تُشغّل في هذه المهمة، ومذكورة كحدود في evidence.
+
+### النتيجة
+- **الحالة:** جزئي (PARTIAL).
+- **مختصر:** كل حواجز الوصول القابلة للإثبات من المصدر والحراس الآليين عولجت ونجحت، لكن اعتماد WCAG الكامل ما زال يحتاج تشغيل browser axe على كل المسارات وجلسات AT بشرية.
+
+### ملاحظات / مشاكل مفتوحة
+- `Layout.astro` و`Header.astro` غير موجودين في الشجرة الحالية؛ البدائل الفعلية هما `BaseLayout.astro` و`Navbar.tsx`.
+- لا commit ولا push ولا deploy.

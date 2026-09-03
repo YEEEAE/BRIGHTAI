@@ -46,6 +46,7 @@
   --color-accent-hover: #1d4ed8;
   --color-accent-soft: #eff6ff;
   --color-focus: #2563eb;
+  --color-primary-500: #2563eb;
   --color-success: #047857;
   --color-success-soft: #ecfdf5;
   --color-success-border: #a7f3d0;
@@ -246,8 +247,13 @@
  * the shared UI primitives. Component-specific focus styles can still refine
  * the colour, but no keyboard focus is allowed to become invisible. */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline: 2px solid var(--color-primary-500);
   outline-offset: var(--focus-ring-offset);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
 }
 
 /* Operational screens are used on touch laptops/tablets as well as phones.

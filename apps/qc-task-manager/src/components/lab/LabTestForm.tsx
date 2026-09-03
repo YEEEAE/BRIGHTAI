@@ -247,6 +247,7 @@ export default function LabTestForm({
   const [reviewOpen, setReviewOpen] = useState(false);
   const reviewConfirmRef = useRef<HTMLButtonElement>(null);
   const reviewTriggerRef = useRef<HTMLButtonElement>(null);
+  const reviewDialogRef = useRef<HTMLElement>(null);
   const [productDescription, setProductDescription] = useState('');
   // Set once the tester deliberately changes Connector Type — after that the
   // product default never touches it again ("populate, never overwrite", §28).
@@ -596,6 +597,19 @@ export default function LabTestForm({
     if (!reviewOpen) return;
     reviewConfirmRef.current?.focus();
   }, [reviewOpen]);
+
+  function trapReviewTab(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== 'Tab') return;
+    const root = reviewDialogRef.current;
+    if (!root) return;
+    const focusables = Array.from(root.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'))
+      .filter((el) => el.offsetParent !== null);
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
 
   useEffect(() => {
     if (!reviewOpen) return;
@@ -1337,10 +1351,12 @@ export default function LabTestForm({
         {reviewOpen && (
           <div className="fixed inset-0 z-30 flex items-center justify-center bg-slate-950/40 p-4" role="presentation">
             <section
+              ref={reviewDialogRef}
               role="dialog"
               aria-modal="true"
               aria-labelledby="submit-review-heading"
               aria-describedby="submit-review-description"
+              onKeyDown={trapReviewTab}
               className="w-full max-w-lg rounded-xl border border-slate-200 bg-white p-6 shadow-xl"
             >
               <h2 id="submit-review-heading" className="text-lg font-semibold text-slate-900">Review before sending</h2>

@@ -114,6 +114,8 @@ export default function ReviewDeleteRequestDialog({ requestId, taskTitle }: Prop
 
       <dialog
         ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
         onCancel={(event) => {
           event.preventDefault();
           setMode(null);

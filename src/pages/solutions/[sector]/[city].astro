@@ -190,7 +190,7 @@ const finalJsonLd = migratedJsonLdSanitised
 const locAnswerFirst = loc.answerFirst
   ?? `حوكمة AI في ${loc.cityAr} لقطاع ${sector.chip}: توثيق وضوابط قابلة للتدقيق متوافقة مع الجهات السعودية. أداة تشغيلية لا تستبدل التقييم النظامي.`;
 ---
-<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={(finalJsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title} extraSpeakableSelectors={['.answer-first-summary']} breadcrumbs={crumbs.slice(1).map(c => ({ name: c.label, href: c.href }))}>
+<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={(finalJsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title} extraSpeakableSelectors={['.answer-first-summary']} breadcrumbs={crumbs.slice(1).map(c => ({ name: c.label, href: c.href }))} omitLocalBusiness={!isHQ}>
 {migratedPage ? (
   <>
     {!/<h1\b/i.test(migratedPage.html) && <h1 class="sr-only">{loc.h1}</h1>}

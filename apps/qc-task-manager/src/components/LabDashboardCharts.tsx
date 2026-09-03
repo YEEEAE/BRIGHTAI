@@ -267,7 +267,7 @@ function LabLineChart({ data }: { data: LabWeekPoint[] }) {
         ))}
       </svg>
 
-      <p className="mt-2 text-xs text-slate-500" aria-live="polite">
+      <p className="mt-2 text-xs text-slate-500" aria-live="polite" aria-atomic="true">
         {activePoint
           ? `${activePoint.label}: ${activePoint.count} test${activePoint.count === 1 ? '' : 's'} created — selected point`
           : `${total} test${total === 1 ? '' : 's'} created in the last 8 weeks.`}
