@@ -302,6 +302,13 @@ function resolveSourceFiles(relPath) {
       sources.push("src/pages/docs/[...slug].astro");
     }
   }
+  if (dir === "answer" || dir.startsWith("answer/")) {
+    // answer pages: src/pages/answer/[slug].astro (dynamic), with content
+    // sourced from src/data/answers.ts. Without this branch the 17 answer
+    // URLs got no git history and were emitted without <lastmod>.
+    sources.push("src/pages/answer/[slug].astro");
+    sources.push("src/data/answers.ts");
+  }
 
   // 4) Data file candidates (data-driven pages).
   if (dir === "newsletter" || dir.startsWith("newsletter/")) {

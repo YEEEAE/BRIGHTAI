@@ -1,3 +1,33 @@
+## [2026-09-03] — تنظيف معمارية الفهرسة التقنية (canonical/sitemap/redirects/hreflang)
+
+### تم التنفيذ
+- دققت كل محاور الفهرسة على `dist/client` (280 HTML) ضد `public/sitemap.xml` (263 URL): صيغة canonical واحدة `https://brightai.live/` + trailing slash، و209 redirects بدون chains/cycles/self/duplicates، و264 hreflang set بدون أخطاء.
+- أثبت أن 4 تنبيهات audit-tool كانت artifacts لا مشاكل حقيقية: تطابق sitemap/canonical للفئات العربية (ترميز percent مقابل raw)، وتداخل noindex/sitemap لصفحات المدن (الـalias redirect stubs مقابل الصفحات الحقيقية المفهرسة)، وتكرار canonical (نفس السبب)، و103 hash issues (معرفات `id` وهمية داخل عينات كود مُهرّبة `&#x3C;` في صفحات docs).
+- أصلحت الفجوة الحقيقية الوحيدة: 17 صفحة `/answer/*` كانت تُنشر بدون `<lastmod>` لأن `resolveSourceFiles` ما كان يغطي مسارات answer — أضفت فرع answer (route template + `src/data/answers.ts`) وأعدت توليد الـsitemap.
+- تحققت بعد التعديل: `seo:gate` صفر أخطاء، و`seo:hreflang` صفر، و`redirects:check` نظيف، و`internal-links:audit` صفر orphans وصفر broken وعمق نقر ≤3.
+
+### الملفات المتأثرة
+- `scripts/generate-sitemap-all-pages.mjs` (فرع answer في `resolveSourceFiles`)
+- `public/sitemap.xml` (+17 سطر lastmod فقط)
+- `sitemap.xml` (+17 سطر lastmod فقط)
+
+### التحقق
+- `pnpm sitemap:generate` ✅ — 263 URL ثابتة
+- `pnpm seo:gate` ✅ — 0 أخطاء (sitemap 263، broken 0/48135)
+- `pnpm seo:hreflang` ✅ — 264 sets، 0 أخطاء
+- `pnpm redirects:check` ✅ — 209 redirects، 0 chains/cycles
+- `pnpm internal-links:audit` ✅ — 0 orphans، 0 broken، depth ≤3
+- build/tests: لم تُشغّل — تعديل سكربت توليد + ملفات sitemap فقط، والـHTML المبني لم يُمس
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** معمارية الفهرسة سليمة ومثبتة بالأدلة على صيغة canonical واحدة، والإصلاح الوحيد اللازم كان freshness صفحات answer (17 lastmod)، والباقي artifacts موثقة بدون تعديل.
+
+### ملاحظات / مشاكل مفتوحة
+- hash anchors حقيقية جزئيًا كـUX papercut في صفحات docs/kernel (روابط TOC بدون هدف فعلي) — خارج نطاق الفهرسة، تُعالج في مهمة UX مستقلة إذا طُلبت.
+- `og:locale` الإنجليزية (`en_SA` مقابل سياسة `en_US`) ما زالت P1 مفتوحة من baseline ولم تُمس في هذه المهمة.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-03] — أداء الجوال P0: إعادة قياس LCP وتأجيل الخلفية لما بعد الخمول (BAI-PERF-LCP-001)
 
 ### تم التنفيذ
