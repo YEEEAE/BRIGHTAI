@@ -25,6 +25,7 @@ Last reviewed: 2026-09-03
 - [Banking AI Governance — Riyadh](https://brightai.live/solutions/banking-ai-governance/riyadh/): Banking-sector decision matrix, SAMA context, data boundaries, human review, and evidence.
 - [AI Governance Readiness Assessment](https://brightai.live/assessment/ai-governance-readiness/): Eight visible diagnostic dimensions; results stay in the browser and do not establish compliance.
 - [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/): سجل تدقيق الذكاء الاصطناعي for recording configured AI interactions, policy decisions, human approvals, exceptions, and review evidence.
+- [AI Governance Control Matrix](https://brightai.live/tools/ai-governance-controls/): BrightAI practical implementation matrix — 13 operational control areas (inventory, ownership, risk classification, approved use, data handling, human approval, security filtering, logging, audit evidence, monitoring, third-party AI, incident handling, policy updates) with objective, risk, example control, owner, evidence, and capability mapping. Not regulation text, not an official endorsement.
 
 ## Saudi Arabic search and answer map
 
@@ -39,6 +40,7 @@ Use one canonical owner for each search intent:
 - **سجل تدقيق الذكاء الاصطناعي** / `AI audit trail Saudi Arabia`: [AI Audit Trail](https://brightai.live/solutions/ai-audit-trail/) owns product intent.
 - **أمن الذكاء الاصطناعي** / `NCA AI cybersecurity guidelines` / `AI security Saudi Arabia`: [NCA AI Cybersecurity Draft Guide](https://brightai.live/docs/nca-ai-cybersecurity-guidelines/) owns the draft-guidelines explanation; the ECC docs own the binding baseline.
 - **إطار سدايا لإدارة المخاطر** / **إدارة مخاطر الذكاء الاصطناعي** / `SDAIA AI Risk Management Framework`: [SDAIA AI Risk Deep Guide](https://brightai.live/docs/sdaia-ai-risk-management-framework/) owns the deep framework explanation; the hub guide owns the concise overview.
+- **مصفوفة ضوابط حوكمة الذكاء الاصطناعي** / **ضوابط حوكمة AI** / `AI governance controls` / `Saudi AI governance control matrix`: [AI Governance Control Matrix](https://brightai.live/tools/ai-governance-controls/) owns the practical control-matrix intent; it is a BrightAI implementation aid, not regulation text or an official endorsement.
 
 ## AI Firewall terminology and conflicts
 

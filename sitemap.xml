@@ -6,7 +6,7 @@
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/" />
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/" />
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-09-04</lastmod>
   </url>
   <url>
     <loc>https://brightai.live/en/</loc>
@@ -31,7 +31,7 @@
     <loc>https://brightai.live/kernel/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/" />
-    <lastmod>2026-08-09</lastmod>
+    <lastmod>2026-09-04</lastmod>
   </url>
   <url>
     <loc>https://brightai.live/pricing/</loc>
@@ -649,7 +649,7 @@
     <loc>https://brightai.live/assessment/ai-governance-readiness/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/assessment/ai-governance-readiness/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/assessment/ai-governance-readiness/" />
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-09-04</lastmod>
   </url>
   <url>
     <loc>https://brightai.live/blog/ai-audit-trail-compliance-path/</loc>
@@ -1376,6 +1376,11 @@
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/newsletter/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/newsletter/" />
     <lastmod>2026-09-01</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.live/tools/ai-governance-controls/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/tools/ai-governance-controls/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/tools/ai-governance-controls/" />
   </url>
   <url>
     <loc>https://brightai.live/tools/ai-risk-register/</loc>

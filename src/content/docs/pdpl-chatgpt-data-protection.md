@@ -3,11 +3,22 @@ title: "ChatGPT في المنشآت السعودية: دليل PDPL لحماية
 metaTitle: "ChatGPT والبيانات الشخصية في السعودية: دليل PDPL | BrightAI"
 description: "دليل ChatGPT بالعربي لاستخدام أدوات الذكاء الاصطناعي في المنشآت السعودية بدون تسريب بيانات شخصية، مع ضوابط PDPL واضحة وفحص PII وموافقة بشرية وسجل تدقيق."
 canonical: "https://brightai.live/docs/pdpl-chatgpt-data-protection/"
-updated: "2026-08-24"
+updated: "2026-09-04"
 category: "PDPL"
 tldr: "دليل ChatGPT بالعربي لاستخدام أدوات الذكاء الاصطناعي في المنشآت السعودية بدون تسريب بيانات شخصية، مع ضوابط PDPL واضحة وفحص PII وموافقة بشرية وسجل تدقيق."
 related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
 ---
+<style>
+  .pdpl-flow { display: flex; align-items: stretch; gap: .65rem; overflow-x: auto; padding: 1rem 0 .5rem; direction: rtl; }
+  .pdpl-flow > div { min-width: 130px; flex: 1 0 130px; display: grid; gap: .3rem; align-content: center; padding: 1rem; border: 1px solid var(--border-default); border-radius: 14px; background: var(--surface-2); text-align: center; }
+  .pdpl-flow span { color: var(--color-brand, #14b8a6); font: 700 .78rem/1 ui-monospace, monospace; }
+  .pdpl-flow small { color: var(--text-muted); font-size: .82rem; }
+  .pdpl-flow b { align-self: center; color: var(--color-brand, #14b8a6); }
+  .pdpl-checklist { list-style: none; padding: 0; display: grid; gap: .7rem; }
+  .pdpl-checklist li { position: relative; padding: .85rem 2.4rem .85rem 1rem; border: 1px solid var(--border-subtle, var(--border-default)); border-radius: 12px; background: var(--surface-2); }
+  .pdpl-checklist li::before { content: '✓'; position: absolute; inset-inline-end: .9rem; color: var(--color-brand, #14b8a6); font-weight: 800; }
+  @media (max-width: 640px) { .pdpl-flow { margin-inline: -1rem; padding-inline: 1rem; } .pdpl-flow > div { min-width: 116px; flex-basis: 116px; } .pdpl-flow b { display: none; } }
+</style>
 <section class="hero">
     <span class="pill">PDPL ChatGPT Saudi Arabia</span>
     
@@ -20,14 +31,35 @@ related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
     <p>الطريقة المهنية ليست منع الذكاء الاصطناعي بالكامل، بل تشغيله بضوابط: اكتشاف الاستخدام، تصنيف البيانات، تحديد الأدوات المسموحة، تنقية PII قبل الإرسال، موافقة بشرية عند المخاطر العالية، وسجل تدقيق يثبت ما حدث. هذا المحتوى توعوي وتشغيلي ولا يعد استشارة قانونية؛ تفاصيل التطبيق تعتمد على الغرض، نوع البيانات، المورد، وسياسة مؤسستك.</p>
   </section>
 
-  <section class="card" aria-labelledby="chatgpt-flow-title">
-    <h2 id="chatgpt-flow-title">قبل ما ينسخ الموظف البيانات إلى ChatGPT</h2>
+  <section aria-labelledby="chatgpt-flow-title">
+    <h2 id="chatgpt-flow-title">كيف تتحرك البيانات قبل ما توصل ChatGPT؟</h2>
+    <p>لا تعتمد على انتباه الموظف. افحص وصنّف واتخذ القرار قبل النموذج، ووثّق بدون ما تخزّن نصًا حساسًا أكثر من اللازم.</p>
+    <div class="pdpl-flow" aria-label="مسار بيانات ChatGPT">
+      <div><span>01</span><strong>الموظف</strong><small>Prompt أو ملف</small></div>
+      <b aria-hidden="true">←</b>
+      <div><span>02</span><strong>الفحص</strong><small>اكتشاف PII وتصنيف</small></div>
+      <b aria-hidden="true">←</b>
+      <div><span>03</span><strong>السياسة</strong><small>سماح / تنقيح / حجب / موافقة</small></div>
+      <b aria-hidden="true">←</b>
+      <div><span>04</span><strong>النموذج</strong><small>نسخة منقحة فقط</small></div>
+      <b aria-hidden="true">←</b>
+      <div><span>05</span><strong>الدليل</strong><small>قرار وسجل غير حساس</small></div>
+    </div>
     <ol>
       <li><strong>اكتشف:</strong> هل الاستخدام عبر أداة معتمدة أو Shadow AI؟ ابدأ بـ <a href="/solutions/ai-use-case-discovery/">اكتشاف استخدامات AI</a>.</li>
       <li><strong>صنّف:</strong> هل النص فيه بيانات شخصية أو حساسة أو سرية تجارية؟</li>
       <li><strong>قرّر:</strong> اسمح، نقّح، احجب، أو اطلب موافقة حسب السياسة.</li>
       <li><strong>وثّق:</strong> سجّل القرار والسبب دون تخزين النص الخام إذا ما كان لازمًا.</li>
     </ol>
+  </section>
+
+  <section aria-labelledby="chatgpt-scenarios-title">
+    <h2 id="chatgpt-scenarios-title">سيناريوهات واقعية: وش يصير بالشغل اليومي؟</h2>
+    <div class="grid">
+      <div class="card scenario-card"><h3>تلخيص شكوى عميل</h3><p><strong>الخطر:</strong> الاسم والجوال ورقم الطلب داخل النص قد تكشف شخصًا.</p><p><strong>الإجراء:</strong> تنقيح المعرفات، طلب تلخيص وقائعي بمعرف داخلي، ومراجعة بشرية قبل أي قرار تعويض.</p></div>
+      <div class="card scenario-card"><h3>صياغة عرض من عقد قائم</h3><p><strong>الخطر:</strong> العقد فيه أطراف ومبالغ وتواريخ قد تخص أشخاصًا أو أسرار تجارية.</p><p><strong>الإجراء:</strong> إخفاء الأطراف، تلخيص البنود اللازمة فقط، وتسجيل من اطلع على المخرج.</p></div>
+      <div class="card scenario-card"><h3>تحليل أداء موظف عبر AI</h3><p><strong>الخطر:</strong> المخرج قد يؤثر على قرار وظيفي ويصعب تبريره أو سحب أثر بياناته.</p><p><strong>الإجراء:</strong> تقليل البيانات، منع القرار الآلي النهائي، وتفعيل موافقة بشرية موثقة.</p></div>
+    </div>
   </section>
 
   <section>
@@ -41,11 +73,16 @@ related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
   </section>
 
   <section class="card" aria-labelledby="chatgpt-safe-title">
-    <h2 id="chatgpt-safe-title">آمن أكثر أو غير آمن؟</h2>
+    <h2 id="chatgpt-safe-title">مثال آمن ومثال غير آمن</h2>
+    <div class="table-container">
     <table class="docs-table">
-      <thead><tr><th>غير آمن</th><th>آمن أكثر</th></tr></thead>
-      <tbody><tr><td>رفع شكوى كاملة فيها اسم العميل ورقمه وطلب قرار تعويض.</td><td>استخدام معرف داخلي بعد التنقيح وطلب تلخيص وقائعي فقط، ثم مراجعة بشرية للقرار.</td></tr></tbody>
+      <thead><tr><th>الحالة</th><th>الطلب</th><th>القرار التشغيلي</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">غير آمن</th><td>رفع شكوى كاملة فيها اسم العميل ورقمه وطلب قرار تعويض.</td><td>بيانات تعريف + قرار مؤثر + قناة غير مصنفة: حجب أو تصعيد، لا إرسال مباشر.</td></tr>
+        <tr><th scope="row">أكثر أمانًا</th><td>استخدام معرف داخلي بعد التنقيح وطلب تلخيص وقائعي فقط، ثم مراجعة بشرية للقرار.</td><td>تقليل بيانات، منع القرار النهائي، وتسجيل المراجعة والدليل.</td></tr>
+      </tbody>
     </table>
+    </div>
     <p>التنقيح يقلل التعرض لكنه لا يثبت وحده أن المعالجة مناسبة لكل حالة. راجع الغرض، المورد، الصلاحيات، والاحتفاظ قبل التوسع.</p>
   </section>
 
@@ -123,16 +160,18 @@ related: ["pdpl-ai-complete-guide","pdpl-ai-governance"]
   </section>
 
   <section class="card">
-    <h2 id="section-7">Checklist للشركات السعودية</h2>
-    <ul>
-      <li>اكتب سياسة واضحة لاستخدام ChatGPT في الشركات السعودية، وفرق بين الاستخدام العام والاستخدام الذي يتضمن بيانات شخصية.</li>
-      <li>حدد أنواع البيانات الممنوع إرسالها: هوية، جوال، بريد، آيبان، ملفات صحية، عقود، شكاوى، وبيانات موظفين.</li>
-      <li>فعّل تنقية PII قبل النموذج، وليس بعد ظهور المشكلة.</li>
-      <li>اربط الطلبات عالية المخاطر بموافقة بشرية حسب مستوى الحساسية.</li>
-      <li>احتفظ بسجل تدقيق يوضح القرار بدون تخزين بيانات حساسة أكثر من اللازم.</li>
-      <li>راجع <a href="/docs/pdpl-ai-governance/">دليل PDPL والذكاء الاصطناعي</a> و<a href="/pdpl-statement/">بيان PDPL</a> لتوحيد اللغة التشغيلية داخليًا.</li>
-      <li>اختبر القواعد بعينات تدريبية منقحة قبل فتح الاستخدام على فرق أوسع.</li>
+    <h2 id="section-7">القائمة التشغيلية للشركات السعودية</h2>
+    <ul class="pdpl-checklist">
+      <li>اكتشف استخدامات ChatGPT المعلنة والمخفية (Shadow AI) قبل ما توسّع الصلاحيات.</li>
+      <li>صنّف البيانات قبل الإرسال: هوية، جوال، بريد، آيبان، ملفات صحية، عقود، شكاوى، وبيانات موظفين.</li>
+      <li>حدّد الأدوات المسموحة لكل فئة بيانات وغرض، وامنع الإرسال للقنوات غير المعتمدة.</li>
+      <li>نقّح PII قبل النموذج (إخفاء واستبدال)، وليس بعد ظهور المشكلة.</li>
+      <li>احجب المدخلات الحساسة غير المصرح بها أو صعّدها لموافقة بشرية حسب مستوى الحساسية.</li>
+      <li>سجّل النشاط والقرار والسياسة في <a href="/solutions/ai-audit-trail/">Audit Trail</a> بدون تخزين بيانات حساسة أكثر من اللازم.</li>
+      <li>اطلب موافقة بشرية عبر <a href="/solutions/human-approval-layer/">Human Approval Layer</a> عند الطلبات الحساسة أو القرارات المؤثرة.</li>
+      <li>احتفظ بالأدلة (بطاقة الاستخدام، نتيجة التصنيف، سجل الموافقات) وراجع <a href="/docs/pdpl-ai-governance/">دليل PDPL والذكاء الاصطناعي</a> و<a href="/pdpl-statement/">بيان PDPL</a> لتوحيد اللغة داخليًا، واختبر القواعد بعينات منقحة قبل التوسع.</li>
     </ul>
+    <p>لما تبي تربط الاكتشاف بالتنفيذ على مستوى المؤسسة: <a href="/solutions/ai-firewall/">AI Firewall</a>، <a href="/solutions/ai-use-case-discovery/">اكتشاف Shadow AI</a>، <a href="/solutions/ai-audit-trail/">Audit Trail</a>، <a href="/solutions/ai-governance-platform/">منصة الحوكمة</a>، و<a href="/assessment/ai-governance-readiness/">تقييم الجاهزية</a>.</p>
   </section>
 
   <section class="card">
