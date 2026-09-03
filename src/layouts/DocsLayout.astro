@@ -118,8 +118,6 @@ const jsonLd = {
 // Update timestamp formatted for the docs-meta widget (e.g. "2026-06-30").
 const updatedAtLabel = updated.toISOString().slice(0, 10);
 
-// GitHub edit link: docs live in src/content/docs/<slug>.md
-const editUrl = `https://github.com/YEEEAE/BRIGHTAI/edit/main/src/content/docs/${currentPath.replace(/^\/docs\//, '').replace(/\/$/, '')}.md`;
 ---
 
 <ArabicLayout
@@ -146,10 +144,6 @@ const editUrl = `https://github.com/YEEEAE/BRIGHTAI/edit/main/src/content/docs/$
             <svg aria-hidden="true" width="16" height="16"><use href="/icons.svg#mdi-refresh"></use></svg>
             آخر تحديث: <strong><time datetime={updatedAtLabel}>{updatedAtLabel}</time></strong>
           </span>
-          <a class="docs-meta__edit" href={editUrl} target="_blank" rel="noopener noreferrer">
-            <svg aria-hidden="true" width="14" height="14"><use href="/icons.svg#mdi-pencil-box"></use></svg>
-            عدّل على GitHub
-          </a>
         </div>
       </header>
 

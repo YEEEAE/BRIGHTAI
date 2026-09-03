@@ -33,7 +33,17 @@ export function getStaticPaths() {
 
 const { answer } = Astro.props as { answer: AnswerUnit };
 const canonical = `https://brightai.live/answer/${answer.slug}/`;
-const hreflangLinks = getHreflangLinks(canonical);
+const ENGLISH_ANSWER_SLUGS = new Set([
+  'ai-governance-saudi-arabia',
+  'ai-firewall-saudi',
+  'pdpl-ai-compliance',
+  'ai-safety-platform-enterprise',
+  'saudi-ai-safety-os',
+]);
+const isEnglish = ENGLISH_ANSWER_SLUGS.has(answer.slug);
+const hreflangLinks = isEnglish
+  ? [{ lang: 'en-SA', href: canonical }, { lang: 'x-default', href: canonical }]
+  : getHreflangLinks(canonical);
 
 const faqItems: FaqItem[] = [{ q: answer.question, a: answer.answer }];
 const faqLd = getFaqLd(faqItems);
@@ -70,7 +80,7 @@ const jsonLd = {
 import SiteBackground from '../../components/SiteBackground.astro';
 ---
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang={isEnglish ? 'en' : 'ar'} dir={isEnglish ? 'ltr' : 'rtl'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

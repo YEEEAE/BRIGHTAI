@@ -102,7 +102,7 @@ const pageHeroCTAs = [
             href={c.href}
             class:list={['btn', c.variant === 'glow' ? 'btn--glow' : c.variant === 'whatsapp' ? 'btn--whatsapp' : 'btn--outline']}
             target={c.external ? '_blank' : undefined}
-            rel={c.external ? (c.href.includes('wa.me') ? 'nofollow noopener noreferrer' : 'noopener noreferrer') : undefined}
+            rel={c.external ? 'noopener noreferrer' : undefined}
           >
             <svg aria-hidden="true" width="20" height="20"><use href={`/icons.svg#${c.icon}`} /></svg>
             {c.label}
@@ -308,7 +308,7 @@ const pageHeroCTAs = [
             <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-calendar-check"></use></svg>
             احجز ديمو
           </a>
-          <a href={`https://wa.me/966538229013?text=${whatsappMsg}`} target="_blank" rel="nofollow noopener noreferrer" class="btn btn--whatsapp">
+          <a href={`https://wa.me/966538229013?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer" class="btn btn--whatsapp">
             <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
             تواصل عبر واتساب
           </a>

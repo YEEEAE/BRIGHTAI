@@ -35,7 +35,7 @@
     "contrast:verify": "node scripts/qa/verify-contrast-on-media.mjs",
     "bg:contract": "node scripts/qa/verify-background-contract.mjs && pnpm contrast:verify",
     "build:client": "tsc -p tsconfig.client.json",
-    "build": "npm run build:client && npm run image-sitemap && astro build && npm run avif:generate && npm run sitemap:generate && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css && npm run build:patch-entry",
+    "build": "npm run build:client && npm run image-sitemap && astro build && node scripts/minify-public-js.mjs && npm run avif:generate && npm run sitemap:generate && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css && npm run build:patch-entry",
     "sync:dist:flat": "node scripts/sync-dist-flat.mjs",
     "build:patch-entry": "node scripts/patch-server-entry.mjs",
     "verify:deployment-surface": "node scripts/verify-deployment-surface.mjs",

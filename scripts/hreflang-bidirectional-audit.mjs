@@ -148,7 +148,7 @@ function parseHeadHreflang(html) {
   return extractAlternateHreflangLinks(html);
 }
 
-// Build a map: canonical URL -> { file, alternates: Map<lang,href> }
+// Build a map: canonical URL -> { file, lang, alternates: Map<lang,href> }
 // Synchronous — Task 2.1 renamed `buildPageIndex` → `fetchFilesystem` to match
 // the source abstraction (filesystem vs live). Uses readFileSync so the function
 // returns the Map directly (no Promise). `run()` calls `await fetchFilesystem()`
@@ -164,11 +164,12 @@ function fetchFilesystem() {
     // of the indexable hreflang contract.
     if (hasNoindexDirective(html)) continue;
     const alternates = parseHeadHreflang(html);
+    const langMatch = html.match(/<html\b[^>]*\blang=["']([^"']+)["']/i);
     const map = new Map();
     for (const a of alternates) {
       map.set(a.hreflang, a.href);
     }
-    index.set(canonical, { file, alternates: map });
+    index.set(canonical, { file, lang: langMatch?.[1]?.toLowerCase() ?? 'ar', alternates: map });
   }
   return index;
 }
@@ -220,8 +221,8 @@ function checkReciprocity(index) {
 // equal its canonical literally).
 function checkCanonicalSelfMatch(index) {
   const errors = [];
-  for (const [canonical, { alternates }] of index) {
-    const selfLang = canonical.includes("/en/") ? "en-SA" : "ar-SA";
+  for (const [canonical, { lang, alternates }] of index) {
+    const selfLang = canonical.includes("/en/") || lang.startsWith('en') ? "en-SA" : "ar-SA";
     const selfHref = alternates.get(selfLang);
     if (!selfHref) {
       errors.push(`canonical-mismatch: ${canonical} (no ${selfLang} self-reference)`);
@@ -325,9 +326,12 @@ function checkEnPageContract(index) {
 // some other bilingual page that happens to return ar-SA correctly.
 function checkArOnlyPageNoEnAlternate(index) {
   const errors = [];
-  for (const [canonical, { alternates }] of index) {
+  for (const [canonical, { lang, alternates }] of index) {
     // Bilingual pages (in the explicit pair map) legitimately emit en-SA.
     if (isExplicitBilingualPair(canonical)) continue;
+    // Standalone English answer pages have no Arabic counterpart; their
+    // en-SA self-reference is intentional and checked against <html lang>.
+    if (lang.startsWith('en')) continue;
     if (alternates.has("en-SA")) {
       errors.push(
         `ar-only-invented-en: ${canonical} — REGRESSION BAI-SEO-003-S3 (AR-only page emits an en-SA alternate; the pair map is the single source of truth and does not list this URL as bilingual)`,

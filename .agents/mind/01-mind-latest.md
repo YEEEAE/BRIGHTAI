@@ -2554,3 +2554,32 @@
 
 ### ملاحظات / مشاكل مفتوحة
 - لا commit ولا push ولا deploy؛ المستخدم يقرر النشر وإعادة الزحف.
+## [2026-09-03] — تقوية صفحة AI Firewall التجارية لأمن LLM
+
+### تم التنفيذ
+- رفعت عنوان الصفحة ووصفها لاستهداف AI Firewall لأمن LLM ومنع تسريب البيانات، مع إبقاء النية التجارية واضحة بدون تكرار كلمة Saudi Arabia.
+- أضفت FAQPage JSON-LD من نفس مصفوفة الأسئلة المرئية؛ صار عند الصفحة 7 أسئلة متزامنة بعد إصلاح فجوة كانت تظهر في تدقيق schema.
+- ضبطت الإجابة الأولى بصيغة answer-first لسؤال «وش هو AI Firewall؟» ووضحت أنه طبقة تحكم للطلبات المهيأة قبل النموذج.
+- حدّدت الكاشفات حسب التنفيذ الفعلي في `@brightai/firewall-detectors`، ووضحت أن فحص الردود وتقييم خطورة الوجهات/الموديلات يعتمد على التكامل والسياسة ولا يُفترض تلقائياً.
+- أبقيت المقارنة مع traditional firewall وDLP، وفلو Input → inspection → decision → output/evidence، وبطاقات REDACT/BLOCK/FLAG/LOG والـCTA عالي النية.
+
+### الملفات المتأثرة
+- `src/data/solutions.ts`
+- `src/pages/solutions/[slug].astro`
+
+### التحقق
+- `node --test scripts/ai-firewall-commercial-page.test.mjs` ✅ — 2/2
+- `pnpm build` ✅ — Complete؛ تحذيرات route collision legacy فقط
+- `pnpm seo:schema` ✅ — schema audit 64 صفحة وspeakable 267 صفحة
+- `pnpm seo:gate` ✅ — 0 أخطاء، 0 تحذيرات، 0 روابط مكسورة
+- `pnpm test` ✅ — chat 16/16، CSRF 29/29، PII 38/38
+- فحص بصري Chromium محلي ✅ — hero وFAQ وflow ظاهرة على عرض 715px؛ CSS responsive موجود لـ360 و1440، ولم تُنفذ جلسة Lighthouse أو AT كاملة
+- `git diff --check` ✅ — لا أخطاء whitespace
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صفحة `/solutions/ai-firewall/` صارت صفحة تجارية أوضح وأقوى لأمن LLM، مع حدود تنفيذ صريحة وFAQ schema سليم، بدون ادعاء منع كامل أو امتثال مضمون.
+
+### ملاحظات / مشاكل مفتوحة
+- تحذيرات Astro route collision القديمة ما زالت موجودة خارج نطاق المهمة.
+- لا commit ولا push ولا deploy.

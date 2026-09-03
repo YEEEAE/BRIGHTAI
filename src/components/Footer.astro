@@ -45,13 +45,12 @@ interface SocialLink {
   name: string;
   nameAr: string;
   href: string;
-  icon: 'twitter' | 'linkedin' | 'github';
+  icon: 'twitter' | 'linkedin';
 }
 
 const socialLinks: SocialLink[] = [
   { name: 'Twitter',  nameAr: 'تويتر',   href: SITE.social.twitter,  icon: 'twitter'  },
   { name: 'LinkedIn', nameAr: 'لينكدإن', href: SITE.social.linkedin, icon: 'linkedin' },
-  { name: 'GitHub',   nameAr: 'جيت هب',  href: SITE.social.github,   icon: 'github'   },
 ];
 ---
 
@@ -82,7 +81,7 @@ const socialLinks: SocialLink[] = [
           href={`${SITE.whatsapp.url}?text=${encodeURIComponent(isAr ? SITE.whatsapp.message.ar : SITE.whatsapp.message.en)}`}
           class="footer__whatsapp"
           target="_blank"
-          rel="nofollow noopener noreferrer"
+          rel="noopener noreferrer"
           aria-label={isAr ? 'تواصل معنا عبر واتساب' : 'Chat on WhatsApp'}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

@@ -47,6 +47,16 @@ const relSols = getRelatedSolutions(solution.slug);
 const relSectors = getRelatedSectors(solution.slug);
 const isAiFirewall = solution.slug === 'ai-firewall';
 
+const firewallFaqs = [
+  { question: 'هل AI Firewall يضمن منع التسريب أو كل prompt ضار؟', answer: 'لا. هو نقطة تحكم تقلل المخاطر ضمن الكاشفات والسياسات ونقطة التكامل المفعلة، ومو ضمان مثالي لمنع كل حادثة. ما يغني عن DLP، إدارة الهوية، اختبار النماذج، تدريب الموظفين، ومراقبة القنوات غير المغطاة.' },
+  { question: 'هل هو نفس جدار حماية الشبكة؟', answer: 'لا. جدار الشبكة أو WAF يحمي حركة الاتصال وتطبيقات الويب، بينما AI Firewall يركز على تفاعل AI ومحتوى الطلب والبيانات والسياسة المرتبطة به.' },
+  { question: 'هل AI Firewall هو نفسه LLM Firewall أو AI Gateway؟', answer: 'AI Firewall وLLM Firewall يُستخدمان غالباً لنفس فئة حماية تفاعلات النماذج، لكن LLM Firewall أضيق من ناحية الاسم. AI Gateway يركز عادةً على توجيه الطلبات والمفاتيح والحصص والمراقبة والتكلفة، وقد يضيف ضوابط حماية. BrightAI تصف هنا طبقة تحكم للتفاعلات المهيأة، وليست AI-powered WAF تقليدياً.' },
+  { question: 'هل AI Firewall هو DLP؟', answer: 'مو بالضبط. DLP أوسع على مستوى المؤسسة، وAI Firewall طبقة متخصصة لمسار AI. استخدام الاثنين معاً يعطي تغطية أفضل من اعتبار أحدهما بديلاً عن الثاني.' },
+  { question: 'وش يصير إذا اكتشف بيانات حساسة؟', answer: 'حسب السياسة والإعداد: ممكن تنقية أو استبدال القيمة، حجب الطلب، أو رفعه للمراجعة عبر التكامل المرتبط بسير الموافقات. القرار الفعلي يعتمد على تكامل مؤسستك وقواعدها.' },
+  { question: 'هل يفحص الردود والوجهات والموديلات؟', answer: 'الفحص الموثق في طبقة الكشف الحالية يركز على النص الداخل في مسار الطلب. أما فحص الردود، وتقييم خطورة كل وجهة أو موديل، وتوجيه الطلب لمزود معيّن، فتتحدد بحسب التكامل والسياسات المفعلة؛ لا نفترض أنها مغطاة تلقائياً.' },
+  { question: 'هل يضمن الامتثال لـ PDPL أو NCA أو SDAIA؟', answer: 'لا. يساعد في تنفيذ وتوثيق بعض الضوابط التشغيلية، لكن الجاهزية أو الامتثال النهائي يعتمد على بيئتك وتفسير المتطلبات والضوابط الأخرى.' },
+];
+
 const crumbs = [
   { label: 'الرئيسية', href: '/' },
   { label: 'الحلول', href: '/solutions/' },
@@ -81,7 +91,7 @@ const jsonLd = {
     // NOTE: visible solution FAQs stay in sync with FAQPage via
     // scripts/sync-solution-faq-schema.mjs (required by seo-schema-audit);
     // FAQPage is valid schema.org and only affects rich-result eligibility.
-    ...(!isAiFirewall && solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
+    ...(isAiFirewall ? [{"@type":"FAQPage","mainEntity":firewallFaqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
   ]
 };
 
@@ -273,17 +283,17 @@ const governanceLinks = [
 ];
 const firewallCapabilities = [
   { label: 'PROMPTS', title: 'يفحص الطلب قبل ما يكمل', text: 'يمرر الطلب عبر نقطة التكامل ويفحص النص أو الحقول التي تدخل في مسار AI حسب الإعدادات المطبقة.' },
-  { label: 'SENSITIVE DATA', title: 'يحدد PII وأنماط البيانات الحساسة', text: 'الكاشفات الحالية تشمل أنماطاً مثل الهوية، الجوال، البريد، الحسابات، والبيانات الطبية عندما تطابق القواعد المدعومة.' },
+  { label: 'SENSITIVE DATA', title: 'يحدد أنماط PII المدعومة', text: 'الكاشفات الحالية تشمل الهوية، الإقامة، IBAN، الجوال، البريد، العنوان الوطني، السجل التجاري، التواريخ، البطاقات/الحسابات، MRN، وبيانات الاعتماد عندما تطابق القواعد.' },
   { label: 'POLICY', title: 'يطبق قرار السياسة', text: 'النتيجة ممكن تكون سماح، تنقية/استبدال، حجب، أو رفع الحالة للمراجعة — القرار يعتمد على السياسة والتكامل.' },
-  { label: 'DESTINATION', title: 'يعطيك نقطة تحكم قبل النموذج', text: 'تقدر تربط القرار بوجهة أو مسار AI معتمد، لكن تقييم المخاطر يعتمد على ما تم تعريفه في بيئتك.' },
-  { label: 'RESPONSES', title: 'ما يختفي بعد الإرسال', text: 'المخرج جزء من قصة التفاعل التي تحتاج مراجعة؛ الفحص الفعلي يعتمد على المسار والقواعد المفعلة، وليس وعداً بفهم كل مخرج.' },
+  { label: 'MODEL / ROUTE', title: 'يخلي الوجهة والموديل ضمن النقاش', text: 'المزود أو الموديل والوجهة جزء من إعداد المسار. تقدر تعرّفها في سياستك، لكن خطورة كل مزود أو موديل تحتاج تقييماً منفصلاً.' },
+  { label: 'RESPONSES', title: 'فحص الردود مو افتراض تلقائي', text: 'التحقق الموثق هنا يركز على النص الداخل قبل النموذج. فحص المخرج نفسه يتحدد بحسب التكامل والسياسة المفعلة، وما نعدّيه مغطى تلقائياً.' },
   { label: 'EVIDENCE', title: 'يسجل القرار وسياقه التشغيلي', text: 'يحفظ معلومات الحدث والقرار غير الحساسة للمراجعة، بينما يبقى تصميم الاحتفاظ والوصول مسؤولية المؤسسة.' },
 ];
 const firewallFlow = [
   { step: '01', label: 'INPUT', title: 'Prompt أو طلب AI', text: 'موظف، تطبيق، أو مسار chat يرسل طلباً يحتاج نموذجاً.' },
   { step: '02', label: 'INSPECT', title: 'كشف وفحص', text: 'تُطبّق الكاشفات والسياسات على المحتوى والبيانات الموجودة في المسار.' },
   { step: '03', label: 'DECIDE', title: 'قرار قابل للتفسير', text: 'سماح، تنقية، حجب، أو إشارة لمراجعة بحسب القاعدة.' },
-  { step: '04', label: 'OUTPUT / EVIDENCE', title: 'نتيجة وسجل', text: 'يمر المحتوى المسموح أو المنقى، ويُحفظ سياق القرار للمراجعة.' },
+  { step: '04', label: 'OUTPUT / EVIDENCE', title: 'المخرج وسياق القرار', text: 'يمر الطلب المسموح أو المنقى لمساره، ويرجع المخرج حسب مزود النموذج. يُحفظ سياق الفحص والقرار للمراجعة؛ فحص المخرج يعتمد على التكامل.' },
 ];
 const firewallPolicies = [
   { state: 'REDACT', tone: 'teal', title: 'بيانات هوية داخل prompt', rule: 'إذا طابق الطلب نمط هوية أو جوال أو بريد', action: 'استبدل القيمة بـ placeholder قبل وصولها للمسار التالي.' },
@@ -325,7 +335,7 @@ const firewallDlpRows = [
           <div class="ai-firewall-hero__copy">
             <p class="ai-firewall-kicker"><span aria-hidden="true"></span> AI SECURITY CONTROL LAYER</p>
             <h1 id="ai-firewall-title">{solution.h1}</h1>
-            <p class="ai-firewall-answer"><strong>وش هو جدار حماية الذكاء الاصطناعي؟</strong> هو طبقة تحكم تُسمى أيضاً AI Firewall أو LLM Firewall، وتمرر تفاعل الذكاء الاصطناعي عبر فحص وسياسة قبل ما يكمل للنموذج أو يرجع للمستخدم. يكتشف أنماط بيانات حساسة، ويقدر ينقّي أو يحجب أو يرفع الحالة للمراجعة، مع تسجيل سياق القرار.</p>
+            <p class="ai-firewall-answer"><strong>وش هو AI Firewall؟</strong> هو جدار حماية للذكاء الاصطناعي وطبقة تحكم تُسمى أيضاً LLM Firewall، وتمرر طلبات AI المهيأة عبر فحص وسياسة قبل ما تكمل للنموذج. يكتشف أنماط بيانات حساسة مدعومة، وينقّيها أو يحجب الطلب حسب السياسة، مع تسجيل سياق القرار. فحص الردود وخطورة كل وجهة أو موديل يعتمد على التكامل المفعّل، مو افتراض تلقائي.</p>
             <div class="ai-firewall-actions">
               <a class="ai-firewall-button ai-firewall-button--primary" href="/contact/" data-cta="ai_firewall_demo_click" data-cta-label="اطلب جلسة تصميم ضوابط" data-position="hero" data-page-type="solution">اطلب جلسة تصميم ضوابط <span aria-hidden="true">←</span></a>
               <a class="ai-firewall-button ai-firewall-button--secondary" href="/docs/ai-firewall/">شوف الدليل التقني</a>
@@ -394,7 +404,7 @@ const firewallDlpRows = [
         <div class="ai-firewall-shell ai-firewall-alignment"><div><p class="ai-firewall-eyebrow">جاهزية مسؤولة</p><h2 id="ai-firewall-alignment-title">يدعم تطبيق السياسات — ما يعطيك شهادة جاهزة</h2><p>تقدر تستخدم طبقة التحكم كجزء من تنفيذ متطلبات حماية البيانات والتسجيل وإدارة المخاطر المرتبطة بـ PDPL وNCA، ومع سياق مبادئ SDAIA. لكن مو كل بيئة مثل الثانية: لازم فريقك يراجع نطاق البيانات، الوجهات، النماذج، الصلاحيات، والاحتفاظ مع المستشار القانوني والجهة المختصة.</p></div><a class="ai-firewall-text-link" href="/assessment/ai-governance-readiness/">قيّم جاهزية الضوابط عندك <span aria-hidden="true">←</span></a></div>
       </section>
 
-      <section class="ai-firewall-faq" aria-labelledby="ai-firewall-faq-title"><div class="ai-firewall-shell ai-firewall-shell--narrow"><p class="ai-firewall-eyebrow">أسئلة قبل الشراء</p><h2 id="ai-firewall-faq-title">وش يحتاج يعرفه فريق الأمن؟</h2><div class="ai-firewall-faq__list"><details><summary>هل AI Firewall يضمن منع التسريب أو كل prompt ضار؟</summary><p>لا. هو نقطة تحكم تقلل المخاطر ضمن الكاشفات والسياسات ونقطة التكامل المفعلة، ومو ضمان مثالي لمنع كل حادثة. ما يغني عن DLP، إدارة الهوية، اختبار النماذج، تدريب الموظفين، ومراقبة القنوات غير المغطاة.</p></details><details><summary>هل هو نفس جدار حماية الشبكة؟</summary><p>لا. جدار الشبكة أو WAF يحمي حركة الاتصال وتطبيقات الويب، بينما AI Firewall يركز على تفاعل AI ومحتوى الطلب والبيانات والسياسة المرتبطة به.</p></details><details><summary>هل AI Firewall هو نفسه LLM Firewall أو AI Gateway؟</summary><p>AI Firewall وLLM Firewall يُستخدمان غالباً لنفس فئة حماية تفاعلات النماذج، لكن LLM Firewall أضيق من ناحية الاسم. AI Gateway يركز عادةً على توجيه الطلبات والمفاتيح والحصص والمراقبة والتكلفة، وقد يضيف ضوابط حماية. BrightAI تصف هنا طبقة تحكم للتفاعلات المهيأة، وليست AI-powered WAF تقليدياً.</p></details><details><summary>هل AI Firewall هو DLP؟</summary><p>مو بالضبط. DLP أوسع على مستوى المؤسسة، وAI Firewall طبقة متخصصة لمسار AI. استخدام الاثنين معاً يعطي تغطية أفضل من اعتبار أحدهما بديلاً عن الثاني.</p></details><details><summary>وش يصير إذا اكتشف بيانات حساسة؟</summary><p>حسب السياسة والإعداد: ممكن تنقية أو استبدال القيمة، حجب الطلب، أو رفعه للمراجعة. القرار الفعلي يعتمد على تكامل مؤسستك وقواعدها.</p></details><details><summary>هل يضمن الامتثال لـ PDPL أو NCA أو SDAIA؟</summary><p>لا. يساعد في تنفيذ وتوثيق بعض الضوابط التشغيلية، لكن الجاهزية أو الامتثال النهائي يعتمد على بيئتك وتفسير المتطلبات والضوابط الأخرى.</p></details></div></div></section>
+      <section class="ai-firewall-faq" aria-labelledby="ai-firewall-faq-title"><div class="ai-firewall-shell ai-firewall-shell--narrow"><p class="ai-firewall-eyebrow">أسئلة قبل الشراء</p><h2 id="ai-firewall-faq-title">وش يحتاج يعرفه فريق الأمن؟</h2><div class="ai-firewall-faq__list">{firewallFaqs.map(faq => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></div></section>
 
       <RelatedLinks relatedSlugs={solution.related} sectorSlugs={relSectors.map(s=>s.slug)} docs={solution.docs} blog={solution.blog} kernel={solution.kernel} />
       <section class="ai-firewall-final" aria-labelledby="ai-firewall-final-title"><div class="ai-firewall-shell ai-firewall-final__inner"><p class="ai-firewall-eyebrow">الخطوة الجاية</p><h2 id="ai-firewall-final-title">اعرف وين تحتاج أول نقطة تحكم</h2><p>في جلسة مخصصة، نراجع حالة استخدام واحدة، نوع البيانات، الوجهة، ومسار القرار — ونطلع بنطاق ضوابط واقعي قابل للتنفيذ.</p><a class="ai-firewall-button ai-firewall-button--primary" href="/contact/" data-cta="ai_firewall_contact_click" data-cta-label="اطلب جلسة تصميم ضوابط" data-position="final" data-page-type="solution">اطلب جلسة تصميم ضوابط <span aria-hidden="true">←</span></a></div></section>
@@ -555,7 +565,7 @@ const firewallDlpRows = [
             <small class="cta-micro" aria-hidden="true">30 دقيقة • نطاق + SLA + milestones</small>
           </div>
 <div class="cta-actions">
-<a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" data-whatsapp data-cta-label="تواصل عبر واتساب" data-position="inline" data-page-type="unknown"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+<a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" data-whatsapp data-cta-label="تواصل عبر واتساب" data-position="inline" data-page-type="unknown"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
   <small class="cta-micro" aria-hidden="true">رد سريع • يردّك مهندس سعودي</small>
 </div>
         </div>
@@ -768,7 +778,7 @@ const firewallDlpRows = [
           <small class="cta-micro" aria-hidden="true">30 دقيقة • نطاق + SLA + milestones</small>
         </div>
         <div class="cta-actions">
-          <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" data-whatsapp data-cta-label="تواصل عبر واتساب" data-position="inline" data-page-type="unknown"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+          <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" data-whatsapp data-cta-label="تواصل عبر واتساب" data-position="inline" data-page-type="unknown"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
           <small class="cta-micro" aria-hidden="true">رد سريع • يردّك مهندس سعودي</small>
         </div>
       </div>

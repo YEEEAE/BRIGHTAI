@@ -32,11 +32,9 @@ export const SITE = {
     official: [
       'https://x.com/brightai_sa',
       'https://www.linkedin.com/company/brightai-saudi/',
-      'https://github.com/YEEEAE/BRIGHTAI',
     ],
     twitter: 'https://x.com/brightai_sa',
     linkedin: 'https://www.linkedin.com/company/brightai-saudi/',
-    github: 'https://github.com/YEEEAE/BRIGHTAI',
   },
   // Verification/tracking IDs — empty until real verified values are provided.
   // Conditional rendering in BaseLayout ensures empty values are never emitted.

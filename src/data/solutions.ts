@@ -214,9 +214,9 @@ export const solutions: SolutionData[] = [
   },
   {
     slug:'ai-firewall', href:'/solutions/ai-firewall/',
-    title:'جدار حماية الذكاء الاصطناعي وLLM Firewall | BrightAI',
+    title:'AI Firewall لأمن LLM ومنع تسريب البيانات | BrightAI',
     h1:'جدار حماية الذكاء الاصطناعي (AI/LLM Firewall) للمنشآت السعودية',
-    description:'طبقة تحكم لأمن LLM تفحص مسارات الذكاء الاصطناعي المهيأة وتطبق السماح أو التنقية أو الحجب أو المراجعة حسب سياسة المؤسسة. تختلف عن WAF الشبكي وAI Gateway.',
+    description:'طبقة تحكم لأمن LLM تفحص طلبات الذكاء الاصطناعي المهيأة وتطبق التنقية أو الحجب أو المراجعة حسب سياسة المؤسسة، مع سجل يوضح القرار. تكمل WAF وDLP ولا تدّعي منع كل تسريب.',
     canonical:`${S}/solutions/ai-firewall/`,
     icon:'mdi:shield-half-full', chip:'حماية البيانات',
     shortDesc:'يفحص تفاعلات AI المهيأة وينقّح البيانات الحساسة قبل وصولها للنموذج حسب سياسة مؤسستك.',
