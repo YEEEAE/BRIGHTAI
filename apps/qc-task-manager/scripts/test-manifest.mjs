@@ -101,5 +101,6 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:qc-compliance-100',
   'test:lab-workflows-100',
   'test:e-signature-integrity',
+  'test:records-integrity-100',
   'test:lab-change-request-intent',
 ];

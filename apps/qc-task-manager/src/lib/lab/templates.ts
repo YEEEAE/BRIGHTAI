@@ -38,6 +38,9 @@ import {
   canSubmitLabTemplateRecord,
 } from '../permissions';
 import {
+  ensureLabApprovalsAndAudit,
+} from '../qcWorkflow';
+import {
   ESIGN_FAILURE_MESSAGE_AR,
   ESIGN_FIELD_NAME,
   ESIGN_RATE_LIMITED_MESSAGE_AR,
@@ -551,6 +554,7 @@ function versionSummary(data: LabTemplateFormData): string {
 export function createLabTemplate(data: LabTemplateFormData, actorId: number): number {
   return transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     assertReferencesExist(data);
     assertCodeAvailable(data.code, null);
     const result = db
@@ -594,6 +598,7 @@ export function createLabTemplate(data: LabTemplateFormData, actorId: number): n
 export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId: number, expectedUpdatedAt?: string | null): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const existing = db.prepare('SELECT id, code, test_type, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as
       | { id: number; code: string; test_type: LabTestType; status: string; updated_at: string }
       | undefined;
@@ -679,6 +684,7 @@ export function updateLabTemplate(id: number, data: LabTemplateFormData, actorId
 export function submitLabTemplate(id: number, actor: { id: number; role: import('../types').Role }, expectedUpdatedAt?: string | null): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const template = db.prepare('SELECT id, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as { id: number; status: string; updated_at: string } | undefined;
     if (!template) throw new Error('Test template not found.');
     if (template.status === 'ARCHIVED') throw new Error('Archived templates cannot be submitted.');
@@ -696,6 +702,7 @@ export function submitLabTemplate(id: number, actor: { id: number; role: import(
 export function reviewLabTemplate(id: number, actor: { id: number; role: import('../types').Role }, expectedUpdatedAt?: string | null): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const template = db.prepare('SELECT id, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as { id: number; status: string; updated_at: string } | undefined;
     if (!template) throw new Error('Test template not found.');
     if (template.status === 'ARCHIVED') throw new Error('Archived templates are read-only.');
@@ -713,6 +720,7 @@ export function reviewLabTemplate(id: number, actor: { id: number; role: import(
 export function approveLabTemplate(id: number, actor: { id: number; role: import('../types').Role }, expectedUpdatedAt?: string | null, note?: string | null): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const template = db.prepare('SELECT id, code, status, updated_at FROM lab_test_templates WHERE id = ?').get(id) as { id: number; code: string; status: string; updated_at: string } | undefined;
     if (!template) throw new Error('Test template not found.');
     if (template.status === 'ARCHIVED') throw new Error('Archived templates cannot be approved.');
@@ -739,6 +747,7 @@ export function approveLabTemplate(id: number, actor: { id: number; role: import
 export function archiveLabTemplate(id: number, actorId: number): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const template = db.prepare('SELECT id, code, status FROM lab_test_templates WHERE id = ?').get(id) as
       | { id: number; code: string; status: string }
       | undefined;

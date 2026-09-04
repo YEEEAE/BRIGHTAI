@@ -2,10 +2,10 @@
 //
 // Responsibilities:
 //   1. Strict Segregation of Duties: Analysts who performed/created a test CANNOT approve it.
-//   2. Dual-Intent E-Signature with SHA-256 Record Sealing: Sealing approved records in `lab_test_approvals`.
+//   2. Dual-Intent E-Signature with SHA-256 Record Sealing: Sealing approved and VOID records in `lab_test_approvals`.
 //   3. Tamper Detection: Re-verifying stored SHA-256 digest against live serialized test record.
 //   4. SOP Major Version Acknowledgements: Flagging assigned operators as 'Pending Acknowledgement'.
-//   5. Immutability & Audit Durability: Preventing record mutation/deletion after approval and audit log deletions.
+//   5. Immutability & Audit Durability: Preventing record mutation/deletion after approval and audit-log mutation/deletion.
 
 import { createHash } from 'node:crypto';
 import type { Database as BetterSqliteDatabase } from 'better-sqlite3';
@@ -29,6 +29,7 @@ export function ensureLabApprovalsAndAudit(database?: BetterSqliteDatabase): voi
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       test_id INTEGER NOT NULL REFERENCES lab_test_records(id) ON DELETE CASCADE,
       approver_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+      action TEXT NOT NULL DEFAULT 'APPROVAL' CHECK (action IN ('APPROVAL', 'VOID')),
       signature_reason TEXT NOT NULL,
       record_hash TEXT NOT NULL,
       raw_payload_json TEXT NOT NULL,
@@ -71,10 +72,89 @@ export function ensureLabApprovalsAndAudit(database?: BetterSqliteDatabase): voi
       SELECT RAISE(ABORT, 'approved lab test records cannot be deleted');
     END;
 
+    CREATE TRIGGER IF NOT EXISTS lab_test_records_terminal_update
+    BEFORE UPDATE ON lab_test_records
+    WHEN OLD.status IN ('APPROVED', 'VOID')
+    BEGIN
+      SELECT RAISE(ABORT, 'approved or void lab test records are immutable');
+    END;
+
+    CREATE TRIGGER IF NOT EXISTS lab_test_records_terminal_delete
+    BEFORE DELETE ON lab_test_records
+    WHEN OLD.status IN ('APPROVED', 'VOID')
+    BEGIN
+      SELECT RAISE(ABORT, 'approved or void lab test records cannot be deleted');
+    END;
+
     CREATE TRIGGER IF NOT EXISTS qc_audit_log_no_delete
     BEFORE DELETE ON qc_audit_log
     BEGIN
       SELECT RAISE(ABORT, 'qc_audit_log records cannot be deleted under any circumstances');
+    END;
+
+    CREATE TRIGGER IF NOT EXISTS qc_audit_log_no_update
+    BEFORE UPDATE ON qc_audit_log
+    BEGIN
+      SELECT RAISE(ABORT, 'qc_audit_log records are immutable');
+    END;
+
+    CREATE TRIGGER IF NOT EXISTS lab_document_versions_historical_update
+    BEFORE UPDATE ON lab_document_versions
+    WHEN OLD.status = 'ARCHIVED'
+      OR (OLD.status = 'SUPERSEDED' AND (
+        NEW.status IS NOT 'ARCHIVED' OR
+        NEW.document_id IS NOT OLD.document_id OR NEW.version IS NOT OLD.version OR
+        NEW.content_md IS NOT OLD.content_md OR NEW.content_html_sanitized IS NOT OLD.content_html_sanitized OR
+        NEW.change_summary IS NOT OLD.change_summary OR NEW.author_id IS NOT OLD.author_id OR
+        NEW.reviewed_by IS NOT OLD.reviewed_by OR NEW.reviewed_at IS NOT OLD.reviewed_at OR
+        NEW.approved_by IS NOT OLD.approved_by OR NEW.approved_at IS NOT OLD.approved_at OR
+        NEW.created_at IS NOT OLD.created_at
+      ))
+      OR (OLD.status = 'APPROVED' AND (
+        NEW.status NOT IN ('SUPERSEDED', 'ARCHIVED') OR
+        NEW.document_id IS NOT OLD.document_id OR NEW.version IS NOT OLD.version OR
+        NEW.content_md IS NOT OLD.content_md OR NEW.content_html_sanitized IS NOT OLD.content_html_sanitized OR
+        NEW.change_summary IS NOT OLD.change_summary OR NEW.author_id IS NOT OLD.author_id OR
+        NEW.reviewed_by IS NOT OLD.reviewed_by OR NEW.reviewed_at IS NOT OLD.reviewed_at OR
+        NEW.approved_by IS NOT OLD.approved_by OR NEW.approved_at IS NOT OLD.approved_at OR
+        NEW.created_at IS NOT OLD.created_at
+      ))
+    BEGIN
+      SELECT RAISE(ABORT, 'approved, superseded, and archived document versions are immutable');
+    END;
+
+    CREATE TRIGGER IF NOT EXISTS lab_document_versions_historical_delete
+    BEFORE DELETE ON lab_document_versions
+    WHEN OLD.status IN ('APPROVED', 'SUPERSEDED', 'ARCHIVED')
+    BEGIN
+      SELECT RAISE(ABORT, 'approved, superseded, and archived document versions cannot be deleted');
+    END;
+
+    CREATE TRIGGER IF NOT EXISTS lab_template_versions_historical_update
+    BEFORE UPDATE ON lab_test_template_versions
+    WHEN OLD.status = 'SUPERSEDED'
+      OR (OLD.status = 'APPROVED' AND (
+        NEW.status NOT IN ('SUPERSEDED') OR
+        NEW.template_id IS NOT OLD.template_id OR NEW.version IS NOT OLD.version OR
+        NEW.default_sample_count IS NOT OLD.default_sample_count OR NEW.parameters_json IS NOT OLD.parameters_json OR
+        NEW.connector_choices_json IS NOT OLD.connector_choices_json OR NEW.applicable_product_id IS NOT OLD.applicable_product_id OR
+        NEW.applicable_equipment_id IS NOT OLD.applicable_equipment_id OR NEW.sop_id IS NOT OLD.sop_id OR
+        NEW.wi_id IS NOT OLD.wi_id OR NEW.created_by IS NOT OLD.created_by OR NEW.approved_by IS NOT OLD.approved_by OR
+        NEW.created_at IS NOT OLD.created_at OR NEW.effective_date IS NOT OLD.effective_date OR
+        NEW.requires_approved_template_for_submission IS NOT OLD.requires_approved_template_for_submission OR
+        NEW.submitted_by IS NOT OLD.submitted_by OR NEW.submitted_at IS NOT OLD.submitted_at OR
+        NEW.reviewed_by IS NOT OLD.reviewed_by OR NEW.reviewed_at IS NOT OLD.reviewed_at OR
+        NEW.approved_at IS NOT OLD.approved_at
+      ))
+    BEGIN
+      SELECT RAISE(ABORT, 'approved and superseded template versions are immutable');
+    END;
+
+    CREATE TRIGGER IF NOT EXISTS lab_template_versions_historical_delete
+    BEFORE DELETE ON lab_test_template_versions
+    WHEN OLD.status IN ('APPROVED', 'SUPERSEDED')
+    BEGIN
+      SELECT RAISE(ABORT, 'approved and superseded template versions cannot be deleted');
     END;
 
     CREATE VIEW IF NOT EXISTS lab_audit_log AS
@@ -98,6 +178,13 @@ export function ensureLabApprovalsAndAudit(database?: BetterSqliteDatabase): voi
     FROM qc_audit_log
     WHERE entity_type LIKE 'LAB_%';
   `);
+
+  // The table predates VOID action seals in some local databases. Extend the
+  // existing evidence table in place; this is not a second audit system.
+  const approvalColumns = target.prepare('PRAGMA table_info(lab_test_approvals)').all() as Array<{ name: string }>;
+  if (!approvalColumns.some((column) => column.name === 'action')) {
+    target.exec("ALTER TABLE lab_test_approvals ADD COLUMN action TEXT NOT NULL DEFAULT 'APPROVAL' CHECK (action IN ('APPROVAL', 'VOID'))");
+  }
 
   if (!database) _labSchemaEnsured = true;
 }
@@ -173,6 +260,7 @@ export interface LabTestApprovalSeal {
   id: number;
   test_id: number;
   approver_id: number;
+  action: 'APPROVAL' | 'VOID';
   signature_reason: string;
   record_hash: string;
   raw_payload_json: string;
@@ -183,12 +271,13 @@ export interface LabTestApprovalSeal {
 /**
  * Seal a lab test approval with dual-intent e-signature reason and SHA-256 hash.
  */
-export function sealLabTestApproval(
+function sealLabTestAction(
   db: BetterSqliteDatabase,
   params: {
     testId: number;
     approverId: number;
     signatureReason: string;
+    action: 'APPROVAL' | 'VOID';
   },
 ): LabTestApprovalSeal {
   ensureLabApprovalsAndAudit(db);
@@ -197,12 +286,28 @@ export function sealLabTestApproval(
   const reason = params.signatureReason.trim() || 'I approve this test result for release';
 
   const insert = db.prepare(`
-    INSERT INTO lab_test_approvals (test_id, approver_id, signature_reason, record_hash, raw_payload_json)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(params.testId, params.approverId, reason, recordHash, serialized);
+    INSERT INTO lab_test_approvals (test_id, approver_id, action, signature_reason, record_hash, raw_payload_json)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(params.testId, params.approverId, params.action, reason, recordHash, serialized);
 
   const sealId = Number(insert.lastInsertRowid);
   return db.prepare('SELECT * FROM lab_test_approvals WHERE id = ?').get(sealId) as LabTestApprovalSeal;
+}
+
+/** Seal an approved lab test with its approval meaning and approval snapshot. */
+export function sealLabTestApproval(
+  db: BetterSqliteDatabase,
+  params: { testId: number; approverId: number; signatureReason: string },
+): LabTestApprovalSeal {
+  return sealLabTestAction(db, { ...params, action: 'APPROVAL' });
+}
+
+/** Seal a VOID lab test with its final void-state snapshot and reason. */
+export function sealLabTestVoid(
+  db: BetterSqliteDatabase,
+  params: { testId: number; approverId: number; signatureReason: string },
+): LabTestApprovalSeal {
+  return sealLabTestAction(db, { ...params, action: 'VOID' });
 }
 
 export interface VerificationResult {

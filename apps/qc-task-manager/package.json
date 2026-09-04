@@ -113,6 +113,7 @@
     "test:qc-compliance-100": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-qc-compliance-100.mjs",
     "test:lab-workflows-100": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-workflows-100.mjs",
     "test:e-signature-integrity": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-e-signature-integrity.mjs",
+    "test:records-integrity-100": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-records-integrity-100.mjs",
     "test:lab-change-request-intent": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-lab-change-request-intent.mjs",
     "performance": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/run-performance.mjs"
   },

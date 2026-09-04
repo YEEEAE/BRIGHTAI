@@ -85,10 +85,14 @@ try {
     assert.equal(invalidOutcome, 'invalid', 'incorrect password returns invalid');
     pass('incorrect password returns invalid status');
 
-    // Null/empty password
+    // Null/empty passwords are invalid attempts, not rate-limit responses.
     const emptyOutcome = requireEsignature(userId, null);
-    assert.equal(emptyOutcome, 'rate_limited', 'empty password returns rate_limited');
-    pass('null/empty password returns rate_limited status');
+    assert.equal(emptyOutcome, 'invalid', 'empty password returns invalid');
+    const missingOutcome = requireEsignature(userId, undefined);
+    assert.equal(missingOutcome, 'invalid', 'missing password returns invalid');
+    const emptyAttempts = db.prepare("SELECT COUNT(*) AS n FROM login_attempts WHERE username = 'lead_approver' AND ip_address = 'e-signature:failed'").get().n;
+    assert.equal(emptyAttempts, 3, 'wrong plus empty/missing passwords are recorded as failed security attempts');
+    pass('null/empty passwords return invalid and are audited as failed attempts');
   }
 
   // Seed Master Data & Test Record

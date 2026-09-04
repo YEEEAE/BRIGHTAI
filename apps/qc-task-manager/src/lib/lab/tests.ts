@@ -30,6 +30,7 @@ import {
 import { getLabTestFindingLinks, type LabTestFindingLink } from './findingLinks';
 import type { LabTestSample, LabTestStatus, LabTestType, Role } from '../types';
 import { appendQcAudit } from '../audit/qcChain';
+import { ensureLabApprovalsAndAudit, sealLabTestVoid } from '../qcWorkflow';
 import { recordUxEvent } from '../uxTelemetry';
 
 /** Lab audit actions allowed by the extended qc_audit_log CHECK (migration 011). */
@@ -1036,6 +1037,9 @@ export function voidLabTest(
 ): LabTestVoidResult {
   return transaction(() => {
     const db = getDb();
+    // Install the terminal-record guard before any void transition. This also
+    // ensures the same connection rejects later direct UPDATE/DELETE bypasses.
+    ensureLabApprovalsAndAudit(db);
     const row = db
       .prepare('SELECT * FROM lab_test_records WHERE id = ?')
       .get(testId) as Record<string, unknown> | undefined;
@@ -1094,6 +1098,14 @@ export function voidLabTest(
     db.prepare(
       `UPDATE lab_test_records SET status = 'VOID', updated_at = ? WHERE id = ?`,
     ).run(dbNow, testId);
+
+    // Durable action evidence: the final VOID state is sealed in the existing
+    // lab_test_approvals evidence table; no password material is included.
+    sealLabTestVoid(db, {
+      testId,
+      approverId: user.id,
+      signatureReason: opts?.esigned ? trimmedReason : `Void decision: ${trimmedReason}`,
+    });
 
     // Audit transition — the e-signature marker is appended to the reason;
     // no secret material is ever recorded in the audit trail.

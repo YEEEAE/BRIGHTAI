@@ -38,7 +38,7 @@ import {
   canEditLabDocumentRecord,
   canReviewLabDocumentRecord,
 } from '../permissions';
-import { triggerSopMajorVersionAcknowledgements } from '../qcWorkflow';
+import { ensureLabApprovalsAndAudit, triggerSopMajorVersionAcknowledgements } from '../qcWorkflow';
 import type { LabDocument, LabDocumentStatus, LabDocumentType, LabDocumentVersion, Role } from '../types';
 import { renderDocumentContent } from './documentContent';
 import {
@@ -797,6 +797,7 @@ export function createLabDocument(data: LabDocumentFormData, actor: DocumentActo
   const role = actorRole(actor);
   return transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     assertDocumentReferencesExist(data);
     assertDocumentCodeAvailable(data.code, null);
     const ownerId = role === 'employee' ? sessionActorId : data.owner_id ?? sessionActorId;
@@ -855,6 +856,7 @@ export function updateLabDocument(id: number, data: LabDocumentFormData, actor: 
   const role = actorRole(actor);
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(id) as LabDocument | undefined;
     if (!document) throw new Error('Document not found.');
     if (document.status === 'ARCHIVED' || document.status === 'SUPERSEDED') {
@@ -1052,6 +1054,7 @@ export function submitLabDocument(
 ): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(documentId) as LabDocument | undefined;
     if (!document) throw new Error('Document not found.');
     if (document.status !== 'DRAFT') {
@@ -1115,6 +1118,7 @@ export function requestChangesLabDocument(
 ): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(documentId) as LabDocument | undefined;
     if (!document) throw new Error('Document not found.');
     if (document.status !== 'IN_REVIEW') {
@@ -1188,6 +1192,7 @@ export function approveLabDocument(
 ): void {
   transaction(() => {
     const db = getDb();
+    ensureLabApprovalsAndAudit(db);
     const document = db.prepare('SELECT * FROM lab_documents WHERE id = ?').get(documentId) as LabDocument | undefined;
     if (!document) throw new Error('Document not found.');
     if (document.status !== 'IN_REVIEW') {

@@ -48,7 +48,12 @@ export function backfillQcAuditChain(db: BetterSqliteDatabase): void {
     let previous: string | null = null;
     for (const row of rows) {
       const hash = createQcAuditEventHash(row, previous);
-      update.run(previous, hash, row.id);
+      // The genesis row intentionally keeps previous_hash = NULL. Avoid
+      // issuing a no-op UPDATE for already sealed rows so the append-only
+      // immutability trigger can coexist with legacy backfill.
+      if (row.previous_hash !== previous || row.event_hash !== hash) {
+        update.run(previous, hash, row.id);
+      }
       previous = hash;
     }
   })();

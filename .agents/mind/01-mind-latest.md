@@ -1,3 +1,38 @@
+## [2026-09-04] — CLOSURE: تكامل سلامة السجلات والتوقيع الإلكتروني (E-Records / Auditability)
+
+### تم التنفيذ
+- حُسمت بنية الأدلة: `login_attempts` لمحاولات المصادقة/الأمن فقط، و`qc_audit_log` كسجل الأعمال الكنسي الوحيد، و`lab_test_approvals` كختم snapshot/action immutable؛ ما انضاف أي audit log ثانٍ.
+- صُحّح `src/lib/lab/esignature.ts`: كلمة المرور الفاضية/المفقودة ترجع `invalid` وتُعدّ وتُسجّل كمحاولة فاشلة؛ `rate_limited` يرجع فقط عند وجود lockout سابق، مع تسجيل المحاولة المرفوضة.
+- توسّع ختم `lab_test_approvals` بحقل `action` (`APPROVAL`/`VOID`) مع ترقية runtime آمنة للقواعد القديمة، وصار لكل موافقة/VOID ناجح actor + action + signature meaning + timestamp + serialized snapshot + SHA-256 hash.
+- أُضيفت حواجز runtime تمنع تعديل/حذف سجلات lab `APPROVED`/`VOID`، نسخ المستندات `APPROVED`/`SUPERSEDED`/`ARCHIVED`، نسخ القوالب `APPROVED`/`SUPERSEDED`، وسجلات `qc_audit_log` التاريخية؛ وأُصلح backfill ليتجنب no-op UPDATE على سجل genesis.
+- أُنشئت وثيقة `ELECTRONIC-RECORDS-INTEGRITY.md` ومصفوفة coverage محدثة للدومينات: Data Integrity, Records Integrity, Auditability, Traceability, E-Signature, Data Lineage, State Machine.
+- أُضيفت سويتة `test:records-integrity-100` المسجلة بالمانيفست، وتغطي credential outcomes، SoD، role bypass، stale state، double approval، replay، terminal mutations، historical metadata، retention/deletion، backup/restore، وسلسلتي التدقيق.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/src/lib/lab/esignature.ts`
+- `apps/qc-task-manager/src/lib/qcWorkflow.ts`
+- `apps/qc-task-manager/src/lib/audit/qcChain.ts`
+- `apps/qc-task-manager/src/lib/lab/{tests,documents,templates}.ts`
+- `apps/qc-task-manager/scripts/test-records-integrity-100.mjs`
+- `apps/qc-task-manager/docs/ELECTRONIC-RECORDS-INTEGRITY.md`
+- `apps/qc-task-manager/docs/FINAL-100-DOMAIN-COVERAGE.md`
+
+### الأرقام / التحقق
+- `test:records-integrity-100` ✅ **31/31**؛ `test:e-signature-integrity` ✅ **8/8**؛ `test:lab-esignature` ✅ **16/16**؛ `test:qc-compliance-100` ✅ **16/16**.
+- `test:audit-integrity` ✅؛ `test:lab-documents` ✅ **303/303**؛ `test:lab-templates` ✅ **51/51**؛ `test:lab-review` ✅ **97/97**.
+- `test:database-100` ✅ **23/23**؛ `test:production-operations` ✅؛ `test:schema-reference` ✅ **166 object**؛ embedded migration parity ✅ **40/40**.
+- `test-manifest-guard` ✅ **89 canonical + 28 E2E**؛ `route-manifest --check` ✅ **115/25/6**؛ `astro check` ✅ 0 errors / 2 hints معروفة؛ `astro build` ✅.
+- ما صار commit أو push أو deploy. HEAD وقت التحقق: `9e3e70ed86193277dcf3b91dea41518e9677759b`.
+
+### النتيجة
+- **الحالة:** نجح لنطاق سلامة السجلات والتدقيق والتوقيع الإلكتروني محليًا.
+- **مختصر:** كل محاولات التلاعب المطلوبة انرفضت حسب السياسة، والأدلة التجارية صارت منفصلة عن محاولات كلمة المرور وقابلة للتحقق بعد restore؛ UAT البشري والتحقق على قاعدة الإنتاج ما زالوا مفتوحين.
+
+### ملاحظات / مشاكل مفتوحة
+- الدليل لا يدّعي وحده الامتثال التنظيمي للتوقيع الإلكتروني؛ يلزم اعتماد سياسة identity proofing/retention وUAT بشري قبل أي claim تنظيمي.
+- خطا P0 في acceptance الكامل (بحث `e2e-search`) والدومينات المحجوبة سابقًا ما عولجت ضمن هذه المهمة.
+- تحذيرات WI catalog collisions وbackup catch-up في قواعد الاختبارات المعزولة ظهرت من السلوك التشغيلي الموجود، ولم تفشل أي بوابة.
+
 ## [2026-09-04] — CLOSURE: إغلاق مشكلة نقل التقارير وعقد المسار (tracked-source absence ⇎ PASS)
 
 ### تم التنفيذ

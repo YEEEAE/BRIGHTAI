@@ -12,8 +12,9 @@
 // - The password itself is never stored, logged, or audited — only a boolean
 //   outcome is recorded.
 // - Failed verifications are rate-limited per user (same in-memory bucket
-//   pattern as requireAiRateLimit) and audited as failed attempts in the
-//   shared qc_audit_log.
+//   pattern as requireAiRateLimit) and recorded as security attempts in the
+//   existing login_attempts table. Business approval evidence stays in
+//   qc_audit_log and lab_test_approvals.
 
 import { verifyPasswordForUser } from '../auth';
 import { getDb } from '../db';
@@ -48,15 +49,23 @@ function isRateLimited(userId: number): boolean {
  * Returns 'ok' on success (and clears the failure counter), 'invalid' on a
  * wrong password (audited + counted), or 'rate_limited' when too many recent
  * failures exist (refused WITHOUT running bcrypt — no oracle, no counting).
- * Empty/missing passwords are treated as invalid attempts.
+ * Empty/missing passwords are invalid attempts and count toward the limit;
+ * they are rate-limited only when the actor was already locked out.
  */
 export function requireEsignature(userId: number, password: string | null | undefined): EsignatureResult {
-  if (!password || password.length === 0 || isRateLimited(userId)) {
-    if (password && password.length > 0) {
-      auditEsignAttempt(userId, 'rate_limited');
-    }
+  if (isRateLimited(userId)) {
+    auditEsignAttempt(userId, 'rate_limited');
     return 'rate_limited';
   }
+
+  if (typeof password !== 'string' || password.length === 0) {
+    const bucket = esignFailureBuckets.get(userId) ?? { startedAt: Date.now(), count: 0 };
+    bucket.count += 1;
+    esignFailureBuckets.set(userId, bucket);
+    auditEsignAttempt(userId, 'failed');
+    return 'invalid';
+  }
+
   const ok = verifyPasswordForUser(userId, password);
   if (ok) {
     esignFailureBuckets.delete(userId);

@@ -101,14 +101,23 @@ try {
   const employeeAuditCount = db
     .prepare(`SELECT COUNT(*) AS c FROM login_attempts WHERE username = (SELECT username FROM users WHERE id = ?) AND ip_address LIKE 'e-signature:%'`)
     .get(uid('employee')).c;
-  ok(Number(employeeAuditCount) === 7, `all refused attempts audited exactly once each (got ${employeeAuditCount})`);
+  ok(Number(employeeAuditCount) === 7, `all refused attempts audited exactly once each before empty probe (got ${employeeAuditCount})`);
   const rateLimitedAudits = db
     .prepare(`SELECT COUNT(*) AS c FROM login_attempts WHERE ip_address = 'e-signature:rate_limited'`)
     .get().c;
   ok(Number(rateLimitedAudits) === 2, 'rate-limited refusals audited as rate_limited (got ${})'.replace('${}', rateLimitedAudits));
-  // A locked empty-password probe must not run bcrypt or count as an attempt.
+  // A locked empty-password probe is still rate-limited because the actor was
+  // already locked out, and the refused security attempt is audited.
   result = esign.requireEsignature(uid('employee'), null);
-  ok(result === 'rate_limited', 'empty password → rate_limited without counting');
+  ok(result === 'rate_limited', 'empty password while locked → rate_limited');
+  const employeeAuditCountAfterEmpty = db
+    .prepare(`SELECT COUNT(*) AS c FROM login_attempts WHERE username = (SELECT username FROM users WHERE id = ?) AND ip_address LIKE 'e-signature:%'`)
+    .get(uid('employee')).c;
+  ok(Number(employeeAuditCountAfterEmpty) === 8, `locked empty password is audited exactly once (got ${employeeAuditCountAfterEmpty})`);
+  const rateLimitedAuditsAfterEmpty = db
+    .prepare(`SELECT COUNT(*) AS c FROM login_attempts WHERE ip_address = 'e-signature:rate_limited'`)
+    .get().c;
+  ok(Number(rateLimitedAuditsAfterEmpty) === 3, `locked empty password is classified as rate_limited (got ${rateLimitedAuditsAfterEmpty})`);
 
   // ── 4. Audit note marker on the void action ──
   const insertRow = {
