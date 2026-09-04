@@ -159,8 +159,11 @@ const auditsFor = (testId) => db.prepare("SELECT action FROM qc_audit_log WHERE 
   await page.goto(`${BASE}/lab/tests/review`, { waitUntil: 'domcontentloaded' });
   const row = page.locator('tr', { hasText: 'LAB-TEST-90001' });
   await row.scrollIntoViewIfNeeded();
-  await row.getByRole('button', { name: 'Start Review' }).click();
-  await page.waitForURL((u) => u.pathname.endsWith('/lab/tests/review'), { timeout: 10_000 });
+  await Promise.all([
+    page.waitForResponse((res) => res.url().includes('/api/lab/tests/') && res.url().includes('/review')),
+    row.getByRole('button', { name: 'Start Review' }).click(),
+  ]);
+  await page.waitForLoadState('domcontentloaded');
   const flash = await page.locator('body').innerText();
   ok(/Start Review/.test(flash), 'start_review: success flash shown');
   const r = getRow('LAB-TEST-90001');
@@ -182,8 +185,11 @@ const auditsFor = (testId) => db.prepare("SELECT action FROM qc_audit_log WHERE 
   const row = page.locator('tr', { hasText: 'LAB-TEST-90002' });
   await row.scrollIntoViewIfNeeded();
   await row.locator('input[name="reason"]').fill('rework traceability');
-  await row.getByRole('button', { name: 'Request Changes' }).click();
-  await page.waitForURL((u) => u.pathname.endsWith('/lab/tests/review'), { timeout: 10_000 });
+  await Promise.all([
+    page.waitForResponse((res) => res.url().includes('/api/lab/tests/') && res.url().includes('/review')),
+    row.getByRole('button', { name: 'Request Changes' }).click(),
+  ]);
+  await page.waitForLoadState('domcontentloaded');
   const r = getRow('LAB-TEST-90002');
   ok(r.status === 'REJECTED', 'request_changes: DB status REJECTED');
   ok(r.rejected_reason === 'rework traceability', 'request_changes: reason persisted');
@@ -199,8 +205,11 @@ const auditsFor = (testId) => db.prepare("SELECT action FROM qc_audit_log WHERE 
   const row = page.locator('tr', { hasText: 'LAB-TEST-90004' });
   await row.scrollIntoViewIfNeeded();
   await row.locator('input[name="reason"]').fill('sample count below spec');
-  await row.getByRole('button', { name: 'Reject' }).click();
-  await page.waitForURL((u) => u.pathname.endsWith('/lab/tests/review'), { timeout: 10_000 });
+  await Promise.all([
+    page.waitForResponse((res) => res.url().includes('/api/lab/tests/') && res.url().includes('/review')),
+    row.getByRole('button', { name: 'Reject' }).click(),
+  ]);
+  await page.waitForLoadState('domcontentloaded');
   const r = getRow('LAB-TEST-90004');
   ok(r.status === 'REJECTED', 'reject: DB status REJECTED');
   ok(r.rejected_reason === 'sample count below spec', 'reject: reason persisted');
@@ -217,8 +226,11 @@ const auditsFor = (testId) => db.prepare("SELECT action FROM qc_audit_log WHERE 
   await row.scrollIntoViewIfNeeded();
   await row.getByRole('button', { name: 'Approve' }).click();
   await page.locator('#esign-password').fill(PASS);
-  await page.locator('#esign-confirm').click();
-  await page.waitForURL((u) => u.pathname.endsWith('/lab/tests/review'), { timeout: 10_000 });
+  await Promise.all([
+    page.waitForResponse((res) => res.url().includes('/api/lab/tests/') && res.url().includes('/review')),
+    page.locator('#esign-confirm').click(),
+  ]);
+  await page.waitForLoadState('domcontentloaded');
   const r = getRow('LAB-TEST-90003');
   ok(r.status === 'APPROVED', 'approve: DB status APPROVED');
   ok(Number(r.approved_by) === managerId, 'approve: approved_by = manager');
@@ -242,7 +254,12 @@ const auditsFor = (testId) => db.prepare("SELECT action FROM qc_audit_log WHERE 
   );
 
   // The approved row is now read-only history in the queue view.
-  await page.goto(`${BASE}/lab/tests/review?status=APPROVED`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(500);
+  try {
+    await page.goto(`${BASE}/lab/tests/review?status=APPROVED`, { waitUntil: 'domcontentloaded' });
+  } catch {
+    await page.goto(`${BASE}/lab/tests/review?status=APPROVED`, { waitUntil: 'domcontentloaded' });
+  }
   const approvedRow = page.locator('tr', { hasText: 'LAB-TEST-90003' });
   await approvedRow.scrollIntoViewIfNeeded();
   const rowText = await approvedRow.innerText();

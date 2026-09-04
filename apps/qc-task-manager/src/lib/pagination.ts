@@ -16,7 +16,7 @@ export type PerPageOption = (typeof PER_PAGE_OPTIONS)[number];
 /** Default page size when the request does not ask for one. */
 export const DEFAULT_PER_PAGE = 25;
 
-export const SEARCH_PAGE_SIZE_OPTIONS = [25, 50, 100] as const;
+export const SEARCH_PAGE_SIZE_OPTIONS = [10, 25, 50, 100] as const;
 export type SearchPageSize = (typeof SEARCH_PAGE_SIZE_OPTIONS)[number];
 
 export function parsePositivePage(value: string | null): number {

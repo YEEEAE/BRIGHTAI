@@ -295,7 +295,11 @@ try {
   await login(mgrPage, 'manager');
   await mgrPage.goto(`${BASE}/search`);
   ok((await mgrPage.locator('h1:has-text("Search tasks")').count()) === 1, 'A. search page renders');
-  ok((await mgrPage.locator('text=13 tasks found').count()) === 1, 'A. unfiltered search counts all 13 tasks');
+  ok(
+    (await mgrPage.locator('[data-ux-search-results][data-result-count="13"]').count()) === 1 ||
+      (await mgrPage.locator('text=/Showing 1 to 13 of 13 results/').count()) === 1,
+    'A. unfiltered search counts all 13 tasks',
+  );
   ok((await mgrPage.locator('a[href^="/api/export/search.csv"]').count()) === 1, 'A. CSV export link present');
   ok((await mgrPage.locator('a[href^="/api/export/search.xlsx"]').count()) === 1, 'A. XLSX export link present');
   ok((await mgrPage.locator('a[href="/search"]:has-text("Clear filters")').count()) === 1, 'A. reset-filters button present');
@@ -482,7 +486,11 @@ try {
   // ─────────────────── G. Employee role scoping ───────────────────
   console.log('\n── Scenario G: employees only see/export their own tasks ──');
   await empPage.goto(`${BASE}/search`);
-  ok((await empPage.locator('text=6 tasks found').count()) === 1, 'G. employee sees only their 6 tasks');
+  ok(
+    (await empPage.locator('[data-ux-search-results][data-result-count="6"]').count()) === 1 ||
+      (await empPage.locator('text=/Showing 1 to 6 of 6 results/').count()) === 1,
+    'G. employee sees only their 6 tasks',
+  );
   ok((await empPage.locator('tbody tr').count()) === 6, 'G. employee table has 6 rows');
   ok((await empPage.locator('text=Search Echo audit').count()) === 0, 'G. unassigned task hidden from employee');
   ok((await empPage.locator('text=Search Hotel legacy').count()) === 0, 'G. admin-created task hidden from employee');

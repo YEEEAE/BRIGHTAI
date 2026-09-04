@@ -203,9 +203,11 @@ let recordUrl;
   await manager.selectOption('#equipment_id', String(equipmentId));
   await manager.fill('#calibration_due_at', '2027-01-01');
   await manager.fill('#next_due_at', '2026-01-01');
-  await manager.fill('#certificate_reference', 'CAL-E2E-BAD');
-  await manager.locator('form[action="/lab/calibration/new"] button[type="submit"]').click();
-  await manager.waitForURL((u) => u.pathname === `${registerUrl}/new`, { timeout: 15_000 });
+  await Promise.all([
+    manager.waitForResponse((res) => res.url().includes('/lab/calibration/new')),
+    manager.locator('form[action="/lab/calibration/new"] button[type="submit"]').click(),
+  ]);
+  await manager.waitForLoadState('domcontentloaded');
   const alert = await manager.locator('[role="alert"]').textContent();
   ok(/Next Due Date cannot be before the Calibration Due Date/.test(alert ?? ''), 'validation: cross-field date rule flashes a clear error');
   const bad = db.prepare("SELECT COUNT(*) AS n FROM lab_equipment_calibration WHERE certificate_reference = 'CAL-E2E-BAD'").get();

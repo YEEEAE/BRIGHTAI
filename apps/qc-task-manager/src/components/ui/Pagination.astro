@@ -16,7 +16,7 @@ interface Props {
   class?: string;
 }
 
-const { page, totalPages, hrefFor, label = 'تنقل بين الصفحات', summary, class: className = '' } = Astro.props;
+const { page, totalPages, hrefFor, label = 'Pagination', summary, class: className = '' } = Astro.props;
 
 // Window logic identical to the historical per-page implementations so
 // existing URLs/expectations are preserved (up to 7 pages around current).
@@ -40,11 +40,11 @@ if (totalPages > 1) {
           href={hrefFor(page - 1)}
           class="rounded-qc-sm border border-border-strong bg-surface px-3 py-1.5 text-sm font-medium text-content-secondary hover:bg-surface-muted qc-focus"
         >
-          الصفحة السابقة
+          ← Prev
         </a>
       ) : (
         <span class="rounded-qc-sm border border-border bg-surface-muted px-3 py-1.5 text-sm font-medium text-content-secondary">
-          الصفحة السابقة
+          ← Prev
         </span>
       )}
       {pageNumbers.map((p) => (
@@ -66,11 +66,11 @@ if (totalPages > 1) {
           href={hrefFor(page + 1)}
           class="rounded-qc-sm border border-border-strong bg-surface px-3 py-1.5 text-sm font-medium text-content-secondary hover:bg-surface-muted qc-focus"
         >
-          الصفحة التالية
+          Next →
         </a>
       ) : (
         <span class="rounded-qc-sm border border-border bg-surface-muted px-3 py-1.5 text-sm font-medium text-content-secondary">
-          الصفحة التالية
+          Next →
         </span>
       )}
       {summary && <span class="sr-only">{summary}</span>}

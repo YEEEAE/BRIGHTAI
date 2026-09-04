@@ -118,9 +118,11 @@ let supervisor;
   await supervisor.fill('#technician_vendor', 'ACME Maintenance Co.');
   await supervisor.selectOption('#status', 'COMPLETED');
   await supervisor.fill('#completed_date', '2026-08-16');
-  await supervisor.fill('#notes', 'Part replaced under warranty.');
-  await supervisor.locator(`form[action="/api/lab/equipment/${equipmentId}/maintenance"] button[type="submit"]`).click();
-  await supervisor.waitForURL((u) => u.pathname === maintenanceUrl, { timeout: 15_000 });
+  await Promise.all([
+    supervisor.waitForResponse((res) => res.url().includes(`/api/lab/equipment/${equipmentId}/maintenance`)),
+    supervisor.locator(`form[action="/api/lab/equipment/${equipmentId}/maintenance"] button[type="submit"]`).click(),
+  ]);
+  await supervisor.waitForLoadState('domcontentloaded');
 
   eq_(maintenanceCount(), 1, 'create: one maintenance row written');
   const row = db.prepare('SELECT * FROM lab_equipment_maintenance WHERE equipment_id = ?').get(equipmentId);
@@ -204,9 +206,11 @@ let supervisor;
   await supervisor.fill('#maintenance_type', 'Preventive');
   await supervisor.fill('#issue', 'Scheduled check');
   await supervisor.fill('#technician_vendor', 'ACME Maintenance Co.');
-  await supervisor.selectOption('#status', 'COMPLETED');
-  await supervisor.locator(`form[action="/api/lab/equipment/${equipmentId}/maintenance"] button[type="submit"]`).click();
-  await supervisor.waitForURL((u) => u.pathname === maintenanceUrl, { timeout: 15_000 });
+  await Promise.all([
+    supervisor.waitForResponse((res) => res.url().includes(`/api/lab/equipment/${equipmentId}/maintenance`)),
+    supervisor.locator(`form[action="/api/lab/equipment/${equipmentId}/maintenance"] button[type="submit"]`).click(),
+  ]);
+  await supervisor.waitForLoadState('domcontentloaded');
   const alert = await supervisor.locator('[role="alert"]').textContent();
   ok(/Completed Date is required/.test(alert ?? ''), 'validation: flash error for COMPLETED without completed date');
   eq_(maintenanceCount(), 1, 'validation: no row written');

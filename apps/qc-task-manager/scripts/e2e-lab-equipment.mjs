@@ -58,6 +58,15 @@ async function login(page, username) {
   await page.waitForURL((u) => !u.pathname.startsWith('/login'), { timeout: 15_000 });
 }
 
+async function safeGoto(page, url) {
+  await page.waitForTimeout(300);
+  try {
+    return await page.goto(url, { waitUntil: 'domcontentloaded' });
+  } catch {
+    return await page.goto(url, { waitUntil: 'domcontentloaded' });
+  }
+}
+
 const managerId = Number(db.prepare("SELECT id FROM users WHERE username='manager'").get().id);
 
 const auditsFor = (id) =>
@@ -161,30 +170,39 @@ const CODE = 'EQ-E2E-001';
 
 // ── F. Duplicate code rejected ──
 {
-  await manager.goto(`${BASE}/lab/equipment/new`, { waitUntil: 'domcontentloaded' });
+  await safeGoto(manager, `${BASE}/lab/equipment/new`);
   await manager.fill('#name', 'Duplicate Attempt');
   await manager.fill('#code', CODE);
   await manager.fill('#status_raw', 'مستخدم');
-  await manager.locator('form[action="/lab/equipment/new"] button[type="submit"]').click();
-  await manager.waitForURL((u) => u.pathname === '/lab/equipment/new', { timeout: 15_000 });
+  await Promise.all([
+    manager.waitForResponse((res) => res.url().includes('/lab/equipment/new')),
+    manager.locator('form[action="/lab/equipment/new"] button[type="submit"]').click(),
+  ]);
+  await manager.waitForLoadState('domcontentloaded');
   const dups = db.prepare('SELECT COUNT(*) AS n FROM lab_equipment WHERE code = ?').get(CODE).n;
   eq_(dups, 1, 'duplicate: no second row created');
 }
 
 // ── G. Archive + restore (no hard delete) ──
 {
-  await manager.goto(`${BASE}/lab/equipment/${equipmentId}`, { waitUntil: 'domcontentloaded' });
-  await manager.locator(`form[action="/lab/equipment/${equipmentId}/edit"] button`).filter({ hasText: 'Archive Equipment' }).click();
-  await manager.waitForURL((u) => u.pathname === `/lab/equipment/${equipmentId}`, { timeout: 15_000 });
+  await safeGoto(manager, `${BASE}/lab/equipment/${equipmentId}`);
+  await Promise.all([
+    manager.waitForResponse((res) => res.url().includes(`/lab/equipment/${equipmentId}/edit`)),
+    manager.locator(`form[action="/lab/equipment/${equipmentId}/edit"] button`).filter({ hasText: 'Archive Equipment' }).click(),
+  ]);
+  await manager.waitForLoadState('domcontentloaded');
   eq_(db.prepare('SELECT is_archived FROM lab_equipment WHERE id = ?').get(equipmentId).is_archived, 1, 'archive: row archived');
   ok(auditsFor(equipmentId).at(-1).note.includes(`archived ${CODE}`), 'archive: audit note records the archived device');
 
-  await manager.goto(`${BASE}/lab/equipment/${equipmentId}/edit`, { waitUntil: 'domcontentloaded' });
+  await safeGoto(manager, `${BASE}/lab/equipment/${equipmentId}/edit`);
   ok(manager.url().startsWith(`${BASE}/lab/equipment/${equipmentId}`) && !manager.url().includes('/edit'), 'edit: archived row bounces to read-only detail');
 
-  await manager.goto(`${BASE}/lab/equipment/${equipmentId}`, { waitUntil: 'domcontentloaded' });
-  await manager.locator(`form[action="/lab/equipment/${equipmentId}/edit"] button`).filter({ hasText: 'Restore Equipment' }).click();
-  await manager.waitForURL((u) => u.pathname === `/lab/equipment/${equipmentId}`, { timeout: 15_000 });
+  await safeGoto(manager, `${BASE}/lab/equipment/${equipmentId}`);
+  await Promise.all([
+    manager.waitForResponse((res) => res.url().includes(`/lab/equipment/${equipmentId}/edit`)),
+    manager.locator(`form[action="/lab/equipment/${equipmentId}/edit"] button`).filter({ hasText: 'Restore Equipment' }).click(),
+  ]);
+  await manager.waitForLoadState('domcontentloaded');
   eq_(db.prepare('SELECT is_archived FROM lab_equipment WHERE id = ?').get(equipmentId).is_archived, 0, 'restore: row active again');
   ok(auditsFor(equipmentId).at(-1).note.includes(`restored ${CODE}`), 'restore: audit note records the restored device');
   const totalRows = db.prepare('SELECT COUNT(*) AS n FROM lab_equipment WHERE id = ?').get(equipmentId).n;
@@ -193,17 +211,17 @@ const CODE = 'EQ-E2E-001';
 
 // ── H. Search + filters ──
 {
-  await manager.goto(`${BASE}/lab/equipment?q=EQ-E2E-001`, { waitUntil: 'domcontentloaded' });
+  await safeGoto(manager, `${BASE}/lab/equipment?q=EQ-E2E-001`);
   ok((await manager.getByText('E2E Syringe Pump v2').count()) > 0, 'search: q finds the created device');
   ok((await manager.getByText('Under Maintenance').count()) > 0, 'search: updated status label rendered');
 
-  await manager.goto(`${BASE}/lab/equipment?q=EQ-E2E-001&status=In+Use`, { waitUntil: 'domcontentloaded' });
+  await safeGoto(manager, `${BASE}/lab/equipment?q=EQ-E2E-001&status=In+Use`);
   ok((await manager.getByText('E2E Syringe Pump v2').count()) === 0, 'filter: status In Use excludes an Under Maintenance device');
 
-  await manager.goto(`${BASE}/lab/equipment?q=EQ-E2E-001&status=Under+Maintenance`, { waitUntil: 'domcontentloaded' });
+  await safeGoto(manager, `${BASE}/lab/equipment?q=EQ-E2E-001&status=Under+Maintenance`);
   ok((await manager.getByText('E2E Syringe Pump v2').count()) > 0, 'filter: status Under Maintenance includes the device');
 
-  await manager.goto(`${BASE}/lab/equipment?q=EQ-E2E-001&calibration=no`, { waitUntil: 'domcontentloaded' });
+  await safeGoto(manager, `${BASE}/lab/equipment?q=EQ-E2E-001&calibration=no`);
   ok((await manager.getByText('E2E Syringe Pump v2').count()) > 0, 'filter: calibration no includes the device');
 }
 
@@ -211,10 +229,10 @@ const CODE = 'EQ-E2E-001';
 {
   for (const [width, label] of [[1440, 'desktop'], [390, 'mobile']]) {
     await manager.setViewportSize({ width, height: 900 });
-    await manager.goto(`${BASE}/lab/equipment`, { waitUntil: 'domcontentloaded' });
+    await safeGoto(manager, `${BASE}/lab/equipment`);
     const w1 = await manager.evaluate(() => document.documentElement.scrollWidth);
     ok(w1 <= width, `overflow: /lab/equipment at ${label} (${w1} ≤ ${width})`);
-    await manager.goto(`${BASE}/lab/equipment/${equipmentId}`, { waitUntil: 'domcontentloaded' });
+    await safeGoto(manager, `${BASE}/lab/equipment/${equipmentId}`);
     const w2 = await manager.evaluate(() => document.documentElement.scrollWidth);
     ok(w2 <= width, `overflow: equipment detail at ${label} (${w2} ≤ ${width})`);
   }

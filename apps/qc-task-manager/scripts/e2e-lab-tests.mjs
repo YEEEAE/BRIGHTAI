@@ -46,6 +46,8 @@ function ok(cond, label) {
 }
 
 const db = new Database(DB_PATH, { readonly: false });
+db.pragma('busy_timeout = 5000');
+db.pragma('journal_mode = WAL');
 const browser = await chromium.launch({ headless: true });
 try {
 
@@ -323,9 +325,10 @@ const findingId = Number(db.prepare("SELECT id FROM qc_findings WHERE finding_nu
   await page.selectOption('select[name="finding_id"]', String(findingId));
   await page.fill('input[name="note"]', 'burst on S03');
   await Promise.all([
-    page.waitForURL((u) => u.pathname === '/lab/tests/2', { timeout: 15_000 }),
+    page.waitForResponse((r) => r.url().includes('/lab/tests/2/links') && r.status() === 302),
     page.locator('button:has-text("Link Finding")').click(),
   ]);
+  await page.locator('button:has-text("Unlink")').first().waitFor({ timeout: 10_000 });
   const linkedText = await page.locator('main').innerText();
   ok(linkedText.includes('NCR-E2E-0001'), 'links: linked finding number shown');
   ok(linkedText.includes('burst on S03'), 'links: note shown');
@@ -343,9 +346,10 @@ const findingId = Number(db.prepare("SELECT id FROM qc_findings WHERE finding_nu
 
   // Unlink removes the row + writes the UNLINK audit row.
   await Promise.all([
-    page.waitForURL((u) => u.pathname === '/lab/tests/2', { timeout: 15_000 }),
+    page.waitForResponse((r) => r.url().includes('/links/unlink') && r.status() === 302),
     page.locator('button:has-text("Unlink")').first().click(),
   ]);
+  await page.locator('text=No linked findings.').waitFor({ timeout: 10_000 });
   const unlinkedText = await page.locator('main').innerText();
   ok(unlinkedText.includes('No linked findings.'), 'links: empty state after unlink');
   const linkRowAfter = db.prepare('SELECT COUNT(*) AS n FROM lab_test_findings WHERE test_id = 2 AND finding_id = ?').get(findingId).n;

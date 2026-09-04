@@ -219,9 +219,11 @@ let supervisor;
 // ── F. Employee acknowledges via the real button ──
 {
   const before = db.prepare("SELECT COUNT(*) AS n FROM qc_audit_log WHERE entity_type = 'LAB_DOCUMENT_VERSION' AND action = 'ACKNOWLEDGE'").get().n;
-  await employee.goto(`${BASE}${registerUrl}`, { waitUntil: 'domcontentloaded' });
-  await employee.locator('main button:has-text("Acknowledge")').first().click();
-  await employee.waitForURL((u) => u.pathname === '/lab/acknowledgements', { timeout: 15_000 });
+  await Promise.all([
+    employee.waitForResponse((res) => res.url().includes('/acknowledge')),
+    employee.locator('main button:has-text("Acknowledge")').first().click(),
+  ]);
+  await employee.waitForLoadState('domcontentloaded');
   ok((await employee.locator('main').innerText()).includes('Document version acknowledged.'), 'acknowledge: success flash rendered');
 
   const row = db.prepare('SELECT * FROM lab_document_acknowledgements WHERE document_version_id = ? AND user_id = ?').get(v3Id, employeeId);

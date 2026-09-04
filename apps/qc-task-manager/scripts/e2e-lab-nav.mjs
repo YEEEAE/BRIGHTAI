@@ -178,6 +178,8 @@ for (const roleCase of roleCases) {
     href === '/lab/audit' || // Lab-wide audit timeline (supervisor+ nav entry)
     href === '/lab/management' || // Manager/Admin management dashboard
     href === '/lab/reports' || // Laboratory reports (§13 — missed in this allowlist by QC-LAB-REPORTS-001)
+    href === '/lab/search' || // Laboratory search (implemented in src/pages/lab/search.astro)
+    href.startsWith('/lab/search?') ||
     href === '/lab/retests' || // Retest register module (§46)
     href.startsWith('/lab/retests?') || // live open-retests KPI drill-down
     href === '/lab/retests/new' || // Create Retest from a dispositioned test

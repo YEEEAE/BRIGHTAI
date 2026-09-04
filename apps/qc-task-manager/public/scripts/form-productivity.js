@@ -11,9 +11,15 @@
     return id && id !== 'anonymous' ? id : null;
   }
   function sensitive(field) { return sensitiveNames.test(field.name || '') || sensitiveNames.test(field.id || ''); }
+  function formAction(form) {
+    if (!form) return '';
+    var raw = form.getAttribute && form.getAttribute('action');
+    if (typeof raw === 'string' && raw) return raw;
+    return typeof form.action === 'string' ? form.action : '';
+  }
   function keyFor(form) {
     var id = currentUserId();
-    return id ? DRAFT_PREFIX + id + ':' + location.pathname + location.search + ':' + (form.id || form.action || 'form') : null;
+    return id ? DRAFT_PREFIX + id + ':' + location.pathname + location.search + ':' + (form.id || formAction(form) || 'form') : null;
   }
   function formFields(form) {
     return Array.prototype.filter.call(form.elements || [], function (field) {
@@ -73,7 +79,8 @@
   }
   function setup(form) {
     if (form.dataset.qcCanonicalReady === 'true' || form.method.toLowerCase() === 'dialog') return;
-    if (form.action && /\/login(?:$|[?#])/.test(form.action)) return;
+    var actionUrl = formAction(form);
+    if (actionUrl && /\/login(?:$|[?#])/.test(actionUrl)) return;
     form.dataset.qcCanonicalReady = 'true'; form.dataset.qcForm = form.dataset.qcForm || 'canonical';
     var key = keyFor(form), initial = snapshot(form), dirty = false, submitted = false, draftTimer;
     var banner = document.createElement('div');
@@ -96,14 +103,26 @@
     form.addEventListener('input', function (event) { var field = event.target; if (!field || !field.matches || !field.matches('input, select, textarea')) return; dirty = snapshot(form) !== initial; renderError(field); save(); });
     form.addEventListener('change', function () { dirty = snapshot(form) !== initial; save(); });
     form.addEventListener('submit', function (event) {
+      var submitter = event.submitter;
       var invalid = formFields(form).filter(function (field) { return !field.checkValidity(); });
       if (invalid.length) { event.preventDefault(); invalid.forEach(renderError); invalid[0].focus(); return; }
       if (submitted) { event.preventDefault(); return; }
-      submitted = true; dirty = false; form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(setPending);
+      submitted = true; dirty = false;
       var method = (form.method || 'get').toUpperCase();
       if (method !== 'POST' || form.dataset.qcNativeSubmit === 'true') { clear(key); return; }
       event.preventDefault();
-      fetch(form.action, { method: method, body: new FormData(form), credentials: 'same-origin', redirect: 'follow' }).then(function (response) { if (!response.ok) throw new Error(String(response.status)); clear(key); location.assign(response.url || form.action); }).catch(function () {
+      var body;
+      try {
+        body = submitter ? new FormData(form, submitter) : new FormData(form);
+      } catch (_) {
+        body = new FormData(form);
+      }
+      if (submitter && submitter.name && !body.has(submitter.name)) {
+        body.append(submitter.name, submitter.value || '');
+      }
+      form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(setPending);
+      var targetUrl = formAction(form) || location.href;
+      fetch(targetUrl, { method: method, body: body, credentials: 'same-origin', redirect: 'follow' }).then(function (response) { if (!response.ok) throw new Error(String(response.status)); clear(key); location.assign(response.url || targetUrl); }).catch(function () {
         submitted = false; dirty = true;
         form.querySelectorAll('[data-qc-pending="true"]').forEach(function (button) { button.disabled = false; button.removeAttribute('aria-busy'); button.textContent = button.dataset.qcOriginalText || 'Save'; button.dataset.qcPending = 'false'; });
         form.dispatchEvent(new CustomEvent('qc:submit-failed', { bubbles: true }));
@@ -116,7 +135,7 @@
     var id = currentUserId(); if (!id) return; var prefix = DRAFT_PREFIX + id + ':';
     try { Object.keys(localStorage).filter(function (key) { return key.indexOf(prefix) === 0; }).forEach(function (key) { localStorage.removeItem(key); }); } catch (_) {}
   }
-  document.addEventListener('submit', function (event) { var form = event.target; if (form && /\/logout(?:$|[?#])/.test(form.action || '')) clearUserDrafts(); }, true);
+  document.addEventListener('submit', function (event) { var form = event.target; if (form && /\/logout(?:$|[?#])/.test(formAction(form))) clearUserDrafts(); }, true);
   document.querySelectorAll('form').forEach(setup);
   new MutationObserver(function () { document.querySelectorAll('form').forEach(setup); }).observe(document.documentElement, { childList: true, subtree: true });
 })();
