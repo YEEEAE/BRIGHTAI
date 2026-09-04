@@ -26,6 +26,7 @@
     "test:embedded-migration-parity": "node --import ../../scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-embedded-migration-parity.mjs",
     "test:schema-reference": "node scripts/test-schema-reference.mjs",
     "test:route-manifest": "node scripts/route-manifest.mjs --check",
+    "test:reports-transport": "node scripts/test-reports-transport.mjs",
     "test:manifest": "node scripts/test-manifest-guard.mjs",
     "test:ui-consistency": "node scripts/test-ui-consistency.mjs",
     "test:ui-visual-100": "node scripts/test-ui-visual-100.mjs",

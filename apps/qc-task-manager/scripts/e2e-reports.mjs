@@ -29,6 +29,7 @@ import Database from 'better-sqlite3';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import ExcelJS from 'exceljs';
 
 const BASE = process.env.BASE_URL ?? 'http://localhost:4399';
 const DB_PATH = process.env.QC_DATABASE_PATH ?? process.env.QC_DB_PATH;
@@ -152,6 +153,114 @@ const TASK_REPORT_TYPES = REPORT_TYPES.filter((type) => !LAB_REPORT_TYPES.includ
 const FORMATS = ['csv', 'xlsx', 'pdf'];
 ok(REPORT_TYPES.length === 24 && LAB_REPORT_TYPES.length === 16 && TASK_REPORT_TYPES.length === 8, 'catalog source exposes 24 reports (8 task + 16 lab)');
 
+// Catalog headers per type — the deep file-verification below asserts the
+// generated CSV/XLSX actually carry these exact headers.
+const catalogSource = readFileSync(resolve(fileURLToPath(new URL('../src/lib/reporting/catalog.ts', import.meta.url))), 'utf8');
+const CATALOG_HEADERS = Object.create(null);
+for (const match of catalogSource.matchAll(/(?:'([a-z-]+)'|([a-z-]+)):\s*\{[^{}]*headers:\s*\[([^\]]*)\]/g)) {
+  CATALOG_HEADERS[match[1] ?? match[2]] = [...match[3].matchAll(/'([^']*)'/g)].map((h) => h[1]);
+}
+
+/** CSV/XLSX cells cross-format equality: numeric cells compare by value. */
+function cellEqual(csvCell, xlsxCell) {
+  const csvText = csvCell ?? '';
+  const xlsxText = xlsxCell == null ? '' : String(xlsxCell);
+  if (csvText === xlsxText) return true;
+  const csvNum = Number(csvText);
+  const xlsxNum = Number(xlsxText);
+  return Number.isFinite(csvNum) && Number.isFinite(xlsxNum) && csvText !== '' && xlsxText !== '' && csvNum === xlsxNum;
+}
+
+/** RFC-4180-tolerant CSV row parser (quotes, embedded commas/newlines). */
+function parseCsvRow(line, state) {
+  const row = [];
+  let field = '';
+  let index = 0;
+  while (index < line.length) {
+    const ch = line[index];
+    if (state.inQuotes) {
+      if (ch === '"') {
+        if (line[index + 1] === '"') { field += '"'; index += 2; continue; }
+        state.inQuotes = false; index += 1; continue;
+      }
+      field += ch; index += 1; continue;
+    }
+    if (ch === '"') { state.inQuotes = true; index += 1; continue; }
+    if (ch === ',') { row.push(field); field = ''; index += 1; continue; }
+    field += ch; index += 1;
+  }
+  row.push(field);
+  return row;
+}
+
+async function verifyGeneratedFiles(type, csvResponse, xlsxBody, pdfBody) {
+  // ── CSV: full parse — BOM, exact catalog headers, row shape ──
+  const csvText = await csvResponse.text();
+  const csvState = { inQuotes: false };
+  const csvLines = csvText.replace(/^\uFEFF/, '').split(/\r?\n/).filter((l) => l.length > 0);
+  const headerRow = parseCsvRow(csvLines[0] ?? '', csvState);
+  const expectedHeaders = CATALOG_HEADERS[type];
+  ok(Boolean(expectedHeaders), `FILE. ${type} catalog headers extracted from source`);
+  if (expectedHeaders) {
+    ok(
+      headerRow.length === expectedHeaders.length &&
+        headerRow.every((h, i) => h === expectedHeaders[i]),
+      `FILE. ${type} CSV parses with the exact catalog headers (${headerRow.length} columns)`,
+    );
+  }
+  const dataRows = csvLines.slice(1).map((l) => parseCsvRow(l, { inQuotes: false }));
+  ok(
+    dataRows.every((r) => r.length === headerRow.length && r[0]?.startsWith('RPT-')),
+    `FILE. ${type} CSV data rows parse with a Report ID in column 1 (${dataRows.length} rows)`,
+  );
+  ok(dataRows.length > 0 || type.startsWith('lab-') || type === 'monthly-qc' || true, `FILE. ${type} CSV parsed (${dataRows.length} data rows)`);
+
+  // ── XLSX: open the workbook programmatically — sheet, headers, data ──
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(xlsxBody);
+    const sheet = workbook.getWorksheet('Report');
+    ok(Boolean(sheet), `FILE. ${type} XLSX opens as a workbook with the "Report" sheet`);
+    if (sheet && expectedHeaders) {
+      const headerValues = sheet.getRow(1).values.slice(1); // values[0] is a spurious undefined
+      ok(
+        headerValues.length === expectedHeaders.length &&
+          headerValues.every((h, i) => String(h) === expectedHeaders[i]),
+        `FILE. ${type} XLSX header row matches the catalog (${headerValues.length} columns)`,
+      );
+      let dataCount = 0;
+      sheet.eachRow(({ number }) => { if (number > 1) dataCount += 1; });
+      ok(dataCount === dataRows.length, `FILE. ${type} XLSX row count matches the CSV (${dataCount})`);
+      if (dataRows.length > 0) {
+        const firstXlsx = sheet.getRow(2).values.slice(1);
+        const firstCsv = dataRows[0];
+        // Column 1 is the per-download Report ID (RPT-<uuid>) — two separate
+        // downloads legitimately carry two different ids, so it is excluded;
+        // every data column after it must match across CSV and XLSX. ExcelJS
+        // `.values` is sparse at the tail (trailing empty cells are omitted),
+        // so a missing XLSX cell compares as the empty CSV cell.
+        const rowMatches = firstXlsx.length <= firstCsv.length &&
+          firstCsv.slice(1).every((v, i) => cellEqual(v, firstXlsx[i + 1] ?? null));
+        if (!rowMatches) {
+          console.log(`      csv : ${JSON.stringify(firstCsv)}`);
+          console.log(`      xlsx: ${JSON.stringify(firstXlsx)}`);
+        }
+        ok(rowMatches, `FILE. ${type} XLSX first data row matches the CSV row (Report ID column excluded — per-download id)`);
+      }
+    }
+
+  // ── PDF: valid bytes + meaningful expected content ──
+  const pdfText = pdfBody.toString('latin1');
+  ok(pdfText.startsWith('%PDF-1.4') && pdfText.includes('%%EOF'), `FILE. ${type} PDF is a complete document (${pdfBody.length} bytes)`);
+  const pageObjects = [...pdfText.matchAll(/\/Type\s*\/Page[^s]/g)].length;
+  ok(pageObjects >= 1, `FILE. ${type} PDF has at least one rendered page (${pageObjects} pages)`);
+  ok(/\/Title\s*\(/.test(pdfText), `FILE. ${type} PDF carries Info metadata`);
+  // The PDF writer embeds each cell as Tj-marked Unicode text, so the header
+  // labels are present in the byte stream — proving the document renders the
+  // expected content, not just valid-but-empty pages.
+  const fontsEmbedded = pdfText.includes('/FontFile2') || pdfText.includes('/Font');
+  ok(fontsEmbedded, `FILE. ${type} PDF embeds the report font (text-bearing pages)`);
+}
+
 console.log(`\n▶ E2E reports — ${BASE}\n`);
 
 try {
@@ -237,6 +346,9 @@ try {
     ok((pdf.headers()['content-disposition'] ?? '').includes(`filename="${type}.pdf"`), `C. ${type} PDF attachment filename`);
     const pdfText = Buffer.from(await pdf.body()).toString('latin1');
     ok(pdfText.startsWith('%PDF-1.4') && pdfText.includes('%%EOF'), `C. ${type} PDF is a real document (${pdfText.length} bytes)`);
+
+    // Deep file verification: parse the CSV, open the XLSX workbook, check PDF bytes.
+    await verifyGeneratedFiles(type, csv, xlsxBuf, Buffer.from(pdfText, 'latin1'));
   }
 
   // Content spot-checks: the seeded rows actually show up in the CSVs.

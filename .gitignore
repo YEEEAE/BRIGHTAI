@@ -85,7 +85,9 @@ private/
 .cache/
 .parcel-cache/
 tmp/
-reports/
+# Generated report output only, at the repo root (anchored so src/pages/api/reports/
+# — the canonical HTTP transport — can never be silently ignored again).
+/reports/
 
 # CLEANUP-2026-07-15: tarballs + CI residue (no longer needed in repo)
 *.tgz

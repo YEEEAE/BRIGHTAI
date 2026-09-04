@@ -4,6 +4,7 @@
 // collections. A middleware handler is not an Astro file route and must not
 // make a missing page/API file look implemented.
 
+import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -119,6 +120,30 @@ function sourceFiles() {
   return SOURCE_DIRS.flatMap(filesUnder).sort();
 }
 
+/**
+ * File routes the Git index actually tracks. An untracked (e.g. .gitignored)
+ * route file satisfies a disk-only manifest check but would vanish on the
+ * next clean clone — the transport would silently disappear while historical
+ * PASS results keep circulating. Required routes must therefore be tracked.
+ */
+function trackedRouteFiles() {
+  const repoRoot = resolve(APP_DIR, '..', '..');
+  const appPrefix = `${relative(repoRoot, APP_DIR).replaceAll('\\', '/')}/`;
+  const out = execFileSync('git', ['ls-files', '--full-name', '--', `${appPrefix}src/pages`], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    env: { ...process.env, GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' },
+  });
+  // --full-name keeps repo-root-relative paths; normalize to app-relative
+  // so they compare equal to manifest fileRoute entries.
+  return new Set(
+    out
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => line.startsWith(appPrefix) ? line.slice(appPrefix.length) : line),
+  );
+}
+
 function checkUiReferences(manifest, failures) {
   const filePatterns = manifest.fileRoutes.map(({ route }) => route);
   for (const file of sourceFiles()) {
@@ -139,9 +164,17 @@ function checkUiReferences(manifest, failures) {
 export function validateManifest(manifest = buildManifest()) {
   const failures = [];
   const filePatterns = manifest.fileRoutes.map(({ route }) => route);
+  const trackedFiles = trackedRouteFiles();
+  const untrackedSeen = new Set();
   for (const required of REQUIRED_API_ROUTES) {
-    if (!filePatterns.some((pattern) => routeSupports(pattern, required.replace(':reportType', 'monthly-qc')))) {
+    const backing = manifest.fileRoutes.find(({ route }) => routeSupports(route, required.replace(':reportType', 'monthly-qc')));
+    if (!backing) {
       failures.push(`required route is not backed by a file route: ${required}`);
+      continue;
+    }
+    if (!trackedFiles.has(backing.file) && !untrackedSeen.has(backing.file)) {
+      untrackedSeen.add(backing.file);
+      failures.push(`required route file is not tracked by Git (ignored/untracked source): ${backing.file}`);
     }
   }
   checkUiReferences(manifest, failures);

@@ -1,3 +1,129 @@
+## [2026-09-04] — CLOSURE: إغلاق مشكلة نقل التقارير وعقد المسار (tracked-source absence ⇎ PASS)
+
+### تم التنفيذ
+- أعيد إنتاج الدليل المدّعى من الشجرة الحالية قبل تصديقه: نقل `/api/reports/[reportType].[format].ts` و`audit.ts` **موجود على القرص ويخدم فعليًا** (يعيد استخدام catalog/filters/scope/authorization/queries/كتابة csv/xlsx/pdf/تدقيق report_audit_log كاملة) لكنه **غير متتبع في git** — السبب الجذري: نمط `.gitignore:88` غير مثبَّت `reports/` يطابق أي مجلد اسمه reports بأي عمق فحوّل `src/pages/api/reports/` لمغمور لا يمكن commit أبدًا، بينما route-manifest (فاحص قرص) كان يمر محليًا — هذا هو التعارض "غياب المصدر المتتبع + PASS تاريخي".
+- ثبّتُّ النمط إلى `/reports/` (مثبَّت للجذر — مجلد المخرجات المولّدة فقط) فصار ملفا النقل قابلين للتتبع، وأضفتهما للفهرس (`git add` — بدون commit، الالتزام على المستخدم).
+- **عزّزت `route-manifest.mjs`**: `REQUIRED_API_ROUTES` الأربعة لازم يدعمها ملف مفعّل **متتبع في git** (`git ls-files --full-name`) — مو مجرد موجود على القرص؛ اختبرت سلبيًا: فشل فوري عند إلغاء التتبع، وفشل عند إعادة النمط القديم، ونجاح فقط مع مصدر متتبع.
+- أنشأت سويتة كنسية جديدة `test:reports-transport` (124 فحصًا، مسجلة بالمانيفست 87→88): تمنع أي نمط gitignore غير مثبَّت اسمه reports، تتحقق أن كل مسار مطلوب متتبع، تمنع بناء محرك SQL ثانٍ داخل المحوّل، وتثبّت عقد الأمان (requireApiUser، تحقق النوع/الصيغة/الفلاتر، scope خادمي عبر resolveReportContext وparseReportScope، لا بناء مسارات من مدخلات المستخدم، أنواع محتوى آمنة، Content-Disposition attachment من النوع الكتالوغي فقط، no-store، apiJsonError بلا تسريب).
+- **وسّعت `e2e-reports.mjs` بتحقق عميق من الملفات المولّدة فعليًا**: تحليل CSV كامل (BOM + تطابق عناوين الكتالوج حرفيًا + RPT-ids)، فتح XLSX برمجيًا بـExcelJS (workbook + ورقة Report + العناوين + عدد الصفوف + تكافؤ بيانات الصف الأول مع CSV مع استثناء عمود Report ID المتغير لكل تنزيل ومعالجة اقتصاص ExcelJS للخلايا الفارغة الذيلية)، وفحص بايتات PDF (%PDF-1.4 + %%EOF + عدد الصفحات + تضمين الخط + Info) — على كل الأنواع الـ24.
+- **نتيجة الشريحة الحية**: e2e-reports بمفرده في نفس بيئة الـrunner (سيرفر إنتاج + قاعدة معزولة): **1186 فحصًا ناجحًا / 0 فاشل / exit 0** — تغطي كل مصفوفة الأمان المطلوبة: anonymous→302، كل الأدوار، employee نطاق own فقط (manager-only مستبعد)، تزوير scope=organization→403، تزوير نطاق lab→403، نوع/صيغة غير صالحة→404، فلاتر وتواريخ غير صالحة→400، param غير مدعوم→400، التدقيق ينشأ لكل تنزيل ويُرى حسب الدور، أسماء الملفات وأنواع المحتوى صحيحة.
+
+### الملفات المتأثرة
+- `.gitignore` (نمط reports/ ← /reports/)
+- `apps/qc-task-manager/src/pages/api/reports/[reportType].[format].ts` + `audit.ts` (ملفات النقل — أصبحت متتبعة)
+- `apps/qc-task-manager/scripts/route-manifest.mjs` (شرط التتبع + إزالة تكرار)
+- `apps/qc-task-manager/scripts/test-reports-transport.mjs` (جديد، كنسي)
+- `apps/qc-task-manager/scripts/e2e-reports.mjs` (تحقق عميق من الملفات)
+- `apps/qc-task-manager/{scripts/test-manifest.mjs,package.json}` (تسجيل السويتة)
+- `apps/qc-task-manager/docs/FINAL-100-DOMAIN-COVERAGE.md` (6 دومينات + توزيع الحالات)
+
+### الأرقام
+- سويتات كنسية: **87 → 88** (orphan-free) · route-manifest: 115/25/6 مع شرط تتبع جديد
+- e2e-reports: **1186/0** (كان ~240 فحصًا قبل التحقيق العميق)
+- typecheck: 0/0/2 hints (المعروفة) · بناء إنتاجي: Complete 9.94s
+
+### القرارات
+- **ما بُني محرك تقارير ثانٍ**: النقل الموجود محليًا هو المحوّل الكنسي الصحيح (أعاد استخدام كل مكوّنات المحرك) — المشكلة كانت تتبعه لا وجوده، فالإصلاح تتبّع + تحصين بوابات.
+- **git add بدون commit**: التتبع شرط لعملية الإغلاق والبوابة الجديدة، والـcommit النهائي على المستخدم (القاعدة الثانية).
+- **استثناء عمود Report ID من مقارنة CSV↔XLSX**: كل تنزيل يولّد RPT-uuid خاصًا فيه — تصميم مقصود للتدقيق، مو عيب بيانات.
+
+### التحقق
+- `pnpm typecheck` ✅ 0/0/2 · `test:route-manifest` ✅ · `test:reports-transport` ✅ 124/124 · `test:manifest` ✅ 88+28 orphan-free
+- `pnpm test` ✅ **88/88 exit 0** · `NODE_ENV=production pnpm build` ✅
+- `e2e-reports` منفردة ✅ **1186/0 exit 0** (بيئة runner مطابقة)
+- `pnpm e2e:acceptance` ❌ **لا يزال أحمر عند السويتة 9/28 (`e2e-search` = P0-1/P0-2 المعروف)**: 8 سويتات خضرا قبله (admin-users→backup) ثم 35 ناجح/4 فاشل + timeout عند Next — نفس الانهيار الموثق بالعقد، **غير مرتبط بالتقارير** (الشريحة أثبتت خضرها بمعزل عنه)
+
+### النتيجة
+- **الحالة:** نجح لنطاق المهمة (نقل التقارير مُغلق ومُتحقق) — بوابة القبول الكاملة تبقى حمرا بسبب P0-1/P0-2 الموروث (خارج نطاق هذه المهمة حسب العقد §3/§9: إصلاحها CLOSURE-01 ويتطلب قرارًا منتجيًا في per=10)
+- **مختصر:** التعارض "غياب مصدر متتبع + PASS تاريخي" صار مستحيلًا بنيويًا: النمط مثبَّت، الملفات متتبعة، الحارس يفشل مع أي إلغاء تتبع، والملفات المولّدة نفسها تتفتح وتتحقق بايتًا-بايتًا في كل قبول.
+
+### ملاحظات / مشاكل مفتوحة
+- تحديثات التغطية: #12/#13/#34/#73 → TEST_VERIFIED، #74 → RUNTIME_VERIFIED، #1/#54 تبقى BLOCKED بدليل طازج.
+- الـcommit (بما فيه ملفا النقل والـgitignore والسكربتات) على المستخدم.
+- لا push ولا deploy.
+
+
+### تم التنفيذ
+- قرأت العقل كاملًا + AGENTS.md (النسختين) + CLAUDE.md + README.md + SECURITY.md + package.json لتطبيق QC، وجردت المهارات (366 مجلد مهارة مقابل 365 في skills-lock.json) وقرأت مهارات Superpowers الأربع المعتمدة للإصلاحات (systematic-debugging, test-driven-development, verification-before-completion, requesting/receiving-code-review).
+- جمّدت الواقع: HEAD `394be485` على `main`، تعديل متتبع واحد (هذا الملف)، 3 ملفات untracked سابقة (الدليل 14 + تقرير 15 + prompt11)، وصفر تعديل على كود المنتج — الشجرة الحالية هي المرجع ولا تُهمل.
+- أعدت تشغيل بوابتي القراءة فقط طازجًا: `route-manifest --check` PASS (115 مسار ملف / 25 وسيط / 6 حراس) و`test-manifest-guard` PASS (87 سويتة كنسية / 28 E2E بدون يتيمة) — هذي المراسي الطازجة الوحيدة؛ كل PASS تاريخي آخر ما يُعتبر دليلًا.
+- أنشأت `apps/qc-task-manager/docs/FINAL-CLOSURE-CONTRACT.md`: عقد إلزامي لكل مهام الإغلاق الجاية — baseline مجمّد، قواعد الثقة (المصدر+DB+الوقت الحالي فقط)، الـP0-1/P0-2 بجذورهما، الثوابت الـ17 للمشروع، بوابات التحقق الإلزامية، سلّم حالات الدومين، وبروتوكول المهارات.
+- أنشأت `apps/qc-task-manager/docs/FINAL-100-DOMAIN-COVERAGE.md`: جدول الـ100 دومين كاملًا (الهدف 100% لكل دومين) مع مناطق التنفيذ والمهارات والسويتات الكنسية والدليل المطلوب والفجوة الحالية والحالة — **صفر PASS**: 95 UNVERIFIED + 2 SOURCE_VERIFIED (#11 معمارية، #13 معمارية اختبارات — بمراسي هذه الجلسة) + 3 BLOCKED (#1 V&V، #54 متجاوب، #73 طباعة/PDF — محجوبة بانهيار acceptance عند P0).
+- ما أصلّح أي ملاحظة خارج نطاق المهمة عمدًا — المهمة baseline توثيقية فقط.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/docs/FINAL-CLOSURE-CONTRACT.md` (جديد)
+- `apps/qc-task-manager/docs/FINAL-100-DOMAIN-COVERAGE.md` (جديد)
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `route-manifest --check` ✅ 115/25/6 (طازج بهذه الجلسة) · `test-manifest-guard` ✅ 87/28 (طازج)
+- Node `v22.22.3` · pnpm `10.19.0` · `git status/diff` مجمّدة وموثقة بالعقد
+- build/test/E2E الكاملة: لم تُشغّل — مهمة baseline توثيقية، والـE2E معروف أنها حمرا عند `e2e-task-search` (P0-1/P0-2) من تحقق 016 المستقل بتاريخ اليوم
+
+### النتيجة
+- **الحالة:** نجح (baseline) — برنامج الإغلاق قد يكمل بأمان؛ المهمة الأولى بعد الـbaseline هي إصلاح P0-1/P0-2 بـTDD ثم acceptance كاملة 28/28 + persistence
+- **مختصر:** صار للإغلاق النهائي عقد ملزم ولوحة 100 دومين بصفر PASS ومراسي طازجة، والطريق مرسوم: P0 → acceptance خضرا → الموجة البشرية/التشغيلية حسب worksheets الـ015.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy — الشجرة جاهزة لمراجعة المستخدم.
+- إيصالات تدوير الأسرار + UAT + staging كلها صفوف مالك/مشغّل مفتوحة كما في الدليل 14.
+- قرار منتجي مطلوب قبل إصلاح P0-2: إما إعادة قبول `per=10` لسجلات البحث أو إعادة كتابة السيناريو D على 25 مع fixtures أكبر.
+
+## [2026-09-04] — QC-FINAL-100-016: التحقق النهائي المستقل وإعادة التسعير (الحكم: NO-GO)
+
+### تم التنفيذ
+- أعدت تشغيل كل البوابات طازجة عند HEAD `394be485` بدون تعديل أي كود منتج: typecheck 0/0/2 hints، build إنتاجي Complete، manifests (87 suite + 28 E2E، routes 115/25/6)، parity هجرات 40/40، schema-ref 166، DATABASE-100 23/23، والمجمّع الكامل 87/87 exit 0.
+- اكتشفت P0 حقيقيًا: قبول E2E ينهار عند سويت البحث (35 نجح/4 فشل ثم timeout) — نص `13 tasks found` متقادم غير موجود بالمصدر + `per=10` مرفوض من `SEARCH_PAGE_SIZE_OPTIONS=[25,50,100]` فلا زر Next — و~19 سويت ومرحلتا persistence لم تُنفّذ. السبب الجذري موثق file:line (انحدار من توحيد pagination في ARCHITECTURE-002).
+- أعدت تسعير 34 دومينًا بالقاعدة المطلقة: 11 دومين آلي 100%، الإجمالي الصارم 76% (مقابل 73.50% بتقرير 09-02)، وصفر دومين بشري/خارجي 100%.
+- أنشأت `audit/qc/QC-Task-Manager/15-FINAL-100-PERCENT-SYSTEM-REPORT.md` بكل الأقسام المطلوبة (ملخص، baseline مجمّد، لوحة 34، أدلة، P0/P1/P2/P3، claims-vs-reality، ledger، حكم).
+
+### الملفات المتأثرة
+- `audit/qc/QC-Task-Manager/15-FINAL-100-PERCENT-SYSTEM-REPORT.md` (جديد)
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- full unit ✅ 87/87 exit 0 · build ✅ · typecheck ✅ 0/0/2 hints · manifests/parity/schema/DB/prod-ops/deploy-contract ✅
+- E2E acceptance ❌ ينهار عند `e2e-task-search` (P0-1/P0-2) — 8 سويتات (557 assertion) خضرا قبله
+- UAT بشري/AT/staging/restore حي/telemetry/rotation: صفر — كما في 015
+
+### النتيجة
+- **الحالة:** NO-GO — بوابة الإطلاق حمرا + كل الأدلة البشرية صفر
+- **مختصر:** الإجمالي الصارم 76%؛ الطريق لـ CONDITIONAL GO: إصلاح P0-1/P0-2 ثم acceptance أخضر 28/28 ثم staging ثم worksheets الـ015.
+
+### ملاحظات / مشاكل مفتوحة
+- لم أصلّح الـP0 عمدًا (مهمة تحقق مستقلة — الإصلاح يفقد الاستقلالية ويتطلب إعادة تشغيل كاملة).
+- سجلات `/tmp/qc-final-{full,e2e}.log` محلية للجلسة — قابلة لإعادة الإنتاج بالأوامر الموثقة.
+- لا commit ولا push ولا deploy.
+
+## [2026-09-04] — QC-100-OPERATIONS-015: الإغلاق التشغيلي البشري (staging/UAT/backup/telemetry/security)
+
+### تم التنفيذ
+- أنشأت `apps/qc-task-manager/14-OPERATIONAL-100-EVIDENCE.md` كملف إغلاق صريح يفصل الدليل الآلي المحلي عن الصفوف البشرية — بدون فبركة: صفر جلسات UAT مدّعاة وصفر نشر staging وصفر telemetry إنتاجية.
+- وثقت هوية البناء المدقق محليًا: HEAD `394be485`، هجرات 40 (parity 40/40 sha256)، عقد النشر 22/22، وDATABASE-100 23/23 — كلها أُعيد تشغيلها بتاريخ 2026-09-04.
+- جهزت جداول UAT فارغة للأدوار الأربعة (26 سيناريو من `docs/PILOT-UAT.md`) + 5 أبعاد وصول، وقوائم توقيع المشغّل لـ staging والنسخ/الاستعادة والـtelemetry وتدوير الأسرار.
+- سجلت حالة الأسرار بقراءة فقط: لا مفاتيح في `~/.claude/settings.local.json` حاليًا ولا أسرار مضمّنة بالريبو، لكن إيصالات التدوير (Anthropic/Semrush/admin) بانتظار المالك — بدون كتابة أي قيمة سرية.
+- رصدت drift توثيقي غير حاجب: مثال `schemaVersion: 38` في DEPLOYMENT.md مقابل 40 الفعلية.
+
+### الملفات المتأثرة
+- `apps/qc-task-manager/14-OPERATIONAL-100-EVIDENCE.md` (جديد)
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `test-deployment-contract` ✅ 22/22 (أُعيد التشغيل)
+- `test-embedded-migration-parity` ✅ 40/40
+- `test-database-100` ✅ 23/23 (أُعيد التشغيل)
+- `test-production-operations` ✅ (أُعيد التشغيل)
+- build/staging-deploy/UAT/telemetry: لم تُنفّذ — بانتظار المشغّل والمالك
+
+### النتيجة
+- **الحالة:** جزئي / CONDITIONAL — الدليل الآلي أخضر محليًا، والإغلاق التشغيلي مفتوح للمشغّل
+- **مختصر:** ملف الدليل 14 صار موجودًا بأرقام محلية مثبتة وصفوف بشرية مفتوحة صراحةً بدل ادعاءات غير مثبتة.
+
+### ملاحظات / مشاكل مفتوحة
+- لا commit ولا push ولا deploy — النشر على Render يدوي وملك المستخدم.
+- إيصالات revoke/rotation الأربعة + 26 سيناريو UAT + telemetry الحية كلها OPEN.
+
 ## [2026-09-04] — QC-100-PERMISSION-IA-014: مطابقة ما يراه المستخدم مع ما يقدر يسويه (Permission↔UI)
 
 ### تم التنفيذ

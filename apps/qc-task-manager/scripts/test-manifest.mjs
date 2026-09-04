@@ -20,6 +20,7 @@ export const CANONICAL_TEST_SCRIPTS = [
   'test:embedded-migration-parity',
   'test:schema-reference',
   'test:route-manifest',
+  'test:reports-transport',
   'test:domain',
   'test:sla',
   'test:workflow',
