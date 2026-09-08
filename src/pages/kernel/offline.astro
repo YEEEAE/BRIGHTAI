@@ -8,10 +8,11 @@ import DOMPurify from 'isomorphic-dompurify';
   title={page.title}
   description={page.description}
   canonical={page.canonical}
-  robots="noindex, follow"
+  robots="index, follow"
   hreflang={page.hreflang}
   jsonLd={page.jsonLd as any}
   currentPath="/kernel/offline/"
 >
   <main class="migrated-legacy-content" set:html={DOMPurify.sanitize(page.html)} />
+  <h2 class="sr-only">حالة الاتصال بالشبكة</h2>
 </KernelLayout>

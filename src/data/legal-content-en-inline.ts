@@ -16,7 +16,7 @@ export const legal_en_cookie_policy: LegalInlineContent = {
     <!-- Sidebar -->
     <aside class="lg:col-span-4 sticky top-28 hidden lg:block">
       <div class="glass rounded-3xl p-6">
-        <h3 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h3>
+        <h2 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h2>
         <nav aria-label="Document sections navigation">
           <ul class="space-y-1">
             <li><a href="#sec-1" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">1. Introduction &amp; Definitions</a></li>
@@ -87,7 +87,7 @@ export const legal_en_terms: LegalInlineContent = {
     <!-- Sidebar -->
     <aside class="lg:col-span-4 sticky top-28 hidden lg:block">
       <div class="glass rounded-3xl p-6">
-        <h3 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h3>
+        <h2 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h2>
         <nav aria-label="Document sections navigation">
           <ul class="space-y-1">
             <li><a href="#sec-1" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">1. Agreement &amp; Scope</a></li>
@@ -166,7 +166,7 @@ export const legal_en_privacy_policy: LegalInlineContent = {
     <!-- Sidebar -->
     <aside class="lg:col-span-4 sticky top-28 hidden lg:block">
       <div class="glass rounded-3xl p-6">
-        <h3 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h3>
+        <h2 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h2>
         <nav aria-label="Document sections navigation">
           <ul class="space-y-1">
             <li><a href="#sec-1" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">1. Scope &amp; Identity</a></li>
@@ -247,7 +247,7 @@ export const legal_en_pdpl_statement: LegalInlineContent = {
     <!-- Sidebar -->
     <aside class="lg:col-span-4 sticky top-28 hidden lg:block">
       <div class="glass rounded-3xl p-6">
-        <h3 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h3>
+        <h2 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h2>
         <nav aria-label="Document sections navigation">
           <ul class="space-y-1">
             <li><a href="#sec-1" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">1. Executive Overview</a></li>
@@ -323,7 +323,7 @@ export const legal_en_data_processing_agreement: LegalInlineContent = {
     <!-- Sidebar -->
     <aside class="lg:col-span-4 sticky top-28 hidden lg:block">
       <div class="glass rounded-3xl p-6">
-        <h3 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h3>
+        <h2 class="font-bold text-lg mb-4 text-brand-300">Legal Sections</h2>
         <nav aria-label="Document sections navigation">
           <ul class="space-y-1">
             <li><a href="#sec-1" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">1. Definitions &amp; Parties</a></li>

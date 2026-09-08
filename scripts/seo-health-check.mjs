@@ -206,9 +206,11 @@ function normalizeRobotsLines(content) {
 // Crawlers shouldn't index /api/, /cgi-bin/, or asset directories — only
 // disallow rules that block indexable content (e.g. /admin/, /account/) are
 // considered violations.
-// WHATSAPP-HUB (2026-09-08): /go/ holds internal redirect hubs
-// (/go/whatsapp/ → wa.me). The hub is noindex + sitemap-excluded by design,
-// same utility class as search/404/offline — never indexable content.
+// WHATSAPP-HUB (2026-09-08): /go/ previously held robots-disallowed redirect
+// hubs. SEMRUSH-UNBLOCK (2026-09-08): user decision — /go/, /500/, /offline/
+// and /design/ are now indexable content, so `Disallow: <them>` lines would
+// block indexable pages; kept in the safe list only for historical tolerance,
+// robots.txt itself no longer contains them.
 const SAFE_DISALLOW_PATTERN = /^\s*disallow:\s*\/(?:api\/|go\/|cgi-bin\/|_next\/|_astro\/|assets\/|images\/|fonts\/|sw\.js|robots\.txt|sitemap[.-]?index?\.xml|search|404|500|offline|design)\s*$/i;
 const SAFE_DISALLOW_DYNAMIC = /^\s*disallow:\s*(?:\/\*\?|\/kernel\/\*\?|\/\*\?\*|\/kernel\/\*\?\*)\s*$/i;
 

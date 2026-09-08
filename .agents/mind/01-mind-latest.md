@@ -1,3 +1,63 @@
+## [2026-09-08] — إصلاح Semrush: 91 صفحة Poor heading hierarchy (تخطي H1→H3 و H2→H4)
+
+### تم التنفيذ
+- شخصت الجذر بفحص HTML المبني: أول عنوان بعد H1 كان H3 في 56 مقال مدونة (صندوق "الخلاصة السريعة" بـ `<h3>`)، وH2→H4 في 4 مقالات، وH1→H3 مخفي في كل صفحات Kernel عبر `KernelEmptyState` (عنوان H3 داخل `hidden`)، وH1→H3 في models/reports/scenarios، وH2→H4 في compliance، وH3 بدل H2 في شريط "أقسام الوثيقة" (pdpl-statement + DPA + النسخ الإنجليزية)، وH3 داخل `KernelOnboarding` (يظهر فقط في chat).
+- المدونة: سكربت تخفيض آمن (67 عنوانًا في 59 ملفًا — أول H3→H2 + كل H4 مخالف→H3 بدون مساس بالتعشيش السليم) — بقي 0 تخطي.
+- Kernel: غيّرت `KernelEmptyState` و`KernelOnboarding` من h3 إلى p (class-based CSS فبقي الشكل مطابقًا، و`aria-labelledby` يعمل على أي وسم)، و3 عناوين models إلى H2، وH4 compliance إلى H3، وأضفت عناوين sr-only بدون أثر بصري (reports/stats/scenarios/offline×2)، وأصلحت عنوان معاينة التقارير الفارغ "—".
+- الصفحات القانونية: h3→h2 لشريط الأقسام في `legal-content-inline.ts` (موقِعان) و`legal-content-en-inline.ts` (5 مواقع) — يطابق نمط وثائق terms/privacy الشقيقة.
+- تحققت على HTML المبني الكامل: 280/280 صفحة سليمة (H1 واحد + صفر تخطي) بعد أن كانت 91 مُبلغة + 7 إضافية (en/* وoffline).
+
+### الملفات المتأثرة
+- `src/content/blog/*.md` (59 ملفًا — جُزء منها دخل في commit المستخدم ae641787 أثناء الجلسة)
+- `src/components/kernel/KernelEmptyState.astro` و`KernelOnboarding.astro`
+- `src/pages/kernel/{models,reports,scenarios,compliance,offline}.astro` و`src/pages/offline/index.astro`
+- `src/data/legal-content-inline.ts` و`src/data/legal-content-en-inline.ts`
+- `sitemap.xml` و`public/sitemap.xml` (تجديد lastmod تلقائي من البناء فقط)
+
+### التحقق
+- `pnpm build` ✅ EXIT=0 — تدقيق headings على dist: 280/280 نظيفة ✅
+- `pnpm test` ✅ 38/38 — `pnpm seo:hreflang` ✅ 0 أخطاء — `pnpm redirects:check` ✅ 213 بدون chains/cycles — schema checks ✅
+- فحص بصري Chromium (مدونة 360+1440، chat، models جوال): صفر أخطاء JS ولا كسر بصري ✅
+- `pnpm seo:gate` لم يُشغّل بنجاح: سكربت `resolveClientBuildRoot` يشترط `dist/client/index.html` والرئيسية SSR في مخرجات hybrid — قيد أدوات مسبق خارج نطاق العناوين (الجلسة الموازية سجلت seo:gate ✅ على نسختها).
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** كل أسباب Poor heading hierarchy سقطت من القوالب (نفس القالب يغطي كل روابط `?trace=` و`?scenario=`) — بعد النشر وإعادة زحف Semrush تتصفر الـ 91.
+
+### ملاحظات / مشاكل مفتوحة
+- المستخدم نفذ `commit ae641787` أثناء الجلسة متضمنًا جزءًا من إصلاحاتي (المدونة + EmptyState)؛ الباقي (onboarding/en-legal/offline×2) في working tree بانتظار قراره — لا push حسب القواعد.
+- أخطاء LSP TypeScript في models/reports (سطر jsonLd) مسبقة وخارج النطاق.
+- تنبيه: جلسة موازية تعمل على نفس الشجرة (سجل Blocked أعلاه) — لا تعارض ملفات مع هذه المهمة.
+
+## [2026-09-08] — تحقيق في تقرير Semrush: 17 صفحة "Blocked" — النتيجة: حجب مقصود موثق، لا تغيير مطلوب
+
+### تم التنفيذ
+- حققت في تقرير Semrush الذي يعدّد 17 صفحة محجوبة (12 عبر robots.txt في `/go/whatsapp/*` و10 عبر robots meta noindex في `/500/`, `/design/*` ×5, `/kernel/offline/`, `/offline/`, `/thank-you/`).
+- تحققت من `public/robots.txt`: `Disallow: /go/` مكرر في كل مجموعة User-agent بشكل صحيح، مع تعليق موثق لقرار WHATSAPP-HUB (2026-09-08) — wa.me يرجع HTTP 429 للبوتات فيُبلّغ Semrush عن روابط خارجية مكسورة وهمية إن زحفها العدّاد.
+- تحققت من meta لكل صفحة noindex: `src/pages/go/whatsapp.astro` (noindex, nofollow), `public/500.html`, `src/pages/offline/index.astro`, `src/pages/kernel/offline.astro`, `src/pages/thank-you/index.astro`, وصفحات `src/pages/design/*.astro` الخمس (noindex, follow) — كلها ضمن استثناءات القاعدة 4.3 (صفحات شكر/أخطاء/أدوات داخلية).
+- تحققت من `sitemap.xml` و`public/sitemap.xml`: ولا واحدة من الـ 17 موجودة في الـ sitemap — الإعداد متسق.
+- أكدت سبب اكتشاف Semrush لها: روابط داخلية حقيقية (روابط واتساب في 20 ملفًا، وروابط `/design/*` في `src/data/navigation.ts`) — Semrush يسجل أي صفحة مكتشفة برابط داخلي لكنها محجوبة كـ "Blocked" معلوماتيًا.
+- شغّلت `pnpm seo:gate` ✅ — 0 أخطاء، 0 تحذيرات، 264 sitemap URL، 0 broken links من 49,562 مرجعًا.
+
+### الملفات المتأثرة
+- لا تغيير في كود الموقع — مهمة تحقق وتوثيق فقط.
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm seo:gate` ✅ — 0 errors / 0 warnings
+- فحص يدوي لـ robots.txt + meta + sitemap لكل الـ 17 ✅
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** الـ 17 صفحة "Blocked" في Semrush كلها حجب مقصود وموثق (صفحات أدوات/أخطاء/تحويل) وليست عيوبًا. فك الحجب غير موصى به لأنه يفهرس صفحة خطأ 500 وصفحة شكر ومركز تحويل واتساب وصفحات عرض تصميم — ضرر SEO صافٍ. التوصية: تعليمها "reviewed/accepted" في Semrush.
+
+### ملاحظات / مشاكل مفتوحة
+- قرار مفتوح للمستخدم: إذا أراد تصفير قائمة Semrush بالكامل، الخيار الوحيد الآمن جزئيًا هو إزالة روابط `/design/*` من الفوتر (ينقص 5 issues) — باقي القائمة لا يمكن إزالتها دون فك حجب ضار أو حذف روابط واتساب من الموقع.
+- لا commit ولا push ولا deploy.
+
+---
+
+
 ## [2026-09-08] — تحسين ملف الكلمات الموحّد وإضافة 62 اقتراحًا مع تحقق Semrush
 
 ### تم التنفيذ

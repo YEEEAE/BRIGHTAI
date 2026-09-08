@@ -12,12 +12,16 @@
  *   1. EXACTLY ONE public sitemap file: `sitemap.xml`. No split files
  *      advertised in `public/robots.txt` — that file declares one
  *      Sitemap: directive only.
- *   2. ZERO noindex / redirect / status / design / dev / api URLs.
+ *   2. ZERO noindex / redirect / status / dev / api URLs.
  *      The page-level `analyzePage()` rejects pages whose HTML
  *      contains `<meta name="robots" content="noindex">` or
  *      `<meta http-equiv="refresh">`, or whose canonical doesn't
  *      match the expected URL. `groupRelPath()` further filters
- *      `/design/*`, `/404/`, `/offline/`, `/api/*`, etc.
+ *      `/404/`, `/api/*`, etc.
+ *      SEMRUSH-UNBLOCK (2026-09-08): per user decision, /500/, /offline/,
+ *      /kernel/offline/, /thank-you/, /go/whatsapp/ and /design/* are now
+ *      indexable and sitemap-included; only /404/ (status artifact) and
+ *      dev/api routes remain excluded.
  *   3. lastmod is derived from `git log -1 --format=%cs -- <source>`
  *      where <source> is the page's real source file under src/ (the
  *      HTML relPath is resolved to source candidates — see
@@ -136,7 +140,7 @@ const CLIENT_REL = path.relative(ROOT, CLIENT_ROOT);
 const SITEMAP_INDEX = path.join(ROOT, "public", "sitemap.xml");
 const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
 // IP-07 + HIGH-05 + HIGH-06: We want sitemap-index.xml to point at the clean
-// sitemap produced here (status pages + design utilities filtered out), NOT
+// sitemap produced here (status artifacts + dev/api filtered out), NOT
 // at the @astrojs/sitemap output (`sitemap-0.xml`) which still contains them.
 // astro.config.mjs is PROTECTED (CLAUDE.md Section 2.1), so we cannot change
 // the @astrojs/sitemap `filter` directly. Instead, we override the adapter-
@@ -401,11 +405,12 @@ function groupRelPath(relPath) {
   const normalized = relPath.toLowerCase();
 
   // Exclude list
-  if (normalized.includes("404.html") || normalized.includes("500.html") || normalized.includes("error.html")) {
+  // SEMRUSH-UNBLOCK (2026-09-08): /500/ is now indexable per user decision —
+  // only /404/ and /error/ status artifacts remain sitemap-excluded.
+  if (normalized.includes("404.html") || normalized.includes("error.html")) {
     return null;
   }
   if (
-    normalized.includes("offline") ||
     normalized.includes("login") ||
     normalized.includes("forgot-password") ||
     normalized.includes("reset-password") ||
@@ -487,7 +492,11 @@ function groupRelPath(relPath) {
        // page (11k words, canonical + no noindex). It was silently dropped
        // by the old root-level `/api/` exclusion — whitelist it explicitly.
        normalized === "kernel/api.html" ||
-       normalized === "kernel/api/index.html"
+       normalized === "kernel/api/index.html" ||
+       // SEMRUSH-UNBLOCK (2026-09-08): /kernel/offline/ is indexable per
+       // user decision — include it in the kernel sitemap group.
+       normalized === "kernel/offline.html" ||
+       normalized === "kernel/offline/index.html"
      ) {
       return "kernel";
     }
@@ -549,7 +558,16 @@ function groupRelPath(relPath) {
     // allowlist silently excluded them from the sitemap while the pages
     // themselves stayed indexable — orphaned from discovery.
     (normalized.startsWith("tools/") && normalized.endsWith("/index.html")) ||
-    normalized === "blog/ai-governance.html"
+    normalized === "blog/ai-governance.html" ||
+    // SEMRUSH-UNBLOCK (2026-09-08): previously blocked utility pages are now
+    // indexable per user decision and must not be orphaned from discovery.
+    normalized === "500.html" ||
+    normalized === "offline/index.html" ||
+    normalized === "offline.html" ||
+    normalized === "thank-you/index.html" ||
+    normalized === "go/whatsapp/index.html" ||
+    normalized === "go/whatsapp.html" ||
+    (normalized.startsWith("design/") && normalized.endsWith("/index.html"))
   ) {
     return "pages";
   }

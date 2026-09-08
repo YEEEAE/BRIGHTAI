@@ -6,7 +6,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
   title="BrightAI غير متصل | خيارات المتابعة"
   description="الاتصال بخدمات BrightAI غير متاح مؤقتاً. ارجع لاحقاً لاستعادة السياق والبيانات. خيارات متابعة واضحة أثناء فترة الانقطاع لمستخدمي حوكمة AI والامتثال بالسعودية. فريق الدعم متاح عبر واتساب."
   canonical="https://brightai.live/offline/"
-  robots="noindex, follow"
+  robots="index, follow"
   hreflang={[
     { lang: 'ar-SA', href: 'https://brightai.live/offline/' },
     { lang: 'x-default', href: 'https://brightai.live/offline/' },
@@ -51,6 +51,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
       </div>
     </div>
   </section>
+  <h2 class="sr-only">خيارات المتابعة أثناء الانقطاع</h2>
 
   <script>
     function initOfflineRetry() {

@@ -59,10 +59,10 @@ const REL_PATH_ALIASES = new Map([
 ]);
 
 const NON_INDEXABLE_REL_PATH_PATTERNS = [
-  /^(?:public\/)?(404|500)\.html$/i,
+  // SEMRUSH-UNBLOCK (2026-09-08): /500/, /offline/ and /kernel/offline/ are
+  // indexable per user decision — only /404/ and /error/ stay non-indexable.
+  /^(?:public\/)?404\.html$/i,
   /^error\.html$/i,
-  /^offline\/index\.html$/i,
-  /^kernel\/offline\.html$/i,
   /^report\/index\.html$/i,
   /^en\/docs\/docs\.html$/i,
   /^blog\/(ai-automation-project-analysis|digital-transformation-automation|financial-hr-automation|industrial-automation-productivity|machine-learning-computer-vision|process-automation-ai-efficiency)\.html$/i,

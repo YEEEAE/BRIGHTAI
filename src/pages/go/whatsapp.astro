@@ -5,6 +5,11 @@
  * WHATSAPP-HUB (2026-09-08): wa.me answers HTTP 429 to bot traffic, so every
  * direct wa.me anchor site-wide was flagged by Semrush as a broken external
  * link. All HTML anchors point here with an optional ?text= message.
+ * SEMRUSH-UNBLOCK (2026-09-08): user decision — /go/ is NO LONGER robots-
+ * disallowed and this page is index, follow + sitemap-included. The page
+ * still contains no direct wa.me href in its HTML payload (redirect is bound
+ * client-side by /js/go-whatsapp.js), so audit crawlers fetching this page
+ * never see a wa.me link to misreport.
  *
  * SEMRUSH-EXT-429-FIX (2026-09-08):
  *   - Prerendered as a static page so all internal links resolve in dist/client/
@@ -13,10 +18,12 @@
  *     anchor points to `#whatsapp-chat` and /js/go-whatsapp.js dynamically
  *     binds the destination URL and click handler.
  *   - Browser navigation is handled via client-side location.replace in /js/go-whatsapp.js.
- *   - /go/ is disallowed in robots.txt so audit crawlers do not index or crawl it.
+ *   - SEMRUSH-UNBLOCK (2026-09-08): /go/ is allowed in robots.txt again; the
+ *     page is index, follow and included in sitemap.xml.
  *
- * - robots: noindex, nofollow (utility page, same class as /thank-you/).
- * - Excluded from sitemap.xml automatically (noindex).
+ * - robots: index, follow (user decision SEMRUSH-UNBLOCK 2026-09-08:
+ *   all previously blocked pages are now publicly indexable).
+ * - Included in sitemap.xml (noindex removed).
  * - Zero inline JS (strict CSP): redirect logic lives in /js/go-whatsapp.js.
  */
 const canonical = 'https://brightai.live/go/whatsapp/';
@@ -31,7 +38,7 @@ const canonical = 'https://brightai.live/go/whatsapp/';
       name="description"
       content="صفحة تحويل داخلية تنقلك مباشرة إلى واتساب BrightAI لمتابعة استفسارك عن حوكمة وأمان الذكاء الاصطناعي."
     />
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
     <style>
       body {

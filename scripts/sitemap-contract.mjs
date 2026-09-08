@@ -37,18 +37,15 @@ const BASE_URL = "https://brightai.live";
 /**
  * URL patterns that MUST NEVER appear in the sitemap.
  *
- * - Status pages: served for HTTP error codes, not real content.
- *   We keep `/404/` indexable per astro.config.mjs (so Google can crawl it),
- *   but `/404/` (status page) must NOT be in sitemap — that's a different thing
- *   from the 404 HTTP response. The page `/404/` has its own canonical
- *   (intentional marketing page in this codebase).
+ * - Status artifacts: build outputs served for HTTP error codes, not real
+ *   content. We keep `/404/` indexable per astro.config.mjs (so Google can
+ *   crawl it), but `/404/` (status page) must NOT be in sitemap — that's a
+ *   different thing from the 404 HTTP response. The page `/404/` has its own
+ *   canonical (intentional marketing page in this codebase).
  *
- * - Design utilities: internal pages documenting the design system. Should be
- *   hidden from search engines via `noindex` AND excluded from sitemap.
- *   (Currently the design pages have noindex REMOVED per REPORTS-SEO-FOUNDATION
- *   2026-07-07 — they are indexable, which is the architectural decision under
- *   dispute. This contract enforces the newer HIGH-05/HIGH-06 policy: design
- *   pages must be excluded from the sitemap.)
+ *   SEMRUSH-UNBLOCK (2026-09-08): user decision — /500/, /offline/ and
+ *   /kernel/offline/ are now indexable content pages and ARE allowed in the
+ *   sitemap; only /404/ and /error/ remain status-artifact excluded.
  *
  * - Dev-only / admin: pages that should never be crawled.
  *
@@ -57,14 +54,12 @@ const BASE_URL = "https://brightai.live";
  */
 export const STATUS_PAGE_PATTERNS = [
   /^\/404\/?$/i,                  // /404/ as a status code page (not /404.html)
-  /^\/500\/?$/i,
   /^\/error\/?$/i,
-  /^\/offline\/?$/i,              // service worker fallback
-  /^\/kernel\/offline\/?$/i,
 ];
 
 export const DESIGN_UTILITY_PATTERNS = [
-  /^\/design\/.+/i,               // /design/buttons, /design/cards, etc.
+  // SEMRUSH-UNBLOCK (2026-09-08): /design/* pages are indexable per user
+  // decision and sitemap-included; the styleguide aliases stay excluded.
   /^\/styleguide\/.+/i,
   /^\/style-guide\/.+/i,
   /^\/components-preview\/.+/i,
