@@ -18,8 +18,14 @@
   if (text) {
     text = text.slice(0, 500);
     target = NUMBER_URL + '?text=' + encodeURIComponent(text);
-    var fallback = document.querySelector('[data-whatsapp-fallback]');
-    if (fallback) fallback.setAttribute('href', target);
+  }
+  var fallback = document.querySelector('[data-whatsapp-fallback]');
+  if (fallback) {
+    fallback.setAttribute('href', target);
+    fallback.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.location.href = target;
+    });
   }
   window.location.replace(target);
 })();

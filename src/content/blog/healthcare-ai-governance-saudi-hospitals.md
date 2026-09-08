@@ -129,7 +129,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <h2>مراجع تنظيمية تساعدك على التحقق</h2>
 <p>هذه المقالة تعليمية وليست استشارة قانونية. راجع النصوص الرسمية والمتخصصين قبل اتخاذ قرار امتثال نهائي، خصوصاً في القطاعات المنظمة أو حالات البيانات الحساسة.</p>
 <ul>
-<li><a href="https://www.sfda.gov.sa/en/regulations/87661" rel="noopener" target="_blank">إرشاد SFDA لأجهزة AI/ML الطبية</a></li>
+<li><a href="https://www.sfda.gov.sa/ar/regulations" rel="noopener noreferrer" target="_blank">لوائح وأدلة الهيئة العامة للغذاء والدواء (SFDA)</a></li>
 <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPLCP/" rel="noopener" target="_blank">دليل PDPL من سدايا</a></li>
 </ul>
 </section>

@@ -9,13 +9,10 @@
 # - /api/ is not crawlable. Every Allow group repeats Disallow: /api/
 #   because a named User-agent group does not inherit * rules.
 # - /go/ holds internal redirect hubs (e.g. /go/whatsapp/ → wa.me).
-#   TITLE-DUP-FIX (2026-09-08): /go/whatsapp/ is server-rendered and 301s every
-#   ?text= variant to wa.me; the clean URL serves a noindex hub page. Keeping
-#   Disallow: /go/ prevented crawlers from ever seeing those 301/noindex
-#   signals, so Semrush reported 11 duplicate-title issues for query variants.
-#   /go/ is now crawlable (noindex meta still blocks indexing) and the hub's
-#   fallback wa.me anchor is rel="nofollow" so it is not counted as a broken
-#   external link.
+#   WHATSAPP-HUB (2026-09-08): wa.me rate-limits bots (HTTP 429), so the hub
+#   page is robots-disallowed + noindex; audit crawlers must never fetch it,
+#   otherwise its destination would be misreported as a broken link.
+#   Every Allow group repeats Disallow: /go/ for the same reason as /api/.
 # - Cloudflare Managed robots.txt must stay OFF. When ON it prepends its own
 #   training Disallow + Content Signals block before this file, creating
 #   duplicate/conflicting directives for the same tokens.
@@ -24,35 +21,43 @@
 
 User-agent: *
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 # AI search / grounding / citation — allowed per verified provider docs.
 User-agent: OAI-SearchBot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: ChatGPT-User
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: PerplexityBot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: Perplexity-User
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: Claude-SearchBot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: Claude-User
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: YouBot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 # Model-training-only — disallowed by default per verified provider docs.
@@ -80,41 +85,50 @@ Disallow: /
 # Traditional search tokens.
 User-agent: Googlebot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: Googlebot-Image
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: Bingbot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 Crawl-delay: 1
 
 User-agent: Applebot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: MSNBot-Media
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: YandexBot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 Crawl-delay: 2
 
 User-agent: DuckDuckBot
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 User-agent: Baiduspider
 Disallow: /api/
+Disallow: /go/
 Allow: /
 Crawl-delay: 2
 
 User-agent: Baiduspider-image
 Disallow: /api/
+Disallow: /go/
 Allow: /
 
 # One canonical sitemap declaration.

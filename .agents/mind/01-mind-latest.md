@@ -1,3 +1,38 @@
+## [2026-09-08] — إصلاح تحذير Semrush: 15 رابط خارجي معطوب (Broken External Links)
+
+### تم التنفيذ
+- شخصت الروابط الـ 15 المعطوبة بدقة:
+  1. رابط هيئة الغذاء والدواء (SFDA) المعطوب بكود 404 في مقال حوكمة مستشفيات الذكاء الاصطناعي (`src/content/blog/healthcare-ai-governance-saudi-hospitals.md`) لوجود مسار لائحة قديم (`/en/regulations/87661`) تم تحديثه إلى الدليل المعتمد للوائح SFDA (`https://www.sfda.gov.sa/ar/regulations`).
+  2. روابط واتساب (`wa.me`) الـ 14 التي تسجل خطأ HTTP 429 بسبب قيام جدار حماية واتساب بحظر عناكب الفحص الآلية (SemrushBot):
+     - 3 روابط قديمة على الرئيسية ووثيقة NCA ECC كانت مسجلة في فحص سابق قبل تعميم موجه `/go/whatsapp/`.
+     - 11 رابطاً ناتجة عن زحف Semrush لصفحة التحويل `/go/whatsapp/` ومتغيرات الاستعلام `?text=` بعد فتح زحف المسار في robots.txt ووجود توجيه 301 إلى wa.me مع زر fallback برابط مباشر.
+- إزالة الرابط المباشر `href="https://wa.me/..."` من حمولة HTML لصفحة `/go/whatsapp/` واستبداله بـ `#whatsapp-chat` مع ربطه وتفعيله ديناميكياً عبر `/js/go-whatsapp.js` للزوار في المتصفح.
+- إزالة إعادة التوجيه 301 الخادمية إلى `wa.me` لمتغيرات `?text=` حتى لا تتبعها العناكب وتصطدم بحظر 429، مع إبقاء التحويل الفوري السلس عبر `location.replace` في المتصفح للزوار.
+- إعادة إدراج `Disallow: /go/` في `public/robots.txt` لكافة العناكب ومحركات البحث لمنع زحف مسارات التحويل الداخلي وحماية الموقع من أخطاء الروابط الخارجية المحظورة.
+- تحويل صفحة `/go/whatsapp/` لتبنى كصفحة ساكنة (Prerendered) لضمان نجاح بوابة الروابط الداخلية `pnpm seo:gate`.
+
+### الملفات المتأثرة
+- `src/content/blog/healthcare-ai-governance-saudi-hospitals.md`
+- `src/pages/go/whatsapp.astro`
+- `public/js/go-whatsapp.js`
+- `public/robots.txt`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm build` ✅ (BUILD_EXIT=0) — تم بناء 276 صفحة HTML والـ server entry والـ assets.
+- `pnpm seo:gate` ✅ (0 أخطاء من 49,589 مرجع رابط)
+- `pnpm seo:schema` ✅ (268 صفحة speakable + Schemas كاملة)
+- `pnpm seo:hreflang` ✅ (265 مجموعة مطابقة بنسبة 100%)
+- `pnpm test` ✅ (جميع اختبارات PII وCSRF وChat-Session ناجحة 100%)
+- فحص HTML المبني: صفر روابط خارجية لـ wa.me في كامل شجرة dist/client ✅
+
+### النتيجة
+- **الحالة:** نجح بالكامل.
+- **مختصر:** تم القضاء على كافة أسباب الروابط الـ 15 المعطوبة (رابط SFDA 404 + روابط WhatsApp 429) مع الحفاظ التام على عمل الواتساب للزوار وسرعة التحويل.
+
+### ملاحظات / مشاكل مفتوحة
+- تقرير Semrush يتطلب النشر من قبل المستخدم (git commit / git push) ثم إعادة الزحف (Re-crawl) لتصفير الأخطاء (15 → 0). لم يتم أي commit أو push حسب القواعد.
+
 ## [2026-09-08] — إصلاح تحذير Semrush: 128 صفحة منخفضة النسبة (Text-to-HTML Ratio) واستخدام الكلمات المفتاحية
 
 ### تم التنفيذ
