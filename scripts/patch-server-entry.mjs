@@ -466,26 +466,40 @@ if (existingMarker) {
           try { res.setHeader(name, value); } catch { /* ignore */ }
         }
         // BAI-SEO-HREFLANG-001 (2026-09-08): parameterized URLs (e.g.
-        // /kernel/audit/?risk=high) serve the base page's static HTML whose
-        // canonical/hreflang self-reference the BASE URL (no query). Search
-        // crawlers (Semrush "hreflang conflicts", GSC) report every ?variant
-        // as a duplicate with "no self-referencing hreflang". Per Google's
-        // guidance for parameterized duplicate views, any HTML document
-        // requested WITH a query string is sent noindex via X-Robots-Tag
-        // (the HTTP header wins over the meta robots inside the shared
-        // static HTML, so no per-page template change is needed). Static
-        // assets with cache-busting queries (/js/x.js?v=1) are excluded —
-        // they carry a file extension and are not HTML documents.
+        // /kernel/audit/?risk=high) serve the base page's static HTML.
+        // To ensure 100% indexability without hreflang conflicts (Semrush "No self-referencing hreflang"),
+        // any HTML document requested with a query string dynamically rewrites its
+        // canonical, hreflang, and social meta tags to self-reference the exact requested URL.
         try {
           const dupUrl = typeof req.url === 'string' ? req.url : '';
           const qIdx = dupUrl.indexOf('?');
           if (qIdx > -1) {
             const dupPath = dupUrl.slice(0, qIdx);
             const hasFileExt = /\\.[a-z0-9]+$/i.test(dupPath);
-            const isHtmlDoc = /\.html?$/i.test(dupPath) || !hasFileExt;
+            const isHtmlDoc = /\\.html?$/i.test(dupPath) || !hasFileExt;
             const isApi = dupPath.startsWith('/api/');
-            if (isHtmlDoc && !isApi) {
-              try { res.setHeader('X-Robots-Tag', 'noindex, follow'); } catch { /* ignore */ }
+            if (isHtmlDoc && !isApi && (req.method === 'GET' || req.method === 'HEAD')) {
+              try {
+                const clientDir = resolveClientDir(options);
+                const normPath = dupPath.endsWith('/') ? dupPath : dupPath + '/';
+                const cleanRel = normPath.startsWith('/') ? normPath.slice(1) : normPath;
+                const filePath = path.join(clientDir, cleanRel, 'index.html');
+                if (fs.existsSync(filePath)) {
+                  let html = fs.readFileSync(filePath, 'utf-8');
+                  const baseCanonical = 'https://brightai.live' + normPath;
+                  const selfUrl = 'https://brightai.live' + normPath + '?' + dupUrl.slice(qIdx + 1);
+                  html = html.split('href=\"' + baseCanonical + '\"').join('href=\"' + selfUrl + '\"');
+                  html = html.split('content=\"' + baseCanonical + '\"').join('content=\"' + selfUrl + '\"');
+                  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+                  res.setHeader('Content-Length', Buffer.byteLength(html));
+                  if (req.method === 'HEAD') {
+                    res.end();
+                  } else {
+                    res.end(html);
+                  }
+                  return;
+                }
+              } catch { /* fallback to staticHandler */ }
             }
           }
         } catch { /* ignore */ }

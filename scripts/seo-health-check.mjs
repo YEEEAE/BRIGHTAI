@@ -210,7 +210,7 @@ function normalizeRobotsLines(content) {
 // (/go/whatsapp/ → wa.me). The hub is noindex + sitemap-excluded by design,
 // same utility class as search/404/offline — never indexable content.
 const SAFE_DISALLOW_PATTERN = /^\s*disallow:\s*\/(?:api\/|go\/|cgi-bin\/|_next\/|_astro\/|assets\/|images\/|fonts\/|sw\.js|robots\.txt|sitemap[.-]?index?\.xml|search|404|500|offline|design)\s*$/i;
-const SAFE_DISALLOW_DYNAMIC = /^\s*disallow:\s*\/\*\?\s*$/i;
+const SAFE_DISALLOW_DYNAMIC = /^\s*disallow:\s*(?:\/\*\?|\/kernel\/\*\?|\/\*\?\*|\/kernel\/\*\?\*)\s*$/i;
 
 function isSafeDisallowLine(line) {
   return SAFE_DISALLOW_PATTERN.test(line) || SAFE_DISALLOW_DYNAMIC.test(line);

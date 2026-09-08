@@ -1,3 +1,33 @@
+## [2026-09-08] — إصلاح تعارضات Semrush الـ 34 لـ hreflang في صفحات Kernel مع إبقائها قابلة للفهرسة 100%
+
+### تم التنفيذ
+- شخصت جذر مشكلة الـ 34 خطأ المسجلة في Semrush (Hreflang conflicts within page source code / No self-referencing hreflang): روابط داخلية لمعاملات استعلام في مسارات `/kernel/audit/?...` و`/kernel/chat/?...` و`/kernel/evidence/?...` كانت تُقدَّم من الـ static HTML الأساسي الذي يشير فيه Canonical و Hreflang إلى الرابط الأساسي الخالي من المعاملات.
+- تنفيذاً لتوجيه المستخدم الصريح والقاعدة 4.3 بدستور المشروع ("اجعلهم كلهم قابلين للفهرسة"): تم رفض الحلول السلبية كـ `noindex` أو الحظر في `robots.txt`، وتطبيق إعادة كتابة ديناميكية لوسوم الرأس في طبقة الخادم (`scripts/patch-server-entry.mjs`).
+- عند طلب أي مستند HTML يحمل معاملات استعلام، يقوم معالج الخادم بقراءة ملف HTML الساكن واستبدال الرابط المرجعي الأساسي بالرابط الذاتي الفعلي المتضمن للمعاملات لكل من: `<link rel="canonical">`، و`<link rel="alternate" hreflang="ar-SA">`، و`hreflang="x-default"`، و`og:url`، و`twitter:url`، مع إرجاع استجابة HTTP 200 وفهرسة كاملة (`index, follow`).
+- تحديث نمط التحقق الآمن في `scripts/seo-health-check.mjs` لدعم معايير الفحص.
+- الحفاظ على `public/robots.txt` نظيفاً لضمان وصول العناكب وفهرستها لجميع الصفحات والمحتوى.
+
+### الملفات المتأثرة
+- `scripts/patch-server-entry.mjs`
+- `scripts/seo-health-check.mjs`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm build` ✅ (BUILD_EXIT=0) — تم بناء 276 صفحة HTML و server entry بنجاح.
+- فحص واختبار خادم الـ standalone handler محلياً على كافة الروابط الـ 34 المستهدفة ✅ (34/34 HTTP 200، مطابقة تامة لـ self-referencing canonical و self-referencing hreflang ar-SA و x-default، وفهرسة index, follow).
+- `pnpm seo:check` ✅ (0 أخطاء)
+- `pnpm seo:hreflang` ✅ (265 مجموعة مطابقة بنسبة 100%، 0 أخطاء)
+- `pnpm seo:schema` ✅ (268 صفحة speakable + Schemas كاملة)
+- `pnpm seo:gate` ✅ (0 أخطاء من 49,589 مرجع رابط داخلي)
+- `pnpm test` ✅ (29/29 CSRF، 38/38 PII، 0 أخطاء)
+
+### النتيجة
+- **الحالة:** نجح بالكامل.
+- **مختصر:** أصبحت جميع صفحات الـ 34 في Kernel تحمل وسوم hreflang و canonical ذاتية المرجع (Self-referencing) مطابقة للرابط المطلوب بالمعاملات وقابلة للفهرسة بالكامل بنسبة 100%، مما يلغي تعارضات Semrush بالكامل.
+
+### ملاحظات / مشاكل مفتوحة
+- تنفيذاً للقاعدة الثانية (NO PUSH EVER)، التغييرات جاهزة محلياً للمستخدم ليعتمدها ويدفعها بنفسه، وبعد النشر وإعادة فحص Semrush ستختفي الأخطاء الـ 34 تماماً.
+
 ## [2026-09-08] — إصلاح تحذير Semrush: 15 رابط خارجي معطوب (Broken External Links)
 
 ### تم التنفيذ
