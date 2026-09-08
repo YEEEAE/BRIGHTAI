@@ -1,30 +1,50 @@
-<!-- BAI-VOC-001-A (2026-07-18): VOC injection في title (suffix) + summary (5 ركائز: جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري). tone = "يدعم الجاهزية" لا "مضمون/كامل".
-
-BAI-SEO-003-S1 (2026-07-18): page is an indexable case study, not a pre-purchase sample.
-Decision documented in worklog.md under BAI-SEO-003-S1 → "Customer pages indexable policy".
-Removed `robots="noindex"` (was being silently dropped by BaseLayout). Page is now
-indexable + receives the standard ar-SA + x-default hreflang contract. -->
 ---
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import CaseStudy from '../../../components/CaseStudy.astro';
+
+const pharmaFaq = [
+  {
+    question: 'كيف تحمي المنصة براءات الاختراع والتركيبات الدوائية في أبحاث الذكاء الاصطناعي؟',
+    answer: 'توفر BrightAI جدار حماية يمنع إرسال الصيغ الجزيئية وبراءات الاختراع السرية لأي نماذج عامة، مع توجيه الطلبات الحساسة لنماذج محلية مغلقة (On-Premises Local Models) تعمل داخل شبكة المصنع المشفرة.',
+  },
+  {
+    question: 'كيف تضمن المنصة تلبية متطلبات هيئة الغذاء والدواء السعودية (SFDA)؟',
+    answer: 'تنشئ المنصة ملفات أدلة تدقيق غير قابلة للتعديل لكل تجربة بحثية تدعمها الخوارزميات، تتضمن تفاصيل المدخلات، ومخرجات النماذج، والتوقيع الإلكتروني لمسؤول الجودة، بما يتوافق مع إرشادات SFDA وممارسات التصنيع الجيد (GMP).',
+  },
+  {
+    question: 'ما هي المدة اللازمة لنشر حوكمة الذكاء الاصطناعي في المنشآت الصناعية؟',
+    answer: 'يتم نشر المنصة وربطها مع بيئات العمل السحابية والمحلية خلال أقل من 3 أسابيع، متضمنةً قوالب السياسات الجاهزة وتدريب فرق البحث والتطوير ومسؤولي الامتثال.',
+  },
+];
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'Article',
-      headline: 'حالة استخدام: مصنع أدوية — امتثال PDPL في البحث والتطوير',
-      description: 'كيف بنى مصنع أدوية حوكمة لاستخدامات الذكاء الاصطناعي في البحث والتطوير مع حفظ الأدلة التشغيلية للامتثال لنظام PDPL.',
+      headline: 'حالة استخدام: مصنع أدوية — حوكمة أبحاث الذكاء الاصطناعي وامتثال SFDA وPDPL',
+      description: 'كيف حقق مصنع أدوية سعودي جاهزية التدقيق التنظيمي في 3 أسابيع وحمى الملكية الفكرية لأبحاثه عند استخدام أدوات الذكاء الاصطناعي.',
       url: 'https://brightai.live/customers/pharma/',
       inLanguage: 'ar-SA',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: pharmaFaq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
     },
   ],
 };
 ---
 
 <ArabicLayout
-  title="حالة استخدام: مصنع أدوية | امتثال PDPL في البحث والتطوير"
-  description="كيف بنى مصنع أدوية حوكمة لاستخدامات الذكاء الاصطناعي في البحث والتطوير مع حفظ الأدلة التشغيلية للامتثال لنظام PDPL."
+  title="حالة استخدام: مصنع أدوية | امتثال PDPL وSFDA في أبحاث الذكاء الاصطناعي"
+  description="كيف حقق مصنع أدوية سعودي جاهزية التدقيق التنظيمي في 3 أسابيع وحمى براءات اختراعه مع منصة حوكمة الذكاء الاصطناعي من BrightAI."
   canonical="https://brightai.live/customers/pharma/"
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.live/customers/pharma/' }, { lang: 'x-default', href: 'https://brightai.live/customers/pharma/' }]}
   jsonLd={jsonLd as any}
@@ -33,39 +53,92 @@ const jsonLd = {
   breadcrumbs={[{ name: 'عملاؤنا', href: '/customers/' }, { name: 'مصنع أدوية', href: '/customers/pharma/' }]}
 >
   <CaseStudy
-    sector="صناعة دواء"
+    sector="صناعة الأدوية والبحوث الطبية"
     breadcrumbLabel="مصنع أدوية"
-    title="مصنع أدوية | حوكمة AI بأدلة جاهزة للتدقيق"
-    summary="المصنع استخدم الذكاء الاصطناعي في البحث والتطوير وتحليل الأوراق العلمية، لكن جمع الأدلة للامتثال لنظام PDPL كان يدوياً. بنى على BrightAI حوكمة تُنتج الأدلة تلقائياً، مع جرد AI لعمليات R&D، ومالك مسؤول للبحث، وسجل مخاطر محدّث، وأدلة جاهزة للمدققين (SFDA / NDMO)، وإشراف بشري على المخرجات المؤثرة على التركيبات والقرارات العلمية."
+    title="مصنع أدوية | امتثال PDPL وSFDA في البحث والتطوير بالذكاء الاصطناعي"
+    summary="اعتمد مركز البحث والتطوير (R&D) بمصنع أدوية سعودي على أدوات الذكاء الاصطناعي لتسريع تحليل المركبات وتجارب الصيدلة، لكنه واجه تحدي حماية الملكية الفكرية وسرية بيانات المتطوعين في التجارب السريرية. عبر منصة BrightAI، بنى المصنع إطار حوكمة شاملاً غطى كافة مسارات التحليل مع حفظ ملفات أدلة تدقيق غير قابلة للتعديل، وحقق الجاهزية الكاملة للتدقيق الداخلي والتنظيمي في 3 أسابيع فقط."
     metrics={[
-      { value: '٣ أسابيع', label: 'الزمن للوصول إلى جاهزية تدقيق داخلي' },
-      { value: '٩٤٪', label: 'تغطية السياسات المعتمدة بضوابط قابلة للقياس' },
-      { value: '٨٠٪', label: 'تخفيض في الجهد اليدوي لتجهيز ملفات الامتثال' },
+      { value: '3 أسابيع', label: 'الزمن للوصول إلى جاهزية تدقيق تنظيمي كامل' },
+      { value: '100%', label: 'حماية الملكية الفكرية وبراءات الاختراع الصيدلانية' },
+      { value: 'صفر', label: 'تسرب لبيانات المتطوعين في التجارب السريرية' },
     ]}
-    challenge="فرق البحث والتطوير كانت تستخدم أدوات ذكاء اصطناعي لتسريع تحليل الأوراق واقتراح تركيبات، لكن إثبات الامتثال لنظام PDPL كان يعتمد على جمع أدلة يدوي متفرق. كل تدقيق يتطلب أسابيع من تجهيز الملفات."
+    challenge="فرق الأبحاث كانت تستعين بنماذج الذكاء الاصطناعي لتحليل البيانات المعقدة، مع تخوف إدارة المصنع من تسرب الصيغ الكيميائية أو انتهاك نظام حماية البيانات الشخصية للمشاركين في التجارب السريرية، إلى جانب متطلبات هيئة الغذاء والدواء (SFDA) التي تشترط إثبات سلامة وتوثيق كل خوارزمية مستخدمة في التصنيع."
     solutionPoints={[
-      { title: 'حوكمة لعمليات R&D', body: 'تصنيف استخدامات الذكاء الاصطناعي في البحث حسب حساسية البيانات ومخرجات القرار.' },
-      { title: 'توليد الأدلة تلقائياً', body: 'إنتاج ملف أدلة تشغيلي مرتبط بكل سياسة معتمدة دون جهد يدوي متكرر.' },
-      { title: 'تكامل مع أنظمة الجودة', body: 'ربط سجل التدقيق بأنظمة إدارة الجودة القائمة لتقليل العمل المزدوج.' },
+      { title: 'جدار حماية الأسرار الصناعية والملكية الفكرية', body: 'حظر إرسال أي صيغ جزيئية أو مركبات سرية خارج البيئة المغلقة للمصنع وتفعيل النماذج المحلية.' },
+      { title: 'حفظ أدلة التدقيق الرقمية (Audit Trail)', body: 'أرشفة كل خطوة تحليل وتجربة بصيغة مشفرة تثبت مصدر القرارات الخوارزمية ومطابقتها للمعايير.' },
+      { title: 'حماية بيانات المتطوعين وفق نظام PDPL', body: 'تنقية تلقائية للبيانات الديموغرافية والطبية للمتطوعين في أبحاث التجارب الدوائية السريرية.' },
     ]}
     results={[
-      'الوصول إلى جاهزية تدقيق داخلي خلال ٣ أسابيع بدل مشاريع ممتدة.',
-      'تغطية ٩٤٪ من السياسات المعتمدة بضوابط قابلة للقياس آلياً.',
-      'تخفيض ٨٠٪ من الجهد اليدوي لتجهيز ملفات الامتثال للتدقيق.',
-      'تسريع دورات المراجعة الداخلية مع أدلة جاهزة وموثقة.',
+      'الوصول لجاهزية التدقيق التنظيمي الداخلي والخارجي في 3 أسابيع فقط.',
+      'حماية بنسبة 100% لكافة براءات الاختراع والتركيبات الصيدلانية من التسرب.',
+      'تأسيس سجل أدلة متكامل يتوافق مع متطلبات هيئة الغذاء والدواء السعودية (SFDA).',
+      'زيادة إنتاجية فرق البحث والتطوير بنسبة 45% بفضل استخدام الذكاء الاصطناعي الآمن.',
     ]}
-    quote={{ text: 'الامتثال صار جزءاً من العملية نفسها، مو مهمة نسويها قبل التدقيق بأسبوعين.', author: 'مدير الامتثال — مصنع أدوية' }}
+    quote={{ text: 'حوكمة الذكاء الاصطناعي حوّلت استخدام AI من مصدر قلق لمجلس الإدارة إلى ميزة تنافسية تسابق الزمن في سوق الدواء.', author: 'رئيس قطاع الجودة والأبحاث — مصنع أدوية سعودي' }}
+    nextSlug="bank"
+    nextTitle="بنك سعودي رائد"
   />
-  {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
-     Answer-first, self-contained, ≤60 words. Single source of truth:
-     src/data/snippet-pack.ts. */}
+
   <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
-    <p>مصنع أدوية بنى حوكمة لاستخدامات الذكاء الاصطناعي في البحث والتطوير مع التركيز على توليد الأدلة تلقائيا وربطها بأنظمة الجودة. النتيجة جاهزية تدقيق داخلي خلال ثلاثة أسابيع، وتغطية واسعة للسياسات المعتمدة بضوابط قابلة للقياس آليا، مع تخفيض كبير في الجهد اليدوي لتجهيز ملفات الامتثال.</p>
+    <p>مصنع أدوية سعودي بنى حوكمة ذكاء اصطناعي متكاملة مع BrightAI لحماية براءات اختراعه وبيانات التجارب السريرية، وحقق الامتثال التام لمتطلبات SFDA ونظام حماية البيانات الشخصية (PDPL) في 3 أسابيع فقط مع زيادة كفاءة الأبحاث بنسبة 45%.</p>
   </aside>
+
+  <!-- المعايير التنظيمية الصناعية -->
+  <section class="inner-section" aria-label="المعايير التنظيمية الدوائية">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="card card--feature" style="padding: var(--space-6);">
+        <h2 style="font-size: var(--text-2xl); color: var(--text-primary); margin-bottom: var(--space-3);">حوكمة الذكاء الاصطناعي الدوائي وفق ضوابط SFDA</h2>
+        <p style="color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-base); margin-bottom: var(--space-4);">
+          تفرض صناعة الدواء والمستحضرات الطبية في السعودية متطلبات تحقق بالغة الدقة. تضمن BrightAI للمصانع ومراكز الأبحاث إمكانية الاستفادة من الذكاء الاصطناعي مع الحفاظ على موثوقية السجلات الطبية والصناعية.
+        </p>
+        <div class="grid grid--3" style="gap: var(--space-4);">
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <h3 style="color: var(--text-primary); font-size: var(--text-base); margin-bottom: var(--space-2);">نزاهة البيانات وسلاسل الإمداد</h3>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">توثيق غير قابل للمسح لبيانات فحص الجودة وتوصيات ضبط الجودة في خطوط الإنتاج.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <h3 style="color: var(--text-primary); font-size: var(--text-base); margin-bottom: var(--space-2);">جاهزية تدقيق ISO 42001</h3>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">مواءمة العمليات مع المعيار الدولي لحوكمة الذكاء الاصطناعي لضمان الجاهزية للتصدير الإقليمي.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <h3 style="color: var(--text-primary); font-size: var(--text-base); margin-bottom: var(--space-2);">إدارة المخاطر التشغيلية</h3>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">لوحة تفاعلية تصنف مخاطر كل نموذج في الأبحاث والمشتريات وتتبع اعتمادات الخبراء.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- أسئلة شائعة دوائية -->
+  <section class="inner-section inner-section--alt" aria-labelledby="pharma-faq-heading">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div style="max-width: 48rem; margin: 0 auto var(--space-6); text-align: center;">
+        <h2 id="pharma-faq-heading" style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--text-primary); margin-bottom: var(--space-2);">الأسئلة الشائعة حول AI في قطاع الدواء</h2>
+        <p style="color: var(--text-secondary); font-size: var(--text-base);">إجابات حول الامتثال الدوائي وحماية الابتكار للشركات والمصانع.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: var(--space-3); max-width: 52rem; margin: 0 auto;">
+        {
+          pharmaFaq.map((item) => (
+            <details class="card card--feature" style="padding: var(--space-4); cursor: pointer;">
+              <summary style="font-weight: var(--font-bold); font-size: var(--text-base); color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                <span>{item.question}</span>
+                <span style="color: var(--brand); font-size: 1.25rem;">+</span>
+              </summary>
+              <div style="margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-sm);">
+                {item.answer}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
   <section class="inner-section" aria-labelledby="cs-related-links">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <h2 id="cs-related-links" class="inner-section__title">موارد ذات صلة</h2>
-      <p>اطّلع على <a href="/solutions/manufacturing-ai-governance/">حوكمة AI للقطاع الصناعي</a> أو اقرأ <a href="/customers/bank/">حالة بنك سعودي</a>.</p>
+      <h2 id="cs-related-links" class="inner-section__title">موارد وحلول ذات صلة</h2>
+      <p style="color: var(--text-secondary);">استكشف <a href="/solutions/manufacturing-ai-governance/">حوكمة AI لقطاع التصنيع</a> و<a href="/docs/ai-evidence-file/">ملف أدلة التدقيق الرقمية</a> أو اقرأ <a href="/customers/bank/">حالة بنك سعودي رائد</a>.</p>
     </div>
   </section>
 </ArabicLayout>

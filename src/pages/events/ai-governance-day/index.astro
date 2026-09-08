@@ -1,60 +1,89 @@
 ---
 /**
  * AI Governance Day Riyadh — /events/ai-governance-day/
- * BrightAI-owned flagship event.
  */
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import LeadForm from '../../../components/LeadForm.astro';
+import { FORM_TAXONOMY, DEFAULT_CONTACT_FIELDS } from '../../../data/marketing';
 
-const sessions = [
-  { t: '٠٩:٠٠', title: 'تسجيل + قهوة', body: 'استقبال الحضور.' },
-  { t: '١٠:٠٠', title: 'كلمة الافتتاح: حوكمة AI في السعودية ٢٠٢٦', body: 'يزيد — مؤسس BrightAI.' },
-  { t: '١١:٠٠', title: 'جولة حية: AI Firewall + Audit Trail', body: 'demo تقني.' },
-  { t: '١٢:٣٠', title: 'طاولة نقاش: امتثال PDPL عملياً', body: 'خبراء من القطاع.' },
-  { t: '٠٢:٠٠', title: 'ورشة: ابنِ سجل تدقيق في ٩٠ دقيقة', body: 'ورشة تطبيقية.' },
+const agenda = [
+  { time: '09:00 - 10:30', title: 'الجلسة الافتتاحية: واقع حوكمة الذكاء الاصطناعي في السعودية', desc: 'استعراض الأطر التنظيمية لنظام PDPL وضوابط NCA ECC ومبادئ سدايا للذكاء الاصطناعي المسؤول.' },
+  { time: '11:00 - 12:30', title: 'ورشة عمل: بناء جدار حماية الذكاء الاصطناعي (AI Firewall)', desc: 'تطبيق عملي مباشر على فحص المدخلات، وتعمية PII، وتفادي هجمات حقن الأوامر.' },
+  { time: '01:30 - 03:00', title: 'حلقة نقاش: سجل التدقيق وإدارة المخاطر في البنوك والصحة', desc: 'مشاركة تجارب قيادية في تأسيس سجلات التدقيق غير القابلة للتعديل والجاهزية للمراجعة.' },
+  { time: '03:30 - 04:30', title: 'جلسة التوصيات وإطلاق مؤشر الامتثال المؤسسي', desc: 'خارطة طريق عملية لفرق الامتثال والأمن السيبراني لبدء رحلة الحوكمة الفعالة.' },
 ];
 
-/**
- * BAI-SEO-003-S3 (2026-07-18): the previous Event node lacked a confirmed
- * startDate and a physical venue in Riyadh. Fabricated dates would violate
- * Google spam policies. The page now intentionally emits NO Event node —
- * Organization, BreadcrumbList, and WebPage are emitted by FoundationSchema.
- * When the event date + venue are confirmed, re-add Event via getEventLd().
- */
-const jsonLd = null;
+const dayFaq = [
+  {
+    question: 'من هي الفئات المستهدفة لحضور يوم حوكمة الذكاء الاصطناعي بالرياض؟',
+    answer: 'الحدث مخصص للرؤساء التنفيذيين للمعلومات (CIO)، ورؤساء الأمن السيبراني (CISO)، وضباط حماية البيانات والامتثال (DPO)، ومدراء التحول الرقمي في القطاعات الحكومية والخاصة.',
+  },
+  {
+    question: 'هل يحصل المشاركون على شهادة حضور أو حقيبة تدريبية؟',
+    answer: 'نعم، يحصل كل مشارك على حقيبة أدلة ونماذج سياسات حوكمة جاهزة للتطبيق، بالإضافة إلى شهادة مشاركة معتمدة في ورش العمل.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'يوم حوكمة الذكاء الاصطناعي في الرياض | ملتقى BrightAI السنوي',
+      description: 'ملتقى حوكمة الذكاء الاصطناعي بالرياض: ورش عمل تفاعلية عن نظام PDPL وضوابط سدايا وNCA، وحماية بيانات المنشآت السعودية.',
+      url: 'https://brightai.live/events/ai-governance-day/',
+      inLanguage: 'ar-SA',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: dayFaq.map(item => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  ],
+};
 ---
 
 <ArabicLayout
-  title="AI Governance Day Riyadh | BrightAI"
-   description="حدث خاص من BrightAI عن حوكمة الذكاء الاصطناعي والامتثال بالسعودية: جلسات تقنية مع خبراء PDPL وNCA وورشة تطبيقية في الرياض. سجّل الآن واحجز مقعدك المجاني."
+  title="يوم حوكمة الذكاء الاصطناعي في الرياض | BrightAI"
+  description="انضم إلى يوم حوكمة الذكاء الاصطناعي في الرياض: ملتقى تفاعلي يجمع خبراء الامتثال والأمن السيبراني لمناقشة تطبيق ضوابط PDPL وسدايا وNCA."
   canonical="https://brightai.live/events/ai-governance-day/"
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.live/events/ai-governance-day/' }, { lang: 'x-default', href: 'https://brightai.live/events/ai-governance-day/' }]}
   jsonLd={jsonLd as any}
   currentPath="/events/ai-governance-day/"
   breadcrumbs={[{ name: 'الفعاليات', href: '/events/' }, { name: 'يوم حوكمة AI', href: '/events/ai-governance-day/' }]}
 >
-
   <section class="page-hero" aria-label="يوم حوكمة AI">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-star"></use></svg>
-        حدث BrightAI الخاص — الرياض
+        ملتقى الرياض السنوي
       </div>
-      <h1 class="page-hero__title"><span class="gradient-text">AI Governance Day</span> الرياض</h1>
-      <p class="page-hero__description">يوم كامل عن حوكمة الذكاء الاصطناعي في السعودية: جلسات تقنية، طاولة نقاش مع خبراء القطاع، وورشة تطبيقية تبني فيها سجل تدقيق خلال ٩٠ دقيقة. لمحة سريعة عن الموضوع قبل الفعالية، اطّلع على <a href="/blog/what-is-ai-governance-saudi-companies/">دليل ما هي حوكمة AI للشركات السعودية</a>. للاطلاع على نشرة BrightAI الأسبوعية، اشترك في <a href="/newsletter/">النشرة الأسبوعية</a>.</p>
+      <h1 class="page-hero__title"><span class="gradient-text">يوم حوكمة الذكاء الاصطناعي</span> في الرياض</h1>
+      <p class="page-hero__description">ملتقى تخصصي يجمع رواد التقنية، مسؤولي حماية البيانات، وقادة الأمن السيبراني في المملكة العربية السعودية لبحث سبل تطبيق الحوكمة التشغيلية وضمان الامتثال لنظام PDPL وأطر سدايا وNCA.</p>
     </div>
   </section>
 
-  <section class="inner-section" aria-labelledby="agd-agenda">
+  <!-- أجندة الملتقى التفصيلية -->
+  <section class="inner-section" aria-labelledby="agenda-title">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <h2 id="agd-agenda" class="inner-section__title">أجندة اليوم</h2>
-      <div class="grid grid--2">
+      <h2 id="agenda-title" class="inner-section__title">أجندة الملتقى وورش العمل</h2>
+      <p class="inner-section__lead">جلسات تفاعلية تجمع بين التوجيه التنظيمي والتطبيق البرمجي الميداني.</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-4); max-width: 52rem; margin: 0 auto;">
         {
-          sessions.map((s) => (
-            <article class="card card--feature">
-              <span class="assessment-tag">{s.t}</span>
-              <h3 class="inner-card__title mt-3">{s.title}</h3>
-              <p class="inner-card__text">{s.body}</p>
+          agenda.map((item) => (
+            <article class="card card--feature" style="padding: var(--space-5);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2);">
+                <span class="chip chip--brand">{item.time}</span>
+                <span style="font-size: var(--text-xs); color: var(--text-muted);">الرياض • جلسة حضورية</span>
+              </div>
+              <h3 style="font-size: var(--text-lg); color: var(--text-primary); margin-bottom: var(--space-2);">{item.title}</h3>
+              <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0; line-height: var(--leading-relaxed);">{item.desc}</p>
             </article>
           ))
         }
@@ -62,34 +91,71 @@ const jsonLd = null;
     </div>
   </section>
 
-  <section class="inner-section inner-section--alt" aria-labelledby="agd-form">
-    <div class="max-w-3xl mx-auto px-5 lg:px-8">
-      <h2 id="agd-form" class="inner-section__title inner-section__title--centered">سجّل حضورك</h2>
-      <p class="inner-section__lead inner-section__lead--centered">المقاعد محدودة. نرسل لك التفاصيل فور التسجيل.</p>
-      <div class="contact-form-card contact-form-card--padded">
-        <LeadForm
-          formId="ai-governance-day"
-          title="تسجيل الحضور"
-          intro="عبّي بياناتك ونؤكد مقعدك."
-          subject="تسجيل في AI Governance Day"
-          ctaLabel="سجّلني"
-          source="website"
-          medium="event"
-          campaign="ai-governance-day"
-          fields={[
-            { name: 'name', label: 'الاسم الكامل', required: true, autocomplete: 'name' },
-            { name: 'email', label: 'البريد الإلكتروني', type: 'email', required: true, autocomplete: 'email' },
-            { name: 'company', label: 'الشركة', required: true, autocomplete: 'organization' },
-            { name: 'role', label: 'دورك', type: 'select', options: ['امتثال', 'أمن معلومات', 'تحول رقمي', 'إدارة', 'غيره'] },
-          ]}
-        />
+  <!-- محتوى دليلي عن أهمية الحوكمة في الرياض -->
+  <section class="inner-section inner-section--alt" aria-label="أهمية الملتقى">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="card card--feature" style="padding: var(--space-6);">
+        <h2 style="font-size: var(--text-2xl); color: var(--text-primary); margin-bottom: var(--space-3);">لماذا تحتاج المؤسسات السعودية لحضور هذا الملتقى؟</h2>
+        <p style="color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-base); margin-bottom: var(--space-4);">
+          مع دخول الأنظمة الرقمية السعودية حيز الإلزام الشامل، تواجه المنشآت استحقاقات فورية في مراجعة كافة النماذج الذكية المستخدمة. يقدم الملتقى خارطة طريق واضحة تتضمن:
+        </p>
+        <div class="grid grid--3" style="gap: var(--space-4);">
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">مصفوفة الامتثال لنظام PDPL</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">كيف تضمن عدم مخالفة قواعد نقل البيانات خارج الحدود ومعالجة الهويات الحساسة.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">تقييم المخاطر الخوارزمية</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">معايير تصنيف المخاطر وفق إرشادات سدايا واعتماد آليات التدقيق المستقل.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">بناء منظومة دفاعية</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">نشر جدران الحماية السيبرانية واكتشاف الاستخدامات الخفية (Shadow AI).</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-</ArabicLayout>
 
-<style>
-  .assessment-tag { font-size: var(--text-xs); padding: var(--space-0-5) var(--space-2-5); border-radius: var(--radius-lg); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25); color: var(--assessment-tag-color); display: inline-block; }
-  .mt-3 { margin-block-start: var(--space-3); }
-  .contact-form-card { background: var(--bg-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: var(--space-6); }
-</style>
+  <!-- أسئلة شائعة -->
+  <section class="inner-section" aria-labelledby="day-faq-heading">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div style="max-width: 48rem; margin: 0 auto var(--space-6); text-align: center;">
+        <h2 id="day-faq-heading" style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--text-primary); margin-bottom: var(--space-2);">الأسئلة الشائعة</h2>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--space-3); max-width: 52rem; margin: 0 auto;">
+        {
+          dayFaq.map(item => (
+            <details class="card card--feature" style="padding: var(--space-4); cursor: pointer;">
+              <summary style="font-weight: var(--font-bold); color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                <span>{item.question}</span>
+                <span style="color: var(--brand); font-size: 1.25rem;">+</span>
+              </summary>
+              <div style="margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-sm);">
+                {item.answer}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="day-form-heading">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <h2 id="day-form-heading" class="inner-section__title text-center">سجل اهتمامك لحضور الملتقى القادم</h2>
+      <p class="inner-section__lead text-center">المقاعد محدودة لضمان فاعلية ورش العمل التطبيقية وجلسات النقاش.</p>
+      <LeadForm
+        formId={FORM_TAXONOMY.EVENT_GOV_DAY}
+        title="سجل اهتمامك لحضور الملتقى القادم"
+        intro="المقاعد محدودة لضمان فاعلية ورش العمل التطبيقية وجلسات النقاش."
+        subject="تسجيل اهتمام: AI Governance Day الرياض"
+        ctaLabel="تأكيد التسجيل"
+        source="events"
+        medium="ai-governance-day"
+        campaign="events-2026"
+        fields={DEFAULT_CONTACT_FIELDS}
+      />
+    </div>
+  </section>
+</ArabicLayout>

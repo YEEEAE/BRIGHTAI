@@ -13,6 +13,25 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { SITE } from '../../data/site';
 
+const hubFaq = [
+  {
+    question: 'ما هي مراكز محتوى BrightAI وكيف تفيد مؤسستي؟',
+    answer: 'مراكز المحتوى هي مراجع معرفية وهندسية متخصصة ومصنفة بحسب المجالات الرئيسية لحوكمة وأمان الذكاء الاصطناعي في السوق السعودي. تغطي المراكز الأطر التشريعية، والحلول التقنية لـ Saudi AI Safety OS، وحالات الاستخدام بالقطاعات، وأدلة حوكمة الوكلاء الأذكياء (Agentic AI).',
+  },
+  {
+    question: 'كيف ترتبط المراكز بالأنظمة السعودية (PDPL, NCA, SDAIA)؟',
+    answer: 'تم تصميم محتوى المراكز ليربط بدقة بين المتطلبات القانونية الصادرة عن الهيئة السعودية للبيانات والذكاء الاصطناعي والهيئة الوطنية للأمن السيبراني وبين التطبيق الفني والبرمجي؛ حيث توضح الأدلة كيفية ترجمة النصوص القانونية إلى قواعد جدار حماية وسجلات تدقيق قابلة للإنفاذ آلياً.',
+  },
+  {
+    question: 'هل المحتوى موجه للمسؤولين التنفيذيين أم للمطورين التقنيين؟',
+    answer: 'يجمع المحتوى بين المستويين الاستراتيجي والهندسي؛ حيث يجد المسؤول التنفيذي (CTO/CISO/DPO) ملخصات تنفيذية وأطر تقييم المخاطر، بينما يجد المطورون والمهندسون مواصفات تقنية وبنى معمارية تفصيلية للدمج مع واجهات البرمجة وقواعد البيانات.',
+  },
+  {
+    question: 'كم مرة يتم تحديث مراكز المعرفة؟',
+    answer: 'يتم تحديث مراكز المحتوى بشكل دوري ومستمر فور صدور أي لوائح أو تعاميم تنظيمية جديدة من الجهات الرقابية السعودية، لضمان بقاء مؤسستك على اطلاع دائم بأحدث الممارسات وأدلة الامتثال.',
+  },
+];
+
 const collectionLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -31,10 +50,24 @@ const collectionLd = {
   ],
 };
 
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: hubFaq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+
 const hubJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     collectionLd,
+    faqLd,
   ],
 };
 
@@ -100,7 +133,7 @@ const hubs = [
 
 <ArabicLayout
   title="مراكز محتوى AI | محاور مرجعية"
-   description="مراكز محتوى مرجعية من BrightAI: حوكمة AI وامتثال لـ PDPL وNCA وحلول تقنية وأدلة تشغيلية للوكلاء. ابدأ رحلة التعلم والامتثال من هنا."
+  description="مراكز محتوى مرجعية من BrightAI: حوكمة AI وامتثال لـ PDPL وNCA وحلول تقنية وأدلة تشغيلية للوكلاء. ابدأ رحلة التعلم والامتثال من هنا."
   canonical={`${SITE.url}/hub/`}
   hreflang={[{ lang: 'ar-SA', href: `${SITE.url}/hub/` }]}
   jsonLd={hubJsonLd as any}
@@ -115,7 +148,7 @@ const hubs = [
       </span>
       <h1>كل شي تبي تعرفه عن حوكمة AI في مكان واحد</h1>
       <p class="hub-page__intro">
-        حوكمة وأمان الذكاء الاصطناعي في السعودية، مرتّب لك في مراكز موضوعية. اختصر وقتك وابدأ من المركز اللي يخص سؤالك بالضبط.
+        حوكمة وأمان الذكاء الاصطناعي في السعودية، مرتّب لك في مراكز موضوعية متكاملة. اختصر وقتك وابدأ من المركز الذي يطابق سؤالك واحتياج مؤسستك الحالي.
       </p>
     </header>
 
@@ -140,11 +173,68 @@ const hubs = [
       ))}
     </nav>
 
+    <!-- Deep Architecture & Methodology Guide -->
+    <section class="hub-methodology-section" aria-labelledby="hub-methodology">
+      <div class="hub-methodology-card">
+        <span class="chip chip--brand">المنهجية التشغيلية</span>
+        <h2 id="hub-methodology" class="hub-section-title">خارطة طريق تبني الذكاء الاصطناعي المسؤول والآمن</h2>
+        <p class="hub-section-intro">
+          تعتمد المنشآت السعودية الرائدة منهجية متدرجة للانتقال من مرحلة التجارب المتفرقة إلى التشغيل المؤسسي المحوكم، وفق أربع مراحل رئيسية:
+        </p>
+
+        <div class="hub-steps-grid">
+          <div class="hub-step-item">
+            <div class="hub-step-num">01</div>
+            <h3>حصر وتقييم المخاطر (Inventory & Assessment)</h3>
+            <p>
+              بناء سجل كامل لجميع أدوات ونماذج الذكاء الاصطناعي المستخدمة داخل المنشأة (بما في ذلك كشف Shadow AI)، وتصنيفها حسب درجات الحساسية ومستويات خطورة البيانات المعالجة وفق إطار سدايا.
+            </p>
+          </div>
+          <div class="hub-step-item">
+            <div class="hub-step-num">02</div>
+            <h3>تطبيق جدار الحماية اللحظي (Inline AI Firewall)</h3>
+            <p>
+              نشر بوابات أمان وسيطة تفحص كل استعلام ومخرج لحظياً، مع تفعيل آليات التعمية التلقائية للبيانات الشخصية (PII Masking) والتصدي لمحاولات حقن الأوامر والتهديدات السيبرانية المستجدة.
+            </p>
+          </div>
+          <div class="hub-step-item">
+            <div class="hub-step-num">03</div>
+            <h3>التوثيق الجنائي والأدلة الرقمية (Audit Logging)</h3>
+            <p>
+              أرشفة كافة الاستعلامات، والقرارات، والبيانات الوصفية في سجل تدقيق مشفر غير قابل للتعديل، مع تفعيل مسارات المراجعة البشرية (Human-in-the-loop) للعمليات والقرارات ذات التأثير العالي.
+            </p>
+          </div>
+          <div class="hub-step-item">
+            <div class="hub-step-num">04</div>
+            <h3>المراقبة المستمرة والاعتماد القياسي (Continuous Assurance)</h3>
+            <p>
+              مراقبة الانحراف السلوكي للنماذج (Drift Detection)، وإجراء اختبارات الاختراق المستمرة (AI Red Teaming)، والتوافق مع متطلبات المعيار الدولي لإدارة الذكاء الاصطناعي ISO/IEC 42001.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="hub-faq-section" aria-labelledby="hub-faq-title">
+      <div class="hub-faq-card">
+        <h2 id="hub-faq-title" class="hub-section-title">أسئلة شائعة حول مراكز المعرفة والحوكمة</h2>
+        <div class="hub-faq-grid">
+          {hubFaq.map((item) => (
+            <div class="hub-faq-item">
+              <h3>{item.question}</h3>
+              <p>{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <section class="content-cta-final" aria-labelledby="hub-cta">
       <div class="card card--cta">
         <h2 id="hub-cta">ابدأ من المركز الأقرب لقرارك الحالي</h2>
         <p>
-          لو تبي توصية سريعة بدون ما تقرأ كل شي، <a href="/assessment/ai-governance-readiness/">ابدأ بتقييم جاهزية الحوكمة</a> أو <a href="/contact/">تواصل مع الفريق</a> لجلسة تشخيصية قصيرة.
+          لو تبي توصية سريعة بدون ما تقرأ كل شي، <a href="/assessment/ai-governance-readiness/">ابدأ بتقييم جاهزية الحوكمة</a> أو <a href="/contact/">تواصل مع الفريق</a> لجلسة تشخيص قصيرة.
         </p>
         <div class="content-cta-final__actions">
           <a href="/assessment/ai-governance-readiness/" class="btn btn--glow">
@@ -177,6 +267,85 @@ const hubs = [
     .hub-card--clean[data-hub-tint='amber'] .hub-card__icon {
       background: var(--accent-warm-soft);
       color: var(--accent-warm);
+    }
+
+    .hub-methodology-section,
+    .hub-faq-section {
+      margin-top: var(--space-12);
+      margin-bottom: var(--space-8);
+    }
+    .hub-methodology-card,
+    .hub-faq-card {
+      background: var(--surface-subtle, rgba(255,255,255,0.02));
+      border: 1px solid var(--border-subtle, rgba(255,255,255,0.08));
+      border-radius: var(--radius-xl, 1rem);
+      padding: var(--space-8);
+    }
+    .hub-section-title {
+      font-size: var(--text-2xl, 1.75rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-top: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+    .hub-section-intro {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 65ch;
+    }
+    .hub-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-6);
+      margin-top: var(--space-8);
+    }
+    .hub-step-item {
+      background: var(--surface-card, rgba(255,255,255,0.03));
+      border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+      border-radius: var(--radius-lg, 0.75rem);
+      padding: var(--space-6);
+    }
+    .hub-step-num {
+      display: inline-block;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--interactive-primary, #14b8a6);
+      margin-bottom: var(--space-2);
+    }
+    .hub-step-item h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+    .hub-step-item p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .hub-faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-6);
+      margin-top: var(--space-6);
+    }
+    .hub-faq-item {
+      background: var(--surface-card, rgba(255,255,255,0.02));
+      border: 1px solid var(--border-subtle, rgba(255,255,255,0.05));
+      border-radius: var(--radius-md, 0.5rem);
+      padding: var(--space-5);
+    }
+    .hub-faq-item h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    .hub-faq-item p {
+      font-size: 0.925rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
     }
   </style>
 </ArabicLayout>

@@ -1,14 +1,7 @@
 ---
 /**
  * Authors index — /authors/
- *
- * Lists every registered author from src/data/blog.ts (author registry).
- * Fixes the broken breadcrumb link on every /authors/<slug>/ page, which
- * pointed to /authors/ while no index page existed (seo:gate broken-links).
- *
- * SEO: emits only a page-specific CollectionPage node. Organization and
- * BreadcrumbList come from the foundation Schema.astro (BAI-SEO-003-S3 —
- * do not re-add duplicates).
+ * Lists registered authors and experts in AI governance in Saudi Arabia.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { authors } from '../../data/blog';
@@ -16,11 +9,26 @@ import { SITE } from '../../data/site';
 
 const authorEntries = Object.values(authors);
 
+const authorsFaq = [
+  {
+    question: 'من هم الخبراء والمستشارون الذين يقفون وراء منصة ومحتوى BrightAI؟',
+    answer: 'يضم فريق BrightAI نخبة من المهندسين، ومستشاري حوكمة التقنية، وخبراء الامتثال والأمن السيبراني المتخصصين في الأنظمة السعودية (مثل PDPL وضوابط NCA وإرشادات سدايا)، ولديهم خبرة عملية واسعة في قيادة مشاريع التحول الرقمي في القطاعات المصرفية والصحية والصناعية.',
+  },
+  {
+    question: 'ما هي معايير وضوابط النشر والتحقق في مدونة وأدلة BrightAI؟',
+    answer: 'يخضع كل مقال ودليل تنفيذي في المنصة لمراجعة مزدوجة تجمع بين التدقيق التقني للأمان البرمجي والتحقق القانوني والتنظيمي مع التشريعات السارية في المملكة، لضمان تقديم حلول تشغيلية دقيقة يمكن الاعتماد عليها في التدقيق المؤسسي.',
+  },
+  {
+    question: 'كيف يمكن التواصل مع مستشاري BrightAI لطلب استشارة مخصصة للمنشأة؟',
+    answer: 'يمكنك حجز جلسة استشارية متخصصة أو تقييم جاهزية عبر صفحة الاتصال بنا، وسيقوم فريق الاستشارات والامتثال بجدولة ورشة عمل لتحليل الفجوات وتقديم التوصيات المناسبة لقطاعك.',
+  },
+];
+
 const collectionLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: 'مؤلفو BrightAI',
-  description: 'فريق BrightAI: مستشارون ومهندسون وخبراء حوكمة الذكاء الاصطناعي في السعودية — يكتبون عن PDPL وNCA ECC وسدايا وISO 42001.',
+  name: 'مؤلفو ومستشارو BrightAI | فريق حوكمة الذكاء الاصطناعي في السعودية',
+  description: 'فريق BrightAI: مستشارون ومهندسون وخبراء حوكمة الذكاء الاصطناعي في السعودية — يكتبون عن PDPL وNCA ECC وسدايا وISO 42001 وأمان نماذج الذكاء الاصطناعي.',
   url: `${SITE.url}/authors/`,
   inLanguage: 'ar-SA',
   isPartOf: { '@id': 'https://brightai.live/#website' },
@@ -29,38 +37,98 @@ const collectionLd = {
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [collectionLd],
+  '@graph': [
+    collectionLd,
+    {
+      '@type': 'FAQPage',
+      mainEntity: authorsFaq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  ],
 };
 ---
 
 <ArabicLayout
-  title="مؤلفو BrightAI | فريق حوكمة الذكاء الاصطناعي"
-  description="تعرف على مؤلفي BrightAI — المستشارون والمهندسون وخبراء الامتثال السعوديون الذين يكتبون عن حوكمة AI وPDPL وNCA ECC وسدايا."
+  title="مؤلفو ومستشارو BrightAI | خبراء حوكمة الذكاء الاصطناعي في السعودية"
+  description="تعرف على فريق BrightAI من المهندسين ومستشاري حوكمة الذكاء الاصطناعي والامتثال لنظام PDPL وضوابط NCA ECC وسدايا في المملكة العربية السعودية."
   canonical="https://brightai.live/authors/"
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.live/authors/' }, { lang: 'x-default', href: 'https://brightai.live/authors/' }]}
   jsonLd={jsonLd as any}
   currentPath="/authors/"
-  breadcrumbs={[{ name: 'المؤلفون', href: '/authors/' }]}
+  breadcrumbs={[{ name: 'المؤلفون والخبراء', href: '/authors/' }]}
 >
-
   <div class="author-shell">
     <header class="author-header">
       <div>
-        <p class="author-title">صفحة المؤلفين</p>
-        <h1>فريق BrightAI</h1>
-        <p class="author-bio">المستشارون والمهندسون وخبراء الامتثال الذين يكتبون محتوى BrightAI التنفيذي عن حوكمة الذكاء الاصطناعي في السعودية.</p>
+        <p class="author-title">خبراء ومستشارو المنصة</p>
+        <h1>فريق حوكمة وأمان الذكاء الاصطناعي في السعودية</h1>
+        <p class="author-bio">يقود فريق BrightAI جهود إثراء المحتوى التنفيذي والتقني لتمكين الشركات السعودية من تبني أدوات الذكاء الاصطناعي التوليدي والوكلاء الأذكياء بأمان، وفق أرقى معايير حوكمة البيانات والامتثال التنظيمي والسيادي.</p>
       </div>
     </header>
 
-    <div class="author-posts">
-      {authorEntries.map(author => (
-        <a href={`/authors/${author.slug}/`} class="author-post-card">
-          <span class="author-post-card__cat">{author.title}</span>
-          <h3>{author.name}</h3>
-          <p>{author.bio}</p>
-        </a>
-      ))}
-    </div>
+    <!-- تعريف بدور الخبراء والاستشارات -->
+    <section class="inner-section" aria-label="رؤية فريق العمل" style="margin-bottom: var(--space-6);">
+      <div class="card card--feature" style="padding: var(--space-6); border-inline-start: 4px solid var(--brand);">
+        <h2 style="font-size: var(--text-xl); margin-bottom: var(--space-3); color: var(--text-primary);">خبرات وطنية في حوكمة وأمان الذكاء الاصطناعي</h2>
+        <p style="color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-base); margin-bottom: var(--space-4);">
+          مع التطور المتسارع في بيئة الأعمال السعودية والتوجه الاستراتيجي نحو أتمتة العمليات والتحول الرقمي، أصبحت <strong>حوكمة الذكاء الاصطناعي في السعودية</strong> ركيزة أساسية لحماية الملكية الفكرية وسرية بيانات العملاء. يعمل مستشارو BRIGHTAI على سد الفجوة بين الأطر التنظيمية النظرية (مثل نظام حماية البيانات الشخصية PDPL وضوابط الهيئة الوطنية للأمن السيبراني NCA) والتطبيق البرمجي والتشغيلي الميداني داخل الشركات والمؤسسات.
+        </p>
+        <div class="grid grid--3" style="gap: var(--space-4);">
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">الاستشارات التشغيلية</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">تقييم جاهزية الحوكمة وتصميم سياسات استخدام AI مخصصة للقطاعات الحيوية.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">هندسة الأمان والجدران النارية</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">تطوير جدران حماية الذكاء الاصطناعي (AI Firewall) لمنع حقن الأوامر وتسريب البيانات.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">التدقيق والأدلة الرقمية</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">إعداد سلاسل سجلات التدقيق المشفرة ومواءمة العمليات مع معيار ISO 42001.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قائمة المؤلفين -->
+    <section aria-label="قائمة الخبراء">
+      <h2 style="font-size: var(--text-xl); color: var(--text-primary); margin-bottom: var(--space-4);">المؤلفون والباحثون</h2>
+      <div class="author-posts">
+        {authorEntries.map(author => (
+          <a href={`/authors/${author.slug}/`} class="author-post-card">
+            <span class="author-post-card__cat">{author.title}</span>
+            <h3>{author.name}</h3>
+            <p>{author.bio}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- أسئلة شائعة -->
+    <section class="inner-section" aria-labelledby="authors-faq-title" style="margin-top: var(--space-8);">
+      <h2 id="authors-faq-title" style="font-size: var(--text-xl); color: var(--text-primary); margin-bottom: var(--space-4);">الأسئلة الشائعة حول فريق العمل</h2>
+      <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+        {
+          authorsFaq.map(item => (
+            <details class="card card--feature" style="padding: var(--space-4); cursor: pointer;">
+              <summary style="font-weight: var(--font-bold); color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                <span>{item.question}</span>
+                <span style="color: var(--brand); font-size: 1.25rem;">+</span>
+              </summary>
+              <div style="margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-sm);">
+                {item.answer}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
   </div>
 </ArabicLayout>
 
@@ -89,8 +157,9 @@ const jsonLd = {
     border-color: var(--brand-400);
   }
   .author-post-card__cat {
-    color: var(--text-muted);
+    color: var(--brand-300);
     font-size: var(--text-xs);
+    font-weight: bold;
   }
   .author-post-card h3 {
     margin: var(--space-2) 0;

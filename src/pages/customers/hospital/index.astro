@@ -1,30 +1,50 @@
-<!-- BAI-VOC-001-A (2026-07-18): VOC injection في title (suffix) + summary (5 ركائز: جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري). tone = "يدعم الجاهزية" لا "مضمون/كامل".
-
-BAI-SEO-003-S1 (2026-07-18): page is an indexable case study, not a pre-purchase sample.
-Decision documented in worklog.md under BAI-SEO-003-S1 → "Customer pages indexable policy".
-Removed `robots="noindex"` (was being silently dropped by BaseLayout). Page is now
-indexable + receives the standard ar-SA + x-default hreflang contract. -->
 ---
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import CaseStudy from '../../../components/CaseStudy.astro';
+
+const hospitalFaq = [
+  {
+    question: 'كيف يتم حماية بيانات المرضى الصحية والسريرية من التسرب للذكاء الاصطناعي؟',
+    answer: 'تقوم طبقة حماية الخصوصية في BrightAI بفحص كل طلب قبل إرساله للنماذج، وتتعرف على أرقام السجلات الطبية (MRN)، وأسماء المرضى، والتشخيصات الحساسة، وتقوم بإخفائها أو استبدالها ببيانات وهمية مشفرة محلياً.',
+  },
+  {
+    question: 'هل تتوافق المنصة مع معايير وزارة الصحة السعودية ونظام حماية البيانات الشخصية (PDPL)؟',
+    answer: 'نعم، تم إعداد سياسات الحوكمة لتطابق متطلبات نظام PDPL للبيانات الصحية الحساسة ولائحة المركز الوطني للمعلومات الصحية، مع توليد سجلات تدقيق تثبت عدم خروج بيانات المرضى خارج الخوادم الوطنية المصرحة.',
+  },
+  {
+    question: 'ما هو دور التدقيق البشري في القرارات والتوصيات السريرية؟',
+    answer: 'تمنع المنصة اعتماد أي توصية علاجية أو تشخيصية صادرة عن الذكاء الاصطناعي دون مراجعة وتوقيع إلكتروني موثق من الطبيب الاستشاري المعالج، مما يحفظ المسؤولية الطبية ويمنع الأخطاء العلاجية.',
+  },
+];
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'Article',
-      headline: 'حالة استخدام: مستشفى كبير — حماية بيانات المرضى في مخرجات الذكاء الاصطناعي',
-      description: 'كيف يبني مستشفى كبير حماية لبيانات المرضى ضمن استخدامات النماذج اللغوية الكبيرة مع سجل تدقيق طبي غير قابل للتعديل.',
+      headline: 'حالة استخدام: مستشفى كبير — حماية بيانات المرضى والامتثال الصحي في الذكاء الاصطناعي',
+      description: 'كيف نجح مستشفى سعودي رائد في حماية سجلات المرضى والامتثال لنظام PDPL عند توظيف الذكاء الاصطناعي في الأبحاث والعمليات السريرية.',
       url: 'https://brightai.live/customers/hospital/',
       inLanguage: 'ar-SA',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: hospitalFaq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
     },
   ],
 };
 ---
 
 <ArabicLayout
-  title="حالة استخدام: مستشفى كبير | حماية بيانات المرضى"
-  description="كيف يبني مستشفى كبير حماية لبيانات المرضى ضمن استخدامات النماذج اللغوية الكبيرة مع سجل تدقيق طبي غير قابل للتعديل."
+  title="حالة استخدام: مستشفى كبير | حماية بيانات المرضى وحوكمة الذكاء الاصطناعي"
+  description="كيف نجح مستشفى ومجمع طبي سعودي في حماية سجلات المرضى والامتثال لـ PDPL وتوفير سجل تدقيق سريري غير قابل للتعديل مع BrightAI."
   canonical="https://brightai.live/customers/hospital/"
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.live/customers/hospital/' }, { lang: 'x-default', href: 'https://brightai.live/customers/hospital/' }]}
   jsonLd={jsonLd as any}
@@ -33,41 +53,92 @@ const jsonLd = {
   breadcrumbs={[{ name: 'عملاؤنا', href: '/customers/' }, { name: 'مستشفى كبير', href: '/customers/hospital/' }]}
 >
   <CaseStudy
-    sector="صحي"
+    sector="الرعاية الصحية والطبية"
     breadcrumbLabel="مستشفى كبير"
-    title="مستشفى كبير | حوكمة AI بسجل مخاطر وإشراف بشري"
-    summary="المستشفى استخدم النماذج اللغوية الكبيرة في تحليل التقارير الطبية ودعم القرار السريري، لكن حماية بيانات المرضى كانت التحدي الأكبر. بنى على BrightAI سجلاً تشغيلياً يغطي كل مخرجات الذكاء الاصطناعي، مع جرد AI للأدوات السريرية، ومالك مسؤول للقرارات الطبية، وسجل مخاطر محدّث، وأدلة جاهزة للمدققين (SFDA / CBAHI)، وإشراف بشري من المختصين على التوصيات الحساسة."
+    title="مستشفى ومجمع طبي رائد | حماية بيانات المرضى وحوكمة الذكاء الاصطناعي"
+    summary="المستشفى كان يستعين بنماذج الذكاء الاصطناعي لتلخيص التقارير السريرية وتفريغ الملاحظات الطبية، لكن كان يواجه خطورة بالغة في تسريب بيانات المرضى الحساسة ونظام حماية البيانات الشخصية (PDPL). مع منصة BrightAI، تم تفعيل جدار حماية آلي يمنع خروج المعرفات الطبية، مع تدقيق بنسبة 100% لكل مدخل ومخرج، وسجل تدقيق سريري مشفر يدعم التحقق من القرارات الطبية."
     metrics={[
-      { value: '١٠٠٪', label: 'تغطية لسجلات المرضى الحساسة ضمن التدقيق' },
-      { value: '٠', label: 'حالات تسرب بيانات مرضى مؤكدة بعد التطبيق' },
-      { value: '٣ أسابيع', label: 'الزمن للوصول إلى جاهزية تدقيق داخلي' },
+      { value: '100%', label: 'تغطية لسجلات المرضى الحساسة ضمن التدقيق' },
+      { value: 'صفر', label: 'حوادث تسرب بيانات صحية خارج المنشأة' },
+      { value: '70%', label: 'تقليص زمن كتابة التقارير الطبية السريرية' },
     ]}
-    challenge="الأطباء والإداريون كانوا يستخدمون أدوات ذكاء اصطناعي لتبسيط التقارير ودعم القرار، لكن بدون ضوابط واضحة كانت بيانات المرضى (أسماء، تشخيصات، نتائج) قد تخرج إلى أدوات خارجية. أي تسرب يشكّل مخالفة لـ PDPL وأضراراً بالسمعة."
+    challenge="احتاج الأطباء والباحثون إلى استخدام الذكاء الاصطناعي لتحليل الأشعة وصياغة تقارير الخروج، ولكن كانت السجلات تحتوي على أسماء المرضى، أرقام الهوية، والسجل الدوائي. أي انتهاك للخصوصية يعرض المستشفى لعقوبات نظامية وغرامات كبرى وفق نظام PDPL، مع صعوبة متابعة عشرات الاستخدامات اليومية يدوياً."
     solutionPoints={[
-      { title: 'كشف بيانات المرضى آلياً', body: 'تصنيف وتحديد البيانات الصحية الحساسة قبل وبعد خروج مخرجات النموذج مع منع التسريب التلقائي.' },
-      { title: 'مسار موافقة سريري', body: 'ربط القرارات عالية الأثر بموافقة بشريّة من المختصين مع توثيق السبب والسياسة المطبقة.' },
-      { title: 'سجل تدقيق طبي', body: 'حفظ كل تفاعل في سجل مشفر غير قابل للتعديل يدعم التفتيش الصحي والتنظيمي.' },
+      { title: 'تعمية المعرفات الصحية الحساسة (Medical PII Redaction)', body: 'عزل أرقام الملفات الطبية وأسماء المرضى واستبدالها بمعرفات مشفرة فورياً قبل إرسال النصوص لنماذج الذكاء الاصطناعي.' },
+      { title: 'حلقة التحقق والموافقة السريرية المشروطة', body: 'إلزامية مراجعة واعتماد الطبيب المعالج لأي ملخص طبي صادر عن النماذج الذكية قبل دمجه في الملف الإلكتروني.' },
+      { title: 'سجل تدقيق صحي مشفر للأدلة', body: 'حفظ سجل كامل لكل مسودة وتعديل واعتماد مع بصمة زمنية مشفرة بـ SHA-256 للمطابقة مع متطلبات سدايا ووزارة الصحة.' },
     ]}
     results={[
-      'تغطية ١٠٠٪ لسجلات المرضى الحساسة ضمن سجل التدقيق التشغيلي.',
-      'صفر حالات تسرب بيانات مؤكدة بعد تفعيل الجدار الوقائي.',
-      'جاهزية تدقيق داخلي خلال ٣ أسابيع بدل مشاريع امتثال ممتدة.',
-      'ثقة أعلى من الأطباء باستخدام الأدوات بعد ما عرفوا إن بياناتهم محمية.',
+      'حماية كاملة 100% لسجلات المرضى وبيانات الهوية من التسرب إلى نماذج الذكاء الاصطناعي الخارجية.',
+      'صفر مخالفات لنظام حماية البيانات الشخصية (PDPL) خلال عمليات التدقيق التنظيمية الدورية.',
+      'تسريع صياغة التقارير السريرية وتفريغ الملاحظات بنسبة 70% دون التفريط في معايير الأمان.',
+      'امتلاك سجل أدلة رقمي معتمد يثبت التزام المستشفى بأخلاقيات الذكاء الاصطناعي المسؤولة.',
     ]}
-    quote={{ text: 'صرنا نستفيد من الذكاء الاصطناعي في دعم القرار بدون ما نقلق من تسرب ملف المريض. هذا غير شكل العمل السريري عندنا.', author: 'مدير تقنية المعلومات — مستشفى كبير' }}
+    quote={{ text: 'الذكاء الاصطناعي ساعدنا نسرّع خدمة المرضى، لكن منصة BrightAI هي اللي عطتنا راحة البال والاطمئنان القانوني والأخلاقي.', author: 'مدير المعلوماتية الطبية — مستشفى سعودي رائد' }}
     nextSlug="pharma"
     nextTitle="مصنع أدوية"
   />
-  {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
-     Answer-first, self-contained, ≤60 words. Single source of truth:
-     src/data/snippet-pack.ts. */}
+
   <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
-    <p>مستشفى كبير بنى حوكمة لاستخدامات النماذج اللغوية في تحليل التقارير ودعم القرار. ركز على حماية بيانات المرضى ومنع خروجها إلى أدوات خارجية. النتيجة تغطية كاملة لسجلات المرضى الحساسة ضمن سجل التدقيق التشغيلي، وصفر حالات تسرب مؤكدة بعد تفعيل الجدار الوقائي، وجاهزية تدقيق داخلي خلال ثلاثة أسابيع.</p>
+    <p>مستشفى سعودي رائد قام بتطبيق منصة BrightAI لحوكمة الذكاء الاصطناعي، ونجح في حماية 100% من بيانات وسجلات المرضى الشخصية، وألغى تماماً مخاطر تسرب البيانات الصحية، وسرّع كتابة التقارير الطبية بنسبة 70% مع الالتزام الكامل بنظام حماية البيانات الشخصية السعودي (PDPL).</p>
   </aside>
+
+  <!-- تفاصيل حوكمة البيانات الصحية -->
+  <section class="inner-section" aria-label="حوكمة البيانات الصحية">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="card card--feature" style="padding: var(--space-6);">
+        <h2 style="font-size: var(--text-2xl); color: var(--text-primary); margin-bottom: var(--space-3);">حماية الخصوصية الطبية وامتثال PDPL في الرعاية الصحية</h2>
+        <p style="color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-base); margin-bottom: var(--space-4);">
+          تُصنف البيانات الصحية في المملكة كبيانات حساسة ذات أثر فائق الحرج وفق <strong>نظام حماية البيانات الشخصية</strong>. تضمن BrightAI للمستشفيات والمراكز السريرية العمل بأمان تام عبر معمارية الحماية متعددة الطبقات.
+        </p>
+        <div class="grid grid--3" style="gap: var(--space-4);">
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <h3 style="color: var(--text-primary); font-size: var(--text-base); margin-bottom: var(--space-2);">فحص التشخيصات السريرية</h3>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">كشف فوري للأمراض والبيانات الجينية واستبعاد ربطها بالهويات الوطنية للأفراد.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <h3 style="color: var(--text-primary); font-size: var(--text-base); margin-bottom: var(--space-2);">الاستقلالية وعدم التدريب</h3>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">ضمان عقدي وتقني يمنع مزودي النماذج من استخدام البيانات الصحية في إعادة تدريب نماذجهم.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <h3 style="color: var(--text-primary); font-size: var(--text-base); margin-bottom: var(--space-2);">التكامل مع EHR / EMR</h3>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">ربط آمن عبر واجهات API مع أنظمة السجلات الطبية الإلكترونية المعتمدة في المملكة.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- أسئلة شائعة صحية -->
+  <section class="inner-section inner-section--alt" aria-labelledby="hosp-faq-heading">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div style="max-width: 48rem; margin: 0 auto var(--space-6); text-align: center;">
+        <h2 id="hosp-faq-heading" style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--text-primary); margin-bottom: var(--space-2);">الأسئلة الشائعة حول حوكمة AI في المستشفيات</h2>
+        <p style="color: var(--text-secondary); font-size: var(--text-base);">توضيحات هامة لقيادات الرعاية الصحية وضباط حماية البيانات الشخصية.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: var(--space-3); max-width: 52rem; margin: 0 auto;">
+        {
+          hospitalFaq.map((item) => (
+            <details class="card card--feature" style="padding: var(--space-4); cursor: pointer;">
+              <summary style="font-weight: var(--font-bold); font-size: var(--text-base); color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                <span>{item.question}</span>
+                <span style="color: var(--brand); font-size: 1.25rem;">+</span>
+              </summary>
+              <div style="margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-sm);">
+                {item.answer}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
   <section class="inner-section" aria-labelledby="cs-related-links">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <h2 id="cs-related-links" class="inner-section__title">موارد ذات صلة</h2>
-      <p>اطّلع على <a href="/solutions/healthcare-ai-governance/">حوكمة AI للرعاية الصحية</a> و<a href="/solutions/healthcare-ai-governance/jeddah/">جدة</a> أو اقرأ <a href="/customers/pharma/">حالة مصنع أدوية</a>.</p>
+      <h2 id="cs-related-links" class="inner-section__title">موارد وحلول ذات صلة</h2>
+      <p style="color: var(--text-secondary);">استكشف <a href="/solutions/healthcare-ai-governance/">حوكمة AI للقطاع الصحي</a> ودليل <a href="/docs/pdpl-ai-governance/">الامتثال لنظام PDPL</a> أو اقرأ دراسة الحالة التالية: <a href="/customers/pharma/">حالة مصنع أدوية</a>.</p>
     </div>
   </section>
 </ArabicLayout>

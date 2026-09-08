@@ -37,6 +37,25 @@ const events = [
   },
 ];
 
+const eventFaq = [
+  {
+    question: 'من الفئات المستهدفة بحضور فعاليات BrightAI؟',
+    answer: 'تستهدف فعالياتنا القيادات التنفيذية التقنية (CTO / CIO)، مدراء ومسؤولي الامتثال (Compliance Officers)، مسؤولي حماية البيانات (DPO)، مهندسي الذكاء الاصطناعي والأمن السيبراني، وفرق التحول الرقمي بالجهات الحكومية والشركات السعودية.',
+  },
+  {
+    question: 'هل توجد ورش عمل وتدريب تطبيقي مباشر خلال الفعاليات؟',
+    answer: 'نعم، تتضمن فعالياتنا الحضورية والافتراضية ورش عمل تطبيقية ومختبرات حية لبناء سجلات التدقيق، وتكوين سياسات جدار حماية الذكاء الاصطناعي، ومحاكاة عمليات التدقيق الرقابي وفق متطلبات سدايا والبنك المركزي السعودي.',
+  },
+  {
+    question: 'هل تتوفر تسجيلات ومواد العرض بعد انتهاء الويبنار؟',
+    answer: 'نعم، يحصل جميع المسجلين في الويبنار الشهري على رابط التسجيل الكامل، بالإضافة إلى شرائح العرض التقديمي، وقوائم التحقق (Checklists)، ونماذج الأطر التنظيمية القابلة للتنزيل.',
+  },
+  {
+    question: 'هل يمكن لشركتنا طلب ورشة عمل حوكمة خاصة مغلقة؟',
+    answer: 'نعم، يقدم فريق الاستشارات في BrightAI ورش عمل تنفيذية مغلقة مخصصة لفرق العمل الداخلية بالبنوك والمستشفيات والجهات الحكومية لمناقشة حالات الاستخدام الخاصة بها وتصميم خارطة طريق امتثال مخصصة.',
+  },
+];
+
 const collectionLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -48,9 +67,22 @@ const collectionLd = {
   publisher: { '@id': 'https://brightai.live/#organization' },
 };
 
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: eventFaq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [collectionLd],
+  '@graph': [collectionLd, faqLd],
 };
 ---
 
@@ -71,13 +103,13 @@ const jsonLd = {
         فعاليات BrightAI
       </div>
       <h1 class="page-hero__title"><span class="gradient-text">لقاءات وويبنارات</span> حوكمة AI</h1>
-      <p class="page-hero__description">فعاليات مباشرة عن حوكمة الذكاء الاصطناعي والامتثال بالسعودية: يوم حوكمة AI الرياض، جناحنا في LEAP 2026، والويبنار الشهري.</p>
+      <p class="page-hero__description">فعاليات تفاعلية وتطبيقية عن حوكمة الذكاء الاصطناعي والامتثال بالسعودية: من ملتقيات النخبة في الرياض وجناحنا في LEAP 2026 إلى الويبنارات الشهرية المتخصصة لمسؤولي التقنية والامتثال.</p>
     </div>
   </section>
 
   <section class="inner-section" aria-labelledby="events-list">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <h2 id="events-list" class="inner-section__title">الفعاليات</h2>
+      <h2 id="events-list" class="inner-section__title">الفعاليات القادمة والمستمرة</h2>
       <div class="grid grid--3">
         {
           events.map((e) => (
@@ -94,25 +126,92 @@ const jsonLd = {
       </div>
     </div>
   </section>
+
+  <!-- Deep Value Proposition Section -->
+  <section class="inner-section" aria-labelledby="why-attend">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="section-box">
+        <h2 id="why-attend" class="inner-section__title">لماذا تشارك المنشآت السعودية في فعاليات BrightAI؟</h2>
+        <p class="inner-section__lead">
+          تمثل فعالياتنا الحصرية منصة تواصل معرفية تجمع بين قيادات الأعمال، وخبراء الأمن السيبراني، ومسؤولي الامتثال، ومهندسي الذكاء الاصطناعي في بيئة حوارية تفاعلية تناقش التحديات العملية والتشغيلية في السوق السعودي.
+        </p>
+
+        <div class="grid grid--2 mt-8">
+          <div class="card card--feature">
+            <h3 class="inner-card__title">عروض حية وتجارب تطبيقية (Live Demos)</h3>
+            <p class="inner-card__text">
+              شاهد كيف تعمل جدران حماية الذكاء الاصطناعي لحظياً في كشف محاولات حقن الأوامر وتعمية البيانات الشخصية المصرفية والطبية، وتعرف على كيفية توليد سجلات تدقيق متوافقة مع متطلبات الجهات الرقابية خلال دقائق.
+            </p>
+          </div>
+          <div class="card card--feature">
+            <h3 class="inner-card__title">رؤى مباشرة من الميدان التشريعي والتنظيمي</h3>
+            <p class="inner-card__text">
+              استمع مباشرة لتحليلات معمقة حول تحديثات نظام حماية البيانات الشخصية (PDPL)، وتعاميم البنك المركزي السعودي (SAMA)، وضوابط الهيئة الوطنية للأمن السيبراني (NCA)، وكيفية ترجمتها لسياسات برمجية قابلة للإنفاذ التلقائي.
+            </p>
+          </div>
+          <div class="card card--feature">
+            <h3 class="inner-card__title">تواصل استراتيجي مع قادة التحول الرقمي</h3>
+            <p class="inner-card__text">
+              تبادل الخبرات مع نظرائك من كبرى البنوك، والمستشفيات، والشركات الوطنية، والوزارات الحكومية، واطلع على الدروس المستفادة من مشاريع الذكاء الاصطناعي المنفذة فعلياً على أرض الواقع.
+            </p>
+          </div>
+          <div class="card card--feature">
+            <h3 class="inner-card__title">أدوات ونماذج عمل جاهزة للتنفيذ الفوري</h3>
+            <p class="inner-card__text">
+              يحصل المشاركون على حقائب تدريبية متكاملة تشمل قوائم فحص الجاهزية (Readiness Checklists)، ونماذج سياسات استخدام الذكاء الاصطناعي المؤسسية، ومصفوفات تقييم مخاطر النماذج الذكية.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="inner-section" aria-labelledby="events-faq">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="events-faq" class="inner-section__title">الأسئلة الشائعة حول الفعاليات والورش</h2>
+      <div class="grid grid--2 mt-6">
+        {eventFaq.map((faq) => (
+          <div class="card card--feature">
+            <h3 class="inner-card__title">{faq.question}</h3>
+            <p class="inner-card__text">{faq.answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="content-cta-final" aria-labelledby="events-cta">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="card card--cta text-center">
+        <h2 id="events-cta">ترغب في استضافة ورشة عمل مغلقة لمنشأتك؟</h2>
+        <p>يقدم فريقنا الاستشاري جلسات تشخيصية وورش عمل تنفيذية مخصصة للجهات الحكومية والشركات السعودية لبناء أطر الحوكمة والأمان الداخلي.</p>
+        <div class="content-cta-final__actions mt-6">
+          <a href="/contact/" class="btn btn--glow">
+            <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-email"></use></svg>
+            تواصل معنا لحجز ورشة خاصة
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 </ArabicLayout>
 
 <style>
   .assessment-tag {
-    font-size: var(--text-xs);
-    padding: var(--space-0-5) var(--space-2-5);
-    border-radius: var(--radius-lg);
-    background: rgba(0, 212, 255, 0.08);
-    border: 1px solid rgba(0, 212, 255, 0.25);
-    color: var(--assessment-tag-color);
     display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    background: var(--brand-soft, rgba(20,184,166,0.15));
+    color: var(--interactive-primary, #14b8a6);
+    margin-top: 0.75rem;
   }
-  .mt-3 {
-    margin-block-start: var(--space-3);
-  }
-  .event-card {
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+  .section-box {
+    background: var(--surface-subtle, rgba(255,255,255,0.02));
+    border: 1px solid var(--border-subtle, rgba(255,255,255,0.08));
+    border-radius: var(--radius-xl, 1rem);
+    padding: var(--space-8);
   }
 </style>

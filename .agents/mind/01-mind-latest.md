@@ -1,3 +1,37 @@
+## [2026-09-08] — إصلاح تحذير Semrush: 128 صفحة منخفضة النسبة (Text-to-HTML Ratio) واستخدام الكلمات المفتاحية
+
+### تم التنفيذ
+- حل مشكلة تضخم HTML (Bloat Reduction) في صفحات Kernel باستخراج سكربتات مضمنة ضخمة تتجاوز 95KB إلى ملفات خارجية (`/js/kernel-chat-demo.js`, `/js/kernel-ai-assistant.js`, `/js/kernel-lead-form.js`) واستبدال بيانات المحاكاة المكررة (122KB) بتوليد عميل ديناميكي.
+- إثراء وتوسيع محتوى صفحات العملاء ودراسات الحالة (`/customers/`, `/customers/bank/`, `/customers/hospital/`, `/customers/pharma/`) بمخططات هندسية معمارية وأسئلة شائعة سعودية معتمدة وفق متطلبات SAMA وPDPL وSFDA.
+- إثراء محتوى صفحات الكُتّاب (`/authors/`, `/authors/*`) لتلبية معايير E-E-A-T وإبراز مجالات الاستشارات والخبرات المعتمدة وأسئلة شائعة.
+- إضافة مقالات تحليلية ركيزية عميقة لأدلة مراكز المعرفة (`/hub/compliance/`, `/hub/security/`, `/hub/solutions/`, `/hub/use-cases/`, `/hub/`) بعد أن كانت خالية من المحتوى النصي.
+- تدعيم فعاليات BrightAI (`/events/`, `/events/ai-governance-day/`, `/events/leap-2026/`, `/events/webinar/`) بمحاور الجلسات، ونماذج LeadForm المعتمدة، وأسئلة شائعة.
+- إضافة أدلة مرجعية موسعة في تصنيفات المدونة الخمسة (`/blog/category/*`) مع أسئلة شائعة وبنى JSON-LD متكاملة.
+- دمج الكلمات المفتاحية الاستراتيجية للسوق السعودي: `حوكمة الذكاء الاصطناعي في السعودية`، `جدار حماية الذكاء الاصطناعي`، `نظام حماية البيانات الشخصية`، `سجل تدقيق الذكاء الاصطناعي`، `إدارة المخاطر`.
+
+### الملفات المتأثرة
+- `src/pages/kernel/chat.astro`, `src/data/kernel-policy-editor.ts`, `public/js/kernel-policies.js`
+- `src/components/kernel/KernelAiAssistant.astro`, `src/components/kernel/KernelLeadForm.astro`
+- `public/js/kernel-chat-demo.js`, `public/js/kernel-ai-assistant.js`, `public/js/kernel-lead-form.js`
+- `src/pages/customers/index.astro`, `src/pages/customers/bank/index.astro`, `src/pages/customers/hospital/index.astro`, `src/pages/customers/pharma/index.astro`
+- `src/pages/authors/index.astro`, `src/pages/authors/[slug].astro`
+- `src/pages/hub/index.astro`, `src/pages/hub/[slug].astro`
+- `src/pages/events/index.astro`, `src/pages/events/ai-governance-day/index.astro`, `src/pages/events/leap-2026/index.astro`, `src/pages/events/webinar/index.astro`
+- `src/pages/blog/category/[category].astro`, `src/pages/calculator/roi/index.astro`, `src/pages/404.astro`
+
+### التحقق
+- `pnpm build` ✅ — نجح بناء كامل صفحات الموقع (275 صفحة HTML) والـ server entry والـ assets.
+- فحص Text-to-HTML Ratio بالبايثون ✅ — ارتفعت نسبة النص الصافي من 5% - 7% إلى 12% - 22.1% عبر كافة الصفحات المستهدفة.
+- `pnpm seo:schema` ✅ — 64 صفحة Schema و268 صفحة speakable بنجاح 100%.
+- `pnpm seo:hreflang` ✅ — 265 مجموعة مطابقة بدون أي خطأ (0 errors).
+
+### النتيجة
+- **الحالة:** نجح بالكامل.
+- **مختصر:** تم القضاء على تحذير Semrush (Text-to-HTML ratio) عبر استراتيجية ثنائية (تخفيض حجم HTML الزائد + إثراء المحتوى النصي ذي الصلة بالكلمات المفتاحية)، مع الحفاظ على الأداء وسرعة التحميل.
+
+### ملاحظات / مشاكل مفتوحة
+- التقرير لدى Semrush سيتم تحديثه تلقائياً في الفحص القادم (Crawl) بعد نشر التغييرات بواسطة المستخدم.
+
 ## [2026-09-08] — إصلاح خطأ Semrush: 11 صفحة فيها meta refresh tag
 
 ### تم التنفيذ

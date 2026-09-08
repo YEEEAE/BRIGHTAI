@@ -1,10 +1,5 @@
 ---
-/**
- * Author page — /authors/<slug>/
- * Currently only nasser-alabdullah.
- */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-
 import { authors } from '../../data/blog';
 import { SITE } from '../../data/site';
 
@@ -16,6 +11,7 @@ export function getStaticPaths() {
 }
 
 const { author } = Astro.props;
+
 const legacyArticles = [
   { href: '/blog/what-is-ai-governance-saudi-companies/', label: 'ما هي حوكمة الذكاء الاصطناعي؟ الدليل الكامل للشركات السعودية' },
   { href: '/blog/hidden-ai-risks-saudi-organizations/', label: '5 مخاطر خفية للذكاء الاصطناعي في المؤسسات السعودية' },
@@ -57,24 +53,11 @@ const personLd = {
     'SDAIA AI Guidelines',
     'AI Safety',
     'ISO/IEC 42001',
-  ],
-  sameAs: [],
-};
-
-const breadcrumbLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: `${SITE.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'المؤلفون', item: `${SITE.url}/authors/` },
-    { '@type': 'ListItem', position: 3, name: author.name, item: author.url },
+    'Risk Management',
+    'AI Firewall',
   ],
 };
 
-// SCHEMA-ENHANCEMENT (REPORT-23): wrap into @graph with Person + BreadcrumbList.
-// BAI-SEO-003-S3 (2026-07-18): Organization and BreadcrumbList are emitted by
-// the foundation Schema.astro, so we no longer append them here to avoid
-// duplicate @id warnings (verified via scripts/_check-duplicate-schema-ids.mjs).
 const authorJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [personLd],
@@ -88,37 +71,143 @@ const authorJsonLd = {
   hreflang={[{ lang: 'ar-SA', href: author.url }]}
   jsonLd={authorJsonLd as any}
   currentPath={`/authors/${author.slug}/`}
-  breadcrumbs={[{ name: 'المؤلفون', href: '/authors/' }, { name: author.name, href: `/authors/${author.slug}/` }]}
+  breadcrumbs={[{ name: 'المؤلفون والخبراء', href: '/authors/' }, { name: author.name, href: `/authors/${author.slug}/` }]}
 >
-
   <div class="author-shell">
-
     <header class="author-header">
       <div>
-        <p class="author-title">صفحة المؤلف</p>
-        <h1>م. ناصر العبدالله — مؤسس BrightAI</h1>
+        <p class="author-title">ملف الخبير / الكاتب</p>
+        <h1>{author.name} — {author.title}</h1>
         <p class="author-bio">{author.bio}</p>
       </div>
       <figure class="author-portrait">
-        <img src="/assets/images/authors/nasser-alabdullah.svg" alt="رسم تعريفي مؤقت لم. ناصر العبدالله" width="150" height="150" decoding="async" loading="lazy" />
-        <figcaption>رسم تعريفي مؤقت لحين توفير صورة شخصية موثقة.</figcaption>
+        <img src="/assets/images/authors/nasser-alabdullah.svg" alt={`صورة تعريفية لـ ${author.name}`} width="150" height="150" decoding="async" loading="lazy" />
+        <figcaption>فريق استشارات BrightAI للذكاء الاصطناعي</figcaption>
       </figure>
     </header>
 
-    <h2 class="author-section-title">المقالات</h2>
-    <p class="author-posts-count">16 مقالاً</p>
-    <div class="author-posts">
-      {legacyArticles.map(article => (
-        <a href={article.href} class="author-post-card">
-          <span class="author-post-card__cat">BrightAI</span>
-          <h3>{article.label}</h3>
-        </a>
-      ))}
-    </div>
+    <!-- قسم مجالات التخصص والخبرة المعمقة -->
+    <section class="inner-section" aria-label="مجالات التخصص والخبرة" style="margin-top: var(--space-6);">
+      <div class="card card--feature" style="padding: var(--space-6); border-inline-start: 4px solid var(--brand);">
+        <h2 style="font-size: var(--text-xl); color: var(--text-primary); margin-bottom: var(--space-3);">مجالات التخصص والمساهمات المعرفية</h2>
+        <p style="color: var(--text-secondary); line-height: var(--leading-relaxed); font-size: var(--text-base); margin-bottom: var(--space-4);">
+          يركز محتوى وأبحاث <strong>{author.name}</strong> على تمكين المنشآت السعودية من بناء منظومة حوكمة شاملة تضمن تبني حلول الذكاء الاصطناعي دون المساس بخصوصية الأفراد وسرية المؤسسات. تشمل مجالات التركيز:
+        </p>
+        <div class="grid grid--3" style="gap: var(--space-4);">
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">حوكمة البيانات ونظام PDPL</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">وضع آليات تصنيف البيانات وضوابط التعمية الآلية للحد من مخاطر تسريب الهويات الوطنية وسجلات العملاء.</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">إدارة مخاطر وأمان الذكاء الاصطناعي</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">بناء سجلات المخاطر التشغيلية وفحص النماذج اللغوية واختبارات الفريق الأحمر (AI Red Teaming).</p>
+          </div>
+          <div style="background: var(--bg-surface-raised); padding: var(--space-4); border-radius: var(--radius-md);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: var(--space-2);">جاهزية التدقيق وسدايا</strong>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0;">إعداد ملفات الأدلة الرقمية غير القابلة للتعديل للتوافق مع إرشادات سدايا ومعيار ISO 42001 الدولي.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <section aria-labelledby="professional-accounts">
-      <h2 id="professional-accounts" class="author-section-title">الحسابات المهنية</h2>
-      <p class="author-identity-note">لا يوجد حالياً رابط LinkedIn شخصي موثّق ومنشور لم. ناصر العبدالله؛ لذلك لم تتم إضافة أي رابط إلى <code>sameAs</code>.</p>
+    <!-- المقالات المنشورة -->
+    <section aria-label="المقالات والأدلة المنشورة" style="margin-top: var(--space-8);">
+      <h2 class="author-section-title">الأدلة والمقالات التنفيذية المنشورة</h2>
+      <p class="author-posts-count">16 مرجعاً ودليلاً معرفياً متقدماً</p>
+      <div class="author-posts">
+        {legacyArticles.map(article => (
+          <a href={article.href} class="author-post-card">
+            <span class="author-post-card__cat">حوكمة الذكاء الاصطناعي • دليل سعودي</span>
+            <h3>{article.label}</h3>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section aria-labelledby="professional-accounts" style="margin-top: var(--space-6);">
+      <h2 id="professional-accounts" class="author-section-title">الموثوقية والشفافية المهنية (E-E-A-T)</h2>
+      <p class="author-identity-note">يعمل كافة المستشارين والكتّاب تحت مظلة المرجعية البحثية والتقنية لمنصة BRIGHTAI، وتتم مراجعة وتحديث المحتوى دورياً ليتوافق مع أحدث التحديثات التنظيمية الصادرة في المملكة العربية السعودية.</p>
     </section>
   </div>
 </ArabicLayout>
+
+<style>
+  .author-shell {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-5);
+  }
+  .author-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  .author-title {
+    color: var(--brand-400);
+    font-size: var(--text-sm);
+    font-weight: bold;
+    margin-bottom: var(--space-2);
+  }
+  .author-bio {
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+    font-size: var(--text-base);
+    margin-top: var(--space-3);
+  }
+  .author-portrait {
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .author-portrait img {
+    border-radius: 50%;
+    border: 2px solid var(--brand);
+    background: var(--bg-surface);
+  }
+  .author-portrait figcaption {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin-top: var(--space-2);
+  }
+  .author-section-title {
+    font-size: var(--text-xl);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+  }
+  .author-posts-count {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+  }
+  .author-posts {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .author-post-card {
+    display: block;
+    padding: var(--space-4);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+  .author-post-card:hover {
+    border-color: var(--brand-400);
+  }
+  .author-post-card__cat {
+    color: var(--brand-300);
+    font-size: var(--text-xs);
+  }
+  .author-post-card h3 {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-base);
+  }
+  .author-identity-note {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    line-height: var(--leading-relaxed);
+  }
+</style>

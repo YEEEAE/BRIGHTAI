@@ -498,7 +498,7 @@ export function buildPolicyEditorConfig(): PolicyEditorConfig {
     certificates: POLICY_CERTIFICATES,
     departments: POLICY_EDITOR_DEPARTMENTS,
     sectors: POLICY_EDITOR_SECTORS,
-    simRequests: buildSimulationRequests(),
+    simRequests: [],
     limits: {
       maxVersions: 5,
       maxPatternLen: 120,
