@@ -270,14 +270,14 @@ async function main() {
     netlifyRedirects += `http://brightai.live/*        https://brightai.live/:splat  301\n`;
     netlifyRedirects += `http://www.brightai.live/*    https://brightai.live/:splat  301\n`;
     netlifyRedirects += `https://www.brightai.live/*    https://brightai.live/:splat  301\n`;
-    // Legacy domain migration (brightai.site → brightai.live). Single hop per
+    // Legacy domain migration (brightai.live → brightai.live). Single hop per
     // request — every legacy variant points straight at the canonical host so
     // no redirect chain is created. :splat preserves path; query is preserved
     // by the redirect engine.
-    netlifyRedirects += `http://brightai.site/*        https://brightai.live/:splat  301\n`;
-    netlifyRedirects += `https://brightai.site/*        https://brightai.live/:splat  301\n`;
-    netlifyRedirects += `http://www.brightai.site/*    https://brightai.live/:splat  301\n`;
-    netlifyRedirects += `https://www.brightai.site/*    https://brightai.live/:splat  301\n\n`;
+    netlifyRedirects += `http://brightai.live/*        https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `https://brightai.live/*        https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `http://www.brightai.live/*    https://brightai.live/:splat  301\n`;
+    netlifyRedirects += `https://www.brightai.live/*    https://brightai.live/:splat  301\n\n`;
 
     for (const r of redirects) {
       netlifyRedirects += `${r.from} ${r.to} ${r.status || 301}\n`;

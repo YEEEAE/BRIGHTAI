@@ -1,123 +1,177 @@
-# BrightAI — Keyword Click Tracker
+# BRIGHTAI — كلمات الصفحة الرئيسية واستراتيجية البحث السعودي
 
-**Site:** `https://brightai.site`  
-**Repository:** `YEEEAE/BRIGHTAI`
+**الموقع:** `https://brightai.live/`
+**آخر تحديث:** 2026-09-08
+**مصدر القياس:** Semrush Keyword Analytics، قاعدة السعودية `sa`
+**نطاق التقرير:** الصفحة الرئيسية + توزيع الكلمات على الصفحات المالكة
 
-## تنبيه بخصوص عدد النقرات
+## الخلاصة التنفيذية
 
-عمود **GSC Clicks** مخصص لعدد النقرات الفعلي من Google Search Console لكل Query.
+الصفحة الرئيسية مناسبة لتثبيت هوية BRIGHTAI كمنصة سعودية لحوكمة وأمان الذكاء الاصطناعي، وليست صفحة تستهدف كلمة عامة مثل `الذكاء الاصطناعي` فقط.
 
-البيانات المتوفرة في التقرير السابق احتوت على **Search Volume / CPC / SEO Difficulty** لعدد من الكلمات، لكنها لم تحتوِ على Export فعلي للنقرات لكل Keyword. لذلك القيم الحالية للنقرات مكتوبة `N/A` بدل اختراع أرقام.
+أقوى كلمة تجارية منخفضة الصعوبة للهوية السعودية هي:
 
-عند توفر GSC Query Export، حدث الأعمدة التالية:
-- GSC Clicks
-- Impressions
-- CTR
-- Average Position
-- Landing Page
-- Country = Saudi Arabia
-- Device
-- Date Range
+> `شركات الذكاء الاصطناعي في السعودية` — حجم 170، KD 8، CPC 0.60 USD.
 
-> لا تعتبر Search Volume مساويًا لعدد النقرات على BrightAI.
+أما الكلمات الأعلى حجمًا مثل `نظام حماية البيانات الشخصية` و`التحول الرقمي` فهي فرص قوية، لكن نيتها أوسع أو تنظيمية؛ لذلك تُملكها صفحات متخصصة وتدعم الصفحة الرئيسية بروابط داخلية بدل حشرها في العنوان الرئيسي.
 
-| Priority | Keyword | GSC Clicks | Impressions | CTR | Avg Position | Search Volume | CPC USD | SEO Difficulty | Intent | Recommended Owner |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| P0 | حوكمة الذكاء الاصطناعي | N/A | N/A | N/A | N/A | 10 | 0 | 13 | Informational / Commercial | `/hub/ai-governance/` |
-| P1 | حوكمة الذكاء الاصطناعي سدايا | N/A | N/A | N/A | N/A | 10 | 0 | 5 | Regulatory / Informational | SDAIA risk/governance guide |
-| P0 | AI governance | N/A | N/A | N/A | N/A | 4,400 | 41.05 | 58 | Informational / Commercial | `/hub/ai-governance/` |
-| P0 | what is ai governance | N/A | N/A | N/A | N/A | 1,000 | 32.17 | 36 | Informational | `/hub/ai-governance/` |
-| P1 | ai governance definition | N/A | N/A | N/A | N/A | 70 | 63.26 | 34 | Informational | `/hub/ai-governance/` |
-| P0 | AI governance Saudi Arabia | N/A | N/A | N/A | N/A | 0 | 0 | 4 | Saudi informational/commercial | Governance hub/platform |
-| P0 | AI risk management | N/A | N/A | N/A | N/A | 1,900 | 28.18 | 61 | Informational / Commercial | SDAIA Risk Pillar |
-| P0 | ai risk management framework | N/A | N/A | N/A | N/A | 720 | 38.64 | 67 | Informational | SDAIA Risk Pillar |
-| P1 | risk assessment ai | N/A | N/A | N/A | N/A | 30 | 15.89 | 39 | Tool / Informational | Risk Register / Assessment |
-| P1 | risk management and ai | N/A | N/A | N/A | N/A | 30 | 15.12 | 57 | Informational | SDAIA Risk Pillar |
-| P0 | AI risk management Saudi Arabia | N/A | N/A | N/A | N/A | 0 | 0 | 4 | Saudi regulatory | SDAIA Risk Pillar |
-| P0 | SDAIA AI Risk Management Framework | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Saudi regulatory | New SDAIA framework guide |
-| P0 | ISO 42001 | N/A | N/A | N/A | N/A | 5,400 | 12.26 | 38 | Informational / Commercial | ISO 42001 Pillar |
-| P0 | iso 42001 certification | N/A | N/A | N/A | N/A | 720 | 14.11 | 48 | Commercial investigation | ISO guide |
-| P1 | iso 42001 certified | N/A | N/A | N/A | N/A | 480 | 11.04 | 32 | Informational | ISO guide |
-| P1 | iso 42001 pdf | N/A | N/A | N/A | N/A | 210 | 18.05 | 33 | Navigational/info | ISO guide |
-| P0 | what is iso 42001 | N/A | N/A | N/A | N/A | 210 | 12.31 | 49 | Informational | ISO guide |
-| P1 | iso 42001 ai | N/A | N/A | N/A | N/A | 140 | 25.61 | 56 | Informational | ISO guide |
-| P1 | iso 42001 standard | N/A | N/A | N/A | N/A | 90 | 12.62 | 46 | Informational | ISO guide |
-| P1 | iso 42001 ai certification | N/A | N/A | N/A | N/A | 70 | 27.49 | 43 | Commercial investigation | ISO guide |
-| P1 | iso 42001 certification cost | N/A | N/A | N/A | N/A | 70 | 14.69 | 14 | Commercial investigation | Only if useful |
-| P1 | iso 42001 ai management system | N/A | N/A | N/A | N/A | 50 | 45.50 | 50 | Informational/commercial | ISO guide |
-| P1 | iso 42001 controls | N/A | N/A | N/A | N/A | 50 | 19.34 | 31 | Implementation | ISO guide / Control Matrix |
-| P1 | iso 42001 checklist | N/A | N/A | N/A | N/A | 50 | 21.25 | 15 | Tool / implementation | ISO checklist |
-| P1 | iso 42001 compliance | N/A | N/A | N/A | N/A | 50 | 14.45 | 53 | Commercial/info | ISO guide |
-| P1 | iso 42001 requirements | N/A | N/A | N/A | N/A | 40 | 18.65 | 51 | Informational | ISO guide |
-| P1 | iso 42001 audit | N/A | N/A | N/A | N/A | 30 | 26.28 | 29 | Informational/commercial | ISO guide / Audit Evidence |
-| P2 | iso 42001 framework | N/A | N/A | N/A | N/A | 30 | 15.64 | 61 | Informational | ISO guide |
-| P1 | iso 42001 ai governance | N/A | N/A | N/A | N/A | 20 | 27.08 | 25 | Informational/commercial | ISO + Governance |
-| P0 | AI Firewall | N/A | N/A | N/A | N/A | 320 | 20.57 | 35 | Commercial / Informational | `/solutions/ai-firewall/` |
-| P1 | ai powered firewall | N/A | N/A | N/A | N/A | 70 | 18.97 | 55 | Commercial/info | AI Firewall |
-| P2 | cloudflare ai firewall | N/A | N/A | N/A | N/A | 70 | 8.53 | 30 | Different product intent | Do not target as BrightAI product term |
-| P1 | what is an ai firewall | N/A | N/A | N/A | N/A | 10 | 11.33 | 8 | Informational | AI Firewall |
-| P2 | ai firewall open source | N/A | N/A | N/A | N/A | 10 | 12.27 | 26 | Investigation | Only if product fit exists |
-| P1 | ai firewall vendors | N/A | N/A | N/A | N/A | 10 | 20.59 | 33 | Commercial investigation | Potential later comparison |
-| P0 | AI security Saudi Arabia | N/A | N/A | N/A | N/A | 0 | 0 | 4 | Saudi commercial | NCA guide / AI Firewall |
-| P1 | security artificial intelligence | N/A | N/A | N/A | N/A | 1,300 | 48.16 | 60 | Broad informational | Security support content |
-| P1 | ai saudi arabia | N/A | N/A | N/A | N/A | 170 | 9.19 | 34 | Broad local | Homepage / market context |
-| P2 | Sovereign AI Saudi Arabia | N/A | N/A | N/A | N/A | 0 | 0 | 4 | Strategic emerging | Sovereign AI Governance |
-| P2 | sovereignty ai | N/A | N/A | N/A | N/A | 50 | 20.37 | 42 | Informational | Sovereign AI guide |
-| P2 | Agentic AI | N/A | N/A | N/A | N/A | 110,000 | 12.24 | 72 | Very broad | Do not target generically |
-| P2 | agentic ai definition | N/A | N/A | N/A | N/A | 12,100 | 3.83 | 69 | Broad informational | Supporting only |
-| P2 | agentic ai course | N/A | N/A | N/A | N/A | 3,600 | 15.44 | 33 | Education | Not BrightAI intent |
-| P2 | agentic ai news | N/A | N/A | N/A | N/A | 1,900 | 14.45 | 48 | News | Not primary |
-| P2 | agentic ai examples | N/A | N/A | N/A | N/A | 1,600 | 15.43 | 44 | Informational | Supporting only |
-| P2 | agentic ai platforms | N/A | N/A | N/A | N/A | 1,000 | 37.27 | 48 | Commercial investigation | Only if product fit |
-| P2 | agentic ai tools | N/A | N/A | N/A | N/A | 1,000 | 25.01 | 55 | Broad | Avoid generic listicle |
-| P2 | agentic ai frameworks | N/A | N/A | N/A | N/A | 1,000 | 17.55 | 48 | Informational | Supporting only |
-| P2 | agentic ai architecture | N/A | N/A | N/A | N/A | 720 | 19.20 | 45 | Technical | Supporting architecture |
-| P2 | agentic ai workflows | N/A | N/A | N/A | N/A | 720 | 38.95 | 43 | Informational/commercial | Supporting only |
-| P2 | agentic ai systems | N/A | N/A | N/A | N/A | 590 | 28.39 | 67 | Broad | Supporting only |
-| P1 | agentic ai security | N/A | N/A | N/A | N/A | 390 | 56.91 | 47 | High-value emerging | Agentic AI Security pillar |
-| P1 | agentic ai solutions | N/A | N/A | N/A | N/A | 390 | 39.53 | 63 | Commercial | Only with real fit |
-| P2 | agentic ai use cases | N/A | N/A | N/A | N/A | 480 | 20.18 | 39 | Informational | Supporting |
-| P2 | agentic ai vs generative ai | N/A | N/A | N/A | N/A | 4,400 | 7.34 | 46 | Comparison | Not primary |
-| P2 | agentic ai vs ai agents | N/A | N/A | N/A | N/A | 880 | 10.84 | 47 | Comparison | Supporting |
-| P2 | agentic ai vs llm | N/A | N/A | N/A | N/A | 210 | 7.00 | 39 | Comparison | Supporting |
-| P1 | agentic ai governance | N/A | N/A | N/A | N/A | 0 | N/A | N/A | Emerging governance | Agentic AI Governance pillar |
-| P0 | NCA AI cybersecurity guidelines | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Saudi regulatory | NCA AI cybersecurity guide |
-| P0 | PDPL AI compliance | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Saudi compliance | PDPL + AI pillar |
-| P0 | AI audit trail | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Commercial | `/solutions/ai-audit-trail/` |
-| P0 | AI governance readiness assessment | N/A | N/A | N/A | N/A | N/A | N/A | N/A | High-intent tool | `/assessment/ai-governance-readiness/` |
-| P1 | AI governance Riyadh banking | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Local sector commercial | `/solutions/banking-ai-governance/riyadh/` |
-| P1 | Saudi AI governance control matrix | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Linkable asset | New Control Matrix |
-| P1 | Saudi AI risk register template | N/A | N/A | N/A | N/A | N/A | N/A | N/A | Linkable/tool asset | New Risk Register |
+## حالة القياس الحالية
 
-## الأولوية التنفيذية
+- Semrush يرصد للنطاق كلمة عضوية واحدة فقط في قاعدة السعودية.
+- الكلمة الحالية: `من مهام الهيئة الوطنية للأمن السيبراني حماية البيانات الشخصية` في المركز 62، بحجم 210، وزيارات عضوية مقدرة 0.
+- لا توجد بيانات GSC فعلية داخل هذا الملف؛ لذلك جميع حقول النقرات والانطباعات تبقى `N/A` إلى أن يتم استيراد Query Export من Google Search Console.
+- `Search Volume` ليس عدد نقرات BRIGHTAI، ولا يجوز استخدامه كبديل عن GSC Clicks.
 
-### P0
-ركز عليها أولًا لأنها مرتبطة مباشرة بالفهرسة، الطلب التجاري، أو الفرص التنظيمية السعودية:
-- SDAIA AI Risk Management Framework
-- حوكمة الذكاء الاصطناعي
-- AI governance
-- AI Firewall
-- AI risk management
-- ISO 42001
-- PDPL AI compliance
-- NCA AI cybersecurity guidelines
-- AI audit trail
-- AI governance readiness assessment
+## كلمات الصفحة الرئيسية — Semrush السعودية
 
-### P1
-توسع مدروس يبني topical authority ويرفع احتمالية التحويل.
+| الأولوية | الكلمة | Search Volume | KD | CPC USD | النية | الاستخدام المقترح |
+|---|---|---:|---:|---:|---|---|
+| P0 | حوكمة الذكاء الاصطناعي | 20 | غير متاح | 0.93 | تعريفية / تجارية | الكلمة الأساسية للـ H1 والرسالة الرئيسية |
+| P0 | شركات الذكاء الاصطناعي في السعودية | 170 | 8 | 0.60 | تجارية محلية | العنوان والوصف ونسخة الشركات السعودية |
+| P0 | الذكاء الاصطناعي في السعودية | 140 | 28 | 0.53 | محلية / تعريفية | فقرة الكيان والسياق السعودي |
+| P1 | حوكمة البيانات | 480 | 23 | 1.49 | معلوماتية / تجارية | قسم فرعي ورابط إلى صفحة الحوكمة |
+| P1 | حماية البيانات الشخصية | 260 | 23 | 0 | تنظيمية / معلوماتية | قسم الثقة ورابط صفحة PDPL |
+| P1 | إدارة المخاطر | 320 | 20 | 0.33 | معلوماتية / تجارية | قسم المخاطر ورابط Risk Register |
+| P1 | مخاطر الذكاء الاصطناعي | 110 | 20 | 0 | معلوماتية | FAQ أو مقدمة دليل المخاطر |
+| P1 | شركة أتمتة | 170 | 12 | 0 | تجارية | ذكر طبيعي في الخدمات، وليس محور الصفحة |
+| P1 | التحول الرقمي | 1,600 | 31 | 2.49 | معلوماتية / تجارية | محتوى داعم أو صفحة مستقلة |
+| P1 | نظام حماية البيانات الشخصية | 1,900 | 17 | 0 | تنظيمية | صفحة PDPL مستقلة؛ لا تجعلها الكلمة الأساسية للصفحة الرئيسية |
+| P2 | تطبيقات الذكاء الاصطناعي | 2,400 | 48 | 0.44 | معلوماتية عامة | محتوى داعم فقط؛ النية واسعة |
+| P2 | الذكاء الاصطناعي | 165,000 | 71 | 0.27 | عامة جدًا | لا تستهدفها الصفحة الرئيسية وحدها |
 
-### P2
-كلمات واسعة/مستقبلية؛ لا تنشئ لها صفحات إلا إذا كان عند BrightAI قيمة أصلية واضحة.
+### كلمات ظهرت بدون بيانات قابلة للاعتماد
 
-## تحديث شهري مقترح
+Semrush لم يرجع قياسات صالحة لبعض العبارات، ومنها: `منصة حوكمة الذكاء الاصطناعي`، `حلول الذكاء الاصطناعي للشركات`، `تقييم جاهزية الذكاء الاصطناعي`، `تدقيق الذكاء الاصطناعي`، و`جدار حماية الذكاء الاصطناعي`.
 
-في نهاية كل شهر:
-1. صدّر Queries من GSC لآخر 28 يوم.
-2. صفِّ Country = Saudi Arabia.
-3. طابق Query مع هذا الجدول.
-4. عبّئ Clicks / Impressions / CTR / Position.
-5. سجّل Landing Page.
-6. علّم الكلمات التي عندها Impressions بدون Clicks لمراجعة title/meta.
-7. علّم الكلمات التي عندها Clicks لكن الصفحة غير مناسبة لمراجعة cannibalization.
-8. لا تغيّر الصفحة لمجرد تغير بسيط في شهر واحد؛ قارن 28 يوم مقابل الفترة السابقة.
+هذه العبارات تبقى مهمة من ناحية ملاءمة المنتج ونية الشراء، لكن نسجل حجمها `غير متاح` ولا نحولها إلى صفر أو نبني توقعات زيارات عليها.
+
+## قرار استهداف الصفحة الرئيسية
+
+### الكلمة الأساسية
+
+`حوكمة الذكاء الاصطناعي في السعودية`
+
+هذه صياغة استراتيجية تجمع الكلمة التجارية الأساسية مع الموقع والسوق، حتى لو كان Semrush يقيس صيغها المتفرقة بأحجام صغيرة أو غير مكتملة.
+
+### الكلمات المساندة
+
+- `شركات الذكاء الاصطناعي في السعودية`
+- `الذكاء الاصطناعي في السعودية`
+- `حوكمة البيانات`
+- `حماية البيانات الشخصية`
+- `مخاطر الذكاء الاصطناعي`
+- `شركة أتمتة`
+
+### كلمات لا ينبغي حشرها في الصفحة الرئيسية
+
+- `نظام حماية البيانات الشخصية`: تملكها صفحة PDPL.
+- `التحول الرقمي`: تملكها صفحة أو دليل مستقل.
+- `تطبيقات الذكاء الاصطناعي`: كلمة عامة جدًا وتحتاج نية فرعية.
+- `الذكاء الاصطناعي`: تستخدم في السياق الطبيعي، وليست هدف الصفحة الوحيد.
+
+## توصية metadata للصفحة الرئيسية
+
+```text
+Title:
+حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI
+
+Meta description:
+حوكمة وأمان الذكاء الاصطناعي للشركات السعودية. تحكم بالبيانات، راقب الاستخدامات، فعّل الموافقات البشرية، وابنِ أدلة قابلة للمراجعة مع BRIGHTAI.
+
+H1:
+حوكمة الذكاء الاصطناعي في السعودية للشركات والجهات الطموحة
+```
+
+لا نكرر كل الكلمات داخل `Title` أو `H1`. يكفي وجود الكلمة الأساسية، والسوق السعودي، والقيمة التجارية الواضحة.
+
+## توزيع الكلمات داخل الصفحة الرئيسية
+
+| منطقة الصفحة | الرسالة المقترحة | الكلمات الطبيعية |
+|---|---|---|
+| Hero | منصة سعودية لحوكمة وأمان AI | حوكمة الذكاء الاصطناعي، السعودية |
+| Answer-first summary | وش تقدم BRIGHTAI للشركات؟ | شركات الذكاء الاصطناعي في السعودية، حلول الذكاء الاصطناعي للشركات |
+| Governance section | تحويل السياسات إلى ضوابط تشغيلية | حوكمة البيانات، حوكمة الذكاء الاصطناعي |
+| PDPL section | حماية البيانات قبل وصولها للنموذج | حماية البيانات الشخصية، نظام حماية البيانات الشخصية |
+| Risk section | تصنيف المخاطر ومسار الموافقة | مخاطر الذكاء الاصطناعي، إدارة المخاطر |
+| Services section | من التقييم إلى التشغيل | شركة أتمتة، استشارات الذكاء الاصطناعي |
+| Saudi proof section | سياق السوق والجهات السعودية | الذكاء الاصطناعي في السعودية، التحول الرقمي |
+| Final CTA | تقييم جاهزية أو جلسة مخصصة | تقييم جاهزية حوكمة الذكاء الاصطناعي |
+
+## ملكية الكلمات ومنع التنافس الداخلي
+
+| الصفحة المالكة | الكلمات الأساسية |
+|---|---|
+| `/` | حوكمة الذكاء الاصطناعي في السعودية، شركات الذكاء الاصطناعي في السعودية |
+| `/solutions/ai-governance-platform/` | منصة حوكمة الذكاء الاصطناعي، حوكمة البيانات |
+| `/solutions/ai-firewall/` | AI Firewall، جدار حماية الذكاء الاصطناعي، حماية بيانات العملاء |
+| `/assessment/ai-governance-readiness/` | تقييم جاهزية حوكمة الذكاء الاصطناعي، تقييم مخاطر AI |
+| `/services/` | شركة أتمتة، استشارات الذكاء الاصطناعي، حلول AI للشركات |
+| `/hub/ai-governance/` | ما هي حوكمة الذكاء الاصطناعي، فوائد حوكمة AI، إطار الحوكمة |
+| صفحة PDPL مقترحة | نظام حماية البيانات الشخصية، حماية البيانات الشخصية، PDPL للذكاء الاصطناعي |
+| صفحة مخاطر مقترحة | مخاطر الذكاء الاصطناعي، إدارة مخاطر الذكاء الاصطناعي |
+| صفحات القطاعات | حوكمة AI للبنوك، الصحة، الجهات الحكومية، والمصانع |
+
+## الروابط الداخلية المطلوبة من الصفحة الرئيسية
+
+تحتوي الصفحة الرئيسية على روابط واضحة ومباشرة إلى:
+
+1. `/solutions/ai-governance-platform/` من قسم الحوكمة.
+2. `/solutions/ai-firewall/` من قسم حماية البيانات.
+3. `/assessment/ai-governance-readiness/` من الدعوة الرئيسية للتقييم.
+4. `/hub/ai-governance/` من التعريف التوعوي.
+5. صفحة PDPL المتخصصة بعد إنشائها.
+6. صفحة إدارة المخاطر أو أداة Risk Register.
+
+استخدم نص رابط وصفيًا مثل `استكشف منصة حوكمة الذكاء الاصطناعي` بدل `اضغط هنا`.
+
+## خطة التنفيذ خلال 90 يوم
+
+### الأيام 1–14: تثبيت الصفحة الرئيسية
+
+- تثبيت `Title` و`H1` والوصف حول حوكمة AI في السعودية.
+- إضافة إجابة مباشرة من 40–60 كلمة في بداية المحتوى.
+- إبراز `شركات الذكاء الاصطناعي في السعودية` بصياغة طبيعية مرة واحدة.
+- إضافة روابط داخلية للحوكمة وAI Firewall والتقييم.
+- عدم إضافة حشو للكلمات ذات الحجم العالي.
+
+### الأيام 15–45: الصفحات المالكة
+
+- إنشاء أو تقوية صفحة PDPL.
+- تقوية صفحة حوكمة البيانات والمخاطر.
+- ربط كل صفحة تجارية بمقالين أو ثلاثة من مركز المعرفة.
+- إضافة FAQ مبني على أسئلة حقيقية بعد توفر بيانات GSC.
+
+### الأيام 46–90: بناء السلطة
+
+- نشر 6–8 أدلة عربية عميقة حول PDPL والحوكمة والمخاطر.
+- إنشاء صفحات قطاعية للبنوك، الصحة، الجهات الحكومية، والمصانع.
+- بناء روابط من مصادر سعودية متخصصة ومواد أصلية قابلة للاقتباس.
+- تفعيل Semrush Position Tracking للسعودية بالعربي على الجوال والكمبيوتر.
+
+## قالب GSC الشهري
+
+هذه الحقول لا تُعبّأ من Semrush:
+
+| Query | GSC Clicks | Impressions | CTR | Avg Position | Landing Page | Country | Device | Date Range |
+|---|---:|---:|---:|---:|---|---|---|---|
+| — | N/A | N/A | N/A | N/A | N/A | Saudi Arabia | N/A | N/A |
+
+عند توفر Export من GSC:
+
+1. فلتر `Country = Saudi Arabia`.
+2. طابق الـQuery مع جدول الملكية أعلاه.
+3. راقب الكلمات ذات impressions العالية وCTR المنخفض.
+4. راقب الكلمات ذات clicks والصفحة غير المناسبة؛ هذه علامة cannibalization.
+5. قارن آخر 28 يومًا بالفترة السابقة قبل اتخاذ قرار تحريري.
+
+## حدود التقرير
+
+- الأرقام أعلاه من Semrush وليست بيانات نقرات BRIGHTAI.
+- بعض الكلمات رجعت `no_data`؛ لم يتم تحويلها إلى صفر.
+- لم يتم ادعاء ترتيب أو زيارات مستقبلية.
+- النطاق المستخدم في هذا التقرير هو `brightai.live`، وليس `brightai.site`.
+- يلزم نشر أي تعديلات ثم إعادة crawl في Semrush لقياس أثرها على النسخة الحية.
+
+## النتيجة
+
+الصفحة الرئيسية يجب أن تبيع وتعرّف: `حوكمة الذكاء الاصطناعي في السعودية`. الكلمات الأكبر مثل PDPL والتحول الرقمي تُستخدم لبناء صفحات وأعمدة داعمة، بينما الفرصة التجارية الأسرع حاليًا هي `شركات الذكاء الاصطناعي في السعودية` بسبب KD8 وملاءمتها للسوق والمنتج.

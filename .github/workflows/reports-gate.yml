@@ -91,7 +91,7 @@ jobs:
           echo "Add these fields to the affected report(s):" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "verified_local: yes" >> $GITHUB_STEP_SUMMARY
-          echo "verified_production: yes   # only if you ran pnpm run verify:production against live brightai.site" >> $GITHUB_STEP_SUMMARY
+          echo "verified_production: yes   # only if you ran pnpm run verify:production against live brightai.live" >> $GITHUB_STEP_SUMMARY
           echo "verified_production_commit: <40-char SHA>" >> $GITHUB_STEP_SUMMARY
           echo "verified_production_at: <UTC timestamp>" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY

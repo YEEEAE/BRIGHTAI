@@ -30,13 +30,13 @@ const SITEMAP_EN_ALTERNATES = 23; // English pages with en-SA hreflang
 // 166 + 23 = 189 unique URLs in the sitemap (matches user spec).
 
 const PAGE_TEMPLATES = [
-  { dir: "about", name: "index", canonical: "https://brightai.site/about/" },
-  { dir: "pricing", name: "index", canonical: "https://brightai.site/pricing/" },
-  { dir: "trust", name: "index", canonical: "https://brightai.site/trust/" },
-  { dir: "services", name: "index", canonical: "https://brightai.site/services/" },
-  { dir: "contact", name: "index", canonical: "https://brightai.site/contact/" },
-  { dir: "demo", name: "index", canonical: "https://brightai.site/demo/" },
-  { dir: "assessment/ai-governance-readiness", name: "index", canonical: "https://brightai.site/assessment/ai-governance-readiness/" },
+  { dir: "about", name: "index", canonical: "https://brightai.live/about/" },
+  { dir: "pricing", name: "index", canonical: "https://brightai.live/pricing/" },
+  { dir: "trust", name: "index", canonical: "https://brightai.live/trust/" },
+  { dir: "services", name: "index", canonical: "https://brightai.live/services/" },
+  { dir: "contact", name: "index", canonical: "https://brightai.live/contact/" },
+  { dir: "demo", name: "index", canonical: "https://brightai.live/demo/" },
+  { dir: "assessment/ai-governance-readiness", name: "index", canonical: "https://brightai.live/assessment/ai-governance-readiness/" },
 ];
 
 async function rmrf(p) {
@@ -50,7 +50,7 @@ async function writeFileEnsuringDir(filePath, content) {
 
 function renderHtml({ canonical, title, enPath = null }) {
   const enAlt = enPath
-    ? `<link rel="alternate" hreflang="en-SA" href="https://brightai.site${enPath}" />`
+    ? `<link rel="alternate" hreflang="en-SA" href="https://brightai.live${enPath}" />`
     : "";
   return `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -78,28 +78,28 @@ async function buildHtmlPages() {
   // 1. Reserved pages (homepage + 404 + 500 + key public routes)
   await writeFileEnsuringDir(
     path.join(CLIENT_DIR, "index.html"),
-    renderHtml({ canonical: "https://brightai.site/", title: "BrightAI — الرئيسية" })
+    renderHtml({ canonical: "https://brightai.live/", title: "BrightAI — الرئيسية" })
   );
-  canonicals.push("https://brightai.site/");
+  canonicals.push("https://brightai.live/");
   count++;
 
   await writeFileEnsuringDir(
     path.join(CLIENT_DIR, "404.html"),
-    renderHtml({ canonical: "https://brightai.site/404/", title: "404 — صفحة غير موجودة" })
+    renderHtml({ canonical: "https://brightai.live/404/", title: "404 — صفحة غير موجودة" })
   );
-  canonicals.push("https://brightai.site/404/");
+  canonicals.push("https://brightai.live/404/");
   count++;
 
   await writeFileEnsuringDir(
     path.join(CLIENT_DIR, "500.html"),
-    renderHtml({ canonical: "https://brightai.site/500/", title: "500 — خطأ في الخادم" })
+    renderHtml({ canonical: "https://brightai.live/500/", title: "500 — خطأ في الخادم" })
   );
-  canonicals.push("https://brightai.site/500/");
+  canonicals.push("https://brightai.live/500/");
   count++;
 
   for (const tpl of PAGE_TEMPLATES) {
     const file = path.join(CLIENT_DIR, tpl.dir, `${tpl.name}.html`);
-    const title = `${tpl.canonical.replace("https://brightai.site", "").replace(/\/$/, "") || "home"}`;
+    const title = `${tpl.canonical.replace("https://brightai.live", "").replace(/\/$/, "") || "home"}`;
     await writeFileEnsuringDir(file, renderHtml({ canonical: tpl.canonical, title }));
     canonicals.push(tpl.canonical);
     count++;
@@ -108,7 +108,7 @@ async function buildHtmlPages() {
   // 2. Blog posts — 33 to match production (per brain.md 1.1)
   for (let i = 1; i <= 33 && count < TOTAL_HTML; i++) {
     const slug = `post-${String(i).padStart(2, "0")}`;
-    const canonical = `https://brightai.site/blog/${slug}/`;
+    const canonical = `https://brightai.live/blog/${slug}/`;
     const enPath = i <= SITEMAP_EN_ALTERNATES ? `/en/blog/${slug}/` : null;
     await writeFileEnsuringDir(
       path.join(CLIENT_DIR, "blog", `${slug}.html`),
@@ -121,7 +121,7 @@ async function buildHtmlPages() {
   // 3. Docs pages — 30 to match production
   for (let i = 1; i <= 30 && count < TOTAL_HTML; i++) {
     const slug = `doc-${String(i).padStart(2, "0")}`;
-    const canonical = `https://brightai.site/docs/${slug}/`;
+    const canonical = `https://brightai.live/docs/${slug}/`;
     await writeFileEnsuringDir(
       path.join(CLIENT_DIR, "docs", `${slug}.html`),
       renderHtml({ canonical, title: `Doc ${i}` })
@@ -137,7 +137,7 @@ async function buildHtmlPages() {
   while (count < TOTAL_HTML) {
     const sector = ["banking", "healthcare", "government", "manufacturing", "energy"][solIdx % 5];
     const city = ["riyadh", "jeddah", "dammam", "khobar", "mecca"][solIdx % 5];
-    const canonical = `https://brightai.site/solutions/${sector}/${city}/${solIdx}/`;
+    const canonical = `https://brightai.live/solutions/${sector}/${city}/${solIdx}/`;
     await writeFileEnsuringDir(
       path.join(CLIENT_DIR, "solutions", `${sector}-${city}-${solIdx}.html`),
       renderHtml({ canonical, title: `Solution ${sector} ${city} ${solIdx}` })
@@ -174,7 +174,7 @@ async function buildSitemap(canonicals) {
     lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${loc}" />`);
     if (enAlternateBudget > 0 && pathname.startsWith("/blog/")) {
       lines.push(
-        `    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en${pathname}" />`
+        `    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en${pathname}" />`
       );
       enAlternateBudget--;
     }
@@ -206,7 +206,7 @@ async function buildFlatFallback() {
   // dist/index.html to verify the legacy fallback when dist/client/ is missing.
   await writeFileEnsuringDir(
     path.join(FLAT_DIST, "index.html"),
-    renderHtml({ canonical: "https://brightai.site/", title: "BrightAI (legacy flat)" })
+    renderHtml({ canonical: "https://brightai.live/", title: "BrightAI (legacy flat)" })
   );
 }
 

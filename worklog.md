@@ -353,7 +353,7 @@ Work Log:
 - npm run build → 130 pages, 0 errors ✅
 - npm run verify:all → exit 0 ✅ (6/6 hreflang, 5/5 service, 112 sitemap URLs, 0 broken)
 - npm run seo:gate → 0 errors, 0 warnings ✅
-- Action form preserved: form action="https://formsubmit.co/info@brightai.site" method="POST" ✅
+- Action form preserved: form action="https://formsubmit.co/info@brightai.live" method="POST" ✅
 - Verified Arabic preservation via grep على dist HTML (5 صفحات) ✅
 - شغّلت preview server + Playwright screenshot-secondary.mjs → 37 screenshots ✅
 - Acceptance gate: 0 console errors, 0 page errors, exactly 1 H1 per page × 10 visits ✅
@@ -1287,7 +1287,7 @@ Status: **verified** (build 190 ✅, seo:gate 0 ✅, seo:schema 0 ✅, seo:link-
 - 0 missing title/description/canonical
 - canonical مطلق HTTPS
 - canonical متسق trailing slash
-- canonical يشير لـ brightai.site
+- canonical يشير لـ brightai.live
 - 0 title مكرر
 - 0 description مكرر
 - noindex محصور بالـ allowlist (حالياً `/thank-you/`)
@@ -1684,7 +1684,7 @@ Mode: Senior
 
 Work Log:
 - 15:19: Sequential Thinking → تشخيص 4 مشاكل: entity facts mismatched بين site.ts/schema-helpers.ts/Footer، schema-saudi-seo.json مكسور (referenced in ai.txt but doesn't exist)، لا فصل بين search/grounding و training crawlers، NDMO مكرر مرتين في llms-full.txt
-- 15:19: قرأت schema-helpers.ts → schema foundation authority (canonical entity @id https://brightai.site/#organization): name="BrightAI", alternateName=SITE.nameAr="برايت أيه آي", legalName="BrightAI", foundingDate="2025", founder="يزيد", sameAs=[linkedin/company/brightai-site, x.com/BrightAISite, youtube.com/@BrightAiSaudi, tiktok.com/@bright1ai, github.com/YEEEAE/BRIGHTAI, crunchbase.com/organization/brightai]
+- 15:19: قرأت schema-helpers.ts → schema foundation authority (canonical entity @id https://brightai.live/#organization): name="BrightAI", alternateName=SITE.nameAr="برايت أيه آي", legalName="BrightAI", foundingDate="2025", founder="يزيد", sameAs=[linkedin/company/brightai-site, x.com/BrightAISite, youtube.com/@BrightAiSaudi, tiktok.com/@bright1ai, github.com/YEEEAE/BRIGHTAI, crunchbase.com/organization/brightai]
 - 15:19: لاحظت conflicts بين site.ts وschema-helpers.ts:
     - site.ts.social.twitter = "https://twitter.com/brightai_sa"  ❌
     - schema-helpers.ts.sameAs يحتوي "https://x.com/BrightAISite" ✅
@@ -1882,7 +1882,7 @@ Mode: Senior (multi-file, 3 phases planned upfront per user approval)
 
 Discovery Summary:
 - src/pages/kernel/chat.astro: 982 lines. Existing composer عنده [data-kernel-chat-form] ، sendMessage() + fetch('/api/ai/chat/') + 4 fallbacks (404→unavailable, 429→rate_limit, 502→provider_failed, 504→timeout) + runDemoReply() fake streaming. **ما يستخدم SSE، ما عنده AbortController، ما عنده IME guard، ما يحسب sessionId، ما يقرأ provider من response.**
-- src/pages/api/ai/chat.ts: 1055 lines. عنده SSE path كامل (gate بـ Accept: text/event-stream + CHAT_STREAMING_ENABLED env) يبعت event: token / event: done. promptId allowlist ['compliance','policies','evidence','audit','scenarios']. Origin allowlist (brightai.site + localhost:4321). Rate limit 10 req/min/IP. CHAT_SESSION_VALIDATORS UUID v4/v7. response shape على JSON: { reply, provider }.
+- src/pages/api/ai/chat.ts: 1055 lines. عنده SSE path كامل (gate بـ Accept: text/event-stream + CHAT_STREAMING_ENABLED env) يبعت event: token / event: done. promptId allowlist ['compliance','policies','evidence','audit','scenarios']. Origin allowlist (brightai.live + localhost:4321). Rate limit 10 req/min/IP. CHAT_SESSION_VALIDATORS UUID v4/v7. response shape على JSON: { reply, provider }.
 - src/data/kernel-system-prompts.ts: 5 prompts (compliance, policies, evidence, audit, scenarios). كل prompt نص رسمي <320 كلمة.
 - src/lib/redis.ts + ratelimit.ts + usagetracker.ts: البنية جاهزة (gated reads، degraded markers).
 - scripts/playwright/verify-chat-mobile-drawers.mjs: 320px + 393px + desktop viewport checks pattern — نقدر نقلده.
@@ -2137,7 +2137,7 @@ Discovery:
 - 12:02 — `node --test scripts/trigger-indexnow.test.mjs` → **9/9 tests pass** (5 قديمة + 4 جديدة).
 - 12:02 — `npm run indexnow:check` من repo root → `IndexNow dry run: 180 URL(s), 1 request(s), key e158df443f2742d281a02c4aeecb4a60.txt.` ✅ (كان ENOENT قبل).
 - 12:03 — `npm run indexnow:deploy` من repo root (real submit) → **`IndexNow accepted 180 URL(s) with HTTP 200.`** ✅ هذا هو الـ proof النهائي.
-- 12:03 — `curl -sI https://brightai.site/e158df443f2742d281a02c4aeecb4a60.txt` → `Status: 200 | Bytes: 32 | Content-Type: text/plain; charset=utf-8`، body = `e158df443f2742d281a02c4aeecb4a60` ✅.
+- 12:03 — `curl -sI https://brightai.live/e158df443f2742d281a02c4aeecb4a60.txt` → `Status: 200 | Bytes: 32 | Content-Type: text/plain; charset=utf-8`، body = `e158df443f2742d281a02c4aeecb4a60` ✅.
 - 12:03 — `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **196 pages, 0 errors** ✅.
 - 12:03 — `pnpm run verify:all` → **0 errors, 0 warnings** ✅ (196 HTML files checked).
 - 12:04 — `ls dist/client/e158df443f2742d281a02c4aeecb4a60.txt` → موجود (32 bytes) ✅ — build ينسخه من public/.
@@ -2146,7 +2146,7 @@ Stage Summary:
 - **النتيجة**: BAI-IDX-11 follow-up #2 مغلق. post-deploy IndexNow step في `.github/workflows/deploy.yml` صار يشتغل تلقائيًا على كل deploy. End-to-end verified: 180 URLs مقبولة من `https://api.indexnow.org/indexnow` بـ HTTP 200.
 - **التغييرات**: 2 ملف (`scripts/trigger-indexnow.mjs` + `scripts/trigger-indexnow.test.mjs`)، ~30 سطر كود + ~80 سطر tests. Surgical fix، ما يأثر على API contract.
 - **Acceptance criteria (من الـ task spec)**:
-  - ✅ AC1: `curl https://brightai.site/e158df443f2742d281a02c4aeecb4a60.txt → 200 + key value` — verified.
+  - ✅ AC1: `curl https://brightai.live/e158df443f2742d281a02c4aeecb4a60.txt → 200 + key value` — verified.
   - ✅ AC2: Bing Webmaster → URLs submitted > 0 — verified via `npm run indexnow:deploy → HTTP 200` (الـ count يظهر في Bing WMT UI بعد deploy، يحتاج user يفحص).
 - **الـ DECs الجديدة**: DEC-INDEXNOW-PATH-2026-07-25-001 (fallback chain في `loadKey`)، DEC-INDEXNOW-PATH-2026-07-25-002 (test suite = canonical regression). مسجّلة في brain Section 2.
 - **Commits**: per brain line 18، المستخدم هو من يـ commit. Suggested commit message في brain entry.
@@ -2248,10 +2248,10 @@ Work Log:
 - 22:18: user قال "حدث التوك نفسه جرب الان". أعدت DRY_RUN → success. السكربت نجح: rule موجودة أصلاً من 2026-07-25 (BAI-SEC-11) وتطابق desired shape. JSON_OUT wrote `action: "noop"`.
 - 22:18-22:30: اكتشفت إن الـ rule موجودة لكن ما تنفّذ على responses. cf-cache-status: MISS + last-modified: 24 Jul + POST /api/lead silent 200. Cloudflare Transform Rule approach **fails silently**.
 - 22:20: cloudflare:hsts cleanup — حذف القاعدة (لكن السكربت idempotent، فما يضر).
-- 22:25-22:30: جرّبت Cloudflare Workers Custom Domain approach. أنشأت Worker `misty-hall-ca79` + ربطت بـ `hsts.brightai.site` → HSTS يطلع في response (522 + Strict-Transport-Security present). لكن Custom Domain على subdomain فقط، مو brightai.site/* كامل.
-- 22:30-22:40: جرّبت Workers Route على brightai.site/* — الـ UI ما يدعم (Triggers > Events only، Routes subsection مفقود). جرّبت 3 API endpoints (account-scoped, zone-scoped, PUT script) — كلها 10000 Authentication error (token ناقص Workers Routes permission).
+- 22:25-22:30: جرّبت Cloudflare Workers Custom Domain approach. أنشأت Worker `misty-hall-ca79` + ربطت بـ `hsts.brightai.live` → HSTS يطلع في response (522 + Strict-Transport-Security present). لكن Custom Domain على subdomain فقط، مو brightai.live/* كامل.
+- 22:30-22:40: جرّبت Workers Route على brightai.live/* — الـ UI ما يدعم (Triggers > Events only، Routes subsection مفقود). جرّبت 3 API endpoints (account-scoped, zone-scoped, PUT script) — كلها 10000 Authentication error (token ناقص Workers Routes permission).
 - 22:35-22:45: اكتشفت الـ architecture الحقيقي عبر Astro config + _headers file الكومنتات:
-  - brightai.site = Render **Static Site** (مش Node Web Service)
+  - brightai.live = Render **Static Site** (مش Node Web Service)
   - src/pages/api/*.ts يفترض Astro Node adapter يخدمه (لكن ما يخدم)
   - public/_headers موجود لكن DOCUMENTATION ONLY (Render Web Service ما يقرأه — حسب الكومنت)
   - لكن Render Static Site يقرأ _headers!
@@ -2273,9 +2273,9 @@ Work Log:
   - 23:15: هذا الـ worklog entry
 
 Acceptance Criteria (per BAI-DEPLOY-12):
-  - curl -sI https://brightai.site/ → Strict-Transport-Security: max-age=63072000; includeSubDomains; preload → ❌ PENDING (Render Manual Deploy + Clear build cache needed)
-  - curl -sI https://brightai.site/en/ → نفس الـ header → ❌ PENDING
-  - curl -sI https://brightai.site/kernel/ → نفس الـ header → ❌ PENDING
+  - curl -sI https://brightai.live/ → Strict-Transport-Security: max-age=63072000; includeSubDomains; preload → ❌ PENDING (Render Manual Deploy + Clear build cache needed)
+  - curl -sI https://brightai.live/en/ → نفس الـ header → ❌ PENDING
+  - curl -sI https://brightai.live/kernel/ → نفس الـ header → ❌ PENDING
   - Code: ✅ shipped to main (commits da814a72 + 66b79d0c)
   - Static surface: ✅ verified locally (preview server + dist/client/_headers content)
   - Production: ❌ blocked on Render Static Site persistent storage (not code/config issue)
@@ -2284,7 +2284,7 @@ Acceptance Criteria (per BAI-DEPLOY-13):
   - curl -X POST /api/lead -d '{}' → 400 + JSON {error: 'csrf_invalid'} → ❌ FAIL (200 silent, no handler)
   - curl /api/csrf-token/ → 200 + {token: '...'} → ❌ FAIL (404)
   - curl -X POST /api/lead + CSRF + valid body → 200 + JSON {ok: true, mode, message} → ❌ FAIL
-  - Root cause: brightai.site = Static Site (no SSR) + frontend/ Express removed. **Architectural issue**, not code bug.
+  - Root cause: brightai.live = Static Site (no SSR) + frontend/ Express removed. **Architectural issue**, not code bug.
   - Status: deferred — needs BAI-DEPLOY-14 separate ticket.
 
 Files Changed:
@@ -2385,8 +2385,8 @@ Risks Remaining:
     مُتحقَّق في dist files.
 
 Verification Commands (post-deploy):
-  - `curl -s https://brightai.site/js/gtag-init.js | grep -oE "gtag\('consent'[^)]+\)"` → default call
-  - `curl -s https://brightai.site/js/analytics.js | grep -oE "gtag\('consent'[^)]+\)"` → update call
+  - `curl -s https://brightai.live/js/gtag-init.js | grep -oE "gtag\('consent'[^)]+\)"` → default call
+  - `curl -s https://brightai.live/js/analytics.js | grep -oE "gtag\('consent'[^)]+\)"` → update call
   - GA4 DebugView (chrome://gcm-webtool/ أو GA4 Admin > DebugView):
     - Open site, observe 'consent_update' event after click Accept
     - Verify ad_storage + analytics_storage = 'granted' in event payload
@@ -2450,7 +2450,7 @@ Work Log:
   - Pillar 1: /docs/sdaia-generative-ai-guidelines/ (2,743 كلمة، TOC فيه 4 SDAIA links)
   - Pillar 2: /solutions/government-ai-governance/ (sector page، blog array فيه 2 SDAIA)
   - إجمالي: 5/10 SDAIA articles مغطاة بـ Pillar link → 6 articles يتيمة
-- 04:48: اكتشفت إن brightai.site لايف راجع 404 على كل شي (KI-RENDER-CACHE-2026-07-28-001) → أمر التحقق التيكت `curl ... | wc -w` ما ينفع
+- 04:48: اكتشفت إن brightai.live لايف راجع 404 على كل شي (KI-RENDER-CACHE-2026-07-28-001) → أمر التحقق التيكت `curl ... | wc -w` ما ينفع
 - 04:48: بحثت في worklog + report/A/ — اكتشفت `report/A/2026-07-08-sdaia-cluster-4-articles.md` يوثّق حملة سابقة (4 articles + Pillar TOC)
 - 04:48: سألت المستخدم عبر ask_user: 4 خيارات (إغلاق / سدّ الفجوة / سدّ + إصلاح الموقع / تيكت خاطئ)
 - 04:49: المستخدم اختار Option 1: "إغلاق التيكت: العمل تمّ"
@@ -2487,13 +2487,13 @@ Status: ✅ CLOSED
 ---
 Task ID: 2026-07-29-OUTAGE-FIX
 Agent: BrightAI Workspace Agent
-Task: إصلاح انقطاع موقع brightai.site (المستخدم بلّغ إن الموقع صار ما يشتغل بعد حذف Cloudflare Workers & Pages)
+Task: إصلاح انقطاع موقع brightai.live (المستخدم بلّغ إن الموقع صار ما يشتغل بعد حذف Cloudflare Workers & Pages)
 Started: 2026-07-29T22:40:00+03:00
 Ended: 2026-07-29T22:58:00+03:00
 Mode: Senior
 
 Work Log:
-- فحصت `curl -sI https://brightai.site/` → HTTP/2 404 لكن فيه `rndr-id` header (بصمة Render) → المشكلة في Render مو Cloudflare.
+- فحصت `curl -sI https://brightai.live/` → HTTP/2 404 لكن فيه `rndr-id` header (بصمة Render) → المشكلة في Render مو Cloudflare.
 - فحصت DNS (NS + A + CNAME) → كله سليم على Cloudflare، zone `active`. Cloudflare بريئة.
 - تحققت من Render service `srv-d7m5bcjbc2fs73826v20` → نوع `static_site`، `live`، مو معلّقة، `publishPath: dist`.
 - اختبرت الـ URL الأصلي `https://brightai-4x39.onrender.com/` → 404 على كل المسارات حتى `/` و `/index.html`.

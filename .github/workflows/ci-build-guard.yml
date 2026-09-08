@@ -60,9 +60,9 @@ on:
     # Allow manual run for staging validation or emergency checks.
     inputs:
       host:
-        description: 'Production host to audit (default: https://brightai.site)'
+        description: 'Production host to audit (default: https://brightai.live)'
         required: false
-        default: 'https://brightai.site'
+        default: 'https://brightai.live'
       sample:
         description: 'Number of pages to sample from sitemap (default: 200, 0 = all)'
         required: false
@@ -656,7 +656,7 @@ jobs:
   #
   # Triggers: push (post-deploy smoke test) + schedule (daily 03:00
   # UTC) + workflow_dispatch (manual staging validation).
-  # Pull requests are secrets-free (uses public brightai.site URL).
+  # Pull requests are secrets-free (uses public brightai.live URL).
   # ────────────────────────────────────────────────────────────────
   hreflang-live:
     name: Hreflang Live Audit (production)
@@ -668,7 +668,7 @@ jobs:
       fail-fast: false
       matrix:
         host:
-          - ${{ github.event.inputs.host || 'https://brightai.site' }}
+          - ${{ github.event.inputs.host || 'https://brightai.live' }}
     env:
       PROD_HOST: ${{ matrix.host }}
     steps:

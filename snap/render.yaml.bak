@@ -84,7 +84,7 @@ services:
         name: Strict-Transport-Security
         # HSTS-2026-07-18: aligned with public/_headers (2 years + preload).
         # max-age=63072000 (2 years) per the original CSP strategy doc
-        # in public/_headers. Submit brightai.site to https://hstspreload.org
+        # in public/_headers. Submit brightai.live to https://hstspreload.org
         # once to enable browser-side preload.
         value: max-age=63072000; includeSubDomains; preload
       - path: /*

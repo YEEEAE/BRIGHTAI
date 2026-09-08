@@ -18,7 +18,7 @@
 # Required GitHub Secret (set once, then never touched):
 #   GSC_SERVICE_ACCOUNT_JSON  — full JSON content of a GSC service account key.
 #     The corresponding service-account email must be added as an Owner on
-#     https://search.google.com/search-console/users (sc-domain:brightai.site).
+#     https://search.google.com/search-console/users (sc-domain:brightai.live).
 #
 # Quota (URL Inspection API):
 #   - 2,000 inspections/day per site (the script uses 180; well within limit).
@@ -90,7 +90,7 @@ jobs:
         if: env.GSC_SERVICE_ACCOUNT_JSON != ''
         env:
           GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
-          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'sc-domain:brightai.site' }}
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'sc-domain:brightai.live' }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             echo "::notice::Dry-run mode (workflow_dispatch input)"
@@ -102,7 +102,7 @@ jobs:
       - name: Run GSC export (dry-run fallback)
         if: env.GSC_SERVICE_ACCOUNT_JSON == ''
         env:
-          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'sc-domain:brightai.site' }}
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'sc-domain:brightai.live' }}
         run: |
           echo "::warning::GSC_SERVICE_ACCOUNT_JSON secret is not set. Running --dry-run so the file is still written. Set the secret to enable live GSC data."
           node scripts/gsc-export.mjs --dry-run

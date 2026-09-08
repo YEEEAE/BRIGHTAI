@@ -5,7 +5,7 @@
 > **الحالة:** ساري المفعول — يُطبَّق على كل مهمة بدون استثناء
 > **المشروع:** [BRIGHTAI] (GitHubYEEEAE/BRIGHTAI
 ) — منصة سعودية للذكاء الاصطناعي والأتمتة
-> **الموقع:**https://brightai.site
+> **الموقع:**https://brightai.live
 
 ---
 
@@ -155,7 +155,7 @@
 ### وش هو BRIGHTAI؟
 
 منصة سعودية متكاملة للذكاء الاصطناعي والأتمتة:
-- **الموقع العام:** https://brightai.site — صفحات تعريفية، خدمات، مدونة، أدوات مجانية
+- **الموقع العام:** https://brightai.live — صفحات تعريفية، خدمات، مدونة، أدوات مجانية
 - **الجمهور:** السوق السعودي أولًا — الشركات الصغيرة والمتوسطة، رواد الأعمال، الجهات الحكومية
 - **اللغة:** عربي أولًا (RTL)، مع دعم إنجليزي للصفحات المختارة
 - **الرؤية:** أن نكون المرجع الأول بالسعودية في أتمتة الأعمال بالذكاء الاصطناعي
@@ -245,8 +245,8 @@ CSP صارم + security headers مُحقَقة بسكربتات
 "@context": "https://schema.org",
 "@type": "Organization",
 "name": "BRIGHTAI",
-"url": "https://brightai.site",
-"logo": "https://brightai.site/images/logo.png",
+"url": "https://brightai.live",
+"logo": "https://brightai.live/images/logo.png",
 "address": {
 "@type": "PostalAddress",
 "addressCountry": "SA"
