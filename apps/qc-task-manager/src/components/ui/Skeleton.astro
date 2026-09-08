@@ -1,5 +1,0 @@
----
-interface Props { lines?: number; class?: string; }
-const { lines = 3, class: className = '' } = Astro.props;
----
-<div aria-busy="true" aria-label="Loading" class:list={['space-y-2', className]}>{Array.from({ length: lines }).map((_, index) => <div class:list={['h-4 animate-pulse rounded-qc-sm bg-surface-muted', index === lines - 1 ? 'w-2/3' : 'w-full']} />)}</div>

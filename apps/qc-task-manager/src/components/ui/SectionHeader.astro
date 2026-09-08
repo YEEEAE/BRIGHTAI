@@ -1,8 +1,0 @@
----
-interface Props { title: string; description?: string; id?: string; class?: string; }
-const { title, description, id, class: className = '' } = Astro.props;
----
-<header class:list={['flex flex-wrap items-end justify-between gap-3', className]}>
-  <div><h2 id={id} class="type-section-heading">{title}</h2>{description && <p class="mt-1 text-sm text-content-secondary">{description}</p>}</div>
-  <slot name="actions" />
-</header>

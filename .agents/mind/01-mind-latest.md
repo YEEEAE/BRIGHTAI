@@ -1,3 +1,59 @@
+## [2026-09-08] — حذف مجلد apps/ بالكامل (dashboard + qc-task-manager) بقرار صريح من المالك
+
+### تم التنفيذ
+- حذفت `apps/` كاملًا (`apps/dashboard` و`apps/qc-task-manager`) بقرار مؤكد من المالك بعد تحذير صريح أن qc-task-manager كان به شغل نشط موثق في سجلات 2026-09-04.
+- نظفت `pnpm-workspace.yaml` من `'apps/*'`.
+- نظفت `package.json` الجذري: حذف `e2e:acceptance` و`dashboard:dev` و`dashboard:build`؛ أبقيت `pretest:chat-session` (ليست مرتبطة بـ apps).
+- حذفت `scripts/lint-no-db-service-role-in-reads.mjs` (SCAN_ROOT كان يشير لـ apps/dashboard/app) — لكن سطر `lint:rls` في package.json ما زال يشير له (بحاجة للتنظيف أو الرجوع عن الحذف).
+- نظفت `scripts/sync-background-media.mjs` (بقيت هدف public/media فقط) و`scripts/internal-links-common.mjs` من إشارات apps.
+
+### الملفات المتأثرة
+- `apps/` (محذوف بالكامل)
+- `pnpm-workspace.yaml`
+- `package.json`
+- `scripts/sync-background-media.mjs`
+- `scripts/internal-links-common.mjs`
+- `scripts/lint-no-db-service-role-in-reads.mjs` (محذوف)
+
+### التحقق
+- JSON package.json صالح ✅
+- `node --check` على السكربتات المعدلة ✅
+- `pnpm install` ✅
+- `pnpm build` — قيد التشغيل عند كتابة السجل (يُلحق النتيجة)
+
+### النتيجة
+- **الحالة:** جزئي (بانتظار نتيجة build)
+- **مختصر:** apps/ حذفت والمراجع المحلية نظفت؛ لم تُلمس `.github/workflows/` (ci-build-guard.yml وqc-release-gate.yml ما زالا يشيران إلى apps/ وسيفشلان في CI حتى يُعدلان بإذن المالك).
+
+### ملاحظات / مشاكل مفتوحة
+- ⚠️ `.github/workflows/ci-build-guard.yml` و`qc-release-gate.yml` ما زالا يعتمدان على apps/ — يحتاج قرار المالك (تعديل/حذف/تعطيل).
+- سطر `lint:rls` في package.json يشير لسكربت محذوف.
+- لا commit ولا push ولا deploy.
+
+
+## [2026-09-04] — تقرير تفصيلي لقسم /lab في qc-task-manager (قراءة فقط، بدون تعديل كود)
+
+### تم التنفيذ
+- جردت قسم المختبر بالكامل: 48 صفحة Astro (10,861 سطرًا، 672KB) موزعة على 13 وحدة، و37 ملفًا في `lib/lab` (~15,400 سطر)، و11 مكونًا في `components/lab` (~2,735 سطرًا).
+- تحققت من الـroute-manifest: 47 مسار `/lab/*` + 8 مسارات `/api/lab/*` = 55 مسار مختبر، كلها ملفّقة في القناع (manifest) بدون مسارات ميتة.
+- وثقت الالتزامات المعمارية المطبقة: فلترة RBAC في طبقة lib (`navigation.ts` عبر 87 دالة `can*Lab`)، صفر SQL داخل الصفحات، 18+ Zod schema للمختبر، وحواجز immutability لسجلات APPROVED/VOID.
+- حصرت التغطية الاختبارية: ~29 سكربت `test:lab-*` + 16 سكربت `e2e-lab-*`.
+
+### الملفات المتأثرة
+- `.agents/mind/01-mind-latest.md` (هذا السجل فقط — لا تعديل كود)
+
+### التحقق
+- `route-manifest.mjs` ✅ قراءةً — 47/8 مسارات lab/API
+- `git status` على مجلدات lab الثلاثة ✅ نظيف — كله ملتزم في HEAD `394be485`
+
+### النتيجة
+- **الحالة:** نجح (مهمة تقرير فقط)
+- **مختصر:** قسم المختبر مكتمل البنية (55 مسارًا) بنمط معماري موحد ومغطى اختباريًا؛ أكبر ملفات هي `tests.ts` (1,203 سطرًا) و`LabTestForm.tsx` (1,436 سطرًا) كملكية موثقة بقرار المالك.
+
+### ملاحظات / مشاكل مفتوحة
+- لا شيء جديد؛ المشاكل المفتوحة المعروفة (UAT البشري، e2e-search P0) مسجلة في سجلات سابقة.
+
+
 ## [2026-09-04] — CLOSURE: تكامل سلامة السجلات والتوقيع الإلكتروني (E-Records / Auditability)
 
 ### تم التنفيذ

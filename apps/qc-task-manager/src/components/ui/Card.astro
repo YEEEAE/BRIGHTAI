@@ -1,5 +1,0 @@
----
-interface Props { as?: 'article' | 'section' | 'div'; labelledBy?: string; class?: string; }
-const { as: Tag = 'section', labelledBy, class: className = '' } = Astro.props as Props;
----
-<Tag aria-labelledby={labelledBy} class:list={['qc-surface-card', className]}><slot /></Tag>

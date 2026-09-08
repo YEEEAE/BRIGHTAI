@@ -1,8 +1,0 @@
----
-import StatusPill from './ui/StatusPill.astro';
-import { statusAdapters } from './ui/statusTones';
-
-const { status } = Astro.props;
-const presentation = statusAdapters.finding(status);
----
-<StatusPill tone={presentation.tone} label={presentation.label} dot />

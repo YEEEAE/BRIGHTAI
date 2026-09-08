@@ -28,8 +28,6 @@ const SOURCES = {
 
 const TARGETS = [
   { app: 'site', dir: join(REPO, 'public/media') },
-  { app: 'dashboard', dir: join(REPO, 'apps/dashboard/public/media') },
-  { app: 'qc-task-manager', dir: join(REPO, 'apps/qc-task-manager/public/media') },
 ];
 
 const NAMES = { animation: 'brightai-background.lottie', wasm: 'dotlottie-player.wasm' };

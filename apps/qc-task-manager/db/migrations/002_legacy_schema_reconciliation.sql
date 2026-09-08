@@ -1,7 +1,0 @@
--- brightai:legacy-reconcile
--- brightai:allow-destructive
--- DROP TABLE is used only inside the controlled task-delete-request rebuild.
--- The runner performs deterministic additive reconciliation for databases
--- created before sequential migrations existed. It adds nullable/defaulted
--- columns, creates missing objects from 001, and safely rebuilds the legacy
--- delete-request table while preserving live rows.

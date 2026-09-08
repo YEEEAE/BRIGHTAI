@@ -25,7 +25,7 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "**/.claude/**",
   "**/.agents/plugins/**",
   "**/.lighthouseci/**",
-  "**/apps/**",
+  // eslint config ignores — apps/** removed 2026-09-08
   "**/_reports/**",
   "**/brightai-audit-reports/**",
   "**/qa-screenshots/**"

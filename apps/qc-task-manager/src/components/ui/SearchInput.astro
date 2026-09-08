@@ -1,6 +1,0 @@
----
-import Input from './Input.astro';
-interface Props { id?: string; name?: string; value?: string; placeholder?: string; required?: boolean; disabled?: boolean; invalid?: boolean; describedBy?: string; class?: string; }
-const props = Astro.props;
----
-<div class="relative"><span aria-hidden="true" class="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-content-muted">⌕</span><Input {...props} type="search" class="ps-9" /></div>

@@ -1,6 +1,0 @@
----
-import { CONTROL_CHECKABLE } from './controls';
-interface Props { id: string; name?: string; checked?: boolean; disabled?: boolean; value?: string; label: string; class?: string; }
-const { id, name, checked, disabled, value, label, class: className = '' } = Astro.props;
----
-<label class:list={['inline-flex min-h-11 items-center gap-2 text-sm text-content', className]}><input id={id} name={name} type="checkbox" checked={checked} disabled={disabled} value={value} class={CONTROL_CHECKABLE} /><span>{label}</span></label>

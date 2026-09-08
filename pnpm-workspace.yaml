@@ -1,5 +1,3 @@
 packages:
-  - 'apps/*'
   - 'packages/*'
   # Root (Astro marketing site) is implicitly a workspace.
-  # See README.md for the apps/marketing/ refactor plan.
