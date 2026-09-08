@@ -57,11 +57,20 @@ const safeRobots = robots || 'index, follow, max-snippet:-1, max-image-preview:l
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${SITE.url}${ogImage}`;
 const siteName = SITE.name;
 
+// BAI-SEO-004 (2026-09-09): normalize the canonical to its percent-encoded
+// form. The sitemap writer emits <loc> with percent-encoded paths, while
+// pages with non-ASCII (Arabic) slugs (e.g. /blog/category/دراسات-حالة/)
+// passed a raw canonical — Semrush treated the raw and encoded URLs as two
+// different pages, generating 35 hreflang/canonical conflicts. encodeURI()
+// is idempotent (existing %XX escapes are left intact), so this is safe for
+// ASCII canonicals and for already-encoded input.
+const canonicalNormalized = canonical ? encodeURI(canonical) : canonical;
+
 // BAI-SEO-003-S2 (2026-07-18): build hreflang from the explicit pair map
 // (src/data/hreflang-pairs.ts) instead of deriving /en/ by string replacement.
 // getHreflangLinks() guarantees: self-reference + return tag + x-default,
 // and never invents an en-SA counterpart for AR-only pages.
-const explicitHreflang = canonical ? getHreflangLinks(canonical) : [...hreflang];
+const explicitHreflang = canonical ? getHreflangLinks(canonicalNormalized) : [...hreflang];
 
 // BAI-SEO-003-S1 (2026-07-18): drop hreflang annotations on noindex pages
 // (Google cluster contract). When a page is noindex, we keep no
@@ -74,7 +83,12 @@ const validHreflang = explicitHreflang.filter(
 );
 const uniqueHreflang = Array.from(
   new Map(validHreflang.map((link) => [`${link.lang}:${link.href}`, link])).values(),
-);
+).map((link) => ({
+    ...link,
+    // Only encode raw non-ASCII hrefs — encodeURI is NOT idempotent when
+    // applied to an already percent-encoded URL (it would double-encode %→%25).
+    href: /[^\x00-\x7F]/.test(link.href) ? encodeURI(link.href) : link.href,
+  }));
 const finalHreflang = isNoindexPage || omitHreflang ? [] : uniqueHreflang;
 const finalHasXDefault = finalHreflang.some((link) => link.lang === 'x-default');
 
@@ -92,11 +106,11 @@ const finalTitle = seoTitle(title);
 <title>{finalTitle}</title>
 <meta name="description" content={description} />
 <meta name="robots" content={safeRobots} />
-<link rel="canonical" href={canonical} />
+<link rel="canonical" href={canonicalNormalized} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={canonical} />
+<meta property="og:url" content={canonicalNormalized} />
 <meta property="og:title" content={finalTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={fullOgImage} />
@@ -109,7 +123,7 @@ const finalTitle = seoTitle(title);
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@brightai_sa" />
 <meta name="twitter:creator" content="@brightai_sa" />
-<meta name="twitter:url" content={canonical} />
+<meta name="twitter:url" content={canonicalNormalized} />
 <meta name="twitter:title" content={finalTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={fullOgImage} />
@@ -120,7 +134,7 @@ const finalTitle = seoTitle(title);
   <link rel="alternate" hreflang={link.lang} href={link.href} />
 ))}
 {!finalHasXDefault && finalHreflang.length > 0 && !isNoindexPage && (
-  <link rel="alternate" hreflang="x-default" href={canonical} />
+  <link rel="alternate" hreflang="x-default" href={canonicalNormalized} />
 )}
 
 <!-- JSON-LD Structured Data -->

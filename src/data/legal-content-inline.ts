@@ -242,13 +242,13 @@ export const legal_privacy_policy: LegalInlineContent = {
 };
 
 export const legal_pdpl_statement: LegalInlineContent = {
-  h1: 'بيان الامتثال لـ PDPL',
+  h1: 'نظام حماية البيانات الشخصية وPDPL | بيان BRIGHTAI',
   html: `<!-- Hero Section -->
   <div class="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
     <span class="chip inline-block px-3 py-1 rounded-full text-xs font-bold bg-white/5 border border-white/10 text-brand-300">
       حقيبة الامتثال لنظام البيانات السعودي
     </span>
-    <h1 class="mt-4 text-3xl sm:text-5xl font-black leading-tight gradient-text">بيان الامتثال لـ PDPL</h1>
+    <h1 class="mt-4 text-3xl sm:text-5xl font-black leading-tight gradient-text">نظام حماية البيانات الشخصية وPDPL | بيان BRIGHTAI</h1>
     <p class="mt-4 text-white/70 text-base lg:text-lg leading-relaxed">التزامنا الراسخ بالأنظمة السيادية السعودية للبيانات والذكاء الاصطناعي</p>
   </div>
 

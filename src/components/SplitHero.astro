@@ -79,9 +79,9 @@ import TrustBadges from './TrustBadges.astro';
             "يدعم الجاهزية" — no "مضمون/كامل" claims. */}
         <h1 id="hero-title" class="split-hero__h1" transition:animate="fade">
           <span class="gradient-text">حوكمة الذكاء الاصطناعي</span>
-          للشركات
+          في
           <span class="gradient-text">السعودية</span>
-          <span class="split-hero__h1-voc" style="display:block; font-size:0.42em; font-weight:500; color:var(--text-secondary); margin-top:0.4em; letter-spacing:-0.005em; line-height:1.4;">بجرد AI ومالك مسؤول — Saudi AI Safety OS</span>
+          <span class="split-hero__h1-voc" style="display:block; font-size:0.42em; font-weight:500; color:var(--text-secondary); margin-top:0.4em; letter-spacing:-0.005em; line-height:1.4;">للشركات والجهات — بجرد AI ومالك مسؤول — Saudi AI Safety OS</span>
         </h1>
       </div>
 
@@ -898,8 +898,9 @@ import TrustBadges from './TrustBadges.astro';
   // because Astro compiles every <script> into an isolated module scope.
   const scheduleIdle =
     typeof window.requestIdleCallback === 'function'
-      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
-      : (work) => setTimeout(work, 1200);
+      ? (work: IdleRequestCallback) =>
+          window.requestIdleCallback(work, { timeout: 2000 })
+      : (work: () => void) => setTimeout(work, 1200);
   (function setupTilt() {
     let panel: HTMLElement | null = null;
     let raf = 0;
@@ -969,10 +970,12 @@ import TrustBadges from './TrustBadges.astro';
   // enhancement that can wait for idle without affecting the hero content.
   // scheduleIdle is inlined because Astro compiles every <script> into an
   // isolated module scope.
-  const scheduleIdle =
-    typeof window.requestIdleCallback === 'function'
-      ? (work) => window.requestIdleCallback(work, { timeout: 2000 })
-      : (work) => setTimeout(work, 1200);
+  const scheduleIdle = (work: () => void) => {
+    if (typeof window.requestIdleCallback === 'function') {
+      return window.requestIdleCallback(work, { timeout: 2000 });
+    }
+    return setTimeout(work, 1200);
+  };
   (function setupChipRotate() {
     const ROTATE_MS = 2800;
     const TRANSITION_MS = 450; // يطابق transition في CSS
