@@ -206,7 +206,10 @@ function normalizeRobotsLines(content) {
 // Crawlers shouldn't index /api/, /cgi-bin/, or asset directories — only
 // disallow rules that block indexable content (e.g. /admin/, /account/) are
 // considered violations.
-const SAFE_DISALLOW_PATTERN = /^\s*disallow:\s*\/(?:api\/|cgi-bin\/|_next\/|_astro\/|assets\/|images\/|fonts\/|sw\.js|robots\.txt|sitemap[.-]?index?\.xml|search|404|500|offline|design)\s*$/i;
+// WHATSAPP-HUB (2026-09-08): /go/ holds internal redirect hubs
+// (/go/whatsapp/ → wa.me). The hub is noindex + sitemap-excluded by design,
+// same utility class as search/404/offline — never indexable content.
+const SAFE_DISALLOW_PATTERN = /^\s*disallow:\s*\/(?:api\/|go\/|cgi-bin\/|_next\/|_astro\/|assets\/|images\/|fonts\/|sw\.js|robots\.txt|sitemap[.-]?index?\.xml|search|404|500|offline|design)\s*$/i;
 const SAFE_DISALLOW_DYNAMIC = /^\s*disallow:\s*\/\*\?\s*$/i;
 
 function isSafeDisallowLine(line) {

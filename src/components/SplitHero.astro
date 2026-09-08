@@ -1,5 +1,5 @@
 <!-- BAI-VOC-001-A (2026-07-18): VOC injection في H1 + lead — أضفنا 5 ركائز (جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري) مع الحفاظ على الـ keywords (حوكمة الذكاء الاصطناعي / الشركات السعودية). tone = "يدعم الجاهزية" بدل "متوافق/مضمون". -->
-<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs حسب intent — primary=MOFU "احجز جلسة جاهزية 30 دقيقة" → /contact/، whatsapp=BOFU "احصل على رد سريع" → wa.me، solution/kernel=TOFU "استكشف/جرّب". microcopy موحّد أسفل الأزرار: "بدون التزام • سرية بياناتك مضمونة". href/action لم يتغير. -->
+<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs حسب intent — primary=MOFU "احجز جلسة جاهزية 30 دقيقة" → /contact/، whatsapp=BOFU "احصل على رد سريع" → /go/whatsapp/ (hub) → wa.me، solution/kernel=TOFU "استكشف/جرّب". microcopy موحّد أسفل الأزرار: "بدون التزام • سرية بياناتك مضمونة". href/action لم يتغير. -->
 ---
 /**
  * SplitHero.astro — Premium split-layout hero.
@@ -100,7 +100,7 @@ import TrustBadges from './TrustBadges.astro';
       </p>
 
       <div class="home-hero-actions">
-        <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="wa-btn"
+        <a href="/go/whatsapp/" target="_blank" rel="noopener noreferrer" class="wa-btn"
            data-whatsapp data-cta-label="احصل على رد سريع عبر واتساب" data-position="hero" data-page-type="home">
           <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> احصل على رد سريع عبر واتساب
         </a>

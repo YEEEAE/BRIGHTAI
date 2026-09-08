@@ -61,7 +61,7 @@ const whatsappMsg = encodeURIComponent('مرحباً، أريد استفسار �
 // About-page footer nav (used in CTA + breadcrumbs only)
 const pageHeroCTAs = [
   { href: '/contact/', icon: 'mdi-calendar-check', label: 'ابدأ ديمو خاص بشركتك', variant: 'glow' },
-  { href: `https://wa.me/966538229013?text=${whatsappMsg}`, icon: 'mdi-whatsapp', label: 'تواصل عبر واتساب', variant: 'whatsapp', external: true },
+  { href: `/go/whatsapp/?text=${whatsappMsg}`, icon: 'mdi-whatsapp', label: 'تواصل عبر واتساب', variant: 'whatsapp', external: true },
 ];
 ---
 
@@ -308,7 +308,7 @@ const pageHeroCTAs = [
             <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-calendar-check"></use></svg>
             احجز ديمو
           </a>
-          <a href={`https://wa.me/966538229013?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer" class="btn btn--whatsapp">
+          <a href={`/go/whatsapp/?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer" class="btn btn--whatsapp">
             <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
             تواصل عبر واتساب
           </a>

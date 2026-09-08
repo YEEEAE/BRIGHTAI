@@ -79,7 +79,7 @@ function buildView(t: KernelChatErrorType, retry?: number): ErrorView {
         msg: retry
           ? `وصلنا للحد المسموح (10 طلبات في الدقيقة). حاول مرة ثانية بعد ${retry} ثانية.`
           : 'وصلنا للحد المسموح (10 طلبات في الدقيقة). حاول مرة ثانية بعد لحظات.',
-        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+        cta: { href: '/go/whatsapp/', label: 'تواصل عبر واتساب', external: true },
       };
     case 'blocked':
       // CHAT-STATE-001: HTTP 451 — firewall.decision === 'block'.
@@ -110,7 +110,7 @@ function buildView(t: KernelChatErrorType, retry?: number): ErrorView {
         icon: iconError,
         title: 'المزود الذكي غير متاح مؤقتاً',
         msg: 'فشل الوصول إلى نموذج الذكاء الاصطناعي (Groq أو Gemini). طلبك ما وصل للنموذج. تقدر تعيد المحاولة الآن، أو تتواصل مع فريق الحوكمة لو تكرر.',
-        cta: { href: 'https://wa.me/966538229013', label: 'تواصل مع فريق الحوكمة', external: true },
+        cta: { href: '/go/whatsapp/', label: 'تواصل مع فريق الحوكمة', external: true },
       };
     case 'network':
       return {
@@ -118,7 +118,7 @@ function buildView(t: KernelChatErrorType, retry?: number): ErrorView {
         icon: iconWarning,
         title: 'تعذّر الاتصال',
         msg: 'تعذّر الاتصال بالخادم. تحقق من الإنترنت ثم أعد المحاولة. طلبك ما وصل للنموذج.',
-        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+        cta: { href: '/go/whatsapp/', label: 'تواصل عبر واتساب', external: true },
       };
     case 'unavailable':
       return {
@@ -134,7 +134,7 @@ function buildView(t: KernelChatErrorType, retry?: number): ErrorView {
         icon: iconWarning,
         title: 'انتهت مهلة الاستجابة',
         msg: 'النموذج أخذ وقتاً أطول من المتوقع للرد. طلبك ما اكتمل — تقدر تعيد المحاولة بنفس السؤال أو بصياغة أقصر.',
-        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+        cta: { href: '/go/whatsapp/', label: 'تواصل عبر واتساب', external: true },
       };
     case 'cancelled':
       // CHAT-STATE-001: user pressed the Cancel button mid-stream.
@@ -143,7 +143,7 @@ function buildView(t: KernelChatErrorType, retry?: number): ErrorView {
         icon: iconWarning,
         title: 'تم إيقاف الرد',
         msg: 'أوقفت الرد يدوياً. النص الجزئي (إن وُجد) ظاهر فوق. تقدر تعيد المحاولة بنفس الرسالة.',
-        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+        cta: { href: '/go/whatsapp/', label: 'تواصل عبر واتساب', external: true },
       };
     default:
       return {
@@ -151,7 +151,7 @@ function buildView(t: KernelChatErrorType, retry?: number): ErrorView {
         icon: iconError,
         title: 'حدث خطأ غير متوقع',
         msg: 'حدث خطأ غير متوقع. طلبك ما وصل للنموذج — تقدر تعيد المحاولة. لو تكرر الخطأ تواصل مع فريق الدعم.',
-        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+        cta: { href: '/go/whatsapp/', label: 'تواصل عبر واتساب', external: true },
       };
   }
 }

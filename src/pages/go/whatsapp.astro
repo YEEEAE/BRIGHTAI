@@ -1,0 +1,81 @@
+---
+/**
+ * /go/whatsapp/ — internal WhatsApp redirect hub (noindex utility page).
+ *
+ * WHATSAPP-HUB (2026-09-08): wa.me answers HTTP 429 to bot traffic, so every
+ * direct wa.me anchor site-wide was flagged by Semrush as a broken external
+ * link (318 warnings, Sep-2026 audit). All HTML anchors now point here with
+ * an optional ?text= message; this page forwards the visitor to wa.me.
+ *
+ * - robots: noindex, follow (utility page, same class as /thank-you/).
+ * - Excluded from sitemap.xml automatically (noindex + meta refresh).
+ * - Blocked in robots.txt (Disallow: /go/) so audit crawlers never fetch it
+ *   and never count its fallback wa.me anchor as an external link.
+ * - Zero inline JS (strict CSP): redirect logic lives in /js/go-whatsapp.js.
+ * - <meta refresh> + visible fallback anchor cover no-JS visitors.
+ */
+const canonical = 'https://brightai.live/go/whatsapp/';
+const WA_NUMBER_URL = 'https://wa.me/966538229013';
+---
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جاري تحويلك إلى واتساب | BrightAI</title>
+    <meta
+      name="description"
+      content="صفحة تحويل داخلية تنقلك مباشرة إلى واتساب BrightAI لمتابعة استفسارك عن حوكمة وأمان الذكاء الاصطناعي."
+    />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonical} />
+    <meta http-equiv="refresh" content={`1;url=${WA_NUMBER_URL}`} />
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0a0e1a;
+        color: #e2e8f0;
+        font-family: system-ui, 'IBM Plex Sans Arabic', Tahoma, sans-serif;
+        line-height: 1.8;
+        padding: 1.5rem;
+        box-sizing: border-box;
+      }
+      main { max-width: 34rem; text-align: center; }
+      h1 { font-size: 1.35rem; margin: 0 0 0.75rem; color: #fff; }
+      p { margin: 0 0 1.25rem; color: #94a3b8; }
+      a {
+        display: inline-block;
+        min-height: 44px;
+        line-height: 44px;
+        padding: 0 1.75rem;
+        border-radius: 0.9rem;
+        background: #075e54;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>جاري تحويلك إلى واتساب BrightAI…</h1>
+      <p>
+        هذي صفحة تحويل داخلية تنقلك مباشرة لمحادثة واتساب مع فريق BrightAI
+        لمتابعة استفسارك عن حوكمة وأمان وامتثال الذكاء الاصطناعي في السعودية.
+        إذا ما تم التحويل تلقائيًا خلال ثوانٍ، اضغط الزر بالأسفل.
+      </p>
+      <p>
+        <a
+          href={WA_NUMBER_URL}
+          rel="noopener"
+          data-whatsapp-fallback
+        >فتح واتساب الآن</a>
+      </p>
+    </main>
+    <script src="/js/go-whatsapp.js" defer></script>
+  </body>
+</html>

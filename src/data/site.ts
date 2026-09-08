@@ -23,6 +23,13 @@ export const SITE = {
   whatsapp: {
     number: '966538229013',
     url: 'https://wa.me/966538229013',
+    // WHATSAPP-HUB (2026-09-08): all HTML anchors must use goUrl, NOT url.
+    // wa.me rate-limits bot traffic (HTTP 429), so Semrush flags every direct
+    // wa.me anchor as "broken external link" (318 warnings in Sep-2026 audit).
+    // /go/whatsapp/ is an internal noindex redirect hub (robots-disallowed)
+    // that forwards users to wa.me with the same ?text= message. `url` stays
+    // absolute for JSON-LD ContactPoint and JS runtime fallbacks only.
+    goUrl: '/go/whatsapp/',
     message: {
       ar: 'مرحباً، أريد الاستفسار عن خدمات BrightAI',
       en: 'Hi, I want to inquire about BrightAI services',

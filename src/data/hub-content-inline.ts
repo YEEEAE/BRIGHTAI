@@ -514,7 +514,7 @@ export const hub_ai_governance: HubInlineContent = {
           <a href="/services/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white border border-white/15">
             <svg class="icon-briefcase" aria-hidden="true"><use href="/icons.svg#mdi-briefcase-outline"></use></svg> استعرض الخدمات
           </a>
-          <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
+          <a href="/go/whatsapp/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
             <svg class="icon-whatsapp" aria-hidden="true"><use href="/icons.svg#mdi-whatsapp"></use></svg> سؤال على واتساب
           </a>
         </div>
@@ -755,7 +755,7 @@ export const hub_compliance: HubInlineContent = {
       <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#7c5cff,#00d4ff);">
         <svg class="icon-clipboard-check" aria-hidden="true"><use href="/icons.svg#mdi-clipboard-check"></use></svg> احجز جلسة جاهزية الامتثال
       </a>
-      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
+      <a href="/go/whatsapp/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
         <svg class="icon-whatsapp" aria-hidden="true"><use href="/icons.svg#mdi-whatsapp"></use></svg> واتساب فريق الامتثال
       </a>
     </div>
@@ -1233,7 +1233,7 @@ export const hub_use_cases: HubInlineContent = {
       <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#ff5ca7,#7c5cff);">
         <svg class="icon-comments" aria-hidden="true"><use href="/icons.svg#mdi-message-text"></use></svg> كلّمنا عن قطاعك
       </a>
-      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
+      <a href="/go/whatsapp/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
         <svg class="icon-whatsapp" aria-hidden="true"><use href="/icons.svg#mdi-whatsapp"></use></svg> واتساب مباشر
       </a>
     </div>

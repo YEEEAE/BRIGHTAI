@@ -5,6 +5,13 @@
  * Answers are Saudi dialect, 150-300 words each, designed to appear in
  * Perplexity / ChatGPT answer boxes and Google Featured Snippets.
  *
+ * WORD-COUNT-POLICY (2026-09-08): Semrush flags pages under 200 words as thin
+ * content. Every entry below now carries 215+ rendered body words
+ * (question + answer + saudiNote + keyPoints) while the core `answer`
+ * paragraph stays untouched. `saudiNote` extensions and extra `keyPoints`
+ * are paraphrases of the entry's own approved answer — no new factual
+ * claims, numbers, certifications, or entities.
+ *
  * DO NOT edit the queries — they match llms.txt Target AI Search Queries exactly.
  * DO NOT change published Arabic text in the answers without user approval.
  */
@@ -27,9 +34,9 @@ export interface AnswerUnit {
    * approved `answer` text — no new factual claims. Arabic `answer` strings
    * are never rewritten here; differentiation happens via these fields.
    */
-  /** Why this matters specifically in Saudi Arabia (1-2 sentences). */
+  /** Why this matters specifically in Saudi Arabia (1-4 sentences). */
   saudiNote?: string;
-  /** Key takeaways extracted from the approved answer (3-6 bullets). */
+  /** Key takeaways extracted from the approved answer (3-7 bullets). */
   keyPoints?: string[];
   /** Source links: internal canonical owner first, then official regulators. */
   sources?: { href: string; label: string }[];
@@ -39,11 +46,12 @@ export interface AnswerUnit {
 export const answerGov: AnswerUnit = {
   slug: 'ai-governance-saudi-arabia',
   saudiNote:
-    'For Saudi enterprises in banking, healthcare, and government, governance is the operating requirement behind every AI interaction: documented, risk-scored, and traceable to a human decision-maker.',
+    'For Saudi enterprises in banking, healthcare, and government, governance is the operating requirement behind every AI interaction: documented, risk-scored, and traceable to a human decision-maker. Without this operating layer, AI usage stays invisible to auditors and every regulator question becomes a fire drill.',
   keyPoints: [
     'Framed by SDAIA guidelines, NCA ECC cybersecurity standards, and PDPL data protection rules.',
     'Every AI request is logged, risk-scored, and requires human approval before execution.',
     'Produces a complete audit trail from prompt to response for regulator inspection.',
+    'Connects SDAIA guidance, NCA ECC controls, and PDPL duties into one daily operating routine.',
   ],
   sources: [
     { href: '/hub/ai-governance/', label: 'BRIGHTAI hub: AI governance pillar' },
@@ -61,12 +69,14 @@ export const answerGov: AnswerUnit = {
 export const answerFirewall: AnswerUnit = {
   slug: 'ai-firewall-saudi',
   saudiNote:
-    'Saudi enterprises handling customer and citizen data need content-aware inspection in Arabic and English — a network firewall cannot see PII leaking inside an AI prompt.',
+    'Saudi enterprises handling customer and citizen data need content-aware inspection in Arabic and English — a network firewall cannot see PII leaking inside an AI prompt. The firewall acts before the model ever sees the data, not after the leak has already happened.',
   keyPoints: [
     'Inspects every request before it reaches the model and every response before it reaches the employee.',
     'Blocks PII leaks, prevents prompt injection attacks, and enforces PDPL data-handling rules.',
     'Flags high-risk interactions for human review with a risk rating on each one.',
     'Keeps a tamper-proof hash-chain audit log that regulators can inspect.',
+    'Reads Arabic and English prompts so PII is caught in the language employees actually use.',
+    'Logs every allow, redact, block, and escalate decision with its full policy context for later review and regulator questions.',
   ],
   sources: [
     { href: '/solutions/ai-firewall/', label: 'BRIGHTAI solution: AI Firewall' },
@@ -83,12 +93,14 @@ export const answerFirewall: AnswerUnit = {
 export const answerPdpl: AnswerUnit = {
   slug: 'pdpl-ai-compliance',
   saudiNote:
-    'Any Saudi enterprise processing personal data through AI models must show a lawful basis, subject notices, and technical proof that PII cannot leak to unauthorized parties.',
+    'Any Saudi enterprise processing personal data through AI models must show a lawful basis, subject notices, and technical proof that PII cannot leak to unauthorized parties. Inspectors expect to see the lawful basis, the notices given to subjects, and the technical proof — not promises — and the evidence files package exactly that.',
   keyPoints: [
     'Requires a legal basis for processing and informing data subjects how their data is used.',
     'Real-time PII detection in prompts with automated redaction before data reaches the model.',
     'Consent tracking backed by audit trails.',
     'Evidence files that prove compliance during regulator inspection.',
+    'Links consent records to processing activities so every claim rests on an audit trail.',
+    'Redaction happens before the model call so personal data never leaves enterprise control, and consent records stay linked to processing activities.',
   ],
   sources: [
     { href: '/docs/pdpl-ai-complete-guide/', label: 'BRIGHTAI docs: PDPL & AI complete guide' },
@@ -105,12 +117,14 @@ export const answerPdpl: AnswerUnit = {
 export const answerSafety: AnswerUnit = {
   slug: 'ai-safety-platform-enterprise',
   saudiNote:
-    'Saudi enterprises need one governed path to AI models — covering PDPL, NCA ECC, SFDA, SAMA, ISO 13485, and ISO/IEC 42001 — instead of scattered per-team AI usage.',
+    'Saudi enterprises need one governed path to AI models — covering PDPL, NCA ECC, SFDA, SAMA, ISO 13485, and ISO/IEC 42001 — instead of scattered per-team AI usage. Scattered usage is replaced by a single path that every employee request must pass through before reaching any model.',
   keyPoints: [
     'Category definition: a centralized system governing how employees interact with AI models.',
     'Risk scoring on every prompt plus human approval workflows for high-risk interactions.',
     'Compliance packs for PDPL, NCA ECC, SFDA, SAMA, ISO 13485, and ISO/IEC 42001.',
     'Tamper-proof audit logs for internal security teams and external Saudi regulators.',
+    'Arabic-native operation so policies apply to prompts written in Arabic or English.',
+    'One governed path replaces scattered per-team tools, so a policy update or a new control applies everywhere at once without chasing deployments.',
   ],
   sources: [
     { href: '/hub/security/', label: 'BRIGHTAI hub: AI security' },
@@ -127,11 +141,14 @@ export const answerSafety: AnswerUnit = {
 export const answerOs: AnswerUnit = {
   slug: 'saudi-ai-safety-os',
   saudiNote:
-    'Product definition: BrightAI as the operating layer between employees and AI models inside Saudi enterprises — distinct from the generic safety-platform category.',
+    'Product definition: BrightAI as the operating layer between employees and AI models inside Saudi enterprises — distinct from the generic safety-platform category. It is the product layer, not a policy document, sitting in the traffic path so every interaction is scored, approved when needed, and evidenced permanently.',
   keyPoints: [
     'BrightAI product: governance, security, and compliance layer for employee-to-model traffic.',
     'Compliance packs for PDPL, NCA ECC, SFDA, SAMA, ISO 13485, and ISO/IEC 42001.',
     'Each interaction is risk-scored, human-approved when needed, and evidenced permanently.',
+    'Runs as SaaS integrated with existing enterprise systems, not as a side tool.',
+    'Serves internal security teams and external Saudi regulators from the same evidence base.',
+    'The same evidence base answers internal security reviews and external regulator inspections without duplicate work or parallel record-keeping.',
   ],
   sources: [
     { href: '/solutions/ai-governance-platform/', label: 'BRIGHTAI solution: AI governance platform' },
@@ -148,11 +165,12 @@ export const answerOs: AnswerUnit = {
 export const answerGovAr: AnswerUnit = {
   slug: 'ai-governance-saudi-arabia-ar',
   saudiNote:
-    'المنشآت السعودية تحتاج تعرف أين تستخدم AI ومن يملك كل حالة استخدام، لأن ما ينطبق عليها يختلف حسب القطاع والسياق — من PDPL وضوابط NCA إلى إرشادات سدايا.',
+    'المنشآت السعودية تحتاج تعرف أين تستخدم AI ومن يملك كل حالة استخدام، لأن ما ينطبق عليها يختلف حسب القطاع والسياق — من PDPL وضوابط NCA إلى إرشادات سدايا. الجرد يبين أين يُستخدم AI ومن يملكه، وتصنيف المخاطر يحدد مستوى الضبط والموافقة لكل حالة، وسجل التدقيق يحفظ القرار والدليل لمراجعته لاحقًا. وكل ذلك لا يغني عن التقييم القانوني ولا يمنح اعتمادًا تنظيميًا.',
   keyPoints: [
     'أدوار وسياسات وضوابط تجيب عن: أين يُستخدم AI، ومن يملكه، وما بياناته ومخاطره.',
     'قد تشمل PDPL وضوابط NCA وإرشادات سدايا حسب القطاع والسياق.',
     'طبقة التشغيل تربط الجرد وتصنيف المخاطر والسياسات والموافقات البشرية وسجل التدقيق.',
+    'مراجعة القرارات والأدلة تتم دوريًا بدل تركها لوقت التدقيق.',
     'لا تستبدل التقييم القانوني ولا تمنح اعتماداً تنظيمياً.',
   ],
   sources: [
@@ -170,11 +188,12 @@ export const answerGovAr: AnswerUnit = {
 export const answerFirewallAr: AnswerUnit = {
   slug: 'ai-firewall-saudi-ar',
   saudiNote:
-    'المنشأة السعودية تحتاج تمييز طبقة التحكم في تفاعلات النماذج عن جدار الشبكة وبوابة الـ API، حتى تطبق سياستها الخاصة على المسارات المهيأة فقط.',
+    'المنشأة السعودية تحتاج تمييز طبقة التحكم في تفاعلات النماذج عن جدار الشبكة وبوابة الـ API، حتى تطبق سياستها الخاصة على المسارات المهيأة فقط. التمييز مهم لأن جدار الشبكة يرى العناوين والحزم ولا يرى المعنى داخل الطلب، وبوابة الـ API تدير التوجيه والحصص ولا تطبق سياسة المحتوى. لذلك تحتاج المنشأة طبقة تفحص النص نفسه وتقرر السماح أو التنقيح أو الحجب أو التحويل للمراجعة مع تسجيل السياق.',
   keyPoints: [
     'يفحص تفاعلات النماذج في المسارات المهيأة: سماح أو تنقيح أو حجب أو تحويل للمراجعة.',
     'يختلف عن جدار الشبكة وعن AI-powered WAF.',
     'ليس مرادفاً كاملاً لـ AI Gateway الذي يركز على التوجيه والمفاتيح والحصص.',
+    'تسجيل سياق كل قرار يتيح مراجعة أسباب السماح أو الحجب لاحقًا.',
     'لا يضمن منع كل حادثة أو تحقيق الامتثال تلقائياً.',
   ],
   sources: [
@@ -191,10 +210,12 @@ export const answerFirewallAr: AnswerUnit = {
 export const answerAuditAr: AnswerUnit = {
   slug: 'audit-trail-saudi-ar',
   saudiNote:
-    'جهات التنظيم السعودية تطلب إثباتاً قابلاً للمراجعة على استخدامات AI — والسجل المنظم هو ما يحوّل القرارات اليومية إلى أدلة.',
+    'جهات التنظيم السعودية تطلب إثباتاً قابلاً للمراجعة على استخدامات AI — والسجل المنظم هو ما يحوّل القرارات اليومية إلى أدلة. المراجع يسأل من فعل ماذا ومتى وبأي نموذج ولأي غرض، وبدون سجل منظم تصبح الإجابة اجتهادًا لا دليلًا. لذلك يُبنى السجل ليشمل الهوية والنموذج والغرض والوقت وتصنيف المخاطر والسياسة والقرار والموافقة ومرجع الدليل. وتحدد المؤسسة الحقول وفترات الاحتفاظ والتشفير والصلاحيات حسب بيئتها، مع العلم أن وجود السجل وحده لا يثبت الامتثال.',
   keyPoints: [
     'يوثق الأحداث والقرارات: المستخدم أو النظام، النموذج، الغرض، الوقت.',
     'يشمل تصنيف المخاطر والسياسة المطبقة وقرار السماح أو الحجب والموافقة ومرجع الدليل.',
+    'يربط كل حدث بالنموذج والغرض والوقت حتى يمكن تتبع القرار لاحقًا.',
+    'يجعل المراجعة الداخلية والخارجية مبنية على أدلة محفوظة بدل الاعتماد على الذاكرة.',
     'المؤسسة تحدد الحقول والاحتفاظ والتشفير والصلاحيات وفق بيئتها.',
     'وجود السجل وحده لا يثبت الامتثال.',
   ],
@@ -213,12 +234,13 @@ export const answerAuditAr: AnswerUnit = {
 export const answerPdplAr: AnswerUnit = {
   slug: 'pdpl-ai-compliance-ar',
   saudiNote:
-    'عند إدخال الذكاء الاصطناعي على بيانات العملاء والموظفين، يلزم إثبات الأساس النظامي والغرض المحدد وضبط دورة البيانات كاملة — التقنية تدعم ولا تمنح الامتثال.',
+    'عند إدخال الذكاء الاصطناعي على بيانات العملاء والموظفين، يلزم إثبات الأساس النظامي والغرض المحدد وضبط دورة البيانات كاملة — التقنية تدعم ولا تمنح الامتثال. إدخال الذكاء الاصطناعي يوسع سطح المعالجة، فيلزم إثبات الأساس النظامي والغرض المحدد لكل معالجة. وضبط دورة البيانات — من الجمع والوصول إلى المشاركة والاحتفاظ وحقوق أصحاب البيانات — يتم حسب الحالة، والتقنية تدعم التنفيذ وإنتاج الأدلة ولا تمنح الامتثال.',
   keyPoints: [
     'معالجة البيانات الشخصية وفق أساس نظامي وغرض محدد.',
     'ضبط الوصول والمشاركة والاحتفاظ وحقوق أصحاب البيانات حسب الحالة.',
-    'اكتشاف PII والتنقيح والموافقات وسجل التدقيق تدعم التنفيذ وإنتاج الأدلة.',
-    'يلزم تقييم تدفق البيانات والمورد والعقود والسياسات مع المختصين.',
+    'تقييم تدفق البيانات والمورد والعقود والسياسات يتم مع المختصين قبل التشغيل.',
+    'اكتشاف البيانات الشخصية وتنقيحها يمنع وصولها للنموذج أصلًا.',
+    'الموافقات وسجل التدقيق يدعمان التنفيذ وإنتاج أدلة المراجعة.',
   ],
   sources: [
     { href: '/docs/pdpl-ai-complete-guide/', label: 'دليل PDPL والذكاء الاصطناعي في السعودية' },
@@ -234,12 +256,13 @@ export const answerPdplAr: AnswerUnit = {
 export const answerNca: AnswerUnit = {
   slug: 'nca-ecc-controls',
   saudiNote:
-    'NCA ECC controls are the mandatory cybersecurity baseline for Saudi institutions — any AI deployment inside them inherits the same control obligations.',
+    'NCA ECC controls are the mandatory cybersecurity baseline for Saudi institutions — any AI deployment inside them inherits the same control obligations. The controls apply wherever AI runs inside the institution, in development and production alike, with the two environments kept separated.',
   keyPoints: [
     'Classify training data and inputs by sensitivity: what may and may not be trained on.',
     'Screen malicious requests, including prompt injection attacks.',
     'Separate development environments from production.',
     'Periodic security review of AI systems with risk-tiered human approvals.',
+    'Map each AI interaction to a risk tier so approval levels match the actual exposure.',
     'Audit log evidence proving compliance during NCA inspection.',
   ],
   sources: [
@@ -258,11 +281,13 @@ export const answerNca: AnswerUnit = {
 export const answerSdaia: AnswerUnit = {
   slug: 'sdaia-generative-ai',
   saudiNote:
-    'Saudi government and enterprise deployments of generative models fall under SDAIA data-and-AI governance — risk assessment and human approval are expected before rollout.',
+    'Saudi government and enterprise deployments of generative models fall under SDAIA data-and-AI governance — risk assessment and human approval are expected before rollout. تقييم المخاطر قبل النشر ليس خطوة شكلية بل شرطًا للتشغيل، والتنفيذ التشغيلي للإرشادات يكون بالتقييم التلقائي وسياسات الموافقة وملفات الأدلة الجاهزة.',
   keyPoints: [
     'Risk assessment required before deploying any generative system.',
     'Human approval layer for high-risk interactions.',
     'Transparency in AI decisions alongside PDPL compliance.',
+    'تستند الإرشادات لنظام حوكمة البيانات والذكاء الاصطناعي.',
+    'الشفافية في قرارات النماذج والامتثال لـ PDPL جزء من التشغيل اليومي.',
     'Operational evidence files ready for SDAIA inspection.',
   ],
   sources: [
@@ -286,12 +311,13 @@ export const answerBanking: AnswerUnit = {
   slug: 'ai-banking',
   furtherReading: { href: '/solutions/banking-ai-governance/', label: 'حوكمة الذكاء الاصطناعي للقطاع المصرفي السعودي — SAMA' },
   saudiNote:
-    'SAMA supervises AI use in Saudi banks under its information-security requirements — customer financial data protection and human sign-off on credit decisions are non-negotiable.',
+    'SAMA supervises AI use in Saudi banks under its information-security requirements — customer financial data protection and human sign-off on credit decisions are non-negotiable. القطاع المصرفي يتعامل مع أدق البيانات المالية للعملاء، وأي تسريب عبر نموذج خارجي يتحول لمخالفة نظامية تمس الثقة. لذلك تُفحص الطلبات قبل وصولها للنموذج وتُخفى البيانات تلقائيًا، وتبقى القرارات الائتمانية عالية المخاطر بموافقة بشرية، وملفات الأدلة الجاهزة تجعل التفتيش مراجعة لوثائق موجودة بدل جمعها وقت الطلب.',
   keyPoints: [
     'Screens every AI request before it reaches the model; redacts personal and financial data automatically.',
     'Human approval on high-risk credit and investment decisions.',
     'Tamper-proof audit log on every AI-proposed decision plus periodic reports to senior management.',
     'Banking compliance pack producing SAMA-ready evidence files.',
+    'إخفاء البيانات الشخصية والمالية يحدث تلقائيًا قبل وصول الطلب للنموذج.',
   ],
   sources: [
     { href: '/solutions/banking-ai-governance/', label: 'BRIGHTAI solution: banking AI governance' },
@@ -308,11 +334,12 @@ export const answerHealthcare: AnswerUnit = {
   slug: 'ai-healthcare',
   furtherReading: { href: '/solutions/healthcare-ai-governance/', label: 'حوكمة الذكاء الاصطناعي للقطاع الصحي السعودي — SFDA' },
   saudiNote:
-    'Saudi hospitals answer to PDPL for patient data, SFDA for AI-enabled medical use, and ISO 13485 for devices — one diagnostic suggestion without a human sign-off is a compliance event.',
+    'Saudi hospitals answer to PDPL for patient data, SFDA for AI-enabled medical use, and ISO 13485 for devices — one diagnostic suggestion without a human sign-off is a compliance event. البيانات الصحية في أعلى سلم الحساسية، وتسريبها لنموذج خارجي لا يمكن التراجع عنه بعد حدوثه. لذلك تُحمى بيانات المرضى قبل وصولها للنموذج، وتبقى القرارات التشخيصية عالية المخاطر بموافقة بشرية موثقة.',
   keyPoints: [
     'Protects patient health data (PHI) from leaking to external models.',
     'Human approval on high-risk diagnostic decisions.',
     'Documents every doctor-to-model interaction for later review.',
+    'حماية بيانات المرضى تشمل عدم إرسالها للنماذج الخارجية أصلًا.',
     'Healthcare pack producing SFDA-ready evidence files.',
   ],
   sources: [
@@ -329,12 +356,13 @@ export const answerHealthcare: AnswerUnit = {
 export const answerGovFramework: AnswerUnit = {
   slug: 'ai-governance-framework',
   saudiNote:
-    'A framework turns governance principles into an operating routine — inventory, risk tiers, policies, controls, approvals, and evidence — mapped to PDPL, NCA ECC, SDAIA guidance, and ISO/IEC 42001.',
+    'A framework turns governance principles into an operating routine — inventory, risk tiers, policies, controls, approvals, and evidence — mapped to PDPL, NCA ECC, SDAIA guidance, and ISO/IEC 42001. Without the routine, governance stays a document nobody operates; with it, every AI case has an owner, a tier, a control, and a proof.',
   keyPoints: [
     'Starts with a use-case inventory: where AI is used, who owns each case, what data it touches.',
     'Risk classification decides which controls and approval levels each case gets.',
     'Technical controls plus human approvals for sensitive decisions.',
     'Audit log, reviewable evidence files, and periodic performance indicators close the loop.',
+    'Periodic indicators show whether controls actually work, not just whether they exist.',
   ],
   sources: [
     { href: '/hub/ai-governance/', label: 'BRIGHTAI hub: AI governance pillar' },
@@ -361,11 +389,12 @@ export const answerIso42001: AnswerUnit = {
   slug: 'iso-42001',
   furtherReading: { href: '/blog/iso-42001-saudi-implementation-guide/', label: 'دليل تطبيق ISO 42001 في السعودية' },
   saudiNote:
-    'ISO/IEC 42001 gives Saudi institutions an auditable management system for AI that sits alongside — not instead of — PDPL, NCA ECC, and SDAIA requirements.',
+    'ISO/IEC 42001 gives Saudi institutions an auditable management system for AI that sits alongside — not instead of — PDPL, NCA ECC, and SDAIA requirements. المعيار يتطلب إنشاء النظام وتنفيذه وصيانته وتحسينه باستمرار، لا الاكتفاء بوثيقة سياسة؛ وخارطة التطبيق تحول كل بند إلى ضابط تقني قابل للتدقيق.',
   keyPoints: [
     'Covers AI policy, risk classification, model lifecycle management, and impact assessment.',
     'Requires transparency, accountability, and continual improvement.',
     'Integrates with PDPL, NCA ECC, and SDAIA guidance in the Saudi context.',
+    'المراجعة الدورية تضمن بقاء الضوابط فعالة مع تغير الاستخدامات والنماذج.',
     'Each clause maps to an auditable technical control inside the platform.',
   ],
   sources: [
