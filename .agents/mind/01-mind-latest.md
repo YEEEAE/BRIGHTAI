@@ -1,3 +1,34 @@
+## [2026-09-08] — إصلاح Semrush: Low word count على 4 صفحات (ثلاث /answer/* + /blog/)
+
+### تم التنفيذ
+- شخصت الجذر: أرقام Semrush (199/187/195/174) تطابق زحفًا سابقًا لآخر الـ deploys — جرّبت الحي مقابل البناء المحلي ووجدت أن iso-42001 و/blog/ أصلحا مسبقًا في commit `c537f46a` (2026-09-08 05:49: سطر WORD-COUNT-POLICY الأول + PAGE_SIZE 9→100) ووصل الإنتاج، لكن Semrush زحف قبلها، وpdpl-ai-compliance-ar بقي محليًا عند 213 كلمة فقط (فارق 13 عن حد 200) — خطر رجوع التقرير.
+- عايرت عدّاد Semrush بمقارنة الصفحة القديمة المبنية محليًا (~196) مع رقم Semrush (199) → فرق ±2%، فأصبح عدّاد السكربت مصدر قرار موثوق.
+- وسّعت `pdpl-ai-compliance-ar` (213→258) و`sdaia-generative-ai` (235→286) في `src/data/answers.ts`: جملة إضافية في `saudiNote` + keyPoints إضافية — كلها إعادة صياغة من جواب الصفحة الموثق نفسه، بلا ادعاءات واقعية جديدة، وبدون مساس بفقرة `answer` المنشورة (نفس قاعدة WORD-COUNT-POLICY).
+- أضفت سكربت رقابة انحدارية `scripts/qa/check-word-count.mjs` يقيس كلمات الـ HTML المبني (strip script/style/svg) لكل الصفحات المرصودة مع حد أدنى 230/280، وخرجه PASS/FAIL.
+- أنشأت CSV export موثق للقضية: قبل/بعد + الإصلاح + الخطوة التالية (recrawl بعد النشر).
+- تحقق من الـ HTML المبني: H1 واحد وصفر heading skips وindex,follow في الصفحات الأربع، والنصان الجديدان حاضران.
+
+### الملفات المتأثرة
+- `src/data/answers.ts` (توسعة pdpl-ai-compliance-ar + sdaia-generative-ai + تحديث تعليق السياسة)
+- `scripts/qa/check-word-count.mjs` (جديد — رقابة انحدارية)
+- `audit/keyword/BRIGHTAI-SEMURSH-LOW-WORD-COUNT-2026-09-08.csv` (جديد — export)
+
+### التحقق
+- `pnpm build` ✅ exit 0 — `node scripts/qa/check-word-count.mjs` ✅ 4/4 PASS: 230 / 258 / 286 / 3719
+- `pnpm test` ✅ 38/38
+- فحص HTML مبني ✅ (h1×1، لا تخطي عناوين، noindex=false، النصوص الجديدة موجودة)
+- جرّب سابقًا خلال الجلسة: مقارنة الحي (brightai.live) مع البناء المحلي ✅ — النسخة الحية محدثة
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** كل الصفحات الأربع فوق حد الـ 200 كلمة بهامش أمان (230–3719). التقرير يتصفر في Semrush بعد commit المستخدم ونشره ثم زحف Semrush التالي أو زر RECRAWL PAGE(S) — أدوات recrawl/ignore أزرار واجهة Semrush، والتوكن الحالي لا يملك صلاحية Site Audit API (موثق 2026-09-04).
+
+### ملاحظات / مشاكل مفتوحة
+- خطوات المستخدم: commit → push → deploy → RECRAWL PAGE(S) في Semrush للصفحات الأربع. IGNORE **غير موصى به** — الصفحات فهرسية والإصلاح حقيقي.
+- سكربت `check-word-count.mjs` لا يدخل ضمن pnpm test بعد؛ إضافته للـ CI تُترك لقرار المالك.
+- لا push ولا commit — على المستخدم.
+
+
 ## [2026-09-08] — إصلاح Semrush: 91 صفحة Poor heading hierarchy (تخطي H1→H3 و H2→H4)
 
 ### تم التنفيذ

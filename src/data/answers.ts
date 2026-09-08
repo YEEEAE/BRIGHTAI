@@ -6,11 +6,16 @@
  * Perplexity / ChatGPT answer boxes and Google Featured Snippets.
  *
  * WORD-COUNT-POLICY (2026-09-08): Semrush flags pages under 200 words as thin
- * content. Every entry below now carries 215+ rendered body words
+ * content. Every entry below now carries 230+ rendered body words
  * (question + answer + saudiNote + keyPoints) while the core `answer`
  * paragraph stays untouched. `saudiNote` extensions and extra `keyPoints`
  * are paraphrases of the entry's own approved answer — no new factual
  * claims, numbers, certifications, or entities.
+ * SECOND PASS (2026-09-08, evening): live-crawl calibration showed
+ * Semrush's counter ≈ scripts/qa/check-word-count.mjs (±2%). Entries
+ * pdpl-ai-compliance-ar and sdaia-generative-ai sat too close to the
+ * 200-word threshold; both extended further (same paraphrase-only rule).
+ * Regression guard: `node scripts/qa/check-word-count.mjs` (min 200/word).
  *
  * DO NOT edit the queries — they match llms.txt Target AI Search Queries exactly.
  * DO NOT change published Arabic text in the answers without user approval.
@@ -234,13 +239,14 @@ export const answerAuditAr: AnswerUnit = {
 export const answerPdplAr: AnswerUnit = {
   slug: 'pdpl-ai-compliance-ar',
   saudiNote:
-    'عند إدخال الذكاء الاصطناعي على بيانات العملاء والموظفين، يلزم إثبات الأساس النظامي والغرض المحدد وضبط دورة البيانات كاملة — التقنية تدعم ولا تمنح الامتثال. إدخال الذكاء الاصطناعي يوسع سطح المعالجة، فيلزم إثبات الأساس النظامي والغرض المحدد لكل معالجة. وضبط دورة البيانات — من الجمع والوصول إلى المشاركة والاحتفاظ وحقوق أصحاب البيانات — يتم حسب الحالة، والتقنية تدعم التنفيذ وإنتاج الأدلة ولا تمنح الامتثال.',
+    'عند إدخال الذكاء الاصطناعي على بيانات العملاء والموظفين، يلزم إثبات الأساس النظامي والغرض المحدد وضبط دورة البيانات كاملة — التقنية تدعم ولا تمنح الامتثال. إدخال الذكاء الاصطناعي يوسع سطح المعالجة، فيلزم إثبات الأساس النظامي والغرض المحدد لكل معالجة. وضبط دورة البيانات — من الجمع والوصول إلى المشاركة والاحتفاظ وحقوق أصحاب البيانات — يتم حسب الحالة، والتقنية تدعم التنفيذ وإنتاج الأدلة ولا تمنح الامتثال. والامتناع عن اعتبار التقنية حلًا مغلقًا هو جوهر الموضوع: الأدلة تُبنى من التشغيل اليومي — القرارات الموثقة والموافقات وسجل التدقيق — لتكون جاهزة عند أي مراجعة بدل جمعها على عجل.',
   keyPoints: [
     'معالجة البيانات الشخصية وفق أساس نظامي وغرض محدد.',
     'ضبط الوصول والمشاركة والاحتفاظ وحقوق أصحاب البيانات حسب الحالة.',
-    'تقييم تدفق البيانات والمورد والعقود والسياسات يتم مع المختصين قبل التشغيل.',
+    'التقييم يسبق التشغيل: تدفق البيانات والمورد والعقود والسياسات تُراجع مع المختصين قبل أول استخدام.',
     'اكتشاف البيانات الشخصية وتنقيحها يمنع وصولها للنموذج أصلًا.',
     'الموافقات وسجل التدقيق يدعمان التنفيذ وإنتاج أدلة المراجعة.',
+    'الأدلة تُنتج من التشغيل اليومي بدل تركيبها وقت التدقيق.',
   ],
   sources: [
     { href: '/docs/pdpl-ai-complete-guide/', label: 'دليل PDPL والذكاء الاصطناعي في السعودية' },
@@ -281,11 +287,13 @@ export const answerNca: AnswerUnit = {
 export const answerSdaia: AnswerUnit = {
   slug: 'sdaia-generative-ai',
   saudiNote:
-    'Saudi government and enterprise deployments of generative models fall under SDAIA data-and-AI governance — risk assessment and human approval are expected before rollout. تقييم المخاطر قبل النشر ليس خطوة شكلية بل شرطًا للتشغيل، والتنفيذ التشغيلي للإرشادات يكون بالتقييم التلقائي وسياسات الموافقة وملفات الأدلة الجاهزة.',
+    'Saudi government and enterprise deployments of generative models fall under SDAIA data-and-AI governance — risk assessment and human approval are expected before rollout. تقييم المخاطر قبل النشر ليس خطوة شكلية بل شرطًا للتشغيل، والتنفيذ التشغيلي للإرشادات يكون بالتقييم التلقائي وسياسات الموافقة وملفات الأدلة الجاهزة. الالتزام يعني أن هذه المتطلبات تصبح روتينًا يوميًا موثقًا لا سياسة متروكة على الورق، وكل قرار توليدي يترك أثرًا قابلًا للمراجعة.',
   keyPoints: [
     'Risk assessment required before deploying any generative system.',
     'Human approval layer for high-risk interactions.',
     'Transparency in AI decisions alongside PDPL compliance.',
+    'التقييم التلقائي لكل طلب يجعل تقييم المخاطر ممارسة مستمرة لا حدثًا لمرة واحدة.',
+    'ملفات الأدلة تُنتج أثناء التشغيل اليومي لتكون جاهزة عند التفتيش.',
     'تستند الإرشادات لنظام حوكمة البيانات والذكاء الاصطناعي.',
     'الشفافية في قرارات النماذج والامتثال لـ PDPL جزء من التشغيل اليومي.',
     'Operational evidence files ready for SDAIA inspection.',
