@@ -11,7 +11,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'en-SA' },
 ]};
 ---
-<EnglishLayout title="BrightAI DPA | Saudi Clients" description="BrightAI data processing agreement for Saudi clients: roles, safeguards, and commitments for AI governance services. Review our DPA terms." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'Data Processing Agreement', href: '/en/data-processing-agreement/' }]}>
+<EnglishLayout title="BrightAI Data Processing Agreement (DPA) for Saudi Clients" description="BrightAI data processing agreement for Saudi clients: roles, safeguards, and commitments for AI governance services. Review our DPA terms." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'Data Processing Agreement', href: '/en/data-processing-agreement/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">

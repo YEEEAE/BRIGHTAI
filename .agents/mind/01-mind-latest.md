@@ -1,3 +1,43 @@
+## [2026-09-08] — إصلاح Semrush: 6 صفحات بعناوين <title> قصيرة جدًا
+
+### تم التنفيذ
+- وسّعت 6 عناوين <title> من نطاق 25–29 حرفًا (Semrush: قصير < 30) إلى نطاق 37–58 حرفًا ضمن حد الـ 60 حرفًا الموثق في العقل (2026-09-08، سجل العناوين الطويلة)، مع الحفاظ على نمط `... | BrightAI` وكلمات مفتاحية سعودية (حوكمة، الذكاء الاصطناعي، السعودية، DPA).
+  - `/404/` 29→37: «خطأ 404: الصفحة غير موجودة | BrightAI»
+  - `/en/data-processing-agreement/` 28→58: «BrightAI Data Processing Agreement (DPA) for Saudi Clients»
+  - `/en/terms/` 25→51: «BrightAI Terms of Service for AI Governance Clients»
+  - `/hub/` 29→52: «مراكز محتوى AI المرجعية للحوكمة والامتثال | BrightAI»
+  - `/partners/` 25→58: «برنامج شراكة حوكمة الذكاء الاصطناعي في السعودية | BrightAI»
+  - `/referral/` 26→48: «برنامج الإحالة والمكافآت من BrightAI في السعودية»
+- وثّقت عناوين JSON-LD `name` المرتبطة بالعناوين القديمة في نفس الملفات (WebPage/CollectionPage) لتطابق الجديدة — بدون مساس بأوصاف أو schema أنواع أخرى.
+- تحققت أن `scripts/seo-data.json` (snapshot زحف قديم) غير مستخدم من أي سكربت build/CI فلم يُعدّل، ولا يوجد اختبار مربوط بالعناوين القديمة حرفيًا.
+- أنشأت CSV export للقضية: العنوان قبل/بعد + الطول + الإصلاح + الخطوة التالية.
+
+### الملفات المتأثرة
+- `src/pages/404.astro`
+- `src/pages/en/data-processing-agreement/index.astro`
+- `src/pages/en/terms/index.astro`
+- `src/pages/hub/index.astro`
+- `src/pages/partners/index.astro`
+- `src/pages/referral/index.astro`
+- `audit/keyword/BRIGHTAI-SEMURSH-SHORT-TITLE-2026-09-08.csv` (جديد — export)
+
+### التحقق
+- `pnpm build` ✅ exit 0
+- فحص `<title>` في HTML المبني ✅ — الأطوال: 37 / 58 / 51 / 52 / 58 / 48 (كلها 30–60) وnoindex=false في الست
+- `pnpm seo:gate` ✅ — 0 أخطاء 0 تحذيرات
+- `pnpm test` ✅ — 0 فشل (16+29 pass، 83 ok)
+- `pnpm seo:hreflang` — 4 مخالفات **موجودة مسبقًا** على `/500/` و`/go/whatsapp/` (canonical-mismatch + missing-xdefault) وغير مرتبطة بصفحات هذه المهمة؛ شجرة العمل فيها الملفات الست فقط معدلة
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** الصفحات الست صارت بعناوين 37–58 حرفًا ضمن حدود Semrush (30–60). التقرير يتصفر بعد commit المستخدم ونشره ثم زر RECRAWL PAGE(S) — أزرار recrawl/ignore واجهة Semrush ولا صلاحية Site Audit API بالتوكن (موثق 2026-09-04).
+
+### ملاحظات / مشاكل مفتوحة
+- خطوات المستخدم: commit → push → deploy → RECRAWL PAGE(S) في Semrush للصفحات الست. IGNORE **غير موصى به** — الإصلاح حقيقي والصفحات فهرسية (404 تُحل عادة تلقائيًا بعد إعادة الزحف).
+- مخالفات hreflang الأربع على `/500/` و`/go/whatsapp/` ما زالت مفتوحة — مشكلة مستقلة تحتاج مهمة منفصلة.
+- لا push ولا commit — على المستخدم.
+
+
 ## [2026-09-08] — إصلاح Semrush: Low word count على 4 صفحات (ثلاث /answer/* + /blog/)
 
 ### تم التنفيذ
