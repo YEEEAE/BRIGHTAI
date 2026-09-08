@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-08",
+  "files": {
+    "project-audit.md": {
+      "exists": true,
+      "bytes": 4312
+    },
+    "page-inventory.csv": {
+      "exists": true,
+      "bytes": 50713
+    },
+    "keywords-sa-ar.csv": {
+      "exists": true,
+      "bytes": 47719
+    },
+    "keywords-sa-ar.xlsx": {
+      "exists": true,
+      "bytes": 27065
+    },
+    "topical-authority-strategy.md": {
+      "exists": true,
+      "bytes": 2232
+    },
+    "internal-linking-plan.csv": {
+      "exists": true,
+      "bytes": 5869
+    },
+    "content-briefs.md": {
+      "exists": true,
+      "bytes": 2077
+    },
+    "roadmap-90-days.csv": {
+      "exists": true,
+      "bytes": 3529
+    },
+    "methodology-and-limitations.md": {
+      "exists": true,
+      "bytes": 1876
+    }
+  },
+  "raw": [
+    "build-state.json",
+    "github-audit-evidence.md",
+    "official-regulatory-sources.csv",
+    "semrush-request-log.jsonl",
+    "semrush-schema-notes.json",
+    "xlsx-validation.txt"
+  ]
+}

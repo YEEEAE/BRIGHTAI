@@ -1,0 +1,13 @@
+SHEETS
+{"kind":"sheet","id":"ws/9jn7so","name":"جميع الكلمات","index":0,"range":"A1:X80","address":"A1:X80"}
+{"kind":"sheet","id":"ws/hmodkc","name":"الأعلى بحثًا","index":1,"range":"A1:D4","address":"A1:D4"}
+{"kind":"sheet","id":"ws/x5sila","name":"أفضل الفرص","index":2,"range":"A1:H33","address":"A1:H33"}
+{"kind":"sheet","id":"ws/9a936l","name":"العناقيد","index":3,"range":"A1:G13","address":"A1:G13"}
+{"kind":"sheet","id":"ws/wxezsr","name":"ربط الصفحات","index":4,"range":"A1:G13","address":"A1:G13"}
+{"kind":"sheet","id":"ws/dcgo8w","name":"المستبعدات","index":5,"range":"A1:E12","address":"A1:E12"}
+
+ERROR SCAN
+{"kind":"notice","message":"Cell search matched 0 entries."}
+
+SAMPLE
+{"kind":"table","sheet":"أفضل الفرص","address":"A1:H12","rows":12,"cols":8,"values":[["الترتيب أولي فقط؛ يعاد حسابه بعد Volume/KD/SERP.",null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],["keyword","cluster_id","business_relevance","preliminary_priority_score","data_completeness","target_url","proposed_action","status"],["تقييم جاهزية حوكمة الذكاء الاصطناعي","C07","100","98.5","65%","/assessment/ai-governance-readiness/","update","Semrush pending"],["منصة حوكمة الذكاء الاصطناعي","C01","100","97.7","65%","/solutions/ai-governance-platform/","update","Semrush pending"],["AI Firewall","C02","100","97.7","65%","/solutions/ai-firewall/","update","Semrush pending"],["تقييم جاهزية الذكاء الاصطناعي للشركات","C07","100","97.7","65%","/assessment/ai-governance-readiness/","update","Semrush pending"],["جدار حماية الذكاء الاصطناعي","C02","100","97.3","65%","/solutions/ai-firewall/","update","Semrush pending"],["سعر منصة حوكمة الذكاء الاصطناعي","C12","98","97.2","65%","/pricing/","update","Semrush pending"],["نظام حوكمة الذكاء الاصطناعي","C01","100","96.9","65%","/solutions/ai-governance-platform/","update","Semrush pending"],["حوكمة الذكاء الاصطناعي في البنوك","C08","100","96.9","65%","/solutions/banking-ai-governance/","update","Semrush pending"],["حوكمة AI للبنوك السعودية","C08","100","96.9","65%","/solutions/banking-ai-governance/","update","Semrush pending"]]}

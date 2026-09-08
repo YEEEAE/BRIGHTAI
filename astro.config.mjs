@@ -120,7 +120,10 @@ function injectSecurityMeta() {
             /\s(?:itemscope|itemtype|itemprop)(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi,
             '',
           );
-          const newHtml = withoutLegacyMicrodata.replace('</head>', `${metaBlock}</head>`);
+          let newHtml = withoutLegacyMicrodata.replace('</head>', `${metaBlock}</head>`);
+          // BAI-RATIO-001: Strip non-essential HTML comments to improve Text-to-HTML ratio for search engine crawlers
+          newHtml = newHtml.replace(/<!--(?!\[if|brightai-security-meta|\/brightai-security-meta).*?-->/gs, '');
+          newHtml = newHtml.replace(/>\s{2,}</g, '> <');
           writeFileSync(file, newHtml, 'utf-8');
           totalInjected += 1;
         }

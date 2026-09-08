@@ -1,0 +1,17 @@
+﻿week,work,page_or_cluster,priority,responsible_role,effort,dependencies,acceptance_criteria,measurement
+1,Review all case-study claims; prove or relabel as hypothetical,/customers/*,P0,Product Marketing + Legal/Compliance reviewer,L,Owner approval + evidence,No client/metric/testimonial without reviewable source,Unsupported claims count
+1,Correct NCA ECC count to 108 controls + 92 subcontrols and audit reused references,NCA/Government content,P0,Compliance reviewer + Content editor,M,Official ECC-2:2024,All counts match official current source,Regulatory factual errors
+2,"Create claim-evidence register: hosting, Made in Saudi, deployment timelines, 24h, packs, SLA, signing",Sitewide,P0,Product owner + Compliance,M,Operational/contracts evidence,"Every claim is sourced, bounded, or removed",Claim evidence coverage
+2,Run independent production crawl when environment access is available,Sitewide,P0,Technical SEO,M,Live site access,HTTP/canonical/indexability matched against source/build,Indexable URLs; 4xx/5xx; canonicals
+3,Clean IA and legacy labels in HTML sitemap/navigation,/sitemap/ + navigation,P1,SEO + Product Marketing,M,Approved offer map,No internal label promotes an unproven/non-current offer,Legacy-label count
+3,Reposition services hub around governance/safety core,/services/,P1,SEO strategist + Product owner,M,Offer map,"Hub supports, not competes with, governance platform page",Query-page alignment
+4,Upgrade core governance platform page with product proof and limits,/solutions/ai-governance-platform/,P1,Content + Product SME + SEO,L,Screenshots/traces/architecture,Commercial page complete without unsupported claims,Qualified assessment/demo conversions
+5,Upgrade AI Firewall + precise DLP/WAF/Gateway comparison,C02,P1,Security SME + Content + SEO,L,Threat model + product evidence,Coverage and limitations are explicit,Nonbrand visibility + assisted conversions
+6,Unify Shadow AI / Risk Register / Risk Classification intent map,C03,P1,SEO + Risk SME,L,Semrush SERP after cap,One owner page per intent,Cannibalization count
+7,Add original proof to Audit/Evidence/Human Approval,C04/C05,P1,Product SME + Compliance + Content,L,Redacted product samples,Published evidence artifacts with boundaries,Engagement + CTA rate
+8,Re-audit NCA/PDPL/SDAIA/ISO cluster against official sources,C06,P1,Compliance reviewer + SEO editor,L,Official sources,Every regulatory claim dated/sourced,Regulatory error count
+9,Evaluate six city pages: keep/merge/noindex using demand + local evidence,6 city pages,P1,SEO strategist + Business owner,M,Semrush/GSC + service evidence,Documented decision per page,City impressions + qualified leads
+10,Publish/update first three support pieces from validated clusters,Top support content,P2,Content editor + SME,L,Core pillars finished,Each piece has independent intent and one revenue owner page,Cluster impressions/clicks
+11,Publish/update next three support pieces + internal links,Support content + linking,P2,Content + SEO,L,QA,No orphan commercial pages; links natural,Orphan count; click depth
+12,Optimize Assessment/Pricing/Contact for buying objections and measurement,Conversion pages,P1,CRO + Product Marketing + Analytics,M,Event tracking,Trackable Assessment→Pilot→Enterprise path,Qualified conversion rate
+13,90-day measurement and reprioritization,All clusters,P1,SEO lead + Analytics owner,M,GSC/Analytics/Semrush if available,Baseline vs current with no guaranteed-rank claims,Nonbrand clicks; qualified leads; index coverage

@@ -1,0 +1,8 @@
+{"ts": "2026-09-08", "action": "keyword_research.discovery", "status": "success", "execute_report": false}
+{"ts": "2026-09-08", "action": "competitors_research.discovery", "status": "success", "execute_report": false}
+{"ts": "2026-09-08", "action": "get_report_schema", "report": "phrase_these", "status": "success", "execute_report": false}
+{"ts": "2026-09-08", "action": "get_report_schema", "report": "phrase_related", "status": "success", "execute_report": false}
+{"ts": "2026-09-08", "action": "get_report_schema", "report": "phrase_questions", "status": "success", "execute_report": false}
+{"ts": "2026-09-08", "action": "get_report_schema", "report": "phrase_kdi", "status": "success", "database_sa_supported": true, "execute_report": false}
+{"ts": "2026-09-08", "action": "get_report_schema", "report": "domain_organic_organic", "status": "success", "database_sa_supported": true, "execute_report": false}
+{"ts": "2026-09-08", "action": "execute_report", "status": "NOT_CALLED", "reason": "No approved API-unit cap; connector exposes no separate balance/cost preflight tool.", "execute_report": false}

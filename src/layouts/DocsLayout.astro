@@ -164,6 +164,66 @@ const seoMetaTitle = metaTitle === title ? `${title} | BAI` : metaTitle;
 
       <DocsRelatedLinks docs={relatedDocs} />
 
+      <!-- الأطر التنظيمية والمعايير المعتمدة للذكاء الاصطناعي في المملكة العربية السعودية -->
+      <section class="docs-regulatory-framework my-12 p-8 rounded-3xl bg-slate-900/50 border border-slate-800 text-slate-300" aria-labelledby="docs-reg-title">
+        <header class="mb-6">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-2">
+            المرجعية النظامية السعودية
+          </span>
+          <h2 id="docs-reg-title" class="text-xl lg:text-2xl font-bold text-white">
+            الأطر التنظيمية والمعايير المعتمدة للذكاء الاصطناعي في المملكة العربية السعودية
+          </h2>
+          <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+            ترتبط وثائق BrightAI الفنية ارتباطاً وثيقاً بالأنظمة واللوائح والضوابط الصادرة عن الجهات التشريعية والتنظيمية في المملكة العربية السعودية، لتمكين المنشآت من نشر أدوات ونماذج الذكاء الاصطناعي بأمان وامتثال مؤسسي موثق.
+          </p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <h3 class="font-bold text-white text-base mb-2 flex items-center gap-2">
+              <span class="text-cyan-400">❖</span> نظام حماية البيانات الشخصية (PDPL)
+            </h3>
+            <p class="text-slate-400 leading-relaxed">
+              يوجب النظام ولائحته التنفيذية حماية بيانات الأفراد ومنع مشاركتها مع أطراف خارجية أو نماذج غير مصرحة دون مسوغ نظامي. توفر حلول BrightAI طبقة عزل وتشفير آلي (PII Masking) تعترض البيانات الحساسة مثل الهوية الوطنية وأرقام الجوال والحسابات البنكية قبل وصولها لطبقات المعالجة.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <h3 class="font-bold text-white text-base mb-2 flex items-center gap-2">
+              <span class="text-emerald-400">❖</span> ضوابط الأمن السيبراني الأساسية (NCA ECC)
+            </h3>
+            <p class="text-slate-400 leading-relaxed">
+              تحدد الهيئة الوطنية للأمن السيبراني ضوابط إلزامية لإدارة هويات الوصول، وتشفير البيانات أثناء النقل والتخزين، وحفظ سجلات الأحداث الأمنية في وسائط غير قابلة للتلاعب. تدعم منصتنا التوافق المباشر مع متطلبات سجلات التدقيق المشفرة المعتمدة.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <h3 class="font-bold text-white text-base mb-2 flex items-center gap-2">
+              <span class="text-purple-400">❖</span> إرشادات سدايا للذكاء الاصطناعي التوليدي (SDAIA)
+            </h3>
+            <p class="text-slate-400 leading-relaxed">
+              تؤكد مبادئ وأخلاقيات الذكاء الاصطناعي الصادرة عن الهيئة السعودية للبيانات والذكاء الاصطناعي على الشفافية والمساءلة والرقابة البشرية ومنع التحيز، وهو ما تحققه منصتنا عبر بوابة الموافقات الإشرافية (Human-in-the-Loop) لتدقيق المخرجات الحساسة.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <h3 class="font-bold text-white text-base mb-2 flex items-center gap-2">
+              <span class="text-amber-400">❖</span> المعايير القياسية العالمية (ISO 42001 &amp; ISO 27001)
+            </h3>
+            <p class="text-slate-400 leading-relaxed">
+              توافق معماري كامل مع مواصفة نظام إدارة الذكاء الاصطناعي ISO/IEC 42001 ومواصفة أمن المعلومات ISO/IEC 27001، مما يسهل على المنشأة اجتياز تدقيقات جهات الاعتماد وإصدار شهادات الامتثال الدولية والمحلية بكفاءة وسرعة.
+            </p>
+          </div>
+        </div>
+
+        <footer class="mt-6 pt-5 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
+          <span>فريق التوثيق والاستشارات في BrightAI — الرياض، المملكة العربية السعودية</span>
+          <a href="/assessment/ai-governance-readiness/" class="text-cyan-400 hover:text-cyan-300 font-semibold underline underline-offset-4">
+            ابدأ تقييم جاهزية الحوكمة لمنشأتك مجاناً ←
+          </a>
+        </footer>
+      </section>
+
       <!-- Helpful? yes/no widget (local-only, respects DNT via no-network) -->
       <section class="docs-helpful" aria-labelledby="docs-helpful-q">
         <p id="docs-helpful-q" class="docs-helpful__question">هل كانت هذه الوثيقة مفيدة؟</p>

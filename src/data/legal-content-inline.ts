@@ -583,7 +583,37 @@ export const legal_data_processing_agreement: LegalInlineContent = {
 
     <li>
       <a href="#sec-3" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
-        ٣ الالتزام بالضوابط الأمني...
+        ٣ الالتزام بالضوابط الأمنية...
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-4" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٤ الإخطار عن الحوادث الأمنية...
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-5" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٥ المعالجة من الباطن...
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-6" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٦ سيادة البيانات وحظر النقل...
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-7" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٧ حقوق أصحاب البيانات الشخصية...
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-8" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٨ الإنهاء ومحو البيانات...
       </a>
     </li>
 
@@ -597,19 +627,50 @@ export const legal_data_processing_agreement: LegalInlineContent = {
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-1">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">١. تعريفات وأطراف الاتفاقية</h2>
-      <p class="text-white/80 leading-loose text-sm lg:text-base">تنظم هذه الاتفاقية العلاقة التعاقدية والأمنية بين الجهة أو المنشأة المستفيدة من الخدمة (المتحكم بالبيانات - Data Controller) وبين شركة BrightAI (معالج البيانات - Data Processor). وتسري هذه الاتفاقية تلقائياً كجزء لا يتجزأ من اتفاقية الاشتراك وتقديم الخدمات الرئيسية للمنصة.</p>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">تنظم هذه الاتفاقية العلاقة التعاقدية والأمنية بين الجهة أو المنشأة المستفيدة من الخدمة (المتحكم بالبيانات - Data Controller) وبين شركة BrightAI (معالج البيانات - Data Processor). وتسري هذه الاتفاقية تلقائياً كجزء لا يتجزأ من اتفاقية الاشتراك وتقديم الخدمات الرئيسية للمنصة، استناداً إلى نظام حماية البيانات الشخصية الصادر بالمرسوم الملكي رقم (م/19) وتعديلاته ولائحته التنفيذية الصادرة عن الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا).</p>
+      <p class="text-white/70 leading-relaxed text-sm mt-3">يُقصد بالمصطلحات المستخدمة في هذه الاتفاقية المعاني المحددة لها في نظام حماية البيانات الشخصية ولائحته التنفيذية ما لم يقتضِ السياق خلاف ذلك.</p>
     </article>
-
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-2">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٢. نطاق المعالجة وتوجيهات المتحكم</h2>
-      <p class="text-white/80 leading-loose text-sm lg:text-base">يلتزم المعالج بالعمل حصراً بموجب التوجيهات الخطية والإعدادات التقنية المعتمدة من المتحكم بالبيانات. يقتصر نطاق المعالجة على توفير حلول الحوكمة وجدار الحماية وفحص المدخلات وتصدير ملفات الإثبات والتدقيق (Evidence Files) لحماية المنشأة، دون استخدام البيانات لأغراض التدريب الخاصة بنا أو أي أغراض تسويقية.</p>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يلتزم المعالج بالعمل حصراً بموجب التوجيهات الخطية والإعدادات التقنية المعتمدة من المتحكم بالبيانات. يقتصر نطاق المعالجة على توفير حلول الحوكمة وجدار الحماية وفحص المدخلات وتصدير ملفات الإثبات والتدقيق (Evidence Files) لحماية المنشأة، دون استخدام البيانات لأغراض تدريب نماذج الذكاء الاصطناعي الخاصة بنا أو أي أغراض تسويقية أو تجارية مستقلة.</p>
+      <p class="text-white/70 leading-relaxed text-sm mt-3">تتعهد BrightAI بعدم مشاركة أو إتاحة أي بيانات يرسلها المتحكم لأي طرف ثالث إلا بالقدر اللازم لتقديم الخدمة وبموافقة مسبقة ومكتوبة، مع الالتزام التام بتسجيل وتوثيق كافة عمليات المعالجة في سجل الأنشطة التشغيلي.</p>
     </article>
 
-
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-3">
-      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٣. الالتزام بالضوابط الأمنية والإخطار عن الحوادث</h2>
-      <p class="text-white/80 leading-loose text-sm lg:text-base">يلتزم المعالج بتطبيق ضوابط أمن سيبراني صارمة تتوافق مع معايير الهيئة الوطنية للأمن السيبراني (NCA ECC) وشهادة آيزو 27001. وفي حال رصد أو الاشتباه بأي محاولة وصول غير مصرح بها أو تسريب بيانات، نلتزم بإخطار المتحكم فوراً وبمدة لا تتجاوز 72 ساعة، مع توفير كافة تفاصيل الحادثة وملف الأدلة الجنائي الفني للمساعدة في الاحتواء والتحقيق.</p>
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٣. التدابير الفنية والتنظيمية والضوابط الأمنية</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يلتزم المعالج بتطبيق ضوابط أمن سيبراني تقنية وتنظيمية صارمة تتوافق مع معايير الهيئة الوطنية للأمن السيبراني (ضوابط NCA ECC-1:2018) ومواصفة آيزو 27001، وتشمل على سبيل المثال لا الحصر:</p>
+      <ul class="list-disc list-inside text-white/70 space-y-2 mt-3 text-sm leading-relaxed">
+        <li>تشفير البيانات أثناء النقل باستخدام بروتوكولات TLS 1.3 وتشفير البيانات أثناء التخزين بمفاتيح تشفير متقدمة AES-256.</li>
+        <li>تطبيق مبدأ الصلاحيات الأدنى (Least Privilege) والمصادقة متعددة العوامل (MFA) لكافة عمليات الوصول الإداري.</li>
+        <li>تنقية وتشفير البيانات الشخصية الحساسة آلياً (PII Masking) قبل معالجتها في طبقات الاستدلال.</li>
+        <li>إجراء اختبارات اختراق دورية وتقييمات للثغرات الأمنية عبر فرق فنية معتمدة.</li>
+      </ul>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-4">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٤. الإخطار عن الحوادث الأمنية والتسريبات</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">في حال رصد أو تأكيد وقوع أي خرق أمني أو وصول غير مصرح به أو تسريب للبيانات الشخصية المعالجة، يلتزم المعالج بإخطار المتحكم فوراً ودون تأخير غير مبرر بمدة أقصاها 72 ساعة من وقت العلم بالحادثة. يتضمن الإخطار طبيعة الحادثة، وفئات البيانات المتأثرة، والعدد التقريبي لأصحاب البيانات، والإجراءات التصحيحية المتخذة وتوصيات التخفيف من الآثار المحتملة.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-5">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٥. المعالجة من الباطن (Sub-processors)</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">لا يجوز للمعالج الاستعانة بأي معالج من الباطن إلا بعد الحصول على إذن كتابي عام أو خاص من المتحكم. ويلتزم المعالج بفرض ذات الالتزامات التعاقدية والأمنية الواردة في هذه الاتفاقية على أي معالج من الباطن، مع بقاء المعالج الأصلي مسؤولاً بشكل كامل ومباشر أمام المتحكم عن أداء والتزامات المعالجين من الباطن.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-6">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٦. سيادة البيانات وحظر النقل خارج المملكة</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">تتم معالجة وتخزين كافة البيانات الشخصية والتشغيلية حصرياً داخل البنية التحتية السحابية الواقعة داخل الحدود الجغرافية للمملكة العربية السعودية، والمصنفة وفق اشتراطات هيئة الاتصالات والفضاء والتقنية (CST). ويحظر تماماً نقل البيانات خارج المملكة إلا في الحالات المحددة نظاماً في اللائحة التنفيذية لنقل البيانات الشخصية الصادرة عن سدايا وبموافقة خطية مسبقة من المتحكم.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-7">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٧. حقوق أصحاب البيانات الشخصية</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يلتزم المعالج بتقديم المساعدة الفنية والتقنية اللازمة للمتحكم لتمكينه من الاستجابة لطلبات أصحاب البيانات الشخصية المنصوص عليها في النظام، والتي تشمل: حق العلم والاطلاع، وحق تصحيح البيانات، وحق محو البيانات، وحق الرجوع عن الموافقة، وذلك في حدود نطاق المعالجة الموكل للمعالج.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-8">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٨. الإنهاء ومحو البيانات والتدقيق</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">عند انتهاء اتفاقية تقديم الخدمات لأي سبب كان، يلتزم المعالج - بناءً على خيار المتحكم - بمحو أو إرجاع كافة البيانات الشخصية وسجلات التدقيق إلى المتحكم بشكل آمن، مع إتلاف كافة النسخ والنسخ الاحتياطية المتبقية وتقديم شهادة إتلاف رسمية، ما لم تتطلب الأنظمة السعودية المعمول بها الاحتفاظ بسجلات معينة لفترة محددة نظاماً.</p>
     </article>
 
     </section>

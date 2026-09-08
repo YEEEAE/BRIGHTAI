@@ -400,7 +400,29 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
 {/* ─── Section 8 · Related links (preserved) ──────────────────────── */}
 <RelatedLinks relatedSlugs={sector.related} sectorSlugs={sectors.filter(s => s.slug !== sector.slug).map(s => s.slug)} docs={sector.docs} blog={sector.blog} />
 
-{/* ─── Section 8 · Final CTA (preserved) ──────────────────────────── */}
+{/* ─── Section 8b · Saudi AI Compliance Reference (text enrichment) ─── */}
+<section class="inner-section" aria-labelledby="sector-compliance-ref">
+  <div class="max-w-4xl mx-auto px-5 lg:px-8">
+    <h2 id="sector-compliance-ref" class="inner-section__title">الإطار التنظيمي السعودي لحوكمة الذكاء الاصطناعي في {sector.chip}</h2>
+    <p class="inner-section__lead">دليل مرجعي مختصر للمتطلبات التنظيمية التي تواجهها منشآت قطاع {sector.chip} عند تبني حلول الذكاء الاصطناعي في المملكة العربية السعودية.</p>
+    <div class="space-y-4" style="margin-top: var(--space-5);">
+      <div class="inner-card p-6">
+        <h3 class="inner-card__title">متطلبات نظام حماية البيانات الشخصية (PDPL)</h3>
+        <p class="inner-card__text" style="line-height:1.9;">يُلزم نظام PDPL كل منشأة في قطاع {sector.chip} بالحصول على موافقة صريحة قبل معالجة البيانات الشخصية بالذكاء الاصطناعي، وتطبيق مبدأ تقليل البيانات بحيث لا يُرسل للنموذج سوى ما هو ضروري فعلاً. كما يشترط إخطار أصحاب البيانات حين تتخذ قرارات مؤثرة بصورة آلية كاملة، وتوفير آلية للاعتراض أو طلب المراجعة البشرية خلال مدة لا تتجاوز ما ينص عليه النظام. المخالفات تصل غراماتها إلى 5 ملايين ريال للمخالفة الواحدة.</p>
+      </div>
+      <div class="inner-card p-6">
+        <h3 class="inner-card__title">ضوابط NCA ECC وأمن بنية الذكاء الاصطناعي</h3>
+        <p class="inner-card__text" style="line-height:1.9;">تستلزم ضوابط الهيئة الوطنية للأمن السيبراني حماية النماذج والبيانات التدريبية ومسارات الاستدلال من هجمات التسميم والحقن وسرقة النماذج. يجب توثيق كل اختبار أمني وتقييم دوري للمخاطر، والاحتفاظ بسجلات الإجراءات الأمنية لمدة لا تقل عن سنة. منشآت قطاع {sector.chip} ذات الطابع الحيوي تخضع لمعايير أشد صرامة بموجب تصنيف البنية التحتية الحيوية السعودية.</p>
+      </div>
+      <div class="inner-card p-6">
+        <h3 class="inner-card__title">إرشادات سدايا وخارطة طريق ISO/IEC 42001</h3>
+        <p class="inner-card__text" style="line-height:1.9;">تدعو سدايا منشآت قطاع {sector.chip} إلى تبني مبادئ الذكاء الاصطناعي المسؤول السبعة: العدالة، الخصوصية، الشفافية، المسؤولية، الأمان، الموثوقية، والإنسانية. يُستحسن اعتماد معيار ISO/IEC 42001 كإطار إدارة نظام الذكاء الاصطناعي، إذ يوفر بنية واضحة للسياسات والأدوار والمخاطر والتحسين المستمر. تدعم منصة BrightAI الجاهزية لهذا المعيار من خلال أدوات الجرد والتدقيق وإدارة دورة حياة النماذج.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ─── Section 8c · Final CTA (preserved) ──────────────────────────── */}
 <section class="inner-cta-final">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="inner-cta-final__card">

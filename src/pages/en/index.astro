@@ -60,13 +60,109 @@ const description =
         NCA ECC, SFDA, and SAMA.
       </p>
 
-      <div class="mt-10 card card--glass rounded-2xl p-6 lg:p-8 text-start">
+      <div class="mt-12 text-start space-y-12">
+        <!-- 5 Protection Layers -->
+        <section aria-labelledby="en-layers-title" class="pt-8 border-t border-white/10">
+          <h2 id="en-layers-title" class="text-2xl lg:text-3xl font-bold text-white text-center mb-8">
+            The 5 Core Pillars of BrightAI Governance OS
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card card--glass p-6 rounded-2xl">
+              <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold mb-4">1</div>
+              <h3 class="text-lg font-bold text-white mb-2">Real-Time AI Firewall &amp; PII Shield</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                Automatically intercepts and inspects all prompt payloads and model responses. Redacts Saudi National IDs, Iqama numbers, IBANs, and health data before queries reach public or proprietary AI models, enforcing complete alignment with Saudi PDPL regulations.
+              </p>
+            </div>
+
+            <div class="card card--glass p-6 rounded-2xl">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold mb-4">2</div>
+              <h3 class="text-lg font-bold text-white mb-2">Tamper-Evident Cryptographic Audit Trail</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                Emits an immutable hash-chained event log for every inference query, decision recommendation, and prompt transaction. Assigns unique Trace IDs to ensure forensic accountability and effortless internal audit readiness.
+              </p>
+            </div>
+
+            <div class="card card--glass p-6 rounded-2xl">
+              <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold mb-4">3</div>
+              <h3 class="text-lg font-bold text-white mb-2">Human-in-the-Loop Approval Gateways</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                Prevents automated hallucination and risk exposure by requiring verified supervisor authorization before high-stakes actions—such as credit approvals, medical diagnosis summaries, or contractual amendments—are finalized.
+              </p>
+            </div>
+
+            <div class="card card--glass p-6 rounded-2xl">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold mb-4">4</div>
+              <h3 class="text-lg font-bold text-white mb-2">Saudi Regulatory Compliance Packs</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                Pre-configured compliance control packs matching SDAIA Generative AI Guidelines, National Cybersecurity Authority Essential Cybersecurity Controls (NCA ECC), SAMA Cyber and AI Governance frameworks, and SFDA medical standards.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Industry Sector Solutions -->
+        <section aria-labelledby="en-sectors-title" class="pt-8 border-t border-white/10">
+          <h2 id="en-sectors-title" class="text-2xl lg:text-3xl font-bold text-white text-center mb-8">
+            Tailored Industry Solutions for Saudi Enterprises
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card card--glass p-6 rounded-2xl">
+              <h3 class="text-base font-bold text-cyan-300 mb-2">Banking &amp; Financial Services</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                Enforce strict SAMA compliance, prevent leakage of confidential financial statements and payment credentials, and govern customer-facing banking chatbots with zero latency penalty.
+              </p>
+            </div>
+            <div class="card card--glass p-6 rounded-2xl">
+              <h3 class="text-base font-bold text-emerald-300 mb-2">Healthcare &amp; Pharmaceuticals</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                Safeguard patient medical histories, anonymize clinical research queries, and comply with SFDA digital health standards while deploying AI diagnostic assistants.
+              </p>
+            </div>
+            <div class="card card--glass p-6 rounded-2xl">
+              <h3 class="text-base font-bold text-purple-300 mb-2">Government &amp; National Infrastructure</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                Maintain 100% data sovereignty within certified Class C Saudi cloud infrastructure, guaranteeing that sensitive public sector data never leaves the Kingdom.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Enterprise FAQ in English -->
+        <section aria-labelledby="en-faq-title" class="pt-8 border-t border-white/10">
+          <h2 id="en-faq-title" class="text-2xl lg:text-3xl font-bold text-white text-center mb-8">
+            Frequently Asked Questions
+          </h2>
+          <div class="space-y-6">
+            <div class="card card--glass p-6 rounded-2xl">
+              <h3 class="text-base font-bold text-white mb-2">How does BrightAI deploy within an existing corporate architecture?</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                BrightAI operates as a lightweight, intelligent reverse proxy gateway that sits seamlessly between your applications and LLM providers. Deployment requires changing only your base API endpoint URL and authorization header, requiring zero alterations to model weights or client codebases.
+              </p>
+            </div>
+            <div class="card card--glass p-6 rounded-2xl">
+              <h3 class="text-base font-bold text-white mb-2">Does BrightAI store our prompts or confidential corporate data?</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                No. BrightAI adheres to a strict zero-retention data architecture. We inspect prompt streams ephemerally in memory to verify security policies and redact sensitive data. Only cryptographic event hashes, token counts, and sanitized metadata are preserved in the immutable audit log.
+              </p>
+            </div>
+            <div class="card card--glass p-6 rounded-2xl">
+              <h3 class="text-base font-bold text-white mb-2">Where is the BrightAI platform hosted?</h3>
+              <p class="text-sm text-white/70 leading-relaxed">
+                All BrightAI production instances and databases are hosted exclusively within Tier-III/IV data centers located inside the Kingdom of Saudi Arabia, fully certified under the Communications, Space &amp; Technology Commission (CST) Class C classification.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="mt-12 card card--glass rounded-2xl p-6 lg:p-8 text-start">
         <p class="text-sm text-white/70 leading-loose">
           <strong class="text-white">Full experience in Arabic:</strong> The
-          complete BrightAI homepage — including the AI governance framework,
-          compliance packs, sector pages, kernel demo, evidence files, and the
-          Riyadh / Dammam / Jeddah / Khobar / Mecca / Madinah local pages — is
-          published in Saudi Arabic dialect.
+          complete BrightAI homepage — including the interactive AI governance framework,
+          compliance packs, sector pages, live kernel demo, evidence files, and the
+          Riyadh / Dammam / Jeddah / Khobar / Mecca / Madinah regional pages — is
+          published in Saudi Arabic.
         </p>
         <a
           href="/"
@@ -111,22 +207,22 @@ const description =
           Contact
         </a>
         <a
-          href="/privacy-policy/"
-          class="card card--glass inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white/80 font-bold hover:border-cyan-500/40 transition-all"
-        >
-          Privacy policy
-        </a>
-        <a
           href="/en/sales-deck/"
           class="card card--glass inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white/80 font-bold hover:border-cyan-500/40 transition-all"
         >
           Sales Deck
         </a>
         <a
-          href="/terms/"
+          href="/en/terms/"
           class="card card--glass inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white/80 font-bold hover:border-cyan-500/40 transition-all"
         >
-          Terms of service
+          Terms of Service
+        </a>
+        <a
+          href="/en/privacy-policy/"
+          class="card card--glass inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white/80 font-bold hover:border-cyan-500/40 transition-all"
+        >
+          Privacy Policy
         </a>
       </div>
     </div>

@@ -283,10 +283,7 @@ const locAnswerFirst = loc.answerFirst
 
 <RelatedLinks relatedSlugs={sector.related} sectorSlugs={sectors.filter(s => s.slug !== sector.slug).map(s => s.slug)} docs={sector.docs} blog={sector.blog} />
 
-{/* BAI-VOC-001-B (2026-07-18): city-level FAQ section, only rendered
-    when the city carries its own FAQs (khobar / madinah / mecca). The
-    same array drives the JSON-LD FAQPage above — single source of
-    truth, zero drift between visible UI and structured data. */}
+{/* BAI-VOC-001-B (2026-07-18): city-level FAQ section */}
 {loc.faqs && loc.faqs.length > 0 && (
   <section class="inner-section" aria-labelledby="city-faqs">
     <div class="max-w-4xl mx-auto px-5 lg:px-8">
@@ -307,6 +304,24 @@ const locAnswerFirst = loc.answerFirst
     </div>
   </section>
 )}
+
+{/* ─── Compliance Reference (text enrichment for SEO) ─────────────── */}
+<section class="inner-section inner-section--alt" aria-labelledby="city-compliance-ref">
+  <div class="max-w-4xl mx-auto px-5 lg:px-8">
+    <h2 id="city-compliance-ref" class="inner-section__title">حوكمة الذكاء الاصطناعي في {loc.cityAr} — الإطار التنظيمي</h2>
+    <p class="inner-section__lead">المتطلبات التنظيمية الأساسية للمنشآت العاملة في {loc.cityAr} عند تبني حلول الذكاء الاصطناعي.</p>
+    <div class="space-y-4" style="margin-top: var(--space-4);">
+      <div class="inner-card p-6">
+        <h3 class="inner-card__title">نظام PDPL والذكاء الاصطناعي — الالتزامات التشغيلية</h3>
+        <p class="inner-card__text" style="line-height:1.9;">يُلزم نظام حماية البيانات الشخصية كل منشأة في {loc.cityAr} تستخدم الذكاء الاصطناعي بتوثيق مسارات معالجة البيانات، تطبيق مبدأ التقليل والتعمية قبل إرسال أي بيانات للنماذج، وإتاحة آليات الاعتراض والمراجعة البشرية. المخالفات تصل غراماتها إلى 5 ملايين ريال.</p>
+      </div>
+      <div class="inner-card p-6">
+        <h3 class="inner-card__title">ضوابط NCA ECC وسدايا المطبقة في {sector.chip}</h3>
+        <p class="inner-card__text" style="line-height:1.9;">تشترط الهيئة الوطنية للأمن السيبراني حماية النماذج الذكية من الحقن والتسميم وسرقة البيانات، مع احتفاظ سجلات التدقيق لمدة لا تقل عن سنة. سدايا بدورها تدعو لتطبيق مبادئ الذكاء الاصطناعي المسؤول وفق خارطة طريق ISO/IEC 42001 لضمان الشفافية والمساءلة والموثوقية في قطاع {sector.chip}.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="inner-cta-final">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
