@@ -1,0 +1,123 @@
+{
+  "provider": "Semrush",
+  "report": "phrase_these",
+  "database": "sa",
+  "batches": [
+    {
+      "requested": [
+        "حوكمة الذكاء الاصطناعي التوليدي",
+        "حوكمة وكلاء الذكاء الاصطناعي",
+        "أمن وكلاء الذكاء الاصطناعي",
+        "استشارات حوكمة الذكاء الاصطناعي",
+        "خدمات حوكمة الذكاء الاصطناعي في الرياض",
+        "شركة ذكاء اصطناعي جدة",
+        "شركة ذكاء اصطناعي الدمام",
+        "نموذج سياسة استخدام الذكاء الاصطناعي",
+        "سياسات الذكاء الاصطناعي",
+        "قالب سجل مخاطر الذكاء الاصطناعي",
+        "تقييم أثر حماية البيانات",
+        "تقييم أثر الذكاء الاصطناعي على الخصوصية"
+      ],
+      "retrieved_at": "2026-09-08T08:06:34.509Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "get phrase_these: ERROR 50 :: NOTHING FOUND\nNo data found for this request. Verify your parameters are correct. If parameters are valid, try a different date range or target.\nnot found"
+          }
+        ],
+        "structuredContent": {
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "isError": true
+      }
+    },
+    {
+      "requested": [
+        "حماية البيانات الشخصية في الشركات السعودية",
+        "اللائحة التنفيذية لنظام حماية البيانات الشخصية",
+        "نقل البيانات الشخصية خارج المملكة",
+        "إخفاء البيانات الشخصية في الذكاء الاصطناعي",
+        "منع تسرب البيانات",
+        "منع تسريب بيانات الشركة إلى ChatGPT",
+        "أمن النماذج اللغوية الكبيرة",
+        "حماية الذكاء الاصطناعي من حقن التعليمات",
+        "الفرق بين AI Firewall و DLP",
+        "اكتشاف الذكاء الاصطناعي الخفي في الشركات",
+        "مراقبة استخدام الذكاء الاصطناعي في المؤسسة",
+        "حصر أدوات الذكاء الاصطناعي في الشركة"
+      ],
+      "retrieved_at": "2026-09-08T08:06:34.513Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "get phrase_these: ERROR 50 :: NOTHING FOUND\nNo data found for this request. Verify your parameters are correct. If parameters are valid, try a different date range or target.\nnot found"
+          }
+        ],
+        "structuredContent": {
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "isError": true
+      }
+    },
+    {
+      "requested": [
+        "قائمة تدقيق حوكمة الذكاء الاصطناعي",
+        "تجهيز أدلة تدقيق الذكاء الاصطناعي",
+        "سجل مراجعة قرارات الذكاء الاصطناعي",
+        "إطار سدايا لإدارة مخاطر الذكاء الاصطناعي",
+        "ضوابط NCA ECC للذكاء الاصطناعي",
+        "الفرق بين ISO 27001 و ISO 42001",
+        "متطلبات ISO 42001",
+        "تقييم جاهزية ISO 42001 للشركات",
+        "سياسة استخدام ChatGPT في العمل",
+        "حماية بيانات الموظفين عند استخدام الذكاء الاصطناعي",
+        "حوكمة الذكاء الاصطناعي في القطاع المالي السعودي",
+        "الموافقات البشرية لوكلاء الذكاء الاصطناعي"
+      ],
+      "retrieved_at": "2026-09-08T08:06:34.513Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "get phrase_these: ERROR 50 :: NOTHING FOUND\nNo data found for this request. Verify your parameters are correct. If parameters are valid, try a different date range or target.\nnot found"
+          }
+        ],
+        "structuredContent": {
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "isError": true
+      }
+    },
+    {
+      "requested": [
+        "generative AI governance",
+        "agentic AI governance",
+        "agentic AI security",
+        "AI governance consulting Saudi Arabia",
+        "AI data loss prevention",
+        "LLM security Saudi Arabia",
+        "AI policy template",
+        "AI risk assessment template",
+        "Shadow AI discovery Saudi Arabia",
+        "PDPL compliance checklist",
+        "ISO 42001 requirements",
+        "AI audit readiness"
+      ],
+      "retrieved_at": "2026-09-08T08:06:34.513Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "get phrase_these: ERROR 50 :: NOTHING FOUND\nNo data found for this request. Verify your parameters are correct. If parameters are valid, try a different date range or target.\nnot found"
+          }
+        ],
+        "structuredContent": {
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "isError": true
+      }
+    }
+  ]
+}

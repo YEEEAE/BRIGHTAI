@@ -1,0 +1,616 @@
+{
+  "provider": "Semrush",
+  "report": "phrase_these",
+  "database": "sa",
+  "requested_date": "latest_available",
+  "failed_initial_request": {
+    "requested": [
+      "AI and automation",
+      "AI and Saudi PDPL",
+      "AI and security",
+      "ai audit trail",
+      "AI automation",
+      "AI automation company Saudi Arabia",
+      "AI automation tools",
+      "AI business automation Saudi Arabia",
+      "AI company Riyadh",
+      "AI compliance evidence file",
+      "AI compliance Saudi Arabia",
+      "AI data protection",
+      "AI decision documentation",
+      "ai evidence file",
+      "ai firewall",
+      "ai firewall vs dlp",
+      "ai firewall vs waf",
+      "AI for Saudi ecommerce",
+      "ai gateway vs ai firewall",
+      "AI governance",
+      "ai governance assessment",
+      "AI governance association",
+      "AI governance banking Saudi Arabia",
+      "AI governance company Saudi Arabia",
+      "AI governance for companies",
+      "AI governance for government Saudi Arabia",
+      "AI governance for Saudi enterprises",
+      "AI governance healthcare Saudi Arabia",
+      "AI governance manufacturing Saudi Arabia",
+      "AI governance PDF",
+      "AI governance platform",
+      "AI governance readiness assessment",
+      "AI governance Saudi Arabia",
+      "AI governance Vision 2030",
+      "ai governance السعودية",
+      "AI implementation cost Saudi Arabia",
+      "AI network security",
+      "AI readiness assessment Saudi Arabia",
+      "AI risk classification",
+      "ai risk register",
+      "AI security",
+      "AI solutions for Saudi companies",
+      "AI usage audit",
+      "AI usage policy template Saudi Arabia",
+      "AI use case discovery",
+      "Arabic customer service chatbot Saudi Arabia",
+      "best AI company in Saudi Arabia",
+      "BrightAI Kernel",
+      "BrightAI حوكمة الذكاء الاصطناعي السعودية",
+      "chatgpt",
+      "ChatGPT protection for companies",
+      "chatgpt saudi arabia",
+      "ChatGPT security for business",
+      "human approval for AI decisions",
+      "human approval layer ai",
+      "Human in the loop",
+      "human in the loop ai",
+      "human review AI",
+      "ISO 42001 AI implementation",
+      "ISO 42001 certification Saudi Arabia",
+      "ISO 42001 Saudi Arabia",
+      "iso 42001 السعودية",
+      "llm firewall",
+      "NCA AI requirements Saudi Arabia",
+      "NCA ECC AI controls Saudi Arabia",
+      "NCA ECC compliance",
+      "nca ecc والذكاء الاصطناعي",
+      "NCA PDPL SDAIA",
+      "PDPL compliance for AI",
+      "pdpl والذكاء الاصطناعي",
+      "personal data protection AI",
+      "policy to control mapping ai",
+      "prevent data leakage to ChatGPT",
+      "sama الذكاء الاصطناعي البنوك",
+      "saudi company for artificial intelligence",
+      "Saudi PDPL AI compliance",
+      "SDAIA AI governance",
+      "SDAIA AI guidelines",
+      "sdaia حوكمة الذكاء الاصطناعي",
+      "shadow ai",
+      "أتمتة الأعمال بالذكاء الاصطناعي السعودية",
+      "أدلة امتثال الذكاء الاصطناعي",
+      "أدلة تدقيق الذكاء الاصطناعي",
+      "أسعار منصة حوكمة الذكاء الاصطناعي",
+      "أفضل شركة ذكاء اصطناعي في السعودية",
+      "أفضل منصة حوكمة الذكاء الاصطناعي",
+      "أمان استخدام ChatGPT في الشركات",
+      "أمن الذكاء الاصطناعي",
+      "إخفاء البيانات الشخصية قبل chatgpt",
+      "إدارة استخدام الذكاء الاصطناعي في الشركات",
+      "إدارة المخاطر",
+      "إدارة المخاطر pdf",
+      "إدارة مخاطر الذكاء الاصطناعي",
+      "إرشادات سدايا للذكاء الاصطناعي",
+      "إطار حوكمة الذكاء الاصطناعي",
+      "إنشاء صور بالذكاء الاصطناعي",
+      "اختيار شركة ذكاء اصطناعي",
+      "استخدام ChatGPT في الشركات السعودية",
+      "استخدام الذكاء الاصطناعي",
+      "استخدام الذكاء الاصطناعي غير المصرح به"
+    ],
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "get phrase_these: 414 <html>\r\n<head><title>414 Request-URI Too Large</title></head>\r\n<body>\r\n<center><h1>414 Request-URI Too Large</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+        }
+      ],
+      "structuredContent": {
+        "error_code": "INVALID_ARGUMENT"
+      },
+      "isError": true
+    },
+    "retrieved_at": "2026-09-08T07:56:47.334Z"
+  },
+  "batches": [
+    {
+      "requested": [
+        "AI and automation",
+        "AI and Saudi PDPL",
+        "AI and security",
+        "ai audit trail",
+        "AI automation",
+        "AI automation company Saudi Arabia",
+        "AI automation tools",
+        "AI business automation Saudi Arabia",
+        "AI company Riyadh",
+        "AI compliance evidence file",
+        "AI compliance Saudi Arabia",
+        "AI data protection",
+        "AI decision documentation",
+        "ai evidence file",
+        "ai firewall",
+        "ai firewall vs dlp",
+        "ai firewall vs waf",
+        "AI for Saudi ecommerce",
+        "ai gateway vs ai firewall",
+        "AI governance"
+      ],
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nAI and automation;110;3;0.56;48;1;0.01,0.01,0.01,0.04,0.01,0.01,0.03,0.01,0.01,0.01,0.54,1.00\nAI and security;20;1.98;0.53;0;;0.25,0.25,0.25,0.50,0.25,1.00,0.25,1.00,0.50,0.25,0.25,0.25\nAI automation;90;3;0.56;41;1;0.04,0.07,0.03,0.03,0.01,0.01,0.03,0.01,0.04,0.01,0.36,1.00\nAI automation tools;480;2.93;0.64;60;1;0.04,0.07,0.07,0.04,0.20,0.04,0.07,0.04,0.04,1.00,0.55,0.04\nai firewall;20;0;0.57;0;;0.57,0.14,0.14,0.14,1.00,0.43,0.14,0.14,0.14,0.29,0.14,0.29\nAI governance;90;5.5;0.55;58;0;0.64,0.50,0.64,0.79,0.64,0.79,0.79,0.79,0.79,1.00,1.00,1.00\n"
+          }
+        ],
+        "isError": false
+      },
+      "retrieved_at": "2026-09-08T07:56:58.005Z"
+    },
+    {
+      "requested": [
+        "ai governance assessment",
+        "AI governance association",
+        "AI governance banking Saudi Arabia",
+        "AI governance company Saudi Arabia",
+        "AI governance for companies",
+        "AI governance for government Saudi Arabia",
+        "AI governance for Saudi enterprises",
+        "AI governance healthcare Saudi Arabia",
+        "AI governance manufacturing Saudi Arabia",
+        "AI governance PDF",
+        "AI governance platform",
+        "AI governance readiness assessment",
+        "AI governance Saudi Arabia",
+        "AI governance Vision 2030",
+        "ai governance السعودية"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.674Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "get phrase_these: ERROR 50 :: NOTHING FOUND\nNo data found for this request. Verify your parameters are correct. If parameters are valid, try a different date range or target.\nnot found"
+          }
+        ],
+        "structuredContent": {
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "isError": true
+      }
+    },
+    {
+      "requested": [
+        "AI implementation cost Saudi Arabia",
+        "AI network security",
+        "AI readiness assessment Saudi Arabia",
+        "AI risk classification",
+        "ai risk register",
+        "AI security",
+        "AI solutions for Saudi companies",
+        "AI usage audit",
+        "AI usage policy template Saudi Arabia",
+        "AI use case discovery",
+        "Arabic customer service chatbot Saudi Arabia",
+        "best AI company in Saudi Arabia",
+        "BrightAI Kernel",
+        "BrightAI حوكمة الذكاء الاصطناعي السعودية",
+        "chatgpt"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.677Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nAI network security;30;0;0.5;0;;0.11,0.11,0.44,0.11,0.22,0.11,0.11,0.78,1.00,0.44,0.56,0.11\nAI security;20;2.57;0.64;0;;0.11,0.11,0.44,0.11,1.00,0.11,0.11,0.11,0.11,0.11,0.44,0.11\nchatgpt;246000;0.26;0.08;100;2;0.37,0.55,0.45,0.55,0.55,0.55,0.37,0.37,0.55,0.82,1.00,1.00\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "ChatGPT protection for companies",
+        "chatgpt saudi arabia",
+        "ChatGPT security for business",
+        "human approval for AI decisions",
+        "human approval layer ai",
+        "Human in the loop",
+        "human in the loop ai",
+        "human review AI",
+        "ISO 42001 AI implementation",
+        "ISO 42001 certification Saudi Arabia",
+        "ISO 42001 Saudi Arabia",
+        "iso 42001 السعودية",
+        "llm firewall",
+        "NCA AI requirements Saudi Arabia",
+        "NCA ECC AI controls Saudi Arabia"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.677Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nchatgpt saudi arabia;50;0.36;0.31;0;;0.09,0.16,0.09,0.09,0.09,0.09,0.12,0.06,0.09,0.09,0.12,1.00\nhuman in the loop ai;30;0;0.04;0;;0.11,0.11,0.78,0.33,0.11,0.11,0.78,0.11,1.00,0.22,0.11,0.11\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "NCA ECC compliance",
+        "nca ecc والذكاء الاصطناعي",
+        "NCA PDPL SDAIA",
+        "PDPL compliance for AI",
+        "pdpl والذكاء الاصطناعي",
+        "personal data protection AI",
+        "policy to control mapping ai",
+        "prevent data leakage to ChatGPT",
+        "sama الذكاء الاصطناعي البنوك",
+        "saudi company for artificial intelligence",
+        "Saudi PDPL AI compliance",
+        "SDAIA AI governance",
+        "SDAIA AI guidelines",
+        "sdaia حوكمة الذكاء الاصطناعي",
+        "shadow ai"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.677Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nsaudi company for artificial intelligence;480;0;0;42;2;0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.03,0.02,0.02,0.02,1.00\nshadow ai;20;0;0.04;0;;0.14,0.57,0.14,1.00,0.14,0.29,0.14,0.14,0.14,0.14,0.14,1.00\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "أتمتة الأعمال بالذكاء الاصطناعي السعودية",
+        "أدلة امتثال الذكاء الاصطناعي",
+        "أدلة تدقيق الذكاء الاصطناعي",
+        "أسعار منصة حوكمة الذكاء الاصطناعي",
+        "أفضل شركة ذكاء اصطناعي في السعودية",
+        "أفضل منصة حوكمة الذكاء الاصطناعي",
+        "أمان استخدام ChatGPT في الشركات",
+        "أمن الذكاء الاصطناعي",
+        "إخفاء البيانات الشخصية قبل chatgpt",
+        "إدارة استخدام الذكاء الاصطناعي في الشركات",
+        "إدارة المخاطر",
+        "إدارة المخاطر pdf",
+        "إدارة مخاطر الذكاء الاصطناعي",
+        "إرشادات سدايا للذكاء الاصطناعي",
+        "إطار حوكمة الذكاء الاصطناعي"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.677Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nإدارة المخاطر;320;0.33;0.1;20;1;0.67,0.81,0.67,0.54,1.00,1.00,0.54,0.35,0.54,0.44,0.67,0.81\nإدارة المخاطر pdf;210;0.33;0.02;13;1;0.36,0.36,0.54,0.44,0.36,0.36,0.29,0.29,0.19,1.00,0.29,0.15\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "إنشاء صور بالذكاء الاصطناعي",
+        "اختيار شركة ذكاء اصطناعي",
+        "استخدام ChatGPT في الشركات السعودية",
+        "استخدام الذكاء الاصطناعي",
+        "استخدام الذكاء الاصطناعي غير المصرح به",
+        "استخدامات الذكاء الاصطناعي",
+        "استشارات التحول الرقمي",
+        "اكتشاف استخدامات الذكاء الاصطناعي في الشركة",
+        "اكتشاف حالات استخدام الذكاء الاصطناعي",
+        "الأمن السيبراني",
+        "الأمن السيبراني السعودية",
+        "الإشراف البشري على الذكاء الاصطناعي",
+        "الامتثال",
+        "الامتثال لضوابط NCA ECC",
+        "التحول الرقمي"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.677Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nاستخدام الذكاء الاصطناعي;480;0.42;0.22;31;1;0.36,0.36,0.82,1.00,0.67,0.55,0.30,0.44,0.24,0.67,0.67,0.30\nاستخدامات الذكاء الاصطناعي;480;0.42;0.22;31;1;0.36,0.36,0.82,1.00,0.67,0.55,0.30,0.44,0.24,0.67,0.67,0.30\nاستشارات التحول الرقمي;30;0;0.93;0;;0.33,0.11,0.11,0.56,0.22,0.11,0.11,0.22,0.11,0.11,0.44,1.00\nالأمن السيبراني;22200;0.39;0.17;50;1;0.16,0.20,0.45,1.00,0.30,0.20,0.13,0.11,0.07,0.20,0.13,0.11\nالأمن السيبراني السعودية;1600;0.44;0.1;36;2;0.36,0.30,0.55,1.00,0.43,0.30,0.23,0.20,0.20,0.30,0.23,0.23\nالتحول الرقمي;1600;2.49;0.13;31;1;0.84,0.84,1.00,1.00,1.00,1.00,0.84,1.00,0.46,1.00,0.68,0.68\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "التحول الرقمي في السعودية",
+        "التحول الرقمي للشركات",
+        "الخصوصية",
+        "الذكاء الاصطناعي",
+        "الذكاء الاصطناعي dga sdaia nca",
+        "الذكاء الاصطناعي السعودية",
+        "الذكاء الاصطناعي بالعربي",
+        "الذكاء الاصطناعي في",
+        "الذكاء الاصطناعي في السعودية",
+        "الذكاء الاصطناعي والتحول الرقمي",
+        "الذكاء الاصطناعي ونظام حماية البيانات الشخصية",
+        "الفرق بين حوكمة البيانات وحوكمة الذكاء الاصطناعي",
+        "الفرق بين حوكمة الشركات وحوكمة الذكاء الاصطناعي",
+        "الموافقة البشرية على قرارات الذكاء الاصطناعي",
+        "امتثال PDPL للذكاء الاصطناعي"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.677Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nالتحول الرقمي في السعودية;210;0.36;0.06;21;1;0.36,0.44,1.00,0.82,0.67,0.54,0.28,0.44,0.23,0.54,0.54,0.54\nالخصوصية;2900;0.08;0.07;38;1;1.00,0.81,1.00,1.00,0.81,1.00,0.81,0.81,0.81,0.81,1.00,0.81\nالذكاء الاصطناعي;165000;0.27;0.44;71;1;0.55,0.20,0.25,0.82,0.16,1.00,0.45,0.45,0.37,0.55,0.55,0.55\nالذكاء الاصطناعي السعودية;1300;0.32;0.23;27;2;0.09,0.83,1.00,0.66,0.55,0.45,0.34,0.34,0.25,0.25,0.17,0.13\nالذكاء الاصطناعي بالعربي;1600;0.36;0.53;46;1;0.55,0.55,0.83,0.34,0.45,0.55,0.66,1.00,0.66,0.83,0.55,0.13\nالذكاء الاصطناعي في السعودية;140;0.53;0.05;28;1;0.54,0.42,1.00,1.00,0.54,0.42,0.27,0.35,0.42,0.42,0.35,0.27\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "امتثال PDPL للشركات السعودية",
+        "امتثال الذكاء الاصطناعي في السعودية",
+        "برمجة الذكاء الاصطناعي",
+        "برنامج حوكمة الذكاء الاصطناعي للشركات",
+        "تحليل البيانات",
+        "تدقيق استخدام الذكاء الاصطناعي",
+        "تصنيف مخاطر الذكاء الاصطناعي",
+        "تطبيق ISO 42001",
+        "تطبيق ISO 42001 في السعودية",
+        "تطبيق ISO 42001 للذكاء الاصطناعي",
+        "تطبيق الذكاء الاصطناعي",
+        "تطبيق حوكمة الذكاء الاصطناعي",
+        "تطبيق حوكمة الذكاء الاصطناعي في الشركة",
+        "تطبيقات الذكاء الاصطناعي",
+        "تطبيقات الذكاء الاصطناعي في السعودية"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.677Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nبرمجة الذكاء الاصطناعي;50;0.53;0.26;0;;0.42,0.42,0.04,1.00,0.04,0.04,0.04,0.19,0.12,0.04,0.04,0.12\nتحليل البيانات;1900;0.52;0.31;34;1;0.83,0.66,1.00,0.83,0.66,0.66,0.66,0.55,0.34,0.83,0.55,0.55\nتطبيق الذكاء الاصطناعي;2400;0.44;0.56;48;1;0.55,0.55,0.55,1.00,1.00,0.66,0.66,0.43,0.66,0.55,0.13,0.20\nتطبيقات الذكاء الاصطناعي;2400;0.44;0.56;48;1;0.55,0.55,0.55,1.00,1.00,0.66,0.66,0.43,0.66,0.55,0.13,0.20\nتطبيقات الذكاء الاصطناعي في السعودية;20;0.15;0.35;0;;1.00,0.25,0.75,0.25,0.75,0.50,0.25,0.25,0.25,0.25,0.25,0.25\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "تعلم الآلة",
+        "تقييم جاهزية الذكاء الاصطناعي للشركات",
+        "تقييم جاهزية الذكاء الاصطناعي للشركات السعودية",
+        "تقييم جاهزية حوكمة الذكاء الاصطناعي",
+        "تقييم مخاطر الذكاء الاصطناعي",
+        "تكلفة تطبيق الذكاء الاصطناعي للشركات السعودية",
+        "تكلفة حوكمة الذكاء الاصطناعي",
+        "تكلفة شهادة ISO 42001 في السعودية",
+        "تواصل مع BrightAI",
+        "توثيق قرارات الذكاء الاصطناعي",
+        "جدار حماية الذكاء الاصطناعي",
+        "جدار حماية النماذج اللغوية الكبيرة",
+        "جمعية حوكمة الذكاء الاصطناعي",
+        "حلول أمان وحوكمة الذكاء الاصطناعي",
+        "حلول الذكاء الاصطناعي للشركات السعودية"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nتعلم الآلة;260;1.01;0.05;23;1;0.07,0.32,0.21,0.39,0.26,0.32,0.17,1.00,0.26,0.26,0.14,0.07\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "حلول حوكمة الذكاء الاصطناعي",
+        "حماية ChatGPT للشركات",
+        "حماية البيانات",
+        "حماية البيانات الشخصية",
+        "حماية البيانات الشخصية مع الذكاء الاصطناعي",
+        "حماية البيانات عند استخدام الذكاء الاصطناعي",
+        "حماية بيانات الذكاء الاصطناعي",
+        "حماية بيانات الشركات من chatgpt",
+        "حماية بيانات المرضى عند استخدام الذكاء الاصطناعي",
+        "حوكمة ai",
+        "حوكمة ai للبنوك السعودية",
+        "حوكمة ai للجهات الحكومية السعودية",
+        "حوكمة ai للرعاية الصحية السعودية",
+        "حوكمة ai للقطاع الصناعي",
+        "حوكمة البيانات"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nحماية البيانات;110;0;0.01;16;1;0.27,0.19,0.42,0.54,0.42,0.42,0.35,0.65,0.65,0.54,0.35,1.00\nحماية البيانات الشخصية;260;0;0.01;23;1;0.67,0.67,0.82,1.00,0.82,0.67,0.82,0.67,0.44,0.82,0.67,0.67\nحوكمة البيانات;480;1.49;0.07;23;2;0.26,0.32,0.48,0.39,0.39,0.59,0.59,0.59,0.26,1.00,0.48,0.59\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "حوكمة الذكاء الاصطناعي",
+        "حوكمة الذكاء الاصطناعي pdf",
+        "حوكمة الذكاء الاصطناعي رؤية 2030",
+        "حوكمة الذكاء الاصطناعي سدايا",
+        "حوكمة الذكاء الاصطناعي في البنوك",
+        "حوكمة الذكاء الاصطناعي في الجهات الحكومية",
+        "حوكمة الذكاء الاصطناعي في السعودية",
+        "حوكمة الذكاء الاصطناعي في المستشفيات",
+        "حوكمة الذكاء الاصطناعي في المصانع",
+        "حوكمة الذكاء الاصطناعي للبنوك السعودية",
+        "حوكمة الذكاء الاصطناعي للبنوك في الرياض",
+        "حوكمة الذكاء الاصطناعي للتصنيع السعودية",
+        "حوكمة الذكاء الاصطناعي للجهات الحكومية",
+        "حوكمة الذكاء الاصطناعي للجهات الحكومية في الدمام",
+        "حوكمة الذكاء الاصطناعي للشركات"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nحوكمة الذكاء الاصطناعي;20;0.93;0.09;0;;0.20,1.00,0.20,0.60,0.60,0.20,0.20,0.20,0.20,0.40,0.60,1.00\nحوكمة الذكاء الاصطناعي pdf;20;0;0.6;0;;0.40,0.80,0.80,0.20,0.40,0.20,1.00,0.60,0.20,0.20,0.20,0.20\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "حوكمة الذكاء الاصطناعي للقطاع الصحي السعودية",
+        "حوكمة الذكاء الاصطناعي للمؤسسات السعودية",
+        "حوكمة الذكاء الاصطناعي للمستشفيات في جدة",
+        "حوكمة الشركات",
+        "حوكمة الشركات في السعودية",
+        "خدمات حوكمة الذكاء الاصطناعي",
+        "خطوات حوكمة AI",
+        "دورات الذكاء الاصطناعي",
+        "ذكاء اصطناعي",
+        "ذكاء اصطناعي للمتاجر الإلكترونية السعودية",
+        "ذكاء الأعمال",
+        "ربط سياسات الذكاء الاصطناعي بالضوابط",
+        "روبوت دردشة",
+        "سجل تدقيق الذكاء الاصطناعي",
+        "سجل مخاطر الذكاء الاصطناعي"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nحوكمة الشركات;720;0.51;0.32;17;1;0.82,0.82,1.00,1.00,0.82,0.82,0.82,0.67,0.44,0.67,0.55,0.55\nحوكمة الشركات في السعودية;30;0.84;0.17;0;;0.11,0.11,0.11,0.22,0.22,0.22,0.33,0.44,0.44,0.22,1.00,0.33\nدورات الذكاء الاصطناعي;590;0.46;0.61;45;1;0.20,0.13,1.00,0.13,0.13,0.25,0.11,0.11,0.07,0.13,0.11,0.13\nذكاء اصطناعي;60500;0.34;0.44;67;1;0.37,0.45,0.45,0.45,0.67,0.82,0.67,0.82,0.82,1.00,0.67,1.00\nذكاء الأعمال;260;1.07;0.11;23;1;0.81,0.81,1.00,0.81,0.81,1.00,1.00,1.00,0.53,1.00,0.66,0.81\nروبوت دردشة;20;0.36;0.52;0;;0.22,0.11,0.11,0.11,0.11,0.22,0.11,0.11,0.11,0.11,1.00,0.33\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "سدايا",
+        "سدايا والذكاء الاصطناعي",
+        "سعر منصة حوكمة الذكاء الاصطناعي",
+        "سياسة استخدام الذكاء الاصطناعي في الشركات",
+        "سياسة استخدام الذكاء الاصطناعي للشركات السعودية",
+        "سياسة الخصوصية",
+        "شات بوت",
+        "شات بوت عربي",
+        "شات بوت عربي لخدمة العملاء السعودية",
+        "شات بوت للشركات السعودية",
+        "شات جي بي تي",
+        "شركات الذكاء الاصطناعي في السعودية",
+        "شركة أتمتة",
+        "شركة أتمتة الذكاء الاصطناعي السعودية",
+        "شركة حوكمة الذكاء الاصطناعي السعودية"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nسدايا;33100;0.78;0.01;39;2;0.37,0.30,1.00,0.30,0.30,0.25,0.37,0.25,0.13,0.30,0.20,0.20\nسياسة الخصوصية;2400;0.38;0.19;23;1;0.44,0.24,0.35,0.30,0.30,1.00,0.67,0.35,0.35,0.35,0.30,0.30\nشات بوت;720;0.4;0.35;16;1;0.59,0.59,0.72,0.72,0.88,0.88,0.72,0.88,0.72,1.00,0.88,0.88\nشات بوت عربي;70;0.43;0.39;0;;0.03,0.06,0.06,1.00,0.03,0.03,0.81,0.09,0.06,0.03,0.03,0.66\nشات جي بي تي;165000;0.13;0.1;53;2;0.09,0.11,0.13,0.30,0.16,0.16,0.20,0.45,0.67,0.82,1.00,1.00\nشركات الذكاء الاصطناعي في السعودية;170;0.6;0.18;8;1;1.00,0.81,0.81,0.81,1.00,0.67,0.81,0.67,0.67,0.67,0.14,0.19\nشركة أتمتة;170;0;0.04;12;1;0.81,0.81,0.53,0.53,0.53,0.53,0.53,0.53,0.34,0.81,0.66,1.00\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "شركة حوكمة ذكاء اصطناعي السعودية",
+        "شركة ذكاء اصطناعي الرياض",
+        "شركة ذكاء اصطناعي في السعودية",
+        "شهادة ISO 42001 السعودية",
+        "ضوابط الأمن السيبراني للذكاء الاصطناعي السعودية",
+        "ضوابط الذكاء الاصطناعي nca",
+        "ضوابط حوكمة الذكاء الاصطناعي",
+        "قائمة تدقيق ISO 42001",
+        "قياس التحول الرقمي",
+        "لائحة حوكمة الشركات",
+        "ما هي حوكمة البيانات",
+        "ما هي حوكمة الذكاء الاصطناعي",
+        "ماهو الذكاء الاصطناعي",
+        "متطلبات NCA للذكاء الاصطناعي",
+        "متطلبات الهيئة الوطنية للأمن السيبراني"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nقياس التحول الرقمي;880;1.09;0.02;17;1;1.00,1.00,0.25,0.25,0.84,0.31,0.25,0.25,0.21,0.46,0.46,0.53\nلائحة حوكمة الشركات;1000;0.72;0.02;12;1;0.77,0.68,0.77,0.77,1.00,0.77,0.77,0.77,0.68,0.77,0.55,0.68\nما هي حوكمة البيانات;20;0;0.33;0;;0.20,0.20,0.20,0.20,0.20,0.20,0.20,0.40,0.20,1.00,0.20,0.40\nماهو الذكاء الاصطناعي;2400;0.16;0.13;39;1;0.54,0.35,0.67,1.00,0.67,0.44,0.24,0.35,0.19,0.35,0.11,0.19\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "محادثة مع الذكاء الاصطناعي",
+        "مخاطر shadow ai",
+        "مخاطر الذكاء الاصطناعي",
+        "مخاطر الذكاء الاصطناعي في المصانع",
+        "مراجعة بشرية للذكاء الاصطناعي",
+        "مسؤول حوكمة الذكاء الاصطناعي",
+        "معنى حوكمة البيانات",
+        "ملف أدلة الامتثال للذكاء الاصطناعي",
+        "ملف أدلة امتثال الذكاء الاصطناعي",
+        "منصة حوكمة البيانات الوطنية",
+        "منصة حوكمة الذكاء الاصطناعي",
+        "منظومة الذكاء الاصطناعي السعودية",
+        "منع تسرب البيانات إلى ChatGPT",
+        "منع تسريب البيانات للذكاء الاصطناعي",
+        "نظام إدارة الذكاء الاصطناعي"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nمخاطر الذكاء الاصطناعي;110;0;0.02;20;1;0.52,0.19,0.67,1.00,1.00,0.81,0.33,0.43,0.67,0.67,0.43,0.33\nمعنى حوكمة البيانات;20;0;0.14;0;;0.14,0.57,0.29,0.14,1.00,0.29,0.14,0.29,0.43,0.14,0.57,0.14\nمنصة حوكمة البيانات الوطنية;1300;3.79;0.04;42;1,2;0.30,0.37,0.67,0.25,0.37,1.00,0.79,1.00,0.42,0.54,0.67,0.54\n"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "requested": [
+        "نظام حماية البيانات الشخصية",
+        "نظام حماية البيانات الشخصية السعودي",
+        "نظام حماية البيانات الشخصية والذكاء الاصطناعي السعودية",
+        "نظام حوكمة الذكاء الاصطناعي",
+        "وظائف الذكاء الاصطناعي"
+      ],
+      "retrieved_at": "2026-09-08T07:57:26.678Z",
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Keyword;Search Volume;CPC;Competition;Keyword Difficulty Index;Intent;Trends\nنظام حماية البيانات الشخصية;1900;0;0.01;17;1;1.00,1.00,1.00,1.00,1.00,1.00,0.79,0.79,0.54,1.00,0.54,0.79\nنظام حماية البيانات الشخصية السعودي;10;0;0.03;0;;0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,1.00\nوظائف الذكاء الاصطناعي;170;0;0.03;20;1;1.00,1.00,0.81,0.65,0.54,0.42,0.42,0.65,0.35,0.54,0.35,0.35\n"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ]
+}
