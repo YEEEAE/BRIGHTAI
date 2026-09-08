@@ -7,7 +7,7 @@ updatedDate: "2026-06-19"
 author: "nasser-alabdullah"
 slug: "shadow-ai-discovery-saudi-company"
 readingTime: 11
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["Shadow AI", "الاستخدام الخفي", "اكتشاف AI", "الشركات السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

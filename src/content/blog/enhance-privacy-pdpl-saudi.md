@@ -7,7 +7,7 @@ updatedDate: "2026-09-03"
 author: "nasser-alabdullah"
 slug: "enhance-privacy-pdpl-saudi"
 readingTime: 12
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["PDPL", "نظام حماية البيانات الشخصية", "الخصوصية", "حماية البيانات", "السعودية", "سدايا", "سياسة الخصوصية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-06-20"
 author: "nasser-alabdullah"
 slug: "arabic-chatbot-customer-service-saudi"
 readingTime: 8
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["شات بوت", "خدمة العملاء", "السعودية", "ذكاء اصطناعي توليدي", "تحول رقمي"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

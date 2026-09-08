@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "yazeed-alshareef"
 slug: "appointing-dpo-saudi-data-protection"
 readingTime: 13
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["PDPL", "مسؤول حماية البيانات", "DPO", "السعودية", "حماية البيانات", "سدايا", "الامتثال"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-07-21"
 author: "nasser-alabdullah"
 slug: "ai-ethics-saudi-responsible-ai"
 readingTime: 12
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["أخلاقيات AI", "AI المسؤول", "العدالة", "الشفافية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

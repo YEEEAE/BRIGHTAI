@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "iso-42001-certification-cost-saudi"
 readingTime: 14
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["ISO 42001", "التكلفة", "شهادة", "السعودية", "AIMS", "التدقيق", "الاستثمار", "الميزانية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

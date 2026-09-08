@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "generative-ai-education-saudi"
 readingTime: 9
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["ذكاء اصطناعي توليدي", "تعليم", "السعودية", "رؤية 2030", "حماية بيانات الطلاب"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

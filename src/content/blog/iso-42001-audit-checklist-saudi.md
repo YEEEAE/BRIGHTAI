@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "iso-42001-audit-checklist-saudi"
 readingTime: 16
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["ISO 42001", "تدقيق", "Audit Checklist", "AIMS", "السعودية", "NCA", "جاهزية التدقيق", "شهادة", "SDAIA"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

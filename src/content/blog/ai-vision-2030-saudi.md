@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "ai-vision-2030-saudi"
 readingTime: 8
-category: "رؤية-2030"
+category: "vision-2030"
 tags: ["رؤية 2030", "ذكاء اصطناعي", "السعودية", "سدايا", "تحول رقمي"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

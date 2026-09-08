@@ -17,8 +17,20 @@ import {
   getPostsByCategory,
   paginate,
   categoryTint,
+  categoryLabel,
 } from '../../../data/blog';
 import { SITE } from '../../../data/site';
+
+/** SEO-safe bilingual page title per category slug
+ *  (SEMRUSH-URL-FORMAT-2026-09-09: ASCII slug + Arabic label + English
+ *  keyword so the slug word appears in <title> for the keywords check). */
+const CATEGORY_TITLE: Record<string, string> = {
+  'ai': 'الذكاء الاصطناعي (AI)',
+  'vision-2030': 'رؤية 2030 (Vision 2030)',
+  'digital-transformation': 'التحول الرقمي (Digital Transformation)',
+  'case-studies': 'دراسات الحالة (Case Studies)',
+  'data-security': 'أمن البيانات (Data Security)',
+};
 
 const PAGE_SIZE = 100;
 
@@ -51,7 +63,7 @@ const CATEGORY_GUIDES: Record<string, {
   pillars: { title: string; content: string }[];
   faq: { q: string; a: string }[];
 }> = {
-  'ذكاء-اصطناعي': {
+  'ai': {
     title: 'دليل حوكمة الذكاء الاصطناعي الشامل في المملكة العربية السعودية',
     intro: 'تشهد المملكة العربية السعودية نهضة تقنية غير مسبوقة في تبني حلول الذكاء الاصطناعي التوليدي والأنظمة الذكية، مما يفرض على المنشآت الحكومية والخاصة الانتقال من التجربة العشوائية إلى الحوكمة المؤسسية الممنهجة. يركز هذا التصنيف على أحدث أطر حوكمة الذكاء الاصطناعي، وآليات ضبط النماذج اللغوية الكبيرة (LLMs)، وأفضل الممارسات لتطبيق الذكاء الاصطناعي المسؤول والآمن.',
     pillars: [
@@ -87,7 +99,7 @@ const CATEGORY_GUIDES: Record<string, {
       },
     ],
   },
-  'رؤية-2030': {
+  'vision-2030': {
     title: 'الذكاء الاصطناعي والتحول الوطني في إطار رؤية السعودية 2030',
     intro: 'تضع رؤية السعودية 2030 البيانات والذكاء الاصطناعي في قلب خطط التنويع الاقتصادي وبناء مجتمع رقمي حيوي واقتصاد معرفي رائد. يسلط هذا القسم الضوء على المبادرات الوطنية الكبرى، وأطر العمل المنظمة، واستراتيجيات تبني الذكاء الاصطناعي في القطاعات الاستراتيجية لتحقيق الريادة العالمية للمملكة.',
     pillars: [
@@ -123,7 +135,7 @@ const CATEGORY_GUIDES: Record<string, {
       },
     ],
   },
-  'تحول-رقمي': {
+  'digital-transformation': {
     title: 'استراتيجيات التحول الرقمي المؤسسي وأتمتة العمليات بالذكاء الاصطناعي',
     intro: 'لم يعد التحول الرقمي مجرد رقمنة للأوراق والمعاملات اليدوية، بل أصبح إعادة هيكلة جذرية لنماذج الأعمال بالاعتماد على التحليلات التنبؤية، والأتمتة الذكية، والوكلاء المؤتمتين. نستعرض هنا المنهجيات الهندسية والإدارية لضمان تحول رقمي آمن ومستدام في السوق السعودي.',
     pillars: [
@@ -159,7 +171,7 @@ const CATEGORY_GUIDES: Record<string, {
       },
     ],
   },
-  'دراسات-حالة': {
+  'case-studies': {
     title: 'تجارب وتطبيقات واقعية لحوكمة الذكاء الاصطناعي في القطاعات السعودية',
     intro: 'يقدم هذا القسم تحليلات عميقة ودراسات حالة ميدانية من كبرى المؤسسات البنكية، والصحية، والدوائية، والحكومية في المملكة التي نجحت في تسخير قدرات الذكاء الاصطناعي مع فرض رقابة صارمة وامتثال كامل للأنظمة الوطنية والدولية.',
     pillars: [
@@ -195,7 +207,7 @@ const CATEGORY_GUIDES: Record<string, {
       },
     ],
   },
-  'أمن-البيانات': {
+  'data-security': {
     title: 'أمن البيانات وحمايتها في عصر الذكاء الاصطناعي وفق الأنظمة السعودية',
     intro: 'تمثل البيانات الوقود الأساسي لنماذج الذكاء الاصطناعي، ولكنها في الوقت ذاته النقطة الأكثر حساسية وتعرضاً للمخاطر. يختص هذا القسم باستعراض استراتيجيات تأمين البيانات، وتطبيق نظام حماية البيانات الشخصية السعودي (PDPL)، وضوابط الأمن السيبراني للهيئة الوطنية للأمن السيبراني (NCA).',
     pillars: [
@@ -246,7 +258,7 @@ const descriptionByCategory: Record<typeof category, string> = {
 const categoryLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: `${category} | مدونة BrightAI`,
+  name: `${CATEGORY_TITLE[category] ?? category} | مدونة BrightAI`,
   description: descriptionByCategory[category],
   url: `${SITE.url}/blog/category/${category}/`,
   inLanguage: 'ar-SA',
@@ -276,7 +288,7 @@ void categoryTint;
 ---
 
 <ArabicLayout
-  title={`${category} | مدونة BrightAI`}
+  title={`${CATEGORY_TITLE[category] ?? category} | مدونة BrightAI`}
   description={descriptionByCategory[category]}
   canonical={`${SITE.url}/blog/category/${category}/`}
   hreflang={[{ lang: 'ar-SA', href: `${SITE.url}/blog/category/${category}/` }]}
@@ -319,7 +331,7 @@ void categoryTint;
         <a href={`/blog/${post.slug}/`} class="listing-card" data-category={post.category}>
           <div class="listing-card__image" aria-hidden="true"></div>
           <div class="listing-card__body">
-            <span class="listing-card__category">{post.category}</span>
+            <span class="listing-card__category">{categoryLabel[post.category] ?? post.category}</span>
             <h2>{post.title}</h2>
             <p class="listing-card__desc">{post.description}</p>
             <div class="listing-card__meta">

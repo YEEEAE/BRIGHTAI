@@ -7,7 +7,7 @@ updatedDate: "2026-07-30"
 author: "nasser-alabdullah"
 slug: "pdpl-rights"
 readingTime: 10
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["PDPL", "الخصوصية", "الذكاء الاصطناعي", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

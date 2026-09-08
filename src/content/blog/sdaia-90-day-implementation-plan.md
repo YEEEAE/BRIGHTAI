@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "sdaia-90-day-implementation-plan"
 readingTime: 12
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["SDAIA", "خطة 90 يوم", "تطبيق", "امتثال", "السعودية", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

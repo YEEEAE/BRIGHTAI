@@ -8,7 +8,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ecc-vs-cscc-cybersecurity-controls"
 readingTime: 9
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["NCA ECC", "CSCC", "ضوابط الأمن السيبراني", "NCA", "السعودية", "القطاعات الحساسة", "حوكمة AI", "ECC vs CSCC"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

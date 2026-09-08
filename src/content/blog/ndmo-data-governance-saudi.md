@@ -7,7 +7,7 @@ updatedDate: "2026-05-18"
 author: "nasser-alabdullah"
 slug: "ndmo-data-governance-saudi"
 readingTime: 9
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["NDMO", "حوكمة البيانات", "السعودية", "سدايا", "PDPL"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

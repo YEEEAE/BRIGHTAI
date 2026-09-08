@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "iso-42001-ai-lifecycle-saudi"
 readingTime: 14
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["ISO 42001", "دورة حياة AI", "AI Lifecycle", "إدارة النماذج", "السعودية", "AIMS", "MLOps", "AI Governance"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

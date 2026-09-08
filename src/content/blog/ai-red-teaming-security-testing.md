@@ -7,7 +7,7 @@ updatedDate: "2026-07-28"
 author: "nasser-alabdullah"
 slug: "ai-red-teaming-security-testing"
 readingTime: 12
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["Red Teaming", "اختبار الأمان", "prompt injection", "أمن AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

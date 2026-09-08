@@ -7,7 +7,7 @@ updatedDate: "2026-06-01"
 author: "nasser-alabdullah"
 slug: "ai-audit-trail-saudi"
 readingTime: 37
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["سجل التدقيق", "السعودية", "امتثال", "توثيق AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

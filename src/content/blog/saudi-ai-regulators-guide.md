@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "saudi-ai-regulators-guide"
 readingTime: 14
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["الجهات التنظيمية للذكاء الاصطناعي في السعودية", "سدايا", "NCA", "ساما", "NDMO", "SFDA", "حوكمة AI", "PDPL", "الذكاء الاصطناعي التوليدي", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

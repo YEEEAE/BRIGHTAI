@@ -7,7 +7,7 @@ updatedDate: "2026-05-06"
 author: "nasser-alabdullah"
 slug: "ai-hr-recruitment-saudi"
 readingTime: 9
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["موارد بشرية", "ذكاء اصطناعي", "توظيف", "السعودية", "PDPL"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "sdaia-allam-model-enterprise"
 readingTime: 10
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["SDAIA", "ALLaM", "نموذج سيادي", "LLM سعودي", "ذكاء اصطناعي توليدي"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

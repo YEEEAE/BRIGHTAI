@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "compliance-officer"
 slug: "cloud-cybersecurity-controls-ccc-saudi"
 readingTime: 12
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["NCA", "ضوابط السحابة", "CCC", "الأمن السيبراني", "السعودية", "الحوسبة السحابية", "الذكاء الاصطناعي"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

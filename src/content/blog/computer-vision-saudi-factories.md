@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "computer-vision-saudi-factories"
 readingTime: 9
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["رؤية حاسوبية", "مصانع", "السعودية", "صناعة", "جودة"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

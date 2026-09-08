@@ -7,7 +7,7 @@ updatedDate: "2026-04-24"
 author: "nasser-alabdullah"
 slug: "ai-real-estate-saudi"
 readingTime: 9
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["عقار", "ذكاء اصطناعي", "السعودية", "رؤية 2030", "تقييم عقاري"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

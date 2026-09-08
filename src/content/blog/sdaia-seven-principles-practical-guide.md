@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "sdaia-seven-principles-practical-guide"
 readingTime: 13
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["أخلاقيات الذكاء الاصطناعي", "مبادئ سدايا السبعة", "AI Ethics", "SDAIA", "حوكمة AI", "PDPL", "الفجوة", "الخصوصية", "الإنسانية", "الشفافية", "المساءلة", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

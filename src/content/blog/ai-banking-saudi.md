@@ -7,7 +7,7 @@ updatedDate: "2026-06-12"
 author: "nasser-alabdullah"
 slug: "ai-banking-saudi"
 readingTime: 10
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["ذكاء اصطناعي", "البنوك", "السعودية", "SAMA", "مكافحة الاحتيال"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

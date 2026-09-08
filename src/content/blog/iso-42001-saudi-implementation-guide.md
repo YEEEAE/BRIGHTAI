@@ -7,7 +7,7 @@ updatedDate: "2026-08-24"
 author: "nasser-alabdullah"
 slug: "iso-42001-saudi-implementation-guide"
 readingTime: 13
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["ISO 42001", "إدارة AI", "الشركات السعودية", "تدقيق"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

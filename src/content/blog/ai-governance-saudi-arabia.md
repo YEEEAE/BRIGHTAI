@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ai-governance-saudi-arabia"
 readingTime: 22
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["حوكمة AI", "السعودية", "SDAIA", "PDPL", "حلول BrightAI", "Pillar", "إطار حوكمة AI", "حوكمة GenAI", "سياسة استخدام AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

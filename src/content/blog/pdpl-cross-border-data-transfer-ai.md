@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "pdpl-cross-border-data-transfer-ai"
 readingTime: 11
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["PDPL", "نقل البيانات", "Cloud AI", "Azure", "AWS", "السعودية", "سدايا"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

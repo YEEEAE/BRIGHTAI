@@ -7,7 +7,7 @@ updatedDate: "2026-07-24"
 author: "nasser-alabdullah"
 slug: "best-ai-governance-platforms-2026"
 readingTime: 19
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["منصات حوكمة AI", "مقارنة", "BrightAI", "2026"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

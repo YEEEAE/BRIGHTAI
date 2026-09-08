@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "sdaia-international-standards-unesco-oecd"
 readingTime: 11
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["SDAIA", "UNESCO", "OECD", "معايير دولية", "أخلاقيات AI", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "iso-42001-sdaia-alignment-saudi"
 readingTime: 14
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["ISO 42001", "SDAIA", "سدايا", "إرشادات AI", "السعودية", "مبادئ سدايا", "AIMS", "GenAI", "الذكاء الاصطناعي"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

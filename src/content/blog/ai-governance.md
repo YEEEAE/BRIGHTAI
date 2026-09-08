@@ -7,7 +7,7 @@ updatedDate: "2026-06-01"
 author: "nasser-alabdullah"
 slug: "ai-governance"
 readingTime: 26
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["حوكمة AI", "ممارسات عملية", "إطار عمل", "AI Governance"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

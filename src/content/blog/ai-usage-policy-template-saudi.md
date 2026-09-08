@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ai-usage-policy-template-saudi"
 readingTime: 12
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["سياسة استخدام AI", "AI Usage Policy", "قالب سياسة AI", "PDPL", "سدايا", "السعودية", "Document Template"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

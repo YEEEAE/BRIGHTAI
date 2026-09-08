@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ai-governance-framework-saudi-model"
 readingTime: 14
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["إطار حوكمة AI", "AI Governance Framework", "NIST AI RMF", "EU AI Act", "PDPL", "سدايا", "ISO 42001", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

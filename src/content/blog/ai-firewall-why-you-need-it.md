@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "ai-firewall-why-you-need-it"
 readingTime: 11
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["AI Firewall", "جدار حماية", "حماية البيانات", "أمان AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

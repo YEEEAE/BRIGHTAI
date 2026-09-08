@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "pdpl-compliance-guide-saudi-companies"
 readingTime: 11
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["PDPL", "حماية البيانات", "السعودية", "سدايا", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ndmo-roles-requirements-guide"
 readingTime: 12
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["مكتب إدارة البيانات الوطنية", "NDMO", "NDGP", "سدايا", "PDPL", "حوكمة البيانات", "السعودية", "البيانات الشخصية", "نقل البيانات", "AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

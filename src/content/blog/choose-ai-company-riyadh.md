@@ -7,7 +7,7 @@ updatedDate: "2026-04-20"
 author: "nasser-alabdullah"
 slug: "choose-ai-company-riyadh"
 readingTime: 10
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["شركات AI", "الرياض", "السعودية", "اختيار شريك", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

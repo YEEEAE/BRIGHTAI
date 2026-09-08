@@ -24,6 +24,7 @@ import {
   paginate,
   categoryTint,
   categoryFromSlug,
+  categoryLabel,
 } from '../../data/blog';
 import { SITE } from '../../data/site';
 // BAI-SEO-003-S3 (2026-07-18): Organization import removed — foundation
@@ -193,7 +194,7 @@ function pageUrl(page: number): string {
         <a href={`/blog/${post.slug}/`} class="listing-card" data-category={post.category} data-tint={categoryTint[post.category]}>
           <div class="listing-card__image" aria-hidden="true"></div>
           <div class="listing-card__body">
-            <span class="listing-card__category">{post.category}</span>
+            <span class="listing-card__category">{categoryLabel[post.category] ?? post.category}</span>
             <h2>{post.title}</h2>
             <p class="listing-card__desc">{post.description}</p>
             <div class="listing-card__meta">

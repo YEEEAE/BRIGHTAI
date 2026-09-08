@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "sdaia-sector-compliance-healthcare-banking-government"
 readingTime: 13
-category: "دراسات-حالة"
+category: "case-studies"
 tags: ["SDAIA", "رعاية صحية", "بنوك", "قطاع حكومي", "SFDA", "SAMA", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

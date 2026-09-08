@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "sdaia-nca-pdpl-regulatory-map"
 readingTime: 11
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["SDAIA", "NCA", "PDPL", "خريطة تنظيمية", "السعودية", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

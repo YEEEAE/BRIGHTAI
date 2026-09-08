@@ -205,7 +205,7 @@ export default defineConfig({
     // regression that taught us this). Wildcards and :placeholders are also
     // excluded (Astro's redirects config only accepts literal paths; the full
     // wildcard set lives in public/_redirects for Netlify/Cloudflare Pages).
-    // 204 entries (out of 213 in redirects.json).
+    // 219 entries (out of 228 in redirects.json).
     '/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1.html': {
       status: 301,
       destination: '/blog/computer-vision-saudi-factories/',
@@ -398,6 +398,14 @@ export default defineConfig({
       status: 301,
       destination: '/blog/big-data-analytics-saudi-companies/',
     },
+    '/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA.html': {
+      status: 301,
+      destination: '/blog/category/data-security/',
+    },
+    '/blog/category/%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A.html': {
+      status: 301,
+      destination: '/blog/category/ai/',
+    },
     '/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/': {
       status: 301,
       destination: '/blog/big-data-analytics-saudi-companies/',
@@ -406,9 +414,49 @@ export default defineConfig({
       status: 301,
       destination: '/blog/big-data-analytics-saudi-companies/',
     },
+    '/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/': {
+      status: 301,
+      destination: '/blog/category/data-security/',
+    },
+    '/blog/category/%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A/': {
+      status: 301,
+      destination: '/blog/category/ai/',
+    },
+    '/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA': {
+      status: 301,
+      destination: '/blog/category/data-security/',
+    },
+    '/blog/category/%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A': {
+      status: 301,
+      destination: '/blog/category/ai/',
+    },
+    '/blog/category/%D8%AF%D8%B1%D8%A7%D8%B3%D8%A7%D8%AA-%D8%AD%D8%A7%D9%84%D8%A9.html': {
+      status: 301,
+      destination: '/blog/category/case-studies/',
+    },
+    '/blog/category/%D8%AF%D8%B1%D8%A7%D8%B3%D8%A7%D8%AA-%D8%AD%D8%A7%D9%84%D8%A9/': {
+      status: 301,
+      destination: '/blog/category/case-studies/',
+    },
+    '/blog/category/%D8%AF%D8%B1%D8%A7%D8%B3%D8%A7%D8%AA-%D8%AD%D8%A7%D9%84%D8%A9': {
+      status: 301,
+      destination: '/blog/category/case-studies/',
+    },
+    '/blog/category/%D8%AA%D8%AD%D9%88%D9%84-%D8%B1%D9%82%D9%85%D9%8A.html': {
+      status: 301,
+      destination: '/blog/category/digital-transformation/',
+    },
     '/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84.html': {
       status: 301,
       destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/category/%D8%AA%D8%AD%D9%88%D9%84-%D8%B1%D9%82%D9%85%D9%8A/': {
+      status: 301,
+      destination: '/blog/category/digital-transformation/',
+    },
+    '/blog/category/%D8%AA%D8%AD%D9%88%D9%84-%D8%B1%D9%82%D9%85%D9%8A': {
+      status: 301,
+      destination: '/blog/category/digital-transformation/',
     },
     '/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/': {
       status: 301,
@@ -426,6 +474,10 @@ export default defineConfig({
       status: 301,
       destination: '/blog/computer-vision-saudi-factories/',
     },
+    '/blog/category/%D8%B1%D8%A4%D9%8A%D8%A9-2030.html': {
+      status: 301,
+      destination: '/blog/category/vision-2030/',
+    },
     '/frontend/pages/smart-medical-archive/index.html': {
       status: 301,
       destination: '/solutions/healthcare-ai-governance/',
@@ -442,6 +494,10 @@ export default defineConfig({
       status: 301,
       destination: '/solutions/ai-evidence-file/',
     },
+    '/blog/category/%D8%B1%D8%A4%D9%8A%D8%A9-2030/': {
+      status: 301,
+      destination: '/blog/category/vision-2030/',
+    },
     '/blog/Generative%20artificial%20intelligence': {
       status: 301,
       destination: '/blog/generative-ai-governance-vs-traditional/',
@@ -449,6 +505,10 @@ export default defineConfig({
     '/docs/Governance%D9%80application/index.html': {
       status: 301,
       destination: '/docs/governance-application/',
+    },
+    '/blog/category/%D8%B1%D8%A4%D9%8A%D8%A9-2030': {
+      status: 301,
+      destination: '/blog/category/vision-2030/',
     },
     '/demo/pages/Visitor-registration/index.html': {
       status: 301,

@@ -7,7 +7,7 @@ updatedDate: "2026-05-02"
 author: "nasser-alabdullah"
 slug: "ai-implementation-cost-saudi"
 readingTime: 10
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["تكلفة AI", "تسعير", "السعودية", "ذكاء اصطناعي", "ROI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

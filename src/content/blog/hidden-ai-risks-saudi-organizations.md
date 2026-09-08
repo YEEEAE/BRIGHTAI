@@ -7,7 +7,7 @@ updatedDate: "2026-06-12"
 author: "nasser-alabdullah"
 slug: "hidden-ai-risks-saudi-organizations"
 readingTime: 11
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["مخاطر AI", "الأمن السيبراني", "المؤسسات السعودية", "تصنيف المخاطر"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

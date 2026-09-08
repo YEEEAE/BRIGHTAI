@@ -31,13 +31,26 @@ import { SITE } from './site';
  *  parser crash. The list is the same as `BLOG_CATEGORIES` in content.config.ts.
  */
 export const BLOG_CATEGORIES = [
-  'ذكاء-اصطناعي',
-  'رؤية-2030',
-  'تحول-رقمي',
-  'دراسات-حالة',
-  'أمن-البيانات',
+  'ai',
+  'vision-2030',
+  'digital-transformation',
+  'case-studies',
+  'data-security',
 ] as const;
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
+
+/** Arabic display labels — SEMRUSH-URL-FORMAT-2026-09-09: URL slugs are now
+ *  ASCII (letters/digits/hyphens only) to fix the "poorly formatted URL"
+ *  issue (percent-encoded Arabic slugs fail the characters check). The
+ *  Arabic names remain the display layer via this map.
+ */
+export const categoryLabel: Record<BlogCategory, string> = {
+  'ai': 'الذكاء الاصطناعي',
+  'vision-2030': 'رؤية 2030',
+  'digital-transformation': 'التحول الرقمي',
+  'case-studies': 'دراسات الحالة',
+  'data-security': 'أمن البيانات',
+};
 
 /* ── Public types ─────────────────────────────────────────────────── */
 
@@ -138,7 +151,7 @@ function resolveAuthor(key: string | undefined): Author {
  * Default category when a post omits `category` or sends an unknown value.
  * Picked from the enum (widest topic; least likely to mislead readers).
  */
-const DEFAULT_BLOG_CATEGORY: BlogCategory = 'ذكاء-اصطناعي';
+const DEFAULT_BLOG_CATEGORY: BlogCategory = 'ai';
 
 function resolveCategory(c: string | undefined): BlogCategory {
   // The zod schema keeps `category` permissive (z.string().optional()) to
@@ -310,25 +323,23 @@ export function paginate<T>(allPosts: T[], page = 1, pageSize = 9, basePath = '/
  * Map stays token-friendly (only the brand/indigo/amber accent gradients).
  */
 export const categoryTint: Record<BlogCategory, string> = {
-  'ذكاء-اصطناعي': 'teal',
-  'رؤية-2030': 'amber-teal',
-  'تحول-رقمي': 'indigo',
-  'دراسات-حالة': 'amber',
-  'أمن-البيانات': 'teal-indigo',
+  'ai': 'teal',
+  'vision-2030': 'amber-teal',
+  'digital-transformation': 'indigo',
+  'case-studies': 'amber',
+  'data-security': 'teal-indigo',
 };
 
 /* ── Category URL slug ────────────────────────────────────────────── */
 
-/** Category URL slug — kebab-case Arabic, identical to the enum value. */
+/** Category URL slug — ASCII kebab-case, identical to the enum value
+ *  (SEM RUSH-URL-FORMAT-2026-09-09: no percent-encoding in category URLs). */
 export function categorySlug(c: BlogCategory): string {
   return c;
 }
 
-/** Display name for a category URL — encoded for safe insertion into href. */
+/** Category href — ASCII slug, no encoding needed. */
 export function categoryHref(c: BlogCategory): string {
-  // Astro URL-encodes the path; we leave the literal Arabic value here
-  // so the resulting URL is `/blog/category/أمن-البيانات/` which works
-  // because Astro 6 normalises Unicode in dynamic routes.
   return `/blog/category/${c}/`;
 }
 

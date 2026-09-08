@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "ai-healthcare-saudi"
 readingTime: 10
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["ذكاء اصطناعي", "الرعاية الصحية", "السعودية", "SFDA", "PDPL"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-08-24"
 author: "nasser-alabdullah"
 slug: "nca-cybersecurity-requirements-saudi"
 readingTime: 16
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["الهيئة الوطنية للأمن السيبراني", "NCA", "السعودية", "ECC", "حوكمة AI", "CSCC", "CCC", "DCC", "الأمن السيبراني", "القطاعات الحيوية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

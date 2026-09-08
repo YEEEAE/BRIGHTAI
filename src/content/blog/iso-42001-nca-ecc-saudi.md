@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "iso-42001-nca-ecc-saudi"
 readingTime: 15
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["ISO 42001", "NCA ECC", "الأمن السيبراني", "السعودية", "NCA", "ضوابط", "AIMS", "AI", "ECC"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-05-31"
 author: "nasser-alabdullah"
 slug: "pdpl-and-ai-saudi"
 readingTime: 22
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["PDPL", "الذكاء الاصطناعي", "السعودية", "حماية البيانات"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -8,7 +8,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ai-neom-smart-city"
 readingTime: 9
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["نيوم", "مدن ذكية", "السعودية", "رؤية 2030", "حوكمة AI", "PDPL", "NCA ECC", "سدايا"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

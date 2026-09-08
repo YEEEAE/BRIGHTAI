@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "saudi-ai-landscape-sdaia-humain-allam-scai"
 readingTime: 14
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["هيوماين", "علام", "scai", "سدايا", "الذكاء الاصطناعي السعودي", "النموذج اللغوي العربي", "PIF", "HUMAIN", "ALLAM", "Vision 2030", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

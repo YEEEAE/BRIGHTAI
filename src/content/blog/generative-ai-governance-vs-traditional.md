@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "generative-ai-governance-vs-traditional"
 readingTime: 11
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["حوكمة GenAI", "Generative AI Governance", "هلوسة النماذج", "AI Firewall", "Guardrails", "سدايا إرشادات GenAI", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

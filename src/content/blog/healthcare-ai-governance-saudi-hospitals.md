@@ -7,7 +7,7 @@ updatedDate: "2026-07-14"
 author: "nasser-alabdullah"
 slug: "healthcare-ai-governance-saudi-hospitals"
 readingTime: 14
-category: "دراسات-حالة"
+category: "case-studies"
 tags: ["قطاع الصحة", "حوكمة AI", "SFDA", "المستشفيات السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

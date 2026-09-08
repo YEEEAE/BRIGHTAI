@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "pdpl-employee-data-rights-saudi"
 readingTime: 12
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["PDPL", "حقوق الموظفين", "بيانات الموظفين", "الموارد البشرية", "السعودية", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

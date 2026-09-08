@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "iso-42001-policy-framework-saudi"
 readingTime: 15
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["ISO 42001", "سياسات AI", "AI Governance", "إطار الحوكمة", "السعودية", "NCA", "SDAIA", "إدارة AI", "AIMS"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

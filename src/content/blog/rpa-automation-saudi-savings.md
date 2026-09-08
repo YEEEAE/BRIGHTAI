@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "rpa-automation-saudi-savings"
 readingTime: 9
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["RPA", "أتمتة العمليات", "السعودية", "تحول رقمي", "توفير التكاليف"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

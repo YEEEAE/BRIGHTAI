@@ -7,7 +7,7 @@ updatedDate: "2026-06-16"
 author: "nasser-alabdullah"
 slug: "ai-governance-vs-ai-safety-vs-ai-security"
 readingTime: 14
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["حوكمة AI", "أمان AI", "أمن AI", "AI Governance vs Safety vs Security"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

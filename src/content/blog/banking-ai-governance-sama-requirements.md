@@ -7,7 +7,7 @@ updatedDate: "2026-07-17"
 author: "nasser-alabdullah"
 slug: "banking-ai-governance-sama-requirements"
 readingTime: 13
-category: "دراسات-حالة"
+category: "case-studies"
 tags: ["قطاع البنوك", "SAMA", "حوكمة AI", "البنوك السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

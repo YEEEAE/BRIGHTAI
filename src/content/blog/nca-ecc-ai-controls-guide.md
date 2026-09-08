@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "nca-ecc-ai-controls-guide"
 readingTime: 13
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["NCA ECC", "ضوابط الامن السيبراني", "الضوابط الأساسية", "الذكاء الاصطناعي", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

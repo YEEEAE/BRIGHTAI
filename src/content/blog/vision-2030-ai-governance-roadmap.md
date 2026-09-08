@@ -8,7 +8,7 @@ updatedDate: "2026-07-31"
 author: "nasser-alabdullah"
 slug: "vision-2030-ai-governance-roadmap"
 readingTime: 14
-category: "رؤية-2030"
+category: "vision-2030"
 tags: ["رؤية 2030", "التحول الرقمي", "حوكمة AI", "السعودية", "سدايا", "PDPL", "NCA ECC"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

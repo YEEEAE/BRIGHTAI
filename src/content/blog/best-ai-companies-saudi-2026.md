@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "best-ai-companies-saudi-2026"
 readingTime: 9
-category: "ذكاء-اصطناعي"
+category: "ai"
 tags: ["شركات ذكاء اصطناعي", "السعودية", "حوكمة AI", "تحول رقمي", "رؤية 2030"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

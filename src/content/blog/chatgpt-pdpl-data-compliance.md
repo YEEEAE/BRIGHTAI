@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "chatgpt-pdpl-data-compliance"
 readingTime: 11
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["ChatGPT", "PDPL", "OpenAI", "البيانات الشخصية", "السعودية", "ذكاء اصطناعي"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

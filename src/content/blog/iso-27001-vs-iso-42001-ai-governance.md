@@ -7,7 +7,7 @@ updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "iso-27001-vs-iso-42001-ai-governance"
 readingTime: 13
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["ISO 27001", "ISO 42001", "حوكمة AI", "أمن المعلومات", "إدارة AI", "السعودية", "NCA", "PDPL", "SDAIA", "شهادات"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

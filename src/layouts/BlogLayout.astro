@@ -31,6 +31,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import SpeakableSchema from '../components/SpeakableSchema.astro';
 import { SITE } from '../data/site';
 import type { BlogPost } from '../data/blog';
+import { categoryLabel } from '../data/blog';
 
 interface InternalLink {
   href: string;
@@ -198,7 +199,7 @@ const visualCrumbs = hasHeaderBreadcrumbs
 
     <header class="article-hero" data-speakable>
       <a class="chip chip--brand article-hero__category" href={`/blog/category/${encodeURIComponent(post.category)}/`}>
-        {post.category}
+        {categoryLabel[post.category] ?? post.category}
       </a>
       <h1>{post.title}</h1>
       <p class="article-hero__desc speakable-summary">{post.description}</p>

@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "iso-42001-risk-assessment-saudi"
 readingTime: 14
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["ISO 42001", "تقييم المخاطر", "AI Risk Assessment", "إدارة المخاطر", "السعودية", "NCA", "PDPL", "SDAIA", "AIMS", "الحوكمة"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

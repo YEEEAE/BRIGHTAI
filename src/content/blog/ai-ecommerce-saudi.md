@@ -7,7 +7,7 @@ updatedDate: "2026-07-07"
 author: "nasser-alabdullah"
 slug: "ai-ecommerce-saudi"
 readingTime: 9
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["تجارة إلكترونية", "ذكاء اصطناعي", "السعودية", "توصيات", "PDPL"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

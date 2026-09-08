@@ -7,7 +7,7 @@ updatedDate: "2026-06-04"
 author: "nasser-alabdullah"
 slug: "big-data-analytics-saudi-companies"
 readingTime: 10
-category: "تحول-رقمي"
+category: "digital-transformation"
 tags: ["تحليل بيانات", "بيانات ضخمة", "السعودية", "PDPL", "ذكاء اصطناعي"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-07-30"
 author: "nasser-alabdullah"
 slug: "sama-ai"
 readingTime: 10
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["SAMA", "القطاع المصرفي", "الذكاء الاصطناعي", "السعودية", "حوكمة AI"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

@@ -7,7 +7,7 @@ updatedDate: "2026-07-25"
 author: "nasser-alabdullah"
 slug: "sdaia-audit-checklist-preparedness"
 readingTime: 12
-category: "رؤية-2030"
+category: "vision-2030"
 tags: ["SDAIA", "تدقيق", "جاهزية", "فحص", "امتثال", "السعودية"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"

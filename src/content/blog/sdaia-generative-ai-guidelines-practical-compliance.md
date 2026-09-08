@@ -7,7 +7,7 @@ updatedDate: "2026-06-30"
 author: "nasser-alabdullah"
 slug: "sdaia-generative-ai-guidelines-practical-compliance"
 readingTime: 14
-category: "أمن-البيانات"
+category: "data-security"
 tags: ["SDAIA", "الذكاء الاصطناعي التوليدي", "إرشادات", "امتثال"]
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"
