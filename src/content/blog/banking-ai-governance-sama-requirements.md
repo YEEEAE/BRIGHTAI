@@ -25,7 +25,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <!-- AI-CITATION: دليل حوكمة الذكاء الاصطناعي للبنوك السعودية يشمل متطلبات SAMA لإطار حوكمة تقنية المعلومات وإدارة مخاطر النماذج وحماية بيانات العملاء. Source: https://brightai.live/blog/banking-ai-governance-sama-requirements/ -->
 <div class="tldr--gradient tldr--gradient-banking">
-<h3>الخلاصة السريعة</h3>
+<h2>الخلاصة السريعة</h2>
 <p>البنوك السعودية تحتاج حوكمة AI متوافقة مع إطار SAMA لحوكمة تقنية المعلومات تشمل: إدارة مخاطر نماذج الائتمان والاحتيال، حماية السرية البنكية وبيانات العملاء، موافقات بشرية للقرارات عالية الخطورة، وتدقيق داخلي يثبت السيطرة. منصة BrightAI توفر AI Firewall وAudit Trail وHuman Approval Layer لتغطية هذه المتطلبات.</p>
 </div>
 

@@ -104,7 +104,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
     <div class="cards-grid">
       <div class="feature-card">
         <div class="feature-icon">🆔</div>
-        <h4>بيانات الهوية</h4>
+        <h3>بيانات الهوية</h3>
         <p>رقم الهوية الوطنية، الإقامة، جواز السفر، رقم الحدود، السجل التجاري الشخصي.</p>
       </div>
       <div class="feature-card">
@@ -176,7 +176,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
     <div class="cards-grid">
       <div class="feature-card">
         <div class="feature-icon">📜</div>
-        <h4>سجل غير قابل للتلاعب</h4>
+        <h3>سجل غير قابل للتلاعب</h3>
         <p>Hash لكل طلب/استجابة مع طابع زمني دقيق.</p>
       </div>
       <div class="feature-card">
@@ -287,7 +287,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
     <div class="cards-grid">
       <div class="feature-card">
         <div class="feature-icon">🛡️</div>
-        <h4>طبقة حماية</h4>
+        <h3>طبقة حماية</h3>
         <p>AI Firewall يرشح PII ويطبّق السياسات تلقائيًا، قبل أن تصل البيانات إلى أي نموذج.</p>
       </div>
       <div class="feature-card">

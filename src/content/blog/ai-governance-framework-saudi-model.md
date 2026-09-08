@@ -18,7 +18,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <div class="short-answer-box">
 
-<h3>الخلاصة السريعة</h3>
+<h2>الخلاصة السريعة</h2>
 <p>إطار حوكمة الذكاء الاصطناعي للمنشآت السعودية منظومة متكاملة من أربع ركائز: (1) <strong>السياسات</strong> التي تحدد القواعد والحدود، (2) <strong>الأدوار</strong> التي تضمن المساءلة عبر لجان AI Governance Committee وAI Officer وAI Champions داخل الإدارات، (3) <strong>الأدوات</strong> التي تطبق الحوكمة فعلياً (AI Firewall، Audit Trail، Human Approval، Evidence File)، (4) <strong>القياس</strong> عبر مؤشرات KPI واضحة. الإطار السعودي يستفيد من NIST AI RMF وEU AI Act كنماذج مرجعية، ويتوافق مع متطلبات PDPL المحلية وضوابط سدايا. يمكن للمنشأة بناء الإطار خلال 90 يوماً عبر خطة تنفيذ تدريجية دون توقف العمليات.</p>
 
 </div>

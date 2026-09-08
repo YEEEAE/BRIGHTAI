@@ -256,7 +256,7 @@ export const legal_pdpl_statement: LegalInlineContent = {
     <!-- Sidebar -->
     <aside class="lg:col-span-4 sticky top-28 hidden lg:block">
       <div class="glass rounded-3xl p-6">
-        <h3 class="font-bold text-lg mb-4 text-brand-300">أقسام الوثيقة</h3>
+        <h2 class="font-bold text-lg mb-4 text-brand-300">أقسام الوثيقة</h2>
         <nav aria-label="Document sections navigation">
           <ul class="space-y-1">
 
@@ -563,7 +563,7 @@ export const legal_data_processing_agreement: LegalInlineContent = {
     <!-- Sidebar -->
     <aside class="lg:col-span-4 sticky top-28 hidden lg:block">
       <div class="glass rounded-3xl p-6">
-        <h3 class="font-bold text-lg mb-4 text-brand-300">أقسام الوثيقة</h3>
+        <h2 class="font-bold text-lg mb-4 text-brand-300">أقسام الوثيقة</h2>
         <nav aria-label="Document sections navigation">
           <ul class="space-y-1">
 

@@ -18,7 +18,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <div class="short-answer-box">
 
-<h3>الخلاصة السريعة</h3>
+<h2>الخلاصة السريعة</h2>
 <p>الذكاء الاصطناعي التوليدي (GenAI) — مثل ChatGPT وClaude وGemini — يخلق مخاطر فريدة لا تغطيها أطر الحوكمة التقليدية: (1) <strong>الهلوسة</strong> (Hallucination): النموذج يولّد معلومات خاطئة بثقة عالية، (2) <strong>تسريب البيانات</strong>: كل prompt يرسل البيانات للخوادم الخارجية، (3) <strong>حقوق الملكية</strong>: المخرجات قد تنتهك حقوق الغير، (4) <strong>الإفصاح</strong>: يجب إبلاغ المستخدم أن المحتوى مولد. الحوكمة التقليدية لا تكفي، تحتاج ضوابط متخصصة: [AI Firewall](https://brightai.live/solutions/ai-firewall/) يمنع التسريب، Guardrails يتحقق من المخرجات، [سجل التدقيق](https://brightai.live/solutions/ai-audit-trail/) يوثق كل عملية. [سدايا أصدرت إرشادات رسمية لـ GenAI](https://brightai.live/docs/sdaia-generative-ai-guidelines/) يجب على المنشآت السعودية الالتزام بها.</p>
 
 </div>

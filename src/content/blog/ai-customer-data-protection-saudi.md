@@ -110,7 +110,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
         <div class="mistakes-grid">
             <div class="mistake-card">
                 <div class="icon">📋</div>
-                <h4>نسخ بيانات كاملة في AI</h4>
+                <h3>نسخ بيانات كاملة في AI</h3>
                 <p>موظف ينسخ جدول Excel كامل ببيانات عملاء ويطلب من ChatGPT تحليله، دون إزالة الأعمدة الحساسة.</p>
             </div>
             <div class="mistake-card">
@@ -214,7 +214,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
             <div class="step-item">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                    <h4>اكتشف تدفقات البيانات الحالية</h4>
+                    <h3>اكتشف تدفقات البيانات الحالية</h3>
                     <p>حدد كل الأدوات التي يستخدمها موظفوك مع AI، ونوع البيانات التي تتم معالجتها. استخدم أدوات مراقبة الشبكة لاكتشاف Shadow AI.</p>
                 </div>
             </div>
@@ -271,7 +271,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
         <div class="solutions-grid">
             <div class="solution-card">
                 <div class="icon-wrap">🛡️</div>
-                <h4>AI Firewall</h4>
+                <h3>AI Firewall</h3>
                 <p>جدار حماية ذكي يكتشف PII تلقائيًا ويخفيها قبل إرسالها للنماذج. مُدرّب خصيصًا على الأنماط السعودية.</p>
                 <a href="/solutions/ai-firewall/" class="learn-more">اكتشف المزيد ←</a>
             </div>
@@ -404,7 +404,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
             <div class="step-item">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                    <h4>اكتشف تدفقات البيانات الحالية</h4>
+                    <h3>اكتشف تدفقات البيانات الحالية</h3>
                     <p>حدد كل الأدوات التي يستخدمها موظفوك مع AI، ونوع البيانات التي تتم معالجتها. استخدم أدوات مراقبة الشبكة لاكتشاف Shadow AI.</p>
                 </div>
             </div>

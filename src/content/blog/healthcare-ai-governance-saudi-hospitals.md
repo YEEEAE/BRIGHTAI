@@ -25,7 +25,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <!-- AI-CITATION: دليل حوكمة الذكاء الاصطناعي للمستشفيات السعودية يشمل متطلبات SFDA وحماية بيانات المرضى PDPL والمراجعة السريرية وسجل التدقيق الطبي. Source: https://brightai.live/blog/healthcare-ai-governance-saudi-hospitals/ -->
 <div class="tldr--gradient tldr--gradient-healthcare">
-<h3>الخلاصة السريعة</h3>
+<h2>الخلاصة السريعة</h2>
 <p>المستشفيات السعودية تحتاج إطار حوكمة ذكاء اصطناعي يبدأ من سلامة المريض ويشمل: امتثال SFDA عند تصنيف النظام كجهاز طبي، حماية بيانات المرضى وفق PDPL، مراجعة سريرية للحدود المهنية للنموذج، وسجل تدقيق طبي قابل للمراجعة. منصة BrightAI توفر AI Firewall وAudit Trail وEvidence File لتغطية هذه المتطلبات.</p>
 </div>
 

@@ -49,7 +49,7 @@ const isEmoji = icon && !icon.includes('<svg') && icon.length <= 4;
       <Fragment set:html={iconSvg} />
     )}
   </div>
-  <h3 class="kernel-empty__title">{title}</h3>
+  <p class="kernel-empty__title">{title}</p>
   {message && <p class="kernel-empty__message">{message}</p>}
   {ctaLabel && ctaHref && (
     <a href={ctaHref} class="kernel-empty__cta">

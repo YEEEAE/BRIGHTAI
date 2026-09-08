@@ -15,10 +15,10 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <div class="short-answer-box">
 
-            <h3>
+            <h2>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
                 الخلاصة السريعة
-            </h3>
+            </h2>
             <p>حوكمة الذكاء الاصطناعي في السعودية إطار تنظيمي يضمن الاستخدام الآمن والمتوافق مع ضوابط SDAIA ونظام PDPL. يمكن البدء خلال أيام عبر حلول جاهزة: AI Firewall لحماية البيانات، AI Audit Trail لتوثيق العمليات، Human Approval Layer للتحكم البشري، Evidence File لأدلة الامتثال، وCompliance Packs لـ PDPL وISO 42001. كل هذه تعمل كطبقة وسيطة مع أي نموذج AI خارجي. للشرح الموسّع للتعريف والمكونات ومراحل التطبيق، راجع <a href="/hub/ai-governance/">دليل حوكمة الذكاء الاصطناعي في السعودية</a> في مركز المعرفة.</p>
         
 </div>
@@ -86,7 +86,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
     <div class="risk-grid">
         <div class="risk-card">
             <div class="icon">🔓</div>
-            <h4>تسرب البيانات الحساسة</h4>
+            <h3>تسرب البيانات الحساسة</h3>
             <p>مشاركة معلومات سرية مع نماذج AI خارجية دون فلترة أو مراقبة.</p>
         </div>
         <div class="risk-card">
@@ -122,7 +122,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
         <div class="step-item">
             <div class="step-number">1</div>
             <div class="step-content">
-                <h4>اكتشف استخدامات AI الحالية</h4>
+                <h3>اكتشف استخدامات AI الحالية</h3>
                 <p>ابدأ بمسح شامل: من يستخدم AI في شركتك؟ ما الأدوات؟ ما البيانات التي يتم معالجتها؟ كثير من الشركات تكتشف أن Shadow AI أكبر مما تتوقع. استخدم أدوات اكتشاف تلقائي لمسح الشبكة وتحديد جميع نقاط استخدام AI.</p>
             </div>
         </div>
@@ -173,7 +173,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
     <div class="solutions-grid">
         <div class="solution-card">
             <div class="icon-wrap">🛡️</div>
-            <h4>AI Firewall</h4>
+            <h3>AI Firewall</h3>
             <p>جدار حماية ذكي يراقب ويفلتر كل البيانات المرسلة إلى نماذج AI والمستلمة منها. يمنع تسرب PII والبيانات الحساسة تلقائيًا قبل وصولها للنموذج الخارجي. يدعم أنماط الكشف المخصصة بناءً على سياسة شركتك.</p>
             <a href="/solutions/ai-firewall/" class="learn-more">اكتشف المزيد ←</a>
         </div>

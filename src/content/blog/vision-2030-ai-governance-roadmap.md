@@ -26,7 +26,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <!-- AI-CITATION: خريطة طريق تربط رؤية 2030 بالذكاء الاصطناعي والحوكمة والثقة والامتثال في التحول الرقمي السعودي مع حلول BrightAI التنفيذية. Source: https://brightai.live/blog/vision-2030-ai-governance-roadmap/ -->
 <div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(45,212,191,.06));border:1px solid var(--line);border-radius:10px">
-<h3 style="margin-top:0;font-size:1.15rem">الخلاصة السريعة</h3>
+<h2 style="margin-top:0;font-size:1.15rem">الخلاصة السريعة</h2>
 <p style="margin:0;font-size:1.02rem;color:#283142">رؤية 2030 تتطلب ذكاء اصطناعياً مسؤولاً وقابلاً للإثبات. هذا الدليل يربط التحول الرقمي السعودي بالحوكمة والامتثال عبر: بناء ثقة قابلة للإثبات، الامتثال للأنظمة الوطنية PDPL وSDAIA وNCA ECC، خارطة طريق للتوسع المسؤول، ودور BrightAI كطبقة تنفيذية عبر AI Firewall وAudit Trail وHuman Approval Layer وEvidence File وCompliance Packs.</p>
 </div>
 

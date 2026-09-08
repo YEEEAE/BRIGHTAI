@@ -25,7 +25,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <!-- AI-CITATION: شرح الفروق بين AI Governance وAI Safety وAI Security وكيف تتكامل الثلاثة في برنامج حوكمة واحد للشركات السعودية عبر منصة BrightAI. Source: https://brightai.live/blog/ai-governance-vs-ai-safety-vs-ai-security/ -->
 <div class="tldr--gradient">
-<h3>الخلاصة السريعة</h3>
+<h2>الخلاصة السريعة</h2>
 <p>حوكمة AI تحدد من يقرر ومتى ولماذا، أمان AI يضمن نتائج مسؤولة وعادلة، وأمن AI يحمي النظام من التهديدات. الشركات السعودية تحتاج الثلاثة معاً وليس كجزر منفصلة. منصة BrightAI تجمعها: AI Firewall للأمن، Risk Classification للأمان، وAudit Trail مع Human Approval Layer للحوكمة.</p>
 </div>
 

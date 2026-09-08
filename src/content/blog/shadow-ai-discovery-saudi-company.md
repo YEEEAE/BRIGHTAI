@@ -25,7 +25,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 
 <!-- AI-CITATION: دليل عملي لاكتشاف Shadow AI في الشركات السعودية وتصنيف الأدوات حسب المخاطر وتحويل الاستخدام الخفي إلى استخدام محكوم عبر AI Firewall. Source: https://brightai.live/blog/shadow-ai-discovery-saudi-company/ -->
 <div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,rgba(159,18,57,.06),rgba(249,115,22,.06));border:1px solid var(--line);border-radius:10px">
-<h3 style="margin-top:0;font-size:1.15rem">الخلاصة السريعة</h3>
+<h2 style="margin-top:0;font-size:1.15rem">الخلاصة السريعة</h2>
 <p style="margin:0;font-size:1.02rem;color:#283142">Shadow AI هو الاستخدام غير المصرح به للذكاء الاصطناعي داخل المؤسسات ويشكل خطراً على البيانات والامتثال. هذا الدليل يقدم طريقة عملية لاكتشاف أدوات AI غير المعتمدة وتصنيفها حسب المخاطر، مع خطة 30 يوم للسيطرة عليها عبر AI Firewall لفلترة البيانات وسجل التدقيق لتوثيق العمليات وطبقة الموافقة البشرية للقرارات الحساسة.</p>
 </div>
 
