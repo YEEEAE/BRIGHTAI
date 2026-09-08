@@ -363,7 +363,12 @@ async function checkNon200Files(index) {
       errors.push(`bad-url: ${href}`);
       continue;
     }
-    if (relPath === "/") relPath = "/index.html";
+    // BAI-SEO-HREFLANG-001 (2026-09-08): /404/ is canonical for the error
+    // page whose static build artifact is 404.html (Astro prerenders the
+    // error page as a root-level file, not a directory). Mirror the same
+    // special case used by scripts/sitemap-contract.mjs ("^/404/?$").
+    if (relPath === "/404/") relPath = "/404.html";
+    else if (relPath === "/") relPath = "/index.html";
     else if (relPath.endsWith("/")) relPath += "index.html";
     else if (!relPath.endsWith(".html")) relPath += "/index.html";
     const candidate = path.join(getClientRoot(), relPath);

@@ -465,6 +465,30 @@ if (existingMarker) {
         for (const [name, value] of Object.entries(RESPONSE_SECURITY_HEADERS)) {
           try { res.setHeader(name, value); } catch { /* ignore */ }
         }
+        // BAI-SEO-HREFLANG-001 (2026-09-08): parameterized URLs (e.g.
+        // /kernel/audit/?risk=high) serve the base page's static HTML whose
+        // canonical/hreflang self-reference the BASE URL (no query). Search
+        // crawlers (Semrush "hreflang conflicts", GSC) report every ?variant
+        // as a duplicate with "no self-referencing hreflang". Per Google's
+        // guidance for parameterized duplicate views, any HTML document
+        // requested WITH a query string is sent noindex via X-Robots-Tag
+        // (the HTTP header wins over the meta robots inside the shared
+        // static HTML, so no per-page template change is needed). Static
+        // assets with cache-busting queries (/js/x.js?v=1) are excluded —
+        // they carry a file extension and are not HTML documents.
+        try {
+          const dupUrl = typeof req.url === 'string' ? req.url : '';
+          const qIdx = dupUrl.indexOf('?');
+          if (qIdx > -1) {
+            const dupPath = dupUrl.slice(0, qIdx);
+            const hasFileExt = /\\.[a-z0-9]+$/i.test(dupPath);
+            const isHtmlDoc = /\.html?$/i.test(dupPath) || !hasFileExt;
+            const isApi = dupPath.startsWith('/api/');
+            if (isHtmlDoc && !isApi) {
+              try { res.setHeader('X-Robots-Tag', 'noindex, follow'); } catch { /* ignore */ }
+            }
+          }
+        } catch { /* ignore */ }
       }
     } catch { /* ignore */ }
     // BAI-SEC-10 deny-list check — short-circuit to 404 before the static

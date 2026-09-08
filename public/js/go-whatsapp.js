@@ -7,7 +7,8 @@
  * Forwards the visitor to wa.me/966538229013, preserving an optional
  * ?text= prefilled message (capped at 500 chars to avoid abuse).
  * Uses location.replace so the hub URL doesn't linger in history.
- * A <meta refresh> + visible fallback anchor in the HTML cover no-JS.
+ * The visible fallback anchor in the HTML covers no-JS (meta refresh was
+ * removed — flagged by Semrush as meta-refresh errors, 2026-09-08).
  */
 (function () {
   var NUMBER_URL = 'https://wa.me/966538229013';

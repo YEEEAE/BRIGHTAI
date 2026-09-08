@@ -1,3 +1,28 @@
+## [2026-09-08] — إصلاح خطأ Semrush: 11 صفحة فيها meta refresh tag
+
+### تم التنفيذ
+- شخّصت السبب: كل الـ 11 صفحة المُعلَّمة هي نفس صفحة `/go/whatsapp/` ونسخ `?text=` منها، والمصدر وسم `<meta http-equiv="refresh" content="1;url=wa.me">` داخل الصفحة.
+- أزلت وسم meta refresh بالكامل — التحويل الآن عبر `/js/go-whatsapp.js` (location.replace) للمتصفحات، والرابط اليدوي `data-whatsapp-fallback` يغطي no-JS، ونسخ `?text=` تعيد 301 من الـ SSR (موجود سابقًا SEMRUSH-DUP-001).
+- حدّثت التعليقات التوثيقية في الصفحة والـ JS.
+- ملاحظة: تقرير Semrush المذكور من crawl بتاريخ Sep 8 على النسخة الحية القديمة؛ يلزم deploy + إعادة crawl ليتنقى الخطأ (11 → 0).
+
+### الملفات المتأثرة
+- `src/pages/go/whatsapp.astro`
+- `public/js/go-whatsapp.js`
+
+### التحقق
+- `pnpm build` ✅ (EXIT=0)
+- grep: لا يوجد `http-equiv=refresh` في src/public؛ الـ HTML المبني لصفحة واتساب نظيف ✅
+- فحص يدوي ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** meta refresh أزيل من مصدر الصفحة والحزمة المبنية؛ التحويل يشتغل JS + fallback link + 301 لنسخ الاستعلام.
+
+### ملاحظات / مشاكل مفتوحة
+- التقرير راح يختفي فقط بعد النشر وإعادة فحص Semrush. لا commit ولا push ولا deploy حسب القواعد.
+
+
 +## [2026-09-08] — تنفيذ خطة كلمات BRIGHTAI للسوق السعودي
 
 ### تم التنفيذ

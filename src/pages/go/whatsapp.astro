@@ -7,15 +7,39 @@
  * link (318 warnings, Sep-2026 audit). All HTML anchors now point here with
  * an optional ?text= message; this page forwards the visitor to wa.me.
  *
+ * SEMRUSH-DUP-001 (2026-09-08): Semrush reported 11 duplicate-content errors
+ * — every ?text=… variant was served the identical prerendered HTML (static
+ * file serving matches by pathname and ignores the query string), all with
+ * the same canonical. Fix: this page is now server-rendered on demand.
+ *   - /go/whatsapp/?text=…  → 301 to wa.me with the message preserved
+ *     (visitor reaches WhatsApp one hop earlier, no duplicate document).
+ *   - /go/whatsapp/?other=… → 301 to the clean /go/whatsapp/ canonical.
+ *   - /go/whatsapp/ (no query) → renders the hub page below (meta refresh +
+ *     fallback anchor cover no-JS visitors; go-whatsapp.js handles JS).
+ *
  * - robots: noindex, follow (utility page, same class as /thank-you/).
- * - Excluded from sitemap.xml automatically (noindex + meta refresh).
- * - Blocked in robots.txt (Disallow: /go/) so audit crawlers never fetch it
- *   and never count its fallback wa.me anchor as an external link.
+ * - Excluded from sitemap.xml automatically (noindex).
+ * - TITLE-DUP-FIX (2026-09-08): /go/ is crawlable in robots.txt so audit
+ *   crawlers see these 301s; noindex meta still blocks indexing.
  * - Zero inline JS (strict CSP): redirect logic lives in /js/go-whatsapp.js.
- * - <meta refresh> + visible fallback anchor cover no-JS visitors.
  */
+export const prerender = false;
+
 const canonical = 'https://brightai.live/go/whatsapp/';
 const WA_NUMBER_URL = 'https://wa.me/966538229013';
+
+// SEMRUSH-DUP-001: canonicalize query-string variants before rendering.
+// Only reached in SSR mode; the static build never renders this page.
+const text = Astro.url.searchParams.get('text');
+if (text !== null) {
+  const target =
+    WA_NUMBER_URL + '?text=' + encodeURIComponent(text.slice(0, 500));
+  return Astro.redirect(target, 301);
+}
+if ([...Astro.url.searchParams.keys()].length > 0) {
+  return Astro.redirect(canonical, 301);
+}
+
 ---
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -29,7 +53,12 @@ const WA_NUMBER_URL = 'https://wa.me/966538229013';
     />
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href={canonical} />
-    <meta http-equiv="refresh" content={`1;url=${WA_NUMBER_URL}`} />
+    <!--
+      SEMRUSH-META-REFRESH (2026-09-08): the previous <meta http-equiv="refresh">
+      was flagged as "meta refresh tag" errors (11 pages) by Semrush. Removed —
+      JS redirect (go-whatsapp.js) covers browsers, the fallback anchor below
+      covers no-JS visitors, and ?text= variants get a server-side 301.
+    -->
     <style>
       body {
         margin: 0;
@@ -71,7 +100,7 @@ const WA_NUMBER_URL = 'https://wa.me/966538229013';
       <p>
         <a
           href={WA_NUMBER_URL}
-          rel="noopener"
+          rel="nofollow noopener"
           data-whatsapp-fallback
         >فتح واتساب الآن</a>
       </p>
