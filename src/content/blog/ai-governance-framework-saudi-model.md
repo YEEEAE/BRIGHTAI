@@ -12,9 +12,11 @@ tags: ["إطار حوكمة AI", "AI Governance Framework", "NIST AI RMF", "EU A
 draft: false
 image: "/assets/images/og/brightai-og-1200x630.png"
 ---
+<p class="ai-citation" data-speakable="true">نموذج حوكمة الذكاء الاصطناعي يستفيد من مبادئ حوكمة الشركات في السعودية، لكنه يضيف ضوابط خاصة بالبيانات والنماذج والقرارات الآلية. لذلك لا تكفي لائحة حوكمة الشركات وحدها عند تشغيل AI؛ المطلوب ربط المسؤوليات والسياسات والأدلة بدورة حياة الاستخدام.</p>
+<h2>AI governance best practices وAI governance strategy وAI governance principles وAI governance standards وAI governance model</h2>
 
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
-<p class="ai-citation" data-speakable="true">إطار حوكمة الذكاء الاصطناعي للمنشآت السعودية هو مجموعة منسقة من السياسات والأدوار والأدوات والضوابط والقياس تضمن استخدام AI بشكل آمن ومتوافق مع PDPL وضوابط سدايا وISO 42001. يقوم الإطار على أربع ركائز: السياسات، الأدوار، الأدوات، والقياس، متوافق مع NIST AI RMF وEU AI Act.</p>
+<p class="ai-citation" data-speakable="true">إطار حوكمة الذكاء الاصطناعي للمنشآت السعودية هو مجموعة منسقة من السياسات والأدوار والأدوات والضوابط والقياس تضمن استخدام AI بشكل آمن ومتوافق مع PDPL وضوابط سدايا وISO 42001. يشرح هذا النموذج ai governance best practices وai governance strategy وai governance principles وai governance standards وai governance model ضمن أربع ركائز: السياسات، الأدوار، الأدوات، والقياس، مع الاستفادة من NIST AI RMF وEU AI Act كنماذج مرجعية.</p>
 
 <div class="short-answer-box">
 

@@ -158,28 +158,28 @@ type MockupRow = { icon: string; label: string; meta: string; status: 'success' 
 const SLUG_TO_MOCKUP: Record<string, MockupRow[]> = {
   'ai-firewall': [
     { icon: 'mdi-shield-half-full', label: 'طلب AI وارد من الموظف',     meta: 'chat.openai.com',     status: 'warn',  statusText: 'مسدود جزئياً' },
-    { icon: 'mdi-magnify',          label: '10 رموز PII تم تحديدها',     meta: 'PII detected',         status: 'success', statusText: 'محمي' },
+    { icon: 'mdi-magnify',          label: 'بيانات PII تم تحديدها',       meta: 'PII detected',         status: 'success', statusText: 'محمي' },
     { icon: 'mdi-check',            label: 'رقم الهوية: redacted',        meta: '→ [REDACTED]',         status: 'success', statusText: 'محمي' },
   ],
   'ai-audit-trail': [
-    { icon: 'mdi-file-sign',        label: 'تم تسجيل الدخول #4,872',      meta: 'تم بحفظ SHA-256',      status: 'success', statusText: 'موقّع' },
-    { icon: 'mdi-database',         label: 'الاستعلام: 12.4ms',            meta: 'append-only',           status: 'success', statusText: 'مكتمل' },
-    { icon: 'mdi-shield-check',     label: 'Burst anomaly? none',         meta: 'integrity OK',          status: 'success', statusText: 'مطابق' },
+    { icon: 'mdi-file-sign',        label: 'تم تسجيل حدث AI',              meta: 'محمي بـ SHA-256',      status: 'success', statusText: 'موقّع' },
+    { icon: 'mdi-database',         label: 'سجل append-only',              meta: 'حسب إعداد المؤسسة',    status: 'success', statusText: 'مكتمل' },
+    { icon: 'mdi-shield-check',     label: 'فحص سلامة السجل',               meta: 'integrity check',       status: 'success', statusText: 'مطابق' },
   ],
   'ai-evidence-file': [
     { icon: 'mdi-folder-open',      label: 'تم تجميع تقرير PDPL',         meta: '2026-Q2.pdf',           status: 'success', statusText: 'جاهز' },
-    { icon: 'mdi-information',      label: 'التوقيع الرقمي: ECDSA',       meta: 'verified by SDAIA',     status: 'success', statusText: 'صحيح' },
-    { icon: 'mdi-cloud-off-outline', label: 'تم الإيداع في GSB',          meta: 'audit@sdaia.sa',        status: 'info',   statusText: 'بانتظار' },
+    { icon: 'mdi-information',      label: 'التوقيع الرقمي: مفعّل',        meta: 'حسب إعداد المؤسسة',    status: 'success', statusText: 'صحيح' },
+    { icon: 'mdi-cloud-off-outline', label: 'الملف جاهز للمراجعة',          meta: 'مسار التسليم المحدد',   status: 'info',   statusText: 'بانتظار' },
   ],
   'human-approval-layer': [
-    { icon: 'mdi-account-tie',      label: 'طلب موافقة: اعتماد قرض',     meta: 'المدير المالي',          status: 'warn',  statusText: 'في الانتظار' },
-    { icon: 'mdi-alert-circle',     label: 'إشعار: SMS + email + in-app', meta: '3 طرق',                status: 'info',   statusText: 'مرسل' },
-    { icon: 'mdi-check-circle',     label: 'إعتمد 230,000 ر.س',           meta: '2FA + signature',      status: 'success', statusText: 'موقّع' },
+    { icon: 'mdi-account-tie',      label: 'طلب قرار حساس',                meta: 'المراجع المختص',        status: 'warn',  statusText: 'في الانتظار' },
+    { icon: 'mdi-alert-circle',     label: 'إشعار للمراجع',                 meta: 'حسب قناة المؤسسة',      status: 'info',   statusText: 'مرسل' },
+    { icon: 'mdi-check-circle',     label: 'موافقة بشرية موثقة',            meta: 'إعادة مصادقة + توقيع',  status: 'success', statusText: 'موقّع' },
   ],
   'continuous-ai-governance': [
     { icon: 'mdi-radar',            label: 'تم رصد تحديث SDAIA',          meta: 'policy v2.4 → v2.5',   status: 'warn',  statusText: 'تطبيق' },
     { icon: 'mdi-flask',            label: 'جاري اختبار 14 ضابط جديد',  meta: 'ETL: 00:02:18',       status: 'info',   statusText: 'قيد الاختبار' },
-    { icon: 'mdi-rocket-launch',    label: 'تم تطبيق 11 ضابط تلقائياً',  meta: 'no human intervention', status: 'success', statusText: 'نشط' },
+    { icon: 'mdi-rocket-launch',    label: 'ضوابط مقترحة للمراجعة',        meta: 'حسب السياسة المفعلة',   status: 'success', statusText: 'نشط' },
   ],
   'ai-risk-classification': [
     { icon: 'mdi-magnify',          label: 'استخدام "credit-scoring"',     meta: 'هيكلة / حساس',        status: 'warn',  statusText: 'HIGH' },
@@ -187,14 +187,14 @@ const SLUG_TO_MOCKUP: Record<string, MockupRow[]> = {
     { icon: 'mdi-check-all',        label: 'تم تعليق 4 استخدامات',       meta: 'pending review',        status: 'success', statusText: 'مصنّف' },
   ],
   'ai-use-case-discovery': [
-    { icon: 'mdi-coins',            label: 'Copilot — 47 مستخدم',         meta: 'shadow AI',            status: 'warn',  statusText: 'تحت إدارة' },
-    { icon: 'mdi-robot',            label: 'Gemini Code Assist — 12',    meta: 'permitted',            status: 'success', statusText: 'مسجّل' },
-    { icon: 'mdi-chart-bar',        label: 'خريطة الاستخدام: 23 حالة',   meta: '6 sectors',            status: 'info',   statusText: 'محدّث' },
+    { icon: 'mdi-coins',            label: 'استخدام AI غير مصنّف',         meta: 'shadow AI',            status: 'warn',  statusText: 'تحت إدارة' },
+    { icon: 'mdi-robot',            label: 'أداة AI معتمدة',               meta: 'permitted',            status: 'success', statusText: 'مسجّل' },
+    { icon: 'mdi-chart-bar',        label: 'خريطة استخدامات AI',           meta: 'حسب نطاق المؤسسة',     status: 'info',   statusText: 'محدّث' },
   ],
   'policy-to-control-mapping': [
     { icon: 'mdi-file-document-edit', label: 'السياسة NCA-1.2.4',        meta: 'paper → control',       status: 'info',   statusText: 'تحويل' },
-    { icon: 'mdi-sitemap',           label: '92% ضوابط مطبّقة تلقائياً',   meta: '14/15 active',         status: 'success', statusText: 'مطابق' },
-    { icon: 'mdi-heart-pulse',       label: 'تغيير السياسة → 30 ثانية',    meta: 'audit log entry',      status: 'success', statusText: 'مفعّل' },
+    { icon: 'mdi-sitemap',           label: 'خريطة ضوابط مرتبطة بالسياسة',  meta: 'paper → control',       status: 'success', statusText: 'مطابق' },
+    { icon: 'mdi-heart-pulse',       label: 'تغيير السياسة موثّق',          meta: 'audit log entry',      status: 'success', statusText: 'مفعّل' },
   ],
   'ai-governance-platform': [
     { icon: 'mdi-account-search',   label: 'استخدام AI جديد',             meta: 'مالك + غرض + بيانات',  status: 'info',   statusText: 'مُسجّل' },
@@ -205,7 +205,7 @@ const SLUG_TO_MOCKUP: Record<string, MockupRow[]> = {
 const mockupRows: MockupRow[] = SLUG_TO_MOCKUP[solution.slug] ?? [
   { icon: 'mdi-cog',               label: 'Real-time policy engine', meta: '0.4ms avg', status: 'success', statusText: 'نشط' },
   { icon: 'mdi-chart-bar',         label: 'استخدام AI — last 24h', meta: '143,820 req', status: 'success', statusText: 'مراقَب' },
-  { icon: 'mdi-shield-check',      label: 'Compliance posture', meta: '94/100 ISO 42001', status: 'success', statusText: 'مطابق' },
+  { icon: 'mdi-shield-check',      label: 'حالة الجاهزية', meta: 'بانتظار مراجعة المؤسسة', status: 'success', statusText: 'مراقَب' },
 ];
 
 /* ------------------------------------------------------------------
@@ -338,7 +338,7 @@ const firewallDlpRows = [
           <div class="ai-firewall-hero__copy">
             <p class="ai-firewall-kicker"><span aria-hidden="true"></span> AI SECURITY CONTROL LAYER</p>
             <h1 id="ai-firewall-title">{solution.h1}</h1>
-            <p class="ai-firewall-answer"><strong>وش هو AI Firewall؟</strong> هو جدار حماية للذكاء الاصطناعي وطبقة تحكم تُسمى أيضاً LLM Firewall، وتمرر طلبات AI المهيأة عبر فحص وسياسة قبل ما تكمل للنموذج. يكتشف أنماط بيانات حساسة مدعومة، وينقّيها أو يحجب الطلب حسب السياسة، مع تسجيل سياق القرار. فحص الردود وخطورة كل وجهة أو موديل يعتمد على التكامل المفعّل، مو افتراض تلقائي.</p>
+            <p class="ai-firewall-answer"><strong>وش هو AI Firewall؟</strong> هو جدار حماية للذكاء الاصطناعي وطبقة تحكم ضمن منظومة <strong>AI security</strong> و<strong>AI and security</strong>، تُسمى أيضاً LLM Firewall، وتمرر طلبات AI المهيأة عبر فحص وسياسة قبل ما تكمل للنموذج. يكتشف أنماط بيانات حساسة مدعومة ويطبق <strong>data loss prevention</strong> عبر تنقيتها أو حجب الطلب حسب السياسة، مع تسجيل سياق القرار. فحص الردود وخطورة كل وجهة أو موديل يعتمد على التكامل المفعّل، مو افتراض تلقائي.</p>
             <div class="ai-firewall-actions">
               <a class="ai-firewall-button ai-firewall-button--primary" href="/contact/" data-cta="ai_firewall_demo_click" data-cta-label="اطلب جلسة تصميم ضوابط" data-position="hero" data-page-type="solution">اطلب جلسة تصميم ضوابط <span aria-hidden="true">←</span></a>
               <a class="ai-firewall-button ai-firewall-button--secondary" href="/docs/ai-firewall/">شوف الدليل التقني</a>
@@ -363,7 +363,7 @@ const firewallDlpRows = [
 
       <section class="ai-firewall-section" aria-labelledby="ai-firewall-capabilities">
         <div class="ai-firewall-shell">
-          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">وش يشوف ووش يسوي؟</p><h2 id="ai-firewall-capabilities">نقطة تحكم واضحة بين بياناتك والنموذج</h2><p>القيمة مو في كلمة “Firewall” لحالها. القيمة إن فريقك يعرف وش دخل المسار، وش القرار اللي صار، ووش الدليل اللي بقى.</p></div>
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">وش يشوف ووش يسوي؟</p><h2 id="ai-firewall-capabilities">AI security وAI and security: نقطة تحكم بين بياناتك والنموذج</h2><p>القيمة مو في كلمة “Firewall” لحالها. القيمة إن فريقك يعرف وش دخل المسار، وش القرار اللي صار، ووش الدليل اللي بقى.</p></div>
           <div class="ai-firewall-capability-grid">{firewallCapabilities.map((item, index) => <article class="ai-firewall-card"><span class="ai-firewall-card__index">0{index + 1}</span><span class="ai-firewall-card__label">{item.label}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
         </div>
       </section>
@@ -398,7 +398,7 @@ const firewallDlpRows = [
 
       <section class="ai-firewall-section ai-firewall-section--soft" aria-labelledby="ai-firewall-vs-dlp">
         <div class="ai-firewall-shell">
-          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">AI Firewall vs DLP</p><h2 id="ai-firewall-vs-dlp">مو بديل عن DLP — طبقة متخصصة تكمله</h2><p>DLP يغطي حركة البيانات عبر المؤسسة. AI Firewall يركز على معنى وسياق تفاعل AI. الاثنين ممكن يشتغلون مع بعض، وكل واحد له نطاقه.</p></div>
+          <div class="ai-firewall-section__heading"><p class="ai-firewall-eyebrow">AI Firewall vs DLP</p><h2 id="ai-firewall-vs-dlp">data loss prevention: مو بديل عن DLP — طبقة متخصصة تكمله</h2><p>DLP يغطي حركة البيانات عبر المؤسسة. AI Firewall يركز على معنى وسياق تفاعل AI. الاثنين ممكن يشتغلون مع بعض، وكل واحد له نطاقه.</p></div>
           <div class="ai-firewall-table-wrap"><table class="ai-firewall-table ai-firewall-table--light"><thead><tr><th>المحور</th><th>AI Firewall</th><th>DLP</th></tr></thead><tbody>{firewallDlpRows.map(row => <tr>{row.map((cell, index) => index === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody></table></div>
         </div>
       </section>
@@ -419,8 +419,8 @@ const firewallDlpRows = [
           <div class="governance-hero__copy">
             <p class="governance-kicker"><span class="governance-kicker__mark" aria-hidden="true"></span> AI governance operating layer</p>
             <h1 id="governance-title">{solution.h1}</h1>
-            <p class="governance-hero__value">خلّ كل استخدام AI يمر من سياسة واضحة إلى قرار قابل للتنفيذ ودليل قابل للمراجعة.</p>
-            <p class="governance-hero__desc">{solution.shortDesc} تشبك الموظف ونظام AI والبيانات والسياسة والموافقة والدليل في مسار واحد.</p>
+            <p class="governance-hero__value">ai governance solution تخلي كل استخدام AI يمر من سياسة واضحة إلى قرار قابل للتنفيذ ودليل قابل للمراجعة.</p>
+            <p class="governance-hero__desc">{solution.shortDesc} تشبك الموظف ونظام AI والبيانات والسياسة والموافقة والدليل في مسار واحد؛ لذلك تعمل كـ <strong>ai governance solution</strong> تجمع <strong>ai governance tools</strong> و<strong>ai governance platforms</strong> داخل سير تشغيل قابل للمراجعة.</p>
             <div class="governance-hero__actions">
               <a class="governance-button governance-button--primary" href={governanceLinks[0].href} data-cta="governance_readiness_click" data-cta-label={governanceLinks[0].label} data-position="hero" data-page-type="solution">
                 {governanceLinks[0].label}<span aria-hidden="true">←</span>
@@ -461,7 +461,7 @@ const firewallDlpRows = [
       <section class="governance-answer" aria-labelledby="governance-answer-title">
         <div class="governance-shell">
           <p class="governance-eyebrow">إجابة مباشرة</p>
-          <h2 id="governance-answer-title">وش تسوي منصة حوكمة الذكاء الاصطناعي؟</h2>
+          <h2 id="governance-answer-title">ai governance solution: وش تسوي منصة حوكمة الذكاء الاصطناعي؟</h2>
           <p>منصة حوكمة الذكاء الاصطناعي هي طبقة تشغيلية بين الموظفين وأنظمة AI وبيانات المؤسسة وسياساتها. تسجّل الاستخدام، تحدد المالك والمخاطر، تطبق الضابط المناسب، توقف الحالات التي تحتاج موافقة بشرية، وتحفظ الدليل الذي يشرح وش صار ومَن اعتمد القرار.</p>
           <div class="governance-qa">
             <article><h3>متى تحتاجها مؤسستك؟</h3><p>إذا صار عندك أكثر من استخدام AI، أو لامس أحدها بيانات حساسة أو قرارًا يأثر على عميل أو موظف أو مستفيد — خصوصًا مع Shadow AI أو سياسة ما تنطبق وقت الاستخدام. ابدأ بـ<a class="governance-inline-link" href="/assessment/ai-governance-readiness/">تقييم الجاهزية</a> عشان تحدد أول استخدام يستحق الضبط.</p></article>
@@ -510,7 +510,7 @@ const firewallDlpRows = [
 
       <section class="governance-section governance-section--soft" aria-labelledby="governance-controls-title">
         <div class="governance-shell">
-          <div class="governance-section__heading"><p class="governance-eyebrow">طبقة التحكم</p><h2 id="governance-controls-title">كيف تتحول السياسة إلى ضابط يشتغل فعلاً؟</h2><p>كل وحدة لها وظيفة واضحة داخل المسار. تقدر تبدأ بحالة استخدام واحدة، ثم توسع الحوكمة بدون ما تعيد بناء المنظومة.</p></div>
+          <div class="governance-section__heading"><p class="governance-eyebrow">طبقة التحكم</p><h2 id="governance-controls-title">ai governance tools وai governance platforms: كيف تتحول السياسة إلى ضابط يشتغل فعلاً؟</h2><p>كل وحدة لها وظيفة واضحة داخل المسار. تقدر تبدأ بحالة استخدام واحدة، ثم توسع الحوكمة بدون ما تعيد بناء المنظومة.</p></div>
           <div class="governance-card-grid governance-card-grid--controls">
             {governanceControls.map(control => (
               <a class="governance-card governance-card--control" href={control.href}><span class="governance-card__label">{control.label}</span><h3>{control.title}</h3><p>{control.text}</p><span class="governance-card__link">اعرف أكثر <span aria-hidden="true">←</span></span></a>
@@ -630,7 +630,7 @@ const firewallDlpRows = [
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="section__header section__header--start">
         <span class="section__eyebrow" lang="en">Features</span>
-        <h2 id="features" class="section__title section__title--start">وش يقدّم لك هذا الحل؟</h2>
+        <h2 id="features" class="section__title section__title--start">وش يقدّم لك هذا الحل؟{solution.slug === 'human-approval-layer' ? ' — human in the loop ai' : ''}</h2>
       </div>
       <div class="inner-grid inner-grid--3">
         {(() => {

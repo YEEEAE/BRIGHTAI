@@ -1,3 +1,188 @@
+## [2026-09-08] — توسيع توزيع كلمات الرئيسية على أقسام متعددة
+
+### تم التنفيذ
+- وسّعت دمج كلمات الصفحة الرئيسية من فقرة التعريف ومركز الحوكمة إلى أقسام المشكلة والمنتج وطبقات التشغيل.
+- أضفت `شركات الذكاء الاصطناعي في السعودية` إلى عنوان قسم المشكلة، و`الذكاء الاصطناعي في السعودية` إلى عنوان قسم المنتج، و`الذكاء الاصطناعي وحوكمة البيانات` إلى عنوان قسم الطبقات.
+- أبقيت الصياغة داخل سياق أمان وحوكمة BrightAI، بدون بلوك كلمات أو تكرار مصطنع.
+
+### الملفات المتأثرة
+- `src/pages/index.astro`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل بنجاح، ونتج 274 URL في sitemap المحلي.
+- فحص HTML الرئيسية ✅ — الكلمات ظهرت عدة مرات داخل body، وظهرت داخل عناوين أقسام فعلية.
+- `node scripts/seo-ci-check.mjs` ✅ — 0 أخطاء، 0 تحذيرات، و0 روابط مكسورة.
+- تحذيرات route collision وVite القديمة ⚠️ — موجودة مسبقًا ولم تمنع البناء.
+
+### النتيجة
+- **الحالة:** نجح محليًا.
+- **مختصر:** صارت الكلمات الرئيسية موزعة داخل أقسام متعددة من الصفحة الرئيسية، مو محصورة في العنوان أو فقرة واحدة.
+
+### ملاحظات / مشاكل مفتوحة
+- ترتيب Google والفهرسة الحية تحتاج نشر النسخة وإعادة الزحف.
+
+## [2026-09-08] — تقوية دمج الكلمات داخل أقسام الصفحة الرئيسية
+
+### تم التنفيذ
+- أضفت كلمة `الذكاء الاصطناعي في السعودية` داخل H2 ظاهر في قسم مركز الحوكمة، بدل بقائها في العنوان فقط.
+- أضفت H3 ظاهرًا بصيغة `الذكاء الاصطناعي وحوكمة البيانات للشركات السعودية` داخل نفس القسم.
+- أضفت فقرة سياقية تحتوي `شركات الذكاء الاصطناعي في السعودية` وتربطها بحوكمة البيانات وحماية البيانات والمراجعة البشرية.
+
+### الملفات المتأثرة
+- `src/pages/index.astro`
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل بنجاح، ونتج 274 URL في sitemap المحلي.
+- فحص HTML الرئيسية ✅ — الكلمات الثلاث ظهرت داخل المحتوى، والكلمتان الرئيسيتان ظهرتا داخل H2/H3 ظاهرين.
+- `node scripts/seo-ci-check.mjs` ✅ — 0 أخطاء، 0 تحذيرات، و0 روابط مكسورة.
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** صارت الكلمات المستهدفة في الرئيسية جزءًا من أقسام وفقرات مرئية، مو في العنوان فقط.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد تحقق حي من الترتيب قبل النشر وإعادة الفهرسة.
+
+## [2026-09-08] — توزيع كلمات CSV كاملة داخل الأقسام وبناء مصفوفة السلطة الموضوعية
+
+### تم التنفيذ
+- وسّعت الدمج من الكلمات المالكة الأولية إلى جميع 80 كلمة في CSV، مع `final_owner_url` واضح لكل صف.
+- وزّعت الملكية إلى 15 كلمة primary و37 secondary و28 supporting، مع إبقاء المالك الأساسي واحدًا وتوثيق الصفحات الداعمة في `supporting_urls`.
+- دمجت الكلمات داخل محتوى فعلي منشور: المقدمة، H1-H3، الأسئلة الشائعة، الجداول والمقارنات، ونصوص الروابط الداخلية؛ واستبدلت الصيغ القريبة بالصيغ المستهدفة عندما كان ذلك طبيعيًا.
+- أضفت مصفوفة السلطة الموضوعية وتقرير تحقق خاص بالتغطية على مستوى الأقسام، وعدّلت التقرير النهائي ليعكس أن نتيجة الـ54/26 كانت فحصًا مرحليًا سابقًا.
+
+### الملفات المتأثرة
+- `src/pages/index.astro`
+- `src/pages/services/index.astro`
+- `src/pages/solutions/[slug].astro`
+- `src/components/hub/AiGovernancePillar.astro`
+- `src/data/solutions-content-generated.ts`
+- `src/content/docs/*.md` و`src/content/blog/*.md` للصفحات المالكة
+- `audit/seo-keyword-authority/01-KEYWORD-OWNERSHIP-MAP.csv`
+- `audit/seo-keyword-authority/08-KEYWORD-COVERAGE-VERIFICATION.csv`
+- `audit/seo-keyword-authority/TOPICAL-AUTHORITY-PAGE-MATRIX-2026-09-08.md`
+- `audit/seo-keyword-authority/content-reviver/SECTION-KEYWORD-COVERAGE-VERIFICATION-2026-09-08.md`
+- `audit/seo-keyword-authority/FINAL-SEO-GEO-TOPICAL-AUTHORITY-REPORT.md`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل بنجاح، ونتج 274 URL في sitemap المحلي.
+- `node scripts/seo-ci-check.mjs` ✅ — 0 أخطاء، 0 تحذيرات، و0 روابط مكسورة من 49,233 مرجعًا.
+- فحص HTML النهائي ✅ — 80/80 داخل body، و15/15 primary داخل Title وH1 وأول 100 كلمة، و15/15 primary داخل H1-H3.
+- تحذيرات route collision وVite القديمة ⚠️ — ما زالت موجودة من قبل ولم تمنع البناء أو بوابة SEO.
+
+### النتيجة
+- **الحالة:** نجح محليًا.
+- **مختصر:** اكتمل دمج الكلمات داخل أقسام الصفحات الحالية وبنية الملكية الموضوعية بدون إنشاء صفحات أو commit أو push أو deploy. التصدّر الحي يحتاج إعادة فهرسة وبيانات GSC.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد تحقق حي من ترتيب Google أو AI Search حتى الآن.
+- تحذيرات route collision في Astro تحتاج مهمة تقنية مستقلة.
+
+## [2026-09-08] — دمج الكلمات المالكة داخل محتوى الصفحات الحالية
+
+### تم التنفيذ
+- دمجت 54 كلمة لها مالك محدد داخل النصوص المنشورة للصفحات التجارية والركائز والأدلة والمقالات، بدون بلوكات كلمات منفصلة أو إنشاء صفحات جديدة.
+- صححت مصادر العرض الفعلية لبعض الصفحات: قالب الحلول، مكوّن Hub حوكمة الذكاء الاصطناعي، ومصادر Docs وBlog؛ التحقق صار من HTML النهائي بعد البناء.
+- تركت 26 كلمة بدون مالك كفرص `OWNERLESS_OPPORTUNITY` بدل حشرها في صفحات غير مناسبة.
+- حدّثت خريطة الملكية وملف التغطية وأضفت ملف تحقق HTML وتقرير Content Reviver للموجات الثلاث.
+
+### الملفات المتأثرة
+- `src/pages/index.astro`
+- `src/pages/services/index.astro`
+- `src/pages/solutions/[slug].astro`
+- `src/components/hub/AiGovernancePillar.astro`
+- `src/content/docs/ai-risk-management.md`
+- `src/content/docs/pdpl-ai-complete-guide.md`
+- `src/content/blog/*.md` للصفحات المالكة المحددة
+- `audit/seo-keyword-authority/01-KEYWORD-OWNERSHIP-MAP.csv`
+- `audit/seo-keyword-authority/08-KEYWORD-COVERAGE-VERIFICATION.csv`
+- `audit/seo-keyword-authority/09-CONTENT-INTEGRATION-VERIFICATION.csv`
+- `audit/seo-keyword-authority/content-reviver/KEYWORD-CONTENT-INTEGRATION-2026-09-08.md`
+- `audit/seo-keyword-authority/FINAL-SEO-GEO-TOPICAL-AUTHORITY-REPORT.md`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل بنجاح، ونتج 274 URL في sitemap المحلي.
+- `node scripts/seo-ci-check.mjs` ✅ — 0 أخطاء، 0 تحذيرات، 0 روابط مكسورة من 49,233 مرجعًا.
+- فحص HTML النهائي ✅ — 54/54 كلمة مالكة ظهرت داخل body الصفحة المالكة، و26 صفًا بقيت فرصًا بلا مالك.
+- تحذيرات route collision وVite القديمة ⚠️ — موجودة مسبقًا وموثقة، وما منعت البناء أو بوابة SEO.
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** اكتمل دمج الكلمات المالكة داخل محتوى الصفحات الحالية على ثلاث موجات، مع تحقق من النص المنشور فعليًا وبدون commit أو push أو deploy.
+
+### ملاحظات / مشاكل مفتوحة
+- ترتيب Google والفهرسة الحية غير مقاسَين؛ التحقق محلي بعد البناء فقط.
+- تحذيرات route collision في Astro تحتاج مهمة تقنية مستقلة.
+
+## [2026-09-08] — بدء تنفيذ Wave 1 للـSEO/GEO على الصفحات التجارية P0
+
+### تم التنفيذ
+- حدّثت عنوان ووصف الصفحة الرئيسية لتموضع `شركة ذكاء اصطناعي في السعودية` مع إبقاء نية الحوكمة والأمان والـenterprise واضحة.
+- أضفت تعريفًا entity واضحًا داخل فقرة answer-first يشرح أن BrightAI شركة ذكاء اصطناعي سعودية تركّز على تشغيل الحوكمة المؤسسية.
+- نظّفت mockups قالب `src/pages/solutions/[slug].astro` من أرقام وحالات تحقق غير موثقة قد تُفهم كإحصائيات أو شهادات حقيقية، واستبدلتها بأوصاف تشغيلية محافظة.
+- وثّقت Wave 1 بملف before/after وحدود الموجة، وحدّثت التقرير النهائي بالأرقام الفعلية بدل ادعاء اكتمال Content Reviver.
+
+### الملفات المتأثرة
+- `src/pages/index.astro`
+- `src/pages/solutions/[slug].astro`
+- `audit/seo-keyword-authority/content-reviver/WAVE-1-P0-IMPLEMENTATION-2026-09-08.md`
+- `audit/seo-keyword-authority/FINAL-SEO-GEO-TOPICAL-AUTHORITY-REPORT.md`
+- `.astro/content-assets.mjs` (أثر build مولّد)
+
+### التحقق
+- `pnpm build` ✅ — اكتمل؛ 274 sitemap URL محليًا، مع تحذيرات route collision قديمة موثقة.
+- `node scripts/seo-schema-audit.mjs` ✅ — 64 صفحة.
+- `node scripts/check-speakable-schema.mjs` ✅ — 268 صفحة.
+- `node scripts/seo-ci-check.mjs` ✅ — 0 أخطاء، 0 تحذيرات، 0 روابط مكسورة من 49,233 مرجعًا.
+- `pnpm test` ✅ — chat 16/16، CSRF 29/29، PII 38/38.
+- فحص HTML المولّد ✅ — العنوان والوصف الجديدان ظهرا في `dist/client/index.html`، والعبارات التجريبية القديمة غائبة عن صفحة AI Firewall.
+- `git diff --check` ⚠️ — تعذر مرة أخرى بسبب `fsmonitor_ipc__send_query` في `.git/fsmonitor--daemon.ipc`.
+
+### النتيجة
+- **الحالة:** جزئي — Wave 1 نُفذت وتحققت، لكن خطة SEO/GEO الشاملة ما زالت تحتاج Wave 2 للركائز وWave 5 للمدونة.
+- **مختصر:** تحسن تموضع الرئيسية، وانخفض خطر الادعاءات الوهمية في واجهات الحلول، بدون إنشاء صفحات أو تغيير ملاك الكلمات.
+
+### ملاحظات / مشاكل مفتوحة
+- route collisions القديمة في Astro ما زالت تحتاج مهمة تقنية مستقلة.
+- `.astro/content-assets.mjs` تغيّر كأثر build مولّد؛ لا يوجد تعديل يدوي على محتوى المصدر.
+- لا commit ولا push ولا deploy.
+
+## [2026-09-08] — تجميد وجرد SEO/GEO الكامل قبل تنفيذ Content Reviver
+
+### تم التنفيذ
+- أنشأت baseline محليًا يثبت branch/HEAD/Node/حالة الشجرة وأرقام الاكتشاف قبل أي إعادة كتابة محتوى.
+- جردت كل ملفات `src/pages/**/*.astro`: 83 ملفًا، منها 74 مرشحًا لسطح عام بعد استبعاد API والأدوات الداخلية، مع تمييز 72 قالبًا ساكنًا و11 قالبًا ديناميكيًا حسب شكل المسار.
+- جردت كل مصادر المدونة: 97 مقالًا، وكل مصادر Docs: 50 ملفًا، مع حقول أولية للموضوع واللغة والتاريخ والتقريب النصي والـFAQ والجداول والمصادر.
+- قرأت كامل CSV الكلمات الحالي: 80 كلمة، 54 لها `target_url`، وأنشأت خريطة ملكية محافظة على الهدف الأصلي، وتحقق تغطية لكل كلمة بدون صفوف بلا status.
+- أنشأت `FILE-COVERAGE.csv` و`FULL-PAGE-COVERAGE.md` لتوثيق أن كل ملفات Astro والمدونة دخلت الجرد، مع فصل baseline عن مراجعة HTML المولّد والبيانات الحية.
+
+### الملفات المتأثرة
+- `scripts/generate-seo-keyword-authority-audit.mjs`
+- `audit/seo-keyword-authority/00-CURRENT-SEO-REALITY.md`
+- `audit/seo-keyword-authority/ASTRO-PAGE-INVENTORY.csv`
+- `audit/seo-keyword-authority/BLOG-CONTENT-INVENTORY.csv`
+- `audit/seo-keyword-authority/01-KEYWORD-OWNERSHIP-MAP.csv`
+- `audit/seo-keyword-authority/08-KEYWORD-COVERAGE-VERIFICATION.csv`
+- `audit/seo-keyword-authority/FILE-COVERAGE.csv`
+- `audit/seo-keyword-authority/FULL-PAGE-COVERAGE.md`
+- `audit/seo-keyword-authority/FINAL-SEO-GEO-TOPICAL-AUTHORITY-REPORT.md`
+
+### التحقق
+- `node --check scripts/generate-seo-keyword-authority-audit.mjs` ✅
+- تحقق مستقل من CSVs ✅ — 83 صف Astro، 97 صف Blog، 80 صف Ownership، 80 صف Keyword Coverage، 83 صف File Coverage.
+- `git diff --check` ⚠️ تعذر بسبب عطل `fsmonitor` المحلي في `.git/fsmonitor--daemon.ipc`؛ لا يوجد ادعاء نجاح لهذا الفحص.
+- Build/SEO gates لم تُشغّل: هذه الموجة audit artifacts فقط ولم تغيّر صفحات أو مسارات الموقع.
+
+### النتيجة
+- **الحالة:** جزئي — baseline والجرد الكامل مكتملان، والتنفيذ التحريري لم يبدأ.
+- **مختصر:** صار عند المشروع أساس رقمي قابل للمراجعة لكل Astro/blog/keywords بدون تخمين ترتيب حي أو ادعاء تحسن. الخطوة التالية هي فحص HTML المولّد ثم Wave 1 للصفحات التجارية P0.
+
+### ملاحظات / مشاكل مفتوحة
+- أرقام live Search Console/CrUX/PSI وترتيب SERP غير متوفرة في هذه الموجة، لذلك الحقول المرتبطة بها بقيت فارغة أو pending.
+- لم يتم تعديل محتوى الموقع، ولم يتم إنشاء صفحات، ولم يتم commit أو push.
+
 ## [2026-09-08] — إصلاح Semrush: 6 صفحات بعناوين <title> قصيرة جدًا
 
 ### تم التنفيذ
@@ -3567,3 +3752,30 @@
 ### ملاحظات / مشاكل مفتوحة
 - تعذر فحص النسخة الحية بسبب DNS في بيئة العمل؛ يلزم النشر ثم التحقق من المصدر الحي عند توفر الاتصال.
 - لا commit ولا push.
+## [2026-09-08] — إضافة الكلمات المستهدفة داخل محتوى الصفحات المالكة
+
+### تم التنفيذ
+- أضفت عبارة `شركات الذكاء الاصطناعي في السعودية` داخل الفقرة التعريفية القابلة للاقتباس في الصفحة الرئيسية.
+- أضفت `AI automation tools` و`AI automation` و`AI and automation` داخل مقدمة صفحة الخدمات، مع سياق طبيعي يشرح اختيار الأدوات بدل حشو الكلمات.
+- دعّمت دليل إدارة المخاطر بعبارة مرتبطة بـ `إدارة المخاطر pdf` داخل سياق المراجعة الداخلية، بدون ادعاء وجود ملف PDF مستقل.
+- أضفت `تطبيقات الذكاء الاصطناعي في السعودية` داخل مقال المشهد السعودي، وعبارات `الأمن السيبراني السعودية` و`الأمن السيبراني في السعودية` داخل مقال متطلبات NCA.
+
+### الملفات المتأثرة
+- `src/pages/index.astro`
+- `src/pages/services/index.astro`
+- `src/content/docs/ai-risk-management.md`
+- `src/content/blog/saudi-ai-landscape-sdaia-humain-allam-scai.md`
+- `src/content/blog/nca-cybersecurity-requirements-saudi.md`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل؛ 274 sitemap URL، مع تحذيرات route collision قديمة.
+- `node scripts/seo-ci-check.mjs` ✅ — 0 أخطاء، 0 تحذيرات، 0 روابط مكسورة من 49,233 مرجعًا.
+- تحقق نصي من العبارات في مصادرها ✅.
+
+### النتيجة
+- **الحالة:** نجح.
+- **مختصر:** صارت الكلمات الناقصة أو الضعيفة موجودة داخل محتوى الصفحات المالكة لها بصياغة تحريرية طبيعية، بدون نقل الملكية أو تكرار مفرط.
+
+### ملاحظات / مشاكل مفتوحة
+- route collisions القديمة في Astro ما زالت تحتاج مهمة تقنية مستقلة.
+- لا commit ولا push ولا deploy.

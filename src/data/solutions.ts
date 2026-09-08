@@ -135,7 +135,7 @@ export const solutions: SolutionData[] = [
     docs:['/docs/ai-governance-platform/'], blog:['/blog/ai-governance/','/blog/what-is-ai-governance-saudi-companies/','/blog/best-ai-governance-platforms-2026/','/blog/sdaia-generative-ai-guidelines-practical-compliance/'], kernel:['/kernel/'],
     content: {
       lead: [
-        'منصة حوكمة الذكاء الاصطناعي من BrightAI هي طبقة تشغيلية بين الموظفين وأنظمة AI وبيانات المؤسسة وسياساتها. تربط كل استخدام بمالك واضح، وتحوّل القرار من سياسة مكتوبة إلى ضابط يُطبّق وسجل دليل يُراجع.',
+        'منصة حوكمة الذكاء الاصطناعي من BrightAI هي طبقة تشغيلية بين الموظفين وأنظمة AI وبيانات المؤسسة وسياساتها. تُستخدم كـ ai governance solution وتجمع ai governance tools وai governance platforms في مسار واحد، فتربط كل استخدام بمالك واضح وتحوّل القرار من سياسة مكتوبة إلى ضابط يُطبّق وسجل دليل يُراجع.',
         'تبدأ من جرد الاستخدامات، ثم تصنيف المخاطر، ثم تحديد الضابط المناسب: سماح، حجب، إخفاء بيانات، أو موافقة بشرية. بعدها تحفظ المنصة ما حدث ومن اعتمد ولماذا في سجل قابل للمراجعة.',
         'المراجع التنظيمية مثل PDPL وNCA ECC وإرشادات SDAIA ومعيار ISO/IEC 42001 تعطيك سياقاً للسياسات والضوابط. المنصة تساعدك توثّق التطبيق والجاهزية، لكنها ما تستبدل التقييم القانوني أو شهادة المطابقة.',
       ],
@@ -215,7 +215,7 @@ export const solutions: SolutionData[] = [
   {
     slug:'ai-firewall', href:'/solutions/ai-firewall/',
     title:'جدار حماية الذكاء الاصطناعي AI Firewall | حماية بيانات العملاء',
-    h1:'جدار حماية الذكاء الاصطناعي (AI/LLM Firewall) للمنشآت السعودية',
+    h1:'جدار حماية الذكاء الاصطناعي (AI Firewall / LLM Firewall) للمنشآت السعودية',
     description:'جدار حماية الذكاء الاصطناعي AI Firewall يحمي بيانات العملاء قبل وصولها للنموذج ويفرض سياسات الاستخدام على نماذج LLM. تكمل WAF وDLP ولا تدّعي منع كل تسريب.',
     canonical:`${S}/solutions/ai-firewall/`,
     icon:'mdi:shield-half-full', chip:'حماية البيانات',
