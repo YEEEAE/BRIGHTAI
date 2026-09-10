@@ -1,3 +1,38 @@
+## [2026-09-10] — ترقية صفحات P0 التجارية ومراجعة صفحات الإجابات (12)
+
+### تم التنفيذ
+- رقّيت صفحات `/partners/` و`/newsletter/` و`/referral/` بإجابة مباشرة، خطوات عملية، فوائد واضحة، وروابط داخلية سياقية.
+- زاد النص المرندر تقريبًا من 340→680 كلمة للشراكات، 216→611 للنشرة، و282→628 للإحالات.
+- أزلت صياغة غير مثبتة عن «آلاف المختصين»، واستبدلت ادعاء استخدام بيانات النشرة بصياغة تشير لسياسة الخصوصية.
+- أنشأت `12-CONTENT-UPGRADE-LOG.csv`، وحدّثت P0 queue بعلامات الإنجاز، وأنشأت `13-ANSWER-PAGE-REVIEW.md`.
+- راجعت 15 صفحة إجابة: كلها KEEP؛ وقرارا redirect السابقان (`nca-compliance` و`sama-ai`) مثبتان ولا حاجة لقرار جديد.
+
+### الملفات المتأثرة
+- `src/pages/partners/index.astro`
+- `src/pages/newsletter/index.astro`
+- `src/pages/referral/index.astro`
+- `audit/seo-recovery/05-SEO-ACTION-QUEUE.md`
+- `audit/seo-recovery/12-CONTENT-UPGRADE-LOG.csv`
+- `audit/seo-recovery/13-ANSWER-PAGE-REVIEW.md`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل؛ sitemap = 264 URL، مع تحذيرات legacy route collision معروفة.
+- `pnpm internal-links:audit` ✅ — 0 orphan، 0 broken في acceptance architecture، depth ≤3؛ بقي عطلان CSS قديمان في demos (`%23n`).
+- `pnpm seo:gate` ✅ — 264 sitemap، 49,312 مرجعًا، 0 أخطاء و0 تحذيرات.
+- `node scripts/qa/check-word-count.mjs` ✅ — 4/4 PASS.
+- `pnpm seo:schema` ✅ — schema لـ64 صفحة وSpeakable لـ268 صفحة.
+- `pnpm seo:hreflang` ✅ — 275 مجموعة، 0 أخطاء.
+- `pnpm test` ✅ — chat 16/16، CSRF 29/29، PII 38/38؛ ظهرت تحذيرات بيئة `DATABASE_URL` و`GA4_API_SECRET` المتوقعة في الاختبارات.
+
+### النتيجة
+- **الحالة:** نجح محليًا.
+- **مختصر:** اكتملت موجة P0 للصفحات التجارية الثلاث، وسُجلت قرارات صفحات الإجابات بدون اختراع دمج أو noindex جديد.
+
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد تحقق حي من GSC أو ترتيب SERP.
+- عطلان `%23n` في demos الخاصة بمهارة `scroll-world-storytelling` خارج نطاق صفحات الموقع ويحتاجان مهمة مستقلة إن أُريد تصفير التقرير العام.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-10] — إعادة بناء الربط الداخلي حول السلطة الموضوعية (10/11)
 
 ### تم التنفيذ

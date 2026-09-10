@@ -3,9 +3,9 @@
 Date (UTC): 2026-09-10 | Source: 00-BASELINE + 01..04 (internally consistent)
 
 ## P0 — نفّذ أولًا (مالكو النية التجارية + نحافة عالية الأثر)
-- [ ] IMPROVE https://brightai.live/partners/ — commercial / words~311 / owner=unassigned — قوِّ الإجابة المباشرة + H2 سؤالي + روابط داخلية للمالك؛ تحقق: word-count + schema + gate.
-- [ ] IMPROVE https://brightai.live/newsletter/ — commercial / words~205 / owner=unassigned — قوِّ الإجابة المباشرة + H2 سؤالي + روابط داخلية للمالك؛ تحقق: word-count + schema + gate.
-- [ ] IMPROVE https://brightai.live/referral/ — commercial / words~260 / owner=unassigned — قوِّ الإجابة المباشرة + H2 سؤالي + روابط داخلية للمالك؛ تحقق: word-count + schema + gate.
+- [x] IMPROVE https://brightai.live/partners/ — commercial / words~311→680 / owner=unassigned — أضيفت إجابة مباشرة وخطوات شراكة وروابط داخلية للمالك؛ تحقق: word-count + schema + gate.
+- [x] IMPROVE https://brightai.live/newsletter/ — commercial / words~205→611 / owner=unassigned — أضيفت إجابة مباشرة وفوائد النشرة وروابط داخلية للمالك؛ تحقق: word-count + schema + gate.
+- [x] IMPROVE https://brightai.live/referral/ — commercial / words~260→628 / owner=unassigned — أضيفت إجابة مباشرة وخطوات الإحالة وروابط داخلية للمالك؛ تحقق: word-count + schema + gate.
 
 ## P1 — تحسينات المحتوى والدعم
 - [ ] معالجة PRIMARY نحافة: 3 مالك أساسي تحت ~400 كلمة مصدرية — وسّع بأسئلة GEO وجداول مقارنة وFAQ متزامن (بدون أرقام مختلقة).
