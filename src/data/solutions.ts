@@ -214,7 +214,7 @@ export const solutions: SolutionData[] = [
   },
   {
     slug:'ai-firewall', href:'/solutions/ai-firewall/',
-    title:'جدار حماية الذكاء الاصطناعي AI Firewall | حماية بيانات العملاء',
+    title:'جدار حماية الذكاء الاصطناعي AI Firewall | BrightAI',
     h1:'جدار حماية الذكاء الاصطناعي (AI Firewall / LLM Firewall) للمنشآت السعودية',
     description:'جدار حماية الذكاء الاصطناعي AI Firewall يحمي بيانات العملاء قبل وصولها للنموذج ويفرض سياسات الاستخدام على نماذج LLM. تكمل WAF وDLP ولا تدّعي منع كل تسريب.',
     canonical:`${S}/solutions/ai-firewall/`,

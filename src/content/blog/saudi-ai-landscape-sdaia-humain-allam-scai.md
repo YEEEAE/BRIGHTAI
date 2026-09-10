@@ -1,5 +1,5 @@
 ---
-title: "الذكاء الاصطناعي في السعودية 2026: سدايا وهيوماين وعلام"
+title: "الذكاء الاصطناعي في السعودية 2026"
 description: "مشهد الذكاء الاصطناعي السعودي 2026: سدايا وهيوماين وعلام وSCAI، وكيف يتكاملون مع حوكمة AI وأين يقع BrightAI."
 canonical: "https://brightai.live/blog/saudi-ai-landscape-sdaia-humain-allam-scai/"
 pubDate: "2026-07-08"
