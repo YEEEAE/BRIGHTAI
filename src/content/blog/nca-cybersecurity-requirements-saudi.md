@@ -1,5 +1,5 @@
 ---
-title: "الأمن السيبراني السعودية | الأمن السيبراني في السعودية — NCA"
+title: "الأمن السيبراني في السعودية وضوابط NCA"
 description: "الهيئة الوطنية للأمن السيبراني (NCA): ضوابط ECC وCSCC وCCC وDCC وكيف تؤثر على أنظمة AI، مع خطوات تطبيق وعقوبات الامتثال."
 canonical: "https://brightai.live/blog/nca-cybersecurity-requirements-saudi/"
 pubDate: "2026-06-08"

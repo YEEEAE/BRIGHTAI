@@ -34,7 +34,7 @@ Scope: repository + astro.config.mjs + src/pages/** + src/layouts/** + src/compo
 
 - total URLs analyzed: 274 (264 في sitemap + 10 utility خارجها)
 - KEEP: 229 / IMPROVE: 35 / MERGE: 0 / NOINDEX: 0 / REDIRECT: 0 / REVIEW: 0 / REMOVE_FROM_SITEMAP: 10
-- keyword owners assigned: PRIMARY_OWNER=29 / SECONDARY_SUPPORT=2 / REFERENCE_ONLY=17 / EXCLUDED=8 / VALIDATE_BEFORE_TARGETING=24
+- keyword owners assigned: PRIMARY_OWNER=27 / SECONDARY_SUPPORT=4 / REFERENCE_ONLY=17 / EXCLUDED=11 / VALIDATE_BEFORE_TARGETING=21 (validation queue resolved 2026-09-10, see 07)
 - cannibalization groups found: 13 (كلها KEEP مُوثّق — صفر دمج)
 - keywords rejected (poor business fit): 8
 - remaining ambiguous (VALIDATE_BEFORE_TARGETING): 24

@@ -47,5 +47,5 @@ Date (UTC): 2026-09-10 | Source: 00-BASELINE + 01..04 (internally consistent)
 ## Completion gate (مطابق للملفات — بعد consolidation 2026-09-10، راجع 06)
 - total URLs analyzed: 274 (264 sitemap + 10 utility)
 - KEEP 229 / IMPROVE 35 / MERGE 0 / NOINDEX 0 / REDIRECT 0 / REVIEW 0 / REMOVE_FROM_SITEMAP 10
-- keyword owners: PRIMARY=29 SECONDARY=2 REFERENCE=17 EXCLUDED=8 VALIDATE=24
+- keyword owners: PRIMARY=27 SECONDARY=4 REFERENCE=17 EXCLUDED=11 VALIDATE=21 (queue resolved 2026-09-10, see 07)
 - cannibalization groups: 13 / rejected: 8 / ambiguous: 24
