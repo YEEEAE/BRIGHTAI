@@ -1,8 +1,8 @@
 /**
  * ga4-server.ts — GA4 Measurement Protocol (server-side) sender.
  *
- * EXEC-10 (2026-07-29). Closes the gap where a client-side `generate_lead`
- * event is lost when the browser closes the tab, the network drops after
+ * Sends the canonical server-side `lead_created` event when the client event
+ * is lost because the browser closes the tab, the network drops after
  * submit, or an adblocker blocks gtag.js. By sending the event from the
  * API route itself (src/pages/api/lead.ts), the conversion reaches GA4
  * as long as the lead enqueue succeeds — independent of the browser.
@@ -48,7 +48,7 @@ const SEND_TIMEOUT_MS = 3000;
 const PLACEHOLDER = /^(your_.*_placeholder|placeholder|example|test-?xxx|)$/i;
 
 export interface ServerEvent {
-  /** GA4 event name, e.g. `generate_lead`, `purchase`. */
+  /** GA4 event name, for example `lead_created` or another approved event. */
   name: string;
   /** Event params. Must NOT contain PII. */
   params?: Record<string, unknown>;

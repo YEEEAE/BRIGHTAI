@@ -232,7 +232,7 @@
           submitBtn.setAttribute('data-state', 'loading');
           submitBtn.setAttribute('aria-busy', 'true');
 
-          // KERNEL-ANALYTICS-2026-07-18: lead_submitted — fires on successful
+          // KERNEL-ANALYTICS: lead_created — fires on successful
           // capture (API 200 or wa.me fallback). Linked to aggregated scenario
           // context (slugs), NEVER to message text or contact PII. Consent
           // gating + dedupe are inherited from the shared runtime.

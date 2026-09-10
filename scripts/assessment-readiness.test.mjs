@@ -44,7 +44,7 @@ test('exposes a visible progress state and accessible question grouping', () => 
 
 test('tracks the full funnel without collecting personal data', () => {
   const client = fs.readFileSync(path.join(process.cwd(), 'public/js/ai-governance-readiness.js'), 'utf8');
-  for (const event of ['assessment_start', 'assessment_step_progress', 'assessment_complete', 'assessment_abandon']) {
+  for (const event of ['assessment_started', 'assessment_step_progress', 'assessment_completed', 'assessment_abandon']) {
     assert.ok(client.includes(`'${event}'`), `missing ${event}`);
   }
   // Abandonment must survive mobile browser suspension, sent only once.

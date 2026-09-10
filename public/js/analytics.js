@@ -40,19 +40,8 @@
  * HubSpot/Bing/Mixpanel IDs are empty), calls are silent. No console
  * errors, no broken dashboards, no network requests.
  *
- * BAI-ANALYTICS-2026-08-03 (GA4 data restore): default consent is now
- * `granted` instead of `unknown`. Previously `unknown` queued every event
- * in pendingQueue until the visitor accepted the banner — visitors who
- * ignored/declined were never tracked, so GA4 reports went near-empty.
- * Now: never-consented visitors are tracked immediately (matching the
- * gtag-init.js consent default).
- *
- * BAI-ANALYTICS-2026-08-03-B (owner decision): the decline button is
- * cosmetic only. Analytics tracks every visitor regardless of banner
- * choice. Any `denied` value (fresh click or stored from before this
- * fix) is ignored — consent stays `granted` forever. This guarantees
- * visit data is always captured, per the owner's explicit product
- * decision.
+ * Consent is explicit: GA4 stays blocked until the visitor accepts. A decline
+ * decision is persisted and never converted into a grant by this runtime.
  */
 
 // ─────────────────────────────────────────────────────────────────────
@@ -68,8 +57,16 @@ const ANALYTICS_EVENTS = {
   PRICING_CTA_CLICK: 'pricing_cta_click',
   PROOF_ASSET_VIEW: 'proof_asset_view',
   CASE_STUDY_VIEW: 'case_study_view',
-  ASSESSMENT_START: 'assessment_start',
-  ASSESSMENT_COMPLETE: 'assessment_complete',
+  DEMO_SUBMIT: 'demo_submit',
+  CONTACT_SUBMIT: 'contact_submit',
+  LEAD_CREATED: 'lead_created',
+  ASSESSMENT_STARTED: 'assessment_started',
+  ASSESSMENT_COMPLETED: 'assessment_completed',
+  NEWSLETTER_SIGNUP: 'newsletter_signup',
+  RESOURCE_DOWNLOAD: 'resource_download',
+  OUTBOUND_PARTNER_CLICK: 'outbound_partner_click',
+  ASSESSMENT_START: 'assessment_started',
+  ASSESSMENT_COMPLETE: 'assessment_completed',
   FORM_VIEW: 'form_view',
   FORM_START: 'form_start',
   FORM_FIELD_ERROR: 'form_field_error',
@@ -87,7 +84,7 @@ const ANALYTICS_EVENTS = {
   MESSAGE_ALLOWED: 'message_allowed',
   MESSAGE_BLOCKED: 'message_blocked',
   EVIDENCE_VIEWED: 'evidence_viewed',
-  LEAD_SUBMITTED: 'lead_submitted',
+  LEAD_SUBMITTED: 'demo_submit',
 };
 
 // ─────────────────────────────────────────────────────────────────────
@@ -105,6 +102,17 @@ const PII_KEYS = new Set([
   'pdpl_consent', 'consent', 'gdpr_consent',
   'form_data', 'payload', 'values', 'fields',
   'url', 'href', 'src',
+]);
+
+const SAFE_EVENT_PROPS = new Set([
+  'page_path', 'page_type', 'page_title', 'page_location', 'content_group',
+  'persona', 'offer', 'form_id', 'form_type', 'experiment_id', 'variant',
+  'cta_label', 'cta_location', 'cta_target', 'cta_position',
+  'source', 'medium', 'campaign', 'content', 'term', 'referrer',
+  'device', 'language', 'viewport', 'connection',
+  'field_name', 'error_code', 'duration_ms', 'lead_id', 'mode',
+  'asset_type', 'asset_id', 'case_study_id', 'step_number', 'event_id',
+  'outbound_domain', 'resource_type',
 ]);
 
 function isPiiKey(key) {
@@ -166,14 +174,11 @@ function isDuplicate(name, payload) {
 // Consent
 // ─────────────────────────────────────────────────────────────────────
 
-let consent = 'granted';
+let consent = 'unknown';
 let consentListeners = [];
 const pendingQueue = [];
 
 function setConsent(next) {
-  // BAI-ANALYTICS-2026-08-03-B: decline is cosmetic — never allow tracking
-  // to turn off. A stored/fresh 'denied' is ignored; consent stays granted.
-  if (next === 'denied') return;
   if (consent === next) return;
   consent = next;
   try {
@@ -230,18 +235,7 @@ function hydrateConsentFromStorage() {
   if (typeof localStorage === 'undefined') return consent;
   try {
     const stored = localStorage.getItem('brightai:tracking_consent');
-    // BAI-ANALYTICS-2026-08-03-B: only 'granted' is honoured. A previously
-    // stored 'denied' (pre-fix decline) is ignored so the visitor is tracked.
-    if (stored === 'granted') {
-      consent = 'granted';
-    } else if (stored === 'denied') {
-      // Pre-fix decline stored — force back to granted (owner decision:
-      // decline is cosmetic only, visit data must always be captured).
-      consent = 'granted';
-      try {
-        localStorage.setItem('brightai:tracking_consent', 'granted');
-      } catch (e) { /* private mode */ }
-    }
+    if (stored === 'granted' || stored === 'denied') consent = stored;
   } catch (e) { /* noop */ }
   return consent;
 }
@@ -291,6 +285,13 @@ function buildContext(overrides) {
   if (!('page_type' in ctx) || ctx.page_type == null) {
     ctx.page_type = detectPageType();
   }
+  if (!('content_group' in ctx) || ctx.content_group == null) {
+    ctx.content_group = ['pricing', 'contact', 'solution', 'solution_sector', 'solution_city'].includes(ctx.page_type)
+      ? 'commercial'
+      : ['blog', 'docs', 'hub'].includes(ctx.page_type)
+        ? 'informational'
+        : ctx.page_type === 'assessment' ? 'assessment' : (ctx.page_type || 'other');
+  }
   if (!('language' in ctx) || ctx.language == null) {
     const lang = document.documentElement.lang || 'ar';
     ctx.language = lang === 'en' ? 'en-SA' : 'ar-SA';
@@ -313,15 +314,22 @@ function buildContext(overrides) {
   }
   try {
     const usp = new URLSearchParams(window.location.search);
-    if (!('source' in ctx) || ctx.source == null) {
-      ctx.source = usp.get('utm_source') || 'direct';
-    }
-    if (!('medium' in ctx) || ctx.medium == null) {
-      ctx.medium = usp.get('utm_medium') || 'none';
-    }
-    if (!('campaign' in ctx) || ctx.campaign == null) {
-      ctx.campaign = usp.get('utm_campaign') || 'none';
-    }
+    let stored = {};
+    try {
+      stored = JSON.parse(sessionStorage.getItem('brightai:analytics:attribution') || '{}') || {};
+    } catch (e) { /* private mode */ }
+    const current = {};
+    ['source', 'medium', 'campaign', 'content', 'term'].forEach((key) => {
+      const value = usp.get('utm_' + key);
+      if (value) current[key] = value;
+    });
+    const attribution = Object.assign({}, stored, current);
+    if (!attribution.source) attribution.source = document.referrer ? 'referral' : 'direct';
+    if (!attribution.medium) attribution.medium = document.referrer ? 'referral' : 'none';
+    try { sessionStorage.setItem('brightai:analytics:attribution', JSON.stringify(attribution)); } catch (e) { /* private mode */ }
+    ['source', 'medium', 'campaign', 'content', 'term'].forEach((key) => {
+      if (!(key in ctx) || ctx[key] == null) ctx[key] = attribution[key] || undefined;
+    });
   } catch (e) { /* noop */ }
   return ctx;
 }
@@ -350,10 +358,11 @@ function sanitizeValue(v) {
 
 function track(name, payload) {
   payload = payload || {};
+  let sanitized;
   try {
-    const sanitized = {};
+    sanitized = {};
     for (const k of Object.keys(payload)) {
-      sanitized[k] = sanitizeValue(payload[k]);
+      if (SAFE_EVENT_PROPS.has(k)) sanitized[k] = sanitizeValue(payload[k]);
     }
     assertNoPii(sanitized);
   } catch (err) {
@@ -363,7 +372,7 @@ function track(name, payload) {
 
   if (typeof window === 'undefined') return false;
 
-  const enriched = buildContext(payload);
+  const enriched = buildContext(sanitized);
 
   if (isDuplicate(name, enriched)) return false;
 
@@ -504,16 +513,35 @@ function installClickDelegation() {
   document.addEventListener(
     'click',
     (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      const cta = target.closest('[data-cta], [data-cta-secondary], [data-whatsapp]');
+       const target = event.target;
+       if (!(target instanceof Element)) return;
+       const resource = target.closest('[data-resource-download], a[download]');
+       if (resource) {
+         track(ANALYTICS_EVENTS.RESOURCE_DOWNLOAD, {
+           resource_type: resource.getAttribute('data-resource-type') || 'download',
+           page_type: detectPageType(),
+         });
+         return;
+       }
+       const partner = target.closest('[data-outbound-partner]');
+       if (partner) {
+         let domain;
+         try { domain = new URL(partner.getAttribute('href') || '', window.location.href).host; } catch (e) { /* noop */ }
+         track(ANALYTICS_EVENTS.OUTBOUND_PARTNER_CLICK, {
+           cta_label: truncate(partner.getAttribute('data-cta-label') || textOf(partner), 80),
+           cta_location: partner.getAttribute('data-position') || 'inline',
+           outbound_domain: domain,
+         });
+         return;
+       }
+       const cta = target.closest('[data-cta], [data-cta-secondary], [data-whatsapp]');
       if (!cta) return;
 
       const ds = (key) => cta.getAttribute('data-' + key) || undefined;
       const basePayload = {
-        cta_label: truncate(cta.getAttribute('data-cta-label') || textOf(cta), 80),
-        cta_position: ds('position') || ds('cta-position') || 'inline',
-        cta_target: pathOnly(cta.getAttribute('href')),
+         cta_label: truncate(cta.getAttribute('data-cta-label') || textOf(cta), 80),
+         cta_location: ds('position') || ds('cta-position') || 'inline',
+         cta_target: pathOnly(cta.getAttribute('href')),
         page_type: detectPageType(),
         persona: ds('persona') || undefined,
         offer: ds('offer') || undefined,
@@ -540,7 +568,9 @@ function installClickDelegation() {
         const isCalendar = /calendly|cal\.com|hubspot.*meeting|book/i.test(href) ||
                            cta.getAttribute('data-calendar') !== null;
         const isProof = cta.closest('[data-asset-type]') !== null;
-        if (isCalendar) {
+         if (explicit === 'pricing_cta_click') {
+           track(ANALYTICS_EVENTS.PRICING_CTA_CLICK, basePayload);
+         } else if (isCalendar) {
           track(ANALYTICS_EVENTS.CALENDAR_OPEN, basePayload);
         } else if (isAssessment) {
           track(ANALYTICS_EVENTS.ASSESSMENT_START, basePayload);
@@ -549,7 +579,7 @@ function installClickDelegation() {
         } else if (isProof) {
           track(ANALYTICS_EVENTS.HERO_CTA_CLICK, basePayload);
         } else {
-          const eventName = basePayload.cta_position === 'hero'
+           const eventName = basePayload.cta_location === 'hero'
             ? ANALYTICS_EVENTS.HERO_CTA_CLICK
             : ANALYTICS_EVENTS.SECONDARY_CTA_CLICK;
           track(eventName, basePayload);

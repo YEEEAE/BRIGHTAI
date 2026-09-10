@@ -40,7 +40,7 @@ export type LeadEventName =
   | 'form_submit_attempt'
   | 'form_submit_success'
   | 'form_submit_failure'
-  | 'generate_lead';
+  | 'lead_created';
 
 export interface LeadEventPayload {
   form_id: string;
@@ -57,10 +57,10 @@ export interface LeadEventPayload {
 
 export const leadTracker = {
   formView: (formId: string, pagePath: string) =>
-    track('form_view', { form_id: formId, page_path: pagePath }),
+    track('form_view', { form_id: formId, form_type: formTypeFor(formId), page_path: pagePath }),
 
   formStart: (formId: string, pagePath: string) =>
-    track('form_start', { form_id: formId, page_path: pagePath }),
+    track('form_start', { form_id: formId, form_type: formTypeFor(formId), page_path: pagePath }),
 
   formFieldError: (
     formId: string,
@@ -70,6 +70,7 @@ export const leadTracker = {
   ) =>
     track('form_field_error', {
       form_id: formId,
+      form_type: formTypeFor(formId),
       page_path: pagePath,
       field_name: fieldName,
       error_code: errorCode,
@@ -84,6 +85,7 @@ export const leadTracker = {
   ) =>
     track('form_submit_attempt', {
       form_id: formId,
+      form_type: formTypeFor(formId),
       page_path: pagePath,
       source,
       medium,
@@ -99,6 +101,7 @@ export const leadTracker = {
   ) =>
     track('form_submit_success', {
       form_id: formId,
+      form_type: formTypeFor(formId),
       page_path: pagePath,
       duration_ms: Math.round(opts.durationMs),
       lead_id: opts.leadId,
@@ -113,15 +116,14 @@ export const leadTracker = {
   ) =>
     track('form_submit_failure', {
       form_id: formId,
+      form_type: formTypeFor(formId),
       page_path: pagePath,
       error_code: errorCode,
       duration_ms: Math.round(durationMs),
     }),
 
-  /** GA4 conversion event: generate_lead. Fired client-side after a
-   *  successful form submit so Google Ads / GA4 conversion tracking
-   *  can attribute the lead without waiting for server-side events.
-   *  Never contains PII — only form_id + page_path + attribution. */
+  /** Canonical conversion events. Each successful form is counted once by
+    *  its form-specific event plus one lead_created event. */
   generateLead: (
     formId: string,
     pagePath: string,
@@ -129,20 +131,37 @@ export const leadTracker = {
       source?: string;
       medium?: string;
       campaign?: string;
-      value?: number;
-      currency?: string;
     } = {},
-  ) =>
-    track('generate_lead', {
+  ) => {
+    const common = {
       form_id: formId,
+      form_type: formTypeFor(formId),
       page_path: pagePath,
       source: opts.source ?? undefined,
       medium: opts.medium ?? undefined,
       campaign: opts.campaign ?? undefined,
-      value: opts.value ?? 1,
-      currency: opts.currency ?? 'SAR',
-    }),
+    };
+    const specific = formId === 'newsletter'
+      ? 'newsletter_signup'
+      : formId === 'kernel_lead'
+        ? 'demo_submit'
+        : formId === 'contact_main' || formId === 'home_cta'
+          ? 'contact_submit'
+          : undefined;
+    if (specific) track(specific, common);
+    track('lead_created', common);
+  },
 };
+
+function formTypeFor(formId: string): string {
+  if (formId === 'newsletter') return 'newsletter';
+  if (formId === 'kernel_lead') return 'demo';
+  if (formId === 'contact_main' || formId === 'home_cta') return 'contact';
+  if (formId === 'partners') return 'partner';
+  if (formId === 'referral') return 'referral';
+  if (formId.startsWith('event_')) return 'event';
+  return 'other';
+}
 
 /** Re-export the unified track so other modules can `import { track } from
  *  './lead-tracker'` without caring that the real implementation lives in

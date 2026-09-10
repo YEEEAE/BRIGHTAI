@@ -102,7 +102,7 @@ import {
 import { recordUsageAsync } from '../../../lib/usagetracker';
 // CHAMPION-05 (2026-07-30): server-side GA4 event so `chat_completed` reaches
 // GA4 even when the client gtag event is lost (tab close, adblocker, network
-// drop). Best-effort — mirrors the EXEC-10 generate_lead pattern in lead.ts.
+// drop). Best-effort — mirrors the canonical lead_created pattern in lead.ts.
 import { sendServerEvent } from '../../../lib/ga4-server';
 // K3 (2026-07-18): AI Firewall — PII detection + redaction + policy decision
 // that runs BEFORE the request reaches Groq/Gemini. Blocked payloads never
@@ -1174,7 +1174,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   // CHAMPION-05 (2026-07-30): fire `chat_completed` server-side so the
   // conversion funnel (page_view → chat_started → chat_completed →
-  // generate_lead) is measurable regardless of client gtag delivery. Best-effort
+  // lead_created) is measurable regardless of client gtag delivery. Best-effort
   // fire-and-forget — sendServerEvent swallows all errors internally and never
   // rejects, so this can never fail the reply. Params are PII-free (the ga4-server
   // stripper is a second line of defense).

@@ -1,3 +1,39 @@
+## [2026-09-10] — توحيد قياس GA4 والإسناد والتحويلات (13)
+
+### تم التنفيذ
+- وحّدت أحداث التحويل الأساسية إلى `demo_submit` و`contact_submit` و`lead_created`، مع الأحداث المطلوبة للتسعير وواتساب والتقييم والنشرة والتنزيلات والشركاء.
+- أضفت allowlist مشتركة للخصائص مع تنقية PII **قبل** إثراء السياق أو إرسال الحدث إلى providers؛ وأصلحت bug كان يسمح بمرور مفاتيح غير مسموحة بعد التنقية.
+- أضفت attribution على مستوى session (`brightai:analytics:attribution`) مع UTM/referrer fallback، ومنعت احتساب honeypot كتحويل، وربطت consent الافتراضي بـ `unknown` ورفض صريح.
+- حدّثت التقييم إلى `assessment_started` و`assessment_completed`، وربطت server-side lead tracking بـ `lead_created` بدل الأسماء القديمة.
+- أنشأت خطة القياس وrunbook الإعداد اليدوي، وأضافت اختبارات static تمنع رجوع taxonomy/PII/consent وازدواجية التحويل.
+
+### الملفات المتأثرة
+- `src/lib/analytics.ts`
+- `public/js/analytics.js`
+- `src/lib/lead-tracker.ts`
+- `src/scripts/lead-form-handler.js`
+- `src/components/CookieConsent.astro`
+- `public/js/ai-governance-readiness.js`
+- `src/pages/api/lead.ts` و`src/lib/ga4-server.ts`
+- `audit/seo-recovery/13-ANALYTICS-MEASUREMENT-PLAN.md`
+- `audit/seo-recovery/14-GA4-MANUAL-CONFIGURATION.md`
+- `scripts/analytics-measurement.test.mjs`
+
+### التحقق
+- `pnpm build` ✅ — اكتمل مسار البناء النهائي، sitemap = 264 URL.
+- `pnpm build:client` ✅ و`pnpm typecheck` ✅ — صفر أخطاء TypeScript.
+- `pnpm test` ✅ — chat 16/16، CSRF 29/29، PII 38/38؛ تحذيرات البيئة `DATABASE_URL` و`GA4_API_SECRET` متوقعة.
+- اختبارات analytics + assessment ✅ — 9/9.
+- `node --check` لسكريبتات analytics/forms ✅ و`git diff --check` ✅.
+
+### النتيجة
+- **الحالة:** نجح محليًا؛ إعدادات GA4 داخل لوحة Google وDebugView ما زالت خطوة يدوية بعد النشر.
+- **مختصر:** صار عند المشروع taxonomy موحّد، إسناد session-scoped، consent واضح، حماية PII قبل dispatch، وتوثيق قابل للتنفيذ بدون أسرار.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم تنفيذ `14-GA4-MANUAL-CONFIGURATION.md` يدويًا في GA4: custom dimensions، key events، Consent Mode، cross-domain، واختبارات DebugView.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-10] — ترقية صفحات P0 التجارية ومراجعة صفحات الإجابات (12)
 
 ### تم التنفيذ

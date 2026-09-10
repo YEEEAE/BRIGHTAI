@@ -11,13 +11,6 @@
  *   - On decline: queued events are dropped, and the providers never
  *     receive anything for the rest of the session.
  *
- * BAI-ANALYTICS-2026-08-03 (owner decision): the decline button is now
- * cosmetic only. Analytics tracking runs for every visitor regardless of
- * the banner choice — the restore fix made analytics_storage=granted the
- * default, and the decline button simply hides the banner without flipping
- * consent to denied. This matches the owner's product decision (visit data
- * must always be captured).
- *
  * The consent flag is also written to localStorage under the
  * `brightai:tracking_consent` key (the analytics runtime reads this on
  * boot so consent survives a hard refresh).
@@ -34,7 +27,7 @@
 <div id="cookie-consent" class="cookie-consent" role="dialog" aria-label="إشعار ملفات تعريف الارتباط" hidden>
   <div class="cookie-consent__inner">
     <p class="cookie-consent__text">
-      نستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالاستمرار في التصفح، أنت توافق على
+      نستخدم ملفات تعريف الارتباط والقياس الاختياري لتحسين تجربتك. تقدر تقبل أو ترفض، وتفاصيل الاستخدام موجودة في
       <a href="/privacy-cookies/" class="cookie-consent__link">سياسة ملفات تعريف الارتباط</a>.
     </p>
     <div class="cookie-consent__actions">
@@ -45,7 +38,12 @@
 </div>
 
 <script>
-  // Banner visibility — show on first visit when no decision is recorded.
+  // Migrate the legacy decision once, then show the banner only when no
+  // explicit tracking decision exists.
+  const legacyConsent = localStorage.getItem('cookie-consent');
+  if (!localStorage.getItem('brightai:tracking_consent') && (legacyConsent === 'accepted' || legacyConsent === 'declined')) {
+    localStorage.setItem('brightai:tracking_consent', legacyConsent === 'accepted' ? 'granted' : 'denied');
+  }
   const banner = document.getElementById('cookie-consent');
   if (banner && !localStorage.getItem('cookie-consent')) {
     banner.hidden = false;
@@ -74,9 +72,7 @@
     setTrackingConsent('granted');
   });
   document.getElementById('cookie-decline')?.addEventListener('click', () => {
-    // BAI-ANALYTICS-2026-08-03: cosmetic-only decline. The banner hides but
-    // analytics continue to track (consent stays granted). Owner decision.
-    setTrackingConsent('granted');
+    setTrackingConsent('denied');
   });
 </script>
 

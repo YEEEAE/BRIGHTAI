@@ -268,7 +268,7 @@ export const POST: APIRoute = async ({ request }) => {
     name: lead.name,
     contact: lead.contact,
     company: lead.company,
-    page: lead.page ?? null,
+    page: lead.page ?? undefined,
     source: lead.source ?? 'kernel',
     ip,
     userAgent: getUserAgentLocal(request),
@@ -278,7 +278,7 @@ export const POST: APIRoute = async ({ request }) => {
   // status = DELIVERED — surface that as `shipped`.
   const mode: 'shipped' | 'queued' = enqueued.status === 'DELIVERED' ? 'shipped' : 'queued';
 
-  // 7.5. EXEC-10: Server-side GA4 `generate_lead` conversion (best-effort).
+  // 7.5. Server-side GA4 `lead_created` conversion (best-effort).
   //      Covers the case where the client-side gtag event is lost
   //      (adblocker, network drop after submit, tab closed). Stitches to
   //      the same GA4 session via the _ga cookie when available; falls
@@ -294,7 +294,7 @@ export const POST: APIRoute = async ({ request }) => {
     clientId: cookieClientId ?? fallbackClientId,
     events: [
       {
-        name: 'generate_lead',
+        name: 'lead_created',
         params: {
           source: lead.source ?? 'kernel',
           page: lead.page ?? null,
@@ -304,7 +304,7 @@ export const POST: APIRoute = async ({ request }) => {
     ],
   }).catch((e) => {
     // eslint-disable-next-line no-console
-    console.warn('[ga4-server] generate_lead rejected (swallowed)', e);
+      console.warn('[ga4-server] lead_created rejected (swallowed)', e);
   });
 
   // 8. Log ONLY ID hash + timestamp + page (لا PII في stdout)

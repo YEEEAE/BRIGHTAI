@@ -51,10 +51,18 @@ export const ANALYTICS_EVENTS = {
   WHATSAPP_CLICK: 'whatsapp_click',
   PRICING_VIEW: 'pricing_view',
   PRICING_CTA_CLICK: 'pricing_cta_click',
+  DEMO_SUBMIT: 'demo_submit',
+  CONTACT_SUBMIT: 'contact_submit',
+  LEAD_CREATED: 'lead_created',
+  ASSESSMENT_STARTED: 'assessment_started',
+  ASSESSMENT_COMPLETED: 'assessment_completed',
+  NEWSLETTER_SIGNUP: 'newsletter_signup',
+  RESOURCE_DOWNLOAD: 'resource_download',
+  OUTBOUND_PARTNER_CLICK: 'outbound_partner_click',
   PROOF_ASSET_VIEW: 'proof_asset_view',
   CASE_STUDY_VIEW: 'case_study_view',
-  ASSESSMENT_START: 'assessment_start',
-  ASSESSMENT_COMPLETE: 'assessment_complete',
+  ASSESSMENT_START: 'assessment_started',
+  ASSESSMENT_COMPLETE: 'assessment_completed',
   FORM_VIEW: 'form_view',
   FORM_START: 'form_start',
   FORM_FIELD_ERROR: 'form_field_error',
@@ -63,13 +71,12 @@ export const ANALYTICS_EVENTS = {
   FORM_SUBMIT_FAILURE: 'form_submit_failure',
   CALENDAR_OPEN: 'calendar_open',
   MEETING_BOOKED: 'meeting_booked',
-  GENERATE_LEAD: 'generate_lead',
-  // EXEC-10 (2026-07-29): Alias event names for GA4 reports. These fire
-  // alongside the unified events above (form_submit_attempt/success) per
-  // the alias policy. They keep the existing taxonomy intact while giving
-  // GA4 DebugView / Ads the EXEC-10 naming contract.
-  LEAD_STARTED: 'lead_started',
-  LEAD_COMPLETED: 'lead_completed',
+  /** @deprecated use LEAD_CREATED. Kept only for source compatibility. */
+  GENERATE_LEAD: 'lead_created',
+  /** @deprecated use canonical conversion names above. */
+  LEAD_STARTED: 'form_submit_attempt',
+  /** @deprecated use LEAD_CREATED. */
+  LEAD_COMPLETED: 'lead_created',
   CHAT_STARTED: 'chat_started',
   CHAT_COMPLETED: 'chat_completed',
   DEMO_OPENED: 'demo_opened',
@@ -132,6 +139,7 @@ const ALLOWED_COMMON_PROPS = new Set<string>([
   'persona', 'offer', 'form_id', 'experiment_id', 'variant',
   // CTA context
   'cta_label', 'cta_position', 'cta_target',
+  'cta_location', 'form_type', 'content_group',
   // Attribution
   'source', 'medium', 'campaign', 'content', 'term', 'referrer',
   // Device + lang
@@ -160,6 +168,9 @@ const COMMON_PROPS_HINT = {
   cta_label: 'visible button text (truncated to 80 chars)',
   cta_position: 'hero | final | header | footer | card | section | inline',
   cta_target: 'href value of the link/button (path only, no query)',
+  cta_location: 'hero | header | footer | card | section | inline | results',
+  form_type: 'contact | demo | newsletter | partner | referral | assessment | other',
+  content_group: 'stable content grouping derived from page type',
   // Attribution
   source: 'utm_source (or "direct")',
   medium: 'utm_medium (or "none")',
@@ -461,7 +472,43 @@ const AUTO_INJECTED: ReadonlyArray<keyof typeof COMMON_PROPS_HINT> = [
   'source',
   'medium',
   'campaign',
+  'content_group',
 ];
+
+const SAFE_EVENT_PROPS = new Set(Object.keys(COMMON_PROPS_HINT));
+
+function contentGroup(pageType: string): string {
+  if (pageType === 'pricing' || pageType === 'contact' || pageType === 'solution' || pageType === 'solution_sector' || pageType === 'solution_city') return 'commercial';
+  if (pageType === 'blog' || pageType === 'docs' || pageType === 'hub') return 'informational';
+  if (pageType === 'assessment') return 'assessment';
+  return pageType || 'other';
+}
+
+function readStoredAttribution(): AnalyticsPayload {
+  if (typeof sessionStorage === 'undefined') return {};
+  try {
+    const raw = sessionStorage.getItem('brightai:analytics:attribution');
+    const parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch { return {}; }
+}
+
+function captureAttribution(w: { location: Location }): AnalyticsPayload {
+  const params = new URLSearchParams(w.location.search);
+  const stored = readStoredAttribution();
+  const current = {
+    source: params.get('utm_source') || undefined,
+    medium: params.get('utm_medium') || undefined,
+    campaign: params.get('utm_campaign') || undefined,
+    content: params.get('utm_content') || undefined,
+    term: params.get('utm_term') || undefined,
+  };
+  const next = { ...stored, ...Object.fromEntries(Object.entries(current).filter(([, value]) => value)) };
+  if (!next.source) next.source = document.referrer ? 'referral' : 'direct';
+  if (!next.medium) next.medium = document.referrer ? 'referral' : 'none';
+  try { sessionStorage.setItem('brightai:analytics:attribution', JSON.stringify(next)); } catch { /* private mode */ }
+  return next;
+}
 
 /** Compute the auto-injected set. Called per emit (cheap). */
 function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
@@ -476,6 +523,9 @@ function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
   };
   if (!('page_path' in ctx) || ctx.page_path == null) {
     ctx.page_path = w.location.pathname;
+  }
+  if (!('content_group' in ctx) || ctx.content_group == null) {
+    ctx.content_group = contentGroup(detectPageType());
   }
   if (!('page_title' in ctx) || ctx.page_title == null) {
     ctx.page_title = w.document.title;
@@ -500,19 +550,12 @@ function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
       }
     } catch { /* noop */ }
   }
-  // UTM auto-capture from URL — only if not explicitly passed.
-  try {
-    const usp = new URLSearchParams(w.location.search);
-    if (!('source' in ctx) || ctx.source == null) {
-      ctx.source = usp.get('utm_source') || 'direct';
-    }
-    if (!('medium' in ctx) || ctx.medium == null) {
-      ctx.medium = usp.get('utm_medium') || 'none';
-    }
-    if (!('campaign' in ctx) || ctx.campaign == null) {
-      ctx.campaign = usp.get('utm_campaign') || 'none';
-    }
-  } catch { /* noop */ }
+  const attribution = captureAttribution(w);
+  if (!('source' in ctx) || ctx.source == null) ctx.source = attribution.source || 'direct';
+  if (!('medium' in ctx) || ctx.medium == null) ctx.medium = attribution.medium || 'none';
+  if (!('campaign' in ctx) || ctx.campaign == null) ctx.campaign = attribution.campaign;
+  if (!('content' in ctx) || ctx.content == null) ctx.content = attribution.content;
+  if (!('term' in ctx) || ctx.term == null) ctx.term = attribution.term;
   return ctx;
 }
 
@@ -526,10 +569,11 @@ function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
  * consent-blocked (callers can ignore — the return is for tests).
  */
 export function track(name: AnalyticsEventName | LeadEventName | string, payload: AnalyticsPayload = {}): boolean {
+  let sanitized: AnalyticsPayload;
   try {
-    const sanitized: AnalyticsPayload = {};
+    sanitized = {};
     for (const [k, v] of Object.entries(payload)) {
-      sanitized[k] = sanitizeValue(v) as never;
+      if (SAFE_EVENT_PROPS.has(k)) sanitized[k] = sanitizeValue(v) as never;
     }
     assertNoPii(sanitized);
   } catch (err) {
@@ -540,9 +584,19 @@ export function track(name: AnalyticsEventName | LeadEventName | string, payload
 
   if (typeof window === 'undefined') return false; // SSR no-op
 
+  // LeadForm's bundled module and the deferred public runtime share consent
+  // through this global. This prevents form events from being stranded in a
+  // private queue when the public runtime is the component that received the
+  // cookie-banner decision.
+  try {
+    const external = window.__BRIGHTAI_ANALYTICS__?.getConsent?.();
+    if (external === 'granted' || external === 'denied') CONSENT = external;
+    else if (CONSENT === 'unknown') hydrateConsentFromStorage();
+  } catch { /* best effort */ }
+
   // Inject context (page_path, device, UTM, ...) — caller-provided values
   // win (they have higher specificity).
-  const enriched = buildContext(payload);
+  const enriched = buildContext(sanitized);
 
   // Dedupe identical events fired in quick succession.
   if (isDuplicate(name, enriched)) return false;
@@ -570,6 +624,12 @@ function dispatch(name: string, payload: AnalyticsPayload): void {
       // Provider failure is never allowed to surface. A failing Mixpanel
       // should never break the form submit it was logging.
     }
+  }
+  // LeadForm is bundled separately from the deferred public runtime. If its
+  // module fires before the runtime registers the provider, use the already
+  // loaded GA4 queue directly instead of silently losing the conversion.
+  if (!PROVIDERS.some((p) => p.name === 'gtag') && typeof window !== 'undefined' && typeof window.gtag === 'function' && CONSENT === 'granted') {
+    try { window.gtag('event', name, payload); } catch { /* best effort */ }
   }
 }
 

@@ -21,7 +21,7 @@
  * happened before listener attachment).
  */
 
-import { leadTracker, ERROR_CODES, track } from '../lib/lead-tracker.ts';
+import { leadTracker, ERROR_CODES } from '../lib/lead-tracker.ts';
 import { SESSION_KEYS } from '../data/marketing.ts';
 
 // ─────────────────────────────────────────────────────────────────────
@@ -469,12 +469,8 @@ function attachSubmitListener(form) {
     // 1. Honeypot — if filled, this is a bot. Fake success, never POST.
     const honeypot = form.querySelector('[data-honeypot]');
     if (honeypot && honeypot.value) {
-      // Emit success so the dashboard sees activity (helps spot bot farms).
+      // Fake success for bots, but never count a conversion.
       leadTracker.formSubmitAttempt(formId, path, source, medium, campaign);
-      leadTracker.formSubmitSuccess(formId, path, { durationMs: 0, mode: 'queued' });
-      // EXEC-10 (2026-07-29): alias event — mirrors the queued success
-      // so GA4 reports match the unified taxonomy.
-      track('lead_completed', { form_id: formId, page_path: path, mode: 'queued' });
       showSuccess(form);
       redirectAfterSuccess(form);
       return;
@@ -514,9 +510,6 @@ function attachSubmitListener(form) {
     // 3. Submit attempt is real — measure duration from here.
     const startedAt = performance.now();
     leadTracker.formSubmitAttempt(formId, path, source, medium, campaign);
-    // EXEC-10 (2026-07-29): alias event for GA4 reports. Fires alongside
-    // the unified form_submit_attempt.
-    track('lead_started', { form_id: formId, page_path: path });
     setSubmitState(form, 'loading');
     hideErrorSummary(form);
     hideFormError(form);
@@ -554,11 +547,7 @@ function attachSubmitListener(form) {
           leadId,
           mode: 'shipped',
         });
-        // EXEC-10 (2026-07-29): alias event for GA4 reports.
-        track('lead_completed', { form_id: formId, page_path: path, mode: 'shipped' });
-        // GA4 conversion event: generate_lead — fires after successful
-        // submit so Google Ads / GA4 conversion tracking attributes the
-        // lead. Only carries form_id + page_path + UTM (never PII).
+        // Canonical conversion events fire only after a real successful submit.
         leadTracker.generateLead(formId, path, {
           source: source || undefined,
           medium: medium || undefined,
