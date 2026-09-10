@@ -1157,7 +1157,7 @@ export const kernelUnits: KernelUnit[] = [
     path: '/kernel/datasets/',
     label: 'الـ Datasets',
     shortDescription: 'أدر مجموعات بيانات التقييم والإصدارات والهاش والاستيراد',
-    title: 'Dataset Manager — إدارة مجموعات بيانات التقييم | BrightAI Kernel',
+    title: 'Dataset Manager — إدارة مجموعات بيانات التقييم',
     description: 'أدر مجموعات بيانات تقييم الذكاء الاصطناعي في Kernel: Saudi Governance Benchmark بثمانية قطاعات سعودية، إصدارات بهاش حتمي، استيراد CSV وJSON وJSONL، تقسيم train/validation/test، وكشف التكرار والنقص. أداة وليست صفحة تسويقية.',
     canonical: 'https://brightai.live/kernel/datasets/',
     h1: 'Dataset Manager — مجموعة التقييم تحكم جودة الشهادة',

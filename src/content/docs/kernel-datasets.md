@@ -1,6 +1,6 @@
 ---
 title: "Kernel Datasets: مدير مجموعات بيانات التقييم في BrightAI Kernel"
-metaTitle: "Kernel Datasets: مدير مجموعات بيانات التقييم في BrightAI Kernel"
+metaTitle: "Kernel Datasets: إدارة مجموعات بيانات التقييم"
 description: "دليل Dataset Manager في Kernel: Saudi Governance Benchmark بثمانية قطاعات، إصدارات بهاش حتمي، استيراد CSV وJSON وJSONL ولصق جدول، تقسيم train/validation/test، وكشف التكرار والنقص."
 canonical: "https://brightai.live/docs/kernel-datasets/"
 updated: "2026-07-31"
