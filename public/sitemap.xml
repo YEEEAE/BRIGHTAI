@@ -277,7 +277,7 @@
     <loc>https://brightai.live/docs/ai-firewall/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/docs/ai-firewall/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/docs/ai-firewall/" />
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-09-08</lastmod>
   </url>
   <url>
     <loc>https://brightai.live/docs/ai-governance-platform/</loc>
@@ -523,7 +523,7 @@
     <loc>https://brightai.live/docs/pdpl-ai-complete-guide/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/docs/pdpl-ai-complete-guide/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/docs/pdpl-ai-complete-guide/" />
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-09-08</lastmod>
   </url>
   <url>
     <loc>https://brightai.live/docs/pdpl-ai-governance/</loc>
@@ -1390,11 +1390,6 @@
     <lastmod>2026-08-28</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/500/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/500/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/500/" />
-  </url>
-  <url>
     <loc>https://brightai.live/cookie-policy/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/cookie-policy/" />
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/cookie-policy/" />
@@ -1407,31 +1402,6 @@
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/data-processing-agreement/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/data-processing-agreement/" />
     <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/design/buttons/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/design/buttons/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/design/buttons/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/design/cards/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/design/cards/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/design/cards/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/design/colors/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/design/colors/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/design/colors/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/design/forms/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/design/forms/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/design/forms/" />
-  </url>
-  <url>
-    <loc>https://brightai.live/design/typography/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/design/typography/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/design/typography/" />
   </url>
   <url>
     <loc>https://brightai.live/en/cookie-policy/</loc>
@@ -1474,11 +1444,6 @@
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/terms/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/terms/" />
     <lastmod>2026-09-08</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/go/whatsapp/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/go/whatsapp/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/go/whatsapp/" />
   </url>
   <url>
     <loc>https://brightai.live/kernel/api/</loc>
@@ -1541,12 +1506,6 @@
     <lastmod>2026-07-30</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/kernel/offline/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/offline/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/offline/" />
-    <lastmod>2026-07-30</lastmod>
-  </url>
-  <url>
     <loc>https://brightai.live/kernel/playground/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/kernel/playground/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/kernel/playground/" />
@@ -1595,12 +1554,6 @@
     <lastmod>2026-07-30</lastmod>
   </url>
   <url>
-    <loc>https://brightai.live/offline/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/offline/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/offline/" />
-    <lastmod>2026-09-08</lastmod>
-  </url>
-  <url>
     <loc>https://brightai.live/pdpl-statement/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/pdpl-statement/" />
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/pdpl-statement/" />
@@ -1645,12 +1598,6 @@
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.live/en/terms/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/terms/" />
     <lastmod>2026-08-28</lastmod>
-  </url>
-  <url>
-    <loc>https://brightai.live/thank-you/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.live/thank-you/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.live/thank-you/" />
-    <lastmod>2026-09-08</lastmod>
   </url>
 
 </urlset>

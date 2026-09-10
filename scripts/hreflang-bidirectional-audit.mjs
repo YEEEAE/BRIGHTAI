@@ -367,7 +367,11 @@ async function checkNon200Files(index) {
     // page whose static build artifact is 404.html (Astro prerenders the
     // error page as a root-level file, not a directory). Mirror the same
     // special case used by scripts/sitemap-contract.mjs ("^/404/?$").
+    // SEO-CONSOLIDATION (2026-09-10): /500/ is the same shape — static
+    // public/500.html copied verbatim (not a directory) — now that /500/
+    // carries hreflang self-references, it needs the same mapping.
     if (relPath === "/404/") relPath = "/404.html";
+    else if (relPath === "/500/") relPath = "/500.html";
     else if (relPath === "/") relPath = "/index.html";
     else if (relPath.endsWith("/")) relPath += "index.html";
     else if (!relPath.endsWith(".html")) relPath += "/index.html";

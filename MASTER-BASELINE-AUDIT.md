@@ -1,178 +1,1147 @@
-# BRIGHTAI QC Task Manager — Master Baseline Audit
+# BRIGHTAI SEO RECOVERY & ORGANIC GROWTH PROGRAM
 
-> تاريخ التدقيق: 2026-08-11  
-> النطاق المقصود: `apps/qc-task-manager/` فقط  
-> نوع العمل: تحليل قراءة فقط — بدون تعديل كود التطبيق أو بنية المشروع
+Repository:
 
-## 1. حالة التدقيق
+```text
+YEEEAE/BRIGHTAI
+```
 
-تعذر تنفيذ تحليل الكود الفعلي في جلسة التدقيق الحالية لأن نسخة BRIGHTAI غير موجودة داخل مساحة العمل المتاحة. مجلد العمل الحالي يحتوي مجلدات `outputs/` و`work/` فقط، ولا يحتوي مستودع Git أو `apps/qc-task-manager/` أو `.agents/brain.md`.
+Production domain:
 
-بالتالي، هذا المستند هو **تقرير حجب Baseline Blocker** وليس حكمًا على جودة التطبيق أو اكتمال ميزاته. أي خانة لم يتوفر عليها دليل مباشر صُنّفت `NEEDS VERIFICATION`، ولم يتم استنتاج وجود أو غياب feature من الوثائق أو اسم المشروع.
+```text
+https://brightai.live
+```
 
-## 2. دليل النطاق والقراءة المنفذة
+Keyword source of truth:
 
-الأوامر المنفذة كانت للقراءة فقط:
+```text
+BRIGHTAI-KEYWORDS-MERGED-2026-09-08(1).csv
+```
 
-- البحث عن `brain.md` و`AGENTS.md` و`package.json` و`apps/qc-task-manager/**` داخل مساحة العمل.
-- فحص محتويات مجلد العمل ومجلد `Documents/Codex` بحثًا عن نسخة BRIGHTAI.
-- فحص حالة Git وجذر المستودع من مجلد العمل.
+Locate the file by basename if its exact path differs.
 
-النتيجة:
+Current verified baseline:
 
-- لا يوجد repository root قابل للاكتشاف من مجلد العمل.
-- لا يوجد مسار `apps/qc-task-manager/` قابل للقراءة.
-- لا يوجد `.agents/brain.md` قابل للقراءة ضمن مساحة العمل.
-- لم تُشغّل `pnpm build` أو `lint` أو `typecheck` أو `test`؛ لأن ملفات المشروع و`package.json` غير متاحة.
-- لم يتم تعديل أي ملف من ملفات التطبيق.
+```text
+Technical site health: ~93/100
+Successful crawl: 320/320
+Broken crawled pages: 0
+GSC audited indexability sample: 25/25 indexable
+Sitemap URLs: 274
+Sitemap URLs with GSC impressions in measured period: 39
+Organic clicks: 0
+Organic CTR: 0%
+Domain Authority / Domain InLink Rank: ~1/100
+Known backlinks: 38
+Known dofollow backlinks: 0
+Known nofollow backlinks: 38
+GA4 acquisition is dominated by Direct traffic
+Conversion/key-event measurement is incomplete
+```
 
-## 3. ملخص الدرجات
+The fundamental problem is NOT lack of pages.
 
-الأرقام التالية تعني **نسبة ما تم التحقق منه بالأدلة المتاحة**، وليست نسبة جودة أو اكتمال النظام:
+The fundamental problem is:
 
-| المقياس | النتيجة | التفسير |
-|---|---:|---|
-| CORE COMPLETION | 0% verified | لا يوجد كود أو artifact قابل للفحص لإثبات features الأساسية |
-| SECURITY | 0% verified | لا يمكن إثبات أو نفي IDOR/RBAC/CSRF/session/upload controls |
-| TESTING | 0% verified | لم تتوفر اختبارات أو إعدادات E2E أو نتائج تشغيل |
-| DATABASE | 0% verified | لم تتوفر migrations أو schema أو SQLite configuration |
-| AI READINESS | 0% verified | لم تتوفر طبقة domain أو endpoints أو نماذج بيانات للتحليل |
-| PRODUCTION READINESS | 0% verified | لا يمكن التحقق من build/deployment/env/backup/observability |
-| OVERALL | 0% verified | لا توجد أدلة محلية كافية لإصدار baseline موثوق |
+```text
+Authority << Content footprint
++
+weak keyword ownership
++
+possible cannibalization
++
+excess indexable surface area
++
+poor organic acquisition
++
+weak measurement
+```
 
-> لا ينبغي استخدام هذه النسب كـ scorecard للمنتج. بعد توفير المستودع، يجب استبدالها بنسب مبنية على inventory واختبارات وأدلة تشغيلية.
+Do not respond with generic recommendations.
 
-## 4. تحليل الـ Codebase
+Execute the requested work.
 
-### 4.1 الملفات والمكونات المطلوبة
+Do not push, merge, publish, or deploy unless explicitly instructed.
 
-| المجال | الحالة | دليل متوفر | المطلوب عند إعادة التدقيق |
-|---|---|---|---|
-| `package.json` وscripts | NEEDS VERIFICATION | غير متوفر | قراءة scripts والـ dependencies ونسخ Astro/Node/TypeScript |
-| `src/` | NEEDS VERIFICATION | غير متوفر | جرد الصفحات والمكونات والـ services والـ API handlers |
-| `db/` وSQLite | NEEDS VERIFICATION | غير متوفر | تحديد connection lifecycle وqueries وtransactions |
-| migrations | NEEDS VERIFICATION | غير متوفر | ترتيب migrations وآخر schema version وقابلية rollback |
-| API routes | NEEDS VERIFICATION | غير متوفر | مصفوفة route × method × auth × role × validation |
-| Astro pages | NEEDS VERIFICATION | غير متوفر | SSR boundaries وdata loading وerror states |
-| React components | NEEDS VERIFICATION | غير متوفر | client/server boundary وstate وaccessibility |
-| authentication | NEEDS VERIFICATION | غير متوفر | session creation/rotation/expiry/logout/password/token model |
-| authorization/task-policy | NEEDS VERIFICATION | غير متوفر | resource-level policy وtenant/ownership checks |
-| validation | NEEDS VERIFICATION | غير متوفر | server-side schemas وحدود الإدخال ورسائل الأخطاء |
-| activity logging | NEEDS VERIFICATION | غير متوفر | actor/action/resource/timestamp/outcome وtamper resistance |
-| attachments | NEEDS VERIFICATION | غير متوفر | MIME sniffing/path traversal/size/quarantine/access control |
-| notifications | NEEDS VERIFICATION | غير متوفر | delivery/retry/idempotency/PII handling |
-| backup | NEEDS VERIFICATION | غير متوفر | SQLite backup/restore test/retention/encryption |
-| tests وE2E | NEEDS VERIFICATION | غير متوفر | unit/component/integration/E2E coverage وCI commands |
-| deployment | NEEDS VERIFICATION | غير متوفر | Docker/Node adapter/runtime/health checks/logging/rollback |
-| environment configuration | NEEDS VERIFICATION | غير متوفر | `.env.example` وrequired variables وsecret handling |
+Never fabricate SEO metrics.
 
-### 4.2 تصنيف الـ features
+When an SEO provider is unavailable, record:
 
-لا يمكن تصنيف أي feature فعليًا إلى `IMPLEMENTED`, `PARTIAL`, `MISSING`, أو `BROKEN` بدون قراءة source of truth. التصنيف الحالي لكل المحاور هو `NEEDS VERIFICATION` لتجنب اختلاق نتائج.
+```text
+DATA_UNAVAILABLE
+```
 
-## 5. Architecture Baseline
+instead of estimating a metric.
 
-لم يتمكن التدقيق من إثبات الشكل الفعلي للطبقات التالية:
+Never create fake backlinks, fake testimonials, fake customers, fake certifications, fake regulatory relationships, or invented claims.
 
-- Frontend وAstro SSR pages
-- API routes وrequest lifecycle
-- SQLite database access layer
-- Authentication وsession management
-- Authorization وRBAC وtask policy
-- Domain layer وservice layer
-- Groq/AI integration أو أي AI layer
-- File storage وattachment lifecycle
-- Audit/activity logging
-- Notifications وbackground processing
+Preserve product truth.
 
-المرجع المعطى يذكر Astro 6 وNode.js وTypeScript وSQLite وRBAC وGroq API، لكن هذه المعلومات لم تُعامل كدليل تنفيذ داخل codebase.
+BrightAI must not be repositioned into a generic AI agency, automation consultancy, cybersecurity consultancy, or digital-transformation company merely because those keywords have search volume.
 
-## 6. Database Review
 
-### 6.1 المطلوب التحقق منه
+---
 
-لم تتوفر ملفات schema أو migrations، لذلك لا يمكن تحديد:
 
-- الجداول والعلاقات.
-- المفاتيح الأساسية والفهارس.
-- foreign keys و`ON DELETE` behavior.
-- unique/check/not-null constraints.
-- schema version وآلية migration at startup/deploy.
-- transaction boundaries وconcurrency behavior.
-- SQLite WAL/locking/pragmas.
-- backup snapshots وrestore verification.
 
-### 6.2 مخاطر غير قابلة للحسم
+# PROMPT #2 — BUILD A STRICT KEYWORD OWNERSHIP MODEL FROM THE CSV
 
-أي حكم على سلامة العلاقات أو قابلية الاسترجاع أو فقدان البيانات سيكون تخمينًا. يلزم توفير database artifacts وتشغيل اختبارات migration وbackup/restore قبل إصدار نسبة Database حقيقية.
+Treat:
 
-## 7. Security Review
+```text
+BRIGHTAI-KEYWORDS-MERGED-2026-09-08(1).csv
+```
 
-لا يوجد source متاح لإثبات أو نفي البنود التالية:
+as the primary keyword dataset.
 
-- IDOR في task/finding/evidence/attachment IDs.
-- تحقق server-side من RBAC على كل route، وليس في الواجهة فقط.
-- CSRF protection للطلبات state-changing.
-- session cookie flags (`HttpOnly`, `Secure`, `SameSite`) وrotation وexpiry.
-- منع privilege escalation وتغيير owner/status خارج policy.
-- upload limits وMIME validation وfilename/path isolation وdownload authorization.
-- عدم تسريب secrets أو tokens في logs أو responses أو client bundle.
-- authorization قبل Groq API calls وحماية prompt/context من بيانات غير مصرح بها.
-- rate limiting وabuse controls للـ login وAPI وuploads وAI.
-- redaction للبيانات الحساسة داخل activity/audit logs.
+Do NOT perform keyword stuffing.
 
-**الحكم:** `NEEDS VERIFICATION`، وليس “secure” أو “vulnerable”.
+Do NOT place every keyword on every page.
 
-## 8. AI Readiness
+Use semantic relevance and search intent.
 
-لا تتم إضافة AI في هذه المرحلة. وعند توفر الكود، تُراجع نقاط الاستعداد التالية بدون تغيير behavior:
+## Start with P0 and P1
 
-| فرصة AI | البيانات المحتملة | ضوابط لازمة قبل التنفيذ |
-|---|---|---|
-| Task analysis | task title/description/priority/owner | RBAC، منع تسريب بيانات المشاريع، human approval |
-| QC Finding analysis | finding/evidence/status | traceability، confidence، عدم تعديل الحالة تلقائيًا |
-| RCA assistance | finding history/activity/attachments | عزل tenants، citations، منع اختلاق السبب الجذري |
-| CAPA assistance | corrective/preventive actions | مراجعة بشرية، policy validation، audit trail |
-| Management summaries | aggregate task/KPI data | least privilege، redaction، reproducible inputs |
-| Evidence analysis | attachment metadata/content | malware scanning، content extraction limits، data retention |
+Prioritize the existing measured opportunities including, but not limited to:
 
-الاستعداد الفعلي يتطلب معرفة وجود domain events، audit trail، normalized data، provider abstraction، secrets/configuration، timeouts/retries، cost/rate budgets، وfeature flags. لم يتم التحقق من أي منها.
+### PDPL commercial
 
-## 9. Testing Baseline
+```text
+نظام حماية البيانات الشخصية
+volume ~1900
+KD ~17
+candidate owner:
+/pdpl-statement/
+```
 
-لم تتوفر اختبارات قابلة للتشغيل. لذلك لا يمكن حساب coverage أو تصنيف الجودة. عند إعادة التدقيق يجب تشغيل الموجود فعليًا، ثم تصنيف النتائج إلى:
+Support where appropriate:
 
-- Unit: policies، validators، domain services.
-- Integration: API + SQLite + migrations.
-- Security regression: IDOR، RBAC bypass، CSRF، upload abuse.
-- E2E: login، task lifecycle، finding/CAPA، attachment access، audit trail.
-- Operational: backup/restore، startup migration، failure/retry paths.
+```text
+نظام حماية البيانات الشخصية السعودي
+```
 
-## 10. Technical Debt وMissing Features
+### PDPL informational
 
-لا يمكن تسجيل technical debt أو missing features خاصة بالتطبيق من دون source. أي قائمة فعلية الآن قد تخلط بين نقص الدليل ونقص التنفيذ. الاستثناء الوحيد الموثق هو **نقص قابلية التدقيق في بيئة المهمة الحالية**: لا توجد نسخة source أو brain أو نتائج اختبارات محلية.
+```text
+حماية البيانات الشخصية
+volume ~260
+KD ~23
+candidate owner:
+/docs/pdpl-ai-complete-guide/
+```
 
-## 11. Recommended Execution Order
+Do not let the commercial and informational PDPL pages compete for exactly the same intent.
 
-بعد توفير نسخة BRIGHTAI القابلة للقراءة، ترتيب التدقيق والتنفيذ المقترح:
+### Data Governance
 
-1. تثبيت baseline: قراءة `.agents/brain.md` كاملًا، ثم `git status` ونسخة Node/pnpm.
-2. جرد الملفات وscripts وruntime boundaries للتطبيق فقط.
-3. رسم route/authz matrix قبل أي تعديل.
-4. جرد schema/migrations/indexes/foreign keys واختبار migration على نسخة مؤقتة.
-5. تدقيق security controls: IDOR، CSRF، session، uploads، secrets، logging، rate limits.
-6. تشغيل الاختبارات الموجودة وتصنيف failures بدون تعطيل أو تعديل tests لمجرد تمريرها.
-7. فحص deployment/env/backup/restore وhealth/readiness behavior.
-8. إصدار feature matrix موثق بالأدلة وتصحيح نسب completion/security/testing/database.
-9. بناء AI readiness map فقط؛ لا إضافة Groq أو prompts أو AI behavior قبل اعتماد security/data governance.
-10. تحديث `.agents/brain.md` بالنتائج، ثم عرض التغييرات للمستخدم بدون commit أو push.
+```text
+حوكمة البيانات
+volume ~480
+KD ~23
+candidate owner:
+/blog/ndmo-data-governance-saudi/
+```
 
-## 12. إعادة التدقيق المطلوبة
+Supporting terms include:
 
-لإكمال هذا المستند كتقرير حقيقي، يجب توفير أحد الخيارين:
+```text
+ما هي حوكمة البيانات
+معنى حوكمة البيانات
+إدارة البيانات
+حوكمة تقنية المعلومات
+```
 
-- فتح جلسة العمل من جذر مستودع BRIGHTAI الذي يحتوي `apps/qc-task-manager/` و`.agents/brain.md`.
-- أو إتاحة نسخة محلية كاملة للقراءة مع الملفات المطلوبة والـ test fixtures اللازمة.
+### Risk Management
 
-بعدها يمكن استبدال كل `NEEDS VERIFICATION` بنتيجة evidence-backed، وتشغيل أوامر المشروع الفعلية فقط.
+```text
+إدارة المخاطر
+volume ~320
+KD ~20
 
+إدارة المخاطر pdf
+volume ~210
+KD ~13
+
+مخاطر الذكاء الاصطناعي
+volume ~110
+```
+
+Candidate owner:
+
+```text
+/docs/ai-risk-management/
+```
+
+Do NOT create a fake PDF.
+
+Only target PDF intent if an actual useful downloadable asset is created.
+
+### NCA
+
+```text
+الأمن السيبراني السعودية
+volume ~1600
+KD ~36
+```
+
+Candidate page:
+
+```text
+/blog/nca-cybersecurity-requirements-saudi/
+```
+
+Before aggressively targeting it, ensure the page remains specifically relevant to BrightAI and does not falsely position BrightAI as a generic cybersecurity provider.
+
+### Saudi AI landscape
+
+```text
+الذكاء الاصطناعي في السعودية
+volume ~140
+KD ~28
+```
+
+Candidate:
+
+```text
+/blog/saudi-ai-landscape-sdaia-humain-allam-scai/
+```
+
+### AI Firewall
+
+```text
+ai firewall
+candidate:
+/solutions/ai-firewall/
+```
+
+### AI Governance
+
+Potential owner:
+
+```text
+/hub/ai-governance/
+```
+
+Terms include:
+
+```text
+AI governance
+حوكمة الذكاء الاصطناعي
+أخلاقيات الذكاء الاصطناعي
+```
+
+But distinguish commercial product intent from informational governance intent.
+
+The commercial product page:
+
+```text
+/solutions/ai-governance-platform/
+```
+
+must NOT duplicate the informational hub.
+
+## Special validation queue
+
+Do NOT automatically target these terms just because the CSV scores them highly:
+
+```text
+شركات الذكاء الاصطناعي في السعودية
+شركة أتمتة
+AI automation tools
+AI automation
+AI and automation
+استشارات التحول الرقمي
+```
+
+First determine whether each keyword accurately reflects what BrightAI currently sells.
+
+If intent is too broad or mismatched:
+
+```text
+downgrade to SECONDARY_SUPPORT
+move to a genuinely relevant editorial page
+or mark EXCLUDED
+```
+
+Do not distort the homepage or Services page to chase traffic.
+
+## For each PRIMARY_OWNER page
+
+Create a keyword placement specification containing:
+
+```text
+primary keyword
+secondary semantic terms
+search intent
+title role
+H1 role
+intro role
+section opportunities
+FAQ opportunities
+internal anchor targets
+entities to cover
+terms to avoid overusing
+commercial CTA
+```
+
+Then implement naturally in the existing content.
+
+Primary keyword should generally appear where contextually appropriate in:
+
+```text
+title
+H1
+opening section
+one or more meaningful H2/H3s
+body copy
+internal anchors
+image alt only when actually describing the image
+structured data only when truthful
+```
+
+Never optimize by repetition density.
+
+Optimize by complete intent satisfaction.
+
+Create:
+
+```text
+07-KEYWORD-IMPLEMENTATION-MAP.csv
+```
+
+with before/after evidence.
+
+---
+
+# PROMPT #3 — FIX HOMEPAGE POSITIONING, TITLES, META AND SEARCH INTENT
+
+Audit the homepage and all P0/P1 owner pages.
+
+Current homepage title has been observed as approximately:
+
+```text
+شركات الذكاء الاصطناعي في السعودية | حوكمة وأمان AI | | BAI
+```
+
+The duplicated separator:
+
+```text
+| |
+```
+
+must be fixed.
+
+But do NOT simply replace it with another keyword-stuffed title.
+
+## Homepage mission
+
+Determine the actual homepage search intent from product truth.
+
+BrightAI should clearly communicate its real positioning around areas such as:
+
+```text
+AI governance
+AI safety
+AI security controls
+enterprise AI oversight
+Saudi regulatory readiness
+PDPL
+NCA
+SDAIA
+human approval
+audit evidence
+```
+
+Only claim capabilities actually implemented/documented.
+
+## Evaluate
+
+Determine whether:
+
+```text
+شركات الذكاء الاصطناعي في السعودية
+```
+
+should truly be owned by `/`.
+
+The keyword dataset proposes `/` but also references:
+
+```text
+/blog/best-ai-companies-saudi-2026/
+```
+
+as an alternative.
+
+Use business fit and SERP intent to make the final decision.
+
+If the query primarily expects a list/comparison of Saudi AI companies, do NOT make it the homepage's primary intent.
+
+## Audit every P0/P1 owner
+
+Improve where necessary:
+
+```text
+<title>
+meta description
+H1
+opening paragraph
+heading hierarchy
+search intent satisfaction
+CTA alignment
+brand consistency
+Arabic wording
+English wording where applicable
+```
+
+Avoid:
+
+```text
+titles written only for bots
+awkward keyword repetition
+mixed Arabic/English without reason
+duplicate titles
+multiple primary intents
+claims not supported by BrightAI
+```
+
+Arabic content should read naturally to a Saudi professional audience.
+
+Do not turn it into exaggerated marketing slang.
+
+## Produce
+
+```text
+08-METADATA-BEFORE-AFTER.csv
+```
+
+containing:
+
+```text
+URL
+old title
+new title
+old meta
+new meta
+primary intent
+primary keyword
+reason
+character counts
+```
+
+Run regression tests for duplicate titles and descriptions.
+
+---
+
+# PROMPT #4 — REPAIR STRUCTURED DATA, IMAGE SEO AND TECHNICAL HYGIENE
+
+Technical SEO is already relatively healthy.
+
+Do NOT refactor working infrastructure for cosmetic reasons.
+
+Fix verified defects.
+
+## Structured data
+
+Audit centralized Schema/JSON-LD generation.
+
+Known observed problems include instances where:
+
+```text
+Organization.name missing
+Organization.logo missing
+Article.image missing
+```
+
+Find the root shared component/helper causing repeated errors.
+
+Fix the generator once where possible rather than patching dozens of pages individually.
+
+## Rules
+
+Every schema type must correspond to visible/real page content.
+
+Remove schema types that are not justified.
+
+Do not include a huge schema graph merely to maximize schema count.
+
+Review use of:
+
+```text
+Organization
+LocalBusiness
+ProfessionalService
+Article
+BlogPosting
+FAQPage
+Person
+Service
+Offer
+SpeakableSpecification
+BreadcrumbList
+WebSite
+WebPage
+```
+
+Particularly verify whether `LocalBusiness` and geographic schemas are actually justified for each page.
+
+Do not invent:
+
+```text
+offices
+addresses
+opening hours
+authors
+credentials
+ratings
+reviews
+certifications
+```
+
+## Image SEO
+
+A recurring pattern was observed where approximately three shared images on many pages lack alt attributes.
+
+Locate the common source.
+
+For every image:
+
+* meaningful content image → useful descriptive alt;
+* decorative image → `alt=""`;
+* icon already explained by adjacent text → normally decorative;
+* never insert keywords into unrelated alt text.
+
+## Other checks
+
+Verify:
+
+```text
+canonical
+hreflang
+favicon
+viewport
+robots directives
+Open Graph
+Twitter metadata
+language attributes
+trailing-slash consistency
+```
+
+## Verification
+
+Run:
+
+```text
+npm/pnpm build
+existing tests
+SEO QA scripts
+structured-data validators available locally
+link checks
+```
+
+Create:
+
+```text
+09-TECHNICAL-SEO-FIXES.md
+```
+
+with exact files changed and verification evidence.
+
+---
+
+# PROMPT #5 — REBUILD INTERNAL LINKING AROUND TOPICAL AUTHORITY
+
+Current pages can contain 130–180+ internal links.
+
+A large number of links is not itself an SEO strategy.
+
+Rebuild internal linking so PageRank and topical relevance flow deliberately.
+
+## Establish hierarchy
+
+Create topic architecture similar to:
+
+```text
+PILLAR / HUB
+    ↓
+CLUSTER GUIDE
+    ↓
+SUPPORTING ARTICLE
+    ↓
+COMMERCIAL SOLUTION
+    ↓
+DEMO / CONTACT when relevant
+```
+
+Core clusters should include only topics supported by actual BrightAI positioning:
+
+```text
+AI Governance
+AI Risk
+PDPL + AI
+NCA + AI
+SDAIA
+AI Security / AI Firewall
+Human Approval
+Audit Trail / Evidence
+sector-specific governance
+```
+
+## Rules
+
+A supporting article should strongly link upward to its owner/pillar.
+
+Pillar pages should link to the most valuable cluster pages.
+
+Commercial pages should receive contextual links from relevant informational content.
+
+Do NOT inject identical keyword-rich blocks into every page.
+
+Do NOT create sitewide exact-match anchors.
+
+Use varied natural anchors.
+
+Reduce irrelevant boilerplate link density where safe.
+
+Do not remove navigation required for UX.
+
+## Owner-page protection
+
+If:
+
+```text
+/hub/ai-governance/
+```
+
+owns the informational AI Governance topic, supporting content should reinforce it rather than compete with it.
+
+If:
+
+```text
+/solutions/ai-governance-platform/
+```
+
+owns commercial product intent, route commercial-intent links toward it.
+
+Apply the same structure to PDPL, risk and security clusters.
+
+## Create
+
+```text
+10-INTERNAL-LINK-GRAPH.csv
+11-TOPICAL-AUTHORITY-MAP.md
+```
+
+Include:
+
+```text
+source URL
+target URL
+anchor
+cluster
+link purpose
+old/new
+```
+
+Verify all added links return HTTP 200 or an intentional final canonical target.
+
+---
+
+# PROMPT #6 — UPGRADE ONLY THE P0/P1 CONTENT THAT DESERVES TO RANK
+
+Do NOT bulk-generate new articles.
+
+Improve the strongest existing owner pages first.
+
+Use:
+
+```text
+BRIGHTAI-KEYWORDS-MERGED-2026-09-08(1).csv
+```
+
+plus current SERP/GSC evidence where available.
+
+## Prioritization formula
+
+Favor pages with a combination of:
+
+```text
+P0/P1
+high business relevance
+real Saudi search volume
+low/moderate difficulty
+existing impressions
+strong product fit
+clear intent
+commercial pathway
+```
+
+## For every selected owner page
+
+Analyze the top-ranking Saudi SERP results where current web access exists.
+
+Determine:
+
+```text
+what intent Google rewards
+missing entities
+missing questions
+missing practical examples
+missing official-source references
+missing comparison tables
+missing definitions
+missing implementation steps
+missing regulatory context
+```
+
+Then improve the existing page.
+
+## Content quality requirements
+
+Content must provide original utility, not just additional word count.
+
+Favor assets such as:
+
+```text
+decision frameworks
+checklists
+implementation sequences
+risk matrices
+control mappings
+examples
+comparison tables
+templates
+downloadable resources when genuinely useful
+definitions backed by authoritative sources
+```
+
+For regulatory material prioritize primary sources such as the relevant Saudi authorities and official standards documentation.
+
+Do not state BrightAI is officially approved/certified/endorsed unless evidence exists.
+
+## Answer pages
+
+Review thin `/answer/**` pages.
+
+Where an answer page duplicates the intent of a stronger hub/article:
+
+```text
+MERGE / canonicalize / redirect / noindex
+```
+
+as appropriate.
+
+Do not keep thin pages solely because they create more indexed URLs.
+
+## Content gate
+
+Do NOT increase word count unless the new content adds information gain.
+
+Record:
+
+```text
+word count before
+word count after
+intent gaps fixed
+entities added
+official references added
+internal links added
+conversion pathway
+```
+
+in:
+
+```text
+12-CONTENT-UPGRADE-LOG.csv
+```
+
+---
+
+# PROMPT #7 — FIX GA4 SEO MEASUREMENT AND CONVERSION ATTRIBUTION
+
+The current GA4 snapshot is dominated by Direct traffic and does not provide a useful conversion picture.
+
+Audit the repository's analytics implementation.
+
+Do not expose or print secrets.
+
+## Implement or verify measurement for
+
+```text
+demo_submit
+contact_submit
+lead_created
+pricing_cta_click
+whatsapp_click
+assessment_started
+assessment_completed
+newsletter_signup
+resource_download
+outbound_partner_click
+```
+
+Use consistent event naming.
+
+Prevent duplicate event firing.
+
+Do not count page refreshes as conversions.
+
+## Enrich relevant events with safe context such as
+
+```text
+page_path
+cta_location
+form_type
+content_group
+language
+```
+
+Do NOT send:
+
+```text
+email
+phone
+full name
+free-form sensitive input
+personal data
+```
+
+to GA4 event parameters.
+
+## Attribution audit
+
+Investigate why acquisition is heavily:
+
+```text
+Direct
+Unassigned
+```
+
+Verify:
+
+```text
+UTM handling
+cross-domain behavior
+referrer preservation
+redirect tracking
+www/non-www consistency
+HTTP→HTTPS
+client-side redirects
+WhatsApp redirect flow
+SPA/history behavior if applicable
+consent implementation
+```
+
+## Internal/testing traffic
+
+Create a documented method to distinguish or exclude:
+
+```text
+developer traffic
+CI/browser automation
+Playwright
+Lighthouse
+monitoring
+internal team visits
+automated QA
+```
+
+Do not silently implement unreliable user-agent filtering that could remove real users.
+
+For GA4 settings that cannot be configured in code, create explicit manual configuration instructions.
+
+## Funnel
+
+Define:
+
+```text
+Organic Landing
+→ Engaged Session
+→ Commercial Page
+→ CTA
+→ Lead
+```
+
+and:
+
+```text
+Informational Article
+→ Solution
+→ Pricing/Demo
+→ Lead
+```
+
+Create:
+
+```text
+13-ANALYTICS-MEASUREMENT-PLAN.md
+14-GA4-MANUAL-CONFIGURATION.md
+```
+
+and automated tests for event firing where practical.
+
+---
+
+# PROMPT #8 — AUTHORITY BUILDING AND LINK EARNING, NOT LINK SPAM
+
+BrightAI currently has extremely weak external authority relative to its content footprint.
+
+Known external-tool observations have indicated approximately:
+
+```text
+Authority ≈ 1/100
+38 backlinks
+0 dofollow
+```
+
+Re-check current data if tools are available.
+
+Do not fabricate unavailable metrics.
+
+This task has TWO parts.
+
+## Part A — Make the site link-worthy
+
+Identify 3–5 assets BrightAI can credibly own, preferably based on its strongest topics.
+
+Examples:
+
+```text
+Saudi AI Governance Controls Map
+PDPL + AI Compliance Checklist
+AI Risk Register Template
+SDAIA/NCA/PDPL regulatory map
+ISO 42001 readiness checklist
+AI Usage Policy template
+Human Approval Decision Matrix
+```
+
+Before creating anything, check for overlapping existing BrightAI assets.
+
+Prefer improving existing resources instead of creating duplicates.
+
+Create assets only if they provide unique value.
+
+Every asset needs:
+
+```text
+canonical HTML owner
+clear authorship
+last reviewed date
+primary-source citations
+useful downloadable form only when warranted
+natural internal links
+commercial pathway without making the asset an advertisement
+```
+
+## Part B — Build a legitimate backlink acquisition plan
+
+Using live web/SEO tools where available, identify relevant prospects in Saudi Arabia and the region.
+
+Focus on:
+
+```text
+AI ecosystem organizations
+technology companies
+compliance communities
+cybersecurity publications
+data-governance communities
+universities/research organizations where genuinely relevant
+conference/event ecosystems
+startup directories
+enterprise SaaS directories
+professional associations
+partners
+industry publications
+podcasts/interviews
+expert roundups
+```
+
+Evaluate prospects by:
+
+```text
+relevance
+authority
+Saudi relevance
+editorial legitimacy
+real traffic signals if available
+link type
+contact route
+asset match
+```
+
+Reject:
+
+```text
+PBNs
+paid link farms
+irrelevant directories
+sitewide links
+spam guest-post networks
+automated backlink packages
+```
+
+Do not automatically contact anyone.
+
+Create:
+
+```text
+15-LINKABLE-ASSET-PLAN.md
+16-BACKLINK-PROSPECTS.csv
+17-DIGITAL-PR-PLAN.md
+```
+
+Target the first milestone:
+
+```text
+10 genuinely relevant referring domains
+with editorially earned links
+```
+
+Quality is more important than raw backlink count.
+
+---
+
+# PROMPT #9 — FINAL SEO VERIFICATION AND 90-DAY EXECUTION GATES
+
+Perform a complete post-remediation audit.
+
+Do not claim success based only on a green build.
+
+Compare BEFORE vs AFTER.
+
+## Re-run
+
+```text
+build
+tests
+crawl
+indexability validation
+sitemap audit
+robots validation
+canonical checks
+hreflang checks
+structured data checks
+internal links
+redirect checks
+metadata duplicate checks
+image alt checks
+analytics event tests
+```
+
+If integrations are available, also retrieve the newest:
+
+```text
+GSC
+Ubersuggest
+SE Ranking
+Semrush
+Ahrefs
+```
+
+Do not fail the audit merely because an external subscription has insufficient API credits.
+
+Record that limitation.
+
+## Verify these structural outcomes
+
+Target:
+
+```text
+0 broken internal links
+0 redirect loops
+0 unintended noindex owner pages
+0 duplicate PRIMARY_OWNER assignments for the same intent
+0 important redirected URLs left in sitemap
+0 known malformed Organization schema
+0 known missing Article.image where Article schema requires it
+0 keyword stuffing introduced
+0 fake compliance or certification claims
+```
+
+## Establish 30 / 60 / 90 day KPIs
+
+Do not promise rankings.
+
+Use measurable targets.
+
+### 30 days
+
+Monitor:
+
+```text
+number of sitemap URLs receiving impressions
+P0/P1 owner-page impressions
+non-branded query count
+crawl/indexation state
+average owner-page position
+organic landing sessions
+```
+
+### 60 days
+
+Monitor:
+
+```text
+keywords entering Top 50
+keywords entering Top 20
+organic clicks
+Saudi organic users
+commercial-page assisted conversions
+new quality referring domains
+```
+
+### 90 days
+
+Monitor:
+
+```text
+Top 10 P0/P1 keywords
+organic leads
+organic conversion rate
+topic-level share of visibility
+earned referring domains
+brand-query growth
+```
+
+## Important diagnostic rule
+
+Do not use sitewide average position alone.
+
+Track performance by:
+
+```text
+keyword
+intent
+owner URL
+cluster
+country
+device
+```
+
+## Create final artifacts
+
+```text
+18-FINAL-SEO-AUDIT.md
+19-SEO-KPI-BASELINE.csv
+20-30-60-90-DAY-ROADMAP.md
+21-REMAINING-RISKS.md
+```
+
+The final report must explicitly distinguish:
+
+```text
+FIXED
+IMPROVED
+REQUIRES_GOOGLE_RECRAWL
+REQUIRES_EXTERNAL_AUTHORITY
+REQUIRES_MORE_DATA
+NOT_ACTIONABLE_IN_CODE
+```
+
+Never label external ranking or authority problems as "fixed" merely because local code changed.
+
+End with the 10 highest-impact remaining actions ranked by:
+
+```text
+Impact × Confidence ÷ Effort
+```

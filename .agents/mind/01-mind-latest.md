@@ -1,3 +1,69 @@
+## [2026-09-10] — تقليص السطح القابل للفهرسة (consolidation: sitemap 274→264)
+
+### تم التنفيذ
+- فحصت كل عناقيد التداخل (حوكمة AI وPDPL وNCA ECC وSDAIA وSAMA وISO وFirewall والمخاطر وحوكمة البيانات + hub/blog/answer/docs/solutions/lp/city/category) صفحة بصفحة: كلها KEEP متمايز (تجاري vs تعليمي vs أداة vs حملة) — صفر دمج بدون دليل GSC.
+- أخرجت 10 utility من sitemap على مستوى المولد فقط (`500/offline/kernel/offline/thank-you/go/whatsapp/design×5`) مع بقاء `index, follow` في HTML بقرار المالك؛ `robots.txt` و`redirects.json` بدون تغيير.
+- أصلحت 4 مخالفات hreflang المسجلة مسبقًا (`/500/` + `/go/whatsapp/`: self ar-SA وx-default) + special-case `/500.html` في الفاحص.
+- أصلحت orphan الوحيد (`tools/ai-governance-controls`) برابط سياقي واحد من ركيزة الحوكمة.
+- حدّثت `03` (أعمدة resolution لكل 13 مجموعة) و`04` (274 صفًا: 229 KEEP و35 IMPROVE و10 REMOVE_FROM_SITEMAP) وأنشأت `06-CONSOLIDATION-CHANGELOG.md`.
+
+### الملفات المتأثرة
+- `scripts/generate-sitemap-all-pages.mjs` (استبعاد utility من groupRelPath)
+- `src/pages/go/whatsapp.astro` و`public/500.html` (hreflang ذاتي فقط)
+- `scripts/hreflang-bidirectional-audit.mjs` (special-case `/500.html`)
+- `src/components/hub/AiGovernancePillar.astro` (رابط واحد للأداة)
+- `audit/seo-recovery/00..06` (توليد + overlay + سجل الدمج)
+- `public/sitemap.xml` و`sitemap.xml` (264 loc)
+
+### التحقق
+- `pnpm build` ✅ exit 0 — sitemap 264 وصفر utility داخلها
+- `seo:gate` ✅ 0/0 (49,234 مرجعًا) + `hreflang` ✅ 0 (كانت 4 مسبقة) + `schema` ✅ 64 + `speakable` ✅ 268
+- `redirects:check` ✅ (صفر chains/cycles) + `internal-links` ✅ (0 orphans بعد الإصلاح، depth ≤3)
+- `check-word-count` ✅ 4/4 + `pnpm test` ✅ 38/38
+- canonicals ذاتية ✅ ومالكو PRIMARY كلهم indexable ✅
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** السطح القابل للفهرسة صار 264 canonical فقط، وكل التداخلات محسومة KEEP موثق، وكل البوابات خضرا.
+
+### ملاحظات / مشاكل مفتوحة
+- `MASTER-BASELINE-AUDIT.md` فيها تعديل ضخم من جلسة موازية — ليست من هذه المهمة ولم تُلمس.
+- `docs/nca-ecc-ai-governance` (630w) تحتاج IMPROVE تحريري لاحقًا؛ والـ 24 VALIDATE تنتظر GSC ومحتوى EN.
+- لا commit ولا push ولا deploy.
+
+## [2026-09-10] — تأسيس SEO control plane (audit/seo-recovery) بدون صفحات جديدة
+
+### تم التنفيذ
+- بنيت `scripts/generate-seo-recovery-control-plane.mjs` يولّد كل المخرجات من المصدر الفعلي (sitemap + pages + content + data + robots + redirects + CSV) بدون أي استدعاء حي.
+- جردت 274 URL من `public/sitemap.xml` (83 Astro + 97 blog + 50 docs + 15 answer + solutions/hub) مع title/H1/words تقريبية وinbound/outbound وschema وcanonical/hreflang وGSC=N/A.
+- عالجت 80 كلمة بتطبيع نية token-based (بدون `\b` العربي): PRIMARY=29 وSECONDARY=2 وREFERENCE=17 وEXCLUDED=8 وVALIDATE=24، بمالك واحد لكل نية مميزة.
+- اكتشفت 9 صفحات noindex-allowlist داخل sitemap (500 + design×5 + offline + kernel/offline + thank-you) مع hreflang — وصنفتها REMOVE_FROM_SITEMAP بدل NOINDEX.
+- أنشأت 13 مجموعة cannibalization من target/alternative في CSV + عناقيد تجارية، و274 صف خطة فهرسة، وقائمة إجراءات P0-P3 بدون MERGE/REDIRECT جديد (بلا دليل GSC).
+
+### الملفات المتأثرة
+- `scripts/generate-seo-recovery-control-plane.mjs` (جديد)
+- `audit/seo-recovery/00-BASELINE.md`
+- `audit/seo-recovery/01-URL-INVENTORY.csv` (274 صفًا)
+- `audit/seo-recovery/02-KEYWORD-OWNERSHIP.csv` (80 صفًا)
+- `audit/seo-recovery/03-CANNIBALIZATION-MATRIX.csv` (13 مجموعة)
+- `audit/seo-recovery/04-INDEXATION-PLAN.csv` (274 صفًا)
+- `audit/seo-recovery/05-SEO-ACTION-QUEUE.md`
+
+### التحقق
+- `node scripts/generate-seo-recovery-control-plane.mjs` ✅ — CONSISTENT (01==sitemap==04 بكل dispositions)
+- فحص CSV ✅ — 274/80/13/274 صفًا، وsitemap كلها YES، وGSC كلها N/A، و26 عمودًا للجرد
+- `pnpm build` لم يُشغّل: الموجة audit artifacts فقط ولم تمس صفحات أو مسارات الموقع
+- فحص يدوي ✅ — الـ 9 REMOVE_FROM_SITEMAP مثبتة بـ grep في sitemap، وصفر تداخل redirect-vs-sitemap
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** صار عند المشروع control plane مبني على أدلة وقابل لإعادة التوليد: 221 KEEP و36 IMPROVE و8 REVIEW و9 REMOVE_FROM_SITEMAP و0 MERGE/REDIRECT/NOINDEX، مع 29 مالكًا أساسيًا و8 مرفوضة و24 غامضة تحتاج تحققًا قبل الاستهداف.
+
+### ملاحظات / مشاكل مفتوحة
+- لا GSC/PSI/CrUX حية — قرارات الدمج والتوجيه النهائية مشروطة بـ 28 يومًا بعد النشر.
+- word counts من المصدر تقريبية وتحتاج تأكيد HTML مبني عبر check-word-count.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-08] — توسيع توزيع كلمات الرئيسية على أقسام متعددة
 
 ### تم التنفيذ

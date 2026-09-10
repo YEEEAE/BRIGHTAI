@@ -12,16 +12,19 @@
  *   1. EXACTLY ONE public sitemap file: `sitemap.xml`. No split files
  *      advertised in `public/robots.txt` — that file declares one
  *      Sitemap: directive only.
- *   2. ZERO noindex / redirect / status / dev / api URLs.
- *      The page-level `analyzePage()` rejects pages whose HTML
- *      contains `<meta name="robots" content="noindex">` or
- *      `<meta http-equiv="refresh">`, or whose canonical doesn't
- *      match the expected URL. `groupRelPath()` further filters
- *      `/404/`, `/api/*`, etc.
- *      SEMRUSH-UNBLOCK (2026-09-08): per user decision, /500/, /offline/,
- *      /kernel/offline/, /thank-you/, /go/whatsapp/ and /design/* are now
- *      indexable and sitemap-included; only /404/ (status artifact) and
- *      dev/api routes remain excluded.
+  *   2. ZERO noindex / redirect / status / dev / api URLs.
+  *      The page-level `analyzePage()` rejects pages whose HTML
+  *      contains `<meta name="robots" content="noindex">` or
+  *      `<meta http-equiv="refresh">`, or whose canonical doesn't
+  *      match the expected URL. `groupRelPath()` further filters
+  *      `/404/`, `/500/`, `/offline/`, `/kernel/offline/`,
+  *      `/thank-you/`, `/go/*`, `/design/*`, `/api/*`, etc.
+  *      SEO-CONSOLIDATION (2026-09-10): utility / error / redirect-hub
+  *      paths are excluded from the sitemap at the generator level
+  *      (sitemap = canonical indexable URLs only). Per owner decision
+  *      the pages themselves keep `index, follow` in their HTML —
+  *      only sitemap membership changes, nothing else.
+  *      robots.txt is left untouched (still valid).
  *   3. lastmod is derived from `git log -1 --format=%cs -- <source>`
  *      where <source> is the page's real source file under src/ (the
  *      HTML relPath is resolved to source candidates — see
@@ -405,8 +408,25 @@ function groupRelPath(relPath) {
   const normalized = relPath.toLowerCase();
 
   // Exclude list
-  // SEMRUSH-UNBLOCK (2026-09-08): /500/ is now indexable per user decision —
-  // only /404/ and /error/ status artifacts remain sitemap-excluded.
+  // SEO-CONSOLIDATION (2026-09-10): utility / error / redirect-hub paths
+  // are intentionally NOT in the sitemap (sitemap = canonical indexable
+  // URLs only). Per owner decision the pages keep `index, follow` in
+  // their HTML — this filter only controls sitemap membership.
+  if (
+    normalized === "500.html" ||
+    normalized === "500/index.html" ||
+    normalized === "offline.html" ||
+    normalized === "offline/index.html" ||
+    normalized === "kernel/offline.html" ||
+    normalized === "kernel/offline/index.html" ||
+    normalized === "thank-you.html" ||
+    normalized === "thank-you/index.html" ||
+    normalized.startsWith("go/") ||
+    normalized.startsWith("design/")
+  ) {
+    return null;
+  }
+  // Status artifacts stay excluded.
   if (normalized.includes("404.html") || normalized.includes("error.html")) {
     return null;
   }
@@ -488,18 +508,14 @@ function groupRelPath(relPath) {
        normalized === "kernel/scorers/index.html" ||
        normalized === "kernel/eval.html" ||
        normalized === "kernel/eval/index.html" ||
-       // BAI-SEO-004 (2026-08-08): kernel/api is a real, indexable docs
-       // page (11k words, canonical + no noindex). It was silently dropped
-       // by the old root-level `/api/` exclusion — whitelist it explicitly.
-       normalized === "kernel/api.html" ||
-       normalized === "kernel/api/index.html" ||
-       // SEMRUSH-UNBLOCK (2026-09-08): /kernel/offline/ is indexable per
-       // user decision — include it in the kernel sitemap group.
-       normalized === "kernel/offline.html" ||
-       normalized === "kernel/offline/index.html"
-     ) {
-      return "kernel";
-    }
+        // BAI-SEO-004 (2026-08-08): kernel/api is a real, indexable docs
+        // page (11k words, canonical + no noindex). It was silently dropped
+        // by the old root-level `/api/` exclusion — whitelist it explicitly.
+        normalized === "kernel/api.html" ||
+        normalized === "kernel/api/index.html"
+      ) {
+       return "kernel";
+     }
     return null;
   }
 
@@ -558,16 +574,7 @@ function groupRelPath(relPath) {
     // allowlist silently excluded them from the sitemap while the pages
     // themselves stayed indexable — orphaned from discovery.
     (normalized.startsWith("tools/") && normalized.endsWith("/index.html")) ||
-    normalized === "blog/ai-governance.html" ||
-    // SEMRUSH-UNBLOCK (2026-09-08): previously blocked utility pages are now
-    // indexable per user decision and must not be orphaned from discovery.
-    normalized === "500.html" ||
-    normalized === "offline/index.html" ||
-    normalized === "offline.html" ||
-    normalized === "thank-you/index.html" ||
-    normalized === "go/whatsapp/index.html" ||
-    normalized === "go/whatsapp.html" ||
-    (normalized.startsWith("design/") && normalized.endsWith("/index.html"))
+    normalized === "blog/ai-governance.html"
   ) {
     return "pages";
   }
