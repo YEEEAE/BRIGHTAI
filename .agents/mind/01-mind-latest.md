@@ -4064,3 +4064,35 @@
 ### ملاحظات / مشاكل مفتوحة
 - route collisions القديمة في Astro ما زالت تحتاج مهمة تقنية مستقلة.
 - لا commit ولا push ولا deploy.
+## [2026-09-10] — متابعة تدقيق SEO وإصلاح بوابات المخرجات المولّدة (15)
+
+### تم التنفيذ
+- أعدت تشغيل بوابات التحقق الحالية بعد استئناف المهمة: `pnpm test` نجح 16+29+38، و`pnpm typecheck` نجح، و`pnpm lint` نجح ضمن نطاق الحزم الموجودة.
+- أكدت أن `pnpm seo:hreflang` و`pnpm redirects:check` وarchitecture acceptance للروابط نجحت؛ بقيت 0 orphan و0 broken وعمق النقر الأقصى 3.
+- أصلحت `public/500.html` بإزالة canonical ثانٍ متعارض يشير إلى `/500.html`، مع إبقاء canonical الأساسي `/500/`.
+- شغّلت `pnpm schema:solutions:sync` ثم تحققت من `pnpm schema:solutions:check`؛ drift الخاص بـ19 صفحة صار 0.
+- ثبت أن أخطاء `seo:gate` و`seo:check` الحالية ناتجة عن artifacts قديمة مولّدة داخل `dist/client` بأسماء مثل `404 2.html` و`500 2.html`، وليست مسارات مصدر أو URLs في sitemap.
+
+### الملفات المتأثرة
+- `public/500.html`
+- `.agents/mind/01-mind-latest.md`
+- `dist/client/` (مخرجات ignored قديمة؛ لم تُحذف بانتظار تأكيد)
+
+### التحقق
+- `pnpm test` ✅ — chat 16/16، CSRF 29/29، PII 38/38؛ تحذيرات `DATABASE_URL` و`GA4_API_SECRET` متوقعة.
+- `pnpm typecheck` ✅
+- `pnpm lint` ✅ ضمن الحزم الموجودة حاليًا.
+- `pnpm seo:hreflang` ✅ — 275 set، 0 أخطاء.
+- `pnpm redirects:check` ✅ — 228 redirect، 0 chains/cycles/missing.
+- `pnpm internal-links:audit` ✅ acceptance — 0 orphan، 0 broken، max depth 3؛ source audit القديم سجّل عطلين CSS داخل demos.
+- `pnpm schema:solutions:check` ✅ — 0 drift بعد المزامنة.
+- `pnpm seo:gate` ❌ — 4 أخطاء بسبب `404 2.html` و`500 2.html` القديمة داخل `dist/client`.
+- `pnpm seo:check` ❌ — نفس artifacts القديمة + canonical duplicate كان موجودًا في `public/500.html` وأُزيل من المصدر.
+
+### النتيجة
+- **الحالة:** جزئي / متوقف على موافقة تنظيف مخرجات build.
+- **مختصر:** إصلاح مصدر 500 ومزامنة FAQ اكتملتا، لكن لا يمكن إعلان بوابات SEO خضراء قبل تنظيف `dist/` المولّد ثم إعادة build والفحص؛ لم تُحذف أي مخرجات بدون تأكيد.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم تأكيد المستخدم لحذف `dist/` المولّد بالكامل أو تنظيف artifacts القديمة المحددة فقط؛ المجلد ignored لكنه يحتوي نسخًا متوازية بأسماء مسافات.
+- لا commit ولا push ولا deploy.
