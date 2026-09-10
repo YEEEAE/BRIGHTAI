@@ -70,7 +70,8 @@ const jsonLd = {
       "url": loc.canonical,
       "telephone": "+966538229013",
       "image": "https://brightai.live/assets/images/og/og-solutions.webp",
-      "priceRange": "$$$",
+      // TECH-SEO-09 (2026-09-10): no priceRange — unverified commercial garnish,
+      // consistent with the foundation + getLocalBusinessLd cleanup.
       ...(isHQ ? {
         "address": {
           "@type": "PostalAddress",

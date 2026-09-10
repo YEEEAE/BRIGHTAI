@@ -165,23 +165,35 @@ interface LocalBusinessInput {
 export function getLocalBusinessLd(input: LocalBusinessInput) {
   const { cityEn, cityAr, regionAr, geoLat, geoLng, wikidataId, href } = input;
   const canonical = `${SITE.url}${href}`;
+  // TECH-SEO-09 (2026-09-10): SAB honesty at the generator — one fix for all
+  // six city nodes. Only Riyadh is the real HQ (founder-confirmed street
+  // address), so ONLY Riyadh keeps the address block and the LocalBusiness
+  // type. The other five cities emit plain Service (like the city-page
+  // template): stamping the Riyadh street onto Jeddah/Dammam/Khobar/Mecca/
+  // Madinah nodes fabricated branch offices. priceRange / openingHours /
+  // currenciesAccepted / paymentAccepted removed everywhere: founder-
+  // confirmed for none of them and none matches visible page content.
+  const isHQ = cityEn === 'Riyadh';
   return {
     '@context': 'https://schema.org',
-    '@type': ['LocalBusiness', 'Service'],
+    '@type': isHQ ? ['LocalBusiness', 'Service'] : 'Service',
     '@id': `${canonical}#localbusiness`,
     name: `BrightAI — حوكمة AI في ${cityAr}`,
     description: `خدمات BrightAI لحوكمة وأمان الذكاء الاصطناعي في ${cityAr}، المملكة العربية السعودية. يدعم جاهزية الامتثال وفق PDPL وNCA ECC ولا يُعد استشارة قانونية.`,
     url: canonical,
     telephone: '+966538229013',
     image: `${SITE.url}/assets/images/og/og-solutions.webp`,
-    priceRange: '$$$',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'رويغب الفيحاء',
-      addressLocality: cityAr,
-      addressRegion: regionAr,
-      addressCountry: 'SA',
-    },
+    ...(isHQ
+      ? {
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'رويغب الفيحاء',
+            addressLocality: cityAr,
+            addressRegion: regionAr,
+            addressCountry: 'SA',
+          },
+        }
+      : {}),
     geo: {
       '@type': 'GeoCoordinates',
       latitude: geoLat,
@@ -203,16 +215,6 @@ export function getLocalBusinessLd(input: LocalBusinessInput) {
       },
       geoRadius: '100 km',
     },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-        opens: '08:00',
-        closes: '17:00',
-      },
-    ],
-    currenciesAccepted: 'SAR',
-    paymentAccepted: 'Cash, Credit Card, Bank Transfer',
     knowsAbout: [
       'AI Governance',
       'AI Safety',

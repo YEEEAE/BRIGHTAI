@@ -8,7 +8,7 @@ const canonical = `https://brightai.live${route}`;
 const legalContent = legal_pdpl_statement;
 const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'WebPage', name: legalContent.h1, url: canonical, inLanguage: 'ar-SA' },
-  { '@type': 'Article', headline: legalContent.h1, url: canonical, inLanguage: 'ar-SA', author: { '@type': 'Organization', name: 'BrightAI', url: 'https://brightai.live' }, datePublished: '2025-09-15', dateModified: '2026-06-29', publisher: { '@type': 'Organization', name: 'BrightAI' } },
+  { '@type': 'Article', headline: legalContent.h1, url: canonical, inLanguage: 'ar-SA', image: 'https://brightai.live/assets/images/og/brightai-og-1200x630.png', author: { '@type': 'Organization', name: 'BrightAI', url: 'https://brightai.live' }, datePublished: '2025-09-15', dateModified: '2026-06-29', publisher: { '@type': 'Organization', name: 'BrightAI' } },
   { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.live/' }, { '@type': 'ListItem', position: 2, name: legalContent.h1, item: canonical }] },
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'ar-SA' },
 ]};

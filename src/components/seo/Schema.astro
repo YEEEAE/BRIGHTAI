@@ -128,6 +128,12 @@ const website = {
 } as const;
 
 // LocalBusiness — Riyadh HQ (geo.region SA-01)
+//
+// TECH-SEO-09 (2026-09-10): identity + founder-confirmed contact only.
+// priceRange / currenciesAccepted / paymentAccepted / openingHoursSpecification
+// were removed: none of them is founder-confirmed (unlike address/phone
+// above) and none corresponds to visible page content. Single-generator
+// fix — applies to every page emitting the foundation node.
 const localBusiness = {
   '@type': ['LocalBusiness', 'ProfessionalService'],
   '@id': `${SITE.url}/#localbusiness-riyadh`,
@@ -137,7 +143,6 @@ const localBusiness = {
   url: SITE.url,
   telephone: '+966538229013',
   image: `${SITE.url}/assets/images/og/brightai-og-1200x630.png`,
-  priceRange: '$$$',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'رويغب الفيحاء',
@@ -160,16 +165,6 @@ const localBusiness = {
     { '@type': 'City', name: 'مكة المكرمة' },
     { '@type': 'City', name: 'المدينة المنورة' },
   ],
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-      opens: '08:00',
-      closes: '17:00',
-    },
-  ],
-  currenciesAccepted: 'SAR',
-  paymentAccepted: 'Cash, Credit Card, Bank Transfer',
   parentOrganization: { '@id': `${SITE.url}/#organization` },
 } as const;
 

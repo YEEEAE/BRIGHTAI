@@ -1,3 +1,31 @@
+## [2026-09-10] — إصلاح Schema والفحوص التقنية من المولدات (09)
+
+### تم التنفيذ
+- فحصت JSON-LD محليًا (274 صفحة): مشاكل Organization absنت موثقة كغير موجودة، وأكملت Article الناقص (عملاء×3 + بيان PDPL) بقيم حقيقية فقط (صورة OG + مؤلف Organization + تواريخ git) مع تأطير توضيحي لقصص العملاء.
+- أصلحت مولد `getLocalBusinessLd`: عنوان الرياض للرياض فقط، والمدن الخمس صارت Service عادي (كانت تحمل شارع الرياض = فروع مختلقة)، وحذفت حقول تجارية غير مؤكدة (ساعات/أسعار/دفع) من المولد الأساسي + about (عقدة الرياض فقط) + قالب المدن.
+- أثبت عدم وجود مشكلة alt (819 صورة كلها بـ alt) وعدم اختراع مكاتب بصفحات المدن، وأضفت OG/Twitter/favIcon لقالب الإجابات الـ15.
+- أنشأت `09-TECHNICAL-SEO-FIXES.md` (7 ملفات + أدلة التحقق).
+
+### الملفات المتأثرة
+- `src/components/seo/Schema.astro` و`src/data/schema-helpers.ts` (المولدان)
+- `src/pages/about/index.astro` و`src/pages/solutions/[sector]/[city].astro`
+- `src/pages/customers/*/index.astro` (3) و`src/pages/pdpl-statement/index.astro`
+- `src/pages/answer/[slug].astro` (وسوم المشاركة)
+- `audit/seo-recovery/09-TECHNICAL-SEO-FIXES.md` (جديد)
+
+### التحقق
+- `pnpm build` ✅ — sitemap 264 + `typecheck` ✅ صفر أخطاء
+- فاحص JSON-LD المحلي ✅ صفر مشاكل (كانت 7 + 59) + فحص alt ✅ 819/819 + فحص head ✅
+- `seo:gate` ✅ + `schema` ✅ 64 + `speakable` ✅ 268 + `hreflang` ✅ + روابط ✅ + `word-count` ✅ + `redirects` ✅ + `test` ✅ 38/38
+
+### النتيجة
+- **الحالة:** نجح
+- **مختصر:** الـ structured data صار مطابقًا للمحتوى المرئي الحقيقي بدون اختراع، بإصلاحات مولد واحدة.
+
+### ملاحظات / مشاكل مفتوحة
+- إبقاء LocalBusiness الرياض بالصفحات قرار موثق (كيان HQ واحد حقيقي) وليس عيبًا.
+- لا commit ولا push ولا deploy.
+
 ## [2026-09-10] — تدقيق الرئيسية ومالكي P0/P1 ونقل نية القائمة للمقال (08)
 
 ### تم التنفيذ

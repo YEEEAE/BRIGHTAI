@@ -104,6 +104,22 @@ import SiteBackground from '../../components/SiteBackground.astro';
     {hreflangLinks.map(({ lang, href }) => (
       <link rel="alternate" hreflang={lang} href={href} />
     ))}
+    {/* TECH-SEO-09 (2026-09-10): social/sharing tags for the 15 answer pages —
+        same identity assets as BaseLayout (logo favicon + site OG image).
+        One-template fix; no per-page edits needed. */}
+    <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/images/logo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={`${answer.question} | إجابات BrightAI`} />
+    <meta property="og:description" content={answer.answer.slice(0, 155)} />
+    <meta property="og:image" content="https://brightai.live/assets/images/og/brightai-og-1200x630.png" />
+    <meta property="og:site_name" content="BrightAI" />
+    <meta property="og:locale" content={isEnglish ? 'en_US' : 'ar_SA'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${answer.question} | إجابات BrightAI`} />
+    <meta name="twitter:description" content={answer.answer.slice(0, 155)} />
+    <meta name="twitter:image" content="https://brightai.live/assets/images/og/brightai-og-1200x630.png" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
