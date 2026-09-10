@@ -123,5 +123,6 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <li><a href="/blog/sama-banking/">SAMA والقطاع المصرفي</a></li>
 <li><a href="/solutions/ai-firewall/">AI Firewall</a></li>
 <li><a href="/solutions/ai-audit-trail/">سجل التدقيق</a></li>
+<li><a href="/docs/ai-risk-management/">دليل إدارة المخاطر للمؤسسات</a></li>
 </ul>
 </section>

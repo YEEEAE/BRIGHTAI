@@ -238,7 +238,7 @@ related: ["ai-governance-saudi-arabia","nca-ecc-ai-guide","saudi-ai-regulators-g
 
   <section class="sources" aria-labelledby="official-sources">
   <h2 id="section-15">المصادر الرسمية وآلية المراقبة</h2>
-  <p>تمت مراجعة هذه الصفحة مقابل مراجع SDAIA الرسمية المتاحة في 7 يونيو 2026. هذه الروابط محفوظة أيضًا في كتلة بيانات قابلة للقراءة آليًا داخل الصفحة لمراجعة التحديثات عند النشر.</p>
+  <p>تمت مراجعة هذه الصفحة مقابل مراجع SDAIA الرسمية المتاحة في 7 يونيو 2026. هذه الروابط محفوظة أيضًا في كتلة بيانات قابلة للقراءة آليًا داخل الصفحة لمراجعة التحديثات عند النشر. وللإطار الوطني الأعم للمخاطر، راجع <a href="/docs/sdaia-ai-risk-management-framework/">مرجع SDAIA-P145 العميق</a>.</p>
   <ul>
     <li><a href="https://sdaia.gov.sa/en/SDAIA/about/Files/GenerativeAIPublicEN.pdf" rel="noopener" target="_blank">Generative AI Guidelines - Public Version 1</a></li>
     <li><a href="https://sdaia.gov.sa/en/SDAIA/about/Files/GenAIGuidelinesForGovernmentENCompressed.pdf" rel="noopener" target="_blank">Generative AI Guidelines - Government Version 1</a></li>

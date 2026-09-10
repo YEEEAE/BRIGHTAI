@@ -273,6 +273,7 @@ export const answerNca: AnswerUnit = {
   ],
   sources: [
     { href: '/hub/compliance/', label: 'BRIGHTAI hub: Saudi AI compliance' },
+    { href: '/docs/nca-ecc-ai-controls/', label: 'BRIGHTAI docs: NCA ECC baseline controls reference' },
     { href: '/docs/nca-ecc-ai-governance/', label: 'BRIGHTAI docs: NCA ECC & AI governance' },
     { href: 'https://www.nca.gov.sa', label: 'NCA — National Cybersecurity Authority' },
   ],

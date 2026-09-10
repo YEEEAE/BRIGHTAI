@@ -157,6 +157,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <div class="actions">
 <a class="btn" href="/assessment/ai-governance-readiness/">ابدأ تقييم جاهزية حوكمة AI</a>
 <a class="btn secondary" href="/solutions/ai-governance-platform/">استكشف منصة BrightAI</a>
+<a class="btn secondary" href="/docs/sdaia-ai-risk-management-framework/">مصفوفة المخاطر ومراحلها الأربع</a>
 <a class="btn secondary" href="/contact/">تحدث مع الفريق</a>
 </div>
 </section>

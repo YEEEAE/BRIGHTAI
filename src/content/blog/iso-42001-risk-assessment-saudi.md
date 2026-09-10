@@ -177,4 +177,5 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <li><a href="/blog/iso-27001-vs-iso-42001-ai-governance/">ISO 27001 vs ISO 42001: الفرق والتكامل</a></li>
 <li><a href="/blog/sdaia-seven-principles-practical-guide/">مبادئ سدايا السبعة لأخلاقيات AI</a></li>
 <li><a href="/solutions/ai-risk-classification/">تصنيف مخاطر الذكاء الاصطناعي</a></li>
+<li><a href="/docs/ai-risk-management/">منهج إدارة المخاطر العام</a></li>
 </ul>

@@ -195,5 +195,6 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <li><a href="/solutions/ai-firewall/">AI Firewall</a></li>
 <li><a href="/solutions/ai-audit-trail/">سجل التدقيق</a></li>
 <li><a href="/privacy-policy/">سياسة الخصوصية</a></li>
+<li><a href="/docs/pdpl-ai-complete-guide/">مرجع PDPL والذكاء الاصطناعي العميق</a></li>
 </ul>
 </section>

@@ -252,3 +252,4 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 - [مكتب إدارة البيانات الوطنية: الأدوار والمتطلبات الكاملة](/blog/ndmo-roles-requirements-guide/) — البيانات وعلاقتها بالمبادئ
 - [مشهد الذكاء الاصطناعي السعودي: سدايا، هيوماين، علام، SCAI](/blog/saudi-ai-landscape-sdaia-humain-allam-scai/) — من يطبق المبادئ في السوق السعودي
 - [منصة BrightAI للحوكمة](/solutions/ai-governance-platform/) — منظومة تطبيق المبادئ السبعة
+- [دليل سدايا المختصر لإدارة المخاطر](/hub/sdaia-ai-risk-management/) — المرجع المختصر قبل التعمق

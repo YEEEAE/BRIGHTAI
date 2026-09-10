@@ -124,4 +124,5 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <li><a href="/blog/pdpl-ai-compliance-guide/">دليل امتثال PDPL للذكاء الاصطناعي</a></li>
 <li><a href="/blog/pdpl-and-ai-saudi/">PDPL والذكاء الاصطناعي في السعودية</a></li>
 <li><a href="/blog/sdaia-nca-pdpl-regulatory-map/">خريطة المتطلبات التنظيمية السعودية</a></li>
+<li><a href="/docs/pdpl-ai-complete-guide/">الدليل الكامل لحماية البيانات مع AI</a></li>
 </ul>

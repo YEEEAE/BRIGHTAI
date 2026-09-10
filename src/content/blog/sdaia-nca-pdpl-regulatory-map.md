@@ -232,6 +232,7 @@ PDPL يتقاطع مع سدايا عند مبدأ الخصوصية في إرشا
 <a class="btn" href="/solutions/government-ai-governance/">حوكمة AI للقطاع الحكومي</a>
 <a class="btn secondary" href="/solutions/ai-firewall/">جدار حماية الذكاء الاصطناعي</a>
 <a class="btn secondary" href="/solutions/ai-audit-trail/">سجل تدقيق الذكاء الاصطناعي</a>
+<a class="btn secondary" href="/docs/pdpl-ai-complete-guide/">مرجع PDPL ضمن الخريطة التنظيمية</a>
 <a class="btn secondary" href="/contact/">تحدث مع فريقنا</a>
 </div>
 </section>

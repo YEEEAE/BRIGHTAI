@@ -149,4 +149,5 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <li><a href="/blog/sdaia-seven-principles-practical-guide/">مبادئ سدايا السبعة—دليل عملي</a></li>
 <li><a href="/docs/sdaia-generative-ai-guidelines/">إرشادات سدايا للذكاء الاصطناعي التوليدي</a></li>
 <li><a href="/blog/saudi-ai-regulators-guide/">دليل الجهات التنظيمية للذكاء الاصطناعي</a></li>
+<li><a href="/docs/sdaia-ai-risk-management-framework/">الإطار العميق لإدارة مخاطر سدايا</a></li>
 </ul>

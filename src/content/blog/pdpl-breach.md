@@ -165,5 +165,6 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <li><a href="/blog/pdpl-data/">حماية البيانات وفق PDPL</a></li>
 <li><a href="/solutions/ai-firewall/">AI Firewall</a></li>
 <li><a href="/privacy-policy/">سياسة الخصوصية</a></li>
+<li><a href="/docs/pdpl-ai-complete-guide/">الدليل الكامل لحماية البيانات مع AI</a></li>
 </ul>
 </section>
