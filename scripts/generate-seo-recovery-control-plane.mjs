@@ -382,6 +382,16 @@ for (const r of rows) {
   if (!r.target_url && o.status === 'PRIMARY_OWNER') { o.status = 'VALIDATE_BEFORE_TARGETING'; o.reason = 'missing-target_url'; }
 }
 
+// Preserve the owner's 2026-09-10 decision when regenerating the control plane.
+// A vendor-comparison listicle owns this intent; the homepage supports the entity.
+if (ownership.has('شركات الذكاء الاصطناعي في السعودية')) {
+  ownership.set('شركات الذكاء الاصطناعي في السعودية', {
+    status: 'PRIMARY_OWNER',
+    owner: 'https://brightai.live/blog/best-ai-companies-saudi-2026/',
+    reason: 'moved-2026-09-10: list/comparison intent belongs to the listicle; homepage SECONDARY entity support',
+  });
+}
+
 // owner lookup by URL
 const urlToPrimary = new Map(), urlToSecondary = new Map();
 for (const r of rows) {

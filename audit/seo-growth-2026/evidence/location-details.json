@@ -1,0 +1,25 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "[\n  {\n    \"id\": 2840,\n    \"parent_id\": null,\n    \"is_country\": 1,\n    \"name\": \"United States\"\n  },\n  {\n    \"id\": 2682,\n    \"parent_id\": null,\n    \"is_country\": 1,\n    \"name\": \"Saudi Arabia\"\n  }\n]"
+    }
+  ],
+  "structuredContent": {
+    "results": [
+      {
+        "id": 2840,
+        "parent_id": null,
+        "is_country": 1,
+        "name": "United States"
+      },
+      {
+        "id": 2682,
+        "parent_id": null,
+        "is_country": 1,
+        "name": "Saudi Arabia"
+      }
+    ]
+  },
+  "isError": false
+}

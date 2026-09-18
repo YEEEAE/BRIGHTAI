@@ -1,0 +1,45 @@
+{
+  "01-SAUDI-SERP-OPPORTUNITIES.csv": {
+    "rows": 85,
+    "well_formed": true
+  },
+  "02-KEYWORD-OWNERSHIP.csv": {
+    "rows": 106,
+    "well_formed": true
+  },
+  "03-STRIKING-DISTANCE.csv": {
+    "rows": 1,
+    "well_formed": true
+  },
+  "04-INDEXATION-RECOVERY.csv": {
+    "rows": 269,
+    "well_formed": true
+  },
+  "06-CONTENT-REFRESH-QUEUE.csv": {
+    "rows": 43,
+    "well_formed": true
+  },
+  "07-INTERNAL-LINK-PLAN.csv": {
+    "rows": 57,
+    "well_formed": true
+  },
+  "08-SERP-CTR-PLAN.csv": {
+    "rows": 9,
+    "well_formed": true
+  },
+  "09-AI-PROMPT-TRACKING.csv": {
+    "rows": 72,
+    "well_formed": true
+  },
+  "prompt_panel": {
+    "total": 72,
+    "arabic": 64,
+    "english": 8,
+    "executed": 0,
+    "unique_ids": true
+  },
+  "required_artifacts": {
+    "total": 17,
+    "expected": 17
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "McpServerError: { \"error\": \"Insufficient plan\" }"
+    }
+  ],
+  "structuredContent": {
+    "error": "McpServerError: { \"error\": \"Insufficient plan\" }",
+    "error_code": "UNAVAILABLE",
+    "error_data": {
+      "type": "json_rpc_error",
+      "code": -32001,
+      "message": "{ \"error\": \"Insufficient plan\" }",
+      "data": {
+        "x-request-id": "6406cfdc77f7348bd39edca4b6d8a34e"
+      }
+    }
+  },
+  "isError": true
+}

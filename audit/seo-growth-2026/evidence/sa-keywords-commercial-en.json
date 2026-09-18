@@ -1,0 +1,28 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"suggestions\": [],\n  \"suggestionCount\": 0,\n  \"nextKey\": null,\n  \"searched_keywords\": [\n    {\n      \"keyword\": \"AI governance Saudi Arabia\",\n      \"search_intent\": null\n    },\n    {\n      \"keyword\": \"AI firewall Saudi Arabia\",\n      \"search_intent\": null\n    },\n    {\n      \"keyword\": \"PDPL AI governance platform\",\n      \"search_intent\": null\n    }\n  ]\n}"
+    }
+  ],
+  "structuredContent": {
+    "suggestions": [],
+    "suggestionCount": 0,
+    "nextKey": null,
+    "searched_keywords": [
+      {
+        "keyword": "AI governance Saudi Arabia",
+        "search_intent": null
+      },
+      {
+        "keyword": "AI firewall Saudi Arabia",
+        "search_intent": null
+      },
+      {
+        "keyword": "PDPL AI governance platform",
+        "search_intent": null
+      }
+    ]
+  },
+  "isError": false
+}

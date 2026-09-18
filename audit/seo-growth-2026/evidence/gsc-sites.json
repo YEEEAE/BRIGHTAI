@@ -1,0 +1,12 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "payment_required: Your GSC Wizard trial has ended or you have no active subscription. Subscribe at https://tool.gscwizard.com/settings/subscription to keep using the MCP tools."
+    }
+  ],
+  "structuredContent": {
+    "error_code": "INVALID_ARGUMENT"
+  },
+  "isError": true
+}

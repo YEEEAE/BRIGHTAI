@@ -493,6 +493,22 @@ function readStoredAttribution(): AnalyticsPayload {
   } catch { return {}; }
 }
 
+/** Recognize citation assistants by hostname only; never retain a conversation URL. */
+export function classifyAiReferrer(referrer: string): string | undefined {
+  try {
+    const hostname = new URL(referrer).hostname.toLowerCase();
+    const assistants = {
+      'chatgpt.com': 'chatgpt', 'chat.openai.com': 'chatgpt',
+      'perplexity.ai': 'perplexity', 'gemini.google.com': 'gemini',
+      'copilot.microsoft.com': 'copilot', 'claude.ai': 'claude',
+    };
+    for (const [domain, assistant] of Object.entries(assistants)) {
+      if (hostname === domain || hostname.endsWith('.' + domain)) return assistant;
+    }
+  } catch { /* Missing or invalid referrer is not an AI visit. */ }
+  return undefined;
+}
+
 function captureAttribution(w: { location: Location }): AnalyticsPayload {
   const params = new URLSearchParams(w.location.search);
   const stored = readStoredAttribution();
@@ -504,8 +520,9 @@ function captureAttribution(w: { location: Location }): AnalyticsPayload {
     term: params.get('utm_term') || undefined,
   };
   const next = { ...stored, ...Object.fromEntries(Object.entries(current).filter(([, value]) => value)) };
-  if (!next.source) next.source = document.referrer ? 'referral' : 'direct';
-  if (!next.medium) next.medium = document.referrer ? 'referral' : 'none';
+  const aiSource = classifyAiReferrer(document.referrer);
+  if (!next.source) next.source = aiSource || (document.referrer ? 'referral' : 'direct');
+  if (!next.medium) next.medium = aiSource && !current.source && !stored.source ? 'ai_referral' : (document.referrer ? 'referral' : 'none');
   try { sessionStorage.setItem('brightai:analytics:attribution', JSON.stringify(next)); } catch { /* private mode */ }
   return next;
 }

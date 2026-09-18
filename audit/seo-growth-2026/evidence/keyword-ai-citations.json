@@ -1,0 +1,50 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"domain_id\": 7692,\n  \"filters\": {\n    \"timeframe\": \"30d\"\n  },\n  \"raw\": {\n    \"totalCitations\": 0,\n    \"uniqueCitations\": 0,\n    \"uniqueDomains\": 0,\n    \"totalBrands\": 0,\n    \"timestampFormat\": \"daily\",\n    \"paginationInfo\": {\n      \"hasMore\": false,\n      \"totalCount\": 0,\n      \"returnedCount\": 0,\n      \"citationsCapped\": false,\n      \"brandsCapped\": false,\n      \"capBypassed\": false,\n      \"maxCitations\": 5000,\n      \"maxBrands\": 50,\n      \"responseTrimmed\": false,\n      \"returnedDomainCount\": 0,\n      \"totalDomainCount\": 0\n    },\n    \"freshness\": {\n      \"dataUpdatedThrough\": \"2026-09-08T07:35:10.036Z\",\n      \"generatedAt\": \"2026-09-18T04:48:21.615Z\",\n      \"source\": \"computed\",\n      \"isLastGood\": false,\n      \"refreshQueued\": false\n    },\n    \"domainSummary\": {\n      \"topDomainsOverall\": [],\n      \"topDomainsByEngine\": [],\n      \"topDomainsByQuery\": [],\n      \"topDomainsByOwnBrandCitations\": [],\n      \"topDomainsByCompetitor\": []\n    },\n    \"citationsByDomain\": []\n  }\n}"
+    }
+  ],
+  "structuredContent": {
+    "domain_id": 7692,
+    "filters": {
+      "timeframe": "30d"
+    },
+    "raw": {
+      "totalCitations": 0,
+      "uniqueCitations": 0,
+      "uniqueDomains": 0,
+      "totalBrands": 0,
+      "timestampFormat": "daily",
+      "paginationInfo": {
+        "hasMore": false,
+        "totalCount": 0,
+        "returnedCount": 0,
+        "citationsCapped": false,
+        "brandsCapped": false,
+        "capBypassed": false,
+        "maxCitations": 5000,
+        "maxBrands": 50,
+        "responseTrimmed": false,
+        "returnedDomainCount": 0,
+        "totalDomainCount": 0
+      },
+      "freshness": {
+        "dataUpdatedThrough": "2026-09-08T07:35:10.036Z",
+        "generatedAt": "2026-09-18T04:48:21.615Z",
+        "source": "computed",
+        "isLastGood": false,
+        "refreshQueued": false
+      },
+      "domainSummary": {
+        "topDomainsOverall": [],
+        "topDomainsByEngine": [],
+        "topDomainsByQuery": [],
+        "topDomainsByOwnBrandCitations": [],
+        "topDomainsByCompetitor": []
+      },
+      "citationsByDomain": []
+    }
+  },
+  "isError": false
+}

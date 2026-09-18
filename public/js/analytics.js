@@ -272,6 +272,22 @@ function listProviders() {
 // Context injection (auto page_path, device, UTM, etc.)
 // ─────────────────────────────────────────────────────────────────────
 
+/** Recognize citation assistants by hostname only; never retain a conversation URL. */
+export function classifyAiReferrer(referrer) {
+  try {
+    const hostname = new URL(referrer).hostname.toLowerCase();
+    const assistants = {
+      'chatgpt.com': 'chatgpt', 'chat.openai.com': 'chatgpt',
+      'perplexity.ai': 'perplexity', 'gemini.google.com': 'gemini',
+      'copilot.microsoft.com': 'copilot', 'claude.ai': 'claude',
+    };
+    for (const [domain, assistant] of Object.entries(assistants)) {
+      if (hostname === domain || hostname.endsWith('.' + domain)) return assistant;
+    }
+  } catch { /* Missing or invalid referrer is not an AI visit. */ }
+  return undefined;
+}
+
 function buildContext(overrides) {
   overrides = overrides || {};
   const ctx = Object.assign({}, overrides);
@@ -324,8 +340,9 @@ function buildContext(overrides) {
       if (value) current[key] = value;
     });
     const attribution = Object.assign({}, stored, current);
-    if (!attribution.source) attribution.source = document.referrer ? 'referral' : 'direct';
-    if (!attribution.medium) attribution.medium = document.referrer ? 'referral' : 'none';
+    const aiSource = classifyAiReferrer(document.referrer);
+    if (!attribution.source) attribution.source = aiSource || (document.referrer ? 'referral' : 'direct');
+    if (!attribution.medium) attribution.medium = aiSource && !current.source && !stored.source ? 'ai_referral' : (document.referrer ? 'referral' : 'none');
     try { sessionStorage.setItem('brightai:analytics:attribution', JSON.stringify(attribution)); } catch (e) { /* private mode */ }
     ['source', 'medium', 'campaign', 'content', 'term'].forEach((key) => {
       if (!(key in ctx) || ctx[key] == null) ctx[key] = attribution[key] || undefined;

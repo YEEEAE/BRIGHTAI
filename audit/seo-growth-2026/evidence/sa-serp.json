@@ -1,0 +1,163 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"serpEntries\": [\n    {\n      \"url\": \"http://NODOMAIN\",\n      \"title\": null,\n      \"domain\": \"NODOMAIN\",\n      \"position\": 1,\n      \"type\": \"ai_overview\"\n    },\n    {\n      \"url\": \"http://governanceacademy.sa/ar/TrainingProgram/Details/4258\",\n      \"title\": \"حوكمة الذكاء الاصطناعي\",\n      \"domain\": \"governanceacademy.sa\",\n      \"position\": 2,\n      \"type\": \"organic\",\n      \"clicks\": 23,\n      \"domainAuthority\": 11,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://x.com/AIGA_KSA\",\n      \"title\": \"جمعية حوكمة الذكاء الاصطناعي (@AIGA_KSA) / X\",\n      \"domain\": \"x.com\",\n      \"position\": 3,\n      \"type\": \"organic\",\n      \"clicks\": 4,\n      \"domainAuthority\": 97,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://dgp.sdaia.gov.sa/\",\n      \"title\": \"منصة حوكمة البيانات الوطنية\",\n      \"domain\": \"dgp.sdaia.gov.sa\",\n      \"position\": 4,\n      \"type\": \"organic\",\n      \"clicks\": 10,\n      \"domainAuthority\": 50,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://www.rmg-sa.com/%D8%AD%D9%88%D9%83%D9%85%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9-%D9%85%D8%A7/\",\n      \"title\": \"حوكمة الذكاء الاصطناعي في السعودية | بناء استراتيجية ذكاء ...\",\n      \"domain\": \"rmg-sa.com\",\n      \"position\": 5,\n      \"type\": \"organic\",\n      \"clicks\": 3,\n      \"domainAuthority\": 56,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://NODOMAIN\",\n      \"title\": \"المزيد من النتائج الإخبارية\",\n      \"domain\": \"NODOMAIN\",\n      \"position\": 6,\n      \"type\": \"top_stories\"\n    },\n    {\n      \"url\": \"http://NODOMAIN\",\n      \"title\": null,\n      \"domain\": \"NODOMAIN\",\n      \"position\": 7,\n      \"type\": \"people_also_ask\"\n    },\n    {\n      \"url\": \"http://aiga.org.sa/?page_id=786\",\n      \"title\": \"عن الجمعية\",\n      \"domain\": \"aiga.org.sa\",\n      \"position\": 8,\n      \"type\": \"organic\",\n      \"clicks\": 1,\n      \"domainAuthority\": 1,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://vsrp.co.uk/index.php/ijfaes/ar/article/view/507\",\n      \"title\": \"دور حوكمة الذكاء الاصطناعي في تعزيز الخصوصية وبناء الثقة ...\",\n      \"domain\": \"vsrp.co.uk\",\n      \"position\": 9,\n      \"type\": \"organic\",\n      \"clicks\": 1,\n      \"domainAuthority\": 20,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://mjle.journals.ekb.eg/article_480604.html\",\n      \"title\": \"حوكمة الذكاء الاصطناعي (نظرة تحليلية في ضوء حق العمل وحق ...\",\n      \"domain\": \"mjle.journals.ekb.eg\",\n      \"position\": 10,\n      \"type\": \"organic\",\n      \"clicks\": 1,\n      \"domainAuthority\": 60,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://www.ibm.com/sa-ar/solutions/ai-governance\",\n      \"title\": \"أدوات وحلول حوكمة الذكاء الاصطناعي\",\n      \"domain\": \"ibm.com\",\n      \"position\": 11,\n      \"type\": \"organic\",\n      \"clicks\": 1,\n      \"domainAuthority\": 93,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://un.org/global-dialogue-ai-governance/ar\",\n      \"title\": \"حوار عالمي حول حوكمة الذكاء الاصطناعي\",\n      \"domain\": \"un.org\",\n      \"position\": 13,\n      \"type\": \"organic\",\n      \"clicks\": 1,\n      \"domainAuthority\": 94,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    },\n    {\n      \"url\": \"http://youtube.com/watch?v=DKXjgdmodrs\",\n      \"title\": \"الذكاء الاصطناعي في الحوكمة AI in Governance\",\n      \"domain\": \"youtube.com\",\n      \"position\": 14,\n      \"type\": \"organic\",\n      \"clicks\": 1,\n      \"domainAuthority\": 100,\n      \"facebookShares\": null,\n      \"pinterestShares\": null,\n      \"redditShares\": null\n    }\n  ],\n  \"newData\": true,\n  \"keyword\": \"حوكمة الذكاء الاصطناعي\",\n  \"updated_at\": \"2026-09-18\",\n  \"limits\": {\n    \"monthly_keyword_metrics_updates_limits\": 250,\n    \"monthly_keyword_metrics_updates_used\": 2\n  },\n  \"location\": \"Saudi Arabia\",\n  \"language\": \"Arabic\"\n}"
+    }
+  ],
+  "structuredContent": {
+    "serpEntries": [
+      {
+        "url": "http://NODOMAIN",
+        "title": null,
+        "domain": "NODOMAIN",
+        "position": 1,
+        "type": "ai_overview"
+      },
+      {
+        "url": "http://governanceacademy.sa/ar/TrainingProgram/Details/4258",
+        "title": "حوكمة الذكاء الاصطناعي",
+        "domain": "governanceacademy.sa",
+        "position": 2,
+        "type": "organic",
+        "clicks": 23,
+        "domainAuthority": 11,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://x.com/AIGA_KSA",
+        "title": "جمعية حوكمة الذكاء الاصطناعي (@AIGA_KSA) / X",
+        "domain": "x.com",
+        "position": 3,
+        "type": "organic",
+        "clicks": 4,
+        "domainAuthority": 97,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://dgp.sdaia.gov.sa/",
+        "title": "منصة حوكمة البيانات الوطنية",
+        "domain": "dgp.sdaia.gov.sa",
+        "position": 4,
+        "type": "organic",
+        "clicks": 10,
+        "domainAuthority": 50,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://www.rmg-sa.com/%D8%AD%D9%88%D9%83%D9%85%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9-%D9%85%D8%A7/",
+        "title": "حوكمة الذكاء الاصطناعي في السعودية | بناء استراتيجية ذكاء ...",
+        "domain": "rmg-sa.com",
+        "position": 5,
+        "type": "organic",
+        "clicks": 3,
+        "domainAuthority": 56,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://NODOMAIN",
+        "title": "المزيد من النتائج الإخبارية",
+        "domain": "NODOMAIN",
+        "position": 6,
+        "type": "top_stories"
+      },
+      {
+        "url": "http://NODOMAIN",
+        "title": null,
+        "domain": "NODOMAIN",
+        "position": 7,
+        "type": "people_also_ask"
+      },
+      {
+        "url": "http://aiga.org.sa/?page_id=786",
+        "title": "عن الجمعية",
+        "domain": "aiga.org.sa",
+        "position": 8,
+        "type": "organic",
+        "clicks": 1,
+        "domainAuthority": 1,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://vsrp.co.uk/index.php/ijfaes/ar/article/view/507",
+        "title": "دور حوكمة الذكاء الاصطناعي في تعزيز الخصوصية وبناء الثقة ...",
+        "domain": "vsrp.co.uk",
+        "position": 9,
+        "type": "organic",
+        "clicks": 1,
+        "domainAuthority": 20,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://mjle.journals.ekb.eg/article_480604.html",
+        "title": "حوكمة الذكاء الاصطناعي (نظرة تحليلية في ضوء حق العمل وحق ...",
+        "domain": "mjle.journals.ekb.eg",
+        "position": 10,
+        "type": "organic",
+        "clicks": 1,
+        "domainAuthority": 60,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://www.ibm.com/sa-ar/solutions/ai-governance",
+        "title": "أدوات وحلول حوكمة الذكاء الاصطناعي",
+        "domain": "ibm.com",
+        "position": 11,
+        "type": "organic",
+        "clicks": 1,
+        "domainAuthority": 93,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://un.org/global-dialogue-ai-governance/ar",
+        "title": "حوار عالمي حول حوكمة الذكاء الاصطناعي",
+        "domain": "un.org",
+        "position": 13,
+        "type": "organic",
+        "clicks": 1,
+        "domainAuthority": 94,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      },
+      {
+        "url": "http://youtube.com/watch?v=DKXjgdmodrs",
+        "title": "الذكاء الاصطناعي في الحوكمة AI in Governance",
+        "domain": "youtube.com",
+        "position": 14,
+        "type": "organic",
+        "clicks": 1,
+        "domainAuthority": 100,
+        "facebookShares": null,
+        "pinterestShares": null,
+        "redditShares": null
+      }
+    ],
+    "newData": true,
+    "keyword": "حوكمة الذكاء الاصطناعي",
+    "updated_at": "2026-09-18",
+    "limits": {
+      "monthly_keyword_metrics_updates_limits": 250,
+      "monthly_keyword_metrics_updates_used": 2
+    },
+    "location": "Saudi Arabia",
+    "language": "Arabic"
+  },
+  "isError": false
+}

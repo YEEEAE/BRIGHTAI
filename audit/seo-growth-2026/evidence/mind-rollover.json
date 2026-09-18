@@ -1,0 +1,9 @@
+{
+  "original_bytes": 388340,
+  "latest_bytes": 31288,
+  "latest_lines": 335,
+  "moved_bytes": 364342,
+  "moved_sha256": "67df1bdc191e0818a97211752e2f74eb552d49741a35266f02d2237946bc805d",
+  "archive_contains_moved_verbatim": true,
+  "retained_recent_sections": 9
+}

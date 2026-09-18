@@ -1,0 +1,15 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"domain_id\": 7692,\n  \"search_terms\": [],\n  \"count\": 0,\n  \"raw\": []\n}"
+    }
+  ],
+  "structuredContent": {
+    "domain_id": 7692,
+    "search_terms": [],
+    "count": 0,
+    "raw": []
+  },
+  "isError": false
+}

@@ -1,0 +1,89 @@
+{
+  "status": "PASS_LOCAL_NOT_RELEASED",
+  "head_at_task_start": "3a7ed77669f042450f7af25e30d878b3d858b22f",
+  "commands": [
+    {
+      "command": "pnpm build",
+      "exit_code": 0,
+      "log": "build.log",
+      "sha256": "bf3b4898d758f40be2edd286872c143866706218c4f77c1bfc3e14e238dd83ec"
+    },
+    {
+      "command": "pnpm typecheck",
+      "exit_code": 0,
+      "log": "typecheck.log",
+      "sha256": "ca103a537caaefb7d1f1b9cc2e5f9a8241a8c5cafcf9048235b0e74a5f3a74af"
+    },
+    {
+      "command": "pnpm seo:all",
+      "exit_code": 0,
+      "log": "seo-all.log",
+      "sha256": "a49daab9b45f6924c42d5d7ebc78d126749d23e694497f56263ec76bc35161ee"
+    },
+    {
+      "command": "pnpm seo:gate",
+      "exit_code": 0,
+      "log": "seo-gate.log",
+      "sha256": "64c118fc786b175469ed4972c5380464238e13ef2d41b2af5abceb893dacf14e"
+    },
+    {
+      "command": "pnpm seo:schema",
+      "exit_code": 0,
+      "log": "seo-schema.log",
+      "sha256": "aba4b468ce5199937b5924144fead29c3490c9ffcec43405c6f706e91d144ad2"
+    },
+    {
+      "command": "pnpm seo:hreflang",
+      "exit_code": 0,
+      "log": "seo-hreflang.log",
+      "sha256": "cc028258151f43d323844f5df383e7661ac2add7c975ca77482bd8b6c5449949"
+    },
+    {
+      "command": "pnpm internal-links:audit",
+      "exit_code": 0,
+      "log": "internal-links-audit.log",
+      "sha256": "03ee53fa558d81cc539dd7d41f186044bf6f691035c2382e76e8bf9af6b20d82"
+    },
+    {
+      "command": "pnpm redirects:check",
+      "exit_code": 0,
+      "log": "redirects-check.log",
+      "sha256": "cba98dab6d56bafaff2eb923e3d3d908782a1f8869189861b2ac028e03e6c759"
+    },
+    {
+      "command": "pnpm test",
+      "exit_code": 0,
+      "log": "test.log",
+      "sha256": "91c3822684dd82c54c796664a6738591ae4daae515e7570fc6a9e06f05a6c329"
+    },
+    {
+      "command": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types --test scripts/ai-referral-attribution.test.mjs scripts/analytics-measurement.test.mjs",
+      "exit_code": 0,
+      "log": "ai-referral-test.log",
+      "sha256": "7651cbcc18283597bf9f022ffc96d00c70b6bee67d9018d3ce683e7e8e1ee057"
+    },
+    {
+      "command": "pnpm performance:budget",
+      "exit_code": 0,
+      "log": "performance-budget.log",
+      "sha256": "cde741c2adb0d8460a40d0053c9f5b9b40c112b4859a22c981f34e9aa5543c23"
+    }
+  ],
+  "fresh_final_layout_checks": [
+    "build",
+    "seo-all",
+    "seo-gate",
+    "seo-schema",
+    "seo-hreflang",
+    "internal-links-audit",
+    "rendered audit"
+  ],
+  "limitations": [
+    "GSC/GA4 account access blocked",
+    "AI responses NOT_RUN",
+    "live backlink metrics NOT_VERIFIED",
+    "mobile/local browser timeout",
+    "CWV NOT_RUN",
+    "Cloudflare account NOT_VERIFIED"
+  ]
+}

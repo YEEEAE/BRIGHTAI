@@ -1,0 +1,131 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"domain_id\": 7692,\n  \"filters\": {\n    \"timeframe\": \"30d\"\n  },\n  \"raw\": {\n    \"ownBrandMetrics\": {\n      \"name\": \"brightai.live\",\n      \"aliases\": [],\n      \"visibilityScore\": 0,\n      \"sentiment\": 0,\n      \"mentions\": 0,\n      \"sources\": 0,\n      \"citations\": 0,\n      \"avgPosition\": 0,\n      \"detectionRate\": 0,\n      \"top3\": 0,\n      \"validMetricsCount\": 0,\n      \"executionsAnalyzed\": 0,\n      \"trends\": {\n        \"visibilityScore\": 0,\n        \"sentiment\": 0,\n        \"mentions\": 0,\n        \"sources\": 0,\n        \"citations\": 0,\n        \"avgPosition\": 0,\n        \"detectionRate\": 0,\n        \"top3\": 0,\n        \"executionsAnalyzed\": 0\n      },\n      \"historicalData\": {\n        \"hourly\": {\n          \"visibilityScore\": [],\n          \"sentiment\": [],\n          \"mentions\": [],\n          \"sources\": [],\n          \"citations\": [],\n          \"citationCounts\": [],\n          \"avgPosition\": [],\n          \"detectionRate\": [],\n          \"top3\": [],\n          \"executionsAnalyzed\": [],\n          \"timestamps\": [],\n          \"brandNotFound\": []\n        },\n        \"daily\": {\n          \"visibilityScore\": [],\n          \"sentiment\": [],\n          \"mentions\": [],\n          \"sources\": [],\n          \"citations\": [],\n          \"citationCounts\": [],\n          \"avgPosition\": [],\n          \"detectionRate\": [],\n          \"top3\": [],\n          \"executionsAnalyzed\": [],\n          \"timestamps\": [],\n          \"brandNotFound\": []\n        },\n        \"weekly\": {\n          \"visibilityScore\": [],\n          \"sentiment\": [],\n          \"mentions\": [],\n          \"sources\": [],\n          \"citations\": [],\n          \"citationCounts\": [],\n          \"avgPosition\": [],\n          \"detectionRate\": [],\n          \"top3\": [],\n          \"executionsAnalyzed\": [],\n          \"timestamps\": [],\n          \"brandNotFound\": []\n        },\n        \"monthly\": {\n          \"visibilityScore\": [],\n          \"sentiment\": [],\n          \"mentions\": [],\n          \"sources\": [],\n          \"citations\": [],\n          \"citationCounts\": [],\n          \"avgPosition\": [],\n          \"detectionRate\": [],\n          \"top3\": [],\n          \"executionsAnalyzed\": [],\n          \"timestamps\": [],\n          \"brandNotFound\": []\n        }\n      },\n      \"topicMetricsData\": {\n        \"hourly\": [],\n        \"daily\": [],\n        \"weekly\": [],\n        \"monthly\": []\n      },\n      \"engineMetricsData\": {\n        \"hourly\": [],\n        \"daily\": [],\n        \"weekly\": [],\n        \"monthly\": []\n      }\n    },\n    \"competitorMetrics\": [],\n    \"competitorTimeSeriesData\": {\n      \"hourly\": {\n        \"timestamps\": [],\n        \"competitors\": []\n      },\n      \"daily\": {\n        \"timestamps\": [],\n        \"competitors\": []\n      },\n      \"weekly\": {\n        \"timestamps\": [],\n        \"competitors\": []\n      },\n      \"monthly\": {\n        \"timestamps\": [],\n        \"competitors\": []\n      }\n    }\n  }\n}"
+    }
+  ],
+  "structuredContent": {
+    "domain_id": 7692,
+    "filters": {
+      "timeframe": "30d"
+    },
+    "raw": {
+      "ownBrandMetrics": {
+        "name": "brightai.live",
+        "aliases": [],
+        "visibilityScore": 0,
+        "sentiment": 0,
+        "mentions": 0,
+        "sources": 0,
+        "citations": 0,
+        "avgPosition": 0,
+        "detectionRate": 0,
+        "top3": 0,
+        "validMetricsCount": 0,
+        "executionsAnalyzed": 0,
+        "trends": {
+          "visibilityScore": 0,
+          "sentiment": 0,
+          "mentions": 0,
+          "sources": 0,
+          "citations": 0,
+          "avgPosition": 0,
+          "detectionRate": 0,
+          "top3": 0,
+          "executionsAnalyzed": 0
+        },
+        "historicalData": {
+          "hourly": {
+            "visibilityScore": [],
+            "sentiment": [],
+            "mentions": [],
+            "sources": [],
+            "citations": [],
+            "citationCounts": [],
+            "avgPosition": [],
+            "detectionRate": [],
+            "top3": [],
+            "executionsAnalyzed": [],
+            "timestamps": [],
+            "brandNotFound": []
+          },
+          "daily": {
+            "visibilityScore": [],
+            "sentiment": [],
+            "mentions": [],
+            "sources": [],
+            "citations": [],
+            "citationCounts": [],
+            "avgPosition": [],
+            "detectionRate": [],
+            "top3": [],
+            "executionsAnalyzed": [],
+            "timestamps": [],
+            "brandNotFound": []
+          },
+          "weekly": {
+            "visibilityScore": [],
+            "sentiment": [],
+            "mentions": [],
+            "sources": [],
+            "citations": [],
+            "citationCounts": [],
+            "avgPosition": [],
+            "detectionRate": [],
+            "top3": [],
+            "executionsAnalyzed": [],
+            "timestamps": [],
+            "brandNotFound": []
+          },
+          "monthly": {
+            "visibilityScore": [],
+            "sentiment": [],
+            "mentions": [],
+            "sources": [],
+            "citations": [],
+            "citationCounts": [],
+            "avgPosition": [],
+            "detectionRate": [],
+            "top3": [],
+            "executionsAnalyzed": [],
+            "timestamps": [],
+            "brandNotFound": []
+          }
+        },
+        "topicMetricsData": {
+          "hourly": [],
+          "daily": [],
+          "weekly": [],
+          "monthly": []
+        },
+        "engineMetricsData": {
+          "hourly": [],
+          "daily": [],
+          "weekly": [],
+          "monthly": []
+        }
+      },
+      "competitorMetrics": [],
+      "competitorTimeSeriesData": {
+        "hourly": {
+          "timestamps": [],
+          "competitors": []
+        },
+        "daily": {
+          "timestamps": [],
+          "competitors": []
+        },
+        "weekly": {
+          "timestamps": [],
+          "competitors": []
+        },
+        "monthly": {
+          "timestamps": [],
+          "competitors": []
+        }
+      }
+    }
+  },
+  "isError": false
+}
