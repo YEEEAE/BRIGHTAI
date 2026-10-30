@@ -499,7 +499,6 @@ function attachSubmitListener(form) {
         const leadId = body && (body.id || body.lead_id) ? String(body.id || body.lead_id) : undefined;
         leadTracker.formSubmitSuccess(formId, path, {
           durationMs,
-          leadId,
           mode: 'shipped',
         });
         // Canonical conversion events fire only after a real successful submit.

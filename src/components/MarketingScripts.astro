@@ -1,48 +1,17 @@
 ---
 /**
- * MarketingScripts.astro — Conditionally emits growth-stack tracking scripts.
+ * MarketingScripts.astro — Emits growth-stack config for consent-gated loading.
  *
- * Renders ONLY when a real ID is configured (HubSpot portal, Bing UET,
- * Mixpanel token). When IDs are empty (placeholders), nothing is emitted —
- * keeping the site clean and CSP-compliant until credentials are provided.
+ * Emits non-executable metadata only when a real ID is configured. The
+ * analytics runtime loads provider scripts after explicit consent.
  *
- * All script bodies live in external /js/*.js files (CSP-safe, no
- * unsafe-inline). IDs are passed as HTML data attributes (not governed by
- * script-src CSP).
+ * Provider IDs are passed as metadata values; they are not secrets.
  *
- * GATED: to make HubSpot / Bing / Mixpanel actually execute, public/_headers
- * CSP must allow js.hs-scripts.com, bat.bing.com, cdn.mxpnl.com. That is a
- * protected-file change requiring owner approval.
+ * Provider origins must also be allowed by CSP before scripts can execute.
  */
 import { TRACKING, hasHubSpot, hasBingUet, hasMixpanel } from '../data/marketing';
 ---
 
-{
-  hasHubSpot && (
-    <script
-      defer
-      id="hs-script-loader"
-      src={`https://js.hs-scripts.com/${TRACKING.hubspot}.js`}
-    ></script>
-  )
-}
-
-{
-  hasBingUet && (
-    <script
-      defer
-      src="/js/bing-uet.js"
-      data-uet-id={TRACKING.bingUet}
-    ></script>
-  )
-}
-
-{
-  hasMixpanel && (
-    <script
-      defer
-      src="/js/mixpanel-init.js"
-      data-token={TRACKING.mixpanel}
-    ></script>
-  )
-}
+{hasHubSpot && <meta name="brightai-hubspot-portal" content={TRACKING.hubspot} />}
+{hasBingUet && <meta name="brightai-bing-uet" content={TRACKING.bingUet} />}
+{hasMixpanel && <meta name="brightai-mixpanel-token" content={TRACKING.mixpanel} />}

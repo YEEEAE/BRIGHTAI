@@ -278,26 +278,24 @@ export const POST: APIRoute = async ({ request }) => {
   // status = DELIVERED — surface that as `shipped`.
   const mode: 'shipped' | 'queued' = enqueued.status === 'DELIVERED' ? 'shipped' : 'queued';
 
-  // 7.5. Server-side GA4 `lead_created` conversion (best-effort).
-  //      Covers the case where the client-side gtag event is lost
-  //      (adblocker, network drop after submit, tab closed). Stitches to
-  //      the same GA4 session via the _ga cookie when available; falls
-  //      back to a stable IP+UA hash (no raw PII leaves the server).
-  //      Never blocks or fails the lead — any throw is swallowed.
+  // 7.5. Server-owned GA4 reconciliation event: only a newly inserted row
+  //      and explicit client consent qualify. No lead PII is included, and
+  //      analytics failure never blocks lead persistence.
   const cookieClientId = parseClientIdFromCookie(request.headers.get('cookie'));
   const fallbackClientId = crypto
     .createHash('sha256')
     .update(`${ip}|${getUserAgentLocal(request)}`)
     .digest('hex')
     .slice(0, 16);
-  void sendServerEvent({
+  if (enqueued.created && request.headers.get('x-analytics-consent') === 'granted') void sendServerEvent({
     clientId: cookieClientId ?? fallbackClientId,
     events: [
       {
         name: 'lead_created',
         params: {
-          source: lead.source ?? 'kernel',
-          page: lead.page ?? null,
+          form_id: 'kernel_lead',
+          form_type: 'demo',
+          source: lead.source === 'kernel' ? 'kernel' : 'other',
           mode,
         },
       },

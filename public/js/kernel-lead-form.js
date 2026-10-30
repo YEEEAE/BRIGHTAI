@@ -97,11 +97,30 @@
         }
 
         function submitForm(payload) {
+          var idempotencyStorageKey = 'brightai:lead-idempotency:' + (root.dataset.formId || 'kernel-lead-form');
+          var submittedStoragePrefix = 'brightai:lead-submitted:' + (root.dataset.formId || 'kernel-lead-form') + ':';
+          var idempotencyKey;
+          try {
+            idempotencyKey = sessionStorage.getItem(idempotencyStorageKey);
+            if (!idempotencyKey) {
+              idempotencyKey = window.crypto && typeof window.crypto.randomUUID === 'function'
+                ? window.crypto.randomUUID()
+                : String(Date.now()) + '-' + Math.random().toString(36).slice(2);
+              sessionStorage.setItem(idempotencyStorageKey, idempotencyKey);
+            }
+          } catch (e) {
+            idempotencyKey = String(Date.now()) + '-' + Math.random().toString(36).slice(2);
+          }
           // CSRF-LEAD-001: double-submit cookie pattern.
           // نقرأ الـ token من الـ cookie (الـ server ضبطه عبر /api/csrf-token/).
           // لو الـ 403 رجع → refresh + retry مرة وحدة.
           function doPost(csrfToken) {
             var headers = { 'Content-Type': 'application/json' };
+            headers['Idempotency-Key'] = idempotencyKey;
+            var analytics = window.__BRIGHTAI_ANALYTICS__;
+            if (analytics && analytics.getConsent && analytics.getConsent() === 'granted') {
+              headers['X-Analytics-Consent'] = 'granted';
+            }
             if (csrfToken) headers['X-CSRF-Token'] = csrfToken;
             return fetch('/api/lead/', {
               method: 'POST',
@@ -161,7 +180,12 @@
               if (data && data.ok) {
                 showSuccess(data.message || 'تم استلام طلبك بنجاح. فريق الحوكمة سيتواصل معك خلال 24 ساعة.');
                 form.reset();
-                trackLeadSubmitted('api');
+                var wasAlreadyTracked = false;
+                try {
+                  wasAlreadyTracked = sessionStorage.getItem(submittedStoragePrefix + idempotencyKey) === '1';
+                  sessionStorage.setItem(submittedStoragePrefix + idempotencyKey, '1');
+                } catch (e) {}
+                if (!wasAlreadyTracked) trackLeadSubmitted('api');
               }
             })
             .catch(function () {
@@ -228,25 +252,28 @@
             return;
           }
 
+          var rt = window.__BRIGHTAI_ANALYTICS__;
+          if (rt && typeof rt.track === 'function') {
+            rt.track('form_submit_attempt', {
+              form_id: root.dataset.formId || 'kernel-lead-form',
+              form_type: 'demo',
+            });
+          }
+
           submitBtn.disabled = true;
           submitBtn.setAttribute('data-state', 'loading');
           submitBtn.setAttribute('aria-busy', 'true');
 
-          // KERNEL-ANALYTICS: lead_created — fires on successful
-          // capture (API 200 or wa.me fallback). Linked to aggregated scenario
-          // context (slugs), NEVER to message text or contact PII. Consent
-          // gating + dedupe are inherited from the shared runtime.
+          // KERNEL-ANALYTICS: demo_submit fires only after API acceptance.
+          // WhatsApp fallback is a handoff, not an accepted lead. Only the
+          // form identifiers are sent; the shared runtime enforces consent.
           function trackLeadSubmitted(channel) {
             var rt = window.__BRIGHTAI_ANALYTICS__;
             if (!rt || typeof rt.track !== 'function') return;
-            rt.track(rt.events.LEAD_SUBMITTED, {
+            if (channel !== 'api') return;
+            rt.track(rt.events.DEMO_SUBMIT, {
               form_id: root.dataset.formId || 'kernel-lead-form',
-              page: page,
-              channel: channel,
-              scenario_id: payload.scenario || undefined,
-              sector: payload.sector || undefined,
-              risk_band: payload.riskBand || undefined,
-              journey_stage: payload.journeyStage || undefined,
+              form_type: 'demo',
             });
           }
 

@@ -122,8 +122,8 @@ export const leadTracker = {
       duration_ms: Math.round(durationMs),
     }),
 
-  /** Canonical conversion events. Each successful form is counted once by
-    *  its form-specific event plus one lead_created event. */
+  /** Browser owns accepted form events. `lead_created` is server-owned so
+    *  it can be emitted only for a newly persisted, idempotent lead row. */
   generateLead: (
     formId: string,
     pagePath: string,
@@ -149,7 +149,6 @@ export const leadTracker = {
           ? 'contact_submit'
           : undefined;
     if (specific) track(specific, common);
-    track('lead_created', common);
   },
 };
 

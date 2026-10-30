@@ -78,23 +78,14 @@ const jsonLd = {
   ],
 };
 import SiteBackground from '../../components/SiteBackground.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
 ---
 <!DOCTYPE html>
 <html lang={isEnglish ? 'en' : 'ar'} dir={isEnglish ? 'ltr' : 'rtl'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {/* Google tag (gtag.js) — OWNER REQUEST (2026-08-28): literal Google snippet,
-        verbatim, same as BaseLayout. These standalone static pages have no
-        Layout, so without this block the /answer/* pages would carry no GA4 tag. */}
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-9LMB4PGTWJ');
-    </script>
+    <script type="module" src="/js/analytics.js"></script>
     <title>{answer.question} | إجابات BrightAI</title>
     <meta name="description" content={answer.answer.slice(0, 155)} />
     {/* SEO (2026-08-23): explicit robots matches the site-wide BaseLayout
@@ -123,6 +114,7 @@ import SiteBackground from '../../components/SiteBackground.astro';
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <CookieConsent />
     <SiteBackground />
     <main id="main-content" class="answer-page">
       {ownerCrumb && (

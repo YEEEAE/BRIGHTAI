@@ -177,6 +177,50 @@ function isDuplicate(name, payload) {
 let consent = 'unknown';
 let consentListeners = [];
 const pendingQueue = [];
+const GA4_MEASUREMENT_ID = 'G-9LMB4PGTWJ';
+let gtagLoaded = false;
+let configuredProvidersLoaded = false;
+
+function loadConfiguredProvidersAfterConsent() {
+  if (configuredProvidersLoaded || typeof document === 'undefined') return;
+  configuredProvidersLoaded = true;
+  const configs = [
+    { selector: 'meta[name="brightai-hubspot-portal"]', src: (value) => 'https://js.hs-scripts.com/' + encodeURIComponent(value) + '.js', id: 'hs-script-loader' },
+    { selector: 'meta[name="brightai-bing-uet"]', src: () => '/js/bing-uet.js', attribute: 'data-uet-id' },
+    { selector: 'meta[name="brightai-mixpanel-token"]', src: () => '/js/mixpanel-init.js', attribute: 'data-token' },
+  ];
+  for (const config of configs) {
+    const value = document.querySelector(config.selector)?.getAttribute('content');
+    if (!value) continue;
+    const script = document.createElement('script');
+    script.defer = true;
+    script.src = config.src(value);
+    if (config.id) script.id = config.id;
+    if (config.attribute) script.setAttribute(config.attribute, value);
+    document.head.appendChild(script);
+  }
+}
+
+function loadGtagAfterConsent() {
+  if (gtagLoaded || typeof window === 'undefined') return;
+  gtagLoaded = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+  window.gtag('consent', 'default', {
+    ad_storage: 'denied', analytics_storage: 'denied',
+    ad_user_data: 'denied', ad_personalization: 'denied',
+  });
+  window.gtag('consent', 'update', {
+    ad_storage: 'denied', analytics_storage: 'granted',
+    ad_user_data: 'denied', ad_personalization: 'denied',
+  });
+  window.gtag('js', new Date());
+  window.gtag('config', GA4_MEASUREMENT_ID, { anonymize_ip: true, send_page_view: false });
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_MEASUREMENT_ID;
+  document.head.appendChild(script);
+}
 
 function setConsent(next) {
   if (consent === next) return;
@@ -193,6 +237,10 @@ function setConsent(next) {
   // not exist yet if setConsent runs before gtag.js loads (dataLayer.push
   // will still queue the update for gtag.js to consume on boot).
   if (typeof window !== 'undefined') {
+    if (next === 'granted') {
+      loadGtagAfterConsent();
+      loadConfiguredProvidersAfterConsent();
+    }
     if (typeof window.gtag === 'function') {
       window.gtag('consent', 'update', {
         ad_storage: next === 'granted' ? 'granted' : 'denied',
@@ -234,7 +282,14 @@ function onConsentChange(fn) {
 function hydrateConsentFromStorage() {
   if (typeof localStorage === 'undefined') return consent;
   try {
-    const stored = localStorage.getItem('brightai:tracking_consent');
+    let stored = localStorage.getItem('brightai:tracking_consent');
+    if (stored !== 'granted' && stored !== 'denied') {
+      const legacy = localStorage.getItem('cookie-consent');
+      if (legacy === 'accepted' || legacy === 'declined') {
+        stored = legacy === 'accepted' ? 'granted' : 'denied';
+        localStorage.setItem('brightai:tracking_consent', stored);
+      }
+    }
     if (stored === 'granted' || stored === 'denied') consent = stored;
   } catch (e) { /* noop */ }
   return consent;
@@ -367,6 +422,9 @@ function sanitizeValue(v) {
   if (typeof v === 'boolean') return v;
   if (typeof v === 'string') {
     const trimmed = v.trim();
+    // UTM values are externally supplied query data. Drop obvious email/phone
+    // values before any provider receives the event.
+    if (/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i.test(trimmed) || /(?:\+?\d[\d ()-]{7,}\d)/.test(trimmed)) return null;
     if (trimmed.length > MAX_STRING) return trimmed.slice(0, MAX_STRING);
     return trimmed;
   }
@@ -374,6 +432,8 @@ function sanitizeValue(v) {
 }
 
 function track(name, payload) {
+  // lead_created is server-owned; browser code must not emit a second copy.
+  if (name === ANALYTICS_EVENTS.LEAD_CREATED) return false;
   payload = payload || {};
   let sanitized;
   try {
@@ -463,6 +523,10 @@ function installRuntime() {
     hydrateConsentFromStorage,
   };
   hydrateConsentFromStorage();
+  if (consent === 'granted') {
+    loadGtagAfterConsent();
+    loadConfiguredProvidersAfterConsent();
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -488,20 +552,11 @@ function bootOnce() {
     },
   });
 
-  // Google Analytics 4 provider (2026-08-28). gtag.js now ships as the literal
-  // Google snippet from BaseLayout (gtag-init.js retired), which already defines
-  // window.gtag/dataLayer and fires the initial page_view via gtag('config').
-  // The first page_view routed through this runtime is therefore dropped to
-  // avoid double-counting; soft-navigation page_views (ClientRouter view
-  // transitions) and every track() event pass through to GA4 normally.
-  let initialPageViewDropped = false;
+  // GA4 receives events only after explicit consent. Initial and transition
+  // page views both pass through this shared gate.
   registerProvider({
     name: 'gtag',
     fn: function (event, payload) {
-      if (event === ANALYTICS_EVENTS.PAGE_VIEW && !initialPageViewDropped) {
-        initialPageViewDropped = true;
-        return;
-      }
       if (typeof window.gtag === 'function') {
         window.gtag('event', event, payload);
       } else if (Array.isArray(window.dataLayer)) {
@@ -578,6 +633,10 @@ function installClickDelegation() {
       if (cta.matches('[data-cta]')) {
         const explicit = cta.getAttribute('data-cta');
         const href = cta.getAttribute('href') || '';
+        if (explicit === ANALYTICS_EVENTS.WHATSAPP_CLICK || /(?:wa\.me|api\.whatsapp\.com|\/go\/whatsapp\/)/i.test(href)) {
+          track(ANALYTICS_EVENTS.WHATSAPP_CLICK, basePayload);
+          return;
+        }
         const isPricing = basePayload.page_type === 'pricing' ||
                           (explicit && explicit.indexOf('pricing') === 0);
         const isAssessment = explicit === 'assessment_start' ||

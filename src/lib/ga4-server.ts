@@ -1,11 +1,8 @@
 /**
  * ga4-server.ts — GA4 Measurement Protocol (server-side) sender.
  *
- * Sends the canonical server-side `lead_created` event when the client event
- * is lost because the browser closes the tab, the network drops after
- * submit, or an adblocker blocks gtag.js. By sending the event from the
- * API route itself (src/pages/api/lead.ts), the conversion reaches GA4
- * as long as the lead enqueue succeeds — independent of the browser.
+ * Sends approved server-owned GA4 events after explicit visitor consent.
+ * Lead reconciliation is emitted by the API only for a newly inserted row.
  *
  * Contract:
  *   - BEST-EFFORT. Any throw is swallowed by the caller (try/catch in
@@ -13,8 +10,7 @@
  *   - SAFE FALLBACK. If `GA4_API_SECRET` or `GA4_MEASUREMENT_SECRET` is
  *     empty/placeholder, the function logs a warning and returns — local
  *     dev works without secrets. Production must set both in Render env.
- *   - NO PII. `params` must contain only attribution fields (source,
- *     page). The caller is responsible for not passing PII; this module
+ *   - NO PII. Callers must pass only approved, non-identifying fields; this module
  *     additionally strips any key matching the PII suffix rule.
  *
  * Env vars (Render → Environment):

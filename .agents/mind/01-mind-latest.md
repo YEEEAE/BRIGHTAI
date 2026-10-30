@@ -1,5 +1,14 @@
 # Project Mind — BrightAI
 
+## [2026-10-30] — ضبط موافقة GA4 ودلالات funnel العملاء
+
+- Changed: جعلت تحميل وتهيئة GA4 وClarity وgrowth providers بعد موافقة التحليلات فقط، مع ترحيل قرار `cookie-consent` legacy في الاتجاهين وإبقاء الإسناد الخالي من البريد/الهاتف.
+- Changed: `demo_submit` و`contact_submit` أحداث قبول من المتصفح؛ `lead_created` من السيرفر عند إنشاء صف جديد ومع header موافقة فقط. أضفت `Idempotency-Key` ثابتًا عبر retry/refresh لنموذج Kernel، وأوقفت تسجيل WhatsApp fallback كتحويل.
+- Changed: أزلت تهيئة GA4 غير المشروطة من الصفحات المستقلة/الإدارية و500، وأزلت ازدواج server `chat_completed` مع حدث المتصفح.
+- Evidence: `node --check` لسكريبتات analytics وClarity وKernel form و`src/scripts/lead-form-handler.js`، و`git diff --check` PASS؛ `astro check` BLOCKED بسبب Corepack cache permission وغياب `@astrojs/check`؛ لم يُشغّل build أو suite أو تحقق GA4 حي.
+- State: PARTIAL — التغييرات محلية؛ صلاحية الحساب وDebugView وGSC تحتاج مالك الحساب.
+- Key files: `public/js/analytics.js`, `public/js/clarity-init.js`, `src/pages/api/lead.ts`, `public/js/kernel-lead-form.js`, `audit/seo-recovery/13-ANALYTICS-MEASUREMENT-PLAN.md`.
+
 ## [2026-10-30] — تقليل حفظ بيانات نماذج العملاء
 
 ### تم التنفيذ
@@ -44,9 +53,9 @@
 
 ## Analytics / AI Search
 
-- GA4 الإلزامي `G-9LMB4PGTWJ` وsnippet async غير المشروط في BaseLayout والسطوح المستقلة قرار المالك؛ لم يتغير. consent للطبقة المخصصة لا يغير هذا العقد.
+- GA4 `G-9LMB4PGTWJ` ومزودو القياس المشروطون يُحمّلون بعد موافقة `granted` عبر `public/js/analytics.js`/`clarity-init.js`؛ legacy `cookie-consent` يهاجر إلى المفتاح المعتمد. يظل الوضع الحي/DebugView غير متحقق.
 - سياق events يحفظ attribution ضمن sessionStorage وأولوية UTM، ويتعرف على chatgpt/perplexity/gemini/copilot/claude وmedium ai_referral عند غياب UTM وإسناد سابق؛ hostname فقط بلا conversation/query. source/medium event fields لا تعيد كتابة GA4 session source تلقائيًا.
-- GA4 custom/session mapping وDebugView واكتساب AI الفعلي NOT VERIFIED؛ يجب التحقق بعد نشر مفوض. click/download ليس lead؛ server-confirmed lead_created وqualification مصدر التحويل الحقيقي. PII allowlist محفوظة.
+- GA4 custom/session mapping وDebugView واكتساب AI الفعلي NOT VERIFIED؛ يجب التحقق بعد نشر مفوض. CTA/WhatsApp click وform attempt ليست lead؛ المتصفح يرسل form-specific accepted event، والسيرفر يرسل `lead_created` للصف الجديد فقط عند موافقة صريحة. لا تجمع الحدثين كتحويلين. PII allowlist محفوظة.
 - robots: search/citation/user-fetch Allow مع api exclusions؛ training Disallow. Cloudflare account/WAF/managed overrides NOT VERIFIED. لا تعكس منع التدريب بناء على نتائجHTTP تاريخية.
 - Keyword.com domain7692 موجود لكن0 prompts/0 executions؛ AI mention/citation rates=N/A،N=0. panel72prompt(64AR+8EN) فيaudit/seo-growth-2026/09؛NOT_RUN،مع بروتوكول ثابت ومقامات في10. لاAIrank مختلق.
 
@@ -65,6 +74,12 @@
 - لاlivebacklinkauthority أوAIresponsebaseline؛لاoutreachمرسل. يلزمexportGSC/GA4وinspectionومراجعةمختص وتفويضنشر ثمrecrawl لقياس الأثر.
 
 ## Recent Changes / Historical Ledger
+
+- **2026-10-30 — Analytics consent and funnel semantics**
+  - Changed: GA4 now loads after consent; browser owns accepted form events, while server `lead_created` fires once for a newly inserted row with explicit consent; Kernel retries reuse an idempotency key.
+  - Evidence: targeted syntax checks and diff hygiene PASS; Astro check BLOCKED (Corepack cache permission; local `@astrojs/check` absent); GA4 account/DebugView and deployment remain NOT VERIFIED.
+  - State: PARTIAL.
+  - Key files: `public/js/analytics.js`; `src/pages/api/lead.ts`; `audit/seo-recovery/13-ANALYTICS-MEASUREMENT-PLAN.md`.
 
 - **2026-09-18 — SEO-GROWTH-2026 / بحث سعودي وظهور AI**
   - Changed: assistant referral recognition،مصفوفةموافقاتوقالب،حدودclaimsفيDocsLayout،تصحيحCANN-02ومولده،17مخرجaudit و72prompt ثابتة.

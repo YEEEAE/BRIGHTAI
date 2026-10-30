@@ -10,18 +10,14 @@
  * (fallback: setTimeout 3000ms) so the ~20KB clarity.ms payload never
  * competes with the LCP element or blocks the main thread at load time.
  *
- * Behavior contract (preserved from prior version):
+ * Behavior contract:
  *   1. Skip silently if no Clarity ID is configured (placeholder or empty).
- *   2. Set up window.clarity queue function immediately so calls before the
- *      tag loads are queued (matches Clarity's published install pattern).
- *   3. Load https://www.clarity.ms/tag/<id> lazily via requestIdleCallback
- *      (fallback: setTimeout 3000ms).
- *   4. Register as a provider with the unified analytics runtime
- *      (window.__BRIGHTAI_ANALYTICS__.registerProvider) so all events
- *      flow through the unified layer.
+ *   2. Register with the unified analytics runtime and wait for explicit
+ *      consent before creating the queue or loading Clarity.
+ *   3. Load https://www.clarity.ms/tag/<id> lazily after consent.
  *
- * No tracking data is lost — the initial window.clarity() queue captures
- * everything before the tag loads and replays it once the script arrives.
+ * The event queue contains only events generated after consent; it replays
+ * those events once the tag arrives.
  */
 (function () {
   'use strict';
@@ -36,15 +32,10 @@
   }
   if (!id) return; // no Clarity ID configured — skip silently
 
-  // 1. Set up the Clarity queue function immediately (matches the standard
-  //    c/l/a/r/i/t/y pattern — window.clarity captures calls before the tag
-  //    loads and replays them once the script arrives).
-  window.clarity = window.clarity || function () {
-    (window.clarity.q = window.clarity.q || []).push(arguments);
-  };
+  var clarityScheduled = false;
 
-  // 2. Register as a provider with the unified analytics runtime. Safe to
-  //    call before the runtime is installed — we poll every 20ms up to 1s.
+  // Register with the unified analytics runtime. It may load after this
+  // deferred bootstrap, so retry briefly while noncritical modules start.
   function registerClarityProvider() {
     var rt = window.__BRIGHTAI_ANALYTICS__;
     if (!rt) return false;
@@ -56,17 +47,36 @@
         }
       },
     });
+    if (typeof rt.onConsentChange === 'function') {
+      rt.onConsentChange(function (state) {
+        if (state === 'granted') scheduleClarity();
+      });
+    }
+    if (typeof rt.getConsent === 'function' && rt.getConsent() === 'granted') scheduleClarity();
     return true;
   }
   if (!registerClarityProvider()) {
     var attempts = 0;
     var iv = setInterval(function () {
-      if (registerClarityProvider() || ++attempts > 50) clearInterval(iv);
-    }, 20);
+      if (registerClarityProvider() || ++attempts > 300) clearInterval(iv);
+    }, 200);
   }
 
-  // 3. Load the Clarity tag lazily — never competes with the LCP element.
+  // Load Clarity only after consent; retain the existing idle-load behavior.
+  function scheduleClarity() {
+    if (clarityScheduled) return;
+    clarityScheduled = true;
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadClarity, { timeout: 4000 });
+    } else {
+      setTimeout(loadClarity, 3000);
+    }
+  }
+
   function loadClarity() {
+    window.clarity = window.clarity || function () {
+      (window.clarity.q = window.clarity.q || []).push(arguments);
+    };
     (function (c, l, a, r, i, t, y) {
       c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
       t = l.createElement(r);
@@ -75,11 +85,6 @@
       y = l.getElementsByTagName(r)[0];
       y.parentNode.insertBefore(t, y);
     })(window, document, 'clarity', 'script', id);
-  }
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(loadClarity, { timeout: 4000 });
-  } else {
-    setTimeout(loadClarity, 3000);
   }
   /* eslint-enable */
 })();

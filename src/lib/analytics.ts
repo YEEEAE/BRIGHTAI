@@ -586,6 +586,9 @@ function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
  * consent-blocked (callers can ignore — the return is for tests).
  */
 export function track(name: AnalyticsEventName | LeadEventName | string, payload: AnalyticsPayload = {}): boolean {
+  // Durable lead creation is server-owned; browser code reports the
+  // form-specific accepted event and must not duplicate `lead_created`.
+  if (name === ANALYTICS_EVENTS.LEAD_CREATED) return false;
   let sanitized: AnalyticsPayload;
   try {
     sanitized = {};

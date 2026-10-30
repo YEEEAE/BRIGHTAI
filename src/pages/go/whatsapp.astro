@@ -28,23 +28,14 @@
  * - Zero inline JS (strict CSP): redirect logic lives in /js/go-whatsapp.js.
  */
 const canonical = 'https://brightai.live/go/whatsapp/';
+import CookieConsent from '../../components/CookieConsent.astro';
 ---
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {/* Google tag (gtag.js) — OWNER REQUEST (2026-08-28): literal Google snippet,
-        verbatim, same as BaseLayout. This standalone static page has no
-        Layout, so without this block /go/whatsapp/ would carry no GA4 tag. */}
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-9LMB4PGTWJ');
-    </script>
+    <script type="module" src="/js/analytics.js"></script>
     <title>جاري تحويلك إلى واتساب | BrightAI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>جاري تحويلك إلى واتساب | BrightAI</title>
@@ -88,6 +79,7 @@ const canonical = 'https://brightai.live/go/whatsapp/';
     </style>
   </head>
   <body>
+    <CookieConsent />
     <main>
       <h1>جاري تحويلك إلى واتساب BrightAI…</h1>
       <p>

@@ -19,8 +19,7 @@
  * protection layers.
  *
  * Design: uses the project design tokens (tokens.css) so it matches the site's
- * dark aesthetic. No Header/Footer. The Google tag is included on this
- * standalone screen per the owner's all-pages tracking requirement.
+ * dark aesthetic. No Header/Footer. Analytics are omitted from this admin utility.
  */
 const title = 'BrightAI — Quota Dashboard (admin)';
 import SiteBackground from '../../../components/SiteBackground.astro';
@@ -30,15 +29,6 @@ import SiteBackground from '../../../components/SiteBackground.astro';
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="utf-8" />
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-9LMB4PGTWJ');
-    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {/* Admin screen — never index, never follow. */}

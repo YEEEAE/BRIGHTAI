@@ -41,11 +41,14 @@
   // Migrate the legacy decision once, then show the banner only when no
   // explicit tracking decision exists.
   const legacyConsent = localStorage.getItem('cookie-consent');
-  if (!localStorage.getItem('brightai:tracking_consent') && (legacyConsent === 'accepted' || legacyConsent === 'declined')) {
+  const storedConsent = localStorage.getItem('brightai:tracking_consent');
+  if (!storedConsent && (legacyConsent === 'accepted' || legacyConsent === 'declined')) {
     localStorage.setItem('brightai:tracking_consent', legacyConsent === 'accepted' ? 'granted' : 'denied');
+  } else if ((storedConsent === 'granted' || storedConsent === 'denied') && !legacyConsent) {
+    localStorage.setItem('cookie-consent', storedConsent === 'granted' ? 'accepted' : 'declined');
   }
   const banner = document.getElementById('cookie-consent');
-  if (banner && !localStorage.getItem('cookie-consent')) {
+  if (banner && !storedConsent && !legacyConsent) {
     banner.hidden = false;
   }
 
@@ -82,9 +85,9 @@
     bottom: 0;
     inset-inline: 0;
     z-index: 900;
-    background: var(--bg-elevated);
-    border-top: 1px solid var(--border-default);
-    padding: var(--space-4) var(--space-6);
+    background: var(--bg-elevated, #141b2d);
+    border-top: 1px solid var(--border-default, #334155);
+    padding: var(--space-4, 1rem) var(--space-6, 1.5rem);
     box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
   }
 
@@ -93,7 +96,7 @@
     margin-inline: auto;
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-4, 1rem);
     align-items: center;
   }
 
@@ -105,8 +108,8 @@
   }
 
   .cookie-consent__text {
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--text-secondary, #e2e8f0);
     margin: 0;
     text-align: center;
   }
@@ -116,7 +119,7 @@
   }
 
   .cookie-consent__link {
-    color: var(--interactive-primary);
+    color: var(--interactive-primary, #67e8f9);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
@@ -125,13 +128,13 @@
 
   .cookie-consent__actions {
     display: flex;
-    gap: var(--space-3);
+    gap: var(--space-3, 0.75rem);
     flex-shrink: 0;
   }
 
   .cookie-consent__btn {
-    font-size: var(--text-sm);
-    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm, 0.875rem);
+    padding: var(--space-2, 0.5rem) var(--space-4, 1rem);
     min-height: 44px;
   }
 </style>

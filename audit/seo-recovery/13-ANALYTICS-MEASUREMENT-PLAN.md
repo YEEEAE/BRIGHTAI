@@ -15,9 +15,9 @@
 
 | Event | When it fires | Required context | GA4 key event? |
 |---|---|---|---|
-| `demo_submit` | A valid demo/kernel lead is accepted | `form_id`, `form_type`, `page_path`, attribution | Yes |
-| `contact_submit` | A valid contact lead is accepted | `form_id`, `form_type`, `page_path`, attribution | Yes |
-| `lead_created` | Server/client lead creation confirmation | `form_id`, `form_type`, `page_path`, attribution | Yes, secondary dedupe/audit event |
+| `demo_submit` | Browser: the lead API returns an accepted response for a valid demo/kernel lead | `form_id`, `form_type`, `page_path`, safe attribution | Yes |
+| `contact_submit` | Browser: the configured contact form provider confirms successful acceptance | `form_id`, `form_type`, `page_path`, safe attribution | Yes |
+| `lead_created` | Server: a new durable lead row was created; emitted only with explicit analytics consent | `form_id`, `form_type`, safe source, mode | Reconciliation only; never add to form-specific key events |
 | `pricing_cta_click` | Pricing CTA click | `cta_location`, `cta_target`, `page_path` | No |
 | `whatsapp_click` | WhatsApp CTA click | `cta_location`, `cta_target`, `page_path` | No |
 | `assessment_started` | First answer interaction | `step`, `page_path`, `content_group` | No |
@@ -32,7 +32,7 @@ Legacy source names (`generate_lead`, `lead_submitted`, `lead_started`, `lead_co
 
 Allowed parameters are intentionally small: `page_path`, `page_type`, `content_group`, `form_id`, `form_type`, `cta_location`, `cta_label`, `cta_target`, `source`, `medium`, `campaign`, `content`, `term`, `referrer`, `language`, `step`, `duration_ms`, `mode`, `resource_type`, and `outbound_domain`.
 
-Never send names, email addresses, phone numbers, free-text form answers, company names, raw URLs containing query values, or unapproved payload keys. The client allowlists and sanitizes event properties before provider dispatch.
+Never send names, email addresses, phone numbers, free-text form answers, company names, raw URLs containing query values, or unapproved payload keys. The client allowlists and sanitizes event properties before provider dispatch. Browser CTA clicks and form attempts are behavior, not accepted leads. WhatsApp click/fallback is a handoff only.
 
 ## 4. Attribution rules
 
@@ -47,15 +47,16 @@ Never send names, email addresses, phone numbers, free-text form answers, compan
 
 - Default state is `unknown`; no analytics provider receives events until `granted`.
 - `denied` clears queued events and remains denied for the session/storage value.
-- Server-side `lead_created` is best-effort and must not block lead creation.
-- A successful form conversion is emitted once per valid submission; honeypot submissions never emit a conversion.
+- Server-side `lead_created` is best-effort, requires `X-Analytics-Consent: granted`, and is emitted only when the queue inserts a new idempotency key. It must not block lead creation.
+- Browser owns `demo_submit`/`contact_submit`; server owns `lead_created`. They are separate funnel stages, not duplicate conversions. The Kernel API idempotency key persists across retry/refresh.
+- A successful form conversion is emitted once per accepted submission; honeypot submissions never emit a conversion.
 - GA4 key-event reporting should use the specific form event for funnel reporting and `lead_created` for server/client reconciliation, not add both to a revenue total.
 
 ## 6. GA4 reports and explorations
 
 Create these saved views after manual setup:
 
-1. **Commercial funnel:** `pricing_cta_click` → `contact_submit`/`demo_submit` → `lead_created`.
+1. **Commercial funnel:** `pricing_cta_click` → `contact_submit`/`demo_submit`; use `lead_created` only as a separate server reconciliation stage.
 2. **Assessment funnel:** `assessment_started` → `assessment_step_progress` → `assessment_completed`.
 3. **Acquisition:** sessions and key events by `source / medium / campaign` and landing `page_path`.
 4. **Content assist:** `resource_download`, `outbound_partner_click`, and newsletter signups by `content_group`.
