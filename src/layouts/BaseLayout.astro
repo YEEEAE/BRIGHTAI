@@ -1,6 +1,7 @@
 ---
 import '../styles/variables.css';
 import '../styles/site.css';
+import { brand } from '../data/brand';
 interface Props {
   title: string;
   description: string;
@@ -13,7 +14,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'BRIGHTAI',
   url: 'https://brightai.live',
-  logo: 'https://brightai.live/images/brightai-logo.svg',
+  logo: new URL(brand.logo, 'https://brightai.live').href,
   address: {
     '@type': 'PostalAddress',
     addressCountry: 'SA',
@@ -43,16 +44,23 @@ const websiteSchema = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href={brand.favicon} />
+    <link rel="apple-touch-icon" sizes="180x180" href={brand.touchIcon} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ar_SA" />
     <meta property="og:site_name" content="BRIGHTAI" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(brand.logo, 'https://brightai.live').href} />
+    <meta property="og:image:width" content={String(brand.width)} />
+    <meta property="og:image:height" content={String(brand.height)} />
+    <meta property="og:image:alt" content={brand.alt} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(brand.logo, 'https://brightai.live').href} />
+    <meta name="twitter:image:alt" content={brand.alt} />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />

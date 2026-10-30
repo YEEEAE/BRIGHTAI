@@ -1,5 +1,30 @@
 # Project Mind — BrightAI
 
+## [2026-10-30] — اعتماد شعار BRIGHTAI المرفق كهوية وحيدة
+
+### تم التنفيذ
+- اعتمدت صورة المستخدم ذات الدرع الأزرق واسم BRIGHTAI كشعار وحيد؛ حفظت الأصل في `public/images/brightai-logo.png` مطابقاً بايتياً للمرفق.
+- جهزت نسخة WebP بعرض 768px (~70KB) وأيقونتي PNG بمقاسي 192 و180px، بتحجيم الصورة كاملة دون قص أو تغيير ألوان أو إعادة رسم؛ الأيقونات مربعة بحواف سوداء.
+- أنشأت `src/data/brand.ts` كمصدر موحد للمسارات ومكوّن `BrandLogo.astro` للهيدر والفوتر، وطبّقتهما على الصفحات الست.
+- حدّثت favicon وApple touch icon وOrganization.logo وOpen Graph وTwitter لاستخدام نفس الهوية.
+- حذفت `public/favicon.svg` و`public/images/brightai-logo.svg` وأزلت الشعار المثلث والنص البديل القديم في الهيدر والفوتر بناءً على طلب المستخدم الصريح بإزالة الشعارات الأخرى.
+
+### الملفات المتأثرة
+- `src/data/brand.ts`، `src/components/{BrandLogo,Header,Footer}.astro`، `src/layouts/BaseLayout.astro`
+- `public/images/brightai-logo.{png,webp}`، `public/favicon.png`، `public/apple-touch-icon.png`
+- حذف: `public/favicon.svg`، `public/images/brightai-logo.svg`
+
+### التحقق
+- `npm run build` ✅؛ `git diff --check` ✅.
+- تطابق SHA-256 للأصل مع المرفق ✅؛ لا مراجع للشعار القديم في src/public أو HTML المبني ✅.
+- Playwright على 360 و1440px ✅ بدون overflow، الهيدر والفوتر يستخدمان الشعار نفسه، واختبار فك صورة الفوتر بعد التمرير نجح.
+- الصفحات الداخلية الخمس تحتوي الشعار المعتمد وترجع HTTP 200 ✅، وملفات الشعار والأيقونات ترجع HTTP 200 ✅.
+- فحص بصري للكمبيوتر ولقطة للجوال؛ نسخة العرض ~70KB بدلاً من تحميل الأصل ~1.2MB. لم تُقَس Core Web Vitals.
+
+### النتيجة
+- **الحالة:** نجح محلياً.
+- **مختصر:** الشعار المرفق هو الهوية الوحيدة في مواضع العلامة الحالية على الموقع؛ الأصل الكبير محفوظ مرجعاً ولا يستخدم للتحميل المعتاد. لا commit ولا push ولا نشر.
+
 ## [2026-10-30] — إضافة theme.css المرفق إلى الرئيسية
 
 ### تم التنفيذ
