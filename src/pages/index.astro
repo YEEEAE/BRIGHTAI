@@ -24,13 +24,14 @@ const sectors = [
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> AIGAS <span class="eyebrow-separator">/</span> حوكمة الذكاء الاصطناعي</p>
+
         <h1 id="hero-title">ذكاء اصطناعي<br />تثق به<span class="ellipsis">...</span><br /><span class="hero-last">وتحاسبه</span></h1>
+        <p class="eyebrow hero-tagline">AIGAS / حوكمة وأمان الذكاء الاصطناعي</p>
         <p class="hero-description">AIGAS طبقة حوكمة وأمان تقف بين موظفيك ونماذج الذكاء الاصطناعي. تحجب البيانات الحساسة قبل خروجها، وتقيّم مخاطر كل طلب، وتوقف القرارات الحرجة لين يوافق عليها إنسان، وتوثّق كل شيء في سجل لا يمكن تعديله.</p>
         <div class="actions"><a class="button" href="/kernel/">جرّب Kernel مجاناً <span aria-hidden="true">↖</span></a><a class="ghost" href="/contact/">احجز عرضاً توضيحياً <span aria-hidden="true">←</span></a></div>
       </div>
       <div class="hero-art"><Constellation /></div>
-      <div class="hero-bottom"><span class="latin" dir="ltr">SAUDI AI SAFETY OS</span><a class="ghost" href="#problem">الثقة تبدأ من هنا <span aria-hidden="true">↓</span></a><span class="latin" dir="ltr">01 — 06</span></div>
+
     </section>
     <section class="trust wrap" aria-label="مراجع التصميم">
       <p>مصمم وفق</p><div><span>مبادئ أخلاقيات الذكاء الاصطناعي من سدايا</span><i aria-hidden="true">·</i><span>نظام حماية البيانات الشخصية</span><i aria-hidden="true">·</i><span>إرشادات الهيئة الوطنية للأمن السيبراني</span></div>
@@ -56,34 +57,41 @@ const sectors = [
   <Footer />
 </BaseLayout>
 <style>
-  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 0 24px; padding-top: 48px; min-height: 790px; position: relative; }
-  .hero-copy { min-width: 0; position: relative; z-index: 1; }
-  .hero .eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
-  .eyebrow-separator { color: #9a9a9a; padding-inline: 6px; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ffb829; }
-  .ellipsis { color: #9a9a9a; }
-  .hero-last { color: #fff; }
-  .hero-description { color: #bdbdbd; max-width: 525px; margin-block: 30px; font-size: 18px; }
-  .hero-art { margin-inline: -24px; }
-  .hero-bottom { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; color: #9a9a9a; margin-top: 54px; padding-bottom: 24px; }
-  .trust { padding-block: 36px 60px; text-align: center; color: #bdbdbd; font-size: 14px; }
+  main { overflow: clip; }
+  .hero { position: relative; min-height: min(1050px, calc(100svh - 108px)); display: flex; align-items: center; padding-block: 110px 120px; }
+  .hero-copy { position: relative; z-index: 2; width: 580px; max-width: 50%; }
+  .hero h1 { font-size: clamp(72px, 7vw, 100px); line-height: 1.16; letter-spacing: -.04em; }
+  .ellipsis { color: #fff; }
+  .hero .hero-tagline { display: block; margin-block: 30px 12px; font-size: 14px; font-weight: 600; }
+  .hero-description { max-width: 440px; color: #d0ced2; font-size: 18px; line-height: 1.65; margin-bottom: 24px; }
+  .hero .actions { gap: 18px; }
+  .hero .button { font-size: 14px; padding: 9px 20px; min-height: 44px; }
+  .hero .ghost { font-size: 14px; }
+  .hero-art { position: absolute; z-index: 0; width: 83vw; height: 108%; inset-inline-end: -17vw; inset-block-start: -2%; mask-image: linear-gradient(to right, #000 63%, transparent 89%); }
+  .trust { padding-block: 60px 90px; text-align: center; color: #bdbdbd; font-size: 14px; }
   .trust > p { color: #9a9a9a; margin-bottom: 18px; }
-  .trust > div { display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .trust > div { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
   .trust i { color: #8052ff; font-style: normal; }
-  .problem { display: grid; grid-template-columns: 1.1fr .9fr; gap: 96px; align-items: center; }
-  .problem-copy { max-width: 440px; padding-top: 48px; color: #bdbdbd; }
-  .asterisk { font: 400 72px/1 Arial,sans-serif; color: #ffb829; display: block; margin-bottom: 36px; }
-  .problem-copy .ghost { margin-top: 30px; }
-  .pillars-heading { margin-bottom: 72px; }
-  .pillar { display: grid; grid-template-columns: .8fr 1fr; gap: 96px; align-items: center; padding-block: 42px; }
+  .section { padding-block: 120px; }
+  .section h2 { font-size: clamp(42px, 5.4vw, 78px); line-height: 1.2; }
+  .problem { display: grid; grid-template-columns: 1.1fr .9fr; gap: 120px; min-height: 720px; align-items: center; }
+  .problem h2 { font-size: clamp(36px, 3.4vw, 48px); line-height: 1.4; }
+  .problem-copy { color: #bdbdbd; max-width: 410px; }
+  .asterisk { display: none; }
+  .problem-copy .ghost { margin-top: 24px; }
+  .pillars-heading { margin-bottom: 90px; }
+  .pillar { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 120px; min-height: 400px; padding-block: 60px; }
   .pillar:nth-child(2) .pillar-symbol { order: 2; }
   .pillar:nth-child(2) .pillar-copy { order: 1; }
-  .pillar-symbol { display: flex; gap: 60px; align-items: center; justify-content: center; color: #a988ff; }
+  .pillar-symbol { display: flex; align-items: center; justify-content: center; gap: 30px; color: #8052ff; }
+  .pillar-symbol svg { width: 150px; height: 150px; stroke-width: .65; }
   .pillar-symbol .latin { color: #9a9a9a; align-self: flex-start; }
-  .pillar-copy { max-width: 550px; }
+  .pillar-copy { max-width: 430px; }
+  .pillar h3 { font-size: 42px; }
   .pillar-copy p { color: #bdbdbd; margin-block: 24px; }
-  .pillar-note { color: #ffb829; font-size: 14px; }
-  .workflow { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; }
+  .pillar-note { display: block; font-size: 14px; color: #ffb829; }
+  .pillar-copy .ghost { margin-top: 18px; }
+  .workflow { display: grid; grid-template-columns: 1fr 1fr; gap: 120px; }
   .workflow-intro > p:last-child { margin-top: 30px; }
   .steps { list-style: none; margin: 0; padding: 0; }
   .steps li { position: relative; display: grid; grid-template-columns: 48px 1fr; gap: 24px; padding-block: 18px 48px; }
@@ -92,19 +100,43 @@ const sectors = [
   .step-arrow { position: absolute; inset-block-end: 0; inset-inline-start: 18px; color: #8052ff; }
   .solutions-heading { display: flex; justify-content: space-between; align-items: end; gap: 48px; }
   .solutions-heading > p { margin-bottom: 12px; }
-  .sectors { display: grid; grid-template-columns: 1fr 1fr; gap: 60px 96px; margin-top: 72px; }
+  .sectors { display: grid; grid-template-columns: 1fr 1fr; gap: 90px 120px; margin-top: 90px; }
   .sector { display: block; padding-block: 12px; }
   .sector .latin { color: #9a9a9a; }
   .sector h3 { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-block: 18px; }
-  .sector h3 span { color: #8052ff; transition: transform .2s; }
-  .sector:hover h3 span { transform: translate(-4px, -4px); }
+  .sector h3 span { color: #8052ff; }
   .sector p { color: #bdbdbd; }
-  .sector-link { display: inline-flex; align-items: center; gap: 18px; color: #ffb829; font-size: 14px; margin-top: 24px; }
-  .closing { text-align: center; padding-block: 120px; }
-  .closing-star { display: block; color: #8052ff; font: 96px/1 Arial,sans-serif; margin-block: 36px; }
+  .sector-link { display: inline-flex; gap: 18px; color: #ffb829; font-size: 14px; margin-top: 24px; }
+  .closing { text-align: center; padding-block: 180px; }
+  .closing-star { display: none; }
   .closing h2 { font-size: clamp(36px, 4.6vw, 66px); }
   .closing > p:not(.eyebrow) { color: #bdbdbd; margin-block: 30px; }
-  @media (min-width: 1600px) { .hero { min-height: 850px; } }
-  @media (max-width: 1023px) { .hero { grid-template-columns: 1.1fr .9fr; } .hero-art { margin-inline: -24px; } .problem, .workflow, .pillar { gap: 48px; } .hero h1 { font-size: 72px; } .hero .actions { gap: 12px; } .trust > div { gap: 18px; } }
-  @media (max-width: 767px) { .hero { grid-template-columns: 1fr; padding-top: 36px; min-height: auto; } .hero h1 { font-size: clamp(52px, 12vw, 78px); } .hero-description { margin-block: 24px; } .hero-art { width: 100%; max-width: 480px; margin: 12px auto 0; } .hero-bottom { margin-top: 24px; } .hero-bottom > .latin:last-child { display: none; } .hero-bottom .latin { font-size: 10px; } .hero-bottom .ghost { font-size: 12px; } .trust { padding-block: 30px; } .trust > div { flex-direction: column; gap: 12px; } .trust i { display: none; } .problem, .workflow, .pillar { grid-template-columns: 1fr; gap: 30px; } .problem-copy { padding-top: 0; } .asterisk { font-size: 54px; margin-bottom: 24px; } .pillars-heading { margin-bottom: 30px; } .pillar { padding-block: 36px; } .pillar-symbol { justify-content: flex-start; gap: 24px; } .pillar-symbol svg { width: 54px; height: 54px; } .pillar:nth-child(2) .pillar-symbol, .pillar:nth-child(2) .pillar-copy { order: initial; } .pillar-copy p { margin-block: 18px; } .solutions-heading { display: block; } .solutions-heading > p { margin-top: 24px; } .sectors { grid-template-columns: 1fr; gap: 36px; margin-top: 36px; } .closing { padding-block: 72px; } .steps li { gap: 12px; } }
+  @media (min-width: 1024px) { .wrap { width: min(1200px, calc(100% - 160px)); } }
+  @media (max-width: 1100px) and (min-width: 768px) { .hero-copy { max-width: 53%; } .hero h1 { font-size: 76px; } .hero-art { width: 85vw; inset-inline-end: -25vw; } .hero { padding-block: 70px 90px; min-height: 850px; } .problem, .pillar, .workflow { gap: 60px; } }
+  @media (max-width: 767px) {
+    .hero { display: flex; flex-direction: column; align-items: stretch; padding-block: 36px 0; min-height: auto; }
+    .hero-copy { width: 100%; max-width: none; }
+    .hero h1 { font-size: clamp(54px, 12.5vw, 86px); line-height: 1.17; letter-spacing: -.025em; }
+    .hero-description { font-size: 17px; line-height: 1.8; max-width: 470px; }
+    .hero .hero-tagline { margin-top: 24px; font-size: 13px; }
+    .hero-art { position: relative; width: calc(100% + 80px); height: 460px; inset: auto; margin-inline: -40px; margin-top: -10px; mask-image: linear-gradient(#000 85%, transparent); }
+    .hero .actions { gap: 12px; }
+    .trust { padding-block: 24px 48px; }
+    .trust > div { flex-direction: column; gap: 12px; }
+    .trust i { display: none; }
+    .section { padding-block: 72px; }
+    .section h2 { font-size: 40px; line-height: 1.4; }
+    .problem, .pillar, .workflow { grid-template-columns: 1fr; gap: 30px; min-height: auto; }
+    .problem h2 { font-size: 32px; }
+    .pillars-heading { margin-bottom: 30px; }
+    .pillar { padding-block: 48px; }
+    .pillar-symbol { justify-content: flex-start; }
+    .pillar-symbol svg { width: 80px; height: 80px; }
+    .pillar:nth-child(2) .pillar-symbol, .pillar:nth-child(2) .pillar-copy { order: initial; }
+    .pillar h3 { font-size: 30px; }
+    .solutions-heading { display: block; }
+    .solutions-heading > p { margin-top: 24px; }
+    .sectors { grid-template-columns: 1fr; gap: 48px; margin-top: 48px; }
+    .closing { padding-block: 96px; }
+  }
 </style>

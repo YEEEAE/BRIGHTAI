@@ -1,37 +1,119 @@
 ---
-// Deterministic particles keep the artwork identical across static builds.
-const colors = ['#8052ff', '#ffb829', '#15846e', '#df64ed', '#648bff', '#c1a4ff'];
-let seed = 47;
-const random = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
-const particles = Array.from({ length: 2400 }, (_, i) => {
-  const z = random() * 2 - 1;
-  const angle = random() * Math.PI * 2;
-  const radius = Math.sqrt(1 - z * z);
-  const depth = .72 + random() * .28;
-  const side = i % 2 === 0 ? -1 : 1;
-  const x = side * (85 + Math.cos(angle) * 132 * radius * depth);
-  const y = Math.sin(angle) * radius * 205 * depth;
-  const fold = 1 + .065 * Math.sin(angle * 9 + z * 12);
-  return { x: 360 + x * fold + y * .13, y: 320 + y * fold - x * .15,
-    size: 1.2 + random() * 2.6, color: colors[Math.floor(random() * colors.length)], opacity: .25 + random() * .7 };
+import preview from '../data/neural-preview.json';
+// Coordinates and colors derived from the user-supplied Dala reference; see Audit.
+const fallback = preview.map(([x, y, z, r, g, b]) => {
+  const yaw = -.785;
+  const px = x * Math.cos(yaw) + z * Math.sin(yaw);
+  const sx = 470 + px * 480, sy = 490 - y * 480;
+  return { d: `M${sx.toFixed(1)} ${sy.toFixed(1)}l3 5h-6Z`, color: `rgb(${r},${g},${b})` };
 });
-const ambient = Array.from({ length: 70 }, (_, i) => ({ x: random() * 720, y: random() * 640, color: colors[i % colors.length] }));
 ---
 <div class="constellation" aria-hidden="true">
-  <svg viewBox="0 0 720 640" fill="none" focusable="false">
-    <g class="brain-particles">
-      {particles.map(p => <path d={`M${p.x.toFixed(1)} ${(p.y - p.size).toFixed(1)}l${p.size.toFixed(1)} ${(p.size * 1.8).toFixed(1)}h${(-p.size * 2).toFixed(1)}Z`} stroke={p.color} stroke-width=".8" opacity={p.opacity} />)}
-    </g>
-    {ambient.map(p => <path d={`M${p.x.toFixed(1)} ${p.y.toFixed(1)}l2 4h-4Z`} stroke={p.color} stroke-width=".7" opacity=".45" />)}
-  </svg>
-  <div class="art-label"><span>△</span> INTELLIGENCE, WITH ACCOUNTABILITY</div>
+  <svg class="fallback" viewBox="0 0 1000 900" fill="none" focusable="false">{fallback.map(p => <path d={p.d} stroke={p.color} stroke-width=".8" />)}</svg>
+  <canvas class="particle-canvas"></canvas>
 </div>
+<script>
+  async function mountConstellation(host: HTMLElement) {
+    const canvas = host.querySelector<HTMLCanvasElement>('canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+    const context = ctx;
+    const surface = canvas;
+    let seed = 47;
+    const random = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const palette = ['#f3c900', '#ddd6df', '#8052ff', '#3b9e98', '#9567da'];
+    let bytes: ArrayBuffer;
+    try {
+      const response = await fetch('/visuals/neural-particles.bin');
+      if (!response.ok) return;
+      bytes = await response.arrayBuffer();
+    } catch { return; } // Keep the static artwork when the particle data cannot load.
+    if (bytes.byteLength !== 100000) return;
+    const view = new DataView(bytes);
+    const stride = matchMedia('(max-width: 767px)').matches ? 2 : 1;
+    const points = [];
+    for (let index = 0; index < 10000; index += stride) {
+      const offset = index * 10;
+      points.push({
+        x: view.getInt16(offset, true) / 32767,
+        y: -view.getInt16(offset + 2, true) / 32767,
+        z: view.getInt16(offset + 4, true) / 32767,
+        size: 1.8 + view.getUint8(offset + 9) / 255 * 2.8,
+        angle: random() * Math.PI * 2,
+        color: `rgb(${view.getUint8(offset + 6)},${view.getUint8(offset + 7)},${view.getUint8(offset + 8)})`,
+      });
+    }
+    const ambient = Array.from({ length: 75 }, () => ({ x: random(), y: random(), size: 2 + random() ** 3 * 22, angle: random() * 6.28, color: palette[Math.floor(random() * palette.length)] }));
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    let width = 0, height = 0, frame = 0, last = 0, visible = false;
+    let pointer = 0;
+    function triangle(x: number, y: number, size: number, angle: number, color: string, opacity: number) {
+      context.globalAlpha = opacity;
+      context.strokeStyle = color;
+      context.lineWidth = size > 10 ? 1.6 : .8;
+      context.beginPath();
+      for (let i = 0; i < 3; i++) {
+        const a = angle + i * Math.PI * 2 / 3;
+        const px = x + Math.cos(a) * size, py = y + Math.sin(a) * size;
+        if (i === 0) context.moveTo(px, py); else context.lineTo(px, py);
+      }
+      context.closePath(); context.stroke();
+    }
+    function draw(time = 0) {
+      context.clearRect(0, 0, width, height);
+      const yaw = -.785 + Math.sin(time * .00016) * .16 + pointer * .06;
+      const c = Math.cos(yaw), s = Math.sin(yaw);
+      const scale = Math.min(width / 1.85, height / 1.8) * .98;
+      const projected = points.map(p => {
+        const x = p.x * c + p.z * s, z = -p.x * s + p.z * c;
+        const perspective = 3.6 / (3.6 - z);
+        return { p, z, x: width * .45 + x * scale * perspective, y: height * .56 + p.y * scale * perspective, perspective };
+      }).sort((a, b) => a.z - b.z);
+      for (const { p, x, y, z, perspective } of projected) {
+        triangle(x, y, p.size * perspective * Math.max(.7, scale / 340), p.angle + time * .000045, p.color, z < -.15 ? .26 : .85);
+      }
+      for (const p of ambient) {
+        triangle(p.x * width, ((p.y + time * .000004) % 1) * height, p.size, p.angle + time * .00004, p.color, .35);
+      }
+      context.globalAlpha = 1;
+      host.classList.add('ready');
+    }
+    function tick(time: number) {
+      frame = 0;
+      if (!visible || document.hidden || motion.matches) return;
+      if (time - last > 40) { draw(time); last = time; }
+      frame = requestAnimationFrame(tick);
+    }
+    function sync() {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      if (motion.matches) draw();
+      else if (visible && !document.hidden) frame = requestAnimationFrame(tick);
+    }
+    const resize = new ResizeObserver(() => {
+      width = host.clientWidth; height = host.clientHeight;
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
+      surface.width = Math.round(width * dpr); surface.height = Math.round(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+    });
+    resize.observe(host);
+    const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); });
+    observer.observe(host);
+    host.addEventListener('pointermove', event => { pointer = (event.clientX - host.getBoundingClientRect().left) / width - .5; });
+    motion.addEventListener('change', sync);
+    document.addEventListener('visibilitychange', sync);
+    document.addEventListener('astro:before-swap', () => {
+      resize.disconnect(); observer.disconnect(); cancelAnimationFrame(frame);
+      motion.removeEventListener('change', sync); document.removeEventListener('visibilitychange', sync);
+    }, { once: true });
+  }
+  document.querySelectorAll<HTMLElement>('.constellation').forEach(mountConstellation);
+</script>
 <style>
-  .constellation { position: relative; width: 100%; }
-  svg { display: block; width: 100%; height: auto; overflow: visible; }
-  .brain-particles { transform-origin: center; animation: breathe 12s ease-in-out infinite alternate; }
-  .art-label { text-align: center; color: #9a9a9a; font: 10px/1.5 Arial, sans-serif; letter-spacing: .16em; direction: ltr; }
-  .art-label span { color: #ffb829; margin-inline-end: 9px; }
-  @keyframes breathe { to { transform: translateY(-9px) rotate(3deg); } }
-  @media (prefers-reduced-motion: reduce) { .brain-particles { animation: none; } }
+  .constellation { position: relative; width: 100%; height: 100%; background: radial-gradient(ellipse at 45% 45%, #18131c88, transparent 62%); }
+  canvas, .fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
+  canvas { opacity: 0; }
+  .ready canvas { opacity: 1; }
+  .ready .fallback { display: none; }
 </style>
