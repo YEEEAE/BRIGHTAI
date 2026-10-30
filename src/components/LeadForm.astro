@@ -18,8 +18,8 @@
  *     email check (no hard block on gmail/hotmail) per Product decision.
  *   - States: idle → submitting → success | error. Error summary + per-field
  *     errors are announced via aria-live so screen readers catch them.
- *   - sessionStorage preserves non-sensitive values across Back/Retry; the
- *     PDPL consent is always re-required (privacy by default).
+ *   - Form field values remain in the live form only; they are never persisted
+ *     to browser storage, and PDPL consent is always re-required.
  *   - Submits via fetch to formsubmit.co's AJAX endpoint, then redirects to
  *     MARKETING.leadThankYou. If JS is disabled, the form falls back to a
  *     native POST (action="formsubmit.co") with _next pointed at the same

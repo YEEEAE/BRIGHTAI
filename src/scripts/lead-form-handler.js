@@ -9,7 +9,7 @@
  *   - Submit interception (AJAX with native fallback)
  *   - Loading / success / error UI states
  *   - Error summary that focuses the first invalid field
- *   - sessionStorage value preservation across Back / Retry
+ *   - Removal of obsolete persisted form drafts from earlier versions
  *
  * PII rule: this file MUST NEVER read a field's value into an analytics
  * call. Only the field's `name` is sent (form_field_error). All telemetry
@@ -106,15 +106,17 @@ function readUtmFromUrl() {
 
 function readOrInitLanding() {
   try {
-    let landing = sessionStorage.getItem(SESSION_KEYS.landingPage);
-    if (!landing) {
-      landing = window.location.pathname + window.location.search;
-      sessionStorage.setItem(SESSION_KEYS.landingPage, landing);
-    }
+    const storedLanding = sessionStorage.getItem(SESSION_KEYS.landingPage);
+    // Migrate legacy values by dropping query/hash data. UTM values are
+    // captured separately in dedicated fields.
+    const landing = storedLanding
+      ? new URL(storedLanding, window.location.origin).pathname
+      : window.location.pathname;
+    sessionStorage.setItem(SESSION_KEYS.landingPage, landing);
     return landing;
   } catch {
     // sessionStorage can throw in private mode — fall back to current path
-    return window.location.pathname + window.location.search;
+    return window.location.pathname;
   }
 }
 
@@ -130,8 +132,11 @@ function populateAttribution(form) {
   // Referrer — only set if we actually came from somewhere (not direct).
   const referrerInput = form.querySelector('[data-meta="referrer"]');
   if (referrerInput) {
-    const ref = document.referrer || '';
-    if (ref) referrerInput.value = ref;
+    try {
+      referrerInput.value = document.referrer ? new URL(document.referrer).hostname : '';
+    } catch {
+      referrerInput.value = '';
+    }
   }
 
   // Landing page — captured once per session, reused on every subsequent
@@ -143,55 +148,8 @@ function populateAttribution(form) {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// sessionStorage value preservation (non-sensitive fields only)
-// ─────────────────────────────────────────────────────────────────────
-
-const SENSITIVE_FIELDS = new Set(['pdpl_consent']);
-
-function loadSavedValues(form) {
-  const formId = form.dataset.formId;
-  if (!formId) return;
-  let raw;
-  try {
-    raw = sessionStorage.getItem(SESSION_KEYS.formValues(formId));
-  } catch {
-    return;
-  }
-  if (!raw) return;
-  let saved;
-  try { saved = JSON.parse(raw); } catch { return; }
-  if (!saved || typeof saved !== 'object') return;
-  form.querySelectorAll('[data-field]').forEach((field) => {
-    const name = field.name;
-    if (SENSITIVE_FIELDS.has(name)) return; // never restore consent
-    if (!(name in saved)) return;
-    const value = saved[name];
-    if (field.type === 'checkbox') {
-      field.checked = !!value;
-    } else {
-      field.value = value;
-    }
-  });
-}
-
-function saveValues(form) {
-  const formId = form.dataset.formId;
-  if (!formId) return;
-  const values = {};
-  form.querySelectorAll('[data-field]').forEach((field) => {
-    const name = field.name;
-    if (SENSITIVE_FIELDS.has(name)) return;
-    if (field.type === 'checkbox') values[name] = field.checked;
-    else values[name] = field.value;
-  });
-  try {
-    sessionStorage.setItem(SESSION_KEYS.formValues(formId), JSON.stringify(values));
-  } catch {
-    // private mode / quota — silently skip
-  }
-}
-
+// Older versions stored lead-form drafts in sessionStorage. Remove only the
+// current form's legacy entry; never read or write submitted field values.
 function clearSavedValues(form) {
   const formId = form.dataset.formId;
   if (!formId) return;
@@ -410,10 +368,7 @@ function attachFieldListeners(form) {
           recomputeSummaryAfterEdit(form);
         }
       }
-      // Save values on every keystroke (no PII — just names + values).
-      saveValues(form);
     });
-    field.addEventListener('change', () => saveValues(form));
   });
 }
 
@@ -629,6 +584,7 @@ function initForm(form) {
   form.dataset.bound = '1';
 
   const formId = form.dataset.formId;
+  clearSavedValues(form);
   // If the user already submitted this form in this session, keep the
   // success panel visible instead of resetting it. View transitions
   // re-mount the form, so we have to ask storage.
@@ -640,7 +596,6 @@ function initForm(form) {
   } catch { /* noop */ }
 
   populateAttribution(form);
-  loadSavedValues(form);
   attachFieldListeners(form);
   attachSubmitListener(form);
   attachViewObserver(form);

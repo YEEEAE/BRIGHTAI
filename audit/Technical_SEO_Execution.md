@@ -13,32 +13,6 @@ EVIDENCE: Treat the 2026 audit as a lead, not an immutable truth. If findings ar
 DELIVERY: At completion return (a) what was verified, (b) exact changed paths, (c) evidence-based changes, (d) open blockers, (e) any manual follow-up. Do not output inflated completion percentages.
 ```
 
-## BA-01 — إيقاف حفظ بيانات التواصل غير الضرورية في المتصفح (P0)
-
-**Phase:** 01 · الخصوصية والنماذج
-**Files:** `src/scripts/lead-form-handler.js · src/components/LeadForm.astro`
-**Depends on:** BA-00
-**Purpose:** الحد الأدنى من البيانات مع الحفاظ على نموذج التواصل
-
-```text
-PROJECT: YEEEAE/BRIGHTAI (Astro 6, Render Node). Work against the currently checked-out repository; confirm the actual HEAD and paths first.
-EXECUTION POLICY: Implement the scoped, evidence-backed changes in the local working tree only. NEVER push, commit, create a branch/PR, change GitHub settings, deploy, or mutate production systems. Never expose credentials or personal data. Do not delete unrelated functionality. Keep current Arabic RTL and English routes working.
-EFFICIENCY: No Playwright/E2E tests, automated test suites, browser screenshot collection, mass crawling, or long-running agents. Use targeted source inspection, review the diff, and optionally a lightweight build or syntax check only where it adds real value.
-EVIDENCE: Treat the 2026 audit as a lead, not an immutable truth. If findings are stale or unsupported, explain and do not force a fix. Never invent GSC/GA4 metrics, customer endorsements, security certifications, hosting regions, performance measurements, or a passing status.
-DELIVERY: At completion return (a) what was verified, (b) exact changed paths, (c) evidence-based changes, (d) open blockers, (e) any manual follow-up. Do not output inflated completion percentages.
-
-ROLE: Frontend privacy engineer.
-FINDING: src/scripts/lead-form-handler.js currently enumerates all [data-field] fields for sessionStorage persistence and excludes only pdpl_consent; this can persist name, email, business and free-text fields.
-TASK: Implement data minimization without breaking input, submission, field-level errors or the consent flow.
-ACTIONS:
-1. Read saveValues/loadSavedValues/clearSavedValues and every invocation; inventory actual field names across forms before edits.
-2. Default to NOT persisting personally identifying/free-text form values in sessionStorage. Prefer removing the persistence pathway entirely; if a non-PII UI selection truly needs preservation, use an explicit allowlist that is documented and genuinely nonsensitive.
-3. On successful acceptance, reset any transient form data as appropriate and remove preexisting obsolete saved keys for the current form, without wiping unrelated storage.
-4. Preserve consent semantics: never auto-consent, never store or restore consent as a remembered positive choice in the lead draft.
-5. Check that analytics, URLs, error messages and console logs do not capture submitted PII.
-ACCEPTANCE: There is no path persisting contact names, corporate/personal emails, phone numbers, organization identifiers or free text to sessionStorage by default; form UX and submission contract remain intact.
-```
-
 ## BA-02 — تحديد مسار واحد موثوق لاستقبال العملاء المحتملين (P1)
 
 **Phase:** 01 · الخصوصية والنماذج
