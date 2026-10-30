@@ -6,5 +6,5 @@ export default defineConfig({
   site: 'https://brightai.live',
   output: 'server',
   adapter: node({ mode: 'standalone' }),
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !/\/README\/?$/.test(new URL(page).pathname) })],
 });

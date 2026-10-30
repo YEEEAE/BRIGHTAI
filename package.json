@@ -16,6 +16,7 @@
   "dependencies": {
     "@astrojs/node": "^10.1.4",
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^6.0.0"
+    "astro": "^6.0.0",
+    "react-useanimations": "^3.1.1"
   }
 }

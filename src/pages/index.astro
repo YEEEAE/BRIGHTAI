@@ -1,285 +1,108 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Constellation from '../components/Constellation.astro';
 export const prerender = true;
-
-const title = 'حوكمة الذكاء الاصطناعي في السعودية بوضوح | BRIGHTAI';
-const description = 'تعرّف على مبادئ حوكمة الذكاء الاصطناعي في السعودية: السلامة والموثوقية، الشفافية والمساءلة، وحماية البيانات لبناء استخدام مسؤول وواضح.';
+const pillars = [
+  { number: '01', icon: 'shield', title: 'السلامة والموثوقية', text: 'نمنع الأنظمة من التسبب في أي ضرر للأفراد أو الممتلكات أو البيئة، ونضمن أنها تعمل ضمن حدود واضحة ومدروسة. كل طلب يُقيَّم من 0 إلى 100، والقرارات الحرجة تحتاج موافقة بشرية.', note: 'حدود واضحة. والقرار الأخير للإنسان.' },
+  { number: '02', icon: 'eye', title: 'الشفافية والمساءلة', text: 'تعرف مصدر كل بيان، وتتبع تاريخ كل نموذج، وتحدد من المسؤول عن كل قرار. سجل التدقيق عندنا غير قابل للتعديل.', note: 'كل طلب له أثر. وكل قرار له مسؤول.' },
+  { number: '03', icon: 'lock', title: 'الخصوصية وحماية البيانات', text: 'نكتشف البيانات الشخصية ونحجبها قبل أن تصل للنموذج، وبطريقة ما تمنعك من اكتشاف الانحياز في بياناتك.', note: 'بياناتك تبقى تحت سيطرتك.' },
+];
+const steps = ['يكتب الموظف طلبه', 'يفحص جدار الحماية البيانات الحساسة ويحجبها', 'يقيّم محرك المخاطر الطلب ويطبق سياستكم', 'يصل الرد بأمان ويُسجَّل الحدث'];
+const sectors = [
+  { slug: 'government', title: 'الجهات الحكومية', label: 'GOVERNMENT', description: 'ابتكار يخدم الناس، ضمن حدود واضحة.' },
+  { slug: 'finance', title: 'البنوك والمالية', label: 'FINANCIAL SERVICES', description: 'حماية البيانات في كل تفاعل وقرار.' },
+  { slug: 'healthcare', title: 'الصحة', label: 'HEALTHCARE', description: 'خصوصية المريض أولاً. دائماً.' },
+  { slug: 'enterprise', title: 'الشركات', label: 'ENTERPRISE', description: 'مساحة لفريقك يبتكر فيها بثقة.' },
+];
 ---
-
-<BaseLayout title={title} description={description}>
-  <div class="site-shell">
-    <header class="topbar">
-      <a class="brand" href="/" aria-label="BRIGHTAI — الرئيسية">
-        <span class="brand-mark" aria-hidden="true">B</span>
-        <span>BRIGHT<span class="brand-accent">AI</span></span>
-      </a>
-      <nav aria-label="التنقل الرئيسي">
-        <a href="#approach">منهجنا</a>
-        <a href="#principles">المبادئ</a>
-        <a href="#frameworks">الأطر</a>
-      </nav>
-      <a class="header-cta" href="mailto:hello@brightai.live">تواصل معنا <span aria-hidden="true">↗</span></a>
-    </header>
-
-    <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-dot"></span> الذكاء الاصطناعي بمسؤولية</p>
-          <h1 id="hero-title">خلّ الذكاء الاصطناعي<br /><span>يشتغل بثقة.</span></h1>
-          <p class="hero-description">
-            التقنية القوية تحتاج قرارات واضحة. نساعدك تفهم مخاطر الذكاء الاصطناعي، وتحمي بياناتك، وتبني استخدامًا مسؤولًا من البداية.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="mailto:hello@brightai.live">ناقش احتياجك <span aria-hidden="true">←</span></a>
-            <a class="text-link" href="#approach">اكتشف منهجنا <span aria-hidden="true">↓</span></a>
-          </div>
-          <div class="hero-note"><span class="note-line"></span><span>وضوح في القرار. ثقة في التطبيق.</span></div>
-        </div>
-
-        <div class="hero-art" aria-label="تصوير بصري لمبادئ حوكمة الذكاء الاصطناعي" role="img">
-          <div class="orbit orbit-outer"></div>
-          <div class="orbit orbit-inner"></div>
-          <div class="orbit-label label-top">المساءلة</div>
-          <div class="orbit-label label-left">الخصوصية</div>
-          <div class="orbit-label label-right">السلامة</div>
-          <div class="core-glow"></div>
-          <div class="core">
-            <svg viewBox="0 0 80 80" fill="none" aria-hidden="true">
-              <path d="M40 8 66 23v34L40 72 14 57V23L40 8Z" stroke="currentColor" stroke-width="1.5" />
-              <path d="M40 23 53 31v17l-13 8-13-8V31l13-8Z" stroke="currentColor" stroke-width="1.5" />
-              <circle cx="40" cy="40" r="4" fill="currentColor" />
-              <path d="M40 8v15m26 0L53 31M66 57l-13-9M40 72V56M14 57l13-9M14 23l13 8" stroke="currentColor" stroke-width="1.5" />
-            </svg>
-            <span>ذكاء<br />مسؤول</span>
-          </div>
-          <span class="art-index">01 <i></i> 03</span>
-          <span class="art-caption">حوكمة واضحة لكل مرحلة</span>
-        </div>
-        <div class="hero-bottom"><span>01 / 03</span><span>مبادئ تحمي الثقة</span><span class="bottom-rule"></span></div>
-      </section>
-
-      <section class="intro section-wrap" id="approach">
-        <p class="section-kicker">من الفكرة إلى الاستخدام المسؤول</p>
-        <div class="intro-grid">
-          <h2>ابتكارك يستاهل<br />أساسًا <em>موثوقًا.</em></h2>
-          <div class="intro-copy">
-            <p>حوكمة الذكاء الاصطناعي هي مجموعة مبادئ وممارسات تساعد مؤسستك على فهم الأنظمة الذكية وإدارة مخاطرها ومتابعة أثرها.</p>
-            <p>نبدأ من الأسئلة المهمة: وش البيانات المستخدمة؟ كيف يتخذ النظام قراره؟ ومتى يحتاج الإنسان يتدخل؟</p>
-            <a class="underlined-link" href="#principles">تعرّف على المبادئ <span aria-hidden="true">↙</span></a>
-          </div>
-        </div>
-      </section>
-
-      <section class="principles-section" id="principles">
-        <div class="section-wrap">
-          <div class="section-heading">
-            <div><p class="section-kicker">أساس كل قرار</p><h2>ثلاثة مبادئ،<br />وثقة <em>تستمر.</em></h2></div>
-            <p>كل نظام ذكاء اصطناعي يحتاج حدودًا مفهومة، وأشخاصًا مسؤولين، واحترامًا لبيانات الناس.</p>
-          </div>
-          <div class="principle-grid">
-            <article class="principle-card">
-              <span class="card-number">01</span>
-              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 5 39 11v11c0 10-6.4 16.8-15 21-8.6-4.2-15-11-15-21V11l15-6Z" stroke="currentColor" stroke-width="1.7"/><path d="m17 23 5 5 10-11" stroke="currentColor" stroke-width="1.7"/></svg></div>
-              <h3>السلامة والموثوقية</h3>
-              <p>قيّم المخاطر، وحدد حدود الاستخدام، وتأكد أن النظام يعمل ضمن ضوابط واضحة.</p>
-              <span class="card-foot">مسؤولية من التصميم إلى التشغيل</span>
-            </article>
-            <article class="principle-card">
-              <span class="card-number">02</span>
-              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="1.7"/><path d="M7 24h34M24 7c5 5 7.5 10.7 7.5 17S29 36 24 41c-5-5-7.5-10.7-7.5-17S19 12 24 7Z" stroke="currentColor" stroke-width="1.7"/></svg></div>
-              <h3>الشفافية والمساءلة</h3>
-              <p>وثّق مصادر البيانات وتغييرات النماذج، وعيّن مسؤولًا واضحًا عن القرارات.</p>
-              <span class="card-foot">قرارات يمكن تتبّعها ومراجعتها</span>
-            </article>
-            <article class="principle-card">
-              <span class="card-number">03</span>
-              <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="9" y="20" width="30" height="22" rx="4" stroke="currentColor" stroke-width="1.7"/><path d="M15 20v-6a9 9 0 1 1 18 0v6m-9 9v5" stroke="currentColor" stroke-width="1.7"/><circle cx="24" cy="29" r="1.5" fill="currentColor"/></svg></div>
-              <h3>الخصوصية وحماية البيانات</h3>
-              <p>قلّل جمع البيانات، واحمِ المعلومات الشخصية، وراجع أثر النظام على أصحابها.</p>
-              <span class="card-foot">حماية مدمجة في طريقة العمل</span>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="framework-section section-wrap" id="frameworks">
-        <div class="framework-intro">
-          <p class="section-kicker">مراجع تساعدك تبدأ</p>
-          <h2>مو لازم تبدأ<br />من <em>الصفر.</em></h2>
-          <p>أطر معروفة تساعد الفرق على تحويل مبادئ الذكاء المسؤول إلى خطوات قابلة للتطبيق.</p>
-        </div>
-        <div class="framework-list">
-          <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer" class="framework-row">
-            <span class="framework-code">01</span><span><strong>NIST AI RMF</strong><small>إطار لإدارة مخاطر الذكاء الاصطناعي</small></span><span class="external-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener noreferrer" class="framework-row">
-            <span class="framework-code">02</span><span><strong>EU AI Act</strong><small>نهج تنظيمي قائم على مستويات المخاطر</small></span><span class="external-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href="https://sdaia.gov.sa/en/SDAIA/about/Pages/RegulationsAndPolicies.aspx" target="_blank" rel="noopener noreferrer" class="framework-row">
-            <span class="framework-code">03</span><span><strong>مبادئ سدايا للذكاء الاصطناعي</strong><small>مبادئ تراعي السياق الوطني وحقوق الإنسان</small></span><span class="external-arrow" aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="closing-cta">
-        <div class="cta-orb" aria-hidden="true"></div>
-        <div class="section-wrap cta-content">
-          <p class="section-kicker">الخطوة الأولى تبدأ بحوار</p>
-          <h2>خلّنا نبني<br /><em>ثقة تدوم.</em></h2>
-          <a class="button button-light" href="mailto:hello@brightai.live">تواصل مع BRIGHTAI <span aria-hidden="true">↖</span></a>
-        </div>
-        <span class="cta-aside">الذكاء المسؤول<br />يبدأ من هنا</span>
-      </section>
-    </main>
-
-    <footer class="footer section-wrap">
-      <a class="brand" href="/" aria-label="BRIGHTAI — الرئيسية"><span class="brand-mark" aria-hidden="true">B</span><span>BRIGHT<span class="brand-accent">AI</span></span></a>
-      <p>ذكاء اصطناعي مسؤول. مستقبل أوضح.</p>
-      <span>© {new Date().getFullYear()} BRIGHTAI</span>
-    </footer>
-  </div>
+<BaseLayout title="AIGAS — ذكاء اصطناعي تثق به... وتحاسبه | BRIGHTAI" description="AIGAS طبقة حوكمة وأمان بين موظفيك ونماذج الذكاء الاصطناعي: حجب البيانات الحساسة، تقييم المخاطر، موافقات بشرية وسجل تدقيق.">
+  <Header />
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> AIGAS <span class="eyebrow-separator">/</span> حوكمة الذكاء الاصطناعي</p>
+        <h1 id="hero-title">ذكاء اصطناعي<br />تثق به<span class="ellipsis">...</span><br /><span class="hero-last">وتحاسبه</span></h1>
+        <p class="hero-description">AIGAS طبقة حوكمة وأمان تقف بين موظفيك ونماذج الذكاء الاصطناعي. تحجب البيانات الحساسة قبل خروجها، وتقيّم مخاطر كل طلب، وتوقف القرارات الحرجة لين يوافق عليها إنسان، وتوثّق كل شيء في سجل لا يمكن تعديله.</p>
+        <div class="actions"><a class="button" href="/kernel/">جرّب Kernel مجاناً <span aria-hidden="true">↖</span></a><a class="ghost" href="mailto:hello@brightai.live?subject=AIGAS%20Demo">احجز عرضاً توضيحياً <span aria-hidden="true">←</span></a></div>
+      </div>
+      <div class="hero-art"><Constellation /></div>
+      <div class="hero-bottom"><span class="latin" dir="ltr">SAUDI AI SAFETY OS</span><a class="ghost" href="#problem">الثقة تبدأ من هنا <span aria-hidden="true">↓</span></a><span class="latin" dir="ltr">01 — 06</span></div>
+    </section>
+    <section class="trust wrap" aria-label="مراجع التصميم">
+      <p>مصمم وفق</p><div><span>مبادئ أخلاقيات الذكاء الاصطناعي من سدايا</span><i aria-hidden="true">·</i><span>نظام حماية البيانات الشخصية</span><i aria-hidden="true">·</i><span>إرشادات الهيئة الوطنية للأمن السيبراني</span></div>
+    </section>
+    <section class="problem section wrap" id="problem" aria-labelledby="problem-title">
+      <div><p class="eyebrow">01 / السؤال الذي يستحق إجابة</p><h2 id="problem-title">موظفوك يستخدمون<br />الذكاء الاصطناعي اليوم.<br /><span class="muted">السؤال: هل تعرف<br />ماذا يرسلون؟</span></h2></div>
+      <div class="problem-copy"><span class="asterisk" aria-hidden="true">✳</span><p>كل محادثة مع نموذج ذكاء اصطناعي ممكن تكون نقطة تسريب: رقم هوية عميل، أو آيبان، أو ملف مريض، أو كلمة مرور. ومع بدء تطبيق نظام حماية البيانات الشخصية فعلياً، ما عاد ينفع نترك الموضوع للاجتهاد الشخصي.</p><a class="ghost" href="#principles">هنا يأتي دور AIGAS <span aria-hidden="true">↓</span></a></div>
+    </section>
+    <section class="section wrap" id="principles" aria-labelledby="pillars-title">
+      <p class="eyebrow">02 / ثلاثة أركان. أساس واحد للثقة.</p><h2 id="pillars-title" class="pillars-heading">ذكاء أقوى.<br /><span class="muted">وضوابط أوضح.</span></h2>
+      <div class="pillars">{pillars.map(p => <article class="pillar"><div class="pillar-symbol" aria-hidden="true"><span class="latin">{p.number}</span><svg width="72" height="72" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">{p.icon === 'shield' ? <><path d="m24 5 15 6v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z"/><path d="m17 24 5 5 10-12"/></> : p.icon === 'eye' ? <><path d="M3 24s8-13 21-13 21 13 21 13-8 13-21 13S3 24 3 24Z"/><circle cx="24" cy="24" r="6"/></> : <><rect x="10" y="20" width="28" height="23" rx="4"/><path d="M16 20v-7a8 8 0 0 1 16 0v7m-8 9v6"/></>}</svg></div><div class="pillar-copy"><h3>{p.title}</h3><p>{p.text}</p><span class="pillar-note">{p.note}</span></div></article>)}</div>
+    </section>
+    <section class="section wrap workflow" id="how-it-works" aria-labelledby="workflow-title">
+      <div class="workflow-intro"><p class="eyebrow">03 / من الطلب إلى الرد</p><h2 id="workflow-title">أربع خطوات.<br />ولا تفصيلة<br /><span class="muted">خارج الصورة.</span></h2><p class="muted">طبقة حماية بين فريقك والنموذج،<br />تعمل في كل تفاعل.</p></div>
+      <ol class="steps">{steps.map((step, i) => <li><span class="step-number" aria-hidden="true">{['١', '٢', '٣', '٤'][i]}</span><h3>{step}</h3>{i < 3 && <span class="step-arrow" aria-hidden="true">↓</span>}</li>)}</ol>
+    </section>
+    <section class="section wrap" id="solutions" aria-labelledby="solutions-title">
+      <div class="solutions-heading"><div><p class="eyebrow">04 / صُمّم لمسؤولياتكم</p><h2 id="solutions-title">مهما كان قطاعك،<br /><span class="muted">الثقة ليست خياراً.</span></h2></div><p class="muted">حوكمة تراعي طبيعة عملك.<br />وحماية تبدأ من بياناتك.</p></div>
+      <div class="sectors">{sectors.map((s, i) => <a class="sector" href={`/solutions/${s.slug}/`}><span class="latin" dir="ltr">0{i + 1} / {s.label}</span><h3>{s.title} <span aria-hidden="true">↖</span></h3><p>{s.description}</p><span class="sector-link">اكتشف الحل <span aria-hidden="true">←</span></span></a>)}</div>
+    </section>
+    <section class="closing section wrap" aria-labelledby="closing-title"><p class="eyebrow">05 / شوف الحماية بنفسك</p><span class="closing-star" aria-hidden="true">✳</span><h2 id="closing-title">شاهد Kernel وهو يحجب<br />رقم هوية <span class="muted">في أقل من ثانية</span></h2><p>بدون تسجيل وبدون بطاقة ائتمان. جرّب البيئة التجريبية الآن.</p><a class="button" href="/kernel/">ابدأ التجربة <span aria-hidden="true">↖</span></a></section>
+  </main>
+  <Footer />
 </BaseLayout>
-
 <style>
-  :global(*) { box-sizing: border-box; }
-  :global(html) { scroll-behavior: smooth; }
-  :global(body) { margin: 0; background: #f6f8f5; color: #102a2a; font-family: Tahoma, Arial, sans-serif; font-size: 16px; line-height: 1.75; }
-  :global(a) { color: inherit; text-decoration: none; }
-  :global(a:focus-visible) { outline: 3px solid #9ee96f; outline-offset: 4px; }
-  .site-shell { overflow: hidden; }
-  .topbar, .section-wrap, .hero { width: min(1160px, calc(100% - 64px)); margin-inline: auto; }
-  .topbar { min-height: 94px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #dfe7df; }
-  .brand { display: inline-flex; align-items: center; gap: 10px; font: 700 18px/1 Arial, sans-serif; letter-spacing: -.07em; direction: ltr; }
-  .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; background: #183e3a; color: #c1f281; border-radius: 10px 3px 10px 3px; font-size: 19px; }
-  .brand-accent { color: #69a852; }
-  nav { display: flex; gap: 36px; color: #61716d; font-size: 14px; }
-  nav a:hover, .text-link:hover { color: #4a8d3e; }
-  .header-cta { border: 1px solid #b7c8bd; border-radius: 4px; padding: 9px 15px; font-size: 13px; font-weight: 600; }
-  .header-cta span { color: #68a84c; margin-inline-start: 5px; }
-  .hero { min-height: 610px; display: grid; grid-template-columns: 1fr .9fr; align-items: center; gap: 40px; position: relative; padding-block: 45px 74px; }
-  .hero-copy { padding-block: 22px; position: relative; z-index: 1; }
-  .eyebrow, .section-kicker { color: #6b837a; font-size: 12px; font-weight: 600; letter-spacing: .02em; margin: 0 0 23px; }
-  .eyebrow { display: flex; align-items: center; gap: 9px; }
-  .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: #83c35f; box-shadow: 0 0 0 4px #e6f2de; }
-  h1, h2, h3, p { margin-top: 0; }
-  h1 { font-size: clamp(48px, 6vw, 76px); line-height: 1.15; letter-spacing: -.055em; font-weight: 600; margin-bottom: 23px; }
-  h1 span, h2 em { color: #669b4e; font-style: normal; }
-  .hero-description { max-width: 470px; color: #65746f; font-size: 17px; line-height: 1.9; margin-bottom: 30px; }
-  .hero-actions { display: flex; align-items: center; gap: 27px; }
-  .button { display: inline-flex; align-items: center; justify-content: center; gap: 25px; min-height: 50px; padding: 0 20px; border-radius: 4px; font-weight: 600; font-size: 14px; transition: transform .2s ease, background .2s ease; }
-  .button:hover { transform: translateY(-2px); }
-  .button-primary { background: #183e3a; color: white; }
-  .button-primary span { color: #b8ea85; }
-  .text-link { font-size: 13px; color: #596c65; }
-  .text-link span { color: #70a456; margin-inline-start: 5px; }
-  .hero-note { color: #82908a; font-size: 11px; margin-top: 64px; display: flex; align-items: center; gap: 12px; }
-  .note-line { height: 1px; width: 35px; background: #91bc79; }
-  .hero-art { position: relative; width: min(100%, 480px); aspect-ratio: 1; justify-self: center; display: grid; place-items: center; }
-  .hero-art::before { content: ''; position: absolute; inset: 11%; border-radius: 50%; background: radial-gradient(circle, #dcebcf 0, #e8f0e1 35%, rgba(246,248,245,0) 71%); }
-  .orbit { position: absolute; border: 1px solid #cdddc9; border-radius: 50%; transform: rotate(-27deg); }
-  .orbit-outer { width: 88%; height: 43%; }
-  .orbit-inner { width: 68%; height: 30%; transform: rotate(39deg); border-color: #b6cbb5; }
-  .orbit-outer::before, .orbit-inner::after { content: ''; position: absolute; width: 9px; height: 9px; border-radius: 50%; background: #84bc66; box-shadow: 0 0 0 5px #e4efdc; }
-  .orbit-outer::before { top: 14%; right: 10%; }
-  .orbit-inner::after { bottom: 5%; left: 13%; width: 6px; height: 6px; }
-  .core-glow { position: absolute; width: 165px; height: 165px; border-radius: 50%; background: #d7e9c9; filter: blur(18px); }
-  .core { position: relative; width: 145px; height: 170px; clip-path: polygon(50% 0%, 92% 24%, 92% 71%, 50% 100%, 8% 71%, 8% 24%); background: #1b4940; color: #c8f48f; display: grid; place-content: center; justify-items: center; gap: 5px; box-shadow: 0 25px 60px #315b3624; }
-  .core svg { width: 65px; }
-  .core span { font-size: 13px; text-align: center; line-height: 1.45; color: #f1f7e9; }
-  .orbit-label { position: absolute; color: #6f8077; font-size: 11px; }
-  .label-top { top: 10%; left: 50%; transform: translateX(-50%); }
-  .label-left { bottom: 20%; left: 4%; }
-  .label-right { bottom: 20%; right: 4%; }
-  .art-index { position: absolute; top: 17%; right: 8%; color: #9ba89f; direction: ltr; font: 10px Arial, sans-serif; display: flex; align-items: center; gap: 6px; }
-  .art-index i { display: inline-block; width: 24px; height: 1px; background: #a8b6a6; }
-  .art-caption { position: absolute; bottom: 15%; color: #76887e; font-size: 11px; }
-  .hero-bottom { position: absolute; inset-inline: 0; bottom: 20px; display: flex; align-items: center; gap: 17px; color: #9aa59e; font: 10px Arial, sans-serif; }
-  .hero-bottom span:nth-child(2) { font: 11px Tahoma, Arial, sans-serif; }
-  .bottom-rule { flex: 1; height: 1px; background: #dce4dc; }
-  .intro { padding-block: 115px 125px; }
-  .intro-grid { display: grid; grid-template-columns: 1fr .7fr; gap: 100px; align-items: start; }
-  h2 { font-size: clamp(38px, 4.8vw, 58px); line-height: 1.28; letter-spacing: -.045em; font-weight: 500; margin-bottom: 0; }
-  .intro-copy { padding-top: 8px; max-width: 460px; color: #65746f; font-size: 15px; line-height: 1.95; }
-  .intro-copy p { margin-bottom: 15px; }
-  .underlined-link { display: inline-block; color: #21473d; font-weight: 600; font-size: 13px; margin-top: 18px; padding-bottom: 4px; border-bottom: 1px solid #98b789; }
-  .underlined-link span { color: #71a457; margin-inline-start: 8px; }
-  .principles-section { background: #eaf0e8; padding-block: 105px 115px; }
-  .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 54px; }
-  .section-heading .section-kicker, .framework-intro .section-kicker, .cta-content .section-kicker { margin-bottom: 16px; }
-  .section-heading > p { color: #708079; max-width: 300px; margin: 0 0 8px; line-height: 1.9; font-size: 14px; }
-  .principle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-  .principle-card { position: relative; min-height: 300px; padding: 30px 27px 24px; background: #f8faf6; border: 1px solid #e0e8dc; border-radius: 3px; }
-  .card-number { color: #9bac9f; font: 11px Arial, sans-serif; direction: ltr; display: block; }
-  .card-icon { display: grid; place-items: center; width: 48px; height: 48px; background: #edf4e8; color: #67984f; border-radius: 50%; margin-block: 22px 17px; }
-  .card-icon svg { width: 30px; height: 30px; }
-  .principle-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-  .principle-card p { min-height: 54px; color: #6c7a73; font-size: 13px; line-height: 1.8; margin-bottom: 20px; }
-  .card-foot { display: block; padding-top: 13px; border-top: 1px solid #e4ebe1; color: #8b998f; font-size: 10px; }
-  .framework-section { padding-block: 125px 135px; display: grid; grid-template-columns: .65fr 1fr; gap: 110px; align-items: center; }
-  .framework-intro h2 { margin-bottom: 22px; }
-  .framework-intro > p:last-child { color: #6c7c74; max-width: 310px; font-size: 14px; line-height: 1.9; }
-  .framework-list { border-top: 1px solid #dce5db; }
-  .framework-row { display: grid; grid-template-columns: 48px 1fr 30px; gap: 18px; align-items: center; padding: 24px 0; border-bottom: 1px solid #dce5db; transition: padding .2s ease; }
-  .framework-row:hover { padding-inline: 8px; }
-  .framework-code { color: #8aa07f; font: 11px Arial, sans-serif; }
-  .framework-row strong { display: block; font-size: 15px; font-weight: 600; }
-  .framework-row small { display: block; color: #839087; font-size: 11px; margin-top: 3px; }
-  .external-arrow { color: #76a660; font-size: 19px; text-align: center; }
-  .closing-cta { position: relative; background: #153b36; color: white; overflow: hidden; }
-  .cta-content { position: relative; z-index: 1; padding-block: 93px 98px; }
-  .cta-content .section-kicker { color: #b0c9ad; }
-  .cta-content h2 { font-size: clamp(52px, 7vw, 84px); line-height: 1.15; margin-bottom: 34px; }
-  .cta-content h2 em { color: #b7eb83; }
-  .button-light { background: #c4ef96; color: #193c35; }
-  .button-light span { font-size: 17px; }
-  .cta-orb { position: absolute; width: 510px; height: 510px; border-radius: 50%; border: 1px solid #ffffff20; inset-inline-end: 5%; top: -30%; }
-  .cta-orb::before, .cta-orb::after { content: ''; position: absolute; border: 1px solid #ffffff18; border-radius: 50%; inset: 12%; }
-  .cta-orb::after { inset: 26%; background: radial-gradient(circle, #b6e58b1c, transparent 70%); }
-  .cta-aside { position: absolute; bottom: 24%; inset-inline-end: 10%; color: #c1d7c331; font-size: 13px; line-height: 1.8; }
-  .footer { min-height: 100px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: #829087; font-size: 11px; }
-  .footer p { margin: 0; }
-  .footer .brand { color: #173e38; font-size: 15px; }
-  .footer .brand-mark { width: 29px; height: 29px; font-size: 16px; }
-  @media (max-width: 760px) {
-    .topbar, .section-wrap, .hero { width: min(100% - 40px, 540px); }
-    .topbar { min-height: 76px; }
-    nav { display: none; }
-    .brand { font-size: 16px; }
-    .brand-mark { width: 30px; height: 30px; }
-    .header-cta { padding: 7px 10px; font-size: 11px; }
-    .hero { min-height: unset; grid-template-columns: 1fr; gap: 0; padding-block: 64px 60px; }
-    .hero-copy { padding: 0; }
-    .eyebrow { margin-bottom: 18px; }
-    h1 { font-size: clamp(46px, 12vw, 64px); }
-    .hero-description { font-size: 15px; max-width: 460px; }
-    .hero-note { margin-top: 33px; }
-    .hero-art { width: min(100%, 390px); margin-top: 15px; }
-    .hero-bottom { bottom: 10px; }
-    .intro { padding-block: 78px 85px; }
-    .intro-grid { grid-template-columns: 1fr; gap: 24px; }
-    h2 { font-size: clamp(38px, 10vw, 50px); }
-    .principles-section { padding-block: 78px 82px; }
-    .section-heading { display: block; margin-bottom: 34px; }
-    .section-heading > p { margin-top: 20px; }
-    .principle-grid { grid-template-columns: 1fr; gap: 10px; }
-    .principle-card { min-height: unset; padding: 23px; }
-    .card-icon { margin-block: 15px 12px; }
-    .principle-card p { min-height: unset; margin-bottom: 15px; }
-    .framework-section { grid-template-columns: 1fr; gap: 38px; padding-block: 82px 91px; }
-    .framework-intro h2 br { display: none; }
-    .framework-row { grid-template-columns: 30px 1fr 24px; gap: 12px; padding-block: 18px; }
-    .framework-row strong { font-size: 13px; }
-    .framework-row small { font-size: 10px; }
-    .cta-content { padding-block: 75px 78px; }
-    .cta-content h2 { font-size: 58px; }
-    .cta-orb { width: 320px; height: 320px; inset-inline-end: -35%; top: 8%; }
-    .cta-aside { display: none; }
-    .footer { min-height: 110px; flex-wrap: wrap; padding-block: 20px; }
-    .footer p { order: 3; width: 100%; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    :global(html) { scroll-behavior: auto; }
-    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
-  }
+  .hero { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0 24px; padding-top: 48px; min-height: 790px; position: relative; }
+  .hero-copy { position: relative; z-index: 1; }
+  .hero .eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+  .eyebrow-separator { color: #9a9a9a; padding-inline: 6px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ffb829; }
+  .ellipsis { color: #9a9a9a; }
+  .hero-last { color: #fff; }
+  .hero-description { color: #bdbdbd; max-width: 525px; margin-block: 30px; font-size: 18px; }
+  .hero-art { margin-inline: -24px; }
+  .hero-bottom { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; color: #9a9a9a; margin-top: 54px; padding-bottom: 24px; }
+  .trust { padding-block: 36px 60px; text-align: center; color: #bdbdbd; font-size: 14px; }
+  .trust > p { color: #9a9a9a; margin-bottom: 18px; }
+  .trust > div { display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .trust i { color: #8052ff; font-style: normal; }
+  .problem { display: grid; grid-template-columns: 1.1fr .9fr; gap: 96px; align-items: center; }
+  .problem-copy { max-width: 440px; padding-top: 48px; color: #bdbdbd; }
+  .asterisk { font: 400 72px/1 Arial,sans-serif; color: #ffb829; display: block; margin-bottom: 36px; }
+  .problem-copy .ghost { margin-top: 30px; }
+  .pillars-heading { margin-bottom: 72px; }
+  .pillar { display: grid; grid-template-columns: .8fr 1fr; gap: 96px; align-items: center; padding-block: 42px; }
+  .pillar:nth-child(2) .pillar-symbol { order: 2; }
+  .pillar:nth-child(2) .pillar-copy { order: 1; }
+  .pillar-symbol { display: flex; gap: 60px; align-items: center; justify-content: center; color: #a988ff; }
+  .pillar-symbol .latin { color: #9a9a9a; align-self: flex-start; }
+  .pillar-copy { max-width: 550px; }
+  .pillar-copy p { color: #bdbdbd; margin-block: 24px; }
+  .pillar-note { color: #ffb829; font-size: 14px; }
+  .workflow { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; }
+  .workflow-intro > p:last-child { margin-top: 30px; }
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { position: relative; display: grid; grid-template-columns: 48px 1fr; gap: 24px; padding-block: 18px 48px; }
+  .step-number { color: #ffb829; font-size: 27px; }
+  .steps h3 { font-size: 24px; max-width: 360px; }
+  .step-arrow { position: absolute; inset-block-end: 0; inset-inline-start: 18px; color: #8052ff; }
+  .solutions-heading { display: flex; justify-content: space-between; align-items: end; gap: 48px; }
+  .solutions-heading > p { margin-bottom: 12px; }
+  .sectors { display: grid; grid-template-columns: 1fr 1fr; gap: 60px 96px; margin-top: 72px; }
+  .sector { display: block; padding-block: 12px; }
+  .sector .latin { color: #9a9a9a; }
+  .sector h3 { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-block: 18px; }
+  .sector h3 span { color: #8052ff; transition: transform .2s; }
+  .sector:hover h3 span { transform: translate(-4px, -4px); }
+  .sector p { color: #bdbdbd; }
+  .sector-link { display: inline-flex; align-items: center; gap: 18px; color: #ffb829; font-size: 14px; margin-top: 24px; }
+  .closing { text-align: center; padding-block: 120px; }
+  .closing-star { display: block; color: #8052ff; font: 96px/1 Arial,sans-serif; margin-block: 36px; }
+  .closing h2 { font-size: clamp(36px, 4.6vw, 66px); }
+  .closing > p:not(.eyebrow) { color: #bdbdbd; margin-block: 30px; }
+  @media (min-width: 1600px) { .hero { min-height: 850px; } }
+  @media (max-width: 1023px) { .hero { grid-template-columns: 1.1fr .9fr; } .hero-art { margin-inline: -24px; } .problem, .workflow, .pillar { gap: 48px; } .hero h1 { font-size: 72px; } .hero .actions { gap: 12px; } .trust > div { gap: 18px; } }
+  @media (max-width: 767px) { .hero { grid-template-columns: 1fr; padding-top: 36px; min-height: auto; } .hero h1 { font-size: clamp(52px, 12vw, 78px); } .hero-description { margin-block: 24px; } .hero-art { width: 100%; max-width: 480px; margin: 12px auto 0; } .hero-bottom { margin-top: 24px; } .hero-bottom > .latin:last-child { display: none; } .hero-bottom .latin { font-size: 10px; } .hero-bottom .ghost { font-size: 12px; } .trust { padding-block: 30px; } .trust > div { flex-direction: column; gap: 12px; } .trust i { display: none; } .problem, .workflow, .pillar { grid-template-columns: 1fr; gap: 30px; } .problem-copy { padding-top: 0; } .asterisk { font-size: 54px; margin-bottom: 24px; } .pillars-heading { margin-bottom: 30px; } .pillar { padding-block: 36px; } .pillar-symbol { justify-content: flex-start; gap: 24px; } .pillar-symbol svg { width: 54px; height: 54px; } .pillar:nth-child(2) .pillar-symbol, .pillar:nth-child(2) .pillar-copy { order: initial; } .pillar-copy p { margin-block: 18px; } .solutions-heading { display: block; } .solutions-heading > p { margin-top: 24px; } .sectors { grid-template-columns: 1fr; gap: 36px; margin-top: 36px; } .closing { padding-block: 72px; } .steps li { gap: 12px; } }
 </style>

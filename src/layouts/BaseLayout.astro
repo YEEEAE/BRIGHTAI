@@ -1,4 +1,6 @@
 ---
+import '../styles/variables.css';
+import '../styles/site.css';
 interface Props {
   title: string;
   description: string;
@@ -35,7 +37,8 @@ const websiteSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f6f8f5" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="preload" href="/fonts/plex-arabic-400.ttf" as="font" type="font/ttf" crossorigin />
     <meta name="robots" content="index, follow" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

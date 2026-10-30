@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48">
-  <rect width="48" height="48" rx="13" fill="#183e3a" />
-  <path d="M16 12h11c6 0 9 3 9 7 0 3-1 5-4 6 4 1 6 3 6 7 0 5-4 8-10 8H16V12Zm7 6v5h4c2 0 3-1 3-3s-1-2-3-2h-4Zm0 11v6h5c2 0 3-1 3-3s-1-3-3-3h-5Z" fill="#c1f281" />
-  <text x="59" y="32" fill="#183e3a" font-family="Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="-1.5">BRIGHT</text>
-  <text x="124" y="32" fill="#67984f" font-family="Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="-1.5">AI</text>
+  <rect width="160" height="48" fill="#000" />
+  <path d="M24 5 44 43H4L24 5Z" fill="#8052ff" />
+  <path d="m24 24 10 19H14l10-19Z" fill="#15846e" />
+  <text x="57" y="33" fill="#fff" font-family="Arial, sans-serif" font-size="25" letter-spacing="-1.5">brightai.</text>
 </svg>

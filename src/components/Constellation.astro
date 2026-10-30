@@ -1,0 +1,37 @@
+---
+// Deterministic particles keep the artwork identical across static builds.
+const colors = ['#8052ff', '#ffb829', '#15846e', '#df64ed', '#648bff', '#c1a4ff'];
+let seed = 47;
+const random = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+const particles = Array.from({ length: 2400 }, (_, i) => {
+  const z = random() * 2 - 1;
+  const angle = random() * Math.PI * 2;
+  const radius = Math.sqrt(1 - z * z);
+  const depth = .72 + random() * .28;
+  const side = i % 2 === 0 ? -1 : 1;
+  const x = side * (85 + Math.cos(angle) * 132 * radius * depth);
+  const y = Math.sin(angle) * radius * 205 * depth;
+  const fold = 1 + .065 * Math.sin(angle * 9 + z * 12);
+  return { x: 360 + x * fold + y * .13, y: 320 + y * fold - x * .15,
+    size: 1.2 + random() * 2.6, color: colors[Math.floor(random() * colors.length)], opacity: .25 + random() * .7 };
+});
+const ambient = Array.from({ length: 70 }, (_, i) => ({ x: random() * 720, y: random() * 640, color: colors[i % colors.length] }));
+---
+<div class="constellation" aria-hidden="true">
+  <svg viewBox="0 0 720 640" fill="none" focusable="false">
+    <g class="brain-particles">
+      {particles.map(p => <path d={`M${p.x.toFixed(1)} ${(p.y - p.size).toFixed(1)}l${p.size.toFixed(1)} ${(p.size * 1.8).toFixed(1)}h${(-p.size * 2).toFixed(1)}Z`} stroke={p.color} stroke-width=".8" opacity={p.opacity} />)}
+    </g>
+    {ambient.map(p => <path d={`M${p.x.toFixed(1)} ${p.y.toFixed(1)}l2 4h-4Z`} stroke={p.color} stroke-width=".7" opacity=".45" />)}
+  </svg>
+  <div class="art-label"><span>△</span> INTELLIGENCE, WITH ACCOUNTABILITY</div>
+</div>
+<style>
+  .constellation { position: relative; width: 100%; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .brain-particles { transform-origin: center; animation: breathe 12s ease-in-out infinite alternate; }
+  .art-label { text-align: center; color: #9a9a9a; font: 10px/1.5 Arial, sans-serif; letter-spacing: .16em; direction: ltr; }
+  .art-label span { color: #ffb829; margin-inline-end: 9px; }
+  @keyframes breathe { to { transform: translateY(-9px) rotate(3deg); } }
+  @media (prefers-reduced-motion: reduce) { .brain-particles { animation: none; } }
+</style>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+export const prerender = true;
+const schema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.live/' }, { '@type': 'ListItem', position: 2, name: 'تجربة Kernel', item: 'https://brightai.live/kernel/' }] };
+---
+<BaseLayout title="جرّب حجب البيانات — Kernel | BRIGHTAI" description="محاكاة محلية مبسطة توضّح فكرة حجب رقم هوية قبل إرسال الطلب إلى نموذج ذكاء اصطناعي، دون تسجيل.">
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <Header />
+  <main id="main" class="wrap section subpage">
+    <nav class="breadcrumb" aria-label="مسار التنقل"><a href="/">الرئيسية</a> / تجربة Kernel</nav>
+    <p class="eyebrow">KERNEL / تجربة توضيحية</p>
+    <h1>شاهد ما الذي<br />يصل إلى النموذج.</h1>
+    <p>محاكاة محلية مبسطة لفكرة الحجب، وليست اتصالاً بمحرك Kernel الفعلي. اختر المثال الجاهز وشاهد النتيجة، بدون تسجيل وبدون إرسال بيانات لأي خدمة.</p>
+    <section aria-labelledby="sample-title"><h2 id="sample-title">الطلب قبل الحجب</h2><p class="sample">لخّص طلب العميل صاحب الهوية <bdi>1000000000</bdi>.</p><button class="button" id="run-demo" type="button">احجب رقم الهوية <span aria-hidden="true">←</span></button><noscript><p>النتيجة التوضيحية: لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].</p></noscript></section>
+    <div role="status" aria-live="polite" id="demo-result"></div>
+    <p class="demo-note">هذا مثال ببيانات افتراضية، ولا يثبت اكتشاف جميع البيانات الحساسة أو قياس أداء المنتج الفعلي.</p>
+    <a class="ghost" href="mailto:hello@brightai.live?subject=AIGAS%20Demo">احجز عرضاً توضيحياً للمحرك الفعلي <span aria-hidden="true">←</span></a>
+  </main>
+  <Footer />
+</BaseLayout>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#run-demo');
+  const result = document.querySelector<HTMLDivElement>('#demo-result');
+  button?.addEventListener('click', () => {
+    if (!result) return;
+    result.textContent = 'الطلب بعد الحجب: لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].';
+    button.textContent = 'أعد التجربة';
+  });
+</script>
+<style>
+  .eyebrow { margin-top: 48px; }
+  h2 { font-size: 27px; }
+  section { margin-block: 48px; }
+  .sample { font-size: 24px; color: #fff; }
+  #demo-result:not(:empty) { margin-block: 36px; font-size: 24px; color: #ffb829; }
+  .demo-note { font-size: 14px; }
+</style>
