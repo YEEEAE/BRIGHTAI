@@ -33,8 +33,8 @@ const sectors = [
       <div class="hero-art"><Constellation /></div>
 
     </section>
-    <section class="trust wrap" aria-label="مراجع التصميم">
-      <p>مصمم وفق</p><div><span>مبادئ أخلاقيات الذكاء الاصطناعي من سدايا</span><i aria-hidden="true">·</i><span>نظام حماية البيانات الشخصية</span><i aria-hidden="true">·</i><span>إرشادات الهيئة الوطنية للأمن السيبراني</span></div>
+    <section class="governance-statement wrap" aria-label="حوكمة وحماية البيانات">
+      <p><span>حوكمة تراعي طبيعة عملك.</span><span class="statement-accent">وحماية تبدأ من بياناتك.</span></p>
     </section>
     <section class="problem section wrap" id="problem" aria-labelledby="problem-title">
       <div><p class="eyebrow">01 / السؤال الذي يستحق إجابة</p><h2 id="problem-title">موظفوك يستخدمون<br />الذكاء الاصطناعي اليوم.<br /><span class="muted">السؤال: هل تعرف<br />ماذا يرسلون؟</span></h2></div>
@@ -49,7 +49,7 @@ const sectors = [
       <ol class="steps">{steps.map((step, i) => <li><span class="step-number" aria-hidden="true">{['١', '٢', '٣', '٤'][i]}</span><h3>{step}</h3>{i < 3 && <span class="step-arrow" aria-hidden="true">↓</span>}</li>)}</ol>
     </section>
     <section class="section wrap" id="solutions" aria-labelledby="solutions-title">
-      <div class="solutions-heading"><div><p class="eyebrow">04 / صُمّم لمسؤولياتكم</p><h2 id="solutions-title">مهما كان قطاعك،<br /><span class="muted">الثقة ليست خياراً.</span></h2></div><p class="muted">حوكمة تراعي طبيعة عملك.<br />وحماية تبدأ من بياناتك.</p></div>
+      <div class="solutions-heading"><div><p class="eyebrow">04 / صُمّم لمسؤولياتكم</p><h2 id="solutions-title">مهما كان قطاعك،<br /><span class="muted">الثقة ليست خياراً.</span></h2></div></div>
       <div class="sectors">{sectors.map((s, i) => <a class="sector" href={`/solutions/${s.slug}/`}><span class="latin" dir="ltr">0{i + 1} / {s.label}</span><h3>{s.title} <span aria-hidden="true">↖</span></h3><p>{s.description}</p><span class="sector-link">اكتشف الحل <span aria-hidden="true">←</span></span></a>)}</div>
     </section>
     <section class="closing section wrap" aria-labelledby="closing-title"><p class="eyebrow">05 / شوف الحماية بنفسك</p><span class="closing-star" aria-hidden="true">✳</span><h2 id="closing-title">شاهد Kernel وهو يحجب<br />رقم هوية <span class="muted">في أقل من ثانية</span></h2><p>بدون تسجيل وبدون بطاقة ائتمان. جرّب البيئة التجريبية الآن.</p><a class="button" href="/kernel/">ابدأ التجربة <span aria-hidden="true">↖</span></a></section>
@@ -68,10 +68,10 @@ const sectors = [
   .hero .button { font-size: 14px; padding: 9px 20px; min-height: 44px; }
   .hero .ghost { font-size: 14px; }
   .hero-art { position: absolute; z-index: 0; width: 83vw; height: 108%; inset-inline-end: -17vw; inset-block-start: -2%; mask-image: linear-gradient(to right, #000 63%, transparent 89%); }
-  .trust { padding-block: 60px 90px; text-align: center; color: #bdbdbd; font-size: 14px; }
-  .trust > p { color: #9a9a9a; margin-bottom: 18px; }
-  .trust > div { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
-  .trust i { color: #8052ff; font-style: normal; }
+  .governance-statement { padding-block: 72px 96px; text-align: center; }
+  .governance-statement p { font-size: clamp(24px, 3.6vw, 48px); line-height: 1.65; font-weight: 400; }
+  .governance-statement span { display: block; }
+  .governance-statement .statement-accent { color: var(--color-saffron-spark); font-weight: 200; }
   .section { padding-block: 120px; }
   .section h2 { font-size: clamp(42px, 5.4vw, 78px); line-height: 1.2; }
   .problem { display: grid; grid-template-columns: 1.1fr .9fr; gap: 120px; min-height: 720px; align-items: center; }
@@ -99,7 +99,6 @@ const sectors = [
   .steps h3 { font-size: 24px; max-width: 360px; }
   .step-arrow { position: absolute; inset-block-end: 0; inset-inline-start: 18px; color: #8052ff; }
   .solutions-heading { display: flex; justify-content: space-between; align-items: end; gap: 48px; }
-  .solutions-heading > p { margin-bottom: 12px; }
   .sectors { display: grid; grid-template-columns: 1fr 1fr; gap: 90px 120px; margin-top: 90px; }
   .sector { display: block; padding-block: 12px; }
   .sector .latin { color: #9a9a9a; }
@@ -121,9 +120,7 @@ const sectors = [
     .hero .hero-tagline { margin-top: 24px; font-size: 13px; }
     .hero-art { position: relative; width: calc(100% + 80px); height: 460px; inset: auto; margin-inline: -40px; margin-top: -10px; mask-image: linear-gradient(#000 85%, transparent); }
     .hero .actions { gap: 12px; }
-    .trust { padding-block: 24px 48px; }
-    .trust > div { flex-direction: column; gap: 12px; }
-    .trust i { display: none; }
+    .governance-statement { padding-block: 36px 60px; }
     .section { padding-block: 72px; }
     .section h2 { font-size: 40px; line-height: 1.4; }
     .problem, .pillar, .workflow { grid-template-columns: 1fr; gap: 30px; min-height: auto; }
@@ -135,7 +132,6 @@ const sectors = [
     .pillar:nth-child(2) .pillar-symbol, .pillar:nth-child(2) .pillar-copy { order: initial; }
     .pillar h3 { font-size: 30px; }
     .solutions-heading { display: block; }
-    .solutions-heading > p { margin-top: 24px; }
     .sectors { grid-template-columns: 1fr; gap: 48px; margin-top: 48px; }
     .closing { padding-block: 96px; }
   }
