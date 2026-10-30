@@ -34,7 +34,7 @@ const sectors = [
 
     </section>
     <section class="governance-statement wrap" aria-label="حوكمة وحماية البيانات">
-      <p><span>حوكمة تراعي طبيعة عملك.</span><span class="statement-accent">وحماية تبدأ من بياناتك.</span></p>
+      <p data-reveal-02="lines" data-scroll="scrub"><span data-reveal-line>حوكمة تراعي طبيعة عملك.</span><span class="statement-accent" data-reveal-line>وحماية تبدأ من بياناتك.</span></p>
     </section>
     <section class="problem section wrap" id="problem" aria-labelledby="problem-title">
       <div><p class="eyebrow">01 / السؤال الذي يستحق إجابة</p><h2 id="problem-title">موظفوك يستخدمون<br />الذكاء الاصطناعي اليوم.<br /><span class="muted">السؤال: هل تعرف<br />ماذا يرسلون؟</span></h2></div>
@@ -56,6 +56,40 @@ const sectors = [
   </main>
   <Footer />
 </BaseLayout>
+<script>
+  // Native line-by-line opacity scrub; keep Arabic shaping and static HTML intact.
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const reveals = [...document.querySelectorAll<HTMLElement>('[data-reveal-02="lines"][data-scroll="scrub"]')].map(element => ({
+    element, lines: [...element.querySelectorAll<HTMLElement>('[data-reveal-line]')],
+  }));
+  let frame = 0;
+  const clamp = (value: number) => Math.min(1, Math.max(0, value));
+  function updateReveal() {
+    frame = 0;
+    for (const { element, lines } of reveals) {
+      const rect = element.getBoundingClientRect();
+      // Reveal from top 80% to bottom 50%, one full line at a time.
+      const progress = clamp((innerHeight * .8 - rect.top) / (innerHeight * .3 + rect.height));
+      lines.forEach((line, index) => {
+        line.style.opacity = motion.matches ? '1' : String(.1 + .9 * clamp(progress * lines.length - index));
+      });
+    }
+  }
+  function scheduleReveal() {
+    if (!frame) frame = requestAnimationFrame(updateReveal);
+  }
+  addEventListener('scroll', scheduleReveal, { passive: true });
+  addEventListener('resize', scheduleReveal);
+  motion.addEventListener('change', scheduleReveal);
+  document.fonts.ready.then(scheduleReveal);
+  scheduleReveal();
+  document.addEventListener('astro:before-swap', () => {
+    cancelAnimationFrame(frame);
+    removeEventListener('scroll', scheduleReveal);
+    removeEventListener('resize', scheduleReveal);
+    motion.removeEventListener('change', scheduleReveal);
+  }, { once: true });
+</script>
 <style>
   main { overflow: clip; }
   .hero { position: relative; min-height: min(1050px, calc(100svh - 108px)); display: flex; align-items: center; padding-block: 110px 120px; }
@@ -71,6 +105,9 @@ const sectors = [
   .governance-statement { padding-block: 72px 96px; text-align: center; }
   .governance-statement p { font-size: clamp(24px, 3.6vw, 48px); line-height: 1.65; font-weight: 400; }
   .governance-statement span { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    .governance-statement [data-reveal-line] { opacity: 1 !important; }
+  }
   .governance-statement .statement-accent { color: var(--color-saffron-spark); font-weight: 200; }
   .section { padding-block: 120px; }
   .section h2 { font-size: clamp(42px, 5.4vw, 78px); line-height: 1.2; }
