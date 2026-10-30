@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Constellation from '../components/Constellation.astro';
 export const prerender = true;
+const pillarPaths = ['safety', 'transparency', 'privacy'];
 const pillars = [
   { number: '01', icon: 'shield', title: 'السلامة والموثوقية', text: 'نمنع الأنظمة من التسبب في أي ضرر للأفراد أو الممتلكات أو البيئة، ونضمن أنها تعمل ضمن حدود واضحة ومدروسة. كل طلب يُقيَّم من 0 إلى 100، والقرارات الحرجة تحتاج موافقة بشرية.', note: 'حدود واضحة. والقرار الأخير للإنسان.' },
   { number: '02', icon: 'eye', title: 'الشفافية والمساءلة', text: 'تعرف مصدر كل بيان، وتتبع تاريخ كل نموذج، وتحدد من المسؤول عن كل قرار. سجل التدقيق عندنا غير قابل للتعديل.', note: 'كل طلب له أثر. وكل قرار له مسؤول.' },
@@ -26,7 +27,7 @@ const sectors = [
         <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> AIGAS <span class="eyebrow-separator">/</span> حوكمة الذكاء الاصطناعي</p>
         <h1 id="hero-title">ذكاء اصطناعي<br />تثق به<span class="ellipsis">...</span><br /><span class="hero-last">وتحاسبه</span></h1>
         <p class="hero-description">AIGAS طبقة حوكمة وأمان تقف بين موظفيك ونماذج الذكاء الاصطناعي. تحجب البيانات الحساسة قبل خروجها، وتقيّم مخاطر كل طلب، وتوقف القرارات الحرجة لين يوافق عليها إنسان، وتوثّق كل شيء في سجل لا يمكن تعديله.</p>
-        <div class="actions"><a class="button" href="/kernel/">جرّب Kernel مجاناً <span aria-hidden="true">↖</span></a><a class="ghost" href="mailto:hello@brightai.live?subject=AIGAS%20Demo">احجز عرضاً توضيحياً <span aria-hidden="true">←</span></a></div>
+        <div class="actions"><a class="button" href="/kernel/">جرّب Kernel مجاناً <span aria-hidden="true">↖</span></a><a class="ghost" href="/contact/">احجز عرضاً توضيحياً <span aria-hidden="true">←</span></a></div>
       </div>
       <div class="hero-art"><Constellation /></div>
       <div class="hero-bottom"><span class="latin" dir="ltr">SAUDI AI SAFETY OS</span><a class="ghost" href="#problem">الثقة تبدأ من هنا <span aria-hidden="true">↓</span></a><span class="latin" dir="ltr">01 — 06</span></div>
@@ -40,7 +41,7 @@ const sectors = [
     </section>
     <section class="section wrap" id="principles" aria-labelledby="pillars-title">
       <p class="eyebrow">02 / ثلاثة أركان. أساس واحد للثقة.</p><h2 id="pillars-title" class="pillars-heading">ذكاء أقوى.<br /><span class="muted">وضوابط أوضح.</span></h2>
-      <div class="pillars">{pillars.map(p => <article class="pillar"><div class="pillar-symbol" aria-hidden="true"><span class="latin">{p.number}</span><svg width="72" height="72" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">{p.icon === 'shield' ? <><path d="m24 5 15 6v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z"/><path d="m17 24 5 5 10-12"/></> : p.icon === 'eye' ? <><path d="M3 24s8-13 21-13 21 13 21 13-8 13-21 13S3 24 3 24Z"/><circle cx="24" cy="24" r="6"/></> : <><rect x="10" y="20" width="28" height="23" rx="4"/><path d="M16 20v-7a8 8 0 0 1 16 0v7m-8 9v6"/></>}</svg></div><div class="pillar-copy"><h3>{p.title}</h3><p>{p.text}</p><span class="pillar-note">{p.note}</span></div></article>)}</div>
+      <div class="pillars">{pillars.map((p, i) => <article class="pillar"><div class="pillar-symbol" aria-hidden="true"><span class="latin">{p.number}</span><svg width="72" height="72" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">{p.icon === 'shield' ? <><path d="m24 5 15 6v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z"/><path d="m17 24 5 5 10-12"/></> : p.icon === 'eye' ? <><path d="M3 24s8-13 21-13 21 13 21 13-8 13-21 13S3 24 3 24Z"/><circle cx="24" cy="24" r="6"/></> : <><rect x="10" y="20" width="28" height="23" rx="4"/><path d="M16 20v-7a8 8 0 0 1 16 0v7m-8 9v6"/></>}</svg></div><div class="pillar-copy"><h3>{p.title}</h3><p>{p.text}</p><span class="pillar-note">{p.note}</span><a class="ghost" href={`/pillars/${pillarPaths[i]}/`}>اكتشف هذا الركن <span aria-hidden="true">←</span></a></div></article>)}</div>
     </section>
     <section class="section wrap workflow" id="how-it-works" aria-labelledby="workflow-title">
       <div class="workflow-intro"><p class="eyebrow">03 / من الطلب إلى الرد</p><h2 id="workflow-title">أربع خطوات.<br />ولا تفصيلة<br /><span class="muted">خارج الصورة.</span></h2><p class="muted">طبقة حماية بين فريقك والنموذج،<br />تعمل في كل تفاعل.</p></div>
@@ -55,8 +56,8 @@ const sectors = [
   <Footer />
 </BaseLayout>
 <style>
-  .hero { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0 24px; padding-top: 48px; min-height: 790px; position: relative; }
-  .hero-copy { position: relative; z-index: 1; }
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 0 24px; padding-top: 48px; min-height: 790px; position: relative; }
+  .hero-copy { min-width: 0; position: relative; z-index: 1; }
   .hero .eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
   .eyebrow-separator { color: #9a9a9a; padding-inline: 6px; }
   .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ffb829; }

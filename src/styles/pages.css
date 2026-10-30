@@ -1,0 +1,31 @@
+.page h1 { font-size: clamp(42px, 5.6vw, 76px); margin-block: 36px 24px; }
+.page { min-inline-size: 0; overflow-wrap: anywhere; }
+.page .breadcrumb a, .page summary { display: inline-block; min-block-size: 44px; align-content: center; }
+.page .grid > *, .page pre, .page .table-wrap { min-inline-size: 0; max-inline-size: 100%; }
+.lead { font-size: 21px; color: var(--color-silver-mist); max-width: 760px; margin-bottom: 36px; }
+.block { padding-block: 72px; border-top: 1px solid #1c1c1c; }
+.block > h2 { font-size: clamp(30px, 3.4vw, 46px); margin-bottom: 20px; }
+.block > p { color: var(--color-silver-mist); max-width: 760px; margin-bottom: 16px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 40px; }
+.card { border: 1px solid #222; border-radius: 16px; padding: 32px; background: #0a0a0a; display: flex; flex-direction: column; gap: 14px; }
+.card.featured { border-color: var(--color-electric-iris); }
+.card h3 { font-size: 24px; }
+.card p { color: var(--color-silver-mist); font-size: 16px; }
+.card ul, .list { margin: 0; padding-inline-start: 20px; color: var(--color-silver-mist); font-size: 16px; }
+.card li, .list li { margin-block: 8px; }
+.card .ghost { margin-top: auto; }
+.price { font-size: 34px; font-weight: 400; color: var(--color-bone-white); }
+.price small { font-size: 14px; color: var(--color-silver-mist); font-weight: 200; }
+.tag { font-size: 12px; padding: 4px 12px; border: 1px solid var(--color-saffron-spark); color: var(--color-saffron-spark); border-radius: 999px; width: fit-content; }
+.table-wrap { overflow-x: auto; margin-top: 32px; }
+table { width: 100%; border-collapse: collapse; font-size: 16px; min-width: 640px; }
+th, td { text-align: start; padding: 16px; border-bottom: 1px solid #1f1f1f; vertical-align: top; }
+th { color: var(--color-bone-white); font-weight: 400; }
+td { color: var(--color-silver-mist); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; direction: ltr; unicode-bidi: isolate; }
+pre { direction: ltr; text-align: left; background: #0d0d0d; border: 1px solid #222; border-radius: 12px; padding: 20px; overflow-x: auto; font-size: 14px; line-height: 1.8; color: #d8d8d8; margin-top: 24px; }
+.note { font-size: 14px; color: var(--color-ash-gray); margin-top: 32px; }
+details { border-bottom: 1px solid #1f1f1f; padding-block: 20px; }
+summary { cursor: pointer; font-size: 19px; font-weight: 400; }
+details p { color: var(--color-silver-mist); margin-top: 12px; }
+@media (max-width: 767px) { .block { padding-block: 48px; } .card { padding: 24px; } }

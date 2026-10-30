@@ -1,44 +1,16 @@
-# BrightAI Render Blueprint — Astro site (static + Node server functions)
-# KERNEL-AI-2026-07-14: switched from `runtime: static` to `runtime: node`
-# to enable the /api/ai/chat and /api/lead serverless functions on Render.
-# Astro builds produce:
-#   - dist/client/   (190 prerendered HTML pages + assets)
-#   - dist/server/   (Node standalone server with API routes)
-# The Node server serves both static files and API routes from one process.
+# BrightAI Render Blueprint — Astro with the standalone Node adapter.
+# Astro serves clean routes; src/middleware.ts reads redirects.json for .html aliases.
 
 services:
   - type: web
     runtime: node
     name: brightai-site
-    buildCommand: pip3 install fonttools brotli && pnpm install && pnpm run build
-    preDeployCommand: pnpm run verify:deployment-surface
+    # The committed lockfile is package-lock.json; no pnpm lockfile is present.
+    buildCommand: npm ci && npm run build
     startCommand: node ./dist/server/entry.mjs
-    # KERNEL-AUDIT-2026-07-15-BATCH-10 / EXEC-17: hit a real SSR endpoint
-    # (not just / static HTML) so Render detects actual Node outages.
-    healthCheckPath: /api/health/
-    # ──────────────────────────────────────────────────────────────────
-    # BAI-IDX-02 (2026-07-25) — DOCUMENTATION ONLY.
-    # The `headers:` block below is NOT applied to runtime responses on
-    # Render Web Services (Node runtime). Render's `headers:` directive
-    # only works for Render Static Sites. On the current Node service,
-    # the actual production security header posture is enforced by:
-    #
-    #   1. src/middleware.ts — applies RESPONSE_SECURITY_HEADERS as
-    #      HTTP response headers on every SSR route (/api/*).
-    #   2. injectSecurityMeta() Astro integration in astro.config.mjs —
-    #      injects <meta http-equiv="..."> in every prerendered HTML
-    #      file in dist/client/.
-    #   3. Cloudflare edge Transform Rule — applies HSTS on static
-    #      pages (HSTS does NOT work in meta). See
-    #      docs/cloudflare-deployment-headers.md for the manual setup.
-    #
-    # The block below is kept in sync with the canonical posture in
-    # scripts/security-headers.mjs for documentation + drift detection.
-    # If you change a value here, also update scripts/security-headers.mjs
-    # and the post-deploy check (npm run verify:live:headers) will fail
-    # until they re-sync. Do NOT remove this block — it is the single
-    # line of defence for any future migration to a static-only host.
-    # ──────────────────────────────────────────────────────────────────
+    # Checks website availability only, not product/API readiness.
+    healthCheckPath: /
+    # headers below are legacy static-site settings, not runtime security evidence.
     envVars:
       - key: NODE_VERSION
         value: 22.22.2
@@ -46,39 +18,9 @@ services:
         value: 0.0.0.0
       - key: PORT
         value: 10000
-      # CHAT-SESSION-2026-07-15: Redis-backed conversation context store for
-      # /api/ai/chat/. Stores the last 8 messages per sessionId in a Redis
-      # LIST with 10-minute TTL. Required for multi-turn context (kernel
-      # AI assistant). Set in Render dashboard as a sync from a Redis Cloud
-      # / Upstash / Render Key Value instance reachable from the Node
-      # service. If unset, the endpoint gracefully degrades to single-turn
-      # mode (no context) — see src/lib/redis.ts for the fallback contract.
+      # Preserved for existing dashboard compatibility; the current site has no chat API.
       - key: REDIS_URL
         sync: false
-      # GROQ_API_KEY and GEMINI_API_KEY are set in Render dashboard env
-      # (NOT in this file — they are server secrets).
-      # LEAD_WEBHOOK_URL + LEAD_WEBHOOK_SECRET (KRN-004 / EXEC-04) also
-      # set in Render dashboard env. Without LEAD_WEBHOOK_URL configured,
-      # leads are queued in-memory only (cap 100). Recommended webhook
-      # providers: Resend / SendGrid / HubSpot / Zapier / n8n.
-      # BRIGHTAI_CHAT_KEY (KRN-003-FULL-2026-07-15 / EXEC-03) — optional
-      # shared-secret API key for /api/ai/chat/. The endpoint accepts
-      # requests from the BrightAI origin (browser) OR from any client
-      # sending a valid `x-brightai-chat-key: <key>` header. Set in Render
-      # dashboard to enable the API-key auth path for non-browser clients
-      # (curl/Postman/server-to-server). When unset, only the Origin
-      # allowlist is enforced (current production default). Generate with:
-      #   openssl rand -hex 32
-      # The value is read at function scope (process.env) at request time
-      # so it is never inlined into the SSR bundle.
-      # TRUSTED_PROXY_COUNT (KRN-013 / EXEC-13) — controls XFF trust depth
-      # for client-IP extraction in src/lib/ip.ts. Render fronts the Node
-      # service with exactly one reverse proxy, so the default value (1)
-      # is correct for production. The helper trusts the rightmost N
-      # entries of x-forwarded-for (where N = TRUSTED_PROXY_COUNT); the
-      # leftmost entry is client-controlled and ignored. Set to 0 if you
-      # switch to a proxy that strips XFF and only sets x-real-ip. Default
-      # when unset is 1 (Render).
     headers:
       - path: /*
         name: Strict-Transport-Security

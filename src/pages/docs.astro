@@ -1,0 +1,60 @@
+---
+import PageShell from '../components/PageShell.astro';
+export const prerender = true;
+const req = `POST /api/ai/chat/
+Content-Type: application/json
+Accept: text/event-stream        # أو application/json
+x-brightai-chat-key: <YOUR_KEY>  # اختياري حسب إعداد الجهة
+
+{
+  "message": "لخّص سياسة الاحتفاظ بالبيانات",
+  "sessionId": "3f1c9a2e-8b7d-4e21-9c3a-5d6f7a8b9c0d",
+  "promptId": "compliance",
+  "provider": "auto"
+}`;
+const sse = `event: token
+data: "حسب"
+
+event: token
+data: " السياسة..."
+
+event: done
+data: {"provider":"groq"}`;
+const json = `{
+  "reply": "حسب السياسة...",
+  "provider": "groq",
+  "sessionId": "3f1c9a2e-8b7d-4e21-9c3a-5d6f7a8b9c0d"
+}`;
+const js = `const res = await fetch('/api/ai/chat/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+  body: JSON.stringify({ message, sessionId, promptId: 'compliance', provider: 'auto' }),
+});
+const reader = res.body.getReader();
+const decoder = new TextDecoder();
+while (true) {
+  const { value, done } = await reader.read();
+  if (done) break;
+  render(decoder.decode(value)); // حلّل أحداث token / done / error
+}`;
+const rules = [
+  ['المزودون', 'Groq أساسي، وGemini بديل. في وضع auto ينتقل الطلب تلقائياً عند الفشل، ويمكنك تحديد groq أو gemini صراحة.'],
+  ['القوالب', 'يُقبل promptId من القائمة المعتمدة فقط. إرسال systemPrompt مباشرةً مرفوض.'],
+  ['البيانات المحجوبة', 'SAUDI_ID، IQAMA، IBAN، CREDENTIAL، PATIENT_ID قبل وصول الطلب للنموذج.'],
+  ['الجلسات', 'sessionId بصيغة UUID v4. تُحفظ في Redis لمدة 10 دقائق. إذا تعذّر Redis تُستخدم الذاكرة ويعود الترويسة X-Chat-Session: degraded.'],
+  ['المهلة', '25 ثانية للرد.'],
+  ['الحدود', 'حصص وحدود معدل لكل جهة عبر K4.'],
+  ['المصادر المسموحة', 'الطلبات من المتصفح مسموحة من النطاقات المعتمدة فقط.'],
+];
+---
+<PageShell title="التوثيق التقني — AIGAS Chat API | BRIGHTAI" description="توثيق واجهة AIGAS للمحادثة الآمنة: البث المباشر SSE، ووضع JSON، والقوالب، والجلسات، والحماية." crumbs={[{ name: 'التوثيق' }]}>
+  <p class="eyebrow">للمطورين / API</p>
+  <h1>واجهة واحدة.<br /><span class="muted">والحوكمة مدمجة فيها.</span></h1>
+  <p class="note">هذه أمثلة لتكامل مستهدف. المسار <code>/api/ai/chat/</code> غير متوفر في هذا الموقع حالياً، ولم يُتحقق من تشغيل البث أو المزودين أو الجلسات. لا تستخدم الأمثلة كواجهة جاهزة للإنتاج ولا تضع مفاتيح حقيقية في المتصفح.</p>
+  <p class="lead">استبدل الاتصال المباشر بالنموذج بمسار واحد، وسيمر كل طلب على الطبقات الأربع تلقائياً.</p>
+  <section class="block"><h2>الطلب</h2><pre>{req}</pre></section>
+  <section class="block"><h2>البث المباشر (مفضّل)</h2><p>مع <code>Accept: text/event-stream</code> يصل الرد على شكل أحداث <code>token</code> ثم <code>done</code>، أو <code>error</code> عند الفشل.</p><pre>{sse}</pre><pre>{js}</pre></section>
+  <section class="block"><h2>وضع JSON (بديل)</h2><p>مع <code>Accept: application/json</code> يصل الرد كاملاً دفعة واحدة.</p><pre>{json}</pre></section>
+  <section class="block"><h2>القواعد</h2><div class="table-wrap"><table><tbody>{rules.map(([a, b]) => <tr><th>{a}</th><td>{b}</td></tr>)}</tbody></table></div></section>
+  <p class="note">مفاتيح الوصول تُصدر لعملاء الباقات المدفوعة. لا تضع المفتاح أبداً في كود يعمل في المتصفح.</p>
+</PageShell>

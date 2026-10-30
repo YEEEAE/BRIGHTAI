@@ -1,5 +1,26 @@
 ---
 import BrandLogo from './BrandLogo.astro';
+const cols = [
+  { title: 'المنصة', links: [['/products/', 'Kernel والمنتجات'], ['/kernel/', 'التجربة'], ['/pricing/', 'الأسعار'], ['/docs/', 'التوثيق']] },
+  { title: 'الحوكمة', links: [['/pillars/safety/', 'السلامة'], ['/pillars/transparency/', 'الشفافية'], ['/pillars/privacy/', 'الخصوصية'], ['/compliance/', 'الامتثال']] },
+  { title: 'الشركة', links: [['/services/', 'الخدمات'], ['/about/', 'من نحن'], ['/trust/', 'مركز الثقة'], ['/contact/', 'تواصل معنا']] },
+  { title: 'قانوني', links: [['/privacy/', 'سياسة الخصوصية'], ['/terms/', 'الشروط والأحكام']] },
+];
 ---
-<footer class="wrap"><BrandLogo placement="footer" /><p>ذكاء اصطناعي تثق به... وتحاسبه.</p><span dir="ltr">© {new Date().getFullYear()} BRIGHTAI</span></footer>
-<style>footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 48px; color: #9a9a9a; font-size: 14px; } @media(max-width:767px) { footer { flex-direction: column; text-align: center; gap: 12px; } }</style>
+<footer class="wrap">
+  <div class="brand"><BrandLogo placement="footer" /><p>ذكاء اصطناعي تثق به... وتحاسبه.</p></div>
+  <div class="cols">{cols.map(c => <div><h2>{c.title}</h2><ul>{c.links.map(([href, label]) => <li><a href={href}>{label}</a></li>)}</ul></div>)}</div>
+  <span class="copy" dir="ltr">© {new Date().getFullYear()} BRIGHTAI</span>
+</footer>
+<style>
+  footer { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; padding-block: 64px 40px; color: #9a9a9a; font-size: 14px; border-top: 1px solid #1c1c1c; }
+  .brand p { margin-top: 16px; }
+  .cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  h2 { font-size: 14px; color: #fff; margin-bottom: 12px; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li { margin-block: 8px; }
+  a:hover { color: #fff; }
+  li a { display: inline-flex; align-items: center; min-height: 44px; }
+  .copy { grid-column: 1 / -1; }
+  @media (max-width: 767px) { footer { grid-template-columns: 1fr; text-align: center; } .cols { grid-template-columns: repeat(2, 1fr); } }
+</style>

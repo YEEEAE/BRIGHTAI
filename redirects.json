@@ -1,3 +1,96 @@
 {
-  "redirects": []
+  "redirects": [
+    {
+      "source": "/about.html",
+      "destination": "/about/"
+    },
+    {
+      "source": "/compliance.html",
+      "destination": "/compliance/"
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/contact/"
+    },
+    {
+      "source": "/docs.html",
+      "destination": "/docs/"
+    },
+    {
+      "source": "/kernel.html",
+      "destination": "/kernel/"
+    },
+    {
+      "source": "/pillars/safety.html",
+      "destination": "/pillars/safety/"
+    },
+    {
+      "source": "/pillars/transparency.html",
+      "destination": "/pillars/transparency/"
+    },
+    {
+      "source": "/pillars/privacy.html",
+      "destination": "/pillars/privacy/"
+    },
+    {
+      "source": "/pricing.html",
+      "destination": "/pricing/"
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "/privacy/"
+    },
+    {
+      "source": "/products/firewall.html",
+      "destination": "/products/firewall/"
+    },
+    {
+      "source": "/products/risk-engine.html",
+      "destination": "/products/risk-engine/"
+    },
+    {
+      "source": "/products/human-gate.html",
+      "destination": "/products/human-gate/"
+    },
+    {
+      "source": "/products/ledger.html",
+      "destination": "/products/ledger/"
+    },
+    {
+      "source": "/products/secure-chat.html",
+      "destination": "/products/secure-chat/"
+    },
+    {
+      "source": "/products.html",
+      "destination": "/products/"
+    },
+    {
+      "source": "/services.html",
+      "destination": "/services/"
+    },
+    {
+      "source": "/solutions/government.html",
+      "destination": "/solutions/government/"
+    },
+    {
+      "source": "/solutions/finance.html",
+      "destination": "/solutions/finance/"
+    },
+    {
+      "source": "/solutions/healthcare.html",
+      "destination": "/solutions/healthcare/"
+    },
+    {
+      "source": "/solutions/enterprise.html",
+      "destination": "/solutions/enterprise/"
+    },
+    {
+      "source": "/terms.html",
+      "destination": "/terms/"
+    },
+    {
+      "source": "/trust.html",
+      "destination": "/trust/"
+    }
+  ]
 }

@@ -1,0 +1,44 @@
+---
+import PageShell from '../components/PageShell.astro';
+export const prerender = true;
+const topics = ['عرض توضيحي', 'Starter', 'Business', 'Enterprise', 'Sovereign', 'فحص الجاهزية', 'تقييم الامتثال', 'تدريب', 'شراكة', 'منافسة حكومية'];
+---
+<PageShell title="تواصل معنا — احجز عرضاً لـ AIGAS | BRIGHTAI" description="احجز عرضاً توضيحياً لمنصة AIGAS أو اطلب عرض سعر لخدمات حوكمة الذكاء الاصطناعي." crumbs={[{ name: 'تواصل معنا' }]}>
+  <p class="eyebrow">تواصل معنا</p>
+  <h1>خلّنا نفهم احتياجك<br /><span class="muted">قبل أن نعرض عليك شيئاً.</span></h1>
+  <p class="lead">العرض التوضيحي يستغرق 30 دقيقة: نفهم وضعكم، ونعرض المنصة على سيناريو من قطاعكم، ونقترح نقطة البداية المناسبة.</p>
+  <form id="contact" class="card" style="max-width:640px">
+    <label>الاسم<input name="name" required autocomplete="name" /></label>
+    <label>الجهة<input name="org" required autocomplete="organization" /></label>
+    <label>الموضوع<select name="topic">{topics.map(t => <option>{t}</option>)}</select></label>
+    <label>كيف نساعدك؟<textarea name="msg" rows="5"></textarea></label>
+    <button class="button" type="submit" disabled>افتح رسالة البريد <span aria-hidden="true">←</span></button>
+    <p id="contact-status" role="status" aria-live="polite"></p>
+    <noscript><p>للتواصل بدون JavaScript: <a href="mailto:hello@brightai.live">افتح تطبيق البريد</a>.</p></noscript>
+    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى hello@brightai.live. لا يُرسل هذا النموذج شيئاً بنفسه.</p>
+  </form>
+  <p class="note">لا تكتب أي بيانات شخصية حساسة في رسالتك.</p>
+</PageShell>
+<script>
+  const form = document.querySelector<HTMLFormElement>('#contact');
+  const submit = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const status = document.querySelector('#contact-status');
+  const topic = new URLSearchParams(location.search).get('topic');
+  const select = form?.querySelector<HTMLSelectElement>('select');
+  if (topic && select && ![...select.options].some(o => o.value === topic)) select.add(new Option(topic, topic, true, true));
+  else if (topic && select) select.value = topic;
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const body = `الاسم: ${d.get('name')}\nالجهة: ${d.get('org')}\n\n${d.get('msg')}`;
+    location.href = `mailto:hello@brightai.live?subject=${encodeURIComponent(`AIGAS — ${d.get('topic')}`)}&body=${encodeURIComponent(body)}`;
+    if (status) status.textContent = 'طلبنا فتح تطبيق البريد. راجع الرسالة وأرسلها منه؛ لم يُرسل الموقع طلباً أو يؤكد حجزاً.';
+  });
+  // Enable only after the handler is registered; avoid a native GET of personal data.
+  if (submit) submit.disabled = false;
+</script>
+<style>
+  label { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--color-silver-mist); }
+  input, select, textarea { background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; padding: 12px 14px; font-size: 16px; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 2px; }
+</style>

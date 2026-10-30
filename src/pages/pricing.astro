@@ -1,0 +1,59 @@
+---
+import PageShell from '../components/PageShell.astro';
+export const prerender = true;
+const plans = [
+  { name: 'تجربة', price: 'مجاناً', per: '14 يوماً', for: 'لاختبار المنصة قبل القرار', items: ['1,000 طلب', 'Firewall وRisk Engine', 'سجل تدقيق 7 أيام', 'بدون بطاقة ائتمان'], cta: 'ابدأ التجربة' },
+  { name: 'Starter', price: '2,900', per: 'ر.س / شهرياً', yearly: 'أو 29,000 ر.س سنوياً', for: 'الشركات الناشئة والفرق الصغيرة', items: ['حتى 50 مستخدماً', '100 ألف طلب شهرياً', 'Firewall وRisk Engine وSecure Chat', 'سجل تدقيق 90 يوماً', 'دعم عبر البريد'], cta: 'ابدأ بـ Starter' },
+  { name: 'Business', price: '9,500', per: 'ر.س / شهرياً', yearly: 'أو 95,000 ر.س سنوياً', for: 'الشركات المتوسطة', featured: true, items: ['حتى 250 مستخدماً', 'مليون طلب شهرياً', 'كل ما في Starter', 'Human Gate للموافقات البشرية', 'قاطع الدائرة والتحويل بين المزودين', 'سجل تدقيق سنة كاملة'], cta: 'ابدأ بـ Business' },
+  { name: 'Enterprise', price: 'من 35,000', per: 'ر.س / شهرياً', yearly: 'أو من 350,000 ر.س سنوياً', for: 'المؤسسات الكبيرة والقطاعات المنظمة', items: ['مستخدمون حسب الاتفاق', 'دخول موحد SSO', 'Model Lineage', 'سجل تدقيق 5 سنوات', 'اتفاقية مستوى خدمة 99.9%', 'مدير حساب مخصص'], cta: 'تواصل مع المبيعات' },
+  { name: 'Sovereign', price: 'من 750,000', per: 'ر.س ترخيص سنوي', yearly: '+ تركيب من 150,000 ر.س', for: 'الجهات الحكومية والجهات التي لا تسمح بخروج البيانات', items: ['تشغيل كامل داخل بنيتكم', 'نماذج محلية بدون اتصال خارجي', 'احتفاظ حسب سياستكم', 'دعم على مدار الساعة', 'تهيئة وتدريب فريقكم'], cta: 'اطلب عرضاً' },
+];
+const addons = [
+  ['مليون طلب إضافي', '1,500 ر.س'], ['أنماط PII مخصصة (رقم موظف، رقم ملف...)', '15,000 ر.س لمرة واحدة'],
+  ['ربط مزود نماذج إضافي', '8,000 ر.س + 1,000 ر.س شهرياً'], ['تمديد سجل التدقيق', '12,000 ر.س سنوياً'],
+  ['تكامل SIEM', '25,000 ر.س لمرة واحدة'], ['بيئة اختبار Staging', '20% من قيمة الباقة'],
+];
+const bundles = [
+  { name: 'حزمة الامتثال المؤسسي', price: '150,000 ر.س', parts: 'Business سنوي (95,000) + التقييم الشامل (65,000) + ورشة القيادات (15,000)', sum: '175,000 ر.س', save: 'توفير 25,000 ر.س' },
+  { name: 'الحزمة السيادية', price: 'من 1,250,000 ر.س', parts: 'ترخيص Sovereign (750,000) + التركيب (150,000) + تهيئة ISO 42001 (90,000) + AI Red Teaming (45,000) + مكتب الحوكمة المُدار لـ12 شهراً (300,000)', sum: '1,335,000 ر.س', save: 'توفير 85,000 ر.س' },
+];
+const faq = [
+  ['هل الأسعار شاملة الضريبة؟', 'لا. جميع الأسعار بالريال السعودي ولا تشمل ضريبة القيمة المضافة 15%.'],
+  ['ماذا يحدث لو تجاوزنا عدد الطلبات؟', 'لن تتوقف الخدمة فجأة. نرسل لكم تنبيهاً عند 80%، ويُحتسب الاستهلاك الزائد بسعر حزمة المليون طلب الإضافية.'],
+  ['هل تُرسل بياناتنا لمزودي النماذج؟', 'في الباقات السحابية يصل النص إلى المزود بعد حجب البيانات الحساسة. وإذا كانت سياستكم لا تسمح بخروج أي بيانات، فالباقة السيادية هي الخيار المناسب.'],
+  ['هل يمكن الترقية في منتصف الاشتراك؟', 'نعم، ونحتسب الفرق بالتناسب مع المدة المتبقية.'],
+  ['هل تدعمون المنافسات والعقود الحكومية؟', 'نعم، نقدم عروضاً فنية ومالية وفق متطلبات المنافسة.'],
+];
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: faq.map(([question, answer]) => ({
+    '@type': 'Question', name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
+};
+---
+<PageShell title="الأسعار والباقات — AIGAS | BRIGHTAI" description="أسعار واضحة ومعلنة لمنصة AIGAS بالريال السعودي: تجربة مجانية، Starter، Business، Enterprise وSovereign." crumbs={[{ name: 'الأسعار' }]}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <p class="eyebrow">الأسعار / بالريال السعودي</p>
+  <h1>أسعار معلنة.<br /><span class="muted">لأن الشفافية تبدأ منّا.</span></h1>
+  <p class="lead">أسعار الباقات والخدمات المقترحة موضحة هنا. تفاصيل التوفر والتفعيل والالتزامات تُحدد في العرض المكتوب.</p>
+  <p class="note">تجربة الموقع الحالية محاكاة حجب فقط، ولا تفعّل اشتراكاً لمدة 14 يوماً أو حصة طلبات أو SLA. البنود التجارية المعروضة تحتاج تأكيداً في عرضكم الموقّع.</p>
+  <div class="grid">{plans.map(p => <article class={`card${p.featured ? ' featured' : ''}`}>
+    {p.featured && <span class="tag">الأكثر طلباً</span>}
+    <h3 dir="ltr" style="text-align:right">{p.name}</h3><p>{p.for}</p>
+    <span class="price">{p.price} <small>{p.per}</small></span>{p.yearly && <span class="note" style="margin:0">{p.yearly}</span>}
+    <ul>{p.items.map(i => <li>{i}</li>)}</ul>
+    <a class={p.featured ? 'button' : 'ghost'} href={`/contact/?topic=${encodeURIComponent(p.name === 'تجربة' ? 'طلب تجربة المنصة' : p.name)}`}>{p.name === 'تجربة' ? 'اطلب تجربة المنصة' : p.cta} <span aria-hidden="true">←</span></a>
+  </article>)}</div>
+
+  <section class="block"><h2>الإضافات</h2>
+    <div class="table-wrap"><table><thead><tr><th>الإضافة</th><th>السعر</th></tr></thead><tbody>{addons.map(([a, b]) => <tr><td>{a}</td><td>{b}</td></tr>)}</tbody></table></div>
+  </section>
+
+  <section class="block"><h2>الحزم</h2><p>منصة وخدمات بسعر واحد، مع توفير حقيقي تستطيع التحقق منه.</p>
+    <div class="grid">{bundles.map(b => <article class="card"><h3>{b.name}</h3><span class="price">{b.price}</span><p>{b.parts}</p><span class="note" style="margin:0">المجموع منفصلاً: {b.sum} · {b.save}</span></article>)}</div>
+  </section>
+
+  <section class="block"><h2>أسئلة شائعة</h2>{faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</section>
+  <p class="note">الأسعار افتتاحية وقابلة للتحديث، وما يُلزم الطرفين هو العرض المكتوب الموقّع.</p>
+</PageShell>

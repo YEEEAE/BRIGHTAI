@@ -1,16 +1,23 @@
 ---
 import BrandLogo from './BrandLogo.astro';
+const links = [
+  { href: '/products/', label: 'المنتجات' },
+  { href: '/#solutions', label: 'الحلول' },
+  { href: '/services/', label: 'الخدمات' },
+  { href: '/pricing/', label: 'الأسعار' },
+  { href: '/docs/', label: 'المطورون' },
+];
 ---
 <a class="skip-link" href="#main">تخطّ إلى المحتوى</a>
 <header class="topbar wrap">
   <BrandLogo />
-  <nav aria-label="التنقل الرئيسي"><a href="/#principles">لماذا AIGAS؟</a><a href="/#how-it-works">كيف يعمل</a><a href="/#solutions">الحلول</a></nav>
-  <a class="ghost contact" href="mailto:hello@brightai.live?subject=AIGAS%20Demo">احجز عرضاً <span aria-hidden="true">↗</span></a>
+  <nav aria-label="التنقل الرئيسي">{links.map(l => <a href={l.href}>{l.label}</a>)}</nav>
+  <a class="ghost contact" href="/contact/">احجز عرضاً <span aria-hidden="true">↗</span></a>
 </header>
 <style>
   .topbar { min-height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-  nav { display: flex; gap: 36px; align-items: center; }
+  nav { display: flex; gap: 32px; align-items: center; }
   nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 400; color: #9a9a9a; }
   nav a:hover { color: #fff; }
-  @media (max-width: 767px) { .topbar { min-height: 112px; flex-wrap: wrap; padding-block: 12px; gap: 12px; } nav { order: 3; width: 100%; justify-content: space-between; gap: 12px; } .contact { font-size: 14px; } }
+  @media (max-width: 900px) { .topbar { flex-wrap: wrap; padding-block: 12px; gap: 12px; } nav { order: 3; width: 100%; justify-content: space-between; gap: 8px; flex-wrap: wrap; } .contact { font-size: 14px; } }
 </style>

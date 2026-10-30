@@ -1,5 +1,46 @@
 # Project Mind — BrightAI
 
+## [2026-10-30] — إصلاح تعريف استيراد CSS في المحرر
+
+### تم التنفيذ
+- أضفت `tsconfig.json` المفقود بامتداد `astro/tsconfigs/strict` وإدراج `.astro/types.d.ts` و`src/**/*`؛ تعريف `astro/client` الموجود يتضمن وحدات CSS.
+- أبقيت استيراد `theme.css` كما هو؛ الملف موجود والمشكلة في سياق الأنواع، وأزلت `@ts-ignore` غير اللازم من PageShell.
+- لم أضف اعتماداً أو تصريح CSS عاماً يكرر تعريفات Astro أو يعطّل التحقق.
+### الملفات المتأثرة
+- `tsconfig.json`، `src/env.d.ts`، `src/components/PageShell.astro`
+### التحقق
+- `npm run build`: PASS؛ `tsc --noEmit --noUncheckedSideEffectImports`: PASS باستخدام tsc العام 7.0.2.
+- فحص TypeScript منفصل لاستيرادي theme.css وpages.css مع astro/client: PASS؛ diff-check: PASS.
+- تشخيص محرر المستخدم مباشرة و`astro check`: NOT RUN؛ الأخير غير مثبت. tsc لا يفحص قوالب Astro كاملة.
+### النتيجة
+- **الحالة:** نجح محلياً لإعداد الأنواع واستيراد CSS؛ قد يحتاج المحرر إعادة تحميل خدمة اللغة.
+
+## [2026-10-30] — مراجعة الصفحات الجديدة وتفعيل الروابط النظيفة
+
+### تم التنفيذ
+- راجعت إضافات المستخدم وحافظت عليها؛ الموقع يبني 24 صفحة عامة (18 جديدة)، وجميعها مرتبطة داخلياً ومدرجة في sitemap.
+- فعّلت `trailingSlash: always`؛ أضفت 23 alias بصيغة `.html` إلى `redirects.json` وربطتها عبر `src/middleware.ts` بتحويل 301 يحفظ query. Middleware للتوجيه فقط وليس لترويسات الأمان.
+- أصلحت CSS المشترك في BaseLayout باستيراد الملفين بدلاً من روابط نسبية 404، وربطت صفحات الأركان من الرئيسية وحسّنت نموذج فتح البريد وfallback ومساحات اللمس.
+- صححت حدود توثيق API والتجربة والسياسات: قدرات المنصة المعروضة مستهدفة وغير مثبتة التشغيل؛ `/api/ai/chat/` غير موجود، وطلب تجربة الاشتراك يفتح التواصل بدلاً من محاكاة Kernel.
+- صححت Render لواقع الشجرة: `npm ci && npm run build` لوجود package-lock.json فقط، إزالة preDeploy لسكربت مفقود، وhealthCheckPath `/` لقياس توفر الموقع فقط. headers الموروثة ليست دليلاً لتطبيق أمان Node.
+
+### الملفات المتأثرة
+- `astro.config.mjs`، `redirects.json`، `render.yaml`، `src/middleware.ts`، `src/layouts/BaseLayout.astro`
+- صفحات المستخدم الجديدة، `src/pages/index.astro`، `src/components/Footer.astro`، `src/styles/pages.css`
+- `scripts/verify-routes.mjs`، `Audit/2026-10-30-pages-and-clean-urls.md`
+
+### التحقق
+- `npm run build`: PASS؛ `pnpm build`: BLOCKED بكاش Corepack، دون تثبيت تبعيات.
+- فحص Node محلي: 24 صفحة، 823 مرجعاً داخلياً + 3 أصول CSS، 69 فحص تحويل، صفر روابط مكسورة أو صفحات معزولة؛ canonical/indexability/GA4/breadcrumbs: PASS.
+- Playwright: 48 عرضاً على 360/1440px دون overflow؛ لوحة المفاتيح وrequired وtopic وfallback بلا JS وreduced-motion: PASS. لم يُرسل بريد فعلي.
+- JSON/YAML ومطابقة manifest مع package-lock وdiff-check: PASS. لا تحقق نشر أو اعتماد سياسات أو تشغيل محرك.
+
+### النتيجة
+- **الحالة:** نجح محلياً للتوجيه وربط الصفحات؛ اعتماد النصوص القانونية والتجارية والقدرات التشغيلية NOT VERIFIED.
+
+### ملاحظات / مشاكل مفتوحة
+- تقرير audit يوضح حدود API وSLA والاحتفاظ وهوية المتحكم وheaders؛ تحتاج أدلة واعتماد المالك. README الفارغ باقٍ ومستبعد من sitemap؛ aliases الخاصة بـindex.html الساكنة ليست ضمن التحويلات الجديدة.
+
 ## [2026-10-30] — تكييف AGENTS.md المرجعي بالكامل لـBRIGHTAI
 
 ### تم التنفيذ
