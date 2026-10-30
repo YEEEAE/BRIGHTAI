@@ -100,19 +100,6 @@ seo/raw/
 # Demo/Development directories (contain exposed API keys)
 h/
 Customer/
-try.html
-
-# Test/Dead files
-test-glassmorphism.html
-mm.html
-nn.html
-width.html
-fake.py
-ز.html
-يي
-
-# CLEANUP-2026-07-15: archived kernel directory (was legacy-disabled/)
-/kernel/legacy-disabled/
 
 # Directories with spaces (non-standard naming)
 Saudi tourism and heritage services/
