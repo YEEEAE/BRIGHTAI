@@ -1,3 +1,0 @@
-packages:
-  - 'packages/*'
-  # Root (Astro marketing site) is implicitly a workspace.

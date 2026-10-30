@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" aria-hidden="true" focusable="false">
-  <rect x="2" y="2" width="76" height="76" rx="14" fill="#0a0e1a" stroke="#22d3ee" stroke-width="1.5"/>
-  <text x="40" y="34" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" font-weight="700" fill="#22d3ee" letter-spacing="0.5">SAMA</text>
-  <text x="40" y="52" text-anchor="middle" font-family="IBM Plex Sans Arabic, system-ui, sans-serif" font-size="9" fill="#94a3b8">البنك المركزي</text>
-  <text x="40" y="64" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7" fill="#64748b">Saudi Central Bank</text>
-</svg>

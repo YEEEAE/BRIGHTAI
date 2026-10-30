@@ -1,6 +1,0 @@
-Contact: mailto:yazeed1job@gmail.com
-Contact: https://brightai.live/contact/
-Preferred-Languages: ar, en
-Canonical: https://brightai.live/.well-known/security.txt
-Policy: https://brightai.live/docs/privacy-policy/
-Expires: 2027-05-03T00:00:00+03:00

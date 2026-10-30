@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BrightAI">
-  <rect width="64" height="64" rx="14" fill="#060914"/>
-  <path d="M18 44V16h18c6.4 0 10.4 3.3 10.4 8.2 0 3-1.5 5.4-4.2 6.8 3.4 1.2 5.4 4 5.4 7.6 0 5.3-4.3 8.4-11.4 8.4H18Zm8.2-16.6h8.2c2.5 0 3.9-1.2 3.9-3.2 0-2.1-1.4-3.2-3.9-3.2h-8.2v6.4Zm0 12.5h9.4c2.6 0 4-1.2 4-3.4 0-2.1-1.5-3.4-4-3.4h-9.4v6.8Z" fill="#f8fafc"/>
-  <path d="M14 50h36" stroke="#22d3ee" stroke-width="4" stroke-linecap="round"/>
-</svg>

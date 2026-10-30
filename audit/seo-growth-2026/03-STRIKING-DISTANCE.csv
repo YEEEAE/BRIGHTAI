@@ -1,2 +1,0 @@
-status,country,query,page,device,period_start,period_end,impressions,clicks,ctr,position,eligibility,next_action
-BLOCKED_GSC_DATA,SA,,,,,,,,,,position 2–15 AND impressions > 0; not currently evaluable,Export same-period country=SA query×page×device; validate normalized intent owners; rank before rewriting
