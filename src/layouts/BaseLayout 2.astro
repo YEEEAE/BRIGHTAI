@@ -298,26 +298,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        a prior is:inline script to remove unsafe-inline from CSP script-src. */}
   <script defer src="/js/sw-register.js"></script>
 
-  {/* Google tag (gtag.js) — OWNER REQUEST (2026-08-28): the literal Google
-       snippet, verbatim, on every page for every visitor. No consent gating,
-       no deferred loader, no requestIdleCallback. is:inline keeps the snippet
-       byte-exact in the served HTML; CSP already allows 'unsafe-inline' and
-       www.googletagmanager.com in script-src (Report-Only header).
-       gtag-init.js is retired; the unified analytics runtime (analytics.js)
-       registers its gtag provider internally. */}
-  {/* BAI-PERF-LCP-001 (2026-09-03): preconnect so the owner-mandated gtag
-        request (async, every page) handshakes in parallel with the
-        render-blocking CSS/font fetch instead of stalling ~3.7s on
-        throttled mobile. No visual or behavioural change. */}
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-9LMB4PGTWJ');
-  </script>
+  {/* Legacy layout: keep GA4 initialization in the consent-gated analytics runtime. */}
 
   {/* Microsoft Clarity — only when a real ID is configured (skip on placeholder).
        External file replaces a prior is:inline script to remove unsafe-inline from

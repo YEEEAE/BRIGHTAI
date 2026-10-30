@@ -51,7 +51,7 @@ export const legal_en_cookie_policy: LegalInlineContent = {
       <article class="glass rounded-2xl p-6 lg:p-8" id="sec-3">
         <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">3. Performance &amp; Analytics</h2>
         <p class="text-white/80 leading-loose text-sm lg:text-base">Performance cookies enable us to monitor website speed, identify technical errors, evaluate page view statistics, and understand how visitors interact with our technical guides and documentation. This aggregated information helps us continually refine platform usability, optimize Core Web Vitals, and ensure high responsiveness on desktop and mobile browsers across Saudi networks.</p>
-        <p class="text-white/70 leading-relaxed text-sm mt-3">We implement privacy-centric telemetry with IP anonymization enabled by default. No personal identification numbers, phone numbers, or corporate confidential prompts are ever transmitted or tracked via performance monitoring tools.</p>
+        <p class="text-white/70 leading-relaxed text-sm mt-3">Optional analytics providers load only after you grant analytics consent. Events use an approved set of page, CTA, and attribution fields; obvious email and phone values are filtered, and page locations omit query strings. Please do not include personal or confidential information in page titles, campaign tags, or other tracking labels.</p>
       </article>
 
       <article class="glass rounded-2xl p-6 lg:p-8" id="sec-4">

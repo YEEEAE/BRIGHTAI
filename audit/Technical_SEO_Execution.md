@@ -1,29 +1,3 @@
-## BA-05 — تصحيح شعارات الامتثال وصياغات الاعتماد (P0)
-
-**Phase:** 02 · الثقة والادعاءات
-**Files:** `src/components/TrustBadges.astro · src/pages/index.astro · src/pages/trust/index.astro`
-**Depends on:** BA-00
-**Purpose:** دعم الجاهزية ≠ شهادة أو اعتماد من جهة تنظيمية
-
-```text
-PROJECT: YEEEAE/BRIGHTAI (Astro 6, Render Node). Work against the currently checked-out repository; confirm the actual HEAD and paths first.
-EXECUTION POLICY: Implement the scoped, evidence-backed changes in the local working tree only. NEVER push, commit, create a branch/PR, change GitHub settings, deploy, or mutate production systems. Never expose credentials or personal data. Do not delete unrelated functionality. Keep current Arabic RTL and English routes working.
-EFFICIENCY: No Playwright/E2E tests, automated test suites, browser screenshot collection, mass crawling, or long-running agents. Use targeted source inspection, review the diff, and optionally a lightweight build or syntax check only where it adds real value.
-EVIDENCE: Treat the 2026 audit as a lead, not an immutable truth. If findings are stale or unsupported, explain and do not force a fix. Never invent GSC/GA4 metrics, customer endorsements, security certifications, hosting regions, performance measurements, or a passing status.
-DELIVERY: At completion return (a) what was verified, (b) exact changed paths, (c) evidence-based changes, (d) open blockers, (e) any manual follow-up. Do not output inflated completion percentages.
-
-ROLE: Compliance-aware content engineer.
-FINDING: Hero displays marks for SDAIA, NCA ECC, ISO 42001 and SAMA. Existing tooltip wording tends toward 'متوافق مع' while the code itself references readiness support.
-TASK: Make meaning unambiguous without falsely implying official endorsement, certification or audit approval.
-ACTIONS:
-1. Inventory regulatory marks and exact claim text (alt, tooltip, visually rendered caption, aria-label, structured data) across the site.
-2. For each claim, search repository evidence and official-source references. Classify as verifiable certification, documented capability alignment, explanatory reference, or unsupported.
-3. For unsupported marks or certification-like phrases, replace with clear text labels such as 'يدعم الاستعداد لمتطلبات ...' where true. Do not reuse restricted logos if usage permission is not documented; choose neutral text references as needed.
-4. Provide accessible explanatory copy that works without hover, including touch and keyboard users.
-5. Preserve accurate legal disclaimers: the customer's final compliance depends on its deployment, controls and independent assessment.
-ACCEPTANCE: No visitor is invited to infer official certification or approval from a readiness feature alone; each public claim has traceable basis.
-```
-
 ## BA-06 — إزالة شهادات العملاء غير المثبتة أو تمييزها بوضوح (P0)
 
 **Phase:** 02 · الثقة والادعاءات

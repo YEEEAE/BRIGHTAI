@@ -1,5 +1,21 @@
 # Project Mind — BrightAI
 
+- **2026-10-30 — توضيح مراجع الجهات والمعايير في الهيرو**
+  - Changed: استبدلت رسوم TrustBadges بروابط نصية تفسيرية لمراجع SDAIA وNCA ECC وISO/IEC 42001 وSAMA؛ صححت صياغة PDPL في FAQ/Schema وعبارات امتثال القطاعات ووصف PWA، وعطلت أسماء SVG القديمة التي توحي بشهادة واستبعدت مجلدات شارات الجهات من image sitemap.
+  - Evidence: طابقت الروابط بصفحات الجهات الرسمية؛ التزمت بإيضاح أن التطبيق النهائي للعميل يعتمد على نطاقه وبيئته وضوابطه وتقييم مستقل.
+  - State: PARTIAL — الادعاءات التي جرى تحديدها في الواجهة الرئيسية ووصف PWA عولجت؛ بقية الموقع تحتوي إشارات تنظيمية ومحتوى تعليمي أوسع لم تُراجع دعوىً بدعوى.
+  - Key files: `src/components/TrustBadges.astro`; `src/components/SplitHero.astro`; `src/pages/index.astro`; `public/manifest.webmanifest`; `scripts/generate-image-sitemap.mjs`; `public/sitemap-images.xml`.
+
+## [2026-10-30] — مصالحة موافقة التحليلات ودلالات funnel
+
+- Changed: أزلت gtag المبكر من layout legacy، وأصبحت أحداث `unknown` تُهمل ولا تُعاد بعد القبول؛ ترحيل `cookie-consent` صار ثنائي الاتجاه ويحمّل المزودين فقط عند grant.
+- Changed: تقييد `page_location` إلى origin+path، وتأجيل قراءة/حفظ UTM حتى grant، وتطبيق allowlist وتنقية email/phone obvious values للعميل والسيرفر.
+- Changed: `contact_submit` يخص `contact_main` و`home_cta` بعد قبول مزود FormSubmit وبالموافقة؛ `demo_submit` يخص `kernel_lead` بعد API acceptance ويحمل idempotency event ID. WhatsApp fallback يظل handoff.
+- Changed: `lead_created` سيرفر فقط لصف Kernel جديد، مع موافقة header+cookie وGA client ID موجود؛ أزلت client ID الاصطناعي، وقيدت server params بالـallowlist.
+- Evidence: `node --check` لملفات JavaScript المعدلة، TypeScript syntax check لـ`analytics.ts` و`ga4-server.ts` و`api/lead.ts`، و`git diff --check` PASS؛ لم تُشغّل suites أو build أو تحقق حساب/DebugView.
+- State: PARTIAL — التغييرات محلية؛ قبول FormSubmit النهائي، GA4 config/DebugView وGSC يحتاج تحقق المالك. لا أرقام dashboard أو production موثقة.
+- Key files: `public/js/analytics.js`, `src/lib/analytics.ts`, `src/pages/api/lead.ts`, `src/lib/ga4-server.ts`, `audit/seo-recovery/13-ANALYTICS-MEASUREMENT-PLAN.md`.
+
 ## [2026-10-30] — ضبط موافقة GA4 ودلالات funnel العملاء
 
 - Changed: جعلت تحميل وتهيئة GA4 وClarity وgrowth providers بعد موافقة التحليلات فقط، مع ترحيل قرار `cookie-consent` legacy في الاتجاهين وإبقاء الإسناد الخالي من البريد/الهاتف.

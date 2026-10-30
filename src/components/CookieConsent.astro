@@ -6,9 +6,8 @@
  * unified analytics runtime (window.__BRIGHTAI_ANALYTICS__.setConsent) so
  * that:
  *
- *   - On accept: queued events (collected before the user clicked) are
- *     flushed to the providers (gtag, mixpanel, bing).
- *   - On decline: queued events are dropped, and the providers never
+ *   - On accept: subsequent events can be sent to consent-gated providers.
+ *   - On decline: providers never
  *     receive anything for the rest of the session.
  *
  * The consent flag is also written to localStorage under the
@@ -41,15 +40,21 @@
   // Migrate the legacy decision once, then show the banner only when no
   // explicit tracking decision exists.
   const legacyConsent = localStorage.getItem('cookie-consent');
-  const storedConsent = localStorage.getItem('brightai:tracking_consent');
+  let storedConsent = localStorage.getItem('brightai:tracking_consent');
   if (!storedConsent && (legacyConsent === 'accepted' || legacyConsent === 'declined')) {
     localStorage.setItem('brightai:tracking_consent', legacyConsent === 'accepted' ? 'granted' : 'denied');
-  } else if ((storedConsent === 'granted' || storedConsent === 'denied') && !legacyConsent) {
+    storedConsent = legacyConsent === 'accepted' ? 'granted' : 'denied';
+  } else if ((storedConsent === 'granted' || storedConsent === 'denied') && legacyConsent !== (storedConsent === 'granted' ? 'accepted' : 'declined')) {
     localStorage.setItem('cookie-consent', storedConsent === 'granted' ? 'accepted' : 'declined');
   }
   const banner = document.getElementById('cookie-consent');
   if (banner && !storedConsent && !legacyConsent) {
     banner.hidden = false;
+  }
+
+  // Keep the runtime in sync when this inline script runs before analytics.js.
+  if (storedConsent === 'granted' || storedConsent === 'denied') {
+    window.__BRIGHTAI_ANALYTICS__?.setConsent(storedConsent);
   }
 
   // Helper — set the legacy + the new consent key, and notify the analytics

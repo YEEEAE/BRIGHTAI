@@ -7,14 +7,13 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SplitHero from '../components/SplitHero.astro';
-import TrustBadges from '../components/TrustBadges.astro';
 import LeadForm from '../components/LeadForm.astro';
 import { FORM_TAXONOMY, DEFAULT_CONTACT_FIELDS } from '../data/marketing';
 import DOMPurify from 'isomorphic-dompurify';
 
 const faqItems = [
   { q: 'وش هي BrightAI؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI هي <strong>Saudi AI Safety OS</strong> — نظام تشغيل أمان وحوكمة للذكاء الاصطناعي داخل المؤسسات السعودية. تشتغل كطبقة وسيطة بين الموظف والـ AI وبيانات الشركة، وتضمن إن كل طلب ذكاء اصطناعي يكون آمن وموثّق وقابل للمراجعة.</p><p>عكس شات بوت عادي، BrightAI تركّب تحت أي نظام AI في شركتك وتفعّل AI Firewall وإخفاء البيانات الشخصية وسجل التدقيق والموافقات البشرية وملفات الأدلة — كلها مصممة لدعم متطلبات PDPL وNCA وSDAIA.</p>' },
-  { q: 'هل BrightAI متوافقة مع نظام حماية البيانات الشخصية PDPL؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI صُممت لدعم جاهزية الامتثال لنظام حماية البيانات الشخصية السعودي PDPL من اليوم الأول. يتوفر <strong>PDPL Compliance Pack</strong> جاهز يتضمن إخفاء البيانات الشخصية تلقائياً (PII Redaction)، سجل الموافقات، سجل مشاركة البيانات، وإشعارات أصحاب البيانات.</p><p>النظام ينتج تقارير جاهزية امتثال تقدّمها للمدققين عند الحاجة، مع توقيع رقمي يمنع التعديل — والامتثال النهائي يبقى مسؤولية مؤسستك وتقييمها.</p>' },
+  { q: 'هل BrightAI متوافقة مع نظام حماية البيانات الشخصية PDPL؟', a: '<p><strong class="text-white">الجواب:</strong> لا نقدر نؤكد امتثال BrightAI أو أي عميل لـ PDPL من الميزة وحدها. توفر المنصة أدوات تشغيلية مثل إخفاء بعض البيانات الشخصية وتوثيق الإجراءات، وقد تساعد المؤسسة في الاستعداد لمراجعة متطلباته.</p><p>يعتمد الامتثال النهائي على نطاق المؤسسة وبيئة النشر والضوابط المطبقة، ويحتاج تقييمًا مستقلًا. BrightAI ليست جهة اعتماد أو استشارة قانونية.</p>' },
   { q: 'هل BrightAI يشتغل مع المصانع الطبية؟', a: '<p><strong class="text-white">الجواب:</strong> نعم، <strong>BrightAI QMS AI</strong> مصمم خصيصاً للمصانع الطبية السعودية. يدير المرفوضات (Nonconformities) وCAPA والتدقيق الداخلي مع ربط مباشر مع أنظمة ERP.</p><p>يولّد Evidence File PDF جاهز للمدققين يدعم متطلبات SFDA وISO 13485، مع توقيع رقمي وتتبع كامل لكل إجراء.</p>' },
   { q: 'هل الذكاء الاصطناعي يقدر يتخذ قرار خطير بدون موافقة بشرية؟', a: '<p><strong class="text-white">الجواب:</strong> لا، الـ AI في BrightAI <strong>يقترح فقط</strong>. القرارات الخطيرة والعالية المخاطر تتطلب موافقة بشرية موثّقة من المدير المختص عبر <strong>Human Approval Layer</strong>، مع توقيع رقمي وتاريخ وإشعار فوري عبر واتساب أو البريد.</p><p>هذا يضمن بقاء السيطرة في أيدي البشر (Human-in-the-Loop) وعدم تفويض القرارات الحيوية للذكاء الاصطناعي بشكل كامل.</p>' },
   { q: 'هل ينفع نركّب BrightAI On-Premise داخل سيرفراتنا؟', a: '<p><strong class="text-white">الجواب:</strong> نعم، BrightAI يدعم <strong>3 أوضاع نشر</strong> تناسب احتياجات المؤسسات السعودية:</p><ul class="mt-2 space-y-1 list-disc list-inside"><li><strong>Cloud:</strong> مستضاف داخل السعودية</li><li><strong>Hybrid:</strong> نشر هجين بين السحابة والسيرفرات المحلية</li><li><strong>Air-Gapped:</strong> معزول بالكامل داخل شبكتك بدون أي اتصال خارجي — مثالي للجهات الحكومية والمصانع الحساسة</li></ul>' },
@@ -160,11 +159,6 @@ const enhancedJsonLd = jsonLd;
     </p>
   </div>
 </section>
-
-{/* CHAMPION-03 (2026-07-30): Trust badges row — SAMA, SDAIA, NCA ECC, ISO 42001.
-    Placed under the hero CTAs as B2B trust signals. Label is "متوافق مع"
-    (aligned with), NOT "معتمد من" (certified by). CSS-only hover tooltips. */}
-<TrustBadges />
 
 {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
    Answer-first, self-contained, ≤60 words, formal Arabic. Visual
@@ -329,9 +323,9 @@ const enhancedJsonLd = jsonLd;
     <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
       <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-flask"></use></svg><h3 class="mt-3 text-lg font-bold">المصانع الطبية</h3><p class="text-sm text-white/60 mt-1">BrightAI QMS AI – إدارة المرفوضات وCAPA والتدقيق وفق SFDA و ISO 13485.</p><span class="chip text-[10px] px-2 py-0.5 rounded mt-3 inline-block">جاهز · ديمو MAIS</span></div>
       <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-hospital-building"></use></svg><h3 class="mt-3 text-lg font-bold">الرعاية الصحية</h3><p class="text-sm text-white/60 mt-1">أرشفة، OCR، تلخيص ملفات طبية مع حماية بيانات المرضى ومسار موافقة.</p></div>
-      <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-bank"></use></svg><h3 class="mt-3 text-lg font-bold">الجهات الحكومية</h3><p class="text-sm text-white/60 mt-1">ذكاء اصطناعي متوافق مع SDAIA و NCA لتسريع الخدمات بدون مخاطر امتثال.</p></div>
+      <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-bank"></use></svg><h3 class="mt-3 text-lg font-bold">الجهات الحكومية</h3><p class="text-sm text-white/60 mt-1">تنظيم استخدام الذكاء الاصطناعي مع مراجعة المتطلبات التي تنطبق على الجهة ونطاق استخدامها.</p></div>
       <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-handshake"></use></svg><h3 class="mt-3 text-lg font-bold">المشتريات والمناقصات</h3><p class="text-sm text-white/60 mt-1">تحليل عروض الموردين والعقود واكتشاف المخاطر والشروط الجزائية.</p></div>
-      <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-coins"></use></svg><h3 class="mt-3 text-lg font-bold">القطاع المالي</h3><p class="text-sm text-white/60 mt-1">توافق مع ساما والزكاة، كشف الاحتيال، مطابقة AML، تدقيق ذكي.</p></div>
+      <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-coins"></use></svg><h3 class="mt-3 text-lg font-bold">القطاع المالي</h3><p class="text-sm text-white/60 mt-1">حوكمة استخدامات الذكاء الاصطناعي في القطاع المالي مع مراعاة متطلبات الجهة ونطاقها.</p></div>
       <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-switch"></use></svg><h3 class="mt-3 text-lg font-bold">الموارد البشرية</h3><p class="text-sm text-white/60 mt-1">فرز سير ذاتية ذكي بدون انحياز ومع حماية بيانات المتقدمين.</p></div>
       <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-truck-fast"></use></svg><h3 class="mt-3 text-lg font-bold">سلاسل الإمداد</h3><p class="text-sm text-white/60 mt-1">رصد المخاطر، تحسين مخزون، تنبؤ بالطلب مع ضوابط قرار آمنة.</p></div>
       <div class="card card--feature rounded-2xl p-6"><svg class="text-3xl text-cyan-400" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-school"></use></svg><h3 class="mt-3 text-lg font-bold">التعليم</h3><p class="text-sm text-white/60 mt-1">أدوات AI للجامعات السعودية مع حماية بيانات الطلاب وضوابط محتوى.</p></div>
@@ -434,24 +428,9 @@ const enhancedJsonLd = jsonLd;
         <span class="section__eyebrow" lang="ar">
           <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-home"></use></svg> الامتثال التنظيمي السعودي
         </span>
-        <h2 class="section__title text-start">متوافق مع الهيئات السعودية 🇸🇦</h2>
-        <p class="text-sm text-white/60 leading-relaxed">نواة BrightAI متوافقة مع ضوابط الأمن السيبراني ولائحة حماية البيانات.</p>
-        <div class="home-trust__badges">
-          <span class="home-trust__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-half-full"></use></svg> الهيئة الوطنية للأمن السيبراني (NCA)</span>
-          <span class="home-trust__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-brain"></use></svg> هيئة البيانات والذكاء الاصطناعي (SDAIA)</span>
-          <span class="home-trust__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-medical-bag"></use></svg> هيئة الغذاء والدواء (SFDA)</span>
-          <span class="home-trust__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-document-outline"></use></svg> هيئة الزكاة والضريبة والجمارك (ZATCA)</span>
-        </div>
-        {/* REPORT-09: Compliance logo row — grayscale by default, colored on hover.
-            GA-SEO-AUDIT-002 (2026-08-24): label + caption state alignment with
-            standards, NOT certification possession (ai.txt: no cert claims). */}
-        <div class="home-trust__logos" aria-label="معايير أمن وامتثال نعمل وفق مبادئها">
-          <span class="home-trust__logo">ISO 27001</span>
-          <span class="home-trust__logo">SOC 2</span>
-          <span class="home-trust__logo">ISO 13485</span>
-          <span class="home-trust__logo">PDPL</span>
-        </div>
-        <p class="text-[10px] text-white/40 mt-2">نعمل وفق مبادئ هذه المعايير وندعم جاهزية الامتثال لها — BrightAI ليست جهة اعتماد ولا تدّعي شهادات رسمية.</p>
+        <h2 class="section__title text-start">حوكمة AI ضمن سياق الأنظمة السعودية 🇸🇦</h2>
+        <p class="text-sm text-white/60 leading-relaxed">تساعد BrightAI على تنظيم استخدام الذكاء الاصطناعي وربط السياسات والأدلة بالمراجع ذات الصلة. هذا وصف لمنهج التشغيل، وليس إثبات امتثال أو اعتماد من أي جهة.</p>
+        <p class="text-sm text-white/60 leading-relaxed">تختلف المتطلبات بحسب الجهة والقطاع ونطاق الاستخدام. راجع المراجع الرسمية في الهيرو لتحديد ما ينطبق على مؤسستك.</p>
       </div>
       <div class="lg:col-span-4 grid grid-cols-3 gap-3 text-center">
         <div class="card card--metric card--sm"><div class="text-2xl sm:text-3xl font-black gradient-text" data-counter="9" data-suffix="+">+٩</div><div class="text-[10px] sm:text-xs text-white/60 mt-1.5 font-medium">حلول حوكمة وتشغيل</div></div>

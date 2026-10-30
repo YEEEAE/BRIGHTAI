@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" role="img" aria-label="NCA ECC">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" aria-hidden="true" focusable="false">
   <!-- Shield outline -->
   <path d="M40 6 L66 14 V40 C66 57 54 70 40 74 C26 70 14 57 14 40 V14 Z"
         fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>

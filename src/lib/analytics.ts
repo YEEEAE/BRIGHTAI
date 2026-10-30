@@ -29,7 +29,7 @@
  *   - consent set:  window.__BRIGHTAI_ANALYTICS__.setConsent(true|false);
  *   - provider reg: window.__BRIGHTAI_ANALYTICS__.registerProvider({ name, fn });
  *
- * The runtime lives in src/scripts/analytics.js. This file is the spec
+ * The runtime lives in public/js/analytics.js. This file is the spec
  * + the dev-time guards. Keep them in sync.
  */
 
@@ -71,12 +71,12 @@ export const ANALYTICS_EVENTS = {
   FORM_SUBMIT_FAILURE: 'form_submit_failure',
   CALENDAR_OPEN: 'calendar_open',
   MEETING_BOOKED: 'meeting_booked',
-  /** @deprecated use LEAD_CREATED. Kept only for source compatibility. */
-  GENERATE_LEAD: 'lead_created',
+  /** @deprecated use CONTACT_SUBMIT or DEMO_SUBMIT. */
+  GENERATE_LEAD: 'contact_submit',
   /** @deprecated use canonical conversion names above. */
   LEAD_STARTED: 'form_submit_attempt',
-  /** @deprecated use LEAD_CREATED. */
-  LEAD_COMPLETED: 'lead_created',
+  /** @deprecated use CONTACT_SUBMIT or DEMO_SUBMIT. */
+  LEAD_COMPLETED: 'contact_submit',
   CHAT_STARTED: 'chat_started',
   CHAT_COMPLETED: 'chat_completed',
   DEMO_OPENED: 'demo_opened',
@@ -157,7 +157,7 @@ const COMMON_PROPS_HINT = {
   page_path: 'current URL path (Astro.url.pathname)',
   page_type: 'home | pricing | contact | solution | solution_sector | solution_city | assessment | customers | about | services | blog | docs | legal | kernel | other',
   page_title: 'document.title at emit time',
-  page_location: 'window.location.href (NO query — strip UTM here)',
+  page_location: 'origin + pathname only; never include query or fragment',
   // Funnel
   persona: 'CISO | DPO | CIO | Risk | CDO | Procurement | CEO | null',
   offer: 'assessment | pilot | enterprise | null',
@@ -239,7 +239,7 @@ export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
 const MAX_STRING = 200;
 const MAX_DURATION_MS = 60_000;
 
-function sanitizeValue(v: unknown): unknown {
+function sanitizeValue(v: unknown, key?: string): unknown {
   if (v == null) return v;
   if (typeof v === 'number') {
     if (Number.isFinite(v)) return Math.min(Math.max(Math.trunc(v), 0), MAX_DURATION_MS);
@@ -248,6 +248,8 @@ function sanitizeValue(v: unknown): unknown {
   if (typeof v === 'boolean') return v;
   if (typeof v === 'string') {
     const trimmed = v.trim();
+    if (/^[\w.+-]+@[\w.-]+\.[a-z]{2,}$/i.test(trimmed) || /(?:\+?\d[\d ()-]{7,}\d)/.test(trimmed)) return null;
+    if (['campaign', 'content', 'term', 'cta_label', 'page_title'].includes(key || '') && trimmed.length > 80) return null;
     if (trimmed.length > MAX_STRING) return trimmed.slice(0, MAX_STRING);
     return trimmed;
   }
@@ -304,6 +306,7 @@ export function assertNoPii(payload: AnalyticsPayload): void {
  * same button from logging 2 events.
  */
 const DEDUPE_WINDOW_MS = 1500;
+const ACCEPTED_EVENT_DEDUPE_MS = 24 * 60 * 60 * 1000;
 
 /** Per-event key fingerprint. Used for dedupe + a stable id per emit. */
 function fingerprint(name: string, payload: AnalyticsPayload): string {
@@ -329,6 +332,7 @@ const RECENT: Map<string, DedupeEntry> = (() => {
   // SSR fallback — never read, but typed.
   return new Map<string, DedupeEntry>();
 })();
+const ACCEPTED_EVENTS = new Map<string, number>();
 
 function isDuplicate(name: string, payload: AnalyticsPayload): boolean {
   if (typeof window === 'undefined') return false;
@@ -344,6 +348,27 @@ function isDuplicate(name: string, payload: AnalyticsPayload): boolean {
   return false;
 }
 
+function isAcceptedEventDuplicate(name: string, payload: AnalyticsPayload): boolean {
+  if (typeof window === 'undefined' || !['demo_submit', 'contact_submit'].includes(name)) return false;
+  const key = `${name}::${String(payload.form_id || '')}::${String(payload.event_id || '')}`;
+  const now = Date.now();
+  try {
+    const stored = JSON.parse(sessionStorage.getItem('brightai:analytics:accepted-events') || '{}') as Record<string, number>;
+    for (const [storedKey, timestamp] of Object.entries(stored)) {
+      if (now - timestamp > ACCEPTED_EVENT_DEDUPE_MS) delete stored[storedKey];
+    }
+    if (stored[key] && now - stored[key] < ACCEPTED_EVENT_DEDUPE_MS) return true;
+    stored[key] = now;
+    sessionStorage.setItem('brightai:analytics:accepted-events', JSON.stringify(stored));
+    return false;
+  } catch {
+    const previous = ACCEPTED_EVENTS.get(key);
+    if (previous && now - previous < ACCEPTED_EVENT_DEDUPE_MS) return true;
+    ACCEPTED_EVENTS.set(key, now);
+    return false;
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────
 // Consent
 // ─────────────────────────────────────────────────────────────────────
@@ -354,20 +379,14 @@ function isDuplicate(name: string, payload: AnalyticsPayload): boolean {
  *
  * The default is `unknown` (no tracking until the user clicks). The
  * banner in CookieConsent.astro calls `setConsent('granted' | 'denied')`
- * on click. While `unknown`, events are queued in-memory; on `granted`
- * they're flushed; on `denied` they're discarded.
+ * on click. While `unknown`, events are discarded; they are never replayed.
  *
- * Important: we still emit `page_view` and `form_*` events even when
- * consent is `unknown` because those are SCOPED to the current session
- * and never touch third-party storage when no provider is configured.
- * When a real HubSpot/Mixpanel token lands, the provider function checks
- * `getConsent()` and decides whether to actually network out.
+ * Do not retain any event or attribution before an explicit grant.
  */
 export type ConsentState = 'unknown' | 'granted' | 'denied';
 
 let CONSENT: ConsentState = 'unknown';
 let CONSENT_LISTENERS: Array<(s: ConsentState) => void> = [];
-const PENDING_QUEUE: Array<{ name: string; payload: AnalyticsPayload }> = [];
 
 export function getConsent(): ConsentState {
   return CONSENT;
@@ -384,8 +403,7 @@ export function setConsent(next: ConsentState): void {
   for (const fn of CONSENT_LISTENERS) {
     try { fn(next); } catch { /* noop */ }
   }
-  if (next === 'granted') flushQueue();
-  if (next === 'denied') PENDING_QUEUE.length = 0;
+  if (next === 'denied') unregisterProvider('gtag');
 }
 
 export function onConsentChange(fn: (s: ConsentState) => void): () => void {
@@ -399,19 +417,22 @@ export function onConsentChange(fn: (s: ConsentState) => void): () => void {
 export function hydrateConsentFromStorage(): ConsentState {
   if (typeof localStorage === 'undefined') return CONSENT;
   try {
-    const stored = localStorage.getItem('brightai:tracking_consent');
+    let stored = localStorage.getItem('brightai:tracking_consent');
+    if (stored !== 'granted' && stored !== 'denied') {
+      const legacy = localStorage.getItem('cookie-consent');
+      if (legacy === 'accepted' || legacy === 'declined') {
+        stored = legacy === 'accepted' ? 'granted' : 'denied';
+        localStorage.setItem('brightai:tracking_consent', stored);
+      }
+    }
     if (stored === 'granted' || stored === 'denied') {
       CONSENT = stored;
+      if (localStorage.getItem('cookie-consent') !== (stored === 'granted' ? 'accepted' : 'declined')) {
+        localStorage.setItem('cookie-consent', stored === 'granted' ? 'accepted' : 'declined');
+      }
     }
   } catch { /* noop */ }
   return CONSENT;
-}
-
-function flushQueue(): void {
-  while (PENDING_QUEUE.length > 0) {
-    const next = PENDING_QUEUE.shift()!;
-    dispatch(next.name, next.payload);
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -538,6 +559,7 @@ function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
     navigator: Navigator;
     screen: Screen;
   };
+  ctx.page_location = `${w.location.origin}${w.location.pathname}`;
   if (!('page_path' in ctx) || ctx.page_path == null) {
     ctx.page_path = w.location.pathname;
   }
@@ -547,6 +569,7 @@ function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
   if (!('page_title' in ctx) || ctx.page_title == null) {
     ctx.page_title = w.document.title;
   }
+  if (typeof ctx.page_title === 'string' && /[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+?\d[\d ()-]{7,}\d)/i.test(ctx.page_title)) ctx.page_title = undefined;
   if (!('language' in ctx) || ctx.language == null) {
     const lang = w.document.documentElement.lang || 'ar';
     ctx.language = lang === 'en' ? 'en-SA' : 'ar-SA';
@@ -567,6 +590,7 @@ function buildContext(overrides: AnalyticsPayload = {}): AnalyticsPayload {
       }
     } catch { /* noop */ }
   }
+  if (CONSENT !== 'granted') return ctx;
   const attribution = captureAttribution(w);
   if (!('source' in ctx) || ctx.source == null) ctx.source = attribution.source || 'direct';
   if (!('medium' in ctx) || ctx.medium == null) ctx.medium = attribution.medium || 'none';
@@ -593,7 +617,7 @@ export function track(name: AnalyticsEventName | LeadEventName | string, payload
   try {
     sanitized = {};
     for (const [k, v] of Object.entries(payload)) {
-      if (SAFE_EVENT_PROPS.has(k)) sanitized[k] = sanitizeValue(v) as never;
+      if (SAFE_EVENT_PROPS.has(k)) sanitized[k] = sanitizeValue(v, k) as never;
     }
     assertNoPii(sanitized);
   } catch (err) {
@@ -605,9 +629,7 @@ export function track(name: AnalyticsEventName | LeadEventName | string, payload
   if (typeof window === 'undefined') return false; // SSR no-op
 
   // LeadForm's bundled module and the deferred public runtime share consent
-  // through this global. This prevents form events from being stranded in a
-  // private queue when the public runtime is the component that received the
-  // cookie-banner decision.
+  // through this global so both enforce the same decision.
   try {
     const external = window.__BRIGHTAI_ANALYTICS__?.getConsent?.();
     if (external === 'granted' || external === 'denied') CONSENT = external;
@@ -618,18 +640,12 @@ export function track(name: AnalyticsEventName | LeadEventName | string, payload
   // win (they have higher specificity).
   const enriched = buildContext(sanitized);
 
-  // Dedupe identical events fired in quick succession.
+  // Events before a decision or after decline are discarded, never replayed.
+  if (CONSENT !== 'granted') return false;
+  if (name === 'contact_submit' && !['contact_main', 'home_cta'].includes(String(enriched.form_id))) return false;
+  if (name === 'demo_submit' && enriched.form_id !== 'kernel_lead') return false;
+  if (isAcceptedEventDuplicate(name, enriched)) return false;
   if (isDuplicate(name, enriched)) return false;
-
-  // Consent gate: if user declined, drop the event.
-  // If still `unknown`, queue until consent decides.
-  if (CONSENT === 'denied') return false;
-  if (CONSENT === 'unknown') {
-    PENDING_QUEUE.push({ name, payload: enriched });
-    // Cap the queue to avoid memory bloat in case consent never lands.
-    if (PENDING_QUEUE.length > 100) PENDING_QUEUE.shift();
-    return false;
-  }
 
   dispatch(name, enriched);
   return true;
@@ -646,8 +662,7 @@ function dispatch(name: string, payload: AnalyticsPayload): void {
     }
   }
   // LeadForm is bundled separately from the deferred public runtime. If its
-  // module fires before the runtime registers the provider, use the already
-  // loaded GA4 queue directly instead of silently losing the conversion.
+  // module fires before provider registration, use an already-consented gtag.
   if (!PROVIDERS.some((p) => p.name === 'gtag') && typeof window !== 'undefined' && typeof window.gtag === 'function' && CONSENT === 'granted') {
     try { window.gtag('event', name, payload); } catch { /* best effort */ }
   }

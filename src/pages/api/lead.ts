@@ -278,17 +278,16 @@ export const POST: APIRoute = async ({ request }) => {
   // status = DELIVERED — surface that as `shipped`.
   const mode: 'shipped' | 'queued' = enqueued.status === 'DELIVERED' ? 'shipped' : 'queued';
 
-  // 7.5. Server-owned GA4 reconciliation event: only a newly inserted row
-  //      and explicit client consent qualify. No lead PII is included, and
-  //      analytics failure never blocks lead persistence.
+  // 7.5. Server-owned GA4 reconciliation event: only a newly inserted row,
+  //      explicit stored consent, and an existing GA client ID qualify.
+  //      No lead PII is included; analytics failure never blocks persistence.
   const cookieClientId = parseClientIdFromCookie(request.headers.get('cookie'));
-  const fallbackClientId = crypto
-    .createHash('sha256')
-    .update(`${ip}|${getUserAgentLocal(request)}`)
-    .digest('hex')
-    .slice(0, 16);
-  if (enqueued.created && request.headers.get('x-analytics-consent') === 'granted') void sendServerEvent({
-    clientId: cookieClientId ?? fallbackClientId,
+  const analyticsConsent = request.headers.get('x-analytics-consent');
+  const analyticsConsentValid = analyticsConsent === 'granted' &&
+    request.headers.get('origin')?.replace(/\/$/, '') === 'https://brightai.live' &&
+    request.headers.get('cookie')?.split(';').some((part) => part.trim().startsWith('brightai:tracking_consent=granted'));
+  if (enqueued.created && analyticsConsentValid && cookieClientId) void sendServerEvent({
+    clientId: cookieClientId,
     events: [
       {
         name: 'lead_created',

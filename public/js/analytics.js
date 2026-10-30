@@ -148,6 +148,8 @@ function assertNoPii(payload) {
 
 const DEDUPE_WINDOW_MS = 1500;
 const recent = new Map();
+const ACCEPTED_EVENT_DEDUPE_MS = 24 * 60 * 60 * 1000;
+const acceptedEvents = new Map();
 
 function fingerprint(name, payload) {
   const keys = Object.keys(payload).filter(
@@ -170,13 +172,31 @@ function isDuplicate(name, payload) {
   return false;
 }
 
+function isAcceptedEventDuplicate(name, payload) {
+  if (typeof window === 'undefined' || !['demo_submit', 'contact_submit'].includes(name)) return false;
+  const key = name + '::' + [payload.form_id || '', payload.event_id || ''].join('::');
+  const now = Date.now();
+  try {
+    const stored = JSON.parse(sessionStorage.getItem('brightai:analytics:accepted-events') || '{}');
+    Object.keys(stored).forEach((k) => { if (now - stored[k] > ACCEPTED_EVENT_DEDUPE_MS) delete stored[k]; });
+    if (stored[key] && now - stored[key] < ACCEPTED_EVENT_DEDUPE_MS) return true;
+    stored[key] = now;
+    sessionStorage.setItem('brightai:analytics:accepted-events', JSON.stringify(stored));
+    return false;
+  } catch (e) {
+    const previous = acceptedEvents.get(key);
+    if (previous && now - previous < ACCEPTED_EVENT_DEDUPE_MS) return true;
+    acceptedEvents.set(key, now);
+    return false;
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────
 // Consent
 // ─────────────────────────────────────────────────────────────────────
 
 let consent = 'unknown';
 let consentListeners = [];
-const pendingQueue = [];
 const GA4_MEASUREMENT_ID = 'G-9LMB4PGTWJ';
 let gtagLoaded = false;
 let configuredProvidersLoaded = false;
@@ -215,7 +235,11 @@ function loadGtagAfterConsent() {
     ad_user_data: 'denied', ad_personalization: 'denied',
   });
   window.gtag('js', new Date());
-  window.gtag('config', GA4_MEASUREMENT_ID, { anonymize_ip: true, send_page_view: false });
+  window.gtag('config', GA4_MEASUREMENT_ID, {
+    anonymize_ip: true,
+    send_page_view: false,
+    page_location: window.location.origin + window.location.pathname,
+  });
   const script = document.createElement('script');
   script.async = true;
   script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_MEASUREMENT_ID;
@@ -264,8 +288,7 @@ function setConsent(next) {
   for (const fn of consentListeners) {
     try { fn(next); } catch (e) { /* noop */ }
   }
-  if (next === 'granted') flushQueue();
-  if (next === 'denied') pendingQueue.length = 0;
+  if (next === 'denied') unregisterProvider('gtag');
 }
 
 function getConsent() {
@@ -283,23 +306,17 @@ function hydrateConsentFromStorage() {
   if (typeof localStorage === 'undefined') return consent;
   try {
     let stored = localStorage.getItem('brightai:tracking_consent');
-    if (stored !== 'granted' && stored !== 'denied') {
-      const legacy = localStorage.getItem('cookie-consent');
-      if (legacy === 'accepted' || legacy === 'declined') {
-        stored = legacy === 'accepted' ? 'granted' : 'denied';
-        localStorage.setItem('brightai:tracking_consent', stored);
-      }
+    const legacy = localStorage.getItem('cookie-consent');
+    if (stored !== 'granted' && stored !== 'denied' && (legacy === 'accepted' || legacy === 'declined')) {
+      stored = legacy === 'accepted' ? 'granted' : 'denied';
+      localStorage.setItem('brightai:tracking_consent', stored);
+    }
+    if ((stored === 'granted' || stored === 'denied') && legacy !== (stored === 'granted' ? 'accepted' : 'declined')) {
+      localStorage.setItem('cookie-consent', stored === 'granted' ? 'accepted' : 'declined');
     }
     if (stored === 'granted' || stored === 'denied') consent = stored;
   } catch (e) { /* noop */ }
   return consent;
-}
-
-function flushQueue() {
-  while (pendingQueue.length > 0) {
-    const next = pendingQueue.shift();
-    dispatch(next.name, next.payload);
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -347,12 +364,14 @@ function buildContext(overrides) {
   overrides = overrides || {};
   const ctx = Object.assign({}, overrides);
   if (typeof window === 'undefined') return ctx;
+  ctx.page_location = window.location.origin + window.location.pathname;
   if (!('page_path' in ctx) || ctx.page_path == null) {
     ctx.page_path = window.location.pathname;
   }
   if (!('page_title' in ctx) || ctx.page_title == null) {
     ctx.page_title = document.title;
   }
+  if (typeof ctx.page_title === 'string' && /[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+?\d[\d ()-]{7,}\d)/i.test(ctx.page_title)) ctx.page_title = undefined;
   if (!('page_type' in ctx) || ctx.page_type == null) {
     ctx.page_type = detectPageType();
   }
@@ -383,6 +402,7 @@ function buildContext(overrides) {
       }
     } catch (e) { /* noop */ }
   }
+  if (consent !== 'granted') return ctx;
   try {
     const usp = new URLSearchParams(window.location.search);
     let stored = {};
@@ -413,7 +433,7 @@ function buildContext(overrides) {
 const MAX_STRING = 200;
 const MAX_DURATION_MS = 60000;
 
-function sanitizeValue(v) {
+function sanitizeValue(v, key) {
   if (v == null) return v;
   if (typeof v === 'number') {
     if (!Number.isFinite(v)) return null;
@@ -422,9 +442,9 @@ function sanitizeValue(v) {
   if (typeof v === 'boolean') return v;
   if (typeof v === 'string') {
     const trimmed = v.trim();
-    // UTM values are externally supplied query data. Drop obvious email/phone
-    // values before any provider receives the event.
+    // Drop obvious PII and free-text-like query values before any provider receives them.
     if (/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i.test(trimmed) || /(?:\+?\d[\d ()-]{7,}\d)/.test(trimmed)) return null;
+    if (['campaign', 'content', 'term', 'cta_label', 'page_title'].includes(key) && trimmed.length > 80) return null;
     if (trimmed.length > MAX_STRING) return trimmed.slice(0, MAX_STRING);
     return trimmed;
   }
@@ -439,7 +459,7 @@ function track(name, payload) {
   try {
     sanitized = {};
     for (const k of Object.keys(payload)) {
-      if (SAFE_EVENT_PROPS.has(k)) sanitized[k] = sanitizeValue(payload[k]);
+      if (SAFE_EVENT_PROPS.has(k)) sanitized[k] = sanitizeValue(payload[k], k);
     }
     assertNoPii(sanitized);
   } catch (err) {
@@ -450,15 +470,13 @@ function track(name, payload) {
   if (typeof window === 'undefined') return false;
 
   const enriched = buildContext(sanitized);
-
-  if (isDuplicate(name, enriched)) return false;
-
   if (consent === 'denied') return false;
-  if (consent === 'unknown') {
-    pendingQueue.push({ name, payload: enriched });
-    if (pendingQueue.length > 100) pendingQueue.shift();
-    return false;
-  }
+  // Unknown means no decision: discard without network dispatch or later replay.
+  if (consent === 'unknown') return false;
+  if (name === 'contact_submit' && !['contact_main', 'home_cta'].includes(enriched.form_id)) return false;
+  if (name === 'demo_submit' && enriched.form_id !== 'kernel_lead') return false;
+  if (isAcceptedEventDuplicate(name, enriched)) return false;
+  if (isDuplicate(name, enriched)) return false;
 
   dispatch(name, enriched);
   return true;

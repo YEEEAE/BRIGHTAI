@@ -1,175 +1,99 @@
-<!--
-  TrustBadges.astro — Compliance/regulatory trust badges row.
+---
+const references = [
+  {
+    name: 'إرشادات الذكاء الاصطناعي من سدايا (SDAIA)',
+    href: 'https://sdaia.gov.sa/en/SDAIA/about/Pages/RegulationsAndPolicies.aspx',
+    detail: 'مرجع توضيحي للحوكمة والاستخدام المسؤول؛ لا يدل على اعتماد أو موافقة من سدايا.',
+  },
+  {
+    name: 'ضوابط الأمن السيبراني الأساسية (NCA ECC)',
+    href: 'https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/',
+    detail: 'يحدد نطاق انطباق كل ضابط بحسب الجهة؛ ذكره هنا لا يثبت امتثال BrightAI أو العميل.',
+  },
+  {
+    name: 'معيار أنظمة إدارة الذكاء الاصطناعي ISO/IEC 42001:2023',
+    href: 'https://www.iso.org/standard/42001',
+    detail: 'مرجع تعريفي بالمعيار، وليس شهادة ممنوحة لـ BrightAI أو لعملائه.',
+  },
+  {
+    name: 'إطار الأمن السيبراني للجهات الخاضعة للبنك المركزي السعودي (SAMA)',
+    href: 'https://rulebook.sama.gov.sa/en/cyber-security-framework-2',
+    detail: 'مرجع للجهات التي ينطبق عليها الإطار؛ مسؤولية تطبيقه وتقييمه على الجهة نفسها.',
+  },
+];
+---
 
-  Purpose: Surface Saudi + international regulatory alignment
-           (SAMA, SDAIA, NCA ECC, ISO/IEC 42001) as B2B trust signals
-           in the hero. Visually subtle — sits below the CTAs
-           without competing with the H1.
-
-  CHAMPION-03 (2026-07-30): Added SAMA badge (4 badges total).
-    Label is "متوافق مع" (aligned with) — NOT "معتمد من" (certified by),
-    because BrightAI is a compliance-readiness platform, not a certification
-    body. Each badge has a hover tooltip explaining the alignment scope.
-
-  Files:
-    - /public/assets/images/badges/sdaia.svg
-    - /public/assets/images/badges/nca.svg
-    - /public/assets/images/badges/iso.svg
-    - /public/assets/images/badges/sama.svg
-
-  Design:
-    - 4 shield-style badges in a single row (scrollable on mobile)
-    - 80x80 each — visible trust signals, not inline icon dots
-    - Static, no animation, no rotation
-    - SVG icons rendered as img tags (eager above the fold, decoded async)
-    - Hover tooltip on each badge (CSS-only, no JS)
-
-  Accessibility:
-    - Each badge has descriptive `alt` text (carries the meaning)
-    - Container has `role="list"` + each badge `role="listitem"`
-    - `aria-label` on the container summarizes the regulatory cluster
-    - Honors `prefers-reduced-motion` (nothing to disable — no animation)
-    - Touch target effectively 80x80 (the badge itself)
-    - Tooltip is aria-describedby linked to the badge
-
-  Performance:
-    - 4 small SVG files (~700-1000B raw each, <4KB total) eagerly loaded
-    - No JS, no hydration, no client-side work
-    - explicit width/height + opacity 0.9 → no CLS contribution
-    - all 4 above the fold → loading="eager" to keep them ready for LCP
--->
-
-<div class="trust-badges" role="list" aria-label="متوافق مع: SAMA، سدايا، NCA ECC، ISO 42001">
-  <span class="trust-badge" role="listitem">
-    <img
-      src="/assets/images/badges/sdaia.svg"
-      alt="شعار سدايا — متوافق مع إرشادات سدايا للذكاء الاصطناعي التوليدي"
-      width="80"
-      height="80"
-      loading="eager"
-      decoding="async"
-      class="trust-badge__icon"
-    />
-    <span class="trust-badge__tooltip">دعم جاهزية الامتثال لإرشادات سدايا للذكاء الاصطناعي التوليدي</span>
-  </span>
-  <span class="trust-badge" role="listitem">
-    <img
-      src="/assets/images/badges/nca.svg"
-      alt="شعار NCA ECC — متوافق مع ضوابط الأمن السيبراني للهيئة الوطنية للأمن السيبراني"
-      width="80"
-      height="80"
-      loading="eager"
-      decoding="async"
-      class="trust-badge__icon"
-    />
-    <span class="trust-badge__tooltip">دعم جاهزية الامتثال لضوابط NCA ECC للأمن السيبراني</span>
-  </span>
-  <span class="trust-badge" role="listitem">
-    <img
-      src="/assets/images/badges/iso.svg"
-      alt="شعار ISO 42001 — متوافق مع معيار ISO/IEC 42001 لأنظمة إدارة الذكاء الاصطناعي"
-      width="80"
-      height="80"
-      loading="eager"
-      decoding="async"
-      class="trust-badge__icon"
-    />
-    <span class="trust-badge__tooltip">دعم جاهزية الامتثال لمعيار ISO/IEC 42001 لأنظمة إدارة AI</span>
-  </span>
-  <span class="trust-badge" role="listitem">
-    <img
-      src="/assets/images/badges/sama.svg"
-      alt="شعار SAMA — متوافق مع متطلبات البنك المركزي السعودي لأمن المعلومات"
-      width="80"
-      height="80"
-      loading="eager"
-      decoding="async"
-      class="trust-badge__icon"
-    />
-    <span class="trust-badge__tooltip">دعم جاهزية الامتثال لمتطلبات SAMA لأمن المعلومات في القطاع المالي</span>
-  </span>
-</div>
+<section class="trust-references" aria-labelledby="trust-references-title">
+  <h2 id="trust-references-title">مراجع تنظيمية للاسترشاد</h2>
+  <p class="trust-references__intro">
+    نعرض هذه الأسماء كمراجع عامة فقط. ما عندنا ما يثبت شهادة أو اعتمادًا أو موافقة رسمية من الجهات المذكورة.
+  </p>
+  <ul class="trust-references__list">
+    {references.map((reference) => (
+      <li>
+        <a href={reference.href} target="_blank" rel="noopener noreferrer">
+          {reference.name}<span class="trust-references__external" aria-hidden="true"> ↗</span>
+        </a>
+        <p>{reference.detail}</p>
+      </li>
+    ))}
+  </ul>
+  <p class="trust-references__disclaimer">
+    لا تعني هذه المراجع أن BrightAI أو أي عميل حاصل على شهادة أو موافقة أو ممتثل تلقائيًا. يعتمد الامتثال النهائي على نطاق الجهة وبيئة النشر والضوابط المطبقة، ويتطلب تقييمًا مستقلًا من الجهة المؤهلة.
+  </p>
+</section>
 
 <style>
-  .trust-badges {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-4);
-    opacity: 0.9;
-    margin-top: 1.25rem;
-    color: var(--text-secondary);
-  }
-  @media (min-width: 1024px) {
-    .trust-badges {
-      justify-content: flex-start;
-      gap: var(--space-4);
-      margin-top: 1.5rem;
-    }
-  }
-  /* Mobile: horizontal scroll if badges overflow */
-  @media (max-width: 640px) {
-    .trust-badges {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      padding-block: 0.5rem;
-    }
+  .trust-references {
+    margin-block: 1.25rem 0;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.65;
   }
 
-  .trust-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    line-height: 0;
-    position: relative;
-  }
-
-  .trust-badge__icon {
-    width: 80px;
-    height: 80px;
-    flex: 0 0 auto;
-    display: block;
-  }
-
-  /* CSS-only tooltip (no JS) */
-  .trust-badge__tooltip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-elevated, #151c30);
+  .trust-references h2 {
+    margin: 0;
     color: var(--text-primary, #f1f5f9);
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-sm, 0.375rem);
-    font-size: var(--text-xs, 0.75rem);
-    line-height: 1.4;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--duration-fast, 150ms) var(--ease-out, ease);
-    border: 1px solid var(--interactive-primary, #06b6d4);
-    z-index: 10;
-    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 700;
   }
-  .trust-badge:hover .trust-badge__tooltip,
-  .trust-badge:focus-within .trust-badge__tooltip {
-    opacity: 1;
+
+  .trust-references__intro,
+  .trust-references__disclaimer {
+    margin-block: 0.5rem;
+    font-size: 0.875rem;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .trust-badge__tooltip { transition: none; }
+
+  .trust-references__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: 0.75rem 1.25rem;
+    margin: 0.75rem 0;
+    padding: 0;
+    list-style: none;
   }
-  /* Mobile: tooltip below badge to avoid viewport clipping */
-  @media (max-width: 640px) {
-    .trust-badge__tooltip {
-      bottom: auto;
-      top: calc(100% + 8px);
-      white-space: normal;
-      max-width: 200px;
-      text-align: center;
-    }
+
+  .trust-references__list li {
+    min-width: 0;
+  }
+
+  .trust-references__list a {
+    color: var(--interactive-primary, #67e8f9);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .trust-references__list a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .trust-references__list p {
+    margin: 0.2rem 0 0;
+    font-size: 0.8125rem;
+  }
+
+  .trust-references__disclaimer {
+    padding-block-start: 0.65rem;
+    border-block-start: 1px solid rgb(148 163 184 / 0.25);
   }
 </style>

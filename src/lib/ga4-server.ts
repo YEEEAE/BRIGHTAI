@@ -55,7 +55,8 @@ export interface SendServerEventOptions {
   /**
    * GA4 client_id. Prefer the `_ga` cookie value (e.g. `GA1.1.123.456`)
    * so server events stitch to the same session as client gtag events.
-   * Falls back to a stable hash of IP + UA (never raw PII).
+   * No synthetic fallback is permitted; absent consented client identity,
+   * server analytics are skipped.
    */
   clientId?: string;
   /** When true, hits the debug endpoint (returns validation JSON). */
@@ -70,11 +71,18 @@ const PII_EXACT = new Set([
   'subject', 'body', 'notes', 'contact', 'url', 'href',
 ]);
 
+const SAFE_EVENT_PARAMS = new Set([
+  'form_id', 'form_type', 'source', 'medium', 'campaign', 'content', 'term', 'mode',
+  'page_path', 'page_type', 'cta_location', 'cta_target', 'event_id',
+]);
+
 function stripPii(params?: Record<string, unknown>): Record<string, unknown> {
   if (!params) return {};
   const clean: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(params)) {
-    if (PII_EXACT.has(key) || PII_SUFFIX.test(key)) continue;
+    if (!SAFE_EVENT_PARAMS.has(key) || PII_EXACT.has(key) || PII_SUFFIX.test(key)) continue;
+    if (typeof value === 'string' && (/^[\w.+-]+@[\w.-]+\.[a-z]{2,}$/i.test(value) || /(?:\+?\d[\d ()-]{7,}\d)/.test(value))) continue;
+    if (typeof value === 'string' && ['campaign', 'content', 'term', 'cta_target', 'page_path'].includes(key) && value.length > 200) continue;
     clean[key] = value;
   }
   return clean;
@@ -116,7 +124,8 @@ function resolveConfig(): { apiSecret: string; measurementId: string } | null {
  * Send one or more GA4 events server-side via the Measurement Protocol.
  *
  * Resolves void on success OR safe-skip. Never rejects — any network /
- * parse error is logged and swallowed so the lead route stays durable.
+ * parse error is logged and swallowed so the lead route stays durable. The
+ * server never fabricates a client ID when no consented GA cookie is present.
  */
 export async function sendServerEvent(
   opts: SendServerEventOptions,
@@ -125,10 +134,8 @@ export async function sendServerEvent(
   if (!cfg) return; // not configured → no-op
 
   const { apiSecret, measurementId } = cfg;
-  const clientId =
-    opts.clientId && opts.clientId.trim()
-      ? opts.clientId.trim()
-      : '555'; // GA4 requires a non-empty client_id; 555 is the documented fallback.
+  const clientId = opts.clientId?.trim();
+  if (!clientId || clientId === '555') return;
 
   if (!opts.events.length) return;
 

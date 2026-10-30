@@ -185,7 +185,7 @@
                   wasAlreadyTracked = sessionStorage.getItem(submittedStoragePrefix + idempotencyKey) === '1';
                   sessionStorage.setItem(submittedStoragePrefix + idempotencyKey, '1');
                 } catch (e) {}
-                if (!wasAlreadyTracked) trackLeadSubmitted('api');
+                if (!wasAlreadyTracked) trackLeadSubmitted('api', data.idempotencyKey || idempotencyKey);
               }
             })
             .catch(function () {
@@ -267,13 +267,14 @@
           // KERNEL-ANALYTICS: demo_submit fires only after API acceptance.
           // WhatsApp fallback is a handoff, not an accepted lead. Only the
           // form identifiers are sent; the shared runtime enforces consent.
-          function trackLeadSubmitted(channel) {
+          function trackLeadSubmitted(channel, eventId) {
             var rt = window.__BRIGHTAI_ANALYTICS__;
             if (!rt || typeof rt.track !== 'function') return;
             if (channel !== 'api') return;
             rt.track(rt.events.DEMO_SUBMIT, {
               form_id: root.dataset.formId || 'kernel-lead-form',
               form_type: 'demo',
+              event_id: eventId,
             });
           }
 

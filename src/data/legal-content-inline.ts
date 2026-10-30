@@ -718,8 +718,7 @@ export const legal_privacy_cookies: LegalInlineContent = {
                             </h3>
                             <ul class="list-disc list-inside space-y-3 marker:text-indigo-500">
                                 <li><strong>ملفات ضرورية:</strong> لتشغيل الموقع بشكل صحيح (مثل تسجيل الدخول).</li>
-                                <li><strong>ملفات تحليلية:</strong> لفهم سلوك الزوار وتحسين الموقع (مثل Google
-                                    Analytics).</li>
+                                <li><strong>القياس التحليلي الاختياري:</strong> قد تُحمّل أدوات القياس مثل Google Analytics بعد موافقتك على التحليلات، وتُرسل أحداثًا محددة عن الصفحة والأزرار ومصدر الزيارة. لا نرسل بيانات النماذج أو نصوصها كأحداث، ونفلتر البريد الإلكتروني وأرقام الجوال الواضحة من قيم القياس.</li>
                                 <li><strong>ملفات وظيفية:</strong> لتذكر تفضيلاتك وتخصيص التجربة.</li>
                                 <li><strong>ملفات تسويقية:</strong> لتقديم إعلانات ذات صلة باهتماماتك.</li>
                             </ul>

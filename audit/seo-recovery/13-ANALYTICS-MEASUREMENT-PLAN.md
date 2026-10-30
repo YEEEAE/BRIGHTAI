@@ -17,9 +17,11 @@
 |---|---|---|---|
 | `demo_submit` | Browser: the lead API returns an accepted response for a valid demo/kernel lead | `form_id`, `form_type`, `page_path`, safe attribution | Yes |
 | `contact_submit` | Browser: the configured contact form provider confirms successful acceptance | `form_id`, `form_type`, `page_path`, safe attribution | Yes |
-| `lead_created` | Server: a new durable lead row was created; emitted only with explicit analytics consent | `form_id`, `form_type`, safe source, mode | Reconciliation only; never add to form-specific key events |
+| `lead_created` | Server: a new durable Kernel lead row was created; emitted only with explicit stored analytics consent and a valid GA client ID | `form_id`, `form_type`, safe source, mode | Reconciliation only; never add to form-specific key events |
 | `pricing_cta_click` | Pricing CTA click | `cta_location`, `cta_target`, `page_path` | No |
 | `whatsapp_click` | WhatsApp CTA click | `cta_location`, `cta_target`, `page_path` | No |
+| `hero_cta_click` | Hero or explicitly marked CTA click | `cta_location`, `cta_target`, `page_path` | No |
+| `form_submit_attempt` | User submits a form before validation/request acceptance | `form_id`, `form_type`, `page_path`, safe attribution | No |
 | `assessment_started` | First answer interaction | `step`, `page_path`, `content_group` | No |
 | `assessment_completed` | Assessment result is rendered | `step`, `page_path`, `content_group` | Yes |
 | `newsletter_signup` | Valid newsletter form accepted | `form_id`, `form_type`, `page_path` | Yes |
@@ -32,24 +34,28 @@ Legacy source names (`generate_lead`, `lead_submitted`, `lead_started`, `lead_co
 
 Allowed parameters are intentionally small: `page_path`, `page_type`, `content_group`, `form_id`, `form_type`, `cta_location`, `cta_label`, `cta_target`, `source`, `medium`, `campaign`, `content`, `term`, `referrer`, `language`, `step`, `duration_ms`, `mode`, `resource_type`, and `outbound_domain`.
 
-Never send names, email addresses, phone numbers, free-text form answers, company names, raw URLs containing query values, or unapproved payload keys. The client allowlists and sanitizes event properties before provider dispatch. Browser CTA clicks and form attempts are behavior, not accepted leads. WhatsApp click/fallback is a handoff only.
+Never send names, email addresses, phone numbers, free-text form answers, company names, raw URLs containing query values, or unapproved payload keys. The client and server each enforce an event-property allowlist and filter obvious email/phone values. Browser CTA clicks and form attempts are behavior, not accepted leads. WhatsApp click/fallback is a handoff only.
 
 ## 4. Attribution rules
 
-- Read `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, and `utm_term` from the landing URL.
+- After explicit grant only, read `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, and `utm_term` from the landing URL; retain only bounded, non-obvious-PII values.
 - Persist the first known attribution in `sessionStorage` as `brightai:analytics:attribution`.
 - Later pages reuse the stored values; a new non-empty UTM value may update the current session attribution.
 - If no UTM exists, use `source=direct`, `medium=none`; a non-empty referrer uses `source=referral`, `medium=referral`.
 - Do not persist raw query strings or PII.
 - Use `page_path` rather than full URLs for page reporting.
+- Runtime `page_location` is restricted to origin + pathname; GA4's automatic page location must never include query or fragment data.
 
 ## 5. Consent and deduplication
 
 - Default state is `unknown`; no analytics provider receives events until `granted`.
-- `denied` clears queued events and remains denied for the session/storage value.
-- Server-side `lead_created` is best-effort, requires `X-Analytics-Consent: granted`, and is emitted only when the queue inserts a new idempotency key. It must not block lead creation.
+- No GA4 script/preconnect, Clarity, HubSpot, Bing, or Mixpanel provider loads before explicit grant; declining blocks dispatch.
+- Events while `unknown` are discarded; attribution is neither read nor persisted until grant, and a later grant does not replay earlier page views or clicks. `denied` remains denied for the stored decision.
+- Server-side `lead_created` is best-effort, requires `X-Analytics-Consent: granted`, matching stored `brightai:tracking_consent=granted`, a valid existing GA client ID, and a newly inserted queue idempotency key. No synthetic client ID is used; analytics must not block lead creation.
 - Browser owns `demo_submit`/`contact_submit`; server owns `lead_created`. They are separate funnel stages, not duplicate conversions. The Kernel API idempotency key persists across retry/refresh.
-- A successful form conversion is emitted once per accepted submission; honeypot submissions never emit a conversion.
+- A successful form conversion is emitted only after provider/API acceptance and explicit analytics consent; durable conversion retry dedupe is session-scoped for the same form event. Honeypot submissions never emit a conversion.
+- `contact_main` and `home_cta` use FormSubmit.co, so they have no server-owned `lead_created` event in the current code. Only `/api/lead/` Kernel rows can emit the server reconciliation event.
+- Newsletter, partner, referral, ROI, and event form acceptance are not mapped to `contact_submit` or `demo_submit` by the current taxonomy; keep them separate pending an owner decision.
 - GA4 key-event reporting should use the specific form event for funnel reporting and `lead_created` for server/client reconciliation, not add both to a revenue total.
 
 ## 6. GA4 reports and explorations

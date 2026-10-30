@@ -41,6 +41,8 @@ Keep CTA clicks and downloads as ordinary events unless the owner explicitly wan
 ## 4. Consent Mode v2
 
 - [ ] Verify default `analytics_storage=denied` before consent.
+- [ ] Verify no `gtag.js` request or analytics preconnect occurs before explicit consent.
+- [ ] Verify page_location is origin + path only and that no page/event URL query string reaches GA4.
 - [ ] Accept updates `analytics_storage` and `ad_storage` to `granted`.
 - [ ] Decline keeps both denied and drops queued events.
 - [ ] Keep `ad_user_data=denied` and `ad_personalization=denied` unless a separately approved ads use case exists.
@@ -54,7 +56,7 @@ For each scenario, open GA4 DebugView and browser network logs:
 2. Visit with UTM: navigate to another page and verify attribution persists.
 3. Accept consent: verify one page view and the intended CTA event.
 4. Decline consent: verify no provider hit.
-5. Submit contact/demo form with analytics consent: verify one form-specific event and, for a newly created Kernel API row, one server `lead_created` reconciliation event. Retry with the same idempotency key and confirm the server event is not repeated.
+5. Submit contact/demo form with analytics consent: verify one form-specific event. The contact/home forms currently post to FormSubmit.co and do not have server `lead_created`; only a newly inserted `/api/lead/` Kernel row can emit that reconciliation event. Retry the same Kernel idempotency key and confirm no second server event.
 6. Trigger honeypot: verify no conversion event.
 7. Complete assessment and reload result: verify one `assessment_completed`.
 8. Click WhatsApp, a resource, and a partner link: verify the correct event and safe target context.
@@ -71,7 +73,9 @@ For each scenario, open GA4 DebugView and browser network logs:
 
 - Which GA4 property and production web stream own `G-9LMB4PGTWJ`, and who can confirm the ID is still correct?
 - Are `demo_submit` and `contact_submit` the only lead key events used for funnel conversion totals? Is `lead_created` excluded from totals and retained only for reconciliation?
-- Does the stream receive zero requests before consent and after decline, including fresh visits and migrated `cookie-consent=declined` browsers?
+- Does the production form provider's HTTP 2xx response mean the request was accepted and stored, or only queued for processing? What provider response field is authoritative for acceptance?
+- Which browser-side forms are intended to map to `contact_submit` versus `demo_submit`, and should newsletter/partner/event registrations remain separate events?
+- Does the stream receive zero requests before consent and after decline, including fresh visits and migrated `cookie-consent=declined` browsers? Confirm no pre-consent events appear after accepting later in the same session.
 - Which UTM source, medium, campaign, content, and term values are currently used, and can the owner certify they contain no email, phone, person name, or company/customer details?
-- Does DebugView show no PII in event parameters, event labels, or page locations, and do retrying an identical Kernel idempotency key and a WhatsApp handoff avoid extra accepted-lead events?
+- Does DebugView show no PII in event parameters, event labels, or page locations? Do identical Kernel idempotency-key retries avoid a second `lead_created`, and does WhatsApp fallback remain a click/handoff with no accepted-lead event?
 - Is GSC connected to this site, which verified property is authoritative, and can the owner provide a dated export/window for any requested organic-performance claims?

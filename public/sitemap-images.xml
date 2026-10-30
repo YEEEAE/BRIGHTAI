@@ -2,59 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://brightai.live/_archive-old-badges/nca-ecc.svg</loc>
-    <image:image>
-      <image:loc>https://brightai.live/_archive-old-badges/nca-ecc.svg</image:loc>
-      <image:title>nca ecc</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.live/_archive-old-badges/pdpl.svg</loc>
-    <image:image>
-      <image:loc>https://brightai.live/_archive-old-badges/pdpl.svg</image:loc>
-      <image:title>pdpl</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.live/_archive-old-badges/sdaia.svg</loc>
-    <image:image>
-      <image:loc>https://brightai.live/_archive-old-badges/sdaia.svg</image:loc>
-      <image:title>sdaia</image:title>
-    </image:image>
-  </url>
-  <url>
     <loc>https://brightai.live/assets/images/authors/nasser-alabdullah.svg</loc>
     <image:image>
       <image:loc>https://brightai.live/assets/images/authors/nasser-alabdullah.svg</image:loc>
       <image:title>nasser alabdullah</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.live/assets/images/badges/iso.svg</loc>
-    <image:image>
-      <image:loc>https://brightai.live/assets/images/badges/iso.svg</image:loc>
-      <image:title>iso</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.live/assets/images/badges/nca.svg</loc>
-    <image:image>
-      <image:loc>https://brightai.live/assets/images/badges/nca.svg</image:loc>
-      <image:title>nca</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.live/assets/images/badges/sama.svg</loc>
-    <image:image>
-      <image:loc>https://brightai.live/assets/images/badges/sama.svg</image:loc>
-      <image:title>sama</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.live/assets/images/badges/sdaia.svg</loc>
-    <image:image>
-      <image:loc>https://brightai.live/assets/images/badges/sdaia.svg</image:loc>
-      <image:title>sdaia</image:title>
     </image:image>
   </url>
   <url>

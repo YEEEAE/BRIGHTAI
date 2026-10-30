@@ -501,12 +501,16 @@ function attachSubmitListener(form) {
           durationMs,
           mode: 'shipped',
         });
-        // Canonical conversion events fire only after a real successful submit.
-        leadTracker.generateLead(formId, path, {
-          source: source || undefined,
-          medium: medium || undefined,
-          campaign: campaign || undefined,
-        });
+        // Only the accepted contact flow is a client-owned conversion.
+        // Durable `lead_created` is reserved for the server-owned API event.
+        const consent = window.__BRIGHTAI_ANALYTICS__?.getConsent?.();
+        if (consent === 'granted' && (formId === 'contact_main' || formId === 'home_cta')) {
+          leadTracker.generateLead(formId, path, {
+            source: source || undefined,
+            medium: medium || undefined,
+            campaign: campaign || undefined,
+          });
+        }
         // Mark the form as submitted so Back/Retry doesn't restore values.
         try {
           sessionStorage.setItem(SESSION_KEYS.submitted(formId), '1');
