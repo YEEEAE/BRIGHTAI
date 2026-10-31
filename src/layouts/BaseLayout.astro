@@ -1,6 +1,8 @@
 ---
 import '../styles/variables.css';
 import '../styles/site.css';
+import '../styles/experience.css';
+import MotionController from '../components/MotionController.astro';
 import { brand } from '../data/brand';
 interface Props {
   title: string;
@@ -71,5 +73,6 @@ const websiteSchema = {
   </head>
   <body>
     <slot />
+    <MotionController />
   </body>
 </html>

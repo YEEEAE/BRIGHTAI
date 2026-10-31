@@ -1,0 +1,96 @@
+{
+  "baselineAssets": {
+    "html": 111134,
+    "htmlGzip": 16180,
+    "cssGzip": 4214,
+    "jsGzip": 0
+  },
+  "afterAssets": {
+    "html": 23811,
+    "htmlGzip": 5803,
+    "cssGzip": 8564,
+    "jsGzip": 0
+  },
+  "samples": [
+    {
+      "lcp": 156,
+      "cls": 0.00006397194358710563,
+      "width": 360,
+      "resources": [
+        {
+          "name": "/fonts/plex-arabic-400.ttf",
+          "size": 219892
+        },
+        {
+          "name": "/_astro/index.BLI6fMQ2.css",
+          "size": 13434
+        },
+        {
+          "name": "/_astro/Footer.BX_SbB-W.css",
+          "size": 21592
+        },
+        {
+          "name": "/images/brightai-logo.webp",
+          "size": 71784
+        },
+        {
+          "name": "/fonts/plex-arabic-200.ttf",
+          "size": 225544
+        },
+        {
+          "name": "/fonts/plex-arabic-600.ttf",
+          "size": 227576
+        },
+        {
+          "name": "/favicon.png",
+          "size": 20697
+        }
+      ],
+      "header": {
+        "height": 160,
+        "border": "0px",
+        "weight": "200"
+      }
+    },
+    {
+      "lcp": 56,
+      "cls": 0.0002931660886327589,
+      "width": 1440,
+      "resources": [
+        {
+          "name": "/fonts/plex-arabic-400.ttf",
+          "size": 219892
+        },
+        {
+          "name": "/_astro/index.BLI6fMQ2.css",
+          "size": 13434
+        },
+        {
+          "name": "/_astro/Footer.BX_SbB-W.css",
+          "size": 21592
+        },
+        {
+          "name": "/images/brightai-logo.webp",
+          "size": 71784
+        },
+        {
+          "name": "/fonts/plex-arabic-200.ttf",
+          "size": 225544
+        },
+        {
+          "name": "/fonts/plex-arabic-600.ttf",
+          "size": 227576
+        },
+        {
+          "name": "/favicon.png",
+          "size": 20697
+        }
+      ],
+      "header": {
+        "height": 108,
+        "border": "0px",
+        "weight": "200"
+      }
+    }
+  ]
+}

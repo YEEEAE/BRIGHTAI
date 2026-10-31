@@ -1,0 +1,15 @@
+<script>
+  // Native document navigation keeps initialization and teardown predictable.
+  // Core content stays visible before JS and when motion is reduced.
+  const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+  const elements = document.querySelectorAll<HTMLElement>('.block,.pillar,.sector,.catalog-row,.experience,.context-route');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      if (!motionPreference.matches) entry.target.classList.add('motion-enter');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: .1 });
+  elements.forEach(element => observer.observe(element));
+  addEventListener('pagehide', () => observer.disconnect(), { once: true });
+</script>

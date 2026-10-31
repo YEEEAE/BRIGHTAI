@@ -1,0 +1,12 @@
+---
+interface Props { kind: string }
+const { kind } = Astro.props;
+const paths: Record<string, string> = {
+  firewall: 'M4 8h7v16H4m24-16h-7v16h7M11 4v24M21 4v24M14 10l4 6-4 6',
+  'risk-engine': 'M4 27V5m0 22h24M8 22l6-8 5 4 9-13M22 5h6v6',
+  'human-gate': 'M4 8h8v8H4zM20 16h8v8h-8zM12 12h8v8M8 16v10h12M24 6v5m-3-3h6',
+  ledger: 'M7 4h18v24H7zM11 10h10M11 16h10M11 22h5M3 8h4M3 14h4M3 20h4',
+  'secure-chat': 'M4 5h24v17H14l-7 5v-5H4zM10 11h12M10 16h7',
+};
+---
+<svg class="product-icon" viewBox="0 0 32 32" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={paths[kind] ?? paths.firewall} /></svg>

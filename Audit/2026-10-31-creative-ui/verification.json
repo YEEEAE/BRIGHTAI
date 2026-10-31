@@ -1,0 +1,10 @@
+{
+  "pages": 30,
+  "viewportChecks": 60,
+  "problems": [],
+  "pageErrors": [],
+  "interactions": "PASS",
+  "keyboard": "PASS",
+  "reducedMotion": "PASS",
+  "noJS": "PASS"
+}

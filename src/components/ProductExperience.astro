@@ -1,0 +1,51 @@
+---
+import ProductIcon from './ProductIcon.astro';
+interface Props { kind: string }
+const { kind } = Astro.props;
+const decisions = [
+  ['سماح', 'طلب بمحتوى عام', 'يمر الطلب عندما تسمح السياسة المعتمدة والنطاق والصلاحية.'],
+  ['تحذير', 'مخرج يحتاج تحققاً', 'يظهر تنبيه للمستخدم كي يراجع الدقة وحدود الاستخدام.'],
+  ['تنقيح', 'معرّف افتراضي', 'يُستبدل المعرّف بعبارة [بيانات منقحة] قبل متابعة المسار المسموح.'],
+  ['موافقة بشرية', 'إجراء ذو أثر', 'يتوقف الإجراء حتى قرار مخوّل لمهمة محددة؛ لا تكفي إشارة الواجهة.'],
+  ['حظر', 'تعارض مع قيد إلزامي', 'يتوقف الطلب. لا تُستخدم الموافقة لتجاوز حظر إلزامي.'],
+];
+---
+<section class={`experience experience-${kind}`} aria-label="شرح تفاعلي لتصور المنتج">
+  <div class="experience-bar"><span><ProductIcon kind={kind} /> مختبر الفكرة</span><span class="map-status">توضيح تعليمي · لا اتصال بخدمة</span></div>
+  {kind === 'firewall' && <div class="protection-layout">
+    <div class="request-path"><div><small>01 / المدخل</small><p>طلب ذكاء اصطناعي</p><span>بيانات افتراضية فقط</span></div><span class="path-connector" aria-hidden="true">↓</span><div class="policy-node"><ProductIcon kind="firewall"/><p>السياسة + الصلاحية</p></div><span class="path-connector" aria-hidden="true">↓</span><div><small>03 / المخرج</small><p>قرار محدد بالسياق</p></div></div>
+    <div><h2>خمس قرارات.<br /><span class="muted">لكل منها سبب.</span></h2><p class="diagram-help">اختر قراراً لقراءة مثال على معناه، وليس لإجراء فحص أمني.</p><div class="decision-options">{decisions.map(([label, scenario, text], i) => <button type="button" disabled data-example={text} data-scenario={scenario} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>{decisions[0][1]}</strong><p data-example-output>{decisions[0][2]}</p></div><noscript><dl>{decisions.map(([label, , text]) => <><dt>{label}</dt><dd>{text}</dd></>)}</dl></noscript></div>
+  </div>}
+  {kind === 'risk-engine' && <div class="risk-layout">
+    <div><h2>افهم السبب،<br /><span class="muted">قبل التصنيف.</span></h2><p class="diagram-help">مصفوفة تعليمية للاحتمال والأثر. لا تمثل منهجاً معتمداً أو تقييماً لحالة فعلية.</p><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>احتمال محدود · أثر محدود</strong><p data-example-output>ابدأ بتوثيق الحالة والمالك والضابط، ثم اعتمد منهج التقييم مع المختص.</p></div></div>
+    <div class="risk-chart"><span>الأثر المحتمل ←</span><div class="risk-matrix">{['مرتفع', 'متوسط', 'محدود'].map((likelihood, row) => ['محدود', 'متوسط', 'مرتفع'].map((impact, col) => <button type="button" disabled class={`risk-cell level-${row === 0 || col === 2 ? 'high' : row === 1 || col === 1 ? 'medium' : 'low'}`} aria-label={`احتمال ${likelihood} وأثر ${impact}`} aria-pressed={row === 2 && col === 0 ? 'true' : 'false'} data-scenario={`احتمال ${likelihood} · أثر ${impact}`} data-example={row === 0 || col === 2 ? 'في هذا التصور، تستحق الحالة مراجعة أعمق للضوابط والآثار قبل الاعتماد. لا يُستنتج حظر آلي من لون الخلية.' : 'وثّق السبب والضابط والمالك وموعد المراجعة. يبقى التصنيف النهائي للمنهج والجهة المخولة.'}><span>{likelihood}</span><small>أثر {impact}</small></button>))}</div><span>↑ الاحتمال المحتمل</span><noscript><p>تزداد حاجة المراجعة مع زيادة احتمال الضرر أو أثره وفق المنهج المعتمد لدى الجهة.</p></noscript></div>
+  </div>}
+  {kind === 'human-gate' && <div class="human-layout"><div><h2>القرار لصاحب<br /><span class="muted">الصلاحية.</span></h2><p class="diagram-help">افتح كل مرحلة لفهم مسؤوليتها. لا ينشئ هذا الرسم طلب موافقة أو قراراً فعلياً.</p></div><ol class="approval-flow">{[
+    ['طلب محدد', 'مالك الحالة يصف الإجراء والسبب والسياق ونسخة السياسة.'],
+    ['مراجعة مستقلة', 'المراجع المخول يتحقق من النطاق وفصل المهام؛ مقدم الطلب لا يعتمد طلبه عندما يُشترط الفصل.'],
+    ['قرار مسبب', 'موافقة محددة أو رفض موثق؛ لا يغيّر القرار قيود الحظر الأعلى.'],
+    ['تنفيذ أو إيقاف آمن', 'لا استكمال قبل موافقة صالحة. انتهاء المهلة أو غياب الرد لا يعني موافقة.'],
+  ].map(([label, text], i) => <li><span aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
+  {kind === 'ledger' && <div class="ledger-layout"><div><h2>من الحدث،<br /><span class="muted">إلى الدليل.</span></h2><p class="diagram-help">تتبّع متطلبات الدليل. فتح المراحل لا يحفظ أحداثاً ولا يولّد توقيعاً أو تحققاً تشفيرياً.</p><div class="evidence-seal" aria-hidden="true"><ProductIcon kind="ledger"/><span>المصدر<br />القرار<br />السياسة</span></div></div><ol class="evidence-timeline">{[
+    ['التقاط الحد الأدنى', 'مصدر الحدث وهوية الفاعل المخول ووقت القرار ونسخة السياسة، دون محتوى حساس غير لازم.'],
+    ['ربط سلامة الدليل', 'Hash أو توقيع مناسب ضمن تنفيذ مثبت، مع مفاتيح وصلاحيات وإدارة دورة حياة.'],
+    ['حفظ وفق السياسة', 'احتفاظ ووصول وحذف وقيود قانونية تحددها الجهة والعقد.'],
+    ['تصدير وفحص مستقل', 'حزمة دليل وأداة تحقق مفوضة. تعديل الدليل يجب أن يظهر في نتيجة فحص حقيقية.'],
+  ].map(([label, text], i) => <li><span class="event-point" aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
+  {kind === 'secure-chat' && <div class="chat-layout"><div><h2>مساحة أبسط.<br /><span class="muted">وحدود أوضح.</span></h2><p class="diagram-help">قصة توضيحية جاهزة، وليست محادثة مع نموذج. لا تكتب بيانات أو ملفات هنا.</p><ul class="chat-principles"><li>اختيار نموذج مصرح به</li><li>حفظ المحتوى حسب سياسة المؤسسة</li><li>مشاركة وتصدير مغلقان افتراضياً</li></ul></div><div class="chat-preview"><div class="chat-toolbar"><span>محادثة توضيحية</span><span>بلا اتصال</span></div><p class="chat-bubble user">كيف أكتب طلباً يحترم بيانات المنشأة؟</p><p class="chat-bubble assistant">ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.</p><details><summary>ما الذي يضبط هذا المسار؟</summary><p>صلاحية الاستخدام والنموذج والوجهة والميزانية. لا نفترض وجود نموذج أو تكامل عامل في هذا التصور.</p></details><div class="chat-footer">مثال جاهز / لا إرسال أو رفع ملفات</div></div></div>}
+</section>
+<script>
+  // Local educational state only. Progressive enhancement, scoped to each diagram.
+  document.querySelectorAll<HTMLElement>('.experience').forEach(root => {
+    root.querySelectorAll<HTMLButtonElement>('button[data-example]').forEach(button => {
+      button.addEventListener('click', () => {
+        root.querySelectorAll('button[data-example]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        const heading = root.querySelector('[data-scenario-output]');
+        const output = root.querySelector('[data-example-output]');
+        if (heading) heading.textContent = button.dataset.scenario ?? '';
+        if (output) output.textContent = button.dataset.example ?? '';
+      });
+      button.disabled = false;
+    });
+  });
+</script>

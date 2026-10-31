@@ -3,7 +3,7 @@ import '../styles/theme.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Constellation from '../components/Constellation.astro';
+import SystemMap from '../components/SystemMap.astro';
 export const prerender = true;
 const pillarPaths = ['safety', 'transparency', 'privacy'];
 const pillars = [
@@ -26,12 +26,12 @@ const sectors = [
       <div class="hero-copy">
 
 
-        <h1 id="hero-title">ذكاء اصطناعي<br />تثق به<span class="ellipsis">...</span><br /><span class="hero-last">وتحاسبه</span></h1>
+        <p class="eyebrow hero-kicker">مؤسسة مُشرقة BRIGHT AI / السعودية</p><h1 id="hero-title">لكل طلب<br />حدود.<br /><span class="hero-last">ولكل قرار أثر.</span></h1>
         <p class="eyebrow hero-tagline">AIGAS / حوكمة وأمان الذكاء الاصطناعي</p>
         <p class="hero-description">AIGAS تصور لحوكمة وأمان الذكاء الاصطناعي، يضم Kernel كمكوّن مشترك وخمسة منتجات مستقلة وظيفياً وتجاريًا وفق الـBlueprint. الإتاحة التشغيلية للمنتجات غير متحققة حالياً.</p>
         <div class="actions"><a class="button" href="/products/">استكشف المنتجات <span aria-hidden="true">↖</span></a><a class="ghost" href="/contact/">اطلب معلومات أو عرض سعر <span aria-hidden="true">←</span></a></div>
       </div>
-      <div class="hero-art"><Constellation /></div>
+      <div class="hero-art"><SystemMap /></div>
 
     </section>
     <section class="governance-statement wrap" aria-label="حوكمة وحماية البيانات">
@@ -52,7 +52,7 @@ const sectors = [
     <section class="section wrap" aria-labelledby="products-title">
       <p class="eyebrow">04 / التصور المستهدف</p><h2 id="products-title">خمسة منتجات مستقلة.<br /><span class="muted">وKernel أساس مشترك.</span></h2>
       <p class="note">الإتاحة التشغيلية للمنتجات غير متحققة. القائمة تصف نطاق الـBlueprint ولا تعني توفر خدمات حالياً.</p>
-      <div class="sectors">
+      <div class="sectors home-products">
         <a class="sector" href="/products/firewall/"><h3>AIGAS Firewall</h3><p>تصور لفحص المدخلات والمخرجات وفق سياسة الجهة.</p></a>
         <a class="sector" href="/products/risk-engine/"><h3>AIGAS Risk Engine</h3><p>تصور لتقييم مخاطر حالات الاستخدام وربطها بالضوابط.</p></a>
         <a class="sector" href="/products/human-gate/"><h3>AIGAS Human Gate</h3><p>تصور لمسارات المراجعة البشرية والاعتماد.</p></a>
@@ -185,4 +185,37 @@ const sectors = [
     .sectors { grid-template-columns: 1fr; gap: 48px; margin-top: 48px; }
     .closing { padding-block: 96px; }
   }
+</style>
+
+<style>
+  .hero { display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); gap: 60px; min-height: auto; padding-block: 76px 96px; }
+  .hero-copy { width: auto; max-width: none; }
+  .hero h1 { font-size: clamp(58px,6.2vw,88px); line-height: 1.35; letter-spacing: 0; }
+  .hero-last { color: #b79aff; }
+  .hero .hero-kicker { font-size: 12px; margin-bottom: 26px; color: #beb7c9; }
+  .hero .hero-tagline { font-size: 12px; margin-block: 24px 16px; }
+  .hero-description { font-size: 16px; line-height: 1.95; }
+  .hero-art { position: relative; width: 100%; height: auto; inset: auto; mask-image: none; margin: 0; }
+  .hero .actions { gap: 14px 24px; }
+  .hero .button { padding: 12px 20px; }
+  .section { padding-block: clamp(64px,8vw,112px); }
+  .problem { min-height: auto; padding-block: 100px; border-block: 1px solid #2c2334; gap: 100px; }
+  .problem-copy { border-inline-start: 2px solid #8052ff; padding-inline-start: 30px; }
+  .pillar { gap: 80px; min-height: 330px; border-top: 1px solid #2c2334; }
+  .pillar-symbol { background: radial-gradient(ellipse,#2a164080,transparent 65%); min-height: 240px; }
+  .pillar-symbol svg { width: 125px; height: 125px; stroke-width: .9; transition: transform var(--motion-normal); }
+  .pillar:is(:hover,:focus-within) .pillar-symbol svg { transform: translateY(-6px); }
+  .workflow-intro { position: sticky; top: 40px; align-self: start; }
+  .steps li { border-bottom: 1px solid #33263e; padding-block: 28px 40px; }
+  .steps li:last-child { border-bottom: 0; }
+  .home-products { display: block; margin-top: 48px; }
+  .home-products .sector { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; border-top: 1px solid #33263e; padding-block: 24px; }
+  .home-products .sector h3 { font-size: 28px; direction: ltr; text-align: right; margin: 0; }
+  .home-products .sector p { font-size: 16px; }
+  .sectors:not(.home-products) { gap: 0 72px; }
+  .sectors:not(.home-products) .sector { border-top: 1px solid #33263e; padding-block: 30px; }
+  .closing { border-block-start: 1px solid #33263e; background: radial-gradient(ellipse at 50% 100%,#2d154580,transparent 65%); }
+  @media(max-width: 900px) { .hero { gap: 30px; }.hero h1 { font-size: 60px; }.workflow-intro { position: static; } }
+  @media(max-width: 767px) { .hero { display: grid; grid-template-columns: 1fr; padding-block: 40px 56px; }.hero h1 { font-size: clamp(50px,12vw,76px); }.hero-art { margin-block-start: 16px; width: 100%; height: auto; }.hero .hero-kicker { font-size: 11px; }.home-products .sector { grid-template-columns: 1fr; gap: 12px; }.problem { padding-block: 56px; gap: 36px; }.pillar { gap: 24px; }.pillar-symbol { min-height: 160px; }.pillar-symbol svg { width: 90px; height: 90px; }.home-products .sector h3 { font-size: 26px; } }
+  @media(prefers-reduced-motion:reduce) { .pillar:hover .pillar-symbol svg { transform: none; } }
 </style>

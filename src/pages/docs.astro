@@ -13,8 +13,8 @@ const articles = [
   <p class="eyebrow">المعرفة قبل الأداة</p>
   <h1>مركز المعرفة</h1>
   <p class="lead">أدلة عملية تساعد الفرق على طرح الأسئلة الصحيحة قبل استخدام الذكاء الاصطناعي. المواد توعوية ولا تمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
-  <section class="block"><h2>ابدأ من احتياجك</h2><div class="grid">
-    {articles.map((article) => <article class="card"><p class="eyebrow">{article.tag}</p><h3><a href={article.href}>{article.title}</a></h3><p>{article.text}</p><a href={article.href}>اقرأ الدليل ←</a></article>)}
+  <section class="block"><h2>ابدأ من احتياجك</h2><div class="catalog">
+    {articles.map((article, i) => <a class="catalog-row" href={article.href}><span class="index-number">0{i + 1}</span><div><small>{article.tag}</small><h3>{article.title}</h3></div><p>{article.text}</p><span aria-hidden="true">←</span></a>)}
   </div></section>
   <p class="note">تاريخ إعداد هذه المواد: 31 أكتوبر 2026. راجع المصدر الرسمي والنص النظامي الساري قبل اتخاذ قرار مؤسسي.</p>
 </PageShell>

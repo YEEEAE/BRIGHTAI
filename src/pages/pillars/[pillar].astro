@@ -10,9 +10,8 @@ export function getStaticPaths() { return pillars.map(({ slug, ...props }) => ({
 const { no, title, intro, prompts, products } = Astro.props;
 ---
 <PageShell title={`${title} | حوكمة الذكاء الاصطناعي — BRIGHTAI`} description={intro} crumbs={[{ name: 'الأركان', href: '/#principles' }, { name: title }]}>
-  <p class="eyebrow">{no} / ركن من أركان الحوكمة</p><h1>{title}</h1>
-  <p class="lead">{intro}</p>
+  <div class="pillar-manifesto"><span class="pillar-number" aria-hidden="true">{no}</span><div><p class="eyebrow">ركن من أركان الحوكمة</p><h1>{title}</h1><p class="lead">{intro}</p></div></div>
   <p class="note">هذه مبادئ توجيهية لا تثبت تطبيقها بواسطة منتج. منتجات AIGAS مخططة والإتاحة التشغيلية غير متحققة. قيّم كل حالة وفق متطلبات الجهة المختصة.</p>
-  <section class="block"><h2>أسئلة للمراجعة</h2><ul class="list">{prompts.map((question: string) => <li>{question}</li>)}</ul></section>
+  <section class="block review-questions"><h2>حوّل المبدأ<br/>إلى أسئلة عملية.</h2><ol>{prompts.map((question: string) => <li>{question}</li>)}</ol></section>
   <section class="block"><h2>منتجات مرتبطة في التصور</h2><p>الأسماء التالية توضح اتجاه الـBlueprint فقط، وليست قائمة خدمات متاحة.</p><div class="actions">{products.map(([slug, name]: string[]) => <a class="ghost" href={`/products/${slug}/`} dir="ltr">{name}</a>)}<a class="button" href="/docs/">مركز المعرفة</a></div></section>
 </PageShell>

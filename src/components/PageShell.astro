@@ -6,6 +6,7 @@ import Footer from './Footer.astro';
 interface Crumb { name: string; href?: string }
 interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string }
 const { title, description, crumbs, robots = 'index, follow' } = Astro.props;
+const family = Astro.url.pathname.split('/').filter(Boolean)[0] ?? 'home';
 const site = 'https://brightai.live';
 const all = [{ name: 'الرئيسية', href: '/' }, ...crumbs];
 const schema = {
@@ -16,7 +17,7 @@ const schema = {
 <BaseLayout title={title} description={description} robots={robots}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <Header />
-  <main id="main" class="wrap section page">
+  <main id="main" class={`wrap section page page-family-${family}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">
       {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}>{c.name}</a> / </> : <span aria-current="page">{c.name}</span>)}
     </nav>

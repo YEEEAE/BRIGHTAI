@@ -1,5 +1,7 @@
 ---
 import PageShell from '../../components/PageShell.astro';
+import ProductExperience from '../../components/ProductExperience.astro';
+import ProductIcon from '../../components/ProductIcon.astro';
 export const prerender = true;
 export const products = [
   { slug: 'firewall', name: 'AIGAS Firewall', purpose: 'تصور منتج لفحص مدخلات ومخرجات الذكاء الاصطناعي بحثاً عن معلومات أو تعليمات قد تتطلب معالجة وفق سياسة المنشأة.', questions: ['ما فئات المعلومات التي تحتاج إلى ضوابط؟', 'كيف تُراجع نتيجة الفحص وحدودها؟', 'ما الإجراء عند اكتشاف مادة حساسة؟'] },
@@ -8,15 +10,17 @@ export const products = [
   { slug: 'ledger', name: 'AIGAS Ledger', purpose: 'تصور لحفظ أدلة تشغيلية مرتبطة بالاستخدام والقرارات وفق ضوابط وصول واحتفاظ تعتمدها الجهة.', questions: ['ما الحد الأدنى اللازم من الأدلة؟', 'من يستطيع الاطلاع عليها؟', 'ما أساس ومدة الاحتفاظ المعتمدة؟'] },
   { slug: 'secure-chat', name: 'AIGAS Secure Chat', purpose: 'تصور لواجهة محادثة مؤسسية يمكن أن تخضع لسياسات اختيار الأدوات والمراجعة بعد إثبات البنية والتكاملات.', questions: ['ما الخدمات والنماذج التي ستُعتمد؟', 'ما إعدادات الحساب والعقد؟', 'كيف يتحقق الموظف من الإجابة؟'] },
 ];
-export function getStaticPaths() { return products.map(({ slug, ...props }) => ({ params: { product: slug }, props })); }
-const { name, purpose, questions } = Astro.props;
+export function getStaticPaths() { return products.map(({ slug, ...props }) => ({ params: { product: slug }, props: { ...props, slug } })); }
+const { name, purpose, questions, slug } = Astro.props;
+const roles: Record<string,string> = { firewall: 'من الطلب إلى القرار', 'risk-engine': 'المخاطر في سياقها', 'human-gate': 'مراجعة لها صاحب صلاحية', ledger: 'لكل قرار أثر', 'secure-chat': 'محادثة ضمن حدود واضحة' };
 ---
 <PageShell title={`${name} — تصور المنتج | BRIGHTAI`} description={`${name}: وصف للتوجه والقدرات المستهدفة، مع توضيح أن الإتاحة التشغيلية غير متحققة.`} crumbs={[{ name: 'المنتجات', href: '/products/' }, { name }]}>
-  <p class="eyebrow" dir="ltr" style="text-align:right">{name}</p>
-  <h1>{name}</h1>
-  <p class="tag">مخطط — الإتاحة التشغيلية غير متحققة</p>
-  <p class="lead">{purpose}</p>
-  <p class="note">هذه الصفحة تصف نطاقاً مستهدفاً وفق Blueprint، ولا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة. يُحدد أي عرض أو اتفاق بعد التحقق والمراجعة.</p>
-  <section class="block"><h2>أسئلة يجب حسمها قبل الاستخدام</h2><ul class="list">{questions.map((question: string) => <li>{question}</li>)}</ul></section>
+  <div class="product-intro">
+    <div><p class="eyebrow">AIGAS / تصور المنتج</p><h1><bdi>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
+    <aside class="product-meta"><ProductIcon kind={slug}/><div><p>منتج مستقل ضمن المنظومة</p><p class="tag">مخطط · غير متحقق تشغيلياً</p><a class="ghost" href="/products/">كل المنتجات ←</a></div></aside>
+  </div>
+  <ProductExperience kind={slug}/>
+  <p class="note">المخططات تعليمية وتصف نطاقاً مستهدفاً وفق Blueprint. لا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة.</p>
+  <section class="block review-questions"><div><p class="eyebrow">قبل أي استخدام فعلي</p><h2>ثلاثة أسئلة<br/>تستحق المراجعة.</h2></div><ol>{questions.map((question: string) => <li>{question}</li>)}</ol></section>
   <section class="block"><h2>مكان المنتج في التصور</h2><p>AIGAS Kernel مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint؛ وهذا لا يعني أنها متاحة حالياً.</p><div class="actions"><a class="button" href="/contact/">اطلب معلومات أو عرض سعر</a><a class="ghost" href="/products/">استعراض المنتجات</a></div></section>
 </PageShell>

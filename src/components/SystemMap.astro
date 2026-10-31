@@ -1,0 +1,25 @@
+---
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+const nodes = [
+  ['firewall', 'فحص الطلب', 'Firewall', '01'],
+  ['risk-engine', 'فهم المخاطر', 'Risk Engine', '02'],
+  ['human-gate', 'قرار بشري', 'Human Gate', '03'],
+  ['ledger', 'أثر قابل للمراجعة', 'Ledger', '04'],
+  ['secure-chat', 'استخدام مسؤول', 'Secure Chat', '05'],
+];
+---
+<figure class:list={['system-map', { compact }]} aria-label="خريطة تصور منظومة AIGAS">
+  <div class="map-caption"><span>منظومة واحدة / أدوار مستقلة</span><span class="map-status">تصور معماري</span></div>
+  <div class="map-space">
+    <svg viewBox="0 0 600 540" fill="none" aria-hidden="true" class="map-wires">
+      <ellipse cx="300" cy="270" rx="210" ry="190" stroke="currentColor" stroke-dasharray="2 12" />
+      <ellipse cx="300" cy="270" rx="150" ry="135" stroke="currentColor" opacity=".4" />
+      <path class="map-path" d="M300 270 300 65M300 270 510 210M300 270 430 435M300 270 170 435M300 270 90 210" stroke="currentColor" />
+      <circle cx="300" cy="270" r="90" stroke="currentColor" />
+    </svg>
+    <div class="map-core"><span class="core-mark" aria-hidden="true">⟡</span><bdi>AIGAS Kernel</bdi><small>الهوية · السياسات · الأمن الأساسي</small></div>
+    {nodes.map(([slug, label, name, number], i) => <a class={`map-node node-${i}`} href={`/products/${slug}/`}><span class="node-no" aria-hidden="true">{number}</span><strong>{label}</strong><bdi>{name}</bdi><span class="node-arrow" aria-hidden="true">↖</span></a>)}
+  </div>
+  <figcaption>كل منتج مستقل. الروابط توضح التكامل الاختياري، ولا تمثل خدمات متصلة الآن.</figcaption>
+</figure>
