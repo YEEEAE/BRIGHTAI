@@ -1,0 +1,1691 @@
+openapi: 3.1.0
+info:
+  title: AIGAS Secure Chat — Proposed API Contract (NOT DEPLOYED)
+  version: 1.0.0-draft
+  description: مواصفة مستهدفة لا توثق API موجودة. حماية Kernel الأساسية لكل رسالة، No-Training، خصوصية متن المحادثات عن المسؤولين،
+    مشاركة/تصدير مغلقان، وحدود النماذج والميزانيات.
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+servers:
+- url: https://api.aigas.invalid
+  description: عنوان .invalid غير قابل للاستخدام، لا خدمة حقيقية منشورة
+x-contract-status: DESIGN_ONLY_NOT_IMPLEMENTED_OR_VERIFIED
+x-product-id: AIGAS-SC
+x-source-requirements:
+- SC-01
+- SC-02
+- SC-03
+- SC-04
+- SC-05
+- SC-06
+- SC-07
+x-cross-product-rule:
+  kernel_required: true
+  kernel_separate_paid_license: false
+  firewall_paid_license_required: false
+  ledger_paid_license_required: false
+  human_gate_paid_license_required: false
+  risk_engine_paid_license_required: false
+x-security-invariants:
+  tenant_id_from_verified_identity: true
+  provider_allowlist_and_region_checked_before_send: true
+  no_training_at_provider: true
+  no_raw_content_in_security_logs: true
+  staff_content_private_from_tenant_admin_by_default: true
+  sharing_default_disabled: true
+  export_default_disabled: true
+  output_policy_applies_before_stream_flush: true
+  no_auto_fallback_to_unapproved_provider: true
+  fail_closed_for_mandatory_gates: true
+  no_core_RAG_or_file_upload: true
+  metering_idempotency_required: true
+  actual_provider_not_selected: true
+x-review-required:
+- Provider/Region/Contract
+- No-Training evidence
+- Privacy/Retention matrix
+- Key management
+- Token and cost limits
+- Access exception roles and SoD
+- DLP policy
+- SSE output policy buffering
+- Legal terms
+security: &id001
+- BearerAuth: []
+paths:
+  /v1/chat/models:
+    get:
+      operationId: listApprovedModels
+      summary: النماذج المعتمدة للمستخدم
+      tags:
+      - Models
+      description: لا تسرد خيارات خارج سياسة المستأجر أو مكان معالجة غير مخوّل؛ لا يُسحب اسم المزود من مدخل المستخدم دون سياسة.
+      security: *id001
+      x-required-permission: chat.model.read
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/sessions:
+    post:
+      operationId: createChatSession
+      summary: إنشاء جلسة محادثة للمستخدم
+      tags:
+      - Sessions
+      description: تفعيل الحفظ يخضع لسياسة مستقلة؛ لا اختيار tenant في body.
+      security: *id001
+      x-required-permission: chat.session.create
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSession'
+      responses:
+        '201':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSession'
+        '400':
+          description: BAD_REQUEST — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: QUOTA_EXCEEDED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      operationId: listOwnSessions
+      summary: عرض جلسات المستخدم المسموح حفظها
+      tags:
+      - Sessions
+      description: لا تعرض جلسات عابرة ephemeral؛ الإدارة لا تستطيع تعداد نصوص جلسات الأفراد.
+      security: *id001
+      x-required-permission: chat.session.read_own
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionList'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/sessions/{sessionId}:
+    get:
+      operationId: getOwnSession
+      summary: عرض تفاصيل جلسة مملوكة
+      tags:
+      - Sessions
+      description: مسار مستهدف غير منشور؛ الهوية والمستأجر مشتقان من المصادقة. يمنع كشف نصوص المحادثات والأسرار في السجل.
+      security: *id001
+      x-required-permission: chat.session.read_own
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSession'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      operationId: requestDeleteOwnSession
+      summary: حذف جلسة ضمن سياسة الاحتفاظ والـ Legal Hold
+      tags:
+      - Sessions
+      description: لا يعد الحذف فوريًا إذا كان Legal Hold قائمًا، ولا يوعد بمحو نسخ احتياطية قبل دورة معتمدة.
+      security: *id001
+      x-required-permission: chat.session.delete_own
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '202':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ack'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/sessions/{sessionId}/messages:
+    post:
+      operationId: sendChatMessage
+      summary: إرسال نص إلى نموذج AI معتمد
+      tags:
+      - Sessions
+      description: تقييم الهوية والبيانات والنموذج والمنطقة والتكلفة قبل إرسال الرسالة. في streaming يجب اجتياز فحص المخرجات
+        قبل خروج أي chunk. عدم وجود مزود مصرح ⇒ رفض آمن. لا كشف مفاتيح أو prompt النظام.
+      security: *id001
+      x-required-permission: chat.message.send
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatMessageRequest'
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+        description: منع إعادة التنفيذ المكرر مع حفظ النتيجة
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessageResponse'
+            text/event-stream:
+              schema:
+                type: string
+              description: 'أحداث: message_safe_chunk، done، error. لا تعرض قطعة قبل اجتياز الحماية. لا تُرسل معلومات محظورة.'
+        '400':
+          description: BAD_REQUEST — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '413':
+          description: PAYLOAD_TOO_LARGE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: QUOTA_EXCEEDED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      operationId: listOwnMessages
+      summary: استرجاع ما تسمح سياسة الحفظ بإتاحته للمالك
+      tags:
+      - Sessions
+      description: لا تتوفر الرسائل في الجلسات غير المحفوظة؛ لا تعطِ مسؤول المؤسسة حق قراءة المحتوى افتراضيًا.
+      security: *id001
+      x-required-permission: chat.message.read_own
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageList'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/sessions/{sessionId}/cancel:
+    post:
+      operationId: cancelActiveGeneration
+      summary: إلغاء توليد حالي ضمن جلسة
+      tags:
+      - Sessions
+      description: إلغاء العمل وتسوية الحصص وعدم بث رد جزئي باعتباره مكتملًا؛ idempotency وconcurrency إلزاميان.
+      security: *id001
+      x-required-permission: chat.message.cancel_own
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelResult'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/usage:
+    get:
+      operationId: getOwnUsage
+      summary: استهلاك المستخدم وحدوده دون كشف المحتوى
+      tags:
+      - Usage
+      description: الميزانيات تُطبّق من مصدر محاسبي موثوق، لا من عداد العميل؛ القيم والأسعار غير معتمدة في المواصفة.
+      security: *id001
+      x-required-permission: chat.usage.read_own
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSummary'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/privacy-policy:
+    get:
+      operationId: getEffectiveChatPrivacyPolicy
+      summary: سياسة خصوصية المحادثة النافذة
+      tags:
+      - Privacy-Policy
+      description: مسار مستهدف غير منشور؛ الهوية والمستأجر مشتقان من المصادقة. يمنع كشف نصوص المحادثات والأسرار في السجل.
+      security: *id001
+      x-required-permission: chat.policy.read
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacyPolicy'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/admin/privacy-policy:
+    put:
+      operationId: updateTenantChatPrivacyPolicy
+      summary: طلب تحديث سياسة الحفظ/المشاركة للمؤسسة
+      tags:
+      - Admin
+      description: قد يتطلب موافقة متعددة أو review قبل النشر. لا يمكن إتاحة قراءة مسؤول المؤسسة للمحتوى افتراضيًا.
+      security: *id001
+      x-required-permission: chat.policy.manage
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyUpdate'
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacyPolicy'
+        '400':
+          description: BAD_REQUEST — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/sessions/{sessionId}/exports:
+    post:
+      operationId: requestScopedExport
+      summary: طلب تصدير محادثة مفوض ومحكوم DLP
+      tags:
+      - Sessions
+      description: مغلق افتراضيًا؛ الإذن لا يثبت حتى تُراجع السياسة والموافقات وDLP ويكون التخزين مصرحًا.
+      security: *id001
+      x-required-permission: chat.export.request
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+        description: منع إعادة التنفيذ المكرر مع حفظ النتيجة
+      responses:
+        '202':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJob'
+        '400':
+          description: BAD_REQUEST — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: QUOTA_EXCEEDED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/exports/{exportId}:
+    get:
+      operationId: getExportStatus
+      summary: حالة تصدير ونطاق الوصول
+      tags:
+      - Exports
+      description: لا يُنشأ رابط مجهول عمومي؛ التحميل المصرح يكون من قناة أخرى محكومة أو token قصير وفق سياسة.
+      security: *id001
+      x-required-permission: chat.export.read_own
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: path
+        name: exportId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJob'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/sessions/{sessionId}/shares:
+    post:
+      operationId: requestScopedShare
+      summary: طلب مشاركة محكومة مع مستلم معروف
+      tags:
+      - Sessions
+      description: الافتراضي منع المشاركة. لا رابط عام أو مشاركة مجهولة؛ اجتياز DLP قبل إصدار منحة محددة.
+      security: *id001
+      x-required-permission: chat.share.request
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShareRequest'
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '202':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareGrant'
+        '400':
+          description: BAD_REQUEST — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: QUOTA_EXCEEDED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/shares/{shareId}:
+    delete:
+      operationId: revokeChatShare
+      summary: إبطال مشاركة مفوضة
+      tags:
+      - Shares
+      description: مسار مستهدف غير منشور؛ الهوية والمستأجر مشتقان من المصادقة. يمنع كشف نصوص المحادثات والأسرار في السجل.
+      security: *id001
+      x-required-permission: chat.share.revoke
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: path
+        name: shareId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ack'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/access-exceptions:
+    post:
+      operationId: requestExceptionalContentAccess
+      summary: طلب وصول استثنائي لمحتوى محادثة خاصة
+      tags:
+      - Access-Exceptions
+      description: لا يمنح مقدم الطلب وصولًا فورياً؛ سبب مشروع وموافقة من جهة مستقلة وعزل وتوقيت وتدقيق.
+      security: *id001
+      x-required-permission: chat.content_exception.request
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessExceptionRequest'
+      responses:
+        '202':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessException'
+        '400':
+          description: BAD_REQUEST — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/access-exceptions/{exceptionId}:
+    get:
+      operationId: getAccessException
+      summary: حالة طلب استثناء الوصول
+      tags:
+      - Access-Exceptions
+      description: مسار مستهدف غير منشور؛ الهوية والمستأجر مشتقان من المصادقة. يمنع كشف نصوص المحادثات والأسرار في السجل.
+      security: *id001
+      x-required-permission: chat.content_exception.read
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      parameters:
+      - in: path
+        name: exceptionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessException'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/chat/access-exceptions/{exceptionId}/decision:
+    post:
+      operationId: decideExceptionalAccess
+      summary: اعتماد أو رفض الاستثناء من مخوّل مستقل
+      tags:
+      - Access-Exceptions
+      description: فصل المهام مطلوب؛ المراجع لا يعتمد طلبه، والموافقة محددة النطاق والمدة، وليست ترخيص قراءة عامة للمؤسسة.
+      security: *id001
+      x-required-permission: chat.content_exception.approve
+      x-tenant-context: verified_identity_only
+      x-evidence-status: PROPOSED_NOT_IMPLEMENTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessExceptionDecision'
+      parameters:
+      - in: path
+        name: exceptionId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: نجاح مقيد بصلاحية وسياسة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessException'
+        '400':
+          description: BAD_REQUEST — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: UNAUTHENTICATED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: FORBIDDEN — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: NOT_FOUND — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: CONFLICT — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: POLICY_REJECTED — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE — تفاصيل عامة دون محتوى خاص
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'تصميم غير نهائي: رمز Tenant/Subject موثوق. scopes في x-required-permission مرشحة وتحتاج اعتمادًا.'
+  schemas:
+    ApiError:
+      type: object
+      required:
+      - code
+      - message
+      - correlation_id
+      properties:
+        code:
+          type: string
+          enum:
+          - BAD_REQUEST
+          - UNAUTHENTICATED
+          - FORBIDDEN
+          - NOT_FOUND
+          - CONFLICT
+          - PAYLOAD_TOO_LARGE
+          - POLICY_REJECTED
+          - QUOTA_EXCEEDED
+          - NO_APPROVED_PROVIDER_OR_SAFETY_GATE_UNAVAILABLE
+        message:
+          type: string
+        correlation_id:
+          type: string
+          format: uuid
+        retryable:
+          type: boolean
+        details:
+          type: object
+          additionalProperties:
+            type: string
+          description: لا تضمّن نصوص الرسائل أو أي أسرار
+      additionalProperties: false
+    ModelOption:
+      type: object
+      required:
+      - model_id
+      - display_name
+      - approval_status
+      - processing_region
+      - data_classes
+      properties:
+        model_id:
+          type: string
+        display_name:
+          type: string
+        approval_status:
+          type: string
+          enum:
+          - APPROVED
+        processing_region:
+          type: string
+        data_classes:
+          type: array
+          items:
+            type: string
+        cost_visibility:
+          type: string
+          enum:
+          - QUOTED
+          - POLICY_DEFINED
+          - NOT_APPROVED
+        streaming_eligible:
+          type: boolean
+      additionalProperties: false
+    ModelList:
+      type: object
+      required:
+      - models
+      - policy_version
+      properties:
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOption'
+        policy_version:
+          type: string
+      additionalProperties: false
+    CreateSession:
+      type: object
+      required:
+      - retention_preference
+      properties:
+        retention_preference:
+          type: string
+          enum:
+          - EPHEMERAL
+          - SAVE_IF_APPROVED
+        model_id:
+          type: string
+          description: من قائمة approved فقط؛ غيابه يسمح بتوجيه محكوم
+        purpose_code:
+          type: string
+          maxLength: 100
+      additionalProperties: false
+    ChatSession:
+      type: object
+      required:
+      - session_id
+      - owner_ref
+      - state
+      - retention_mode
+      - created_at
+      - policy_version
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        owner_ref:
+          type: string
+          description: مرجع مستعار للمالك لا بيانات هوية حساسة
+        state:
+          type: string
+          enum:
+          - ACTIVE
+          - CLOSED
+          - EXPIRED
+          - RESTRICTED
+        retention_mode:
+          type: string
+          enum:
+          - EPHEMERAL
+          - POLICY_SAVED
+        model_id:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+        policy_version:
+          type: string
+      additionalProperties: false
+    SessionList:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatSession'
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ChatMessageRequest:
+      type: object
+      required:
+      - content
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 65536
+          description: نص فقط، لا مرفقات، لا بيانات حقيقية قبل اعتماد المعالجة
+        model_id:
+          type: string
+          description: اختياري من نماذج معتمدة للمؤسسة
+        response_mode:
+          type: string
+          enum:
+          - JSON
+          - SSE
+          default: JSON
+        client_message_id:
+          type: string
+          format: uuid
+          description: لا يستخدم كهوية tenant أو مصدر صلاحية
+      additionalProperties: false
+    UsageRecord:
+      type: object
+      required:
+      - request_id
+      - metering_state
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        input_tokens:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        output_tokens:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        metering_state:
+          type: string
+          enum:
+          - RESERVED
+          - FINALIZED
+          - NOT_BILLED
+          - ADJUSTMENT_PENDING
+        provider_cost_estimate:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          description: العملة وسعر المزود يحتاجان اتفاقًا
+        currency:
+          type:
+          - string
+          - 'null'
+        cost_is_approved:
+          type: boolean
+      additionalProperties: false
+    ChatMessageResponse:
+      type: object
+      required:
+      - request_id
+      - session_id
+      - state
+      - correlation_id
+      - policy_version
+      - usage
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        session_id:
+          type: string
+          format: uuid
+        state:
+          type: string
+          enum:
+          - COMPLETED
+          - BLOCKED
+          - CANCELLED
+          - REVIEW_REQUIRED
+          - ERROR
+        content:
+          type:
+          - string
+          - 'null'
+          description: يظهر فقط بعد فحص وتفويض المخرج
+        model_id:
+          type:
+          - string
+          - 'null'
+        correlation_id:
+          type: string
+          format: uuid
+        policy_version:
+          type: string
+        usage:
+          $ref: '#/components/schemas/UsageRecord'
+        refusal_reason:
+          type:
+          - string
+          - 'null'
+          description: سبب عام دون تفاصيل سرية
+      additionalProperties: false
+    MessageList:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessageResponse'
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CancelResult:
+      type: object
+      required:
+      - request_id
+      - state
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        state:
+          type: string
+          enum:
+          - CANCELLED
+          - ALREADY_FINISHED
+          - CANCEL_PENDING
+        metering_pending:
+          type: boolean
+      additionalProperties: false
+    UsageSummary:
+      type: object
+      required:
+      - limits_state
+      - period_start
+      - period_end
+      properties:
+        limits_state:
+          type: string
+          enum:
+          - WITHIN_LIMIT
+          - NEAR_LIMIT
+          - BLOCKED
+          - NOT_CONFIGURED
+        period_start:
+          type: string
+          format: date-time
+        period_end:
+          type: string
+          format: date-time
+        messages_used:
+          type: integer
+          minimum: 0
+        tokens_used:
+          type: integer
+          minimum: 0
+        remaining_messages:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        remaining_tokens:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        provider_cost:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+        brightai_fees:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          description: تصميم واجهة فقط؛ لا سعر معتمد
+      additionalProperties: false
+    PrivacyPolicy:
+      type: object
+      required:
+      - policy_version
+      - content_storage
+      - sharing_enabled
+      - export_enabled
+      - admin_content_access_default
+      - retention_policy_ref
+      properties:
+        policy_version:
+          type: string
+        content_storage:
+          type: string
+          enum:
+          - EPHEMERAL
+          - OPT_IN_POLICY_SAVED
+        sharing_enabled:
+          type: boolean
+          default: false
+        export_enabled:
+          type: boolean
+          default: false
+        admin_content_access_default:
+          type: boolean
+          const: false
+        retention_policy_ref:
+          type:
+          - string
+          - 'null'
+        legal_hold_supported:
+          type: boolean
+      additionalProperties: false
+    PolicyUpdate:
+      type: object
+      required:
+      - requested_policy_version
+      - justification
+      - content_storage
+      - sharing_enabled
+      - export_enabled
+      properties:
+        requested_policy_version:
+          type: string
+        justification:
+          type: string
+          minLength: 5
+        content_storage:
+          type: string
+          enum:
+          - EPHEMERAL
+          - OPT_IN_POLICY_SAVED
+        sharing_enabled:
+          type: boolean
+        export_enabled:
+          type: boolean
+        retention_policy_ref:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ExportRequest:
+      type: object
+      required:
+      - reason
+      - format
+      properties:
+        reason:
+          type: string
+          minLength: 5
+        format:
+          type: string
+          enum:
+          - JSON
+          - PDF
+        recipient_ref:
+          type: string
+          description: مرجع مستلم مفوض، لا بريد مباشر من طرف مجهول
+      additionalProperties: false
+    ExportJob:
+      type: object
+      required:
+      - export_id
+      - state
+      - session_id
+      properties:
+        export_id:
+          type: string
+          format: uuid
+        session_id:
+          type: string
+          format: uuid
+        state:
+          type: string
+          enum:
+          - PENDING_APPROVAL
+          - DLP_SCANNING
+          - READY
+          - REJECTED
+          - EXPIRED
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        download_token_ref:
+          type:
+          - string
+          - 'null'
+          description: مرجع تحكم مقيد الصلاحية لا رابط عام
+      additionalProperties: false
+    ShareRequest:
+      type: object
+      required:
+      - recipient_ref
+      - purpose
+      - expires_at
+      properties:
+        recipient_ref:
+          type: string
+        purpose:
+          type: string
+          minLength: 5
+        expires_at:
+          type: string
+          format: date-time
+        scope:
+          type: string
+          enum:
+          - READ_REDACTED
+        confirmation_id:
+          type: string
+      additionalProperties: false
+    ShareGrant:
+      type: object
+      required:
+      - share_id
+      - status
+      - recipient_ref
+      properties:
+        share_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - PENDING
+          - ACTIVE
+          - REVOKED
+          - EXPIRED
+          - REJECTED
+        recipient_ref:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+      additionalProperties: false
+    AccessExceptionRequest:
+      type: object
+      required:
+      - session_id
+      - reason_code
+      - justification
+      - requested_duration_seconds
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        reason_code:
+          type: string
+          enum:
+          - SECURITY_INCIDENT
+          - LAWFUL_REQUEST
+          - AUTHORIZED_INTERNAL_INVESTIGATION
+        justification:
+          type: string
+          minLength: 10
+        requested_duration_seconds:
+          type: integer
+          minimum: 1
+          description: الحد الأعلى النهائي يتحدد بسياسة معتمدة
+      additionalProperties: false
+    AccessException:
+      type: object
+      required:
+      - exception_id
+      - session_id
+      - status
+      - requested_by
+      - decision_at
+      properties:
+        exception_id:
+          type: string
+          format: uuid
+        session_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - PENDING
+          - APPROVED
+          - DENIED
+          - EXPIRED
+          - REVOKED
+        requested_by:
+          type: string
+        decision_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        approved_scope:
+          type:
+          - string
+          - 'null'
+        approved_expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    AccessExceptionDecision:
+      type: object
+      required:
+      - decision
+      - reason
+      properties:
+        decision:
+          type: string
+          enum:
+          - APPROVE
+          - DENY
+        reason:
+          type: string
+          minLength: 5
+      additionalProperties: false
+    Ack:
+      type: object
+      required:
+      - status
+      - correlation_id
+      properties:
+        status:
+          type: string
+          enum:
+          - ACCEPTED
+          - CANCELLED
+          - DELETION_SCHEDULED
+          - REVOKED
+        correlation_id:
+          type: string
+          format: uuid
+      additionalProperties: false
+x-api-note-ar: لا تعتمد أي عميل خارجي على هذه المسارات قبل التنفيذ والتحقق الأمني والنشر المتحكم. أرقام الحدود والأسعار ومدد
+  الاحتفاظ غير معتمدة.

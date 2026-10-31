@@ -1,0 +1,1630 @@
+openapi: 3.1.0
+info:
+  title: AIGAS Ledger — Proposed API Contract (NOT DEPLOYED)
+  version: 1.0.0-draft
+  description: عقد تصميم مستهدف لـ AIGAS Ledger؛ جميع مساراته مقترحة وليست إثباتًا على وجود API عاملة. بيانات العميل
+    Metadata افتراضيًا، مع اختبارات صلاحية وعزل وسلامة تدقيق.
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+servers:
+- url: https://api.aigas.invalid
+  description: Placeholder .invalid فقط؛ لا خادم حقيقي ولا عنوان منشور
+x-contract-state: PROPOSED_NOT_IMPLEMENTED_OR_VERIFIED
+x-product-id: AIGAS-LD
+x-source-requirements:
+- LD-01
+- LD-02
+- LD-03
+- LD-04
+- LD-05
+- LD-06
+- LD-07
+x-security-contract:
+  kernel_required: true
+  kernel_fee_separate: false
+  tenant_id_from_verified_token: true
+  avoid_customer_raw_content_by_default: true
+  privacy_no_training: true
+  signed_export_profile_unapproved: true
+  authz_scopes_are_design_candidates: true
+  fail_closed_on_mandatory_ledger_loss: true
+  independent_export_verifier_required: true
+  no_assumption_of_blockchain: true
+security: &id001
+- BearerAuth: []
+paths:
+  /v1/ledger/events:
+    post:
+      tags:
+      - Events
+      summary: تسجيل حدث مؤسسي موثق
+      operationId: ingestEvidenceEvent
+      description: إقرار durable only after valid persistence; protected fallback identified explicitly; fail closed
+        for mandatory events if both paths fail.
+      x-required-permission: ledger.event.ingest
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '201':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordReceipt'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventIngestRequest'
+      parameters:
+      - &id003
+        name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 8
+        description: إعادة نفس الطلب بنفس المفتاح لا تعيد الأثر أو الفاتورة
+    get:
+      tags:
+      - Events
+      summary: استعراض الأحداث داخل مستأجر
+      operationId: listEvidenceEvents
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.event.read
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventPage'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: correlation_id
+        in: query
+        required: false
+        schema:
+          type: string
+  /v1/ledger/events/{event_id}:
+    get:
+      tags:
+      - Events
+      summary: عرض الحدث دون محتوى حساس غير مصرح به
+      operationId: getEvidenceEvent
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.event.read
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceEvent'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+      - &id002
+        name: event_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: معرف حدث من نفس المستأجر
+  /v1/ledger/events/{event_id}/receipt:
+    get:
+      tags:
+      - Integrity
+      summary: استرجاع إقرار حفظ الحدث
+      operationId: getEvidenceReceipt
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.receipt.read
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordReceipt'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+      - *id002
+  /v1/ledger/events/{event_id}/verify:
+    post:
+      tags:
+      - Integrity
+      summary: فحص تشخيصي عند الخادم لا يغني عن أداة مستقلة
+      operationId: verifyEventDiagnostic
+      description: نتيجة الخادم وحدها ليست independent verification؛ الحزمة تحتوي مواد الفحص الخارجي.
+      x-required-permission: ledger.verify.invoke
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrityResult'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+      - *id002
+  /v1/ledger/exports:
+    post:
+      tags:
+      - Export
+      summary: إنشاء مهمة تصدير بحدود مفوضة
+      operationId: createEvidenceExport
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.export.create
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '202':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJob'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+      parameters:
+      - *id003
+  /v1/ledger/exports/{export_id}:
+    get:
+      tags:
+      - Export
+      summary: متابعة حالة حزمة التصدير
+      operationId: getEvidenceExportStatus
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.export.read
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJob'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+      - &id004
+        name: export_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: معرف مهمة تصدير
+  /v1/ledger/exports/{export_id}/bundle:
+    get:
+      tags:
+      - Export
+      summary: تنزيل حزمة موقع/مصرح بها مستقلة عن الخادم
+      operationId: downloadEvidenceBundle
+      description: يجب أن تحتوي الحزمة manifest، أدلة، ملف تحقق، نسخة طريقة canonicalization، معلومات مفاتيح ثقة عامة؛
+        Content-Type للملف النهائي بعد اعتماد الصيغة.
+      x-required-permission: ledger.export.download
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: حزمة أدلة قابلة للاستخراج والفحص المستقل
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: attachment filename sanitized
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+      - *id004
+  /v1/ledger/retention-policy:
+    get:
+      tags:
+      - Retention
+      summary: جلب سياسة الاحتفاظ الفعالة
+      operationId: getRetentionPolicy
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.retention.read
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetentionPolicy'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+      - Retention
+      summary: تعديل سياسة الاحتفاظ بإثبات موافقة وفحص نسخة
+      operationId: updateRetentionPolicy
+      description: لا تُطبق مدة عالمية؛ Legal Hold يتقدم على حذف مقرر ضمن نطاقه وتظل تغييرات السياسة مسجلة.
+      x-required-permission: ledger.retention.manage
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetentionPolicy'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetentionUpdateRequest'
+      parameters:
+      - &id005
+        name: If-Match
+        in: header
+        required: true
+        schema:
+          type: string
+        description: نسخة السياسة السابقة لتفادي Lost Update
+  /v1/ledger/legal-holds:
+    post:
+      tags:
+      - LegalHold
+      summary: إيقاف حذف نطاق أدلة بأمر مخول
+      operationId: createLegalHold
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.legalhold.create
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '201':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalHold'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalHoldCreate'
+      parameters:
+      - *id003
+    get:
+      tags:
+      - LegalHold
+      summary: استعراض التجميدات القانونية للمخولين
+      operationId: listLegalHolds
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.legalhold.read
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: تجميدات قانونية مصرح بها
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalHold'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/ledger/legal-holds/{hold_id}/release:
+    post:
+      tags:
+      - LegalHold
+      summary: رفع Legal Hold بموافقة مستقلة
+      operationId: releaseLegalHold
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.legalhold.release
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalHold'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HoldReleaseRequest'
+      parameters:
+      - *id005
+      - name: hold_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: معرف تجميد قانوني
+  /v1/ledger/evidence-links:
+    post:
+      tags:
+      - Linkage
+      summary: إضافة علاقة دليل بحدث أو ضابط آخر دون إعادة كتابة الأصل
+      operationId: createEvidenceLink
+      description: تصميم مقترح فقط؛ لا إثبات بأن endpoint موجود
+      x-required-permission: ledger.link.create
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '201':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceLink'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvidenceLinkCreate'
+      parameters:
+      - *id003
+  /v1/ledger/recording-health:
+    get:
+      tags:
+      - Operations
+      summary: حالة مسار التسجيل الإلزامي لمشغل مخول
+      operationId: getRecordingHealth
+      description: غير عام؛ لا نشر live status أو تفاصيل بنية لأطراف غير مخولة
+      x-required-permission: ledger.operations.read
+      x-tenant-scope: derived from verified identity, never from caller-supplied tenant_id
+      security: *id001
+      responses:
+        '200':
+          description: النتيجة المصرح بها
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+        '400':
+          description: BAD_REQUEST / schema invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: UNAUTHENTICATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: FORBIDDEN / tenant or scope denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: NOT_FOUND (no cross-tenant enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: CONFLICT / policy version or idempotency collision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: POLICY_REJECTED / sensitive content, legal hold, or semantic constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: RATE_LIMITED / quota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: MANDATORY_AUDIT_UNAVAILABLE / critical signing/storage dependency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token from approved Kernel identity; actual protocol and federation not yet decided
+  schemas:
+    Error:
+      type: object
+      description: خطأ منظّم لا يكشف محتوى العميل
+      properties:
+        code:
+          type: string
+          description: رمز آلي معروف
+        message:
+          type: string
+          description: شرح مختصر غير حساس
+        correlation_id:
+          type: string
+          description: مرجع تحقيق
+        retryable:
+          type: boolean
+          description: قابل لإعادة المحاولة؟
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - correlation_id
+      - retryable
+    PolicyReference:
+      type: object
+      description: مرجع سياسة مُعتمدة
+      properties:
+        policy_id:
+          type: string
+          description: معرف سياسة
+        version:
+          type: string
+          description: نسخة سياسة
+      additionalProperties: false
+      required:
+      - policy_id
+      - version
+    SourceReference:
+      type: object
+      description: مصدر الفعل بعد مصادقة النظام
+      properties:
+        source_event_ref:
+          type: string
+          description: معرف حدث النظام المصدر
+        source_system:
+          type: string
+          description: خدمة/تطبيق مفوّض
+        action_ref:
+          type: string
+          description: مرجع العملية
+      additionalProperties: false
+      required:
+      - source_system
+      - source_event_ref
+    EventIngestRequest:
+      type: object
+      description: لا يحتوي tenant_id أو actor identity قابلة للتزوير؛ تُستمد من مصادقة Kernel
+      properties:
+        source:
+          $ref: '#/components/schemas/SourceReference'
+        event_type:
+          type: string
+          description: نوع حدث من قائمة معتمدة
+        occurred_at:
+          type: string
+          description: وقت حدوث الحدث وفق المصدر مع إثبات مصدر الوقت
+          format: date-time
+        correlation_id:
+          type: string
+          description: مرجع سلسلة عمليات دون بيانات حساسة
+        policy:
+          $ref: '#/components/schemas/PolicyReference'
+        decision_ref:
+          type: string
+          description: معرف قرار متعلق إن وجد
+        actor_ref:
+          type: string
+          description: مرجع هوية مُمثل بعد تحقق مصدره
+        classification:
+          type: string
+          description: مستوى التصنيف المسموح
+          enum:
+          - PUBLIC
+          - INTERNAL
+          - CONFIDENTIAL
+          - RESTRICTED
+        metadata:
+          type: object
+          description: بيانات وصفية بسيطة وwhitelist؛ لا prompts أو secrets
+          additionalProperties:
+            type:
+            - string
+            - integer
+            - number
+            - boolean
+            - 'null'
+        mandatory_record:
+          type: boolean
+          description: تصنيف العمل كتسجيل إلزامي تُثبته سياسة الخادم؛ لا يمنح الحقل المستدعي سلطة تخطي السياسة
+      additionalProperties: false
+      required:
+      - source
+      - event_type
+      - occurred_at
+      - correlation_id
+      - classification
+      - metadata
+    RecordReceipt:
+      type: object
+      description: إقرار المتانة المحدد المعنى، ليس مجرد 202 HTTP
+      properties:
+        receipt_id:
+          type: string
+          description: معرف الإقرار
+        event_id:
+          type: string
+          description: معرف الحدث
+        recorded_at:
+          type: string
+          description: وقت اعتماد الإيداع
+          format: date-time
+        persistence_state:
+          type: string
+          description: نتيجة إيداع فعلية
+          enum:
+          - DURABLY_RECORDED
+          - PROTECTED_FALLBACK
+          - NOT_RECORDED
+        integrity_profile:
+          type: string
+          description: معرف إصدار التحقق
+        sequence_ref:
+          type: string
+          description: مرجع التسلسل إن كان معتمدًا
+        idempotency_replayed:
+          type: boolean
+          description: الإعادة استرجعت نفس الإقرار
+      additionalProperties: false
+      required:
+      - receipt_id
+      - event_id
+      - recorded_at
+      - persistence_state
+      - idempotency_replayed
+    EvidenceEvent:
+      type: object
+      description: ملف حدث مختزل قابل للقراءة المفوضة
+      properties:
+        event_id:
+          type: string
+          description: معرف الخادم
+        recorded_at:
+          type: string
+          description: وقت الاستلام الموثوق
+          format: date-time
+        event_type:
+          type: string
+          description: نوع الحدث
+        source:
+          $ref: '#/components/schemas/SourceReference'
+        correlation_id:
+          type: string
+          description: مرجع عملية
+        policy:
+          $ref: '#/components/schemas/PolicyReference'
+        decision_ref:
+          type: string
+          description: مرجع قرار إن وجد
+        classification:
+          type: string
+          description: درجة حساسية
+        integrity_receipt:
+          $ref: '#/components/schemas/RecordReceipt'
+        metadata:
+          type: object
+          description: حقول مختزلة ومسموحة
+          additionalProperties: true
+      additionalProperties: false
+      required:
+      - event_id
+      - recorded_at
+      - event_type
+      - source
+      - correlation_id
+      - classification
+      - integrity_receipt
+    EventPage:
+      type: object
+      description: صفحة نتائج ضمن Tenant المصدق
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvidenceEvent'
+        next_cursor:
+          type: string
+          description: cursor قابل للتجاهل وعدم كشف بنية المخزن
+      additionalProperties: false
+      required:
+      - items
+    IntegrityResult:
+      type: object
+      description: نتيجة فحص خادم تشخيصية؛ الفحص المستقل يتم في أداة خارج الخادم
+      properties:
+        event_id:
+          type: string
+          description: معرّف الحدث
+        result:
+          type: string
+          description: حالة مفصلة
+          enum:
+          - VALID
+          - INVALID
+          - INDETERMINATE
+          - UNTRUSTED_SOURCE
+          - KEY_UNAVAILABLE
+        verification_profile:
+          type: string
+          description: طريقة التحقق وإصدارها
+        checked_at:
+          type: string
+          description: وقت الفحص
+          format: date-time
+        reason_code:
+          type: string
+          description: السبب التقني غير الحساس
+      additionalProperties: false
+      required:
+      - event_id
+      - result
+      - checked_at
+      - reason_code
+    ExportRequest:
+      type: object
+      description: نطاق تصدير مُصرح به، لا توجد صيغة تصدير عامة بلا صلاحية
+      properties:
+        event_ids:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        reason:
+          type: string
+          description: مبرر التصدير غير حساس
+        format:
+          type: string
+          description: صيغة الحزمة بعد اعتماد معيارها
+          enum:
+          - EVIDENCE_BUNDLE_V1
+        include_sensitive_content:
+          type: boolean
+          description: رفض افتراضي؛ يتطلب موافقة مستقلة إن توفرت
+          default: false
+      additionalProperties: false
+      required:
+      - event_ids
+      - reason
+      - format
+    ExportJob:
+      type: object
+      description: مهمة إعداد حزمة تدقيق
+      properties:
+        export_id:
+          type: string
+          description: معرف الحزمة
+        status:
+          type: string
+          description: حالة التحضير
+          enum:
+          - PENDING
+          - RUNNING
+          - READY
+          - FAILED
+          - EXPIRED
+        created_at:
+          type: string
+          description: وقت الطلب
+          format: date-time
+        manifest_ref:
+          type: string
+          description: مرجع manifest عند اكتمالها
+        failure_reason:
+          type: string
+          description: سبب الفشل غير الحساس
+      additionalProperties: false
+      required:
+      - export_id
+      - status
+      - created_at
+    RetentionPolicy:
+      type: object
+      description: سياسة لكل Tenant وفئة؛ المدد غير معتمدة عالميًا
+      properties:
+        policy_id:
+          type: string
+          description: معرف سياسة
+        version:
+          type: string
+          description: نسخة معتمدة
+        rules:
+          type: array
+          items:
+            type: object
+            description: قاعدة احتفاظ
+            properties:
+              data_class:
+                type: string
+                description: فئة البيانات
+              retention_period:
+                type: string
+                description: ISO 8601 duration بعد الاعتماد أو policy reference
+              deletion_action:
+                type: string
+                description: حذف/إخفاء/إتلاف بحسب الصنف
+              legal_basis_ref:
+                type: string
+                description: مرجع السبب/الاعتماد
+            additionalProperties: false
+            required:
+            - data_class
+            - retention_period
+            - deletion_action
+        updated_at:
+          type: string
+          description: وقت الاعتماد
+          format: date-time
+      additionalProperties: false
+      required:
+      - policy_id
+      - version
+      - rules
+    RetentionUpdateRequest:
+      type: object
+      description: تحديث سياسة مع تحقق صلاحية وIf-Match
+      properties:
+        rules:
+          $ref: '#/components/schemas/RetentionPolicy'
+        reason:
+          type: string
+          description: سبب تعديل مكتوب
+        approval_ref:
+          type: string
+          description: مرجع موافقة مخولة
+      additionalProperties: false
+      required:
+      - rules
+      - reason
+      - approval_ref
+    LegalHoldCreate:
+      type: object
+      description: تجميد قانوني محدد لا يشمل كل المؤسسة افتراضيًا
+      properties:
+        case_ref:
+          type: string
+          description: مرجع قضية مفوض غير حساس
+        scope_event_ids:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        legal_basis_ref:
+          type: string
+          description: الأساس المعتمد
+        approver_ref:
+          type: string
+          description: مرجع موافقة مستقلة
+        reason:
+          type: string
+          description: سبب مختصر غير حساس
+      additionalProperties: false
+      required:
+      - case_ref
+      - scope_event_ids
+      - legal_basis_ref
+      - approver_ref
+      - reason
+    LegalHold:
+      type: object
+      description: سجل Legal Hold قابل للمراجعة
+      properties:
+        hold_id:
+          type: string
+          description: معرف التجميد
+        case_ref:
+          type: string
+          description: القضية
+        status:
+          type: string
+          description: الحالة
+          enum:
+          - ACTIVE
+          - RELEASED
+        scope_event_ids:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          description: وقت الإجراء
+          format: date-time
+        released_at:
+          type: string
+          description: وقت الرفع إن حدث
+          format: date-time
+      additionalProperties: false
+      required:
+      - hold_id
+      - case_ref
+      - status
+      - scope_event_ids
+      - created_at
+    HoldReleaseRequest:
+      type: object
+      description: تسجيل رفع تجميد مخول
+      properties:
+        reason:
+          type: string
+          description: السبب
+        approval_ref:
+          type: string
+          description: الموافقة المستقلة
+      additionalProperties: false
+      required:
+      - reason
+      - approval_ref
+    EvidenceLinkCreate:
+      type: object
+      description: ربط دليل بسياق آخر دون إعادة كتابة الأصل
+      properties:
+        event_id:
+          type: string
+          description: معرف دليل من نفس المستأجر
+        relation_type:
+          type: string
+          description: نوع علاقة
+          enum:
+          - APPROVAL
+          - INCIDENT
+          - RISK_ASSESSMENT
+          - CONTROL
+          - AI_ACTION
+        target_ref:
+          type: string
+          description: مرجع الهدف ضمن المستأجر
+        reason:
+          type: string
+          description: سبب الربط
+      additionalProperties: false
+      required:
+      - event_id
+      - relation_type
+      - target_ref
+    EvidenceLink:
+      type: object
+      description: نتيجة إنشاء علاقة منفصلة مدققة
+      properties:
+        link_id:
+          type: string
+          description: معرف العلاقة
+        event_id:
+          type: string
+          description: الأصل
+        relation_type:
+          type: string
+          description: نوع العلاقة
+        target_ref:
+          type: string
+          description: المرجع
+        created_at:
+          type: string
+          description: وقت الربط
+          format: date-time
+      additionalProperties: false
+      required:
+      - link_id
+      - event_id
+      - relation_type
+      - target_ref
+      - created_at
+    HealthStatus:
+      type: object
+      description: صحة المسارات لا تعني صلاحية إطلاق المنتج
+      properties:
+        recording_mode:
+          type: string
+          description: حالة المسار
+          enum:
+          - PRIMARY
+          - PROTECTED_FALLBACK
+          - MANDATORY_RECORDING_UNAVAILABLE
+        can_record_mandatory:
+          type: boolean
+          description: إمكان حفظ الأحداث الإلزامية
+        observed_at:
+          type: string
+          description: وقت المراقبة
+          format: date-time
+      additionalProperties: false
+      required:
+      - recording_mode
+      - can_record_mandatory
+      - observed_at

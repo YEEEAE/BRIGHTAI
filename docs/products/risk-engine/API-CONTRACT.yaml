@@ -1,0 +1,1223 @@
+# AIGAS Risk Engine — Proposed OpenAPI Contract. NO ENDPOINT IS VERIFIED OR DEPLOYED.
+# example.invalid is intentionally non-routable; values null mean owner decision required.
+openapi: 3.1.0
+info:
+  title: AIGAS Risk Engine API — Proposed Contract
+  version: 0.1.0-draft
+  description: Target API design only. None of these paths is verified to exist or be available at brightai.live.
+    Tenant identity, authorization issuer, deployment base URLs, limits, pricing, scoring methodology and provider
+    selection require approval.
+  x-document-id: AIGAS-RE-API-001
+  x-canonical-path: docs/products/risk-engine/API-CONTRACT.yaml
+  x-date: '2026-11-01'
+  x-product: AIGAS-RE
+  x-requirement-trace:
+  - RE-01
+  - RE-02
+  - RE-03
+  - RE-04
+  - RE-05
+  x-runtime-availability: NOT_VERIFIED
+  x-review-status: DESIGN_PROPOSAL_NOT_DEPLOYED
+servers:
+- url: https://risk-api.example.invalid
+  description: Documentation-only non-routable example; NOT a live endpoint
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+tags:
+- name: Assets
+  description: RE-01 asset inventory
+- name: Assessments
+  description: RE-02 evaluation and RE-04 reassessment
+- name: Reviews
+  description: RE-02 and RE-05 review and challenge
+- name: Changes
+  description: RE-04 lifecycle changes
+- name: Policies
+  description: RE-03 hierarchy
+- name: Evidence
+  description: Minimum product/Kernel audit
+x-contract-boundaries:
+  status: PROPOSED_ONLY
+  authenticated_tenant_context: Derived from verified Kernel identity; never trust tenant_id sent by client
+  auth_profile: Example HTTP Bearer; final SSO/MFA, service identity and token issuer are architecture decisions
+  security_and_privacy:
+  - No customer data used to train or improve models
+  - No provider fallback to unapproved model or region
+  - No missing-context automatic approval
+  - No self-approval where segregation of duties is required
+  - No enforce/block claims for unintegrated services
+  deployment_modes:
+  - SAAS
+  - ON_PREMISE
+  - AIR_GAPPED
+  ai_provider_selection: Must be approved and reachable only within the authorized deployment boundary
+  numeric_risk_scale: null
+  risk_scoring_methodology: null
+  endpoints_live: false
+  rate_limit: null
+  trial_quotas: null
+  retention_days: null
+  business_support_terms: null
+  idempotent_mutations: true
+  eventual_consistency: Any asynchronous result must retain a pending state, correlated job/assessment ID and status
+    retrieval
+security:
+- BearerAuth: []
+paths:
+  /v1/risk/assets:
+    post:
+      operationId: createRiskAsset
+      summary: تسجيل أصل AI بنطاق مستأجر مصادق
+      tags:
+      - Assets
+      x-required-permissions:
+      - risk.asset.write
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '201':
+          description: Asset created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAsset'
+        '400': &id001
+          $ref: '#/components/responses/BadRequest'
+        '401': &id002
+          $ref: '#/components/responses/Unauthorized'
+        '403': &id003
+          $ref: '#/components/responses/Forbidden'
+        '404': &id004
+          $ref: '#/components/responses/NotFound'
+        '409': &id005
+          $ref: '#/components/responses/Conflict'
+        '422': &id006
+          $ref: '#/components/responses/Unprocessable'
+        '429': &id007
+          $ref: '#/components/responses/QuotaExceeded'
+        '503': &id008
+          $ref: '#/components/responses/Unavailable'
+      requestBody:
+        description: المعلومات الضرورية فقط، بلا أسرار أو بيانات حساسة خام
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RiskAssetCreate'
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      - $ref: '#/components/parameters/CorrelationId'
+    get:
+      operationId: listRiskAssets
+      summary: استعراض الأصول المسموح بها فقط
+      tags:
+      - Assets
+      x-required-permissions:
+      - risk.asset.read
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '200':
+          description: Filtered assets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAssets'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CorrelationId'
+  /v1/risk/assets/{assetId}:
+    get:
+      operationId: getRiskAsset
+      summary: تفاصيل أصل مصرّح به
+      tags:
+      - Assets
+      x-required-permissions:
+      - risk.asset.read
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '200':
+          description: Asset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAsset'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      parameters:
+      - $ref: '#/components/parameters/AssetId'
+      - $ref: '#/components/parameters/CorrelationId'
+    patch:
+      operationId: updateRiskAsset
+      summary: تحديث نسخة أصل دون إعادة كتابة التاريخ
+      tags:
+      - Assets
+      x-required-permissions:
+      - risk.asset.write
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '200':
+          description: Updated asset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskAsset'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+      requestBody:
+        description: Update only documented patchable fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RiskAssetPatch'
+      parameters:
+      - $ref: '#/components/parameters/AssetId'
+      - $ref: '#/components/parameters/IfMatch'
+      - $ref: '#/components/parameters/IdempotencyKey'
+  /v1/risk/assessments:
+    post:
+      operationId: createAssessment
+      summary: بدء تقييم موثق لا يعني اعتمادًا نهائيًا
+      tags:
+      - Assessments
+      x-required-permissions:
+      - risk.assessment.create
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '202':
+          description: Assessment accepted/pending evaluation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assessment'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      requestBody:
+        description: Rules-only or approved hybrid mode; no unapproved provider routing
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssessmentCreate'
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      - $ref: '#/components/parameters/CorrelationId'
+      x-security-invariant: When model unavailable, no automatic clearance; mark INCOMPLETE/REVIEW_REQUIRED
+  /v1/risk/assessments/{assessmentId}:
+    get:
+      operationId: getAssessment
+      summary: عرض النتيجة والتفسيرات ومراجع الأدلة
+      tags:
+      - Assessments
+      x-required-permissions:
+      - risk.assessment.read
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '200':
+          description: Assessment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assessment'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      parameters:
+      - $ref: '#/components/parameters/AssessmentId'
+      - $ref: '#/components/parameters/CorrelationId'
+  /v1/risk/assessments/{assessmentId}/reviews:
+    post:
+      operationId: decideAssessmentReview
+      summary: إثبات قرار مراجع مستقل ومخوّل
+      tags:
+      - Reviews
+      x-required-permissions:
+      - risk.review.decide
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '201':
+          description: Review receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewReceipt'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+      requestBody:
+        description: Approval/rejection with mandatory reason
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssessmentReview'
+      parameters:
+      - $ref: '#/components/parameters/AssessmentId'
+      - $ref: '#/components/parameters/IfMatch'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      x-security-invariant: Enforce no forbidden self-approval and no override of higher policy; approvals are scoped
+        to assessment version
+  /v1/risk/assessments/{assessmentId}/challenges:
+    post:
+      operationId: challengeAssessment
+      summary: فتح اعتراض مدعوم دون محو النتيجة القديمة
+      tags:
+      - Reviews
+      x-required-permissions:
+      - risk.assessment.challenge
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '201':
+          description: Challenge created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChallengeReceipt'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      requestBody:
+        description: Reason and selected findings
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChallengeCreate'
+      parameters:
+      - $ref: '#/components/parameters/AssessmentId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+  /v1/risk/assets/{assetId}/changes:
+    post:
+      operationId: recordRiskAssetChange
+      summary: تسجيل حدث تغير لإعادة التقييم حسب ماديته
+      tags:
+      - Changes
+      x-required-permissions:
+      - risk.change.create
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '202':
+          description: Change accepted and classified/pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeReceipt'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      requestBody:
+        description: Source references and version identifiers
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RiskChange'
+      parameters:
+      - $ref: '#/components/parameters/AssetId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+  /v1/risk/assessments/{assessmentId}/reassess:
+    post:
+      operationId: reassessRisk
+      summary: إنشاء تقييم جديد استنادًا إلى تقييم سابق
+      tags:
+      - Assessments
+      x-required-permissions:
+      - risk.assessment.create
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '202':
+          description: New assessment pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assessment'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      requestBody:
+        description: Reason of re-evaluation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReassessmentRequest'
+      parameters:
+      - $ref: '#/components/parameters/AssessmentId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      x-security-invariant: Never mutate an existing signed review or old assessment; link new assessment by lineage
+  /v1/risk/policies/effective:
+    get:
+      operationId: getEffectiveRiskPolicy
+      summary: عرض حدود السياسة النافذة للمستخدم دون أسرار
+      tags:
+      - Policies
+      x-required-permissions:
+      - risk.policy.read
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '200':
+          description: Effective policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EffectivePolicy'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      parameters:
+      - $ref: '#/components/parameters/CorrelationId'
+      x-security-invariant: Higher-level mandatory controls must not be overridden by lower-level settings
+  /v1/risk/assessments/{assessmentId}/evidence:
+    get:
+      operationId: getRiskAssessmentEvidence
+      summary: عرض وصف حزمة أدلة مخففة ومقيدة
+      tags:
+      - Evidence
+      x-required-permissions:
+      - risk.audit.read
+      x-product-runtime-status: NOT_IMPLEMENTED_OR_VERIFIED
+      x-tenant-isolation: Always derive tenant from verified principal, never client payload
+      responses:
+        '200':
+          description: Manifest only, subject to retention and export controls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceManifest'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '409': *id005
+        '422': *id006
+        '429': *id007
+        '503': *id008
+      parameters:
+      - $ref: '#/components/parameters/AssessmentId'
+      x-security-invariant: No raw sensitive evidence, no cross-tenant data, no write bypass, no implicit access
+        to Ledger without license
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque/JWT per approved IAM profile
+      description: Illustrative mechanism only. Not a declaration that a production issuer exists.
+  parameters:
+    AssetId:
+      name: assetId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: معرف الأصل داخل المستأجر
+    AssessmentId:
+      name: assessmentId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Unique per tenant + operation; prevents repeated mutations or double metering
+    IfMatch:
+      name: If-Match
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Expected version/ETag for concurrency control
+    CorrelationId:
+      name: X-Correlation-ID
+      in: header
+      required: false
+      schema:
+        type: string
+      description: Opaque trace identifier; no PII
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+      description: Maximum subject to approved tenant limits
+  responses:
+    BadRequest:
+      description: Malformed request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Unauthorized:
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Forbidden:
+      description: Not authorized for this tenant, scope or operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotFound:
+      description: No accessible record; do not leak existence across tenants
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Conflict:
+      description: State/version conflict or duplicate request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    PreconditionFailed:
+      description: Invalid or stale If-Match
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Unprocessable:
+      description: Policy, methodology, evidence or SoD validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    QuotaExceeded:
+      description: Trial or license usage quota exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Unavailable:
+      description: Required policy/model/identity dependency unavailable; never silently approve
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+  schemas:
+    RiskAssetCreate:
+      type: object
+      additionalProperties: false
+      properties:
+        external_reference:
+          type: string
+          description: معرّف العميل الاختياري؛ لا يُستخدم لتجاوز حدود المستأجر
+        name:
+          type: string
+          description: اسم أصل عام لا يتضمن PII
+        owner_reference:
+          type: string
+          description: معرف مالك لدى نظام هوية المستأجر
+        purpose:
+          type: string
+          description: الغرض المؤسسي المصرح به
+        use_case:
+          type: string
+          description: حالة الاستخدام المختصرة
+        model_reference:
+          type: string
+          description: اسم/معرف نموذج داخل سجل معتمد؛ لا بيانات اعتماد
+        model_version:
+          type: string
+          description: إصدار موثق عند توافره
+        data_categories:
+          type: array
+          items:
+            type: string
+        affected_parties:
+          type: array
+          items:
+            type: string
+        controls:
+          type: array
+          items:
+            type: string
+        environment:
+          type: string
+          description: بيئة نشر معتمدة في مؤسسة العميل
+      required:
+      - name
+      - owner_reference
+      - purpose
+      - use_case
+      - data_categories
+    RiskAsset:
+      type: object
+      additionalProperties: false
+      properties:
+        asset_id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        state:
+          type: string
+          enum:
+          - DRAFT
+          - IN_REVIEW
+          - ACTIVE
+          - RETIRED
+        details:
+          $ref: '#/components/schemas/RiskAssetCreate'
+      required:
+      - asset_id
+      - tenant_id
+      - version
+      - state
+      - details
+    RiskAssetPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        owner_reference:
+          type: string
+        purpose:
+          type: string
+        use_case:
+          type: string
+        model_reference:
+          type: string
+        model_version:
+          type: string
+        data_categories:
+          type: array
+          items:
+            type: string
+        affected_parties:
+          type: array
+          items:
+            type: string
+        controls:
+          type: array
+          items:
+            type: string
+        environment:
+          type: string
+      description: Patch لا يغير tenant_id أو هوية الأصل؛ يستلزم If-Match.
+    SourceEvidence:
+      type: object
+      additionalProperties: false
+      properties:
+        reference:
+          type: string
+          description: مرجع داخلي مصرح به وليس البيانات الخام
+        type:
+          type: string
+          enum:
+          - RULE
+          - DOCUMENT
+          - OWNER_INPUT
+          - APPROVED_MODEL
+          - REVIEW
+        version:
+          type: string
+        note:
+          type: string
+      required:
+      - reference
+      - type
+    RiskContext:
+      type: object
+      additionalProperties: false
+      properties:
+        impact_domains:
+          type: array
+          items:
+            type: string
+            description: مفاهيم ضرر وفق منهج المؤسسة
+        threats:
+          type: array
+          items:
+            type: string
+        controls_in_effect:
+          type: array
+          items:
+            type: string
+        likelihood_evidence:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceEvidence'
+        impact_evidence:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceEvidence'
+        additional_factors:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceEvidence'
+      required:
+      - impact_domains
+      - likelihood_evidence
+      - impact_evidence
+    AssessmentCreate:
+      type: object
+      additionalProperties: false
+      properties:
+        asset_id:
+          type: string
+          format: uuid
+        asset_version:
+          type: integer
+          minimum: 1
+        methodology_version:
+          type: string
+          description: نسخة منهج مؤسسي مُعتمد
+        policy_version:
+          type: string
+          description: السياسة النافذة؛ لا يجوز تمرير نسخة أقدم لتجاوزها
+        analysis_mode:
+          type: string
+          enum:
+          - RULES_ONLY
+          - HYBRID_APPROVED
+        context:
+          $ref: '#/components/schemas/RiskContext'
+        reason:
+          type: string
+      required:
+      - asset_id
+      - asset_version
+      - methodology_version
+      - analysis_mode
+      - context
+    RiskFinding:
+      type: object
+      additionalProperties: false
+      properties:
+        finding_id:
+          type: string
+          format: uuid
+        category:
+          type: string
+        description:
+          type: string
+        conclusion_basis:
+          type: string
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceEvidence'
+        rule_id:
+          type: string
+        mitigation:
+          type: string
+        uncertainty_note:
+          type: string
+      required:
+      - finding_id
+      - category
+      - description
+      - sources
+    Assessment:
+      type: object
+      additionalProperties: false
+      properties:
+        assessment_id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+        asset_id:
+          type: string
+          format: uuid
+        asset_version:
+          type: integer
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - PENDING_EVALUATION
+          - INCOMPLETE
+          - REVIEW_REQUIRED
+          - UNDER_REVIEW
+          - APPROVED
+          - REJECTED
+          - SUPERSEDED
+          - FAILED
+        methodology_version:
+          type: string
+        policy_version:
+          type: string
+        analysis_mode_requested:
+          type: string
+          enum:
+          - RULES_ONLY
+          - HYBRID_APPROVED
+        analysis_mode_performed:
+          type: string
+          enum:
+          - RULES_ONLY
+          - HYBRID_APPROVED
+          - NOT_COMPLETED
+        qualitative_classification:
+          type:
+          - string
+          - 'null'
+          description: قيمة وفق تصنيفات جهة العميل المعتمدة؛ لا enum أو score رقمي مفروض
+        numeric_score:
+          type:
+          - number
+          - 'null'
+          description: null إلى أن تُعتمد طريقة معايرة/قياس قابلة للإثبات
+        findings:
+          type: array
+          items:
+            $ref: '#/components/schemas/RiskFinding'
+        requires_human_review:
+          type: boolean
+        missing_evidence:
+          type: array
+          items:
+            type: string
+        result_explanation:
+          type: string
+        review_reference:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+        correlation_id:
+          type: string
+      required:
+      - assessment_id
+      - tenant_id
+      - asset_id
+      - status
+      - methodology_version
+      - policy_version
+      - findings
+      - requires_human_review
+      - correlation_id
+    AssessmentReview:
+      type: object
+      additionalProperties: false
+      properties:
+        decision:
+          type: string
+          enum:
+          - APPROVE
+          - REJECT
+          - REQUEST_INFORMATION
+        rationale:
+          type: string
+          description: سبب إلزامي لكل قرار
+        evidence_references:
+          type: array
+          items:
+            type: string
+        reviewer_acknowledgement:
+          type: boolean
+          description: تصريح لا يحل محل تفويض النظام
+      required:
+      - decision
+      - rationale
+    ReviewReceipt:
+      type: object
+      additionalProperties: false
+      properties:
+        review_id:
+          type: string
+          format: uuid
+        assessment_id:
+          type: string
+          format: uuid
+        decision:
+          type: string
+        reviewer_id:
+          type: string
+        reviewed_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+        correlation_id:
+          type: string
+      required:
+      - review_id
+      - assessment_id
+      - decision
+      - reviewer_id
+      - reviewed_at
+      - status
+    ChallengeCreate:
+      type: object
+      additionalProperties: false
+      properties:
+        reason:
+          type: string
+        disputed_finding_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        evidence_references:
+          type: array
+          items:
+            type: string
+      required:
+      - reason
+      - disputed_finding_ids
+    ChallengeReceipt:
+      type: object
+      additionalProperties: false
+      properties:
+        challenge_id:
+          type: string
+          format: uuid
+        assessment_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - OPEN
+          - UNDER_REVIEW
+          - RESOLVED
+          - REJECTED
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - challenge_id
+      - assessment_id
+      - status
+    RiskChange:
+      type: object
+      additionalProperties: false
+      properties:
+        event_id:
+          type: string
+          description: Unique source event ID for deduplication
+        change_type:
+          type: string
+          enum:
+          - MODEL_VERSION
+          - DATA_CATEGORY
+          - PURPOSE
+          - DEPLOYMENT
+          - CONTROL
+          - PROVIDER
+          - OTHER
+        before_reference:
+          type: string
+        after_reference:
+          type: string
+        change_reason:
+          type: string
+        source_timestamp:
+          type: string
+          format: date-time
+        evidence_references:
+          type: array
+          items:
+            type: string
+      required:
+      - event_id
+      - change_type
+      - after_reference
+      - change_reason
+    ChangeReceipt:
+      type: object
+      additionalProperties: false
+      properties:
+        change_id:
+          type: string
+          format: uuid
+        asset_id:
+          type: string
+          format: uuid
+        materiality:
+          type: string
+          enum:
+          - PENDING_CLASSIFICATION
+          - MATERIAL
+          - NON_MATERIAL
+        review_required:
+          type: boolean
+        assessment_reference:
+          type:
+          - string
+          - 'null'
+        correlation_id:
+          type: string
+      required:
+      - change_id
+      - asset_id
+      - materiality
+      - review_required
+    ReassessmentRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        reason:
+          type: string
+        change_id:
+          type: string
+          format: uuid
+        methodology_version:
+          type: string
+      required:
+      - reason
+    EffectivePolicy:
+      type: object
+      additionalProperties: false
+      properties:
+        tenant_id:
+          type: string
+        policy_version:
+          type: string
+        methodology_version:
+          type: string
+        scope:
+          type: object
+          additionalProperties: false
+          properties:
+            org_unit:
+              type: string
+            asset_id:
+              type: string
+            user_reference:
+              type: string
+        effective_controls:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              rule_id:
+                type: string
+              source_scope:
+                type: string
+              effect:
+                type: string
+              override_permitted:
+                type: boolean
+            required:
+            - rule_id
+            - source_scope
+            - effect
+        numeric_thresholds_approved:
+          type: boolean
+      required:
+      - tenant_id
+      - policy_version
+      - effective_controls
+    EvidenceManifest:
+      type: object
+      additionalProperties: false
+      properties:
+        assessment_id:
+          type: string
+          format: uuid
+        package_reference:
+          type:
+          - string
+          - 'null'
+        entries:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              evidence_id:
+                type: string
+              type:
+                type: string
+              integrity_reference:
+                type: string
+              redacted:
+                type: boolean
+            required:
+            - evidence_id
+            - type
+            - redacted
+        export_status:
+          type: string
+          enum:
+          - NOT_AVAILABLE
+          - PREPARING
+          - READY
+          - DENIED
+        retention_policy_reference:
+          type: string
+      required:
+      - assessment_id
+      - entries
+      - export_status
+    Problem:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        code:
+          type: string
+        detail:
+          type: string
+          description: رسالة عامة لا تفصح عن معلومات مستأجر آخر
+        correlation_id:
+          type: string
+        retryable:
+          type: boolean
+      required:
+      - title
+      - status
+      - code
+      - correlation_id
+    ListAssets:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RiskAsset'
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - items
+x-operation-traceability:
+  RE-01:
+  - createRiskAsset
+  - listRiskAssets
+  - getRiskAsset
+  - updateRiskAsset
+  RE-02:
+  - createAssessment
+  - getAssessment
+  - challengeAssessment
+  RE-03:
+  - getEffectiveRiskPolicy
+  RE-04:
+  - recordRiskAssetChange
+  - reassessRisk
+  RE-05:
+  - decideAssessmentReview
+  - getRiskAssessmentEvidence
+x-error-codes:
+  TENANT_SCOPE_DENIED: 403 or 404 without information disclosure
+  POLICY_HIERARCHY_VIOLATION: 422 on impermissible rule weakening
+  METHOD_NOT_APPROVED: 422 when methodology or numeric grading is unapproved
+  MODEL_NOT_APPROVED: 422/503 when provider is not authorized or unavailable
+  MISSING_EVIDENCE: 422 or incomplete assessment; never silent approval
+  SELF_APPROVAL_DENIED: 403/422 when SoD is violated
+  ASSESSMENT_STALE: 409/412 on mismatched asset/policy version
+  TRIAL_EXPIRED: 403 or 429 under signed license policy; no auto billing
+  RATE_LIMITED: 429 with Retry-After when applicable
+  IDEMPOTENCY_CONFLICT: 409 when same key re-used for different payload
+x-implementation-acceptance:
+  requirements:
+  - Tenant isolation and unauthorized 404/403 behavior
+  - Immutability/lineage of assessment history
+  - Role-aware reviews and SoD
+  - Strict policy hierarchy
+  - Rules-only safe behavior when model fails
+  - No real data in synthetic trial by default
+  - Air-gapped fully local auth and license checking
+  - Evidence/version/correlation trace
+  - Customer consent, privacy and retention approved before real data
+  reference: ACCEPTANCE-AND-EVIDENCE.md

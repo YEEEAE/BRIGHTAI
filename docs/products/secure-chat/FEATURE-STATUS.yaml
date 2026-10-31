@@ -1,0 +1,593 @@
+schema_version: 1.0.0
+document:
+  id: AIGAS-SC-FEATURE-STATUS
+  version: 1.0.0-draft
+  date: '2026-11-01'
+  file: FEATURE-STATUS.yaml
+  proposed_repo_path: docs/products/secure-chat/FEATURE-STATUS.yaml
+  approval: DRAFT_PENDING_OWNER_AND_SECURITY_REVIEW
+  github_modified: false
+product:
+  id: AIGAS-SC
+  name: AIGAS Secure Chat
+  wave: WAVE_2
+  priority: P1
+  requirements:
+  - SC-01
+  - SC-02
+  - SC-03
+  - SC-04
+  - SC-05
+  - SC-06
+  - SC-07
+  operational_readiness: NOT_VERIFIED
+  public_availability: NOT_VERIFIED
+status_taxonomy:
+  WORKING: السلوك مثبت بتشغيل فعلي في بيئة وإصدار محددين وبدليل، لا يُستنتج من الكود فقط
+  PLANNED: متطلب مستهدف أو تصميم غير مثبت التشغيل
+  UNAVAILABLE: أُثبت أنه غير مدعوم في النسخة/البيئة محل المراجعة أو مستبعد من النطاق؛ يحدد السبب
+  CANCELLED: إلغاء اعتمده المالك رسميًا، ولا تُعد الميزة ملغاة لمجرد غيابها
+  NOT_VERIFIED: حالة تحقق إثبات منفصلة؛ لا تعني تشغيلًا ولا إثبات غياب شامل
+source_evidence:
+- path: docs/MASTER-PROJECT-BLUEPRINT.md
+  scope: §03.6 SC-01..SC-07
+  kind: APPROVED_TARGET
+- path: docs/PRODUCT-MASTER-CATALOG.yaml
+  scope: AIGAS-SC
+  kind: APPROVED_TARGET
+- path: src/pages/products/[product].astro
+  scope: /products/secure-chat/
+  kind: SOURCE_PRESENT_EDUCATIONAL_ONLY
+- path: src/components/ProductExperience.astro
+  scope: chat-layout/chat-preview/RedactionDemo
+  kind: SOURCE_PRESENT_DEMO_ONLY
+- path: src/scripts/interior-motion.ts
+  scope: data-chat-example client interactions
+  kind: SOURCE_PRESENT_CLIENT_SIDE
+- path: src/components/ProductContentExtension.astro
+  scope: secure-chat educational text
+  kind: SOURCE_PRESENT_EDUCATIONAL_ONLY
+- path: kernel/README.md
+  scope: historical runtime claims
+  kind: NOT_ACCEPTABLE_AS_RUNTIME_EVIDENCE
+truth_rules:
+  approved_requirement_is_not_implementation: true
+  source_code_is_not_runtime_verification: true
+  mock_chat_is_not_ai_provider_call: true
+  api_endpoints_are_proposed_only: true
+  firewall_paid_license_not_required_for_kernel_basics: true
+  no_training_requirement_is_non_waivable: true
+features:
+- id: SC-01.01
+  requirement_id: SC-01
+  name_ar: إدخال نص عربي واتجاه RTL
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: CORE
+  acceptance_id: AC-SC-01-01
+  expected_behavior_ar: يرسل مستخدم مفوض نصًا عربيًا ويستقبل إجابة عربية سليمة العرض والتدفق مع تتبع طلب حقيقي
+  required_evidence: واجهة RTL + طلب/استجابة معقمتان + سجل إصدار
+- id: SC-01.02
+  requirement_id: SC-01
+  name_ar: قائمة نماذج معتمدة فقط
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: CORE
+  acceptance_id: AC-SC-01-02
+  expected_behavior_ar: لا تظهر في القائمة ولا تُقبل في الطلب نماذج خارج سجل السماح الخاص بالمؤسسة
+  required_evidence: Model registry + deny trace
+- id: SC-01.03
+  requirement_id: SC-01
+  name_ar: توجيه سياقي محكوم
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: CORE
+  acceptance_id: AC-SC-01-03
+  expected_behavior_ar: يرتبط اختيار النموذج بالسياسة وفئة البيانات والمنطقة والميزانية قبل إرسال البيانات
+  required_evidence: Policy/version trace + provider-region binding
+- id: SC-01.04
+  requirement_id: SC-01
+  name_ar: تدفق إجابة محكوم
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: CORE
+  acceptance_id: AC-SC-01-04
+  expected_behavior_ar: لا تُبث أي قطعة من المخرج قبل اجتياز ضوابط السلامة/الخصوصية الملائمة؛ ينهي التدفق بأمان عند الإخفاق
+  required_evidence: Streaming trace + output DLP evidence
+- id: SC-01.05
+  requirement_id: SC-01
+  name_ar: جلسات محادثة وعزل سياق
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: CORE
+  acceptance_id: AC-SC-01-05
+  expected_behavior_ar: لا يتسرب تاريخ جلسة إلى مستخدم آخر أو مؤسسة أخرى ولا يتجاوز سياسة الاحتفاظ
+  required_evidence: Session isolation trace + storage inspection
+- id: SC-01.06
+  requirement_id: SC-01
+  name_ar: إخفاء مفاتيح API عن العميل
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: CORE
+  acceptance_id: AC-SC-01-06
+  expected_behavior_ar: تدار مفاتيح الموصلات عبر طبقة آمنة؛ لا تصل للمتصفح أو ملفات التتبع
+  required_evidence: Secret scan + server-only configuration
+- id: SC-01.07
+  requirement_id: SC-01
+  name_ar: عرض المصدر والحدود
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P1
+  category: UX
+  acceptance_id: AC-SC-01-07
+  expected_behavior_ar: تظهر تسمية النموذج/القيود المسموحة مع إشعار أن الإجابة تحتاج مراجعة بشرية عند اللزوم دون ادعاء ضمان
+    الدقة
+  required_evidence: UI capture + policy outcome mapping
+- id: SC-02.01
+  requirement_id: SC-02
+  name_ar: مصادقة وهوية مستأجر موثوقة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-02-01
+  expected_behavior_ar: يرفض أي طلب غير مصادق عليه ويُستمد tenant_id من رمز أو سياق موثوق لا من حمولة المستخدم
+  required_evidence: AuthN/authZ denial traces
+- id: SC-02.02
+  requirement_id: SC-02
+  name_ar: تقييم فئة المحتوى قبل الإرسال
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-02-02
+  expected_behavior_ar: تطبق سياسة تصنيف وفحص بيانات حساسة قبل إرسال أي محتوى للمزود
+  required_evidence: Sanitized PII fixtures + input-gate trace
+- id: SC-02.03
+  requirement_id: SC-02
+  name_ar: حماية المخرجات
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-02-03
+  expected_behavior_ar: تُحجب أو تُرفض الاستجابة عند مخالفة قواعد المحتوى/التسريب حسب السياسة قبل عرضها
+  required_evidence: Output-policy evidence and negative cases
+- id: SC-02.04
+  requirement_id: SC-02
+  name_ar: حماية من حقن التعليمات
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-02-04
+  expected_behavior_ar: يُعامل نص المستخدم ومخرجات النموذج كبيانات غير مخوّلة لتغيير تعليمات النظام أو الصلاحيات
+  required_evidence: Injection cases + authority boundary trace
+- id: SC-02.05
+  requirement_id: SC-02
+  name_ar: منع تنفيذ الأدوات افتراضيًا
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-02-05
+  expected_behavior_ar: لا تنفذ المحادثة أوامر/أدوات/موصلات خارج النطاق المصرح به؛ الإدخال النصي ليس تفويضًا
+  required_evidence: Tool-call denial evidence
+- id: SC-02.06
+  requirement_id: SC-02
+  name_ar: Fail-Closed للأحكام الإلزامية
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-02-06
+  expected_behavior_ar: تعطل بوابة حماية لازمة يمنع خروج الطلب أو عرض المخرج المحظور؛ لا تجاوز صامت
+  required_evidence: Dependency outage traces + denied request
+- id: SC-02.07
+  requirement_id: SC-02
+  name_ar: عمل الحماية دون رخصة Firewall مدفوعة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: INDEPENDENCE
+  acceptance_id: AC-SC-02-07
+  expected_behavior_ar: الوظائف الأساسية المطلوبة للمحادثة تظل عاملة عندما لا يملك المستأجر ترخيص Firewall مستقل
+  required_evidence: License matrix + policy enforcement trace
+- id: SC-03.01
+  requirement_id: SC-03
+  name_ar: عدم حفظ المحادثة افتراضيًا دون اعتماد
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-03-01
+  expected_behavior_ar: لا يفعّل الحفظ الدائم إلا بسياسة مؤسسة واضحة ومعلنة؛ قرار الحفظ ومدة الاحتفاظ متغيران معتمدان
+  required_evidence: Policy snapshots + store inspection
+- id: SC-03.02
+  requirement_id: SC-03
+  name_ar: خصوصية متن المحادثة عن الإدارة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-03-02
+  expected_behavior_ar: لا يحق لمسؤول المؤسسة قراءة محتوى المستخدم افتراضيًا حتى مع إمكانية عرض معلومات تشغيلية
+  required_evidence: Admin read-denial + role matrix
+- id: SC-03.03
+  requirement_id: SC-03
+  name_ar: وصول استثنائي مقيّد ومسجل
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-03-03
+  expected_behavior_ar: يتطلب استثناء الوصول سببًا وموافقة مفوضة ونطاقًا ومهلة وتوثيقًا يتيح المراجعة
+  required_evidence: Break-glass workflow + approver/audit chain
+- id: SC-03.04
+  requirement_id: SC-03
+  name_ar: صلاحيات جلسات المستخدم
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-03-04
+  expected_behavior_ar: المستخدم لا يسترجع إلا جلساته التي تسمح السياسة بحفظها ولا يفتح محادثات الزملاء
+  required_evidence: Object-level authorization negative traces
+- id: SC-03.05
+  requirement_id: SC-03
+  name_ar: حذف وانتهاء احتفاظ مع Legal Hold
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-03-05
+  expected_behavior_ar: يُنفذ الحذف أو يحتفظ بما يلزم قانونيًا وفق قرار موثق؛ لا وعود حذف صفري/فوري دون سياسة
+  required_evidence: Retention job + hold exception evidence
+- id: SC-03.06
+  requirement_id: SC-03
+  name_ar: No-Training لدى BRIGHT AI والمورد
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-03-06
+  expected_behavior_ar: توجد شروط وإعدادات وأدلة تمنع التدريب والتحسين على بيانات العملاء؛ أي مزود لا يضمنها يُستبعد
+  required_evidence: Provider contract + configuration + assurance
+- id: SC-04.01
+  requirement_id: SC-04
+  name_ar: فصل مخزن المحتوى عن Audit
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-04-01
+  expected_behavior_ar: سجل Audit يحفظ معرفات ونتائج سياسات وعدادات دنيا لا نصوص طلب/إجابة
+  required_evidence: Storage/schema separation + audit sample
+- id: SC-04.02
+  requirement_id: SC-04
+  name_ar: تنقيح سجلات الأخطاء والتتبع
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-04-02
+  expected_behavior_ar: لا تصل نصوص/مفاتيح/PII إلى Log أو Trace أو أحداث تحليلات الموقع
+  required_evidence: Redaction scans + seeded sensitive test
+- id: SC-04.03
+  requirement_id: SC-04
+  name_ar: حد أدنى للتدقيق دون Ledger
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: INDEPENDENCE
+  acceptance_id: AC-SC-04-03
+  expected_behavior_ar: توجد سجلات أمنية أساسية ولو لم يشترِ العميل Ledger المدفوع
+  required_evidence: No-Ledger-license trace + baseline events
+- id: SC-04.04
+  requirement_id: SC-04
+  name_ar: أثر قرار وسياسة قابل للمراجعة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P1
+  category: AUDIT
+  acceptance_id: AC-SC-04-04
+  expected_behavior_ar: يسجَّل معرف قرار وسياسة وإصدار وبصمة ارتباط دون فك خصوصية المستخدم
+  required_evidence: Correlation evidence + redacted audit
+- id: SC-05.01
+  requirement_id: SC-05
+  name_ar: مشاركة مغلقة افتراضيًا
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-05-01
+  expected_behavior_ar: لا يوجد رابط عام أو وظيفة مشاركة مفعّلة عند إنشاء المستأجر دون تصريح صريح
+  required_evidence: Fresh tenant default + unauthorized route rejection
+- id: SC-05.02
+  requirement_id: SC-05
+  name_ar: تصدير مغلق افتراضيًا
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: PRIVACY
+  acceptance_id: AC-SC-05-02
+  expected_behavior_ar: تُرفض محاولات تنزيل/نسخ أرشيف عبر API ما لم تسمح سياسة وصلاحية محددتان
+  required_evidence: Export deny audit + policy matrix
+- id: SC-05.03
+  requirement_id: SC-05
+  name_ar: تفويض مشاركة وتصدير محدود
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-05-03
+  expected_behavior_ar: كل سماح يحدد مالك المحتوى والمستلم ونطاق البيانات والغرض وتوقيت الانتهاء
+  required_evidence: Scoped approval + authorization trace
+- id: SC-05.04
+  requirement_id: SC-05
+  name_ar: DLP قبل التصدير والمشاركة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-05-04
+  expected_behavior_ar: يُعاد فحص المادة المستهدفة وتُحجب/تُنقّح قبل إنشاء حزمة إخراج
+  required_evidence: DLP sanitized artifacts + blocked export
+- id: SC-05.05
+  requirement_id: SC-05
+  name_ar: إلغاء الوصول وانتهاء الصلاحية
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P1
+  category: PRIVACY
+  acceptance_id: AC-SC-05-05
+  expected_behavior_ar: تُلغى المشاركة المحكومة وتنتهي صلاحيتها؛ لا روابط عامة بلا هوية
+  required_evidence: Revocation + expiry access denial
+- id: SC-06.01
+  requirement_id: SC-06
+  name_ar: ميزانيات الاستهلاك المؤسسية
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: FINOPS
+  acceptance_id: AC-SC-06-01
+  expected_behavior_ar: حدود الرسائل وTokens والتكلفة حسب المؤسسة والمنتج والمستخدم والمزود؛ تمنع التجاوز
+  required_evidence: Quota setup + threshold reject/allow trace
+- id: SC-06.02
+  requirement_id: SC-06
+  name_ar: تسوية الاستهلاك وإزالة التكرار
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: FINOPS
+  acceptance_id: AC-SC-06-02
+  expected_behavior_ar: لا تُحسب إعادة المحاولة لنفس الطلب كاستخدام جديد دون معالجة Idempotency
+  required_evidence: Duplicate request + metering ledger
+- id: SC-06.03
+  requirement_id: SC-06
+  name_ar: حظر المسار غير المعتمد
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SECURITY
+  acceptance_id: AC-SC-06-03
+  expected_behavior_ar: لا fallback إلى مزود/نموذج/منطقة غير معتمدة أو غير متوافقة مع No-Training
+  required_evidence: Disallowed provider outage test
+- id: SC-06.04
+  requirement_id: SC-06
+  name_ar: مهلة وإلغاء وتراجع آمن
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: RELIABILITY
+  acceptance_id: AC-SC-06-04
+  expected_behavior_ar: تُلغى الاستدعاءات المتعثرة وتُسجّل نتيجتها دون إظهار مخرج ناقص على أنه مكتمل
+  required_evidence: Timeout/cancel trace + retry control
+- id: SC-06.05
+  requirement_id: SC-06
+  name_ar: حماية ميزانيات التجربة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: TRIAL
+  acceptance_id: AC-SC-06-05
+  expected_behavior_ar: حصة التجربة وسقف التمويل عند تفعيل 48h لا يسمحان بديون أو ترقية تلقائية
+  required_evidence: Trial cap and expiration evidence
+- id: SC-06.06
+  requirement_id: SC-06
+  name_ar: BYOK وفق سياسة معتمدة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P1
+  category: SECURITY
+  acceptance_id: AC-SC-06-06
+  expected_behavior_ar: تخزن مفاتيح العميل بأمان ولا تنكشف للمستخدم النهائي أو التحليلات
+  required_evidence: KMS/BYOK configuration + leak scan
+- id: SC-06.07
+  requirement_id: SC-06
+  name_ar: كشف تكلفة المزود المنفصلة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P1
+  category: FINOPS
+  acceptance_id: AC-SC-06-07
+  expected_behavior_ar: يعرض تقرير الاستخدام رسوم BRIGHT AI مستقلة عن تكلفة مزود AI عندما تنطبق
+  required_evidence: Redacted metering reconciliation
+- id: SC-07.01
+  requirement_id: SC-07
+  name_ar: عدم توفير رفع ملفات في MVP
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SCOPE
+  acceptance_id: AC-SC-07-01
+  expected_behavior_ar: لا يوجد مسار Upload مفعل ولا واجهة تسمح بقبول ملفات ضمن النطاق الأساسي
+  required_evidence: Routes inspection + API rejection
+- id: SC-07.02
+  requirement_id: SC-07
+  name_ar: عدم تضمين RAG أو فهرسة المعرفة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SCOPE
+  acceptance_id: AC-SC-07-02
+  expected_behavior_ar: لا يجري المنتج قراءة مستندات/توليد embeddings أو بحث معرفي ضمن النسخة الأساسية
+  required_evidence: Runtime topology + no-RAG trace
+- id: SC-07.03
+  requirement_id: SC-07
+  name_ar: عدم ادعاء إدارة معرفة متكاملة
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SCOPE
+  acceptance_id: AC-SC-07-03
+  expected_behavior_ar: لا تُنسب قدرات KB أو تكاملات غير مفعلة للمنتج في الموقع والعقود
+  required_evidence: Copy approval + product catalog matching
+- id: SC-07.04
+  requirement_id: SC-07
+  name_ar: عدم تنفيذ وكلاء/أدوات بشكل ضمني
+  status: PLANNED
+  source_presence: NO_OPERATIONAL_PROOF
+  verification_status: NOT_VERIFIED
+  public_availability: NOT_AVAILABLE
+  priority: P0
+  category: SCOPE
+  acceptance_id: AC-SC-07-04
+  expected_behavior_ar: محادثة نصية أساسية؛ أي تكامل أدوات مستقبلي يحتاج قرار منتج وتفويض مستقل
+  required_evidence: Tool disabled test + change-control evidence
+educational_ui:
+- id: SC-UI-01
+  name_ar: صفحة /products/secure-chat/ التعليمية
+  source: src/pages/products/[product].astro
+  status: PLANNED
+  source_presence: PRESENT
+  verification_status: SOURCE_REVIEWED_RUNTIME_NOT_VERIFIED
+  public_claim: DEMONSTRATION_ONLY
+  note_ar: موجود في المصدر؛ غير مفحوص تشغيليًا في هذه المراجعة
+- id: SC-UI-02
+  name_ar: قصص محادثة جاهزة دون نموذج
+  source: src/components/ProductExperience.astro
+  status: PLANNED
+  source_presence: PRESENT
+  verification_status: SOURCE_REVIEWED_RUNTIME_NOT_VERIFIED
+  public_claim: DEMONSTRATION_ONLY
+  note_ar: بيانات تعليمة ثابتة؛ لا استدعاء API حقيقي
+- id: SC-UI-03
+  name_ar: تفاعل اختيار الأمثلة والتنقيح التعليمي
+  source: src/scripts/interior-motion.ts / RedactionDemo
+  status: PLANNED
+  source_presence: PRESENT
+  verification_status: SOURCE_REVIEWED_RUNTIME_NOT_VERIFIED
+  public_claim: DEMONSTRATION_ONLY
+  note_ar: JS محلي؛ ليس دليل حماية إنتاج
+deliberate_scope_exclusions:
+- id: SC-X-01
+  name_ar: رفع الملفات
+  status: UNAVAILABLE
+  scope: MVP_CORE_EXCLUDED
+  reason: SC-07 approved scope; لا يعني الإلغاء الأبدي
+- id: SC-X-02
+  name_ar: RAG واسع/فهرسة ملفات
+  status: UNAVAILABLE
+  scope: MVP_CORE_EXCLUDED
+  reason: SC-07 approved scope; يلزم قرار منتج مستقل
+- id: SC-X-03
+  name_ar: إدارة معرفة مؤسسية
+  status: UNAVAILABLE
+  scope: MVP_CORE_EXCLUDED
+  reason: خارج الوعد الأساسي للمنتج
+- id: SC-X-04
+  name_ar: روابط مشاركة عامة دون هوية
+  status: UNAVAILABLE
+  scope: SECURITY_PROHIBITION
+  reason: SC-05 مشاركة مغلقة افتراضيًا ولا روابط عامة
+acceptance_traceability:
+  acceptance_file: ACCEPTANCE-AND-EVIDENCE.md
+  feature_count: 40
+  no_operational_features_working_claimed: true
+update_policy: غيّر PLANNED إلى WORKING فقط برقم إصدار وبيئة ودليل قابل للمراجعة وموافقة صاحب الصلاحية. لا تغيّر حالة عامة
+  بسبب نجاح اختبار الواجهة التعليمية.

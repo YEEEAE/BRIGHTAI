@@ -1,0 +1,1551 @@
+# AIGAS Human Gate — PROPOSED OpenAPI 3.1; NONE of these endpoints are verified live.
+# Approval != execution. Enforce at trusted action boundary. No implicit approval on timeout.
+openapi: 3.1.0
+info:
+  title: AIGAS Human Gate API — Proposed Contract
+  version: 0.1.0-draft
+  description: Design-only authorization/enforcement API, not a deployed service. Request & response shapes require
+    review against platform architecture. No URL, issuer, numeric timeouts or quotas have been approved.
+  x-document-id: AIGAS-HG-API-001
+  x-canonical-path: docs/products/human-gate/API-CONTRACT.yaml
+  x-date: '2026-11-01'
+  x-product: AIGAS-HG
+  x-requirement-trace:
+  - HG-01
+  - HG-02
+  - HG-03
+  - HG-04
+  - HG-05
+  x-runtime-availability: NOT_VERIFIED
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+servers:
+- url: https://human-gate.example.invalid
+  description: Explicit non-routable contract placeholder, NOT a real deployed endpoint
+tags:
+- name: Approvals
+  description: Create, list and read requests
+- name: Decisions
+  description: Human decision and escalation with SoD
+- name: Delegations
+  description: Scoped time-bound delegation
+- name: Enforcement
+  description: Trusted integration grants consumed atomically
+- name: Evidence
+  description: Basic audit without Ledger dependency
+- name: Policies
+  description: Read-only policy revision context
+x-security-contract:
+  approval_is_not_execution: true
+  no_override_mandatory_deny: true
+  no_self_approval_when_sod_required: true
+  timeout_default: DENY_OR_SAFE_STOP
+  authorization_at_enforcement: MUST be checked by trusted application at actual side-effect boundary, not only
+    via UI
+  no_unapproved_provider_fallback: true
+  tenant_from_verified_principal: true
+  do_not_train_on_customer_data: true
+  audit_without_ledger_license: true
+  kernel_fee_separate: false
+  optional_integrations:
+  - AIGAS-FW
+  - AIGAS-RE
+  - AIGAS-LD
+  deployment_modes:
+  - SAAS
+  - ON_PREMISE
+  - AIR_GAPPED
+  mfa_and_sso: Policy driven; issuer to be selected
+  retention_days: null
+  stage_quorum_default: null
+  approval_timeout_default: null
+  grant_ttl_seconds: null
+  rate_limit: null
+  trial_quota: null
+  client_sdk_releases: null
+  public_api_url: null
+  error_policy: 403/409/410/412/423/503 must NOT release pending protected operations
+  atomicity_note: The consume operation must be atomic; authorize-and-execute boundary requires service-level idempotency
+    and exactly-once effect management where feasible
+  important: This contract documents intended behavior; no API path here is evidence of product availability
+security:
+- BearerAuth: []
+paths:
+  /v1/approvals:
+    post:
+      tags:
+      - Approvals
+      operationId: createApprovalRequest
+      summary: إنشاء طلب موافقة مع عملية محكومة
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.request.create
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '201':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalCreate'
+      x-requirements:
+      - HG-01
+      - HG-02
+      - HG-05
+      x-security-note: Originating operation must stop until approved and authorization consumed
+    get:
+      tags:
+      - Approvals
+      operationId: listApprovalRequests
+      summary: استعراض الطلبات وفق نطاق الدور والمستأجر
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.request.read
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListApprovals'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Status'
+      - $ref: '#/components/parameters/CorrelationId'
+  /v1/approvals/{approvalId}:
+    get:
+      tags:
+      - Approvals
+      operationId: getApprovalRequest
+      summary: تفاصيل طلب محدد بعد تفويض
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.request.read
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/ApprovalId'
+      - $ref: '#/components/parameters/CorrelationId'
+  /v1/approvals/{approvalId}/decisions:
+    post:
+      tags:
+      - Decisions
+      operationId: submitApprovalDecision
+      summary: موافقة أو رفض مخول على مرحلة فعالة
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.review.decide
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/ApprovalId'
+      - $ref: '#/components/parameters/Revision'
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionSubmit'
+      x-requirements:
+      - HG-02
+      - HG-03
+      - HG-04
+      x-security-note: Server derives reviewer identity; check SoD, delegation, quorum, MFA, policy version and
+        active time; hard deny cannot be overridden
+  /v1/approvals/{approvalId}/cancel:
+    post:
+      tags:
+      - Approvals
+      operationId: cancelApprovalRequest
+      summary: إلغاء طلب قبل إنفاذه بواسطة مخول
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.request.cancel
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/ApprovalId'
+      - $ref: '#/components/parameters/Revision'
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelRequest'
+  /v1/approvals/{approvalId}/escalations:
+    post:
+      tags:
+      - Decisions
+      operationId: escalateApproval
+      summary: طلب تصعيد على مرحلة وفق سياسة الجهة
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.escalate
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '202':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EscalationResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/ApprovalId'
+      - $ref: '#/components/parameters/Revision'
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EscalationCreate'
+      x-requirements:
+      - HG-03
+      x-security-note: Never automatically grant new reviewer power or silently extend expiration
+  /v1/approvals/{approvalId}/history:
+    get:
+      tags:
+      - Evidence
+      operationId: getApprovalHistory
+      summary: سجل أثر القرار الأساسي دون Ledger
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.audit.read
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/ApprovalId'
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/CorrelationId'
+  /v1/approval-grants/issue:
+    post:
+      tags:
+      - Enforcement
+      operationId: issueExecutionGrant
+      summary: إصدار إذن تنفيذ بعد اكتمال مراجعة موثقة
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.grant.issue
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '201':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionGrant'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantIssue'
+      x-requirements:
+      - HG-05
+      x-service-only: true
+      x-security-note: Internal trusted caller only; never expose grant issuance to general browser UI. Recheck
+        hard deny, scope, identity, expiry and policy.
+  /v1/approval-grants/{grantId}:
+    get:
+      tags:
+      - Enforcement
+      operationId: getExecutionGrant
+      summary: تحقق حالة grant دون كشف بيانات غير مخولة
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.grant.read
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionGrant'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/GrantId'
+      - $ref: '#/components/parameters/CorrelationId'
+      x-service-only: true
+  /v1/approval-grants/{grantId}/consume:
+    post:
+      tags:
+      - Enforcement
+      operationId: consumeExecutionGrant
+      summary: استهلاك صلاحية تنفيذ لمرة واحدة عند نقطة إنفاذ
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.enforce.consume
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrantConsumeResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/GrantId'
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantConsume'
+      x-requirements:
+      - HG-05
+      x-service-only: true
+      x-security-note: Must atomically bind grant to authenticated executor and exact operation, current policy
+        and expiry. Downstream side effect requires its own idempotent execution record.
+  /v1/delegations:
+    post:
+      tags:
+      - Delegations
+      operationId: createDelegation
+      summary: تفويض محدود ومؤقت لا يتجاوز سلطة الموكل
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.delegate.manage
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '201':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delegation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DelegationCreate'
+      x-requirements:
+      - HG-03
+      x-security-note: Cannot delegate beyond current rights, override SoD or permit self approval
+    get:
+      tags:
+      - Delegations
+      operationId: listDelegations
+      summary: استعراض التفويضات في نطاق المخول
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.delegate.read
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/CorrelationId'
+  /v1/delegations/{delegationId}/revoke:
+    post:
+      tags:
+      - Delegations
+      operationId: revokeDelegation
+      summary: إبطال تفويض بمفعول فوري للقرارات المستقبلية
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.delegate.manage
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delegation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/DelegationId'
+      - $ref: '#/components/parameters/CorrelationId'
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeDelegation'
+  /v1/approval-policies/{policyId}:
+    get:
+      tags:
+      - Policies
+      operationId: getApprovalPolicyReference
+      summary: قراءة مرجع نسخة السياسة المعتمدة بحسب الصلاحية
+      description: Proposed contract only. No production implementation or endpoint availability is verified.
+      x-required-permissions:
+      - approval.policy.read
+      x-runtime-availability: NOT_VERIFIED
+      x-tenant-enforcement: Derived from verified Kernel principal; never trusted from client input
+      responses:
+        '200':
+          description: Target success response; not deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyReference'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Expired'
+        '412':
+          $ref: '#/components/responses/Precondition'
+        '422':
+          $ref: '#/components/responses/Invalid'
+        '423':
+          $ref: '#/components/responses/Locked'
+        '429':
+          $ref: '#/components/responses/Throttled'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+      parameters:
+      - $ref: '#/components/parameters/PolicyId'
+      - $ref: '#/components/parameters/CorrelationId'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT or approved offline-compatible service token (design undecided)
+      description: Issuer and claims must be approved; service identity must be authenticated separately for grants
+  schemas:
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Stable machine-readable code
+        message:
+          type: string
+          description: Safe human-readable error; no sensitive data
+        correlation_id:
+          type: string
+          description: Support correlation without secret exposure
+        retryable:
+          type: boolean
+          description: True only if retry cannot bypass policy
+      additionalProperties: false
+      required:
+      - error_code
+      - message
+      - correlation_id
+      - retryable
+    DecisionStatus:
+      type: string
+      enum:
+      - PENDING
+      - IN_REVIEW
+      - APPROVED
+      - REJECTED
+      - EXPIRED
+      - CANCELLED
+      - AUTHORIZED
+      - CONSUMED
+      - ENFORCEMENT_FAILED
+      description: Target status taxonomy; APPROVED is not equivalent to executed
+    StageStatus:
+      type: string
+      enum:
+      - PENDING
+      - ASSIGNED
+      - APPROVED
+      - REJECTED
+      - ESCALATED
+      - EXPIRED
+      description: Stage lifecycle in proposed approval plan
+    ApprovalAction:
+      type: string
+      enum:
+      - APPROVE
+      - REJECT
+      description: Only a currently authorized reviewer can submit a decision
+    OperationBinding:
+      type: object
+      properties:
+        operation_type:
+          type: string
+          description: Action class from registered integration workflow
+          maxLength: 120
+        resource_ref:
+          type: string
+          description: Opaque reference; avoid customer data in ID
+          maxLength: 240
+        operation_fingerprint:
+          type: string
+          description: Canonical operation hash computed/checked by trusted integration
+          minLength: 32
+          maxLength: 256
+        origin_service_id:
+          type: string
+          description: Authenticated caller service; body value must match trusted identity
+        origin_operation_id:
+          type: string
+          description: ID in originating system; no raw personal details
+      additionalProperties: false
+      required:
+      - operation_type
+      - resource_ref
+      - operation_fingerprint
+      - origin_service_id
+      - origin_operation_id
+    ApprovalCreate:
+      type: object
+      properties:
+        operation:
+          $ref: '#/components/schemas/OperationBinding'
+        reason:
+          type: string
+          description: Business reason for human gate, non-sensitive
+          minLength: 1
+          maxLength: 3000
+        summary:
+          type: string
+          description: Human-readable, sanitized summary of action
+          minLength: 1
+          maxLength: 3000
+        risk_context_ref:
+          type: string
+          description: Optional opaque risk context; Risk Engine not mandatory
+        policy_id:
+          type: string
+          description: Requested policy reference, resolved and validated by server
+        policy_version:
+          type: string
+          description: Optional expected version; server checks current approved policy
+        expires_at:
+          type: string
+          description: Requested upper-bound expiry, enforced within server-defined policy
+          format: date-time
+        correlation_id:
+          type: string
+          description: Caller correlation, sanitized
+      additionalProperties: false
+      required:
+      - operation
+      - reason
+      - summary
+      - policy_id
+      description: Requester identity and tenant_id MUST come from verified token, never trusted JSON
+    ApprovalStage:
+      type: object
+      properties:
+        stage_id:
+          type: string
+          description: Non-sensitive stage id
+        stage_order:
+          type: integer
+          description: Sequence number
+          minimum: 1
+        state:
+          $ref: '#/components/schemas/StageStatus'
+        required_reviewers:
+          type: integer
+          description: Approved policy quorum, not hardcoded here
+          minimum: 1
+        completed_reviewers:
+          type: integer
+          description: Verified reviewer decisions count
+          minimum: 0
+      additionalProperties: false
+      required:
+      - stage_id
+      - stage_order
+      - state
+    ApprovalRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Opaque request id
+        status:
+          $ref: '#/components/schemas/DecisionStatus'
+        operation:
+          $ref: '#/components/schemas/OperationBinding'
+        policy_id:
+          type: string
+          description: Policy id
+        policy_version:
+          type: string
+          description: Policy revision fixed for the lifecycle; recheck mandatory deny at enforcement
+        created_at:
+          type: string
+          description: UTC timestamp
+          format: date-time
+        expires_at:
+          type: string
+          description: UTC timestamp
+          format: date-time
+        reason:
+          type: string
+          description: Sanitized business justification
+        summary:
+          type: string
+          description: Sanitized action summary
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalStage'
+        correlation_id:
+          type: string
+          description: Event correlation
+      additionalProperties: false
+      required:
+      - id
+      - status
+      - operation
+      - policy_id
+      - policy_version
+      - created_at
+      - expires_at
+      - stages
+    ListApprovals:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalRequest'
+        next_cursor:
+          type:
+          - string
+          - 'null'
+          description: Opaque cursor scoped to caller tenant and permissions
+      additionalProperties: false
+      required:
+      - items
+      - next_cursor
+    DecisionSubmit:
+      type: object
+      properties:
+        action:
+          $ref: '#/components/schemas/ApprovalAction'
+        stage_id:
+          type: string
+          description: Active stage only
+        reason:
+          type: string
+          description: Rationale required for both approval and rejection
+          minLength: 1
+          maxLength: 2500
+        expected_revision:
+          type: integer
+          description: Optimistic concurrency check
+          minimum: 0
+        step_up_proof_ref:
+          type: string
+          description: Reference to trusted MFA proof if policy requires
+      additionalProperties: false
+      required:
+      - action
+      - stage_id
+      - reason
+      - expected_revision
+    DecisionRecord:
+      type: object
+      properties:
+        decision_id:
+          type: string
+          description: Server id
+        approval_id:
+          type: string
+          description: Related approval
+        reviewer_id:
+          type: string
+          description: From verified identity, not client supplied
+        stage_id:
+          type: string
+          description: Stage processed
+        action:
+          $ref: '#/components/schemas/ApprovalAction'
+        reason:
+          type: string
+          description: Sanitized rationale
+        decided_at:
+          type: string
+          description: Authoritative timestamp
+          format: date-time
+        policy_version:
+          type: string
+          description: Revision approved
+      additionalProperties: false
+      required:
+      - decision_id
+      - approval_id
+      - reviewer_id
+      - stage_id
+      - action
+      - reason
+      - decided_at
+      - policy_version
+    DecisionResult:
+      type: object
+      properties:
+        approval:
+          $ref: '#/components/schemas/ApprovalRequest'
+        decision:
+          $ref: '#/components/schemas/DecisionRecord'
+        next_action:
+          type: string
+          description: Review remains pending, complete, or safe-stop
+      additionalProperties: false
+      required:
+      - approval
+      - decision
+    CancelRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Cancellation reason
+          minLength: 1
+          maxLength: 2500
+        expected_revision:
+          type: integer
+          description: Concurrency guard
+          minimum: 0
+      additionalProperties: false
+      required:
+      - reason
+      - expected_revision
+    EscalationCreate:
+      type: object
+      properties:
+        stage_id:
+          type: string
+          description: Which stage is escalated
+        reason:
+          type: string
+          description: Why escalation is needed
+          minLength: 1
+          maxLength: 2500
+        target_role_ref:
+          type: string
+          description: Optional whitelisted reviewer-role reference
+        expected_revision:
+          type: integer
+          description: Concurrency guard
+          minimum: 0
+      additionalProperties: false
+      required:
+      - stage_id
+      - reason
+      - expected_revision
+    EscalationResult:
+      type: object
+      properties:
+        approval_id:
+          type: string
+          description: Request id
+        escalation_id:
+          type: string
+          description: Escalation id
+        status:
+          type: string
+          description: Recorded or pending review
+        recorded_at:
+          type: string
+          description: UTC
+          format: date-time
+      additionalProperties: false
+      required:
+      - approval_id
+      - escalation_id
+      - status
+      - recorded_at
+    HistoryEvent:
+      type: object
+      properties:
+        event_id:
+          type: string
+          description: Audit event id
+        approval_id:
+          type: string
+          description: Request reference
+        event_type:
+          type: string
+          description: Lifecycle change or enforcement activity
+        actor_ref:
+          type: string
+          description: Pseudonymous authorized actor
+        recorded_at:
+          type: string
+          description: UTC
+          format: date-time
+        policy_version:
+          type: string
+          description: Policy revision
+        correlation_id:
+          type: string
+          description: Correlation
+        metadata:
+          type: object
+          properties: {}
+          additionalProperties: true
+          description: Whitelisted minimal metadata; no secrets
+      additionalProperties: false
+      required:
+      - event_id
+      - approval_id
+      - event_type
+      - recorded_at
+    HistoryList:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryEvent'
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - events
+    DelegationCreate:
+      type: object
+      properties:
+        delegatee_principal_id:
+          type: string
+          description: Recipient id resolved in same tenant
+        role_or_scope_ref:
+          type: string
+          description: Narrow approved scope
+        valid_from:
+          type: string
+          description: UTC
+          format: date-time
+        valid_until:
+          type: string
+          description: UTC
+          format: date-time
+        reason:
+          type: string
+          description: Business rationale
+          minLength: 1
+          maxLength: 2500
+      additionalProperties: false
+      required:
+      - delegatee_principal_id
+      - role_or_scope_ref
+      - valid_from
+      - valid_until
+      - reason
+    Delegation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Delegation id
+        grantor_id:
+          type: string
+          description: Derived verified principal
+        delegatee_principal_id:
+          type: string
+          description: Principal id
+        role_or_scope_ref:
+          type: string
+          description: Constrained scope
+        valid_from:
+          type: string
+          description: UTC
+          format: date-time
+        valid_until:
+          type: string
+          description: UTC
+          format: date-time
+        status:
+          type: string
+          description: ACTIVE or EXPIRED or REVOKED
+          enum:
+          - ACTIVE
+          - EXPIRED
+          - REVOKED
+        created_at:
+          type: string
+          description: UTC
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - grantor_id
+      - delegatee_principal_id
+      - role_or_scope_ref
+      - valid_from
+      - valid_until
+      - status
+    DelegationList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Delegation'
+      additionalProperties: false
+      required:
+      - items
+    RevokeDelegation:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Audit reason
+          minLength: 1
+          maxLength: 2500
+      additionalProperties: false
+      required:
+      - reason
+    GrantIssue:
+      type: object
+      properties:
+        approval_id:
+          type: string
+          description: Request reference
+        operation:
+          $ref: '#/components/schemas/OperationBinding'
+        expected_policy_version:
+          type: string
+          description: Revalidate approved version and current hard denies
+        intended_executor_service_id:
+          type: string
+          description: Verified caller service identity
+        correlation_id:
+          type: string
+          description: Server trace
+      additionalProperties: false
+      required:
+      - approval_id
+      - operation
+      - expected_policy_version
+      - intended_executor_service_id
+    ExecutionGrant:
+      type: object
+      properties:
+        grant_id:
+          type: string
+          description: Opaque internal id; not enough to execute alone
+        approval_id:
+          type: string
+          description: Approval id
+        status:
+          type: string
+          description: ACTIVE / CONSUMED / EXPIRED / REVOKED
+          enum:
+          - ACTIVE
+          - CONSUMED
+          - EXPIRED
+          - REVOKED
+        operation_fingerprint:
+          type: string
+          description: Exact fingerprint bound to grant
+        executor_service_id:
+          type: string
+          description: Caller service this grant is bound to
+        expires_at:
+          type: string
+          description: UTC
+          format: date-time
+        issued_at:
+          type: string
+          description: UTC
+          format: date-time
+        consumed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - grant_id
+      - approval_id
+      - status
+      - operation_fingerprint
+      - executor_service_id
+      - expires_at
+      - issued_at
+    GrantConsume:
+      type: object
+      properties:
+        operation:
+          $ref: '#/components/schemas/OperationBinding'
+        execution_attempt_id:
+          type: string
+          description: Unique attempt id for deduplication and exactly-once authorization
+        expected_grant_status:
+          type: string
+          description: ACTIVE only
+          const: ACTIVE
+        policy_version:
+          type: string
+          description: Recheck current mandatory denies
+        correlation_id:
+          type: string
+          description: Trace id
+      additionalProperties: false
+      required:
+      - operation
+      - execution_attempt_id
+      - expected_grant_status
+      - policy_version
+    GrantConsumeResult:
+      type: object
+      properties:
+        grant_id:
+          type: string
+          description: Grant id
+        authorization_consumed:
+          type: boolean
+          description: True only after atomic server-side consume
+        consumed_at:
+          type: string
+          description: Authoritative time
+          format: date-time
+        execution_attempt_id:
+          type: string
+          description: Attempt id
+        operation_fingerprint:
+          type: string
+          description: Bound operation digest
+        note:
+          type: string
+          description: This confirms authorization consume, NOT downstream business action success
+      additionalProperties: false
+      required:
+      - grant_id
+      - authorization_consumed
+      - consumed_at
+      - execution_attempt_id
+      - operation_fingerprint
+    PolicyReference:
+      type: object
+      properties:
+        policy_id:
+          type: string
+          description: Policy identifier
+        version:
+          type: string
+          description: Signed approved revision
+        approval_plan_id:
+          type: string
+          description: Assigned review plan
+        mandatory_denies_enabled:
+          type: boolean
+          description: Cannot be overridden by human decision
+        approved_at:
+          type: string
+          description: UTC
+          format: date-time
+      additionalProperties: false
+      required:
+      - policy_id
+      - version
+      - approval_plan_id
+      - mandatory_denies_enabled
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Safe localized message
+        correlation_id:
+          type: string
+          description: Request trace
+      additionalProperties: false
+      required:
+      - message
+  parameters:
+    ApprovalId:
+      name: approvalId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Opaque approval request identifier; not sufficient authorization
+    GrantId:
+      name: grantId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Opaque grant id scoped to verified tenant and service
+    DelegationId:
+      name: delegationId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Opaque delegation id
+    PolicyId:
+      name: policyId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Approved policy identifier
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        maxLength: 150
+      description: Unique per operation and tenant; replay must not duplicate mutation
+    CorrelationId:
+      name: X-Correlation-ID
+      in: header
+      required: false
+      schema:
+        type: string
+        maxLength: 100
+      description: Sanitized diagnostic correlation, not an auth credential
+    Revision:
+      name: If-Match
+      in: header
+      required: false
+      schema:
+        type: string
+      description: Expected request revision; stale writes fail
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque tenant-scoped pagination cursor
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+      description: Maximum page size subject to approved server cap (not fixed here)
+    Status:
+      name: status
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/DecisionStatus'
+      description: Filter scoped to caller permission
+  responses:
+    BadRequest:
+      description: 'Malformed or invalid fields. Example error code: BAD_REQUEST'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: 'Identity missing or invalid. Example error code: AUTHENTICATION_REQUIRED'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: 'Insufficient scope or separation-of-duties breach. Example error code: NOT_AUTHORIZED_OR_SOD'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: 'Not visible within authenticated tenant. Example error code: NOT_FOUND'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: 'Concurrent decision, duplicate or consumed grant. Example error code: STATE_CONFLICT'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Expired:
+      description: 'Request or grant expired, cannot silently reopen. Example error code: APPROVAL_OR_GRANT_EXPIRED'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Precondition:
+      description: 'Operation fingerprint, policy or revision mismatch. Example error code: OPERATION_OR_POLICY_MISMATCH'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Invalid:
+      description: 'Unprocessable or missing policy context. Example error code: UNPROCESSABLE_CONTEXT'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Locked:
+      description: 'Hard deny, revoked authority or failed mandatory step. Example error code: OPERATION_STOPPED'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Throttled:
+      description: 'Rate or quota exceeded, never fail open. Example error code: QUOTA_EXCEEDED'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unavailable:
+      description: 'Dependency unavailable; fail closed. Example error code: SAFE_STOP_UNAVAILABLE'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

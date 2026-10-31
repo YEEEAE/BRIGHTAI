@@ -1,0 +1,376 @@
+# AIGAS Risk Engine — Feature Status Registry
+# No product capability is WORKING without release-specific evidence. Educational UI != risk evaluation.
+schema_version: '1.0'
+document:
+  id: AIGAS-RE-FEATURE-STATUS-001
+  version: 1.0.0-draft
+  date: '2026-11-01'
+  path: docs/products/risk-engine/FEATURE-STATUS.yaml
+  source_branch: main
+  repo: YEEEAE/BRIGHTAI
+  review_mode: REPOSITORY_SOURCE_READ_ONLY
+  operational_evidence_available: false
+  runtime_exercised_in_this_review: false
+  remote_repository_modified: false
+  owner_release_approval: false
+product:
+  id: AIGAS-RE
+  name: AIGAS Risk Engine
+  slug: risk-engine
+  release_wave: WAVE_2
+  priority: P1
+  approved_capability_ids:
+  - RE-01
+  - RE-02
+  - RE-03
+  - RE-04
+  - RE-05
+  implementation_status: NOT_VERIFIED
+  public_availability: NOT_VERIFIED
+  live_api_base_url: null
+  current_trial_active: false
+  kernel_included_without_separate_fee: true
+  mandatory_other_products: false
+  numeric_risk_score_range_approved: null
+status_taxonomy:
+  WORKING:
+    ar: تعمل
+    requirement: تشغيل حقيقي في إصدار/بيئة محددين مع دليل وظيفي وأمني وسجل قبول
+    rule: لا تُستخدم للـDemo أو الواجهة غير المرتبطة بخدمة
+  PLANNED:
+    ar: مخطط لها
+    requirement: متطلب معتمد لكن لا توجد أدلة تشغيل تؤهله لـ WORKING
+  UNAVAILABLE:
+    ar: غير متاحة
+    requirement: غير قابلة للاستخدام من العميل في الحالة الحالية أو تقنيًا غير متوفرة/معتمدة
+  CANCELLED:
+    ar: أُلغيت
+    requirement: إلغاء صريح موثق بقرار مالك؛ لا تُستنتج من غياب الكود
+implementation_state_legend:
+  SOURCE_PRESENT_RUNTIME_NOT_VERIFIED: مصدر واجهة موجود، ولم يُتحقق من التشغيل حاليًا
+  NOT_VERIFIED: لا دليل كافٍ على التنفيذ التشغيلي
+  NOT_IMPLEMENTED_EVIDENCED: عدم وجود مسار تشغيل بالمصادر التي روجعت ولا يعني جرد جميع البنى الخارجية
+  UNAVAILABLE_AT_REVIEW: غير مفعلة حاليًا أو لم تعتمد رسميًا
+source_evidence:
+- path: docs/MASTER-PROJECT-BLUEPRINT.md
+  role: approved_requirement
+  references:
+  - §03.5
+  - §12
+  - §22
+- path: docs/PRODUCT-MASTER-CATALOG.yaml
+  role: approved_catalog
+  references:
+  - products[AIGAS-RE]
+- path: src/pages/products/[product].astro
+  role: source_observed
+  sha_at_review: d945b8a7d80906d4fcef79dee05070f1b483c501
+  notes_ar: مسار risk-engine وصف حالة مخطط وغير متحقق
+- path: src/components/ProductExperience.astro
+  role: source_observed
+  sha_at_review: 10c5011f0a9fcf8b1ce9a3115954bb1c769f438f
+  notes_ar: مصفوفة تعليمية 3x3 واحتمال/أثر، أزرار يبدأ بعضها disabled وتُدار محليًا
+- path: src/components/ProductContentExtension.astro
+  role: source_observed
+  sha_at_review: c1b7670a94d1e0578ae0abf74ab2cd5f2cdd6c8c
+  notes_ar: شرح تعليمات تقييم المخاطر وأن المنتج في مرحلة لاحقة
+- path: src/components/InteriorController.astro
+  role: source_observed
+  sha_at_review: 29753afd0ae7301829f03c7855fc5f9698efc670
+  notes_ar: سلوك عرض تعليمي يستجيب لأمثلة عبر الواجهة، لا تخزين أو API
+- path: src/scripts/interior-motion.ts
+  role: source_observed
+  sha_at_review: bb81f4f991888f2c38f0f301fc15476b7a9b157c
+  notes_ar: حركة صفحات داخلية تعليمية لا دليل تشغيل للمنتج
+- path: src/pages/pricing.astro
+  role: source_observed
+  notes_ar: التجربة المخططة غير مفعلة، لا تحويل تلقائي
+capabilities:
+- id: RE-01
+  name_ar: سجل أصول AI والمخاطر
+  target_summary_ar: أصل معلوم الهوية والمالك والغرض والسياق وقابل للتحديث والتدقيق
+  requirement_status: APPROVED
+  status: PLANNED
+  implementation_state: NOT_VERIFIED
+  production_available: false
+  evidence_required: 'ACCEPTANCE-AND-EVIDENCE.md #RE-01'
+  features:
+  - id: RE-01.01
+    name_ar: إنشاء أصل AI مع tenant والمالك والغرض
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-01
+  - id: RE-01.02
+    name_ar: تصنيف أنواع البيانات والأطراف المتأثرة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-02
+  - id: RE-01.03
+    name_ar: تسجيل النموذج/الإصدار وسياق الاستخدام والضوابط
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-03
+  - id: RE-01.04
+    name_ar: استيراد الأصول ضمن مخطط ومراجعة صلاحيات
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-04
+  - id: RE-01.05
+    name_ar: بحث وفلاتر ضمن المستأجر مع سجل التغييرات
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-05
+- id: RE-02
+  name_ar: تقييم هجين مفسّر
+  target_summary_ar: قواعد واضحة مع تحليل سياقي من نموذج AI معتمد عند الأهلية
+  requirement_status: APPROVED
+  status: PLANNED
+  implementation_state: NOT_VERIFIED
+  production_available: false
+  evidence_required: 'ACCEPTANCE-AND-EVIDENCE.md #RE-02'
+  features:
+  - id: RE-02.01
+    name_ar: محرك قواعد وإصدارات منهجية قابلة للتدقيق
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-06
+  - id: RE-02.02
+    name_ar: تقدير الاحتمال والأثر والسياق والضوابط
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-07
+  - id: RE-02.03
+    name_ar: تحليل سياقي بمزود/نموذج معتمد دون تدريب على البيانات
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-08
+  - id: RE-02.04
+    name_ar: تعليل النتيجة وربط كل عامل بمصدره وعدم يقينه
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-09
+  - id: RE-02.05
+    name_ar: إتاحة اعتراض موثق وإعادة حساب بإصدار جديد
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-10
+  - id: RE-02.06
+    name_ar: سلوك آمن عند غياب النموذج أو الأدلة وعدم الاعتماد الصامت
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-11
+  - id: RE-02.07
+    name_ar: عدم اختلاق درجة أو معايرة أو معيار رقمي غير معتمد
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-12
+- id: RE-03
+  name_ar: العتبات والسياسات الهرمية
+  target_summary_ar: حدود مؤسسية وإدارية ومستخدميّة وفق سياسة أعلى لا يمكن تخفيفها
+  requirement_status: APPROVED
+  status: PLANNED
+  implementation_state: NOT_VERIFIED
+  production_available: false
+  evidence_required: 'ACCEPTANCE-AND-EVIDENCE.md #RE-03'
+  features:
+  - id: RE-03.01
+    name_ar: سياسات على مستوى المؤسسة والوحدة والأصل/المنتج والمستخدم
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-13
+  - id: RE-03.02
+    name_ar: أولوية سياسة أعلى ورفض تجاوز حدودها
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-14
+  - id: RE-03.03
+    name_ar: تثبيت policy_version لكل تقييم وإعادة إنتاج النتيجة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-15
+  - id: RE-03.04
+    name_ar: RBAC وSoD واعتماد التغييرات الحساسة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-16
+- id: RE-04
+  name_ar: المتابعة وإعادة الاعتماد
+  target_summary_ar: كشف تغير مادي وإطلاق إعادة تقييم ومراجعة عند اللزوم
+  requirement_status: APPROVED
+  status: PLANNED
+  implementation_state: NOT_VERIFIED
+  production_available: false
+  evidence_required: 'ACCEPTANCE-AND-EVIDENCE.md #RE-04'
+  features:
+  - id: RE-04.01
+    name_ar: إشعار تغير النموذج أو بياناته أو سياق الاستخدام
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-17
+  - id: RE-04.02
+    name_ar: تمييز التغير المادي وفق سياسة معتمدة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-18
+  - id: RE-04.03
+    name_ar: إعادة التقييم والموافقة دون تعديل التاريخ
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-19
+  - id: RE-04.04
+    name_ar: سجل كامل للدورة من التغير إلى القرار
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-20
+- id: RE-05
+  name_ar: مراجعات الخصوصية والأمن والسلامة
+  target_summary_ar: لا تشغيل عالي الخطورة دون المسار المخوّل؛ الإنفاذ يحتاج نقطة تكامل حقيقية
+  requirement_status: APPROVED
+  status: PLANNED
+  implementation_state: NOT_VERIFIED
+  production_available: false
+  evidence_required: 'ACCEPTANCE-AND-EVIDENCE.md #RE-05'
+  features:
+  - id: RE-05.01
+    name_ar: بوابة مراجعة Privacy/Security/Safety حسب المستوى
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-21
+  - id: RE-05.02
+    name_ar: فصل مراجع مستقل مع أسباب وإثبات موافقة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-22
+  - id: RE-05.03
+    name_ar: منع اعتبار التقييم وحده إنفاذًا في أنظمة غير مدمجة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-23
+  - id: RE-05.04
+    name_ar: ربط نقاط نشر/إنفاذ متكاملة بقرار صالح فقط
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-RE-24
+ui_and_demo_features:
+- id: RE-UI-01
+  name_ar: وجود صفحة تعريفية للمنتج
+  status: PLANNED
+  implementation_state: SOURCE_PRESENT_RUNTIME_NOT_VERIFIED
+  path: src/pages/products/[product].astro
+  note_ar: الصفحة موجودة في المصدر، لا يصنّف ذلك خاصية تشغيلية تعمل؛ يلزم فحص المتصفح للتصنيف WORKING ضمن واجهة
+    العرض فقط.
+- id: RE-UI-02
+  name_ar: مصفوفة تعليمية 3×3 وشرح الاحتمال والأثر
+  status: PLANNED
+  implementation_state: SOURCE_PRESENT_RUNTIME_NOT_VERIFIED
+  path: src/components/ProductExperience.astro
+  note_ar: القيم ومخرجاتها تمثيل تعليمي غير مرتبط بقاعدة تقييم أو مزود AI.
+- id: RE-UI-03
+  name_ar: تفاعل وأثر حركة توضيحي محلي
+  status: PLANNED
+  implementation_state: SOURCE_PRESENT_RUNTIME_NOT_VERIFIED
+  path: src/components/InteriorController.astro
+  note_ar: يلزم تحقق تشغيل مستقل؛ حتى عند نجاحه يظل Demo لا تقييمًا حقيقيًا.
+not_available_features:
+- id: RE-AV-01
+  name_ar: تشغيل API خدمة Risk Engine عامة
+  status: UNAVAILABLE
+  implementation_state: UNAVAILABLE_AT_REVIEW
+  reason_ar: لا endpoint تشغيلية مثبتة في شجرة المشروع المستعرضة
+  acceptance_id: AC-RE-31
+- id: RE-AV-02
+  name_ar: تجربة 48 ساعة من الموقع العام
+  status: UNAVAILABLE
+  implementation_state: UNAVAILABLE_AT_REVIEW
+  reason_ar: صفحة pricing تنص على أن التجربة غير مفعلة
+  acceptance_id: AC-RE-32
+- id: RE-AV-03
+  name_ar: نشر منتج مؤسسي معتمد
+  status: UNAVAILABLE
+  implementation_state: UNAVAILABLE_AT_REVIEW
+  reason_ar: لا أدلة إنتاج وصلاحيات وتراخيص معتمدة
+  acceptance_id: AC-RE-33
+- id: RE-AV-04
+  name_ar: درجة مخاطر رسمية من 0 إلى 100
+  status: UNAVAILABLE
+  implementation_state: UNAVAILABLE_AT_REVIEW
+  reason_ar: النطاق الرقمي والمنهج غير معتمدين؛ 0–100 قد يكون مثال UI فقط
+  acceptance_id: AC-RE-12
+cancelled_features: []
+optional_product_integrations:
+- product: AIGAS-FW
+  purpose: إثراء القرار في حركة متكاملة
+  required_for_core: false
+  state: PLANNED
+- product: AIGAS-HG
+  purpose: موافقة بشرية متعددة المراحل
+  required_for_core: false
+  state: PLANNED
+- product: AIGAS-LD
+  purpose: أدلة مستقلة موسعة
+  required_for_core: false
+  state: PLANNED
+status_update_gate:
+  promote_to_WORKING_only_if:
+  - exact_version_and_environment_recorded
+  - service_trace_with_reproducible_inputs_and_outputs
+  - tenant_isolation_permissions_and_privacy_verified
+  - security_risk_owner_signoff
+  - acceptance_evidence_and_incident_handling_reviewed
+  mark_CANCELLED_only_if: owner_approved_change_record
+  revalidate_when:
+  - source_or_release_changes
+  - approved_risk_methodology_changes
+  - backend_provider_changes
+  - deployment_security_boundary_changes
+  - trial_policy_changes
+related_documents:
+- PRODUCT-SPEC.md
+- PAGE-EXPERIENCE.md
+- API-CONTRACT.yaml
+- 48H-TRIAL-SPEC.md
+- ACCEPTANCE-AND-EVIDENCE.md
+- ../../MASTER-PROJECT-BLUEPRINT.md
+shared_crosscutting_features:
+- id: RE-SH-01
+  name_ar: Kernel identity/tenant isolation
+  status: PLANNED
+  requirement_status: APPROVED_TARGET
+  implementation_state: NOT_VERIFIED
+  rationale_ar: عزل بيانات ومؤشرات الأصول والتقييمات للمستأجر
+  acceptance_id: AC-RE-25
+- id: RE-SH-02
+  name_ar: Kernel audit minimum
+  status: PLANNED
+  requirement_status: APPROVED_TARGET
+  implementation_state: NOT_VERIFIED
+  rationale_ar: أثر أمني وتدقيقي أساسي دون رخصة Ledger
+  acceptance_id: AC-RE-26
+- id: RE-SH-03
+  name_ar: إدارة أسرار ومزودي AI وفق الاعتماد
+  status: PLANNED
+  requirement_status: APPROVED_TARGET
+  implementation_state: NOT_VERIFIED
+  rationale_ar: لا أسرار أو نصوص حساسة في telemetry وprompts
+  acceptance_id: AC-RE-27
+- id: RE-SH-04
+  name_ar: الترخيص المستقل والقياس
+  status: PLANNED
+  requirement_status: APPROVED_TARGET
+  implementation_state: NOT_VERIFIED
+  rationale_ar: Risk Engine بدون شراء FW/HG/LD
+  acceptance_id: AC-RE-28
+- id: RE-SH-05
+  name_ar: SAAS/ON_PREMISE/AIR_GAPPED
+  status: PLANNED
+  requirement_status: APPROVED_TARGET
+  implementation_state: NOT_VERIFIED
+  rationale_ar: نشر مستقل فعلي في البيئة المختارة
+  acceptance_id: AC-RE-29
+- id: RE-SH-06
+  name_ar: التصدير والاحتفاظ والحذف
+  status: PLANNED
+  requirement_status: APPROVED_TARGET
+  implementation_state: NOT_VERIFIED
+  rationale_ar: أدلة محكومة وسياسة احتفاظ وحذف وموانع قانونية
+  acceptance_id: AC-RE-30

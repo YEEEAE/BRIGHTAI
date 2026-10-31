@@ -1,0 +1,566 @@
+schema_version: 1.0.0
+document:
+  id: AIGAS-LD-FEATURE-STATUS
+  version: 1.0.0-draft
+  date: '2026-11-01'
+  file: FEATURE-STATUS.yaml
+  proposed_repo_path: docs/products/ledger/FEATURE-STATUS.yaml
+  classification: DRAFT_REQUIRES_OWNER_APPROVAL
+  github_modified: false
+product:
+  id: AIGAS-LD
+  name: AIGAS Ledger
+  short_code: LD
+  wave: WAVE_1
+  priority: P0
+  operational_readiness: NOT_VERIFIED
+  public_status: PLANNED_NOT_VERIFIED
+status_taxonomy:
+  WORKING: سلوك موجود وثبت من دليل تشغيل محدد النطاق؛ لا يعمم على المنتج
+  PLANNED: متطلب معتمد أو تصميم مستهدف دون إثبات تشغيل
+  UNAVAILABLE: غير متاح تشغيليًا في نطاق المراجعة، مع توضيح سبب الدليل
+  CANCELLED: قرار إلغاء صريح وموثق؛ لا يفترض من الغياب
+  NOT_VERIFIED: حالة الإثبات الحالية غير كافية لإعلان العمل
+implementation_truth:
+  requirement_approved_is_not_runtime_proof: true
+  all_operational_features_currently_not_verified: true
+  no_live_product_api_verified: true
+  demo_visuals_not_cryptographic_proof: true
+  kernel_basic_audit_exists_as_target_without_ledger_license: true
+source_evidence:
+- path: docs/MASTER-PROJECT-BLUEPRINT.md
+  scope: §03.3 / LD-01..LD-07
+  kind: APPROVED_TARGET
+- path: docs/PRODUCT-MASTER-CATALOG.yaml
+  scope: AIGAS-LD
+  kind: APPROVED_TARGET
+- path: src/pages/products/[product].astro
+  scope: /products/ledger/
+  kind: SOURCE_VERIFIED_EDUCATIONAL_PAGE
+- path: src/components/ProductExperience.astro
+  scope: ledger-layout, integrity-example, evidence-timeline, educational-hash
+  kind: SOURCE_VERIFIED_DEMO_ONLY
+- path: src/components/ProductContentExtension.astro
+  scope: ledger-related text
+  kind: SOURCE_VERIFIED_EDUCATIONAL_CONTENT
+- path: src/scripts/interior-motion.ts
+  scope: local visual interactions
+  kind: SOURCE_VERIFIED_CLIENT_ONLY
+- path: kernel/README.md
+  scope: historical claims not runtime proof
+  kind: HISTORICAL_NOT_OPERATIONAL_PROOF
+capabilities:
+- requirement_id: LD-01
+  name_ar: توثيق الأحداث وهوية مصدرها
+  requirement_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  features:
+  - id: LD-01.01
+    parent_requirement: LD-01
+    name_ar: اعتماد مُصدِر الحدث
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-01
+    acceptance_expectation_ar: يرفض إدخال حدث من مصدر غير مصادق عليه، ويسجل هوية المصدر من اتصال موثوق
+    required_evidence: AuthN decision + signed/source identity trace
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-01.02
+    parent_requirement: LD-01
+    name_ar: معرّف الحدث والارتباط
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-02
+    acceptance_expectation_ar: يحفظ event_id فريدًا وcorrelation_id ويربطه بسير عمل دون نسخ بيانات غير لازمة
+    required_evidence: Event envelope + correlation trace
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-01.03
+    parent_requirement: LD-01
+    name_ar: ختم الوقت ومصدر الزمن
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-03
+    acceptance_expectation_ar: يثبت وقت استقبال/وقوع الحدث ويكشف الترتيب غير المنطقي أو فجوة مزامنة الوقت
+    required_evidence: Clock provenance + ordered event evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-01.04
+    parent_requirement: LD-01
+    name_ar: نسخة السياسة والقرار
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-04
+    acceptance_expectation_ar: يُوثّق معرف السياسة ونسختها والقرار والمكوّن في أحداث القرار التي تتطلب ذلك
+    required_evidence: Policy/decision linkage evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-01.05
+    parent_requirement: LD-01
+    name_ar: عزل المستأجر والبيئة
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-05
+    acceptance_expectation_ar: tenant_id من هوية موثقة ولا يمكن للعميل تزويره للوصول لمؤسسة أخرى
+    required_evidence: Tenant isolation traces
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-01.06
+    parent_requirement: LD-01
+    name_ar: منع التكرار في التسجيل والعداد
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-06
+    acceptance_expectation_ar: إعادة إرسال idempotency key لا تنشئ دليلًا مزدوجًا أو احتسابًا مزدوجًا
+    required_evidence: Retry and dedup report
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+- requirement_id: LD-02
+  name_ar: سلامة الدليل والتشفير
+  requirement_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  features:
+  - id: LD-02.01
+    parent_requirement: LD-02
+    name_ar: تشفير النقل
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-07
+    acceptance_expectation_ar: كل قناة دخول/خروج توافق سياسة التشفير المعتمدة وتُرفض الوصلات غير المقبولة
+    required_evidence: Transport handshake configuration and trace
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-02.02
+    parent_requirement: LD-02
+    name_ar: تشفير المخزن والنسخ
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-08
+    acceptance_expectation_ar: الأدلة في التخزين والنسخ والاحتياطي مشفرة بمفاتيح محكومة
+    required_evidence: Storage/encryption configuration
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-02.03
+    parent_requirement: LD-02
+    name_ar: بصمة سلامة بمواصفة مثبتة
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-09
+    acceptance_expectation_ar: توليد digest بتسلسل canonical محدد الإصدار وقابل لإعادة الحساب مستقلًا
+    required_evidence: Canonicalization specification + fixtures
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-02.04
+    parent_requirement: LD-02
+    name_ar: ربط تسلسل/توقيع الدليل
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-10
+    acceptance_expectation_ar: يتيح إثبات كشف التعديل والإزالة أو إعادة الترتيب ضمن حدود الآلية المختارة
+    required_evidence: Integrity chain or signature evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-02.05
+    parent_requirement: LD-02
+    name_ar: كشف تعديل نسخة مصدّرة
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-11
+    acceptance_expectation_ar: يؤدي تغيير بايت محتوى مشمول بالسلامة إلى فشل التحقق مع سبب واضح
+    required_evidence: Tampered copy and verifier result
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-02.06
+    parent_requirement: LD-02
+    name_ar: مفاتيح وتحكم وثقة
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-12
+    acceptance_expectation_ar: المفاتيح مخولة ومدورة ومحمية مع سجل وصول وفصل التوقيع عن تشفير البيانات
+    required_evidence: Key lifecycle and access evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+- requirement_id: LD-03
+  name_ar: استمرارية التسجيل الإلزامي
+  requirement_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  features:
+  - id: LD-03.01
+    parent_requirement: LD-03
+    name_ar: كتابة دائمة للمسار الأساسي
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-13
+    acceptance_expectation_ar: لا يرسل تأكيد تسجيل إلزامي قبل تحقق شرط الديمومة والربط بسياق الحدث
+    required_evidence: Durability receipt + storage trace
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-03.02
+    parent_requirement: LD-03
+    name_ar: احتياطي محلي مشفر
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-14
+    acceptance_expectation_ar: عند تعذر المسار الأساسي تُكتب أدلة لازمة في مسار محلي محمي ومشفر
+    required_evidence: Fallback switch trace + encrypted queue evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-03.03
+    parent_requirement: LD-03
+    name_ar: سعة وتعافٍ دون فقد صامت
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-15
+    acceptance_expectation_ar: رفض واضح أو توقف آمن عند امتلاء المخزن وعدم إسقاط أدلة إلزامية بصمت
+    required_evidence: Capacity saturation injection and outcome
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-03.04
+    parent_requirement: LD-03
+    name_ar: فشل مزدوج يقود لإيقاف انتقائي
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-16
+    acceptance_expectation_ar: تعطل الأساسي والاحتياطي يوقف الأعمال التي تتطلب دليلًا إلزاميًا، لا كل عمليات القراءة بالضرورة
+    required_evidence: Dual outage + downstream no-action trace
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-03.05
+    parent_requirement: LD-03
+    name_ar: استعادة وإزالة التكرار
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-17
+    acceptance_expectation_ar: عند عودة المسار الرئيسي يُعاد الترحيل بصورة مرتبة وقابلة للمطابقة بلا ازدواج
+    required_evidence: Recovery replay/reconciliation evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-03.06
+    parent_requirement: LD-03
+    name_ar: قواعد اختلاف مستوى السجل
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-18
+    acceptance_expectation_ar: يُحدد متى يكون الإيداع شرطًا مسبقًا ومتى يكفي تدقيق Kernel الأساسي بحسب السياسة
+    required_evidence: Policy-to-path decision matrix
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+- requirement_id: LD-04
+  name_ar: خصوصية المحتوى وتقليل البيانات
+  requirement_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  features:
+  - id: LD-04.01
+    parent_requirement: LD-04
+    name_ar: Metadata افتراضيًا
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-19
+    acceptance_expectation_ar: الحدث الافتراضي لا يحتوي متن prompt أو conversation أو هوية شخصية خام بلا داعٍ
+    required_evidence: Field-level sample audit
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-04.02
+    parent_requirement: LD-04
+    name_ar: تخفيف وإخفاء الحقول الحساسة
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-20
+    acceptance_expectation_ar: تطبيق Redaction/Minimization قبل التخزين والتصدير وعند الفشل
+    required_evidence: Synthetic sensitive-field evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-04.03
+    parent_requirement: LD-04
+    name_ar: محتوى استثنائي بتصريح
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-21
+    acceptance_expectation_ar: لا يحفظ متن المحتوى إلا عند وجود صلاحية وأساس وغرض وسياسة احتفاظ معتمدة
+    required_evidence: Approval/policy evidence + negative case
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-04.04
+    parent_requirement: LD-04
+    name_ar: فصل سجلات التشغيل عن الدليل
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-22
+    acceptance_expectation_ar: لا تحل telemetry أو debug محل الدليل الموثوق ولا تُخزن فيه بيانات خام بلا داعٍ
+    required_evidence: Data-flow and log redaction inspection
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-04.05
+    parent_requirement: LD-04
+    name_ar: منع بيانات العميل من تدريب AI
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-23
+    acceptance_expectation_ar: لا يوجه محتوى أو أدلة العميل لأي مسار تدريب/تحسين نموذج لدى المؤسسة أو المورد
+    required_evidence: Vendor/processor controls + network trace
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+- requirement_id: LD-05
+  name_ar: الاحتفاظ والحذف وLegal Hold
+  requirement_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  features:
+  - id: LD-05.01
+    parent_requirement: LD-05
+    name_ar: سياسة احتفاظ لكل مستأجر وصنف
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-24
+    acceptance_expectation_ar: تُقرأ قاعدة الاحتفاظ من سياسة فعالة معتمدة بلا أرقام ثابتة مخترعة
+    required_evidence: Tenant policy version & decision
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-05.02
+    parent_requirement: LD-05
+    name_ar: تغيير محكوم للسياسات
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-25
+    acceptance_expectation_ar: تعديل مدة الاحتفاظ يتطلب صلاحية ويسجل السابق والجديد والسبب والموافق
+    required_evidence: Policy-change audit sample
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-05.03
+    parent_requirement: LD-05
+    name_ar: تجميد Legal Hold مخول
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-26
+    acceptance_expectation_ar: يحجز الحذف فقط للنطاق المحدد قانونيًا وبصلاحيات مفصولة
+    required_evidence: Hold authorization + constrained scope
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-05.04
+    parent_requirement: LD-05
+    name_ar: رفع التجميد بسجل مستقل
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-27
+    acceptance_expectation_ar: لا يرفع Legal Hold إلا مخول مع سبب وتوثيق ومنع التحرير العشوائي
+    required_evidence: Hold-release trail
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-05.05
+    parent_requirement: LD-05
+    name_ar: انتهاء الاحتفاظ والحذف الآمن
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-28
+    acceptance_expectation_ar: يطبق الحذف/الإتلاف بحسب الصنف والنسخ والالتزامات مع إثبات عدم الحذف أثناء Hold
+    required_evidence: Deletion job/exception evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-05.06
+    parent_requirement: LD-05
+    name_ar: تصدير قبل خروج العميل وفق العقد
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P1
+    acceptance_id: AC-LD-29
+    acceptance_expectation_ar: الحصول على البيانات القابلة للتصدير يتبع صلاحية ونطاقًا ومدة استرداد معتمدة
+    required_evidence: Exit authorization + export manifest
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+- requirement_id: LD-06
+  name_ar: التصدير والتحقق المستقل
+  requirement_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  features:
+  - id: LD-06.01
+    parent_requirement: LD-06
+    name_ar: حزمة أدلة ذات Manifest
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-30
+    acceptance_expectation_ar: يُصدر manifest يربط الملفات ومعرفات الأحداث وحدود النطاق وإصدارات طرق التحقق
+    required_evidence: Export manifest + bundle sample
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-06.02
+    parent_requirement: LD-06
+    name_ar: فاحص مستقل غير معتمد على خادم Ledger
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-31
+    acceptance_expectation_ar: يمكن لمراجع مخول التحقق خارج المنصة دون طلب ثقة عمياء من نفس الخادم
+    required_evidence: Offline verifier run + instructions
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-06.03
+    parent_requirement: LD-06
+    name_ar: فشل واضح عند التلاعب أو نقص ملف
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-32
+    acceptance_expectation_ar: فشل التحقق عند تعديل أو فقد ملف مشمول بدل إظهار نتيجة سليمة
+    required_evidence: Tamper/missing-file negative results
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-06.04
+    parent_requirement: LD-06
+    name_ar: تاريخ المفاتيح بعد تدويرها
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-33
+    acceptance_expectation_ar: تظل أدلة المفاتيح العامة/الثقة التاريخية متاحة ضمن السياسة لفحص إثباتات سابقة
+    required_evidence: Key rotation + historical verify output
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-06.05
+    parent_requirement: LD-06
+    name_ar: صلاحية التصدير والعزل
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-34
+    acceptance_expectation_ar: لا يمكن تحميل/تحضير تصدير خارج نطاق Tenant والصلاحية مع حد أدنى للبيانات
+    required_evidence: Export access denial evidence
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-06.06
+    parent_requirement: LD-06
+    name_ar: إثبات حدود التحقق
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-35
+    acceptance_expectation_ar: يفصل الفاحص بين سلامة البيانات وصحة المصدر ومعنى القرار والامتثال؛ لا شهادة تلقائية
+    required_evidence: Verifier output semantics and docs
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+- requirement_id: LD-07
+  name_ar: ربط أدلة الحوكمة
+  requirement_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  features:
+  - id: LD-07.01
+    parent_requirement: LD-07
+    name_ar: ربط أدلة موافقة Human Gate
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P1
+    acceptance_id: AC-LD-36
+    acceptance_expectation_ar: يربط الدليل بapproval_id والقرار دون اشتراط شراء Human Gate لإيداع حدث عام
+    required_evidence: Approval link and permission trace
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-07.02
+    parent_requirement: LD-07
+    name_ar: ربط حوادث وإجراءات مراجعة
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P1
+    acceptance_id: AC-LD-37
+    acceptance_expectation_ar: يحفظ مرجع الحادث/المراجعة ورابطه ضمن سياق وصلاحية مرخّصة
+    required_evidence: Incident link sample
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-07.03
+    parent_requirement: LD-07
+    name_ar: ربط ضابط/مرجع امتثال
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P1
+    acceptance_id: AC-LD-38
+    acceptance_expectation_ar: يتيح مرجع إطار أو ضابط دون إصدار ادعاء شهادة أو اجتياز تلقائي
+    required_evidence: Control mapping and disclaimer
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+  - id: LD-07.04
+    parent_requirement: LD-07
+    name_ar: منع تعديل الدليل الأصل عبر الربط
+    status: PLANNED
+    implementation_status: NOT_VERIFIED
+    public_availability: NOT_AVAILABLE
+    priority: P0
+    acceptance_id: AC-LD-39
+    acceptance_expectation_ar: تُضاف علاقات موثقة بآثار مستقلة دون إعادة كتابة دليل سبق ختمه
+    required_evidence: Append-only link event and verify output
+    source: MASTER-PROJECT-BLUEPRINT.md §03.3; PRODUCT-MASTER-CATALOG.yaml AIGAS-LD
+existing_visual_experience:
+- id: LD-UI-01
+  name_ar: صفحة تعريف المنتج ووسم مخطط
+  status: WORKING_IN_SOURCE_ONLY
+  url_path: /products/ledger/
+  evidence: src/pages/products/[product].astro
+  not_evidence_of: live-ledger or database writes
+- id: LD-UI-02
+  name_ar: مراحل الدليل التفاعلية
+  status: WORKING_IN_SOURCE_ONLY
+  evidence: ProductExperience.astro evidence-timeline
+  not_evidence_of: real event logging or export
+- id: LD-UI-03
+  name_ar: مقارنة مثال سليم/معدل
+  status: WORKING_IN_SOURCE_ONLY
+  evidence: ProductExperience.astro integrity-example and interior-motion.ts
+  not_evidence_of: cryptographic hash computation or verification
+- id: LD-UI-04
+  name_ar: عرض Hash تعليمي DEMO-A
+  status: WORKING_IN_SOURCE_ONLY
+  evidence: ProductExperience.astro educational-hash
+  not_evidence_of: real signatures or tamper resistance
+currently_unavailable_for_verified_customer_use:
+- AIGAS Ledger operational ingestion API
+- durable audited event store
+- verified backup journal
+- cryptographic signing/independent verifier
+- customer export service
+- retention/legal-hold operational control
+- approved 48h trial activation
+- public API/SDK for live use
+cancelled_features: []
+deliberate_scope_exclusions:
+- Guarantee that tampering is impossible
+- Mandatory blockchain
+- Replace Kernel minimal mandatory audit without Ledger purchase
+- Automatic compliance certification
+- Store raw prompts by default
+measurement:
+  candidate_unit: AUDIT_EVIDENCE_EVENT
+  metering_status: DESIGN_CANDIDATE_NOT_APPROVED
+  approved_quota: null
+  price_sar: null
+  retention_duration: null
+  release_date: null
+update_rules:
+- Change status to WORKING only with commit/build/service evidence and approved scope
+- Date and link all evidence; never promote demo features to operational
+- Mark cancelled only with owner decision and rationale
+- Reconcile feature IDs and AC-LD IDs before release

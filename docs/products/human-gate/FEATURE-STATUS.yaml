@@ -1,0 +1,364 @@
+# AIGAS Human Gate — Feature Status. Visual demo is not an operational approval system.
+schema_version: '1.0'
+document:
+  id: AIGAS-HG-FEATURE-STATUS-001
+  version: 1.0.0-draft
+  date: '2026-11-01'
+  path: docs/products/human-gate/FEATURE-STATUS.yaml
+  repository: YEEEAE/BRIGHTAI
+  branch: main
+  review_mode: READ_ONLY_CODE_AND_DOCUMENT_REVIEW
+  runtime_verified: false
+  github_modified: false
+product:
+  id: AIGAS-HG
+  name: AIGAS Human Gate
+  priority: P0
+  wave: WAVE_1
+  implementation_status: NOT_VERIFIED
+  public_availability: NOT_VERIFIED
+  live_api_base_url: null
+  trial_active: false
+  license_model: INDEPENDENT_WITH_INCLUDED_KERNEL
+  mandatory_purchase_of_other_products: false
+  current_web_route: /products/human-gate/
+status_taxonomy:
+  WORKING:
+    ar: تعمل
+    requires: Release-specific reproducible operational evidence, security checks and owner acceptance; educational
+      UI is insufficient
+  PLANNED:
+    ar: مخطط لها
+    requires: Approved requirement not proven operational
+  UNAVAILABLE:
+    ar: غير متاحة
+    requires: Not activated for customers at review time, or unavailable due to missing approval
+  CANCELLED:
+    ar: أُلغيت
+    requires: Explicit owner decision documenting cancellation; no inferred cancellation from lack of code
+implementation_truth:
+  SOURCE_PRESENT_RUNTIME_NOT_VERIFIED: UI source inspected but not executed in this review
+  NOT_VERIFIED: Operational functionality evidence not available
+  UNAVAILABLE_AT_REVIEW: No customer-accessible activation demonstrated
+source_evidence:
+- path: docs/MASTER-PROJECT-BLUEPRINT.md
+  kind: APPROVED_REQUIREMENTS
+  references:
+  - §03.4
+  - §04
+  - §07
+  - §12
+  - §22
+- path: docs/PRODUCT-MASTER-CATALOG.yaml
+  kind: APPROVED_CATALOG
+  references:
+  - products[AIGAS-HG]
+- path: src/pages/products/[product].astro
+  kind: OBSERVED_SOURCE
+  sha: d945b8a7d80906d4fcef79dee05070f1b483c501
+  finding_ar: صفحة Human Gate تصف المنتج بأنه مخطط وغير متحقق تشغيليًا
+- path: src/components/ProductExperience.astro
+  kind: OBSERVED_SOURCE
+  sha: 10c5011f0a9fcf8b1ce9a3115954bb1c769f438f
+  finding_ar: approval-flow وأزرار موافقة/رفض توضيحية فقط
+- path: src/components/ProductContentExtension.astro
+  kind: OBSERVED_SOURCE
+  sha: c1b7670a94d1e0578ae0abf74ab2cd5f2cdd6c8c
+  finding_ar: شرح عدم كفاية واجهة الموافقة
+- path: src/scripts/interior-motion.ts
+  kind: OBSERVED_SOURCE
+  sha: bb81f4f991888f2c38f0f301fc15476b7a9b157c
+  finding_ar: تغيير نصوص الواجهة المحلية دون API قرار
+- path: src/pages/pricing.astro
+  kind: OBSERVED_SOURCE
+  finding_ar: Trial 48h مخططة وغير مفعلة حاليًا
+capabilities:
+- id: HG-01
+  name_ar: طلب موافقة محدد ومكتمل
+  requirement: APPROVED
+  status: PLANNED
+  operational_status: NOT_VERIFIED
+  verified_release: null
+  features:
+  - id: HG-01.01
+    name_ar: هوية طلب مستقلة ومعرّف ارتباط للحدث الأصلي
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-01
+    evidence: null
+  - id: HG-01.02
+    name_ar: ربط الطلب بمستأجر ومصدر عملية مصادق عليه
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-02
+    evidence: null
+  - id: HG-01.03
+    name_ar: غرض الطلب وسبب إحالته والسياق والمخاطر
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-03
+    evidence: null
+  - id: HG-01.04
+    name_ar: تثبيت هوية المهمة وبصمة العملية والموارد المستهدفة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-04
+    evidence: null
+  - id: HG-01.05
+    name_ar: نسخة سياسة الموافقة وحدود الإجراء والمهلة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-05
+    evidence: null
+  - id: HG-01.06
+    name_ar: إنشاء آمن بتكرار Idempotency Key ومنع الازدواج
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-06
+    evidence: null
+  - id: HG-01.07
+    name_ar: توجيه إشعار مراجعة بلا إفشاء محتوى حساس
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-07
+    evidence: null
+- id: HG-02
+  name_ar: موافقات بمستويات وفصل مهام
+  requirement: APPROVED
+  status: PLANNED
+  operational_status: NOT_VERIFIED
+  verified_release: null
+  features:
+  - id: HG-02.01
+    name_ar: مسار موافقة فردي ومخطط مراحل متسلسل
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-08
+    evidence: null
+  - id: HG-02.02
+    name_ar: مسار مراجعة متعددة المراحل قابل للاعتماد المؤسسي
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-09
+    evidence: null
+  - id: HG-02.03
+    name_ar: التحقق من الدور والصلاحية والنطاق والهوية
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-10
+    evidence: null
+  - id: HG-02.04
+    name_ar: فصل مقدم الطلب عن المراجع حيث تشترط السياسة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-11
+    evidence: null
+  - id: HG-02.05
+    name_ar: منع المستخدم الواحد من إكمال مراحل تستلزم استقلالية
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-12
+    evidence: null
+  - id: HG-02.06
+    name_ar: تحقق هوية قوي وإعادة مصادقة للقرارات عالية الحساسية
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-13
+    evidence: null
+  - id: HG-02.07
+    name_ar: عدم تجاوز الحظر الأعلى أو التعارض السياسي
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-14
+    evidence: null
+- id: HG-03
+  name_ar: التفويض والتصعيد والانتهاء الآمن
+  requirement: APPROVED
+  status: PLANNED
+  operational_status: NOT_VERIFIED
+  verified_release: null
+  features:
+  - id: HG-03.01
+    name_ar: إنشاء تفويض محدد المجال والعملية والمدة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-15
+    evidence: null
+  - id: HG-03.02
+    name_ar: رفض تفويض يمنح صلاحية أوسع من صلاحية الموكّل
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-16
+    evidence: null
+  - id: HG-03.03
+    name_ar: إبطال التفويض فورًا ومنع قراراته المستقبلية
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-17
+    evidence: null
+  - id: HG-03.04
+    name_ar: تصعيد طلب مع الحفاظ على الفصل والصلاحية
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-18
+    evidence: null
+  - id: HG-03.05
+    name_ar: انتهاء مهلة القرار إلى رفض أو إيقاف آمن
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-19
+    evidence: null
+  - id: HG-03.06
+    name_ar: منع افتراض الموافقة عند غياب الرد أو الانقطاع
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-20
+    evidence: null
+  - id: HG-03.07
+    name_ar: التعامل الآمن مع التزامن والقرار المتأخر
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-21
+    evidence: null
+- id: HG-04
+  name_ar: إثبات القرار الأساسي ومساءلة المراجع
+  requirement: APPROVED
+  status: PLANNED
+  operational_status: NOT_VERIFIED
+  verified_release: null
+  features:
+  - id: HG-04.01
+    name_ar: ربط قرار قبول أو رفض بهوية مراجع موثقة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-22
+    evidence: null
+  - id: HG-04.02
+    name_ar: تسجيل التعليل والتوقيت والمرحلة والنسخة والسياسة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-23
+    evidence: null
+  - id: HG-04.03
+    name_ar: حفظ أثر القرار الأساسي دون ترخيص Ledger
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-24
+    evidence: null
+  - id: HG-04.04
+    name_ar: سجل تاريخ غير قابل للتلاعب الصامت ومنضبط الوصول
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-25
+    evidence: null
+  - id: HG-04.05
+    name_ar: تصدير أثر أساسي مع إخفاء المحتوى الحساس
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-26
+    evidence: null
+- id: HG-05
+  name_ar: إنفاذ الموافقة الفعلية على العمل المحكوم
+  requirement: APPROVED
+  status: PLANNED
+  operational_status: NOT_VERIFIED
+  verified_release: null
+  features:
+  - id: HG-05.01
+    name_ar: ربط الموافقة بعملية واحدة محددة وبصمة نطاق
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-27
+    evidence: null
+  - id: HG-05.02
+    name_ar: بوابة تنفيذ ترفض قبل اكتمال جميع المراحل
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-28
+    evidence: null
+  - id: HG-05.03
+    name_ar: إصدار إذن تنفيذي محدود الصلاحية والسياق
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-29
+    evidence: null
+  - id: HG-05.04
+    name_ar: استهلاك إذن التنفيذ بصورة ذرية مرة واحدة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-30
+    evidence: null
+  - id: HG-05.05
+    name_ar: منع إعادة التشغيل وإعادة استخدام الإذن أو نقل المستأجر
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-31
+    evidence: null
+  - id: HG-05.06
+    name_ar: إعادة التحقق من الهوية والسياسة والحظر لحظة التنفيذ
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-32
+    evidence: null
+  - id: HG-05.07
+    name_ar: استمرار أمان المسار عند عدم توفر المكوّن أو انتهاء الترخيص
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-33
+    evidence: null
+  - id: HG-05.08
+    name_ar: إثبات إيقاف العملية فعليًا عند الرفض أو انتهاء المهلة
+    status: PLANNED
+    implementation_state: NOT_VERIFIED
+    acceptance_id: AC-HG-34
+    evidence: null
+existing_visual_experience:
+- id: HG-UI-01
+  name_ar: عرض مسار مراجعة بأربع مراحل
+  status: PLANNED
+  source_present: true
+  implementation_state: SOURCE_PRESENT_RUNTIME_NOT_VERIFIED
+  counts_as_operational_approval: false
+  source_path: src/components/ProductExperience.astro
+  evidence_required: Targeted browser run for UI classification only
+- id: HG-UI-02
+  name_ar: إظهار حالات انتظار/موافقة/رفض تعليمية
+  status: PLANNED
+  source_present: true
+  implementation_state: SOURCE_PRESENT_RUNTIME_NOT_VERIFIED
+  counts_as_operational_approval: false
+  source_path: src/scripts/interior-motion.ts
+  evidence_required: Targeted browser run for educational controls only
+currently_unavailable:
+- id: HG-AV-01
+  name_ar: تفعيل تجربة 48 ساعة من الموقع
+  status: UNAVAILABLE
+  cause: Website presents planned trial, no verified provisioning
+- id: HG-AV-02
+  name_ar: واجهة قرارات مؤسسة حقيقية مثبتة التشغيل
+  status: UNAVAILABLE
+  cause: No verified enterprise console or deployment
+- id: HG-AV-03
+  name_ar: رابط API إنتاج موثّق ومعتمد
+  status: UNAVAILABLE
+  cause: No verified service endpoint
+- id: HG-AV-04
+  name_ar: سعر رسمي/حصة تجربة معتمدة
+  status: UNAVAILABLE
+  cause: Pricing and quotas not approved
+cancellations: []
+update_rules:
+- Never change PLANNED to WORKING from source code, a screenshot, or a UI simulation
+- For each WORKING claim attach environment, release SHA, test case, security validation and approving reviewer
+- If a capability is cancelled, require explicit recorded product decision
+- Customer-facing availability is a separate approval from feature implementation
+- Feature status, acceptance ID and requirement trace must stay consistent with sibling documents
+unapproved_parameters:
+  default_approval_timeout_seconds: null
+  minimum_reviewers: null
+  quorum_definition: null
+  trial_decisions_quota: null
+  trial_users_quota: null
+  paid_decision_unit: null
+  retention_days: null
+  external_live_api_url: null
