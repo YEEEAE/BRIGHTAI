@@ -7,11 +7,11 @@ import Constellation from '../components/Constellation.astro';
 export const prerender = true;
 const pillarPaths = ['safety', 'transparency', 'privacy'];
 const pillars = [
-  { number: '01', icon: 'shield', title: 'السلامة والموثوقية', text: 'نمنع الأنظمة من التسبب في أي ضرر للأفراد أو الممتلكات أو البيئة، ونضمن أنها تعمل ضمن حدود واضحة ومدروسة. كل طلب يُقيَّم من 0 إلى 100، والقرارات الحرجة تحتاج موافقة بشرية.', note: 'حدود واضحة. والقرار الأخير للإنسان.' },
-  { number: '02', icon: 'eye', title: 'الشفافية والمساءلة', text: 'تعرف مصدر كل بيان، وتتبع تاريخ كل نموذج، وتحدد من المسؤول عن كل قرار. سجل التدقيق عندنا غير قابل للتعديل.', note: 'كل طلب له أثر. وكل قرار له مسؤول.' },
-  { number: '03', icon: 'lock', title: 'الخصوصية وحماية البيانات', text: 'نكتشف البيانات الشخصية ونحجبها قبل أن تصل للنموذج، وبطريقة ما تمنعك من اكتشاف الانحياز في بياناتك.', note: 'بياناتك تبقى تحت سيطرتك.' },
+  { number: '01', icon: 'shield', title: 'السلامة والموثوقية', text: 'حدد حدود الاستخدام والأضرار المحتملة ومسار المراجعة والإيقاف قبل اعتماد أي حالة استخدام.', note: 'حدود واضحة ومسؤوليات محددة.' },
+  { number: '02', icon: 'eye', title: 'الشفافية والمساءلة', text: 'وثّق الغرض والمالك والضوابط والقرارات لتسهيل المراجعة والمحاسبة.', note: 'لكل استخدام مالك ودليل.' },
+  { number: '03', icon: 'lock', title: 'الخصوصية وحماية البيانات', text: 'حدد البيانات والغرض والمستلمين والقناة المعتمدة قبل استخدام أي خدمة خارجية.', note: 'تحقق قبل مشاركة البيانات.' },
 ];
-const steps = ['يكتب الموظف طلبه', 'يفحص جدار الحماية البيانات الحساسة ويحجبها', 'يقيّم محرك المخاطر الطلب ويطبق سياستكم', 'يصل الرد بأمان ويُسجَّل الحدث'];
+const steps = ['حدد حالة الاستخدام ومالكها', 'صنّف البيانات والأطراف المتأثرة', 'قيّم المخاطر واختر الضوابط', 'راقب النتائج وراجع القرار'];
 const sectors = [
   { slug: 'government', title: 'الجهات الحكومية', label: 'GOVERNMENT', description: 'ابتكار يخدم الناس، ضمن حدود واضحة.' },
   { slug: 'finance', title: 'البنوك والمالية', label: 'FINANCIAL SERVICES', description: 'حماية البيانات في كل تفاعل وقرار.' },
@@ -19,7 +19,7 @@ const sectors = [
   { slug: 'enterprise', title: 'الشركات', label: 'ENTERPRISE', description: 'مساحة لفريقك يبتكر فيها بثقة.' },
 ];
 ---
-<BaseLayout title="AIGAS — ذكاء اصطناعي تثق به... وتحاسبه | BRIGHTAI" description="AIGAS طبقة حوكمة وأمان بين موظفيك ونماذج الذكاء الاصطناعي: حجب البيانات الحساسة، تقييم المخاطر، موافقات بشرية وسجل تدقيق.">
+<BaseLayout title="حوكمة وأمان الذكاء الاصطناعي | BRIGHTAI" description="تعرّف على توجه BRIGHTAI لحوكمة الذكاء الاصطناعي ومخاطره، واستكشف الأدلة العربية والتصور المستهدف لمنتجات AIGAS غير المتحققة تشغيلياً.">
   <Header />
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
@@ -28,8 +28,8 @@ const sectors = [
 
         <h1 id="hero-title">ذكاء اصطناعي<br />تثق به<span class="ellipsis">...</span><br /><span class="hero-last">وتحاسبه</span></h1>
         <p class="eyebrow hero-tagline">AIGAS / حوكمة وأمان الذكاء الاصطناعي</p>
-        <p class="hero-description">AIGAS طبقة حوكمة وأمان تقف بين موظفيك ونماذج الذكاء الاصطناعي. تحجب البيانات الحساسة قبل خروجها، وتقيّم مخاطر كل طلب، وتوقف القرارات الحرجة لين يوافق عليها إنسان، وتوثّق كل شيء في سجل لا يمكن تعديله.</p>
-        <div class="actions"><a class="button" href="/kernel/">جرّب Kernel مجاناً <span aria-hidden="true">↖</span></a><a class="ghost" href="/contact/">احجز عرضاً توضيحياً <span aria-hidden="true">←</span></a></div>
+        <p class="hero-description">AIGAS تصور لحوكمة وأمان الذكاء الاصطناعي، يضم Kernel كمكوّن مشترك وخمسة منتجات مستقلة وظيفياً وتجاريًا وفق الـBlueprint. الإتاحة التشغيلية للمنتجات غير متحققة حالياً.</p>
+        <div class="actions"><a class="button" href="/products/">استكشف المنتجات <span aria-hidden="true">↖</span></a><a class="ghost" href="/contact/">اطلب معلومات أو عرض سعر <span aria-hidden="true">←</span></a></div>
       </div>
       <div class="hero-art"><Constellation /></div>
 
@@ -39,21 +39,33 @@ const sectors = [
     </section>
     <section class="problem section wrap" id="problem" aria-labelledby="problem-title">
       <div><p class="eyebrow">01 / السؤال الذي يستحق إجابة</p><h2 id="problem-title">موظفوك يستخدمون<br />الذكاء الاصطناعي اليوم.<br /><span class="muted">السؤال: هل تعرف<br />ماذا يرسلون؟</span></h2></div>
-      <div class="problem-copy"><span class="asterisk" aria-hidden="true">✳</span><p>كل محادثة مع نموذج ذكاء اصطناعي ممكن تكون نقطة تسريب: رقم هوية عميل، أو آيبان، أو ملف مريض، أو كلمة مرور. ومع بدء تطبيق نظام حماية البيانات الشخصية فعلياً، ما عاد ينفع نترك الموضوع للاجتهاد الشخصي.</p><a class="ghost" href="#principles">هنا يأتي دور AIGAS <span aria-hidden="true">↓</span></a></div>
+      <div class="problem-copy"><span class="asterisk" aria-hidden="true">✳</span><p>قد تتضمن المحادثة معلومات شخصية أو داخلية. قبل استخدام أي أداة، حدّد البيانات والغرض والحساب وشروط الخدمة والضوابط المصرح بها. تختلف الالتزامات حسب الجهة والسياق؛ لا تكفي عبارة عامة لإثبات الامتثال.</p><a class="ghost" href="/docs/">اقرأ إرشادات الاستخدام <span aria-hidden="true">↓</span></a></div>
     </section>
     <section class="section wrap" id="principles" aria-labelledby="pillars-title">
       <p class="eyebrow">02 / ثلاثة أركان. أساس واحد للثقة.</p><h2 id="pillars-title" class="pillars-heading">ذكاء أقوى.<br /><span class="muted">وضوابط أوضح.</span></h2>
       <div class="pillars">{pillars.map((p, i) => <article class="pillar"><div class="pillar-symbol" aria-hidden="true"><span class="latin">{p.number}</span><svg width="72" height="72" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">{p.icon === 'shield' ? <><path d="m24 5 15 6v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z"/><path d="m17 24 5 5 10-12"/></> : p.icon === 'eye' ? <><path d="M3 24s8-13 21-13 21 13 21 13-8 13-21 13S3 24 3 24Z"/><circle cx="24" cy="24" r="6"/></> : <><rect x="10" y="20" width="28" height="23" rx="4"/><path d="M16 20v-7a8 8 0 0 1 16 0v7m-8 9v6"/></>}</svg></div><div class="pillar-copy"><h3>{p.title}</h3><p>{p.text}</p><span class="pillar-note">{p.note}</span><a class="ghost" href={`/pillars/${pillarPaths[i]}/`}>اكتشف هذا الركن <span aria-hidden="true">←</span></a></div></article>)}</div>
     </section>
     <section class="section wrap workflow" id="how-it-works" aria-labelledby="workflow-title">
-      <div class="workflow-intro"><p class="eyebrow">03 / من الطلب إلى الرد</p><h2 id="workflow-title">أربع خطوات.<br />ولا تفصيلة<br /><span class="muted">خارج الصورة.</span></h2><p class="muted">طبقة حماية بين فريقك والنموذج،<br />تعمل في كل تفاعل.</p></div>
+      <div class="workflow-intro"><p class="eyebrow">03 / من الطلب إلى الرد</p><h2 id="workflow-title">حوكمة واضحة.<br />من تحديد الاستخدام<br /><span class="muted">حتى المراجعة.</span></h2><p class="muted">مراحل مقترحة للتصميم؛<br />وليست دليلاً على تشغيل منتج.</p></div>
       <ol class="steps">{steps.map((step, i) => <li><span class="step-number" aria-hidden="true">{['١', '٢', '٣', '٤'][i]}</span><h3>{step}</h3>{i < 3 && <span class="step-arrow" aria-hidden="true">↓</span>}</li>)}</ol>
     </section>
+    <section class="section wrap" aria-labelledby="products-title">
+      <p class="eyebrow">04 / التصور المستهدف</p><h2 id="products-title">خمسة منتجات مستقلة.<br /><span class="muted">وKernel أساس مشترك.</span></h2>
+      <p class="note">الإتاحة التشغيلية للمنتجات غير متحققة. القائمة تصف نطاق الـBlueprint ولا تعني توفر خدمات حالياً.</p>
+      <div class="sectors">
+        <a class="sector" href="/products/firewall/"><h3>AIGAS Firewall</h3><p>تصور لفحص المدخلات والمخرجات وفق سياسة الجهة.</p></a>
+        <a class="sector" href="/products/risk-engine/"><h3>AIGAS Risk Engine</h3><p>تصور لتقييم مخاطر حالات الاستخدام وربطها بالضوابط.</p></a>
+        <a class="sector" href="/products/human-gate/"><h3>AIGAS Human Gate</h3><p>تصور لمسارات المراجعة البشرية والاعتماد.</p></a>
+        <a class="sector" href="/products/ledger/"><h3>AIGAS Ledger</h3><p>تصور لحوكمة الأدلة التشغيلية والوصول إليها.</p></a>
+        <a class="sector" href="/products/secure-chat/"><h3>AIGAS Secure Chat</h3><p>تصور لواجهة مؤسسية لمساعدات الذكاء الاصطناعي.</p></a>
+      </div>
+      <a class="ghost" href="/products/">تفاصيل المنتجات وحالتها <span aria-hidden="true">←</span></a>
+    </section>
     <section class="section wrap" id="solutions" aria-labelledby="solutions-title">
-      <div class="solutions-heading"><div><p class="eyebrow">04 / صُمّم لمسؤولياتكم</p><h2 id="solutions-title">مهما كان قطاعك،<br /><span class="muted">الثقة ليست خياراً.</span></h2></div></div>
+      <div class="solutions-heading"><div><p class="eyebrow">05 / أسئلة حسب القطاع</p><h2 id="solutions-title">ابدأ من مسؤولياتك<br /><span class="muted">وسياقك التنظيمي.</span></h2></div></div>
       <div class="sectors">{sectors.map((s, i) => <a class="sector" href={`/solutions/${s.slug}/`}><span class="latin" dir="ltr">0{i + 1} / {s.label}</span><h3>{s.title} <span aria-hidden="true">↖</span></h3><p>{s.description}</p><span class="sector-link">اكتشف الحل <span aria-hidden="true">←</span></span></a>)}</div>
     </section>
-    <section class="closing section wrap" aria-labelledby="closing-title"><p class="eyebrow">05 / شوف الحماية بنفسك</p><span class="closing-star" aria-hidden="true">✳</span><h2 id="closing-title">شاهد Kernel وهو يحجب<br />رقم هوية <span class="muted">في أقل من ثانية</span></h2><p>بدون تسجيل وبدون بطاقة ائتمان. جرّب البيئة التجريبية الآن.</p><a class="button" href="/kernel/">ابدأ التجربة <span aria-hidden="true">↖</span></a></section>
+    <section class="closing section wrap" aria-labelledby="closing-title"><p class="eyebrow">06 / المعرفة أولاً</p><span class="closing-star" aria-hidden="true">✳</span><h2 id="closing-title">ابدأ بفهم المخاطر<br /><span class="muted">قبل اختيار الأداة.</span></h2><p>أدلة عربية عن السياسات وتقييم المخاطر وحماية بيانات المنشأة.</p><a class="button" href="/docs/">تصفح مركز المعرفة <span aria-hidden="true">↖</span></a></section>
   </main>
   <Footer />
 </BaseLayout>

@@ -1,0 +1,9 @@
+---
+import PageShell from '../components/PageShell.astro';
+export const prerender = true;
+---
+<PageShell title="الصفحة غير موجودة | BRIGHTAI" description="تعذر العثور على الصفحة المطلوبة في موقع BRIGHTAI." crumbs={[{ name: 'صفحة غير موجودة' }]} robots="noindex, follow">
+  <p class="eyebrow">404 / لم نعثر على الصفحة</p><h1>الرابط غير موجود</h1>
+  <p class="lead">قد يكون الرابط تغيّر أو كُتب بطريقة غير صحيحة. تقدر تتابع من الصفحات التالية.</p>
+  <div class="actions"><a class="button" href="/">العودة للرئيسية</a><a class="ghost" href="/docs/">مركز المعرفة</a><a class="ghost" href="/products/">المنتجات</a></div>
+</PageShell>

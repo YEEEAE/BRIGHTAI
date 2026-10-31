@@ -5,14 +5,14 @@ const links = [
   { href: '/#solutions', label: 'الحلول' },
   { href: '/services/', label: 'الخدمات' },
   { href: '/pricing/', label: 'الأسعار' },
-  { href: '/docs/', label: 'المطورون' },
+  { href: '/docs/', label: 'مركز المعرفة' },
 ];
 ---
 <a class="skip-link" href="#main">تخطّ إلى المحتوى</a>
 <header class="topbar wrap">
   <BrandLogo />
   <nav aria-label="التنقل الرئيسي">{links.map(l => <a href={l.href}>{l.label}</a>)}</nav>
-  <a class="ghost contact" href="/contact/">احجز عرضاً <span aria-hidden="true">↗</span></a>
+  <a class="ghost contact" href="/contact/">اطلب معلومات <span aria-hidden="true">↗</span></a>
 </header>
 <style>
   .topbar { min-height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }

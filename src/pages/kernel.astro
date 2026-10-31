@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 export const prerender = true;
 const schema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.live/' }, { '@type': 'ListItem', position: 2, name: 'تجربة Kernel', item: 'https://brightai.live/kernel/' }] };
 ---
-<BaseLayout title="جرّب حجب البيانات — Kernel | BRIGHTAI" description="محاكاة محلية مبسطة توضّح فكرة حجب رقم هوية قبل إرسال الطلب إلى نموذج ذكاء اصطناعي، دون تسجيل.">
+<BaseLayout title="محاكاة توضيحية لفكرة حجب البيانات | BRIGHTAI" description="محاكاة محلية مبسطة لفكرة حجب رقم افتراضي. لا تتصل بمحرك منتج ولا ترسل بيانات إلى خدمة." robots="noindex, follow">
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <Header />
   <main id="main" class="wrap section subpage">
@@ -16,7 +16,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', it
     <section aria-labelledby="sample-title"><h2 id="sample-title">الطلب قبل الحجب</h2><p class="sample">لخّص طلب العميل صاحب الهوية <bdi>1000000000</bdi>.</p><button class="button" id="run-demo" type="button">احجب رقم الهوية <span aria-hidden="true">←</span></button><noscript><p>النتيجة التوضيحية: لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].</p></noscript></section>
     <div role="status" aria-live="polite" id="demo-result"></div>
     <p class="demo-note">هذا مثال ببيانات افتراضية، ولا يثبت اكتشاف جميع البيانات الحساسة أو قياس أداء المنتج الفعلي.</p>
-    <a class="ghost" href="mailto:hello@brightai.live?subject=AIGAS%20Demo">احجز عرضاً توضيحياً للمحرك الفعلي <span aria-hidden="true">←</span></a>
+    <a class="ghost" href="/contact/">استفسر عن حالة المنتجات <span aria-hidden="true">←</span></a>
   </main>
   <Footer />
 </BaseLayout>

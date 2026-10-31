@@ -4,8 +4,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 interface Crumb { name: string; href?: string }
-interface Props { title: string; description: string; crumbs: Crumb[] }
-const { title, description, crumbs } = Astro.props;
+interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string }
+const { title, description, crumbs, robots = 'index, follow' } = Astro.props;
 const site = 'https://brightai.live';
 const all = [{ name: 'الرئيسية', href: '/' }, ...crumbs];
 const schema = {
@@ -13,7 +13,7 @@ const schema = {
   itemListElement: all.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.href ?? Astro.url.pathname, site).href })),
 };
 ---
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} robots={robots}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <Header />
   <main id="main" class="wrap section page">

@@ -7,5 +7,5 @@ export default defineConfig({
   trailingSlash: 'always',
   output: 'server',
   adapter: node({ mode: 'standalone' }),
-  integrations: [sitemap({ filter: (page) => !/\/README\/?$/.test(new URL(page).pathname) })],
+  integrations: [sitemap({ filter: (page) => !['/README/', '/kernel/', '/404/'].includes(new URL(page).pathname) })],
 });

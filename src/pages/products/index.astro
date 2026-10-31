@@ -1,42 +1,18 @@
 ---
 import PageShell from '../../components/PageShell.astro';
 export const prerender = true;
-const layers = [
-  { code: 'K1', title: 'الهوية والصلاحيات', text: 'يتعرف على المستخدم والجهة قبل أي شيء، ويحدد القوالب والنماذج المسموحة لكل دور.' },
-  { code: 'K2', title: 'قوالب السياسات', text: 'الطلبات تمر عبر قوالب معتمدة فقط (promptId)، ولا يُقبل أي system prompt من الخارج. هكذا نغلق باب حقن التعليمات.' },
-  { code: 'K3', title: 'جدار حماية البيانات', text: 'يكتشف الهوية الوطنية والإقامة والآيبان وبيانات الاعتماد وأرقام المرضى، ويحجبها قبل خروج الطلب.' },
-  { code: 'K4', title: 'الحصص وقاطع الدائرة', text: 'يحدد معدل الطلبات لكل جهة، ويعزل المزود الذي يتكرر فشله وينقل الطلبات تلقائياً للمزود البديل.' },
-];
 const products = [
-  { slug: 'firewall', name: 'AIGAS Firewall', text: 'يحجب البيانات الحساسة قبل وصولها للنموذج.', plans: 'كل الباقات' },
-  { slug: 'risk-engine', name: 'AIGAS Risk Engine', text: 'يعطي كل طلب درجة مخاطر من 0 إلى 100 ويطبق سياستكم.', plans: 'كل الباقات' },
-  { slug: 'human-gate', name: 'AIGAS Human Gate', text: 'يوقف القرارات الحرجة إلى أن يعتمدها إنسان.', plans: 'Business فأعلى' },
-  { slug: 'ledger', name: 'AIGAS Ledger', text: 'سجل تدقيق بسلسلة بصمات تشفيرية يكشف أي تعديل.', plans: 'كل الباقات' },
-  { slug: 'secure-chat', name: 'AIGAS Secure Chat', text: 'مساعد عربي آمن مع بث مباشر للردود.', plans: 'كل الباقات' },
+  ['firewall', 'AIGAS Firewall', 'تصور لفحص المدخلات والمخرجات وفق سياسات المنشأة.'],
+  ['risk-engine', 'AIGAS Risk Engine', 'تصور لتقييم مخاطر الاستخدام وربطها بضوابط مناسبة.'],
+  ['human-gate', 'AIGAS Human Gate', 'تصور لمسار مراجعة بشرية للحالات التي تحددها الجهة.'],
+  ['ledger', 'AIGAS Ledger', 'تصور لأدلة تشغيلية وحوكمة الوصول والاحتفاظ بها.'],
+  ['secure-chat', 'AIGAS Secure Chat', 'تصور لواجهة مؤسسية لاستخدام مساعدات الذكاء الاصطناعي.'],
 ];
 ---
-<PageShell title="منصة AIGAS Kernel والمنتجات | BRIGHTAI" description="Kernel طبقة حوكمة وأمان بين موظفيك ونماذج الذكاء الاصطناعي، وتتكون من خمسة منتجات: Firewall وRisk Engine وHuman Gate وLedger وSecure Chat." crumbs={[{ name: 'المنتجات' }]}>
-  <p class="eyebrow">AIGAS KERNEL / المنصة</p>
-  <h1>طبقة واحدة بين فريقك<br /><span class="muted">وكل نماذج الذكاء الاصطناعي.</span></h1>
-  <p class="note">هذا المحتوى يصف التصور المستهدف للمنصة، ولا يثبت تشغيل القدرات أو التكاملات أو مدد الاحتفاظ المذكورة. المتاح هنا تجربة حجب توضيحية؛ يُحدد نطاق الخدمة والتزاماتها في اتفاق مكتوب.</p>
-  <p class="lead">Kernel لا يستبدل النماذج التي تستخدمها. يقف قبلها، فيفحص كل طلب ويقيّمه ويسجله، ثم يقرر: هل يمر، أو يمر بعد الحجب، أو يتوقف بانتظار موافقة بشرية.</p>
-  <div class="actions"><a class="button" href="/kernel/">جرّب الحجب الآن <span aria-hidden="true">↖</span></a><a class="ghost" href="/pricing/">شاهد الأسعار <span aria-hidden="true">←</span></a></div>
-
-  <section class="block" aria-labelledby="layers">
-    <h2 id="layers">أربع طبقات. كل طلب يمر عليها كلها.</h2>
-    <p>الترتيب مقصود. نتحقق من هوية المرسل أولاً، ثم من القالب، ثم من البيانات، ثم من الحصة، وبعدها فقط يصل الطلب للنموذج.</p>
-    <div class="grid">{layers.map(l => <article class="card"><span class="tag latin" dir="ltr">{l.code}</span><h3>{l.title}</h3><p>{l.text}</p></article>)}</div>
-  </section>
-
-  <section class="block" aria-labelledby="mods">
-    <h2 id="mods">خمسة منتجات. منصة واحدة.</h2>
-    <p>تشتريها كلها ضمن باقة واحدة، وتفعّل منها ما يناسب مرحلتك.</p>
-    <div class="grid">{products.map(p => <article class="card"><h3 dir="ltr" style="text-align:right">{p.name}</h3><p>{p.text}</p><span class="note" style="margin:0">متاح في: {p.plans}</span><a class="ghost" href={`/products/${p.slug}/`}>التفاصيل <span aria-hidden="true">←</span></a></article>)}</div>
-  </section>
-
-  <section class="block" aria-labelledby="providers">
-    <h2 id="providers">بدون تعطّل، وبدون ارتباط بمزود واحد.</h2>
-    <p>في الوضع التلقائي يذهب الطلب إلى Groq أولاً، وإذا فشل ينتقل إلى Gemini بدون أي تدخل منك. وإذا أردت مزوداً بعينه تحدده في الطلب. وعند تكرار فشل أي مزود، يعزله قاطع الدائرة في K4 تلقائياً.</p>
-    <p>وللجهات التي لا تسمح بخروج أي بيانات، تعمل الباقة السيادية داخل بنيتكم التحتية مع نماذج محلية.</p>
-  </section>
+<PageShell title="منتجات AIGAS | BRIGHTAI" description="تعرّف على التصور المستهدف لمنتجات AIGAS الخمسة، مع فصل Kernel المشترك عن المنتجات وحالة الإتاحة غير المتحققة." crumbs={[{ name: 'المنتجات' }]}>
+  <p class="eyebrow">AIGAS / المنتجات</p><h1>مكوّن مشترك.<br /><span class="muted">وخمسة منتجات مستقلة.</span></h1>
+  <p class="lead">AIGAS Kernel أساس مشترك غير مفوتر كمنتج مستقل وفق الـBlueprint. المنتجات الخمسة مصممة كوحدات مستقلة وظيفياً وتجاريًا؛ حالة توفرها التشغيلي حاليًا غير متحققة.</p>
+  <p class="note">المعلومات التالية تصف التوجه المستهدف، ولا تعني أن المنتج أو التكامل أو الضابط يعمل الآن. لا توجد أسعار أو باقات نهائية معتمدة.</p>
+  <section class="block"><h2>المنتجات ضمن خارطة الطريق</h2><div class="grid">{products.map(([slug, name, text]) => <article class="card"><p class="eyebrow">مخطط — غير متحقق تشغيلياً</p><h3 dir="ltr" style="text-align:right">{name}</h3><p>{text}</p><a href={`/products/${slug}/`}>التصور والأسئلة المفتوحة ←</a></article>)}</div></section>
+  <section class="block"><h2>ما الذي يتطلب تحققاً؟</h2><p>قبل أي اعتماد تجاري، يلزم إثبات حالة التشغيل، ونطاق الوظائف، ومقدمي الخدمات ومناطق المعالجة، وضوابط الأمن والخصوصية، وشروط الخدمة والاحتفاظ. لا تثبت هذه الصفحة وجود أي من ذلك.</p><div class="actions"><a class="button" href="/pricing/">اطلب عرض سعر</a><a class="ghost" href="/docs/">اقرأ مركز المعرفة</a></div></section>
 </PageShell>

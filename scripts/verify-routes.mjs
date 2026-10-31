@@ -10,6 +10,8 @@ const xml = await readFile(new URL('../dist/client/sitemap-0.xml', import.meta.u
 const routes = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(([, url]) => new URL(url).pathname);
 assert(routes.length > 0, 'Sitemap must contain pages');
 assert.equal(new Set(routes).size, routes.length, 'Duplicate sitemap routes');
+assert(!routes.includes('/kernel/'), 'Noindex demo must be omitted from sitemap');
+assert(!routes.includes('/404/'), '404 route must be omitted from sitemap');
 const pages = new Map();
 const references = [];
 const titles = new Set();
@@ -20,6 +22,7 @@ for (const path of routes) {
   const response = await fetch(new URL(path, base), { redirect: 'manual' });
   assert.equal(response.status, 200, path);
   const html = await response.text();
+  assert(html.includes('<html lang="ar-SA" dir="rtl">'), `Locale/direction: ${path}`);
   const title = html.match(/<title>(.*?)<\/title>/s)?.[1];
   assert(title && !titles.has(title), `Missing or duplicate title: ${path}`);
   titles.add(title);
@@ -59,17 +62,22 @@ for (const { from, url } of references) {
   }
 }
 
+const redirectFailures = [];
 for (const { source, destination } of redirects) {
-  assert(routes.includes(destination), `Redirect target missing from sitemap: ${destination}`);
+  if (!['/kernel/', '/404/'].includes(destination)) {
+    assert(routes.includes(destination), `Redirect target missing from sitemap: ${destination}`);
+  }
   const query = '?topic=%D8%B9%D8%B1%D8%B6&source=audit';
   for (const method of ['GET', 'HEAD']) {
     const response = await fetch(new URL(source + query, base), { method, redirect: 'manual' });
-    assert.equal(response.status, 301, `${method} ${source}`);
-    assert.equal(response.headers.get('location'), destination + query, `Query preservation: ${source}`);
+    if (response.status !== 301 || response.headers.get('location') !== destination + query) {
+      redirectFailures.push(`${method} ${source}: ${response.status} ${response.headers.get('location') ?? ''}`);
+    }
   }
   const response = await fetch(new URL(destination.slice(0, -1) + query, base), { redirect: 'manual' });
-  assert.equal(response.status, 301, `Trailing slash: ${destination}`);
-  assert.equal(response.headers.get('location'), destination + query);
+  if (response.status !== 301 || response.headers.get('location') !== destination + query) {
+    redirectFailures.push(`Trailing slash ${destination}: ${response.status} ${response.headers.get('location') ?? ''}`);
+  }
 }
 
 const reachable = new Set(['/']);
@@ -82,8 +90,18 @@ while (previous !== reachable.size) {
 }
 assert.equal(reachable.size, routes.length, 'Orphan sitemap pages');
 for (const path of ['/missing-page.html', '/products/missing/', '/api/ai/chat/']) {
-  assert.equal((await fetch(new URL(path, base))).status, 404, `Unexpected route: ${path}`);
+  const response = await fetch(new URL(path, base));
+  assert.equal(response.status, 404, `Unexpected route: ${path}`);
+  assert((await response.text()).includes('الرابط غير موجود'), `Custom 404 content: ${path}`);
 }
+const demo = await fetch(new URL('/kernel/', base));
+assert.equal(demo.status, 200, 'Kernel explainer route');
+assert((await demo.text()).includes('name="robots" content="noindex, follow"'), 'Kernel demo must be noindex');
+for (const path of ['/knowledge/ai-governance-saudi/', '/knowledge/protect-company-data-chatgpt/',
+  '/knowledge/ai-risk-assessment/', '/knowledge/prompt-injection/', '/knowledge/ai-use-policy-employees/']) {
+  assert(routes.includes(path), `Knowledge article missing from sitemap: ${path}`);
+}
+assert.deepEqual(redirectFailures, [], `Legacy redirects failed: ${redirectFailures.slice(0, 5).join('; ')}`);
 console.log(JSON.stringify({ status: 'PASS', pages: routes.length, references: references.length,
   uniquePaths: checked.size, cssAssets, redirects: redirects.length, redirectChecks: redirects.length * 3,
   orphanPages: 0, brokenReferences: 0 }, null, 2));

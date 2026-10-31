@@ -1,12 +1,12 @@
 ---
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
-const topics = ['عرض توضيحي', 'Starter', 'Business', 'Enterprise', 'Sovereign', 'فحص الجاهزية', 'تقييم الامتثال', 'تدريب', 'شراكة', 'منافسة حكومية'];
+const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 'استفسار عن تجربة 48 ساعة', 'استفسار عام', 'شراكة'];
 ---
-<PageShell title="تواصل معنا — احجز عرضاً لـ AIGAS | BRIGHTAI" description="احجز عرضاً توضيحياً لمنصة AIGAS أو اطلب عرض سعر لخدمات حوكمة الذكاء الاصطناعي." crumbs={[{ name: 'تواصل معنا' }]}>
+<PageShell title="تواصل مع BRIGHTAI | استفسار أو عرض سعر" description="أرسل استفساراً عن تصور منتجات BRIGHTAI أو اطلب عرض سعر. نموذج الموقع يفتح رسالة بريد ولا يؤكد إرسال الطلب." crumbs={[{ name: 'تواصل معنا' }]}>
   <p class="eyebrow">تواصل معنا</p>
   <h1>خلّنا نفهم احتياجك<br /><span class="muted">قبل أن نعرض عليك شيئاً.</span></h1>
-  <p class="lead">العرض التوضيحي يستغرق 30 دقيقة: نفهم وضعكم، ونعرض المنصة على سيناريو من قطاعكم، ونقترح نقطة البداية المناسبة.</p>
+  <p class="lead">استخدم النموذج لفتح رسالة بريد تتضمن استفسارك. الإتاحة التشغيلية للمنتجات غير متحققة، ولا يؤكد الموقع استلام الرسالة أو حجز عرض أو تفعيل تجربة.</p>
   <form id="contact" class="card" style="max-width:640px">
     <label>الاسم<input name="name" required autocomplete="name" /></label>
     <label>الجهة<input name="org" required autocomplete="organization" /></label>
@@ -15,7 +15,7 @@ const topics = ['عرض توضيحي', 'Starter', 'Business', 'Enterprise', 'Sov
     <button class="button" type="submit" disabled>افتح رسالة البريد <span aria-hidden="true">←</span></button>
     <p id="contact-status" role="status" aria-live="polite"></p>
     <noscript><p>للتواصل بدون JavaScript: <a href="mailto:hello@brightai.live">افتح تطبيق البريد</a>.</p></noscript>
-    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى hello@brightai.live. لا يُرسل هذا النموذج شيئاً بنفسه.</p>
+    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى hello@brightai.live. راجعها وأرسلها بنفسك؛ لا يرسل الموقع الطلب ولا يؤكد استلامه.</p>
   </form>
   <p class="note">لا تكتب أي بيانات شخصية حساسة في رسالتك.</p>
 </PageShell>

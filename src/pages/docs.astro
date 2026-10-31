@@ -1,60 +1,20 @@
 ---
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
-const req = `POST /api/ai/chat/
-Content-Type: application/json
-Accept: text/event-stream        # أو application/json
-x-brightai-chat-key: <YOUR_KEY>  # اختياري حسب إعداد الجهة
-
-{
-  "message": "لخّص سياسة الاحتفاظ بالبيانات",
-  "sessionId": "3f1c9a2e-8b7d-4e21-9c3a-5d6f7a8b9c0d",
-  "promptId": "compliance",
-  "provider": "auto"
-}`;
-const sse = `event: token
-data: "حسب"
-
-event: token
-data: " السياسة..."
-
-event: done
-data: {"provider":"groq"}`;
-const json = `{
-  "reply": "حسب السياسة...",
-  "provider": "groq",
-  "sessionId": "3f1c9a2e-8b7d-4e21-9c3a-5d6f7a8b9c0d"
-}`;
-const js = `const res = await fetch('/api/ai/chat/', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
-  body: JSON.stringify({ message, sessionId, promptId: 'compliance', provider: 'auto' }),
-});
-const reader = res.body.getReader();
-const decoder = new TextDecoder();
-while (true) {
-  const { value, done } = await reader.read();
-  if (done) break;
-  render(decoder.decode(value)); // حلّل أحداث token / done / error
-}`;
-const rules = [
-  ['المزودون', 'Groq أساسي، وGemini بديل. في وضع auto ينتقل الطلب تلقائياً عند الفشل، ويمكنك تحديد groq أو gemini صراحة.'],
-  ['القوالب', 'يُقبل promptId من القائمة المعتمدة فقط. إرسال systemPrompt مباشرةً مرفوض.'],
-  ['البيانات المحجوبة', 'SAUDI_ID، IQAMA، IBAN، CREDENTIAL، PATIENT_ID قبل وصول الطلب للنموذج.'],
-  ['الجلسات', 'sessionId بصيغة UUID v4. تُحفظ في Redis لمدة 10 دقائق. إذا تعذّر Redis تُستخدم الذاكرة ويعود الترويسة X-Chat-Session: degraded.'],
-  ['المهلة', '25 ثانية للرد.'],
-  ['الحدود', 'حصص وحدود معدل لكل جهة عبر K4.'],
-  ['المصادر المسموحة', 'الطلبات من المتصفح مسموحة من النطاقات المعتمدة فقط.'],
+const articles = [
+  { href: '/knowledge/ai-governance-saudi/', tag: 'إطار عمل', title: 'حوكمة الذكاء الاصطناعي في السعودية', text: 'مسار عملي يبدأ بتحديد الاستخدام والمسؤوليات، ويمر بتقييم المخاطر والمعالجة، وينتهي بالمراجعة والتحسين.' },
+  { href: '/knowledge/protect-company-data-chatgpt/', tag: 'قائمة قرار', title: 'حماية بيانات المنشأة عند استخدام ChatGPT', text: 'أسئلة قصيرة تساعد الموظف على التمييز بين المعلومات العامة والداخلية والشخصية قبل إدخالها في أداة خارجية.' },
+  { href: '/knowledge/ai-risk-assessment/', tag: 'مصفوفة تعليمية', title: 'تقييم مخاطر الذكاء الاصطناعي', text: 'طريقة مبسطة لتوثيق الخطر والأثر والضوابط والمالك؛ ليست تصنيفاً رسمياً أو نتيجة تقييم آلي.' },
+  { href: '/knowledge/prompt-injection/', tag: 'شرح تقني', title: 'Prompt Injection وطبقات الحماية', text: 'كيف قد تحاول مدخلات غير موثوقة تغيير سلوك النموذج، وأين توضع ضوابط التحقق والمراجعة.' },
+  { href: '/knowledge/ai-use-policy-employees/', tag: 'سياسة داخلية', title: 'سياسة استخدام الذكاء الاصطناعي للموظفين', text: 'خطوات لبناء سياسة مفهومة تشمل الاستخدام المسموح والمشروط والمحظور وآلية التصعيد.' },
 ];
 ---
-<PageShell title="التوثيق التقني — AIGAS Chat API | BRIGHTAI" description="توثيق واجهة AIGAS للمحادثة الآمنة: البث المباشر SSE، ووضع JSON، والقوالب، والجلسات، والحماية." crumbs={[{ name: 'التوثيق' }]}>
-  <p class="eyebrow">للمطورين / API</p>
-  <h1>واجهة واحدة.<br /><span class="muted">والحوكمة مدمجة فيها.</span></h1>
-  <p class="note">هذه أمثلة لتكامل مستهدف. المسار <code>/api/ai/chat/</code> غير متوفر في هذا الموقع حالياً، ولم يُتحقق من تشغيل البث أو المزودين أو الجلسات. لا تستخدم الأمثلة كواجهة جاهزة للإنتاج ولا تضع مفاتيح حقيقية في المتصفح.</p>
-  <p class="lead">استبدل الاتصال المباشر بالنموذج بمسار واحد، وسيمر كل طلب على الطبقات الأربع تلقائياً.</p>
-  <section class="block"><h2>الطلب</h2><pre>{req}</pre></section>
-  <section class="block"><h2>البث المباشر (مفضّل)</h2><p>مع <code>Accept: text/event-stream</code> يصل الرد على شكل أحداث <code>token</code> ثم <code>done</code>، أو <code>error</code> عند الفشل.</p><pre>{sse}</pre><pre>{js}</pre></section>
-  <section class="block"><h2>وضع JSON (بديل)</h2><p>مع <code>Accept: application/json</code> يصل الرد كاملاً دفعة واحدة.</p><pre>{json}</pre></section>
-  <section class="block"><h2>القواعد</h2><div class="table-wrap"><table><tbody>{rules.map(([a, b]) => <tr><th>{a}</th><td>{b}</td></tr>)}</tbody></table></div></section>
-  <p class="note">مفاتيح الوصول تُصدر لعملاء الباقات المدفوعة. لا تضع المفتاح أبداً في كود يعمل في المتصفح.</p>
+<PageShell title="مركز المعرفة | حوكمة الذكاء الاصطناعي" description="أدلة عربية عملية عن حوكمة الذكاء الاصطناعي وحماية البيانات وتقييم المخاطر والسياسات في بيئة العمل السعودية." crumbs={[{ name: 'مركز المعرفة' }]}>
+  <p class="eyebrow">المعرفة قبل الأداة</p>
+  <h1>مركز المعرفة</h1>
+  <p class="lead">أدلة عملية تساعد الفرق على طرح الأسئلة الصحيحة قبل استخدام الذكاء الاصطناعي. المواد توعوية ولا تمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
+  <section class="block"><h2>ابدأ من احتياجك</h2><div class="grid">
+    {articles.map((article) => <article class="card"><p class="eyebrow">{article.tag}</p><h3><a href={article.href}>{article.title}</a></h3><p>{article.text}</p><a href={article.href}>اقرأ الدليل ←</a></article>)}
+  </div></section>
+  <p class="note">تاريخ إعداد هذه المواد: 31 أكتوبر 2026. راجع المصدر الرسمي والنص النظامي الساري قبل اتخاذ قرار مؤسسي.</p>
 </PageShell>
