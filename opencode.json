@@ -5,6 +5,23 @@
       "figma": {
         "type": "remote",
         "url": "https://mcp.figma.com/mcp"
+      },
+      "21st": {
+        "type": "remote",
+        "url": "https://21st.dev/api/mcp"
+      },
+      "stitch": {
+        "type": "remote",
+        "url": "https://stitch.googleapis.com/mcp"
+      },
+      "chrome-devtools": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "chrome-devtools-mcp@1.12.0",
+          "--no-usage-statistics"
+        ]
       }
     }
   },
