@@ -2,6 +2,9 @@
 import '../styles/pages.css';
 import '../styles/interior.css';
 import InteriorController from './InteriorController.astro';
+import InteriorMotion from './InteriorMotion.astro';
+import PageMotionStudy from './PageMotionStudy.astro';
+import '../styles/interior-motion.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
@@ -16,6 +19,17 @@ const schema = {
   '@context': 'https://schema.org', '@type': 'BreadcrumbList',
   itemListElement: all.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.href ?? Astro.url.pathname, site).href })),
 };
+const reading = ['knowledge', 'privacy', 'terms'].includes(family);
+let content = await Astro.slots.render('default');
+const toc: { id: string; title: string }[] = [];
+if (reading) content = content.replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/g, (full, attrs, text) => {
+  if (/في هذا الدليل/.test(text)) return full;
+  const id = /\bid="([^"]+)"/.exec(attrs)?.[1] ?? `document-heading-${toc.length + 1}`;
+  toc.push({ id, title: text.replace(/<[^>]*>/g, '').trim() });
+  return `<h2${attrs}${/\bid=/.test(attrs) ? '' : ` id="${id}"`}>${text}</h2>`;
+});
+const words = content.replace(/<(script|style|svg|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&[^;]+;/g, ' ').trim().split(/\s+/).length;
+const minutes = Math.max(1, Math.ceil(words / 180));
 ---
 <BaseLayout title={title} description={description} robots={robots}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
@@ -24,12 +38,15 @@ const schema = {
     <nav class="breadcrumb" aria-label="مسار التنقل">
       {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}>{c.name}</a> / </> : <span aria-current="page">{c.name}</span>)}
     </nav>
-    <slot />
+    {reading && <nav class="document-toc" aria-label="تنقل القراءة"><p>{family === 'knowledge' ? `وقت قراءة تقريبي: ${minutes} دقيقة، بافتراض 180 كلمة في الدقيقة.` : 'داخل هذه الوثيقة'}</p><details><summary>انتقل إلى قسم</summary>{toc.map(item => <a href={`#${item.id}`}>{item.title}</a>)}</details></nav>}
+    <Fragment set:html={content} />
+    <PageMotionStudy family={family} segment={segment}/>
     <details class="section-compass" hidden data-section-compass>
       <summary><span aria-hidden="true">☷</span> داخل الصفحة <span data-section-position></span></summary>
       <nav aria-label="فهرس أقسام الصفحة" data-section-links></nav>
     </details>
   </main>
   <InteriorController />
+  <InteriorMotion />
   <Footer />
 </BaseLayout>

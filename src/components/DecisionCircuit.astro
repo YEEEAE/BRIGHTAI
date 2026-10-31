@@ -12,6 +12,7 @@ const labels = ['سماح','تحذير','تنقيح','موافقة','حظر'];
       <circle cx="300" cy="140" r="58" fill="#1d122b" stroke="#c0a0eb"/>
       <path d="M282 122h36v36h-36zM293 122v36m14-36v36" stroke="#d1b5ef" stroke-width="1.5"/>
       {labels.map((_,i) => <g class={`circuit-branch branch-${i}`}><path d={`M300 222V244Q300 260 ${60+i*120} 260V314`} stroke="currentColor" stroke-width="1.5"/><circle cx={60+i*120} cy="321" r="6" fill="#120c1b" stroke="currentColor" stroke-width="2"/></g>)}
+      <circle data-decision-packet cx="60" cy="314" r="5" fill="currentColor"/>
     </svg>
     <span class="circuit-policy">السياسة + الصلاحية</span>
   </div>

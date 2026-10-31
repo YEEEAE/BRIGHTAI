@@ -1,0 +1,11 @@
+---
+interface Props { example?: string; placeholder?: string }
+const { example = 'DEMO-0000', placeholder = '[بيانات منقحة]' } = Astro.props;
+---
+<div class="redaction-demo" data-redaction data-placeholder={placeholder}>
+  <p class="diagram-help">مثال خيالي للتنقيح · لا فحص أو إرسال بيانات</p>
+  <p class="redaction-value" aria-hidden="true"><bdi data-redaction-value data-original={example}>{example}</bdi><span class="scan-line"></span></p>
+  <button type="button" class="ghost" data-redaction-run disabled>شاهد التنقيح</button>
+  <p class="note" data-redaction-status role="status"></p>
+  <noscript><p>النتيجة التوضيحية: {placeholder}</p></noscript>
+</div>

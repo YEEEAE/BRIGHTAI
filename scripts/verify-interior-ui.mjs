@@ -70,14 +70,14 @@ await page.goto(base+'/knowledge/ai-risk-assessment/');
 await page.evaluate(() => scrollTo(0,document.body.scrollHeight/2));
 await page.waitForFunction(() => document.querySelector('.reading-progress')?.value > 0);
 await page.locator('[data-section-compass] summary').click();
-assert.equal(await page.locator('[data-section-links] a').count(),6);
+assert.equal(await page.locator('[data-section-links] a').count(),7);
 await page.locator('[data-section-links] a').last().click();
 assert.equal(await page.locator('[data-section-compass]').getAttribute('open'),null);
 assert.equal(await page.locator(':focus').evaluate(element => element.tagName),'H2');
 // BFCache/native back navigation must not duplicate generated controls.
 await page.goto(base+'/docs/');await page.goBack();
 assert.equal(await page.locator('.reading-progress').count(),1);
-assert.equal(await page.locator('[data-section-links] a').count(),6);
+assert.equal(await page.locator('[data-section-links] a').count(),7);
 await page.emulateMedia({reducedMotion:'reduce'});
 await page.goto(base+'/products/firewall/');await page.evaluate(() => scrollTo(0,1200));
 assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length),0);
@@ -93,7 +93,7 @@ for (const path of routes) {
   if (path !== '/kernel/' && path !== '/missing-page/') assert.equal(await staticPage.locator('[data-content-extension]').count(),1,path);
 }
 await staticPage.goto(base+'/docs/');assert.equal(await staticPage.locator('.catalog-row:visible').count(),5);
-await staticPage.goto(base+'/products/firewall/');assert.match(await staticPage.locator('noscript').textContent(),/حظر/);
+await staticPage.goto(base+'/products/firewall/');assert.match(await staticPage.locator('.experience noscript').textContent(),/حظر/);
 assert.deepEqual(errors,[]);
 const result = {status:'PASS',routes:routes.length,viewportChecks,noJSRoutes:routes.length,search:'PASS',emptyState:'PASS',scopeComposer:'PASS',diagrams:'PASS',keyboard:'PASS',reducedMotion:'PASS',nativeBackNavigation:'PASS',pageErrors:errors};
 console.log(JSON.stringify(result,null,2));

@@ -27,14 +27,7 @@
     };
     preference.addEventListener('change', onPreference, { signal });
 
-    // Headings stay visible: reveal only short groups entering below the fold.
-    const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      if (!preference.matches && entry.boundingClientRect.top > 100) entry.target.classList.add('ui-arrive');
-      reveal.unobserve(entry.target);
-    }), { threshold: .12 });
-    root.querySelectorAll('.content-extension > section, .catalog-row, .sector-visual, .review-questions').forEach(element => reveal.observe(element));
-    observers.push(reveal);
+    // Entrance choreography belongs to InteriorMotion; keep one observer owner.
 
     // A generated, optional compass supplements the server-rendered article TOC.
     const compass = root.querySelector<HTMLDetailsElement>('[data-section-compass]');

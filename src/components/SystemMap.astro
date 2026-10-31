@@ -15,7 +15,7 @@ const nodes = [
     <svg viewBox="0 0 600 540" fill="none" aria-hidden="true" class="map-wires">
       <ellipse cx="300" cy="270" rx="210" ry="190" stroke="currentColor" stroke-dasharray="2 12" />
       <ellipse cx="300" cy="270" rx="150" ry="135" stroke="currentColor" opacity=".4" />
-      <path class="map-path" d="M300 270 300 65M300 270 510 210M300 270 430 435M300 270 170 435M300 270 90 210" stroke="currentColor" />
+      {['300 65','510 210','430 435','170 435','90 210'].map((end, i) => <path class={`map-path map-wire-${nodes[i][0]}`} d={`M300 270 ${end}`} stroke="currentColor" />)}
       <circle cx="300" cy="270" r="90" stroke="currentColor" />
     </svg>
     <div class="map-core"><span class="core-mark" aria-hidden="true">⟡</span><bdi>AIGAS Kernel</bdi><small>الهوية · السياسات · الأمن الأساسي</small></div>

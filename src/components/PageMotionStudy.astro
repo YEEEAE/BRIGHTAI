@@ -1,0 +1,50 @@
+---
+import RedactionDemo from './RedactionDemo.astro';
+interface Props { family: string; segment: string }
+const { family, segment } = Astro.props;
+const pillars = ['safety', 'transparency', 'privacy'];
+const pillarIndex = pillars.indexOf(segment);
+const next = pillars[(pillarIndex + 1) % pillars.length];
+const journeys: Record<string, { title: string; steps: string[][] }> = {
+  services: { title: 'مسار تجهيز نطاق العمل', steps: [['تحديد السؤال', 'صف الغرض والحدود ببيانات عامة.'], ['مراجعة النطاق', 'حدّد المخرجات والمسؤوليات وما يحتاج مختصاً.'], ['اتفاق مكتوب', 'أي تنفيذ يحتاج نطاقاً وشروطاً واعتماداً؛ لا يوجد تعاقد هنا.']] },
+  pricing: { title: 'رحلة مستهدفة، وليست تفعيل اشتراك', steps: [['تجربة 48 ساعة', 'متطلب مخطط يبدأ عند تفعيل مؤهل؛ غير مفعّل حالياً.'], ['Pilot محدود', 'نطاق ومعايير قبول ومراجعة متفق عليها.'], ['عقد مستقل', 'رسوم BRIGHT AI منفصلة عن كلفة مزود AI، وفق عرض معتمد.']] },
+  trust: { title: 'دورة الدليل والاحتفاظ — توضيح', steps: [['جمع الحد الأدنى', 'حدّد الغرض والمصدر والصلاحية قبل أي حفظ.'], ['حفظ ومراجعة', 'تحدد الجهة مدة الاحتفاظ والوصول والقيود القانونية؛ لا مدة منشورة معتمدة هنا.'], ['إنهاء أو احتفاظ ملزم', 'حذف أو تصدير وفق السياسة المعتمدة والعوائق القانونية؛ لا حذف فعلي هنا.'], ['إفصاح أمني مسؤول', 'وصف عام للملاحظة ثم قناة مفوضة ثم مراجعة؛ لا ترسل أسراراً أو بيانات عملاء عبر الموقع.']] },
+  about: { title: 'من القيمة إلى السؤال', steps: [['وضوح', 'ما الذي تثبته الأدلة، وما الذي يبقى تصوراً؟'], ['مسؤولية', 'من يملك القرار ومن يراجعه؟'], ['سياق سعودي', 'ما المتطلبات التي تنطبق على الجهة والاستخدام تحديداً؟']] },
+};
+const journey = journeys[family];
+const controls = [
+  ['البيانات', 'غرض المعالجة، تقليل البيانات، الصلاحيات والاحتفاظ.', 'مراجعة النص الرسمي لحماية البيانات الشخصية عند انطباقه مع المختص؛ التنقيح وحده لا يثبت الامتثال.'],
+  ['الخطر', 'وصف الضرر والاحتمال والأثر والمالك والضابط.', 'يمكن تنظيم الأسئلة باستعمال NIST AI RMF أو الإطار الوطني لإدارة مخاطر AI؛ هذا ربط مفاهيمي لا تقييم امتثال.'],
+  ['المساءلة', 'مسؤولية واضحة ومراجعة ونسخة معتمدة ودليل اختبار.', 'تُراجع سياسات الجهة والمعايير المناسبة مثل ISO/IEC 42001 بحسب النطاق؛ لا توجد شهادة معلنة هنا.'],
+];
+---
+{journey && <section class={`motion-study study-${family}`} aria-label={journey.title}>
+  <p class="eyebrow">توضيح تعليمي</p><h2>{journey.title}</h2>
+  {family === 'about' && <svg class="saudi-accent" viewBox="0 0 240 54" width="240" height="54" fill="none" aria-hidden="true" data-motion="draw"><path d="M2 48H238M40 48V24L52 12L64 24V48M99 48V20L110 5L121 20V48M165 48V30L180 18L195 30V48" stroke="currentColor"/></svg>}
+  <ol class="study-timeline" data-motion="stagger">{journey.steps.map(([title, text], i) => <li><span aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{title}</summary><p>{text}</p></details></li>)}</ol>
+</section>}
+{family === 'compliance' && <section class="motion-study control-connections" aria-labelledby="controls-title"><h2 id="controls-title">اربط السؤال بضابط ومرجع</h2><p>افتح المسار لفهم العلاقة. دعم الامتثال لا يثبت الامتثال؛ هذه أمثلة وليست تفسيراً قانونياً.</p><div data-motion="stagger">{controls.map(([title, control, framework]) => <details><summary>{title} ← ضابط ← مرجع للمراجعة</summary><div class="control-path"><p>{control}</p><span aria-hidden="true">↓</span><p>{framework}</p></div></details>)}</div></section>}
+{family === 'pillars' && <section class={`motion-study pillar-study pillar-study-${segment}`}>
+  <svg class="pillar-symbol" viewBox="0 0 80 80" width="80" height="80" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" data-motion="draw">
+    {segment === 'safety' && <><path d="M40 6L66 16V36Q66 60 40 74Q14 60 14 36V16Z"/><path d="M26 38l10 10 20-22"/></>}
+    {segment === 'transparency' && <><circle cx="40" cy="40" r="28"/><path d="M8 40h64M40 8v64M20 20l40 40"/><circle cx="40" cy="40" r="8"/></>}
+    {segment === 'privacy' && <><rect x="17" y="34" width="46" height="36" rx="3"/><path d="M26 34V22a14 14 0 0 1 28 0v12M40 46v12"/></>}
+  </svg>
+  <p>كل ركن يكمل سؤالاً مختلفاً؛ الرسوم توضيحية ولا تثبت تطبيق ضوابط.</p>
+  {segment === 'privacy' && <RedactionDemo />}
+  <a class="ghost" href={`/pillars/${next}/`}>الركن التالي: {['السلامة والموثوقية', 'الشفافية والمساءلة', 'الخصوصية وحماية البيانات'][(pillarIndex + 1) % 3]} ←</a>
+</section>}
+{family === 'solutions' && <section class={`motion-study sector-motion sector-motion-${segment}`}>
+  <p class="eyebrow">رسم تعليمي · لا اتصال تشغيلي</p>
+  {segment === 'finance' ? <><h2>من القيمة الافتراضية إلى المراجعة</h2><RedactionDemo example="FIN-DEMO-0000"/><p>بعد التنقيح، يبقى التحقق من الغرض وصلاحية المعالجة والمراجعة البشرية عند الحاجة.</p></> : <>
+    <h2>{segment === 'government' ? 'حدود البيانات قبل خروج الطلب' : segment === 'healthcare' ? 'من الإشارة إلى قرار الحماية' : 'من استخدام متفرق إلى مسار محكوم'}</h2>
+    <svg viewBox="0 0 600 160" class="sector-flow" fill="none" aria-hidden="true" data-motion="draw">
+      {segment === 'government' && <><rect x="340" y="20" width="240" height="120" rx="5" stroke="#4c9aff" stroke-dasharray="5 5"/><path d="M540 80H370M340 80H220M190 80H40" stroke="#8052ff"/><path d="M210 35l30 12v30q0 35-30 50q-30-15-30-50V47Z" stroke="#ffb829"/></>}
+      {segment === 'healthcare' && <><path class="health-pulse" d="M570 80H450L435 60L415 110L395 40L375 80H275" stroke="#4c9aff"/><path d="M180 20l55 20v38q0 40-55 65q-55-25-55-65V40Z" stroke="#8052ff"/><path d="M155 80l18 18 34-38" stroke="#ffb829"/></>}
+      {segment === 'enterprise' && <><path d="M560 30L370 80M560 80H370M560 130L370 80M370 80H55" stroke="#8052ff"/>{[30,80,130].map(y => <circle cx="560" cy={y} r="8" stroke="#4c9aff"/>)}<rect x="285" y="40" width="85" height="80" stroke="#ffb829"/></>}
+    </svg>
+    <p>{segment === 'government' ? 'حدود الجهة ← صلاحية وسياسة ← وجهة مصرح بها فقط. الرسم لا يثبت موطن بيانات.' : segment === 'healthcare' ? 'إشارة افتراضية ← تقليل بيانات ← مراجعة قبل الاستخدام. لا بيانات مرضى أو قياس طبي.' : 'قنوات متفرقة ← سياسة وصلاحية ← مسار واضح. لا يفترض مراقبة الأدوات غير المتكاملة.'}</p>
+  </>}
+</section>}
+{family === 'knowledge' && <section class="motion-study educational-checklist" data-checklist><h2>قائمة مراجعة أثناء القراءة</h2><p>قائمة تعليمية محلية؛ لا تُحفظ الاختيارات ولا تثبت جاهزية أو امتثالاً.</p><fieldset><legend>راجع مع مالك الحالة</legend>{['حددت الغرض وحدود الاستخدام', 'راجعت البيانات والصلاحيات مع المختص', 'حددت المالك والدليل وموعد المراجعة'].map(text => <label><input type="checkbox"/>{text}</label>)}</fieldset><p role="status" data-checklist-output>لم تُحدّد عناصر بعد.</p></section>}
+{family === '404' && <svg class="missing-route" viewBox="0 0 400 80" width="400" height="80" aria-hidden="true" fill="none" data-motion="draw"><path d="M390 40H250M150 40H10" stroke="#8052ff" stroke-dasharray="5 6"/><circle cx="200" cy="40" r="27" stroke="#ffb829"/><path d="M190 30l20 20m0-20l-20 20" stroke="#ffb829"/></svg>}

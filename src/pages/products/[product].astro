@@ -17,7 +17,7 @@ const roles: Record<string,string> = { firewall: 'من الطلب إلى الق�
 ---
 <PageShell title={`${name} — تصور المنتج | BRIGHTAI`} description={`${name}: وصف للتوجه والقدرات المستهدفة، مع توضيح أن الإتاحة التشغيلية غير متحققة.`} crumbs={[{ name: 'المنتجات', href: '/products/' }, { name }]}>
   <div class="product-intro">
-    <div><p class="eyebrow">AIGAS / تصور المنتج</p><h1><bdi>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
+    <div><p class="eyebrow">AIGAS / تصور المنتج</p><h1><bdi style={`view-transition-name:product-${slug}`}>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
     <aside class="product-meta"><ProductIcon kind={slug}/><div><p>منتج مستقل ضمن المنظومة</p><p class="tag">مخطط · غير متحقق تشغيلياً</p><a class="ghost" href="/products/">كل المنتجات ←</a></div></aside>
   </div>
   <ProductExperience kind={slug}/>

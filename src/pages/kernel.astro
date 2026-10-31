@@ -1,5 +1,8 @@
 ---
 import '../styles/interior.css';
+import '../styles/interior-motion.css';
+import KernelSequence from '../components/KernelSequence.astro';
+import InteriorMotion from '../components/InteriorMotion.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -17,9 +20,11 @@ const schema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', it
     <div class="kernel-comparison"><section aria-labelledby="sample-title"><h2 id="sample-title">الطلب قبل الحجب</h2><p class="sample">لخّص طلب العميل صاحب الهوية <bdi>1000000000</bdi>.</p><button class="button" id="run-demo" type="button">احجب رقم الهوية <span aria-hidden="true">←</span></button><noscript><p>النتيجة التوضيحية: لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].</p></noscript></section>
     <div class="kernel-result" role="status" aria-live="polite" id="demo-result"><p>النتيجة التوضيحية</p><span>شغّل المثال الجاهز لمشاهدة استبدال الرقم الافتراضي.</span></div></div>
     <p class="demo-note">هذا مثال ببيانات افتراضية، ولا يثبت اكتشاف جميع البيانات الحساسة أو قياس أداء المنتج الفعلي.</p>
+    <KernelSequence />
     <a class="ghost" href="/contact/">استفسر عن حالة المنتجات <span aria-hidden="true">←</span></a>
   </main>
   <Footer />
+  <InteriorMotion />
 </BaseLayout>
 <script>
   const button = document.querySelector<HTMLButtonElement>('#run-demo');

@@ -1,0 +1,10 @@
+<script>
+  import { initializeMotion } from '../scripts/interior-motion';
+  let cleanup: (() => void) | undefined;
+  const start = () => { cleanup?.(); cleanup = initializeMotion(); };
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', () => cleanup?.());
+  addEventListener('pagehide', () => cleanup?.());
+  addEventListener('pageshow', event => { if (event.persisted) start(); });
+</script>

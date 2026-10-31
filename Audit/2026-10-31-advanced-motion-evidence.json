@@ -1,0 +1,106 @@
+{
+  "method": "Local gzip file sizes; inline JS is included in HTML, not additive. No network transfer, production CWV, INP or 4G claim.",
+  "sizes": [
+    {
+      "route": "/products/firewall/",
+      "before": {
+        "htmlGzip": 9468,
+        "cssGzip": 11674,
+        "externalJSGzip": 0
+      },
+      "after": {
+        "htmlGzip": 9682,
+        "cssGzip": 13333,
+        "externalJSGzip": 3846,
+        "inlineJSGzip": 2558
+      }
+    },
+    {
+      "route": "/products/",
+      "before": {
+        "htmlGzip": 8038,
+        "cssGzip": 11674,
+        "externalJSGzip": 0
+      },
+      "after": {
+        "htmlGzip": 8090,
+        "cssGzip": 13333,
+        "externalJSGzip": 3846,
+        "inlineJSGzip": 1839
+      }
+    },
+    {
+      "route": "/kernel/",
+      "before": {
+        "htmlGzip": 2968,
+        "cssGzip": 11674,
+        "externalJSGzip": 0
+      },
+      "after": {
+        "htmlGzip": 3451,
+        "cssGzip": 13333,
+        "externalJSGzip": 3846,
+        "inlineJSGzip": 549
+      }
+    },
+    {
+      "route": "/knowledge/ai-risk-assessment/",
+      "before": {
+        "htmlGzip": 7400,
+        "cssGzip": 11674,
+        "externalJSGzip": 0
+      },
+      "after": {
+        "htmlGzip": 7749,
+        "cssGzip": 13333,
+        "externalJSGzip": 3846,
+        "inlineJSGzip": 1839
+      }
+    },
+    {
+      "route": "/privacy/",
+      "before": {
+        "htmlGzip": 6406,
+        "cssGzip": 11674,
+        "externalJSGzip": 0
+      },
+      "after": {
+        "htmlGzip": 6492,
+        "cssGzip": 13333,
+        "externalJSGzip": 3846,
+        "inlineJSGzip": 1839
+      }
+    }
+  ],
+  "protectedSourcesUnchanged": {
+    "src/pages/index.astro": true,
+    "src/components/Header.astro": true,
+    "src/components/Footer.astro": true,
+    "src/components/Constellation.astro": true,
+    "src/components/MotionController.astro": true,
+    "src/layouts/BaseLayout.astro": true,
+    "src/styles/variables.css": true,
+    "src/styles/site.css": true,
+    "src/styles/theme.css": true,
+    "src/styles/experience.css": true,
+    "src/styles/tokens.json": true,
+    "src/pages/privacy.astro": true,
+    "src/pages/terms.astro": true
+  },
+  "homeHTMLByteIdentical": true,
+  "smallDecisionLabelContrast": 14.87,
+  "chromeDevToolsFinalDesktopTrace": {
+    "route": "/products/firewall/",
+    "lcpMs": 111,
+    "cls": 0,
+    "cpu": "1x",
+    "network": "unthrottled localhost",
+    "fieldData": null
+  },
+  "routeVerification": {
+    "status": "FAIL",
+    "legacyHTMLFailures": 46,
+    "otherAssertionsBeforeLegacyCheck": "PASS",
+    "note": "Legacy .html aliases return 404 rather than 301 in local standalone; routing files unchanged."
+  }
+}

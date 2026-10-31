@@ -1,0 +1,13 @@
+---
+const stages = [['K1', 'قراءة الطلب الخيالي'], ['K2', 'مراجعة السياسة التوضيحية'], ['K3', 'تنقيح المعرّف الافتراضي'], ['K4', 'عرض النتيجة التعليمية']];
+---
+<section class="motion-study kernel-sequence" data-kernel-sequence aria-labelledby="sequence-title">
+  <p class="eyebrow">تسلسل تعليمي محلي / لا اتصال بخدمة</p>
+  <h2 id="sequence-title">من الطلب إلى النتيجة</h2>
+  <p>ترقيم K1–K4 يشرح خطوات هذا المثال فقط، ولا يصف طبقات مثبتة لمحرك Kernel.</p>
+  <p class="sequence-request" aria-hidden="true" data-kernel-request>لخّص طلباً خيالياً بمعرّف DEMO-0000.</p>
+  <ol class="sequence-stages" data-motion="stagger">{stages.map(([key, label]) => <li data-kernel-stage><bdi>{key}</bdi><span>{label}</span></li>)}</ol>
+  <div class="actions"><button type="button" class="button" data-kernel-play disabled>شغّل التسلسل</button><button type="button" class="ghost" data-kernel-skip disabled>تخطّ الحركة</button></div>
+  <p class="sequence-output" data-kernel-output role="status">النتيجة التعليمية: لخّص طلباً خيالياً بمعرّف [بيانات منقحة].</p>
+  <noscript><p>الخطوات والنتيجة ظاهرة دون JavaScript. لا تُنفذ معالجة فعلية.</p></noscript>
+</section>

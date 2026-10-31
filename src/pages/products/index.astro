@@ -17,7 +17,7 @@ const products = [
   <p class="lead">AIGAS Kernel أساس مشترك غير مفوتر كمنتج مستقل وفق الـBlueprint. المنتجات الخمسة مصممة كوحدات مستقلة وظيفياً وتجاريًا؛ حالة توفرها التشغيلي حاليًا غير متحققة.</p>
   <p class="note">المعلومات التالية تصف التوجه المستهدف، ولا تعني أن المنتج أو التكامل أو الضابط يعمل الآن. لا توجد أسعار أو باقات نهائية معتمدة.</p>
   <section class="block"><SystemMap compact /></section>
-  <section class="block"><p class="eyebrow">دليل المنتجات / 01–05</p><h2>ابدأ بالدور الذي تحتاجه.</h2><div class="catalog">{products.map(([slug, name, text], i) => <a class="catalog-row" href={`/products/${slug}/`}><ProductIcon kind={slug}/><div><small>0{i + 1} / مخطط</small><h3><bdi>{name}</bdi></h3></div><p>{text}</p><span aria-hidden="true">↖</span></a>)}</div></section>
+  <section class="block"><p class="eyebrow">دليل المنتجات / 01–05</p><h2>ابدأ بالدور الذي تحتاجه.</h2><div class="catalog">{products.map(([slug, name, text], i) => <a class="catalog-row" href={`/products/${slug}/`}><ProductIcon kind={slug}/><div><small>0{i + 1} / مخطط</small><h3 style={`view-transition-name:product-${slug}`}><bdi>{name}</bdi></h3></div><p>{text}</p><span aria-hidden="true">↖</span></a>)}</div></section>
   <section class="block"><h2>ما الذي يتطلب تحققاً؟</h2><p>قبل أي اعتماد تجاري، يلزم إثبات حالة التشغيل، ونطاق الوظائف، ومقدمي الخدمات ومناطق المعالجة، وضوابط الأمن والخصوصية، وشروط الخدمة والاحتفاظ. لا تثبت هذه الصفحة وجود أي من ذلك.</p><div class="actions"><a class="button" href="/pricing/">اطلب عرض سعر</a><a class="ghost" href="/docs/">اقرأ مركز المعرفة</a></div></section>
 
     <ContentExtension>

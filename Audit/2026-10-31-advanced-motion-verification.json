@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "kernel": "PASS",
+  "packetSelection": "PASS",
+  "redaction": "PASS",
+  "approval": "PASS",
+  "risk": "PASS",
+  "namedTransitions": "PASS (native pagereveal verified)",
+  "mapFocus": "PASS",
+  "spotlight": "PASS",
+  "chatTyping": "PASS",
+  "checklist": "PASS",
+  "readingTOC": "PASS",
+  "contactInvalid": "PASS",
+  "dynamicReducedMotion": "PASS",
+  "noJS": "PASS",
+  "legalText": "PASS (same-run baseline)",
+  "pageErrors": []
+}

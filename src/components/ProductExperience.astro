@@ -1,6 +1,7 @@
 ---
 import ProductIcon from './ProductIcon.astro';
 import DecisionCircuit from './DecisionCircuit.astro';
+import RedactionDemo from './RedactionDemo.astro';
 interface Props { kind: string }
 const { kind } = Astro.props;
 const decisions = [
@@ -36,6 +37,17 @@ const decisions = [
   ].map(([label, text], i) => <li><span class="event-point" aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
   {kind === 'secure-chat' && <div class="chat-layout"><div><h2>مساحة أبسط.<br /><span class="muted">وحدود أوضح.</span></h2><p class="diagram-help">قصة توضيحية جاهزة، وليست محادثة مع نموذج. لا تكتب بيانات أو ملفات هنا.</p><ul class="chat-principles"><li>اختيار نموذج مصرح به</li><li>حفظ المحتوى حسب سياسة المؤسسة</li><li>مشاركة وتصدير مغلقان افتراضياً</li></ul></div><div class="chat-preview"><div class="chat-toolbar"><span>محادثة توضيحية</span><span>بلا اتصال</span></div><div class="chat-examples decision-options" aria-label="اختيار مثال جاهز"><button type="button" disabled data-chat-example="public" aria-pressed="true">بيانات عامة</button><button type="button" disabled data-chat-example="internal" aria-pressed="false">بيانات داخلية</button></div><p class="chat-bubble user">كيف أكتب طلباً يحترم بيانات المنشأة؟</p><p class="chat-bubble assistant" role="status" aria-live="polite">ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.</p><details><summary>ما الذي يضبط هذا المسار؟</summary><p>صلاحية الاستخدام والنموذج والوجهة والميزانية. لا نفترض وجود نموذج أو تكامل عامل في هذا التصور.</p></details><div class="chat-footer">مثال جاهز / لا إرسال أو رفع ملفات</div></div></div>}
 </section>
+{kind === 'firewall' && <RedactionDemo />}
+{kind === 'secure-chat' && <><p class="note">النموذج المصرح: تسمية توضيحية فقط؛ لم يُختر أو يُربط مورد فعلي.</p><RedactionDemo example="CHAT-DEMO-0000" /></>}
+{kind === 'human-gate' && <section class="motion-study" data-approval-demo aria-label="مسارات موافقة خيالية">
+  <h2>جرّب قرار المراجع في مثال خيالي</h2>
+  <p>لا تُرسل هذه الأزرار موافقة أو رفضاً لأي نظام.</p>
+  <svg class="approval-lock" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path class="lock-shackle" d="M20 28V19a12 12 0 0 1 24 0v9"/><rect x="14" y="28" width="36" height="28" rx="3"/><path d="M32 38v9"/></svg>
+  <div class="decision-options"><button type="button" data-approval="pending" aria-pressed="true" disabled>انتظار توضيحي</button><button type="button" data-approval="allow" aria-pressed="false" disabled>موافقة توضيحية</button><button type="button" data-approval="block" aria-pressed="false" disabled>رفض توضيحي</button></div>
+  <p data-approval-output role="status">انتظار مراجعة مستقلة في المثال. غياب الرد لا يعني موافقة.</p>
+  <noscript><p>الموافقة تسمح باستكمال النطاق المحدد فقط؛ الرفض يوقف المثال. الحظر الإلزامي لا تتجاوزه الموافقة.</p></noscript>
+</section>}
+{kind === 'ledger' && <div class="motion-study educational-hash"><p>تمثيل تعليمي مبسّط للربط، لا Hash أو توقيع محسوب:</p><ol data-motion="stagger"><li><code>DEMO-A → REF-A</code></li><li><code>REF-A + DEMO-B → REF-B</code></li><li><code>DEMO-B* ≠ REF-B</code> · تعديل محتوى المثال يستلزم كشف الاختلاف في تنفيذ حقيقي.</li></ol></div>}
 <script>
   // Local educational state only. Progressive enhancement, scoped to each diagram.
   document.querySelectorAll<HTMLElement>('.experience').forEach(root => {
