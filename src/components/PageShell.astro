@@ -1,5 +1,7 @@
 ---
 import '../styles/pages.css';
+import '../styles/interior.css';
+import InteriorController from './InteriorController.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
@@ -7,6 +9,7 @@ interface Crumb { name: string; href?: string }
 interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string }
 const { title, description, crumbs, robots = 'index, follow' } = Astro.props;
 const family = Astro.url.pathname.split('/').filter(Boolean)[0] ?? 'home';
+const segment = Astro.url.pathname.split('/').filter(Boolean)[1] ?? 'index';
 const site = 'https://brightai.live';
 const all = [{ name: 'الرئيسية', href: '/' }, ...crumbs];
 const schema = {
@@ -17,11 +20,16 @@ const schema = {
 <BaseLayout title={title} description={description} robots={robots}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <Header />
-  <main id="main" class={`wrap section page page-family-${family}`}>
+  <main id="main" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">
       {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}>{c.name}</a> / </> : <span aria-current="page">{c.name}</span>)}
     </nav>
     <slot />
+    <details class="section-compass" hidden data-section-compass>
+      <summary><span aria-hidden="true">☷</span> داخل الصفحة <span data-section-position></span></summary>
+      <nav aria-label="فهرس أقسام الصفحة" data-section-links></nav>
+    </details>
   </main>
+  <InteriorController />
   <Footer />
 </BaseLayout>

@@ -1,0 +1,137 @@
+<script>
+  // Interior-only enhancement. No router, scroll hijacking, or background loops.
+  function initializeInterior() {
+    const root = document.querySelector<HTMLElement>('.interior-page');
+    if (!root) return;
+    const lifetime = new AbortController();
+    const signal = lifetime.signal;
+    const preference = matchMedia('(prefers-reduced-motion: reduce)');
+    const observers: IntersectionObserver[] = [];
+    const frames = new Set<number>();
+    const animations = new Set<Animation>();
+    const frame = (fn: () => void) => {
+      const id = requestAnimationFrame(() => { frames.delete(id); fn(); });
+      frames.add(id);
+    };
+    const animate = (element: Element, keyframes: Keyframe[], duration = 280) => {
+      if (preference.matches) return;
+      const animation = element.animate(keyframes, { duration, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      animations.add(animation);
+      animation.finished.then(() => animations.delete(animation)).catch(() => animations.delete(animation));
+    };
+    const onPreference = () => {
+      if (preference.matches) {
+        animations.forEach(animation => animation.cancel());
+        root.querySelectorAll('.ui-arrive').forEach(element => element.classList.remove('ui-arrive'));
+      }
+    };
+    preference.addEventListener('change', onPreference, { signal });
+
+    // Headings stay visible: reveal only short groups entering below the fold.
+    const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      if (!preference.matches && entry.boundingClientRect.top > 100) entry.target.classList.add('ui-arrive');
+      reveal.unobserve(entry.target);
+    }), { threshold: .12 });
+    root.querySelectorAll('.content-extension > section, .catalog-row, .sector-visual, .review-questions').forEach(element => reveal.observe(element));
+    observers.push(reveal);
+
+    // A generated, optional compass supplements the server-rendered article TOC.
+    const compass = root.querySelector<HTMLDetailsElement>('[data-section-compass]');
+    const linksRoot = root.querySelector('[data-section-links]');
+    const headings = [...root.querySelectorAll<HTMLHeadingElement>('h2')].filter(heading =>
+      !heading.closest('.reading-nav,.experience,.section-compass') && heading.textContent?.trim());
+    const links: HTMLAnchorElement[] = [];
+    headings.forEach((heading, index) => {
+      heading.id ||= `reading-section-${index + 1}`;
+      const link = document.createElement('a');
+      link.href = `#${heading.id}`;
+      link.textContent = `${String(index + 1).padStart(2, '0')} / ${heading.innerText.replace(/\s+/g, ' ').trim()}`;
+      link.addEventListener('click', () => {
+        if (compass) compass.open = false;
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      }, { signal });
+      linksRoot?.append(link); links.push(link);
+    });
+    if (compass && headings.length > 2) compass.hidden = false;
+    const position = root.querySelector('[data-section-position]');
+    if (position) position.textContent = `01 / ${String(headings.length).padStart(2, '0')}`;
+    const visibleHeadings = new Set<Element>();
+    const headingObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => entry.isIntersecting ? visibleHeadings.add(entry.target) : visibleHeadings.delete(entry.target));
+      const current = headings.find(heading => visibleHeadings.has(heading));
+      if (!current) return;
+      const index = headings.indexOf(current);
+      links.forEach((link, i) => i === index ? link.setAttribute('aria-current', 'location') : link.removeAttribute('aria-current'));
+      if (position) position.textContent = `${String(index + 1).padStart(2, '0')} / ${String(headings.length).padStart(2, '0')}`;
+    }, { rootMargin: '-12% 0px -55% 0px' });
+    headings.forEach(heading => headingObserver.observe(heading)); observers.push(headingObserver);
+
+    const footer = document.querySelector('footer');
+    if (footer && compass && headings.length > 2) {
+      const footerObserver = new IntersectionObserver(entries => {
+        compass.hidden = entries.some(entry => entry.isIntersecting);
+      });
+      footerObserver.observe(footer); observers.push(footerObserver);
+    }
+
+    // Reading progress is local UI state; no analytics, storage, or text collection.
+    const article = root.querySelector('article');
+    const readingNav = root.querySelector('.reading-nav');
+    if (article && readingNav) {
+      const progress = document.createElement('progress');
+      progress.max = 100; progress.value = 0; progress.className = 'reading-progress';
+      progress.setAttribute('aria-label', 'تقدّم قراءة الدليل'); readingNav.prepend(progress);
+      let pending = false;
+      const update = () => {
+        pending = false;
+        const box = article.getBoundingClientRect();
+        progress.value = Math.max(0, Math.min(100, -box.top / Math.max(1, box.height - innerHeight) * 100));
+      };
+      const schedule = () => { if (!pending) { pending = true; frame(update); } };
+      addEventListener('scroll', schedule, { passive: true, signal });
+      addEventListener('resize', schedule, { passive: true, signal }); update();
+    }
+
+    // Hover light follows the device pointer only on capable devices.
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      root.querySelectorAll<HTMLElement>('.experience,.sector-visual').forEach(panel => {
+        let queued = false; let x = 50; let y = 50;
+        panel.addEventListener('pointermove', event => {
+          if (preference.matches) return;
+          const rect = panel.getBoundingClientRect(); x = event.clientX - rect.left; y = event.clientY - rect.top;
+          if (queued) return; queued = true;
+          frame(() => { queued = false; panel.style.setProperty('--pointer-x', `${x}px`); panel.style.setProperty('--pointer-y', `${y}px`); });
+        }, { passive: true, signal });
+      });
+    }
+
+    // Native disclosure remains usable without this linked diagram feedback.
+    root.querySelectorAll<HTMLElement>('.experience-human-gate,.experience-ledger,.sector-visual').forEach(panel => {
+      panel.querySelectorAll('details').forEach((details, index) => details.addEventListener('toggle', () => {
+        if (details.open) panel.dataset.stage = String(index);
+      }, { signal }));
+    });
+    root.addEventListener('click', event => {
+      const button = (event.target as Element).closest<HTMLButtonElement>('button[data-example]');
+      if (!button) return;
+      const panel = button.closest<HTMLElement>('.experience');
+      if (!panel) return;
+      panel.dataset.state = String([...panel.querySelectorAll('button[data-example]')].indexOf(button));
+      const label = panel.querySelector('[data-path-label]');
+      if (label) label.textContent = button.textContent?.trim() ?? '';
+      const result = panel.querySelector('.example-result');
+      if (result) animate(result, [{ transform: 'translateY(4px)' }, { transform: 'translateY(0)' }]);
+    }, { signal });
+
+    addEventListener('pagehide', () => {
+      lifetime.abort(); observers.forEach(observer => observer.disconnect());
+      frames.forEach(id => cancelAnimationFrame(id)); animations.forEach(animation => animation.cancel());
+      compass?.setAttribute('hidden', ''); linksRoot?.replaceChildren();
+      root.querySelector('.reading-progress')?.remove();
+    }, { once: true, signal });
+  }
+  initializeInterior();
+  addEventListener('pageshow', event => { if (event.persisted) initializeInterior(); });
+</script>

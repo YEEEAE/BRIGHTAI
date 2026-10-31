@@ -1,0 +1,27 @@
+---
+const products = ['AIGAS Firewall','AIGAS Risk Engine','AIGAS Human Gate','AIGAS Ledger','AIGAS Secure Chat'];
+---
+<section class="scope-composer" aria-labelledby="scope-title" data-scope-composer>
+  <header><p class="eyebrow">اختيارات واضحة قبل عرض السعر</p><h2 id="scope-title">جهّز نطاق استفسارك</h2><p>المنتجات وخيارات النشر التالية مستهدفة وغير متحققة تشغيلياً. اختياراتك تجهّز موضوع رسالة؛ لا تنشئ سعراً أو تجربة أو عقداً.</p></header>
+  <div class="scope-workspace">
+    <div>
+      <fieldset><legend>01 / المنتجات التي تود مناقشتها</legend><div class="scope-products">{products.map(product => <label><input type="checkbox" name="scope-product" value={product}/><span><bdi>{product}</bdi></span><span aria-hidden="true">+</span></label>)}</div></fieldset>
+      <fieldset><legend>02 / بيئة النشر المستهدفة</legend><div class="scope-environments">{['سحابي SaaS','محلي On-Premise','معزول Air-Gapped'].map((label,i) => <label><input type="radio" name="scope-deployment" value={label} checked={i === 0}/><span>{label}</span></label>)}</div></fieldset>
+    </div>
+    <aside class="scope-summary"><span class="scope-mark" aria-hidden="true">↙</span><h3>موضوع الرسالة</h3><p data-scope-output aria-live="polite">اختر المنتجات وبيئة النشر لتحديد ما تريد الاستفسار عنه.</p><a class="button" href="/contact/?topic=طلب%20عرض%20سعر" data-scope-link>انتقل لصفحة التواصل ←</a><p class="note">نموذج التواصل يفتح تطبيق البريد. راجع الرسالة وأرسلها بنفسك؛ لا يؤكد الموقع الاستلام.</p><noscript><p>يمكنك ذكر اختياراتك مباشرة في رسالة الاستفسار؛ إعداد الموضوع التلقائي يحتاج JavaScript.</p></noscript></aside>
+  </div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-scope-composer]').forEach(root => {
+    const output = root.querySelector('[data-scope-output]');
+    const link = root.querySelector<HTMLAnchorElement>('[data-scope-link]');
+    const update = () => {
+      const selected = [...root.querySelectorAll<HTMLInputElement>('input[name="scope-product"]:checked')].map(input => input.value);
+      const environment = root.querySelector<HTMLInputElement>('input[name="scope-deployment"]:checked')?.value;
+      const topic = selected.length ? `استفسار عن ${selected.join('، ')} — نشر ${environment}` : 'طلب عرض سعر';
+      if (output) output.textContent = selected.length ? topic : 'اختر المنتجات وبيئة النشر لتحديد ما تريد الاستفسار عنه.';
+      if (link) link.href = `/contact/?${new URLSearchParams({ topic }).toString()}`;
+    };
+    root.addEventListener('change', update);
+  });
+</script>

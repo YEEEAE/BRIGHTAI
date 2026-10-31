@@ -1,0 +1,77 @@
+{
+  "baselineHead": "bdf8ef03",
+  "protectedSources": [
+    {
+      "path": "src/pages/index.astro",
+      "before": "cb547270e7c5fc39a168dbb7a5050dbdf81ae08aa19102045ace69fb124a2a14",
+      "after": "cb547270e7c5fc39a168dbb7a5050dbdf81ae08aa19102045ace69fb124a2a14",
+      "unchanged": true
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "before": "831c8dec20dd8bc370e67c1f86910771f5bf50796b46ca8db239e0695680696c",
+      "after": "831c8dec20dd8bc370e67c1f86910771f5bf50796b46ca8db239e0695680696c",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/Header.astro",
+      "before": "1cdcc566b9bf9d57da004b98dc06afc20c90f155a43a3845b341f04644ca89dd",
+      "after": "1cdcc566b9bf9d57da004b98dc06afc20c90f155a43a3845b341f04644ca89dd",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/Footer.astro",
+      "before": "3fb15a4b863c9495339eab1af4cb8753d5b1915209d68e36fbbc8233d85f73c4",
+      "after": "3fb15a4b863c9495339eab1af4cb8753d5b1915209d68e36fbbc8233d85f73c4",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/Constellation.astro",
+      "before": "00aaf7f29a1a9e9f007e0f47f480470b36f58e487cdf0220169a303fbe023139",
+      "after": "00aaf7f29a1a9e9f007e0f47f480470b36f58e487cdf0220169a303fbe023139",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/MotionController.astro",
+      "before": "a8635a057728eba11e0f73c477ec29f77a97fea0e601f530f8a89d55b6d0eba5",
+      "after": "a8635a057728eba11e0f73c477ec29f77a97fea0e601f530f8a89d55b6d0eba5",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/BrandLogo.astro",
+      "before": "46437ddc7a35240abb00b3e363720bb99ccac73c228c38c47fac5dabcb1e1215",
+      "after": "46437ddc7a35240abb00b3e363720bb99ccac73c228c38c47fac5dabcb1e1215",
+      "unchanged": true
+    },
+    {
+      "path": "src/styles/site.css",
+      "before": "89b4173ba9556e9bd9d361d03e0cf0e8a6c79d5f33f3d5156e2307625b646bc2",
+      "after": "89b4173ba9556e9bd9d361d03e0cf0e8a6c79d5f33f3d5156e2307625b646bc2",
+      "unchanged": true
+    },
+    {
+      "path": "src/styles/experience.css",
+      "before": "cccefa55bdbc1c3bcc5c8a8678a27b2932a5b5e5b836e75fdff8980218556bd8",
+      "after": "cccefa55bdbc1c3bcc5c8a8678a27b2932a5b5e5b836e75fdff8980218556bd8",
+      "unchanged": true
+    },
+    {
+      "path": "src/styles/variables.css",
+      "before": "0e5df613cdb3bc441c5bbcdced38b51362a7034ae406dfec73e2631a8058c6d2",
+      "after": "0e5df613cdb3bc441c5bbcdced38b51362a7034ae406dfec73e2631a8058c6d2",
+      "unchanged": true
+    },
+    {
+      "path": "src/styles/theme.css",
+      "before": "eb4f9b4428e1944034d2bc3cabb287e5ec456ff28becaf02d899ec93bb60b4f6",
+      "after": "eb4f9b4428e1944034d2bc3cabb287e5ec456ff28becaf02d899ec93bb60b4f6",
+      "unchanged": true
+    }
+  ],
+  "sourceStatus": "PASS",
+  "builtHomeHtml": {
+    "before": "70c6ff8f9df1f2d978284c6626a50bbff720686a4e288a3ad4db079269ea89f5",
+    "after": "70c6ff8f9df1f2d978284c6626a50bbff720686a4e288a3ad4db079269ea89f5",
+    "unchanged": true
+  }
+}

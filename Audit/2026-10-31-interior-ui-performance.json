@@ -1,0 +1,257 @@
+{
+  "environment": "local Chrome 360x900; fresh browser context per run; no CPU/network throttle; GA request blocked; 3 samples per route",
+  "limits": "Local unthrottled samples, not field CWV, no INP/4G measurement. CSS/JS gzip are content estimates including inline code; not total network transfer and exclude remote GA library.",
+  "summary": [
+    {
+      "path": "/products/firewall/",
+      "before": {
+        "lcpMedian": 44,
+        "clsMax": 0.0000035727451989026067,
+        "htmlGzip": 6472,
+        "cssGzip": 6771,
+        "firstPartyJsGzip": 536
+      },
+      "after": {
+        "lcpMedian": 104,
+        "clsMax": 0.0006478517232510288,
+        "htmlGzip": 9578,
+        "cssGzip": 12042,
+        "firstPartyJsGzip": 2690
+      }
+    },
+    {
+      "path": "/docs/",
+      "before": {
+        "lcpMedian": 52,
+        "clsMax": 0.0000035727451989026067,
+        "htmlGzip": 4957,
+        "cssGzip": 6771,
+        "firstPartyJsGzip": 387
+      },
+      "after": {
+        "lcpMedian": 52,
+        "clsMax": 0.0005005864197530864,
+        "htmlGzip": 7430,
+        "cssGzip": 11591,
+        "firstPartyJsGzip": 2331
+      }
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "before": {
+        "lcpMedian": 52,
+        "clsMax": 0.0000035727451989026067,
+        "htmlGzip": 5874,
+        "cssGzip": 6771,
+        "firstPartyJsGzip": 387
+      },
+      "after": {
+        "lcpMedian": 52,
+        "clsMax": 0.0008475137174211248,
+        "htmlGzip": 7516,
+        "cssGzip": 11591,
+        "firstPartyJsGzip": 1927
+      }
+    },
+    {
+      "path": "/pricing/",
+      "before": {
+        "lcpMedian": 48,
+        "clsMax": 0.0000035727451989026067,
+        "htmlGzip": 4998,
+        "cssGzip": 6771,
+        "firstPartyJsGzip": 387
+      },
+      "after": {
+        "lcpMedian": 60,
+        "clsMax": 0.0005005864197530864,
+        "htmlGzip": 7519,
+        "cssGzip": 11591,
+        "firstPartyJsGzip": 2237
+      }
+    }
+  ],
+  "beforeSamples": [
+    {
+      "path": "/products/firewall/",
+      "run": 0,
+      "lcp": 264,
+      "cls": 0.0000035727451989026067,
+      "dom": 192
+    },
+    {
+      "path": "/products/firewall/",
+      "run": 1,
+      "lcp": 36,
+      "cls": 0.0000035727451989026067,
+      "dom": 192
+    },
+    {
+      "path": "/products/firewall/",
+      "run": 2,
+      "lcp": 44,
+      "cls": 0.0000035727451989026067,
+      "dom": 192
+    },
+    {
+      "path": "/docs/",
+      "run": 0,
+      "lcp": 76,
+      "cls": 0.0000035727451989026067,
+      "dom": 167
+    },
+    {
+      "path": "/docs/",
+      "run": 1,
+      "lcp": 44,
+      "cls": 0.0000035727451989026067,
+      "dom": 167
+    },
+    {
+      "path": "/docs/",
+      "run": 2,
+      "lcp": 52,
+      "cls": 0.0000035727451989026067,
+      "dom": 167
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "run": 0,
+      "lcp": 52,
+      "cls": 0,
+      "dom": 203
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "run": 1,
+      "lcp": 52,
+      "cls": 0,
+      "dom": 203
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "run": 2,
+      "lcp": 60,
+      "cls": 0.0000035727451989026067,
+      "dom": 203
+    },
+    {
+      "path": "/pricing/",
+      "run": 0,
+      "lcp": 48,
+      "cls": 0.0000035727451989026067,
+      "dom": 143
+    },
+    {
+      "path": "/pricing/",
+      "run": 1,
+      "lcp": 64,
+      "cls": 0.0000035727451989026067,
+      "dom": 143
+    },
+    {
+      "path": "/pricing/",
+      "run": 2,
+      "lcp": 44,
+      "cls": 0.0000035727451989026067,
+      "dom": 143
+    }
+  ],
+  "afterSamples": [
+    {
+      "path": "/products/firewall/",
+      "run": 0,
+      "lcp": 104,
+      "cls": 0.0006478517232510288,
+      "dom": 232
+    },
+    {
+      "path": "/products/firewall/",
+      "run": 1,
+      "lcp": 72,
+      "cls": 0.0006478517232510288,
+      "dom": 232
+    },
+    {
+      "path": "/products/firewall/",
+      "run": 2,
+      "lcp": 104,
+      "cls": 0.0006478517232510288,
+      "dom": 232
+    },
+    {
+      "path": "/docs/",
+      "run": 0,
+      "lcp": 48,
+      "cls": 0.0005005864197530864,
+      "dom": 194
+    },
+    {
+      "path": "/docs/",
+      "run": 1,
+      "lcp": 56,
+      "cls": 0,
+      "dom": 194
+    },
+    {
+      "path": "/docs/",
+      "run": 2,
+      "lcp": 52,
+      "cls": 0,
+      "dom": 194
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "run": 0,
+      "lcp": 48,
+      "cls": 0.0008475137174211248,
+      "dom": 217
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "run": 1,
+      "lcp": 52,
+      "cls": 0.0008475137174211248,
+      "dom": 217
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "run": 2,
+      "lcp": 72,
+      "cls": 0.0008475137174211248,
+      "dom": 217
+    },
+    {
+      "path": "/pricing/",
+      "run": 0,
+      "lcp": 64,
+      "cls": 0.0005005864197530864,
+      "dom": 211
+    },
+    {
+      "path": "/pricing/",
+      "run": 1,
+      "lcp": 52,
+      "cls": 0.0005005864197530864,
+      "dom": 211
+    },
+    {
+      "path": "/pricing/",
+      "run": 2,
+      "lcp": 60,
+      "cls": 0.0005005864197530864,
+      "dom": 211
+    }
+  ],
+  "chromeTrace": {
+    "before": {
+      "lcpMs": 640,
+      "cls": 0
+    },
+    "after": {
+      "lcpMs": 99,
+      "cls": 0
+    },
+    "limits": "One unthrottled trace each; cache and LCP element differ, not evidence of a speed improvement."
+  }
+}

@@ -1,5 +1,6 @@
 ---
 import ProductIcon from './ProductIcon.astro';
+import DecisionCircuit from './DecisionCircuit.astro';
 interface Props { kind: string }
 const { kind } = Astro.props;
 const decisions = [
@@ -13,7 +14,7 @@ const decisions = [
 <section class={`experience experience-${kind}`} aria-label="شرح تفاعلي لتصور المنتج">
   <div class="experience-bar"><span><ProductIcon kind={kind} /> مختبر الفكرة</span><span class="map-status">توضيح تعليمي · لا اتصال بخدمة</span></div>
   {kind === 'firewall' && <div class="protection-layout">
-    <div class="request-path"><div><small>01 / المدخل</small><p>طلب ذكاء اصطناعي</p><span>بيانات افتراضية فقط</span></div><span class="path-connector" aria-hidden="true">↓</span><div class="policy-node"><ProductIcon kind="firewall"/><p>السياسة + الصلاحية</p></div><span class="path-connector" aria-hidden="true">↓</span><div><small>03 / المخرج</small><p>قرار محدد بالسياق</p></div></div>
+    <DecisionCircuit />
     <div><h2>خمس قرارات.<br /><span class="muted">لكل منها سبب.</span></h2><p class="diagram-help">اختر قراراً لقراءة مثال على معناه، وليس لإجراء فحص أمني.</p><div class="decision-options">{decisions.map(([label, scenario, text], i) => <button type="button" disabled data-example={text} data-scenario={scenario} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>{decisions[0][1]}</strong><p data-example-output>{decisions[0][2]}</p></div><noscript><dl>{decisions.map(([label, , text]) => <><dt>{label}</dt><dd>{text}</dd></>)}</dl></noscript></div>
   </div>}
   {kind === 'risk-engine' && <div class="risk-layout">
@@ -26,13 +27,14 @@ const decisions = [
     ['قرار مسبب', 'موافقة محددة أو رفض موثق؛ لا يغيّر القرار قيود الحظر الأعلى.'],
     ['تنفيذ أو إيقاف آمن', 'لا استكمال قبل موافقة صالحة. انتهاء المهلة أو غياب الرد لا يعني موافقة.'],
   ].map(([label, text], i) => <li><span aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
-  {kind === 'ledger' && <div class="ledger-layout"><div><h2>من الحدث،<br /><span class="muted">إلى الدليل.</span></h2><p class="diagram-help">تتبّع متطلبات الدليل. فتح المراحل لا يحفظ أحداثاً ولا يولّد توقيعاً أو تحققاً تشفيرياً.</p><div class="evidence-seal" aria-hidden="true"><ProductIcon kind="ledger"/><span>المصدر<br />القرار<br />السياسة</span></div></div><ol class="evidence-timeline">{[
+  {kind === 'ledger' && <div class="ledger-layout"><div><h2>من الحدث،<br /><span class="muted">إلى الدليل.</span></h2><p class="diagram-help">تتبّع متطلبات الدليل. فتح المراحل لا يحفظ أحداثاً ولا يولّد توقيعاً أو تحققاً تشفيرياً.</p><div class="evidence-seal" aria-hidden="true"><ProductIcon kind="ledger"/><span>المصدر<br />القرار<br />السياسة</span></div>
+    <div class="integrity-example"><p class="diagram-help">قارن حالتين افتراضيتين للدليل:</p><div class="decision-options"><button type="button" disabled data-integrity="valid" aria-pressed="true">مثال سليم</button><button type="button" disabled data-integrity="changed" aria-pressed="false">مثال معدّل</button></div><p class="integrity-result" role="status" aria-live="polite" data-integrity-output>في المثال السليم تتوافق البيانات مع مرجع التحقق. هذا وصف تعليمي ولا يفحص ملفاً أو توقيعاً.</p><noscript><p>في المثال المعدّل تختلف البيانات عن مرجع التحقق؛ المطلوب أن يكشف التنفيذ الفعلي ذلك قبل قبول الدليل.</p></noscript></div></div><ol class="evidence-timeline">{[
     ['التقاط الحد الأدنى', 'مصدر الحدث وهوية الفاعل المخول ووقت القرار ونسخة السياسة، دون محتوى حساس غير لازم.'],
     ['ربط سلامة الدليل', 'Hash أو توقيع مناسب ضمن تنفيذ مثبت، مع مفاتيح وصلاحيات وإدارة دورة حياة.'],
     ['حفظ وفق السياسة', 'احتفاظ ووصول وحذف وقيود قانونية تحددها الجهة والعقد.'],
     ['تصدير وفحص مستقل', 'حزمة دليل وأداة تحقق مفوضة. تعديل الدليل يجب أن يظهر في نتيجة فحص حقيقية.'],
   ].map(([label, text], i) => <li><span class="event-point" aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
-  {kind === 'secure-chat' && <div class="chat-layout"><div><h2>مساحة أبسط.<br /><span class="muted">وحدود أوضح.</span></h2><p class="diagram-help">قصة توضيحية جاهزة، وليست محادثة مع نموذج. لا تكتب بيانات أو ملفات هنا.</p><ul class="chat-principles"><li>اختيار نموذج مصرح به</li><li>حفظ المحتوى حسب سياسة المؤسسة</li><li>مشاركة وتصدير مغلقان افتراضياً</li></ul></div><div class="chat-preview"><div class="chat-toolbar"><span>محادثة توضيحية</span><span>بلا اتصال</span></div><p class="chat-bubble user">كيف أكتب طلباً يحترم بيانات المنشأة؟</p><p class="chat-bubble assistant">ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.</p><details><summary>ما الذي يضبط هذا المسار؟</summary><p>صلاحية الاستخدام والنموذج والوجهة والميزانية. لا نفترض وجود نموذج أو تكامل عامل في هذا التصور.</p></details><div class="chat-footer">مثال جاهز / لا إرسال أو رفع ملفات</div></div></div>}
+  {kind === 'secure-chat' && <div class="chat-layout"><div><h2>مساحة أبسط.<br /><span class="muted">وحدود أوضح.</span></h2><p class="diagram-help">قصة توضيحية جاهزة، وليست محادثة مع نموذج. لا تكتب بيانات أو ملفات هنا.</p><ul class="chat-principles"><li>اختيار نموذج مصرح به</li><li>حفظ المحتوى حسب سياسة المؤسسة</li><li>مشاركة وتصدير مغلقان افتراضياً</li></ul></div><div class="chat-preview"><div class="chat-toolbar"><span>محادثة توضيحية</span><span>بلا اتصال</span></div><div class="chat-examples decision-options" aria-label="اختيار مثال جاهز"><button type="button" disabled data-chat-example="public" aria-pressed="true">بيانات عامة</button><button type="button" disabled data-chat-example="internal" aria-pressed="false">بيانات داخلية</button></div><p class="chat-bubble user">كيف أكتب طلباً يحترم بيانات المنشأة؟</p><p class="chat-bubble assistant" role="status" aria-live="polite">ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.</p><details><summary>ما الذي يضبط هذا المسار؟</summary><p>صلاحية الاستخدام والنموذج والوجهة والميزانية. لا نفترض وجود نموذج أو تكامل عامل في هذا التصور.</p></details><div class="chat-footer">مثال جاهز / لا إرسال أو رفع ملفات</div></div></div>}
 </section>
 <script>
   // Local educational state only. Progressive enhancement, scoped to each diagram.
@@ -44,6 +46,28 @@ const decisions = [
         const output = root.querySelector('[data-example-output]');
         if (heading) heading.textContent = button.dataset.scenario ?? '';
         if (output) output.textContent = button.dataset.example ?? '';
+      });
+      button.disabled = false;
+    });
+    root.querySelectorAll<HTMLButtonElement>('button[data-integrity]').forEach(button => {
+      button.addEventListener('click', () => {
+        root.querySelectorAll('button[data-integrity]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        root.setAttribute('data-integrity-state', button.dataset.integrity ?? 'valid');
+        const output = root.querySelector('[data-integrity-output]');
+        if (output) output.textContent = button.dataset.integrity === 'changed'
+          ? 'في المثال المعدّل تختلف البيانات عن مرجع التحقق. يجب أن يكشف التنفيذ الفعلي التغيير؛ لا يجري هنا فحص تشفيري.'
+          : 'في المثال السليم تتوافق البيانات مع مرجع التحقق. هذا وصف تعليمي ولا يفحص ملفاً أو توقيعاً.';
+      });
+      button.disabled = false;
+    });
+    root.querySelectorAll<HTMLButtonElement>('button[data-chat-example]').forEach(button => {
+      button.addEventListener('click', () => {
+        root.querySelectorAll('button[data-chat-example]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        const internal = button.dataset.chatExample === 'internal';
+        const user = root.querySelector('.chat-bubble.user');
+        const assistant = root.querySelector('.chat-bubble.assistant');
+        if (user) user.textContent = internal ? 'أحتاج تلخيص رسالة عمل داخلية. ما الذي أراجعه أولاً؟' : 'كيف أكتب طلباً يحترم بيانات المنشأة؟';
+        if (assistant) assistant.textContent = internal ? 'تحقق من تصنيف البيانات وصلاحية مشاركتها ومن اعتماد الأداة والحساب والوجهة. عند الغموض، توقف وراجع المالك المختص قبل إدخال المحتوى.' : 'ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.';
       });
       button.disabled = false;
     });

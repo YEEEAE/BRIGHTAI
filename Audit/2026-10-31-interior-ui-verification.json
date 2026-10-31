@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "routes": 29,
+  "viewportChecks": 87,
+  "noJSRoutes": 29,
+  "search": "PASS",
+  "emptyState": "PASS",
+  "scopeComposer": "PASS",
+  "diagrams": "PASS",
+  "keyboard": "PASS",
+  "reducedMotion": "PASS",
+  "nativeBackNavigation": "PASS",
+  "pageErrors": []
+}

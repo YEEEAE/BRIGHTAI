@@ -14,9 +14,18 @@ const articles = [
   <p class="eyebrow">المعرفة قبل الأداة</p>
   <h1>مركز المعرفة</h1>
   <p class="lead">أدلة عملية تساعد الفرق على طرح الأسئلة الصحيحة قبل استخدام الذكاء الاصطناعي. المواد توعوية ولا تمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
-  <section class="block"><h2>ابدأ من احتياجك</h2><div class="catalog">
-    {articles.map((article, i) => <a class="catalog-row" href={article.href}><span class="index-number">0{i + 1}</span><div><small>{article.tag}</small><h3>{article.title}</h3></div><p>{article.text}</p><span aria-hidden="true">←</span></a>)}
-  </div></section>
+  <section class="block" data-knowledge-browser><h2>ابدأ من احتياجك</h2>
+    <div class="knowledge-tools">
+      <label for="knowledge-search">ابحث في الأدلة<input id="knowledge-search" type="search" placeholder="مثل: البيانات أو المخاطر" autocomplete="off" disabled /></label>
+      <div class="knowledge-topics" aria-label="موضوع الدليل">{[['all','الكل'],['governance','الحوكمة'],['data','البيانات'],['risk','المخاطر'],['security','الحماية'],['policy','السياسات']].map(([value,label],i) => <button type="button" disabled data-knowledge-topic={value} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div>
+      <p class="knowledge-count" role="status" aria-live="polite" data-knowledge-count>{articles.length} أدلة للقراءة</p>
+    </div>
+    <div class="catalog">
+      {articles.map((article, i) => <a class="catalog-row" data-topic={['governance','data','risk','security','policy'][i]} href={article.href}><span class="index-number">0{i + 1}</span><div><small>{article.tag}</small><h3>{article.title}</h3></div><p>{article.text}</p><span aria-hidden="true">←</span></a>)}
+    </div>
+    <div class="knowledge-empty" data-knowledge-empty hidden><h3>ما لقينا دليلاً يطابق بحثك</h3><p>جرّب كلمة أقصر أو اختر «الكل» لاستعراض الموضوعات.</p><button type="button" data-knowledge-reset>اعرض كل الأدلة</button></div>
+    <noscript><p class="note">كل الأدلة ظاهرة أدناه؛ البحث والتصفية يحتاجان JavaScript.</p></noscript>
+  </section>
   <p class="note">تاريخ إعداد هذه المواد: 31 أكتوبر 2026. راجع المصدر الرسمي والنص النظامي الساري قبل اتخاذ قرار مؤسسي.</p>
 
     <ContentExtension>
@@ -25,3 +34,30 @@ const articles = [
 <section><h2>كيف تستخدم الأدلة داخل منشأتك؟</h2><p>حوّل الأسئلة إلى ورقة عمل لحالة استخدام محددة، ثم اعرضها على المالك المختص. الأمثلة اصطناعية ولا تمثل نتائج تشغيل أو سياسات معتمدة لعميل. تاريخ إعداد الإضافات: 31 أكتوبر 2026؛ اعتماد المراجع البشري المختص قبل النشر النهائي ما زال مطلوباً.</p></section>
     </ContentExtension>
 </PageShell>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-knowledge-browser]').forEach(root => {
+    const search = root.querySelector<HTMLInputElement>('input[type="search"]');
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-knowledge-topic]');
+    const rows = [...root.querySelectorAll<HTMLAnchorElement>('.catalog-row')];
+    const count = root.querySelector('[data-knowledge-count]');
+    const empty = root.querySelector<HTMLElement>('[data-knowledge-empty]');
+    let topic = 'all';
+    const normalize = (value: string) => value.normalize('NFKC').toLowerCase()
+      .replace(/[\u064b-\u065f]/g,'').replace(/[أإآ]/g,'ا')
+      .replace(/(^|\s)ال(?=[\u0621-\u064a]{3})/g,'$1');
+    const update = () => {
+      const query = normalize(search?.value.trim() ?? ''); let visible = 0;
+      rows.forEach(row => {
+        const matches = (topic === 'all' || row.dataset.topic === topic) && normalize(row.textContent ?? '').includes(query);
+        row.hidden = !matches; if (matches) visible++;
+      });
+      root.dataset.filtered = String(topic !== 'all' || !!query);
+      buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.knowledgeTopic === topic)));
+      if (count) count.textContent = `${visible} من ${rows.length} أدلة`;
+      if (empty) empty.hidden = visible !== 0;
+    };
+    if (search) { search.disabled = false; search.addEventListener('input', update); }
+    buttons.forEach(button => { button.disabled = false; button.addEventListener('click', () => { topic = button.dataset.knowledgeTopic ?? 'all'; update(); }); });
+    root.querySelector('[data-knowledge-reset]')?.addEventListener('click', () => { topic = 'all'; if (search) search.value = ''; update(); search?.focus(); });
+  });
+</script>

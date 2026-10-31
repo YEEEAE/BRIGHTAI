@@ -1,0 +1,35 @@
+---
+interface Props { kind: string; contexts: string[][] }
+const { kind, contexts } = Astro.props;
+const lines: Record<string,string[]> = {
+  government: ['M300 30V85M300 85H100V165','M300 85V165','M300 85H500V165'],
+  finance: ['M80 165L220 55','M220 55L380 165','M380 165L520 55'],
+  healthcare: ['M100 110H220','M220 110H380','M380 110H500'],
+  enterprise: ['M100 55L300 110L100 165','M300 30V190','M500 55L300 110L500 165'],
+};
+---
+<figure class={`sector-visual sector-diagram diagram-${kind}`}>
+  <figcaption class="context-label">خريطة أسئلة / ليست إجراء تشغيل معتمداً</figcaption>
+  <svg viewBox="0 0 600 220" fill="none" aria-hidden="true">
+    <rect x="1" y="1" width="598" height="218" stroke="#44304d" stroke-dasharray="2 10"/>
+    {lines[kind].map((path,i) => <path class={`sector-line line-${i}`} d={path} stroke="currentColor" stroke-width="1.5" pathLength="1"/>)}
+    {kind === 'healthcare' ? [100,300,500].map((x,i) => <><circle cx={x} cy="110" r={i === 1 ? 56 : 38} fill="#130c1c" stroke="#ae89c9"/><circle cx={x} cy="110" r="7" fill="#d3ac78"/></>) : <><circle cx="300" cy="110" r="28" fill="#1c1125" stroke="#c7a2e1"/><path d="M291 110h18m-9-9v18" stroke="#e0c395"/></>}
+  </svg>
+  <ol class="sector-stages">{contexts.map(([name,text],i) => <li><span aria-hidden="true">0{i+1}</span><details open={i === 0}><summary>{name}</summary><p>{text}</p></details></li>)}</ol>
+</figure>
+<style>
+ .sector-diagram svg { display: block; inline-size: 100%; block-size: auto; margin-block: 16px 28px; }
+ .sector-line { color: #9e79be; stroke-dasharray: 1; }
+ .sector-diagram:focus-within .sector-line { animation: sector-route var(--ui-reveal,420ms) var(--ui-ease,ease-out) both; }
+ .sector-stages { margin: 0; padding: 0; list-style: none; }
+ .sector-stages li { display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 16px; border-block-start: 1px solid #49334f; }
+ .sector-stages li>span { font: 11px ui-monospace,monospace; color: #c1a1ce; padding-top: 24px; }
+ .sector-stages details { border: 0; padding-block: 10px; }
+ .sector-stages summary { font-size: 18px; min-height: 48px; padding-block: 12px; }
+ .sector-stages details[open] summary { color: #f6c26a; }
+ .sector-stages p { font-size: 14px; line-height: 1.9; color: #c3b0ce; margin-block: 4px 16px; }
+ .diagram-finance .sector-stages li:nth-child(2) { margin-inline-start: 20px; }.diagram-finance .sector-stages li:nth-child(3) { margin-inline-start: 40px; }
+ .diagram-enterprise .sector-stages li { border-inline-start: 1px solid #614674; padding-inline-start: 18px; }
+ @keyframes sector-route { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+ @media(prefers-reduced-motion:reduce) { .sector-diagram:focus-within .sector-line { animation: none; } }
+</style>

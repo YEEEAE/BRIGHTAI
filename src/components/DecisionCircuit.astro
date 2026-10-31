@@ -1,0 +1,42 @@
+---
+const labels = ['سماح','تحذير','تنقيح','موافقة','حظر'];
+---
+<figure class="decision-circuit" aria-label="خريطة تعليمية لمرور الطلب إلى السياسة ثم قرار محدد">
+  <div class="circuit-source"><span>01 / المدخل</span><strong>طلب ذكاء اصطناعي</strong><small>بيانات افتراضية فقط</small></div>
+  <div class="circuit-drawing">
+    <svg viewBox="0 0 600 340" fill="none" aria-hidden="true">
+      <defs><pattern id="circuit-grid" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#75568b" opacity=".35"/></pattern></defs>
+      <rect width="600" height="340" fill="url(#circuit-grid)"/>
+      <path d="M300 0V92" stroke="#ac83d0" stroke-dasharray="3 6"/>
+      <circle cx="300" cy="140" r="82" stroke="#59416d" stroke-dasharray="2 9"/>
+      <circle cx="300" cy="140" r="58" fill="#1d122b" stroke="#c0a0eb"/>
+      <path d="M282 122h36v36h-36zM293 122v36m14-36v36" stroke="#d1b5ef" stroke-width="1.5"/>
+      {labels.map((_,i) => <g class={`circuit-branch branch-${i}`}><path d={`M300 222V244Q300 260 ${60+i*120} 260V314`} stroke="currentColor" stroke-width="1.5"/><circle cx={60+i*120} cy="321" r="6" fill="#120c1b" stroke="currentColor" stroke-width="2"/></g>)}
+    </svg>
+    <span class="circuit-policy">السياسة + الصلاحية</span>
+  </div>
+  <div class="circuit-outcomes" aria-hidden="true">{labels.map((label,i) => <span class={`outcome-${i}`}>{label}</span>)}</div>
+  <figcaption><span>03 / المخرج</span><strong>قرار محدد بالسياق</strong><b data-path-label>سماح</b></figcaption>
+</figure>
+<style>
+ .decision-circuit { margin: 0; min-width: 0; text-align: center; }
+ .circuit-source { display: inline-grid; gap: 5px; padding: 18px 28px; border: 1px solid #655078; background: #110c1b; position: relative; }
+ .circuit-source span,.circuit-source small,.decision-circuit figcaption>span { font-size: 11px; color: #b7a2cd; }
+ .circuit-source strong { font-weight: 400; font-size: 17px; }
+ .circuit-drawing { position: relative; margin-top: -1px; }
+ .circuit-drawing svg { display: block; width: 100%; height: auto; }
+ .circuit-policy { display: block; position: absolute; inset: 64% 0 auto; font-size: 12px; color: #dcc3ef; }
+ .circuit-branch { color: #553e6c; transition: color var(--ui-state,220ms); }
+ .branch-0 { color: #dfbe85; }
+ .circuit-outcomes { direction: ltr; display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; font-size: 11px; color: #b4a0c4; }
+ .circuit-outcomes span { direction: rtl; padding-block: 8px; }
+ .decision-circuit figcaption { margin-top: 28px; border-block-start: 1px solid #382843; padding-top: 18px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 18px; text-align: start; }
+ .decision-circuit figcaption>span { grid-column: 1/-1; }
+ .decision-circuit figcaption strong { font-weight: 400; font-size: 16px; }
+ .decision-circuit figcaption b { font-size: 13px; font-weight: 400; color: #f6c26a; }
+ :global(.experience-firewall[data-state] .circuit-branch) { color: #553e6c; }
+ :global(.experience-firewall[data-state='0'] .branch-0),:global(.experience-firewall[data-state='1'] .branch-1),:global(.experience-firewall[data-state='2'] .branch-2),:global(.experience-firewall[data-state='3'] .branch-3),:global(.experience-firewall[data-state='4'] .branch-4) { color: #f6c26a; }
+ :global(.experience-firewall[data-state='0'] .outcome-0),:global(.experience-firewall[data-state='1'] .outcome-1),:global(.experience-firewall[data-state='2'] .outcome-2),:global(.experience-firewall[data-state='3'] .outcome-3),:global(.experience-firewall[data-state='4'] .outcome-4) { color: #f6c26a; }
+ @media(max-width:650px) { .circuit-drawing { max-width: 340px; margin-inline: auto; }.circuit-policy { font-size: 11px; }.circuit-outcomes { font-size: 10px; } }
+ @media(prefers-reduced-motion:reduce) { .circuit-branch { transition: none; } }
+</style>
