@@ -1,0 +1,2182 @@
+# BRIGHT AI — Website Page Registry
+# Inventory derived from YEEEAE/BRIGHTAI@main on 2026-10-31.
+# Never interpret a repository route or a blueprint feature as a verified live product.
+document:
+  id: BRIGHTAI-WEBSITE-PAGE-REGISTRY
+  file_name: WEBSITE-PAGE-REGISTRY.yaml
+  logical_repository_path: docs/WEBSITE-PAGE-REGISTRY.yaml
+  schema_version: 1.0.0
+  created_on: '2026-10-31'
+  language: ar-SA
+  status: REFERENCE_DRAFT_AWAITING_REVIEW
+  repo_readonly_reviewed: YEEEAE/BRIGHTAI@main
+  source_baselines:
+  - docs/MASTER-PROJECT-BLUEPRINT.md (repo observed)
+  - PRODUCT-MASTER-CATALOG.yaml (conversation artifact, not assumed in repo)
+  - BRAND-AND-DESIGN-SYSTEM.md (conversation artifact, not assumed in repo)
+  - Audit/2026-10-31-saudi-content-seo-audit.md
+  - Live public website browser review 2026-10-31 of 15 routes
+  github_modified: false
+  notes_ar: هذا السجل جرد للمسارات وأهدافها وليس إثباتًا لجاهزية منتجات AIGAS أو صحة ادعاءات الصفحات. كل المقترحات منفصلة
+    تماماً عن المسارات الموجودة.
+website:
+  brand: BRIGHT AI
+  legal_name_ar: مؤسسة مُشرقة
+  platform: AIGAS
+  domain: https://brightai.live
+  primary_language: ar-SA
+  direction: rtl
+  theme: dark-only
+  framework: Astro
+  config: astro.config.mjs
+  routing_convention: 'trailingSlash: always'
+  output_mode: server + @astrojs/node standalone
+  static_page_pattern: export const prerender = true
+  shared_layouts:
+  - src/layouts/BaseLayout.astro
+  - src/components/PageShell.astro
+  sitemap_integration: '@astrojs/sitemap'
+  sitemap_entry_point_expected: https://brightai.live/sitemap-index.xml
+  sitemap_live_fetch_status: NOT_VERIFIED_THIS_TURN
+  approved_measurement_tools:
+    google_search_console:
+      approved: true
+      purpose: Search visibility, queries, impressions, indexing and organic clicks.
+      account_connection_verified: false
+    google_analytics_4:
+      approved: true
+      purpose: Public-site traffic, engagement and approved event analytics.
+      measurement_id_observed_in_source: G-9LMB4PGTWJ
+      source_file: src/layouts/BaseLayout.astro
+      active_data_collection_verified: false
+      settings_and_privacy_review_required: true
+      never_send_sensitive_customer_or_aigas_content: true
+    additional_trackers_and_pixels:
+      approved: false
+      owner_approval_required: true
+  product_operational_state: NOT_VERIFIED
+  approved_commercial_prices: false
+  trial_48h: BLUEPRINT_REQUIREMENT_NOT_ACTIVATED_ON_SITE
+  contact_delivery: MAILTO_CLIENT_SIDE_NOT_SERVER_CONFIRMED
+  legal_documents: PROVISIONAL_PENDING_APPROVAL
+inventory_summary:
+  count_normal_public_routes_in_repo: 29
+  count_index_eligible_expected: 28
+  count_noindex_public_routes_expected: 1
+  count_special_error_handlers: 1
+  count_source_page_components: 21
+  count_routes_visually_inspected_in_prior_browser_review: 15
+  counts_are_repo_derived_not_live_sitemap_verified: true
+  dynamic_route_expansion:
+    src/pages/products/[product].astro: 5
+    src/pages/solutions/[sector].astro: 4
+    src/pages/pillars/[pillar].astro: 3
+  knowledge_article_count: 5
+  proposed_routes_not_live: 9
+global_rules:
+  single_intent_per_page: true
+  avoid_keyword_cannibalization: true
+  keep_human_readable_arabic_not_keyword_stuffing: true
+  seo_aeo_geo: Useful, factual, directly answerable content; no guarantee of AI citation or rankings.
+  schema_validity: Publish only types supported by visible real content; do not invent ratings, pricing, reviews, customer
+    logos or certification.
+  visibility_states:
+  - Available only with evidence
+  - Beta only with opt-in and baseline security
+  - Planned otherwise
+  never_present_mock_as_live: true
+  product_independence: Each of the 5 products standalone in core commercial/function; Kernel not separately billed.
+  links_to_avoid: Never link to unimplemented destinations, private tenant pages or unapproved purchase flows.
+  legal_content_needs_review: true
+  no_unverified_regulatory_claims: true
+  no_automatic_trial_to_paid_conversion: true
+  public_website_analytics: Google Analytics 4 (GA4) approved alongside Google Search Console; verify privacy notices, consent where applicable, configuration and data minimization before claiming live measurement. Do not add extra trackers or pixels without separate approval.
+  supported_product_claims_status: Not operationally verified by this registry
+  seo_keywords_status: Editorial candidate topics only; keyword tools volume, difficulty and rankings not assumed.
+  internal_linking: Prefer direct topic-relevant links; no auto-links for keywords.
+  website_vs_product: Public marketing pages must not expose protected customer data.
+  page_status_rules: EXISTING_IN_REPOSITORY means source route exists, not that production endpoint or product operation is
+    proven.
+page_routes:
+- id: WEB-HOME
+  path: /
+  absolute_url: https://brightai.live/
+  source:
+    repo_path: src/pages/index.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: homepage
+    topic_cluster: brand-and-aigas
+    search_intent: mixed
+    target_audiences:
+    - government
+    - enterprise
+    - technical-decision-makers
+  content:
+    current_label_ar: الرئيسية
+    current_meta_title_from_source: حوكمة وأمان الذكاء الاصطناعي | BRIGHTAI
+    primary_topic_target_unverified: حوكمة وأمان الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - AIGAS
+    - أمن الذكاء الاصطناعي
+    - AI Governance Saudi Arabia
+    editorial_goal_ar: عرض التخصص والمنتجات الخمسة وحالة التوفر دون ادعاء تشغيل غير مثبت
+    editorial_work_items:
+    - وازن المشهد الجسيمي مع العنوان على الجوال
+    - اعرض حالة المنتجات قرب CTA
+    - حافظ على أقسام الأركان والقطاعات لكن تجنب التكرار
+    - اعمل على وضوح كيان مؤسسة مُشرقة بعد التحقق القانوني
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+    current_h1_from_source: ذكاء اصطناعي تثق به... وتحاسبه
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: immersive_hero_and_system_story
+    primary_cta:
+      label_ar: استكشف المنتجات
+      destination: /products/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /products/
+    - /docs/
+    - /solutions/government/
+    - /contact/
+- id: WEB-PRODUCTS
+  path: /products/
+  absolute_url: https://brightai.live/products/
+  source:
+    repo_path: src/pages/products/index.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: product_index
+    topic_cluster: product-portfolio
+    search_intent: commercial_research
+    target_audiences:
+    - enterprise
+    - government
+    - security-teams
+  content:
+    current_label_ar: منتجات AIGAS
+    current_meta_title_from_source: منتجات AIGAS | BRIGHTAI
+    primary_topic_target_unverified: منصة حوكمة وأمان الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - منتجات AIGAS
+    - AI Firewall
+    - AI Risk Assessment
+    - Human Gate
+    - AI Audit Trail
+    editorial_goal_ar: عرض خمس منتجات مستقلة والتكامل الاختياري دون طرح Kernel للبيع منفرداً
+    editorial_work_items:
+    - وضح وظيفة كل منتج وعلاقته بـKernel
+    - اربط كل منتج بصفحة مستقلة
+    - أظهر حالة إتاحته الحالية
+    - لا تستخدم Product Offers/Reviews schema دون أدلة
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/products/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: interactive_kernel_product_map
+    primary_cta:
+      label_ar: اطلب معلومات أو عرض سعر
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-FW
+    - AIGAS-LD
+    - AIGAS-HG
+    - AIGAS-RE
+    - AIGAS-SC
+    suggested_related_paths:
+    - /products/firewall/
+    - /products/ledger/
+    - /products/human-gate/
+    - /products/risk-engine/
+    - /products/secure-chat/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PRODUCT-FIREWALL
+  path: /products/firewall/
+  absolute_url: https://brightai.live/products/firewall/
+  source:
+    repo_path: src/pages/products/[product].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: product_detail
+    topic_cluster: aigas-products
+    search_intent: commercial_research
+    target_audiences:
+    - enterprise
+    - government
+    - developers
+  content:
+    current_label_ar: AIGAS Firewall
+    current_meta_title_from_source: AIGAS Firewall — تصور المنتج | BRIGHTAI
+    primary_topic_target_unverified: حماية مدخلات ومخرجات الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - AI Firewall
+    - AI Prompt Firewall
+    - DLP for AI
+    - Prompt Injection Protection
+    editorial_goal_ar: توضيح التحكم الفعلي المستهدف في مرور طلبات AI مع حدود التكامل والقرارات الأمنية
+    editorial_work_items:
+    - ميّز بين العرض التوضيحي وإنفاذ السياسة الحقيقي
+    - اعرض تدفق input → policy → decision بطريقة مفهومة
+    - تجنب ادعاءات منع جميع الهجمات
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/products/firewall/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: request_path_decision_map
+    primary_cta:
+      label_ar: اطلب معلومات عن المنتج
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-FW
+    suggested_related_paths:
+    - /products/
+    - /pricing/
+    - /contact/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PRODUCT-LEDGER
+  path: /products/ledger/
+  absolute_url: https://brightai.live/products/ledger/
+  source:
+    repo_path: src/pages/products/[product].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: product_detail
+    topic_cluster: aigas-products
+    search_intent: commercial_research
+    target_audiences:
+    - enterprise
+    - government
+    - developers
+  content:
+    current_label_ar: AIGAS Ledger
+    current_meta_title_from_source: AIGAS Ledger — تصور المنتج | BRIGHTAI
+    primary_topic_target_unverified: سجلات تدقيق الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - سجلات تدقيق الذكاء الاصطناعي
+    - AI Audit Trail
+    - Verifiable AI Evidence
+    - سجل حوكمة الذكاء الاصطناعي
+    editorial_goal_ar: شرح أدلة التدقيق المحمية والتحقق من النزاهة والتصدير دون وعود غير منفذة
+    editorial_work_items:
+    - وضح الفرق بين سجل التدقيق والمحتوى الخاص للمحادثات
+    - بيّن Hash/Signature كتوجه لا كدليل تشغيلي
+    - وضّح الاحتفاظ وفق سياسة العميل
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/products/ledger/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: evidence_integrity_timeline
+    primary_cta:
+      label_ar: اطلب معلومات عن المنتج
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-LD
+    suggested_related_paths:
+    - /products/
+    - /pricing/
+    - /contact/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PRODUCT-HUMAN_GATE
+  path: /products/human-gate/
+  absolute_url: https://brightai.live/products/human-gate/
+  source:
+    repo_path: src/pages/products/[product].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: product_detail
+    topic_cluster: aigas-products
+    search_intent: commercial_research
+    target_audiences:
+    - enterprise
+    - government
+    - developers
+  content:
+    current_label_ar: AIGAS Human Gate
+    current_meta_title_from_source: AIGAS Human Gate — تصور المنتج | BRIGHTAI
+    primary_topic_target_unverified: الموافقة البشرية على قرارات الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - الموافقة البشرية على قرارات الذكاء الاصطناعي
+    - Human in the Loop AI
+    - AI Approval Workflow
+    - التحكم البشري بالقرارات
+    editorial_goal_ar: عرض مسارات الموافقة والتصعيد والفصل بين المهام وإيقاف الإجراءات الحساسة
+    editorial_work_items:
+    - صمم شجرة قرارات مع مسار قبول ورفض وتصعيد
+    - اذكر الضوابط والآثار دون الإيحاء بوجود محرك معتمد
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/products/human-gate/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: human_approval_branching_flow
+    primary_cta:
+      label_ar: اطلب معلومات عن المنتج
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-HG
+    suggested_related_paths:
+    - /products/
+    - /pricing/
+    - /contact/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PRODUCT-RISK_ENGINE
+  path: /products/risk-engine/
+  absolute_url: https://brightai.live/products/risk-engine/
+  source:
+    repo_path: src/pages/products/[product].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: product_detail
+    topic_cluster: aigas-products
+    search_intent: commercial_research
+    target_audiences:
+    - enterprise
+    - government
+    - developers
+  content:
+    current_label_ar: AIGAS Risk Engine
+    current_meta_title_from_source: AIGAS Risk Engine — تصور المنتج | BRIGHTAI
+    primary_topic_target_unverified: تقييم مخاطر الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - تقييم مخاطر الذكاء الاصطناعي
+    - AI Risk Assessment Platform
+    - AI Risk Scoring
+    - تقييم مخاطر نماذج AI
+    editorial_goal_ar: شرح التقييم السياقي للمخاطر مع أسباب درجاتها دون اختراع عتبات وأداء
+    editorial_work_items:
+    - استخدم مصفوفة تعليمية مع وسم توضيحي
+    - لا تعرض درجات دقة أو حدود امتثال غير معتمدة
+    - اربط بمقال تقييم المخاطر
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/products/risk-engine/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: risk_dimensions_and_explainable_score
+    primary_cta:
+      label_ar: اطلب معلومات عن المنتج
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-RE
+    suggested_related_paths:
+    - /products/
+    - /pricing/
+    - /contact/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PRODUCT-SECURE_CHAT
+  path: /products/secure-chat/
+  absolute_url: https://brightai.live/products/secure-chat/
+  source:
+    repo_path: src/pages/products/[product].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: product_detail
+    topic_cluster: aigas-products
+    search_intent: commercial_research
+    target_audiences:
+    - enterprise
+    - government
+    - developers
+  content:
+    current_label_ar: AIGAS Secure Chat
+    current_meta_title_from_source: AIGAS Secure Chat — تصور المنتج | BRIGHTAI
+    primary_topic_target_unverified: محادثة ذكاء اصطناعي آمنة للمؤسسات
+    supporting_topic_targets_unverified:
+    - محادثة ذكاء اصطناعي آمنة للمؤسسات
+    - Private AI Chat
+    - AI Chat Governance
+    - محادثة مؤسسية آمنة
+    editorial_goal_ar: شرح محادثة AI بسيطة آمنة مع الضوابط والحدود دون إضافة RAG كميزة أساسية
+    editorial_work_items:
+    - صف اختيار النماذج المصرح بها
+    - وضح الخصوصية وحدود حفظ المحادثات
+    - لا تصور RAG أو رفع ملفات كميزات متاحة
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/products/secure-chat/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: minimal_secure_chat_walkthrough
+    primary_cta:
+      label_ar: اطلب معلومات عن المنتج
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-SC
+    suggested_related_paths:
+    - /products/
+    - /pricing/
+    - /contact/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-SECTOR-GOVERNMENT
+  path: /solutions/government/
+  absolute_url: https://brightai.live/solutions/government/
+  source:
+    repo_path: src/pages/solutions/[sector].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: sector_solution
+    topic_cluster: industry-solutions
+    search_intent: solution_aware
+    target_audiences:
+    - government
+    - saudi-b2b
+  content:
+    current_label_ar: الجهات الحكومية
+    current_meta_title_from_source: حوكمة الذكاء الاصطناعي في الجهات الحكومية | BRIGHTAI
+    primary_topic_target_unverified: حوكمة الذكاء الاصطناعي للجهات الحكومية
+    supporting_topic_targets_unverified:
+    - AI Governance Government
+    - حماية بيانات الجهات الحكومية
+    editorial_goal_ar: تحويل تحديات قطاع الجهات الحكومية إلى أسئلة حوكمة وممارسات قابلة للفهم دون تقديم شهادة امتثال
+    editorial_work_items:
+    - خصص الأمثلة لاحتياجات القطاع دون ادعاء عميل فعلي
+    - راجع قابلية تطبيق الأنظمة على كل جهة
+    - اربط بالمنتجات ذات الصلة على نحو مشروط
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/solutions/government/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: government_service_decision_map
+    primary_cta:
+      label_ar: تعرّف على المنتجات
+      destination: /products/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-FW
+    - AIGAS-LD
+    - AIGAS-HG
+    suggested_related_paths:
+    - /products/
+    - /compliance/
+    - /docs/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-SECTOR-FINANCE
+  path: /solutions/finance/
+  absolute_url: https://brightai.live/solutions/finance/
+  source:
+    repo_path: src/pages/solutions/[sector].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: sector_solution
+    topic_cluster: industry-solutions
+    search_intent: solution_aware
+    target_audiences:
+    - finance
+    - saudi-b2b
+  content:
+    current_label_ar: القطاع المالي
+    current_meta_title_from_source: حوكمة الذكاء الاصطناعي في القطاع المالي | BRIGHTAI
+    primary_topic_target_unverified: حوكمة الذكاء الاصطناعي في القطاع المالي
+    supporting_topic_targets_unverified:
+    - AI Risk Management Finance
+    - أمان الذكاء الاصطناعي في البنوك
+    editorial_goal_ar: تحويل تحديات قطاع القطاع المالي إلى أسئلة حوكمة وممارسات قابلة للفهم دون تقديم شهادة امتثال
+    editorial_work_items:
+    - خصص الأمثلة لاحتياجات القطاع دون ادعاء عميل فعلي
+    - راجع قابلية تطبيق الأنظمة على كل جهة
+    - اربط بالمنتجات ذات الصلة على نحو مشروط
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/solutions/finance/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: financial_risk_control_flow
+    primary_cta:
+      label_ar: تعرّف على المنتجات
+      destination: /products/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-FW
+    - AIGAS-HG
+    - AIGAS-LD
+    suggested_related_paths:
+    - /products/
+    - /compliance/
+    - /docs/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-SECTOR-HEALTHCARE
+  path: /solutions/healthcare/
+  absolute_url: https://brightai.live/solutions/healthcare/
+  source:
+    repo_path: src/pages/solutions/[sector].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: sector_solution
+    topic_cluster: industry-solutions
+    search_intent: solution_aware
+    target_audiences:
+    - healthcare
+    - saudi-b2b
+  content:
+    current_label_ar: الرعاية الصحية
+    current_meta_title_from_source: حوكمة الذكاء الاصطناعي في الرعاية الصحية | BRIGHTAI
+    primary_topic_target_unverified: حوكمة الذكاء الاصطناعي في الرعاية الصحية
+    supporting_topic_targets_unverified:
+    - AI Healthcare Privacy
+    - حماية البيانات الصحية والذكاء الاصطناعي
+    editorial_goal_ar: تحويل تحديات قطاع الرعاية الصحية إلى أسئلة حوكمة وممارسات قابلة للفهم دون تقديم شهادة امتثال
+    editorial_work_items:
+    - خصص الأمثلة لاحتياجات القطاع دون ادعاء عميل فعلي
+    - راجع قابلية تطبيق الأنظمة على كل جهة
+    - اربط بالمنتجات ذات الصلة على نحو مشروط
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/solutions/healthcare/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: health_data_trust_boundaries
+    primary_cta:
+      label_ar: تعرّف على المنتجات
+      destination: /products/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-FW
+    - AIGAS-LD
+    - AIGAS-HG
+    suggested_related_paths:
+    - /products/
+    - /compliance/
+    - /docs/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-SECTOR-ENTERPRISE
+  path: /solutions/enterprise/
+  absolute_url: https://brightai.live/solutions/enterprise/
+  source:
+    repo_path: src/pages/solutions/[sector].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: sector_solution
+    topic_cluster: industry-solutions
+    search_intent: solution_aware
+    target_audiences:
+    - enterprise
+    - saudi-b2b
+  content:
+    current_label_ar: المنشآت والشركات
+    current_meta_title_from_source: حوكمة الذكاء الاصطناعي في المنشآت والشركات | BRIGHTAI
+    primary_topic_target_unverified: حوكمة استخدام الذكاء الاصطناعي في الشركات
+    supporting_topic_targets_unverified:
+    - سياسات الموظفين للذكاء الاصطناعي
+    - حماية بيانات المنشأة
+    editorial_goal_ar: تحويل تحديات قطاع المنشآت والشركات إلى أسئلة حوكمة وممارسات قابلة للفهم دون تقديم شهادة امتثال
+    editorial_work_items:
+    - خصص الأمثلة لاحتياجات القطاع دون ادعاء عميل فعلي
+    - راجع قابلية تطبيق الأنظمة على كل جهة
+    - اربط بالمنتجات ذات الصلة على نحو مشروط
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/solutions/enterprise/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: employee_ai_use_journey
+    primary_cta:
+      label_ar: تعرّف على المنتجات
+      destination: /products/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-FW
+    - AIGAS-SC
+    - AIGAS-HG
+    suggested_related_paths:
+    - /products/
+    - /compliance/
+    - /docs/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PILLAR-SAFETY
+  path: /pillars/safety/
+  absolute_url: https://brightai.live/pillars/safety/
+  source:
+    repo_path: src/pages/pillars/[pillar].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: governance_pillar
+    topic_cluster: aigas-principles
+    search_intent: informational
+    target_audiences:
+    - governance
+    - security
+    - decision-makers
+  content:
+    current_label_ar: السلامة والموثوقية
+    current_meta_title_from_source: السلامة والموثوقية | حوكمة الذكاء الاصطناعي — BRIGHTAI
+    primary_topic_target_unverified: سلامة الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - AI Safety
+    - موثوقية الذكاء الاصطناعي
+    editorial_goal_ar: تعريف ركن السلامة والموثوقية وأسئلة مراجعته وربطه بالضوابط والمنتجات دون ضمان تطبيقها
+    editorial_work_items:
+    - أضف أمثلة وأسئلة واقعية
+    - حافظ على وضوح فرق المبدأ عن الضابط المنتج
+    - اربط بأقرب دليل أو منتج
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/pillars/safety/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: harm_prevention_review_path
+    primary_cta:
+      label_ar: اقرأ الأدلة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-RE
+    - AIGAS-HG
+    suggested_related_paths:
+    - /compliance/
+    - /docs/
+    - /products/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PILLAR-TRANSPARENCY
+  path: /pillars/transparency/
+  absolute_url: https://brightai.live/pillars/transparency/
+  source:
+    repo_path: src/pages/pillars/[pillar].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: governance_pillar
+    topic_cluster: aigas-principles
+    search_intent: informational
+    target_audiences:
+    - governance
+    - security
+    - decision-makers
+  content:
+    current_label_ar: الشفافية والمساءلة
+    current_meta_title_from_source: الشفافية والمساءلة | حوكمة الذكاء الاصطناعي — BRIGHTAI
+    primary_topic_target_unverified: الشفافية والمساءلة في الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - AI Accountability
+    - AI Transparency
+    - AI Audit Trail
+    editorial_goal_ar: تعريف ركن الشفافية والمساءلة وأسئلة مراجعته وربطه بالضوابط والمنتجات دون ضمان تطبيقها
+    editorial_work_items:
+    - أضف أمثلة وأسئلة واقعية
+    - حافظ على وضوح فرق المبدأ عن الضابط المنتج
+    - اربط بأقرب دليل أو منتج
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/pillars/transparency/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: accountability_owner_evidence_map
+    primary_cta:
+      label_ar: اقرأ الأدلة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-LD
+    - AIGAS-HG
+    suggested_related_paths:
+    - /compliance/
+    - /docs/
+    - /products/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-PILLAR-PRIVACY
+  path: /pillars/privacy/
+  absolute_url: https://brightai.live/pillars/privacy/
+  source:
+    repo_path: src/pages/pillars/[pillar].astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: governance_pillar
+    topic_cluster: aigas-principles
+    search_intent: informational
+    target_audiences:
+    - governance
+    - security
+    - decision-makers
+  content:
+    current_label_ar: الخصوصية وحماية البيانات
+    current_meta_title_from_source: الخصوصية وحماية البيانات | حوكمة الذكاء الاصطناعي — BRIGHTAI
+    primary_topic_target_unverified: حماية خصوصية بيانات الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - AI Privacy
+    - Data Loss Prevention AI
+    - سياسات مشاركة البيانات
+    editorial_goal_ar: تعريف ركن الخصوصية وحماية البيانات وأسئلة مراجعته وربطه بالضوابط والمنتجات دون ضمان تطبيقها
+    editorial_work_items:
+    - أضف أمثلة وأسئلة واقعية
+    - حافظ على وضوح فرق المبدأ عن الضابط المنتج
+    - اربط بأقرب دليل أو منتج
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/pillars/privacy/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: data_boundary_and_redaction_map
+    primary_cta:
+      label_ar: اقرأ الأدلة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids:
+    - AIGAS-FW
+    - AIGAS-SC
+    suggested_related_paths:
+    - /compliance/
+    - /docs/
+    - /products/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+- id: WEB-DOCS
+  path: /docs/
+  absolute_url: https://brightai.live/docs/
+  source:
+    repo_path: src/pages/docs.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: knowledge_hub
+    topic_cluster: knowledge-hub
+    search_intent: informational
+    target_audiences:
+    - general-public
+    - enterprise
+    - security
+  content:
+    current_label_ar: مركز المعرفة
+    current_meta_title_from_source: مركز المعرفة | حوكمة الذكاء الاصطناعي
+    primary_topic_target_unverified: مركز معرفة حوكمة الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - أدلة AI governance
+    - حوكمة الذكاء الاصطناعي في السعودية
+    editorial_goal_ar: توجيه القراء إلى أدلة عملية أصيلة عربية ومراجعة وفق نية البحث
+    editorial_work_items:
+    - حافظ على التصنيفات الواضحة
+    - إظهار مراجع وتواريخ مراجعة حقيقة
+    - راجع الروابط الداخلية وأولوية المقالات
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/docs/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: editorial_hub_with_topic_paths
+    primary_cta:
+      label_ar: اقرأ دليل الحوكمة
+      destination: /knowledge/ai-governance-saudi/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /knowledge/ai-governance-saudi/
+    - /knowledge/ai-risk-assessment/
+    - /knowledge/prompt-injection/
+- id: WEB-ARTICLE-AI_GOVERNANCE_SAUDI
+  path: /knowledge/ai-governance-saudi/
+  absolute_url: https://brightai.live/knowledge/ai-governance-saudi/
+  source:
+    repo_path: src/pages/knowledge/ai-governance-saudi.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: knowledge_article
+    topic_cluster: knowledge-hub
+    search_intent: informational
+    target_audiences:
+    - saudi-employees
+    - security-teams
+    - executive-decision-makers
+  content:
+    current_label_ar: حوكمة الذكاء الاصطناعي في السعودية
+    current_meta_title_from_source: حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI
+    primary_topic_target_unverified: حوكمة الذكاء الاصطناعي في السعودية
+    supporting_topic_targets_unverified:
+    - AI Governance Saudi Arabia
+    - إطار حوكمة AI
+    editorial_goal_ar: تقديم شرح أصيل قابل للاستشهاد حول حوكمة الذكاء الاصطناعي في السعودية مع حدود دقيقة ومصادر
+    editorial_work_items:
+    - تأكد من تاريخ ومصدر الإطار الوطني
+    - تجنب استنتاج إلزام قانوني عام
+    - اربط بصفحة الأركان والامتثال
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/knowledge/ai-governance-saudi/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented:
+    - Article
+  ux:
+    recommended_visual_pattern: six_step_governance_lifecycle
+    primary_cta:
+      label_ar: تصفح مركز المعرفة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /compliance/
+    - /pillars/safety/
+    - /products/
+- id: WEB-ARTICLE-PROTECT_COMPANY_DATA_CHATGPT
+  path: /knowledge/protect-company-data-chatgpt/
+  absolute_url: https://brightai.live/knowledge/protect-company-data-chatgpt/
+  source:
+    repo_path: src/pages/knowledge/protect-company-data-chatgpt.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: knowledge_article
+    topic_cluster: knowledge-hub
+    search_intent: informational
+    target_audiences:
+    - saudi-employees
+    - security-teams
+    - executive-decision-makers
+  content:
+    current_label_ar: حماية بيانات المنشأة عند استخدام ChatGPT
+    current_meta_title_from_source: حماية بيانات المنشأة عند استخدام ChatGPT | BRIGHTAI
+    primary_topic_target_unverified: حماية بيانات الشركة عند استخدام ChatGPT
+    supporting_topic_targets_unverified:
+    - حماية بيانات الموظفين AI
+    - سياسة استخدام ChatGPT في العمل
+    editorial_goal_ar: تقديم شرح أصيل قابل للاستشهاد حول حماية بيانات المنشأة عند استخدام ChatGPT مع حدود دقيقة ومصادر
+    editorial_work_items:
+    - افصل سياسة المؤسسة عن خصائص مزود الخدمة
+    - لا تفترض أن تنقيح النص يضمن إخفاء الهوية
+    - اعرض خطوات قابلة للتطبيق
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/knowledge/protect-company-data-chatgpt/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented:
+    - Article
+  ux:
+    recommended_visual_pattern: employee_decision_checklist
+    primary_cta:
+      label_ar: تصفح مركز المعرفة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /knowledge/ai-use-policy-employees/
+    - /pillars/privacy/
+    - /products/firewall/
+- id: WEB-ARTICLE-AI_RISK_ASSESSMENT
+  path: /knowledge/ai-risk-assessment/
+  absolute_url: https://brightai.live/knowledge/ai-risk-assessment/
+  source:
+    repo_path: src/pages/knowledge/ai-risk-assessment.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: knowledge_article
+    topic_cluster: knowledge-hub
+    search_intent: informational
+    target_audiences:
+    - saudi-employees
+    - security-teams
+    - executive-decision-makers
+  content:
+    current_label_ar: تقييم مخاطر الذكاء الاصطناعي
+    current_meta_title_from_source: تقييم مخاطر الذكاء الاصطناعي | BRIGHTAI
+    primary_topic_target_unverified: تقييم مخاطر الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - AI Risk Assessment
+    - مصفوفة مخاطر AI
+    editorial_goal_ar: تقديم شرح أصيل قابل للاستشهاد حول تقييم مخاطر الذكاء الاصطناعي مع حدود دقيقة ومصادر
+    editorial_work_items:
+    - أبرز أن المصفوفة تعليمية
+    - لا تستخدم درجات رسمية مختلقة
+    - اربط بالمخاطر والضوابط والدليل
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/knowledge/ai-risk-assessment/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented:
+    - Article
+  ux:
+    recommended_visual_pattern: educational_risk_record_matrix
+    primary_cta:
+      label_ar: تصفح مركز المعرفة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /products/risk-engine/
+    - /pillars/safety/
+    - /knowledge/ai-governance-saudi/
+- id: WEB-ARTICLE-PROMPT_INJECTION
+  path: /knowledge/prompt-injection/
+  absolute_url: https://brightai.live/knowledge/prompt-injection/
+  source:
+    repo_path: src/pages/knowledge/prompt-injection.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: knowledge_article
+    topic_cluster: knowledge-hub
+    search_intent: informational
+    target_audiences:
+    - saudi-employees
+    - security-teams
+    - executive-decision-makers
+  content:
+    current_label_ar: هجمات Prompt Injection
+    current_meta_title_from_source: Prompt Injection وطبقات الحماية | BRIGHTAI
+    primary_topic_target_unverified: Prompt Injection
+    supporting_topic_targets_unverified:
+    - حقن الأوامر الذكاء الاصطناعي
+    - AI Prompt Injection Security
+    editorial_goal_ar: تقديم شرح أصيل قابل للاستشهاد حول هجمات Prompt Injection مع حدود دقيقة ومصادر
+    editorial_work_items:
+    - وضح صلاحيات الأدوات المستقلة عن النموذج
+    - ميّز بين الدفاع متعدد الطبقات والضمان المطلق
+    - اربط بـFirewall
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/knowledge/prompt-injection/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented:
+    - Article
+  ux:
+    recommended_visual_pattern: untrusted_input_to_tool_auth_flow
+    primary_cta:
+      label_ar: تصفح مركز المعرفة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /products/firewall/
+    - /knowledge/protect-company-data-chatgpt/
+    - /docs/
+- id: WEB-ARTICLE-AI_USE_POLICY_EMPLOYEES
+  path: /knowledge/ai-use-policy-employees/
+  absolute_url: https://brightai.live/knowledge/ai-use-policy-employees/
+  source:
+    repo_path: src/pages/knowledge/ai-use-policy-employees.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: NOT_INDIVIDUALLY_CHECKED
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: knowledge_article
+    topic_cluster: knowledge-hub
+    search_intent: informational
+    target_audiences:
+    - saudi-employees
+    - security-teams
+    - executive-decision-makers
+  content:
+    current_label_ar: سياسة استخدام الذكاء الاصطناعي للموظفين
+    current_meta_title_from_source: سياسة استخدام الذكاء الاصطناعي للموظفين | BRIGHTAI
+    primary_topic_target_unverified: سياسة استخدام الذكاء الاصطناعي للموظفين
+    supporting_topic_targets_unverified:
+    - AI Acceptable Use Policy
+    - حوكمة أدوات AI للموظفين
+    editorial_goal_ar: تقديم شرح أصيل قابل للاستشهاد حول سياسة استخدام الذكاء الاصطناعي للموظفين مع حدود دقيقة ومصادر
+    editorial_work_items:
+    - قدّم نموذج سياسة قابل للتكييف لا وثيقة ملزمة
+    - ميّز المسموح والمشروط والمحظور
+    - اربط بمقال حماية البيانات
+    claims_review: GENERAL_EDITORIAL_FACT_CHECK
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/knowledge/ai-use-policy-employees/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented:
+    - Article
+  ux:
+    recommended_visual_pattern: policy_decision_table
+    primary_cta:
+      label_ar: تصفح مركز المعرفة
+      destination: /docs/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /knowledge/protect-company-data-chatgpt/
+    - /solutions/enterprise/
+    - /docs/
+- id: WEB-ABOUT
+  path: /about/
+  absolute_url: https://brightai.live/about/
+  source:
+    repo_path: src/pages/about.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: about
+    topic_cluster: brand-and-aigas
+    search_intent: navigational
+    target_audiences:
+    - general-public
+    - procurement
+  content:
+    current_label_ar: من نحن
+    current_meta_title_from_source: عن BRIGHTAI | حوكمة وأمان الذكاء الاصطناعي
+    primary_topic_target_unverified: مؤسسة مُشرقة BRIGHT AI
+    supporting_topic_targets_unverified:
+    - من نحن BRIGHT AI
+    - AI Governance Saudi Arabia
+    editorial_goal_ar: عرض هوية مؤسسة مُشرقة بصورة صحيحة وتجنب الادعاءات القانونية دون إثبات
+    editorial_work_items:
+    - صحّح تعريف المبادرة إذا ثبتت الهوية القانونية رسميًا
+    - ميّز ما تم اعتماده تصميمًا عما يعمل إنتاجيًا
+    - حافظ على التخصص الحصري AI governance and safety
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/about/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: brand_credibility_editorial
+    primary_cta:
+      label_ar: تصفح المنتجات
+      destination: /products/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /products/
+    - /trust/
+- id: WEB-COMPLIANCE
+  path: /compliance/
+  absolute_url: https://brightai.live/compliance/
+  source:
+    repo_path: src/pages/compliance.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: regulatory_context
+    topic_cluster: governance-regulatory
+    search_intent: informational
+    target_audiences:
+    - government
+    - compliance
+    - legal
+  content:
+    current_label_ar: الحوكمة والمتطلبات
+    current_meta_title_from_source: حوكمة ومتطلبات الذكاء الاصطناعي | BRIGHTAI
+    primary_topic_target_unverified: متطلبات حوكمة الذكاء الاصطناعي السعودية
+    supporting_topic_targets_unverified:
+    - PDPL
+    - NCA applicable controls
+    - ISO IEC 42001
+    - NIST AI RMF
+    editorial_goal_ar: شرح نطاق المتطلبات لا الادعاء بحصول BRIGHT AI أو العملاء على شهادة/امتثال
+    editorial_work_items:
+    - تحقق من المصادر الرسمية والصياغات الحالية
+    - لا تعتبر المعايير قابلة للتطبيق على كل جهة بنفس الدرجة
+    - لا تستخدم شارات معتمدة غير مثبتة
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/compliance/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: requirements_scope_matrix
+    primary_cta:
+      label_ar: دليل الحوكمة
+      destination: /knowledge/ai-governance-saudi/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /knowledge/ai-governance-saudi/
+    - /pillars/transparency/
+- id: WEB-SERVICES
+  path: /services/
+  absolute_url: https://brightai.live/services/
+  source:
+    repo_path: src/pages/services.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: services_scope
+    topic_cluster: enterprise-services
+    search_intent: commercial_research
+    target_audiences:
+    - enterprise
+    - government
+  content:
+    current_label_ar: الخدمات
+    current_meta_title_from_source: الخدمات | BRIGHTAI
+    primary_topic_target_unverified: خدمات حوكمة الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - AI Governance Consulting Saudi Arabia
+    - تخطيط حوكمة AI
+    editorial_goal_ar: تحديد نطاق الاستفسار دون تسويق خدمات غير مصرح بتقديمها أو أسعار غير معتمدة
+    editorial_work_items:
+    - راجع اتساق الصفحة مع التخصص الحصري AIGAS
+    - لا تنشر خدمة غير معتمدة
+    - ميز بين الدعم المستهدف وخدمة استشارية متعاقد عليها
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/services/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: service_scope_and_engagement_path
+    primary_cta:
+      label_ar: أرسل استفسار
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /products/
+    - /contact/
+- id: WEB-PRICING
+  path: /pricing/
+  absolute_url: https://brightai.live/pricing/
+  source:
+    repo_path: src/pages/pricing.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: pricing
+    topic_cluster: commercial
+    search_intent: transactional
+    target_audiences:
+    - enterprise
+    - government
+    - procurement
+  content:
+    current_label_ar: الأسعار وطلب عرض سعر
+    current_meta_title_from_source: الأسعار وطلب عرض سعر | BRIGHTAI
+    primary_topic_target_unverified: أسعار منتجات AIGAS
+    supporting_topic_targets_unverified:
+    - تسعير AI Firewall
+    - On Premise AI Governance
+    - تراخيص AIGAS
+    editorial_goal_ar: صفحة هجينة تبقي الأسعار والحاسبة غير منشورة حتى اعتماد النموذج المالي
+    editorial_work_items:
+    - لا تعرض سعرًا أو حصة أو حاسبة نهائية غير معتمدة
+    - تجربة 48 ساعة غير مفعلة وتشترط الأهلية
+    - المراسلة عبر mailto ليست إتمام طلب
+    - فصل SaaS عن عروض enterprise/on-prem/air-gapped
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/pricing/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: transparent_pricing_logic_and_quote_path
+    primary_cta:
+      label_ar: جهّز رسالة الاستفسار
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /products/
+    - /contact/
+- id: WEB-CONTACT
+  path: /contact/
+  absolute_url: https://brightai.live/contact/
+  source:
+    repo_path: src/pages/contact.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: contact
+    topic_cluster: commercial
+    search_intent: transactional
+    target_audiences:
+    - all
+  content:
+    current_label_ar: تواصل معنا
+    current_meta_title_from_source: تواصل مع BRIGHTAI | استفسار أو عرض سعر
+    primary_topic_target_unverified: التواصل مع BRIGHT AI
+    supporting_topic_targets_unverified:
+    - طلب عرض سعر AI Governance
+    - استفسار منتجات AIGAS
+    editorial_goal_ar: توضيح أن النموذج الحالي يجهز رسالة بريد ولا يضمن إرسالها أو استلامها
+    editorial_work_items:
+    - لا توحِ بأن الطلب محفوظ في CRM حاليًا
+    - قدم وسيلة بريد قابلة للنسخ بعد التحقق
+    - اجعل حالة الزر ونتيجة التواصل مفهومة
+    - امنع جمع بيانات حساسة في نموذج عام
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/contact/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: short_form_and_clear_fallback
+    primary_cta:
+      label_ar: افتح رسالة البريد
+      destination: mailto:hello@brightai.live
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /pricing/
+    - /products/
+- id: WEB-TRUST
+  path: /trust/
+  absolute_url: https://brightai.live/trust/
+  source:
+    repo_path: src/pages/trust.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: trust_disclosures
+    topic_cluster: trust-and-legal
+    search_intent: navigational
+    target_audiences:
+    - security
+    - procurement
+    - government
+  content:
+    current_label_ar: الثقة والشفافية
+    current_meta_title_from_source: الثقة والشفافية | BRIGHTAI
+    primary_topic_target_unverified: شفافية BRIGHT AI حول منتجات AIGAS
+    supporting_topic_targets_unverified:
+    - أمان BRIGHT AI
+    - AIGAS deployment trust
+    editorial_goal_ar: بيان الأدلة والحدود دون تحويل الصفحة إلى مركز شهادات أو Trust Center موسع غير معتمد
+    editorial_work_items:
+    - طابق الصفحة مع قرار الاكتفاء بصفحات الثقة الأساسية
+    - لا تستخدم شارات أو شهادات غير مثبتة
+    - راجع وضع الخصوصية والموردين والاحتفاظ قبل أي تعهد
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P1
+    canonical_expected: https://brightai.live/trust/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: verified_vs_pending_evidence_table
+    primary_cta:
+      label_ar: اطلب معلومات
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /privacy/
+    - /terms/
+    - /contact/
+- id: WEB-PRIVACY
+  path: /privacy/
+  absolute_url: https://brightai.live/privacy/
+  source:
+    repo_path: src/pages/privacy.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: privacy_disclosure
+    topic_cluster: trust-and-legal
+    search_intent: navigational
+    target_audiences:
+    - all
+  content:
+    current_label_ar: سياسة الخصوصية
+    current_meta_title_from_source: الخصوصية | BRIGHTAI
+    primary_topic_target_unverified: سياسة الخصوصية BRIGHT AI
+    supporting_topic_targets_unverified:
+    - PDPL BRIGHT AI
+    editorial_goal_ar: بيان خصوصية صحيح ومعتمد قانونيًا مع مراجعة تحليل الموقع والتواصل
+    editorial_work_items:
+    - الصفحة حالياً معلومات أولية وليست إشعاراً قانونياً نهائياً
+    - راجع إفصاح Google Analytics 4 المعتمد مع Search Console وتحقق من إعدادات الخصوصية والموافقة عند انطباقها
+    - اعتمد الجهة المتحكمة والموردين والاحتفاظ والحقوق قبل النشر النهائي
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/privacy/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: clear_legal_text_and_section_navigation
+    primary_cta:
+      label_ar: تواصل معنا
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /terms/
+    - /contact/
+- id: WEB-TERMS
+  path: /terms/
+  absolute_url: https://brightai.live/terms/
+  source:
+    repo_path: src/pages/terms.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: index, follow
+    sitemap_expected_from_source: true
+    lastmod_verified: false
+  taxonomy:
+    page_type: terms_disclosure
+    topic_cluster: trust-and-legal
+    search_intent: navigational
+    target_audiences:
+    - all
+  content:
+    current_label_ar: الشروط والأحكام
+    current_meta_title_from_source: الشروط | BRIGHTAI
+    primary_topic_target_unverified: الشروط والأحكام BRIGHT AI
+    supporting_topic_targets_unverified:
+    - شروط ترخيص AIGAS
+    editorial_goal_ar: تحديد النطاق العام الحالي دون إيهام بنشوء عقود أو شروط اشتراك معتمدة
+    editorial_work_items:
+    - يلزم اعتماد قانوني قبل استخدام كنص تعاقدي
+    - وثق حقوق التراخيص الدائمة منفصلة عن الصيانة عند اعتماد العقود
+    - لا تتعهد بـSLA غير مثبت
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P0
+    canonical_expected: https://brightai.live/terms/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: legal_content_plain_readable
+    primary_cta:
+      label_ar: تواصل معنا
+      destination: /contact/
+      requires_live_functionality_check: true
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /privacy/
+    - /pricing/
+- id: WEB-KERNEL-DEMO
+  path: /kernel/
+  absolute_url: https://brightai.live/kernel/
+  source:
+    repo_path: src/pages/kernel.astro
+    generation: astro_static_prerender
+    route_verified_in_main: true
+  publication:
+    category: EXISTING_IN_REPOSITORY
+    browser_observation: LOADED_READ_ONLY_2026-10-31
+    http_status_verified: false
+    robots_expected_from_source: noindex, follow
+    sitemap_expected_from_source: false
+    lastmod_verified: false
+  taxonomy:
+    page_type: educational_demo
+    topic_cluster: product-portfolio
+    search_intent: demonstrational
+    target_audiences:
+    - general-public
+    - technical
+  content:
+    current_label_ar: محاكاة توضيحية لـKernel
+    current_meta_title_from_source: محاكاة توضيحية لفكرة حجب البيانات | BRIGHTAI
+    primary_topic_target_unverified: محاكاة حجب بيانات الذكاء الاصطناعي
+    supporting_topic_targets_unverified:
+    - PII redaction demo
+    - Kernel AIGAS
+    editorial_goal_ar: عرض محاكاة محلية لفكرة تنقيح بيانات افتراضية دون اتصال بنظام AIGAS فعلي
+    editorial_work_items:
+    - الإبقاء على noindex
+    - عدم توهم توفر API حقيقية
+    - عدم استخدام بيانات شخصية حقيقية
+    - الإبقاء على وصف المحاكاة واضحًا
+    claims_review: REQUIRED_BEFORE_COMMERCIAL_CLAIMS
+  seo:
+    priority: P2
+    canonical_expected: https://brightai.live/kernel/
+    canonical_response_verified: false
+    schema_notes: BreadcrumbList may be absent on homepage; validate emitted JSON-LD on live output.
+    keyword_metrics: NOT_VERIFIED
+    gsc_performance: NOT_VERIFIED
+    search_ranking: NOT_VERIFIED
+    schema_types_expected_from_source:
+    - Organization
+    - WebSite
+    - BreadcrumbList
+    schema_types_proposed_not_implemented: []
+  ux:
+    recommended_visual_pattern: explicitly_labeled_local_synthetic_demo
+    primary_cta:
+      label_ar: كل المنتجات
+      destination: /products/
+      requires_live_functionality_check: false
+    rtl: AR_SA
+    theme: DARK_ONLY
+    responsive_validation: REQUIRED_AFTER_CHANGES
+  relationships:
+    product_ids: []
+    suggested_related_paths:
+    - /products/
+    - /products/firewall/
+  capability_claims:
+    operational_availability: NOT_VERIFIED
+    marketing_rule: REQUIRE_VERIFIED_EVIDENCE_BEFORE_AVAILABLE_OR_BETA
+special_routes:
+- id: WEB-404
+  route_kind: ERROR_HANDLER_NOT_NORMAL_INDEXABLE_URL
+  source_path: src/pages/404.astro
+  rendered_path_semantics: Astro 404 handler; do not treat /404/ as normal indexed route
+  robots_expected_from_source: noindex, follow
+  sitemap_expected_from_source: false
+  purpose_ar: شرح الرابط المفقود واقتراح العودة للمحتوى
+  http_404_response_verified: false
+  verification_required:
+  - HTTP status code 404 on unmatched URL
+  - noindex in resulting HTML
+  - main navigation links still valid
+future_content_backlog:
+- id: PROPOSAL-AI-AGENT-GOV
+  suggested_path_not_reserved: /knowledge/ai-agent-governance/
+  title_ar: حوكمة وكلاء الذكاء الاصطناعي
+  search_intent: informational
+  priority: P1
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: avoid duplicate with governance article; link to agentic governance and relevant products
+- id: PROPOSAL-AI-INVENTORY
+  suggested_path_not_reserved: /knowledge/ai-asset-inventory/
+  title_ar: سجل أصول الذكاء الاصطناعي للمؤسسات
+  search_intent: informational
+  priority: P1
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: separate discovery inventory education from a claimed product feature
+- id: PROPOSAL-HUMAN-IN-LOOP
+  suggested_path_not_reserved: /knowledge/human-in-the-loop-ai/
+  title_ar: المراجعة البشرية لقرارات الذكاء الاصطناعي
+  search_intent: informational
+  priority: P1
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: differentiate informational explanation from /products/human-gate/ commercial intent
+- id: PROPOSAL-AI-AUDIT
+  suggested_path_not_reserved: /knowledge/ai-audit-trail/
+  title_ar: توثيق قرارات وأدلة الذكاء الاصطناعي
+  search_intent: informational
+  priority: P1
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: differentiate education from /products/ledger/ product page
+- id: PROPOSAL-AI-PRIVACY
+  suggested_path_not_reserved: /knowledge/ai-data-residency-saudi/
+  title_ar: مناطق تخزين ومعالجة بيانات الذكاء الاصطناعي
+  search_intent: informational
+  priority: P1
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: distinguish storage from model inference geography; no universal legal claims
+- id: PROPOSAL-AI-PROMPT-ATTACKS
+  suggested_path_not_reserved: /knowledge/ai-red-teaming/
+  title_ar: التقييم الأمني واختبار سلامة الذكاء الاصطناعي
+  search_intent: informational
+  priority: P2
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: avoid overlapping /knowledge/prompt-injection/
+- id: PROPOSAL-PRIVATE-DEPLOY
+  suggested_path_not_reserved: /solutions/on-premise-air-gapped/
+  title_ar: نشر حوكمة الذكاء الاصطناعي داخل بيئة معزولة
+  search_intent: commercial_research
+  priority: P1
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: only publish verified deployment capability or label planned
+- id: PROPOSAL-DEVELOPER-DOCS
+  suggested_path_not_reserved: /developers/
+  title_ar: دليل مطوري AIGAS
+  search_intent: developer
+  priority: P2
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: versioned API, SDK only when evidenced; distinguish public docs from protected keys
+- id: PROPOSAL-SECURITY
+  suggested_path_not_reserved: /security/
+  title_ar: الأمان وحدود الضوابط
+  search_intent: trust
+  priority: P1
+  status: PROPOSED_NOT_IMPLEMENTED
+  can_publish: false
+  requires_human_approval: true
+  quality_gate: publish after technical/legal approval; assess consolidation with existing /trust/
+internal_linking_hubs:
+- hub: /
+  role: brand and primary navigation
+  links_to:
+  - /products/
+  - /docs/
+  - /compliance/
+  - /contact/
+- hub: /products/
+  role: five products
+  links_to:
+  - /products/firewall/
+  - /products/ledger/
+  - /products/human-gate/
+  - /products/risk-engine/
+  - /products/secure-chat/
+- hub: /docs/
+  role: five Arabic guides
+  links_to:
+  - /knowledge/ai-governance-saudi/
+  - /knowledge/protect-company-data-chatgpt/
+  - /knowledge/ai-risk-assessment/
+  - /knowledge/prompt-injection/
+  - /knowledge/ai-use-policy-employees/
+- hub: /pricing/
+  role: commercial qualification not a paid checkout
+  links_to:
+  - /products/
+  - /contact/
+- hub: /compliance/
+  role: regulatory context only
+  links_to:
+  - /knowledge/ai-governance-saudi/
+  - /pillars/safety/
+  - /pillars/privacy/
+design_variation_contract:
+  source: BRAND-AND-DESIGN-SYSTEM.md
+  avoid_repeating_one_template: true
+  patterns_used_or_proposed:
+  - particle_hero
+  - system_map
+  - decision_flow
+  - evidence_timeline
+  - approval_tree
+  - risk_dimensions
+  - minimal_chat
+  - sector_context
+  - editorial_step_guide
+  avoid_heavy_client_js_for_indexable_text: true
+  reduced_motion: required
+  rtl: required
+  mobile: required
+  observed_mobile_issue: Header about 160px tall at 390px in prior browser review; improve without hiding essential navigation.
+  existing_brand_colors:
+    black: '#000000'
+    violet: '#8052ff'
+    saffron: '#ffb829'
+  no_new_brand_assets_without_review: true
+validation_and_maintenance:
+  pre_publish_steps:
+  - Generate routes locally from Astro and compare count to this registry
+  - Confirm canonical and robots for each actual response
+  - Compare sitemap-index.xml and child sitemaps against only intended indexable URLs
+  - Resolve any route canonical or indexability mismatch
+  - Check no broken links and no links to future_content_backlog
+  - Verify H1 and meta title/description and Article structured data only when supported
+  - Check accurate product-availability statements and no fabricated commercial claims
+  - Check layout RTL/mobile accessibility and motion preferences
+  - Review legal and privacy source accuracy before official publication
+  - Record observed production evidence and timestamp before changing browser_observation
+  change_control: Update page_routes when an Astro source route is added/removed or its intended indexing changes; keep proposed
+    routes separate.
+  future_page_activation: Move backlog entry to page_routes only after source exists and owner approves; do not automatically
+    create URLs.
+  github_operations_allowed: READ_ONLY_FOR_THIS_REQUEST
+  repo_write_operations_performed: false
+  production_site_modified: false
+  unchecked_items:
+  - Production HTTP statuses and sitemap XML inaccessible through current direct fetch
+  - GSC click/impression data and live rankings not retrieved
+  - GA4 account reporting, configuration, consent implementation and actual event collection not independently verified
+  - Product backend and pricing availability not independently verified
