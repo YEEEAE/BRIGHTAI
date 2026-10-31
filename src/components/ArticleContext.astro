@@ -1,0 +1,14 @@
+---
+interface Props { headline: string }
+const { headline } = Astro.props;
+const url = new URL(Astro.url.pathname, 'https://brightai.live').href;
+const schema = {
+  '@context': 'https://schema.org', '@type': 'Article',
+  headline, inLanguage: 'ar-SA', mainEntityOfPage: url,
+  dateModified: '2026-10-31',
+  author: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/about/' },
+  publisher: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/' },
+};
+---
+<p class="note">محتوى تعليمي من <a href="/about/">مؤسسة مُشرقة BRIGHT AI</a>. تاريخ إضافة الأقسام الجديدة: <time datetime="2026-10-31">31 أكتوبر 2026</time>. المواد توعوية؛ اعتماد المراجعة التخصصية قبل النشر النهائي ما زال مطلوباً.</p>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

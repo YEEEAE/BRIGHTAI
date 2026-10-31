@@ -1,4 +1,6 @@
 ---
+import ArticleContext from '../../components/ArticleContext.astro';
+import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 export const prerender = true;
 ---
@@ -11,5 +13,12 @@ export const prerender = true;
     <section class="block" id="part-2"><h2>سجل الخطر والضابط</h2><div class="card" role="group" aria-label="نموذج تعليمي لسجل المخاطر"><p><strong>الخطر المحتمل</strong> — ما الذي قد يحدث؟</p><p><strong>السبب والسياق</strong> — ما الظروف التي قد تؤدي إليه؟</p><p><strong>الأثر المحتمل</strong> — على من، وبأي صورة؟</p><p><strong>الضابط المقترح</strong> — كيف يمنع الضرر أو يحده؟</p><p><strong>المالك والدليل</strong> — من ينفذ؟ وما السجل الذي يثبت التنفيذ؟</p><p><strong>المراجعة</strong> — متى يعاد التقييم، ومن يملك الإيقاف؟</p></div></section>
     <section class="block" id="part-3"><h2>أمثلة على أسئلة المراجعة</h2><table><thead><tr><th>المجال</th><th>سؤال يستحق التحقق</th></tr></thead><tbody><tr><td>الخصوصية</td><td>هل تجمع الحالة بيانات أكثر من الحاجة؟ وأين تعالج وفق العقد والإعداد؟</td></tr><tr><td>الجودة</td><td>كيف تكتشف إجابة غير دقيقة قبل الاعتماد عليها؟</td></tr><tr><td>الإنصاف</td><td>هل تختلف النتائج على نحو مؤثر بين مجموعات قد تتأثر؟</td></tr><tr><td>الأمن</td><td>هل يمكن لمدخل غير موثوق التأثير في التعليمات أو الأدوات؟</td></tr><tr><td>المساءلة</td><td>من يراجع النتيجة ومن يوقف الاستخدام عند ظهور ضرر؟</td></tr></tbody></table></section>
     <h2>مصدر مرجعي</h2><p><a href="https://www.spa.gov.sa/en/N2633781" target="_blank" rel="noopener noreferrer">الإطار الوطني لإدارة مخاطر الذكاء الاصطناعي — وكالة الأنباء السعودية</a></p>
+
+    <ContentExtension>
+
+<section><h2>مخاطر الذكاء الاصطناعي: حوّل الوصف إلى قرار</h2><p>قد يظهر الخطر في إجابة غير دقيقة أو تسريب بيانات أو استخدام أداة بصلاحيات أوسع من المهمة. سجّل كيف يصل الخطأ إلى ضرر فعلي؛ فعبارة «النموذج يهلوس» وحدها لا توضح من يتأثر أو أين تتدخل المراجعة.</p><blockquote><p><strong>مثال افتراضي:</strong> مساعد يقترح رداً على شكوى عميل. الخطر: اعتماد الرد دون تحقق فيتضمن التزاماً غير مصرح. الضابط المقترح: مراجعة بشرية قبل الإرسال. الدليل: نسخة معتمدة ومرجع صلاحية المراجع، مع تقليل البيانات المحفوظة.</p></blockquote></section>
+<section><h2>قبل الضابط وبعده</h2><div class="extension-scroll"><table><caption>أسئلة تعليمية للخطر المتبقي؛ لا درجات رسمية</caption><thead><tr><th>مرحلة المراجعة</th><th>ما الذي توثقه؟</th></tr></thead><tbody><tr><td>قبل المعالجة</td><td>السياق والضرر المحتمل والاحتمال والأثر وفق منهج الجهة.</td></tr><tr><td>بعد المعالجة</td><td>كيف اختُبر الضابط؟ ما الحالات التي لا يغطيها؟ ومن يقبل الخطر المتبقي؟</td></tr><tr><td>عند التغيير</td><td>هل تغير النموذج أو البيانات أو الأدوات أو الغرض بما يستوجب مراجعة جديدة؟</td></tr></tbody></table></div><p>يقدم <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">إطار NIST لإدارة مخاطر AI</a> مرجعاً لتنظيم العمل، ولا يحول استخدامه إلى شهادة. اقرأ نطاق <a href="/products/risk-engine/">Risk Engine المخطط</a> و<a href="/products/human-gate/">المراجعة البشرية المستهدفة</a>.</p></section>
+    </ContentExtension>
+    <ArticleContext headline="تقييم مخاطر الذكاء الاصطناعي"/>
   </article></div>
 </PageShell>

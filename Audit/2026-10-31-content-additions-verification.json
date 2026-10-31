@@ -1,0 +1,391 @@
+{
+  "date": "2026-10-31",
+  "status": "PASS",
+  "pages": 27,
+  "sections": 57,
+  "noJS": true,
+  "widths": [
+    360,
+    1440
+  ],
+  "checks": [
+    {
+      "route": "/about/",
+      "width": 360,
+      "sections": 2,
+      "characters": 823,
+      "status": "PASS"
+    },
+    {
+      "route": "/compliance/",
+      "width": 360,
+      "sections": 2,
+      "characters": 767,
+      "status": "PASS"
+    },
+    {
+      "route": "/contact/",
+      "width": 360,
+      "sections": 2,
+      "characters": 641,
+      "status": "PASS"
+    },
+    {
+      "route": "/docs/",
+      "width": 360,
+      "sections": 2,
+      "characters": 519,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/ai-governance-saudi/",
+      "width": 360,
+      "sections": 2,
+      "characters": 857,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/ai-risk-assessment/",
+      "width": 360,
+      "sections": 2,
+      "characters": 903,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/ai-use-policy-employees/",
+      "width": 360,
+      "sections": 2,
+      "characters": 811,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/prompt-injection/",
+      "width": 360,
+      "sections": 2,
+      "characters": 887,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/protect-company-data-chatgpt/",
+      "width": 360,
+      "sections": 2,
+      "characters": 869,
+      "status": "PASS"
+    },
+    {
+      "route": "/pillars/privacy/",
+      "width": 360,
+      "sections": 1,
+      "characters": 471,
+      "status": "PASS"
+    },
+    {
+      "route": "/pillars/safety/",
+      "width": 360,
+      "sections": 1,
+      "characters": 449,
+      "status": "PASS"
+    },
+    {
+      "route": "/pillars/transparency/",
+      "width": 360,
+      "sections": 1,
+      "characters": 357,
+      "status": "PASS"
+    },
+    {
+      "route": "/pricing/",
+      "width": 360,
+      "sections": 2,
+      "characters": 737,
+      "status": "PASS"
+    },
+    {
+      "route": "/privacy/",
+      "width": 360,
+      "sections": 2,
+      "characters": 699,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/",
+      "width": 360,
+      "sections": 3,
+      "characters": 1477,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/firewall/",
+      "width": 360,
+      "sections": 3,
+      "characters": 1340,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/human-gate/",
+      "width": 360,
+      "sections": 3,
+      "characters": 1172,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/ledger/",
+      "width": 360,
+      "sections": 3,
+      "characters": 1068,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/risk-engine/",
+      "width": 360,
+      "sections": 3,
+      "characters": 1070,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/secure-chat/",
+      "width": 360,
+      "sections": 3,
+      "characters": 1220,
+      "status": "PASS"
+    },
+    {
+      "route": "/services/",
+      "width": 360,
+      "sections": 2,
+      "characters": 648,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/enterprise/",
+      "width": 360,
+      "sections": 2,
+      "characters": 890,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/finance/",
+      "width": 360,
+      "sections": 2,
+      "characters": 868,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/government/",
+      "width": 360,
+      "sections": 2,
+      "characters": 866,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/healthcare/",
+      "width": 360,
+      "sections": 2,
+      "characters": 873,
+      "status": "PASS"
+    },
+    {
+      "route": "/terms/",
+      "width": 360,
+      "sections": 2,
+      "characters": 624,
+      "status": "PASS"
+    },
+    {
+      "route": "/trust/",
+      "width": 360,
+      "sections": 2,
+      "characters": 633,
+      "status": "PASS"
+    },
+    {
+      "route": "/about/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 823,
+      "status": "PASS"
+    },
+    {
+      "route": "/compliance/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 767,
+      "status": "PASS"
+    },
+    {
+      "route": "/contact/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 641,
+      "status": "PASS"
+    },
+    {
+      "route": "/docs/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 519,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/ai-governance-saudi/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 857,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/ai-risk-assessment/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 903,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/ai-use-policy-employees/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 811,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/prompt-injection/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 887,
+      "status": "PASS"
+    },
+    {
+      "route": "/knowledge/protect-company-data-chatgpt/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 869,
+      "status": "PASS"
+    },
+    {
+      "route": "/pillars/privacy/",
+      "width": 1440,
+      "sections": 1,
+      "characters": 471,
+      "status": "PASS"
+    },
+    {
+      "route": "/pillars/safety/",
+      "width": 1440,
+      "sections": 1,
+      "characters": 449,
+      "status": "PASS"
+    },
+    {
+      "route": "/pillars/transparency/",
+      "width": 1440,
+      "sections": 1,
+      "characters": 357,
+      "status": "PASS"
+    },
+    {
+      "route": "/pricing/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 737,
+      "status": "PASS"
+    },
+    {
+      "route": "/privacy/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 699,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/",
+      "width": 1440,
+      "sections": 3,
+      "characters": 1477,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/firewall/",
+      "width": 1440,
+      "sections": 3,
+      "characters": 1340,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/human-gate/",
+      "width": 1440,
+      "sections": 3,
+      "characters": 1172,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/ledger/",
+      "width": 1440,
+      "sections": 3,
+      "characters": 1068,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/risk-engine/",
+      "width": 1440,
+      "sections": 3,
+      "characters": 1070,
+      "status": "PASS"
+    },
+    {
+      "route": "/products/secure-chat/",
+      "width": 1440,
+      "sections": 3,
+      "characters": 1220,
+      "status": "PASS"
+    },
+    {
+      "route": "/services/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 648,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/enterprise/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 890,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/finance/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 868,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/government/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 866,
+      "status": "PASS"
+    },
+    {
+      "route": "/solutions/healthcare/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 873,
+      "status": "PASS"
+    },
+    {
+      "route": "/terms/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 624,
+      "status": "PASS"
+    },
+    {
+      "route": "/trust/",
+      "width": 1440,
+      "sections": 2,
+      "characters": 633,
+      "status": "PASS"
+    }
+  ]
+}

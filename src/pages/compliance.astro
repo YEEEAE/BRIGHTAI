@@ -1,4 +1,5 @@
 ---
+import ContentExtension from '../components/ContentExtension.astro';
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
 ---
@@ -9,4 +10,10 @@ export const prerender = true;
   <section class="block"><h2>أسئلة لتحديد نطاق المراجعة</h2><ul class="list"><li>هل الاستخدام من جهة عامة أو خاصة، وما القطاع الذي تعمل فيه؟</li><li>هل يعالج بيانات شخصية أو بيانات حساسة؟</li><li>هل يؤثر المخرج في قرار أو حق أو خدمة لفرد؟</li><li>ما الجهة المنظمة والنصوص والسياسات الداخلية التي تنطبق تحديداً؟</li><li>من يملك قرار الاعتماد والمراجعة والاستجابة للحوادث؟</li></ul></section>
   <section class="block"><h2>مصادر للبدء</h2><ul class="list"><li><a href="https://www.spa.gov.sa/en/N2633781" target="_blank" rel="noopener noreferrer">الإطار الوطني لإدارة مخاطر الذكاء الاصطناعي — SDAIA (خبر نشرته SPA)</a></li><li><a href="https://sdaia.gov.sa/" target="_blank" rel="noopener noreferrer">الموقع الرسمي لسدايا</a></li><li><a href="https://dgp.sdaia.gov.sa/" target="_blank" rel="noopener noreferrer">البوابة الرسمية لحوكمة البيانات الوطنية</a></li></ul><p>تحقق من النصوص والإصدارات الرسمية السارية والجهة المنظمة ذات الصلة قبل اتخاذ قرار.</p></section>
   <a class="button" href="/docs/">اقرأ أدلة مركز المعرفة</a>
+
+    <ContentExtension>
+
+<section><h2>من المتطلب إلى الدليل</h2><ol class="extension-path"><li><strong>حدّد المرجع:</strong> النص أو السياسة السارية ونطاق انطباقها على الجهة والحالة.</li><li><strong>اربط الضابط:</strong> الإجراء الذي يعالج المتطلب ومن يملكه وأين يُطبق.</li><li><strong>اطلب الدليل:</strong> نتيجة اختبار أو قرار مخول أو سجل مناسب، مع التاريخ والنسخة وحدود التحقق.</li><li><strong>سجّل الفجوة:</strong> ما الذي لم يثبت؟ ومن يعالجه؟ ومتى يُراجع؟</li></ol><p>هذه طريقة تنظيم للمراجعة وليست حكماً قانونياً أو ضمان امتثال. استخدام AI Compliance في وصف منتج لا يغني عن تحديد المتطلبات وأدلتها.</p></section>
+<section><h2>أسئلة عن حماية البيانات الشخصية</h2><p>عند معالجة بيانات شخصية، حدّد الغرض وفئات البيانات والأطراف ومكان المعالجة والصلاحيات؛ ثم راجع المتطلبات المنطبقة من النص الرسمي مع المختص. لا يكفي التنقيح أو منع التدريب وحده للحكم بصحة المعالجة.</p><p>ابدأ بـ<a href="/knowledge/protect-company-data-chatgpt/">قائمة قرار حماية البيانات</a> و<a href="/knowledge/ai-governance-saudi/">دورة الحوكمة</a>. الأدوات المقترحة تدعم تنفيذ ضوابط محددة عند إثباتها؛ لا تمنح شهادة.</p></section>
+    </ContentExtension>
 </PageShell>

@@ -1,4 +1,6 @@
 ---
+import ArticleContext from '../../components/ArticleContext.astro';
+import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 export const prerender = true;
 ---
@@ -18,5 +20,12 @@ export const prerender = true;
     <section class="block" id="part-2"><h2>ماذا توثّق لكل استخدام؟</h2><ul class="list"><li>الغرض وحدود الاستخدام وما لا يُسمح للنظام بفعله.</li><li>فئات البيانات ومصدرها وأساس استخدامها، بعد مراجعة الخصوصية والأمن.</li><li>المخاطر والضوابط المتفق عليها والمالك المسؤول عن كل منها.</li><li>حالات المراجعة البشرية والتصعيد والإيقاف والتعامل مع الحوادث.</li><li>تاريخ المراجعة ومتى يلزم تحديث التقييم.</li></ul></section>
     <h2>مصادر للرجوع</h2><ul class="list"><li><a href="https://www.spa.gov.sa/en/N2633781" target="_blank" rel="noopener noreferrer">وكالة الأنباء السعودية: الإطار الوطني لإدارة مخاطر الذكاء الاصطناعي</a></li><li><a href="https://sdaia.gov.sa/" target="_blank" rel="noopener noreferrer">الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)</a></li></ul>
     <p class="note">تأكد من النسخة الأحدث من المصدر الرسمي؛ هذا الشرح لا يحل محل مراجعة الإطار أو الأنظمة واللوائح المنطبقة.</p>
+
+    <ContentExtension>
+
+<section><h2>حوكمة AI وأمنه: مسؤوليتان متكاملتان</h2><div class="extension-columns"><div><h3>الحوكمة تحدد القرار</h3><p>من يعتمد الاستخدام؟ ما حدود البيانات؟ من يقبل المخاطر المتبقية؟ ومتى تتوقف الحالة؟ هذه أسئلة تحتاج مالكاً وسياسة ومسار مراجعة.</p></div><div><h3>الأمن يختبر الضوابط</h3><p>كيف تُمنع الصلاحيات الزائدة؟ أين تُفحص المدخلات؟ وماذا يحدث عند تعطل المسار؟ هذه أسئلة تحتاج تنفيذاً واختباراً ودليلاً.</p></div></div><p>تساعد أدوات الحماية والموافقات والأدلة في تطبيق القرار، لكن شراء الأداة لا يعين المسؤوليات ولا يحل محل اعتماد سياسة المنشأة.</p></section>
+<section><h2>أول اجتماع لحوكمة الذكاء الاصطناعي في منشأتك</h2><ol class="extension-path"><li>اختر استخداماً واحداً له مالك معروف؛ اكتب الغرض والبيانات والقرار المتأثر.</li><li>اجمع مالك الأعمال والأمن والخصوصية والتقنية لتحديد أسئلة المراجعة، مع إشراك المختص النظامي عند الحاجة.</li><li>اخرج بسجل خطر ومسؤولية وخطوة اختبار وموعد مراجعة؛ لا تكتفِ بمحضر يقول «تمت الموافقة».</li></ol><p>انتقل إلى <a href="/knowledge/ai-risk-assessment/">ورقة عمل المخاطر</a>، ثم <a href="/knowledge/ai-use-policy-employees/">دليل سياسة الموظفين</a>. ولتمييز أدوار الأدوات، راجع <a href="/products/">خريطة منتجات AIGAS المخططة</a>.</p></section>
+    </ContentExtension>
+    <ArticleContext headline="حوكمة الذكاء الاصطناعي في السعودية"/>
   </article></div>
 </PageShell>

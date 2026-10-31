@@ -1,4 +1,6 @@
 ---
+import ArticleContext from '../../components/ArticleContext.astro';
+import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 export const prerender = true;
 ---
@@ -12,5 +14,12 @@ export const prerender = true;
     <section class="block" id="part-2"><h2>طبقات دفاع تساعد على تقليل الخطر</h2><ul class="list"><li>اعتبر المستندات ونتائج البحث ومدخلات المستخدم بيانات، لا تعليمات حاكمة.</li><li>لا تضع الأسرار في سياق النموذج إذا لم تكن ضرورية للمهمة.</li><li>طبّق صلاحيات الأدوات في طبقة موثوقة مستقلة عن مخرجات النموذج.</li><li>تحقق من المدخلات والوجهة ونطاق الفعل قبل استدعاء أي أداة.</li><li>اطلب مراجعة بشرية للأفعال ذات الأثر الخارجي أو غير القابلة للعكس.</li><li>اختبر حالات الهجوم وسجل النتائج، ثم حدّث الضوابط عند تغير النموذج أو الأدوات.</li></ul></section>
     <p class="note">المخطط تعليمي ولا يمثل بنية أو ضماناً أمنياً لمنتج متاح. لا توجد هنا خدمة AI Firewall تشغيلية مثبتة؛ وجود طبقة فحص لا يلغي الحاجة إلى عزل الصلاحيات والاختبار والمراجعة.</p>
     <style>.flow{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap}.flow div{flex:1 1 170px;border:1px solid #303039;border-radius:12px;padding:18px;background:#0c0c10}.flow strong,.flow span{display:block}.flow span{color:#aaa;margin-top:8px}.flow b{align-self:center;color:#b89cff}@media(max-width:650px){.flow>b{transform:rotate(90deg);margin-inline:auto}}</style>
+
+    <ContentExtension>
+
+<section><h2>حقن مباشر وحقن غير مباشر</h2><div class="extension-columns"><div><h3>مباشر في الطلب</h3><p>تصل محاولة تغيير المهمة ضمن الرسالة المرسلة إلى النموذج. مصدر الطلب لا يمنحه صلاحية تجاوز سياسة النظام أو الوصول إلى بيانات إضافية.</p></div><div><h3>غير مباشر في المحتوى</h3><p>يقرأ المساعد صفحة أو مستنداً أو نتيجة أداة تتضمن تعليمات مضللة. الخطر أن يعامل المحتوى كأمر مخول، خصوصاً إذا كان يستطيع استخدام أدوات ذات أثر.</p></div></div><p>يوضح <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noopener noreferrer">مرجع OWASP لحقن التعليمات</a> هذا التمييز، ويعرض وسائل لتقليل الأثر دون ضمان منع كل هجوم.</p></section>
+<section><h2>اختبار حدود الوكيل قبل ربط أدواته</h2><ol class="extension-path"><li>استخدم بيئة اختبار وبيانات اصطناعية وأداة لا تنفذ أثراً خارجياً.</li><li>قدّم محتوى خارجياً يطلب فعلاً خارج غرض المهمة، ثم افحص إن كانت طبقة الصلاحيات ترفضه بصورة مستقلة عن النص.</li><li>جرّب تغيير الوجهة أو نطاق البيانات؛ لا يكفي التحقق من اسم الأداة وحده.</li><li>سجّل النتيجة وراجع صلاحية الموافقة ونطاقها قبل تمكين أفعال حساسة.</li></ol><p>هذا اختبار تعليمي لا تقرير اختراق. تعرّف على <a href="/products/firewall/">نطاق AI Firewall المستهدف</a> و<a href="/products/human-gate/">دور Human Gate</a>؛ كلاهما يحتاج إثبات تشغيل قبل الاعتماد.</p></section>
+    </ContentExtension>
+    <ArticleContext headline="Prompt Injection: افصل التعليمات الموثوقة عن المحتوى"/>
   </article></div>
 </PageShell>

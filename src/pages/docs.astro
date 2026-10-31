@@ -1,4 +1,5 @@
 ---
+import ContentExtension from '../components/ContentExtension.astro';
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
 const articles = [
@@ -17,4 +18,10 @@ const articles = [
     {articles.map((article, i) => <a class="catalog-row" href={article.href}><span class="index-number">0{i + 1}</span><div><small>{article.tag}</small><h3>{article.title}</h3></div><p>{article.text}</p><span aria-hidden="true">←</span></a>)}
   </div></section>
   <p class="note">تاريخ إعداد هذه المواد: 31 أكتوبر 2026. راجع المصدر الرسمي والنص النظامي الساري قبل اتخاذ قرار مؤسسي.</p>
+
+    <ContentExtension>
+
+<section><h2>مساران للقراءة حسب مسؤوليتك</h2><div class="extension-columns"><div><h3>للمالك ومدير الحوكمة</h3><ol><li><a href="/knowledge/ai-governance-saudi/">حدد المسؤوليات ودورة الحوكمة</a>.</li><li><a href="/knowledge/ai-risk-assessment/">اكتب الخطر والضابط والدليل</a>.</li><li><a href="/knowledge/ai-use-policy-employees/">حوّل القرارات إلى سياسة للموظفين</a>.</li></ol></div><div><h3>للأمن والتقنية</h3><ol><li><a href="/knowledge/protect-company-data-chatgpt/">راجع البيانات والقناة والمورد</a>.</li><li><a href="/knowledge/prompt-injection/">افصل التعليمات عن المحتوى الخارجي</a>.</li><li><a href="/products/">قارن أدوار المنتجات وحدود تكاملها</a>.</li></ol></div></div></section>
+<section><h2>كيف تستخدم الأدلة داخل منشأتك؟</h2><p>حوّل الأسئلة إلى ورقة عمل لحالة استخدام محددة، ثم اعرضها على المالك المختص. الأمثلة اصطناعية ولا تمثل نتائج تشغيل أو سياسات معتمدة لعميل. تاريخ إعداد الإضافات: 31 أكتوبر 2026؛ اعتماد المراجع البشري المختص قبل النشر النهائي ما زال مطلوباً.</p></section>
+    </ContentExtension>
 </PageShell>

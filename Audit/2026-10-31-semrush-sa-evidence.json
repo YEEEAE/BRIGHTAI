@@ -1,0 +1,98 @@
+{
+  "retrievedAt": "2026-10-31",
+  "database": "sa",
+  "source": "Semrush MCP",
+  "language": "Arabic and English; database location Saudi Arabia; no language filter in report",
+  "seeds": [
+    "حوكمة الذكاء الاصطناعي",
+    "حوكمة الذكاء الاصطناعي في السعودية",
+    "أمن الذكاء الاصطناعي",
+    "امن الذكاء الاصطناعي",
+    "مخاطر الذكاء الاصطناعي",
+    "حماية البيانات",
+    "حماية بيانات الشركات عند استخدام ChatGPT",
+    "سياسات استخدام الذكاء الاصطناعي",
+    "تقييم مخاطر الذكاء الاصطناعي",
+    "حوكمة وكلاء الذكاء الاصطناعي",
+    "ai governance",
+    "ai governance saudi arabia",
+    "ai security",
+    "ai security platform",
+    "ai firewall",
+    "prompt injection",
+    "prompt injection protection",
+    "ai risk assessment",
+    "human in the loop",
+    "ai audit trail",
+    "ai compliance",
+    "ai data privacy",
+    "ai agent security",
+    "air gapped ai",
+    "llm security",
+    "نظام حماية البيانات الشخصية",
+    "سدايا"
+  ],
+  "reports": {
+    "phrase_these": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"data\":\"Keyword;Search Volume;Keyword Difficulty Index;Intent\\nحوكمة الذكاء الاصطناعي;20;0;\\nمخاطر الذكاء الاصطناعي;110;36;1\\nحماية البيانات;140;21;1\\nai governance;110;52;1\\nai security;20;0;\\nai firewall;20;0;\\nنظام حماية البيانات الشخصية;1900;10;1\\nسدايا;33100;52;1,2\\n\",\"metadata\":{\"format\":\"csv\",\"url\":\"https://www.semrush.com/analytics/keywordoverview/?db=sa\\u0026export_columns=keyword%2Cvolume%2Ckeyword_difficulty%2Cintent\\u0026q=%D8%AD%D9%88%D9%83%D9%85%D8%A9+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AD%D9%88%D9%83%D9%85%D8%A9+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A+%D9%81%D9%8A+%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%3B%D8%A3%D9%85%D9%86+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%A7%D9%85%D9%86+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D9%85%D8%AE%D8%A7%D8%B7%D8%B1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AD%D9%85%D8%A7%D9%8A%D8%A9+%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%3B%D8%AD%D9%85%D8%A7%D9%8A%D8%A9+%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA+%D8%A7%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA+%D8%B9%D9%86%D8%AF+%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85+ChatGPT%3B%D8%B3%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA+%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AA%D9%82%D9%8A%D9%8A%D9%85+%D9%85%D8%AE%D8%A7%D8%B7%D8%B1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AD%D9%88%D9%83%D9%85%D8%A9+%D9%88%D9%83%D9%84%D8%A7%D8%A1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3Bai+governance%3Bai+governance+saudi+arabia%3Bai+security%3Bai+security+platform%3Bai+firewall%3Bprompt+injection%3Bprompt+injection+protection%3Bai+risk+assessment%3Bhuman+in+the+loop%3Bai+audit+trail%3Bai+compliance%3Bai+data+privacy%3Bai+agent+security%3Bair+gapped+ai%3Bllm+security%3B%D9%86%D8%B8%D8%A7%D9%85+%D8%AD%D9%85%D8%A7%D9%8A%D8%A9+%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA+%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9%3B%D8%B3%D8%AF%D8%A7%D9%8A%D8%A7\",\"usage\":{\"api_units\":80}}}"
+        }
+      ],
+      "structuredContent": {
+        "data": "Keyword;Search Volume;Keyword Difficulty Index;Intent\nحوكمة الذكاء الاصطناعي;20;0;\nمخاطر الذكاء الاصطناعي;110;36;1\nحماية البيانات;140;21;1\nai governance;110;52;1\nai security;20;0;\nai firewall;20;0;\nنظام حماية البيانات الشخصية;1900;10;1\nسدايا;33100;52;1,2\n",
+        "metadata": {
+          "format": "csv",
+          "url": "https://www.semrush.com/analytics/keywordoverview/?db=sa&export_columns=keyword%2Cvolume%2Ckeyword_difficulty%2Cintent&q=%D8%AD%D9%88%D9%83%D9%85%D8%A9+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AD%D9%88%D9%83%D9%85%D8%A9+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A+%D9%81%D9%8A+%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%3B%D8%A3%D9%85%D9%86+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%A7%D9%85%D9%86+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D9%85%D8%AE%D8%A7%D8%B7%D8%B1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AD%D9%85%D8%A7%D9%8A%D8%A9+%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%3B%D8%AD%D9%85%D8%A7%D9%8A%D8%A9+%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA+%D8%A7%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA+%D8%B9%D9%86%D8%AF+%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85+ChatGPT%3B%D8%B3%D9%8A%D8%A7%D8%B3%D8%A7%D8%AA+%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AA%D9%82%D9%8A%D9%8A%D9%85+%D9%85%D8%AE%D8%A7%D8%B7%D8%B1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3B%D8%AD%D9%88%D9%83%D9%85%D8%A9+%D9%88%D9%83%D9%84%D8%A7%D8%A1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%3Bai+governance%3Bai+governance+saudi+arabia%3Bai+security%3Bai+security+platform%3Bai+firewall%3Bprompt+injection%3Bprompt+injection+protection%3Bai+risk+assessment%3Bhuman+in+the+loop%3Bai+audit+trail%3Bai+compliance%3Bai+data+privacy%3Bai+agent+security%3Bair+gapped+ai%3Bllm+security%3B%D9%86%D8%B8%D8%A7%D9%85+%D8%AD%D9%85%D8%A7%D9%8A%D8%A9+%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA+%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9%3B%D8%B3%D8%AF%D8%A7%D9%8A%D8%A7",
+          "usage": {
+            "api_units": 80
+          }
+        }
+      },
+      "isError": false
+    },
+    "phrase_related_ar": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"code\":\"no_data\",\"message\":\"No data found for this request. Verify your parameters are correct. If parameters are valid, try a different date range or target.\",\"retryable\":false,\"hint\":\"Semrush has no data for this request; this is the final answer for it. Do not retry the same request and do not look for the data another way: no other reports, discovery tools, parameter variations, or data sources.\\nInform the user concisely and factually that Semrush has no data for these parameters, and do not fill the gap with figures from general knowledge or any source other than Semrush.\\nIf this request covers only part of the user's task, continue with the other parts and report the missing data separately; do not merge this notice with other tool results.\",\"trace_id\":\"8f7a7151e859cf66813c174e9a45fd90\"}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "phrase_related_en": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"code\":\"no_data\",\"message\":\"No data found for this request. Verify your parameters are correct. If parameters are valid, try a different date range or target.\",\"retryable\":false,\"hint\":\"Semrush has no data for this request; this is the final answer for it. Do not retry the same request and do not look for the data another way: no other reports, discovery tools, parameter variations, or data sources.\\nInform the user concisely and factually that Semrush has no data for these parameters, and do not fill the gap with figures from general knowledge or any source other than Semrush.\\nIf this request covers only part of the user's task, continue with the other parts and report the missing data separately; do not merge this notice with other tool results.\",\"trace_id\":\"0527bb6d203930b26788e027e68355cc\"}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "phrase_organic_risks": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"data\":\"Position;Domain;Url\\n1;www.ibm.com;https://www.ibm.com/sa-ar/think/insights/10-ai-dangers-and-risks-and-how-to-manage-them\\n2;translate.google.com;https://translate.google.com/translate?u=https://builtin.com/artificial-intelligence/risks-of-artificial-intelligence\\u0026hl=ar\\u0026sl=en\\u0026tl=ar\\u0026client=srp\\n3;sdaia.gov.sa;https://sdaia.gov.sa/ar/MediaCenter/KnowledgeCenter/ResearchLibrary/ExecutiveSummaryAr.pdf\\n4;bakkah.com;https://bakkah.com/ar/knowledge-center/%D8%A5%D9%8A%D8%AC%D8%A7%D8%A8%D9%8A%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A\\n5;www.youtube.com;https://www.youtube.com/shorts/EwxCr46LCfE\\n6;asjp.cerist.dz;https://asjp.cerist.dz/en/article/217953\\n7;ar.wikipedia.org;https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%AE%D8%B7%D8%B1_%D8%A7%D9%84%D9%88%D8%AC%D9%88%D8%AF%D9%8A_%D9%85%D9%86_%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1_%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A\\n8;translate.google.com;https://translate.google.com/translate?u=https://airc.nist.gov/airmf-resources/airmf/3-sec-characteristics/\\u0026hl=ar\\u0026sl=en\\u0026tl=ar\\u0026client=srp\\n9;www.slideshare.net;https://www.slideshare.net/slideshow/pdf-ff55/267132551\\n10;www.imf.org;https://www.imf.org/ar/publications/fandd/issues/2023/12/b2b-artificial-intelligence-promise-peril-tourpe\\n\",\"metadata\":{\"format\":\"csv\",\"pagination\":{\"limit\":10},\"url\":\"https://www.semrush.com/analytics/keywordoverview/?db=sa\\u0026display_limit=10\\u0026export_columns=position%2Cdomain%2Curl\\u0026q=%D9%85%D8%AE%D8%A7%D8%B7%D8%B1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A\",\"usage\":{\"api_units\":100}}}"
+        }
+      ],
+      "structuredContent": {
+        "data": "Position;Domain;Url\n1;www.ibm.com;https://www.ibm.com/sa-ar/think/insights/10-ai-dangers-and-risks-and-how-to-manage-them\n2;translate.google.com;https://translate.google.com/translate?u=https://builtin.com/artificial-intelligence/risks-of-artificial-intelligence&hl=ar&sl=en&tl=ar&client=srp\n3;sdaia.gov.sa;https://sdaia.gov.sa/ar/MediaCenter/KnowledgeCenter/ResearchLibrary/ExecutiveSummaryAr.pdf\n4;bakkah.com;https://bakkah.com/ar/knowledge-center/%D8%A5%D9%8A%D8%AC%D8%A7%D8%A8%D9%8A%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A\n5;www.youtube.com;https://www.youtube.com/shorts/EwxCr46LCfE\n6;asjp.cerist.dz;https://asjp.cerist.dz/en/article/217953\n7;ar.wikipedia.org;https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%AE%D8%B7%D8%B1_%D8%A7%D9%84%D9%88%D8%AC%D9%88%D8%AF%D9%8A_%D9%85%D9%86_%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1_%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A\n8;translate.google.com;https://translate.google.com/translate?u=https://airc.nist.gov/airmf-resources/airmf/3-sec-characteristics/&hl=ar&sl=en&tl=ar&client=srp\n9;www.slideshare.net;https://www.slideshare.net/slideshow/pdf-ff55/267132551\n10;www.imf.org;https://www.imf.org/ar/publications/fandd/issues/2023/12/b2b-artificial-intelligence-promise-peril-tourpe\n",
+        "metadata": {
+          "format": "csv",
+          "pagination": {
+            "limit": 10
+          },
+          "url": "https://www.semrush.com/analytics/keywordoverview/?db=sa&display_limit=10&export_columns=position%2Cdomain%2Curl&q=%D9%85%D8%AE%D8%A7%D8%B7%D8%B1+%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1+%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A",
+          "usage": {
+            "api_units": 100
+          }
+        }
+      },
+      "isError": false
+    }
+  }
+}

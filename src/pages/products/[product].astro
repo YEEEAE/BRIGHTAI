@@ -1,4 +1,5 @@
 ---
+import ProductContentExtension from '../../components/ProductContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 import ProductExperience from '../../components/ProductExperience.astro';
 import ProductIcon from '../../components/ProductIcon.astro';
@@ -23,4 +24,5 @@ const roles: Record<string,string> = { firewall: 'من الطلب إلى الق�
   <p class="note">المخططات تعليمية وتصف نطاقاً مستهدفاً وفق Blueprint. لا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة.</p>
   <section class="block review-questions"><div><p class="eyebrow">قبل أي استخدام فعلي</p><h2>ثلاثة أسئلة<br/>تستحق المراجعة.</h2></div><ol>{questions.map((question: string) => <li>{question}</li>)}</ol></section>
   <section class="block"><h2>مكان المنتج في التصور</h2><p>AIGAS Kernel مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint؛ وهذا لا يعني أنها متاحة حالياً.</p><div class="actions"><a class="button" href="/contact/">اطلب معلومات أو عرض سعر</a><a class="ghost" href="/products/">استعراض المنتجات</a></div></section>
+  <ProductContentExtension kind={slug}/>
 </PageShell>

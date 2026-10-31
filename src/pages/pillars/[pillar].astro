@@ -1,4 +1,5 @@
 ---
+import PillarContentExtension from '../../components/PillarContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 export const prerender = true;
 export const pillars = [
@@ -14,4 +15,5 @@ const { no, title, intro, prompts, products } = Astro.props;
   <p class="note">هذه مبادئ توجيهية لا تثبت تطبيقها بواسطة منتج. منتجات AIGAS مخططة والإتاحة التشغيلية غير متحققة. قيّم كل حالة وفق متطلبات الجهة المختصة.</p>
   <section class="block review-questions"><h2>حوّل المبدأ<br/>إلى أسئلة عملية.</h2><ol>{prompts.map((question: string) => <li>{question}</li>)}</ol></section>
   <section class="block"><h2>منتجات مرتبطة في التصور</h2><p>الأسماء التالية توضح اتجاه الـBlueprint فقط، وليست قائمة خدمات متاحة.</p><div class="actions">{products.map(([slug, name]: string[]) => <a class="ghost" href={`/products/${slug}/`} dir="ltr">{name}</a>)}<a class="button" href="/docs/">مركز المعرفة</a></div></section>
+  <PillarContentExtension kind={no}/>
 </PageShell>

@@ -1,4 +1,5 @@
 ---
+import SectorContentExtension from '../../components/SectorContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 export const prerender = true;
 export const sectors = [
@@ -21,4 +22,5 @@ const contexts: Record<string, string[][]> = {
   <p class="note">هذه أسئلة للتخطيط وليست توصية تشغيلية أو شهادة امتثال. الالتزامات تختلف بحسب الجهة والقطاع وحالة الاستخدام، والإتاحة التشغيلية لمنتجات AIGAS غير متحققة.</p>
   <section class="block review-questions"><h2>قرارات تبدأ<br/>بالسؤال الصحيح.</h2><ol>{questions.map((question: string) => <li>{question}</li>)}</ol></section>
   <section class="block"><h2>خطوة عملية</h2><p>سجّل الغرض والبيانات والأطراف المتأثرة، ثم اطلب مراجعة الأمن والخصوصية والامتثال والمالك المسؤول قبل اختيار أداة أو إدخال بيانات فعلية.</p><div class="actions"><a class="button" href={`/contact/?topic=${encodeURIComponent(title)}`}>أرسل استفساراً</a><a class="ghost" href="/docs/">أدلة مركز المعرفة</a></div></section>
+  <SectorContentExtension kind={slug}/>
 </PageShell>

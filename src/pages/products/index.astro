@@ -1,4 +1,5 @@
 ---
+import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 import SystemMap from '../../components/SystemMap.astro';
 import ProductIcon from '../../components/ProductIcon.astro';
@@ -18,4 +19,12 @@ const products = [
   <section class="block"><SystemMap compact /></section>
   <section class="block"><p class="eyebrow">دليل المنتجات / 01–05</p><h2>ابدأ بالدور الذي تحتاجه.</h2><div class="catalog">{products.map(([slug, name, text], i) => <a class="catalog-row" href={`/products/${slug}/`}><ProductIcon kind={slug}/><div><small>0{i + 1} / مخطط</small><h3><bdi>{name}</bdi></h3></div><p>{text}</p><span aria-hidden="true">↖</span></a>)}</div></section>
   <section class="block"><h2>ما الذي يتطلب تحققاً؟</h2><p>قبل أي اعتماد تجاري، يلزم إثبات حالة التشغيل، ونطاق الوظائف، ومقدمي الخدمات ومناطق المعالجة، وضوابط الأمن والخصوصية، وشروط الخدمة والاحتفاظ. لا تثبت هذه الصفحة وجود أي من ذلك.</p><div class="actions"><a class="button" href="/pricing/">اطلب عرض سعر</a><a class="ghost" href="/docs/">اقرأ مركز المعرفة</a></div></section>
+
+    <ContentExtension>
+
+<section><h2>أي دور تحتاجه أولاً؟</h2><div class="extension-scroll"><table><caption>خريطة احتياج إلى منتج مخطط؛ ليست قائمة إتاحة</caption><thead><tr><th>سؤالك</th><th>الدور المستهدف</th><th>ابدأ هنا</th></tr></thead><tbody><tr><td>كيف أضبط طلبات AI عند نقطة التكامل؟</td><td>تطبيق قرارات الحماية</td><td><a href="/products/firewall/">Firewall</a></td></tr><tr><td>كيف أوثّق سبب تقييم الخطر؟</td><td>تقييم قابل للتفسير والمراجعة</td><td><a href="/products/risk-engine/">Risk Engine</a></td></tr><tr><td>من يوافق قبل الإجراء الحساس؟</td><td>مراجعة بشرية وإنفاذ قرارها</td><td><a href="/products/human-gate/">Human Gate</a></td></tr><tr><td>كيف أفحص دليل القرار؟</td><td>تصدير وتحقق من سلامة الأدلة</td><td><a href="/products/ledger/">Ledger</a></td></tr><tr><td>كيف يراسل الموظف نموذجاً معتمداً؟</td><td>محادثة مؤسسية محكومة</td><td><a href="/products/secure-chat/">Secure Chat</a></td></tr></tbody></table></div></section>
+<section><h2>استقلال المنتج والتكامل الاختياري</h2><p>المتطلب المعتمد أن تعمل الوظيفة الأساسية لكل منتج مشترى دون اشتراط شراء منتج ثانٍ. يوفر Kernel الأمن والسياسات والتدقيق الأساسي اللازم؛ أما التكامل بين المنتجات فيضيف وظائف متقدمة ضمن نطاق معلن.</p><p>ترتيب التنفيذ المستهدف يبدأ بـKernel ثم Firewall وLedger وHuman Gate، ويتبعه Risk Engine وSecure Chat. هذا ترتيب خطة، وليس إعلان إطلاق. <a href="/pricing/">راجع الفرق بين التجربة والعرض التجاري</a>.</p></section>
+
+<section id="deployment-options"><h2>النشر السحابي والمحلي والمعزول: قارن الاعتماديات</h2><div class="extension-scroll"><table><caption>خيارات مستهدفة في Blueprint؛ لم تُثبت جاهزيتها التشغيلية</caption><thead><tr><th>البيئة</th><th>سؤال القرار</th><th>ما الذي يلزم إثباته؟</th></tr></thead><tbody><tr><td><bdi>SaaS</bdi></td><td>من يدير الخدمة وأين تحفظ البيانات وتعالج طلبات AI؟</td><td>عقود الموردين، العزل، المناطق والصلاحيات والاستعادة.</td></tr><tr><td><bdi>On-Premise</bdi></td><td>ما الذي يعمل داخل بيئة العميل وما الاتصال الخارجي المصرح؟</td><td>مسؤوليات التشغيل والهوية والمفاتيح والتحديث والدعم المؤقت.</td></tr><tr><td><bdi>Air-Gapped</bdi></td><td>هل تبقى الوظائف الأساسية مستقلة تماماً دون إنترنت؟</td><td>هوية وتراخيص ونماذج ومراقبة محلية، وحزم تحديث Offline موثقة.</td></tr></tbody></table></div><p>النشر المحلي المتصل لا يساوي بيئة معزولة. اطلب اختبار انقطاع الإنترنت واستقلال الاعتماديات عند تقييم Air-Gapped. لا تعني هذه المقارنة وجود نسخة عاملة أو تعهداً بمكان استضافة حالي.</p></section>
+    </ContentExtension>
 </PageShell>
