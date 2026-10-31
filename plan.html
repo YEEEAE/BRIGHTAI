@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>BRIGHTAI — تحليل المشروع وخطة المستندات المرجعية وتجربة المنتجات</title><meta name="description" content="التقرير الكامل لمشروع BRIGHTAI مع الخرائط والجداول والمخططات المرجعية"/><style>
+:root{color-scheme:dark;--bg:#08090e;--panel:#12131c;--panel2:#191a27;--line:#343441;--fg:#fafafa;--muted:#aaaebd;--violet:#8666ff;--amber:#ffb829;--good:#6bd4b8;--bad:#ff8689}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font-family:'IBM Plex Sans Arabic','Noto Sans Arabic',Tahoma,Arial,sans-serif;font-size:15px;line-height:1.95;direction:rtl;text-align:right;font-synthesis:none}
+.main{max-width:1100px;padding:62px 52px 85px;margin:auto}h1,h2,h3{line-height:1.45;break-after:avoid;page-break-after:avoid;letter-spacing:-.018em}h1{font-size:35px;margin:0 0 25px;font-weight:700;line-height:1.45;background:linear-gradient(110deg,#fff,#fff 56%,#c1afff);-webkit-background-clip:text;background-clip:text;color:transparent}h2{font-size:27px;margin:59px 0 18px;padding-top:20px;border-top:1px solid var(--line)}h3{font-size:21px;margin:36px 0 14px}p{margin:12px 0 18px}strong,b{color:#fff;font-weight:700}a{color:#bdb0ff;text-decoration:none;border-bottom:1px solid #7c66d2}a:hover{color:white;border-color:white}em{color:#ddd}code{font-family:'SFMono-Regular','DejaVu Sans Mono',Consolas,monospace;font-size:.9em;background:#22232f;color:#f1e6ff;padding:.08em .3em;border-radius:4px;unicode-bidi:plaintext;overflow-wrap:anywhere}pre{direction:ltr;text-align:left;white-space:pre;overflow:auto;background:#11141f;border:1px solid #343a4b;border-radius:13px;padding:22px 25px;line-height:1.65;font-size:12px;break-inside:avoid}pre code{background:none;padding:0;color:#d9ecff;font-size:12px;overflow-wrap:normal;white-space:pre}
+table{border-collapse:separate;border-spacing:0;width:100%;table-layout:auto;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:20px 0 27px;font-size:13px;line-height:1.7}thead th{background:#222339;font-weight:700;color:#fafafa}td,th{text-align:right;vertical-align:top;border-bottom:1px solid var(--line);padding:12px 13px;overflow-wrap:anywhere}tr:last-child td{border-bottom:0}tbody tr:nth-child(2n){background:#151622}th:not(:last-child),td:not(:last-child){border-left:1px solid var(--line)}table code{font-size:11px}table th:first-child{min-width:22%}
+.meta-line{display:flex;flex-wrap:wrap;gap:12px;align-items:center;color:var(--muted);font-size:12px;margin-top:-4px;margin-bottom:17px}.status-badge{background:#342817;color:#f9d08b;border:1px solid #55432b;border-radius:7px;padding:2px 11px;font-weight:600;font-size:11px;display:inline-block}
+.stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 30px}.stat{padding:21px 22px;border:1px solid var(--line);border-radius:14px;background:#12131c;min-height:129px;display:flex;flex-direction:column;align-items:flex-start;gap:5px}.stat span{color:var(--muted);font-size:12px}.stat strong{font-size:30px;line-height:1.3}.stat strong.stat-long{font-size:22px}.stat small{font-size:11px;color:var(--muted);line-height:1.7}
+.mindmap,.trial-flow,.api-flow{border:1px solid var(--line);background:#10111b;border-radius:17px;padding:24px;margin:24px 0 31px;break-inside:avoid}.mind-root,.mind-bottom{background:#212137;padding:16px;border-radius:12px;min-height:67px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}.mind-root b,.mind-bottom b{direction:ltr;unicode-bidi:plaintext}.mindmap small,.trial-flow small,.api-flow small{font-size:11px;color:#aeb0c6;line-height:1.6;display:block}.mind-connect{height:27px;width:1px;margin:auto;background:#67628a;position:relative}.mind-connect:after{content:' ';position:absolute;width:7px;height:7px;background:#8f83d1;border-radius:50%;left:-3px;top:10px}.mind-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.mind-node{border:1px solid #49445f;border-radius:11px;padding:18px 14px;min-height:110px;display:flex;flex-direction:column;gap:5px;justify-content:center}.mind-node b{direction:ltr;text-align:right;unicode-bidi:plaintext;font-size:15px}.mind-bottom{min-height:69px}
+.products-visual{margin:18px 0 12px}.product-visual-row{display:flex;gap:18px;align-items:center;border-bottom:1px solid var(--line);padding:15px 1px 17px;break-inside:avoid}.product-visual-row:last-child{border-bottom:0}.product-visual-row b{font-size:16px;direction:ltr;unicode-bidi:plaintext;display:block;text-align:right}.product-visual-row p{margin:4px 0 0}.prod-thumb{width:115px;height:115px;min-width:115px;border-radius:10px;display:grid;place-items:center;background:radial-gradient(circle at 27% 20%,#7161b8 0,#281f51 38%,#141020 70%);overflow:hidden}.prod-thumb svg{width:85%;height:85%;fill:#8866f288;stroke:#d1baff;stroke-width:2;filter:drop-shadow(0 0 11px #715beaaa)}.prod-thumb svg .line{fill:none;stroke:#eee5ff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.prod-risk{background:radial-gradient(circle at 30% 10%,#4a80ab,#1c284b 45%,#0e1223)}.prod-human{background:radial-gradient(circle at 30% 10%,#6a55a5,#271b46 45%,#101025)}.prod-ledger{background:radial-gradient(circle at 30% 10%,#8660a5,#352152 45%,#161124)}.prod-chat{background:radial-gradient(circle at 30% 10%,#355cbd,#25184d 50%,#111328)}
+.sample-spec{border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:20px 0 30px;break-inside:avoid}.sample-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px;flex-wrap:wrap}.sample-title b{font-size:16px}.sample-spec table{margin:0 0 18px;border:0;font-size:12.5px}.sample-spec table tr:nth-child(even){background:#151622}.sample-spec table td:first-child{width:32%}.sample-rules{border-top:1px solid var(--line);padding-top:14px}.rule{display:flex;align-items:flex-start;gap:11px;margin:13px 0;line-height:1.8}.pass-icon{font-weight:bold;color:var(--good);font-size:20px;line-height:1.3}.fail-icon{font-weight:bold;color:var(--bad);font-size:20px;line-height:1.3}
+.flow-heading{text-align:center;display:flex;flex-direction:column;gap:5px;align-items:center;margin-bottom:18px}.flow-heading b{font-size:20px}.flow-step{border:1px solid #4d4c61;border-radius:11px;padding:12px 15px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:75px}.flow-step.major{background:#24243b;border-color:transparent}.flow-step b{font-size:15px}.flow-icon{line-height:1.1;font-size:25px;color:#ddd2ff}.down-arrow{text-align:center;color:#9e93d6;font-size:23px;line-height:1.4;height:35px}.flow-branches{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:11px}.flow-branches .flow-step{min-height:128px}.api-flow{max-width:710px;margin-inline:auto}.api-services{display:grid;grid-template-columns:1fr 1fr;gap:10px}.api-services div{border-radius:9px;padding:20px 10px;border:1px solid #4b485d;text-align:center;font-weight:650;font-size:13px;direction:ltr}.api-flow .flow-step{max-width:600px;margin-inline:auto;direction:ltr}
+.roadmap{margin:18px 0 30px}.roadmap-item{display:flex;align-items:flex-start;gap:15px;padding:18px 0;border-bottom:1px solid var(--line);break-inside:avoid}.roadmap-item:last-child{border-bottom:0}.roadmap-item b{font-size:16px}.roadmap-item p{margin:4px 0 0}.road-icon{min-width:51px;height:51px;border:1px solid #57506d;border-radius:11px;background:#1d1d2c;color:#c7b9ff;font-size:29px;display:grid;place-items:center;line-height:1}
+@page{size:A4;margin:17mm 14mm 18mm 14mm} @media print{ :root{color-scheme:light;--bg:#fff;--panel:#f9f9fc;--panel2:#f1f1f8;--line:#dbdce7;--fg:#1c1f2a;--muted:#586172} body{background:white;color:#20212b;font-size:10.5pt;line-height:1.65;-webkit-print-color-adjust:exact;print-color-adjust:exact} .main{padding:0;max-width:none}h1{color:#24114f;background:none;-webkit-text-fill-color:#24114f;font-size:25pt}h2{font-size:17pt;page-break-before:auto;margin:30px 0 14px}h3{font-size:13pt;margin:19px 0 10px}p{margin:8px 0 10px}strong,b{color:#181727}a{color:#443496;border-bottom:0}table{font-size:9pt;margin:14px 0 20px;break-inside:auto}tr{break-inside:avoid}thead{display:table-header-group}td,th{padding:7px 9px;color:#242536}thead th{background:#edeafc;color:#241741}tbody tr:nth-child(2n){background:#f8f8fc}code{background:#f1effa;color:#43335b}.stats-grid .stat{min-height:90px}.stat{background:#f7f7fb}.stat span,.stat small{color:#525667}.stat strong{color:#241741}.mindmap,.trial-flow,.api-flow{background:#fafafe;padding:16px;margin:13px 0 16px}.mind-root,.mind-bottom,.flow-step.major{background:#efedfa}.mind-node{border-color:#dad6f3}.flow-step,.mind-root,.mind-bottom,.mind-node,.flow-step b,.mind-root b,.mind-bottom b,.mind-node b,.api-services div{color:#252034}.flow-step small,.mindmap small,.api-flow small{color:#55566b}.sample-spec{padding:12px}.sample-title b{color:#1f1f2b}.sample-spec table tr:nth-child(even){background:#f4f3fa!important}.sample-spec table td{color:#252535!important}.rule{line-height:1.5;margin:9px 0}.pass-icon{color:#128562}.fail-icon{color:#b62b3d}.road-icon{background:#eeeaf9;color:#533c9f}.prod-thumb{width:82px;height:82px;min-width:82px}.product-visual-row{padding:10px 0}.products-visual p,.roadmap-item p{margin:2px 0}.status-badge{background:#fff1d1;color:#77551b;border:1px solid #d9ba86}.meta-line{color:#555}.flow-heading b{color:#262238}.stats-grid{gap:9px}.stat{padding:13px}.stat strong{font-size:24px}.stat strong.stat-long{font-size:19px}pre{background:#fafafd;color:#25345c;border-color:#d7dbe7;padding:14px;overflow:visible;white-space:pre-wrap;overflow-wrap:anywhere;font-size:9pt}pre code{color:#25345c;font-size:9pt;background:none} .prod-thumb{print-color-adjust:exact}}
+@media(max-width:720px){.main{padding:32px 18px 70px}body{font-size:14px}h1{font-size:28px}h2{font-size:23px}h3{font-size:18px}td,th{padding:9px;font-size:12px}table{display:block;overflow-x:auto}.stat{padding:15px 14px}.product-visual-row{align-items:flex-start}.prod-thumb{width:80px;height:80px;min-width:80px}.mind-node{padding:12px}.mind-node b{font-size:12px}}
+</style></head>
+<body><main class="main"><h1>BRIGHTAI — تحليل المشروع وخطة المستندات المرجعية وتجربة المنتجات</h1>
+<p>راجعت مستودع <a href="https://github.com/YEEEAE/BRIGHTAI">BRIGHTAI على GitHub</a>، وبدأت من الكود الفعلي لصفحات المنتجات والتسعير والتوثيق وواجهة Kernel.</p>
+<p><strong>أهم نتيجة:</strong> مشروعك يحتاج إلى ما أسميه <strong>BRIGHTAI Product &amp; Knowledge Architecture</strong>؛ نظام مستندات يكون المصدر الرسمي للحقيقة، مو مجرد ملفات شرح. كل صفحة، منتج، تكامل API، تجربة مجانية، وسياسة تجارية يكون له مرجع واضح يرجع له المطور أو وكيل الذكاء الاصطناعي.</p>
+<p>وفيه نقطة مهمة اكتشفتها: المشروع حاليًا يفرّق بين المنتجات المستهدفة وبين القدرات المتاحة فعليًا، وهذا شيء صحيح. لكن تجربة Kernel الموجودة في الموقع محاكاة محلية للحجب، وليست تجربة حقيقية للمنتجات الخمسة. كذلك صفحة الأسعار تعرض تجربة 14 يومًا، بينما توجهك الجديد هو تجربة مدتها يومان.</p>
+<p>أقترح نخلي <strong>48 ساعة هي التجربة المؤسسية الموجّهة</strong>، بدل مجرد تقليل عدد أيام التجربة. الهدف أن العميل يشوف نتيجة قابلة للقياس، ويقدر يقرر بعدها هل المنتج يناسب بيئته.</p>
+<h2>1. نتيجة التحليل التقني للمشروع</h2>
+<div class="meta-line"><span class="status-badge">مرحلة تأسيس المنتجات</span><span>المرجع: الفرع main — 31 أكتوبر 2026</span></div>
+
+<div class="stats-grid">
+  <div class="stat"><span>صفحات الموقع الموثقة</span><strong>24</strong><small>وفق آخر سجل بناء بالمستودع</small></div>
+  <div class="stat"><span>المنتجات المعروضة</span><strong>5</strong><small>ضمن AIGAS Kernel</small></div>
+  <div class="stat"><span>الخدمات الاستشارية</span><strong>8</strong><small>بجانب البرامج التدريبية</small></div>
+  <div class="stat"><span>API المنتجات في المصدر الحالي</span><strong class="stat-long">غير موجودة</strong><small>لم أجد Endpoints قابلة للتشغيل ضمن شجرة المشروع</small></div>
+</div>
+
+<h3>المشاكل التي تحتاج معالجة في مرحلة التأسيس</h3>
+<table>
+<thead>
+<tr>
+  <th>الموضوع</th>
+  <th>الموجود حاليًا</th>
+  <th>المطلوب</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>مصدر معلومات المنتجات</td>
+  <td>التعريفات مكتوبة مباشرة داخل صفحات Astro</td>
+  <td>كتالوج منتجات موحد</td>
+</tr>
+<tr>
+  <td>تجربة العميل</td>
+  <td>محاكاة حجب واحدة</td>
+  <td>بيئة فعلية مستقلة لكل منتج</td>
+</tr>
+<tr>
+  <td>التسجيل والتفعيل</td>
+  <td>نموذج يفتح تطبيق البريد</td>
+  <td>طلب تجربة، تحقق من الجهة، تفعيل وصلاحيات</td>
+</tr>
+<tr>
+  <td>APIs</td>
+  <td>وصف تقني لمسار Chat دون تنفيذ حالي</td>
+  <td>عقود API وربط فعلي محكوم</td>
+</tr>
+<tr>
+  <td>الأسعار</td>
+  <td>باقات ثابتة داخل الكود</td>
+  <td>سجل تجاري موحد للأسعار والحدود</td>
+</tr>
+<tr>
+  <td>المحتوى العربي</td>
+  <td>نصوص داخل الملفات ومراجع تصميم متعددة</td>
+  <td>دليل لغوي وتحريري إلزامي</td>
+</tr>
+<tr>
+  <td>الإثبات</td>
+  <td>خصائص موصوفة بأنها مستهدفة</td>
+  <td>سجل يميز المتاح من المخطط</td>
+</tr>
+<tr>
+  <td>تصميم الواجهات</td>
+  <td>دليل قديم مع Design Tokens أحدث ومختلفة</td>
+  <td>Design System معتمد واحد</td>
+</tr>
+</tbody>
+</table>
+<p><strong>وفيه ثلاث ملاحظات إضافية مهمة:</strong></p>
+<p>أولًا، ملف <a href="https://github.com/YEEEAE/BRIGHTAI/blob/main/Audit/Complete-Site-Guide.md">Complete-Site-Guide.md</a> فيه تصور جيد لتجربة <code>/sandbox</code>، لكن التنفيذ الحالي مختلف عنه. حتى الهوية البصرية في الدليل تستخدم ألوانًا مختلفة عن الهوية السوداء والبنفسجية الحالية. لازم نعتمد قرارًا نهائيًا عشان الوكلاء ما يرجعون للتصاميم القديمة.</p>
+<p>ثانيًا، ملف <a href="https://github.com/YEEEAE/BRIGHTAI/blob/main/AGENTS.md">AGENTS.md</a> الموجود بالفعل شامل في طريقة عمل الوكلاء، لكنك تحتاج تفصل <strong>تعليمات كيفية العمل</strong> عن <strong>المستندات التي تحدد ماذا نبني</strong>. هذي وظيفتان مختلفتان.</p>
+<p>ثالثًا، المشروع يحتوي آلاف الملفات المرتبطة بالمهارات والوكلاء، مقابل شجرة تطبيق أصغر بكثير. هذا مو خطأ بحد ذاته، لكنه يرفع أهمية وجود فهرس صغير ودقيق للمستندات المعتمدة، حتى الوكيل ما يضيع بين المراجع أو يقرأ تعليمات غير مرتبطة بالمهمة.</p>
+<p>كذلك سجل التدقيق الحالي يشير إلى أن بيانات الرسم البصري بالصفحة الرئيسية مشتقة من مرجع تصميم خارجي دون إثبات ترخيص. هذه نقطة أنصح بإغلاقها قبل الاستخدام التجاري النهائي.</p>
+<h2>2. مكتبة BRIGHTAI المرجعية المقترحة</h2>
+<p>أقترح تنظيمها على أربع طبقات: هوية المؤسسة، تعريف المنتجات، تشغيل المنصة، ثم تجربة العميل.</p>
+<div class="mindmap" aria-label="الخريطة الذهنية لمكتبة BRIGHTAI المرجعية">
+  <div class="mind-root"><b>BRIGHTAI MASTER KNOWLEDGE</b><small>المرجع الأعلى للمشروع والقرارات والمحتوى المعتمد</small></div>
+  <div class="mind-connect"></div>
+  <div class="mind-grid">
+    <div class="mind-node"><b>01 · Foundation</b><small>الهوية، اللغة، التصميم، قواعد العمل</small></div>
+    <div class="mind-node"><b>02 · Products</b><small>مواصفات كل منتج وصفحاته وقدراته</small></div>
+    <div class="mind-node"><b>03 · Platform</b><small>API، الأمان، البيانات، الحسابات والتكاليف</small></div>
+    <div class="mind-node"><b>04 · Trial &amp; Sales</b><small>تجربة 48 ساعة، القياس، التقارير والتحويل للبيع</small></div>
+  </div>
+  <div class="mind-connect"></div>
+  <div class="mind-bottom"><b>Website Pages + AI Agents + Product APIs</b><small>كلها ترجع إلى نفس المرجع بدل تكرار التعريفات</small></div>
+</div>
+
+<h3>أ. المستندات الأساسية للمشروع</h3>
+<p>هذي أهم المستندات التي أنصح بإنشائها، مع مراعاة ما هو موجود أصلًا حتى ما نكرر المحتوى.</p>
+<table>
+<thead>
+<tr>
+  <th>اسم المستند</th>
+  <th>وش يحدد بالضبط</th>
+  <th>الأولوية</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>MASTER-PROJECT-BLUEPRINT.md</code></td>
+  <td>رؤية BRIGHTAI، العملاء، المنتجات، حدود المشروع وأهدافه</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>PRODUCT-MASTER-CATALOG.yaml</code></td>
+  <td>قائمة المنتجات الرسمية، أسماؤها، IDs، حالتها، الباقات والروابط</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>ARABIC-EDITORIAL-STANDARD.md</code></td>
+  <td>الهمزات، الإملاء، المصطلحات، الترقيم، أسلوب الصياغة</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>BRAND-AND-DESIGN-SYSTEM.md</code></td>
+  <td>الألوان والخطوط والمكونات والحركة وRTL والهوية</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>CLAIMS-AND-EVIDENCE-REGISTER.md</code></td>
+  <td>أي ادعاء مسموح أو ممنوع وما الدليل عليه</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>WEBSITE-PAGE-REGISTRY.yaml</code></td>
+  <td>كل صفحة، وظيفتها، روابطها، بيانات SEO، ومرجع محتواها</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>MASTER-AGENT-CONTEXT.md</code></td>
+  <td>ترتيب قراءة المراجع وقواعد تفسيرها لأي وكيل</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>PLATFORM-ARCHITECTURE.md</code></td>
+  <td>معمارية AIGAS وربط المكونات والـAPI</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>ENTERPRISE-TRIAL-POLICY.md</code></td>
+  <td>ضوابط تجربة الـ48 ساعة كاملة</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>API-GATEWAY-AND-USAGE-POLICY.md</code></td>
+  <td>حماية المفاتيح، الحصص، الاستهلاك، التكاليف والأخطاء</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>DATA-PRIVACY-AND-SECURITY.md</code></td>
+  <td>فصل بيانات الجهات، الاحتفاظ، النقل، التشفير والصلاحيات</td>
+  <td>P0</td>
+</tr>
+<tr>
+  <td><code>PRICING-AND-LICENSING.md</code></td>
+  <td>الاشتراكات وحدود الاستخدام والإضافات والفوترة</td>
+  <td>P1</td>
+</tr>
+<tr>
+  <td><code>SAUDI-REGULATORY-MAPPING.md</code></td>
+  <td>ربط كل منتج بالمتطلبات النظامية ذات الصلة دون ادعاء شهادة</td>
+  <td>P1</td>
+</tr>
+<tr>
+  <td><code>PRODUCT-DECISION-LOG.md</code></td>
+  <td>القرارات المعتمدة، سببها، تاريخها، ومن اعتمدها</td>
+  <td>P1</td>
+</tr>
+<tr>
+  <td><code>CUSTOMER-JOURNEY-SPEC.md</code></td>
+  <td>رحلة العميل من أول زيارة حتى التعاقد</td>
+  <td>P1</td>
+</tr>
+<tr>
+  <td><code>INTEGRATION-AND-DEPLOYMENT.md</code></td>
+  <td>خيارات الربط السحابي والخاص والمحلي وتكامل أنظمة العملاء</td>
+  <td>P1</td>
+</tr>
+</tbody>
+</table>
+<h3>ب. المستندات الخاصة بكل منتج</h3>
+<p>المشروع يعرض خمسة منتجات، وكل واحد يحتاج ملفًا مرجعيًا مستقلًا بدل ما تكون تفاصيله مدفونة في كود الصفحة.</p>
+<div class="products-visual">
+ <div class="product-visual-row"><div class="prod-thumb prod-firewall"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 10 L79 22 L76 56 Q70 75 50 88 Q30 75 24 56 L21 22 Z"/><path d="M37 49 L46 58 L64 39" class="line"/></svg></div><div><b>AIGAS Firewall</b><p>حجب البيانات الحساسة قبل إرسالها إلى النموذج. يحتاج تعريفًا دقيقًا لأنواع البيانات المدعومة، حالات الاكتشاف، الإيجابيات الخاطئة، وطريقة التعامل مع البيانات التي لم تُكتشف.</p></div></div>
+ <div class="product-visual-row"><div class="prod-thumb prod-risk"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M18 76 L18 24 M18 76 L85 76 M28 63 L42 48 L54 56 L74 31" class="line"/><circle cx="74" cy="31" r="6"/></svg></div><div><b>AIGAS Risk Engine</b><p>تقييم المخاطر وسياسات السماح والمنع. يحتاج توثيق كيفية حساب الدرجات، القواعد، العتبات، تفسير القرارات، والتعامل مع الحالات غير المؤكدة.</p></div></div>
+ <div class="product-visual-row"><div class="prod-thumb prod-human"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="27" r="14"/><path d="M26 75 Q25 49 50 48 Q75 49 74 75"/><path d="M66 65 L76 75 L91 53" class="line"/></svg></div><div><b>AIGAS Human Gate</b><p>الموافقات البشرية. يحتاج تحديد صاحب الصلاحية، الحالات المعلقة، مدة الموافقة، الرفض والتفويض، وما يحدث عند انتهاء المهلة.</p></div></div>
+ <div class="product-visual-row"><div class="prod-thumb prod-ledger"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="15" width="70" height="21" rx="5"/><rect x="14" y="41" width="70" height="21" rx="5"/><rect x="14" y="67" width="70" height="18" rx="5"/><path d="M30 25 H65 M30 52 H65 M30 76 H65" class="line"/></svg></div><div><b>AIGAS Ledger</b><p>السجل والتتبع. يحتاج تصميم سجلات الأحداث، سلامة التسلسل، التحقق من التعديل، التصدير، وإثبات الاحتفاظ والصلاحيات.</p></div></div>
+ <div class="product-visual-row"><div class="prod-thumb prod-chat"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M15 21 Q15 13 26 13 L74 13 Q84 13 84 24 L84 65 Q84 76 72 76 H48 L30 90 L32 76 H27 Q15 76 15 65 Z"/><path d="M30 38 H69 M30 51 H59" class="line"/></svg></div><div><b>AIGAS Secure Chat</b><p>المحادثة الآمنة. يحتاج عقود النماذج والمزودين، الجلسات، التعامل مع الأخطاء، الحدود، وجودة الإجابات وسياسات البيانات.</p></div></div>
+</div>
+
+<p>هذه الصور أمثلة لاتجاه بصري فقط، وليست تصميمات معتمدة للمنتجات.</p>
+<p>لكل منتج أقترح <strong>ستة مستندات ثابتة</strong>:</p>
+<table>
+<thead>
+<tr>
+  <th>المستند</th>
+  <th>وظيفته</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>PRODUCT-SPEC.md</code></td>
+  <td>تعريف المنتج، المشكلة التي يحلها، جمهوره، ميزاته وحدوده</td>
+</tr>
+<tr>
+  <td><code>FEATURE-STATUS.yaml</code></td>
+  <td>كل ميزة وحالتها: تعمل / مخطط لها / غير متاحة / أُلغيت</td>
+</tr>
+<tr>
+  <td><code>PAGE-EXPERIENCE.md</code></td>
+  <td>كل قسم بالصفحة، المحتوى، الأزرار، حالات الواجهة</td>
+</tr>
+<tr>
+  <td><code>API-CONTRACT.yaml</code></td>
+  <td>الـEndpoints، الطلبات، الاستجابات، الأخطاء والصلاحيات</td>
+</tr>
+<tr>
+  <td><code>48H-TRIAL-SPEC.md</code></td>
+  <td>تجربة المنتج، سيناريوهاتها، حصصها ومخرجاتها</td>
+</tr>
+<tr>
+  <td><code>ACCEPTANCE-AND-EVIDENCE.md</code></td>
+  <td>كيف نثبت أن المنتج يحقق المتطلبات قبل إطلاقه</td>
+</tr>
+</tbody>
+</table>
+<p>بهذا يكون عندك 30 مستندًا خاصًا بالمنتجات الخمسة، لكنها متصلة بنفس القواعد الأساسية، مو ثلاثين نسخة متكررة من الكلام.</p>
+<h2>3. مثال عملي: مرجع المنتج إلى أدق التفاصيل</h2>
+<p>خلنا نأخذ <code>AIGAS Firewall</code> مثالًا.</p>
+<p>المرجع ما يكفي يقول «يحجب البيانات». لازم يحدد ما الذي يظهر بالصفحة، وكيف يعمل المنتج، وما الذي يُسمح للوكيل بتغييره.</p>
+<div class="sample-spec">
+ <div class="sample-title"><b>PRODUCT-SPEC — AIGAS Firewall</b><span class="status-badge">تصور مقترح</span></div>
+ <table><tbody>
+ <tr><td>معرّف المنتج</td><td><code>AIGAS-FW-001</code></td></tr>
+ <tr><td>الاسم الرسمي</td><td>AIGAS Firewall</td></tr>
+ <tr><td>العنوان العربي</td><td>جدار حماية البيانات للذكاء الاصطناعي</td></tr>
+ <tr><td>الرابط</td><td><code>/products/firewall/</code></td></tr>
+ <tr><td>رسالة المنتج</td><td>اكتشاف وحجب أنماط محددة من البيانات الحساسة قبل إرسال الطلبات إلى النماذج</td></tr>
+ <tr><td>الجمهور</td><td>فرق أمن المعلومات والامتثال وتقنية المعلومات</td></tr>
+ <tr><td>التجربة</td><td>48 ساعة بعد التفعيل</td></tr>
+ <tr><td>الحالة التقنية</td><td>مستهدف؛ لم يُثبت تنفيذ API في المستودع الحالي</td></tr>
+ </tbody></table>
+ <div class="sample-rules"><b>قواعد صياغة ملزمة للوكيل</b>
+ <div class="rule"><span class="pass-icon">✓</span>استخدم «يساعد على حماية البيانات الحساسة» عند وصف الفائدة العامة.</div>
+ <div class="rule"><span class="pass-icon">✓</span>اذكر أنواع البيانات المدعومة فعليًا فقط، مع التفريق بين النماذج الجاهزة والأنماط المخصصة.</div>
+ <div class="rule"><span class="fail-icon">✕</span>يُمنع قول «يمنع تسرب جميع البيانات بنسبة 100%» دون دليل يثبت ذلك، وهو ادعاء مطلق يصعب ضمانه.</div>
+ <div class="rule"><span class="fail-icon">✕</span>يُمنع وصف المحاكاة الموجودة حاليًا بأنها محرك حماية مكتمل أو بيئة تشغيل حقيقية.</div>
+ </div>
+</div>
+
+<h3>المستند اللغوي الذي تقصده بالضبط</h3>
+<p>أقترح <code>ARABIC-EDITORIAL-STANDARD.md</code>، ويكون صارمًا في صياغة محتوى الموقع، لكن بدون تحويل النصوص إلى لغة جامدة.</p>
+<table>
+<thead>
+<tr>
+  <th>القاعدة</th>
+  <th>الصواب</th>
+  <th>الخطأ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>همزة القطع</td>
+  <td>أمان الذكاء الاصطناعي</td>
+  <td>امان الذكاء الاصطناعي</td>
+</tr>
+<tr>
+  <td>همزة القطع</td>
+  <td>إدارة المخاطر</td>
+  <td>ادارة المخاطر</td>
+</tr>
+<tr>
+  <td>همزة القطع</td>
+  <td>إلى</td>
+  <td>الى</td>
+</tr>
+<tr>
+  <td>همزة القطع</td>
+  <td>إن</td>
+  <td>ان عندما تكون المقصودة إنّ</td>
+</tr>
+<tr>
+  <td>همزة الوصل</td>
+  <td>استخدام المنتج</td>
+  <td>إستخدام المنتج</td>
+</tr>
+<tr>
+  <td>همزة الوصل</td>
+  <td>استعلام API</td>
+  <td>إستعلام API</td>
+</tr>
+<tr>
+  <td>كتابة المصطلح</td>
+  <td>الذكاء الاصطناعي</td>
+  <td>الذكاء الإصطناعي</td>
+</tr>
+<tr>
+  <td>اسم المنتج</td>
+  <td>AIGAS Firewall</td>
+  <td>تغيير الاسم أو ترجمته عشوائيًا</td>
+</tr>
+<tr>
+  <td>الأرقام والأسعار</td>
+  <td>2,900 ر.س / شهريًا</td>
+  <td>تنسيقات مختلفة بين الصفحات</td>
+</tr>
+<tr>
+  <td>المصطلحات التقنية</td>
+  <td>API، Risk Engine، Model Lineage</td>
+  <td>تعريب غير متسق من صفحة لأخرى</td>
+</tr>
+</tbody>
+</table>
+<p>ويحتوي أيضًا على قواعد كتابة الأزرار، طول العناوين، رسائل الخطأ، التشكيل عند الحاجة، وعلامات الترقيم العربية، واتجاه النصوص المختلطة RTL/LTR.</p>
+<p>الأهم أن يكون فيه <strong>قاموس مصطلحات معتمد</strong> يحدد الاسم العربي والإنجليزي والمختصر المستخدم لكل مفهوم؛ مثل «البيانات الشخصية»، «حجب البيانات»، «سجل التدقيق»، «الموافقة البشرية»، و«التجربة المؤسسية».</p>
+<h2>4. بيئة تجربة المنتجات لمدة 48 ساعة</h2>
+<p>أقترح يكون اسمها:</p>
+<p><strong>BRIGHTAI Trial Lab — Enterprise AI Governance Sandbox</strong></p>
+<p>وتكون تجربة مؤسسية مستقلة عن الموقع التسويقي، لكن مرتبطة معه ومع كل منتج.</p>
+<div class="trial-flow" aria-label="خريطة رحلة العميل داخل Trial Lab">
+ <div class="flow-heading"><b>رحلة العميل داخل Trial Lab</b><small>التصور المستهدف لتجربة المنتجات الذكية</small></div>
+ <div class="flow-step major"><div class="flow-icon">♙</div><b>طلب التجربة المؤسسية</b><small>الجهة، البريد المؤسسي، القطاع والمنتج المطلوب</small></div>
+ <div class="down-arrow">↓</div>
+ <div class="flow-step"><div class="flow-icon">⬡</div><b>التحقق والتهيئة</b><small>تأكيد صلاحية الجهة، تجهيز الحساب والصلاحيات وبيانات التجربة</small></div>
+ <div class="down-arrow">↓</div>
+ <div class="flow-step major"><div class="flow-icon">◷</div><b>تفعيل تجربة 48 ساعة</b><small>تبدأ المدة عند جاهزية البيئة وأول تفعيل معتمد</small></div>
+ <div class="flow-branches"><div class="flow-step"><div class="flow-icon">⚗</div><b>Product Sandbox</b><small>سيناريوهات حقيقية تقنيًا ببيانات اصطناعية</small></div><div class="flow-step"><div class="flow-icon">▥</div><b>Live Metrics</b><small>الاستخدام، النتائج، الأخطاء واستهلاك الـAPI</small></div></div>
+ <div class="down-arrow">↓</div>
+ <div class="flow-step"><div class="flow-icon">▤</div><b>تقرير تقييم التجربة</b><small>النتائج القابلة للإثبات، الحدود، التوصيات والخطوة التجارية التالية</small></div>
+</div>
+
+<h3>لا أنصح بنوع واحد من التجارب</h3>
+<table>
+<thead>
+<tr>
+  <th>نوع التجربة</th>
+  <th>الوصول</th>
+  <th>الهدف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Public Preview</td>
+  <td>بدون تسجيل</td>
+  <td>تعريف الزائر بالمنتج ببيانات جاهزة ومحاكاة معلنة</td>
+</tr>
+<tr>
+  <td>48H Enterprise Trial</td>
+  <td>حساب مؤسسة معتمد</td>
+  <td>تشغيل قدرات المنتج الفعلية المتاحة وقياس نتائجها</td>
+</tr>
+<tr>
+  <td>Government / Regulated PoC</td>
+  <td>بتنسيق وموافقة مسبقة</td>
+  <td>تقييم أمني وتقني محكوم حسب متطلبات الجهة</td>
+</tr>
+</tbody>
+</table>
+<p>الـ48 ساعة مناسبة لإثبات قيمة المنتج، لكنها قد لا تكفي لجهة حكومية تحتاج مراجعة أمن معلومات وعقود وتوافق بنية تحتية. لذلك <strong>فترة التجهيز والموافقات لا تُحتسب من الـ48 ساعة</strong>، ويمكن تمديد التقييم بقرار واضح حسب الحالة.</p>
+<h3>كيف تكون تجربة كل منتج؟</h3>
+<table>
+<thead>
+<tr>
+  <th>المنتج</th>
+  <th>ما يجرّبه العميل</th>
+  <th>ماذا يرى في النهاية</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Firewall</td>
+  <td>بيانات اختبار تحتوي على هويات وآيبانات ونصوص عادية</td>
+  <td>ما تم اكتشافه وحجبه، الأخطاء المحتملة، والزمن</td>
+</tr>
+<tr>
+  <td>Risk Engine</td>
+  <td>سيناريوهات منخفضة ومتوسطة وعالية المخاطر</td>
+  <td>الدرجة وأسبابها والقرار الناتج وفق السياسة</td>
+</tr>
+<tr>
+  <td>Human Gate</td>
+  <td>اعتماد طلب حساس أو رفضه أو إعادته</td>
+  <td>سجل الموافقات، حالة الطلب، المسؤول والزمن</td>
+</tr>
+<tr>
+  <td>Ledger</td>
+  <td>إنشاء أحداث تدقيق ثم التحقق من سلامة سجلاتها</td>
+  <td>سجل الأحداث ونتيجة التحقق من سلامة التسلسل</td>
+</tr>
+<tr>
+  <td>Secure Chat</td>
+  <td>استخدام نماذج AI من خلال طبقة الحوكمة</td>
+  <td>المحادثات، النموذج المستخدم، الاستهلاك والقيود</td>
+</tr>
+</tbody>
+</table>
+<p>هنا العميل ما يجرب مجرد شكل الموقع؛ يجرب <strong>الوظيفة التي بيدفع مقابلها</strong>.</p>
+<h2>5. كيف نضبط تكاليف الـAPI خلال التجربة؟</h2>
+<p>بما أن منتجاتك مرتبطة بخدمات API، فأهم شيء تفصل تجربة المستخدم عن الاتصال المباشر بمزودي النماذج.</p>
+<div class="api-flow" aria-label="خريطة تدفق الطلب من مساحة تجربة العميل إلى خدمات النظام">
+ <div class="flow-step major"><b>Enterprise Trial Workspace</b></div><div class="down-arrow">↓</div>
+ <div class="flow-step"><b>Authentication + Tenant Isolation</b></div><div class="down-arrow">↓</div>
+ <div class="flow-step"><b>BRIGHTAI API Gateway</b><small>الصلاحيات، السياسات، الحصص، التكاليف، السجلات</small></div><div class="down-arrow">↓</div>
+ <div class="api-services"><div>AI Model Providers</div><div>Firewall / Risk Services</div><div>Human Approval Service</div><div>Audit Ledger Service</div></div>
+</div>
+
+<p><strong>مو كل منتج يحتاج يستدعي نموذج ذكاء اصطناعي في كل عملية.</strong> الـFirewall ممكن يستخدم كواشف برمجية وقواعد وML، والـLedger خدمة سجلات، وHuman Gate محرك موافقات. هذا أفضل أمنيًا وتشغيليًا وأوفر من تمرير كل وظيفة إلى نموذج لغوي.</p>
+<p>أما تجربة العميل نفسها فأقترح لها السياسة التالية، وهي أرقام أولية للتصميم وليست حدودًا محسوبة من التكاليف الفعلية:</p>
+<table>
+<thead>
+<tr>
+  <th>الإعداد</th>
+  <th>المقترح</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>مدة الوصول</td>
+  <td>48 ساعة</td>
+</tr>
+<tr>
+  <td>المستخدمون</td>
+  <td>3 إلى 5 أشخاص من الجهة</td>
+</tr>
+<tr>
+  <td>الميزانية</td>
+  <td>سقف تكلفة API لكل جهة</td>
+</tr>
+<tr>
+  <td>عدد الطلبات</td>
+  <td>حصة مختلفة لكل منتج</td>
+</tr>
+<tr>
+  <td>Rate Limit</td>
+  <td>حد لكل مستخدم وجهة وEndpoint</td>
+</tr>
+<tr>
+  <td>مزود النماذج</td>
+  <td>BRIGHTAI يتحكم به من الخادم</td>
+</tr>
+<tr>
+  <td>انتهاء التجربة</td>
+  <td>إيقاف الاستدعاءات المدفوعة تلقائيًا</td>
+</tr>
+<tr>
+  <td>تمديد التجربة</td>
+  <td>بموافقة موثقة</td>
+</tr>
+<tr>
+  <td>البيانات</td>
+  <td>بيانات اصطناعية افتراضيًا، وعدم رفع بيانات حقيقية دون مراجعة وضوابط مستقلة</td>
+</tr>
+</tbody>
+</table>
+<p>سقف التكلفة مهم أكثر من عدد الطلبات وحده؛ لأن تكلفة الاستدعاء قد تختلف حسب النموذج وعدد الـTokens.</p>
+<p>وكذلك لازم يكون عندك <strong>Usage &amp; Cost Ledger</strong> مستقل عن سجل الأحداث الأمنية: يحسب الاستهلاك والتكلفة التقديرية لكل جهة ومنتج ومزود، ويمنع تجاوز الميزانية حتى مع الطلبات المتزامنة.</p>
+<h2>6. المستندات المطلوبة لتشغيل Trial Lab</h2>
+<p>أقترح هذه المجموعة كمراجع تشغيلية إلزامية:</p>
+<table>
+<thead>
+<tr>
+  <th>المستند</th>
+  <th>المحتوى</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>TRIAL-ELIGIBILITY.md</code></td>
+  <td>من يستحق التجربة، وكيف نتحقق من المؤسسة</td>
+</tr>
+<tr>
+  <td><code>TRIAL-ONBOARDING.md</code></td>
+  <td>إنشاء الجهة، المسؤول، الحسابات، صلاحيات الوصول</td>
+</tr>
+<tr>
+  <td><code>TRIAL-LIFECYCLE.md</code></td>
+  <td>حالات Requested / Approved / Ready / Active / Expired / Converted</td>
+</tr>
+<tr>
+  <td><code>TRIAL-LIMITS.yaml</code></td>
+  <td>المدة، الحدود، التكلفة، عدد المستخدمين لكل منتج</td>
+</tr>
+<tr>
+  <td><code>TRIAL-DATA-POLICY.md</code></td>
+  <td>البيانات المسموحة والممنوعة وإجراءات الحذف</td>
+</tr>
+<tr>
+  <td><code>TRIAL-SUCCESS-METRICS.md</code></td>
+  <td>طريقة قياس نجاح المنتج في التجربة</td>
+</tr>
+<tr>
+  <td><code>TRIAL-REPORT-SPEC.md</code></td>
+  <td>تصميم التقرير النهائي ومصادر الأرقام</td>
+</tr>
+<tr>
+  <td><code>TRIAL-TO-PAID.md</code></td>
+  <td>التحويل إلى اشتراك، أو طلب عرض سعر أو تمديد</td>
+</tr>
+</tbody>
+</table>
+<p>وأقترح داخل لوحة العميل وجود <strong>مركز تقييم التجربة</strong> يعرض الوقت المتبقي، المنتج المفعّل، السيناريوهات المكتملة، النتائج، والحدود المتبقية، ثم يتيح تنزيل التقرير. لا تعرض درجة نجاح مصطنعة أو مؤشرات لا تملك بيانات فعلية عنها.</p>
+<h2>7. متطلبات خاصة بالسوق السعودي والجهات الحكومية</h2>
+<p>هذا الجزء مهم جدًا لهوية BRIGHTAI باعتباره منتجًا لحوكمة الذكاء الاصطناعي.</p>
+<p>قبل إتاحة ربط بيانات جهة حكومية أو مصرفية أو صحية، لازم يكون عندك مستند يحدد تصنيف البيانات، والمزود الذي سيعالجها، وموقع المعالجة، والأساس النظامي، ومتطلبات العميل الأمنية.</p>
+<p>المرجعيات التي ينبغي إدراجها في <code>SAUDI-REGULATORY-MAPPING.md</code> تشمل نظام حماية البيانات الشخصية ولائحة نقل البيانات خارج المملكة، وضوابط الأمن السيبراني الأساسية والسحابية بحسب نطاق تطبيقها، وكذلك ISO/IEC 42001 لنظام إدارة الذكاء الاصطناعي.</p>
+<p>وهناك فرق بين توفير منتج سحابي وبين صلاحية استخدامه لدى جهة حكومية معينة. سياسات الحكومة الرقمية والسحابة الحكومية تفرض اعتبارات إضافية على بيئات الجهات.</p>
+<p>لذلك لا أنصح بوعد جميع الجهات الحكومية بإمكانية تجربة فعلية فورية على بياناتها. الأفضل توفير تجربة آمنة ببيانات اصطناعية، ثم PoC منفصل إذا احتاج العميل تشغيلًا داخل بيئته.</p>
+<h2>8. كيف نخلي المستندات تتحكم فعليًا بالصفحات والوكلاء؟</h2>
+<p>القاعدة التي أنصح بها:</p>
+<p><strong>المحتوى المعتمد يُكتب مرة واحدة في مصدر رسمي، ثم تستهلكه الصفحات والخدمات.</strong></p>
+<p>مثلًا، هذه فكرة ملف بيانات موحد لمنتج Firewall:</p>
+<pre><code class="language-yaml">id: AIGAS-FW-001
+slug: firewall
+
+brand_name: AIGAS Firewall
+arabic_name: جدار حماية البيانات
+
+status:
+  marketing_page: existing
+  production_api: not_verified
+  enterprise_trial: planned
+
+trial:
+  enabled: false
+  proposed_duration_hours: 48
+  activation: after_environment_ready
+  approval_required: true
+
+references:
+  specification: PRODUCT-SPEC.md
+  page: PAGE-EXPERIENCE.md
+  api: API-CONTRACT.yaml
+  trial: 48H-TRIAL-SPEC.md
+  evidence: ACCEPTANCE-AND-EVIDENCE.md
+</code></pre>
+<p>ومعناه أن أي وكيل يشتغل على صفحة Firewall يعرف اسم المنتج، وحالته الحقيقية، ومرجعه، ومدة التجربة المستهدفة، ولا يحوّل ميزة مخططًا لها إلى ميزة جاهزة للبيع.</p>
+<p>كذلك أضيف لكل مستند بيانات مثل <code>owner</code> و<code>version</code> و<code>approval_status</code> و<code>last_reviewed</code> و<code>related_routes</code>. ولو تعارض الكود مع المستند، يُبلّغ الوكيل عن التعارض بدل ما يفترض أن كل شيء شغال.</p>
+<p>هذا بيمنع مشكلة تتكرر كثير في المشاريع التي تُبنى بوكلاء AI: وكيل يكتب وصف المنتج، وثاني يغير السعر، وثالث يعيد استخدام نص قديم، وفي النهاية يصير عندك تناقضات بين الصفحات.</p>
+<h2>9. ترتيب التنفيذ الذي أنصح فيه</h2>
+<div class="roadmap">
+ <div class="roadmap-item"><div class="road-icon">▣</div><div><b>المرحلة الأولى — تثبيت المراجع الرسمية</b><p>اعتماد هوية BRIGHTAI الحالية، دليل العربية، كتالوج المنتجات، سجل الادعاءات، وخريطة الصفحات. ثم مراجعة التعارضات مع <code>AGENTS.md</code> ودليل الموقع الموجود.</p></div></div>
+ <div class="roadmap-item"><div class="road-icon">▦</div><div><b>المرحلة الثانية — توثيق المنتجات الخمسة</b><p>مواصفات كل منتج، الـAPI، الصلاحيات، سيناريوهات التجربة، مؤشرات النجاح، وحالة التنفيذ الحقيقية.</p></div></div>
+ <div class="roadmap-item"><div class="road-icon">⚗</div><div><b>المرحلة الثالثة — بناء تجربة مؤسسية واحدة مكتملة</b><p>أبدأ بـFirewall؛ لأنه منتج يمكن إظهار فائدته بمدخلات ومخرجات واضحة وقياسها. بعدها نعمم بنية Trial Lab على بقية المنتجات بدل بناء خمس تجارب منفصلة من الصفر.</p></div></div>
+ <div class="roadmap-item"><div class="road-icon">▥</div><div><b>المرحلة الرابعة — جاهزية البيع والتعاقد</b><p>توحيد الأسعار وشروط التجربة، تقارير التقييم، مستندات الخصوصية، اتفاقية معالجة البيانات، ومخرجات الـPoC التي تطلبها المؤسسات.</p></div></div>
+</div>
+
+<h2>الخلاصة</h2>
+<p>أشوف أفضل هيكل تجاري وتقني لـBRIGHTAI هو الجمع بين <strong>موقع مؤسسي يعرض المنتجات ويشرح فائدتها، ومكتبة مواصفات تتحكم في محتواه، وبيئة تجارب فعلية منفصلة تُظهر قيمة كل منتج قبل التعاقد</strong>.</p>
+<p>وأهم قرار عندي هو ألا تجعل مدة 48 ساعة مجرد عداد ينتهي. خلها تجربة تقيس نتيجة محددة، وتنتج تقريرًا يمكن لمسؤول تقنية المعلومات أو أمن المعلومات عرضه على الإدارة واتخاذ قرار الشراء بناءً عليه.</p>
+<p><strong>حدود هذه المراجعة:</strong> تحققت من هيكل مستودع GitHub والملفات الأساسية وسجلات التدقيق الحالية، وليس من أداء الـAPIs أو حالة النشر الفعلي. ما عدّلت أي ملف أو دفعت أي تغيير إلى GitHub.</p>
+</main></body></html>
