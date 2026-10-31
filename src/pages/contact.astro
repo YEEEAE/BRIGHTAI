@@ -8,6 +8,11 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
   <p class="eyebrow">تواصل معنا</p>
   <h1>خلّنا نفهم احتياجك<br /><span class="muted">قبل أن نعرض عليك شيئاً.</span></h1>
   <p class="lead">استخدم النموذج لفتح رسالة بريد تتضمن استفسارك. الإتاحة التشغيلية للمنتجات غير متحققة، ولا يؤكد الموقع استلام الرسالة أو حجز عرض أو تفعيل تجربة.</p>
+  <section class="card contact-options" aria-label="خيارات التواصل">
+    <h2>تواصل مباشرة</h2>
+    <p><a class="button" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">راسلنا على واتساب</a></p>
+    <p>أو عبر البريد: <a href="mailto:yzeed1job@gmail.com">yzeed1job@gmail.com</a></p>
+  </section>
   <form id="contact" class="card" style="max-width:640px">
     <label>الاسم<input name="name" required autocomplete="name" /></label>
     <label>الجهة<input name="org" required autocomplete="organization" /></label>
@@ -15,8 +20,8 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
     <label>كيف نساعدك؟<textarea name="msg" rows="5"></textarea></label>
     <button class="button" type="submit" disabled>افتح رسالة البريد <span aria-hidden="true">←</span></button>
     <p id="contact-status" role="status" aria-live="polite"></p>
-    <noscript><p>للتواصل بدون JavaScript: <a href="mailto:hello@brightai.live">افتح تطبيق البريد</a>.</p></noscript>
-    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى hello@brightai.live. راجعها وأرسلها بنفسك؛ لا يرسل الموقع الطلب ولا يؤكد استلامه.</p>
+    <noscript><p>للتواصل بدون JavaScript: <a href="mailto:yzeed1job@gmail.com">افتح تطبيق البريد</a>.</p></noscript>
+    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى yzeed1job@gmail.com. راجعها وأرسلها بنفسك؛ لا يرسل الموقع الطلب ولا يؤكد استلامه.</p>
   </form>
   <p class="note">لا تكتب أي بيانات شخصية حساسة في رسالتك.</p>
 
@@ -38,7 +43,7 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
     e.preventDefault();
     const d = new FormData(form);
     const body = `الاسم: ${d.get('name')}\nالجهة: ${d.get('org')}\n\n${d.get('msg')}`;
-    location.href = `mailto:hello@brightai.live?subject=${encodeURIComponent(`AIGAS — ${d.get('topic')}`)}&body=${encodeURIComponent(body)}`;
+    location.href = `mailto:yzeed1job@gmail.com?subject=${encodeURIComponent(`AIGAS — ${d.get('topic')}`)}&body=${encodeURIComponent(body)}`;
     if (status) status.textContent = 'طلبنا فتح تطبيق البريد. راجع الرسالة وأرسلها منه؛ لم يُرسل الموقع طلباً أو يؤكد حجزاً.';
   });
   // Enable only after the handler is registered; avoid a native GET of personal data.
