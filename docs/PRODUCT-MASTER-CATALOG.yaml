@@ -1,0 +1,1067 @@
+# BRIGHT AI / AIGAS — Product Master Catalog
+# Approved target requirements compiled from MASTER-PROJECT-BLUEPRINT.md (through decision 108).
+# IMPORTANT: APPROVED requirement != IMPLEMENTED feature != VERIFIED production availability.
+# Suggested repository location: docs/PRODUCT-MASTER-CATALOG.yaml
+# This copy was generated separately and does NOT modify the GitHub repository.
+# Null values are intentional: no invented prices, API endpoints, SKUs, performance, or release versions.
+
+document:
+  id: AIGAS-PRODUCT-MASTER-CATALOG
+  file_name: PRODUCT-MASTER-CATALOG.yaml
+  logical_repository_path: docs/PRODUCT-MASTER-CATALOG.yaml
+  version: 1.0.0
+  compiled_on: '2026-10-31'
+  language: ar-SA
+  document_type: machine_readable_product_requirements_catalog
+  approval_level: DERIVED_FROM_APPROVED_BLUEPRINT_PENDING_DOCUMENT_REVIEW
+  source_document: docs/MASTER-PROJECT-BLUEPRINT.md
+  source_baseline: MASTER-PROJECT-BLUEPRINT v1.0 / decisions through 108
+  github_repository: YEEEAE/BRIGHTAI
+  change_scope: GENERATED_CONVERSATION_ARTIFACT_ONLY
+  github_modified: false
+  notes_ar:
+  - هذا الكتالوج مواصفات مستهدفة مشتقة من قرارات المشروع وليس إثباتًا للوظائف المنفذة.
+  - المسار داخل GitHub مقترح ومتفق عليه تنظيمياً لكنه لا يعني أن الملف رُفع أو أن المجلد موجود.
+identity:
+  legal_entity_label_ar: مؤسسة مُشرقة
+  trade_brand: BRIGHT AI
+  platform_name: AIGAS
+  platform_full_name_en: AI Governance & Safety
+  specialization: AI_GOVERNANCE_AND_SAFETY_ONLY
+  market_priority:
+  - SAUDI_GOVERNMENT
+  - SAUDI_PRIVATE_SECTOR
+  primary_user_interface_language: ar-SA
+  developer_protocol_language: en
+  legal_registration_details_verified: false
+catalog_truth_policy:
+  requirements_approved_does_not_mean_implemented: true
+  implementation_default: NOT_VERIFIED
+  availability_default: NOT_VERIFIED
+  public_states_allowed:
+  - AVAILABLE
+  - BETA
+  - PLANNED
+  available_requires_verified_operational_evidence: true
+  beta_requires_explicit_opt_in_and_valid_security_baseline: true
+  do_not_invent:
+  - PRICES
+  - SKUS
+  - PERFORMANCE_BENCHMARKS
+  - REGULATORY_CERTIFICATIONS
+  - SLAS
+  - PROVIDER_APPROVALS
+  - PRODUCTION_ENDPOINTS
+  - RELEASE_VERSIONS
+  - CUSTOMER_REFERENCES
+  pricing_status: NOT_APPROVED
+  public_claims_policy_ar: لا تُعرض وظيفة على أنها متاحة إلا بعد إثبات تنفيذها وتشغيلها وفق النطاق المعلن.
+portfolio_rules:
+  paid_independent_product_count: 5
+  product_codes:
+  - FW
+  - RE
+  - HG
+  - LD
+  - SC
+  each_product_standalone_commercially: true
+  each_product_standalone_core_functionally: true
+  cross_product_enhancements_optional: true
+  kernel_included_in_each_paid_product: true
+  separate_kernel_fee_permitted: false
+  mandatory_cross_sell_to_access_base_function: false
+  basic_audit_remains_without_ledger_license: true
+  basic_chat_protection_remains_without_firewall_license: true
+  release_strategy: DEPENDENCY_DRIVEN_PHASED_ROLLOUT
+  first_wave:
+  - AIGAS-FW
+  - AIGAS-LD
+  - AIGAS-HG
+  later_wave:
+  - AIGAS-RE
+  - AIGAS-SC
+  current_repo_capability_audit_required: true
+shared_component:
+  component_id: AIGAS-KERNEL
+  display_name: AIGAS Kernel
+  type: SHARED_FOUNDATION_NOT_SEPARATELY_SOLD
+  commercial_product: false
+  separate_fee: false
+  required_for_each_product: true
+  status:
+    requirement: APPROVED
+    implementation: NOT_VERIFIED
+    public_availability: NOT_APPLICABLE
+  core_capabilities:
+  - id: KERNEL-IDENTITY
+    name_ar: هوية وهوية مستأجر
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: Tenant وUsers وIdentity Providers وSessions وMFA/SSO أو هوية محلية مناسبة للنشر.
+  - id: KERNEL-AUTHZ
+    name_ar: صلاحيات وسياسات أساسية
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: RBAC/Permissions ومحرك سياسة أساسي يحترم الوراثة العليا والحدود الإلزامية.
+  - id: KERNEL-LICENSE
+    name_ar: التراخيص والحصص
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تراخيص المنتجات وحدود الاستهلاك والتحقق من الرخص الموقعة محليًا دون فحص سحابي إلزامي.
+  - id: KERNEL-SECRETS
+    name_ar: أسرار ومفاتيح التكامل
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: هوية مفاتيح API والموصلات وإبطالها وتدويرها وحدود استخدامها.
+  - id: KERNEL-AUDIT
+    name_ar: سجل أمان أساسي
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: توثيق الحد الأدنى الضروري للأمان حتى عند عدم شراء AIGAS Ledger.
+  - id: KERNEL-SAFETY
+    name_ar: حماية ومخاطر أساسية
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: طبقة حماية أساسية لكل منتج لحفظ الاستقلالية دون تحويلها إلى بديل للمنتجات المتقدمة.
+  - id: KERNEL-HEALTH
+    name_ar: التشغيل والتوافق
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: Service Registry وHealth وTelemetry وتوافق الإصدارات والتعطل الآمن.
+  - id: KERNEL-OFFLINE
+    name_ar: استقلال النشر المحلي
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: العمل بالهوية والمفاتيح والتراخيص والمراقبة اللازمة محليًا في Air-Gapped.
+  essential_service_boundaries_ar:
+  - يوفر الهوية والتراخيص والسياسات والتدقيق والأمن الضرورية فقط.
+  - لا يزيل استقلال المنتج أو يحوّل وظائف Ledger أو Risk Engine أو Firewall المتقدمة إلى خدمات مجانية شاملة.
+  - يحفظ تشغيل Air-Gapped دون هوية أو تحقق تراخيص خارجي إلزامي.
+  source_blueprint_sections:
+  - '02.2'
+  - '04'
+  - '07'
+  - 09
+products:
+- product_id: AIGAS-FW
+  slug: firewall
+  display_name: AIGAS Firewall
+  short_code: FW
+  classification: INDEPENDENT_COMMERCIAL_PRODUCT
+  requirements_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  verified_release_version: null
+  public_availability: NOT_VERIFIED
+  roadmap:
+    launch_wave: WAVE_1
+    priority: P0
+    target_release: MVP_FIRST
+    launch_date: null
+  purpose_ar: ضبط عبور طلبات واستجابات AI المتكاملة بالسياسات والهوية والحماية واتخاذ قرارات فعلية.
+  one_line_value_ar: حماية تشغيلية قابلة للإنفاذ على حركة AI المتكاملة.
+  essential_kernel_dependency:
+    component: AIGAS-KERNEL
+    included_without_separate_license_fee: true
+    mandatory_purchase_of_other_products: false
+  sales:
+    can_be_sold_individually: true
+    can_be_bundled: true
+    published_sku: null
+    published_price_sar: null
+    price_approved: false
+    supported_commercial_models_target:
+    - SAAS_SUBSCRIPTION
+    - ON_PREMISE_ANNUAL_LICENSE
+    - ON_PREMISE_PERPETUAL_LICENSE
+    - AIR_GAPPED_LOCAL_LICENSE
+    support_and_maintenance_terms: SEPARATE_OR_CONTRACT_DEFINED
+    custom_enterprise_quote: true
+  metering:
+    candidate_unit: PROTECTED_AI_REQUEST
+    status: DESIGN_CANDIDATE_NOT_FINAL_PRICE
+    included_allowance: null
+    overage_price_sar: null
+    deduplication_required: true
+    customer_approved_spend_limits_required: true
+    provider_ai_costs_separate_if_applicable: true
+  capabilities:
+  - id: FW-01
+    name_ar: نقاط تكامل حماية فعلية
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: اعتراض حركة طلبات واستجابات AI فقط عبر SDK أو API أو Proxy أو Connector معتمد ومفعّل؛ لا ادعاء
+      بالتحكم في الأنظمة غير المتكاملة.
+    control_scope: INTEGRATED_TRAFFIC_ONLY
+  - id: FW-02
+    name_ar: قرارات الحماية
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تطبيق Allow أو Warn أو Redact أو Request Human Approval أو Block حسب السياسة والصلاحيات ومستوى
+      المخاطر.
+    decision_actions:
+    - ALLOW
+    - WARN
+    - REDACT
+    - REQUEST_APPROVAL
+    - BLOCK
+  - id: FW-03
+    name_ar: منع تجاوز الحدود الإلزامية
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: لا يُسمح لنموذج AI أو سياسة أدنى أولوية بتجاوز Hard Deny صادر من سياسة أعلى.
+    always_mandatory: true
+  - id: FW-04
+    name_ar: منع تسرب البيانات DLP
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: كشف بيانات حساسة بالعربية والإنجليزية باستخدام قواعد وأنماط وسياق AI مصرح به، على المدخلات والمخرجات.
+    default_content_minimization: true
+  - id: FW-05
+    name_ar: حماية حقن التعليمات
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: فصل المحتوى غير الموثوق عن التعليمات المعتمدة، وتقليل Prompt Injection وJailbreak والتحقق من
+      أذونات استدعاءات الأدوات.
+    no_guarantee_of_perfect_detection: true
+  - id: FW-06
+    name_ar: وضع المراقبة قبل الإنفاذ
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تفعيل مراقبة غير معطلة عند ملاءمة المخاطر وموافقة العميل، دون تعطيل القيود الأمنية الإلزامية.
+  - id: FW-07
+    name_ar: ضوابط API والتدهور الآمن
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: حدود المعدلات والموارد والاستجابة لتعطل التبعيات بقرار آمن يحفظ الضوابط الإلزامية.
+  - id: FW-08
+    name_ar: توثيق القرار الأدنى
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تسجيل الأحداث الأمنية الضرورية دون افتراض امتلاك ترخيص Ledger، وتقليل البيانات الحساسة افتراضيًا.
+  minimum_viable_product:
+    definition_ar: طلب AI حقيقي عبر نقطة تكامل معتمدة يُطبق عليه قرار سياسة فعلي، مع سجل أساسي وعزل مؤسسة وسلوك
+      آمن عند الفشل.
+    acceptance_criteria_ar:
+    - إنفاذ فعلي لقرار السماح والرفض في مسار طلب AI متكامل
+    - التحقق من التنقيح والتصعيد عندما تُعلن كوظائف متاحة
+    - منع تجاوز سياسة أعلى أو Failover غير مصرح
+    - حفظ تدقيق أساسي حتى دون شراء Ledger
+    - عدم تجاوز بيانات مؤسسة إلى مؤسسة أخرى
+    shared_security_privacy_license_requirements_mandatory: true
+    fake_or_mock_ui_does_not_count_as_completed: true
+  post_mvp_or_optional_scope_ar:
+  - تقييم سياقي موسع عبر Risk Engine عند الترخيص
+  - مسار موافقة Human Gate اختياري
+  - تجميع أدلة متقدم عبر Ledger
+  deliberate_exclusions_ar:
+  - التحكم في نظم AI غير المتكاملة
+  - الوعد بمنع كل أنواع Prompt Injection دون استثناء
+  optional_product_integrations:
+  - AIGAS-RE
+  - AIGAS-HG
+  - AIGAS-LD
+  product_specific_risks_ar:
+  - عدم جعل Risk Engine التجاري شرطًا للحظر الأساسي
+  - وضع المراقبة لا يوقف الحظر الإلزامي
+  source_blueprint_sections:
+  - '03.2'
+  - '04'
+  - 09
+- product_id: AIGAS-LD
+  slug: ledger
+  display_name: AIGAS Ledger
+  short_code: LD
+  classification: INDEPENDENT_COMMERCIAL_PRODUCT
+  requirements_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  verified_release_version: null
+  public_availability: NOT_VERIFIED
+  roadmap:
+    launch_wave: WAVE_1
+    priority: P0
+    target_release: MVP_FIRST
+    launch_date: null
+  purpose_ar: تسجيل أحداث وأدلة AI مع سلامة تشفيرية واحتفاظ محكوم وقدرة تحقق مستقل.
+  one_line_value_ar: أدلة حوكمة محمية قابلة للتدقيق والتحقق والتصدير.
+  essential_kernel_dependency:
+    component: AIGAS-KERNEL
+    included_without_separate_license_fee: true
+    mandatory_purchase_of_other_products: false
+  sales:
+    can_be_sold_individually: true
+    can_be_bundled: true
+    published_sku: null
+    published_price_sar: null
+    price_approved: false
+    supported_commercial_models_target:
+    - SAAS_SUBSCRIPTION
+    - ON_PREMISE_ANNUAL_LICENSE
+    - ON_PREMISE_PERPETUAL_LICENSE
+    - AIR_GAPPED_LOCAL_LICENSE
+    support_and_maintenance_terms: SEPARATE_OR_CONTRACT_DEFINED
+    custom_enterprise_quote: true
+  metering:
+    candidate_unit: AUDIT_EVIDENCE_EVENT
+    status: DESIGN_CANDIDATE_NOT_FINAL_PRICE
+    included_allowance: null
+    overage_price_sar: null
+    deduplication_required: true
+    customer_approved_spend_limits_required: true
+    provider_ai_costs_separate_if_applicable: true
+  capabilities:
+  - id: LD-01
+    name_ar: توثيق الأحداث ومصدرها
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تسجيل أحداث الحوكمة مع وقت ومصدر وفاعل ونسخ السياسة والقرار ضمن الحدود المسموحة.
+  - id: LD-02
+    name_ar: سلامة الأدلة التشفيرية
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تشفير الأدلة وإنتاج Hash أو توقيع أو سلسلة تحقق مناسبة، دون ادعاء استحالة التلاعب.
+  - id: LD-03
+    name_ar: استمرارية السجل الضروري
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: مخزن دائم محمي مع بديل محلي مشفر؛ عند فشل كل مسار مطلوب توقف العملية التي تستلزم سجلًا موثوقًا
+      بأمان.
+    always_mandatory: true
+  - id: LD-04
+    name_ar: تقليل المحتوى المحفوظ
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: الاحتفاظ ببيانات Metadata افتراضيًا؛ حفظ متن المحتوى فقط وفق مبرر وتصريح وضوابط حماية معتمدة.
+    default_capture: METADATA_ONLY
+  - id: LD-05
+    name_ar: إدارة الاحتفاظ والتجميد القانوني
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: سياسات احتفاظ للمؤسسة وحذف آمن وLegal Hold عند الانطباق مع توثيق التعديلات.
+  - id: LD-06
+    name_ar: أدلة قابلة للتحقق بعد التصدير
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تصدير أدلة وآلية تحقق مستقل تبقى صالحة بعد تدوير مفاتيح التوقيع السابقة.
+  - id: LD-07
+    name_ar: ارتباط أدلة الحوكمة
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: ربط الأحداث بموافقات وحوادث وضوابط امتثال دون اعتبار تقارير النظام شهادات امتثال.
+  minimum_viable_product:
+    definition_ar: تسجيل أحداث تشغيل حقيقية بسلامة يمكن فحصها مستقلًا وتصديرها، مع إثبات التعامل الآمن مع إخفاق
+      التسجيل أو العبث.
+    acceptance_criteria_ar:
+    - إنشاء وتصدير حدث حقيقي مع وسيلة تحقق مستقلة
+    - كشف اختلاف/عبث الدليل وعدم اعتباره سليمًا
+    - احترام صلاحيات الوصول وحدود الحفظ
+    - تعطل سجل إلزامي رئيسي واحتياطي يؤدي إلى إيقاف العمل المعني بأمان
+    shared_security_privacy_license_requirements_mandatory: true
+    fake_or_mock_ui_does_not_count_as_completed: true
+  post_mvp_or_optional_scope_ar:
+  - إثراء أدلة قرارات Firewall وRisk Engine وHuman Gate
+  - ربط أوسع بملفات الامتثال والحوادث
+  deliberate_exclusions_ar:
+  - الادعاء باستحالة تعديل البيانات مطلقًا
+  - اشتراط Blockchain
+  - استبدال تسجيل Kernel الأساسي المحمي إذا لم يشترِ العميل Ledger
+  optional_product_integrations:
+  - AIGAS-FW
+  - AIGAS-RE
+  - AIGAS-HG
+  - AIGAS-SC
+  product_specific_risks_ar:
+  - 'خصوصية متن المحادثات: Metadata افتراضيًا'
+  - التدوير لا يلغي إمكان التحقق من الأثر القديم
+  source_blueprint_sections:
+  - '03.3'
+  - '04'
+  - 08
+- product_id: AIGAS-HG
+  slug: human-gate
+  display_name: AIGAS Human Gate
+  short_code: HG
+  classification: INDEPENDENT_COMMERCIAL_PRODUCT
+  requirements_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  verified_release_version: null
+  public_availability: NOT_VERIFIED
+  roadmap:
+    launch_wave: WAVE_1
+    priority: P0
+    target_release: MVP_FIRST
+    launch_date: null
+  purpose_ar: إدارة ومصادقة وتوثيق موافقات المستخدم المخوّل قبل تنفيذ عمليات AI المحكومة.
+  one_line_value_ar: موافقات بشرية فعلية تمنع تنفيذ القرارات الحساسة دون تفويض.
+  essential_kernel_dependency:
+    component: AIGAS-KERNEL
+    included_without_separate_license_fee: true
+    mandatory_purchase_of_other_products: false
+  sales:
+    can_be_sold_individually: true
+    can_be_bundled: true
+    published_sku: null
+    published_price_sar: null
+    price_approved: false
+    supported_commercial_models_target:
+    - SAAS_SUBSCRIPTION
+    - ON_PREMISE_ANNUAL_LICENSE
+    - ON_PREMISE_PERPETUAL_LICENSE
+    - AIR_GAPPED_LOCAL_LICENSE
+    support_and_maintenance_terms: SEPARATE_OR_CONTRACT_DEFINED
+    custom_enterprise_quote: true
+  metering:
+    candidate_unit: APPROVAL_DECISION
+    status: DESIGN_CANDIDATE_NOT_FINAL_PRICE
+    included_allowance: null
+    overage_price_sar: null
+    deduplication_required: true
+    customer_approved_spend_limits_required: true
+    provider_ai_costs_separate_if_applicable: true
+  capabilities:
+  - id: HG-01
+    name_ar: فتح طلب موافقة
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: طلب موثق يتضمن السبب والسياق والسياسة والمخاطر والمهلة والصلاحية.
+  - id: HG-02
+    name_ar: تدرج الموافقات وفصل المهام
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: موافقات من مستوى واحد أو متعددة المستويات حسب المخاطر، مع SoD حيث يلزم.
+  - id: HG-03
+    name_ar: تفويض وتصعيد وانتهاء آمن
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: تفويض محدود وتصعيد ومهلة، مع رفض آمن عند انتهاء المهلة أو عدم الاستجابة.
+    timeout_effect: DENY_OR_SAFE_STOP
+  - id: HG-04
+    name_ar: توثيق القرار وهوية المراجع
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: حفظ الموافق والوقت ونسخة السياسة والأسباب وقرار القبول أو الرفض.
+  - id: HG-05
+    name_ar: إنفاذ الموافقة عبر API
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: التحقق من موافقة صحيحة مرتبطة بطلب محدد قبل إطلاق العمل، وليس الاعتماد على تغير واجهة فقط.
+  minimum_viable_product:
+    definition_ar: إنشاء طلب فعلي، توجيهه للمخوّل، التحقق من الصلاحية، رفض/قبول، مهلة، إنفاذ قرار العملية وتوثيق
+      كامل.
+    acceptance_criteria_ar:
+    - لا تنفيذ عند غياب الموافقة اللازمة
+    - موافقة شخص مخوّل فقط مع SoD حيث ينطبق
+    - انتهاء المهلة ينتج عنه رفض أو إيقاف آمن
+    - تسجيل نتيجة القرار مع نسخة السياسة
+    - القدرة على بيع Human Gate دون إلزام شراء Ledger
+    shared_security_privacy_license_requirements_mandatory: true
+    fake_or_mock_ui_does_not_count_as_completed: true
+  post_mvp_or_optional_scope_ar:
+  - ربط قرارات Firewall بالموافقات
+  - ربط تقييمات Risk Engine
+  - أدلة مطولة عبر Ledger
+  deliberate_exclusions_ar:
+  - اعتماد الطلبات بمجرد تغيير حالة واجهة المستخدم
+  - السماح بموافقة صامتة بعد انتهاء المهلة
+  optional_product_integrations:
+  - AIGAS-FW
+  - AIGAS-RE
+  - AIGAS-LD
+  product_specific_risks_ar:
+  - المسؤولون والموافقون لا يجوز أن يخرقوا فصل المهام
+  source_blueprint_sections:
+  - '03.4'
+  - '04'
+  - 09
+- product_id: AIGAS-RE
+  slug: risk-engine
+  display_name: AIGAS Risk Engine
+  short_code: RE
+  classification: INDEPENDENT_COMMERCIAL_PRODUCT
+  requirements_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  verified_release_version: null
+  public_availability: NOT_VERIFIED
+  roadmap:
+    launch_wave: WAVE_2
+    priority: P1
+    target_release: LATER_PHASE
+    launch_date: null
+  purpose_ar: إجراء تقييمات مخاطر الأصول والنماذج والسياقات ومتابعتها خلال دورة الحياة.
+  one_line_value_ar: تقييم مخاطر AI المفسّر والقابل للمراجعة.
+  essential_kernel_dependency:
+    component: AIGAS-KERNEL
+    included_without_separate_license_fee: true
+    mandatory_purchase_of_other_products: false
+  sales:
+    can_be_sold_individually: true
+    can_be_bundled: true
+    published_sku: null
+    published_price_sar: null
+    price_approved: false
+    supported_commercial_models_target:
+    - SAAS_SUBSCRIPTION
+    - ON_PREMISE_ANNUAL_LICENSE
+    - ON_PREMISE_PERPETUAL_LICENSE
+    - AIR_GAPPED_LOCAL_LICENSE
+    support_and_maintenance_terms: SEPARATE_OR_CONTRACT_DEFINED
+    custom_enterprise_quote: true
+  metering:
+    candidate_unit: RISK_ASSESSMENT
+    status: DESIGN_CANDIDATE_NOT_FINAL_PRICE
+    included_allowance: null
+    overage_price_sar: null
+    deduplication_required: true
+    customer_approved_spend_limits_required: true
+    provider_ai_costs_separate_if_applicable: true
+  capabilities:
+  - id: RE-01
+    name_ar: سجل الأصول والمخاطر
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: جرد أصول AI ومالكيها وتصنيف مخاطرها وسياق استخدامها وضوابطها.
+  - id: RE-02
+    name_ar: تقييم هجيني قابل للتفسير
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: مزج قواعد محددة مع تحليل سياقي من AI معتمد؛ درجة قابلة للتفسير والمراجعة دون افتراض نطاق رقمي
+      أو دقة لم يُعتمدا.
+    numeric_score_range: null
+  - id: RE-03
+    name_ar: حدود المخاطر حسب الدور والنطاق
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: عتبات محددة للمؤسسة والإدارة والمنتج والمستخدم لا تتجاوز قواعد المستوى الأعلى.
+  - id: RE-04
+    name_ar: المتابعة وإعادة الاعتماد
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: متابعة التغيرات المادية في النموذج والبيانات والسلوك وتفعيل إعادة مراجعة حسب الخطورة.
+  - id: RE-05
+    name_ar: مراجعات الخصوصية والأمن والسلامة
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: مراجعات ملائمة قبل التشغيل عالي المخاطر، مع منع آلي فقط عبر نقاط تحكم متكاملة حقيقة.
+  minimum_viable_product:
+    definition_ar: إضافة/استيراد أصل AI وتقييم موثق قابل للتفسير بحدود مخاطر وموافقة بشرية بحسب الصلاحيات.
+    acceptance_criteria_ar:
+    - تقييم مخاطر ذو هوية ومصدر ومدخلات موثقة
+    - شرح أسباب التصنيف وحدود المؤسسة
+    - تطبيق حدود السياسة العليا
+    - إمكان المراجعة/الاعتماد حسب الدور
+    shared_security_privacy_license_requirements_mandatory: true
+    fake_or_mock_ui_does_not_count_as_completed: true
+  post_mvp_or_optional_scope_ar:
+  - إثراء قرارات Firewall
+  - التصعيد إلى Human Gate
+  - إيداع أدلة متقدمة في Ledger
+  deliberate_exclusions_ar:
+  - الادعاء بفرض حظر على نظام لا يتكامل مع AIGAS
+  - ادعاء دقة نموذج أو حدود رقمية دون قياس/اعتماد
+  optional_product_integrations:
+  - AIGAS-FW
+  - AIGAS-HG
+  - AIGAS-LD
+  product_specific_risks_ar:
+  - درجات المخاطر المعلنة تحتاج أساسًا قابلًا للتحقق
+  source_blueprint_sections:
+  - '03.5'
+  - 09
+  - '10'
+- product_id: AIGAS-SC
+  slug: secure-chat
+  display_name: AIGAS Secure Chat
+  short_code: SC
+  classification: INDEPENDENT_COMMERCIAL_PRODUCT
+  requirements_status: APPROVED
+  implementation_status: NOT_VERIFIED
+  verified_release_version: null
+  public_availability: NOT_VERIFIED
+  roadmap:
+    launch_wave: WAVE_2
+    priority: P1
+    target_release: LATER_PHASE
+    launch_date: null
+  purpose_ar: محادثة عربية مع نماذج معتمدة وضوابط خصوصية وحماية واستهلاك.
+  one_line_value_ar: محادثة AI آمنة وبسيطة ومحكومة بسياسات المؤسسة.
+  essential_kernel_dependency:
+    component: AIGAS-KERNEL
+    included_without_separate_license_fee: true
+    mandatory_purchase_of_other_products: false
+  sales:
+    can_be_sold_individually: true
+    can_be_bundled: true
+    published_sku: null
+    published_price_sar: null
+    price_approved: false
+    supported_commercial_models_target:
+    - SAAS_SUBSCRIPTION
+    - ON_PREMISE_ANNUAL_LICENSE
+    - ON_PREMISE_PERPETUAL_LICENSE
+    - AIR_GAPPED_LOCAL_LICENSE
+    support_and_maintenance_terms: SEPARATE_OR_CONTRACT_DEFINED
+    custom_enterprise_quote: true
+  metering:
+    candidate_unit: CHAT_MESSAGE_OR_SESSION
+    status: DESIGN_CANDIDATE_NOT_FINAL_PRICE
+    included_allowance: null
+    overage_price_sar: null
+    deduplication_required: true
+    customer_approved_spend_limits_required: true
+    provider_ai_costs_separate_if_applicable: true
+  capabilities:
+  - id: SC-01
+    name_ar: محادثة عربية بنماذج معتمدة
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: محادثة AI مبسطة مع اختيار نموذج معتمد أو توجيه ضمن مناطق المعالجة والتكلفة والحدود المسموحة.
+  - id: SC-02
+    name_ar: حماية أساسية مستقلة
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: حماية وسياسات Kernel الأساسية لكل محادثة حتى دون شراء منتج Firewall التجاري.
+    firewall_paid_license_required: false
+  - id: SC-03
+    name_ar: خصوصية المحادثة والاحتفاظ
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: حفظ اختياري طبق سياسة المؤسسة، مع خصوصية افتراضية وإمكانية وصول استثنائي مصرح وموثق فقط.
+  - id: SC-04
+    name_ar: فصل المحتوى عن سجل الأمان
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: عدم خلط متن المحادثة الخاصة بسجل تدقيق الأمن الأدنى.
+    security_audit_default: MINIMAL_METADATA
+  - id: SC-05
+    name_ar: تحكم بالمشاركة والتصدير
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: المشاركة والتصدير معطلان افتراضيًا ويحتاجان سياسة وموافقة وفحص DLP؛ لا روابط عامة افتراضيًا.
+    sharing_default: DISABLED
+  - id: SC-06
+    name_ar: قيود الاستهلاك والمزود
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: موازنة استخدام الرسائل وTokens والمزودين، مع رفض آمن إذا لم يتوفر نموذج ومكان معالجة مصرحان.
+  - id: SC-07
+    name_ar: حدود النطاق
+    requirement_status: APPROVED
+    implementation_status: NOT_VERIFIED
+    description_ar: لا RAG شامل ولا Knowledge Base مؤسسي ولا إدارة ملفات كقدرات أساسية معتمدة.
+    core_rag: false
+    core_file_upload: false
+  minimum_viable_product:
+    definition_ar: محادثة حقيقية مع نموذج مصرح ضمن حدود سياسة المؤسسة، وحماية أساسية وخصوصية وسقف إنفاق دون افتراض
+      ميزة RAG.
+    acceptance_criteria_ar:
+    - اختيار/توجيه إلى نموذج معتمد دون تسرب مفاتيح
+    - رفض المسار عند عدم وجود مزود ومكان معالجة مصرح
+    - خصوصية محتوى المحادثة افتراضيًا
+    - فصل سجل الأمان عن نصوص المحادثة
+    - تطبيق سقف الاستهلاك والمشاركة المقيدة
+    shared_security_privacy_license_requirements_mandatory: true
+    fake_or_mock_ui_does_not_count_as_completed: true
+  post_mvp_or_optional_scope_ar:
+  - ضوابط Firewall التجارية المتقدمة اختيارية
+  - تحليل Risk Engine اختياري
+  - مسارات موافقة Human Gate عند الحاجة
+  - أدلة Ledger اختيارية
+  deliberate_exclusions_ar:
+  - نظام إدارة معرفة مؤسسية شامل
+  - RAG أساسي
+  - رفع/فهرسة ملفات كقدرة أساسية
+  - روابط مشاركة عامة افتراضيًا
+  optional_product_integrations:
+  - AIGAS-FW
+  - AIGAS-RE
+  - AIGAS-HG
+  - AIGAS-LD
+  product_specific_risks_ar:
+  - متطلبات عدم التدريب تشمل مزود النموذج الخارجي
+  source_blueprint_sections:
+  - '03.6'
+  - 08
+  - '11'
+integration_matrix:
+  enforcement_reach: ONLY_WITHIN_AUTHORIZED_INTEGRATED_CONTROL_POINTS
+  integration_is_opt_in_by_licenses_and_policy: true
+  scenarios:
+  - id: INT-01
+    from: AIGAS-FW
+    to: AIGAS-RE
+    optional: true
+    purpose_ar: تفسير سياقي أعمق لقرارات الحماية عند الترخيص.
+  - id: INT-02
+    from: AIGAS-FW
+    to: AIGAS-HG
+    optional: true
+    purpose_ar: تصعيد عملية عالية المخاطر لموافقة بشرية قبل إكمالها.
+  - id: INT-03
+    from: AIGAS-FW
+    to: AIGAS-LD
+    optional: true
+    purpose_ar: إيداع أدلة قرار موسعة مع الاحتفاظ بسجل الأمان الأدنى دون Ledger.
+  - id: INT-04
+    from: AIGAS-RE
+    to: AIGAS-HG
+    optional: true
+    purpose_ar: طلب مراجعة بشرية لتقييمات المخاطر حسب السياسة.
+  - id: INT-05
+    from: AIGAS-HG
+    to: AIGAS-LD
+    optional: true
+    purpose_ar: إثراء أدلة موافقات وتحويلات مهام المراجعة.
+  - id: INT-06
+    from: AIGAS-SC
+    to: AIGAS-FW
+    optional: true
+    purpose_ar: حماية محادثات متقدمة دون التخلي عن حماية Kernel الأساسية في حال عدم شراء Firewall.
+  - id: INT-07
+    from: AIGAS-SC
+    to: AIGAS-LD
+    optional: true
+    purpose_ar: أدلة تدقيق إضافية دون كشف نص المحادثة افتراضيًا.
+  external_protocols_target:
+  - REST
+  - OPENAPI
+  - SDK_PYTHON
+  - SDK_TYPESCRIPT
+  - MCP
+  a2a_status: FUTURE_CANDIDATE_NOT_COMMITTED
+  real_endpoint_paths_verified: false
+  external_ai_provider_allowlist: APPROVED_PROVIDERS_ONLY
+  provider_fallback: ONLY_TO_PREAPPROVED_MODEL_AND_PROCESSING_REGION
+policy_and_safety_contract:
+  policy_precedence:
+  - ENTERPRISE
+  - DEPARTMENT
+  - PRODUCT
+  - USER
+  lower_levels_cannot_weaken_mandatory_parent: true
+  hard_deny_ai_override_allowed: false
+  decision_actions:
+  - ALLOW
+  - WARN
+  - REDACT
+  - REQUEST_APPROVAL
+  - BLOCK
+  risk_engine_method_target: HYBRID_RULES_AND_APPROVED_CONTEXTUAL_AI
+  human_gate_timeout: SAFE_DENY_OR_STOP
+  audit_required_for_mandatory_workflows: true
+  no_reliable_primary_or_backup_audit: STOP_OPERATIONS_REQUIRING_MANDATORY_EVIDENCE
+  default_audit_payload: MINIMAL_METADATA
+  sandbox_traffic_control_policy: POLICY_BOUND
+  monitor_mode_cannot_override_hard_deny: true
+  prompt_injection_security_not_guaranteed_perfect: true
+data_protection_contract:
+  customer_data_used_to_train_or_improve_ai_models: false
+  customer_data_training_exception_allowed: false
+  subprocessors_must_prohibit_training_and_improvement: true
+  sensitive_logs_redacted_by_default: true
+  data_residency_default_for_saudi_saas: SAUDI_ARABIA
+  foreign_storage_or_processing: ONLY_IF_LEGAL_CONTRACTUAL_REQUIREMENTS_AND_REQUIRED_CONSENTS_MET
+  storage_region_distinct_from_inference_processing_region: true
+  tenant_isolation_targets:
+  - DATABASE
+  - ROW_LEVEL_AUTHORIZATION
+  - OBJECT_STORAGE
+  - CACHE
+  - QUEUE
+  - LOGS
+  - BACKUPS
+  - ENCRYPTION_KEYS
+  higher_assurance_deployment_isolation_available_by_contract: true
+  private_chat_content_default: PRIVATE
+  support_access: JUST_IN_TIME_CUSTOMER_APPROVED_LEAST_PRIVILEGE_TIME_LIMITED_AUDITED
+  retention: TENANT_SPECIFIC_POLICY_AND_LEGAL_HOLD_WHERE_APPLICABLE
+  post_contract_exit: AUTHORIZED_EXPORT_AND_DEFENSIBLE_DELETION_POLICY
+deployment_profiles:
+- id: SAAS
+  cloud_managed: true
+  offline_capable: false
+  data_residency_default: SAUDI_ARABIA
+  identity: MFA_AND_OPTIONAL_ENTERPRISE_SSO
+  licensing: REMOTE_SUBSCRIPTION_OR_ENTERPRISE_CONTRACT
+  ai_models: PREAPPROVED_PROVIDER_REGION_OR_ELIGIBLE_LOCAL_MODEL
+  maintenance: SIGNED_MANAGED_RELEASES
+  support: CONTRACT_TIERED
+- id: ON_PREMISE
+  cloud_managed: false
+  offline_capable: DEPENDS_ON_LOCAL_CONFIGURATION
+  data_residency_default: CUSTOMER_DEPLOYMENT_SITE
+  identity: ENTERPRISE_SSO_OR_LOCAL_IDP
+  licensing: SIGNED_LOCAL_ANNUAL_OR_PERPETUAL_LICENSE
+  ai_models: AUTHORIZED_EXTERNAL_OR_LOCAL
+  maintenance: SIGNED_CUSTOMER_APPROVED_UPDATE_PACKAGES
+  support: APPROVED_TEMPORARY_OR_LOCAL_ONLY
+- id: AIR_GAPPED
+  cloud_managed: false
+  offline_capable: true
+  no_internet_required: true
+  data_residency_default: CUSTOMER_OFFLINE_ENVIRONMENT
+  identity: INDEPENDENT_LOCAL_IDP
+  licensing: SIGNED_LOCAL_LICENSE_NO_CLOUD_CHECK
+  ai_models: LOCAL_MODELS_ONLY
+  maintenance: OFFLINE_VERIFIABLE_SIGNED_BUNDLES
+  support: INDEPENDENT_LOCAL_ONLY_NO_BACKDOORS
+commercial_rules:
+  pricing_method: COST_VALUE_MARKET_FINANCIAL_MODEL_FIRST
+  final_price_approval_required_before_publication: true
+  standard_saas_price_published_only_after_approval: true
+  pricing_calculator_only_approved_units_and_disclosed_assumptions: true
+  public_price_quote_required_for:
+  - GOVERNMENT
+  - ENTERPRISE
+  - ON_PREMISE
+  - AIR_GAPPED
+  - CUSTOM_INTEGRATIONS
+  license_models_target:
+  - SAAS_SUBSCRIPTION
+  - ON_PREMISE_ANNUAL
+  - ON_PREMISE_PERPETUAL
+  perpetual_license_use_right_survives_maintenance_expiration: ACCORDING_TO_SIGNED_TERMS
+  metering_categories:
+    AIGAS-FW: PROTECTED_AI_REQUEST
+    AIGAS-LD: AUDIT_EVIDENCE_EVENT
+    AIGAS-HG: APPROVAL_DECISION
+    AIGAS-RE: RISK_ASSESSMENT
+    AIGAS-SC: CHAT_MESSAGE_OR_SESSION
+  overage_requires_transparency_and_budget_controls: true
+  prevent_unjustified_double_billing: true
+  separate_external_provider_ai_costs: true
+  saudi_invoicing_and_tax: FOLLOW_APPLICABLE_REQUIREMENTS_AND_VERIFY_IMPLEMENTATION
+  self_serve_payment: SAAS_STANDARD_ONLY_AS_ELIGIBLE
+  enterprise_procurement:
+  - QUOTATION
+  - CONTRACT
+  - PURCHASE_ORDER
+  - BANK_TRANSFER_AS_CONTRACTED
+  trial:
+    duration_hours: 48
+    auto_convert_to_paid: false
+    approved_client_scope: ELIGIBLE_VERIFIED_INSTITUTIONS
+    government_trial: MANUAL_REVIEW
+    default_data: SYNTHETIC
+    actual_data: EXPLICIT_WRITTEN_CONSENT_AND_ENVIRONMENT_APPROVAL
+    limit_ai_cost_to_bright_ai: true
+    byok_for_extended_trial: OPTIONAL_WITH_CONSENT
+  license_nonpayment: CONTRACT_BASED_NOTICE_GRACE_AND_SAFE_RESTRICTION_WITH_DATA_EXIT_RIGHTS
+  license_state_machine_target:
+  - PENDING
+  - ACTIVE
+  - RENEWAL_DUE
+  - CONTRACTUAL_GRACE
+  - RESTRICTED_OR_SUSPENDED
+  - EXPIRED_OR_TERMINATED
+enterprise_readiness:
+  self_serve_onboarding_target: STANDARD_SAAS_ONLY
+  guided_onboarding_target:
+  - GOVERNMENT
+  - ON_PREMISE
+  - AIR_GAPPED
+  - CUSTOM_ENTERPRISE
+  states_target:
+  - COMMERCIALLY_WON
+  - LICENSED
+  - PROVISIONED
+  - SECURITY_READY
+  - CUSTOMER_ACCEPTED
+  - PRODUCTION_ACTIVE
+  capacity_pricing_assessment_inputs:
+  - ACTIVE_USERS
+  - REQUEST_RATE
+  - PEAK_CONCURRENCY
+  - MODEL_SIZE
+  - CPU
+  - RAM
+  - GPU
+  - STORAGE_AND_AUDIT_RETENTION
+  - NETWORK
+  - CONNECTOR_COUNT
+  - HA_BACKUP_DR
+  - KEYS
+  performance_guarantee_requires_real_measurements: true
+  migration:
+    methods_target:
+    - CSV
+    - JSON
+    - APPROVED_API
+    - APPROVED_CONNECTOR
+    supported_objects_target:
+    - AI_ASSETS
+    - POLICIES
+    - USERS
+    - ROLES
+    - APPROVAL_WORKFLOWS
+    - CONFIGURATIONS
+    dry_run_required: true
+    difference_review_required: true
+    client_approval_before_enforcement: true
+    rollback_plan_required: true
+    air_gapped_signed_encrypted_media: true
+    historical_evidence_must_not_be_misrepresented_as_native_AIGAS_signed: true
+  documentation: ARABIC_ROLE_AND_VERSION_SPECIFIC_PUBLIC_PRIVATE_SEPARATION
+  offline_documentation_bundles: true
+release_and_production_policy:
+  first_build_priority:
+  - AIGAS-KERNEL
+  - AIGAS-FW
+  - AIGAS-LD
+  - AIGAS-HG
+  second_build_priority:
+  - AIGAS-RE
+  - AIGAS-SC
+  mvp_product_independence_mandatory: true
+  launch_advanced_features_required: false
+  pilot: LIMITED_CUSTOMER_AUTHORIZED_RISK_BASED
+  pilot_success_rule: BASE_FUNCTIONS_OPERATE_NO_CRITICAL_ISSUES_CUSTOMER_SATISFACTION_APPROVED_FINAL_REPORT
+  pilot_scorecard_detailed_by_product_mandatory: false
+  commercial_rollout: GRADUAL_PER_PRODUCT_AFTER_SECURITY_AND_MVP_READINESS
+  developer_environments:
+  - DEVELOPMENT
+  - STAGING
+  - PRODUCTION
+  environment_isolation: DATA_KEYS_SECRETS_PERMISSIONS_INFRASTRUCTURE
+  nonproduction_data_default: SYNTHETIC
+  signed_builds_and_sbom_required: true
+  offline_signed_updates_required: true
+  audit_and_rollback_required: true
+  production_publish_authorization_required: true
+  versioned_apis_and_compatibility_matrix_required: true
+customer_communication:
+  major_outage_notification: EMAIL_TO_AFFECTED_CUSTOMERS
+  planned_maintenance_notice: EMAIL
+  service_restored_notice: EMAIL
+  public_status_page_required: false
+  vulnerability_reporting: DEDICATED_EMAIL_AND_INTERNAL_TRIAGE
+  bug_bounty_required: false
+  incident_notifications: FOLLOW_APPLICABLE_LEGAL_AND_CONTRACTUAL_REQUIREMENTS
+regulatory_references:
+- code: PDPL
+  label: Saudi Personal Data Protection Law
+  applicability: ONLY_IF_AND_WHERE_APPLICABLE
+  claim_type: CONTROL_MAPPING_ONLY
+- code: NCA
+  label: Saudi National Cybersecurity Authority controls
+  applicability: ONLY_IF_AND_WHERE_APPLICABLE
+  claim_type: CONTROL_MAPPING_ONLY
+- code: ISO_IEC_42001
+  label: AI management system standard
+  applicability: REFERENCE_AS_RELEVANT
+  claim_type: NO_CERTIFICATION_ASSERTED
+- code: NIST_AI_RMF
+  label: NIST AI Risk Management Framework
+  applicability: REFERENCE_AS_RELEVANT
+  claim_type: NO_CERTIFICATION_ASSERTED
+publication_and_governance:
+  public_product_pages_separate_from_protected_application: true
+  marketing_stack: ASTRO
+  public_ui_arabic_rtl: true
+  dark_mode_only: true
+  customer_facing_proof_requires_evidence: true
+  capability_visibility_requires_verified_live_or_beta: true
+  marketing_feature_statuses:
+  - AVAILABLE
+  - BETA
+  - PLANNED
+  no_unverified_regulatory_or_security_claims: true
+  seo_measurement_tool_approved: GOOGLE_SEARCH_CONSOLE_ONLY
+  workflow_content_approval_required: true
+  perpetual_licenses_and_offline_modes_not_to_be_called_live_before_verified: true
+minimum_global_acceptance:
+- id: CAT-AC-01
+  rule_ar: شراء منتج منفرد يتيح وظيفته الأساسية دون ترخيص أي منتج آخر.
+- id: CAT-AC-02
+  rule_ar: منع سياسة مؤسسة عليا لا يستطيع نموذج أو سياسة أدنى تجاوزها.
+- id: CAT-AC-03
+  rule_ar: عدم نقل الطلب لمزود أو نموذج أو منطقة معالجة غير مصرح بها عند فشل الأساسي.
+- id: CAT-AC-04
+  rule_ar: الموافقات الحرجة لا تتنفذ دون موافقة صالحة وموثقة؛ انتهاء المهلة آمن.
+- id: CAT-AC-05
+  rule_ar: حفظ دليل Ledger قابل للتصدير والتحقق، وفشل التحقق بعد التلاعب.
+- id: CAT-AC-06
+  rule_ar: فشل التخزين الإلزامي الرئيسي والبديل يوقف الأعمال التي تتطلب أدلة محمية.
+- id: CAT-AC-07
+  rule_ar: عزل بيانات مؤسسة عن الأخرى في جميع طبقات الخدمة.
+- id: CAT-AC-08
+  rule_ar: Trial ينتهي بعد 48 ساعة دون خصم أو تحويل تلقائي مدفوع.
+- id: CAT-AC-09
+  rule_ar: حدود الإنفاق وحصص الاستخدام والفوترة تعالج التكرار دون احتساب غير مبرر.
+- id: CAT-AC-10
+  rule_ar: بيئة Air-Gapped تعمل بالكامل دون اتصال خارجي أو Cloud License Check.
+- id: CAT-AC-11
+  rule_ar: وصول الدعم لا يحدث دون تصريح مؤقت محدد ومراقب من الجهة.
+- id: CAT-AC-12
+  rule_ar: استيراد السياسات يجري أولاً Dry Run ومراجعة ثم موافقة قبل الإنفاذ.
+- id: CAT-AC-13
+  rule_ar: دقة محتوى التسويق والأسعار والشهادات مرتبطة بأدلة واعتمادات حقيقية.
+- id: CAT-AC-14
+  rule_ar: عدم استخدام بيانات العميل لتدريب أو تحسين أي نموذج AI لدى BRIGHT AI أو مورديه.
+verification_backlog:
+- id: VERIFY-01
+  item: GitHub actual product code and available API endpoints
+  status: NOT_VERIFIED
+  notes_ar: لا تحول README أو صفحات العرض إلى ادعاء إنتاجي دون فحص وتشغيل مستقل.
+- id: VERIFY-02
+  item: Approved legal entity name and registration number
+  status: NOT_VERIFIED
+- id: VERIFY-03
+  item: Actual approved price points, SKUs, tax readiness
+  status: NOT_VERIFIED
+- id: VERIFY-04
+  item: Real deployment sizes, GPU requirements and capacity benchmarks
+  status: NOT_VERIFIED
+- id: VERIFY-05
+  item: Actual available model providers, data processing territories and contract no-training
+  status: NOT_VERIFIED
+- id: VERIFY-06
+  item: Existing certifications, audited security controls and exact Saudi regulatory applicability
+  status: NOT_VERIFIED
+- id: VERIFY-07
+  item: MVP acceptance evidence per product and pilot acceptance
+  status: NOT_VERIFIED
+- id: VERIFY-08
+  item: Signing keys, SBOM pipeline, offline releases and license integrity
+  status: NOT_VERIFIED
+source_traceability:
+  primary: MASTER-PROJECT-BLUEPRINT.md v1.0 (31 Oct 2026)
+  decisions_through: 108
+  key_decision_refs:
+  - 85
+  - 86
+  - 87
+  - 88
+  - 89
+  - 90
+  - 91
+  - 92
+  - 93
+  - 94
+  - 95
+  - 96
+  - 97
+  - 98
+  - 99
+  - 100
+  - 101
+  - 102
+  - 103
+  - 104
+  - 105
+  - 106
+  - 107
+  - 108
+  product_scope_blueprint_sections:
+  - '02'
+  - '03'
+  - '04'
+  - '05'
+  - '06'
+  - 08
+  - 09
+  - '11'
+  - '13'
+  - '14'
+  - '22'
+  - '23'
+  - '25'
+  historical_repository_documentation: REFERENCE_ONLY_NOT_IMPLEMENTATION_PROOF
