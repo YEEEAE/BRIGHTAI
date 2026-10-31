@@ -1,0 +1,279 @@
+# AIGAS Firewall — Feature Status Registry
+# Status meanings: WORKING=operational in named scope with evidence; PLANNED=approved target but not proven;
+# UNAVAILABLE=explicitly unavailable in current product/release; CANCELLED=explicitly withdrawn by owner.
+# Evidence must be evaluated per scope. An educational UI is not a functional AI security gateway.
+# Canonical repository path: docs/products/firewall/FEATURE-STATUS.yaml
+schema_version: '1.0'
+document:
+  id: AIGAS-FW-FEATURE-STATUS-001
+  version: 1.0.0-draft
+  review_date: '2026-11-01'
+  review_state: SOURCE_INSPECTED_NOT_RELEASE_CERTIFIED
+  repository: YEEEAE/BRIGHTAI
+  inspected_branch: main
+  source_baseline: SOURCE_TREE_AT_DOCUMENT_CREATION
+  runtime_exercised_in_this_review: false
+  public_service_verification: NOT_VERIFIED
+  next_review_trigger:
+    - verified_product_runtime_evidence
+    - approved_release_or_contract_change
+    - owner_feature_deprecation_decision
+  repository_mutated: false
+product:
+  id: AIGAS-FW
+  slug: firewall
+  name_ar: جدار حماية الذكاء الاصطناعي
+  name_en: AIGAS Firewall
+  release_wave: WAVE_1
+  priority: P0
+  approved_scope: INTEGRATED_AI_TRAFFIC_ONLY
+  current_product_operational_state: NOT_VERIFIED
+  verified_live_base_url: null
+  verified_api_version: null
+  verified_customer_production_release: null
+  default_requirements_status: APPROVED
+  kernel_included_without_separate_license: true
+  customer_must_buy_other_products_for_basic_firewall: false
+status_taxonomy:
+  allowed_values: [WORKING, PLANNED, UNAVAILABLE, CANCELLED]
+  arabic_labels:
+    WORKING: تعمل
+    PLANNED: مخطط لها
+    UNAVAILABLE: غير متاحة
+    CANCELLED: ألغيت
+  operational_working_rule_ar: لا تصنف وظيفة Firewall تشغيلية كـWORKING إلا بدليل تنفيذ حقيقي على مسار تكامل تحت سيطرة المنتج وإثبات سلوك المنع والتدقيق والأمان.
+  ui_working_rule_ar: يمكن تصنيف واجهة تعليمية فقط WORKING إذا أثبتها الكود، لكن لا تحوّلها إلى حالة منتج تشغيلي أو API عامة.
+  planned_rule_ar: خاصية أو قدرة معتمدة في المرجع تستهدف مرحلة قادمة لكنها لم تثبت تشغيليًا.
+  unavailable_rule_ar: خاصية خارج تغطية/نطاق العرض الحالي أو ما لا يدعمه الإصدار، ولا تعني أنها مرفوضة دائمًا.
+  cancelled_rule_ar: تستخدم فقط لميزة أُلغي اعتمادها صراحة بقرار مالك موثق، لا لعدم ظهورها في الشفرة.
+  evidence_levels:
+    - SPECIFIED_ONLY
+    - SOURCE_PRESENT
+    - LOCAL_VERIFIED
+    - INTEGRATION_VERIFIED
+    - PRODUCTION_VERIFIED
+  evidence_missing_default: NOT_VERIFIED
+  no_assumed_release_from_legacy_readme: true
+release_policy:
+  marketing_state: PLANNED
+  launch_approval: NOT_GRANTED
+  publish_available_badge: false
+  published_pricing_approved: false
+  48h_trial_active: NOT_VERIFIED
+  do_not_use_audit_as_launch_approval: true
+  mandatory_no_training: true
+  mandatory_fail_closed_for_hard_deny: true
+  mandatory_tenant_isolation: true
+  minimum_security_log_without_ledger: true
+source_evidence:
+  - id: SRC-FW-001
+    path: src/pages/products/[product].astro
+    finding: توجد صفحة /products/firewall/ وتصرّح أن المنتج تصور غير متحقق تشغيليًا.
+    evidence_level: SOURCE_PRESENT
+  - id: SRC-FW-002
+    path: src/components/ProductExperience.astro
+    finding: أمثلة خمس قرارات تعليمية مع أزرار وسيناريوهات؛ لا تتصل بمحرك كشف/إنفاذ.
+    evidence_level: SOURCE_PRESENT
+  - id: SRC-FW-003
+    path: src/components/DecisionCircuit.astro
+    finding: مخطط SVG لحركة الطلب وقراراته، لا يرسل طلبًا تشغيليًا.
+    evidence_level: SOURCE_PRESENT
+  - id: SRC-FW-004
+    path: src/scripts/interior-motion.ts
+    finding: معالجة تفاعل بصري عند اختيار القرارات وتحريك packet، وليست سجل قرار أمني.
+    evidence_level: SOURCE_PRESENT
+  - id: SRC-FW-005
+    path: kernel/README.md
+    finding: وصف تاريخي لخدمات Chat/Kernel لا تؤكده المسارات الحالية في src/pages؛ غير معتمد دليل تشغيل.
+    evidence_level: SPECIFIED_ONLY
+  - id: SRC-FW-006
+    path: src/pages/api/
+    finding: مجلد مسارات Firewall API غير ظاهر في شجرة المستودع المفحوصة؛ لا نثبت وجود endpoint.
+    evidence_level: NOT_VERIFIED
+capabilities:
+  - id: FW-01
+    name_ar: نقاط تكامل حماية فعلية
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: Integration Engineering
+    scope: API_SDK_PROXY_CONNECTOR_APPROVED_TRAFFIC_ONLY
+    acceptance_ref: AC-FW-01
+    notes_ar: صفحات المنتجات والرسم التعليمي لا يثبتان وجود API أو Proxy.
+    subfeatures:
+      - {id: FW-01A, name_ar: تكامل API آمن, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-01B, name_ar: SDK أو وكيل معتمد, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-01C, name_ar: Proxy أو Gateway لإنفاذ الطلبات, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-01D, name_ar: قائمة النطاقات والموصلات المصرح بها, status: PLANNED, evidence: NOT_VERIFIED}
+  - id: FW-02
+    name_ar: قرارات الحماية الخمسة
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: Policy Enforcement
+    acceptance_ref: AC-FW-02
+    decisions: [ALLOW, WARN, REDACT, REQUEST_APPROVAL, BLOCK]
+    notes_ar: حركات القرار بالواجهة تعليمية، أما الإنفاذ الحقيقي في مسار AI فلم يثبت.
+    subfeatures:
+      - {id: FW-02A, name_ar: إنفاذ السماح, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-02B, name_ar: إنفاذ المنع, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-02C, name_ar: تنقيح فعلي قبل الإرسال أو الإفراج, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-02D, name_ar: التحذير ضمن سياسة تسمح بالاستمرار, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-02E, name_ar: طلب مراجعة بشرية مع تعليق التنفيذ, status: PLANNED, evidence: NOT_VERIFIED}
+  - id: FW-03
+    name_ar: منع تجاوز السياسات الإلزامية
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: Security Architecture
+    acceptance_ref: AC-FW-08
+    invariants:
+      - hard_deny_overrides_customer_lower_policy
+      - no_model_output_can_override_policy
+      - lower_role_cannot_change_mandatory_policy
+      - trial_or_shadow_cannot_bypass_hard_deny
+    subfeatures:
+      - {id: FW-03A, name_ar: ترتيب هرمي للسياسات ونسخها, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-03B, name_ar: تدقيق صلاحيات التعديل والموافقة, status: PLANNED, evidence: NOT_VERIFIED}
+  - id: FW-04
+    name_ar: حماية DLP باللغتين العربية والإنجليزية
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: DLP Engineering
+    acceptance_ref: AC-FW-11
+    targets: [INBOUND, OUTBOUND]
+    notes_ar: التصنيفات وقواعد الكشف تتطلب corpus ومعايير قبول منشورة داخليًا؛ لا ضمان كشف شامل.
+    subfeatures:
+      - {id: FW-04A, name_ar: تصنيف فئات البيانات الحساسة, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-04B, name_ar: كشف عربي, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-04C, name_ar: كشف إنجليزي, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-04D, name_ar: تنقيح وتقليل تسجيل النص الخام, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-04E, name_ar: فحص المخرجات والبث عند الاقتضاء, status: PLANNED, evidence: NOT_VERIFIED}
+  - id: FW-05
+    name_ar: دفاع متعدد الطبقات ضد حقن التعليمات وأذونات الأدوات
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: AI Security
+    acceptance_ref: AC-FW-15
+    notes_ar: الكشف الاحتمالي وحده لا يحل محل أذونات الأدوات في طبقة موثوقة.
+    subfeatures:
+      - {id: FW-05A, name_ar: فصل التعليمات الموثوقة عن بيانات المصادر, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-05B, name_ar: فحص أو تصعيد محاولات Prompt Injection, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-05C, name_ar: تحقق مستقل من Tool Action وTarget, status: PLANNED, evidence: NOT_VERIFIED}
+  - id: FW-06
+    name_ar: وضع مراقبة غير معطل عند السماح
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: Product Security
+    acceptance_ref: AC-FW-17
+    guardrail: HARD_DENY_NEVER_BYPASSED
+    subfeatures:
+      - {id: FW-06A, name_ar: موافقة العميل على مراقبة قبل الإنفاذ, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-06B, name_ar: مراقبة مع سبب ومدة واعتماد, status: PLANNED, evidence: NOT_VERIFIED}
+  - id: FW-07
+    name_ar: حدود المعدل والعزل والتدهور الآمن
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: Platform Reliability
+    acceptance_ref: AC-FW-19
+    subfeatures:
+      - {id: FW-07A, name_ar: Rate limiting وحصص المؤسسة, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-07B, name_ar: Fail-Closed للقواعد الملزمة, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-07C, name_ar: رفض تحويل المزود لوجهة غير معتمدة, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-07D, name_ar: عزل مؤسسات حتى أثناء التدهور, status: PLANNED, evidence: NOT_VERIFIED}
+  - id: FW-08
+    name_ar: سجل أمن أساسي دون Ledger
+    status: PLANNED
+    implementation_verification: NOT_VERIFIED
+    requirement_approval: APPROVED
+    stage: MVP
+    owner_role: Audit Platform
+    acceptance_ref: AC-FW-22
+    subfeatures:
+      - {id: FW-08A, name_ar: حفظ قرار وسبب ونسخة سياسة ومرجع عملية, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-08B, name_ar: تقليل أو إخفاء المحتوى الحساس في الأحداث, status: PLANNED, evidence: NOT_VERIFIED}
+      - {id: FW-08C, name_ar: منع نجاح مزعوم عند تعطل التدقيق الإلزامي, status: PLANNED, evidence: NOT_VERIFIED}
+ui_and_demo_features:
+  - id: FW-UI-01
+    name_ar: صفحة وصف المنتج العامة
+    status: WORKING
+    status_scope: STATIC_SITE_SOURCE_PRESENT_ONLY
+    implementation_verification: SOURCE_PRESENT
+    runtime_verification: NOT_VERIFIED
+    production_firewall_operational: false
+    evidence_refs: [SRC-FW-001]
+  - id: FW-UI-02
+    name_ar: عرض خمسة قرارات تعليمية ومخطط SVG
+    status: WORKING
+    status_scope: EDUCATIONAL_PRESENTATION_SOURCE_PRESENT_ONLY
+    implementation_verification: SOURCE_PRESENT
+    runtime_verification: NOT_VERIFIED
+    production_firewall_operational: false
+    evidence_refs: [SRC-FW-002, SRC-FW-003, SRC-FW-004]
+  - id: FW-UI-03
+    name_ar: فصل وصف المتطلبات عن الإتاحة الحالية
+    status: WORKING
+    status_scope: PUBLIC_COPY_SOURCE_PRESENT_ONLY
+    implementation_verification: SOURCE_PRESENT
+    runtime_verification: NOT_VERIFIED
+    production_firewall_operational: false
+    evidence_refs: [SRC-FW-001, SRC-FW-002]
+not_available_features:
+  - id: FW-OUT-01
+    name_ar: التحكم في طلبات AI غير المتكاملة
+    status: UNAVAILABLE
+    reason_ar: خارج نطاق المنتج المعتمد؛ لا تغطية دون نقطة تكامل مفوضة.
+  - id: FW-OUT-02
+    name_ar: ضمان كشف جميع محاولات Prompt Injection
+    status: UNAVAILABLE
+    reason_ar: ضمان مطلق غير قابل للاعتماد؛ المطلوب دفاع متعدد الطبقات وحدود كشف معلنة.
+  - id: FW-OUT-03
+    name_ar: إثبات امتثال تنظيمي تلقائي
+    status: UNAVAILABLE
+    reason_ar: المنتج لا يصدر شهادة أو ضمان امتثال.
+  - id: FW-OUT-04
+    name_ar: API تشغيلية عامة مثبتة في المسارات الحالية
+    status: UNAVAILABLE
+    reason_ar: لا يوجد مسار موثق مثبت في مراجعة الشجرة؛ API-CONTRACT.yaml تصميم مقترح لا endpoint حي.
+cancelled_features: []
+optional_product_integrations:
+  - {product: AIGAS-RE, purpose: risk_context_enrichment, status: PLANNED, mandatory_purchase: false}
+  - {product: AIGAS-HG, purpose: advanced_human_approval_workflows, status: PLANNED, mandatory_purchase: false}
+  - {product: AIGAS-LD, purpose: specialized_verifiable_evidence, status: PLANNED, mandatory_purchase: false}
+status_update_gate:
+  required_evidence:
+    - source_commit_sha_and_release_id
+    - authenticated_integration_call_trace
+    - observable_allow_and_block_effect
+    - isolated_tenant_and_roles_proof
+    - mandatory_fail_closed_proof
+    - minimal_audit_without_ledger
+    - deployment_scope_and_provider_region_approval
+    - security_privacy_review_and_owner_signoff
+  target_document: ACCEPTANCE-AND-EVIDENCE.md
+  who_can_promote_operational_status: OWNER_APPROVED_RELEASE_AUTHORITY
+  cannot_promote_based_on:
+    - mock_visualization
+    - static_marketing_copy
+    - legacy_readme
+    - passing_build_alone
+    - unsupported_self_report
+    - browser_animation_alone
+related_documents:
+  - PRODUCT-SPEC.md
+  - PAGE-EXPERIENCE.md
+  - API-CONTRACT.yaml
+  - 48H-TRIAL-SPEC.md
+  - ACCEPTANCE-AND-EVIDENCE.md
+  - ../../MASTER-PROJECT-BLUEPRINT.md

@@ -1,0 +1,617 @@
+# AIGAS Firewall — Proposed API Contract
+# THIS IS NOT AN INVENTORY OF DEPLOYED ENDPOINTS. All operations are target designs, NOT_IMPLEMENTED_OR_VERIFIED.
+# Base path, host, auth issuer, scopes, limits, retention and version must be approved before production publishing.
+# Canonical path: docs/products/firewall/API-CONTRACT.yaml
+openapi: 3.1.0
+info:
+  title: AIGAS Firewall API — Proposed Contract
+  version: 0.1.0-draft
+  description: >-
+    مخطط مبدئي لواجهات Firewall المستهدفة، وليس توثيقًا لواجهات موجودة. لا يوجد مسار
+    Firewall API تشغيلي مثبت في شجرة المستودع التي تمت مراجعتها. جميع أمثلة البيانات اصطناعية.
+  x-document-id: AIGAS-FW-API-001
+  x-document-version: 1.0.0-draft
+  x-date: '2026-11-01'
+  x-approval-status: CONTRACT_PROPOSAL_PENDING_ARCHITECTURE_SECURITY_APPROVAL
+  x-runtime-availability: NOT_VERIFIED
+  x-catalog-product: AIGAS-FW
+  x-scope: INTEGRATED_TRAFFIC_ONLY
+servers:
+  - url: https://firewall-api.example.invalid
+    description: 'Non-routable placeholder; not a live BRIGHT AI endpoint'
+security:
+  - oauth2: []
+tags:
+  - {name: Evaluation, description: 'Evaluate-only; result alone does NOT enforce the AI request.'}
+  - {name: Enforcement, description: 'Server-side controlled route that actually enforces decisions.'}
+  - {name: Decisions, description: 'Scoped read access to decision metadata.'}
+  - {name: Reviews, description: 'Basic authorised review capability independent of commercial Human Gate.'}
+  - {name: Policies, description: 'Read-only approved policy metadata.'}
+  - {name: Coverage, description: 'What approved integrated traffic is in scope.'}
+  - {name: Operations, description: 'Limited runtime information for authenticated operators.'}
+x-contract-rules:
+  all_paths_status: PROPOSED_NOT_DEPLOYED
+  tenant_identity_source: VERIFIED_AUTH_CONTEXT_ONLY
+  never_trust_tenant_from_body: true
+  no_api_keys_in_url: true
+  no_raw_prompts_in_logs_by_default: true
+  no_training_on_customer_data: true
+  hard_deny_overrides_shadows_reviews_and_lower_policies: true
+  evaluation_endpoint_not_sufficient_for_enforcement: true
+  mcp_or_tool_call_requires_separate_tool_authorization: true
+  provider_must_be_authorised_and_region_approved: true
+  optional_integrations: [AIGAS-RE, AIGAS-HG, AIGAS-LD]
+  requires_purchase_of_optional_integrations_for_base_function: false
+  rate_limits: APPROVAL_REQUIRED_NO_NUMERIC_DEFAULT
+  request_size_limit: APPROVAL_REQUIRED_NO_NUMERIC_DEFAULT
+  timeouts: APPROVAL_REQUIRED_PER_OPERATION
+  default_on_mandatory_policy_error: FAIL_CLOSED
+  trial_activation_separate_from_api_use: true
+  forbidden_interpretations:
+    - HTTP_error_implies_allow
+    - empty_decision_implies_allow
+    - visual_simulation_is_api
+    - evaluation_response_implies_enforcement
+paths:
+  /v1/firewall/evaluations:
+    post:
+      tags: [Evaluation]
+      operationId: evaluateFirewallRequest
+      summary: تقييم معلومات طلب/استجابة خاضعة للحماية دون تنفيذ العملية الخارجية
+      description: >-
+        يعيد تقييمًا سياقيًا لقرار محتمل. هو واجهة تقييم/محاكاة سياسة مصادق عليها،
+        ولا يُستخدم دليلًا على إنفاذ حقيقي إلا إذا ثبت مسار تكامل يستهلك القرار وينفذه بأمان.
+        لا يُسمح بتجاوز ضوابط Hard Deny. ينبغي منع إفشاء محتوى حساس غير لازم.
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.evaluate
+      security:
+        - oauth2: [firewall.evaluate]
+      x-requirement-ids: [FW-01, FW-02, FW-03, FW-04, FW-05, FW-08]
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/FirewallEvaluationRequest'}
+            examples:
+              syntheticInbound:
+                summary: بيانات تعليمية اصطناعية
+                value:
+                  direction: INPUT
+                  operation_id: demo-operation-001
+                  target:
+                    integration_id: approved-connector-example
+                    model_id: approved-model-example
+                    action: GENERATE_TEXT
+                  content:
+                    representation: INLINE_TEXT
+                    text: تلخيص رسالة عامة لا تحتوي بيانات عميل حقيقية.
+                  data_classification: PUBLIC
+                  execution_mode: EVALUATE_ONLY
+      responses:
+        '200':
+          description: نتيجة تقييم دون إثبات تنفيذ
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/FirewallDecision'}
+              examples:
+                example:
+                  value:
+                    decision_id: example-decision-001
+                    correlation_id: example-correlation-001
+                    decision: ALLOW
+                    enforcement_status: NOT_EXECUTED
+                    policy_reference: {policy_id: example-policy, version: example-version}
+                    reason_codes: [POLICY_PERMITS_REQUEST]
+                    output: {content_ref: null, redacted_text: null}
+                    review: null
+                    expires_at: null
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/Unprocessable'}
+        '429': {$ref: '#/components/responses/RateLimited'}
+        '503': {$ref: '#/components/responses/SecureUnavailable'}
+  /v1/firewall/guarded-executions:
+    post:
+      tags: [Enforcement]
+      operationId: executeFirewallGuardedRequest
+      summary: تنفيذ طلب AI محكوم عبر مسار Gateway معتمد (مقترح)
+      description: >-
+        نقطة إنفاذ تمرر الطلب إلى مزود/أداة معتمدة فقط بعد التحقق من السياسة والهوية
+        وفحص المدخلات. تتحكم بتمرير المخرجات وفق ضوابطها؛ عند مراجعة معلقة لا
+        ينفذ الأثر الخارجي. إذا تعذر التحقق من حظر إلزامي يمنع التنفيذ (Fail-Closed).
+        لا تسمح بتمرير بيانات إلى مزود غير مصرح به أو معالجة خارج منطقة العميل المعتمدة.
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.enforce
+      security:
+        - oauth2: [firewall.enforce]
+      x-requirement-ids: [FW-01, FW-02, FW-03, FW-04, FW-05, FW-07, FW-08]
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/GuardedExecutionRequest'}
+      responses:
+        '200':
+          description: عملية مأذون بها؛ حقول الاستجابة تمثل الأثر المنفذ فعليًا لا تخمين واجهة
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/GuardedExecutionResult'}
+        '202':
+          description: مراجعة بشرية لازمة؛ لا تنفيذ قبل الموافقة والتحقق مرة أخرى
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ReviewPendingResult'}
+        '403':
+          description: قرار BLOCK أو عدم صلاحية؛ الفعل الخارجي لم يُنفذ
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/FirewallDenied'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '413': {$ref: '#/components/responses/PayloadTooLarge'}
+        '422': {$ref: '#/components/responses/Unprocessable'}
+        '429': {$ref: '#/components/responses/RateLimited'}
+        '503': {$ref: '#/components/responses/SecureUnavailable'}
+  /v1/firewall/decisions/{decision_id}:
+    get:
+      tags: [Decisions]
+      operationId: getFirewallDecision
+      summary: قراءة الحد الأدنى من بيانات قرار تابع للمستأجر المخوّل
+      description: لا يعيد Prompt الخام أو أسرارًا أو بيانات عميل آخر.
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.decisions.read
+      security:
+        - oauth2: [firewall.decisions.read]
+      x-requirement-ids: [FW-08]
+      parameters:
+        - $ref: '#/components/parameters/DecisionId'
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: سجل قرار مصغر
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/FirewallDecisionRecord'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /v1/firewall/reviews/{review_id}:
+    get:
+      tags: [Reviews]
+      operationId: getFirewallReview
+      summary: الاستعلام عن مراجعة أساسية معلقة (لا تتطلب شراء Human Gate التجاري)
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.review.read
+      security:
+        - oauth2: [firewall.review.read]
+      x-requirement-ids: [FW-02, FW-03]
+      parameters:
+        - $ref: '#/components/parameters/ReviewId'
+      responses:
+        '200':
+          description: حالة مراجعة أساسية
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ReviewRecord'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /v1/firewall/reviews/{review_id}/resolutions:
+    post:
+      tags: [Reviews]
+      operationId: resolveBasicFirewallReview
+      summary: قرار مراجع مخوّل على عملية محددة؛ لا يرفع Hard Deny
+      description: >-
+        يجب إعادة التحقق من صلاحية المراجع وفصل المهام وسياسة العملية والمقصد والنسخة
+        قبل السماح بمتابعة تنفيذ محكوم؛ هذا الاستدعاء لا ينفذ الأثر تلقائيًا ولا يسمح
+        بإعادة تشغيل عملية تغيرت معلماتها أو انتهت المهلة.
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.review.resolve
+      security:
+        - oauth2: [firewall.review.resolve]
+      x-requirement-ids: [FW-02, FW-03, FW-08]
+      parameters:
+        - $ref: '#/components/parameters/ReviewId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ReviewResolutionRequest'}
+      responses:
+        '200':
+          description: سجل قرار مراجعة؛ لا يثبت تنفيذ فعل مزود
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ReviewRecord'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/Unprocessable'}
+  /v1/firewall/policies:
+    get:
+      tags: [Policies]
+      operationId: listFirewallPolicyMetadata
+      summary: سياسات معتمدة ظاهرة للمستأجر/المراجع المخول دون محتويات سرية
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.policies.read
+      security:
+        - oauth2: [firewall.policies.read]
+      x-requirement-ids: [FW-03, FW-06]
+      responses:
+        '200':
+          description: قائمة موجزة بنسخ السياسات ووسم mandatory/shadow
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  policies:
+                    type: array
+                    items: {$ref: '#/components/schemas/PolicySummary'}
+                required: [policies]
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /v1/firewall/coverage:
+    get:
+      tags: [Coverage]
+      operationId: getFirewallIntegratedCoverage
+      summary: قائمة نقاط التكامل المسجلة لنطاق المؤسسة، دون الادعاء بحماية ما خارجها
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.coverage.read
+      security:
+        - oauth2: [firewall.coverage.read]
+      x-requirement-ids: [FW-01]
+      responses:
+        '200':
+          description: قائمة نقاط التكامل المصرح بها وحالتها الموثقة
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  integrations:
+                    type: array
+                    items: {$ref: '#/components/schemas/IntegrationSummary'}
+                required: [integrations]
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /v1/firewall/health:
+    get:
+      tags: [Operations]
+      operationId: firewallMinimalHealth
+      summary: مؤشر صحة تقني محدود للمراقبة الداخلية (ليس تقرير جاهزية المنتج)
+      x-status: PROPOSED_NOT_DEPLOYED
+      x-required-scope: firewall.operations.read
+      security:
+        - oauth2: [firewall.operations.read]
+      responses:
+        '200':
+          description: المراقبة المخولة فقط؛ دون كشف مفاتيح أو أسماء عملاء
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  status: {type: string, enum: [READY, DEGRADED]}
+                  checked_at: {type: string, format: date-time}
+                required: [status, checked_at]
+        '401': {$ref: '#/components/responses/Unauthenticated'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/SecureUnavailable'}
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: >-
+        نموذج توثيق مقترح. Issuer، تدفقات OAuth/OIDC الفعلية والـaudience
+        ومطابقة الهوية للبيئات المحلية/المعزولة غير معتمدة بعد.
+      flows:
+        clientCredentials:
+          tokenUrl: https://identity.example.invalid/oauth2/token
+          scopes:
+            firewall.evaluate: تقييم قرار
+            firewall.enforce: تنفيذ عملية محكومة
+            firewall.decisions.read: قراءة سجل قرار
+            firewall.review.read: قراءة مراجعة
+            firewall.review.resolve: اتخاذ قرار مراجعة
+            firewall.policies.read: قراءة السياسات
+            firewall.coverage.read: قراءة التكاملات
+            firewall.operations.read: مراقبة تقنية
+  parameters:
+    CorrelationId:
+      name: X-Correlation-Id
+      in: header
+      required: false
+      description: مرجع ترابط غير حساس؛ إن غاب ينشئ الخادم قيمة آمنة.
+      schema: {type: string, maxLength: 128}
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: مطلوب لعمليات التنفيذ/المراجعة ذات الأثر؛ يربط بالـtenant والمستدعي وbody hash ومنع التكرار.
+      schema: {type: string, maxLength: 128}
+    DecisionId:
+      name: decision_id
+      in: path
+      required: true
+      schema: {type: string}
+    ReviewId:
+      name: review_id
+      in: path
+      required: true
+      schema: {type: string}
+  schemas:
+    Target:
+      type: object
+      additionalProperties: false
+      required: [integration_id, action]
+      properties:
+        integration_id:
+          type: string
+          description: معرف تكامل مملوك للخادم ومعتمد للمستأجر؛ لا عنوان URL خارجي حر.
+        model_id: {type: [string, 'null']}
+        action: {type: string, enum: [GENERATE_TEXT, SUMMARIZE, EMBEDDINGS, TOOL_ACTION, OTHER_APPROVED]}
+        tool_id: {type: [string, 'null']}
+        region_code: {type: [string, 'null'], description: لا يستبدل إذن المنطقة على الخادم.}
+    Content:
+      type: object
+      additionalProperties: false
+      required: [representation]
+      properties:
+        representation: {type: string, enum: [INLINE_TEXT, SECURE_REFERENCE]}
+        text:
+          type: [string, 'null']
+          description: يُقبل فقط حسب تصنيف البيانات/سياسة النقل؛ لا يحفظ افتراضيًا بسجلات الخادم.
+        reference:
+          type: [string, 'null']
+          description: مرجع قصير الأجل مفوض، وليس URL عالمي أو وصول غير مقيد.
+      description: يجب فرض وجود text أو reference بما يطابق representation، ومنع الجمع غير المصرح.
+    FirewallEvaluationRequest:
+      type: object
+      additionalProperties: false
+      required: [direction, operation_id, target, content, execution_mode]
+      properties:
+        direction: {type: string, enum: [INPUT, OUTPUT, TOOL_CALL, TOOL_RESULT]}
+        operation_id: {type: string}
+        target: {$ref: '#/components/schemas/Target'}
+        content: {$ref: '#/components/schemas/Content'}
+        data_classification: {type: [string, 'null'], description: تصريح الفاعل لا يحل محل سياسة تصنيف موثوقة.}
+        execution_mode: {type: string, const: EVALUATE_ONLY}
+        policy_hint: {type: [string, 'null'], description: معلومة غير موثوقة؛ الخادم يختار السياسة الفعلية.}
+    GuardedExecutionRequest:
+      type: object
+      additionalProperties: false
+      required: [operation_id, target, content, response_mode]
+      properties:
+        operation_id: {type: string}
+        target: {$ref: '#/components/schemas/Target'}
+        content: {$ref: '#/components/schemas/Content'}
+        response_mode: {type: string, enum: [CONTROLLED_BUFFERED, CONTROLLED_STREAMING_IF_APPROVED]}
+        data_classification: {type: [string, 'null']}
+        approval_reference: {type: [string, 'null'], description: يعاد التحقق منه ضد actor/tenant/operation/policy/version.}
+    PolicyReference:
+      type: object
+      required: [policy_id, version]
+      properties:
+        policy_id: {type: string}
+        version: {type: string}
+    FirewallDecision:
+      type: object
+      additionalProperties: false
+      required: [decision_id, correlation_id, decision, enforcement_status, policy_reference, reason_codes]
+      properties:
+        decision_id: {type: string}
+        correlation_id: {type: string}
+        decision: {type: string, enum: [ALLOW, WARN, REDACT, REQUEST_APPROVAL, BLOCK]}
+        enforcement_status: {type: string, enum: [NOT_EXECUTED, ENFORCED, PENDING_REVIEW, BLOCKED]}
+        policy_reference: {$ref: '#/components/schemas/PolicyReference'}
+        reason_codes: {type: array, items: {type: string}}
+        output:
+          type: object
+          properties:
+            content_ref: {type: [string, 'null']}
+            redacted_text: {type: [string, 'null']}
+        review:
+          anyOf:
+            - {$ref: '#/components/schemas/ReviewRecord'}
+            - {type: 'null'}
+        expires_at: {type: [string, 'null'], format: date-time}
+    GuardedExecutionResult:
+      type: object
+      required: [decision, execution_status]
+      properties:
+        decision: {$ref: '#/components/schemas/FirewallDecision'}
+        execution_status: {type: string, enum: [EXECUTED, REDACTED_AND_EXECUTED, WARNING_AND_EXECUTED, NOT_EXECUTED]}
+        provider_response_ref: {type: [string, 'null']}
+        response_content:
+          type: [string, 'null']
+          description: لا يفرج إلا عن المحتوى المسموح بعد ضوابط المخرجات.
+    ReviewPendingResult:
+      type: object
+      required: [decision, review_id, external_action_executed]
+      properties:
+        decision: {$ref: '#/components/schemas/FirewallDecision'}
+        review_id: {type: string}
+        external_action_executed: {type: boolean, const: false}
+    FirewallDenied:
+      type: object
+      required: [decision, external_action_executed]
+      properties:
+        decision: {$ref: '#/components/schemas/FirewallDecision'}
+        external_action_executed: {type: boolean, const: false}
+    FirewallDecisionRecord:
+      type: object
+      required: [decision_id, decision, created_at, policy_reference, reason_codes]
+      properties:
+        decision_id: {type: string}
+        decision: {type: string, enum: [ALLOW, WARN, REDACT, REQUEST_APPROVAL, BLOCK]}
+        created_at: {type: string, format: date-time}
+        policy_reference: {$ref: '#/components/schemas/PolicyReference'}
+        reason_codes: {type: array, items: {type: string}}
+        operation_id_hash: {type: [string, 'null']}
+        tenant_audit_scope: {type: string, description: من سياق الهوية وليس من إدخال العميل الحر.}
+    ReviewRecord:
+      type: object
+      required: [review_id, status, operation_id, expires_at]
+      properties:
+        review_id: {type: string}
+        status: {type: string, enum: [PENDING, APPROVED, REJECTED, EXPIRED, CANCELLED]}
+        operation_id: {type: string}
+        expires_at: {type: string, format: date-time}
+        reviewer_role: {type: [string, 'null']}
+        decision_reason_code: {type: [string, 'null']}
+    ReviewResolutionRequest:
+      type: object
+      additionalProperties: false
+      required: [resolution, reason_code, expected_status]
+      properties:
+        resolution: {type: string, enum: [APPROVE, REJECT]}
+        reason_code: {type: string}
+        expected_status: {type: string, const: PENDING}
+    PolicySummary:
+      type: object
+      required: [id, version, mode, mandatory]
+      properties:
+        id: {type: string}
+        version: {type: string}
+        mode: {type: string, enum: [ENFORCE, MONITOR_ALLOWED]}
+        mandatory: {type: boolean}
+        last_approved_at: {type: [string, 'null'], format: date-time}
+    IntegrationSummary:
+      type: object
+      required: [id, type, status]
+      properties:
+        id: {type: string}
+        type: {type: string, enum: [API, SDK, PROXY, CONNECTOR]}
+        status: {type: string, enum: [REGISTERED, APPROVED, ACTIVE, SUSPENDED]}
+        traffic_scope: {type: string}
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error, correlation_id]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message]
+          properties:
+            code: {type: string}
+            message: {type: string, description: وصف آمن لا يسرب سياسة سرية أو بيانات مستأجر آخر.}
+            retryable: {type: boolean}
+        correlation_id: {type: string}
+  responses:
+    BadRequest:
+      description: BAD_REQUEST — الطلب غير صالح بنيويًا
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    Unauthenticated:
+      description: UNAUTHENTICATED — لا توجد هوية موثوقة
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    Forbidden:
+      description: FORBIDDEN — صلاحية غير كافية أو مجال غير مخوّل
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    NotFound:
+      description: NOT_FOUND — لا يُفصح عن وجود موارد مستأجر آخر
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    Conflict:
+      description: CONFLICT — حالة عملية تغيرت أو مفتاح idempotency متعارض
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    PayloadTooLarge:
+      description: PAYLOAD_TOO_LARGE — حدود الحجم تُحدد من سياسة منشورة معتمدة
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    Unprocessable:
+      description: POLICY_OR_VALIDATION_ERROR — لا تخمّن قرار ALLOW
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    RateLimited:
+      description: RATE_LIMITED — تجاوز الحصة أو معدل الطلب
+      headers:
+        Retry-After:
+          description: مدة إعادة المحاولة إن انطبق، لا تضمن تجاوز الحظر.
+          schema: {type: string}
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+    SecureUnavailable:
+      description: SECURE_DEPENDENCY_UNAVAILABLE — يجب عدم تجاوز الإنفاذ الإلزامي
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+x-error-catalog:
+  - {code: INVALID_REQUEST, http_status: 400, client_action: FIX_INPUT}
+  - {code: AUTH_REQUIRED, http_status: 401, client_action: AUTHENTICATE}
+  - {code: SCOPE_DENIED, http_status: 403, client_action: REQUEST_AUTHORITY}
+  - {code: HARD_DENY, http_status: 403, client_action: STOP_EXTERNAL_ACTION}
+  - {code: PROVIDER_NOT_APPROVED, http_status: 403, client_action: STOP_EXTERNAL_ACTION}
+  - {code: CROSS_TENANT_ACCESS_DENIED, http_status: 404, client_action: DO_NOT_DISCLOSE_TARGET}
+  - {code: REVIEW_EXPIRED, http_status: 409, client_action: RESTART_AUTHORIZED_FLOW}
+  - {code: IDEMPOTENCY_CONFLICT, http_status: 409, client_action: INSPECT_ORIGINAL_OPERATION}
+  - {code: PAYLOAD_LIMIT, http_status: 413, client_action: REDUCE_PAYLOAD}
+  - {code: POLICY_INVALID, http_status: 422, client_action: STOP_AND_FIX_POLICY}
+  - {code: RATE_LIMITED, http_status: 429, client_action: RETRY_ONLY_WHEN_AUTHORIZED}
+  - {code: REQUIRED_POLICY_SERVICE_UNAVAILABLE, http_status: 503, client_action: FAIL_CLOSED}
+  - {code: REQUIRED_AUDIT_UNAVAILABLE, http_status: 503, client_action: FAIL_CLOSED}
+  - {code: PROVIDER_TIMEOUT, http_status: 503, client_action: STOP_OR_SAFE_RETRY}
+x-event-contracts:
+  approval_state: PROPOSED
+  requires_versioning_and_schema_ownership: true
+  metadata_only_by_default: true
+  events:
+    - {name: FirewallRequestReceived, owner: AIGAS-FW}
+    - {name: FirewallPolicyEvaluated, owner: AIGAS-FW}
+    - {name: FirewallDecisionEnforced, owner: AIGAS-FW}
+    - {name: FirewallReviewRequested, owner: AIGAS-FW}
+    - {name: FirewallReviewResolved, owner: AIGAS-FW}
+    - {name: FirewallControlFailure, owner: AIGAS-FW}
+  minimum_fields:
+    - event_id
+    - tenant_scope_from_auth
+    - correlation_id
+    - policy_id
+    - policy_version
+    - decision_id
+    - decision_type
+    - execution_state
+    - occurred_at
+    - reason_code
+  no_raw_user_content_default: true
+  optional_ledger_export: true
+  required_basic_security_events_without_ledger_license: true
+x-offline-requirements:
+  on_premise: LOCAL_IDENTITY_OR_APPROVED_SSO
+  air_gapped: FULL_LOCAL_AUTH_POLICY_LICENSE_KEY_AND_AUDIT
+  no_cloud_license_heartbeat_mandatory: true
+  no_implicit_internet_fallback: true
+  signed_offline_release_packages: REQUIRED_BEFORE_OFFLINE_LAUNCH
+  provider_adapter: APPROVED_LOCAL_MODEL_FOR_AIR_GAP
+x-open-decisions:
+  - final_api_paths_and_hostname
+  - issuer_and_actual_auth_protocol_per_deployment
+  - exact_scopes_and_customer_roles
+  - policy_version_approval_workflow
+  - feature_specific_DLP_categories_and_language_corpora
+  - request_and_response_size_caps
+  - timeout_and_streaming_buffer_policy
+  - safe_failure_matrix_per_control_and_traffic_path
+  - connector_whitelist_and_provider_approved_regions
+  - persistence_storage_and_retention_schedule
+  - release_semver_deprecation_window
+  - human_review_base_vs_Human_Gate_advanced_workflow_boundary
+  - legal_privacy_approval_for_customer_data_processing
+x-evidence-gates:
+  doc_ref: ACCEPTANCE-AND-EVIDENCE.md
+  cannot_claim_working_without:
+    - real_authenticated_integrated_request
+    - actual_allow_and_block_enforcement_trace
+    - mandatory_hard_deny_and_failure_safety
+    - tenant_isolation_proof
+    - basic_audit_proof
+    - deployment_scope_authorization
+  no_prod_endpoint_assumed: true
