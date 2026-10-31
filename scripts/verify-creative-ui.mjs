@@ -29,8 +29,8 @@ for(const route of ['/products/human-gate/','/products/ledger/','/products/secur
  await page.goto(base+route);const summary=page.locator('summary').last();await summary.focus();await page.keyboard.press('Enter');assert.equal(await summary.evaluate(e=>e.parentElement.open),true);
 }
 await page.goto(base+'/');await page.keyboard.press('Tab');assert.match(await page.locator(':focus').textContent(),/تخطّ/);await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>location.hash),'#main');
-await page.locator('.map-node').first().click();assert.match(page.url(),/products\/firewall/);await page.getByRole('button',{name:'تحذير',exact:true}).click();assert.equal(await page.getByRole('button',{name:'تحذير',exact:true}).getAttribute('aria-pressed'),'true');
-await page.goto(base+'/');await page.locator('.map-node').first().click();await page.getByRole('button',{name:'سماح',exact:true}).click();assert.equal(await page.getByRole('button',{name:'سماح',exact:true}).getAttribute('aria-pressed'),'true');
+await page.goto(base+'/products/');await page.locator('.map-node').first().click();assert.match(page.url(),/products\/firewall/);await page.getByRole('button',{name:'تحذير',exact:true}).click();assert.equal(await page.getByRole('button',{name:'تحذير',exact:true}).getAttribute('aria-pressed'),'true');
+await page.goto(base+'/');await page.goto(base+'/products/');await page.locator('.map-node').first().click();await page.getByRole('button',{name:'سماح',exact:true}).click();assert.equal(await page.getByRole('button',{name:'سماح',exact:true}).getAttribute('aria-pressed'),'true');
 await page.goto(base+'/contact/');await page.locator('button[type=submit]').click();assert.equal(await page.locator('input:invalid').count(),2);
 await page.emulateMedia({reducedMotion:'reduce'});await page.goto(base+'/');await page.evaluate(()=>scrollTo(0,1000));
 assert.equal(await page.locator('[data-reveal-line]').first().evaluate(e=>getComputedStyle(e).opacity),'1');

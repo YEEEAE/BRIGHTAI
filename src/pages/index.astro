@@ -3,7 +3,7 @@ import '../styles/theme.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import SystemMap from '../components/SystemMap.astro';
+import Constellation from '../components/Constellation.astro';
 export const prerender = true;
 const pillarPaths = ['safety', 'transparency', 'privacy'];
 const pillars = [
@@ -26,12 +26,12 @@ const sectors = [
       <div class="hero-copy">
 
 
-        <p class="eyebrow hero-kicker">مؤسسة مُشرقة BRIGHT AI / السعودية</p><h1 id="hero-title">لكل طلب<br />حدود.<br /><span class="hero-last">ولكل قرار أثر.</span></h1>
+        <h1 id="hero-title">ذكاء اصطناعي<br />تثق به<span class="ellipsis">...</span><br /><span class="hero-last">وتحاسبه</span></h1>
         <p class="eyebrow hero-tagline">AIGAS / حوكمة وأمان الذكاء الاصطناعي</p>
         <p class="hero-description">AIGAS تصور لحوكمة وأمان الذكاء الاصطناعي، يضم Kernel كمكوّن مشترك وخمسة منتجات مستقلة وظيفياً وتجاريًا وفق الـBlueprint. الإتاحة التشغيلية للمنتجات غير متحققة حالياً.</p>
         <div class="actions"><a class="button" href="/products/">استكشف المنتجات <span aria-hidden="true">↖</span></a><a class="ghost" href="/contact/">اطلب معلومات أو عرض سعر <span aria-hidden="true">←</span></a></div>
       </div>
-      <div class="hero-art"><SystemMap /></div>
+      <div class="hero-art"><Constellation /></div>
 
     </section>
     <section class="governance-statement wrap" aria-label="حوكمة وحماية البيانات">
@@ -188,16 +188,6 @@ const sectors = [
 </style>
 
 <style>
-  .hero { display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); gap: 60px; min-height: auto; padding-block: 76px 96px; }
-  .hero-copy { width: auto; max-width: none; }
-  .hero h1 { font-size: clamp(58px,6.2vw,88px); line-height: 1.35; letter-spacing: 0; }
-  .hero-last { color: #b79aff; }
-  .hero .hero-kicker { font-size: 12px; margin-bottom: 26px; color: #beb7c9; }
-  .hero .hero-tagline { font-size: 12px; margin-block: 24px 16px; }
-  .hero-description { font-size: 16px; line-height: 1.95; }
-  .hero-art { position: relative; width: 100%; height: auto; inset: auto; mask-image: none; margin: 0; }
-  .hero .actions { gap: 14px 24px; }
-  .hero .button { padding: 12px 20px; }
   .section { padding-block: clamp(64px,8vw,112px); }
   .problem { min-height: auto; padding-block: 100px; border-block: 1px solid #2c2334; gap: 100px; }
   .problem-copy { border-inline-start: 2px solid #8052ff; padding-inline-start: 30px; }
@@ -215,7 +205,16 @@ const sectors = [
   .sectors:not(.home-products) { gap: 0 72px; }
   .sectors:not(.home-products) .sector { border-top: 1px solid #33263e; padding-block: 30px; }
   .closing { border-block-start: 1px solid #33263e; background: radial-gradient(ellipse at 50% 100%,#2d154580,transparent 65%); }
-  @media(max-width: 900px) { .hero { gap: 30px; }.hero h1 { font-size: 60px; }.workflow-intro { position: static; } }
-  @media(max-width: 767px) { .hero { display: grid; grid-template-columns: 1fr; padding-block: 40px 56px; }.hero h1 { font-size: clamp(50px,12vw,76px); }.hero-art { margin-block-start: 16px; width: 100%; height: auto; }.hero .hero-kicker { font-size: 11px; }.home-products .sector { grid-template-columns: 1fr; gap: 12px; }.problem { padding-block: 56px; gap: 36px; }.pillar { gap: 24px; }.pillar-symbol { min-height: 160px; }.pillar-symbol svg { width: 90px; height: 90px; }.home-products .sector h3 { font-size: 26px; } }
+  @media(max-width: 900px) { .workflow-intro { position: static; } }
+  @media(max-width: 767px) { .home-products .sector { grid-template-columns: 1fr; gap: 12px; }.problem { padding-block: 56px; gap: 36px; }.pillar { gap: 24px; }.pillar-symbol { min-height: 160px; }.pillar-symbol svg { width: 90px; height: 90px; }.home-products .sector h3 { font-size: 26px; } }
   @media(prefers-reduced-motion:reduce) { .pillar:hover .pillar-symbol svg { transform: none; } }
+</style>
+
+<style>
+  /* Preserve the approved hero against the newer shared design system. */
+  .hero { font-weight: 200; }
+  .hero h1 { animation: none; text-wrap: wrap; }
+  .hero .button { border-radius: var(--radius-buttons); transition: transform .2s, filter .2s; }
+  .hero :is(.button,.ghost) span { transition: none; }
+  .hero :is(.button,.ghost):is(:hover,:focus-visible) span { transform: none; }
 </style>
