@@ -1,0 +1,251 @@
+{
+  "migration": "0001_aigas_kernel.sql",
+  "sha256": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+  "project": "young-frog-60183055",
+  "branch": "production",
+  "branch_id": "br-young-bird-b43proeb",
+  "database": "neondb",
+  "applied_at_utc": "2026-11-01T00:52:13.056Z",
+  "status": "APPLIED",
+  "transaction": "COMMITTED",
+  "tables": [
+    {
+      "name": "aigas_audit_events",
+      "rls": true,
+      "owner": "neondb_owner"
+    },
+    {
+      "name": "aigas_memberships",
+      "rls": true,
+      "owner": "neondb_owner"
+    },
+    {
+      "name": "aigas_product_access",
+      "rls": true,
+      "owner": "neondb_owner"
+    },
+    {
+      "name": "aigas_tenants",
+      "rls": true,
+      "owner": "neondb_owner"
+    }
+  ],
+  "constraints": [
+    {
+      "relation": "aigas_audit_events",
+      "name": "aigas_audit_events_action_not_null",
+      "type": "n",
+      "definition": "NOT NULL action"
+    },
+    {
+      "relation": "aigas_audit_events",
+      "name": "aigas_audit_events_actor_user_id_not_null",
+      "type": "n",
+      "definition": "NOT NULL actor_user_id"
+    },
+    {
+      "relation": "aigas_audit_events",
+      "name": "aigas_audit_events_created_at_not_null",
+      "type": "n",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "relation": "aigas_audit_events",
+      "name": "aigas_audit_events_id_not_null",
+      "type": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "relation": "aigas_audit_events",
+      "name": "aigas_audit_events_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "relation": "aigas_audit_events",
+      "name": "aigas_audit_events_tenant_id_fkey",
+      "type": "f",
+      "definition": "FOREIGN KEY (tenant_id) REFERENCES aigas_tenants(id)"
+    },
+    {
+      "relation": "aigas_audit_events",
+      "name": "aigas_audit_events_tenant_id_not_null",
+      "type": "n",
+      "definition": "NOT NULL tenant_id"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_created_at_not_null",
+      "type": "n",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (tenant_id, user_id)"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_role_check",
+      "type": "c",
+      "definition": "CHECK ((role = ANY (ARRAY['OWNER'::text, 'ADMIN'::text, 'MEMBER'::text])))"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_role_not_null",
+      "type": "n",
+      "definition": "NOT NULL role"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_tenant_id_fkey",
+      "type": "f",
+      "definition": "FOREIGN KEY (tenant_id) REFERENCES aigas_tenants(id)"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_tenant_id_not_null",
+      "type": "n",
+      "definition": "NOT NULL tenant_id"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_user_id_fkey",
+      "type": "f",
+      "definition": "FOREIGN KEY (user_id) REFERENCES neon_auth.\"user\"(id)"
+    },
+    {
+      "relation": "aigas_memberships",
+      "name": "aigas_memberships_user_id_not_null",
+      "type": "n",
+      "definition": "NOT NULL user_id"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (tenant_id, product_slug)"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_product_slug_check",
+      "type": "c",
+      "definition": "CHECK ((product_slug = ANY (ARRAY['firewall'::text, 'ledger'::text, 'human-gate'::text, 'risk-engine'::text, 'secure-chat'::text])))"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_product_slug_not_null",
+      "type": "n",
+      "definition": "NOT NULL product_slug"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_status_check",
+      "type": "c",
+      "definition": "CHECK ((status = ANY (ARRAY['FOUNDATION'::text, 'DISABLED'::text, 'ENABLED'::text])))"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_status_not_null",
+      "type": "n",
+      "definition": "NOT NULL status"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_tenant_id_fkey",
+      "type": "f",
+      "definition": "FOREIGN KEY (tenant_id) REFERENCES aigas_tenants(id)"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_tenant_id_not_null",
+      "type": "n",
+      "definition": "NOT NULL tenant_id"
+    },
+    {
+      "relation": "aigas_product_access",
+      "name": "aigas_product_access_updated_at_not_null",
+      "type": "n",
+      "definition": "NOT NULL updated_at"
+    },
+    {
+      "relation": "aigas_tenants",
+      "name": "aigas_tenants_created_at_not_null",
+      "type": "n",
+      "definition": "NOT NULL created_at"
+    },
+    {
+      "relation": "aigas_tenants",
+      "name": "aigas_tenants_id_not_null",
+      "type": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "relation": "aigas_tenants",
+      "name": "aigas_tenants_name_check",
+      "type": "c",
+      "definition": "CHECK (((char_length(btrim(name)) >= 2) AND (char_length(btrim(name)) <= 100)))"
+    },
+    {
+      "relation": "aigas_tenants",
+      "name": "aigas_tenants_name_not_null",
+      "type": "n",
+      "definition": "NOT NULL name"
+    },
+    {
+      "relation": "aigas_tenants",
+      "name": "aigas_tenants_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (id)"
+    }
+  ],
+  "indexes": [
+    {
+      "tablename": "aigas_audit_events",
+      "indexname": "aigas_audit_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX aigas_audit_events_pkey ON public.aigas_audit_events USING btree (id)"
+    },
+    {
+      "tablename": "aigas_audit_events",
+      "indexname": "aigas_audit_tenant_time_idx",
+      "indexdef": "CREATE INDEX aigas_audit_tenant_time_idx ON public.aigas_audit_events USING btree (tenant_id, created_at)"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "indexname": "aigas_memberships_pkey",
+      "indexdef": "CREATE UNIQUE INDEX aigas_memberships_pkey ON public.aigas_memberships USING btree (tenant_id, user_id)"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "indexname": "aigas_memberships_user_idx",
+      "indexdef": "CREATE INDEX aigas_memberships_user_idx ON public.aigas_memberships USING btree (user_id)"
+    },
+    {
+      "tablename": "aigas_product_access",
+      "indexname": "aigas_product_access_pkey",
+      "indexdef": "CREATE UNIQUE INDEX aigas_product_access_pkey ON public.aigas_product_access USING btree (tenant_id, product_slug)"
+    },
+    {
+      "tablename": "aigas_tenants",
+      "indexname": "aigas_tenants_pkey",
+      "indexdef": "CREATE UNIQUE INDEX aigas_tenants_pkey ON public.aigas_tenants USING btree (id)"
+    }
+  ],
+  "public_grants": [],
+  "row_counts": {
+    "aigas_tenants": 0,
+    "aigas_memberships": 0,
+    "aigas_product_access": 0,
+    "aigas_audit_events": 0
+  },
+  "existing_auth_table_inventory_preserved": true,
+  "post_commit_verification": {
+    "independent_runtime_connection": "PASS",
+    "four_tables_and_rls": "PASS",
+    "nonexistent_user_denied_401": "PASS",
+    "local_security_tests": "6 PASS",
+    "authenticated_onboarding": "NOT RUN",
+    "real_multi_user_isolation": "NOT RUN"
+  }
+}

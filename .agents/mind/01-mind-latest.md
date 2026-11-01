@@ -1,5 +1,33 @@
 # Project Mind — BrightAI
 
+## [2026-11-01] — تطبيق ترحيل Kernel على الفرع الحالي بإذن المالك
+### تم التنفيذ
+- طبّق `0001_aigas_kernel.sql` على `production` / `br-young-bird-b43proeb` في `young-frog-60183055` بأمر المالك الصريح؛ ألغي انتظار فرع التطوير لهذا الترحيل.
+- مطابقة endpoint المباشر وغياب التعارضات قبل التنفيذ؛ SQL المعتمد محفوظ بنفس SHA-256 المسجل في دليل التطبيق. COMMIT ناجح بعد فحص القيود داخل المعاملة.
+- أُنشئت 4 جداول و6 فهارس و4 PK و4 FK و4 CHECK؛ RLS مفعّل للجميع وPUBLIC بلا grants. الجداول الجديدة فارغة، دون تعديل صفوف قائمة أو Auth أو `.env` أو إنشاء فروع.
+### الملفات المتأثرة
+- `Audit/2026-11-01-kernel-migration.json`، `docs/KERNEL-DEVELOPMENT.md`.
+### التحقق
+- فحص كتالوج المعاملة واتصال تطبيق مستقل ورفض مستخدم غير موجود بـ401: PASS؛ اختبارات الحماية المحلية: 6 PASS؛ diff-check: PASS.
+### النتيجة
+- **الحالة:** DONE للترحيل؛ Kernel تشغيلياً PARTIAL: رحلة دخول/إنشاء مؤسسة وعزل مستخدمين حقيقيين NOT RUN؛ مراجعة runtime role ما زالت مطلوبة. لا نشر أو commit/push.
+
+## [2026-11-01] — تأسيس بوابة Kernel التشغيلية المحلية
+### تم التنفيذ
+- أُضيفت `/app/` و`/app/kernel/` بواجهة RTL مستقلة دون Analytics أو تعديل الموقع التسويقي؛ خمس بطاقات وحالات دخول/تحميل/فراغ/خطأ ومخطط خفيف.
+- أُضيف Backend محمي بـJWT EdDSA وJWKS ومُصدر محدد، والتحقق من مستخدم Neon غير المحظور وعضويات DB؛ اختيار المؤسسة لا يمنح صلاحية، وأدوار OWNER/ADMIN/MEMBER محصورة بالخادم.
+- إنشاء المساحة للمستخدم بلا عضويات فقط، بمعاملة وقفل للمستخدم وتدقيق وخمس حالات FOUNDATION؛ لا تفعيل اشتراك أو تجربة. سجل المسارات المنفذة فارغ، لذلك كل المنتجات قيد التأسيس دون روابط تشغيل وهمية.
+- فحص Neon MCP: BLOCKED بخطأ تفويض؛ فحص SQL مباشر للقراءة فقط نجح: جداول neon_auth موجودة ولا جداول public للتطبيق، ومعرّف المستخدم UUID وbanned boolean. جداول organization/member المُدارة موجودة؛ لم تُعدّل ولم تُستورد كصلاحيات Kernel.
+- جُهّز ترحيل أربع كيانات محلياً فقط؛ لم يُطبّق على production ولم تُنشأ موارد/فروع خارجية. أُضيف pg وjose؛ `.env` محفوظ دون تغيير. SDK المثبت @neon/auth 0.8.2 يعيد JWT عبر getSession().data.session.token بخطاف set-auth-jwt، لا عبر token() الأحدث.
+### الملفات المتأثرة
+- `src/pages/app/`، `src/layouts/AppLayout.astro`، `src/server/kernel/`، `src/scripts/kernel.ts`، `src/styles/kernel.css`.
+- `migrations/0001_aigas_kernel.sql`، `.env.example`، `docs/KERNEL-DEVELOPMENT.md`، `tests/kernel.test.mjs`، manifest/lockfile؛ `astro.config.mjs` لاستبعاد /app/ من sitemap فقط.
+### التحقق
+- build وTypeScript و6 اختبارات حماية: PASS؛ HTTP محلي: /app/ يحوّل، Kernel يعرض 5 بطاقات بلا Analytics، API يرفض غياب الهوية والرمز المزوّر بـ401 وno-store.
+- Chrome DevTools على 360/1440px: PASS لغياب overflow وظهور البطاقات والحالة الآمنة والخط المحلي؛ Playwright MCP مشغول. رحلة إنشاء مؤسسة وحماية مستخدمين على DB مُرحّلة: NOT RUN.
+### النتيجة
+- **الحالة:** PARTIAL تشغيلياً؛ التأسيس المحلي منفذ. طبّق SQL لاحقاً وفق السجل الأعلى؛ المتبقي مراجعة runtime DB role واختبار دخول/عضويات حقيقي قبل ادعاء التشغيل. قيود الأصل المحلي السابقة لم تُغيّر؛ لا commit أو push أو نشر.
+
 ## [2026-11-01] — إضافة تسجيل الحساب عبر Neon Managed Auth
 ### تم التنفيذ
 - رُبط `young-frog-60183055` على `production`، وفُعّل Managed Auth؛ أضاف Neon CLI تعريف `neon.ts` واعتماداته وسحب متغيرات الخدمة إلى `.env` الموجود دون تسجيل القيم.

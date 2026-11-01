@@ -1,0 +1,18 @@
+---
+import BrandLogo from '../components/BrandLogo.astro';
+import '../styles/kernel.css';
+const { title = 'مساحة العمل' } = Astro.props;
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+---
+<!doctype html>
+<html lang="ar-SA" dir="rtl">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><meta name="robots" content="noindex,nofollow" /><title>{title} | BRIGHTAI</title><link rel="icon" href="/favicon.png" /></head>
+  <body><a class="skip" href="#main">انتقل للمحتوى</a>
+    <div class="app-frame">
+      <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span><nav aria-label="تنقل النظام"><a href="/app/kernel/" aria-current="page"><span aria-hidden="true">◈</span> نواة المنظومة <bdi>Kernel</bdi></a></nav><p>الهوية والمؤسسة والوصول.<br />أساس مشترك للمنتجات الخمسة.</p><a class="site-link" href="/">الموقع العام ↗</a></aside>
+      <div class="app-body"><header class="app-top"><span>بوابة النظام <span class="tag">مرحلة التأسيس</span></span><span>BRIGHTAI <span aria-hidden="true">/</span> AIGAS</span></header><main id="main"><slot /></main><footer class="app-footer">Kernel مكوّن مشترك ضمن المنظومة؛ ليس منتجًا سادسًا مدفوعًا.</footer></div>
+    </div>
+  </body>
+</html>
