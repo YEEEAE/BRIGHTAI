@@ -1,4 +1,6 @@
 import { recordProductEvent } from '../ledger/writer.mjs';
+import { listApprovedModels } from '../secure-chat/models.mjs';
+import { providerReady } from '../secure-chat/adapter.mjs';
 import { randomUUID } from 'node:crypto';
 import { database, transaction } from './db.mjs';
 import { env } from './env.mjs';
@@ -29,7 +31,7 @@ export async function dashboard(identity, requested) {
     const adminReady = (await db.query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0].ready;
     const access = (await db.query(adminReady ? 'SELECT product_slug,status,version FROM public.aigas_product_access WHERE tenant_id=$1' : 'SELECT product_slug,status FROM public.aigas_product_access WHERE tenant_id=$1', [tenantId])).rows;
     const grants = adminReady ? (await db.query('SELECT product_slug,access_kind,expires_at FROM public.aigas_product_grants WHERE tenant_id=$1 AND revoked_at IS NULL AND expires_at>now()', [tenantId])).rows : [];
-    const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': [] };
+    const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': ['aigas_sc_requests','aigas_sc_cancellations'] };
     const states = [];
     for (const p of productStates(access)) {
       const grant = grants.find(g => g.product_slug === p.slug);
@@ -38,7 +40,7 @@ export async function dashboard(identity, requested) {
       const enabled = p.state === 'ENABLED' && !!grant;
       states.push({ ...p, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
         canEnable: !!grant, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
-        setupMessage: p.slug === 'secure-chat' ? 'لا يوجد نموذج أو مزود معتمد؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
+        setupMessage: p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
         accessKind: grant?.access_kind ?? null, expiresAt: grant?.expires_at ?? null, subscription: 'NOT_CONFIGURED', trial: 'NOT_CONFIGURED',
         label: p.state === 'ENABLED' && !grant ? 'الإتاحة معلّقة: لا قرار إداري ساري' : p.label });
     }

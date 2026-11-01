@@ -1,34 +1,39 @@
 import type { APIRoute } from 'astro';
-import { errorResponse, privateHeaders, rejectMessage } from '../../../../server/secure-chat/service.mjs';
-
+import { errorResponse, privateHeaders, sendMessage, cancelMessage } from '../../../../server/secure-chat/service.mjs';
+import { KernelError } from '../../../../server/kernel/core.mjs';
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+async function bodyFor(request: Request, keys: string[]) {
+  if (request.headers.get('origin') !== new URL(request.url).origin) throw new KernelError(403,'ORIGIN_REJECTED','مصدر الطلب غير مسموح.');
+  if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') throw new KernelError(415,'INVALID_BODY','صيغة الطلب غير مدعومة.');
+  const reader=request.body?.getReader();
+  if (!reader) throw new KernelError(400,'INVALID_BODY','الطلب فارغ.');
+  const decoder=new TextDecoder();
+  let raw='',bytes=0;
   try {
-    if (request.headers.get('origin') !== new URL(request.url).origin) {
-      return Response.json({ code: 'ORIGIN_REJECTED', message: 'مصدر الطلب غير مسموح.' }, { status: 403, headers: privateHeaders });
+    while (true) {
+      const {done,value}=await reader.read();
+      if (done) break;
+      bytes+=value.byteLength;
+      if (bytes>131072) { await reader.cancel(); throw new KernelError(413,'BODY_TOO_LARGE','الطلب أكبر من الحد التقني المسموح.'); }
+      raw+=decoder.decode(value,{stream:true});
     }
-    if (!request.headers.get('content-type')?.startsWith('application/json')) {
-      return Response.json({ code: 'INVALID_BODY', message: 'صيغة الطلب غير مدعومة.' }, { status: 415, headers: privateHeaders });
-    }
-    const declaredLength = Number(request.headers.get('content-length') ?? 0);
-    if (declaredLength > 8192) {
-      return Response.json({ code: 'BODY_TOO_LARGE', message: 'الطلب أكبر من الحد المسموح.' }, { status: 413, headers: privateHeaders });
-    }
-    const raw = await request.text();
-    if (new TextEncoder().encode(raw).byteLength > 8192) {
-      return Response.json({ code: 'BODY_TOO_LARGE', message: 'الطلب أكبر من الحد المسموح.' }, { status: 413, headers: privateHeaders });
-    }
-    let body: unknown;
-    try { body = JSON.parse(raw); } catch {
-      return Response.json({ code: 'INVALID_BODY', message: 'تعذر قراءة الطلب.' }, { status: 400, headers: privateHeaders });
-    }
-    if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).some(key => !['message', 'modelId'].includes(key))) {
-      return Response.json({ code: 'INVALID_BODY', message: 'حقول الطلب غير مدعومة.' }, { status: 400, headers: privateHeaders });
-    }
-    await rejectMessage(request, (body as { modelId?: unknown }).modelId as string, (body as { message?: unknown }).message as string);
-    return Response.json({ code: 'UNEXPECTED_PROVIDER_STATE' }, { status: 503, headers: privateHeaders });
-  } catch (error) {
-    return errorResponse(error);
-  }
+    raw+=decoder.decode();
+  } finally { reader.releaseLock(); }
+  let body;
+  try { body=JSON.parse(raw); } catch { throw new KernelError(400,'INVALID_BODY','تعذر قراءة الطلب.'); }
+  if (!body || typeof body!=='object' || Array.isArray(body) || Object.keys(body).some(key=>!keys.includes(key))) throw new KernelError(400,'INVALID_BODY','حقول الطلب غير مدعومة.');
+  return body;
+}
+export const POST: APIRoute = async ({request}) => {
+  try {
+    const body=await bodyFor(request,['requestId','modelId','message','history','syntheticAcknowledged']);
+    return Response.json(await sendMessage(request,body),{headers:privateHeaders});
+  } catch(error) { return errorResponse(error); }
+};
+export const DELETE: APIRoute = async ({request}) => {
+  try {
+    const body=await bodyFor(request,['requestId']);
+    return Response.json(await cancelMessage(request,body.requestId),{headers:privateHeaders});
+  } catch(error) { return errorResponse(error); }
 };

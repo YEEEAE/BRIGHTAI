@@ -22,8 +22,40 @@ const auth = authUrl ? createAuthClient(authUrl) : null;
 let controller: AbortController | undefined;
 let selectedTenant = '';
 let busy = false;
+let available = false;
+let activeRequestId = '';
+let history: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+let epoch = 0;
+const consent = root.querySelector<HTMLInputElement>('[data-synthetic]')!;
+const usageLabel = root.querySelector<HTMLElement>('[data-usage]')!;
+function updateSend() {
+  sendButton.disabled = !available || !!controller || busy || !consent.checked || !message.value.trim();
+}
+function sendingControls(sending: boolean) {
+  signOut.disabled = sending;
+  root.querySelector<HTMLButtonElement>('[data-retry]')!.disabled = sending;
+  workspace.disabled = sending;
+  model.disabled = sending || !available;
+  message.readOnly = sending;
+  root.querySelector<HTMLButtonElement>('[data-new-chat]')!.disabled = sending;
+  consent.disabled = sending;
+  updateSend();
+}
+async function requestCancellation() {
+  if (!activeRequestId) return;
+  try { await api('messages', 'DELETE', { requestId: activeRequestId }); }
+  finally { controller?.abort(); }
+}
+
 
 function clearPrivate() {
+  epoch++;
+  controller?.abort();
+  available = false;
+  history = [];
+  consent.checked = false;
+  usageLabel.textContent = 'الرموز الفعلية: غير متاح. التكلفة: غير متاح.';
+  updateSend();
   chatArea.hidden = true;
   workspaceWrap.hidden = true;
   workspace.replaceChildren();
@@ -112,7 +144,7 @@ async function load(requested?: string) {
   signOut.hidden = false;
 
   const access = dashboard.products.find((item: { slug: string }) => item.slug === 'secure-chat');
-  if (access?.state !== 'ENABLED') {
+  if (!access?.enabled) {
     stateTitle.textContent = 'Secure Chat غير مفعّل';
     status.textContent = 'عضويتك مؤكدة، لكن هذه المؤسسة لم تفعّل المنتج. لا تُتاح واجهة الرسائل أو محتوى الجلسة.';
     return;
@@ -124,10 +156,18 @@ async function load(requested?: string) {
   login.hidden = true;
 }
 
-function applyModelAvailability(data: { models: Array<{ id: string; label?: string }>; available: boolean; message: string; usage?: { configuredMessageCharacters?: number } }) {
-  const options = data.models.map(item => new Option(item.label || item.id, item.id));
+function applyModelAvailability(data: { models: Array<{ id: string; label?: string; region?: string; ready: boolean }>; available: boolean; message: string; policy?: { message: string }; usage?: { configuredMessageCharacters?: number; limits?: Record<string, number | null> } }) {
+  available = data.available;
+  const previous = model.value;
+  const options = data.models.map(item => new Option(`${item.label || item.id} — ${item.region || ''}${item.ready ? '' : ' (غير مهيأ)'}`, item.id));
   model.replaceChildren(...(options.length ? options : [new Option('لا يوجد نموذج متاح', '')]));
-  model.disabled = options.length === 0;
+  data.models.forEach((item,index) => { options[index].disabled = !item.ready; });
+  model.value = data.models.find(item => item.id === previous && item.ready)?.id || data.models.find(item => item.ready)?.id || '';
+  model.disabled = !available;
+  root.querySelector('[data-policy-note]')!.textContent = data.policy?.message || '';
+  const names: Record<string,string> = {userMinute:'طلباتك خلال دقيقة',tenantMinute:'طلبات المؤسسة خلال دقيقة',userDay:'طلباتك خلال 24 ساعة',tenantDay:'طلبات المؤسسة خلال 24 ساعة',tenantTokensDay:'سقف رموز المؤسسة خلال 24 ساعة'};
+  root.querySelector('[data-limits]')!.textContent = data.usage?.limits ? Object.entries(data.usage.limits).filter(([,value]) => value !== null).map(([key,value]) => `${names[key]}: ${value}`).join('، ') : 'الحصص غير مفعّلة حتى اعتمادها. التكلفة غير متاحة.';
+  updateSend();
   const maxLength = data.usage?.configuredMessageCharacters || 4000;
   message.maxLength = maxLength;
   root.querySelector('[data-count]')!.textContent = `${Array.from(message.value).length} / ${maxLength}`;
@@ -144,7 +184,7 @@ async function refreshModels() {
 }
 
 async function run(task: () => Promise<void>) {
-  if (busy) return;
+  if (busy || controller) return;
   busy = true;
   root.setAttribute('aria-busy', 'true');
   root.querySelectorAll<HTMLButtonElement>('[data-retry], [data-retry-send], [data-sign-out], [data-new-chat]').forEach(button => button.disabled = true);
@@ -156,6 +196,7 @@ async function run(task: () => Promise<void>) {
   finally {
     busy = false;
     root.removeAttribute('aria-busy');
+    updateSend();
     root.querySelectorAll<HTMLButtonElement>('[data-retry], [data-retry-send], [data-sign-out], [data-new-chat]').forEach(button => button.disabled = false);
   }
 }
@@ -168,6 +209,9 @@ root.querySelector('[data-retry]')!.addEventListener('click', () => void run(() 
 retrySend.addEventListener('click', () => void run(refreshModels));
 root.querySelector('[data-new-chat]')!.addEventListener('click', () => {
   controller?.abort();
+  epoch++;
+  history = [];
+  usageLabel.textContent = 'الرموز الفعلية: غير متاح. التكلفة: غير متاح.';
   message.value = '';
   messageList.replaceChildren();
   root.querySelector<HTMLElement>('[data-empty]')!.hidden = false;
@@ -175,10 +219,12 @@ root.querySelector('[data-new-chat]')!.addEventListener('click', () => {
   sendErrorText.textContent = '';
   retrySend.hidden = true;
   updateCount();
+  updateSend();
   message.focus();
 });
 workspace.addEventListener('change', () => void run(() => load(workspace.value)));
-message.addEventListener('input', updateCount);
+message.addEventListener('input', () => { updateCount(); updateSend(); });
+consent.addEventListener('change', updateSend);
 login.addEventListener('submit', event => {
   event.preventDefault();
   const values = new FormData(login);
@@ -199,41 +245,57 @@ signOut.addEventListener('click', () => void run(async () => {
   if (result?.error) throw new Error('تعذر إنهاء جلسة الدخول. أعد المحاولة.');
   showError('تم تسجيل الخروج.', true);
 }));
-cancelButton.addEventListener('click', () => controller?.abort());
+cancelButton.addEventListener('click', () => {
+  cancelButton.disabled = true;
+  status.textContent = 'جارٍ طلب إيقاف الاتصال بالمزود…';
+  void requestCancellation().catch(() => { status.textContent = 'تعذر تأكيد تسجيل الإلغاء؛ توقف انتظار الواجهة فقط، وقد يكون المزود عالج الطلب.'; });
+});
 composer.addEventListener('submit', event => {
   event.preventDefault();
-  if (!message.value.trim() || controller) return;
+  if (!available || !consent.checked || busy || !message.value.trim() || controller) return;
   sendError.hidden = true;
-  sendError.textContent = '';
+  sendErrorText.textContent = '';
   const draft = message.value;
+  const submittedEpoch = epoch;
+  const requestId = crypto.randomUUID();
+  activeRequestId = requestId;
   controller = new AbortController();
+  sendingControls(true);
   sendButton.disabled = true;
   sendButton.textContent = 'جارٍ التحقق…';
   cancelButton.hidden = false;
   status.textContent = 'جارٍ التحقق من النموذج قبل الإرسال…';
-  void api('messages', 'POST', { message: draft, modelId: model.value }, controller.signal)
+  void api('messages', 'POST', { requestId, message: draft, modelId: model.value, history, syntheticAcknowledged: consent.checked }, controller.signal)
     .then(data => {
+      if (submittedEpoch !== epoch) return;
+      if (typeof data.reply !== 'string' || typeof data.submittedText !== 'string') throw new Error('تعذر تأكيد رد مكتمل من المزود.');
       const userMessage = document.createElement('li');
       userMessage.dataset.role = 'user';
-      userMessage.textContent = draft;
+      userMessage.textContent = data.submittedText;
       const item = document.createElement('li');
       item.dataset.role = 'assistant';
       item.textContent = data.reply;
       messageList.append(userMessage, item);
+      history.push({ role:'user', content:data.submittedText }, { role:'assistant', content:data.reply });
+      // Bounded ephemeral context; only complete turns, no silent partial reply.
+      while (history.length > 12 || (history.length > 2 && history.reduce((sum,item) => sum + Array.from(item.content).length,0) > 18000)) history.splice(0,2);
+      usageLabel.textContent = data.usage ? `آخر طلب — إدخال: ${data.usage.inputTokens}، إخراج: ${data.usage.outputTokens}، الإجمالي: ${data.usage.totalTokens} رمز. التكلفة: غير متاح.` : 'الرموز الفعلية: غير متاح. التكلفة: غير متاح.';
       root.querySelector<HTMLElement>('[data-empty]')!.hidden = true;
       message.value = '';
       updateCount();
-      status.textContent = 'وصل رد من النموذج.';
+      status.textContent = data.redacted ? 'وصل رد من النموذج بعد تنقيح أولي. السياق المؤقت يقتصر على أحدث الأدوار ضمن الحد التقني.' : 'وصل رد من النموذج. يُرسل أحدث سياق مؤقت ضمن الحد التقني؛ لا يُحفظ المتن.';
     })
     .catch(error => {
+      if (submittedEpoch !== epoch) return;
       if ((error as Error).name === 'AbortError') {
-        sendErrorText.textContent = 'انقطع انتظار الواجهة؛ لا يمكن تأكيد ما إذا كان الخادم استلم الطلب. لا يوجد نموذج معتمد حاليًا، لذلك لا يرسل الخادم النص إلى مزود.';
+        sendErrorText.textContent = 'توقف انتظار الواجهة. قد يكون المزود استلم الطلب واستهلكه؛ لا يُعاد الإرسال تلقائيًا.';
         retrySend.hidden = false;
         sendError.hidden = false;
         status.textContent = 'توقف انتظار الواجهة؛ تحقق من توفر النموذج قبل المحاولة مجددًا.';
       } else {
-        const value = error as Error & { unauthorized?: boolean };
-        sendErrorText.textContent = `${value.message} بقيت المسودة في الحقل ولم تُحفظ.`;
+        const value = error as Error & { unauthorized?: boolean; status?: number };
+        if (value.unauthorized || value.status === 403) { showError(value.message, !!value.unauthorized); return; }
+        sendErrorText.textContent = `${value.message} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
         retrySend.hidden = false;
         sendError.hidden = false;
         status.textContent = 'لم يصل رد من نموذج.';
@@ -241,7 +303,9 @@ composer.addEventListener('submit', event => {
     })
     .finally(() => {
       controller = undefined;
-      sendButton.disabled = false;
+      activeRequestId = '';
+      sendingControls(false);
+      cancelButton.disabled = false;
       sendButton.textContent = 'إرسال';
       cancelButton.hidden = true;
     });

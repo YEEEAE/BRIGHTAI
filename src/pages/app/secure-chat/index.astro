@@ -32,7 +32,7 @@ const config = authConfig();
           <div class="empty-chat" data-empty>
             <span class="empty-glyph" aria-hidden="true">◈</span>
             <h2>ابدأ جلسة مؤقتة</h2>
-            <p>لا تُحفظ الرسائل في قاعدة البيانات. لا يتوفر حاليًا نموذج اجتاز اعتماد المنطقة وشروط عدم التدريب.</p>
+            <p>اختر نموذجًا معتمدًا ومهيأً عند توفره. متن المحادثة مؤقت في هذه الصفحة، ولا يقرأه مسؤول المؤسسة عبر المنتج.</p>
           </div>
           <ol class="messages" data-messages aria-live="polite" aria-relevant="additions text"></ol>
           <div class="send-error" data-send-error role="alert" hidden><p data-send-error-text></p><button type="button" data-retry-send hidden>إعادة التحقق من النماذج</button></div>
@@ -40,13 +40,15 @@ const config = authConfig();
             <label for="chat-message">رسالتك</label>
             <textarea id="chat-message" name="message" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required></textarea>
             <div class="composer-meta"><span id="message-limit" data-count>0 / 4000</span><span id="privacy-note">لا ترسل بيانات حساسة في هذه المرحلة.</span></div>
-            <div class="composer-actions"><button type="button" class="cancel-send" data-cancel hidden>إيقاف الطلب</button><button type="submit" data-send>إرسال</button></div>
+            <label class="synthetic-consent"><input type="checkbox" data-synthetic required /> أؤكد أن النصوص اصطناعية ولا تتضمن بيانات عميل حقيقية.</label>
+            <p class="policy-note" data-policy-note></p>
+            <div class="composer-actions"><button type="button" class="cancel-send" data-cancel hidden>طلب إيقاف</button><button type="submit" data-send disabled>إرسال</button></div>
           </form>
         </section>
         <aside class="chat-details" aria-label="إعدادات الجلسة">
           <div class="detail-block"><p class="overline">النموذج</p><label for="chat-model">نموذج معتمد</label><select id="chat-model" data-model disabled><option>لا يوجد نموذج متاح</option></select><p data-model-status>لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة.</p></div>
-          <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>سجل الأمن يحفظ حدثًا وصفيًا ثابتًا دون نص الرسالة.</li></ul></div>
-          <div class="detail-block usage"><p class="overline">حدود الاستخدام</p><p>لا توجد حصة أو رسوم محددة في هذه النسخة. المشاركة والتصدير والملفات غير متاحة.</p></div>
+          <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>تُحفظ معرّفات الطلب والنتيجة والاستخدام؛ لا يُحفظ المتن في سجل الأمن.</li></ul></div>
+          <div class="detail-block usage"><p class="overline">حدود الاستخدام</p><p><span data-usage>الرموز الفعلية: غير متاح. التكلفة: غير متاح.</span></p><p data-limits>الحصص غير مفعّلة حتى اعتمادها.</p><p>المشاركة والتصدير والملفات وRAG غير متاحة. الحفظ الدائم غير مفعّل حتى اعتماد سياسة الاحتفاظ وحماية البيانات.</p></div>
         </aside>
       </div>
       <noscript><p class="access-panel">يلزم JavaScript للتحقق من Neon Auth. لا تُحمّل بيانات خاصة بدونه.</p></noscript>
