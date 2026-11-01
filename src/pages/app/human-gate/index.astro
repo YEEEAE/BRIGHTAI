@@ -7,23 +7,38 @@ const config=authConfig();
 ---
 <AppLayout title="المراجعة البشرية Human Gate">
  <section class="kernel human-gate" data-human-gate data-auth-url={config?.base??''}>
-  <div class="page-heading"><div><p class="overline">04 / HUMAN GATE FOUNDATION</p><h1>مراجعة مستقلة.<span>قبل اكتمال العملية.</span></h1><p class="intro">طلب واحد، وقرار مسبب من مراجع آخر. المسار الحالي محصور في نشر ملاحظة داخلية تجريبية؛ لا ينفذ أي تصرف خارجي.</p></div><span class="connection">موافقة أحادية المرحلة</span></div>
+  <div class="page-heading"><div><p class="overline">04 / HUMAN GATE</p><h1>موافقة محددة.<span>وتنفيذ مرة واحدة.</span></h1><p class="intro">راجع تغيير اسم مساحة العمل داخل AIGAS قبل تطبيقه. الموافقة مرتبطة بالاسم والنسخة والسياسة والمهلة؛ التنفيذ من الخادم بعد مراجعة مستقلة. الملاحظة الداخلية مسار تجريبي منفصل.</p></div><span class="connection">موافقة أحادية المرحلة</span></div>
   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الطلبات</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض بيانات المؤسسة.</p></noscript>
   <div data-private hidden>
-   <section class="panel"><label for="hg-workspace">المؤسسة</label><select id="hg-workspace" data-workspace></select><p data-role></p><p>كل الأعضاء ينشئون الطلبات. المالك والمسؤول يراجعان طلبات غيرهما فقط. المؤسسة تُتحقق من عضويتها في الخادم.</p></section>
-   <section class="panel"><h2>طلب مراجعة جديد</h2><p id="hg-help">استخدم نصوصًا تجريبية غير حساسة فقط. لا تُدخل أسماء عملاء أو بيانات شخصية أو أسرارًا. يُحفظ الطلب معلقًا حتى مراجعة مستقلة.</p>
-    <form data-create class="hg-form" aria-describedby="hg-help">
-     <div><label for="hg-title">العنوان</label><input id="hg-title" name="title" required minlength="2" maxlength="120" /></div>
-     <div><label for="hg-scope">نطاق العملية</label><select id="hg-scope" name="operation_scope"><option value="INTERNAL_DEMO_NOTE">نشر ملاحظة داخلية تجريبية</option></select></div>
-     <div><label for="hg-description">وصف مختصر غير حساس</label><textarea id="hg-description" name="description" required minlength="2" maxlength="500" rows="3"></textarea></div>
-     <div><label for="hg-reason">سبب طلب المراجعة</label><textarea id="hg-reason" name="reason" required minlength="2" maxlength="500" rows="3"></textarea></div>
-     <button type="submit">إرسال للمراجعة</button>
+   <section class="panel"><label for="hg-workspace">المؤسسة</label><select id="hg-workspace" data-workspace></select><p data-role></p><p>المالك والمسؤول يطلبان تغيير اسم المساحة ويراجعان طلبات غيرهما فقط. العضو ينشئ ملاحظة تجريبية ويعرض طلباته. التنفيذ لمقدم الطلب بعد إعادة فحص صلاحية الطرفين.</p></section>
+   <section class="panel"><h2>سياسة المدة والنطاق</h2><p data-policy-summary></p><p>تغيير الاسم متاح للمالك والمسؤول فقط؛ المراجعة تتطلب مالكًا أو مسؤولًا آخر. لا تفويض إضافي ضمن هذه النسخة.</p>
+    <form data-policy class="hg-form" hidden>
+     <div><label for="hg-pending">المهلة القصوى للطلب بالدقائق</label><input id="hg-pending" name="pending_minutes" type="number" required min="1" max="1440" step="1" /></div>
+     <div><label for="hg-approval">صلاحية الموافقة بالدقائق</label><input id="hg-approval" name="approval_minutes" type="number" required min="1" max="1440" step="1" /></div>
+     <label class="hg-check"><input name="enabled" type="checkbox" /> تفعيل استقبال الطلبات والتنفيذ ضمن هذه السياسة</label>
+     <p>اختر القيم حسب سياسة مؤسستك؛ النطاق من دقيقة إلى 1440 حد تقني، وليس مدة ترخيص أو SLA. الموافقة لا تمدد مهلة الطلب الأصلية. أي حفظ للسياسة يبطل الطلبات المعلقة والموافقات السابقة.</p>
+     <button type="submit">حفظ السياسة وإبطال الطلبات السابقة</button>
     </form>
    </section>
-   <section class="panel"><h2>طلبات المؤسسة</h2><div class="hg-tabs" role="group" aria-label="تصفية حالة الطلب"><button type="button" data-filter="PENDING" aria-pressed="true">بانتظار المراجعة</button><button type="button" data-filter="APPROVED" aria-pressed="false">المعتمدة</button><button type="button" data-filter="REJECTED" aria-pressed="false">المرفوضة</button></div><p data-empty hidden>لا توجد طلبات في هذه الحالة.</p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div></section>
+   <section class="panel"><h2>طلب مراجعة جديد</h2><p id="hg-help">استخدم مساحة تجريبية ونصوصًا غير حساسة؛ لا بيانات عميل حقيقية أو معلومات شخصية أو أسرار. تغيير الاسم يعدّل اسم هذه المساحة فعلًا عند التنفيذ، ولا يغيّر صلاحياتها أو إعدادات الدخول.</p>
+    <form data-create class="hg-form" aria-describedby="hg-help">
+     <div><label for="hg-title">العنوان</label><input id="hg-title" name="title" required minlength="2" maxlength="120" /></div>
+     <div><label for="hg-scope">العملية</label><select id="hg-scope" name="operation_type"><option value="KERNEL_WORKSPACE_RENAME">تغيير اسم مساحة العمل في Kernel</option><option value="INTERNAL_DEMO_NOTE">ملاحظة داخلية تجريبية</option></select></div>
+     <div data-rename><label for="hg-name">اسم المساحة الجديد</label><input id="hg-name" name="new_name" required minlength="2" maxlength="100" autocomplete="off" /><p>يُثبت الاسم الحالي ونسخة المساحة من الخادم وقت إنشاء الطلب.</p></div>
+     <div><label for="hg-description">وصف مختصر غير حساس</label><textarea id="hg-description" name="description" required minlength="2" maxlength="500" rows="3"></textarea></div>
+     <div><label for="hg-reason">سبب طلب المراجعة</label><textarea id="hg-reason" name="reason" required minlength="2" maxlength="500" rows="3"></textarea></div>
+     <label class="hg-check"><input name="synthetic_confirmed" type="checkbox" required /> أؤكد استخدام مساحة تجريبية ونصوص غير حساسة دون بيانات عميل حقيقية.</label>
+     <button type="submit" data-create-submit>إرسال للمراجعة</button>
+    </form>
+   </section>
+   <section class="panel"><h2>لوحة الطلبات</h2>
+    <div class="hg-tabs" role="group" aria-label="نطاق عرض الطلبات"><button type="button" data-view="mine" aria-pressed="true">طلباتي</button><button type="button" data-view="review" aria-pressed="false">تحتاج مراجعتي</button><button type="button" data-view="completed" aria-pressed="false">مكتملة</button></div>
+    <label for="hg-status">حالة الطلب</label><select id="hg-status" data-filter><option value="">جميع الحالات ضمن اللوحة</option><option value="PENDING">بانتظار المراجعة</option><option value="APPROVED">معتمد — لم يُنفذ</option><option value="REJECTED">مرفوض</option><option value="EXPIRED">منتهي الصلاحية</option><option value="EXECUTED">نُفّذ</option></select>
+    <p data-empty hidden>لا توجد طلبات ضمن هذا العرض.</p><p data-review-notice hidden>المراجعة متاحة للمالك والمسؤول فقط؛ لا يوجد تفويض مراجعة لهذا الدور.</p><p data-refreshed></p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div>
+   </section>
   </div>
-  <p class="notice">التدقيق الأساسي مستقل عن Ledger. الموافقات المتعددة والتفويض والتصعيد وSLA والتوقيع الرسمي والتنبيهات الخارجية والتصريح العام للأنظمة الأخرى مؤجلة. هذه الدفعة لا تفعّل تجربة تجارية.</p>
+  <p class="notice">التدقيق الأساسي مستقل عن Ledger. تغيير اسم مساحة Kernel هو الأثر الفعلي المحدود في هذه النسخة؛ لا تفعيل سياسة Firewall أو تغيير تصنيف Risk Engine أو تنفيذ أنظمة خارجية. لا تُرسل البيانات لمزود AI ولا تُستخدم للتدريب. الموافقات المتعددة والتفويض والتصعيد والتنبيهات الخارجية غير متاحة هنا.</p>
  </section>
 </AppLayout>
 <script src="../../../scripts/human-gate.ts"></script>

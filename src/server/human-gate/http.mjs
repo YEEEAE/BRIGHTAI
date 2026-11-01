@@ -3,7 +3,7 @@ import { KernelError } from '../kernel/core.mjs';
 import { operate } from './service.mjs';
 const headers = { 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' };
 function setupError(error) {
-  if (error?.code === '42P01') return { code:'HUMAN_GATE_SCHEMA_MISSING', message:'جداول Human Gate غير موجودة على قاعدة البيانات الحالية. يحتاج المشغّل مراجعة الترحيل في بيئة تطوير معتمدة؛ لم يُؤكد الحفظ أو التنفيذ.' };
+  if (['42P01','42703'].includes(error?.code)) return { code:'HUMAN_GATE_SCHEMA_MISSING', message:'مخطط Human Gate غير مكتمل على قاعدة البيانات الحالية. يحتاج المشغّل مراجعة الترحيلات المعتمدة؛ لم يُؤكد الحفظ أو التنفيذ.' };
   if (error?.code === '42501') return { code:'HUMAN_GATE_DB_PRIVILEGE', message:'دور قاعدة بيانات التطبيق لا يملك الصلاحية المطلوبة على جداول Human Gate. يلزم مراجعة صلاحيات runtime؛ لم يُؤكد الحفظ أو التنفيذ.' };
   return null;
 }
@@ -23,7 +23,7 @@ export function createHandler(auth=authenticate, service=operate) {
     try {
       const identity=await auth(request);
       const params=new URL(request.url).searchParams;
-      const body=['create','decide','execute'].includes(operation)?await readBody(request):{};
+      const body=['create','decide','execute','policy'].includes(operation)?await readBody(request):{};
       const data=await service(identity,params.get('workspace'),operation,body,params,id);
       return Response.json(data,{status:operation==='create'?201:200,headers});
     } catch(error) {

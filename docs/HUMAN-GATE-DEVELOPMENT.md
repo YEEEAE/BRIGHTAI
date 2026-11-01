@@ -1,61 +1,45 @@
-# Human Gate local foundation — 2026-11-01
+# Human Gate — bounded local implementation, 2026-11-01
 
-Status: **PARTIAL operationally**. No release, commercial trial or production migration is asserted. The full product specifications and proposed `/v1/approvals` contract remain future targets. This batch implements only a single-stage, internal synthetic note operation.
+Status: **IMPLEMENTED_NOT_RUNTIME_VERIFIED**. Application source remains local and was not deployed. No tests, build, lint, typecheck, smoke requests or browser tools were run for this change, at the owner's explicit request. Earlier foundation evidence is historical and does not validate this version.
 
-## Changed files
+## Enforced operation
 
-- `src/server/human-gate/core.mjs`, `service.mjs`, `http.mjs`
-- `src/pages/app/human-gate/index.astro`
-- `src/pages/app/api/human-gate/requests/index.ts`
-- `src/pages/app/api/human-gate/requests/[requestId]/decide.ts`, `execute.ts`
-- `src/scripts/human-gate.ts`, `src/styles/human-gate.css`
-- `src/layouts/AppLayout.astro` (app navigation only)
-- `migrations/0004_aigas_human_gate.sql`
-- `tests/human-gate.test.mjs`, `tests/human-gate-db.test.mjs`
-- `docs/products/human-gate/FEATURE-STATUS.yaml`
-- This guide, `Audit/2026-11-01-human-gate-foundation.md`, `.agents/mind/01-mind-latest.md`
+`KERNEL_WORKSPACE_RENAME` changes the existing Kernel tenant name. It does not change Auth organizations, user permissions, product availability, Firewall rules or Risk Engine classifications. Only an OWNER/ADMIN can request this operation, and a different current OWNER/ADMIN must decide. All members can still request `INTERNAL_DEMO_NOTE`; completion of that operation is explicitly a synthetic note, not an external integration. No additional product purchase is required.
 
-## Actual routes and permissions
+The server captures `subject_ref`, the expected tenant name and `profile_version`, the new name, requester, operation type and current policy version. SHA-256 covers that fixed binding; the browser cannot supply its digest, actor, status, subject or execution payload. SQL guards prohibit changing request content and permit only explicit lifecycle transitions. A tenant revision trigger advances `profile_version` on every name change, including changing a name away and back.
 
-All routes require the existing Kernel verified Bearer identity and current database membership. `workspace` is a selection from those memberships, not authorization. JSON cannot supply tenant, requester, reviewer, status or completion time. Every service operation locks the caller's membership through commit, so role revocation cannot race a write. The app uses its existing independent layout without marketing analytics.
+The current endpoints are:
 
-| Route | Method | Behavior |
+| Route | Method | Scope |
 |---|---|---|
-| `/app/api/human-gate/requests/` | GET | Tenant-scoped list including decision details; `status=PENDING/APPROVED/REJECTED`, `page=1..100`; 25 per page |
-| Same | POST | All members create a pending request with `title`, `description`, `reason`, `operation_scope=INTERNAL_DEMO_NOTE` |
-| `/app/api/human-gate/requests/{id}/decide/` | POST | OWNER/ADMIN, independent from requester, records `decision=APPROVE/REJECT` and nonempty `reason` |
-| `/app/api/human-gate/requests/{id}/execute/` | POST | Requester only, body `{}`; completes this exact internal note only after persisted independent approval |
+| `/app/api/human-gate/requests/` | GET | `view=mine/review/completed`, optional `status=PENDING/APPROVED/REJECTED/EXPIRED/EXECUTED`, `page=1..100`; current membership required |
+| `/app/api/human-gate/requests/` | POST | `title`, `description`, `reason`, `operation_type`, `new_name` for rename, and `synthetic_confirmed=true` |
+| `/app/api/human-gate/requests/[requestId]/decide/` | POST | Distinct OWNER/ADMIN; `decision=APPROVE/REJECT` and mandatory `reason` |
+| `/app/api/human-gate/requests/[requestId]/execute/` | POST | Empty JSON; original requester only; no reusable browser grant |
+| `/app/api/human-gate/policy/` | POST | OWNER/ADMIN; prior `version` (null initially), `pending_minutes`, `approval_minutes`, `enabled` |
 
-The request's immutable-by-API content is the synthetic note. Its `completed_at` is the durable internal publication effect; there is no external publication channel or public note feed. No endpoint edits requests or decisions. Rejected requests cannot execute; pending never becomes approved automatically. Decisions are terminal. Row locks plus one decision per request prevent conflicting concurrent decisions. Repeated execute returns the same completion without a new event. Creation retries can create another request; refresh after uncertain network errors before resubmitting.
+These reuse Kernel Bearer authentication, workspace membership selection and product access. Members see their own requests; OWNER/ADMIN additionally see the review inbox and completed tenant requests. A `workspace` query never grants access. The proposed `/v1` contract remains a future external API and is not implemented by these routes.
 
-Each mutation and its basic Kernel audit event commit atomically. Audit actions carry the request ID for correlation, with no free-text request/decision content. Full decision history (one final decision per request) resides in `aigas_hg_decisions`. No Ledger table or license is required. This is not a tamper-proof log against a database administrator.
+## Policy and lifecycle
 
-## Setup still required
+No duration or enablement policy is seeded. An OWNER/ADMIN chooses the pending deadline and approval lifetime, each an integer from 1 to 1440 minutes as technical bounds, not a universal policy, license or SLA. Approval can shorten but never extend the original request deadline. Every policy save generates a new version and expires active old requests. Disabling the policy stops new work.
 
-Local `.env` already supplies database and Auth settings; it was inspected by key presence only and left unchanged. No storage or Data API is needed by this batch. Never copy credentials into this guide or browser code.
+`PENDING → APPROVED/REJECTED/EXPIRED`; `APPROVED → EXECUTED/EXPIRED`. Expiry is persisted with database time and base audit when the service accesses requests, without a scheduler or silent approval. The UI refreshes at the displayed deadline and on returning to the tab; displayed statuses are DB values. A missing or revoked role, changed policy/target or binding mismatch blocks action. Repeating execution returns an error and causes no second effect.
 
-## Current Neon schema and migration gate (read-only check, 2026-11-01)
+Within a transaction the service locks the request, policy, relevant current memberships and Auth identities. It checks both parties again at execution, compares the target version/name and immutable payload digest, performs the name update and writes the linked base audit/timeline. Final consumption checks expiry after audit/evidence waits. Any audit failure or late expiry rolls the side effect back. Decision and timeline rows are append-only under ordinary SQL operations; a privileged database administrator can still change schema/triggers, so no absolute immutability claim is made.
 
-Neon MCP read-only access succeeded for project `young-frog-60183055`, database `neondb`. Its only branch is `production` (`br-young-bird-b43proeb`), which is the default and is not protected. The inspected schema has the four Kernel tables (`aigas_tenants`, `aigas_memberships`, `aigas_product_access`, `aigas_audit_events`) and the managed `neon_auth.*` tables; `aigas_hg_requests` and `aigas_hg_decisions` are absent. No migration or SQL write was run. `aigas_tenants.id`, `aigas_memberships.tenant_id/user_id`, and `neon_auth.user.id` are all UUIDs, matching the corresponding Human Gate foreign-key types in `0004`.
+Kernel base audit contains fixed actions and request identifiers, not names, descriptions or sensitive payloads. Request data stays in the protected product tables; it is not sent to Analytics, logs, AI providers or training. Ledger evidence remains optional through the existing internal writer: synthetic notes retain their classification, while the real Kernel operation links metadata-only audit evidence. No content ingestion endpoint or model provider was added.
 
-**Migration status: BLOCKED.** Do not apply `0004` to the current branch. The owner must first approve an isolated development target/branch and its use for this schema change. The local migration plan is:
+## Applied schema and remaining setup
 
-1. Confirm the approved branch contains Kernel `0001` tables and Neon Auth `neon_auth."user"`; Human Gate `0004` depends on those, not on Firewall `0002`, Ledger `0003`, or Risk Engine `0005`.
-2. Review `0004` as one unit: request `requester_id` is tied to the Auth user; its composite `(tenant_id,id,requester_id)` key anchors each decision to the same request and requester; `reviewer_id` is a distinct Auth user and the CHECK forbids self-review. The service additionally verifies current OWNER/ADMIN membership in the selected tenant within the transaction that inserts the decision. The migration does not itself encode dynamic membership roles; review runtime grants/RLS and retain the server authorization check.
-3. Only after approval, apply the unchanged reviewed migration through the owner's approved migration process on that isolated branch, compare the resulting schema, and run the disposable synthetic PostgreSQL journey. Do not copy the change to production as part of this task.
+The owner explicitly authorized **production / `br-young-bird-b43proeb`**, project `young-frog-60183055`, database `neondb`, on 2026-11-01. Neon MCP first confirmed that Human Gate and administrative grant tables were absent and that the Auth foreign keys use UUID. The following local migration sources were then applied together in one transaction:
 
-RLS is enabled and PUBLIC access revoked; the server membership checks are the current application authorization boundary. A limited runtime role still needs explicitly reviewed grants/policies; do not silently use a browser/Data API role or disable RLS. The local HTTP layer now returns `HUMAN_GATE_SCHEMA_MISSING` for PostgreSQL `42P01` and `HUMAN_GATE_DB_PRIVILEGE` for `42501`, without exposing driver details.
+- `0004_aigas_human_gate.sql` — initial request and decision tables.
+- `0006_aigas_kernel_administration.sql` — existing Kernel administration/access prerequisites.
+- `0007_aigas_human_gate_enforcement.sql` — bound request lifecycle, policy, timeline and tenant profile revision.
 
-Existing Neon Auth integration is reused. Local Origin approval and a real two-user Neon journey remain unresolved from Kernel. Configure an approved test origin and provision two distinct existing users with appropriate tenant memberships through an authorized process. No roles, users, trusted origins or Auth settings were changed here.
+The initial batch transport rejected multi-command prepared statements before schema changes; catalog reads confirmed no partial application. Sending the same migrations as individual statements in one transaction succeeded. A subsequent catalog read confirmed eleven public tables, RLS and the new ordinary-operation guards. This is schema evidence only. No test data, users, role changes, product grants, product toggles or policy values were inserted. `0002`, `0003` and `0005` remain unapplied on this branch.
 
-For manual acceptance: requester creates → reload still PENDING → self-decision API returns 403 → execute returns 409 → independent OWNER/ADMIN approves → reload shows reviewer/reason/time → requester executes → reload shows completed. Repeat with REJECT and confirm no completion. Test a second tenant's denial and a concurrent pair of decisions. Never use customer data.
+`0007` preserves historical requests if used on another authorized target: completed synthetic notes remain completed, rejected requests remain rejected, and unbound old pending/approved requests expire. It does not convert an old note approval into a rename authorization. Migration files are ordered, one-time migrations; do not rerun them on an already migrated target.
 
-## Verification
-
-- `npm run build`, `tsc --noEmit`, `git diff --check`.
-- `node --test tests/kernel.test.mjs tests/firewall.test.mjs tests/ledger.test.mjs tests/human-gate.test.mjs`.
-- Disposable localhost PostgreSQL 16 database only: `HUMAN_GATE_TEST_DATABASE_URL=... node --test tests/human-gate-db.test.mjs`. Test does not read `.env`; creates its own synthetic Auth schema and applies only `0001` + `0004`. Use an empty disposable database. The local database test injects identity into the actual HTTP handler and uses real service SQL/transactions; it does **not** prove Neon login.
-
-## Deferred
-
-Multiple approval levels, time-bound delegation, automatic expiry/escalation, SLA, official digital signatures, external notifications, general cross-system execution grants, billing/trial activation, advanced policy administration and evidence export. No claims of completing HG-01..HG-05 in full.
+Runtime role grants/RLS, approved Human Gate administrative access, operator policy, a second authorized reviewer and deployment remain separate prerequisites. This work does not enable a trial, change origin/DNS/hosting, provision commercial access or claim a verified authenticated journey. Multiple stages, delegation, escalation and external notifications remain outside this bounded implementation.

@@ -7,26 +7,39 @@ document:
   path: docs/products/human-gate/FEATURE-STATUS.yaml
   repository: YEEEAE/BRIGHTAI
   branch: main
-  review_mode: LOCAL_FOUNDATION_IMPLEMENTATION_WITH_LIMITED_VERIFICATION
+  review_mode: LOCAL_IMPLEMENTATION_NO_TESTS_OWNER_AUTHORIZED_SCHEMA_MIGRATION
   runtime_verified: false
   github_modified: false
 local_foundation:
   date: '2026-11-01'
-  state: PARTIAL_RUNTIME_SETUP_REQUIRED
+  state: IMPLEMENTED_NOT_RUNTIME_VERIFIED
   route: /app/human-gate/
-  scope: SINGLE_STAGE_INTERNAL_DEMO_NOTE_ONLY
-  evidence: Audit/2026-11-01-human-gate-foundation.md
+  scope: SINGLE_STAGE_KERNEL_WORKSPACE_RENAME_AND_INTERNAL_DEMO_NOTE
+  historical_evidence: Audit/2026-11-01-human-gate-foundation.md
   development_guide: docs/HUMAN-GATE-DEVELOPMENT.md
-  migration: migrations/0004_aigas_human_gate.sql
-  migration_applied_to_neon: false
-  verified_local: PostgreSQL service and HTTP tests; unauthenticated browser only
+  migrations:
+  - migrations/0004_aigas_human_gate.sql
+  - migrations/0006_aigas_kernel_administration.sql
+  - migrations/0007_aigas_human_gate_enforcement.sql
+  migration_applied_to_neon: true
+  migration_target: young-frog-60183055 / br-young-bird-b43proeb / neondb
+  migration_authority: Explicit owner permission for production on 2026-11-01
+  migration_verification: COMMIT plus read-only catalog; no synthetic data or runtime probes
+  verified_local: NOT_RUN_AT_OWNER_REQUEST
+  policy_default: No seeded duration; OWNER/ADMIN chooses bounded pending and approval minutes
+  activation: Operator-issued Human Gate access grant required; none provisioned
+  binding: SHA256 tenant/requester/operation/subject/policy/payload with immutable request fields
+  enforcement: Kernel workspace name update, request consumption and base audit in one transaction
+  expiry: Persisted on access using database time; execution rechecks before final write
+  retry: A consumed request returns ALREADY_EXECUTED without a second effect
+  deployment: NOT_PERFORMED
   neon_authenticated_user_journey: NOT_RUN
   capability_scope:
-    HG-01: PARTIAL_CREATE_LIST_FIXED_SCOPE
+    HG-01: PARTIAL_BOUND_REQUEST_AND_OPERATOR_POLICY
     HG-02: PARTIAL_SINGLE_STAGE_OWNER_ADMIN_AND_SOD
-    HG-03: DEFERRED_PENDING_NEVER_AUTO_APPROVES
-    HG-04: PARTIAL_PERSISTED_DECISION_AND_KERNEL_AUDIT
-    HG-05: PARTIAL_INTERNAL_DEMO_COMPLETION_ONLY
+    HG-03: PARTIAL_PERSISTED_EXPIRY_NO_DELEGATION_OR_ESCALATION
+    HG-04: PARTIAL_APPEND_ONLY_DECISION_TIMELINE_AND_KERNEL_AUDIT
+    HG-05: PARTIAL_ATOMIC_KERNEL_WORKSPACE_RENAME_SINGLE_USE
 product:
   id: AIGAS-HG
   name: AIGAS Human Gate

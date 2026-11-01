@@ -29,7 +29,7 @@ export async function dashboard(identity, requested) {
     const adminReady = (await db.query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0].ready;
     const access = (await db.query(adminReady ? 'SELECT product_slug,status,version FROM public.aigas_product_access WHERE tenant_id=$1' : 'SELECT product_slug,status FROM public.aigas_product_access WHERE tenant_id=$1', [tenantId])).rows;
     const grants = adminReady ? (await db.query('SELECT product_slug,access_kind,expires_at FROM public.aigas_product_grants WHERE tenant_id=$1 AND revoked_at IS NULL AND expires_at>now()', [tenantId])).rows : [];
-    const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': [] };
+    const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': [] };
     const states = [];
     for (const p of productStates(access)) {
       const grant = grants.find(g => g.product_slug === p.slug);

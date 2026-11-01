@@ -33,7 +33,7 @@ const auditLabels = {
 };
 export const auditActionLabel = action => {
   if (action.startsWith('kernel.product.')) return 'تغيير حالة منتج';
-  const labels = { 'secure_chat.blocked_no_approved_model': 'رفض إرسال لغياب نموذج معتمد', 'kernel.auth.linked': 'ربط مؤسسة الدخول', 'kernel.invitation.created': 'تسجيل دعوة عضو', 'kernel.invitation.accepted': 'قبول عضوية مؤسسة', 'human_gate.request.created': 'طلب مراجعة بشرية', 'human_gate.request.decided': 'قرار مراجعة بشرية', 'human_gate.request.executed': 'إكمال عملية مراجعة', 'ledger.synthetic.created': 'تسجيل حدث اصطناعي', 'ledger.event.exported': 'تصدير حدث دليل' };
+  const labels = { 'secure_chat.blocked_no_approved_model': 'رفض إرسال لغياب نموذج معتمد', 'kernel.auth.linked': 'ربط مؤسسة الدخول', 'kernel.invitation.created': 'تسجيل دعوة عضو', 'kernel.invitation.accepted': 'قبول عضوية مؤسسة', 'human_gate.request.created': 'طلب مراجعة بشرية', 'human_gate.request.decided': 'قرار مراجعة بشرية', 'human_gate.decision.approve': 'اعتماد طلب مراجعة', 'human_gate.decision.reject': 'رفض طلب مراجعة', 'human_gate.request.expired': 'انتهاء صلاحية طلب مراجعة', 'kernel.human_gate.policy.updated': 'تحديث سياسة المراجعة البشرية', 'human_gate.request.executed': 'إكمال عملية مراجعة', 'ledger.synthetic.created': 'تسجيل حدث اصطناعي', 'ledger.event.exported': 'تصدير حدث دليل' };
   return auditLabels[action] ?? labels[action.split(':')[0]] ?? 'حدث تشغيلي';
 };
 export function productStates(access) {
