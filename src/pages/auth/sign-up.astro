@@ -1,0 +1,209 @@
+---
+import PageShell from '../../components/PageShell.astro';
+
+const authUrl = import.meta.env.NEON_AUTH_BASE_URL ?? '';
+---
+
+<PageShell
+  title="إنشاء حساب | BRIGHTAI"
+  description="أنشئ حساب BRIGHTAI باستخدام بريدك الإلكتروني وكلمة المرور."
+  crumbs={[{ name: 'إنشاء حساب' }]}
+>
+  <p class="eyebrow">حساب BRIGHTAI</p>
+  <h1>ابدأ بحسابك</h1>
+  <p class="lead">سجّل بالبريد الإلكتروني وكلمة المرور. تُدار بيانات الدخول عبر Neon Managed Auth.</p>
+
+  {authUrl ? (
+    <section class="card auth-card" data-auth-url={authUrl} aria-labelledby="auth-heading">
+      <div data-auth-form-view>
+        <h2 id="auth-heading">إنشاء حساب</h2>
+        <form data-auth-form>
+          <div class="auth-field" data-name-field>
+            <label for="auth-name">الاسم</label>
+            <input id="auth-name" name="name" type="text" autocomplete="name" required maxlength="80" />
+          </div>
+          <div class="auth-field">
+            <label for="auth-email">البريد الإلكتروني</label>
+            <input id="auth-email" name="email" type="email" autocomplete="email" required maxlength="254" />
+          </div>
+          <div class="auth-field">
+            <label for="auth-password">كلمة المرور</label>
+            <input id="auth-password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128" />
+          </div>
+          <button class="button" type="submit" data-submit disabled>إنشاء الحساب</button>
+        </form>
+        <p class="auth-switch">
+          <span data-switch-label>عندك حساب؟</span>
+          <button class="auth-link" type="button" data-switch>تسجيل الدخول</button>
+        </p>
+      </div>
+
+      <div data-auth-session hidden>
+        <h2>أنت مسجل دخول</h2>
+        <p>الحساب الحالي: <bdi data-current-user></bdi></p>
+        <button class="button" type="button" data-sign-out>تسجيل الخروج</button>
+      </div>
+
+      <p class="auth-status" data-auth-status role="status" aria-live="polite"></p>
+    </section>
+  ) : (
+    <p class="card auth-unavailable" role="status">التسجيل غير متاح حالياً؛ لم يُضبط عنوان Neon Auth لهذا التشغيل.</p>
+  )}
+</PageShell>
+
+<script>
+  import { createAuthClient } from '@neon/neon-js/auth';
+
+  const card = document.querySelector<HTMLElement>('.auth-card');
+  const form = card?.querySelector<HTMLFormElement>('[data-auth-form]');
+  const formView = card?.querySelector<HTMLElement>('[data-auth-form-view]');
+  const sessionView = card?.querySelector<HTMLElement>('[data-auth-session]');
+  const nameField = card?.querySelector<HTMLElement>('[data-name-field]');
+  const nameInput = card?.querySelector<HTMLInputElement>('#auth-name');
+  const emailInput = card?.querySelector<HTMLInputElement>('#auth-email');
+  const passwordInput = card?.querySelector<HTMLInputElement>('#auth-password');
+  const submitButton = card?.querySelector<HTMLButtonElement>('[data-submit]');
+  const switchButton = card?.querySelector<HTMLButtonElement>('[data-switch]');
+  const switchLabel = card?.querySelector<HTMLElement>('[data-switch-label]');
+  const signOutButton = card?.querySelector<HTMLButtonElement>('[data-sign-out]');
+  const currentUser = card?.querySelector<HTMLElement>('[data-current-user]');
+  const status = card?.querySelector<HTMLElement>('[data-auth-status]');
+  const authUrl = card?.dataset.authUrl;
+
+  if (
+    card && form && formView && sessionView && nameField && nameInput && emailInput && passwordInput &&
+    submitButton && switchButton && switchLabel && signOutButton && currentUser && status && authUrl
+  ) {
+    const auth = createAuthClient(authUrl);
+    let mode: 'sign-up' | 'sign-in' = 'sign-up';
+
+    const setStatus = (message: string) => {
+      status.textContent = message;
+    };
+
+    const showUser = (email: string) => {
+      currentUser.textContent = email;
+      formView.hidden = true;
+      sessionView.hidden = false;
+      setStatus('تم التحقق من الجلسة الحالية.');
+    };
+
+    const showForm = () => {
+      sessionView.hidden = true;
+      formView.hidden = false;
+    };
+
+    const setMode = (nextMode: 'sign-up' | 'sign-in') => {
+      mode = nextMode;
+      const signingUp = mode === 'sign-up';
+      nameField.hidden = !signingUp;
+      nameInput.required = signingUp;
+      nameInput.autocomplete = signingUp ? 'name' : 'off';
+      passwordInput.autocomplete = signingUp ? 'new-password' : 'current-password';
+      submitButton.textContent = signingUp ? 'إنشاء الحساب' : 'تسجيل الدخول';
+      switchLabel.textContent = signingUp ? 'عندك حساب؟' : 'ما عندك حساب؟';
+      switchButton.textContent = signingUp ? 'تسجيل الدخول' : 'إنشاء حساب';
+      setStatus('');
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      submitButton.disabled = true;
+      switchButton.disabled = true;
+      setStatus(mode === 'sign-up' ? 'جارٍ إنشاء الحساب…' : 'جارٍ تسجيل الدخول…');
+
+      try {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const result = mode === 'sign-up'
+          ? await auth.signUp.email({
+              name: nameInput.value.trim(),
+              email,
+              password,
+            })
+          : await auth.signIn.email({ email, password });
+
+        if (result.error) {
+          setStatus(mode === 'sign-up'
+            ? 'تعذر إنشاء الحساب. تحقق من البيانات وحاول مرة ثانية.'
+            : 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور.');
+          return;
+        }
+
+        const sessionResult = await auth.getSession();
+        if (sessionResult.error) {
+          setStatus('تم إرسال الطلب، لكن تعذر قراءة الجلسة الآن. حدّث الصفحة وحاول مرة ثانية.');
+          return;
+        }
+
+        if (sessionResult.data?.user?.email) {
+          showUser(sessionResult.data.user.email);
+        } else if (mode === 'sign-up') {
+          setStatus('تم إنشاء الحساب. أكمل تأكيد البريد الإلكتروني إذا وصلك طلب تحقق، ثم سجّل الدخول.');
+          setMode('sign-in');
+        } else {
+          setStatus('لم تُنشأ جلسة. تحقق من البريد وكلمة المرور وحاول مرة ثانية.');
+        }
+      } catch {
+        setStatus('تعذر إكمال الطلب. راجع إعداد خدمة الحسابات أو حاول مرة ثانية.');
+      } finally {
+        submitButton.disabled = false;
+        switchButton.disabled = false;
+        passwordInput.value = '';
+      }
+    });
+
+    switchButton.addEventListener('click', () => {
+      showForm();
+      setMode(mode === 'sign-up' ? 'sign-in' : 'sign-up');
+    });
+
+    signOutButton.addEventListener('click', async () => {
+      signOutButton.disabled = true;
+      setStatus('جارٍ تسجيل الخروج…');
+      try {
+        const result = await auth.signOut();
+        if (result.error) {
+          setStatus('تعذر تسجيل الخروج. حاول مرة ثانية.');
+          return;
+        }
+        showForm();
+        form.reset();
+        setMode('sign-up');
+        setStatus('تم تسجيل الخروج.');
+      } catch {
+        setStatus('تعذر الاتصال بخدمة الحسابات. حاول مرة ثانية.');
+      } finally {
+        signOutButton.disabled = false;
+      }
+    });
+
+    auth.getSession().then(({ data, error }) => {
+      if (error) {
+        setStatus('تعذر التحقق من الجلسة. تقدر تتابع بتسجيل الدخول.');
+      } else if (data?.user?.email) {
+        showUser(data.user.email);
+      }
+      submitButton.disabled = false;
+    }).catch(() => {
+      setStatus('تعذر الاتصال بخدمة الحسابات. تحقق من اتصالك وحاول مرة ثانية.');
+      submitButton.disabled = false;
+    });
+  }
+</script>
+
+<style>
+  .auth-card { max-width: 640px; margin-block-start: 36px; }
+  .auth-card h2 { font-size: clamp(28px, 4vw, 42px); margin-block-end: 24px; }
+  .auth-card form { display: grid; gap: 20px; }
+  .auth-field { display: grid; gap: 8px; color: var(--color-silver-mist); font-size: 15px; }
+  .auth-field input { width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid #444; border-radius: 10px; background: #080808; color: #fff; font: inherit; }
+  .auth-field input:focus-visible, .auth-link:focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 3px; }
+  .auth-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-block-start: 20px; color: var(--color-silver-mist); font-size: 14px; }
+  .auth-link { min-height: 44px; border: 0; padding: 6px 8px; background: transparent; color: var(--color-saffron-spark); font: inherit; cursor: pointer; }
+  .auth-status { min-height: 1.8em; margin-block-start: 16px; color: var(--color-silver-mist); font-size: 14px; }
+  .auth-unavailable { max-width: 640px; margin-block-start: 36px; }
+  [hidden] { display: none !important; }
+</style>

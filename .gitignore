@@ -133,3 +133,4 @@ apps/dashboard/public/media/brightai-background-poster.jpg
 # avif:generate derives this from the ignored poster on every build.
 public/media/brightai-background-poster.avif
 apps/dashboard/public/media/brightai-background-poster.avif
+.neon
