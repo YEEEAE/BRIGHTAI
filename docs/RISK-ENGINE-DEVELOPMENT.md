@@ -1,8 +1,34 @@
-# Risk Engine — local foundation
+# Risk Engine — local implementation
 
 Date: 2026-11-01. Scope: a small persisted, rules-only slice authorized by the owner; not the complete RE-01–RE-05 product or a commercial release.
 
-## Actual behavior
+## Current lifecycle extension (2026-11-01)
+
+State: `IMPLEMENTED_NOT_RUNTIME_VERIFIED`. No tests, builds, lint, typecheck, HTTP smoke or browser tools were run for this extension, at the owner's request. Earlier verification below is historical and does not cover this implementation.
+
+`/app/risk-engine/{assetId}/` shares the existing workspace UI with the registry. Assessments now include `method_name`, optional `evidence_references` (up to 1000 characters), and a server-selected `previous_assessment_id`. Earlier immutable assessments are retained. The existing OWNER/ADMIN write contract is preserved; MEMBER remains read-only.
+
+Treatment is a separate append-only history, bound to an exact assessment and asset version. OWNER/ADMIN save full revisions with descriptive `owner`, `status` (`OPEN`, `IN_PROGRESS`, `MITIGATED`, `ACCEPTED`), `control_description`, optional `review_on` (YYYY-MM-DD), and required `rationale`. Saves require `asset_version`, `assessment_id`, and `treatment_version` (0 for first save). An asset lock and expected treatment version reject stale writes. HIGH acceptance requires OWNER distinct from the evaluator, enforced in both service and SQL trigger. A new assessment or asset version makes the previous treatment require review; neither acceptance nor mitigation changes the risk score or authorizes deployment.
+
+All write bodies additionally require `synthetic_data_confirmed: true`; the UI requires an unchecked acknowledgement each time. Real customer data is not enabled through this route. This declaration does not automatically inspect or certify submitted text. No provider/training, analytics or browser persistence is added.
+
+Additional local APIs (all use the same Kernel identity, membership, product access and private/no-store boundary):
+
+| Method | Path under `/app/api/risk-engine/` | Contract |
+| --- | --- | --- |
+| GET | `assets/?assessment_status=` | Adds NOT_ASSESSED / REASSESSMENT_REQUIRED / ASSESSED filter |
+| GET | `assets/{assetId}/treatments/?page=1` | Treatment revisions, latest assessment/plan, stale flag, role capabilities |
+| POST/PATCH | `assets/{assetId}/treatments/` | Full treatment revision with expected versions and synthetic acknowledgement; 201 after commit |
+| GET | `actions/?page=1&treatment_status=&due=1` | Latest plan per asset; due means today/overdue in Asia/Riyadh |
+| GET | `export/` | OWNER/ADMIN only; JSON organization summary of all assets and latest assessment/method/treatment, audited before response |
+
+Export ignores UI filters and includes stale flags and scope limitations. A technical ceiling of 10000 assets rejects oversize exports rather than truncating; this is not a commercial quota. File download requires authenticated fetch and remains in memory until download. Assessment, asset and treatment histories remain available through their paginated endpoints.
+
+Apply `0005_aigas_risk_engine.sql` followed by additive `0008_aigas_risk_engine_lifecycle.sql` on an approved development target. 0008 retains existing data and adds treatment RLS, scoped FKs, append-only and current-version/role guards. Kernel access additionally uses administration migration 0006. Do not run unrelated product migrations as a prerequisite. No grants, sample data, activation, environment changes or migrations were applied in this task.
+
+Neon MCP read-only inspection found the sole branch `production` / `br-young-bird-b43proeb` in `young-frog-60183055` / `neondb`, with 11 public Kernel/Human Gate tables and no Risk Engine tables. There is no approved development branch. Production authorization from a different product task is not authorization for these migrations. Runtime role/RLS, actual Auth flow and deployment remain external prerequisites.
+
+## Earlier foundation behavior (historical description; extension above takes precedence)
 
 `/app/risk-engine/` uses the existing AppLayout, Neon Auth session and Kernel server identity/membership guards. No marketing layout, analytics, storage uploads or AI provider calls are added. OWNER/ADMIN can create/update assets and create assessments; MEMBER can list assets and read assessment history. The asset owner is descriptive text, not a permission grant. Workspace selection is checked against the verified user's DB memberships on every operation; tenant/user/result fields in request bodies are rejected.
 
@@ -41,7 +67,7 @@ Neon MCP read-only inspection on 2026-11-01 succeeded for project `young-frog-60
 
 Before connected use: approve a development DB target and migration, review a least-privilege server DB role and its RLS access path (no permissive browser grants), and verify real Neon user/organization flows. Existing local Auth origin restrictions remain unchanged. Signed-out UI keeps all organization data/forms hidden and directs users to Kernel. Missing Auth config reports setup required; missing tables or DB errors fail closed without a successful-save claim.
 
-## Verification and limits
+## Historical verification and limits (not rerun for lifecycle extension)
 
 - `npm run build`, `tsc --noEmit --noUncheckedSideEffectImports`: PASS.
 - `node --test tests/kernel.test.mjs tests/firewall.test.mjs tests/ledger.test.mjs tests/human-gate.test.mjs tests/risk-engine.test.mjs`: 17 PASS.

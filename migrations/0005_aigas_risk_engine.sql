@@ -1,4 +1,5 @@
 -- REVIEW ONLY: requires Kernel 0001. No dependency on Firewall, Human Gate or Ledger.
+-- Lifecycle fields and append-only treatment history are added by 0008 after this migration.
 -- First apply to an approved isolated development target, never auto-run on startup.
 BEGIN;
 CREATE TABLE public.aigas_re_assets (

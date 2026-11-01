@@ -1,5 +1,8 @@
 import { KernelError } from '../kernel/core.mjs';
 export const METHOD_VERSION = 'draft-likelihood-impact-v1';
+export const METHOD_NAME = 'مسودة مصفوفة الاحتمال × الأثر 3×3';
+export const treatmentStatuses = ['OPEN','IN_PROGRESS','MITIGATED','ACCEPTED'];
+export const treatmentFields = ['asset_version','assessment_id','treatment_version','owner','status','control_description','review_on','rationale'];
 export const classifications = ['PUBLIC','INTERNAL','CONFIDENTIAL','RESTRICTED'];
 export const assetFields = ['name','owner','purpose','data_classification'];
 export const controls = {
@@ -30,5 +33,12 @@ export function evaluate(likelihood, impact) {
  return {score,risk_level,method_version:METHOD_VERSION,explanation:`الاحتمال ${likelihood} × الأثر ${impact} = ${score}؛ التصنيف ${risk_level} حسب مسودة المصفوفة.`,suggested_control:controls[risk_level]};
 }
 export function assessmentInput(body) {
- return {...evaluate(body.likelihood,body.impact),likelihood:body.likelihood,impact:body.impact,likelihood_reason:text(body.likelihood_reason),impact_reason:text(body.impact_reason),controls_reason:text(body.controls_reason),asset_version:version(body.asset_version)};
+ return {...evaluate(body.likelihood,body.impact),method_name:METHOD_NAME,likelihood:body.likelihood,impact:body.impact,likelihood_reason:text(body.likelihood_reason),impact_reason:text(body.impact_reason),controls_reason:text(body.controls_reason),evidence_references:body.evidence_references==null||body.evidence_references===''?'':text(body.evidence_references,1000),asset_version:version(body.asset_version)};
+}
+export function treatmentInput(body) {
+ if(!uuid(body.assessment_id)||!Number.isSafeInteger(body.treatment_version)||body.treatment_version<0)throw new KernelError(400,'INVALID_TREATMENT_VERSION','مرجع التقييم أو نسخة المعالجة غير صالحة.');
+ if(!treatmentStatuses.includes(body.status))throw new KernelError(400,'INVALID_TREATMENT_STATUS','اختر حالة المعالجة.');
+ const review_on=body.review_on===undefined||body.review_on===null||body.review_on===''?null:body.review_on;
+ if(review_on!==null&&(typeof review_on!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(review_on)||!Number.isFinite(Date.parse(review_on))||new Date(review_on).toISOString().slice(0,10)!==review_on))throw new KernelError(400,'INVALID_REVIEW_DATE','تاريخ المراجعة غير صالح.');
+ return {asset_version:version(body.asset_version),assessment_id:body.assessment_id,treatment_version:body.treatment_version,owner:text(body.owner,120),status:body.status,control_description:text(body.control_description,500),review_on,rationale:text(body.rationale,500)};
 }

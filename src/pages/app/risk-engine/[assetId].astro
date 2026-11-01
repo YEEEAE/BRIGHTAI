@@ -1,0 +1,8 @@
+---
+import RiskWorkspace from '../../../components/RiskWorkspace.astro';
+import { uuid } from '../../../server/risk-engine/core.mjs';
+export const prerender=false;
+const assetId=Astro.params.assetId || '';
+if(!uuid(assetId))return new Response('معرّف الأصل غير صالح.',{status:404,headers:{'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow','Content-Type':'text/plain; charset=utf-8'}});
+---
+<RiskWorkspace assetId={assetId} />

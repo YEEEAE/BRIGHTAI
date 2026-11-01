@@ -34,22 +34,24 @@ product:
   numeric_risk_score_range_approved: null
 local_foundation:
   date: '2026-11-01'
-  state: LOCAL_SLICE_VERIFIED_CONNECTED_OPERATION_PARTIAL
+  state: IMPLEMENTED_NOT_RUNTIME_VERIFIED
   route: /app/risk-engine/
   implemented_contract: docs/RISK-ENGINE-DEVELOPMENT.md
-  evidence: Audit/2026-11-01-risk-engine-foundation.md
+  historical_evidence: Audit/2026-11-01-risk-engine-foundation.md
+  current_runtime_verification: NOT_RUN_OWNER_REQUEST
   migration: migrations/0005_aigas_risk_engine.sql
+  lifecycle_migration: migrations/0008_aigas_risk_engine_lifecycle.sql
   neon_migration_applied: false
   real_neon_authenticated_flow_verified: false
   method: draft-likelihood-impact-v1
-  scope_ar: سجل أصول قابل للبحث والتصفية ونسخ محفوظة، تقييم قاعدي مسبب، مقارنة النسخ، ومؤشرات مشتقة من قاعدة البيانات؛ ليس RE-02 الهجين أو منظومة مخاطر مكتملة
-  follow_up_slice: APPEND_ONLY_ASSET_REVISIONS_DB_SUMMARY_AND_FILTERS_LOCAL_ONLY
+  scope_ar: سجل أصول ونسخ وتقييم قاعدي بمراجع نصية، معالجة بإصدارات ومراجعات وقبول إداري مقيد، وتصدير JSON؛ كود محلي دون تحقق تشغيلي
+  follow_up_slice: VERSIONED_TREATMENT_REVIEW_AND_JSON_EXPORT_LOCAL_ONLY
   capability_coverage:
     RE-01: PARTIAL_LOCAL_SLICE
     RE-02: RULES_ONLY_DRAFT_SUBSET
     RE-03: DEFERRED_HIERARCHICAL_POLICIES
     RE-04: PARTIAL_MANUAL_ASSET_CHANGE_REASSESSMENT
-    RE-05: DEFERRED_REVIEWS
+    RE-05: PARTIAL_HIGH_ACCEPTANCE_INDEPENDENT_OWNER_LOCAL_UNVERIFIED
   commercial_availability_changed: false
 status_taxonomy:
   WORKING:

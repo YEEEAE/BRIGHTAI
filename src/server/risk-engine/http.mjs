@@ -18,10 +18,12 @@ export function createHandler(auth=authenticate, service=operate) {
     try {
       const identity=await auth(request);
       const params=new URL(request.url).searchParams;
-      const body=['create','update','assess'].includes(operation)?await readBody(request):{};
+      const body=['create','update','assess','save-treatment'].includes(operation)?await readBody(request):{};
       const data=await service(identity,params.get('workspace'),operation,body,params,id);
-      return Response.json(data,{status:['create','assess'].includes(operation)?201:200,headers});
+      return Response.json(data,{status:['create','assess','save-treatment'].includes(operation)?201:200,headers:{...headers,...(operation==='export'?{'Content-Disposition':'attachment; filename="aigas-risk-register.json"'}:{})}});
     } catch(error) {
+      if(error?.code==='42P01'||error?.code==='42703')error=new KernelError(503,'RISK_ENGINE_SCHEMA_MISSING','مخطط دورة المخاطر غير متاح؛ يلزم تطبيق 0005 ثم 0008 على بيئة معتمدة.');
+      if(error?.code==='42501')error=new KernelError(503,'RISK_ENGINE_DB_PRIVILEGE','صلاحيات قاعدة البيانات لا تسمح بهذه العملية؛ راجع مسؤول التشغيل.');
       const known=error instanceof KernelError;
       return Response.json({code:known?error.code:'RISK_ENGINE_UNAVAILABLE',message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.'},{status:known?error.status:503,headers});
     }
