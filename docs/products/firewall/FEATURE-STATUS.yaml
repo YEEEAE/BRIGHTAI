@@ -90,6 +90,11 @@ source_evidence:
     path: src/pages/api/
     finding: مجلد مسارات Firewall API غير ظاهر في شجرة المستودع المفحوصة؛ لا نثبت وجود endpoint.
     evidence_level: NOT_VERIFIED
+  - id: SRC-FW-007
+    path: src/pages/app/api/firewall/
+    finding: مساران محميان بهوية Kernel وعضوية المؤسسة: قواعد CRUD محدودة وفحص نص اصطناعي يحفظ القرار دون متنه.
+    evidence_level: LOCAL_VERIFIED
+    scope: SYNTHETIC_TEXT_LAB_ONLY
 capabilities:
   - id: FW-01
     name_ar: نقاط تكامل حماية فعلية
@@ -284,10 +289,16 @@ local_starter_foundation:
   route: /app/firewall/
   state: SOURCE_AND_ISOLATED_POSTGRES_VERIFIED
   operational_state: PARTIAL
-  scope: FIXED_SYNTHETIC_TEXT_RULE_LAB_ONLY
+  scope: SYNTHETIC_TEXT_LITERAL_RULE_LAB_ONLY
+  rule_management: SERVER_OWNED_TEMPLATES_TOGGLE_ONLY_PLUS_EDITABLE_TENANT_LITERAL_RULES
+  decision_log: METADATA_ONLY_LATEST_12_ACTION_AND_REASON_FILTERS
+  setup_error_codes: [FIREWALL_SCHEMA_MISSING, FIREWALL_DB_PRIVILEGE, FIREWALL_UNAVAILABLE]
+  enforcement_scope: /app/api/firewall/evaluate_route_only
   documentation: docs/FIREWALL-DEVELOPMENT.md
   migration: migrations/0002_aigas_firewall.sql
+  migration_review_state: LOCAL_REVISED_NOT_APPLIED
   neon_migration_applied: false
+  local_verification: BUILD_TSC_UNIT_AND_DISPOSABLE_POSTGRES_PASS
   authenticated_browser_journey: NOT_VERIFIED
   provider_integration: NOT_IMPLEMENTED
   commercial_entitlement_activated: false

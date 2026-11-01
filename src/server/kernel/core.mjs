@@ -16,6 +16,7 @@ export const roleLabels = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عض�
 const auditLabels = {
   'workspace.created': 'إنشاء مساحة العمل',
   'firewall.rule.created': 'إضافة قاعدة جدار حماية',
+  'firewall.rule.updated': 'تعديل قاعدة جدار حماية',
   'firewall.rule.toggled': 'تغيير حالة قاعدة جدار حماية',
   'ledger.event.created': 'تسجيل حدث دليل',
   'ledger.event.verified': 'فحص حدث دليل',

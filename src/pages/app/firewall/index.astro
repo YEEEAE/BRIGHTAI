@@ -5,19 +5,54 @@ import '../../../styles/firewall.css';
 export const prerender = false;
 const config = authConfig();
 ---
-<AppLayout title="مختبر Firewall Starter">
+<AppLayout title="جدار حماية AI — سياسات وفحص">
  <section class="kernel firewall" data-firewall data-auth-url={config?.base ?? ''}>
-  <div class="page-heading"><div><p class="overline">02 / FIREWALL STARTER</p><h1>جرّب السياسة.<span>وشاهد سبب القرار.</span></h1><p class="intro">مختبر قواعد محدودة يعمل من الخادم على نصوص اصطناعية. لا يتصل بنموذج ذكاء اصطناعي.</p></div><span class="connection">مختبر تأسيسي</span></div>
+  <div class="page-heading"><div><p class="overline">02 / FIREWALL STARTER</p><h1>اضبط السياسة.<span>وافحص نصًا اصطناعيًا.</span></h1><p class="intro">قواعد نصية حرفية تُدار من الخادم وتُقيَّم على نص اصطناعي. لا يتصل هذا المسار بنموذج ذكاء اصطناعي.</p></div><span class="connection">مختبر تأسيسي</span></div>
   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة مساحة العمل عبر Kernel ←</a></div><button type="button" data-reload>تحديث</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel؛ لا تُعرض بيانات خاصة بدونه.</p></noscript>
   <div data-private hidden>
    <section class="panel"><label for="fw-workspace">المؤسسة</label><select id="fw-workspace" data-workspace></select><p data-scope></p></section>
    <div class="fw-counts" aria-label="عدادات القرارات المحفوظة"><article class="panel"><bdi>ALLOW</bdi><strong data-count="ALLOW">—</strong></article><article class="panel"><bdi>BLOCK</bdi><strong data-count="BLOCK">—</strong></article><article class="panel"><bdi>REDACT</bdi><strong data-count="REDACT">—</strong></article></div>
    <div class="fw-columns">
-    <section class="panel"><p class="overline">01 / POLICY</p><h2>قواعد المؤسسة</h2><p>تطابق حرفي لا يراعي حالة الأحرف اللاتينية. الحجب يسبق التنقيح ثم السماح. دون قواعد مفعّلة يُحجب الفحص.</p><div data-rules></div><form data-create-rule hidden><label for="fw-template">إضافة قاعدة ثابتة</label><select id="fw-template" name="template"><option value="public">سماح: معلومة عامة</option><option value="identifier">تنقيح: DEMO-ID-1234</option><option value="prohibited">حجب: DEMO-BLOCK</option></select><button type="submit">إضافة القاعدة للمؤسسة</button></form><p data-role></p></section>
-    <section class="panel"><p class="overline">02 / SYNTHETIC LAB</p><h2>مختبر النص الاصطناعي</h2><p>استخدم بيانات مصطنعة فقط. متن النص لا يُحفظ في سجل القرارات.</p><div class="fw-examples"><button type="button" data-example="معلومة عامة عن حوكمة الذكاء الاصطناعي">بيانات عامة</button><button type="button" data-example="معرّف اختباري DEMO-ID-1234 فقط">معرّف افتراضي</button><button type="button" data-example="محتوى اختباري DEMO-BLOCK">محتوى محظور</button></div><form data-evaluate><label for="fw-text">النص الاصطناعي</label><textarea id="fw-text" name="text" rows="5" maxlength="4000" required autocomplete="off" spellcheck="false"></textarea><button type="submit">فحص من الخادم</button></form><div class="fw-result" data-result role="status" aria-live="polite">شغّل مثالًا بعد إضافة القواعد المناسبة.</div></section>
+    <section class="panel">
+     <p class="overline">01 / POLICY</p><h2>قواعد المؤسسة</h2>
+     <p>الأولوية: الحجب يتقدّم دائمًا على التنقيح ثم السماح، ولا تسمح قاعدة ALLOW بتجاوز قاعدة حجب أو تنقيح. رقم الأولوية الأقل يُعرض أولًا ويُذكر في القرار عند تعدد القواعد المطابقة للإجراء نفسه.</p>
+     <p class="fw-hint">النمط نص حرفي يُطابق احتواءً دون اعتبار حالة الأحرف اللاتينية؛ لا يُقبل تعبير نمطي (RegExp) ولا رموز تحكم.</p>
+     <p class="fw-meta"><span data-rule-count>0</span> قاعدة مسجلة</p>
+     <div data-rules></div>
+     <div data-empty-rules hidden class="fw-empty">لا توجد قواعد بعد. أضف قاعدة مخصصة أو قالبًا جاهزًا؛ بلا قاعدة مفعّلة يحجب الفحص ولا يصدر سماح.</div>
+     <form data-create-rule hidden>
+      <fieldset><legend>إضافة قاعدة حرفية</legend>
+       <label for="fw-name">اسم القاعدة</label><input id="fw-name" name="name" type="text" maxlength="60" required autocomplete="off">
+       <label for="fw-pattern">النمط الحرفي</label><input id="fw-pattern" name="pattern" type="text" maxlength="80" required autocomplete="off" spellcheck="false">
+       <label for="fw-action">الإجراء</label><select id="fw-action" name="action"><option value="BLOCK">BLOCK — حجب</option><option value="REDACT">REDACT — تنقيح</option><option value="ALLOW">ALLOW — سماح</option></select>
+       <label for="fw-priority">الأولوية (1–999، الأقل أولًا)</label><input id="fw-priority" name="priority" type="number" min="1" max="999" step="1" value="100" required>
+       <p data-create-error class="fw-error" role="alert"></p>
+       <button type="submit">حفظ القاعدة</button>
+      </fieldset>
+     </form>
+     <div data-templates hidden class="fw-templates"><p>قوالب مختبر جاهزة:</p><div class="fw-examples"><button type="button" data-template="public">سماح: معلومة عامة</button><button type="button" data-template="identifier">تنقيح: DEMO-ID-1234</button><button type="button" data-template="prohibited">حجب: DEMO-BLOCK</button></div></div>
+     <p data-role></p>
+    </section>
+    <section class="panel">
+     <p class="overline">02 / SYNTHETIC LAB</p><h2>فحص نص اصطناعي</h2>
+     <p>استخدم بيانات مصطنعة فقط. النص لا يُحفظ في سجل القرارات؛ يُحفظ القرار وسببه ومرجع القاعدة ونسختها فقط.</p>
+     <div class="fw-examples"><button type="button" data-example="معلومة عامة عن حوكمة الذكاء الاصطناعي">بيانات عامة</button><button type="button" data-example="معرّف اختباري DEMO-ID-1234 فقط">معرّف افتراضي</button><button type="button" data-example="محتوى اختباري DEMO-BLOCK">محتوى محظور</button></div>
+     <form data-evaluate>
+      <label for="fw-text">النص الاصطناعي</label><textarea id="fw-text" name="text" rows="5" maxlength="4000" required autocomplete="off" spellcheck="false"></textarea>
+      <label class="fw-check"><input type="checkbox" data-synthetic> أؤكد أن النص اصطناعي ولا يحتوي بيانات عميل أو أسرارًا.</label>
+      <p data-eval-error class="fw-error" role="alert"></p>
+      <button type="submit" data-eval-submit disabled>فحص من الخادم</button>
+     </form>
+     <div class="fw-result" data-result role="status" aria-live="polite">اختر مثالًا، أكّد أنه اصطناعي، ثم افحصه.</div>
+     <p class="fw-hint">الإنفاذ داخل هذا المسار فقط: <bdi>/app/api/firewall/evaluate</bdi>. لا يُطبَّق ذلك تلقائيًا على تطبيقات العميل أو حركة مزودي النماذج.</p>
+    </section>
    </div>
-   <section class="panel"><div class="section-heading"><div><p class="overline">03 / DECISION LOG</p><h2>آخر 10 قرارات</h2></div><div><label for="fw-filter">تصفية القرار</label><select id="fw-filter" data-filter><option value="">كل القرارات</option><option>ALLOW</option><option>BLOCK</option><option>REDACT</option></select></div></div><p>بيانات وصفية فقط: الوقت والقرار والسبب ومرجع القاعدة ونسختها. ليس Ledger موقعًا أو دليلًا غير قابل للتعديل.</p><ol class="fw-decisions" data-decisions></ol></section>
+   <section class="panel">
+    <div class="section-heading"><div><p class="overline">03 / DECISION LOG</p><h2>آخر 12 قرارًا</h2></div><div class="fw-filters"><div><label for="fw-filter">الإجراء</label><select id="fw-filter" data-filter><option value="">كل الإجراءات</option><option>ALLOW</option><option>BLOCK</option><option>REDACT</option></select></div><div><label for="fw-reason">السبب</label><select id="fw-reason" data-reason><option value="">كل الأسباب</option><option value="RULE_BLOCK">حجب بقاعدة</option><option value="RULE_REDACT">تنقيح بقاعدة</option><option value="RULE_ALLOW">سماح بقاعدة</option><option value="NO_MATCH_LAB_ONLY">دون مطابقة</option><option value="NO_ACTIVE_POLICY">لا سياسة مفعّلة</option><option value="INVALID_POLICY">سياسة غير صالحة</option></select></div></div></div>
+    <p>بيانات وصفية فقط: الوقت والقرار والسبب واسم القاعدة ونسختها. ليس Ledger موقّعًا أو دليلًا غير قابل للتعديل.</p>
+    <ol class="fw-decisions" data-decisions></ol>
+   </section>
   </div>
   <p class="notice">الحماية ضمن هذا المختبر فقط، ولا تغطي تطبيقات غير متكاملة. لا Proxy أو تحليل دلالي أو DLP شامل أو موافقات بشرية في هذه الدفعة. لا اشتراك أو تجربة 48 ساعة مفعّلة.</p>
  </section>
