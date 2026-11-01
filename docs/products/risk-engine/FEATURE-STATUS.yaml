@@ -32,6 +32,24 @@ product:
   kernel_included_without_separate_fee: true
   mandatory_other_products: false
   numeric_risk_score_range_approved: null
+local_foundation:
+  date: '2026-11-01'
+  state: LOCAL_SLICE_VERIFIED_CONNECTED_OPERATION_PARTIAL
+  route: /app/risk-engine/
+  implemented_contract: docs/RISK-ENGINE-DEVELOPMENT.md
+  evidence: Audit/2026-11-01-risk-engine-foundation.md
+  migration: migrations/0005_aigas_risk_engine.sql
+  neon_migration_applied: false
+  real_neon_authenticated_flow_verified: false
+  method: draft-likelihood-impact-v1
+  scope_ar: سجل حالات ونسخ وتقييم قاعدي مسبب وتاريخ محفوظ؛ ليس RE-02 الهجين أو منظومة مخاطر مكتملة
+  capability_coverage:
+    RE-01: PARTIAL_LOCAL_SLICE
+    RE-02: RULES_ONLY_DRAFT_SUBSET
+    RE-03: DEFERRED_HIERARCHICAL_POLICIES
+    RE-04: PARTIAL_MANUAL_ASSET_CHANGE_REASSESSMENT
+    RE-05: DEFERRED_REVIEWS
+  commercial_availability_changed: false
 status_taxonomy:
   WORKING:
     ar: تعمل

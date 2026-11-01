@@ -1,5 +1,20 @@
 # Project Mind — BrightAI
 
+## [2026-11-01] — تأسيس Risk Engine بمصفوفة مسودة وتاريخ تقييمات
+### تم التنفيذ
+- أُضيف `/app/risk-engine/` لسجل حالات AI وإضافتها وتعديلها وتقييمها وعرض التاريخ؛ OWNER/ADMIN للكتابة وMEMBER للقراءة بهوية وعضويات Kernel من الخادم.
+- مصفوفة احتمال × أثر 1–3 بقواعد معلنة: 1–2 LOW، 3–4 MEDIUM، 6–9 HIGH، بإصدار `draft-likelihood-impact-v1`؛ أسباب المحورين والضوابط ولقطة الحالة والمقيّم والوقت محفوظة. لا AI أو اعتماد أو حظر تلقائي.
+- تغيير بيانات الحالة يرفع النسخة ويُظهر «يحتاج إعادة تقييم»؛ فحص النسخة وقفل الصف يمنعان تقييم نسخة قديمة، والتقييمات append-only مع تدقيق Kernel ذري مستقل عن FW/HG/LD.
+- Neon MCP نجح للقراءة وأثبت جداول Kernel الأربع وغياب Risk Engine على الفرع الحالي؛ `0005` جُهّز واختُبر محليًا فقط ولم يُطبّق على Neon. إعدادات DB/Auth موجودة دون تعديل `.env` أو الأصل الموثوق أو الاعتماديات أو الموقع التسويقي.
+### الملفات المتأثرة
+- `src/server/risk-engine/`، `src/pages/app/{risk-engine,api/risk-engine}/`، `src/scripts/risk-engine.ts`، `src/styles/risk-engine.css` وتنقل `AppLayout.astro`.
+- `migrations/0005_aigas_risk_engine.sql`، `tests/risk-engine*.test.mjs`، `docs/RISK-ENGINE-DEVELOPMENT.md` وسجل الخصائص ومرجع API، `Audit/2026-11-01-risk-engine-foundation.md`.
+### التحقق
+- build وTypeScript وdiff-check: PASS؛ Kernel/Firewall/Ledger/Human Gate/Risk Engine unit+HTTP: 17 PASS؛ PostgreSQL 16 محلي معزول + service/HTTP: 1 PASS للحفظ والتاريخ والعزل والصلاحيات والتزامن والنسخ وفشل التدقيق. هوية HTTP محقونة للاختبار وليست دخول Neon حقيقيًا.
+- Chrome DevTools MCP على 360/1440px دون هوية: PASS لغياب overflow وAnalytics، وإخفاء البيانات وfocus و401/no-store؛ Playwright مشغول. أسرار DB/Storage في ملفات العميل: لم تُكتشف قيم مطابقة.
+### النتيجة
+- **الحالة:** PARTIAL تشغيليًا؛ المصدر والشريحة المعزولة متحققان. يلزم هدف ترحيل معتمد ومراجعة runtime role وحل Origin واختبار الدخول/التحديث على Neon. RE-01/04 جزئيان وRE-02 قواعد مسودة فقط؛ RE-03/05 مؤجلان، لا تفعيل تجاري أو commit/push/deploy.
+
 ## [2026-11-01] — تأسيس Human Gate بمراجعة مستقلة وإنفاذ عملية داخلية
 ### تم التنفيذ
 - أُضيف `/app/human-gate/` لإنشاء طلبات وتصفية PENDING/APPROVED/REJECTED وعرض القرار؛ هوية وعضويات Kernel من الخادم، وOWNER/ADMIN يراجعان طلبات غيرهما فقط.
