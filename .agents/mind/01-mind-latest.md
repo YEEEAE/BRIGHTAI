@@ -1,3 +1,23 @@
+## [2026-11-01] — Ledger: بحث محدود وحماية append-only
+### تم التنفيذ
+- أضيف بحث محدود في قائمة Ledger بمعرّف الحدث أو مرجع القرار فقط، مع حد 80 حرفًا دون البحث في Metadata إضافية أو محتوى عميل.
+- أضيف trigger إلى migration `0003` يرفض UPDATE/DELETE الاعتياديين؛ لا يمنع مالك قاعدة البيانات من تعطيله أو تعديل المخطط ولا يثبت توقيعًا مستقلًا.
+- API يعيد 503 برسائل إعداد واضحة وأكواد `LEDGER_SCHEMA_MISSING` / `LEDGER_DB_PRIVILEGE` بدل تفاصيل SQL؛ الواجهة تربط Kernel وصفحة التعريف العامة فقط.
+- فُحص Neon MCP قراءة فقط: الفرع `production` وحده، غير محمي، والجداول التشغيلية الأربع موجودة وفارغة؛ `aigas_ld_events` غير موجود. لم يُنشأ فرع أو يُكتب SQL.
+- تأكد محليًا أن `/app/*` يبقى SSR في `dist/server` مع Astro Node standalone، ولا يُنشأ له HTML داخل `dist/client`؛ سبب 404 المنشور هو خدمة ثابتة لا تشغّل artifact الخادم وفق التشخيص الحالي.
+### الملفات المتأثرة
+- `src/server/ledger/{core,service}.mjs`، `src/pages/app/ledger/index.astro`، `src/scripts/ledger.ts`، `migrations/0003_aigas_ledger.sql`.
+- `tests/ledger{,-db}.test.mjs`، `docs/LEDGER-DEVELOPMENT.md`.
+### التحقق
+- `npm run build`: PASS؛ `node --test tests/ledger.test.mjs`: 3 PASS؛ PostgreSQL 14 مؤقت محلي: 1 PASS للبحث والصلاحيات والعزل والبصمة والـappend-only وmissing-schema.
+- HTTP محلي على standalone: `/app/` 302، `/app/ledger/` 200 مع `no-store/noindex`، وAPI دون هوية 401.
+- Neon journey، تطبيق `0003`، runtime role، التوقيع المستقل وRetention/Legal Hold: NOT RUN / NOT VERIFIED.
+### النتيجة
+- **الحالة:** PARTIAL محليًا؛ لا ترحيل Neon أو نشر أو كتابة بعيدة.
+### ملاحظات / مشاكل مفتوحة
+- لا يوجد فرع Neon تطوير معتمد؛ يلزم اعتماد فرع وموافقة المالك لتطبيق `0003`. مراجعة دور runtime واختبار حساب حقيقي لا يزالان مطلوبين.
+- `/app/` المنشور ما زال 404 في الدليل المقدم؛ يلزم توجيه الدومين إلى Node SSR أو قرار استضافة منفصل، دون تعديل الخدمة من الوكيل.
+
 ## [2026-11-01] — Firewall: سياسات مخصصة وفحص وسجل قرارات مع تشخيص الجداول
 ### تم التنفيذ
 - وُسّع `/app/firewall/` من ثلاثة قوالب ثابتة إلى قوالب خادم للتفعيل فقط + قواعد حرفية مخصصة (اسم/نمط/إجراء/أولوية) تُضاف وتعدّل وتُفعّل بصلاحية OWNER/ADMIN، مع نسخة صف تُرفض عند التعارض.

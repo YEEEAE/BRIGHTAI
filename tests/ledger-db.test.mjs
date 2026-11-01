@@ -6,6 +6,7 @@ import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { createLedgerService } from '../src/server/ledger/service.mjs';
 import { createHandler } from '../src/server/ledger/http.mjs';
+import { hashEvent } from '../src/server/ledger/core.mjs';
 import { audit } from '../src/server/kernel/service.mjs';
 const url=process.env.LEDGER_TEST_DATABASE_URL;
 if(url&&!['localhost','127.0.0.1'].includes(new URL(url).hostname))throw new Error('Disposable localhost database required');
@@ -29,6 +30,8 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  const input={event_type:'synthetic.test.created',scenario:'integrity-check'};
  const created=await send(owner,'create',input);assert.equal(created.status,201);assert.equal(created.data.persisted,true);const id=created.data.event.event_id;
  for(const metadata of [{...created.data.event.metadata_json,prompt:'synthetic-secret'},{...created.data.event.metadata_json,scenario:null},{...created.data.event.metadata_json,decision_ref:null}])await assert.rejects(db.query('INSERT INTO aigas_ld_events SELECT $1,tenant_id,source,event_type,policy_version,$2::jsonb,created_at,created_by,integrity_hash FROM aigas_ld_events WHERE event_id=$3',[randomUUID(),JSON.stringify(metadata),id]),e=>e.code==='23514');
+ await assert.rejects(db.query('UPDATE aigas_ld_events SET created_at=now() WHERE event_id=$1',[id]),/append-only/);
+ await assert.rejects(db.query('DELETE FROM aigas_ld_events WHERE event_id=$1',[id]),/append-only/);
  const loaded=await send(member);assert.equal(loaded.data.events[0].event_id,id);assert.equal(loaded.data.permissions.create,false);
  assert.equal((await send(member,'detail',{},id)).status,200);
  assert.equal((await send(member,'verify',{},id)).data.result,'MATCH');
@@ -45,10 +48,15 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  assert.equal((await send(owner)).data.events.length,25);assert.equal((await send(owner)).data.hasMore,true);
  assert.equal((await send(owner,'list',{},undefined,tenant,'page=2')).data.events.length,2);
  assert.equal((await send(owner,'list',{},undefined,tenant,'type=synthetic.test.created&period=1')).data.events.length,1);
+ assert.equal((await send(owner,'list',{},undefined,tenant,`q=${encodeURIComponent(id.slice(0,8))}`)).data.events.length,1);
+ assert.equal((await send(owner,'list',{},undefined,tenant,`q=${encodeURIComponent(created.data.event.metadata_json.decision_ref.slice(0,8))}`)).data.events.length,1);
+ assert.equal((await send(owner,'list',{},undefined,tenant,`q=${encodeURIComponent('synthetic-secret')}`)).data.events.length,0);
+ const historical={...created.data.event,event_id:randomUUID(),created_at:'2026-08-01T00:00:00.000Z',metadata_json:{...created.data.event.metadata_json,decision_ref:randomUUID()}};
+ historical.integrity_hash=hashEvent(historical);
+ await db.query('INSERT INTO aigas_ld_events (event_id,tenant_id,source,event_type,policy_version,metadata_json,created_at,created_by,integrity_hash) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)',[historical.event_id,tenant,historical.source,historical.event_type,historical.policy_version,historical.metadata_json,historical.created_at,historical.created_by,historical.integrity_hash]);
  assert.equal((await send(owner,'list',{},undefined,tenant,'page=101')).status,400);
- await db.query("UPDATE aigas_ld_events SET created_at=now()-interval '40 days' WHERE event_id=$1",[id]);
- assert.equal((await send(owner,'list',{},undefined,tenant,'type=synthetic.test.created&period=30')).data.events.length,0);
- assert.equal((await send(owner,'verify',{},id)).data.result,'MISMATCH');
+ assert.equal((await send(owner,'list',{},undefined,tenant,'type=synthetic.test.created&period=30')).data.events.length,1);
+ assert.equal((await send(owner,'verify',{},id)).data.result,'MATCH');
  assert.doesNotMatch(JSON.stringify((await db.query('SELECT metadata_json FROM aigas_ld_events')).rows),/synthetic-secret|prompt|conversation/);
  // Kernel basic audit has no Ledger table or product-license dependency.
  await transact(c=>audit(c,owner,tenant,'kernel.synthetic.test'));
@@ -62,5 +70,10 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  await db.query("ALTER TABLE aigas_audit_events ADD CONSTRAINT synthetic_failure CHECK (false) NOT VALID");
  assert.equal((await send(owner,'create',input)).status,503);
  assert.equal(Number((await db.query('SELECT count(*) AS n FROM aigas_ld_events')).rows[0].n),count);
+ await db.query('DROP TABLE public.aigas_ld_events');
+ const missingSchema=await send(owner);
+ assert.equal(missingSchema.status,503);
+ assert.equal(missingSchema.data.code,'LEDGER_SCHEMA_MISSING');
+ assert.match(missingSchema.data.message,/الترحيل المعتمد/);
  }finally{await db.end();}
 });

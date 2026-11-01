@@ -2,6 +2,8 @@
 
 Status on 2026-11-01: **PARTIAL operationally**. `/app/ledger/` and its protected server paths are implemented. A disposable local PostgreSQL test proves event creation, committed readback, digest comparison, JSON export, permissions and isolation. A real Neon user journey is **NOT RUN**. No commercial availability, signature, legal proof or compliance claim follows from these checks.
 
+Pre-final slice on 2026-11-01 (local only): the event list also supports a bounded `q` search over event UUID and synthetic decision reference, migration `0003` rejects ordinary row updates/deletes with a trigger, and missing schema/database privilege failures have explicit 503 codes. This is append-only behavior for the foundation path, not protection from a database owner who can alter or disable the trigger.
+
 ## Configuration and migration
 
 - Reuses Kernel's existing `DATABASE_URL`, `NEON_AUTH_BASE_URL` (or `NEON_AUTH_URL`) and `NEON_AUTH_JWKS_URL` (or `NEON_JWKS_URL`). Existing `.env` is ignored and was left unchanged. No storage, Data API or AI provider is needed for this slice.
@@ -16,7 +18,7 @@ All routes require a Kernel Bearer session. `workspace` is an optional membershi
 
 | Route | Method | Kernel role | Behavior |
 |---|---|---|---|
-| `/app/api/ledger/events/` | GET | OWNER / ADMIN / MEMBER | Scoped list; `type`, `period=all/1/7/30`, `page=1..100`; 25 rows/page |
+| `/app/api/ledger/events/` | GET | OWNER / ADMIN / MEMBER | Scoped list; `q` (up to 80 chars, UUID/decision reference only), `type`, `period=all/1/7/30`, `page=1..100`; 25 rows/page |
 | `/app/api/ledger/events/` | POST | OWNER / ADMIN | Synthetic event with `{event_type,scenario}` only |
 | `/app/api/ledger/events/{eventId}/` | GET | OWNER / ADMIN / MEMBER | One event from the selected membership |
 | `/app/api/ledger/events/{eventId}/verify/` | POST | OWNER / ADMIN / MEMBER | Recalculate stored event, or compare optional `candidate` to the persisted digest |
@@ -39,7 +41,7 @@ UTF-8 `JSON.stringify` of an array with this fixed order:
 
 Metadata keys are reconstructed in the exact order above, independently of JSONB order. The digest itself is excluded. Timestamp precision is milliseconds in SQL and serialization. SHA-256 is lower-case hex; comparison uses `timingSafeEqual`.
 
-Verification returns `MATCH`, `MISMATCH` or `INDETERMINATE` (malformed/unsupported event). Infrastructure/auth failures are non-2xx, and the interface says verification could not complete. Optional `candidate` must contain exactly the seven non-tenant, non-hash event fields; its hash is compared against the **stored** hash, never a caller-provided hash. Candidate tenant comes from the scoped stored row. The UI's tamper check only changes an in-memory synthetic outcome; it never writes back the original event.
+Verification returns `MATCH`, `MISMATCH` or `INDETERMINATE` (malformed/unsupported event). Infrastructure/auth failures are non-2xx, and the interface says verification could not complete. Optional `candidate` must contain exactly the seven non-tenant, non-hash event fields; its hash is compared against the **stored** hash, never a caller-provided hash. Candidate tenant comes from the scoped stored row. The UI's tamper check only changes an in-memory synthetic outcome; it never writes back the original event. Migration `0003` also installs a trigger rejecting ordinary `UPDATE` and `DELETE`; a database owner can still alter the schema or disable the trigger.
 
 An administrator able to rewrite both row and digest can defeat this consistency check. It cannot prove origin independently, completeness, deletion/reordering, clock correctness, legal admissibility or decision correctness. **LD-02 and LD-06 remain partial**, LD-03/LD-05 advanced controls and LD-07 integrations remain deferred. No blockchain, PKI, key rotation or independent offline tool is included.
 
@@ -48,11 +50,12 @@ An administrator able to rewrite both row and digest can defeat this consistency
 Evidence: `Audit/2026-11-01-ledger-foundation.md`.
 
 ```sh
-node --test tests/kernel.test.mjs tests/firewall.test.mjs tests/ledger.test.mjs
+node --test tests/ledger.test.mjs
 # Use a fresh disposable local database with no preexisting schemas/data:
 LEDGER_TEST_DATABASE_URL=postgresql://127.0.0.1:55483/postgres node --test tests/ledger-db.test.mjs
 npm run build
-tsc --noEmit
 ```
 
-Files introduced: `src/server/ledger/{core,http,service}.mjs`, `src/pages/app/ledger/index.astro`, `src/pages/app/api/ledger/events/index.ts`, `src/pages/app/api/ledger/events/[eventId]/{index,verify,export}.ts`, `src/scripts/ledger.ts`, `src/styles/ledger.css`, `migrations/0003_aigas_ledger.sql`, `tests/ledger.test.mjs`, `tests/ledger-db.test.mjs`, this document and the evidence report. Existing files updated: `src/layouts/AppLayout.astro` (portal navigation only), `docs/products/ledger/FEATURE-STATUS.yaml` (narrow local status), `.agents/mind/01-mind-latest.md`. No marketing/shared protected files, dependencies, environment values or remote resources changed.
+Current pre-final checks: build PASS; Ledger unit 3 PASS; disposable PostgreSQL 14 integration 1 PASS (synthetic-only); local standalone HTTP `/app/` 302, `/app/ledger/` 200, unauthenticated Ledger API 401 with private/no-store and noindex. Signed-in Neon journey remains NOT RUN. A generic TypeScript command is not a manifest script and is omitted here.
+
+This slice changed `src/server/ledger/{core,service}.mjs`, `src/pages/app/ledger/index.astro`, `src/scripts/ledger.ts`, `migrations/0003_aigas_ledger.sql`, `tests/ledger{,-db}.test.mjs`, this document and `.agents/mind/01-mind-latest.md`. No dependencies, environment values, shared protected marketing files or remote resources changed.

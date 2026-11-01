@@ -22,8 +22,20 @@ CREATE TABLE public.aigas_ld_events (
 );
 CREATE INDEX aigas_ld_tenant_time_idx ON public.aigas_ld_events(tenant_id,created_at DESC,event_id DESC);
 CREATE INDEX aigas_ld_tenant_type_time_idx ON public.aigas_ld_events(tenant_id,event_type,created_at DESC,event_id DESC);
+CREATE FUNCTION public.aigas_ld_events_reject_mutation() RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RAISE EXCEPTION 'Ledger evidence rows are append-only in this foundation';
+END;
+$$;
+REVOKE ALL ON FUNCTION public.aigas_ld_events_reject_mutation() FROM PUBLIC;
+CREATE TRIGGER aigas_ld_events_append_only
+BEFORE UPDATE OR DELETE ON public.aigas_ld_events
+FOR EACH ROW EXECUTE FUNCTION public.aigas_ld_events_reject_mutation();
 REVOKE ALL ON public.aigas_ld_events FROM PUBLIC;
 ALTER TABLE public.aigas_ld_events ENABLE ROW LEVEL SECURITY;
 -- No browser/Data API grants or policies. Runtime role/grants need owner review.
--- No update/delete endpoint; this is not administrator-proof immutable storage.
+-- A row trigger rejects ordinary UPDATE/DELETE. A database owner can still alter schema or disable triggers;
+-- this is not administrator-proof immutable storage or an independent signature.
 COMMIT;

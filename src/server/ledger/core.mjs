@@ -38,6 +38,7 @@ export function filters(params) {
   const type = params.get('type') || '';
   const period = params.get('period') || 'all';
   const page = params.get('page') || '1';
-  if ((type && !types.includes(type)) || !['all', '1', '7', '30'].includes(period) || !/^[1-9]\d{0,2}$/.test(page) || Number(page) > 100) throw new KernelError(400, 'INVALID_FILTER', 'التصفية أو رقم الصفحة غير صالح. الحد الأقصى 100 صفحة.');
-  return { type, days: period === 'all' ? null : Number(period), page: Number(page), limit: 25 };
+  const search = (params.get('q') || '').trim();
+  if ((type && !types.includes(type)) || !['all', '1', '7', '30'].includes(period) || !/^[1-9]\d{0,2}$/.test(page) || Number(page) > 100 || search.length > 80) throw new KernelError(400, 'INVALID_FILTER', 'التصفية أو رقم الصفحة غير صالح. الحد الأقصى 100 صفحة و80 حرفًا للبحث.');
+  return { type, days: period === 'all' ? null : Number(period), page: Number(page), limit: 25, search };
 }

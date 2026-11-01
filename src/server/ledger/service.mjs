@@ -28,7 +28,7 @@ export function createLedgerService(transact = transaction) {
         return { event, profile, persisted:true };
       }
       if (operation === 'list') {
-        const result = await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND ($2='' OR event_type=$2) AND ($3::int IS NULL OR created_at >= now()-make_interval(days => $3::int)) ORDER BY created_at DESC,event_id DESC LIMIT 26 OFFSET $4`, [tenantId, filter.type, filter.days, (filter.page-1)*25]);
+        const result = await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND ($2='' OR event_type=$2) AND ($3::int IS NULL OR created_at >= now()-make_interval(days => $3::int)) AND ($4='' OR position(lower($4) in lower(event_id::text))>0 OR position(lower($4) in lower(metadata_json->>'decision_ref'))>0) ORDER BY created_at DESC,event_id DESC LIMIT 26 OFFSET $5`, [tenantId, filter.type, filter.days, filter.search, (filter.page-1)*25]);
         return { tenant:{...scope.tenant,role:member.role}, memberships:scope.memberships, permissions, events:result.rows.slice(0,25), page:filter.page, hasMore:result.rows.length>25 && filter.page<100 };
       }
       const event = (await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND event_id=$2`, [tenantId,id])).rows[0];

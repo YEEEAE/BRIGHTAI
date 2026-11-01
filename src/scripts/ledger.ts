@@ -3,6 +3,7 @@ const root=document.querySelector<HTMLElement>('[data-ledger]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'), area=get('[data-private]');
 const workspace=get<HTMLSelectElement>('[data-workspace]'), type=get<HTMLSelectElement>('[data-type]'), period=get<HTMLSelectElement>('[data-period]');
+const search=get<HTMLInputElement>('[data-search-input]');
 const dialog=get<HTMLDialogElement>('[data-detail]'), integrity=get('[data-integrity]');
 const auth=root.dataset.authUrl?createAuthClient(root.dataset.authUrl):null;
 let busy=false, page=1, selected:any=null, hasMore=false;
@@ -12,7 +13,7 @@ async function api(path='',method='GET',body?:object){
  if(!auth)throw new Error('يلزم إعداد الدخول.');
  const session=await auth.getSession();const token=session.data?.session?.token;
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
- const params=new URLSearchParams({type:type.value,period:period.value,page:String(page)});if(workspace.value)params.set('workspace',workspace.value);
+ const params=new URLSearchParams({type:type.value,period:period.value,page:String(page),q:search.value});if(workspace.value)params.set('workspace',workspace.value);
  const response=await fetch(`/app/api/ledger/events/${path}?${params}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();if(!response.ok)throw new Error(data.message||'تعذر إكمال الطلب.');return data;
 }
@@ -42,6 +43,8 @@ async function load(){
 }
 get('[data-reload]').addEventListener('click',()=>void run(async()=>{clearDetail();await load();}));
 for(const select of [workspace,type,period])select.addEventListener('change',()=>{page=1;clearDetail();void run(load);});
+get('[data-search]').addEventListener('click',()=>{page=1;clearDetail();void run(load);});
+search.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();page=1;clearDetail();void run(load);}});
 get('[data-prev]').addEventListener('click',()=>{page--;void run(load);});get('[data-next]').addEventListener('click',()=>{page++;void run(load);});
 get('form[data-create]').addEventListener('submit',event=>{event.preventDefault();void run(async()=>{const form=new FormData(event.currentTarget as HTMLFormElement);const data=await api('','POST',{event_type:form.get('event_type'),scenario:form.get('scenario')});page=1;type.value='';period.value='all';await load();await detail(data.event.event_id);});});
 get('[data-close]').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{selected=null;get('[data-fields]').replaceChildren();});

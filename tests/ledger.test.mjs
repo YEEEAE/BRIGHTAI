@@ -18,8 +18,9 @@ test('canonical digest survives DB time/JSON ordering; detects changes to each c
  assert.equal(verifyEvent(e,{...candidate,metadata_json:{...candidate.metadata_json,prompt:'synthetic secret'}}),'INDETERMINATE');
 });
 test('bounded filters reject huge pages and invalid types/periods',()=>{
- for(const query of ['page=0','page=101','page=1.5','page=999999','type=unknown','period=-1'])assert.throws(()=>filters(new URLSearchParams(query)),{status:400});
+ for(const query of ['page=0','page=101','page=1.5','page=999999','type=unknown','period=-1','q='+('a'.repeat(81))])assert.throws(()=>filters(new URLSearchParams(query)),{status:400});
  assert.equal(filters(new URLSearchParams()).limit,25);
+ assert.equal(filters(new URLSearchParams('q=%20abc%20')).search,'abc');
 });
 test('HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures',async()=>{
  let calls=0;const handler=createHandler(async()=>({userId:randomUUID()}),async()=>{calls++;return {};});
@@ -34,4 +35,10 @@ test('HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON
  const fail=createHandler(async()=>({}),async()=>{throw new Error('database password synthetic-secret');});
  const response=await fail(req(),'create');assert.equal(response.status,503);assert.doesNotMatch(await response.text(),/password|synthetic-secret/);
  assert.equal(response.headers.get('cache-control'),'private, no-store');
+ const schemaFail=createHandler(async()=>({}),async()=>{const error=new Error('relation details hidden');error.code='42P01';throw error;});
+ const schemaResponse=await schemaFail(new Request('https://local/app/api/ledger/events/'),'list');
+ assert.equal(schemaResponse.status,503);assert.equal((await schemaResponse.json()).code,'LEDGER_SCHEMA_MISSING');
+ const privilegeFail=createHandler(async()=>({}),async()=>{const error=new Error('permission detail hidden');error.code='42501';throw error;});
+ const privilegeResponse=await privilegeFail(new Request('https://local/app/api/ledger/events/'),'list');
+ assert.equal(privilegeResponse.status,503);assert.equal((await privilegeResponse.json()).code,'LEDGER_DB_PRIVILEGE');
 });
