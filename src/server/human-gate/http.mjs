@@ -2,6 +2,11 @@ import { authenticate } from '../kernel/auth.mjs';
 import { KernelError } from '../kernel/core.mjs';
 import { operate } from './service.mjs';
 const headers = { 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' };
+function setupError(error) {
+  if (error?.code === '42P01') return { code:'HUMAN_GATE_SCHEMA_MISSING', message:'جداول Human Gate غير موجودة على قاعدة البيانات الحالية. يحتاج المشغّل مراجعة الترحيل في بيئة تطوير معتمدة؛ لم يُؤكد الحفظ أو التنفيذ.' };
+  if (error?.code === '42501') return { code:'HUMAN_GATE_DB_PRIVILEGE', message:'دور قاعدة بيانات التطبيق لا يملك الصلاحية المطلوبة على جداول Human Gate. يلزم مراجعة صلاحيات runtime؛ لم يُؤكد الحفظ أو التنفيذ.' };
+  return null;
+}
 async function readBody(request) {
   if (request.headers.get('origin') !== new URL(request.url).origin) throw new KernelError(403,'ORIGIN_REJECTED','مصدر الطلب غير مسموح.');
   if (request.headers.get('content-type')?.split(';')[0] !== 'application/json') throw new KernelError(415,'INVALID_BODY','أرسل JSON فقط.');
@@ -23,7 +28,8 @@ export function createHandler(auth=authenticate, service=operate) {
       return Response.json(data,{status:operation==='create'?201:200,headers});
     } catch(error) {
       const known=error instanceof KernelError;
-      return Response.json({code:known?error.code:'HUMAN_GATE_UNAVAILABLE',message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التحقق.'},{status:known?error.status:503,headers});
+      const setup=known?null:setupError(error);
+      return Response.json({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.'},{status:known?error.status:503,headers});
     }
   };
 }

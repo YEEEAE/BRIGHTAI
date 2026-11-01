@@ -20,3 +20,10 @@ test('Human Gate HTTP: auth first, origin, size, JSON and private errors',async(
  assert.equal(calls,0);
  const error=createHandler(async()=>({userId:'test'}),async()=>{throw new Error('private connection string');});const response=await error(new Request('https://local/'),'list');assert.equal(response.status,503);assert.doesNotMatch(await response.text(),/private connection string/);
 });
+test('Human Gate reports missing schema and database privilege without leaking driver details',async()=>{
+ for(const [sqlstate,code] of [['42P01','HUMAN_GATE_SCHEMA_MISSING'],['42501','HUMAN_GATE_DB_PRIVILEGE']]){
+  const handler=createHandler(async()=>({userId:'test'}),async()=>{const error=new Error('private database detail');error.code=sqlstate;throw error;});
+  const response=await handler(new Request('https://local/'),'list');const data=await response.json();
+  assert.equal(response.status,503);assert.equal(data.code,code);assert.match(data.message,/Human Gate|runtime/u);assert.doesNotMatch(JSON.stringify(data),/private database detail/u);
+ }
+});

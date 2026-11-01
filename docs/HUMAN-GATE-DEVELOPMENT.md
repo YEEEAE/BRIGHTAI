@@ -34,7 +34,17 @@ Each mutation and its basic Kernel audit event commit atomically. Audit actions 
 
 Local `.env` already supplies database and Auth settings; it was inspected by key presence only and left unchanged. No storage or Data API is needed by this batch. Never copy credentials into this guide or browser code.
 
-Neon MCP authorization was unavailable. Direct SQL **READ ONLY** found the four Kernel tables and no approval/Human Gate tables. The configured target is production; no HG migration was applied there. Review `0004` against Kernel `0001`, choose an approved isolated development target, apply it through the owner's approved migration process, and review the runtime DB role. RLS is enabled and PUBLIC access revoked; inherited Kernel server membership checks remain the application authorization boundary. A limited runtime role needs explicitly reviewed grants/policies; do not silently use a browser/Data API role or disable RLS.
+## Current Neon schema and migration gate (read-only check, 2026-11-01)
+
+Neon MCP read-only access succeeded for project `young-frog-60183055`, database `neondb`. Its only branch is `production` (`br-young-bird-b43proeb`), which is the default and is not protected. The inspected schema has the four Kernel tables (`aigas_tenants`, `aigas_memberships`, `aigas_product_access`, `aigas_audit_events`) and the managed `neon_auth.*` tables; `aigas_hg_requests` and `aigas_hg_decisions` are absent. No migration or SQL write was run. `aigas_tenants.id`, `aigas_memberships.tenant_id/user_id`, and `neon_auth.user.id` are all UUIDs, matching the corresponding Human Gate foreign-key types in `0004`.
+
+**Migration status: BLOCKED.** Do not apply `0004` to the current branch. The owner must first approve an isolated development target/branch and its use for this schema change. The local migration plan is:
+
+1. Confirm the approved branch contains Kernel `0001` tables and Neon Auth `neon_auth."user"`; Human Gate `0004` depends on those, not on Firewall `0002`, Ledger `0003`, or Risk Engine `0005`.
+2. Review `0004` as one unit: request `requester_id` is tied to the Auth user; its composite `(tenant_id,id,requester_id)` key anchors each decision to the same request and requester; `reviewer_id` is a distinct Auth user and the CHECK forbids self-review. The service additionally verifies current OWNER/ADMIN membership in the selected tenant within the transaction that inserts the decision. The migration does not itself encode dynamic membership roles; review runtime grants/RLS and retain the server authorization check.
+3. Only after approval, apply the unchanged reviewed migration through the owner's approved migration process on that isolated branch, compare the resulting schema, and run the disposable synthetic PostgreSQL journey. Do not copy the change to production as part of this task.
+
+RLS is enabled and PUBLIC access revoked; the server membership checks are the current application authorization boundary. A limited runtime role still needs explicitly reviewed grants/policies; do not silently use a browser/Data API role or disable RLS. The local HTTP layer now returns `HUMAN_GATE_SCHEMA_MISSING` for PostgreSQL `42P01` and `HUMAN_GATE_DB_PRIVILEGE` for `42501`, without exposing driver details.
 
 Existing Neon Auth integration is reused. Local Origin approval and a real two-user Neon journey remain unresolved from Kernel. Configure an approved test origin and provision two distinct existing users with appropriate tenant memberships through an authorized process. No roles, users, trusted origins or Auth settings were changed here.
 
