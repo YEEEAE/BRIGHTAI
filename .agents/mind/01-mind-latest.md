@@ -1,5 +1,19 @@
 # Project Mind — BrightAI
 
+## [2026-11-01] — تأسيس سجل Ledger وفحص SHA-256 محدود
+### تم التنفيذ
+- أُضيف `/app/ledger/` بجدول وتصفية نوع/فترة وصفحات وتفاصيل وإنشاء حدث اصطناعي موسوم وفحص بصمة وتصدير JSON؛ API يستخدم هوية Kernel وعضوية المؤسسة من الخادم. OWNER/ADMIN للإضافة والتصدير وMEMBER للعرض والفحص.
+- جدول واحد وMetadata محصورة بقيم اختبار ثابتة، وSHA-256 بتمثيل ثابت محدد الإصدار والوقت/الفاعل من الخادم. فحص نسخة معدلة لا يغيّر الأصل؛ فشل التدقيق يلغي حفظ الحدث بمعاملة واحدة. سجل Kernel الأساسي مستقل عن ترخيص Ledger.
+- Neon MCP تعذر تفويضه؛ SQL مباشر READ ONLY أثبت جداول Kernel الأربع وغياب Ledger. `0003_aigas_ledger.sql` محلي للمراجعة فقط ولم يُطبّق على production؛ لا تفعيل تجاري أو تكامل أحداث منتجات تلقائي.
+### الملفات المتأثرة
+- `src/server/ledger/`، `src/pages/app/{ledger,api/ledger}/`، `src/scripts/ledger.ts`، `src/styles/ledger.css`، `src/layouts/AppLayout.astro` (تنقل البوابة).
+- `migrations/0003_aigas_ledger.sql`، `tests/ledger*.test.mjs`، `docs/LEDGER-DEVELOPMENT.md`، سجل خصائص Ledger، `Audit/2026-11-01-ledger-foundation.md`.
+### التحقق
+- build وTypeScript وdiff-check: PASS؛ Kernel/Firewall/Ledger unit+HTTP: 13 PASS؛ PostgreSQL 16 معزول + service/HTTP: 1 PASS للحفظ وإعادة القراءة والعزل والصلاحيات وكشف التعديل وقيود Metadata وفشل الحفظ. هوية HTTP محقونة في اختبار التكامل وليست دخول Neon حقيقيًا.
+- Playwright غير موثق الهوية على 360/1440px: PASS لغياب overflow وAnalytics وإخفاء البيانات وfocus و401/no-store؛ Chrome DevTools مشغول. رحلة مستخدم Neon والواجهة الخاصة بعد الدخول: NOT RUN.
+### النتيجة
+- **الحالة:** PARTIAL تشغيلياً؛ المتبقي هدف DB وترحيل معتمدان ومراجعة runtime role وحل تحقق Origin/الدخول الفعلي. LD-02/LD-06 جزئيان؛ لا توقيع مستقل أو ضمان ضد مسؤول DB أو Legal Hold/احتفاظ متقدم. لا اعتماديات جديدة أو تعديل `.env` أو الموقع التسويقي أو commit/push/deploy.
+
 ## [2026-11-01] — تأسيس مختبر Firewall Starter بقواعد خادم محدودة
 ### تم التنفيذ
 - أُضيف `/app/firewall/` وAPI قواعد/فحص محمي بهوية Kernel وعضوية المؤسسة؛ OWNER/ADMIN للإضافة والتفعيل/التعطيل، وMEMBER للعرض والفحص فقط. لا نظام دخول أو Analytics أو مزود AI أو تفعيل تجاري.

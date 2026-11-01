@@ -23,7 +23,13 @@ status_taxonomy:
   NOT_VERIFIED: حالة الإثبات الحالية غير كافية لإعلان العمل
 implementation_truth:
   requirement_approved_is_not_runtime_proof: true
-  all_operational_features_currently_not_verified: true
+  all_operational_features_currently_not_verified: false
+  local_foundation_status: PARTIAL
+  local_foundation_evidence: Audit/2026-11-01-ledger-foundation.md
+  local_foundation_scope: Synthetic events persisted in isolated local PostgreSQL; scoped list/detail, SHA-256 consistency check and JSON export. Not a released product.
+  neon_user_journey_verified: false
+  ledger_migration_applied_to_neon: false
+  full_ld_02_and_ld_06_complete: false
   no_live_product_api_verified: true
   demo_visuals_not_cryptographic_proof: true
   kernel_basic_audit_exists_as_target_without_ledger_license: true

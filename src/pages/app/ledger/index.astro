@@ -1,0 +1,22 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { authConfig } from '../../../server/kernel/auth.mjs';
+import '../../../styles/ledger.css';
+export const prerender = false;
+const config = authConfig();
+---
+<AppLayout title="سجل أدلة Ledger">
+ <section class="kernel ledger" data-ledger data-auth-url={config?.base ?? ''}>
+  <div class="page-heading"><div><p class="overline">03 / LEDGER FOUNDATION</p><h1>أثر واضح.<span>وسلامة قابلة للفحص.</span></h1><p class="intro">سجل أحداث مؤسستك من قاعدة البيانات. أحداث الاختبار موسومة صراحةً بأنها اصطناعية، وليست نشاط حماية فعليًا.</p></div><span class="connection">أساس سجل أدلة</span></div>
+  <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث السجل</button></section>
+  <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض البيانات الخاصة.</p></noscript>
+  <div data-private hidden>
+   <section class="panel ledger-controls"><div><label for="ld-workspace">المؤسسة</label><select id="ld-workspace" data-workspace></select><p data-role></p></div><div><label for="ld-type">نوع الحدث</label><select id="ld-type" data-type><option value="">كل الأنواع</option><option value="synthetic.test.created">اختبار اصطناعي</option><option value="synthetic.review.recorded">مراجعة اصطناعية</option></select></div><div><label for="ld-period">الفترة</label><select id="ld-period" data-period><option value="all">كل الفترات</option><option value="1">آخر 24 ساعة</option><option value="7">آخر 7 أيام</option><option value="30">آخر 30 يومًا</option></select></div></section>
+   <section class="panel" data-create-panel hidden><h2>إضافة حدث تجريبي منظم</h2><p>الخادم ينشئ الوقت وهوية الفاعل ومرجع قرار اصطناعي والبصمة. القيم محصورة؛ لا يوجد حقل لحفظ محادثات أو أسرار.</p><form data-create class="ledger-controls"><div><label for="ld-event-type">النوع الاصطناعي</label><select id="ld-event-type" name="event_type"><option value="synthetic.test.created">اختبار اصطناعي</option><option value="synthetic.review.recorded">مراجعة اصطناعية</option></select></div><div><label for="ld-scenario">سيناريو الاختبار</label><select id="ld-scenario" name="scenario"><option value="integrity-check">فحص السلامة</option><option value="access-check">فحص الوصول</option></select></div><button type="submit">حفظ حدث تجريبي</button></form></section>
+   <section class="panel"><div class="section-heading"><h2>أحداث المؤسسة</h2><span data-page></span></div><p>25 حدثًا لكل صفحة، بحد أقصى 100 صفحة. طبّق الفلاتر لتضييق البحث.</p><p data-empty role="status" hidden>لا توجد أحداث ضمن هذه التصفية. لا تُنشأ أحداث تلقائية لملء السجل.</p><div class="ledger-table" tabindex="0" role="region" aria-label="جدول الأحداث، يمكن تمريره أفقيًا"><table><caption class="sr-only">أحداث المؤسسة المحفوظة</caption><thead><tr><th scope="col">الوقت</th><th scope="col">النوع / المصدر</th><th scope="col">مرجع القرار</th><th scope="col">الفاعل</th><th scope="col">التفاصيل</th></tr></thead><tbody data-events></tbody></table></div><div class="ledger-pagination"><button type="button" data-prev>السابق</button><button type="button" data-next>التالي</button></div></section>
+  </div>
+  <dialog data-detail aria-labelledby="ld-detail-title"><div class="ledger-detail"><div class="section-heading"><h2 id="ld-detail-title">تفاصيل الحدث</h2><button type="button" data-close>إغلاق</button></div><p>حدث اصطناعي محفوظ، وليس إثباتًا لقرار حماية حقيقي.</p><dl data-fields></dl><div class="ledger-actions"><button type="button" data-verify>تحقق من سلامة الحدث</button><button type="button" data-tamper>افحص نسخة معدلة اصطناعيًا</button><button type="button" data-export hidden>تصدير JSON</button></div><p data-integrity role="status" aria-live="polite">لم يُفحص بعد.</p></div></dialog>
+  <p class="notice">فحص SHA-256 أولي لاتساق الحقول؛ ليس توقيعًا مستقلًا أو ضمانًا لمنع العبث من مسؤول قاعدة البيانات. التوقيع وسلسلة الأدلة والتحقق المستقل والاحتفاظ وLegal Hold مؤجلة. لا اكتمال لـLD-02 أو LD-06. سجل Kernel الأمني الأساسي مستقل عن ترخيص Ledger.</p>
+ </section>
+</AppLayout>
+<script src="../../../scripts/ledger.ts"></script>
