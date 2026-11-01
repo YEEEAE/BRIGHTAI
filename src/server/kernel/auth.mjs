@@ -28,6 +28,6 @@ export async function authenticate(request) {
 
 export async function verifyIdentity(token, keySet, issuer) {
   const { payload } = await jwtVerify(token, keySet, { issuer, algorithms: ['EdDSA'], requiredClaims: ['sub', 'exp', 'iat'], maxTokenAge: '15m' });
-  if (typeof payload.sub !== 'string' || !payload.sub || payload.role === 'anonymous' || payload.is_anonymous === true) throw new Error('invalid identity');
+  if (typeof payload.sub !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(payload.sub) || payload.role === 'anonymous' || payload.is_anonymous === true) throw new Error('invalid identity');
   return { userId: payload.sub };
 }

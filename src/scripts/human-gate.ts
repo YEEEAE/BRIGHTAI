@@ -1,4 +1,4 @@
-import { createAuthClient } from '@neon/neon-js/auth';
+import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
 const root=document.querySelector<HTMLElement>('[data-human-gate]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'),area=get('[data-private]'),workspace=get<HTMLSelectElement>('[data-workspace]');
@@ -10,10 +10,10 @@ function node(tag:string,value:string){const el=document.createElement(tag);el.t
 function clear(){area.hidden=true;get('[data-requests]').replaceChildren();workspace.replaceChildren();get('[data-role]').textContent='';}
 async function api(path='',body?:object){
  if(!auth)throw new Error('يلزم إعداد الدخول عبر Neon Auth.');
- const session=await auth.getSession(),token=session.data?.session?.token;
+ const session=await getWorkspaceSession(auth),token=session.data?.session?.token;
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
  const query=new URLSearchParams({status:filter,page:String(page)});if(workspace.value)query.set('workspace',workspace.value);
- const response=await fetch(`/app/api/human-gate/requests/${path}?${query}`,{method:body?'POST':'GET',cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
+ const response=await appFetch(auth!, `/app/api/human-gate/requests/${path}?${query}`,{method:body?'POST':'GET',cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();if(!response.ok)throw new Error(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.');return data;
 }
 function sync(){root.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===filter)));get<HTMLButtonElement>('[data-prev]').disabled=busy||page===1;get<HTMLButtonElement>('[data-next]').disabled=busy||!hasMore;}
@@ -25,6 +25,7 @@ async function run(task:()=>Promise<void>){
 }
 async function load(){
  const data=await api();hasMore=data.hasMore;
+ setWorkspace(data.tenant.tenant_id);
  workspace.replaceChildren(...data.memberships.map((m:any)=>{const o=document.createElement('option');o.value=m.tenant_id;o.textContent=m.name;o.selected=m.tenant_id===data.tenant.tenant_id;return o;}));
  get('[data-role]').textContent=`الدور الحالي: ${data.tenant.role}`;get('[data-page]').textContent=`الصفحة ${page}`;get('[data-empty]').hidden=data.requests.length>0;
  const list=get('[data-requests]');list.replaceChildren();
@@ -50,3 +51,5 @@ get('[data-prev]').addEventListener('click',()=>{page--;void run(load);});get('[
 get('form[data-create]').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement;const fields=new FormData(form);void run(async()=>{await api('',Object.fromEntries(fields.entries()));form.reset();filter='PENDING';page=1;await load();});});
 window.addEventListener('pagehide',clear);window.addEventListener('pageshow',event=>{if(event.persisted)void run(load);});
 if(auth)void run(load);
+
+document.addEventListener('workspace-session-ended', () => { clear(); status.textContent = 'انتهت الجلسة؛ سجّل الدخول مجددًا من Kernel.'; });

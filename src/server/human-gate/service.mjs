@@ -1,3 +1,4 @@
+import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { tenantGuard } from '../kernel/service.mjs';
@@ -14,6 +15,7 @@ export function createHumanGateService(transact=transaction) {
    const scope=await tenantGuard(identity,requested,db);
    if(!scope.tenant)throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
    const tenantId=scope.tenant.tenant_id;
+   await requireProductAccess(db, identity, tenantId, 'human-gate');
    const member=(await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE',[tenantId,identity.userId])).rows[0];
    requireRole(member,['OWNER','ADMIN','MEMBER']);
    const record=async action=>{

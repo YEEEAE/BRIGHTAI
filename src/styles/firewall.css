@@ -49,4 +49,12 @@
 .firewall :focus-visible{outline:2px solid #ffb829;outline-offset:4px}
 .firewall button{min-height:44px}
 .firewall .panel{min-width:0}
+.fw-integration{margin-block:20px}
+.fw-integration details{border-block-start:1px solid #302c38;padding-block-start:12px}
+.firewall summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.fw-pagination{display:flex;gap:12px;align-items:center;justify-content:center;margin-block-start:20px;flex-wrap:wrap}
+.firewall button:disabled{opacity:.55;cursor:not-allowed}
+.firewall .fw-filters input{min-width:0;width:100%;min-height:44px;color-scheme:dark}
+.firewall .fw-filters{max-width:100%}
+.firewall .section-heading{flex-wrap:wrap;gap:18px}
 @media(max-width:800px){.fw-columns{grid-template-columns:1fr}.fw-counts{gap:8px}.fw-counts .panel{padding:16px 10px}.fw-counts bdi{font-size:.8rem}.fw-filters>div{flex:1 1 140px}.fw-rule-actions{flex-direction:column;align-items:stretch}.fw-edit-details summary{justify-content:center}}

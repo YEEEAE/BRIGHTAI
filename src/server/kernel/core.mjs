@@ -18,6 +18,8 @@ const auditLabels = {
   'firewall.rule.created': 'إضافة قاعدة جدار حماية',
   'firewall.rule.updated': 'تعديل قاعدة جدار حماية',
   'firewall.rule.toggled': 'تغيير حالة قاعدة جدار حماية',
+  'firewall.lab.evaluated': 'حفظ تقييم تجريبي لجدار الحماية',
+  'firewall.guard.evaluated': 'حفظ قرار مسار إنفاذ جدار الحماية',
   'ledger.event.created': 'تسجيل حدث دليل',
   'ledger.event.verified': 'فحص حدث دليل',
   'ledger.events.exported': 'تصدير سجل الأدلة',
@@ -29,7 +31,11 @@ const auditLabels = {
   'risk-engine.assessment.created': 'تقييم مخاطر',
   'secure-chat.message.rejected': 'رفض إرسال محادثة',
 };
-export const auditActionLabel = action => auditLabels[action] ?? 'حدث تشغيلي';
+export const auditActionLabel = action => {
+  if (action.startsWith('kernel.product.')) return 'تغيير حالة منتج';
+  const labels = { 'secure_chat.blocked_no_approved_model': 'رفض إرسال لغياب نموذج معتمد', 'kernel.auth.linked': 'ربط مؤسسة الدخول', 'kernel.invitation.created': 'تسجيل دعوة عضو', 'kernel.invitation.accepted': 'قبول عضوية مؤسسة', 'human_gate.request.created': 'طلب مراجعة بشرية', 'human_gate.request.decided': 'قرار مراجعة بشرية', 'human_gate.request.executed': 'إكمال عملية مراجعة', 'ledger.synthetic.created': 'تسجيل حدث اصطناعي', 'ledger.event.exported': 'تصدير حدث دليل' };
+  return auditLabels[action] ?? labels[action.split(':')[0]] ?? 'حدث تشغيلي';
+};
 export function productStates(access) {
   return products.map(p => {
     const state = access.find(a => a.product_slug === p.slug)?.status ?? 'FOUNDATION';
@@ -43,7 +49,7 @@ export function roleLabel(role) {
   return roleLabels[role] ?? 'دور غير معروف';
 }
 export function selectMembership(memberships, requested) {
-  if (!memberships.length) return null;
+  if (!memberships.length) { if (requested) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.'); return null; }
   const member = requested ? memberships.find(m => m.tenant_id === requested) : memberships[0];
   if (!member) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.');
   return member;

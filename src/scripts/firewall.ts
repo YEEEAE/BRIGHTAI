@@ -1,4 +1,4 @@
-import { createAuthClient } from '@neon/neon-js/auth';
+import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
 
 const root = document.querySelector<HTMLElement>('[data-firewall]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
@@ -6,6 +6,12 @@ const privateArea = root.querySelector<HTMLElement>('[data-private]')!;
 const workspace = root.querySelector<HTMLSelectElement>('[data-workspace]')!;
 const actionFilter = root.querySelector<HTMLSelectElement>('[data-filter]')!;
 const reasonFilter = root.querySelector<HTMLSelectElement>('[data-reason]')!;
+const modeFilter = root.querySelector<HTMLSelectElement>('[data-log-mode]')!;
+const fromFilter = root.querySelector<HTMLInputElement>('[data-from]')!;
+const toFilter = root.querySelector<HTMLInputElement>('[data-to]')!;
+const evalMode = root.querySelector<HTMLSelectElement>('[data-eval-mode]')!;
+const previousPage = root.querySelector<HTMLButtonElement>('[data-prev]')!;
+const nextPage = root.querySelector<HTMLButtonElement>('[data-next]')!;
 const text = root.querySelector<HTMLTextAreaElement>('textarea')!;
 const ack = root.querySelector<HTMLInputElement>('[data-synthetic]')!;
 const evalSubmit = root.querySelector<HTMLButtonElement>('[data-eval-submit]')!;
@@ -18,9 +24,12 @@ const reasonLabels: Record<string, string> = {
   RULE_REDACT: 'نُقّح النص وفق قاعدة تنقيح.',
   RULE_ALLOW: 'طابق النص قاعدة سماح.',
   NO_MATCH_LAB_ONLY: 'لم يطابق أي قاعدة؛ ليس إثبات سلامة المحتوى.',
+  NO_MATCH_ENFORCED: 'حُجب التنفيذ؛ لا قاعدة سماح أو تنقيح مطابقة.',
 };
 const auth = root.dataset.authUrl ? createAuthClient(root.dataset.authUrl) : null;
 let busy = false;
+let page = 1, hasNext = false, providerConfigured = false;
+let viewEpoch = 0;
 
 class ApiError extends Error { code: string; constructor(message: string, code = '') { super(message); this.code = code; } }
 const field = <T extends keyof HTMLElementTagNameMap>(tag: T, className = '') => { const node = document.createElement(tag); if (className) node.className = className; return node; };
@@ -28,15 +37,23 @@ const messageOf = (error: unknown) => error instanceof Error && error.message ? 
 function note(message: string, failed = false) { status.textContent = message; status.dataset.state = failed ? 'error' : 'ok'; }
 function lockControls(locked: boolean) {
   root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>('button,select,input,textarea').forEach(node => { node.disabled = locked; });
-  if (!locked) evalSubmit.disabled = !ack.checked;
+  if (!locked) {
+    evalSubmit.disabled = !ack.checked;
+    previousPage.disabled = page <= 1;
+    nextPage.disabled = !hasNext;
+    root.querySelectorAll<HTMLButtonElement>('[data-template]').forEach(button => { button.disabled = button.dataset.exists === 'true' || button.dataset.limit === 'true'; });
+    const createSubmit = root.querySelector<HTMLButtonElement>('[data-create-rule] button[type=submit]');
+    if (createSubmit) createSubmit.disabled = createSubmit.dataset.limit === 'true';
+  }
 }
 async function withBusy(task: () => Promise<void>) {
-  if (busy) return;
-  busy = true; root.setAttribute('aria-busy', 'true'); lockControls(true);
+  if (busy) throw new ApiError('هناك طلب جارٍ؛ انتظر نتيجته قبل تنفيذ عملية أخرى.', 'BUSY');
+  busy = true; root.setAttribute('aria-busy', 'true'); lockControls(true); note('جارٍ معالجة الطلب من الخادم…');
   try { await task(); }
   finally { busy = false; root.removeAttribute('aria-busy'); lockControls(false); }
 }
 function clearPrivate() {
+  viewEpoch++;
   privateArea.hidden = true; text.value = ''; ack.checked = false; evalError.textContent = ''; result.textContent = '';
   root.querySelector('[data-rules]')!.replaceChildren();
   root.querySelector('[data-decisions]')!.replaceChildren();
@@ -45,26 +62,38 @@ function clearPrivate() {
   root.querySelector('[data-templates]')!.setAttribute('hidden', '');
   workspace.replaceChildren();
   root.querySelector('[data-scope]')!.textContent = '';
+  root.querySelector('[data-provider]')!.textContent = '';
+  createForm.reset(); createError.textContent = '';
+  page = 1; hasNext = false; providerConfigured = false;
+  evalMode.value = 'LAB'; updateSubmitLabel();
   root.querySelector('[data-rule-count]')!.textContent = '0';
   root.querySelectorAll('[data-count]').forEach(node => { node.textContent = '—'; });
   lockControls(false);
 }
 async function api(path: string, method = 'GET', body?: object) {
+  const epoch = viewEpoch;
   if (!auth) throw new ApiError('يلزم إعداد الدخول.', 'AUTH_SETUP');
-  const session = await auth.getSession();
+  const session = await getWorkspaceSession(auth);
   const token = session.data?.session?.token;
   if (session.error || !session.data?.user || !token) throw new ApiError('يلزم تسجيل الدخول عبر Kernel. تحقق أيضًا من إعداد الأصل الموثوق.', 'AUTH_REQUIRED');
   const params = new URLSearchParams();
   if (workspace.value) params.set('workspace', workspace.value);
   if (actionFilter.value) params.set('action', actionFilter.value);
   if (reasonFilter.value) params.set('reason', reasonFilter.value);
-  const response = await fetch(`/app/api/firewall/${path}/?${params}`, {
+  if (modeFilter.value) params.set('mode', modeFilter.value);
+  if (fromFilter.value) params.set('from', fromFilter.value);
+  if (toFilter.value) params.set('to', toFilter.value);
+  params.set('page', String(page));
+  const response = await appFetch(auth!, `/app/api/firewall/${path}/?${params}`, {
     method, cache: 'no-store',
     headers: { Authorization: `Bearer ${token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
   let data: any = null;
   try { data = await response.json(); } catch { /* non-JSON failures are reported generically below */ }
+  if (epoch !== viewEpoch) throw new ApiError('تغيرت الجلسة؛ أعد تحميل المؤسسة.', 'SESSION_CHANGED');
+  if (path === 'guarded-executions' && data?.persisted === true && data?.decision?.id) return data;
+  if (!response.ok && ['FORBIDDEN', 'NO_WORKSPACE', 'PRODUCT_NOT_ENABLED'].includes(data?.code)) clearPrivate();
   if (!response.ok) throw new ApiError(data?.message || 'تعذر إكمال الطلب.', data?.code ?? '');
   return data;
 }
@@ -151,12 +180,35 @@ function renderResult(data: any) {
   const id = field('p'); id.textContent = `مرجع القرار: ${data.id}`;
   const output = field('p');
   output.textContent = data.action === 'BLOCK' ? 'لم يُعرض النص المحجوب، ولم يُحفظ.' : data.output ?? 'لم يُعد النص.';
-  const saved = field('p'); saved.textContent = 'حُفظ القرار على الخادم دون متن النص.';
+  const saved = field('p'); saved.textContent = 'حُفظ التقييم وتدقيق Kernel على الخادم دون متن النص. تقييم تجريبي فقط؛ لم يُرسل إلى مزود.';
   result.append(summary, rule, id, output, saved);
 }
+function updateSubmitLabel() {
+  evalSubmit.textContent = evalMode.value === 'LAB' ? 'تقييم تجريبي من الخادم' : providerConfigured ? 'تقييم وتنفيذ عبر المزود المعتمد' : 'تقييم مسار الإنفاذ — الإرسال غير مهيأ';
+}
+function renderGuard(data: any) {
+  result.replaceChildren();
+  const head = field('p', 'fw-result-head');
+  head.append(actionBadge(data.decision.action), document.createTextNode(reasonLabels[data.decision.reason] ?? data.decision.reason));
+  const reference = field('p'); reference.textContent = `مرجع القرار المحفوظ: ${data.decision.id}`;
+  const state = field('p'); state.textContent = data.message ?? (data.external_action_executed === true ? 'أعاد المزود استجابة للطلب المحكوم.' : 'لم يُنفذ طلب مزود.');
+  const saved = field('p'); saved.textContent = 'حُفظ قرار السياسة وتدقيق Kernel دون النص؛ هذا المرجع ليس إثبات وصول للمزود.';
+  result.append(head, reference, state, saved);
+  if (data.external_action_executed === true && typeof data.response_text === 'string') {
+    const output = field('p'); output.textContent = data.response_text; result.append(output);
+  }
+}
 function render(data: any) {
-  workspace.replaceChildren(...data.memberships.map((membership: any) => { const option = field('option'); option.value = membership.tenant_id; option.textContent = membership.name; option.selected = membership.tenant_id === data.tenant.tenant_id; return option; }));
-  root.querySelector('[data-scope]')!.textContent = `الدور: ${data.tenant.role} · مختبر قواعد نصية فقط`;
+  setWorkspace(data.tenant.tenant_id);
+ workspace.replaceChildren(...data.memberships.map((membership: any) => { const option = field('option'); option.value = membership.tenant_id; option.textContent = membership.name; option.selected = membership.tenant_id === data.tenant.tenant_id; return option; }));
+  root.querySelector('[data-scope]')!.textContent = `الدور: ${data.tenant.role} · قواعد حرفية · بيانات اصطناعية فقط`;
+  providerConfigured = data.provider?.configured === true;
+  root.querySelector('[data-provider]')!.textContent = providerConfigured
+    ? `مزود مهيأ للمؤسسة · النموذج ${data.provider.model} · المنطقة ${data.provider.region}؛ يخضع لشروط الاعتماد.`
+    : 'PROVIDER_NOT_CONFIGURED — لا مزود AI معتمد ومهيأ لهذه المؤسسة. التقييم والحفظ متاحان عند اكتمال إعداد قاعدة البيانات، والإرسال الخارجي متوقف.';
+  updateSubmitLabel();
+  page = data.page; hasNext = data.hasNext;
+  root.querySelector('[data-page]')!.textContent = `الصفحة ${page}`;
   root.querySelectorAll<HTMLElement>('[data-count]').forEach(node => { node.textContent = String(data.counts.find((count: any) => count.action === node.dataset.count)?.count ?? 0); });
   root.querySelector('[data-rule-count]')!.textContent = `${data.rules.length} / ${data.maxRules}`;
   const reload = () => (async () => { render(await api('rules')); })();
@@ -166,6 +218,12 @@ function render(data: any) {
   (root.querySelector('[data-empty-rules]') as HTMLElement).hidden = data.rules.length > 0;
   (root.querySelector('[data-create-rule]') as HTMLElement).hidden = !data.canManage;
   (root.querySelector('[data-templates]') as HTMLElement).hidden = !data.canManage;
+  const limitReached = data.rules.length >= data.maxRules;
+  createForm.querySelector<HTMLButtonElement>('button[type=submit]')!.dataset.limit = String(limitReached);
+  root.querySelectorAll<HTMLButtonElement>('[data-template]').forEach(button => {
+    button.dataset.exists = String(data.rules.some((rule: any) => rule.template === button.dataset.template));
+    button.dataset.limit = String(limitReached);
+  });
   root.querySelector('[data-role]')!.textContent = data.canManage
     ? 'يمكنك إضافة القواعد وتعديلها وتفعيلها وتعطيلها؛ كل تغيير يُحفظ في الخادم ويرفع النسخة.'
     : 'عرض وفحص فقط؛ تعديل القواعد للمالك والمسؤول.';
@@ -174,23 +232,27 @@ function render(data: any) {
   if (!data.decisions.length) decisions.textContent = 'لا توجد قرارات محفوظة ضمن هذه التصفية.';
   for (const decision of data.decisions) {
     const item = field('li');
-    const time = field('time'); time.dateTime = decision.created_at; time.textContent = new Date(decision.created_at).toLocaleString('ar-SA');
+    const time = field('time'); time.dateTime = decision.created_at; time.textContent = new Date(decision.created_at).toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
     const rule = field('p');
-    rule.textContent = decision.rule_name ? `${decision.rule_name} · النسخة ${decision.rule_version}` : 'دون قاعدة مطابقة';
+    rule.textContent = decision.rule_id ? `مرجع القاعدة: ${decision.rule_id} · النسخة وقت القرار ${decision.rule_version}` : 'دون قاعدة مطابقة';
     const reason = field('p', 'fw-decision-reason'); reason.textContent = reasonLabels[decision.reason] ?? decision.reason;
-    item.append(time, actionBadge(decision.action), reason, rule);
+    const reference = field('p'); reference.textContent = `القرار: ${decision.id} · ${decision.mode === 'GUARD' ? 'مسار التنفيذ (قرار سياسة)' : 'تقييم تجريبي'}`;
+    item.append(time, actionBadge(decision.action), reason, rule, reference);
     decisions.append(item);
   }
   privateArea.hidden = false;
 }
 async function refresh(message = 'تم تحميل بيانات المؤسسة والتحقق من الصلاحيات في الخادم.') {
+  if (busy) return;
   try { await withBusy(async () => { render(await api('rules')); }); note(message); }
-  catch (error) { clearPrivate(); note(messageOf(error), true); }
+  catch (error) { if (!(error instanceof ApiError && error.code === 'INVALID_FILTER')) clearPrivate(); note(messageOf(error), true); }
 }
 root.querySelector('[data-reload]')!.addEventListener('click', () => void refresh());
 workspace.addEventListener('change', () => { text.value = ''; result.textContent = ''; void refresh(); });
-actionFilter.addEventListener('change', () => void refresh());
-reasonFilter.addEventListener('change', () => void refresh());
+[actionFilter, reasonFilter, modeFilter, fromFilter, toFilter].forEach(control => control.addEventListener('change', () => { page = 1; void refresh(); }));
+previousPage.addEventListener('click', () => { if (page > 1) { page--; void refresh(); } });
+nextPage.addEventListener('click', () => { if (hasNext) { page++; void refresh(); } });
+evalMode.addEventListener('change', () => { result.textContent = ''; updateSubmitLabel(); });
 root.querySelectorAll<HTMLButtonElement>('[data-example]').forEach(button => button.addEventListener('click', () => {
   text.value = button.dataset.example!;
   evalError.textContent = '';
@@ -228,11 +290,21 @@ root.querySelector('form[data-evaluate]')!.addEventListener('submit', event => {
   if (!text.value.trim()) { evalError.textContent = 'اكتب نصًا اصطناعيًا من حرف واحد على الأقل.'; return; }
   void (async () => {
     try {
-      await withBusy(async () => { const decision = await api('evaluate', 'POST', { text: text.value }); renderResult(decision); render(await api('rules')); });
-      note('أصدر الخادم القرار وحفظه دون متن النص.');
-    } catch (error) { evalError.textContent = messageOf(error); result.textContent = 'لم يصدر قرار من الخادم؛ لا يُعرض سماح عند فشل الطلب.'; }
+      await withBusy(async () => {
+        result.textContent = 'جارٍ تقييم السياسة وحفظ القرار…';
+        const guarded = evalMode.value === 'GUARD';
+        const decision = await api(guarded ? 'guarded-executions' : 'evaluate', 'POST', { text: text.value, synthetic: true, ...(guarded ? { request_id: crypto.randomUUID() } : {}) });
+        if (guarded) renderGuard(decision); else renderResult(decision);
+        const message = guarded ? decision.message ?? 'أعاد المزود استجابة للطلب المحكوم.' : 'حُفظ التقييم التجريبي دون إرسال للمزود.';
+        page = 1;
+        try { render(await api('rules')); note(message, guarded && decision.external_action_executed !== true); }
+        catch { note(`${message} تعذر تحديث قائمة السجل؛ حدّثها يدويًا.`, true); }
+      });
+    } catch (error) { evalError.textContent = messageOf(error); result.textContent = 'تعذر تأكيد نتيجة الطلب. لا تتعامل معه كسماح، ولا تعِد التنفيذ تلقائيًا؛ راجع السجل أولًا.'; }
   })();
 });
 window.addEventListener('pagehide', clearPrivate);
 window.addEventListener('pageshow', event => { if (event.persisted) void refresh(); });
 if (auth) void refresh();
+
+document.addEventListener('workspace-session-ended', () => { clearPrivate(); status.textContent = 'انتهت الجلسة؛ سجّل الدخول مجددًا من Kernel.'; });

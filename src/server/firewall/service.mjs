@@ -1,8 +1,11 @@
+import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { tenantGuard, audit } from '../kernel/service.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
 import { templates, evaluate, inputText, actions, reasons, ruleName, rulePattern, ruleAction, rulePriority, MAX_RULES } from './core.mjs';
+import { providerState } from './provider.mjs';
+import { enforceDecision } from './guard.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const editableFields = ['name', 'pattern', 'action', 'priority'];
@@ -10,17 +13,27 @@ const uniqueName = error => error?.code === '23505';
 
 export function createFirewallService(transact = transaction) {
   return async function operate(identity, requested, operation, body = {}, query = '') {
-    if (!['dashboard', 'create', 'update', 'evaluate'].includes(operation)) throw new KernelError(404, 'NOT_FOUND', 'المسار غير موجود.');
+    if (!['dashboard', 'create', 'update', 'evaluate', 'enforce'].includes(operation)) throw new KernelError(404, 'NOT_FOUND', 'المسار غير موجود.');
     const action = typeof query === 'string' ? query : query?.action ?? '';
     const reason = typeof query === 'object' && query ? query.reason ?? '' : '';
+    const filters = typeof query === 'object' && query ? query : {};
+    const mode = filters.mode ?? '';
+    const from = filters.from ?? '', to = filters.to ?? '';
+    const page = Number(filters.page ?? 1);
+    const validDay = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && value >= '0001-01-01' && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+    if ((mode && !['LAB', 'GUARD'].includes(mode)) || !Number.isInteger(page) || page < 1 || page > 10000
+      || (from && !validDay(from)) || (to && !validDay(to)) || (from && to && from > to)) throw new KernelError(400, 'INVALID_FILTER', 'فترة السجل أو رقم الصفحة أو المسار غير صالح.');
     if (action && !actions.includes(action)) throw new KernelError(400, 'INVALID_FILTER', 'تصفية الإجراء غير صالحة.');
     if (reason && !Object.hasOwn(reasons, reason)) throw new KernelError(400, 'INVALID_FILTER', 'تصفية السبب غير صالحة.');
-    return transact(async db => {
+    if (operation === 'enforce' && (typeof body.request_id !== 'string' || !uuid.test(body.request_id))) throw new KernelError(400, 'INVALID_REQUEST_ID', 'يلزم معرّف UUID جديد للعملية لمنع إعادة تنفيذ الطلب نفسه.');
+    if (['evaluate', 'enforce'].includes(operation) && body.synthetic !== true) throw new KernelError(400, 'SYNTHETIC_REQUIRED', 'هذه النسخة تقبل نصًا اصطناعيًا فقط؛ يلزم الإقرار بذلك.');
+    const outcome = await transact(async db => {
       const scope = await tenantGuard(identity, requested, db);
       if (!scope.tenant) throw new KernelError(403, 'NO_WORKSPACE', 'أنشئ مساحة عمل من Kernel أولًا.');
       const tenantId = scope.tenant.tenant_id;
       // Serialize policy changes and evaluation within each tenant.
       await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
+      await requireProductAccess(db, identity, tenantId, 'firewall');
       const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
       if (!member) throw new KernelError(403, 'FORBIDDEN', 'عضويتك لم تعد متاحة.');
       const canManage = ['OWNER', 'ADMIN'].includes(member.role);
@@ -45,7 +58,7 @@ export function createFirewallService(transact = transaction) {
           };
         }
         const count = (await db.query('SELECT count(*)::int AS count FROM public.aigas_fw_rules WHERE tenant_id=$1', [tenantId])).rows[0].count;
-        if (count >= MAX_RULES) throw new KernelError(409, 'RULE_LIMIT', `الحد ${MAX_RULES} قاعدة للمؤسسة؛ عطّل أو عدّل قاعدة قائمة.`);
+        if (count >= MAX_RULES) throw new KernelError(409, 'RULE_LIMIT', `الحد ${MAX_RULES} قاعدة للمؤسسة، ويشمل المعطّلة؛ عدّل قاعدة قائمة.`);
         try {
           await db.query(
             'INSERT INTO public.aigas_fw_rules (id,tenant_id,template,name,match_type,pattern,action,priority) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
@@ -96,28 +109,48 @@ export function createFirewallService(transact = transaction) {
         [tenantId],
       )).rows;
 
-      if (operation === 'evaluate') {
-        const result = evaluate(inputText(body.text), rules);
+      if (operation === 'evaluate' || operation === 'enforce') {
+        const enforced = operation === 'enforce';
+        const result = evaluate(inputText(body.text), rules, { enforce: enforced });
         const id = randomUUID();
         // Explicit metadata fields only: the submitted text and any output never reach the database.
-        await db.query(
-          'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version) VALUES ($1,$2,$3,$4,$5,$6)',
-          [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version],
-        );
-        return { ...result, id, persisted: true };
+        try {
+          const inserted = await db.query(
+            'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING created_at',
+            [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', enforced ? body.request_id : null],
+          );
+          if (inserted.rowCount !== 1) throw new Error('DECISION_NOT_SAVED');
+          // Kernel audit is required and atomic with the metadata-only decision.
+          await audit(db, identity, tenantId, enforced ? 'firewall.guard.evaluated' : 'firewall.lab.evaluated');
+          const decision = { id, action: result.action, reason: result.reason, rule_id: result.rule_id, rule_version: result.rule_version,
+            created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB' };
+          if (enforced) return { decision, tenantId, forwardText: result.output };
+          return { ...decision, rule_name: result.rule_name, output: result.output, persisted: true, execution_status: 'NOT_EXECUTED', external_action_executed: false };
+        } catch (error) {
+          if (enforced && uniqueName(error)) throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
+          if (['42P01', '42703', '42501'].includes(error?.code)) throw error;
+          throw new KernelError(503, 'REQUIRED_AUDIT_UNAVAILABLE', 'تعذر تأكيد حفظ القرار وتدقيق Kernel؛ لم يُرسل الطلب إلى مزود AI.');
+        }
       }
 
       const counts = (await db.query('SELECT action,count(*)::int AS count FROM public.aigas_fw_decisions WHERE tenant_id=$1 GROUP BY action', [tenantId])).rows;
       const decisions = (await db.query(
-        `SELECT d.id,d.created_at,d.action,d.reason,d.rule_id,d.rule_version,r.name AS rule_name
+        `SELECT d.id,d.created_at,d.action,d.reason,d.rule_id,d.rule_version,d.mode
          FROM public.aigas_fw_decisions d
-         LEFT JOIN public.aigas_fw_rules r ON r.tenant_id=d.tenant_id AND r.id=d.rule_id
          WHERE d.tenant_id=$1 AND ($2='' OR d.action=$2) AND ($3='' OR d.reason=$3)
-         ORDER BY d.created_at DESC,d.id DESC LIMIT 12`,
-        [tenantId, action, reason],
+         AND ($4='' OR d.mode=$4)
+         AND ($5::timestamptz IS NULL OR d.created_at >= $5::timestamptz)
+         AND ($6::timestamptz IS NULL OR d.created_at < $6::timestamptz + interval '24 hours')
+         ORDER BY d.created_at DESC,d.id DESC LIMIT 13 OFFSET $7`,
+        [tenantId, action, reason, mode, from ? `${from}T00:00:00Z` : null, to ? `${to}T00:00:00Z` : null, (page - 1) * 12],
       )).rows;
-      return { tenant: scope.tenant, memberships: scope.memberships, canManage, rules, counts, decisions, actionFilter: action, reasonFilter: reason, maxRules: MAX_RULES };
+      return { tenant: { ...scope.tenant, role: member.role }, memberships: scope.memberships, canManage, rules, counts,
+        decisions: decisions.slice(0, 12), page, hasNext: decisions.length > 12 && page < 10000, provider: providerState(tenantId),
+        enforcementPath: '/app/api/firewall/guarded-executions/', actionFilter: action, reasonFilter: reason, maxRules: MAX_RULES };
     });
+    // COMMIT has succeeded before any optional external call. Raw body is never
+    // passed to the guard; only the evaluator's output can cross this boundary.
+    return operation === 'enforce' ? enforceDecision(outcome) : outcome;
   };
 }
 export const operate = createFirewallService();

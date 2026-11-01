@@ -1,6 +1,7 @@
+import { requireProductAccess } from '../kernel/access.mjs';
 import { authenticate } from '../kernel/auth.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
-import { database } from '../kernel/db.mjs';
+import { transaction } from '../kernel/db.mjs';
 import { KernelError } from '../kernel/core.mjs';
 import { env } from '../kernel/env.mjs';
 import { findApprovedModel, listApprovedModels } from './models.mjs';
@@ -19,13 +20,7 @@ async function accessContext(request) {
   const { tenant } = await tenantGuard(identity, workspace);
   if (!tenant) throw new KernelError(403, 'MEMBERSHIP_REQUIRED', 'يلزم الانضمام إلى مؤسسة قبل استخدام Secure Chat.');
 
-  const result = await database().query(
-    `SELECT 1 FROM public.aigas_product_access a
-     JOIN public.aigas_memberships m ON m.tenant_id = a.tenant_id
-     WHERE a.tenant_id = $1 AND m.user_id = $2 AND a.product_slug = 'secure-chat' AND a.status = 'ENABLED'`,
-    [tenant.tenant_id, identity.userId],
-  );
-  if (!result.rowCount) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', 'Secure Chat غير مفعّل لهذه المؤسسة.');
+  await transaction(db => requireProductAccess(db, identity, tenant.tenant_id, 'secure-chat'));
   return { identity, tenant };
 }
 
@@ -60,7 +55,10 @@ export async function rejectMessage(request, modelId, message) {
   }
   if (!findApprovedModel(modelId)) {
     // Do not contact a provider, even if a client submits an arbitrary model ID.
-    await audit(database(), identity, tenant.tenant_id, 'secure_chat.blocked_no_approved_model');
+    await transaction(async db => {
+      await requireProductAccess(db, identity, tenant.tenant_id, 'secure-chat');
+      await audit(db, identity, tenant.tenant_id, 'secure_chat.blocked_no_approved_model');
+    });
     throw new KernelError(503, 'NO_APPROVED_MODEL', 'لا يوجد نموذج معتمد ومهيأ؛ لم يُرسل النص إلى أي مزود ولم يُحفظ في قاعدة البيانات.');
   }
 

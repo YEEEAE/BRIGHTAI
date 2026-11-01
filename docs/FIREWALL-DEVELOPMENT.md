@@ -1,94 +1,35 @@
-# Firewall Starter — local policy and decision lab
+# Firewall — local policy evaluation and guarded execution
 
-Status: **PARTIAL operationally**, reviewed 2026-11-01. The page and APIs below exist and are exercised locally against a disposable PostgreSQL 16 instance. Nothing here is a released AI gateway, and `migrations/0002_aigas_firewall.sql` is **not applied to Neon**.
+Status: **IMPLEMENTED_NOT_VERIFIED / PARTIAL**, 2026-11-01. Current changes have not been built or exercised, at the owner's explicit request. Earlier local results concern earlier source only. No deployment, provider approval or Neon migration is implied.
 
-## What runs in this scope
+## Current routes and authorization
 
-- `/app/firewall/` reuses Kernel's Neon Auth session and the persisted membership check, with RTL layout, keyboard focus and loading/empty/error/unauthorized states. No second login, analytics, AI provider call or commercial entitlement change.
-- `GET /app/api/firewall/rules/` returns memberships, rules, all-time decision counts and the latest 12 decisions. Optional `action=ALLOW|BLOCK|REDACT` and `reason=<fixed code>` filter the recent list only, never the counts.
-- `POST /app/api/firewall/rules/` accepts either `{template:'public'|'identifier'|'prohibited'}` or a tenant-defined rule `{name, pattern, action, priority?}`. OWNER/ADMIN only; 25 rules per tenant.
-- `PATCH /app/api/firewall/rules/` accepts `{id, version, …}` with `enabled`, or — for tenant-defined rules — `name`, `pattern`, `action`, `priority`. Every write checks the row version and increments it; a stale version returns 409 `RULE_CHANGED`. Server templates can be toggled but not redefined (409 `TEMPLATE_IMMUTABLE`).
-- `POST /app/api/firewall/evaluate/` accepts `{text}` (1–4000 characters) and returns action, fixed reason code, rule ID/name/version, a transient output and the persisted decision ID. BLOCK never returns the submitted text.
-- All endpoints require the verified Kernel bearer JWT; `workspace` only selects a membership loaded by the server, and a body `tenant_id` is rejected. Writes require same Origin and JSON with a streamed 18000-byte body cap. Responses are `private, no-store` and `noindex`.
-- Each operation rechecks and locks membership in its transaction, and a tenant row lock serializes policy changes with evaluation. The mandatory decision insert must commit before a result is returned. Database or commit failure returns 503 and never ALLOW.
+`/app/firewall/` uses AppLayout and the shared Kernel session/institution selector. Every API authenticates the existing Neon Auth bearer JWT, loads the user's membership and rechecks Firewall access through Kernel's administrative grant. OWNER/ADMIN manage rules; MEMBER can read and evaluate. Other product licenses are not required.
 
-## Policy model
+- `GET /app/api/firewall/rules/?workspace=<membership>`: rules, all-time counts, provider status and decision history, 12 entries per page. Optional `action`, `reason`, `mode=LAB|GUARD`, `from`/`to` inclusive UTC dates and `page=1..10000` filter the history, not counts. Times display in Asia/Riyadh. Only decision-time rule ID/version are displayed; a renamed rule does not rewrite the historical label.
+- `POST /app/api/firewall/rules/`: `{template}` or `{name,pattern,action,priority}`. The 25-rule limit includes disabled rules. Names are unique within the institution. Custom rules are editable; protected server templates are toggle-only.
+- `PATCH /app/api/firewall/rules/`: `{id,version,enabled?}` and custom rule fields. Updates increment the version; concurrent changes return `409 RULE_CHANGED`.
+- `POST /app/api/firewall/evaluate/`: `{text,synthetic:true}`. Evaluates and persists metadata, returns a transient output, `execution_status=NOT_EXECUTED`, and never calls a provider. No match remains `ALLOW / NO_MATCH_LAB_ONLY`, explicitly not a safety judgment.
+- `POST /app/api/firewall/guarded-executions/`: `{text,synthetic:true,request_id:<new UUID>}`. Evaluates and saves the decision plus mandatory Kernel audit in one transaction, then invokes the server guard only after COMMIT. No client decision, destination URL, provider override or alternate text is accepted.
 
-Rules are plain literal text matched case-insensitively by containment. They are never compiled as client-supplied regular expressions; REDACT substitutes an escaped literal. Control characters are rejected by API, service and database checks. The browser form has an explicit synthetic-data acknowledgement before it will submit an evaluation.
+All requests use JSON; body size is capped at 18000 bytes and input at 4000 characters. Browser mutations require the same Origin. The guarded endpoint also permits an absent Origin for bearer-authenticated application integrations; it does not support service credentials, CORS or cookie authentication. `workspace` selects an actual membership and grants no authority. Authenticated responses are private/no-store/noindex. No content is sent to Analytics or logging.
 
-| Item | Behaviour |
-|---|---|
-| Starter templates | Server-owned: `public` → ALLOW, `identifier` → REDACT to `[معرّف منقّح]`, `prohibited` → BLOCK. Toggle only. |
-| Tenant rules | Name (2–60), literal pattern (1–80), action, priority 1–999. Editable; name unique per tenant. |
-| Precedence | BLOCK always wins, then REDACT, then ALLOW. Priority orders rules inside the winning action and selects the cited rule. An ALLOW rule can never override BLOCK. |
-| No active rule | BLOCK `NO_ACTIVE_POLICY` |
-| Malformed stored rule | BLOCK `INVALID_POLICY` |
-| No literal match | ALLOW `NO_MATCH_LAB_ONLY` — explicitly not a safety assessment |
+## Enforcement boundary
 
-The dedicated decisions table stores only ID, tenant, time, action, fixed reason, rule ID and rule version. It has no input/output text or hash. Rule changes add fixed action metadata to the Kernel audit log. This basic log does not claim Ledger signatures or immutable evidence.
+BLOCK wins over REDACT, which wins over ALLOW, regardless of numeric priority. Priority selects the cited rule within the winning action. Rules match escaped, case-insensitive literals, never arbitrary regular expressions. Redaction merges matching spans from the original text, including overlapping matches, before replacement with `[نص منقّح]`.
 
-## Failure and setup codes
+The guard blocks missing/invalid policy and unmatched input (`NO_MATCH_ENFORCED`). For BLOCK it returns 403 `POLICY_BLOCKED` without a provider call. For REDACT only the evaluator's redacted output is available to the adapter. For ALLOW only evaluated output is forwarded. Evaluation/saving/COMMIT failure prevents invocation.
 
-| Condition | Response |
-|---|---|
-| Missing `aigas_fw_*` tables (`42P01`) | 503 `FIREWALL_SCHEMA_MISSING` |
-| Runtime role lacks table privilege (`42501`) | 503 `FIREWALL_DB_PRIVILEGE` |
-| Any other database/commit failure | 503 `FIREWALL_UNAVAILABLE` |
-| No workspace, or lost membership | 403 `NO_WORKSPACE` / `FORBIDDEN` |
-| Stale or foreign rule ID | 409 `RULE_CHANGED` |
-| Duplicate template or rule name | 409 `RULE_EXISTS` |
-| Invalid literal/action/priority/name | 400 with a specific code |
+`src/server/firewall/provider.mjs` deliberately contains an empty approved registry. Consequently a permitted policy decision returns **503 PROVIDER_NOT_CONFIGURED**, `persisted=true`, and `external_action_executed=false`. A key in the environment is not provider approval. A future reviewed entry must bind exact institutions, model, processing region, approval reference/expiry, no-training terms and a bounded server adapter. It must not obtain destination or alternate content from the client. No adapter or provider has been approved or connected in this change.
 
-These codes replace the previous generic 500 for an unprovisioned database; no raw driver text is returned or logged.
+The guard has no automatic retry or provider fallback. A request UUID is consumed when its decision commits; reusing it returns 409 and never invokes a provider again. If an eventual approved adapter fails after invocation, the response reports `execution_status=UNKNOWN` and `external_action_executed=null`, since a timeout cannot prove non-delivery. A process crash after COMMIT can leave a saved decision without execution; the decision history is a policy history, not a delivery receipt.
 
-## Migration 0002 — review-only, BLOCKED on Neon
+This boundary governs **input on this endpoint only**. It does not intercept direct provider calls from other applications, inspect provider output, support streaming, implement full DLP or semantic prompt-injection detection, or enable WARN/human approval/commercial trials.
 
-The configured target is `young-frog-60183055` / `neondb` on the default `production` branch, which is not protected. A read-only check on 2026-11-01 found only `aigas_tenants`, `aigas_memberships`, `aigas_product_access` and `aigas_audit_events` (all empty) plus `neon_auth.*`; no `aigas_fw_*` tables exist. The Neon MCP server still returns an authorization error, so the read-only check used the configured connection string without printing it.
+## Persistence and setup
 
-Local review corrections in `0002`:
+`0002_aigas_firewall.sql` is a revised **fresh-install migration**, not an upgrade for a database already carrying an earlier 0002. It requires 0001; the current runtime also requires separately reviewed Kernel administration 0006. It adds protected-template constraints, metadata/action/reason consistency, LAB/GUARD mode, opaque per-institution request UUID uniqueness, history indexes and an append-only row trigger. No prompt, output, prompt hash or matched value is stored in decisions. The trigger does not prevent a DB owner from changing DDL.
 
-- `aigas_fw_rules`: `UNIQUE (tenant_id, name)`, partial `UNIQUE (tenant_id, template) WHERE template IS NOT NULL`, `priority smallint` 1–999, explicit control-character checks, and ordering index on `(tenant_id, priority, created_at)`.
-- `aigas_fw_decisions`: unchanged reason/action checks and composite FK, plus `(tenant_id, action, created_at DESC)` for the filtered list.
-- Both tables `REVOKE ALL … FROM PUBLIC` and enable RLS; no browser/Data API grants or public policies. Tenant scoping today is enforced in the server service, not by RLS policies for a separate runtime role.
+Neon MCP read-only inspection on 2026-11-01 found only the default, unprotected `production` branch (`br-young-bird-b43proeb`) in project `young-frog-60183055`, database `neondb`, with the four public Kernel tables and no Firewall tables. **No approved isolated development target exists; no SQL was applied and no resources or sample data were created.** Existing local environment files were not changed.
 
-Approval is required before any database write. Recommended sequence, not executed:
-
-1. Owner approves a dedicated dev branch/target and a runtime role.
-2. Apply `0001` if absent, then `0002` in one transaction on that branch; verify the two tables, PK/FK/CHECK/unique constraints, both indexes and `relrowsecurity`.
-3. Run the disposable integration test against the branch copy, then verify 401 without a session and a synthetic two-account isolation check.
-4. Review runtime-role grants and, if a non-owner role is used, add tenant RLS policies.
-5. Production application needs a separate explicit approval; no startup migration or automatic seed.
-
-No tenant, user, rule or decision was created on Neon.
-
-## Live `/app/` 404 diagnosis (2026-11-01)
-
-- `astro.config.mjs` uses `output: 'server'` with `@astrojs/node` standalone. All `/app/*` pages set `prerender = false`, so they exist only in `dist/server`; `dist/client` has no `app/` directory. The build log therefore prerenders only public pages.
-- The built Node server responds `200` for `/app/firewall/` (verified), so routing and prerender configuration are correct.
-- `render.yaml` already declares a Node web service with `node ./dist/server/entry.mjs`, but the live domain is served by Cloudflare: `/` returns 200 with `server: cloudflare`, while `/app/` and `/app/firewall/` return 404 with `cf-cache-status: BYPASS` and no `x-render` header. That is consistent with a static artifact deployment, not the Node entry.
-- Recommendation: route the domain to the Node standalone service (or an approved SSR adapter for the actual host), keep `/app/*` uncached and never prerender authenticated tenant pages. This needs an owner decision on hosting; no hosting or DNS configuration was changed here.
-
-## Verification (local, this change)
-
-- `npm run build`: PASS. `tsc --noEmit`: PASS.
-- `node --test tests/firewall.test.mjs tests/kernel.test.mjs`: 12 PASS (5 Firewall, 7 Kernel), including literal-pattern safety, precedence/priority, field allowlists, cross-origin rejection, schema-missing mapping and 503-without-ALLOW.
-- `tests/firewall-db.test.mjs` against a disposable local PostgreSQL 16 (`initdb`/`pg_ctl`, synthetic users and tenants): 1 PASS. Applies `0001`+`0002`, then covers template creation, custom rule CRUD, priority citation, version conflicts, template immutability, permission denial, tenant isolation, filters, 12-row limit, absence of raw text, decision-insert failure rollback.
-- Built server over HTTP: `/app/firewall/` 200 with the rule editor, filters and synthetic acknowledgement present; `GET`/`POST` without identity 401 with `Cache-Control: private, no-store`, `X-Robots-Tag: noindex, nofollow`, `nosniff`. This is not an authenticated journey.
-- Real Neon sign-in → workspace → Firewall with two accounts: **NOT RUN**. No approved test account or trusted local origin. No browser session or visual viewport check was performed in this change.
-
-## Deferred
-
-Provider proxy/egress enforcement, real AI request interception, WARN/REQUEST_APPROVAL decisions, semantic detection, full DLP, quotas/rate limits, signed Ledger evidence, retention policy, commercial licensing/trials and production acceptance gates. The Firewall row remains FOUNDATION and does not require buying another product.
-
-## Changed-file inventory
-
-- `src/server/firewall/core.mjs`, `service.mjs`, `http.mjs`
-- `src/pages/app/api/firewall/rules.ts`
-- `src/pages/app/firewall/index.astro`
-- `src/scripts/firewall.ts`
-- `src/styles/firewall.css`
-- `src/server/kernel/core.mjs` (one audit label)
-- `migrations/0002_aigas_firewall.sql`
-- `tests/firewall.test.mjs`, `tests/firewall-db.test.mjs`
-- `docs/FIREWALL-DEVELOPMENT.md`, `docs/products/firewall/FEATURE-STATUS.yaml`
-- `.agents/mind/01-mind-latest.md`, `.agents/mind/02-mind-mid.md`
+Missing tables return `FIREWALL_SCHEMA_MISSING`; missing columns return `FIREWALL_SCHEMA_OUTDATED`; missing privileges return `FIREWALL_DB_PRIVILEGE`; mandatory decision/audit write errors return `REQUIRED_AUDIT_UNAVAILABLE`. Driver details and secrets are not returned. Review runtime-role grants/RLS, approve an isolated target and provider conditions before application or release. Hosting/DNS/Node publication remain outside this local change.

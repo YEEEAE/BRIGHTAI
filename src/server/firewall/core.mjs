@@ -39,6 +39,8 @@ export function rulePriority(value) {
   return value;
 }
 function structurallyValid(rule) {
+  const template = rule?.template ? templates[rule.template] : null;
+  if (rule?.template && (!template || ['name', 'match_type', 'pattern', 'action', 'priority'].some(key => rule[key] !== template[key]))) return false;
   return !!rule && typeof rule.name === 'string' && rule.name.trim().length >= 2 && rule.name.length <= 60 && !controlChars.test(rule.name)
     && rule.match_type === 'CONTAINS'
     && typeof rule.pattern === 'string' && rule.pattern.length >= 1 && rule.pattern.length <= 80 && !controlChars.test(rule.pattern)
@@ -47,13 +49,13 @@ function structurallyValid(rule) {
     && Number.isInteger(rule.priority) && rule.priority >= 1 && rule.priority <= 999;
 }
 const escapeLiteral = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const matches = (text, pattern) => text.toLowerCase().includes(pattern.toLowerCase());
+const matches = (text, pattern) => new RegExp(escapeLiteral(pattern), 'i').test(text);
 function firstByPriority(list) {
   return [...list].sort((a, b) => (a.priority - b.priority)
     || String(a.created_at ?? '').localeCompare(String(b.created_at ?? ''))
     || String(a.id).localeCompare(String(b.id)))[0] ?? null;
 }
-export function evaluate(text, rules) {
+export function evaluate(text, rules, { enforce = false } = {}) {
   inputText(text);
   const active = rules.filter(rule => rule.enabled);
   const result = (action, reason, rule = null, output = null) => ({
@@ -68,11 +70,28 @@ export function evaluate(text, rules) {
   if (block) return result('BLOCK', 'RULE_BLOCK', block);
   const redact = active.filter(rule => matches(text, rule.pattern) && rule.action === 'REDACT');
   if (redact.length) {
-    let output = text;
-    for (const rule of redact) output = output.replace(new RegExp(escapeLiteral(rule.pattern), 'gi'), '[معرّف منقّح]');
+    // Collect spans against the original input, then merge overlaps. Replacing one
+    // literal first must never hide an overlapping match belonging to another rule.
+    const spans = [];
+    for (const rule of redact) {
+      const matcher = new RegExp(escapeLiteral(rule.pattern), 'gi');
+      let match;
+      while ((match = matcher.exec(text))) { spans.push([match.index, match.index + match[0].length]); matcher.lastIndex = match.index + 1; }
+    }
+    spans.sort((a, b) => a[0] - b[0]);
+    const merged = [];
+    for (const span of spans) {
+      const last = merged[merged.length - 1];
+      if (last && span[0] <= last[1]) last[1] = Math.max(last[1], span[1]);
+      else merged.push([...span]);
+    }
+    let output = '', cursor = 0;
+    for (const [start, end] of merged) { output += text.slice(cursor, start) + '[نص منقّح]'; cursor = end; }
+    output += text.slice(cursor);
     return result('REDACT', 'RULE_REDACT', firstByPriority(redact), output);
   }
   const allow = firstByPriority(active.filter(rule => matches(text, rule.pattern) && rule.action === 'ALLOW'));
+  if (enforce && !allow) return result('BLOCK', 'NO_MATCH_ENFORCED');
   return result('ALLOW', allow ? 'RULE_ALLOW' : 'NO_MATCH_LAB_ONLY', allow, text);
 }
 export const reasons = Object.freeze({
@@ -82,4 +101,5 @@ export const reasons = Object.freeze({
   RULE_REDACT: 'نُقّح النص وفق قاعدة تنقيح.',
   RULE_ALLOW: 'طابق النص قاعدة سماح؛ لا تتجاوز قواعد الحجب أو التنقيح.',
   NO_MATCH_LAB_ONLY: 'لم يطابق أي قاعدة مفعّلة؛ هذا ليس إثبات سلامة المحتوى.',
+  NO_MATCH_ENFORCED: 'حُجب التنفيذ لعدم مطابقة قاعدة سماح أو تنقيح مفعّلة.',
 });

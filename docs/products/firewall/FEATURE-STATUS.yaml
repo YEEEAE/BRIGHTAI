@@ -287,19 +287,24 @@ related_documents:
 local_starter_foundation:
   inspected_on: '2026-11-01'
   route: /app/firewall/
-  state: SOURCE_AND_ISOLATED_POSTGRES_VERIFIED
+  state: IMPLEMENTED_NOT_VERIFIED
   operational_state: PARTIAL
-  scope: SYNTHETIC_TEXT_LITERAL_RULE_LAB_ONLY
+  scope: SYNTHETIC_TEXT_LITERAL_POLICY_AND_GUARDED_EXECUTION
   rule_management: SERVER_OWNED_TEMPLATES_TOGGLE_ONLY_PLUS_EDITABLE_TENANT_LITERAL_RULES
-  decision_log: METADATA_ONLY_LATEST_12_ACTION_AND_REASON_FILTERS
+  decision_log: METADATA_ONLY_PAGED_12_ACTION_REASON_MODE_AND_UTC_DATE_FILTERS
   setup_error_codes: [FIREWALL_SCHEMA_MISSING, FIREWALL_DB_PRIVILEGE, FIREWALL_UNAVAILABLE]
-  enforcement_scope: /app/api/firewall/evaluate_route_only
+  enforcement_scope: /app/api/firewall/guarded-executions/INPUT_ONLY
   documentation: docs/FIREWALL-DEVELOPMENT.md
   migration: migrations/0002_aigas_firewall.sql
   migration_review_state: LOCAL_REVISED_NOT_APPLIED
   neon_migration_applied: false
-  local_verification: BUILD_TSC_UNIT_AND_DISPOSABLE_POSTGRES_PASS
+  local_verification: NOT_RUN_OWNER_REQUEST_IMPLEMENTATION_ONLY
+  historical_verification: EARLIER_BUILD_TSC_UNIT_AND_DISPOSABLE_POSTGRES_ONLY
   authenticated_browser_journey: NOT_VERIFIED
-  provider_integration: NOT_IMPLEMENTED
+  provider_integration: SERVER_GUARD_PRESENT_APPROVED_PROVIDER_REGISTRY_EMPTY
+  provider_state: PROVIDER_NOT_CONFIGURED
+  no_match_enforcement: BLOCK_NO_MATCH_ENFORCED
+  mandatory_audit: KERNEL_ATOMIC_WITH_DECISION_BEFORE_PROVIDER_CALL
+  replay_protection: TENANT_REQUEST_UUID_CONSUMED_ON_DECISION_COMMIT
   commercial_entitlement_activated: false
   release_approval: NOT_GRANTED

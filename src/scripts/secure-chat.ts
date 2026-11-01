@@ -1,4 +1,4 @@
-import { createAuthClient } from '@neon/neon-js/auth';
+import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
 
 const root = document.querySelector<HTMLElement>('[data-secure-chat]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
@@ -47,7 +47,7 @@ function showError(text: string, unauthorized = false) {
 
 async function token() {
   if (!auth) throw new Error('يلزم إعداد Neon Auth.');
-  const session = await auth.getSession();
+  const session = await getWorkspaceSession(auth);
   const value = session.data?.session?.token;
   if (session.error || !session.data?.user || !value) {
     const error = new Error('سجّل الدخول بحساب Neon Auth لعرض مساحة العمل.');
@@ -60,7 +60,7 @@ async function token() {
 async function api(path: string, method = 'GET', body?: object, signal?: AbortSignal) {
   const bearer = await token();
   const query = selectedTenant ? `?workspace=${encodeURIComponent(selectedTenant)}` : '';
-  const response = await fetch(`/app/api/secure-chat/${path}/${query}`, {
+  const response = await appFetch(auth!, `/app/api/secure-chat/${path}/${query}`, {
     method,
     cache: 'no-store',
     signal,
@@ -81,7 +81,7 @@ async function load(requested?: string) {
   login.hidden = true;
   const bearer = await token();
   const query = requested ? `?workspace=${encodeURIComponent(requested)}` : '';
-  const response = await fetch(`/app/api/kernel/${query}`, { cache: 'no-store', headers: { Authorization: `Bearer ${bearer}` } });
+  const response = await appFetch(auth!, `/app/api/kernel/${query}`, { cache: 'no-store', headers: { Authorization: `Bearer ${bearer}` } });
   const dashboard = await response.json();
   if (!response.ok) {
     const error = new Error(dashboard.message || 'تعذر التحقق من عضوية المؤسسة.');
@@ -97,6 +97,7 @@ async function load(requested?: string) {
   }
 
   selectedTenant = dashboard.tenant.tenant_id;
+  setWorkspace(selectedTenant);
   const memberships = dashboard.memberships as Array<{ tenant_id: string; name: string; role: string }>;
   workspace.replaceChildren(...memberships.map(item => {
     const option = document.createElement('option');
@@ -250,3 +251,5 @@ window.addEventListener('pagehide', () => { controller?.abort(); clearPrivate();
 window.addEventListener('pageshow', event => { if (event.persisted && auth) void run(() => load()); });
 if (auth) void run(() => load());
 else showError('يلزم إعداد Neon Auth.', true);
+
+document.addEventListener('workspace-session-ended', () => { clearPrivate(); status.textContent = 'انتهت الجلسة؛ سجّل الدخول مجددًا من Kernel.'; });

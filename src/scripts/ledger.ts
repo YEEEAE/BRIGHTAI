@@ -1,4 +1,4 @@
-import { createAuthClient } from '@neon/neon-js/auth';
+import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
 const root=document.querySelector<HTMLElement>('[data-ledger]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'), area=get('[data-private]');
@@ -11,10 +11,10 @@ function clearDetail(){selected=null;get('[data-fields]').replaceChildren();inte
 function clearPrivate(){area.hidden=true;clearDetail();get('[data-events]').replaceChildren();workspace.replaceChildren();get('[data-role]').textContent='';}
 async function api(path='',method='GET',body?:object){
  if(!auth)throw new Error('يلزم إعداد الدخول.');
- const session=await auth.getSession();const token=session.data?.session?.token;
+ const session=await getWorkspaceSession(auth);const token=session.data?.session?.token;
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
  const params=new URLSearchParams({type:type.value,period:period.value,page:String(page),q:search.value});if(workspace.value)params.set('workspace',workspace.value);
- const response=await fetch(`/app/api/ledger/events/${path}?${params}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
+ const response=await appFetch(auth!, `/app/api/ledger/events/${path}?${params}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();if(!response.ok)throw new Error(data.message||'تعذر إكمال الطلب.');return data;
 }
 const time=(value:string)=>new Date(value).toLocaleString('ar-SA');
@@ -34,6 +34,7 @@ async function detail(id:string){
 }
 async function load(){
  const data=await api();hasMore=data.hasMore;page=data.page;
+ setWorkspace(data.tenant.tenant_id);
  workspace.replaceChildren(...data.memberships.map((m:any)=>{const option=document.createElement('option');option.value=m.tenant_id;option.textContent=m.name;option.selected=m.tenant_id===data.tenant.tenant_id;return option;}));
  get('[data-role]').textContent=`الدور: ${data.tenant.role} · ${data.permissions.create?'إضافة وتصدير متاحان':'عرض وفحص فقط؛ الإضافة والتصدير للمالك والمسؤول'}`;
  get('[data-create-panel]').hidden=!data.permissions.create;get('[data-page]').textContent=`الصفحة ${page}`;get('[data-empty]').hidden=data.events.length!==0;
@@ -53,3 +54,5 @@ get('[data-verify]').addEventListener('click',()=>void run(()=>verify()));get('[
 get('[data-export]').addEventListener('click',()=>void run(async()=>{if(!selected)return;const data=await api(`${selected.event_id}/export/`);const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`ledger-${selected.event_id}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}));
 window.addEventListener('pagehide',clearPrivate);window.addEventListener('pageshow',event=>{if(event.persisted)void run(load);});
 if(auth)void run(load);
+
+document.addEventListener('workspace-session-ended', () => { clearPrivate(); status.textContent = 'انتهت الجلسة؛ سجّل الدخول مجددًا من Kernel.'; });

@@ -1,0 +1,7 @@
+---
+// No acceptance on navigation. Kernel lists only invitations for the verified identity.
+export const prerender = false;
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+return Astro.redirect('/app/kernel/', 303);
+---
