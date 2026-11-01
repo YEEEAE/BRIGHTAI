@@ -8,15 +8,38 @@ export const products = [
   { slug: 'risk-engine', name: 'Risk Engine', wave: 2, benefit: 'تسجيل استخدامات الذكاء الاصطناعي وتقييم مخاطرها.' },
   { slug: 'secure-chat', name: 'Secure Chat', wave: 2, benefit: 'مساحة محادثة مؤسسية محكومة بالسياسات.' },
 ];
-// Register only routes with server-side access checks. This does not claim operational readiness.
-const implementedRoutes = new Set(['secure-chat']);
+// Register only routes whose page and API enforce Kernel identity and membership server-side.
+// A separate DB access record still decides whether the product is enabled for the tenant.
+const implementedRoutes = new Set(['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']);
+const stateLabels = { ENABLED: 'مفعّل للمؤسسة', DISABLED: 'معطّل من المشغّل', FOUNDATION: 'قيد التأسيس' };
+export const roleLabels = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
+const auditLabels = {
+  'workspace.created': 'إنشاء مساحة العمل',
+  'firewall.rule.created': 'إضافة قاعدة جدار حماية',
+  'firewall.rule.toggled': 'تغيير حالة قاعدة جدار حماية',
+  'ledger.event.created': 'تسجيل حدث دليل',
+  'ledger.event.verified': 'فحص حدث دليل',
+  'ledger.events.exported': 'تصدير سجل الأدلة',
+  'human-gate.request.created': 'طلب مراجعة بشرية',
+  'human-gate.request.decided': 'قرار مراجعة بشرية',
+  'human-gate.request.executed': 'تنفيذ قرار مراجعة',
+  'risk-engine.asset.created': 'تسجيل أصل مخاطر',
+  'risk-engine.asset.updated': 'تحديث أصل مخاطر',
+  'risk-engine.assessment.created': 'تقييم مخاطر',
+  'secure-chat.message.rejected': 'رفض إرسال محادثة',
+};
+export const auditActionLabel = action => auditLabels[action] ?? 'حدث تشغيلي';
 export function productStates(access) {
   return products.map(p => {
     const state = access.find(a => a.product_slug === p.slug)?.status ?? 'FOUNDATION';
-    const available = implementedRoutes.has(p.slug) && state === 'ENABLED';
-    const label = !implementedRoutes.has(p.slug) ? 'قيد التأسيس' : state === 'ENABLED' && p.slug === 'secure-chat' ? 'واجهة التأسيس؛ لا يوجد نموذج متاح' : state === 'ENABLED' ? 'متاح للمؤسسة' : 'غير متاح للمؤسسة';
-    return { ...p, state, label, href: available ? `/app/${p.slug}/` : null };
+    const routeReady = implementedRoutes.has(p.slug);
+    const enabled = state === 'ENABLED';
+    const label = !routeReady ? 'المسار غير متاح بعد' : stateLabels[state] ?? 'حالة غير معروفة';
+    return { ...p, state, enabled, routeReady, label, href: routeReady && state !== 'DISABLED' ? `/app/${p.slug}/` : null };
   });
+}
+export function roleLabel(role) {
+  return roleLabels[role] ?? 'دور غير معروف';
 }
 export function selectMembership(memberships, requested) {
   if (!memberships.length) return null;

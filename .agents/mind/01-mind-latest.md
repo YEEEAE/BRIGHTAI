@@ -1,5 +1,26 @@
 # Project Mind — BrightAI
 
+## [2026-11-01] — مرحلة ما قبل النهائية: لوحة Kernel التشغيلية
+### تم التنفيذ
+- أُضيف إلى `/app/kernel/` شريط حالة تشغيل، وحالات المنتجات الخمسة الفعلية من `aigas_product_access`، وعدّادات أعضاء/أحداث محصورة بالمؤسسة، وقائمة الأعضاء بأدوارهم، وآخر 8 أنشطة من سجل تدقيق Kernel، مع حالات loading/empty/error/unauthorized/disabled.
+- `GET /app/api/kernel/members/` للقراءة فقط: يتحقق من الهوية والعضوية من الخادم؛ بريد العضو يُعاد لـOWNER/ADMIN فقط. لا دعوة ولا تغيير دور، فلا مسار لتسوية MEMBER إلى OWNER ولا مستخدمون وهميون.
+- `GET /app/api/kernel/health/` مجهول بلا أسرار: يعيد أكواد AUTH_SETUP_REQUIRED / DB_SETUP_REQUIRED / SCHEMA_MISSING بلا مضيف أو إصدار أو نص SQL.
+- تصحيح عقد المنتجات: الحالة من السجل (`ENABLED` مفعّل، `DISABLED` معطّل، `FOUNDATION` قيد التأسيس)، والرابط فقط لمسارات القائمة المسموحة وغير المعطّلة. القائمة تضم الآن المنتجات الخمسة ذات الحراس الخادميين.
+- تشخيص 404 للوحة المنشورة: الصفحات العامة الـ29 `prerender = true` (HTML في `dist/client`) وكل `/app/*` بـ`prerender = false` (في `dist/server` فقط). المضيف الحي يخدم المخرجات الثابتة وحدها، فتعمل الصفحات المسبقة وترجع اللوحة 404. البناء المحلي يعمل 302/200/401.
+- Neon MCP: BLOCKED بخطأ تفويض؛ فحص قراءة فقط مباشر أكد الجداول الأربع فارغة وغياب جداول `0002`–`0005`. لم تُنفّذ أي كتابة أو ترحيل أو زرع بيانات.
+### الملفات المتأثرة
+- `src/server/kernel/{core,service}.mjs`، `src/pages/app/kernel/index.astro`، `src/pages/app/api/kernel/{health,members}.ts`، `src/scripts/kernel.ts`، `src/styles/kernel.css`.
+- `tests/kernel.test.mjs`، `tests/kernel-db.test.mjs`، `docs/KERNEL-DEVELOPMENT.md`، `Audit/2026-11-01-kernel-prelaunch-workspace.md`.
+### التحقق
+- build: PASS؛ unit Kernel: 7 PASS؛ PostgreSQL 16 محلي معزول ببيانات اصطناعية: 1 PASS للعزل والعدّادات والأدوار وإخفاء البريد وحالة SCHEMA_MISSING.
+- HTTP محلي على البناء: `/app/` 302، `/app/kernel/` 200 بـno-store/noindex، APIs 401 بلا رمز أو برمز مزوّر، health 200؛ لا Analytics. متصفح 360/1440 بلا overflow وبلا أخطاء console.
+- تسجيل الدخول الحقيقي وحسابان على Neon: NOT RUN — الأصل الموثوق هو الدومين الحي فقط ولا يوجد حساب اختبار معتمد.
+### النتيجة
+- **الحالة:** PARTIAL محليًا؛ اللوحة والوحدات الأربع منفذة ومتحققة على قاعدة معزولة، لكن `/app/` ما زال 404 على الدومين الحي.
+### ملاحظات / مشاكل مفتوحة
+- قرار المالك مطلوب للاستضافة: توجيه الدومين لخدمة Node (`node ./dist/server/entry.mjs`) أو الموافقة على adapter يدعم SSR؛ ممنوع prerender لـ`/app/*` وممنوع تخزينها مؤقتًا على الحافة.
+- `0002`–`0005` غير مطبقة؛ أي تغيير مخطط Neon يحتاج موافقة وفرع تطوير معتمدًا. الدعوات وتغيير الأدوار والاشتراكات و48h Trial وSSO/MFA غير منفذة وغير مُدّعاة.
+
 ## [2026-11-01] — تأسيس محلي لـ Secure Chat مع إيقاف الإرسال الآمن
 ### تم التنفيذ
 - أُضيف `/app/secure-chat/` بتسجيل Neon Auth، اختيار مؤسسة من عضويات Kernel، واجهة RTL لمسودة مؤقتة ورسائل وأخطاء وإلغاء؛ لا يحفظ سجل محادثة.

@@ -8,11 +8,38 @@ const config = authConfig();
 <AppLayout title="نواة المنظومة">
   <section class="kernel" data-kernel data-auth-url={config?.base ?? ''}>
     <div class="page-heading"><div><p class="overline">01 / SHARED FOUNDATION</p><h1>نواة المنظومة<span>مساحتك، ومنها تبدأ.</span></h1><p class="intro">مؤسستك ومنتجاتك في مساحة عمل واحدة، بصلاحيات مرتبطة بعضويتك.</p></div><span class="connection" data-connection>لم يُتحقق من الربط</span></div>
-    <section class="notice" aria-labelledby="session-title"><div><p class="overline">حالة الوصول</p><h2 id="session-title" data-state-title>{config ? 'تحقق من جلسة الدخول' : 'يلزم إعداد الدخول'}</h2><p role="status" aria-live="polite" data-status>{config ? 'جارٍ التحقق من الجلسة…' : 'يلزم ضبط Neon Auth قبل إتاحة بيانات المؤسسة.'}</p></div><button type="button" data-retry hidden>إعادة المحاولة</button><button type="button" data-sign-out hidden>تسجيل الخروج</button></section>
+
+    <section class="health" aria-labelledby="health-title"><div class="section-heading"><div><p class="overline">00 / RUNTIME</p><h2 id="health-title">حالة التشغيل</h2></div><button type="button" data-health-refresh>إعادة الفحص</button></div><ul class="health-list" data-health-list role="status" aria-live="polite"><li>جارٍ فحص الدخول والقاعدة…</li></ul><p class="health-note">فحص اتصال ومخطط فقط. لا يثبت اشتراكًا أو جاهزية منتج، ولا يعرض أي إعداد سري.</p></section>
+
+    <section class="notice" aria-labelledby="session-title"><div><p class="overline">حالة الوصول</p><h2 id="session-title" data-state-title>{config ? 'تحقق من جلسة الدخول' : 'يلزم إعداد الدخول'}</h2><p role="status" aria-live="polite" data-status>{config ? 'جارٍ التحقق من الجلسة…' : 'AUTH_SETUP_REQUIRED — يلزم ضبط Neon Auth قبل إتاحة بيانات المؤسسة.'}</p></div><button type="button" data-retry hidden>إعادة المحاولة</button><button type="button" data-sign-out hidden>تسجيل الخروج</button></section>
+
     {config && <form class="panel login-form" data-login hidden><h2>دخول مساحة العمل</h2><p>استخدم حساب Neon Auth الخاص بك.</p><label for="email">البريد الإلكتروني</label><input id="email" name="email" type="email" autocomplete="username" required maxlength="254" /><label for="password">كلمة المرور</label><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="128" /><button type="submit">تسجيل الدخول</button><p>إنشاء الحساب متاح في صفحة التسجيل الحالية؛ هذه البوابة لا تتضمن أي تتبع.</p></form>}
-    <div class="workspace-row"><section class="panel institution"><p class="overline">المؤسسة</p><h2 data-tenant-name>لا توجد مساحة محمّلة</h2><p data-tenant-detail>تظهر بيانات المؤسسة بعد توثيق الهوية والتحقق من العضوية في الخادم.</p><div data-selector hidden><label for="workspace">اختر مؤسستك</label><select id="workspace" data-workspace></select></div><form data-create hidden><label for="workspace-name">اسم مساحة العمل الجديدة</label><input id="workspace-name" name="name" required minlength="2" maxlength="100" /><button type="submit">إنشاء مساحة عمل</button><p>ينشئ مساحة جديدة فقط. لا يفعّل اشتراكًا أو تجربة مدفوعة.</p></form></section>
+
+    <div class="workspace-row"><section class="panel institution"><p class="overline">المؤسسة</p><h2 data-tenant-name>لا توجد مساحة محمّلة</h2><p data-tenant-detail>تظهر بيانات المؤسسة بعد توثيق الهوية والتحقق من العضوية في الخادم.</p><div data-selector hidden><label for="workspace">اختر مؤسستك</label><select id="workspace" data-workspace></select><p data-selector-note></p></div><form data-create hidden><label for="workspace-name">اسم مساحة العمل الجديدة</label><input id="workspace-name" name="name" required minlength="2" maxlength="100" /><button type="submit">إنشاء مساحة عمل</button><p>ينشئ مساحة جديدة فقط. لا يفعّل اشتراكًا أو تجربة مدفوعة.</p></form></section>
     <section class="panel system-diagram" aria-label="Kernel يربط الهوية والمؤسسة والوصول بالمنتجات الخمسة"><p class="overline">خريطة المنظومة</p><div class="diagram-core"><span aria-hidden="true">◈</span><bdi>Kernel</bdi><small>هوية · مؤسسة · وصول</small></div><svg viewBox="0 0 480 48" aria-hidden="true"><path d="M240 0V20M40 48V20H440V48M140 48V20M240 48V20M340 48V20" fill="none" stroke="currentColor" /></svg><div class="diagram-products">{products.map(p => <bdi>{p.name}</bdi>)}</div><p>أساس واحد، وخمسة منتجات مستقلة.</p></section></div>
-    <section aria-labelledby="products-title"><div class="section-heading"><div><p class="overline">02 / YOUR PRODUCTS</p><h2 id="products-title">المنتجات</h2></div><p>الإتاحة حسب بيانات المؤسسة وجاهزية المسار.</p></div><div class="product-grid">{products.map((p, i) => <article class="product-card" data-product={p.slug}><div class="card-top"><span class="product-number">0{i + 1}</span><span class="wave">الموجة {p.wave === 1 ? 'الأولى' : 'الثانية'}</span></div><h3><bdi>{p.name}</bdi></h3><p>{p.benefit}</p><span class="availability" data-product-status>يلزم تسجيل الدخول لمعرفة الإتاحة</span><div data-product-action><button type="button" disabled>لم يجهز بعد</button></div></article>)}</div></section>
+
+    <section class="metrics" data-metrics hidden aria-label="ملخص المؤسسة">
+      <article class="panel metric"><p class="overline">MEMBERS</p><strong data-metric="members">—</strong><span>أعضاء المؤسسة</span></article>
+      <article class="panel metric"><p class="overline">AUDIT EVENTS</p><strong data-metric="events">—</strong><span>أحداث التدقيق</span></article>
+    </section>
+
+    <section aria-labelledby="products-title"><div class="section-heading"><div><p class="overline">02 / YOUR PRODUCTS</p><h2 id="products-title">المنتجات</h2></div><p>الإتاحة من سجل وصول المؤسسة، لا من الواجهة.</p></div><div class="product-grid">{products.map((p, i) => <article class="product-card" data-product={p.slug}><div class="card-top"><span class="product-number">0{i + 1}</span><span class="wave">الموجة {p.wave === 1 ? 'الأولى' : 'الثانية'}</span></div><h3><bdi>{p.name}</bdi></h3><p>{p.benefit}</p><span class="availability" data-product-status>يلزم تسجيل الدخول لمعرفة الإتاحة</span><div data-product-action><button type="button" disabled>لم يجهز بعد</button></div></article>)}</div></section>
+
+    <div class="ops-row">
+      <section class="panel members" aria-labelledby="members-title">
+        <div class="section-heading"><div><p class="overline">03 / MEMBERS</p><h2 id="members-title">أعضاء المؤسسة</h2></div><span class="count" data-member-count></span></div>
+        <p data-members-state role="status" aria-live="polite">تُحمّل الأعضاء بعد التحقق من العضوية.</p>
+        <ul class="member-list" data-members></ul>
+        <div class="member-actions"><button type="button" disabled aria-describedby="invite-note">دعوة عضو</button><p id="invite-note" data-invite-note>الدعوات غير مفعّلة: لا يوجد مسار دعوة موثّق في Kernel بعد، ولا تُنشأ حسابات وهمية.</p></div>
+      </section>
+      <section class="panel" aria-labelledby="activity-title">
+        <div class="section-heading"><div><p class="overline">04 / ACTIVITY</p><h2 id="activity-title">آخر أنشطة المؤسسة</h2></div></div>
+        <p data-activity-state role="status" aria-live="polite">تُحمّل الأنشطة بعد التحقق من العضوية.</p>
+        <ol class="activity" data-activity></ol>
+        <p class="health-note">من سجل تدقيق Kernel لهذه المؤسسة فقط، بلا نصوص طلبات أو بيانات شخصية.</p>
+      </section>
+    </div>
+
     <noscript><p class="notice">يلزم JavaScript للتحقق من جلسة Neon Auth وتحميل بيانات المؤسسة. لا تُعرض أي بيانات خاصة بدونه.</p></noscript>
   </section>
 </AppLayout>
