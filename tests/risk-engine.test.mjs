@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { evaluate,assetInput,assessmentInput,exact,version } from '../src/server/risk-engine/core.mjs';
 import { createHandler } from '../src/server/risk-engine/http.mjs';
+import { createRiskEngineService } from '../src/server/risk-engine/service.mjs';
 test('Risk Engine: every draft matrix cell and untrusted fields',()=>{
  const expected=[['LOW','LOW','MEDIUM'],['LOW','MEDIUM','HIGH'],['MEDIUM','HIGH','HIGH']];
  for(let l=1;l<=3;l++)for(let i=1;i<=3;i++){const r=evaluate(l,i);assert.equal(r.risk_level,expected[l-1][i-1]);assert.equal(r.score,l*i);assert.match(r.explanation,new RegExp(`${l} × الأثر ${i}`));assert.ok(r.suggested_control);assert.equal(r.method_version,'draft-likelihood-impact-v1');}
@@ -12,6 +13,12 @@ test('Risk Engine: every draft matrix cell and untrusted fields',()=>{
  for(const bad of [{...a,name:''},{...a,owner:'a'},{...a,purpose:'x\u0000'},{...a,data_classification:'OTHER'}])assert.throws(()=>assetInput(bad));
  const assessment={asset_version:1,likelihood:3,impact:3,likelihood_reason:'Synthetic reason',impact_reason:'Synthetic impact',controls_reason:'Synthetic controls'};
  assert.equal(assessmentInput(assessment).risk_level,'HIGH');for(const key of ['likelihood_reason','impact_reason','controls_reason'])assert.throws(()=>assessmentInput({...assessment,[key]:''}));
+});
+test('Risk Engine service: validate search and filter input before database access',async()=>{
+ let calls=0;const service=createRiskEngineService(async()=>{calls++;throw new Error('database should not be reached');});
+ for(const [query,code]of [['q='+encodeURIComponent('x'.repeat(81)),'INVALID_SEARCH'],['classification=OTHER','INVALID_CLASSIFICATION'],['risk_level=CRITICAL','INVALID_RISK_LEVEL']])
+  await assert.rejects(service({userId:'synthetic'},null,'list',{},new URLSearchParams(query)),error=>error.code===code);
+ assert.equal(calls,0);
 });
 test('Risk Engine HTTP: auth before data, origin, JSON limit, private failure',async()=>{
  const request=new Request('https://local/app/api/risk-engine/assets/');assert.equal((await createHandler()(request,'list')).status,401);

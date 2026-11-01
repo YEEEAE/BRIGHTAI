@@ -15,6 +15,18 @@ CREATE TABLE public.aigas_re_assets (
  UNIQUE(tenant_id,id)
 );
 CREATE INDEX aigas_re_assets_tenant_idx ON public.aigas_re_assets(tenant_id,created_at DESC,id DESC);
+-- Immutable snapshots make the asset's own change history reviewable, not only its assessment snapshots.
+CREATE TABLE public.aigas_re_asset_revisions (
+ tenant_id uuid NOT NULL,
+ asset_id uuid NOT NULL,
+ asset_version integer NOT NULL CHECK(asset_version>0),
+ asset_snapshot jsonb NOT NULL CHECK(jsonb_typeof(asset_snapshot)='object'),
+ changed_by uuid NOT NULL REFERENCES neon_auth."user"(id),
+ changed_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+ PRIMARY KEY(tenant_id,asset_id,asset_version),
+ FOREIGN KEY(tenant_id,asset_id) REFERENCES public.aigas_re_assets(tenant_id,id)
+);
+CREATE INDEX aigas_re_asset_revisions_history_idx ON public.aigas_re_asset_revisions(tenant_id,asset_id,asset_version DESC);
 CREATE TABLE public.aigas_re_assessments (
  id uuid PRIMARY KEY,
  tenant_id uuid NOT NULL,
@@ -36,13 +48,15 @@ CREATE TABLE public.aigas_re_assessments (
  CHECK(risk_level=CASE WHEN likelihood*impact<=2 THEN 'LOW' WHEN likelihood*impact<=4 THEN 'MEDIUM' ELSE 'HIGH' END)
 );
 CREATE INDEX aigas_re_assessments_history_idx ON public.aigas_re_assessments(tenant_id,asset_id,created_at DESC,id DESC);
-CREATE FUNCTION public.aigas_re_preserve_assessment() RETURNS trigger LANGUAGE plpgsql AS $$
-BEGIN RAISE EXCEPTION 'Risk assessments are append-only'; END;
+CREATE FUNCTION public.aigas_re_reject_history_mutation() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN RAISE EXCEPTION 'Risk history rows are append-only'; END;
 $$;
-CREATE TRIGGER aigas_re_assessments_append_only BEFORE UPDATE OR DELETE ON public.aigas_re_assessments FOR EACH ROW EXECUTE FUNCTION public.aigas_re_preserve_assessment();
-REVOKE ALL ON public.aigas_re_assets,public.aigas_re_assessments FROM PUBLIC;
-REVOKE ALL ON FUNCTION public.aigas_re_preserve_assessment() FROM PUBLIC;
+CREATE TRIGGER aigas_re_assessments_append_only BEFORE UPDATE OR DELETE ON public.aigas_re_assessments FOR EACH ROW EXECUTE FUNCTION public.aigas_re_reject_history_mutation();
+CREATE TRIGGER aigas_re_asset_revisions_append_only BEFORE UPDATE OR DELETE ON public.aigas_re_asset_revisions FOR EACH ROW EXECUTE FUNCTION public.aigas_re_reject_history_mutation();
+REVOKE ALL ON public.aigas_re_assets,public.aigas_re_asset_revisions,public.aigas_re_assessments FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.aigas_re_reject_history_mutation() FROM PUBLIC;
 ALTER TABLE public.aigas_re_assets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.aigas_re_asset_revisions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.aigas_re_assessments ENABLE ROW LEVEL SECURITY;
 -- Like Kernel, no browser/Data API grants or permissive RLS policies.
 -- Runtime role review is required; server membership checks remain mandatory.

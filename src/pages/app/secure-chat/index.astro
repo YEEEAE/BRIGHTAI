@@ -35,7 +35,7 @@ const config = authConfig();
             <p>لا تُحفظ الرسائل في قاعدة البيانات. لا يتوفر حاليًا نموذج اجتاز اعتماد المنطقة وشروط عدم التدريب.</p>
           </div>
           <ol class="messages" data-messages aria-live="polite" aria-relevant="additions text"></ol>
-          <p class="send-error" data-send-error role="alert" hidden></p>
+          <div class="send-error" data-send-error role="alert" hidden><p data-send-error-text></p><button type="button" data-retry-send hidden>إعادة التحقق من النماذج</button></div>
           <form class="composer" data-composer>
             <label for="chat-message">رسالتك</label>
             <textarea id="chat-message" name="message" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required></textarea>

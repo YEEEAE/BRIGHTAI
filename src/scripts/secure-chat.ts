@@ -12,6 +12,8 @@ const message = root.querySelector<HTMLTextAreaElement>('#chat-message')!;
 const model = root.querySelector<HTMLSelectElement>('[data-model]')!;
 const messageList = root.querySelector<HTMLOListElement>('[data-messages]')!;
 const sendError = root.querySelector<HTMLElement>('[data-send-error]')!;
+const sendErrorText = root.querySelector<HTMLElement>('[data-send-error-text]')!;
+const retrySend = root.querySelector<HTMLButtonElement>('[data-retry-send]')!;
 const sendButton = root.querySelector<HTMLButtonElement>('[data-send]')!;
 const cancelButton = root.querySelector<HTMLButtonElement>('[data-cancel]')!;
 const signOut = root.querySelector<HTMLButtonElement>('[data-sign-out]')!;
@@ -28,7 +30,8 @@ function clearPrivate() {
   message.value = '';
   messageList.replaceChildren();
   sendError.hidden = true;
-  sendError.textContent = '';
+  sendErrorText.textContent = '';
+  retrySend.hidden = true;
   root.querySelector('[data-role]')!.textContent = '';
   root.querySelector('[data-connection]')!.textContent = 'يلزم التحقق من الدخول';
   selectedTenant = '';
@@ -67,7 +70,7 @@ async function api(path: string, method = 'GET', body?: object, signal?: AbortSi
   const data = await response.json();
   if (!response.ok) {
     const error = new Error(data.message || 'تعذر إكمال الطلب.');
-    Object.assign(error, { status: response.status, unauthorized: response.status === 401 });
+    Object.assign(error, { status: response.status, code: data.code, unauthorized: response.status === 401 });
     throw error;
   }
   return data;
@@ -115,20 +118,35 @@ async function load(requested?: string) {
   }
 
   const data = await api('models');
+  applyModelAvailability(data);
   chatArea.hidden = false;
   login.hidden = true;
-  stateTitle.textContent = 'لا يوجد نموذج معتمد ومهيأ';
-  status.textContent = data.message;
+}
+
+function applyModelAvailability(data: { models: Array<{ id: string; label?: string }>; available: boolean; message: string; usage?: { configuredMessageCharacters?: number } }) {
+  const options = data.models.map(item => new Option(item.label || item.id, item.id));
+  model.replaceChildren(...(options.length ? options : [new Option('لا يوجد نموذج متاح', '')]));
+  model.disabled = options.length === 0;
+  const maxLength = data.usage?.configuredMessageCharacters || 4000;
+  message.maxLength = maxLength;
+  root.querySelector('[data-count]')!.textContent = `${Array.from(message.value).length} / ${maxLength}`;
   root.querySelector('[data-model-status]')!.textContent = data.message;
-  model.replaceChildren(new Option('لا يوجد نموذج متاح', ''));
-  model.disabled = data.models.length === 0;
+  stateTitle.textContent = data.available ? 'النماذج المعتمدة' : 'لا يوجد نموذج معتمد ومهيأ';
+  status.textContent = data.message;
+}
+
+async function refreshModels() {
+  const data = await api('models');
+  applyModelAvailability(data);
+  sendError.hidden = true;
+  retrySend.hidden = true;
 }
 
 async function run(task: () => Promise<void>) {
   if (busy) return;
   busy = true;
   root.setAttribute('aria-busy', 'true');
-  root.querySelectorAll<HTMLButtonElement>('[data-retry], [data-sign-out], [data-new-chat]').forEach(button => button.disabled = true);
+  root.querySelectorAll<HTMLButtonElement>('[data-retry], [data-retry-send], [data-sign-out], [data-new-chat]').forEach(button => button.disabled = true);
   try { await task(); }
   catch (error) {
     const value = error as Error & { unauthorized?: boolean };
@@ -137,22 +155,24 @@ async function run(task: () => Promise<void>) {
   finally {
     busy = false;
     root.removeAttribute('aria-busy');
-    root.querySelectorAll<HTMLButtonElement>('[data-retry], [data-sign-out], [data-new-chat]').forEach(button => button.disabled = false);
+    root.querySelectorAll<HTMLButtonElement>('[data-retry], [data-retry-send], [data-sign-out], [data-new-chat]').forEach(button => button.disabled = false);
   }
 }
 
 function updateCount() {
-  root.querySelector('[data-count]')!.textContent = `${message.value.length} / 4000`;
+  root.querySelector('[data-count]')!.textContent = `${Array.from(message.value).length} / ${message.maxLength || 4000}`;
 }
 
-root.querySelector('[data-retry]')!.addEventListener('click', () => void run(() => load(selectedTenant || undefined)));
+root.querySelector('[data-retry]')!.addEventListener('click', () => void run(() => selectedTenant ? refreshModels() : load()));
+retrySend.addEventListener('click', () => void run(refreshModels));
 root.querySelector('[data-new-chat]')!.addEventListener('click', () => {
   controller?.abort();
   message.value = '';
   messageList.replaceChildren();
   root.querySelector<HTMLElement>('[data-empty]')!.hidden = false;
   sendError.hidden = true;
-  sendError.textContent = '';
+  sendErrorText.textContent = '';
+  retrySend.hidden = true;
   updateCount();
   message.focus();
 });
@@ -206,11 +226,14 @@ composer.addEventListener('submit', event => {
     })
     .catch(error => {
       if ((error as Error).name === 'AbortError') {
-        sendError.textContent = 'أُوقف الطلب قبل إرسال النص إلى أي مزود.';
-        status.textContent = 'أُوقف الطلب.';
+        sendErrorText.textContent = 'انقطع انتظار الواجهة؛ لا يمكن تأكيد ما إذا كان الخادم استلم الطلب. لا يوجد نموذج معتمد حاليًا، لذلك لا يرسل الخادم النص إلى مزود.';
+        retrySend.hidden = false;
+        sendError.hidden = false;
+        status.textContent = 'توقف انتظار الواجهة؛ تحقق من توفر النموذج قبل المحاولة مجددًا.';
       } else {
         const value = error as Error & { unauthorized?: boolean };
-        sendError.textContent = `${value.message} مسودتك لم تُحفظ.`;
+        sendErrorText.textContent = `${value.message} بقيت المسودة في الحقل ولم تُحفظ.`;
+        retrySend.hidden = false;
         sendError.hidden = false;
         status.textContent = 'لم يصل رد من نموذج.';
       }

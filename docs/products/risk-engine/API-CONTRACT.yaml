@@ -1,4 +1,4 @@
-# Local foundation /app/api/risk-engine/ is documented in docs/RISK-ENGINE-DEVELOPMENT.md.
+# Local foundation APIs /app/api/risk-engine/ (assets, assessments, revisions) are documented in docs/RISK-ENGINE-DEVELOPMENT.md.
 # The /v1/risk/ paths below remain future proposals.
 # AIGAS Risk Engine — Proposed OpenAPI Contract. NO ENDPOINT IS VERIFIED OR DEPLOYED.
 # example.invalid is intentionally non-routable; values null mean owner decision required.

@@ -42,7 +42,8 @@ local_foundation:
   neon_migration_applied: false
   real_neon_authenticated_flow_verified: false
   method: draft-likelihood-impact-v1
-  scope_ar: سجل حالات ونسخ وتقييم قاعدي مسبب وتاريخ محفوظ؛ ليس RE-02 الهجين أو منظومة مخاطر مكتملة
+  scope_ar: سجل أصول قابل للبحث والتصفية ونسخ محفوظة، تقييم قاعدي مسبب، مقارنة النسخ، ومؤشرات مشتقة من قاعدة البيانات؛ ليس RE-02 الهجين أو منظومة مخاطر مكتملة
+  follow_up_slice: APPEND_ONLY_ASSET_REVISIONS_DB_SUMMARY_AND_FILTERS_LOCAL_ONLY
   capability_coverage:
     RE-01: PARTIAL_LOCAL_SLICE
     RE-02: RULES_ONLY_DRAFT_SUBSET

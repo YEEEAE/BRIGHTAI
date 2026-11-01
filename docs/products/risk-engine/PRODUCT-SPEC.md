@@ -8,9 +8,9 @@
 
 ## 0. قاعدة الحقيقة والمصادر
 
-هذه وثيقة مواصفات **مستهدفة**، وليست دليلًا على منتج يعمل أو خدمة منشورة أو امتثال معتمد. مصدر المتطلبات الأساسي `docs/MASTER-PROJECT-BLUEPRINT.md` §03.5 (`RE-01`–`RE-05`)، ثم `docs/PRODUCT-MASTER-CATALOG.yaml` (`AIGAS-RE`)، ووثائق المنصة والخصوصية والتراخيص. أسماء واجهات الـAPI في هذا المجلد **مقترحات** ولا تمثل Endpoints عاملة.
+هذه وثيقة مواصفات **مستهدفة**، وليست دليلًا على منتج متاح أو خدمة منشورة أو امتثال معتمد. مصدر المتطلبات الأساسي `docs/MASTER-PROJECT-BLUEPRINT.md` §03.5 (`RE-01`–`RE-05`)، ثم `docs/PRODUCT-MASTER-CATALOG.yaml` (`AIGAS-RE`)، ووثائق المنصة والخصوصية والتراخيص. واجهات `/v1/risk/` في هذا المجلد **مقترحات**؛ المسارات المحلية الفعلية موثقة في `docs/RISK-ENGINE-DEVELOPMENT.md` ولا تعني توفرها على الدومين أو اكتمال المنتج.
 
-**الدليل الحالي من المستودع `YEEEAE/BRIGHTAI`، فرع `main` عند المراجعة:** صفحة `/products/risk-engine/` تُولّد عبر `src/pages/products/[product].astro`، وتعرض مصفوفة احتمال × أثر تعليمية في `src/components/ProductExperience.astro`، مع أقسام شرح في `ProductContentExtension.astro`؛ لا يوجد دليل من شجرة المصدر المستعرضة على API Risk Engine تشغيلية أو خدمة تقييم تُصدر قرارات مؤسسية فعليًا. ملف `kernel/README.md` تاريخي ولا يُستخدم لإثبات جاهزية منظومة تشغيلية. **حالة التشغيل التجاري: `NOT_VERIFIED`؛ تفعيل تجربة الـ48 ساعة: `UNAVAILABLE`.**
+**الحالة المصدرية الحالية:** توجد صفحة تعريف عامة ومثال تعليمي، إضافة إلى شريحة لوحة محلية في `/app/risk-engine/` مع APIs خادمية للأصول والتقييمات وسجل نسخ الأصول. الشريحة تستخدم Kernel للهوية والعضوية، وتحفظ تقييمًا يدويًا حتميًا وفق مصفوفة `draft-likelihood-impact-v1`. هذا لا يثبت تشغيل Neon أو توفر API على الدومين أو قرارات مؤسسية معتمدة. **حالة التشغيل التجاري: `NOT_VERIFIED`؛ تفعيل تجربة الـ48 ساعة: `UNAVAILABLE`.**
 
 ## 1. التعريف والمشكلة والقيمة
 
@@ -156,7 +156,7 @@ flowchart TD
 | الصنف | الحالة الحالية | الدليل |
 |---|---|---|
 | صفحة عامة ومصفوفة تعليمية | `SOURCE_PRESENT / RUNTIME_NOT_INDEPENDENTLY_VERIFIED` | ملفات Astro المشار إليها |
-| سجل أصول وتقييمات حقيقي | `PLANNED / NOT_VERIFIED` | لا عقود تشغيلية مثبَتة ضمن شجرة المصدر التي روجعت |
+| سجل أصول وتقييمات | `PARTIAL_LOCAL_SLICE / NEON_NOT_VERIFIED` | شريحة محلية موثقة في `docs/RISK-ENGINE-DEVELOPMENT.md`؛ قاعدة البيانات الحية بلا جداول Risk Engine مفحوصة |
 | منهج وعتبات واعتماد فعلي | `PLANNED / NOT_VERIFIED` | متطلبات `RE-02` و`RE-03` وتوقيع المعايير غير موجود |
 | خدمة API مؤسسية | `UNAVAILABLE / NO_DEPLOYED_ENDPOINT_VERIFIED` | `API-CONTRACT.yaml` مقترح |
 | تجربة 48 ساعة | `UNAVAILABLE` | صفحة `/pricing/` تنص على عدم التفعيل |
