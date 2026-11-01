@@ -277,3 +277,18 @@ related_documents:
   - 48H-TRIAL-SPEC.md
   - ACCEPTANCE-AND-EVIDENCE.md
   - ../../MASTER-PROJECT-BLUEPRINT.md
+
+# Narrow local laboratory evidence; does not promote the product/release state above.
+local_starter_foundation:
+  inspected_on: '2026-11-01'
+  route: /app/firewall/
+  state: SOURCE_AND_ISOLATED_POSTGRES_VERIFIED
+  operational_state: PARTIAL
+  scope: FIXED_SYNTHETIC_TEXT_RULE_LAB_ONLY
+  documentation: docs/FIREWALL-DEVELOPMENT.md
+  migration: migrations/0002_aigas_firewall.sql
+  neon_migration_applied: false
+  authenticated_browser_journey: NOT_VERIFIED
+  provider_integration: NOT_IMPLEMENTED
+  commercial_entitlement_activated: false
+  release_approval: NOT_GRANTED

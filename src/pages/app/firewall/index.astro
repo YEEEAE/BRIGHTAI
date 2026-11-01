@@ -1,0 +1,25 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { authConfig } from '../../../server/kernel/auth.mjs';
+import '../../../styles/firewall.css';
+export const prerender = false;
+const config = authConfig();
+---
+<AppLayout title="مختبر Firewall Starter">
+ <section class="kernel firewall" data-firewall data-auth-url={config?.base ?? ''}>
+  <div class="page-heading"><div><p class="overline">02 / FIREWALL STARTER</p><h1>جرّب السياسة.<span>وشاهد سبب القرار.</span></h1><p class="intro">مختبر قواعد محدودة يعمل من الخادم على نصوص اصطناعية. لا يتصل بنموذج ذكاء اصطناعي.</p></div><span class="connection">مختبر تأسيسي</span></div>
+  <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة مساحة العمل عبر Kernel ←</a></div><button type="button" data-reload>تحديث</button></section>
+  <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel؛ لا تُعرض بيانات خاصة بدونه.</p></noscript>
+  <div data-private hidden>
+   <section class="panel"><label for="fw-workspace">المؤسسة</label><select id="fw-workspace" data-workspace></select><p data-scope></p></section>
+   <div class="fw-counts" aria-label="عدادات القرارات المحفوظة"><article class="panel"><bdi>ALLOW</bdi><strong data-count="ALLOW">—</strong></article><article class="panel"><bdi>BLOCK</bdi><strong data-count="BLOCK">—</strong></article><article class="panel"><bdi>REDACT</bdi><strong data-count="REDACT">—</strong></article></div>
+   <div class="fw-columns">
+    <section class="panel"><p class="overline">01 / POLICY</p><h2>قواعد المؤسسة</h2><p>تطابق حرفي لا يراعي حالة الأحرف اللاتينية. الحجب يسبق التنقيح ثم السماح. دون قواعد مفعّلة يُحجب الفحص.</p><div data-rules></div><form data-create-rule hidden><label for="fw-template">إضافة قاعدة ثابتة</label><select id="fw-template" name="template"><option value="public">سماح: معلومة عامة</option><option value="identifier">تنقيح: DEMO-ID-1234</option><option value="prohibited">حجب: DEMO-BLOCK</option></select><button type="submit">إضافة القاعدة للمؤسسة</button></form><p data-role></p></section>
+    <section class="panel"><p class="overline">02 / SYNTHETIC LAB</p><h2>مختبر النص الاصطناعي</h2><p>استخدم بيانات مصطنعة فقط. متن النص لا يُحفظ في سجل القرارات.</p><div class="fw-examples"><button type="button" data-example="معلومة عامة عن حوكمة الذكاء الاصطناعي">بيانات عامة</button><button type="button" data-example="معرّف اختباري DEMO-ID-1234 فقط">معرّف افتراضي</button><button type="button" data-example="محتوى اختباري DEMO-BLOCK">محتوى محظور</button></div><form data-evaluate><label for="fw-text">النص الاصطناعي</label><textarea id="fw-text" name="text" rows="5" maxlength="4000" required autocomplete="off" spellcheck="false"></textarea><button type="submit">فحص من الخادم</button></form><div class="fw-result" data-result role="status" aria-live="polite">شغّل مثالًا بعد إضافة القواعد المناسبة.</div></section>
+   </div>
+   <section class="panel"><div class="section-heading"><div><p class="overline">03 / DECISION LOG</p><h2>آخر 10 قرارات</h2></div><div><label for="fw-filter">تصفية القرار</label><select id="fw-filter" data-filter><option value="">كل القرارات</option><option>ALLOW</option><option>BLOCK</option><option>REDACT</option></select></div></div><p>بيانات وصفية فقط: الوقت والقرار والسبب ومرجع القاعدة ونسختها. ليس Ledger موقعًا أو دليلًا غير قابل للتعديل.</p><ol class="fw-decisions" data-decisions></ol></section>
+  </div>
+  <p class="notice">الحماية ضمن هذا المختبر فقط، ولا تغطي تطبيقات غير متكاملة. لا Proxy أو تحليل دلالي أو DLP شامل أو موافقات بشرية في هذه الدفعة. لا اشتراك أو تجربة 48 ساعة مفعّلة.</p>
+ </section>
+</AppLayout>
+<script src="../../../scripts/firewall.ts"></script>

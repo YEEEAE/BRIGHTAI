@@ -1,5 +1,19 @@
 # Project Mind — BrightAI
 
+## [2026-11-01] — تأسيس مختبر Firewall Starter بقواعد خادم محدودة
+### تم التنفيذ
+- أُضيف `/app/firewall/` وAPI قواعد/فحص محمي بهوية Kernel وعضوية المؤسسة؛ OWNER/ADMIN للإضافة والتفعيل/التعطيل، وMEMBER للعرض والفحص فقط. لا نظام دخول أو Analytics أو مزود AI أو تفعيل تجاري.
+- ثلاث قوالب ثابتة للسماح/حجب DEMO-BLOCK/تنقيح DEMO-ID-1234، مع نسخ للقواعد وأولوية الحجب وفشل آمن عند غياب/فساد السياسة أو فشل حفظ القرار. السجل metadata فقط وآخر 10 مع تصفية وعدادات DB.
+- Neon MCP تعذر تفويضه؛ فحص SQL مباشر READ ONLY أثبت جداول Kernel الأربع وغياب جداول Firewall. ترحيل `0002` محلي للمراجعة فقط ولم يُطبّق على Neon؛ إذن Kernel السابق لا يشمله.
+### الملفات المتأثرة
+- `src/server/firewall/`، `src/pages/app/{firewall,api/firewall}/`، `src/scripts/firewall.ts`، `src/styles/firewall.css`، `src/layouts/AppLayout.astro`.
+- `migrations/0002_aigas_firewall.sql`، `tests/firewall*.test.mjs`، `docs/FIREWALL-DEVELOPMENT.md`، سجل خصائص Firewall.
+### التحقق
+- build وTypeScript: PASS؛ Kernel/Firewall unit+HTTP: 10 PASS؛ اختبار تكامل PostgreSQL محلي معزول: 1 PASS لحفظ القواعد وتغيّر القرار والعزل والصلاحيات وخصوصية السجل وفشل الحفظ.
+- Chrome DevTools غير موثق على 360/1440px: PASS لغياب overflow وAnalytics وإخفاء البيانات؛ API دون هوية: 401. رحلة مستخدم Neon حقيقي: NOT RUN.
+### النتيجة
+- **الحالة:** PARTIAL تشغيلياً؛ مصدر المختبر والتحقق المحلي منفذان. يلزم هدف DB معتمد وتطبيق الترحيل ومراجعة runtime role ومعالجة تحقق Origin/المستخدم الحقيقي قبل ادعاء التشغيل المتكامل. لا تغيير `.env` أو إعدادات Auth أو الموقع التسويقي، ولا commit/push/deploy.
+
 ## [2026-11-01] — تطبيق ترحيل Kernel على الفرع الحالي بإذن المالك
 ### تم التنفيذ
 - طبّق `0001_aigas_kernel.sql` على `production` / `br-young-bird-b43proeb` في `young-frog-60183055` بأمر المالك الصريح؛ ألغي انتظار فرع التطوير لهذا الترحيل.
