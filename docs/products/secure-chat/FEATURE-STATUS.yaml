@@ -47,6 +47,12 @@ source_evidence:
 - path: src/components/ProductContentExtension.astro
   scope: secure-chat educational text
   kind: SOURCE_PRESENT_EDUCATIONAL_ONLY
+- path: src/pages/app/secure-chat/index.astro
+  scope: authenticated local foundation UI; provider unavailable
+  kind: SOURCE_PRESENT_LOCAL_UNVERIFIED
+- path: src/pages/app/api/secure-chat/
+  scope: membership-gated model listing and fail-closed message endpoint
+  kind: SOURCE_PRESENT_LOCAL_UNVERIFIED
 - path: kernel/README.md
   scope: historical runtime claims
   kind: NOT_ACCEPTABLE_AS_RUNTIME_EVIDENCE
@@ -54,7 +60,7 @@ truth_rules:
   approved_requirement_is_not_implementation: true
   source_code_is_not_runtime_verification: true
   mock_chat_is_not_ai_provider_call: true
-  api_endpoints_are_proposed_only: true
+  api_endpoints_are_not_deployed_or_operationally_verified: true
   firewall_paid_license_not_required_for_kernel_basics: true
   no_training_requirement_is_non_waivable: true
 features:
@@ -591,3 +597,17 @@ acceptance_traceability:
   no_operational_features_working_claimed: true
 update_policy: غيّر PLANNED إلى WORKING فقط برقم إصدار وبيئة ودليل قابل للمراجعة وموافقة صاحب الصلاحية. لا تغيّر حالة عامة
   بسبب نجاح اختبار الواجهة التعليمية.
+local_foundation_snapshot:
+  date: '2026-11-01'
+  status: PARTIAL_SOURCE_IMPLEMENTATION_NOT_OPERATIONALLY_VERIFIED
+  implemented:
+  - صفحة /app/secure-chat/ مرتبطة بـ Neon Auth وعضوية Kernel من الخادم.
+  - قائمة نماذج لا تعرض نموذجًا عند غياب اعتماد موثق؛ واجهة RTL لجلسة مؤقتة لا تخزن المحتوى.
+  - نقطة إرسال تتحقق من الهوية والعضوية وإتاحة المنتج والـ Origin والطول، ثم ترفض دون مزود معتمد وتسجل حدث Kernel ثابتًا بلا محتوى.
+  - المشاركة والتصدير والملفات غير متاحة في الواجهة.
+  limitations:
+  - لا مزود أو نموذج أو منطقة معالجة ثبت اعتمادها وشروط عدم التدريب؛ لا اتصال خارجي ولا رد AI حقيقي.
+  - لا حفظ جلسات أو رسائل، ولا حصص/ميزانية أو فحص DLP للمحتوى.
+  - لم يُضف ترحيل؛ فحص Neon READ ONLY وجد فرع production فقط وجداول Kernel الأساسية.
+  verification_status: NOT_VERIFIED
+  operational_readiness: NOT_VERIFIED

@@ -1,0 +1,56 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import '../../../styles/secure-chat.css';
+import { authConfig } from '../../../server/kernel/auth.mjs';
+export const prerender = false;
+const config = authConfig();
+---
+<AppLayout title="Secure Chat">
+  <section class="secure-chat" data-secure-chat data-auth-url={config?.base ?? ''}>
+    <aside class="chat-sidebar" aria-label="جلسات المحادثة">
+      <div class="sidebar-brand"><span class="sidebar-mark" aria-hidden="true">◈</span><div><bdi>Secure Chat</bdi><small>مساحة مؤسسية</small></div></div>
+      <button type="button" class="new-chat" data-new-chat>＋ <span>محادثة جديدة</span></button>
+      <p class="sidebar-label">الجلسات</p>
+      <div class="session-list" data-session-list><p>لا توجد جلسات محفوظة.</p></div>
+      <div class="sidebar-foot">الجلسة الحالية مؤقتة في هذه الصفحة.</div>
+    </aside>
+    <div class="chat-main">
+      <header class="chat-header"><div><p class="overline">AIGAS / PRIVATE WORKSPACE</p><h1>محادثة مؤسسية</h1></div><span class="chat-state" data-connection>يلزم التحقق من الدخول</span></header>
+      <section class="access-panel" aria-labelledby="access-title">
+        <div><p class="overline">حالة الوصول</p><h2 id="access-title" data-state-title>التحقق من الهوية والإعداد</h2><p role="status" aria-live="polite" data-status>لا تُعرض بيانات المؤسسة قبل التحقق من عضوية Kernel.</p></div>
+        <div class="access-actions"><button type="button" data-retry>إعادة المحاولة</button><button type="button" data-sign-out hidden>تسجيل الخروج</button></div>
+      </section>
+      <form class="login-form" data-login hidden>
+        <h2>دخول مساحة العمل</h2><p>استخدم حساب Neon Auth الخاص بك.</p>
+        <label for="secure-email">البريد الإلكتروني</label><input id="secure-email" name="email" type="email" autocomplete="username" required maxlength="254" />
+        <label for="secure-password">كلمة المرور</label><input id="secure-password" name="password" type="password" autocomplete="current-password" required maxlength="128" />
+        <button type="submit">تسجيل الدخول</button>
+      </form>
+      <div class="workspace-switch" data-workspace-wrap hidden><label for="secure-workspace">المؤسسة</label><select id="secure-workspace" data-workspace></select><span data-role></span></div>
+      <div class="chat-grid" data-chat-area hidden>
+        <section class="conversation" aria-label="محتوى المحادثة">
+          <div class="empty-chat" data-empty>
+            <span class="empty-glyph" aria-hidden="true">◈</span>
+            <h2>ابدأ جلسة مؤقتة</h2>
+            <p>لا تُحفظ الرسائل في قاعدة البيانات. لا يتوفر حاليًا نموذج اجتاز اعتماد المنطقة وشروط عدم التدريب.</p>
+          </div>
+          <ol class="messages" data-messages aria-live="polite" aria-relevant="additions text"></ol>
+          <p class="send-error" data-send-error role="alert" hidden></p>
+          <form class="composer" data-composer>
+            <label for="chat-message">رسالتك</label>
+            <textarea id="chat-message" name="message" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required></textarea>
+            <div class="composer-meta"><span id="message-limit" data-count>0 / 4000</span><span id="privacy-note">لا ترسل بيانات حساسة في هذه المرحلة.</span></div>
+            <div class="composer-actions"><button type="button" class="cancel-send" data-cancel hidden>إيقاف الطلب</button><button type="submit" data-send>إرسال</button></div>
+          </form>
+        </section>
+        <aside class="chat-details" aria-label="إعدادات الجلسة">
+          <div class="detail-block"><p class="overline">النموذج</p><label for="chat-model">نموذج معتمد</label><select id="chat-model" data-model disabled><option>لا يوجد نموذج متاح</option></select><p data-model-status>لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة.</p></div>
+          <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>سجل الأمن يحفظ حدثًا وصفيًا ثابتًا دون نص الرسالة.</li></ul></div>
+          <div class="detail-block usage"><p class="overline">حدود الاستخدام</p><p>لا توجد حصة أو رسوم محددة في هذه النسخة. المشاركة والتصدير والملفات غير متاحة.</p></div>
+        </aside>
+      </div>
+      <noscript><p class="access-panel">يلزم JavaScript للتحقق من Neon Auth. لا تُحمّل بيانات خاصة بدونه.</p></noscript>
+    </div>
+  </section>
+</AppLayout>
+<script src="../../../scripts/secure-chat.ts"></script>

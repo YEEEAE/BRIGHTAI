@@ -8,13 +8,14 @@ export const products = [
   { slug: 'risk-engine', name: 'Risk Engine', wave: 2, benefit: 'تسجيل استخدامات الذكاء الاصطناعي وتقييم مخاطرها.' },
   { slug: 'secure-chat', name: 'Secure Chat', wave: 2, benefit: 'مساحة محادثة مؤسسية محكومة بالسياسات.' },
 ];
-// Register only implemented, protected product routes after verification.
-const implementedRoutes = new Set();
+// Register only routes with server-side access checks. This does not claim operational readiness.
+const implementedRoutes = new Set(['secure-chat']);
 export function productStates(access) {
   return products.map(p => {
     const state = access.find(a => a.product_slug === p.slug)?.status ?? 'FOUNDATION';
     const available = implementedRoutes.has(p.slug) && state === 'ENABLED';
-    return { ...p, state, label: !implementedRoutes.has(p.slug) ? 'قيد التأسيس' : state === 'ENABLED' ? 'متاح للمؤسسة' : 'غير متاح للمؤسسة', href: available ? `/app/${p.slug}/` : null };
+    const label = !implementedRoutes.has(p.slug) ? 'قيد التأسيس' : state === 'ENABLED' && p.slug === 'secure-chat' ? 'واجهة التأسيس؛ لا يوجد نموذج متاح' : state === 'ENABLED' ? 'متاح للمؤسسة' : 'غير متاح للمؤسسة';
+    return { ...p, state, label, href: available ? `/app/${p.slug}/` : null };
   });
 }
 export function selectMembership(memberships, requested) {

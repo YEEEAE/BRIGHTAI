@@ -1,5 +1,24 @@
 # Project Mind — BrightAI
 
+## [2026-11-01] — تأسيس محلي لـ Secure Chat مع إيقاف الإرسال الآمن
+### تم التنفيذ
+- أُضيف `/app/secure-chat/` بتسجيل Neon Auth، اختيار مؤسسة من عضويات Kernel، واجهة RTL لمسودة مؤقتة ورسائل وأخطاء وإلغاء؛ لا يحفظ سجل محادثة.
+- أُضيف API لقائمة النماذج والإرسال، يتحقق من الهوية والعضوية وتفعيل المنتج وOrigin وحد الرسالة؛ لا يوجد اعتماد موثق لمزود/منطقة/No-Training، لذلك القائمة فارغة والإرسال يُرفض قبل أي اتصال خارجي.
+- رفض الإرسال المسجل يكتب حدث Kernel ثابتًا بلا متن. المشاركة والتصدير والملفات غير متاحة. لا ترحيل أو تعديل إعدادات `.env`.
+- Neon MCP READ ONLY أكد فرع `production` فقط وجداول Kernel الأساسية دون جداول Secure Chat؛ لم يُنفّذ أي SQL تغييري.
+### الملفات المتأثرة
+- `src/pages/app/secure-chat/`، `src/pages/app/api/secure-chat/`، `src/scripts/secure-chat.ts`، `src/server/secure-chat/service.mjs`، `src/styles/secure-chat.css`
+- `src/server/kernel/core.mjs`، `src/layouts/AppLayout.astro`، `src/styles/kernel.css`، `docs/products/secure-chat/FEATURE-STATUS.yaml`
+### التحقق
+- `npm run build`: PASS؛ `git diff --check`: PASS.
+- معاينة المتصفح وطلبات HTTP: NOT RUN؛ تشغيل preview على localhost رُفض بـ`EPERM`، وChrome DevTools مشغول.
+- اختبارات آلية: NOT RUN. لا يثبت البناء أو قراءة المخطط جاهزية تشغيلية.
+### النتيجة
+- **الحالة:** PARTIAL محليًا؛ لا نموذج أو رد AI حقيقي، ولا حفظ اختياري أو حصص أو DLP.
+### ملاحظات / مشاكل مفتوحة
+- يلزم اعتماد ومراجعة شروط مزود/نموذج/منطقة/عدم تدريب، ثم تنفيذ adapter آمن وفحوص تكامل معزولة. لا إعداد تجريبي معزول في Neon حاليًا؛ لا تُرحّل إلى الإنتاج.
+- لم تُتحقق رحلة تسجيل الدخول أو الواجهة على 360/1440px بسبب تعذر تشغيل preview.
+
 ## [2026-11-01] — تأسيس Risk Engine بمصفوفة مسودة وتاريخ تقييمات
 ### تم التنفيذ
 - أُضيف `/app/risk-engine/` لسجل حالات AI وإضافتها وتعديلها وتقييمها وعرض التاريخ؛ OWNER/ADMIN للكتابة وMEMBER للقراءة بهوية وعضويات Kernel من الخادم.
