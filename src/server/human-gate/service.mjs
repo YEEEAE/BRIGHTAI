@@ -1,3 +1,4 @@
+import { recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
@@ -27,7 +28,8 @@ export function createHumanGateService(transact=transaction) {
     const title=text(body.title,120),description=text(body.description),reason=text(body.reason);
     if(body.operation_scope!=='INTERNAL_DEMO_NOTE')throw new KernelError(400,'INVALID_SCOPE','المتاح فقط نشر ملاحظة داخلية تجريبية.');
     const request=(await db.query('INSERT INTO public.aigas_hg_requests(id,tenant_id,requester_id,title,description,reason,operation_scope) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *',[randomUUID(),tenantId,identity.userId,title,description,reason,body.operation_scope])).rows[0];
-    await record(`human_gate.request.created:${request.id}`);return {request,persisted:true};
+    await record(`human_gate.request.created:${request.id}`);
+    await recordProductEvent(db,identity,tenantId,{source:'human-gate',event_type:'human_gate.request.created',policy_version:'human-gate-separation-v1',metadata_json:{synthetic:true,request_ref:request.id,operation_scope:request.operation_scope},idempotency_key:`request:${request.id}`});return {request,persisted:true};
    }
    if(operation==='list'){
     const rows=(await db.query(`SELECT r.*,d.id AS decision_id,d.decision,d.reviewer_id,d.reason AS decision_reason,d.decided_at FROM public.aigas_hg_requests r LEFT JOIN public.aigas_hg_decisions d ON d.tenant_id=r.tenant_id AND d.request_id=r.id WHERE r.tenant_id=$1 AND r.status=$2 ORDER BY r.created_at DESC,r.id DESC LIMIT 26 OFFSET $3`,[tenantId,status,(page-1)*25])).rows;
@@ -43,14 +45,16 @@ export function createHumanGateService(transact=transaction) {
     const reason=text(body.reason);
     const decision=(await db.query('INSERT INTO public.aigas_hg_decisions(id,tenant_id,request_id,requester_id,reviewer_id,decision,reason) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *',[randomUUID(),tenantId,id,request.requester_id,identity.userId,body.decision,reason])).rows[0];
     await db.query('UPDATE public.aigas_hg_requests SET status=$3 WHERE tenant_id=$1 AND id=$2',[tenantId,id,body.decision==='APPROVE'?'APPROVED':'REJECTED']);
-    await record(`human_gate.decision.${body.decision.toLowerCase()}:${id}`);return {decision,persisted:true};
+    await record(`human_gate.decision.${body.decision.toLowerCase()}:${id}`);
+    await recordProductEvent(db,identity,tenantId,{source:'human-gate',event_type:'human_gate.decision.recorded',policy_version:'human-gate-separation-v1',metadata_json:{synthetic:true,request_ref:id,decision_ref:decision.id,decision:decision.decision,operation_scope:request.operation_scope},idempotency_key:`decision:${decision.id}`});return {decision,persisted:true};
    }
    if(request.requester_id!==identity.userId)throw new KernelError(403,'FORBIDDEN','تنفيذ العملية التجريبية متاح لمقدم الطلب فقط.');
    const approval=(await db.query("SELECT id FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE' AND reviewer_id<>$3",[tenantId,id,identity.userId])).rows[0];
    if(request.status!=='APPROVED'||!approval||request.operation_scope!=='INTERNAL_DEMO_NOTE')throw new KernelError(409,'APPROVAL_REQUIRED','العملية متوقفة؛ يلزم قرار موافقة محفوظ من مراجع مستقل.');
    if(request.completed_at)return {request,alreadyCompleted:true};
    const completed=(await db.query('UPDATE public.aigas_hg_requests SET completed_at=now() WHERE tenant_id=$1 AND id=$2 RETURNING *',[tenantId,id])).rows[0];
-   await record(`human_gate.demo_note.completed:${id}`);return {request:completed,persisted:true};
+   await record(`human_gate.demo_note.completed:${id}`);
+   await recordProductEvent(db,identity,tenantId,{source:'human-gate',event_type:'human_gate.demo_note.completed',policy_version:'human-gate-separation-v1',metadata_json:{synthetic:true,request_ref:id,operation_scope:request.operation_scope},idempotency_key:`completion:${id}`});return {request:completed,persisted:true};
   });
  };
 }

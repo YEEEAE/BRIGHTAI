@@ -1,3 +1,4 @@
+import { recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
@@ -122,13 +123,14 @@ export function createFirewallService(transact = transaction) {
           if (inserted.rowCount !== 1) throw new Error('DECISION_NOT_SAVED');
           // Kernel audit is required and atomic with the metadata-only decision.
           await audit(db, identity, tenantId, enforced ? 'firewall.guard.evaluated' : 'firewall.lab.evaluated');
+          await recordProductEvent(db, identity, tenantId, {source:'firewall',event_type:'firewall.decision.recorded',policy_version:result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v1',metadata_json:{synthetic:true,decision_ref:id,action:result.action,mode:enforced?'GUARD':'LAB',rule_ref:result.rule_id,rule_version:result.rule_version},idempotency_key:`decision:${id}`});
           const decision = { id, action: result.action, reason: result.reason, rule_id: result.rule_id, rule_version: result.rule_version,
             created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB' };
           if (enforced) return { decision, tenantId, forwardText: result.output };
           return { ...decision, rule_name: result.rule_name, output: result.output, persisted: true, execution_status: 'NOT_EXECUTED', external_action_executed: false };
         } catch (error) {
           if (enforced && uniqueName(error)) throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
-          if (['42P01', '42703', '42501'].includes(error?.code)) throw error;
+          if (error instanceof KernelError || ['42P01', '42703', '42501'].includes(error?.code)) throw error;
           throw new KernelError(503, 'REQUIRED_AUDIT_UNAVAILABLE', 'تعذر تأكيد حفظ القرار وتدقيق Kernel؛ لم يُرسل الطلب إلى مزود AI.');
         }
       }

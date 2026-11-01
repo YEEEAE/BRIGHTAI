@@ -23,10 +23,12 @@ status_taxonomy:
   NOT_VERIFIED: حالة الإثبات الحالية غير كافية لإعلان العمل
 implementation_truth:
   requirement_approved_is_not_runtime_proof: true
-  all_operational_features_currently_not_verified: false
-  local_foundation_status: PARTIAL
-  local_foundation_evidence: Audit/2026-11-01-ledger-foundation.md
-  local_foundation_scope: Synthetic events persisted in isolated local PostgreSQL; scoped list/detail, SHA-256 consistency check and JSON export. Not a released product.
+  all_operational_features_currently_not_verified: true
+  local_foundation_status: IMPLEMENTED_NOT_VERIFIED
+  historical_foundation_evidence: Audit/2026-11-01-ledger-foundation.md
+  current_source_contract: docs/LEDGER-DEVELOPMENT.md
+  current_revision_checks: NOT_RUN_OWNER_REQUEST
+  local_foundation_scope: Internal product event adapters, tenant SHA-256 v2 chain, source-filtered UI, authorized audited prefix JSON export and standalone offline verifier. Implemented locally without execution; not released.
   neon_user_journey_verified: false
   ledger_migration_applied_to_neon: false
   full_ld_02_and_ld_06_complete: false

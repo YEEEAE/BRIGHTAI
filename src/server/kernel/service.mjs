@@ -1,3 +1,4 @@
+import { recordProductEvent } from '../ledger/writer.mjs';
 import { randomUUID } from 'node:crypto';
 import { database, transaction } from './db.mjs';
 import { env } from './env.mjs';
@@ -59,8 +60,12 @@ export async function tenantMembers(identity, requested) {
 }
 export async function audit(db, identity, tenantId, action) {
   // No request bodies, tokens, names, email addresses or AI content in this log.
-  const result = await db.query('INSERT INTO public.aigas_audit_events (id, tenant_id, actor_user_id, action) SELECT $1, m.tenant_id, m.user_id, $4 FROM public.aigas_memberships m WHERE m.tenant_id = $2 AND m.user_id = $3', [randomUUID(), tenantId, identity.userId, action]);
+  const auditId = randomUUID();
+  const result = await db.query('INSERT INTO public.aigas_audit_events (id, tenant_id, actor_user_id, action) SELECT $1, m.tenant_id, m.user_id, $4 FROM public.aigas_memberships m WHERE m.tenant_id = $2 AND m.user_id = $3', [auditId, tenantId, identity.userId, action]);
   if (result.rowCount !== 1) throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر حفظ سجل الإدارة؛ لم تكتمل العملية.');
+  if (action === 'workspace.created' || action.startsWith('kernel.')) {
+    await recordProductEvent(db, identity, tenantId, {source:'kernel',event_type:'kernel.audit.recorded',policy_version:'kernel-administration-v1',metadata_json:{synthetic:false,audit_ref:auditId,action},idempotency_key:`audit:${auditId}`});
+  }
 }
 export async function createWorkspace(identity, name) {
   const validated = workspaceName(name);

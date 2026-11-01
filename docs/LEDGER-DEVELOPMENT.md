@@ -1,61 +1,57 @@
-# Ledger foundation — local implementation
+# AIGAS Ledger — local implementation contract
 
-Status on 2026-11-01: **PARTIAL operationally**. `/app/ledger/` and its protected server paths are implemented. A disposable local PostgreSQL test proves event creation, committed readback, digest comparison, JSON export, permissions and isolation. A real Neon user journey is **NOT RUN**. No commercial availability, signature, legal proof or compliance claim follows from these checks.
+Status 2026-11-01: **IMPLEMENTED_NOT_VERIFIED / PARTIAL operationally**. This revision was implemented without running tests, build, lint, typecheck, HTTP smoke checks or browsers, as requested. Earlier foundation evidence is historical and does not verify this revision. No deployment or remote mutation occurred.
 
-Pre-final slice on 2026-11-01 (local only): the event list also supports a bounded `q` search over event UUID and synthetic decision reference, migration `0003` rejects ordinary row updates/deletes with a trigger, and missing schema/database privilege failures have explicit 503 codes. This is append-only behavior for the foundation path, not protection from a database owner who can alter or disable the trigger.
+## Database and access
 
-## Configuration and migration
+Neon MCP read-only inspection on 2026-11-01 found only the default `production` branch (`br-young-bird-b43proeb`) in `young-frog-60183055`, database `neondb`. The four public tables are Kernel's tenants, memberships, product access and basic audit. Ledger tables do not exist. There is no approved dedicated development target; **0003 has not been applied**.
 
-- Reuses Kernel's existing `DATABASE_URL`, `NEON_AUTH_BASE_URL` (or `NEON_AUTH_URL`) and `NEON_AUTH_JWKS_URL` (or `NEON_JWKS_URL`). Existing `.env` is ignored and was left unchanged. No storage, Data API or AI provider is needed for this slice.
-- Neon MCP failed authorization. Direct read-only catalog inspection found the four Kernel tables and no `aigas_ld_events`. The currently linked branch is production; **0003 was not applied remotely**. Previous permission for Kernel's 0001 does not authorize this migration.
-- Review `migrations/0003_aigas_ledger.sql`, then apply on an approved isolated development database with Kernel 0001. Firewall 0002 is not a dependency. Do not run migrations automatically during build/startup.
-- Review runtime DB role/grants before deployment. RLS is enabled without browser/Data API policies or PUBLIC grants. Tests use a local table owner; they do not prove production role least privilege. Scope checks run server-side for every operation and lock membership during the transaction.
-- Auth remains Kernel's verified EdDSA/JWKS flow and active Auth-directory membership. Workspace selection chooses an existing membership; it cannot create authority. No new login or trusted-domain configuration is introduced. Local Neon login still needs the previously documented Origin/user-journey validation.
+`migrations/0003_aigas_ledger.sql` is a fresh-install migration requiring 0001. The application also uses 0006's administrative product grants. Apply ordered migrations only to an explicitly approved development target; never during build/startup or against production by inference. An installation with an older 0003 needs a separately reviewed upgrade preserving original hashes; this file is not an in-place upgrade.
 
-## Implemented routes and permissions
+The existing server database connection and Neon Auth are reused; no new provider, secret, Auth setting or dependency. Every route resolves identity and tenant membership on the server. An active Ledger grant and ENABLED access record are required. OWNER/ADMIN may create synthetic events and export; MEMBER may list, inspect and verify. Review runtime roles: SELECT/INSERT on events, SELECT only on evidence requirements, and the existing Kernel audit privileges. RLS and PUBLIC revocation remain; no browser/Data API grants are added. Row mutation and TRUNCATE triggers reject ordinary changes, while a database owner can still disable them.
 
-All routes require a Kernel Bearer session. `workspace` is an optional membership selector, not a trusted tenant claim; tenant scope is resolved from the database. Responses are private/no-store and noindex, without Analytics. Mutating requests require same-origin JSON and are streamed with an 8192-byte cap.
+## Existing API routes
 
-| Route | Method | Kernel role | Behavior |
-|---|---|---|---|
-| `/app/api/ledger/events/` | GET | OWNER / ADMIN / MEMBER | Scoped list; `q` (up to 80 chars, UUID/decision reference only), `type`, `period=all/1/7/30`, `page=1..100`; 25 rows/page |
-| `/app/api/ledger/events/` | POST | OWNER / ADMIN | Synthetic event with `{event_type,scenario}` only |
-| `/app/api/ledger/events/{eventId}/` | GET | OWNER / ADMIN / MEMBER | One event from the selected membership |
-| `/app/api/ledger/events/{eventId}/verify/` | POST | OWNER / ADMIN / MEMBER | Recalculate stored event, or compare optional `candidate` to the persisted digest |
-| `/app/api/ledger/events/{eventId}/export/` | GET | OWNER / ADMIN | Single JSON attachment, profile, integrity result and explicit limitations |
+| Route | Method | Behavior |
+|---|---|---|
+| `/app/api/ledger/events/` | GET | Tenant-scoped list, 25/page, up to 100 pages; `source`, `type`, `classification=synthetic/operational`, `period=all/1/7/30`, `q` up to 80 chars over event/operation UUID references |
+| `/app/api/ledger/events/` | POST | OWNER/ADMIN synthetic lab only: `{event_type,scenario,idempotency_key}`; key is UUID and reused for retries |
+| `/app/api/ledger/events/{eventId}/` | GET | Scoped details, individual hash result and chain-prefix result |
+| `/app/api/ledger/events/{eventId}/verify/` | POST | Recompute event/chain; optional candidate compares against the stored digest with the stored tenant |
+| `/app/api/ledger/events/{eventId}/export/` | GET | OWNER/ADMIN JSON attachment, after Kernel audit commits; audit action includes target UUID |
 
-No update/delete route, production event ingestion, independent verifier, signed bundle, idempotency/billing, Legal Hold, retention engine or encrypted fallback is implemented. The proposed `/v1/ledger/` API contract remains a future full-product target; these foundation endpoints are deliberately smaller.
+Responses stay private/no-store and noindex. JSON POSTs require same origin and an 8KB body cap. No public ingestion endpoint accepts source, actor, tenant or mandatory-evidence flags from a client. The proposed full `/v1/ledger/` contract remains a future target.
 
-Creation accepts types `synthetic.test.created` / `synthetic.review.recorded` and scenarios `integrity-check` / `access-check`. The server generates event UUID, tenant, source `ledger.synthetic-lab`, policy label `foundation-v1`, actor, UTC timestamp, synthetic decision UUID and digest. The policy label is an implementation profile, not an approved customer policy. Metadata is exactly `synthetic=true`, enumerated `scenario`/`outcome`, and `decision_ref` UUID. No arbitrary text, prompts, conversations, tokens or secrets can be supplied for persistence. This phase records synthetic events honestly; it does not backfill fake security activity or wire optional product integrations.
+## Internal event integration
 
-Creation and the minimal Kernel audit marker share a transaction. No persistence receipt is returned before commit; audit failure rolls back the event. Export writes a minimal Kernel audit marker. Kernel's basic audit implementation remains independent of Ledger tables and commercial access.
+`recordProductEvent` runs inside the originating product transaction, after product permission checks. `appendEvent` repeats the membership check. Source and actor come from the trusted service call; time is generated by the database server. Metadata uses source-specific scalar allowlists; names, descriptions, reasons, prompts, conversations and full asset snapshots are not copied. Evidence is not sent to AI or Analytics or used for training.
 
-## Digest profile: `aigas-ledger-sha256-v1`
+| Source | Recorded operations | Classification |
+|---|---|---|
+| `firewall` | Persisted evaluation/enforcement-path decision with rule/version reference | Synthetic: current Firewall accepts only synthetic input; decision is not provider delivery |
+| `human-gate` | Request, independent decision, demo-note completion | Synthetic: current scope is `INTERNAL_DEMO_NOTE` |
+| `risk-engine` | Asset creation/revision and assessment, UUID/version and level only | Application operation; does not attest to truth of supplied asset data |
+| `kernel` | `workspace.created` and `kernel.*` audit operations | Application operation; references independent Kernel audit UUID |
+| `ledger.synthetic-lab` | Explicit lab event creation | Synthetic |
 
-UTF-8 `JSON.stringify` of an array with this fixed order:
+Idempotency is scoped by tenant/source and the persisted operation UUID/version. A repeated key returns the existing event only if actor, type, policy and minimized metadata match; conflicting reuse fails. No historical rows are backfilled or fabricated.
+
+Without a Ledger grant, optional projection is skipped and basic Kernel audit remains mandatory and independent. With Ledger enabled, event insertion and the original operation commit together; an insertion failure rolls back both. `aigas_ld_evidence_requirements` is initially empty and has no client management endpoint. Only an authorized operator may configure it from an approved policy. A matching requirement with unavailable Ledger blocks that operation: there is **no approved encrypted fallback** in this release. The requirement's policy version is included in hashed metadata. Do not seed requirements or commercial grants without owner authorization.
+
+## Chain and portable export
+
+New events use `aigas-ledger-sha256-chain-v2`. Appends serialize per tenant with a transaction advisory lock, increment a bigint sequence and include the previous hash. Database uniqueness, same-tenant previous-hash FK and append-only triggers support the application path. The legacy v1 SHA-256 calculation is retained for explicitly versioned historical data; no historical hash is recomputed or upgraded.
+
+The hash is lowercase hexadecimal SHA-256 of UTF-8 JSON.stringify of:
 
 ```text
-[profile, tenant_id, event_id, source, event_type, policy_version,
- {synthetic, scenario, outcome, decision_ref}, created_at_UTC_ISO_milliseconds, created_by]
+[hash_profile, tenant_id, event_id, source, event_type, policy_version,
+ metadata_json_with_sorted_keys, created_at_UTC_ISO_milliseconds,
+ created_by, sequence_as_decimal_string, previous_hash_or_null, idempotency_key]
 ```
 
-Metadata keys are reconstructed in the exact order above, independently of JSONB order. The digest itself is excluded. Timestamp precision is milliseconds in SQL and serialization. SHA-256 is lower-case hex; comparison uses `timingSafeEqual`.
+List/detail/export verify the unfiltered prefix from sequence 1 through the selected event. Export includes all prefix events, canonical hash input strings, versioned manifest and hash references. The technical safety bound is 10000 events per verification/export, not a commercial quota; larger prefixes yield INDETERMINATE and export 413 rather than a truncated bundle. A structurally valid but inconsistent chain may be exported for investigation with an explicit MISMATCH result.
 
-Verification returns `MATCH`, `MISMATCH` or `INDETERMINATE` (malformed/unsupported event). Infrastructure/auth failures are non-2xx, and the interface says verification could not complete. Optional `candidate` must contain exactly the seven non-tenant, non-hash event fields; its hash is compared against the **stored** hash, never a caller-provided hash. Candidate tenant comes from the scoped stored row. The UI's tamper check only changes an in-memory synthetic outcome; it never writes back the original event. Migration `0003` also installs a trigger rejecting ordinary `UPDATE` and `DELETE`; a database owner can still alter the schema or disable the trigger.
+The standalone `public/downloads/aigas-ledger-verifier.mjs` has no project dependencies, network or credentials. Download it and the JSON from the UI, then invoke `node aigas-ledger-verifier.mjs ledger-EVENT_ID.json` offline using Node 22. It recomputes inputs, hashes, sequence and predecessor links and checks the manifest; it does not trust the server's `verification` label. The command was not executed in this implementation task.
 
-An administrator able to rewrite both row and digest can defeat this consistency check. It cannot prove origin independently, completeness, deletion/reordering, clock correctness, legal admissibility or decision correctness. **LD-02 and LD-06 remain partial**, LD-03/LD-05 advanced controls and LD-07 integrations remain deferred. No blockchain, PKI, key rotation or independent offline tool is included.
-
-## Verification and exact changed files
-
-Evidence: `Audit/2026-11-01-ledger-foundation.md`.
-
-```sh
-node --test tests/ledger.test.mjs
-# Use a fresh disposable local database with no preexisting schemas/data:
-LEDGER_TEST_DATABASE_URL=postgresql://127.0.0.1:55483/postgres node --test tests/ledger-db.test.mjs
-npm run build
-```
-
-Current pre-final checks: build PASS; Ledger unit 3 PASS; disposable PostgreSQL 14 integration 1 PASS (synthetic-only); local standalone HTTP `/app/` 302, `/app/ledger/` 200, unauthenticated Ledger API 401 with private/no-store and noindex. Signed-in Neon journey remains NOT RUN. A generic TypeScript command is not a manifest script and is omitted here.
-
-This slice changed `src/server/ledger/{core,service}.mjs`, `src/pages/app/ledger/index.astro`, `src/scripts/ledger.ts`, `migrations/0003_aigas_ledger.sql`, `tests/ledger{,-db}.test.mjs`, this document and `.agents/mind/01-mind-latest.md`. No dependencies, environment values, shared protected marketing files or remote resources changed.
+MATCH proves consistency of the supplied prefix only. It cannot establish source or clock truth, independently anchored completeness, omitted tail detection, decision correctness, legal admissibility or resistance to an administrator rewriting the entire chain and hashes. No external signature, key lifecycle, retention policy, Legal Hold or permanent archive is implemented. LD-02/LD-03/LD-05/LD-06 remain limited by these stated boundaries and operational approval.

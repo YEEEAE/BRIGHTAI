@@ -24,7 +24,7 @@ export function createHandler(auth=authenticate, service=operate) {
       return Response.json(data,{status:operation==='create'?201:200,headers:{...headers,...extra}});
     } catch(error) {
       const known=error instanceof KernelError;
-      const setupCode=error?.code==='42P01'?'LEDGER_SCHEMA_MISSING':error?.code==='42501'?'LEDGER_DB_PRIVILEGE':null;
+      const setupCode=['42P01','42703'].includes(error?.code)?'LEDGER_SCHEMA_MISSING':error?.code==='42501'?'LEDGER_DB_PRIVILEGE':null;
       const message=known?error.message:setupCode==='LEDGER_SCHEMA_MISSING'?'مخطط Ledger غير مهيأ؛ يحتاج المشغّل مراجعة الترحيل المعتمد. لم يُؤكد الحفظ أو التحقق.':setupCode==='LEDGER_DB_PRIVILEGE'?'صلاحيات قاعدة البيانات لا تسمح بعملية Ledger؛ يلزم مراجعة إعداد دور الخادم. لم يُؤكد الحفظ أو التحقق.':'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Ledger. لم يُؤكد الحفظ أو التحقق.';
       return Response.json({code:known?error.code:setupCode||'LEDGER_UNAVAILABLE',message},{status:known?error.status:503,headers});
     }
