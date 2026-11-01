@@ -1,5 +1,19 @@
 # Project Mind — BrightAI
 
+## [2026-11-01] — تأسيس Human Gate بمراجعة مستقلة وإنفاذ عملية داخلية
+### تم التنفيذ
+- أُضيف `/app/human-gate/` لإنشاء طلبات وتصفية PENDING/APPROVED/REJECTED وعرض القرار؛ هوية وعضويات Kernel من الخادم، وOWNER/ADMIN يراجعان طلبات غيرهما فقط.
+- جدولان وقرار نهائي واحد بقفل صف ومعاملة؛ العملية الثابتة INTERNAL_DEMO_NOTE لا تُكمل إلا بعد موافقة مستقلة محفوظة، مع إكمال غير متكرر وتدقيق Kernel ذري مستقل عن Ledger.
+- Neon MCP تعذر تفويضه؛ SQL مباشر READ ONLY أثبت جداول Kernel الأربع وغياب Human Gate. ترحيل `0004` محلي للمراجعة ولم يُطبّق على Neon؛ لا تغيير Auth أو `.env` أو الموقع التسويقي أو اعتماديات.
+### الملفات المتأثرة
+- `src/server/human-gate/`، `src/pages/app/{human-gate,api/human-gate}/`، `src/scripts/human-gate.ts`، `src/styles/human-gate.css`، تنقل `AppLayout.astro`.
+- `migrations/0004_aigas_human_gate.sql`، `tests/human-gate*.test.mjs`، `docs/HUMAN-GATE-DEVELOPMENT.md`، سجل خصائص المنتج، `Audit/2026-11-01-human-gate-foundation.md`.
+### التحقق
+- build وTypeScript: PASS؛ Kernel/Firewall/Ledger/Human Gate unit+HTTP: 15 PASS؛ PostgreSQL 16 محلي معزول + service/HTTP: 1 PASS للعزل وفصل المهام والتزامن والإنفاذ وتراجع الحفظ عند فشل التدقيق. هوية اختبار HTTP محقونة وليست دخول Neon حقيقيًا.
+- Playwright MCP غير موثق على 360/1440px: PASS لغياب overflow وAnalytics وإخفاء البيانات و401/no-store. واجهة المستخدم الموثق ورحلة حسابين Neon: NOT RUN.
+### النتيجة
+- **الحالة:** PARTIAL تشغيلياً؛ يلزم هدف ترحيل معتمد ومراجعة runtime role وحل Origin واختبار حسابين فعليين. HG-01/02/04/05 جزئية وHG-03 مؤجلة؛ لا تصريح خارجي أو تفعيل تجاري أو commit/push/deploy.
+
 ## [2026-11-01] — تأسيس سجل Ledger وفحص SHA-256 محدود
 ### تم التنفيذ
 - أُضيف `/app/ledger/` بجدول وتصفية نوع/فترة وصفحات وتفاصيل وإنشاء حدث اصطناعي موسوم وفحص بصمة وتصدير JSON؛ API يستخدم هوية Kernel وعضوية المؤسسة من الخادم. OWNER/ADMIN للإضافة والتصدير وMEMBER للعرض والفحص.

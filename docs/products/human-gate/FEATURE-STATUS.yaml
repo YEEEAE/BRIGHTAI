@@ -7,9 +7,26 @@ document:
   path: docs/products/human-gate/FEATURE-STATUS.yaml
   repository: YEEEAE/BRIGHTAI
   branch: main
-  review_mode: READ_ONLY_CODE_AND_DOCUMENT_REVIEW
+  review_mode: LOCAL_FOUNDATION_IMPLEMENTATION_WITH_LIMITED_VERIFICATION
   runtime_verified: false
   github_modified: false
+local_foundation:
+  date: '2026-11-01'
+  state: PARTIAL_RUNTIME_SETUP_REQUIRED
+  route: /app/human-gate/
+  scope: SINGLE_STAGE_INTERNAL_DEMO_NOTE_ONLY
+  evidence: Audit/2026-11-01-human-gate-foundation.md
+  development_guide: docs/HUMAN-GATE-DEVELOPMENT.md
+  migration: migrations/0004_aigas_human_gate.sql
+  migration_applied_to_neon: false
+  verified_local: PostgreSQL service and HTTP tests; unauthenticated browser only
+  neon_authenticated_user_journey: NOT_RUN
+  capability_scope:
+    HG-01: PARTIAL_CREATE_LIST_FIXED_SCOPE
+    HG-02: PARTIAL_SINGLE_STAGE_OWNER_ADMIN_AND_SOD
+    HG-03: DEFERRED_PENDING_NEVER_AUTO_APPROVES
+    HG-04: PARTIAL_PERSISTED_DECISION_AND_KERNEL_AUDIT
+    HG-05: PARTIAL_INTERNAL_DEMO_COMPLETION_ONLY
 product:
   id: AIGAS-HG
   name: AIGAS Human Gate

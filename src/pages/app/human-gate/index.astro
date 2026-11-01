@@ -1,0 +1,29 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { authConfig } from '../../../server/kernel/auth.mjs';
+import '../../../styles/human-gate.css';
+export const prerender=false;
+const config=authConfig();
+---
+<AppLayout title="المراجعة البشرية Human Gate">
+ <section class="kernel human-gate" data-human-gate data-auth-url={config?.base??''}>
+  <div class="page-heading"><div><p class="overline">04 / HUMAN GATE FOUNDATION</p><h1>مراجعة مستقلة.<span>قبل اكتمال العملية.</span></h1><p class="intro">طلب واحد، وقرار مسبب من مراجع آخر. المسار الحالي محصور في نشر ملاحظة داخلية تجريبية؛ لا ينفذ أي تصرف خارجي.</p></div><span class="connection">موافقة أحادية المرحلة</span></div>
+  <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الطلبات</button></section>
+  <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض بيانات المؤسسة.</p></noscript>
+  <div data-private hidden>
+   <section class="panel"><label for="hg-workspace">المؤسسة</label><select id="hg-workspace" data-workspace></select><p data-role></p><p>كل الأعضاء ينشئون الطلبات. المالك والمسؤول يراجعان طلبات غيرهما فقط. المؤسسة تُتحقق من عضويتها في الخادم.</p></section>
+   <section class="panel"><h2>طلب مراجعة جديد</h2><p id="hg-help">استخدم نصوصًا تجريبية غير حساسة فقط. لا تُدخل أسماء عملاء أو بيانات شخصية أو أسرارًا. يُحفظ الطلب معلقًا حتى مراجعة مستقلة.</p>
+    <form data-create class="hg-form" aria-describedby="hg-help">
+     <div><label for="hg-title">العنوان</label><input id="hg-title" name="title" required minlength="2" maxlength="120" /></div>
+     <div><label for="hg-scope">نطاق العملية</label><select id="hg-scope" name="operation_scope"><option value="INTERNAL_DEMO_NOTE">نشر ملاحظة داخلية تجريبية</option></select></div>
+     <div><label for="hg-description">وصف مختصر غير حساس</label><textarea id="hg-description" name="description" required minlength="2" maxlength="500" rows="3"></textarea></div>
+     <div><label for="hg-reason">سبب طلب المراجعة</label><textarea id="hg-reason" name="reason" required minlength="2" maxlength="500" rows="3"></textarea></div>
+     <button type="submit">إرسال للمراجعة</button>
+    </form>
+   </section>
+   <section class="panel"><h2>طلبات المؤسسة</h2><div class="hg-tabs" role="group" aria-label="تصفية حالة الطلب"><button type="button" data-filter="PENDING" aria-pressed="true">بانتظار المراجعة</button><button type="button" data-filter="APPROVED" aria-pressed="false">المعتمدة</button><button type="button" data-filter="REJECTED" aria-pressed="false">المرفوضة</button></div><p data-empty hidden>لا توجد طلبات في هذه الحالة.</p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div></section>
+  </div>
+  <p class="notice">التدقيق الأساسي مستقل عن Ledger. الموافقات المتعددة والتفويض والتصعيد وSLA والتوقيع الرسمي والتنبيهات الخارجية والتصريح العام للأنظمة الأخرى مؤجلة. هذه الدفعة لا تفعّل تجربة تجارية.</p>
+ </section>
+</AppLayout>
+<script src="../../../scripts/human-gate.ts"></script>
