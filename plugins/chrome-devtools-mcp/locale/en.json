@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Chrome DevTools MCP",
+    "description": "Connects the official Chrome DevTools MCP server so the agent can navigate pages, read console and network activity, run performance traces, and take screenshots in a real Chrome browser."
+  }
+}

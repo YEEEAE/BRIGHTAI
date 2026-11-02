@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Chrome DevTools MCP",
+    "description": "يربط خادم Chrome DevTools MCP الرسمي ليتحكّم الوكيل بمتصفح Chrome حقيقي: فتح الصفحات، قراءة الـconsole والشبكة، قياس الأداء، وأخذ لقطات الشاشة."
+  }
+}

@@ -1,0 +1,15 @@
+# Chrome DevTools MCP — official server from ChromeDevTools/chrome-devtools-mcp.
+# Tools are exposed as `mcp__chrome-devtools__<tool>`.
+- insert:
+    - id: chrome-devtools-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: chrome-devtools
+        transport: stdio
+        command: npx
+        args:
+          - '-y'
+          - 'chrome-devtools-mcp@1.12.0'
+          - '--no-usage-statistics'
+        toolCallTimeoutMs: 120000
+        failOnStartupError: false

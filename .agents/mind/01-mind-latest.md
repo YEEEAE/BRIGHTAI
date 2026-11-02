@@ -1,3 +1,21 @@
+## [2026-11-02] — Chrome DevTools MCP داخل DSH
+### تم التنفيذ
+- أُنشئت حزمة إعداد فقط `@local/chrome-devtools-mcp` في `plugins/chrome-devtools-mcp` تُدرج صف `@deepseek-ai/dsh-mcp-client` واحدًا؛ لا كود Harness جديد.
+- النقل stdio عبر `npx -y chrome-devtools-mcp@1.12.0 --no-usage-statistics` مع `toolCallTimeoutMs: 120000`؛ الإصدار مثبّت ومطابق لـ`latest` في registry وقت التركيب.
+- الأدوات تظهر باسم `mcp__chrome-devtools__<tool>`: تنقّل وصفحات، DOM و`evaluate_script`، console وشبكة، performance trace، لقطات شاشة وscreencast.
+- بيانات عرض en/ar وأيقونة أصلية ليست شعار Chrome وREADME يوضح المتطلبات والأعلام والحدود الأمنية وإرشاد التحقق.
+- أُعيد ضغط `01` بنقل عشرة سجلات 2026-10-31 إلى أعلى `02-mind-mid.md` بعد التحقق من حفظها.
+### الملفات المتأثرة
+- `plugins/chrome-devtools-mcp/{package.json,cordis.patch.yml,icon.svg,README.md,locale/{en,ar}.json}`
+- `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/@local/chrome-devtools-mcp}`
+- `.agents/mind/{01-mind-latest.md,02-mind-mid.md}`
+### التحقق
+- `install_bundle`: applied بلا warnings؛ `Config.listConfigs` يعيد صف `include:chrome-devtools-mcp` بحالة schema؛ الحزمة مرتبطة في `node_modules` ومدرجة في `dsh.profile.bundles`.
+- `mcp__chrome-devtools__list_pages`: PASS — عادت `about:blank`، أي أن العملية الفرعية stdio استجابت فعليًا، وليس مجرد تسجيل الصف.
+- JSON للـmanifest والـlocales وSVG: PASS. رسم بيانات العرض والأيقونة داخل Plugin Manager: NOT RUN — لا تحكم متصفح لهذه الصفحة.
+### النتيجة
+- **الحالة:** DONE للتركيب والاتصال ونداء الأداة؛ بيانات العرض البصرية PARTIAL / NOT VERIFIED. لا commit أو push أو نشر، ولا تغيير على موقع BRIGHTAI.
+
 ## [2026-11-02] — Usage & Stats: إحصاءات المحادثات والمعالج داخل DSH
 ### تم التنفيذ
 - أُنشئت حزمة `@local/usage-stats` في `plugins/usage-stats` وتسجّل صفحة `usage-stats` في `sidebar.panellist` و`main`، بواجهة en/ar/zh وRTL واحترام reduced-motion.
@@ -152,9 +170,10 @@
 - `/app/*` هو Node SSR دون prerender أو cache. تشخيص 404 للاستضافة الثابتة HISTORICAL حتى إعادة تحقق؛ لا تعديل استضافة أو DNS في المهمة.
 - الرئيسية/Hero/Constellation والهيدر محمية؛ شعار الدرع المعتمد فقط عبر brand.ts وBrandLogo.astro. GA4 العام في BaseLayout؛ لا محتوى منتج حساس في Analytics.
 - تحويلات `.html` وحقوق بيانات رسم الدماغ والاعتماد القانوني/التجاري وCWV/الفهرسة الفعلية بلا دليل إغلاق جديد.
-- DSH desktop: خمس حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
+- DSH desktop: ست حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader` و`@local/chrome-devtools-mcp`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `chrome-devtools-mcp` صف MCP واحد (stdio، `npx`، إصدار 1.12.0) وأدوات `mcp__chrome-devtools__*` مستدعاة فعليًا؛ يشغّل Chrome بملف مستخدم مستقل في `~/.cache/chrome-devtools-mcp`. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
 
 ## Historical Ledger
+- 2026-11-02: Chrome DevTools MCP بعقد إعداد فقط وstdio عبر `npx` بإصدار 1.12.0؛ التركيب PASS و`list_pages` PASS، ويشغّل Chrome مستقلًا. Rollover: نُقلت سجلات 2026-10-31 إلى أعلى `02`.
 - 2026-11-02: Paper Reader قارئ PDF في الشريط الأيمن مع PDF.js وأصل محفوظ وتمييز/ملاحظات وسؤال متعدد اللغات؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
 - 2026-11-02: نسخة Landmark Atlas داخل plugins/Codex؛ build و4 Node وWebGL للمشاهد الأربعة PASS؛ التثبيت ومدخل Codex الأصلي NOT VERIFIED.
 - 2026-11-02: Poster Workbench عرض ملصق داخل المحادثة بشيدر Harness وخط Host Grotesk وتصدير PNG؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
@@ -411,90 +430,3 @@
 - **الحالة:** PARTIAL؛ صفحة التسجيل وخدمة Neon جاهزتان محلياً، لكن اختبار المستخدم الحقيقي لم يكتمل.
 ### ملاحظات / مشاكل مفتوحة
 - الأصل الموثوق هو `https://brightai.live` فقط. مراجعة الموافقة الآلية رفضت إضافة `http://127.0.0.1:4321` لأنها توسّع سياسة Origin الدائمة؛ اختبار حساب حقيقي ينتظر نشر الصفحة على الأصل الموثوق أو تفويضاً منفصلاً للأصل المحلي.
-
-## [2026-10-31] — حركة وتفاعلات الداخل مع حماية الرئيسية
-### تم التنفيذ
-- أُكملت 26 مجموعة متطلبات من البرومبت التنفيذي المتاح عبر أدوات حركة أصلية معزولة، وتسلسل Kernel وتنقيح وموافقة ومسارات SVG وانتقالات منتجات مسماة؛ جميع الأمثلة تعليمية دون اتصال بخدمات.
-- أُضيفت هوية حركة للأركان والقطاعات ومسارات الصفحات المساندة وTOC ثابت ووقت قراءة تقريبي وقوائم مراجعة؛ النصوص القانونية ومصادر الرئيسية والملفات المشتركة المحمية محفوظة.
-- مستند «مقترحات التصميم والحركة لكل الصفحات» المشار إليه غير متاح كمرفق مستقل؛ مطابقة تفاصيله NOT VERIFIED. مرحلة الرئيسية مستثناة ومحظورة حسب الطلب الحالي؛ لا مكتبة أو تعديل خارجي.
-### الملفات المتأثرة
-- `src/components/{InteriorMotion,KernelSequence,RedactionDemo,PageMotionStudy,PageShell,InteriorController,ProductExperience,DecisionCircuit,SystemMap}.astro` و`src/scripts/interior-motion.ts` و`src/styles/interior-motion.css` وصفحات kernel/products.
-- `Audit/2026-10-31-advanced-motion.md` وأدلة JSON وفاحص `scripts/verify-advanced-motion.mjs`.
-### التحقق
-- build وTypeScript للسكربت وdiff-check: PASS؛ 87 معاينة/29 مساراً و29 دون JS، والتفاعلات وreduced-motion والانتقال الأصلي والرجوع: PASS. نص القانوني وHTML الرئيسية وبصمات المصادر المحمية: PASS.
-- Chrome DevTools: LCP محلي غير مخنوق 111ms وCLS 0؛ CSS gzip 13333 بايت (+1659) وJS جديد 3846 بايت. ليست قياسات إنتاج/INP/4G. فاحص المسارات الشامل FAIL عند 46 GET/HEAD لتحويلات `.html` القائمة؛ بقيت دون معالجة.
-### النتيجة
-- **الحالة:** DONE محلياً للمتطلبات المتاحة؛ PARTIAL لمطابقة المستند المنفصل الغائب. لا commit أو push أو نشر؛ معاينة الجلسة على 4395.
-
-## [2026-10-31] — تحديث خيارات التواصل
-### تم التنفيذ
-- أضفت واتساب كأول خيار تواصل مباشر على الرقم المحدد، وغيّرت بريد صفحة التواصل ورسالة النموذج إلى البريد الجديد.
-### الملفات المتأثرة
-- `src/pages/contact.astro`
-### التحقق
-- مراجعة diff و`git diff --check`: PASS؛ رابط واتساب والبريد الجديد مستخدمان في مواضع التواصل والنموذج، ولا بقايا للبريد السابق في الصفحة.
-### النتيجة
-- **الحالة:** DONE محلياً؛ لا commit أو push أو نشر.
-
-## [2026-10-31] — تصميم الداخل ومسارات القرار مع عزل الرئيسية
-### تم التنفيذ
-- طُبق MASTER PROMPT 02 على الداخل فقط وفق توجيه المالك: **لا تغيير لأي شيء في الرئيسية**؛ حفظت الهيدر والفوتر وBaseLayout وMotionController وConstellation وملفات CSS المشتركة. أقسام المحتوى الـ57 محفوظة.
-- أنشأت `interior.css` وInteriorController كتطوير معزول لـ29 صفحة داخلية: تكوينات منتجات وقطاعات وأدلة وقراءة وأداة استفسار؛ لا ClientRouter أو مكتبة أو تعقب جديد.
-- أضيف رسم Firewall مرتبط بالقرارات، ومقارنة دليل Ledger، وأمثلة محادثة جاهزة، ورسوم قطاعات، وبحث/تصفية/فراغ للأدلة، وتجهيز موضوع استفسار المنتجات والنشر؛ كلها تعليمية ولا تثبت تشغيل منتج أو سعر أو تجربة.
-### الملفات المتأثرة
-- `src/components/{PageShell,ProductExperience,DecisionCircuit,InteriorController,ScopeComposer,SectorDiagram}.astro` و`src/styles/interior.css` وصفحات docs/pricing/kernel/solutions.
-- `scripts/verify-interior-ui.mjs`، `Audit/2026-10-31-interior-creative-ui.md` وأدلة التحقق والأداء وحفظ الرئيسية المرتبطة.
-### التحقق
-- build وdiff-check: PASS؛ 29 مساراً × 360/768/1440px =87 معاينة، و29 دون JS، والبحث/الفراغ/الاختيارات/لوحة المفاتيح/reduced-motion/الرجوع: PASS. فاحص الواجهة السابق: 60 معاينة PASS.
-- حفظ HTML الرئيسية بايتياً وSHA-256 للمصادر المحمية: PASS. Semrush والمحتوى السابق لم يتغيرا.
-- Chrome DevTools traces وPlaywright: قياسات محلية فقط؛ CSS للعينات ~11.6–12KB gzip وJS ~1.9–2.7KB بعد الإضافة. لا ادعاء تحسن سرعة أو CWV إنتاج؛ INP/4G NOT VERIFIED.
-- فاحص المسارات الشامل FAIL عند تحويلات `.html` القائمة (46 GET/HEAD)، ولم تُعالج. لا نقص يمنع مراجعة الواجهة المحلية.
-### النتيجة
-- **الحالة:** DONE للتصميم المحلي؛ لا commit أو push أو نشر أو تعديل لوحة خارجية. المنتجات تبقى مخططة وغير متحققة تشغيلياً.
-
-## [2026-10-31] — أقسام جديدة للصفحات الداخلية ببحث Semrush السعودي
-### تم التنفيذ
-- توجيه المالك الحالي: **أضف أقساماً جديدة واحفظ المحتوى السابق؛ لا تعالج فجواته ولا تغيّر أي شيء في الرئيسية**. شمل الحفظ الهيدر والفوتر وBaseLayout وCSS المشترك.
-- أضفت 57 قسماً إلى 27 صفحة داخلية: منتجات وقطاعات وأركان ومعرفة وصفحات مساندة، بمسارات تعليمية ومقارنات وسيناريوهات وروابط سياقية. أضيف Article JSON-LD للأدلة الخمسة دون اختلاق خبير أو مراجعة بشرية.
-- Semrush `sa`: 27 عبارة، 8 صفوف حجم/KD، و19 عبارة Not Verified؛ related بالعربية والإنجليزية بلا بيانات، وSERP مخاطر AI أعاد 10 نتائج. القياسات والنية التحريرية منفصلتان في الأدلة؛ لا بيانات GSC أو توقع زيارات.
-### الملفات المتأثرة
-- `src/pages/` (18 ملفاً، إضافات فقط)، `src/components/{ContentExtension,ProductContentExtension,SectorContentExtension,PillarContentExtension,ArticleContext}.astro`.
-- `Audit/2026-10-31-saudi-content-additions.md` وملفات Semrush JSON/CSV ونتائج فحص الإضافات المرتبطة.
-### التحقق
-- build وdiff-check: PASS؛ UI: 60 معاينة، وتحقق الإضافات: 54 معاينة دون JS على 360/1440px، 27 صفحة و57 قسماً، بلا overflow. Article schema محلياً: PASS.
-- HTML الرئيسية مطابق بايتياً قبل/بعد، وSHA-256 للهيدر والفوتر وBaseLayout وCSS المشترك: PASS؛ لا أسطر محذوفة من الصفحات.
-- فاحص المسارات الشامل: FAIL عند 46 طلب GET/HEAD لتحويلات `.html` القائمة؛ لم تُعالج ضمن توجيه الإضافة فقط. فهرسة Google/CWV/الإنتاج NOT VERIFIED.
-### النتيجة
-- **الحالة:** DONE للإضافات المحلية؛ دون commit أو push أو نشر. اعتماد المراجعة التخصصية للمحتوى الجديد ما زال مطلوباً قبل النشر النهائي.
-
-## [2026-10-31] — استعادة هيرو الرئيسية حسب تصحيح المالك
-### تم التنفيذ
-- أعدت هيرو الرئيسية السابق بنصه «ذكاء اصطناعي… تثق به… وتحاسبه» ومكوّن Constellation ورسم الدماغ وحركته وتنسيقه المتجاوب؛ markup الهيرو مطابق للنسخة السابقة المحفوظة قبل إعادة التصميم.
-- أزلت تعديلات الهيرو الجديدة وعزلته عن حركة العنوان ووزن النص وحواف الأزرار الجديدة؛ بقية تحسينات الموقع محفوظة والهيدر دون تعديل.
-- **توجيه حالي ملزم:** لا تغيّر هيرو الرئيسية أو الهيدر. خريطة المنظومة باقية في صفحة المنتجات فقط. قياسات ولقطات الرئيسية في تقرير إعادة التصميم أصبحت HISTORICAL للهيرو المستبدل.
-### الملفات المتأثرة
-- `src/pages/index.astro`، `scripts/verify-creative-ui.mjs`، `Audit/2026-10-31-creative-ui-review.md`.
-### التحقق
-- `npm run build`: PASS؛ Playwright على 360/1440px: PASS للعنوان السابق وConstellation وغياب خريطة الهيرو وغياب overflow وأخطاء JavaScript؛ `git diff --check`: PASS.
-### النتيجة
-- **الحالة:** نجح محلياً؛ لا commit أو نشر.
-
-## [2026-10-31] — إعادة تصميم الواجهة ومسارات القرار التعليمية
-
-### تم التنفيذ
-- أعدت تكوين الرئيسية بخريطة HTML/SVG أصلية لـKernel والمنتجات الخمسة؛ لم تعد تحمل مشهد الجزيئات المشتق من المرجع، وملفاته القديمة محفوظة دون حذف.
-- أنشأت خمسة عروض مختلفة للمنتجات: قرارات حماية، مصفوفة مخاطر، مراحل موافقة، تسلسل دليل، ومحادثة تعليمية جاهزة؛ لا اتصال بمحرك أو موافقة أو توقيع أو نموذج فعلي.
-- حولت كتالوج المنتجات والمعرفة إلى فهارس تحريرية، وأضفت فهارس أقسام للمقالات وخرائط قطاعية ومعالجة مختلفة للأركان والأسعار والخدمات والصفحات المساندة.
-- أضفت نظام حركة أصلياً وSVG وأيقونات وtokens مع reduced-motion ومحتوى ظاهر بدون JS؛ لا اعتماديات جديدة أو ClientRouter. انتقال الوثائق الأصلي تحسين اختياري حسب دعم المتصفح.
-- **توجيه مالك حالي:** نسخ المكونات وإضافة مكتبات مسموحان عند الحاجة، لكن **لا تغيّر هيدر الرئيسية**. أُعيد Header.astro مطابقاً لـHEAD وعُزل عن تعديلات وزن المحتوى وحركة الروابط.
-### الملفات المتأثرة
-- `src/components/{SystemMap,ProductIcon,ProductExperience,MotionController}.astro`، `BaseLayout.astro`، `PageShell.astro`، `experience.css` و`tokens.json` وصفحات المنتجات/المعرفة/القطاعات/الأركان/الرئيسية/الأسعار.
-- `scripts/verify-creative-ui.mjs` و`Audit/2026-10-31-creative-ui-review.md` والأدلة المختصرة المرتبطة.
-### التحقق
-- `npm run build`: PASS. Playwright: 60 معاينة على 360/1440px، دون overflow أو pageerror؛ تفاعلات المنتجات ولوحة المفاتيح وreduced-motion وبدون JS: PASS. `git diff --check`: PASS.
-- SEO والروابط الأساسية اجتازت داخل فاحص المشروع؛ الفحص الكامل FAIL عند تحويلات `.html` القديمة (46 فحص GET/HEAD ترجع 404)، وهي مشكلة قائمة موثقة سابقاً ولم تُعدل في المهمة.
-- HTML الرئيسية gzip انخفض من 16180 إلى 5803 بايت؛ CSS الموقع gzip ارتفع من 4214 إلى 8564 بايت. قياسات LCP/CLS محلية غير مخنوقة فقط؛ لا قياس INP/4G أو تحقق إنتاج.
-### النتيجة
-- **الحالة:** نجح محلياً ضمن نطاق التصميم والاختبارات؛ لا commit أو push أو نشر.
-### ملاحظات / مشاكل مفتوحة
-- هيدر الرئيسية يجب أن يبقى كما هو في أي متابعة لهذه المهمة. المنتج الحقيقي والأسعار والامتثال غير متحققين، وتحويلات `.html` القديمة ما زالت مفتوحة. Playwright MCP كان مشغولاً؛ التحقق استخدم تثبيت Playwright المتاح محلياً مع Chrome منفصل.
