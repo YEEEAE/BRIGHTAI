@@ -2,9 +2,12 @@
 import ArticleContext from '../../components/ArticleContext.astro';
 import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
+import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
+const description = 'نموذج تعليمي لتوثيق مخاطر الذكاء الاصطناعي والآثار والضوابط والمالكين دون اختلاق درجات رسمية.';
+const article = articleStructuredData('تقييم مخاطر الذكاء الاصطناعي', description, Astro.url.pathname);
 ---
-<PageShell title="تقييم مخاطر الذكاء الاصطناعي | BRIGHTAI" description="نموذج تعليمي لتوثيق مخاطر الذكاء الاصطناعي والآثار والضوابط والمالكين دون اختلاق درجات رسمية." crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'تقييم المخاطر' }]}>
+<PageShell title="تقييم مخاطر الذكاء الاصطناعي | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'تقييم المخاطر' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">ابدأ بوصف الحالة</a><a href="#part-2">سجل الخطر والضابط</a><a href="#part-3">أمثلة على أسئلة المراجعة</a><a href="/docs/">← كل الأدلة</a></aside><article>
     <p class="eyebrow">ورقة عمل تعليمية · 31 أكتوبر 2026</p><h1>تقييم مخاطر الذكاء الاصطناعي</h1>
     <p class="lead">التقييم الجيد يشرح كيف قد يحدث الضرر، ومن قد يتأثر، وما الضابط الذي سيقلله. لا توجد درجة موحدة تصلح لكل الاستخدامات؛ اعتمد المنهج والمعايير مع الجهة المختصة في مؤسستك.</p>

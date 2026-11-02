@@ -2,9 +2,12 @@
 import ArticleContext from '../../components/ArticleContext.astro';
 import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
+import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
+const description = 'دليل عربي يشرح دورة حوكمة مخاطر الذكاء الاصطناعي من تحديد الاستخدام حتى المراجعة والتحسين.';
+const article = articleStructuredData('حوكمة الذكاء الاصطناعي في السعودية', description, Astro.url.pathname);
 ---
-<PageShell title="حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI" description="دليل عربي يشرح دورة حوكمة مخاطر الذكاء الاصطناعي من تحديد الاستخدام حتى المراجعة والتحسين." crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'حوكمة الذكاء الاصطناعي في السعودية' }]}>
+<PageShell title="حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'حوكمة الذكاء الاصطناعي في السعودية' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">دورة عمل من ست محطات</a><a href="#part-2">ماذا توثّق لكل استخدام؟</a><a href="/docs/">← كل الأدلة</a></aside><article>
     <p class="eyebrow">دليل تأسيسي · 31 أكتوبر 2026</p><h1>حوكمة الذكاء الاصطناعي في السعودية</h1>
     <p class="lead">حوكمة الذكاء الاصطناعي هي طريقة مؤسسية لتحديد من يملك الاستخدام، وما المخاطر التي قد تنتج عنه، وكيف تُعالج وتُراجع. البداية ليست شراء أداة؛ البداية فهم الحالة والقرار المتأثر بها.</p>

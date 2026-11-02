@@ -8,10 +8,16 @@ interface Props {
   title: string;
   description: string;
   robots?: string;
+  ogType?: 'website' | 'article';
 }
 
-const { title, description, robots = 'index, follow' } = Astro.props;
+const { title, description, robots: requestedRobots = 'index, follow', ogType = 'website' } = Astro.props;
+const sensitiveQueryKeys = new Set(['token', 'access_token', 'refresh_token', 'id_token', 'oauth_token', 'invite_token', 'reset_token', 'code', 'auth_code', 'state', 'invite', 'invitation', 'key', 'secret', 'client_secret', 'session', 'ticket', 'signature', 'credential', 'password', 'verification', 'challenge', 'email']);
+const hasSensitiveQuery = [...Astro.url.searchParams.keys()].some((key) => sensitiveQueryKeys.has(key.toLowerCase()));
+const isPrivateRoute = Astro.url.pathname.startsWith('/auth/');
+const robots = hasSensitiveQuery || isPrivateRoute ? 'noindex, nofollow' : requestedRobots;
 const canonical = new URL(Astro.url.pathname, 'https://brightai.live').href;
+if (robots.includes('noindex')) Astro.response.headers.set('X-Robots-Tag', robots);
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -45,7 +51,7 @@ const websiteSchema = {
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" type="image/png" sizes="192x192" href={brand.favicon} />
     <link rel="apple-touch-icon" sizes="180x180" href={brand.touchIcon} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="ar_SA" />
     <meta property="og:site_name" content="BRIGHTAI" />
     <meta property="og:title" content={title} />

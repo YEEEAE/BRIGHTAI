@@ -9,8 +9,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 interface Crumb { name: string; href?: string }
-interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string }
-const { title, description, crumbs, robots = 'index, follow' } = Astro.props;
+interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string; ogType?: 'website' | 'article'; structuredData?: Record<string, unknown> }
+const { title, description, crumbs, robots = 'index, follow', ogType = 'website', structuredData } = Astro.props;
 const family = Astro.url.pathname.split('/').filter(Boolean)[0] ?? 'home';
 const segment = Astro.url.pathname.split('/').filter(Boolean)[1] ?? 'index';
 // Opt in only the public editorial families; leave product and home styling alone.
@@ -33,8 +33,9 @@ if (reading) content = content.replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/g, (full, 
 const words = content.replace(/<(script|style|svg|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&[^;]+;/g, ' ').trim().split(/\s+/).length;
 const minutes = Math.max(1, Math.ceil(words / 180));
 ---
-<BaseLayout title={title} description={description} robots={robots}>
+<BaseLayout title={title} description={description} robots={robots} ogType={ogType}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   <Header />
   <main id="main" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}${publicContent ? ' public-content' : ''}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">

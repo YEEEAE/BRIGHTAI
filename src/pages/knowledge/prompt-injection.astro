@@ -2,14 +2,17 @@
 import ArticleContext from '../../components/ArticleContext.astro';
 import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
+import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
+const description = 'شرح عربي مبسط لهجمات Prompt Injection ومراحل التعامل مع المدخلات غير الموثوقة وحدود وسائل الحماية.';
+const article = articleStructuredData('Prompt Injection: افصل التعليمات الموثوقة عن المحتوى', description, Astro.url.pathname);
 ---
-<PageShell title="Prompt Injection وطبقات الحماية | BRIGHTAI" description="شرح عربي مبسط لهجمات Prompt Injection ومراحل التعامل مع المدخلات غير الموثوقة وحدود وسائل الحماية." crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'Prompt Injection' }]}>
+<PageShell title="Prompt Injection وطبقات الحماية | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'Prompt Injection' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">تدفق مبسط للمراجعة</a><a href="#part-2">طبقات دفاع تساعد على تقليل الخطر</a><a href="/docs/">← كل الأدلة</a></aside><article>
     <p class="eyebrow">شرح تقني · 31 أكتوبر 2026</p><h1>Prompt Injection: افصل التعليمات الموثوقة عن المحتوى</h1>
     <p class="lead">Prompt Injection محاولة لتمرير نص داخل مستند أو صفحة أو رسالة كي يدفع النموذج إلى تجاهل غرضه أو كشف معلومات أو تنفيذ فعل غير مقصود. لا يكفي وصف النص بأنه «غير موثوق»؛ يجب تصميم النظام بحيث لا تمنح قراءة المحتوى وحدها صلاحية.</p>
     <section class="block" id="part-1"><h2>تدفق مبسط للمراجعة</h2>
-      <div class="flow" aria-label="تدفق توضيحي للتعامل مع مدخلات الذكاء الاصطناعي"><div><strong>١. مدخل غير موثوق</strong><span>طلب، مستند، صفحة أو نتيجة استرجاع</span></div><b aria-hidden="true">←</b><div><strong>٢. فصل السياق</strong><span>تحديد المصدر والحدود وعدم اعتباره سياسة</span></div><b aria-hidden="true">←</b><div><strong>٣. فحص الإجراء</strong><span>تحقق من الصلاحية والمدخلات قبل أي أداة</span></div><b aria-hidden="true">←</b><div><strong>٤. مراجعة أو رفض</strong><span>تصعيد الأفعال الحساسة ومراقبة النتيجة</span></div></div>
+      <div class="flow" role="group" aria-label="تدفق توضيحي للتعامل مع مدخلات الذكاء الاصطناعي"><div><strong>١. مدخل غير موثوق</strong><span>طلب، مستند، صفحة أو نتيجة استرجاع</span></div><b aria-hidden="true">←</b><div><strong>٢. فصل السياق</strong><span>تحديد المصدر والحدود وعدم اعتباره سياسة</span></div><b aria-hidden="true">←</b><div><strong>٣. فحص الإجراء</strong><span>تحقق من الصلاحية والمدخلات قبل أي أداة</span></div><b aria-hidden="true">←</b><div><strong>٤. مراجعة أو رفض</strong><span>تصعيد الأفعال الحساسة ومراقبة النتيجة</span></div></div>
     </section>
     <section class="block" id="part-2"><h2>طبقات دفاع تساعد على تقليل الخطر</h2><ul class="list"><li>اعتبر المستندات ونتائج البحث ومدخلات المستخدم بيانات، لا تعليمات حاكمة.</li><li>لا تضع الأسرار في سياق النموذج إذا لم تكن ضرورية للمهمة.</li><li>طبّق صلاحيات الأدوات في طبقة موثوقة مستقلة عن مخرجات النموذج.</li><li>تحقق من المدخلات والوجهة ونطاق الفعل قبل استدعاء أي أداة.</li><li>اطلب مراجعة بشرية للأفعال ذات الأثر الخارجي أو غير القابلة للعكس.</li><li>اختبر حالات الهجوم وسجل النتائج، ثم حدّث الضوابط عند تغير النموذج أو الأدوات.</li></ul></section>
     <p class="note">المخطط تعليمي ولا يمثل بنية أو ضماناً أمنياً لمنتج متاح. لا توجد هنا خدمة AI Firewall تشغيلية مثبتة؛ وجود طبقة فحص لا يلغي الحاجة إلى عزل الصلاحيات والاختبار والمراجعة.</p>

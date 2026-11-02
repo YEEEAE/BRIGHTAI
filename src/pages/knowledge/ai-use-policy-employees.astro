@@ -2,9 +2,12 @@
 import ArticleContext from '../../components/ArticleContext.astro';
 import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
+import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
+const description = 'خطوات وجدول قرارات لمساعدة المنشآت على صياغة سياسة داخلية واضحة لاستخدام أدوات الذكاء الاصطناعي.';
+const article = articleStructuredData('سياسة استخدام الذكاء الاصطناعي للموظفين', description, Astro.url.pathname);
 ---
-<PageShell title="سياسة استخدام الذكاء الاصطناعي للموظفين | BRIGHTAI" description="خطوات وجدول قرارات لمساعدة المنشآت على صياغة سياسة داخلية واضحة لاستخدام أدوات الذكاء الاصطناعي." crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'سياسة الموظفين' }]}>
+<PageShell title="سياسة استخدام الذكاء الاصطناعي للموظفين | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'سياسة الموظفين' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">خطوات إعدادها</a><a href="#part-2">جدول قرار أولي</a><a href="#part-3">نص مختصر يمكن تكييفه</a><a href="/docs/">← كل الأدلة</a></aside><article>
     <p class="eyebrow">دليل إعداد سياسة · 31 أكتوبر 2026</p><h1>سياسة استخدام الذكاء الاصطناعي للموظفين</h1>
     <p class="lead">السياسة الفعالة تقول للموظف ما الذي يمكنه فعله، وما الذي يحتاج موافقة، وكيف يتصرف عند الخطأ. اكتبها بلغة تشغيلية، وعيّن مالكاً يراجعها مع تغير الأدوات والأنظمة.</p>
