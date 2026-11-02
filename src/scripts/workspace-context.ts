@@ -1,8 +1,6 @@
 import { createAuthClient, type VanillaBetterAuthClient } from '@neon/neon-js/auth';
 import { BetterAuthVanillaAdapter } from '@neon/neon-js/auth/vanilla/adapters';
-import { organizationClient } from 'better-auth/client/plugins';
-type WorkspaceBetterAuth = ReturnType<typeof import('better-auth/client').createAuthClient<{ plugins: [ReturnType<typeof organizationClient>] }>>;
-export type WorkspaceAuth = WorkspaceBetterAuth & { getJWTToken: () => Promise<string | null> };
+export type WorkspaceAuth = VanillaBetterAuthClient & { getJWTToken: () => Promise<string | null> };
 let sessionEpoch = 0;
 document.addEventListener('workspace-session-ended', () => { sessionEpoch++; restored = false; });
 const sessionChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('aigas-session') : null;
