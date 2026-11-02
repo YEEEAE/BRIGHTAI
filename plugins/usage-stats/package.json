@@ -1,0 +1,30 @@
+{
+  "name": "@local/usage-stats",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A usage dashboard for Harness: real token counts, estimated costs and budget, a token timeline, per-conversation cost, and live CPU activity.",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

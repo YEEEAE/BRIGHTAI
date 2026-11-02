@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Paper Reader">
+  <defs>
+    <linearGradient id="pr-bg" x1="7" y1="5" x2="57" y2="59" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101a2c"/>
+      <stop offset="1" stop-color="#060a12"/>
+    </linearGradient>
+    <linearGradient id="pr-page" x1="20" y1="13" x2="45" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff7e7"/>
+      <stop offset="1" stop-color="#e9dcc4"/>
+    </linearGradient>
+    <linearGradient id="pr-mark" x1="19" y1="38" x2="47" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4b740"/>
+      <stop offset="1" stop-color="#ffd979"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#pr-bg)"/>
+  <path d="M17 12.5h21.5L48 22v29.5H17z" fill="url(#pr-page)"/>
+  <path d="M38.5 12.5V22H48" fill="none" stroke="#c7b99f" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M23 27h18M23 32h18M23 37h11" stroke="#7f7668" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+  <rect x="18" y="39" width="30" height="8.5" rx="2.2" fill="url(#pr-mark)"/>
+  <path d="M24 43.3h18" stroke="#101a2c" stroke-width="2.4" stroke-linecap="round" opacity=".72"/>
+  <path d="M48 26.5v25.8L42.8 49 37.6 52.3V26.5" fill="#8b7cf6" opacity=".9"/>
+  <path d="M41.2 31.5h3.4M41.2 36h3.4" stroke="#e7e2ff" stroke-width="1.7" stroke-linecap="round" opacity=".9"/>
+</svg>

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Transformer Lab",
+    "description": "An interactive 3D game that walks through tokenization, attention, the MLP and next-token prediction inside a Transformer."
+  }
+}

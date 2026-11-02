@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Transformer 实验室",
+    "description": "一个交互式 3D 游戏，演示 Transformer 内部的词元化、注意力、MLP 与下一个词元预测。"
+  }
+}

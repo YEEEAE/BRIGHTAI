@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Landmark Atlas">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#151b2d"/>
+      <stop offset="1" stop-color="#090c15"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe2a8"/>
+      <stop offset="1" stop-color="#d99a45"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#e7b15f" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#e7b15f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#sky)"/>
+  <circle cx="32" cy="29" r="24" fill="url(#glow)"/>
+  <path d="M20 49h24M23 49l4-18 5 18M41 49l-4-18-5 18" fill="none" stroke="url(#gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M27 31h10M26 36h12M24 41h16M32 17v32M29 22l6 8M35 22l-6 8M27 27l10 9M37 27l-10 9" fill="none" stroke="url(#gold)" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M32 13l1.7 4h-3.4z" fill="#ffe2a8"/>
+  <path d="M13 49c4-5 8-2 11 0M40 49c3-2 7-5 11 0" fill="none" stroke="#7f92bf" stroke-width="1.4" stroke-linecap="round" opacity=".75"/>
+  <circle cx="48" cy="15" r="1.4" fill="#f6d79d" opacity=".9"/>
+  <circle cx="15" cy="20" r=".9" fill="#aab8dc" opacity=".8"/>
+  <circle cx="50" cy="27" r=".8" fill="#aab8dc" opacity=".7"/>
+</svg>

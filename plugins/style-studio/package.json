@@ -1,0 +1,30 @@
+{
+  "name": "@local/style-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A left-sidebar studio with five complete interface styles for DeepSeek Harness, including a pixelated arcade look.",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

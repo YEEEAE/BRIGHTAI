@@ -1,0 +1,3 @@
+- insert:
+    - id: landmarks-3d
+      name: '@local/landmarks-3d'

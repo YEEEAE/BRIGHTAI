@@ -1,0 +1,50 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - paragraph [ref=e5]: رحلة في العمارة
+    - heading "أطلس المعالم" [level=1] [ref=e6]
+    - navigation "اختر معلمًا" [ref=e7]:
+      - button "01 برج إيفل باريس، فرنسا" [ref=e8] [cursor=pointer]:
+        - generic [ref=e9]: "01"
+        - generic [ref=e10]: برج إيفل
+        - generic [ref=e11]: باريس، فرنسا
+      - button "02 سور الصين العظيم هوايرو، الصين" [ref=e12] [cursor=pointer]:
+        - generic [ref=e13]: "02"
+        - generic [ref=e14]: سور الصين العظيم
+        - generic [ref=e15]: هوايرو، الصين
+      - button "03 المدينة المحرمة بكين، الصين" [ref=e16] [cursor=pointer]:
+        - generic [ref=e17]: "03"
+        - generic [ref=e18]: المدينة المحرمة
+        - generic [ref=e19]: بكين، الصين
+      - button "04 تاج محل أغرا، الهند" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: "04"
+        - generic [ref=e22]: تاج محل
+        - generic [ref=e23]: أغرا، الهند
+    - paragraph [ref=e24]: نموذج هندسي تقريبي · يعمل محليًا
+    - combobox "اللغة" [ref=e25]:
+      - option "العربية" [selected]
+      - option "English"
+  - main [ref=e26]:
+    - img "برج إيفل. اسحب للدوران · مرّر للتكبير · الأسهم لتحريك العرض · R لإعادة الضبط" [ref=e27]
+    - generic:
+      - generic: ●عرض ثلاثي الأبعاد
+      - generic: 01 / 04
+    - generic:
+      - paragraph: 48.8584° N · 2.2945° E
+      - heading "برج إيفل" [level=2]
+      - paragraph: باريس، فرنسا
+      - paragraph: هيكل حديدي شبكي يرتفع بأربع قواعد مقوّسة فوق باريس.
+      - generic:
+        - generic:
+          - term: الإنشاء
+          - definition: "1889"
+        - generic:
+          - term: المقياس
+          - definition: 330 m
+    - group "عرض ثلاثي الأبعاد" [ref=e28]:
+      - button "دوران تلقائي" [pressed] [ref=e29] [cursor=pointer]
+      - button "إعادة الضبط" [ref=e30] [cursor=pointer]
+      - button "تكبير" [ref=e31] [cursor=pointer]
+      - button "تصغير" [ref=e32] [cursor=pointer]
+      - button "ملء الشاشة" [ref=e33] [cursor=pointer]
+    - paragraph: اسحب للدوران · مرّر للتكبير · الأسهم لتحريك العرض · R لإعادة الضبط
+    - paragraph [ref=e34]: برج إيفل — باريس، فرنسا

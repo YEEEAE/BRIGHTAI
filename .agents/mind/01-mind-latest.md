@@ -1,3 +1,90 @@
+## [2026-11-02] — Usage & Stats: إحصاءات المحادثات والمعالج داخل DSH
+### تم التنفيذ
+- أُنشئت حزمة `@local/usage-stats` في `plugins/usage-stats` وتسجّل صفحة `usage-stats` في `sidebar.panellist` و`main`، بواجهة en/ar/zh وRTL واحترام reduced-motion.
+- يقرأ النصف المضيف سجلات الجلسات الفعلية عبر `ctx.sessionQuery` ويجمع رموز `assistant/message` حسب النموذج والساعة واليوم، ويستمع إلى `session/event` لتحديث الجلسات الحية دون إعادة مسح كامل.
+- يقدّم مسارًا محليًا موثّقًا `GET /api/local-usage-stats` فقط للمالك؛ الواجهة لا تقرأ ملفات الجلسات، وتحسب التكلفة والميزانية محليًا من أسعار قابلة للتعديل في `localStorage`.
+- يجمع نشاط المعالج الفعلي عبر `node:os` و`process.cpuUsage()` بعيّنة كل ثانيتين، مع حمل النظام والذاكرة واستخدام كل نواة ومخطط تاريخي.
+- الواجهة تشمل بطاقات الإجمالي والتكلفة والمحادثات والميزانية، وخطًا زمنيًا متراكمًا، وجدول محادثات قابلًا للتوسيع، وإعدادات الأسعار والميزانية.
+### الملفات المتأثرة
+- `plugins/usage-stats/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,README.md,locale/*.json}`.
+- `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/@local/usage-stats}` (تركيب محلي).
+### التحقق
+- `node --check` وJSON وSVG: PASS. تجميع 7 جلسات حقيقية عبر مسار المضيف: PASS (6 محادثات ذات استخدام، إجمالي >119M رمز، 0 سجلات غير مقروءة).
+- عرض Dashboard بمكوّنات React مع hooks وبيانات تجريبية en/ar: PASS بلا استثناءات. HMR graph يعرض `@local/usage-stats` مع client bundle مخدوم: PASS.
+- استجابة المسار داخل الصفحة الموثّقة والعرض البصري الفعلي: NOT RUN — لا تحكم متصفح ولا صلاحية لقراءة كوكي الجلسة. لا commit أو push أو نشر.
+### النتيجة
+- **الحالة:** DONE للتنفيذ والتركيب والتسجيل والفحص الساكن والمنطقي؛ العرض البصري والمسار الموثّق PARTIAL / NOT VERIFIED. لا تغييرات على موقع BRIGHTAI.
+
+## [2026-11-02] — Paper Reader: قارئ PDF في الشريط الجانبي الأيمن
+### تم التنفيذ
+- أُنشئت حزمة `@local/paper-reader` في `plugins/paper-reader` وتسجّل نوع تبويب في `rightbar` وبطاقة في دليل الشريط الأيمن، مع جسم يقرأ PDF داخل الجلسة.
+- ضُمّن PDF.js 6.5.438 مع worker وpolyfills، ويُعرض الأصل عبر canvas بدقة devicePixelRatio مع طبقة نص قابلة للتحديد؛ بقي الملف الأصلي بايت-بايت في IndexedDB ويُتاح عبر العارض الأصلي والتنزيل.
+- تُحفظ التمييزات والملاحظات بإحداثيات صفحة نسبية؛ قائمة التحديد العائمة تقدّم Highlight/Note/Ask. Ask يبني السؤال الافتراضي بحسب لغة الواجهة (en/ar/zh) ويرسله إلى المحادثة.
+- واجهة en/ar/zh مع RTL وreduced-motion وتركيز لوحة المفاتيح، وأيقونة/بيانات عرض محلية للحزمة.
+### الملفات المتأثرة
+- `plugins/paper-reader/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,README.md,src/*,scripts/build.mjs,vendor/*,locale/*.json}`.
+- `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,node_modules/@local/paper-reader}` (تركيب محلي).
+### التحقق
+- `install_bundle`: applied بلا warnings؛ `Slots`: `@local/paper-reader` نشط في `sidebar.right.pane.tab`.
+- `node scripts/build.mjs` و`node --check` وJSON وSVG وتغطية مفاتيح en/ar/zh: PASS؛ استخراج نص PDF تجريبي من 3 صفحات عبر PDF.js: PASS. العرض البصري والتفاعل الكامل داخل الصفحة: NOT RUN — لا تحكم متصفح.
+### النتيجة
+- **الحالة:** DONE للتركيب والتسجيل والبناء والفحص الساكن؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
+
+## [2026-11-02] — Landmark Atlas: نسخة Codex مستقلة
+### تم التنفيذ
+- حسب طلب المالك أُنشئت `plugins/Codex/` مستقلة؛ حزمة Harness الأصلية `plugins/landmarks-3d/` محفوظة. تركيب Harness السابق HISTORICAL ولا يثبت تركيب نسخة Codex.
+- manifest محمول وتوافقي وسوق محلي وإعداد MCP stdio بمسارات مطلقة مولّدة، ومهارة فتح وملف إعداد تفعيل نموذجي؛ لا تغيير لإعدادات Codex العامة ولا تثبيت للحزمة.
+- MCP App يعلن مدخلي global/thread؛ دعم الشريط الأصلي داخل Codex NOT VERIFIED. عارض HTML محلي بشريط أيسر وأربعة نماذج (إيفل/السور/المدينة المحرمة/تاج محل)، عربي/إنجليزي، بلا شبكة أو React/Harness runtime.
+- أصلح خطأ materials في حركة المدينة المحرمة وقص كاميرا إيفل داخل النسخة الجديدة فقط؛ تحتاج إعادة build بعد نقلها لتحديث مسارات MCP.
+### الملفات المتأثرة
+- `plugins/Codex/{plugin.json,.codex-plugin/,.agents/plugins/,.mcp.json,mcp.json,server.mjs,config.example.toml,skills/,src/,scripts/,web/,assets/,README.md}`.
+### التحقق
+- بناء مستقل و4 اختبارات Node: PASS؛ Playwright للمشاهد الأربعة WebGL2 دون JS/WebGL errors؛ 1440px و360px عربي/إنجليزي دون overflow وأزرار ≥44px. لقطات محلية داخل assets.
+- ملء الشاشة/غياب WebGL/تبديل reduced-motion فعليًا: NOT RUN. طلب لوحة Codex عبر open_in_codex أعاد queued؛ لا يثبت ظهورها. لا commit/push/deploy.
+### النتيجة
+- **الحالة:** DONE للملفات والعارض المحلي؛ PARTIAL لتكامل واجهة Codex، والتثبيت وظهور مدخل الشريط الأصلي NOT VERIFIED؛ خطوات التثبيت موثقة في README.
+
+## [2026-11-02] — Poster Workbench: استوديو ملصقات داخل المحادثة
+### تم التنفيذ
+- أُنشئت حزمة `@local/poster-workbench` في `plugins/poster-workbench` وتسجّل عرض `poster-workbench` في `conversation.view` بجوار Chat/Trajectory، مع Host half بلا سلوك تشغيلي.
+- شيدر WebGL2 مستوحى من خلفية موقع Harness المتدفقة (simplex FBM + domain warp + curl + 5 ألوان + dither) داخل ملصق 4:5، وخط Host Grotesk الإنجليزي مع Fragment Mono للوسوم؛ الخطوط مضمّنة داخل `client.js` من أصول الموقع.
+- شريط الصفحة الافتراضي مقتصر على الملصق وزرّي تخصيص وPNG؛ لوحة تخصيص منبثقة للعنوان والنص وثلاثة ألوان وخمس لوحات، مع حفظ محلي.
+- تصدير PNG 1600×2000 من نفس مسار الرسم؛ Canvas2D fallback، احترام reduced-motion، نص بديل لقارئ الشاشة، وتنظيف WebGL.
+### الملفات المتأثرة
+- `plugins/poster-workbench/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md}`
+- `plugins/poster-workbench/{src/client.template.js,scripts/build.mjs,fonts/*.woff2}`
+### التحقق
+- `install_bundle`: applied بلا warnings؛ `Slots`: `poster-workbench` نشط في `conversation.view` (order 20)؛ الحزمة مرتبطة ومثبتة، وبصمة client المثبت/المحلي متطابقة.
+- `node scripts/build.mjs` و`node --check` وJSON وSVG واختبار تخطيط Canvas بوهم: PASS. تحقق شادر/عرض بصري/تصدير فعلي داخل الصفحة: NOT RUN — لا تحكم متصفح.
+### النتيجة
+- **الحالة:** DONE للتركيب وتسجيل العرض والفحص الساكن؛ العرض البصري والتصدير PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
+
+## [2026-11-02] — Style Studio: خمسة أنماط بصرية لتطبيق DSH
+### تم التنفيذ
+- أُنشئت حزمة محلية `@local/style-studio` في `plugins/style-studio` تسجّل `sidebar.panellist` و`main` و`shell.overlay`، مع خمسة أنماط كاملة عبر `ctx.theme.overrideTokens`، وlocale en/ar/zh، واختيار محفوظ في localStorage.
+### الملفات المتأثرة
+- `plugins/style-studio/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md}`
+### التحقق
+- `install_bundle`: applied بلا warnings؛ `Slots`: المدخل واللوحة وruntime نشطة؛ `node --check` وJSON: PASS؛ العرض البصري NOT RUN.
+### النتيجة
+- **الحالة:** DONE للتركيب والتسجيل؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
+
+## [2026-11-02] — Transformer Lab: لعبة 3D تعليمية داخل DSH
+### تم التنفيذ
+- أنشئت حزمة محلية `@local/transformer-lab` في `plugins/transformer-lab` تسجّل مدخل `transformer-lab` في `sidebar.panellist` ولوحة `main`، مع Host half بلا سلوك تشغيلي.
+- بُني مشهد Three.js بست مراحل: الترميز، التضمين، الانتباه، الرؤوس، MLP، والتوقّع؛ أعمدة رموز رأسية، أقواس انتباه بأوزان softmax حقيقية من نموذج 8 أبعاد بثلاثة رؤوس، وجسيمات MLP، وأعمدة احتمالات قابلة للنقر.
+- أضيفت لعبة توقّع: يختار المستخدم الرمز قبل كشف التوزيع، مع نقاط وكشف الاختيار الأول؛ وواجهة en/ar/zh وRTL وreduced-motion وتنظيف WebGL.
+- عولج تداخل أزرار macOS: العنوان يحجز 42px علويًا ويزيح أفقيًا حسب `getBoundingClientRect` عند اقتراب اللوحة من أعلى يسار النافذة، وشريط الأدوات مثبت أسفل اللوحة.
+### الملفات المتأثرة
+- `plugins/transformer-lab/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md,scripts/build.mjs,src/*}`
+### التحقق
+- `install_bundle`: applied بلا warnings؛ `Slots`: `transformer-lab` نشط في `sidebar.panellist` و`main`؛ `node --check`: PASS؛ بناء esbuild: PASS؛ softmax مجموع 1 وثبات النموذج: PASS؛ JSON/SVG: PASS.
+- العرض البصري داخل الصفحة والتحقق من العنوان/الأيقونة المرسومين: NOT RUN — لا تحكم متصفح متاح؛ لا يُدّعى نجاحه من التسجيل وحده.
+### النتيجة
+- **الحالة:** DONE للتركيب والتسجيل والبناء؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
+### ملاحظات / مفتوحة
+- إن كانت الصفحة محمّلة قبل آخر إعادة بناء لـ`client.js` فحدّثها؛ لا تغييرات على موقع BRIGHTAI.
+
 ## [2026-11-01] — Risk Engine: دورة معالجة وتصدير محلية دون فحوص
 ### تم التنفيذ
 - أضيفت معالجة بإصدارات append-only مرتبطة بالتقييم ونسخة الأصل: مالك وضابط وحالة ومبرر وتاريخ مراجعة؛ الأصل أو التقييم الأحدث يجعل الخطة السابقة بحاجة مراجعة. القبول لا يغيّر التقييم ولا يصرّح بالنشر.
@@ -55,6 +142,7 @@
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_VERIFIED محليًا؛ يلزم هدف تطوير معتمد لتطبيق 0002 وإدارة Kernel 0006، مراجعة runtime role، اعتماد وتنفيذ adapter مزود/منطقة/شروط، ونشر مصرح به. لا اتصال AI أو كتابة بعيدة.
 
 ## Current State / Invariants
+- نسخة Codex المحلية في `plugins/Codex/`: عارض مستقل ومهارة وMCP App يعلن global/thread؛ ليست مثبتة، ودعم مدخل الشريط الأصلي NOT VERIFIED. خطوات التشغيل/التثبيت في README؛ لا تغير الحزمة الأصلية.
 - أحدث Risk Engine في السجل الأعلى: معالجة بإصدارات ومراجع وتصدير محلي دون تشغيل فحوص؛ أدلة Risk Engine السابقة HISTORICAL ولا تثبت هذه النسخة. 0008 غير مطبق إضافةً إلى 0005.
 - أحدث Human Gate في السجل الأعلى: تغيير اسم مساحة Kernel بربط المهمة ومهلة واستهلاك ذري، دون تحقق runtime أو نشر؛ الأدلة السابقة HISTORICAL.
 - Ledger الحالي موصوف في السجل الأعلى: تكامل أحداث داخلي وchain-v2 وفاحص مستقل محليًا دون تشغيل؛ أدلة Ledger القديمة HISTORICAL ولا تثبت هذا التغيير.
@@ -64,12 +152,19 @@
 - `/app/*` هو Node SSR دون prerender أو cache. تشخيص 404 للاستضافة الثابتة HISTORICAL حتى إعادة تحقق؛ لا تعديل استضافة أو DNS في المهمة.
 - الرئيسية/Hero/Constellation والهيدر محمية؛ شعار الدرع المعتمد فقط عبر brand.ts وBrandLogo.astro. GA4 العام في BaseLayout؛ لا محتوى منتج حساس في Analytics.
 - تحويلات `.html` وحقوق بيانات رسم الدماغ والاعتماد القانوني/التجاري وCWV/الفهرسة الفعلية بلا دليل إغلاق جديد.
+- DSH desktop: خمس حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
 
 ## Historical Ledger
+- 2026-11-02: Paper Reader قارئ PDF في الشريط الأيمن مع PDF.js وأصل محفوظ وتمييز/ملاحظات وسؤال متعدد اللغات؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
+- 2026-11-02: نسخة Landmark Atlas داخل plugins/Codex؛ build و4 Node وWebGL للمشاهد الأربعة PASS؛ التثبيت ومدخل Codex الأصلي NOT VERIFIED.
+- 2026-11-02: Poster Workbench عرض ملصق داخل المحادثة بشيدر Harness وخط Host Grotesk وتصدير PNG؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
+- 2026-11-02: Style Studio خمسة أنماط كاملة منها Pixel Arcade؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
+- 2026-11-02: Transformer Lab لعبة 3D بست مراحل ونموذج انتباه مصغّر؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
 - 2026-11-01: Risk Engine معالجة بإصدارات وقبول HIGH مقيد وتصدير JSON محليًا؛ 0005/0008 غير مطبقين، دون اختبارات أو نشر.
 - 2026-11-01: Human Gate إنفاذ اسم Kernel محليًا؛ 0004/0006/0007 مطبقة على production بتفويض صريح، دون فحوص تشغيل أو تفعيل وصول.
 - 2026-11-01: Ledger chain-v2 وتكاملات وتصدير مستقل أضيفت محليًا دون تشغيل فحوص أو ترحيل Neon؛ تفاصيل الحالة في السجل الأعلى.
 - 2026-11-01: ضُغط سياق الحالة ونُقلت أقدم سجلات 2026-10-30 إلى أعلى `02-mind-mid.md` بعد حفظها؛ القيود والمشاكل الفعالة باقية هنا.
+- 2026-11-02: نُقلت أقدم سجلات 2026-10-31 إلى أعلى `02-mind-mid.md` بعد التحقق من حفظها؛ أُبقي السياق الحالي والمشاكل المفتوحة هنا.
 - السجلات التالية HISTORICAL؛ الأحدث أعلاه يتقدم عند التعارض.
 
 ## [2026-11-01] — إدارة Kernel محليًا دون تشغيل فحوص
@@ -403,37 +498,3 @@
 - **الحالة:** نجح محلياً ضمن نطاق التصميم والاختبارات؛ لا commit أو push أو نشر.
 ### ملاحظات / مشاكل مفتوحة
 - هيدر الرئيسية يجب أن يبقى كما هو في أي متابعة لهذه المهمة. المنتج الحقيقي والأسعار والامتثال غير متحققين، وتحويلات `.html` القديمة ما زالت مفتوحة. Playwright MCP كان مشغولاً؛ التحقق استخدم تثبيت Playwright المتاح محلياً مع Chrome منفصل.
-
-## [2026-10-31] — تطوير محتوى BRIGHTAI وSEO وGEO
-
-### تم التنفيذ
-- راجعت الصفحات العامة الـ24 وصححت ادعاءات التشغيل والتكاملات والأسعار والخدمات والاحتفاظ والامتثال؛ Kernel مكوّن مشترك والمنتجات الخمسة مستقلة حسب Blueprint، وتوفرها التشغيلي NOT VERIFIED.
-- أنشأت مركز معرفة وخمسة أدلة عربية متميزة، وصفحة 404 مخصصة؛ محاكاة `/kernel/` أصبحت `noindex` ومستبعدة من sitemap.
-- حدّثت المحتوى الداخلي والربط والـmetadata، وأبقيت GA4 الحالي دون إضافة تتبع؛ أزلت بيانات schema التجارية غير المثبتة.
-- أضفت سجل التدقيق والكلمات والقيود وموافقات ما قبل النشر في `Audit/2026-10-31-saudi-content-seo-audit.md`.
-### الملفات المتأثرة
-- صفحات `src/pages/` ومكوّنات `BaseLayout`, `PageShell`, `Header`, `Footer` وإعدادات `astro.config.mjs` و`verify-routes.mjs`.
-- `Audit/2026-10-31-saudi-content-seo-audit.md`.
-### التحقق
-- `npm run build`: PASS؛ 29 صفحة HTML مفهرسة البناء و28 عنواناً في sitemap.
-- metadata/H1/JSON-LD وnoindex وsitemap: PASS. Playwright على 360/1440px وreduced-motion: PASS؛ اختبار 404 رجع 404 مع النص العربي وnoindex.
-- فاحص المسارات: PARTIAL؛ بقية فحوص الصفحات والروابط اجتازت قبل الإغلاق، لكن aliases القديمة لـ`.html` ترجع 404 بدلاً من 301 في معاينة Astro standalone. التفاصيل في Audit.
-### النتيجة
-- **الحالة:** PARTIAL محلياً؛ لا commit أو push أو نشر.
-### ملاحظات / مشاكل مفتوحة
-- هوية الكيان القانونية، جاهزية المنتجات، الأسعار، الموردون والمعالجة والاحتفاظ، الخصوصية والشروط، والمواءمة التنظيمية تحتاج أدلة واعتمادات. Google indexing وSERP وCore Web Vitals والإنتاج NOT VERIFIED.
-
-## [2026-10-31] — إصلاح اختفاء محتوى الرئيسية
-
-### تم التنفيذ
-- حددت وسم `<style>` قبل H1 يبتلع بقية HTML؛ أزلته وأعدت ظهور العنوان والأقسام والفوتر.
-- نقلت FlowBackground إلى غلاف الأقسام 01–05 بعد المقدمة ورسالة الحوكمة، مع عزل طبقاته خلف المحتوى.
-- حافظت على المحتوى والهوية والتأثيرات الحالية دون تبعيات أو نشر.
-### الملفات المتأثرة
-- `src/pages/index.astro`
-### التحقق
-- `npm run build`: PASS (24 صفحة)؛ `git diff --check`: PASS.
-- Playwright للنسخة المبنية على 360/1440px: PASS؛ H1 واحد و7 أقسام وفوتر، دون overflow أو pageerror. فحص بصري: PASS.
-- بدون JavaScript: PASS لظهور المحتوى؛ reduced-motion: PASS لشفافية سطري الحوكمة 1.
-### النتيجة
-- **الحالة:** نجح محلياً؛ الإنتاج NOT VERIFIED.

@@ -1,0 +1,3 @@
+- insert:
+    - id: transformer-lab
+      name: '@local/transformer-lab'
