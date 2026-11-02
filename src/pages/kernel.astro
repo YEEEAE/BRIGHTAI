@@ -17,8 +17,19 @@ const schema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', it
     <p class="eyebrow">KERNEL / تجربة توضيحية</p>
     <h1>شاهد ما الذي<br />يصل إلى النموذج.</h1>
     <p>محاكاة محلية مبسطة لفكرة الحجب، وليست اتصالاً بمحرك Kernel الفعلي. اختر المثال الجاهز وشاهد النتيجة، بدون تسجيل وبدون إرسال بيانات لأي خدمة.</p>
-    <div class="kernel-comparison"><section aria-labelledby="sample-title"><h2 id="sample-title">الطلب قبل الحجب</h2><p class="sample">لخّص طلب العميل صاحب الهوية <bdi>1000000000</bdi>.</p><button class="button" id="run-demo" type="button">احجب رقم الهوية <span aria-hidden="true">←</span></button><noscript><p>النتيجة التوضيحية: لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].</p></noscript></section>
-    <div class="kernel-result" role="status" aria-live="polite" id="demo-result"><p>النتيجة التوضيحية</p><span>شغّل المثال الجاهز لمشاهدة استبدال الرقم الافتراضي.</span></div></div>
+    <div class="kernel-comparison" aria-label="مقارنة المثال قبل التنقيح وبعده">
+      <section class="kernel-before" aria-labelledby="sample-title">
+        <p class="demo-step">01 <span>قبل</span></p><h2 id="sample-title">الطلب قبل الحجب</h2>
+        <p class="sample">لخّص طلب العميل صاحب الهوية <bdi>1000000000</bdi>.</p>
+        <button class="button" id="run-demo" type="button" aria-controls="demo-result demo-progress">احجب رقم الهوية <span aria-hidden="true">←</span></button>
+        <div class="demo-progress-wrap"><label for="demo-progress">تقدم المثال المحلي</label><progress id="demo-progress" value="0" max="1">0%</progress><span data-demo-state>بانتظار التشغيل</span></div>
+        <noscript><p>النتيجة التوضيحية: لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].</p></noscript>
+      </section>
+      <div class="kernel-result" role="status" aria-live="polite" aria-atomic="true" id="demo-result" data-state="ready">
+        <p class="demo-step">02 <span>بعد</span></p><p class="result-label">النتيجة التوضيحية</p>
+        <p class="result-copy" data-demo-output>شغّل المثال الجاهز لمشاهدة استبدال الرقم الافتراضي.</p>
+      </div>
+    </div>
     <p class="demo-note">هذا مثال ببيانات افتراضية، ولا يثبت اكتشاف جميع البيانات الحساسة أو قياس أداء المنتج الفعلي.</p>
     <KernelSequence />
     <a class="ghost" href="/contact/">استفسر عن حالة المنتجات <span aria-hidden="true">←</span></a>
@@ -31,8 +42,15 @@ const schema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', it
   const result = document.querySelector<HTMLDivElement>('#demo-result');
   button?.addEventListener('click', () => {
     if (!result) return;
-    result.textContent = 'الطلب بعد الحجب: لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].';
-    button.textContent = 'أعد التجربة';
+    const output = result.querySelector<HTMLElement>('[data-demo-output]');
+    const state = document.querySelector<HTMLElement>('[data-demo-state]');
+    const progress = document.querySelector<HTMLProgressElement>('#demo-progress');
+    if (!output || !progress) return;
+    output.textContent = 'لخّص طلب العميل صاحب الهوية [رقم هوية محجوب].';
+    result.dataset.state = 'complete';
+    progress.value = 1;
+    if (state) state.textContent = 'اكتمل المثال المحلي';
+    button.textContent = 'أعد المثال المحلي ↻';
   });
 </script>
 <style>
@@ -40,6 +58,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', it
   h2 { font-size: 27px; }
   section { margin-block: 48px; }
   .sample { font-size: 24px; color: #fff; }
-  #demo-result:not(:empty) { margin-block: 36px; font-size: 24px; color: #ffb829; }
+  #demo-result:not(:empty) { margin-block: 0; font-size: 18px; }
+  .result-copy { font-size: clamp(20px,2.2vw,28px); color: #fff; }
   .demo-note { font-size: 14px; }
 </style>
