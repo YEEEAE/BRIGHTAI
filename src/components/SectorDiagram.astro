@@ -33,6 +33,15 @@ const lines: Record<string,string[]> = {
  @media(hover:hover) { .sector-stages summary:hover { color: #ffb829; } }
  .diagram-finance .sector-stages li:nth-child(2) { margin-inline-start: 20px; }.diagram-finance .sector-stages li:nth-child(3) { margin-inline-start: 40px; }
  .diagram-enterprise .sector-stages li { border-inline-start: 1px solid #614674; padding-inline-start: 18px; }
+ .sector-diagram .context-label { inline-size: fit-content; max-inline-size: 100%; padding: 7px 11px; border: 1px solid var(--ui-line); border-radius: var(--ui-radius-sm); background: var(--surface-panel); color: var(--ui-copy); line-height: 1.7; }
+ .sector-diagram svg { overflow: visible; padding: 8px; border: 1px solid var(--ui-line); border-radius: var(--ui-radius-sm); background: linear-gradient(90deg,transparent 49.8%,#ffffff08 50%,transparent 50.2%),linear-gradient(0deg,transparent 49.8%,#ffffff08 50%,transparent 50.2%),#09070d; }
+ .sector-diagram svg > rect { stroke: var(--ui-line); }
+ .sector-stages li { grid-template-columns: 40px minmax(0,1fr); gap: 14px; border-block-start-color: var(--ui-line); }
+ .sector-stages li > span { display: grid; place-items: center; inline-size: 32px; block-size: 32px; padding: 0; margin-block-start: 18px; border: 1px solid #705986; border-radius: 50%; background: #120d19; color: var(--ui-amber); font-size: 12px; }
+ .sector-stages li:has(details[open]) > span { border-color: var(--ui-amber); }
+ .sector-stages details[open] summary { text-decoration: underline; text-decoration-color: #ffb82955; text-underline-offset: 6px; }
+ .sector-stages p { max-inline-size: 54ch; }
+ .sector-diagram:focus-within svg { border-color: #705986; }
  @keyframes sector-route { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
  @media(prefers-reduced-motion:reduce) { .sector-diagram:focus-within .sector-line { animation: none; } }
 </style>

@@ -30,3 +30,134 @@ details { border-bottom: 1px solid var(--border-subtle); padding-block: 20px; }
 summary { cursor: pointer; font-size: 19px; font-weight: 400; min-height: 44px; align-content: center; }
 details p { color: var(--color-text-muted); margin-top: 12px; line-height: var(--leading-ar-body); }
 @media (max-width: 767px) { .block { padding-block: 48px; } .card { padding: 24px; } }
+
+/* Public editorial pages: consistent callouts, reading tools and decision surfaces. */
+.interior-page.public-content > .note {
+  max-inline-size: 880px;
+  margin-block: 28px 36px;
+  padding: 16px 20px;
+  border-inline-start: 2px solid var(--state-warning-text);
+  border-radius: var(--radius-content);
+  background: linear-gradient(100deg, #ffb8290b, transparent 80%), var(--surface-panel);
+}
+.interior-page.public-content .block > h2 { max-inline-size: 25ch; }
+.interior-page.public-content :is(.list, .content-extension ul, .content-extension ol) { line-height: 2; }
+.interior-page.public-content .content-extension > section > :is(p, ul, ol, dl, table) { max-inline-size: 78ch; }
+
+/* Article context is supporting metadata, distinct from policy warnings. */
+.interior-page.public-content .article-context {
+  padding-block-start: 18px;
+  border-block-start: 1px solid var(--border-subtle);
+  color: var(--color-text-subtle);
+}
+.interior-page.public-content .article-context time { font-variant-numeric: tabular-nums; }
+
+/* Keep the reading index easy to scan without changing article content. */
+.interior-page.page-family-knowledge .reading-nav {
+  padding: 18px 20px 24px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-content);
+  background: linear-gradient(145deg, #ffffff04, transparent 70%), var(--surface-panel);
+}
+.interior-page.page-family-knowledge .reading-nav a {
+  padding-inline: 10px;
+  border-inline-start: 1px solid transparent;
+  transition: color var(--motion-fast), border-color var(--motion-fast), background-color var(--motion-fast);
+}
+.interior-page.page-family-knowledge .reading-nav a:is(:hover, :focus-visible) {
+  color: var(--color-text);
+  border-inline-start-color: var(--color-action);
+  background: #ffffff06;
+}
+.interior-page.page-family-knowledge .reading-layout article > .block {
+  border-block-start-style: solid;
+}
+.interior-page.page-family-knowledge :is(blockquote, table, pre) { scroll-margin-block: 24px; }
+.interior-page.page-family-knowledge blockquote { border-radius: var(--radius-content); }
+
+/* The knowledge index remains usable with native links and progressive filters. */
+.interior-page.interior-docs-index .knowledge-tools {
+  padding: 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-content);
+  background: linear-gradient(120deg, #ffffff04, transparent 75%), var(--surface-panel);
+}
+.interior-page.interior-docs-index .knowledge-topics button[aria-pressed='true'] {
+  border-color: var(--color-action);
+  box-shadow: inset 0 0 0 1px var(--color-action);
+}
+.interior-page.interior-docs-index .knowledge-count { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+
+/* The existing quote card stays a request-preparation aid, never checkout. */
+.interior-page.page-family-pricing .quote-grid .quote-scope {
+  border: 1px solid var(--border-strong);
+  border-block-start: 2px solid var(--color-action);
+  background: linear-gradient(155deg, #8052ff12, transparent 58%), var(--surface-panel);
+  box-shadow: inset 0 1px 0 #ffffff0a, 0 24px 64px -48px #8052ff66;
+}
+.interior-page.page-family-pricing .quote-scope h2 { line-height: var(--leading-ar-h2); }
+.interior-page.page-family-pricing .quote-scope .button { inline-size: fit-content; max-inline-size: 100%; }
+.interior-page.page-family-pricing > .pricing-trial {
+  padding-inline: clamp(20px, 4vw, 48px);
+  border: 1px solid var(--border-strong);
+  border-inline-start: 3px solid var(--state-warning-text);
+  border-radius: var(--radius-content);
+  background: linear-gradient(110deg, #ffb8290c, transparent 72%), var(--surface-panel);
+}
+.interior-page.page-family-pricing > .pricing-trial > h2 { max-inline-size: 22ch; }
+.interior-page.page-family-pricing > .pricing-trial > p:first-of-type { max-inline-size: 76ch; }
+
+/* Contact keeps the mail hand-off and privacy note visible beside the fields. */
+.interior-page.page-family-contact > .contact-options {
+  inline-size: min(100%, 640px);
+  margin-block: 28px 20px;
+  border-color: var(--border-strong);
+  background: linear-gradient(140deg, #8052ff10, transparent 70%), var(--surface-panel);
+}
+.interior-page.page-family-contact > .contact-options h2 { font-size: var(--type-h3); }
+.interior-page.page-family-contact > .contact-options p { margin: 0; }
+.interior-page.page-family-contact .contact-form {
+  inline-size: min(100%, 640px);
+  margin-inline-start: auto;
+  gap: 20px;
+}
+.interior-page.page-family-contact .contact-form label {
+  display: grid;
+  gap: 10px;
+  color: var(--color-text-muted);
+  font-size: var(--type-label);
+}
+.interior-page.page-family-contact .contact-form :is(input, select, textarea) {
+  inline-size: 100%;
+  min-block-size: 48px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 16px;
+}
+.interior-page.page-family-contact .contact-form textarea { min-block-size: 140px; resize: vertical; }
+.interior-page.page-family-contact .contact-form button { align-self: flex-start; }
+.interior-page.page-family-contact .contact-form .note { margin: 0; }
+
+/* Trust, privacy and legal content preserve full text while improving scanning. */
+.interior-page:is(.page-family-trust, .page-family-compliance) table {
+  border: 1px solid var(--table-border);
+  border-radius: var(--radius-content);
+  overflow: hidden;
+}
+.interior-page:is(.page-family-trust, .page-family-compliance) th { font-weight: var(--font-weight-semibold); }
+.interior-page:is(.page-family-privacy, .page-family-terms, .page-family-compliance) .content-extension > section {
+  border-block-start: 1px solid var(--border-subtle);
+  padding-block-start: 30px;
+}
+
+@media (max-width: 767px) {
+  .interior-page.page-family-knowledge .reading-nav { padding: 14px 16px 20px; }
+  .interior-page.page-family-pricing > .pricing-trial { padding-inline: 20px; }
+  .interior-page.page-family-contact > .contact-options,
+  .interior-page.page-family-contact .contact-form { inline-size: 100%; }
+  .interior-page.page-family-contact .contact-form button { inline-size: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interior-page.page-family-knowledge .reading-nav a { transition: none; }
+}

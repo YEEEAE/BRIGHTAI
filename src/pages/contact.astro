@@ -13,7 +13,7 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
     <p><a class="button" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">راسلنا على واتساب</a></p>
     <p>أو عبر البريد: <a href="mailto:yzeed1job@gmail.com">yzeed1job@gmail.com</a></p>
   </section>
-  <form id="contact" class="card" style="max-width:640px">
+  <form id="contact" class="card contact-form">
     <label>الاسم<input name="name" required autocomplete="name" /></label>
     <label>الجهة<input name="org" required autocomplete="organization" /></label>
     <label>الموضوع<select name="topic">{topics.map(t => <option>{t}</option>)}</select></label>
@@ -49,8 +49,3 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
   // Enable only after the handler is registered; avoid a native GET of personal data.
   if (submit) submit.disabled = false;
 </script>
-<style>
-  label { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--color-silver-mist); }
-  input, select, textarea { background: #000; color: #fff; border: 1px solid #333; border-radius: 10px; padding: 12px 14px; font-size: 16px; }
-  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 2px; }
-</style>
