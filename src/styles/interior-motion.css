@@ -90,6 +90,21 @@
 .interior-page .map-node:is(:hover,:focus-visible) { border-color: #ffb829; }
 .interior-page .motion-typing { position: relative; }
 .interior-page .motion-typing::after { content: '…'; color: #ffb829; display: inline-block; animation: approval-attention 650ms 1; }
+/* Manual public demonstrations only: no timers, auto-run or hidden copy. */
+.page-family-products .decision-options button { transition: background-color var(--ui-fast),border-color var(--ui-fast),color var(--ui-fast),box-shadow var(--ui-fast); }
+.page-family-products .experience-firewall .example-result { transition: border-color var(--ui-state); }
+.page-family-products .experience-firewall .circuit-outcomes span { transition: background-color var(--ui-state),color var(--ui-state); }
+.page-family-products .experience-ledger :is(.evidence-seal,.integrity-result) { transition: color var(--ui-state),border-color var(--ui-state); }
+.page-family-products .experience-risk-engine .risk-cell { transition: background-color var(--ui-fast),border-color var(--ui-fast),box-shadow var(--ui-fast); }
+.page-family-products .section-compass nav a { transition: color var(--ui-fast),background-color var(--ui-fast),border-color var(--ui-fast); }
+:is(.page-family-products,.interior-kernel-index) :is(.button,.ghost) { transition: transform var(--ui-fast),filter var(--ui-fast),color var(--ui-fast),text-decoration-color var(--ui-fast); }
+:is(.page-family-products,.interior-kernel-index) .button:not(:disabled):hover { transform: translateY(-1px); }
+:is(.page-family-products,.interior-kernel-index) :is(.button,.ghost):disabled { border-style: dashed; cursor: default; transform: none; filter: none; }
+:is(.page-family-products,.interior-kernel-index) .redaction-demo { border-radius: var(--ui-radius-sm); background: linear-gradient(110deg,#8052ff08,transparent); }
+:is(.page-family-products,.interior-kernel-index) .redaction-value { border-radius: var(--ui-radius-sm); box-shadow: inset 0 0 0 1px var(--ui-line); color: #fff; }
+:is(.page-family-products,.interior-kernel-index) .redaction-demo .diagram-help { color: #bdbdbd; }
+:is(.page-family-products,.interior-kernel-index) .redaction-demo [data-redaction-status] { color: #bdbdbd; }
+.interior-kernel-index .kernel-sequence .sequence-stages li { transition: border-color var(--ui-state),background-color var(--ui-state),color var(--ui-state); }
 @supports (animation-timeline: scroll()) {
   .interior-page .native-reading-track { display: block; position: absolute; inset: 0; background: #b79af5; transform-origin: right; animation: reading-line linear both; animation-timeline: scroll(root block); }
   .interior-page .motion-reading-progress { opacity: 0; }
@@ -105,6 +120,8 @@
   .interior-page .experience::before,.interior-page .sector-visual::before { display: none; }
 }
 @media(prefers-reduced-motion:reduce) {
+  :is(.page-family-products,.interior-kernel-index) .button:not(:disabled):hover { transform: none; }
+  :is(.page-family-products,.interior-kernel-index) :is(.button,.ghost):active { transform: none; }
   .interior-page .scan-line,.interior-page .approval-lock,.interior-page .motion-typing::after,.interior-page .native-reading-track { animation: none; }
   .interior-page .native-reading-track { display: none; }
   .interior-page .motion-reading-progress { opacity: 1; }
