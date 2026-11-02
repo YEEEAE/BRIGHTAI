@@ -13,6 +13,8 @@ interface Props { title: string; description: string; crumbs: Crumb[]; robots?: 
 const { title, description, crumbs, robots = 'index, follow' } = Astro.props;
 const family = Astro.url.pathname.split('/').filter(Boolean)[0] ?? 'home';
 const segment = Astro.url.pathname.split('/').filter(Boolean)[1] ?? 'index';
+// Opt in only the public editorial families; leave product and home styling alone.
+const publicContent = ['solutions', 'pillars', 'services', 'pricing', 'about', 'contact', 'trust', 'compliance', 'docs', 'knowledge', 'privacy', 'terms'].includes(family);
 const site = 'https://brightai.live';
 const all = [{ name: 'الرئيسية', href: '/' }, ...crumbs];
 const schema = {
@@ -34,7 +36,7 @@ const minutes = Math.max(1, Math.ceil(words / 180));
 <BaseLayout title={title} description={description} robots={robots}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <Header />
-  <main id="main" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}`}>
+  <main id="main" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}${publicContent ? ' public-content' : ''}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">
       {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}>{c.name}</a> / </> : <span aria-current="page">{c.name}</span>)}
     </nav>
