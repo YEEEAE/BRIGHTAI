@@ -5,9 +5,9 @@
   --stagger: 60ms;
   --ease-in-out: cubic-bezier(.45,0,.55,1);
   --ease-spring: cubic-bezier(.2,.8,.3,1);
-  --decision-allow: #15846e;
-  --decision-warn: #ffb829;
-  --decision-redact: #8052ff;
+  --decision-allow: var(--state-success);
+  --decision-warn: var(--color-focus);
+  --decision-redact: var(--color-action);
   --decision-review: #4c9aff;
   --decision-block: #e5484d;
 }
@@ -22,7 +22,7 @@
 .interior-page .control-path { padding: 16px; border-inline-start: 2px solid var(--decision-review); }
 .interior-page .control-path>span { color: var(--ui-amber); font-size: 24px; }
 .interior-page .educational-checklist label { display: flex; align-items: center; gap: 14px; min-block-size: 48px; line-height: 1.8; cursor: pointer; }
-.interior-page .educational-checklist input { inline-size: 22px; block-size: 22px; flex-shrink: 0; accent-color: #8052ff; }
+.interior-page .educational-checklist input { inline-size: 22px; block-size: 22px; flex-shrink: 0; accent-color: var(--color-action); }
 .interior-page .educational-checklist fieldset { border: 1px solid var(--ui-line); padding: 20px; }
 .interior-page .redaction-demo { border-inline-start: 2px solid var(--decision-redact); padding: 18px 22px; margin-block: 28px; }
 .interior-page .redaction-value { position: relative; display: flex; align-items: center; justify-content: center; min-block-size: 62px; background: #110c1b; overflow: hidden; max-inline-size: 520px; font: 20px ui-monospace,monospace; color: #e1d6fc; }
@@ -86,10 +86,10 @@
 .interior-page .system-map[data-highlight=risk-engine] .map-wire-risk-engine,
 .interior-page .system-map[data-highlight=human-gate] .map-wire-human-gate,
 .interior-page .system-map[data-highlight=ledger] .map-wire-ledger,
-.interior-page .system-map[data-highlight=secure-chat] .map-wire-secure-chat { opacity: 1; stroke: #ffb829; stroke-width: 3px; }
-.interior-page .map-node:is(:hover,:focus-visible) { border-color: #ffb829; }
+.interior-page .system-map[data-highlight=secure-chat] .map-wire-secure-chat { opacity: 1; stroke: var(--color-focus); stroke-width: 3px; }
+.interior-page .map-node:is(:hover,:focus-visible) { border-color: var(--color-focus); }
 .interior-page .motion-typing { position: relative; }
-.interior-page .motion-typing::after { content: '…'; color: #ffb829; display: inline-block; animation: approval-attention 650ms 1; }
+.interior-page .motion-typing::after { content: '…'; color: var(--color-focus); display: inline-block; animation: approval-attention 650ms 1; }
 /* Manual public demonstrations only: no timers, auto-run or hidden copy. */
 .page-family-products .decision-options button { transition: background-color var(--ui-fast),border-color var(--ui-fast),color var(--ui-fast),box-shadow var(--ui-fast); }
 .page-family-products .experience-firewall .example-result { transition: border-color var(--ui-state); }

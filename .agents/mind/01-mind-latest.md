@@ -1,3 +1,37 @@
+## [2026-11-03] — توحيد النظام البصري: Tokens والخطوط والأيقونات
+### تم التنفيذ
+- `variables.css` صار المصدر الوحيد للألوان البدائية، وأضيفت طبقة دلالية (`--color-text/-action/-focus`, `--surface-*`, `--state-*`, `--tag-*`, `--table-*`) وسلّم عربي `--type-*` بقيم `clamp` مطابقة للقيم المستخدمة فعلًا. حُذفت تكرارات الألوان من `theme.css` و`experience.css` واستُبدلت بمراجع.
+- أزيل التتبع السلبي عن العناوين العربية في `site.css`، ووُحّد focus واحد عالمي، وحالات disabled/busy بحدود منقّطة لا باللون وحده، وحقول بـ`aria-invalid`.
+- `ProductIcon.astro` صار مجموعة رسوم متعددة المسارات للمنتجات الخمسة وKernel بأحجام 16/20/24/32/40 وسماكة stroke متدرجة، والشعار الرسمي باقٍ في `BrandLogo`.
+- `/app/*` صارت تقرأ نفس الـTokens عبر استيراد `variables.css` في `AppLayout`، واستُبدلت قيم العلامة المكررة في CSS التطبيق والمنتجات بمراجع Tokens دون تغيير القيم.
+### الملفات المتأثرة
+- `src/styles/{tokens.json,variables.css,theme.css,site.css,pages.css,experience.css,interior.css,interior-motion.css,kernel.css,firewall.css,human-gate.css,secure-chat.css,ledger.css,risk-engine.css}`، `src/components/ProductIcon.astro`, `src/layouts/AppLayout.astro`, `src/pages/products/index.astro`, `src/components/ProductExperience.astro`.
+### التحقق
+- صحة JSON لـ`tokens.json`: PASS. توازن أقواس CSS والمراجع: PASS بلا متغيرات غير معرّفة (عدا `--pointer-x/y` التي يضبطها JS). بناء/اختبارات/لقطات: NOT RUN بطلب المالك.
+### النتيجة
+- **الحالة:** نجح محليًا؛ لم يُنفّذ commit/push/deploy ولم تُمس الرئيسية/الهيرو/Constellation.
+### ملاحظات / مشاكل مفتوحة
+- `letter-spacing` السلبي باقٍ في عنوان الهيرو داخل `src/pages/index.astro` لأن الهيرو محمي حرفيًا؛ يحتاج قرارًا مستقلًا إن أُريد تصحيحه عربيًا.
+
+## [2026-11-03] — تركيب DSH Plugin Hub في بروفايل desktop
+### تم التنفيذ
+- نُفّذ الطلب `dsh plugin --profile web add dsh-plugin` على بروفايل `desktop` بدل `web` لأن هذا هو البروفايل الوحيد الموجود والمُشغِّل للتطبيق؛ `--profile web` كان سينشئ بروفايلًا جديدًا لا يُقلع.
+- الإصدار المُركَّب `dsh-plugin@2.2.7` وليس `2.3.1` (أحدث إصدار في registry)؛ pnpm حلّ الإصدار الأقدم، ويُرجَّح بسبب سياسة عمر الإصدار في DSH.
+- الـCLI أضاف الحزمة إلى `dependencies` و`dsh.profile.bundles` تلقائيًا، متجاوزًا `plugin_manager`، فلا قيد إصدار DSH ولا سجل عملية في `.plugin-manager/logs`.
+- الحزمة بلا اعتماديات وقت تشغيل (node builtins فقط) وبلا استيراد لـ`@deepseek-ai/cordis`؛ الـpeer `4.0.1` مقابل `4.0.5` المضمّن في DSH 0.2.1-rc.5 لا يمنع التحميل.
+### الملفات المتأثرة
+- `~/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/dsh-plugin}`
+- نسخة احتياطية: `~/.dsh/profiles/desktop/package.json.bak-20261103-005830`
+### التحقق
+- `pnpm add`: PASS؛ الحزمة موجودة مع `lib/index.js` و`client/client.js` ومدرجة في bundles: PASS.
+- `--dump-config` على desktop: BLOCKED — «profile managed exclusively by the Electron application».
+- ظهور السوق داخل الواجهة بعد إعادة تشغيل التطبيق: NOT RUN — إعادة التشغيل تُنهي الجلسة.
+### النتيجة
+- **الحالة:** DONE للتركيب والتسجيل؛ التحميل الفعلي والواجهة NOT VERIFIED حتى إعادة تشغيل DSH. لا commit أو push.
+### ملاحظات / مشاكل مفتوحة
+- الإضافة تمنح واجهة تثبيت حزم من npm/GitHub داخل التطبيق، فهي سطح ثقة إضافي على الجهاز.
+- توكن npm موجود نصًا في `~/.npmrc`؛ يُفضّل تضييق صلاحياته أو نقله إلى مخزن اعتماد.
+
 ## [2026-11-02] — ربط نماذج Codex في DSH عبر OAuth
 ### تم التنفيذ
 - فُعّل مسار `openai-codex` في `llm-pi-ai` عبر `cordis.patch.yml` مع `displayName: OpenAI Codex`؛ وأُزيل `baseURL` الذي كان يشير إلى `opencode.ai/inference/openai/v1` لأنه ليس خادم Codex، فبقي الافتراضي `chatgpt.com/backend-api` عبر `openai-codex-responses`.

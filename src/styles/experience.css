@@ -1,22 +1,21 @@
 /* Shared visual grammar: precise routes, open editorial space, restrained depth. */
+/* Aliases only — the palette and Arabic scale come from variables.css. */
 :root {
-  --surface-panel: #0c0b12;
-  --line-soft: #292630;
-  --text-secondary: #bdbbc6;
   --motion-fast: 120ms;
   --motion-normal: 220ms;
   --motion-reveal: 480ms;
   --ease-out: cubic-bezier(.2,.7,.2,1);
   --diagram-radius: 10px;
 }
-body { font-weight: 400; }
 /* Preserve the existing homepage header typography and interactions. */
 .topbar { font-weight: 200; }
 h1,h2,h3 { text-wrap: balance; letter-spacing: 0; }
 select { font: inherit; }
-button:disabled { cursor: default; opacity: .55; }
-:is(a,button,input,select,textarea,summary):focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 5px; }
-::selection { color: #fff; background: #5834ad; }
+/* One shared focus ring for every interactive element on the site. */
+:is(a,button,input,select,textarea,summary):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 5px; }
+/* Disabled and busy controls keep a non-colour cue (dashed edge + opacity). */
+:is(button,.button):is(:disabled,[aria-disabled='true'],[aria-busy='true']) { cursor: default; opacity: .6; }
+::selection { color: var(--color-text); background: var(--color-selection); }
 @view-transition { navigation: auto; }
 ::view-transition-old(root) { animation: page-out var(--motion-fast) ease-out both; }
 ::view-transition-new(root) { animation: page-in var(--motion-normal) ease-out both; }
@@ -27,28 +26,28 @@ button:disabled { cursor: default; opacity: .55; }
 @keyframes draw-route { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 .motion-enter { animation: section-in var(--motion-reveal) var(--ease-out) both; }
 h1 { animation: title-in var(--motion-reveal) var(--ease-out); }
-.button { border-radius: 8px; transition: transform var(--motion-normal), filter var(--motion-normal); }
+.button { transition: transform var(--motion-normal), filter var(--motion-normal), background-color var(--motion-normal); }
 .button span,main .ghost span,.node-arrow { display: inline-block; transition: transform var(--motion-normal) var(--ease-out); }
 main :is(.button,.ghost):is(:hover,:focus-visible) span { transform: translate(-3px,-1px); }
-.product-icon { flex: 0 0 auto; color: #a88bff; transition: transform var(--motion-normal); }
+.product-icon { flex: 0 0 auto; inline-size: var(--icon-size, 40px); block-size: var(--icon-size, 40px); color: var(--icon-accent); transition: transform var(--motion-normal); }
 a:hover .product-icon { transform: translateY(-3px); }
 .eyebrow { font-size: 13px; }
 .page { padding-block-start: 24px; }
-.page h1 { max-inline-size: 1000px; font-size: clamp(38px,5.3vw,76px); line-height: 1.4; margin-block: 48px 24px; }
-.page .lead { color: #c5c2cf; font-size: clamp(18px,1.7vw,22px); line-height: 1.9; max-inline-size: 760px; }
+.page h1 { max-inline-size: 1000px; font-size: var(--type-h1); line-height: var(--leading-ar-h1); margin-block: 48px 24px; }
+.page .lead { color: #c5c2cf; font-size: var(--type-lead); line-height: var(--leading-ar-lead); max-inline-size: 760px; }
 .page .breadcrumb { padding-block: 8px 20px; border-bottom: 1px solid var(--line-soft); }
 .page .note { line-height: 1.9; max-inline-size: 850px; }
 .page .block { padding-block: clamp(44px,7vw,92px); }
 .page .block>h2 { font-size: clamp(28px,3vw,42px); line-height: 1.5; }
-.page .tag { border-radius: 4px; border-color: #5d4824; background: #1c160c; margin-block: 16px 28px; }
-.page a:not(.button):not(.map-node):not(.ghost):not(.catalog-row):hover { color: #ffca68; }
+.page .tag { border-radius: 4px; border-color: var(--tag-border); background: var(--tag-bg); color: var(--tag-text); margin-block: 16px 28px; }
+.page a:not(.button):not(.map-node):not(.ghost):not(.catalog-row):hover { color: var(--state-warning-text); }
 .page table { min-inline-size: 0; table-layout: fixed; }
 .page th,.page td { overflow-wrap: anywhere; line-height: 1.9; }
 .page .table-wrap table { min-inline-size: 620px; }
 .page .list { line-height: 2; }
 .page .list li { padding-inline-start: 10px; margin-block: 16px; }
-.page .list li::marker { color: #a88bff; }
-.page blockquote { margin-inline: 0; padding: 28px; border-inline-start: 2px solid #a88bff; background: var(--surface-panel); color: #e3dce9; line-height: 2; }
+.page .list li::marker { color: var(--icon-accent); }
+.page blockquote { margin-inline: 0; padding: 28px; border-inline-start: 2px solid var(--icon-accent); background: var(--surface-panel); color: #e3dce9; line-height: var(--leading-ar-lead); }
 /* The catalogue is an index, rather than a stack of feature cards. */
 .catalog { border-top: 1px solid var(--line-soft); margin-top: 40px; }
 .catalog-row { display: grid; grid-template-columns: 56px 1fr 1fr 32px; align-items: center; gap: 28px; padding-block: 32px; border-bottom: 1px solid var(--line-soft); transition: background var(--motion-normal), padding var(--motion-normal); }
@@ -76,7 +75,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 .map-node bdi { font-size: clamp(9px,2.2cqw,12px); color: #b8a6cf; }
 .node-no { color: #b995ff; font: 10px monospace; }
 .node-arrow { position: absolute; inset-inline-end: 10px; inset-block-start: 10px; color: #b995ff; }
-.map-node:is(:hover,:focus-visible) { background: #20142d; border-color: #b18aff; box-shadow: 0 0 32px #8052ff20; }
+.map-node:is(:hover,:focus-visible) { background: #20142d; border-color: var(--icon-accent); box-shadow: 0 0 32px #8052ff20; }
 .node-0 { inset-block-start: 3%; inset-inline-start: 34.5%; }
 .node-1 { inset-block-start: 30%; inset-inline-start: 3%; }
 .node-2 { inset-block-end: 7%; inset-inline-start: 12%; }
@@ -90,11 +89,11 @@ a:hover .product-icon { transform: translateY(-3px); }
 .product-role { color: #ffca68; font-size: 26px; margin-top: 12px; }
 .product-intro .lead { margin-bottom: 0; font-size: 19px; }
 .product-meta { border-inline-start: 1px solid #544362; padding-inline-start: 28px; font-size: 14px; color: var(--text-secondary); }
-.product-meta .product-icon { width: 60px; height: 60px; margin-bottom: 20px; }
+.product-meta .product-icon { --icon-size: 40px; width: 60px; height: 60px; margin-bottom: 20px; }
 .experience { border: 1px solid #39313f; border-radius: var(--diagram-radius); background: #09080c; margin-block: 12px 80px; overflow: hidden; }
 .experience-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 18px 28px; border-bottom: 1px solid var(--line-soft); gap: 12px; font-size: 13px; }
 .experience-bar>span:first-child { display: flex; align-items: center; gap: 12px; }
-.experience-bar .product-icon { width: 24px; height: 24px; }
+.experience-bar .product-icon { --icon-size: 24px; width: 24px; height: 24px; }
 .experience h2 { font-size: clamp(28px,3.2vw,44px); line-height: 1.5; }
 .protection-layout,.risk-layout,.human-layout,.ledger-layout,.chat-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(28px,6vw,80px); padding: clamp(24px,4vw,56px); align-items: center; }
 .diagram-help { color: var(--text-secondary); font-size: 15px; margin-block: 18px 24px; line-height: 1.9; }
@@ -178,7 +177,7 @@ a:hover .product-icon { transform: translateY(-3px); }
   .reading-nav a { display: inline-block; margin-inline-end: 20px; }
   .product-intro,.sector-story { grid-template-columns: 1fr; gap: 28px; }
   .product-meta { display: flex; gap: 20px; align-items: center; }
-  .product-meta .product-icon { margin: 0; width: 40px; height: 40px; }
+  .product-meta .product-icon { --icon-size: 40px; margin: 0; width: 40px; height: 40px; }
 }
 @media (max-width: 650px) {
   .catalog-row { grid-template-columns: 32px minmax(0,1fr) 20px; gap: 16px; }

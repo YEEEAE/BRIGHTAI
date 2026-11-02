@@ -3,7 +3,7 @@
 .fw-counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-block:22px}
 .fw-counts article{position:relative;display:flex;flex-direction:column;gap:4px;overflow:hidden;padding:18px 20px 20px;border:1px solid #302a39;border-radius:12px;background:linear-gradient(160deg,#121019,#0e0b14 72%);box-shadow:inset 0 1px 0 #ffffff08}
 .fw-counts article::before{content:"";position:absolute;inset-block-start:0;inset-inline:0;block-size:2px;background:#3a3346}
-.fw-counts article:nth-child(1)::before{background:#15846e}
+.fw-counts article:nth-child(1)::before{background:var(--state-success)}
 .fw-counts article:nth-child(2)::before{background:#a34b4b}
 .fw-counts article:nth-child(3)::before{background:#8a6a25}
 .fw-counts bdi{align-self:flex-start;font-size:12px;line-height:1.6;letter-spacing:.08em;color:#c6c1cf}
@@ -19,7 +19,7 @@
 .firewall label{margin-block:10px 6px;font-size:13px;color:#d8d3e4}
 .firewall input[type=number]{direction:ltr;text-align:end}
 .fw-hint{font-size:12px;color:#8f8a9b;line-height:1.9}
-.fw-meta{font-size:11px;color:#ffb829;margin:10px 0}
+.fw-meta{font-size:11px;color:var(--color-focus);margin:10px 0}
 .fw-empty{padding:16px;border:1px dashed #3a3346;border-radius:8px;font-size:12px;color:#a9a3b8}
 .fw-examples{display:flex;gap:8px;flex-wrap:wrap;margin-block:16px}
 .fw-examples button{background:transparent;border:1px solid #635678;font-size:.85rem}
@@ -33,7 +33,7 @@
 .fw-pattern bdi{display:inline-block;padding:2px 8px;background:#15111c;border:1px solid #302639;border-radius:5px;margin-inline-start:6px}
 .fw-tag{display:inline-block;font-size:10px;letter-spacing:.6px;padding:4px 9px;border-radius:20px;border:1px solid #3a3346;background:#15111c;color:#d8d3e4;white-space:nowrap}
 .fw-tag.fw-block{color:#ff9b9b;border-color:#5e2c2c;background:#1a0d0d}
-.fw-tag.fw-redact{color:#ffb829;border-color:#5b4520;background:#191307}
+.fw-tag.fw-redact{color:var(--color-focus);border-color:#5b4520;background:#191307}
 .fw-tag.fw-allow{color:#b9f3c9;border-color:#2f5e3e;background:#0e1a12}
 .fw-rule-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-block-start:10px}
 .fw-rule-actions button{min-height:40px;padding:8px 16px;font-size:12px}
@@ -43,7 +43,7 @@
 .fw-check input{width:auto;min-height:0;margin-block-start:6px;padding:0}
 .fw-error{color:#ff9b9b;font-size:12px;margin:0;line-height:1.8}
 .fw-error:empty{display:none}
-.fw-result{margin-block-start:16px;padding:18px;background:#161021;border-inline-start:3px solid #8052ff;font-size:13px;line-height:1.9}
+.fw-result{margin-block-start:16px;padding:18px;background:#161021;border-inline-start:3px solid var(--color-action);font-size:13px;line-height:1.9}
 .fw-result-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px}
 .fw-result p{margin:0}
 .fw-decisions{list-style:none;padding:0;margin:0;display:grid;gap:10px}
@@ -55,7 +55,7 @@
 .fw-filters>div{min-width:160px}
 .fw-filters label{margin-block:0 6px;font-size:11px}
 .firewall bdi{unicode-bidi:isolate}
-.firewall :focus-visible{outline:2px solid #ffb829;outline-offset:4px}
+.firewall :focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}
 .firewall button{min-height:44px}
 .firewall .panel{min-width:0}
 .fw-integration{margin-block:20px}
@@ -80,7 +80,7 @@
 .firewall label{color:#c6c1cf;font-size:13px;line-height:1.7}
 .firewall textarea{min-height:132px;border-color:#3a3346;background:#09080d;font-size:14px;line-height:1.8;transition:border-color 140ms ease,background-color 140ms ease}
 .firewall textarea:hover{border-color:#4a4157}
-.firewall textarea:focus{border-color:#ffb829}
+.firewall textarea:focus{border-color:var(--color-focus)}
 .firewall select option{background:#0e0b14;color:#f4f1f8}
 .firewall .fw-examples{gap:8px;margin-block:14px}
 .firewall .fw-examples button{min-height:44px;padding:8px 14px;border:1px solid #3f3550;border-radius:8px;background:#100c17;color:#c6c1cf;font-size:13px;line-height:1.6;transition:border-color 140ms ease,background-color 140ms ease,color 140ms ease}
@@ -104,18 +104,18 @@
 .firewall .fw-edit-details summary:hover{border-color:#5b4a72;background:#17121f;color:#fff}
 .firewall .fw-edit{padding-block-start:12px}
 .firewall .fw-check{gap:10px;color:#c6c1cf;font-size:13px;line-height:1.85}
-.firewall .fw-check input{accent-color:#8052ff}
+.firewall .fw-check input{accent-color:var(--color-action)}
 .firewall .fw-error{color:#ffb1b1;font-size:12px;line-height:1.8}
-.firewall .fw-result{margin-block-start:18px;padding:18px 20px;border:1px solid #3a2c56;border-inline-start:3px solid #8052ff;border-radius:10px;background:linear-gradient(140deg,#141020,#0e0b14 72%);font-size:14px;line-height:1.9;color:#f4f1f8}
+.firewall .fw-result{margin-block-start:18px;padding:18px 20px;border:1px solid #3a2c56;border-inline-start:3px solid var(--color-action);border-radius:10px;background:linear-gradient(140deg,#141020,#0e0b14 72%);font-size:14px;line-height:1.9;color:#f4f1f8}
 .firewall .fw-result:has(.fw-block){border-color:#4b2727;border-inline-start-color:#a34b4b;background:linear-gradient(140deg,#170e10,#0e0b14 72%)}
 .firewall .fw-result:has(.fw-redact){border-color:#4a3a22;border-inline-start-color:#8a6a25;background:linear-gradient(140deg,#171208,#0e0b14 72%)}
-.firewall .fw-result:has(.fw-allow){border-color:#1f5c4c;border-inline-start-color:#15846e;background:linear-gradient(140deg,#0b1512,#0e0b14 72%)}
+.firewall .fw-result:has(.fw-allow){border-color:#1f5c4c;border-inline-start-color:var(--state-success);background:linear-gradient(140deg,#0b1512,#0e0b14 72%)}
 .firewall .fw-result .fw-result-head{gap:10px;margin-block-end:10px;padding-block-end:10px;border-block-end:1px solid #ffffff0f}
 .firewall .fw-result p{font-size:14px;line-height:1.9;color:#d8d3e4}
 .firewall .fw-decisions{gap:8px;margin-block:16px}
 .firewall .fw-decisions>li{gap:6px;padding:14px 16px;border:1px solid #241f2d;border-inline-start:2px solid #3a3346;border-radius:8px;background:#0b0910;font-size:13px;line-height:1.8;transition:border-color 140ms ease,background-color 140ms ease}
 .firewall .fw-decisions>li:hover{border-color:#3a3346;background:#100d16}
-.firewall .fw-decisions>li:has(.fw-allow){border-inline-start-color:#15846e}
+.firewall .fw-decisions>li:has(.fw-allow){border-inline-start-color:var(--state-success)}
 .firewall .fw-decisions>li:has(.fw-block){border-inline-start-color:#a34b4b}
 .firewall .fw-decisions>li:has(.fw-redact){border-inline-start-color:#8a6a25}
 .firewall .fw-decisions li time{font-size:12px;line-height:1.7;color:#a9a3b8;font-variant-numeric:tabular-nums}

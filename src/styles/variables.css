@@ -1,5 +1,11 @@
+/* BRIGHT AI — design tokens.
+   This file is the only place brand primitives are declared. theme.css and
+   experience.css alias these values instead of repeating hex codes, so the
+   palette can no longer drift between the homepage and interior pages. */
 :root {
-  /* Colors */
+  color-scheme: dark;
+
+  /* — Brand primitives (approved palette, do not replace) — */
   --color-void: #000000;
   --color-bone-white: #ffffff;
   --color-ash-gray: #9a9a9a;
@@ -8,36 +14,119 @@
   --color-saffron-spark: #ffb829;
   --color-deep-verdant: #15846e;
 
-  /* Typography — Font Families */
-  --font-ppneuemontreal: 'PPNeueMontreal', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* — Semantic: surfaces, text, lines — */
+  --surface-canvas: var(--color-void);
+  --surface-raised: #0c0b12;
+  --surface-raised-hover: #17121f;
+  --surface-sunken: #08070b;
+  --surface-panel: var(--surface-raised);
+  --surface-panel-hover: var(--surface-raised-hover);
 
-  /* Typography — Scale */
-  --text-caption: 12px;
+  --color-text: var(--color-bone-white);
+  --color-text-muted: var(--color-silver-mist);
+  --color-text-subtle: var(--color-ash-gray);
+  --text-secondary: var(--color-text-muted);
+
+  --border-subtle: #292630;
+  --border-strong: #3a3442;
+  --line-soft: var(--border-subtle);
+
+  /* — Semantic: actions and focus — */
+  --color-action: var(--color-electric-iris);
+  --color-action-hover: #9166ff;
+  --color-action-contrast: var(--color-bone-white);
+  --color-focus: var(--color-saffron-spark);
+  --color-selection: #5834ad;
+  --icon-accent: #a88bff;
+  --icon-accent-strong: #b79af5;
+
+  /* — Semantic: states. Always paired with a written label or a shape,
+       never communicated by colour alone. Values are checked against the
+       void canvas (>= 4.5:1 for the *-text variants). — */
+  --state-success: var(--color-deep-verdant);
+  --state-success-text: #4ec9aa;
+  --state-warning: var(--color-saffron-spark);
+  --state-warning-text: var(--color-saffron-spark);
+  --state-error: #ff6b72;
+  --state-error-text: #ff9ba0;
+  --state-info: #9bcaff;
+  --state-info-text: #b7d7ff;
+  --state-disabled: #6f6b7a;
+  --state-disabled-text: var(--color-ash-gray);
+
+  /* — Component tokens — */
+  --radius-control: 8px;
+  --radius-field: 6px;
+  --radius-card: var(--radius-content);
+  --tag-bg: #1c160c;
+  --tag-border: #5d4824;
+  --tag-text: var(--color-saffron-spark);
+  --table-header-bg: #140e1c;
+  --table-row-hover: #120d19;
+  --table-border: var(--border-subtle);
+
+  /* — Typography — Font families (Arabic-first; Plex Arabic is local) — */
+  --font-arabic: 'Plex Arabic', 'IBM Plex Sans Arabic', Arial, sans-serif;
+  --font-latin: 'Plex Arabic', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-monospace: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Kept for existing references; the loaded family is Plex Arabic. */
+  --font-ppneuemontreal: var(--font-latin);
+
+  /* — Typography — Arabic scale, locked to the values already in use — */
+  --type-display: clamp(48px, 7.1vw, 102px);
+  --type-h1: clamp(38px, 5.3vw, 78px);
+  --type-h2: clamp(36px, 4.6vw, 66px);
+  --type-h3: clamp(27px, 2.7vw, 38px);
+  --type-lead: clamp(18px, 1.7vw, 22px);
+  --type-body: 18px;
+  --type-body-sm: 16px;
+  --type-table: 16px;
+  --type-label: 14px;
+  --type-caption: 12px;
+
+  /* Arabic needs generous leading and zero tracking. */
+  --leading-ar-display: 1.28;
+  --leading-ar-h1: 1.4;
+  --leading-ar-h2: 1.42;
+  --leading-ar-h3: 1.45;
+  --leading-ar-lead: 1.9;
+  --leading-ar-body: 1.85;
+  --leading-ar-table: 1.7;
+  --leading-ar-label: 1.5;
+
+  /* Latin-only tracking (Arabic headings must stay at 0). */
+  --tracking-latin-label: 0.05em;
+  --measure-reading: 66ch;
+  --measure-lead: 62ch;
+
+  /* Legacy scale names retained for reference; do not apply negative
+     tracking to Arabic text — these are now neutral. */
+  --text-caption: var(--type-caption);
   --leading-caption: 1.5;
-  --text-nav-label: 14px;
+  --text-nav-label: var(--type-label);
   --leading-nav-label: 1.2;
-  --tracking-nav-label: 0.35px;
-  --text-body: 18px;
+  --tracking-nav-label: 0;
+  --text-body: var(--type-body);
   --leading-body: 1.5;
   --text-heading-2xs: 24px;
   --leading-heading-2xs: 1.25;
-  --tracking-heading-2xs: -0.48px;
+  --tracking-heading-2xs: 0;
   --text-heading-xs: 27px;
   --leading-heading-xs: 1;
   --text-subheading: 36px;
   --leading-subheading: 1.2;
   --text-heading-sm: 42px;
   --leading-heading-sm: 1.2;
-  --tracking-heading-sm: -1.68px;
+  --tracking-heading-sm: 0;
   --text-heading: 48px;
   --leading-heading: 1.1;
-  --tracking-heading: -1.68px;
+  --tracking-heading: 0;
   --text-heading-lg: 78px;
   --leading-heading-lg: 1.1;
-  --tracking-heading-lg: -3.12px;
+  --tracking-heading-lg: 0;
   --text-display: 113px;
   --leading-display: 1.1;
-  --tracking-display: -4.52px;
+  --tracking-display: 0;
 
   /* Typography — Weights */
   --font-weight-extralight: 200;
@@ -73,11 +162,13 @@
   --radius-tags: 9999px;
   --radius-cards: 24px;
   --radius-buttons: 24px;
+  --radius-content: 12px;
+  --radius-system: 8px;
 
   /* Surfaces */
-  --surface-void-canvas: #000000;
-  --surface-deep-verdant-tint: #15846e;
-  --surface-electric-iris: #8052ff;
+  --surface-void-canvas: var(--color-void);
+  --surface-deep-verdant-tint: var(--color-deep-verdant);
+  --surface-electric-iris: var(--color-electric-iris);
 }
 
 /* Interior-only aliases: scoped so the homepage, hero and header are untouched. */
@@ -88,11 +179,12 @@
   --interior-border: #302a39;
   --interior-text: #f4f1f8;
   --interior-copy: #c6c1cf;
-  --interior-accent: #8052ff;
-  --interior-focus: #ffb829;
-  --interior-success: #15846e;
-  --interior-radius-system: 8px;
-  --interior-radius-content: 12px;
+  --interior-accent: var(--color-action);
+  --interior-focus: var(--color-focus);
+  --interior-success: var(--state-success);
+  --interior-error: var(--state-error);
+  --interior-radius-system: var(--radius-system);
+  --interior-radius-content: var(--radius-content);
   --interior-fast: 140ms;
   --interior-state: 220ms;
   --interior-reveal: 440ms;

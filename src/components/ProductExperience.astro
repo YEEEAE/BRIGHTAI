@@ -13,7 +13,7 @@ const decisions = [
 ];
 ---
 <section class={`experience experience-${kind}`} aria-label="شرح تفاعلي لتصور المنتج">
-  <div class="experience-bar"><span><ProductIcon kind={kind} /> مختبر الفكرة</span><span class="map-status">توضيح تعليمي · لا اتصال بخدمة</span></div>
+  <div class="experience-bar"><span><ProductIcon kind={kind} size={24} /> مختبر الفكرة</span><span class="map-status">توضيح تعليمي · لا اتصال بخدمة</span></div>
   {kind === 'firewall' && <div class="protection-layout">
     <DecisionCircuit />
     <div><h2>خمس قرارات.<br /><span class="muted">لكل منها سبب.</span></h2><p class="diagram-help">اختر قراراً لقراءة مثال على معناه، وليس لإجراء فحص أمني.</p><div class="decision-options">{decisions.map(([label, scenario, text], i) => <button type="button" disabled data-example={text} data-scenario={scenario} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>{decisions[0][1]}</strong><p data-example-output>{decisions[0][2]}</p></div><noscript><dl>{decisions.map(([label, , text]) => <><dt>{label}</dt><dd>{text}</dd></>)}</dl></noscript></div>
