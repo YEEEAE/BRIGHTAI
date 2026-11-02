@@ -11,13 +11,42 @@ const links = [
 <a class="skip-link" href="#main">تخطّ إلى المحتوى</a>
 <header class="topbar wrap">
   <BrandLogo />
-  <nav aria-label="التنقل الرئيسي">{links.map(l => <a href={l.href}>{l.label}</a>)}</nav>
+  <details class="primary-navigation" data-primary-navigation open>
+    <summary aria-controls="primary-navigation-links" aria-expanded="true">القائمة</summary>
+    <nav id="primary-navigation-links" aria-label="التنقل الرئيسي">{links.map(l => <a href={l.href}>{l.label}</a>)}</nav>
+  </details>
   <a class="ghost contact" href="/contact/">اطلب معلومات <span aria-hidden="true">↗</span></a>
 </header>
+<script>
+  const navigation = document.querySelector<HTMLDetailsElement>('[data-primary-navigation]');
+  const navigationSummary = navigation?.querySelector('summary');
+  if (navigation && navigationSummary) {
+    const compactViewport = matchMedia('(max-width: 900px)');
+    const syncExpandedState = () => navigationSummary.setAttribute('aria-expanded', String(navigation.open));
+    const syncViewport = () => {
+      navigation.open = !compactViewport.matches;
+      syncExpandedState();
+    };
+    navigation.addEventListener('toggle', syncExpandedState);
+    compactViewport.addEventListener('change', syncViewport);
+    syncViewport();
+  }
+</script>
 <style>
   .topbar { min-height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-  nav { display: flex; gap: 32px; align-items: center; }
+  .primary-navigation { flex: 1; min-inline-size: 0; }
+  nav { display: flex; justify-content: center; gap: 32px; align-items: center; }
   nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 400; color: #9a9a9a; }
   nav a:hover { color: #fff; }
-  @media (max-width: 900px) { .topbar { flex-wrap: wrap; padding-block: 12px; gap: 12px; } nav { order: 3; width: 100%; justify-content: space-between; gap: 8px; flex-wrap: wrap; } .contact { font-size: 14px; } }
+  .primary-navigation summary { display: none; }
+  .primary-navigation :is(summary, a):focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; border-radius: 3px; }
+  @media (max-width: 900px) {
+    .topbar { flex-wrap: wrap; padding-block: 12px; gap: 12px; }
+    .primary-navigation { order: 3; flex: 1 0 100%; inline-size: 100%; }
+    .primary-navigation summary { display: flex; align-items: center; min-block-size: 44px; inline-size: fit-content; padding-inline: 14px; border: 1px solid #40354c; border-radius: 4px; color: #fff; cursor: pointer; }
+    .primary-navigation nav { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap: 4px 12px; padding-block-start: 8px; }
+    .primary-navigation:not([open]) nav { display: none; }
+    .primary-navigation nav a { padding-inline: 8px; }
+    .contact { font-size: 14px; }
+  }
 </style>

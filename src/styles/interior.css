@@ -341,6 +341,9 @@
   .interior-page .experience::before,.interior-page .sector-visual::before { display: none; }
   .interior-page * { scroll-behavior: auto; }
 }
+@media (max-width: 767px) {
+  .section-compass { position: static; inset: auto; max-inline-size: 100%; margin-block-start: 24px; }
+}
 /* Purposeful local tools: editorial filtering and a quotation brief. */
 .interior-page .knowledge-tools { display: grid; grid-template-columns: minmax(200px,.8fr) minmax(0,1.2fr); gap: 20px 40px; align-items: end; margin-block: 32px 20px; }
 .interior-page .knowledge-tools label { display: grid; gap: 10px; font-size: 13px; color: #c1afcf; }

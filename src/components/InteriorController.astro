@@ -39,7 +39,12 @@
       heading.id ||= `reading-section-${index + 1}`;
       const link = document.createElement('a');
       link.href = `#${heading.id}`;
-      link.textContent = `${String(index + 1).padStart(2, '0')} / ${heading.innerText.replace(/\s+/g, ' ').trim()}`;
+      const number = document.createElement('bdi');
+      number.dir = 'ltr';
+      number.textContent = `${String(index + 1).padStart(2, '0')} /`;
+      const label = document.createElement('bdi');
+      label.textContent = heading.innerText.replace(/\s+/g, ' ').trim();
+      link.append(number, document.createTextNode(' '), label);
       link.addEventListener('click', () => {
         if (compass) compass.open = false;
         heading.tabIndex = -1;

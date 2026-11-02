@@ -9,7 +9,7 @@ const cols = [
 ---
 <footer class="wrap">
   <div class="brand"><BrandLogo placement="footer" /><p>ذكاء اصطناعي تثق به... وتحاسبه.</p></div>
-  <div class="cols">{cols.map(c => <div><h2>{c.title}</h2><ul>{c.links.map(([href, label]) => <li><a href={href}>{label}</a></li>)}</ul></div>)}</div>
+  <div class="cols">{cols.map(c => <div><h2>{c.title}</h2><ul>{c.links.map(([href, label]) => <li><a href={href}>{label === 'Kernel والمنتجات' ? <><bdi dir="ltr">Kernel</bdi> والمنتجات</> : label}</a></li>)}</ul></div>)}</div>
   <span class="copy" dir="ltr">© {new Date().getFullYear()} BRIGHTAI</span>
 </footer>
 <style>

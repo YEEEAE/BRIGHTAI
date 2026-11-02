@@ -18,8 +18,8 @@ const nodes = [
       {['300 65','510 210','430 435','170 435','90 210'].map((end, i) => <path class={`map-path map-wire-${nodes[i][0]}`} d={`M300 270 ${end}`} stroke="currentColor" />)}
       <circle cx="300" cy="270" r="90" stroke="currentColor" />
     </svg>
-    <div class="map-core"><span class="core-mark" aria-hidden="true">⟡</span><bdi>AIGAS Kernel</bdi><small>الهوية · السياسات · الأمن الأساسي</small></div>
-    {nodes.map(([slug, label, name, number], i) => <a class={`map-node node-${i}`} href={`/products/${slug}/`}><span class="node-no" aria-hidden="true">{number}</span><strong>{label}</strong><bdi>{name}</bdi><span class="node-arrow" aria-hidden="true">↖</span></a>)}
+    <div class="map-core"><span class="core-mark" aria-hidden="true">⟡</span><bdi dir="ltr">AIGAS Kernel</bdi><small>الهوية · السياسات · الأمن الأساسي</small></div>
+    {nodes.map(([slug, label, name, number], i) => <a class={`map-node node-${i}`} href={`/products/${slug}/`}><bdi class="node-no" dir="ltr" aria-hidden="true">{number}</bdi><strong>{label}</strong><bdi dir="ltr">{name}</bdi><span class="node-arrow" aria-hidden="true">↖</span></a>)}
   </div>
   <figcaption>كل منتج مستقل. الروابط توضح التكامل الاختياري، ولا تمثل خدمات متصلة الآن.</figcaption>
 </figure>

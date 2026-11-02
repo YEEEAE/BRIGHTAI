@@ -13,13 +13,13 @@ const products = [
 ];
 ---
 <PageShell title="منتجات AIGAS | BRIGHTAI" description="تعرّف على التصور المستهدف لمنتجات AIGAS الخمسة، مع فصل Kernel المشترك عن المنتجات وحالة الإتاحة غير المتحققة." crumbs={[{ name: 'المنتجات' }]}>
-  <p class="eyebrow">AIGAS / المنتجات</p><h1>مكوّن مشترك.<br /><span class="muted">وخمسة منتجات مستقلة.</span></h1>
-  <p class="lead">AIGAS Kernel أساس مشترك غير مفوتر كمنتج مستقل وفق الـBlueprint. المنتجات الخمسة مصممة كوحدات مستقلة وظيفياً وتجاريًا؛ حالة توفرها التشغيلي حاليًا غير متحققة.</p>
+  <p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / المنتجات</p><h1>مكوّن مشترك.<br /><span class="muted">وخمسة منتجات مستقلة.</span></h1>
+  <p class="lead"><bdi dir="ltr">AIGAS Kernel</bdi> أساس مشترك غير مفوتر كمنتج مستقل وفق الـBlueprint. المنتجات الخمسة مصممة كوحدات مستقلة وظيفياً وتجاريًا؛ حالة توفرها التشغيلي حاليًا غير متحققة.</p>
   <p class="note">المعلومات التالية تصف التوجه المستهدف، ولا تعني أن المنتج أو التكامل أو الضابط يعمل الآن. لا توجد أسعار أو باقات نهائية معتمدة.</p>
   <section class="block"><SystemMap compact /></section>
-  <section class="block"><p class="eyebrow">دليل المنتجات / 01–05</p><h2>ابدأ بالدور الذي تحتاجه.</h2><div class="catalog">{products.map(([slug, name, text], i) => <a class="catalog-row" href={`/products/${slug}/`} aria-labelledby={`product-title-${slug}`} aria-describedby={`product-description-${slug} product-status-${slug}`}>
+  <section class="block"><p class="eyebrow">دليل المنتجات / <bdi dir="ltr">01–05</bdi></p><h2>ابدأ بالدور الذي تحتاجه.</h2><div class="catalog">{products.map(([slug, name, text], i) => <a class="catalog-row" href={`/products/${slug}/`} aria-labelledby={`product-title-${slug}`} aria-describedby={`product-description-${slug} product-status-${slug}`}>
     <span class="catalog-icon-frame"><ProductIcon kind={slug} size={32} /></span>
-    <div class="catalog-copy"><small>0{i + 1} / تصور مستهدف</small><h3 id={`product-title-${slug}`} style={`view-transition-name:product-${slug}`}><bdi>{name}</bdi></h3><p id={`product-description-${slug}`}>{text}</p></div>
+    <div class="catalog-copy"><small><bdi dir="ltr">0{i + 1} /</bdi> تصور مستهدف</small><h3 id={`product-title-${slug}`} style={`view-transition-name:product-${slug}`}><bdi dir="ltr">{name}</bdi></h3><p id={`product-description-${slug}`}>{text}</p></div>
     <span class="catalog-availability" id={`product-status-${slug}`}><span aria-hidden="true"></span>مخطط · غير متحقق تشغيلياً</span>
     <span class="catalog-arrow" aria-hidden="true">↖</span>
   </a>)}</div></section>

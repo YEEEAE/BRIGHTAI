@@ -44,8 +44,8 @@ const minutes = Math.max(1, Math.ceil(words / 180));
     <Fragment set:html={content} />
     <PageMotionStudy family={family} segment={segment}/>
     <details class="section-compass" hidden data-section-compass>
-      <summary><span aria-hidden="true">☷</span> داخل الصفحة <span data-section-position></span></summary>
-      <nav aria-label="فهرس أقسام الصفحة" data-section-links></nav>
+      <summary aria-controls="section-compass-links"><span aria-hidden="true">☷</span> داخل الصفحة <span data-section-position></span></summary>
+      <nav id="section-compass-links" aria-label="فهرس أقسام الصفحة" data-section-links></nav>
     </details>
   </main>
   <InteriorController />
