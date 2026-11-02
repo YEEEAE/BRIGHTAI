@@ -115,13 +115,13 @@ const sectors = [
   .hero .button { font-size: 14px; padding: 9px 20px; min-height: 44px; }
   .hero .ghost { font-size: 14px; }
   .hero-art { position: absolute; z-index: 0; width: 83vw; height: 108%; inset-inline-end: -17vw; inset-block-start: -2%; mask-image: linear-gradient(to right, #000 63%, transparent 89%); }
-  .governance-statement { padding-block: 72px 96px; text-align: center; }
+  .governance-statement { padding-block: 72px 96px; text-align: center; box-shadow: inset 0 1px #ffffff14, inset 0 -1px #ffffff14; }
   .governance-statement p { font-size: clamp(24px, 3.6vw, 48px); line-height: 1.65; font-weight: 400; }
   .governance-statement span { display: block; }
   @media (prefers-reduced-motion: reduce) {
     .governance-statement [data-reveal-line] { opacity: 1 !important; }
   }
-  .governance-statement .statement-accent { color: var(--color-saffron-spark); font-weight: 200; }
+  .governance-statement .statement-accent { color: var(--color-saffron-spark); font-weight: 400; }
   .section { padding-block: 120px; }
   .section h2 { font-size: clamp(42px, 5.4vw, 78px); line-height: 1.2; }
   .problem { display: grid; grid-template-columns: 1.1fr .9fr; gap: 120px; min-height: 720px; align-items: center; }
@@ -190,24 +190,71 @@ const sectors = [
 <style>
   .section { padding-block: clamp(64px,8vw,112px); }
   .problem { min-height: auto; padding-block: 100px; border-block: 1px solid #2c2334; gap: 100px; }
-  .problem-copy { border-inline-start: 2px solid #8052ff; padding-inline-start: 30px; }
-  .pillar { gap: 80px; min-height: 330px; border-top: 1px solid #2c2334; }
-  .pillar-symbol { background: radial-gradient(ellipse,#2a164080,transparent 65%); min-height: 240px; }
-  .pillar-symbol svg { width: 125px; height: 125px; stroke-width: .9; transition: transform var(--motion-normal); }
-  .pillar:is(:hover,:focus-within) .pillar-symbol svg { transform: translateY(-6px); }
+  #problem h2 { color: var(--color-bone-white); }
+  #problem h2 .muted { color: var(--color-silver-mist); }
+  #problem .problem-copy { border-inline-start: 1px solid var(--color-electric-iris); padding-inline-start: 31px; }
+  #problem .problem-copy p { color: var(--color-silver-mist); line-height: 1.85; letter-spacing: 0; }
+  #principles .pillar { gap: 80px; min-height: 330px; border: 1px solid var(--line-soft); border-radius: 12px; background: linear-gradient(135deg,#ffffff05,transparent 70%); box-shadow: inset 0 1px #ffffff06,0 12px 24px -24px #000; transition: border-color 150ms ease-out,background-color 150ms ease-out; }
+  #principles .pillar:focus-within { border-color: var(--color-electric-iris); background-color: #ffffff03; }
+  #principles .pillar-symbol { background: radial-gradient(ellipse,#8052ff0a,transparent 65%); min-height: 240px; }
+  #principles .pillar-symbol svg { width: 125px; height: 125px; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  #principles .pillar-symbol .latin { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; line-height: 1.65; }
+  #principles .pillar-copy { min-inline-size: 0; }
+  #principles .pillar-copy h3 { color: var(--color-bone-white); letter-spacing: 0; }
+  #principles .pillar-copy p { color: var(--color-silver-mist); }
+  #principles .pillar-note { line-height: 1.8; letter-spacing: 0; }
+  @media (hover: hover) {
+    #principles .pillar:hover { border-color: var(--color-electric-iris); background-color: #ffffff03; }
+  }
   .workflow-intro { position: sticky; top: 40px; align-self: start; }
-  .steps li { border-bottom: 1px solid #33263e; padding-block: 28px 40px; }
-  .steps li:last-child { border-bottom: 0; }
+  #how-it-works .steps li { border-bottom: 1px solid var(--line-soft); padding-block: 28px 40px; background: linear-gradient(90deg,transparent,#ffffff03); border-radius: 8px; }
+  #how-it-works .steps li:last-child { border-bottom: 0; }
+  #how-it-works .steps h3 { color: var(--color-bone-white); letter-spacing: 0; }
+  #how-it-works .step-number { font-variant-numeric: tabular-nums; }
+  #how-it-works .step-arrow { color: var(--color-electric-iris); }
+  #how-it-works .workflow-intro .muted { color: var(--color-silver-mist); }
   .home-products { display: block; margin-top: 48px; }
-  .home-products .sector { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; border-top: 1px solid #33263e; padding-block: 24px; }
-  .home-products .sector h3 { font-size: 28px; direction: ltr; text-align: right; margin: 0; }
-  .home-products .sector p { font-size: 16px; }
+  .home-products .sector { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; border-top: 1px solid var(--line-soft); border-radius: 8px; padding-block: 24px; background: linear-gradient(135deg,#ffffff04,transparent 75%); box-shadow: inset 0 -1px #ffffff08; transition: border-color 150ms ease-out,background-color 150ms ease-out; }
+  .home-products .sector h3 { font-size: 28px; direction: ltr; unicode-bidi: isolate; text-align: right; margin: 0; color: var(--color-bone-white); }
+  .home-products .sector p { font-size: 16px; color: var(--color-silver-mist); }
+  .section[aria-labelledby="products-title"] > .note { color: var(--color-silver-mist); letter-spacing: 0; }
   .sectors:not(.home-products) { gap: 0 72px; }
-  .sectors:not(.home-products) .sector { border-top: 1px solid #33263e; padding-block: 30px; }
-  .closing { border-block-start: 1px solid #33263e; background: radial-gradient(ellipse at 50% 100%,#2d154580,transparent 65%); }
+  #solutions .sector { border-top: 1px solid var(--line-soft); border-radius: 8px; padding-block: 30px; transition: border-color 150ms ease-out,background-color 150ms ease-out; }
+  #solutions .sector .latin { color: var(--color-ash-gray); font-variant-numeric: tabular-nums; unicode-bidi: isolate; }
+  #solutions .sector h3 { color: var(--color-bone-white); letter-spacing: 0; }
+  #solutions .sector p { color: var(--color-silver-mist); }
+  #solutions .sector-link { line-height: 1.8; }
+  :is(.home-products,#solutions) .sector:focus-visible { border-color: var(--color-electric-iris); background-color: #ffffff04; }
+  .closing { border-block-start: 1px solid var(--line-soft); background: radial-gradient(ellipse at 50% 100%,#8052ff0c,transparent 65%); }
+  .closing > p:not(.eyebrow) { color: var(--color-silver-mist); letter-spacing: 0; }
+  /* Local interaction rules never reach the protected hero or shared shell. */
+  .section :is(.ghost,.button) { transition: color 150ms ease-out,transform 150ms ease-out,filter 150ms ease-out; }
+  .section :is(.ghost,.button) span { transition: none; }
+  .section :is(.ghost,.button):is(:hover,:focus-visible) span { transform: none; }
+  .closing .button:hover { transform: none; }
+  .section :is(.ghost,.button):active { transform: none; }
+  .section a:focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 5px; }
+  @media (hover: hover) {
+    :is(.home-products,#solutions) .sector:hover { border-color: var(--color-electric-iris); background-color: #ffffff04; }
+  }
+  /* One readable group at a time, without moving the steps or splitting Arabic. */
+  @keyframes home-content-in { from { opacity: .85; } to { opacity: 1; } }
+  #principles .pillar.motion-enter,.section .sector.motion-enter { animation: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    #principles .pillar.motion-enter,.section .sector.motion-enter,
+    #how-it-works .steps,.closing { animation: home-content-in 440ms ease-out; }
+  }
   @media(max-width: 900px) { .workflow-intro { position: static; } }
-  @media(max-width: 767px) { .home-products .sector { grid-template-columns: 1fr; gap: 12px; }.problem { padding-block: 56px; gap: 36px; }.pillar { gap: 24px; }.pillar-symbol { min-height: 160px; }.pillar-symbol svg { width: 90px; height: 90px; }.home-products .sector h3 { font-size: 26px; } }
-  @media(prefers-reduced-motion:reduce) { .pillar:hover .pillar-symbol svg { transform: none; } }
+  @media(max-width: 767px) { .home-products .sector { grid-template-columns: 1fr; gap: 12px; }.problem { padding-block: 56px; gap: 36px; }#principles .pillar { gap: 24px; }#principles .pillar-symbol { min-height: 160px; }#principles .pillar-symbol svg { width: 90px; height: 90px; }.home-products .sector h3 { font-size: 26px; } }
+  @media(max-width: 390px) {
+    #problem .problem-copy { padding-inline-start: 23px; }
+    #principles .pillar { padding-inline: 10px; }
+    .home-products .sector,#solutions .sector { padding-inline: 10px; }
+  }
+  @media(prefers-reduced-motion:reduce) {
+    #principles .pillar,.section .sector,#how-it-works .steps,.closing { animation: none; opacity: 1; transform: none; }
+    .section :is(.ghost,.button),#principles .pillar,.section .sector { transition: none; }
+  }
 </style>
 
 <style>
