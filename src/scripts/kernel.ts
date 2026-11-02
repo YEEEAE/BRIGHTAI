@@ -3,6 +3,12 @@ const root = document.querySelector<HTMLElement>('[data-kernel]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
 const title = root.querySelector<HTMLElement>('[data-state-title]')!;
 const login = root.querySelector<HTMLFormElement>('[data-login]');
+const loginEmail = login?.querySelector<HTMLInputElement>('#email');
+const loginPassword = login?.querySelector<HTMLInputElement>('#password');
+const loginSubmit = login?.querySelector<HTMLButtonElement>('[data-login-submit]');
+const loginPasswordToggle = login?.querySelector<HTMLButtonElement>('[data-login-password-toggle]');
+const loginEmailError = login?.querySelector<HTMLElement>('[data-login-email-error]');
+const loginPasswordError = login?.querySelector<HTMLElement>('[data-login-password-error]');
 const create = root.querySelector<HTMLFormElement>('[data-create]')!;
 const selector = root.querySelector<HTMLSelectElement>('[data-workspace]')!;
 const retry = root.querySelector<HTMLButtonElement>('[data-retry]')!;
@@ -29,12 +35,13 @@ const nativeOrganizations = root.querySelector<HTMLSelectElement>('[data-auth-or
 const registerInvite = root.querySelector<HTMLButtonElement>('[data-register-invite]')!;
 const incomingPanel = root.querySelector<HTMLElement>('[data-incoming-panel]')!;
 const productSlugs = ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat'];
+const roleNames: Record<string,string> = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
 const healthNames: Record<string, string> = { auth: 'الدخول (Neon Auth)', database: 'قاعدة البيانات', schema: 'مخطط Kernel', administration: 'إدارة Kernel' };
 const healthStates: Record<string, { text: string; tone: string }> = {
   READY: { text: 'جاهز', tone: 'ok' },
-  AUTH_SETUP_REQUIRED: { text: 'AUTH_SETUP_REQUIRED — يلزم إعداد الدخول', tone: 'warn' },
+  AUTH_SETUP_REQUIRED: { text: 'يلزم إعداد خدمة الدخول', tone: 'warn' },
   AUTH_UNAVAILABLE: { text: 'تعذر التحقق من خدمة الدخول', tone: 'bad' },
-  DB_SETUP_REQUIRED: { text: 'DB_SETUP_REQUIRED — يلزم إعداد اتصال القاعدة', tone: 'warn' },
+  DB_SETUP_REQUIRED: { text: 'يلزم إعداد اتصال قاعدة البيانات', tone: 'warn' },
   DB_UNAVAILABLE: { text: 'تعذر الاتصال بقاعدة البيانات', tone: 'bad' },
   SCHEMA_MISSING: { text: 'جداول Kernel الأربع غير مطبّقة', tone: 'bad' },
   NOT_CHECKED: { text: 'لم يُفحص', tone: 'muted' },
@@ -42,6 +49,12 @@ const healthStates: Record<string, { text: string; tone: string }> = {
   UNKNOWN: { text: 'غير معروف', tone: 'muted' },
 };
 const date = (value: string) => { const parsed = new Date(value); return Number.isNaN(parsed.getTime()) ? '—' : parsed.toLocaleDateString('ar-SA'); };
+function setLoginError(input: HTMLInputElement | null | undefined, error: HTMLElement | null | undefined, message = '') {
+  if (!input || !error) return;
+  error.textContent = message; error.hidden = !message;
+  input.setAttribute('aria-invalid', message ? 'true' : 'false');
+  input.setAttribute('aria-describedby', error.id);
+}
 function clearPrivate() {
   currentTenant = null; invitationConfig = null;
   invitationForm.hidden = true; linkPanel.hidden = true; incomingPanel.hidden = true;
@@ -49,7 +62,8 @@ function clearPrivate() {
   root.querySelector('[data-incoming]')!.replaceChildren();
   nativeOrganizations.replaceChildren();
   adminStatus.textContent = '';
-  root.querySelector('[data-tenant-name]')!.textContent = 'لا توجد مساحة محمّلة';
+  const tenantName = root.querySelector<HTMLElement>('[data-tenant-name]')!;
+  const emptyTenant = document.createElement('bdi'); emptyTenant.dir = 'auto'; emptyTenant.textContent = 'لا توجد مساحة محمّلة'; tenantName.replaceChildren(emptyTenant);
   root.querySelector('[data-tenant-detail]')!.textContent = 'تظهر البيانات بعد التحقق من العضوية.';
   root.querySelector('[data-selector]')!.setAttribute('hidden', '');
   root.querySelector('[data-selector-note]')!.textContent = '';
@@ -83,7 +97,7 @@ async function api(method = 'GET', name?: string, workspace?: string) {
     ...(method === 'POST' ? { body: JSON.stringify({ name }) } : {}),
   });
   const data = await response.json();
-  if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401 }); throw e; }
+  if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401, code: data.code }); throw e; }
   return data;
 }
 async function members(workspace?: string) {
@@ -92,7 +106,7 @@ async function members(workspace?: string) {
   if (!token) { const e = new Error('سجّل الدخول لعرض أعضاء المؤسسة.'); Object.assign(e, { unauthorized: true }); throw e; }
   const response = await appFetch(auth, `/app/api/kernel/members/${workspace ? `?workspace=${encodeURIComponent(workspace)}` : ''}`, { cache: 'no-store', headers: { Authorization: `Bearer ${token}` } });
   const data = await response.json();
-  if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401 }); throw e; }
+  if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401, code: data.code }); throw e; }
   return data;
 }
 async function renderMembers(data: any) {
@@ -105,10 +119,12 @@ async function renderMembers(data: any) {
   invitationForm.hidden = !invitationConfig?.available;
   linkPanel.hidden = !invitationConfig?.canLink;
   const invitations = root.querySelector('[data-invitations]')!; invitations.replaceChildren();
-  const labels: Record<string,string> = {pending:'بانتظار القبول',accepted:'مقبولة لدى Auth',rejected:'مرفوضة',canceled:'ملغاة',expired:'منتهية'};
+  const labels: Record<string,string> = {pending:'بانتظار القبول',accepted:'مقبولة لدى Auth',rejected:'مرفوضة',canceled:'ملغاة',expired:'منتهية',inviter_unavailable:'توقفت صلاحية الداعي'};
   for (const row of invitationConfig?.invitations ?? []) {
     const li = document.createElement('li');
-    li.textContent = `${row.email} · ${row.accepted_at ? 'عضوية Kernel معتمدة' : labels[row.status] ?? 'غير متاحة'} · تنتهي ${date(row.expires_at)}`;
+    const email = document.createElement('bdi'); email.dir = 'ltr'; email.textContent = row.email ?? '';
+    const details = document.createElement('span'); details.textContent = `${row.accepted_at ? 'عضوية Kernel معتمدة' : labels[row.status] ?? 'غير متاحة'} · تنتهي ${date(row.expires_at)}`;
+    li.append(email, details);
     invitations.append(li);
   }
   if (invitationConfig?.canLink) await loadNativeOrganizations();
@@ -116,9 +132,9 @@ async function renderMembers(data: any) {
   for (const member of data.members) {
     const item = document.createElement('li');
     const identity = document.createElement('div');
-    const name = document.createElement('strong'); name.textContent = member.name;
+    const name = document.createElement('strong'); name.dir = 'auto'; name.textContent = member.name;
     identity.append(name);
-    if (member.email) { const email = document.createElement('span'); email.textContent = member.email; identity.append(email); }
+    if (member.email) { const email = document.createElement('bdi'); email.dir = 'ltr'; email.textContent = member.email; identity.append(email); }
     const role = document.createElement('span'); role.className = 'role'; role.textContent = member.roleLabel;
     const joined = document.createElement('time'); joined.textContent = `انضم: ${date(member.created_at)}`;
     if (member.status === 'BANNED') { const banned = document.createElement('span'); banned.className = 'role warn'; banned.textContent = 'موقوف'; item.append(identity, role, banned, joined); }
@@ -149,8 +165,9 @@ function render(data: any) {
   status.textContent = data.tenant ? 'تم التحقق من الهوية والعضوية وتحميل بيانات المؤسسة.' : 'لا توجد عضويات لهذا الحساب. يمكنك إنشاء مؤسسة جديدة.';
   root.querySelector('[data-connection]')!.textContent = 'Auth + DB · متصل';
   create.hidden = data.memberships.length > 0;
-  root.querySelector('[data-tenant-name]')!.textContent = data.tenant?.name ?? 'لا توجد مؤسسة بعد';
-  root.querySelector('[data-tenant-detail]')!.textContent = data.tenant ? `الدور: ${data.tenant.role} · تاريخ الإنشاء: ${date(data.tenant.created_at)}` : 'إنشاء المساحة لا يفعّل المنتجات أو الاشتراك.';
+  const tenantName = root.querySelector<HTMLElement>('[data-tenant-name]')!;
+  const tenantDisplay = document.createElement('bdi'); tenantDisplay.dir = 'auto'; tenantDisplay.textContent = data.tenant?.name ?? 'لا توجد مؤسسة بعد'; tenantName.replaceChildren(tenantDisplay);
+  root.querySelector('[data-tenant-detail]')!.textContent = data.tenant ? `الدور: ${roleNames[data.tenant.role] ?? 'غير معروف'} · تاريخ الإنشاء: ${date(data.tenant.created_at)}` : 'إنشاء المساحة لا يفعّل المنتجات أو الاشتراك.';
   selector.replaceChildren(...data.memberships.map((m: any) => { const option = document.createElement('option'); option.value = m.tenant_id; option.textContent = m.name; option.selected = m.tenant_id === data.tenant?.tenant_id; return option; }));
   (root.querySelector('[data-selector]') as HTMLElement).hidden = !data.memberships.length;
   root.querySelector('[data-selector-note]')!.textContent = data.memberships.length > 1 ? `لديك عضوية في ${data.memberships.length} مؤسسات؛ تُحمّل بيانات المؤسسة المختارة فقط.` : '';
@@ -191,7 +208,7 @@ async function load(workspace?: string) {
   workspace ||= selectedWorkspace();
   clearPrivate();
   const session = await getWorkspaceSession(auth);
-  if (session.error) throw new Error('تعذر التحقق من Neon Auth. راجع إعداد الأصل الموثوق واتصال الخدمة.');
+  if (session.error) { const error = new Error('تعذر استعادة جلسة الدخول؛ سجّل الدخول مجددًا أو أعد المحاولة.'); Object.assign(error, { unauthorized: true }); throw error; }
   if (!session.data?.user) { showError('سجّل الدخول بحسابك لعرض مساحة العمل.', true); logout.hidden = true; return; }
   const data = await api('GET', undefined, workspace);
   render(data);
@@ -224,10 +241,10 @@ async function health() {
 }
 async function run(task: () => Promise<void>) {
   if (busy) return; busy = true; root.setAttribute('aria-busy', 'true');
-  root.querySelectorAll<HTMLButtonElement | HTMLSelectElement>('button,select').forEach(b => b.disabled = true);
+  root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = true);
   status.textContent = 'جارٍ تحميل المساحة…';
   try { await task(); } catch (error: any) { showError(error.message || 'تعذر الاتصال. حاول لاحقًا.', !!error.unauthorized); }
-  finally { busy = false; root.removeAttribute('aria-busy'); root.querySelectorAll<HTMLButtonElement | HTMLSelectElement>('button,select').forEach(b => b.disabled = false);
+  finally { busy = false; root.removeAttribute('aria-busy'); root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = false);
     root.querySelectorAll<HTMLButtonElement>('[data-product-action] button').forEach(b => b.disabled = true); }
 }
 async function endpoint(path: string, method = 'GET', body?: object, workspace?: string) {
@@ -235,13 +252,13 @@ async function endpoint(path: string, method = 'GET', body?: object, workspace?:
     method, ...(body ? {headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {})
   });
   let data: any; try { data = await response.json(); } catch { throw new Error('الخدمة غير متاحة؛ لم يُؤكد الحفظ.'); }
-  if (!response.ok) throw Object.assign(new Error(data.message || 'تعذر إكمال الطلب.'), {unauthorized: response.status === 401});
+  if (!response.ok) throw Object.assign(new Error(data.message || 'تعذر إكمال الطلب.'), {unauthorized: response.status === 401, code: data.code});
   return data;
 }
 async function adminRun(work: () => Promise<void>) {
   if (busy) return;
   busy = true; root.setAttribute('aria-busy','true');
-  root.querySelectorAll<HTMLButtonElement | HTMLSelectElement>('button,select').forEach(b => b.disabled = true);
+  root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = true);
   adminStatus.textContent = 'جارٍ تنفيذ العملية؛ انتظر نتيجة الخادم…';
   try { await work(); }
   catch (error: any) {
@@ -249,7 +266,7 @@ async function adminRun(work: () => Promise<void>) {
     adminStatus.textContent = error.message || 'تعذر إكمال العملية؛ لم يُؤكد الحفظ. حدّث البيانات قبل إعادة الإرسال.';
   } finally {
     busy = false; root.removeAttribute('aria-busy');
-    root.querySelectorAll<HTMLButtonElement | HTMLSelectElement>('button,select').forEach(b => b.disabled = false);
+    root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = false);
     root.querySelectorAll<HTMLButtonElement>('[data-product-action] button').forEach(b => b.disabled = true);
     registerInvite.hidden = !pendingInvitationId || !currentTenant;
   }
@@ -272,7 +289,8 @@ async function loadProviderPending(registered: any[]) {
     for (const row of result.data ?? []) {
       if (row.status !== 'pending' || row.inviterId !== session.data?.user?.id || registered.some(item => item.id === row.id)) continue;
       const li = document.createElement('li'), text = document.createElement('span'), button = document.createElement('button');
-      text.textContent = `${row.email} · دعوة لدى Auth لم تُسجل في Kernel بعد`;
+      const email = document.createElement('bdi'); email.dir = 'ltr'; email.textContent = row.email;
+      text.append(email, document.createTextNode(' · دعوة لدى Auth لم تُسجل في Kernel بعد'));
       button.type = 'button'; button.textContent = 'تسجيل متابعة الدعوة';
       button.addEventListener('click', () => void adminRun(async () => {
         await endpoint('members','POST',{operation:'register',invitationId:row.id},workspace);
@@ -286,20 +304,36 @@ async function loadIncoming() {
   const state = root.querySelector<HTMLElement>('[data-incoming-state]')!;
   try {
     const data = await endpoint('invitations');
-    incomingPanel.hidden = !data.invitations.length;
+    incomingPanel.hidden = false;
     const list = root.querySelector('[data-incoming]')!; list.replaceChildren();
+    if (!data.available) state.textContent = 'لم تُجهز متابعة الدعوات على هذه البيئة بعد.';
+    else if (!data.invitations.length) state.textContent = 'ما ظهرت دعوة مؤهلة؛ تحقق من تسجيل الدخول بالبريد المدعو وتوثيق البريد الإلكتروني.';
+    else state.textContent = '';
     for (const invite of data.invitations) {
       const li = document.createElement('li'), name = document.createElement('span'), accept = document.createElement('button');
-      name.textContent = `${invite.name} · تنتهي ${date(invite.expires_at)}`;
-      accept.type = 'button'; accept.textContent = invite.status === 'accepted' ? 'إكمال اعتماد العضوية' : 'قبول الانضمام بدور عضو';
-      accept.addEventListener('click', () => void adminRun(async () => {
-        if (invite.status !== 'accepted') { const result = await auth.organization.acceptInvitation({invitationId:invite.id}); if (result.error) throw new Error('لم يُقبل طلب الدعوة لدى Auth؛ تحقق من البريد الموثّق وصلاحية الدعوة.'); }
-        const result = await endpoint('members','POST',{operation:'accept',invitationId:invite.id});
-        setWorkspace(result.tenantId); await load(result.tenantId); adminStatus.textContent = 'اعتمد الخادم عضويتك في المؤسسة.';
-      }));
-      li.append(name,accept); list.append(li);
+      const orgName = document.createElement('bdi'); orgName.dir = 'auto'; orgName.textContent = invite.name;
+      name.append(orgName, document.createTextNode(` · ${invite.status === 'inviter_unavailable' ? 'لم تعد الدعوة صالحة لأن صلاحية الداعي انتهت.' : `تنتهي ${date(invite.expires_at)}`}`));
+      if (invite.status === 'pending' || invite.status === 'accepted') {
+        accept.type = 'button'; accept.textContent = invite.status === 'accepted' ? 'إكمال اعتماد العضوية' : 'قبول الانضمام بدور عضو';
+        accept.addEventListener('click', () => void adminRun(async () => {
+          if (invite.status !== 'accepted') {
+            const result = await auth.organization.acceptInvitation({invitationId:invite.id});
+            if (result.error) throw new Error('تعذر قبول الدعوة لدى Neon Auth. قد تكون منتهية أو ملغاة؛ حدّث القائمة أو تواصل مع مالك المؤسسة.');
+          }
+          try {
+            const result = await endpoint('members','POST',{operation:'accept',invitationId:invite.id});
+            setWorkspace(result.tenantId); await load(result.tenantId); adminStatus.textContent = 'اعتمد الخادم عضويتك في المؤسسة بدور عضو.';
+          } catch (error: any) {
+            if (error.code === 'INVALID_INVITATION') throw new Error('الدعوة غير متاحة الآن؛ ربما ألغيت أو سبق قبولها بحساب آخر. حدّث القائمة.');
+            if (error.code === 'INVITER_AUTHORITY_REVOKED') throw new Error('توقفت صلاحية الداعي في المؤسسة؛ اطلب دعوة جديدة من مالك أو مدير حالي.');
+            if (error.code === 'INVITATION_NOT_ACCEPTED') throw new Error('لم يثبت قبول الدعوة ببريدك الموثّق؛ أكمل خطوة Neon Auth ثم حدّث القائمة.');
+            throw error;
+          }
+        }));
+        li.append(name,accept);
+      } else li.append(name, document.createTextNode(` · ${labels[invite.status] ?? 'غير متاحة'}`));
+      list.append(li);
     }
-    state.textContent = '';
   } catch { incomingPanel.hidden = false; state.textContent = 'تعذر تحميل الدعوات؛ بيانات المؤسسة الحالية لا تتغير. حدّث اللوحة للمحاولة.'; }
 }
 async function linkOrganization(id: string) {
@@ -338,11 +372,26 @@ if (url) {
   void run(() => load());
   retry.addEventListener('click', () => void run(() => load()));
   selector.addEventListener('change', () => { const workspace = selector.value; void run(() => load(workspace)); });
-  login?.addEventListener('submit', event => { event.preventDefault(); const form = new FormData(login); void run(async () => {
-    const result = await auth.signIn.email({ email: String(form.get('email')), password: String(form.get('password')) });
-    login.reset(); if (result.error) { const e = new Error('تعذر الدخول. تحقق من بيانات الحساب وإعداد Neon Auth.'); Object.assign(e,{unauthorized:true}); throw e; }
-    await load();
-  }); });
+  if (login && loginEmail && loginPassword && loginSubmit && loginPasswordToggle) {
+    const validateLogin = () => {
+      const emailValid = loginEmail.validity.valid;
+      setLoginError(loginEmail, loginEmailError, emailValid ? '' : loginEmail.value ? 'تحقق من صيغة البريد الإلكتروني.' : 'اكتب بريدك الإلكتروني.');
+      setLoginError(loginPassword, loginPasswordError, loginPassword.value ? '' : 'اكتب كلمة المرور.');
+      return emailValid && !!loginPassword.value;
+    };
+    loginEmail.addEventListener('blur', validateLogin); loginPassword.addEventListener('blur', validateLogin);
+    loginEmail.addEventListener('input', () => { if (!loginEmailError?.hidden) setLoginError(loginEmail, loginEmailError, loginEmail.validity.valid ? '' : 'تحقق من صيغة البريد الإلكتروني.'); });
+    loginPassword.addEventListener('input', () => { if (!loginPasswordError?.hidden && loginPassword.value) setLoginError(loginPassword, loginPasswordError); });
+    loginPasswordToggle.addEventListener('click', () => {
+      const visible = loginPassword.type === 'password'; loginPassword.type = visible ? 'text' : 'password';
+      loginPasswordToggle.textContent = visible ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'; loginPasswordToggle.setAttribute('aria-pressed', String(visible));
+    });
+    login.addEventListener('submit', event => { event.preventDefault(); if (!validateLogin()) { login.reportValidity(); return; } const form = new FormData(login); void run(async () => {
+      const result = await auth.signIn.email({ email: String(form.get('email')).trim(), password: String(form.get('password')) });
+      if (result.error) { setLoginError(loginPassword, loginPasswordError, 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور وحاول مرة ثانية.'); const e = new Error('تعذر تسجيل الدخول. تحقق من بياناتك وحاول مرة ثانية.'); Object.assign(e,{unauthorized:true}); throw e; }
+      await load(); login.reset(); loginPassword.type = 'password'; loginPasswordToggle.textContent = 'إظهار كلمة المرور'; loginPasswordToggle.setAttribute('aria-pressed','false'); setLoginError(loginEmail, loginEmailError); setLoginError(loginPassword, loginPasswordError);
+    }); });
+  }
   create.addEventListener('submit', event => { event.preventDefault(); const name = String(new FormData(create).get('name')); void run(async () => { const data = await api('POST', name); create.reset(); await load(data.tenantId); }); });
   logout.addEventListener('click', () => { pendingInvitationId = ''; registerInvite.hidden = true; clearPrivate(); void run(async () => { const result = await auth.signOut(); if(result.error) throw new Error('تعذر إنهاء جلسة Neon Auth. أعد المحاولة.'); logout.hidden = true; showError('تم تسجيل الخروج.', true); }); });
   // Do not restore private DOM snapshots from the browser history cache.

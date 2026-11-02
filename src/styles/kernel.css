@@ -345,6 +345,10 @@
 .kernel .system-diagram>p:last-child{color:var(--ui-muted);font-size:12px;line-height:1.7}
 .kernel .login-form{max-width:500px;margin-bottom:24px}
 .kernel .login-form p{color:var(--ui-muted);font-size:13px;line-height:1.8}
+.kernel .login-form .field-error{margin:4px 0 0;color:#ffb4a9;font-size:13px;line-height:1.7}
+.kernel .login-form input[aria-invalid="true"]{border-color:#d56c60}
+.kernel .login-form .password-control{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
+.kernel .login-form .password-control button{margin:0;min-height:44px;padding-inline:10px;border-color:var(--ui-line);background:var(--ui-panel-hover);color:#e7dcc6}
 
 @media (max-width:1000px){
   .app-frame .app-top{padding:18px 22px}

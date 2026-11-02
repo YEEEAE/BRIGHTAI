@@ -25,15 +25,18 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         <form data-auth-form>
           <div class="auth-field" data-name-field>
             <label for="auth-name">الاسم</label>
-            <input id="auth-name" name="name" type="text" autocomplete="name" required maxlength="80" />
+            <input id="auth-name" name="name" type="text" autocomplete="name" dir="auto" required maxlength="80" />
+            <p class="field-error" id="auth-name-error" data-field-error="name" hidden></p>
           </div>
           <div class="auth-field">
             <label for="auth-email">البريد الإلكتروني</label>
-            <input id="auth-email" name="email" type="email" autocomplete="email" required maxlength="254" />
+            <input id="auth-email" name="email" type="email" autocomplete="email" dir="ltr" required maxlength="254" aria-describedby="auth-email-error" />
+            <p class="field-error" id="auth-email-error" data-field-error="email" hidden></p>
           </div>
           <div class="auth-field">
             <label for="auth-password">كلمة المرور</label>
-            <input id="auth-password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128" />
+            <div class="password-control"><input id="auth-password" name="password" type="password" autocomplete="new-password" dir="ltr" required minlength="8" maxlength="128" aria-describedby="auth-password-error" /><button type="button" data-password-toggle aria-pressed="false" aria-controls="auth-password">إظهار كلمة المرور</button></div>
+            <p class="field-error" id="auth-password-error" data-field-error="password" hidden></p>
           </div>
           <button class="button" type="submit" data-submit disabled>إنشاء الحساب</button>
         </form>
@@ -62,7 +65,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 </PageShell>
 
 <script>
-  import { createAuthClient } from '@neon/neon-js/auth';
+  import { createWorkspaceAuth as createAuthClient } from '../../scripts/workspace-context';
 
   const card = document.querySelector<HTMLElement>('.auth-card');
   const form = card?.querySelector<HTMLFormElement>('[data-auth-form]');
@@ -78,6 +81,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
   const signOutButton = card?.querySelector<HTMLButtonElement>('[data-sign-out]');
   const currentUser = card?.querySelector<HTMLElement>('[data-current-user]');
   const status = card?.querySelector<HTMLElement>('[data-auth-status]');
+  const passwordToggle = card?.querySelector<HTMLButtonElement>('[data-password-toggle]');
   const authUrl = card?.dataset.authUrl;
 
   if (
@@ -91,11 +95,40 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       status.textContent = message;
     };
 
+    const fieldErrors = new Map<string, HTMLElement>(
+      [...card.querySelectorAll<HTMLElement>('[data-field-error]')].map((error) => [error.dataset.fieldError ?? '', error]),
+    );
+    const setFieldError = (field: 'name' | 'email' | 'password', message = '') => {
+      const input = field === 'name' ? nameInput : field === 'email' ? emailInput : passwordInput;
+      const error = fieldErrors.get(field);
+      if (!error) return;
+      error.textContent = message;
+      error.hidden = !message;
+      input.setAttribute('aria-invalid', message ? 'true' : 'false');
+      input.setAttribute('aria-describedby', error.id);
+    };
+    const validate = (field: 'name' | 'email' | 'password') => {
+      const signingUp = mode === 'sign-up';
+      if (field === 'name' && !signingUp) return true;
+      const input = field === 'name' ? nameInput : field === 'email' ? emailInput : passwordInput;
+      let message = '';
+      if (field === 'name' && !input.value.trim()) message = 'اكتب اسمك.';
+      else if (field === 'email' && !input.value.trim()) message = 'اكتب بريدك الإلكتروني.';
+      else if (field === 'email' && input.validity.typeMismatch) message = 'تحقق من صيغة البريد الإلكتروني.';
+      else if (field === 'password' && !input.value) message = 'اكتب كلمة المرور.';
+      else if (field === 'password' && signingUp && input.value.length < 8) message = 'استخدم 8 أحرف على الأقل.';
+      setFieldError(field, message);
+      return !message;
+    };
+    const clearFieldErrors = () => {
+      (['name', 'email', 'password'] as const).forEach((field) => setFieldError(field));
+    };
+
     const showUser = (email: string) => {
       currentUser.textContent = email;
       formView.hidden = true;
       sessionView.hidden = false;
-      setStatus('تم التحقق من الجلسة الحالية.');
+      setStatus('عُثر على جلسة لدى Neon Auth. يتحقق الخادم من الهوية والعضوية عند فتح مساحة العمل.');
     };
 
     const showForm = () => {
@@ -110,19 +143,28 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       nameInput.required = signingUp;
       nameInput.autocomplete = signingUp ? 'name' : 'off';
       passwordInput.autocomplete = signingUp ? 'new-password' : 'current-password';
+      passwordInput.minLength = signingUp ? 8 : 0;
+      passwordInput.type = 'password'; passwordInput.value = '';
+      if (passwordToggle) { passwordToggle.textContent = 'إظهار كلمة المرور'; passwordToggle.setAttribute('aria-pressed', 'false'); }
       submitButton.textContent = signingUp ? 'إنشاء الحساب' : 'تسجيل الدخول';
       switchLabel.textContent = signingUp ? 'عندك حساب؟' : 'ما عندك حساب؟';
       switchButton.textContent = signingUp ? 'تسجيل الدخول' : 'إنشاء حساب';
       setStatus('');
+      clearFieldErrors();
     };
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (!form.reportValidity()) return;
+      clearFieldErrors();
+      const valid = [validate('email'), validate('password'), validate('name')].every(Boolean);
+      if (!valid || !form.reportValidity()) return;
 
       submitButton.disabled = true;
       switchButton.disabled = true;
+      form.querySelectorAll<HTMLInputElement | HTMLButtonElement>('input,button').forEach((control) => { control.disabled = true; });
+      form.setAttribute('aria-busy', 'true');
       setStatus(mode === 'sign-up' ? 'جارٍ إنشاء الحساب…' : 'جارٍ تسجيل الدخول…');
+      let authSucceeded = false;
 
       try {
         const email = emailInput.value.trim();
@@ -136,11 +178,15 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
           : await auth.signIn.email({ email, password });
 
         if (result.error) {
+          const code = String((result.error as { code?: unknown }).code ?? '').toUpperCase();
+          if (['INVALID_EMAIL', 'INVALID_EMAIL_ADDRESS'].includes(code)) setFieldError('email', 'تحقق من صيغة البريد الإلكتروني.');
+          if (['PASSWORD_TOO_SHORT', 'PASSWORD_TOO_LONG', 'INVALID_PASSWORD'].includes(code)) setFieldError('password', mode === 'sign-up' ? 'راجع متطلبات كلمة المرور وحاول مرة ثانية.' : 'تعذر التحقق من كلمة المرور. حاول مرة ثانية.');
           setStatus(mode === 'sign-up'
-            ? 'تعذر إنشاء الحساب. تحقق من البيانات وحاول مرة ثانية.'
-            : 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور.');
+            ? 'تعذر إنشاء الحساب. راجع الحقول وحاول مرة ثانية.'
+            : 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور وحاول مرة ثانية.');
           return;
         }
+        authSucceeded = true;
 
         const sessionResult = await auth.getSession();
         if (sessionResult.error) {
@@ -151,23 +197,34 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         if (sessionResult.data?.user?.email) {
           showUser(sessionResult.data.user.email);
         } else if (mode === 'sign-up') {
-          setStatus('تم إنشاء الحساب. أكمل تأكيد البريد الإلكتروني إذا وصلك طلب تحقق، ثم سجّل الدخول.');
           setMode('sign-in');
+          setStatus('تم إنشاء الحساب. أكمل تأكيد البريد الإلكتروني إذا وصلك طلب تحقق، ثم سجّل الدخول.');
         } else {
           setStatus('لم تُنشأ جلسة. تحقق من البريد وكلمة المرور وحاول مرة ثانية.');
         }
       } catch {
         setStatus('تعذر إكمال الطلب. راجع إعداد خدمة الحسابات أو حاول مرة ثانية.');
       } finally {
-        submitButton.disabled = false;
-        switchButton.disabled = false;
-        passwordInput.value = '';
+        form.querySelectorAll<HTMLInputElement | HTMLButtonElement>('input,button').forEach((control) => { control.disabled = false; });
+        form.removeAttribute('aria-busy');
+        if (authSucceeded) passwordInput.value = '';
       }
     });
 
     switchButton.addEventListener('click', () => {
       showForm();
       setMode(mode === 'sign-up' ? 'sign-in' : 'sign-up');
+    });
+
+    for (const [field, input] of [['name', nameInput], ['email', emailInput], ['password', passwordInput]] as const) {
+      input.addEventListener('blur', () => { if (input.value) validate(field); });
+      input.addEventListener('input', () => { if (!fieldErrors.get(field)?.hidden) validate(field); });
+    }
+    passwordToggle?.addEventListener('click', () => {
+      const visible = passwordInput.type === 'password';
+      passwordInput.type = visible ? 'text' : 'password';
+      passwordToggle.textContent = visible ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور';
+      passwordToggle.setAttribute('aria-pressed', String(visible));
     });
 
     signOutButton.addEventListener('click', async () => {
@@ -211,9 +268,13 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
   .auth-field { display: grid; gap: 8px; color: var(--color-silver-mist); font-size: 15px; }
   .auth-field label { color: #c6c1cf; font-size: 14px; line-height: 1.7; letter-spacing: 0; }
   .auth-field input { width: 100%; min-height: 48px; padding: 11px 14px; border: 1px solid #302a39; border-radius: 10px; background: #0b0910; color: #f4f1f8; font: inherit; font-size: 16px; line-height: 1.6; transition: border-color 140ms ease, background-color 140ms ease; }
+  .password-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+  .password-control button { min-height: 44px; padding-inline: 10px; border: 1px solid #302a39; border-radius: 8px; background: #111018; color: #e7dcc6; font: inherit; cursor: pointer; }
+  .field-error { margin: 0; color: #ffb4a9; font-size: 13px; line-height: 1.7; }
+  .auth-field input[aria-invalid="true"] { border-color: #d56c60; }
   .auth-field input:hover { border-color: #413a4d; }
   .auth-field input:focus { border-color: var(--color-saffron-spark); background: #0e0b14; }
-  .auth-field input:focus-visible, .auth-link:focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 3px; }
+  .auth-field input:focus-visible, .auth-link:focus-visible, .password-control button:focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 3px; }
   .auth-field input:user-invalid { border-color: #c25a5a; }
   .auth-card .button { transition: filter 140ms ease, transform 140ms ease, background-color 140ms ease; }
   .auth-card .button:not([disabled]):hover { filter: brightness(1.08); transform: translateY(-1px); }

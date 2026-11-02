@@ -40,7 +40,20 @@ export async function incomingInvitations(identity) {
     await memberships(identity.userId, db);
     const ready = (await db.query("SELECT to_regclass('public.aigas_member_invitations') IS NOT NULL AS ready")).rows[0].ready;
     if (!ready) return { invitations: [], available: false };
-    const rows = (await db.query(`SELECT i.id,t.name,i.status,i."expiresAt" AS expires_at FROM public.aigas_member_invitations k JOIN neon_auth.invitation i ON i.id=k.invitation_id JOIN public.aigas_auth_organizations o ON o.tenant_id=k.tenant_id AND o.organization_id=i."organizationId" JOIN public.aigas_tenants t ON t.id=k.tenant_id JOIN neon_auth."user" u ON lower(u.email)=lower(i.email) JOIN public.aigas_memberships m ON m.tenant_id=k.tenant_id AND m.user_id=k.invited_by AND m.role IN ('OWNER','ADMIN') WHERE u.id=$1 AND u."emailVerified" IS TRUE AND u.banned IS NOT TRUE AND k.accepted_at IS NULL AND i.role='member' AND i."inviterId"=k.invited_by AND i.status IN ('pending','accepted') AND i."expiresAt">now() ORDER BY k.created_at DESC LIMIT 30`, [identity.userId])).rows;
+    const rows = (await db.query(`SELECT i.id,t.name,i."expiresAt" AS expires_at,
+      CASE WHEN i.status='pending' AND i."expiresAt"<=now() THEN 'expired'
+           WHEN i.status IN ('pending','accepted') AND (COALESCE(km.role,'') NOT IN ('OWNER','ADMIN') OR COALESCE(nm.role,'') NOT IN ('owner','admin')) THEN 'inviter_unavailable'
+           ELSE i.status END AS status
+      FROM public.aigas_member_invitations k
+      JOIN neon_auth.invitation i ON i.id=k.invitation_id
+      JOIN public.aigas_auth_organizations o ON o.tenant_id=k.tenant_id AND o.organization_id=i."organizationId"
+      JOIN public.aigas_tenants t ON t.id=k.tenant_id
+      JOIN neon_auth."user" u ON lower(u.email)=lower(i.email)
+      LEFT JOIN public.aigas_memberships km ON km.tenant_id=k.tenant_id AND km.user_id=k.invited_by
+      LEFT JOIN neon_auth.member nm ON nm."organizationId"=i."organizationId" AND nm."userId"=k.invited_by
+      WHERE u.id=$1 AND u."emailVerified" IS TRUE AND u.banned IS NOT TRUE AND k.accepted_at IS NULL
+        AND i.role='member' AND i."inviterId"=k.invited_by AND i.status IN ('pending','accepted','rejected','canceled')
+      ORDER BY k.created_at DESC LIMIT 30`, [identity.userId])).rows;
     return { invitations: rows, available: true };
   });
 }
@@ -52,10 +65,16 @@ export async function manageInvitation(identity, requested, body) {
       // Lock registration first: one acceptance cannot create duplicate memberships or audit events.
       const record = (await db.query('SELECT * FROM public.aigas_member_invitations WHERE invitation_id=$1 FOR UPDATE', [body.invitationId])).rows[0];
       if (!record) throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير مسجلة في Kernel.');
-      if (record.accepted_by === identity.userId) return { persisted: true, tenantId: record.tenant_id };
+      if (record.accepted_by === identity.userId) {
+        const membership = (await db.query("SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2", [record.tenant_id, identity.userId])).rows[0];
+        if (membership?.role === 'MEMBER') return { persisted: true, tenantId: record.tenant_id };
+        throw new KernelError(403, 'INVITATION_NOT_ACCEPTED', 'لم تعد عضوية Kernel المرتبطة بالدعوة فعالة.');
+      }
       if (record.accepted_by) throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير متاحة.');
       const inviter = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [record.tenant_id, record.invited_by])).rows[0];
-      requireRole(inviter, ['OWNER','ADMIN']);
+      if (!inviter || !['OWNER','ADMIN'].includes(inviter.role)) throw new KernelError(403, 'INVITER_AUTHORITY_REVOKED', 'لم تعد صلاحية الداعي تسمح بإنهاء العضوية.');
+      const nativeInviter = (await db.query(`SELECT m.role FROM public.aigas_auth_organizations o JOIN neon_auth.member m ON m."organizationId"=o.organization_id WHERE o.tenant_id=$1 AND m."userId"=$2 FOR SHARE OF m`, [record.tenant_id, record.invited_by])).rows[0];
+      if (!nativeInviter || !['owner','admin'].includes(nativeInviter.role)) throw new KernelError(403, 'INVITER_AUTHORITY_REVOKED', 'لم تعد صلاحية الداعي تسمح بإنهاء العضوية.');
       const valid = (await db.query(`SELECT i.id FROM neon_auth.invitation i JOIN public.aigas_auth_organizations o ON o.organization_id=i."organizationId" JOIN neon_auth."user" u ON lower(u.email)=lower(i.email) JOIN neon_auth.member m ON m."organizationId"=o.organization_id AND m."userId"=u.id WHERE i.id=$1 AND o.tenant_id=$2 AND i."inviterId"=$3 AND i.status='accepted' AND i.role='member' AND m.role='member' AND i."expiresAt">now() AND u.id=$4 AND u."emailVerified" IS TRUE AND u.banned IS NOT TRUE`, [body.invitationId, record.tenant_id, record.invited_by, identity.userId])).rows[0];
       if (!valid) throw new KernelError(403, 'INVITATION_NOT_ACCEPTED', 'يلزم قبول دعوة Auth الصحيحة ببريد موثّق؛ لم تُمنح أي عضوية.');
       await db.query("INSERT INTO public.aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,'MEMBER') ON CONFLICT DO NOTHING", [record.tenant_id, identity.userId]);

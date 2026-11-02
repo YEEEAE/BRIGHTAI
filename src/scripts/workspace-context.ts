@@ -32,14 +32,16 @@ export function setWorkspace(id: string) {
 }
 let restored = false;
 export async function getWorkspaceSession(auth: WorkspaceAuth, force = false) {
-  // 0.8.2 returns a JWT in session.token; X-Force-Fetch bypasses its session cache.
-  force ||= !restored; restored = true;
-  return auth.getSession(force ? { fetchOptions: { headers: { 'X-Force-Fetch': 'true' } } } : undefined);
+  // X-Force-Fetch bypasses the session cache when restoring or refreshing a session.
+  force ||= !restored;
+  const result = await auth.getSession(force ? { fetchOptions: { headers: { 'X-Force-Fetch': 'true' } } } : undefined);
+  restored = !result.error && !!result.data?.session;
+  return result;
 }
 export async function appFetch(auth: WorkspaceAuth, input: string, init: RequestInit = {}) {
   const epoch = sessionEpoch;
   const session = await getWorkspaceSession(auth);
-  const token = session.data?.session?.token;
+  const token = await auth.getJWTToken();
   if (session.error || !session.data?.user || !token) throw Object.assign(new Error('سجّل الدخول من Kernel لاستعادة الجلسة.'), { unauthorized: true });
   const url = new URL(input, location.origin);
   if (!url.searchParams.has('workspace') && selectedWorkspace()) url.searchParams.set('workspace', selectedWorkspace());
@@ -47,7 +49,7 @@ export async function appFetch(auth: WorkspaceAuth, input: string, init: Request
   let response = await fetch(url, { ...init, headers, cache: 'no-store' });
   if (response.status === 401) {
     const refreshed = await getWorkspaceSession(auth, true);
-    const fresh = refreshed.data?.session?.token;
+    const fresh = await auth.getJWTToken();
     // Never replay mutations: the user must review server state before trying again.
     if (!refreshed.error && fresh && (init.method || 'GET') === 'GET') {
       headers.set('Authorization', `Bearer ${fresh}`);
