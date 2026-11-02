@@ -30,22 +30,26 @@ export async function dashboard(identity, requested) {
     const tenantId = scope.tenant.tenant_id;
     const adminReady = (await db.query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0].ready;
     const access = (await db.query(adminReady ? 'SELECT product_slug,status,version FROM public.aigas_product_access WHERE tenant_id=$1' : 'SELECT product_slug,status FROM public.aigas_product_access WHERE tenant_id=$1', [tenantId])).rows;
-    const grants = adminReady ? (await db.query('SELECT product_slug,access_kind,expires_at FROM public.aigas_product_grants WHERE tenant_id=$1 AND revoked_at IS NULL AND expires_at>now()', [tenantId])).rows : [];
+    const grants = adminReady ? (await db.query('SELECT product_slug,access_kind,expires_at,revoked_at FROM public.aigas_product_grants WHERE tenant_id=$1', [tenantId])).rows : [];
     const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': ['aigas_sc_requests','aigas_sc_cancellations'] };
     const states = [];
     for (const p of productStates(access)) {
       const grant = grants.find(g => g.product_slug === p.slug);
       const tables = relations[p.slug];
       const ready = tables.length ? (await db.query("SELECT bool_and(to_regclass('public.' || name) IS NOT NULL) AS ready FROM unnest($1::text[]) AS name", [tables])).rows[0].ready : false;
-      const enabled = p.state === 'ENABLED' && !!grant;
-      states.push({ ...p, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
-        canEnable: !!grant, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
+      const grantValid = !!grant && !grant.revoked_at && new Date(grant.expires_at) > new Date();
+      const accessState = p.state;
+      const state = accessState === 'FOUNDATION' ? 'FOUNDATION' : accessState === 'DISABLED' ? 'DISABLED' : grantValid ? 'ENABLED' : grant?.revoked_at ? 'REVOKED' : grant ? 'EXPIRED' : 'DISABLED';
+      const enabled = state === 'ENABLED';
+      states.push({ ...p, state, configuredStatus: accessState, grantState: !grant ? 'NOT_APPROVED' : grant.revoked_at ? 'REVOKED' : grantValid ? 'ACTIVE' : 'EXPIRED', enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
+        canEnable: grantValid, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
         setupMessage: p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
         accessKind: grant?.access_kind ?? null, expiresAt: grant?.expires_at ?? null, subscription: 'NOT_CONFIGURED', trial: 'NOT_CONFIGURED',
-        label: p.state === 'ENABLED' && !grant ? 'الإتاحة معلّقة: لا قرار إداري ساري' : p.label });
+        label: state === 'EXPIRED' ? 'منتهٍ: انتهى قرار الإتاحة الإداري' : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' && accessState === 'ENABLED' && !grant ? 'معطّل: لا يوجد قرار إتاحة إداري' : p.label });
     }
     const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, (SELECT count(*)::int FROM public.aigas_audit_events WHERE tenant_id=$1) AS events', [tenantId])).rows[0];
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));
+    summary.coverage = access.length ? { enabled: states.filter(p => p.enabled).length, total: products.length } : null;
     return { ...scope, products: states, connection: 'CONNECTED', summary, activity, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady };
   });
 }
@@ -55,9 +59,9 @@ export async function tenantMembers(identity, requested) {
     if (!scope.tenant) throw new KernelError(403, 'NO_WORKSPACE', 'أنشئ مساحة عمل من Kernel أولًا.');
     scope.tenant = await lockMember(db, identity, scope.tenant);
     const canManage = ['OWNER','ADMIN'].includes(scope.tenant.role);
-    const rows = (await db.query(`SELECT m.role,m.created_at,u.name,u.email,u.banned FROM public.aigas_memberships m LEFT JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 ORDER BY CASE m.role WHEN 'OWNER' THEN 0 WHEN 'ADMIN' THEN 1 ELSE 2 END,m.created_at,m.user_id`, [scope.tenant.tenant_id])).rows;
+    const rows = (await db.query(`SELECT m.user_id,m.role,m.created_at,u.name,u.email,u.banned FROM public.aigas_memberships m LEFT JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 ORDER BY CASE m.role WHEN 'OWNER' THEN 0 WHEN 'ADMIN' THEN 1 ELSE 2 END,m.created_at,m.user_id`, [scope.tenant.tenant_id])).rows;
     const { invitationState } = await import('./administration.mjs');
-    return { ...scope, canManage, members: rows.map(row => ({ name: row.name || 'عضو', role: row.role, roleLabel: roleLabel(row.role), created_at: row.created_at, status: row.banned ? 'BANNED' : 'ACTIVE', email: canManage ? row.email ?? null : null })), invitation: await invitationState(db, identity, scope.tenant) };
+    return { ...scope, canManage, members: rows.map(row => ({ userId: canManage ? row.user_id : null, isSelf: row.user_id === identity.userId, name: row.name || 'عضو', role: row.role, roleLabel: roleLabel(row.role), created_at: row.created_at, status: row.banned ? 'BANNED' : 'ACTIVE', email: canManage ? row.email ?? null : null })), invitation: await invitationState(db, identity, scope.tenant) };
   });
 }
 export async function audit(db, identity, tenantId, action) {

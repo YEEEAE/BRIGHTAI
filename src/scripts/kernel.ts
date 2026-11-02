@@ -48,6 +48,7 @@ const healthStates: Record<string, { text: string; tone: string }> = {
   KERNEL_ADMIN_SETUP_REQUIRED: { text: 'يلزم ترحيل إدارة Kernel المعتمد', tone: 'warn' },
   UNKNOWN: { text: 'غير معروف', tone: 'muted' },
 };
+const invitationStatusLabels: Record<string, string> = { pending: 'بانتظار القبول', accepted: 'مقبولة لدى Auth', rejected: 'مرفوضة', canceled: 'ملغاة', expired: 'منتهية', inviter_unavailable: 'توقفت صلاحية الداعي' };
 const date = (value: string) => { const parsed = new Date(value); return Number.isNaN(parsed.getTime()) ? '—' : parsed.toLocaleDateString('ar-SA'); };
 function setLoginError(input: HTMLInputElement | null | undefined, error: HTMLElement | null | undefined, message = '') {
   if (!input || !error) return;
@@ -88,9 +89,8 @@ function showError(message: string, unauthorized = false) {
   if (login) login.hidden = !unauthorized;
 }
 async function api(method = 'GET', name?: string, workspace?: string) {
-  // Installed @neon/auth 0.8.2 replaces session.token with set-auth-jwt.
   const session = await getWorkspaceSession(auth);
-  const token = session.data?.session?.token;
+  const token = await auth.getJWTToken();
   if (session.error || !session.data?.user || !token) { const e = new Error('سجّل الدخول لعرض بيانات مؤسستك.'); Object.assign(e, { unauthorized: true }); throw e; }
   const response = await appFetch(auth, `/app/api/kernel/${workspace ? `?workspace=${encodeURIComponent(workspace)}` : ''}`, {
     method, cache: 'no-store', headers: { Authorization: `Bearer ${token}`, ...(method === 'POST' ? { 'Content-Type': 'application/json' } : {}) },
@@ -101,8 +101,8 @@ async function api(method = 'GET', name?: string, workspace?: string) {
   return data;
 }
 async function members(workspace?: string) {
-  const session = await getWorkspaceSession(auth);
-  const token = session.data?.session?.token;
+  await getWorkspaceSession(auth);
+  const token = await auth.getJWTToken();
   if (!token) { const e = new Error('سجّل الدخول لعرض أعضاء المؤسسة.'); Object.assign(e, { unauthorized: true }); throw e; }
   const response = await appFetch(auth, `/app/api/kernel/members/${workspace ? `?workspace=${encodeURIComponent(workspace)}` : ''}`, { cache: 'no-store', headers: { Authorization: `Bearer ${token}` } });
   const data = await response.json();
@@ -137,8 +137,34 @@ async function renderMembers(data: any) {
     if (member.email) { const email = document.createElement('bdi'); email.dir = 'ltr'; email.textContent = member.email; identity.append(email); }
     const role = document.createElement('span'); role.className = 'role'; role.textContent = member.roleLabel;
     const joined = document.createElement('time'); joined.textContent = `انضم: ${date(member.created_at)}`;
-    if (member.status === 'BANNED') { const banned = document.createElement('span'); banned.className = 'role warn'; banned.textContent = 'موقوف'; item.append(identity, role, banned, joined); }
-    else item.append(identity, role, joined);
+    item.append(identity, role);
+    if (member.status === 'BANNED') { const banned = document.createElement('span'); banned.className = 'role warn'; banned.textContent = 'موقوف لدى Auth'; item.append(banned); }
+    item.append(joined);
+    if (data.canManage && member.userId && (member.role !== 'OWNER' || currentTenant?.role === 'OWNER')) {
+      const actions = document.createElement('div'); actions.className = 'member-controls';
+      const roleSelect = document.createElement('select'); roleSelect.setAttribute('aria-label', `تغيير دور ${member.name}`);
+      for (const [value, label] of [...(member.role === 'OWNER' ? [['OWNER','مالك']] : []), ['MEMBER','عضو'],['ADMIN','مدير']]) {
+        const option = new Option(label, value); option.selected = member.role === value;
+        if (value === 'ADMIN' && currentTenant?.role !== 'OWNER' || value === 'OWNER') option.disabled = true;
+        roleSelect.append(option);
+      }
+      const saveRole = document.createElement('button'); saveRole.type = 'button'; saveRole.textContent = 'حفظ الدور'; saveRole.disabled = true;
+      roleSelect.addEventListener('change', () => { saveRole.disabled = roleSelect.value === member.role; });
+      saveRole.addEventListener('click', () => void adminRun(async () => {
+        await endpoint('members','POST',{operation:'set-role',userId:member.userId,role:roleSelect.value},currentTenant.tenant_id);
+        await load(currentTenant.tenant_id); adminStatus.textContent = 'تم تحديث دور العضو في Kernel.';
+      }));
+      const revoke = document.createElement('button'); revoke.type = 'button'; revoke.textContent = 'سحب عضوية Kernel';
+      if (member.isSelf) revoke.disabled = true;
+      revoke.addEventListener('click', () => void adminRun(async () => {
+        if (!window.confirm(`سحب عضوية ${member.name} يمنع وصوله إلى Kernel لهذه المؤسسة. هل تريد المتابعة؟`)) return;
+        await endpoint('members','POST',{operation:'revoke',userId:member.userId},currentTenant.tenant_id);
+        await load(currentTenant.tenant_id); adminStatus.textContent = 'تم سحب عضوية Kernel؛ لم تتغير عضوية Neon Auth.';
+      }));
+      if (!member.isSelf) actions.append(roleSelect, saveRole, revoke);
+      else if (currentTenant?.role === 'OWNER' || currentTenant?.role === 'ADMIN') actions.append(roleSelect, saveRole);
+      item.append(actions);
+    }
     membersList.append(item);
   }
 }
@@ -173,8 +199,9 @@ function render(data: any) {
   root.querySelector('[data-selector-note]')!.textContent = data.memberships.length > 1 ? `لديك عضوية في ${data.memberships.length} مؤسسات؛ تُحمّل بيانات المؤسسة المختارة فقط.` : '';
   metrics.hidden = !data.tenant;
   if (data.tenant) {
-    root.querySelector('[data-metric="members"]')!.textContent = String(data.summary?.members ?? 0);
-    root.querySelector('[data-metric="events"]')!.textContent = String(data.summary?.events ?? 0);
+    root.querySelector('[data-metric="members"]')!.textContent = data.summary?.members == null ? 'لا بيانات' : String(data.summary.members);
+    root.querySelector('[data-metric="coverage"]')!.textContent = data.summary?.coverage ? `${data.summary.coverage.enabled} / ${data.summary.coverage.total}` : 'لا بيانات';
+    root.querySelector('[data-metric="events"]')!.textContent = data.summary?.events == null ? 'لا بيانات' : String(data.summary.events);
     renderActivity(data.activity ?? []);
   }
   for (const p of data.products) {
@@ -182,13 +209,13 @@ function render(data: any) {
     if (!card) continue;
     card.querySelector('[data-product-status]')!.textContent = p.label;
     card.querySelector('[data-product-setup]')!.textContent = p.setupMessage ?? 'اختر مؤسسة لعرض حالة الإعداد.';
-    card.querySelector('[data-product-terms]')!.textContent = p.accessKind === 'ADMIN_NON_BILLED' ? `إتاحة إدارية مؤقتة غير مفوترة حتى ${date(p.expiresAt)}؛ ليست اشتراكًا أو تجربة مدفوعة.` : 'لا قرار إتاحة إداري ساري. الاشتراك والتجربة غير مهيّأين.';
+    card.querySelector('[data-product-terms]')!.textContent = p.grantState === 'EXPIRED' ? `انتهت الإتاحة الإدارية بتاريخ ${date(p.expiresAt)}. الاشتراك والتجربة غير مهيّأين.` : p.grantState === 'REVOKED' ? 'أُلغي قرار الإتاحة الإداري؛ راجع مشغّل النظام.' : p.accessKind === 'ADMIN_NON_BILLED' ? `إتاحة إدارية مؤقتة غير مفوترة حتى ${date(p.expiresAt)}؛ ليست اشتراكًا أو تجربة مدفوعة.` : 'لا قرار إتاحة إداري ساري. الاشتراك والتجربة غير مهيّأين.';
     const admin = card.querySelector<HTMLElement>('[data-product-admin]')!; admin.replaceChildren(); admin.hidden = !p.canManage;
     if (p.canManage) {
       const form = document.createElement('form'), select = document.createElement('select'), label = document.createElement('label');
       select.id = `state-${p.slug}`; label.htmlFor = select.id; label.textContent = 'إدارة حالة المنتج (للمالك)';
       for (const [value,text] of [['FOUNDATION','قيد التأسيس'],['ENABLED','تمكين'],['DISABLED','تعطيل']]) {
-        const option = new Option(text, value); option.selected = p.state === value; option.disabled = value === 'ENABLED' && !p.canEnable; select.append(option);
+        const option = new Option(text, value); option.selected = (p.configuredStatus ?? p.state) === value; option.disabled = value === 'ENABLED' && !p.canEnable; select.append(option);
       }
       const save = document.createElement('button'); save.type = 'submit'; save.textContent = 'حفظ الحالة';
       form.append(label,select,save); admin.append(form);
@@ -199,7 +226,7 @@ function render(data: any) {
     if (data.tenant && p.href === `/app/${p.slug}/` && productSlugs.includes(p.slug)) {
       const link = document.createElement('a'); link.href = `${p.href}?workspace=${encodeURIComponent(data.tenant.tenant_id)}`; link.textContent = 'فتح صفحة المنتج'; action.replaceChildren(link);
     } else {
-      const blocked = document.createElement('button'); blocked.type = 'button'; blocked.disabled = true; blocked.textContent = p.state === 'DISABLED' ? 'معطّل' : !p.enabled ? 'يلزم تمكين معتمد' : 'الإعداد غير مكتمل';
+      const blocked = document.createElement('button'); blocked.type = 'button'; blocked.disabled = true; blocked.textContent = p.state === 'DISABLED' ? 'معطّل' : p.state === 'EXPIRED' ? 'انتهت الإتاحة' : p.state === 'REVOKED' ? 'أُلغي القرار' : !p.enabled ? 'يلزم تمكين معتمد' : 'الإعداد غير مكتمل';
       action.replaceChildren(blocked);
     }
   }
@@ -331,7 +358,7 @@ async function loadIncoming() {
           }
         }));
         li.append(name,accept);
-      } else li.append(name, document.createTextNode(` · ${labels[invite.status] ?? 'غير متاحة'}`));
+      } else li.append(name, document.createTextNode(` · ${invitationStatusLabels[invite.status] ?? 'غير متاحة'}`));
       list.append(li);
     }
   } catch { incomingPanel.hidden = false; state.textContent = 'تعذر تحميل الدعوات؛ بيانات المؤسسة الحالية لا تتغير. حدّث اللوحة للمحاولة.'; }

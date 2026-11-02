@@ -14,7 +14,7 @@
 .health-state.muted{color:#bdbbc6}
 .health-note{font-size:11px;color:#8f8a9b;margin:12px 0 0}
 .health-summary{color:#b9f3c9;font-size:12px}
-.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:44px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:44px}
 .metric{display:grid;gap:4px;padding:22px}
 .metric strong{font-size:34px;font-weight:400;color:#b799ff;line-height:1.2}
 .metric span{font-size:12px;color:#bdbbc6}
@@ -27,6 +27,7 @@
 .member-list strong,.activity strong{font-weight:400}
 .member-list span,.member-list time,.activity span,.activity time{font-size:11px;color:#a9a3b8;overflow-wrap:anywhere}
 .member-list time,.activity time{white-space:nowrap}
+.member-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.member-controls select{width:auto;min-width:110px}.member-controls button{padding-inline:12px;font-size:11px}
 .role{background:#251a36;border-radius:4px;padding:4px 8px;white-space:nowrap;font-size:11px;color:#c3b4dd}
 .role.warn{background:#1a1307;color:var(--color-focus)}
 .member-actions{margin-top:18px;border-top:1px solid #241f2d;padding-top:16px}
@@ -34,7 +35,7 @@
 .activity code{font-size:10px;color:#8f8a9b;direction:ltr;text-align:start}
 [data-members-state]:empty,[data-activity-state]:empty{display:none}
 @media(max-width:1000px){.metrics{grid-template-columns:1fr}.ops-row{grid-template-columns:1fr}}
-@media(max-width:600px){.member-list li,.activity li{grid-template-columns:1fr}.member-list time{white-space:normal}}
+@media(max-width:600px){.member-list li,.activity li{grid-template-columns:1fr}.member-list time{white-space:normal}.member-controls{display:grid;grid-template-columns:1fr 1fr}.member-controls select{grid-column:1/-1;width:100%}}
 .app-nav nav{display:grid;gap:8px}.app-nav nav a{background:transparent;border-color:transparent;color:#bdbbc6}.app-nav nav a[aria-current=page]{background:#171023;border-color:#60429d;color:#fff}.app-nav nav a:hover{border-color:#484252}.product-card .product-setup,.product-card .product-terms{font-size:12px;flex:0;margin-block:6px 14px}.product-card [data-product-admin]{border-top:1px solid #35254e;margin-block:8px 16px;padding-top:8px}.product-card [data-product-admin] button{margin-top:10px}.member-actions button{margin-block:10px}.member-actions h3{font-weight:400}.member-actions input{direction:ltr;text-align:start}.member-actions ul{margin-top:18px}.admin-status{padding:14px;border-inline-start:3px solid var(--color-focus);background:#141007;overflow-wrap:anywhere}.admin-status:empty{display:none}.incoming{margin-bottom:24px}.incoming button{width:max-content;max-width:100%}.product-card label{font-size:12px}.product-card .product-terms{color:#c3b4dd}.app-nav .brand-logo{max-width:100%}@media(max-width:600px){.app-nav nav{display:flex}.product-card select{max-width:100%}.incoming button{width:100%}}
 
 /* Interior-only visual tokens and a unified card language for the app workspace.

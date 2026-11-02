@@ -80,7 +80,7 @@ function showError(text: string, unauthorized = false) {
 async function token() {
   if (!auth) throw new Error('يلزم إعداد Neon Auth.');
   const session = await getWorkspaceSession(auth);
-  const value = session.data?.session?.token;
+  const value = await auth.getJWTToken();
   if (session.error || !session.data?.user || !value) {
     const error = new Error('سجّل الدخول بحساب Neon Auth لعرض مساحة العمل.');
     Object.assign(error, { unauthorized: true });

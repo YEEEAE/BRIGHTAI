@@ -74,7 +74,7 @@ async function api(path: string, method = 'GET', body?: object) {
   const epoch = viewEpoch;
   if (!auth) throw new ApiError('يلزم إعداد الدخول.', 'AUTH_SETUP');
   const session = await getWorkspaceSession(auth);
-  const token = session.data?.session?.token;
+  const token = await auth.getJWTToken();
   if (session.error || !session.data?.user || !token) throw new ApiError('يلزم تسجيل الدخول عبر Kernel. تحقق أيضًا من إعداد الأصل الموثوق.', 'AUTH_REQUIRED');
   const params = new URLSearchParams();
   if (workspace.value) params.set('workspace', workspace.value);

@@ -16,7 +16,7 @@ function scopeFields(){
 }
 async function api(path='',body?:object,policyRoute=false){
  if(!auth)throw new Error('يلزم إعداد الدخول عبر Neon Auth.');
- const generation=epoch,session=await getWorkspaceSession(auth),token=session.data?.session?.token;
+ const generation=epoch,session=await getWorkspaceSession(auth),token=await auth.getJWTToken();
  if(generation!==epoch)throw new Error('تغيرت الجلسة؛ حدّث البيانات.');
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
  const query=new URLSearchParams({view,status:filter,page:String(page)});if(workspace.value)query.set('workspace',workspace.value);

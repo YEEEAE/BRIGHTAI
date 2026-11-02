@@ -1,11 +1,14 @@
-import { createAuthClient } from '@neon/neon-js/auth';
-export type WorkspaceAuth = ReturnType<typeof createAuthClient>;
+import { createAuthClient, type VanillaBetterAuthClient } from '@neon/neon-js/auth';
+import { BetterAuthVanillaAdapter } from '@neon/neon-js/auth/vanilla/adapters';
+import { organizationClient } from 'better-auth/client/plugins';
+type WorkspaceBetterAuth = ReturnType<typeof import('better-auth/client').createAuthClient<{ plugins: [ReturnType<typeof organizationClient>] }>>;
+export type WorkspaceAuth = WorkspaceBetterAuth & { getJWTToken: () => Promise<string | null> };
 let sessionEpoch = 0;
 document.addEventListener('workspace-session-ended', () => { sessionEpoch++; restored = false; });
 const sessionChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('aigas-session') : null;
 sessionChannel?.addEventListener('message', event => { if (event.data === 'SIGN_OUT') document.dispatchEvent(new Event('workspace-session-ended')); });
 export function createWorkspaceAuth(url: string): WorkspaceAuth {
-  const client = createAuthClient(url);
+  const client = createAuthClient(url, { adapter: BetterAuthVanillaAdapter() }) as unknown as WorkspaceAuth;
   return new Proxy(client, {
     get(target, key, receiver) {
       if (key === 'signOut') return async () => {

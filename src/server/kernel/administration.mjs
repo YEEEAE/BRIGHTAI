@@ -25,6 +25,46 @@ export async function updateProduct(identity, requested, body) {
     return { persisted: true, ...result.rows[0] };
   });
 }
+export async function manageMember(identity, requested, body) {
+  if (!['set-role', 'revoke'].includes(body.operation)) throw new KernelError(400, 'INVALID_OPERATION', 'عملية العضوية غير مدعومة.');
+  if (body.operation === 'set-role') {
+    exact(body, ['operation','userId','role']); uuid(body.userId);
+    if (!['ADMIN','MEMBER'].includes(body.role)) throw new KernelError(400, 'INVALID_ROLE', 'الدور المطلوب غير مسموح.');
+  } else { exact(body, ['operation','userId']); uuid(body.userId); }
+  return transaction(async db => {
+    if (!requested) throw new KernelError(400, 'WORKSPACE_REQUIRED', 'حدد المؤسسة قبل تنفيذ العملية.');
+    const scope = await tenantGuard(identity, uuid(requested), db);
+    const tenant = scope.tenant;
+    if (!tenant) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.');
+    // Lock tenant before member rows so concurrent changes serialize without stale authority.
+    await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenant.tenant_id]);
+    const actor = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR UPDATE', [tenant.tenant_id, identity.userId])).rows[0];
+    requireRole(actor, ['OWNER','ADMIN']);
+    const target = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR UPDATE', [tenant.tenant_id, body.userId])).rows[0];
+    if (!target && body.operation === 'revoke') return { persisted: true, unchanged: true };
+    if (!target) throw new KernelError(404, 'MEMBER_NOT_FOUND', 'العضوية غير موجودة أو سبق سحبها.');
+    if (target.role === 'OWNER' && actor.role !== 'OWNER') throw new KernelError(403, 'OWNER_PROTECTED', 'لا يحق للمدير تغيير صلاحية المالك.');
+    if (body.operation === 'revoke') {
+      if (body.userId === identity.userId) throw new KernelError(409, 'SELF_REVOCATION_REJECTED', 'لا يمكن سحب عضويتك من هذه الشاشة. اطلب من مالك آخر إدارة عضويتك.');
+      if (target.role === 'OWNER') {
+        const owners = (await db.query("SELECT count(*)::int AS count FROM public.aigas_memberships WHERE tenant_id=$1 AND role='OWNER'", [tenant.tenant_id])).rows[0].count;
+        if (owners <= 1) throw new KernelError(409, 'LAST_OWNER_REQUIRED', 'لا يمكن سحب آخر عضوية مالك للمؤسسة.');
+      }
+      await audit(db, identity, tenant.tenant_id, 'kernel.member.revoked');
+      await db.query('DELETE FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2', [tenant.tenant_id, body.userId]);
+      return { persisted: true };
+    }
+    if (actor.role !== 'OWNER' && (target.role === 'OWNER' || body.role === 'ADMIN')) throw new KernelError(403, 'OWNER_REQUIRED', 'ترقية الأعضاء إلى مدير من صلاحية المالك فقط.');
+    if (target.role === 'OWNER' && body.role !== 'OWNER') {
+      const owners = (await db.query("SELECT count(*)::int AS count FROM public.aigas_memberships WHERE tenant_id=$1 AND role='OWNER'", [tenant.tenant_id])).rows[0].count;
+      if (owners <= 1) throw new KernelError(409, 'LAST_OWNER_REQUIRED', 'يجب أن يبقى مالك واحد على الأقل.');
+    }
+    if (target.role === body.role) return { persisted: true, unchanged: true };
+    await db.query('UPDATE public.aigas_memberships SET role=$3 WHERE tenant_id=$1 AND user_id=$2', [tenant.tenant_id, body.userId, body.role]);
+    await audit(db, identity, tenant.tenant_id, 'kernel.member.role_changed');
+    return { persisted: true, role: body.role };
+  });
+}
 export async function invitationState(db, identity, tenant) {
   const ready = (await db.query("SELECT to_regclass('public.aigas_auth_organizations') IS NOT NULL AND to_regclass('public.aigas_member_invitations') IS NOT NULL AS ready")).rows[0].ready;
   if (!ready) return { available: false, canLink: false, reason: 'الدعوات معلّقة حتى تطبيق ترحيل إدارة Kernel على بيئة معتمدة.', invitations: [] };
@@ -33,7 +73,7 @@ export async function invitationState(db, identity, tenant) {
   const native = (await db.query('SELECT role FROM neon_auth.member WHERE "organizationId"=$1 AND "userId"=$2', [mapping.organization_id, identity.userId])).rows[0];
   const available = ['OWNER','ADMIN'].includes(tenant.role) && ['owner','admin'].includes(native?.role);
   const invitations = ['OWNER','ADMIN'].includes(tenant.role) ? (await db.query(`SELECT i.id,i.email,i.status,i."expiresAt" AS expires_at,k.accepted_at FROM public.aigas_member_invitations k JOIN neon_auth.invitation i ON i.id=k.invitation_id WHERE k.tenant_id=$1 ORDER BY k.created_at DESC LIMIT 30`, [tenant.tenant_id])).rows.map(row => ({ ...row, status: row.status === 'pending' && new Date(row.expires_at) <= new Date() ? 'expired' : row.status })) : [];
-  return { available, canLink: false, organizationId: available ? mapping.organization_id : null, invitations, reason: available ? 'دعوة بدور عضو فقط. تُتابع داخل Kernel؛ إرسال البريد يتبع إعداد Neon Auth ولا يُفترض نجاحه.' : 'الدعوة تتطلب OWNER/ADMIN في Kernel وصلاحية دعوة لدى مؤسسة Auth المرتبطة.' };
+  return { available, canLink: false, organizationId: available ? mapping.organization_id : null, invitations, reason: available ? 'دعوة بدور عضو فقط. تُتابع داخل Kernel؛ إرسال البريد غير مؤكد، وإلغاء الدعوة يتم من Neon Auth.' : 'الدعوة تتطلب OWNER/ADMIN في Kernel وصلاحية دعوة لدى مؤسسة Auth المرتبطة.' };
 }
 export async function incomingInvitations(identity) {
   return transaction(async db => {

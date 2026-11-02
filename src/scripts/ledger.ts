@@ -16,7 +16,7 @@ function clearPrivate(){epoch++;area.hidden=true;clearDetail();get('[data-events
 async function api(path='',method='GET',body?:object){
  if(!auth)throw new Error('يلزم إعداد الدخول.');
  const generation=epoch;
- const session=await getWorkspaceSession(auth);const token=session.data?.session?.token;
+ const session=await getWorkspaceSession(auth);const token=await auth.getJWTToken();
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
  const params=new URLSearchParams({type:type.value,source:source.value,classification:classification.value,period:period.value,page:String(page),q:search.value});if(workspace.value)params.set('workspace',workspace.value);
  const response=await appFetch(auth,`/app/api/ledger/events/${path}?${params}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});

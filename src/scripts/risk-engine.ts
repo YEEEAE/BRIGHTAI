@@ -13,7 +13,7 @@ const time=(value:string)=>new Date(value).toLocaleString('ar-SA',{timeZone:'Asi
 function clear(){area.hidden=true;get('[data-assets]').replaceChildren();get('[data-history]').replaceChildren();get('[data-revisions]').replaceChildren();get('[data-summary]').replaceChildren();get('[data-actions]').replaceChildren();get('[data-treatments]').replaceChildren();treatmentForm.reset();treatmentForm.hidden=true;treatmentData=null;workspace.replaceChildren();get('[data-role]').textContent='';get('[data-selected-title]').textContent='';get('[data-selected-description]').textContent='';selected=null;editing=null;assetForm.reset();assessmentForm.reset();get('[data-editor]').hidden=true;get('[data-detail]').hidden=true;}
 async function api(path='',body?:object,method=body?'POST':'GET',history=false,resource='assets'){
  if(!auth)throw new Error('يلزم إعداد الدخول عبر Neon Auth.');
- const session=await getWorkspaceSession(auth),token=session.data?.session?.token;
+ const session=await getWorkspaceSession(auth),token=await auth.getJWTToken();
  if(session.error||!session.data?.user||!token)throw Object.assign(new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.'),{unauthorized:true});
  const query=new URLSearchParams({page:String(resource==='actions'?actionsPage:history?historyPage:path.endsWith('/revisions/')?revisionsPage:path.endsWith('/treatments/')?treatmentPage:page)});if(workspace.value)query.set('workspace',workspace.value);
  if(!path&&resource==='assets'){for(const key of ['q','classification','risk_level','assessment_status']){const value=(filterForm.elements.namedItem(key) as HTMLInputElement).value;if(value)query.set(key,value);}}

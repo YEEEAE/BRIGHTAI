@@ -11,7 +11,7 @@ export const products = [
 // Register only routes whose page and API enforce Kernel identity and membership server-side.
 // A separate DB access record still decides whether the product is enabled for the tenant.
 const implementedRoutes = new Set(['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']);
-const stateLabels = { ENABLED: 'مفعّل للمؤسسة', DISABLED: 'معطّل من المشغّل', FOUNDATION: 'قيد التأسيس' };
+const stateLabels = { ENABLED: 'مفعّل للمؤسسة', DISABLED: 'معطّل', EXPIRED: 'انتهى قرار الإتاحة', REVOKED: 'أُلغي قرار الإتاحة', FOUNDATION: 'قيد التأسيس' };
 export const roleLabels = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
 const auditLabels = {
   'workspace.created': 'إنشاء مساحة العمل',
