@@ -2,3 +2,52 @@
 .ledger [data-private]>.panel{margin-block-end:1.5rem}
 
 .ledger pre{white-space:pre-wrap;overflow-wrap:anywhere;max-inline-size:100%}.ledger [data-chain],.ledger [data-integrity]{overflow-wrap:anywhere}
+
+/* 06 — Ledger readability: filters, evidence table and integrity detail keep their DOM and scrolling. */
+.ledger .ledger-controls{gap:.9rem 1.2rem}
+.ledger .ledger-controls label{margin-block:0 .45rem;color:#c6c1cf;font-size:13px;line-height:1.7}
+.ledger .ledger-controls input,.ledger .ledger-controls select{font-size:14px}
+.ledger .ledger-controls>div{min-inline-size:0}
+.ledger .ledger-table{border:1px solid #302a39;border-radius:10px;background:#0a0810;scrollbar-color:#3f3550 #0b0910}
+.ledger .ledger-table:focus-visible{outline-offset:3px}
+.ledger .ledger table{color:#ece7f2}
+.ledger .ledger th{padding:.9rem .75rem;border-block-end:1px solid #3a3346;background:#100c17;color:#c6c1cf;font-size:12px;font-weight:400;line-height:1.7}
+.ledger .ledger td{padding:.9rem .75rem;border-block-end:1px solid #221e2a;font-size:13px;line-height:1.8;vertical-align:top}
+.ledger .ledger tbody tr{transition:background-color 140ms ease}
+.ledger .ledger tbody tr:hover{background:#110d18}
+.ledger .ledger tbody tr:last-child td{border-block-end:0}
+.ledger .ledger td bdi{font-size:12.5px;line-height:1.75;color:#e9e4f0;font-variant-numeric:tabular-nums}
+.ledger .ledger td small{color:#a9a3b8;font-size:12px;line-height:1.7}
+.ledger .ledger td button{font-size:12px;line-height:1.6;white-space:nowrap}
+.ledger .ledger-pagination{margin-block-start:.6rem;gap:.6rem;align-items:center}
+.ledger .ledger-pagination button{min-inline-size:104px}
+.ledger [data-chain]{margin-block:0 1.1rem;padding:10px 12px;border:1px solid #302a39;border-inline-start:2px solid #3a3346;border-radius:8px;background:#0b0910;color:#c6c1cf;font-size:12.5px;line-height:1.8}
+.ledger [data-chain]:empty{display:none}
+.ledger [data-empty]{padding:12px 14px;border:1px dashed #3a3346;border-radius:8px;color:#b9b3c6;font-size:13px;line-height:1.85}
+.ledger dialog{border-color:#4a4157;border-radius:14px;box-shadow:0 40px 90px -40px #000}
+.ledger .ledger-detail{max-block-size:85vh;overflow:auto;padding:1.5rem}
+.ledger .ledger-detail .section-heading{padding-block-end:14px;border-block-end:1px solid #241f2d;margin-block-end:1rem}
+.ledger .ledger-detail .section-heading h2{font-size:20px;line-height:1.6}
+.ledger .ledger-detail [data-event-classification]{margin-block:0 1rem;padding:10px 12px;border:1px solid #302a39;border-radius:8px;background:#100c17;color:#c6c1cf;font-size:12.5px;line-height:1.85}
+.ledger .ledger-detail dl{gap:0;border:1px solid #241f2d;border-radius:10px;overflow:hidden}
+.ledger .ledger-detail dt,.ledger .ledger-detail dd{padding:.7rem .9rem;border-block-end:1px solid #1c1824}
+.ledger .ledger-detail dt{background:#0b0910;color:#a9a3b8;font-size:12px;line-height:1.7}
+.ledger .ledger-detail dd{color:#ece7f2;font-size:13px;line-height:1.8}
+.ledger .ledger-detail dl>:nth-last-child(-n+2){border-block-end:0}
+.ledger .ledger-detail dd[dir=ltr]{font-variant-numeric:tabular-nums;text-align:start}
+.ledger .ledger-detail [data-integrity]{margin-block:.25rem 0;padding:12px 14px;border:1px solid #4a3a22;border-inline-start:3px solid #ffb829;border-radius:8px;background:#141007;color:#d3c9b5;font-size:12.5px;line-height:1.85}
+.ledger .ledger-actions{align-items:center;margin-block-start:.25rem}
+.ledger .ledger-actions [data-verify]{background:#8052ff;border-color:#8052ff;color:#fff}
+.ledger .ledger-actions [data-export]{background:transparent;border-color:#4a4157;color:#d8d3e4}
+.ledger .ledger-actions [data-export]:hover{background:#17121f;border-color:#5b4a72;color:#fff}
+.ledger .notice pre{margin-block:12px 0;padding:12px 14px;border:1px solid #302a39;border-radius:8px;background:#0a0810;color:#e9e4f0;font-size:12px;line-height:1.8;font-variant-numeric:tabular-nums}
+.ledger .notice code{font-size:12px}
+
+@media(prefers-reduced-motion:reduce){
+ .ledger .ledger tbody tr{transition:none}
+}
+@media(max-width:600px){
+ .ledger .ledger-table{border-radius:8px}
+ .ledger .ledger-detail{padding:1rem;max-block-size:85vh}
+ .ledger .ledger td,.ledger .ledger th{padding:.75rem .6rem}
+}
