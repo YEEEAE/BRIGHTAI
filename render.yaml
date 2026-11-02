@@ -20,6 +20,9 @@ services:
         value: 0.0.0.0
       - key: PORT
         value: 10000
+      # Enable only after the owner authorizes exposing the portal on this Node service.
+      - key: AIGAS_APP_ENABLED
+        value: "false"
       - key: DATABASE_URL
         sync: false
       - key: NEON_AUTH_BASE_URL

@@ -1,7 +1,11 @@
 ---
 import PageShell from '../../components/PageShell.astro';
+import { env, isPortalEnabled } from '../../server/kernel/env.mjs';
 
-const authUrl = import.meta.env.NEON_AUTH_BASE_URL ?? '';
+export const prerender = false;
+const authUrl = env('NEON_AUTH_BASE_URL') ?? '';
+const portalEnabled = isPortalEnabled();
+Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 ---
 
 <PageShell
@@ -42,7 +46,11 @@ const authUrl = import.meta.env.NEON_AUTH_BASE_URL ?? '';
       <div data-auth-session hidden>
         <h2>أنت مسجل دخول</h2>
         <p>الحساب الحالي: <bdi data-current-user></bdi></p>
-        <a class="button" href="/app/kernel/">فتح مساحة العمل</a>
+        {portalEnabled ? (
+          <a class="button" href="/app/kernel/">فتح مساحة العمل</a>
+        ) : (
+          <p role="status">بوابة مساحة العمل غير متاحة حاليًا. <a href="/contact/?topic=بوابة%20مساحة%20العمل">استفسر عن إتاحتها</a></p>
+        )}
         <button class="button" type="button" data-sign-out>تسجيل الخروج</button>
       </div>
 

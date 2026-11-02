@@ -1,3 +1,19 @@
+## [2026-11-03] — توحيد إتاحة بوابة AIGAS مع SSR وإعداد البيئة
+### تم التنفيذ
+- تأكدت من أن Astro مضبوط على Node standalone وأن `render.yaml` يبدأ `npm start` الذي يشغّل `dist/server/entry.mjs`؛ لم أغيّر هذه الإعدادات لأنها متسقة محليًا.
+- أضيف `AIGAS_APP_ENABLED` مغلقًا افتراضيًا للإنتاج؛ عند الإغلاق تُحوّل صفحات `/app/*` إلى صفحة التواصل الحالية، وتُرجع APIs رمز `APP_UNAVAILABLE` مع 503 و`no-store`.
+- أصبحت البوابة متاحة في Astro dev؛ لا يُفتح مسار الإنتاج إلا عند ضبط المتغير وقت التشغيل، ولا تُخبز إعدادات Auth/DB في الحزمة.
+- صفحة التسجيل SSR وتقرأ عنوان Auth من `process.env`، وتُظهر رابط مساحة العمل فقط عند إتاحتها.
+### الملفات المتأثرة
+- `render.yaml`, `src/middleware.ts`, `src/pages/auth/sign-up.astro`, `src/server/kernel/env.mjs`
+### التحقق
+- مراجعة المصدر وحدود imports: PASS؛ `git diff --check`: PASS. build والاختبارات لم تُشغّل بطلب المهمة.
+- فحص حي للبوابة عبر Chrome: `/app/` أظهر 404؛ استجابة HTTP الخام غير متاحة للفحص هنا.
+### النتيجة
+- **الحالة:** DONE محليًا؛ لم يحدث نشر أو تغيير خارجي.
+### ملاحظات / مشاكل مفتوحة
+- يلزم نشر Node service وتغيير origin مصرح به لتصحيح 404 الحي؛ يلزم ضبط `AIGAS_APP_ENABLED=true` بعد اعتماد فتح البوابة وتجهيز بيئتها.
+
 ## [2026-11-03] — استكمال SEO وSchema للموقع العام
 ### تم التنفيذ
 - أضيفت Article JSON-LD للمقالات الخمسة وProduct JSON-LD لصفحات المنتجات الخمسة اعتمادًا على المحتوى الحالي، مع إبقاء الأسعار والعروض والمراجعات غير موجودة.
@@ -279,7 +295,7 @@
 - أحدث حالة Firewall في السجل الأعلى؛ أدلة البناء/DB القديمة أدناه HISTORICAL ولا تثبت النسخة الحالية. سجل القرار ليس إثبات تسليم للمزود.
 - Neon VERIFIED 2026-11-01: `young-frog-60183055` / `neondb`، الفرع الوحيد `production` / `br-young-bird-b43proeb` غير محمي؛ 11 جدول public. 0001 مطبق سابقًا؛ 0004/0006/0007 طُبقت بإذن المالك الصريح في مهمة Human Gate. 0002/0003/0005 غير مطبقة، ولا هدف تطوير معتمد. لا grants أو سياسات Human Gate مزروعة.
 - إدارة Kernel المحلية تتطلب grant إداري ADMIN_NON_BILLED ساريًا مستقلًا عن status؛ لا اشتراك أو Trial أو مزود AI معتمد حاليًا. رحلة دخول وعزل حسابين وruntime grants/RLS والنشر الحالي NOT VERIFIED.
-- `/app/*` هو Node SSR دون prerender أو cache. تشخيص 404 للاستضافة الثابتة HISTORICAL حتى إعادة تحقق؛ لا تعديل استضافة أو DNS في المهمة.
+- `/app/*` في المصدر Node SSR مع `private, no-store`؛ `render.yaml` يشير لخدمة Node وentrypoint standalone. فحص Chrome في 2026-11-03 أظهر 404 حيًا على `/app/`؛ علاج المصدر محلي فقط ومغلق افتراضيًا بمتغير `AIGAS_APP_ENABLED`. يلزم نشر مصرح وتغيير origin وإتاحة خادمية قبل ادعاء التشغيل.
 - Hero الرئيسية وConstellation دون تغيير. هيدر الجوال يستخدم الآن قائمة disclosure بالروابط نفسها؛ الفهرس الثابت يتحول للتدفق الطبيعي حتى 767px. الشعار عبر brand.ts وBrandLogo.astro، وGA4 العام في BaseLayout.
 - تحويلات `.html` وحقوق بيانات رسم الدماغ والاعتماد القانوني/التجاري وCWV/الفهرسة الفعلية بلا دليل إغلاق جديد.
 - DSH desktop: ست حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader` و`@local/chrome-devtools-mcp`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `chrome-devtools-mcp` صف MCP واحد (stdio، `npx`، إصدار 1.12.0) وأدوات `mcp__chrome-devtools__*` مستدعاة فعليًا؛ يشغّل Chrome بملف مستخدم مستقل في `~/.cache/chrome-devtools-mcp`. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
