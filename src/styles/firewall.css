@@ -143,3 +143,13 @@
  .firewall .fw-result{padding:16px}
  .firewall .fw-decisions>li{padding:12px 14px}
 }
+
+/* 08 — Final polish: RTL isolation, honest disabled/loading cues and narrow wrapping. */
+.firewall :is(bdi,time){unicode-bidi:isolate}
+.firewall :is(.fw-rule-head h3,.fw-pattern,.fw-result p,.fw-decisions li p){overflow-wrap:anywhere}
+.firewall button:disabled{border-style:dashed;cursor:not-allowed}
+.firewall [aria-busy=true] button:disabled{cursor:progress}
+@media(max-width:390px){
+  .firewall .fw-counts bdi{letter-spacing:0}
+  .firewall .fw-tag{white-space:normal;text-align:center}
+}

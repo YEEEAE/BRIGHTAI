@@ -40,7 +40,7 @@
 .interior-page :is(h2,h3,section) { scroll-margin-block-start: 28px; }
 .interior-page .motion-enter { animation: none; }
 .interior-page .ui-arrive { animation: interior-arrive var(--ui-reveal) var(--ui-ease) both; }
-@keyframes interior-arrive { from { transform: translateY(12px); opacity: .85; } to { transform: none; opacity: 1; } }
+@keyframes interior-arrive { from { transform: translateY(8px); opacity: .85; } to { transform: none; opacity: 1; } }
 /* A small index stays out of the reading column and opens only on request. */
 .section-compass { position: fixed; z-index: 12; inset-inline-end: 22px; inset-block-end: 20px; padding: 0; border: 1px solid var(--ui-line); border-radius: var(--ui-radius-lg); background: var(--ui-panel); max-inline-size: min(390px,calc(100vw - 40px)); box-shadow: inset 0 1px 0 #ffffff08,0 18px 40px -30px #000; }
 .section-compass[hidden] { display: none; }
@@ -487,3 +487,23 @@
 .interior-kernel-index .kernel-sequence .sequence-stages [data-complete=true] { border-color: #685480; }
 .interior-kernel-index .kernel-sequence .sequence-stages [data-complete=true] bdi::after { color: var(--ui-violet); }
 .interior-kernel-index .kernel-sequence .sequence-output { color: var(--ui-amber); }
+
+/* 08 — Final polish. Scoped to the public interior shell; the protected hero,
+   header, constellation and home page cannot match these selectors. */
+.interior-page :is(code,kbd,samp,time,[dir=ltr]) { unicode-bidi: isolate; }
+.interior-page :is(.product-intro h1,.experience h2,.content-extension h2,.catalog-row h3,.product-meta,.scope-summary h3,.kernel-comparison h2) { overflow-wrap: break-word; }
+.interior-page .button,
+.interior-page .button span,
+.interior-page .ghost span,
+.interior-page .product-icon { transition-duration: var(--ui-fast); }
+.interior-page .button:not(:disabled):hover { transform: translateY(-1px); }
+.interior-page :is(.button,.ghost):is(:hover,:focus-visible) span { transform: translateY(-1px); }
+.interior-page a:hover .product-icon { transform: translateY(-1px); }
+.interior-products-index .catalog .catalog-row:is(:hover,:focus-visible) {
+  background-color: #110d18;
+  box-shadow: inset 0 0 0 1px #51445f, inset 0 1px 0 #ffffff0a;
+}
+@media (max-width:390px) {
+  .interior-page :is(.product-intro h1,.experience h2,.content-extension h2,.catalog-row h3,.scope-summary h3) { overflow-wrap: anywhere; }
+  .interior-page .section-compass summary { padding-inline: 14px; }
+}

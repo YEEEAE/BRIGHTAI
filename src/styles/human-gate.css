@@ -58,3 +58,12 @@
  .human-gate .hg-request h3{font-size:19px}
  .human-gate .hg-request dd{font-size:13px}
 }
+
+/* 08 — Final polish: RTL isolation and disabled versus loading clarity. */
+.human-gate :is(bdi,time,code){unicode-bidi:isolate}
+.human-gate :is(.hg-request h3,.hg-request dd,.hg-request li,[data-policy-summary]){overflow-wrap:anywhere}
+.human-gate button:disabled{cursor:not-allowed}
+.human-gate [aria-busy=true] :is(button,select):disabled{cursor:progress}
+@media(max-width:390px){
+  .human-gate .hg-request{padding:.9rem}
+}

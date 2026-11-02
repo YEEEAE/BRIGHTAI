@@ -51,3 +51,13 @@
  .ledger .ledger-detail{padding:1rem;max-block-size:85vh}
  .ledger .ledger td,.ledger .ledger th{padding:.75rem .6rem}
 }
+
+/* 08 — Final polish: RTL isolation and disabled versus loading clarity. */
+.ledger :is(bdi,time,code){unicode-bidi:isolate}
+.ledger button:disabled{cursor:not-allowed}
+.ledger [aria-busy=true] button:disabled{cursor:progress}
+.ledger .ledger-detail dd[dir=ltr]{unicode-bidi:isolate}
+@media(max-width:390px){
+  .ledger .ledger-pagination button{min-inline-size:0;flex:1 1 auto}
+  .ledger .ledger-detail{padding:.9rem}
+}

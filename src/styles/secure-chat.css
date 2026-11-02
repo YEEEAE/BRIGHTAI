@@ -179,3 +179,14 @@
   .secure-chat .messages li{transition:none}
   .secure-chat button:not(:disabled):active{transform:none}
 }
+
+/* 08 — Final polish: RTL isolation, state clarity and readable mobile metadata. */
+.secure-chat :is(bdi,time,code){unicode-bidi:isolate}
+.secure-chat :is(.messages li,.chat-details,.access-panel p){overflow-wrap:anywhere}
+.secure-chat button:disabled{cursor:not-allowed}
+.secure-chat .composer-actions button:disabled{border-style:dashed}
+.secure-chat [aria-busy=true] :is(button,select,textarea):disabled{cursor:progress}
+@media(max-width:700px){
+  .secure-chat .chat-header .overline{font-size:11px}
+  .secure-chat .chat-state{font-size:12px}
+}

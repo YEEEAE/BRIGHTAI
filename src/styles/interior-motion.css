@@ -36,7 +36,7 @@
 .interior-page .sequence-stages li { padding: 18px; border: 1px solid #4b3e5b; display: grid; gap: 10px; transition: border-color 220ms,background 220ms; }
 .interior-page .sequence-stages bdi { color: var(--ui-violet); }
 .interior-page .sequence-stages [data-active=true] { border-color: var(--decision-warn); background: #221a0b; }
-.interior-page .sequence-stages [data-complete=true] bdi::after { content: ' ✓'; color: #8ae0bd; }
+.interior-page .sequence-stages [data-complete=true] bdi::after { content: ' ✓'; color: var(--ui-amber); }
 .interior-page .approval-lock { color: var(--decision-review); }
 .interior-page .lock-shackle { transform-origin: 20px 28px; transition: transform 220ms; }
 .interior-page [data-approval-state=allow] .lock-shackle { transform: rotate(-24deg); }

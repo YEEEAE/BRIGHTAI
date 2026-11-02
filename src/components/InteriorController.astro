@@ -13,7 +13,7 @@
       const id = requestAnimationFrame(() => { frames.delete(id); fn(); });
       frames.add(id);
     };
-    const animate = (element: Element, keyframes: Keyframe[], duration = 280) => {
+    const animate = (element: Element, keyframes: Keyframe[], duration = 240) => {
       if (preference.matches) return;
       const animation = element.animate(keyframes, { duration, easing: 'cubic-bezier(.2,.7,.2,1)' });
       animations.add(animation);

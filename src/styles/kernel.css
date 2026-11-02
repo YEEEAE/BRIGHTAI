@@ -384,3 +384,16 @@
   .kernel .member-list li,
   .kernel .activity li{transition:none}
 }
+
+/* 08 — Final polish. Still scoped to the app shell and the Kernel surface. */
+.kernel :is(bdi,code,time){unicode-bidi:isolate}
+.kernel :is(.product-card h3,.member-list strong,.activity strong,.notice h2,.admin-status){overflow-wrap:anywhere}
+.kernel .product-card:is(:hover,:focus-within){border-color:#3f3548;box-shadow:inset 0 1px 0 #ffffff08,0 14px 30px -32px #000}
+.kernel button:disabled,.kernel button[aria-disabled=true]{border-style:dashed;cursor:not-allowed}
+.kernel [aria-busy=true] :is(button,select,input):disabled{cursor:progress}
+@media (max-width:600px){
+  .app-frame .app-nav nav a,
+  .app-frame .app-nav nav a bdi{font-size:12px}
+  .app-frame .tag{font-size:11px}
+  .kernel .connection{font-size:12px;white-space:normal}
+}

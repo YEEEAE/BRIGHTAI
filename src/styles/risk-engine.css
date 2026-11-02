@@ -177,3 +177,12 @@
   .risk-engine .re-matrix td{transition:none}
   .risk-engine button:not(:disabled):active{transform:none}
 }
+
+/* 08 — Final polish: RTL isolation and disabled versus loading clarity. */
+.risk-engine :is(bdi,time,code){unicode-bidi:isolate}
+.risk-engine button:disabled{cursor:not-allowed}
+.risk-engine [aria-busy=true] :is(button,input,select,textarea):disabled{cursor:progress}
+.risk-engine :is(.re-history h4,.re-history dd,[data-treatment-state],[data-preview]){overflow-wrap:anywhere}
+@media(max-width:390px){
+  .risk-engine .re-summary>div{padding:12px 14px}
+}

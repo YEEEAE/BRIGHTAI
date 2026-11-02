@@ -66,7 +66,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 .map-space { position: relative; aspect-ratio: 600/540; container-type: inline-size; }
 .map-wires { position: absolute; inset: 0; width: 100%; height: 100%; color: #71529a; }
 .map-path { stroke-dasharray: 100; }
-.system-map:is(:hover,:focus-within) .map-path { animation: draw-route 1s var(--ease-out) both; color: #b599ff; }
+.system-map:is(:hover,:focus-within) .map-path { animation: draw-route 800ms var(--ease-out) both; color: #b599ff; }
 .map-core { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%,-50%); display: grid; justify-items: center; gap: 6px; text-align: center; width: 42%; }
 .map-core bdi { font: 400 clamp(14px,4cqw,24px)/1.4 monospace; color: #f4eeff; }
 .map-core small { font-size: clamp(9px,2cqw,12px); color: #bdb0cc; }

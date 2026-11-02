@@ -38,7 +38,7 @@ const minutes = Math.max(1, Math.ceil(words / 180));
   <Header />
   <main id="main" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}${publicContent ? ' public-content' : ''}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">
-      {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}>{c.name}</a> / </> : <span aria-current="page">{c.name}</span>)}
+      {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}><bdi>{c.name}</bdi></a> / </> : <span aria-current="page"><bdi>{c.name}</bdi></span>)}
     </nav>
     {reading && <nav class="document-toc" aria-label="تنقل القراءة"><p>{family === 'knowledge' ? `وقت قراءة تقريبي: ${minutes} دقيقة، بافتراض 180 كلمة في الدقيقة.` : 'داخل هذه الوثيقة'}</p><details><summary>انتقل إلى قسم</summary>{toc.map(item => <a href={`#${item.id}`}>{item.title}</a>)}</details></nav>}
     <Fragment set:html={content} />
