@@ -258,6 +258,16 @@
 .kernel .health-state.bad{color:#ff9b9b;border-color:#5e2c2c;background:#1a0d0d}
 .kernel .health-state.muted{color:#bdbdbd;border-color:#3a3346;background:#100d15}
 .kernel .health-summary{color:var(--ui-copy);font-size:12px;line-height:1.75;letter-spacing:0}
+.kernel .health-summary.ok{color:#8fe3d3}
+.kernel .health-summary.warn{color:#ffc65c}
+.kernel .health-summary.bad{color:#ff9b9b}
+.kernel .health-summary.muted{color:var(--ui-muted)}
+.kernel .health-meta,.kernel .health-error{margin:9px 0 0;color:var(--ui-muted);font-size:12px;line-height:1.7}
+.kernel .health-error{color:#ff9b9b}
+.kernel .policy-status{display:grid;grid-template-columns:minmax(180px,.4fr) minmax(0,1fr);align-items:center;gap:24px;margin:0 0 28px;border-inline-start:3px solid var(--ui-focus)}
+.kernel .policy-status h2{margin:0;font-size:20px}
+.kernel .policy-status p{margin:0;color:var(--ui-copy);font-size:13px;line-height:1.8}
+@media(max-width:600px){.kernel .policy-status{grid-template-columns:1fr;gap:8px}}
 .kernel .health-note{margin-top:12px;color:var(--ui-muted);font-size:12px;line-height:1.8}
 
 .kernel .metrics{gap:16px;margin-bottom:40px}

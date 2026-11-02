@@ -5,8 +5,9 @@ export const prerender = false;
 const headers = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Content-Type-Options': 'nosniff' };
 export const GET: APIRoute = async () => {
   try {
-    return Response.json(await operationalHealth(), { headers });
+    const result = await operationalHealth();
+    return Response.json(result, { headers, status: result.state === 'blocked' ? 503 : 200 });
   } catch {
-    return Response.json({ status: 'degraded', checks: { auth: 'UNKNOWN', database: 'DB_UNAVAILABLE', schema: 'NOT_CHECKED' } }, { headers, status: 503 });
+    return Response.json({ status: 'degraded', state: 'degraded', errorType: 'HEALTH_CHECK_FAILED', updatedAt: new Date().toISOString(), configuration: { auth: 'UNKNOWN', database: 'UNKNOWN' }, checks: { auth: 'UNKNOWN', database: 'DB_UNAVAILABLE', schema: 'NOT_CHECKED', administration: 'NOT_CHECKED' } }, { headers, status: 503 });
   }
 };

@@ -1,4 +1,3 @@
-import { recordProductEvent } from '../ledger/writer.mjs';
 import { listApprovedModels } from '../secure-chat/models.mjs';
 import { providerReady } from '../secure-chat/adapter.mjs';
 import { randomUUID } from 'node:crypto';
@@ -25,7 +24,9 @@ async function lockMember(db, identity, tenant) {
 export async function dashboard(identity, requested) {
   return transaction(async db => {
     const scope = await tenantGuard(identity, requested, db);
-    if (!scope.tenant) return { ...scope, products: productStates([]).map(p => ({ ...p, href: null, enabled: false })), connection: 'CONNECTED', summary: null, activity: [], canManageMembers: false, canManageProducts: false };
+    const updatedAt = (await db.query('SELECT clock_timestamp() AS updated_at')).rows[0].updated_at;
+    const system = { connection: 'CONNECTED', membership: scope.tenant ? 'VERIFIED' : 'NONE', updatedAt };
+    if (!scope.tenant) return { ...scope, products: productStates([]).map(p => ({ ...p, href: null, enabled: false })), connection: 'CONNECTED', system, summary: null, activity: [], canManageMembers: false, canManageProducts: false };
     scope.tenant = await lockMember(db, identity, scope.tenant);
     const tenantId = scope.tenant.tenant_id;
     const adminReady = (await db.query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0].ready;
@@ -50,7 +51,7 @@ export async function dashboard(identity, requested) {
     const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, (SELECT count(*)::int FROM public.aigas_audit_events WHERE tenant_id=$1) AS events', [tenantId])).rows[0];
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));
     summary.coverage = access.length ? { enabled: states.filter(p => p.enabled).length, total: products.length } : null;
-    return { ...scope, products: states, connection: 'CONNECTED', summary, activity, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady };
+    return { ...scope, products: states, connection: 'CONNECTED', system, summary, activity, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady };
   });
 }
 export async function tenantMembers(identity, requested) {
@@ -69,9 +70,6 @@ export async function audit(db, identity, tenantId, action) {
   const auditId = randomUUID();
   const result = await db.query('INSERT INTO public.aigas_audit_events (id, tenant_id, actor_user_id, action) SELECT $1, m.tenant_id, m.user_id, $4 FROM public.aigas_memberships m WHERE m.tenant_id = $2 AND m.user_id = $3', [auditId, tenantId, identity.userId, action]);
   if (result.rowCount !== 1) throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر حفظ سجل الإدارة؛ لم تكتمل العملية.');
-  if (action === 'workspace.created' || action.startsWith('kernel.')) {
-    await recordProductEvent(db, identity, tenantId, {source:'kernel',event_type:'kernel.audit.recorded',policy_version:'kernel-administration-v1',metadata_json:{synthetic:false,audit_ref:auditId,action},idempotency_key:`audit:${auditId}`});
-  }
 }
 export async function createWorkspace(identity, name) {
   const validated = workspaceName(name);
@@ -88,18 +86,26 @@ export async function createWorkspace(identity, name) {
 }
 // Setup-state codes only: no host names, credentials, versions or SQL error text are returned.
 export async function operationalHealth() {
-  const checks = { auth: authConfig() ? 'READY' : 'AUTH_SETUP_REQUIRED', database: 'DB_SETUP_REQUIRED', schema: 'NOT_CHECKED', administration: 'NOT_CHECKED' };
-  if (!env('DATABASE_URL')) return { status: 'setup_required', checks };
+  const authReady = !!authConfig();
+  const databaseConfigured = !!env('DATABASE_URL');
+  const checks = { auth: authReady ? 'READY' : 'AUTH_SETUP_REQUIRED', database: 'DB_SETUP_REQUIRED', schema: 'NOT_CHECKED', administration: 'NOT_CHECKED' };
+  const configuration = { auth: authReady ? 'CONFIGURED' : 'UNCONFIGURED', database: databaseConfigured ? 'CONFIGURED' : 'UNCONFIGURED' };
+  const updatedAt = new Date().toISOString();
+  if (!databaseConfigured) return { status: 'setup_required', state: 'unconfigured', errorType: authReady ? 'DB_SETUP_REQUIRED' : 'KERNEL_SETUP_REQUIRED', updatedAt, configuration, checks };
   try {
-    const result = await database().query("SELECT to_regclass('public.aigas_tenants') IS NOT NULL AND to_regclass('public.aigas_memberships') IS NOT NULL AND to_regclass('public.aigas_product_access') IS NOT NULL AND to_regclass('public.aigas_audit_events') IS NOT NULL AS ready");
+    const result = await database().query("SELECT to_regclass('public.aigas_tenants') IS NOT NULL AND to_regclass('public.aigas_memberships') IS NOT NULL AND to_regclass('public.aigas_product_access') IS NOT NULL AND to_regclass('public.aigas_audit_events') IS NOT NULL AS ready, clock_timestamp() AS checked_at");
+    const checkedAt = result.rows[0]?.checked_at ?? updatedAt;
     checks.database = 'READY';
     checks.schema = result.rows[0]?.ready ? 'READY' : 'SCHEMA_MISSING';
     const administration = (await database().query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AND to_regclass('public.aigas_auth_organizations') IS NOT NULL AND to_regclass('public.aigas_member_invitations') IS NOT NULL AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='aigas_product_access' AND column_name='version') AS ready")).rows[0]?.ready;
     checks.administration = administration ? 'READY' : 'KERNEL_ADMIN_SETUP_REQUIRED';
-    return { status: checks.auth === 'READY' && checks.schema === 'READY' && administration ? 'operational' : 'degraded', checks };
-  } catch {
-    checks.database = 'DB_UNAVAILABLE';
-    checks.schema = 'NOT_CHECKED';
-    return { status: 'degraded', checks };
+    const state = checks.schema !== 'READY' ? 'blocked' : !authReady ? 'unconfigured' : !administration ? 'degraded' : 'ready';
+    const errorType = state === 'blocked' ? 'SCHEMA_MISSING' : !authReady ? 'AUTH_SETUP_REQUIRED' : !administration ? 'KERNEL_ADMIN_SETUP_REQUIRED' : null;
+    return { status: state === 'ready' ? 'operational' : 'degraded', state, errorType, updatedAt: checkedAt, configuration: { ...configuration, schema: checks.schema, administration: administration ? 'CONFIGURED' : 'UNCONFIGURED' }, checks };
+  } catch (error) {
+    const errorType = error?.code === '42P01' || error?.code === '42703' ? 'SCHEMA_MISSING' : error?.code === '42501' ? 'DB_PRIVILEGE_UNAVAILABLE' : 'DB_UNAVAILABLE';
+    checks.database = errorType === 'SCHEMA_MISSING' ? 'READY' : errorType === 'DB_PRIVILEGE_UNAVAILABLE' ? 'DB_PRIVILEGE_UNAVAILABLE' : 'DB_UNAVAILABLE';
+    checks.schema = errorType === 'SCHEMA_MISSING' ? 'SCHEMA_MISSING' : 'NOT_CHECKED';
+    return { status: 'degraded', state: errorType === 'SCHEMA_MISSING' ? 'blocked' : 'degraded', errorType, updatedAt, configuration: { ...configuration, schema: errorType === 'SCHEMA_MISSING' ? 'UNCONFIGURED' : 'UNKNOWN', administration: 'UNKNOWN' }, checks };
   }
 }

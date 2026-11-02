@@ -21,6 +21,11 @@ const activityList = root.querySelector<HTMLElement>('[data-activity]')!;
 const activityState = root.querySelector<HTMLElement>('[data-activity-state]')!;
 const healthList = root.querySelector<HTMLElement>('[data-health-list]')!;
 const healthRefresh = root.querySelector<HTMLButtonElement>('[data-health-refresh]')!;
+const healthUpdated = root.querySelector<HTMLElement>('[data-health-updated]')!;
+const healthError = root.querySelector<HTMLElement>('[data-health-error]')!;
+const healthErrorType = root.querySelector<HTMLElement>('[data-health-error-type]')!;
+const dashboardError = root.querySelector<HTMLElement>('[data-dashboard-error]')!;
+const dashboardErrorType = root.querySelector<HTMLElement>('[data-dashboard-error-type]')!;
 const url = root.dataset.authUrl;
 const makeAuth = (base: string) => createAuthClient(base);
 let auth: ReturnType<typeof makeAuth>;
@@ -36,17 +41,24 @@ const registerInvite = root.querySelector<HTMLButtonElement>('[data-register-inv
 const incomingPanel = root.querySelector<HTMLElement>('[data-incoming-panel]')!;
 const productSlugs = ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat'];
 const roleNames: Record<string,string> = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
-const healthNames: Record<string, string> = { auth: 'الدخول (Neon Auth)', database: 'قاعدة البيانات', schema: 'مخطط Kernel', administration: 'إدارة Kernel' };
+const healthNames: Record<string, string> = { auth: 'إعداد Neon Auth', database: 'اتصال قاعدة البيانات', schema: 'مخطط Kernel', administration: 'إدارة Kernel', configuration_auth: 'تهيئة Auth على الخادم', configuration_database: 'تهيئة قاعدة البيانات على الخادم', configuration_schema: 'تهيئة المخطط', configuration_administration: 'تهيئة الإدارة' };
 const healthStates: Record<string, { text: string; tone: string }> = {
   READY: { text: 'جاهز', tone: 'ok' },
+  CONFIGURED: { text: 'الإعداد موجود', tone: 'ok' },
   AUTH_SETUP_REQUIRED: { text: 'يلزم إعداد خدمة الدخول', tone: 'warn' },
+  UNCONFIGURED: { text: 'غير مهيأ', tone: 'muted' },
   AUTH_UNAVAILABLE: { text: 'تعذر التحقق من خدمة الدخول', tone: 'bad' },
   DB_SETUP_REQUIRED: { text: 'يلزم إعداد اتصال قاعدة البيانات', tone: 'warn' },
   DB_UNAVAILABLE: { text: 'تعذر الاتصال بقاعدة البيانات', tone: 'bad' },
+  DB_PRIVILEGE_UNAVAILABLE: { text: 'صلاحية القراءة غير متاحة', tone: 'bad' },
   SCHEMA_MISSING: { text: 'جداول Kernel الأربع غير مطبّقة', tone: 'bad' },
   NOT_CHECKED: { text: 'لم يُفحص', tone: 'muted' },
   KERNEL_ADMIN_SETUP_REQUIRED: { text: 'يلزم ترحيل إدارة Kernel المعتمد', tone: 'warn' },
   UNKNOWN: { text: 'غير معروف', tone: 'muted' },
+};
+const healthOverall: Record<string, { text: string; tone: string }> = {
+  ready: { text: 'جاهز', tone: 'ok' }, degraded: { text: 'متدهور', tone: 'warn' },
+  blocked: { text: 'محجوب', tone: 'bad' }, unconfigured: { text: 'غير مهيأ', tone: 'muted' },
 };
 const invitationStatusLabels: Record<string, string> = { pending: 'بانتظار القبول', accepted: 'مقبولة لدى Auth', rejected: 'مرفوضة', canceled: 'ملغاة', expired: 'منتهية', inviter_unavailable: 'توقفت صلاحية الداعي' };
 const date = (value: string) => { const parsed = new Date(value); return Number.isNaN(parsed.getTime()) ? '—' : parsed.toLocaleDateString('ar-SA'); };
@@ -70,6 +82,9 @@ function clearPrivate() {
   root.querySelector('[data-selector-note]')!.textContent = '';
   selector.replaceChildren(); create.hidden = true;
   root.querySelector('[data-connection]')!.textContent = 'لم يُتحقق من الربط';
+  const dashboardUpdated = root.querySelector<HTMLElement>('[data-dashboard-updated]')!;
+  dashboardUpdated.hidden = true; dashboardUpdated.textContent = '';
+  dashboardError.hidden = true; dashboardErrorType.textContent = '';
   metrics.hidden = true;
   membersList.replaceChildren(); memberCount.textContent = ''; membersState.textContent = 'تُحمّل الأعضاء بعد التحقق من العضوية.';
   activityList.replaceChildren(); activityState.textContent = 'تُحمّل الأنشطة بعد التحقق من العضوية.';
@@ -83,9 +98,10 @@ function clearPrivate() {
     card.querySelector('[data-product-action]')!.replaceChildren(button);
   });
 }
-function showError(message: string, unauthorized = false) {
+function showError(message: string, unauthorized = false, type = '') {
   clearPrivate(); title.textContent = unauthorized ? 'يلزم تسجيل الدخول' : 'تعذر تحميل المساحة';
   status.textContent = message; retry.hidden = false;
+  if (type) { dashboardError.hidden = false; dashboardErrorType.textContent = type; }
   if (login) login.hidden = !unauthorized;
 }
 async function api(method = 'GET', name?: string, workspace?: string) {
@@ -184,16 +200,21 @@ function renderActivity(rows: any[]) {
   }
 }
 function render(data: any) {
+  dashboardError.hidden = true; dashboardErrorType.textContent = '';
   currentTenant = data.tenant;
   if (data.tenant) setWorkspace(data.tenant.tenant_id);
   retry.hidden = true; logout.hidden = false; if (login) login.hidden = true;
   title.textContent = data.tenant ? 'مساحة العمل متصلة' : 'أنشئ مساحة عملك الأولى';
   status.textContent = data.tenant ? 'تم التحقق من الهوية والعضوية وتحميل بيانات المؤسسة.' : 'لا توجد عضويات لهذا الحساب. يمكنك إنشاء مؤسسة جديدة.';
-  root.querySelector('[data-connection]')!.textContent = 'Auth + DB · متصل';
+  root.querySelector('[data-connection]')!.textContent = data.system?.connection === 'CONNECTED' ? 'Auth + DB · متصل' : 'تعذر تأكيد الاتصال';
+  const dashboardUpdated = root.querySelector<HTMLElement>('[data-dashboard-updated]')!;
+  const dashboardDate = new Date(data.system?.updatedAt);
+  dashboardUpdated.hidden = Number.isNaN(dashboardDate.getTime());
+  if (!dashboardUpdated.hidden) dashboardUpdated.textContent = `آخر تحديث لبيانات المؤسسة: ${new Intl.DateTimeFormat('ar-SA', { timeZone: 'Asia/Riyadh', dateStyle: 'medium', timeStyle: 'short' }).format(dashboardDate)}`;
   create.hidden = data.memberships.length > 0;
   const tenantName = root.querySelector<HTMLElement>('[data-tenant-name]')!;
   const tenantDisplay = document.createElement('bdi'); tenantDisplay.dir = 'auto'; tenantDisplay.textContent = data.tenant?.name ?? 'لا توجد مؤسسة بعد'; tenantName.replaceChildren(tenantDisplay);
-  root.querySelector('[data-tenant-detail]')!.textContent = data.tenant ? `الدور: ${roleNames[data.tenant.role] ?? 'غير معروف'} · تاريخ الإنشاء: ${date(data.tenant.created_at)}` : 'إنشاء المساحة لا يفعّل المنتجات أو الاشتراك.';
+  root.querySelector('[data-tenant-detail]')!.textContent = data.tenant ? `العضوية موثقة · الدور: ${roleNames[data.tenant.role] ?? 'غير معروف'} · تاريخ الإنشاء: ${date(data.tenant.created_at)}` : 'لا توجد عضوية لهذه المؤسسة. إنشاء المساحة لا يفعّل المنتجات أو الاشتراك.';
   selector.replaceChildren(...data.memberships.map((m: any) => { const option = document.createElement('option'); option.value = m.tenant_id; option.textContent = m.name; option.selected = m.tenant_id === data.tenant?.tenant_id; return option; }));
   (root.querySelector('[data-selector]') as HTMLElement).hidden = !data.memberships.length;
   root.querySelector('[data-selector-note]')!.textContent = data.memberships.length > 1 ? `لديك عضوية في ${data.memberships.length} مؤسسات؛ تُحمّل بيانات المؤسسة المختارة فقط.` : '';
@@ -251,26 +272,40 @@ async function load(workspace?: string) {
 async function health() {
   healthList.replaceChildren();
   const pending = document.createElement('li'); pending.textContent = 'جارٍ فحص الدخول والقاعدة…'; healthList.append(pending);
+  healthError.hidden = true; healthErrorType.textContent = '';
   try {
     const response = await fetch('/app/api/kernel/health/', { cache: 'no-store' });
     const data = await response.json();
-    healthList.replaceChildren(...Object.entries(data.checks ?? {}).map(([key, value]) => {
+    const overall = healthOverall[data.state] ?? healthOverall.degraded;
+    const summary = document.createElement('li'); summary.className = `health-summary ${overall.tone}`;
+    summary.textContent = `حالة Kernel: ${overall.text}`;
+    const rows = [
+      ...Object.entries(data.checks ?? {}),
+      ...Object.entries(data.configuration ?? {}).map(([key, value]) => [`configuration_${key}`, value]),
+    ];
+    healthList.replaceChildren(summary, ...rows.map(([key, value]) => {
       const item = document.createElement('li');
       const label = document.createElement('span'); label.textContent = healthNames[key] ?? key;
       const state = healthStates[String(value)] ?? { text: 'حالة غير معروفة', tone: 'muted' };
       const badge = document.createElement('b'); badge.className = `health-state ${state.tone}`; badge.textContent = state.text;
       item.append(label, badge); return item;
     }));
-    if (data.status === 'operational') { const ok = document.createElement('li'); ok.className = 'health-summary'; ok.textContent = 'الإعدادات الأساسية مكتملة. هذا فحص اتصال فقط.'; healthList.append(ok); }
-  } catch {
-    const failed = document.createElement('li'); failed.textContent = 'تعذر قراءة حالة التشغيل من الخادم. أعد المحاولة.'; healthList.replaceChildren(failed);
+    const checkedAt = new Date(data.updatedAt);
+    healthUpdated.textContent = Number.isNaN(checkedAt.getTime()) ? 'وقت آخر تحديث غير متاح.' : `آخر تحديث من الخادم: ${new Intl.DateTimeFormat('ar-SA', { timeZone: 'Asia/Riyadh', dateStyle: 'medium', timeStyle: 'short' }).format(checkedAt)}`;
+    if (data.errorType) { healthError.hidden = false; healthErrorType.textContent = data.errorType; }
+    if (!response.ok && !data.errorType) { healthError.hidden = false; healthErrorType.textContent = `HTTP_${response.status}`; }
+  } catch (error) {
+    const failed = document.createElement('li'); failed.textContent = 'فشل اتصال الشبكة؛ تعذر قراءة حالة التشغيل. أعد المحاولة.'; healthList.replaceChildren(failed);
+    healthUpdated.textContent = 'لم يصل تحديث جديد من الخادم.';
+    healthError.hidden = false;
+    healthErrorType.textContent = error instanceof TypeError ? 'NETWORK_ERROR' : 'HEALTH_RESPONSE_UNAVAILABLE';
   }
 }
 async function run(task: () => Promise<void>) {
   if (busy) return; busy = true; root.setAttribute('aria-busy', 'true');
   root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = true);
   status.textContent = 'جارٍ تحميل المساحة…';
-  try { await task(); } catch (error: any) { showError(error.message || 'تعذر الاتصال. حاول لاحقًا.', !!error.unauthorized); }
+  try { await task(); } catch (error: any) { showError(error instanceof TypeError ? 'تعذر الاتصال بالخادم. افحص الشبكة ثم أعد المحاولة.' : error.message || 'تعذر تحميل مساحة العمل. أعد المحاولة.', !!error.unauthorized, error instanceof TypeError ? 'NETWORK_ERROR' : error.code ?? 'REQUEST_FAILED'); }
   finally { busy = false; root.removeAttribute('aria-busy'); root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = false);
     root.querySelectorAll<HTMLButtonElement>('[data-product-action] button').forEach(b => b.disabled = true); }
 }
@@ -289,8 +324,9 @@ async function adminRun(work: () => Promise<void>) {
   adminStatus.textContent = 'جارٍ تنفيذ العملية؛ انتظر نتيجة الخادم…';
   try { await work(); }
   catch (error: any) {
-    if (error.unauthorized) showError(error.message, true);
-    adminStatus.textContent = error.message || 'تعذر إكمال العملية؛ لم يُؤكد الحفظ. حدّث البيانات قبل إعادة الإرسال.';
+    if (error.unauthorized) showError(error.message, true, error.code ?? 'UNAUTHORIZED');
+    const type = error instanceof TypeError ? 'NETWORK_ERROR' : error.code ?? 'REQUEST_FAILED';
+    adminStatus.textContent = `${error.message || 'تعذر إكمال العملية؛ لم يُؤكد الحفظ. حدّث البيانات قبل إعادة الإرسال.'} (${type})`;
   } finally {
     busy = false; root.removeAttribute('aria-busy');
     root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = false);
