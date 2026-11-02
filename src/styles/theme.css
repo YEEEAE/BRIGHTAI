@@ -54,4 +54,23 @@
   /* Border Radius */
   --radius-3xl: 24px;
   --radius-full: 9999px;
+
+  /* Interior radii — aliases only; the homepage keeps its existing geometry. */
+  --radius-system: 8px;
+  --radius-content: 12px;
+}
+
+/* Interior-only aliases. Scoped away from the homepage hero and shared shell. */
+.interior-page,
+.kernel {
+  --interior-surface: #0e0b14;
+  --interior-surface-hover: #17121f;
+  --interior-border: #302a39;
+  --interior-text: #f4f1f8;
+  --interior-copy: #c6c1cf;
+  --interior-accent: #8052ff;
+  --interior-focus: #ffb829;
+  --interior-fast: 140ms;
+  --interior-state: 220ms;
+  --interior-reveal: 440ms;
 }

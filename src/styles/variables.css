@@ -59,9 +59,10 @@
 
   /* Layout */
   --page-max-width: 1280px;
-  --section-gap: 60-120px;
-  --card-padding: 24-38px;
-  --element-gap: 6-18px;
+  /* Fluid, valid replacements for the former range strings. */
+  --section-gap: clamp(60px, 7vw, 120px);
+  --card-padding: clamp(24px, 3vw, 38px);
+  --element-gap: clamp(6px, 1vw, 18px);
 
   /* Border Radius */
   --radius-3xl: 24px;
@@ -77,4 +78,22 @@
   --surface-void-canvas: #000000;
   --surface-deep-verdant-tint: #15846e;
   --surface-electric-iris: #8052ff;
+}
+
+/* Interior-only aliases: scoped so the homepage, hero and header are untouched. */
+.interior-page,
+.kernel {
+  --interior-surface: #0e0b14;
+  --interior-surface-hover: #17121f;
+  --interior-border: #302a39;
+  --interior-text: #f4f1f8;
+  --interior-copy: #c6c1cf;
+  --interior-accent: #8052ff;
+  --interior-focus: #ffb829;
+  --interior-success: #15846e;
+  --interior-radius-system: 8px;
+  --interior-radius-content: 12px;
+  --interior-fast: 140ms;
+  --interior-state: 220ms;
+  --interior-reveal: 440ms;
 }

@@ -1,3 +1,19 @@
+## [2026-11-02] — ربط نماذج Codex في DSH عبر OAuth
+### تم التنفيذ
+- فُعّل مسار `openai-codex` في `llm-pi-ai` عبر `cordis.patch.yml` مع `displayName: OpenAI Codex`؛ وأُزيل `baseURL` الذي كان يشير إلى `opencode.ai/inference/openai/v1` لأنه ليس خادم Codex، فبقي الافتراضي `chatgpt.com/backend-api` عبر `openai-codex-responses`.
+- نُفّذ توثيق ChatGPT OAuth بـpi-ai (`openaiCodexOAuth`، client `app_EMoamEEZ73f0CkXaXp7hrann`، callback `127.0.0.1:1455`) وخُزّن grant في مخزن DSH بالمفتاح `llm-pi-ai/openai-codex` (type/access/refresh/expires/accountId)، دون كتابة أي سر داخل المستودع.
+- تحقق مستقل: طلب مباشر إلى `https://chatgpt.com/backend-api/codex/responses` بالنموذج `gpt-6-sol` أعاد 200، ثم استدعاء عبر خدمة LLM في Harness لنفس المزوّد/النموذج أعاد `OK`.
+### الملفات المتأثرة
+- `/Users/yzydalshmry/.dsh/profiles/desktop/cordis.patch.yml`
+- `/Users/yzydalshmry/.dsh/.credentials.yaml`
+### التحقق
+- `dsh-hmr` يراقب `cordis.patch.yml` ويعيد تركيب المكوّنات، وwatcher الخاص بـ`credentials-local` (chokidar) يعيد تحميل الملف؛ لا إعادة تشغيل مطلوبة.
+- `gpt-6-sol` عبر مسار `openai-codex` داخل Harness: PASS (`OK`). الظهور البصري في منتقي النماذج والاستخدام في محادثة كاملة: NOT RUN.
+### النتيجة
+- **الحالة:** DONE للربط والتوثيق والتحقق من المسار. لا commit/push، ولا تغيير على موقع BRIGHTAI.
+### ملاحظات / مشاكل مفتوحة
+- صلاحية access token تنتهي 2026-11-12، والتجديد تلقائي عبر refresh token؛ أي إبطال من OpenAI يلزمه إعادة توثيق.
+
 ## [2026-11-02] — Chrome DevTools MCP داخل DSH
 ### تم التنفيذ
 - أُنشئت حزمة إعداد فقط `@local/chrome-devtools-mcp` في `plugins/chrome-devtools-mcp` تُدرج صف `@deepseek-ai/dsh-mcp-client` واحدًا؛ لا كود Harness جديد.

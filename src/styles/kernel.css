@@ -36,3 +36,39 @@
 @media(max-width:1000px){.metrics{grid-template-columns:1fr}.ops-row{grid-template-columns:1fr}}
 @media(max-width:600px){.member-list li,.activity li{grid-template-columns:1fr}.member-list time{white-space:normal}}
 .app-nav nav{display:grid;gap:8px}.app-nav nav a{background:transparent;border-color:transparent;color:#bdbbc6}.app-nav nav a[aria-current=page]{background:#171023;border-color:#60429d;color:#fff}.app-nav nav a:hover{border-color:#484252}.product-card .product-setup,.product-card .product-terms{font-size:12px;flex:0;margin-block:6px 14px}.product-card [data-product-admin]{border-top:1px solid #35254e;margin-block:8px 16px;padding-top:8px}.product-card [data-product-admin] button{margin-top:10px}.member-actions button{margin-block:10px}.member-actions h3{font-weight:400}.member-actions input{direction:ltr;text-align:start}.member-actions ul{margin-top:18px}.admin-status{padding:14px;border-inline-start:3px solid #ffb829;background:#141007;overflow-wrap:anywhere}.admin-status:empty{display:none}.incoming{margin-bottom:24px}.incoming button{width:max-content;max-width:100%}.product-card label{font-size:12px}.product-card .product-terms{color:#c3b4dd}.app-nav .brand-logo{max-width:100%}@media(max-width:600px){.app-nav nav{display:flex}.product-card select{max-width:100%}.incoming button{width:100%}}
+
+/* Interior-only visual tokens and a unified card language for the app workspace.
+   Scoped to .kernel so the public site, hero and shared shell stay untouched. */
+.kernel{
+  --ui-ink:#f4f1f8;
+  --ui-copy:#c6c1cf;
+  --ui-muted:#9a9a9a;
+  --ui-line:#302a39;
+  --ui-panel:#0e0b14;
+  --ui-panel-hover:#17121f;
+  --ui-accent:#8052ff;
+  --ui-focus:#ffb829;
+  --ui-success:#15846e;
+  --ui-radius-sm:8px;
+  --ui-radius-lg:12px;
+  --ui-fast:140ms;
+  --ui-state:220ms;
+  --ui-reveal:440ms;
+  color:var(--ui-ink)
+}
+.kernel :is(p,li,label,td,th,summary,dt,dd){letter-spacing:0}
+.kernel :is(a,button,input,select,summary):focus-visible{outline:2px solid var(--ui-focus);outline-offset:4px}
+.kernel .panel{border-color:var(--ui-line);background:var(--ui-panel);box-shadow:inset 0 1px 0 #ffffff08,0 18px 40px -36px #000}
+.kernel .product-card{border-color:var(--ui-line);background:linear-gradient(150deg,#17121f,#0e0b14 72%);box-shadow:inset 0 1px 0 #ffffff08,0 18px 40px -36px #000;transition:border-color var(--ui-state),background-color var(--ui-state)}
+.kernel .product-card:is(:hover,:focus-within){border-color:#4a3e58}
+.kernel .health,.kernel .member-list li,.kernel .activity li{border-color:var(--ui-line);background:var(--ui-panel)}
+.kernel .health{border-radius:var(--ui-radius-lg)}
+.kernel .member-list li,.kernel .activity li{border-radius:var(--ui-radius-sm)}
+.kernel .health-state,.kernel .health-note,.kernel .availability,.kernel .member-list span,.kernel .member-list time,.kernel .activity span,.kernel .activity time{font-size:12px}
+.kernel table{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){.kernel .product-card{transition:none}}
+.kernel .product-card h3{font-size:20px;line-height:1.6}
+.kernel .product-card>p,.kernel .panel p{font-size:14px;line-height:1.9}
+.kernel .product-card .product-setup,.kernel .product-card .product-terms,.kernel .member-actions p{font-size:12px}
+.kernel .activity code{font-size:12px}
+.kernel .panel h2{font-size:20px;line-height:1.6}
