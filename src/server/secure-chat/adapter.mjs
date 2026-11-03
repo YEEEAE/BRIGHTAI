@@ -1,16 +1,17 @@
 import { KernelError } from '../kernel/core.mjs';
 import { env } from '../kernel/env.mjs';
 
-const unavailable = () => new KernelError(503, 'NO_APPROVED_MODEL', 'لا يوجد نموذج معتمد ومهيأ لهذا الطلب؛ لم يُرسل المحتوى.');
+const unavailable = (status = 'not configured') => new KernelError(503, 'NO_APPROVED_MODEL', 'لا يوجد نموذج معتمد ومهيأ لهذا الطلب؛ لم يُرسل المحتوى.', status);
 
 export function providerConfiguration(model) {
   // An entry is reviewed in source, including the exact destination, protocol,
   // region, terms, no-training evidence and tenant scope. No client URLs.
   try {
     const approval = model.approval;
+    const expiresAt = Date.parse(approval?.expiresAt);
+    if (Number.isFinite(expiresAt) && expiresAt <= Date.now()) throw unavailable('expired');
     if (!approval?.reference || approval.noTraining !== true || !approval.retentionReference || !approval.regionReference ||
-        !Number.isFinite(Date.parse(approval.expiresAt)) || Date.parse(approval.expiresAt) <= Date.now() ||
-        model.protocol !== 'CHAT_COMPLETIONS_V1' || !model.region || !model.providerModel ||
+        !Number.isFinite(expiresAt) || model.protocol !== 'CHAT_COMPLETIONS_V1' || !model.region || !model.providerModel ||
         !Number.isSafeInteger(model.maxOutputTokens) || model.maxOutputTokens < 1 ||
         !Number.isSafeInteger(model.maxRequestTokens) || model.maxRequestTokens <= model.maxOutputTokens ||
         !Number.isSafeInteger(model.maxInputBytes) || model.maxInputBytes < 1 ||
@@ -23,7 +24,10 @@ export function providerConfiguration(model) {
     const key = env(model.apiKeyEnv);
     if (!key || /[\r\n]/.test(key)) throw unavailable();
     return { endpoint: destination.href, key };
-  } catch { throw unavailable(); }
+  } catch (error) {
+    if (error instanceof KernelError && error.dependencyStatus === 'expired') throw error;
+    throw unavailable();
+  }
 }
 
 export function providerReady(model) {

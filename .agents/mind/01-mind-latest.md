@@ -1,3 +1,18 @@
+## [2026-11-03] — توحيد حدود Kernel وتبعيات المنتجات محليًا
+### تم التنفيذ
+- أضيفت حالات التبعية الموحدة `available/not configured/access denied/expired/temporarily unavailable` لحدود الإتاحة ومخرجات تكاملات Firewall وSecure Chat؛ بقيت العضوية ومنحة Kernel شرط الوصول للمنتج.
+- صارت سجلات Kernel لأحداث Firewall وHuman Gate وRisk Engine وSecure Chat تحمل ارتباطًا محدودًا (tenant/actor موجودان، correlation UUID، نسخة سياسة، ومفتاح idempotency) دون متن الطلب؛ التكرار بنفس المفتاح يعيد السجل ذاته ويرفض التعارض.
+- أضيف ترحيل محلي `0017_aigas_kernel_audit_context.sql` لحقول السياق وفهرس idempotency. فشل Ledger الاختياري يُعزل داخل savepoint مع تسجيل حالة التبعية، والمتطلب المعتمد يظل fail-closed.
+- لم تُطبق أي تغييرات على Neon، ولم تُشغّل اختبارات أو build أو lint أو typecheck حسب الطلب.
+### الملفات المتأثرة
+- `src/server/kernel/{core,access,service,http}.mjs`, `src/server/ledger/{writer,http}.mjs`, `src/server/firewall/{provider,escalation,guard,service,http}.mjs`, `src/server/human-gate/{service,http}.mjs`, `src/server/risk-engine/{service,http}.mjs`, `src/server/secure-chat/{adapter,requests,service}.mjs`, `migrations/0017_aigas_kernel_audit_context.sql`
+### التحقق
+- مراجعة المصدر والـdiff يدويًا: تم؛ الاختبارات/build/lint/typecheck/runtime: NOT RUN حسب الطلب.
+### النتيجة
+- **الحالة:** PARTIAL / تعديل محلي غير متحقق تشغيليًا.
+### ملاحظات / مشاكل مفتوحة
+- التطبيق يتطلب اعتماد وتطبيق `0017` على بيئة معتمدة قبل تشغيل نسخة الكود؛ لا SQL أو migration production نُفّذ.
+
 ## [2026-11-03] — Secure Chat: حصة رموز المستخدم وحالة النموذج الصريحة
 ### تم التنفيذ
 - قائمة النماذج ترجع فقط النماذج المعتمدة والمهيأة؛ غياب النموذج أو إعداد الموصل/دليل No-Training يعرض `NO_APPROVED_MODEL`، بلا إرسال أو fallback.

@@ -1,5 +1,5 @@
 import { authenticate } from '../kernel/auth.mjs';
-import { KernelError } from '../kernel/core.mjs';
+import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { operate } from './service.mjs';
 
 const headers = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', Vary: 'Authorization', 'X-Content-Type-Options': 'nosniff' };
@@ -50,9 +50,10 @@ export function createHandler(auth = authenticate, service = operate) {
       const known = error instanceof KernelError ? error : setupError(error);
       if (known) {
         const setup = ['FIREWALL_SCHEMA_MISSING', 'FIREWALL_SCHEMA_OUTDATED', 'FIREWALL_DB_PRIVILEGE'].includes(known.code);
-        return Response.json({ code: known.code, message: known.message, ...(setup ? { setup: true } : {}) }, { headers, status: known.status });
+        const dependencyStatus = known.dependencyStatus ?? (known.code.includes('SCHEMA') ? 'not configured' : known.code.includes('PRIVILEGE') ? 'access denied' : dependencyStatusForError(known));
+        return Response.json({ code: known.code, message: known.message, ...(dependencyStatus ? { dependencyStatus } : {}), ...(setup ? { setup: true } : {}) }, { headers, status: known.status });
       }
-      return Response.json({ code: 'FIREWALL_UNAVAILABLE', message: 'تعذر تأكيد نتيجة العملية؛ تحقق من إعداد قاعدة البيانات والسجل. لا تتابع خارج مسار الإنفاذ ولا تعِد التنفيذ تلقائيًا.' }, { headers, status: 503 });
+      return Response.json({ code: 'FIREWALL_UNAVAILABLE', dependencyStatus:'temporarily unavailable', message: 'تعذر تأكيد نتيجة العملية؛ تحقق من إعداد قاعدة البيانات والسجل. لا تتابع خارج مسار الإنفاذ ولا تعِد التنفيذ تلقائيًا.' }, { headers, status: 503 });
     }
   };
 }

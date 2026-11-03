@@ -30,7 +30,7 @@ export async function reserve(identity, tenantId, id, model) {
       }
     }
     await db.query(`INSERT INTO public.aigas_sc_requests(tenant_id,user_id,id,model_ref,policy_version,state,reserved_tokens) VALUES($1,$2,$3,$4,$5,'RESERVED',$6)`, [tenantId,identity.userId,id,model.id,INPUT_POLICY.version,model.maxRequestTokens]);
-    await audit(db,identity,tenantId,'secure_chat.request.reserved');
+    await audit(db,identity,tenantId,'secure_chat.request.reserved',{correlationId:id,policyVersion:INPUT_POLICY.version,idempotencyKey:`secure-chat:${id}:reserved`});
   });
 }
 
@@ -48,7 +48,7 @@ export async function cancel(identity, tenantId, id) {
     await db.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [`sc:${tenantId}`]);
     await db.query('INSERT INTO public.aigas_sc_cancellations(tenant_id,user_id,request_id) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[tenantId,identity.userId,id]);
     const row = (await db.query(`UPDATE public.aigas_sc_requests SET cancel_requested=true WHERE tenant_id=$1 AND user_id=$2 AND id=$3 AND state='RESERVED' RETURNING id`, [tenantId,identity.userId,id])).rows[0];
-    if (row) await audit(db,identity,tenantId,'secure_chat.request.cancel_requested');
+    if (row) await audit(db,identity,tenantId,'secure_chat.request.cancel_requested',{correlationId:id,policyVersion:INPUT_POLICY.version,idempotencyKey:`secure-chat:${id}:cancel-requested`});
     return { message: 'سُجل طلب الإيقاف إن كان الطلب قيد التنفيذ. قد يكون المزود عالج الطلب بالفعل؛ الإلغاء لا يؤكد انعدام الاستهلاك.' };
   });
 }
@@ -58,7 +58,7 @@ export async function settle(identity, tenantId, id, state, usage) {
     await scope(db,identity,tenantId);
     const row = (await db.query(`UPDATE public.aigas_sc_requests SET state=CASE WHEN cancel_requested THEN 'CANCELLED' ELSE $4 END,completed_at=now(),input_tokens=$5,output_tokens=$6,total_tokens=$7 WHERE tenant_id=$1 AND user_id=$2 AND id=$3 AND state='RESERVED' RETURNING state`, [tenantId,identity.userId,id,state,usage?.inputTokens ?? null,usage?.outputTokens ?? null,usage?.totalTokens ?? null])).rows[0];
     if (!row) throw new KernelError(503,'REQUEST_STATE_UNAVAILABLE','تعذر تأكيد نتيجة الطلب. لا تُعد إرساله تلقائيًا.');
-    await audit(db,identity,tenantId,`secure_chat.request.${row.state.toLowerCase()}`);
+    await audit(db,identity,tenantId,`secure_chat.request.${row.state.toLowerCase()}`,{correlationId:id,policyVersion:INPUT_POLICY.version,idempotencyKey:`secure-chat:${id}:settled:${row.state}`});
     return row.state;
   });
 }

@@ -33,21 +33,38 @@ export async function appendEvent(db, identity, tenantId, input) {
   return event;
 }
 
-// An optional subscription adds evidence; Kernel audit remains independent.
-// Approved mandatory requirements have no fallback in this release: fail closed.
+// Ledger evidence is additive unless an approved Kernel requirement makes it mandatory.
+// A savepoint lets an optional Ledger outage roll back only that append, not the Kernel audit.
 export async function recordProductEvent(db, identity, tenantId, input) {
-  const ready = (await db.query("SELECT to_regclass('public.aigas_ld_evidence_requirements') IS NOT NULL AS requirements, to_regclass('public.aigas_product_grants') IS NOT NULL AS grants")).rows[0];
+  const ready = (await db.query("SELECT to_regclass('public.aigas_ld_evidence_requirements') IS NOT NULL AS requirements, to_regclass('public.aigas_ld_events') IS NOT NULL AS events, to_regclass('public.aigas_product_access') IS NOT NULL AS access, to_regclass('public.aigas_product_grants') IS NOT NULL AS grants")).rows[0];
   const requirement = ready.requirements ? (await db.query('SELECT policy_version FROM public.aigas_ld_evidence_requirements WHERE tenant_id=$1 AND source=$2 AND event_type=$3 FOR SHARE',[tenantId,input.source,input.event_type])).rows[0] : null;
-  const access = ready.grants ? (await db.query("SELECT a.status FROM public.aigas_product_access a JOIN public.aigas_product_grants g ON g.tenant_id=a.tenant_id AND g.product_slug=a.product_slug WHERE a.tenant_id=$1 AND a.product_slug='ledger' AND a.status='ENABLED' AND g.revoked_at IS NULL AND g.expires_at>now() FOR SHARE OF a,g",[tenantId])).rows[0] : null;
-  if (!access) {
-    if (requirement) throw new KernelError(503,'MANDATORY_EVIDENCE_UNAVAILABLE','السياسة المعتمدة تشترط دليلًا لهذه العملية؛ Ledger غير متاح ولا يوجد احتياطي معتمد. لم تكتمل العملية.');
-    return {recorded:false,reason:'LEDGER_NOT_ENABLED'};
-  }
+  const mandatoryFailure = status => new KernelError(503,'MANDATORY_EVIDENCE_UNAVAILABLE','السياسة المعتمدة تشترط دليلًا لهذه العملية؛ تعذر تأكيد Ledger. لم تكتمل العملية.',status);
+  await db.query('SAVEPOINT aig_optional_ledger_event');
   try {
-    return await appendEvent(db,identity,tenantId,requirement ? {...input,metadata_json:{...input.metadata_json,evidence_policy_version:requirement.policy_version}} : input);
+    let access = null, grant = null;
+    if (ready.access && ready.grants) {
+      access = (await db.query("SELECT status FROM public.aigas_product_access WHERE tenant_id=$1 AND product_slug='ledger' FOR SHARE",[tenantId])).rows[0] ?? null;
+      if (access) grant = (await db.query("SELECT revoked_at,expires_at<=clock_timestamp() AS expired FROM public.aigas_product_grants WHERE tenant_id=$1 AND product_slug='ledger' FOR SHARE",[tenantId])).rows[0] ?? null;
+    }
+    const state = !ready.events || !ready.access || !ready.grants ? 'not configured'
+      : !access || !grant || grant.revoked_at || access.status !== 'ENABLED' ? 'access denied'
+      : grant.expired ? 'expired' : 'available';
+    if (state !== 'available') {
+      if (requirement) throw mandatoryFailure(state);
+      await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
+      return { recorded:false, dependencyStatus:state, reason:'LEDGER_NOT_AVAILABLE' };
+    }
+    const event = await appendEvent(db,identity,tenantId,requirement ? {...input,metadata_json:{...input.metadata_json,evidence_policy_version:requirement.policy_version}} : input);
+    await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
+    return { ...event, dependencyStatus:'available' };
   } catch (error) {
-    if (error instanceof KernelError) throw error;
-    if (error?.code==='23514') throw new KernelError(503,'EVIDENCE_SCHEMA_CONSTRAINT','رفض المخطط بيانات هذا الدليل؛ لم تُحفظ العملية. يلزم مطابقة ترحيل Ledger لنسخة العقد الحالية.');
-    throw new KernelError(503,'EVIDENCE_UNAVAILABLE','تعذر حفظ دليل Ledger داخل المعاملة؛ لم تكتمل العملية. راجع المخطط وصلاحيات الخادم.');
+    await db.query('ROLLBACK TO SAVEPOINT aig_optional_ledger_event');
+    await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
+    if (error instanceof KernelError && ['INVALID_EVENT','UNTRUSTED_EVENT','INVALID_AUDIT_CONTEXT'].includes(error.code)) throw error;
+    if (requirement) {
+      if (error instanceof KernelError && error.code === 'MANDATORY_EVIDENCE_UNAVAILABLE') throw error;
+      throw mandatoryFailure(error?.code === '42501' ? 'access denied' : 'temporarily unavailable');
+    }
+    return { recorded:false, dependencyStatus:error?.code === '42501' ? 'access denied' : 'temporarily unavailable', reason:'LEDGER_TEMPORARILY_UNAVAILABLE' };
   }
 }

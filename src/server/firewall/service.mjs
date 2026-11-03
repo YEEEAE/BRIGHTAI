@@ -225,7 +225,11 @@ export function createFirewallService(transact = transaction) {
           );
           if (inserted.rowCount !== 1) throw new Error('DECISION_NOT_SAVED');
           // Kernel audit is required and atomic with the metadata-only decision.
-          await audit(db, identity, tenantId, enforced ? 'firewall.guard.evaluated' : 'firewall.lab.evaluated');
+          await audit(db, identity, tenantId, enforced ? 'firewall.guard.evaluated' : 'firewall.lab.evaluated', {
+            correlationId: enforced ? body.request_id : id,
+            policyVersion,
+            idempotencyKey: enforced ? `firewall:guard:${body.request_id}` : `firewall:lab:${id}`,
+          });
           // Mandatory Ledger evidence (when policy requires it) is written inside the
           // same transaction; a failure rolls the decision back. Ledger is never required
           // unless an approved evidence requirement matches this tenant and event type.

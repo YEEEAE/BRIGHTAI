@@ -25,9 +25,12 @@ function findIntegration(tenantId) {
 
 export function reviewIntegrationState(tenantId) {
   const integration = findIntegration(tenantId);
+  const expired = approvedReviewIntegrations.some(item => Array.isArray(item.tenantIds) && item.tenantIds.includes(tenantId)
+    && typeof item.approvalReference === 'string' && typeof item.approvedUntil === 'string'
+    && Number.isFinite(Date.parse(item.approvedUntil)) && Date.parse(item.approvedUntil) <= Date.now());
   return integration
-    ? { code: 'HUMAN_GATE_CONFIGURED', configured: true, operation_type: integration.operationType }
-    : { code: 'HUMAN_GATE_NOT_CONFIGURED', configured: false, operation_type: null, reason: 'NO_APPROVED_REVIEW_INTEGRATION' };
+    ? { code: 'HUMAN_GATE_CONFIGURED', configured: true, dependencyStatus:'available', operation_type: integration.operationType }
+    : { code: 'HUMAN_GATE_NOT_CONFIGURED', configured: false, dependencyStatus:expired?'expired':'not configured', operation_type: null, reason: 'NO_APPROVED_REVIEW_INTEGRATION' };
 }
 
 // Called inside the Firewall transaction, after the ESCALATE decision, Kernel audit

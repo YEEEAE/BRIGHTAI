@@ -1,5 +1,5 @@
 import { authenticate } from '../kernel/auth.mjs';
-import { KernelError } from '../kernel/core.mjs';
+import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { operate } from './service.mjs';
 const headers = { 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' };
 function setupError(error) {
@@ -29,7 +29,8 @@ export function createHandler(auth=authenticate, service=operate) {
     } catch(error) {
       const known=error instanceof KernelError;
       const setup=known?null:setupError(error);
-      return Response.json({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.'},{status:known?error.status:503,headers});
+      const dependencyStatus=known?dependencyStatusForError(error):setup?.code==='HUMAN_GATE_SCHEMA_MISSING'?'not configured':setup?'access denied':'temporarily unavailable';
+       return Response.json({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.',...(dependencyStatus?{dependencyStatus}:{})},{status:known?error.status:503,headers});
     }
   };
 }

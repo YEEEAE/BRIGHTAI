@@ -68,11 +68,28 @@ export async function tenantMembers(identity, requested) {
     return { ...scope, canManage, members: rows.map(row => ({ userId: canManage ? row.user_id : null, isSelf: row.user_id === identity.userId, name: row.name || 'عضو', role: row.role, roleLabel: roleLabel(row.role), created_at: row.created_at, status: row.banned ? 'BANNED' : 'ACTIVE', email: canManage ? row.email ?? null : null })), invitation: await invitationState(db, identity, scope.tenant) };
   });
 }
-export async function audit(db, identity, tenantId, action) {
+export async function audit(db, identity, tenantId, action, context = {}) {
   // No request bodies, tokens, names, email addresses or AI content in this log.
+  const { correlationId = null, policyVersion = null, idempotencyKey = null } = context;
+  const validVersion = policyVersion === null || (typeof policyVersion === 'string' && /^[a-zA-Z0-9_.:-]{1,120}$/.test(policyVersion));
+  const validCorrelation = correlationId === null || (typeof correlationId === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(correlationId));
+  const validKey = idempotencyKey === null || (typeof idempotencyKey === 'string' && /^[a-zA-Z0-9_.:-]{1,180}$/.test(idempotencyKey));
+  if (!validVersion || !validCorrelation || !validKey) throw new KernelError(400, 'INVALID_AUDIT_CONTEXT', 'مرجع سجل Kernel أو نسخة السياسة غير صالحة.');
   const auditId = randomUUID();
-  const result = await db.query('INSERT INTO public.aigas_audit_events (id, tenant_id, actor_user_id, action) SELECT $1, m.tenant_id, m.user_id, $4 FROM public.aigas_memberships m WHERE m.tenant_id = $2 AND m.user_id = $3', [auditId, tenantId, identity.userId, action]);
-  if (result.rowCount !== 1) throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر حفظ سجل الإدارة؛ لم تكتمل العملية.');
+  const result = await db.query(`INSERT INTO public.aigas_audit_events
+    (id,tenant_id,actor_user_id,action,correlation_id,policy_version,idempotency_key)
+    SELECT $1,m.tenant_id,m.user_id,$4,$5,$6,$7 FROM public.aigas_memberships m
+    WHERE m.tenant_id=$2 AND m.user_id=$3
+    ON CONFLICT DO NOTHING RETURNING id`, [auditId, tenantId, identity.userId, action, correlationId, policyVersion, idempotencyKey]);
+  if (result.rowCount === 1) return auditId;
+  if (idempotencyKey) {
+    const member = (await db.query('SELECT 1 FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
+    if (!member) throw new KernelError(403, 'FORBIDDEN', 'صلاحياتك لا تسمح بهذه العملية.');
+    const previous = (await db.query('SELECT id,actor_user_id,action,correlation_id,policy_version FROM public.aigas_audit_events WHERE tenant_id=$1 AND idempotency_key=$2 FOR SHARE', [tenantId, idempotencyKey])).rows[0];
+    if (previous && previous.actor_user_id === identity.userId && previous.action === action && previous.correlation_id === correlationId && previous.policy_version === policyVersion) return previous.id;
+    throw new KernelError(409, 'AUDIT_IDEMPOTENCY_CONFLICT', 'مفتاح سجل Kernel مرتبط بعملية مختلفة؛ لم تُكرر العملية.');
+  }
+  throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر حفظ سجل الإدارة؛ لم تكتمل العملية.');
 }
 export async function createWorkspace(identity, name) {
   const validated = workspaceName(name);

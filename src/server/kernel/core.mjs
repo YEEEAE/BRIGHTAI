@@ -1,5 +1,16 @@
+export const dependencyStatuses = Object.freeze(['available', 'not configured', 'access denied', 'expired', 'temporarily unavailable']);
+const dependencyStatusSet = new Set(dependencyStatuses);
 export class KernelError extends Error {
-  constructor(status, code, message) { super(message); this.status = status; this.code = code; }
+  constructor(status, code, message, dependencyStatus = null) {
+    super(message);
+    this.status = status;
+    this.code = code;
+    this.dependencyStatus = dependencyStatusSet.has(dependencyStatus) ? dependencyStatus : null;
+  }
+}
+export function dependencyStatusForError(error) {
+  if (dependencyStatusSet.has(error?.dependencyStatus)) return error.dependencyStatus;
+  return error?.status >= 500 ? 'temporarily unavailable' : null;
 }
 export const products = [
   { slug: 'firewall', name: 'Firewall', wave: 1, benefit: 'تطبيق سياسات الحماية على حركة الذكاء الاصطناعي المتكاملة.' },

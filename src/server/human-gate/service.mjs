@@ -2,7 +2,7 @@ import { recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
-import { tenantGuard } from '../kernel/service.mjs';
+import { audit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole, workspaceName } from '../kernel/core.mjs';
 import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor } from './core.mjs';
 
@@ -37,9 +37,10 @@ export function createHumanGateService(transact=transaction) {
    await db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))",[tenantId]);
    const policy=(await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE',[tenantId])).rows[0]||null;
    const record=async(action,request,event,reason=null,auditAction=null)=>{
-    const auditId=randomUUID();
-    const saved=await db.query('INSERT INTO public.aigas_audit_events(id,tenant_id,actor_user_id,action) VALUES($1,$2,$3,$4)',[auditId,tenantId,identity.userId,auditAction??(request?`human_gate.${action}:${request.id}`:'kernel.human_gate.policy.updated')]);
-    if(saved.rowCount!==1) throw new KernelError(503,'AUDIT_UNAVAILABLE','تعذر حفظ أثر العملية؛ لم تكتمل.');
+    
+    const eventAction=auditAction??(request?`human_gate.${action}:${request.id}`:'kernel.human_gate.policy.updated');
+     const auditId=await audit(db,identity,tenantId,eventAction,{correlationId:request?.id??randomUUID(),policyVersion:request?.policy_version??policy?.version??'human-gate-policy-v3',idempotencyKey:request?`human-gate:${request.id}:${event}`:`human-gate:policy:${randomUUID()}`});
+    
     if(request){
      const savedEvent=await db.query('INSERT INTO public.aigas_hg_events(id,tenant_id,request_id,requester_id,actor_user_id,event_type,reason_code,audit_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[randomUUID(),tenantId,request.id,request.requester_id,identity.userId,event,reason,auditId]);
      if(savedEvent.rowCount!==1) throw new KernelError(503,'AUDIT_UNAVAILABLE','تعذر حفظ سجل الطلب؛ لم تكتمل العملية.');

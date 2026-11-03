@@ -21,7 +21,9 @@ export function approvedProvider(tenantId) {
 }
 export function providerState(tenantId) {
   const provider = approvedProvider(tenantId);
+  const expired = approvedProviders.some(item => Array.isArray(item.tenantIds) && item.tenantIds.includes(tenantId)
+    && typeof item.approvalReference === 'string' && isDate(item.approvedUntil) && Date.parse(item.approvedUntil) <= Date.now());
   return provider
-    ? { code: 'CONFIGURED', configured: true, approval: 'APPROVED', execution: 'AVAILABLE', model: provider.model, region: provider.region }
-    : { code: 'PROVIDER_NOT_CONFIGURED', configured: false, approval: 'NOT_APPROVED', execution: 'BLOCKED', model: null, region: null };
+    ? { code: 'CONFIGURED', configured: true, dependencyStatus:'available', approval: 'APPROVED', execution: 'AVAILABLE', model: provider.model, region: provider.region }
+    : { code: 'PROVIDER_NOT_CONFIGURED', configured: false, dependencyStatus:expired?'expired':'not configured', approval: 'NOT_APPROVED', execution: 'BLOCKED', model: null, region: null };
 }

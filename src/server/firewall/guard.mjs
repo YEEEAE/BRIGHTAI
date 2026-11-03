@@ -26,11 +26,11 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
   // In both cases nothing has been sent to a provider and nothing will be.
   if (decision.action === 'ESCALATE') {
     if (escalation?.requested === true && escalation.review) {
-      return { ...base, httpStatus: 202, code: 'REVIEW_PENDING', review_required: true,
+      return { ...base, httpStatus: 202, code: 'REVIEW_PENDING', dependencyStatus: 'available', review_required: true,
         review: escalation.review, integration: { code: escalation.code, configured: true, operation_type: escalation.operation_type },
         message: 'أُنشئ طلب مراجعة بشرية معلق. لم يُرسل الطلب إلى أي مزود، ولن يُرسل قبل اعتماد مستقل يعيد التحقق من الربط.' };
     }
-    return { ...base, httpStatus: 409, code: 'HUMAN_GATE_NOT_CONFIGURED', review_required: true,
+    return { ...base, httpStatus: 409, code: 'HUMAN_GATE_NOT_CONFIGURED', dependencyStatus: escalation?.dependencyStatus ?? 'not configured', review_required: true,
       integration: escalation?.configured === false ? { code: escalation.code, configured: false, reason: escalation.reason ?? null } : { code: 'HUMAN_GATE_NOT_CONFIGURED', configured: false, reason: 'NO_APPROVED_REVIEW_INTEGRATION' },
       message: 'القرار يتطلب موافقة بشرية، وتكامل Human Gate غير مهيأ لهذه النسخة؛ لم يُنشأ طلب ولم يُرسل الطلب إلى أي مزود.' };
   }

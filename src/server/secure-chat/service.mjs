@@ -2,7 +2,7 @@ import { requireProductAccess } from '../kernel/access.mjs';
 import { authenticate } from '../kernel/auth.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
 import { transaction } from '../kernel/db.mjs';
-import { KernelError } from '../kernel/core.mjs';
+import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { env } from '../kernel/env.mjs';
 import { findApprovedModel, listApprovedModels } from './models.mjs';
 import { complete, providerReady, providerConfiguration } from './adapter.mjs';
@@ -25,11 +25,13 @@ async function accessContext(request) {
 }
 export async function listModels(request) {
   const { tenant } = await accessContext(request);
-  const models = listApprovedModels(tenant.tenant_id).filter(providerReady).map(model => ({ id: model.id, label: model.label, region: model.region, ready: true }));
+  const approvedModels = listApprovedModels(tenant.tenant_id);
+  const models = approvedModels.filter(providerReady).map(model => ({ id: model.id, label: model.label, region: model.region, ready: true }));
   const policy = usagePolicy();
   const available = models.length > 0;
+  const dependencyStatus = available ? 'available' : approvedModels.length > 0 && approvedModels.every(model => Number.isFinite(Date.parse(model.approval?.expiresAt)) && Date.parse(model.approval.expiresAt) <= Date.now()) ? 'expired' : 'not configured';
   return {
-    models, available, tenant: { id: tenant.tenant_id, name: tenant.name },
+    models, available, dependencyStatus, tenant: { id: tenant.tenant_id, name: tenant.name },
     conversationMode: 'EPHEMERAL_TAB_ONLY', retention: { enabled: false, message: 'لا تُحفظ نصوص المحادثة أو مسوداتها؛ تُحفظ بيانات طلب وصفية لمنع التكرار وضبط الاستخدام. لم تعتمد سياسة حفظ المتن.' },
     policy: { version: INPUT_POLICY.version, syntheticOnly: true, message: 'نصوص اصطناعية فقط. حماية أولية محدودة تحجب الأسرار وتنقح بعض بيانات الاتصال والهوية؛ لا تضمن كشف جميع البيانات الحساسة.' },
     usage: { cost: 'غير متاح', tokens: null, limits: policy, configuredMessageCharacters: configuredMessageLimit() },
@@ -71,8 +73,8 @@ export async function sendMessage(request, body) {
   if (typeof body.modelId !== 'string' || body.modelId.length > 120) throw new KernelError(400,'INVALID_MODEL','اختيار النموذج غير صالح.');
   const model = findApprovedModel(body.modelId,tenant.tenant_id);
   if (!model) {
-    await transaction(async db => { await requireProductAccess(db,identity,tenant.tenant_id,'secure-chat'); await audit(db,identity,tenant.tenant_id,'secure_chat.blocked_no_approved_model'); });
-    throw new KernelError(503,'NO_APPROVED_MODEL','لا يوجد نموذج معتمد؛ لم يُرسل النص إلى أي مزود ولم يُحفظ متن المحادثة.');
+    await transaction(async db => { await requireProductAccess(db,identity,tenant.tenant_id,'secure-chat'); await audit(db,identity,tenant.tenant_id,'secure_chat.blocked_no_approved_model',{correlationId:requestId,policyVersion:INPUT_POLICY.version,idempotencyKey:`secure-chat:${requestId}:no-approved-model`}); });
+    throw new KernelError(503,'NO_APPROVED_MODEL','لا يوجد نموذج معتمد؛ لم يُرسل النص إلى أي مزود ولم يُحفظ متن المحادثة.','not configured');
   }
   providerConfiguration(model);
   const protectedInput = validateMessages(body.message,body.history ?? [],model);
@@ -133,5 +135,6 @@ export function errorResponse(error) {
   const known=error instanceof KernelError;
   const code=known ? error.code : ['42P01','42703','42883'].includes(error?.code) ? 'SECURE_CHAT_SCHEMA_MISSING' : error?.code==='42501' ? 'SECURE_CHAT_DB_PRIVILEGE' : 'SECURE_CHAT_UNAVAILABLE';
   const message=known ? error.message : code==='SECURE_CHAT_SCHEMA_MISSING' ? 'يلزم تجهيز مخطط Secure Chat على بيئة تطوير معتمدة. لم يُؤكد اكتمال الطلب.' : code==='SECURE_CHAT_DB_PRIVILEGE' ? 'صلاحيات قاعدة البيانات غير مهيأة. لم يُؤكد اكتمال الطلب.' : 'تعذر إكمال الطلب؛ لا تُعد إرساله تلقائيًا. لم يُؤكد استهلاك المزود أو اكتمال الرد.';
-  return Response.json({code,message},{status:known ? error.status : 503,headers:privateHeaders});
+  const dependencyStatus=known?dependencyStatusForError(error):code==='SECURE_CHAT_SCHEMA_MISSING'?'not configured':code==='SECURE_CHAT_DB_PRIVILEGE'?'access denied':'temporarily unavailable';
+  return Response.json({code,message,...(dependencyStatus?{dependencyStatus}:{})},{status:known ? error.status : 503,headers:privateHeaders});
 }

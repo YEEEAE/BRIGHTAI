@@ -2,7 +2,7 @@ import { recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
-import { tenantGuard } from '../kernel/service.mjs';
+import { audit as kernelAudit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
 import { exact,uuid,assetFields,assetInput,assessmentInput,version,classifications,treatmentFields,treatmentInput,treatmentStatuses,text } from './core.mjs';
 
@@ -36,9 +36,9 @@ export function createRiskEngineService(transact=transaction) {
    requireRole(member,['OWNER','ADMIN','MEMBER']);
    const canWrite=['OWNER','ADMIN'].includes(member.role);
    if(['create','update','assess','save-treatment','archive','export'].includes(operation))requireRole(member,['OWNER','ADMIN']);
-   const audit=async action=>{
-    const result=await db.query('INSERT INTO public.aigas_audit_events(id,tenant_id,actor_user_id,action) VALUES($1,$2,$3,$4) RETURNING id',[randomUUID(),tenantId,identity.userId,action]);
-    if(result.rowCount!==1)throw new Error('Audit not persisted');
+   const audit=async(action,context={})=>{
+    return kernelAudit(db,identity,tenantId,action,context);
+    
    };
    const snapshot=a=>Object.fromEntries([...assetFields,'version'].map(k=>[k,a[k]]));
    const saveRevision=async asset=>db.query('INSERT INTO public.aigas_re_asset_revisions(tenant_id,asset_id,asset_version,asset_snapshot,changed_by) VALUES($1,$2,$3,$4,$5)',[tenantId,asset.id,asset.version,snapshot(asset),identity.userId]);
@@ -72,7 +72,7 @@ export function createRiskEngineService(transact=transaction) {
     const asset=(await db.query(`INSERT INTO public.aigas_re_assets(id,tenant_id,name,owner,purpose,data_classification,data_context,provider_reference,model_reference,model_version,approval_status,lifecycle_status,created_by)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,[randomUUID(),tenantId,a.name,a.owner,a.purpose,a.data_classification,a.data_context,a.provider_reference,a.model_reference,a.model_version,a.approval_status,a.lifecycle_status,identity.userId])).rows[0];
     await saveRevision(asset);
-    await audit(`risk_engine.asset.created:${asset.id}`);
+    await audit(`risk_engine.asset.created:${asset.id}`,{correlationId:asset.id,policyVersion:'risk-asset-schema-v2',idempotencyKey:`risk-engine:asset:${asset.id}:created:v${asset.version}`});
     await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.asset.created',policy_version:'risk-asset-schema-v2',metadata_json:{synthetic:false,asset_ref:asset.id,asset_version:asset.version},idempotency_key:`asset:${asset.id}:v${asset.version}`});
     return {asset,persisted:true};
    }
@@ -113,7 +113,7 @@ export function createRiskEngineService(transact=transaction) {
     if(asset.lifecycle_status==='RETIRED')return {asset,persisted:true,changed:false};
     const archived=(await db.query("UPDATE public.aigas_re_assets SET lifecycle_status='RETIRED',version=version+1,updated_at=clock_timestamp() WHERE tenant_id=$1 AND id=$2 RETURNING *",[tenantId,id])).rows[0];
     await saveRevision(archived);
-    await audit(`risk_engine.asset.archived:${id}:${reason}`);
+    await audit(`risk_engine.asset.archived:${id}:${reason}`,{correlationId:id,policyVersion:'risk-asset-schema-v2',idempotencyKey:`risk-engine:asset:${id}:archived:v${archived.version}`});
     return {asset:archived,persisted:true,changed:true,reason};
    }
    if(operation==='update'){
@@ -123,7 +123,7 @@ export function createRiskEngineService(transact=transaction) {
     if(!changed)return {asset,persisted:true,changed:false};
     const updated=(await db.query(`UPDATE public.aigas_re_assets SET name=$3,owner=$4,purpose=$5,data_classification=$6,data_context=$7,provider_reference=$8,model_reference=$9,model_version=$10,approval_status=$11,lifecycle_status=$12,version=version+1,updated_at=clock_timestamp() WHERE tenant_id=$1 AND id=$2 RETURNING *`,[tenantId,id,a.name,a.owner,a.purpose,a.data_classification,a.data_context,a.provider_reference,a.model_reference,a.model_version,a.approval_status,a.lifecycle_status])).rows[0];
     await saveRevision(updated);
-    await audit(`risk_engine.asset.updated:${id}`);
+    await audit(`risk_engine.asset.updated:${id}`,{correlationId:id,policyVersion:'risk-asset-schema-v2',idempotencyKey:`risk-engine:asset:${id}:updated:v${updated.version}`});
     await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.asset.updated',policy_version:'risk-asset-schema-v2',metadata_json:{synthetic:false,asset_ref:id,asset_version:updated.version},idempotency_key:`asset:${id}:v${updated.version}`});
     return {asset:updated,persisted:true,changed:true};
    }
@@ -138,7 +138,7 @@ export function createRiskEngineService(transact=transaction) {
     }
     const treatment=(await db.query(`INSERT INTO public.aigas_re_treatment_revisions(id,tenant_id,asset_id,asset_version,assessment_id,version,owner,status,control_description,residual_risk_description,review_on,rationale,changed_by,actor_role)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *`,[randomUUID(),tenantId,id,asset.version,latestAssessment.id,t.treatment_version+1,t.owner,t.status,t.control_description,t.residual_risk_description,t.review_on,t.rationale,identity.userId,member.role])).rows[0];
-    await audit(`risk_engine.treatment.saved:${treatment.id}`);
+    await audit(`risk_engine.treatment.saved:${treatment.id}`,{correlationId:treatment.id,policyVersion:latestAssessment.method_version,idempotencyKey:`risk-engine:treatment:${treatment.id}:v${treatment.version}`});
     return {treatment,persisted:true,deployment_authorized:false};
    }
    if(operation==='assess'){
@@ -147,7 +147,7 @@ export function createRiskEngineService(transact=transaction) {
     const assetSnapshot=snapshot(asset);
     const assessment=(await db.query(`INSERT INTO public.aigas_re_assessments(id,tenant_id,asset_id,asset_version,asset_snapshot,likelihood,impact,likelihood_reason,impact_reason,controls_reason,risk_level,method_version,explanation,suggested_control,evaluator_id,method_name,evidence_references,previous_assessment_id)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING *`,[randomUUID(),tenantId,id,asset.version,assetSnapshot,a.likelihood,a.impact,a.likelihood_reason,a.impact_reason,a.controls_reason,a.risk_level,a.method_version,a.explanation,a.suggested_control,identity.userId,a.method_name,a.evidence_references,latestAssessment?.id||null])).rows[0];
-    await audit(`risk_engine.assessment.created:${assessment.id}`);
+    await audit(`risk_engine.assessment.created:${assessment.id}`,{correlationId:assessment.id,policyVersion:assessment.method_version,idempotencyKey:`risk-engine:assessment:${assessment.id}`});
     await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.assessment.created',policy_version:assessment.method_version,metadata_json:{synthetic:false,asset_ref:id,asset_version:asset.version,assessment_ref:assessment.id,risk_level:assessment.risk_level,requires_human_review:assessment.risk_level==='HIGH'},idempotency_key:`assessment:${assessment.id}`});
     return {assessment:{...assessment,requires_human_review:assessment.risk_level==='HIGH',deployment_authorized:false},persisted:true};
    }

@@ -1,5 +1,5 @@
 import { authenticate } from '../kernel/auth.mjs';
-import { KernelError } from '../kernel/core.mjs';
+import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { operate } from './service.mjs';
 const headers = { 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' };
 async function readBody(request) {
@@ -25,7 +25,8 @@ export function createHandler(auth=authenticate, service=operate) {
       if(error?.code==='42P01'||error?.code==='42703')error=new KernelError(503,'RISK_ENGINE_SCHEMA_MISSING','مخطط Risk Engine أو أحدث حقوله غير متاح؛ يلزم تطبيق 0005 ثم 0008 ثم 0015 على بيئة معتمدة.');
       if(error?.code==='42501')error=new KernelError(503,'RISK_ENGINE_DB_PRIVILEGE','صلاحيات قاعدة البيانات لا تسمح بهذه العملية؛ راجع مسؤول التشغيل.');
       const known=error instanceof KernelError;
-      return Response.json({code:known?error.code:'RISK_ENGINE_UNAVAILABLE',message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.'},{status:known?error.status:503,headers});
+      const dependencyStatus=known?(error.dependencyStatus??(error.code.includes('SCHEMA')?'not configured':error.code.includes('PRIVILEGE')?'access denied':dependencyStatusForError(error))):'temporarily unavailable';
+      return Response.json({code:known?error.code:'RISK_ENGINE_UNAVAILABLE',message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.',...(dependencyStatus?{dependencyStatus}:{})},{status:known?error.status:503,headers});
     }
   };
 }
