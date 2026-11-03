@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole, workspaceName } from '../kernel/core.mjs';
+import { HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, bindingVersion, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor, canTransition } from './core.mjs';
 
 const failure=(status,code,message)=>({failure:{status,code,message}});
@@ -42,10 +43,9 @@ export function createHumanGateService(transact=transaction) {
    await db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))",[tenantId]);
    const policy=(await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE',[tenantId])).rows[0]||null;
    const record=async(action,request,event,reason=null,auditAction=null)=>{
-    
     const eventAction=auditAction??(request?`human_gate.${action}:${request.id}`:'kernel.human_gate.policy.updated');
-     const auditId=await audit(db,identity,tenantId,eventAction,{correlationId:request?.id??randomUUID(),policyVersion:request?.policy_version??policy?.version??'human-gate-policy-v3',idempotencyKey:request?`human-gate:${request.id}:${event}`:`human-gate:policy:${randomUUID()}`});
-    
+     const correlationId=request?.id??randomUUID();
+     const auditId=await audit(db,identity,tenantId,eventAction,{correlationId,policyVersion:request?.policy_version??policy?.version??'human-gate-policy-v3',idempotencyKey:request?`human-gate:${request.id}:${event}`:`human-gate:policy:${randomUUID()}`});
     if(request){
      const savedEvent=await db.query('INSERT INTO public.aigas_hg_events(id,tenant_id,request_id,requester_id,actor_user_id,event_type,reason_code,audit_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[randomUUID(),tenantId,request.id,request.requester_id,identity.userId,event,reason,auditId]);
      if(savedEvent.rowCount!==1) throw new KernelError(503,'AUDIT_UNAVAILABLE','تعذر حفظ سجل الطلب؛ لم تكتمل العملية.');
@@ -56,14 +56,38 @@ export function createHumanGateService(transact=transaction) {
      const eventType={CREATED:'human_gate.request.created',APPROVED:'human_gate.decision.recorded',REJECTED:'human_gate.decision.recorded',EXECUTED:'human_gate.demo_note.completed'}[event];
      if(eventType){
       const metadata={synthetic:true,request_ref:request.id,operation_scope:'INTERNAL_DEMO_NOTE'};
+      let decisionRef=null;
       if(event==='APPROVED'||event==='REJECTED'){
-       const d=(await db.query('SELECT id,decision FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2',[tenantId,request.id])).rows[0];
-       Object.assign(metadata,{decision_ref:d.id,decision:d.decision});
+       decisionRef=(await db.query('SELECT id,decision FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2',[tenantId,request.id])).rows[0];
+       if(!decisionRef?.id) throw new KernelError(503,'AUDIT_UNAVAILABLE','تعذر ربط القرار بسجل الطلب؛ لم تكتمل العملية.');
+       Object.assign(metadata,{decision_ref:decisionRef.id,decision:decisionRef.decision});
       }
-      await recordProductEvent(db,identity,tenantId,{source:'human-gate',event_type:eventType,policy_version:request.policy_version,metadata_json:metadata,idempotency_key:`hg:${request.id}:${event}`});
+      await recordProductEvent(db,identity,tenantId,{
+       source:'human-gate',event_type:eventType,
+       correlation_id:correlationId,
+       decision_id:decisionRef?.id??request.id,
+       policy_version:request.policy_version,
+       metadata_json:metadata,
+       idempotency_key:`hg:${request.id}:${event}`,
+       // Only the terminal EXECUTED transition records an outcome, and only
+       // after the effect happened inside this transaction.
+       outcome_confirmed:event==='EXECUTED',
+      });
      }
     }else{
-     await recordProductEvent(db,identity,tenantId,{source:'kernel',event_type:'kernel.audit.recorded',policy_version:request?.policy_version||policy?.version||'human-gate-policy-v3',metadata_json:{synthetic:false,audit_ref:auditId,action:auditAction??`kernel.human_gate.${action}`},idempotency_key:`audit:${auditId}`});
+     // The Ledger kernel source only accepts `workspace.created` or `kernel.*`
+     // action codes. A per-record suffix stays in the Kernel audit action, never
+     // in the allowlisted metadata, so a delegation event cannot be rejected by
+     // the evidence constraint after the real change was already made.
+     const kernelEventAction=/^(workspace\.created|kernel\.[a-z_.-]+)$/.test(auditAction??'')?auditAction:`kernel.human_gate.${action}`;
+     await recordProductEvent(db,identity,tenantId,{
+      source:'kernel',event_type:'kernel.audit.recorded',
+      correlation_id:correlationId,
+      decision_id:auditId,
+      policy_version:request?.policy_version||policy?.version||'human-gate-policy-v3',
+      metadata_json:{synthetic:false,audit_ref:auditId,action:kernelEventAction},
+      idempotency_key:`audit:${auditId}`,
+     });
     }
     await assertAccessFresh(db,tenantId);
    };
@@ -234,7 +258,7 @@ export function createHumanGateService(transact=transaction) {
       LEFT JOIN neon_auth."user" eu ON eu.id=d.delegatee_id
       WHERE d.tenant_id=$1 AND ($2::boolean OR d.delegator_id=$3 OR d.delegatee_id=$3)
       ORDER BY d.created_at DESC LIMIT 100`,[tenantId,canManage,identity.userId])).rows;
-    return {tenant:{...scope.tenant,...tenant,role:member.role},memberships:scope.memberships.map(m=>m.tenant_id===tenantId?{...m,name:tenant.name}:m),policy,canManage,canReview:canManage||reviewScopes.length>0,canDelegate:canManage&&!!policy?.enabled&&!!policy?.delegation_enabled,reviewers,delegations,page,hasMore:rows.length>25&&page<100,requests,serverTime};
+    return {tenant:{...scope.tenant,...tenant,role:member.role},memberships:scope.memberships.map(m=>m.tenant_id===tenantId?{...m,name:tenant.name}:m),policy,canManage,canReview:canManage||reviewScopes.length>0,canDelegate:canManage&&!!policy?.enabled&&!!policy?.delegation_enabled,reviewers,delegations,page,hasMore:rows.length>25&&page<100,requests,serverTime,contract_version:HTTP_CONTRACT_VERSION};
    }
    const request=(await db.query('SELECT * FROM public.aigas_hg_requests WHERE tenant_id=$1 AND id=$2 FOR UPDATE',[tenantId,id])).rows[0];
    if(!request) throw new KernelError(404,'NOT_FOUND','الطلب غير موجود أو ليس ضمن صلاحيتك.');

@@ -1,7 +1,8 @@
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
+import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
 import { operate } from './service.mjs';
-const headers = { 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' };
+const headers = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
 async function readBody(request) {
   if (request.headers.get('origin') !== new URL(request.url).origin) throw new KernelError(403,'ORIGIN_REJECTED','مصدر الطلب غير مسموح.');
   if (request.headers.get('content-type')?.split(';')[0] !== 'application/json') throw new KernelError(415,'INVALID_BODY','أرسل JSON فقط.');
@@ -29,7 +30,7 @@ export function createHandler(auth=authenticate, service=operate) {
       if(error?.code==='23503')error=new KernelError(409,'RISK_ENGINE_REFERENCE','مرجع الأصل أو التقييم غير متاح في النسخة الحالية؛ حدّث السجل وأعد المحاولة.');
       const known=error instanceof KernelError;
       const dependencyStatus=known?(error.dependencyStatus??(error.code.includes('SCHEMA')?'not configured':error.code.includes('PRIVILEGE')?'access denied':dependencyStatusForError(error))):'temporarily unavailable';
-      return Response.json({code:known?error.code:'RISK_ENGINE_UNAVAILABLE',message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.',...(dependencyStatus?{dependencyStatus}:{})},{status:known?error.status:503,headers});
+      return Response.json(errorBody({code:known?error.code:'RISK_ENGINE_UNAVAILABLE',message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.',dependencyStatus}),{status:known?error.status:503,headers});
     }
   };
 }

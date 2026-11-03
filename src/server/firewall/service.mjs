@@ -1,5 +1,6 @@
 import { recordProductEvent } from '../ledger/writer.mjs';
-import { requireProductAccess } from '../kernel/access.mjs';
+import { assertReferenceTenant, requireProductAccess } from '../kernel/access.mjs';
+import { dependencyEntry, HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { tenantGuard, audit } from '../kernel/service.mjs';
@@ -19,6 +20,18 @@ const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const editableFields = ['name', 'pattern', 'action', 'priority'];
 const operations = ['dashboard', 'create', 'update', 'delete', 'evaluate', 'enforce'];
 const uniqueName = error => error?.code === '23505';
+
+// Product-to-product states are reported, not hidden. Ledger is optional unless
+// an approved requirement made it mandatory; Risk Engine is not consulted by the
+// baseline enforcement path at all.
+function dependencySummary(ledgerEvidence, review) {
+  const ledger = ledgerEvidence ?? { dependencyStatus: 'not configured', dependencyCode: 'LEDGER_NOT_EVALUATED', required: false };
+  return {
+    ledger: dependencyEntry('ledger', ledger.dependencyStatus, { required: ledger.required === true, reason: ledger.dependencyCode ?? null }),
+    humanGate: dependencyEntry('human-gate', review?.dependencyStatus ?? 'not configured', { required: false, reason: review?.code ?? null }),
+    riskEngine: Object.freeze({ product: 'risk-engine', required: false, evaluated: false, blocking: false, reason: 'BASELINE_CONTROL_DOES_NOT_REQUIRE_RISK_ENGINE' }),
+  };
+}
 
 // Copies are new custom rules. The server picks a unique Arabic-suffixed name so the
 // client never supplies identity for an existing rule.
@@ -206,6 +219,9 @@ export function createFirewallService(transact = transaction) {
         // above, so retries are classified before any write; a UUID reused for a
         // different decision is a conflict and is never executed again.
         if (enforced) {
+          // A client-supplied request UUID is only usable inside the tenant that
+          // first used it. Another workspace cannot replay this reference.
+          await assertReferenceTenant(db, tenantId, 'firewall_request', body.request_id);
           const existing = (await db.query('SELECT id,request_fingerprint FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND request_id=$2', [tenantId, body.request_id])).rows[0];
           if (existing) {
             if (!existing.request_fingerprint || existing.request_fingerprint !== requestFingerprint) {
@@ -215,6 +231,7 @@ export function createFirewallService(transact = transaction) {
           }
         }
         // Explicit metadata fields only: the submitted text and any output never reach the database.
+        let ledgerEvidence = null;
         try {
           if (enforced) {
             await db.query('INSERT INTO public.aigas_kernel_policy_decisions(id,tenant_id,actor_user_id,product_slug,operation,decision,reason,policy_chain,request_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9)',
@@ -234,8 +251,10 @@ export function createFirewallService(transact = transaction) {
           // Mandatory Ledger evidence (when policy requires it) is written inside the
           // same transaction; a failure rolls the decision back. Ledger is never required
           // unless an approved evidence requirement matches this tenant and event type.
-          await recordProductEvent(db, identity, tenantId, {
+          ledgerEvidence = await recordProductEvent(db, identity, tenantId, {
             source: 'firewall', event_type: 'firewall.decision.recorded',
+            correlation_id: enforced ? body.request_id : id,
+            decision_id: id,
             policy_version: enforced ? policyVersion : (result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v2'),
             metadata_json: { synthetic: true, decision_ref: id, action: result.action, mode: enforced ? 'GUARD' : 'LAB', rule_ref: result.rule_id, rule_version: result.rule_version, ...(enforced ? { request_fingerprint: requestFingerprint } : {}) },
             idempotency_key: `decision:${id}`,
@@ -253,12 +272,14 @@ export function createFirewallService(transact = transaction) {
             created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB',
             policy_version: policyVersion, request_fingerprint: requestFingerprint,
           };
+          const dependencies = dependencySummary(ledgerEvidence, reviewIntegrationState(tenantId));
           if (enforced) return { decision, tenantId, actorUserId: identity.userId, requestId: body.request_id, policyVersion, requestFingerprint,
-            forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation };
+            forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation, dependencies, contract_version: HTTP_CONTRACT_VERSION };
           return {
             ...decision, rule_name: result.rule_name, output: result.output,
             input_length: requestText.length, persisted: true,
             execution_status: 'NOT_EXECUTED', external_action_executed: false,
+            dependencies, contract_version: HTTP_CONTRACT_VERSION,
           };
         } catch (error) {
           if (enforced && uniqueName(error)) throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب أو معرّفه مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
@@ -300,6 +321,7 @@ export function createFirewallService(transact = transaction) {
         decisions: decisions.slice(0, 12), page, hasNext: decisions.length > 12 && page < 10000, provider, enforcement,
         enforcementPath: '/app/api/firewall/guarded-executions/', actionFilter: action, reasonFilter: reason,
         limits: { maxRules: MAX_RULES, maxTextLength: MAX_TEXT_LENGTH, maxEvaluationsPerWindow: MAX_EVALUATIONS_PER_WINDOW },
+        contract_version: HTTP_CONTRACT_VERSION,
       };
     });
     // COMMIT has succeeded before any optional external call. Raw body is never

@@ -531,6 +531,8 @@ async function endpoint(path: string, method = 'GET', body?: object, workspace?:
 const dependencyLabels: Record<string, string> = {
   available: 'متاحة',
   'not configured': 'غير مهيأة',
+  degraded: 'متعطلة جزئيًا',
+  blocked: 'موقوفة',
   'access denied': 'صلاحية مرفوضة',
   expired: 'منتهية',
   'temporarily unavailable': 'غير متاحة مؤقتًا',

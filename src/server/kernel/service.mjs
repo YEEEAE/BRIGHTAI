@@ -6,6 +6,7 @@ import { env } from './env.mjs';
 import { authConfig } from './auth.mjs';
 import { productGrants } from './access.mjs';
 import { KernelError, products, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole, isUuid } from './core.mjs';
+import { HTTP_CONTRACT_VERSION } from './contracts.mjs';
 export async function memberships(userId, db = database()) {
   if (!isUuid(userId)) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
   // Actor scope comes from the verified token; it lets a least-privilege runtime role read
@@ -75,7 +76,7 @@ export async function dashboard(identity, requested) {
     summary.proofOfValue = { status: 'NOT_CONFIGURED', source: 'KERNEL_AUDIT', scope: 'ALL_RETAINED_TENANT_EVENTS', activated_at: null, expires_at: null, firstEventAt: summary.firsteventat, lastEventAt: summary.lasteventat };
     delete summary.firsteventat; delete summary.lasteventat;
     summary.coverage = access.length ? { enabled: states.filter(p => p.enabled).length, total: products.length } : null;
-    return { ...scope, products: states, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady };
+    return { ...scope, products: states, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady, contract_version: HTTP_CONTRACT_VERSION };
   });
 }
 export async function tenantMembers(identity, requested) {

@@ -1,8 +1,9 @@
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
+import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
 import { operate } from './service.mjs';
 
-const headers = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', Vary: 'Authorization', 'X-Content-Type-Options': 'nosniff' };
+const headers = contractHeaders({ 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', Vary: 'Authorization', 'X-Content-Type-Options': 'nosniff' });
 const allowedFields = {
   dashboard: [],
   create: ['template', 'duplicate_of', 'name', 'pattern', 'action', 'priority'],
@@ -51,9 +52,9 @@ export function createHandler(auth = authenticate, service = operate) {
       if (known) {
         const setup = ['FIREWALL_SCHEMA_MISSING', 'FIREWALL_SCHEMA_OUTDATED', 'FIREWALL_DB_PRIVILEGE'].includes(known.code);
         const dependencyStatus = known.dependencyStatus ?? (known.code.includes('SCHEMA') ? 'not configured' : known.code.includes('PRIVILEGE') ? 'access denied' : dependencyStatusForError(known));
-        return Response.json({ code: known.code, message: known.message, ...(dependencyStatus ? { dependencyStatus } : {}), ...(setup ? { setup: true } : {}) }, { headers, status: known.status });
+        return Response.json(errorBody({ code: known.code, message: known.message, dependencyStatus, extra: setup ? { setup: true } : {} }), { headers, status: known.status });
       }
-      return Response.json({ code: 'FIREWALL_UNAVAILABLE', dependencyStatus:'temporarily unavailable', message: 'تعذر تأكيد نتيجة العملية؛ تحقق من إعداد قاعدة البيانات والسجل. لا تتابع خارج مسار الإنفاذ ولا تعِد التنفيذ تلقائيًا.' }, { headers, status: 503 });
+      return Response.json(errorBody({ code: 'FIREWALL_UNAVAILABLE', dependencyStatus:'temporarily unavailable', message: 'تعذر تأكيد نتيجة العملية؛ تحقق من إعداد قاعدة البيانات والسجل. لا تتابع خارج مسار الإنفاذ ولا تعِد التنفيذ تلقائيًا.' }), { headers, status: 503 });
     }
   };
 }

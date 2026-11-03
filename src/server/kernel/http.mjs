@@ -1,12 +1,13 @@
 import { authenticate } from './auth.mjs';
 import { KernelError, dependencyStatusForError } from './core.mjs';
-export const headers = {
+import { contractHeaders, errorBody } from './contracts.mjs';
+export const headers = contractHeaders({
   'Cache-Control': 'private, no-store',
   'X-Robots-Tag': 'noindex, nofollow',
   'Referrer-Policy': 'no-referrer',
   Vary: 'Authorization',
   'X-Content-Type-Options': 'nosniff',
-};
+});
 
 // Small abuse guard for administrative writes. It is per process and is not an
 // authorization or durable quota; product endpoints keep their own stored limits.
@@ -58,7 +59,7 @@ export function kernelHandler(work, write = false) {
       const message = known ? error.message : code === 'KERNEL_SCHEMA_MISSING' ? 'يلزم تطبيق ترحيل إدارة Kernel المعتمد قبل استخدام هذه الوظيفة.' : code === 'KERNEL_DB_PRIVILEGE' ? 'صلاحية اتصال النظام غير مهيأة لهذه الوظيفة.' : 'تعذر الاتصال بالخدمة؛ لم يُؤكد الحفظ. حدّث البيانات قبل إعادة الإرسال.';
       const dependencyStatus=known?dependencyStatusForError(error):code==='KERNEL_SCHEMA_MISSING'?'not configured':code==='KERNEL_DB_PRIVILEGE'?'access denied':'temporarily unavailable';
       const responseHeaders = code === 'RATE_LIMITED' ? { ...headers, 'Retry-After': '60' } : headers;
-      return Response.json({ code, message, ...(dependencyStatus ? { dependencyStatus } : {}) }, { headers: responseHeaders, status: known ? error.status : 503 });
+      return Response.json(errorBody({ code, message, dependencyStatus }), { headers: responseHeaders, status: known ? error.status : 503 });
     }
   };
 }

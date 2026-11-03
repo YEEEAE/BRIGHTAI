@@ -3,6 +3,7 @@ import { authenticate } from '../kernel/auth.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
 import { transaction } from '../kernel/db.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
+import { contractHeaders, errorBody, HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { env } from '../kernel/env.mjs';
 import { findApprovedModel, listApprovedModels } from './models.mjs';
 import { complete, providerConfiguration, providerState } from './adapter.mjs';
@@ -79,6 +80,7 @@ export async function listModels(request) {
     policy: { version: INPUT_POLICY.version, syntheticOnly: true, firewallLicenceRequired: false, message: 'نصوص اصطناعية فقط. حماية خروج أساسية محدودة تعمل دون رخصة Firewall وتحجب الأسرار وتنقح بعض بيانات الاتصال والهوية؛ لا تضمن كشف جميع البيانات الحساسة.' },
     usage: { cost: 'غير متاح', tokens: null, limits: policy, configuredMessageCharacters: configuredMessageLimit() },
     message: available ? 'النماذج المعتمدة والمهيأة متاحة للنصوص الاصطناعية فقط؛ كل إرسال يخضع لفحص الخادم.' : 'لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة؛ يلزم اعتماد النموذج والمنطقة ودليل عدم التدريب وإعداد الموصل. لم يُرسل أي محتوى إلى مزود AI.',
+    contract_version: HTTP_CONTRACT_VERSION,
   };
 }
 
@@ -191,12 +193,12 @@ export async function sendMessage(request, body) {
 export async function rejectMessage(request, modelId, message) {
   return sendMessage(request,{modelId,message,syntheticAcknowledged:false});
 }
-export const privateHeaders = { 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' };
+export const privateHeaders = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
 export function errorResponse(error) {
   const known=error instanceof KernelError;
   const code=known ? error.code : ['42P01','42703','42883'].includes(error?.code) ? 'SECURE_CHAT_SCHEMA_MISSING' : error?.code==='42501' ? 'SECURE_CHAT_DB_PRIVILEGE' : 'SECURE_CHAT_UNAVAILABLE';
   const message=known ? error.message : code==='SECURE_CHAT_SCHEMA_MISSING' ? 'يلزم تجهيز مخطط Secure Chat على بيئة تطوير معتمدة. لم يُؤكد اكتمال الطلب.' : code==='SECURE_CHAT_DB_PRIVILEGE' ? 'صلاحيات قاعدة البيانات غير مهيأة. لم يُؤكد اكتمال الطلب.' : 'تعذر إكمال الطلب؛ لا تُعد إرساله تلقائيًا. لم يُؤكد استهلاك المزود أو اكتمال الرد.';
   const dependencyStatus=known?dependencyStatusForError(error):code==='SECURE_CHAT_SCHEMA_MISSING'?'not configured':code==='SECURE_CHAT_DB_PRIVILEGE'?'access denied':'temporarily unavailable';
   const responseHeaders=known&&error.status===429?{...privateHeaders,'Retry-After':'60'}:privateHeaders;
-  return Response.json({code,message,...(dependencyStatus?{dependencyStatus}:{})},{status:known ? error.status : 503,headers:responseHeaders});
+  return Response.json(errorBody({code,message,dependencyStatus}),{status:known ? error.status : 503,headers:responseHeaders});
 }

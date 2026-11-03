@@ -1,3 +1,41 @@
+## [2026-11-03] — إغلاق عقود الثقة بين المنتجات ومنع الاعتماد المتبادل القسري
+### تم التنفيذ
+- أُضيف غلاف حدث داخلي موحد `aigas-product-event-v1` في `src/server/kernel/events.mjs` يُستهلك عبر `recordProductEvent` الموجود، ويثبت `tenantId/actorId/correlationId/decisionId/policyVersion/source/action/idempotencyKey` ويرفض `OUTCOME` قبل تأكيد الأثر ويرفض مرجعًا لا يطابق مرجع metadata المحفوظ؛ لا Bus ولا Queue ولا جدول جديد.
+- `Firewall` لا يقبل طلب مراجعة أو موافقة إلا بربط صريح لنفس المؤسسة/القرار/الطلب/نسخة السياسة/البصمة والمهلة، ويُرجع `BLOCKED` (`HUMAN_APPROVAL_PRESENT_NOT_EXECUTED`) بدل تحويل الموافقة إلى تنفيذ. `Ledger` يسجّل قرارات فقط، وتميّز حالته `not configured/access denied/expired/blocked/degraded` مع بقاء Kernel audit عند غياب الاشتراك الاختياري.
+- أُضيف `assertReferenceTenant` لمنع إعادة استخدام `request_id`/`requestId` بين المؤسسات (`REFERENCE_TENANT_CONFLICT`)، واستُخدم قبل كتابة القرار في Firewall وSecure Chat.
+- أُضيف عقد HTTP ثابت `aigas-http-v1`/`aigas-error-v1` مع رأس `X-AIGAS-Contract` و`contract_version` في الاستجابات، مع إبقاء المسارات والحقول الحالية.
+- أُضيف Runbook مفهومي `docs/PRODUCT-TRUST-CONTRACT-RUNBOOK.md` وقسم في `PLATFORM-ARCHITECTURE`، ومسودة ترحيل محلية `0022` (فهارس مرجع عالمية) غير مطبقة.
+### الملفات المتأثرة
+- `src/server/kernel/{contracts,events,core,access,service,http}.mjs`, `src/server/firewall/{guard,escalation,service,http}.mjs`
+- `src/server/ledger/{writer,service,http}.mjs`, `src/server/human-gate/{service,http}.mjs`, `src/server/risk-engine/{service,http}.mjs`, `src/server/secure-chat/{service,requests}.mjs`, `src/scripts/kernel.ts`
+- `docs/{PLATFORM-ARCHITECTURE,PRODUCT-TRUST-CONTRACT-RUNBOOK}.md`, `migrations/0022_aigas_reference_scope_guard.sql`
+### التحقق
+- `node --check` لجميع ملفات `.mjs` المعدلة/الجديدة، واستيراد وحدات الخدمات الست في Node، و`git diff --check`: PASS.
+- build/lint/typecheck/tests/Playwright/DB/Neon/متصفح/نشر: NOT RUN حسب طلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED — NOT_RUNTIME_VERIFIED؛ لا commit/push/deploy ولا كتابة إلى Neon أو GitHub.
+### ملاحظات / مشاكل مفتوحة
+- `0022` غير مطبق؛ منع المرجع العابر يعمل في الكود فقط حتى اعتماد المشغّل. غلاف الحدث لا يُحفظ حقل `correlationId` في Ledger بسبب قيد metadata الحالي، ويُقرأ من Kernel audit.
+- تكامل Firewall↔Human Gate ما زال بلا سجل تكامل معتمد؛ ESCALATE يبقى `HUMAN_GATE_NOT_CONFIGURED`/`REVIEW_PENDING` ولا يمرر لمزود.
+
+## [2026-11-03] — إضافة Made Good Designs MCP لمشروع BRIGHTAI
+### تم التنفيذ
+- أُضيف سيرفر `mgd-design` في `opencode.json` الجذري تحت `mcp.servers` (`type: remote`، بلا مصادقة) بمسار `https://madegooddesigns.com/inspiration/mcp/core`.
+- اختير endpoint المختصر `/core` (22 أداة: بحث في UI screens وbrand/type references وmuseum art وannual reports، مع `browse_design_tools`+`run_design_tool` للوصول لبقية المكتبة) بدل `/mcp` الكامل (88 أداة) لتوفير سياق الوكيل؛ كل الأدوات تعمل على المسارين.
+- الرابط الذي أعطاه المستخدم صفحة تعريفية لا endpoint؛ استُخرج منه عنوان MCP الفعلي.
+- السيرفر للقراءة فقط ولا يخزّن إلا `save_moodboard` بطلب صريح؛ لا يرسل أسرار المشروع.
+### الملفات المتأثرة
+- `opencode.json`
+### التحقق
+- فحص `initialize` و`tools/list` مباشرة على المسارين: PASS (88/22 أداة).
+- تحميل السيرفر داخل جلسة OpenCode وظهور `mgd-design` مع أدواته: PASS.
+- استدعاء `list_inspiration_themes` فعليًا وإرجاع ثيمات حقيقية: PASS.
+- `python3 -c json.load`: صالح؛ `git diff` = 5 أسطر مضافة فقط.
+### النتيجة
+- **الحالة:** DONE محليًا؛ لا commit/push.
+### ملاحظات / مشاكل مفتوحة
+- السيرفر مضاف على مستوى هذا المشروع فقط؛ إضافته عالميًا في `~/.config/opencode/opencode.json` تحتاج طلبًا منفصلًا.
+
 ## [2026-11-03] — إكمال Secure Chat مع إيقاف صريح حتى اعتماد النموذج
 ### تم التنفيذ
 - فُصل رفض الإرسال إلى `NO_APPROVED_MODEL` و`PROVIDER_NOT_CONFIGURED`، وأعلنت قائمة النماذج `MODEL_APPROVAL_EXPIRED` و`USAGE_POLICY_NOT_READY`، مع تدقيق بلا متن؛ `APPROVED_MODELS=[]` بقي كما هو بلا أي إرسال خارجي.

@@ -2,6 +2,7 @@ import { requireProductAccess } from '../kernel/access.mjs';
 import { transaction } from '../kernel/db.mjs';
 import { tenantGuard, audit } from '../kernel/service.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
+import { HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { chainVersion, canonical, exactObject, filters, profile, publicMetadata, syntheticTypes, uuid, verificationState, verifyEvent } from './core.mjs';
 import { appendEvent, columns } from './writer.mjs';
 import { FORMAT, MAX_EVENTS, VERIFIER_VERSION, verifyBundle } from '../../../public/downloads/aigas-ledger-verifier.mjs';
@@ -56,7 +57,7 @@ export function createLedgerService(transact = transaction) {
         // Verify the unfiltered prefix, so filtering cannot disguise missing links.
         const chain=events.length?await chainThrough(db,tenantId,events[0]):{report:{result:'EMPTY',state:'EMPTY'},events:[]};
         const summary=chain.report.result==='EMPTY'?{state:'EMPTY',reasons:[]}:verificationState('MATCH',chain.report);
-        return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,permissions,events:events.map(event=>publicEvent(event,chain.report)),chain:chain.report,verification:summary,chain_version:chainVersion,page:filter.page,hasMore:rows.length>25 && filter.page<100,maxVerificationEvents:MAX_EVENTS,verifier:{version:VERIFIER_VERSION}};
+        return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,permissions,events:events.map(event=>publicEvent(event,chain.report)),chain:chain.report,verification:summary,chain_version:chainVersion,page:filter.page,hasMore:rows.length>25 && filter.page<100,maxVerificationEvents:MAX_EVENTS,verifier:{version:VERIFIER_VERSION},contract_version:HTTP_CONTRACT_VERSION};
       }
       const event=(await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND event_id=$2`,[tenantId,id])).rows[0];
       if (!event) throw new KernelError(404,'NOT_FOUND','الحدث غير موجود ضمن مؤسستك.');

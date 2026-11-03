@@ -1,5 +1,6 @@
 import { approvedProvider, PROVIDER_TIMEOUT_MS } from './provider.mjs';
 import { policyReference, decisionFingerprint } from './binding.mjs';
+import { reviewBindingVersion, verifyHumanApproval } from './escalation.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fingerprint = /^[0-9a-f]{64}$/;
@@ -30,6 +31,40 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
   // when an approved server integration is configured; otherwise this stops here.
   // In both cases nothing has been sent to a provider and nothing will be.
   if (decision.action === 'ESCALATE') {
+    // A review request is accepted only when the server-side integration says it
+    // belongs to this decision, tenant, request UUID and policy version. A review
+    // for another cycle is not evidence of approval for this one.
+    const binding = escalation?.requested === true ? escalation.binding : null;
+    const reviewBindingValid = binding?.version === reviewBindingVersion
+      && binding.tenantId === tenantId
+      && binding.decisionId === decision.id
+      && binding.requestId === requestId
+      && binding.policyVersion === policyVersion
+      && escalation.review?.subject_ref === decision.id
+      && escalation.review?.policy_version === policyVersion;
+    if (escalation?.requested === true && !reviewBindingValid) {
+      return { ...base, httpStatus: 503, code: 'HUMAN_GATE_REVIEW_UNBOUND',
+        execution_status: 'BLOCKED', blocked_reason: 'REVIEW_BINDING_MISMATCH', review_required: true,
+        integration: { code: 'HUMAN_GATE_CONFIGURED', configured: true, operation_type: escalation.operation_type ?? null },
+        message: 'طلب المراجعة لا يطابق هذا القرار أو نسخته السياسية؛ لم يُرسل الطلب إلى أي مزود ولم يُعتمد كموافقة.' };
+    }
+    // Even a supplied approval is only usable if it is bound to this exact request,
+    // policy version, fingerprint and tenant and is still active. A mismatch is a
+    // refusal, never a silent allow.
+    const approval = verifyHumanApproval(escalation, { tenantId, requestId, policyVersion, requestFingerprint });
+    if (approval.state === 'INVALID') {
+      return { ...base, httpStatus: 409, code: 'HUMAN_APPROVAL_BINDING_INVALID',
+        execution_status: 'BLOCKED', blocked_reason: approval.reason, approval_bound: false,
+        message: 'الموافقة البشرية لا تطابق هذا الطلب أو انتهت أو استُخدمت مسبقًا؛ لم يُرسل الطلب إلى أي مزود.' };
+    }
+    if (approval.state === 'BOUND') {
+      // This route has no approved integration to execute an approved human action.
+      // Returning success or forwarding here would turn an approval into an execution.
+      return { ...base, httpStatus: 409, code: 'HUMAN_APPROVAL_PRESENT_NOT_EXECUTED',
+        execution_status: 'BLOCKED', blocked_reason: 'EXECUTION_INTEGRATION_NOT_CONFIGURED',
+        approval_bound: true, review_required: false,
+        message: 'الموافقة البشرية مربوطة بهذا الطلب، لكن مسار تنفيذ الموافقة المعتمد غير مهيأ؛ لم يُرسل الطلب إلى أي مزود.' };
+    }
     if (escalation?.requested === true && escalation.review) {
       return { ...base, httpStatus: 202, code: 'REVIEW_PENDING', dependencyStatus: 'available', review_required: true,
         review: escalation.review, integration: { code: escalation.code, configured: true, operation_type: escalation.operation_type },

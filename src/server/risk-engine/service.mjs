@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { audit as kernelAudit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
+import { HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { exact,uuid,assetFields,assetInput,assessmentInput,version,classifications,treatmentFields,treatmentInput,treatmentStatuses,text,METHOD,acceptanceScope,assessmentStatus,treatmentNeedsReview } from './core.mjs';
 
 export function createRiskEngineService(transact=transaction) {
@@ -77,7 +78,7 @@ export function createRiskEngineService(transact=transaction) {
       LEFT JOIN LATERAL(SELECT id,risk_level,asset_version FROM public.aigas_re_assessments WHERE tenant_id=a.tenant_id AND asset_id=a.id ORDER BY created_at DESC,id DESC LIMIT 1)s ON true
       WHERE a.tenant_id=$1 AND ($2='' OR t.status=$2) AND (NOT $3::boolean OR t.review_on<=timezone('Asia/Riyadh',now())::date)
       ORDER BY t.review_on ASC NULLS LAST,a.id LIMIT 26 OFFSET $4`,[tenantId,treatmentStatus,dueOnly,(page-1)*25])).rows;
-    return {actions:rows.slice(0,25),hasMore:rows.length>25,page,canWrite};
+    return {actions:rows.slice(0,25),hasMore:rows.length>25,page,canWrite,contract_version:HTTP_CONTRACT_VERSION};
    }
    if(operation==='create'){
     const a=assetInput(body);
@@ -85,7 +86,7 @@ export function createRiskEngineService(transact=transaction) {
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,[randomUUID(),tenantId,a.name,a.owner,a.purpose,a.data_classification,a.data_context,a.provider_reference,a.model_reference,a.model_version,a.approval_status,a.lifecycle_status,identity.userId])).rows[0];
     await saveRevision(asset);
     await audit(`risk_engine.asset.created:${asset.id}`,{correlationId:asset.id,policyVersion:'risk-asset-schema-v2',idempotencyKey:`risk-engine:asset:${asset.id}:created:v${asset.version}`});
-    await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.asset.created',policy_version:'risk-asset-schema-v2',metadata_json:{synthetic:false,asset_ref:asset.id,asset_version:asset.version},idempotency_key:`asset:${asset.id}:v${asset.version}`});
+    await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.asset.created',correlation_id:asset.id,decision_id:asset.id,policy_version:'risk-asset-schema-v2',metadata_json:{synthetic:false,asset_ref:asset.id,asset_version:asset.version},idempotency_key:`asset:${asset.id}:v${asset.version}`});
     return {asset,persisted:true,assessment_status:'NOT_ASSESSED',method:METHOD};
    }
    if(operation==='list'){
@@ -103,7 +104,7 @@ export function createRiskEngineService(transact=transaction) {
       AND ($6='' OR $6=CASE WHEN s.id IS NULL THEN 'NOT_ASSESSED' WHEN s.asset_version<>a.version THEN 'REASSESSMENT_REQUIRED' ELSE 'ASSESSED' END)
       ORDER BY a.created_at DESC,a.id DESC LIMIT 26 OFFSET $5`,[tenantId,search,classification,riskLevel,(page-1)*25,assessmentStatus])).rows;
     const filteredTotal=(await db.query(`SELECT count(*)::int AS total FROM public.aigas_re_assets a LEFT JOIN LATERAL(SELECT id,risk_level,asset_version FROM public.aigas_re_assessments WHERE tenant_id=a.tenant_id AND asset_id=a.id ORDER BY created_at DESC,id DESC LIMIT 1)s ON true WHERE a.tenant_id=$1 AND ($2='' OR a.name ILIKE '%'||$2||'%' OR a.owner ILIKE '%'||$2||'%' OR a.purpose ILIKE '%'||$2||'%' OR a.provider_reference ILIKE '%'||$2||'%' OR a.model_reference ILIKE '%'||$2||'%') AND ($3='' OR a.data_classification=$3) AND ($4='' OR (s.asset_version=a.version AND s.risk_level=$4)) AND ($5='' OR $5=CASE WHEN s.id IS NULL THEN 'NOT_ASSESSED' WHEN s.asset_version<>a.version THEN 'REASSESSMENT_REQUIRED' ELSE 'ASSESSED' END)`,[tenantId,search,classification,riskLevel,assessmentStatus])).rows[0].total;
-    return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,canWrite,assets:rows.slice(0,25),hasMore:rows.length>25,page,summary,filteredTotal,method:METHOD};
+    return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,canWrite,assets:rows.slice(0,25),hasMore:rows.length>25,page,summary,filteredTotal,method:METHOD,contract_version:HTTP_CONTRACT_VERSION};
    }
    // Read paths share-lock so a saved revision cannot tear a multi-query view;
    // only mutating operations take the row lock that serializes versions.
@@ -143,7 +144,7 @@ export function createRiskEngineService(transact=transaction) {
     const updated=(await db.query(`UPDATE public.aigas_re_assets SET name=$3,owner=$4,purpose=$5,data_classification=$6,data_context=$7,provider_reference=$8,model_reference=$9,model_version=$10,approval_status=$11,lifecycle_status=$12,version=version+1,updated_at=clock_timestamp() WHERE tenant_id=$1 AND id=$2 RETURNING *`,[tenantId,id,a.name,a.owner,a.purpose,a.data_classification,a.data_context,a.provider_reference,a.model_reference,a.model_version,a.approval_status,a.lifecycle_status])).rows[0];
     await saveRevision(updated);
     await audit(`risk_engine.asset.updated:${id}`,{correlationId:id,policyVersion:'risk-asset-schema-v2',idempotencyKey:`risk-engine:asset:${id}:updated:v${updated.version}`});
-    await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.asset.updated',policy_version:'risk-asset-schema-v2',metadata_json:{synthetic:false,asset_ref:id,asset_version:updated.version},idempotency_key:`asset:${id}:v${updated.version}`});
+    await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.asset.updated',correlation_id:id,decision_id:id,policy_version:'risk-asset-schema-v2',metadata_json:{synthetic:false,asset_ref:id,asset_version:updated.version},idempotency_key:`asset:${id}:v${updated.version}`});
     return {asset:updated,persisted:true,changed:true,changed_fields:changedFields,assessment_status:assessmentStatus(updated,latestAssessment),reassessment_required:assessmentStatus(updated,latestAssessment)==='REASSESSMENT_REQUIRED',treatment_review_required:treatmentNeedsReview(updated,latestAssessment,latestTreatment)};
    }
    if(['assess','save-treatment'].includes(operation)&&asset.lifecycle_status!=='ACTIVE')throw new KernelError(409,'ASSET_RETIRED','الأصل مؤرشف؛ أعد تفعيله عبر تحرير الأصل قبل التقييم أو تحديث المعالجة.');
@@ -168,7 +169,7 @@ export function createRiskEngineService(transact=transaction) {
     const assessment=(await db.query(`INSERT INTO public.aigas_re_assessments(id,tenant_id,asset_id,asset_version,asset_snapshot,likelihood,impact,likelihood_reason,impact_reason,controls_reason,risk_level,method_version,explanation,suggested_control,evaluator_id,method_name,evidence_references,previous_assessment_id)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING *`,[randomUUID(),tenantId,id,asset.version,assetSnapshot,a.likelihood,a.impact,a.likelihood_reason,a.impact_reason,a.controls_reason,a.risk_level,a.method_version,a.explanation,a.suggested_control,identity.userId,a.method_name,a.evidence_references,latestAssessment?.id||null])).rows[0];
     await audit(`risk_engine.assessment.created:${assessment.id}`,{correlationId:assessment.id,policyVersion:assessment.method_version,idempotencyKey:`risk-engine:assessment:${assessment.id}`});
-    await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.assessment.created',policy_version:assessment.method_version,metadata_json:{synthetic:false,asset_ref:id,asset_version:asset.version,assessment_ref:assessment.id,risk_level:assessment.risk_level,requires_human_review:assessment.risk_level==='HIGH'},idempotency_key:`assessment:${assessment.id}`});
+    await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.assessment.created',correlation_id:assessment.id,decision_id:assessment.id,policy_version:assessment.method_version,metadata_json:{synthetic:false,asset_ref:id,asset_version:asset.version,assessment_ref:assessment.id,risk_level:assessment.risk_level},idempotency_key:`assessment:${assessment.id}`});
     return {assessment:{...assessment,requires_human_review:assessment.risk_level==='HIGH',deployment_authorized:false},persisted:true,assessment_status:'ASSESSED',treatment_review_required:!!latestTreatment,method:METHOD};
    }
    throw new KernelError(404,'NOT_FOUND','المسار غير موجود.');

@@ -843,6 +843,24 @@ Phase 5 — Enterprise deployment breadth / capacity / advanced operations
 
 ---
 
+## 35.1 عقد الثقة بين المنتجات — حالة المصدر (2026-11-03)
+
+> **التصنيف:** `IMPLEMENTED_IN_SOURCE` / `NOT_RUNTIME_VERIFIED`. لا يغيّر هذا القسم اعتماد المنتجات أو الترخيص أو وضع النشر.
+
+أُضيف غلاف حدث داخلي موحد `aigas-product-event-v1` (في `src/server/kernel/events.mjs`) يُستهلك عبر محوّل Ledger الموجود `recordProductEvent`؛ لا يوجد Bus أو Queue جديد. الغلاف يثبت `tenantId/actorId/correlationId/decisionId/policyVersion/source/action/idempotencyKey` ويرفض حدث نتيجة قبل تأكيد الأثر، ويرفض مرجعًا لا يطابق `decision_ref/request_ref/asset_ref/assessment_ref/audit_ref`.
+
+حدود القرار والتنفيذ:
+
+- `Firewall` لا يعتبر `Human Gate` موافقة إلا بربط صريح لنفس المؤسسة والقرار والطلب ونسخة السياسة والبصمة والمهلة. ومع ذلك لا ينفّذ موافقة بشرية تلقائيًا؛ غياب تكامل تنفيذ معتمد يبقى `BLOCKED`.
+- `Ledger` يسجّل `firewall.decision.recorded` لا نتيجة تنفيذ. غياب Ledger الاختياري يعيد `recorded:false` مع حالة اعتمادية، ويبقى `Kernel audit` قائمًا. غياب دليل إلزامي يوقف العملية.
+- `tenantGuard` يسبق الاستعلامات المؤسسية، والمراجع التي يرسلها العميل تُفحص ضد مؤسسة أخرى (`REFERENCE_TENANT_CONFLICT`). الترحيل `0022` (فهارس مرجع عالمية) مسودة محلية غير مطبقة وتحتاج اعتمادًا بشريًا.
+- أكواد الأخطاء صارت ضمن غلاف ثابت `aigas-http-v1` / `aigas-error-v1` مع رأس `X-AIGAS-Contract`، دون تغيير المسارات أو الحقول الحالية.
+- `Risk Engine` غير مستدعى في مسار `Firewall` الأساسي؛ غيابه لا يغيّر الضوابط الأساسية.
+
+التفاصيل التشغيلية والحدود والعوائق في `docs/PRODUCT-TRUST-CONTRACT-RUNBOOK.md`. كل ما لم يُفحص تشغيليًا يبقى `NOT VERIFIED`.
+
+---
+
 ## 36. سياسة التغيير واعتماد هذه الوثيقة
 
 **نوع الوثيقة:** Architecture Baseline مقترح مشتق من Blueprint، قابل للمراجعة. **لا تُعد موافقة على Procurement أو مستضيف أو DB أو عرض سعر أو ترخيص أو انتشار إقليمي أو شهادة.**

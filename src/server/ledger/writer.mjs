@@ -1,6 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import { productGrants } from '../kernel/access.mjs';
+import { assertTenantMembership, productGrants } from '../kernel/access.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
+import { buildProductEvent, eventDefinition, eventLedgerFields, publicEventEnvelope } from '../kernel/events.mjs';
+import { dependencyClasses } from '../kernel/contracts.mjs';
 import { profile, metadata, hashEvent, verifyEvent, sourceTypes, uuid } from './core.mjs';
 
 export const columns = 'event_id,tenant_id,source,event_type,policy_version,metadata_json,created_at,created_by,hash_profile,sequence_no,previous_hash,idempotency_key,integrity_hash';
@@ -39,9 +41,51 @@ export async function appendEvent(db, identity, tenantId, input) {
 
 // Ledger evidence is additive unless an approved Kernel requirement makes it mandatory.
 // A savepoint lets an optional Ledger outage roll back only that append, not the Kernel audit.
+//
+// `input` is validated through the shared product envelope first. The persisted
+// reference (`decision_ref`, `request_ref`, `asset_ref`, `assessment_ref` or
+// `audit_ref`) must match the envelope's `decision_id`; a product cannot attach
+// an outcome to a different decision or replay another cycle's reference.
+const referenceState = (ready, access, grant) => {
+  // No approved Ledger configuration at all. This is not "access denied" and it
+  // never disables Kernel audit; it only means optional evidence is unavailable.
+  if (!ready.events || !ready.access || !ready.grants) return { status: dependencyClasses.NOT_CONFIGURED, code: 'LEDGER_NOT_CONFIGURED', entitled: false };
+  // No access row or no grant means no approved commercial entitlement. It is
+  // reported as not configured, not as a security denial of the caller.
+  if (!access || !grant) return { status: dependencyClasses.NOT_CONFIGURED, code: 'LEDGER_NOT_ENTITLED', entitled: false };
+  if (grant.grantState === 'REVOKED') return { status: dependencyClasses.NOT_ENTITLED, code: 'LEDGER_ENTITLEMENT_REVOKED', entitled: false };
+  if (grant.grantState === 'EXPIRED' || access.status === 'EXPIRED') return { status: dependencyClasses.EXPIRED, code: 'LEDGER_ENTITLEMENT_EXPIRED', entitled: false };
+  if (grant.grantState === 'NOT_CONFIGURED') return { status: dependencyClasses.NOT_CONFIGURED, code: 'LEDGER_ENTITLEMENT_NOT_CONFIGURED', entitled: false };
+  if (grant.grantState === 'PENDING') return { status: dependencyClasses.BLOCKED, code: 'LEDGER_ENTITLEMENT_PENDING', entitled: false };
+  // FOUNDATION is a database default, not an administrative decision. It means
+  // "not configured", never "blocked" and never "not subscribed".
+  if (access.status === 'FOUNDATION') return { status: dependencyClasses.NOT_CONFIGURED, code: 'LEDGER_ACCESS_UNDECIDED', entitled: false };
+  if (access.status !== 'ENABLED') return { status: dependencyClasses.BLOCKED, code: 'LEDGER_PRODUCT_DISABLED', entitled: true };
+  if (grant.grantState !== 'ACTIVE') return { status: dependencyClasses.NOT_ENTITLED, code: 'LEDGER_ENTITLEMENT_UNUSABLE', entitled: false };
+  return { status: dependencyClasses.AVAILABLE, code: 'LEDGER_AVAILABLE', entitled: true };
+};
+
 export async function recordProductEvent(db, identity, tenantId, input) {
+  const definition = eventDefinition(input.source, input.event_type);
+  // Callers normally pass the reference explicitly; deriving it from the
+  // allowlisted metadata prevents a second, divergent value for the same cycle.
+  const decisionId = input.decision_id ?? input.metadata_json?.[definition.reference];
+  const envelope = buildProductEvent({
+    identity, tenantId,
+    source: input.source,
+    eventType: input.event_type,
+    correlationId: input.correlation_id,
+    decisionId,
+    policyVersion: input.policy_version,
+    idempotencyKey: input.idempotency_key,
+    outcomeConfirmed: input.outcome_confirmed === true,
+    metadata: input.metadata_json,
+  });
+  // Membership is checked before any tenant-scoped read below; the caller's
+  // tenant is still the one derived from tenantGuard, never a request body.
+  await assertTenantMembership(db, identity, tenantId);
   const ready = (await db.query("SELECT to_regclass('public.aigas_ld_evidence_requirements') IS NOT NULL AS requirements, to_regclass('public.aigas_ld_events') IS NOT NULL AS events, to_regclass('public.aigas_product_access') IS NOT NULL AS access, to_regclass('public.aigas_product_grants') IS NOT NULL AS grants")).rows[0];
-  const requirement = ready.requirements ? (await db.query('SELECT policy_version FROM public.aigas_ld_evidence_requirements WHERE tenant_id=$1 AND source=$2 AND event_type=$3 FOR SHARE',[tenantId,input.source,input.event_type])).rows[0] : null;
+  const requirement = ready.requirements ? (await db.query('SELECT policy_version FROM public.aigas_ld_evidence_requirements WHERE tenant_id=$1 AND source=$2 AND event_type=$3 FOR SHARE',[tenantId,envelope.source,envelope.eventType])).rows[0] : null;
   const mandatoryFailure = status => new KernelError(503,'MANDATORY_EVIDENCE_UNAVAILABLE','السياسة المعتمدة تشترط دليلًا لهذه العملية؛ تعذر تأكيد Ledger. لم تكتمل العملية.',status);
   await db.query('SAVEPOINT aig_optional_ledger_event');
   try {
@@ -50,26 +94,40 @@ export async function recordProductEvent(db, identity, tenantId, input) {
       access = (await db.query("SELECT status FROM public.aigas_product_access WHERE tenant_id=$1 AND product_slug='ledger' FOR SHARE",[tenantId])).rows[0] ?? null;
       if (access) grant = (await productGrants(db,tenantId,'ledger'))[0] ?? null;
     }
-    const state = !ready.events || !ready.access || !ready.grants ? 'not configured'
-      : grant?.grantState === 'NOT_CONFIGURED' ? 'not configured'
-      : !access || !grant || grant.grantState === 'REVOKED' || access.status !== 'ENABLED' ? 'access denied'
-      : grant.grantState === 'EXPIRED' ? 'expired' : grant.grantState === 'ACTIVE' ? 'available' : 'access denied';
-    if (state !== 'available') {
-      if (requirement) throw mandatoryFailure(state);
+    const state = referenceState(ready, access, grant);
+    if (state.status !== dependencyClasses.AVAILABLE) {
+      if (requirement) throw mandatoryFailure(state.status);
       await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
-      return { recorded:false, dependencyStatus:state, reason:'LEDGER_NOT_AVAILABLE' };
+      return {
+        recorded:false, dependencyStatus:state.status, dependencyCode:state.code,
+        entitled:state.entitled, required:false, reason:'LEDGER_NOT_AVAILABLE',
+        contract: envelope.contract, event: publicEventEnvelope(envelope),
+      };
     }
-    const event = await appendEvent(db,identity,tenantId,requirement ? {...input,metadata_json:{...input.metadata_json,evidence_policy_version:requirement.policy_version}} : input);
+    const ledgerInput = eventLedgerFields(envelope);
+    const event = await appendEvent(db, identity, tenantId, {
+      ...ledgerInput,
+      metadata_json: requirement ? { ...input.metadata_json, evidence_policy_version: requirement.policy_version } : input.metadata_json,
+    });
     await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
-    return { ...event, dependencyStatus:'available' };
+    return {
+      ...event, dependencyStatus:dependencyClasses.AVAILABLE, dependencyCode:'LEDGER_AVAILABLE',
+      entitled:true, required:!!requirement, contract: envelope.contract, event: publicEventEnvelope(envelope),
+    };
   } catch (error) {
     await db.query('ROLLBACK TO SAVEPOINT aig_optional_ledger_event');
     await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
-    if (error instanceof KernelError && ['INVALID_EVENT','UNTRUSTED_EVENT','INVALID_AUDIT_CONTEXT'].includes(error.code)) throw error;
+    if (error instanceof KernelError && ['INVALID_EVENT','UNTRUSTED_EVENT','INVALID_AUDIT_CONTEXT','INVALID_EVENT_CONTEXT','EVENT_REFERENCE_MISMATCH','OUTCOME_NOT_CONFIRMED','EVIDENCE_KEY_CONFLICT','LEDGER_INTEGRITY_UNAVAILABLE','EVIDENCE_UNAVAILABLE'].includes(error.code)) throw error;
     if (requirement) {
       if (error instanceof KernelError && error.code === 'MANDATORY_EVIDENCE_UNAVAILABLE') throw error;
-      throw mandatoryFailure(error?.code === '42501' ? 'access denied' : 'temporarily unavailable');
+      throw mandatoryFailure(error?.code === '42501' ? dependencyClasses.NOT_ENTITLED : dependencyClasses.TEMPORARILY_UNAVAILABLE);
     }
-    return { recorded:false, dependencyStatus:error?.code === '42501' ? 'access denied' : 'temporarily unavailable', reason:'LEDGER_TEMPORARILY_UNAVAILABLE' };
+    return {
+      recorded:false,
+      dependencyStatus:error?.code === '42501' ? dependencyClasses.NOT_ENTITLED : dependencyClasses.TEMPORARILY_UNAVAILABLE,
+      dependencyCode:error?.code === '42501' ? 'LEDGER_DB_PRIVILEGE' : 'LEDGER_TEMPORARILY_UNAVAILABLE',
+      entitled:error?.code !== '42501', required:false, reason:'LEDGER_TEMPORARILY_UNAVAILABLE',
+      contract: envelope.contract, event: publicEventEnvelope(envelope),
+    };
   }
 }

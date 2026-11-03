@@ -1,5 +1,8 @@
-export const dependencyStatuses = Object.freeze(['available', 'not configured', 'access denied', 'expired', 'temporarily unavailable']);
-const dependencyStatusSet = new Set(dependencyStatuses);
+import { dependencyClasses, dependencyStatusSet } from './contracts.mjs';
+
+// The dependency vocabulary is shared with the HTTP contract so a product
+// cannot invent a state that the client or an operator runbook would misread.
+export const dependencyStatuses = Object.freeze(Object.values(dependencyClasses));
 export const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // Accepts only canonical UUID strings; numbers, arrays and query-param lists never pass.
 export function isUuid(value) {

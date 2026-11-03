@@ -1,5 +1,5 @@
 import { transaction } from '../kernel/db.mjs';
-import { requireProductAccess } from '../kernel/access.mjs';
+import { assertReferenceTenant, requireProductAccess } from '../kernel/access.mjs';
 import { audit } from '../kernel/service.mjs';
 import { KernelError } from '../kernel/core.mjs';
 import { INPUT_POLICY, usagePolicy } from './policy.mjs';
@@ -16,6 +16,9 @@ function isUniqueViolation(error) {
 export async function reserve(identity, tenantId, id, model) {
   return transaction(async db => {
     await scope(db, identity, tenantId);
+    // A request UUID used by another tenant is a conflict, never a replay of
+    // that tenant's request. This runs before the per-tenant row lookup.
+    await assertReferenceTenant(db, tenantId, 'secure_chat_request', id);
     // Serialize all reservations for this tenant across workers/replicas.
     await db.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [`sc:${tenantId}`]);
     if ((await db.query('SELECT 1 FROM public.aigas_sc_cancellations WHERE tenant_id=$1 AND user_id=$2 AND request_id=$3',[tenantId,identity.userId,id])).rowCount) throw new KernelError(409,'REQUEST_CANCELLED','سُجل إلغاء هذا الطلب قبل الإرسال؛ لن يُرسل إلى المزود.');

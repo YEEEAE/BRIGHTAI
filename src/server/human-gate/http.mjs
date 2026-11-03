@@ -1,7 +1,8 @@
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
+import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
 import { operate } from './service.mjs';
-const headers = { 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' };
+const headers = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
 function setupError(error) {
   if (['42P01','42703'].includes(error?.code)) return { code:'HUMAN_GATE_SCHEMA_MISSING', message:'مخطط Human Gate غير مكتمل على قاعدة البيانات الحالية. يحتاج المشغّل مراجعة الترحيلات المعتمدة؛ لم يُؤكد الحفظ أو التنفيذ.' };
   if (error?.code === '42501') return { code:'HUMAN_GATE_DB_PRIVILEGE', message:'دور قاعدة بيانات التطبيق لا يملك الصلاحية المطلوبة على جداول Human Gate. يلزم مراجعة صلاحيات runtime؛ لم يُؤكد الحفظ أو التنفيذ.' };
@@ -33,7 +34,7 @@ export function createHandler(auth=authenticate, service=operate) {
       const known=error instanceof KernelError;
       const setup=known?null:setupError(error);
       const dependencyStatus=known?dependencyStatusForError(error):setup?.code==='HUMAN_GATE_SCHEMA_MISSING'?'not configured':setup?'access denied':'temporarily unavailable';
-       return Response.json({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.',...(dependencyStatus?{dependencyStatus}:{})},{status:known?error.status:503,headers});
+       return Response.json(errorBody({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.',dependencyStatus}),{status:known?error.status:503,headers});
     }
   };
 }

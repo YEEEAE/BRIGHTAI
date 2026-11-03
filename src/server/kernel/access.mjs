@@ -28,6 +28,31 @@ export async function assertTenantMembership(db, identity, tenantId) {
   requireRole(member, ['OWNER', 'ADMIN', 'MEMBER']);
   return member;
 }
+// Stable, tenant-bound references used by client-supplied identifiers. The
+// table/column pairs are server-owned literals; no identifier from a request is
+// ever interpolated into SQL. A reference already used by another tenant is a
+// conflict, never a replay of that tenant's operation.
+const referenceScopes = Object.freeze({
+  firewall_request: { table: 'public.aigas_fw_decisions', column: 'request_id' },
+  secure_chat_request: { table: 'public.aigas_sc_requests', column: 'id' },
+});
+
+export async function assertReferenceTenant(db, tenantId, kind, value) {
+  const scope = referenceScopes[kind];
+  if (!scope || !isUuid(tenantId) || !isUuid(value)) return;
+  let foreign;
+  try {
+    foreign = (await db.query(`SELECT 1 FROM ${scope.table} WHERE ${scope.column}=$1 AND tenant_id<>$2 LIMIT 1`, [value, tenantId])).rowCount > 0;
+  } catch (error) {
+    // The primary operation writes to this table next and will fail closed if
+    // the schema or grant is absent. This secondary check never turns a missing
+    // table into an allow.
+    if (error?.code === '42P01' || error?.code === '42501') return;
+    throw error;
+  }
+  if (foreign) throw new KernelError(409, 'REFERENCE_TENANT_CONFLICT', 'هذا المرجع مستخدم في مؤسسة أخرى؛ استخدم معرّفًا جديدًا. لم تُنفّذ العملية.');
+}
+
 // Shared by all five products. Active approval is separate from the product toggle.
 export async function requireProductAccess(db, identity, tenantId, slug) {
   const product = products.find(item => item.slug === slug);

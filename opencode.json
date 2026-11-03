@@ -22,6 +22,11 @@
           "chrome-devtools-mcp@1.12.0",
           "--no-usage-statistics"
         ]
+      },
+      "mgd-design": {
+        "type": "remote",
+        "url": "https://madegooddesigns.com/inspiration/mcp/core",
+        "enabled": true
       }
     }
   },
