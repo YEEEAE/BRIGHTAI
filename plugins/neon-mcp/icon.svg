@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Neon database">
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="#030712"/>
+  <rect x="4.75" y="4.75" width="54.5" height="54.5" rx="13.25" fill="none" stroke="#22d3a6" stroke-opacity="0.7" stroke-width="1.5"/>
+  <ellipse cx="32" cy="20" rx="14" ry="5.5" fill="none" stroke="#22d3a6" stroke-width="2.2"/>
+  <path d="M18 20v12c0 3.04 6.27 5.5 14 5.5s14-2.46 14-5.5V20" fill="none" stroke="#22d3a6" stroke-width="2.2"/>
+  <path d="M18 32v12c0 3.04 6.27 5.5 14 5.5s14-2.46 14-5.5V32" fill="none" stroke="#e2e8f0" stroke-opacity="0.85" stroke-width="2.2"/>
+  <path d="M46 30.5 40.5 39h4.2l-2.9 6.5" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

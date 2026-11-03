@@ -268,10 +268,19 @@ function renderGuard(data: any, submitted: string) {
   if (decision.rule_id) result.append(metaLine('معرّف القاعدة', `${decision.rule_id} · النسخة ${decision.rule_version}`));
   result.append(metaLine('وقت التقييم', riyadhTime(decision.created_at)));
   result.append(metaLine('مرجع القرار', decision.id));
+  if (data.request_id) result.append(metaLine('معرّف الطلب', data.request_id));
+  if (data.policy_version) result.append(metaLine('نسخة السياسة', String(data.policy_version)));
+  if (data.request_fingerprint) result.append(metaLine('بصمة الطلب', `${String(data.request_fingerprint).slice(0, 20)}…`));
   result.append(metaLine('الحالة', `${data.execution_status ?? 'NOT_EXECUTED'} — ${executionLabel(data)}`));
+  if (data.review_required === true) {
+    const integration = data.integration?.configured === true
+      ? `طلب مراجعة معلق · ${data.integration.operation_type}`
+      : `HUMAN_GATE_NOT_CONFIGURED — ${data.integration?.reason ?? 'NO_APPROVED_REVIEW_INTEGRATION'}؛ لم يُنشأ طلب موافقة.`;
+    result.append(metaLine('تكامل المراجعة', integration));
+  }
   const state = field('p'); state.textContent = data.message ?? executionLabel(data);
   result.append(state);
-  const saved = field('p', 'fw-result-meta'); saved.textContent = 'حُفظ قرار السياسة وتدقيق Kernel دون النص؛ هذا المرجع ليس إثبات وصول للمزود.';
+  const saved = field('p', 'fw-result-meta'); saved.textContent = 'حُفظ قرار السياسة وتدقيق Kernel وبصمة الربط دون النص؛ هذا المرجع ليس إثبات وصول للمزود.';
   result.append(saved);
   if (data.external_action_executed === true && typeof data.response_text === 'string') {
     const output = field('p', 'fw-result-output'); output.textContent = `استجابة المزود: ${data.response_text}`; result.append(output);
@@ -317,7 +326,10 @@ function render(data: any) {
     const rule = field('p');
     rule.textContent = decision.rule_id ? `مرجع القاعدة: ${decision.rule_id} · النسخة وقت القرار ${decision.rule_version}` : 'دون قاعدة مطابقة';
     const reason = field('p', 'fw-decision-reason'); reason.textContent = reasonLabels[decision.reason] ?? decision.reason;
-    const reference = field('p'); reference.textContent = `القرار: ${decision.id} · ${decision.mode === 'GUARD' ? 'مسار التنفيذ (قرار سياسة)' : 'تقييم تجريبي'}`;
+    const reference = field('p');
+    reference.textContent = `القرار: ${decision.id} · ${decision.mode === 'GUARD'
+      ? `مسار التنفيذ (قرار سياسة${decision.policy_version ? ` · نسخة ${String(decision.policy_version).slice(0, 24)}…` : ''})`
+      : 'تقييم تجريبي'}`;
     item.append(time, actionBadge(decision.action), reason, rule, reference);
     decisions.append(item);
   }

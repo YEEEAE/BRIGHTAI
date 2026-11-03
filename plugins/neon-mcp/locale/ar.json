@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Neon MCP",
+    "description": "يربط خادم Neon MCP الرسمي بالمشروع المرتبط: عرض الفروع، فحص المخطط، تنفيذ SQL للقراءة، وإدارة Lakebase Postgres من المحادثة."
+  }
+}

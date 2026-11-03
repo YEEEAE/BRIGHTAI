@@ -4,6 +4,10 @@
 -- strict enforcement defaults and per-tenant request replay protection.
 -- Changes in this revision (2026-11-03): five decision states ALLOW/WARN/REDACT/ESCALATE/DENY,
 -- KERNEL_POLICY_DENIED reason, and the DENY action on the `prohibited` template.
+-- Changes in this revision (2026-11-03, execution binding): durable policy_version and
+-- request_fingerprint on every decision; GUARD rows must carry both. The fingerprint is a
+-- server-computed SHA-256 over tenant, single-use request UUID, Kernel policy versions and the
+-- decision outcome. It is not a prompt or a prompt hash and cannot be reversed to the text.
 -- Fresh install only: this revision is NOT an upgrade script for an existing 0002.
 -- Runtime also requires the separately reviewed Kernel administration migration 0006.
 BEGIN;
@@ -40,11 +44,16 @@ CREATE TABLE public.aigas_fw_decisions (
  mode text NOT NULL DEFAULT 'LAB' CHECK (mode IN ('LAB','GUARD')),
  -- Opaque operation UUID only. Never a prompt, prompt hash, caller URL or matching value.
  request_id uuid,
+ -- Effective Kernel policy reference (or the evaluator version for LAB decisions).
+ policy_version text NOT NULL DEFAULT 'firewall-evaluator-v2' CHECK (policy_version ~ '^[a-zA-Z0-9_.:-]{1,120}$'),
+ -- Binding digest over tenant, request UUID, policy version and outcome; not a prompt hash.
+ request_fingerprint text CHECK (request_fingerprint IS NULL OR request_fingerprint ~ '^[0-9a-f]{64}$'),
  rule_id uuid,
  rule_version integer CHECK (rule_version>0),
  FOREIGN KEY (tenant_id,rule_id) REFERENCES public.aigas_fw_rules(tenant_id,id),
  CHECK ((rule_id IS NULL)=(rule_version IS NULL)),
  CHECK ((mode='GUARD')=(request_id IS NOT NULL)),
+ CHECK (mode <> 'GUARD' OR request_fingerprint IS NOT NULL),
  CHECK ((reason IN ('NO_ACTIVE_POLICY','INVALID_POLICY','RULE_DENY','NO_MATCH_ENFORCED','KERNEL_POLICY_DENIED') AND action='DENY') OR
         (reason='RULE_ESCALATE' AND action='ESCALATE') OR
         (reason='RULE_REDACT' AND action='REDACT') OR

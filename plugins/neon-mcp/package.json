@@ -1,0 +1,22 @@
+{
+  "name": "@local/neon-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Connects the official Neon MCP server so the agent can inspect and manage the linked Neon project.",
+  "exports": {
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

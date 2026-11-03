@@ -1,0 +1,15 @@
+# Neon MCP Server — official remote server at https://mcp.neon.tech/mcp.
+# Tools are exposed as `mcp__neon__<tool>`.
+#
+# This row intentionally carries no Authorization header: the project-scoped
+# Neon API key lives only in the user-level profile patch, which overrides this
+# row's `config` wholesale. Keep secrets out of the repository.
+- insert:
+    - id: neon-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: neon
+        transport: streamable-http
+        url: 'https://mcp.neon.tech/mcp?projectId=young-frog-60183055'
+        toolCallTimeoutMs: 120000
+        failOnStartupError: false

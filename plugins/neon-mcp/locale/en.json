@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Neon MCP",
+    "description": "Connects the official Neon MCP server for the linked project: list branches, inspect schemas, run read-only SQL, and manage Lakebase Postgres from the conversation."
+  }
+}

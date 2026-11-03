@@ -1,21 +1,37 @@
-import { approvedProvider } from './provider.mjs';
+import { approvedProvider, PROVIDER_TIMEOUT_MS } from './provider.mjs';
+
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const fingerprint = /^[0-9a-f]{64}$/;
+const policyVersionFormat = /^[a-zA-Z0-9_.:-]{1,120}$/;
 
 // Called only after the mandatory policy decision AND Kernel audit COMMIT.
 // The HTTP layer never receives the server-only forwarding text. There is no
 // client decision token, arbitrary URL, alternate prompt or provider override.
-export async function enforceDecision({ decision, tenantId, forwardText, kernelPolicy }) {
+// Fail-closed order: Kernel ALLOW + durable binding are required before any
+// provider lookup, and only ALLOW/REDACT may cross the provider boundary.
+export async function enforceDecision({ decision, tenantId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation }) {
   const base = {
     decision,
     policy: kernelPolicy ? { decision: kernelPolicy.decision, reason: kernelPolicy.reason, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
+    request_id: requestId ?? null,
+    policy_version: policyVersion ?? null,
+    request_fingerprint: requestFingerprint ?? null,
     persisted: true, external_action_executed: false, execution_status: 'NOT_EXECUTED',
   };
   // DENY is the final state; nothing downstream may soften it.
   if (decision.action === 'DENY') return { ...base, httpStatus: 403, code: 'POLICY_BLOCKED', message: 'حُجب الطلب قبل أي استدعاء لمزود AI.' };
-  // ESCALATE needs a human decision. No approval path is enabled in this release,
-  // so the safe outcome is to stop instead of treating silence as consent.
+  // ESCALATE needs an independent human decision. A review request may exist only
+  // when an approved server integration is configured; otherwise this stops here.
+  // In both cases nothing has been sent to a provider and nothing will be.
   if (decision.action === 'ESCALATE') {
-    return { ...base, httpStatus: 409, code: 'ESCALATION_REQUIRED', review_required: true,
-      message: 'القرار يتطلب موافقة بشرية مخولة، ولا يوجد مسار موافقة مفعّل في هذه النسخة؛ لم يُرسل الطلب.' };
+    if (escalation?.requested === true && escalation.review) {
+      return { ...base, httpStatus: 202, code: 'REVIEW_PENDING', review_required: true,
+        review: escalation.review, integration: { code: escalation.code, configured: true, operation_type: escalation.operation_type },
+        message: 'أُنشئ طلب مراجعة بشرية معلق. لم يُرسل الطلب إلى أي مزود، ولن يُرسل قبل اعتماد مستقل يعيد التحقق من الربط.' };
+    }
+    return { ...base, httpStatus: 409, code: 'HUMAN_GATE_NOT_CONFIGURED', review_required: true,
+      integration: escalation?.configured === false ? { code: escalation.code, configured: false, reason: escalation.reason ?? null } : { code: 'HUMAN_GATE_NOT_CONFIGURED', configured: false, reason: 'NO_APPROVED_REVIEW_INTEGRATION' },
+      message: 'القرار يتطلب موافقة بشرية، وتكامل Human Gate غير مهيأ لهذه النسخة؛ لم يُنشأ طلب ولم يُرسل الطلب إلى أي مزود.' };
   }
   // WARN is a conditional state, never an unconditional allow. Without an
   // approved warning policy the guard refuses to forward it.
@@ -26,6 +42,17 @@ export async function enforceDecision({ decision, tenantId, forwardText, kernelP
   if (!['ALLOW', 'REDACT'].includes(decision.action) || typeof forwardText !== 'string' || !forwardText.length) {
     return { ...base, httpStatus: 503, code: 'INVALID_GUARD_DECISION', message: 'تعذر تطبيق القرار؛ لم يُرسل الطلب.' };
   }
+  // Defense in depth: a non-ALLOW Kernel policy is never forwarded even if the
+  // product evaluator or a future caller tried to present an ALLOW product rule.
+  if (!kernelPolicy || kernelPolicy.decision !== 'ALLOW') {
+    return { ...base, httpStatus: 409, code: 'KERNEL_POLICY_REQUIRED', message: 'لا يوجد قرار Kernel ALLOW صالح لهذه العملية؛ لم يُرسل الطلب.' };
+  }
+  // The durable decision must carry an intact tenant/policy/request binding.
+  // A missing or malformed binding is a server integrity failure, not an allow.
+  if (!uuid.test(tenantId ?? '') || !uuid.test(requestId ?? '') || !policyVersionFormat.test(policyVersion ?? '')
+    || !fingerprint.test(requestFingerprint ?? '')) {
+    return { ...base, httpStatus: 503, code: 'EXECUTION_BINDING_REQUIRED', message: 'تعذر التحقق من ربط القرار بالطلب والنسخة السياسية؛ لم يُرسل الطلب.' };
+  }
   const provider = approvedProvider(tenantId);
   if (!provider) return { ...base, httpStatus: 503, code: 'PROVIDER_NOT_CONFIGURED', message: 'حُفظ قرار السياسة، لكن لا توجد جهة AI معتمدة ومهيأة لهذه المؤسسة؛ لم يُرسل الطلب.' };
   const controller = new AbortController();
@@ -34,7 +61,7 @@ export async function enforceDecision({ decision, tenantId, forwardText, kernelP
     // Only evaluated output is available to the adapter, never the raw request.
     // No automatic retries or fallback to another provider.
     const deadline = new Promise((_, reject) => {
-      timer = setTimeout(() => { controller.abort(); reject(new Error('PROVIDER_TIMEOUT')); }, 15000);
+      timer = setTimeout(() => { controller.abort(); reject(new Error('PROVIDER_TIMEOUT')); }, PROVIDER_TIMEOUT_MS);
     });
     const output = await Promise.race([provider.generate({ text: forwardText, signal: controller.signal }), deadline]);
     if (typeof output !== 'string' || output.length > 16000) throw new Error('INVALID_PROVIDER_RESPONSE');

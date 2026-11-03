@@ -10,6 +10,8 @@ import {
 } from './core.mjs';
 import { providerState } from './provider.mjs';
 import { enforceDecision } from './guard.mjs';
+import { requestHumanReview } from './escalation.mjs';
+import { policyReference, decisionFingerprint } from './binding.mjs';
 import { evaluateKernelPolicy } from '../kernel/policies.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -186,6 +188,8 @@ export function createFirewallService(transact = transaction) {
             if (['42P01', '42703', '42501'].includes(error?.code)) throw new KernelError(503, 'KERNEL_POLICY_SETUP_REQUIRED', 'محرك سياسات Kernel غير مهيأ أو غير متاح؛ لم يُرسل الطلب إلى مزود AI.');
             throw error;
           }
+          // Missing policy output is an unavailable authorizer, never an allow.
+          if (!kernelPolicy || typeof kernelPolicy.decision !== 'string') throw new KernelError(503, 'KERNEL_POLICY_UNAVAILABLE', 'تعذر الحصول على قرار سياسة Kernel؛ لم يُرسل الطلب إلى مزود AI.');
         }
         const productResult = evaluate(requestText, rules, { enforce: enforced });
         // A Kernel policy that is not ALLOW hard-denies and is never softened by product rules.
@@ -193,6 +197,22 @@ export function createFirewallService(transact = transaction) {
           ? { action: 'DENY', reason: 'KERNEL_POLICY_DENIED', rule_id: null, rule_version: null, rule_name: null, output: null }
           : productResult;
         const id = randomUUID();
+        const policyVersion = enforced ? policyReference(kernelPolicy) : 'firewall-evaluator-v2';
+        const requestFingerprint = enforced
+          ? decisionFingerprint({ tenantId, actorUserId: identity.userId, requestId: body.request_id, policyVersion, result, enforced })
+          : null;
+        // Single-use request UUID. The pre-check runs under the tenant row lock taken
+        // above, so retries are classified before any write; a UUID reused for a
+        // different decision is a conflict and is never executed again.
+        if (enforced) {
+          const existing = (await db.query('SELECT id,request_fingerprint FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND request_id=$2', [tenantId, body.request_id])).rows[0];
+          if (existing) {
+            if (!existing.request_fingerprint || existing.request_fingerprint !== requestFingerprint) {
+              throw new KernelError(409, 'REQUEST_ID_CONFLICT', 'هذا المعرّف مستخدم لطلب مختلف؛ استخدم UUID جديدًا. لم يُعد تنفيذ أي عملية.');
+            }
+            throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
+          }
+        }
         // Explicit metadata fields only: the submitted text and any output never reach the database.
         try {
           if (enforced) {
@@ -200,26 +220,43 @@ export function createFirewallService(transact = transaction) {
               [randomUUID(), tenantId, identity.userId, 'firewall', 'firewall.execute', kernelPolicy.decision, kernelPolicy.reason, JSON.stringify(kernelPolicy.policies ?? []), body.request_id]);
           }
           const inserted = await db.query(
-            'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING created_at',
-            [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', enforced ? body.request_id : null],
+            'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id,policy_version,request_fingerprint) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING created_at',
+            [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', enforced ? body.request_id : null, policyVersion, requestFingerprint],
           );
           if (inserted.rowCount !== 1) throw new Error('DECISION_NOT_SAVED');
           // Kernel audit is required and atomic with the metadata-only decision.
           await audit(db, identity, tenantId, enforced ? 'firewall.guard.evaluated' : 'firewall.lab.evaluated');
-          await recordProductEvent(db, identity, tenantId, { source: 'firewall', event_type: 'firewall.decision.recorded', policy_version: result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v2', metadata_json: { synthetic: true, decision_ref: id, action: result.action, mode: enforced ? 'GUARD' : 'LAB', rule_ref: result.rule_id, rule_version: result.rule_version }, idempotency_key: `decision:${id}` });
+          // Mandatory Ledger evidence (when policy requires it) is written inside the
+          // same transaction; a failure rolls the decision back. Ledger is never required
+          // unless an approved evidence requirement matches this tenant and event type.
+          await recordProductEvent(db, identity, tenantId, {
+            source: 'firewall', event_type: 'firewall.decision.recorded',
+            policy_version: enforced ? policyVersion : (result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v2'),
+            metadata_json: { synthetic: true, decision_ref: id, action: result.action, mode: enforced ? 'GUARD' : 'LAB', rule_ref: result.rule_id, rule_version: result.rule_version, ...(enforced ? { request_fingerprint: requestFingerprint } : {}) },
+            idempotency_key: `decision:${id}`,
+          });
+          let escalation = null;
+          // A human review decision creates its pending request in this transaction,
+          // before any provider call, only through an approved server integration.
+          if (enforced && result.action === 'ESCALATE') {
+            try { escalation = await requestHumanReview(db, identity, tenantId, { decisionId: id, requestId: body.request_id, policyVersion }); }
+            catch { throw new KernelError(503, 'HUMAN_GATE_UNAVAILABLE', 'تعذر إنشاء طلب المراجعة البشرية داخل المعاملة؛ لم تُحفظ العملية ولم يُرسل الطلب.'); }
+          }
           const decision = {
             id, action: result.action, reason: result.reason, reason_text: reasons[result.reason],
             rule_id: result.rule_id, rule_version: result.rule_version,
             created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB',
+            policy_version: policyVersion, request_fingerprint: requestFingerprint,
           };
-          if (enforced) return { decision, tenantId, forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy };
+          if (enforced) return { decision, tenantId, actorUserId: identity.userId, requestId: body.request_id, policyVersion, requestFingerprint,
+            forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation };
           return {
             ...decision, rule_name: result.rule_name, output: result.output,
             input_length: requestText.length, persisted: true,
             execution_status: 'NOT_EXECUTED', external_action_executed: false,
           };
         } catch (error) {
-          if (enforced && uniqueName(error)) throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
+          if (enforced && uniqueName(error)) throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب أو معرّفه مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
           if (error instanceof KernelError || ['42P01', '42703', '42501'].includes(error?.code)) throw error;
           throw new KernelError(503, 'REQUIRED_AUDIT_UNAVAILABLE', enforced
             ? 'تعذر تأكيد حفظ القرار وتدقيق Kernel؛ لم يُرسل الطلب إلى مزود AI.'
@@ -229,7 +266,7 @@ export function createFirewallService(transact = transaction) {
 
       const counts = (await db.query('SELECT action,count(*)::int AS count FROM public.aigas_fw_decisions WHERE tenant_id=$1 GROUP BY action', [tenantId])).rows;
       const decisions = (await db.query(
-        `SELECT d.id,d.created_at,d.action,d.reason,d.rule_id,d.rule_version,d.mode
+        `SELECT d.id,d.created_at,d.action,d.reason,d.rule_id,d.rule_version,d.mode,d.policy_version
          FROM public.aigas_fw_decisions d
          WHERE d.tenant_id=$1 AND ($2='' OR d.action=$2) AND ($3='' OR d.reason=$3)
          AND ($4='' OR d.mode=$4)

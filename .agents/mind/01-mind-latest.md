@@ -14,6 +14,24 @@
 ### ملاحظات / مشاكل مفتوحة
 - 0002 رُوجع كـfresh-install بخمس حالات ولم يُطبّق؛ أي قاعدة بيانات طبّقت النسخة السابقة تحتاج ترحيل ترقية مراجعًا بدل هذا الملف. اختبارات `tests/firewall*.mjs` لم تُعدّل/تُشغّل وما زالت تعكس العقد الثلاثي السابق. تفعيل `ESCALATE` تشغيليًا يحتاج مسار موافقة معتمدًا، وإرسال `ALLOW/REDACT` يحتاج مزودًا معتمدًا.
 
+## [2026-11-03] — إعداد Neon للأيجنت: CLI والمهارات وخادم MCP
+### تم التنفيذ
+- ثُبّت Neon CLI `8.17.0` عالميًا؛ فشل npm cache/EPERM عولج بمخزن مؤقت بدل `sudo chown`، والحساب مسجّل مسبقًا (`zezo--270@hotmail.com`) فلم يُشغّل `neon login`.
+- مهارات Neon في `.agents/skills/neon*` كانت مثبتة يدويًا وخارج تتبّع `neon skills update`؛ أُضيفت `neon-realtime` الناقصة عبر `neon skills -s neon-realtime -y`.
+- أُنشئت حزمة إعداد فقط `plugins/neon-mcp` تربط `@deepseek-ai/dsh-mcp-client` بخادم `https://mcp.neon.tech/mcp?projectId=young-frog-60183055` عبر streamable-http؛ DSH غير مدعوم في أوامر Neon لذلك كان الربط يدويًا.
+- مفتاح Neon API محدود بالمشروع (`dsh-neon-mcp-20261103`, id 3492946) وُضع في تجاوز سطر `neon-mcp` داخل `~/.dsh/profiles/desktop/cordis.patch.yml` فقط مع نسخة احتياطية؛ المستودع بلا سر.
+- `.env` يطابق قيم Neon المعطاة (pooled/unpooled، `production`، Auth URLs) فلم يُعدّل.
+### الملفات المتأثرة
+- `plugins/neon-mcp/{package.json,cordis.patch.yml,locale/*.json,icon.svg,README.md}`, `.agents/skills/neon-realtime`, `~/.dsh/profiles/desktop/cordis.patch.yml`
+### التحقق
+- `neon me` و`neon projects list`: PASS؛ تثبيت الحزمة `application: applied`؛ نداء `mcp__neon__list_branches` أعاد `production` / `br-young-bird-b43proeb`: PASS.
+- build والاختبارات: NOT RUN — لا تغيير في كود التطبيق.
+### النتيجة
+- **الحالة:** DONE للإعداد والاتصال؛ لا commit/push/deploy ولا ترحيل أو تعديل بيانات.
+### ملاحظات / مشاكل مفتوحة
+- المفتاح يمنح صلاحية كاملة داخل المشروع فقط (لا مشاريع أخرى ولا إنشاء مفاتيح)؛ يُلغى بـ`neon api-keys revoke 3492946`.
+- المهارات المثبتة يدويًا لا يحدّثها `neon skills update`؛ التحديث يحتاج إعادة تثبيت صريحة.
+
 ## [2026-11-03] — قناة EAC في dsh-our-free-model: star مطلوب
 ### تم التنفيذ
 - سبب فشل «This turn failed» عند اختيار نموذج EAC هو بوّابة الإضافة `dsh-our-free-model@2.8.0` (مركّبة من `github:ebony-vinyl/dsh-our-free-model`): نماذج EAC لا تعمل قبل تسجيل دخول GitHub وstar للمستودع.
@@ -424,7 +442,7 @@
 - `/app/*` في المصدر Node SSR مع `private, no-store`؛ `render.yaml` يشير لخدمة Node وentrypoint standalone. فحص Chrome في 2026-11-03 أظهر 404 حيًا على `/app/`؛ علاج المصدر محلي فقط ومغلق افتراضيًا بمتغير `AIGAS_APP_ENABLED`. يلزم نشر مصرح وتغيير origin وإتاحة خادمية قبل ادعاء التشغيل.
 - Hero الرئيسية وConstellation دون تغيير. هيدر الجوال يستخدم الآن قائمة disclosure بالروابط نفسها؛ الفهرس الثابت يتحول للتدفق الطبيعي حتى 767px. الشعار عبر brand.ts وBrandLogo.astro، وGA4 العام في BaseLayout.
 - تحويلات `.html` وحقوق بيانات رسم الدماغ والاعتماد القانوني/التجاري وCWV/الفهرسة الفعلية بلا دليل إغلاق جديد.
-- DSH desktop: ست حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader` و`@local/chrome-devtools-mcp`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `chrome-devtools-mcp` صف MCP واحد (stdio، `npx`، إصدار 1.12.0) وأدوات `mcp__chrome-devtools__*` مستدعاة فعليًا؛ يشغّل Chrome بملف مستخدم مستقل في `~/.cache/chrome-devtools-mcp`. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
+- DSH desktop: سبع حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader` و`@local/chrome-devtools-mcp` و`@local/neon-mcp`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `neon-mcp` صف MCP واحد (streamable-http إلى `mcp.neon.tech` بمشروع `young-frog-60183055`) وأدوات `mcp__neon__*` مستدعاة فعليًا، ومفتاحه في بروفايل المستخدم لا في المستودع. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `chrome-devtools-mcp` صف MCP واحد (stdio، `npx`، إصدار 1.12.0) وأدوات `mcp__chrome-devtools__*` مستدعاة فعليًا؛ يشغّل Chrome بملف مستخدم مستقل في `~/.cache/chrome-devtools-mcp`. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
 
 ## Historical Ledger
 - 2026-11-02: Chrome DevTools MCP بعقد إعداد فقط وstdio عبر `npx` بإصدار 1.12.0؛ التركيب PASS و`list_pages` PASS، ويشغّل Chrome مستقلًا. Rollover: نُقلت سجلات 2026-10-31 إلى أعلى `02`.
