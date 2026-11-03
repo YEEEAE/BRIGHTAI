@@ -33,4 +33,6 @@ services:
       - key: REDIS_URL
         sync: false
     # Static-site header rules do not belong to this Node web service.
-    # Private /app/* and CDN no-store headers are set by src/middleware.ts.
+    # src/middleware.ts sets baseline headers (framing, referrer, permissions,
+    # HSTS on HTTPS) and private /app/* no-store/noindex headers.
+    # Keep TLS termination at the operator-managed edge; do not downgrade to HTTP.

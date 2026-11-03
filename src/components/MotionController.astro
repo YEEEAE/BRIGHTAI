@@ -2,14 +2,40 @@
   // Native document navigation keeps initialization and teardown predictable.
   // Core content stays visible before JS and when motion is reduced.
   const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
-  const elements = document.querySelectorAll<HTMLElement>('.block,.pillar,.sector,.catalog-row,.experience,.context-route');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      if (!motionPreference.matches) entry.target.classList.add('motion-enter');
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: .1 });
-  elements.forEach(element => observer.observe(element));
-  addEventListener('pagehide', () => observer.disconnect(), { once: true });
+  // InteriorMotion owns entrance choreography inside .interior-page; never observe it twice.
+  const elements = [...document.querySelectorAll<HTMLElement>('.block,.pillar,.sector,.catalog-row,.experience,.context-route')]
+    .filter(element => !element.closest('.interior-page'));
+  let observer: IntersectionObserver | undefined;
+
+  const revealAll = () => elements.forEach(element => element.classList.remove('motion-enter'));
+
+  const start = () => {
+    if (observer || !elements.length || motionPreference.matches || !('IntersectionObserver' in window)) return;
+    const pending = new Set(elements);
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        if (!motionPreference.matches) entry.target.classList.add('motion-enter');
+        pending.delete(entry.target as HTMLElement);
+        observer?.unobserve(entry.target);
+      });
+      if (!pending.size) { observer?.disconnect(); observer = undefined; }
+    }, { threshold: .1, rootMargin: '0px 0px -5% 0px' });
+    pending.forEach(element => observer?.observe(element));
+  };
+
+  const stop = () => { observer?.disconnect(); observer = undefined; };
+
+  const onPreferenceChange = () => {
+    if (motionPreference.matches) { stop(); revealAll(); }
+    else start();
+  };
+
+  motionPreference.addEventListener('change', onPreferenceChange);
+  addEventListener('pagehide', () => {
+    motionPreference.removeEventListener('change', onPreferenceChange);
+    stop();
+  }, { once: true });
+
+  start();
 </script>

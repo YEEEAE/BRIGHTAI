@@ -207,6 +207,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 @media (prefers-reduced-motion: reduce) {
   :root { --motion-fast: 0ms; --motion-normal: 0ms; --motion-reveal: 0ms; }
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) { animation: none !important; }
-  .motion-enter { opacity: 1; transform: none; }
+  h1,.motion-enter { animation: none; opacity: 1; transform: none; }
+  .system-map:is(:hover,:focus-within) .map-path { animation: none; }
   .button:hover,.ghost:hover span,a:hover .product-icon { transform: none; }
 }

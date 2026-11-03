@@ -1,3 +1,19 @@
+## [2026-11-03] — تقوية ترويسات الاستجابة والحركة والوصول محليًا
+### تم التنفيذ
+- أضيفت ترويسات أمنية موحّدة في `src/middleware.ts` لكل الاستجابات (nosniff، منع التأطير، referrer، permissions، HSTS عند HTTPS مؤكد)، مع إبقاء `no-store` و`noindex` و`Vary` للبوابة ومنع تكرار `Vary`.
+- أضيف حد كتابة بسيط في الذاكرة لمسارات Kernel الإدارية (60/دقيقة لكل مستخدم ومسار) مع `Retry-After`، دون ادعاء أنه حصة دائمة أو تفويض.
+- صُلب اتصال القاعدة: مستمع أخطاء للمسبح، `query_timeout`، وROLLBACK لا يطمس الخطأ الأصلي. وأضيف `Referrer-Policy` لاستجابات Secure Chat و`Retry-After` لحد الاستخدام.
+- أُزيل ازدواج مراقبة الظهور بين `MotionController` و`InteriorMotion` داخل الصفحات الداخلية، وأُغلقت المراقبات والاستماعات، واحتُرم `prefers-reduced-motion` للعناوين والتمرير، ومنع شريط تقدّم قراءة مزدوجًا.
+- تحسينات وصول محدودة: `tabindex="-1"` لأهداف التخطي، `aria-busy` لنموذج Secure Chat، رسائل شبكة/JSON عربية، وإخفاء السهم الزخرفي عن قارئ الشاشة.
+### الملفات المتأثرة
+- `src/middleware.ts`, `src/server/kernel/{http,db}.mjs`, `src/server/secure-chat/service.mjs`, `src/components/{MotionController.astro,PageShell.astro}`, `src/scripts/{interior-motion,secure-chat}.ts`, `src/layouts/AppLayout.astro`, `src/styles/{experience,site}.css`, `render.yaml`.
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. build/lint/typecheck/tests/runtime/headers الفعلية: NOT RUN حسب طلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / تعديل محلي غير متحقق تشغيليًا.
+### ملاحظات / مشاكل مفتوحة
+- لم تُضف سياسة CSP كاملة بالنونس لأن الصفحات تحتوي سكربتات inline حالية؛ المضافة تقتصر على `frame-ancestors`. يلزم التحقق من الترويسات على Render قبل الإطلاق ومن اعتماد تشغيل البوابة/المزود.
+
 ## [2026-11-03] — صدق تجربة 48 ساعة والاستحقاقات التجارية محليًا
 ### تم التنفيذ
 - وُحدت صلاحية المنحة `ADMIN_NON_BILLED` للمنتجات الخمسة بين حارس Kernel واللوحة والتمكين؛ بداية الموافقة المستقبلية والنوع/المدد غير الصالحة لا تمنح وصولًا. استُكمل الحد نفسه في تكامل Ledger وفحص Human Gate النهائي.

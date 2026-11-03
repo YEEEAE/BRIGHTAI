@@ -37,7 +37,7 @@ const minutes = Math.max(1, Math.ceil(words / 180));
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   <Header />
-  <main id="main" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}${publicContent ? ' public-content' : ''}`}>
+  <main id="main" tabindex="-1" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}${publicContent ? ' public-content' : ''}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">
       {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}><bdi>{c.name}</bdi></a> / </> : <span aria-current="page"><bdi>{c.name}</bdi></span>)}
     </nav>

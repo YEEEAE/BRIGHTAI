@@ -39,6 +39,8 @@ function sendingControls(sending: boolean) {
   message.readOnly = sending;
   root.querySelector<HTMLButtonElement>('[data-new-chat]')!.disabled = sending;
   consent.disabled = sending;
+  if (sending) composer.setAttribute('aria-busy', 'true');
+  else composer.removeAttribute('aria-busy');
   updateSend();
 }
 async function requestCancellation() {
@@ -89,6 +91,11 @@ async function token() {
   return value;
 }
 
+function friendlyError(error: unknown) {
+  if (error instanceof TypeError) return 'تعذر الاتصال بالخادم. افحص الشبكة ثم أعد المحاولة يدويًا.';
+  return error instanceof Error && error.message ? error.message : 'تعذر إكمال الطلب.';
+}
+
 async function api(path: string, method = 'GET', body?: object, signal?: AbortSignal) {
   const bearer = await token();
   const query = selectedTenant ? `?workspace=${encodeURIComponent(selectedTenant)}` : '';
@@ -99,7 +106,9 @@ async function api(path: string, method = 'GET', body?: object, signal?: AbortSi
     headers: { Authorization: `Bearer ${bearer}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
-  const data = await response.json();
+  let data: any;
+  try { data = await response.json(); }
+  catch { throw new Error('تعذر قراءة استجابة الخادم؛ لم يُؤكد اكتمال الطلب. حدّث الحالة قبل المحاولة.'); }
   if (!response.ok) {
     const error = new Error(data.message || 'تعذر إكمال الطلب.');
     Object.assign(error, { status: response.status, code: data.code, unauthorized: response.status === 401 });
@@ -114,7 +123,9 @@ async function load(requested?: string) {
   const bearer = await token();
   const query = requested ? `?workspace=${encodeURIComponent(requested)}` : '';
   const response = await appFetch(auth!, `/app/api/kernel/${query}`, { cache: 'no-store', headers: { Authorization: `Bearer ${bearer}` } });
-  const dashboard = await response.json();
+  let dashboard: any;
+  try { dashboard = await response.json(); }
+  catch { throw new Error('تعذر قراءة استجابة الخادم؛ لم يُؤكد التحقق من العضوية. أعد المحاولة.'); }
   if (!response.ok) {
     const error = new Error(dashboard.message || 'تعذر التحقق من عضوية المؤسسة.');
     Object.assign(error, { status: response.status, unauthorized: response.status === 401 });
@@ -191,7 +202,7 @@ async function run(task: () => Promise<void>) {
   try { await task(); }
   catch (error) {
     const value = error as Error & { unauthorized?: boolean };
-    showError(value.message || 'تعذر الاتصال. لم يصدر رد من نموذج.', value.unauthorized);
+    showError(friendlyError(error), value.unauthorized);
   }
   finally {
     busy = false;
@@ -294,8 +305,8 @@ composer.addEventListener('submit', event => {
         status.textContent = 'توقف انتظار الواجهة؛ تحقق من توفر النموذج قبل المحاولة مجددًا.';
       } else {
         const value = error as Error & { unauthorized?: boolean; status?: number };
-        if (value.unauthorized || value.status === 403) { showError(value.message, !!value.unauthorized); return; }
-        sendErrorText.textContent = `${value.message} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
+        if (value.unauthorized || value.status === 403) { showError(friendlyError(value), !!value.unauthorized); return; }
+        sendErrorText.textContent = `${friendlyError(value)} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
         retrySend.hidden = false;
         sendError.hidden = false;
         status.textContent = 'لم يصل رد من نموذج.';

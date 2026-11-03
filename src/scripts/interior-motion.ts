@@ -51,7 +51,8 @@ export function initializeMotion() {
       else if (mode === 'stagger') [...element.children].forEach((child, i) => play(child, [{ opacity: .65, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], 480, Math.min(i * 60, 360)));
       else if (mode === 'mask') play(element, [{ opacity: .7, clipPath: 'inset(0 0 20% 0)', transform: 'translateY(6px)' }, { opacity: 1, clipPath: 'inset(0)', transform: 'none' }]);
       else if (mode !== 'scrub') play(element, [{ opacity: .7, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }]);
-      if (element.matches('.system-map')) play(element.querySelector('.map-core')!, [{ transform: 'translate(-50%,-50%) scale(1)' }, { transform: 'translate(-50%,-50%) scale(1.025)' }, { transform: 'translate(-50%,-50%) scale(1)' }], 900);
+      const core = element.matches('.system-map') ? element.querySelector('.map-core') : null;
+      if (core) play(core, [{ transform: 'translate(-50%,-50%) scale(1)' }, { transform: 'translate(-50%,-50%) scale(1.025)' }, { transform: 'translate(-50%,-50%) scale(1)' }], 900);
       observer.unobserve(element);
     }), { threshold: .12 });
     root.querySelectorAll('[data-motion],.system-map').forEach(element => observer.observe(element));
@@ -205,7 +206,7 @@ export function initializeMotion() {
   const longForm = root.matches('.interior-privacy-index,.interior-terms-index,.interior-docs-index');
   let progress: HTMLProgressElement | undefined;
   let meter: HTMLDivElement | undefined;
-  if (longForm) {
+  if (longForm && !root.querySelector('.reading-progress')) {
     progress = document.createElement('progress'); progress.max = 100; progress.value = 0;
     progress.className = 'motion-reading-progress'; progress.setAttribute('aria-label', 'تقدّم قراءة الصفحة');
     meter = document.createElement('div'); meter.className = 'motion-reading-meter';
@@ -221,7 +222,8 @@ export function initializeMotion() {
     if (progress) { const rect = root.getBoundingClientRect(); progress.value = Math.max(0, Math.min(100, -rect.top / Math.max(1, rect.height - innerHeight) * 100)); }
     scrub.forEach(element => {
       const top = element.getBoundingClientRect().top;
-      element.style.opacity = reduced.matches ? '1' : String(.5 + .5 * Math.max(0, Math.min(1, 1 - top / innerHeight)));
+      const next = reduced.matches ? '1' : String(.5 + .5 * Math.max(0, Math.min(1, 1 - top / innerHeight)));
+      if (element.style.opacity !== next) element.style.opacity = next;
     });
     const positions = sections.map(section => ({ section, top: section.getBoundingClientRect().top }));
     const current = positions.filter(item => item.top <= innerHeight * .3).sort((a, b) => b.top - a.top)[0]?.section ?? sections[0];
@@ -233,7 +235,14 @@ export function initializeMotion() {
   };
   const schedule = () => { if (pending) return; pending = true; const id = requestAnimationFrame(() => { frames.delete(id); update(); }); frames.add(id); };
   if (progress || scrub.length || readingLinks.length) { addEventListener('scroll', schedule, { passive: true, signal }); addEventListener('resize', schedule, { signal }); update(); }
-  const preference = () => { if (reduced.matches) { animations.forEach(animation => animation.cancel()); finishers.forEach(finish => finish()); } update(); };
+  const preference = () => {
+    if (reduced.matches) {
+      timers.forEach(clearTimeout); timers.clear();
+      animations.forEach(animation => animation.cancel());
+      finishers.forEach(finish => finish());
+    }
+    update();
+  };
   reduced.addEventListener('change', preference, { signal });
   root.dataset.motionReady = 'true';
   return () => {

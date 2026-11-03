@@ -3,6 +3,7 @@
 @font-face { font-family: 'Plex Arabic'; src: url('/fonts/plex-arabic-600.ttf') format('truetype'); font-weight: 600; font-display: swap; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; color-scheme: dark; scroll-padding-top: 36px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body { margin: 0; background: var(--surface-canvas); color: var(--color-text); font: var(--font-weight-regular) var(--type-body)/var(--leading-ar-body) var(--font-arabic); }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; }
