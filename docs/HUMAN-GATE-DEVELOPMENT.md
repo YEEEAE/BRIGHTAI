@@ -8,6 +8,8 @@ Status: **IMPLEMENTED_NOT_RUNTIME_VERIFIED**. Application source remains local a
 
 The server captures `subject_ref`, the expected tenant name and `profile_version`, the new name, requester, operation type and current policy version. SHA-256 covers that fixed binding; the browser cannot supply its digest, actor, status, subject or execution payload. SQL guards prohibit changing request content and permit only explicit lifecycle transitions. The service exposes `binding_version` (`human-gate-binding-v3`) and the approved window (`approval_expires_at`) alongside each request. A malformed or legacy payload fails closed as ineligible instead of raising a list-page error. A tenant revision trigger advances `profile_version` on every name change, including changing a name away and back.
 
+The service mirrors the allow-list (`PENDING → APPROVED/REJECTED/EXPIRED/CANCELLED`, `APPROVED → EXECUTED/EXPIRED/CANCELLED`, terminal states final) before each transition and still relies on the database guard as the final authority. Every POST route now parses its JSON body, so cancellation, delegation and revocation reach the service with the mandatory reason instead of failing as empty input.
+
 The current endpoints are:
 
 | Route | Method | Scope |
@@ -30,6 +32,8 @@ No duration or enablement policy is seeded. An OWNER/ADMIN chooses the pending d
 `PENDING → APPROVED/REJECTED/EXPIRED/CANCELLED`; `APPROVED → EXECUTED/EXPIRED/CANCELLED`; `REJECTED/EXPIRED/CANCELLED/EXECUTED` are terminal. Expiry is persisted with database time and base audit when the service accesses requests, without a scheduler or silent approval. The UI refreshes at the displayed deadline and on returning to the tab; displayed statuses are DB values. A missing or revoked role, changed policy/target or binding mismatch blocks action. Repeating execution returns an error and causes no second effect.
 
 Approval inserts one `ACTIVE` permit bound to the tenant, requester, operation, subject, payload digest, policy version and expiry. Execution locks that permit, rechecks the operation and both principals, then moves it to `CONSUMED` exactly once in the same transaction as the Kernel effect. Cancellation or policy change revokes an unused permit; an expired, revoked or consumed permit cannot authorize the operation.
+
+Unapplied SQL hardening in `0014` now also requires a decision to reference a still-`PENDING` request with the same digest and policy version, requires an executed request to hold a consumed permit for the same requester and binding, forbids a permit from outliving its approved request, and requires permit consumption by the requester before expiry. It introduces no seed rows, grants or access changes.
 
 Review authority is resolved on the server from the current policy: the required level (`ADMIN` or `OWNER`), separation of duties, and any active delegation. A delegation is constrained to one operation, one tenant, a bounded duration, and a level no higher than the delegator's current role. Any delegation or role change is rechecked at decision and execution time.
 

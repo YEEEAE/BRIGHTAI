@@ -35,7 +35,7 @@ const config=authConfig();
     </form>
     <p data-delegation-empty hidden>لا توجد تفويضات مسجلة ضمن صلاحيتك.</p><ul data-delegations class="hg-delegations"></ul>
    </section>
-   <section class="panel"><h2>طلب مراجعة جديد</h2><p id="hg-help">استخدم مساحة تجريبية ونصوصًا غير حساسة؛ لا بيانات عميل حقيقية أو معلومات شخصية أو أسرار. تغيير الاسم يعدّل اسم هذه المساحة فعلًا عند التنفيذ، ولا يغيّر صلاحياتها أو إعدادات الدخول.</p>
+   <section class="panel"><h2>طلب مراجعة جديد</h2><p class="hg-scope-note"><strong>عملية AIGAS محدودة:</strong> النطاق الحالي هو تغيير اسم مساحة العمل داخل Kernel أو ملاحظة داخلية تجريبية فقط؛ لا موافقة على تشغيل أنظمة خارجية ولا تكامل مزود AI.</p><p id="hg-help">استخدم مساحة تجريبية ونصوصًا غير حساسة؛ لا بيانات عميل حقيقية أو معلومات شخصية أو أسرار. تغيير الاسم يعدّل اسم هذه المساحة فعلًا عند التنفيذ، ولا يغيّر صلاحياتها أو إعدادات الدخول.</p>
     <form data-create class="hg-form" aria-describedby="hg-help">
      <div><label for="hg-title">العنوان</label><input id="hg-title" name="title" required minlength="2" maxlength="120" /></div>
      <div><label for="hg-scope">العملية</label><select id="hg-scope" name="operation_type"><option value="KERNEL_WORKSPACE_RENAME">تغيير اسم مساحة العمل في Kernel</option><option value="INTERNAL_DEMO_NOTE">ملاحظة داخلية تجريبية</option></select></div>
@@ -47,7 +47,7 @@ const config=authConfig();
     </form>
    </section>
    <section class="panel"><h2>لوحة الطلبات</h2>
-    <div class="hg-tabs" role="group" aria-label="نطاق عرض الطلبات"><button type="button" data-view="mine" aria-pressed="true">طلباتي</button><button type="button" data-view="review" aria-pressed="false">تحتاج مراجعتي</button><button type="button" data-view="completed" aria-pressed="false">مكتملة</button></div>
+    <div class="hg-tabs" role="group" aria-label="نطاق عرض الطلبات"><button type="button" data-view="mine" aria-pressed="true">طلباتي</button><button type="button" data-view="review" aria-pressed="false">تحتاج مراجعتي</button><button type="button" data-view="completed" aria-pressed="false">منتهية</button></div>
     <label for="hg-status">حالة الطلب</label><select id="hg-status" data-filter><option value="">جميع الحالات ضمن اللوحة</option><option value="PENDING">بانتظار المراجعة</option><option value="APPROVED">معتمد — لم يُنفذ</option><option value="REJECTED">مرفوض</option><option value="EXPIRED">منتهي الصلاحية</option><option value="CANCELLED">ملغى</option><option value="EXECUTED">نُفّذ</option></select>
     <p data-empty hidden>لا توجد طلبات ضمن هذا العرض.</p><p data-review-notice hidden>المراجعة متاحة للمالك أو المسؤول، أو لعضو يحمل تفويضًا مؤقتًا نشطًا لنطاق العملية.</p><p data-refreshed></p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div>
    </section>

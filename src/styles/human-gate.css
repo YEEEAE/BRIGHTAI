@@ -81,3 +81,6 @@
  .human-gate .hg-delegation form{flex-direction:column;align-items:stretch}
  .human-gate .hg-delegation input{width:100%}
 }
+/* 10 — State the bounded operation scope next to the request form. */
+.human-gate .hg-scope-note{margin-block:0 1rem;padding:.8rem 1rem;border:1px solid #3a3346;border-inline-start:2px solid var(--color-focus);border-radius:8px;background:#0b0910;color:#e4dfeb;font-size:13px;line-height:1.9}
+.human-gate .hg-scope-note strong{color:#fff}

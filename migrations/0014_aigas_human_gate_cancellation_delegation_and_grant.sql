@@ -65,6 +65,11 @@ BEGIN
     AND d.payload_digest=NEW.payload_digest AND d.policy_version=NEW.policy_version
     AND d.decision=CASE WHEN NEW.status='REJECTED' THEN 'REJECT' ELSE 'APPROVE' END
   ) THEN RAISE EXCEPTION 'Bound decision required' USING ERRCODE='23514'; END IF;
+  IF NEW.status='EXECUTED' AND NOT EXISTS (
+   SELECT 1 FROM public.aigas_hg_grants g WHERE g.tenant_id=NEW.tenant_id AND g.request_id=NEW.id
+    AND g.requester_id=NEW.requester_id AND g.payload_digest=NEW.payload_digest
+    AND g.policy_version=NEW.policy_version AND g.status='CONSUMED'
+  ) THEN RAISE EXCEPTION 'A consumed single-use execution permit is required' USING ERRCODE='23514'; END IF;
  END IF;
  RETURN NEW;
 END $$;
@@ -123,14 +128,22 @@ CREATE TRIGGER aigas_hg_delegation_guard BEFORE INSERT OR UPDATE OR DELETE ON pu
 CREATE FUNCTION public.aigas_hg_decision_guard() RETURNS trigger LANGUAGE plpgsql AS $$
 DECLARE
  request_type text;
+ request_status text;
+ request_digest text;
+ request_policy text;
  required_level text;
  sod boolean;
 BEGIN
  IF NEW.authority_level IS NULL THEN RAISE EXCEPTION 'Decision authority level required' USING ERRCODE='23514'; END IF;
- SELECT r.operation_type,p.review_level,p.separation_of_duties INTO request_type,required_level,sod
+ SELECT r.operation_type,r.status,r.payload_digest,r.policy_version,p.review_level,p.separation_of_duties
+  INTO request_type,request_status,request_digest,request_policy,required_level,sod
   FROM public.aigas_hg_requests r JOIN public.aigas_hg_policies p ON p.tenant_id=r.tenant_id
   WHERE r.tenant_id=NEW.tenant_id AND r.id=NEW.request_id;
  IF request_type IS NULL THEN RAISE EXCEPTION 'Decision task not found' USING ERRCODE='23514'; END IF;
+ IF request_status<>'PENDING' THEN RAISE EXCEPTION 'Decision requires a pending request' USING ERRCODE='23514'; END IF;
+ IF NEW.payload_digest IS DISTINCT FROM request_digest OR NEW.policy_version IS DISTINCT FROM request_policy THEN
+  RAISE EXCEPTION 'Decision must bind the request digest and policy version' USING ERRCODE='23514';
+ END IF;
  IF NEW.reviewer_id=NEW.requester_id AND (request_type='KERNEL_WORKSPACE_RENAME' OR sod) THEN
   RAISE EXCEPTION 'Separation of duties required' USING ERRCODE='23514';
  END IF;
@@ -180,6 +193,7 @@ BEGIN
    SELECT 1 FROM public.aigas_hg_requests r WHERE r.tenant_id=NEW.tenant_id AND r.id=NEW.request_id AND r.status='APPROVED'
     AND r.requester_id=NEW.requester_id AND r.operation_type=NEW.operation_type AND r.subject_ref=NEW.subject_ref
     AND r.payload_digest=NEW.payload_digest AND r.policy_version=NEW.policy_version
+    AND NEW.expires_at<=r.expires_at AND r.expires_at>clock_timestamp()
   ) OR NOT EXISTS (
    SELECT 1 FROM public.aigas_hg_decisions d WHERE d.tenant_id=NEW.tenant_id AND d.request_id=NEW.request_id
     AND d.decision='APPROVE' AND d.reviewer_id=NEW.reviewer_id
@@ -190,6 +204,10 @@ BEGIN
    IS DISTINCT FROM ROW(OLD.id,OLD.tenant_id,OLD.request_id,OLD.requester_id,OLD.reviewer_id,OLD.operation_type,OLD.subject_ref,OLD.payload_digest,OLD.policy_version,OLD.issued_at,OLD.expires_at)
    OR NOT (OLD.status='ACTIVE' AND NEW.status IN ('CONSUMED','REVOKED','EXPIRED'))
   THEN RAISE EXCEPTION 'Permit is immutable except one consumption or revocation' USING ERRCODE='23514'; END IF;
+  IF NEW.status='CONSUMED' AND NOT EXISTS (
+   SELECT 1 FROM public.aigas_hg_requests r WHERE r.tenant_id=NEW.tenant_id AND r.id=NEW.request_id
+    AND r.status='APPROVED' AND r.requester_id=NEW.consumed_by AND r.expires_at>clock_timestamp()
+  ) THEN RAISE EXCEPTION 'Permit consumption must be the requester before expiry' USING ERRCODE='23514'; END IF;
  END IF;
  RETURN NEW;
 END $$;

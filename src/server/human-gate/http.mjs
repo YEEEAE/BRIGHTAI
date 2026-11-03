@@ -18,12 +18,15 @@ async function readBody(request) {
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); }
   catch { throw new KernelError(400,'INVALID_BODY','تعذر قراءة JSON.'); }
 }
+// Every POST route supplies a mandatory reason or payload; cancellation,
+// delegation and revocation must not reach the service with an empty body.
+const bodyOperations = new Set(['create','decide','execute','cancel','policy','delegate','revoke-delegation']);
 export function createHandler(auth=authenticate, service=operate) {
   return async (request,operation,id) => {
     try {
       const identity=await auth(request);
       const params=new URL(request.url).searchParams;
-      const body=['create','decide','execute','policy'].includes(operation)?await readBody(request):{};
+      const body=bodyOperations.has(operation)?await readBody(request):{};
       const data=await service(identity,params.get('workspace'),operation,body,params,id);
       return Response.json(data,{status:operation==='create'?201:200,headers});
     } catch(error) {

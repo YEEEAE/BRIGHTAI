@@ -4,9 +4,14 @@ import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole, workspaceName } from '../kernel/core.mjs';
-import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, bindingVersion, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor } from './core.mjs';
+import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, bindingVersion, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor, canTransition } from './core.mjs';
 
 const failure=(status,code,message)=>({failure:{status,code,message}});
+// Source-level mirror of core.transitions; the database guard remains the
+// final authority and repeats the same allow-list.
+const assertTransition=(from,to)=>{
+ if(!canTransition(from,to)) throw new KernelError(409,'INVALID_TRANSITION','حالة الطلب لا تسمح بهذا الانتقال؛ حدّث الصفحة قبل الإجراء.');
+};
 const bodyKeys={
  create:['title','description','reason','operation_type','new_name','synthetic_confirmed'],
  decide:['decision','reason'],
@@ -66,6 +71,7 @@ export function createHumanGateService(transact=transaction) {
     await db.query("UPDATE public.aigas_hg_grants SET status='REVOKED' WHERE tenant_id=$1 AND request_id=$2 AND status='ACTIVE'",[tenantId,requestId]);
    };
    const expire=async(request,reason)=>{
+    if(!canTransition(request.status,'EXPIRED')) return request;
     const expired=(await db.query("UPDATE public.aigas_hg_requests SET status='EXPIRED',terminal_reason=$3 WHERE tenant_id=$1 AND id=$2 AND status IN ('PENDING','APPROVED') RETURNING *",[tenantId,request.id,reason])).rows[0];
     if(expired){
      await revokeGrant(expired.id);
@@ -241,6 +247,7 @@ export function createHumanGateService(transact=transaction) {
    if(request.status==='CANCELLED') throw new KernelError(409,'REQUEST_CANCELLED','أُلغي الطلب؛ يلزم طلب جديد.');
    if(operation==='cancel'){
     if(!cancelAllowed(request,member,identity.userId)) throw new KernelError(403,'FORBIDDEN','إلغاء الطلب غير متاح لهذا الدور أو الحالة.');
+    assertTransition(request.status,'CANCELLED');
     const reason=text(body.reason);
     const terminal=request.requester_id===identity.userId?'CANCELLED_BY_REQUESTER':'CANCELLED_BY_REVIEWER';
     await revokeGrant(request.id);
@@ -255,13 +262,14 @@ export function createHumanGateService(transact=transaction) {
    }
    if(operation==='decide'){
     if(request.status!=='PENDING') throw new KernelError(409,'REQUEST_CLOSED','حُسم الطلب ولا يمكن تسجيل قرار آخر.');
+    if(!['APPROVE','REJECT'].includes(body.decision)) throw new KernelError(400,'INVALID_DECISION','اختر موافقة أو رفض.');
+    const newStatus=body.decision==='APPROVE'?'APPROVED':'REJECTED';
+    assertTransition(request.status,newStatus);
     const authority=await reviewAuthority(request);
     if(request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||request.operation_type==='KERNEL_WORKSPACE_RENAME')) throw new KernelError(403,'SELF_REVIEW_DENIED','فصل المهام يمنع صاحب الطلب من اعتماده أو رفضه.');
     if(!decisionAllowed(request,identity.userId,policy,authority)) throw new KernelError(403,'REVIEW_NOT_AUTHORIZED','لا تملك صلاحية مراجعة هذه العملية ضمن المستوى والتفويض الحاليين.');
-    if(!['APPROVE','REJECT'].includes(body.decision)) throw new KernelError(400,'INVALID_DECISION','اختر موافقة أو رفض.');
     const reason=text(body.reason);
     const decision=(await db.query('INSERT INTO public.aigas_hg_decisions(id,tenant_id,request_id,requester_id,reviewer_id,decision,reason,payload_digest,policy_version,delegation_id,authority_level) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *',[randomUUID(),tenantId,id,request.requester_id,identity.userId,body.decision,reason,request.payload_digest,request.policy_version,authority.delegation_id,authority.level])).rows[0];
-    const newStatus=body.decision==='APPROVE'?'APPROVED':'REJECTED';
     const updated=(await db.query("UPDATE public.aigas_hg_requests SET status=$3,expires_at=CASE WHEN $3='APPROVED' THEN LEAST(expires_at,clock_timestamp()+make_interval(mins=>$4)) ELSE expires_at END WHERE tenant_id=$1 AND id=$2 AND status='PENDING' AND expires_at>clock_timestamp() RETURNING *",[tenantId,id,newStatus,policy.approval_minutes])).rows[0];
     if(!updated) throw new KernelError(410,'REQUEST_EXPIRED','انتهت المهلة قبل حفظ القرار؛ لم يُسجل القرار.');
     let grant=null;
@@ -275,6 +283,7 @@ export function createHumanGateService(transact=transaction) {
    }
    if(request.requester_id!==identity.userId) throw new KernelError(403,'FORBIDDEN','التنفيذ متاح لمقدم الطلب فقط.');
    if(request.status!=='APPROVED') throw new KernelError(409,'APPROVAL_REQUIRED','يلزم قرار موافقة مستقل وصالح قبل التنفيذ.');
+   assertTransition(request.status,'EXECUTED');
    // Lock the permit before any side effect. A consumed or revoked permit cannot authorize a second run.
    const permit=(await db.query('SELECT *,expires_at>clock_timestamp() AS active FROM public.aigas_hg_grants WHERE tenant_id=$1 AND request_id=$2 FOR UPDATE',[tenantId,id])).rows[0];
    if(!permit) throw new KernelError(409,'PERMIT_REQUIRED','لا يوجد إذن تنفيذ مربوط بهذا الطلب؛ يلزم اعتماد جديد.');
@@ -311,7 +320,7 @@ export function createHumanGateService(transact=transaction) {
    // Last statement after audit/evidence waits: late expiry rolls back the side effect too.
    const completed=(await db.query("UPDATE public.aigas_hg_requests SET status='EXECUTED',completed_at=clock_timestamp(),executed_by=$3,execution_result=$4 WHERE tenant_id=$1 AND id=$2 AND status='APPROVED' AND expires_at>clock_timestamp() RETURNING *",[tenantId,id,identity.userId,executionResult])).rows[0];
    if(!completed) throw new KernelError(410,'REQUEST_EXPIRED','انتهت المهلة قبل اكتمال التنفيذ؛ أُلغي التغيير داخل المعاملة.');
-   return {request:completed,permit:consumed,binding_version:bindingVersion,persisted:true};
+   return {request:completed,permit:consumed,binding_version:bindingVersion,approval_expires_at:completed.expires_at,persisted:true};
   });
   if(result.failure) throw new KernelError(result.failure.status,result.failure.code,result.failure.message);
   return result;
