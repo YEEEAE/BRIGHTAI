@@ -22,6 +22,7 @@
   background:#0a0810;
   scrollbar-color:#3f3550 #0b0910;
 }
+.risk-engine .re-table:focus-visible{outline:2px solid var(--color-focus);outline-offset:3px}
 .risk-engine table{color:var(--re-ink)}
 .risk-engine thead th{
   padding-block:.8rem;

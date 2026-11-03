@@ -3,6 +3,7 @@
 > **الغرض:** مصدر واحد لتوحيد الحقيقة بين المتطلبات والكود والمخطط والواجهات، دون تحويل أي متطلب إلى إثبات تشغيل.
 > **تاريخ الفحص:** 2026-11-03
 > **نسخة العمل المحلية:** الفرع `main` عند `ede38c28c11efe1ee79dc253c1e1e30b1feed5f2` (رسالة: `update site`)، وشجرة العمل نظيفة وقت الفحص.
+> **تحديث 2026-11-03 (حزمة التسليم):** HEAD المحلي أصبح `24b242505589493ef6ab2d8a7bd393cc44a580c2` وشجرة العمل غير نظيفة. أُعيد جرد Neon قراءة فقط، وصُحح تعداد مسارات API إلى 29، وأُضيفت حالة `0020`–`0023`. المرجع الأحدث للتسليم هو `docs/FINAL-RELEASE-HANDOFF.md`.
 > **ملاحظة على المرجع الخارجي:** اللقطة المرجعية في نص المهمة كانت GitHub `main` عند `e33b480744b5d0b44344bf469f09b6cbbb50248f`. النسخة المحلية متقدمة عنها، وهذا السجل يعتمد **النسخة المحلية** عند أي اختلاف.
 > **حدود الدليل:** لم يُشغّل build أو lint أو typecheck أو اختبارات أو متصفح أو Playwright، ولم يُنشر شيء. كل سلوك في هذا الملف هو `SOURCE_PRESENT` أو `SCHEMA_PRESENT` فقط، وليس `RUNTIME_VERIFIED`.
 > **قاعدة:** `APPROVED_REQ` يعني مطلبًا معتمدًا في `MASTER-PROJECT-BLUEPRINT.md` / `PRODUCT-MASTER-CATALOG.yaml`. وجود الكود أو الجدول لا يرفع الحالة إلى `WORKING`.
@@ -46,7 +47,7 @@
 
 `/app/` و`/auth/` مستبعدة من sitemap في `astro.config.mjs`، والبوابة محمية بـ`middleware` وتعطي عند تعطيلها 503 صفحة عربية (`APP_UNAVAILABLE`, `no-store`, `noindex`) لكل `/app/*` و503 JSON لكل `/app/api/*`، دون تحويل إلى صفحة عامة. دليل المشغّل: `docs/APP-PORTAL-RUNTIME-HANDOFF.md`.
 
-### 2.2 مسارات API الخادمية (30 ملفًا)
+### 2.2 مسارات API الخادمية (29 ملفًا)
 
 | المنتج | المسارات |
 |---|---|
@@ -83,11 +84,15 @@
 | `0012_aigas_firewall_five_state_upgrade` | مطبّق | قيود الحالات الخمس والحقول المرصودة |
 | `0013_aigas_ledger_five_state_and_chain_guard` | **غير مطبّق** | لا توجد دالة `aigas_ld_events_chain_guard`، وقيد `aigas_ld_events_check` يقبل `ALLOW/BLOCK/REDACT` فقط |
 | `0014_aigas_human_gate_cancellation_delegation_and_grant` | **غير مطبّق** | لا يوجد `aigas_hg_delegations` ولا `aigas_hg_grants`؛ لا أعمدة `provider_ref/cancelled_at/review_level/...` |
-| `0015_aigas_risk_engine_asset_context_residual_risk` | مطبّق | `aigas_re_assets.data_context/provider_reference/model_reference/model_version/approval_status/lifecycle_status`, و`residual_risk_description` |
+| `0015_aigas_risk_engine_asset_context_residual_risk` | مطبّق | `aigas_re_assets.data_context/provider_reference/model_reference/model_version/approval_status/lifecycle_status`, و`aigas_re_treatment_revisions.residual_risk_description` |
 | `0016_aigas_sc_user_token_quota` | **غير مطبّق** | لا توجد دالة `aigas_sc_usage_window_v2`؛ الموجودة `aigas_sc_usage_window` فقط |
 | `0017_aigas_kernel_audit_context` | **غير مطبّق** | `aigas_audit_events` بلا `correlation_id/policy_version/idempotency_key` |
 | `0018_aigas_data_api_grant_hardening` | **غير مطبّق** | دور `authenticated` ما زال يملك DML على 31 جدولًا؛ Data API نشط على `public` |
 | `0019_aigas_runtime_least_privilege` | **غير مطبّق** | لا يوجد دور `aigas_runtime` ولا سياسات نطاق مؤسسة؛ `DATABASE_URL` ما زال `neondb_owner` بـ`BYPASSRLS` |
+| `0020_aigas_kernel_policy_review_requirements` | مطبّق | `aigas_policy_versions.required_approvals` موجود |
+| `0021_aigas_risk_engine_acceptance_guard` | مطبّق | `aigas_re_guard_treatment` وtrigger `aigas_re_treatment_guard` موجودان (جرد 2026-11-03) |
+| `0022_aigas_reference_scope_guard` | **غير مطبّق** | لا يوجد `aigas_fw_decisions_request_scope_idx` ولا `aigas_sc_requests_scope_idx` |
+| `0023_aigas_enterprise_trial_lifecycle` | **غير مطبّق** | لا يوجد جدول `aigas_trial_requests` |
 
 ### 3.1 أثر الترحيلات الناقصة على الكود الحالي
 
@@ -210,7 +215,7 @@
 
 ## 6. العوائق المفتوحة (لا تتجاوزها بافتراض)
 
-1. **اعتماد الترحيلات:** `0013`, `0014`, `0016`, `0017`, `0018`, `0019` تحتاج مراجعة بشرية وتطبيقًا على بيئة معتمدة. لا تُطبّق هنا.
+1. **اعتماد الترحيلات:** `0013`, `0014`, `0016`, `0017`, `0018`, `0019`, `0022`, `0023` تحتاج مراجعة بشرية وتطبيقًا على بيئة معتمدة. لا تُطبّق هنا. (`0020` و`0021` مطبقتان فعليًا بحسب جرد 2026-11-03.)
 2. **صلاحيات runtime وRLS:** RLS مفعّل بلا سياسات على 29 جدولًا؛ يلزم إثبات دور التطبيق وسياسات العزل قبل أي تشغيل.
 3. **الجلسة والمستخدمون:** لا مستخدم/جلسة في Neon Auth؛ لا يمكن إثبات أي رحلة موثقة.
 4. **مزود/نموذج AI:** لا نموذج معتمد؛ أي إرسال حقيقي محجوب بقرار منتج وموافقة تشغيل.

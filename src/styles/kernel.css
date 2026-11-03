@@ -394,7 +394,7 @@
   .kernel .connection{align-self:flex-start;min-height:34px;padding:6px 12px;font-size:11px}
   .kernel .panel,.kernel .health,.kernel .notice{padding:18px}
   .kernel .metric strong{font-size:30px}
-  .kernel .diagram-products{gap:4px;font-size:10px}
+  .kernel .diagram-products{gap:4px;font-size:11px;line-height:1.45}
   .kernel .diagram-products bdi{padding:8px 2px}
   .kernel .product-card{padding:20px}
   .kernel .member-list li,.kernel .activity li{padding:11px 12px}
@@ -404,7 +404,7 @@
   .app-frame .app-top{padding:12px 14px}
   .kernel .notice{padding:16px}
   .kernel .section-heading h2{font-size:22px}
-  .kernel .diagram-products{gap:3px;font-size:9.5px}
+  .kernel .diagram-products{gap:3px;font-size:10.5px;line-height:1.45}
 }
 @media (prefers-reduced-motion: reduce){
   .app-frame :is(a,button,input,select),
@@ -441,4 +441,17 @@
 @media (max-width:600px){
   .kernel .departments .member-list li{grid-template-columns:1fr}
   .kernel [data-invitations] li button{width:100%}
+}
+
+/* 10 — Accessibility floor for the private workspace. Scoped to .app-frame only so
+   the public site, hero and shared shell are untouched. Critical outcomes (blocked
+   decisions, chain integrity, access states) must never depend on motion. */
+@media (prefers-reduced-motion: reduce){
+  .app-frame *,
+  .app-frame *::before,
+  .app-frame *::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
 }

@@ -325,6 +325,8 @@ flowchart TD
 
 **حقول اعتماد غير محسومة:** `trial_data_retention_period`, `post_expiry_export_window`, `backup_purge_schedule`, `support_log_retention`, `legal_hold_authority`.
 
+> **حالة التنفيذ (2026-11-03):** لا مسار حذف أو خروج منفذ في الكود، ولا سياسة احتفاظ معتمدة؛ حالات الخروج في لوحة Kernel تبقى `POLICY_PENDING_APPROVAL` ولا تنفذ حذفًا. المتطلبات والعوائق مفصّلة في `docs/DATA-PRIVACY-AND-SECURITY.md` §5–§6. لا يجوز تحويل أي منها إلى وعد تعاقدي قبل التنفيذ والاعتماد.
+
 ---
 
 ## 11. حصص الاستهلاك وتكلفة AI

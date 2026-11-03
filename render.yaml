@@ -33,6 +33,10 @@ services:
       - key: REDIS_URL
         sync: false
     # Operator runbook: docs/APP-PORTAL-RUNTIME-HANDOFF.md
+    # Data/secret handling and rotation: docs/DATA-PRIVACY-AND-SECURITY.md
+    # Branch protection, backup/restore and rollback: docs/NEON-BRANCH-PROTECTION-RUNBOOK.md
+    # DATABASE_URL must be a least-privilege runtime role before the portal is enabled;
+    # never paste a secret value into this file or any tracked file.
     # Static-site header rules do not belong to this Node web service.
     # src/middleware.ts sets baseline headers (framing, referrer, permissions,
     # HSTS on HTTPS) and private /app/* no-store/noindex headers.

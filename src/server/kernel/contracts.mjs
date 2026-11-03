@@ -58,5 +58,13 @@ export function errorBody({ code, message, dependencyStatus = null, extra = {} }
 }
 
 export function contractHeaders(base = {}) {
-  return { ...base, 'X-AIGAS-Contract': HTTP_CONTRACT_VERSION };
+  // Every AIGAS API response is a private, same-origin document fragment: it must not
+  // be framed and must not be readable as a cross-origin resource. Callers may override,
+  // but no caller needs to repeat these two lines.
+  return {
+    'X-Frame-Options': 'DENY',
+    'Cross-Origin-Resource-Policy': 'same-origin',
+    ...base,
+    'X-AIGAS-Contract': HTTP_CONTRACT_VERSION,
+  };
 }

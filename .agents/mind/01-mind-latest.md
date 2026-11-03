@@ -1,3 +1,54 @@
+## [2026-11-03] — حزمة تسليم إصدار صادقة وسجل موانع P0/P1/P2 (محلي فقط)
+
+### تم التنفيذ
+- أُنشئ `docs/FINAL-RELEASE-HANDOFF.md` يربط الأساس المحلي `24b24250` بفرع Neon `production`/`br-young-bird-b43proeb`، ويصنّف المكوّنات إلى `SOURCE_IMPLEMENTED`/`SCHEMA_PRESENT`/`CONFIGURED`/`RUNTIME_VERIFIED`/`BLOCKED`، ويضم 12 بوابة قرار بحقول Owner/Evidence Required/Current/Missing/Placeholder. كل البوابات `NO-GO` حاليًا.
+- أُنشئ `docs/RELEASE-BLOCKERS-REGISTER.md` مستقلًا: 12 مانع P0 و10 P1 و6 P2 بحقول `source_path/required_action/authority_needed/status/risk_if_ignored`، مع فصل المغلق (تجاوز المسار المرمّز، دمج CSP، `0020`، `0011`) وعدم تكراره.
+- مراجعة ميثاق التسويق: `NO-GO` لكل إتاحة منتج لأن `AIGAS_APP_ENABLED=false` ولا نشر مثبت؛ و`NO-GO` لـSecure Chat (`APPROVED_MODELS=[]`) وFirewall (سجل مزودين فارغ) وLedger/Human Gate/Risk Engine لترحيلات ناقصة.
+- تعداد المتطلبات AC-01..AC-20 من Blueprint §23 بدليل لكل متطلب بدل أي نسبة إنجاز؛ وRunbook مشغّل من اعتماد → أسرار → staging → استعادة → هوية → فتح علم → DNS/SSR → مراقبة، دون تنفيذ.
+- جرد Neon قراءة فقط (2026-11-03): 31 جدولًا، RLS على 31، سياسات على 2، `authenticated` بـ124 منحًا، Data API نشط، `production` غير محمي، وصفر مستخدمين/جلسات/سجلات عمل. **تصحيح:** `0021` مطبقة فعليًا (الدالة والtrigger موجودان) و`0022`/`0023` غير مطبقتين؛ `0020` مطبقة.
+- صُحح تعداد مسارات API من 30 إلى 29 في `CURRENT-IMPLEMENTATION-REGISTER` و`MASTER-AGENT-CONTEXT`، وأُضيفت حالة `0020`–`0023` للسجل.
+### الملفات المتأثرة
+- `docs/{FINAL-RELEASE-HANDOFF,RELEASE-BLOCKERS-REGISTER}.md` (جديدان)
+- `docs/{CURRENT-IMPLEMENTATION-REGISTER,MASTER-AGENT-CONTEXT}.md`
+- `docs/products/risk-engine/FEATURE-STATUS.yaml`
+### التحقق
+- جرد Neon قراءة فقط عبر MCP (`SELECT`/كتالوج) وتحقّق موضعي من الأعمدة والدوال والفهارس والمنح: PASS.
+- فحص ثابت لتطابق المسارات والفهارس والعدادات داخل المستندات: PASS؛ `git diff --check`: PASS.
+- build/lint/typecheck/tests/Playwright/متصفح/نشر/migrations: NOT RUN بطلب المهمة؛ لا commit/push ولا كتابة Neon.
+### النتيجة
+- **الحالة:** DONE للتسليم البرمجي المحلي — NOT_RUNTIME_VERIFIED. لا شهادة إطلاق ولا توقيع إداري.
+### ملاحظات / مشاكل مفتوحة
+- كل البوابات الاثنتي عشرة `NO-GO`؛ أهمها النشر غير المثبت، `0013/0014/0016/0017/0018/0019/0022/0023` غير مطبقة، عزل البيانات غير منفذ، لا مزود AI معتمد، و`production` غير محمي. التفاصيل في سجل الموانع.
+- `docs/FINAL-RELEASE-HANDOFF.md` يصف HEAD + شجرة عمل غير نظيفة؛ لا يمثل نسخة منشورة. قرار إطلاق أول عميل/تجربة/منتج تجاري يبقى توقيعًا إداريًا منفصلًا.
+
+## [2026-11-03] — إغلاق حواجز الأمان والخصوصية والتشغيل (محلي فقط)
+
+### تم التنفيذ
+- أُصلح تجاوز حقيقي لبوابة `/app`: Astro يطابق المسارات على مسار مفكوك الترميز بينما الـmiddleware يستقبل المسار الخام، فكان `/%61pp/...` يصل إلى صفحات/APIs البوابة دون 503 ودون `no-store`. أُضيف `normalizePath` (فك `%xx`، دمج الشرطات، حلّ `.`/`..`) والبوابة تُقرر على المسار الخام أو المطبّع.
+- ترويسات الـmiddleware تُدمج CSP بدل استبدالها، وأُضيف `base-uri/form-action/object-src` مع بقاء `frame-ancestors`، و`Cross-Origin-Resource-Policy: same-origin` و`X-Permitted-Cross-Domain-Policies: none` للعام والخاص. `contractHeaders` صار يضيف `X-Frame-Options: DENY` و`CORP` لكل API مرة واحدة بدل تكرارها في ستة ملفات.
+- مراجعة مصدرية لرمز الدخول: Bearer فقط، `EdDSA`، `maxTokenAge 15m`، JWKS بنفس أصل HTTPS، لا تخزين رمز في المتصفح، ولا `Access-Control-Allow-Origin`، ولا `console.*` في `src/`، وسجل التدقيق Metadata فقط بلا متن أو PII.
+- أُنشئ `docs/DATA-PRIVACY-AND-SECURITY.md` (كان مطلوبًا وغير موجود) يفصل `SOURCE_PRESENT` عن `TARGET_REQUIREMENT`/`BLOCKED` للحوادث والاحتفاظ والحذف/الخروج وOn-Prem/Air-Gapped، ويضم لقطة Neon مؤرخة ومسؤولية تدوير الأسرار على المشغّل بلا عرض قيم.
+- أُنشئ `docs/NEON-BRANCH-PROTECTION-RUNBOOK.md`: طوبولوجيا فرع تطوير/فروع مؤقتة، اعتماد مزدوج، حماية الفرع، Backup/استعادة مختبرة، Roll-forward/Rollback، ودورة المهاجرة — **خطة غير منفذة**.
+- جرد Neon قراءة فقط (2026-11-03): 31 جدولًا، RLS على 31، سياسات على جدولين، `aigas_runtime` غير موجود، Data API `active` على `public`، فرع `production` وحيد بـ`protected:false`، صفر tenants/memberships/audit/Auth users، والمشروع في `aws-us-east-2` مع `block_public_connections=false` و`allowed_ips` فارغة.
+- واجهات خاصة: أُضيف `tabindex/role=region/aria-label` لجدولي Risk Engine مع تركيز ظاهر، وسقف تقليل حركة شامل داخل `.app-frame` فقط، ورفع أصغر خط في خريطة المنتجات على الجوال (9.5→10.5px، 10→11px). لم تُلمس Hero/Constellation/Header/Logo.
+
+### الملفات المتأثرة
+- `src/middleware.ts`, `src/server/kernel/contracts.mjs`, `src/components/RiskWorkspace.astro`, `src/styles/{kernel,risk-engine}.css`, `render.yaml`
+- `docs/{DATA-PRIVACY-AND-SECURITY,NEON-BRANCH-PROTECTION-RUNBOOK}.md` (جديدان), `docs/{PLATFORM-ARCHITECTURE,INTEGRATION-AND-DEPLOYMENT,ENTERPRISE-TRIAL-POLICY}.md`
+
+### التحقق
+- فحص ثابت: `node --check` لملف `.mjs` المعدل، وتحليل `render.yaml` كـYAML، و`git diff --check`: PASS.
+- build/lint/typecheck/tests/Playwright/متصفح/اختراق/نشر: NOT RUN بطلب المهمة؛ لا commit/push، ولا كتابة على Neon أو GitHub.
+
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED — NOT_RUNTIME_VERIFIED. لا شهادة Go-Live ولا ادعاء امتثال أو عزل.
+
+### ملاحظات / مشاكل مفتوحة
+- حماية فرع `production` والاتصالات العامة وقائمة IP وData API ونقل المنطقة تحتاج مشغّلًا مصرحًا؛ لم يُغيَّر شيء.
+- لا سياسة احتفاظ/حذف/خروج/حوادث منفذة، ولا On-Prem/Air-Gapped؛ كلها `BLOCKED` حتى قرار المالك والقانوني.
+- تدوير أي سر لامس بيئة تطوير مطلوب من المشغّل ولم يُنفَّذ؛ لا قيم محفوظة في المستودع أو العقل.
+
+
 ## [2026-11-03] — إغلاق مركز المعرفة والـSEO والتمدد الجوال (محلي فقط)
 ### تم التنفيذ
 - `/docs/`: أصبح البحث والفلاتر بحالة مفهومة للقارئ ومساعد الشاشة — `role=search`، زر مسح للاستعلام، `aria-controls/aria-describedby`، وربط أزرار المنتجات بالنتائج. مساحة منتجات AIGAS تعرض حالة اختيار صريحة و`aria-pressed`، وكل منتج بلا دليل منشور يظهر «لا يوجد دليل مرتبط بعد» بلا رابط مخترع (Kernel/Ledger ما زالا بلا روابط).

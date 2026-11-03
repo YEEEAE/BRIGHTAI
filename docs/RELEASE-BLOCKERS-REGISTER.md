@@ -1,0 +1,94 @@
+# RELEASE BLOCKERS REGISTER — BRIGHT AI / AIGAS
+
+> **الغرض:** سجل مستقل عن الاختبارات، يجمع الموانع الفعلية التي تمنع الإطلاق أو التشغيل المعتمد، مع مسار الإغلاق والسلطة المطلوبة.
+> **الأساس:** HEAD المحلي `24b242505589493ef6ab2d8a7bd393cc44a580c2` + شجرة العمل الحالية، وجرد Neon قراءة فقط 2026-11-03 (المشروع `young-frog-60183055` / الفرع `production` / `br-young-bird-b43proeb`).
+> **العلاقة:** هذا السجل يفصّل أعمدت «Missing Evidence» في `docs/FINAL-RELEASE-HANDOFF.md`. لا يمنح اعتمادًا ولا يغلق مانعًا.
+> **قاعدة:** لا يُغلق مانع بكود فقط إذا كان يحتاج اعتمادًا أو بيئة أو دليلًا مستقلًا.
+
+---
+
+## 1. تعريف الحالات
+
+| الحالة | المعنى |
+|---|---|
+| `OPEN` | إجراء ممكن ولم يبدأ، أو دليل قابل للإنتاج ولم يُنتج. |
+| `PARTIAL` | جزء منفذ، وبقية مسار الإغلاق مطلوبة. |
+| `BLOCKED` | ينتظر سلطة/اعتمادًا/بيئة خارج نطاق الوكيل. |
+| `CLOSED` | أُغلق بدليل أو قرار موثق؛ يُنقل إلى قسم «مغلق» ولا يُكرر. |
+
+**الأولويات:** `P0` تمنع أي استخدام تجاري أو إطلاق؛ `P1` ضرورية للتوسع المؤسسي؛ `P2` تحسين/اتساق لا يوقف MVP.
+
+**العدد الحالي:** 12 مانع P0، 10 موانع P1، 6 موانع P2. هذه أعداد عناصر، وليست نسبة إنجاز.
+
+---
+
+## 2. موانع P0
+
+| ID | المانع | source_path | required_action | authority_needed | status | risk_if_ignored |
+|---|---|---|---|---|---|---|
+| P0-01 | نشر المصدر الحالي غير مثبت، والبوابة مغلقة؛ مرجع حي مؤرخ ذكر 404 لـ`/app/` | `render.yaml`; `src/middleware.ts`; `src/server/kernel/env.mjs`; `docs/APP-PORTAL-RUNTIME-HANDOFF.md` | نشر نفس SHA على خدمة Node، ربط الدومين، تمرير `/app/*` بلا CDN، وإثبات 503 قبل الفتح ثم 200/302 بعده | مالك المنصة + مشغّل النشر | `BLOCKED` | ادعاء إتاحة كاذب، أو 404/واجهة مكشوفة، أو منع كاش غير فعال |
+| P0-02 | ترحيلات حرجة غير مطبقة: `0013`, `0014`, `0016`, `0017`, `0022` | `migrations/0013_*.sql` … `0017_*.sql`; `migrations/0022_*.sql`; `src/server/kernel/service.mjs`; `src/server/ledger/*`; `src/server/human-gate/*`; `src/server/secure-chat/requests.mjs` | تطبيقها بالترتيب على staging بعد مراجعة واختبار، ثم production باعتماد مزدوج | مشغّل قاعدة البيانات + مالك المنصة | `PARTIAL` | فشل SQL في التدقيق وLedger وHuman Gate وSecure Chat، وبقاء حارس المرجع العابر في الكود فقط |
+| P0-03 | عزل البيانات غير منفذ: `DATABASE_URL` مالك بـ`BYPASSRLS`، سياستان فقط، `authenticated` بـ124 منحًا، Data API نشط | `src/server/kernel/db.mjs`; `migrations/0018_*.sql`; `migrations/0019_*.sql`; `docs/DATA-ACCESS-AND-RLS.md` | تطبيق `0018`/`0019`، إنشاء دور تشغيل `NOBYPASSRLS`، تقييد Data API، واختبار مؤسستين | مسؤول الأمن + مشغّل قاعدة البيانات | `BLOCKED` | قراءة عابرة للمؤسسات أو وصول عميل مباشر عند أي خطأ سياسة/منح |
+| P0-04 | فرع `production` وحيد وغير محمي، ولا دليل استعادة | Neon branch `br-young-bird-b43proeb`; `docs/NEON-BRANCH-PROTECTION-RUNBOOK.md` | تفعيل الحماية، إنشاء staging/فرع استعادة، وتنفيذ استعادة فعلية موثقة قبل أي ترحيل | مالك المنصة + مشغّل قاعدة البيانات | `BLOCKED` | فقدان/تلف بلا مسار رجوع، وتعذر إثبات RPO/RTO |
+| P0-05 | لا نموذج AI ولا مزود معتمد: `APPROVED_MODELS=[]` و`approvedProviders=[]` | `src/server/secure-chat/models.mjs`; `src/server/firewall/provider.mjs` | اعتماد model/provider/region/No-Training/retention ومفتاح خادمي قبل أي إرسال | مالك المنتج + الأمن/الخصوصية + القانوني | `BLOCKED` | إرسال بيانات لمزود غير معتمد، أو ادعاء منتج يعمل بلا مزود |
+| P0-06 | لا مستخدم/جلسة/عضوية حقيقية؛ رحلة الهوية والعزل غير مثبتة | Neon Auth (`neon_auth."user"=0`, `session=0`); `src/server/kernel/auth.mjs`; `src/server/kernel/access.mjs` | إنشاء مستخدم اصطناعي معتمد، اختبار دخول/عضوية/رفض مؤسسة أخرى، وحل bootstrap أول مساحة عمل | مسؤول الأمن + مشغّل التشغيل | `BLOCKED` | فشل أول دخول، أو إنشاء مساحة عمل يتجاوز RLS، أو عزل غير مثبت |
+| P0-07 | تدوير الأسرار غير منفذ ولا يوجد دليل إبطال للقيم القديمة | `docs/DATA-PRIVACY-AND-SECURITY.md` §9; `render.yaml` | تدوير `DATABASE_URL` و`NEON_AUTH_*` وأي مفاتيح AI، وتخزينها في Secret Store، وتسجيل تاريخ التدوير بلا قيم | مشغّل التشغيل + الأمن | `BLOCKED` | استمرار صلاحية سر مكشوف، أو كسر الخدمة بعد التدوير غير المنسق |
+| P0-08 | لا سياسة احتفاظ/حذف/خروج/حوادث معتمدة، ولا جهة إشعار أمنية | `docs/DATA-PRIVACY-AND-SECURITY.md` §4–§6; `src/server/kernel/administration.mjs` | اعتماد المدد ونطاق الحذف وLegal Hold ومسار الحوادث، ثم تنفيذ آلي واختباره | القانوني + الخصوصية + مالك المنصة | `BLOCKED` | وعود امتثال/محو غير قابلة للتنفيذ، ومخاطر PDPL تعاقدية |
+| P0-09 | إقامة البيانات غير مثبتة: المشروع في `aws-us-east-2` | Neon project settings; `docs/DATA-PRIVACY-AND-SECURITY.md` §8.2 | قرار مالك/قانوني بنقل المنطقة أو تعديل الادعاء، مع خطة ترحيل واختبار | مالك المنصة + القانوني | `BLOCKED` | ادعاء استضافة سعودية غير صحيح، ومخالفة التزام تعاقدي/تنظيمي |
+| P0-10 | لا دليل إصدار: لم يُشغّل build/typecheck/اختبارات/أمن/متصفح | `package.json`; `tests/`; `docs/FINAL-RELEASE-HANDOFF.md` §8 | إنتاج حزمة أدلة على نفس SHA: build، اختبارات، فحص أمني، وصول، وأداء | مالك المنصة + الأمن | `OPEN` | إطلاق كود غير متحقق، وفشل غير مكتشف في أول استخدام |
+| P0-11 | التجربة والترخيص والدفع غير قابلة للتفعيل: `0023` غير مطبقة، لا أسعار معتمدة | `src/server/kernel/trial.mjs`; `migrations/0023_*.sql`; `docs/ENTERPRISE-TRIAL-POLICY.md` | اعتماد السياسة والأهلية والأسعار، تطبيق `0023`، وبناء منح استحقاق منفصل عن الطلب | مالك المنصة + المالية + القانوني | `BLOCKED` | منح وصول بلا ترخيص، أو وعد تجربة لا تعمل، أو التباس تجاري |
+| P0-12 | سلامة Ledger غير قابلة للتحقق المستقل: لا توقيع/مرساة، `0013` ناقصة، والفاحص لم يُشغّل | `src/server/ledger/*`; `public/downloads/aigas-ledger-verifier.mjs`; `migrations/0013_*.sql` | تطبيق `0013`، تشغيل الفاحص على حزمة حقيقية، وإضافة مرساة/توقيع معتمد | مالك المنتج + الامتثال + الأمن | `PARTIAL` | قبول دليل معدل، أو ادعاء سلامة لا يصمد أمام تدقيق |
+
+---
+
+## 3. موانع P1
+
+| ID | المانع | source_path | required_action | authority_needed | status | risk_if_ignored |
+|---|---|---|---|---|---|---|
+| P1-01 | عمق كشف Firewall ناقص: `CONTAINS` حرفي، لا Prompt Injection، لا وضع مراقبة | `src/server/firewall/core.mjs`; `docs/products/firewall/FEATURE-STATUS.yaml` | تنفيذ FW-04/05/06 أو تقييد ادعاء المنتج صراحةً | مالك المنتج + الأمن | `OPEN` | ادعاء DLP/حماية حقن أوسع من القدرة الفعلية |
+| P1-02 | Human Gate بمرحلة واحدة؛ لا تصعيد متعدد المستويات | `src/server/human-gate/core.mjs`; `docs/products/human-gate/FEATURE-STATUS.yaml` | تصميم/تنفيذ مستويات الموافقة والتصعيد، أو توثيق القيد في العقد | مالك المنتج + الأمن | `OPEN` | عدم مطابقة HG-02/HG-03 للمتطلب المعتمد |
+| P1-03 | Risk Engine: تقييم قواعدي فقط، ولا سياسات هرمية للمخاطر (RE-03) | `src/server/risk-engine/core.mjs`; `docs/products/risk-engine/FEATURE-STATUS.yaml` | تنفيذ العتبات الهرمية أو تأجيلها رسميًا، ومنع ادعاء تقييم AI | مالك المنتج + المخاطر | `OPEN` | تقييم غير متوافق مع حدود المؤسسة، وادعاء تفسير أوسع |
+| P1-04 | Ledger بلا احتفاظ/Legal Hold/ربط امتثال (LD-05/LD-07) | `docs/products/ledger/FEATURE-STATUS.yaml`; `src/server/ledger/*` | اعتماد سياسة احتفاظ وربط أدلة، ثم تنفيذها | الامتثال + القانوني | `BLOCKED` | أدلة غير قابلة للاحتفاظ القانوني، أو حذف غير منضبط |
+| P1-05 | CSP ليست سياسة سكربتات كاملة (لا `script-src`/`connect-src`) | `src/middleware.ts`; `docs/DATA-PRIVACY-AND-SECURITY.md` §2.4 | بناء سياسة كاملة بعد جرد الموارد، واختبار عدم كسر التحليلات | الأمن | `OPEN` | تعرض XSS أوسع مما توحي الترويسات الحالية |
+| P1-06 | Health check في Render على `/` فقط، لا جاهزية بوابة/API | `render.yaml`; `src/server/kernel/service.mjs:operationalHealth` | إضافة فحص جاهزية مناسب بعد فتح البوابة وربطه بالخدمة | مشغّل النشر | `OPEN` | إعلان خدمة سليمة بينما `/app` أو القاعدة معطلة |
+| P1-07 | لا مراقبة/تنبيه/on-call/دعم معلن | `docs/DATA-PRIVACY-AND-SECURITY.md` §4; القراران 96/97 | تعيين جهة، بريد أمني/أعطال، تنبيهات 5xx، ومناوبة | مالك المنصة + التشغيل | `BLOCKED` | اكتشاف متأخر للحوادث، وفشل التزام الإشعار |
+| P1-08 | لا SBOM ولا بناء/تحديث موقّع ولا حزمة Offline | `docs/PRODUCT-MASTER-CATALOG.yaml` (`signed_builds_and_sbom_required`) | إضافة توليد SBOM وتوقيع الإصدار وحزم محدثة قبل التوسع | مالك المنصة + الأمن | `OPEN` | سلسلة توريد غير قابلة للتدقيق، وتعذر On-Prem/Air-Gapped |
+| P1-09 | لا حد معدل عند الحافة ولا WAF/DDoS معلن | `src/server/firewall/service.mjs` (حد محلي); `render.yaml` | إعداد حماية حافة وحدود لكل مؤسسة/مسار | مشغّل النشر + الأمن | `OPEN` | إساءة استخدام/إغراق يتجاوز الحد المحلي |
+| P1-10 | لا تحقق من وصول/أداء واجهات `/app` (لوحة المفاتيح، 360px، تقليل الحركة) | `src/pages/app/*`; `src/styles/*` | تشغيل فحص وصول وأداء على بيئة معتمدة وتسجيل النتائج | مالك المنتج + الوصول | `OPEN` | تجربة غير صالحة لبعض المستخدمين، وأداء غير مقاس |
+
+---
+
+## 4. موانع P2
+
+| ID | المانع | source_path | required_action | authority_needed | status | risk_if_ignored |
+|---|---|---|---|---|---|---|
+| P2-01 | لقطات commits في ملفات حالة المنتجات أقدم من HEAD | `docs/products/*/FEATURE-STATUS.yaml` | تحديث `inspected_on`/`local_commit` عند المراجعة القادمة بدل الاعتماد على لقطة قديمة | مالك المنتج | `OPEN` | استنتاج حالة من نسخة قديمة |
+| P2-02 | `REDIS_URL` محفوظ للتوافق بلا مستهلك في الكود | `render.yaml` | إزالته أو توثيق سبب بقائه ومنع الاعتماد عليه | مشغّل النشر | `OPEN` | إعداد زائد يربك المشغّل ويوهم بوجود ميزة |
+| P2-03 | لا فحص آلي يمنع ظهور شارات `AVAILABLE`/`Live`/`Trial` غير المثبتة | `src/pages/products/*`; `src/components/*` | إضافة قائمة مراجعة نشر أو فحص محتوى قبل أي نشر تسويقي | مالك المحتوى | `OPEN` | تسرب ادعاء إتاحة عبر تعديل محتوى لاحق |
+| P2-04 | عقد Firewall يقول `PROPOSED_NOT_DEPLOYED` مع وجود مسارات مصدرية | `docs/products/firewall/API-CONTRACT.yaml`; `src/pages/app/api/firewall/*` | توضيح أن المسارات مصدرية غير منشورة، دون رفع الحالة | مالك المنتج | `OPEN` | التباس بين «موجود في المصدر» و«متاح» |
+| P2-05 | `0019` يمنح دالة من `0016`؛ ترتيب الترحيل حساس | `migrations/0019_*.sql`; `migrations/0016_*.sql` | تثبيت ترتيب `0016` قبل `0019` في Runbook ومراجعة المنح | مشغّل قاعدة البيانات | `OPEN` | فشل منح أو صلاحية ناقصة عند التطبيق |
+| P2-06 | لا قائمة مراجعة موحدة لأي تسجيل مستقبلي (Metadata فقط) | `docs/DATA-PRIVACY-AND-SECURITY.md` §3.3 | إضافة checklist مراجعة قبل إدخال أي logging أو tracing | الأمن | `OPEN` | تسرب JWT/DSN/متن محادثة في سجلات مستقبلية |
+
+---
+
+## 5. مغلق ولا يُعاد فتحه بلا دليل جديد
+
+| البند | سبب الإغلاق | الدليل |
+|---|---|---|
+| تجاوز بوابة `/app` بمسار مُرمّز (`/%61pp/...`) | أُصلح في المصدر بتطبيع المسار قبل قرار البوابة | `src/middleware.ts:normalizePath` |
+| استبدال CSP/ترويسات بدل دمجها | أُصلح بالدمج وإضافة `base-uri/form-action/object-src` وCORP | `src/middleware.ts` |
+| `0020` غير مطبقة | مطبقة؛ عمود `required_approvals` موجود | Neon catalog 2026-11-03 |
+| `0021` غير مطبقة | **مطبقة**؛ الدالة والtrigger موجودان | Neon catalog 2026-11-03 |
+| `0011` مستقل | متجاوزة بـ`0012`؛ لا أثر مستقل | `docs/CURRENT-IMPLEMENTATION-REGISTER.md` |
+| تعارض `REQUEST_APPROVAL/BLOCK` مع `ESCALATE/DENY` | تعيين تنفيذي موثق لا يغيّر المتطلب | `src/server/firewall/core.mjs:10` |
+| عدّ API «30» في السجل | الصحيح 29 ملف مسار؛ صُحح في السجل | `find src/pages/app/api -type f` |
+
+---
+
+## 6. طريقة التحديث
+
+1. لا يُغلق مانع إلا بدليل مستقل مؤرخ أو قرار سلطة موثق.
+2. عند الإغلاق: انقل الصف إلى قسم «مغلق» مع الدليل، واحذفه من جدول الأولوية.
+3. لا تُضف مانعًا مكررًا؛ اربطه بالـID القائم.
+4. أي مانع جديد يحتاج الحقول الخمسة: `source_path`, `required_action`, `authority_needed`, `status`, `risk_if_ignored`.
+5. حدّث `docs/FINAL-RELEASE-HANDOFF.md` عند تغير أي بوابة أو تعداد متطلبات.

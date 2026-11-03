@@ -48,7 +48,10 @@ local_foundation:
   follow_up_slice: ASSET_CONTEXT_RESIDUAL_RISK_AND_REVISION_RESTORE_LOCAL_ONLY
   latest_source_update: '2026-11-03'
   latest_local_migration: migrations/0015_aigas_risk_engine_asset_context_residual_risk.sql
-  latest_local_draft_migration_unapplied: migrations/0021_aigas_risk_engine_acceptance_guard.sql
+  latest_local_draft_migration_unapplied: null
+  migration_0021_applied: true
+  migration_0021_observed_on: '2026-11-03'
+  migration_0021_evidence: function aigas_re_guard_treatment and trigger aigas_re_treatment_guard exist on production branch (read-only catalog)
   lifecycle_closure_local_only: METHOD_METADATA_REASSESSMENT_FLAGS_ACCEPTANCE_RATIONALE_AND_DATA_QUALITY
   latest_neon_schema_observation:
     date: '2026-11-03'
