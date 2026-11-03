@@ -1,6 +1,10 @@
 {
   "redirects": [
     {
+      "source": "/docs/حوكمة الذكاء الاصطناعي في السعودية",
+      "destination": "/knowledge/ai-governance-saudi/"
+    },
+    {
       "source": "/about.html",
       "destination": "/about/"
     },

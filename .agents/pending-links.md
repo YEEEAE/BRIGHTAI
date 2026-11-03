@@ -13,3 +13,16 @@
 - saudi-ai-ethics-principles -> ai-employee-training | «خطة تدريب الموظفين تحتاج ربط المبادئ بقرار حقيقي لا محاضرة عامة.»
 - saudi-ai-ethics-principles -> sdaia-generative-ai-guidelines | «إرشادات الذكاء الاصطناعي التوليدي: ضوابط إضافية عند استخدام نموذج توليدي في العمل.»
 - saudi-ai-ethics-principles -> data-classification-for-ai | «تصنيف البيانات للذكاء الاصطناعي: كيف تحدد ما يدخل الأداة وما لا يدخل قبل الإطلاق.»
+
+المصدر: `/knowledge/sdaia-generative-ai-guidelines/` — تُفعّل هذه الروابط تلقائياً عند إنشاء المقالات المستهدفة في نفس الدفعة.
+
+- sdaia-generative-ai-guidelines -> saudi-ai-law-binding-vs-guidance | «إذا كان عندك شك في حدود الالتزام، راجع الفرق بين الملزم والإرشادي في ملف الذكاء الاصطناعي.»
+- sdaia-generative-ai-guidelines -> shadow-ai-detection | «إذا كان عندك أداة يستخدمها الفريق بدون اعتماد، ابدأ من كشف الاستخدام غير المعتمد قبل أي إجراء انضباطي.»
+- sdaia-generative-ai-guidelines -> ai-hallucinations-controls | «للتعمق في جانب الدقة، اقرأ ضوابط التعامل مع هلوسة الذكاء الاصطناعي.»
+- sdaia-generative-ai-guidelines -> deepfake-policy-organizations | «لجانب المحتوى المزيف اقرأ سياسة التعامل مع التزييف العميق في المنشآت.»
+- sdaia-generative-ai-guidelines -> ai-inventory-register | «سجل استخدامات الذكاء الاصطناعي يثبت الأداة والغرض والبيانات والمالك.»
+- sdaia-generative-ai-guidelines -> ai-employee-training | «خطة تدريب الموظفين على الذكاء الاصطناعي تعطيك هيكل الجلسة.»
+- sdaia-generative-ai-guidelines -> ai-vendor-assessment | «تقييم موردي الذكاء الاصطناعي يحوّل أسئلة المورد إلى ملف واحد.»
+- sdaia-generative-ai-guidelines -> pdpl-and-ai | «للتفاصيل القانونية، اقرأ دليل PDPL والذكاء الاصطناعي.»
+- sdaia-generative-ai-guidelines -> data-classification-for-ai | «لطريقة تصنيف البيانات قبل الإدخال اقرأ تصنيف البيانات للذكاء الاصطناعي.»
+- sdaia-generative-ai-guidelines -> ai-impact-assessment | «دليل تقييم أثر الذكاء الاصطناعي: من يتأثر بالقرار، وما البديل لو أوقفت الاستخدام.»

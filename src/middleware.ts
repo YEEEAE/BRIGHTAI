@@ -62,7 +62,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return harden(response, { portal: true, secureTransport });
   }
 
-  const destination = destinations.get(path);
+  let decodedPath = path;
+  try { decodedPath = decodeURIComponent(path); } catch { /* Keep malformed paths unmatched. */ }
+  const destination = destinations.get(path)
+    ?? destinations.get(decodedPath)
+    ?? destinations.get(decodedPath.replace(/\/$/, ''));
   const response = destination && ['GET', 'HEAD'].includes(context.request.method)
     ? context.redirect(`${destination}${context.url.search}`, 301)
     : await next();
