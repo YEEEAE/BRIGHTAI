@@ -1,3 +1,22 @@
+## [2026-11-03] — Ledger: حالة تحقق صريحة وتصدير مثبّت الإصدار وترحيل ترقية محلي
+### تم التنفيذ
+- أضيفت حالة مشتقة واحدة `VERIFIED/BLOCKED/UNVERIFIED` مع أسباب مقيدة لكل حدث ولكل سلسلة؛ لا تُعلن السلامة عند تطابق حدث واحد إذا كانت البادئة غير مكتملة أو متجاوزة الحد أو بها رابط مكسور أو تسلسل ناقص.
+- حزمة التصدير تسجل المصادر ونسخ السياسة و`hash_profile` وإصدار الفاحص المستقل؛ الفاحص يرفض المطابقة عند اختلاف الإصدار المسجل ويعيد `INDETERMINATE/VERIFIER_VERSION_MISMATCH`، ويظهر `verifier.pinned` و`warnings` عند غياب الإصدار في حزمة قديمة.
+- البيانات الوصفية لا تخرج من الخادم إلا بعد المرور بعقد المصدر الحالي؛ الصفوف غير المطابقة تُعرض ببيانات وصفية فارغة وحالة غير محسومة بدل metadata خام. أضيف تحقق أن القيم scalar، ورفض مبكر لنسخة السياسة/مفتاح التكرار غير الصالحين.
+- أضيف ترحيل ترقية محلي `0013_aigas_ledger_five_state_and_chain_guard.sql` (غير مطبق): يوائم قيد `aigas_ld_events` مع حالات Firewall الخمس و`request_fingerprint` كـ`NOT VALID` دون إعادة كتابة أدلة مختومة، ويضيف trigger يرفض فجوة التسلسل أو `previous_hash` الخاطئ عند الإدراج. حُدّث `0003` كتثبيت جديد فقط.
+- واجهة Ledger تعرض الحالة والأسباب لكل حدث/سلسلة، وتُظهر الحالة المحجوبة أو غير المتحققة بدل نجاح ضمني، مع RTL وحالات focus القائمة.
+### الملفات المتأثرة
+- `src/server/ledger/{core,writer,service}.mjs`, `src/scripts/ledger.ts`, `src/pages/app/ledger/index.astro`, `src/styles/ledger.css`, `public/downloads/aigas-ledger-verifier.mjs`
+- `migrations/0003_aigas_ledger.sql`, `migrations/0013_aigas_ledger_five_state_and_chain_guard.sql` (جديد)، `docs/products/ledger/ACCEPTANCE-AND-EVIDENCE.md`
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. بناء/اختبارات/lint/typecheck/متصفح/معاينة Node: NOT RUN بطلب المهمة.
+- فحص Neon قراءة فقط عبر MCP: جداول `aigas_ld_events` و`aigas_ld_evidence_requirements` موجودة، لكن قيد metadata ما زال ثلاثي الحالات ولا يسمح بـ`request_fingerprint`؛ أي لا يثبت تطبيق `0013`.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا SQL تغييري.
+### ملاحظات / مشاكل مفتوحة
+- حتى يُراجع ويُطبق `0013` على بيئة معتمدة، أي دليل Ledger لحدث Firewall بحالة `WARN/ESCALATE/DENY` أو ببصمة تنفيذ `GUARD` قد يرفضه قيد production الحالي. التطبيق يحتاج تفويضًا مستقلًا.
+- runtime grants/RLS وجلسة فعلية وتصدير/فاحص على بيئة معتمدة وبناء الواجهة: NOT VERIFIED.
+
 ## [2026-11-03] — ترحيل Firewall وهرمية السياسات على Neon production
 ### تم التنفيذ
 - فحص Neon أظهر أن جداول Firewall موجودة بمخطط قديم ثلاثي (`ALLOW/BLOCK/REDACT` و`RULE_BLOCK`) وأن `0011` لا ينطبق؛ أُضيف `0012_aigas_firewall_five_state_upgrade.sql` يحوّل `BLOCK→DENY` و`RULE_BLOCK→RULE_DENY`، ويضيف قيود الحالات الخمس و`policy_version`/`request_fingerprint` (فحص وجود البصمة `NOT VALID` للصفوف القديمة).
@@ -466,7 +485,7 @@
 - نسخة Codex المحلية في `plugins/Codex/`: عارض مستقل ومهارة وMCP App يعلن global/thread؛ ليست مثبتة، ودعم مدخل الشريط الأصلي NOT VERIFIED. خطوات التشغيل/التثبيت في README؛ لا تغير الحزمة الأصلية.
 - أحدث Risk Engine في السجل الأعلى: معالجة بإصدارات ومراجع وتصدير محلي دون تشغيل فحوص؛ أدلة Risk Engine السابقة HISTORICAL ولا تثبت هذه النسخة. 0008 غير مطبق إضافةً إلى 0005.
 - أحدث Human Gate في السجل الأعلى: تغيير اسم مساحة Kernel بربط المهمة ومهلة واستهلاك ذري، دون تحقق runtime أو نشر؛ الأدلة السابقة HISTORICAL.
-- Ledger الحالي موصوف في السجل الأعلى: تكامل أحداث داخلي وchain-v2 وفاحص مستقل محليًا دون تشغيل؛ أدلة Ledger القديمة HISTORICAL ولا تثبت هذا التغيير.
+- Ledger الحالي موصوف في السجل الأعلى: تكامل أحداث داخلي وchain-v2 وفاحص مستقل محليًا؛ التحقق يعيد `VERIFIED/BLOCKED/UNVERIFIED` صراحة، والحزمة تسجل إصدار الفاحص ونسخ السياسة والمصادر. `0013` (حالات Firewall الخمس + `request_fingerprint` + حارس التسلسل) محلي وغير مطبق؛ قيد production ما زال ثلاثي الحالات. أدلة Ledger القديمة HISTORICAL ولا تثبت هذا التغيير.
 - أحدث Firewall في السجل الأعلى: قرار GUARD مربوط بمؤسسة وفاعل وUUID طلب لمرة واحدة ونسخة سياسة Kernel وبصمة قرار محفوظة؛ الـguard يعيد الحساب ويرفض عدم التطابق. registry المزود وتكامل Human Gate فارغان عمدًا (`PROVIDER_NOT_CONFIGURED` / `HUMAN_GATE_NOT_CONFIGURED`)، و0011 ترحيل محلي غير مطبق. سجل القرار ليس إثبات تسليم للمزود، واختبارات Firewall لم تُحدّث أو تُشغّل.
 - Neon VERIFIED 2026-11-03: `young-frog-60183055` / `neondb`، الفرع الوحيد `production` / `br-young-bird-b43proeb` غير محمي. 31 جدول public بعد تطبيق `0012` (ترقية Firewall من المخطط الثلاثي) و`0010` (هرمية السياسات)؛ 0001/0003/0004/0005/0006/0007/0008/0009 مطبقة، و0011 غير مطبق لأنه غير لازم. المؤسسات والقواعد والقرارات والسياسات = 0؛ لا grants أو سياسات مزروعة. runtime role/RLS والنشر NOT VERIFIED.
 - إدارة Kernel المحلية تتطلب grant إداري ADMIN_NON_BILLED ساريًا مستقلًا عن status؛ تُعرض حالات EXPIRED/REVOKED وتتوفر إدارة أدوار Kernel والسحب محليًا، مع حماية آخر OWNER. سجل Kernel الأساسي يحفظ الحد الأدنى مستقلًا عن Ledger. أولوية الإتاحة المشتركة تشترط العضوية والتمكين والمنحة ومخطط المنتج. هرمية السياسات المركزية لها أساس محلي: ترحيل 0010، API دورة نشر وتقييم خادمي لمسار Firewall المحمي فقط، وواجهة أولية للمسودات والإدارات والتفويض؛ تحرير النسخ والتاريخ التفصيلي وبعض سياقات المنتج، تشغيل RLS، والتحقق الفعلي ما زالت غير مكتملة. لا سياسة افتراضية مزروعة ولا ترحيل مطبق على Neon. إلغاء دعوة Neon Auth نفسها غير متاح في واجهة Kernel؛ لا اشتراك أو Trial أو مزود AI معتمد حاليًا. جلسة Neon Auth حقيقية وعزل حسابين وruntime grants/RLS والنشر الحالي NOT VERIFIED.

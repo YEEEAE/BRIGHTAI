@@ -32,6 +32,7 @@ export function metadata(value, source = 'ledger.synthetic-lab', eventType) {
   if (value.evidence_policy_version !== undefined && (typeof value.evidence_policy_version !== 'string' || !/^[a-zA-Z0-9_.:-]{1,120}$/.test(value.evidence_policy_version))) throw new Error('Invalid evidence policy');
   if (typeof value.synthetic !== 'boolean') throw new Error('Missing classification');
   for (const [key, val] of Object.entries(value)) {
+    if (val !== null && !['string','boolean','number'].includes(typeof val)) throw new Error('Non-scalar metadata');
     if (key.endsWith('_ref') && val !== null && !uuid(val)) throw new Error('Invalid reference');
     if (['asset_version','rule_version'].includes(key) && val !== null && (!Number.isSafeInteger(val) || val < 1)) throw new Error('Invalid version');
   }
@@ -72,4 +73,19 @@ export function filters(params) {
   const period = params.get('period') || 'all', page = params.get('page') || '1', search = (params.get('q') || '').trim();
   if ((type && !types.includes(type)) || (source && !Object.hasOwn(sourceTypes,source)) || (classification && !['synthetic','operational'].includes(classification)) || !['all','1','7','30'].includes(period) || !/^[1-9]\d{0,2}$/.test(page) || Number(page)>100 || search.length>80 || /[\u0000-\u001f\u007f]/.test(search)) throw new KernelError(400,'INVALID_FILTER','التصفية غير صالحة؛ حد البحث 80 حرفًا وحد العرض 100 صفحة.');
   return {type,source,classification,days:period==='all'?null:Number(period),page:Number(page),limit:25,search};
+}
+// Derive one explicit state. Never report VERIFIED from a single MATCH when the
+// prefix limit, an unreadable row or a broken link leaves the chain unproven.
+export function verificationState(integrity, chain) {
+  const chainResult = chain?.result ?? 'INDETERMINATE';
+  const chainReason = chain?.reason ?? null;
+  if (integrity === 'MISMATCH' || chainResult === 'MISMATCH') return {state:'BLOCKED',reasons:[...(integrity==='MISMATCH'?['EVENT_HASH_MISMATCH']:[]),...(chainResult==='MISMATCH'?[chainReason||'CHAIN_MISMATCH']:[])]};
+  if (integrity !== 'MATCH' || chainResult !== 'MATCH') return {state:'UNVERIFIED',reasons:[...(integrity!=='MATCH'?['EVENT_HASH_INDETERMINATE']:[]),...(chainResult==='EMPTY'?['NO_EVIDENCE']:[chainReason||'CHAIN_INDETERMINATE'])]};
+  return {state:'VERIFIED',reasons:[]};
+}
+// Only allowlisted, scalar metadata leaves the server. A row that no longer
+// satisfies the current profile is returned as an empty object, never raw.
+export function publicMetadata(value, source, eventType) {
+  try { return {valid:true,value:metadata(value,source,eventType)}; }
+  catch { return {valid:false,value:{}}; }
 }

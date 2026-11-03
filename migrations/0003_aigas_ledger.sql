@@ -1,6 +1,8 @@
--- Fresh-install migration: 0003 was not applied on the inspected Neon branch.
+-- Fresh-install definition. An existing installation that already applied an
+-- older 0003 needs 0013; never rewrite already-sealed evidence in place.
 -- REVIEW ONLY: requires 0001; apply only to an approved isolated development DB.
 -- Access/grants for ingestion require 0006; no license is activated by this SQL.
+-- Current contract: five Firewall states and the execution fingerprint binding.
 BEGIN;
 CREATE TABLE public.aigas_ld_events (
   event_id uuid PRIMARY KEY,
@@ -23,10 +25,11 @@ CREATE TABLE public.aigas_ld_events (
       WHEN 'firewall' THEN
         event_type='firewall.decision.recorded'
         AND metadata_json ?& ARRAY['synthetic','decision_ref','action','mode','rule_ref','rule_version']
-        AND metadata_json - ARRAY['synthetic','decision_ref','action','mode','rule_ref','rule_version','evidence_policy_version']='{}'::jsonb
+        AND metadata_json - ARRAY['synthetic','decision_ref','action','mode','rule_ref','rule_version','request_fingerprint','evidence_policy_version']='{}'::jsonb
         AND metadata_json->'synthetic'='true'::jsonb
-        AND metadata_json->>'action' IN ('ALLOW','BLOCK','REDACT')
+        AND metadata_json->>'action' IN ('ALLOW','WARN','REDACT','ESCALATE','DENY')
         AND metadata_json->>'mode' IN ('LAB','GUARD')
+        AND (NOT (metadata_json ? 'request_fingerprint') OR metadata_json->>'request_fingerprint' ~ '^[0-9a-f]{64}$')
       WHEN 'human-gate' THEN
         event_type IN ('human_gate.request.created','human_gate.decision.recorded','human_gate.demo_note.completed')
         AND metadata_json ?& ARRAY['synthetic','request_ref','operation_scope']
@@ -81,6 +84,28 @@ CREATE TRIGGER aigas_ld_events_append_only BEFORE UPDATE OR DELETE ON public.aig
 FOR EACH ROW EXECUTE FUNCTION public.aigas_ld_events_reject_mutation();
 CREATE TRIGGER aigas_ld_events_no_truncate BEFORE TRUNCATE ON public.aigas_ld_events
 FOR EACH STATEMENT EXECUTE FUNCTION public.aigas_ld_events_reject_mutation();
+
+-- Write-time parent link: reject a missing sequence or a forked previous hash
+-- instead of relying only on export-time detection.
+CREATE OR REPLACE FUNCTION public.aigas_ld_events_chain_guard() RETURNS trigger
+LANGUAGE plpgsql AS $$
+DECLARE parent public.aigas_ld_events%ROWTYPE;
+BEGIN
+  IF NEW.sequence_no=1 THEN
+    IF NEW.previous_hash IS NOT NULL THEN RAISE EXCEPTION 'Ledger genesis must not reference a previous hash'; END IF;
+    RETURN NEW;
+  END IF;
+  SELECT * INTO parent FROM public.aigas_ld_events
+    WHERE tenant_id=NEW.tenant_id AND sequence_no=NEW.sequence_no-1;
+  IF NOT FOUND OR parent.integrity_hash IS DISTINCT FROM NEW.previous_hash THEN
+    RAISE EXCEPTION 'Ledger sequence gap or wrong previous hash';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.aigas_ld_events_chain_guard() FROM PUBLIC;
+CREATE TRIGGER aigas_ld_events_chain_guard BEFORE INSERT ON public.aigas_ld_events
+FOR EACH ROW EXECUTE FUNCTION public.aigas_ld_events_chain_guard();
 
 -- Empty by default. Only an authorized operator may configure mandatory evidence
 -- from an approved policy. No client endpoint, default requirement or fallback.

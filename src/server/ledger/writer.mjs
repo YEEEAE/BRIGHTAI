@@ -8,6 +8,10 @@ export const columns = 'event_id,tenant_id,source,event_type,policy_version,meta
 // There is deliberately no HTTP ingestion endpoint accepting source/actor/tenant.
 export async function appendEvent(db, identity, tenantId, input) {
   if (!uuid(identity?.userId) || !uuid(tenantId) || !sourceTypes[input.source]?.includes(input.event_type)) throw new KernelError(403,'UNTRUSTED_EVENT','مصدر الحدث غير مخوّل.');
+  // Actor, tenant and source are bound by the calling service; nothing here is
+  // accepted from a request body. Reject malformed envelope values early so a
+  // database constraint never has to absorb them silently.
+  if (typeof input.policy_version!=='string' || !/^[a-zA-Z0-9_.:-]{1,120}$/.test(input.policy_version) || typeof input.idempotency_key!=='string' || !/^[a-zA-Z0-9_.:-]{1,180}$/.test(input.idempotency_key)) throw new KernelError(400,'INVALID_EVENT','مرجع العملية أو نسخة السياسة غير صالح.');
   const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE',[tenantId,identity.userId])).rows[0];
   requireRole(member,['OWNER','ADMIN','MEMBER']);
   // All appends in this implementation serialize per tenant until COMMIT.
@@ -43,6 +47,7 @@ export async function recordProductEvent(db, identity, tenantId, input) {
     return await appendEvent(db,identity,tenantId,requirement ? {...input,metadata_json:{...input.metadata_json,evidence_policy_version:requirement.policy_version}} : input);
   } catch (error) {
     if (error instanceof KernelError) throw error;
+    if (error?.code==='23514') throw new KernelError(503,'EVIDENCE_SCHEMA_CONSTRAINT','رفض المخطط بيانات هذا الدليل؛ لم تُحفظ العملية. يلزم مطابقة ترحيل Ledger لنسخة العقد الحالية.');
     throw new KernelError(503,'EVIDENCE_UNAVAILABLE','تعذر حفظ دليل Ledger داخل المعاملة؛ لم تكتمل العملية. راجع المخطط وصلاحيات الخادم.');
   }
 }
