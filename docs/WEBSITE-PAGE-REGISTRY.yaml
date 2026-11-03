@@ -56,7 +56,7 @@ document:
       auth:
         - /auth/sign-up/
         - /auth/accept-invitation/
-      api_route_files: 30
+      api_route_files: 29
       index_eligible: false
       runtime_verified: false
     related_register: docs/CURRENT-IMPLEMENTATION-REGISTER.md
@@ -2177,6 +2177,120 @@ internal_linking_hubs:
   - /knowledge/ai-governance-saudi/
   - /pillars/safety/
   - /pillars/privacy/
+ui_batch_baseline:
+  inspected_on: '2026-11-03'
+  local_head: f35132d446805802543bf63940d031b6d925a63e
+  evidence: SOURCE_AND_READ_ONLY_BROWSER
+  purpose_ar: مرجع ملكية وحماية للدفعات الخمس عشرة التالية، وليس تفويضاً بتنفيذها أو إعادة تصميم الموقع.
+  source_route_families:
+    - {source: 'src/pages/products/[product].astro', count: 5, slugs: [firewall, risk-engine, human-gate, ledger, secure-chat]}
+    - {source: 'src/pages/solutions/[sector].astro', count: 4, slugs: [government, finance, healthcare, enterprise]}
+    - {source: 'src/pages/pillars/[pillar].astro', count: 3, slugs: [safety, transparency, privacy]}
+    - {source: src/pages/knowledge/, count: 12, catalog: src/data/knowledge.ts}
+  protected:
+    files:
+      - src/components/Header.astro
+      - src/components/BrandLogo.astro
+      - src/components/Constellation.astro
+      - src/data/brand.ts
+      - public/images/brightai-logo.png
+      - public/images/brightai-logo.webp
+    selectors: ['.topbar', '.primary-navigation', '.hero', '.hero-copy', '.hero-art']
+    descendants: 'All Header/BrandLogo/Constellation descendants, Canvas/SVG and homepage Hero descendants'
+    cascade_ar: الحماية تشمل CSS وJS المستوردين والقواعد الموروثة؛ لا تعديل tokens أو selectors عامة يؤثر عليها جانبياً.
+  ownership_table:
+    - {owner: src/layouts/BaseLayout.astro, css: 'variables.css → site.css → experience.css', scope: 'All public pages; Header and Hero share this cascade'}
+    - {owner: src/pages/index.astro, css: 'theme.css + scoped style', scope: 'Homepage; Hero frozen'}
+    - {owner: src/components/PageShell.astro, css: 'pages.css + interior.css + interior-motion.css', scope: 'Public interior pages including products, docs and articles'}
+    - {owner: src/pages/docs.astro, css: knowledge-center.css, scope: 'Knowledge hub only'}
+    - {owner: src/components/KnowledgeReader.astro, css: knowledge-reader.css, scope: '12 knowledge articles via PageShell'}
+    - {owner: src/components/ProductExperience.astro, css: 'experience.css + interior-motion.css', scope: 'Five public product demos; not authenticated workspaces'}
+    - {owner: src/pages/app/firewall/index.astro, css: firewall.css, scope: 'Private workspace; outside this batch'}
+    - {owner: src/pages/app/ledger/index.astro, css: ledger.css, scope: 'Private workspace; outside this batch'}
+    - {owner: src/pages/app/human-gate/index.astro, css: human-gate.css, scope: 'Private workspace; outside this batch'}
+    - {owner: src/components/RiskWorkspace.astro, css: risk-engine.css, scope: 'Private risk list and detail; outside this batch'}
+    - {owner: src/pages/app/secure-chat/index.astro, css: secure-chat.css, scope: 'Private workspace; outside this batch'}
+  existing_components:
+    PageMotionStudy: 'PageShell invokes except docs/knowledge; actual output conditional by family, no output for products/contact'
+    SystemMap: 'products/index.astro only; compact figure with five product links'
+    DecisionCircuit: 'ProductExperience firewall branch only; educational figure'
+    KnowledgeReader: 'PageShell knowledge branch; contents, reading progress and related guides'
+    ProductExperience: 'products/[product].astro; five kinds, no server execution'
+    section-compass: 'PageShell except docs/knowledge; InteriorController builds links from existing headings'
+  section_order:
+    home:
+      source: src/pages/index.astro
+      sections:
+        - {id: null, labelledby: hero-title, protected: true}
+        - {id: null, label: حوكمة وحماية البيانات}
+        - {id: problem, labelledby: problem-title}
+        - {id: principles, labelledby: pillars-title}
+        - {id: how-it-works, labelledby: workflow-title}
+        - {id: null, labelledby: products-title, items: 5}
+        - {id: solutions, labelledby: solutions-title, items: 4}
+        - {id: null, labelledby: closing-title}
+      cta_destinations: ['/products/', '/contact/', '/docs/', '/pillars/:pillar/', '/solutions/:sector/']
+    products:
+      source: src/pages/products/index.astro
+      sections:
+        - {id: null, labelledby: null, component: SystemMap}
+        - {id: null, labelledby: catalog-title, heading: 'ابدأ بالدور الذي تحتاجه.', items: 5}
+        - {id: null, labelledby: verification-title, heading: 'ما الذي يتطلب تحققاً؟'}
+        - {id: null, labelledby: null, heading: 'أي دور تحتاجه أولاً؟'}
+        - {id: null, labelledby: null, heading: 'استقلال المنتج والتكامل الاختياري'}
+        - {id: deployment-options, labelledby: null, heading: 'النشر السحابي والمحلي والمعزول: قارن الاعتماديات'}
+      cta_destinations: ['/products/:product/', '/pricing/', '/docs/']
+      change_ar: ربط قسمَي الفهرس والتحقق بعنوانيهما الموجودين فقط؛ لا نص أو CSS أو ترتيب أو رابط جديد.
+    docs:
+      source: src/pages/docs.astro
+      order: [kc-sidebar, kc-heading, kc-controls, kc-product-space, kc-results-bar, kc-workspace]
+      sections:
+        - {id: null, label: البحث وتصفية الأدلة, role: search}
+        - {id: null, label: معرفة منظومة AIGAS, hidden_initially: true}
+        - {id: kc-results, label: نتائج الأدلة, items: 12}
+      adjacent_component: 'kc-preview aside follows results; filter state is not product availability'
+      cta_destinations: ['/knowledge/:article/']
+    contact:
+      source: src/pages/contact.astro
+      order: [intro, contact-options, contact-form, privacy-note, content-extension]
+      sections:
+        - {id: null, label: خيارات التواصل}
+        - {id: null, labelledby: null, heading: 'وش تكتب في استفسارك؟'}
+        - {id: null, labelledby: null, heading: 'ماذا يحصل بعد تجهيز الرسالة؟'}
+      form_id: contact
+      cta_behavior: 'Existing WhatsApp/mailto links and mailto preparation only; no submission performed'
+  browser:
+    routes: ['/', '/products/', '/docs/', '/contact/']
+    sources: [public_live_baseline, local_astro_dev_final]
+    local_preview: http://127.0.0.1:4322
+    excluded_preview_ar: المنفذ 4321 تشغله عملية سابقة؛ استُبعدت لقطاته من دليل النسخة الحالية وأُعيد فحص الأربع على 4322 الذي أطلقته هذه المهمة.
+    actual_viewports: ['1440px desktop', '390px mobile emulation']
+    note_ar: resize إلى 390 أعاد innerWidth=500؛ أُعيد الفحص بمحاكاة viewport وأكد innerWidth=390. لا تُعد اللقطات الأولى دليلاً على 390.
+    observed_ar: ترتيب العناوين والروابط الأساسية متطابق في العينات؛ لا تجاوز أفقي على الأربع عند 390 و1440. هذا ليس إثبات تطابق نشر كامل.
+    visual_ar: خلفية سوداء وعناوين بيضاء وتسميات كهرمانية؛ فهرس المنتجات صفوف مفصولة وخريطة، والمعرفة بحث وتصنيفات ومعاينة، والتواصل نموذج رأسي. لم تتغير هذه البنية.
+    not_verified: ['320px', 'full-page visual audit', 'screen reader interaction', 'performance', 'backend', 'deployment']
+  reference_decisions:
+    lazyweb_navigation:
+      reference: 'bettermode / services — screens:9f10733ed7c60c0448ab5b12'
+      source: https://bettermode.com/services
+      principle_ar: فصل التنقل العام عن اختيار دور المنتج؛ رُبط فهرس الأدوار بعنوانه الحالي دون تعديل الهيدر.
+    lazyweb_docs:
+      reference: 'gitbook — screens:c3efc970067f69f90d3f732b'
+      principle_ar: فصل تنقل المعرفة عن منطقة العمل؛ الموجود kc-sidebar وkc-workspace يحقق الفصل، فلا إضافة مكوّن آخر.
+    made_good_designs:
+      reference: Architectural Blueprint Sheet
+      source: https://madegooddesigns.com/inspiration/?utm_source=mcp&utm_medium=referral&utm_campaign=search_design_inspiration
+      principle_ar: محاذاة التسميات والفراغات مع البنية؛ مرجع تقني تحريري جزئي لا نظام داكن مطابق، فلا تغيير ألوان أو نسخ artwork.
+    figma:
+      status: NOT_AVAILABLE
+      reason_ar: موارد MCP المتاحة وثائق ومهارات فقط؛ لا ملف BRIGHT AI أو رابط محلي ولا أداة بحث ملفات عامة ظهرت. عمر التصميم مقابل الكود غير قابل للتحقق.
+    twenty_first:
+      status: NOT_APPLICABLE
+      reason_ar: لا إنشاء بطاقة أو زر أو مكوّن جديد في هذه الدفعة؛ البحث اختياري حسب الطلب.
+  continuation_contract_ar: >-
+    هذا الجرد نقطة بدء لا نسخة نصوص بديلة. في كل دفعة لاحقة اقرأ المصدر الحالي، وثبّت نصوص وروابط وعدد وترتيب الأقسام
+    قبل التحرير، وأصلح المكوّن القائم في ملفه المالك. لا تعمم styles ولا تضف قسماً أو اعتماداً أو حركة دون طلب خاص.
+    لا Build أو tests أو إرسال نموذج أو تعديل خارجي ضمن هذه الدفعة.
 design_variation_contract:
   source: BRAND-AND-DESIGN-SYSTEM.md
   avoid_repeating_one_template: true
