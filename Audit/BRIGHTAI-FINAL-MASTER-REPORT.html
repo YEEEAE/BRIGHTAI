@@ -1,0 +1,921 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="description" content="تقرير BRIGHT AI/AIGAS التنفيذي — مصدر وسلامة وحدود إتاحة وإغلاق الإصدار"><title>BRIGHT AI / AIGAS — التقرير التنفيذي النهائي للحالة</title><style>
+:root{color-scheme:dark;--ink:#f4effd;--muted:#b8afc8;--surface:#12101b;--border:#302640;--violet:#8052ff;--gold:#ffb829;--success:#15846e}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{direction:rtl;margin:0;background:#08060d;color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.85}
+a{color:#c9b3ff;text-underline-offset:3px;word-break:break-word}.container{max-width:1200px;margin:auto;padding:0 24px 72px}.hero{padding:62px 32px 32px;background:radial-gradient(ellipse at 80% -30%,#402773,#100b19 55%,#08060d 90%);border-bottom:1px solid #382e4b;margin-bottom:30px}.hero .eyebrow{letter-spacing:1px;color:#c7aaff;font-size:13px}.hero h1{font-size:clamp(27px,4vw,52px);line-height:1.4;margin:12px 0;font-weight:650}.hero p{max-width:900px;color:var(--muted);font-size:16px}.nav{margin:15px 0 40px;padding:16px 20px;background:#15101f;border:1px solid var(--border);border-radius:12px}.nav summary{cursor:pointer;font-weight:bold}.nav ol{columns:2;gap:30px;margin:16px 0 0;padding-inline-start:20px;font-size:14px}article{max-width:1120px}h2{font-size:clamp(23px,3vw,31px);font-weight:650;margin:44px 0 14px;line-height:1.5;padding-bottom:12px;border-bottom:1px solid #453651}h3{font-size:20px;margin:26px 0 10px}h4{font-size:16px;color:#e1d4f4;margin:20px 0 8px}p,li{font-size:15px}p{margin:0 0 14px;color:#ede8f3}li{margin-bottom:7px}ul,ol{padding-inline-start:25px}blockquote{margin:20px 0;padding:14px 18px;border-right:3px solid var(--violet);border-radius:7px;background:#171021;color:#ddd2ed}code{font-size:.87em;padding:2px 6px;background:#20182e;color:#eacfff;border:1px solid #322341;border-radius:5px;direction:ltr;unicode-bidi:isolate}pre{overflow:auto;background:#181120;padding:16px;border-radius:10px;border:1px solid #352747}pre code{border:0;padding:0;background:none}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;margin:19px 0 26px;font-size:13px;white-space:normal}th,td{padding:11px 12px;border:1px solid #392b47;text-align:right;vertical-align:top;min-width:105px}th{background:#251932;color:#fff}td{background:#100d15;color:#e3dbea}tr:hover td{background:#16101f}hr{border:0;border-top:1px solid var(--border);margin:38px 0}strong{color:#fff}.foot{margin-top:65px;padding-top:25px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}.pill{display:inline-block;border:1px solid #59417b;background:#1e1430;color:#ccb5f2;padding:4px 12px;border-radius:999px;font-size:12px;margin-inline-end:8px}.actions a{display:inline-block;margin:6px 0 6px 10px;border:1px solid #604c85;background:#25143c;padding:8px 12px;border-radius:6px;font-size:13px}.caption{font-size:12px;color:#b8adc6}.callout{padding:18px;border:1px solid #5a422e;background:#221609;border-radius:8px;color:#ffdea2}
+@media(max-width:800px){.container{padding:0 14px 48px}.hero{padding:40px 15px 26px}.nav ol{columns:1}table{font-size:12px}th,td{padding:8px 10px}h2{margin-top:35px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{:root{color-scheme:light}body{background:white;color:#111;font-family:Arial,Tahoma,sans-serif}a{color:#26208e}p,li,td{color:#222!important}h1,h2,h3,h4,strong{color:#000!important}.hero{background:white;border-bottom:2px solid #111}.hero .eyebrow,.hero p{color:#333}.nav{display:none}table{display:table;overflow:visible}th{background:#eee;color:#000}td{background:#fff}th,td{border:1px solid #bbb;page-break-inside:avoid}h2,h3{page-break-after:avoid}pre,code{color:#333!important;background:#fff;border-color:#ddd}.container{max-width:none}.foot{color:#555}}
+</style></head><body><div class="hero"><div class="container"><span class="eyebrow">FINAL-CLOSURE-AUDIT · 2026-11-03</span><h1>BRIGHT AI / AIGAS — التقرير التنفيذي النهائي للحالة</h1><p>مراجعة معمارية وتشغيلية وخصوصية وأمن وتجربة استخدام ومنتجات AIGAS الخمسة. المعلومات موثقة بحسب مصدرها، ولا تُستعمل شهادة إطلاق.</p><div><span class="pill">31 AIGAS tables</span><span class="pill">15 final prompts</span><span class="pill">NO-GO until evidence</span></div></div></div><main class="container"><details class="nav" open><summary>فهرس التقرير</summary><ol><li><a href="#h1">00 — تعريف مشروع BRIGHT AI والتمييز بين ما هو مستهدف وما هو مطبق</a></li>
+<li><a href="#h2">01 — نتيجة المجلس التنفيذي</a></li>
+<li><a href="#h3">02 — منهج الدليل وحدوده</a></li>
+<li><a href="#h4">03 — طبقات المشروع ومكوناته الفعلية</a></li>
+<li><a href="#h5">04 — مراجعة تفصيلية للمنتجات الخمسة</a></li>
+<li><a href="#h6">05 — Neon / PostgreSQL: تحليل بنيوي وأمني</a></li>
+<li><a href="#h7">06 — المخاطر الأمنية والخصوصية والأمان التشغيلي</a></li>
+<li><a href="#h8">07 — تجربة الاستخدام والتصميم والمحتوى والـSEO</a></li>
+<li><a href="#h9">08 — الشؤون التجارية والتشغيل والتكامل المؤسسي</a></li>
+<li><a href="#h10">09 — مسارات الإطلاق الأربعة: ما ينبغي أن يبقى منفصلًا</a></li>
+<li><a href="#h11">10 — أولويات الإغلاق قبل الإطلاق</a></li>
+<li><a href="#h12">11 — معايير Go/No-Go النهائية (القرار لم يُمنح بعد)</a></li>
+<li><a href="#h13">12 — مصفوفة تنفيذ 15 برومبت نهائيًا (الأقصى المعتمد)</a></li>
+<li><a href="#h14">13 — سجل المصادر وطريقة إعادة الإنتاج دون أسرار</a></li>
+<li><a href="#h15">14 — تفسير ما لا يمكن حسمه من هذه الأدلة</a></li>
+<li><a href="#h16">15 — المخرجات والحدود الأخلاقية</a></li>
+<li><a href="#h17">16 — مصفوفة الفحص البصري الفعلي — 3 نوفمبر 2026</a></li>
+<li><a href="#h18">17 — جرد تفصيلي لمسارات التنفيذ والمستندات</a></li>
+<li><a href="#h19">18 — البيانات التشغيلية المطلوب طلبها قبل قرار إطلاق عميل</a></li></ol></details><article><h1>BRIGHT AI / AIGAS — التقرير الشامل للحالة الفعلية وخطة الإغلاق النهائي</h1>
+<p><strong>نسخة التقرير:</strong> <code>FINAL-CLOSURE-AUDIT-2026-11-03</code><br/>
+<strong>تاريخ الفحص:</strong> 3 نوفمبر 2026<br/>
+<strong>المستودع:</strong> <a href="https://github.com/YEEEAE/BRIGHTAI">YEEEAE/BRIGHTAI</a> — <code>main</code> عند <code>e33b480744b5d0b44344bf469f09b6cbbb50248f</code><br/>
+<strong>قاعدة البيانات:</strong> Neon project <code>young-frog-60183055</code> — قاعدة <code>neondb</code>، قراءة فقط<br/>
+<strong>الموقع:</strong> <a href="https://brightai.live">brightai.live</a> — Browser Use: 13/20 مسارًا أعادت HTTP 200 و7/20 أعادت HTTP 404؛ بوابة <code>/app/</code> ومسارات منتجاتها غير متاحة علنًا لحظة الفحص<br/>
+<strong>نوع التقرير:</strong> تقييم حالة مبني على الوثائق والمصدر ومعلومات قاعدة البيانات ومشاهدات الويب، <strong>وليس شهادة أمنية أو تقرير اختبار اختراق أو تصديقًا تشغيليًا</strong>.<br/>
+<strong>العمليات التي أُجريت:</strong> قراءة GitHub، استعلامات SQL <code>SELECT</code> فقط، معاينة صفحات عامة، إنشاء هذا التقرير والبرومبتات في مساحة عمل مستقلة. <strong>لا تغييرات في GitHub أو Neon أو الموقع.</strong></p>
+<hr/>
+<h2 id="h1">00 — تعريف مشروع BRIGHT AI والتمييز بين ما هو مستهدف وما هو مطبق</h2>
+<p>BRIGHT AI هي العلامة المؤسسية لـ<strong>مؤسسة مُشرقة</strong>، وAIGAS تخصصها في حوكمة وأمان الذكاء الاصطناعي. تحتوي المنظومة على AIGAS Kernel (الطبقة المشتركة غير المرخصة منفصلًا) وعلى خمسة منتجات مستقلة: <strong>Firewall وLedger وHuman Gate وRisk Engine وSecure Chat</strong>. يجب أن تحتفظ المنتجات بحدود تجارية ووظيفية مستقلة: تسجيل الأمان الأدنى في Kernel لا يتوقف على ترخيص Ledger، وضوابط Secure Chat الأساسية لا تتوقف على شراء Firewall، وربط المنتجات الأخرى إضافة اختيارية لا إكراه وظيفي.</p>
+<p>المرجع الأعلى للمتطلبات المستهدفة هو <code>docs/MASTER-PROJECT-BLUEPRINT.md</code> مع مستندات <code>docs/products/*</code> الستة لكل منتج. <strong>الوثيقة المعتمدة تشرح المطلوب، ولا تثبت تشغيله</strong>. مصدر الحالة التقنية هو الكود في commit المحدد، ومصدر وجود الجداول هو Neon. لا تعتبر الأدلة المحلية القديمة أو <code>WORKING</code> داخل ملف حالة بديلًا عن إثبات تشغيل في الإصدار المنشور.</p>
+<h2 id="h2">01 — نتيجة المجلس التنفيذي</h2>
+<p><strong>قرار الحالة الحالية: <code>PRE-LAUNCH / RELEASE NOT YET PROVEN</code>.</strong> المشروع تقدم جدًا في كتابة طبقات الـBackend وAstro وSQL ومستندات المنتج والمحتوى المعرفي. لكنه لا يمتلك من المصادر التي فُحصت ما يكفي للإعلان أن أي منتج من الخمسة جاهز لعميل حقيقي أو أن البوابة منشورة وتعمل من البداية للنهاية.</p>
+<h3 id="h3">أهم المقاييس المثبتة</h3>
+<table>
+<thead>
+<tr>
+<th>المؤشر</th>
+<th style="text-align:right">القيمة المثبتة</th>
+<th>مصدر الإثبات</th>
+<th>ماذا يعني / لا يعني</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>المنتجات الأساسية</td>
+<td style="text-align:right">5</td>
+<td>Blueprint + صفحات المنتجات</td>
+<td>كتالوج متكامل وظيفيًا على الورق، لا 5 خدمات مُطلقة</td>
+</tr>
+<tr>
+<td>Kernel مشترك</td>
+<td style="text-align:right">1</td>
+<td>Blueprint + <code>src/server/kernel/*</code></td>
+<td>قاعدة كود وظيفية مقترحة، لا شهادة جاهزية</td>
+</tr>
+<tr>
+<td>ترحيلات SQL في المستودع</td>
+<td style="text-align:right">17</td>
+<td><code>migrations/0001</code> إلى <code>0017</code></td>
+<td>ملفات موجودة؛ لا يثبت تطبيق كل تعديل بالتسلسل</td>
+</tr>
+<tr>
+<td>جداول AIGAS في Neon <code>public</code></td>
+<td style="text-align:right"><strong>31</strong></td>
+<td><code>information_schema.tables</code></td>
+<td>جداول فعلية منشأة</td>
+</tr>
+<tr>
+<td>سجلات العمل في جداول AIGAS الـ31</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td><code>COUNT(*)</code> مباشر لكل جدول</td>
+<td>لا يوجد دليل على رحلة عمل حقيقية من سجلات هذه القاعدة</td>
+</tr>
+<tr>
+<td>مستخدمو Neon Auth</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td><code>neon_auth.user</code></td>
+<td>لم يثبت استخدام حساب حقيقي بهذا المصدر</td>
+</tr>
+<tr>
+<td>جلسات Neon Auth</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td><code>neon_auth.session</code></td>
+<td>لم يثبت تسجيل دخول إلى البوابة عبر هذه القاعدة</td>
+</tr>
+<tr>
+<td>منظمات Neon Auth / عضويتها</td>
+<td style="text-align:right"><strong>0 / 0</strong></td>
+<td><code>neon_auth.organization/member</code></td>
+<td>لا دليل على تهيئة عميل حتى الآن</td>
+</tr>
+<tr>
+<td>فرع Neon</td>
+<td style="text-align:right"><strong>1</strong></td>
+<td>Neon branches</td>
+<td>اسمه <code>production</code> وهو افتراضي <strong>غير محمي</strong> لحظة الفحص</td>
+</tr>
+<tr>
+<td>جداول <code>public.aigas_*</code> مع RLS مفعّل</td>
+<td style="text-align:right"><strong>31/31</strong></td>
+<td><code>pg_class.relrowsecurity</code></td>
+<td>تفعيل RLS وحده ليس تدقيق وصول مكتملًا</td>
+</tr>
+<tr>
+<td>الجداول التي لها RLS Policies مباشرة</td>
+<td style="text-align:right"><strong>2/31</strong></td>
+<td><code>pg_policies</code></td>
+<td>بقية الجداول لا تملك سياسة مباشرة؛ يتطلب فهم أدوار الخدمة ومسارات الاتصال</td>
+</tr>
+<tr>
+<td>صلاحيات دور <code>authenticated</code></td>
+<td style="text-align:right"><strong>SELECT/INSERT/UPDATE/DELETE على 31 جدولًا</strong></td>
+<td><code>information_schema.role_table_grants</code></td>
+<td>صلاحيات SQL لا تعني تجاوز RLS تلقائيًا؛ سطح يحتاج مراجعة</td>
+</tr>
+<tr>
+<td>دور اتصال DB المالك <code>neondb_owner</code></td>
+<td style="text-align:right"><strong>BYPASSRLS=true</strong></td>
+<td><code>pg_roles</code></td>
+<td>يجب إثبات أن APIs تقيّد المؤسسة، ولا تعتمد على RLS في اتصال المالك</td>
+</tr>
+<tr>
+<td>المقالات المنشورة في مركز المعرفة</td>
+<td style="text-align:right"><strong>11</strong></td>
+<td><code>src/pages/knowledge/*</code> + صفحة <code>/docs/</code> الحية</td>
+<td>محتوى فعلي، وليس إثبات اكتمال التغطية لكل منتج</td>
+</tr>
+<tr>
+<td>نماذج Secure Chat المعتمدة في Registry</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td><code>src/server/secure-chat/models.mjs</code></td>
+<td>إرسال AI الحقيقي يبقى غير متاح حتى اعتماد مزوّد ونموذج</td>
+</tr>
+<tr>
+<td>S3 Buckets في فرع Neon</td>
+<td style="text-align:right"><strong>0</strong></td>
+<td><code>list_storage_buckets</code></td>
+<td>التخزين مفعّل تقنيًا، ولا يوجد Bucket مفحوص مُهيأ</td>
+</tr>
+<tr>
+<td>صفحة الموقع الرئيسية</td>
+<td style="text-align:right"><strong>متاحة علنًا</strong></td>
+<td>فحص الويب 3 نوفمبر</td>
+<td>لا تعني وصول بوابة <code>/app/</code></td>
+</tr>
+<tr>
+<td>بوابة <code>/app/</code> وخمسة منتجاتها</td>
+<td style="text-align:right"><strong>HTTP 404 (7 مسارات تشمل <code>/knowledge/</code>)</strong></td>
+<td>Browser Use مباشر بتاريخ 3 نوفمبر</td>
+<td>ليس تسجيل دخول أو SSR يعمل على الموقع الحي</td>
+</tr>
+</tbody>
+</table>
+<p><strong>تنبيه منهجي:</strong> نتائج الفحص تخص مشروع Neon هذا وفرعه الحالي؛ قد توجد بيئات أخرى لم تتوفر لها الأدلة. <code>0 rows</code> دليل عدم وجود سجلات في الجداول المفحوصة، وليس دليل أن جميع المسارات مكسورة. الدرجات المئوية للإنجاز <strong>غير محسوبة</strong> لأن جرد المتطلبات إلى حالات تشغيل مثبتة غير مكتمل؛ اختراع نسبة 90% أو 100% سيكون مضللًا.</p>
+<h2 id="h3">02 — منهج الدليل وحدوده</h2>
+<h3 id="h4">التصنيفات الأربعة التي يُمنع دمجها</h3>
+<ul>
+<li><strong><code>APPROVED_REQUIREMENT</code></strong>: قرار/سياسة أو منتج مستهدف داخل Blueprint أو Product Spec؛ ليس تنفيذًا.</li>
+<li><strong><code>SOURCE_IMPLEMENTED</code></strong>: كود/صفحة/API/ترحيل موجودة في commit محدد، مع حدود تدل عليها المراجعة؛ ليس تنفيذًا منشورًا.</li>
+<li><strong><code>SCHEMA_PRESENT</code></strong>: جدول/قيد/فهرس موجود في Neon؛ ليس دليل أن المستخدم أتم إجراء.</li>
+<li><strong><code>RUNTIME_VERIFIED</code></strong>: تسجيل دخول مفوّض ومشاهدات متماسكة على إصدار منشور محدد، مع أثر قرار في قاعدة معزولة؛ <strong>غير مثبت في هذا التقرير</strong>.</li>
+</ul>
+<p>المستندات المرجعية الحديثة التي فُحصت تميز غالبًا بين التنفيذ المحلي والحالة <code>NOT_VERIFIED</code>، لكن بعضها يحمل وصف <code>APPROVED</code> في عنوان «حالة التشغيل» رغم أن متنه ينفي إثبات الإتاحة؛ ينبغي حسم طريقة استعمال العلامات القانونية والتسويقية دون إعادة كتابة التاريخ أو الادعاء بإطلاق سابق.</p>
+<h3 id="h4">حدود الفحص</h3>
+<p>لم أستخدم بيانات عملاء حقيقية، ولم أُنشئ مستخدمًا أو مؤسسة أو سياسة، ولم أرسل رسالة إلى نموذج AI، ولم أنفذ طلب موافقة أو تعديل بيانات في Neon. كذلك لم أقم بتشغيل Build أو اختبارات أو فحص اختراق. ظهرت ملفات <code>Audit/*</code> محلية في المستودع تشير إلى نتائج سابقة، لكنها <strong>أدلة مؤرخة لظروفها</strong> وليست شهادة التشغيل الحالي. فحص المتصفح المباشر لجميع مسارات <code>/app/</code> أعاد 404 ولم يثبت نجاح الدخول أو التشغيل؛ لذلك كل نتيجة تشغيلية هنا لا تتجاوز حدود المصدر.</p>
+<h2 id="h4">03 — طبقات المشروع ومكوناته الفعلية</h2>
+<h3 id="h5">03.1 Web / Marketing / Knowledge</h3>
+<ul>
+<li><strong>الإطار:</strong> Astro 6، إعداد <code>output:'server'</code> و<code>@astrojs/node</code> standalone، <code>trailingSlash:'always'</code> وSitemap يرفض فهرسة <code>/app/*</code> و<code>/auth/*</code> و<code>/kernel/</code> وغيرها من الصفحات الخاصة أو التوضيحية.</li>
+<li><strong>الهوية:</strong> عربية RTL، مظهر داكن، بنفسجي <code>#8052FF</code>، أصفر <code>#FFB829</code>، أخضر <code>#15846E</code> في موضعه. الهيرو المتحرك وConstellation والهيدر والشعار محمية بقرارات المالك السابقة.</li>
+<li><strong>الصفحات:</strong> الرئيسية، كتالوج <code>/products/</code>، خمس صفحات المنتجات، <code>/kernel/</code> التوضيحية، أربع صفحات قطاعات، ثلاث ركائز، الخدمات، الأسعار، التواصل، الثقة، الامتثال، من نحن، الخصوصية والشروط، 404.</li>
+<li><strong>المعرفة:</strong> <code>/docs/</code> و<strong>11 مقالة</strong> تحت <code>/knowledge/</code>. كود Command Center (<code>knowledge-center.ts</code>, <code>KnowledgeReader.astro</code>, <code>src/server/knowledge</code>) يدعم تصنيفات وفلاتر وبحثًا ومعاينة وقراءة وبنية FAQ؛ هذه ميزات مصدرية، مع ظهور فهرس 11 دليلًا في الويب العام.</li>
+<li><strong>ملاحظة محتوى:</strong> صفحة <code>/docs/</code> تربط Firewall بثلاثة أدلة وHuman Gate بثلاثة وRisk Engine بدليلين وSecure Chat بدليلين، وتعرض <strong>0 رابطًا مباشرًا لـKernel وLedger</strong>؛ لا تعوض ذلك بروابط مخترعة. المحتوى تعليمي ولا يثبت امتثالًا أو تشغيل API.</li>
+<li><strong>التصميم والحركة:</strong> لدى المشروع CSS Tokens وحركة داخلية ورسوم SVG وحالات تطبيق؛ التنفيذ الأخير لم يُثبت على كل أحجام الشاشات في هذه المراجعة. الخطة السابقة لتحسين الحركة ليست تصريحًا بتغيير هيرو الرئيسية ولا بمحو نصوصها.</li>
+</ul>
+<h3 id="h5">03.2 Kernel / Identity / Data</h3>
+<ul>
+<li>مسارات <code>/app/</code> و<code>/app/kernel/</code> وواجهات <code>/app/api/kernel*</code> موجودة في المصدر، مع Services للهوية، العضويات، منح المنتجات، السياسات، الأحداث والتفويض.</li>
+<li><code>src/server/kernel/auth.mjs</code> يتحقق من Bearer/JWKS وissuer والخوارزمية المصرح بها؛ لا يمثل هذا وحده إثبات تدفق تسجيل دخول كامل أو قدرة على تسجيل موظف حقيقي.</li>
+<li><code>src/server/kernel/access.mjs</code> يميز حقوق <code>ADMIN_NON_BILLED</code> عن Trial/Subscription/Perpetual؛ <strong>لا يوجد نظام ترخيص تجاري نهائي مُثبت</strong>.</li>
+<li>توجد بنية سياسات متدرجة، إصدارات وموافقات وتفويضات وأحداث؛ <strong>كلها فارغة</strong> في Neon المفحوصة.</li>
+<li>الـ<code>tenant</code> و<code>department</code> و<code>product</code> و<code>user</code> مستويات مطلوبة للعزل والسياسة؛ التحقق الحقيقي من وراثة الأولويات/الرفض الإلزامي/الأحداث المؤسسية لم يُنفذ في هذا الفحص.</li>
+</ul>
+<h3 id="h5">03.3 مسار النشر</h3>
+<ul>
+<li><code>astro.config.mjs</code> يحدد خادم Node SSR. <code>package.json</code> يحتوي <code>start: node ./dist/server/entry.mjs</code>، و<code>render.yaml</code> يصف Node web service مع أمر <code>npm ci &amp;&amp; npm run build</code> و<code>npm start</code>.</li>
+<li><strong>الحقيقة المعيقة:</strong> <code>render.yaml</code> يضبط <code>AIGAS_APP_ENABLED</code> على <code>false</code> عمدًا إلى أن يوافق المشغل، وتعليق التكوين يوضح ضرورة تحويل الدومين إلى خادم Node بدل خدمة static. <code>src/middleware.ts</code> يعيد <code>503 APP_UNAVAILABLE</code> للـAPI عندما تكون البوابة معطلة. <strong>Browser Use أعاد HTTP 404 على <code>/app/</code> وكل صفحات المنتجات الخمسة، وليست شاشة دخول</strong>؛ هذا يثبت عدم إتاحتها على الواجهة العامة حاليًا، لكنه لا يثبت وحده أي طبقة/أصل استضافة سبب الخطأ.</li>
+<li>لا تغيّر إعداد الخدمة الحية أو الدومين أو أسرارها بناءً على هذا التقرير وحده. المطلوب أولًا <strong>تطابق artifact وorigin وfeature flag</strong> في نشر مصرح.</li>
+</ul>
+<h2 id="h5">04 — مراجعة تفصيلية للمنتجات الخمسة</h2>
+<table>
+<thead>
+<tr>
+<th>المنتج</th>
+<th>ما ظهر في الكود</th>
+<th>ما ظهر في Neon</th>
+<th>ما لم يثبت بعد</th>
+<th>أولوية الإغلاق</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Firewall</strong></td>
+<td>قواعد وسياسات، تقييم، guarded execution، provider registry، escalation و5-state upgrade</td>
+<td><code>aigas_fw_rules</code>, <code>aigas_fw_decisions</code> (فارغان)</td>
+<td>مرور طلب AI حقيقي عبر نقطة إنفاذ مُعتمدة، نتائج حظر/تنقيح مع مزود، حزم أدلة تشغيلية</td>
+<td>P0 قبل بيع الحماية</td>
+</tr>
+<tr>
+<td><strong>Ledger</strong></td>
+<td>Writer، chain/digest، التحقق، التصدير، verifier منفصل في <code>public/downloads</code></td>
+<td><code>aigas_ld_events</code>, <code>aigas_ld_evidence_requirements</code> (فارغان)</td>
+<td>حدث تشغيل حقيقي، تحقق مستقل موثق بعد العبث، توقيعات/حفظ طويل متقدم</td>
+<td>P0 إذا يُباع كأدلة</td>
+</tr>
+<tr>
+<td><strong>Human Gate</strong></td>
+<td>الطلبات والقرارات، الإلغاء، تفويض محدود، grants وإنفاذ مرة واحدة</td>
+<td><code>aigas_hg_requests/decisions/events/policies</code> (فارغة)</td>
+<td>مراجع حقيقي مستقل، حالة عدم الرد/التوازي، تنفيذ خاضع لموافقة على أصل محدد</td>
+<td>P0 قبل تمكين موافقات حساسة</td>
+</tr>
+<tr>
+<td><strong>Risk Engine</strong></td>
+<td>سجل الأصول والإصدارات، تقييمات سياقية ومعالجة ومخاطر متبقية وتصدير</td>
+<td><code>aigas_re_assets/assessments/asset_revisions/treatment_revisions</code> (فارغة)</td>
+<td>تفسير نتيجة مع أصل حقيقي اصطناعي، اعتماد منهج المخاطر وحواجز التشغيل</td>
+<td>P1 لنسخة مستهدفة</td>
+</tr>
+<tr>
+<td><strong>Secure Chat</strong></td>
+<td>سياسة synthetic-only، registry للنماذج، adapter، حدود استهلاك وطلب وإلغاء</td>
+<td><code>aigas_sc_conversations/messages/requests/cancellations</code> (فارغة)</td>
+<td><strong>لا نموذج معتمد</strong>؛ لا محادثة AI تشغيلية مُثبتة؛ قرار الاحتفاظ والموافقة</td>
+<td>P0 قبل أي إطلاق Chat</td>
+</tr>
+</tbody>
+</table>
+<h3 id="h6">04.1 Firewall</h3>
+<ul>
+<li><strong>المتاح في الكود:</strong> تقييم سياسة مسار محدد، بيانات قرار ومصدر rule، تصعيد Human Gate وحماية من تجاوز القرار في <code>guard.mjs</code>/<code>binding.mjs</code> وفق المصدر.</li>
+<li><strong>شرط الإطلاق الحقيقي:</strong> إثبات أن الطلب لا يمكن أن يتخطى نقطة التقييم، وأن <code>BLOCK</code> يمنع الاستدعاء الخارجي، وأن <code>REDACT</code> يرسل النص المنقح فقط، وأن فشل السياسة/التدقيق الإلزامي يوقف الإرسال عند وجوبه.</li>
+<li><strong>عائق خارجي:</strong> لا يوجد ما يثبت موافقة Provider أو نشر Gateway لكل تدفقات المستخدم؛ وجود endpoint لا يعني حماية كل تطبيقات AI.</li>
+</ul>
+<h3 id="h6">04.2 Ledger</h3>
+<ul>
+<li><strong>المتاح في الكود:</strong> تسجيل أدلة metadata، رابط تسلسلي، Digest وتصدير/تحقق مستقل داخل حدود نموذج الأدلة المحلي.</li>
+<li><strong>حدود الأمان:</strong> SHA-256 وربط سجل لا يساوي WORM أو توقيعًا مستقلًا أو حصانة كاملة ضد مسؤول قاعدة البيانات؛ لا تُعلن سلامة مطلقة أو إثباتًا قانونيًا دون بنية وموافقات.</li>
+<li><strong>شرط الإطلاق:</strong> عزل المؤسسة، تسلسل غير قابل للتجاوز بعمليات متزامنة، <code>idempotency</code>, سياسة احتفاظ معتمدة، ومخرجات تحقق يمكن إعادة إنتاجها دون أسرار.</li>
+</ul>
+<h3 id="h6">04.3 Human Gate</h3>
+<ul>
+<li><strong>المتاح في الكود:</strong> إنشاء طلب ومراجعة/رفض/إلغاء، صلاحية زمنية وتفويض محدود ومنع اعتماد ذاتي، إصدار تصريح مستخدم واحد/عملية واحدة في نطاق ضيق.</li>
+<li><strong>الشرط الحاسم:</strong> يجب إعادة فحص نطاق الطلب وهوية المراجع والحالة ونسخة السياسة <strong>وقت التنفيذ</strong>، لا وقت الضغط فقط. لا موافقة صامتة عند انتهاء المهلة أو إعادة استعمال تصريح.</li>
+<li><strong>مؤجل لا يمنع الإفراج عن نطاق صغير:</strong> محرك workflow عام وقنوات تنبيه متعددة وموافقات رسمية متعددة إذا لم تكن ضمن العقد التجاري الأول.</li>
+</ul>
+<h3 id="h6">04.4 Risk Engine</h3>
+<ul>
+<li><strong>المتاح في الكود:</strong> سجل أصول ونسخ وتقييم likelihood/impact، سياق بيانات/مزود، علاج/قبول مخاطر والتصدير.</li>
+<li><strong>قيد صدق المنتج:</strong> المنهج الحالي Draft يعتمد قواعد محددة؛ لا يثبت معيار ISO/IEC 42001، ولا يبرر نشر نموذج تلقائيًا، ولا توجد درجة مخاطر 0–100 معتمدة.</li>
+<li><strong>الأولوية:</strong> إيضاح المدخلات، إدارة نسخ الأصل، تفسير الأثر والاحتمال، القبول بدور مفوض وسجل المعالجة دون حذف التاريخ.</li>
+</ul>
+<h3 id="h6">04.5 Secure Chat</h3>
+<ul>
+<li><strong>المتاح في الكود:</strong> واجهة محادثة، تحقق من هوية المؤسسة والمنتج، Adapter مقيد بـHTTPS وChat Completions، Limits/Quota وبعض ضوابط Synthetic-only.</li>
+<li><strong>حقيقة فاصلة:</strong> <code>APPROVED_MODELS=[]</code> حاليًا؛ <code>NO_APPROVED_MODEL</code> أو <code>PROVIDER_NOT_CONFIGURED</code> حظر سليم، وليس عيبًا يجب الالتفاف عليه. لا تطلب من الوكيل إضافة GPT أو مفتاح أو منطقة معالجة من دون اعتماد موثق.</li>
+<li><strong>الشرط:</strong> سياسة حفظ الرسائل، عدم قدرة المسؤول على قراءتها افتراضيًا، منع تسربها إلى Audit/Analytics، ضوابط مزود تمنع التدريب، وعدم تفعيل مشاركة عامة/رفع ملفات/RAG قبل تحديد نطاق مستقل.</li>
+</ul>
+<h2 id="h6">05 — Neon / PostgreSQL: تحليل بنيوي وأمني</h2>
+<h3 id="h7">05.1 الجداول الفعلية (31 جدولًا؛ عدد سجلات كل واحد = 0)</h3>
+<p><strong>المؤسسة والهوية:</strong> <code>aigas_tenants</code>, <code>aigas_memberships</code>, <code>aigas_auth_organizations</code>, <code>aigas_member_invitations</code>, <code>aigas_departments</code>, <code>aigas_department_memberships</code>, <code>aigas_department_events</code>.</p>
+<p><strong>السياسات والتراخيص وKernel:</strong> <code>aigas_policies</code>, <code>aigas_policy_versions</code>, <code>aigas_policy_approvals</code>, <code>aigas_policy_delegations</code>, <code>aigas_kernel_policy_decisions</code>, <code>aigas_product_access</code>, <code>aigas_product_grants</code>, <code>aigas_audit_events</code>.</p>
+<p><strong>Firewall:</strong> <code>aigas_fw_rules</code>, <code>aigas_fw_decisions</code>.</p>
+<p><strong>Ledger:</strong> <code>aigas_ld_events</code>, <code>aigas_ld_evidence_requirements</code>.</p>
+<p><strong>Human Gate:</strong> <code>aigas_hg_requests</code>, <code>aigas_hg_decisions</code>, <code>aigas_hg_events</code>, <code>aigas_hg_policies</code>.</p>
+<p><strong>Risk Engine:</strong> <code>aigas_re_assets</code>, <code>aigas_re_assessments</code>, <code>aigas_re_asset_revisions</code>, <code>aigas_re_treatment_revisions</code>.</p>
+<p><strong>Secure Chat:</strong> <code>aigas_sc_conversations</code>, <code>aigas_sc_messages</code>, <code>aigas_sc_requests</code>, <code>aigas_sc_cancellations</code>.</p>
+<h3 id="h7">05.2 تحليل RLS / الصلاحيات</h3>
+<ul>
+<li><strong>31/31</strong> جداول مفعّل عليها RLS.</li>
+<li>توجد سياستان مباشرتان فقط على <code>aigas_sc_requests</code> و<code>aigas_sc_cancellations</code>، تشترطان أن يساوي <code>tenant_id</code> و<code>user_id</code> متغيري جلسة PostgreSQL <code>aigas.sc_tenant_id/aigas.sc_user_id</code>.</li>
+<li><strong>29 جدولًا</strong> لا تملك سياسات <code>pg_policies</code> مباشرة؛ مستخدم خاضع لـRLS يرى عادة منعًا افتراضيًا للعمليات، لكن <strong>مالك الجدول أو دور BYPASSRLS</strong> لا يخضع له بنفس الطريقة.</li>
+<li>دور <code>authenticated</code> لديه GRANT للقراءة والإضافة والتعديل والحذف على الجداول الـ31، لكنه <code>rolbypassrls=false</code>. دور <code>neondb_owner</code> لديه <code>rolbypassrls=true</code>. هذا يستدعي مراجعة منفصلة لمسار Data API (<code>public</code> schema)، وصلاحية تغيير GUCs، وعزل service role وطريقة استخدام الاتصال الإداري.</li>
+<li><strong>لا يمكن الاستنتاج من هذه البيانات وحدها أن هناك وصولًا عابرًا للمؤسسات أو أن كل الجداول مكشوفة؛</strong> يلزم فصل فعلي لامتيازات الـData API والـBackend وإنفاذ سياسة المؤسسة. على الجانب الآخر لا يجوز اعتبار اسم <code>RLS ENABLED</code> شهادة عزل كافية.</li>
+<li><code>NEON Auth</code> موجود تقنيًا؛ عدد المستخدمين والجلسات والمنظمات والعضويات داخله صفر. هذا يحد بشدة من إمكانية وصف دورة الحسابات بأنها مثبتة.</li>
+</ul>
+<h3 id="h7">05.3 الجاهزية التشغيلية لقاعدة البيانات</h3>
+<ul>
+<li>فرع واحد اسمه <code>production</code> وهو الفرع الأساسي غير المحمي وقت الفحص؛ ليس هناك فرع staging مستقل أو دليل نسخ واستعادة تم التحقق منه ضمن ما توفّر.</li>
+<li>مستندات الترحيل <code>0001–0017</code> موجودة، لكن <strong>مقارنة الشيفرة بالبنية الفعلية والقيود ليست مساوية لتتبع سجل ترحيل منشور</strong>؛ يجب تحديد جدول migration history مع تاريخ/Checksum/actor لعدم الاختلاط.</li>
+<li>Data API فعّالة، والتخزين S3-compatible مفعّل لكن Buckets = 0. لا تعتبر ذلك تحقيقًا فعليًا لاستراتيجية ملفات العملاء أو backup.</li>
+<li>قاعدة البيانات لم تسجل طلبات تشغيل في الجداول الخاصة بالمشروع، ولا يوجد ما يثبت قدرة الاستعادة أو Disaster Recovery أو صلاحيات Operator البديلة.</li>
+</ul>
+<h2 id="h7">06 — المخاطر الأمنية والخصوصية والأمان التشغيلي</h2>
+<table>
+<thead>
+<tr>
+<th>الرمز</th>
+<th>القضية</th>
+<th>الدليل</th>
+<th>التأثير الممكن</th>
+<th>الإغلاق المطلوب</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEC-01 P0</td>
+<td>RLS/GRANT/دور المالك وData API</td>
+<td>بيانات Neon المباشرة</td>
+<td>تفسير خاطئ للعزل أو مسار وصول غير مقصود</td>
+<td>نموذج أدوار موثق، منع تجاوز المؤسسة، تقييد Data API/DB privileges</td>
+</tr>
+<tr>
+<td>SEC-02 P0</td>
+<td>الفرع الأساسي غير محمي ولا staging مثبت</td>
+<td>Neon branches</td>
+<td>تغيير غير قابل للرجوع بسهولة أو تلوث بيانات</td>
+<td>فصل branch ونسخ احتياطي وخطة Rollback بموافقة المالك</td>
+</tr>
+<tr>
+<td>SEC-03 P0</td>
+<td>بيانات اتصال حساسة سبق تداولها في سياق العمل</td>
+<td>تعليمات المستخدم السابقة</td>
+<td>إساءة استخدام بيانات اعتماد</td>
+<td>تدوير المفاتيح والـDSN وتحديثها في Secret Manager، دون إعادة طباعتها</td>
+</tr>
+<tr>
+<td>SEC-04 P0</td>
+<td>نشر البوابة/تفعليها غير مثبت</td>
+<td>render.yaml + middleware + موقع حي</td>
+<td>منتج غير متاح رغم وجود كود</td>
+<td>نشر Node منضبط، صلاحيات Origin، gate activation معتمد</td>
+</tr>
+<tr>
+<td>SEC-05 P0</td>
+<td>غياب دليل end-to-end للمؤسسة/المنتجات</td>
+<td>31 جدولًا صفر سجلات، Auth صفر مستخدم</td>
+<td>فشل عمليات حقيقية غير مكتشف</td>
+<td>بيئة بيانات اصطناعية معزولة وإثبات مسارات كاملة قبل إطلاق</td>
+</tr>
+<tr>
+<td>SEC-06 P0</td>
+<td>مزود AI غير معتمد</td>
+<td>Registry خالٍ</td>
+<td>Chat/Firewall بلا خدمة خارجية حقيقية</td>
+<td>اعتماد Provider/No-Training/Region/Retention ومفاتيح server-only</td>
+</tr>
+<tr>
+<td>SEC-07 P1</td>
+<td>مخطط أدلة Ledger ليس شهادة WORM/توقيع</td>
+<td>الكود ووثائق المواصفات</td>
+<td>مبالغة تسويقية في سلامة الدليل</td>
+<td>حدود كتابة/تصدير/تحقق مستقلة وصياغة صادقة</td>
+</tr>
+<tr>
+<td>SEC-08 P1</td>
+<td>شروط 48h والباقات والتراخيص معتمدة كتصميم لا تشغيل</td>
+<td>سياسة Trial/Commercial + Grants</td>
+<td>وعود تجربة لا يمكن تفعيلها</td>
+<td>موافقات أهلية وتفعيل حقيقي بلا تحويل مدفوع</td>
+</tr>
+<tr>
+<td>SEC-09 P1</td>
+<td>خصوصية المحادثات والاحتفاظ والتصدير</td>
+<td>وثيقة Secure Chat والكود</td>
+<td>الاحتفاظ بمحتوى دون سياسة</td>
+<td>بيانات مؤقتة افتراضيًا، موافقة حفظ، فصل Audit عن متن الرسائل</td>
+</tr>
+<tr>
+<td>SEC-10 P1</td>
+<td>التحقق من المراجعة البشرية والقرارات الملزمة</td>
+<td>Human Gate + سياسات</td>
+<td>اعتماد خاطئ أو إعادة تنفيذ</td>
+<td>تحقق وقت التنفيذ، انتهاء الصلاحية، SoD، تدقيق مبرر</td>
+</tr>
+</tbody>
+</table>
+<p><strong>تفسير P0/P1:</strong> أولويات إغلاق مستخلصة من أثر محتمل على إطلاق خدمات للعملاء، وليست إثبات وجود استغلال أو ضرر حالي. يُعدّ خرقًا لصدق التقرير أن تُحوّل هذه الملاحظات وحدها إلى وصف «مخترق» أو «آمن 100%».</p>
+<h2 id="h8">07 — تجربة الاستخدام والتصميم والمحتوى والـSEO</h2>
+<h3 id="h9">07.1 الموقع العام</h3>
+<p>الموقع يوصل هوية العلامة ويشرح المنتجات والمبادئ، ويصرح في الصفحة الرئيسية أن المنتجات <strong>تصورات غير متحققة تشغيليًا</strong>. يجب الحفاظ على هذا الإفصاح حتى تثبت إتاحة خدمة محددة، مع تنسيق مؤسسي واضح لا يربك الزائر بين Public Demo وبين <code>/app/</code>.</p>
+<p><strong>المرجعية البصرية المحددة للمالك:</strong> الهيرو المتحرك وConstellation والهيدر لا تُغيّر، ونصوص الأقسام وترتيبها وأماكنها محفوظة. التحسينات المسموحة موجهة لبطاقات المحتوى والـTypography والألوان والأيقونات والمسافات الداخلية والـMicro-motion. لا تُطلق إعادة تصميم عامة تحت عنوان «تحسين كل شيء».</p>
+<h3 id="h9">07.2 مركز المعرفة</h3>
+<p><code>/docs/</code> متاح ويعرض <strong>11 دليلًا</strong> مع حقل بحث وتصنيفات ومعاينة وملاحظات تعليمية، كما يشرح روابط المقالات بالمنتجات ويصرح بأن التصنيف لا يعني توثيق API. هذا تقدم نوعي عن مركز صفحات ثابت، لكن هناك <strong>فجوة تغطية مباشرة لـKernel وLedger (صفر روابط مقالات)</strong>، وينبغي التمييز بين وجود قصة تعليمية عن هذين المنتجين وبين وجود وثيقة API تشغيلية مُعتمدة.</p>
+<p>آخر تغيير في commit المصدر أعاد بناء Command Center من صفحات المقالات نفسها بدل فهرسة نتائج مخترعة. يوجد <code>KnowledgeReader</code>, كتالوج، فلاتر URL، وملفات <code>Audit/knowledge-command-center/</code> التي تصف تحققًا محليًا. هذه الأدلة <strong>لا تغني عن مراجعة نشر وتوافق مستقلين</strong>.</p>
+<h3 id="h9">07.3 SEO والبحث والتحويل التجاري</h3>
+<p>لاحظ الفحص البصري الحالي تعارضًا بين خريطتي موقع منشورتين: <code>/sitemap-0.xml</code> تبدو مطابقة للصفحات الحالية، بينما <code>/sitemap.xml</code> تعرض شجرة أوسع قديمة. كذلك <code>/knowledge/</code> ليس فهرسًا ويعيد HTTP 404 بينما <code>/docs/</code> هو فهرس المعرفة الصحيح؛ ينبغي إزالة الروابط والفهرسة المضللة أو توحيد التوجيهات وفق قرار SEO. لا تظهر في هذه المراجعة بيانات <code>Google Search Console</code> أو GA4 فعلية تقيس مرات الظهور أو CTR أو التحويل؛ فلا يمكن تحديد سبب ضعف زيارات السعودية بصورة كمية أو إعلان نجاح SEO. <strong>المطلوب</strong>: ربط بيانات التحليل المصرح بها، والتحقق من Canonicals وStructured Data وSitemap، ووضع مقاييس زيارات فعلية بحسب صفحات المنتجات والبحث العربي، مع حماية بيانات مستخدمي <code>/app/</code> من Analytics.</p>
+<p>لا تنشر شهادات/شركات عميلة/تقييمات أو أسعارًا وأرقام أداء مختلقة. يجب أن يطابق CTA الذي يفتح البريد <code>mailto:</code> الوظيفة الحقيقية، وأن يبين متى يكون طلب التجربة بحاجة إلى موافقة بشرية.</p>
+<h3 id="h9">07.4 إمكانية الوصول والأداء</h3>
+<p>أعطِ الأولوية للقراءة العربية في RTL و<code>bdi</code> للأرقام/الأكواد، التباين والـfocus و<code>prefers-reduced-motion</code>. <strong>Browser Use على 390px لم يجد قصًّا أفقيًا مستمرًا بعد اكتمال التحميل</strong>، لكنه رصد توسعًا انتقاليًا إلى عرض 777px لمدة قصيرة في <code>/products/</code> و<code>/products/firewall/</code> عند بداية الحركة، ثم عودة للعرض الصحيح؛ يجب علاج تحول عنصر الحركة المسبب. خطوط عربية رفيعة بحجم 13–14px تستحق تحسين القراءة. لم يثبت التقرير الجديد استمرار تغطية فهرس «داخل الصفحة» للنص بعد اكتمال التحميل، فلا تتعامل معها كخلل باقٍ مثبت. جداول التطبيق تحتاج Empty/Loading/Error/Pending وفرقًا بين حالة المنتج ومجرد عرض معلومات عنه. <strong>لا تُخترع أرقام أداء أو Lighthouse Scores.</strong></p>
+<h2 id="h9">08 — الشؤون التجارية والتشغيل والتكامل المؤسسي</h2>
+<ul>
+<li><strong>البيع:</strong> خمسة منتجات قابلة للترخيص منفردة، وKernel مكوّن تقني إلزامي بلا رسم منفصل؛ التسعير المعتمد كاتجاه يستهدف اشتراكًا/ترخيصًا/حد استهلاك، <strong>لا توجد أسعار نهائية مثبتة</strong>.</li>
+<li><strong>تجربة Proof of Value:</strong> <strong>48 ساعة من التفعيل الفعلي</strong> للمؤسسة المؤهلة، لا تبدأ من إرسال الطلب أو الضغط على زر، ولا تحويل تلقائي مدفوع، ومع تقرير تنفيذي وتقني ومسار خروج بيانات واضح. النصوص التجارية مُستهدفة؛ محرك التفعيل والدفع والفوترة التجارية ليس مثبتًا.</li>
+<li><strong>التشغيل:</strong> التصميم المستهدف SaaS وOn-Premise وAir-Gapped، لكن ليس كل مخطط مرجعي دليل حزمة مُثبتة لكل بيئة؛ خصوصًا الرخص offline والمفاتيح وإدارة التحديث/التراجع.</li>
+<li><strong>المزودون والتكاملات:</strong> Provider-agnostic وAPI/SDK ومداخل MCP/A2A ضمن خارطة هدف، لكن لا تسوّق تكاملًا أو Schema تصوريًا كخدمة منشورة أو معتمدة.</li>
+<li><strong>المصادقة:</strong> SSO/MFA وأدوار قابلة للتخصيص استراتيجية، لكن تنفيذ Neon Auth الحالي لا يثبت تهيئة جميع مزودي الهوية المؤسسية.</li>
+<li><strong>الالتزام التنظيمي:</strong> PDPL، الأطر السعودية ذات الصلة، ISO/IEC 42001 وNIST AI RMF ضوابط ومراجع مستهدفة. <strong>لا توجد في الأدلة المعروضة شهادة أو تقرير اعتماد قانوني/تنظيمي يغطي تشغيل كل المنتجات</strong>. يحتاج نصوصًا متخصصة واعتماد مالك شؤون الامتثال حسب نوع العميل.</li>
+<li><strong>الدعم:</strong> لا SLA ملزم ولا إجراءات حادث/خروج بيانات/نسخ احتياطي/DR موثقة كخدمة منفذة، بناءً على الأدلة التي توفرت لهذه المراجعة.</li>
+</ul>
+<h2 id="h10">09 — مسارات الإطلاق الأربعة: ما ينبغي أن يبقى منفصلًا</h2>
+<ol>
+<li><strong>إطلاق المحتوى العام:</strong> موقع تسويقي ومعرفة توعوية؛ يمكن أن يكون متاحًا قبل المنتجات، مع إفصاحات دقيقة وضوابط تحرير وSEO.</li>
+<li><strong>إطلاق بوابة إدارة المؤسسة:</strong> يحتاج نشر SSR وهوية وTenant Guard وعضوية وجداول وأمن مفوض؛ ليس معناه أن المنتجات الخمسة جاهزة.</li>
+<li><strong>إطلاق منتج واحد بنطاق محدود:</strong> يحتاج إثبات وظيفة محددة وData Protection وProvider/Quota عند الحاجة، وتصريح إتاحة لهذا المنتج دون بقية المنتجات.</li>
+<li><strong>إطلاق تجاري مؤسسي:</strong> يحتاج تجارب/عقود/تراخيص/فواتير/بيانات عملاء ودعم وحوادث واتفاقيات، مع موافقات إطلاق مستقلة؛ لا تُخلط الخطوات السابقة به.</li>
+</ol>
+<h2 id="h11">10 — أولويات الإغلاق قبل الإطلاق</h2>
+<h3 id="h12">P0 — وقف أي إطلاق مؤسسي قبل إغلاقها</h3>
+<ol>
+<li>حسم مكان تقديم بوابة <code>/app/</code> وقرار <code>AIGAS_APP_ENABLED</code> ومصدر الـNode service، مع منع تسرب المحتوى الخاص أو cache.</li>
+<li>إعداد <strong>فرع Neon تطوير مستقل ونسخة استعادة معتمدة</strong> وحماية الإنتاج ومراجعة اعتماد وصول DB والتدوير السري.</li>
+<li>تفسير RLS/GRANT/Owner/Data API وربطها بالمؤسسة والعضوية على مستوى الخادم والقاعدة، مع منع أي مسار لتجاوز الضوابط.</li>
+<li>إدارة حساب/مؤسسة/عضوية حقيقية في بيئة تجربة اصطناعية مصرح بها، بما يكفي لإثبات المسارات الأساسية دون بيانات عملاء.</li>
+<li>ضبط نموذج التمكين المستقل لكل منتج، وعدم فتح Chat أو موصل AI بلا موافقة مزود وسياسة No-Training معتمدة.</li>
+<li>امتلاك معيار قبول <strong>محدد النطاق</strong> لما يُقال «يعمل» مع مصدر نسخة/تاريخ/بيئة/دليل، وعدم إعلان منتج جاهز من وثائق Target فقط.</li>
+</ol>
+<h3 id="h12">P1 — إغلاق مكوّنات المنتج ونموذج الأعمال</h3>
+<ol start="7">
+<li>إكمال اتصال Firewall أو التصريح بنطاق المختبر فقط.</li>
+<li>إغلاق تصدير/تحقق Ledger وسيناريو فشل التسجيل الإلزامي.</li>
+<li>إغلاق Human Gate داخل عملية محدودة موثّقة، بإذن يستخدم مرة واحدة.</li>
+<li>إغلاق Asset Lifecycle وRisk Treatment مع قواعد مسؤوليات واضحة.</li>
+<li>إغلاق Secure Chat بالاعتماد الصريح للنموذج، أو إبقاؤه غير متاح وشرحه بوضوح.</li>
+<li>إكمال دورة PoV 48h والعقود والموافقات والتراخيص والإشعارات دون دفع تلقائي.</li>
+</ol>
+<h3 id="h12">P2 — اكتمال تجربة العرض والمحتوى والمراقبة</h3>
+<ol start="13">
+<li>اتساق UX والموبايل والـRTL وPerformance دون إعادة بناء الرئيسية المحمية.</li>
+<li>تغطية مقالات Kernel/Ledger وروابطها الحقيقية داخل مركز المعرفة، وقياس SEO من أدوات مصرح بها.</li>
+<li>تشغيل مراقبة احترافية، سجل حوادث واستعادة بيانات/نسخ احتياطي وتوثيق واجهات المطور بحسب النطاق المعتمد.</li>
+</ol>
+<h2 id="h12">11 — معايير Go/No-Go النهائية (القرار لم يُمنح بعد)</h2>
+<table>
+<thead>
+<tr>
+<th>البوابة</th>
+<th>شرط المرور</th>
+<th>النتيجة الآن</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source ↔ Deploy</td>
+<td>commit، Node artifact، middleware، feature flags، public routes متطابقة</td>
+<td><strong>غير مثبت / BLOCKED</strong></td>
+</tr>
+<tr>
+<td>Identity &amp; Tenant</td>
+<td>حساب ومؤسسة ودور ومنع وصول عابر مثبت بتشغيل مصرح</td>
+<td><strong>غير مثبت / BLOCKED</strong></td>
+</tr>
+<tr>
+<td>Data Protection</td>
+<td>تفسير GRANT/RLS وBYPASS وData API والنسخ/الاستعادة مع اعتماد</td>
+<td><strong>غير مثبت / BLOCKED</strong></td>
+</tr>
+<tr>
+<td>Kernel policy</td>
+<td>إصدار سياسة وأولوية وإيقاف ملزم وأثر تدقيق في رحلة حقيقية</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+<tr>
+<td>Firewall</td>
+<td>Enforce محدد ومزود معتمد أو إطلاق «مختبر» مصرح</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+<tr>
+<td>Ledger</td>
+<td>دليل فعلي وتصدير وتحقق مستقل وحدود الضمان</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+<tr>
+<td>Human Gate</td>
+<td>موافقة مستقلة وقت التنفيذ، وعدم إعادة الاستخدام</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+<tr>
+<td>Risk Engine</td>
+<td>تقييم محفوظ ومبرر وتاريخ معالجة وتفويض</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+<tr>
+<td>Secure Chat</td>
+<td>نموذج معتمد وNo-Training/Retention وQuota وإرسال حقيقي</td>
+<td><strong>BLOCKED — لا نموذج معتمد</strong></td>
+</tr>
+<tr>
+<td>Trial &amp; Commercial</td>
+<td>قواعد أهلية وتفعيل 48h وصلاحيات ونهاية/خروج/قبول</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+<tr>
+<td>Legal / Trust</td>
+<td>إفصاحات واعتماد خصوصية وعقود ووعد دعم</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>Restore/rollback/incident/alerts/runbook وقرار نشر</td>
+<td><strong>غير مثبت</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>قاعدة صارمة:</strong> إن استمر اختيار المالك عدم تشغيل اختبارات أو أدلة تشغيل، احترم هذا القيد في مرحلة البرمجة، لكن لا ترفع أي حالة إلى <code>RUNTIME_VERIFIED</code> ولا تمرّر <code>Go-Live</code> بسبب غياب الدليل. التصريح بالإطلاق مسار منفصل مع موافقة صاحب المشروع.</p>
+<h2 id="h13">12 — مصفوفة تنفيذ 15 برومبت نهائيًا (الأقصى المعتمد)</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">التسلسل</th>
+<th>اسم البرومبت</th>
+<th>مجال الإغلاق</th>
+<th>الاعتماد الأساسي</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">01</td>
+<td>Canonical Source of Truth</td>
+<td>تسوية مستندات الخطة والحالة والـAPIs</td>
+<td>GitHub/Neon</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">02</td>
+<td>SSR Deployment Boundary</td>
+<td>Node SSR/Origin/بوابة التطبيق</td>
+<td>01</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">03</td>
+<td>Neon Data Access Security</td>
+<td>RLS/GRANT/Data API/فرع آمن</td>
+<td>01</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">04</td>
+<td>Identity, Organizations &amp; RBAC</td>
+<td>Neon Auth / Tenant / Departments</td>
+<td>02–03</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">05</td>
+<td>Kernel Policy &amp; Entitlements</td>
+<td>السياسات والقرار والأثر والتراخيص الأساسية</td>
+<td>04</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">06</td>
+<td>Firewall Enforced Gateway</td>
+<td>القواعد الخمس والـProvider Gate</td>
+<td>05</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">07</td>
+<td>Ledger Evidence Integrity</td>
+<td>السجل/الحزم/التحقق المستقل</td>
+<td>05</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">08</td>
+<td>Human Gate Bound Approval</td>
+<td>موافقة ومراجعة وتصريح تنفيذ</td>
+<td>05 و07 عند وجوب دليل</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">09</td>
+<td>Risk Engine Lifecycle</td>
+<td>سجل الأصول والمخاطر والتقييمات</td>
+<td>05</td>
+<td>P1</td>
+</tr>
+<tr>
+<td style="text-align:right">10</td>
+<td>Secure Chat Approved Models</td>
+<td>موافقة المزود والخصوصية والتكلفة</td>
+<td>05 و06 للحماية المندمجة</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">11</td>
+<td>Cross-Product Trust Contracts</td>
+<td>طلب/قرار/دليل/موافقة/عزل</td>
+<td>06–10</td>
+<td>P1</td>
+</tr>
+<tr>
+<td style="text-align:right">12</td>
+<td>Proof of Value &amp; Commercial</td>
+<td>تجربة 48h والتراخيص المستقلة</td>
+<td>04–11</td>
+<td>P1</td>
+</tr>
+<tr>
+<td style="text-align:right">13</td>
+<td>Website, Knowledge &amp; SEO</td>
+<td>الموقع والتصميم والمحتوى والزيارات</td>
+<td>01</td>
+<td>P1</td>
+</tr>
+<tr>
+<td style="text-align:right">14</td>
+<td>Security, Legal &amp; Operations</td>
+<td>الخصوصية والمفاتيح والاحتفاظ وDR والحوادث</td>
+<td>02–12</td>
+<td>P0</td>
+</tr>
+<tr>
+<td style="text-align:right">15</td>
+<td>Evidence-Gated Release Handoff</td>
+<td>المطابقة، الإغلاق، Runbooks وGo/No-Go</td>
+<td>الكل</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table>
+<p>كل برومبت من الملفات المرفقة قائم بذاته، ويشرح المصدر والحدود والمخرجات. لا ينشر ولا ينشئ ترحيل إنتاج تلقائيًا، ولا ينفذ اختبارًا بدون موافقة المالك. بعد 15 تأتي مرحلة تحقق وإقرار إطلاق مستقلة.</p>
+<h2 id="h14">13 — سجل المصادر وطريقة إعادة الإنتاج دون أسرار</h2>
+<ul>
+<li><strong>GitHub:</strong> <code>https://github.com/YEEEAE/BRIGHTAI/tree/e33b480744b5d0b44344bf469f09b6cbbb50248f</code>، الدليل المصدر الذي أتاح قراءة بنية الصفحات، الخدمات والـSQL. الملفات الرئيسية: <code>AGENTS.md</code>, <code>.agents/mind/01-mind-latest.md</code>, <code>package.json</code>, <code>astro.config.mjs</code>, <code>render.yaml</code>, <code>src/middleware.ts</code>, <code>src/server/kernel/*</code>, <code>src/server/{firewall,ledger,human-gate,risk-engine,secure-chat}/*</code>, <code>docs/*</code>, <code>migrations/0001..0017</code>.</li>
+<li><strong>Neon:</strong> project <code>young-frog-60183055</code>, default branch <code>production</code>، استعلامات معلومات عامة <code>information_schema</code>, <code>pg_class</code>, <code>pg_policies</code>, <code>pg_roles</code>, <code>COUNT(*)</code> فقط؛ لم تُطلب أو تُعرض قيم أسرار أو صفوف مستخدمين.</li>
+<li><strong>الموقع العام:</strong> <code>https://brightai.live/</code>, <code>https://brightai.live/docs/</code>, <code>https://brightai.live/products/</code>. Browser Use وثّق <strong>13 مسارًا 200 و7 مسارات 404</strong>، ومنها <code>/knowledge/</code> وستة مسارات التطبيق، وحالة جمالية انتقالية على الجوال، وخريطة Sitemap قديمة موازية؛ لا تحول حالة 404 إلى استنتاج سببي مطلق.</li>
+<li><strong>مصدر التصميم الذي أرسله المستخدم:</strong> <code>BRIGHTAI | مقترحات التصميم والحركة لكل الصفحات</code>، تاريخ مرجعي 2026-10-31؛ بنوده مقترحات، والتحسينات المقيدة تحفظ Hero/Header والنصوص والترتيب وفق آخر توجيه.</li>
+<li><strong>مصادر متطلبات المنتجات:</strong> <code>docs/products/{firewall,ledger,human-gate,risk-engine,secure-chat}/</code>، ستة ملفات لكل منتج. تواريخها ترجع لأوائل نوفمبر وبعض حقول حالة التنفيذ فيها أقدم من آخر commit/Neon؛ تُحدّث بمصدر ودليل لا بتغيير توصيف اعتباطي.</li>
+</ul>
+<h2 id="h15">14 — تفسير ما لا يمكن حسمه من هذه الأدلة</h2>
+<p>لا يمكن إثبات الأداء على الأحمال، زمن الاستجابة، قوة التشفير في الإنتاج، امتثال قانوني، تسجيل مستخدم فعلي، أو جودة نموذج AI لأن لم تُتح اختبارات تشغيل مسجلة ومصرح بها في هذه الجولة. لا يمكن قياس تسويق السعودية أو مبيعات التحويل من دون أرقام Search Console/Analytics الحقيقية. لا يمكن الجزم بأن قاعدة البيانات الحالية وحيدة كل بيئات الشركة، أو أن خط CDN/Host حاليًا هو نفسه ملف <code>render.yaml</code>. لا يمكن اعتماد جدول تدفقات OpenAPI كخدمة مستخدمة من مجرد وجود YAML. أي ادعاء من هذا النوع يتطلب أدلة منفصلة قبل تسويقه أو قبوله تعاقديًا.</p>
+<h2 id="h16">15 — المخرجات والحدود الأخلاقية</h2>
+<p><strong>المخرجات:</strong> هذا التقرير، نسخته HTML القابلة للقراءة والطباعة، 15 برومبت تنفيذ نهائي مستقل، ملف تعليمات ترتيب، وحزمة ZIP. <strong>لم تتغير</strong> قاعدة Neon، المستودع، الموقع أو بيانات مستخدم. لم تُعاد طباعة بيانات اعتماد قد تكون سُلمت سابقًا. البرومبتات اللاحقة تكلف الوكيل بتنفيذ كود محلي ضمن صلاحيات صاحب المشروع، ولا تمنحه تصريحًا بتغيير الإنتاج.</p>
+<h2 id="h17">16 — مصفوفة الفحص البصري الفعلي — 3 نوفمبر 2026</h2>
+<p>تم استخدام Browser Use في قراءة عامة فقط على نافذة Desktop 1440px وجوال 390px. النتيجة <strong>13/20 HTTP 200</strong>، <strong>7/20 HTTP 404</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>المسار</th>
+<th style="text-align:right">HTTP</th>
+<th>الوصف الظاهر</th>
+<th>الإجراء المطلوب</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td style="text-align:right">200</td>
+<td>الصفحة الرئيسية العربية والهيرو والمنتجات</td>
+<td>حفظ هيرو/Constellation/النصوص الحالية</td>
+</tr>
+<tr>
+<td><code>/products/</code></td>
+<td style="text-align:right">200</td>
+<td>فهرس المنتجات مع إفصاح عدم إثبات الإتاحة</td>
+<td>ضبط تداخل الأنيميشن في أول التحميل</td>
+</tr>
+<tr>
+<td><code>/products/firewall/</code></td>
+<td style="text-align:right">200</td>
+<td>شرح/محاكاة تعليمية</td>
+<td>لا تسويقها كجدار يحمي تدفقات حقيقية</td>
+</tr>
+<tr>
+<td><code>/products/ledger/</code></td>
+<td style="text-align:right">200</td>
+<td>تصور دليل وأمثلة</td>
+<td>فصل التوضيح عن إثبات التشفير</td>
+</tr>
+<tr>
+<td><code>/products/human-gate/</code></td>
+<td style="text-align:right">200</td>
+<td>حالات مراجعة توضيحية</td>
+<td>عدم الوعد بمراجعات منتج متاحة</td>
+</tr>
+<tr>
+<td><code>/products/risk-engine/</code></td>
+<td style="text-align:right">200</td>
+<td>مصفوفة مخاطر توضيحية</td>
+<td>عدم تسويق الدرجة على أنها اعتماد تنظيمي</td>
+</tr>
+<tr>
+<td><code>/products/secure-chat/</code></td>
+<td style="text-align:right">200</td>
+<td>مثال تنقيح محلي</td>
+<td>لا يوحي بأنه اتصال بنموذج معتمد</td>
+</tr>
+<tr>
+<td><code>/kernel/</code></td>
+<td style="text-align:right">200</td>
+<td>محاكاة تعليمية للـKernel</td>
+<td>تأكيد الفرق عن <code>/app/kernel/</code></td>
+</tr>
+<tr>
+<td><code>/docs/</code></td>
+<td style="text-align:right">200</td>
+<td>فهرس مركز المعرفة مع بحث وفلاتر</td>
+<td>ربط المقالات الفعلية فقط</td>
+</tr>
+<tr>
+<td><code>/pricing/</code></td>
+<td style="text-align:right">200</td>
+<td>لا أسعار/حصص/SLA أو Trial تشغيلية منشورة</td>
+<td>الحفاظ على صدق الوعد</td>
+</tr>
+<tr>
+<td><code>/contact/</code></td>
+<td style="text-align:right">200</td>
+<td>فتح رسالة بريد معدّة، لا إرسال عبر خادم</td>
+<td>لا تظهر رسالة وصول مؤكّد</td>
+</tr>
+<tr>
+<td><code>/trust/</code></td>
+<td style="text-align:right">200</td>
+<td>التفريق بين Blueprint ودليل عمل</td>
+<td>لا شهادات أو حماية 100% بلا إثبات</td>
+</tr>
+<tr>
+<td><code>/about/</code></td>
+<td style="text-align:right">200</td>
+<td>تعريف المؤسسة وعلاقة المنتجات</td>
+<td>الحفاظ على التفريق القانوني/التجاري</td>
+</tr>
+<tr>
+<td><code>/knowledge/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>ليس فهرس مركز المعرفة الحالي</td>
+<td>ليس عيبًا بالضرورة إن كان <code>/docs/</code> هو المعتمد؛ صحّح الروابط المكسورة فقط</td>
+</tr>
+<tr>
+<td><code>/app/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>صفحة 404، لا شاشة دخول</td>
+<td>SSR Origin/Feature Flag/Routing</td>
+</tr>
+<tr>
+<td><code>/app/kernel/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>صفحة 404</td>
+<td>الوصول/هوية/Node SSR</td>
+</tr>
+<tr>
+<td><code>/app/firewall/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>صفحة 404</td>
+<td>يظل تشغيل Firewall غير مثبت</td>
+</tr>
+<tr>
+<td><code>/app/ledger/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>صفحة 404</td>
+<td>يظل تشغيل Ledger غير مثبت</td>
+</tr>
+<tr>
+<td><code>/app/human-gate/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>صفحة 404</td>
+<td>يظل تشغيل HG غير مثبت</td>
+</tr>
+<tr>
+<td><code>/app/risk-engine/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>صفحة 404</td>
+<td>يظل تشغيل Risk Engine غير مثبت</td>
+</tr>
+<tr>
+<td><code>/app/secure-chat/</code></td>
+<td style="text-align:right"><strong>404</strong></td>
+<td>صفحة 404</td>
+<td>يظل تشغيل Chat غير مثبت</td>
+</tr>
+</tbody>
+</table>
+<h3 id="h18">تفاصيل تجربة الجوال في نفس الفحص</h3>
+<p>بعد اكتمال تحميل الشاشات عند عرض 390px <strong>لم يُلاحظ Overflow دائم</strong> في الصفحات العامة المستهدفة. لكن خلال ما يقارب 0.9 ثانية من أول حركة على <code>/products/</code> و<code>/products/firewall/</code> وصل عرض الوثيقة مؤقتًا إلى نحو <strong>777px</strong> قبل أن يعود إلى 390px، ما قد يسبب سحبًا أفقيًا لحظيًا أو اهتزازًا أوليًا. ظهرت عناصر الوصول الأساسية — اللغة <code>ar-SA</code> واتجاه RTL، ورابط Skip، وتسميات الحقول وAlt — في الصفحات المفحوصة، مع وجود نصوص 13–14px وأوزان عربية رقيقة قد تقلل سهولة القراءة. هذا <strong>ليس اعتمادًا عامًا لإمكانية الوصول</strong>.</p>
+<p>لوحظ اختلاف بين خريطتي المواقع <code>https://brightai.live/sitemap-0.xml</code> و<code>https://brightai.live/sitemap.xml</code>؛ الثانية تعرض شجرة روابط أكبر تبدو من نسخة أخرى. يحتاج المصدر المولّد واستراتيجية canonical/robots إلى ضبط، بدل إعلان أن كل تلك الروابط صفحات معتمدة. لا توجد بيانات Search Console حية ضمن الفحص لإثبات أثر هذا الاختلاف على الزيارات.</p>
+<h3 id="h18">تفسير حدود 404</h3>
+<p><code>/app/</code> وواجهاتها أعادت 404 على الدومين العام، وليس خطأ 401/403/صفحة دخول. هذا <strong>يثبت عدم الوصول العام عبر هذه المسارات وقت الفحص</strong>، ولا يثبت أن كود الواجهة غير موجود أو أن الخدمة لا تعمل في بيئة أخرى. <code>render.yaml</code> يعطل علم التطبيق افتراضيًا، لكنه لا يثبت إعداد الخدمة المنشورة نفسها. لا يُفتح العلم قبل موافقة وفحص تشغيل مستقل.</p>
+<h2 id="h18">17 — جرد تفصيلي لمسارات التنفيذ والمستندات</h2>
+<h3 id="h19">الوثائق المركزية المعتمدة كمتطلبات مستهدفة</h3>
+<p><code>docs/MASTER-PROJECT-BLUEPRINT.md</code>, <code>docs/PLATFORM-ARCHITECTURE.md</code>, <code>docs/PRODUCT-MASTER-CATALOG.yaml</code>, <code>docs/BRAND-AND-DESIGN-SYSTEM.md</code>, <code>docs/WEBSITE-PAGE-REGISTRY.yaml</code>, <code>docs/ENTERPRISE-TRIAL-POLICY.md</code>, <code>docs/PRICING-AND-LICENSING.md</code>, <code>docs/INTEGRATION-AND-DEPLOYMENT.md</code>, <code>docs/AIGAS-KERNEL-POLICY-HIERARCHY-AND-ENFORCEMENT.md</code>, <code>docs/KERNEL-DEVELOPMENT.md</code>, <code>docs/FIREWALL-DEVELOPMENT.md</code>, <code>docs/LEDGER-DEVELOPMENT.md</code>, <code>docs/HUMAN-GATE-DEVELOPMENT.md</code>, <code>docs/RISK-ENGINE-DEVELOPMENT.md</code>.</p>
+<p>لكل واحد من المنتجات الخمسة ستة ملفات: <code>PRODUCT-SPEC.md</code>, <code>FEATURE-STATUS.yaml</code>, <code>PAGE-EXPERIENCE.md</code>, <code>API-CONTRACT.yaml</code>, <code>48H-TRIAL-SPEC.md</code>, <code>ACCEPTANCE-AND-EVIDENCE.md</code>. <strong>عدد الملفات الستة × خمسة = 30 ملفًا توثيقيًا.</strong> هذا الجرد مستمد من GitHub وليس اعتمادًا بأن كل مستند حديث أو متفق مع كل تغيير تنفيذي.</p>
+<h3 id="h19">ملفات التنفيذ ومعنى وجودها</h3>
+<table>
+<thead>
+<tr>
+<th>الطبقة</th>
+<th>المصدر</th>
+<th>المقصود</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Astro تشغيل</td>
+<td><code>astro.config.mjs</code>, <code>render.yaml</code>, <code>package.json</code></td>
+<td>Node SSR مع استبعاد تطبيق المؤسسات من Sitemap</td>
+</tr>
+<tr>
+<td>بوابة/حماية</td>
+<td><code>src/middleware.ts</code>, <code>src/layouts/AppLayout.astro</code></td>
+<td>منع cache للمسارات الخاصة وتبديل حالة التوفر</td>
+</tr>
+<tr>
+<td>هوية</td>
+<td><code>src/server/kernel/auth.mjs</code>, <code>access.mjs</code>, <code>db.mjs</code></td>
+<td>جلسة وعضوية واستعلامات مفوضة خادميًا</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td><code>src/server/kernel/policies.mjs</code>, <code>aigas_policies*</code></td>
+<td>إصدار واعتماد وأولوية القرار</td>
+</tr>
+<tr>
+<td>Firewall</td>
+<td><code>src/server/firewall/{core,service,guard,provider,binding,escalation}.mjs</code></td>
+<td>محرك القاعدة ونقطة الإنفاذ والمزود</td>
+</tr>
+<tr>
+<td>Ledger</td>
+<td><code>src/server/ledger/{core,service,writer,http}.mjs</code>, <code>public/downloads/aigas-ledger-verifier.mjs</code></td>
+<td>كتابة بصمة/سلسلة وتصدير/تحقق</td>
+</tr>
+<tr>
+<td>Human Gate</td>
+<td><code>src/server/human-gate/{core,service,http}.mjs</code></td>
+<td>دورة الطلب والمراجعة والتنفيذ المقيد</td>
+</tr>
+<tr>
+<td>Risk Engine</td>
+<td><code>src/server/risk-engine/{core,service,http}.mjs</code></td>
+<td>سجل الأصول والتقييم والمعالجة</td>
+</tr>
+<tr>
+<td>Secure Chat</td>
+<td><code>src/server/secure-chat/{adapter,models,policy,requests,service}.mjs</code></td>
+<td>نموذج مصرح، حماية مدخل، حجز استخدام وإلغاء</td>
+</tr>
+<tr>
+<td>Knowledge</td>
+<td><code>src/server/knowledge/{catalog,document}.*</code>, <code>src/scripts/knowledge-*</code>, <code>src/data/knowledge.ts</code></td>
+<td>استخراج فهرس 11 مقالًا والبحث والقراءة</td>
+</tr>
+</tbody>
+</table>
+<h3 id="h19">جرد الترحيلات</h3>
+<table>
+<thead>
+<tr>
+<th>النطاق</th>
+<th>ترحيل SQL موجود في المستودع</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kernel تأسيسي</td>
+<td><code>0001_aigas_kernel.sql</code></td>
+</tr>
+<tr>
+<td>Firewall / Ledger / Human Gate / Risk Engine</td>
+<td><code>0002</code>, <code>0003</code>, <code>0004</code>, <code>0005</code></td>
+</tr>
+<tr>
+<td>Kernel Administration</td>
+<td><code>0006_aigas_kernel_administration.sql</code></td>
+</tr>
+<tr>
+<td>Human Gate Enforcement</td>
+<td><code>0007_aigas_human_gate_enforcement.sql</code></td>
+</tr>
+<tr>
+<td>Risk Engine Lifecycle</td>
+<td><code>0008_aigas_risk_engine_lifecycle.sql</code></td>
+</tr>
+<tr>
+<td>Secure Chat</td>
+<td><code>0009_aigas_secure_chat.sql</code></td>
+</tr>
+<tr>
+<td>Policy Hierarchy</td>
+<td><code>0010_aigas_kernel_policy_hierarchy.sql</code></td>
+</tr>
+<tr>
+<td>Firewall Execution + 5-state</td>
+<td><code>0011_aigas_firewall_execution_binding.sql</code>, <code>0012_aigas_firewall_five_state_upgrade.sql</code></td>
+</tr>
+<tr>
+<td>Ledger</td>
+<td><code>0013_aigas_ledger_five_state_and_chain_guard.sql</code></td>
+</tr>
+<tr>
+<td>Human Gate</td>
+<td><code>0014_aigas_human_gate_cancellation_delegation_and_grant.sql</code></td>
+</tr>
+<tr>
+<td>Risk Engine</td>
+<td><code>0015_aigas_risk_engine_asset_context_residual_risk.sql</code></td>
+</tr>
+<tr>
+<td>Secure Chat</td>
+<td><code>0016_aigas_sc_user_token_quota.sql</code></td>
+</tr>
+<tr>
+<td>Audit Context</td>
+<td><code>0017_aigas_kernel_audit_context.sql</code></td>
+</tr>
+</tbody>
+</table>
+<p>وجود الـ17 ملفًا في GitHub مع الـ31 جدولًا الحالية <strong>لا يكفي لتأكيد</strong> تطبيق كل migration حرفيًا بالترتيب؛ يلزم مصدر Migration History أو مراجعة فروق Columns/Constraints/Indexes لكل نسخة فعلية.</p>
+<h2 id="h19">18 — البيانات التشغيلية المطلوب طلبها قبل قرار إطلاق عميل</h2>
+<p>لا يوجد ضمن هذه المراجعة: مستخرج قياسات فعلية من Search Console/GA4، إثبات عمليات حساب/مؤسسة في بيئة مصرح بها، توثيق نسخة حية لبوابة Node، عقد موافقة Provider وNo-Training، نماذج اتفاقيات خدمة/ترخيص موقعة، دليل نسخ احتياطي واستعادة، نتائج تحميل وتحمل، أو اعتماد سياسة بيانات عملاء حقيقية. لا تُنشأ هذه الأدلة بتلوين خلايا جدول، ولا تكون إلزامية كلها لنشر <strong>موقع تعريفي</strong>؛ لكنها تتدرج في الأهمية حسب ما ينوي المالك تسويقه وتشغيله وحفظه من بيانات.</p>
+</article><footer class="foot">BRIGHT AI / AIGAS — تقرير مستقل قائم على قراءة GitHub وNeon والفحص العام. لا تُنشر هذه الوثيقة على الموقع العام، ولا تتضمن أسرار اتصال.</footer></main></body></html>
