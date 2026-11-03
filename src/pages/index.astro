@@ -81,10 +81,11 @@ const sectors = [
     frame = 0;
     for (const { element, lines } of reveals) {
       const rect = element.getBoundingClientRect();
-      // Reveal from top 80% to bottom 50%, one full line at a time.
+      // Reveal from top 80% to bottom 50%, one full line at a time. The floor
+      // stays high so the amber accent never fades into the black canvas.
       const progress = clamp((innerHeight * .8 - rect.top) / (innerHeight * .3 + rect.height));
       lines.forEach((line, index) => {
-        line.style.opacity = motion.matches ? '1' : String(.1 + .9 * clamp(progress * lines.length - index));
+        line.style.opacity = motion.matches ? '1' : String(.72 + .28 * clamp(progress * lines.length - index));
       });
     }
   }
@@ -253,7 +254,14 @@ const sectors = [
   }
   @media(prefers-reduced-motion:reduce) {
     #principles .pillar,.section .sector,#how-it-works .steps,.closing { animation: none; opacity: 1; transform: none; }
-    .section :is(.ghost,.button),#principles .pillar,.section .sector { transition: none; }
+    .section :is(.ghost,.button),#principles .pillar,.section .sector,
+    .section :is(.ghost,.button) span,
+    #solutions .sector h3 span,
+    #solutions .sector-link span { transition: none; }
+    .section :is(.ghost,.button):is(:hover,:focus-visible) span,
+    #solutions .sector:is(:hover,:focus-visible) h3 span,
+    #solutions .sector:is(:hover,:focus-visible) .sector-link span,
+    .closing .button:hover { transform: none; }
   }
 </style>
 
@@ -275,8 +283,13 @@ const sectors = [
     box-shadow: none;
     background: radial-gradient(ellipse at 50% 50%, #8052ff0a, transparent 68%);
   }
-  .governance-statement p { max-inline-size: 18ch; margin-inline: auto; line-height: 1.55; }
-  .governance-statement .statement-accent { margin-block-start: 4px; }
+  .governance-statement p { max-inline-size: 19ch; margin-inline: auto; color: var(--color-bone-white); line-height: 1.5; text-wrap: balance; }
+  .governance-statement .statement-accent {
+    margin-block-start: 6px;
+    color: var(--color-saffron-spark);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0;
+  }
 
   #problem.problem { gap: clamp(40px, 8vw, 104px); padding-block: clamp(64px, 8vw, 100px); }
   #problem .problem-copy {
@@ -286,84 +299,172 @@ const sectors = [
     border-inline-start: 2px solid var(--color-action);
     border-radius: var(--radius-card);
     background: linear-gradient(135deg, #ffffff06, #0c0b12 72%);
+    box-shadow: inset 0 1px #ffffff08;
   }
-  #problem .problem-copy p { max-inline-size: 48ch; line-height: 1.95; }
-  #problem .problem-copy .ghost { margin-block-start: 16px; }
+  #problem .problem-copy p { max-inline-size: 48ch; color: var(--color-text-copy); line-height: 1.95; }
+  #problem .problem-copy .ghost { margin-block-start: 16px; color: var(--color-bone-white); }
+  #problem .problem-copy .ghost span { color: var(--color-saffron-spark); }
+  #problem .problem-copy .ghost:is(:hover,:focus-visible) { color: var(--color-saffron-spark); }
 
   #principles .pillars-heading { max-inline-size: 15ch; margin-block-end: clamp(36px, 6vw, 72px); }
   #principles .pillar {
-    gap: clamp(28px, 6vw, 76px);
-    padding: clamp(28px, 4vw, 48px);
-    border-color: var(--border-strong);
+    gap: clamp(24px, 5vw, 64px);
+    padding: clamp(26px, 3.6vw, 44px);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-card);
     background: linear-gradient(135deg, #ffffff07, #0c0b12 68%);
     box-shadow: inset 0 1px #ffffff08;
     transition: transform 160ms var(--ease-out), border-color 160ms ease, background-color 160ms ease;
   }
-  #principles .pillar-symbol { min-inline-size: 0; gap: clamp(14px, 2vw, 28px); }
-  #principles .pillar-symbol .latin { flex: 0 0 auto; }
+  #principles .pillar:focus-within {
+    border-color: var(--color-focus);
+    box-shadow: inset 0 1px #ffffff08, 0 0 0 1px var(--color-focus);
+  }
+  #principles .pillar-symbol {
+    min-inline-size: 0;
+    min-block-size: clamp(180px, 16vw, 232px);
+    gap: clamp(12px, 1.8vw, 26px);
+    align-items: center;
+  }
+  #principles .pillar-symbol svg {
+    display: block;
+    width: clamp(96px, 8.6vw, 124px);
+    height: auto;
+    aspect-ratio: 1;
+    stroke-width: 1.15;
+  }
+  #principles .pillar-symbol .latin {
+    flex: 0 0 auto;
+    margin-block-start: 2px;
+    color: var(--color-ash-gray);
+    line-height: 1.65;
+  }
   #principles .pillar-copy { display: flex; flex-direction: column; align-items: flex-start; }
   #principles .pillar-copy h3 { line-height: 1.35; }
-  #principles .pillar-copy p { margin-block: 14px 12px; line-height: 1.9; }
-  #principles .pillar-note { margin-block-end: 4px; }
-  #principles .pillar-copy .ghost { margin-block-start: 8px; }
+  #principles .pillar-copy p { margin-block: 14px 12px; color: var(--color-text-copy); line-height: 1.9; }
+  #principles .pillar-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-block-end: 4px;
+    color: var(--color-saffron-spark);
+    line-height: 1.8;
+  }
+  #principles .pillar-note::before {
+    content: '';
+    inline-size: 14px;
+    block-size: 1px;
+    background: currentColor;
+    opacity: .7;
+  }
+  #principles .pillar-copy .ghost { margin-block-start: 8px; color: var(--color-text-muted); }
+  #principles .pillar-copy .ghost span { color: var(--color-action); }
+  #principles .pillar-copy .ghost:is(:hover,:focus-visible) { color: var(--color-saffron-spark); }
+  #principles .pillar-copy .ghost:is(:hover,:focus-visible) span { color: inherit; }
 
   #how-it-works.workflow { gap: clamp(40px, 8vw, 104px); }
   #how-it-works .steps { padding-inline-start: 0; }
   #how-it-works .steps li {
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 18px;
-    padding: 24px 18px 38px;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding: 22px 16px 34px;
     border: 1px solid transparent;
     border-block-end-color: var(--line-soft);
     border-radius: var(--radius-card);
-    background: linear-gradient(100deg, transparent, #ffffff04);
+    background: linear-gradient(260deg, transparent, #ffffff04);
   }
-  #how-it-works .step-number { line-height: 1.5; unicode-bidi: isolate; }
+  #how-it-works .step-number {
+    display: grid;
+    place-content: center;
+    inline-size: 34px;
+    block-size: 34px;
+    border: 1px solid #ffb8293d;
+    border-radius: var(--radius-full);
+    background: #ffb8290a;
+    color: var(--color-saffron-spark);
+    font-size: 18px;
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    unicode-bidi: isolate;
+  }
   #how-it-works .steps h3 { line-height: 1.65; }
-  #how-it-works .step-arrow { inset-inline-start: 20px; inset-block-end: -2px; padding-inline: 6px; background: var(--color-void); }
+  #how-it-works .step-arrow {
+    display: grid;
+    place-items: center;
+    inline-size: 18px;
+    block-size: 18px;
+    inset-inline-start: 27px;
+    inset-block-end: -9px;
+    z-index: 1;
+    padding: 0;
+    border: 0;
+    background: var(--color-void);
+    color: var(--color-action);
+    font-size: 14px;
+    line-height: 1;
+  }
 
   .home-products .sector {
     gap: clamp(14px, 3vw, 32px);
     padding: 22px clamp(16px, 2.4vw, 28px);
     border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
     background: linear-gradient(115deg, #ffffff06, #0c0b12 76%);
     transition: transform 160ms var(--ease-out), border-color 160ms ease, background-color 160ms ease;
   }
   .home-products .sector h3 { line-height: 1.5; overflow-wrap: anywhere; }
-  .home-products .sector p { line-height: 1.8; }
+  .home-products .sector p { color: var(--color-text-copy); line-height: 1.8; }
   #solutions .sectors { margin-block-start: clamp(40px, 6vw, 72px); }
   #solutions .sector {
     padding: 28px clamp(16px, 2.4vw, 28px);
     border: 1px solid transparent;
     border-block-start-color: var(--line-soft);
+    border-radius: var(--radius-card);
     background: linear-gradient(120deg, #ffffff04, transparent 72%);
     transition: transform 160ms var(--ease-out), border-color 160ms ease, background-color 160ms ease;
   }
   #solutions .sector h3 { line-height: 1.5; }
-  #solutions .sector p { line-height: 1.85; }
+  #solutions .sector p { color: var(--color-text-copy); line-height: 1.85; }
   #solutions .sector-link { margin-block-start: 14px; }
+  #solutions .sector h3 span,
+  #solutions .sector-link span { transition: transform var(--motion-hover) var(--ease-out); }
 
   .closing { padding-block: clamp(104px, 12vw, 160px); }
   .closing > p:not(.eyebrow) { max-inline-size: 48ch; margin-inline: auto; line-height: 1.9; }
   .closing .button { margin-block-start: 8px; }
+  .closing .button:hover { transform: translateY(-2px); }
+  .closing .button:active { transform: none; }
+
+  /* Section links share one small forward nudge; the hero keeps its own rules. */
+  .section :is(.ghost,.button) span { transition: transform var(--motion-hover) var(--ease-out); }
+  #solutions .sector:focus-visible h3 span,
+  #solutions .sector:focus-visible .sector-link span { transform: translateX(-3px); }
 
   @media (hover: hover) and (pointer: fine) {
     #principles .pillar:hover,
     .home-products .sector:hover,
     #solutions .sector:hover { transform: translateY(-2px); }
+    .section :is(.ghost,.button):is(:hover,:focus-visible) span { transform: translate(-3px,-1px); }
+    #solutions .sector:is(:hover,:focus-visible) h3 span,
+    #solutions .sector:is(:hover,:focus-visible) .sector-link span { transform: translateX(-3px); }
   }
   @media (max-width: 767px) {
-    .governance-statement p { max-inline-size: 16ch; }
-    #principles .pillar { padding: 24px; }
-    #principles .pillar-symbol { min-block-size: 132px; }
+    .governance-statement p { max-inline-size: 17ch; }
+    #principles .pillar { padding: 22px; }
+    #principles .pillar-symbol { min-block-size: 148px; }
     #how-it-works .steps li { padding-inline: 12px; }
+    #how-it-works .step-arrow { inset-inline-start: 23px; }
     .home-products .sector { padding-inline: 18px; }
     #solutions .sector { padding-inline: 18px; }
   }
   @media (max-width: 390px) {
     #problem .problem-copy { padding: 20px 18px; }
     #principles .pillar { padding: 18px; }
-    #how-it-works .steps li { grid-template-columns: 36px minmax(0, 1fr); gap: 12px; }
+    #how-it-works .steps li { grid-template-columns: 32px minmax(0, 1fr); gap: 10px; }
+    #how-it-works .step-number { inline-size: 28px; block-size: 28px; font-size: 17px; }
+    #how-it-works .step-arrow { inset-inline-start: 19px; }
     .home-products .sector h3 { font-size: 23px; }
   }
 </style>

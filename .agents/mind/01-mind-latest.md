@@ -1,3 +1,22 @@
+## [2026-11-03] — صقل أقسام الرئيسية: حوكمة، مشكلة، ركائز، خطوات، بطاقات
+### تم التنفيذ
+- `governance-statement`: رُفع حد الشفافية من `.1` إلى `.72` فبقيت العبارة الثانية مقروءة أثناء التمرير بدل أن تختفي، وأصبح التشديد الكهرماني بوزن 600 مع `text-wrap: balance`؛ العبارتان والنص والتتابع كما هما.
+- `#problem .problem-copy`: النص على `--color-text-copy`، CTA أبيض بسهم كهرماني، وحد داخلي علوي؛ مواضع العمودين والسهم لم تتغير.
+- `#principles .pillar`: إطار 1px `--border-strong` وradius 12، حلقة focus كهرمانية عبر `:focus-within`، أيقونة `clamp(96px,8.6vw,124px)`، رقم الركن على نفس السطر البصري، وشرطة قصيرة قبل الملاحظة، وسهم CTA كهرماني.
+- `#how-it-works .steps`: أرقام دائرية 34px (28px على 390) بوزن 600، وأسهم 18px بلا إطار متمركزة تحت الرقم، واتجاه التدرج صار 260deg لـRTL؛ لا خطوة جديدة ولا تغيير نص.
+- `home-products`/`#solutions`: radius 12 موحد، نص الوصف على `--color-text-copy`، ودفعة 3px لأسهم الروابط على hover/focus فقط؛ الترتيب والمصفوفة لم يتغيرا.
+- `site.css`/`experience.css`/`pages.css`/`ProductIcon.astro` لم تُعدّل: الأولى مشتركة وقد تمس الهيدر/الهيرو، والأخيرة غير مستخدمة في الرئيسية.
+- مراجع: 21st `How It Works Timeline` (أرقام دائرية وتسلسل)؛ Lazyweb `OpenAI Frontier` و`Zscaler Risk360` (هرمية بطاقات المنتج)؛ MGD `Harvard Bridge Plaque` (وزن/تباين العنوان التحريري)؛ Figma NOT APPLICABLE — لا fileKey/رابط BRIGHT AI في المستودع.
+### الملفات المتأثرة
+- `src/pages/index.astro`
+### التحقق
+- Chrome محلي (dev 4331) 1440/1024/390/320: `scrollWidth == innerWidth`، console بلا أخطاء؛ focus على رابط الركن يعطي `rgb(255,184,41)` وحدًا داخليًا؛ hover القطاع `translateY(-2px)` والسهم `translateX(-3px)`؛ reduced-motion: `animation:none` و`0s` وشفافية 1.
+- الهيرو/الهيدر محفوظان: H1 100px@1440 و54px@390، زر الهيرو radius 24 و`0.2s`، header 108/160. `git diff --check`: PASS. build/tests/نشر: NOT RUN بطلب الدفعة.
+### النتيجة
+- **الحالة:** DONE محليًا — NOT_RUNTIME_VERIFIED؛ لا commit/push/deploy.
+### ملاحظات / مشاكل مفتوحة
+- لا توجد حالة تعلّم مرتبطة بالتمرير في الخطوات؛ لذلك لم يُغيَّر توقيت حالة غير موجودة. لقطات المقارنة أُزيلت بعد الفحص (ملفات مؤقتة).
+
 ## [2026-11-03] — فهرس الأقسام على الجوال: فتح/إغلاق آمن، وحذف الفهرس المكرر
 ### تم التنفيذ
 - `section-compass` لم يعد يُثبَّت في نهاية المستند على الجوال؛ صار كشفًا ثابتًا أسفل الحافة (`position:fixed` + `env(safe-area-inset-bottom)`) بارتفاع لوحة `min(50svh,320px)`، ويُغلق بـEscape أو لمس خارجي أو اختيار رابط، مع حلقة تركيز على `summary`.
