@@ -122,19 +122,15 @@
 .interior-page table th { color: var(--ui-ink); background: var(--table-header-bg); border-block: 1px solid var(--border-strong); }
 .interior-page table td { border-color: var(--table-border); padding-block: 22px; color: var(--ui-copy); }
 .interior-page table tr:hover td { background: var(--table-row-hover); }
-/* Knowledge catalogue: one editorial lead followed by a compact index. */
+/* Knowledge catalogue: consistent cards in reading order, including the first guide. */
 .interior-docs-index > h1 { font-size: clamp(48px,7.5vw,108px); }
 .interior-docs-index > .lead { max-inline-size: 58ch; }
 .interior-docs-index .catalog { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,1fr); column-gap: 64px; border-block-start: 0; }
 .interior-docs-index .catalog-row { grid-template-columns: 36px minmax(0,1fr) 24px; gap: 16px; padding-block: 26px; align-items: start; }
+.interior-docs-index .catalog-row > div { min-inline-size: 0; grid-column: 2; }
+.interior-docs-index .catalog-row h3 { font-size: clamp(22px,2.2vw,32px); line-height: 1.6; overflow-wrap: anywhere; }
 .interior-docs-index .catalog-row p { grid-column: 2; font-size: 15px; line-height: 1.9; }
 .interior-docs-index .catalog-row > span:last-child { grid-column: 3; grid-row: 1/3; }
-.interior-docs-index .catalog-row:first-child { grid-row: span 2; align-content: start; grid-template-columns: 36px minmax(0,1fr); background: radial-gradient(ellipse at 40% 20%,#75529a1c,transparent 65%); border-block-start: 2px solid #ae88df; padding-block: 34px; }
-.interior-docs-index .catalog-row:first-child .index-number { font-size: 48px; color: #826995; grid-column: 1/-1; padding-block-end: 20px; }
-.interior-docs-index .catalog-row:first-child h3 { font-size: clamp(28px,3vw,44px); line-height: 1.6; }
-.interior-docs-index .catalog-row:first-child > div { grid-column: 1/-1; }
-.interior-docs-index .catalog-row:first-child p { grid-column: 1/-1; }
-.interior-docs-index .catalog-row:first-child > span:last-child { display: none; }
 .interior-page .catalog-row:hover { padding-inline: 0; background-color: transparent; }
 .interior-page .catalog-row :is(h3,svg) { transition: color var(--ui-state),transform var(--ui-state); }
 .interior-page .catalog-row:is(:hover,:focus-visible) h3 { color: var(--ui-amber); }
@@ -316,9 +312,6 @@
   .interior-page .content-extension .extension-path li { padding: 16px; }
   .interior-page .content-extension .extension-columns { grid-template-columns: 1fr; gap: 20px; }
   .interior-docs-index .catalog { grid-template-columns: 1fr; gap: 0; }
-  .interior-docs-index .catalog-row:first-child { grid-row: auto; padding-block: 26px; }
-  .interior-docs-index .catalog-row:first-child .index-number { font-size: 24px; padding-block-end: 12px; }
-  .interior-docs-index .catalog-row:first-child h3 { font-size: 28px; }
   .interior-products-index .catalog-row { grid-template-columns: 40px minmax(0,1fr) 20px; gap: 16px; }
   .interior-products-index .map-node { padding: 12px 8px; }
   .interior-page .pillar-manifesto { grid-template-columns: 1fr; padding-block: 40px; gap: 24px; }
@@ -354,11 +347,6 @@
 .interior-page .knowledge-count { grid-column: 1/-1; font-size: 12px; color: #bda3d0; }
 .interior-page .catalog-row[hidden],.interior-page .knowledge-empty[hidden] { display: none; }
 .interior-page [data-filtered=true] .catalog { display: block; }
-.interior-page [data-filtered=true] .catalog-row:first-child { grid-row: auto; display: grid; grid-template-columns: 36px minmax(0,1fr) 24px; background: none; padding-block: 26px; border-block-start: 0; }
-.interior-page [data-filtered=true] .catalog-row:first-child .index-number { grid-column: auto; font-size: 14px; padding: 0; }
-.interior-page [data-filtered=true] .catalog-row:first-child>div { grid-column: 2; }
-.interior-page [data-filtered=true] .catalog-row:first-child h3 { font-size: 28px; }
-.interior-page [data-filtered=true] .catalog-row:first-child p { grid-column: 2; }
 .interior-page [data-knowledge-browser] .catalog .catalog-row[hidden] { display: none; }
 .interior-page .knowledge-empty { padding: 40px; background: #120c1c; border-inline-start: 2px solid #cba5ec; }
 .interior-page .knowledge-empty p { margin-block: 12px 24px; }
