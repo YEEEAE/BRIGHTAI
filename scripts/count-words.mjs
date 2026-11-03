@@ -23,12 +23,13 @@ const strip = (value) =>
 
 const count = (text) => text.trim().split(/\s+/).filter(Boolean).length;
 
-const main = /<main\b[^>]*>([\s\S]*?)<\/main>/i.exec(html)?.[1] ?? html;
+const renderedArticle = /<article\s+class="iso-article"[^>]*>([\s\S]*?)<\/article>/i.exec(html)?.[1];
+const main = renderedArticle ?? /<main\b[^>]*>([\s\S]*?)<\/main>/i.exec(html)?.[1] ?? html;
 // Prefer the article body region when present: from the body wrapper to the
 // "read next" block, which sits outside the article element.
 const start = html.indexOf('<article class="k1-body"');
 const end = html.indexOf('<section class="k1-next"');
-const article = start >= 0 && end > start ? html.slice(start, end) : '';
+const article = renderedArticle ?? (start >= 0 && end > start ? html.slice(start, end) : '');
 
 const mainWords = count(strip(main));
 const bodyWords = article ? count(strip(article)) : 0;
