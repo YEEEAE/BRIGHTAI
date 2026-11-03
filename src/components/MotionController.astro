@@ -5,13 +5,20 @@
   // InteriorMotion owns entrance choreography inside .interior-page; never observe it twice.
   const elements = [...document.querySelectorAll<HTMLElement>('.block,.pillar,.sector,.catalog-row,.experience,.context-route')]
     .filter(element => !element.closest('.interior-page'));
+  // One-way reveal: an element animates at most once per page, so toggling the
+  // reduced-motion preference can never replay the whole page.
+  const pending = new Set(elements);
   let observer: IntersectionObserver | undefined;
 
-  const revealAll = () => elements.forEach(element => element.classList.remove('motion-enter'));
+  const settle = () => {
+    pending.forEach(element => element.classList.remove('motion-enter'));
+    pending.clear();
+    observer?.disconnect();
+    observer = undefined;
+  };
 
   const start = () => {
-    if (observer || !elements.length || motionPreference.matches || !('IntersectionObserver' in window)) return;
-    const pending = new Set(elements);
+    if (observer || !pending.size || motionPreference.matches || !('IntersectionObserver' in window)) return;
     observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -27,7 +34,7 @@
   const stop = () => { observer?.disconnect(); observer = undefined; };
 
   const onPreferenceChange = () => {
-    if (motionPreference.matches) { stop(); revealAll(); }
+    if (motionPreference.matches) settle();
     else start();
   };
 

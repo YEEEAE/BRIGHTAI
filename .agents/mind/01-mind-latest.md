@@ -1,3 +1,23 @@
+## [2026-11-03] — ترشيد حركة الصفحات الداخلية وعزل عنوان الهيرو عن قاعدة h1 العامة
+### تم التنفيذ
+- أُزيلت قاعدة `h1 { animation: title-in }` العامة من `experience.css` مع keyframeها؛ الفحص أثبت أنها كانت بلا أثر فعلي (`.interior-page h1` تمنعها و`.hero h1` تتجاوزها) وكانت خطرًا على الهيرو عند إعادة ترتيب CSS. لا تغيير بصري في الهيرو/الهيدر.
+- كشف حركة العنوان في `interior-motion.ts` فقد كان `clipPath: inset(0 0 20% 0)` يقص ذيول الحروف العربية 480ms؛ صارت `title` = opacity .88 + translateY(6px) بلا قص، و`rise` 12→8px، والرسم 800→700ms مع stagger ≤200ms (السقف 900ms).
+- حُذف نبض `.map-core` (900ms) لأنه زخرفة تنافس رسم الأسلاك في المنطقة نفسها؛ بقي ظهور اللوحة + draw واحد.
+- `MotionController` صار one-way: مجموعة `pending` تُفرغ بعد أول ظهور، فتبديل `prefers-reduced-motion` لا يعيد تشغيل الصفحة، و`settle()` يوقف المراقب نهائيًا.
+- جُمّعت استجابة أزرار قرار Firewall في مالك واحد داخل `interior-motion.ts` (state + label + نتيجة + packet) وأُزيلت النسخة المكررة و`animate` من `InteriorController`.
+- وُحّدت مدة `.sequence-stages` و`.lock-shackle` و`.ghost` و`.map-path` على `--ui-fast/--ui-state` بدل 160/220ms مكتوبة.
+- مراجع: 21st `Underline Tabs` (المؤشر يحمل الحالة والمحتوى ثابت)؛ Lazyweb `campsite`/`chameleon`/`appcues` (feedback عند نقطة الإجراء لا احتفال ملء الشاشة)؛ MGD لا مرجع Motion فعلي ⇒ اعتُمد مبدأ الهرمية الساكنة (Church Historical Sign). Figma NOT APPLICABLE — لا fileKey/رابط BRIGHT AI في المصدر.
+### الملفات المتأثرة
+- `src/styles/experience.css`, `src/styles/interior-motion.css`, `src/components/MotionController.astro`, `src/components/InteriorController.astro`, `src/scripts/interior-motion.ts`
+### التحقق
+- Chrome محلي (dev 4331) 1440/390/320 على `/`, `/products/`, `/products/firewall/`, `/kernel/`, `/docs/`: بلا تجاوز أفقي وبلا أخطاء console؛ إطارات عنوان الداخل بلا `clipPath`؛ تقليل الحركة = 0 WAAPI وopacity 1 مع بقاء التفاعل يعمل؛ الهيرو كما هو (h1 animation none، radius 24، 0.2s، header 108px)؛ `git diff --check`: PASS.
+- build/lint/typecheck/tests/نشر: NOT RUN بطلب الدفعة. تغيير التفضيل الحي لم يُرصد عبر CDP لأن emulation لا يطلق `MediaQueryList.change`؛ مسار `settle` مُتحقق مصدريًا فقط.
+### النتيجة
+- **الحالة:** DONE محليًا — NOT_RUNTIME_VERIFIED؛ لا commit/push/deploy.
+### ملاحظات / مشاكل مفتوحة
+- تُرك hover `.catalog-row` بتغيّر `padding-inline` (reflow) لأنه قرار تصميمي خارج نطاق الدفعة؛ و`InteriorMotion.astro` بلا تعديل لأن init/teardown الحالي متوازن.
+- `/auth/*` فقدت ارتفاع العنوان 10px بعد إزالة قاعدة h1 العامة؛ لا أثر على الهيرو أو المحتوى.
+
 ## [2026-11-03] — توحيد أيقونات المنتج/المعرفة وحالات الأسطح والأزرار في صفحات الداخل
 ### تم التنفيذ
 - وُحّد الرمز البصري: `ProductIcon` و`KnowledgeIcon` على شبكة 24 و`vector-effect="non-scaling-stroke"` بعرض 1.6px، فبقي السطر نفسه عند 24 و34 و46px بدل أن يثقل مع التكبير؛ `KnowledgeIcon` صار يقبل 16/20/24/32 و`label` اختياريًا. لم يُستخدم درع العلامة كأيقونة قسم.

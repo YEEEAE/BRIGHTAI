@@ -28,7 +28,8 @@ export function initializeMotion() {
       const length = shape.hasAttribute('pathLength') ? Number(shape.getAttribute('pathLength')) : shape.getTotalLength();
       if (!length) return;
       // WAAPI restores the authored dash pattern when drawing completes.
-      play(shape, [{ strokeDasharray: `${length}`, strokeDashoffset: `${length}` }, { strokeDasharray: `${length}`, strokeDashoffset: '0' }], 800, Math.min(i * 45, 270));
+      // 700ms + ≤200ms stagger keeps the whole route inside the 550–900ms budget.
+      play(shape, [{ strokeDasharray: `${length}`, strokeDashoffset: `${length}` }, { strokeDasharray: `${length}`, strokeDashoffset: '0' }], 700, Math.min(i * 40, 200));
     });
   };
 
@@ -36,7 +37,7 @@ export function initializeMotion() {
   const legal = root.matches('.interior-privacy-index,.interior-terms-index');
   if (!legal) {
     root.querySelectorAll('h1,.review-questions ol,.approval-flow,.evidence-timeline,.extension-path,.scope-products,.extension-columns').forEach(element => {
-      if (!element.hasAttribute('data-motion')) element.setAttribute('data-motion', element.tagName === 'H1' ? 'mask' : 'stagger');
+      if (!element.hasAttribute('data-motion')) element.setAttribute('data-motion', element.tagName === 'H1' ? 'title' : 'stagger');
     });
     root.querySelectorAll('.map-wires,.sector-diagram svg,.decision-circuit svg').forEach(element => element.setAttribute('data-motion', 'draw'));
     root.querySelectorAll('.content-extension>section,.catalog-row,.review-questions,.sector-visual').forEach(element => element.setAttribute('data-motion', 'rise'));
@@ -49,10 +50,10 @@ export function initializeMotion() {
       const mode = element.dataset.motion;
       if (mode === 'draw') draw(element);
       else if (mode === 'stagger') [...element.children].forEach((child, i) => play(child, [{ opacity: .65, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], 480, Math.min(i * 60, 360)));
-      else if (mode === 'mask') play(element, [{ opacity: .7, clipPath: 'inset(0 0 20% 0)', transform: 'translateY(6px)' }, { opacity: 1, clipPath: 'inset(0)', transform: 'none' }]);
-      else if (mode !== 'scrub') play(element, [{ opacity: .7, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }]);
-      const core = element.matches('.system-map') ? element.querySelector('.map-core') : null;
-      if (core) play(core, [{ transform: 'translate(-50%,-50%) scale(1)' }, { transform: 'translate(-50%,-50%) scale(1.025)' }, { transform: 'translate(-50%,-50%) scale(1)' }], 900);
+      // Arabic titles rise as one block. No clip path, so descenders and dots are
+      // never cut mid-animation, and the final text keeps its original position.
+      else if (mode === 'title') play(element, [{ opacity: .88, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], 420);
+      else if (mode !== 'scrub') play(element, [{ opacity: .8, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }]);
       observer.unobserve(element);
     }), { threshold: .12 });
     root.querySelectorAll('[data-motion],.system-map').forEach(element => observer.observe(element));
@@ -63,7 +64,13 @@ export function initializeMotion() {
   root.querySelectorAll<HTMLElement>('.experience-firewall').forEach(panel => {
     const packet = panel.querySelector<SVGCircleElement>('[data-decision-packet]');
     let active: Animation | undefined;
+    // One interaction owner: branch state, label, result and packet share a click.
     panel.querySelectorAll<HTMLButtonElement>('[data-example]').forEach((button, index) => button.addEventListener('click', () => {
+      panel.dataset.state = String(index);
+      const label = panel.querySelector('[data-path-label]');
+      if (label) label.textContent = button.textContent?.trim() ?? '';
+      const result = panel.querySelector('.example-result');
+      if (result) play(result, [{ opacity: .7, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], 220);
       active?.cancel();
       const path = panel.querySelector<SVGPathElement>(`.branch-${index} path`);
       if (!path || !packet) return;

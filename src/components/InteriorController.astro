@@ -8,24 +8,10 @@
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     const observers: IntersectionObserver[] = [];
     const frames = new Set<number>();
-    const animations = new Set<Animation>();
     const frame = (fn: () => void) => {
       const id = requestAnimationFrame(() => { frames.delete(id); fn(); });
       frames.add(id);
     };
-    const animate = (element: Element, keyframes: Keyframe[], duration = 240) => {
-      if (preference.matches) return;
-      const animation = element.animate(keyframes, { duration, easing: 'cubic-bezier(.2,.7,.2,1)' });
-      animations.add(animation);
-      animation.finished.then(() => animations.delete(animation)).catch(() => animations.delete(animation));
-    };
-    const onPreference = () => {
-      if (preference.matches) {
-        animations.forEach(animation => animation.cancel());
-        root.querySelectorAll('.ui-arrive').forEach(element => element.classList.remove('ui-arrive'));
-      }
-    };
-    preference.addEventListener('change', onPreference, { signal });
 
     // Entrance choreography belongs to InteriorMotion; keep one observer owner.
 
@@ -111,21 +97,12 @@
         if (details.open) panel.dataset.stage = String(index);
       }, { signal }));
     });
-    root.addEventListener('click', event => {
-      const button = (event.target as Element).closest<HTMLButtonElement>('button[data-example]');
-      if (!button) return;
-      const panel = button.closest<HTMLElement>('.experience');
-      if (!panel) return;
-      panel.dataset.state = String([...panel.querySelectorAll('button[data-example]')].indexOf(button));
-      const label = panel.querySelector('[data-path-label]');
-      if (label) label.textContent = button.textContent?.trim() ?? '';
-      const result = panel.querySelector('.example-result');
-      if (result) animate(result, [{ transform: 'translateY(4px)' }, { transform: 'translateY(0)' }]);
-    }, { signal });
+    // Branch feedback (state, label, result, packet) is owned by interior-motion.ts,
+    // together with the entrance choreography; this controller never duplicates it.
 
     addEventListener('pagehide', () => {
       lifetime.abort(); observers.forEach(observer => observer.disconnect());
-      frames.forEach(id => cancelAnimationFrame(id)); animations.forEach(animation => animation.cancel());
+      frames.forEach(id => cancelAnimationFrame(id));
       compass?.setAttribute('hidden', ''); linksRoot?.replaceChildren();
       root.querySelector('.reading-progress')?.remove();
     }, { once: true, signal });

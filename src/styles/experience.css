@@ -17,15 +17,16 @@ select { font: inherit; }
 ::view-transition-new(root) { animation: page-in var(--motion-normal) ease-out both; }
 @keyframes page-out { to { opacity: 0; } }
 @keyframes page-in { from { opacity: 0; } }
-@keyframes section-in { from { transform: translateY(16px); opacity: .7; } to { transform: none; opacity: 1; } }
-@keyframes title-in { from { transform: translateY(10px); } to { transform: none; } }
+/* Group reveal only: one short lift for the wrapper, never per word or letter. */
+@keyframes section-in { from { transform: translateY(8px); opacity: .9; } to { transform: none; opacity: 1; } }
 @keyframes draw-route { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 .motion-enter { animation: section-in var(--motion-reveal) var(--ease-out) both; }
-h1 { animation: title-in var(--motion-reveal) var(--ease-out); }
+/* No global h1 animation: the approved hero, the page header and the editorial
+   titles keep their authored paint. Entrance motion is opted in per component. */
 .button { transition: var(--transition-control); }
-.button span,main .ghost span,.node-arrow { display: inline-block; transition: transform var(--motion-normal) var(--ease-out); }
+.button span,main .ghost span,.node-arrow { display: inline-block; transition: transform var(--motion-hover) var(--ease-out); }
 main :is(.button,.ghost):is(:hover,:focus-visible) span { transform: translate(-3px,-1px); }
-.product-icon { flex: 0 0 auto; inline-size: var(--icon-size, 40px); block-size: var(--icon-size, 40px); color: var(--icon-accent); transition: transform var(--motion-normal); }
+.product-icon { flex: 0 0 auto; inline-size: var(--icon-size, 40px); block-size: var(--icon-size, 40px); color: var(--icon-accent); transition: transform var(--motion-hover); }
 a:hover .product-icon { transform: translateY(-3px); }
 .eyebrow { font-size: 13px; }
 .page { padding-block-start: 24px; }
