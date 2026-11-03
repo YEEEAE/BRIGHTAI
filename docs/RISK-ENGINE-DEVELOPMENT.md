@@ -2,6 +2,14 @@
 
 Date: 2026-11-01. Scope: a small persisted, rules-only slice authorized by the owner; not the complete RE-01–RE-05 product or a commercial release.
 
+## Asset context and residual-risk extension (2026-11-03)
+
+Local source now records data context, provider/model identifiers, a free-text organization-reported approval status, and ACTIVE/RETIRED lifecycle. The approval field is descriptive and unverified; retirement is reversible through a new asset revision and preserves assessment/treatment history. Each edit remains tenant-scoped and creates an append-only asset snapshot; restoring an older snapshot is a new edit, never a rewrite.
+
+Treatment revisions separately capture control steps and a required residual-risk narrative. Residual risk has no numeric score. HIGH from the existing draft likelihood×impact rule is labelled as requiring human review; the assessment itself never grants deployment authority, and no separate approval/deployment integration is present in this local slice. This draft score/range remains unapproved per PRODUCT-SPEC.
+
+Local additive schema file `migrations/0015_aigas_risk_engine_asset_context_residual_risk.sql` was applied to production on 2026-11-03 at the owner's explicit request. Post-apply schema inspection confirmed all six asset columns and `residual_risk_description`, including defaults and CHECK constraints. No branch was created. Runtime/auth/role/RLS behavior and application use remain NOT VERIFIED.
+
 ## Current lifecycle extension (2026-11-01)
 
 State: `IMPLEMENTED_NOT_RUNTIME_VERIFIED`. No tests, builds, lint, typecheck, HTTP smoke or browser tools were run for this extension, at the owner's request. Earlier verification below is historical and does not cover this implementation.
@@ -24,9 +32,9 @@ Additional local APIs (all use the same Kernel identity, membership, product acc
 
 Export ignores UI filters and includes stale flags and scope limitations. A technical ceiling of 10000 assets rejects oversize exports rather than truncating; this is not a commercial quota. File download requires authenticated fetch and remains in memory until download. Assessment, asset and treatment histories remain available through their paginated endpoints.
 
-Apply `0005_aigas_risk_engine.sql` followed by additive `0008_aigas_risk_engine_lifecycle.sql` on an approved development target. 0008 retains existing data and adds treatment RLS, scoped FKs, append-only and current-version/role guards. Kernel access additionally uses administration migration 0006. Do not run unrelated product migrations as a prerequisite. No grants, sample data, activation, environment changes or migrations were applied in this task.
+For a fresh approved development target, apply `0005_aigas_risk_engine.sql`, `0008_aigas_risk_engine_lifecycle.sql`, then `0015_aigas_risk_engine_asset_context_residual_risk.sql`; the latter retains all existing history and only adds fields. Kernel access additionally uses administration migration 0006. Do not run unrelated product migrations as a prerequisite. Migration 0015 was not applied in this task.
 
-Neon MCP read-only inspection found the sole branch `production` / `br-young-bird-b43proeb` in `young-frog-60183055` / `neondb`, with 11 public Kernel/Human Gate tables and no Risk Engine tables. There is no approved development branch. Production authorization from a different product task is not authorization for these migrations. Runtime role/RLS, actual Auth flow and deployment remain external prerequisites.
+Neon MCP read-only inspection on 2026-11-03 found the sole branch `production` / `br-young-bird-b43proeb` in `young-frog-60183055` / `neondb`; `aigas_re_assets`, `aigas_re_asset_revisions`, `aigas_re_assessments`, and `aigas_re_treatment_revisions` are present. The inspected schemas do not yet include the 0015 fields. No development branch is available, so no schema change was applied. Runtime role/RLS, actual Auth flow and deployment remain external prerequisites.
 
 ## Earlier foundation behavior (historical description; extension above takes precedence)
 
@@ -49,19 +57,20 @@ All paths end in `/`. `Authorization: Bearer <Neon session JWT>` is required; JW
 | Method | Path under `/app/api/risk-engine/` | Body / response |
 | --- | --- | --- |
 | GET | `assets/?page=1&q=&classification=&risk_level=` | tenant-filtered assets, DB-derived summary and filtered count, memberships, selected tenant/role, canWrite, page, hasMore |
-| POST | `assets/` | name, owner, purpose, data_classification → asset (201) |
-| PATCH | `assets/{assetId}/` | all four asset fields + asset_version → saved asset |
+| POST | `assets/` | name, owner, purpose, data_classification, optional context/provider/model fields, approval_status (descriptive only), lifecycle_status → asset (201) |
+| PATCH | `assets/{assetId}/` | all asset fields + asset_version → saved asset/revision |
+| DELETE | `assets/{assetId}/` | soft archive with reason, asset_version and synthetic-data acknowledgement; retains asset and history, appends a new version |
 | GET | `assets/{assetId}/assessments/?page=1` | asset, assessments, canWrite, page, hasMore |
 | POST | `assets/{assetId}/assessments/` | asset_version, likelihood, impact, likelihood_reason, impact_reason, controls_reason → assessment (201) |
 | GET | `assets/{assetId}/revisions/?page=1` | append-only asset version snapshots with actor/time, tenant-scoped |
 
-Classifications: PUBLIC, INTERNAL, CONFIDENTIAL, RESTRICTED. Name/owner: 2–120 characters; purpose/reasons/controls: 2–500 after trimming. Server-generated IDs, timestamps and outcome fields cannot be supplied. Mutation retries are not deduplicated; after an ambiguous connection loss, refresh and inspect history before resubmitting. No usage billing, quota or idempotency guarantee is claimed.
+Classifications: PUBLIC, INTERNAL, CONFIDENTIAL, RESTRICTED. Name/owner/provider/model references: 2–120 when populated; purpose/reasons/control and residual-risk narrative: 2–500 after trimming. Approval status is free text only and is not verified. Lifecycle status is ACTIVE/RETIRED; archived items retain their full history. Server-generated IDs, timestamps and outcome fields cannot be supplied. Mutation retries are not deduplicated; after an ambiguous connection loss, refresh and inspect history before resubmitting. No usage billing, quota or idempotency guarantee is claimed.
 
 The existing `docs/products/risk-engine/API-CONTRACT.yaml` remains a broader future `/v1/risk/` proposal. It is not the implemented route contract above.
 
 ## Environment and migration boundary
 
-Neon MCP read-only inspection on 2026-11-01 succeeded for project `young-frog-60183055`, branch `br-young-bird-b43proeb` (production), database `neondb`: Auth plus Kernel's four public tables exist; no Risk Engine tables exist. Existing local DATABASE_URL, NEON_AUTH_BASE_URL and NEON_AUTH_JWKS_URL were present. `.env` is ignored and was not changed. No credentials are needed for local source work; no additional Storage/Data API configuration is required for this slice.
+Neon MCP inspection on 2026-11-03 found project `young-frog-60183055`, sole branch `br-young-bird-b43proeb` (production), database `neondb`. After explicit owner authorization, migration 0015 was applied in one transaction. Follow-up schema inspection confirmed `data_context`, `provider_reference`, `model_reference`, `model_version`, `approval_status`, `lifecycle_status`, and `residual_risk_description` with their defaults/check constraints. No branch was created; `.env` was not changed. Runtime/Auth/RLS behavior remains unverified.
 
 `migrations/0005_aigas_risk_engine.sql` is review-only and requires `0001_aigas_kernel.sql`. It creates the asset, immutable asset-revision and assessment tables, history indexes and append-only triggers, with RLS enabled on all three tables and PUBLIC access revoked. The original 0005 slice was applied to disposable local PostgreSQL; this follow-up adding asset revisions was **not re-tested** because the execution sandbox denied PostgreSQL shared memory. It was **not applied to Neon**. No dev branch was created, and the production migration permission previously granted for Kernel does not cover this migration.
 

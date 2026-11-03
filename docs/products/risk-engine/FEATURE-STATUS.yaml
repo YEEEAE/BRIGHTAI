@@ -41,11 +41,20 @@ local_foundation:
   current_runtime_verification: NOT_RUN_OWNER_REQUEST
   migration: migrations/0005_aigas_risk_engine.sql
   lifecycle_migration: migrations/0008_aigas_risk_engine_lifecycle.sql
-  neon_migration_applied: false
+  schema_migration_applied: true
   real_neon_authenticated_flow_verified: false
   method: draft-likelihood-impact-v1
-  scope_ar: سجل أصول ونسخ وتقييم قاعدي بمراجع نصية، معالجة بإصدارات ومراجعات وقبول إداري مقيد، وتصدير JSON؛ كود محلي دون تحقق تشغيلي
-  follow_up_slice: VERSIONED_TREATMENT_REVIEW_AND_JSON_EXPORT_LOCAL_ONLY
+  scope_ar: سجل أصول ونسخ وتقييمات ومعالجة؛ أحدث تعديل محلي يضيف سياق بيانات ومزوّد/نموذج وحالة اعتماد وصفية وأرشفة قابلة للعكس وخطرًا متبقيًا سرديًا واستعادة النسخ
+  follow_up_slice: ASSET_CONTEXT_RESIDUAL_RISK_AND_REVISION_RESTORE_LOCAL_ONLY
+  latest_source_update: '2026-11-03'
+  latest_local_migration: migrations/0015_aigas_risk_engine_asset_context_residual_risk.sql
+  latest_neon_schema_observation:
+    date: '2026-11-03'
+    branch: production
+    risk_engine_tables_observed: true
+    migration_0015_fields_observed: true
+    migration_0015_applied_by_this_task: true
+    runtime_verified: false
   capability_coverage:
     RE-01: PARTIAL_LOCAL_SLICE
     RE-02: RULES_ONLY_DRAFT_SUBSET
