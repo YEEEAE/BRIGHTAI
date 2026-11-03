@@ -36,3 +36,13 @@
 - pdpl-and-ai -> ai-impact-assessment | «تقييم أثر الذكاء الاصطناعي يربط نقاط المسار بمن يتأثر بالقرار.»
 - pdpl-and-ai -> ai-data-residency-saudi | «دليل موقع البيانات والاستضافة في السعودية يربط السؤال التقني بالنظامي.»
 - pdpl-and-ai -> data-governance-vs-ai-governance | «الفرق بين حوكمة البيانات وحوكمة الذكاء الاصطناعي يوضح حدود كل منهما.»
+
+المصدر: `/knowledge/saudi-ai-law-binding-vs-guidance/` — تُفعّل هذه الروابط تلقائياً عند إنشاء المقالات المستهدفة في نفس الدفعة.
+
+- saudi-ai-law-binding-vs-guidance -> saudi-ai-regulators-map | «ابدأ من خريطة الجهات المنظمة لترتيب من يسأل عن ماذا.»
+- saudi-ai-law-binding-vs-guidance -> ai-cybersecurity-nca | «ضوابط الأمن السيبراني طبقة ملزمة على النشاط، وليست بديلاً عن حوكمة الذكاء الاصطناعي.»
+- saudi-ai-law-binding-vs-guidance -> ai-governance-financial-sector | «في القطاع المالي، متطلبات البنك المركزي تضيف طبقة على الحوكمة العامة.»
+- saudi-ai-law-binding-vs-guidance -> ai-governance-healthcare | «في الصحة، البيانات الصحية والبرمجيات الطبية تغيّر نطاق الالتزام.»
+- saudi-ai-law-binding-vs-guidance -> data-classification-for-ai | «صنّف البيانات قبل الإدخال؛ التصنيف يحدد كثيراً من الالتزامات.»
+- saudi-ai-law-binding-vs-guidance -> iso-42001-saudi | «ISO/IEC 42001 معيار اختياري لنظام إدارة، وليس نظاماً سعودياً.»
+- saudi-ai-law-binding-vs-guidance -> ai-impact-assessment | «تقييم أثر الذكاء الاصطناعي يربط المتطلب بمن يتأثر بالقرار.»
