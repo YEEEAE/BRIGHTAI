@@ -7,19 +7,33 @@ const config=authConfig();
 ---
 <AppLayout title="المراجعة البشرية Human Gate">
  <section class="kernel human-gate" data-human-gate data-auth-url={config?.base??''}>
-  <div class="page-heading"><div><p class="overline">04 / HUMAN GATE</p><h1>موافقة محددة.<span>وتنفيذ مرة واحدة.</span></h1><p class="intro">راجع تغيير اسم مساحة العمل داخل AIGAS قبل تطبيقه. الموافقة مرتبطة بالاسم والنسخة والسياسة والمهلة؛ التنفيذ من الخادم بعد مراجعة مستقلة. الملاحظة الداخلية مسار تجريبي منفصل.</p></div><span class="connection">موافقة أحادية المرحلة</span></div>
+  <div class="page-heading"><div><p class="overline">04 / HUMAN GATE</p><h1>موافقة محددة.<span>وتنفيذ مرة واحدة.</span></h1><p class="intro">راجع تغيير اسم مساحة العمل داخل AIGAS قبل تطبيقه. الموافقة مرتبطة بالاسم والنسخة والسياسة والمهلة والمورد؛ التنفيذ من الخادم بعد مراجعة مستقلة وبإذن يُستهلك مرة واحدة. يمكن إلغاء الطلب قبل التنفيذ، وتفويض مراجعة مؤقت محدد العملية والمستوى والتاريخ. الملاحظة الداخلية مسار تجريبي منفصل.</p></div><span class="connection">موافقة أحادية المرحلة</span></div>
   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الطلبات</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض بيانات المؤسسة.</p></noscript>
   <div data-private hidden>
-   <section class="panel"><label for="hg-workspace">المؤسسة</label><select id="hg-workspace" data-workspace></select><p data-role></p><p>المالك والمسؤول يطلبان تغيير اسم المساحة ويراجعان طلبات غيرهما فقط. العضو ينشئ ملاحظة تجريبية ويعرض طلباته. التنفيذ لمقدم الطلب بعد إعادة فحص صلاحية الطرفين.</p></section>
-   <section class="panel"><h2>سياسة المدة والنطاق</h2><p data-policy-summary></p><p>تغيير الاسم متاح للمالك والمسؤول فقط؛ المراجعة تتطلب مالكًا أو مسؤولًا آخر. لا تفويض إضافي ضمن هذه النسخة.</p>
+   <section class="panel"><label for="hg-workspace">المؤسسة</label><select id="hg-workspace" data-workspace></select><p data-role></p><p>المالك والمسؤول يطلبان تغيير اسم المساحة ويراجعان طلبات غيرهما فقط. العضو ينشئ ملاحظة تجريبية ويعرض طلباته. التنفيذ لمقدم الطلب بعد إعادة فحص صلاحية الطرفين وإذن التنفيذ. يمكن للمالك أو المسؤول تفويض مراجعة مؤقتة عند تفعيلها في السياسة، دون تجاوز صلاحية المفوّض أو فصل المهام.</p></section>
+   <section class="panel"><h2>سياسة المدة والنطاق</h2><p data-policy-summary></p><p>تغيير الاسم متاح للمالك والمسؤول فقط؛ المراجعة تتطلب المستوى المحدد في السياسة، ومراجعًا مستقلًا عند اشتراط فصل المهام. التفويض المؤقت يبقى محدد العملية والمستوى والمدة، ولا يتجاوز صلاحية المفوّض.</p>
     <form data-policy class="hg-form" hidden>
      <div><label for="hg-pending">المهلة القصوى للطلب بالدقائق</label><input id="hg-pending" name="pending_minutes" type="number" required min="1" max="1440" step="1" /></div>
      <div><label for="hg-approval">صلاحية الموافقة بالدقائق</label><input id="hg-approval" name="approval_minutes" type="number" required min="1" max="1440" step="1" /></div>
+     <div><label for="hg-level">الحد الأدنى لمستوى المراجع</label><select id="hg-level" name="review_level"><option value="ADMIN">مدير أو مالك</option><option value="OWNER">مالك المؤسسة فقط</option></select></div>
      <label class="hg-check"><input name="enabled" type="checkbox" /> تفعيل استقبال الطلبات والتنفيذ ضمن هذه السياسة</label>
-     <p>اختر القيم حسب سياسة مؤسستك؛ النطاق من دقيقة إلى 1440 حد تقني، وليس مدة ترخيص أو SLA. الموافقة لا تمدد مهلة الطلب الأصلية. أي حفظ للسياسة يبطل الطلبات المعلقة والموافقات السابقة.</p>
+     <label class="hg-check"><input name="separation_of_duties" type="checkbox" /> اشتراط فصل المهام: لا يعتمد مقدم الطلب طلبه (يبقى إلزاميًا لتغيير اسم المساحة)</label>
+     <label class="hg-check"><input name="delegation_enabled" type="checkbox" /> السماح بتفويض مراجعة مؤقت محدد العملية والمدة</label>
+     <p>اختر القيم حسب سياسة مؤسستك؛ النطاق من دقيقة إلى 1440 حد تقني، وليس مدة ترخيص أو SLA. الموافقة لا تمدد مهلة الطلب الأصلية. أي حفظ للسياسة يبطل الطلبات المعلقة والموافقات وأذونات التنفيذ السابقة.</p>
      <button type="submit">حفظ السياسة وإبطال الطلبات السابقة</button>
     </form>
+   </section>
+   <section class="panel" data-delegation-panel hidden><h2>تفويض مراجعة مؤقت</h2><p>التفويض محدد بمؤسسة وعملية ومستوى ومدة وتاريخ انتهاء من الخادم. لا يتجاوز صلاحية المفوّض، ولا يسمح باعتماد صاحب الطلب طلبه عند اشتراط فصل المهام. الإلغاء يمنع القرارات الجديدة فورًا.</p>
+    <form data-delegate class="hg-form">
+     <div><label for="hg-delegate-user">العضو المفوّض</label><select id="hg-delegate-user" name="delegatee_id" required data-delegate-user></select></div>
+     <div><label for="hg-delegate-scope">نطاق التفويض</label><select id="hg-delegate-scope" name="operation_type"><option value="KERNEL_WORKSPACE_RENAME">تغيير اسم مساحة العمل</option><option value="INTERNAL_DEMO_NOTE">الملاحظة التجريبية</option></select></div>
+     <div><label for="hg-delegate-level">أعلى مستوى مفوّض</label><select id="hg-delegate-level" name="level"><option value="ADMIN">مدير</option><option value="OWNER">مالك</option></select></div>
+     <div><label for="hg-delegate-minutes">مدة التفويض بالدقائق</label><input id="hg-delegate-minutes" name="minutes" type="number" required min="1" max="1440" step="1" /></div>
+     <div><label for="hg-delegate-reason">سبب التفويض</label><textarea id="hg-delegate-reason" name="reason" required minlength="2" maxlength="500" rows="2"></textarea></div>
+     <button type="submit">إنشاء التفويض المؤقت</button>
+    </form>
+    <p data-delegation-empty hidden>لا توجد تفويضات مسجلة ضمن صلاحيتك.</p><ul data-delegations class="hg-delegations"></ul>
    </section>
    <section class="panel"><h2>طلب مراجعة جديد</h2><p id="hg-help">استخدم مساحة تجريبية ونصوصًا غير حساسة؛ لا بيانات عميل حقيقية أو معلومات شخصية أو أسرار. تغيير الاسم يعدّل اسم هذه المساحة فعلًا عند التنفيذ، ولا يغيّر صلاحياتها أو إعدادات الدخول.</p>
     <form data-create class="hg-form" aria-describedby="hg-help">
@@ -34,11 +48,11 @@ const config=authConfig();
    </section>
    <section class="panel"><h2>لوحة الطلبات</h2>
     <div class="hg-tabs" role="group" aria-label="نطاق عرض الطلبات"><button type="button" data-view="mine" aria-pressed="true">طلباتي</button><button type="button" data-view="review" aria-pressed="false">تحتاج مراجعتي</button><button type="button" data-view="completed" aria-pressed="false">مكتملة</button></div>
-    <label for="hg-status">حالة الطلب</label><select id="hg-status" data-filter><option value="">جميع الحالات ضمن اللوحة</option><option value="PENDING">بانتظار المراجعة</option><option value="APPROVED">معتمد — لم يُنفذ</option><option value="REJECTED">مرفوض</option><option value="EXPIRED">منتهي الصلاحية</option><option value="EXECUTED">نُفّذ</option></select>
-    <p data-empty hidden>لا توجد طلبات ضمن هذا العرض.</p><p data-review-notice hidden>المراجعة متاحة للمالك والمسؤول فقط؛ لا يوجد تفويض مراجعة لهذا الدور.</p><p data-refreshed></p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div>
+    <label for="hg-status">حالة الطلب</label><select id="hg-status" data-filter><option value="">جميع الحالات ضمن اللوحة</option><option value="PENDING">بانتظار المراجعة</option><option value="APPROVED">معتمد — لم يُنفذ</option><option value="REJECTED">مرفوض</option><option value="EXPIRED">منتهي الصلاحية</option><option value="CANCELLED">ملغى</option><option value="EXECUTED">نُفّذ</option></select>
+    <p data-empty hidden>لا توجد طلبات ضمن هذا العرض.</p><p data-review-notice hidden>المراجعة متاحة للمالك أو المسؤول، أو لعضو يحمل تفويضًا مؤقتًا نشطًا لنطاق العملية.</p><p data-refreshed></p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div>
    </section>
   </div>
-  <p class="notice">التدقيق الأساسي مستقل عن Ledger. تغيير اسم مساحة Kernel هو الأثر الفعلي المحدود في هذه النسخة؛ لا تفعيل سياسة Firewall أو تغيير تصنيف Risk Engine أو تنفيذ أنظمة خارجية. لا تُرسل البيانات لمزود AI ولا تُستخدم للتدريب. الموافقات المتعددة والتفويض والتصعيد والتنبيهات الخارجية غير متاحة هنا.</p>
+  <p class="notice">الإيقاف الأساسي عند سياسة Kernel التي تطلب مراجعة (REQUEST_APPROVAL/ESCALATE) يبقى داخل Kernel ولا يشترط ترخيص Human Gate. هذه الصفحة تضيف التفويض المؤقت وربط القرار بعملية واحدة وإذن تنفيذ يُستهلك مرة واحدة، مع تدقيق أساسي مستقل عن Ledger. تغيير اسم مساحة Kernel هو الأثر الفعلي المحدود في هذه النسخة؛ لا تفعيل سياسة Firewall أو تغيير تصنيف Risk Engine أو تنفيذ أنظمة خارجية. لا تُرسل البيانات لمزود AI ولا تُستخدم للتدريب. الموافقات المتعددة المراحل والتصعيد والتنبيهات الخارجية غير متاحة هنا.</p>
  </section>
 </AppLayout>
 <script src="../../../scripts/human-gate.ts"></script>

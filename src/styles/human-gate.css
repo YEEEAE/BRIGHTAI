@@ -67,3 +67,17 @@
 @media(max-width:390px){
   .human-gate .hg-request{padding:.9rem}
 }
+
+/* 09 — Time-boxed delegation and one-use execution permits. */
+.human-gate .hg-delegations{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.6rem}
+.human-gate .hg-delegation{display:grid;gap:.3rem;min-width:0;padding:.85rem 1rem;border:1px solid #302a39;border-radius:10px;background:#0b0910;overflow-wrap:anywhere}
+.human-gate .hg-delegation strong{color:#f4f1f8;font-size:13.5px;line-height:1.7}
+.human-gate .hg-delegation span{color:#a9a3b8;font-size:12px;line-height:1.8}
+.human-gate .hg-delegation form{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-block-start:.35rem;border:0;padding:0;background:transparent}
+.human-gate .hg-delegation input{flex:1 1 12rem;min-width:0}
+.human-gate .hg-delegation button{flex:0 0 auto}
+.human-gate .hg-request form>button[type=submit]{margin-block-start:.6rem}
+@media(max-width:650px){
+ .human-gate .hg-delegation form{flex-direction:column;align-items:stretch}
+ .human-gate .hg-delegation input{width:100%}
+}

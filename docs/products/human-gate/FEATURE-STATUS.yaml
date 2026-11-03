@@ -14,13 +14,15 @@ local_foundation:
   date: '2026-11-01'
   state: IMPLEMENTED_NOT_RUNTIME_VERIFIED
   route: /app/human-gate/
-  scope: SINGLE_STAGE_KERNEL_WORKSPACE_RENAME_AND_INTERNAL_DEMO_NOTE
+  scope: SINGLE_STAGE_WITH_CANCELLATION_BOUNDED_DELEGATION_AND_SINGLE_USE_PERMIT
   historical_evidence: Audit/2026-11-01-human-gate-foundation.md
   development_guide: docs/HUMAN-GATE-DEVELOPMENT.md
   migrations:
   - migrations/0004_aigas_human_gate.sql
   - migrations/0006_aigas_kernel_administration.sql
   - migrations/0007_aigas_human_gate_enforcement.sql
+  pending_migrations:
+  - migrations/0014_aigas_human_gate_cancellation_delegation_and_grant.sql
   migration_applied_to_neon: true
   migration_target: young-frog-60183055 / br-young-bird-b43proeb / neondb
   migration_authority: Explicit owner permission for production on 2026-11-01
@@ -28,18 +30,29 @@ local_foundation:
   verified_local: NOT_RUN_AT_OWNER_REQUEST
   policy_default: No seeded duration; OWNER/ADMIN chooses bounded pending and approval minutes
   activation: Operator-issued Human Gate access grant required; none provisioned
-  binding: SHA256 tenant/requester/operation/subject/policy/payload with immutable request fields
-  enforcement: Kernel workspace name update, request consumption and base audit in one transaction
-  expiry: Persisted on access using database time; execution rechecks before final write
-  retry: A consumed request returns ALREADY_EXECUTED without a second effect
+  binding: SHA256 v3 over tenant/requester/operation/provider/subject/policy/payload with immutable request fields
+  enforcement: Kernel workspace name update, permit consumption and base audit in one transaction
+  expiry: Persisted on access using database time; execution rechecks permit, policy and target before the final write
+  retry: A consumed request returns ALREADY_EXECUTED and a consumed permit is rejected without a second effect
+  cancellation: Requester or OWNER/ADMIN before execution; revokes an unused permit
+  delegation: Time-boxed, one operation, one level; cannot exceed the delegator's current role or override separation of duties
+  review_levels: ADMIN or OWNER selected by policy; separation of duties is on by default
+  kernel_base_protection: REQUEST_APPROVAL/ESCALATE halts inside Kernel without a Human Gate licence; the advanced approval features are separate
   deployment: NOT_PERFORMED
   neon_authenticated_user_journey: NOT_RUN
   capability_scope:
-    HG-01: PARTIAL_BOUND_REQUEST_AND_OPERATOR_POLICY
-    HG-02: PARTIAL_SINGLE_STAGE_OWNER_ADMIN_AND_SOD
-    HG-03: PARTIAL_PERSISTED_EXPIRY_NO_DELEGATION_OR_ESCALATION
+    HG-01: PARTIAL_BOUND_REQUEST_PROVIDER_AND_OPERATOR_POLICY
+    HG-02: PARTIAL_SINGLE_STAGE_LEVELS_SOD_AND_BOUNDED_DELEGATION
+    HG-03: PARTIAL_PERSISTED_EXPIRY_CANCELLATION_AND_DELEGATION_NO_ESCALATION
     HG-04: PARTIAL_APPEND_ONLY_DECISION_TIMELINE_AND_KERNEL_AUDIT
-    HG-05: PARTIAL_ATOMIC_KERNEL_WORKSPACE_RENAME_SINGLE_USE
+    HG-05: PARTIAL_ATOMIC_KERNEL_WORKSPACE_RENAME_WITH_SINGLE_USE_PERMIT
+  local_extension:
+    date: '2026-11-03'
+    state: IMPLEMENTED_NOT_RUNTIME_VERIFIED
+    migration_applied: false
+    scope: CANCELLED_PROVIDER_BINDING_V3_REVIEW_LEVELS_DELEGATION_AND_PERMIT
+    verified_local: NOT_RUN_AT_OWNER_REQUEST
+    note_ar: الكود والواجهة والترحيل المحلي موجودة، لكن 0014 لم يُطبق ولم تُشغّل فحوص runtime أو جلسة حقيقية.
 product:
   id: AIGAS-HG
   name: AIGAS Human Gate
