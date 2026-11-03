@@ -39,6 +39,9 @@ const linkPanel = root.querySelector<HTMLElement>('[data-auth-link]')!;
 const nativeOrganizations = root.querySelector<HTMLSelectElement>('[data-auth-organizations]')!;
 const registerInvite = root.querySelector<HTMLButtonElement>('[data-register-invite]')!;
 const incomingPanel = root.querySelector<HTMLElement>('[data-incoming-panel]')!;
+const departmentsPanel = root.querySelector<HTMLElement>('[data-departments-panel]')!;
+const departmentsList = root.querySelector<HTMLElement>('[data-departments]')!;
+const departmentsState = root.querySelector<HTMLElement>('[data-departments-state]')!;
 const productSlugs = ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat'];
 const roleNames: Record<string,string> = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
 const healthNames: Record<string, string> = { auth: 'إعداد Neon Auth', database: 'اتصال قاعدة البيانات', schema: 'مخطط Kernel', administration: 'إدارة Kernel', policyEngine:'مخطط السياسات المركزية', configuration_auth: 'تهيئة Auth على الخادم', configuration_database: 'تهيئة قاعدة البيانات على الخادم', configuration_schema: 'تهيئة المخطط', configuration_administration: 'تهيئة الإدارة', configuration_policyEngine:'تهيئة السياسات المركزية' };
@@ -121,6 +124,7 @@ function clearPrivate() {
   dashboardError.hidden = true; dashboardErrorType.textContent = '';
   metrics.hidden = true;
   membersList.replaceChildren(); memberCount.textContent = ''; membersState.textContent = 'تُحمّل الأعضاء بعد التحقق من العضوية.';
+  departmentsPanel.hidden = true; departmentsList.replaceChildren(); departmentsState.textContent = 'تُحمّل الإدارات بعد التحقق من العضوية.';
   activityList.replaceChildren(); activityState.textContent = 'تُحمّل الأنشطة بعد التحقق من العضوية.';
   root.querySelector('[data-evidence-summary]')!.textContent = 'ملخص السجلات غير محمّل.';
   root.querySelectorAll<HTMLElement>('[data-product]').forEach(card => {
@@ -134,8 +138,24 @@ function clearPrivate() {
     card.querySelector('[data-product-action]')!.replaceChildren(button);
   });
 }
+const errorTitles: Record<string, string> = {
+  FORBIDDEN: 'لا تملك صلاحية لهذه المؤسسة',
+  NO_WORKSPACE: 'لا توجد مؤسسة محددة',
+  INVALID_WORKSPACE: 'اختيار المؤسسة غير صالح',
+  KERNEL_ADMIN_SETUP_REQUIRED: 'إدارة Kernel غير مهيأة',
+  KERNEL_SCHEMA_MISSING: 'مخطط Kernel غير مطبّق',
+  DB_PRIVILEGE_UNAVAILABLE: 'صلاحية قاعدة البيانات غير متاحة',
+  DB_UNAVAILABLE: 'قاعدة البيانات غير متاحة مؤقتًا',
+  AUTH_UNAVAILABLE: 'خدمة الدخول غير متاحة مؤقتًا',
+  AUTH_SETUP_REQUIRED: 'إعداد الدخول غير مكتمل',
+  RATE_LIMITED: 'طلبات كثيرة في وقت قصير',
+  WORKSPACE_LIMIT: 'بلغت حد المساحات',
+};
 function showError(message: string, unauthorized = false, type = '') {
-  clearPrivate(); title.textContent = unauthorized ? 'يلزم تسجيل الدخول' : 'تعذر تحميل المساحة';
+  // A rejected workspace selector is discarded so a retry reads the account's own
+  // memberships; the URL is never treated as authority in either case.
+  if (type === 'FORBIDDEN' || type === 'INVALID_WORKSPACE') setWorkspace('');
+  clearPrivate(); title.textContent = unauthorized ? 'يلزم تسجيل الدخول' : errorTitles[type] ?? 'تعذر تحميل المساحة';
   status.textContent = message; retry.hidden = false;
   if (type) { dashboardError.hidden = false; dashboardErrorType.textContent = type; }
   if (login) login.hidden = !unauthorized;
@@ -158,8 +178,37 @@ async function members(workspace?: string) {
   if (!token) { const e = new Error('سجّل الدخول لعرض أعضاء المؤسسة.'); Object.assign(e, { unauthorized: true }); throw e; }
   const response = await appFetch(auth, `/app/api/kernel/members/${workspace ? `?workspace=${encodeURIComponent(workspace)}` : ''}`, { cache: 'no-store', headers: { Authorization: `Bearer ${token}` } });
   const data = await response.json();
-  if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401, code: data.code }); throw e; }
+  if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401, code: data.code, dependencyStatus: data.dependencyStatus, status: response.status }); throw e; }
   return data;
+}
+function renderDepartments(departments: any) {
+  departmentsList.replaceChildren();
+  departmentsPanel.hidden = false;
+  if (!departments?.available) {
+    departmentsState.textContent = 'مخطط الإدارات غير مطبّق على هذه البيئة؛ لا تظهر بيانات إدارات.';
+    return;
+  }
+  if (!departments.rows?.length) {
+    departmentsState.textContent = departments.canManage ? 'لا توجد إدارات في هذه المؤسسة بعد. تُنشأ من لوحة السياسات.' : 'لست عضوًا نشطًا في أي إدارة لهذه المؤسسة.';
+    return;
+  }
+  departmentsState.textContent = departments.canManage
+    ? 'عضوية الإدارات تُدار من لوحة السياسات؛ التعديل خادمي وليس من هذه القائمة.'
+    : 'تظهر الإدارات التي تنتمي إليها فقط؛ لا تُعرض عضوية إدارات أخرى.';
+  for (const department of departments.rows) {
+    const item = document.createElement('li');
+    const identity = document.createElement('div');
+    const name = document.createElement('strong'); name.dir = 'auto'; name.textContent = department.name;
+    identity.append(name);
+    const members = (department.members ?? []).filter((member: any) => member.status === 'ACTIVE');
+    const detail = document.createElement('span');
+    detail.textContent = departments.canManage
+      ? `${members.length} عضو نشط${members.length ? ` · ${members.map((member: any) => member.name).join('، ')}` : ''}`
+      : 'عضويتك نشطة في هذه الإدارة';
+    const status = document.createElement('span'); status.className = `role${department.status === 'ACTIVE' ? '' : ' warn'}`; status.textContent = department.status === 'ACTIVE' ? 'إدارة نشطة' : 'إدارة موقوفة';
+    item.append(identity, status, detail);
+    departmentsList.append(item);
+  }
 }
 async function renderMembers(data: any) {
   membersList.replaceChildren();
@@ -177,8 +226,21 @@ async function renderMembers(data: any) {
     const email = document.createElement('bdi'); email.dir = 'ltr'; email.textContent = row.email ?? '';
     const details = document.createElement('span'); details.textContent = `${row.accepted_at ? 'عضوية Kernel معتمدة' : labels[row.status] ?? 'غير متاحة'} · تنتهي ${date(row.expires_at)}`;
     li.append(email, details);
+    if (data.canManage && row.canCancel) {
+      const cancel = document.createElement('button'); cancel.type = 'button'; cancel.textContent = 'إلغاء الدعوة';
+      cancel.addEventListener('click', () => void adminRun(async () => {
+        if (!window.confirm(`إلغاء دعوة ${row.email ?? 'هذا البريد'}؟ لن تُمنح عضوية من هذه الدعوة.`)) return;
+        // Provider cancellation happens first; the server then confirms and audits it.
+        const native = await auth.organization.cancelInvitation({ invitationId: row.id });
+        if (native.error) throw new Error('تعذر إلغاء الدعوة لدى Neon Auth؛ قد تكون مقبولة أو منتهية. حدّث القائمة.');
+        await endpoint('members','POST',{operation:'cancel',invitationId:row.id},currentTenant?.tenant_id);
+        await load(currentTenant?.tenant_id); adminStatus.textContent = 'أُلغيت الدعوة لدى Auth وسُجل الإلغاء في Kernel.';
+      }));
+      li.append(cancel);
+    }
     invitations.append(li);
   }
+  renderDepartments(data.departments);
   if (invitationConfig?.canLink) await loadNativeOrganizations();
   if (invitationConfig?.available) await loadProviderPending(data.invitation.invitations ?? []);
   for (const member of data.members) {
@@ -192,7 +254,12 @@ async function renderMembers(data: any) {
     item.append(identity, role);
     if (member.status === 'BANNED') { const banned = document.createElement('span'); banned.className = 'role warn'; banned.textContent = 'موقوف لدى Auth'; item.append(banned); }
     item.append(joined);
-    if (data.canManage && member.userId && (member.role !== 'OWNER' || currentTenant?.role === 'OWNER')) {
+    if (data.canManage && member.isSelf) {
+      const selfNote = document.createElement('span'); selfNote.className = 'role-note';
+      selfNote.textContent = 'لا يمكنك تغيير دورك بنفسك؛ يلزم عضو آخر مخوّل.';
+      item.append(selfNote);
+    }
+    if (data.canManage && member.userId && !member.isSelf && (member.role !== 'OWNER' || currentTenant?.role === 'OWNER')) {
       const actions = document.createElement('div'); actions.className = 'member-controls';
       const roleSelect = document.createElement('select'); roleSelect.setAttribute('aria-label', `تغيير دور ${member.name}`);
       for (const [value, label] of [...(member.role === 'OWNER' ? [['OWNER','مالك']] : []), ['MEMBER','عضو'],['ADMIN','مدير']]) {
@@ -207,14 +274,12 @@ async function renderMembers(data: any) {
         await load(currentTenant.tenant_id); adminStatus.textContent = 'تم تحديث دور العضو في Kernel.';
       }));
       const revoke = document.createElement('button'); revoke.type = 'button'; revoke.textContent = 'سحب عضوية Kernel';
-      if (member.isSelf) revoke.disabled = true;
       revoke.addEventListener('click', () => void adminRun(async () => {
         if (!window.confirm(`سحب عضوية ${member.name} يمنع وصوله إلى Kernel لهذه المؤسسة. هل تريد المتابعة؟`)) return;
         await endpoint('members','POST',{operation:'revoke',userId:member.userId},currentTenant.tenant_id);
         await load(currentTenant.tenant_id); adminStatus.textContent = 'تم سحب عضوية Kernel؛ لم تتغير عضوية Neon Auth.';
       }));
-      if (!member.isSelf) actions.append(roleSelect, saveRole, revoke);
-      else if (currentTenant?.role === 'OWNER' || currentTenant?.role === 'ADMIN') actions.append(roleSelect, saveRole);
+      actions.append(roleSelect, saveRole, revoke);
       item.append(actions);
     }
     membersList.append(item);
@@ -260,7 +325,9 @@ function render(data: any) {
   const dashboardDate = new Date(data.system?.updatedAt);
   dashboardUpdated.hidden = Number.isNaN(dashboardDate.getTime());
   if (!dashboardUpdated.hidden) dashboardUpdated.textContent = `آخر تحديث لبيانات المؤسسة: ${new Intl.DateTimeFormat('ar-SA', { timeZone: 'Asia/Riyadh', dateStyle: 'medium', timeStyle: 'short' }).format(dashboardDate)}`;
-  create.hidden = data.memberships.length > 0;
+  // Any authenticated account may start its own organization; this does not copy the
+  // selected tenant's members, roles, policies or access approvals.
+  create.hidden = false;
   const tenantName = root.querySelector<HTMLElement>('[data-tenant-name]')!;
   const tenantDisplay = document.createElement('bdi'); tenantDisplay.dir = 'auto'; tenantDisplay.textContent = data.tenant?.name ?? 'لا توجد مؤسسة بعد'; tenantName.replaceChildren(tenantDisplay);
   root.querySelector('[data-tenant-detail]')!.textContent = data.tenant ? `العضوية موثقة · الدور: ${roleNames[data.tenant.role] ?? 'غير معروف'} · تاريخ الإنشاء: ${date(data.tenant.created_at)}` : 'لا توجد عضوية لهذه المؤسسة. إنشاء المساحة لا يفعّل المنتجات أو الاشتراك.';
@@ -447,9 +514,16 @@ async function endpoint(path: string, method = 'GET', body?: object, workspace?:
     method, ...(body ? {headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {})
   });
   let data: any; try { data = await response.json(); } catch { throw new Error('الخدمة غير متاحة؛ لم يُؤكد الحفظ.'); }
-  if (!response.ok) throw Object.assign(new Error(data.message || 'تعذر إكمال الطلب.'), {unauthorized: response.status === 401, code: data.code});
+  if (!response.ok) throw Object.assign(new Error(data.message || 'تعذر إكمال الطلب.'), {unauthorized: response.status === 401, code: data.code, dependencyStatus: data.dependencyStatus, status: response.status});
   return data;
 }
+const dependencyLabels: Record<string, string> = {
+  available: 'متاحة',
+  'not configured': 'غير مهيأة',
+  'access denied': 'صلاحية مرفوضة',
+  expired: 'منتهية',
+  'temporarily unavailable': 'غير متاحة مؤقتًا',
+};
 async function adminRun(work: () => Promise<void>) {
   if (busy) return;
   busy = true; root.setAttribute('aria-busy','true');
@@ -459,7 +533,10 @@ async function adminRun(work: () => Promise<void>) {
   catch (error: any) {
     if (error.unauthorized) showError(error.message, true, error.code ?? 'UNAUTHORIZED');
     const type = error instanceof TypeError ? 'NETWORK_ERROR' : error.code ?? 'REQUEST_FAILED';
-    adminStatus.textContent = `${error.message || 'تعذر إكمال العملية؛ لم يُؤكد الحفظ. حدّث البيانات قبل إعادة الإرسال.'} (${type})`;
+    const dependency = error.dependencyStatus
+      ? ` · التبعية: ${dependencyLabels[error.dependencyStatus] ?? 'حالة غير معروفة'}`
+      : '';
+    adminStatus.textContent = `${error.message || 'تعذر إكمال العملية؛ لم يُؤكد الحفظ. حدّث البيانات قبل إعادة الإرسال.'} (${type})${dependency}`;
   } finally {
     busy = false; root.removeAttribute('aria-busy');
     root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>('button,select,input').forEach(b => b.disabled = false);

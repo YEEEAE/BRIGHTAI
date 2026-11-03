@@ -429,3 +429,16 @@
   .app-frame .tag{font-size:11px}
   .kernel .connection{font-size:12px;white-space:normal}
 }
+
+/* 09 — Departments, role safety and invitation cancellation (Kernel only). */
+.kernel .departments{margin-top:18px;border-top:1px solid var(--app-line-soft);padding-top:16px}
+.kernel .departments h3{font-size:16px;font-weight:400;margin:0 0 8px;color:var(--ui-ink)}
+.kernel .departments [data-departments-state]:not(:empty){margin:0 0 12px;color:var(--ui-copy);font-size:12px;line-height:1.8}
+.kernel .departments .member-list li{grid-template-columns:minmax(0,1fr) auto;align-items:start}
+.kernel .departments .member-list li>span:last-child{grid-column:1/-1;overflow-wrap:anywhere}
+.kernel .role-note{display:block;grid-column:1/-1;padding:6px 9px;border:1px dashed #3a3346;border-radius:6px;color:var(--ui-muted);font-size:12px;line-height:1.7}
+.kernel [data-invitations] li button{margin-top:2px}
+@media (max-width:600px){
+  .kernel .departments .member-list li{grid-template-columns:1fr}
+  .kernel [data-invitations] li button{width:100%}
+}

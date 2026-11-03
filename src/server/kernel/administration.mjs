@@ -44,6 +44,8 @@ export async function manageMember(identity, requested, body) {
     const target = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR UPDATE', [tenant.tenant_id, body.userId])).rows[0];
     if (!target && body.operation === 'revoke') return { persisted: true, unchanged: true };
     if (!target) throw new KernelError(404, 'MEMBER_NOT_FOUND', 'العضوية غير موجودة أو سبق سحبها.');
+    // Roles are never self-edited: a second authorized actor is required.
+    if (body.operation === 'set-role' && body.userId === identity.userId) throw new KernelError(409, 'SELF_ROLE_CHANGE_REJECTED', 'لا يمكنك تغيير دورك بنفسك. اطلب من مالك أو مدير آخر إدارة دورك.');
     if (target.role === 'OWNER' && actor.role !== 'OWNER') throw new KernelError(403, 'OWNER_PROTECTED', 'لا يحق للمدير تغيير صلاحية المالك.');
     if (body.operation === 'revoke') {
       if (body.userId === identity.userId) throw new KernelError(409, 'SELF_REVOCATION_REJECTED', 'لا يمكن سحب عضويتك من هذه الشاشة. اطلب من مالك آخر إدارة عضويتك.');
@@ -84,8 +86,13 @@ export async function invitationState(db, identity, tenant) {
   if (!mapping) return { available: false, canLink: tenant.role === 'OWNER', reason: 'لم تُربط مؤسسة Neon Auth بعد. المالك يستطيع ربط مؤسسة ينشئها بحسابه؛ لا تُستورد أدوار Auth إلى Kernel.', invitations: [] };
   const native = (await db.query('SELECT role FROM neon_auth.member WHERE "organizationId"=$1 AND "userId"=$2', [mapping.organization_id, identity.userId])).rows[0];
   const available = ['OWNER','ADMIN'].includes(tenant.role) && ['owner','admin'].includes(native?.role);
-  const invitations = ['OWNER','ADMIN'].includes(tenant.role) ? (await db.query(`SELECT i.id,i.email,i.status,i."expiresAt" AS expires_at,k.accepted_at FROM public.aigas_member_invitations k JOIN neon_auth.invitation i ON i.id=k.invitation_id WHERE k.tenant_id=$1 ORDER BY k.created_at DESC LIMIT 30`, [tenant.tenant_id])).rows.map(row => ({ ...row, status: row.status === 'pending' && new Date(row.expires_at) <= new Date() ? 'expired' : row.status })) : [];
-  return { available, canLink: false, organizationId: available ? mapping.organization_id : null, invitations, reason: available ? 'دعوة بدور عضو فقط. تُتابع داخل Kernel؛ إرسال البريد غير مؤكد، وإلغاء الدعوة يتم من Neon Auth.' : 'الدعوة تتطلب OWNER/ADMIN في Kernel وصلاحية دعوة لدى مؤسسة Auth المرتبطة.' };
+  const invitations = ['OWNER','ADMIN'].includes(tenant.role) ? (await db.query(`SELECT i.id,i.email,i.status,i."expiresAt" AS expires_at,k.accepted_at FROM public.aigas_member_invitations k JOIN neon_auth.invitation i ON i.id=k.invitation_id WHERE k.tenant_id=$1 ORDER BY k.created_at DESC LIMIT 30`, [tenant.tenant_id])).rows.map(row => {
+    // Cancellation is a provider action confirmed by the server; only a pending, unaccepted
+    // invitation that Kernel actually registered can be offered here.
+    const status = row.status === 'pending' && new Date(row.expires_at) <= new Date() ? 'expired' : row.status;
+    return { ...row, status, canCancel: status === 'pending' && !row.accepted_at };
+  }) : [];
+  return { available, canLink: false, organizationId: available ? mapping.organization_id : null, invitations, reason: available ? 'دعوة بدور عضو فقط. تُتابع داخل Kernel؛ إرسال البريد غير مؤكد، وإلغاء الدعوة يتم من هنا أو من Neon Auth.' : 'الدعوة تتطلب OWNER/ADMIN في Kernel وصلاحية دعوة لدى مؤسسة Auth المرتبطة.' };
 }
 export async function incomingInvitations(identity) {
   return transaction(async db => {
@@ -133,6 +140,21 @@ export async function manageInvitation(identity, requested, body) {
       await db.query('UPDATE public.aigas_member_invitations SET accepted_by=$2,accepted_at=now() WHERE invitation_id=$1', [body.invitationId, identity.userId]);
       await audit(db, identity, record.tenant_id, 'kernel.invitation.accepted');
       return { persisted: true, tenantId: record.tenant_id };
+    });
+  }
+  if (body.operation === 'cancel') {
+    exact(body, ['operation','invitationId']); uuid(body.invitationId);
+    return transaction(async db => {
+      const { tenant } = await adminScope(db, identity, requested, ['OWNER','ADMIN']);
+      const record = (await db.query('SELECT accepted_at FROM public.aigas_member_invitations WHERE invitation_id=$1 AND tenant_id=$2 FOR UPDATE', [body.invitationId, tenant.tenant_id])).rows[0];
+      if (!record) throw new KernelError(404, 'INVITATION_NOT_FOUND', 'الدعوة غير مسجلة لهذه المؤسسة.');
+      if (record.accepted_at) throw new KernelError(409, 'INVITATION_ALREADY_ACCEPTED', 'الدعوة مقبولة؛ لا يمكن إلغاؤها من هذه الشاشة.');
+      // The browser performs the provider cancellation. The server only records it after
+      // reading the real provider state; a pending invitation is never treated as canceled.
+      const provider = (await db.query('SELECT status FROM neon_auth.invitation WHERE id=$1', [body.invitationId])).rows[0];
+      if (!provider || provider.status !== 'canceled') throw new KernelError(409, 'CANCELLATION_NOT_CONFIRMED', 'لم يؤكد Auth إلغاء الدعوة. ألغِها من إدارة الدعوات ثم أعد المحاولة.');
+      await audit(db, identity, tenant.tenant_id, 'kernel.invitation.canceled');
+      return { persisted: true, status: 'canceled' };
     });
   }
   return transaction(async db => {

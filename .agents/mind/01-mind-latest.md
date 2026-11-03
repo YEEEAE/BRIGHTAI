@@ -1,3 +1,20 @@
+## [2026-11-03] — إكمال الهوية والمؤسسات والإدارات والأعضاء (محلي فقط)
+### تم التنفيذ
+- أصبح إنشاء المؤسسة متاحًا لأي حساب موثّق غير موقوف حتى لو كان عضوًا في مؤسسة أخرى؛ المؤسسة الجديدة تبدأ بعضويتك OWNER وحدك دون نسخ أعضاء/سياسات/دعوات/إتاحة، مع قفل استشاري وحد إساءة 10 مساحات (`WORKSPACE_LIMIT`).
+- `GET /members/` يضيف نموذج `departments` مُقلّلًا: OWNER/ADMIN يريان الأسماء والأعضاء، والعضو يرى الإدارات التي ينتمي إليها فقط دون قوائم أخرى؛ التحقق الخادمي في `evaluateKernelPolicy` باقٍ.
+- مُنع تغيير العضو لدوره بنفسه (`SELF_ROLE_CHANGE_REJECTED`) حتى للمالك، مع بقاء حماية آخر مالك وعدم نقل الملكية؛ وأُضيف إلغاء دعوة صريح يتطلب تأكيد Auth (`canceled`) قبل تسجيل/تدقيق `kernel.invitation.canceled`.
+- `/auth/accept-invitation/` صارت صفحة قبول صريحة بحالات تحميل/فراغ/منتهية/دعوة غير صالحة/تبعية غير متاحة، بدل تحويل تلقائي؛ لا قبول عند فتح الرابط.
+- أُضيفت حالات عربية لأخطاء الصلاحية/التبعية في Kernel، وUI يعرض الإدارات وأزرار إلغاء الدعوة، ويخفي تعديل الدور الذاتي.
+### الملفات المتأثرة
+- `src/server/kernel/{service,administration,core}.mjs`, `src/pages/auth/accept-invitation.astro`, `src/pages/app/kernel/index.astro`, `src/pages/app/api/kernel/members.ts`, `src/scripts/kernel.ts`, `src/styles/kernel.css`, `docs/KERNEL-DEVELOPMENT.md`
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. build/lint/typecheck/tests/Playwright/Neon: NOT RUN حسب طلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / تنفيذ محلي غير متحقق تشغيليًا؛ لا commit/push/deploy ولا تغيير Neon أو إنشاء مستخدم/دعوة.
+### ملاحظات / مشاكل مفتوحة
+- إلغاء الدعوة يعتمد على إتاحة Organization لدى Neon Auth؛ أول تهيئة مؤسسية وقبول فعلي يحتاجان مشغّلًا مصرحًا. حد 10 مساحات سياسة إساءة محلية وليس باقة. `Audit/15-FINAL-EXECUTION-PROMPTS-COMBINED.md` ظهر معدّلًا أثناء المهمة من جهة غير هذه المهمة ولم يُلمس.
+- إنشاء أول مؤسسة تحت دور `aigas_runtime` (0019) يظل محجوبًا: لا سياسة INSERT على `aigas_tenants` ولا عضوية أولى OWNER؛ الكود يعمل تحت اتصال المالك الحالي فقط. لم تُضعف 0019، ويلزم ترحيل bootstrap معتمد مستقل.
+
 ## [2026-11-03] — إغلاق فجوات منح الوصول عبر RLS وGRANT ودور التشغيل (محلي فقط)
 ### تم التنفيذ
 - جرد قراءة فقط عبر Neon MCP أكد: `neondb_owner` هو دور `DATABASE_URL` و`rolbypassrls=true`؛ `authenticated` يملك DML على 31 جدولًا وEXECUTE افتراضيًا؛ RLS مفعّل على 31 وسياسات على جدولين فقط؛ Data API `active` على `public`؛ لا بيانات ولا مستخدمين.

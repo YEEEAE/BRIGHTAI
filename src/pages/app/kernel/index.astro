@@ -17,7 +17,7 @@ const config = authConfig();
 
     <section class="panel incoming" data-incoming-panel hidden aria-labelledby="incoming-title"><h2 id="incoming-title">دعوات الانضمام</h2><p>تظهر الدعوات المسجلة لبريدك الموثّق. قبول Auth وحده لا يمنح صلاحية Kernel حتى يعتمدها الخادم.</p><ul class="member-list" data-incoming></ul><p data-incoming-state role="status"></p></section>
     <p class="admin-status" data-admin-status role="status" aria-live="polite"></p>
-    <div class="workspace-row"><section class="panel institution"><p class="overline">المؤسسة</p><h2 data-tenant-name>لا توجد مساحة محمّلة</h2><p data-tenant-detail>تظهر بيانات المؤسسة بعد توثيق الهوية والتحقق من العضوية في الخادم.</p><div data-selector hidden><label for="workspace">اختر مؤسستك</label><select id="workspace" data-workspace dir="auto"></select><p data-selector-note></p></div><form data-create hidden><label for="workspace-name">اسم مساحة العمل الجديدة</label><input id="workspace-name" name="name" dir="auto" required minlength="2" maxlength="100" /><button type="submit">إنشاء مساحة عمل</button><p>ينشئ مساحة جديدة فقط. لا يفعّل اشتراكًا أو تجربة مدفوعة.</p></form></section>
+    <div class="workspace-row"><section class="panel institution"><p class="overline">المؤسسة</p><h2 data-tenant-name>لا توجد مساحة محمّلة</h2><p data-tenant-detail>تظهر بيانات المؤسسة بعد توثيق الهوية والتحقق من العضوية في الخادم.</p><div data-selector hidden><label for="workspace">اختر مؤسستك</label><select id="workspace" data-workspace dir="auto"></select><p data-selector-note></p></div><form data-create hidden><label for="workspace-name">اسم المؤسسة</label><input id="workspace-name" name="name" dir="auto" required minlength="2" maxlength="100" /><button type="submit">إنشاء مؤسسة</button><p>يمكن لحسابك إنشاء أكثر من مؤسسة. المؤسسة الجديدة تبدأ بعضويتك كمالك وحيد فقط، ولا تنسخ أعضاء أو سياسات أو دعوات أو قرارات إتاحة من مؤسسة أخرى، ولا تفعّل اشتراكًا أو تجربة مدفوعة.</p></form></section>
     <section class="panel system-diagram" aria-label="Kernel يربط الهوية والمؤسسة والوصول بالمنتجات الخمسة"><p class="overline">خريطة المنظومة</p><div class="diagram-core"><span aria-hidden="true">◈</span><bdi>Kernel</bdi><small>هوية · مؤسسة · وصول</small></div><svg viewBox="0 0 480 48" aria-hidden="true"><path d="M240 0V20M40 48V20H440V48M140 48V20M240 48V20M340 48V20" fill="none" stroke="currentColor" /></svg><div class="diagram-products">{products.map(p => <bdi>{p.name}</bdi>)}</div><p>أساس واحد، وخمسة منتجات مستقلة.</p></section></div>
 
     <section class="metrics" data-metrics hidden aria-label="ملخص المؤسسة">
@@ -63,6 +63,12 @@ const config = authConfig();
           <form data-invite hidden><label for="invite-email">بريد العضو المدعو</label><input id="invite-email" name="email" type="email" autocomplete="off" dir="ltr" required maxlength="254" /><button type="submit">دعوة بدور عضو</button><p>العضوية تُمنح بعد قبول دعوة صحيحة ببريد موثّق. لا ترقيات أو نقل ملكية.</p></form>
           <button type="button" data-register-invite hidden>إكمال تسجيل الدعوة المعلقة</button>
           <ul class="member-list" data-invitations></ul>
+          <div class="departments" data-departments-panel hidden>
+            <h3>الإدارات</h3>
+            <p data-departments-state role="status" aria-live="polite">تُحمّل الإدارات بعد التحقق من العضوية.</p>
+            <ul class="member-list" data-departments></ul>
+            <p class="health-note">إدارة الإدارات وعضوياتها من لوحة السياسات للمالك. العضو يرى الإدارات التي ينتمي إليها فقط؛ ولا يكفي إخفاء الواجهة لعزل سياسات إدارة أخرى.</p>
+          </div>
         </div>
       </section>
       <section class="panel" aria-labelledby="activity-title">

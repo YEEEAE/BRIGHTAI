@@ -1,7 +1,176 @@
 ---
-// No acceptance on navigation. Kernel lists only invitations for the verified identity.
+// The invitation is never accepted on navigation. This page only lists invitations that
+// belong to the signed-in, verified identity and requires an explicit accept action.
+import PageShell from '../../components/PageShell.astro';
+import { env, isPortalEnabled } from '../../server/kernel/env.mjs';
+
 export const prerender = false;
-Astro.response.headers.set('Cache-Control', 'private, no-store');
+const authUrl = env('NEON_AUTH_BASE_URL') ?? '';
+const portalEnabled = isPortalEnabled();
+Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
-return Astro.redirect('/app/kernel/', 303);
 ---
+
+<PageShell
+  title="قبول دعوة مؤسسة | BRIGHTAI"
+  description="راجع دعوات الانضمام المرتبطة ببريدك الموثّق واعتمد العضوية بنفسك."
+  crumbs={[{ name: 'قبول دعوة' }]}
+  robots="noindex, nofollow"
+>
+  <p class="eyebrow">دعوة انضمام</p>
+  <h1>قبول دعوة مؤسسة</h1>
+  <p class="lead">قبول الدعوة خطوة صريحة تقوم بها أنت. فتح الرابط أو تسجيل الدخول وحده لا يمنح عضوية، والخادم يتحقق من بريدك الموثّق ومن صلاحية الداعي وقت الاعتماد.</p>
+
+  {portalEnabled && authUrl ? (
+    <section class="card accept-card" data-accept data-auth-url={authUrl} aria-labelledby="accept-title">
+      <h2 id="accept-title">دعواتك المسجلة</h2>
+      <p class="accept-status" data-accept-status role="status" aria-live="polite">جارٍ التحقق من جلسة الدخول…</p>
+      <ul class="accept-list" data-accept-list></ul>
+      <p class="accept-signed-out" data-accept-signed-out hidden>سجّل الدخول بالبريد المدعو ثم ارجع إلى هذه الصفحة. <a class="button" href="/auth/sign-up/">تسجيل الدخول</a></p>
+      <p class="accept-note">لا تُمنح العضوية بمجرد فتح الدعوة. يلزم قبول دعوة Auth صحيحة ثم اعتماد الخادم؛ وقد تفشل الدعوة إذا انتهت مدتها أو تغيّرت صلاحية الداعي.</p>
+      <p class="accept-note">بعد قبول العضوية تنتقل إلى مساحة عمل المؤسسة. الأدوار تبدأ بدور عضو، ولا يوجد ترقية ذاتية أو نقل ملكية من هذه الصفحة.</p>
+    </section>
+  ) : (
+    <p class="card accept-unavailable" role="status">{portalEnabled ? 'التسجيل غير متاح حاليًا؛ لم يُضبط عنوان Neon Auth لهذا التشغيل.' : 'بوابة مساحة العمل غير متاحة حاليًا. لا يمكن قبول الدعوات حتى يفتحها المشغّل.'}</p>
+  )}
+</PageShell>
+
+<script>
+  import { createWorkspaceAuth as createAuthClient, getWorkspaceSession } from '../../scripts/workspace-context';
+
+  const card = document.querySelector<HTMLElement>('[data-accept]');
+  const authUrl = card?.dataset.authUrl;
+  const status = card?.querySelector<HTMLElement>('[data-accept-status]');
+  const list = card?.querySelector<HTMLElement>('[data-accept-list]');
+  const signedOut = card?.querySelector<HTMLElement>('[data-accept-signed-out]');
+
+  if (card && authUrl && status && list && signedOut) {
+    const auth = createAuthClient(authUrl);
+    let busy = false;
+
+    const setStatus = (message: string) => { status.textContent = message; };
+    const date = (value: string) => {
+      const parsed = new Date(value);
+      return Number.isNaN(parsed.getTime()) ? 'غير مسجلة' : parsed.toLocaleDateString('ar-SA');
+    };
+    const labels: Record<string, string> = {
+      pending: 'بانتظار قبولك',
+      accepted: 'مقبولة لدى Auth؛ يلزم اعتماد الخادم',
+      expired: 'انتهت مدة الدعوة',
+      inviter_unavailable: 'توقفت صلاحية الداعي',
+      rejected: 'مرفوضة',
+      canceled: 'ملغاة',
+    };
+    const showSignedOut = (message: string) => {
+      list.replaceChildren();
+      signedOut.hidden = false;
+      setStatus(message);
+    };
+
+    const token = async () => {
+      const session = await getWorkspaceSession(auth);
+      if (session.error || !session.data?.user) return null;
+      return auth.getJWTToken();
+    };
+
+    const post = async (path: string, body: object) => {
+      const bearer = await token();
+      if (!bearer) { const error = new Error('سجّل الدخول لعرض دعواتك.'); Object.assign(error, { unauthorized: true }); throw error; }
+      const response = await fetch(path, {
+        method: 'POST', cache: 'no-store',
+        headers: { Authorization: `Bearer ${bearer}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      let data: any = {};
+      try { data = await response.json(); } catch { throw Object.assign(new Error('الخدمة غير متاحة؛ لم يُؤكد القبول.'), { code: 'INVALID_RESPONSE' }); }
+      if (!response.ok) throw Object.assign(new Error(data.message || 'تعذر إكمال القبول.'), { unauthorized: response.status === 401, code: data.code, dependencyStatus: data.dependencyStatus, status: response.status });
+      return data;
+    };
+
+    const accept = async (invitation: { id: string; status: string }) => {
+      if (busy) return;
+      busy = true;
+      setStatus('جارٍ قبول الدعوة لدى Auth ثم اعتماد العضوية في الخادم…');
+      try {
+        if (invitation.status !== 'accepted') {
+          const native = await auth.organization.acceptInvitation({ invitationId: invitation.id });
+          if (native.error) {
+            setStatus('تعذر قبول الدعوة لدى Auth. قد تكون منتهية أو ملغاة أو أُرسلت لبريد آخر؛ حدّث القائمة أو اطلب دعوة جديدة.');
+            return;
+          }
+        }
+        const result = await post('/app/api/kernel/members/', { operation: 'accept', invitationId: invitation.id });
+        setStatus('اعتمد الخادم عضويتك. جارٍ فتح مساحة العمل…');
+        location.assign(`/app/kernel/?workspace=${encodeURIComponent(String(result.tenantId))}`);
+      } catch (error: any) {
+        if (error.unauthorized) { signedOut.hidden = false; setStatus('انتهت الجلسة؛ سجّل الدخول ثم أعد المحاولة. القبول لا يُنفذ تلقائيًا.'); }
+        else if (error.code === 'INVITER_AUTHORITY_REVOKED') setStatus('توقفت صلاحية الداعي في المؤسسة؛ اطلب دعوة جديدة من مالك أو مدير حالي.');
+        else if (error.code === 'INVITATION_NOT_ACCEPTED') setStatus('لم يثبت قبول الدعوة ببريدك الموثّق؛ أكمل خطوة Auth ثم أعد المحاولة.');
+        else if (error.code === 'INVALID_INVITATION' || error.code === 'INVITATION_NOT_FOUND') setStatus('الدعوة غير متاحة الآن؛ ربما أُلغيت أو سبق قبولها.');
+        else if (error.code === 'KERNEL_SCHEMA_MISSING' || error.status === 503) setStatus('الخدمة أو الإدارة غير مهيأة الآن؛ لم تُمنح عضوية. أعد المحاولة لاحقًا.');
+        else setStatus(error.message || 'تعذر إكمال القبول؛ لم يُؤكد الحفظ.');
+      } finally {
+        busy = false;
+      }
+    };
+
+    const load = async () => {
+      list.replaceChildren();
+      signedOut.hidden = true;
+      setStatus('جارٍ التحقق من جلسة الدخول ودعواتك…');
+      try {
+        const session = await getWorkspaceSession(auth, true);
+        if (session.error || !session.data?.user) { showSignedOut('سجّل الدخول بالبريد المدعو لعرض دعواتك. لم يُقبل أي شيء.'); return; }
+        const bearer = await auth.getJWTToken();
+        if (!bearer) { showSignedOut('تعذر الحصول على جلسة موثّقة؛ سجّل الدخول من جديد.'); return; }
+        const response = await fetch('/app/api/kernel/invitations/', { cache: 'no-store', headers: { Authorization: `Bearer ${bearer}` } });
+        let data: any = {};
+        try { data = await response.json(); } catch { throw Object.assign(new Error(''), { code: 'INVALID_RESPONSE' }); }
+        if (response.status === 401) { showSignedOut('انتهت الجلسة؛ سجّل الدخول ثم أعد المحاولة.'); return; }
+        if (!response.ok) {
+          setStatus(response.status === 503 ? 'خدمة الدعوات غير متاحة مؤقتًا؛ لم يُقبل أي شيء. أعد المحاولة لاحقًا.' : (data.message || 'تعذر تحميل الدعوات.'));
+          return;
+        }
+        if (!data.available) { setStatus(data.message ?? 'متابعة الدعوات غير مهيأة على هذه البيئة بعد.'); return; }
+        if (!data.invitations?.length) { setStatus('لا توجد دعوة مؤهلة لبريدك الموثّق. تحقق من تسجيل الدخول بالبريد المدعو ومن توثيق البريد.'); return; }
+        setStatus('');
+        for (const invitation of data.invitations) {
+          const item = document.createElement('li');
+          const name = document.createElement('bdi'); name.dir = 'auto'; name.textContent = invitation.name;
+          const detail = document.createElement('span');
+          detail.textContent = `${labels[invitation.status] ?? 'حالة غير متاحة'} · تنتهي ${date(invitation.expires_at)}`;
+          item.append(name, detail);
+          if (invitation.status === 'pending' || invitation.status === 'accepted') {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = invitation.status === 'accepted' ? 'إكمال اعتماد العضوية' : 'قبول الانضمام بدور عضو';
+            button.addEventListener('click', () => void accept(invitation));
+            item.append(button);
+          }
+          list.append(item);
+        }
+      } catch {
+        setStatus('تعذر الاتصال بالخدمة؛ لم يُقبل أي شيء. تحقق من الشبكة ثم أعد المحاولة.');
+      }
+    };
+
+    void load();
+  }
+</script>
+
+<style>
+  .accept-card { max-width: 680px; margin-block-start: 36px; }
+  .accept-card h2 { font-size: clamp(26px, 3.6vw, 38px); margin-block-end: 18px; }
+  .accept-status { min-height: 1.8em; margin: 0 0 16px; color: var(--color-silver-mist); font-size: 14px; line-height: 1.8; }
+  .accept-status:not(:empty) { padding: 10px 12px; border: 1px solid #241f2d; border-inline-start: 2px solid #3a3346; border-radius: 8px; background: #0b0910; color: #d8d3e4; }
+  .accept-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .accept-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 14px; padding: 12px; border: 1px solid #241f2d; border-radius: 8px; background: #0a090d; font-size: 14px; min-width: 0; }
+  .accept-list li > span { color: #a9a3b8; font-size: 12px; line-height: 1.7; }
+  .accept-list li button { grid-column: 2; }
+  .accept-note { margin: 14px 0 0; color: #8f8a9b; font-size: 12px; line-height: 1.9; }
+  .accept-signed-out { margin-block-start: 14px; color: var(--color-silver-mist); font-size: 14px; line-height: 1.9; }
+  .accept-signed-out .button { display: inline-block; margin-inline-start: 8px; }
+  .accept-unavailable { max-width: 680px; margin-block-start: 36px; border-inline-start: 3px solid var(--color-saffron-spark); background: #141007; color: #e7dcc6; }
+  @media (max-width: 390px) { .accept-list li { grid-template-columns: 1fr; } .accept-list li button { grid-column: 1; } }
+  [hidden] { display: none !important; }
+</style>

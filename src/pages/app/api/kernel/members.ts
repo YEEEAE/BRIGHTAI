@@ -4,6 +4,6 @@ import { manageInvitation, manageMember } from '../../../../server/kernel/admini
 type KernelIdentity = { userId: string };
 export const prerender = false;
 export const GET = kernelHandler(tenantMembers);
-export const POST = kernelHandler(async (identity: KernelIdentity, workspace: string | null, body: Record<string, unknown>) => body.operation === 'accept' || body.operation === 'register' || body.operation === 'link'
+export const POST = kernelHandler(async (identity: KernelIdentity, workspace: string | null, body: Record<string, unknown>) => ['accept','cancel','register','link'].includes(String(body.operation))
   ? manageInvitation(identity, workspace, body)
   : manageMember(identity, workspace, body), true);

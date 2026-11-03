@@ -85,8 +85,32 @@ export async function tenantMembers(identity, requested) {
     const canManage = ['OWNER','ADMIN'].includes(scope.tenant.role);
     const rows = (await db.query(`SELECT m.user_id,m.role,m.created_at,u.name,u.email,u.banned FROM public.aigas_memberships m LEFT JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 ORDER BY CASE m.role WHEN 'OWNER' THEN 0 WHEN 'ADMIN' THEN 1 ELSE 2 END,m.created_at,m.user_id`, [scope.tenant.tenant_id])).rows;
     const { invitationState } = await import('./administration.mjs');
-    return { ...scope, canManage, members: rows.map(row => ({ userId: canManage ? row.user_id : null, isSelf: row.user_id === identity.userId, name: row.name || 'عضو', role: row.role, roleLabel: roleLabel(row.role), created_at: row.created_at, status: row.banned ? 'BANNED' : 'ACTIVE', email: canManage ? row.email ?? null : null })), invitation: await invitationState(db, identity, scope.tenant) };
+    return { ...scope, canManage, members: rows.map(row => ({ userId: canManage ? row.user_id : null, isSelf: row.user_id === identity.userId, name: row.name || 'عضو', role: row.role, roleLabel: roleLabel(row.role), created_at: row.created_at, status: row.banned ? 'BANNED' : 'ACTIVE', email: canManage ? row.email ?? null : null })), departments: await departmentRoster(db, identity, scope.tenant, canManage), invitation: await invitationState(db, identity, scope.tenant) };
   });
+}
+// Department membership is tenant-scoped and is also enforced by the policy evaluator.
+// A co-member never receives the roster of a department they do not belong to; this is a
+// read-model minimization on top of the server-side check, never a substitute for it.
+async function departmentRoster(db, identity, tenant, canManage) {
+  const ready = (await db.query("SELECT to_regclass('public.aigas_departments') IS NOT NULL AND to_regclass('public.aigas_department_memberships') IS NOT NULL AS ready")).rows[0].ready;
+  if (!ready) return { available: false, canManage: false, rows: [] };
+  if (canManage) {
+    const departments = (await db.query('SELECT id,name,status,created_at FROM public.aigas_departments WHERE tenant_id=$1 ORDER BY status,name,id', [tenant.tenant_id])).rows;
+    const members = (await db.query(`SELECT dm.department_id,dm.user_id,dm.status,dm.created_at,u.name FROM public.aigas_department_memberships dm LEFT JOIN neon_auth."user" u ON u.id=dm.user_id WHERE dm.tenant_id=$1 ORDER BY dm.status,dm.created_at,dm.user_id`, [tenant.tenant_id])).rows;
+    return {
+      available: true, canManage: true,
+      rows: departments.map(department => ({
+        ...department,
+        members: members.filter(member => member.department_id === department.id).map(member => ({ userId: member.user_id, name: member.name || 'عضو', status: member.status, created_at: member.created_at })),
+      })),
+    };
+  }
+  const own = new Map((await db.query('SELECT department_id,status FROM public.aigas_department_memberships WHERE tenant_id=$1 AND user_id=$2', [tenant.tenant_id, identity.userId])).rows.map(row => [row.department_id, row.status]));
+  const departments = (await db.query('SELECT id,name,status,created_at FROM public.aigas_departments WHERE tenant_id=$1 AND status=$2 ORDER BY name,id', [tenant.tenant_id, 'ACTIVE'])).rows;
+  return {
+    available: true, canManage: false,
+    rows: departments.filter(department => own.get(department.id) === 'ACTIVE').map(department => ({ ...department, members: [], ownStatus: 'ACTIVE' })),
+  };
 }
 export async function audit(db, identity, tenantId, action, context = {}) {
   // No request bodies, tokens, names, email addresses or AI content in this log.
@@ -112,11 +136,22 @@ export async function audit(db, identity, tenantId, action, context = {}) {
   }
   throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر حفظ سجل الإدارة؛ لم تكتمل العملية.');
 }
+// A creation ceiling for abuse control, not a commercial plan or seat quota.
+const MAX_WORKSPACES_PER_USER = 10;
 export async function createWorkspace(identity, name) {
   const validated = workspaceName(name);
   return transaction(async db => {
     await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [identity.userId]);
-    if ((await memberships(identity.userId, db)).length) throw new KernelError(409, 'ALREADY_MEMBER', 'لديك عضوية قائمة؛ لا يمكن إنشاء مؤسسة أو منح دور جديد من هذا المسار.');
+    // Actor scope is required before reading membership rows under the runtime RLS policy.
+    await setActorScope(db, identity.userId);
+    // The account must still exist and be active; the token alone is not the directory.
+    const account = await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE FOR SHARE', [identity.userId]);
+    if (!account.rowCount) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
+    // Serialized by the advisory lock so concurrent requests cannot both pass the ceiling.
+    const owned = (await db.query("SELECT count(*)::int AS count FROM public.aigas_memberships WHERE user_id=$1 AND role='OWNER'", [identity.userId])).rows[0].count;
+    if (owned >= MAX_WORKSPACES_PER_USER) throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب؛ تواصل مع مشغّل المنصة.');
+    // A new workspace always starts with its creator as the only OWNER. Existing members,
+    // policies, invitations and product approvals are never copied from another tenant.
     const id = randomUUID();
     await db.query('INSERT INTO public.aigas_tenants (id, name) VALUES ($1, $2)', [id, validated]);
     await db.query("INSERT INTO public.aigas_memberships (tenant_id, user_id, role) VALUES ($1, $2, 'OWNER')", [id, identity.userId]);
