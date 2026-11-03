@@ -18,7 +18,9 @@ export function configuredMessageLimit(raw = env('AIGAS_SC_MAX_MESSAGE_CHARS')) 
 }
 async function accessContext(request) {
   const identity = await authenticate(request);
-  const { tenant } = await tenantGuard(identity, new URL(request.url).searchParams.get('workspace'));
+  // Membership discovery must run inside a transaction so the transaction-local actor scope
+  // is visible to the query and is discarded before the connection is pooled.
+  const { tenant } = await transaction(db => tenantGuard(identity, new URL(request.url).searchParams.get('workspace'), db));
   if (!tenant) throw new KernelError(403, 'MEMBERSHIP_REQUIRED', 'يلزم الانضمام إلى مؤسسة قبل استخدام Secure Chat.');
   await transaction(db => requireProductAccess(db, identity, tenant.tenant_id, 'secure-chat'));
   return { identity, tenant };

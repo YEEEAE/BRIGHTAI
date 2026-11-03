@@ -1,6 +1,8 @@
-import { KernelError, requireRole, products } from './core.mjs';
+import { KernelError, requireRole, products, isUuid } from './core.mjs';
+import { setTenantScope } from './db.mjs';
 // One read model for all five products; administrative access is not a commercial licence.
 export async function productGrants(db, tenantId, slug = null) {
+  if (!isUuid(tenantId)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة.');
   const rows = (await db.query(`SELECT product_slug,access_kind,approved_at,expires_at,revoked_at,
     clock_timestamp() AS checked_at FROM public.aigas_product_grants
     WHERE tenant_id=$1 AND ($2::text IS NULL OR product_slug=$2) FOR SHARE`, [tenantId, slug])).rows;
@@ -18,12 +20,22 @@ export function productGrantState(grant) {
   if (expires <= checked) return 'EXPIRED';
   return approved > checked ? 'PENDING' : 'ACTIVE';
 }
+// The only membership lookup products may trust. The tenant comes from server data, never
+// from a request body; the user comes from the verified bearer token.
+export async function assertTenantMembership(db, identity, tenantId) {
+  if (!isUuid(tenantId) || typeof identity?.userId !== 'string' || !isUuid(identity.userId)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة.');
+  const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
+  requireRole(member, ['OWNER', 'ADMIN', 'MEMBER']);
+  return member;
+}
 // Shared by all five products. Active approval is separate from the product toggle.
 export async function requireProductAccess(db, identity, tenantId, slug) {
   const product = products.find(item => item.slug === slug);
   if (!product) throw new KernelError(404, 'NOT_FOUND', 'المنتج غير موجود.');
-  const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
-  requireRole(member, ['OWNER', 'ADMIN', 'MEMBER']);
+  const member = await assertTenantMembership(db, identity, tenantId);
+  // Scope the transaction only after the membership check so a future runtime role can rely
+  // on RLS without ever trusting a client-supplied tenant.
+  await setTenantScope(db, tenantId, identity.userId);
   let access;
   try {
     const setup = (await db.query("SELECT to_regclass('public.aigas_product_access') IS NOT NULL AND to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0];
@@ -36,6 +48,7 @@ export async function requireProductAccess(db, identity, tenantId, slug) {
   } catch (error) {
     if (error instanceof KernelError) throw error;
     if (error.code === '42P01') throw new KernelError(503, 'KERNEL_ADMIN_SETUP_REQUIRED', `إتاحة ${product.name} غير مهيأة لهذه المؤسسة؛ راجع إعدادات Kernel المعتمدة.`, 'not configured');
+    if (error.code === '42501') throw new KernelError(503, 'DB_PRIVILEGE_UNAVAILABLE', `صلاحية اتصال النظام لا تسمح بالتحقق من إتاحة ${product.name}.`, 'access denied');
     throw error;
   }
   if (!access) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `لم تُعتمد إتاحة ${product.name} لهذه المؤسسة.`, 'not configured');

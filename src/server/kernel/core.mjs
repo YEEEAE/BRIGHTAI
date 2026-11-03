@@ -1,5 +1,10 @@
 export const dependencyStatuses = Object.freeze(['available', 'not configured', 'access denied', 'expired', 'temporarily unavailable']);
 const dependencyStatusSet = new Set(dependencyStatuses);
+export const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// Accepts only canonical UUID strings; numbers, arrays and query-param lists never pass.
+export function isUuid(value) {
+  return typeof value === 'string' && UUID_PATTERN.test(value);
+}
 export class KernelError extends Error {
   constructor(status, code, message, dependencyStatus = null) {
     super(message);
@@ -60,6 +65,9 @@ export function roleLabel(role) {
   return roleLabels[role] ?? 'دور غير معروف';
 }
 export function selectMembership(memberships, requested) {
+  // A malformed or repeated workspace parameter is rejected before any lookup; the value is
+  // never echoed and never used as an authorization input on its own.
+  if (requested != null && !isUuid(requested)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة قبل تنفيذ العملية.');
   if (!memberships.length) { if (requested) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.'); return null; }
   const member = requested ? memberships.find(m => m.tenant_id === requested) : memberships[0];
   if (!member) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.');

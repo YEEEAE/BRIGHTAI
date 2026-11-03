@@ -1,3 +1,19 @@
+## [2026-11-03] — إغلاق فجوات منح الوصول عبر RLS وGRANT ودور التشغيل (محلي فقط)
+### تم التنفيذ
+- جرد قراءة فقط عبر Neon MCP أكد: `neondb_owner` هو دور `DATABASE_URL` و`rolbypassrls=true`؛ `authenticated` يملك DML على 31 جدولًا وEXECUTE افتراضيًا؛ RLS مفعّل على 31 وسياسات على جدولين فقط؛ Data API `active` على `public`؛ لا بيانات ولا مستخدمين.
+- الكود يرفض `workspace` غير الصالح كـUUID قبل أي استعلام، ويضبط سياق `aigas.tenant_id`/`aigas.user_id` معامليًا (`set_config(...,true)`) بعد التحقق من العضوية فقط؛ العضوية أصبحت عبر مسار واحد `assertTenantMembership`، و`audit` يرفض tenant غير صالح، وقراءة عضوية Secure Chat صارت داخل معاملة.
+- لوحة Kernel المعتمدة تعرض `system.rls: BYPASSED/ENFORCED` بدل ادعاء عزل؛ لم يُضف هذا للفحص العام المجهول.
+- أُضيفت مهاجرتان محليتان غير مطبقتين: `0018` تسحب منح `authenticated`/`anonymous` وتلغي default privileges وتشدد سياستي Secure Chat بالعضوية؛ `0019` تنشئ دور `aigas_runtime` بـ`NOBYPASSRLS` وسياسات نطاق مؤسسة.
+- وثّق `docs/DATA-ACCESS-AND-RLS.md` المصفوفة والعوائق، وحُدّث `PLATFORM-ARCHITECTURE` بلقطة مصدر مؤرخة.
+### الملفات المتأثرة
+- `src/server/kernel/{core,db,access,service}.mjs`, `src/server/secure-chat/service.mjs`, `docs/{DATA-ACCESS-AND-RLS,PLATFORM-ARCHITECTURE}.md`, `migrations/0018_*.sql`, `migrations/0019_*.sql`
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. build/lint/typecheck/tests/Playwright/Neon writes: NOT RUN بطلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / تنفيذ محلي غير متحقق تشغيليًا؛ لا commit/push/deploy ولا تغيير Neon أو Data API.
+### ملاحظات / مشاكل مفتوحة
+- تحويل `DATABASE_URL` إلى `aigas_runtime` محجوب بـ: اعتماد المالك، فرع تطوير ونسخة استعادة، اعتماد دور تسجيل دخول خارج SQL، حل bootstrap إنشاء مساحة العمل وقبول الدعوات، وتطبيق `0016` قبل منح دالة الحصة. تعطيل Data API إجراء control-plane منفصل.
+
 ## [2026-11-03] — بوابة `/app/*`: استجابة 503 عند التعطيل وتوثيق تشغيل المشغّل
 ### تم التنفيذ
 - تحوّلت البوابة المعطلة من تحويل 302 إلى `/contact/` إلى رد خادمي مباشر: صفحة HTML عربية `503` لمسارات `/app/*` وJSON `{code:"APP_UNAVAILABLE"}` لـ`/app/api/*`، مع `no-store`/`noindex`/`Retry-After`، ودون أي بيانات أو رابط دخول وهمي. الجسم في `src/server/kernel/unavailable.mjs` والترتيب في `src/middleware.ts`.

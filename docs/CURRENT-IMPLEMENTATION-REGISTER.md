@@ -86,6 +86,8 @@
 | `0015_aigas_risk_engine_asset_context_residual_risk` | مطبّق | `aigas_re_assets.data_context/provider_reference/model_reference/model_version/approval_status/lifecycle_status`, و`residual_risk_description` |
 | `0016_aigas_sc_user_token_quota` | **غير مطبّق** | لا توجد دالة `aigas_sc_usage_window_v2`؛ الموجودة `aigas_sc_usage_window` فقط |
 | `0017_aigas_kernel_audit_context` | **غير مطبّق** | `aigas_audit_events` بلا `correlation_id/policy_version/idempotency_key` |
+| `0018_aigas_data_api_grant_hardening` | **غير مطبّق** | دور `authenticated` ما زال يملك DML على 31 جدولًا؛ Data API نشط على `public` |
+| `0019_aigas_runtime_least_privilege` | **غير مطبّق** | لا يوجد دور `aigas_runtime` ولا سياسات نطاق مؤسسة؛ `DATABASE_URL` ما زال `neondb_owner` بـ`BYPASSRLS` |
 
 ### 3.1 أثر الترحيلات الناقصة على الكود الحالي
 
@@ -208,7 +210,7 @@
 
 ## 6. العوائق المفتوحة (لا تتجاوزها بافتراض)
 
-1. **اعتماد الترحيلات:** `0013`, `0014`, `0016`, `0017` تحتاج مراجعة بشرية وتطبيقًا على بيئة معتمدة. لا تُطبّق هنا.
+1. **اعتماد الترحيلات:** `0013`, `0014`, `0016`, `0017`, `0018`, `0019` تحتاج مراجعة بشرية وتطبيقًا على بيئة معتمدة. لا تُطبّق هنا.
 2. **صلاحيات runtime وRLS:** RLS مفعّل بلا سياسات على 29 جدولًا؛ يلزم إثبات دور التطبيق وسياسات العزل قبل أي تشغيل.
 3. **الجلسة والمستخدمون:** لا مستخدم/جلسة في Neon Auth؛ لا يمكن إثبات أي رحلة موثقة.
 4. **مزود/نموذج AI:** لا نموذج معتمد؛ أي إرسال حقيقي محجوب بقرار منتج وموافقة تشغيل.

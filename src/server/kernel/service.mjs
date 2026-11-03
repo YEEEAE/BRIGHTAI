@@ -1,12 +1,16 @@
 import { listApprovedModels } from '../secure-chat/models.mjs';
 import { providerReady } from '../secure-chat/adapter.mjs';
 import { randomUUID } from 'node:crypto';
-import { database, transaction } from './db.mjs';
+import { database, transaction, setActorScope, setTenantScope, connectionPrivilege } from './db.mjs';
 import { env } from './env.mjs';
 import { authConfig } from './auth.mjs';
 import { productGrants } from './access.mjs';
-import { KernelError, products, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole } from './core.mjs';
+import { KernelError, products, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole, isUuid } from './core.mjs';
 export async function memberships(userId, db = database()) {
+  if (!isUuid(userId)) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
+  // Actor scope comes from the verified token; it lets a least-privilege runtime role read
+  // only this user's membership rows before a tenant is chosen.
+  await setActorScope(db, userId);
   // Excludes anonymous tokens and deleted identities using the actual Auth directory.
   const user = await db.query('SELECT id FROM neon_auth."user" WHERE id = $1 AND banned IS NOT TRUE', [userId]);
   if (!user.rowCount) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
@@ -14,8 +18,14 @@ export async function memberships(userId, db = database()) {
   return result.rows;
 }
 export async function tenantGuard(identity, requested, db = database()) {
+  // Reject a malformed selector before reading any row; it is never echoed back.
+  if (requested != null && !isUuid(requested)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة قبل تنفيذ العملية.');
   const rows = await memberships(identity.userId, db);
-  return { memberships: rows, tenant: selectMembership(rows, requested) };
+  const tenant = selectMembership(rows, requested);
+  // A workspace parameter is only a selector over the caller's own memberships. It never
+  // grants scope and never becomes the tenant used by a query.
+  if (tenant) await setTenantScope(db, tenant.tenant_id, identity.userId);
+  return { memberships: rows, tenant };
 }
 async function lockMember(db, identity, tenant) {
   const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenant.tenant_id, identity.userId])).rows[0];
@@ -26,7 +36,10 @@ export async function dashboard(identity, requested) {
   return transaction(async db => {
     const scope = await tenantGuard(identity, requested, db);
     const updatedAt = (await db.query('SELECT clock_timestamp() AS updated_at')).rows[0].updated_at;
-    const system = { connection: 'CONNECTED', membership: scope.tenant ? 'VERIFIED' : 'NONE', updatedAt };
+    const system = { connection: 'CONNECTED', membership: scope.tenant ? 'VERIFIED' : 'NONE', updatedAt,
+      // Authenticated view only: the current owner connection bypasses RLS, so isolation rests
+      // on explicit tenant predicates until migrations/0019 is approved and applied.
+      rls: await connectionPrivilege(db).then(posture => posture.rlsEnforced ? 'ENFORCED' : 'BYPASSED').catch(() => 'NOT_CHECKED') };
     if (!scope.tenant) return { ...scope, products: productStates([]).map(p => ({ ...p, href: null, enabled: false })), connection: 'CONNECTED', system, summary: null, activity: [], canManageMembers: false, canManageProducts: false, policyEngine:{state:'NOT_CONFIGURED',publishedPolicies:0,departments:0} };
     scope.tenant = await lockMember(db, identity, scope.tenant);
     const tenantId = scope.tenant.tenant_id;
@@ -77,6 +90,7 @@ export async function tenantMembers(identity, requested) {
 }
 export async function audit(db, identity, tenantId, action, context = {}) {
   // No request bodies, tokens, names, email addresses or AI content in this log.
+  if (!isUuid(tenantId)) throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر تحديد نطاق المؤسسة؛ لم تكتمل العملية.');
   const { correlationId = null, policyVersion = null, idempotencyKey = null } = context;
   const validVersion = policyVersion === null || (typeof policyVersion === 'string' && /^[a-zA-Z0-9_.:-]{1,120}$/.test(policyVersion));
   const validCorrelation = correlationId === null || (typeof correlationId === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(correlationId));
