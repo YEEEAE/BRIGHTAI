@@ -415,7 +415,7 @@ components:
       properties:
         decision_id: {type: string}
         correlation_id: {type: string}
-        decision: {type: string, enum: [ALLOW, WARN, REDACT, REQUEST_APPROVAL, BLOCK]}
+        decision: {type: string, enum: [ALLOW, WARN, REDACT, ESCALATE, DENY], description: 'ESCALATE = REQUEST_APPROVAL؛ DENY = BLOCK/Hard Deny في وصف المنتج.'}
         enforcement_status: {type: string, enum: [NOT_EXECUTED, ENFORCED, PENDING_REVIEW, BLOCKED]}
         policy_reference: {$ref: '#/components/schemas/PolicyReference'}
         reason_codes: {type: array, items: {type: string}}
@@ -457,7 +457,7 @@ components:
       required: [decision_id, decision, created_at, policy_reference, reason_codes]
       properties:
         decision_id: {type: string}
-        decision: {type: string, enum: [ALLOW, WARN, REDACT, REQUEST_APPROVAL, BLOCK]}
+        decision: {type: string, enum: [ALLOW, WARN, REDACT, ESCALATE, DENY], description: 'ESCALATE = REQUEST_APPROVAL؛ DENY = BLOCK/Hard Deny في وصف المنتج.'}
         created_at: {type: string, format: date-time}
         policy_reference: {$ref: '#/components/schemas/PolicyReference'}
         reason_codes: {type: array, items: {type: string}}

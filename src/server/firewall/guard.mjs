@@ -4,8 +4,25 @@ import { approvedProvider } from './provider.mjs';
 // The HTTP layer never receives the server-only forwarding text. There is no
 // client decision token, arbitrary URL, alternate prompt or provider override.
 export async function enforceDecision({ decision, tenantId, forwardText, kernelPolicy }) {
-  const base = { decision, policy: kernelPolicy ? { decision:kernelPolicy.decision,reason:kernelPolicy.reason,policies:kernelPolicy.policies ?? [],warnings:kernelPolicy.warnings ?? [] } : null, persisted: true, external_action_executed: false, execution_status: 'NOT_EXECUTED' };
-  if (decision.action === 'BLOCK') return { ...base, httpStatus: 403, code: 'POLICY_BLOCKED', message: 'حُجب الطلب قبل أي استدعاء لمزود AI.' };
+  const base = {
+    decision,
+    policy: kernelPolicy ? { decision: kernelPolicy.decision, reason: kernelPolicy.reason, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
+    persisted: true, external_action_executed: false, execution_status: 'NOT_EXECUTED',
+  };
+  // DENY is the final state; nothing downstream may soften it.
+  if (decision.action === 'DENY') return { ...base, httpStatus: 403, code: 'POLICY_BLOCKED', message: 'حُجب الطلب قبل أي استدعاء لمزود AI.' };
+  // ESCALATE needs a human decision. No approval path is enabled in this release,
+  // so the safe outcome is to stop instead of treating silence as consent.
+  if (decision.action === 'ESCALATE') {
+    return { ...base, httpStatus: 409, code: 'ESCALATION_REQUIRED', review_required: true,
+      message: 'القرار يتطلب موافقة بشرية مخولة، ولا يوجد مسار موافقة مفعّل في هذه النسخة؛ لم يُرسل الطلب.' };
+  }
+  // WARN is a conditional state, never an unconditional allow. Without an
+  // approved warning policy the guard refuses to forward it.
+  if (decision.action === 'WARN') {
+    return { ...base, httpStatus: 409, code: 'WARNING_NOT_FORWARDED',
+      message: 'سجّل الفحص تحذيرًا سياسيًا؛ التحذير لا يسمح بالتمرير التلقائي، لذلك لم يُرسل الطلب.' };
+  }
   if (!['ALLOW', 'REDACT'].includes(decision.action) || typeof forwardText !== 'string' || !forwardText.length) {
     return { ...base, httpStatus: 503, code: 'INVALID_GUARD_DECISION', message: 'تعذر تطبيق القرار؛ لم يُرسل الطلب.' };
   }

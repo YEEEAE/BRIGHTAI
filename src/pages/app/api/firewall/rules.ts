@@ -4,3 +4,4 @@ export const prerender = false;
 export const GET: APIRoute = ({request}) => handle(request,'dashboard');
 export const POST: APIRoute = ({request}) => handle(request,'create');
 export const PATCH: APIRoute = ({request}) => handle(request,'update');
+export const DELETE: APIRoute = ({request}) => handle(request,'delete');

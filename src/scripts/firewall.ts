@@ -17,14 +17,26 @@ const ack = root.querySelector<HTMLInputElement>('[data-synthetic]')!;
 const evalSubmit = root.querySelector<HTMLButtonElement>('[data-eval-submit]')!;
 const evalError = root.querySelector<HTMLElement>('[data-eval-error]')!;
 const result = root.querySelector<HTMLElement>('[data-result]')!;
+const setupPanel = root.querySelector<HTMLElement>('[data-setup-panel]')!;
+const setupMessage = root.querySelector<HTMLElement>('[data-setup-message]')!;
 const reasonLabels: Record<string, string> = {
   NO_ACTIVE_POLICY: 'لا توجد قاعدة مفعّلة؛ حجب آمن.',
   INVALID_POLICY: 'قاعدة محفوظة غير صالحة؛ حجب آمن.',
-  RULE_BLOCK: 'طابق النص قاعدة حجب.',
+  RULE_DENY: 'طابق النص قاعدة حجب.',
+  RULE_ESCALATE: 'تصعيد للموافقة البشرية؛ لا مسار موافقة مفعّل.',
   RULE_REDACT: 'نُقّح النص وفق قاعدة تنقيح.',
+  RULE_WARN: 'تحذير سياسة؛ لا يمرر تلقائيًا.',
   RULE_ALLOW: 'طابق النص قاعدة سماح.',
   NO_MATCH_LAB_ONLY: 'لم يطابق أي قاعدة؛ ليس إثبات سلامة المحتوى.',
   NO_MATCH_ENFORCED: 'حُجب التنفيذ؛ لا قاعدة سماح أو تنقيح مطابقة.',
+  KERNEL_POLICY_DENIED: 'منعت سياسة Kernel العليا التنفيذ؛ لا تخففها قواعد المنتج.',
+};
+const setupCodes = ['FIREWALL_SCHEMA_MISSING', 'FIREWALL_SCHEMA_OUTDATED', 'FIREWALL_DB_PRIVILEGE', 'KERNEL_ADMIN_SETUP_REQUIRED'];
+const riyadhTime = (value: string) => new Date(value).toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' });
+const executionLabel = (data: any) => {
+  if (data.external_action_executed === true) return 'نُفذ الطلب خارجيًا عبر المزود المعتمد.';
+  if (data.external_action_executed === null) return 'حالة الإرسال غير مؤكدة؛ قد يكون الطلب وصل المزود. لا تعِد الإرسال تلقائيًا.';
+  return 'لم يُنفذ أي إجراء خارجي.';
 };
 const auth = root.dataset.authUrl ? createAuthClient(root.dataset.authUrl) : null;
 let busy = false;
@@ -54,7 +66,7 @@ async function withBusy(task: () => Promise<void>) {
 }
 function clearPrivate() {
   viewEpoch++;
-  privateArea.hidden = true; text.value = ''; ack.checked = false; evalError.textContent = ''; result.textContent = '';
+  privateArea.hidden = true; setupPanel.hidden = true; setupMessage.textContent = ''; text.value = ''; ack.checked = false; evalError.textContent = ''; result.textContent = ''; delete result.dataset.state;
   root.querySelector('[data-rules]')!.replaceChildren();
   root.querySelector('[data-decisions]')!.replaceChildren();
   (root.querySelector('[data-empty-rules]') as HTMLElement).hidden = true;
@@ -124,14 +136,32 @@ function ruleCard(rule: any, canManage: boolean, reload: () => Promise<void>, no
       notify(rule.enabled ? 'عُطّلت القاعدة وحُفظ التغيير في الخادم.' : 'فُعّلت القاعدة وحُفظ التغيير في الخادم.');
     } catch (error) { notify(messageOf(error), true); }
   })(); });
-  actions.append(toggle);
+  const copy = field('button'); copy.type = 'button'; copy.textContent = 'نسخ';
+  copy.addEventListener('click', () => { void (async () => {
+    try {
+      await withBusy(async () => { await api('rules', 'POST', { duplicate_of: rule.id }); await reload(); });
+      notify('نُسخت القاعدة كقاعدة مخصصة جديدة ومعطّلة حتى تراجعها.');
+    } catch (error) { notify(messageOf(error), true); }
+  })(); });
+  const remove = field('button', 'fw-danger'); remove.type = 'button'; remove.textContent = 'حذف';
+  remove.addEventListener('click', () => {
+    if (!window.confirm(`حذف القاعدة «${rule.name}»؟ لا يمكن التراجع. إذا كانت مذكورة في قرارات محفوظة سيرفض الخادم الحذف ويقترح تعطيلها.`)) return;
+    void (async () => {
+      try {
+        await withBusy(async () => { await api('rules', 'DELETE', { id: rule.id, version: rule.version }); await reload(); });
+        notify('حُذفت القاعدة من الخادم بعد التأكد من عدم ارتباطها بقرارات محفوظة.');
+      } catch (error) { notify(messageOf(error), true); }
+    })();
+  });
+  actions.append(toggle, copy);
 
   if (rule.template) {
     const hint = field('p', 'fw-hint');
-    hint.textContent = 'قالب خادم موثوق: يُفعّل أو يُعطّل فقط، ولا يُعاد تعريف نمطه. أضف قاعدة مخصصة لتعديل النمط. ';
+    hint.textContent = 'قالب خادم موثوق: يُفعّل أو يُعطّل أو يُنسخ فقط، ولا يُعاد تعريف نمطه. أضف قاعدة مخصصة لتعديل النمط. ';
     card.append(actions, hint);
     return card;
   }
+  actions.append(remove);
   const details = field('details', 'fw-edit-details');
   const summary = field('summary'); summary.textContent = 'تعديل القاعدة';
   details.append(summary);
@@ -143,7 +173,7 @@ function ruleCard(rule: any, canManage: boolean, reload: () => Promise<void>, no
   const name = field('input') as HTMLInputElement; name.id = `${idBase}-name`; name.name = 'edit-name'; name.type = 'text'; name.maxLength = 60; name.required = true; name.value = rule.name;
   const patternInput = field('input') as HTMLInputElement; patternInput.id = `${idBase}-pattern`; patternInput.name = 'edit-pattern'; patternInput.type = 'text'; patternInput.maxLength = 80; patternInput.required = true; patternInput.spellcheck = false; patternInput.value = rule.pattern;
   const action = field('select') as HTMLSelectElement; action.id = `${idBase}-action`; action.name = 'edit-action';
-  for (const value of ['BLOCK', 'REDACT', 'ALLOW']) { const option = field('option'); option.value = value; option.textContent = value; option.selected = rule.action === value; action.append(option); }
+  for (const value of ['ALLOW', 'WARN', 'REDACT', 'ESCALATE', 'DENY']) { const option = field('option'); option.value = value; option.textContent = value; option.selected = rule.action === value; action.append(option); }
   const priority = field('input') as HTMLInputElement; priority.id = `${idBase}-priority`; priority.name = 'edit-priority'; priority.type = 'number'; priority.min = '1'; priority.max = '999'; priority.step = '1'; priority.required = true; priority.value = String(rule.priority);
   addField('اسم القاعدة', name, name.id);
   addField('النمط الحرفي', patternInput, patternInput.id);
@@ -169,33 +199,82 @@ function ruleCard(rule: any, canManage: boolean, reload: () => Promise<void>, no
   card.append(actions);
   return card;
 }
-function renderResult(data: any) {
+function inputLine(submitted: string) {
+  const line = field('p', 'fw-result-input');
+  line.append(document.createTextNode('المدخل المفحوص (اصطناعي): '));
+  const value = field('bdi'); value.textContent = submitted;
+  line.append(value);
+  return line;
+}
+function metaLine(label: string, value: string) {
+  const line = field('p', 'fw-result-meta');
+  line.append(document.createTextNode(`${label}: `));
+  const data = field('bdi'); data.textContent = value;
+  line.append(data);
+  return line;
+}
+function renderSetup(message?: string, external = false) {
+  const detail = message?.trim() || 'جداول Firewall غير موجودة أو غير مطابقة على قاعدة البيانات الحالية. لم يصدر أي قرار ولم يُحفظ شيء.';
+  if (external) {
+    setupMessage.textContent = detail;
+    setupPanel.hidden = false;
+    return;
+  }
   result.replaceChildren();
+  result.dataset.state = 'setup';
+  const head = field('p', 'fw-result-head');
+  const label = field('span', 'fw-tag fw-escalate'); label.textContent = 'SETUP';
+  head.append(label, document.createTextNode('التهيئة غير مكتملة'));
+  const body = field('p');
+  body.textContent = detail;
+  const next = field('p', 'fw-result-meta');
+  next.textContent = 'طبّق ترحيل Firewall المعتمد في بيئة معتمدة، ثم أعد التحميل. لا تعامل غياب البيانات كسماح.';
+  result.append(head, body, next);
+}
+function renderResult(data: any, submitted: string) {
+  result.replaceChildren();
+  result.dataset.state = 'decision';
   const summary = field('p', 'fw-result-head');
   summary.append(actionBadge(data.action));
-  const reason = field('span'); reason.textContent = reasonLabels[data.reason] ?? data.reason;
+  const reason = field('span'); reason.textContent = data.reason_text ?? reasonLabels[data.reason] ?? data.reason;
   summary.append(reason);
-  const rule = field('p');
-  rule.textContent = data.rule_name ? `القاعدة: ${data.rule_name} · النسخة ${data.rule_version}` : 'لا توجد قاعدة مطابقة لهذا القرار.';
-  const id = field('p'); id.textContent = `مرجع القرار: ${data.id}`;
-  const output = field('p');
-  output.textContent = data.action === 'BLOCK' ? 'لم يُعرض النص المحجوب، ولم يُحفظ.' : data.output ?? 'لم يُعد النص.';
-  const saved = field('p'); saved.textContent = 'حُفظ التقييم وتدقيق Kernel على الخادم دون متن النص. تقييم تجريبي فقط؛ لم يُرسل إلى مزود.';
-  result.append(summary, rule, id, output, saved);
+  const rule = data.rule_id
+    ? metaLine('معرّف القاعدة', `${data.rule_id}${data.rule_name ? ` · ${data.rule_name}` : ''} · النسخة ${data.rule_version}`)
+    : (() => { const p = field('p'); p.textContent = 'لا توجد قاعدة مطابقة لهذا القرار.'; return p; })();
+  const time = metaLine('وقت التقييم', riyadhTime(data.created_at));
+  const reference = metaLine('مرجع القرار', data.id);
+  const status = metaLine('الحالة', `${data.execution_status ?? 'NOT_EXECUTED'} — ${executionLabel(data)} تقييم تجريبي فقط؛ لم يُرسل إلى مزود.`);
+  const output = field('p', 'fw-result-output');
+  output.textContent = ['DENY', 'ESCALATE', 'WARN'].includes(data.action)
+    ? 'لا يعيد الخادم النص الأصلي ضمن نتيجة هذه الحالة؛ التحذير والحجب لا يمرران النص تلقائيًا.'
+    : data.action === 'REDACT'
+      ? `النص بعد التنقيح: ${data.output ?? 'لم يُعد النص.'}`
+      : `النص المفحوص: ${data.output ?? 'لم يُعد النص.'}`;
+  const saved = field('p', 'fw-result-meta'); saved.textContent = 'حُفظ التقييم وتدقيق Kernel على الخادم دون متن النص.';
+  result.append(summary, inputLine(submitted), rule, time, reference, status, output, saved);
 }
 function updateSubmitLabel() {
-  evalSubmit.textContent = evalMode.value === 'LAB' ? 'تقييم تجريبي من الخادم' : providerConfigured ? 'تقييم وتنفيذ عبر المزود المعتمد' : 'تقييم مسار الإنفاذ — الإرسال غير مهيأ';
+  evalSubmit.textContent = evalMode.value === 'LAB'
+    ? 'تقييم تجريبي من الخادم'
+    : providerConfigured ? 'تقييم وتنفيذ عبر المزود المعتمد' : 'تقييم مسار الإنفاذ — الإرسال غير مهيأ';
 }
-function renderGuard(data: any) {
+function renderGuard(data: any, submitted: string) {
   result.replaceChildren();
+  result.dataset.state = 'decision';
+  const decision = data.decision;
   const head = field('p', 'fw-result-head');
-  head.append(actionBadge(data.decision.action), document.createTextNode(reasonLabels[data.decision.reason] ?? data.decision.reason));
-  const reference = field('p'); reference.textContent = `مرجع القرار المحفوظ: ${data.decision.id}`;
-  const state = field('p'); state.textContent = data.message ?? (data.external_action_executed === true ? 'أعاد المزود استجابة للطلب المحكوم.' : 'لم يُنفذ طلب مزود.');
-  const saved = field('p'); saved.textContent = 'حُفظ قرار السياسة وتدقيق Kernel دون النص؛ هذا المرجع ليس إثبات وصول للمزود.';
-  result.append(head, reference, state, saved);
+  head.append(actionBadge(decision.action), document.createTextNode(decision.reason_text ?? reasonLabels[decision.reason] ?? decision.reason));
+  result.append(head, inputLine(submitted));
+  if (decision.rule_id) result.append(metaLine('معرّف القاعدة', `${decision.rule_id} · النسخة ${decision.rule_version}`));
+  result.append(metaLine('وقت التقييم', riyadhTime(decision.created_at)));
+  result.append(metaLine('مرجع القرار', decision.id));
+  result.append(metaLine('الحالة', `${data.execution_status ?? 'NOT_EXECUTED'} — ${executionLabel(data)}`));
+  const state = field('p'); state.textContent = data.message ?? executionLabel(data);
+  result.append(state);
+  const saved = field('p', 'fw-result-meta'); saved.textContent = 'حُفظ قرار السياسة وتدقيق Kernel دون النص؛ هذا المرجع ليس إثبات وصول للمزود.';
+  result.append(saved);
   if (data.external_action_executed === true && typeof data.response_text === 'string') {
-    const output = field('p'); output.textContent = data.response_text; result.append(output);
+    const output = field('p', 'fw-result-output'); output.textContent = `استجابة المزود: ${data.response_text}`; result.append(output);
   }
 }
 function render(data: any) {
@@ -207,10 +286,12 @@ function render(data: any) {
     ? `مزود مهيأ للمؤسسة · النموذج ${data.provider.model} · المنطقة ${data.provider.region}؛ يخضع لشروط الاعتماد.`
     : 'PROVIDER_NOT_CONFIGURED — لا مزود AI معتمد ومهيأ لهذه المؤسسة. التقييم والحفظ متاحان عند اكتمال إعداد قاعدة البيانات، والإرسال الخارجي متوقف.';
   updateSubmitLabel();
+  const limits = data.limits ?? { maxRules: 25, maxTextLength: 4000 };
+  text.maxLength = limits.maxTextLength;
   page = data.page; hasNext = data.hasNext;
   root.querySelector('[data-page]')!.textContent = `الصفحة ${page}`;
   root.querySelectorAll<HTMLElement>('[data-count]').forEach(node => { node.textContent = String(data.counts.find((count: any) => count.action === node.dataset.count)?.count ?? 0); });
-  root.querySelector('[data-rule-count]')!.textContent = `${data.rules.length} / ${data.maxRules}`;
+  root.querySelector('[data-rule-count]')!.textContent = `${data.rules.length} / ${limits.maxRules}`;
   const reload = () => (async () => { render(await api('rules')); })();
   const notify = (message: string, failed = false) => note(message, failed);
   const list = root.querySelector('[data-rules]')!;
@@ -218,14 +299,14 @@ function render(data: any) {
   (root.querySelector('[data-empty-rules]') as HTMLElement).hidden = data.rules.length > 0;
   (root.querySelector('[data-create-rule]') as HTMLElement).hidden = !data.canManage;
   (root.querySelector('[data-templates]') as HTMLElement).hidden = !data.canManage;
-  const limitReached = data.rules.length >= data.maxRules;
+  const limitReached = data.rules.length >= limits.maxRules;
   createForm.querySelector<HTMLButtonElement>('button[type=submit]')!.dataset.limit = String(limitReached);
   root.querySelectorAll<HTMLButtonElement>('[data-template]').forEach(button => {
     button.dataset.exists = String(data.rules.some((rule: any) => rule.template === button.dataset.template));
     button.dataset.limit = String(limitReached);
   });
   root.querySelector('[data-role]')!.textContent = data.canManage
-    ? 'يمكنك إضافة القواعد وتعديلها وتفعيلها وتعطيلها؛ كل تغيير يُحفظ في الخادم ويرفع النسخة.'
+    ? 'يمكنك إضافة القواعد وتعديلها وتفعيلها وتعطيلها ونسخها وحذف غير المرتبط منها بقرارات؛ كل تغيير يُتحقق منه ويُحفظ في الخادم.'
     : 'عرض وفحص فقط؛ تعديل القواعد للمالك والمسؤول.';
   const decisions = root.querySelector('[data-decisions]')!;
   decisions.replaceChildren();
@@ -241,11 +322,18 @@ function render(data: any) {
     decisions.append(item);
   }
   privateArea.hidden = false;
+  setupPanel.hidden = true;
 }
 async function refresh(message = 'تم تحميل بيانات المؤسسة والتحقق من الصلاحيات في الخادم.') {
   if (busy) return;
   try { await withBusy(async () => { render(await api('rules')); }); note(message); }
-  catch (error) { if (!(error instanceof ApiError && error.code === 'INVALID_FILTER')) clearPrivate(); note(messageOf(error), true); }
+  catch (error) {
+    if (error instanceof ApiError && setupCodes.includes(error.code)) {
+      clearPrivate(); renderSetup(error.message, true); note('التهيئة غير مكتملة؛ لم تُعرض أي بيانات أو قرار.', true); return;
+    }
+    if (!(error instanceof ApiError && error.code === 'INVALID_FILTER')) clearPrivate();
+    note(messageOf(error), true);
+  }
 }
 root.querySelector('[data-reload]')!.addEventListener('click', () => void refresh());
 workspace.addEventListener('change', () => { text.value = ''; result.textContent = ''; void refresh(); });
@@ -288,19 +376,30 @@ root.querySelector('form[data-evaluate]')!.addEventListener('submit', event => {
   evalError.textContent = '';
   if (!ack.checked) { evalError.textContent = 'أكّد أن النص اصطناعي قبل الفحص.'; return; }
   if (!text.value.trim()) { evalError.textContent = 'اكتب نصًا اصطناعيًا من حرف واحد على الأقل.'; return; }
+  const submitted = text.value;
   void (async () => {
     try {
       await withBusy(async () => {
+        result.dataset.state = 'loading';
         result.textContent = 'جارٍ تقييم السياسة وحفظ القرار…';
         const guarded = evalMode.value === 'GUARD';
-        const decision = await api(guarded ? 'guarded-executions' : 'evaluate', 'POST', { text: text.value, synthetic: true, ...(guarded ? { request_id: crypto.randomUUID() } : {}) });
-        if (guarded) renderGuard(decision); else renderResult(decision);
+        const decision = await api(guarded ? 'guarded-executions' : 'evaluate', 'POST', { text: submitted, synthetic: true, ...(guarded ? { request_id: crypto.randomUUID() } : {}) });
+        if (guarded) renderGuard(decision, submitted); else renderResult(decision, submitted);
         const message = guarded ? decision.message ?? 'أعاد المزود استجابة للطلب المحكوم.' : 'حُفظ التقييم التجريبي دون إرسال للمزود.';
         page = 1;
         try { render(await api('rules')); note(message, guarded && decision.external_action_executed !== true); }
         catch { note(`${message} تعذر تحديث قائمة السجل؛ حدّثها يدويًا.`, true); }
       });
-    } catch (error) { evalError.textContent = messageOf(error); result.textContent = 'تعذر تأكيد نتيجة الطلب. لا تتعامل معه كسماح، ولا تعِد التنفيذ تلقائيًا؛ راجع السجل أولًا.'; }
+    } catch (error) {
+      if (error instanceof ApiError && setupCodes.includes(error.code)) {
+        renderSetup(error.message);
+        evalError.textContent = '';
+        return;
+      }
+      evalError.textContent = messageOf(error);
+      result.dataset.state = 'error';
+      result.textContent = 'تعذر تأكيد نتيجة الطلب. لا تتعامل معه كسماح، ولا تعِد التنفيذ تلقائيًا؛ راجع السجل أولًا.';
+    }
   })();
 });
 window.addEventListener('pagehide', clearPrivate);

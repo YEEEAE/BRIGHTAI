@@ -5,8 +5,9 @@ import { operate } from './service.mjs';
 const headers = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', Vary: 'Authorization', 'X-Content-Type-Options': 'nosniff' };
 const allowedFields = {
   dashboard: [],
-  create: ['template', 'name', 'pattern', 'action', 'priority'],
+  create: ['template', 'duplicate_of', 'name', 'pattern', 'action', 'priority'],
   update: ['id', 'version', 'enabled', 'name', 'pattern', 'action', 'priority'],
+  delete: ['id', 'version'],
   evaluate: ['text', 'synthetic'],
   enforce: ['text', 'synthetic', 'request_id', 'department_id'],
 };
@@ -25,10 +26,11 @@ async function readBody(request, operation) {
   catch { throw new KernelError(400, 'INVALID_BODY', 'تعذر قراءة الطلب.'); }
 }
 // Database setup states are reported by code, never by raw driver text.
+// `setup: true` lets the UI say «التهيئة غير مكتملة» instead of showing a decision.
 function setupError(error) {
-  if (error?.code === '42P01') return new KernelError(503, 'FIREWALL_SCHEMA_MISSING', 'جداول Firewall غير موجودة على قاعدة البيانات الحالية. طبّق الترحيل في بيئة معتمدة قبل استخدام المختبر.');
-  if (error?.code === '42703') return new KernelError(503, 'FIREWALL_SCHEMA_OUTDATED', 'مخطط Firewall لا يطابق نسخة التطبيق؛ راجع الترحيل المعتمد قبل الاستخدام.');
-  if (error?.code === '42501') return new KernelError(503, 'FIREWALL_DB_PRIVILEGE', 'دور قاعدة بيانات التطبيق لا يملك صلاحية على جداول Firewall. راجع صلاحيات runtime.');
+  if (error?.code === '42P01') return new KernelError(503, 'FIREWALL_SCHEMA_MISSING', 'التهيئة غير مكتملة: جداول Firewall غير موجودة على قاعدة البيانات الحالية. طبّق الترحيل في بيئة معتمدة قبل استخدام المختبر.');
+  if (error?.code === '42703') return new KernelError(503, 'FIREWALL_SCHEMA_OUTDATED', 'التهيئة غير مكتملة: مخطط Firewall لا يطابق نسخة التطبيق؛ راجع الترحيل المعتمد قبل الاستخدام.');
+  if (error?.code === '42501') return new KernelError(503, 'FIREWALL_DB_PRIVILEGE', 'التهيئة غير مكتملة: دور قاعدة بيانات التطبيق لا يملك صلاحية على جداول Firewall. راجع صلاحيات runtime.');
   return null;
 }
 export function createHandler(auth = authenticate, service = operate) {
@@ -40,13 +42,16 @@ export function createHandler(auth = authenticate, service = operate) {
       if (!fields) throw new KernelError(404, 'NOT_FOUND', 'المسار غير موجود.');
       const body = operation === 'dashboard' ? {} : await readBody(request, operation);
       if (Object.keys(body).some(key => !fields.includes(key))) throw new KernelError(400, 'INVALID_BODY', 'حقول الطلب غير مسموحة.');
-      const query = Object.fromEntries(['action','reason','mode','from','to','page'].map(key => [key, url.searchParams.get(key) ?? (key === 'page' ? '1' : '')]));
+      const query = Object.fromEntries(['action', 'reason', 'mode', 'from', 'to', 'page'].map(key => [key, url.searchParams.get(key) ?? (key === 'page' ? '1' : '')]));
       const data = await service(identity, url.searchParams.get('workspace'), operation, body, query);
       const { httpStatus, ...payload } = data;
       return Response.json(payload, { headers, status: httpStatus ?? (operation === 'create' ? 201 : 200) });
     } catch (error) {
       const known = error instanceof KernelError ? error : setupError(error);
-      if (known) return Response.json({ code: known.code, message: known.message }, { headers, status: known.status });
+      if (known) {
+        const setup = ['FIREWALL_SCHEMA_MISSING', 'FIREWALL_SCHEMA_OUTDATED', 'FIREWALL_DB_PRIVILEGE'].includes(known.code);
+        return Response.json({ code: known.code, message: known.message, ...(setup ? { setup: true } : {}) }, { headers, status: known.status });
+      }
       return Response.json({ code: 'FIREWALL_UNAVAILABLE', message: 'تعذر تأكيد نتيجة العملية؛ تحقق من إعداد قاعدة البيانات والسجل. لا تتابع خارج مسار الإنفاذ ولا تعِد التنفيذ تلقائيًا.' }, { headers, status: 503 });
     }
   };

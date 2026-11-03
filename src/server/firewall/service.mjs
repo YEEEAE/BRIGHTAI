@@ -4,18 +4,39 @@ import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { tenantGuard, audit } from '../kernel/service.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
-import { templates, evaluate, inputText, actions, reasons, ruleName, rulePattern, ruleAction, rulePriority, MAX_RULES } from './core.mjs';
+import {
+  templates, evaluate, inputText, actions, reasons, ruleName, rulePattern, ruleAction, rulePriority,
+  MAX_RULES, MAX_TEXT_LENGTH, MAX_EVALUATIONS_PER_WINDOW, EVALUATION_WINDOW_SECONDS,
+} from './core.mjs';
 import { providerState } from './provider.mjs';
 import { enforceDecision } from './guard.mjs';
 import { evaluateKernelPolicy } from '../kernel/policies.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const editableFields = ['name', 'pattern', 'action', 'priority'];
+const operations = ['dashboard', 'create', 'update', 'delete', 'evaluate', 'enforce'];
 const uniqueName = error => error?.code === '23505';
+
+// Copies are new custom rules. The server picks a unique Arabic-suffixed name so the
+// client never supplies identity for an existing rule.
+async function copyName(db, tenantId, sourceName) {
+  const build = tail => {
+    const candidate = `${sourceName}${tail})`;
+    return candidate.length <= 60 ? candidate : `${sourceName.slice(0, 60 - tail.length - 1).trimEnd()}${tail})`;
+  };
+  const taken = async name => (await db.query('SELECT 1 FROM public.aigas_fw_rules WHERE tenant_id=$1 AND name=$2', [tenantId, name])).rowCount > 0;
+  const base = build(' (نسخة');
+  if (!(await taken(base))) return base;
+  for (let n = 2; n <= MAX_RULES + 1; n++) {
+    const candidate = build(` (نسخة ${n}`);
+    if (!(await taken(candidate))) return candidate;
+  }
+  throw new KernelError(409, 'RULE_EXISTS', 'تعذر توليد اسم فريد للنسخة؛ احذف نسخة قديمة أو أعد تسميتها.');
+}
 
 export function createFirewallService(transact = transaction) {
   return async function operate(identity, requested, operation, body = {}, query = '') {
-    if (!['dashboard', 'create', 'update', 'evaluate', 'enforce'].includes(operation)) throw new KernelError(404, 'NOT_FOUND', 'المسار غير موجود.');
+    if (!operations.includes(operation)) throw new KernelError(404, 'NOT_FOUND', 'المسار غير موجود.');
     const action = typeof query === 'string' ? query : query?.action ?? '';
     const reason = typeof query === 'object' && query ? query.reason ?? '' : '';
     const filters = typeof query === 'object' && query ? query : {};
@@ -39,37 +60,56 @@ export function createFirewallService(transact = transaction) {
       const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
       if (!member) throw new KernelError(403, 'FORBIDDEN', 'عضويتك لم تعد متاحة.');
       const canManage = ['OWNER', 'ADMIN'].includes(member.role);
-      if (operation === 'create' || operation === 'update') requireRole(member, ['OWNER', 'ADMIN']);
+      if (['create', 'update', 'delete'].includes(operation)) requireRole(member, ['OWNER', 'ADMIN']);
 
       if (operation === 'create') {
-        if (body.template !== undefined && editableFields.some(field => body[field] !== undefined)) {
-          throw new KernelError(400, 'INVALID_BODY', 'أضف إما قالبًا جاهزًا أو قاعدة مخصصة، لا كليهما.');
-        }
-        let rule;
-        if (body.template !== undefined) {
-          if (!Object.hasOwn(templates, body.template)) throw new KernelError(400, 'INVALID_TEMPLATE', 'اختر قالب قاعدة معتمدًا.');
-          rule = { template: body.template, ...templates[body.template] };
+        const ruleCount = async () => (await db.query('SELECT count(*)::int AS count FROM public.aigas_fw_rules WHERE tenant_id=$1', [tenantId])).rows[0].count;
+        if (body.duplicate_of !== undefined) {
+          if (typeof body.duplicate_of !== 'string' || !uuid.test(body.duplicate_of)
+            || body.template !== undefined || editableFields.some(field => body[field] !== undefined)) {
+            throw new KernelError(400, 'INVALID_BODY', 'أرسل مرجع القاعدة المطلوب نسخها فقط دون حقول أخرى.');
+          }
+          const source = (await db.query('SELECT name,pattern,action,priority FROM public.aigas_fw_rules WHERE tenant_id=$1 AND id=$2', [tenantId, body.duplicate_of])).rows[0];
+          if (!source) throw new KernelError(404, 'RULE_NOT_FOUND', 'القاعدة المطلوب نسخها غير موجودة في هذه المؤسسة.');
+          if (await ruleCount() >= MAX_RULES) throw new KernelError(409, 'RULE_LIMIT', `الحد ${MAX_RULES} قاعدة للمؤسسة، ويشمل المعطّلة؛ احذف قاعدة أو عدّلها.`);
+          const name = await copyName(db, tenantId, source.name);
+          try {
+            // A copy starts disabled so a duplicate never changes enforcement silently.
+            await db.query(
+              'INSERT INTO public.aigas_fw_rules (id,tenant_id,template,name,match_type,pattern,action,priority,enabled) VALUES ($1,$2,NULL,$3,$4,$5,$6,$7,false)',
+              [randomUUID(), tenantId, name, 'CONTAINS', source.pattern, source.action, source.priority],
+            );
+            await audit(db, identity, tenantId, 'firewall.rule.duplicated');
+          } catch (error) {
+            if (uniqueName(error)) throw new KernelError(409, 'RULE_EXISTS', 'توجد قاعدة بالاسم أو القالب نفسه؛ أعد المحاولة.');
+            throw error;
+          }
         } else {
-          rule = {
-            template: null,
-            name: ruleName(body.name),
-            match_type: 'CONTAINS',
-            pattern: rulePattern(body.pattern),
-            action: ruleAction(body.action),
-            priority: rulePriority(body.priority),
-          };
-        }
-        const count = (await db.query('SELECT count(*)::int AS count FROM public.aigas_fw_rules WHERE tenant_id=$1', [tenantId])).rows[0].count;
-        if (count >= MAX_RULES) throw new KernelError(409, 'RULE_LIMIT', `الحد ${MAX_RULES} قاعدة للمؤسسة، ويشمل المعطّلة؛ عدّل قاعدة قائمة.`);
-        try {
-          await db.query(
-            'INSERT INTO public.aigas_fw_rules (id,tenant_id,template,name,match_type,pattern,action,priority) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
-            [randomUUID(), tenantId, rule.template, rule.name, rule.match_type, rule.pattern, rule.action, rule.priority],
-          );
-          await audit(db, identity, tenantId, 'firewall.rule.created');
-        } catch (error) {
-          if (uniqueName(error)) throw new KernelError(409, 'RULE_EXISTS', 'توجد قاعدة بالاسم أو القالب نفسه؛ عدّلها من القائمة.');
-          throw error;
+          if (body.template !== undefined && editableFields.some(field => body[field] !== undefined)) {
+            throw new KernelError(400, 'INVALID_BODY', 'أضف إما قالبًا جاهزًا أو قاعدة مخصصة، لا كليهما.');
+          }
+          const rule = body.template !== undefined
+            ? (Object.hasOwn(templates, body.template) ? { template: body.template, ...templates[body.template] } : null)
+            : {
+              template: null,
+              name: ruleName(body.name),
+              match_type: 'CONTAINS',
+              pattern: rulePattern(body.pattern),
+              action: ruleAction(body.action),
+              priority: rulePriority(body.priority),
+            };
+          if (!rule) throw new KernelError(400, 'INVALID_TEMPLATE', 'اختر قالب قاعدة معتمدًا.');
+          if (await ruleCount() >= MAX_RULES) throw new KernelError(409, 'RULE_LIMIT', `الحد ${MAX_RULES} قاعدة للمؤسسة، ويشمل المعطّلة؛ عدّل قاعدة قائمة.`);
+          try {
+            await db.query(
+              'INSERT INTO public.aigas_fw_rules (id,tenant_id,template,name,match_type,pattern,action,priority) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
+              [randomUUID(), tenantId, rule.template, rule.name, rule.match_type, rule.pattern, rule.action, rule.priority],
+            );
+            await audit(db, identity, tenantId, 'firewall.rule.created');
+          } catch (error) {
+            if (uniqueName(error)) throw new KernelError(409, 'RULE_EXISTS', 'توجد قاعدة بالاسم أو القالب نفسه؛ عدّلها من القائمة.');
+            throw error;
+          }
         }
       }
 
@@ -87,7 +127,8 @@ export function createFirewallService(transact = transaction) {
           add('enabled=?', body.enabled);
         }
         if (!sets.length) throw new KernelError(400, 'INVALID_RULE', 'لا يوجد تغيير مطلوب.');
-        if (editableFields.some(field => body[field] !== undefined)) {
+        const fieldsChanged = editableFields.some(field => body[field] !== undefined);
+        if (fieldsChanged) {
           // Server templates stay trusted: they can be toggled, not redefined.
           const existing = (await db.query('SELECT template FROM public.aigas_fw_rules WHERE tenant_id=$1 AND id=$2', [tenantId, body.id])).rows[0];
           if (!existing) throw new KernelError(409, 'RULE_CHANGED', 'تغيرت القاعدة أو لم تعد متاحة؛ حدّث القائمة.');
@@ -99,11 +140,25 @@ export function createFirewallService(transact = transaction) {
             params,
           );
           if (!updated.rowCount) throw new KernelError(409, 'RULE_CHANGED', 'تغيرت القاعدة أو لم تعد متاحة؛ حدّث القائمة.');
-          await audit(db, identity, tenantId, editableFields.some(field => body[field] !== undefined) ? 'firewall.rule.updated' : 'firewall.rule.toggled');
+          await audit(db, identity, tenantId, fieldsChanged ? 'firewall.rule.updated' : 'firewall.rule.toggled');
         } catch (error) {
           if (uniqueName(error)) throw new KernelError(409, 'RULE_EXISTS', 'توجد قاعدة أخرى بالاسم نفسه؛ اختر اسمًا آخر.');
           throw error;
         }
+      }
+
+      if (operation === 'delete') {
+        if (typeof body.id !== 'string' || !uuid.test(body.id) || !Number.isInteger(body.version)) throw new KernelError(400, 'INVALID_RULE', 'بيانات القاعدة غير صالحة.');
+        const existing = (await db.query('SELECT template FROM public.aigas_fw_rules WHERE tenant_id=$1 AND id=$2', [tenantId, body.id])).rows[0];
+        if (!existing) throw new KernelError(409, 'RULE_CHANGED', 'تغيرت القاعدة أو لم تعد متاحة؛ حدّث القائمة.');
+        // Starter templates are server-owned and are never deleted, only disabled.
+        if (existing.template) throw new KernelError(409, 'TEMPLATE_IMMUTABLE', 'قوالب المختبر الجاهزة تُعطّل ولا تُحذف؛ أضف قاعدة مخصصة بدلًا منها.');
+        // Decisions are append-only and reference the rule they cite. Never orphan history.
+        const cited = (await db.query('SELECT 1 FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND rule_id=$2 LIMIT 1', [tenantId, body.id])).rowCount > 0;
+        if (cited) throw new KernelError(409, 'RULE_HAS_HISTORY', 'هذه القاعدة مذكورة في قرارات محفوظة؛ عطّلها بدل حذفها للحفاظ على سجل القرارات.');
+        const deleted = await db.query('DELETE FROM public.aigas_fw_rules WHERE tenant_id=$1 AND id=$2 AND version=$3 RETURNING id', [tenantId, body.id, body.version]);
+        if (!deleted.rowCount) throw new KernelError(409, 'RULE_CHANGED', 'تغيرت القاعدة أو لم تعد متاحة؛ حدّث القائمة.');
+        await audit(db, identity, tenantId, 'firewall.rule.deleted');
       }
 
       const rules = (await db.query(
@@ -113,26 +168,36 @@ export function createFirewallService(transact = transaction) {
 
       if (operation === 'evaluate' || operation === 'enforce') {
         const enforced = operation === 'enforce';
+        // Abuse control: cap stored evaluations per tenant window. The tenant row lock
+        // above serializes this check with concurrent requests in the same transaction.
+        const recent = (await db.query(
+          `SELECT count(*)::int AS count FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND created_at > now() - ($2::text || ' seconds')::interval`,
+          [tenantId, EVALUATION_WINDOW_SECONDS],
+        )).rows[0].count;
+        if (recent >= MAX_EVALUATIONS_PER_WINDOW) {
+          throw new KernelError(429, 'RATE_LIMITED', `تجاوزت المؤسسة ${MAX_EVALUATIONS_PER_WINDOW} تقييمًا في ${EVALUATION_WINDOW_SECONDS} ثانية؛ انتظر قليلًا ثم أعد المحاولة.`);
+        }
         const requestText = inputText(body.text);
         let kernelPolicy = null;
         if (enforced) {
           try {
-            kernelPolicy = await evaluateKernelPolicy(db, identity, tenantId, { productSlug:'firewall',operation:'firewall.execute',resource_type:'text',departmentId:body.department_id ?? null });
+            kernelPolicy = await evaluateKernelPolicy(db, identity, tenantId, { productSlug: 'firewall', operation: 'firewall.execute', resource_type: 'text', departmentId: body.department_id ?? null });
           } catch (error) {
-            if (['42P01','42703','42501'].includes(error?.code)) throw new KernelError(503,'KERNEL_POLICY_SETUP_REQUIRED','محرك سياسات Kernel غير مهيأ أو غير متاح؛ لم يُرسل الطلب إلى مزود AI.');
+            if (['42P01', '42703', '42501'].includes(error?.code)) throw new KernelError(503, 'KERNEL_POLICY_SETUP_REQUIRED', 'محرك سياسات Kernel غير مهيأ أو غير متاح؛ لم يُرسل الطلب إلى مزود AI.');
             throw error;
           }
         }
         const productResult = evaluate(requestText, rules, { enforce: enforced });
+        // A Kernel policy that is not ALLOW hard-denies and is never softened by product rules.
         const result = enforced && kernelPolicy.decision !== 'ALLOW'
-          ? { action:'BLOCK',reason:'NO_ACTIVE_POLICY',rule_id:null,rule_version:null,rule_name:null,output:null }
+          ? { action: 'DENY', reason: 'KERNEL_POLICY_DENIED', rule_id: null, rule_version: null, rule_name: null, output: null }
           : productResult;
         const id = randomUUID();
         // Explicit metadata fields only: the submitted text and any output never reach the database.
         try {
           if (enforced) {
             await db.query('INSERT INTO public.aigas_kernel_policy_decisions(id,tenant_id,actor_user_id,product_slug,operation,decision,reason,policy_chain,request_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9)',
-              [randomUUID(),tenantId,identity.userId,'firewall','firewall.execute',kernelPolicy.decision,kernelPolicy.reason,JSON.stringify(kernelPolicy.policies ?? []),body.request_id]);
+              [randomUUID(), tenantId, identity.userId, 'firewall', 'firewall.execute', kernelPolicy.decision, kernelPolicy.reason, JSON.stringify(kernelPolicy.policies ?? []), body.request_id]);
           }
           const inserted = await db.query(
             'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING created_at',
@@ -141,15 +206,24 @@ export function createFirewallService(transact = transaction) {
           if (inserted.rowCount !== 1) throw new Error('DECISION_NOT_SAVED');
           // Kernel audit is required and atomic with the metadata-only decision.
           await audit(db, identity, tenantId, enforced ? 'firewall.guard.evaluated' : 'firewall.lab.evaluated');
-          await recordProductEvent(db, identity, tenantId, {source:'firewall',event_type:'firewall.decision.recorded',policy_version:result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v1',metadata_json:{synthetic:true,decision_ref:id,action:result.action,mode:enforced?'GUARD':'LAB',rule_ref:result.rule_id,rule_version:result.rule_version},idempotency_key:`decision:${id}`});
-          const decision = { id, action: result.action, reason: result.reason, rule_id: result.rule_id, rule_version: result.rule_version,
-            created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB' };
-          if (enforced) return { decision, tenantId, forwardText: result.output, kernelPolicy };
-          return { ...decision, rule_name: result.rule_name, output: result.output, persisted: true, execution_status: 'NOT_EXECUTED', external_action_executed: false };
+          await recordProductEvent(db, identity, tenantId, { source: 'firewall', event_type: 'firewall.decision.recorded', policy_version: result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v2', metadata_json: { synthetic: true, decision_ref: id, action: result.action, mode: enforced ? 'GUARD' : 'LAB', rule_ref: result.rule_id, rule_version: result.rule_version }, idempotency_key: `decision:${id}` });
+          const decision = {
+            id, action: result.action, reason: result.reason, reason_text: reasons[result.reason],
+            rule_id: result.rule_id, rule_version: result.rule_version,
+            created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB',
+          };
+          if (enforced) return { decision, tenantId, forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy };
+          return {
+            ...decision, rule_name: result.rule_name, output: result.output,
+            input_length: requestText.length, persisted: true,
+            execution_status: 'NOT_EXECUTED', external_action_executed: false,
+          };
         } catch (error) {
           if (enforced && uniqueName(error)) throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
           if (error instanceof KernelError || ['42P01', '42703', '42501'].includes(error?.code)) throw error;
-          throw new KernelError(503, 'REQUIRED_AUDIT_UNAVAILABLE', 'تعذر تأكيد حفظ القرار وتدقيق Kernel؛ لم يُرسل الطلب إلى مزود AI.');
+          throw new KernelError(503, 'REQUIRED_AUDIT_UNAVAILABLE', enforced
+            ? 'تعذر تأكيد حفظ القرار وتدقيق Kernel؛ لم يُرسل الطلب إلى مزود AI.'
+            : 'تعذر تأكيد حفظ القرار وتدقيق Kernel؛ لم يُسجّل التقييم.');
         }
       }
 
@@ -164,9 +238,12 @@ export function createFirewallService(transact = transaction) {
          ORDER BY d.created_at DESC,d.id DESC LIMIT 13 OFFSET $7`,
         [tenantId, action, reason, mode, from ? `${from}T00:00:00Z` : null, to ? `${to}T00:00:00Z` : null, (page - 1) * 12],
       )).rows;
-      return { tenant: { ...scope.tenant, role: member.role }, memberships: scope.memberships, canManage, rules, counts,
+      return {
+        tenant: { ...scope.tenant, role: member.role }, memberships: scope.memberships, canManage, rules, counts,
         decisions: decisions.slice(0, 12), page, hasNext: decisions.length > 12 && page < 10000, provider: providerState(tenantId),
-        enforcementPath: '/app/api/firewall/guarded-executions/', actionFilter: action, reasonFilter: reason, maxRules: MAX_RULES };
+        enforcementPath: '/app/api/firewall/guarded-executions/', actionFilter: action, reasonFilter: reason,
+        limits: { maxRules: MAX_RULES, maxTextLength: MAX_TEXT_LENGTH, maxEvaluationsPerWindow: MAX_EVALUATIONS_PER_WINDOW },
+      };
     });
     // COMMIT has succeeded before any optional external call. Raw body is never
     // passed to the guard; only the evaluator's output can cross this boundary.

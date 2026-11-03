@@ -2,6 +2,8 @@
 -- Changes in this revision (2026-11-01): editable literal rules, per-tenant unique name,
 -- priority ordering, protected templates, metadata-only LAB/GUARD decisions,
 -- strict enforcement defaults and per-tenant request replay protection.
+-- Changes in this revision (2026-11-03): five decision states ALLOW/WARN/REDACT/ESCALATE/DENY,
+-- KERNEL_POLICY_DENIED reason, and the DENY action on the `prohibited` template.
 -- Fresh install only: this revision is NOT an upgrade script for an existing 0002.
 -- Runtime also requires the separately reviewed Kernel administration migration 0006.
 BEGIN;
@@ -14,7 +16,7 @@ CREATE TABLE public.aigas_fw_rules (
  match_type text NOT NULL DEFAULT 'CONTAINS' CHECK (match_type='CONTAINS'),
  -- Literal text, never a regular expression. Case-insensitive containment only.
  pattern text NOT NULL CHECK (char_length(pattern) BETWEEN 1 AND 80 AND pattern !~ E'[\x01-\x1F\x7F]'),
- action text NOT NULL CHECK (action IN ('ALLOW','BLOCK','REDACT')),
+ action text NOT NULL CHECK (action IN ('ALLOW','WARN','REDACT','ESCALATE','DENY')),
  priority smallint NOT NULL DEFAULT 100 CHECK (priority BETWEEN 1 AND 999),
  enabled boolean NOT NULL DEFAULT true,
  version integer NOT NULL DEFAULT 1 CHECK (version>0),
@@ -25,7 +27,7 @@ CREATE TABLE public.aigas_fw_rules (
  CHECK (template IS NULL OR
    (template='public' AND name='بيانات عامة' AND pattern='معلومة عامة' AND action='ALLOW' AND priority=30) OR
    (template='identifier' AND name='معرّف اصطناعي' AND pattern='DEMO-ID-1234' AND action='REDACT' AND priority=20) OR
-   (template='prohibited' AND name='محتوى محظور اصطناعي' AND pattern='DEMO-BLOCK' AND action='BLOCK' AND priority=10))
+   (template='prohibited' AND name='محتوى محظور اصطناعي' AND pattern='DEMO-BLOCK' AND action='DENY' AND priority=10))
 );
 CREATE UNIQUE INDEX aigas_fw_rules_template_idx ON public.aigas_fw_rules(tenant_id,template) WHERE template IS NOT NULL;
 CREATE INDEX aigas_fw_rules_tenant_order_idx ON public.aigas_fw_rules(tenant_id,priority,created_at);
@@ -33,8 +35,8 @@ CREATE TABLE public.aigas_fw_decisions (
  id uuid PRIMARY KEY,
  tenant_id uuid NOT NULL REFERENCES public.aigas_tenants(id),
  created_at timestamptz NOT NULL DEFAULT now(),
- action text NOT NULL CHECK (action IN ('ALLOW','BLOCK','REDACT')),
- reason text NOT NULL CHECK (reason IN ('NO_ACTIVE_POLICY','INVALID_POLICY','RULE_BLOCK','RULE_REDACT','RULE_ALLOW','NO_MATCH_LAB_ONLY','NO_MATCH_ENFORCED')),
+ action text NOT NULL CHECK (action IN ('ALLOW','WARN','REDACT','ESCALATE','DENY')),
+ reason text NOT NULL CHECK (reason IN ('NO_ACTIVE_POLICY','INVALID_POLICY','RULE_DENY','RULE_ESCALATE','RULE_REDACT','RULE_WARN','RULE_ALLOW','NO_MATCH_LAB_ONLY','NO_MATCH_ENFORCED','KERNEL_POLICY_DENIED')),
  mode text NOT NULL DEFAULT 'LAB' CHECK (mode IN ('LAB','GUARD')),
  -- Opaque operation UUID only. Never a prompt, prompt hash, caller URL or matching value.
  request_id uuid,
@@ -43,12 +45,15 @@ CREATE TABLE public.aigas_fw_decisions (
  FOREIGN KEY (tenant_id,rule_id) REFERENCES public.aigas_fw_rules(tenant_id,id),
  CHECK ((rule_id IS NULL)=(rule_version IS NULL)),
  CHECK ((mode='GUARD')=(request_id IS NOT NULL)),
- CHECK ((reason IN ('NO_ACTIVE_POLICY','INVALID_POLICY','RULE_BLOCK','NO_MATCH_ENFORCED') AND action='BLOCK') OR
+ CHECK ((reason IN ('NO_ACTIVE_POLICY','INVALID_POLICY','RULE_DENY','NO_MATCH_ENFORCED','KERNEL_POLICY_DENIED') AND action='DENY') OR
+        (reason='RULE_ESCALATE' AND action='ESCALATE') OR
         (reason='RULE_REDACT' AND action='REDACT') OR
+        (reason='RULE_WARN' AND action='WARN') OR
         (reason IN ('RULE_ALLOW','NO_MATCH_LAB_ONLY') AND action='ALLOW')),
- CHECK ((reason IN ('RULE_BLOCK','RULE_REDACT','RULE_ALLOW'))=(rule_id IS NOT NULL)),
+ CHECK ((reason IN ('RULE_DENY','RULE_ESCALATE','RULE_REDACT','RULE_WARN','RULE_ALLOW'))=(rule_id IS NOT NULL)),
  CHECK (mode <> 'GUARD' OR reason <> 'NO_MATCH_LAB_ONLY'),
- CHECK (mode <> 'LAB' OR reason <> 'NO_MATCH_ENFORCED')
+ CHECK (mode <> 'LAB' OR reason <> 'NO_MATCH_ENFORCED'),
+ CHECK (reason <> 'KERNEL_POLICY_DENIED' OR mode='GUARD')
 );
 CREATE UNIQUE INDEX aigas_fw_decisions_request_idx ON public.aigas_fw_decisions(tenant_id,request_id) WHERE request_id IS NOT NULL;
 CREATE INDEX aigas_fw_decisions_tenant_time_idx ON public.aigas_fw_decisions(tenant_id,created_at DESC);

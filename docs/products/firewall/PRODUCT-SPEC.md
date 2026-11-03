@@ -81,6 +81,8 @@
 | `REQUEST_APPROVAL` | تحتاج العملية موافقة بشرية مخولة | `PENDING` وتعليق التنفيذ حتى قرار صالح | لا تعتبر المهلة أو عدم الرد موافقة |
 | `BLOCK` | انتهاك سياسة أو ضابط إلزامي | منع الإرسال/الإجراء أو حجب المخرج المحكوم | لا يمكن تخطي Hard Deny بموافقة أدنى |
 
+> **Vocabulary note (implementation, 2026-11-03):** the local service emits the five states `ALLOW`, `WARN`, `REDACT`, `ESCALATE`, `DENY`. `ESCALATE` is the same decision as `REQUEST_APPROVAL` in this table and `DENY` is the same decision as `BLOCK`/Hard Deny. The change is a documented contract rename, not a sixth decision or a weaker guard.
+
 في الطلبات ذات المخرجات المتدفقة (SSE/stream)، لا يجوز بث محتوى لم يُفحص إذا كان مخرجًا خاضعًا لفحص ملزم. يعتمد التصميم نمط حجز/تجميع محدود أو فحص آمن قبل الإفراج؛ حدود الكمون والذاكرة وسياسة رفض المحتوى غير المفحوص تتطلب اعتمادًا هندسيًا.
 
 ## 6. نطاق MVP الحقيقي

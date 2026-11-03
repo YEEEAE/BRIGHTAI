@@ -1,19 +1,24 @@
 import { KernelError } from '../kernel/core.mjs';
 
 // Starter templates are server-owned literals. A tenant may also add its own literal rules.
+// `prohibited` uses the deny state (the approved spec calls the same concept BLOCK).
 export const templates = Object.freeze({
   public: { name: 'بيانات عامة', match_type: 'CONTAINS', pattern: 'معلومة عامة', action: 'ALLOW', priority: 30 },
   identifier: { name: 'معرّف اصطناعي', match_type: 'CONTAINS', pattern: 'DEMO-ID-1234', action: 'REDACT', priority: 20 },
-  prohibited: { name: 'محتوى محظور اصطناعي', match_type: 'CONTAINS', pattern: 'DEMO-BLOCK', action: 'BLOCK', priority: 10 },
+  prohibited: { name: 'محتوى محظور اصطناعي', match_type: 'CONTAINS', pattern: 'DEMO-BLOCK', action: 'DENY', priority: 10 },
 });
-export const actions = Object.freeze(['ALLOW', 'BLOCK', 'REDACT']);
+// Five decision states. ESCALATE is the approved spec's REQUEST_APPROVAL; DENY is BLOCK.
+export const actions = Object.freeze(['ALLOW', 'WARN', 'REDACT', 'ESCALATE', 'DENY']);
 // Defense-first precedence. Priority only orders rules inside the winning action.
-export const actionRank = Object.freeze({ BLOCK: 0, REDACT: 1, ALLOW: 2 });
+export const actionRank = Object.freeze({ DENY: 0, ESCALATE: 1, REDACT: 2, WARN: 3, ALLOW: 4 });
 export const MAX_RULES = 25;
+export const MAX_TEXT_LENGTH = 4000;
+export const MAX_EVALUATIONS_PER_WINDOW = 60;
+export const EVALUATION_WINDOW_SECONDS = 60;
 const controlChars = /[\u0000-\u001F\u007F]/;
 
 export function inputText(value) {
-  if (typeof value !== 'string' || !value.trim() || value.length > 4000) throw new KernelError(400, 'INVALID_TEXT', 'اكتب نصًا اصطناعيًا من 1 إلى 4000 حرف.');
+  if (typeof value !== 'string' || !value.trim() || value.length > MAX_TEXT_LENGTH) throw new KernelError(400, 'INVALID_TEXT', `اكتب نصًا اصطناعيًا من 1 إلى ${MAX_TEXT_LENGTH} حرف.`);
   return value;
 }
 // Names and patterns are plain literals: never compiled as client-supplied regular expressions.
@@ -30,7 +35,7 @@ export function rulePattern(value) {
   return pattern;
 }
 export function ruleAction(value) {
-  if (!actions.includes(value)) throw new KernelError(400, 'INVALID_RULE_ACTION', 'اختر إجراءً معتمدًا: ALLOW أو BLOCK أو REDACT.');
+  if (!actions.includes(value)) throw new KernelError(400, 'INVALID_RULE_ACTION', 'اختر إجراءً معتمدًا: ALLOW أو WARN أو REDACT أو ESCALATE أو DENY.');
   return value;
 }
 export function rulePriority(value) {
@@ -63,12 +68,16 @@ export function evaluate(text, rules, { enforce = false } = {}) {
     rule_id: rule?.id ?? null, rule_version: rule?.version ?? null, rule_name: rule?.name ?? null,
     output,
   });
-  if (!active.length) return result('BLOCK', 'NO_ACTIVE_POLICY');
+  if (!active.length) return result('DENY', 'NO_ACTIVE_POLICY');
   // Fail closed if persisted policy is malformed, even when another rule would allow.
-  if (active.some(rule => !structurallyValid(rule))) return result('BLOCK', 'INVALID_POLICY');
-  const block = firstByPriority(active.filter(rule => matches(text, rule.pattern) && rule.action === 'BLOCK'));
-  if (block) return result('BLOCK', 'RULE_BLOCK', block);
-  const redact = active.filter(rule => matches(text, rule.pattern) && rule.action === 'REDACT');
+  if (active.some(rule => !structurallyValid(rule))) return result('DENY', 'INVALID_POLICY');
+  const matching = action => active.filter(rule => rule.action === action && matches(text, rule.pattern));
+  // A deny rule can never be softened by a lower state or by numeric priority.
+  const deny = firstByPriority(matching('DENY'));
+  if (deny) return result('DENY', 'RULE_DENY', deny);
+  const escalate = firstByPriority(matching('ESCALATE'));
+  if (escalate) return result('ESCALATE', 'RULE_ESCALATE', escalate);
+  const redact = matching('REDACT');
   if (redact.length) {
     // Collect spans against the original input, then merge overlaps. Replacing one
     // literal first must never hide an overlapping match belonging to another rule.
@@ -90,16 +99,22 @@ export function evaluate(text, rules, { enforce = false } = {}) {
     output += text.slice(cursor);
     return result('REDACT', 'RULE_REDACT', firstByPriority(redact), output);
   }
-  const allow = firstByPriority(active.filter(rule => matches(text, rule.pattern) && rule.action === 'ALLOW'));
-  if (enforce && !allow) return result('BLOCK', 'NO_MATCH_ENFORCED');
+  // WARN is not an unconditional allow: the guard path never forwards it automatically.
+  const warn = firstByPriority(matching('WARN'));
+  if (warn) return result('WARN', 'RULE_WARN', warn);
+  const allow = firstByPriority(matching('ALLOW'));
+  if (enforce && !allow) return result('DENY', 'NO_MATCH_ENFORCED');
   return result('ALLOW', allow ? 'RULE_ALLOW' : 'NO_MATCH_LAB_ONLY', allow, text);
 }
 export const reasons = Object.freeze({
   NO_ACTIVE_POLICY: 'حُجب الفحص لعدم وجود قاعدة مفعّلة.',
   INVALID_POLICY: 'حُجب الفحص لوجود قاعدة غير صالحة في السجل.',
-  RULE_BLOCK: 'طابق النص قاعدة حجب.',
+  RULE_DENY: 'طابق النص قاعدة حجب.',
+  RULE_ESCALATE: 'يتطلب النص موافقة بشرية؛ لا يوجد مسار موافقة مفعّل في هذه النسخة.',
   RULE_REDACT: 'نُقّح النص وفق قاعدة تنقيح.',
-  RULE_ALLOW: 'طابق النص قاعدة سماح؛ لا تتجاوز قواعد الحجب أو التنقيح.',
+  RULE_WARN: 'طابق النص قاعدة تحذير؛ التحذير لا يسمح بالتمرير التلقائي.',
+  RULE_ALLOW: 'طابق النص قاعدة سماح؛ لا تتجاوز قواعد الحجب أو التصعيد أو التنقيح.',
   NO_MATCH_LAB_ONLY: 'لم يطابق أي قاعدة مفعّلة؛ هذا ليس إثبات سلامة المحتوى.',
   NO_MATCH_ENFORCED: 'حُجب التنفيذ لعدم مطابقة قاعدة سماح أو تنقيح مفعّلة.',
+  KERNEL_POLICY_DENIED: 'منعت سياسة Kernel العليا التنفيذ؛ لا يخففها قرار قواعد المنتج.',
 });

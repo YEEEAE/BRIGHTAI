@@ -1,3 +1,19 @@
+## [2026-11-03] — Firewall: خمس حالات قرار وإدارة قواعد كاملة محليًا
+### تم التنفيذ
+- وُحّدت حالات القرار إلى `ALLOW/WARN/REDACT/ESCALATE/DENY` بترتيب دفاعي `DENY>ESCALATE>REDACT>WARN>ALLOW`؛ `WARN` و`ESCALATE` لا يمرران في مسار الإنفاذ، وسياسة Kernel غير `ALLOW` تصبح `DENY/KERNEL_POLICY_DENIED`. `ESCALATE` يقابل `REQUEST_APPROVAL` و`DENY` يقابل `BLOCK` في وصف المنتج.
+- أضيف نسخ القاعدة (اسم خادمي فريد، نسخة معطّلة) وحذفها مع منع حذف القوالب التأسيسية أو أي قاعدة مذكورة في قرارات محفوظة؛ كل قراءة/كتابة تعيد التحقق من الهوية والعضوية والمؤسسة والمنحة.
+- أضيف حد 60 تقييمًا/دقيقة لكل مؤسسة فوق حماية UUID، وأصبحت واجهة «جرب فحصًا» تعرض المدخل والقرار ومعرّف القاعدة والسبب ووقت التقييم والحالة، وتعرض «التهيئة غير مكتملة» بدل قرار عند غياب الجداول.
+- لا يعيد API نص `DENY/ESCALATE/WARN`؛ السجل يحفظ metadata فقط (بلا نص أو أسرار). القوالب الثلاثة باقية، و`prohibited` صار `DENY`.
+### الملفات المتأثرة
+- `src/server/firewall/{core,service,http,guard}.mjs`, `src/server/ledger/core.mjs`, `src/pages/app/{firewall,api/firewall}/`, `src/scripts/firewall.ts`, `src/styles/firewall.css`
+- `migrations/0002_aigas_firewall.sql` (مراجعة fresh-install، غير مطبقة), `docs/FIREWALL-DEVELOPMENT.md`, `docs/products/firewall/{PRODUCT-SPEC.md,API-CONTRACT.yaml}`
+### التحقق
+- مراجعة diff و`git diff --check` و`node --check` لملفات `.mjs`: PASS. build/tests/lint/typecheck/متصفح: NOT RUN بطلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا تطبيق على Neon.
+### ملاحظات / مشاكل مفتوحة
+- 0002 رُوجع كـfresh-install بخمس حالات ولم يُطبّق؛ أي قاعدة بيانات طبّقت النسخة السابقة تحتاج ترحيل ترقية مراجعًا بدل هذا الملف. اختبارات `tests/firewall*.mjs` لم تُعدّل/تُشغّل وما زالت تعكس العقد الثلاثي السابق. تفعيل `ESCALATE` تشغيليًا يحتاج مسار موافقة معتمدًا، وإرسال `ALLOW/REDACT` يحتاج مزودًا معتمدًا.
+
 ## [2026-11-03] — قناة EAC في dsh-our-free-model: star مطلوب
 ### تم التنفيذ
 - سبب فشل «This turn failed» عند اختيار نموذج EAC هو بوّابة الإضافة `dsh-our-free-model@2.8.0` (مركّبة من `github:ebony-vinyl/dsh-our-free-model`): نماذج EAC لا تعمل قبل تسجيل دخول GitHub وstar للمستودع.
@@ -402,7 +418,7 @@
 - أحدث Risk Engine في السجل الأعلى: معالجة بإصدارات ومراجع وتصدير محلي دون تشغيل فحوص؛ أدلة Risk Engine السابقة HISTORICAL ولا تثبت هذه النسخة. 0008 غير مطبق إضافةً إلى 0005.
 - أحدث Human Gate في السجل الأعلى: تغيير اسم مساحة Kernel بربط المهمة ومهلة واستهلاك ذري، دون تحقق runtime أو نشر؛ الأدلة السابقة HISTORICAL.
 - Ledger الحالي موصوف في السجل الأعلى: تكامل أحداث داخلي وchain-v2 وفاحص مستقل محليًا دون تشغيل؛ أدلة Ledger القديمة HISTORICAL ولا تثبت هذا التغيير.
-- أحدث حالة Firewall في السجل الأعلى؛ أدلة البناء/DB القديمة أدناه HISTORICAL ولا تثبت النسخة الحالية. سجل القرار ليس إثبات تسليم للمزود.
+- أحدث Firewall في السجل الأعلى: خمس حالات قرار محليًا مع نسخ/حذف محكوم وحد تقييم، و0002 رُوجع بخمس حالات لكنه غير مطبق؛ أدلة البناء/DB الأقدم HISTORICAL. سجل القرار ليس إثبات تسليم للمزود، واختبارات Firewall لم تُحدّث أو تُشغّل.
 - Neon VERIFIED 2026-11-01: `young-frog-60183055` / `neondb`، الفرع الوحيد `production` / `br-young-bird-b43proeb` غير محمي؛ 11 جدول public. 0001 مطبق سابقًا؛ 0004/0006/0007 طُبقت بإذن المالك الصريح في مهمة Human Gate. 0002/0003/0005 غير مطبقة، ولا هدف تطوير معتمد. لا grants أو سياسات Human Gate مزروعة.
 - إدارة Kernel المحلية تتطلب grant إداري ADMIN_NON_BILLED ساريًا مستقلًا عن status؛ تُعرض حالات EXPIRED/REVOKED وتتوفر إدارة أدوار Kernel والسحب محليًا، مع حماية آخر OWNER. سجل Kernel الأساسي يحفظ الحد الأدنى مستقلًا عن Ledger. أولوية الإتاحة المشتركة تشترط العضوية والتمكين والمنحة ومخطط المنتج. هرمية السياسات المركزية لها أساس محلي: ترحيل 0010، API دورة نشر وتقييم خادمي لمسار Firewall المحمي فقط، وواجهة أولية للمسودات والإدارات والتفويض؛ تحرير النسخ والتاريخ التفصيلي وبعض سياقات المنتج، تشغيل RLS، والتحقق الفعلي ما زالت غير مكتملة. لا سياسة افتراضية مزروعة ولا ترحيل مطبق على Neon. إلغاء دعوة Neon Auth نفسها غير متاح في واجهة Kernel؛ لا اشتراك أو Trial أو مزود AI معتمد حاليًا. جلسة Neon Auth حقيقية وعزل حسابين وruntime grants/RLS والنشر الحالي NOT VERIFIED.
 - `/app/*` في المصدر Node SSR مع `private, no-store`؛ `render.yaml` يشير لخدمة Node وentrypoint standalone. فحص Chrome في 2026-11-03 أظهر 404 حيًا على `/app/`؛ علاج المصدر محلي فقط ومغلق افتراضيًا بمتغير `AIGAS_APP_ENABLED`. يلزم نشر مصرح وتغيير origin وإتاحة خادمية قبل ادعاء التشغيل.
