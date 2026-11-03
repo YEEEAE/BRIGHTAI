@@ -267,7 +267,20 @@
 .kernel .policy-status{display:grid;grid-template-columns:minmax(180px,.4fr) minmax(0,1fr);align-items:center;gap:24px;margin:0 0 28px;border-inline-start:3px solid var(--ui-focus)}
 .kernel .policy-status h2{margin:0;font-size:20px}
 .kernel .policy-status p{margin:0;color:var(--ui-copy);font-size:13px;line-height:1.8}
-@media(max-width:600px){.kernel .policy-status{grid-template-columns:1fr;gap:8px}}
+.kernel .policy-console{margin:0 0 28px;border-inline-start:3px solid var(--ui-focus)}
+.kernel .policy-console [data-policy-list]{display:grid;gap:10px;padding:0;list-style:none}
+.kernel .policy-console [data-policy-list]>li{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px;border:1px solid var(--ui-line);border-radius:8px;background:#09080d}
+.kernel .policy-console [data-policy-list]>li>div:first-child{display:grid;gap:4px;min-width:0}
+.kernel .policy-console [data-policy-list] span{color:var(--ui-copy);font-size:12px;overflow-wrap:anywhere}
+.kernel .policy-editor{margin-top:14px;border-top:1px solid var(--ui-line);padding-top:14px}
+.kernel .policy-editor summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--ui-focus)}
+.kernel .policy-editor form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;margin-top:12px}
+.kernel .policy-editor form>label,.kernel .policy-editor form>input,.kernel .policy-editor form>select,.kernel .policy-editor form>textarea,.kernel .policy-editor form>button,.kernel .policy-editor form>p{grid-column:span 2}
+.kernel .policy-editor input,.kernel .policy-editor select,.kernel .policy-editor textarea{width:100%;min-height:44px;padding:10px;border:1px solid var(--ui-line);border-radius:8px;background:#09080d;color:var(--ui-ink);font:inherit}
+.kernel .policy-editor textarea{min-height:88px;resize:vertical}
+.kernel .policy-editor button{margin-top:12px}
+.kernel .policy-editor p{margin:8px 0;color:var(--ui-muted)}
+@media(max-width:600px){.kernel .policy-status{grid-template-columns:1fr;gap:8px}.kernel .policy-console [data-policy-list]>li{align-items:flex-start;flex-direction:column}.kernel .policy-editor form{grid-template-columns:1fr}.kernel .policy-editor form>*{grid-column:1!important}}
 .kernel .health-note{margin-top:12px;color:var(--ui-muted);font-size:12px;line-height:1.8}
 
 .kernel .metrics{gap:16px;margin-bottom:40px}

@@ -51,6 +51,13 @@ export async function manageMember(identity, requested, body) {
         if (owners <= 1) throw new KernelError(409, 'LAST_OWNER_REQUIRED', 'لا يمكن سحب آخر عضوية مالك للمؤسسة.');
       }
       await audit(db, identity, tenant.tenant_id, 'kernel.member.revoked');
+      const hierarchyReady=(await db.query("SELECT to_regclass('public.aigas_department_memberships') IS NOT NULL AND to_regclass('public.aigas_department_events') IS NOT NULL AS ready")).rows[0].ready;
+      if (hierarchyReady) {
+        const departments=(await db.query("UPDATE public.aigas_department_memberships SET status='REVOKED' WHERE tenant_id=$1 AND user_id=$2 AND status='ACTIVE' RETURNING department_id",[tenant.tenant_id,body.userId])).rows;
+        for (const row of departments) await db.query("INSERT INTO public.aigas_department_events(id,tenant_id,department_id,actor_user_id,subject_user_id,action,reason) VALUES(gen_random_uuid(),$1,$2,$3,$4,'MEMBER_REVOKED','سُحبت عضوية Kernel؛ أوقفت عضوية الإدارة التابعة.')",[tenant.tenant_id,row.department_id,identity.userId,body.userId]);
+      }
+      const delegationsReady=(await db.query("SELECT to_regclass('public.aigas_policy_delegations') IS NOT NULL AS ready")).rows[0].ready;
+      if (delegationsReady) await db.query("UPDATE public.aigas_policy_delegations SET revoked_at=clock_timestamp(),revoke_reason='سُحبت عضوية Kernel.' WHERE tenant_id=$1 AND delegate_user_id=$2 AND revoked_at IS NULL",[tenant.tenant_id,body.userId]);
       await db.query('DELETE FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2', [tenant.tenant_id, body.userId]);
       return { persisted: true };
     }
@@ -61,6 +68,10 @@ export async function manageMember(identity, requested, body) {
     }
     if (target.role === body.role) return { persisted: true, unchanged: true };
     await db.query('UPDATE public.aigas_memberships SET role=$3 WHERE tenant_id=$1 AND user_id=$2', [tenant.tenant_id, body.userId, body.role]);
+    if (target.role==='ADMIN' && body.role!=='ADMIN') {
+      const delegationsReady=(await db.query("SELECT to_regclass('public.aigas_policy_delegations') IS NOT NULL AS ready")).rows[0].ready;
+      if (delegationsReady) await db.query("UPDATE public.aigas_policy_delegations SET revoked_at=clock_timestamp(),revoke_reason='تغير دور العضو من ADMIN.' WHERE tenant_id=$1 AND delegate_user_id=$2 AND revoked_at IS NULL",[tenant.tenant_id,body.userId]);
+    }
     await audit(db, identity, tenant.tenant_id, 'kernel.member.role_changed');
     return { persisted: true, role: body.role };
   });

@@ -41,7 +41,7 @@ const registerInvite = root.querySelector<HTMLButtonElement>('[data-register-inv
 const incomingPanel = root.querySelector<HTMLElement>('[data-incoming-panel]')!;
 const productSlugs = ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat'];
 const roleNames: Record<string,string> = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
-const healthNames: Record<string, string> = { auth: 'إعداد Neon Auth', database: 'اتصال قاعدة البيانات', schema: 'مخطط Kernel', administration: 'إدارة Kernel', configuration_auth: 'تهيئة Auth على الخادم', configuration_database: 'تهيئة قاعدة البيانات على الخادم', configuration_schema: 'تهيئة المخطط', configuration_administration: 'تهيئة الإدارة' };
+const healthNames: Record<string, string> = { auth: 'إعداد Neon Auth', database: 'اتصال قاعدة البيانات', schema: 'مخطط Kernel', administration: 'إدارة Kernel', policyEngine:'مخطط السياسات المركزية', configuration_auth: 'تهيئة Auth على الخادم', configuration_database: 'تهيئة قاعدة البيانات على الخادم', configuration_schema: 'تهيئة المخطط', configuration_administration: 'تهيئة الإدارة', configuration_policyEngine:'تهيئة السياسات المركزية' };
 const healthStates: Record<string, { text: string; tone: string }> = {
   READY: { text: 'جاهز', tone: 'ok' },
   CONFIGURED: { text: 'الإعداد موجود', tone: 'ok' },
@@ -54,6 +54,8 @@ const healthStates: Record<string, { text: string; tone: string }> = {
   SCHEMA_MISSING: { text: 'جداول Kernel الأربع غير مطبّقة', tone: 'bad' },
   NOT_CHECKED: { text: 'لم يُفحص', tone: 'muted' },
   KERNEL_ADMIN_SETUP_REQUIRED: { text: 'يلزم ترحيل إدارة Kernel المعتمد', tone: 'warn' },
+  NOT_CONFIGURED: { text: 'غير مهيأ', tone: 'muted' },
+  SCHEMA_READY: { text: 'المخطط موجود', tone: 'ok' },
   UNKNOWN: { text: 'غير معروف', tone: 'muted' },
 };
 const healthOverall: Record<string, { text: string; tone: string }> = {
@@ -75,6 +77,11 @@ function clearPrivate() {
   root.querySelector('[data-incoming]')!.replaceChildren();
   nativeOrganizations.replaceChildren();
   adminStatus.textContent = '';
+  root.querySelector('[data-policy-state]')!.textContent='غير مهيأ';
+  root.querySelector('[data-policy-count]')!.textContent='لم تُحمّل حالة السياسات.';
+  root.querySelector('[data-policy-detail]')!.textContent='حالة مخطط السياسات غير محمّلة؛ لا يُدّعى تفعيل الهرمية.';
+  root.querySelector<HTMLElement>('[data-policy-console]')!.hidden=true;
+  root.querySelector('[data-policy-list]')!.replaceChildren();
   const tenantName = root.querySelector<HTMLElement>('[data-tenant-name]')!;
   const emptyTenant = document.createElement('bdi'); emptyTenant.dir = 'auto'; emptyTenant.textContent = 'لا توجد مساحة محمّلة'; tenantName.replaceChildren(emptyTenant);
   root.querySelector('[data-tenant-detail]')!.textContent = 'تظهر البيانات بعد التحقق من العضوية.';
@@ -206,6 +213,19 @@ function render(data: any) {
   retry.hidden = true; logout.hidden = false; if (login) login.hidden = true;
   title.textContent = data.tenant ? 'مساحة العمل متصلة' : 'أنشئ مساحة عملك الأولى';
   status.textContent = data.tenant ? 'تم التحقق من الهوية والعضوية وتحميل بيانات المؤسسة.' : 'لا توجد عضويات لهذا الحساب. يمكنك إنشاء مؤسسة جديدة.';
+  const policyState = data.policyEngine?.state ?? 'NOT_CONFIGURED';
+  const policyLabels: Record<string,string> = { NOT_CONFIGURED:'غير مهيأ',NO_PUBLISHED_POLICIES:'لا توجد سياسات منشورة',CONFIGURED:'مخطط وسياسات منشورة' };
+  root.querySelector('[data-policy-state]')!.textContent=policyLabels[policyState] ?? 'حالة غير معروفة';
+  root.querySelector('[data-policy-count]')!.textContent=`سياسات منشورة: ${data.policyEngine?.publishedPolicies ?? 0} · إدارات: ${data.policyEngine?.departments ?? 0}`;
+  root.querySelector('[data-policy-detail]')!.textContent=policyState==='CONFIGURED'
+    ? 'توجد نسخ منشورة ضمن المؤسسة؛ يمر مسار Firewall المحمي بتقييم Kernel الخادمي قبل أي تمرير. يظل التحقق من صلاحية المخطط وRLS والتشغيل الفعلي مطلوبًا.'
+    : policyState==='NO_PUBLISHED_POLICIES'
+      ? 'المخطط موجود لكن لا توجد سياسة منشورة؛ مسار التنفيذ المحمي يتوقف آمنًا حتى النشر.'
+      : 'مخطط السياسات غير موجود في قاعدة البيانات الحالية؛ مسار التنفيذ المحمي لا يمر إلى مزود عند غياب التقييم.';
+  const policyConsole=root.querySelector<HTMLElement>('[data-policy-console]')!;
+  policyConsole.hidden=!data.tenant||!['OWNER','ADMIN'].includes(data.tenant.role);
+  root.querySelector<HTMLElement>('[data-policy-department-tools]')!.hidden=data.tenant?.role!=='OWNER';
+  root.querySelector<HTMLFormElement>('[data-policy-create]')!.hidden=data.tenant?.role!=='OWNER';
   root.querySelector('[data-connection]')!.textContent = data.system?.connection === 'CONNECTED' ? 'Auth + DB · متصل' : 'تعذر تأكيد الاتصال';
   const dashboardUpdated = root.querySelector<HTMLElement>('[data-dashboard-updated]')!;
   const dashboardDate = new Date(data.system?.updatedAt);
@@ -252,6 +272,84 @@ function render(data: any) {
     }
   }
 }
+const policyScope = root.querySelector<HTMLSelectElement>('#policy-scope')!;
+const policyDepartments = root.querySelector<HTMLSelectElement>('[data-policy-department]')!;
+const policyProduct = root.querySelector<HTMLSelectElement>('[data-policy-product]')!;
+const policyUser = root.querySelector<HTMLSelectElement>('[data-policy-user]')!;
+function updatePolicyScopeFields() {
+  const scope=policyScope.value;
+  root.querySelector<HTMLElement>('[data-policy-department-field]')!.hidden=scope!=='DEPARTMENT';
+  root.querySelector<HTMLElement>('[data-policy-product-field]')!.hidden=scope!=='PRODUCT';
+  root.querySelector<HTMLElement>('[data-policy-user-field]')!.hidden=scope!=='USER';
+  policyDepartments.required=scope==='DEPARTMENT'; policyProduct.required=scope==='PRODUCT'; policyUser.required=scope==='USER';
+}
+async function loadPolicyConsole(team?: any) {
+  const section=root.querySelector<HTMLElement>('[data-policy-console]')!;
+  const state=section.querySelector<HTMLElement>('[data-policy-console-state]')!;
+  if (section.hidden||!currentTenant) return;
+  state.textContent='جارٍ تحميل السياسات والإدارات…';
+  try {
+    const data=await endpoint('policies', 'GET', undefined, currentTenant.tenant_id);
+    const activeMembers=(team?.members??[]).filter((m:any)=>m.userId&&m.status==='ACTIVE');
+    const people=[new Option('اختر عضوًا',''),...activeMembers.map((m:any)=>new Option(`${m.name} · ${m.roleLabel} · ${m.userId}`,m.userId))];
+    policyUser.replaceChildren(...people.map((o:HTMLOptionElement)=>o.cloneNode(true) as HTMLOptionElement));
+    root.querySelector<HTMLSelectElement>('[data-department-user]')!.replaceChildren(...people.map((o:HTMLOptionElement)=>o.cloneNode(true) as HTMLOptionElement));
+    root.querySelector<HTMLSelectElement>('[data-policy-delegate-user]')!.replaceChildren(new Option('اختر مديرًا',''),...activeMembers.filter((m:any)=>m.role==='ADMIN').map((m:any)=>new Option(`${m.name} · ${m.userId}`,m.userId)));
+    const list=section.querySelector<HTMLElement>('[data-policy-list]')!; list.replaceChildren();
+    const departments=data.departments ?? [];
+    const deptOptions=[new Option('اختر إدارة',''),...departments.map((d:any)=>new Option(d.name,d.id))];
+    policyDepartments.replaceChildren(...deptOptions.map((o:HTMLOptionElement)=>o.cloneNode(true) as HTMLOptionElement));
+    root.querySelector<HTMLSelectElement>('[data-department-member-ref]')!.replaceChildren(...deptOptions.map((o:HTMLOptionElement)=>o.cloneNode(true) as HTMLOptionElement));
+    for (const policy of data.policies ?? []) {
+      const item=document.createElement('li'), summary=document.createElement('div'), title=document.createElement('strong'), detail=document.createElement('span');
+      title.textContent=`${policy.policy_family} · ${policy.scope}`;
+      detail.textContent=`${policy.rule_key} · ${policy.status ?? 'DRAFT'} · v${policy.version ?? 1} · ${policy.effect ?? '—'}${policy.is_mandatory?' · إلزامية':''}`;
+      summary.append(title,detail); item.append(summary);
+      const actions=document.createElement('div'); actions.className='member-actions';
+      const addAction=(label:string,operation:string)=>{
+        const button=document.createElement('button'); button.type='button'; button.textContent=label;
+        button.addEventListener('click',()=>void adminRun(async()=>{
+          const why=window.prompt('اكتب سبب الإجراء (3–500 حرفًا):'); if (!why||why.trim().length<3) return;
+          const payload:any={operation,policyId:policy.id,version:policy.version,reason:why.trim()};
+          if(operation==='publish') payload.expectedVersion=policy.current_version;
+          await endpoint('policies','POST',payload,currentTenant?.tenant_id);
+          await loadPolicyConsole();
+          state.textContent=`تم تنفيذ الإجراء: ${label}.`;
+        })); actions.append(button);
+      };
+      if(policy.status==='DRAFT'&&currentTenant?.role==='OWNER') addAction('إحالة للمراجعة','submit');
+      if(policy.status==='IN_REVIEW'&&['OWNER','ADMIN'].includes(currentTenant?.role)) addAction('اعتماد النسخة','approve');
+      if(policy.status==='APPROVED'&&currentTenant?.role==='OWNER') addAction('نشر النسخة','publish');
+      if(policy.status==='PUBLISHED'&&currentTenant?.role==='OWNER'&&policy.effect!=='HARD_DENY'&&!policy.is_mandatory) addAction('إيقاف النسخة','retire');
+      if(actions.childElementCount) item.append(actions);
+      list.append(item);
+    }
+    if(!(data.policies ?? []).length){const empty=document.createElement('li');empty.textContent='لا توجد سياسات بعد. أنشئ مسودة من النموذج أدناه.';list.append(empty);}
+    const members=data.departmentMembers ?? [];
+    const departmentDetails=document.createElement('li'); departmentDetails.textContent=`الإدارات: ${departments.length} · عضويات الإدارات: ${members.filter((m:any)=>m.status==='ACTIVE').length}`; list.append(departmentDetails);
+    for(const grant of data.delegations ?? []){
+      const item=document.createElement('li'), detail=document.createElement('span');
+      detail.textContent=`تفويض اعتماد · ${grant.delegate_user_id} · ${grant.revoked_at?'ملغى':new Date(grant.expires_at).toLocaleDateString('ar-SA')}`; item.append(detail);
+      if(currentTenant?.role==='OWNER'&&!grant.revoked_at){const button=document.createElement('button');button.type='button';button.textContent='إلغاء التفويض';button.addEventListener('click',()=>void adminRun(async()=>{const reason=window.prompt('اكتب سبب إلغاء التفويض:');if(!reason||reason.trim().length<3)return;await endpoint('policies','POST',{operation:'revoke-approver',userId:grant.delegate_user_id,reason:reason.trim()},currentTenant?.tenant_id);await loadPolicyConsole();}));item.append(button);}
+      list.append(item);
+    }
+    state.textContent=currentTenant.role==='ADMIN'?'تظهر السياسات للمراجعة فقط؛ يلزم تفويض اعتماد ساري.':'تُعرض سياسات هذه المؤسسة فقط.';
+  } catch(error:any) { state.textContent=`تعذر تحميل واجهة السياسات (${error.code??'REQUEST_FAILED'}): ${error.message??'أعد المحاولة.'}`; }
+}
+policyScope.addEventListener('change',updatePolicyScopeFields); updatePolicyScopeFields();
+root.querySelector('[data-policy-refresh]')!.addEventListener('click',()=>void loadPolicyConsole());
+root.querySelector<HTMLFormElement>('[data-policy-create]')!.addEventListener('submit',event=>{
+  event.preventDefault(); const form=event.currentTarget as HTMLFormElement, values=new FormData(form), scope=String(values.get('scope')), operation=String(values.get('operation')??'').trim();
+  const definition:any={scope,family:String(values.get('family')).trim(),ruleKey:String(values.get('ruleKey')).trim(),effect:String(values.get('effect')),obligations:[],mandatory:String(values.get('effect'))==='HARD_DENY',conditions:operation?{operation}: {},reason:String(values.get('reason')).trim()};
+  if(scope==='DEPARTMENT') definition.departmentId=String(values.get('departmentId'));
+  if(scope==='PRODUCT') definition.productSlug=String(values.get('productSlug'));
+  if(scope==='USER') definition.userId=String(values.get('userId')).trim();
+  void adminRun(async()=>{await endpoint('policies','POST',{operation:'create',definition},currentTenant?.tenant_id);form.reset();updatePolicyScopeFields();await loadPolicyConsole();});
+});
+root.querySelector<HTMLFormElement>('[data-department-create]')!.addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,values=new FormData(form);void adminRun(async()=>{await endpoint('policies','POST',{operation:'department-create',name:String(values.get('name')).trim(),reason:String(values.get('reason')).trim()},currentTenant?.tenant_id);form.reset();await loadPolicyConsole();});});
+root.querySelector<HTMLFormElement>('[data-department-member]')!.addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,values=new FormData(form);void adminRun(async()=>{await endpoint('policies','POST',{operation:'department-member-add',departmentId:String(values.get('departmentId')),userId:String(values.get('userId')).trim(),reason:String(values.get('reason')).trim()},currentTenant?.tenant_id);form.reset();await loadPolicyConsole();});});
+root.querySelector('[data-department-member-remove]')!.addEventListener('click',()=>{const form=root.querySelector<HTMLFormElement>('[data-department-member]')!,values=new FormData(form),reason=window.prompt('اكتب سبب إيقاف عضوية الإدارة:');if(!reason||reason.trim().length<3)return;void adminRun(async()=>{await endpoint('policies','POST',{operation:'department-member-remove',departmentId:String(values.get('departmentId')),userId:String(values.get('userId')).trim(),reason:reason.trim()},currentTenant?.tenant_id);await loadPolicyConsole();});});
+root.querySelector<HTMLFormElement>('[data-policy-delegate]')!.addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,values=new FormData(form);void adminRun(async()=>{const expiry=new Date(String(values.get('expiresAt')));await endpoint('policies','POST',{operation:'delegate-approver',userId:String(values.get('userId')).trim(),expiresAt:expiry.toISOString(),reason:String(values.get('reason')).trim()},currentTenant?.tenant_id);form.reset();await loadPolicyConsole();});});
 async function load(workspace?: string) {
   workspace ||= selectedWorkspace();
   clearPrivate();
@@ -261,13 +359,15 @@ async function load(workspace?: string) {
   const data = await api('GET', undefined, workspace);
   render(data);
   await loadIncoming();
+  let policyTeam:any=null;
   if (data.tenant) {
-    try { await renderMembers(await members(data.tenant.tenant_id)); }
+    try { policyTeam=await members(data.tenant.tenant_id); await renderMembers(policyTeam); }
     catch (error: any) { membersState.textContent = error.message || 'تعذر تحميل الأعضاء.'; }
   } else {
     membersState.textContent = 'لا توجد مؤسسة بعد؛ أنشئ مساحة عمل لعرض الأعضاء.';
     activityState.textContent = 'لا توجد مؤسسة بعد.';
   }
+  await loadPolicyConsole(policyTeam);
 }
 async function health() {
   healthList.replaceChildren();

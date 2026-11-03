@@ -7,6 +7,7 @@ import { KernelError, requireRole } from '../kernel/core.mjs';
 import { templates, evaluate, inputText, actions, reasons, ruleName, rulePattern, ruleAction, rulePriority, MAX_RULES } from './core.mjs';
 import { providerState } from './provider.mjs';
 import { enforceDecision } from './guard.mjs';
+import { evaluateKernelPolicy } from '../kernel/policies.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const editableFields = ['name', 'pattern', 'action', 'priority'];
@@ -112,10 +113,27 @@ export function createFirewallService(transact = transaction) {
 
       if (operation === 'evaluate' || operation === 'enforce') {
         const enforced = operation === 'enforce';
-        const result = evaluate(inputText(body.text), rules, { enforce: enforced });
+        const requestText = inputText(body.text);
+        let kernelPolicy = null;
+        if (enforced) {
+          try {
+            kernelPolicy = await evaluateKernelPolicy(db, identity, tenantId, { productSlug:'firewall',operation:'firewall.execute',resource_type:'text',departmentId:body.department_id ?? null });
+          } catch (error) {
+            if (['42P01','42703','42501'].includes(error?.code)) throw new KernelError(503,'KERNEL_POLICY_SETUP_REQUIRED','محرك سياسات Kernel غير مهيأ أو غير متاح؛ لم يُرسل الطلب إلى مزود AI.');
+            throw error;
+          }
+        }
+        const productResult = evaluate(requestText, rules, { enforce: enforced });
+        const result = enforced && kernelPolicy.decision !== 'ALLOW'
+          ? { action:'BLOCK',reason:'NO_ACTIVE_POLICY',rule_id:null,rule_version:null,rule_name:null,output:null }
+          : productResult;
         const id = randomUUID();
         // Explicit metadata fields only: the submitted text and any output never reach the database.
         try {
+          if (enforced) {
+            await db.query('INSERT INTO public.aigas_kernel_policy_decisions(id,tenant_id,actor_user_id,product_slug,operation,decision,reason,policy_chain,request_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9)',
+              [randomUUID(),tenantId,identity.userId,'firewall','firewall.execute',kernelPolicy.decision,kernelPolicy.reason,JSON.stringify(kernelPolicy.policies ?? []),body.request_id]);
+          }
           const inserted = await db.query(
             'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING created_at',
             [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', enforced ? body.request_id : null],
@@ -126,7 +144,7 @@ export function createFirewallService(transact = transaction) {
           await recordProductEvent(db, identity, tenantId, {source:'firewall',event_type:'firewall.decision.recorded',policy_version:result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v1',metadata_json:{synthetic:true,decision_ref:id,action:result.action,mode:enforced?'GUARD':'LAB',rule_ref:result.rule_id,rule_version:result.rule_version},idempotency_key:`decision:${id}`});
           const decision = { id, action: result.action, reason: result.reason, rule_id: result.rule_id, rule_version: result.rule_version,
             created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB' };
-          if (enforced) return { decision, tenantId, forwardText: result.output };
+          if (enforced) return { decision, tenantId, forwardText: result.output, kernelPolicy };
           return { ...decision, rule_name: result.rule_name, output: result.output, persisted: true, execution_status: 'NOT_EXECUTED', external_action_executed: false };
         } catch (error) {
           if (enforced && uniqueName(error)) throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');

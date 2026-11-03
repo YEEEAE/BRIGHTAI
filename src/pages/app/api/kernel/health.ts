@@ -8,6 +8,6 @@ export const GET: APIRoute = async () => {
     const result = await operationalHealth();
     return Response.json(result, { headers, status: result.state === 'blocked' ? 503 : 200 });
   } catch {
-    return Response.json({ status: 'degraded', state: 'degraded', errorType: 'HEALTH_CHECK_FAILED', updatedAt: new Date().toISOString(), configuration: { auth: 'UNKNOWN', database: 'UNKNOWN' }, checks: { auth: 'UNKNOWN', database: 'DB_UNAVAILABLE', schema: 'NOT_CHECKED', administration: 'NOT_CHECKED' } }, { headers, status: 503 });
+    return Response.json({ status: 'degraded', state: 'degraded', errorType: 'HEALTH_CHECK_FAILED', updatedAt: new Date().toISOString(), configuration: { auth: 'UNKNOWN', database: 'UNKNOWN', policyEngine:'UNKNOWN' }, checks: { auth: 'UNKNOWN', database: 'DB_UNAVAILABLE', schema: 'NOT_CHECKED', administration: 'NOT_CHECKED', policyEngine:'NOT_CHECKED' } }, { headers, status: 503 });
   }
 };

@@ -8,7 +8,7 @@ const allowedFields = {
   create: ['template', 'name', 'pattern', 'action', 'priority'],
   update: ['id', 'version', 'enabled', 'name', 'pattern', 'action', 'priority'],
   evaluate: ['text', 'synthetic'],
-  enforce: ['text', 'synthetic', 'request_id'],
+  enforce: ['text', 'synthetic', 'request_id', 'department_id'],
 };
 async function readBody(request, operation) {
   const origin = request.headers.get('origin');
