@@ -3,7 +3,8 @@ import BrandLogo from '../components/BrandLogo.astro';
 import '../styles/variables.css';
 import '../styles/kernel.css';
 const { title = 'مساحة العمل' } = Astro.props;
-Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
+Astro.response.headers.set('CDN-Cache-Control', 'no-store');
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 ---

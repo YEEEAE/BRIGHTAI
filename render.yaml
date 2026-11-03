@@ -32,6 +32,7 @@ services:
       # Preserved for existing dashboard compatibility; the current site has no chat API.
       - key: REDIS_URL
         sync: false
+    # Operator runbook: docs/APP-PORTAL-RUNTIME-HANDOFF.md
     # Static-site header rules do not belong to this Node web service.
     # src/middleware.ts sets baseline headers (framing, referrer, permissions,
     # HSTS on HTTPS) and private /app/* no-store/noindex headers.

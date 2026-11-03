@@ -1,6 +1,7 @@
 import { defineMiddleware } from 'astro:middleware';
 import { redirects } from '../redirects.json';
 import { isPortalEnabled } from './server/kernel/env.mjs';
+import { portalUnavailableJson, portalUnavailablePage } from './server/kernel/unavailable.mjs';
 
 // Node web services do not consume redirects.json automatically.
 const destinations = new Map(redirects.map(({ source, destination }) => [source, destination]));
@@ -41,24 +42,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const secureTransport = forwardedProto === 'https' || context.url.protocol === 'https:';
 
   if (path === '/app' || path.startsWith('/app/')) {
-    let response;
-    if (!isPortalEnabled()) {
-      if (path.startsWith('/app/api/')) {
-        response = Response.json({
-          code: 'APP_UNAVAILABLE',
-          message: 'بوابة مساحة العمل غير متاحة حاليًا.',
-        }, {
-          status: 503,
-          headers: { 'Retry-After': '3600' },
-        });
-      } else {
-        const contact = new URL('/contact/', context.url);
-        contact.searchParams.set('topic', 'بوابة مساحة العمل');
-        response = context.redirect(`${contact.pathname}${contact.search}`, 302);
-      }
-    } else {
-      response = await next();
-    }
+    // The gate runs before any route, redirect or static asset resolution:
+    // a disabled portal answers 503 here and never renders app pages or APIs.
+    const isApi = path === '/app/api' || path.startsWith('/app/api/');
+    const response = isPortalEnabled()
+      ? await next()
+      : isApi
+        ? portalUnavailableJson()
+        : portalUnavailablePage(context.request);
     return harden(response, { portal: true, secureTransport });
   }
 

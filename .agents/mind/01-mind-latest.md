@@ -1,3 +1,19 @@
+## [2026-11-03] — بوابة `/app/*`: استجابة 503 عند التعطيل وتوثيق تشغيل المشغّل
+### تم التنفيذ
+- تحوّلت البوابة المعطلة من تحويل 302 إلى `/contact/` إلى رد خادمي مباشر: صفحة HTML عربية `503` لمسارات `/app/*` وJSON `{code:"APP_UNAVAILABLE"}` لـ`/app/api/*`، مع `no-store`/`noindex`/`Retry-After`، ودون أي بيانات أو رابط دخول وهمي. الجسم في `src/server/kernel/unavailable.mjs` والترتيب في `src/middleware.ts`.
+- صار `AIGAS_APP_ENABLED=false` يتغلّب صراحةً حتى في التطوير، وقيمة `true` هي الطريقة الوحيدة لفتح تشغيل غير تطويري؛ غياب العلم يُبقي `astro dev` مفتوحًا فقط.
+- عُزّزت ترويسات `AppLayout` بـ`CDN-Cache-Control: no-store`، وأُضيف دليل مشغّل موجز يفصل Node SSR عن الاستضافة الثابتة ويحدد مكان تغيير الخدمة/الأسرار/العلم.
+- أُبقيت `output:'server'` و`@astrojs/node` standalone و`npm start` كما هي؛ لا تغيير في routes أو عقود API أو المنتجات أو الهيرو/الهيدر/الشعار، ولا استيراد server جديد في أي عميل.
+### الملفات المتأثرة
+- `src/middleware.ts`, `src/server/kernel/{env,unavailable}.mjs`, `src/layouts/AppLayout.astro`, `render.yaml`, `docs/APP-PORTAL-RUNTIME-HANDOFF.md`, `docs/CURRENT-IMPLEMENTATION-REGISTER.md`
+### التحقق
+- `node --check` للملفين المعدل/الجديد، وتشييد استجابتي 503 برمجيًا (الحالة والترويسات)، و`git diff --check`: PASS.
+- build/lint/typecheck/tests/Playwright/متصفح/خادم/نشر: NOT RUN حسب طلب المهمة. لا تغيير على GitHub أو Neon.
+### النتيجة
+- **الحالة:** DONE كمصدر محلي لإغلاق البوابة؛ التشغيل والنشر NOT VERIFIED.
+### ملاحظات / مشاكل مفتوحة
+- إصلاح 404 الحقيقي على `brightai.live` يتطلب ربط الدومين بخدمة Node SSR وتمرير `/app/*` دون CDN، ثم تحقق المشغّل من الاستجابة الفعلية؛ لم يُنفّذ أي نشر أو تعديل DNS/Render. `AIGAS_APP_ENABLED` بقي `false`.
+
 ## [2026-11-03] — توحيد الحقيقة بين المتطلبات والكود والمخطط والواجهات
 ### تم التنفيذ
 - أُنشئ `docs/CURRENT-IMPLEMENTATION-REGISTER.md` يجرد المسارات والـAPIs والترحيلات وحالة Neon قراءة فقط، ويصنّف كل قدرة `FW/LD/HG/RE/SC` بحقول APPROVED_REQ وSOURCE_PRESENT وSCHEMA_PRESENT وRUNTIME_NOT_VERIFIED وBLOCKED_BY مع دليل الملف/الدالة.

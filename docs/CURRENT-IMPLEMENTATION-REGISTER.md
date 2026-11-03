@@ -21,7 +21,7 @@
 
 **حدود عامة ثابتة في هذه اللقطة:**
 
-- `AIGAS_APP_ENABLED` غير مضبوط بـ`true` في المصدر/`render.yaml`؛ البوابة مغلقة افتراضيًا في الإنتاج (`src/server/kernel/env.mjs:6`).
+- `AIGAS_APP_ENABLED` غير مضبوط بـ`true` في المصدر/`render.yaml`؛ البوابة مغلقة افتراضيًا في الإنتاج (`src/server/kernel/env.mjs`).
 - `APPROVED_MODELS = []` في `src/server/secure-chat/models.mjs:3`؛ لا يوجد نموذج أو مزود معتمد ومهيأ.
 - لا توجد سجلات عمل في Neon: `aigas_tenants = 0`، `aigas_memberships = 0`، `aigas_product_access = 0`، `aigas_fw_decisions = 0`، `aigas_ld_events = 0`، `aigas_hg_requests = 0`، `aigas_re_assets = 0`، `aigas_sc_messages = 0`، و`neon_auth."user" = 0`، `neon_auth.session = 0`.
 - RLS مفعّل على 31 جدولًا، لكن السياسات المعرّفة موجودة على جدولين فقط: `aigas_sc_requests` و`aigas_sc_cancellations`. بقية الجداول بلا سياسة RLS، لذا الاعتماد الفعلي على دور التطبيق وصلاحياته لا على RLS وحدها.
@@ -44,7 +44,7 @@
 | بوابة | 8 أنماط | `/app/`, `/app/firewall/`, `/app/human-gate/`, `/app/kernel/`, `/app/ledger/`, `/app/risk-engine/`, `/app/risk-engine/:assetId`, `/app/secure-chat/` |
 | خطأ | 1 | `/404/` |
 
-`/app/` و`/auth/` مستبعدة من sitemap في `astro.config.mjs`، والبوابة محمية بـ`middleware` وتعطي 302 إلى `/contact/` أو 503 لمسارات API عند تعطيلها.
+`/app/` و`/auth/` مستبعدة من sitemap في `astro.config.mjs`، والبوابة محمية بـ`middleware` وتعطي عند تعطيلها 503 صفحة عربية (`APP_UNAVAILABLE`, `no-store`, `noindex`) لكل `/app/*` و503 JSON لكل `/app/api/*`، دون تحويل إلى صفحة عامة. دليل المشغّل: `docs/APP-PORTAL-RUNTIME-HANDOFF.md`.
 
 ### 2.2 مسارات API الخادمية (30 ملفًا)
 
