@@ -1,3 +1,20 @@
+## [2026-11-03] — إكمال دورة أصل/تقييم/معالجة في Risk Engine (محلي فقط)
+### تم التنفيذ
+- أُضيف كائن منهج معلن `METHOD` (محاور 1–3، نطاقات 1–2/3–4/6–9، معنى inherent/residual، وقيود صريحة) ويُعاد مع قائمة الأصول والتقييمات والمعالجة والتصدير؛ لا مقياس 0–100 ولا ادعاء ISO/سدايا/امتثال.
+- أصبحت حالة التقييم مشتقة من مطابقة `asset_version` فقط: الأصل بلا تقييم أو بتقييم قديم يظهر `NOT_ASSESSED`/`REASSESSMENT_REQUIRED` ولا يُحتسب LOW. وقراءات التفاصيل تستخدم `FOR SHARE` بينما الكتابة فقط `FOR UPDATE`.
+- تعديل الأصل يعيد `changed_fields` و`reassessment_required` و`treatment_review_required`؛ لا تتغير الدرجات السابقة ولا يُمحى سجل المعالجة.
+- قبول الخطر: تعليل مسجل ≥20 حرفًا، وOWNER مستقل للخطر HIGH، واستجابة `acceptance` + `deployment_authorized:false` و`policy_override:false`، مع تدقيق صريح `risk_engine.treatment.accepted`.
+- التصدير يضيف `method` و`authorization_scope` و`data_quality` (غير مقيّم/إعادة تقييم/مراجعة معالجة/قبول حالي) مع بقاء حد 10000 أصل.
+- الواجهة توضح الفرق بين الخطر الكامن والمتبقي، ورسائل «يحتاج تقييمًا»، وحد التعليل عند القبول. أضيف `migrations/0021_aigas_risk_engine_acceptance_guard.sql` كمسودة محلية غير مطبقة.
+### الملفات المتأثرة
+- `src/server/risk-engine/{core,service,http}.mjs`, `src/components/RiskWorkspace.astro`, `src/scripts/risk-engine.ts`, `migrations/0021_aigas_risk_engine_acceptance_guard.sql`, `docs/RISK-ENGINE-DEVELOPMENT.md`, `docs/products/risk-engine/FEATURE-STATUS.yaml`
+### التحقق
+- `node --check` للملفات `.mjs` المعدلة و`git diff --check`: PASS. build/lint/typecheck/tests/Playwright/PostgreSQL/Neon/متصفح: NOT RUN حسب طلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED — NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا كتابة إلى Neon أو GitHub.
+### ملاحظات / مشاكل مفتوحة
+- `0021` غير مطبق على أي بيئة؛ يلزم اعتماد بشري وبيئة معتمدة. تشغيل Risk Engine ما زال محجوبًا أيضًا بـ`0017` (سياق التدقيق) وعدم وجود مستخدم/جلسة أو دور runtime/RLS متحقق. لا توجد درجة للخطر المتبقي؛ هو وصف نصي فقط.
+
 ## [2026-11-03] — متابعة إغلاق Human Gate: أجسام POST والانتقالات وربط إذن التنفيذ
 ### تم التنفيذ
 - أُصلح خلل خادمي حقيقي في `http.mjs`: الإلغاء والتفويض وإلغاء التفويض كانت تُنفّذ بجسم فارغ فتفشل دائمًا؛ أصبح كل مسار POST يقرأ JSON الخاص به.

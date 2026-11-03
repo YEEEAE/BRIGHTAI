@@ -48,6 +48,8 @@ local_foundation:
   follow_up_slice: ASSET_CONTEXT_RESIDUAL_RISK_AND_REVISION_RESTORE_LOCAL_ONLY
   latest_source_update: '2026-11-03'
   latest_local_migration: migrations/0015_aigas_risk_engine_asset_context_residual_risk.sql
+  latest_local_draft_migration_unapplied: migrations/0021_aigas_risk_engine_acceptance_guard.sql
+  lifecycle_closure_local_only: METHOD_METADATA_REASSESSMENT_FLAGS_ACCEPTANCE_RATIONALE_AND_DATA_QUALITY
   latest_neon_schema_observation:
     date: '2026-11-03'
     branch: production
@@ -64,7 +66,7 @@ local_foundation:
   commercial_availability_changed: false
 current_source_snapshot:
   inspected_on: '2026-11-03'
-  local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+  local_commit: af6d721df6372fdbc9d4cb9a71820c033019afb1
   runtime_verified: false
   sources:
   - src/server/risk-engine/{core,service,http}.mjs

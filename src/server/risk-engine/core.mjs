@@ -1,6 +1,33 @@
 import { KernelError } from '../kernel/core.mjs';
 export const METHOD_VERSION = 'draft-likelihood-impact-v1';
 export const METHOD_NAME = 'مسودة مصفوفة الاحتمال × الأثر 3×3';
+// Declared context for the draft method. It is deliberately descriptive: no
+// numeric 0–100 score, no calibration claim and no ISO/regulatory approval.
+export const METHOD = Object.freeze({
+ id: METHOD_VERSION,
+ name: METHOD_NAME,
+ state: 'DRAFT_NOT_APPROVED',
+ measurement: 'HUMAN_ENTERED_DETERMINISTIC_RULES',
+ axes: Object.freeze({
+  likelihood: Object.freeze({min:1,max:3,labels:Object.freeze({1:'غير مرجح',2:'ممكن',3:'مرجح'})}),
+  impact: Object.freeze({min:1,max:3,labels:Object.freeze({1:'محدود',2:'مؤثر',3:'جسيم'})}),
+ }),
+ bands: Object.freeze([
+  Object.freeze({min:1,max:2,level:'LOW',label:'منخفض'}),
+  Object.freeze({min:3,max:4,level:'MEDIUM',label:'متوسط'}),
+  Object.freeze({min:6,max:9,level:'HIGH',label:'مرتفع'}),
+ ]),
+ inherent: 'الخطر الكامن = الاحتمال × الأثر قبل الاعتماد على الضوابط؛ الأسباب يكتبها المقيّم البشري.',
+ residual: 'الخطر المتبقي وصف نصي بعد الضوابط؛ لا تُحتسب درجة رقمية ولا يخفض القبول درجة التقييم تلقائيًا.',
+ limitations: Object.freeze([
+  'مدخلات بشرية بقواعد حتمية؛ ليست احتمالًا إحصائيًا معايرًا ولا تحليلًا من نموذج ذكاء اصطناعي.',
+  'لا اعتماد ISO أو سدايا أو أي جهة تنظيمية، ولا ادعاء امتثال.',
+  'النتيجة لا تصرح بنشر نموذج أو تشغيله ولا تتجاوز سياسة إلزامية.',
+  'قبول الخطر المرتفع إداري فقط ويتطلب مالكًا مستقلًا وتعليلًا مسجلًا.',
+ ]),
+});
+// Acceptance is recorded as a decision, never as deployment or policy authority.
+export const acceptanceScope = Object.freeze({deployment_authorized:false,policy_override:false,mandatory_policy_override:false});
 export const treatmentStatuses = ['OPEN','IN_PROGRESS','MITIGATED','ACCEPTED'];
 export const treatmentFields = ['asset_version','assessment_id','treatment_version','owner','status','control_description','residual_risk_description','review_on','rationale'];
 export const classifications = ['PUBLIC','INTERNAL','CONFIDENTIAL','RESTRICTED'];
@@ -22,6 +49,16 @@ export function version(value) {
  return value;
 }
 export function uuid(value) {return typeof value==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);}
+// One read model for every response: an assessment only counts for the current
+// asset version. Stale scores stay readable as history, never as a current LOW.
+export function assessmentStatus(asset, assessment) {
+ if(!assessment) return 'NOT_ASSESSED';
+ return assessment.asset_version===asset.version ? 'ASSESSED' : 'REASSESSMENT_REQUIRED';
+}
+export function treatmentNeedsReview(asset, assessment, treatment) {
+ if(!treatment) return false;
+ return treatment.asset_version!==asset.version || treatment.assessment_id!==(assessment?.id??null);
+}
 export function assetInput(body) {
  if(!classifications.includes(body.data_classification))throw new KernelError(400,'INVALID_CLASSIFICATION','اختر تصنيف البيانات.');
  const lifecycle_status=body.lifecycle_status??'ACTIVE';
@@ -45,5 +82,7 @@ export function treatmentInput(body) {
  if(!treatmentStatuses.includes(body.status))throw new KernelError(400,'INVALID_TREATMENT_STATUS','اختر حالة المعالجة.');
  const review_on=body.review_on===undefined||body.review_on===null||body.review_on===''?null:body.review_on;
  if(review_on!==null&&(typeof review_on!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(review_on)||!Number.isFinite(Date.parse(review_on))||new Date(review_on).toISOString().slice(0,10)!==review_on))throw new KernelError(400,'INVALID_REVIEW_DATE','تاريخ المراجعة غير صالح.');
- return {asset_version:version(body.asset_version),assessment_id:body.assessment_id,treatment_version:body.treatment_version,owner:text(body.owner,120),status:body.status,control_description:text(body.control_description,500),residual_risk_description:text(body.residual_risk_description),review_on,rationale:text(body.rationale,500)};
+ const rationale=text(body.rationale,500);
+ if(body.status==='ACCEPTED'&&rationale.length<20)throw new KernelError(400,'ACCEPTANCE_RATIONALE_REQUIRED','قبول الخطر يحتاج تعليلًا مسجلًا لا يقل عن 20 حرفًا يوضح سبب القبول ونطاقه.');
+ return {asset_version:version(body.asset_version),assessment_id:body.assessment_id,treatment_version:body.treatment_version,owner:text(body.owner,120),status:body.status,control_description:text(body.control_description,500),residual_risk_description:text(body.residual_risk_description),review_on,rationale};
 }

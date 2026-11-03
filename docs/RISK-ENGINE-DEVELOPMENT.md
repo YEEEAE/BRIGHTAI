@@ -2,6 +2,16 @@
 
 Date: 2026-11-01. Scope: a small persisted, rules-only slice authorized by the owner; not the complete RE-01–RE-05 product or a commercial release.
 
+## Lifecycle closure (2026-11-03, local source only)
+
+- One declared method object (`METHOD`) now travels with list/history/treatment/export responses: concrete axes, 1–2 / 3–4 / 6–9 bands, inherent-vs-residual meaning, and explicit limits. It states that the method is a draft, human-entered deterministic estimate, not a calibrated probability, AI analysis, ISO/SDAIA approval or compliance claim; no 0–100 scale is introduced.
+- Asset edits return `changed_fields`, `reassessment_required`, and `treatment_review_required`. An assessment counts only when its `asset_version` matches the current asset; stale scores remain readable as history and never become a current LOW. Read endpoints use `FOR SHARE`; only mutations take `FOR UPDATE`, so multi-query detail reads are consistent without serializing other readers.
+- Treatment acceptance remains an administrative decision. The service requires a recorded rationale of at least 20 characters for `ACCEPTED`, keeps the existing independent-OWNER rule for HIGH, returns an `acceptance` record with the actor role and risk level, and states `deployment_authorized:false` and `policy_override:false`. `migrations/0021_aigas_risk_engine_acceptance_guard.sql` mirrors the rationale rule in SQL, but it is a local draft and is **not applied**.
+- Export now includes the declared method, `authorization_scope`, and `data_quality` counts (assessed / not assessed / reassessment required / treatment review required / missing review date / accepted), while keeping tenant scope and the 10000-asset ceiling.
+- The UI explains inherent vs residual risk, shows that a missing/current-version assessment yields “needs assessment” rather than LOW, and labels acceptance as a recorded administrative decision that does not authorize deployment.
+
+Verification for this closure: `node --check` on the changed `.mjs` files and `git diff --check` only. Build, lint, typecheck, tests, browser, PostgreSQL and Neon writes were **NOT RUN** at the owner’s request. Migration 0021 requires human approval and an isolated target; production is untouched.
+
 ## Asset context and residual-risk extension (2026-11-03)
 
 Local source now records data context, provider/model identifiers, a free-text organization-reported approval status, and ACTIVE/RETIRED lifecycle. The approval field is descriptive and unverified; retirement is reversible through a new asset revision and preserves assessment/treatment history. Each edit remains tenant-scoped and creates an append-only asset snapshot; restoring an older snapshot is a new edit, never a rewrite.
@@ -32,7 +42,7 @@ Additional local APIs (all use the same Kernel identity, membership, product acc
 
 Export ignores UI filters and includes stale flags and scope limitations. A technical ceiling of 10000 assets rejects oversize exports rather than truncating; this is not a commercial quota. File download requires authenticated fetch and remains in memory until download. Assessment, asset and treatment histories remain available through their paginated endpoints.
 
-For a fresh approved development target, apply `0005_aigas_risk_engine.sql`, `0008_aigas_risk_engine_lifecycle.sql`, then `0015_aigas_risk_engine_asset_context_residual_risk.sql`; the latter retains all existing history and only adds fields. Kernel access additionally uses administration migration 0006. Do not run unrelated product migrations as a prerequisite. Migration 0015 was not applied in this task.
+For a fresh approved development target, apply `0005_aigas_risk_engine.sql`, `0008_aigas_risk_engine_lifecycle.sql`, then `0015_aigas_risk_engine_asset_context_residual_risk.sql`; the latter retains all existing history and only adds fields. Kernel access additionally uses administration migration 0006. Do not run unrelated product migrations as a prerequisite. A later local draft, `0021_aigas_risk_engine_acceptance_guard.sql`, only replaces the treatment guard function to require a 20-character acceptance rationale; it is review-only and has not been applied anywhere.
 
 Neon MCP read-only inspection on 2026-11-03 found the sole branch `production` / `br-young-bird-b43proeb` in `young-frog-60183055` / `neondb`; `aigas_re_assets`, `aigas_re_asset_revisions`, `aigas_re_assessments`, and `aigas_re_treatment_revisions` are present. The inspected schemas do not yet include the 0015 fields. No development branch is available, so no schema change was applied. Runtime role/RLS, actual Auth flow and deployment remain external prerequisites.
 
