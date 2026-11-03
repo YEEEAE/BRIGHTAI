@@ -92,7 +92,7 @@ source_evidence:
     evidence_level: NOT_VERIFIED
   - id: SRC-FW-007
     path: src/pages/app/api/firewall/
-    finding: مساران محميان بهوية Kernel وعضوية المؤسسة: قواعد CRUD محدودة وفحص نص اصطناعي يحفظ القرار دون متنه.
+    finding: 'مساران محميان بهوية Kernel وعضوية المؤسسة: قواعد CRUD محدودة وفحص نص اصطناعي يحفظ القرار دون متنه.'
     evidence_level: LOCAL_VERIFIED
     scope: SYNTHETIC_TEXT_LAB_ONLY
 capabilities:
@@ -297,7 +297,29 @@ local_starter_foundation:
   documentation: docs/FIREWALL-DEVELOPMENT.md
   migration: migrations/0002_aigas_firewall.sql
   migration_review_state: LOCAL_REVISED_NOT_APPLIED
-  neon_migration_applied: false
+  # Corrected 2026-11-03 after read-only Neon catalog inspection: 0002 and the
+  # 0012 five-state upgrade are present. 0013/0017 remain unapplied and block
+  # five-state Ledger evidence and Kernel audit context.
+  neon_migration_applied: PARTIAL_0002_PLUS_0012_OBSERVED_2026_11_03
+  current_source_snapshot:
+    inspected_on: '2026-11-03'
+    local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+    runtime_verified: false
+    sources:
+    - src/pages/app/api/firewall/{evaluate,guarded-executions,rules}.ts
+    - src/server/firewall/{core,service,guard,provider,escalation,binding,http}.mjs
+    - src/pages/app/firewall/index.astro
+    schema_observed:
+      decisions_table: PRESENT
+      five_state_constraint: PRESENT
+      policy_version_and_fingerprint: PRESENT
+      ledger_five_state_upgrade_0013: NOT_APPLIED
+      kernel_audit_context_0017: NOT_APPLIED
+    blockers:
+    - approved_provider_registry_empty
+    - no_deployed_endpoint_verified
+    - product_grant_absent
+    - migrations_0013_and_0017_required_for_full_path
   local_verification: NOT_RUN_OWNER_REQUEST_IMPLEMENTATION_ONLY
   historical_verification: EARLIER_BUILD_TSC_UNIT_AND_DISPOSABLE_POSTGRES_ONLY
   authenticated_browser_journey: NOT_VERIFIED

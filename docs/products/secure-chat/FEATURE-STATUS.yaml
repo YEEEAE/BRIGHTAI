@@ -63,6 +63,24 @@ truth_rules:
   api_endpoints_are_not_deployed_or_operationally_verified: true
   firewall_paid_license_not_required_for_kernel_basics: true
   no_training_requirement_is_non_waivable: true
+current_source_snapshot:
+  inspected_on: '2026-11-03'
+  local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+  runtime_verified: false
+  sources:
+  - src/server/secure-chat/{models,policy,adapter,requests,service}.mjs
+  - src/pages/app/api/secure-chat/{models,messages}.ts
+  - src/pages/app/secure-chat/index.astro
+  schema_observed:
+    request_cancellation_conversation_message_tables: PRESENT
+    usage_quota_function_v2_0016: NOT_APPLIED
+    kernel_audit_context_0017: NOT_APPLIED
+  approved_models: []
+  blockers:
+  - no_approved_provider_or_model
+  - migration_0016_not_applied
+  - migration_0017_not_applied
+  - no_runtime_session_verified
 features:
 - id: SC-01.01
   requirement_id: SC-01

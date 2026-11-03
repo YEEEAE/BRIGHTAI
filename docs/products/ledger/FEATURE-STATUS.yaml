@@ -30,7 +30,25 @@ implementation_truth:
   current_revision_checks: NOT_RUN_OWNER_REQUEST
   local_foundation_scope: Internal product event adapters, tenant SHA-256 v2 chain, source-filtered UI, authorized audited prefix JSON export and standalone offline verifier. Implemented locally without execution; not released.
   neon_user_journey_verified: false
-  ledger_migration_applied_to_neon: false
+  # Corrected 2026-11-03 after read-only Neon catalog inspection: base 0003
+  # tables/constraints exist; the five-state + chain-guard upgrade 0013 does not.
+  ledger_migration_applied_to_neon: PARTIAL_BASE_0003_OBSERVED_UPGRADE_0013_NOT_APPLIED
+  current_source_snapshot:
+    inspected_on: '2026-11-03'
+    local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+    runtime_verified: false
+    sources:
+    - src/server/ledger/{core,writer,service,http}.mjs
+    - src/pages/app/api/ledger/events/**
+    - public/downloads/aigas-ledger-verifier.mjs
+    schema_observed:
+      base_tables: PRESENT
+      five_state_metadata_constraint: NOT_APPLIED
+      chain_guard_function: NOT_APPLIED
+    blockers:
+    - migration_0013_not_applied
+    - kernel_audit_context_0017_not_applied
+    - no_runtime_session_or_rls_role_verified
   full_ld_02_and_ld_06_complete: false
   no_live_product_api_verified: true
   demo_visuals_not_cryptographic_proof: true

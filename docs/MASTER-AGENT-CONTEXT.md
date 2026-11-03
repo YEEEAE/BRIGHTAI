@@ -54,9 +54,11 @@
 - **أحدث UX لحالة العمل:** آخر قرار مثبت في Mind، ما لم يلغِه المالك؛ تقارير التدقيق القديمة تُستخدم كتاريخ لا كأمر تعديل.
 - إذا لم يُحسم التعارض، **لا تختَر من عندك** في قرار قانوني/تجاري/أمني مؤثر. أظهر تعارضًا موثقًا ومحددًا.
 
-### توافر المستندات في GitHub عند هذه المراجعة
+### توافر المستندات في GitHub
 
-ظهر في `main` داخل `docs/`: `MASTER-PROJECT-BLUEPRINT.md` و`PRODUCT-MASTER-CATALOG.yaml` و`BRAND-AND-DESIGN-SYSTEM.md`. لم يظهر `WEBSITE-PAGE-REGISTRY.yaml` ولا ملف `MASTER-AGENT-CONTEXT.md` ضمن شجرة `main` وقت الفحص؛ نسخة Registry متاحة كمستند مستقل لهذه المحادثة. **افحص الشجرة من جديد** عند الاستخدام اللاحق؛ فقد تتغير.
+**لقطة 2026-10-31:** ظهر في `main` داخل `docs/`: `MASTER-PROJECT-BLUEPRINT.md` و`PRODUCT-MASTER-CATALOG.yaml` و`BRAND-AND-DESIGN-SYSTEM.md`. لم يظهر `WEBSITE-PAGE-REGISTRY.yaml` ولا `MASTER-AGENT-CONTEXT.md` ضمن الشجرة وقتها.
+
+**تحديث 2026-11-03 (نسخة محلية `ede38c28`):** جميع الملفات المذكورة أعلاه موجودة في `docs/`، ومنها `WEBSITE-PAGE-REGISTRY.yaml` و`MASTER-AGENT-CONTEXT.md` و`CURRENT-IMPLEMENTATION-REGISTER.md` و`SOURCE-TO-CLAIM-MAP.md`. وجود الملف لا يثبت نشره أو تطابق نسخته مع أي جهة خارجية؛ افحص الشجرة من جديد عند الاستخدام اللاحق.
 
 ---
 
@@ -186,13 +188,14 @@
 
 **التقنية المصدرية:** Astro، Node adapter `@astrojs/node` بنمط standalone، تكوين `trailingSlash: always`، صفحات `src/pages/` أغلبها `prerender = true`، ومكوّنات UI في `src/components/`. التحقق من النسخ الدقيقة يكون من `package.json`، لا من ذاكرة هذا المستند.
 
-**إحصاء شجرة `main` وقت الفحص (2026-10-31):**
+**إحصاء شجرة `main` وقت الفحص (2026-10-31، مُحدَّث محليًا في 2026-11-03 على `ede38c28`):**
 
-- **29 مسارًا عامًا عاديًا** بعد توسيع Dynamic Routes؛ منها **28 مسارًا مؤهلًا للفهرسة على مستوى المصدر**.
+- **35 مسارًا عامًا عاديًا** بعد توسيع Dynamic Routes؛ منها **34 مسارًا مؤهلًا للفهرسة على مستوى المصدر**.
 - **`/kernel/`** محاكاة تعليمية محلية بـ `noindex, follow` وليست AIGAS Kernel الفعلي، ومستبعدة من Sitemap.
-- **`404.astro`** صفحة خطأ مستقلة بـ`noindex`، لا تُحسب ضمن صفحات الموقع الـ29 العادية.
-- خمسة مسارات منتجات، أربعة قطاعات، ثلاثة أركان، خمسة مقالات معرفة، وصفحات المؤسسات والمبيعات والثقة.
+- **`404.astro`** صفحة خطأ مستقلة بـ`noindex`، لا تُحسب ضمن صفحات الموقع الـ35 العادية.
+- خمسة مسارات منتجات، أربعة قطاعات، ثلاثة أركان، **أحد عشر مقال معرفة**، وصفحات المؤسسات والمبيعات والثقة.
 - **لا يعني التأهل للفهرسة ظهورًا فعليًا في نتائج Google**. حالة Search Console والتغطية الإنتاجية تحتاج بيانات فعلية.
+- توجد أيضًا مسارات بوابة محمية (`/app/...`) و`/auth/...` مستبعدة من Sitemap، و**30 ملف API خادمي** في `src/pages/app/api/`؛ وجودها في المصدر لا يثبت نشرها أو عملها على `brightai.live`. التفاصيل في `docs/CURRENT-IMPLEMENTATION-REGISTER.md`.
 
 ### قائمة المسارات الأساسية المثبتة في المصدر
 
@@ -203,10 +206,10 @@
 | المنتجات الخمسة | `/products/firewall/`، `/products/risk-engine/`، `/products/human-gate/`، `/products/ledger/`، `/products/secure-chat/` |
 | القطاعات | `/solutions/government/`، `/solutions/finance/`، `/solutions/healthcare/`، `/solutions/enterprise/` |
 | أركان الحوكمة | `/pillars/safety/`، `/pillars/transparency/`، `/pillars/privacy/` |
-| المعرفة | `/docs/`، و`/knowledge/ai-governance-saudi/`، `/knowledge/protect-company-data-chatgpt/`، `/knowledge/ai-risk-assessment/`، `/knowledge/prompt-injection/`، `/knowledge/ai-use-policy-employees/` |
+| المعرفة | `/docs/`، و`/knowledge/ai-governance-saudi/`، `/knowledge/protect-company-data-chatgpt/`، `/knowledge/ai-risk-assessment/`، `/knowledge/prompt-injection/`، `/knowledge/ai-use-policy-employees/`، `/knowledge/iso-42001-saudi/`، `/knowledge/pdpl-and-ai/`، `/knowledge/saudi-ai-ethics-principles/`، `/knowledge/saudi-ai-law-binding-vs-guidance/`، `/knowledge/sdaia-ai-adoption-framework/`، `/knowledge/sdaia-ai-ethics-self-assessment/` |
 | تعريف/تجاري | `/about/`، `/services/`، `/pricing/`، `/contact/` |
 | ثقة/قانوني | `/compliance/`، `/trust/`، `/privacy/`، `/terms/` |
-| خاصة/غير مفهرسة | `/kernel/` تعليمية، وصفحة 404 |
+| خاصة/غير مفهرسة | `/kernel/` تعليمية، وصفحة 404، و`/auth/sign-up/`، `/auth/accept-invitation/`، و`/app/...` (بوابة محمية، مستبعدة من Sitemap) |
 
 **انتبه إلى تمييز `docs/`:** المسار `/docs/` في الموقع هو **مركز المعرفة المنشور**، بينما `docs/` في جذر المستودع مجلد **وثائق المشروع الداخلية**. لا تخلط بين الاثنين ولا تنشر المستندات الداخلية ضمن الموقع عن طريق الخطأ.
 

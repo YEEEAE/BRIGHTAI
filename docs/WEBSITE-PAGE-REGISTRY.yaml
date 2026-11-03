@@ -19,6 +19,44 @@ document:
   github_modified: false
   notes_ar: هذا السجل جرد للمسارات وأهدافها وليس إثباتًا لجاهزية منتجات AIGAS أو صحة ادعاءات الصفحات. كل المقترحات منفصلة
     تماماً عن المسارات الموجودة.
+  current_source_refresh:
+    inspected_on: '2026-11-03'
+    local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+    scope: LOCAL_SOURCE_ONLY
+    runtime_verified: false
+    note_ar: >-
+      الجرد التفصيلي أدناه يعود للقطة 2026-10-31. هذا التحديث يصحح الأعداد ويضيف المسارات التي أُنشئت بعدها،
+      دون تغيير حالة أي صفحة أو ادعاء نشر. المسارات التفصيلية الناقصة في القسم `page_routes` هي المقالات الستة
+      المضافة لاحقًا، ولم تُضف هنا لتجنّب نسخ محتوى مكرر.
+    public_route_count: 35
+    index_eligible_count: 34
+    noindex_public_routes: ['/kernel/']
+    knowledge_article_count: 11
+    knowledge_routes_not_in_page_routes:
+      - /knowledge/iso-42001-saudi/
+      - /knowledge/pdpl-and-ai/
+      - /knowledge/saudi-ai-ethics-principles/
+      - /knowledge/saudi-ai-law-binding-vs-guidance/
+      - /knowledge/sdaia-ai-adoption-framework/
+      - /knowledge/sdaia-ai-ethics-self-assessment/
+    authenticated_routes:
+      page_patterns:
+        - /app/
+        - /app/firewall/
+        - /app/human-gate/
+        - /app/kernel/
+        - /app/ledger/
+        - /app/risk-engine/
+        - /app/risk-engine/:assetId
+        - /app/secure-chat/
+      auth:
+        - /auth/sign-up/
+        - /auth/accept-invitation/
+      api_route_files: 30
+      index_eligible: false
+      runtime_verified: false
+    related_register: docs/CURRENT-IMPLEMENTATION-REGISTER.md
+    source_to_claim_map: docs/SOURCE-TO-CLAIM-MAP.md
 website:
   brand: BRIGHT AI
   legal_name_ar: مؤسسة مُشرقة
@@ -60,18 +98,20 @@ website:
   contact_delivery: MAILTO_CLIENT_SIDE_NOT_SERVER_CONFIRMED
   legal_documents: PROVISIONAL_PENDING_APPROVAL
 inventory_summary:
-  count_normal_public_routes_in_repo: 29
-  count_index_eligible_expected: 28
+  count_normal_public_routes_in_repo: 35
+  count_index_eligible_expected: 34
   count_noindex_public_routes_expected: 1
   count_special_error_handlers: 1
   count_source_page_components: 21
   count_routes_visually_inspected_in_prior_browser_review: 15
   counts_are_repo_derived_not_live_sitemap_verified: true
+  counts_refreshed_on: '2026-11-03'
+  counts_refresh_local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
   dynamic_route_expansion:
     src/pages/products/[product].astro: 5
     src/pages/solutions/[sector].astro: 4
     src/pages/pillars/[pillar].astro: 3
-  knowledge_article_count: 5
+  knowledge_article_count: 11
   proposed_routes_not_live: 9
 global_rules:
   single_intent_per_page: true

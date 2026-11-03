@@ -62,6 +62,22 @@ local_foundation:
     RE-04: PARTIAL_MANUAL_ASSET_CHANGE_REASSESSMENT
     RE-05: PARTIAL_HIGH_ACCEPTANCE_INDEPENDENT_OWNER_LOCAL_UNVERIFIED
   commercial_availability_changed: false
+current_source_snapshot:
+  inspected_on: '2026-11-03'
+  local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+  runtime_verified: false
+  sources:
+  - src/server/risk-engine/{core,service,http}.mjs
+  - src/pages/app/api/risk-engine/**
+  - src/pages/app/risk-engine/{index,[assetId]}.astro
+  schema_observed:
+    asset_assessment_revision_treatment_tables: PRESENT
+    asset_context_residual_risk_0015_fields: PRESENT
+    kernel_audit_context_0017: NOT_APPLIED
+  blockers:
+  - migration_0017_not_applied
+  - no_runtime_session_or_rls_role_verified
+  - no_ai_assisted_assessment_approved
 status_taxonomy:
   WORKING:
     ar: تعمل

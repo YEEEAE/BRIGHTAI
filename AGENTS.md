@@ -614,7 +614,7 @@ Local tests → تتحقق من الإصلاح
 
 * BRIGHTAI منصة سعودية لحوكمة وأمان الذكاء الاصطناعي (AIGAS)، والموقع `https://brightai.live/`. المحادثة سعودي عامي، المحتوى العام عربي مبسط، والكود والتعليقات التقنية بالإنجليزية.
 * المصدر الحالي Astro 6 مع Node adapter وsitemap؛ Node `22.x` و`pnpm@10.19.0` حسب manifest. لا تفترض وجود Next.js أو تطبيقات `apps/` أو `packages/` أو قاعدة بيانات حية من وثائق قديمة.
-* أوامر manifest الحالية: `dev` و`build` و`preview`. استخدم `pnpm build` أو نفس سكربت البناء عبر `npm run build` عند تعذر Corepack؛ لا تخترع أوامر lint/typecheck/test غير موجودة.
+* أوامر manifest الحالية: `dev` و`build` و`preview` و`start` و`start:local`. استخدم `pnpm build` أو نفس سكربت البناء عبر `npm run build` عند تعذر Corepack؛ لا تخترع أوامر lint/typecheck/test غير موجودة.
 * أي اعتماد أو نقل مجلدات أو تغيير معماري يحتاج مبرراً موثقاً؛ استخدم الموجود قبل إضافة مكتبة.
 * `render.yaml` دليل إعداد فقط، وليس إثبات نشر أو صحة خدمة إنتاج أو مفاتيح أو health endpoint.
 

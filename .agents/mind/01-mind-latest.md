@@ -1,3 +1,21 @@
+## [2026-11-03] — توحيد الحقيقة بين المتطلبات والكود والمخطط والواجهات
+### تم التنفيذ
+- أُنشئ `docs/CURRENT-IMPLEMENTATION-REGISTER.md` يجرد المسارات والـAPIs والترحيلات وحالة Neon قراءة فقط، ويصنّف كل قدرة `FW/LD/HG/RE/SC` بحقول APPROVED_REQ وSOURCE_PRESENT وSCHEMA_PRESENT وRUNTIME_NOT_VERIFIED وBLOCKED_BY مع دليل الملف/الدالة.
+- أُنشئ `docs/SOURCE-TO-CLAIM-MAP.md` لربط روابط المنتجات وTrust/Compliance بنوع الادعاء (مطلب معتمد / تنفيذ محلي / مرجع منشور / تنقل فقط) دون رفع أي حالة إتاحة.
+- صُححت أعداد Registry و`MASTER-AGENT-CONTEXT` (35 مسارًا عامًا، 34 قابلًا للفهرسة، 11 مقالة) وأُضيف فحص مصدر مؤرخ في `PLATFORM-ARCHITECTURE` يثبت وجود `src/pages/app/api/**` دون ادعاء نشر.
+- صُححت حقول Neon في سجل Firewall وLedger، وأُضيفت لقطات مصدر مؤرخة للخمسة؛ وعُلّمت الفجوات `0013/0014/0016/0017` كعوائق تشغيل. أُصلح YAML غير صالح مسبقًا في `FEATURE-STATUS` الخاص بـFirewall.
+- فُصل تعيين `REQUEST_APPROVAL↔ESCALATE` و`BLOCK↔DENY` في الكتالوج كتعيين تنفيذي لا يغيّر المتطلب. لم تُلمس واجهات المنتجات أو الهيرو/الهيدر/الشعار.
+### الملفات المتأثرة
+- `docs/CURRENT-IMPLEMENTATION-REGISTER.md`, `docs/SOURCE-TO-CLAIM-MAP.md`, `docs/{WEBSITE-PAGE-REGISTRY,MASTER-AGENT-CONTEXT,PLATFORM-ARCHITECTURE,PRODUCT-MASTER-CATALOG}.*`
+- `docs/products/*/FEATURE-STATUS.yaml`, `AGENTS.md`, `.agents/AGENTS.md`
+### التحقق
+- تحليل YAML لملفات الكتالوج وRegistry وسجلات المنتجات الخمسة: PASS؛ `git diff --check`: PASS. مجموع جداول Neon المرصود 31، وRLS على 31، وسياسات على جدولين، وكل عدّادات العمل صفر.
+- build/lint/typecheck/tests/Playwright/متصفح/نشر: NOT RUN حسب طلب المهمة.
+### النتيجة
+- **الحالة:** DONE محليًا كمصدر حقيقة موحد؛ التشغيل والنشر NOT VERIFIED. لا commit/push/deploy ولا تغيير Neon.
+### ملاحظات / مشاكل مفتوحة
+- الكود الحالي يحتاج `0013/0014/0016/0017` قبل أي تشغيل معتمد؛ `0017` غيابه يمنع كل تدقيق Kernel، و`0014` يمنع Human Gate، و`0013` يمنع أدلة Firewall الخماسية. لا مستخدم/جلسة ولا نموذج معتمد.
+
 ## [2026-11-03] — مركز المعرفة بأسلوب AI Knowledge Command Center
 ### تم التنفيذ
 - أُعيد تصميم `/docs/` على المرجع التفاعلي الثاني: تصنيفات يمين، بحث عربي فوري، منتجات متعددة بمنطق OR مع AND لباقي الفلاتر، عرض مضغوط/موسع ومعاينة مستقلة؛ البحث والفلاتر مرتبطة بالرابط والتاريخ.

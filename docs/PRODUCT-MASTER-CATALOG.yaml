@@ -22,6 +22,20 @@ document:
   notes_ar:
   - هذا الكتالوج مواصفات مستهدفة مشتقة من قرارات المشروع وليس إثباتًا للوظائف المنفذة.
   - المسار داخل GitHub مقترح ومتفق عليه تنظيمياً لكنه لا يعني أن الملف رُفع أو أن المجلد موجود.
+  implementation_truth:
+    current_implementation_register: docs/CURRENT-IMPLEMENTATION-REGISTER.md
+    last_source_check: '2026-11-03'
+    source_check_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+    runtime_verified: false
+    decision_name_mapping:
+      note_ar: >-
+        المتطلب المعتمد يستخدم REQUEST_APPROVAL وBLOCK. الكود المحلي يستخدم ESCALATE وDENY لنفس المفهومين
+        (انظر src/server/firewall/core.mjs:10). هذا تعيين تنفيذي لا يغيّر المتطلب المعتمد.
+      REQUEST_APPROVAL: ESCALATE
+      BLOCK: DENY
+    catalog_status_note_ar: >-
+      حقول implementation_status هنا لا ترتفع بمجرد وجود جدول أو ملف؛ تحتاج دليل تشغيل مستقل. هذا الكتالوج
+      لا يمنح اعتماد إتاحة.
 identity:
   legal_entity_label_ar: مؤسسة مُشرقة
   trade_brand: BRIGHT AI

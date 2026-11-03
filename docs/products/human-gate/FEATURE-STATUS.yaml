@@ -53,6 +53,24 @@ local_foundation:
     scope: CANCELLED_PROVIDER_BINDING_V3_REVIEW_LEVELS_DELEGATION_AND_PERMIT
     verified_local: NOT_RUN_AT_OWNER_REQUEST
     note_ar: الكود والواجهة والترحيل المحلي موجودة، لكن 0014 لم يُطبق ولم تُشغّل فحوص runtime أو جلسة حقيقية.
+current_source_snapshot:
+  inspected_on: '2026-11-03'
+  local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+  runtime_verified: false
+  sources:
+  - src/server/human-gate/{core,service,http}.mjs
+  - src/pages/app/api/human-gate/**
+  - src/pages/app/human-gate/index.astro
+  schema_observed:
+    base_requests_decisions_policies_events: PRESENT
+    delegations_and_grants_tables: NOT_APPLIED
+    cancellation_and_binding_columns: NOT_APPLIED
+    kernel_audit_context_0017: NOT_APPLIED
+  blockers:
+  - migration_0014_not_applied
+  - migration_0017_not_applied
+  - no_access_grant_provisioned
+  - no_runtime_session_verified
 product:
   id: AIGAS-HG
   name: AIGAS Human Gate
