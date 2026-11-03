@@ -8,46 +8,78 @@ import '../styles/knowledge-center.css';
 export const prerender = true;
 const articles = await knowledgeCatalog();
 const types = [...new Set(articles.map(a => a.tag))];
+const productIndex = products.map(([id, label]) => ({ id, label, count: articles.filter(article => article.products.includes(id)).length }));
+// CollectionPage describes only the guides that exist in this source tree.
+const collectionSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'مركز المعرفة — أدلة حوكمة وأمان الذكاء الاصطناعي',
+  description: 'أدلة عربية عملية عن حوكمة الذكاء الاصطناعي وحماية البيانات وتقييم المخاطر والسياسات في بيئة العمل السعودية.',
+  url: 'https://brightai.live/docs/',
+  inLanguage: 'ar-SA',
+  isPartOf: { '@type': 'WebSite', name: 'BRIGHTAI', url: 'https://brightai.live/' },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: articles.length,
+    itemListElement: articles.map((article, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: article.title,
+      url: new URL(article.href, 'https://brightai.live').href,
+    })),
+  },
+};
 ---
-<PageShell title="مركز المعرفة | حوكمة الذكاء الاصطناعي" description="أدلة عربية عملية عن حوكمة الذكاء الاصطناعي وحماية البيانات وتقييم المخاطر والسياسات في بيئة العمل السعودية." crumbs={[{ name: 'مركز المعرفة' }]}>
+<PageShell title="مركز المعرفة | حوكمة الذكاء الاصطناعي" description="أدلة عربية عملية عن حوكمة الذكاء الاصطناعي وحماية البيانات وتقييم المخاطر والسياسات في بيئة العمل السعودية." crumbs={[{ name: 'مركز المعرفة' }]} structuredData={collectionSchema}>
   <div class="kc" data-knowledge-center>
     <details class="kc-sidebar" open>
       <summary>التصنيفات ومساحة المعرفة</summary>
       <div class="kc-sidebar-inner">
         <div class="kc-brand"><BrandLogo/><span>AIGAS / مساحة المعرفة</span></div>
         <nav aria-label="مساحة المعرفة" class="kc-nav">
-          <button disabled data-space="guides" aria-pressed="true"><Icon/> الأدلة <span>{articles.length}</span></button>
-          <button disabled data-space="products" aria-pressed="false">معرفة منظومة <bdi>AIGAS</bdi></button>
-          <button disabled data-topic="faq" aria-pressed="false">الأسئلة الشائعة</button>
+          <button type="button" disabled data-space="guides" aria-pressed="true"><Icon/> الأدلة <span>{articles.length}</span></button>
+          <button type="button" disabled data-space="products" aria-pressed="false">معرفة منظومة <bdi>AIGAS</bdi></button>
+          <button type="button" disabled data-topic="faq" aria-pressed="false">الأسئلة الشائعة</button>
         </nav>
         <p class="kc-label">تصفّح الموضوعات</p>
         <nav class="kc-topics" aria-label="الموضوعات">
-          <button disabled data-topic="" aria-pressed="true">كل الموضوعات <span>{articles.length}</span></button>
-          {topics.map(([id, label]) => <button disabled data-topic={id} aria-pressed="false"><span>{label}</span><bdi>{articles.filter(a => a.topics.includes(id)).length}</bdi></button>)}
+          <button type="button" disabled data-topic="" aria-pressed="true">كل الموضوعات <span>{articles.length}</span></button>
+          {topics.map(([id, label]) => <button type="button" disabled data-topic={id} aria-pressed="false"><span>{label}</span><bdi>{articles.filter(a => a.topics.includes(id)).length}</bdi></button>)}
         </nav>
         <p class="kc-sidebar-note"><span aria-hidden="true">●</span> معرفة مفتوحة للجميع<br/>محتوى تعليمي، لا يثبت امتثالًا.</p>
       </div>
     </details>
     <div class="kc-main">
       <header class="kc-heading"><div><p class="kc-kicker">ابحث. افهم. طبّق.</p><h1>المعلومة المناسبة،<br/><em>في مكان واحد.</em></h1><p>أدلة عربية لقرارات أوضح في حوكمة وأمان الذكاء الاصطناعي.</p></div><div class="kc-total"><b>{articles.length}</b><span>دليلًا من محتوى الموقع<br/>للفهم والتطبيق</span></div></header>
-      <section aria-label="البحث وتصفية الأدلة" class="kc-controls">
-        <label class="kc-search" for="kc-query"><Icon kind="search"/><span class="kc-sr">ابحث في عناوين الأدلة وأوصافها وموضوعاتها</span><input disabled id="kc-query" type="search" placeholder="ابحث في الحوكمة، البيانات، والأدلة التقنية…" autocomplete="off"/><kbd aria-hidden="true">/</kbd></label>
-        <div class="kc-suggestions"><span>ابدأ من:</span>{['حماية البيانات', 'المخاطر', 'Prompt Injection'].map(term => <button disabled data-query={term}>{term}<span aria-hidden="true"> ↖</span></button>)}</div>
-        <fieldset class="kc-products"><legend>المنتج المرتبط <span>— حسب الروابط داخل الدليل</span></legend>{products.map(([id, label]) => <button disabled data-product={id} aria-pressed="false"><bdi>{label}</bdi></button>)}</fieldset>
-        <div class="kc-filterbar"><label>نوع المحتوى<select disabled id="kc-type"><option value="">كل الأنواع</option>{types.map(type => <option>{type}</option>)}</select></label><label>الموضوع<select disabled id="kc-topic"><option value="">كل الموضوعات</option>{topics.map(([id, label]) => <option value={id}>{label}</option>)}</select></label><button disabled id="kc-view" aria-pressed="false">عرض موسع</button><button disabled data-reset>مسح الفلاتر</button></div>
+      <section aria-label="البحث وتصفية الأدلة" class="kc-controls" role="search">
+        <div class="kc-search">
+          <Icon kind="search"/>
+          <label class="kc-sr" for="kc-query">ابحث في عناوين الأدلة وأوصافها وموضوعاتها</label>
+          <input disabled id="kc-query" type="search" placeholder="ابحث في الحوكمة، البيانات، والأدلة التقنية…" autocomplete="off" enterkeyhint="search" aria-controls="kc-results" aria-describedby="kc-search-hint"/>
+          <button class="kc-search-clear" type="button" data-clear-query hidden aria-label="مسح نص البحث">مسح</button>
+          <kbd aria-hidden="true">/</kbd>
+        </div>
+        <p class="kc-sr" id="kc-search-hint">يُطبّق البحث على العنوان والوصف والموضوع. يمكن اختيار أكثر من منتج، وتُعرض النتائج التي ترتبط بأي منتج مختار.</p>
+        <div class="kc-suggestions"><span>ابدأ من:</span>{['حماية البيانات', 'المخاطر', 'Prompt Injection'].map(term => <button type="button" disabled data-query={term}>{term}<span aria-hidden="true"> ↖</span></button>)}</div>
+        <fieldset class="kc-products" aria-describedby="kc-product-help"><legend>المنتج المرتبط <span>— حسب الروابط داخل الدليل</span></legend><p class="kc-product-help" id="kc-product-help">اختيار أكثر من منتج يعرض أي دليل مرتبط بأحدها. لا تُنشأ روابط لمقالات غير منشورة.</p>{products.map(([id, label]) => <button type="button" disabled data-product={id} aria-pressed="false"><bdi>{label}</bdi></button>)}</fieldset>
+        <div class="kc-filterbar"><label>نوع المحتوى<select disabled id="kc-type"><option value="">كل الأنواع</option>{types.map(type => <option>{type}</option>)}</select></label><label>الموضوع<select disabled id="kc-topic"><option value="">كل الموضوعات</option>{topics.map(([id, label]) => <option value={id}>{label}</option>)}</select></label><button type="button" disabled id="kc-view" aria-pressed="false">عرض موسع</button><button type="button" disabled data-reset>مسح الفلاتر</button></div>
         <div class="kc-active" aria-label="الفلاتر النشطة" data-active></div>
       </section>
-      <section class="kc-product-space" data-product-space hidden aria-label="معرفة منظومة AIGAS"><h2>المعرفة المرتبطة بمنظومة AIGAS</h2><p>Kernel هو الأساس المشترك. الروابط التالية تصنّف المعرفة التعليمية؛ ليست توثيق API أو دليل إتاحة تشغيلية.</p><div>{products.map(([id, label]) => <button disabled data-product-only={id}><bdi>{label}</bdi><span>{id === 'kernel' ? 'الأساس المشترك · ' : ''}{articles.filter(a => a.products.includes(id)).length} أدلة مرتبطة</span></button>)}</div></section>
-      <div class="kc-results-bar"><p role="status" aria-live="polite" aria-atomic="true" data-result-count>{articles.length} نتائج من {articles.length} أدلة</p><span>قراءة تقديرية · 180 كلمة / دقيقة</span></div>
+      <section class="kc-product-space" data-product-space hidden aria-label="معرفة منظومة AIGAS">
+        <div class="kc-product-space-head"><div><h2>المعرفة المرتبطة بمنظومة AIGAS</h2><p>Kernel هو الأساس المشترك. الروابط التالية تصنّف المعرفة التعليمية؛ ليست توثيق API أو دليل إتاحة تشغيلية. المنتج الذي بلا دليل منشور يظهر بلا رابط.</p></div><button type="button" data-product-clear hidden>إلغاء تصفية المنتج</button></div>
+        <div class="kc-product-cards">{productIndex.map(({ id, label, count }) => <button type="button" disabled data-product-only={id} aria-pressed="false" aria-controls="kc-results"><bdi>{label}</bdi><span>{id === 'kernel' ? 'الأساس المشترك · ' : ''}{count === 0 ? 'لا يوجد دليل مرتبط بعد' : `${count} ${count === 1 ? 'دليل مرتبط' : 'أدلة مرتبطة'}`}</span></button>)}</div>
+        <p class="kc-product-status" role="status" aria-live="polite" data-product-status>لم يُحدَّد منتج بعد؛ تعرض القائمة النتائج حسب الفلاتر الحالية.</p>
+      </section>
+      <div class="kc-results-bar"><p role="status" aria-live="polite" aria-atomic="true" data-result-count>{articles.length} نتائج من {articles.length} أدلة</p><span data-results-hint>قراءة تقديرية · 180 كلمة / دقيقة</span></div>
       <div class="kc-workspace">
-        <section aria-label="نتائج الأدلة" class="kc-results">
+        <section aria-label="نتائج الأدلة" class="kc-results" id="kc-results">
           {articles.map((a, i) => <article class="kc-row" data-entry={i}>
             <div class="kc-row-icon"><Icon kind={a.topic}/></div>
-            <div class="kc-row-copy"><div class="kc-row-meta"><span>{a.tag}</span><bdi>DOC / {String(i + 1).padStart(2, '0')}</bdi></div><h2><a href={a.href} data-article-link>{a.title}</a></h2><p class="kc-description">{a.text}</p><div class="kc-tags">{a.products.map(id => <span><bdi>{products.find(p => p[0] === id)?.[1]}</bdi></span>)}<span>{topics.find(t => t[0] === a.topic)?.[1]}</span><span>{a.minutes} دقائق</span></div><div class="kc-row-actions"><button disabled data-preview={i} aria-controls="kc-preview" aria-expanded="false">معاينة سريعة</button><a href={a.href} data-article-link>افتح المقال <span aria-hidden="true">←</span></a></div></div>
+            <div class="kc-row-copy"><div class="kc-row-meta"><span>{a.tag}</span><bdi>DOC / {String(i + 1).padStart(2, '0')}</bdi></div><h2><a href={a.href} data-article-link>{a.title}</a></h2><p class="kc-description">{a.text}</p><div class="kc-tags">{a.products.map(id => <span><bdi>{products.find(p => p[0] === id)?.[1]}</bdi></span>)}<span>{topics.find(t => t[0] === a.topic)?.[1]}</span><span>{a.minutes} دقائق</span></div><div class="kc-row-actions"><button type="button" disabled data-preview={i} aria-controls="kc-preview" aria-expanded="false">معاينة سريعة</button><a href={a.href} data-article-link>افتح المقال <span aria-hidden="true">←</span></a></div></div>
           </article>)}
-          <div class="kc-empty" data-empty hidden><Icon kind="search"/><h2>ما لقينا دليلًا يطابق اختيارك</h2><p>جرّب كلمة أقصر أو خفّف الفلاتر. بعض التصنيفات ما لها محتوى مرتبط حاليًا.</p><button data-reset>إعادة ضبط البحث والفلاتر</button></div>
+          <div class="kc-empty" data-empty hidden><Icon kind="search"/><h2 data-empty-title>ما لقينا دليلًا يطابق اختيارك</h2><p data-empty-text>جرّب كلمة أقصر أو خفّف الفلاتر. بعض التصنيفات ما لها محتوى مرتبط حاليًا.</p><button type="button" data-reset>إعادة ضبط البحث والفلاتر</button></div>
         </section>
-        <aside id="kc-preview" class="kc-preview" aria-label="معاينة الدليل" tabindex="-1"><div class="kc-preview-top"><span>معاينة سريعة</span><button data-close-preview hidden aria-label="إغلاق المعاينة">×</button></div><div data-preview-content><div class="kc-preview-art"><Icon kind="guide"/></div><h2>خذ نظرة قبل القراءة</h2><p>اختر «معاينة سريعة» من أي دليل لعرض وصفه وأقسامه الفعلية هنا.</p><span class="kc-label">العناوين من المقال الأصلي</span></div></aside>
+        <aside id="kc-preview" class="kc-preview" aria-label="معاينة الدليل" tabindex="-1"><div class="kc-preview-top"><span>معاينة سريعة</span><button type="button" data-close-preview hidden aria-label="إغلاق المعاينة">×</button></div><div data-preview-content><div class="kc-preview-art"><Icon kind="guide"/></div><h2>خذ نظرة قبل القراءة</h2><p>اختر «معاينة سريعة» من أي دليل لعرض وصفه وأقسامه الفعلية هنا.</p><span class="kc-label">العناوين من المقال الأصلي</span></div></aside>
       </div>
       <noscript><p class="kc-notice">كل الأدلة وروابطها متاحة. فعّل JavaScript لاستخدام البحث والفلاتر والمعاينة.</p></noscript>
       <p class="kc-notice">المواد توعوية ولا تمثل استشارة قانونية أو اعتمادًا تنظيميًا. راجع المصدر الرسمي الساري قبل اتخاذ قرار مؤسسي.</p>

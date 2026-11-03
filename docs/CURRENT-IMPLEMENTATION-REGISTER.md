@@ -38,8 +38,8 @@
 | منتجات | 6 | `/products/` + خمس صفحات منتجات |
 | قطاعات | 4 | `/solutions/government/`, `/solutions/finance/`, `/solutions/healthcare/`, `/solutions/enterprise/` |
 | أركان | 3 | `/pillars/safety/`, `/pillars/transparency/`, `/pillars/privacy/` |
-| معرفة | 11 | المقالات في `src/pages/knowledge/` |
-| **إجمالي المسارات العامة العادية** | **35** | منها 34 مؤهلة للفهرسة على مستوى المصدر، و`/kernel/` بـ`noindex` |
+| معرفة | 12 | المقالات في `src/pages/knowledge/` |
+| **إجمالي المسارات العامة العادية** | **36** | منها 35 مؤهلة للفهرسة على مستوى المصدر، و`/kernel/` بـ`noindex` |
 | خاصة | 2 | `/auth/sign-up/`, `/auth/accept-invitation/` |
 | بوابة | 8 أنماط | `/app/`, `/app/firewall/`, `/app/human-gate/`, `/app/kernel/`, `/app/ledger/`, `/app/risk-engine/`, `/app/risk-engine/:assetId`, `/app/secure-chat/` |
 | خطأ | 1 | `/404/` |
@@ -197,8 +197,8 @@
 
 | التعارض | القرار | الملف |
 |---|---|---|
-| Registry يقول 29 مسارًا و5 مقالات معرفة | الصحيح محليًا: 35 مسارًا عامًا و11 مقالة؛ أُضيف تحديث مؤرخ | `docs/WEBSITE-PAGE-REGISTRY.yaml` |
-| `MASTER-AGENT-CONTEXT` يقول 29/5 مقالات | صُحح إلى 35/11 مع توضيح تاريخ اللقطة | `docs/MASTER-AGENT-CONTEXT.md` |
+| Registry يقول 29 مسارًا و5 مقالات معرفة | الصحيح محليًا: 36 مسارًا عامًا و12 مقالة؛ أُضيف تحديث مؤرخ | `docs/WEBSITE-PAGE-REGISTRY.yaml` |
+| `MASTER-AGENT-CONTEXT` يقول 29/5 مقالات | صُحح إلى 36/12 مع توضيح تاريخ اللقطة | `docs/MASTER-AGENT-CONTEXT.md` |
 | `PLATFORM-ARCHITECTURE` يقول «لا مسارات API خلفية» | يوجد `src/pages/app/api/**` في المصدر؛ أُضيف فحص حالي مؤرخ دون ادعاء نشر | `docs/PLATFORM-ARCHITECTURE.md` |
 | Firewall FEATURE-STATUS يقول `neon_migration_applied: false` | المخطط الفعلي يثبت 0002 + 0012؛ صُحح مع بقاء 0013/0017 عائقًا | `docs/products/firewall/FEATURE-STATUS.yaml` |
 | Ledger FEATURE-STATUS يقول `ledger_migration_applied_to_neon: false` | 0003 موجودة، و0013 غير مطبّق؛ فُصلت الحالتان | `docs/products/ledger/FEATURE-STATUS.yaml` |

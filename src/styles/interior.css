@@ -185,6 +185,10 @@
 .interior-products-index .catalog-row > .product-icon { justify-self: center; transform: none; }
 .interior-products-index .catalog-row > span:last-child { justify-self: center; color: var(--ui-violet); }
 .page-family-products .product-intro h1 { color: #fff; }
+/* Product diagrams may briefly translate while entering; keep that motion from
+   widening the mobile document without clipping sticky/fixed descendants. */
+.page-family-products { overflow-x: clip; }
+.page-family-products::before { inset-inline: 0; }
 .page-family-products .product-role { color: var(--ui-amber); letter-spacing: 0; }
 .page-family-products .product-intro .eyebrow { color: #bdbdbd; }
 .page-family-products .product-meta { border-block-start-color: var(--ui-line); border-radius: var(--ui-radius-sm); box-shadow: inset 1px 0 var(--ui-line),inset -1px 0 var(--ui-line); background: linear-gradient(180deg,#ffffff03,transparent); color: #bdbdbd; }

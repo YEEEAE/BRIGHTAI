@@ -14,10 +14,10 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
     <p>أو عبر البريد: <a href="mailto:yzeed1job@gmail.com"><bdi dir="ltr">yzeed1job@gmail.com</bdi></a></p>
   </section>
   <form id="contact" class="card contact-form">
-    <label>الاسم<input name="name" required autocomplete="name" /></label>
-    <label>الجهة<input name="org" required autocomplete="organization" /></label>
+    <label>الاسم<input name="name" required autocomplete="name" maxlength="80" /></label>
+    <label>الجهة<input name="org" required autocomplete="organization" maxlength="120" /></label>
     <label>الموضوع<select name="topic">{topics.map(t => <option>{t}</option>)}</select></label>
-    <label>كيف نساعدك؟<textarea name="msg" rows="5"></textarea></label>
+    <label>كيف نساعدك؟<textarea name="msg" rows="5" maxlength="2000"></textarea></label>
     <button class="button" type="submit" disabled>افتح رسالة البريد <span aria-hidden="true">←</span></button>
     <p id="contact-status" role="status" aria-live="polite"></p>
     <noscript><p>للتواصل بدون JavaScript: <a href="mailto:yzeed1job@gmail.com">افتح تطبيق البريد</a>.</p></noscript>

@@ -53,6 +53,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return harden(response, { portal: true, secureTransport });
   }
 
+  // Astro emits /sitemap-index.xml + /sitemap-0.xml. A stale empty root map
+  // used to be deployed separately; point the conventional path at the live index.
+  if ((path === '/sitemap.xml' || path === '/sitemap.xml/') && ['GET', 'HEAD'].includes(context.request.method)) {
+    return harden(context.redirect('/sitemap-index.xml', 301), { portal: false, secureTransport });
+  }
+
   let decodedPath = path;
   try { decodedPath = decodeURIComponent(path); } catch { /* Keep malformed paths unmatched. */ }
   const destination = destinations.get(path)

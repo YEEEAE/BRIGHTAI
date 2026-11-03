@@ -190,10 +190,10 @@
 
 **إحصاء شجرة `main` وقت الفحص (2026-10-31، مُحدَّث محليًا في 2026-11-03 على `ede38c28`):**
 
-- **35 مسارًا عامًا عاديًا** بعد توسيع Dynamic Routes؛ منها **34 مسارًا مؤهلًا للفهرسة على مستوى المصدر**.
+- **36 مسارًا عامًا عاديًا** بعد توسيع Dynamic Routes؛ منها **35 مسارًا مؤهلًا للفهرسة على مستوى المصدر**.
 - **`/kernel/`** محاكاة تعليمية محلية بـ `noindex, follow` وليست AIGAS Kernel الفعلي، ومستبعدة من Sitemap.
-- **`404.astro`** صفحة خطأ مستقلة بـ`noindex`، لا تُحسب ضمن صفحات الموقع الـ35 العادية.
-- خمسة مسارات منتجات، أربعة قطاعات، ثلاثة أركان، **أحد عشر مقال معرفة**، وصفحات المؤسسات والمبيعات والثقة.
+- **`404.astro`** صفحة خطأ مستقلة بـ`noindex`، لا تُحسب ضمن صفحات الموقع الـ36 العادية.
+- خمسة مسارات منتجات، أربعة قطاعات، ثلاثة أركان، **اثنا عشر مقال معرفة**، وصفحات المؤسسات والمبيعات والثقة.
 - **لا يعني التأهل للفهرسة ظهورًا فعليًا في نتائج Google**. حالة Search Console والتغطية الإنتاجية تحتاج بيانات فعلية.
 - توجد أيضًا مسارات بوابة محمية (`/app/...`) و`/auth/...` مستبعدة من Sitemap، و**30 ملف API خادمي** في `src/pages/app/api/`؛ وجودها في المصدر لا يثبت نشرها أو عملها على `brightai.live`. التفاصيل في `docs/CURRENT-IMPLEMENTATION-REGISTER.md`.
 
@@ -206,7 +206,7 @@
 | المنتجات الخمسة | `/products/firewall/`، `/products/risk-engine/`، `/products/human-gate/`، `/products/ledger/`، `/products/secure-chat/` |
 | القطاعات | `/solutions/government/`، `/solutions/finance/`، `/solutions/healthcare/`، `/solutions/enterprise/` |
 | أركان الحوكمة | `/pillars/safety/`، `/pillars/transparency/`، `/pillars/privacy/` |
-| المعرفة | `/docs/`، و`/knowledge/ai-governance-saudi/`، `/knowledge/protect-company-data-chatgpt/`، `/knowledge/ai-risk-assessment/`، `/knowledge/prompt-injection/`، `/knowledge/ai-use-policy-employees/`، `/knowledge/iso-42001-saudi/`، `/knowledge/pdpl-and-ai/`، `/knowledge/saudi-ai-ethics-principles/`، `/knowledge/saudi-ai-law-binding-vs-guidance/`، `/knowledge/sdaia-ai-adoption-framework/`، `/knowledge/sdaia-ai-ethics-self-assessment/` |
+| المعرفة | `/docs/`، و`/knowledge/ai-governance-saudi/`، `/knowledge/protect-company-data-chatgpt/`، `/knowledge/ai-risk-assessment/`، `/knowledge/prompt-injection/`، `/knowledge/ai-use-policy-employees/`، `/knowledge/iso-42001-saudi/`، `/knowledge/pdpl-and-ai/`، `/knowledge/saudi-ai-ethics-principles/`، `/knowledge/saudi-ai-law-binding-vs-guidance/`، `/knowledge/sdaia-ai-adoption-framework/`، `/knowledge/sdaia-ai-ethics-self-assessment/`، `/knowledge/sdaia-generative-ai-guidelines/` |
 | تعريف/تجاري | `/about/`، `/services/`، `/pricing/`، `/contact/` |
 | ثقة/قانوني | `/compliance/`، `/trust/`، `/privacy/`، `/terms/` |
 | خاصة/غير مفهرسة | `/kernel/` تعليمية، وصفحة 404، و`/auth/sign-up/`، `/auth/accept-invitation/`، و`/app/...` (بوابة محمية، مستبعدة من Sitemap) |

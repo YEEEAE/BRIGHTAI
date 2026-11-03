@@ -1,3 +1,24 @@
+## [2026-11-03] — إغلاق مركز المعرفة والـSEO والتمدد الجوال (محلي فقط)
+### تم التنفيذ
+- `/docs/`: أصبح البحث والفلاتر بحالة مفهومة للقارئ ومساعد الشاشة — `role=search`، زر مسح للاستعلام، `aria-controls/aria-describedby`، وربط أزرار المنتجات بالنتائج. مساحة منتجات AIGAS تعرض حالة اختيار صريحة و`aria-pressed`، وكل منتج بلا دليل منشور يظهر «لا يوجد دليل مرتبط بعد» بلا رابط مخترع (Kernel/Ledger ما زالا بلا روابط).
+- حالات الصفر صارت سياقية (بحث/تصنيف/منتج/عام) وتشرح أن غياب الدليل ليس إثباتًا لحالة تشغيل المنتج. الفلاتر تُحدّث الرابط بـ`replaceState` بدل تكديس سجل لكل حرف، ورابط العودة يُبنى من حالة الفلاتر المعروفة دون تداخل `from`.
+- رفع تباين النص الخفيف داخل مركز المعرفة عبر متغير محلي `--kc-subtle`، وأُضيفت دلالات CSS لبطاقات المنتجات وزر المسح وحالة المساحة.
+- SEO: أُضيف `CollectionPage`/`ItemList` في `/docs/` مبنيّ من عناوين ومسارات المقالات الفعلية (12 مقالًا في المصدر الحالي، والعدّ مشتق لا مكتوب). `/knowledge/` يعيد 301 إلى `/docs/` عبر `redirects.json`، و`/sitemap.xml` يعيد 301 إلى `/sitemap-index.xml` عبر `src/middleware.ts`؛ جذر `sitemap.xml` القديم الفارغ صار alias صالحًا يشير إلى `sitemap-0.xml` بدل شجرة قديمة.
+- الجوال: عُطّل morph العنصر المشترك `view-transition-name:product-*` عند `<=767px` (كان يمدّ عنوان البطاقة إلى عنوان H1 فيبدو كتمدد مؤقت)، وأُضيف `overflow-x: clip` محصور بـ`.page-family-products` مع مواءمة خلفيته. لم تُلمس الرئيسية/الهيرو/Constellation/Header/Logo.
+- Contact: أُضيفت حدود `maxlength` للحقول مع بقاء mailto فقط ودون ادعاء إرسال أو استلام. Trust/Pricing/المنتجات لم تُغيَّر لأنها تفصل التصور عن التشغيل أصلًا.
+### الملفات المتأثرة
+- `src/pages/docs.astro`, `src/scripts/knowledge-center.ts`, `src/styles/knowledge-center.css`, `src/styles/experience.css`, `src/styles/interior.css`
+- `src/middleware.ts`, `redirects.json`, `sitemap.xml`, `src/pages/contact.astro`
+- `docs/{CURRENT-IMPLEMENTATION-REGISTER,MASTER-AGENT-CONTEXT,WEBSITE-PAGE-REGISTRY}.md|yaml` (تصحيح العدّ إلى 36/35 و12 مقالة وإضافة مقال سدايا التوليدي الناقص من القائمة)
+### التحقق
+- فحص ثابت: `redirects.json` و`sitemap.xml` يُحلّلان، وYAML السجل يُحلّل، و`git diff --check`: PASS.
+- build/lint/typecheck/tests/Playwright/متصفح/Neon/نشر: NOT RUN حسب طلب المهمة؛ لا commit/push/deploy.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED — NOT_RUNTIME_VERIFIED. لا ادعاء إطلاق أو فهرسة أو نجاح SEO.
+### ملاحظات / مشاكل مفتوحة
+- إصلاح `sitemap.xml` و`/knowledge/` على `brightai.live` يحتاج نشر نسخة Node الجديدة؛ الملف الحي القديم لا يُصحح من المصدر وحده، ولم تُفحص Search Console/Analytics.
+- عدد مقالات المصدر 12 لا 11؛ لا تغيير في المحتوى. Kernel وLedger يبقيان بلا أدلة مرتبطة حتى يُعتمد محتوى موثق جديد.
+
 ## [2026-11-03] — إغلاق دورة تجربة 48 ساعة وفصل مصادر الوصول (محلي فقط)
 ### تم التنفيذ
 - أُضيف عقد دورة تجربة صريح في `src/server/kernel/trial.mjs`: `REQUESTED → ELIGIBILITY_REVIEW → APPROVED → ACTIVATED → EXPIRED → CLOSED` مع `REJECTED`/`CANCELLED`، و`ACTIVATED` يتطلب قرار مشغّل وجاهزية وبيانات اصطناعية وإقرار عميل، و`EXPIRED` لا يعود إلى `ACTIVATED`.

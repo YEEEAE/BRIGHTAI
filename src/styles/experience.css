@@ -204,6 +204,13 @@ a:hover .product-icon { transform: translateY(-3px); }
   .map-node { padding: 9px; }
   .node-arrow { display: none; }
 }
+/* Product titles share a view-transition name between a full-width card heading
+   and an inline page h1. On narrow screens that morph reads as a temporary
+   stretch while the snapshot interpolates between the two boxes. Keep the page
+   fade and drop only the mismatched shared-element animation. */
+@media (max-width: 767px) {
+  [style*="view-transition-name:product-"] { view-transition-name: none !important; }
+}
 @media (prefers-reduced-motion: reduce) {
   :root { --motion-fast: 0ms; --motion-normal: 0ms; --motion-reveal: 0ms; }
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) { animation: none !important; }
