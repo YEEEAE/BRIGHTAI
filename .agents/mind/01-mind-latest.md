@@ -1,3 +1,24 @@
+## [2026-11-03] — فهرس الأقسام على الجوال: فتح/إغلاق آمن، وحذف الفهرس المكرر
+### تم التنفيذ
+- `section-compass` لم يعد يُثبَّت في نهاية المستند على الجوال؛ صار كشفًا ثابتًا أسفل الحافة (`position:fixed` + `env(safe-area-inset-bottom)`) بارتفاع لوحة `min(50svh,320px)`، ويُغلق بـEscape أو لمس خارجي أو اختيار رابط، مع حلقة تركيز على `summary`.
+- منع تغطية CTA: مراقب واحد يخفي الفهرس حين يدخل أي `.button` داخل الشريط السفلي (96px)، ويبقى ظاهرًا إن كان التركيز داخله؛ و`footerInView` بديل عن إخفاء `hidden` المباشر.
+- حذف الفهرس المكرر من `/privacy/` و`/terms/`: الشرط صار `!reading`، فلم تعد الصفحات التي تملك `document-toc` تحمل compass ثانيًا (و`docs`/`knowledge` كما كانت).
+- `document-toc` صار فهرسًا مقروءًا على سطح المكتب (روابط inline بدل تفاصيل مطوية دائمًا) وكشفًا واحدًا على الجوال عبر `data-document-toc`؛ والضغط على الرابط ينقل التركيز للعنوان ويغلق الكشف على الهواتف.
+- `:target` صار واضحًا (تسطير كهرماني) وحلقة تركيز على العناوين القابلة للتركيز، و`scroll-margin-block-start` صار `clamp(24px,4vh,56px)`؛ ووُحّد مؤشر القسم الحالي على الكهرماني في Compass وdocument-toc و`KnowledgeReader` (بدل البنفسجي هناك).
+- فواصل Breadcrumb صارت `aria-hidden` بدل نص «/» يُقرأ لقارئ الشاشة. لم تُلمس الهيدر/الهيرو/Constellation/النصوص/الترتيب.
+- مراجع: 21st `Table of Contents` (appica-dev، scroll-spy يبرز العنوان الظاهر — الاسترجاع التفصيلي وصل حد الخطة)؛ Lazyweb `notion`/`arista-networks` سطح مكتب و`confluence` جوال (عنوان + وقت قراءة ثم فهرس مختصر)؛ MGD `Church Historical Sign` لوزن الفواصل؛ Figma NOT APPLICABLE — لا fileKey/رابط BRIGHT AI في المستودع.
+### الملفات المتأثرة
+- `src/components/PageShell.astro`, `src/components/InteriorController.astro`, `src/styles/interior.css`, `src/styles/knowledge-reader.css`
+### التحقق
+- Chrome محلي (dev 4331) بمقاسات 320/360/390/1440: compass ثابت 184px على الجوال ولا تجاوز أفقي في 10 مسارات، ويختفي عند CTA (قيس `hidden=true` عند تداخل الزر)، وEnter/Escape يعملان ويعيدان التركيز؛ `/privacy/` بلا compass وبلا TOC مطوي على سطح المكتب؛ النقر يعطي `#document-heading-3` + underline + تركيز؛ active في `/knowledge/..` كهرماني `rgb(255,184,41)`. console: بلا أخطاء.
+- `git diff --check`: PASS. build/lint/typecheck/tests/نشر: NOT RUN بطلب الدفعة؛ لا commit/push.
+### النتيجة
+- **الحالة:** DONE محليًا — NOT_RUNTIME_VERIFIED.
+### ملاحظات / مشاكل مفتوحة
+- `knowledge-center.css` لم يُعدّل: لا تداخل `sticky` فعلي في `/docs/` ولا حاجة لتغيير (الترويسة غير مثبتة أصلًا).
+- على الجوال قد يظهر الفهرس فوق زاوية بطاقة أثناء التمرير (طبقة عائمة مقصودة)؛ لا يغطي زرًا أو نصًا، ويختفي عند CTA/الفوتر.
+
+
 ## [2026-11-03] — خريطة النظام: تتبّع مسار واحد، بديل نصي، وإصلاح أزرار ghost
 ### تم التنفيذ
 - `SystemMap`: أُضيف `pathLength="1"` فصارت الأسلاك خطوطًا متصلة بدل نمط 100px؛ عند hover/focus تُرسم وصلة المنتج المختار وحدها خلال 700ms (داخل 550–900) ثم تستقر، وتخفت الأربع الأخرى إلى `.26` مع بقاء أسماء كل العقد. أُبطلت حركة `draw-route` الجماعية على أي hover عبر تجاوز بخصوصية أعلى في `interior-motion.css` (بدون تعديل `experience.css`).

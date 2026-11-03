@@ -92,10 +92,18 @@
   font-size:11px;
   color:var(--icon-accent)
 }
-.kr-sidebar a:hover,.kr-sidebar a[aria-current] {
-  border-color:var(--color-action);
+.kr-sidebar a:hover {
+  border-color:var(--icon-accent-strong);
   background:var(--surface-raised-hover);
   color:white
+}
+.kr-sidebar a[aria-current] {
+  border-color:var(--color-saffron-spark);
+  background:var(--surface-raised-hover);
+  color:white
+}
+.kr-sidebar a[aria-current]>bdi {
+  color:var(--color-saffron-spark)
 }
 .kr :is(a,button,summary):focus-visible {
   outline:2px solid var(--color-focus);
@@ -129,6 +137,17 @@
   font-size:clamp(24px,2.4vw,32px)!important;
   line-height:1.7!important;
   scroll-margin-block-start:30px
+}
+.kr-content :is(h2,h3):target {
+  text-decoration:underline;
+  text-decoration-color:var(--color-saffron-spark);
+  text-decoration-thickness:2px;
+  text-underline-offset:.18em
+}
+.kr-content :is(h2,h3)[tabindex='-1']:focus {
+  outline:2px solid var(--color-focus);
+  outline-offset:6px;
+  border-radius:2px
 }
 .kr-content :is(p,li,dd) {
   line-height:1.95

@@ -16,29 +16,68 @@
     // Entrance choreography belongs to InteriorMotion; keep one observer owner.
 
     // A generated, optional compass supplements the server-rendered article TOC.
+    // Pages that already render their own index (reading families) never get it twice.
     const compass = root.querySelector<HTMLDetailsElement>('[data-section-compass]');
     const linksRoot = root.querySelector('[data-section-links]');
-    const headings = [...root.querySelectorAll<HTMLHeadingElement>('h2')].filter(heading =>
-      !heading.closest('.reading-nav,.experience,.section-compass') && heading.textContent?.trim());
+    const headings = compass ? [...root.querySelectorAll<HTMLHeadingElement>('h2')].filter(heading =>
+      !heading.closest('.reading-nav,.experience,.section-compass') && heading.textContent?.trim()) : [];
     const links: HTMLAnchorElement[] = [];
-    headings.forEach((heading, index) => {
-      heading.id ||= `reading-section-${index + 1}`;
-      const link = document.createElement('a');
-      link.href = `#${heading.id}`;
-      const number = document.createElement('bdi');
-      number.dir = 'ltr';
-      number.textContent = `${String(index + 1).padStart(2, '0')} /`;
-      const label = document.createElement('bdi');
-      label.textContent = heading.innerText.replace(/\s+/g, ' ').trim();
-      link.append(number, document.createTextNode(' '), label);
-      link.addEventListener('click', () => {
-        if (compass) compass.open = false;
-        heading.tabIndex = -1;
-        heading.focus({ preventScroll: true });
-      }, { signal });
-      linksRoot?.append(link); links.push(link);
-    });
-    if (compass && headings.length > 2) compass.hidden = false;
+    // A primary action inside the bottom strip must never sit under the fixed index.
+    const primaryActions = compass ? [...root.querySelectorAll<HTMLElement>('.button')] : [];
+    let footerInView = false;
+    let compassQueued = false;
+    const syncCompass = () => {
+      compassQueued = false;
+      if (!compass || headings.length <= 2) return;
+      if (compass.open || compass.contains(document.activeElement)) { compass.hidden = false; return; }
+      const limit = innerHeight - 96;
+      const covered = primaryActions.some(action => {
+        const box = action.getBoundingClientRect();
+        return box.top < innerHeight && box.bottom > limit;
+      });
+      compass.hidden = footerInView || covered;
+    };
+    const scheduleCompass = () => {
+      if (!compass || compassQueued) return;
+      compassQueued = true;
+      frame(syncCompass);
+    };
+    if (compass) {
+      headings.forEach((heading, index) => {
+        heading.id ||= `reading-section-${index + 1}`;
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        const number = document.createElement('bdi');
+        number.dir = 'ltr';
+        number.textContent = `${String(index + 1).padStart(2, '0')} /`;
+        const label = document.createElement('bdi');
+        label.textContent = heading.innerText.replace(/\s+/g, ' ').trim();
+        link.append(number, document.createTextNode(' '), label);
+        link.addEventListener('click', () => {
+          if (compass) compass.open = false;
+          heading.tabIndex = -1;
+          heading.focus({ preventScroll: true });
+        }, { signal });
+        linksRoot?.append(link); links.push(link);
+      });
+      if (headings.length > 2) {
+        compass.hidden = false;
+        // Escape and an outside tap close the panel; focus stays on the summary.
+        compass.addEventListener('keydown', event => {
+          if (event.key !== 'Escape' || !compass.open) return;
+          compass.open = false;
+          compass.querySelector('summary')?.focus();
+        }, { signal });
+        document.addEventListener('pointerdown', event => {
+          if (!compass.open) return;
+          if (event.target instanceof Node && !compass.contains(event.target)) compass.open = false;
+        }, { signal });
+        compass.addEventListener('toggle', syncCompass, { signal });
+        addEventListener('scroll', scheduleCompass, { passive: true, signal });
+        addEventListener('resize', scheduleCompass, { signal });
+        scheduleCompass();
+      }
+    }
     const position = root.querySelector('[data-section-position]');
     if (position) position.textContent = `01 / ${String(headings.length).padStart(2, '0')}`;
     const visibleHeadings = new Set<Element>();
@@ -50,15 +89,34 @@
       links.forEach((link, i) => i === index ? link.setAttribute('aria-current', 'location') : link.removeAttribute('aria-current'));
       if (position) position.textContent = `${String(index + 1).padStart(2, '0')} / ${String(headings.length).padStart(2, '0')}`;
     }, { rootMargin: '-12% 0px -55% 0px' });
-    headings.forEach(heading => headingObserver.observe(heading)); observers.push(headingObserver);
+    if (headings.length > 2) { headings.forEach(heading => headingObserver.observe(heading)); observers.push(headingObserver); }
 
     const footer = document.querySelector('footer');
     if (footer && compass && headings.length > 2) {
       const footerObserver = new IntersectionObserver(entries => {
-        compass.hidden = entries.some(entry => entry.isIntersecting);
+        footerInView = entries.some(entry => entry.isIntersecting);
+        syncCompass();
       });
       footerObserver.observe(footer); observers.push(footerObserver);
     }
+
+    // The server-rendered document index behaves as a disclosure on phones only.
+    const documentToc = root.querySelector<HTMLElement>('[data-document-toc]');
+    const documentDetails = documentToc?.querySelector('details');
+    if (documentDetails) {
+      const compactViewport = matchMedia('(max-width: 767px)');
+      const adaptIndex = () => { documentDetails.open = !compactViewport.matches; };
+      adaptIndex(); compactViewport.addEventListener('change', adaptIndex, { signal });
+    }
+    root.querySelectorAll<HTMLAnchorElement>('.document-toc a[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => {
+        const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+        if (!target) return;
+        target.tabIndex = -1;
+        target.focus({ preventScroll: true });
+        if (documentDetails && matchMedia('(max-width: 767px)').matches) documentDetails.open = false;
+      }, { signal });
+    });
 
     // Reading progress is local UI state; no analytics, storage, or text collection.
     const article = root.querySelector('article');
