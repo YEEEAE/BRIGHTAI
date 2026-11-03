@@ -1,3 +1,5 @@
+import { brand } from './brand';
+
 const site = 'https://brightai.live';
 
 export function articleStructuredData(headline: string, description: string, pathname: string) {
@@ -12,7 +14,7 @@ export function articleStructuredData(headline: string, description: string, pat
       '@type': 'Organization',
       name: 'BRIGHTAI',
       url: `${site}/`,
-      logo: { '@type': 'ImageObject', url: new URL('/images/brightai-logo.webp', site).href },
+      logo: { '@type': 'ImageObject', url: new URL(brand.logo, site).href },
     },
   };
 }

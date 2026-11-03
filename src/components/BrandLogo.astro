@@ -4,7 +4,7 @@ interface Props { placement?: 'header' | 'footer'; }
 const { placement = 'header' } = Astro.props;
 ---
 <a class:list={['brand-logo', placement]} href="/" aria-label="BRIGHTAI — الرئيسية">
-  <img src={brand.logo} alt={brand.alt} width={brand.width} height={brand.height} loading={placement === 'footer' ? 'lazy' : 'eager'} decoding="async" />
+  <img src={brand.displayLogo} alt={brand.alt} width={brand.displayWidth} height={brand.displayHeight} loading={placement === 'footer' ? 'lazy' : 'eager'} decoding="async" />
 </a>
 <style>
   .brand-logo { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; }

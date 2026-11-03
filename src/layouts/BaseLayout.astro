@@ -58,10 +58,12 @@ const websiteSchema = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(brand.logo, 'https://brightai.live').href} />
+    <meta property="og:image:secure_url" content={new URL(brand.logo, 'https://brightai.live').href} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content={String(brand.width)} />
     <meta property="og:image:height" content={String(brand.height)} />
     <meta property="og:image:alt" content={brand.alt} />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(brand.logo, 'https://brightai.live').href} />

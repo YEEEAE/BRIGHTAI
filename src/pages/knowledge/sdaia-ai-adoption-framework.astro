@@ -1,5 +1,6 @@
 ---
 import PageShell from '../../components/PageShell.astro';
+import { brand } from '../../data/brand';
 export const prerender = true;
 const description = 'شرح عملي لإطار تبني الذكاء الاصطناعي من سدايا: لمن وُجّه، وما محاوره الثلاثة، ومستويات النضج، ومن وين تبدأ منشأتك، مع خطة 90 يوماً للمنشآت الصغيرة والكبيرة.';
 const path = Astro.url.pathname;
@@ -17,7 +18,7 @@ const article = {
     '@type': 'Organization',
     name: 'BRIGHTAI',
     url: 'https://brightai.live/',
-    logo: { '@type': 'ImageObject', url: 'https://brightai.live/images/brightai-logo.webp' },
+    logo: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href },
   },
   about: [
     { '@type': 'Thing', name: 'حوكمة الذكاء الاصطناعي' },

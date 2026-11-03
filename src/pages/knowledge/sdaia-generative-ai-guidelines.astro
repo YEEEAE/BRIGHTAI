@@ -1,5 +1,6 @@
 ---
 import PageShell from '../../components/PageShell.astro';
+import { brand } from '../../data/brand';
 export const prerender = true;
 const description = 'مقارنة عملية بين مبادئ الذكاء الاصطناعي التوليدي للعموم وللجهات الحكومية من سدايا: من تنطبق عليه كل نسخة، والفروقات، وأمثلة مسموح وممنوع، وخطوات التطبيق.';
 const path = Astro.url.pathname;
@@ -18,7 +19,7 @@ const article = {
     '@type': 'Organization',
     name: 'BRIGHTAI',
     url: 'https://brightai.live/',
-    logo: { '@type': 'ImageObject', url: 'https://brightai.live/images/brightai-logo.webp' },
+    logo: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href },
   },
   about: [
     { '@type': 'Thing', name: 'مبادئ الذكاء الاصطناعي التوليدي' },
