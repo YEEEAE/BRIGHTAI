@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-03",
+  "report": [
+    "Desktop 1440px: 11 guides, preview, screenshot PASS",
+    "Keyboard Escape and focus restoration PASS",
+    "Article round trip and 650px scroll restoration PASS",
+    "Mobile 360px: no overflow, expanded descriptions, collapsed categories, preview focus and Escape PASS",
+    "Reduced motion: transitions disabled PASS",
+    "JavaScript disabled: 11 visible article links PASS",
+    "Article: real reading progress, current section, mobile overflow and desktop screenshot PASS"
+  ]
+}

@@ -1,0 +1,17 @@
+---
+import { articles, topics } from '../data/knowledge';
+import '../styles/knowledge-reader.css';
+interface Props { content: string; toc: {id:string;title:string}[]; minutes: number; path: string }
+const {content, toc, minutes, path} = Astro.props;
+const current = articles.find(a => a.href === path);
+const related = articles.filter(a => a.href !== path && a.topic === current?.topic).slice(0,3);
+---
+<div class="kr" data-knowledge-reader>
+  <div class="kr-bar"><a href="/docs/" data-back-center>← عودة لمركز المعرفة</a><span><bdi>AIGAS / KNOWLEDGE</bdi> · {minutes} دقائق قراءة تقديرية</span></div>
+  <div class="kr-layout">
+    <aside class="kr-sidebar"><div class="kr-side-inner"><p class="kr-label">داخل هذا الدليل</p><progress class="kr-progress" max="100" value="0" aria-label="تقدم قراءة الدليل"/><details open><summary>فهرس الأقسام</summary><nav aria-label="فهرس الدليل">{toc.map((h,i) => <a href={`#${h.id}`}><bdi>{String(i+1).padStart(2,'0')}</bdi><span set:html={h.title}/></a>)}</nav></details><p class="kr-disclaimer">محتوى تعليمي · راجع المراجع الرسمية قبل اتخاذ القرار.</p></div></aside>
+    <div class="kr-content" data-knowledge-content><Fragment set:html={content}/><!--knowledge-content-end--></div>
+  </div>
+  {related.length > 0 && <section class="kr-related" aria-label="أدلة مرتبطة"><p class="kr-label">تابع في الموضوع نفسه · {topics.find(t => t[0] === current?.topic)?.[1]}</p><h2>أكمل الصورة</h2><div>{related.map(a => <a href={a.href}><span>{a.tag}</span><h3>{a.title}</h3><span aria-hidden="true">←</span></a>)}</div></section>}
+</div>
+<script>import '../scripts/knowledge-reader';</script>

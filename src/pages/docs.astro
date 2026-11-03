@@ -1,69 +1,58 @@
 ---
-import ContentExtension from '../components/ContentExtension.astro';
 import PageShell from '../components/PageShell.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+import Icon from '../components/KnowledgeIcon.astro';
+import { topics, products } from '../data/knowledge';
+import { knowledgeCatalog } from '../server/knowledge/catalog';
+import '../styles/knowledge-center.css';
 export const prerender = true;
-const articles = [
-  { href: '/knowledge/ai-governance-saudi/', topic: 'governance', tag: 'إطار عمل', title: 'حوكمة الذكاء الاصطناعي في السعودية', text: 'مسار عملي يبدأ بتحديد الاستخدام والمسؤوليات، ويمر بتقييم المخاطر والمعالجة، وينتهي بالمراجعة والتحسين.' },
-  { href: '/knowledge/protect-company-data-chatgpt/', topic: 'data', tag: 'قائمة قرار', title: 'حماية بيانات المنشأة عند استخدام ChatGPT', text: 'أسئلة قصيرة تساعد الموظف على التمييز بين المعلومات العامة والداخلية والشخصية قبل إدخالها في أداة خارجية.' },
-  { href: '/knowledge/ai-risk-assessment/', topic: 'risk', tag: 'مصفوفة تعليمية', title: 'تقييم مخاطر الذكاء الاصطناعي', text: 'طريقة مبسطة لتوثيق الخطر والأثر والضوابط والمالك؛ ليست تصنيفاً رسمياً أو نتيجة تقييم آلي.' },
-  { href: '/knowledge/prompt-injection/', topic: 'security', tag: 'شرح تقني', title: 'Prompt Injection وطبقات الحماية', text: 'كيف قد تحاول مدخلات غير موثوقة تغيير سلوك النموذج، وأين توضع ضوابط التحقق والمراجعة.' },
-  { href: '/knowledge/ai-use-policy-employees/', topic: 'policy', tag: 'سياسة داخلية', title: 'سياسة استخدام الذكاء الاصطناعي للموظفين', text: 'خطوات لبناء سياسة مفهومة تشمل الاستخدام المسموح والمشروط والمحظور وآلية التصعيد.' },
-  { href: '/knowledge/sdaia-ai-adoption-framework/', topic: 'governance', tag: 'شرح عملي', title: 'إطار تبني الذكاء الاصطناعي من سدايا', text: 'ما يعنيه إطار سدايا لمنشأتك عملياً: محاوره ومستويات النضج، وترتيب البداية للمنشآت الصغيرة والكبيرة، وخطة 90 يوماً.' },
-  { href: '/knowledge/saudi-ai-ethics-principles/', topic: 'governance', tag: 'مصفوفة تعليمية', title: 'مبادئ أخلاقيات الذكاء الاصطناعي في السعودية', text: 'سبعة مبادئ بمسمياتها الرسمية، وكيف يحوّل كل مبدأ إلى سؤال ودليل ومالك، مع مستويات المخاطر وأسئلة التحقق.' },
-  { href: '/knowledge/sdaia-generative-ai-guidelines/', topic: 'governance', tag: 'شرح عملي', title: 'مبادئ الذكاء الاصطناعي التوليدي من سدايا: نسختان', text: 'الفرق بين نسخة العموم ونسخة الجهات الحكومية: من تنطبق عليه كل واحدة، وأمثلة مسموح وبشروط وممنوع، وخطوات التطبيق.' },
-  { href: '/knowledge/pdpl-and-ai/', topic: 'data', tag: 'شرح عملي', title: 'PDPL والذكاء الاصطناعي: متى يخضع إدخال البيانات؟', text: 'رحلة من الموظف إلى النموذج عبر ست نقاط فحص، وموقع منشأتك بين المتحكم والمعالج، وأساس المعالجة والموافقة والنقل خارج المملكة.' },
-  { href: '/knowledge/saudi-ai-law-binding-vs-guidance/', topic: 'governance', tag: 'شرح عملي', title: 'هل في السعودية قانون للذكاء الاصطناعي؟', text: 'طبقات الالتزام الثلاث: أنظمة نافذة، ووثائق سدايا الإرشادية، ومسودات لم تصدر. جدول للوثائق وأداة لترتيب الأسئلة قبل القرار.' },
-  { href: '/knowledge/sdaia-ai-ethics-self-assessment/', topic: 'risk', tag: 'مصفوفة تعليمية', title: 'أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا', text: 'ما تجهزه قبل الدخول: الجرد والمالكين والوثائق والقرارات، مع فحص جاهزية من عشرة أسئلة وطريقة لقراءة النتيجة ومعالجة الفجوات.' },
-];
+const articles = await knowledgeCatalog();
+const types = [...new Set(articles.map(a => a.tag))];
 ---
 <PageShell title="مركز المعرفة | حوكمة الذكاء الاصطناعي" description="أدلة عربية عملية عن حوكمة الذكاء الاصطناعي وحماية البيانات وتقييم المخاطر والسياسات في بيئة العمل السعودية." crumbs={[{ name: 'مركز المعرفة' }]}>
-  <p class="eyebrow">المعرفة قبل الأداة</p>
-  <h1>مركز المعرفة</h1>
-  <p class="lead">أدلة عملية تساعد الفرق على طرح الأسئلة الصحيحة قبل استخدام الذكاء الاصطناعي. المواد توعوية ولا تمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
-  <section class="block" data-knowledge-browser><h2>ابدأ من احتياجك</h2>
-    <div class="knowledge-tools">
-      <label for="knowledge-search">ابحث في الأدلة<input id="knowledge-search" type="search" placeholder="مثل: البيانات أو المخاطر" autocomplete="off" disabled /></label>
-      <div class="knowledge-topics" aria-label="موضوع الدليل">{[['all','الكل'],['governance','الحوكمة'],['data','البيانات'],['risk','المخاطر'],['security','الحماية'],['policy','السياسات']].map(([value,label],i) => <button type="button" disabled data-knowledge-topic={value} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div>
-      <p class="knowledge-count" role="status" aria-live="polite" data-knowledge-count>{articles.length} أدلة للقراءة</p>
+  <div class="kc" data-knowledge-center>
+    <details class="kc-sidebar" open>
+      <summary>التصنيفات ومساحة المعرفة</summary>
+      <div class="kc-sidebar-inner">
+        <div class="kc-brand"><BrandLogo/><span>AIGAS / مساحة المعرفة</span></div>
+        <nav aria-label="مساحة المعرفة" class="kc-nav">
+          <button disabled data-space="guides" aria-pressed="true"><Icon/> الأدلة <span>{articles.length}</span></button>
+          <button disabled data-space="products" aria-pressed="false">معرفة منظومة <bdi>AIGAS</bdi></button>
+          <button disabled data-topic="faq" aria-pressed="false">الأسئلة الشائعة</button>
+        </nav>
+        <p class="kc-label">تصفّح الموضوعات</p>
+        <nav class="kc-topics" aria-label="الموضوعات">
+          <button disabled data-topic="" aria-pressed="true">كل الموضوعات <span>{articles.length}</span></button>
+          {topics.map(([id, label]) => <button disabled data-topic={id} aria-pressed="false"><span>{label}</span><bdi>{articles.filter(a => a.topics.includes(id)).length}</bdi></button>)}
+        </nav>
+        <p class="kc-sidebar-note"><span aria-hidden="true">●</span> معرفة مفتوحة للجميع<br/>محتوى تعليمي، لا يثبت امتثالًا.</p>
+      </div>
+    </details>
+    <div class="kc-main">
+      <header class="kc-heading"><div><p class="kc-kicker">ابحث. افهم. طبّق.</p><h1>المعلومة المناسبة،<br/><em>في مكان واحد.</em></h1><p>أدلة عربية لقرارات أوضح في حوكمة وأمان الذكاء الاصطناعي.</p></div><div class="kc-total"><b>{articles.length}</b><span>دليلًا من محتوى الموقع<br/>للفهم والتطبيق</span></div></header>
+      <section aria-label="البحث وتصفية الأدلة" class="kc-controls">
+        <label class="kc-search" for="kc-query"><Icon kind="search"/><span class="kc-sr">ابحث في عناوين الأدلة وأوصافها وموضوعاتها</span><input disabled id="kc-query" type="search" placeholder="ابحث في الحوكمة، البيانات، والأدلة التقنية…" autocomplete="off"/><kbd aria-hidden="true">/</kbd></label>
+        <div class="kc-suggestions"><span>ابدأ من:</span>{['حماية البيانات', 'المخاطر', 'Prompt Injection'].map(term => <button disabled data-query={term}>{term}<span aria-hidden="true"> ↖</span></button>)}</div>
+        <fieldset class="kc-products"><legend>المنتج المرتبط <span>— حسب الروابط داخل الدليل</span></legend>{products.map(([id, label]) => <button disabled data-product={id} aria-pressed="false"><bdi>{label}</bdi></button>)}</fieldset>
+        <div class="kc-filterbar"><label>نوع المحتوى<select disabled id="kc-type"><option value="">كل الأنواع</option>{types.map(type => <option>{type}</option>)}</select></label><label>الموضوع<select disabled id="kc-topic"><option value="">كل الموضوعات</option>{topics.map(([id, label]) => <option value={id}>{label}</option>)}</select></label><button disabled id="kc-view" aria-pressed="false">عرض موسع</button><button disabled data-reset>مسح الفلاتر</button></div>
+        <div class="kc-active" aria-label="الفلاتر النشطة" data-active></div>
+      </section>
+      <section class="kc-product-space" data-product-space hidden aria-label="معرفة منظومة AIGAS"><h2>المعرفة المرتبطة بمنظومة AIGAS</h2><p>Kernel هو الأساس المشترك. الروابط التالية تصنّف المعرفة التعليمية؛ ليست توثيق API أو دليل إتاحة تشغيلية.</p><div>{products.map(([id, label]) => <button disabled data-product-only={id}><bdi>{label}</bdi><span>{id === 'kernel' ? 'الأساس المشترك · ' : ''}{articles.filter(a => a.products.includes(id)).length} أدلة مرتبطة</span></button>)}</div></section>
+      <div class="kc-results-bar"><p role="status" aria-live="polite" aria-atomic="true" data-result-count>{articles.length} نتائج من {articles.length} أدلة</p><span>قراءة تقديرية · 180 كلمة / دقيقة</span></div>
+      <div class="kc-workspace">
+        <section aria-label="نتائج الأدلة" class="kc-results">
+          {articles.map((a, i) => <article class="kc-row" data-entry={i}>
+            <div class="kc-row-icon"><Icon kind={a.topic}/></div>
+            <div class="kc-row-copy"><div class="kc-row-meta"><span>{a.tag}</span><bdi>DOC / {String(i + 1).padStart(2, '0')}</bdi></div><h2><a href={a.href} data-article-link>{a.title}</a></h2><p class="kc-description">{a.text}</p><div class="kc-tags">{a.products.map(id => <span><bdi>{products.find(p => p[0] === id)?.[1]}</bdi></span>)}<span>{topics.find(t => t[0] === a.topic)?.[1]}</span><span>{a.minutes} دقائق</span></div><div class="kc-row-actions"><button disabled data-preview={i} aria-controls="kc-preview" aria-expanded="false">معاينة سريعة</button><a href={a.href} data-article-link>افتح المقال <span aria-hidden="true">←</span></a></div></div>
+          </article>)}
+          <div class="kc-empty" data-empty hidden><Icon kind="search"/><h2>ما لقينا دليلًا يطابق اختيارك</h2><p>جرّب كلمة أقصر أو خفّف الفلاتر. بعض التصنيفات ما لها محتوى مرتبط حاليًا.</p><button data-reset>إعادة ضبط البحث والفلاتر</button></div>
+        </section>
+        <aside id="kc-preview" class="kc-preview" aria-label="معاينة الدليل" tabindex="-1"><div class="kc-preview-top"><span>معاينة سريعة</span><button data-close-preview hidden aria-label="إغلاق المعاينة">×</button></div><div data-preview-content><div class="kc-preview-art"><Icon kind="guide"/></div><h2>خذ نظرة قبل القراءة</h2><p>اختر «معاينة سريعة» من أي دليل لعرض وصفه وأقسامه الفعلية هنا.</p><span class="kc-label">العناوين من المقال الأصلي</span></div></aside>
+      </div>
+      <noscript><p class="kc-notice">كل الأدلة وروابطها متاحة. فعّل JavaScript لاستخدام البحث والفلاتر والمعاينة.</p></noscript>
+      <p class="kc-notice">المواد توعوية ولا تمثل استشارة قانونية أو اعتمادًا تنظيميًا. راجع المصدر الرسمي الساري قبل اتخاذ قرار مؤسسي.</p>
     </div>
-    <div class="catalog">
-      {articles.map((article, i) => <a class="catalog-row" data-topic={article.topic} href={article.href}><span class="index-number">0{i + 1}</span><div><small>{article.tag}</small><h3>{article.title}</h3></div><p>{article.text}</p><span aria-hidden="true">←</span></a>)}
-    </div>
-    <div class="knowledge-empty" data-knowledge-empty hidden><h3>ما لقينا دليلاً يطابق بحثك</h3><p>جرّب كلمة أقصر أو اختر «الكل» لاستعراض الموضوعات.</p><button type="button" data-knowledge-reset>اعرض كل الأدلة</button></div>
-    <noscript><p class="note">كل الأدلة ظاهرة أدناه؛ البحث والتصفية يحتاجان JavaScript.</p></noscript>
-  </section>
-  <p class="note">تاريخ إعداد هذه المواد: 31 أكتوبر 2026. راجع المصدر الرسمي والنص النظامي الساري قبل اتخاذ قرار مؤسسي.</p>
-
-    <ContentExtension>
-
-<section><h2>مساران للقراءة حسب مسؤوليتك</h2><div class="extension-columns"><div><h3>للمالك ومدير الحوكمة</h3><ol><li><a href="/knowledge/ai-governance-saudi/">حدد المسؤوليات ودورة الحوكمة</a>.</li><li><a href="/knowledge/ai-risk-assessment/">اكتب الخطر والضابط والدليل</a>.</li><li><a href="/knowledge/ai-use-policy-employees/">حوّل القرارات إلى سياسة للموظفين</a>.</li></ol></div><div><h3>للأمن والتقنية</h3><ol><li><a href="/knowledge/protect-company-data-chatgpt/">راجع البيانات والقناة والمورد</a>.</li><li><a href="/knowledge/prompt-injection/">افصل التعليمات عن المحتوى الخارجي</a>.</li><li><a href="/products/">قارن أدوار المنتجات وحدود تكاملها</a>.</li></ol></div></div></section>
-<section><h2>كيف تستخدم الأدلة داخل منشأتك؟</h2><p>حوّل الأسئلة إلى ورقة عمل لحالة استخدام محددة، ثم اعرضها على المالك المختص. الأمثلة اصطناعية ولا تمثل نتائج تشغيل أو سياسات معتمدة لعميل. تاريخ إعداد الإضافات: 31 أكتوبر 2026؛ اعتماد المراجع البشري المختص قبل النشر النهائي ما زال مطلوباً.</p></section>
-    </ContentExtension>
+    <script type="application/json" id="kc-data" set:html={JSON.stringify(articles).replace(/</g, '\\u003c')}/>
+  </div>
 </PageShell>
-<script>
-  document.querySelectorAll<HTMLElement>('[data-knowledge-browser]').forEach(root => {
-    const search = root.querySelector<HTMLInputElement>('input[type="search"]');
-    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-knowledge-topic]');
-    const rows = [...root.querySelectorAll<HTMLAnchorElement>('.catalog-row')];
-    const count = root.querySelector('[data-knowledge-count]');
-    const empty = root.querySelector<HTMLElement>('[data-knowledge-empty]');
-    let topic = 'all';
-    const normalize = (value: string) => value.normalize('NFKC').toLowerCase()
-      .replace(/[\u064b-\u065f]/g,'').replace(/[أإآ]/g,'ا')
-      .replace(/(^|\s)ال(?=[\u0621-\u064a]{3})/g,'$1');
-    const update = () => {
-      const query = normalize(search?.value.trim() ?? ''); let visible = 0;
-      rows.forEach(row => {
-        const matches = (topic === 'all' || row.dataset.topic === topic) && normalize(row.textContent ?? '').includes(query);
-        row.hidden = !matches; if (matches) visible++;
-      });
-      root.dataset.filtered = String(topic !== 'all' || !!query);
-      buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.knowledgeTopic === topic)));
-      if (count) count.textContent = `${visible} من ${rows.length} أدلة`;
-      if (empty) empty.hidden = visible !== 0;
-    };
-    if (search) { search.disabled = false; search.addEventListener('input', update); }
-    buttons.forEach(button => { button.disabled = false; button.addEventListener('click', () => { topic = button.dataset.knowledgeTopic ?? 'all'; update(); }); });
-    root.querySelector('[data-knowledge-reset]')?.addEventListener('click', () => { topic = 'all'; if (search) search.value = ''; update(); search?.focus(); });
-  });
-</script>
+<script>import '../scripts/knowledge-center';</script>

@@ -1,0 +1,226 @@
+.page-family-knowledge:has(.kr) {
+  max-inline-size:1440px;
+  inline-size:100%;
+  padding:24px clamp(16px,3vw,44px) 64px
+}
+.kr {
+  color:var(--color-text);
+  min-inline-size:0
+}
+.kr-bar {
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:center;
+  border-block:1px solid var(--border-subtle);
+  padding-block:14px;
+  margin-block:24px;
+  font-size:14px;
+  color:var(--color-text-muted)
+}
+.kr-bar>a {
+  display:inline-flex;
+  align-items:center;
+  min-block-size:44px;
+  color:var(--icon-accent-strong);
+  text-decoration:none
+}
+.kr-layout {
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr);
+  gap:40px;
+  align-items:start
+}
+.kr-sidebar {
+  min-inline-size:0;
+  align-self:stretch
+}
+.kr-side-inner {
+  position:sticky;
+  inset-block-start:20px;
+  max-block-size:calc(100dvh - 40px);
+  overflow:auto;
+  padding:16px;
+  border:1px solid var(--border-subtle);
+  border-radius:10px;
+  background:var(--surface-raised);
+  scrollbar-width:thin
+}
+.kr .kr-label {
+  font-size:13px;
+  color:var(--color-saffron-spark);
+  margin:0 0 14px
+}
+.kr-progress {
+  display:block;
+  inline-size:100%;
+  block-size:4px;
+  border:0;
+  accent-color:var(--color-action);
+  margin-block:12px 20px
+}
+.kr-progress::-webkit-progress-bar {
+  background:var(--border-subtle)
+}
+.kr-progress::-webkit-progress-value {
+  background:var(--color-action)
+}
+.kr-sidebar summary {
+  font-size:15px;
+  cursor:pointer;
+  min-block-size:44px;
+  display:flex;
+  align-items:center
+}
+.kr-sidebar nav {
+  display:grid;
+  gap:3px
+}
+.kr-sidebar a {
+  display:flex;
+  gap:10px;
+  min-block-size:44px;
+  align-items:center;
+  padding:8px;
+  border-inline-start:2px solid transparent;
+  color:var(--color-text-muted);
+  text-decoration:none;
+  font-size:14px;
+  line-height:1.8
+}
+.kr-sidebar a>bdi {
+  font-size:11px;
+  color:var(--icon-accent)
+}
+.kr-sidebar a:hover,.kr-sidebar a[aria-current] {
+  border-color:var(--color-action);
+  background:var(--surface-raised-hover);
+  color:white
+}
+.kr :is(a,button,summary):focus-visible {
+  outline:2px solid var(--color-focus);
+  outline-offset:3px
+}
+.kr-disclaimer {
+  color:var(--color-text-subtle);
+  font-size:12px;
+  line-height:1.9;
+  margin-block-start:20px
+}
+.kr-content {
+  min-inline-size:0;
+  overflow-wrap:break-word
+}
+.kr-content .reading-nav,.kr-content aside[class$="-toc"] {
+  display:none!important
+}
+.kr-content .reading-layout {
+  display:block!important
+}
+.kr-content :is(.k1-grid,.k2-grid,.k3-grid,.pd-grid,.sc-grid,.sl-grid) {
+  grid-template-columns:minmax(0,1fr)!important
+}
+.kr-content h1 {
+  font-size:clamp(30px,3.5vw,48px)!important;
+  line-height:1.6!important;
+  letter-spacing:0!important
+}
+.kr-content h2 {
+  font-size:clamp(24px,2.4vw,32px)!important;
+  line-height:1.7!important;
+  scroll-margin-block-start:30px
+}
+.kr-content :is(p,li,dd) {
+  line-height:1.95
+}
+.kr-content :is(article>p,section>p) {
+  max-inline-size:76ch
+}
+.kr-content a:not([class]) {
+  text-underline-offset:5px
+}
+.kr-content .block {
+  margin-block:32px
+}
+.kr-related {
+  border-block-start:1px solid var(--border-subtle);
+  margin-block-start:48px;
+  padding-block-start:28px
+}
+.kr-related>h2 {
+  font-size:28px
+}
+.kr-related>div {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));
+  gap:14px
+}
+.kr-related a {
+  background:var(--surface-raised);
+  border:1px solid var(--border-subtle);
+  border-radius:8px;
+  padding:20px;
+  text-decoration:none;
+  display:block;
+  min-block-size:44px
+}
+.kr-related a>span {
+  font-size:13px;
+  color:var(--icon-accent-strong)
+}
+.kr-related h3 {
+  font-size:19px;
+  line-height:1.8;
+  margin-block:10px;
+  color:white
+}
+
+@media(max-width:900px) {
+  .kr-layout {
+  grid-template-columns:minmax(0,1fr)
+}
+.kr-side-inner {
+  position:static;
+  max-block-size:none
+}
+.kr-sidebar details:not([open]) nav {
+  display:none
+}
+.kr-bar {
+  flex-wrap:wrap;
+  gap:4px
+}
+.kr-bar>span {
+  font-size:12px
+}
+.kr-content :is(.k1-grid,.k2-grid,.k3-grid,.pd-grid,.sc-grid,.sl-grid) {
+  display:block!important
+}
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .kr * {
+  animation:none!important;
+  transition:none!important;
+  scroll-behavior:auto!important
+}
+
+}
+
+/* Existing article illustrations remain intact;
+   their former TOC column is released. */
+.kr-content :is(.k2-layout,.k3-layout,.pd-layout,.sc-layout,.sl-layout) {
+  grid-template-columns:minmax(0,1fr)!important
+}
+
+
+.page-family-knowledge:has(.kr)::before {
+  inset-inline:0
+}
+
+.kr-sidebar a > bdi {
+  flex-shrink: 0;
+  min-inline-size: 2ch;
+  white-space: nowrap;
+}

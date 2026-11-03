@@ -8,6 +8,7 @@ import '../styles/interior-motion.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import KnowledgeReader from './KnowledgeReader.astro';
 interface Crumb { name: string; href?: string }
 interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string; ogType?: 'website' | 'article'; structuredData?: Record<string, unknown> }
 const { title, description, crumbs, robots = 'index, follow', ogType = 'website', structuredData } = Astro.props;
@@ -41,15 +42,14 @@ const minutes = Math.max(1, Math.ceil(words / 180));
     <nav class="breadcrumb" aria-label="مسار التنقل">
       {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}><bdi>{c.name}</bdi></a> / </> : <span aria-current="page"><bdi>{c.name}</bdi></span>)}
     </nav>
-    {reading && <nav class="document-toc" aria-label="تنقل القراءة"><p>{family === 'knowledge' ? `وقت قراءة تقريبي: ${minutes} دقيقة، بافتراض 180 كلمة في الدقيقة.` : 'داخل هذه الوثيقة'}</p><details><summary>انتقل إلى قسم</summary>{toc.map(item => <a href={`#${item.id}`}>{item.title}</a>)}</details></nav>}
-    <Fragment set:html={content} />
-    <PageMotionStudy family={family} segment={segment}/>
-    <details class="section-compass" hidden data-section-compass>
+    {reading && family !== 'knowledge' && <nav class="document-toc" aria-label="تنقل القراءة"><p>{family === 'knowledge' ? `وقت قراءة تقريبي: ${minutes} دقيقة، بافتراض 180 كلمة في الدقيقة.` : 'داخل هذه الوثيقة'}</p><details><summary>انتقل إلى قسم</summary>{toc.map(item => <a href={`#${item.id}`}>{item.title}</a>)}</details></nav>}
+    {family === 'knowledge' ? <KnowledgeReader content={content} toc={toc} minutes={minutes} path={Astro.url.pathname}/> : <Fragment set:html={content} /> }
+    {!['docs', 'knowledge'].includes(family) && <PageMotionStudy family={family} segment={segment}/>}
+    {!(['docs', 'knowledge'].includes(family)) && <details class="section-compass" hidden data-section-compass>
       <summary aria-controls="section-compass-links"><span aria-hidden="true">☷</span> داخل الصفحة <span data-section-position></span></summary>
       <nav id="section-compass-links" aria-label="فهرس أقسام الصفحة" data-section-links></nav>
-    </details>
+    </details>}
   </main>
-  <InteriorController />
-  <InteriorMotion />
+  {!['docs', 'knowledge'].includes(family) && <><InteriorController /><InteriorMotion /></>}
   <Footer />
 </BaseLayout>
