@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole, workspaceName } from '../kernel/core.mjs';
-import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor } from './core.mjs';
+import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, bindingVersion, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor } from './core.mjs';
 
 const failure=(status,code,message)=>({failure:{status,code,message}});
 const bodyKeys={
@@ -128,7 +128,7 @@ export function createHumanGateService(transact=transaction) {
     const data={tenant_id:tenantId,requester_id:identity.userId,operation_type:body.operation_type,provider_ref:provider,subject_ref:subjectRef,payload,policy_version:policy.version};
     const request=(await db.query('INSERT INTO public.aigas_hg_requests(id,tenant_id,requester_id,title,description,reason,operation_scope,operation_type,subject_ref,payload,payload_digest,policy_version,provider_ref,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$7,$8,$9,$10,$11,$12,clock_timestamp()+make_interval(mins=>$13)) RETURNING *',[requestId,tenantId,identity.userId,title,description,reason,body.operation_type,subjectRef,payload,binding(data),policy.version,provider,policy.pending_minutes])).rows[0];
     await record('request.created',request,'CREATED');
-    return {request,persisted:true};
+    return {request,persisted:true,binding_version:bindingVersion};
    }
    if(operation==='delegate'){
     requireRole(member,['OWNER','ADMIN']);
@@ -166,7 +166,12 @@ export function createHumanGateService(transact=transaction) {
     return {delegations,policy,canManage:admin(member)&&!!policy?.delegation_enabled,persisted:true};
    }
    const eligible=async(request)=>{
-    if(!policy?.enabled||policy.version!==request.policy_version||!request.payload_digest||binding(request)!==request.payload_digest) return false;
+    // Legacy or hand-modified rows must fail closed, not throw a 400 while a
+    // list page is being rendered. Only the digest check is guarded here; real
+    // database errors below still surface and abort the request.
+    let digestValid=false;
+    try { digestValid=!!request.payload_digest&&binding(request)===request.payload_digest; } catch { digestValid=false; }
+    if(!policy?.enabled||policy.version!==request.policy_version||!digestValid) return false;
     if((request.provider_ref??providerFor(request.operation_type))!==providerFor(request.operation_type)) return false;
     const requester=(await db.query('SELECT m.role FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 AND m.user_id=$2 AND u.banned IS NOT TRUE FOR SHARE OF m,u',[tenantId,request.requester_id])).rows[0];
     if(!requester||(request.operation_type==='KERNEL_WORKSPACE_RENAME'&&!admin(requester))) return false;
@@ -201,6 +206,8 @@ export function createHumanGateService(transact=transaction) {
      const history=(await db.query('SELECT event_type,reason_code,actor_user_id,created_at,audit_id FROM public.aigas_hg_events WHERE tenant_id=$1 AND request_id=$2 ORDER BY created_at,id',[tenantId,request.id])).rows;
      requests.push({...request,history,
       bindingValid:!!valid,
+       binding_version:bindingVersion,
+       approval_expires_at:request.status==='APPROVED'?request.expires_at:null,
       isRequester:request.requester_id===identity.userId,
       canDecide:!!valid&&decisionAllowed(request,identity.userId,policy,authority),
       canCancel:['PENDING','APPROVED'].includes(request.status)&&cancelAllowed(request,member,identity.userId),
@@ -264,7 +271,7 @@ export function createHumanGateService(transact=transaction) {
     }
     await record('decision.'+body.decision.toLowerCase(),updated,newStatus);
     await assertFresh(db,tenantId,id);
-    return {request:updated,decision,grant,persisted:true};
+    return {request:updated,decision,grant,binding_version:bindingVersion,approval_expires_at:newStatus==='APPROVED'?updated.expires_at:null,persisted:true};
    }
    if(request.requester_id!==identity.userId) throw new KernelError(403,'FORBIDDEN','التنفيذ متاح لمقدم الطلب فقط.');
    if(request.status!=='APPROVED') throw new KernelError(409,'APPROVAL_REQUIRED','يلزم قرار موافقة مستقل وصالح قبل التنفيذ.');
@@ -274,6 +281,8 @@ export function createHumanGateService(transact=transaction) {
    if(permit.status==='CONSUMED') throw new KernelError(409,'PERMIT_ALREADY_CONSUMED','استُهلك إذن التنفيذ مسبقًا؛ لا يمكن إعادة العملية.');
    if(permit.status!=='ACTIVE') throw new KernelError(409,'PERMIT_NOT_ACTIVE','إذن التنفيذ ملغى أو منتهٍ؛ أعد الاعتماد ضمن سياسة سارية.');
    if(!permit.active) throw new KernelError(410,'PERMIT_EXPIRED','انتهت صلاحية إذن التنفيذ قبل الاستخدام.');
+   // The permit may shorten but never outlive the approved request window.
+   if(new Date(permit.expires_at).getTime()>new Date(request.expires_at).getTime()) throw new KernelError(409,'BINDING_INVALID','صلاحية إذن التنفيذ تتجاوز المهمة المعتمدة؛ يلزم اعتماد جديد.');
    const approval=(await db.query("SELECT * FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE' FOR SHARE",[tenantId,id])).rows[0];
    const selfApproval=approval?.reviewer_id===identity.userId;
    if(!approval||(selfApproval&&((policy?.separation_of_duties!==false)||request.operation_type==='KERNEL_WORKSPACE_RENAME'))||approval.payload_digest!==request.payload_digest||approval.policy_version!==request.policy_version||permit.payload_digest!==request.payload_digest||permit.policy_version!==request.policy_version||permit.subject_ref!==request.subject_ref||permit.operation_type!==request.operation_type||permit.requester_id!==request.requester_id||permit.reviewer_id!==approval.reviewer_id) throw new KernelError(409,'APPROVAL_REQUIRED','الموافقة أو إذن التنفيذ لا يطابق المهمة الحالية.');
@@ -302,7 +311,7 @@ export function createHumanGateService(transact=transaction) {
    // Last statement after audit/evidence waits: late expiry rolls back the side effect too.
    const completed=(await db.query("UPDATE public.aigas_hg_requests SET status='EXECUTED',completed_at=clock_timestamp(),executed_by=$3,execution_result=$4 WHERE tenant_id=$1 AND id=$2 AND status='APPROVED' AND expires_at>clock_timestamp() RETURNING *",[tenantId,id,identity.userId,executionResult])).rows[0];
    if(!completed) throw new KernelError(410,'REQUEST_EXPIRED','انتهت المهلة قبل اكتمال التنفيذ؛ أُلغي التغيير داخل المعاملة.');
-   return {request:completed,permit:consumed,persisted:true};
+   return {request:completed,permit:consumed,binding_version:bindingVersion,persisted:true};
   });
   if(result.failure) throw new KernelError(result.failure.status,result.failure.code,result.failure.message);
   return result;

@@ -9,8 +9,9 @@ export const PROFILE = 'aigas-ledger-sha256-chain-v2';
 // Bump only with a reviewed change to canonicalInputs/verifyBundle semantics.
 // Bundles record this version; a different verifier fails closed instead of
 // silently reapplying a newer interpretation to an older bundle.
-export const VERIFIER_VERSION = '2.1.0';
+export const VERIFIER_VERSION = '2.2.0';
 export const MAX_EVENTS = 10000;
+export const ASSURANCE = 'INTEGRITY_ONLY_NO_SIGNATURE';
 const fields = ['event_id','tenant_id','source','event_type','policy_version','metadata_json','created_at','created_by','hash_profile','sequence_no','previous_hash','idempotency_key','integrity_hash'];
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 const policyVersion = value => typeof value === 'string' && /^[a-zA-Z0-9_.:-]{1,120}$/.test(value);
@@ -22,12 +23,15 @@ export function canonicalInputs(event) {
   if (Object.values(meta).some(v=>v!==null && !['string','boolean','number'].includes(typeof v))) throw new Error('Non-scalar metadata');
   return JSON.stringify([PROFILE,event.tenant_id,event.event_id,event.source,event.event_type,event.policy_version,meta,new Date(event.created_at).toISOString(),event.created_by,String(event.sequence_no),event.previous_hash,event.idempotency_key]);
 }
-const stateFor = result => result==='MATCH'?'VERIFIED':result==='MISMATCH'?'BLOCKED':'UNVERIFIED';
+const stateFor = result => result==='MATCH'?'VERIFIED_WITHIN_SCOPE':result==='MISMATCH'?'TAMPERED':'UNVERIFIED';
 export function verifyBundle(bundle) {
-  const fail = (result,reason,extra={}) => ({result,reason,state:stateFor(result),independentSignature:false,externalAnchor:false,verifier:{version:VERIFIER_VERSION,pinned:extra.pinned===true},...extra});
+  const fail = (result,reason,extra={}) => ({result,reason,state:stateFor(result),assurance:ASSURANCE,independentSignature:false,externalAnchor:false,verifier:{version:VERIFIER_VERSION,pinned:extra.pinned===true},...extra});
   try {
     const m=bundle?.manifest, entries=bundle?.entries;
     if (bundle?.format!==FORMAT || !m || !Array.isArray(entries) || !entries.length || entries.length>MAX_EVENTS || m.profile!==PROFILE || m.coverage!=='GENESIS_THROUGH_TARGET' || !uuid(m.tenant_id)) return fail('INDETERMINATE','UNSUPPORTED_BUNDLE');
+    // chain_version is optional for bundles exported before it existed; when
+    // present it must name the same contract as profile.
+    if (m.chain_version!==undefined && m.chain_version!==PROFILE) return fail('INDETERMINATE','UNSUPPORTED_BUNDLE');
     // A bundle that declares a verifier version must be read by that exact version.
     // Older bundles without the declaration are still checked but reported unpinned.
     const pinned = !!m.verifier;
@@ -47,7 +51,7 @@ export function verifyBundle(bundle) {
     const target=entries.at(-1).event;
     if (m.head_hash!==previous || m.target_event_id!==target.event_id) return fail('MISMATCH','MANIFEST_TARGET');
     if (Array.isArray(m.policy_versions) && (m.policy_versions.length!==versions.size || m.policy_versions.some(v=>!versions.has(v)))) return fail('MISMATCH','MANIFEST_POLICY_VERSIONS');
-    return {...fail('MATCH','CONSISTENT_SUPPLIED_PREFIX',{pinned,...(pinned?{}:{warnings:['VERIFIER_VERSION_NOT_DECLARED']})}),eventCount:entries.length,limits:'No independent signature or external anchor. Cannot prove source truth, timestamp truth, omitted tail, legal validity, or detect administrator rewrite of the entire supplied chain. No retention guarantee.'};
+    return {...fail('MATCH','CONSISTENT_SUPPLIED_PREFIX',{pinned,...(pinned?{}:{warnings:['VERIFIER_VERSION_NOT_DECLARED']})}),chain_version:PROFILE,scope:'SUPPLIED_PREFIX_ONLY',eventCount:entries.length,limits:'No independent signature or external anchor. Cannot prove source truth, timestamp truth, omitted tail, legal validity, or detect administrator rewrite of the entire supplied chain. No retention guarantee.'};
   } catch { return fail('INDETERMINATE','MALFORMED_BUNDLE'); }
 }
 if (process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href) {

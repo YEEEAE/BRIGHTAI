@@ -9,7 +9,7 @@ const dialog=get<HTMLDialogElement>('[data-detail]'), integrity=get('[data-integ
 const auth=root.dataset.authUrl?createAuthClient(root.dataset.authUrl):null;
 let busy=false,page=1,selected:any=null,hasMore=false,epoch=0;
 let pendingSynthetic:{key:string;event_type:string;scenario:string;workspace:string}|null=null;
-const resultLabels:Record<string,string>={MATCH:'مطابق ضمن النطاق',MISMATCH:'غير مطابق — راجع الدليل',INDETERMINATE:'تعذر حسم السلامة',EMPTY:'السجل فارغ',VERIFIED:'متحقق ضمن النطاق',BLOCKED:'محجوب — لم تُثبت السلامة',UNVERIFIED:'غير متحقق — دليل غير كافٍ'};
+const resultLabels:Record<string,string>={MATCH:'مطابق ضمن النطاق',MISMATCH:'غير مطابق — راجع الدليل',INDETERMINATE:'تعذر حسم السلامة',EMPTY:'السجل فارغ',VERIFIED_WITHIN_SCOPE:'متحقق ضمن النطاق المورد فقط',TAMPERED:'غير مطابق — احتمال تعديل أو مدخلات خاطئة',VERIFIED:'متحقق ضمن النطاق',BLOCKED:'محجوب — لم تُثبت السلامة',UNVERIFIED:'غير متحقق — دليل غير كافٍ'};
 const reasonLabels:Record<string,string>={EVENT_HASH_MISMATCH:'بصمة الحدث لا تطابق محتواه',EVENT_HASH_INDETERMINATE:'تعذر إعادة حساب بصمة الحدث',CHAIN_MISMATCH:'تعارض في رابط السلسلة',CHAIN_REFERENCE:'ترتيب أو رابط سلسلة غير صالح',CHAIN_INDETERMINATE:'تعذر حسم السلسلة',HASH_INPUTS:'مدخلات البصمة لا تطابق الحدث',MANIFEST_RANGE:'نطاق الحزمة غير متصل',MANIFEST_TARGET:'هدف الحزمة لا يطابق آخر حدث',MANIFEST_POLICY_VERSIONS:'نسخ السياسة في الحزمة غير متسقة',INVALID_EVENT:'حدث غير قابل للقراءة أو غير صالح',MALFORMED_BUNDLE:'حزمة غير صالحة أو ناقصة',UNSUPPORTED_BUNDLE:'حزمة بإصدار غير مدعوم',PREFIX_LIMIT:'تجاوز حد بادئة الفحص الأساسية',NO_EVIDENCE:'لا توجد أدلة ضمن النطاق',VERIFIER_VERSION_MISMATCH:'إصدار الفاحص لا يطابق إصدار الحزمة'};
 const resultLabel=(value:string)=>resultLabels[value]||'لم يُفحص';
 const reasonsText=(reasons:unknown)=>Array.isArray(reasons)&&reasons.length?` الأسباب: ${reasons.map((reason:string)=>reasonLabels[reason]||reason).join('؛ ')}.`:'';
@@ -44,7 +44,7 @@ async function detail(id:string){
  for(const [key,label] of Object.entries(names)){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=key==='metadata_json'?JSON.stringify(selected[key],null,2):key==='created_at'?time(selected[key]):String(selected[key]??'بداية السلسلة');dl.append(dt,dd);}
  get('[data-export]').hidden=!data.permissions.export;
  integrity.dataset.state=data.state||'UNVERIFIED';
- integrity.textContent=`الحالة: ${stateLabel(data.state)}.${reasonsText(data.reasons)} فحص الحدث: ${resultLabel(data.integrity)}. السلسلة حتى هذا الحدث: ${resultLabel(data.chain.result)}. ليس توقيعًا مستقلًا.${selected.metadata_valid===false?' البيانات الوصفية المحفوظة لا تطابق العقد الحالي ولا تُعرض.':''}`;
+ integrity.textContent=`الحالة: ${stateLabel(data.state)}.${reasonsText(data.reasons)} فحص الحدث: ${resultLabel(data.integrity)}. السلسلة حتى هذا الحدث: ${resultLabel(data.chain.result)}. طريقة السلسلة: ${data.chain_version||data.profile||'غير محددة'} · الضمان: سلامة النسخة الموردة فقط، بلا توقيع مستقل.${selected.metadata_valid===false?' البيانات الوصفية المحفوظة لا تطابق العقد الحالي ولا تُعرض.':''}`;
  if(!dialog.open)dialog.showModal();get<HTMLButtonElement>('[data-close]').focus();
 }
 async function load(){
@@ -53,14 +53,14 @@ async function load(){
  workspace.replaceChildren(...data.memberships.map((m:any)=>{const option=document.createElement('option');option.value=m.tenant_id;option.textContent=m.name;option.selected=m.tenant_id===data.tenant.tenant_id;return option;}));
  get('[data-role]').textContent=`الدور: ${data.tenant.role} · ${data.permissions.create?'الإضافة الاصطناعية والتصدير متاحان':'عرض وفحص فقط؛ الإضافة والتصدير للمالك والمسؤول'}`;
  get('[data-create-panel]').hidden=!data.permissions.create;get('[data-page]').textContent=`الصفحة ${page}`;get('[data-empty]').hidden=data.events.length!==0;
- get('[data-chain]').textContent=`حالة السلسلة حتى أحدث حدث في الصفحة: ${stateLabel(data.verification?.state)}.${reasonsText(data.verification?.reasons)}${data.chain.reason==='PREFIX_LIMIT'?' تجاوز حد الفحص الأساسي (10000 حدث)؛ لا تُدّعى السلامة.':''}`;
+ get('[data-chain]').textContent=`حالة السلسلة حتى أحدث حدث في الصفحة: ${stateLabel(data.verification?.state)}.${reasonsText(data.verification?.reasons)}${data.chain.reason==='PREFIX_LIMIT'?' تجاوز حد الفحص الأساسي (10000 حدث)؛ لا تُدّعى السلامة.':''} طريقة السلسلة: ${data.chain_version||'غير محددة'}؛ الضمان سلامة البادئة الموردة فقط.`;
  get('[data-chain]').dataset.state=data.verification?.state||'UNVERIFIED';
  const tbody=get('[data-events]');tbody.replaceChildren();
  for(const event of data.events){
   const tr=document.createElement('tr');
   const meta=event.metadata_json||{};
   const ref=meta.decision_ref||meta.request_ref||meta.assessment_ref||meta.asset_ref||meta.audit_ref;
-  for(const value of [time(event.created_at),labels[event.event_type]||event.event_type,ref,event.created_by,`${stateLabel(event.integrity)} / ${stateLabel(event.chain_integrity)}`]){
+  for(const value of [time(event.created_at),labels[event.event_type]||event.event_type,ref,event.created_by,stateLabel(event.verification_state||event.integrity)]){
    const td=document.createElement('td'),bdi=document.createElement('bdi');bdi.textContent=value;td.append(bdi);
    if(tr.children.length===1){const small=document.createElement('small');small.textContent=`${event.source} · ${meta.synthetic?'اصطناعي / تجريبي':'تشغيلي داخل التطبيق'}`;td.append(small);const profile=document.createElement('small');profile.textContent=event.hash_profile;td.append(profile);if(event.metadata_valid===false){const invalid=document.createElement('small');invalid.textContent='البيانات الوصفية غير صالحة ولا تُعرض';td.append(invalid);}}
    tr.append(td);

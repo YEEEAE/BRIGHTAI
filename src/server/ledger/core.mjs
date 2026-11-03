@@ -74,14 +74,19 @@ export function filters(params) {
   if ((type && !types.includes(type)) || (source && !Object.hasOwn(sourceTypes,source)) || (classification && !['synthetic','operational'].includes(classification)) || !['all','1','7','30'].includes(period) || !/^[1-9]\d{0,2}$/.test(page) || Number(page)>100 || search.length>80 || /[\u0000-\u001f\u007f]/.test(search)) throw new KernelError(400,'INVALID_FILTER','التصفية غير صالحة؛ حد البحث 80 حرفًا وحد العرض 100 صفحة.');
   return {type,source,classification,days:period==='all'?null:Number(period),page:Number(page),limit:25,search};
 }
-// Derive one explicit state. Never report VERIFIED from a single MATCH when the
-// prefix limit, an unreadable row or a broken link leaves the chain unproven.
+// The profile names the canonical hash and chain contract. It is recorded on
+// every event; export also states it as chain_version so an offline reader never
+// has to infer which interpretation produced the digest.
+export const chainVersion = profile;
+// Derive one explicit state. Never report a positive state from a single MATCH
+// when the prefix limit, an unreadable row or a broken link leaves the chain
+// unproven. TAMPERED means an observed mismatch, not proof of intent.
 export function verificationState(integrity, chain) {
   const chainResult = chain?.result ?? 'INDETERMINATE';
   const chainReason = chain?.reason ?? null;
-  if (integrity === 'MISMATCH' || chainResult === 'MISMATCH') return {state:'BLOCKED',reasons:[...(integrity==='MISMATCH'?['EVENT_HASH_MISMATCH']:[]),...(chainResult==='MISMATCH'?[chainReason||'CHAIN_MISMATCH']:[])]};
+  if (integrity === 'MISMATCH' || chainResult === 'MISMATCH') return {state:'TAMPERED',reasons:[...(integrity==='MISMATCH'?['EVENT_HASH_MISMATCH']:[]),...(chainResult==='MISMATCH'?[chainReason||'CHAIN_MISMATCH']:[])]};
   if (integrity !== 'MATCH' || chainResult !== 'MATCH') return {state:'UNVERIFIED',reasons:[...(integrity!=='MATCH'?['EVENT_HASH_INDETERMINATE']:[]),...(chainResult==='EMPTY'?['NO_EVIDENCE']:[chainReason||'CHAIN_INDETERMINATE'])]};
-  return {state:'VERIFIED',reasons:[]};
+  return {state:'VERIFIED_WITHIN_SCOPE',reasons:[]};
 }
 // Only allowlisted, scalar metadata leaves the server. A row that no longer
 // satisfies the current profile is returned as an empty object, never raw.

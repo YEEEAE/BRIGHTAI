@@ -15,7 +15,10 @@ export async function appendEvent(db, identity, tenantId, input) {
   if (typeof input.policy_version!=='string' || !/^[a-zA-Z0-9_.:-]{1,120}$/.test(input.policy_version) || typeof input.idempotency_key!=='string' || !/^[a-zA-Z0-9_.:-]{1,180}$/.test(input.idempotency_key)) throw new KernelError(400,'INVALID_EVENT','مرجع العملية أو نسخة السياسة غير صالح.');
   const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE',[tenantId,identity.userId])).rows[0];
   requireRole(member,['OWNER','ADMIN','MEMBER']);
-  // All appends in this implementation serialize per tenant until COMMIT.
+// All appends in this implementation serialize per tenant until COMMIT. The
+// transaction-scoped lock covers tail read, sequence increment, idempotency
+// lookup and insert, so two concurrent writers cannot fork the sequence.
+// hash_profile is the chain version recorded on every row.
   await db.query("SELECT pg_advisory_xact_lock(hashtextextended('ledger:' || $1,0))",[tenantId]);
   const event = {event_id:randomUUID(),tenant_id:tenantId,source:input.source,event_type:input.event_type,policy_version:input.policy_version,metadata_json:metadata(input.metadata_json,input.source,input.event_type),created_by:identity.userId,hash_profile:profile,idempotency_key:input.idempotency_key};
   const existing = (await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND source=$2 AND idempotency_key=$3`,[tenantId,event.source,event.idempotency_key])).rows[0];

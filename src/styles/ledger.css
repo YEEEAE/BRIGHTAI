@@ -62,6 +62,6 @@
   .ledger .ledger-detail{padding:.9rem}
 }
 /* Derived verification state is never colour-only: the Arabic label is always present. */
-.ledger [data-state="BLOCKED"]{border-color:#7c3b3b;border-inline-start-color:#d06a6a;background:#170d0d;color:#f1cccc}
+.ledger [data-state="BLOCKED"],.ledger [data-state="TAMPERED"]{border-color:#7c3b3b;border-inline-start-color:#d06a6a;background:#170d0d;color:#f1cccc}
 .ledger [data-state="UNVERIFIED"]{border-color:#6b5730;border-inline-start-color:#d6a44a;background:#161208;color:#efe0c2}
-.ledger [data-state="VERIFIED"]{border-color:#2f5c4c;border-inline-start-color:#43a07f;background:#0b1512;color:#c9e8dc}
+.ledger [data-state="VERIFIED"],.ledger [data-state="VERIFIED_WITHIN_SCOPE"]{border-color:#2f5c4c;border-inline-start-color:#43a07f;background:#0b1512;color:#c9e8dc}

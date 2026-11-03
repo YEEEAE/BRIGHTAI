@@ -1,323 +1,1074 @@
+## 
 
-## [2026-11-03] — استكمال إدارة عضويات Kernel وإتاحة المنتجات محليًا
+## [2026-11-03] — توحيد بطاقة الدليل 01 في مركز المعرفة
+
 ### تم التنفيذ
+
+- أزيل استثناء البطاقة الأولى بالكامل: امتداد الصفوف وتضخيم الرقم والعنوان وإخفاء السهم؛ تقليل الامتداد السابق لم يعالج التفاوت المرئي.
+- وُحّدت قواعد الحجم وترتيب المحتوى مع بقية البطاقات، وأضيف التفاف العنوان داخل عرضه في RTL.
+- أزيلت قواعد الاستثناء القديمة في الجوال والتصفية لمنع رجوع التنسيق المختلف عند البحث.
+
+### الملفات المتأثرة
+
+- `src/styles/interior.css`
+
+### التحقق
+
+- `npm run build` و`git diff --check`: PASS.
+- المتصفح المحلي (1440/360): PASS؛ لا تمرير أفقي، المحتوى والسهم ظاهرون، التركيز مرئي والبحث يعمل. معاينة المنفذ المحلي اشتغلت بصلاحية موسعة بعد تعذرها داخل sandbox سابقًا.
+
+### النتيجة
+
+- **الحالة:** DONE محليًا؛ لا commit/push/deploy.
+
+## [2026-11-03] — مقال «PDPL والذكاء الاصطناعي» في مركز المعرفة
+
+### تم التنفيذ
+
+- أُنشئ `/knowledge/pdpl-and-ai/` بتصميم بنفسجي مختلف (رحلة بيانات SVG متحركة بست نقاط قابلة للنقر، شجرة قرار من أربعة أسئلة، جدول أدوار المتحكم والمعالج) وبطول 3296 كلمة على مقياس `scripts/count-words.mjs`.
+- تحققت التعريفات والنطاق والموافقة والحقوق والنقل من النص الرسمي على منصة حوكمة البيانات الوطنية: النظام (بما فيه تعديل م/148)، اللائحة التنفيذية، ولائحة النقل؛ وتاريخ النشر من أم القرى. لا توجد ادعاءات بأرقام مواد غير متحقق منها ولا `TODO-VERIFY` معلّق.
+- أُضيفت بطاقة رقم 09 في `docs.astro` بقسم البيانات ونوع «شرح عملي»؛ العدّاد صار 9، والبحث والتصفية يعملان (اختبار «data» و«PDPL»).
+- أُضيفت 14 رابطة مقال و4 روابط صفحات موقع داخل النص، و3 روابط عكسية سياقية، وسُجلت 7 روابط لمقالات لم تُنشأ بعد في `.agents/pending-links.md`.
+
+### الملفات المتأثرة
+
+- `src/pages/knowledge/pdpl-and-ai.astro` (جديد)، `src/pages/docs.astro`، `src/pages/knowledge/{protect-company-data-chatgpt,ai-use-policy-employees,ai-risk-assessment}.astro`، `.agents/pending-links.md`.
+
+### التحقق
+
+- `npm run build`: PASS؛ 3296 كلمة داخل 2900–3300؛ H1 واحد؛ 5 كتل JSON-LD تُحلَّل وFAQ الخمسة مطابق حرفياً للنص الظاهر؛ canonical/robots/og:locale/sitemap: PASS.
+- المتصفح (1280/360): لا تمرير أفقي للصفحة؛ الرسم والشجرة والبطاقات تعمل بالنقر ولوحة المفاتيح؛ `prefers-reduced-motion` يوقف حركة SMIL ويعطّل الظهور التدريجي؛ لا أخطاء console.
+
+### النتيجة
+
+- **الحالة:** DONE محلياً؛ build ناجح، ولا commit/push/deploy.
+
+### ملاحظات / مشاكل مفتوحة
+
+- 7 مقالات مستهدفة بالروابط لم تُنشأ بعد وهي مسجلة في `pending-links.md`؛ المراجعة القانونية البشرية للنشر النهائي ما زالت مطلوبة.
+
+## [2026-11-03] — إصلاح رابط وبطاقة دليل الحوكمة 01
+
+### تم التنفيذ
+
+- أضيف تحويل للمسار العربي القديم `/docs/حوكمة الذكاء الاصطناعي في السعودية` إلى الرابط القانوني للمقال؛ وسيط Node يطابق المسار بعد فك الترميز مع الحفاظ على الاستعلام.
+- خُفّض امتداد بطاقة الدليل الأولى من أربعة صفوف إلى صفين، ومحاذاة محتواها للأعلى لتفادي الفراغ الذي أخفى عنوانها ووصفها عن الجزء الظاهر.
+
+### الملفات المتأثرة
+
+- `redirects.json`, `src/middleware.ts`, `src/styles/interior.css`
+
+### التحقق
+
+- فُحص الرابط المباشر على الموقع: كان يعيد 404 قبل التعديل. `npm run build`: PASS؛ تشغيل preview لفحص استجابة التحويل تعذر لأن البيئة رفضت فتح المنفذ المحلي (`EPERM`).
+
+### النتيجة
+
+- **الحالة:** PARTIAL / التعديل محلي؛ لم يُنشر.
+
+## [2026-11-03] — مقال «مبادئ أخلاقيات الذكاء الاصطناعي في السعودية» في مركز المعرفة
+
+### تم التنفيذ
+
+- أُنشئ `/knowledge/saudi-ai-ethics-principles/` بتصميم زمردي مختلف (شبكة بطاقات قلابة، رادار SVG تفاعلي، جدول مبدأ/ضابط/دليل/مالك، أربع فئات مخاطر) وبطول 3293 كلمة على مقياس `scripts/count-words.mjs`.
+- تحققت الوقائع من نسخة سدايا الرسمية المؤرخة مايو 2025 (SDAIA-P114E): سبعة مبادئ بمسمياتها، أربع فئات مخاطر، النطاق، دورة الحياة، والأدوار. أُضيف تحذير أن الأثر النظامي للمبادئ يحتاج مراجعة قانونية.
+- أُضيفت بطاقة رقم 07 في `docs.astro` بقسم الحوكمة ونوع «مصفوفة تعليمية»؛ العدّاد صار 7 تلقائياً، والبحث والتصفية يعملان.
+- أُضيفت 3 روابط عكسية سياقية من مقالات الحوكمة والمخاطر وإطار التبني، وسُجلت 11 رابطاً لمقالات لم تُنشأ بعد في `.agents/pending-links.md`.
+
+### الملفات المتأثرة
+
+- `src/pages/knowledge/saudi-ai-ethics-principles.astro` (جديد)، `src/pages/docs.astro`، `src/pages/knowledge/{ai-governance-saudi,ai-risk-assessment,sdaia-ai-adoption-framework}.astro`، `.agents/pending-links.md` (جديد).
+
+### التحقق
+
+- `npm run build`: PASS؛ 3293 كلمة داخل 2900–3300؛ H1 واحد؛ 5 كتل JSON-LD تُحلَّل وFAQ الخمسة مطابق حرفياً للنص الظاهر؛ 12 رابط مقال و4 روابط صفحات موقع داخل النص؛ sitemap/canonical/robots/og:locale: PASS.
+- المتصفح (1280/360): لا تمرير أفقي؛ البطاقات القلابة والرادار وأعادة الضبط تعمل؛ `prefers-reduced-motion` يعطّل الانتقالات ويبقي المحتوى؛ لا أخطاء console.
+
+### النتيجة
+
+- **الحالة:** DONE محلياً؛ build ناجح، ولا commit/push/deploy.
+
+### ملاحظات / مشاكل مفتوحة
+
+- الأثر النظامي الملزم للمبادئ، وفتح آلية التسجيل/الشارات الاختيارية، يحتاجان مراجعة بشرية/قانونية مسجلة كـ`TODO-VERIFY` داخل الصفحة.
+
+## [2026-11-03] — مقال «إطار تبني الذكاء الاصطناعي من سدايا» في مركز المعرفة
+
+### تم التنفيذ
+
+- أُنشئ مقال `/knowledge/sdaia-ai-adoption-framework/` بتصميم خاص (خارطة طريق SVG تُرسم بالتمرير، اختبار نضج من 6 أسئلة يعمل محلياً، جدول مقارنة، سلّم مستويات نضج) بطول 3291 كلمة على مقياس `scripts/count-words.mjs`.
+- تحققت الوقائع من بيان وكالة الأنباء السعودية (1 ديسمبر 2024، إصدار سبتمبر 2024، الدعائم الثلاث، مستويات النضج الأربعة، مبادئ 2023) وليست من الذاكرة. الوثيقة الرسمية PDF لم تُفتح مباشرة (WAF) وتعذر التحقق الآلي منها.
+- أُضيفت بطاقة رقم 06 في `docs.astro` بقسم «الحوكمة»، وحُوِّل ربط التصنيف من فهرس موضعي هش إلى حقل `topic` صريح لكل مقال؛ العدّاد صار 6 تلقائياً.
+- أُضيفت روابط عكسية سياقية من مقالات الحوكمة والمخاطر والسياسة، وسُجلت 8 روابط لمقالات لم تُنشأ بعد في `.agents/pending-links.md`.
+
+### الملفات المتأثرة
+
+- `src/pages/knowledge/sdaia-ai-adoption-framework.astro` (جديد)، `src/pages/docs.astro`، `src/pages/knowledge/{ai-governance-saudi,ai-risk-assessment,ai-use-policy-employees}.astro`, `scripts/count-words.mjs` (جديد)، `.agents/pending-links.md` (جديد).
+
+### التحقق
+
+- `npm run build`: PASS؛ عدد الكلمات 3291 داخل 2900–3300؛ H1 واحد؛ 5 كتل JSON-LD تُحلَّل وFAQ مطابق حرفياً للنص الظاهر؛ sitemap وcanonical وrobots وog:locale: PASS؛ 11 رابطاً معرفياً كلها موجودة أو مسجلة.
+- المتصفح (1280/768/360): لا تمرير أفقي (أُصلح تجاوز ناتج عن شبكة `.k1-body` مع جدول `min-inline-size`)؛ الاختبار يعمل ويتعامل مع الإجابة الناقصة؛ `prefers-reduced-motion` يرسم المسار كاملاً ويفعّل المحطات الست.
+
+### النتيجة
+
+- **الحالة:** DONE محلياً؛ build ناجح، ولا commit/push/deploy.
+
+### ملاحظات / مشاكل مفتوحة
+
+- رابط PDF الرسمي لسدايا محجوب على مستوى WAF من هذه الشبكة؛ أُدرج الرابط المنشور في البيان مع تنبيه في صفحة المراجع، ويلزم فتحه ومراجعة نص الوثيقة بشرياً قبل النشر النهائي.
+- تعريف وصف كل مستوى نضج وترتيب محطات خارطة الطريق قراءة تبسيطية، موسومة بذلك داخل الصفحة.
+
+## [2026-11-03] — تقوية ترويسات الاستجابة والحركة والوصول محليًا
+
+### تم التنفيذ
+
+- أضيفت ترويسات أمنية موحّدة في `src/middleware.ts` لكل الاستجابات (nosniff، منع التأطير، referrer، permissions، HSTS عند HTTPS مؤكد)، مع إبقاء `no-store` و`noindex` و`Vary` للبوابة ومنع تكرار `Vary`.
+- أضيف حد كتابة بسيط في الذاكرة لمسارات Kernel الإدارية (60/دقيقة لكل مستخدم ومسار) مع `Retry-After`، دون ادعاء أنه حصة دائمة أو تفويض.
+- صُلب اتصال القاعدة: مستمع أخطاء للمسبح، `query_timeout`، وROLLBACK لا يطمس الخطأ الأصلي. وأضيف `Referrer-Policy` لاستجابات Secure Chat و`Retry-After` لحد الاستخدام.
+- أُزيل ازدواج مراقبة الظهور بين `MotionController` و`InteriorMotion` داخل الصفحات الداخلية، وأُغلقت المراقبات والاستماعات، واحتُرم `prefers-reduced-motion` للعناوين والتمرير، ومنع شريط تقدّم قراءة مزدوجًا.
+- تحسينات وصول محدودة: `tabindex="-1"` لأهداف التخطي، `aria-busy` لنموذج Secure Chat، رسائل شبكة/JSON عربية، وإخفاء السهم الزخرفي عن قارئ الشاشة.
+
+### الملفات المتأثرة
+
+- `src/middleware.ts`, `src/server/kernel/{http,db}.mjs`, `src/server/secure-chat/service.mjs`, `src/components/{MotionController.astro,PageShell.astro}`, `src/scripts/{interior-motion,secure-chat}.ts`, `src/layouts/AppLayout.astro`, `src/styles/{experience,site}.css`, `render.yaml`.
+
+### التحقق
+
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. build/lint/typecheck/tests/runtime/headers الفعلية: NOT RUN حسب طلب المهمة.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / تعديل محلي غير متحقق تشغيليًا.
+
+### ملاحظات / مشاكل مفتوحة
+
+- لم تُضف سياسة CSP كاملة بالنونس لأن الصفحات تحتوي سكربتات inline حالية؛ المضافة تقتصر على `frame-ancestors`. يلزم التحقق من الترويسات على Render قبل الإطلاق ومن اعتماد تشغيل البوابة/المزود.
+
+## [2026-11-03] — صدق تجربة 48 ساعة والاستحقاقات التجارية محليًا
+
+### تم التنفيذ
+
+- وُحدت صلاحية المنحة `ADMIN_NON_BILLED` للمنتجات الخمسة بين حارس Kernel واللوحة والتمكين؛ بداية الموافقة المستقبلية والنوع/المدد غير الصالحة لا تمنح وصولًا. استُكمل الحد نفسه في تكامل Ledger وفحص Human Gate النهائي.
+- فُصلت تواريخ الإتاحة الإدارية عن `trialDetails.activated_at/expires_at` الفارغتين؛ الاشتراك والرخصة والتجربة `NOT_CONFIGURED`، ومدة 172800 ثانية متطلب وليست عدادًا عاملًا. لا مصدر استحقاق تجاري أو تفعيل تجربة أو دفع أُضيف.
+- أضيف ملخص أول/آخر حدث محفوظ للمؤسسة من سجل Kernel فقط؛ ليس نافذة تجربة أو تقرير PoV أو دليل نجاح منتج. رسائل التسعير والتواصل والمواصفات تميز mailto عن طلب محفوظ، وPoV عن Pilot، ونماذج النشر المستهدفة عن الإتاحة.
+- وُضحت الأهلية الاصطناعية، وشرط الموافقة المكتوبة والبيئة المعتمدة للبيانات الحقيقية، واستقلال No-Training عن موافقة التشغيل؛ الهيرو وConstellation لم يُعدلا.
+
+### الملفات المتأثرة
+
+- `src/server/kernel/{access,administration,service}.mjs`, `src/server/ledger/writer.mjs`, `src/server/human-gate/service.mjs`, `src/pages/{pricing,contact}.astro`, صفحة/سكربت/تنسيق Kernel.
+- `docs/{KERNEL-DEVELOPMENT,ENTERPRISE-TRIAL-POLICY,PRICING-AND-LICENSING}.md`, مواصفتا تجربة Firewall وSecure Chat.
+
+### التحقق
+
+- قراءة المصدر والـdiff فقط؛ الاختبارات/build/lint/typecheck/المتصفح والتدقيق المنفصل: NOT RUN حسب الطلب. لا Neon أو migrations أو commit/push/deploy.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / محلي فقط، التشغيل NOT VERIFIED.
+
+### ملاحظات / مشاكل مفتوحة
+
+- تشغيل تجربة فعلية بمهلة 48 ساعة وإنفاذها يتطلب مسار موافقة وتهيئة وإصدار استحقاق موثق لم يُنفذ هنا؛ لا تُحوّل المنحة الإدارية إلى تجربة. يلزم اعتماد الحصص والمعالجة والمزود والعقد والترخيص والنشر، وإعداد profiles المحلية/المعزولة قبل إتاحتها.
+
+## [2026-11-03] — توحيد حدود Kernel وتبعيات المنتجات محليًا
+
+### تم التنفيذ
+
+- أضيفت حالات التبعية الموحدة `available/not configured/access denied/expired/temporarily unavailable` لحدود الإتاحة ومخرجات تكاملات Firewall وSecure Chat؛ بقيت العضوية ومنحة Kernel شرط الوصول للمنتج.
+- صارت سجلات Kernel لأحداث Firewall وHuman Gate وRisk Engine وSecure Chat تحمل ارتباطًا محدودًا (tenant/actor موجودان، correlation UUID، نسخة سياسة، ومفتاح idempotency) دون متن الطلب؛ التكرار بنفس المفتاح يعيد السجل ذاته ويرفض التعارض.
+- أضيف ترحيل محلي `0017_aigas_kernel_audit_context.sql` لحقول السياق وفهرس idempotency. فشل Ledger الاختياري يُعزل داخل savepoint مع تسجيل حالة التبعية، والمتطلب المعتمد يظل fail-closed.
+- لم تُطبق أي تغييرات على Neon، ولم تُشغّل اختبارات أو build أو lint أو typecheck حسب الطلب.
+
+### الملفات المتأثرة
+
+- `src/server/kernel/{core,access,service,http}.mjs`, `src/server/ledger/{writer,http}.mjs`, `src/server/firewall/{provider,escalation,guard,service,http}.mjs`, `src/server/human-gate/{service,http}.mjs`, `src/server/risk-engine/{service,http}.mjs`, `src/server/secure-chat/{adapter,requests,service}.mjs`, `migrations/0017_aigas_kernel_audit_context.sql`
+
+### التحقق
+
+- مراجعة المصدر والـdiff يدويًا: تم؛ الاختبارات/build/lint/typecheck/runtime: NOT RUN حسب الطلب.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / تعديل محلي غير متحقق تشغيليًا.
+
+### ملاحظات / مشاكل مفتوحة
+
+- التطبيق يتطلب اعتماد وتطبيق `0017` على بيئة معتمدة قبل تشغيل نسخة الكود؛ لا SQL أو migration production نُفّذ.
+
+## [2026-11-03] — Secure Chat: حصة رموز المستخدم وحالة النموذج الصريحة
+
+### تم التنفيذ
+
+- قائمة النماذج ترجع فقط النماذج المعتمدة والمهيأة؛ غياب النموذج أو إعداد الموصل/دليل No-Training يعرض `NO_APPROVED_MODEL`، بلا إرسال أو fallback.
+- أضيف حد رموز يومي للمستخدم مع حصة المؤسسة الحالية؛ يتطلب دالة تجميع جديدة محمية في ترحيل محلي `0016`.
+- أضيف حد إدخال محافظ حسب bytes/overhead للنموذج؛ usage المزود المفقود أو المتجاوز للسقف لا يُقبل كرد ناجح.
+- أُبقيت المحادثات مؤقتة، وسجل Kernel metadata دون متن؛ تحديث مواصفة التجربة وحالة الميزات يميزان المصدر المحلي عن التشغيل المعتمد.
+
+### الملفات المتأثرة
+
+- `src/server/secure-chat/{adapter,models,policy,requests,service}.mjs`, `src/scripts/secure-chat.ts`, `migrations/0016_aigas_sc_user_token_quota.sql`, `docs/products/secure-chat/{48H-TRIAL-SPEC.md,FEATURE-STATUS.yaml}`
+
+### التحقق
+
+- قراءة المصدر والتعديل: تمت؛ build/tests/lint/typecheck/Neon: NOT RUN حسب الطلب.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / محلي فقط، التشغيل NOT VERIFIED.
+
+### ملاحظات / مشاكل مفتوحة
+
+- `0016` لم يُطبق؛ يلزم اعتماد حدود الاستخدام ومراجعة ملكية الدالة ومنح EXECUTE في بيئة معتمدة. لا يوجد نموذج مزود معتمد ومهيأ؛ الإرسال الحقيقي يظل موقوفًا.
+
+## [2026-11-03] — استكمال شريحة Risk Engine محليًا
+
+### تم التنفيذ
+
+- أضيفت حقول سياق البيانات والمزوّد/النموذج وحالة اعتماد وصفية، وأرشفة غير هدّامة بإصدار جديد تحفظ السجل؛ أضيفت استعادة النسخة كتعديل جديد لا يعيد كتابة التاريخ.
+- وسّع التقييمات المحفوظة لتضمين سياق الأصل، وأضيف وصف الخطر المتبقي لكل إصدار معالجة؛ HIGH يتطلب مراجعة بشرية ولا يمنح تصريح تشغيل.
+- بطلب صريح لاحق، طُبق ترحيل `0015` على فرع `production` في مشروع Neon `young-frog-60183055`/قاعدة `neondb` بمعاملة واحدة؛ لم يُنشأ فرع. بقيت الجداول/السجلات السابقة محفوظة.
+
+### الملفات المتأثرة
+
+- `src/server/risk-engine/{core,service,http}.mjs`, `src/scripts/risk-engine.ts`, `src/components/RiskWorkspace.astro`, API أرشفة الأصل، `migrations/0015_*.sql`, وثائق Risk Engine.
+
+### التحقق
+
+- فحص مخطط Neon بعد التطبيق أكد الحقول والـdefaults وقيود CHECK: PASS. اختبارات/build/lint/typecheck/browser: NOT RUN حسب الطلب؛ السلوك التشغيلي غير متحقق.
+
+### النتيجة
+
+- **الحالة:** ترحيل Neon مطبق ومخططه متحقق؛ الكود المحلي PARTIAL / NOT RUNTIME VERIFIED. لا commit/push/deploy.
+
+### ملاحظات / مشاكل مفتوحة
+
+- يلزم التحقق من RLS/runtime/session بعد نشر/تشغيل معتمد. اعتماد الحالة التنظيمي وتكامل بوابة نشر خارج النطاق.
+
+## [2026-11-03] — تثبيت ModLens في DSH desktop
+
+### تم التنفيذ
+
+- ثُبّتت `@liustack/modlens@3.27.2` على بروفايل Harness `desktop` وفُعّلت؛ لم تُعدّل ملفات التطبيق.
+- ظهرت أداة `modlens_read_image` ضمن أدوات الوكيل بعد التثبيت.
+
+### التحقق
+
+- Plugin Manager: `application: applied` بلا warnings؛ الحزمة مؤكدة مثبتة ومفعّلة.
+- إعداد محرك الرؤية واختبار قراءة صورة: NOT RUN؛ يلزم إعداد محرك في ModLens.
+
+### النتيجة
+
+- **الحالة:** DONE للتثبيت؛ استخدام الرؤية يعتمد على إعداد محرك.
+
+## [2026-11-03] — Human Gate: إلغاء وتفويض مؤقت وإذن تنفيذ واحد
+
+### تم التنفيذ
+
+- أضيفت حالة `CANCELLED` ومسار إلغاء مخول بسبب، ويُبطل إذن التنفيذ النشط؛ القرارات المتأخرة والانتقالات غير المصرح بها ممنوعة في الخدمة وفي حارس SQL الجديد.
+- رُبط الطلب بالمورد `provider_ref` وبصمة v3، وأصبحت السياسة تحدد `review_level` و`separation_of_duties` و`delegation_enabled`. التفويض محدد العملية والمستوى والمدة على الخادم، ولا يتجاوز دور المفوّض الحالي ولا يلغي فصل المهام.
+- الموافقة تصدر `aigas_hg_grants` مرتبطًا بالبصمة والنسخة والهدف؛ `/execute` يعيد فحص السياسة والهدف وصلاحية المراجع والمفوّض ويستهلك الإذن مرة واحدة داخل معاملة واحدة.
+- أضيفت واجهة ومسارات API للإلغاء وإدارة التفويضات وعرض سبب الرفض/الإلغاء وحالة الإذن وسجل الطلب، مع تمييز إيقاف Kernel الأساسي (`REQUEST_APPROVAL`/`ESCALATE`) عن إضافة Human Gate.
+- أضيف `0014_aigas_human_gate_cancellation_delegation_and_grant.sql` محليًا **غير مطبق**؛ لم تُنفذ تغييرات Neon أو نشر أو build/tests.
+
+### الملفات المتأثرة
+
+- `src/server/human-gate/{core,service,http}.mjs`, `src/server/kernel/core.mjs`, `src/pages/app/api/human-gate/` (cancel/delegations)، صفحة/سكربت/تنسيق Human Gate.
+- `migrations/0014_aigas_human_gate_cancellation_delegation_and_grant.sql` (جديد)، `docs/HUMAN-GATE-DEVELOPMENT.md`, `docs/products/human-gate/{PRODUCT-SPEC.md,FEATURE-STATUS.yaml}`.
+
+### التحقق
+
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check` وYAML: PASS. build/tests/lint/typecheck/DB/متصفح/جلسة حقيقية: NOT RUN بطلب المهمة.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا SQL إنتاجي.
+
+### ملاحظات / مشاكل مفتوحة
+
+- يلزم اعتماد `0014` وتطبيقه على هدف معتمد ثم مراجعة runtime grants/RLS والتحقق من جلسة فعلية. مسار الإيقاف الأساسي في Kernel لم يُعدّل، لكن تشغيله لم يُختبر هنا.
+
+## [2026-11-03] — Ledger: حالة تحقق صريحة وتصدير مثبّت الإصدار وترحيل ترقية محلي
+
+### تم التنفيذ
+
+- أضيفت حالة مشتقة واحدة `VERIFIED/BLOCKED/UNVERIFIED` مع أسباب مقيدة لكل حدث ولكل سلسلة؛ لا تُعلن السلامة عند تطابق حدث واحد إذا كانت البادئة غير مكتملة أو متجاوزة الحد أو بها رابط مكسور أو تسلسل ناقص.
+- حزمة التصدير تسجل المصادر ونسخ السياسة و`hash_profile` وإصدار الفاحص المستقل؛ الفاحص يرفض المطابقة عند اختلاف الإصدار المسجل ويعيد `INDETERMINATE/VERIFIER_VERSION_MISMATCH`، ويظهر `verifier.pinned` و`warnings` عند غياب الإصدار في حزمة قديمة.
+- البيانات الوصفية لا تخرج من الخادم إلا بعد المرور بعقد المصدر الحالي؛ الصفوف غير المطابقة تُعرض ببيانات وصفية فارغة وحالة غير محسومة بدل metadata خام. أضيف تحقق أن القيم scalar، ورفض مبكر لنسخة السياسة/مفتاح التكرار غير الصالحين.
+- أضيف ترحيل ترقية محلي `0013_aigas_ledger_five_state_and_chain_guard.sql` (غير مطبق): يوائم قيد `aigas_ld_events` مع حالات Firewall الخمس و`request_fingerprint` كـ`NOT VALID` دون إعادة كتابة أدلة مختومة، ويضيف trigger يرفض فجوة التسلسل أو `previous_hash` الخاطئ عند الإدراج. حُدّث `0003` كتثبيت جديد فقط.
+- واجهة Ledger تعرض الحالة والأسباب لكل حدث/سلسلة، وتُظهر الحالة المحجوبة أو غير المتحققة بدل نجاح ضمني، مع RTL وحالات focus القائمة.
+
+### الملفات المتأثرة
+
+- `src/server/ledger/{core,writer,service}.mjs`, `src/scripts/ledger.ts`, `src/pages/app/ledger/index.astro`, `src/styles/ledger.css`, `public/downloads/aigas-ledger-verifier.mjs`
+- `migrations/0003_aigas_ledger.sql`, `migrations/0013_aigas_ledger_five_state_and_chain_guard.sql` (جديد)، `docs/products/ledger/ACCEPTANCE-AND-EVIDENCE.md`
+
+### التحقق
+
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. بناء/اختبارات/lint/typecheck/متصفح/معاينة Node: NOT RUN بطلب المهمة.
+- فحص Neon قراءة فقط عبر MCP: جداول `aigas_ld_events` و`aigas_ld_evidence_requirements` موجودة، لكن قيد metadata ما زال ثلاثي الحالات ولا يسمح بـ`request_fingerprint`؛ أي لا يثبت تطبيق `0013`.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا SQL تغييري.
+
+### ملاحظات / مشاكل مفتوحة
+
+- حتى يُراجع ويُطبق `0013` على بيئة معتمدة، أي دليل Ledger لحدث Firewall بحالة `WARN/ESCALATE/DENY` أو ببصمة تنفيذ `GUARD` قد يرفضه قيد production الحالي. التطبيق يحتاج تفويضًا مستقلًا.
+- runtime grants/RLS وجلسة فعلية وتصدير/فاحص على بيئة معتمدة وبناء الواجهة: NOT VERIFIED.
+
+## [2026-11-03] — ترحيل Firewall وهرمية السياسات على Neon production
+
+### تم التنفيذ
+
+- فحص Neon أظهر أن جداول Firewall موجودة بمخطط قديم ثلاثي (`ALLOW/BLOCK/REDACT` و`RULE_BLOCK`) وأن `0011` لا ينطبق؛ أُضيف `0012_aigas_firewall_five_state_upgrade.sql` يحوّل `BLOCK→DENY` و`RULE_BLOCK→RULE_DENY`، ويضيف قيود الحالات الخمس و`policy_version`/`request_fingerprint` (فحص وجود البصمة `NOT VALID` للصفوف القديمة).
+- طُبّق `0012` ثم `0010` داخل معاملتين على `production` بتفويض صريح من المالك؛ أصبح عدد جداول public 31 مع جداول هرمية السياسات وRLS والـtriggers. لم يُطبّق `0011` لأنه غير لازم.
+- القاعدة كانت وما زالت بلا مؤسسات أو قواعد أو قرارات أو سياسات (0)؛ لم تُنشأ أو تُحوّل أو تُحذف بيانات تطبيق.
+
+### الملفات المتأثرة
+
+- `migrations/0012_aigas_firewall_five_state_upgrade.sql` (جديد)، وسم 0002، `docs/FIREWALL-DEVELOPMENT.md`، `docs/products/firewall/ACCEPTANCE-AND-EVIDENCE.md`
+
+### التحقق
+
+- استعلامات كتالوج بعد الترحيل للأعمدة والقيود والدوال والـtriggers وRLS: PASS؛ عدّ البيانات 0: PASS. build/tests/typecheck/تشغيل التطبيق: NOT RUN.
+
+### النتيجة
+
+- **الحالة:** DONE للترحيل على production؛ runtime role/RLS وجلسة فعلية والنشر NOT VERIFIED.
+
+### ملاحظات / مفتوحة
+
+- التنفيذ الخارجي يبقى محجوبًا: لا سياسة Enterprise ALLOW منشورة (أي GUARD يعود DENY/KERNEL_POLICY_DENIED) ولا مزود معتمد ولا تكامل Human Gate. يلزم التحقق من صلاحيات دور runtime واختبار تطبيق فعلي.
+
+## [2026-11-03] — Firewall: ربط قرار التنفيذ وبصمة الطلب وتكامل المراجعة المغلق
+
+### تم التنفيذ
+
+- فُصل المساران صراحةً: `/evaluate/` تقييم نظري `LAB` لا ينفذ، و`/guarded-executions/` وحده `GUARD`. كل قرار GUARD يُحفظ مع `policy_version` (مرجع مجمّع لنسخ/بصمات سياسات Kernel) و`request_fingerprint` = SHA-256 على المؤسسة والفاعل ومعرّف الطلب UUID ونسخة السياسة ونتيجة القرار، دون النص أو بصمته.
+- الـguard يعيد حساب مرجع السياسة والبصمة من أدلة السياسة الفعلية ويرفض `EXECUTION_BINDING_MISMATCH`، ويتطلب Kernel `ALLOW` وربطًا صالحًا قبل البحث عن مزود؛ المزود ما زال registry فارغًا فيرجع `PROVIDER_NOT_CONFIGURED`، ومهلة 15s افتراض محلي غير معتمد.
+- idempotency: فحص مسبق تحت قفل المؤسسة؛ إعادة نفس البصمة ترجع 409 `REQUEST_ALREADY_EVALUATED`، وإعادة استخدام UUID لقرار مختلف ترجع 409 `REQUEST_ID_CONFLICT`، ولا يُعاد التنفيذ في الحالتين.
+- `ESCALATE` يوقف قبل المزود؛ سجل تكامل Human Gate فارغ عمدًا (لا عملية معتمدة ولا عقد حمولة للمراجعة) فترجع 409 `HUMAN_GATE_NOT_CONFIGURED` دون إنشاء طلب، مع مسار 202 `REVIEW_PENDING` محفوظ لتكامل معتمد مستقبلي. دليل Ledger الإلزامي ما زال داخل نفس المعاملة قبل أي إرسال.
+- أضيف `migrations/0011_aigas_firewall_execution_binding.sql` كترحيل ترقية محلي غير مطبق، وحُدّث 0002 fresh-install بالعمودين؛ لم يُنفّذ SQL أو build/tests/typecheck أو نشر.
+
+### الملفات المتأثرة
+
+- `src/server/firewall/{binding,guard,provider,service,escalation,core}.mjs`, `src/server/ledger/core.mjs`, `src/scripts/firewall.ts`, `src/pages/app/firewall/index.astro`
+- `migrations/{0002_aigas_firewall,0011_aigas_firewall_execution_binding}.sql`, `docs/FIREWALL-DEVELOPMENT.md`, `docs/products/firewall/ACCEPTANCE-AND-EVIDENCE.md`
+
+### التحقق
+
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. build/tests/lint/typecheck/DB/متصفح: NOT RUN بطلب المهمة.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا تطبيق Neon.
+
+### ملاحظات / مشاكل مفتوحة
+
+- تفعيل الإرسال يحتاج مزودًا معتمدًا (نموذج/منطقة/عدم تدريب/مرجع اعتماد) ومراجعة مهلة، وتفعيل ESCALATE يحتاج عملية Human Gate معتمدة وعقد حمولة لا يخزن النص. ترحيل 0011 و0002 وruntime grants/RLS غير متحققين.
+
+## [2026-11-03] — Firewall: خمس حالات قرار وإدارة قواعد كاملة محليًا
+
+### تم التنفيذ
+
+- وُحّدت حالات القرار إلى `ALLOW/WARN/REDACT/ESCALATE/DENY` بترتيب دفاعي `DENY>ESCALATE>REDACT>WARN>ALLOW`؛ `WARN` و`ESCALATE` لا يمرران في مسار الإنفاذ، وسياسة Kernel غير `ALLOW` تصبح `DENY/KERNEL_POLICY_DENIED`. `ESCALATE` يقابل `REQUEST_APPROVAL` و`DENY` يقابل `BLOCK` في وصف المنتج.
+- أضيف نسخ القاعدة (اسم خادمي فريد، نسخة معطّلة) وحذفها مع منع حذف القوالب التأسيسية أو أي قاعدة مذكورة في قرارات محفوظة؛ كل قراءة/كتابة تعيد التحقق من الهوية والعضوية والمؤسسة والمنحة.
+- أضيف حد 60 تقييمًا/دقيقة لكل مؤسسة فوق حماية UUID، وأصبحت واجهة «جرب فحصًا» تعرض المدخل والقرار ومعرّف القاعدة والسبب ووقت التقييم والحالة، وتعرض «التهيئة غير مكتملة» بدل قرار عند غياب الجداول.
+- لا يعيد API نص `DENY/ESCALATE/WARN`؛ السجل يحفظ metadata فقط (بلا نص أو أسرار). القوالب الثلاثة باقية، و`prohibited` صار `DENY`.
+
+### الملفات المتأثرة
+
+- `src/server/firewall/{core,service,http,guard}.mjs`, `src/server/ledger/core.mjs`, `src/pages/app/{firewall,api/firewall}/`, `src/scripts/firewall.ts`, `src/styles/firewall.css`
+- `migrations/0002_aigas_firewall.sql` (مراجعة fresh-install، غير مطبقة), `docs/FIREWALL-DEVELOPMENT.md`, `docs/products/firewall/{PRODUCT-SPEC.md,API-CONTRACT.yaml}`
+
+### التحقق
+
+- مراجعة diff و`git diff --check` و`node --check` لملفات `.mjs`: PASS. build/tests/lint/typecheck/متصفح: NOT RUN بطلب المهمة.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا تطبيق على Neon.
+
+### ملاحظات / مشاكل مفتوحة
+
+- 0002 رُوجع كـfresh-install بخمس حالات ولم يُطبّق؛ أي قاعدة بيانات طبّقت النسخة السابقة تحتاج ترحيل ترقية مراجعًا بدل هذا الملف. اختبارات `tests/firewall*.mjs` لم تُعدّل/تُشغّل وما زالت تعكس العقد الثلاثي السابق. تفعيل `ESCALATE` تشغيليًا يحتاج مسار موافقة معتمدًا، وإرسال `ALLOW/REDACT` يحتاج مزودًا معتمدًا.
+
+## [2026-11-03] — إعداد Neon للأيجنت: CLI والمهارات وخادم MCP
+
+### تم التنفيذ
+
+- ثُبّت Neon CLI `8.17.0` عالميًا؛ فشل npm cache/EPERM عولج بمخزن مؤقت بدل `sudo chown`، والحساب مسجّل مسبقًا (`zezo--270@hotmail.com`) فلم يُشغّل `neon login`.
+- مهارات Neon في `.agents/skills/neon*` كانت مثبتة يدويًا وخارج تتبّع `neon skills update`؛ أُضيفت `neon-realtime` الناقصة عبر `neon skills -s neon-realtime -y`.
+- أُنشئت حزمة إعداد فقط `plugins/neon-mcp` تربط `@deepseek-ai/dsh-mcp-client` بخادم `https://mcp.neon.tech/mcp?projectId=young-frog-60183055` عبر streamable-http؛ DSH غير مدعوم في أوامر Neon لذلك كان الربط يدويًا.
+- مفتاح Neon API محدود بالمشروع (`dsh-neon-mcp-20261103`, id 3492946) وُضع في تجاوز سطر `neon-mcp` داخل `~/.dsh/profiles/desktop/cordis.patch.yml` فقط مع نسخة احتياطية؛ المستودع بلا سر.
+- `.env` يطابق قيم Neon المعطاة (pooled/unpooled، `production`، Auth URLs) فلم يُعدّل.
+
+### الملفات المتأثرة
+
+- `plugins/neon-mcp/{package.json,cordis.patch.yml,locale/*.json,icon.svg,README.md}`, `.agents/skills/neon-realtime`, `~/.dsh/profiles/desktop/cordis.patch.yml`
+
+### التحقق
+
+- `neon me` و`neon projects list`: PASS؛ تثبيت الحزمة `application: applied`؛ نداء `mcp__neon__list_branches` أعاد `production` / `br-young-bird-b43proeb`: PASS.
+- build والاختبارات: NOT RUN — لا تغيير في كود التطبيق.
+
+### النتيجة
+
+- **الحالة:** DONE للإعداد والاتصال؛ لا commit/push/deploy ولا ترحيل أو تعديل بيانات.
+
+### ملاحظات / مشاكل مفتوحة
+
+- المفتاح يمنح صلاحية كاملة داخل المشروع فقط (لا مشاريع أخرى ولا إنشاء مفاتيح)؛ يُلغى بـ`neon api-keys revoke 3492946`.
+- المهارات المثبتة يدويًا لا يحدّثها `neon skills update`؛ التحديث يحتاج إعادة تثبيت صريحة.
+
+## [2026-11-03] — قناة EAC في dsh-our-free-model: star مطلوب
+
+### تم التنفيذ
+
+- سبب فشل «This turn failed» عند اختيار نموذج EAC هو بوّابة الإضافة `dsh-our-free-model@2.8.0` (مركّبة من `github:ebony-vinyl/dsh-our-free-model`): نماذج EAC لا تعمل قبل تسجيل دخول GitHub وstar للمستودع.
+- من الكود: الـstar يُفحص في جهة الخادم عبر `auth/poll` على بوّابة المزوّد، والمستودع الافتراضي `Ebony-Vinyl/dsh-our-free-model`؛ التوكن المحفوظ محليًا هو توكن البوّابة لا توكن GitHub.
+- نُفّذ الـstar بحساب المالك عبر `gh api -X PUT /user/starred/Ebony-Vinyl/dsh-our-free-model` وتأكّد بـ204.
+- يبقى تسجيل الدخول عبر GitHub من لوحة EAC في الإضافة؛ لا يُنفّذ نيابة عن المالك لأنها موافقة OAuth.
+
+### الملفات المتأثرة
+
+- `~/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/dsh-our-free-model}`
+
+### التحقق
+
+- `PUT /user/starred/...`: PASS (204)، و`GET` بعده يعيد 204.
+- تشغيل نموذج EAC فعليًا: NOT RUN — يحتاج OAuth من المتصفح.
+
+### النتيجة
+
+- **الحالة:** DONE للـstar؛ تفعيل قناة EAC PARTIAL حتى يكمل المالك تسجيل الدخول.
+
+### ملاحظات / مشاكل مفتوحة
+
+- قناة EAC تمرّر المحادثات عبر بوّابة طرف ثالث تتحقق من الـstar؛ تُعامل كسطح ثقة خارجي ولا تُرسل إليها بيانات حساسة. إزالة الـstar تُبطل الوصول بحسب تصميم الإضافة.
+
+## [2026-11-03] — أساس تنفيذ هرمية سياسات Kernel محليًا
+
+### تم التنفيذ
+
+- أُضيف ترحيل محلي للإدارات وعضوياتها وتفويض اعتماد محدود ونسخ السياسات وسجل اعتماد/قرارات append-only مع RLS وPUBLIC revokes؛ بلا سياسات أو عضويات مزروعة.
+- أُضيف API خادمي للمسودات ودورة المراجعة والنشر والإيقاف، بفصل المنشئ عن المعتمد والناشر، وتفويض ADMIN للاعتماد فقط بقرار OWNER محدد المدة.
+- رُبط التقييم قبل تمرير Firewall المحمي: Enterprise ALLOW إلزامي، والحظر لا تخففه المستويات الأدنى، والسياق/المخطط/الالتزامات غير المدعومة توقف المسار.
+- أضيفت لوحة لإعداد المسودات وإدارة الإدارات وعضوياتها والتفويض المحدود وإجراءات دورة النشر؛ تحرير النسخ/التاريخ التفصيلي API-only، وبقية المنتجات غير موصولة.
+
+### الملفات المتأثرة
+
+- `migrations/0010_aigas_kernel_policy_hierarchy.sql`, `src/server/kernel/policies.mjs`, `src/server/firewall/`, لوحة Kernel، `docs/KERNEL-DEVELOPMENT.md`
+
+### التحقق
+
+- مراجعة المصدر والـdiff: PASS؛ build والاختبارات وlint/typecheck والمتصفح: NOT RUN حسب طلب التنفيذ.
+
+### النتيجة
+
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTATION NOT RUNTIME VERIFIED؛ لم يُطبق الترحيل على Neon ولم يحدث نشر.
+
+### ملاحظات / مشاكل مفتوحة
+
+- يلزم مراجعة grants/RLS والتطبيق على بيئة معتمدة والتحقق التشغيلي، وإكمال تحرير النسخ/عرض تاريخها وربط المنتجات الأربعة الأخرى.
+
+## [2026-11-03] — توضيح حالة متطلب هرمية سياسات Kernel
+
+### تم التنفيذ
+
+- روجع `docs/AIGAS-KERNEL-POLICY-HIERARCHY-AND-ENFORCEMENT.md`: الهرمية وحد عدم تخفيف القيود العليا متطلبان معتمدان؛ تفاصيل المخطط والعقد التنفيذي فيه مقترحة، وحالة التنفيذ الموثقة NOT IMPLEMENTED / NOT VERIFIED.
+- أكد فحص HEAD `0d9ed44b` عدم وجود مخطط أو خدمة/واجهات لهرمية الإدارات والسياسات؛ الموجود قواعد منتج منفردة وبوابة إتاحة Kernel.
+- لم يُنفذ تغيير كود أو قاعدة بيانات أو نشر؛ ملف المتطلبات موجود محليًا وغير متعقّب.
+
+### الملفات المتأثرة
+
+- `.agents/mind/01-mind-latest.md`
+
+### التحقق
+
+- قراءة المستند ومراجعة المصدر: PASS؛ build والاختبارات: NOT RUN.
+
+### النتيجة
+
+- **الحالة:** DONE لتوضيح الفرق بين اعتماد المتطلب وتنفيذه.
+
+### ملاحظات / مشاكل مفتوحة
+
+- اعتماد التصميم المقترح والتنفيذ والتحقق التشغيلي ما زالت مفتوحة.
+
+## [2026-11-03] — إصلاح فشل بناء Render لاستيراد Better Auth
+
+### تم التنفيذ
+
+- أزيل استيراد `better-auth/client/plugins` غير المعلن من `workspace-context.ts`؛ عميل Neon Auth المعلن يوفّر أصلًا نوع `VanillaBetterAuthClient` مع دعم Organization.
+- استُخدم نوع SDK المصدري وأُبقي امتداد `getJWTToken()` الذي تعتمد عليه مساحة العمل.
+
+### الملفات المتأثرة
+
+- `src/scripts/workspace-context.ts`
+
+### التحقق
+
+- `npm run build`: PASS محليًا؛ ظهرت تحذيرات Rollup قائمة في ملفات Zod.
+
+### النتيجة
+
+- **الحالة:** DONE محليًا؛ بناء Render السابق على commit `2d49f24` فشل قبل التعديل، ولا يوجد نشر جديد أو commit.
+
+### ملاحظات / مشاكل مفتوحة
+
+- نجاح البناء المحلي لا يثبت نجاح Render بعد رفع التغيير أو حالة الموقع المنشور.
+
+## [2026-11-03] — إكمال ربط حالة Kernel وسياسة الإتاحة الأساسية
+
+### تم التنفيذ
+
+- وسّع فحص الحالة العام بحالات `ready/degraded/blocked/unconfigured` ووقت تحديث ورموز خطأ محدودة، مع إبقاءه مجهولًا بلا DSN أو أسماء جداول/مؤسسات أو stack traces.
+- أظهر لوحة Kernel اتصال Auth/DB وعضوية المؤسسة وتوقيت بياناتها وتوفر كل منتج، مع حالات الشبكة وإعادة المحاولة.
+- وثّق أولوية الإتاحة الفعلية: العضوية والتمكين والمنحة السارية ومخطط المنتج؛ لا توجد طبقات سياسات مركزية موحدة بين Enterprise/Department/Product/User.
+- فصل سجل Kernel الأساسي عن Ledger؛ أحداثه تحفظ tenant والفاعل والإجراء والوقت داخل معاملة الإدارة دون اشتراط المنتج المدفوع.
+
+### الملفات المتأثرة
+
+- `src/pages/app/kernel/index.astro`, `src/pages/app/api/kernel/health.ts`, `src/scripts/kernel.ts`, `src/styles/kernel.css`, `src/server/kernel/service.mjs`, `docs/KERNEL-DEVELOPMENT.md`
+
+### التحقق
+
+- مراجعة المصدر والـdiff: PASS. Build والاختبارات والمتصفح: NOT RUN حسب الطلب.
+
+### النتيجة
+
+- **الحالة:** PARTIAL محليًا؛ الواجهة والفحص وسجل Kernel الأساسي محدثة، دون تحقق تشغيل.
+
+### ملاحظات / مشاكل مفتوحة
+
+- هرمية السياسات المركزية غير موجودة في المصدر الحالي؛ تطبيقها يحتاج نموذج بيانات وواجهات/إنفاذ معتمد. Auth الفعلي، runtime DB grants/RLS، الترحيلات والإنتاج غير متحققة ولم تُغيّر.
+
+## [2026-11-03] — إصلاح استخراج JWT في Kernel
+
+### تم التنفيذ
+
+- استُبدل الوصول إلى `session.token` باستخدام `auth.getJWTToken()` في طلبات Kernel وقراءة الأعضاء؛ `getSession()` نوعه لا يضمن وجود `token`.
+
+### التحقق
+
+- `pnpm build`: PASS على Node 24.20.0 (المتطلب Node 22.x)؛ تحذيرات Rollup من Zod.
+
+### النتيجة
+
+- **الحالة:** DONE محليًا؛ لا commit أو نشر.
+
+ [2026-11-03] — استكمال إدارة عضويات Kernel وإتاحة المنتجات محليًا
+
+### تم التنفيذ
+
 - أضيفت API خادمية للمالك/المدير لتغيير دور Kernel أو سحب عضوية Kernel؛ قفل المؤسسة يعيد التحقق من دور المنفذ ويمنع إسقاط آخر OWNER، مع تدقيق ذري وعمليات تكرار آمنة.
 - أُظهرت أدوات إدارة العضوية فقط لصاحب الصلاحية، وعُزلت هوية العضو عن استجابات MEMBER؛ سحب العضوية لا يغيّر عضوية Neon Auth.
 - حالات المنتجات الفعلية تجمع `aigas_product_access` والمنحة: الإتاحة لا تعمل دون grant ساري، وتظهر المنحة المنتهية أو المسحوبة كـEXPIRED/REVOKED.
 - أصبحت عدادات الأعضاء والأحداث والمنتجات المتاحة مشتقة من سجلات المؤسسة الفعلية، وتعرض «لا بيانات» عند غياب المصدر.
 - وثّق عقد API في `docs/KERNEL-DEVELOPMENT.md`. لا ترحيل DB جديد أو تغيير خارجي.
+
 ### الملفات المتأثرة
+
 - `src/server/kernel/{administration,service,core}.mjs`, `src/pages/app/api/kernel/members.ts`, `src/scripts/kernel.ts`, `src/styles/kernel.css`, `docs/KERNEL-DEVELOPMENT.md`
+
 ### التحقق
+
 - مراجعة diff: تمت؛ build والاختبارات وlint/typecheck والمتصفح: NOT RUN بطلب المهمة.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL محليًا؛ تغييرات الأدوار وسحب Kernel وإظهار حالة المنح مكتملة مصدرًا، دون إثبات تشغيل.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - إلغاء دعوة Neon Auth نفسها لا يتوفر في واجهة Kernel؛ إلغاء مزود الدعوة إجراء منفصل. تطبيق ترحيل/تجهيز الإدارة على قاعدة معتمدة وجلسة حقيقية غير متحققين.
 
 ## [2026-11-03] — استكمال تجربة الحسابات والدعوات محليًا
+
 ### تم التنفيذ
+
 - أضيفت أخطاء حقول ورسائل تحميل وإظهار كلمة المرور مع RTL للأسماء والبريد، وبقي Neon Auth مصدر الهوية دون تخزين session token في `localStorage`.
 - نموذج Kernel يحافظ على المدخلات عند فشل الدخول، واستعادة الجلسة لا تُعلّم ناجحة عند فشل `getSession`؛ الواجهة تميّز انتهاء الجلسة والعضوية والدور برسائل عربية.
 - تظهر الدعوات المنتهية/الملغاة/المرفوضة، ويُعاد فحص دور الداعي في Kernel وNeon Auth عند القبول؛ إعادة المحاولة لا تعيد نجاحًا ما لم تبق عضوية Kernel.
 - حراس API الحالية تستخرج المستخدم من JWT وتتحقق من حسابه وعضويته، وخدمات المنتجات الخمسة تستخدم `requireProductAccess`؛ هذا فحص مصدر فقط.
+
 ### الملفات المتأثرة
+
 - `src/pages/auth/sign-up.astro`, `src/pages/app/kernel/index.astro`, `src/scripts/{kernel,workspace-context}.ts`, `src/server/kernel/administration.mjs`, `src/styles/kernel.css`
+
 ### التحقق
+
 - `git diff --check`: PASS. Build والاختبارات والمتصفح: NOT RUN بطلب المهمة؛ اختبار جلسة حقيقية وعزل حسابين: NOT VERIFIED.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لا رسائل دعوة أُرسلت ولا تغييرات DB/إنتاج أو نشر.
 
 ## [2026-11-03] — توحيد إتاحة بوابة AIGAS مع SSR وإعداد البيئة
+
 ### تم التنفيذ
+
 - تأكدت من أن Astro مضبوط على Node standalone وأن `render.yaml` يبدأ `npm start` الذي يشغّل `dist/server/entry.mjs`؛ لم أغيّر هذه الإعدادات لأنها متسقة محليًا.
 - أضيف `AIGAS_APP_ENABLED` مغلقًا افتراضيًا للإنتاج؛ عند الإغلاق تُحوّل صفحات `/app/*` إلى صفحة التواصل الحالية، وتُرجع APIs رمز `APP_UNAVAILABLE` مع 503 و`no-store`.
 - أصبحت البوابة متاحة في Astro dev؛ لا يُفتح مسار الإنتاج إلا عند ضبط المتغير وقت التشغيل، ولا تُخبز إعدادات Auth/DB في الحزمة.
 - صفحة التسجيل SSR وتقرأ عنوان Auth من `process.env`، وتُظهر رابط مساحة العمل فقط عند إتاحتها.
+
 ### الملفات المتأثرة
+
 - `render.yaml`, `src/middleware.ts`, `src/pages/auth/sign-up.astro`, `src/server/kernel/env.mjs`
+
 ### التحقق
+
 - مراجعة المصدر وحدود imports: PASS؛ `git diff --check`: PASS. build والاختبارات لم تُشغّل بطلب المهمة.
 - فحص حي للبوابة عبر Chrome: `/app/` أظهر 404؛ استجابة HTTP الخام غير متاحة للفحص هنا.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لم يحدث نشر أو تغيير خارجي.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - يلزم نشر Node service وتغيير origin مصرح به لتصحيح 404 الحي؛ يلزم ضبط `AIGAS_APP_ENABLED=true` بعد اعتماد فتح البوابة وتجهيز بيئتها.
 
 ## [2026-11-03] — استكمال SEO وSchema للموقع العام
+
 ### تم التنفيذ
+
 - أضيفت Article JSON-LD للمقالات الخمسة وProduct JSON-LD لصفحات المنتجات الخمسة اعتمادًا على المحتوى الحالي، مع إبقاء الأسعار والعروض والمراجعات غير موجودة.
 - أصبحت أوصاف المنتجات مبنية على غرض كل منتج، ويدعم الغلاف OG article ويضيف X-Robots-Tag للصفحات المعلّمة noindex ولروابط الاستعلام ذات مفاتيح الأسرار.
 - استُبعدت مسارات المصادقة كلها من Sitemap، وأصبحت صفحة التسجيل noindex؛ بقيت `/app/*` و404 وKernel مستبعدة كما كانت.
 - لم تتغير النصوص المرئية أو الروابط الداخلية أو Hero/Constellation.
+
 ### الملفات المتأثرة
+
 - `src/layouts/BaseLayout.astro`, `src/components/PageShell.astro`, `src/data/structured-data.ts`, `src/pages/{auth/sign-up,products/[product],knowledge/*.astro}`, `astro.config.mjs`
+
 ### التحقق
+
 - `git diff --check`: PASS؛ مراجعة التغييرات: PASS. build والاختبارات وLighthouse والنشر: NOT RUN حسب طلب المهمة.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ Sitemap المنشور والفهرسة الفعلية غير متحققين.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - سجل `WEBSITE-PAGE-REGISTRY.yaml` ما زال `REFERENCE_DRAFT_AWAITING_REVIEW`؛ لم يُستخدم لتثبيت ادعاءات أو اعتماد غير موثق.
 
 ## [2026-11-03] — إصلاح تداخلات الجوال وRTL
+
 ### تم التنفيذ
+
 - جعلت «داخل الصفحة» عنصرًا ضمن التدفق حتى 767px، وأضفت للهيدر قائمة جوال أصلية قابلة للفتح بلوحة المفاتيح؛ الروابط ونصوصها وترتيبها بقيت كما هي، وتظل ظاهرة دون JavaScript.
 - عزلت الأسماء اللاتينية والأرقام في التنقل والمنتجات وKernel و404 والبريد باستخدام `bdi/dir`، مع focus ظاهر وحالة `aria-expanded/controls` للقوائم التفاعلية.
 - لم أغيّر Hero الرئيسية أو Constellation؛ احتواء القص المرصود يحتاج قرارًا منفصلًا إذا كان ما زال ظاهرًا.
+
 ### الملفات المتأثرة
+
 - `src/components/{Header,Footer,PageShell,InteriorController,SystemMap}.astro`, `src/styles/interior.css`, `src/pages/{404,contact,kernel,products/index,products/[product]}.astro`
+
 ### التحقق
+
 - مراجعة diff: PASS؛ build والاختبارات واللقطات: NOT RUN حسب الطلب.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لا نشر أو commit/push.
 
 ## [2026-11-03] — تحسين القراءة والوضوح للصفحات المؤسسية
+
 ### تم التنفيذ
+
 - وحّدت إبراز الملاحظات والقراءة الطويلة وفهرس المعرفة والجداول عبر Tokens الحالية، مع تباعد أفضل للسياسات والمحتوى المساند.
 - رفعت وضوح نموذج التواصل وحقوله على الجوال، وأبرزت بطاقة تجهيز عرض السعر وتنبيه تجربة 48 ساعة دون تغيير النصوص أو الترتيب.
 - حسّنت تسلسل مخطط القطاعات وأرقامه مع بقاء الرسوم تعليمية واحترام reduced-motion.
+
 ### الملفات المتأثرة
+
 - `src/styles/pages.css`, `src/components/{ArticleContext,SectorDiagram}.astro`, `src/pages/{contact,pricing}.astro`
+
 ### التحقق
+
 - `git diff --check`: PASS؛ البناء والاختبارات والمعاينة: NOT RUN حسب الطلب.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لا تغيير للروابط أو المحتوى، ولا commit/push/deploy.
 
 ## [2026-11-03] — صقل كتالوج المنتجات وتجربة Kernel العامة
+
 ### تم التنفيذ
+
 - ربطت أيقونة كل منتج بعنوانه وشرحه ومؤشر «مخطط · غير متحقق تشغيلياً» مع حفظ الترتيب والمسارات والرسوم المميزة.
 - حسّنت Hero صفحات المنتجات وإطار ProductIcon، وجعلت مقارنة Kernel تعرض قبل/بعد وتقدماً وحالة محلية واضحة.
+
 ### الملفات المتأثرة
+
 - `src/pages/products/index.astro`, `src/pages/products/[product].astro`, `src/pages/kernel.astro`, `src/styles/interior.css`
+
 ### التحقق
+
 - مراجعة diff و`git diff --check`: PASS؛ build والاختبارات والمعاينة NOT RUN حسب الطلب.
+
 ### النتيجة
+
 - **الحالة:** DONE محلياً؛ لا اتصال بمحرك حي ولا commit/push/deploy.
 
 ## [2026-11-03] — صقل أقسام الرئيسية مع حماية الهيرو
+
 ### تم التنفيذ
+
 - حسّنت الأسطح والمسافات والحدود داخل أقسام الحوكمة والسؤال والمبادئ وخطوات العمل والمنتجات والقطاعات وCTA دون تغيير المحتوى أو ترتيب الأقسام.
 - أضفت استجابة hover قصيرة على المؤشر الدقيق باستخدام transform فقط، وحسّنت لف أسماء المنتجات الإنجليزية وتباعد القراءة على الشاشات الصغيرة.
 - كتلة الهيرو وConstellation والهيدر لم تُعدّل.
+
 ### الملفات المتأثرة
+
 - `src/pages/index.astro`
+
 ### التحقق
+
 - مراجعة diff: PASS — التغيير إضافة CSS للأقسام فقط؛ build والاختبارات واللقطات: NOT RUN بطلب المهمة.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لم يُنفّذ commit/push/deploy.
 
 ## [2026-11-03] — توحيد النظام البصري: Tokens والخطوط والأيقونات
+
 ### تم التنفيذ
+
 - `variables.css` صار المصدر الوحيد للألوان البدائية، وأضيفت طبقة دلالية (`--color-text/-action/-focus`, `--surface-*`, `--state-*`, `--tag-*`, `--table-*`) وسلّم عربي `--type-*` بقيم `clamp` مطابقة للقيم المستخدمة فعلًا. حُذفت تكرارات الألوان من `theme.css` و`experience.css` واستُبدلت بمراجع.
 - أزيل التتبع السلبي عن العناوين العربية في `site.css`، ووُحّد focus واحد عالمي، وحالات disabled/busy بحدود منقّطة لا باللون وحده، وحقول بـ`aria-invalid`.
 - `ProductIcon.astro` صار مجموعة رسوم متعددة المسارات للمنتجات الخمسة وKernel بأحجام 16/20/24/32/40 وسماكة stroke متدرجة، والشعار الرسمي باقٍ في `BrandLogo`.
 - `/app/*` صارت تقرأ نفس الـTokens عبر استيراد `variables.css` في `AppLayout`، واستُبدلت قيم العلامة المكررة في CSS التطبيق والمنتجات بمراجع Tokens دون تغيير القيم.
+
 ### الملفات المتأثرة
+
 - `src/styles/{tokens.json,variables.css,theme.css,site.css,pages.css,experience.css,interior.css,interior-motion.css,kernel.css,firewall.css,human-gate.css,secure-chat.css,ledger.css,risk-engine.css}`، `src/components/ProductIcon.astro`, `src/layouts/AppLayout.astro`, `src/pages/products/index.astro`, `src/components/ProductExperience.astro`.
+
 ### التحقق
+
 - صحة JSON لـ`tokens.json`: PASS. توازن أقواس CSS والمراجع: PASS بلا متغيرات غير معرّفة (عدا `--pointer-x/y` التي يضبطها JS). بناء/اختبارات/لقطات: NOT RUN بطلب المالك.
+
 ### النتيجة
+
 - **الحالة:** نجح محليًا؛ لم يُنفّذ commit/push/deploy ولم تُمس الرئيسية/الهيرو/Constellation.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - `letter-spacing` السلبي باقٍ في عنوان الهيرو داخل `src/pages/index.astro` لأن الهيرو محمي حرفيًا؛ يحتاج قرارًا مستقلًا إن أُريد تصحيحه عربيًا.
 
 ## [2026-11-03] — تركيب DSH Plugin Hub في بروفايل desktop
+
 ### تم التنفيذ
+
 - نُفّذ الطلب `dsh plugin --profile web add dsh-plugin` على بروفايل `desktop` بدل `web` لأن هذا هو البروفايل الوحيد الموجود والمُشغِّل للتطبيق؛ `--profile web` كان سينشئ بروفايلًا جديدًا لا يُقلع.
 - الإصدار المُركَّب `dsh-plugin@2.2.7` وليس `2.3.1` (أحدث إصدار في registry)؛ pnpm حلّ الإصدار الأقدم، ويُرجَّح بسبب سياسة عمر الإصدار في DSH.
 - الـCLI أضاف الحزمة إلى `dependencies` و`dsh.profile.bundles` تلقائيًا، متجاوزًا `plugin_manager`، فلا قيد إصدار DSH ولا سجل عملية في `.plugin-manager/logs`.
 - الحزمة بلا اعتماديات وقت تشغيل (node builtins فقط) وبلا استيراد لـ`@deepseek-ai/cordis`؛ الـpeer `4.0.1` مقابل `4.0.5` المضمّن في DSH 0.2.1-rc.5 لا يمنع التحميل.
+
 ### الملفات المتأثرة
+
 - `~/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/dsh-plugin}`
 - نسخة احتياطية: `~/.dsh/profiles/desktop/package.json.bak-20261103-005830`
+
 ### التحقق
+
 - `pnpm add`: PASS؛ الحزمة موجودة مع `lib/index.js` و`client/client.js` ومدرجة في bundles: PASS.
 - `--dump-config` على desktop: BLOCKED — «profile managed exclusively by the Electron application».
 - ظهور السوق داخل الواجهة بعد إعادة تشغيل التطبيق: NOT RUN — إعادة التشغيل تُنهي الجلسة.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل؛ التحميل الفعلي والواجهة NOT VERIFIED حتى إعادة تشغيل DSH. لا commit أو push.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - الإضافة تمنح واجهة تثبيت حزم من npm/GitHub داخل التطبيق، فهي سطح ثقة إضافي على الجهاز.
 - توكن npm موجود نصًا في `~/.npmrc`؛ يُفضّل تضييق صلاحياته أو نقله إلى مخزن اعتماد.
 
 ## [2026-11-02] — ربط نماذج Codex في DSH عبر OAuth
+
 ### تم التنفيذ
+
 - فُعّل مسار `openai-codex` في `llm-pi-ai` عبر `cordis.patch.yml` مع `displayName: OpenAI Codex`؛ وأُزيل `baseURL` الذي كان يشير إلى `opencode.ai/inference/openai/v1` لأنه ليس خادم Codex، فبقي الافتراضي `chatgpt.com/backend-api` عبر `openai-codex-responses`.
 - نُفّذ توثيق ChatGPT OAuth بـpi-ai (`openaiCodexOAuth`، client `app_EMoamEEZ73f0CkXaXp7hrann`، callback `127.0.0.1:1455`) وخُزّن grant في مخزن DSH بالمفتاح `llm-pi-ai/openai-codex` (type/access/refresh/expires/accountId)، دون كتابة أي سر داخل المستودع.
 - تحقق مستقل: طلب مباشر إلى `https://chatgpt.com/backend-api/codex/responses` بالنموذج `gpt-6-sol` أعاد 200، ثم استدعاء عبر خدمة LLM في Harness لنفس المزوّد/النموذج أعاد `OK`.
+
 ### الملفات المتأثرة
+
 - `/Users/yzydalshmry/.dsh/profiles/desktop/cordis.patch.yml`
 - `/Users/yzydalshmry/.dsh/.credentials.yaml`
+
 ### التحقق
+
 - `dsh-hmr` يراقب `cordis.patch.yml` ويعيد تركيب المكوّنات، وwatcher الخاص بـ`credentials-local` (chokidar) يعيد تحميل الملف؛ لا إعادة تشغيل مطلوبة.
 - `gpt-6-sol` عبر مسار `openai-codex` داخل Harness: PASS (`OK`). الظهور البصري في منتقي النماذج والاستخدام في محادثة كاملة: NOT RUN.
+
 ### النتيجة
+
 - **الحالة:** DONE للربط والتوثيق والتحقق من المسار. لا commit/push، ولا تغيير على موقع BRIGHTAI.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - صلاحية access token تنتهي 2026-11-12، والتجديد تلقائي عبر refresh token؛ أي إبطال من OpenAI يلزمه إعادة توثيق.
 
 ## [2026-11-02] — Chrome DevTools MCP داخل DSH
+
 ### تم التنفيذ
+
 - أُنشئت حزمة إعداد فقط `@local/chrome-devtools-mcp` في `plugins/chrome-devtools-mcp` تُدرج صف `@deepseek-ai/dsh-mcp-client` واحدًا؛ لا كود Harness جديد.
 - النقل stdio عبر `npx -y chrome-devtools-mcp@1.12.0 --no-usage-statistics` مع `toolCallTimeoutMs: 120000`؛ الإصدار مثبّت ومطابق لـ`latest` في registry وقت التركيب.
 - الأدوات تظهر باسم `mcp__chrome-devtools__<tool>`: تنقّل وصفحات، DOM و`evaluate_script`، console وشبكة، performance trace، لقطات شاشة وscreencast.
 - بيانات عرض en/ar وأيقونة أصلية ليست شعار Chrome وREADME يوضح المتطلبات والأعلام والحدود الأمنية وإرشاد التحقق.
 - أُعيد ضغط `01` بنقل عشرة سجلات 2026-10-31 إلى أعلى `02-mind-mid.md` بعد التحقق من حفظها.
+
 ### الملفات المتأثرة
+
 - `plugins/chrome-devtools-mcp/{package.json,cordis.patch.yml,icon.svg,README.md,locale/{en,ar}.json}`
 - `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/@local/chrome-devtools-mcp}`
 - `.agents/mind/{01-mind-latest.md,02-mind-mid.md}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Config.listConfigs` يعيد صف `include:chrome-devtools-mcp` بحالة schema؛ الحزمة مرتبطة في `node_modules` ومدرجة في `dsh.profile.bundles`.
 - `mcp__chrome-devtools__list_pages`: PASS — عادت `about:blank`، أي أن العملية الفرعية stdio استجابت فعليًا، وليس مجرد تسجيل الصف.
 - JSON للـmanifest والـlocales وSVG: PASS. رسم بيانات العرض والأيقونة داخل Plugin Manager: NOT RUN — لا تحكم متصفح لهذه الصفحة.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والاتصال ونداء الأداة؛ بيانات العرض البصرية PARTIAL / NOT VERIFIED. لا commit أو push أو نشر، ولا تغيير على موقع BRIGHTAI.
 
 ## [2026-11-02] — Usage & Stats: إحصاءات المحادثات والمعالج داخل DSH
+
 ### تم التنفيذ
+
 - أُنشئت حزمة `@local/usage-stats` في `plugins/usage-stats` وتسجّل صفحة `usage-stats` في `sidebar.panellist` و`main`، بواجهة en/ar/zh وRTL واحترام reduced-motion.
 - يقرأ النصف المضيف سجلات الجلسات الفعلية عبر `ctx.sessionQuery` ويجمع رموز `assistant/message` حسب النموذج والساعة واليوم، ويستمع إلى `session/event` لتحديث الجلسات الحية دون إعادة مسح كامل.
 - يقدّم مسارًا محليًا موثّقًا `GET /api/local-usage-stats` فقط للمالك؛ الواجهة لا تقرأ ملفات الجلسات، وتحسب التكلفة والميزانية محليًا من أسعار قابلة للتعديل في `localStorage`.
 - يجمع نشاط المعالج الفعلي عبر `node:os` و`process.cpuUsage()` بعيّنة كل ثانيتين، مع حمل النظام والذاكرة واستخدام كل نواة ومخطط تاريخي.
 - الواجهة تشمل بطاقات الإجمالي والتكلفة والمحادثات والميزانية، وخطًا زمنيًا متراكمًا، وجدول محادثات قابلًا للتوسيع، وإعدادات الأسعار والميزانية.
+
 ### الملفات المتأثرة
+
 - `plugins/usage-stats/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,README.md,locale/*.json}`.
 - `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/@local/usage-stats}` (تركيب محلي).
+
 ### التحقق
+
 - `node --check` وJSON وSVG: PASS. تجميع 7 جلسات حقيقية عبر مسار المضيف: PASS (6 محادثات ذات استخدام، إجمالي >119M رمز، 0 سجلات غير مقروءة).
 - عرض Dashboard بمكوّنات React مع hooks وبيانات تجريبية en/ar: PASS بلا استثناءات. HMR graph يعرض `@local/usage-stats` مع client bundle مخدوم: PASS.
 - استجابة المسار داخل الصفحة الموثّقة والعرض البصري الفعلي: NOT RUN — لا تحكم متصفح ولا صلاحية لقراءة كوكي الجلسة. لا commit أو push أو نشر.
+
 ### النتيجة
+
 - **الحالة:** DONE للتنفيذ والتركيب والتسجيل والفحص الساكن والمنطقي؛ العرض البصري والمسار الموثّق PARTIAL / NOT VERIFIED. لا تغييرات على موقع BRIGHTAI.
 
 ## [2026-11-02] — Paper Reader: قارئ PDF في الشريط الجانبي الأيمن
+
 ### تم التنفيذ
+
 - أُنشئت حزمة `@local/paper-reader` في `plugins/paper-reader` وتسجّل نوع تبويب في `rightbar` وبطاقة في دليل الشريط الأيمن، مع جسم يقرأ PDF داخل الجلسة.
 - ضُمّن PDF.js 6.5.438 مع worker وpolyfills، ويُعرض الأصل عبر canvas بدقة devicePixelRatio مع طبقة نص قابلة للتحديد؛ بقي الملف الأصلي بايت-بايت في IndexedDB ويُتاح عبر العارض الأصلي والتنزيل.
 - تُحفظ التمييزات والملاحظات بإحداثيات صفحة نسبية؛ قائمة التحديد العائمة تقدّم Highlight/Note/Ask. Ask يبني السؤال الافتراضي بحسب لغة الواجهة (en/ar/zh) ويرسله إلى المحادثة.
 - واجهة en/ar/zh مع RTL وreduced-motion وتركيز لوحة المفاتيح، وأيقونة/بيانات عرض محلية للحزمة.
+
 ### الملفات المتأثرة
+
 - `plugins/paper-reader/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,README.md,src/*,scripts/build.mjs,vendor/*,locale/*.json}`.
 - `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,node_modules/@local/paper-reader}` (تركيب محلي).
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: `@local/paper-reader` نشط في `sidebar.right.pane.tab`.
 - `node scripts/build.mjs` و`node --check` وJSON وSVG وتغطية مفاتيح en/ar/zh: PASS؛ استخراج نص PDF تجريبي من 3 صفحات عبر PDF.js: PASS. العرض البصري والتفاعل الكامل داخل الصفحة: NOT RUN — لا تحكم متصفح.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل والبناء والفحص الساكن؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
 
 ## [2026-11-02] — Landmark Atlas: نسخة Codex مستقلة
+
 ### تم التنفيذ
+
 - حسب طلب المالك أُنشئت `plugins/Codex/` مستقلة؛ حزمة Harness الأصلية `plugins/landmarks-3d/` محفوظة. تركيب Harness السابق HISTORICAL ولا يثبت تركيب نسخة Codex.
 - manifest محمول وتوافقي وسوق محلي وإعداد MCP stdio بمسارات مطلقة مولّدة، ومهارة فتح وملف إعداد تفعيل نموذجي؛ لا تغيير لإعدادات Codex العامة ولا تثبيت للحزمة.
 - MCP App يعلن مدخلي global/thread؛ دعم الشريط الأصلي داخل Codex NOT VERIFIED. عارض HTML محلي بشريط أيسر وأربعة نماذج (إيفل/السور/المدينة المحرمة/تاج محل)، عربي/إنجليزي، بلا شبكة أو React/Harness runtime.
 - أصلح خطأ materials في حركة المدينة المحرمة وقص كاميرا إيفل داخل النسخة الجديدة فقط؛ تحتاج إعادة build بعد نقلها لتحديث مسارات MCP.
+
 ### الملفات المتأثرة
+
 - `plugins/Codex/{plugin.json,.codex-plugin/,.agents/plugins/,.mcp.json,mcp.json,server.mjs,config.example.toml,skills/,src/,scripts/,web/,assets/,README.md}`.
+
 ### التحقق
+
 - بناء مستقل و4 اختبارات Node: PASS؛ Playwright للمشاهد الأربعة WebGL2 دون JS/WebGL errors؛ 1440px و360px عربي/إنجليزي دون overflow وأزرار ≥44px. لقطات محلية داخل assets.
 - ملء الشاشة/غياب WebGL/تبديل reduced-motion فعليًا: NOT RUN. طلب لوحة Codex عبر open_in_codex أعاد queued؛ لا يثبت ظهورها. لا commit/push/deploy.
+
 ### النتيجة
+
 - **الحالة:** DONE للملفات والعارض المحلي؛ PARTIAL لتكامل واجهة Codex، والتثبيت وظهور مدخل الشريط الأصلي NOT VERIFIED؛ خطوات التثبيت موثقة في README.
 
 ## [2026-11-02] — Poster Workbench: استوديو ملصقات داخل المحادثة
+
 ### تم التنفيذ
+
 - أُنشئت حزمة `@local/poster-workbench` في `plugins/poster-workbench` وتسجّل عرض `poster-workbench` في `conversation.view` بجوار Chat/Trajectory، مع Host half بلا سلوك تشغيلي.
 - شيدر WebGL2 مستوحى من خلفية موقع Harness المتدفقة (simplex FBM + domain warp + curl + 5 ألوان + dither) داخل ملصق 4:5، وخط Host Grotesk الإنجليزي مع Fragment Mono للوسوم؛ الخطوط مضمّنة داخل `client.js` من أصول الموقع.
 - شريط الصفحة الافتراضي مقتصر على الملصق وزرّي تخصيص وPNG؛ لوحة تخصيص منبثقة للعنوان والنص وثلاثة ألوان وخمس لوحات، مع حفظ محلي.
 - تصدير PNG 1600×2000 من نفس مسار الرسم؛ Canvas2D fallback، احترام reduced-motion، نص بديل لقارئ الشاشة، وتنظيف WebGL.
+
 ### الملفات المتأثرة
+
 - `plugins/poster-workbench/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md}`
 - `plugins/poster-workbench/{src/client.template.js,scripts/build.mjs,fonts/*.woff2}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: `poster-workbench` نشط في `conversation.view` (order 20)؛ الحزمة مرتبطة ومثبتة، وبصمة client المثبت/المحلي متطابقة.
 - `node scripts/build.mjs` و`node --check` وJSON وSVG واختبار تخطيط Canvas بوهم: PASS. تحقق شادر/عرض بصري/تصدير فعلي داخل الصفحة: NOT RUN — لا تحكم متصفح.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب وتسجيل العرض والفحص الساكن؛ العرض البصري والتصدير PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
 
 ## [2026-11-02] — Style Studio: خمسة أنماط بصرية لتطبيق DSH
+
 ### تم التنفيذ
+
 - أُنشئت حزمة محلية `@local/style-studio` في `plugins/style-studio` تسجّل `sidebar.panellist` و`main` و`shell.overlay`، مع خمسة أنماط كاملة عبر `ctx.theme.overrideTokens`، وlocale en/ar/zh، واختيار محفوظ في localStorage.
+
 ### الملفات المتأثرة
+
 - `plugins/style-studio/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: المدخل واللوحة وruntime نشطة؛ `node --check` وJSON: PASS؛ العرض البصري NOT RUN.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
 
 ## [2026-11-02] — Transformer Lab: لعبة 3D تعليمية داخل DSH
+
 ### تم التنفيذ
+
 - أنشئت حزمة محلية `@local/transformer-lab` في `plugins/transformer-lab` تسجّل مدخل `transformer-lab` في `sidebar.panellist` ولوحة `main`، مع Host half بلا سلوك تشغيلي.
 - بُني مشهد Three.js بست مراحل: الترميز، التضمين، الانتباه، الرؤوس، MLP، والتوقّع؛ أعمدة رموز رأسية، أقواس انتباه بأوزان softmax حقيقية من نموذج 8 أبعاد بثلاثة رؤوس، وجسيمات MLP، وأعمدة احتمالات قابلة للنقر.
 - أضيفت لعبة توقّع: يختار المستخدم الرمز قبل كشف التوزيع، مع نقاط وكشف الاختيار الأول؛ وواجهة en/ar/zh وRTL وreduced-motion وتنظيف WebGL.
 - عولج تداخل أزرار macOS: العنوان يحجز 42px علويًا ويزيح أفقيًا حسب `getBoundingClientRect` عند اقتراب اللوحة من أعلى يسار النافذة، وشريط الأدوات مثبت أسفل اللوحة.
+
 ### الملفات المتأثرة
+
 - `plugins/transformer-lab/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md,scripts/build.mjs,src/*}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: `transformer-lab` نشط في `sidebar.panellist` و`main`؛ `node --check`: PASS؛ بناء esbuild: PASS؛ softmax مجموع 1 وثبات النموذج: PASS؛ JSON/SVG: PASS.
 - العرض البصري داخل الصفحة والتحقق من العنوان/الأيقونة المرسومين: NOT RUN — لا تحكم متصفح متاح؛ لا يُدّعى نجاحه من التسجيل وحده.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل والبناء؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
+
 ### ملاحظات / مفتوحة
+
 - إن كانت الصفحة محمّلة قبل آخر إعادة بناء لـ`client.js` فحدّثها؛ لا تغييرات على موقع BRIGHTAI.
 
 ## [2026-11-01] — Risk Engine: دورة معالجة وتصدير محلية دون فحوص
+
 ### تم التنفيذ
+
 - أضيفت معالجة بإصدارات append-only مرتبطة بالتقييم ونسخة الأصل: مالك وضابط وحالة ومبرر وتاريخ مراجعة؛ الأصل أو التقييم الأحدث يجعل الخطة السابقة بحاجة مراجعة. القبول لا يغيّر التقييم ولا يصرّح بالنشر.
 - قبول HIGH مقصور على OWNER مستقل عن المقيّم، مع تحقق خادم وSQL؛ عقد MEMBER الحالي بقي للقراءة. أضيف اسم المنهج ومراجع نصية وربط التقييم السابق دون إعادة كتابة التاريخ.
 - أضيفت صفحة تفاصيل الأصل وقائمة إجراءات بمواعيد الرياض وتصفية إعادة التقييم وتصدير JSON للمؤسسة بعد صلاحية وتدقيق؛ إقرار اصطناعي مطلوب لكل حفظ، دون AI أو Analytics أو اشتراط شراء منتج آخر.
 - جُهز 0008 إضافيًا بعد 0005؛ Neon MCP قراءة فقط أكد production وحده و11 جدول public دون Risk Engine، فلا هدف تطوير معتمد ولا ترحيل مطبق في المهمة.
+
 ### الملفات المتأثرة
+
 - `src/server/risk-engine/` وصفحات/API/سكربت/تنسيق المنتج، `src/components/RiskWorkspace.astro`، `migrations/0008_aigas_risk_engine_lifecycle.sql` ودليل المنتج وسجل خصائصه الموجودان.
+
 ### التحقق
+
 - الاختبارات/build/lint/typecheck/smoke/browser: NOT RUN بطلب المالك؛ مراجعة مصدر وdiff فقط، دون تعديل tests أو إنشاء Audit.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_RUNTIME_VERIFIED؛ يلزم هدف تطوير معتمد لتطبيق 0005 ثم 0008 ومراجعة runtime grants/RLS وقرارات الإتاحة والنشر لاحقًا.
 
 ## [2026-11-01] — Human Gate: إنفاذ محدود وترحيل بإذن الإنتاج
+
 ### تم التنفيذ
+
 - أضيف تغيير اسم مساحة Kernel كعملية فعلية محدودة مستقلة عن شراء منتجات أخرى؛ الملاحظة الداخلية باقية بمسمى تجريبي. ربط SHA-256 للمؤسسة/المقدم/العملية/الهدف/نسخة السياسة/الحمولة مع نسخة ملف المساحة لمنع إعادة استخدام موافقة بعد تغير الهدف.
 - أضيفت سياسة مهلة يختارها OWNER/ADMIN دون قيم مزروعة؛ حالات EXPIRED/EXECUTED وسجل دورة مرتبط بالتدقيق، وفحص الصلاحيات والهويات مجددًا عند الإنفاذ مرة واحدة. تغيير الهدف والتدقيق والاستهلاك داخل معاملة واحدة؛ لا token متصفح عام.
 - أضيفت لوحات طلباتي/تحتاج مراجعتي/مكتملة وتفاصيل القرار والنتيجة والمهلة؛ لا تفويض أو تصعيد أو اتصال AI.
 - بعد سؤال تحديد الهدف، فوّض المالك صراحة التطبيق على production؛ طُبقت 0004 و0006 و0007 معًا عبر Neon MCP. رُفضت دفعة النقل الأولى قبل التنفيذ لتعدد الأوامر بالعبارة المحضّرة، وأكد الكتالوج عدم التطبيق الجزئي؛ نجح إرسالها كعبارات منفردة ضمن معاملة واحدة. لا بيانات أو أدوار أو grants أو سياسات مُنشأة.
+
 ### الملفات المتأثرة
+
 - Human Gate server/API/page/script/style، readiness وتسميات تدقيق Kernel، `migrations/0007_aigas_human_gate_enforcement.sql`، ودليل Human Gate وسجل خصائصه الموجودان.
+
 ### التحقق
+
 - Neon: COMMIT وقراءة كتالوج المخطط بعده؛ 11 جدول public مع RLS وحراس الدورة/السجل/نسخة المساحة. هذا دليل مخطط فقط.
 - اختبارات/build/lint/typecheck/smoke/browser: NOT RUN بطلب المالك؛ مراجعة مصدر وdiff فقط، دون تعديل tests أو إنشاء Audit.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_RUNTIME_VERIFIED؛ التطبيق محلي وغير منشور. يلزم قرار إتاحة Human Gate معتمد وسياسة مشغّل ومراجع مستقل ومراجعة runtime grants/RLS والنشر المصرح.
 
 ## [2026-11-01] — Ledger: أحداث تطبيق وسلسلة وتصدير مستقل دون تشغيل فحوص
+
 ### تم التنفيذ
+
 - أضيف كاتب داخلي مرتبط بمعاملات Firewall وHuman Gate وRisk Engine وعمليات Kernel؛ metadata allowlist فقط، والهوية/المؤسسة من الحراس الخادميين. أحداث المختبر وFirewall/Human Gate التجريبية موسومة دون ادعاء تنفيذ خارجي.
 - أضيف SHA-256 chain-v2 وتسلسل لكل مؤسسة وقفل append ومفاتيح منع تكرار من مرجع العملية؛ تحديث 0003 كتثبيت جديد فقط، دون إعادة بصمات الأدلة القديمة.
 - أضيف تصدير JSON لصاحب OWNER/ADMIN بعد audit يتضمن معرّف الهدف، مع manifest ومدخلات canonical وسلسلة من البداية للهدف وفاحص Node مستقل؛ حد تقني 10000 حدث دون تصدير مبتور. الفحص لا يثبت المصدر أو الوقت أو أحدث ذيل أو مقاومة إعادة كتابة المسؤول.
 - التكامل اختياري دون Ledger؛ تدقيق Kernel الأساسي باقٍ. جدول اشتراط الأدلة فارغ افتراضيًا ومخصص لسياسات مشغّل معتمدة؛ الاشتراط المطابق يوقف العملية عند غياب Ledger، ولا احتياطي معتمد أو احتفاظ/Legal Hold مُنفّذ.
+
 ### الملفات المتأثرة
+
 - `src/server/ledger/` وخدمات المنتجات الأربعة، صفحة/سكربت/تنسيق Ledger، `migrations/0003_aigas_ledger.sql`، `public/downloads/aigas-ledger-verifier.mjs`، ودليل Ledger وسجل خصائصه الموجودان.
+
 ### التحقق
+
 - اختبارات/build/lint/typecheck/smoke/browser والفاحص المستقل: NOT RUN بطلب المالك؛ مراجعة مصدر وdiff فقط. لم تُعدّل tests ولم يُنشأ تقرير Audit.
 - Neon MCP قراءة فقط أعاد تأكيد production وحده والجداول الأربع وأعمدة UUID؛ لا جداول Ledger أو هدف تطوير معتمد، ولا SQL تغييري.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_VERIFIED محليًا؛ يلزم هدف تطوير معتمد وتطبيق المخطط ومراجعة runtime grants/RLS واعتماد السياسات والنشر لاحقًا.
 
 ## [2026-11-01] — Firewall: مسار إنفاذ خادمي محلي دون تشغيل فحوص
+
 ### تم التنفيذ
+
 - أضيف `/app/api/firewall/guarded-executions/` بهوية Kernel وعضوية/إتاحة Firewall؛ BLOCK والتنقيح يسبقان المزود الاختياري، وعدم المطابقة يُحجب بـNO_MATCH_ENFORCED. `/evaluate/` تقييم تجريبي فقط.
 - القرار metadata-only وتدقيق Kernel ذريان قبل COMMIT/التمرير؛ request_id UUID يمنع إعادة الطلب نفسه. لا نص أو بصمة نص في السجل ولا شراء Ledger مطلوب.
 - حُفظت إدارة القواعد والنسخ؛ التنقيح يجمع التطابقات المتداخلة من الأصل. أضيف سجل بصفحات وتصفية إجراء/سبب/مسار/أيام UTC ووقت الرياض، دون نسبة اسم قاعدة حالي إلى قرار تاريخي.
 - سجل المزودين المعتمدين فارغ عمدًا: ALLOW/REDACT في مسار التنفيذ يرجعان PROVIDER_NOT_CONFIGURED دون إرسال. الواجهة توضح النطاق والمدخل فقط، والإقرار الاصطناعي مطلوب خادميًا.
 - روجع 0002 محليًا كـfresh-install لقيود القوالب والقرارات ومنع التكرار وappend-only؛ Neon MCP قراءة فقط أكد production وحده والجداول الأربع بلا Firewall. لا SQL مطبق أو مورد مُنشأ.
+
 ### الملفات المتأثرة
+
 - `src/server/firewall/`، `src/pages/app/{firewall,api/firewall}/`، `src/scripts/firewall.ts`، `src/styles/firewall.css`، ووسما تدقيق في `src/server/kernel/core.mjs`.
 - `migrations/0002_aigas_firewall.sql`، `docs/FIREWALL-DEVELOPMENT.md`، `docs/products/firewall/FEATURE-STATUS.yaml`.
+
 ### التحقق
+
 - اختبارات/build/lint/typecheck/smoke/browser: NOT RUN بطلب المالك؛ قراءة مصدر وdiff فقط. لا تعديل tests أو إنشاء تقارير Audit.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_VERIFIED محليًا؛ يلزم هدف تطوير معتمد لتطبيق 0002 وإدارة Kernel 0006، مراجعة runtime role، اعتماد وتنفيذ adapter مزود/منطقة/شروط، ونشر مصرح به. لا اتصال AI أو كتابة بعيدة.
 
 ## Current State / Invariants
+
 - نسخة Codex المحلية في `plugins/Codex/`: عارض مستقل ومهارة وMCP App يعلن global/thread؛ ليست مثبتة، ودعم مدخل الشريط الأصلي NOT VERIFIED. خطوات التشغيل/التثبيت في README؛ لا تغير الحزمة الأصلية.
 - أحدث Risk Engine في السجل الأعلى: معالجة بإصدارات ومراجع وتصدير محلي دون تشغيل فحوص؛ أدلة Risk Engine السابقة HISTORICAL ولا تثبت هذه النسخة. 0008 غير مطبق إضافةً إلى 0005.
 - أحدث Human Gate في السجل الأعلى: حالات PENDING/APPROVED/REJECTED/EXPIRED/CANCELLED/EXECUTED، إلغاء مخول، تفويض مؤقت بمستوى وتاريخ، سياسة SoD/مستوى مراجعة، وبصمة v3 تشمل المورد. الموافقة تصدر إذن تنفيذ واحدًا يُستهلك ذريًا؛ `0014` محلي غير مطبق ويلزم اعتماده قبل التشغيل. إيقاف Kernel الأساسي عند REQUEST_APPROVAL/ESCALATE مستقل عن ترخيص Human Gate. الأدلة السابقة HISTORICAL.
@@ -331,6 +1082,7 @@
 - DSH desktop: سبع حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader` و`@local/chrome-devtools-mcp` و`@local/neon-mcp`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `neon-mcp` صف MCP واحد (streamable-http إلى `mcp.neon.tech` بمشروع `young-frog-60183055`) وأدوات `mcp__neon__*` مستدعاة فعليًا، ومفتاحه في بروفايل المستخدم لا في المستودع. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `chrome-devtools-mcp` صف MCP واحد (stdio، `npx`، إصدار 1.12.0) وأدوات `mcp__chrome-devtools__*` مستدعاة فعليًا؛ يشغّل Chrome بملف مستخدم مستقل في `~/.cache/chrome-devtools-mcp`. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
 
 ## Historical Ledger
+
 - 2026-11-02: Chrome DevTools MCP بعقد إعداد فقط وstdio عبر `npx` بإصدار 1.12.0؛ التركيب PASS و`list_pages` PASS، ويشغّل Chrome مستقلًا. Rollover: نُقلت سجلات 2026-10-31 إلى أعلى `02`.
 - 2026-11-02: Paper Reader قارئ PDF في الشريط الأيمن مع PDF.js وأصل محفوظ وتمييز/ملاحظات وسؤال متعدد اللغات؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
 - 2026-11-02: نسخة Landmark Atlas داخل plugins/Codex؛ build و4 Node وWebGL للمشاهد الأربعة PASS؛ التثبيت ومدخل Codex الأصلي NOT VERIFIED.
@@ -345,266 +1097,418 @@
 - 2026-11-03: نُقلت السجلات التفصيلية الأقدم لـ2026-11-01 إلى أعلى `02-mind-mid.md` بعد التحقق من حفظها؛ بقي الملخص الحالي هنا.
 - السجلات التالية HISTORICAL؛ الأحدث أعلاه يتقدم عند التعارض.
 
-
 ## [2026-11-03] — إصلاح تداخلات الجوال وRTL
+
 ### تم التنفيذ
+
 - جعلت «داخل الصفحة» عنصرًا ضمن التدفق حتى 767px، وأضفت للهيدر قائمة جوال أصلية قابلة للفتح بلوحة المفاتيح؛ الروابط ونصوصها وترتيبها بقيت كما هي، وتظل ظاهرة دون JavaScript.
 - عزلت الأسماء اللاتينية والأرقام في التنقل والمنتجات وKernel و404 والبريد باستخدام `bdi/dir`، مع focus ظاهر وحالة `aria-expanded/controls` للقوائم التفاعلية.
 - لم أغيّر Hero الرئيسية أو Constellation؛ احتواء القص المرصود يحتاج قرارًا منفصلًا إذا كان ما زال ظاهرًا.
+
 ### الملفات المتأثرة
+
 - `src/components/{Header,Footer,PageShell,InteriorController,SystemMap}.astro`, `src/styles/interior.css`, `src/pages/{404,contact,kernel,products/index,products/[product]}.astro`
+
 ### التحقق
+
 - مراجعة diff: PASS؛ build والاختبارات واللقطات: NOT RUN حسب الطلب.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لا نشر أو commit/push.
 
 ## [2026-11-03] — تحسين القراءة والوضوح للصفحات المؤسسية
+
 ### تم التنفيذ
+
 - وحّدت إبراز الملاحظات والقراءة الطويلة وفهرس المعرفة والجداول عبر Tokens الحالية، مع تباعد أفضل للسياسات والمحتوى المساند.
 - رفعت وضوح نموذج التواصل وحقوله على الجوال، وأبرزت بطاقة تجهيز عرض السعر وتنبيه تجربة 48 ساعة دون تغيير النصوص أو الترتيب.
 - حسّنت تسلسل مخطط القطاعات وأرقامه مع بقاء الرسوم تعليمية واحترام reduced-motion.
+
 ### الملفات المتأثرة
+
 - `src/styles/pages.css`, `src/components/{ArticleContext,SectorDiagram}.astro`, `src/pages/{contact,pricing}.astro`
+
 ### التحقق
+
 - `git diff --check`: PASS؛ البناء والاختبارات والمعاينة: NOT RUN حسب الطلب.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لا تغيير للروابط أو المحتوى، ولا commit/push/deploy.
 
 ## [2026-11-03] — صقل كتالوج المنتجات وتجربة Kernel العامة
+
 ### تم التنفيذ
+
 - ربطت أيقونة كل منتج بعنوانه وشرحه ومؤشر «مخطط · غير متحقق تشغيلياً» مع حفظ الترتيب والمسارات والرسوم المميزة.
 - حسّنت Hero صفحات المنتجات وإطار ProductIcon، وجعلت مقارنة Kernel تعرض قبل/بعد وتقدماً وحالة محلية واضحة.
+
 ### الملفات المتأثرة
+
 - `src/pages/products/index.astro`, `src/pages/products/[product].astro`, `src/pages/kernel.astro`, `src/styles/interior.css`
+
 ### التحقق
+
 - مراجعة diff و`git diff --check`: PASS؛ build والاختبارات والمعاينة NOT RUN حسب الطلب.
+
 ### النتيجة
+
 - **الحالة:** DONE محلياً؛ لا اتصال بمحرك حي ولا commit/push/deploy.
 
 ## [2026-11-03] — صقل أقسام الرئيسية مع حماية الهيرو
+
 ### تم التنفيذ
+
 - حسّنت الأسطح والمسافات والحدود داخل أقسام الحوكمة والسؤال والمبادئ وخطوات العمل والمنتجات والقطاعات وCTA دون تغيير المحتوى أو ترتيب الأقسام.
 - أضفت استجابة hover قصيرة على المؤشر الدقيق باستخدام transform فقط، وحسّنت لف أسماء المنتجات الإنجليزية وتباعد القراءة على الشاشات الصغيرة.
 - كتلة الهيرو وConstellation والهيدر لم تُعدّل.
+
 ### الملفات المتأثرة
+
 - `src/pages/index.astro`
+
 ### التحقق
+
 - مراجعة diff: PASS — التغيير إضافة CSS للأقسام فقط؛ build والاختبارات واللقطات: NOT RUN بطلب المهمة.
+
 ### النتيجة
+
 - **الحالة:** DONE محليًا؛ لم يُنفّذ commit/push/deploy.
 
 ## [2026-11-03] — توحيد النظام البصري: Tokens والخطوط والأيقونات
+
 ### تم التنفيذ
+
 - `variables.css` صار المصدر الوحيد للألوان البدائية، وأضيفت طبقة دلالية (`--color-text/-action/-focus`, `--surface-*`, `--state-*`, `--tag-*`, `--table-*`) وسلّم عربي `--type-*` بقيم `clamp` مطابقة للقيم المستخدمة فعلًا. حُذفت تكرارات الألوان من `theme.css` و`experience.css` واستُبدلت بمراجع.
 - أزيل التتبع السلبي عن العناوين العربية في `site.css`، ووُحّد focus واحد عالمي، وحالات disabled/busy بحدود منقّطة لا باللون وحده، وحقول بـ`aria-invalid`.
 - `ProductIcon.astro` صار مجموعة رسوم متعددة المسارات للمنتجات الخمسة وKernel بأحجام 16/20/24/32/40 وسماكة stroke متدرجة، والشعار الرسمي باقٍ في `BrandLogo`.
 - `/app/*` صارت تقرأ نفس الـTokens عبر استيراد `variables.css` في `AppLayout`، واستُبدلت قيم العلامة المكررة في CSS التطبيق والمنتجات بمراجع Tokens دون تغيير القيم.
+
 ### الملفات المتأثرة
+
 - `src/styles/{tokens.json,variables.css,theme.css,site.css,pages.css,experience.css,interior.css,interior-motion.css,kernel.css,firewall.css,human-gate.css,secure-chat.css,ledger.css,risk-engine.css}`، `src/components/ProductIcon.astro`, `src/layouts/AppLayout.astro`, `src/pages/products/index.astro`, `src/components/ProductExperience.astro`.
+
 ### التحقق
+
 - صحة JSON لـ`tokens.json`: PASS. توازن أقواس CSS والمراجع: PASS بلا متغيرات غير معرّفة (عدا `--pointer-x/y` التي يضبطها JS). بناء/اختبارات/لقطات: NOT RUN بطلب المالك.
+
 ### النتيجة
+
 - **الحالة:** نجح محليًا؛ لم يُنفّذ commit/push/deploy ولم تُمس الرئيسية/الهيرو/Constellation.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - `letter-spacing` السلبي باقٍ في عنوان الهيرو داخل `src/pages/index.astro` لأن الهيرو محمي حرفيًا؛ يحتاج قرارًا مستقلًا إن أُريد تصحيحه عربيًا.
 
 ## [2026-11-03] — تركيب DSH Plugin Hub في بروفايل desktop
+
 ### تم التنفيذ
+
 - نُفّذ الطلب `dsh plugin --profile web add dsh-plugin` على بروفايل `desktop` بدل `web` لأن هذا هو البروفايل الوحيد الموجود والمُشغِّل للتطبيق؛ `--profile web` كان سينشئ بروفايلًا جديدًا لا يُقلع.
 - الإصدار المُركَّب `dsh-plugin@2.2.7` وليس `2.3.1` (أحدث إصدار في registry)؛ pnpm حلّ الإصدار الأقدم، ويُرجَّح بسبب سياسة عمر الإصدار في DSH.
 - الـCLI أضاف الحزمة إلى `dependencies` و`dsh.profile.bundles` تلقائيًا، متجاوزًا `plugin_manager`، فلا قيد إصدار DSH ولا سجل عملية في `.plugin-manager/logs`.
 - الحزمة بلا اعتماديات وقت تشغيل (node builtins فقط) وبلا استيراد لـ`@deepseek-ai/cordis`؛ الـpeer `4.0.1` مقابل `4.0.5` المضمّن في DSH 0.2.1-rc.5 لا يمنع التحميل.
+
 ### الملفات المتأثرة
+
 - `~/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/dsh-plugin}`
 - نسخة احتياطية: `~/.dsh/profiles/desktop/package.json.bak-20261103-005830`
+
 ### التحقق
+
 - `pnpm add`: PASS؛ الحزمة موجودة مع `lib/index.js` و`client/client.js` ومدرجة في bundles: PASS.
 - `--dump-config` على desktop: BLOCKED — «profile managed exclusively by the Electron application».
 - ظهور السوق داخل الواجهة بعد إعادة تشغيل التطبيق: NOT RUN — إعادة التشغيل تُنهي الجلسة.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل؛ التحميل الفعلي والواجهة NOT VERIFIED حتى إعادة تشغيل DSH. لا commit أو push.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - الإضافة تمنح واجهة تثبيت حزم من npm/GitHub داخل التطبيق، فهي سطح ثقة إضافي على الجهاز.
 - توكن npm موجود نصًا في `~/.npmrc`؛ يُفضّل تضييق صلاحياته أو نقله إلى مخزن اعتماد.
 
 ## [2026-11-02] — ربط نماذج Codex في DSH عبر OAuth
+
 ### تم التنفيذ
+
 - فُعّل مسار `openai-codex` في `llm-pi-ai` عبر `cordis.patch.yml` مع `displayName: OpenAI Codex`؛ وأُزيل `baseURL` الذي كان يشير إلى `opencode.ai/inference/openai/v1` لأنه ليس خادم Codex، فبقي الافتراضي `chatgpt.com/backend-api` عبر `openai-codex-responses`.
 - نُفّذ توثيق ChatGPT OAuth بـpi-ai (`openaiCodexOAuth`، client `app_EMoamEEZ73f0CkXaXp7hrann`، callback `127.0.0.1:1455`) وخُزّن grant في مخزن DSH بالمفتاح `llm-pi-ai/openai-codex` (type/access/refresh/expires/accountId)، دون كتابة أي سر داخل المستودع.
 - تحقق مستقل: طلب مباشر إلى `https://chatgpt.com/backend-api/codex/responses` بالنموذج `gpt-6-sol` أعاد 200، ثم استدعاء عبر خدمة LLM في Harness لنفس المزوّد/النموذج أعاد `OK`.
+
 ### الملفات المتأثرة
+
 - `/Users/yzydalshmry/.dsh/profiles/desktop/cordis.patch.yml`
 - `/Users/yzydalshmry/.dsh/.credentials.yaml`
+
 ### التحقق
+
 - `dsh-hmr` يراقب `cordis.patch.yml` ويعيد تركيب المكوّنات، وwatcher الخاص بـ`credentials-local` (chokidar) يعيد تحميل الملف؛ لا إعادة تشغيل مطلوبة.
 - `gpt-6-sol` عبر مسار `openai-codex` داخل Harness: PASS (`OK`). الظهور البصري في منتقي النماذج والاستخدام في محادثة كاملة: NOT RUN.
+
 ### النتيجة
+
 - **الحالة:** DONE للربط والتوثيق والتحقق من المسار. لا commit/push، ولا تغيير على موقع BRIGHTAI.
+
 ### ملاحظات / مشاكل مفتوحة
+
 - صلاحية access token تنتهي 2026-11-12، والتجديد تلقائي عبر refresh token؛ أي إبطال من OpenAI يلزمه إعادة توثيق.
 
 ## [2026-11-02] — Chrome DevTools MCP داخل DSH
+
 ### تم التنفيذ
+
 - أُنشئت حزمة إعداد فقط `@local/chrome-devtools-mcp` في `plugins/chrome-devtools-mcp` تُدرج صف `@deepseek-ai/dsh-mcp-client` واحدًا؛ لا كود Harness جديد.
 - النقل stdio عبر `npx -y chrome-devtools-mcp@1.12.0 --no-usage-statistics` مع `toolCallTimeoutMs: 120000`؛ الإصدار مثبّت ومطابق لـ`latest` في registry وقت التركيب.
 - الأدوات تظهر باسم `mcp__chrome-devtools__<tool>`: تنقّل وصفحات، DOM و`evaluate_script`، console وشبكة، performance trace، لقطات شاشة وscreencast.
 - بيانات عرض en/ar وأيقونة أصلية ليست شعار Chrome وREADME يوضح المتطلبات والأعلام والحدود الأمنية وإرشاد التحقق.
 - أُعيد ضغط `01` بنقل عشرة سجلات 2026-10-31 إلى أعلى `02-mind-mid.md` بعد التحقق من حفظها.
+
 ### الملفات المتأثرة
+
 - `plugins/chrome-devtools-mcp/{package.json,cordis.patch.yml,icon.svg,README.md,locale/{en,ar}.json}`
 - `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/@local/chrome-devtools-mcp}`
 - `.agents/mind/{01-mind-latest.md,02-mind-mid.md}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Config.listConfigs` يعيد صف `include:chrome-devtools-mcp` بحالة schema؛ الحزمة مرتبطة في `node_modules` ومدرجة في `dsh.profile.bundles`.
 - `mcp__chrome-devtools__list_pages`: PASS — عادت `about:blank`، أي أن العملية الفرعية stdio استجابت فعليًا، وليس مجرد تسجيل الصف.
 - JSON للـmanifest والـlocales وSVG: PASS. رسم بيانات العرض والأيقونة داخل Plugin Manager: NOT RUN — لا تحكم متصفح لهذه الصفحة.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والاتصال ونداء الأداة؛ بيانات العرض البصرية PARTIAL / NOT VERIFIED. لا commit أو push أو نشر، ولا تغيير على موقع BRIGHTAI.
 
 ## [2026-11-02] — Usage & Stats: إحصاءات المحادثات والمعالج داخل DSH
+
 ### تم التنفيذ
+
 - أُنشئت حزمة `@local/usage-stats` في `plugins/usage-stats` وتسجّل صفحة `usage-stats` في `sidebar.panellist` و`main`، بواجهة en/ar/zh وRTL واحترام reduced-motion.
 - يقرأ النصف المضيف سجلات الجلسات الفعلية عبر `ctx.sessionQuery` ويجمع رموز `assistant/message` حسب النموذج والساعة واليوم، ويستمع إلى `session/event` لتحديث الجلسات الحية دون إعادة مسح كامل.
 - يقدّم مسارًا محليًا موثّقًا `GET /api/local-usage-stats` فقط للمالك؛ الواجهة لا تقرأ ملفات الجلسات، وتحسب التكلفة والميزانية محليًا من أسعار قابلة للتعديل في `localStorage`.
 - يجمع نشاط المعالج الفعلي عبر `node:os` و`process.cpuUsage()` بعيّنة كل ثانيتين، مع حمل النظام والذاكرة واستخدام كل نواة ومخطط تاريخي.
 - الواجهة تشمل بطاقات الإجمالي والتكلفة والمحادثات والميزانية، وخطًا زمنيًا متراكمًا، وجدول محادثات قابلًا للتوسيع، وإعدادات الأسعار والميزانية.
+
 ### الملفات المتأثرة
+
 - `plugins/usage-stats/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,README.md,locale/*.json}`.
 - `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,pnpm-lock.yaml,node_modules/@local/usage-stats}` (تركيب محلي).
+
 ### التحقق
+
 - `node --check` وJSON وSVG: PASS. تجميع 7 جلسات حقيقية عبر مسار المضيف: PASS (6 محادثات ذات استخدام، إجمالي >119M رمز، 0 سجلات غير مقروءة).
 - عرض Dashboard بمكوّنات React مع hooks وبيانات تجريبية en/ar: PASS بلا استثناءات. HMR graph يعرض `@local/usage-stats` مع client bundle مخدوم: PASS.
 - استجابة المسار داخل الصفحة الموثّقة والعرض البصري الفعلي: NOT RUN — لا تحكم متصفح ولا صلاحية لقراءة كوكي الجلسة. لا commit أو push أو نشر.
+
 ### النتيجة
+
 - **الحالة:** DONE للتنفيذ والتركيب والتسجيل والفحص الساكن والمنطقي؛ العرض البصري والمسار الموثّق PARTIAL / NOT VERIFIED. لا تغييرات على موقع BRIGHTAI.
 
 ## [2026-11-02] — Paper Reader: قارئ PDF في الشريط الجانبي الأيمن
+
 ### تم التنفيذ
+
 - أُنشئت حزمة `@local/paper-reader` في `plugins/paper-reader` وتسجّل نوع تبويب في `rightbar` وبطاقة في دليل الشريط الأيمن، مع جسم يقرأ PDF داخل الجلسة.
 - ضُمّن PDF.js 6.5.438 مع worker وpolyfills، ويُعرض الأصل عبر canvas بدقة devicePixelRatio مع طبقة نص قابلة للتحديد؛ بقي الملف الأصلي بايت-بايت في IndexedDB ويُتاح عبر العارض الأصلي والتنزيل.
 - تُحفظ التمييزات والملاحظات بإحداثيات صفحة نسبية؛ قائمة التحديد العائمة تقدّم Highlight/Note/Ask. Ask يبني السؤال الافتراضي بحسب لغة الواجهة (en/ar/zh) ويرسله إلى المحادثة.
 - واجهة en/ar/zh مع RTL وreduced-motion وتركيز لوحة المفاتيح، وأيقونة/بيانات عرض محلية للحزمة.
+
 ### الملفات المتأثرة
+
 - `plugins/paper-reader/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,README.md,src/*,scripts/build.mjs,vendor/*,locale/*.json}`.
 - `/Users/yzydalshmry/.dsh/profiles/desktop/{package.json,node_modules/@local/paper-reader}` (تركيب محلي).
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: `@local/paper-reader` نشط في `sidebar.right.pane.tab`.
 - `node scripts/build.mjs` و`node --check` وJSON وSVG وتغطية مفاتيح en/ar/zh: PASS؛ استخراج نص PDF تجريبي من 3 صفحات عبر PDF.js: PASS. العرض البصري والتفاعل الكامل داخل الصفحة: NOT RUN — لا تحكم متصفح.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل والبناء والفحص الساكن؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
 
 ## [2026-11-02] — Landmark Atlas: نسخة Codex مستقلة
+
 ### تم التنفيذ
+
 - حسب طلب المالك أُنشئت `plugins/Codex/` مستقلة؛ حزمة Harness الأصلية `plugins/landmarks-3d/` محفوظة. تركيب Harness السابق HISTORICAL ولا يثبت تركيب نسخة Codex.
 - manifest محمول وتوافقي وسوق محلي وإعداد MCP stdio بمسارات مطلقة مولّدة، ومهارة فتح وملف إعداد تفعيل نموذجي؛ لا تغيير لإعدادات Codex العامة ولا تثبيت للحزمة.
 - MCP App يعلن مدخلي global/thread؛ دعم الشريط الأصلي داخل Codex NOT VERIFIED. عارض HTML محلي بشريط أيسر وأربعة نماذج (إيفل/السور/المدينة المحرمة/تاج محل)، عربي/إنجليزي، بلا شبكة أو React/Harness runtime.
 - أصلح خطأ materials في حركة المدينة المحرمة وقص كاميرا إيفل داخل النسخة الجديدة فقط؛ تحتاج إعادة build بعد نقلها لتحديث مسارات MCP.
+
 ### الملفات المتأثرة
+
 - `plugins/Codex/{plugin.json,.codex-plugin/,.agents/plugins/,.mcp.json,mcp.json,server.mjs,config.example.toml,skills/,src/,scripts/,web/,assets/,README.md}`.
+
 ### التحقق
+
 - بناء مستقل و4 اختبارات Node: PASS؛ Playwright للمشاهد الأربعة WebGL2 دون JS/WebGL errors؛ 1440px و360px عربي/إنجليزي دون overflow وأزرار ≥44px. لقطات محلية داخل assets.
 - ملء الشاشة/غياب WebGL/تبديل reduced-motion فعليًا: NOT RUN. طلب لوحة Codex عبر open_in_codex أعاد queued؛ لا يثبت ظهورها. لا commit/push/deploy.
+
 ### النتيجة
+
 - **الحالة:** DONE للملفات والعارض المحلي؛ PARTIAL لتكامل واجهة Codex، والتثبيت وظهور مدخل الشريط الأصلي NOT VERIFIED؛ خطوات التثبيت موثقة في README.
 
 ## [2026-11-02] — Poster Workbench: استوديو ملصقات داخل المحادثة
+
 ### تم التنفيذ
+
 - أُنشئت حزمة `@local/poster-workbench` في `plugins/poster-workbench` وتسجّل عرض `poster-workbench` في `conversation.view` بجوار Chat/Trajectory، مع Host half بلا سلوك تشغيلي.
 - شيدر WebGL2 مستوحى من خلفية موقع Harness المتدفقة (simplex FBM + domain warp + curl + 5 ألوان + dither) داخل ملصق 4:5، وخط Host Grotesk الإنجليزي مع Fragment Mono للوسوم؛ الخطوط مضمّنة داخل `client.js` من أصول الموقع.
 - شريط الصفحة الافتراضي مقتصر على الملصق وزرّي تخصيص وPNG؛ لوحة تخصيص منبثقة للعنوان والنص وثلاثة ألوان وخمس لوحات، مع حفظ محلي.
 - تصدير PNG 1600×2000 من نفس مسار الرسم؛ Canvas2D fallback، احترام reduced-motion، نص بديل لقارئ الشاشة، وتنظيف WebGL.
+
 ### الملفات المتأثرة
+
 - `plugins/poster-workbench/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md}`
 - `plugins/poster-workbench/{src/client.template.js,scripts/build.mjs,fonts/*.woff2}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: `poster-workbench` نشط في `conversation.view` (order 20)؛ الحزمة مرتبطة ومثبتة، وبصمة client المثبت/المحلي متطابقة.
 - `node scripts/build.mjs` و`node --check` وJSON وSVG واختبار تخطيط Canvas بوهم: PASS. تحقق شادر/عرض بصري/تصدير فعلي داخل الصفحة: NOT RUN — لا تحكم متصفح.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب وتسجيل العرض والفحص الساكن؛ العرض البصري والتصدير PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
 
 ## [2026-11-02] — Style Studio: خمسة أنماط بصرية لتطبيق DSH
+
 ### تم التنفيذ
+
 - أُنشئت حزمة محلية `@local/style-studio` في `plugins/style-studio` تسجّل `sidebar.panellist` و`main` و`shell.overlay`، مع خمسة أنماط كاملة عبر `ctx.theme.overrideTokens`، وlocale en/ar/zh، واختيار محفوظ في localStorage.
+
 ### الملفات المتأثرة
+
 - `plugins/style-studio/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: المدخل واللوحة وruntime نشطة؛ `node --check` وJSON: PASS؛ العرض البصري NOT RUN.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
 
 ## [2026-11-02] — Transformer Lab: لعبة 3D تعليمية داخل DSH
+
 ### تم التنفيذ
+
 - أنشئت حزمة محلية `@local/transformer-lab` في `plugins/transformer-lab` تسجّل مدخل `transformer-lab` في `sidebar.panellist` ولوحة `main`، مع Host half بلا سلوك تشغيلي.
 - بُني مشهد Three.js بست مراحل: الترميز، التضمين، الانتباه، الرؤوس، MLP، والتوقّع؛ أعمدة رموز رأسية، أقواس انتباه بأوزان softmax حقيقية من نموذج 8 أبعاد بثلاثة رؤوس، وجسيمات MLP، وأعمدة احتمالات قابلة للنقر.
 - أضيفت لعبة توقّع: يختار المستخدم الرمز قبل كشف التوزيع، مع نقاط وكشف الاختيار الأول؛ وواجهة en/ar/zh وRTL وreduced-motion وتنظيف WebGL.
 - عولج تداخل أزرار macOS: العنوان يحجز 42px علويًا ويزيح أفقيًا حسب `getBoundingClientRect` عند اقتراب اللوحة من أعلى يسار النافذة، وشريط الأدوات مثبت أسفل اللوحة.
+
 ### الملفات المتأثرة
+
 - `plugins/transformer-lab/{package.json,cordis.patch.yml,index.js,client.js,icon.svg,locale/*.json,README.md,scripts/build.mjs,src/*}`
+
 ### التحقق
+
 - `install_bundle`: applied بلا warnings؛ `Slots`: `transformer-lab` نشط في `sidebar.panellist` و`main`؛ `node --check`: PASS؛ بناء esbuild: PASS؛ softmax مجموع 1 وثبات النموذج: PASS؛ JSON/SVG: PASS.
 - العرض البصري داخل الصفحة والتحقق من العنوان/الأيقونة المرسومين: NOT RUN — لا تحكم متصفح متاح؛ لا يُدّعى نجاحه من التسجيل وحده.
+
 ### النتيجة
+
 - **الحالة:** DONE للتركيب والتسجيل والبناء؛ العرض البصري PARTIAL / NOT VERIFIED. لا commit أو push أو نشر.
+
 ### ملاحظات / مفتوحة
+
 - إن كانت الصفحة محمّلة قبل آخر إعادة بناء لـ`client.js` فحدّثها؛ لا تغييرات على موقع BRIGHTAI.
 
 ## [2026-11-01] — Risk Engine: دورة معالجة وتصدير محلية دون فحوص
+
 ### تم التنفيذ
+
 - أضيفت معالجة بإصدارات append-only مرتبطة بالتقييم ونسخة الأصل: مالك وضابط وحالة ومبرر وتاريخ مراجعة؛ الأصل أو التقييم الأحدث يجعل الخطة السابقة بحاجة مراجعة. القبول لا يغيّر التقييم ولا يصرّح بالنشر.
 - قبول HIGH مقصور على OWNER مستقل عن المقيّم، مع تحقق خادم وSQL؛ عقد MEMBER الحالي بقي للقراءة. أضيف اسم المنهج ومراجع نصية وربط التقييم السابق دون إعادة كتابة التاريخ.
 - أضيفت صفحة تفاصيل الأصل وقائمة إجراءات بمواعيد الرياض وتصفية إعادة التقييم وتصدير JSON للمؤسسة بعد صلاحية وتدقيق؛ إقرار اصطناعي مطلوب لكل حفظ، دون AI أو Analytics أو اشتراط شراء منتج آخر.
 - جُهز 0008 إضافيًا بعد 0005؛ Neon MCP قراءة فقط أكد production وحده و11 جدول public دون Risk Engine، فلا هدف تطوير معتمد ولا ترحيل مطبق في المهمة.
+
 ### الملفات المتأثرة
+
 - `src/server/risk-engine/` وصفحات/API/سكربت/تنسيق المنتج، `src/components/RiskWorkspace.astro`، `migrations/0008_aigas_risk_engine_lifecycle.sql` ودليل المنتج وسجل خصائصه الموجودان.
+
 ### التحقق
+
 - الاختبارات/build/lint/typecheck/smoke/browser: NOT RUN بطلب المالك؛ مراجعة مصدر وdiff فقط، دون تعديل tests أو إنشاء Audit.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_RUNTIME_VERIFIED؛ يلزم هدف تطوير معتمد لتطبيق 0005 ثم 0008 ومراجعة runtime grants/RLS وقرارات الإتاحة والنشر لاحقًا.
 
 ## [2026-11-01] — Human Gate: إنفاذ محدود وترحيل بإذن الإنتاج
+
 ### تم التنفيذ
+
 - أضيف تغيير اسم مساحة Kernel كعملية فعلية محدودة مستقلة عن شراء منتجات أخرى؛ الملاحظة الداخلية باقية بمسمى تجريبي. ربط SHA-256 للمؤسسة/المقدم/العملية/الهدف/نسخة السياسة/الحمولة مع نسخة ملف المساحة لمنع إعادة استخدام موافقة بعد تغير الهدف.
 - أضيفت سياسة مهلة يختارها OWNER/ADMIN دون قيم مزروعة؛ حالات EXPIRED/EXECUTED وسجل دورة مرتبط بالتدقيق، وفحص الصلاحيات والهويات مجددًا عند الإنفاذ مرة واحدة. تغيير الهدف والتدقيق والاستهلاك داخل معاملة واحدة؛ لا token متصفح عام.
 - أضيفت لوحات طلباتي/تحتاج مراجعتي/مكتملة وتفاصيل القرار والنتيجة والمهلة؛ لا تفويض أو تصعيد أو اتصال AI.
 - بعد سؤال تحديد الهدف، فوّض المالك صراحة التطبيق على production؛ طُبقت 0004 و0006 و0007 معًا عبر Neon MCP. رُفضت دفعة النقل الأولى قبل التنفيذ لتعدد الأوامر بالعبارة المحضّرة، وأكد الكتالوج عدم التطبيق الجزئي؛ نجح إرسالها كعبارات منفردة ضمن معاملة واحدة. لا بيانات أو أدوار أو grants أو سياسات مُنشأة.
+
 ### الملفات المتأثرة
+
 - Human Gate server/API/page/script/style، readiness وتسميات تدقيق Kernel، `migrations/0007_aigas_human_gate_enforcement.sql`، ودليل Human Gate وسجل خصائصه الموجودان.
+
 ### التحقق
+
 - Neon: COMMIT وقراءة كتالوج المخطط بعده؛ 11 جدول public مع RLS وحراس الدورة/السجل/نسخة المساحة. هذا دليل مخطط فقط.
 - اختبارات/build/lint/typecheck/smoke/browser: NOT RUN بطلب المالك؛ مراجعة مصدر وdiff فقط، دون تعديل tests أو إنشاء Audit.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_RUNTIME_VERIFIED؛ التطبيق محلي وغير منشور. يلزم قرار إتاحة Human Gate معتمد وسياسة مشغّل ومراجع مستقل ومراجعة runtime grants/RLS والنشر المصرح.
 
 ## [2026-11-01] — Ledger: أحداث تطبيق وسلسلة وتصدير مستقل دون تشغيل فحوص
+
 ### تم التنفيذ
+
 - أضيف كاتب داخلي مرتبط بمعاملات Firewall وHuman Gate وRisk Engine وعمليات Kernel؛ metadata allowlist فقط، والهوية/المؤسسة من الحراس الخادميين. أحداث المختبر وFirewall/Human Gate التجريبية موسومة دون ادعاء تنفيذ خارجي.
 - أضيف SHA-256 chain-v2 وتسلسل لكل مؤسسة وقفل append ومفاتيح منع تكرار من مرجع العملية؛ تحديث 0003 كتثبيت جديد فقط، دون إعادة بصمات الأدلة القديمة.
 - أضيف تصدير JSON لصاحب OWNER/ADMIN بعد audit يتضمن معرّف الهدف، مع manifest ومدخلات canonical وسلسلة من البداية للهدف وفاحص Node مستقل؛ حد تقني 10000 حدث دون تصدير مبتور. الفحص لا يثبت المصدر أو الوقت أو أحدث ذيل أو مقاومة إعادة كتابة المسؤول.
 - التكامل اختياري دون Ledger؛ تدقيق Kernel الأساسي باقٍ. جدول اشتراط الأدلة فارغ افتراضيًا ومخصص لسياسات مشغّل معتمدة؛ الاشتراط المطابق يوقف العملية عند غياب Ledger، ولا احتياطي معتمد أو احتفاظ/Legal Hold مُنفّذ.
+
 ### الملفات المتأثرة
+
 - `src/server/ledger/` وخدمات المنتجات الأربعة، صفحة/سكربت/تنسيق Ledger، `migrations/0003_aigas_ledger.sql`، `public/downloads/aigas-ledger-verifier.mjs`، ودليل Ledger وسجل خصائصه الموجودان.
+
 ### التحقق
+
 - اختبارات/build/lint/typecheck/smoke/browser والفاحص المستقل: NOT RUN بطلب المالك؛ مراجعة مصدر وdiff فقط. لم تُعدّل tests ولم يُنشأ تقرير Audit.
 - Neon MCP قراءة فقط أعاد تأكيد production وحده والجداول الأربع وأعمدة UUID؛ لا جداول Ledger أو هدف تطوير معتمد، ولا SQL تغييري.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_VERIFIED محليًا؛ يلزم هدف تطوير معتمد وتطبيق المخطط ومراجعة runtime grants/RLS واعتماد السياسات والنشر لاحقًا.
 
 ## [2026-11-01] — Firewall: مسار إنفاذ خادمي محلي دون تشغيل فحوص
+
 ### تم التنفيذ
+
 - أضيف `/app/api/firewall/guarded-executions/` بهوية Kernel وعضوية/إتاحة Firewall؛ BLOCK والتنقيح يسبقان المزود الاختياري، وعدم المطابقة يُحجب بـNO_MATCH_ENFORCED. `/evaluate/` تقييم تجريبي فقط.
 - القرار metadata-only وتدقيق Kernel ذريان قبل COMMIT/التمرير؛ request_id UUID يمنع إعادة الطلب نفسه. لا نص أو بصمة نص في السجل ولا شراء Ledger مطلوب.
 - حُفظت إدارة القواعد والنسخ؛ التنقيح يجمع التطابقات المتداخلة من الأصل. أضيف سجل بصفحات وتصفية إجراء/سبب/مسار/أيام UTC ووقت الرياض، دون نسبة اسم قاعدة حالي إلى قرار تاريخي.
 - سجل المزودين المعتمدين فارغ عمدًا: ALLOW/REDACT في مسار التنفيذ يرجعان PROVIDER_NOT_CONFIGURED دون إرسال. الواجهة توضح النطاق والمدخل فقط، والإقرار الاصطناعي مطلوب خادميًا.
 - روجع 0002 محليًا كـfresh-install لقيود القوالب والقرارات ومنع التكرار وappend-only؛ Neon MCP قراءة فقط أكد production وحده والجداول الأربع بلا Firewall. لا SQL مطبق أو مورد مُنشأ.
+
 ### الملفات المتأثرة
+
 - `src/server/firewall/`، `src/pages/app/{firewall,api/firewall}/`، `src/scripts/firewall.ts`، `src/styles/firewall.css`، ووسما تدقيق في `src/server/kernel/core.mjs`.
 - `migrations/0002_aigas_firewall.sql`، `docs/FIREWALL-DEVELOPMENT.md`، `docs/products/firewall/FEATURE-STATUS.yaml`.
+
 ### التحقق
+
 - اختبارات/build/lint/typecheck/smoke/browser: NOT RUN بطلب المالك؛ قراءة مصدر وdiff فقط. لا تعديل tests أو إنشاء تقارير Audit.
+
 ### النتيجة
+
 - **الحالة:** PARTIAL / IMPLEMENTED_NOT_VERIFIED محليًا؛ يلزم هدف تطوير معتمد لتطبيق 0002 وإدارة Kernel 0006، مراجعة runtime role، اعتماد وتنفيذ adapter مزود/منطقة/شروط، ونشر مصرح به. لا اتصال AI أو كتابة بعيدة.
 
 ## Current State / Invariants
+
 - نسخة Codex المحلية في `plugins/Codex/`: عارض مستقل ومهارة وMCP App يعلن global/thread؛ ليست مثبتة، ودعم مدخل الشريط الأصلي NOT VERIFIED. خطوات التشغيل/التثبيت في README؛ لا تغير الحزمة الأصلية.
 - أحدث Risk Engine في السجل الأعلى: معالجة بإصدارات ومراجع وتصدير محلي دون تشغيل فحوص؛ أدلة Risk Engine السابقة HISTORICAL ولا تثبت هذه النسخة. 0008 غير مطبق إضافةً إلى 0005.
 - أحدث Human Gate في السجل الأعلى: تغيير اسم مساحة Kernel بربط المهمة ومهلة واستهلاك ذري، دون تحقق runtime أو نشر؛ الأدلة السابقة HISTORICAL.
@@ -618,6 +1522,7 @@
 - DSH desktop: سبع حزم Harness محلية مثبتة: `@local/landmarks-3d` و`@local/transformer-lab` و`@local/style-studio` و`@local/poster-workbench` و`@local/paper-reader` و`@local/chrome-devtools-mcp` و`@local/neon-mcp`؛ التركيب والتسجيل PASS، والعرض البصري NOT VERIFIED. `neon-mcp` صف MCP واحد (streamable-http إلى `mcp.neon.tech` بمشروع `young-frog-60183055`) وأدوات `mcp__neon__*` مستدعاة فعليًا، ومفتاحه في بروفايل المستخدم لا في المستودع. `paper-reader` تسجّل نوع تبويب/بطاقة في الشريط الأيمن وتقرأ PDF في IndexedDB مع PDF.js وتمييز/ملاحظات وسؤال محلي بحسب اللغة. `chrome-devtools-mcp` صف MCP واحد (stdio، `npx`، إصدار 1.12.0) وأدوات `mcp__chrome-devtools__*` مستدعاة فعليًا؛ يشغّل Chrome بملف مستخدم مستقل في `~/.cache/chrome-devtools-mcp`. `plugins/Codex/` نسخة مستقلة غير مثبتة كحزمة Harness.
 
 ## Historical Ledger
+
 - 2026-11-02: Chrome DevTools MCP بعقد إعداد فقط وstdio عبر `npx` بإصدار 1.12.0؛ التركيب PASS و`list_pages` PASS، ويشغّل Chrome مستقلًا. Rollover: نُقلت سجلات 2026-10-31 إلى أعلى `02`.
 - 2026-11-02: Paper Reader قارئ PDF في الشريط الأيمن مع PDF.js وأصل محفوظ وتمييز/ملاحظات وسؤال متعدد اللغات؛ التركيب والتسجيل PASS، العرض البصري NOT VERIFIED.
 - 2026-11-02: نسخة Landmark Atlas داخل plugins/Codex؛ build و4 Node وWebGL للمشاهد الأربعة PASS؛ التثبيت ومدخل Codex الأصلي NOT VERIFIED.
@@ -631,7 +1536,6 @@
 - 2026-11-02: نُقلت أقدم سجلات 2026-10-31 إلى أعلى `02-mind-mid.md` بعد التحقق من حفظها؛ أُبقي السياق الحالي والمشاكل المفتوحة هنا.
 - 2026-11-03: نُقلت السجلات التفصيلية الأقدم لـ2026-11-01 إلى أعلى `02-mind-mid.md` بعد التحقق من حفظها؛ بقي الملخص الحالي هنا.
 - السجلات التالية HISTORICAL؛ الأحدث أعلاه يتقدم عند التعارض.
-
 
 ## [2026-11-03] — إصلاح تداخلات الجوال وRTL
 
