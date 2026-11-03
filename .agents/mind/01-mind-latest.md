@@ -1,3 +1,22 @@
+## [2026-11-03] — إغلاق سياسات Kernel ومسار Firewall الواحد + تطبيق 0020
+### تم التنفيذ
+- أصبح قرار `evaluateKernelPolicy` يشرح `policyId/version/scope/action/reason/mandatory` لكل سياسة، ويميّز `MANDATORY_BLOCK`؛ لا ترفعه موافقة بشرية ولا قاعدة منتج، و`binding.policyReference` يقرأ الشكل الجديد.
+- دورة السياسة: إحالة، اعتماد بعدد مراجعين مستقلين (`requiredApprovals` 1 أو 2)، منع الاعتماد المكرر لنفس الشخص (`ALREADY_APPROVED`)، فصل الواجبات للنشر عن المنشئ والمعتمدين، وسحب النسخة إلى مسودة (`withdraw`). واجهة الإدارة تعتمد على أعلام `can*` المحسوبة خادميًا لا على الدور في المتصفح.
+- أضيف سياق تدقيق (`correlationId` و`policyVersion`) لكل عمليات السياسات والإدارة، وبقيت الكتابة داخل المعاملة نفسها فلا يُعلن نجاح عند فشل التدقيق.
+- صار تمييز حالة المنتج: `NOT_CONFIGURED` لغياب صف الإتاحة أو `FOUNDATION`، مع `DISABLED/ENABLED/EXPIRED/REVOKED` من الجداول الحالية ودون ادعاء Live.
+- Firewall: الحارس يرفض كل المسارات (بما فيها `ESCALATE`) دون قرار Kernel `ALLOW` محفوظ، فموافقة بشرية لا ترفع منعًا إلزاميًا؛ ولوحة Firewall تعرض نقطة إنفاذ واحدة وحالة تنفيذ مشتقة (`BLOCKED/PROVIDER_NOT_CONFIGURED`) وسلسلة قرار Kernel.
+- بطلب المالك الصريح «قم بالترحيل»، طُبق `0020` على فرع `production` في مشروع Neon `young-frog-60183055`/قاعدة `neondb` بمعاملة واحدة، بعد فحص مسبق أكد غياب العمود وصفر صفوف في السياسات/النسخ/الاعتمادات.
+### الملفات المتأثرة
+- `src/server/kernel/{policies,core,service,administration}.mjs`, `src/server/firewall/{guard,service,binding}.mjs`, `src/scripts/{kernel,firewall}.ts`, `src/pages/app/kernel/index.astro`
+- `migrations/0020_aigas_kernel_policy_review_requirements.sql` (جديد، مطبق على production) وتحديث خط أساس `0010`، `docs/{KERNEL-DEVELOPMENT,FIREWALL-DEVELOPMENT}.md`
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. بناء/اختبارات/متصفح: NOT RUN حسب طلب المهمة.
+- فحص Neon بعد الترحيل: العمود `required_approvals` موجود NOT NULL DEFAULT 1، قيد `1..2` وقيد الإجراءات يشمل `WITHDRAWN`، والفهرس موجود، وعدد الجداول 31 بلا جدول جديد، وصفوف السياسات/النسخ/الاعتمادات ما زالت صفرًا.
+### النتيجة
+- **الحالة:** الترحيل DONE ومخططه متحقق؛ الكود المحلي PARTIAL / NOT VERIFIED تشغيليًا. لا commit/push/deploy ولا نشر.
+### ملاحظات / مشاكل مفتوحة
+- `0020` مطبق على production؛ أي بيئة أخرى تحتاج تطبيقه قبل تشغيل هذا الكود. منع `HARD_DENY` من الإيقاف يبقى مقصودًا؛ استبداله يحتاج سياسة جديدة أشد ومسار اعتماد مستقلًا. مزود Firewall وتكامل Human Gate ما زالا فارغين، فالتنفيذ الخارجي BLOCKED، والتشغيل/RLS/Grants NOT VERIFIED.
+
 ## [2026-11-03] — إكمال الهوية والمؤسسات والإدارات والأعضاء (محلي فقط)
 ### تم التنفيذ
 - أصبح إنشاء المؤسسة متاحًا لأي حساب موثّق غير موقوف حتى لو كان عضوًا في مؤسسة أخرى؛ المؤسسة الجديدة تبدأ بعضويتك OWNER وحدك دون نسخ أعضاء/سياسات/دعوات/إتاحة، مع قفل استشاري وحد إساءة 10 مساحات (`WORKSPACE_LIMIT`).

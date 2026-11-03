@@ -271,6 +271,7 @@ function renderGuard(data: any, submitted: string) {
   if (data.request_id) result.append(metaLine('معرّف الطلب', data.request_id));
   if (data.policy_version) result.append(metaLine('نسخة السياسة', String(data.policy_version)));
   if (data.request_fingerprint) result.append(metaLine('بصمة الطلب', `${String(data.request_fingerprint).slice(0, 20)}…`));
+  if (data.policy) result.append(metaLine('قرار Kernel', `${data.policy.decision} · ${data.policy.reason ?? '—'}${data.policy.mandatory === true ? ' · إلزامي لا ترفعه موافقة' : ''}${(data.policy.policies ?? []).length ? ` · ${data.policy.policies.length} سياسة في السلسلة` : ''}`));
   result.append(metaLine('الحالة', `${data.execution_status ?? 'NOT_EXECUTED'} — ${executionLabel(data)}`));
   if (data.review_required === true) {
     const integration = data.integration?.configured === true
@@ -293,7 +294,7 @@ function render(data: any) {
   providerConfigured = data.provider?.configured === true;
   root.querySelector('[data-provider]')!.textContent = providerConfigured
     ? `مزود مهيأ للمؤسسة · النموذج ${data.provider.model} · المنطقة ${data.provider.region}؛ يخضع لشروط الاعتماد.`
-    : 'PROVIDER_NOT_CONFIGURED — لا مزود AI معتمد ومهيأ لهذه المؤسسة. التقييم والحفظ متاحان عند اكتمال إعداد قاعدة البيانات، والإرسال الخارجي متوقف.';
+    : `PROVIDER_NOT_CONFIGURED — لا مزود AI معتمد ومهيأ لهذه المؤسسة. التقييم والحفظ متاحان عند اكتمال إعداد قاعدة البيانات، والإرسال الخارجي متوقف. نقطة الإنفاذ الوحيدة: ${data.enforcement?.point ?? '/app/api/firewall/guarded-executions/'} · التنفيذ: ${data.enforcement?.execution ?? 'BLOCKED'} (${data.enforcement?.reason ?? 'PROVIDER_NOT_CONFIGURED'}) · تكامل المراجعة: ${data.enforcement?.review ?? 'HUMAN_GATE_NOT_CONFIGURED'}.`;
   updateSubmitLabel();
   const limits = data.limits ?? { maxRules: 25, maxTextLength: 4000 };
   text.maxLength = limits.maxTextLength;

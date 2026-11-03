@@ -82,6 +82,7 @@ CREATE TABLE public.aigas_policy_versions (
   effective_from timestamptz,
   expires_at timestamptz,
   checksum text NOT NULL CHECK (checksum ~ '^[0-9a-f]{64}$'),
+  required_approvals smallint NOT NULL DEFAULT 1 CHECK (required_approvals BETWEEN 1 AND 2),
   change_reason text NOT NULL CHECK (char_length(btrim(change_reason)) BETWEEN 3 AND 500),
   created_by uuid NOT NULL REFERENCES neon_auth."user"(id),
   approved_by uuid REFERENCES neon_auth."user"(id),
@@ -99,13 +100,14 @@ CREATE TABLE public.aigas_policy_approvals (
   tenant_id uuid NOT NULL,
   policy_id uuid NOT NULL,
   version integer NOT NULL,
-  action text NOT NULL CHECK (action IN ('SUBMITTED','APPROVED','PUBLISHED','RETIRED')),
+  action text NOT NULL CHECK (action IN ('SUBMITTED','APPROVED','PUBLISHED','RETIRED','WITHDRAWN')),
   actor_user_id uuid NOT NULL REFERENCES neon_auth."user"(id),
   reason text NOT NULL CHECK (char_length(btrim(reason)) BETWEEN 3 AND 500),
   created_at timestamptz NOT NULL DEFAULT now(),
   FOREIGN KEY (tenant_id,policy_id,version) REFERENCES public.aigas_policy_versions(tenant_id,policy_id,version)
 );
 CREATE INDEX aigas_policy_approvals_history_idx ON public.aigas_policy_approvals(tenant_id,policy_id,version,created_at);
+CREATE INDEX aigas_policy_approvals_actor_action_idx ON public.aigas_policy_approvals(tenant_id,policy_id,version,action,actor_user_id);
 CREATE TABLE public.aigas_kernel_policy_decisions (
   id uuid PRIMARY KEY,
   tenant_id uuid NOT NULL REFERENCES public.aigas_tenants(id),

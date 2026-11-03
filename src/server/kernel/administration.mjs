@@ -1,8 +1,10 @@
+import { randomUUID } from 'node:crypto';
 import { transaction } from './db.mjs';
 import { productGrants } from './access.mjs';
 import { tenantGuard, memberships, audit } from './service.mjs';
 import { KernelError, requireRole, products } from './core.mjs';
 import { exact, uuid } from './http.mjs';
+const auditContext = () => ({ correlationId: randomUUID() });
 export async function adminScope(db, identity, requested, roles = ['OWNER','ADMIN']) {
   if (!requested) throw new KernelError(400, 'WORKSPACE_REQUIRED', 'حدد المؤسسة قبل تنفيذ العملية.');
   const scope = await tenantGuard(identity, uuid(requested), db);
@@ -22,7 +24,7 @@ export async function updateProduct(identity, requested, body) {
     }
     const result = await db.query('UPDATE public.aigas_product_access SET status=$3,version=version+1,updated_at=clock_timestamp() WHERE tenant_id=$1 AND product_slug=$2 AND version=$4 RETURNING status,version', [tenant.tenant_id, body.slug, body.status, body.version]);
     if (!result.rowCount) throw new KernelError(409, 'STALE_PRODUCT', 'تغيرت حالة المنتج؛ حدّث اللوحة قبل إعادة المحاولة.');
-    await audit(db, identity, tenant.tenant_id, `kernel.product.${body.slug}.${body.status.toLowerCase()}`);
+    await audit(db, identity, tenant.tenant_id, `kernel.product.${body.slug}.${body.status.toLowerCase()}`, auditContext());
     return { persisted: true, ...result.rows[0] };
   });
 }
@@ -53,7 +55,7 @@ export async function manageMember(identity, requested, body) {
         const owners = (await db.query("SELECT count(*)::int AS count FROM public.aigas_memberships WHERE tenant_id=$1 AND role='OWNER'", [tenant.tenant_id])).rows[0].count;
         if (owners <= 1) throw new KernelError(409, 'LAST_OWNER_REQUIRED', 'لا يمكن سحب آخر عضوية مالك للمؤسسة.');
       }
-      await audit(db, identity, tenant.tenant_id, 'kernel.member.revoked');
+      await audit(db, identity, tenant.tenant_id, 'kernel.member.revoked', auditContext());
       const hierarchyReady=(await db.query("SELECT to_regclass('public.aigas_department_memberships') IS NOT NULL AND to_regclass('public.aigas_department_events') IS NOT NULL AS ready")).rows[0].ready;
       if (hierarchyReady) {
         const departments=(await db.query("UPDATE public.aigas_department_memberships SET status='REVOKED' WHERE tenant_id=$1 AND user_id=$2 AND status='ACTIVE' RETURNING department_id",[tenant.tenant_id,body.userId])).rows;
@@ -75,7 +77,7 @@ export async function manageMember(identity, requested, body) {
       const delegationsReady=(await db.query("SELECT to_regclass('public.aigas_policy_delegations') IS NOT NULL AS ready")).rows[0].ready;
       if (delegationsReady) await db.query("UPDATE public.aigas_policy_delegations SET revoked_at=clock_timestamp(),revoke_reason='تغير دور العضو من ADMIN.' WHERE tenant_id=$1 AND delegate_user_id=$2 AND revoked_at IS NULL",[tenant.tenant_id,body.userId]);
     }
-    await audit(db, identity, tenant.tenant_id, 'kernel.member.role_changed');
+    await audit(db, identity, tenant.tenant_id, 'kernel.member.role_changed', auditContext());
     return { persisted: true, role: body.role };
   });
 }
@@ -138,7 +140,7 @@ export async function manageInvitation(identity, requested, body) {
       if (!valid) throw new KernelError(403, 'INVITATION_NOT_ACCEPTED', 'يلزم قبول دعوة Auth الصحيحة ببريد موثّق؛ لم تُمنح أي عضوية.');
       await db.query("INSERT INTO public.aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,'MEMBER') ON CONFLICT DO NOTHING", [record.tenant_id, identity.userId]);
       await db.query('UPDATE public.aigas_member_invitations SET accepted_by=$2,accepted_at=now() WHERE invitation_id=$1', [body.invitationId, identity.userId]);
-      await audit(db, identity, record.tenant_id, 'kernel.invitation.accepted');
+      await audit(db, identity, record.tenant_id, 'kernel.invitation.accepted', auditContext());
       return { persisted: true, tenantId: record.tenant_id };
     });
   }
@@ -153,7 +155,7 @@ export async function manageInvitation(identity, requested, body) {
       // reading the real provider state; a pending invitation is never treated as canceled.
       const provider = (await db.query('SELECT status FROM neon_auth.invitation WHERE id=$1', [body.invitationId])).rows[0];
       if (!provider || provider.status !== 'canceled') throw new KernelError(409, 'CANCELLATION_NOT_CONFIRMED', 'لم يؤكد Auth إلغاء الدعوة. ألغِها من إدارة الدعوات ثم أعد المحاولة.');
-      await audit(db, identity, tenant.tenant_id, 'kernel.invitation.canceled');
+      await audit(db, identity, tenant.tenant_id, 'kernel.invitation.canceled', auditContext());
       return { persisted: true, status: 'canceled' };
     });
   }
@@ -165,7 +167,7 @@ export async function manageInvitation(identity, requested, body) {
       if (!owner) throw new KernelError(403, 'AUTH_OWNER_REQUIRED', 'يلزم أن تكون مالك مؤسسة Auth المراد ربطها.');
       const inserted = await db.query('INSERT INTO public.aigas_auth_organizations(tenant_id,organization_id,linked_by) VALUES($1,$2,$3) ON CONFLICT DO NOTHING RETURNING tenant_id', [tenant.tenant_id, body.organizationId, identity.userId]);
       if (!inserted.rowCount) throw new KernelError(409, 'ALREADY_LINKED', 'المؤسسة مرتبطة مسبقًا؛ حدّث الأعضاء.');
-      await audit(db, identity, tenant.tenant_id, 'kernel.auth.linked');
+      await audit(db, identity, tenant.tenant_id, 'kernel.auth.linked', auditContext());
       return { persisted: true };
     }
     if (body.operation !== 'register') throw new KernelError(400, 'INVALID_OPERATION', 'عملية الدعوة غير مدعومة.');
@@ -173,7 +175,7 @@ export async function manageInvitation(identity, requested, body) {
     const valid = (await db.query(`SELECT i.id FROM neon_auth.invitation i JOIN public.aigas_auth_organizations o ON o.organization_id=i."organizationId" JOIN neon_auth.member m ON m."organizationId"=o.organization_id AND m."userId"=$2 WHERE i.id=$1 AND o.tenant_id=$3 AND i."inviterId"=$2 AND i.role='member' AND i.status='pending' AND i."expiresAt">now() AND m.role IN ('owner','admin')`, [body.invitationId, identity.userId, tenant.tenant_id])).rows[0];
     if (!valid) throw new KernelError(403, 'INVALID_INVITATION', 'لا توجد دعوة معلقة صحيحة من حسابك بدور عضو للمؤسسة المحددة.');
     const result = await db.query('INSERT INTO public.aigas_member_invitations(invitation_id,tenant_id,invited_by) VALUES($1,$2,$3) ON CONFLICT DO NOTHING RETURNING invitation_id', [body.invitationId, tenant.tenant_id, identity.userId]);
-    if (result.rowCount) await audit(db, identity, tenant.tenant_id, 'kernel.invitation.created');
+    if (result.rowCount) await audit(db, identity, tenant.tenant_id, 'kernel.invitation.created', auditContext());
     return { persisted: true, delivery: 'NOT_CONFIRMED' };
   });
 }

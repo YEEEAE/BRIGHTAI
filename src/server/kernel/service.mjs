@@ -45,7 +45,8 @@ export async function dashboard(identity, requested) {
     const tenantId = scope.tenant.tenant_id;
     const policySchema = (await db.query("SELECT bool_and(to_regclass('public.' || name) IS NOT NULL) AS ready FROM unnest(ARRAY['aigas_departments','aigas_department_memberships','aigas_department_events','aigas_policy_delegations','aigas_policies','aigas_policy_versions','aigas_policy_approvals','aigas_kernel_policy_decisions']::text[]) AS t(name)")).rows[0].ready;
     const policyCounts = policySchema ? (await db.query("SELECT (SELECT count(*)::int FROM public.aigas_policy_versions v JOIN public.aigas_policies p ON p.tenant_id=v.tenant_id AND p.id=v.policy_id AND p.current_version=v.version WHERE p.tenant_id=$1 AND v.status='PUBLISHED' AND (v.effective_from IS NULL OR v.effective_from<=now()) AND (v.expires_at IS NULL OR v.expires_at>now())) AS published, (SELECT count(*)::int FROM public.aigas_departments WHERE tenant_id=$1 AND status='ACTIVE') AS departments",[tenantId])).rows[0] : {published:0,departments:0};
-    const policyEngine = { state:!policySchema?'NOT_CONFIGURED':policyCounts.published?'CONFIGURED':'NO_PUBLISHED_POLICIES',publishedPolicies:policyCounts.published,departments:policyCounts.departments };
+    const reviewRequirements = policySchema ? (await db.query("SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='aigas_policy_versions' AND column_name='required_approvals'")).rowCount > 0 : false;
+    const policyEngine = { state:!policySchema?'NOT_CONFIGURED':policyCounts.published?'CONFIGURED':'NO_PUBLISHED_POLICIES',publishedPolicies:policyCounts.published,departments:policyCounts.departments,reviewRequirements };
     const adminReady = (await db.query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0].ready;
     const access = (await db.query(adminReady ? 'SELECT product_slug,status,version FROM public.aigas_product_access WHERE tenant_id=$1' : 'SELECT product_slug,status FROM public.aigas_product_access WHERE tenant_id=$1', [tenantId])).rows;
     const grants = adminReady ? await productGrants(db, tenantId) : [];
@@ -60,14 +61,14 @@ export async function dashboard(identity, requested) {
       const accessState = p.state;
       const state = accessState !== 'ENABLED' ? accessState : grantValid ? 'ENABLED' : grantState === 'REVOKED' ? 'REVOKED' : grantState === 'EXPIRED' ? 'EXPIRED' : 'DISABLED';
       const enabled = state === 'ENABLED';
-      states.push({ ...p, state, configuredStatus: accessState, grantState, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
+      states.push({ ...p, state, configuredStatus: p.storedState, grantState, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
         canEnable: grantValid, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
         setupMessage: p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
         accessKind: grant?.access_kind ?? null, approvedAt: grant?.approved_at ?? null, expiresAt: grant?.expires_at ?? null,
         subscription: 'NOT_CONFIGURED', license: 'NOT_CONFIGURED', trial: 'NOT_CONFIGURED',
         // Administrative approval is never activated_at. There is no trial issuer/provisioner.
         trialDetails: { status: 'NOT_CONFIGURED', activated_at: null, expires_at: null, durationSeconds: 172800, selfServiceAvailable: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false, dataEligibility: 'SYNTHETIC_ONLY' },
-        label: state === 'EXPIRED' ? 'منتهٍ: انتهى قرار الإتاحة الإداري' : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' && accessState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة إداري ساري' : p.label });
+        label: state === 'EXPIRED' ? 'منتهٍ: انتهى قرار الإتاحة الإداري' : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' ? (accessState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة إداري ساري' : 'معطّل إداريًا من المالك') : state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : p.label });
     }
     const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, count(*)::int AS events, min(created_at) AS firstEventAt, max(created_at) AS lastEventAt FROM public.aigas_audit_events WHERE tenant_id=$1', [tenantId])).rows[0];
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));

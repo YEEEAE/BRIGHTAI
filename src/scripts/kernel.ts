@@ -367,7 +367,7 @@ function render(data: any) {
     if (data.tenant && p.href === `/app/${p.slug}/` && productSlugs.includes(p.slug)) {
       const link = document.createElement('a'); link.href = `${p.href}?workspace=${encodeURIComponent(data.tenant.tenant_id)}`; link.textContent = 'فتح صفحة المنتج'; action.replaceChildren(link);
     } else {
-      const blocked = document.createElement('button'); blocked.type = 'button'; blocked.disabled = true; blocked.textContent = p.state === 'DISABLED' ? 'معطّل' : p.state === 'EXPIRED' ? 'انتهت الإتاحة' : p.state === 'REVOKED' ? 'أُلغي القرار' : !p.enabled ? 'يلزم تمكين معتمد' : 'الإعداد غير مكتمل';
+      const blocked = document.createElement('button'); blocked.type = 'button'; blocked.disabled = true; blocked.textContent = p.state === 'DISABLED' ? 'معطّل' : p.state === 'EXPIRED' ? 'انتهت الإتاحة' : p.state === 'REVOKED' ? 'أُلغي القرار' : p.state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : !p.enabled ? 'يلزم تمكين معتمد' : 'الإعداد غير مكتمل';
       action.replaceChildren(blocked);
     }
   }
@@ -403,7 +403,8 @@ async function loadPolicyConsole(team?: any) {
     for (const policy of data.policies ?? []) {
       const item=document.createElement('li'), summary=document.createElement('div'), title=document.createElement('strong'), detail=document.createElement('span');
       title.textContent=`${policy.policy_family} · ${policy.scope}`;
-      detail.textContent=`${policy.rule_key} · ${policy.status ?? 'DRAFT'} · v${policy.version ?? 1} · ${policy.effect ?? '—'}${policy.is_mandatory?' · إلزامية':''}`;
+      const approvals=`${policy.approvals ?? 0}/${policy.requiredApprovals ?? 1}`;
+      detail.textContent=`${policy.rule_key} · ${policy.status ?? 'DRAFT'} · v${policy.version ?? 1} · ${policy.effect ?? '—'}${policy.is_mandatory?' · إلزامية':''} · اعتماد ${approvals}`;
       summary.append(title,detail); item.append(summary);
       const actions=document.createElement('div'); actions.className='member-actions';
       const addAction=(label:string,operation:string)=>{
@@ -412,15 +413,25 @@ async function loadPolicyConsole(team?: any) {
           const why=window.prompt('اكتب سبب الإجراء (3–500 حرفًا):'); if (!why||why.trim().length<3) return;
           const payload:any={operation,policyId:policy.id,version:policy.version,reason:why.trim()};
           if(operation==='publish') payload.expectedVersion=policy.current_version;
-          await endpoint('policies','POST',payload,currentTenant?.tenant_id);
+          const response:any=await endpoint('policies','POST',payload,currentTenant?.tenant_id);
           await loadPolicyConsole();
-          state.textContent=`تم تنفيذ الإجراء: ${label}.`;
+          state.textContent=operation==='approve'&&response?.status==='IN_REVIEW'
+            ? `سُجل اعتمادك (${response.approvals}/${response.requiredApprovals})؛ النسخة تبقى قيد المراجعة حتى يكتمل العدد.`
+            : `تم تنفيذ الإجراء: ${label}.`;
         })); actions.append(button);
       };
-      if(policy.status==='DRAFT'&&currentTenant?.role==='OWNER') addAction('إحالة للمراجعة','submit');
-      if(policy.status==='IN_REVIEW'&&['OWNER','ADMIN'].includes(currentTenant?.role)) addAction('اعتماد النسخة','approve');
-      if(policy.status==='APPROVED'&&currentTenant?.role==='OWNER') addAction('نشر النسخة','publish');
-      if(policy.status==='PUBLISHED'&&currentTenant?.role==='OWNER'&&policy.effect!=='HARD_DENY'&&!policy.is_mandatory) addAction('إيقاف النسخة','retire');
+      // Affordances come from server-side role, separation-of-duties and data state, not
+      // from the browser role. The same rules are rechecked when the request arrives.
+      if(policy.canSubmit) addAction('إحالة للمراجعة','submit');
+      if(policy.canApprove) addAction('اعتماد النسخة','approve');
+      if(policy.canWithdraw) addAction('سحب إلى مسودة','withdraw');
+      if(policy.canPublish) addAction('نشر النسخة','publish');
+      if(policy.canRetire) addAction('إيقاف النسخة','retire');
+      if(!actions.childElementCount&&['DRAFT','IN_REVIEW','APPROVED'].includes(policy.status)){
+        const note=document.createElement('span'); note.className='role-note';
+        note.textContent=policy.status==='IN_REVIEW'?'لا يظهر إجراء متاح لهذه النسخة: يلزم معتمد مستقل أو اكتمال عدد المراجعين.':policy.status==='APPROVED'?'النشر يلزمه مالك مختلف عن المنشئ والمعتمدين.':'لا يملك دورك إجراءً على هذه النسخة.';
+        actions.append(note);
+      }
       if(actions.childElementCount) item.append(actions);
       list.append(item);
     }
@@ -440,7 +451,7 @@ policyScope.addEventListener('change',updatePolicyScopeFields); updatePolicyScop
 root.querySelector('[data-policy-refresh]')!.addEventListener('click',()=>void loadPolicyConsole());
 root.querySelector<HTMLFormElement>('[data-policy-create]')!.addEventListener('submit',event=>{
   event.preventDefault(); const form=event.currentTarget as HTMLFormElement, values=new FormData(form), scope=String(values.get('scope')), operation=String(values.get('operation')??'').trim();
-  const definition:any={scope,family:String(values.get('family')).trim(),ruleKey:String(values.get('ruleKey')).trim(),effect:String(values.get('effect')),obligations:[],mandatory:String(values.get('effect'))==='HARD_DENY',conditions:operation?{operation}: {},reason:String(values.get('reason')).trim()};
+  const definition:any={scope,family:String(values.get('family')).trim(),ruleKey:String(values.get('ruleKey')).trim(),effect:String(values.get('effect')),obligations:[],mandatory:String(values.get('effect'))==='HARD_DENY',requiredApprovals:Number(values.get('requiredApprovals')??1),conditions:operation?{operation}: {},reason:String(values.get('reason')).trim()};
   if(scope==='DEPARTMENT') definition.departmentId=String(values.get('departmentId'));
   if(scope==='PRODUCT') definition.productSlug=String(values.get('productSlug'));
   if(scope==='USER') definition.userId=String(values.get('userId')).trim();

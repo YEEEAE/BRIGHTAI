@@ -9,6 +9,7 @@ import {
   MAX_RULES, MAX_TEXT_LENGTH, MAX_EVALUATIONS_PER_WINDOW, EVALUATION_WINDOW_SECONDS,
 } from './core.mjs';
 import { providerState } from './provider.mjs';
+import { reviewIntegrationState } from './escalation.mjs';
 import { enforceDecision } from './guard.mjs';
 import { requestHumanReview } from './escalation.mjs';
 import { policyReference, decisionFingerprint } from './binding.mjs';
@@ -269,6 +270,21 @@ export function createFirewallService(transact = transaction) {
       }
 
       const counts = (await db.query('SELECT action,count(*)::int AS count FROM public.aigas_fw_decisions WHERE tenant_id=$1 GROUP BY action', [tenantId])).rows;
+      const provider = providerState(tenantId);
+      const review = reviewIntegrationState(tenantId);
+      // One enforcement route, reported truthfully: a saved decision is not a delivery and
+      // execution stays BLOCKED until an approved provider adapter exists.
+      const enforcement = {
+        point: '/app/api/firewall/guarded-executions/',
+        mode: 'GUARD',
+        evaluation_route: '/app/api/firewall/evaluate/',
+        kernel_authorization: 'KERNEL_ALLOW_REQUIRED',
+        binding: 'OUTCOME:SHA256:TENANT+ACTOR+REQUEST_ID+POLICY_VERSION+DECISION',
+        provider: provider.code,
+        review: review.code,
+        execution: provider.configured ? 'AVAILABLE' : 'BLOCKED',
+        reason: provider.configured ? null : 'PROVIDER_NOT_CONFIGURED',
+      };
       const decisions = (await db.query(
         `SELECT d.id,d.created_at,d.action,d.reason,d.rule_id,d.rule_version,d.mode,d.policy_version
          FROM public.aigas_fw_decisions d
@@ -281,7 +297,7 @@ export function createFirewallService(transact = transaction) {
       )).rows;
       return {
         tenant: { ...scope.tenant, role: member.role }, memberships: scope.memberships, canManage, rules, counts,
-        decisions: decisions.slice(0, 12), page, hasNext: decisions.length > 12 && page < 10000, provider: providerState(tenantId),
+        decisions: decisions.slice(0, 12), page, hasNext: decisions.length > 12 && page < 10000, provider, enforcement,
         enforcementPath: '/app/api/firewall/guarded-executions/', actionFilter: action, reasonFilter: reason,
         limits: { maxRules: MAX_RULES, maxTextLength: MAX_TEXT_LENGTH, maxEvaluationsPerWindow: MAX_EVALUATIONS_PER_WINDOW },
       };

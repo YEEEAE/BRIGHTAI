@@ -27,7 +27,9 @@ export const products = [
 // Register only routes whose page and API enforce Kernel identity and membership server-side.
 // A separate DB access record still decides whether the product is enabled for the tenant.
 const implementedRoutes = new Set(['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']);
-const stateLabels = { ENABLED: 'مفعّل للمؤسسة', DISABLED: 'معطّل', EXPIRED: 'انتهى قرار الإتاحة', REVOKED: 'أُلغي قرار الإتاحة', FOUNDATION: 'قيد التأسيس' };
+// Derived operator-facing states. FOUNDATION is a database default, not a runtime state:
+// it is reported as NOT_CONFIGURED so the UI never implies a product is live.
+const stateLabels = { ENABLED: 'مفعّل للمؤسسة', DISABLED: 'معطّل', NOT_CONFIGURED: 'غير مهيأ — لا قرار إتاحة', EXPIRED: 'انتهى قرار الإتاحة', REVOKED: 'أُلغي قرار الإتاحة', FOUNDATION: 'غير مهيأ — لا قرار إتاحة' };
 export const roleLabels = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
 const auditLabels = {
   'workspace.created': 'إنشاء مساحة العمل',
@@ -49,16 +51,19 @@ const auditLabels = {
 };
 export const auditActionLabel = action => {
   if (action.startsWith('kernel.product.')) return 'تغيير حالة منتج';
-  const labels = { 'secure_chat.blocked_no_approved_model': 'رفض إرسال لغياب نموذج معتمد', 'kernel.auth.linked': 'ربط مؤسسة الدخول', 'kernel.invitation.created': 'تسجيل دعوة عضو', 'kernel.invitation.accepted': 'قبول عضوية مؤسسة', 'kernel.invitation.canceled': 'إلغاء دعوة عضو', 'kernel.member.role_changed': 'تغيير دور عضو', 'kernel.member.revoked': 'سحب عضوية عضو', 'kernel.policy.created': 'إنشاء مسودة سياسة Kernel', 'kernel.policy.revised': 'إنشاء نسخة سياسة جديدة', 'kernel.policy.submitted': 'إحالة سياسة للمراجعة', 'kernel.policy.approved': 'اعتماد نسخة سياسة', 'kernel.policy.published': 'نشر نسخة سياسة', 'kernel.policy.retired': 'إيقاف نسخة سياسة', 'kernel.policy.approver.delegated': 'تفويض اعتماد السياسات', 'kernel.policy.approver.revoked': 'إلغاء تفويض اعتماد السياسات', 'kernel.department.created': 'إنشاء إدارة', 'kernel.department.member.added': 'إضافة عضو لإدارة', 'kernel.department.member.revoked': 'إيقاف عضوية إدارة', 'human_gate.request.created': 'طلب مراجعة بشرية', 'human_gate.request.decided': 'قرار مراجعة بشرية', 'human_gate.decision.approve': 'اعتماد طلب مراجعة', 'human_gate.decision.reject': 'رفض طلب مراجعة', 'human_gate.request.expired': 'انتهاء صلاحية طلب مراجعة', 'kernel.human_gate.policy.updated': 'تحديث سياسة المراجعة البشرية', 'human_gate.request.executed': 'إكمال عملية مراجعة', 'human_gate.request.cancelled': 'إلغاء طلب مراجعة', 'human_gate.delegation.created': 'إنشاء تفويض مراجعة', 'human_gate.delegation.revoked': 'إلغاء تفويض مراجعة', 'ledger.synthetic.created': 'تسجيل حدث اصطناعي', 'ledger.event.exported': 'تصدير حدث دليل' };
+  const labels = { 'secure_chat.blocked_no_approved_model': 'رفض إرسال لغياب نموذج معتمد', 'kernel.auth.linked': 'ربط مؤسسة الدخول', 'kernel.invitation.created': 'تسجيل دعوة عضو', 'kernel.invitation.accepted': 'قبول عضوية مؤسسة', 'kernel.invitation.canceled': 'إلغاء دعوة عضو', 'kernel.member.role_changed': 'تغيير دور عضو', 'kernel.member.revoked': 'سحب عضوية عضو', 'kernel.policy.created': 'إنشاء مسودة سياسة Kernel', 'kernel.policy.revised': 'إنشاء نسخة سياسة جديدة', 'kernel.policy.submitted': 'إحالة سياسة للمراجعة', 'kernel.policy.approved': 'اعتماد نسخة سياسة', 'kernel.policy.approval.recorded': 'تسجيل اعتماد مراجع لسياسة', 'kernel.policy.withdrawn': 'سحب نسخة سياسة من المراجعة', 'kernel.policy.published': 'نشر نسخة سياسة', 'kernel.policy.retired': 'إيقاف نسخة سياسة', 'kernel.policy.approver.delegated': 'تفويض اعتماد السياسات', 'kernel.policy.approver.revoked': 'إلغاء تفويض اعتماد السياسات', 'kernel.department.created': 'إنشاء إدارة', 'kernel.department.member.added': 'إضافة عضو لإدارة', 'kernel.department.member.revoked': 'إيقاف عضوية إدارة', 'human_gate.request.created': 'طلب مراجعة بشرية', 'human_gate.request.decided': 'قرار مراجعة بشرية', 'human_gate.decision.approve': 'اعتماد طلب مراجعة', 'human_gate.decision.reject': 'رفض طلب مراجعة', 'human_gate.request.expired': 'انتهاء صلاحية طلب مراجعة', 'kernel.human_gate.policy.updated': 'تحديث سياسة المراجعة البشرية', 'human_gate.request.executed': 'إكمال عملية مراجعة', 'human_gate.request.cancelled': 'إلغاء طلب مراجعة', 'human_gate.delegation.created': 'إنشاء تفويض مراجعة', 'human_gate.delegation.revoked': 'إلغاء تفويض مراجعة', 'ledger.synthetic.created': 'تسجيل حدث اصطناعي', 'ledger.event.exported': 'تصدير حدث دليل' };
   return auditLabels[action] ?? labels[action.split(':')[0]] ?? 'حدث تشغيلي';
 };
 export function productStates(access) {
   return products.map(p => {
-    const state = access.find(a => a.product_slug === p.slug)?.status ?? 'FOUNDATION';
+    const stored = access.find(a => a.product_slug === p.slug)?.status ?? null;
+    // The database only stores FOUNDATION/ENABLED/DISABLED. A missing row or FOUNDATION
+    // is an absent administrative decision, never an enabled product.
+    const state = !stored || stored === 'FOUNDATION' ? 'NOT_CONFIGURED' : stored;
     const routeReady = implementedRoutes.has(p.slug);
     const enabled = state === 'ENABLED';
     const label = !routeReady ? 'المسار غير متاح بعد' : stateLabels[state] ?? 'حالة غير معروفة';
-    return { ...p, state, enabled, routeReady, label, href: routeReady && state !== 'DISABLED' ? `/app/${p.slug}/` : null };
+    return { ...p, state, storedState: stored, enabled, routeReady, label, href: routeReady && state !== 'DISABLED' ? `/app/${p.slug}/` : null };
   });
 }
 export function roleLabel(role) {

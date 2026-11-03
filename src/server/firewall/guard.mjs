@@ -13,7 +13,7 @@ const policyVersionFormat = /^[a-zA-Z0-9_.:-]{1,120}$/;
 export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation }) {
   const base = {
     decision,
-    policy: kernelPolicy ? { decision: kernelPolicy.decision, reason: kernelPolicy.reason, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
+    policy: kernelPolicy ? { decision: kernelPolicy.decision, action: kernelPolicy.action ?? null, reason: kernelPolicy.reason, obligations: kernelPolicy.obligations ?? [], mandatory: kernelPolicy.mandatory === true, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
     request_id: requestId ?? null,
     policy_version: policyVersion ?? null,
     request_fingerprint: requestFingerprint ?? null,
@@ -21,6 +21,11 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
   };
   // DENY is the final state; nothing downstream may soften it.
   if (decision.action === 'DENY') return { ...base, httpStatus: 403, code: 'POLICY_BLOCKED', message: 'حُجب الطلب قبل أي استدعاء لمزود AI.' };
+  // A human decision satisfies REQUEST_APPROVAL only. It never lifts a Kernel block, so
+  // every remaining path (including ESCALATE) requires a stored Kernel ALLOW first.
+  if (!kernelPolicy || kernelPolicy.decision !== 'ALLOW') {
+    return { ...base, httpStatus: 409, code: 'KERNEL_POLICY_REQUIRED', message: 'لا يوجد قرار Kernel ALLOW صالح لهذه العملية؛ لم يُرسل الطلب ولم يُنشأ طلب مراجعة.' };
+  }
   // ESCALATE needs an independent human decision. A review request may exist only
   // when an approved server integration is configured; otherwise this stops here.
   // In both cases nothing has been sent to a provider and nothing will be.
@@ -43,8 +48,8 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
   if (!['ALLOW', 'REDACT'].includes(decision.action) || typeof forwardText !== 'string' || !forwardText.length) {
     return { ...base, httpStatus: 503, code: 'INVALID_GUARD_DECISION', message: 'تعذر تطبيق القرار؛ لم يُرسل الطلب.' };
   }
-  // Defense in depth: a non-ALLOW Kernel policy is never forwarded even if the
-  // product evaluator or a future caller tried to present an ALLOW product rule.
+  // The early Kernel check above already covers this path; the assertion stays as
+  // defense in depth for a future caller that changes the order.
   if (!kernelPolicy || kernelPolicy.decision !== 'ALLOW') {
     return { ...base, httpStatus: 409, code: 'KERNEL_POLICY_REQUIRED', message: 'لا يوجد قرار Kernel ALLOW صالح لهذه العملية؛ لم يُرسل الطلب.' };
   }
