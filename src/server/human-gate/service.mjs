@@ -326,7 +326,7 @@ async function reviewerStillAuthorized(db,tenantId,request,policy){
  return admin(reviewer)&&meetsLevel(reviewer.role,required);
 }
 async function assertAccessFresh(db,tenantId){
- const access=(await db.query("SELECT g.tenant_id FROM public.aigas_product_grants g JOIN public.aigas_product_access a USING(tenant_id,product_slug) WHERE g.tenant_id=$1 AND g.product_slug='human-gate' AND g.revoked_at IS NULL AND g.expires_at>clock_timestamp() AND a.status='ENABLED'",[tenantId])).rows[0];
+ const access=(await db.query("SELECT g.tenant_id FROM public.aigas_product_grants g JOIN public.aigas_product_access a USING(tenant_id,product_slug) WHERE g.tenant_id=$1 AND g.product_slug='human-gate' AND g.access_kind='ADMIN_NON_BILLED' AND g.approved_at<=clock_timestamp() AND g.revoked_at IS NULL AND g.expires_at>clock_timestamp() AND a.status='ENABLED'",[tenantId])).rows[0];
  if(!access) throw new KernelError(403,'PRODUCT_NOT_ENABLED','انتهى قرار إتاحة Human Gate؛ لم تكتمل العملية.');
 }
 async function assertFresh(db,tenantId,id){

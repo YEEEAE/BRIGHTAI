@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { productGrants } from '../kernel/access.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
 import { profile, metadata, hashEvent, verifyEvent, sourceTypes, uuid } from './core.mjs';
 
@@ -44,11 +45,12 @@ export async function recordProductEvent(db, identity, tenantId, input) {
     let access = null, grant = null;
     if (ready.access && ready.grants) {
       access = (await db.query("SELECT status FROM public.aigas_product_access WHERE tenant_id=$1 AND product_slug='ledger' FOR SHARE",[tenantId])).rows[0] ?? null;
-      if (access) grant = (await db.query("SELECT revoked_at,expires_at<=clock_timestamp() AS expired FROM public.aigas_product_grants WHERE tenant_id=$1 AND product_slug='ledger' FOR SHARE",[tenantId])).rows[0] ?? null;
+      if (access) grant = (await productGrants(db,tenantId,'ledger'))[0] ?? null;
     }
     const state = !ready.events || !ready.access || !ready.grants ? 'not configured'
-      : !access || !grant || grant.revoked_at || access.status !== 'ENABLED' ? 'access denied'
-      : grant.expired ? 'expired' : 'available';
+      : grant?.grantState === 'NOT_CONFIGURED' ? 'not configured'
+      : !access || !grant || grant.grantState === 'REVOKED' || access.status !== 'ENABLED' ? 'access denied'
+      : grant.grantState === 'EXPIRED' ? 'expired' : grant.grantState === 'ACTIVE' ? 'available' : 'access denied';
     if (state !== 'available') {
       if (requirement) throw mandatoryFailure(state);
       await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');

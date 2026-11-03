@@ -64,6 +64,33 @@ const healthOverall: Record<string, { text: string; tone: string }> = {
 };
 const invitationStatusLabels: Record<string, string> = { pending: 'بانتظار القبول', accepted: 'مقبولة لدى Auth', rejected: 'مرفوضة', canceled: 'ملغاة', expired: 'منتهية', inviter_unavailable: 'توقفت صلاحية الداعي' };
 const date = (value: string) => { const parsed = new Date(value); return Number.isNaN(parsed.getTime()) ? '—' : parsed.toLocaleDateString('ar-SA'); };
+// No browser clock or approval timestamp may start a trial.
+function appendRecordedTime(target: Element, label: string, value: string | null | undefined) {
+  const parsed = value ? new Date(value) : null;
+  const time = document.createElement('bdi');
+  time.textContent = parsed && Number.isFinite(parsed.getTime())
+    ? new Intl.DateTimeFormat('ar-SA', { timeZone: 'Asia/Riyadh', dateStyle: 'medium', timeStyle: 'medium' }).format(parsed)
+    : 'غير مسجل';
+  target.append(document.createElement('br'), document.createTextNode(`${label}: `), time);
+}
+function renderProductTerms(card: HTMLElement, product: any) {
+  const terms = card.querySelector('[data-product-terms]')!;
+  const labels: Record<string, string> = {
+    ACTIVE: 'إتاحة إدارية مؤقتة سارية وغير مفوترة؛ ليست اشتراكًا أو ترخيصًا أو تجربة 48 ساعة.',
+    EXPIRED: 'انتهى قرار الإتاحة الإداري؛ لا يتجدد تلقائيًا.',
+    REVOKED: 'أُلغي قرار الإتاحة الإداري؛ راجع المشغّل.',
+    PENDING: 'لم يبدأ سريان القرار الإداري؛ لا يمنح وصولًا الآن.',
+    NOT_CONFIGURED: 'نوع الإتاحة أو مدتها غير مهيأ؛ الوصول مرفوض.',
+    NOT_APPROVED: 'لا يوجد قرار إتاحة إداري معتمد.'
+  };
+  terms.textContent = labels[product.grantState] ?? 'لم تُحمّل حالة الإتاحة.';
+  appendRecordedTime(terms, 'موافقة الإتاحة الإدارية (بتوقيت الرياض)', product.approvedAt);
+  appendRecordedTime(terms, 'نهاية الإتاحة الإدارية (بتوقيت الرياض)', product.expiresAt);
+  const commercial = card.querySelector('[data-product-commercial]')!;
+  commercial.textContent = 'الاشتراك: غير مهيأ · الترخيص: غير مهيأ · تجربة 48 ساعة: غير مهيأة. لا تفعيل ذاتي.';
+  appendRecordedTime(commercial, 'بداية التجربة', product.trialDetails?.activated_at);
+  appendRecordedTime(commercial, 'نهاية التجربة', product.trialDetails?.expires_at);
+}
 function setLoginError(input: HTMLInputElement | null | undefined, error: HTMLElement | null | undefined, message = '') {
   if (!input || !error) return;
   error.textContent = message; error.hidden = !message;
@@ -95,11 +122,13 @@ function clearPrivate() {
   metrics.hidden = true;
   membersList.replaceChildren(); memberCount.textContent = ''; membersState.textContent = 'تُحمّل الأعضاء بعد التحقق من العضوية.';
   activityList.replaceChildren(); activityState.textContent = 'تُحمّل الأنشطة بعد التحقق من العضوية.';
+  root.querySelector('[data-evidence-summary]')!.textContent = 'ملخص السجلات غير محمّل.';
   root.querySelectorAll<HTMLElement>('[data-product]').forEach(card => {
     card.querySelector<HTMLElement>('[data-product-admin]')!.hidden = true;
     card.querySelector('[data-product-admin]')!.replaceChildren();
     card.querySelector('[data-product-setup]')!.textContent = 'حالة الإعداد غير محمّلة.';
-    card.querySelector('[data-product-terms]')!.textContent = 'الاشتراك والتجربة غير مهيّأين.';
+    card.querySelector('[data-product-terms]')!.textContent = 'الإتاحة غير محمّلة.';
+    card.querySelector('[data-product-commercial]')!.textContent = 'الاشتراك والترخيص وتجربة 48 ساعة غير مهيّأة.';
     card.querySelector('[data-product-status]')!.textContent = 'الإتاحة غير محمّلة';
     const button = document.createElement('button'); button.disabled = true; button.textContent = 'لم يجهز بعد';
     card.querySelector('[data-product-action]')!.replaceChildren(button);
@@ -244,13 +273,17 @@ function render(data: any) {
     root.querySelector('[data-metric="coverage"]')!.textContent = data.summary?.coverage ? `${data.summary.coverage.enabled} / ${data.summary.coverage.total}` : 'لا بيانات';
     root.querySelector('[data-metric="events"]')!.textContent = data.summary?.events == null ? 'لا بيانات' : String(data.summary.events);
     renderActivity(data.activity ?? []);
+    const evidence = root.querySelector('[data-evidence-summary]')!;
+    evidence.textContent = data.summary?.events == null ? 'ملخص السجلات غير متاح.' : `أحداث Kernel المحتفظ بها: ${data.summary.events}. تقرير نتيجة التجربة غير مهيأ.`;
+    appendRecordedTime(evidence, 'أول حدث مسجل (بتوقيت الرياض)', data.summary?.proofOfValue?.firstEventAt);
+    appendRecordedTime(evidence, 'آخر حدث مسجل (بتوقيت الرياض)', data.summary?.proofOfValue?.lastEventAt);
   }
   for (const p of data.products) {
     const card = root.querySelector<HTMLElement>(`[data-product="${p.slug}"]`);
     if (!card) continue;
     card.querySelector('[data-product-status]')!.textContent = p.label;
     card.querySelector('[data-product-setup]')!.textContent = p.setupMessage ?? 'اختر مؤسسة لعرض حالة الإعداد.';
-    card.querySelector('[data-product-terms]')!.textContent = p.grantState === 'EXPIRED' ? `انتهت الإتاحة الإدارية بتاريخ ${date(p.expiresAt)}. الاشتراك والتجربة غير مهيّأين.` : p.grantState === 'REVOKED' ? 'أُلغي قرار الإتاحة الإداري؛ راجع مشغّل النظام.' : p.accessKind === 'ADMIN_NON_BILLED' ? `إتاحة إدارية مؤقتة غير مفوترة حتى ${date(p.expiresAt)}؛ ليست اشتراكًا أو تجربة مدفوعة.` : 'لا قرار إتاحة إداري ساري. الاشتراك والتجربة غير مهيّأين.';
+    renderProductTerms(card, p);
     const admin = card.querySelector<HTMLElement>('[data-product-admin]')!; admin.replaceChildren(); admin.hidden = !p.canManage;
     if (p.canManage) {
       const form = document.createElement('form'), select = document.createElement('select'), label = document.createElement('label');

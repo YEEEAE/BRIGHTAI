@@ -1,4 +1,5 @@
 import { transaction } from './db.mjs';
+import { productGrants } from './access.mjs';
 import { tenantGuard, memberships, audit } from './service.mjs';
 import { KernelError, requireRole, products } from './core.mjs';
 import { exact, uuid } from './http.mjs';
@@ -16,8 +17,8 @@ export async function updateProduct(identity, requested, body) {
   return transaction(async db => {
     const { tenant } = await adminScope(db, identity, requested, ['OWNER']);
     if (body.status === 'ENABLED') {
-      const grant = (await db.query('SELECT 1 FROM public.aigas_product_grants WHERE tenant_id=$1 AND product_slug=$2 AND revoked_at IS NULL AND expires_at>now() FOR SHARE', [tenant.tenant_id, body.slug])).rows[0];
-      if (!grant) throw new KernelError(403, 'APPROVAL_REQUIRED', 'يلزم قرار إتاحة إداري مؤقت من المشغّل؛ لا يمكن منح ترخيص أو تجربة مدفوعة من هذه الواجهة.');
+      const grant = (await productGrants(db, tenant.tenant_id, body.slug))[0];
+      if (grant?.grantState !== 'ACTIVE') throw new KernelError(403, 'APPROVAL_REQUIRED', 'يلزم قرار إتاحة إداري مؤقت ساري من المشغّل؛ حفظ الحالة لا يفعّل تجربة 48 ساعة ولا ينشئ اشتراكًا أو ترخيصًا.');
     }
     const result = await db.query('UPDATE public.aigas_product_access SET status=$3,version=version+1,updated_at=clock_timestamp() WHERE tenant_id=$1 AND product_slug=$2 AND version=$4 RETURNING status,version', [tenant.tenant_id, body.slug, body.status, body.version]);
     if (!result.rowCount) throw new KernelError(409, 'STALE_PRODUCT', 'تغيرت حالة المنتج؛ حدّث اللوحة قبل إعادة المحاولة.');

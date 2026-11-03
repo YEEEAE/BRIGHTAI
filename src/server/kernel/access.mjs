@@ -1,4 +1,23 @@
 import { KernelError, requireRole, products } from './core.mjs';
+// One read model for all five products; administrative access is not a commercial licence.
+export async function productGrants(db, tenantId, slug = null) {
+  const rows = (await db.query(`SELECT product_slug,access_kind,approved_at,expires_at,revoked_at,
+    clock_timestamp() AS checked_at FROM public.aigas_product_grants
+    WHERE tenant_id=$1 AND ($2::text IS NULL OR product_slug=$2) FOR SHARE`, [tenantId, slug])).rows;
+  return rows.map(grant => ({ ...grant, grantState: productGrantState(grant) }));
+}
+export function productGrantState(grant) {
+  if (!grant) return 'NOT_APPROVED';
+  if (grant.revoked_at) return 'REVOKED';
+  // No trial/subscription/perpetual/offline issuer exists. Unknown kinds fail closed.
+  if (grant.access_kind !== 'ADMIN_NON_BILLED') return 'NOT_CONFIGURED';
+  const approved = grant.approved_at == null ? NaN : new Date(grant.approved_at).getTime();
+  const expires = grant.expires_at == null ? NaN : new Date(grant.expires_at).getTime();
+  const checked = grant.checked_at == null ? NaN : new Date(grant.checked_at).getTime();
+  if (![approved, expires, checked].every(Number.isFinite) || expires <= approved) return 'NOT_CONFIGURED';
+  if (expires <= checked) return 'EXPIRED';
+  return approved > checked ? 'PENDING' : 'ACTIVE';
+}
 // Shared by all five products. Active approval is separate from the product toggle.
 export async function requireProductAccess(db, identity, tenantId, slug) {
   const product = products.find(item => item.slug === slug);
@@ -11,8 +30,8 @@ export async function requireProductAccess(db, identity, tenantId, slug) {
     if (!setup?.ready) throw new KernelError(503, 'KERNEL_ADMIN_SETUP_REQUIRED', `إتاحة ${product.name} غير مهيأة لهذه المؤسسة؛ راجع إعدادات Kernel المعتمدة.`, 'not configured');
     access = (await db.query('SELECT status FROM public.aigas_product_access WHERE tenant_id=$1 AND product_slug=$2 FOR SHARE', [tenantId, slug])).rows[0] ?? null;
     if (access) {
-      const grant = (await db.query('SELECT revoked_at,expires_at,expires_at<=clock_timestamp() AS expired FROM public.aigas_product_grants WHERE tenant_id=$1 AND product_slug=$2 FOR SHARE', [tenantId, slug])).rows[0] ?? null;
-      access = { ...access, ...grant };
+      const grant = (await productGrants(db, tenantId, slug))[0] ?? null;
+      access = { ...access, grantState: grant?.grantState ?? 'NOT_APPROVED' };
     }
   } catch (error) {
     if (error instanceof KernelError) throw error;
@@ -20,8 +39,9 @@ export async function requireProductAccess(db, identity, tenantId, slug) {
     throw error;
   }
   if (!access) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `لم تُعتمد إتاحة ${product.name} لهذه المؤسسة.`, 'not configured');
-  if (access.revoked_at) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, 'access denied');
-  if (access.expired === true || access.status === 'EXPIRED') throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `انتهت صلاحية إتاحة ${product.name}؛ راجع مالك المؤسسة.`, 'expired');
-  if (!access.expires_at || access.status !== 'ENABLED') throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, 'access denied');
+  if (access.grantState === 'REVOKED') throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, 'access denied');
+  if (access.grantState === 'EXPIRED' || access.status === 'EXPIRED') throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `انتهت صلاحية إتاحة ${product.name}؛ راجع مالك المؤسسة.`, 'expired');
+  if (access.grantState === 'NOT_CONFIGURED') throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `نوع الإتاحة أو مدتها غير مهيأ لـ${product.name}؛ راجع المشغّل.`, 'not configured');
+  if (access.grantState !== 'ACTIVE' || access.status !== 'ENABLED') throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, 'access denied');
   return member;
 }

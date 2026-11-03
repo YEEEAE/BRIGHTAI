@@ -21,14 +21,14 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
     <button class="button" type="submit" disabled>افتح رسالة البريد <span aria-hidden="true">←</span></button>
     <p id="contact-status" role="status" aria-live="polite"></p>
     <noscript><p>للتواصل بدون JavaScript: <a href="mailto:yzeed1job@gmail.com">افتح تطبيق البريد</a>.</p></noscript>
-    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى yzeed1job@gmail.com. راجعها وأرسلها بنفسك؛ لا يرسل الموقع الطلب ولا يؤكد استلامه.</p>
+    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى yzeed1job@gmail.com. راجعها وأرسلها بنفسك؛ لا يحفظ الموقع طلباً ولا يرسله أو يؤكد استلامه.</p>
   </form>
-  <p class="note">لا تكتب أي بيانات شخصية حساسة في رسالتك.</p>
+  <p class="note">لا تكتب بيانات شخصية حساسة؛ اكتفِ بوصف عام. بيانات التجربة اصطناعية، والواقعية ممنوعة بلا موافقة مكتوبة وبيئة معتمدة. منع التدريب ببيانات العملاء (<bdi dir="ltr">No-Training</bdi>) لا يُستثنى بموافقة تشغيلية.</p>
 
     <ContentExtension>
 
 <section><h2>وش تكتب في استفسارك؟</h2><ul><li>القطاع والمهمة التي تريد حوكمتها، دون أسماء عملاء أو تفاصيل حساسة.</li><li>الدور المطلوب: حماية طلب، تقييم مخاطر، موافقة، دليل تدقيق أو محادثة.</li><li>بيئة النشر المستهدفة، والجهة التي ستراجع النطاق من طرفكم.</li></ul><p>للتجربة اذكر المنتج والهدف من التقييم؛ لعرض السعر اذكر النطاق التقريبي دون أرقام استهلاك سرية. لا تكتب مفاتيح API أو كلمات مرور أو بيانات صحية أو مالية أو سجلات خام.</p></section>
-<section><h2>ماذا يحصل بعد تجهيز الرسالة؟</h2><p>يفتح النموذج تطبيق البريد لديك. راجع النص والوجهة ثم أرسل الرسالة من تطبيقك؛ الموقع لا يثبت الإرسال أو الاستلام ولا يمنح ترخيصاً أو يؤكد موعداً. أي تجربة أو عقد يحتاج اتفاقاً وإثبات جاهزية مستقلين.</p><a href="/pricing/">اقرأ الفرق بين التجربة والعقد المؤسسي</a></section>
+<section><h2>ماذا يحصل بعد تجهيز الرسالة؟</h2><p>يفتح النموذج تطبيق البريد لديك. راجع النص والوجهة ثم أرسل الرسالة من تطبيقك؛ الموقع لا يثبت الإرسال أو الاستلام ولا يمنح ترخيصاً أو يؤكد موعداً. التجربة غير متاحة للتفعيل الذاتي. أي تجربة مستقبلية تحتاج موافقة وتهيئة صالحة؛ تبدأ من <bdi dir="ltr">activated_at</bdi> وتنتهي عند <bdi dir="ltr">activated_at + 48h</bdi> بالضبط، دون خصم أو تحويل أو تجديد تلقائي. المنح الحالية إدارية غير مفوترة (<bdi dir="ltr">ADMIN_NON_BILLED</bdi>) فقط، وليست تجربة أو ترخيصاً؛ لا تهيئة تجارب أو تقارير <bdi dir="ltr">PoV</bdi> تلقائية، وسجل <bdi dir="ltr">Kernel</bdi> الإداري ليس نجاحاً تشغيلياً.</p><a href="/pricing/">اقرأ الفرق بين التجربة والعقد المؤسسي</a></section>
     </ContentExtension>
 </PageShell>
 <script>
@@ -44,7 +44,7 @@ const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 
     const d = new FormData(form);
     const body = `الاسم: ${d.get('name')}\nالجهة: ${d.get('org')}\n\n${d.get('msg')}`;
     location.href = `mailto:yzeed1job@gmail.com?subject=${encodeURIComponent(`AIGAS — ${d.get('topic')}`)}&body=${encodeURIComponent(body)}`;
-    if (status) status.textContent = 'طلبنا فتح تطبيق البريد. راجع الرسالة وأرسلها منه؛ لم يُرسل الموقع طلباً أو يؤكد حجزاً.';
+    if (status) status.textContent = 'طلبنا فتح تطبيق البريد. راجع الرسالة وأرسلها منه؛ لم يحفظ الموقع طلباً أو يرسله أو يؤكد حجزاً.';
   });
   // Enable only after the handler is registered; avoid a native GET of personal data.
   if (submit) submit.disabled = false;

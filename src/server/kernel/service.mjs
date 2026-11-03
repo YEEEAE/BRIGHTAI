@@ -4,7 +4,8 @@ import { randomUUID } from 'node:crypto';
 import { database, transaction } from './db.mjs';
 import { env } from './env.mjs';
 import { authConfig } from './auth.mjs';
-import { KernelError, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole } from './core.mjs';
+import { productGrants } from './access.mjs';
+import { KernelError, products, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole } from './core.mjs';
 export async function memberships(userId, db = database()) {
   // Excludes anonymous tokens and deleted identities using the actual Auth directory.
   const user = await db.query('SELECT id FROM neon_auth."user" WHERE id = $1 AND banned IS NOT TRUE', [userId]);
@@ -34,25 +35,31 @@ export async function dashboard(identity, requested) {
     const policyEngine = { state:!policySchema?'NOT_CONFIGURED':policyCounts.published?'CONFIGURED':'NO_PUBLISHED_POLICIES',publishedPolicies:policyCounts.published,departments:policyCounts.departments };
     const adminReady = (await db.query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0].ready;
     const access = (await db.query(adminReady ? 'SELECT product_slug,status,version FROM public.aigas_product_access WHERE tenant_id=$1' : 'SELECT product_slug,status FROM public.aigas_product_access WHERE tenant_id=$1', [tenantId])).rows;
-    const grants = adminReady ? (await db.query('SELECT product_slug,access_kind,expires_at,revoked_at FROM public.aigas_product_grants WHERE tenant_id=$1', [tenantId])).rows : [];
+    const grants = adminReady ? await productGrants(db, tenantId) : [];
     const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': ['aigas_sc_requests','aigas_sc_cancellations'] };
     const states = [];
     for (const p of productStates(access)) {
       const grant = grants.find(g => g.product_slug === p.slug);
       const tables = relations[p.slug];
       const ready = tables.length ? (await db.query("SELECT bool_and(to_regclass('public.' || name) IS NOT NULL) AS ready FROM unnest($1::text[]) AS name", [tables])).rows[0].ready : false;
-      const grantValid = !!grant && !grant.revoked_at && new Date(grant.expires_at) > new Date();
+      const grantState = grant?.grantState ?? 'NOT_APPROVED';
+      const grantValid = grantState === 'ACTIVE';
       const accessState = p.state;
-      const state = accessState === 'FOUNDATION' ? 'FOUNDATION' : accessState === 'DISABLED' ? 'DISABLED' : grantValid ? 'ENABLED' : grant?.revoked_at ? 'REVOKED' : grant ? 'EXPIRED' : 'DISABLED';
+      const state = accessState !== 'ENABLED' ? accessState : grantValid ? 'ENABLED' : grantState === 'REVOKED' ? 'REVOKED' : grantState === 'EXPIRED' ? 'EXPIRED' : 'DISABLED';
       const enabled = state === 'ENABLED';
-      states.push({ ...p, state, configuredStatus: accessState, grantState: !grant ? 'NOT_APPROVED' : grant.revoked_at ? 'REVOKED' : grantValid ? 'ACTIVE' : 'EXPIRED', enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
+      states.push({ ...p, state, configuredStatus: accessState, grantState, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
         canEnable: grantValid, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
         setupMessage: p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
-        accessKind: grant?.access_kind ?? null, expiresAt: grant?.expires_at ?? null, subscription: 'NOT_CONFIGURED', trial: 'NOT_CONFIGURED',
-        label: state === 'EXPIRED' ? 'منتهٍ: انتهى قرار الإتاحة الإداري' : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' && accessState === 'ENABLED' && !grant ? 'معطّل: لا يوجد قرار إتاحة إداري' : p.label });
+        accessKind: grant?.access_kind ?? null, approvedAt: grant?.approved_at ?? null, expiresAt: grant?.expires_at ?? null,
+        subscription: 'NOT_CONFIGURED', license: 'NOT_CONFIGURED', trial: 'NOT_CONFIGURED',
+        // Administrative approval is never activated_at. There is no trial issuer/provisioner.
+        trialDetails: { status: 'NOT_CONFIGURED', activated_at: null, expires_at: null, durationSeconds: 172800, selfServiceAvailable: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false, dataEligibility: 'SYNTHETIC_ONLY' },
+        label: state === 'EXPIRED' ? 'منتهٍ: انتهى قرار الإتاحة الإداري' : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' && accessState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة إداري ساري' : p.label });
     }
-    const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, (SELECT count(*)::int FROM public.aigas_audit_events WHERE tenant_id=$1) AS events', [tenantId])).rows[0];
+    const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, count(*)::int AS events, min(created_at) AS firstEventAt, max(created_at) AS lastEventAt FROM public.aigas_audit_events WHERE tenant_id=$1', [tenantId])).rows[0];
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));
+    summary.proofOfValue = { status: 'NOT_CONFIGURED', source: 'KERNEL_AUDIT', scope: 'ALL_RETAINED_TENANT_EVENTS', activated_at: null, expires_at: null, firstEventAt: summary.firsteventat, lastEventAt: summary.lasteventat };
+    delete summary.firsteventat; delete summary.lasteventat;
     summary.coverage = access.length ? { enabled: states.filter(p => p.enabled).length, total: products.length } : null;
     return { ...scope, products: states, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady };
   });
