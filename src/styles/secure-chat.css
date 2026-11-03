@@ -125,6 +125,20 @@
 .secure-chat .synthetic-consent{font-size:13px;color:var(--sc-copy);line-height:1.8}
 .secure-chat .policy-note{color:var(--sc-muted);font-size:12px;line-height:1.85;margin-block:10px 0}
 .secure-chat .policy-note:empty{display:none}
+.secure-chat .composer-state{
+  margin-block:10px 0;
+  padding:10px 13px;
+  border:1px solid var(--sc-line);
+  border-radius:9px;
+  background:#0b0910;
+  color:var(--sc-copy);
+  font-size:12.5px;
+  line-height:1.85;
+}
+.secure-chat .composer-state[data-tone="progress"]{border-color:#4a4270;background:#120f1d;color:#ded7ff}
+.secure-chat .composer-state[data-tone="alert"]{border-color:#6b3437;background:#1c0d10;color:#ffd0d0}
+.secure-chat .composer-state[data-tone="muted"]{color:var(--sc-muted)}
+.secure-chat .composer[data-state="DISABLED"] .composer-actions button[type="submit"]{border-style:dashed}
 .secure-chat .send-error{
   margin-block:14px;
   padding:13px 15px;

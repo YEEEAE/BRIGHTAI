@@ -28,6 +28,15 @@ let history: Array<{ role: 'user' | 'assistant'; content: string }> = [];
 let epoch = 0;
 const consent = root.querySelector<HTMLInputElement>('[data-synthetic]')!;
 const usageLabel = root.querySelector<HTMLElement>('[data-usage]')!;
+const composerState = root.querySelector<HTMLElement>('[data-composer-state]')!;
+
+type ComposerState = 'READY' | 'DISABLED' | 'LOADING' | 'TIMEOUT' | 'CANCELLED' | 'LIMIT' | 'ERROR';
+function setComposerState(state: ComposerState, text = '') {
+  composer.dataset.state = state;
+  composerState.hidden = !text;
+  composerState.textContent = text;
+  composerState.dataset.tone = state === 'READY' ? '' : state === 'LOADING' ? 'progress' : state === 'DISABLED' ? 'muted' : 'alert';
+}
 function updateSend() {
   sendButton.disabled = !available || !!controller || busy || !consent.checked || !message.value.trim();
 }
@@ -38,14 +47,20 @@ function sendingControls(sending: boolean) {
   model.disabled = sending || !available;
   message.readOnly = sending;
   root.querySelector<HTMLButtonElement>('[data-new-chat]')!.disabled = sending;
-  consent.disabled = sending;
+  consent.disabled = sending || !available;
+  cancelButton.disabled = sending && !activeRequestId;
   if (sending) composer.setAttribute('aria-busy', 'true');
   else composer.removeAttribute('aria-busy');
   updateSend();
 }
 async function requestCancellation() {
   if (!activeRequestId) return;
-  try { await api('messages', 'DELETE', { requestId: activeRequestId }); }
+  try {
+    const result = await api('messages', 'DELETE', { requestId: activeRequestId });
+    status.textContent = result.state === 'ALREADY_FINISHED'
+      ? 'اكتملت العملية مسبقًا؛ لم يتغير سجل الاستهلاك.'
+      : 'سُجل طلب الإيقاف. قد يكون المزود عالج الطلب بالفعل.';
+  }
   finally { controller?.abort(); }
 }
 
@@ -56,7 +71,9 @@ function clearPrivate() {
   available = false;
   history = [];
   consent.checked = false;
+  consent.disabled = true;
   usageLabel.textContent = 'الرموز الفعلية: غير متاح. التكلفة: غير متاح.';
+  setComposerState('READY');
   updateSend();
   chatArea.hidden = true;
   workspaceWrap.hidden = true;
@@ -135,6 +152,7 @@ async function load(requested?: string) {
     stateTitle.textContent = 'لا توجد عضوية مؤسسة';
     status.textContent = 'أنشئ مساحة العمل من Kernel ثم افتح Secure Chat بعد تفعيل المنتج للمؤسسة.';
     root.querySelector('[data-connection]')!.textContent = 'لا توجد عضوية';
+    setComposerState('DISABLED', 'الإرسال متوقف: لا توجد عضوية مؤسسة نشطة.');
     signOut.hidden = false;
     return;
   }
@@ -158,6 +176,7 @@ async function load(requested?: string) {
   if (!access?.enabled) {
     stateTitle.textContent = 'Secure Chat غير مفعّل';
     status.textContent = 'عضويتك مؤكدة، لكن هذه المؤسسة لم تفعّل المنتج. لا تُتاح واجهة الرسائل أو محتوى الجلسة.';
+    setComposerState('DISABLED', 'الإرسال متوقف: إتاحة Secure Chat غير مفعّلة لهذه المؤسسة.');
     return;
   }
 
@@ -167,24 +186,53 @@ async function load(requested?: string) {
   login.hidden = true;
 }
 
-function applyModelAvailability(data: { models: Array<{ id: string; label?: string; region?: string; ready: boolean }>; available: boolean; message: string; policy?: { message: string }; usage?: { configuredMessageCharacters?: number; limits?: Record<string, number | null> } }) {
+function applyModelAvailability(data: {
+  models: Array<{ id: string; label?: string; region?: string; ready: boolean; state?: string }>;
+  available: boolean;
+  availabilityCode?: string | null;
+  dependencyStatus?: string;
+  message: string;
+  policy?: { message: string; firewallLicenceRequired?: boolean };
+  retention?: { message?: string };
+  capabilities?: Record<string, boolean>;
+  usage?: { configuredMessageCharacters?: number; limits?: Record<string, number | null> };
+}) {
   available = data.available;
   const previous = model.value;
   const options = data.models.map(item => new Option(`${item.label || item.id} — ${item.region || ''}${item.ready ? '' : ' (غير مهيأ)'}`, item.id));
   model.replaceChildren(...(options.length ? options : [new Option('لا يوجد نموذج متاح', '')]));
-  data.models.forEach((item,index) => { options[index].disabled = !item.ready; });
+  data.models.forEach((item, index) => { options[index].disabled = !item.ready; });
   model.value = data.models.find(item => item.id === previous && item.ready)?.id || data.models.find(item => item.ready)?.id || '';
   model.disabled = !available;
+  consent.disabled = !available;
+  if (!available) consent.checked = false;
   root.querySelector('[data-policy-note]')!.textContent = data.policy?.message || '';
-  const names: Record<string,string> = {userMinute:'طلباتك خلال دقيقة',tenantMinute:'طلبات المؤسسة خلال دقيقة',userDay:'طلباتك خلال 24 ساعة',tenantDay:'طلبات المؤسسة خلال 24 ساعة',userTokensDay:'سقف رموزك خلال 24 ساعة',tenantTokensDay:'سقف رموز المؤسسة خلال 24 ساعة'};
+  const names: Record<string,string> = { userMinute:'طلباتك خلال دقيقة', tenantMinute:'طلبات المؤسسة خلال دقيقة', userDay:'طلباتك خلال 24 ساعة', tenantDay:'طلبات المؤسسة خلال 24 ساعة', userTokensDay:'سقف رموزك خلال 24 ساعة', tenantTokensDay:'سقف رموز المؤسسة خلال 24 ساعة' };
   root.querySelector('[data-limits]')!.textContent = data.usage?.limits ? Object.entries(data.usage.limits).filter(([,value]) => value !== null).map(([key,value]) => `${names[key]}: ${value}`).join('، ') : 'الحصص غير مفعّلة حتى اعتمادها. التكلفة غير متاحة.';
   updateSend();
   const maxLength = data.usage?.configuredMessageCharacters || 4000;
   message.maxLength = maxLength;
   root.querySelector('[data-count]')!.textContent = `${Array.from(message.value).length} / ${maxLength}`;
   root.querySelector('[data-model-status]')!.textContent = data.message;
-  stateTitle.textContent = data.available ? 'النماذج المعتمدة' : 'لا يوجد نموذج معتمد ومهيأ';
+  stateTitle.textContent = data.available ? 'النماذج المعتمدة'
+    : data.availabilityCode === 'PROVIDER_NOT_CONFIGURED' ? 'الموصل إلى المزود غير مهيأ'
+      : data.availabilityCode === 'MODEL_APPROVAL_EXPIRED' ? 'انتهت صلاحية اعتماد النموذج'
+        : data.availabilityCode === 'USAGE_POLICY_NOT_READY' ? 'مكوّن الحصص غير مهيأ'
+          : 'لا يوجد نموذج معتمد ومهيأ';
   status.textContent = data.message;
+  if (!available) {
+    const code = data.availabilityCode || 'NO_APPROVED_MODEL';
+    const text = code === 'PROVIDER_NOT_CONFIGURED'
+      ? 'الإرسال متوقف: الموصل إلى المزود المعتمد غير مهيأ على الخادم، ولم يُرسل أي محتوى.'
+      : code === 'MODEL_APPROVAL_EXPIRED'
+        ? 'الإرسال متوقف: انتهت صلاحية اعتماد النموذج المسجل؛ يلزم اعتماد جديد قبل الإرسال.'
+        : code === 'USAGE_POLICY_NOT_READY'
+          ? 'الإرسال متوقف: سياسة الحصص معتمدة لكن مكوّن قياسها غير مهيأ على قاعدة البيانات؛ يلزم اعتماد الترحيل.'
+          : 'الإرسال متوقف: لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة. لا تُعرض قائمة نماذج بديلة ولا يُرسل المحتوى.';
+    setComposerState('DISABLED', text);
+  } else {
+    setComposerState('READY');
+  }
 }
 
 async function refreshModels() {
@@ -229,6 +277,7 @@ root.querySelector('[data-new-chat]')!.addEventListener('click', () => {
   sendError.hidden = true;
   sendErrorText.textContent = '';
   retrySend.hidden = true;
+  setComposerState(available ? 'READY' : 'DISABLED', available ? '' : 'الإرسال متوقف: لا يوجد نموذج معتمد ومهيأ.');
   updateCount();
   updateSend();
   message.focus();
@@ -259,6 +308,7 @@ signOut.addEventListener('click', () => void run(async () => {
 cancelButton.addEventListener('click', () => {
   cancelButton.disabled = true;
   status.textContent = 'جارٍ طلب إيقاف الاتصال بالمزود…';
+  setComposerState('CANCELLED', 'طُلب إيقاف الانتظار. قد يكون المزود عالج الطلب بالفعل؛ لا يؤكد هذا انعدام الاستهلاك.');
   void requestCancellation().catch(() => { status.textContent = 'تعذر تأكيد تسجيل الإلغاء؛ توقف انتظار الواجهة فقط، وقد يكون المزود عالج الطلب.'; });
 });
 composer.addEventListener('submit', event => {
@@ -276,10 +326,12 @@ composer.addEventListener('submit', event => {
   sendButton.textContent = 'جارٍ التحقق…';
   cancelButton.hidden = false;
   status.textContent = 'جارٍ التحقق من النموذج قبل الإرسال…';
+  setComposerState('LOADING', 'جارٍ التحقق ثم الإرسال ضمن إجراء محمي. لا تغلق الصفحة قبل تأكيد النتيجة أو طلب الإيقاف.');
   void api('messages', 'POST', { requestId, message: draft, modelId: model.value, history, syntheticAcknowledged: consent.checked }, controller.signal)
     .then(data => {
       if (submittedEpoch !== epoch) return;
       if (typeof data.reply !== 'string' || typeof data.submittedText !== 'string') throw new Error('تعذر تأكيد رد مكتمل من المزود.');
+      if (data.saved === true || data.contentStored === true) throw new Error('تعذر تأكيد عدم حفظ متن المحادثة؛ لم يُعرض الرد.');
       const userMessage = document.createElement('li');
       userMessage.dataset.role = 'user';
       userMessage.textContent = data.submittedText;
@@ -295,22 +347,40 @@ composer.addEventListener('submit', event => {
       message.value = '';
       updateCount();
       status.textContent = data.redacted ? 'وصل رد من النموذج بعد تنقيح أولي. السياق المؤقت يقتصر على أحدث الأدوار ضمن الحد التقني.' : 'وصل رد من النموذج. يُرسل أحدث سياق مؤقت ضمن الحد التقني؛ لا يُحفظ المتن.';
+      setComposerState('READY');
     })
     .catch(error => {
       if (submittedEpoch !== epoch) return;
-      if ((error as Error).name === 'AbortError') {
+      const value = error as Error & { unauthorized?: boolean; status?: number; code?: string };
+      if (value.name === 'AbortError') {
         sendErrorText.textContent = 'توقف انتظار الواجهة. قد يكون المزود استلم الطلب واستهلكه؛ لا يُعاد الإرسال تلقائيًا.';
         retrySend.hidden = false;
         sendError.hidden = false;
-        status.textContent = 'توقف انتظار الواجهة؛ تحقق من توفر النموذج قبل المحاولة مجددًا.';
-      } else {
-        const value = error as Error & { unauthorized?: boolean; status?: number };
-        if (value.unauthorized || value.status === 403) { showError(friendlyError(value), !!value.unauthorized); return; }
-        sendErrorText.textContent = `${friendlyError(value)} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
-        retrySend.hidden = false;
-        sendError.hidden = false;
-        status.textContent = 'لم يصل رد من نموذج.';
+        status.textContent = 'توقف انتظار الواجهة؛ بقيت المسودة في الحقل.';
+        setComposerState('CANCELLED', 'طُلب إيقاف الانتظار. لا يؤكد ذلك انعدام استهلاك المزود؛ بقيت المسودة ولم يُحفظ المتن.');
+        return;
       }
+      if (value.unauthorized || value.status === 403) { showError(friendlyError(value), !!value.unauthorized); return; }
+      const failure = value.code === 'PROVIDER_TIMEOUT'
+        ? 'انتهت مهلة المزود قبل تأكيد رد مكتمل؛ قد يكون الاستهلاك حدث. لا تُعد الإرسال تلقائيًا.'
+        : value.code === 'REQUEST_CANCELLED'
+          ? 'أُوقف الطلب. قد يكون المزود عالجه بالفعل؛ لا تُعد الإرسال تلقائيًا.'
+          : value.code === 'USAGE_LIMIT_REACHED'
+            ? 'وصلت إلى حد الاستخدام المعتمد. لا خصم أو ترقية تلقائية؛ انتظر تجدد الحصة.'
+            : value.code === 'NO_APPROVED_MODEL' || value.code === 'PROVIDER_NOT_CONFIGURED' || value.code === 'MODEL_APPROVAL_EXPIRED'
+              ? 'الإرسال غير متاح: لا يوجد نموذج معتمد ومهيأ. لم يُرسل المحتوى إلى أي مزود.'
+              : value.code === 'SENSITIVE_CONTENT_BLOCKED'
+                ? 'حُجب النص قبل الإرسال لأنه يشبه سرًا أو مفتاح وصول. عدّل المسودة ثم أعد المحاولة.'
+                : friendlyError(value);
+      sendErrorText.textContent = `${failure} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
+      retrySend.hidden = false;
+      sendError.hidden = false;
+      status.textContent = 'لم يصل رد من نموذج.';
+      if (value.code === 'PROVIDER_TIMEOUT') setComposerState('TIMEOUT', 'انتهت المهلة قبل تأكيد الرد. الحصة قد تبقى محجوزة؛ لا إعادة إرسال تلقائية.');
+      else if (value.code === 'REQUEST_CANCELLED') setComposerState('CANCELLED', 'أُوقف الطلب؛ قد يكون المزود استهلكه. بقيت المسودة في الحقل.');
+      else if (value.code === 'USAGE_LIMIT_REACHED') setComposerState('LIMIT', 'وصلت إلى حد الاستخدام المعتمد؛ الإرسال متوقف حتى تتجدد الحصة.');
+      else if (value.code === 'NO_APPROVED_MODEL' || value.code === 'PROVIDER_NOT_CONFIGURED' || value.code === 'MODEL_APPROVAL_EXPIRED') setComposerState('DISABLED', 'الإرسال متوقف: لا يوجد نموذج معتمد ومهيأ.');
+      else setComposerState('ERROR', 'تعذر إكمال الطلب. لم يُعلن نجاح ولم يُحفظ المتن.');
     })
     .finally(() => {
       controller = undefined;

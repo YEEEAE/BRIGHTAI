@@ -1,5 +1,12 @@
 -- Local migration only. Review function ownership and runtime EXECUTE grants
 -- before applying in any environment. No content or sample data is introduced.
+--
+-- HUMAN APPROVAL GATE (not satisfied by this file):
+--   1. Security/DB owner reviews the SECURITY DEFINER aggregate and its search_path.
+--   2. A named runtime login role is approved and granted EXECUTE explicitly;
+--      do not grant to PUBLIC or to `authenticated`/`anonymous` browser roles.
+--   3. Apply first to an isolated, restorable development branch, never directly
+--      to production, and keep the migration unapplied until that approval exists.
 BEGIN;
 CREATE FUNCTION public.aigas_sc_usage_window_v2(wanted_tenant uuid, wanted_user uuid)
 RETURNS TABLE(

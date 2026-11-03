@@ -173,11 +173,11 @@
 | ID | APPROVED_REQ | SOURCE_PRESENT | SCHEMA_PRESENT | BLOCKED_BY | دليل الكود |
 |---|---|---|---|---|---|
 | SC-01 | نعم | P | Y | `APPROVED_MODELS=[]`؛ لا إرسال | `secure-chat/models.mjs`, `service.mjs:sendMessage` |
-| SC-02 | نعم | Y | Y | حماية نصية أولية فقط؛ لا ادعاء DLP شامل | `secure-chat/policy.mjs:protectText` |
-| SC-03 | نعم | P | Y | محادثة مؤقتة فقط؛ لا سياسة حفظ/وصول استثنائي | `secure-chat/service.mjs` (EPHEMERAL) |
+| SC-02 | نعم | Y | Y | حماية نصية أولية فقط؛ لا ادعاء DLP شامل | `secure-chat/policy.mjs:{protectText,approvedEgress}`, `service.mjs` |
+| SC-03 | نعم | P | Y | محادثة مؤقتة فقط؛ لا سياسة حفظ/وصول استثنائي | `secure-chat/service.mjs` (EPHEMERAL + capabilities) |
 | SC-04 | نعم | Y | Y | فصل metadata عن المتن | `secure-chat/requests.mjs`, `kernel/service.mjs:audit` |
 | SC-05 | نعم | Y | Y | لا مشاركة/تصدير | لا سطح تصدير في `src/pages/app/secure-chat/` |
-| SC-06 | نعم | P | N | `0016` ناقص؛ دالة الحصة v2 غير موجودة | `secure-chat/requests.mjs:reserve` |
+| SC-06 | نعم | P | N | `0016` ناقص؛ دالة الحصة v2 غير موجودة | `secure-chat/requests.mjs:{reserve,settle,cancel}` |
 | SC-07 | نعم | Y | N | لا رفع ملفات/RAG في النطاق الحالي | `secure-chat/service.mjs` |
 
 ### 4.6 AIGAS Kernel (مكوّن مشترك غير مفوتر)

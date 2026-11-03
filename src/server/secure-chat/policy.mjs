@@ -28,6 +28,20 @@ export function protectText(text) {
   return { text: safe, redacted: safe !== text };
 }
 
+// Final, fail-closed egress gate. The same baseline runs on every request to a
+// provider, whether or not the tenant owns a Firewall licence. There is no
+// advanced inspector wired here yet; a future one may only add restrictions.
+// Re-running protection right before dispatch also catches any mutation between
+// validation and the provider call, and the returned array is frozen.
+export function approvedEgress(messages) {
+  return Object.freeze(messages.map(item => {
+    if (item.role !== 'user' && item.role !== 'assistant') {
+      throw new KernelError(422, 'SENSITIVE_CONTENT_BLOCKED', 'تعذر اجتياز فحص الخروج؛ لم يُرسل الطلب.');
+    }
+    return Object.freeze({ role: item.role, content: protectText(item.content).text });
+  }));
+}
+
 function positive(name) {
   const raw = env(name);
   if (!raw) return null;

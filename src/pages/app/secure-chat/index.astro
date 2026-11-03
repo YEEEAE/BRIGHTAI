@@ -42,12 +42,13 @@ const config = authConfig();
             <div class="composer-meta"><span id="message-limit" data-count>0 / 4000</span><span id="privacy-note">لا ترسل بيانات حساسة في هذه المرحلة.</span></div>
             <label class="synthetic-consent"><input type="checkbox" data-synthetic required /> أؤكد أن النصوص اصطناعية ولا تتضمن بيانات عميل حقيقية.</label>
             <p class="policy-note" data-policy-note></p>
+            <p class="composer-state" data-composer-state role="status" aria-live="polite" hidden></p>
             <div class="composer-actions"><button type="button" class="cancel-send" data-cancel hidden>طلب إيقاف</button><button type="submit" data-send disabled>إرسال</button></div>
           </form>
         </section>
         <aside class="chat-details" aria-label="إعدادات الجلسة">
           <div class="detail-block"><p class="overline">النموذج</p><label for="chat-model">نموذج معتمد</label><select id="chat-model" data-model disabled><option>لا يوجد نموذج متاح</option></select><p data-model-status>لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة.</p></div>
-          <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>تُحفظ معرّفات الطلب والنتيجة والاستخدام؛ لا يُحفظ المتن في سجل الأمن.</li></ul></div>
+          <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>متن المحادثة لا يظهر لمسؤول المؤسسة عبر المنتج، ولا يُرسل إلى Audit أو Analytics.</li><li>تُحفظ معرّفات الطلب والنتيجة والاستخدام؛ لا يُحفظ المتن في سجل الأمن.</li></ul></div>
           <div class="detail-block usage"><p class="overline">حدود الاستخدام</p><p><span data-usage>الرموز الفعلية: غير متاح. التكلفة: غير متاح.</span></p><p data-limits>الحصص غير مفعّلة حتى اعتمادها.</p><p>المشاركة والتصدير والملفات وRAG غير متاحة. الحفظ الدائم غير مفعّل حتى اعتماد سياسة الاحتفاظ وحماية البيانات.</p></div>
         </aside>
       </div>

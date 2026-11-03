@@ -1,3 +1,41 @@
+## [2026-11-03] — إكمال Secure Chat مع إيقاف صريح حتى اعتماد النموذج
+### تم التنفيذ
+- فُصل رفض الإرسال إلى `NO_APPROVED_MODEL` و`PROVIDER_NOT_CONFIGURED`، وأعلنت قائمة النماذج `MODEL_APPROVAL_EXPIRED` و`USAGE_POLICY_NOT_READY`، مع تدقيق بلا متن؛ `APPROVED_MODELS=[]` بقي كما هو بلا أي إرسال خارجي.
+- أُضيفت بوابة خروج نهائية `approvedEgress` تعيد فحص الرسائل وتجميدها قبل المزود ولا تعتمد على رخصة Firewall؛ الحماية الأساسية على الإدخال والمخرج قائمة.
+- صُلّبت دورة reserve/settle/cancel: لا إعادة إرسال لنفس المعرّف (بما في ذلك تصادم المفتاح المتزامن)، ولا إعادة كتابة عملية مسوّاة، وفشل التسوية يبقي الحجز ويُرجع `SETTLEMENT_UNAVAILABLE` بدل ادعاء نجاح.
+- أُعلنت قدرات مغلقة صريحة في استجابة النماذج (`sharing/export/fileUpload/rag/savedTranscripts/adminContentAccess=false` و`contentVisibility=PARTICIPANT_ONLY`)، والواجهة تتحقق من `saved/contentStored=false`.
+- الواجهة تعرض Disabled/Loading/Timeout/Cancelled/Limit/Error بالعربية، وتفرّق بين غياب النموذج وغياب الموصل وانتهاء الاعتماد.
+- `0016` بقي محليًا غير مطبق، وأُضيفت بوابات اعتماد بشرية صريحة في رأسه.
+### الملفات المتأثرة
+- `src/server/secure-chat/{adapter,policy,requests,service}.mjs`, `src/server/kernel/core.mjs`
+- `src/pages/app/secure-chat/index.astro`, `src/scripts/secure-chat.ts`, `src/styles/secure-chat.css`
+- `docs/SECURE-CHAT-DEVELOPMENT.md`, `docs/products/secure-chat/FEATURE-STATUS.yaml`, `docs/CURRENT-IMPLEMENTATION-REGISTER.md`, `migrations/0016_aigas_sc_user_token_quota.sql`
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. build/lint/typecheck/tests/Playwright/DB/Neon/متصفح: NOT RUN حسب طلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED — NOT_RUNTIME_VERIFIED؛ لا commit/push/deploy ولا كتابة إلى Neon أو GitHub.
+### ملاحظات / مشاكل مفتوحة
+- التشغيل محجوب بـ: اعتماد مزود/نموذج/منطقة/No-Training ومفتاح خادمي، تطبيق `0016` و`0017` بموافقة بشرية، وجود مستخدم/جلسة/عضوية/إتاحة منتج متحققة، ومراجعة grants/RLS.
+
+
+## [2026-11-03] — تثبيت Lazyweb MCP وحزمة مهاراته في OpenCode
+### تم التنفيذ
+- أُضيف سيرفر MCP عام في `~/.config/opencode/opencode.json` باسم `lazyweb` (`type: remote`، `https://www.lazyweb.com/mcp`، `oauth: false`، ترويسة `Authorization: Bearer`)، والتوكن محفوظ أيضًا في `~/.lazyweb/lazyweb_mcp_token` بصلاحيات `600`.
+- ثُبتت 12 مهارة Lazyweb في `~/.config/opencode/skills` (المُوجّه `lazyweb` + 8 مهارات موجّهة + 3 أسماء بديلة قديمة) بنسخها من مستودع `aboul3ata/lazyweb-skill` v0.15.14 بدل تشغيل سكربت التثبيت البعيد.
+- ثُبتت أدوات مساعدة في `~/.lazyweb/bin` مع `VERSION`؛ `lazyweb-update` جاهز للترقية دون إعادة تثبيت يدوية.
+- لم يُلمس أي ملف داخل المستودع ولا `AGENTS.md`/`CLAUDE.md` ولا إعدادات المشروع؛ التغيير كله في نطاق إعداد الوكيل العام. لا commit/push.
+### الملفات المتأثرة
+- `~/.config/opencode/opencode.json`, `~/.config/opencode/skills/lazyweb*`, `~/.lazyweb/{lazyweb_mcp_token,VERSION,bin/}`
+### التحقق
+- `opencode mcp list`: `lazyweb connected` مع بقية السيرفرات الثمانية: PASS.
+- استدعاء `lazyweb_discover_tools` و`lazyweb_get_workflows` فعليًا عبر Code Mode وإرجاع مخططات أدوات حقيقية: PASS. إصدار الحزمة المثبت = المنشور 0.15.14.
+### النتيجة
+- **الحالة:** DONE محليًا في بيئة OpenCode؛ لا تغيير في المستودع.
+### ملاحظات / مشاكل مفتوحة
+- OpenCode لا يشغّل أوامر `/<skill>` كما في Claude/Codex؛ تُستدعى المهارات بـ`@lazyweb` أو تلقائيًا عبر أداة `skill` بالمعرّف نفسه.
+- التوكن مكتوب كنص في إعداد الوكيل العام (خارج Git) لأن OpenCode لا يدعم قراءة الترويسة من ملف؛ لا تنقله إلى ملفات المشروع أو التقارير.
+- تقارير Lazyweb تكون جزئية للحساب غير Pro؛ و`lazyweb_growth_report` لا يُشغّل إلا بطلب صريح من المستخدم.
+
 ## [2026-11-03] — إكمال دورة أصل/تقييم/معالجة في Risk Engine (محلي فقط)
 ### تم التنفيذ
 - أُضيف كائن منهج معلن `METHOD` (محاور 1–3، نطاقات 1–2/3–4/6–9، معنى inherent/residual، وقيود صريحة) ويُعاد مع قائمة الأصول والتقييمات والمعالجة والتصدير؛ لا مقياس 0–100 ولا ادعاء ISO/سدايا/امتثال.
