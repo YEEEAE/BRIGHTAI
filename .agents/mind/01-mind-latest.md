@@ -1,3 +1,19 @@
+## [2026-11-03] — توحيد رموز الحركة والقراءة العربية في CSS العام
+### تم التنفيذ
+- أصبح `variables.css` المصدر الوحيد للحركة/السهولة و`theme.css` نقطة استيراد بلا تعريفات (أُزيل تكرار radius وinterior aliases). أُضيفت `--color-text-copy`, `--motion-hover:140ms`, `--motion-state:220ms`, `--transition-control`، و`--radius-system: var(--radius-control)`.
+- حُذفت رموز النوع/الزوايا الميتة غير المستخدمة (`--text-heading*`, `--leading-heading*`, `--text-display`, `--radius-nav/cards/tags`, `--font-ppneuemontreal`) بعد التأكد من صفر استدعاءات.
+- القراءة: `.page .lead` وinterior copy على alias واحد؛ `.interior-page .note` 14→15px؛ caption الخريطة وfigcaption/map-status 11→12px؛ استُبدل 15 تكرار `#bdbdbd` في `interior.css` بـ`--color-text-muted` دون تغيير القيمة.
+- العزل: `unicode-bidi: isolate` لـ`.latin` وأرقام/IDs/عناوين المنتجات اللاتينية؛ لا تقسيم حروف ولا تتبع سالب. حركة الأزرار 220→140ms عبر `--transition-control`، والهيرو محفوظ بـ`0.2s` وradius 24.
+- مراجع: 21st (Typography primitives: hierarchy = size/weight/space)؛ Lazyweb (Basedash dark dashboard: surface/border hierarchy)؛ MGD (Neon Arabic Poster, Duo Security brand guidelines للتباين)؛ Figma NOT APPLICABLE — لا fileKey/رابط تصميم في المستودع.
+### الملفات المتأثرة
+- `src/styles/{variables,theme,site,experience,interior}.css`, `src/styles/tokens.json`.
+### التحقق
+- `tokens.json` JSON صالح و`git diff --check`: PASS. Chrome محلي 1440/390/320 على `/`, `/products/`, `/products/firewall/`, `/docs/`: لا تجاوز أفقي؛ الهيرو/الهيدر/Constellation بلا تغيير (H1 54px@390، زر Hero radius 24 و0.2s)؛ reduced-motion يعطي 0ms. build/tests/نشر: NOT RUN بطلب الدفعة.
+### النتيجة
+- **الحالة:** DONE محليًا — NOT_RUNTIME_VERIFIED؛ لا commit/push/deploy.
+### ملاحظات / مشاكل مفتوحة
+- `docs/BRAND-AND-DESIGN-SYSTEM.md` يذكر تضارب radius قديم لم يعد قائمًا؛ تحديثه يحتاج دفعة توثيق منفصلة. الفحص البصري عيّنة لا تغطية شاملة.
+
 ## [2026-11-03] — جرد UI محمي وتحسين دلالي محدود لفهرس المنتجات
 ### تم التنفيذ
 - أضيف `ui_batch_baseline` إلى Registry: توسيع 5 منتجات/4 قطاعات/3 أركان و12 مقالاً، ملكية CSS والمكونات المشتركة، وترتيب أقسام الصفحات الأربع وحدود التجميد للدفعات التالية. صُحح عداد ملفات API في السجل إلى 29؛ لا تغيير API.

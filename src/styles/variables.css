@@ -25,6 +25,9 @@
   --color-text: var(--color-bone-white);
   --color-text-muted: var(--color-silver-mist);
   --color-text-subtle: var(--color-ash-gray);
+  /* Long-form copy sits one step above muted silver so 16–18px Arabic
+     paragraphs keep a measured, non-grey reading colour. */
+  --color-text-copy: #c6c1cf;
   --text-secondary: var(--color-text-muted);
 
   --border-subtle: #292630;
@@ -69,8 +72,6 @@
   --font-arabic: 'Plex Arabic', 'IBM Plex Sans Arabic', Arial, sans-serif;
   --font-latin: 'Plex Arabic', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --font-monospace: ui-monospace, SFMono-Regular, Menlo, monospace;
-  /* Kept for existing references; the loaded family is Plex Arabic. */
-  --font-ppneuemontreal: var(--font-latin);
 
   /* — Typography — Arabic scale, locked to the values already in use — */
   --type-display: clamp(48px, 7.1vw, 102px);
@@ -98,35 +99,6 @@
   --tracking-latin-label: 0.05em;
   --measure-reading: 66ch;
   --measure-lead: 62ch;
-
-  /* Legacy scale names retained for reference; do not apply negative
-     tracking to Arabic text — these are now neutral. */
-  --text-caption: var(--type-caption);
-  --leading-caption: 1.5;
-  --text-nav-label: var(--type-label);
-  --leading-nav-label: 1.2;
-  --tracking-nav-label: 0;
-  --text-body: var(--type-body);
-  --leading-body: 1.5;
-  --text-heading-2xs: 24px;
-  --leading-heading-2xs: 1.25;
-  --tracking-heading-2xs: 0;
-  --text-heading-xs: 27px;
-  --leading-heading-xs: 1;
-  --text-subheading: 36px;
-  --leading-subheading: 1.2;
-  --text-heading-sm: 42px;
-  --leading-heading-sm: 1.2;
-  --tracking-heading-sm: 0;
-  --text-heading: 48px;
-  --leading-heading: 1.1;
-  --tracking-heading: 0;
-  --text-heading-lg: 78px;
-  --leading-heading-lg: 1.1;
-  --tracking-heading-lg: 0;
-  --text-display: 113px;
-  --leading-display: 1.1;
-  --tracking-display: 0;
 
   /* Typography — Weights */
   --font-weight-extralight: 200;
@@ -157,13 +129,24 @@
   --radius-3xl: 24px;
   --radius-full: 9999px;
 
-  /* Named Radii */
-  --radius-nav: 24px;
-  --radius-tags: 9999px;
-  --radius-cards: 24px;
+  /* Named Radii. --radius-control is the single button/control geometry;
+     the hero keeps its own --radius-buttons value without a second rule. */
   --radius-buttons: 24px;
   --radius-content: 12px;
-  --radius-system: 8px;
+  --radius-system: var(--radius-control);
+
+  /* — Motion — hover/press 120–160ms, state 180–260ms, reveal 350–480ms — */
+  --motion-fast: 120ms;
+  --motion-hover: 140ms;
+  --motion-state: 220ms;
+  --motion-normal: var(--motion-state);
+  --motion-reveal: 480ms;
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  /* One control transition; colour and lift share the same timing. */
+  --transition-control: transform var(--motion-hover) var(--ease-out),
+    filter var(--motion-hover) var(--ease-out),
+    background-color var(--motion-hover) var(--ease-out),
+    border-color var(--motion-hover) var(--ease-out);
 
   /* Surfaces */
   --surface-void-canvas: var(--color-void);
@@ -178,14 +161,14 @@
   --interior-surface-hover: #17121f;
   --interior-border: #302a39;
   --interior-text: #f4f1f8;
-  --interior-copy: #c6c1cf;
+  --interior-copy: var(--color-text-copy);
   --interior-accent: var(--color-action);
   --interior-focus: var(--color-focus);
   --interior-success: var(--state-success);
   --interior-error: var(--state-error);
   --interior-radius-system: var(--radius-system);
   --interior-radius-content: var(--radius-content);
-  --interior-fast: 140ms;
-  --interior-state: 220ms;
+  --interior-fast: var(--motion-hover);
+  --interior-state: var(--motion-state);
   --interior-reveal: 440ms;
 }

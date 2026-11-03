@@ -1,25 +1,6 @@
 /* Homepage theme layer.
-   Primitives and the Arabic type scale live in variables.css only; this file
-   used to repeat every colour and heading size, which let the homepage drift
-   away from the rest of the site. It now carries homepage/interior aliases
-   only, so there is one definition per token. */
-:root {
-  /* Interior radii — aliases only; the homepage keeps its existing geometry. */
-  --radius-system: 8px;
-  --radius-content: 12px;
-}
-
-/* Interior-only aliases. Scoped away from the homepage hero and shared shell. */
-.interior-page,
-.kernel {
-  --interior-surface: #0e0b14;
-  --interior-surface-hover: #17121f;
-  --interior-border: #302a39;
-  --interior-text: #f4f1f8;
-  --interior-copy: #c6c1cf;
-  --interior-accent: var(--color-action);
-  --interior-focus: var(--color-focus);
-  --interior-fast: 140ms;
-  --interior-state: 220ms;
-  --interior-reveal: 440ms;
-}
+   Primitives, the Arabic type scale, interior aliases and motion live in
+   variables.css only. This file used to repeat the palette, radius values and
+   the interior alias block, which let the homepage drift from interior pages.
+   It is kept as the homepage's explicit import point so index.astro can keep
+   loading a theme layer without a second definition of any token. */

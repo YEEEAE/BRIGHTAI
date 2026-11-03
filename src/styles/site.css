@@ -18,10 +18,12 @@ p { text-wrap: pretty; }
 .wrap { width: min(var(--page-max-width), calc(100% - 96px)); margin-inline: auto; }
 .section { padding-block: var(--spacing-96); }
 .eyebrow { color: var(--state-warning-text); font-size: var(--type-label); font-weight: 400; margin-bottom: 24px; }
-/* Latin-only strings keep their own tracking; Arabic never receives it. */
-.latin { font-family: var(--font-latin); letter-spacing: .08em; font-size: var(--type-caption); }
+/* Latin-only strings keep their own tracking; Arabic never receives it.
+   Isolation keeps mixed Arabic/identifier runs in reading order without
+   splitting glyphs. */
+.latin { font-family: var(--font-latin); letter-spacing: .08em; font-size: var(--type-caption); unicode-bidi: isolate; }
 .muted { color: var(--color-text-muted); }
-.button { display: inline-flex; justify-content: center; align-items: center; gap: 16px; background: var(--color-action); color: var(--color-action-contrast); padding: 12px 24px; border: 0; border-radius: var(--radius-control); min-height: 48px; font-size: var(--type-label); font-weight: var(--font-weight-semibold); cursor: pointer; transition: transform var(--motion-normal, .2s), filter var(--motion-normal, .2s), background-color var(--motion-normal, .2s); }
+.button { display: inline-flex; justify-content: center; align-items: center; gap: 16px; background: var(--color-action); color: var(--color-action-contrast); padding: 12px 24px; border: 0; border-radius: var(--radius-control); min-height: 48px; font-size: var(--type-label); font-weight: var(--font-weight-semibold); cursor: pointer; transition: var(--transition-control); }
 .button:hover { background: var(--color-action-hover); filter: brightness(1.12); transform: translateY(-2px); }
 .button:active { transform: translateY(0); }
 /* One visible, non-colour-only disabled/loading treatment for every control:

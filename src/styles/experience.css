@@ -1,10 +1,6 @@
 /* Shared visual grammar: precise routes, open editorial space, restrained depth. */
-/* Aliases only — the palette and Arabic scale come from variables.css. */
+/* Aliases only — the palette, Arabic scale and motion come from variables.css. */
 :root {
-  --motion-fast: 120ms;
-  --motion-normal: 220ms;
-  --motion-reveal: 480ms;
-  --ease-out: cubic-bezier(.2,.7,.2,1);
   --diagram-radius: 10px;
 }
 /* Preserve the existing homepage header typography and interactions. */
@@ -26,7 +22,7 @@ select { font: inherit; }
 @keyframes draw-route { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 .motion-enter { animation: section-in var(--motion-reveal) var(--ease-out) both; }
 h1 { animation: title-in var(--motion-reveal) var(--ease-out); }
-.button { transition: transform var(--motion-normal), filter var(--motion-normal), background-color var(--motion-normal); }
+.button { transition: var(--transition-control); }
 .button span,main .ghost span,.node-arrow { display: inline-block; transition: transform var(--motion-normal) var(--ease-out); }
 main :is(.button,.ghost):is(:hover,:focus-visible) span { transform: translate(-3px,-1px); }
 .product-icon { flex: 0 0 auto; inline-size: var(--icon-size, 40px); block-size: var(--icon-size, 40px); color: var(--icon-accent); transition: transform var(--motion-normal); }
@@ -34,7 +30,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 .eyebrow { font-size: 13px; }
 .page { padding-block-start: 24px; }
 .page h1 { max-inline-size: 1000px; font-size: var(--type-h1); line-height: var(--leading-ar-h1); margin-block: 48px 24px; }
-.page .lead { color: #c5c2cf; font-size: var(--type-lead); line-height: var(--leading-ar-lead); max-inline-size: 760px; }
+.page .lead { color: var(--color-text-copy); font-size: var(--type-lead); line-height: var(--leading-ar-lead); max-inline-size: 760px; }
 .page .breadcrumb { padding-block: 8px 20px; border-bottom: 1px solid var(--line-soft); }
 .page .note { line-height: 1.9; max-inline-size: 850px; }
 .page .block { padding-block: clamp(44px,7vw,92px); }
@@ -60,7 +56,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 /* Static HTML diagram with navigable nodes, no canvas or rendering dependency. */
 .system-map { margin: 0; border: 1px solid #332b43; background: radial-gradient(ellipse at 50% 50%,#20133988,transparent 65%),#08070b; border-radius: var(--diagram-radius); overflow: hidden; }
 .map-caption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 20px 24px; border-bottom: 1px solid #292132; color: #cbc4d7; font-size: 12px; }
-.map-status { color: #ffcc6b; font-size: 11px; }
+.map-status { color: #ffcc6b; font-size: 12px; }
 .map-status::before { content: '◈'; margin-inline-end: 7px; }
 .map-space { position: relative; aspect-ratio: 600/540; container-type: inline-size; }
 .map-wires { position: absolute; inset: 0; width: 100%; height: 100%; color: #71529a; }
@@ -81,7 +77,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 .node-2 { inset-block-end: 7%; inset-inline-start: 12%; }
 .node-3 { inset-block-end: 7%; inset-inline-end: 12%; }
 .node-4 { inset-block-start: 30%; inset-inline-end: 3%; }
-.system-map figcaption { font-size: 11px; line-height: 1.9; color: #a9a2b1; padding: 16px 24px; border-top: 1px solid #292132; }
+.system-map figcaption { font-size: 12px; line-height: 1.9; color: #a9a2b1; padding: 16px 24px; border-top: 1px solid #292132; }
 .system-map.compact { max-inline-size: 720px; margin-inline: auto; }
 /* Product stories share a visual grammar, but their compositions follow meaning. */
 .product-intro { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(220px,.6fr); gap: 60px; align-items: end; padding-block: 24px 60px; }
@@ -149,7 +145,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 .sector-visual { background: radial-gradient(ellipse at 50% 50%,#27163688,transparent 70%); border-block: 1px solid #392d40; padding: 36px; }
 .sector-visual .context-label { display: block; font-size: 12px; color: #b9a0d4; margin-bottom: 24px; }
 .context-route { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
-.context-route li { padding: 16px; border-inline-start: 2px solid #8052ff; background: #140e1b; font-size: 17px; }
+.context-route li { padding: 16px; border-inline-start: 2px solid var(--color-action); background: #140e1b; font-size: 17px; }
 .context-route li:nth-child(2) { margin-inline-start: 24px; border-color: #c99c47; }
 .context-route li:nth-child(3) { margin-inline-start: 48px; }
 .context-route small { display: block; color: #b3a9bd; font-size: 12px; margin-top: 6px; }
@@ -157,7 +153,7 @@ a:hover .product-icon { transform: translateY(-3px); }
 .pillar-number { font: 200 clamp(70px,12vw,150px)/1.2 monospace; color: #72529c; }
 .pillar-manifesto h1 { margin-top: 0; }
 .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-.quote-grid .quote-scope { background: #100c16; border-top: 2px solid #8052ff; padding: 32px; }
+.quote-grid .quote-scope { background: #100c16; border-top: 2px solid var(--color-action); padding: 32px; }
 .quote-scope h2 { font-size: 26px; margin-bottom: 20px; }
 .quote-scope li { margin-block: 12px; color: #c2b9ca; }
 .quote-scope .button { margin-top: 24px; }
@@ -212,7 +208,7 @@ a:hover .product-icon { transform: translateY(-3px); }
   [style*="view-transition-name:product-"] { view-transition-name: none !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root { --motion-fast: 0ms; --motion-normal: 0ms; --motion-reveal: 0ms; }
+  :root { --motion-fast: 0ms; --motion-hover: 0ms; --motion-normal: 0ms; --motion-state: 0ms; --motion-reveal: 0ms; }
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) { animation: none !important; }
   h1,.motion-enter { animation: none; opacity: 1; transform: none; }
   .system-map:is(:hover,:focus-within) .map-path { animation: none; }
