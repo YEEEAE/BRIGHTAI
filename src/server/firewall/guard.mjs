@@ -1,4 +1,5 @@
 import { approvedProvider, PROVIDER_TIMEOUT_MS } from './provider.mjs';
+import { policyReference, decisionFingerprint } from './binding.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fingerprint = /^[0-9a-f]{64}$/;
@@ -9,7 +10,7 @@ const policyVersionFormat = /^[a-zA-Z0-9_.:-]{1,120}$/;
 // client decision token, arbitrary URL, alternate prompt or provider override.
 // Fail-closed order: Kernel ALLOW + durable binding are required before any
 // provider lookup, and only ALLOW/REDACT may cross the provider boundary.
-export async function enforceDecision({ decision, tenantId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation }) {
+export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation }) {
   const base = {
     decision,
     policy: kernelPolicy ? { decision: kernelPolicy.decision, reason: kernelPolicy.reason, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
@@ -48,10 +49,19 @@ export async function enforceDecision({ decision, tenantId, requestId, policyVer
     return { ...base, httpStatus: 409, code: 'KERNEL_POLICY_REQUIRED', message: 'لا يوجد قرار Kernel ALLOW صالح لهذه العملية؛ لم يُرسل الطلب.' };
   }
   // The durable decision must carry an intact tenant/policy/request binding.
-  // A missing or malformed binding is a server integrity failure, not an allow.
-  if (!uuid.test(tenantId ?? '') || !uuid.test(requestId ?? '') || !policyVersionFormat.test(policyVersion ?? '')
-    || !fingerprint.test(requestFingerprint ?? '')) {
+  // Recompute both the Kernel policy reference and the fingerprint from the actual
+  // policy evidence/outcome: a mismatch is a server integrity failure, not an allow.
+  if (!uuid.test(tenantId ?? '') || !uuid.test(actorUserId ?? '') || !uuid.test(requestId ?? '')
+    || !policyVersionFormat.test(policyVersion ?? '') || !fingerprint.test(requestFingerprint ?? '')) {
     return { ...base, httpStatus: 503, code: 'EXECUTION_BINDING_REQUIRED', message: 'تعذر التحقق من ربط القرار بالطلب والنسخة السياسية؛ لم يُرسل الطلب.' };
+  }
+  const expectedPolicy = policyReference(kernelPolicy);
+  const expectedFingerprint = decisionFingerprint({
+    tenantId, actorUserId, requestId, policyVersion: expectedPolicy, enforced: true,
+    result: { action: decision.action, reason: decision.reason, rule_id: decision.rule_id ?? null, rule_version: decision.rule_version ?? null },
+  });
+  if (policyVersion !== expectedPolicy || requestFingerprint !== expectedFingerprint) {
+    return { ...base, httpStatus: 503, code: 'EXECUTION_BINDING_MISMATCH', message: 'بصمة القرار أو نسخة السياسة لا تطابق الطلب المحفوظ؛ لم يُرسل الطلب.' };
   }
   const provider = approvedProvider(tenantId);
   if (!provider) return { ...base, httpStatus: 503, code: 'PROVIDER_NOT_CONFIGURED', message: 'حُفظ قرار السياسة، لكن لا توجد جهة AI معتمدة ومهيأة لهذه المؤسسة؛ لم يُرسل الطلب.' };

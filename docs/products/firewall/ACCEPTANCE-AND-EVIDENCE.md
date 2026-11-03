@@ -228,7 +228,8 @@ Firewall-Release-Evidence/<release-id>/
 - التقييم والتنفيذ مساران منفصلان: `/app/api/firewall/evaluate/` لا ينفذ، و`/app/api/firewall/guarded-executions/` وحده يمرر بعد قرار Kernel `ALLOW` وتدقيق إلزامي داخل المعاملة نفسها.
 - كل قرار `GUARD` يُربط بمعرّف مؤسسة، ومعرّف طلب UUID لمرة واحدة، ونسخة سياسة Kernel، وبصمة قرار محفوظة. إعادة استخدام المعرّف تعيد `409` ولا تنفذ العملية مرة أخرى؛ ولا يُحفظ النص أو بصمته.
 - سجل المزودين المعتمدين وسجل تكامل Human Gate فارغان عمدًا: `PROVIDER_NOT_CONFIGURED` يمنع الإرسال، و`HUMAN_GATE_NOT_CONFIGURED` يوقف `ESCALATE` دون إنشاء طلب أو استدعاء مزود.
-- هذه الحالة `SOURCE_PRESENT` فقط. لم يُشغّل build أو tests أو typecheck، ولم يُطبّق أي ترحيل على Neon ولم يحدث نشر. جميع معايير القبول أعلاه تبقى `NOT_VERIFIED`.
+- طُبّق على Neon `production` في 2026-11-03 بتفويض صريح من المالك: `0012_aigas_firewall_five_state_upgrade.sql` (ترقية المخطط القديم ثلاثي الحالات) و`0010_aigas_kernel_policy_hierarchy.sql`. كانت القاعدة قبل الترحيل وبعده بلا مؤسسات أو قواعد أو قرارات أو سياسات؛ لم تُحوّل أو تُحذف بيانات تطبيق. `0011` لم يُطبّق لأنه غير لازم لهذه القاعدة.
+- هذه الحالة `SOURCE_PRESENT` مع مخطط مطبّق فقط. لم يُشغّل build أو tests أو typecheck، ولم يحدث نشر، ولم يُتحقق من runtime role grants/RLS أو جلسة حقيقية. جميع معايير القبول أعلاه تبقى `NOT_VERIFIED`.
 
 ## 10. متطلبات ربط سجل الحالة
 

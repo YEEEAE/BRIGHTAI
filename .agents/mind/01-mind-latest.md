@@ -1,3 +1,34 @@
+## [2026-11-03] — ترحيل Firewall وهرمية السياسات على Neon production
+### تم التنفيذ
+- فحص Neon أظهر أن جداول Firewall موجودة بمخطط قديم ثلاثي (`ALLOW/BLOCK/REDACT` و`RULE_BLOCK`) وأن `0011` لا ينطبق؛ أُضيف `0012_aigas_firewall_five_state_upgrade.sql` يحوّل `BLOCK→DENY` و`RULE_BLOCK→RULE_DENY`، ويضيف قيود الحالات الخمس و`policy_version`/`request_fingerprint` (فحص وجود البصمة `NOT VALID` للصفوف القديمة).
+- طُبّق `0012` ثم `0010` داخل معاملتين على `production` بتفويض صريح من المالك؛ أصبح عدد جداول public 31 مع جداول هرمية السياسات وRLS والـtriggers. لم يُطبّق `0011` لأنه غير لازم.
+- القاعدة كانت وما زالت بلا مؤسسات أو قواعد أو قرارات أو سياسات (0)؛ لم تُنشأ أو تُحوّل أو تُحذف بيانات تطبيق.
+### الملفات المتأثرة
+- `migrations/0012_aigas_firewall_five_state_upgrade.sql` (جديد)، وسم 0002، `docs/FIREWALL-DEVELOPMENT.md`، `docs/products/firewall/ACCEPTANCE-AND-EVIDENCE.md`
+### التحقق
+- استعلامات كتالوج بعد الترحيل للأعمدة والقيود والدوال والـtriggers وRLS: PASS؛ عدّ البيانات 0: PASS. build/tests/typecheck/تشغيل التطبيق: NOT RUN.
+### النتيجة
+- **الحالة:** DONE للترحيل على production؛ runtime role/RLS وجلسة فعلية والنشر NOT VERIFIED.
+### ملاحظات / مفتوحة
+- التنفيذ الخارجي يبقى محجوبًا: لا سياسة Enterprise ALLOW منشورة (أي GUARD يعود DENY/KERNEL_POLICY_DENIED) ولا مزود معتمد ولا تكامل Human Gate. يلزم التحقق من صلاحيات دور runtime واختبار تطبيق فعلي.
+
+## [2026-11-03] — Firewall: ربط قرار التنفيذ وبصمة الطلب وتكامل المراجعة المغلق
+### تم التنفيذ
+- فُصل المساران صراحةً: `/evaluate/` تقييم نظري `LAB` لا ينفذ، و`/guarded-executions/` وحده `GUARD`. كل قرار GUARD يُحفظ مع `policy_version` (مرجع مجمّع لنسخ/بصمات سياسات Kernel) و`request_fingerprint` = SHA-256 على المؤسسة والفاعل ومعرّف الطلب UUID ونسخة السياسة ونتيجة القرار، دون النص أو بصمته.
+- الـguard يعيد حساب مرجع السياسة والبصمة من أدلة السياسة الفعلية ويرفض `EXECUTION_BINDING_MISMATCH`، ويتطلب Kernel `ALLOW` وربطًا صالحًا قبل البحث عن مزود؛ المزود ما زال registry فارغًا فيرجع `PROVIDER_NOT_CONFIGURED`، ومهلة 15s افتراض محلي غير معتمد.
+- idempotency: فحص مسبق تحت قفل المؤسسة؛ إعادة نفس البصمة ترجع 409 `REQUEST_ALREADY_EVALUATED`، وإعادة استخدام UUID لقرار مختلف ترجع 409 `REQUEST_ID_CONFLICT`، ولا يُعاد التنفيذ في الحالتين.
+- `ESCALATE` يوقف قبل المزود؛ سجل تكامل Human Gate فارغ عمدًا (لا عملية معتمدة ولا عقد حمولة للمراجعة) فترجع 409 `HUMAN_GATE_NOT_CONFIGURED` دون إنشاء طلب، مع مسار 202 `REVIEW_PENDING` محفوظ لتكامل معتمد مستقبلي. دليل Ledger الإلزامي ما زال داخل نفس المعاملة قبل أي إرسال.
+- أضيف `migrations/0011_aigas_firewall_execution_binding.sql` كترحيل ترقية محلي غير مطبق، وحُدّث 0002 fresh-install بالعمودين؛ لم يُنفّذ SQL أو build/tests/typecheck أو نشر.
+### الملفات المتأثرة
+- `src/server/firewall/{binding,guard,provider,service,escalation,core}.mjs`, `src/server/ledger/core.mjs`, `src/scripts/firewall.ts`, `src/pages/app/firewall/index.astro`
+- `migrations/{0002_aigas_firewall,0011_aigas_firewall_execution_binding}.sql`, `docs/FIREWALL-DEVELOPMENT.md`, `docs/products/firewall/ACCEPTANCE-AND-EVIDENCE.md`
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة و`git diff --check`: PASS. build/tests/lint/typecheck/DB/متصفح: NOT RUN بطلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED NOT RUNTIME VERIFIED؛ لا commit/push/deploy ولا تطبيق Neon.
+### ملاحظات / مشاكل مفتوحة
+- تفعيل الإرسال يحتاج مزودًا معتمدًا (نموذج/منطقة/عدم تدريب/مرجع اعتماد) ومراجعة مهلة، وتفعيل ESCALATE يحتاج عملية Human Gate معتمدة وعقد حمولة لا يخزن النص. ترحيل 0011 و0002 وruntime grants/RLS غير متحققين.
+
 ## [2026-11-03] — Firewall: خمس حالات قرار وإدارة قواعد كاملة محليًا
 ### تم التنفيذ
 - وُحّدت حالات القرار إلى `ALLOW/WARN/REDACT/ESCALATE/DENY` بترتيب دفاعي `DENY>ESCALATE>REDACT>WARN>ALLOW`؛ `WARN` و`ESCALATE` لا يمرران في مسار الإنفاذ، وسياسة Kernel غير `ALLOW` تصبح `DENY/KERNEL_POLICY_DENIED`. `ESCALATE` يقابل `REQUEST_APPROVAL` و`DENY` يقابل `BLOCK` في وصف المنتج.
@@ -436,8 +467,8 @@
 - أحدث Risk Engine في السجل الأعلى: معالجة بإصدارات ومراجع وتصدير محلي دون تشغيل فحوص؛ أدلة Risk Engine السابقة HISTORICAL ولا تثبت هذه النسخة. 0008 غير مطبق إضافةً إلى 0005.
 - أحدث Human Gate في السجل الأعلى: تغيير اسم مساحة Kernel بربط المهمة ومهلة واستهلاك ذري، دون تحقق runtime أو نشر؛ الأدلة السابقة HISTORICAL.
 - Ledger الحالي موصوف في السجل الأعلى: تكامل أحداث داخلي وchain-v2 وفاحص مستقل محليًا دون تشغيل؛ أدلة Ledger القديمة HISTORICAL ولا تثبت هذا التغيير.
-- أحدث Firewall في السجل الأعلى: خمس حالات قرار محليًا مع نسخ/حذف محكوم وحد تقييم، و0002 رُوجع بخمس حالات لكنه غير مطبق؛ أدلة البناء/DB الأقدم HISTORICAL. سجل القرار ليس إثبات تسليم للمزود، واختبارات Firewall لم تُحدّث أو تُشغّل.
-- Neon VERIFIED 2026-11-01: `young-frog-60183055` / `neondb`، الفرع الوحيد `production` / `br-young-bird-b43proeb` غير محمي؛ 11 جدول public. 0001 مطبق سابقًا؛ 0004/0006/0007 طُبقت بإذن المالك الصريح في مهمة Human Gate. 0002/0003/0005 غير مطبقة، ولا هدف تطوير معتمد. لا grants أو سياسات Human Gate مزروعة.
+- أحدث Firewall في السجل الأعلى: قرار GUARD مربوط بمؤسسة وفاعل وUUID طلب لمرة واحدة ونسخة سياسة Kernel وبصمة قرار محفوظة؛ الـguard يعيد الحساب ويرفض عدم التطابق. registry المزود وتكامل Human Gate فارغان عمدًا (`PROVIDER_NOT_CONFIGURED` / `HUMAN_GATE_NOT_CONFIGURED`)، و0011 ترحيل محلي غير مطبق. سجل القرار ليس إثبات تسليم للمزود، واختبارات Firewall لم تُحدّث أو تُشغّل.
+- Neon VERIFIED 2026-11-03: `young-frog-60183055` / `neondb`، الفرع الوحيد `production` / `br-young-bird-b43proeb` غير محمي. 31 جدول public بعد تطبيق `0012` (ترقية Firewall من المخطط الثلاثي) و`0010` (هرمية السياسات)؛ 0001/0003/0004/0005/0006/0007/0008/0009 مطبقة، و0011 غير مطبق لأنه غير لازم. المؤسسات والقواعد والقرارات والسياسات = 0؛ لا grants أو سياسات مزروعة. runtime role/RLS والنشر NOT VERIFIED.
 - إدارة Kernel المحلية تتطلب grant إداري ADMIN_NON_BILLED ساريًا مستقلًا عن status؛ تُعرض حالات EXPIRED/REVOKED وتتوفر إدارة أدوار Kernel والسحب محليًا، مع حماية آخر OWNER. سجل Kernel الأساسي يحفظ الحد الأدنى مستقلًا عن Ledger. أولوية الإتاحة المشتركة تشترط العضوية والتمكين والمنحة ومخطط المنتج. هرمية السياسات المركزية لها أساس محلي: ترحيل 0010، API دورة نشر وتقييم خادمي لمسار Firewall المحمي فقط، وواجهة أولية للمسودات والإدارات والتفويض؛ تحرير النسخ والتاريخ التفصيلي وبعض سياقات المنتج، تشغيل RLS، والتحقق الفعلي ما زالت غير مكتملة. لا سياسة افتراضية مزروعة ولا ترحيل مطبق على Neon. إلغاء دعوة Neon Auth نفسها غير متاح في واجهة Kernel؛ لا اشتراك أو Trial أو مزود AI معتمد حاليًا. جلسة Neon Auth حقيقية وعزل حسابين وruntime grants/RLS والنشر الحالي NOT VERIFIED.
 - `/app/*` في المصدر Node SSR مع `private, no-store`؛ `render.yaml` يشير لخدمة Node وentrypoint standalone. فحص Chrome في 2026-11-03 أظهر 404 حيًا على `/app/`؛ علاج المصدر محلي فقط ومغلق افتراضيًا بمتغير `AIGAS_APP_ENABLED`. يلزم نشر مصرح وتغيير origin وإتاحة خادمية قبل ادعاء التشغيل.
 - Hero الرئيسية وConstellation دون تغيير. هيدر الجوال يستخدم الآن قائمة disclosure بالروابط نفسها؛ الفهرس الثابت يتحول للتدفق الطبيعي حتى 767px. الشعار عبر brand.ts وBrandLogo.astro، وGA4 العام في BaseLayout.

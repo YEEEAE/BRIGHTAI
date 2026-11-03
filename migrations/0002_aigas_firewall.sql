@@ -1,4 +1,6 @@
--- REVIEW ONLY: not applied to Neon. Requires Kernel 0001. Approve an isolated dev branch/target first.
+-- REVIEW ONLY: fresh installs only. Requires Kernel 0001. The current Neon `production`
+-- database was upgraded in place from the legacy three-state revision by
+-- 0012_aigas_firewall_five_state_upgrade.sql on 2026-11-03; do not run this file there.
 -- Changes in this revision (2026-11-01): editable literal rules, per-tenant unique name,
 -- priority ordering, protected templates, metadata-only LAB/GUARD decisions,
 -- strict enforcement defaults and per-tenant request replay protection.

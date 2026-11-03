@@ -447,6 +447,7 @@ export function createUI(React) {
         '--tl-safe-left': `${inset.left}px`,
       },
     },
+      h('style', null, CSS),
       h('canvas', {
         ref: canvasRef,
         className: 'tl-canvas',
