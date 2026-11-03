@@ -620,3 +620,65 @@
   .interior-products-index .catalog-row:is(:hover,:focus-visible) .catalog-icon-frame,
   .interior-products-index .catalog-row:is(:hover,:focus-visible) .catalog-arrow { transform: none; }
 }
+
+/* 10 — Shared state language for interior surfaces. Marketing cards stay quiet
+   containers; only rows and cards that really link somewhere answer the pointer.
+   Every rule is scoped to .interior-page, so Header, Hero and Constellation are
+   out of reach. */
+.interior-page .card {
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius-lg);
+  background: var(--ui-panel);
+  box-shadow: inset 0 1px 0 #ffffff06;
+}
+.interior-page .card :is(p, li) { color: var(--ui-copy); }
+.interior-page .card.featured { border-color: var(--ui-violet); }
+
+/* Icon/typography alignment inside the existing experience bar and mastheads. */
+.interior-page .experience-bar > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.6;
+}
+.interior-page .experience-bar > span:first-child .product-icon { flex: none; }
+.interior-page :is(.product-mark, .catalog-icon-frame, .evidence-seal) { line-height: 0; }
+.interior-page .product-meta .ghost { gap: 8px; }
+
+/* Primary / secondary / ghost share height, radius and a real focus ring. */
+.interior-page :is(.button, .ghost):focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 3px;
+}
+.interior-page .ghost {
+  min-block-size: 44px;
+  border-radius: var(--ui-radius);
+  padding-inline: 2px;
+}
+.interior-page .ghost:is(:hover, :focus-visible) { color: var(--ui-amber); }
+.interior-page .button:is(:disabled, [aria-disabled='true']) { transform: none; filter: none; }
+.interior-page .button:is(:disabled, [aria-disabled='true']):hover {
+  background: var(--state-disabled);
+  border-color: transparent;
+  transform: none;
+}
+
+/* Status is never colour alone: a written label plus a small shape marker. */
+.interior-page .map-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.interior-page .map-status::before {
+  content: '';
+  inline-size: 6px;
+  block-size: 6px;
+  flex: none;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interior-page .card,
+  .interior-page .catalog-row { transition: none; }
+}

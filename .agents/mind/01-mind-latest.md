@@ -1,3 +1,22 @@
+## [2026-11-03] — توحيد أيقونات المنتج/المعرفة وحالات الأسطح والأزرار في صفحات الداخل
+### تم التنفيذ
+- وُحّد الرمز البصري: `ProductIcon` و`KnowledgeIcon` على شبكة 24 و`vector-effect="non-scaling-stroke"` بعرض 1.6px، فبقي السطر نفسه عند 24 و34 و46px بدل أن يثقل مع التكبير؛ `KnowledgeIcon` صار يقبل 16/20/24/32 و`label` اختياريًا. لم يُستخدم درع العلامة كأيقونة قسم.
+- صُقلت أسطح البطاقات: بطاقات التسويق ثابتة بلا Hover، ولا تتجاوب إلا البطاقات/الصفوف التي تحتوي رابطًا فعليًا أو زرًا ممكنًا (`catalog-row`, `map-node`, `product-card`). وُحّدت نصف الأقطار على رموز `radius-*` القائمة وأضيف حد داخلي هادئ.
+- الأزرار: Primary/Secondary/Ghost على ارتفاع ولمسة تركيز متسقة، ومُنع hover/transform على المعطّل؛ تظهر حالات kernel غير المهيأة (dashed + نص) منفصلة عن الفشل الأحمر، وأضيفت أشكال صغيرة (دائرة/معيّن/مربع) لحالات `health-state` و`availability` و`connection` حتى لا يكون اللون وحده دلالة.
+- Knowledge Center: أُوقف Hover على الأزرار المعطّلة أثناء التحميل/غياب JS، ورُفع زر المسح إلى 44px، ووُحّدت radii وفواصل الحالة، وأضيف مؤشر جهة لـ`kc-product-status`. النصوص والروابط والترتيب لم تتغير.
+- MCP: 21st `Button` (originui) + `Multi state badge` + `Base Input` (variants/focus/disabled)؛ Lazyweb `eeye-digital-security` (Cybersecurity dashboard: حالة أعلى الشاشة ثم تفاصيل)؛ MGD `check` (Heroicons/Lucide، 24 grid، round caps)؛ Figma متصل لكن لا fileKey/رابط BRIGHT AI في المصدر ⇒ NOT APPLICABLE. لم يُنشأ تصميم خارجي.
+### الملفات المتأثرة
+- `src/components/ProductIcon.astro`, `src/components/KnowledgeIcon.astro`
+- `src/styles/interior.css`, `src/styles/pages.css`, `src/styles/knowledge-center.css`, `src/styles/kernel.css`
+### التحقق
+- Chrome محلي (dev 4399): `/products/`, `/products/firewall/`, `/docs/`, `/pricing/`, `/app/kernel/` عند 1440 و390 و320: لا تجاوز أفقي، لا خطأ CSS، الأيقونة 34px بسماكة 1.6، ghost 44px وحلقة تركيز 2px كهرمانية، reduced-motion = 0s. حالة البحث الفارغة تعمل بأيقونة ونص. لقطات بعد التعديل فقط؛ baseline قبل التعديل NOT CAPTURED، والمقارنة مع الإنتاج NOT RUN.
+- `git diff --check`: PASS. build/lint/tests/اختبارات آلية/نشر: NOT RUN حسب طلب الدفعة. `504 Outdated Optimize Dep` ظهر من Vite بعد HMR وليس خطأ صفحة (كل المسارات 200).
+### النتيجة
+- **الحالة:** DONE محليًا للصفحات المتاحة؛ NOT_RUNTIME_VERIFIED. لا commit/push/deploy ولا تغيير Neon/GitHub. `PageShell` بلا تعديل لأن أي تغيير فيه قد يمس فروض الصفحة المشتركة دون حاجة.
+### ملاحظات / مشاكل مفتوحة
+- الفحص البصري عيّنة لا تغطية لكل تركيبات الحالات؛ حالات `error/success` الحقيقية تحتاج بيانات تشغيل لا تتوفر محليًا. بناء الإنتاج نفسه NOT RUN.
+
+
 ## [2026-11-03] — توحيد رموز الحركة والقراءة العربية في CSS العام
 ### تم التنفيذ
 - أصبح `variables.css` المصدر الوحيد للحركة/السهولة و`theme.css` نقطة استيراد بلا تعريفات (أُزيل تكرار radius وinterior aliases). أُضيفت `--color-text-copy`, `--motion-hover:140ms`, `--motion-state:220ms`, `--transition-control`، و`--radius-system: var(--radius-control)`.

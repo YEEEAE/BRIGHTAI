@@ -51,8 +51,10 @@ const glyphs: Record<string, string[]> = {
   ],
 };
 
-/* Thicker strokes at small sizes keep the outline from dissolving. */
-const strokeWidths: Record<number, number> = { 16: 1.75, 20: 1.7, 24: 1.6, 32: 1.5, 40: 1.5 };
+/* One optical weight: 1.6px is the target on screen. The path uses
+   non-scaling-stroke so a 40px masthead glyph and a 16px sidebar glyph keep the
+   same drawn line instead of inheriting a heavier, blurrier stroke. */
+const strokeWidths: Record<number, number> = { 16: 1.75, 20: 1.7, 24: 1.6, 32: 1.6, 40: 1.6 };
 const stroke = strokeWidths[size] ?? 1.6;
 const shapes = glyphs[kind] ?? glyphs.kernel;
 ---
@@ -72,5 +74,5 @@ const shapes = glyphs[kind] ?? glyphs.kernel;
   focusable="false"
 >
   {label && <title>{label}</title>}
-  {shapes.map((d) => <path d={d} />)}
+  {shapes.map((d) => <path d={d} vector-effect="non-scaling-stroke" />)}
 </svg>

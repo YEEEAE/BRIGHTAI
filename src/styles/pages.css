@@ -158,6 +158,23 @@ details p { color: var(--color-text-muted); margin-top: 12px; line-height: var(-
   .interior-page.page-family-contact .contact-form button { inline-size: 100%; }
 }
 
+/* Marketing cards read as content, not controls. The quiet inset edge keeps
+   them distinct from the darker app panels without adding a hover state. */
+.page .card {
+  border-color: var(--border-strong);
+  box-shadow: inset 0 1px 0 #ffffff07;
+}
+.page .card h3 { letter-spacing: 0; }
+.page .card .tag { align-self: flex-start; }
+.page .card :is(.button, .ghost) { min-block-size: 44px; }
+.page .card > .ghost { margin-block-start: auto; }
+/* A card that actually wraps a link may acknowledge focus, but never lifts. */
+.page .card:has(> a[href]):focus-within {
+  border-color: var(--color-focus);
+  box-shadow: inset 0 1px 0 #ffffff07, 0 0 0 1px var(--color-focus);
+}
+.page .card:has(> a[href]):hover { border-color: var(--border-strong); }
+
 @media (prefers-reduced-motion: reduce) {
   .interior-page.page-family-knowledge .reading-nav a { transition: none; }
 }

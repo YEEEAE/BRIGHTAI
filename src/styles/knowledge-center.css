@@ -47,17 +47,20 @@
   min-block-size:44px;
   color:var(--kc-muted);
   border:1px solid var(--kc-line);
-  border-radius:7px;
+  border-radius:var(--radius-control);
   background:transparent;
   padding:8px 13px;
   transition:background 140ms,border-color 140ms,color 140ms
 }
-.kc button:hover {
+.kc button:disabled {
+  cursor:default
+}
+.kc button:not(:disabled):hover {
   background:var(--surface-raised-hover);
   color:white;
   border-color:var(--border-strong)
 }
-.kc button:active {
+.kc button:not(:disabled):active {
   transform:translateY(1px)
 }
 .kc button[aria-pressed=true] {
@@ -213,7 +216,7 @@
   align-items:center;
   gap:14px;
   border:1px solid var(--border-strong);
-  border-radius:10px;
+  border-radius:var(--radius-content);
   background:linear-gradient(115deg,var(--surface-raised),var(--surface-sunken));
   padding:15px 20px;
   min-block-size:76px
@@ -246,7 +249,7 @@
 }
 .kc-search-clear {
   flex:0 0 auto;
-  min-block-size:38px!important;
+  min-block-size:44px!important;
   padding:4px 10px!important;
   border-color:var(--border-strong)!important;
   color:white!important;
@@ -315,7 +318,7 @@
   min-block-size:44px;
   padding:8px 12px;
   border:1px solid var(--kc-line);
-  border-radius:6px;
+  border-radius:var(--radius-field);
   background:var(--surface-raised);
   color:white
 }
@@ -361,12 +364,12 @@
   gap:14px;
   padding:20px;
   border:1px solid var(--kc-line);
-  border-radius:10px;
+  border-radius:var(--radius-content);
   background:linear-gradient(110deg,var(--surface-raised),var(--surface-sunken));
   transition:border-color 140ms,background 140ms;
   min-inline-size:0
 }
-.kc-row:hover {
+.kc-row:is(:hover,:focus-within) {
   border-color:var(--border-strong)
 }
 .kc-row.is-selected {
@@ -380,7 +383,7 @@
   block-size:44px;
   background:color-mix(in srgb,var(--color-action) 12%,var(--surface-raised));
   border:1px solid var(--border-strong);
-  border-radius:8px;
+  border-radius:var(--radius-control);
   color:var(--icon-accent-strong);
   flex-shrink:0
 }
@@ -412,7 +415,7 @@
 }
 .kc-tags>span {
   padding:2px 7px;
-  border-radius:4px;
+  border-radius:6px;
   background:var(--surface-raised-hover);
   color:var(--kc-muted);
   font-size:12px
@@ -451,7 +454,7 @@
   max-block-size:calc(100dvh - 40px);
   overflow-y:auto;
   border:1px solid var(--border-strong);
-  border-radius:10px;
+  border-radius:var(--radius-content);
   padding:20px;
   background:linear-gradient(150deg,var(--surface-raised-hover),var(--surface-sunken));
   scroll-margin-block-start:20px
@@ -475,7 +478,7 @@
   place-items:center;
   block-size:120px;
   border:1px solid var(--kc-line);
-  border-radius:8px;
+  border-radius:var(--radius-control);
   margin-block-end:20px;
   color:var(--icon-accent-strong);
   background:radial-gradient(ellipse at center,color-mix(in srgb,var(--color-action) 16%,transparent),transparent)
@@ -516,7 +519,7 @@
   background:var(--color-action);
   color:white;
   padding:12px 16px;
-  border-radius:7px;
+  border-radius:var(--radius-control);
   margin-block-start:22px;
   text-align:center;
   min-block-size:48px
@@ -532,7 +535,7 @@
   padding:35px 20px;
   text-align:center;
   border:1px dashed var(--border-strong);
-  border-radius:10px
+  border-radius:var(--radius-content)
 }
 .kc .kc-empty h2 {
   font-size:22px;
@@ -545,7 +548,7 @@
 }
 .kc-product-space {
   border:1px solid var(--kc-line);
-  border-radius:10px;
+  border-radius:var(--radius-content);
   padding:20px;
   background:var(--surface-raised)
 }
@@ -592,9 +595,14 @@
   margin-block:14px 0;
   padding-block-start:12px;
   border-block-start:1px solid var(--kc-line);
+  padding-inline-start:10px;
+  border-inline-start:2px solid var(--color-saffron-spark);
   font-size:13px;
   color:var(--kc-subtle)
 }
+/* The only filled primary action in this surface answers hover/focus. */
+.kc .kc-read:is(:hover,:focus-visible) { background:var(--color-action-hover); }
+.kc-empty>svg { color:var(--icon-accent-strong); margin-inline:auto; }
 
 @media(min-width:761px) {
   .kc-sidebar:not([open])>.kc-sidebar-inner {
