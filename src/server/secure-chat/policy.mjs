@@ -43,6 +43,7 @@ export function usagePolicy() {
     tenantMinute: positive('AIGAS_SC_TENANT_REQUESTS_PER_MINUTE'),
     userDay: positive('AIGAS_SC_USER_REQUESTS_PER_DAY'),
     tenantDay: positive('AIGAS_SC_TENANT_REQUESTS_PER_DAY'),
+    userTokensDay: positive('AIGAS_SC_USER_TOKENS_PER_DAY'),
     tenantTokensDay: positive('AIGAS_SC_TENANT_TOKENS_PER_DAY'),
   };
   if (!Object.values(policy).some(Boolean)) throw new KernelError(503, 'USAGE_POLICY_INVALID', 'مرجع اعتماد الحصص موجود دون حدود؛ راجع إعداد المشغّل.');

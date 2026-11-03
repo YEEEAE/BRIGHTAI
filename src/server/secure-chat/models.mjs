@@ -5,7 +5,8 @@ export const APPROVED_MODELS = Object.freeze([]);
 // Reviewed entry contract (never populate from a browser or a free-form env):
 // id, label, tenantIds[], region, protocol='CHAT_COMPLETIONS_V1', endpoint,
 // providerModel, apiKeyEnv='AIGAS_SC_<PROVIDER>_API_KEY', maxOutputTokens,
-// maxRequestTokens (provider-enforced upper bound for input + output), timeoutMs,
+// maxRequestTokens, maxInputBytes, inputOverheadTokens (reviewed conservative
+// input/framing bounds for this exact model/protocol), timeoutMs,
 // approval: { reference, expiresAt, noTraining:true, retentionReference,
 // regionReference }. Adding an entry requires actual approvals, not this comment.
 

@@ -25,18 +25,19 @@ async function accessContext(request) {
 }
 export async function listModels(request) {
   const { tenant } = await accessContext(request);
-  const models = listApprovedModels(tenant.tenant_id).map(model => ({ id: model.id, label: model.label, region: model.region, ready: providerReady(model) }));
+  const models = listApprovedModels(tenant.tenant_id).filter(providerReady).map(model => ({ id: model.id, label: model.label, region: model.region, ready: true }));
   const policy = usagePolicy();
-  const available = models.some(model => model.ready);
+  const available = models.length > 0;
   return {
     models, available, tenant: { id: tenant.tenant_id, name: tenant.name },
     conversationMode: 'EPHEMERAL_TAB_ONLY', retention: { enabled: false, message: 'لا تُحفظ نصوص المحادثة أو مسوداتها؛ تُحفظ بيانات طلب وصفية لمنع التكرار وضبط الاستخدام. لم تعتمد سياسة حفظ المتن.' },
     policy: { version: INPUT_POLICY.version, syntheticOnly: true, message: 'نصوص اصطناعية فقط. حماية أولية محدودة تحجب الأسرار وتنقح بعض بيانات الاتصال والهوية؛ لا تضمن كشف جميع البيانات الحساسة.' },
     usage: { cost: 'غير متاح', tokens: null, limits: policy, configuredMessageCharacters: configuredMessageLimit() },
-    message: available ? 'النماذج المعتمدة والمهيأة متاحة للنصوص الاصطناعية فقط؛ كل إرسال يخضع لفحص الخادم.' : models.length ? 'النموذج معتمد لكن موصله غير مهيأ أو انتهى اعتماده؛ الإرسال موقوف.' : 'لا يوجد نموذج معتمد لهذه المؤسسة. لم يُرسل أي محتوى إلى مزود AI.',
+    availabilityCode: available ? null : 'NO_APPROVED_MODEL',
+    message: available ? 'النماذج المعتمدة والمهيأة متاحة للنصوص الاصطناعية فقط؛ كل إرسال يخضع لفحص الخادم.' : 'لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة؛ يلزم اعتماد النموذج والمنطقة ودليل عدم التدريب وإعداد الموصل. لم يُرسل أي محتوى إلى مزود AI.',
   };
 }
-function validateMessages(message, history) {
+function validateMessages(message, history, model) {
   const maxLength = configuredMessageLimit();
   if (typeof message !== 'string' || !message.trim() || Array.from(message).length > maxLength) throw new KernelError(400,'INVALID_MESSAGE',`اكتب رسالة من حرف واحد إلى ${maxLength} حرفًا.`);
   if (!Array.isArray(history) || history.length > 12 || history.length % 2) throw new KernelError(400,'INVALID_HISTORY','سياق المحادثة أكبر من الحد التقني أو غير صالح؛ ابدأ محادثة جديدة.');
@@ -52,6 +53,11 @@ function validateMessages(message, history) {
   const safe = protectText(message);
   redacted ||= safe.redacted;
   messages.push({ role:'user', content:safe.text });
+  const encoder = new TextEncoder();
+  const inputBytes = messages.reduce((sum,item) => sum + encoder.encode(item.content).byteLength,0);
+  if (inputBytes > model.maxInputBytes || inputBytes + model.inputOverheadTokens > model.maxRequestTokens - model.maxOutputTokens) {
+    throw new KernelError(413,'CONTEXT_LIMIT','تجاوز سياق الرسالة حد الإدخال المعتمد لهذا النموذج؛ لم يُرسل الطلب.');
+  }
   return { messages, redacted, submittedText:safe.text };
 }
 export async function cancelMessage(request, requestId) {
@@ -69,8 +75,8 @@ export async function sendMessage(request, body) {
     throw new KernelError(503,'NO_APPROVED_MODEL','لا يوجد نموذج معتمد؛ لم يُرسل النص إلى أي مزود ولم يُحفظ متن المحادثة.');
   }
   providerConfiguration(model);
-  const protectedInput = validateMessages(body.message,body.history ?? []);
-  // The provider must enforce the approved context/output token bounds. Neither
+  const protectedInput = validateMessages(body.message,body.history ?? [],model);
+  // Enforce conservative approved input/output bounds before dispatch. Neither
   // client roles nor model output can execute tools or change server policies.
   await reserve(identity,tenant.tenant_id,requestId,model);
   const controller = new AbortController();

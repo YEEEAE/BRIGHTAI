@@ -165,7 +165,7 @@ function applyModelAvailability(data: { models: Array<{ id: string; label?: stri
   model.value = data.models.find(item => item.id === previous && item.ready)?.id || data.models.find(item => item.ready)?.id || '';
   model.disabled = !available;
   root.querySelector('[data-policy-note]')!.textContent = data.policy?.message || '';
-  const names: Record<string,string> = {userMinute:'طلباتك خلال دقيقة',tenantMinute:'طلبات المؤسسة خلال دقيقة',userDay:'طلباتك خلال 24 ساعة',tenantDay:'طلبات المؤسسة خلال 24 ساعة',tenantTokensDay:'سقف رموز المؤسسة خلال 24 ساعة'};
+  const names: Record<string,string> = {userMinute:'طلباتك خلال دقيقة',tenantMinute:'طلبات المؤسسة خلال دقيقة',userDay:'طلباتك خلال 24 ساعة',tenantDay:'طلبات المؤسسة خلال 24 ساعة',userTokensDay:'سقف رموزك خلال 24 ساعة',tenantTokensDay:'سقف رموز المؤسسة خلال 24 ساعة'};
   root.querySelector('[data-limits]')!.textContent = data.usage?.limits ? Object.entries(data.usage.limits).filter(([,value]) => value !== null).map(([key,value]) => `${names[key]}: ${value}`).join('، ') : 'الحصص غير مفعّلة حتى اعتمادها. التكلفة غير متاحة.';
   updateSend();
   const maxLength = data.usage?.configuredMessageCharacters || 4000;

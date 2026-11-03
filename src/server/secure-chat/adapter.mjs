@@ -1,7 +1,7 @@
 import { KernelError } from '../kernel/core.mjs';
 import { env } from '../kernel/env.mjs';
 
-const unavailable = () => new KernelError(503, 'PROVIDER_NOT_CONFIGURED', 'موصل النموذج غير مهيأ أو انتهى اعتماده؛ لم يُرسل المحتوى.');
+const unavailable = () => new KernelError(503, 'NO_APPROVED_MODEL', 'لا يوجد نموذج معتمد ومهيأ لهذا الطلب؛ لم يُرسل المحتوى.');
 
 export function providerConfiguration(model) {
   // An entry is reviewed in source, including the exact destination, protocol,
@@ -13,6 +13,9 @@ export function providerConfiguration(model) {
         model.protocol !== 'CHAT_COMPLETIONS_V1' || !model.region || !model.providerModel ||
         !Number.isSafeInteger(model.maxOutputTokens) || model.maxOutputTokens < 1 ||
         !Number.isSafeInteger(model.maxRequestTokens) || model.maxRequestTokens <= model.maxOutputTokens ||
+        !Number.isSafeInteger(model.maxInputBytes) || model.maxInputBytes < 1 ||
+        !Number.isSafeInteger(model.inputOverheadTokens) || model.inputOverheadTokens < 0 ||
+        model.maxInputBytes + model.inputOverheadTokens > model.maxRequestTokens - model.maxOutputTokens ||
         !Number.isSafeInteger(model.timeoutMs) || model.timeoutMs < 1000 || model.timeoutMs > 120000 ||
         !/^AIGAS_SC_[A-Z0-9_]+_API_KEY$/.test(model.apiKeyEnv)) throw unavailable();
     const destination = new URL(model.endpoint);
@@ -47,7 +50,7 @@ async function boundedJson(response) {
 export async function complete(model, messages, signal) {
   const { endpoint, key } = providerConfiguration(model);
   // Single non-streamed request. No redirects, retries, tools or fallback.
-  // maxRequestTokens is an approved upper bound on the entire billed request.
+  // Server-side byte bounds and validated provider usage enforce the approved request ceiling.
   const response = await fetch(endpoint, {
     method: 'POST', redirect: 'error', signal,
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
@@ -61,6 +64,9 @@ export async function complete(model, messages, signal) {
       !choice.message.content.trim() || Array.from(choice.message.content).length > 16000) throw new Error('INVALID_PROVIDER_REPLY');
   const usage = body.usage;
   const valid = usage && ['prompt_tokens', 'completion_tokens', 'total_tokens'].every(k => Number.isSafeInteger(usage[k]) && usage[k] >= 0) &&
-    usage.total_tokens === usage.prompt_tokens + usage.completion_tokens && usage.total_tokens <= model.maxRequestTokens;
-  return { reply: choice.message.content, usage: valid ? { inputTokens: usage.prompt_tokens, outputTokens: usage.completion_tokens, totalTokens: usage.total_tokens } : null };
+    usage.total_tokens === usage.prompt_tokens + usage.completion_tokens &&
+    usage.prompt_tokens <= model.maxRequestTokens - model.maxOutputTokens &&
+    usage.completion_tokens <= model.maxOutputTokens && usage.total_tokens <= model.maxRequestTokens;
+  if (!valid) throw new Error('INVALID_PROVIDER_USAGE');
+  return { reply: choice.message.content, usage: { inputTokens: usage.prompt_tokens, outputTokens: usage.completion_tokens, totalTokens: usage.total_tokens } };
 }

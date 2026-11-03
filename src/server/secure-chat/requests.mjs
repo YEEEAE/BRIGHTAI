@@ -21,10 +21,11 @@ export async function reserve(identity, tenantId, id, model) {
     if (policy) {
       // Deliberate tenant-wide aggregate; no content or per-employee usage is returned.
       // Runtime role needs this reviewed aggregate access; RLS must not hide peers.
-      const row = (await db.query(`SELECT * FROM public.aigas_sc_usage_window($1,$2)`, [tenantId,identity.userId])).rows[0];
+      const row = (await db.query(`SELECT * FROM public.aigas_sc_usage_window_v2($1,$2)`, [tenantId,identity.userId])).rows[0];
       const comparisons = [[policy.userMinute,row.user_minute],[policy.tenantMinute,row.tenant_minute],[policy.userDay,row.user_day],[policy.tenantDay,row.tenant_day]];
       if (comparisons.some(([limit,count]) => limit && Number(count) >= limit) ||
-          (policy.tenantTokensDay && Number(row.token_charge) + model.maxRequestTokens > policy.tenantTokensDay)) {
+          (policy.userTokensDay && Number(row.user_token_charge) + model.maxRequestTokens > policy.userTokensDay) ||
+          (policy.tenantTokensDay && Number(row.tenant_token_charge) + model.maxRequestTokens > policy.tenantTokensDay)) {
         throw new KernelError(429, 'USAGE_LIMIT_REACHED', 'وصلت إلى حد الاستخدام المعتمد. انتظر تجدد الحصة؛ لا يوجد خصم أو ترقية تلقائية.');
       }
     }
