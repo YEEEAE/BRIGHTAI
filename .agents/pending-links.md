@@ -5,7 +5,6 @@
 - saudi-ai-ethics-principles -> saudi-ai-law-binding-vs-guidance | «راجع الفرق بين الملزم والإرشادي في ملف الذكاء الاصطناعي إذا كان هذا السؤال يهم لجنتك.»
 - saudi-ai-ethics-principles -> ai-bias-fairness | «العدالة والتحيز في أنظمة الذكاء الاصطناعي: دليل مستقل يعالج البيانات والتحيز وحدود المقاييس.»
 - saudi-ai-ethics-principles -> ai-governance-committee-raci | «مصفوفة المسؤوليات RACI تساعدك توزّع الأدوار بين الطلب والاعتماد والمراجعة.»
-- saudi-ai-ethics-principles -> sdaia-ai-ethics-self-assessment | «أداة التقييم الذاتي لمبادئ الأخلاقيات تعطيك صورة أولية عن الفجوات قبل الاجتماع.»
 - saudi-ai-ethics-principles -> ai-impact-assessment | «دليل تقييم أثر الذكاء الاصطناعي يجاوب: من يتأثر، وش المصلحة المعرضة للخطر.»
 - saudi-ai-ethics-principles -> ai-inventory-register | «سجل استخدامات الذكاء الاصطناعي يثبت الأداة والغرض والبيانات والمالك.»
 - saudi-ai-ethics-principles -> ai-audit-trail | «سجل التدقيق يمكّن المراجع المستقل من اختبار العينة بدل الاعتماد على الوصف.»
@@ -46,3 +45,14 @@
 - saudi-ai-law-binding-vs-guidance -> data-classification-for-ai | «صنّف البيانات قبل الإدخال؛ التصنيف يحدد كثيراً من الالتزامات.»
 - saudi-ai-law-binding-vs-guidance -> iso-42001-saudi | «ISO/IEC 42001 معيار اختياري لنظام إدارة، وليس نظاماً سعودياً.»
 - saudi-ai-law-binding-vs-guidance -> ai-impact-assessment | «تقييم أثر الذكاء الاصطناعي يربط المتطلب بمن يتأثر بالقرار.»
+
+المصدر: `/knowledge/sdaia-ai-ethics-self-assessment/` — تُفعّل هذه الروابط تلقائياً عند إنشاء المقالات المستهدفة في نفس الدفعة.
+
+- sdaia-ai-ethics-self-assessment -> ai-inventory-register | «سجل استخدامات الذكاء الاصطناعي هو الطبقة الأولى في حزمة التحضير.»
+- sdaia-ai-ethics-self-assessment -> data-classification-for-ai | «تصنيف البيانات للذكاء الاصطناعي يحدد ما يدخل الأداة وما لا يدخل.»
+- sdaia-ai-ethics-self-assessment -> ai-governance-committee-raci | «مصفوفة المسؤوليات RACI تعطيك توزيعاً واضحاً لمن يجاوب عن كل محور.»
+- sdaia-ai-ethics-self-assessment -> ai-impact-assessment | «تقييم أثر الذكاء الاصطناعي يربط كل فجوة بمن يتأثر بها.»
+- sdaia-ai-ethics-self-assessment -> ai-audit-trail | «سجل التدقيق يثبت أن المعالجة صارت فعلاً لا على الورق.»
+- sdaia-ai-ethics-self-assessment -> ai-vendor-assessment | «تقييم موردي الذكاء الاصطناعي يجمع أسئلة المورد في ملف واحد.»
+- sdaia-ai-ethics-self-assessment -> ai-employee-training | «خطة تدريب الموظفين تبدأ من الفجوات التي كشفها التقييم.»
+- sdaia-ai-ethics-self-assessment -> ai-bias-fairness | «العدالة والتحيز في أنظمة الذكاء الاصطناعي: ما يمكن قياسه وحدود المقاييس.»

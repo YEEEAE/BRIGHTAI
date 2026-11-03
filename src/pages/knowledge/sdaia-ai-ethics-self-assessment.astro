@@ -1,0 +1,1207 @@
+---
+import PageShell from '../../components/PageShell.astro';
+import { brand } from '../../data/brand';
+export const prerender = true;
+const description = 'دليل عملي للتحضير لأداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: ما تجمعه، وكيف تقرأ النتيجة، وكيف تعالج الفجوات دون نسخ أسئلة الأداة.';
+const path = Astro.url.pathname;
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: كيف تستعد قبل استخدامها؟',
+  description,
+  inLanguage: 'ar-SA',
+  datePublished: '2026-11-03',
+  dateModified: '2026-11-03',
+  mainEntityOfPage: new URL(path, 'https://brightai.live').href,
+  author: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/about/' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'BRIGHTAI',
+    url: 'https://brightai.live/',
+    logo: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href },
+  },
+  about: [
+    { '@type': 'Thing', name: 'تقييم أخلاقيات الذكاء الاصطناعي سدايا' },
+    { '@type': 'Thing', name: 'أداة التقييم الذاتي' },
+    { '@type': 'Thing', name: 'منصة حوكمة البيانات الوطنية' },
+    { '@type': 'Thing', name: 'قياس الالتزام بالمبادئ الأخلاقية' },
+    { '@type': 'Thing', name: 'جاهزية الذكاء الاصطناعي' },
+  ],
+};
+const faqItems = [
+  {
+    q: 'هل التقييم إلزامي؟',
+    a: 'الأداة تقييم ذاتي، ووصفتها سدايا بأنها وسيلة لمساعدة الجهات على قياس التزامها بالمعايير الأخلاقية، ولم ترد في صفحتها الرسمية صيغة تفرضها كالتزام مستقل. الالتزامات الملزمة تأتي من الأنظمة واللوائح السارية على نشاطك ومن متطلبات المنظم القطاعي. تحقق مع مختصك النظامي قبل أن تعتمد على أي استنتاج في هذا الشأن.',
+  },
+  {
+    q: 'من يمكنه استخدام الأداة؟',
+    a: 'بحسب إعلان الإطلاق الرسمي، الأداة متاحة للجهات الحكومية والخاصة وكذلك المطورين الأفراد، بهدف قياس مدى التزامهم بالمبادئ الأخلاقية عند تطوير وتطبيق تقنيات الذكاء الاصطناعي. وتصف صفحة الخدمة الرسمية الأداة بأنها تساعد جهات التحكم على إجراء تحليل شامل ومنهجي. الدخول يكون عبر منصة حوكمة البيانات الوطنية، وقد يتطلب حساباً على المنصة.',
+  },
+  {
+    q: 'كم يستغرق التحضير؟',
+    a: 'لا توجد مدة تحضير معلنة في المصدر الرسمي، والمدة تعتمد على عدد حالات الاستخدام وجودة وثائقك. عملياً، منشأة عندها سجل استخدامات محدث ومالكون معروفون تستطيع تجهيز ملفها في جلسة أو جلستين، ومنشأة تبدأ من الصفر تحتاج أسابيع لجمع الحد الأدنى. الأفضل تقسيم العمل إلى ثلاث جلسات: الجرد، ثم المالكين والأدلة، ثم مراجعة الإجابات.',
+  },
+  {
+    q: 'هل النتيجة تعني اعتماداً رسمياً؟',
+    a: 'لا. الأداة تصدر نتيجة وتقريراً يوضح مستوى الالتزام أو النضج الأخلاقي في كل مبدأ، وهي أداة تقييم ذاتي وليست شهادة أو اعتماداً تنظيمياً. لا تنسب لمنشأتك اعتماداً بسبب نتيجة التقييم، ولا تستخدم النتيجة في عرض تسويقي يوحي بأن سدايا وثّقت التزامك. النتيجة نقطة بداية للمعالجة، والدليل هو ما يثبت الالتزام لاحقاً.',
+  },
+  {
+    q: 'كيف أحسّن نتيجتي؟',
+    a: 'لا تحسّن النتيجة بالإجابة المتفائلة، بل بمعالجة الفجوة وإثبات المعالجة. ابدأ بأكبر فجوة في مبدأ يؤثر في حقوق الناس أو بياناتهم، وسمِّ مالكاً واحداً، واكتب الدليل المتوقع، وحدد موعداً لإعادة التقييم. الأداة نفسها مصممة لتُستخدم أكثر من مرة لتتبع التقدم، فالتحسن الحقيقي يظهر في تكرار القياس بعد تنفيذ إجراءات موثقة.',
+  },
+];
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+<PageShell
+  title="تقييم أخلاقيات الذكاء الاصطناعي سدايا: الاستعداد"
+  description={description}
+  crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'التقييم الذاتي لأخلاقيات الذكاء الاصطناعي' }]}
+  ogType="article"
+  structuredData={article}
+>
+  <div class="sc" id="top" data-sc>
+    <header class="sc-hero">
+      <div class="sc-hero-copy">
+        <p class="sc-eyebrow"><span aria-hidden="true">▣</span> المخاطر · لوحة جاهزية</p>
+        <h1>أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: كيف تستعد قبل استخدامها؟</h1>
+        <p class="sc-lead">تقييم أخلاقيات الذكاء الاصطناعي سدايا ما يعطيك صورة عن منشأتك من الفراغ؛ يعطيك صورة عن اللي أنت قادر تثبته. عشان كذا التحضير مو حفظ إجابات، هو ترتيب ملفك: وش تستخدم، ومين يملكه، ووش الدليل اللي تقدر تفتحه لو أحد سألك. هذا الدليل يمشّيك قبل الدخول على الأداة.</p>
+        <ul class="sc-badges" aria-label="بيانات الدليل">
+          <li>المخاطر</li>
+          <li>81 سؤالاً · 7 مبادئ</li>
+          <li>قراءة 18 دقيقة</li>
+          <li>آخر مراجعة: 3 نوفمبر 2026</li>
+        </ul>
+      </div>
+      <aside class="sc-console" aria-labelledby="console-title">
+        <div class="sc-console-bar">
+          <span aria-hidden="true">● ● ●</span>
+          <p id="console-title">نطاق الأداة الرسمي</p>
+          <span aria-hidden="true">SDAIA</span>
+        </div>
+        <div class="sc-console-dial">
+          <svg viewBox="0 0 200 118" role="img" aria-labelledby="dial-title dial-desc">
+            <title id="dial-title">مقياس دائري يوضح سبع مبادئ ضمن الأداة</title>
+            <desc id="dial-desc">قوس مقسّم إلى سبع شرائح، يرمز إلى المبادئ السبعة التي تغطيها أسئلة الأداة.</desc>
+            <path class="sc-dial-track" d="M18 106 A 82 82 0 0 1 182 106" pathLength="100" />
+            <g class="sc-dial-ticks" aria-hidden="true">
+              <line x1="100" y1="14" x2="100" y2="24" />
+              <line x1="141" y1="24" x2="135" y2="33" />
+              <line x1="171" y1="56" x2="161" y2="60" />
+              <line x1="182" y1="97" x2="171" y2="97" />
+              <line x1="59" y1="24" x2="65" y2="33" />
+              <line x1="29" y1="56" x2="39" y2="60" />
+              <line x1="18" y1="97" x2="29" y2="97" />
+            </g>
+          </svg>
+          <p class="sc-dial-number">7</p>
+          <p class="sc-dial-caption">مبادئ تغطيها الأسئلة</p>
+        </div>
+        <dl class="sc-readouts">
+          <div><dt>الأسئلة</dt><dd>81</dd></div>
+          <div><dt>المقياس</dt><dd>1–5</dd></div>
+          <div><dt>التقرير</dt><dd>لكل مبدأ</dd></div>
+          <div><dt>التكرار</dt><dd>مسموح</dd></div>
+        </dl>
+        <p class="sc-console-note">الأرقام كما وردت في إعلان الإطلاق الرسمي لسدايا، وليست قياساً لجاهزيتك.</p>
+      </aside>
+    </header>
+
+    <p class="sc-alert" role="note">هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً، ولا يثبت امتثال أي منشأة. آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي.</p>
+
+    <article class="sc-body">
+      <section class="sc-tldr" aria-labelledby="tldr-title">
+        <h2 id="tldr-title">الزبدة</h2>
+        <ol>
+          <li>أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي أطلقتها سدايا عبر منصة حوكمة البيانات الوطنية، وتغطي 81 سؤالاً موزعة على سبعة مبادئ.</li>
+          <li>الجاهزية الحقيقية هي أن يكون عندك جرد محدث، ومالك بالاسم لكل استخدام، ووثائق وقرارات تقدر تفتحها — مو أنك تحفظ إجابات.</li>
+          <li>لا تدخل الأداة وأنت ما تعرف وش عندك؛ النتيجة المتفائلة بلا دليل تعطيك طمأنينة كاذبة وتخفي الفجوة عن الإدارة.</li>
+          <li>جهّز ملفاً واحداً لكل مبدأ: سؤال، دليل، مالك، تاريخ. هذا الملف يخدم التقييم ويخدم المراجعة الداخلية بعده.</li>
+          <li>النتيجة تقييم ذاتي وليست اعتماداً؛ قيمتها في ترتيب الأولويات وفي تكرار القياس بعد معالجة الفجوات.</li>
+        </ol>
+      </section>
+
+      <section class="sc-def" aria-labelledby="def-title">
+        <h2 id="def-title">تعريف مباشر</h2>
+        <p><strong>أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي</strong> هي أداة أطلقتها الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا) عبر منصة حوكمة البيانات الوطنية، تُمكّن الجهات من مقارنة ممارساتها الحالية بالمعايير الأخلاقية في تطوير وتطبيق تقنيات الذكاء الاصطناعي، وإصدار تقرير يوضح مستوى الالتزام في كل مبدأ.</p>
+      </section>
+
+      <!-- TODO-VERIFY: هل توجد صيغة إلزامية أو ربط تنظيمي مباشر لأداة التقييم في مصادر سدايا الرسمية؟ لم يُعثر على نص يفرضها كالتزام مستقل؛ يلزم تأكيد بشري/قانوني. -->
+      <!-- TODO-VERIFY: هل تتطلب الأداة حساباً أو تسجيلاً على منصة حوكمة البيانات الوطنية، وما شروط أهلية المطورين الأفراد؟ إعلان الإطلاق يذكر الفئات ولا يوضح الإجراء. -->
+      <!-- TODO-VERIFY: هل تُحفظ نتائج التقييم على المنصة أو تُشارك مع سدايا، وما مدة الاحتفاظ بها؟ لم يُتحقق من داخل الأداة. -->
+
+      <div class="sc-layout">
+        <aside class="sc-toc" aria-labelledby="toc-title">
+          <p class="sc-toc-label" id="toc-title">مسار التحضير</p>
+          <ol>
+            <li><a href="#tool"><span>01</span> وش الأداة ومن يستخدمها</a></li>
+            <li><a href="#why"><span>02</span> ليش تبدأ بوضعك الداخلي</a></li>
+            <li><a href="#prep"><span>03</span> ما تجهزه قبل التقييم</a></li>
+            <li><a href="#questions"><span>04</span> أسئلة تحضيرية</a></li>
+            <li><a href="#score"><span>05</span> قِس جاهزيتك</a></li>
+            <li><a href="#read"><span>06</span> كيف تقرأ النتيجة</a></li>
+            <li><a href="#plan"><span>07</span> خطة المعالجة</a></li>
+            <li><a href="#mistakes"><span>08</span> أخطاء شائعة</a></li>
+            <li><a href="#faq"><span>09</span> الأسئلة والمراجع</a></li>
+          </ol>
+          <p class="sc-toc-note">الأداة مرجع للتحضير، وليست شهادة أو اعتماداً.</p>
+        </aside>
+
+        <div class="sc-content">
+          <section id="tool" class="sc-reveal" aria-labelledby="tool-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">01</span><h2 id="tool-title">الزبدة: تقييم أخلاقيات الذكاء الاصطناعي سدايا، وش الأداة ومن يستخدمها؟</h2></div>
+            <p class="sc-answer">الأداة تقييم ذاتي رسمي: تجيب على أسئلة بمقياس من 1 إلى 5، وتحصل على تقرير يوضح مستواك في كل مبدأ من المبادئ السبعة. هي مو اختبار يُنجحك أو يُفشلك، ومو جهة تمنحك ترخيصاً؛ هي مرآة منظّمة لواقع ممارستك.</p>
+            <p>وصفحة الخدمة الرسمية على منصة حوكمة البيانات الوطنية تصفها بجملة واضحة:</p>
+            <blockquote class="sc-quote">
+              <p>«تمكّن هذه الأداة المساعدة لجهات التحكم من إجراء تحليل شامل ومنهجي لمدى التزامها بالمعايير الأخلاقية في تطوير وتطبيق تقنيات الذكاء الاصطناعي.»</p>
+              <footer>صفحة «التقييم الذاتي لأخلاقيات الذكاء الاصطناعي» — منصة حوكمة البيانات الوطنية</footer>
+            </blockquote>
+            <!-- TODO-VERIFY: تاريخ الإطلاق (نوفمبر 2024) مأخوذ من تغطية إعلان سدايا المنشور في 21 نوفمبر 2024؛ نص صفحة وكالة الأنباء المستخرج لم يُظهر التاريخ نفسه. -->
+            <p>وأعلنت سدايا إطلاق الأداة عبر المنصة في نوفمبر 2024، وأوضحت أن التقييم يقوم على 81 سؤالاً تغطي سبعة مبادئ، وأن الإجابة تكون بمقياس من 1 (أدنى مستوى) إلى 5 (أعلى مستوى)، وبعد إكمال الأسئلة يصدر تقرير مفصّل يبيّن مستوى النضج الأخلاقي في كل مبدأ، مع نقاط القوة والجوانب التي تحتاج تحسيناً. وتذكر أن الأداة مصممة لتُستخدم أكثر من مرة لتتبع التقدم.</p>
+            <dl class="sc-facts">
+              <div><dt>المنصة</dt><dd>منصة حوكمة البيانات الوطنية (dgp.sdaia.gov.sa)</dd></div>
+              <div><dt>المستخدمون</dt><dd>الجهات الحكومية والخاصة والمطورون الأفراد، بحسب إعلان الإطلاق</dd></div>
+              <div><dt>المخرجات</dt><dd>نتيجة وتقرير لمستوى الالتزام/النضج في كل مبدأ</dd></div>
+              <div><dt>الطبيعة</dt><dd>تقييم ذاتي، وليس اعتماداً أو شهادة نظامية</dd></div>
+            </dl>
+            <p>والمبادئ السبعة اللي تدور عليها الأسئلة هي نفسها في <a href="/knowledge/saudi-ai-ethics-principles/">مبادئ أخلاقيات الذكاء الاصطناعي في السعودية</a>: النزاهة والإنصاف، والخصوصية والأمن، والإنسانية، والمنافع الاجتماعية والبيئية، والموثوقية والسلامة، والشفافية والقابلية للتفسير، والمساءلة والمسؤولية. يعني الأداة مو وثيقة جديدة بقيم جديدة؛ هي طريقة تقيس فيها التزامك بالوثيقة القائمة.</p>
+            <p>السؤال في الأداة ما يبحث عن فهمك النظري، بل عن ممارستك: هل عندك سجل، ومالك، ودليل تقدر تعرضه؟ لهذا التحضير أهم من سرعة الدخول.</p>
+          </section>
+
+          <section id="why" class="sc-reveal" aria-labelledby="why-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">02</span><h2 id="why-title">ليش لا تدخلها وأنت جاهل بوضعك الداخلي؟</h2></div>
+            <p class="sc-answer">لأن الأداة تقيس ما تعرفه وتقدر تثبته، وليس ما تتمناه. إذا دخلت بلا جرد ولا مالكين، راح تجاوب على مستوى النية، وتطلع بنتيجة أعلى من واقعك، وتصرف ميزانية على معالجات لا تعالج أكبر خطر فعلي.</p>
+            <p>خلنا نسمّي ثلاث مشاكل تصير كثير، وكلها تبدأ من الدخول المبكر:</p>
+            <ol class="sc-list">
+              <li><b>تضخيم التقييم الذاتي.</b> الفريق اللي يجاوب هو نفسه اللي يبي يظهر صورة جيدة. بدون دليل، الإجابة تصير «نعم تقريباً» في كل بند، والنتيجة تصير دعاية داخلية مو تشخيصاً.</li>
+              <li><b>فجوة الأدلة.</b> تجاوب «عندنا مراجعة بشرية»، وبعد شهر يطلب منك المراجع نسخة من نموذج المراجعة، فما تلقى إلا وصفاً في عرض تقديمي. هذا النوع من الفجوات ما يظهر في النتيجة، لكنه أول ما يظهر عند التدقيق.</li>
+              <li><b>فراغ الملكية.</b> الأداة تغطي سبعة مبادئ، والمبادئ مو كلها في يد إدارة واحدة. لو دخلت بدون تحديد من يجاوب عن كل محور، راح تجيب إجابات من شخص واحد عن مجالات ما يملكها.</li>
+            </ol>
+            <p>في المقابل، التحضير مو مشروع ضخم. تحتاج شيئين فقط قبل أول دخول: صورة صادقة عن الاستخدامات الموجودة، وحد أدنى من الأدلة اللي تثبت أن الضوابط المعلنة تعمل. الباقي يتصلح بعد التقييم، لا قبله. وهذا ينسجم مع منطق <a href="/knowledge/sdaia-ai-adoption-framework/">إطار تبني الذكاء الاصطناعي من سدايا</a> اللي يبدأ بالتوجه والمسؤوليات قبل التوسع في الأدوات.</p>
+            <p>وفيه سبب رابع: الأداة تصير لك خط أساس. إذا دخلت وأنت مرتب، تقدر تقارن تقييمين وتشوف التقدم الحقيقي؛ وإذا دخلت عشوائياً، كل تقييم يصير رقماً بلا معنى.</p>
+            <p>وأخيراً، لا تفصل التقييم عن سياق الحوكمة الكامل. الأداة تسأل عن ممارسة، والممارسة تُبنى عبر دورة واضحة تبدأ بتحديد الاستخدام والمسؤولية وتنتهي بالمراجعة، وهذا هو جوهر <a href="/knowledge/ai-governance-saudi/">إطار عمل حوكمة الذكاء الاصطناعي في السعودية</a>. وإذا احتجت مساعدة في ترتيب النطاق قبل الدخول، صفحة <a href="/services/">الخدمات في BRIGHTAI</a> توضح أن النطاق والمسؤولية يتحددان باتفاق مكتوب، دون عرض خدمة متاحة أو التزام بموعد.</p>
+          </section>
+
+          <section id="prep" class="sc-reveal" aria-labelledby="prep-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">03</span><h2 id="prep-title">ما تجهزه قبل التقييم: جرد، مالكين، وثائق، قرارات سابقة</h2></div>
+            <p class="sc-answer">جهّز أربع حزم: جرد استخدامات محدث، ومالك بالاسم لكل استخدام، ووثائق السياسة والتصنيف، وقرارات سابقة توضح كيف تعاملت مع خطر أو حادث. هذه الأربع تكفي لأول تقييم، وتقلل عدد الإجابات التي سترجع عنها لاحقاً.</p>
+            <p>لا تحاول تجهيز «كل شيء». ابدأ بحزمة الأدلة كما تبدأ بملف مريض: الحد الأدنى أولاً، ثم التفاصيل عند الحاجة. الرسم التالي يوضح الحزمة بأربع طبقات، وكل طبقة تجيب على سؤال مختلف.</p>
+
+            <figure class="sc-pack">
+              <svg viewBox="0 0 360 240" role="img" aria-labelledby="pack-title pack-desc">
+                <title id="pack-title">حزمة التحضير بأربع طبقات</title>
+                <desc id="pack-desc">أربع طبقات متراكبة: الجرد في الأسفل، ثم المالكين، ثم الوثائق، ثم الأدلة والقرارات في الأعلى.</desc>
+                <g class="sc-pack-lines" aria-hidden="true">
+                  <path d="M44 196 H316" />
+                  <path d="M44 148 H316" />
+                  <path d="M44 100 H316" />
+                  <path d="M44 52 H316" />
+                </g>
+                <g class="sc-pack-row">
+                  <rect x="44" y="158" width="272" height="40" rx="6" />
+                  <text x="60" y="183">01 · الجرد</text>
+                  <text x="300" y="183" text-anchor="end" class="sc-pack-small">وش موجود؟</text>
+                </g>
+                <g class="sc-pack-row">
+                  <rect x="44" y="110" width="272" height="40" rx="6" />
+                  <text x="60" y="135">02 · المالكين</text>
+                  <text x="300" y="135" text-anchor="end" class="sc-pack-small">مين يجاوب؟</text>
+                </g>
+                <g class="sc-pack-row">
+                  <rect x="44" y="62" width="272" height="40" rx="6" />
+                  <text x="60" y="87">03 · الوثائق</text>
+                  <text x="300" y="87" text-anchor="end" class="sc-pack-small">وش القاعدة؟</text>
+                </g>
+                <g class="sc-pack-row sc-pack-row--top">
+                  <rect x="44" y="14" width="272" height="40" rx="6" />
+                  <text x="60" y="39">04 · الأدلة والقرارات</text>
+                  <text x="300" y="39" text-anchor="end" class="sc-pack-small">وش يثبت؟</text>
+                </g>
+              </svg>
+              <figcaption>مثال توضيحي لترتيب حزمة التحضير؛ ليس نموذجاً رسمياً من سدايا.</figcaption>
+            </figure>
+
+            <p>الطبقة الأولى هي اللي تسبق كل شيء: <a href="/knowledge/ai-inventory-register/">سجل استخدامات الذكاء الاصطناعي</a>. الحد الأدنى فيه: اسم الأداة أو النظام، الغرض، المستخدمون، أنواع البيانات، المورد، والمالك. لا تشترط كمال السجل؛ ابدأ بما تستخدمه فعلاً هذا الشهر. السجل الناقص أفضل من لا شيء، بشرط أن يكون محدثاً.</p>
+            <p>الطبقة الثانية مالكين. لكل استخدام مالك أعمال بالاسم، وليس «إدارة التقنية». وإلى جانبه: من يراجع الخصوصية، ومن يراجع الأمن، ومن يعتمد الخطر المتبقي. <a href="/knowledge/ai-governance-committee-raci/">مصفوفة المسؤوليات RACI</a> تعطيك توزيعاً واضحاً، لكن الأهم أن الاسم موجود في ورقة يعرفها الفريق، لا في ذهن مدير واحد.</p>
+            <p>الطبقة الثالثة وثائق. تحتاج نسخة معتمدة من سياسة الاستخدام، وسجل تصنيف بيانات يحدد ما يدخل الأداة وما لا يدخل (<a href="/knowledge/data-classification-for-ai/">تصنيف البيانات للذكاء الاصطناعي</a>)، وأي إفصاح تستخدمه مع المستخدم. وإذا كانت الأدوات جاهزة من مورد، أضف <a href="/knowledge/ai-vendor-assessment/">تقييم موردي الذكاء الاصطناعي</a> لأن مسؤولية الاستخدام تبقى عليك.</p>
+            <p>الطبقة الرابعة أدلة وقرارات: محضر اعتماد حالة استخدام، قرار بإيقاف أو تقييد، سجل حادثة، نتيجة اختبار، أو مراجعة بشرية موثقة. هذي الطبقة هي اللي تحول الإجابة من «نعم» إلى «نعم، وهذا الدليل».</p>
+
+            <p class="sc-scroll-hint">مرّر الجدول أفقياً لعرض بقية الأعمدة.</p>
+            <div class="sc-tablewrap">
+              <table>
+                <caption>الحد الأدنى لحزمة التحضير (مثال توضيحي للترتيب، وليس متطلباً رسمياً)</caption>
+                <thead>
+                  <tr><th scope="col">العنصر</th><th scope="col">الحد الأدنى</th><th scope="col">المالك المقترح</th><th scope="col">الدليل</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><b>الجرد</b></td><td>قائمة الأدوات والاستخدامات الجارية والغرض والبيانات.</td><td>مالك الأعمال + التقنية</td><td>ملف سجل بتاريخ تحديث</td></tr>
+                  <tr><td><b>الملكية</b></td><td>مالك لكل استخدام، ومراجع للخصوصية والأمن.</td><td>الإدارة العليا</td><td>مصفوفة RACI معتمدة</td></tr>
+                  <tr><td><b>الوثائق</b></td><td>سياسة استخدام، تصنيف بيانات، إفصاح للمستخدم.</td><td>الامتثال + الخصوصية</td><td>نسخ معتمدة بتاريخ إصدار</td></tr>
+                  <tr><td><b>القرارات</b></td><td>قرار اعتماد، قرار إيقاف أو تقييد، سجل حادثة إن وجد.</td><td>جهة الاعتماد</td><td>محاضر وقرارات موقعة</td></tr>
+                  <tr><td><b>الأدلة التشغيلية</b></td><td>عينة من مراجعة بشرية أو اختبار أو سجل وصول.</td><td>التشغيل + التدقيق</td><td>سجل قابل للفتح والفحص</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>وإذا كنت تبي تبدأ من الأسهل: ابدأ من الجرد والملكية. هذان العنصران يفتحان لك بقية الملف، لأن كل سؤال في التقييم تقريباً يرجع لأحدهما. والركن اللي يلخص هذا الترتيب هو <a href="/pillars/transparency/">ركن الشفافية والمساءلة في BRIGHTAI</a>: من يملك الاستخدام، وما الدليل، وكيف يُسجَّل التغيير.</p>
+          </section>
+
+          <section id="questions" class="sc-reveal" aria-labelledby="questions-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">04</span><h2 id="questions-title">أسئلة تحضيرية لكل محور (بلا نسخ أسئلة الأداة الرسمية)</h2></div>
+            <p class="sc-answer">لكل مبدأ، جهّز جوابين: سؤال يثبت أنك تعرف الفئة المتأثرة، وسؤال يثبت أن عندك دليلاً. الأسئلة التالية صياغة تحضيرية مستقلة، وليست نسخاً لأسئلة الأداة ولا بديلاً عنها؛ الغرض منها تجهيز الملف قبل الدخول.</p>
+            <p>افتح كل مبدأ، وحدد هل جوابك «نعم + دليل»، أو «نعم بلا دليل»، أو «لا». الثالث والثاني هما اللي يحتاجان عملًا، وليس الأول.</p>
+
+            <div class="sc-prep">
+              <details>
+                <summary><span aria-hidden="true">01</span> النزاهة والإنصاف</summary>
+                <div>
+                  <p><b>تحضير:</b> من الفئات التي قد تتأثر بمخرجات النظام؟ وهل قِست فروق النتائج بينها على عينة حقيقية؟</p>
+                  <p><b>الدليل:</b> تعريف الفئات، ونتيجة فحص، وقرار بالحد المقبول أو بمعالجة الفرق.</p>
+                </div>
+              </details>
+              <details>
+                <summary><span aria-hidden="true">02</span> الخصوصية والأمن</summary>
+                <div>
+                  <p><b>تحضير:</b> ما أقل قدر من البيانات يكفي للمهمة؟ ومن يصل إليه؟ وكم مدة الاحتفاظ؟</p>
+                  <p><b>الدليل:</b> سجل تصنيف، ومصفوفة وصول، وإعداد احتفاظ موثق، وعقد أو ملحق خصوصية مع المورد.</p>
+                </div>
+              </details>
+              <details>
+                <summary><span aria-hidden="true">03</span> الإنسانية</summary>
+                <div>
+                  <p><b>تحضير:</b> أي قرار يؤثر في حق أو خدمة يبقى بيد الإنسان؟ ومن يملك الاعتراض على مخرج آلي؟</p>
+                  <p><b>الدليل:</b> مصفوفة صلاحيات، ونموذج مراجعة، وعينة من قرارات عدّلها الإنسان.</p>
+                </div>
+              </details>
+              <details>
+                <summary><span aria-hidden="true">04</span> المنافع الاجتماعية والبيئية</summary>
+                <div>
+                  <p><b>تحضير:</b> ما المنفعة المقصودة، وكيف تقيسها بعد التشغيل؟ وما الأثر الجانبي المحتمل؟</p>
+                  <p><b>الدليل:</b> ورقة حالة أعمال، ومؤشرات أثر، ومراجعة دورية للنتائج غير المقصودة.</p>
+                </div>
+              </details>
+              <details>
+                <summary><span aria-hidden="true">05</span> الموثوقية والسلامة</summary>
+                <div>
+                  <p><b>تحضير:</b> ما أصعب حالة فشل متوقعة؟ وهل اختبرتها؟ ومن يوقف الاستخدام ومتى؟</p>
+                  <p><b>الدليل:</b> نتائج اختبار حالات الفشل، وخطة بديلة، واسم صاحب صلاحية الإيقاف.</p>
+                </div>
+              </details>
+              <details>
+                <summary><span aria-hidden="true">06</span> الشفافية والقابلية للتفسير</summary>
+                <div>
+                  <p><b>تحضير:</b> هل يعرف المستخدم أنه يتعامل مع نظام آلي؟ وهل تقدر تفسر العوامل المؤثرة في القرار بلغة مفهومة؟</p>
+                  <p><b>الدليل:</b> نص الإفصاح المنشور، ودليل تفسير، وسجل استفسارات واعتراضات.</p>
+                </div>
+              </details>
+              <details>
+                <summary><span aria-hidden="true">07</span> المساءلة والمسؤولية</summary>
+                <div>
+                  <p><b>تحضير:</b> من يجاوب أمام الإدارة وأمام المتضرر؟ وهل فصلت بين من يطلب الاعتماد ومن يمنحه؟</p>
+                  <p><b>الدليل:</b> مصفوفة مسؤوليات، وقرار اعتماد الخطر المتبقي، وسجل بلاغات وقناة تصعيد.</p>
+                </div>
+              </details>
+            </div>
+            <p>لاحظ أن أغلب الأسئلة مو تقنية. هي أسئلة مالك ودليل وقرار. ولهذا يساعدك <a href="/knowledge/ai-risk-assessment/">دليل تقييم مخاطر الذكاء الاصطناعي</a> في صياغة الخطر والضابط والمالك، لأن نفس البنية تخدمك في التقييم وبعده.</p>
+            <p class="sc-fine">الأسئلة أعلاه من إعداد BRIGHTAI للتحضير، ولا تُنسب إلى سدايا ولا تمثل أسئلة الأداة الرسمية.</p>
+          </section>
+
+          <section id="score" class="sc-reveal" aria-labelledby="score-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">05</span><h2 id="score-title">قِس جاهزيتك: عشرة أسئلة قبل الدخول على الأداة</h2></div>
+            <p class="sc-answer">أجب على عشرة أسئلة عن وضعك الداخلي، وستحصل على مؤشر جاهزية من 100، وتوزيع الفجوات على ثلاث حزم: الجرد، والملكية، والأدلة. الحساب يجري في متصفحك فقط، ولا يُحفظ ولا يُرسل، والنتيجة تعليمية وليست تقييماً رسمياً.</p>
+
+            <div class="sc-dash" data-dashboard>
+              <div class="sc-dash-top">
+                <div class="sc-ring-wrap">
+                  <svg viewBox="0 0 140 140" class="sc-ring" role="img" aria-labelledby="ring-title ring-desc">
+                    <title id="ring-title">حلقة مؤشر الجاهزية</title>
+                    <desc id="ring-desc">حلقة تتحدث حسب إجاباتك على عشرة أسئلة، من صفر إلى مئة.</desc>
+                    <circle class="sc-ring-track" cx="70" cy="70" r="54" />
+                    <circle class="sc-ring-value" data-ring cx="70" cy="70" r="54" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+                  </svg>
+                  <div class="sc-ring-label">
+                    <span data-ring-value>0</span><small>من 100</small>
+                    <em>جاهزية تحضيرية</em>
+                  </div>
+                </div>
+                <div class="sc-kpis">
+                  <div class="sc-kpi"><p>بنود موثقة</p><strong data-kpi="solid">0</strong><small>من 10</small></div>
+                  <div class="sc-kpi"><p>بنود جزئية</p><strong data-kpi="partial">0</strong><small>تحتاج دليلاً</small></div>
+                  <div class="sc-kpi"><p>فجوات حرجة</p><strong data-kpi="critical">0</strong><small>غير موجودة</small></div>
+                  <div class="sc-kpi sc-kpi--wide">
+                    <p>حالة الإجابة</p>
+                    <strong data-kpi="answered">0</strong><small>من 10 أسئلة</small>
+                    <div class="sc-meter" aria-hidden="true"><span data-answered-bar></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sc-gauges" aria-label="توزيع الجاهزية على الحزم الثلاث">
+                <div class="sc-gauge" data-gauge="inventory">
+                  <svg viewBox="0 0 120 70" aria-hidden="true">
+                    <path class="sc-gauge-track" d="M10 60 A 50 50 0 0 1 110 60" pathLength="100" />
+                    <path class="sc-gauge-value" d="M10 60 A 50 50 0 0 1 110 60" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+                  </svg>
+                  <p><b data-gauge-value>0%</b><span>الجرد</span></p>
+                  <small>3 أسئلة · 6 نقاط</small>
+                </div>
+                <div class="sc-gauge" data-gauge="owners">
+                  <svg viewBox="0 0 120 70" aria-hidden="true">
+                    <path class="sc-gauge-track" d="M10 60 A 50 50 0 0 1 110 60" pathLength="100" />
+                    <path class="sc-gauge-value" d="M10 60 A 50 50 0 0 1 110 60" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+                  </svg>
+                  <p><b data-gauge-value>0%</b><span>الملكية</span></p>
+                  <small>3 أسئلة · 6 نقاط</small>
+                </div>
+                <div class="sc-gauge" data-gauge="evidence">
+                  <svg viewBox="0 0 120 70" aria-hidden="true">
+                    <path class="sc-gauge-track" d="M10 60 A 50 50 0 0 1 110 60" pathLength="100" />
+                    <path class="sc-gauge-value" d="M10 60 A 50 50 0 0 1 110 60" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+                  </svg>
+                  <p><b data-gauge-value>0%</b><span>الأدلة</span></p>
+                  <small>4 أسئلة · 8 نقاط</small>
+                </div>
+              </div>
+
+              <form class="sc-form" data-readiness>
+                <fieldset data-q data-domain="inventory" data-short="سجل الاستخدامات">
+                  <legend><span>01</span> عندك سجل استخدامات محدث يشمل الأدوات والغرض والبيانات والمالك؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q1" value="2" data-score="2" /><span>موجود ومحدث</span></label>
+                    <label><input type="radio" name="q1" value="1" data-score="1" /><span>جزئي أو قديم</span></label>
+                    <label><input type="radio" name="q1" value="0" data-score="0" /><span>غير موجود</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="inventory" data-short="الغرض والنطاق">
+                  <legend><span>02</span> كل استخدام مكتوب له غرض محدد وما لا يُسمح للنظام بفعله؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q2" value="2" data-score="2" /><span>مكتوب ومعتمد</span></label>
+                    <label><input type="radio" name="q2" value="1" data-score="1" /><span>مكتوب غير معتمد</span></label>
+                    <label><input type="radio" name="q2" value="0" data-score="0" /><span>غير موجود</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="inventory" data-short="تصنيف البيانات">
+                  <legend><span>03</span> البيانات الداخلة في الأدوات مصنّفة، وتعرف أي نوع يُمنع إدخاله؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q3" value="2" data-score="2" /><span>مصنّفة وموثقة</span></label>
+                    <label><input type="radio" name="q3" value="1" data-score="1" /><span>جزئياً</span></label>
+                    <label><input type="radio" name="q3" value="0" data-score="0" /><span>غير مصنّفة</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="owners" data-short="مالك الاستخدام">
+                  <legend><span>04</span> لكل استخدام مالك أعمال بالاسم، وليس إدارة عامة؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q4" value="2" data-score="2" /><span>نعم، بالاسم</span></label>
+                    <label><input type="radio" name="q4" value="1" data-score="1" /><span>جزئياً</span></label>
+                    <label><input type="radio" name="q4" value="0" data-score="0" /><span>لا يوجد</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="owners" data-short="جهة اعتماد المخاطر">
+                  <legend><span>05</span> فيه جهة محددة تعتمد الخطر المتبقي وتوثق قرارها؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q5" value="2" data-score="2" /><span>موجودة وتعمل</span></label>
+                    <label><input type="radio" name="q5" value="1" data-score="1" /><span>موجودة بلا توثيق</span></label>
+                    <label><input type="radio" name="q5" value="0" data-score="0" /><span>غير واضحة</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="owners" data-short="صلاحية الإيقاف">
+                  <legend><span>06</span> تعرف من يملك صلاحية إيقاف استخدام أو تقييده، ومتى يمارسها؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q6" value="2" data-score="2" /><span>معروف وموثق</span></label>
+                    <label><input type="radio" name="q6" value="1" data-score="1" /><span>معروف شفهياً</span></label>
+                    <label><input type="radio" name="q6" value="0" data-score="0" /><span>غير محدد</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="evidence" data-short="نسخة السياسة">
+                  <legend><span>07</span> عندك نسخة معتمدة من سياسة استخدام الذكاء الاصطناعي، ويعرفها الموظفون؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q7" value="2" data-score="2" /><span>معتمدة ومتاحة</span></label>
+                    <label><input type="radio" name="q7" value="1" data-score="1" /><span>مسودة</span></label>
+                    <label><input type="radio" name="q7" value="0" data-score="0" /><span>غير موجودة</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="evidence" data-short="قرارات سابقة">
+                  <legend><span>08</span> تحفظ قرارات سابقة مثل اعتماد حالة استخدام أو رفضها أو تقييدها؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q8" value="2" data-score="2" /><span>محفوظة ويمكن فتحها</span></label>
+                    <label><input type="radio" name="q8" value="1" data-score="1" /><span>بعضها فقط</span></label>
+                    <label><input type="radio" name="q8" value="0" data-score="0" /><span>غير محفوظة</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="evidence" data-short="مراجعة حديثة">
+                  <legend><span>09</span> سويت مراجعة أو تقييماً لأي استخدام خلال الاثني عشر شهراً الماضية؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q9" value="2" data-score="2" /><span>نعم، موثقة</span></label>
+                    <label><input type="radio" name="q9" value="1" data-score="1" /><span>غير موثقة</span></label>
+                    <label><input type="radio" name="q9" value="0" data-score="0" /><span>لا</span></label>
+                  </div>
+                </fieldset>
+                <fieldset data-q data-domain="evidence" data-short="مسار معالجة الفجوات">
+                  <legend><span>10</span> عندك مسار واضح لمعالجة الفجوات: مالك، وإجراء، وتاريخ إعادة فحص؟</legend>
+                  <div class="sc-opts">
+                    <label><input type="radio" name="q10" value="2" data-score="2" /><span>موجود ويعمل</span></label>
+                    <label><input type="radio" name="q10" value="1" data-score="1" /><span>جزئي</span></label>
+                    <label><input type="radio" name="q10" value="0" data-score="0" /><span>غير موجود</span></label>
+                  </div>
+                </fieldset>
+
+                <div class="sc-form-foot">
+                  <p class="sc-summary" data-summary aria-live="polite">ابدأ بالإجابة، وستظهر قراءة أولية للفجوات هنا.</p>
+                  <button type="button" class="sc-btn" data-reset>أعد ضبط الإجابات</button>
+                </div>
+              </form>
+
+              <div class="sc-gaps">
+                <h3>الفجوات التي تحتاج انتباهك أولاً</h3>
+                <ul data-gap-list>
+                  <li>لم تُجب بعد. كل إجابة تظهر هنا كبند يحتاج عملًا.</li>
+                </ul>
+                <details class="sc-fallback">
+                  <summary>اعرض القراءة الحالية كنص</summary>
+                  <div class="sc-tablewrap">
+                    <table>
+                      <caption>ملخص محلي للقراءة الحالية (بيانات من إجاباتك)</caption>
+                      <thead><tr><th scope="col">الحزمة</th><th scope="col">النقاط</th><th scope="col">النسبة</th></tr></thead>
+                      <tbody>
+                        <tr><td>الجرد</td><td data-table-score="inventory">0 من 6</td><td data-table-pct="inventory">0%</td></tr>
+                        <tr><td>الملكية</td><td data-table-score="owners">0 من 6</td><td data-table-pct="owners">0%</td></tr>
+                        <tr><td>الأدلة</td><td data-table-score="evidence">0 من 8</td><td data-table-pct="evidence">0%</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <p class="sc-fine">المؤشر تعليمي من إعداد BRIGHTAI، وليس مقياساً رسمياً ولا نتيجة تقييم سدايا. لا يُحفظ أي جواب في المتصفح أو على أي خادم، وإعادة تحميل الصفحة تصفّر النتيجة.</p>
+          </section>
+
+          <section id="read" class="sc-reveal" aria-labelledby="read-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">06</span><h2 id="read-title">كيف تقرأ نتيجتك وماذا تفعل بالفجوات</h2></div>
+            <p class="sc-answer">لا تقرأ النتيجة كرقم واحد. اقرأها كخريطة: أي مبدأ انخفض، وهل السبب غياب ممارسة أو غياب دليل. الأول يحتاج بناءً، والثاني يحتاج توثيقاً، وكلاهما يحتاج مالكاً وموعداً.</p>
+            <p>الأداة تعطيك مستوى في كل مبدأ من السبعة، وهذا هو الجزء المفيد. الرقم الكلي يصلح للمقارنة بين تقييمين، لكنه ما يقول لك وش تسوي يوم الاثنين. الفرز العملي يكون على ثلاث حالات:</p>
+            <dl class="sc-triage">
+              <div>
+                <dt>فجوة ممارسة</dt>
+                <dd>ما عندك الضابط أصلاً: لا مراجعة بشرية، ولا تصنيف بيانات، ولا مسار بلاغ. العلاج: قرار وتنفيذ، وليس مستنداً جديداً.</dd>
+              </div>
+              <div>
+                <dt>فجوة دليل</dt>
+                <dd>الضابط موجود لكن ما تقدر تثبته. العلاج: نموذج موحد، وسجل، وربط كل إجراء بمالك وتاريخ. لا تعد كتابة السياسة إنجازاً.</dd>
+              </div>
+              <div>
+                <dt>فجوة اتساق</dt>
+                <dd>الضابط مطبق في إدارة ومهمل في أخرى. العلاج: معيار واحد، ومراجعة عينة، وتقرير فروقات دوري.</dd>
+              </div>
+            </dl>
+            <p>بعد الفرز، اربط كل فجوة بمن يتأثر بها. هذا هو الفرق بين تقرير إداري وتقرير حوكمة: الأول يعدّد النواقص، والثاني يوضح أي حق أو مصلحة معرضة للخطر. <a href="/knowledge/ai-impact-assessment/">دليل تقييم أثر الذكاء الاصطناعي</a> يساعدك في هذا الربط، و<a href="/knowledge/ai-audit-trail/">سجل التدقيق</a> يثبت أن المعالجة صارت فعلاً لا على الورق.</p>
+
+            <figure class="sc-paper" aria-labelledby="paper-title">
+              <div class="sc-paper-inner">
+                <div class="sc-paper-head">
+                  <div>
+                    <p class="sc-paper-kicker">نموذج توضيحي</p>
+                    <p class="sc-paper-title" id="paper-title">تقرير جاهزية أخلاقيات الذكاء الاصطناعي</p>
+                    <p class="sc-paper-sub">منشأة افتراضية · قطاع خدمات · نطاق: ثلاث حالات استخدام</p>
+                  </div>
+                  <div class="sc-paper-score">
+                    <b>68</b><span>/100</span>
+                    <small>مؤشر تجريبي</small>
+                  </div>
+                </div>
+                <div class="sc-paper-grid">
+                  <div>
+                    <p class="sc-paper-label">النتيجة لكل مبدأ (بيانات اصطناعية)</p>
+                    <ul class="sc-bars">
+                      <li><span>النزاهة والإنصاف</span><i style="--bar: 62%"></i><b>62</b></li>
+                      <li><span>الخصوصية والأمن</span><i style="--bar: 81%"></i><b>81</b></li>
+                      <li><span>الإنسانية</span><i style="--bar: 74%"></i><b>74</b></li>
+                      <li><span>المنافع الاجتماعية والبيئية</span><i style="--bar: 48%"></i><b>48</b></li>
+                      <li><span>الموثوقية والسلامة</span><i style="--bar: 70%"></i><b>70</b></li>
+                      <li><span>الشفافية والقابلية للتفسير</span><i style="--bar: 55%"></i><b>55</b></li>
+                      <li><span>المساءلة والمسؤولية</span><i style="--bar: 66%"></i><b>66</b></li>
+                    </ul>
+                  </div>
+                  <div class="sc-paper-side">
+                    <p class="sc-paper-label">أهم ثلاث فجوات</p>
+                    <ol>
+                      <li>لا يوجد تعريف موثق للفئات المتأثرة بأداة الفرز.</li>
+                      <li>المنفعة المعلنة غير مرتبطة بمؤشر قياس بعد التشغيل.</li>
+                      <li>سجل المراجعة البشرية غير موحد بين إدارتين.</li>
+                    </ol>
+                    <p class="sc-paper-label">الإجراء التالي</p>
+                    <p class="sc-paper-action">مالك واحد لكل فجوة، ودليل محدد، وموعد إعادة فحص بعد 60 يوماً.</p>
+                  </div>
+                </div>
+                <div class="sc-paper-foot">
+                  <span>أُعد للعرض التعليمي فقط</span>
+                  <span>مراجعة بشرية: ________</span>
+                  <span>التاريخ: 2026</span>
+                </div>
+              </div>
+              <figcaption>مثال اصطناعي بالكامل — ليس تقريراً صادراً عن سدايا، ولا يمثل نتيجة أي منشأة حقيقية. المقياس هنا افتراضي لأغراض الشرح.</figcaption>
+            </figure>
+
+            <p>وفي القراءة، لا تخلط بين انخفاض المبدأ وأهمية الخطر. مبدأ منخفض في أداة داخلية لا يقرأ قرارات الناس قد يكون أخف من مبدأ متوسط في نظام يرفض طلباً أو يحدد أولوية. رتّب المعالجة بالأثر، لا بالرقم. وإذا احتجت صورة أوضح لربط الخطر بالضابط، يصف <a href="/products/risk-engine/">تصور AIGAS Risk Engine</a> كيف يمكن ربط المخاطر بضوابط ومراجعات يحددها مالك المنشأة، دون أن يكون منتجاً متاحاً اليوم.</p>
+          </section>
+
+          <section id="plan" class="sc-reveal" aria-labelledby="plan-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">07</span><h2 id="plan-title">خطة معالجة بسيطة بعد التقييم</h2></div>
+            <p class="sc-answer">لا تحوّل التقرير إلى مشروع مفتوح. اختر ثلاث فجوات فقط: الأعلى أثراً، والأسهل إثباتاً، والتي تفتح بقية الملف. لكل فجوة: إجراء واحد، ومالك واحد، ودليل واحد، وتاريخ.</p>
+            <p>الخطة التالية مثال توضيحي لمدة تسعين يوماً، وتُعدّل بحسب حجم المنشأة. المهم فيها ليس المدد، بل أن كل بند ينتهي بشيء يمكن فتحه أمام المراجع.</p>
+            <div class="sc-tablewrap">
+              <table>
+                <caption>خطة معالجة مقترحة بعد أول تقييم (مثال توضيحي)</caption>
+                <thead>
+                  <tr><th scope="col">المرحلة</th><th scope="col">المخرجات</th><th scope="col">معيار الإنجاز</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><b>أول 30 يوماً</b></td><td>تثبيت الجرد، وتسمية مالك لكل استخدام، وإغلاق أكبر فجوة ممارسة.</td><td>سجل محدث + مصفوفة أسماء + قرار موثق.</td></tr>
+                  <tr><td><b>من 31 إلى 60</b></td><td>توحيد نماذج المراجعة والاعتماد، وربط كل ضابط بدليل، وتدريب الفريق المسؤول.</td><td>نموذج واحد مستخدم فعلاً + عينة أدلة + سجل حضور.</td></tr>
+                  <tr><td><b>من 61 إلى 90</b></td><td>مراجعة عينة مستقلة، وإعادة التقييم، وتحديث السياسة بما ظهر من فجوات.</td><td>تقرير مراجعة + تقييم جديد + نسخة سياسة محدثة.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>وفي كل مرحلة، اسأل سؤالاً واحداً: «لو طلب مني الدليل غداً، وين أفتحه؟». إذا كان الجواب «في بريد فلان»، فالفجوة ما زالت قائمة. وإذا كان الجواب «في سجل واحد بصلاحية معروفة»، فأنت انتقلت من وصف إلى إثبات.</p>
+            <p>وثبّت قواعدك في وثيقة قصيرة يعرفها الموظف، وليس في عرض تقديمي. <a href="/knowledge/ai-use-policy-employees/">سياسة استخدام الذكاء الاصطناعي للموظفين</a> تعطيك هيكلاً عملياً للمسموح والمشروط والمحظور وآلية التصعيد. وكل ما تدرّب الفريق، اربط التدريب بسؤال من التقييم، لأن التدريب العام ما يغيّر ممارسة.</p>
+          </section>
+
+          <section id="mistakes" class="sc-reveal" aria-labelledby="mistakes-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">08</span><h2 id="mistakes-title">أخطاء شائعة: التقييم لمرة واحدة ثم النسيان</h2></div>
+            <p class="sc-answer">أشهر خطأ هو التعامل مع التقييم كحدث سنوي يُحفظ في درج. الأداة نفسها مصممة للتكرار، والتغيير في النموذج أو البيانات أو الغرض أو المورد يغيّر الإجابة، فإذا ما أعدت القياس فأنت تعتمد على صورة قديمة.</p>
+            <dl class="sc-mistakes">
+              <div>
+                <dt>«قيمنا مرة وحصلنا على نتيجة جيدة»</dt>
+                <dd>النتيجة لحظة زمنية، والاستخدام يتغير. <b>البديل:</b> أعد التقييم عند كل تغيير مؤثر، وعلى موعد دوري تحدده الجهة.</dd>
+              </div>
+              <div>
+                <dt>«التقييم شغل الامتثال فقط»</dt>
+                <dd>الأسئلة تمس المنتج والبيانات والتشغيل. <b>البديل:</b> اجمع مالك الأعمال والخصوصية والأمن والتقنية في جلسة واحدة.</dd>
+              </div>
+              <div>
+                <dt>«نجاوب على مستوى النية»</dt>
+                <dd>الإجابة الطيبة بلا دليل فجوة مخفية. <b>البديل:</b> لكل إجابة «نعم»، اكتب اسم الملف الذي يثبتها.</dd>
+              </div>
+              <div>
+                <dt>«نعالج كل الفجوات معاً»</dt>
+                <dd>التشتت يوقف كل شيء. <b>البديل:</b> ثلاث فجوات فقط لكل دورة، مع مالك وتاريخ.</dd>
+              </div>
+              <div>
+                <dt>«النتيجة العالية تعني أننا آمنون»</dt>
+                <dd>التقييم الذاتي لا يختبر الضوابط ولا يكتشف الحوادث. <b>البديل:</b> مراجعة مستقلة وعينة أدلة بعد التقييم.</dd>
+              </div>
+              <div>
+                <dt>«نعرض النتيجة للعملاء كاعتماد»</dt>
+                <dd>هذا ادعاء غير صحيح ويضر بالمصداقية. <b>البديل:</b> استخدم النتيجة داخلياً، واذكر بوضوح أنها تقييم ذاتي غير معتمد.</dd>
+              </div>
+            </dl>
+            <p>ولأن المبادئ نفسها تتطور، تابع التحديثات الرسمية ولا تعتمد على نسخة محفوظة. وإذا كان عندك شك في حدود الالتزام، راجع <a href="/knowledge/saudi-ai-law-binding-vs-guidance/">الفرق بين الملزم والإرشادي في ملف الذكاء الاصطناعي</a> قبل أن تحوّل نتيجة تقييم إلى التزام تعاقدي أو تصريح عام.</p>
+            <p>وأخيراً، خلّ التقييم مرتبطاً بالتدريب والتوعية. <a href="/knowledge/ai-employee-training/">خطة تدريب الموظفين على الذكاء الاصطناعي</a> تحتاج أن تبدأ من الفجوات الفعلية التي كشفها التقييم، لا من قائمة مواضيع عامة. الموظف اللي يعرف وش الدليل المطلوب منه يقلل نصف عمل جمع الأدلة.</p>
+          </section>
+
+          <section id="faq" class="sc-reveal" aria-labelledby="faq-title">
+            <div class="sc-sec-head"><span class="sc-sec-num" aria-hidden="true">09</span><h2 id="faq-title">الأسئلة الشائعة والمراجع</h2></div>
+            <div class="sc-faq">
+              {faqItems.map((item) => (
+                <article>
+                  <h3>{item.q}</h3>
+                  <p>{item.a}</p>
+                </article>
+              ))}
+            </div>
+            <p class="sc-fine">الأجوبة أعلاه مطابقة للبيانات المنظمة في هذه الصفحة، وتُراجع عند تحديث المصدر الرسمي.</p>
+          </section>
+
+          <section class="sc-next" aria-labelledby="next-title">
+            <h2 id="next-title">اقرأ بعد هذا</h2>
+            <div class="sc-next-grid">
+              <a href="/knowledge/sdaia-generative-ai-guidelines/">
+                <span>الاستخدام التوليدي</span>
+                <b>إرشادات الذكاء الاصطناعي التوليدي من سدايا</b>
+                <small>ضوابط إضافية عند تقييم أداة توليدية داخل المنشأة.</small>
+              </a>
+              <a href="/knowledge/ai-bias-fairness/">
+                <span>الإنصاف</span>
+                <b>العدالة والتحيز في أنظمة الذكاء الاصطناعي</b>
+                <small>ما الذي تستطيع قياسه فعلاً، وحدود المقاييس.</small>
+              </a>
+              <a href="/knowledge/pdpl-and-ai/">
+                <span>البيانات</span>
+                <b>PDPL والذكاء الاصطناعي</b>
+                <small>متى يصبح إدخال البيانات معالجة خاضعة للنظام.</small>
+              </a>
+            </div>
+            <p class="sc-site-link">وإذا كنت تبي الصورة الكاملة قبل التقييم، <a href="/docs/">مركز المعرفة في BRIGHTAI</a> يجمع الأدلة حسب الموضوع ومسار القراءة.</p>
+          </section>
+
+          <section class="sc-refs" aria-labelledby="refs-title">
+            <h2 id="refs-title">المراجع</h2>
+            <ul>
+              <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/services/servicesdetails/AIEthicsAssessment" rel="noopener noreferrer" target="_blank">منصة حوكمة البيانات الوطنية: صفحة «التقييم الذاتي لأخلاقيات الذكاء الاصطناعي»</a> — الوصف والخطوات وطبيعة المخرجات.</li>
+              <li><a href="https://www.spa.gov.sa/N2210858" rel="noopener noreferrer" target="_blank">وكالة الأنباء السعودية: «سدايا» تطلق أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي عبر منصة حوكمة البيانات الوطنية</a> — تفاصيل الإطلاق وعدد الأسئلة والمبادئ والمقياس.</li>
+              <li><a href="https://sdaia.gov.sa/" rel="noopener noreferrer" target="_blank">الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)</a> — الجهة المالكة للأداة ووثائقها.</li>
+            </ul>
+            <p class="sc-fine">آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
+          </section>
+        </div>
+      </div>
+    </article>
+
+    <p class="sc-cta">تبي تشوف كيف تترجم الأسئلة إلى سجل ومراجعة؟ <a href="/kernel/">اطّلع على المحاكاة التوضيحية في Kernel</a>، أو اطلب معلومات عبر <a href="/contact/">صفحة التواصل</a>. المحاكاة تعليمية، وليست خدمة إنتاج أو تقييماً رسمياً.</p>
+
+    <script type="application/ld+json" set:html={JSON.stringify(faq)} />
+  </div>
+</PageShell>
+
+<style>
+  .sc {
+    --sc-teal: #2fe3c4;
+    --sc-teal-soft: #a8f7e8;
+    --sc-teal-dim: #14685c;
+    --sc-copy: #bfcfcb;
+    --sc-muted: #8ea6a0;
+    --sc-line: #123a34;
+    --sc-panel: #04100e;
+    max-inline-size: 100%;
+    margin-block-start: 34px;
+  }
+  .sc h1 {
+    font-size: clamp(32px, 4.4vw, 55px);
+    line-height: 1.55;
+    margin-block: 16px 18px;
+    max-inline-size: 25ch;
+    text-wrap: balance;
+  }
+  .sc h2 { font-size: clamp(23px, 2.8vw, 33px); line-height: 1.5; margin-block: 0 14px; max-inline-size: 32ch; }
+  .sc h3 { font-size: clamp(17px, 1.8vw, 20px); line-height: 1.6; margin-block: 0 8px; }
+  .sc p, .sc li, .sc dd, .sc dt, .sc td, .sc th { line-height: 1.95; color: var(--sc-copy); overflow-wrap: anywhere; }
+  .sc a { color: var(--sc-teal-soft); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .sc a:hover { color: var(--sc-teal); }
+  .sc a:focus-visible, .sc button:focus-visible, .sc summary:focus-visible, .sc input:focus-visible {
+    outline: 2px solid var(--sc-teal);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .sc-eyebrow { display: inline-flex; align-items: center; gap: 9px; margin: 0; color: var(--sc-teal); font-size: 13px; }
+  .sc-lead { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.95; color: #d9e6e2; max-inline-size: 62ch; margin-block: 0 22px; }
+  .sc-badges { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .sc-badges li {
+    font-size: 12.5px; color: #c5eee4; border: 1px solid var(--sc-teal-dim);
+    border-radius: 4px; padding: 6px 12px; min-height: 32px; display: inline-flex; align-items: center; background: #061714;
+  }
+
+  /* Hero: editorial copy + instrument console */
+  .sc-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.95fr);
+    gap: clamp(22px, 4vw, 52px);
+    align-items: start;
+    padding-block: 12px 34px;
+    border-block-end: 1px solid var(--sc-line);
+    background:
+      radial-gradient(70% 60% at 85% 0%, #2fe3c40f, transparent 62%),
+      repeating-linear-gradient(90deg, transparent 0 79px, #2fe3c408 79px 80px);
+  }
+  .sc-console {
+    border: 1px solid #1a4b43;
+    border-radius: 16px;
+    background: linear-gradient(170deg, #071b17, #04100e 70%);
+    padding: 0 18px 16px;
+    box-shadow: 0 24px 60px -40px #2fe3c455;
+  }
+  .sc-console-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding-block: 11px; border-block-end: 1px solid #113a33; font-size: 10.5px; color: #8fb4aa;
+  }
+  .sc-console-bar p { margin: 0; font-size: 11px; color: #a9cec4; letter-spacing: 0.02em; }
+  .sc-console-bar span[aria-hidden]:last-child { font-family: ui-monospace, monospace; letter-spacing: 0.12em; color: var(--sc-teal); }
+  .sc-console-dial { position: relative; padding-block: 12px 0; }
+  .sc-console-dial svg { inline-size: 100%; block-size: auto; max-inline-size: 230px; display: block; margin-inline: auto; }
+  .sc-dial-track { fill: none; stroke: #1b4a41; stroke-width: 10; stroke-linecap: round; }
+  .sc-dial-ticks line { stroke: var(--sc-teal); stroke-width: 1.4; opacity: 0.75; }
+  .sc-dial-number {
+    position: absolute; inset-inline: 0; inset-block-start: 58%;
+    margin: 0; text-align: center; font-size: 40px; font-weight: 700; color: #fff; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .sc-dial-caption { margin: 4px 0 0; text-align: center; font-size: 11px; color: #8fb4aa; }
+  .sc-readouts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 14px 0 10px;
+    background: #113a33; border: 1px solid #113a33; border-radius: 8px; overflow: hidden;
+  }
+  .sc-readouts div { background: #051512; padding: 9px 11px; display: grid; gap: 1px; }
+  .sc-readouts dt { font-size: 10px; color: #85a8a0; }
+  .sc-readouts dd { margin: 0; font-size: 14px; color: #e7faf6; font-variant-numeric: tabular-nums; }
+  .sc-console-note { margin: 6px 0 0; font-size: 10px; line-height: 1.7; color: #77958d; }
+
+  .sc-alert {
+    margin-block: 22px 0; padding: 13px 16px; border-inline-start: 2px solid var(--sc-teal);
+    background: #051512; color: #bfd2cd; font-size: 13px; line-height: 1.85;
+  }
+
+  .sc-tldr {
+    margin-block: 30px 0; padding: clamp(18px, 3vw, 28px);
+    border: 1px solid var(--sc-line); border-inline-start: 3px solid var(--sc-teal);
+    border-radius: 4px 16px 16px 4px;
+    background: linear-gradient(120deg, #2fe3c40d, transparent 55%), #04100e;
+  }
+  .sc-tldr h2 { font-size: clamp(20px, 2vw, 23px); margin-block-end: 12px; color: #fff; }
+  .sc-tldr ol { margin: 0; padding: 0; list-style: none; counter-reset: tldr; display: grid; gap: 9px; }
+  .sc-tldr li {
+    counter-increment: tldr; position: relative; padding-inline-start: 36px;
+    font-size: 14.5px; line-height: 1.9;
+  }
+  .sc-tldr li::before {
+    content: counter(tldr, decimal-leading-zero); position: absolute; inset-inline-start: 0; inset-block-start: 5px;
+    font-size: 10.5px; color: var(--sc-teal); border: 1px solid var(--sc-teal-dim); border-radius: 3px; padding: 1px 4px;
+  }
+
+  .sc-def {
+    margin-block: 20px 0; display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: 16px;
+    align-items: start; padding-block: 16px; border-block: 1px solid var(--sc-line);
+  }
+  .sc-def h2 { font-size: 12px; color: var(--sc-teal); margin: 5px 0 0; letter-spacing: 0.03em; }
+  .sc-def p { margin: 0; font-size: 16px; color: #e2efeb; max-inline-size: 78ch; }
+
+  .sc-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: clamp(24px, 4vw, 54px); align-items: start; margin-block-start: 28px; }
+  .sc-toc { position: sticky; inset-block-start: 18px; padding-block: 14px; border-block-start: 1px solid var(--sc-line); }
+  .sc-toc-label { margin: 0 0 10px; font-size: 11px; color: #7c9b93; letter-spacing: 0.04em; }
+  .sc-toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+  .sc-toc a {
+    display: flex; align-items: center; gap: 9px; min-height: 40px; padding: 6px 8px;
+    border-radius: 6px; font-size: 12.5px; color: #b3c8c2; text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .sc-toc a:hover, .sc-toc a:focus-visible { background: #061714; border-color: #123a34; color: #fff; }
+  .sc-toc a span { color: var(--sc-teal); font-size: 10px; font-variant-numeric: tabular-nums; }
+  .sc-toc-note { margin: 12px 0 0; font-size: 10.5px; line-height: 1.8; color: #74938b; }
+
+  .sc-content > section { padding-block: clamp(32px, 4.2vw, 50px); border-block-end: 1px solid #0f2f2a; scroll-margin-block-start: 24px; }
+  .sc-content > section:first-child { padding-block-start: 8px; }
+  .sc-content > section:last-child { border-block-end: 0; }
+  .sc-sec-head { display: flex; align-items: flex-start; gap: 12px; margin-block-end: 14px; }
+  .sc-sec-num {
+    flex: 0 0 auto; margin-block-start: 7px; font-size: 10.5px; color: var(--sc-teal);
+    border: 1px solid var(--sc-teal-dim); border-radius: 3px; padding: 2px 6px; font-variant-numeric: tabular-nums;
+  }
+  .sc-sec-head h2 { margin: 0; }
+  .sc-answer {
+    font-size: 16.5px; color: #e6f1ee; border-inline-start: 2px solid var(--sc-teal);
+    padding-inline-start: 14px; margin-block: 0 16px; max-inline-size: 74ch;
+  }
+  .sc-content p { max-inline-size: 76ch; }
+  .sc-fine { font-size: 11.5px; color: #8aa39d; line-height: 1.85; margin-block: 12px 0; }
+
+  .sc-quote {
+    margin: 18px 0; padding: 18px 20px; border: 1px solid #1a4b43; border-inline-start: 3px solid var(--sc-teal);
+    border-radius: 4px 12px 12px 4px; background: #051512; max-inline-size: 78ch;
+  }
+  .sc-quote p { margin: 0 0 8px; font-size: 15.5px; color: #e8f6f2; }
+  .sc-quote footer { font-size: 11px; color: #8fb0a8; }
+
+  .sc-facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 1px; margin: 18px 0 20px; background: var(--sc-line); border: 1px solid var(--sc-line); border-radius: 10px; overflow: hidden;
+  }
+  .sc-facts div { background: #051210; padding: 12px 14px; }
+  .sc-facts dt { font-size: 10.5px; color: var(--sc-teal); margin-block-end: 3px; }
+  .sc-facts dd { margin: 0; font-size: 13px; color: #d8e8e3; }
+
+  .sc-list { margin: 14px 0 18px; padding-inline-start: 22px; display: grid; gap: 7px; }
+  .sc-list li { font-size: 14.5px; }
+  .sc-list b { color: #fff; }
+
+  .sc-scroll-hint { display: none; margin: 0 0 6px; font-size: 11px; color: #85a49c; }
+  .sc-tablewrap { margin-block: 18px; max-inline-size: 100%; overflow-x: auto; border: 1px solid var(--sc-line); border-radius: 10px; }
+  .sc table { inline-size: 100%; min-inline-size: 640px; border-collapse: collapse; font-size: 13px; }
+  .sc caption { text-align: start; padding: 11px 14px; font-size: 11px; color: #90aca4; border-block-end: 1px solid var(--sc-line); }
+  .sc th, .sc td { text-align: start; vertical-align: top; padding: 11px 13px; border-block-end: 1px solid #0f2f2a; }
+  .sc thead th { background: #061714; color: #c6ece2; font-size: 11.5px; }
+  .sc tbody tr:hover { background: #051310; }
+  .sc td b { color: #fff; }
+
+  /* Evidence pack */
+  .sc-pack { margin: 18px 0; border: 1px solid var(--sc-line); border-radius: 12px; background: #04100e; padding: 14px; }
+  .sc-pack svg { inline-size: 100%; block-size: auto; max-inline-size: 560px; margin-inline: auto; display: block; }
+  .sc-pack-lines path { stroke: #123a34; stroke-width: 1; stroke-dasharray: 3 5; }
+  .sc-pack-row rect { fill: #061815; stroke: #1b4b42; stroke-width: 1; }
+  .sc-pack-row--top rect { fill: #0a2a24; stroke: var(--sc-teal-dim); }
+  .sc-pack-row text { fill: #dff3ee; font-size: 12px; }
+  .sc-pack-row .sc-pack-small { fill: #8fb0a8; font-size: 10px; }
+  .sc-pack figcaption { margin-block-start: 8px; text-align: center; font-size: 11px; color: #8aa39d; }
+
+  /* Prep questions */
+  .sc-prep { display: grid; gap: 7px; margin-block: 18px; }
+  .sc-prep details { border: 1px solid var(--sc-line); border-radius: 8px; background: #051210; }
+  .sc-prep summary {
+    display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 14px;
+    cursor: pointer; font-size: 14px; color: #e4f2ee; list-style: none;
+  }
+  .sc-prep summary::-webkit-details-marker { display: none; }
+  .sc-prep summary span {
+    font-size: 10px; color: var(--sc-teal); border: 1px solid var(--sc-teal-dim);
+    border-radius: 3px; padding: 1px 5px; font-variant-numeric: tabular-nums;
+  }
+  .sc-prep summary::after { content: "+"; margin-inline-start: auto; color: var(--sc-teal); font-size: 17px; }
+  .sc-prep details[open] summary::after { content: "−"; }
+  .sc-prep details[open] summary { border-block-end: 1px solid #0f2f2a; }
+  .sc-prep details > div { padding: 10px 16px 14px; }
+  .sc-prep p { margin: 0 0 7px; font-size: 13px; }
+  .sc-prep p:last-child { margin-block-end: 0; }
+  .sc-prep b { color: var(--sc-teal-soft); }
+
+  /* Dashboard */
+  .sc-dash {
+    margin-block: 18px; padding: clamp(14px, 2.4vw, 24px);
+    border: 1px solid #1a4b43; border-radius: 18px;
+    background:
+      radial-gradient(75% 55% at 15% 0%, #2fe3c410, transparent 60%),
+      #04100e;
+  }
+  .sc-dash-top { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 18px; align-items: center; }
+  .sc-ring-wrap { position: relative; }
+  .sc-ring { inline-size: 100%; max-inline-size: 180px; display: block; margin-inline: auto; }
+  .sc-ring-track { fill: none; stroke: #123a34; stroke-width: 10; }
+  .sc-ring-value {
+    fill: none; stroke: var(--sc-teal); stroke-width: 10; stroke-linecap: round;
+    transform: rotate(-90deg); transform-origin: 70px 70px;
+    transition: stroke-dashoffset 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    filter: drop-shadow(0 0 5px #2fe3c466);
+  }
+  .sc-ring-label {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0; pointer-events: none;
+  }
+  .sc-ring-label span { font-size: 36px; font-weight: 700; color: #fff; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .sc-ring-label small { font-size: 10px; color: #93b3ab; }
+  .sc-ring-label em { font-style: normal; font-size: 10px; color: var(--sc-teal); margin-block-start: 3px; }
+
+  .sc-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sc-kpi { border: 1px solid #123a34; border-radius: 9px; background: #051512; padding: 10px 12px; }
+  .sc-kpi p { margin: 0; font-size: 10.5px; color: #93b3ab; line-height: 1.5; }
+  .sc-kpi strong { display: block; font-size: 26px; color: #fff; line-height: 1.3; font-variant-numeric: tabular-nums; }
+  .sc-kpi small { font-size: 10px; color: #7d9a93; }
+  .sc-kpi--wide { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+  .sc-kpi--wide p { flex: 1 0 100%; }
+  .sc-kpi--wide strong { font-size: 20px; }
+  .sc-kpi--wide small { padding-block-end: 2px; }
+  .sc-meter { flex: 1 0 100%; margin-block-start: 4px; block-size: 4px; border-radius: 999px; background: #123a34; overflow: hidden; }
+  .sc-meter span { display: block; block-size: 100%; inline-size: 0; background: var(--sc-teal); transition: inline-size 0.5s ease; }
+
+  .sc-gauges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-block: 12px; }
+  .sc-gauge { border: 1px solid #123a34; border-radius: 9px; background: #051512; padding: 8px 10px 10px; text-align: center; }
+  .sc-gauge svg { inline-size: 100%; max-inline-size: 130px; display: block; margin-inline: auto; }
+  .sc-gauge-track { fill: none; stroke: #123a34; stroke-width: 7; stroke-linecap: round; }
+  .sc-gauge-value { fill: none; stroke: #58d9c4; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+  .sc-gauge p { margin: 0; display: flex; align-items: baseline; justify-content: center; gap: 6px; }
+  .sc-gauge b { font-size: 17px; color: #fff; font-variant-numeric: tabular-nums; }
+  .sc-gauge span { font-size: 10.5px; color: #a5c3bb; }
+  .sc-gauge small { display: block; font-size: 9.5px; color: #78968e; }
+
+  .sc-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-block-start: 12px; }
+  .sc-form fieldset { margin: 0; padding: 11px 12px; border: 1px solid #123a34; border-radius: 9px; background: #051210; min-inline-size: 0; }
+  .sc-form legend { padding: 0; font-size: 12px; line-height: 1.7; color: #d5e8e3; }
+  .sc-form legend span { color: var(--sc-teal); font-size: 10px; margin-inline-end: 4px; }
+  .sc-opts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-block-start: 8px; }
+  .sc-opts label {
+    position: relative; display: flex; align-items: center; justify-content: center; min-height: 44px;
+    padding: 5px 4px; border: 1px solid #16443c; border-radius: 6px; background: #061815;
+    font-size: 10.5px; color: #a9c6be; cursor: pointer; text-align: center; line-height: 1.4;
+  }
+  .sc-opts input { position: absolute; opacity: 0; inline-size: 1px; block-size: 1px; }
+  .sc-opts label:has(input:checked) { border-color: var(--sc-teal); background: #0a2c26; color: #eafffb; }
+  .sc-opts label:has(input:focus-visible) { outline: 2px solid var(--sc-teal); outline-offset: 2px; }
+  .sc-form-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-block-start: 4px; }
+  .sc-summary { flex: 1 1 260px; margin: 0; font-size: 12.5px; line-height: 1.8; color: #d6ebe6; }
+  .sc-btn {
+    min-height: 44px; padding: 8px 16px; border: 1px solid #1f5c51; border-radius: 7px;
+    background: transparent; color: var(--sc-teal-soft); font: inherit; font-size: 12px; cursor: pointer;
+  }
+  .sc-btn:hover { background: #082019; }
+
+  .sc-gaps { margin-block-start: 14px; padding-block-start: 12px; border-block-start: 1px solid #123a34; }
+  .sc-gaps h3 { font-size: 14px; color: #e9f7f3; margin-block-end: 6px; }
+  .sc-gaps ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+  .sc-gaps li { font-size: 12px; padding: 7px 11px; border: 1px solid #123a34; border-radius: 6px; background: #051210; }
+  .sc-gaps li b { color: #ffd8a8; font-weight: 400; }
+  .sc-fallback { margin-block-start: 9px; font-size: 12px; }
+  .sc-fallback summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; color: #a9c6be; }
+
+  .sc-triage { margin: 16px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 8px; }
+  .sc-triage div { border: 1px solid var(--sc-line); border-radius: 9px; background: #051210; padding: 13px 14px; }
+  .sc-triage dt { font-size: 14px; color: var(--sc-teal-soft); margin-block-end: 4px; }
+  .sc-triage dd { margin: 0; font-size: 12.5px; }
+
+  /* Paper report */
+  .sc-paper {
+    margin: 22px 0; padding: clamp(10px, 2vw, 18px);
+    background: #0b1714; border: 1px solid #1a4b43; border-radius: 4px;
+  }
+  .sc-paper-inner {
+    background: #f1f2ea; color: #18201d; border-radius: 2px; padding: clamp(16px, 3vw, 28px);
+    box-shadow: 0 18px 40px -30px #000;
+  }
+  .sc-paper-inner p, .sc-paper-inner li, .sc-paper-inner span, .sc-paper-inner b { color: #18201d; }
+  .sc-paper-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; border-block-end: 2px solid #18201d; padding-block-end: 12px; }
+  .sc-paper-kicker { margin: 0; font-size: 9.5px; letter-spacing: 0.16em; color: #5c6b62 !important; }
+  .sc-paper-title { margin: 3px 0 2px; font-size: clamp(17px, 2.1vw, 22px); font-weight: 700; }
+  .sc-paper-sub { margin: 0; font-size: 10.5px; color: #5c6b62 !important; }
+  .sc-paper-score { text-align: center; min-inline-size: 88px; }
+  .sc-paper-score b { font-size: 38px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .sc-paper-score span { font-size: 12px; color: #5c6b62 !important; }
+  .sc-paper-score small { display: block; font-size: 9px; color: #5c6b62 !important; }
+  .sc-paper-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; padding-block: 14px; }
+  .sc-paper-label { margin: 0 0 6px; font-size: 9.5px; letter-spacing: 0.06em; color: #4c5a52 !important; }
+  .sc-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+  .sc-bars li { display: grid; grid-template-columns: minmax(0, 1fr) 72px 24px; align-items: center; gap: 7px; font-size: 10.5px; }
+  .sc-bars span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sc-bars i { block-size: 6px; border-radius: 999px; background: linear-gradient(to left, #0f766a 0 var(--bar), #d8ddd3 var(--bar) 100%); }
+  .sc-bars b { font-size: 10px; text-align: end; font-variant-numeric: tabular-nums; }
+  .sc-paper-side ol { margin: 0 0 12px; padding-inline-start: 18px; font-size: 11px; display: grid; gap: 4px; }
+  .sc-paper-action { margin: 0; font-size: 11px; line-height: 1.7; }
+  .sc-paper-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-block-start: 1px solid #b9c3b8; padding-block-start: 9px; font-size: 9px; color: #5c6b62 !important; }
+  .sc-paper figcaption { margin-block-start: 8px; font-size: 10.5px; color: #8aa39d; text-align: start; }
+
+  .sc-mistakes { margin: 16px 0; display: grid; gap: 7px; }
+  .sc-mistakes div { padding: 12px 14px; border: 1px solid var(--sc-line); border-inline-start: 2px solid #2a7a6c; border-radius: 7px; background: #051210; }
+  .sc-mistakes dt { font-size: 13.5px; color: #f0dcd6; margin-block-end: 3px; }
+  .sc-mistakes dt::before { content: "× "; color: #f08c7a; }
+  .sc-mistakes dd { margin: 0; font-size: 12.5px; }
+  .sc-mistakes dd b { color: var(--sc-teal-soft); }
+
+  .sc-faq { display: grid; gap: 7px; }
+  .sc-faq article { padding: 14px 16px; border: 1px solid var(--sc-line); border-radius: 8px; background: #051210; }
+  .sc-faq h3 { font-size: 15px; color: #fff; margin-block-end: 5px; }
+  .sc-faq p { margin: 0; font-size: 13px; max-inline-size: 82ch; }
+
+  .sc-next { padding-block-start: 34px !important; }
+  .sc-next h2 { font-size: clamp(21px, 2.3vw, 27px); }
+  .sc-next-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px; }
+  .sc-next-grid a {
+    display: grid; gap: 4px; padding: 14px; border: 1px solid var(--sc-line); border-radius: 9px;
+    background: #051210; text-decoration: none; transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .sc-next-grid a:hover { border-color: #2a7a6c; transform: translateY(-2px); }
+  .sc-next-grid span { font-size: 10px; color: var(--sc-teal); }
+  .sc-next-grid b { color: #fff; font-size: 14px; line-height: 1.6; }
+  .sc-next-grid small { color: #93ada6; font-size: 11.5px; line-height: 1.7; }
+  .sc-site-link { margin-block: 12px 0; font-size: 12.5px; color: #a3bab4; }
+
+  .sc-refs { margin-block: 30px 0; padding-block-start: 20px; border-block-start: 1px solid var(--sc-line); }
+  .sc-refs h2 { font-size: 19px; }
+  .sc-refs ul { margin: 0; padding-inline-start: 18px; display: grid; gap: 8px; font-size: 12.5px; }
+  .sc-cta {
+    margin-block: 26px 0; padding: 16px 18px; border: 1px solid #1a4b43; border-radius: 9px;
+    background: #04100e; font-size: 13.5px; max-inline-size: none;
+  }
+
+  /* Reveal: only when JS is on; content stays visible without it */
+  .sc-js .sc-reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .sc-js .sc-reveal.is-in { opacity: 1; transform: none; }
+
+  @media (max-width: 1040px) {
+    .sc-hero { grid-template-columns: minmax(0, 1fr); }
+    .sc-console { max-inline-size: 460px; }
+    .sc-layout { grid-template-columns: minmax(0, 1fr); }
+    .sc-toc { position: static; padding-block: 0 10px; border-block-start: 0; border-block-end: 1px solid var(--sc-line); }
+    .sc-toc ol { display: flex; gap: 5px; overflow-x: auto; padding-block-end: 6px; scrollbar-width: thin; }
+    .sc-toc a { white-space: nowrap; border: 1px solid var(--sc-line); min-height: 44px; }
+    .sc-toc-note { display: none; }
+  }
+  @media (max-width: 820px) {
+    .sc-dash-top { grid-template-columns: minmax(0, 1fr); }
+    .sc-ring { max-inline-size: 150px; }
+    .sc-form { grid-template-columns: minmax(0, 1fr); }
+    .sc-paper-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .sc h1 { max-inline-size: none; }
+    .sc-def { grid-template-columns: minmax(0, 1fr); gap: 5px; }
+    .sc-scroll-hint { display: block; }
+    .sc-gauges { gap: 5px; }
+    .sc-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sc-opts { grid-template-columns: minmax(0, 1fr); }
+    .sc-opts label { justify-content: flex-start; padding-inline: 10px; }
+    .sc-paper-head { flex-direction: column; }
+    .sc-paper-score { text-align: start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sc-js .sc-reveal { opacity: 1; transform: none; transition: none; }
+    .sc-ring-value, .sc-gauge-value, .sc-meter span, .sc-next-grid a { transition: none; }
+    .sc-next-grid a:hover { transform: none; }
+  }
+
+  @media print {
+    .sc-toc, .sc-form, .sc-btn, .sc-gauges, .sc-cta, .sc-next, .sc-dash-top .sc-ring-wrap, .sc-console { display: none; }
+    .sc, .sc * { color: #000 !important; background: #fff !important; box-shadow: none !important; }
+    .sc-hero, .sc-def, .sc-layout, .sc-dash-top, .sc-paper-grid { grid-template-columns: minmax(0, 1fr) !important; display: block; }
+    .sc-content > section { break-inside: avoid; }
+    .sc-paper, .sc-paper-inner { border: 1px solid #000; }
+    .sc-bars i { background: #000 !important; }
+    .sc a { text-decoration: underline; }
+    .sc details { page-break-inside: avoid; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-sc]');
+  if (root) {
+    root.classList.add('sc-js');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reveal = root.querySelectorAll<HTMLElement>('.sc-reveal');
+
+    const showAll = () => reveal.forEach((item) => item.classList.add('is-in'));
+    if (reduced.matches || !('IntersectionObserver' in window)) {
+      showAll();
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.06 }
+      );
+      reveal.forEach((item) => observer.observe(item));
+      // Safety net: never leave content hidden if an intersection callback is missed
+      // (for example after an instant anchor jump or a very fast scroll).
+      window.setTimeout(showAll, 1400);
+    }
+    reduced.addEventListener('change', () => {
+      if (reduced.matches) showAll();
+    });
+
+    const dash = root.querySelector<HTMLElement>('[data-dashboard]');
+    if (dash) {
+      const form = dash.querySelector<HTMLFormElement>('[data-readiness]');
+      const fields = Array.from(dash.querySelectorAll<HTMLFieldSetElement>('[data-q]'));
+      const ring = dash.querySelector<SVGCircleElement>('[data-ring]');
+      const ringValue = dash.querySelector<HTMLElement>('[data-ring-value]');
+      const summary = dash.querySelector<HTMLElement>('[data-summary]');
+      const gapList = dash.querySelector<HTMLElement>('[data-gap-list]');
+      const answeredBar = dash.querySelector<HTMLElement>('[data-answered-bar]');
+      const reset = dash.querySelector<HTMLButtonElement>('[data-reset]');
+      const counters: Record<string, HTMLElement | null> = {
+        solid: dash.querySelector('[data-kpi="solid"]'),
+        partial: dash.querySelector('[data-kpi="partial"]'),
+        critical: dash.querySelector('[data-kpi="critical"]'),
+        answered: dash.querySelector('[data-kpi="answered"]'),
+      };
+      const domains = ['inventory', 'owners', 'evidence'] as const;
+      const domainMax: Record<string, number> = { inventory: 6, owners: 6, evidence: 8 };
+
+      const frames = new WeakMap<HTMLElement, number>();
+      const animate = (el: HTMLElement | null, target: number) => {
+        if (!el) return;
+        const running = frames.get(el);
+        if (running) cancelAnimationFrame(running);
+        const from = Number(el.textContent) || 0;
+        if (reduced.matches || from === target) {
+          el.textContent = String(target);
+          frames.delete(el);
+          return;
+        }
+        const start = performance.now();
+        const duration = 600;
+        const tick = (now: number) => {
+          const progress = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = String(Math.round(from + (target - from) * eased));
+          if (progress < 1) frames.set(el, requestAnimationFrame(tick));
+          else frames.delete(el);
+        };
+        frames.set(el, requestAnimationFrame(tick));
+      };
+
+      const update = () => {
+        let total = 0;
+        let answered = 0;
+        const counts = { solid: 0, partial: 0, critical: 0 };
+        const domainScores: Record<string, number> = { inventory: 0, owners: 0, evidence: 0 };
+        const gaps: { label: string; score: number }[] = [];
+
+        fields.forEach((field) => {
+          const checked = field.querySelector<HTMLInputElement>('input:checked');
+          if (!checked) return;
+          const score = Number(checked.dataset.score ?? 0);
+          const domain = field.dataset.domain ?? 'inventory';
+          answered += 1;
+          total += score;
+          domainScores[domain] = (domainScores[domain] ?? 0) + score;
+          if (score === 2) counts.solid += 1;
+          else if (score === 1) counts.partial += 1;
+          else counts.critical += 1;
+          if (score < 2) gaps.push({ label: field.dataset.short ?? 'بند', score });
+        });
+
+        const pct = Math.round((total / 20) * 100);
+        animate(counters.solid, counts.solid);
+        animate(counters.partial, counts.partial);
+        animate(counters.critical, counts.critical);
+        animate(counters.answered, answered);
+        animate(ringValue, pct);
+        if (ring) ring.style.strokeDashoffset = String(100 - pct);
+        if (answeredBar) answeredBar.style.inlineSize = `${answered * 10}%`;
+
+        domains.forEach((domain) => {
+          const gauge = dash.querySelector<HTMLElement>(`[data-gauge="${domain}"]`);
+          const score = domainScores[domain] ?? 0;
+          const domainPct = Math.round((score / domainMax[domain]) * 100);
+          const arc = gauge?.querySelector<SVGPathElement>('.sc-gauge-value');
+          const value = gauge?.querySelector<HTMLElement>('[data-gauge-value]');
+          if (arc) arc.style.strokeDashoffset = String(100 - domainPct);
+          if (value) value.textContent = `${domainPct}%`;
+          const cellScore = dash.querySelector<HTMLElement>(`[data-table-score="${domain}"]`);
+          const cellPct = dash.querySelector<HTMLElement>(`[data-table-pct="${domain}"]`);
+          if (cellScore) cellScore.textContent = `${score} من ${domainMax[domain]}`;
+          if (cellPct) cellPct.textContent = `${domainPct}%`;
+        });
+
+        if (summary) {
+          if (answered < fields.length) {
+            summary.textContent = `أجبت على ${answered} من ${fields.length}. أكمل الباقي لتحصل على قراءة أوضح للفجوات.`;
+          } else if (pct >= 80) {
+            summary.textContent = `جاهزية ${pct} من 100. أساسك جيد؛ راجع الفجوات الجزئية قبل الاعتماد على النتيجة، وتأكد أن كل «نعم» لها دليل يمكن فتحه.`;
+          } else if (pct >= 45) {
+            summary.textContent = `جاهزية ${pct} من 100. عندك أساس يحتاج إكمالاً؛ ابدأ بأكبر فجوة حرجة قبل الدخول على الأداة حتى لا تجيب على مستوى النية.`;
+          } else {
+            summary.textContent = `جاهزية ${pct} من 100. الأفضل تأجيل الدخول حتى تجهّز الجرد والمالكين، لأن الإجابات الحالية غالباً ستكون تقديرية.`;
+          }
+        }
+
+        if (gapList) {
+          const pending = fields.length - answered;
+          const items: string[] = [];
+          gaps
+            .slice()
+            .sort((a, b) => a.score - b.score)
+            .slice(0, 4)
+            .forEach((gap) => {
+              items.push(`<li><b>${gap.score === 0 ? 'غير موجود:' : 'جزئي:'}</b> ${gap.label}</li>`);
+            });
+          if (pending > 0) items.push(`<li>باقي <b>${pending}</b> ${pending === 1 ? 'سؤال' : 'أسئلة'} بلا إجابة.</li>`);
+          if (!items.length) items.push('<li>كل البنود موثقة في هذا الفحص. راجعها دورياً ولا تفترض الثبات.</li>');
+          gapList.innerHTML = items.join('');
+        }
+      };
+
+      form?.addEventListener('change', update);
+      form?.addEventListener('submit', (event) => event.preventDefault());
+      reset?.addEventListener('click', () => {
+        form?.reset();
+        update();
+        fields[0]?.querySelector<HTMLInputElement>('input')?.focus();
+      });
+      update();
+    }
+  }
+</script>
