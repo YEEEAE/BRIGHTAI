@@ -66,6 +66,27 @@ const healthOverall: Record<string, { text: string; tone: string }> = {
   blocked: { text: 'محجوب', tone: 'bad' }, unconfigured: { text: 'غير مهيأ', tone: 'muted' },
 };
 const invitationStatusLabels: Record<string, string> = { pending: 'بانتظار القبول', accepted: 'مقبولة لدى Auth', rejected: 'مرفوضة', canceled: 'ملغاة', expired: 'منتهية', inviter_unavailable: 'توقفت صلاحية الداعي' };
+const trialStateLabels: Record<string, string> = {
+  NOT_CONFIGURED: 'غير مهيأة — لا جدول تجربة معتمد',
+  NONE: 'لا يوجد طلب تجربة',
+  REQUESTED: 'طلب مسجل — بانتظار مراجعة الأهلية',
+  ELIGIBILITY_REVIEW: 'قيد مراجعة الأهلية',
+  APPROVED: 'أهلية موافقة — لا تفعيل بعد',
+  ACTIVATED: 'مفعّلة — 48 ساعة من وقت التفعيل',
+  EXPIRED: 'منتهية — انتهت نافذة 48 ساعة',
+  CLOSED: 'مغلقة',
+  REJECTED: 'مرفوضة',
+  CANCELLED: 'ملغاة',
+  INVALID_CONFIGURATION: 'محجوبة — نافذة 48 ساعة غير صالحة',
+  ACTIVE: 'استحقاق ساري',
+  PENDING: 'بانتظار التحقق',
+  NOT_APPROVED: 'لا يوجد استحقاق',
+  NOT_INCLUDED: 'المنتج غير مشمول',
+  BLOCKED: 'محجوب',
+  IN_PROGRESS: 'قيد التجربة',
+  DRAFT_REQUIRES_HUMAN_REVIEW: 'مسودة تحتاج مراجعة بشرية',
+  NOT_ELIGIBLE: 'غير مؤهل',
+};
 const date = (value: string) => { const parsed = new Date(value); return Number.isNaN(parsed.getTime()) ? '—' : parsed.toLocaleDateString('ar-SA'); };
 // No browser clock or approval timestamp may start a trial.
 function appendRecordedTime(target: Element, label: string, value: string | null | undefined) {
@@ -90,15 +111,32 @@ function renderProductTerms(card: HTMLElement, product: any) {
   appendRecordedTime(terms, 'موافقة الإتاحة الإدارية (بتوقيت الرياض)', product.approvedAt);
   appendRecordedTime(terms, 'نهاية الإتاحة الإدارية (بتوقيت الرياض)', product.expiresAt);
   const commercial = card.querySelector('[data-product-commercial]')!;
-  commercial.textContent = 'الاشتراك: غير مهيأ · الترخيص: غير مهيأ · تجربة 48 ساعة: غير مهيأة. لا تفعيل ذاتي.';
-  appendRecordedTime(commercial, 'بداية التجربة', product.trialDetails?.activated_at);
-  appendRecordedTime(commercial, 'نهاية التجربة', product.trialDetails?.expires_at);
+  const details = product.trialDetails ?? {};
+  const trialLabel = trialStateLabels[details.status] ?? 'غير مهيأة';
+  commercial.textContent = `التجربة: ${trialLabel} · الاشتراك: غير مهيأ · الترخيص المحلي: غير مهيأ. لا تحويل تلقائي ولا خصم ولا تجديد.`;
+  appendRecordedTime(commercial, 'قرار الأهلية', details.decided_at);
+  appendRecordedTime(commercial, 'بداية التجربة من وقت التفعيل', details.activated_at);
+  appendRecordedTime(commercial, 'نهاية التجربة', details.expires_at);
 }
 function setLoginError(input: HTMLInputElement | null | undefined, error: HTMLElement | null | undefined, message = '') {
   if (!input || !error) return;
   error.textContent = message; error.hidden = !message;
   input.setAttribute('aria-invalid', message ? 'true' : 'false');
   input.setAttribute('aria-describedby', error.id);
+}
+function renderTrialSummary(trial: any) {
+  const target = root.querySelector<HTMLElement>('[data-trial-summary]');
+  if (!target) return;
+  const state = trial?.state ?? 'NOT_CONFIGURED';
+  target.textContent = `حالة التجربة: ${trialStateLabels[state] ?? 'غير معروفة'}. الطلب لا ينشئ ترخيصًا، والموافقة لا تبدأ العداد، والتفعيل فقط يبدأ 48 ساعة من activated_at.`;
+  appendRecordedTime(target, 'قرار الأهلية', trial?.decidedAt);
+  appendRecordedTime(target, 'بداية التفعيل', trial?.activatedAt);
+  appendRecordedTime(target, 'الانتهاء', trial?.expiresAt);
+  if (trial?.exit?.state && trial.exit.state !== 'NOT_APPLICABLE') {
+    const exit = document.createElement('span');
+    exit.textContent = ` · الخروج/الحذف: ${trial.exit.deletionExecuted === true ? 'منفذ موثق' : 'سياسة معلقة، لم يُنفذ حذف'}`;
+    target.append(exit);
+  }
 }
 function clearPrivate() {
   currentTenant = null; invitationConfig = null;
@@ -127,6 +165,8 @@ function clearPrivate() {
   departmentsPanel.hidden = true; departmentsList.replaceChildren(); departmentsState.textContent = 'تُحمّل الإدارات بعد التحقق من العضوية.';
   activityList.replaceChildren(); activityState.textContent = 'تُحمّل الأنشطة بعد التحقق من العضوية.';
   root.querySelector('[data-evidence-summary]')!.textContent = 'ملخص السجلات غير محمّل.';
+  const trialSummary = root.querySelector<HTMLElement>('[data-trial-summary]');
+  if (trialSummary) trialSummary.textContent = 'حالة التجربة غير محمّلة؛ لا تفعيل ذاتي ولا تحويل تلقائي.';
   root.querySelectorAll<HTMLElement>('[data-product]').forEach(card => {
     card.querySelector<HTMLElement>('[data-product-admin]')!.hidden = true;
     card.querySelector('[data-product-admin]')!.replaceChildren();
@@ -341,9 +381,13 @@ function render(data: any) {
     root.querySelector('[data-metric="events"]')!.textContent = data.summary?.events == null ? 'لا بيانات' : String(data.summary.events);
     renderActivity(data.activity ?? []);
     const evidence = root.querySelector('[data-evidence-summary]')!;
-    evidence.textContent = data.summary?.events == null ? 'ملخص السجلات غير متاح.' : `أحداث Kernel المحتفظ بها: ${data.summary.events}. تقرير نتيجة التجربة غير مهيأ.`;
-    appendRecordedTime(evidence, 'أول حدث مسجل (بتوقيت الرياض)', data.summary?.proofOfValue?.firstEventAt);
-    appendRecordedTime(evidence, 'آخر حدث مسجل (بتوقيت الرياض)', data.summary?.proofOfValue?.lastEventAt);
+    const pov = data.summary?.proofOfValue;
+    evidence.textContent = pov?.status === 'DRAFT_REQUIRES_HUMAN_REVIEW'
+      ? `مسودة Proof of Value من سجل تدقيق Kernel: ${pov.totals?.events ?? 0} حدثًا ضمن نافذة التجربة. لا تتضمن محتوى عميل ولا نسبة إنجاز، وتحتاج مراجعة بشرية.`
+      : `أحداث Kernel المحتفظ بها: ${data.summary?.events ?? 0}. تقرير Proof of Value: ${trialStateLabels[pov?.status] ?? (pov?.status === 'NOT_CONFIGURED' ? 'غير مهيأ' : pov?.status ?? 'غير متاح')}.`;
+    appendRecordedTime(evidence, 'بداية نافذة PoV', pov?.activatedAt);
+    appendRecordedTime(evidence, 'نهاية نافذة PoV', pov?.closedAt ?? pov?.expiresAt);
+    renderTrialSummary(data.trialLifecycle);
   }
   for (const p of data.products) {
     const card = root.querySelector<HTMLElement>(`[data-product="${p.slug}"]`);

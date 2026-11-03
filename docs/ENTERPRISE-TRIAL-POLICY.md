@@ -12,7 +12,7 @@
 **حالة اعتماد المحتوى:** `APPROVED`
 **حالة تشغيل خدمة التجربة:** `NOT VERIFIED / NOT CURRENTLY OFFERED AS ACTIVE ON THE PUBLIC WEBSITE`
 
-**الحالة المحلية الحالية:** التجربة غير متاحة للتفعيل الذاتي. منح Kernel الحالية `ADMIN_NON_BILLED` (إداري غير مفوتر) فقط؛ ليست `Trial` أو `License` ولا تنشئ بداية تجربة أو حقًا تجاريًا. لا provisioning للتجارب ولا توليد تلقائي لتقارير PoV؛ سجلات Kernel الإدارية تثبت إجراءات الإدارة فقط، لا نجاح تشغيل منتج. `mailto` يجهز استفسارًا ولا يحفظ طلبًا في الموقع أو يثبت إرساله أو استلامه.
+**الحالة المحلية الحالية:** التجربة غير متاحة للتفعيل الذاتي. منح Kernel الحالية `ADMIN_NON_BILLED` (إداري غير مفوتر) فقط؛ ليست `Trial` أو `License` ولا تنشئ بداية تجربة أو حقًا تجاريًا. لا provisioning للتجارب ولا توليد تلقائي لتقارير PoV؛ سجلات Kernel الإدارية تثبت إجراءات الإدارة فقط، لا نجاح تشغيل منتج. `mailto` يجهز استفسارًا ولا يحفظ طلبًا في الموقع أو يثبت إرساله أو استلامه. أُضيف تمثيل محلي للدورة في `src/server/kernel/trial.mjs` ومسودة ترحيل `migrations/0023_aigas_enterprise_trial_lifecycle.sql` **غير المطبقة**؛ لا مسار API أو واجهة تنشئ استحقاقًا عند الطلب.
 
 > **تنبيه أساسي:** هذه الوثيقة تصف السياسة **المستهدفة عند تشغيل منتج حقيقي**. لا يعني وجودها أن طلب تجربة 48 ساعة أو تفعيل المنتجات أو الدفع أو إرسال نموذج الموقع يعمل حاليًا. لا يجوز نشر وعد بتجربة مفعلة قبل إثبات الجاهزية. لا تتضمن هذه الوثيقة أسعارًا، أو حدود استهلاك رقمية، أو مدد احتفاظ، أو SLA غير معتمدة.
 
@@ -154,8 +154,6 @@
 - **مدة التمديد القصوى، عدد مرات التمديد، وسلطة توقيع الاستثناء غير معتمدة رقميًا**؛ تعتمد بجدول صلاحيات قبل الإطلاق.
 - لا يُحوَّل تمديد تجريبي واسع أو عالي المخاطر إلى بديل دائم عن Pilot/عقد موثق.
 
----
-
 ## 07. دورة حياة طلب التجربة (State Machine)
 
 ```mermaid
@@ -201,6 +199,19 @@ flowchart TD
 `TrialRequested`, `EligibilityChecked`, `TrialApproved`, `TrialRejected`, `ProvisioningStarted`, `TrialActivated`, `QuotaWarning`, `QuotaExhausted`, `TrialSuspended`, `TrialResumed`, `TrialExtensionRequested`, `TrialExtensionApproved`, `TrialExpired`, `TrialTerminated`, `TrialExitRequested`, `TrialExportCompleted`, `TrialDeletionScheduled`, `TrialDeletionCompleted`, `PoVReportApproved`, `QuoteCreated`, `PaidLicenseActivated`.
 
 هذه **أسماء أحداث مقترحة لعقد التصميم**، وليست إثبات وجود Event Bus أو جدول أو API بهذا الاسم.
+
+---
+
+### 07.3 عقد التنفيذ المحلي المبسّط (غير مفعّل)
+
+> هذا وصف لعقد كود محلي، وليس إعلان تشغيل. الترحيل `0023` غير مطبق، ولا يوجد مسار API يحوّل طلبًا إلى استحقاق.
+
+- الدورة المنفذة في `src/server/kernel/trial.mjs`: `REQUESTED → ELIGIBILITY_REVIEW → APPROVED → ACTIVATED → EXPIRED → CLOSED`، مع `REJECTED` و`CANCELLED` صريحتين.
+- `ACTIVATED` لا يُبلَغ إلا من `APPROVED` بقرار مشغّل مستقل، مع `readinessVerified=true` و`dataMode=SYNTHETIC` وإقرار عميل صريح. لا يبدأ العداد من الطلب أو الموافقة.
+- `EXPIRED` لا يعود إلى `ACTIVATED`؛ أي تقييم لاحق يحتاج طلبًا وقرارًا جديدين. لا يوجد مسار دفع أو فاتورة أو تجديد أو تحويل تلقائي.
+- كل انتقال يُسجَّل بمصدر فاعل (`TENANT`/`OPERATOR`/`SYSTEM`) وتاريخ وسبب عند الرفض أو الإلغاء، ويُتحقق منه في الكود وفي حارس الترحيل.
+- الاستحقاق لكل منتج على حدة؛ `Kernel` ليس صفًا ولا رسمًا منفصلًا. غياب الجدول أو الصلاحية يُقرأ `NOT_CONFIGURED` وليس منحًا.
+- الخروج/الحذف يبقى `POLICY_PENDING_APPROVAL` ولا ينفّذ حذفًا فعليًا في هذه المرحلة.
 
 ---
 

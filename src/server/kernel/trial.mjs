@@ -1,0 +1,312 @@
+import { isUuid, auditActionLabel } from './core.mjs';
+
+// A trial is a short, bounded evaluation. It is not a subscription, a licence,
+// a purchase order, or an administrative access grant. The browser clock and the
+// request/approval timestamps never start the 48-hour window.
+export const TRIAL_DURATION_MS = 48 * 60 * 60 * 1000;
+export const TRIAL_DURATION_SECONDS = 172800;
+export const TRIAL_DATA_MODE = 'SYNTHETIC';
+export const TRIAL_STATES = Object.freeze([
+  'REQUESTED',
+  'ELIGIBILITY_REVIEW',
+  'APPROVED',
+  'ACTIVATED',
+  'EXPIRED',
+  'CLOSED',
+  'REJECTED',
+  'CANCELLED',
+]);
+const stateSet = new Set(TRIAL_STATES);
+const productSlugs = new Set(['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']);
+
+// The only allowed transitions. EXPIRED can never return to ACTIVATED; a new
+// evaluation needs a new request. No transition creates payment, invoice,
+// renewal, or automatic conversion.
+export const TRIAL_TRANSITIONS = Object.freeze({
+  REQUESTED: Object.freeze(['ELIGIBILITY_REVIEW', 'CANCELLED']),
+  ELIGIBILITY_REVIEW: Object.freeze(['APPROVED', 'REJECTED', 'CANCELLED']),
+  APPROVED: Object.freeze(['ACTIVATED', 'CANCELLED']),
+  ACTIVATED: Object.freeze(['EXPIRED', 'CANCELLED']),
+  EXPIRED: Object.freeze(['CLOSED']),
+  REJECTED: Object.freeze(['CLOSED']),
+  CANCELLED: Object.freeze(['CLOSED']),
+  CLOSED: Object.freeze([]),
+});
+
+const commercialDefaults = Object.freeze({
+  automaticConversion: false,
+  automaticCharge: false,
+  automaticRenewal: false,
+  checkoutAvailable: false,
+  billingEnabled: false,
+  paymentMethodStored: false,
+});
+
+function iso(value) {
+  if (value == null) return null;
+  const parsed = value instanceof Date ? value : new Date(value);
+  return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : null;
+}
+function exactDuration(activatedAt, expiresAt) {
+  const start = activatedAt == null ? NaN : new Date(activatedAt).getTime();
+  const end = expiresAt == null ? NaN : new Date(expiresAt).getTime();
+  return Number.isFinite(start) && Number.isFinite(end) && end - start === TRIAL_DURATION_MS;
+}
+function safeProducts(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter(item => typeof item === 'string' && productSlugs.has(item)))];
+}
+
+export function canTransitionTrial(from, to, context = {}) {
+  if (!stateSet.has(from) || !stateSet.has(to)) return { allowed: false, code: 'INVALID_STATE' };
+  const allowed = TRIAL_TRANSITIONS[from] ?? [];
+  if (!allowed.includes(to)) return { allowed: false, code: 'TRANSITION_NOT_ALLOWED' };
+  const actor = context.actor ?? 'TENANT';
+  const reason = typeof context.reason === 'string' ? context.reason.trim() : '';
+  if (to === 'APPROVED' && actor !== 'OPERATOR') return { allowed: false, code: 'OPERATOR_DECISION_REQUIRED' };
+  if (to === 'REJECTED' && (actor !== 'OPERATOR' || reason.length < 10)) return { allowed: false, code: 'OPERATOR_REASON_REQUIRED' };
+  if (to === 'ACTIVATED') {
+    if (actor !== 'OPERATOR') return { allowed: false, code: 'OPERATOR_ACTIVATION_REQUIRED' };
+    if (context.readinessVerified !== true) return { allowed: false, code: 'READINESS_NOT_VERIFIED' };
+    if (context.dataMode !== TRIAL_DATA_MODE) return { allowed: false, code: 'SYNTHETIC_DATA_ONLY' };
+    if (context.customerAcknowledged !== true) return { allowed: false, code: 'CUSTOMER_ACKNOWLEDGEMENT_REQUIRED' };
+  }
+  if (to === 'EXPIRED' && actor !== 'SYSTEM') return { allowed: false, code: 'SYSTEM_CLOCK_REQUIRED' };
+  if (to === 'CANCELLED' && reason.length < 10) return { allowed: false, code: 'CANCELLATION_REASON_REQUIRED' };
+  return { allowed: true, code: 'OK' };
+}
+
+export function deriveTrialState(row, now = Date.now()) {
+  if (!row?.state) return 'NONE';
+  if (!stateSet.has(row.state)) return 'INVALID_CONFIGURATION';
+  if (row.state !== 'ACTIVATED') return row.state;
+  if (!exactDuration(row.activated_at, row.expires_at)) return 'INVALID_CONFIGURATION';
+  return new Date(row.expires_at).getTime() <= now ? 'EXPIRED' : 'ACTIVATED';
+}
+
+function notConfigured(reason) {
+  return {
+    schemaReady: false,
+    configured: false,
+    state: 'NOT_CONFIGURED',
+    reason,
+    products: [],
+    entitledProducts: [],
+    events: [],
+    durationSeconds: TRIAL_DURATION_SECONDS,
+    selfServiceAvailable: false,
+    activationRequiresOperator: true,
+    activationRequiresReadiness: true,
+    dataMode: TRIAL_DATA_MODE,
+    commercial: { ...commercialDefaults },
+    exit: { state: 'POLICY_PENDING_APPROVAL', exportPrepared: false, deletionScheduled: false, deletionExecuted: false },
+  };
+}
+
+// Read-only lifecycle projection. Missing schema or missing privileges degrade to
+// NOT_CONFIGURED; they never invent a trial or an active entitlement.
+export async function trialLifecycle(db, tenantId) {
+  if (!isUuid(tenantId)) return notConfigured('INVALID_TENANT');
+  let ready;
+  try {
+    ready = (await db.query("SELECT to_regclass('public.aigas_trial_requests') IS NOT NULL AS requests, to_regclass('public.aigas_trial_events') IS NOT NULL AS events, to_regclass('public.aigas_trial_entitlements') IS NOT NULL AS entitlements")).rows[0];
+  } catch (error) {
+    if (error?.code === '42501' || error?.code === '42P01') return notConfigured('TRIAL_SCHEMA_UNAVAILABLE');
+    throw error;
+  }
+  if (!ready?.requests) return notConfigured('MIGRATION_0023_NOT_APPLIED');
+  let row;
+  try {
+    row = (await db.query(`SELECT id,tenant_id,requested_by,requested_products,deployment_mode,data_mode,
+      state,decision_source,decided_at,activated_at,expires_at,closed_at,reason,version,created_at,updated_at
+      FROM public.aigas_trial_requests WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 1`, [tenantId])).rows[0];
+  } catch (error) {
+    if (error?.code === '42P01' || error?.code === '42703' || error?.code === '42501') return notConfigured('TRIAL_SCHEMA_UNAVAILABLE');
+    throw error;
+  }
+  if (!row) {
+    return {
+      ...notConfigured('NO_TRIAL_REQUEST'),
+      schemaReady: true,
+      configured: true,
+      state: 'NONE',
+      reason: 'NO_TRIAL_REQUEST',
+    };
+  }
+  const effectiveState = deriveTrialState(row);
+  const invalid = effectiveState === 'INVALID_CONFIGURATION';
+  let events = [];
+  let entitlements = [];
+  try {
+    if (ready.events) {
+      events = (await db.query(`SELECT from_state,to_state,actor_source,reason,created_at
+        FROM public.aigas_trial_events WHERE trial_id=$1 AND tenant_id=$2
+        ORDER BY created_at ASC,id ASC LIMIT 50`, [row.id, tenantId])).rows.map(event => ({
+        from: event.from_state,
+        to: event.to_state,
+        actorSource: event.actor_source,
+        reason: event.reason ?? null,
+        at: iso(event.created_at),
+      }));
+    }
+    if (ready.entitlements) {
+      entitlements = (await db.query(`SELECT product_slug,status,starts_at,ends_at
+        FROM public.aigas_trial_entitlements WHERE trial_id=$1 AND tenant_id=$2 ORDER BY product_slug`, [row.id, tenantId])).rows;
+    }
+  } catch (error) {
+    if (error?.code !== '42P01' && error?.code !== '42703' && error?.code !== '42501') throw error;
+    events = [];
+    entitlements = [];
+  }
+  const includedProducts = safeProducts(row.requested_products);
+  const now = Date.now();
+  const entitledProducts = !invalid && effectiveState === 'ACTIVATED'
+    ? entitlements.filter(item => item.status === 'ACTIVE' && includedProducts.includes(item.product_slug) && exactDuration(item.starts_at, item.ends_at) && new Date(item.starts_at).getTime() <= now && new Date(item.ends_at).getTime() > now).map(item => item.product_slug)
+    : [];
+  return {
+    schemaReady: true,
+    configured: true,
+    trialId: row.id,
+    state: effectiveState,
+    recordedState: row.state,
+    reason: invalid ? 'INVALID_48_HOUR_WINDOW' : row.reason ?? null,
+    products: includedProducts,
+    entitledProducts,
+    deploymentMode: row.deployment_mode,
+    dataMode: row.data_mode === TRIAL_DATA_MODE ? TRIAL_DATA_MODE : 'NOT_ELIGIBLE',
+    requestedAt: iso(row.created_at),
+    reviewedAt: null,
+    decidedAt: iso(row.decided_at),
+    decisionSource: row.decision_source ?? null,
+    activatedAt: iso(row.activated_at),
+    expiresAt: iso(row.expires_at),
+    closedAt: iso(row.closed_at),
+    durationSeconds: TRIAL_DURATION_SECONDS,
+    version: row.version,
+    events,
+    selfServiceAvailable: false,
+    activationRequiresOperator: true,
+    activationRequiresReadiness: true,
+    commercial: { ...commercialDefaults },
+    exit: {
+      state: ['EXPIRED', 'CANCELLED', 'REJECTED', 'CLOSED'].includes(effectiveState) ? 'EXIT_POLICY_REQUIRED' : 'NOT_APPLICABLE',
+      exportPrepared: false,
+      deletionScheduled: false,
+      deletionExecuted: false,
+    },
+  };
+}
+
+export function trialAccessFor(lifecycle, slug) {
+  if (!productSlugs.has(slug)) return { kind: 'TRIAL_48H', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'UNKNOWN_PRODUCT' };
+  if (!lifecycle?.configured) return { kind: 'TRIAL_48H', state: 'NOT_CONFIGURED', grantsProduct: false, reason: lifecycle?.reason ?? 'TRIAL_SCHEMA_NOT_APPLIED' };
+  if (lifecycle.state === 'NONE') return { kind: 'TRIAL_48H', state: 'NOT_APPROVED', grantsProduct: false, reason: 'NO_TRIAL_REQUEST' };
+  if (!lifecycle.products?.includes(slug)) return { kind: 'TRIAL_48H', state: 'NOT_INCLUDED', grantsProduct: false, reason: 'PRODUCT_NOT_IN_TRIAL_SCOPE' };
+  if (lifecycle.state === 'ACTIVATED' && lifecycle.entitledProducts?.includes(slug)) return { kind: 'TRIAL_48H', state: 'ACTIVE', grantsProduct: true, reason: 'ENTITLED' };
+  if (lifecycle.state === 'EXPIRED') return { kind: 'TRIAL_48H', state: 'EXPIRED', grantsProduct: false, reason: 'TRIAL_WINDOW_ENDED' };
+  if (lifecycle.state === 'CLOSED') return { kind: 'TRIAL_48H', state: 'CLOSED', grantsProduct: false, reason: 'TRIAL_CLOSED' };
+  if (lifecycle.state === 'REJECTED') return { kind: 'TRIAL_48H', state: 'REJECTED', grantsProduct: false, reason: 'ELIGIBILITY_REJECTED' };
+  if (lifecycle.state === 'CANCELLED') return { kind: 'TRIAL_48H', state: 'CANCELLED', grantsProduct: false, reason: 'TRIAL_CANCELLED' };
+  if (lifecycle.state === 'APPROVED') return { kind: 'TRIAL_48H', state: 'APPROVED', grantsProduct: false, reason: 'ACTIVATION_NOT_COMPLETED' };
+  if (lifecycle.state === 'INVALID_CONFIGURATION') return { kind: 'TRIAL_48H', state: 'BLOCKED', grantsProduct: false, reason: 'INVALID_48_HOUR_WINDOW' };
+  return { kind: 'TRIAL_48H', state: 'PENDING', grantsProduct: false, reason: 'ELIGIBILITY_REVIEW_PENDING' };
+}
+
+// Server-side gate used by product access. It reads only tenant-scoped rows and
+// requires an activated request, an ACTIVE entitlement row, and the exact 48-hour
+// window. Any missing schema/privilege is NOT_CONFIGURED, never an allow.
+export async function trialProductAccess(db, tenantId, slug) {
+  if (!isUuid(tenantId) || !productSlugs.has(slug)) return { kind: 'TRIAL_48H', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'INVALID_SCOPE' };
+  let ready;
+  try {
+    ready = (await db.query("SELECT to_regclass('public.aigas_trial_requests') IS NOT NULL AS requests, to_regclass('public.aigas_trial_entitlements') IS NOT NULL AS entitlements")).rows[0];
+  } catch (error) {
+    if (error?.code === '42501' || error?.code === '42P01') return { kind: 'TRIAL_48H', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'TRIAL_SCHEMA_UNAVAILABLE' };
+    throw error;
+  }
+  if (!ready?.requests || !ready?.entitlements) return { kind: 'TRIAL_48H', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'MIGRATION_0023_NOT_APPLIED' };
+  let row;
+  try {
+    row = (await db.query(`SELECT r.state AS request_state,r.activated_at,r.expires_at,
+      e.status AS entitlement_status,e.starts_at,e.ends_at
+      FROM public.aigas_trial_entitlements e
+      JOIN public.aigas_trial_requests r ON r.id=e.trial_id AND r.tenant_id=e.tenant_id
+      WHERE e.tenant_id=$1 AND e.product_slug=$2
+      ORDER BY e.ends_at DESC LIMIT 1`, [tenantId, slug])).rows[0];
+  } catch (error) {
+    if (error?.code === '42P01' || error?.code === '42703' || error?.code === '42501') return { kind: 'TRIAL_48H', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'TRIAL_SCHEMA_UNAVAILABLE' };
+    throw error;
+  }
+  if (!row) return { kind: 'TRIAL_48H', state: 'NOT_APPROVED', grantsProduct: false, reason: 'NO_ENTITLEMENT' };
+  if (row.request_state !== 'ACTIVATED') return { kind: 'TRIAL_48H', state: 'NOT_APPROVED', grantsProduct: false, reason: 'REQUEST_NOT_ACTIVATED' };
+  if (!exactDuration(row.starts_at, row.ends_at) || new Date(row.expires_at).getTime() !== new Date(row.ends_at).getTime()) return { kind: 'TRIAL_48H', state: 'BLOCKED', grantsProduct: false, reason: 'INVALID_48_HOUR_WINDOW' };
+  if (row.entitlement_status !== 'ACTIVE') return { kind: 'TRIAL_48H', state: row.entitlement_status === 'REVOKED' ? 'REVOKED' : row.entitlement_status === 'EXPIRED' ? 'EXPIRED' : 'NOT_APPROVED', grantsProduct: false, reason: 'ENTITLEMENT_NOT_ACTIVE' };
+  const now = Date.now();
+  if (now < new Date(row.starts_at).getTime()) return { kind: 'TRIAL_48H', state: 'PENDING', grantsProduct: false, reason: 'TRIAL_NOT_STARTED' };
+  if (now >= new Date(row.ends_at).getTime()) return { kind: 'TRIAL_48H', state: 'EXPIRED', grantsProduct: false, reason: 'TRIAL_WINDOW_ENDED' };
+  return { kind: 'TRIAL_48H', state: 'ACTIVE', grantsProduct: true, reason: 'ENTITLED' };
+}
+
+// Proof of Value is a draft built only from Kernel audit actions that actually
+// exist in the recorded window. It contains no customer content, no mocked
+// observations, and no invented completion percentage.
+export async function buildPovReport(db, tenantId, lifecycle) {
+  const base = {
+    status: 'NOT_CONFIGURED',
+    source: 'KERNEL_AUDIT',
+    syntheticData: true,
+    generatedAutomatically: false,
+    customerContentIncluded: false,
+    completionPercentage: null,
+    approvedBy: null,
+  };
+  if (!lifecycle?.configured) return { ...base, reason: lifecycle?.reason ?? 'TRIAL_SCHEMA_NOT_APPLIED' };
+  if (lifecycle.state === 'NONE') return { ...base, reason: 'NO_TRIAL_REQUEST' };
+  if (lifecycle.state === 'INVALID_CONFIGURATION') return { ...base, status: 'BLOCKED', reason: 'INVALID_48_HOUR_WINDOW' };
+  if (lifecycle.state === 'ACTIVATED') return { ...base, status: 'IN_PROGRESS', trialId: lifecycle.trialId, reason: 'TRIAL_STILL_ACTIVE' };
+  if (!['EXPIRED', 'CLOSED'].includes(lifecycle.state)) return { ...base, status: 'NOT_ELIGIBLE', trialId: lifecycle.trialId, reason: `TRIAL_${lifecycle.state}` };
+  const start = lifecycle.activatedAt;
+  const end = lifecycle.state === 'CLOSED' && lifecycle.closedAt ? lifecycle.closedAt : lifecycle.expiresAt;
+  if (!start || !end) return { ...base, status: 'BLOCKED', trialId: lifecycle.trialId, reason: 'MISSING_TRIAL_WINDOW' };
+  let rows = [];
+  try {
+    rows = (await db.query(`SELECT action,count(*)::int AS count FROM public.aigas_audit_events
+      WHERE tenant_id=$1 AND created_at >= $2::timestamptz AND created_at <= $3::timestamptz
+      GROUP BY action ORDER BY action`, [tenantId, start, end])).rows;
+  } catch (error) {
+    if (error?.code === '42P01' || error?.code === '42703' || error?.code === '42501') return { ...base, status: 'BLOCKED', trialId: lifecycle.trialId, reason: 'AUDIT_UNAVAILABLE' };
+    throw error;
+  }
+  const observations = rows.map(row => ({ action: row.action, label: auditActionLabel(row.action), count: row.count }));
+  return {
+    ...base,
+    status: 'DRAFT_REQUIRES_HUMAN_REVIEW',
+    trialId: lifecycle.trialId,
+    products: lifecycle.products,
+    dataMode: lifecycle.dataMode,
+    activatedAt: start,
+    expiresAt: lifecycle.expiresAt,
+    closedAt: lifecycle.closedAt,
+    observations,
+    totals: { events: observations.reduce((sum, row) => sum + row.count, 0), actionKinds: observations.length },
+    limitations: [
+      'العدّ من سجل تدقيق Kernel فقط، وليس قياس أثر أعمال أو امتثالًا.',
+      'لا يتضمن التقرير محتوى طلبات أو نصوص عميل؛ بيانات التجربة اصطناعية افتراضيًا.',
+      'غياب حدث لا يعني أن القدرة تعمل، ووجود حدث لا يثبت نجاح المنتج.',
+      'التقرير مسودة تحتاج مراجعة بشرية واعتمادًا مستقلًا قبل أي استخدام تجاري.',
+    ],
+  };
+}
+
+// Kept for callers that need a single explicit model. The administrative grant,
+// trial, subscription, perpetual, and on-premise licences are different sources
+// and are never merged into a single boolean or a single commercial field.
+export function commercialAccessModel(administrativeState, trialState) {
+  return {
+    administrative: { kind: 'ADMIN_NON_BILLED', state: administrativeState, grantsProduct: administrativeState === 'ACTIVE' },
+    trial: { kind: 'TRIAL_48H', state: trialState, grantsProduct: trialState === 'ACTIVE' },
+    subscription: { kind: 'SUBSCRIPTION', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'NO_APPROVED_PRICE_OR_CONTRACT' },
+    perpetual: { kind: 'PERPETUAL', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'NO_LOCAL_LICENSE_ISSUER' },
+    onPremise: { kind: 'ON_PREMISE', state: 'NOT_CONFIGURED', grantsProduct: false, reason: 'NO_LOCAL_LICENSE_ISSUER' },
+  };
+}

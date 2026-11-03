@@ -1,3 +1,22 @@
+## [2026-11-03] — إغلاق دورة تجربة 48 ساعة وفصل مصادر الوصول (محلي فقط)
+### تم التنفيذ
+- أُضيف عقد دورة تجربة صريح في `src/server/kernel/trial.mjs`: `REQUESTED → ELIGIBILITY_REVIEW → APPROVED → ACTIVATED → EXPIRED → CLOSED` مع `REJECTED`/`CANCELLED`، و`ACTIVATED` يتطلب قرار مشغّل وجاهزية وبيانات اصطناعية وإقرار عميل، و`EXPIRED` لا يعود إلى `ACTIVATED`.
+- فُصلت مصادر الوصول في الكود: `ADMIN_NON_BILLED` إداري فقط، و`TRIAL_48H` من استحقاقات التجربة، و`SUBSCRIPTION`/`PERPETUAL`/`ON_PREMISE` بلا مُصدر ⇒ `NOT_CONFIGURED`. لا يمنح الطلب أو الموافقة استحقاقًا؛ وتفعيل المنتج يقبل مصدرًا ساريًا واحدًا فقط.
+- `requireProductAccess` و`updateProduct` يقرآن استحقاق التجربة الخادمي بشرط طلب `ACTIVATED` وصف `ACTIVE` ونافذة 48 ساعة مطابقة؛ أي غياب جدول/صلاحية = `NOT_CONFIGURED` وليس منحًا.
+- تقرير PoV في لوحة Kernel أصبح مسودة من أحداث تدقيق موجودة ضمن نافذة التجربة فقط، بلا محتوى عميل وبلا نسبة إنجاز، ويظهر `DRAFT_REQUIRES_HUMAN_REVIEW`؛ وحالات الخروج/الحذف `POLICY_PENDING_APPROVAL` دون تنفيذ حذف.
+- حُدثت نصوص `/pricing/` و`/contact/` ولوحة Kernel لتفصل الطلب عن الموافقة عن التفعيل، وتؤكد عدم وجود دفع/تحويل/تجديد تلقائي، دون تغيير CTA أو وعود الخدمة.
+### الملفات المتأثرة
+- `src/server/kernel/{trial,access,administration,service}.mjs`, `src/scripts/kernel.ts`, `src/pages/app/kernel/index.astro`, `src/pages/{pricing,contact}.astro`, `src/pages/app/api/kernel/products.ts`
+- `migrations/0023_aigas_enterprise_trial_lifecycle.sql` (مسودة محلية غير مطبقة)، `docs/{ENTERPRISE-TRIAL-POLICY,PRICING-AND-LICENSING,CURRENT-IMPLEMENTATION-REGISTER}.md`
+### التحقق
+- `node --check` لملفات `.mjs` المعدلة/الجديدة و`git diff --check`: PASS.
+- build/lint/typecheck/tests/Playwright/Neon/متصفح/نشر: NOT RUN حسب طلب المهمة.
+### النتيجة
+- **الحالة:** PARTIAL / LOCAL IMPLEMENTED — NOT_RUNTIME_VERIFIED؛ لا commit/push/deploy ولا كتابة إلى Neon أو GitHub.
+### ملاحظات / مشاكل مفتوحة
+- `0023` غير مطبق؛ لا طلب/تفعيل تجربة فعلي حتى اعتماد المشغّل والجدول وRLS/grants ودور تشغيل مستقل. لا مسار API تنشئ استحقاقًا عند الطلب، والدفع والفاتورة والترخيص المحلي بلا مُصدر.
+- Ledger الاختياري ما زال يقرأ المنحة الإدارية وحدها؛ ربط استحقاق التجربة بـLedger يحتاج تغييرًا معتمدًا لاحقًا.
+
 ## [2026-11-03] — إغلاق عقود الثقة بين المنتجات ومنع الاعتماد المتبادل القسري
 ### تم التنفيذ
 - أُضيف غلاف حدث داخلي موحد `aigas-product-event-v1` في `src/server/kernel/events.mjs` يُستهلك عبر `recordProductEvent` الموجود، ويثبت `tenantId/actorId/correlationId/decisionId/policyVersion/source/action/idempotencyKey` ويرفض `OUTCOME` قبل تأكيد الأثر ويرفض مرجعًا لا يطابق مرجع metadata المحفوظ؛ لا Bus ولا Queue ولا جدول جديد.

@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { transaction } from './db.mjs';
 import { productGrants } from './access.mjs';
+import { trialProductAccess } from './trial.mjs';
 import { tenantGuard, memberships, audit } from './service.mjs';
 import { KernelError, requireRole, products } from './core.mjs';
 import { exact, uuid } from './http.mjs';
@@ -20,7 +21,12 @@ export async function updateProduct(identity, requested, body) {
     const { tenant } = await adminScope(db, identity, requested, ['OWNER']);
     if (body.status === 'ENABLED') {
       const grant = (await productGrants(db, tenant.tenant_id, body.slug))[0];
-      if (grant?.grantState !== 'ACTIVE') throw new KernelError(403, 'APPROVAL_REQUIRED', 'يلزم قرار إتاحة إداري مؤقت ساري من المشغّل؛ حفظ الحالة لا يفعّل تجربة 48 ساعة ولا ينشئ اشتراكًا أو ترخيصًا.');
+      const trial = await trialProductAccess(db, tenant.tenant_id, body.slug);
+      // The toggle is not a commercial licence. It can be enabled only when one
+      // explicit access source is active: an operator administrative grant or a
+      // genuinely activated 48-hour trial entitlement. A request or an approval
+      // that has not been activated is never enough.
+      if (grant?.grantState !== 'ACTIVE' && trial?.grantsProduct !== true) throw new KernelError(403, 'APPROVAL_REQUIRED', 'يلزم قرار إتاحة إداري ساري أو استحقاق تجربة 48 ساعة مفعّل؛ طلب التجربة أو الموافقة وحدها لا يفعّل المنتج ولا ينشئ اشتراكًا أو ترخيصًا.');
     }
     const result = await db.query('UPDATE public.aigas_product_access SET status=$3,version=version+1,updated_at=clock_timestamp() WHERE tenant_id=$1 AND product_slug=$2 AND version=$4 RETURNING status,version', [tenant.tenant_id, body.slug, body.status, body.version]);
     if (!result.rowCount) throw new KernelError(409, 'STALE_PRODUCT', 'تغيرت حالة المنتج؛ حدّث اللوحة قبل إعادة المحاولة.');

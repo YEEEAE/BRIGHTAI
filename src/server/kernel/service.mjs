@@ -5,6 +5,7 @@ import { database, transaction, setActorScope, setTenantScope, connectionPrivile
 import { env } from './env.mjs';
 import { authConfig } from './auth.mjs';
 import { productGrants } from './access.mjs';
+import { trialLifecycle, trialAccessFor, buildPovReport, commercialAccessModel } from './trial.mjs';
 import { KernelError, products, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole, isUuid } from './core.mjs';
 import { HTTP_CONTRACT_VERSION } from './contracts.mjs';
 export async function memberships(userId, db = database()) {
@@ -51,6 +52,11 @@ export async function dashboard(identity, requested) {
     const adminReady = (await db.query("SELECT to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0].ready;
     const access = (await db.query(adminReady ? 'SELECT product_slug,status,version FROM public.aigas_product_access WHERE tenant_id=$1' : 'SELECT product_slug,status FROM public.aigas_product_access WHERE tenant_id=$1', [tenantId])).rows;
     const grants = adminReady ? await productGrants(db, tenantId) : [];
+    // Trial, administrative grants, subscription, perpetual, and on-premise are
+    // separate sources. Missing schema is reported as NOT_CONFIGURED, not as a
+    // trial and never as an active entitlement.
+    const trial = await trialLifecycle(db, tenantId);
+    const pov = await buildPovReport(db, tenantId, trial);
     const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': ['aigas_sc_requests','aigas_sc_cancellations'] };
     const states = [];
     for (const p of productStates(access)) {
@@ -58,25 +64,35 @@ export async function dashboard(identity, requested) {
       const tables = relations[p.slug];
       const ready = tables.length ? (await db.query("SELECT bool_and(to_regclass('public.' || name) IS NOT NULL) AS ready FROM unnest($1::text[]) AS name", [tables])).rows[0].ready : false;
       const grantState = grant?.grantState ?? 'NOT_APPROVED';
-      const grantValid = grantState === 'ACTIVE';
+      const trialAccess = trialAccessFor(trial, p.slug);
+      const administrativeActive = grantState === 'ACTIVE';
+      const trialActive = trialAccess.grantsProduct === true;
+      const accessValid = administrativeActive || trialActive;
       const accessState = p.state;
-      const state = accessState !== 'ENABLED' ? accessState : grantValid ? 'ENABLED' : grantState === 'REVOKED' ? 'REVOKED' : grantState === 'EXPIRED' ? 'EXPIRED' : 'DISABLED';
+      const state = accessState !== 'ENABLED' ? accessState : accessValid ? 'ENABLED' : grantState === 'REVOKED' ? 'REVOKED' : grantState === 'EXPIRED' || trialAccess.state === 'EXPIRED' ? 'EXPIRED' : 'DISABLED';
       const enabled = state === 'ENABLED';
+      const trialIncluded = trial?.products?.includes(p.slug) === true;
       states.push({ ...p, state, configuredStatus: p.storedState, grantState, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
-        canEnable: grantValid, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
+        canEnable: accessValid, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
+        operationalReadiness: { schema: ready ? 'PRESENT' : 'MISSING', verifiedOperational: false },
+        commercial: { kernelIncluded: true, independentProduct: true, separateKernelLicense: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false },
         setupMessage: p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
         accessKind: grant?.access_kind ?? null, approvedAt: grant?.approved_at ?? null, expiresAt: grant?.expires_at ?? null,
-        subscription: 'NOT_CONFIGURED', license: 'NOT_CONFIGURED', trial: 'NOT_CONFIGURED',
-        // Administrative approval is never activated_at. There is no trial issuer/provisioner.
-        trialDetails: { status: 'NOT_CONFIGURED', activated_at: null, expires_at: null, durationSeconds: 172800, selfServiceAvailable: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false, dataEligibility: 'SYNTHETIC_ONLY' },
-        label: state === 'EXPIRED' ? 'منتهٍ: انتهى قرار الإتاحة الإداري' : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' ? (accessState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة إداري ساري' : 'معطّل إداريًا من المالك') : state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : p.label });
+        // Access sources stay separate. A missing issuer is NOT_CONFIGURED and is
+        // never converted into a price, an SLA, or an active trial.
+        accessSources: commercialAccessModel(grantState, trialAccess.state),
+        subscription: 'NOT_CONFIGURED', license: 'NOT_CONFIGURED', trial: trialAccess.state,
+        trialDetails: { status: trialAccess.state, lifecycleState: trial?.state ?? 'NOT_CONFIGURED', productIncluded: trialIncluded,
+          decided_at: trialIncluded ? trial?.decidedAt ?? null : null, decision_source: trialIncluded ? trial?.decisionSource ?? null : null,
+          activated_at: trialIncluded ? trial?.activatedAt ?? null : null, expires_at: trialIncluded ? trial?.expiresAt ?? null : null,
+          durationSeconds: 172800, selfServiceAvailable: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false, dataEligibility: 'SYNTHETIC_ONLY', requiresOperatorActivation: true },
+        label: state === 'ENABLED' ? p.label : state === 'EXPIRED' ? (trialAccess.state === 'EXPIRED' && !administrativeActive ? 'منتهية: انتهت نافذة تجربة 48 ساعة' : 'منتهٍ: انتهى قرار الإتاحة الإداري') : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' ? (trialAccess.state === 'PENDING' || trialAccess.state === 'APPROVED' ? 'بانتظار تفعيل التجربة — لا وصول بعد' : accessState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة ساري' : 'معطّل إداريًا من المالك') : state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : p.label });
     }
-    const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, count(*)::int AS events, min(created_at) AS firstEventAt, max(created_at) AS lastEventAt FROM public.aigas_audit_events WHERE tenant_id=$1', [tenantId])).rows[0];
+    const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, count(*)::int AS events FROM public.aigas_audit_events WHERE tenant_id=$1', [tenantId])).rows[0];
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));
-    summary.proofOfValue = { status: 'NOT_CONFIGURED', source: 'KERNEL_AUDIT', scope: 'ALL_RETAINED_TENANT_EVENTS', activated_at: null, expires_at: null, firstEventAt: summary.firsteventat, lastEventAt: summary.lasteventat };
-    delete summary.firsteventat; delete summary.lasteventat;
+    summary.proofOfValue = pov;
     summary.coverage = access.length ? { enabled: states.filter(p => p.enabled).length, total: products.length } : null;
-    return { ...scope, products: states, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady, contract_version: HTTP_CONTRACT_VERSION };
+    return { ...scope, products: states, trialLifecycle: trial, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady, contract_version: HTTP_CONTRACT_VERSION };
   });
 }
 export async function tenantMembers(identity, requested) {
