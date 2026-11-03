@@ -26,3 +26,13 @@
 - sdaia-generative-ai-guidelines -> pdpl-and-ai | «للتفاصيل القانونية، اقرأ دليل PDPL والذكاء الاصطناعي.»
 - sdaia-generative-ai-guidelines -> data-classification-for-ai | «لطريقة تصنيف البيانات قبل الإدخال اقرأ تصنيف البيانات للذكاء الاصطناعي.»
 - sdaia-generative-ai-guidelines -> ai-impact-assessment | «دليل تقييم أثر الذكاء الاصطناعي: من يتأثر بالقرار، وما البديل لو أوقفت الاستخدام.»
+
+المصدر: `/knowledge/pdpl-and-ai/` — تُفعّل هذه الروابط تلقائياً عند إنشاء المقالات المستهدفة في نفس الدفعة.
+
+- pdpl-and-ai -> data-classification-for-ai | «تصنيف البيانات للذكاء الاصطناعي يحدد ما يدخل الأداة وما لا يدخل قبل الإطلاق.»
+- pdpl-and-ai -> ai-vendor-assessment | «تقييم موردي الذكاء الاصطناعي يجمع أسئلة الدور والموقع والاحتفاظ في ملف واحد.»
+- pdpl-and-ai -> ai-contract-clauses | «بنود عقود الذكاء الاصطناعي تترجم أسئلة النقل والاحتفاظ إلى التزامات قابلة للفحص.»
+- pdpl-and-ai -> data-breach-72-hours-ai | «دليل الإبلاغ عن تسرب بيانات الذكاء الاصطناعي يشرح الإجراء والمواعيد.»
+- pdpl-and-ai -> ai-impact-assessment | «تقييم أثر الذكاء الاصطناعي يربط نقاط المسار بمن يتأثر بالقرار.»
+- pdpl-and-ai -> ai-data-residency-saudi | «دليل موقع البيانات والاستضافة في السعودية يربط السؤال التقني بالنظامي.»
+- pdpl-and-ai -> data-governance-vs-ai-governance | «الفرق بين حوكمة البيانات وحوكمة الذكاء الاصطناعي يوضح حدود كل منهما.»
