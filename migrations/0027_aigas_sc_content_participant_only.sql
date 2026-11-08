@@ -33,11 +33,26 @@
 -- Re-running 0025 does NOT recreate a tenant-wide policy on these two tables.
 BEGIN;
 
+-- Ordering guard: 0027 depends on 0025 for the runtime role, grant reset and
+-- restrictive client-deny policy. If 0025 did not run, stop instead of creating
+-- a participant policy that has no surrounding posture.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public' AND policyname = 'aigas_client_deny'
+  ) THEN
+    RAISE EXCEPTION '0027 requires 0025 (aigas_client_deny policy is missing)';
+  END IF;
+END $$;
+
 ALTER TABLE public.aigas_sc_conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.aigas_sc_messages ENABLE ROW LEVEL SECURITY;
--- FORCE also applies the participant policy to the table owner. Retention,
--- legal-hold or support reads must therefore use a separately approved role and
--- policy; owner credentials are not an implicit content backdoor.
+-- FORCE applies the participant policy to a non-BYPASSRLS table owner. It does
+-- NOT bind a role with BYPASSRLS: neondb_owner has rolbypassrls=true, so owner
+-- credentials can still read this content until DATABASE_URL moves to
+-- aigas_runtime. FORCE is not a substitute for that cutover. Retention,
+-- legal-hold or support reads must use a separately approved role and policy.
 ALTER TABLE public.aigas_sc_conversations FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.aigas_sc_messages FORCE ROW LEVEL SECURITY;
 
@@ -76,6 +91,9 @@ CREATE POLICY sc_content_participant ON public.aigas_sc_messages
 -- approved. INSERT is revoked too: there is no approved storage path yet.
 DO $$
 BEGIN
+  -- PUBLIC is not a role that can be tested with to_regrole; a table grant to
+  -- PUBLIC would survive role-specific revokes and be inherited by any client.
+  EXECUTE 'REVOKE ALL ON TABLE public.aigas_sc_conversations, public.aigas_sc_messages FROM PUBLIC';
   IF to_regrole('aigas_runtime') IS NOT NULL THEN
     EXECUTE 'REVOKE ALL ON TABLE public.aigas_sc_conversations, public.aigas_sc_messages FROM aigas_runtime';
   END IF;
@@ -112,8 +130,12 @@ BEGIN
       RAISE EXCEPTION 'policy % on public.% is not participant-scoped', weak_policy, target;
     END IF;
 
-    IF to_regrole('aigas_runtime') IS NOT NULL AND has_table_privilege('aigas_runtime', 'public.' || target, 'SELECT') THEN
-      RAISE EXCEPTION 'aigas_runtime still holds SELECT on public.%', target;
+    IF to_regrole('aigas_runtime') IS NOT NULL AND EXISTS (
+      SELECT 1
+      FROM unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) AS t(verb)
+      WHERE has_table_privilege('aigas_runtime', 'public.' || target, verb)
+    ) THEN
+      RAISE EXCEPTION 'aigas_runtime still holds a table privilege on public.%', target;
     END IF;
   END LOOP;
 END $$;

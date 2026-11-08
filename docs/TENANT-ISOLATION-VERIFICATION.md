@@ -7,15 +7,18 @@
 ## 1. الشروط المسبقة
 
 1. موافقة مالك Neon على إنشاء فرع staging مؤقت ونقطة استعادة، وموافقة مالك BRIGHT AI على نافذة الاختبار.
-2. تطبيق `0018` ثم `0025` على staging فقط، والتحقق من `pg_policies` و`relrowsecurity` و`pg_default_acl`.
-3. إنشاء Login لـ`aigas_runtime` خارج SQL (`ALTER ROLE aigas_runtime LOGIN PASSWORD ...`)، أو Login منفصل يبدأ بـ`SET ROLE aigas_runtime` (مثل `options=-c role=aigas_runtime`)، وتخزين السر في secret store مؤقت خاص بـstaging. `NOINHERIT` يعني أن مجرد العضوية لا يمنح الصلاحيات.
+2. تطبيق `0018` ثم `0022` ثم `0025` ثم `0027` على staging فقط، والتحقق من `pg_policies` و`relrowsecurity` و`relforcerowsecurity` و`pg_default_acl` و`role_table_grants`. **لا يُطبق `0019`**؛ `0025` يتجاوزه، وتطبيقه بعده يعيد فتح منح واسعة.
+3. إنشاء Login لـ`aigas_runtime` خارج SQL (`ALTER ROLE aigas_runtime LOGIN PASSWORD ...`)، أو Login منفصل يبدأ بـ`SET ROLE aigas_runtime` (مثل `options=-c role=aigas_runtime`)، وتخزين السر في secret store مؤقت خاص بـstaging. `NOINHERIT` يعني أن مجرد العضوية لا تمنح الصلاحيات.
 4. تعيين `DATABASE_URL` في خدمة staging إلى دور `aigas_runtime`، وتعيين `AIGAS_REQUIRE_RLS=true` ليجعل مسارات المنتجات ترفض اتصالًا يتجاوز RLS، ثم إعادة تشغيل الخدمة.
 5. إخراج `public` من `db_schemas` في Data API، أو تعطيل Data API على staging.
 6. بيانات اصطناعية فقط: مستخدمون `tenant-a-owner@example.invalid` و`tenant-b-owner@example.invalid` أو معرّفات UUID ثابتة، ومؤسستان A/B بلا أي بيانات عمل حقيقية.
+7. `0016` مطبق قبل اختبار `aigas_sc_usage_window_v2`؛ بدونه لا يُختبر مسار الحصة، ويبقى `NOT_CONFIGURED` لا `FAIL`.
 
 ## 2. سيناريو التحقق
 
 نفّذ كل خطوة داخل معاملة، وسجّل `SQLSTATE` وعدد الصفوف و`current_user` والوقت. لا تنسخ DSN.
+
+> **مهم:** خطوات `SET ROLE` تُنفذ من جلسة DBA مخوّلة (مالك Neon/المشغّل المعتمد)، وليست من اتصال خدمة `aigas_runtime`. اختبر دور runtime باتصال منفصل أو بـ`SET ROLE aigas_runtime` من جلسة DBA. لا تمنح `aigas_runtime` عضوية في `authenticated`/`neondb_owner` لأجل الاختبار.
 
 ```sql
 -- 0) هوية الاتصال ووضع RLS
@@ -87,6 +90,71 @@ SELECT id FROM public.aigas_tenants WHERE id = '<TENANT_A_UUID>' FOR UPDATE;
 -- المتوقع: يعيد الصف. إن رفض RLS القفل، استبدل قفل tenants في الكود
 -- بـpg_advisory_xact_lock قبل cutover؛ لا توسّع سياسة UPDATE للمستخدم العادي.
 ROLLBACK;
+
+-- 8) دور المالك: يثبت سبب عدم استخدامه كدور خدمة
+-- نفّذ من جلسة إدارية منفصلة، وليس عبر aigas_runtime.
+SET ROLE neondb_owner;
+SELECT count(*) FROM public.aigas_fw_rules;
+-- المتوقع: يرى كل الصفوف (rolbypassrls=true). سجّل ذلك كدليل على أن المالك
+-- ليس دور العزل، وليس كنجاح. ثم RESET ROLE.
+
+-- 9) Data API / دور الهوية
+SET ROLE authenticated;
+SELECT count(*) FROM public.aigas_tenants;          -- المتوقع: 42501
+SELECT count(*) FROM public.aigas_sc_messages;      -- المتوقع: 42501
+INSERT INTO public.aigas_fw_rules (id, tenant_id, name, pattern, action)
+VALUES (gen_random_uuid(), '<TENANT_A_UUID>', 'x', 'x', 'ALLOW'); -- المتوقع: 42501
+SELECT public.aigas_sc_usage_window('<TENANT_A_UUID>', '<USER_A_UUID>'); -- المتوقع: 42501
+RESET ROLE;
+
+SET ROLE anonymous;
+SELECT count(*) FROM public.aigas_tenants;          -- المتوقع: 42501
+RESET ROLE;
+
+-- 10) Auth directory
+SET ROLE aigas_runtime;
+SELECT id, name, email, banned, "emailVerified" FROM neon_auth."user" LIMIT 1;
+-- المتوقع: مسموح بهذه الأعمدة فقط.
+INSERT INTO neon_auth."user" (id) VALUES ('00000000-0000-0000-0000-000000000000');
+-- المتوقع: 42501 (لا كتابة).
+SELECT count(*) FROM neon_auth.session; -- المتوقع: 42501 (لا منح على session)
+RESET ROLE;
+
+SET ROLE authenticated;
+SELECT count(*) FROM neon_auth."user";   -- المتوقع: 42501
+RESET ROLE;
+
+-- 11) محتوى Secure Chat — participant-only
+SET ROLE aigas_runtime;
+BEGIN;
+SELECT set_config('aigas.user_id', '<USER_A_UUID>', true),
+       set_config('aigas.tenant_id', '<TENANT_A_UUID>', true);
+INSERT INTO public.aigas_sc_conversations
+  (tenant_id, user_id, id, expires_at, retention_policy_ref, opt_in_at)
+VALUES ('<TENANT_A_UUID>', '<USER_A_UUID>', gen_random_uuid(),
+        now() + interval '1 day', 'synthetic-retention', now());
+-- المتوقع بعد 0027: 42501 لأن aigas_runtime بلا منح على جدولي المتن.
+ROLLBACK;
+RESET ROLE;
+-- أعِد الفحص بدور يملك منحة اصطناعية مؤقتة في staging فقط:
+-- INSERT لصف A ينجح؛ SELECT/INSERT لصف user B في نفس المؤسسة يفشل؛
+-- OWNER لا يقرأ محتوى غيره. لا تمنح هذا الدور في production.
+
+-- 12) بقاء النطاق بعد المعاملة
+SET ROLE aigas_runtime;
+BEGIN;
+SELECT set_config('aigas.tenant_id', '<TENANT_A_UUID>', true),
+       set_config('aigas.user_id', '<USER_A_UUID>', true);
+COMMIT;
+SELECT current_setting('aigas.tenant_id', true),
+       current_setting('aigas.user_id', true);
+-- المتوقع: '' أو غير معرّف، وليس قيم A.
+RESET ROLE;
+
+-- 13) Data API نفسه بعد الخيار A/B
+-- من خارج SQL: طلب REST بلا JWT وبـJWT مصطنع إلى /rest/v1/aigas_tenants.
+-- المتوقع: 404/401/42501، ولا صف واحد من public.aigas_*.
+-- إن بقي 200 مع صفوف، فالخيار A/B لم يُطبق: أوقف الاختبار.
 ```
 
 ## 3. معايير النجاح
@@ -95,9 +163,13 @@ ROLLBACK;
 - لا يظهر أي صف من B في سياق A، ولا صف من A في سياق B.
 - محاولة الكتابة لمؤسسة أخرى تفشل بـ`42501` من RLS.
 - إعادة استخدام `request_id` بين مؤسستين تفشل بـ`23505`.
-- `SET ROLE authenticated` لا يمنح أي قراءة لجدول `aigas_*`.
+- `SET ROLE authenticated` و`SET ROLE anonymous` لا يمنحان أي قراءة/كتابة/EXECUTE على `aigas_*` أو `neon_auth`.
 - `current_setting('aigas.tenant_id', true)` لا يحتفظ بقيمة بعد `COMMIT/ROLLBACK`.
 - لا يوجد أي `INSERT/UPDATE/DELETE` ناجح بدون `SET LOCAL` أو `set_config(..., true)` داخل معاملة.
+- `SET ROLE neondb_owner` يثبت التجاوز المتوقع، ويُسجّل كسبب لعدم استخدامه دورًا للخدمة.
+- `neon_auth` مقروء بالأعمدة المحددة فقط، وكل كتابة مرفوضة، و`session` غير متاح لـ`aigas_runtime`.
+- محتوى `aigas_sc_messages`/`aigas_sc_conversations` participant-only: لا قراءة أو كتابة لصف مؤلف آخر حتى داخل المؤسسة نفسها، ولا قراءة لـOWNER.
+- Data API لا يعيد أي صف من `public.aigas_*` بعد الخيار A/B.
 
 ## 4. ما لا يثبته هذا السيناريو
 
@@ -105,6 +177,9 @@ ROLLBACK;
 - لا يثبت سلامة مسار bootstrap أو قبول الدعوة؛ كلاهما `BLOCKED` حتى اعتماد مسار مميز.
 - لا يثبت أن اتصال الإنتاج تحوّل إلى `aigas_runtime`؛ هذا يُثبت من `pg_stat_activity`/إعداد الخدمة في نافذة cutover.
 - لا يثبت عدم وجود ثغرة منطقية داخل نفس المؤسسة (RBAC)؛ تلك تحقق منفصل.
+- لا يثبت أن `FORCE ROW LEVEL SECURITY` يحمي من `neondb_owner`؛ الدور `BYPASSRLS` يتجاوزها، وهذا مقصود في السيناريو 8.
+- لا يثبت جدول احتفاظ أو حذف أو Legal Hold لمحتوى المحادثة؛ `0027` يغلق الوصول فقط.
+- لا يثبت أن Data API مقيد على production؛ الاختبار 13 على staging فقط، وتغيير control plane يحتاج موافقة منفصلة.
 
 ## 5. الجهات الموافقة
 

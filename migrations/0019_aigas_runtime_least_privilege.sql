@@ -14,9 +14,25 @@
 --      platform secret store. Do not commit or paste the credential.
 --
 -- This file changes DCL/definitions only. It creates no tenant, member, policy or content row.
+--
+-- ORDERING / SUPERSEDED: 0025 replaces this file's role policies with a
+-- catalog-driven set and narrows the Secure Chat content tables. This file's
+-- broad `GRANT ... ON ALL TABLES` is unsafe to apply after 0025 because it would
+-- re-open UPDATE/DELETE on append-only tables and SELECT/INSERT on chat content.
+-- Do not apply 0019 after 0025; use 0025 + 0027 instead.
 BEGIN;
 
 -- 1. Non-login role; the login credential is created by the operator, not by this file.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public' AND policyname = 'aigas_client_deny'
+  ) THEN
+    RAISE EXCEPTION '0019 is superseded by 0025 and must not be applied after it';
+  END IF;
+END $$;
+
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'aigas_runtime') THEN

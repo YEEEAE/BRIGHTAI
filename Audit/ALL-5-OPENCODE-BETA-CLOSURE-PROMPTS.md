@@ -24,38 +24,6 @@
 
 ---
 
----
-
-# المرحلة 2 — عزل المؤسسات وRLS بأقل صلاحيات
-
-
----
-
-# المرحلة 3 — ربط Render وأصل Astro SSR وبوابة AIGAS
-
-أنت OpenCode agent داخل المشروع المحلي. **ابدأ الآن بقراءة الملفات والأدلة، ثم طبّق التعديلات المحلية الآمنة التي يغطيها النطاق.** هذا برومبت مكتفٍ بذاته؛ لا تحتاج سياق محادثات سابقة.
-
-## السياق الحاسم (مستقل عن المحادثة)
-المستودع `YEEEAE/BRIGHTAI` ومشروع Neon `young-frog-60183055`، الفرع `production` (`br-young-bird-b43proeb`) وقاعدة `neondb`. آخر SHA مُشاهَد عند إعداد الحزمة `46ecaeae25368a467c30d27320978fb21aef2077` بتاريخ 2026-11-09 محليًا. استخدم `git rev-parse HEAD` للتحقق من SHA الحالي قبل أي إجراء؛ لا تعتمد على هذه اللقطة إن تغيّرت. النظام Astro 6 + Node standalone + Neon Auth + PostgreSQL، واجهة عربية RTL. الخمسة: Firewall/Ledger/Human Gate/Risk Engine/Secure Chat مع Kernel مركزي. الحالة المسجلة: Neon production فرع وحيد `protected=false`، 31 جدول AIGAS، RLS مفعل 31/31، سياستان، Data API نشط على `public`، دور مالك `neondb_owner` يتجاوز RLS، المستخدمون/المؤسسات/عمليات المنتجات صفر ضمن العد المفحوص. `/app/*` كانت 404 في فحص الموقع بتاريخ 2026-11-09 محليًا. مزودو Firewall وSecure Chat المعتمدون فارغون. الحزمة `docs/beta/RC-3eaf6907c35d0a138984defb5cf9f947f9520f82/GO-NO-GO-GATES.yaml` على SHA أقدم، ولا تعد دليلًا تلقائيًا على SHA الحالي.
-
-## قواعد ملزمة
-- لا `git commit/push/PR/deploy` أو تغيير DNS/Render/Neon production/Secrets/MCP settings من تلقاء نفسك. كتابة ملفات **المستودع المحلي** فقط لتنفيذ الكود الآمن الذي تحدده المهمة؛ كل أثر خارجي يتطلب تأكيدًا صريحًا منفصلًا من المالك. لا تستخدم اختبار بيانات حقيقية، لا تحمّل أسرارًا، لا تنسخ بيانات العملاء إلى Staging.
-- افصل `SOURCE_PRESENT`/`SCHEMA_PRESENT`/`CONFIGURED`/`RUNTIME_VERIFIED`/`APPROVED` في كل مخرجاتك. لا ترفع قرار NO-GO إلى GO بدون أدلة مؤرخة على SHA فعلي وتوقيعات أصحاب السلطة.
-- اقرأ `AGENTS.md` و`.agents/mind/01-mind-latest.md` و`docs/FINAL-RELEASE-HANDOFF.md` وملفات `docs/beta/**` ذات الصلة. اقرأ الحالة الحية عبر الأدوات المتصلة بصلاحية قراءة فقط. لا تعلن حدوث تشغيل أو حماية/استعادة أو ربط Sentry/PostHog إلا بدليل.
-- الهيدر والهيرو المتحرك وConstellation والشعار وترتيب ونصوص أقسام الموقع العام **محمية**، ولا علاقة لها بإغلاق موانع Beta.
-- تجنّب أي `test/build/lint/typecheck/Playwright` أو عمليات تغيّر الإنتاج من تلقاء نفسك في هذه الدفعة. أعدد **خطة تحقق قابلة للتنفيذ لاحقًا بإذن المالك**؛ لن يفتح Beta بدون التحقق المصرّح به.
-- MCPs المتاحة لدى OpenCode حسب المستخدم: Neon وRender وSentry وPostHog (إضافة حديثة)، وقد تكون هناك GitHub وChrome DevTools. اكتشف الأسماء الفعلية للأدوات عند التشغيل؛ لا تخترع اسم دالة MCP ولا تعتبر الاتصال بحد ذاته نشر SDK أو مراقبة فعّالة.
-
-## العمل المطلوب بالتحديد
-1. قبل أي استعمال لـRender MCP تحقق من **اختيار مالك المشروع لمساحة العمل**؛ لا تختر Render workspace تلقائيًا حتى لو ظهرت واحدة. بعدها اقرأ service/deploy/status/logs/env *أسماء متغيرات فقط* وDomain/CDN إن توفرت دون جلب قيم الأسرار إلى المحادثة.
-2. افحص `astro.config.mjs`, `render.yaml`, `package.json`, `scripts/server.mjs`, `src/middleware.ts`, `src/server/kernel/env.mjs`، واكتشف سبب 404 الفعلي بربط Host→DNS/CDN→Render Service→deploy SHA→artifact. لا تكتفِ بتغيير Astro route في الكود إذا كان السبب host يشير لاستضافة Static.
-3. أبقِ `AIGAS_APP_ENABLED=false` على الإنتاج حتى G4/G5/G6/G7 وغالبية G8، ولا ترفع التفعيل تلقائيًا. يجب أن تُفرق بيئة مخوّلة بين المتوقع في النسخة المعطلة `503` وبين `404` من مصدر غير صحيح.
-4. جهز محليًا فقط أي تصحيح لازم في Node standalone أو `render.yaml`, `cache-control no-store`, `noindex`, Origin/CORS/CSRF، مع استثناء الهيرو والهيدر من التعديل؛ لا deploy.
-5. اجمع مسارات الدليل المطلوبة `G2/G3`: deploy ID، SHA، artifact digest، origin response، فحص health، وAuth/Invitation باستخدام synthetic؛ لا تدعِ `200` حتى يُرصد.
-**ناتج المرحلة:** diagnosis دقيق وربط المصادر، وتغييرات local محدودة إذا كانت لازمة، وطلب موافقة نشر مستقلة.
-
-## رد قصير بعد التنفيذ
-اذكر: Current SHA؛ المصادر التي قرأتها؛ الملفات المحلية التي تغيرت (إن وجدت)؛ نتيجة كل blocker بوسم الإثبات؛ القرارات التي تحتاج موافقة المالك. لا تعلن Beta READY.
 
 
 ---

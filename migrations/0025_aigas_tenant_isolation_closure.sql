@@ -13,8 +13,9 @@
 --   0019 hardcoded 29 tables and missed tables added by 0014/0023. This file
 --   is catalog-driven, so every public.aigas_* table with tenant_id is covered
 --   now and after later migrations. It supersedes 0019's role/policies; 0019 is
---   optional if this file is applied. It also adds a restrictive client-deny
---   policy and global reference uniqueness that 0018/0019 do not provide.
+--   optional before this file and MUST NOT be applied after it (0019's broad
+--   GRANT would re-open verbs this file revokes). It also adds a restrictive
+--   client-deny policy and global reference uniqueness that 0018/0019 do not provide.
 --
 -- Prerequisites (none performed here):
 --   1. Owner approval, isolated staging branch, restore point.
@@ -153,6 +154,14 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anonymous
 -- 3. Least-privilege object grants for the runtime role. RLS policies in
 --    section 5 still bound every row; these grants only decide which verbs
 --    are possible at all. Append-only tables never receive UPDATE/DELETE.
+--
+--    Reset any earlier disposition first. `GRANT` is additive: if 0019 (or an
+--    earlier draft) already granted UPDATE/DELETE on every table, the selective
+--    grants below would not remove those verbs. This reset is what makes the
+--    intended verb matrix true on a database where 0019 ran first.
+REVOKE ALL ON ALL TABLES IN SCHEMA public FROM aigas_runtime;
+REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM aigas_runtime;
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM aigas_runtime;
 GRANT USAGE ON SCHEMA public TO aigas_runtime;
 
 DO $$
@@ -456,9 +465,11 @@ BEGIN
   FROM pg_class c
   JOIN pg_namespace n ON n.oid = c.relnamespace
   WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relname LIKE 'aigas\_%'
-    AND (
-      has_table_privilege('authenticated', c.oid, 'SELECT')
-      OR has_table_privilege('anonymous', c.oid, 'SELECT')
+    AND EXISTS (
+      SELECT 1
+      FROM unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) AS t(verb)
+      WHERE has_table_privilege('authenticated', c.oid, verb)
+         OR has_table_privilege('anonymous', c.oid, verb)
     );
   IF offender IS NOT NULL THEN
     RAISE EXCEPTION 'client role still has AIGAS table privileges: %', offender;

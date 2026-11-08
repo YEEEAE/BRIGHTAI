@@ -1,3 +1,20 @@
+## [2026-11-09] — تدقيق عزل المؤسسات ودور aigas_runtime (قراءة فقط)
+### تم التنفيذ
+- HEAD الفعلي `aef462c3b1a26430813b3557145c7031c31d465a` (`main` محليًا)، وليس `46ecaeae…` المذكور في الطلب. جرد Neon قراءة فقط: 31 جدولًا، RLS 31/31، `FORCE=0`، سياستان فقط، `authenticated` 124 منح DML + EXECUTE على 10 دوال، `anonymous` بلا منح، `aigas_runtime` غائب، Data API `active` على `public`.
+- صُحح محليًا: `0018` يستخدم GUC الموحّد `aigas.tenant_id/user_id` ويسحب EXECUTE من PUBLIC؛ `0025` يعيد ضبط منح runtime قبل المصفوفة الانتقائية ويوسّع فحص العميل لكل الأفعال؛ `0027` يوضح أن FORCE لا يربط `BYPASSRLS`، يسحب من PUBLIC، ويفحص كل الأفعال؛ حراس ترتيب تمنع `0018/0019` بعد `0025` و`0027` قبل `0025`.
+- `0019` أصبح متجاوَزًا صراحةً: لا يُطبق بعد `0025`؛ المسار `0018 → 0022 → 0025 → 0027`.
+- أُضيفت سياسة/دليل `docs/beta/TENANT-ISOLATION-RUNTIME-ROLE-POLICY-2026-11-09.md` وخيارات Data API وترتيب cutover، ووُسّع سيناريو A/B بحالات auth/owner/Data API/محتوى المحادثة.
+- لم تُطبق migrations أو DCL، ولم يُنشأ دور/Login، ولم تُغيّر إعدادات Neon/الأسرار، ولم يُشغّل build/test/E2E.
+### الملفات المتأثرة
+- `migrations/{0018,0019,0025,0027}_*.sql`
+- `docs/DATA-ACCESS-AND-RLS.md`, `docs/TENANT-ISOLATION-VERIFICATION.md`, `docs/FINAL-RELEASE-HANDOFF.md`, `docs/beta/TENANT-ISOLATION-RUNTIME-ROLE-POLICY-2026-11-09.md`
+### التحقق
+- Neon MCP قراءة فقط: PASS. فحص ثابت SQL (`$$` متوازنة، BEGIN/COMMIT واحد) و`git diff --check`: PASS. التنفيذ والبناء والاختبارات: NOT RUN.
+### النتيجة
+- **الحالة:** PARTIAL/DONE محليًا للسياسة والتصحيحات؛ **G4=BLOCKED** وG5/G7 بلا تغيير. لا `RUNTIME_VERIFIED` ولا `APPROVED`.
+### ملاحظات / مشاكل مفتوحة
+- يلزم اعتماد المالك + الأمن + DBA لـ: فرع staging/استعادة، تطبيق `0018/0022/0025/0027`، تقييد Data API، إنشاء Login لـ`aigas_runtime`، ونافذة cutover. bootstrap أول مساحة عمل وقبول الدعوة ما زالا `BLOCKED`.
+
 ## [2026-11-09] — إعادة جرد Neon قراءة فقط وخطة Staging/الاستعادة/الترحيلات
 
 ### تم التنفيذ

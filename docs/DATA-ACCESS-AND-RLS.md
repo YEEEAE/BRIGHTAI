@@ -1,9 +1,9 @@
 # وصول البيانات وعزل المؤسسات — RLS وGRANT ودور التشغيل
 
 > الحالة: **مرجع مصدر مؤرخ + خطة ترحيل محلية غير مطبقة**. لا يمثل هذا المستند دليل تشغيل أو إثبات عزل.
-> جرد 2026-11-03 HISTORICAL. آخر تحقق: 2026-11-08 عبر Neon MCP قراءة فقط على مشروع `young-frog-60183055` / فرع `production` (`br-young-bird-b43proeb`) / قاعدة `neondb`؛ لا كتابة ولا migrations ولا تغيير إعدادات.
-> **الحالة الراهنة (2026-11-08):** الاتصال المستخدم للفحص `current_user=neondb_owner` مع `rolsuper=false` و`rolbypassrls=true` وعضوية في `authenticated`. 31/31 جدول AIGAS عليه RLS و`relforcerowsecurity=false`، وسياستان فقط (`aigas_sc_requests`, `aigas_sc_cancellations`). `authenticated` يملك SELECT/INSERT/UPDATE/DELETE على 31 جدولًا وEXECUTE على كل دوال `aigas_*` بما فيها `aigas_sc_usage_window` (SECURITY DEFINER). Default ACL لـ`neondb_owner`: `authenticated=arwd` على الجداول و`X` على الدوال و`U` على التسلسلات. `aigas_runtime` غير موجود. Data API `active` على `public` مع `db_anon_role=anonymous`. كل جداول AIGAS و`neon_auth.user/session/organization` بلا سجلات. دور اتصال خدمة Node الحية `NOT_VERIFIED`؛ وجود `neondb_owner` لا يثبت أنه المستخدم.
-> النطاق: `pg_roles`، `role_table_grants`، `pg_policies`، `pg_class.relrowsecurity`، `pg_default_acl`، `pg_proc`، وإعداد Neon Data API. كل استعلامات Neon كانت للقراءة فقط.
+> جرد 2026-11-03 HISTORICAL. آخر تحقق: 2026-11-09 عبر Neon MCP قراءة فقط على مشروع `young-frog-60183055` / فرع `production` (`br-young-bird-b43proeb`) / قاعدة `neondb`؛ لا كتابة ولا migrations ولا تغيير إعدادات. HEAD المحلي `aef462c3b1a26430813b3557145c7031c31d465a` (`main`).
+> **الحالة الراهنة (2026-11-09):** الاتصال المستخدم للفحص `current_user=neondb_owner` مع `rolsuper=false` و`rolbypassrls=true` وعضوية في `authenticated`. 31/31 جدول AIGAS عليه RLS و`relforcerowsecurity=false`، وسياستان فقط (`aigas_sc_requests`, `aigas_sc_cancellations`) تعتمدان `aigas.sc_*` بلا عضوية. `authenticated` يملك 124 منح DML (4 × 31 جدولًا) وEXECUTE على 10 دوال `aigas_*`، منها `aigas_sc_usage_window` (SECURITY DEFINER). `anonymous` بلا منح. Default ACL لـ`neondb_owner`: `authenticated=arwd` على الجداول و`X` على الدوال و`U` على التسلسلات. `aigas_runtime` غير موجود. Data API `active` على `public` مع `db_anon_role=anonymous` ومخططات متاحة `auth`, `neon_auth`, `public`. كل جداول AIGAS و`neon_auth.user/session/organization/member/invitation` بلا سجلات في العينة. دور اتصال خدمة Node الحية `NOT_VERIFIED`؛ وجود `neondb_owner` لا يثبت أنه المستخدم.
+> النطاق: `pg_roles`، `role_table_grants`، `pg_policies`، `pg_class.relrowsecurity`، `pg_default_acl`، `pg_proc`، `pg_namespace`، وإعداد Neon Data API. كل استعلامات Neon كانت للقراءة فقط.
 
 ---
 
@@ -96,9 +96,10 @@
 | `src/server/kernel/service.mjs` | `tenantGuard` يتحقق من UUID ويضبط النطاق؛ `memberships` يضبط نطاق الفاعل؛ `audit` يرفض `tenant_id` غير صالح؛ لوحة Kernel المعتمدة تعرض `system.rls: BYPASSED/ENFORCED` (وليست ضمن فحص الصحة العام) |
 | `src/server/secure-chat/service.mjs` | قراءة العضوية داخل معاملة بدل pool مباشر |
 | `src/scripts/kernel.ts` | تسمية وحالة صريحة لفحص RLS في لوحة Kernel |
-| `migrations/0018_aigas_data_api_grant_hardening.sql` | **محلي، غير مطبق**: سحب منح `authenticated`/`anonymous`، إلغاء default privileges، تشديد سياستي Secure Chat بالعضوية، سحب EXECUTE عن الدوال |
-| `migrations/0019_aigas_runtime_least_privilege.sql` | **محلي، غير مطبق**: دور `aigas_runtime` بـ`NOBYPASSRLS` وسياسات نطاق مؤسسة على 29 جدولًا + سياستا عضوية، ومنح عمودية محدودة لـ`neon_auth` |
-| `migrations/0025_aigas_tenant_isolation_closure.sql` | **محلي، غير مطبق**: يستكمل 0018/0019؛ دور `NOBYPASSRLS`، منح دنيا مصنفة، سياسات catalog-driven لكل جدول `aigas_*`، سياسة `RESTRICTIVE` تمنع `authenticated/anonymous`، مرجع عالمي فريد لـ`fw_decisions.request_id` و`sc_requests.id`، وفحوص posture تفشل الترحيل إن بقيت ثغرة |
+| `migrations/0018_aigas_data_api_grant_hardening.sql` | **محلي، غير مطبق**: سحب منح `authenticated`/`anonymous`، إلغاء default privileges، تشديد سياستي Secure Chat بالعضوية وبـGUC الموحّد `aigas.tenant_id/aigas.user_id`، وسحب EXECUTE من PUBLIC. حارس يمنع تشغيله بعد `0025`. |
+| `migrations/0019_aigas_runtime_least_privilege.sql` | **متجاوَز، لا يُطبق بعد 0025**: دوره وسياساته استبدلها `0025`؛ منحه الواسعة وقائمة الجداول الثابتة تفتح أفعالًا غير مقصودة. أُضيف حارس يرفض تطبيقه بعد `0025`. |
+| `migrations/0025_aigas_tenant_isolation_closure.sql` | **محلي، غير مطبق**: الملف المرجعي؛ دور `NOBYPASSRLS`، إعادة ضبط منح runtime قبل المصفوفة الانتقائية، سياسات catalog-driven، `RESTRICTIVE` تمنع أدوار العميل، مرجع عالمي فريد، وفحوص posture تفشل الترحيل إن بقيت ثغرة. |
+| `migrations/0027_aigas_sc_content_participant_only.sql` | **محلي، غير مطبق**: participant-only لمحتوى المحادثة، FORCE على الجدولين، سحب كل المنح بما فيها PUBLIC، وحارس ترتيب يمنع تشغيله قبل `0025`. |
 
 ---
 
@@ -116,15 +117,17 @@
 10. **Bootstrap**: `aigas_runtime` لا يملك INSERT على `aigas_tenants` ولا policy لإنشاء أول عضوية. إنشاء أول مساحة عمل وقبول الدعوة يحتاجان مسارًا مميزًا معتمدًا؛ الكود يعيد `WORKSPACE_PROVISIONING_REQUIRED`/`INVITATION_BOOTSTRAP_REQUIRED` ولا يمنح شيئًا.
 11. **فجوات مخطط قائمة**: `0014` (`aigas_hg_grants`, `aigas_hg_delegations`), `0016` (`aigas_sc_usage_window_v2`), و`0024` (أعمدة audit والمشغّل) غير مطبقة على الفرع المفحوص. `0025` catalog-driven فلا يفشل بسببها، لكن ميزات Human Gate/Secure Chat المعتمدة عليها تبقى غير مهيأة.
 12. **التحقق التشغيلي**: سيناريو Tenant A/B في `docs/TENANT-ISOLATION-VERIFICATION.md` لم يُشغّل. لا يجوز إعلان عزل أو إطلاق Beta قبل تسجيل نتائجه على فرع staging معتمد.
+13. **`0018` لا يُطبق منفردًا**: سياستاه تعيدان إنشاء قيود Secure Chat؛ صُححت محليًا إلى GUC الموحّد، لكنهما تظلان مرحلة انتقالية. المسار المعتمد هو `0018 → 0022 → 0025 → 0027`.
+14. **`FORCE RLS` ليس حماية من المالك**: `neondb_owner` يحمل `BYPASSRLS`، لذلك `FORCE` في `0027` لا يمنع قراءته للمحتوى. العزل الفعلي يبدأ بعد cutover إلى `aigas_runtime`.
 
 ---
 
 ## 7. خطة التحقق المستقبلية (غير منفذة)
 
-1. على فرع معزول: تطبيق `0018` ثم `0019`، والتأكد من `pg_policies` و`relrowsecurity` و`pg_default_acl`.
-2. `SET ROLE aigas_runtime; SET LOCAL aigas.user_id=...; SET LOCAL aigas.tenant_id=...` ثم قراءة جدول مؤسسة أخرى → صفر صفوف.
+1. على فرع معزول: تطبيق `0018` ثم `0022` ثم `0025` ثم `0027`، والتأكد من `pg_policies` و`relrowsecurity` و`relforcerowsecurity` و`pg_default_acl` و`role_table_grants`. **لا يُطبق `0019`** بعد `0025`.
+2. `SET ROLE aigas_runtime; SELECT set_config('aigas.user_id',...,true), set_config('aigas.tenant_id',...,true);` ثم قراءة جدول مؤسسة أخرى → صفر صفوف.
 3. محاولة `INSERT` بـ`tenant_id` مختلف → رفض `WITH CHECK`.
-4. `SET ROLE authenticated` ثم REST/`SET ROLE` على `public` → رفض الصلاحية.
-5. تكرار السيناريو عبر pooler للتأكد من عدم بقاء سياق بين الطلبات.
+4. `SET ROLE authenticated`/`anonymous` ثم REST/`SET ROLE` على `public` و`neon_auth` → رفض الصلاحية.
+5. تكرار السيناريو عبر pooler للتأكد من عدم بقاء سياق بين الطلبات، ثم فحص `pg_stat_activity` أن خدمة staging تعمل بـ`aigas_runtime`.
 
 التفاصيل التنفيذية والسيناريو الكامل (Tenant A/B) في `docs/TENANT-ISOLATION-VERIFICATION.md`؛ الحالة تبقى `NOT RUN` حتى موافقة المالك وتشغيله على staging.
