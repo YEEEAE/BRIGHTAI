@@ -178,3 +178,227 @@ details p { color: var(--color-text-muted); margin-top: 12px; line-height: var(-
 @media (prefers-reduced-motion: reduce) {
   .interior-page.page-family-knowledge .reading-nav a { transition: none; }
 }
+
+/* About: make the existing entity → AIGAS relationship easier to scan. */
+.interior-page.page-family-about .content-extension > section:first-child > p:first-of-type {
+  max-inline-size: 74ch;
+  margin-block-start: 24px;
+  padding: 20px 22px;
+  border-inline-start: 2px solid var(--color-action);
+  border-block-start: 1px solid var(--border-strong);
+  border-radius: var(--radius-content);
+  background: linear-gradient(110deg, #8052ff0d, transparent 68%), var(--surface-panel);
+  color: var(--color-text-copy);
+}
+.interior-page.page-family-about .content-extension > section:first-child > p + p {
+  max-inline-size: 74ch;
+  padding-inline-start: 24px;
+  border-inline-start: 1px solid var(--border-strong);
+}
+.interior-page.page-family-about .content-extension dl {
+  display: grid;
+  grid-template-columns: minmax(140px, .35fr) minmax(0, 1fr);
+  gap: 0 24px;
+  max-inline-size: 780px;
+  margin-block: 28px;
+}
+
+/* Trust status table: retain table semantics and headers while stacking each
+   topic/status pair at phone widths. */
+.interior-page.page-family-trust table {
+  table-layout: fixed;
+  min-width: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-content);
+  background: var(--surface-panel);
+}
+.interior-page.page-family-trust th:first-child,
+.interior-page.page-family-trust td:first-child { inline-size: 38%; color: var(--color-text); }
+.interior-page.page-family-trust td { color: var(--color-text-copy); }
+.interior-page.page-family-trust tbody tr:nth-child(even) td { background: #ffffff03; }
+.interior-page.page-family-trust tbody tr:hover td { background: var(--table-row-hover); }
+
+/* Compliance questions and evidence steps stay within their existing sections. */
+.interior-page.page-family-compliance > .block .list li {
+  max-inline-size: 72ch;
+  padding: 10px 14px;
+  border-inline-start: 1px solid var(--border-strong);
+  color: var(--color-text-copy);
+}
+.interior-page.page-family-compliance .content-extension .extension-path li {
+  padding-block: 20px;
+  border-color: #76608b;
+  background: linear-gradient(100deg, #8052ff0b, transparent 74%);
+}
+
+/* Pricing: present the existing scope and trial/Pilot/contract rows as a
+   comparison, without inventing tiers, prices, entitlements or checkout. */
+.interior-page.page-family-pricing .quote-grid > div:first-child > .list {
+  display: grid;
+  gap: 0;
+  max-inline-size: 680px;
+  padding: 0;
+  list-style: none;
+  counter-reset: pricing-scope;
+}
+.interior-page.page-family-pricing .quote-grid > div:first-child > .list li {
+  counter-increment: pricing-scope;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  margin: 0;
+  padding-block: 14px;
+  border-block-end: 1px solid var(--border-subtle);
+  color: var(--color-text-copy);
+}
+.interior-page.page-family-pricing .quote-grid > div:first-child > .list li::before {
+  content: counter(pricing-scope, decimal-leading-zero);
+  color: var(--color-focus);
+  font: 12px/2 var(--font-monospace);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.interior-page.page-family-pricing .quote-grid > div:first-child > .note {
+  max-inline-size: 76ch;
+  padding: 18px 20px;
+  border: 1px solid var(--border-strong);
+  border-inline-start: 2px solid var(--color-action);
+  border-radius: var(--radius-content);
+  background: var(--surface-panel);
+  color: var(--color-text-copy);
+}
+.interior-page.page-family-pricing .content-extension > section:first-child .extension-columns > div {
+  border-block-start: 1px solid var(--border-strong);
+  background: linear-gradient(100deg, #ffffff04, transparent 72%);
+}
+.interior-page.page-family-pricing .content-extension > section:first-child .extension-columns h3 {
+  color: var(--color-text);
+}
+
+/* Contact: explicit field boundaries and a visible keyboard/error state. */
+.interior-page.page-family-contact .contact-form :is(input, select, textarea) {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-field);
+  background: var(--surface-sunken);
+  color: var(--color-text);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast), background-color var(--motion-fast);
+}
+.interior-page.page-family-contact .contact-form :is(input, select, textarea):hover {
+  border-color: #62596d;
+}
+.interior-page.page-family-contact .contact-form :is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 4px #ffb8291a;
+}
+.interior-page.page-family-contact .contact-form :is(input, select, textarea):user-invalid {
+  border-color: var(--state-error-text);
+}
+.interior-page.page-family-contact .contact-form [role='status']:not(:empty) {
+  margin: 0;
+  padding: 12px 14px;
+  border-inline-start: 2px solid var(--color-action);
+  background: #8052ff0d;
+  color: var(--color-text-copy);
+  line-height: var(--leading-ar-body);
+}
+.interior-page.page-family-contact .contact-form .note {
+  padding-block-start: 14px;
+  border-block-start: 1px solid var(--border-subtle);
+  color: var(--color-text-copy);
+}
+
+/* Legal text: improve measure and separation without touching a character. */
+.interior-page:is(.page-family-privacy, .page-family-terms) > .block {
+  border-block-start-color: var(--border-strong);
+}
+.interior-page:is(.page-family-privacy, .page-family-terms) > .block > h2 {
+  color: var(--color-text);
+}
+.interior-page:is(.page-family-privacy, .page-family-terms) > .block > p,
+.interior-page:is(.page-family-privacy, .page-family-terms) > p,
+.interior-page:is(.page-family-privacy, .page-family-terms) .content-extension > section > p {
+  max-inline-size: 68ch;
+  color: var(--color-text-copy);
+  line-height: 1.95;
+}
+.interior-page:is(.page-family-privacy, .page-family-terms) a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+.interior-page:is(.page-family-privacy, .page-family-terms) a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+/* 404 keeps the numeric code LTR and gives the existing routes a clear
+   compass-like navigation hierarchy. */
+.interior-page.page-family-404 > .eyebrow bdi {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 48px;
+  min-block-size: 32px;
+  margin-inline-end: 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--color-focus);
+  font: 600 13px/1 var(--font-monospace);
+  unicode-bidi: isolate;
+}
+.interior-page.page-family-404 .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  max-inline-size: 720px;
+  margin-block-start: 32px;
+  padding: 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-content);
+  background: linear-gradient(110deg, #8052ff0a, transparent 70%), var(--surface-panel);
+}
+.interior-page.page-family-404 .actions > a:first-child { margin-inline-end: auto; }
+.interior-page.page-family-404 .actions > a:not(:first-child)::before {
+  content: '↗';
+  display: inline-block;
+  margin-inline-end: 8px;
+  color: var(--color-focus);
+  direction: ltr;
+}
+
+@media (max-width: 767px) {
+  .interior-page.page-family-about .content-extension dl { grid-template-columns: 1fr; }
+  .interior-page.page-family-trust table { display: block; }
+  .interior-page.page-family-trust table thead { display: block; }
+  .interior-page.page-family-trust table thead tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+  }
+  .interior-page.page-family-trust table tbody { display: block; }
+  .interior-page.page-family-trust table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 8px 12px 12px;
+    border-block-end: 1px solid var(--table-border);
+  }
+  .interior-page.page-family-trust table tbody tr:last-child { border-block-end: 0; }
+  .interior-page.page-family-trust table td,
+  .interior-page.page-family-trust table th { inline-size: auto; padding: 8px 4px; }
+  .interior-page.page-family-trust table tbody td:first-child {
+    padding-block-end: 6px;
+    border-block-end: 1px solid var(--border-subtle);
+    color: var(--color-focus);
+    font-size: var(--type-label);
+    font-weight: var(--font-weight-semibold);
+  }
+  .interior-page.page-family-trust table tbody td + td { padding-block-start: 8px; }
+  .interior-page.page-family-404 .actions { align-items: stretch; }
+  .interior-page.page-family-404 .actions > a { justify-content: center; }
+  .interior-page.page-family-404 .actions > a:first-child { inline-size: 100%; margin-inline-end: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interior-page.page-family-contact .contact-form :is(input, select, textarea) { transition: none; }
+}
