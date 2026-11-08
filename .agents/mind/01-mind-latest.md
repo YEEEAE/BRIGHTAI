@@ -1,3 +1,27 @@
+## [2026-11-09] — إعادة جرد Neon قراءة فقط وخطة Staging/الاستعادة/الترحيلات
+
+### تم التنفيذ
+- تحقق من HEAD `46ecaeae25368a467c30d27320978fb21aef2077` (فرع `main`). جُرد مشروع `young-frog-60183055` قراءة فقط: فرع `production` وحيد `protected=false`، 31 جدولًا، RLS 31/31، `FORCE=0`، سياستان، `aigas_runtime` غائب، 124 منح DML لـ`authenticated`، Data API `active` على `public`، و`neon_auth` بلا مستخدمين/جلسات/مؤسسات.
+- **جديد:** لا snapshots ولا جدول نسخ (`schedule=[]`)، `history_retention_seconds=21600` (6 ساعات)؛ لا نقطة استعادة دائمة، وRPO/RTO `NOT_VERIFIED`.
+- تحقق ثانٍ للترحيلات: `0020` و`0021` مطبّقان بكائناتهما؛ `0013` جزئي (القيد بلا `request_fingerprint` وغياب `aigas_ld_events_chain_guard`)؛ `0014,0016,0017,0018,0019,0022,0023,0024,0025,0026,0027` غير مطبّقة. لم يُعدّل أي حكم.
+- أُعدّت خطة staging معزول بمشروع مستقل ومفاتيح مستقلة وبيانات اصطناعية، وخطة تمرين استعادة إلى فرع منفصل بمعايير كتالوج/عدّ/RTO/RPO، وجدول اعتماديات وrollback لـ12 ملفًا، وقائمة موافقات A1–A9.
+- لم تُنشأ فروع/snapshots، ولم تُطبّق migrations أو تغييرات grants/RLS/Data API/حماية، ولم يُشغّل build/test/E2E، ولم يُعمل commit/push.
+
+### الملفات المتأثرة
+- `docs/beta/NEON-READONLY-STATUS-2026-11-09.md` (جديد)
+- `docs/beta/STAGING-RESTORE-AND-MIGRATION-PLAN.md` (جديد)
+- `docs/NEON-BRANCH-PROTECTION-RUNBOOK.md` (تحقق 2026-11-09)
+
+### التحقق
+- Neon MCP قراءة فقط (`list_branches`, `list_snapshots`, `get_snapshot_schedule`, `get_data_api`, `run_sql` بـSELECT): PASS؛ لا كتابة.
+- `git diff --check`: PASS.
+
+### النتيجة
+- **الحالة:** DONE محليًا للجرد والخطة؛ **G5=BLOCKED** و**G7=BLOCKED** بلا تغيير. لا Beta ولا GO.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم من المالك: حماية production، اعتماد staging معزول، آلية الاستعادة، منفّذ DBA مستقل، نافذة تنفيذ، وتقييد Data API. لا كتابة على Neon قبل ذلك.
+
 ## [2026-11-09] — حزمة قرار Beta مقيدة للمرشح `3eaf6907` (NO-GO)
 
 ### تم التنفيذ
