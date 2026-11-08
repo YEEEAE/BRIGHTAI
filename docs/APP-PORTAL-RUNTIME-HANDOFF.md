@@ -4,6 +4,8 @@
 > **الحالة:** `LOCAL SOURCE ONLY` — لم يُنشر، ولم يُشغّل build أو خادم أو متصفح ضمن هذه المهمة.
 > **تاريخ:** 2026-11-03
 
+> **تحديث التشغيل 2026-11-08:** `npm start` يشغّل الآن `scripts/server.mjs` الذي يطبّق `redirects.json` قبل معالج Astro standalone، لأن ملفات `index.html` الثابتة تتجاوز middleware. البناء والتحقق المحلي لصفحات SEO والتحويلات: PASS؛ لا نشر. الدليل: `Audit/seo-saudi-2026-11-08/REPORT.md`.
+
 ## 1. مصدر التشغيل الحالي (من الكود)
 
 | العنصر | القيمة | الملف |
@@ -11,7 +13,7 @@
 | نوع المخرَج | `output: 'server'` | `astro.config.mjs` |
 | المهايئ | `@astrojs/node` بنمط `standalone` | `astro.config.mjs` |
 | بناء | `npm ci && npm run build` | `render.yaml` |
-| تشغيل | `npm start` → `node ./dist/server/entry.mjs` | `package.json` |
+| تشغيل | `npm start` → `node ./scripts/server.mjs` → Astro standalone handler | `package.json` |
 | Node | `22.x` (Blueprint: `22.22.2`) | `package.json` / `render.yaml` |
 | المنفذ والعنوان | `PORT=10000`، `HOST=0.0.0.0` | `render.yaml` |
 

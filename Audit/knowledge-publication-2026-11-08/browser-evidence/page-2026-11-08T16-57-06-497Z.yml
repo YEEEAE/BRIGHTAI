@@ -1,0 +1,258 @@
+- generic [active] [ref=e1]:
+  - link "تخطّ إلى المحتوى" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - link "BRIGHTAI — الرئيسية" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=e5]
+    - group [ref=e6]:
+      - navigation "التنقل الرئيسي" [ref=e7]:
+        - link "المنتجات" [ref=e8] [cursor=pointer]:
+          - /url: /products/
+        - link "الحلول" [ref=e9] [cursor=pointer]:
+          - /url: /#solutions
+        - link "الخدمات" [ref=e10] [cursor=pointer]:
+          - /url: /services/
+        - link "الأسعار" [ref=e11] [cursor=pointer]:
+          - /url: /pricing/
+        - link "مركز المعرفة" [ref=e12] [cursor=pointer]:
+          - /url: /docs/
+    - link "اطلب معلومات" [ref=e13] [cursor=pointer]:
+      - /url: /contact/
+      - text: اطلب معلومات
+      - generic [aria-hidden] [ref=e14]: ↗
+  - main [ref=e15]:
+    - navigation "مسار التنقل" [ref=e16]:
+      - link "الرئيسية" [ref=e17] [cursor=pointer]:
+        - /url: /
+      - generic [aria-hidden] [ref=e18]: /
+      - link "مركز المعرفة" [ref=e19] [cursor=pointer]:
+        - /url: /docs/
+      - generic [aria-hidden] [ref=e20]: /
+      - generic [ref=e21]: "تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟"
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - link "← عودة لمركز المعرفة" [ref=e24] [cursor=pointer]:
+          - /url: /docs/
+        - generic [ref=e25]: AIGAS / KNOWLEDGE · 4 دقائق قراءة تقديرية
+      - generic [ref=e26]:
+        - complementary [ref=e27]:
+          - generic [ref=e28]:
+            - paragraph [ref=e29]: داخل هذا الدليل
+            - progressbar "تقدم قراءة الدليل" [ref=e30]
+            - group [ref=e31]:
+              - generic "فهرس الأقسام" [ref=e32] [cursor=pointer]
+              - navigation "فهرس الدليل" [ref=e33]:
+                - link "01 فرّق بين البلاغ الداخلي والعلم والقرار النظامي" [ref=e34] [cursor=pointer]:
+                  - /url: "#guide-section-1"
+                  - generic [ref=e35]: "01"
+                  - generic [ref=e36]: فرّق بين البلاغ الداخلي والعلم والقرار النظامي
+                - link "02 احفظ ما يساعد على فهم الواقعة" [ref=e37] [cursor=pointer]:
+                  - /url: "#guide-section-2"
+                  - generic [ref=e38]: "02"
+                  - generic [ref=e39]: احفظ ما يساعد على فهم الواقعة
+                - link "03 لا تخلط مسارات الإخطار" [ref=e40] [cursor=pointer]:
+                  - /url: "#guide-section-3"
+                  - generic [ref=e41]: "03"
+                  - generic [ref=e42]: لا تخلط مسارات الإخطار
+                - link "04 مثال تطبيقي افتراضي" [ref=e43] [cursor=pointer]:
+                  - /url: "#document-heading-4"
+                  - generic [ref=e44]: "04"
+                  - generic [ref=e45]: مثال تطبيقي افتراضي
+                - link "05 قائمة تحقق للعمل" [ref=e46] [cursor=pointer]:
+                  - /url: "#document-heading-5"
+                  - generic [ref=e47]: "05"
+                  - generic [ref=e48]: قائمة تحقق للعمل
+                - link "06 أسئلة شائعة" [ref=e49] [cursor=pointer]:
+                  - /url: "#document-heading-6"
+                  - generic [ref=e50]: "06"
+                  - generic [ref=e51]: أسئلة شائعة
+                - link "07 المصادر الرسمية وحدود الاستشهاد" [ref=e52] [cursor=pointer]:
+                  - /url: "#document-heading-7"
+                  - generic [ref=e53]: "07"
+                  - generic [ref=e54]: المصادر الرسمية وحدود الاستشهاد
+                - link "08 أدلة تكمل الموضوع" [ref=e55] [cursor=pointer]:
+                  - /url: "#document-heading-8"
+                  - generic [ref=e56]: "08"
+                  - generic [ref=e57]: أدلة تكمل الموضوع
+            - paragraph [ref=e58]: محتوى تعليمي · راجع المراجع الرسمية قبل اتخاذ القرار.
+        - article [ref=e60]:
+          - generic [ref=e61]:
+            - paragraph [ref=e62]:
+              - text: "دليل استجابة · إعداد وتحديث:"
+              - time [ref=e63]: 8 نوفمبر 2026
+            - 'heading "تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟" [level=1] [ref=e64]'
+            - paragraph [ref=e65]: بحسب المادة 24 من اللائحة التنفيذية، على جهة التحكم إشعار الجهة المختصة خلال مدة لا تتجاوز 72 ساعة من وقت علمها بحادثة تسرب بيانات شخصية إذا تحققت شروط الضرر أو التعارض مع الحقوق أو المصالح الواردة بالمادة. ليست المهلة قاعدة لكل خطأ AI، وليست إذنًا للانتظار قبل الاحتواء والتقييم.
+            - paragraph [ref=e66]:
+              - text: إعداد
+              - link "مؤسسة مُشرقة BRIGHT AI" [ref=e67] [cursor=pointer]:
+                - /url: /about/
+              - text: . دليل تعليمي؛ الأمثلة افتراضية والنماذج الإجرائية مقترحة وليست نماذج تنظيمية معتمدة. راجع النص الرسمي والمختص المخول قبل تطبيق قرار نظامي أو صحي أو مالي.
+          - region [ref=e68]:
+            - heading "فرّق بين البلاغ الداخلي والعلم والقرار النظامي" [level=2] [ref=e69]
+            - paragraph [ref=e70]: عندما يبلغ موظف أنه أدخل ملفًا في أداة غير معتمدة، افتح مسار التقييم فورًا. وثّق الوقائع والوقت ومصدر المعلومات، وافصل ما هو مؤكد عما يجري التحقق منه. لا تصف كل اشتباه بأنه تسرب مؤكد، ولا تؤخر التصعيد لأن التحقيق لم يكتمل.
+            - paragraph [ref=e71]: تحديد العلم وانطباق شروط الإشعار في واقعة محددة يحتاج جهة مختصة داخل المنشأة ومراجعة الوقائع. اجعل وسيلة الإبلاغ معروفة وبديل المسؤول متاحًا، لأن بقاء البلاغ في بريد غير مراقب يضر سرعة المعالجة ولا يصلح إجراءً لإدارة الالتزام.
+          - region [ref=e72]:
+            - heading "احفظ ما يساعد على فهم الواقعة" [level=2] [ref=e73]
+            - paragraph [ref=e74]: القائمة التالية ترتيب عملي مقترح للتحقيق، وليست نموذج بلاغ رسميًا. اجمع أقل دليل يسمح بفهم ما دخل الأداة ومن استلمه وما إذا كان الوصول مستمرًا، مع حصر الاطلاع على المخولين. لا تنسخ الملف المتسرب إلى مجموعات عمل جديدة أثناء طلب المساعدة.
+            - paragraph [ref=e75]: نسّق احتواء التكامل أو الحساب مع الأمن ومالك العمل، وتجنب إتلاف الدليل الضروري أو تشغيل حذف غير مأذون. سجّل الإجراءات ومن نفذها ووقتها، واطلب من المورد معلومات محددة بدل الاكتفاء برد «تم إغلاق التذكرة».
+            - 'region "جدول: احفظ ما يساعد على فهم الواقعة" [ref=e76]':
+              - table [ref=e77]:
+                - caption [ref=e78]: احفظ ما يساعد على فهم الواقعة — أسئلة وأمثلة للمراجعة
+                - rowgroup [ref=e79]:
+                  - row [ref=e80]:
+                    - columnheader "عنصر التحقيق" [ref=e81]
+                    - columnheader "سؤال عملي" [ref=e82]
+                    - columnheader "ما يبقى واضحًا" [ref=e83]
+                - rowgroup [ref=e84]:
+                  - row [ref=e85]:
+                    - rowheader "البيانات" [ref=e86]
+                    - cell "ما النوع والنطاق التقريبي؟" [ref=e87]
+                    - cell "المؤكد والتقديري وغير المعروف" [ref=e88]
+                  - row [ref=e89]:
+                    - rowheader "الوقت" [ref=e90]
+                    - cell "متى حدثت الواقعة ومتى عُلم بها؟" [ref=e91]
+                    - cell "مصدر كل توقيت" [ref=e92]
+                  - row [ref=e93]:
+                    - rowheader "المستلم والوصول" [ref=e94]
+                    - cell "أي حساب أو خدمة أو تكامل؟" [ref=e95]
+                    - cell "ما أُوقف وما بقي" [ref=e96]
+                  - row [ref=e97]:
+                    - rowheader "الأثر" [ref=e98]
+                    - cell "من قد يتأثر وكيف؟" [ref=e99]
+                    - cell "فرضيات تحتاج تحققًا" [ref=e100]
+                  - row [ref=e101]:
+                    - rowheader "الاحتواء" [ref=e102]
+                    - cell "ما الإجراء ومن أجازه؟" [ref=e103]
+                    - cell "النتيجة وحدودها" [ref=e104]
+          - region [ref=e105]:
+            - heading "لا تخلط مسارات الإخطار" [level=2] [ref=e106]
+            - paragraph [ref=e107]: تفرّق المادة 24 بين إخطار الجهة المختصة وإخطار صاحب البيانات، وتتناول استكمال المعلومات الناقصة مع مبرر التأخير، ولا تلغي التزامات الإبلاغ الأخرى المنطبقة. راجع النص الرسمي للمحتوى والشروط والمواعيد الخاصة بكل مسار، بدل إرسال إشعار موحد للجميع.
+            - paragraph [ref=e108]: "بعد الاحتواء، حلّل سبب الواقعة: غموض السياسة أو حساب غير مناسب أو صلاحية أداة أو ضعف تدريب. اربط الإجراء التصحيحي بمالك واختبار، واحفظ سجل القرار دون ادعاء انتهاء الخطر لأن المورد أغلق الحساب أو لأن النص حُذف من الواجهة."
+          - generic [ref=e109]:
+            - heading "مثال تطبيقي افتراضي" [level=2] [ref=e110]
+            - blockquote [ref=e111]:
+              - paragraph [ref=e112]: "مثال افتراضي: يرفع موظف كشف عملاء إلى خدمة تلخيص. تبلغ الجهة المختصة داخليًا فورًا، وتتحقق من البيانات والمستلمين والإعدادات والأثر والتوقيت، ثم تقرر مسارات الإشعار المنطبقة. لا يُحسب بدء المهلة تلقائيًا من وقت إغلاق التحقيق النهائي."
+          - generic [ref=e113]:
+            - heading "قائمة تحقق للعمل" [level=2] [ref=e114]
+            - list [ref=e115]:
+              - listitem [ref=e116]: صعّد البلاغ ووثّق الوقائع والتوقيت دون انتظار اكتمال التحقيق.
+              - listitem [ref=e117]: افصل المؤكد والتقديري وما يحتاج تحققًا.
+              - listitem [ref=e118]: احتوِ الوصول واحفظ دليلًا بالحد اللازم.
+              - listitem [ref=e119]: راجع شروط ومسارات الإشعار مع المخولين والمختصين.
+          - generic [ref=e120]:
+            - heading "أسئلة شائعة" [level=2] [ref=e121]
+            - generic [ref=e122]:
+              - heading "هل كل إدخال خاطئ في AI يستلزم بلاغ 72 ساعة؟" [level=3] [ref=e123]
+              - paragraph [ref=e124]: ليس تلقائيًا. الحكم يتطلب تقييم طبيعة الواقعة والبيانات وشروط المادة 24 والالتزامات الأخرى المنطبقة.
+            - generic [ref=e125]:
+              - heading "هل ننتظر اكتمال التحقيق قبل التصعيد؟" [level=3] [ref=e126]
+              - paragraph [ref=e127]: لا. يبدأ التصعيد والتوثيق والتقييم فورًا، وتُدار المعلومات الناقصة ومسارات الإشعار وفق النص والوقائع بواسطة المخولين.
+          - generic [ref=e128]:
+            - heading "المصادر الرسمية وحدود الاستشهاد" [level=2] [ref=e129]
+            - paragraph [ref=e130]: اطُّلع على المصادر عند إعداد الدليل بتاريخ 8 نوفمبر 2026. الإحالات تدعم الموضوع المحدد في وصفها؛ الجداول والأمثلة والخطوات المقترحة صياغة تعليمية من BRIGHT AI، وليست نصوصًا منقولة عن الجهات.
+            - list [ref=e131]:
+              - listitem [ref=e132]:
+                - 'link "سدايا: اللائحة التنفيذية لنظام حماية البيانات الشخصية" [ref=e133] [cursor=pointer]':
+                  - /url: https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/
+                - paragraph [ref=e134]: المادة 24 هي المرجع لشروط الإشعار والمهلة والمحتوى واستكمال المعلومات؛ الشرح هنا موجز ولا يستبدلها.
+          - generic [ref=e135]:
+            - heading "أدلة تكمل الموضوع" [level=2] [ref=e136]
+            - list [ref=e137]:
+              - listitem [ref=e138]:
+                - 'link "PDPL والذكاء الاصطناعي: متى يخضع إدخال البيانات؟" [ref=e139] [cursor=pointer]':
+                  - /url: /knowledge/pdpl-and-ai/
+                - paragraph [ref=e140]: رحلة من الموظف إلى النموذج عبر ست نقاط فحص، وموقع منشأتك بين المتحكم والمعالج، وأساس المعالجة والموافقة والنقل خارج المملكة.
+              - listitem [ref=e141]:
+                - 'link "سجل تدقيق الذكاء الاصطناعي: ما الذي تحفظه كدليل؟" [ref=e142] [cursor=pointer]':
+                  - /url: /knowledge/ai-audit-trail/
+                - paragraph [ref=e143]: صمّم أثرًا تدقيقيًا لقرارات AI يربط الاستخدام والسياسة والموافقة والتنفيذ، مع تقليل البيانات وضبط الوصول والتحقق من سلامة السجل.
+              - listitem [ref=e144]:
+                - 'link "بنود عقود الذكاء الاصطناعي: قائمة مراجعة قبل التوقيع" [ref=e145] [cursor=pointer]':
+                  - /url: /knowledge/ai-contract-clauses/
+                - paragraph [ref=e146]: "قائمة تحضير لمراجعة عقد AI: الغرض والبيانات والتدريب والمعالجون الفرعيون والحوادث والتغيير والخروج، مع فصل الشرط التعاقدي عن الدليل التقني."
+            - link "تصفح جميع أدلة المعرفة ←" [ref=e147] [cursor=pointer]:
+              - /url: /docs/
+      - region "أدلة مرتبطة" [ref=e148]:
+        - paragraph [ref=e149]: تابع في الموضوع نفسه · الخصوصية وحماية البيانات
+        - heading "أكمل الصورة" [level=2] [ref=e150]
+        - generic [ref=e151]:
+          - link [ref=e152] [cursor=pointer]:
+            - /url: /knowledge/protect-company-data-chatgpt/
+            - text: قائمة قرار
+            - heading "حماية بيانات المنشأة عند استخدام ChatGPT" [level=3] [ref=e153]
+            - text: ←
+          - link [ref=e154] [cursor=pointer]:
+            - /url: /knowledge/pdpl-and-ai/
+            - text: شرح عملي
+            - 'heading "PDPL والذكاء الاصطناعي: متى يخضع إدخال البيانات؟" [level=3] [ref=e155]'
+            - text: ←
+          - link [ref=e156] [cursor=pointer]:
+            - /url: /knowledge/data-classification-for-ai/
+            - text: دليل قرار
+            - heading "تصنيف البيانات قبل استخدامها في الذكاء الاصطناعي" [level=3] [ref=e157]
+            - text: ←
+  - contentinfo [ref=e158]:
+    - generic [ref=e159]:
+      - link "BRIGHTAI — الرئيسية" [ref=e160] [cursor=pointer]:
+        - /url: /
+        - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=e161]
+      - paragraph [ref=e162]: ذكاء اصطناعي تثق به... وتحاسبه.
+    - generic [ref=e163]:
+      - generic [ref=e164]:
+        - heading "المنصة" [level=2] [ref=e165]
+        - list [ref=e166]:
+          - listitem [ref=e167]:
+            - link "Kernel والمنتجات" [ref=e168] [cursor=pointer]:
+              - /url: /products/
+              - generic [ref=e169]: Kernel
+              - text: والمنتجات
+          - listitem [ref=e170]:
+            - link "محاكاة توضيحية" [ref=e171] [cursor=pointer]:
+              - /url: /kernel/
+          - listitem [ref=e172]:
+            - link "طلب عرض سعر" [ref=e173] [cursor=pointer]:
+              - /url: /pricing/
+          - listitem [ref=e174]:
+            - link "مركز المعرفة" [ref=e175] [cursor=pointer]:
+              - /url: /docs/
+      - generic [ref=e176]:
+        - heading "الحوكمة" [level=2] [ref=e177]
+        - list [ref=e178]:
+          - listitem [ref=e179]:
+            - link "السلامة" [ref=e180] [cursor=pointer]:
+              - /url: /pillars/safety/
+          - listitem [ref=e181]:
+            - link "الشفافية" [ref=e182] [cursor=pointer]:
+              - /url: /pillars/transparency/
+          - listitem [ref=e183]:
+            - link "الخصوصية" [ref=e184] [cursor=pointer]:
+              - /url: /pillars/privacy/
+          - listitem [ref=e185]:
+            - link "الامتثال" [ref=e186] [cursor=pointer]:
+              - /url: /compliance/
+      - generic [ref=e187]:
+        - heading "الشركة" [level=2] [ref=e188]
+        - list [ref=e189]:
+          - listitem [ref=e190]:
+            - link "الخدمات" [ref=e191] [cursor=pointer]:
+              - /url: /services/
+          - listitem [ref=e192]:
+            - link "من نحن" [ref=e193] [cursor=pointer]:
+              - /url: /about/
+          - listitem [ref=e194]:
+            - link "مركز الثقة" [ref=e195] [cursor=pointer]:
+              - /url: /trust/
+          - listitem [ref=e196]:
+            - link "تواصل معنا" [ref=e197] [cursor=pointer]:
+              - /url: /contact/
+      - generic [ref=e198]:
+        - heading "قانوني" [level=2] [ref=e199]
+        - list [ref=e200]:
+          - listitem [ref=e201]:
+            - link "سياسة الخصوصية" [ref=e202] [cursor=pointer]:
+              - /url: /privacy/
+          - listitem [ref=e203]:
+            - link "الشروط والأحكام" [ref=e204] [cursor=pointer]:
+              - /url: /terms/
+    - generic [ref=e205]: © 2026 BRIGHTAI

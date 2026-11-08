@@ -1,0 +1,413 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BRIGHT AI — Final Pre-Beta Audit 2026-11-08</title><style>
+:root{color-scheme:dark;--bg:#09090d;--surface:#13121a;--edge:#36323f;--text:#f4f1f7;--copy:#ccc7d2;--muted:#a7a0b2;--primary:#a78bfa;--yellow:#ffbf4a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(125deg,#0a0910,#0f0a18 38%,#09090e 80%);color:var(--copy);font-family:'IBM Plex Sans Arabic',Tahoma,'Noto Sans Arabic',system-ui,sans-serif;font-size:15px;line-height:1.96;direction:rtl}
+a{color:#bda2ff;text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+.shell{display:grid;grid-template-columns:minmax(210px,254px) minmax(0,1fr);min-height:100vh;max-width:1900px;margin:0 auto}
+nav{position:sticky;top:0;height:100vh;overflow:auto;background:#0e0b14;border-left:1px solid var(--edge);padding:30px 20px}
+.brand{font:700 18px system-ui,Arial,sans-serif;letter-spacing:.06em;color:white}.accent{color:var(--primary)}nav p{font-size:12px;color:var(--muted)}nav a{display:block;padding:9px 11px;margin:4px 0;border-radius:7px;background:#ffffff04;border:1px solid transparent;font-size:13px}nav a:hover{background:#8052ff1e;border-color:#6e4a9e}
+main{padding:44px clamp(22px,4vw,82px) 70px;min-width:0;max-width:1320px;width:100%;margin:auto}
+.headernote{border:1px solid #4e4261;background:#171023;border-radius:12px;padding:18px 22px;margin-bottom:33px}.headernote b{color:#f1deff}
+h1{font-size:clamp(30px,3.5vw,48px);line-height:1.45;color:#fff;font-weight:650;margin:16px 0 18px}h2{font-size:clamp(21px,2.4vw,29px);font-weight:600;color:#fff;margin:47px 0 14px;padding-bottom:10px;border-bottom:1px solid #433a4d}h3{font-size:19px;color:#e6d8ff;margin:25px 0 12px}p{margin:10px 0 19px}strong{color:#fff}code{direction:ltr;unicode-bidi:isolate;display:inline-block;font-family:ui-monospace,Consolas,monospace;color:#edd4ff;background:#2a1f34;padding:0 5px;border-radius:4px;font-size:.86em;max-width:100%;overflow-wrap:anywhere}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:650px}th{color:#f8e7ff;background:#241a33;text-align:right;font-weight:650}th,td{padding:12px;border-bottom:1px solid var(--edge);vertical-align:top}tr:nth-child(even) td{background:#ffffff04}.tableframe{overflow:auto;border-radius:10px;border:1px solid #40374a;margin:18px 0 32px;max-width:100%;scrollbar-width:thin}blockquote{border-right:3px solid var(--yellow);background:#1d1625;border-radius:6px;margin:20px 0;padding:10px 22px}li{margin-block:6px}ul,ol{padding-inline-start:25px}hr{border:0;border-top:1px solid var(--edge);margin:40px 0}footer{margin-top:54px;padding-top:20px;border-top:1px solid var(--edge);font-size:12px;color:var(--muted)}.tags{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}.tag{border:1px solid #5c4175;color:#ddc9ee;padding:4px 11px;border-radius:99px;font-size:12px}.tag.warn{border-color:#806032;color:#ffd18b}
+@media(max-width:850px){.shell{display:block}nav{position:relative;height:auto;padding:16px 18px;border-left:0;border-bottom:1px solid var(--edge)}nav .navlinks{display:flex;gap:4px;overflow-x:auto;padding-bottom:5px}nav .navlinks a{white-space:nowrap}main{padding:24px 16px 55px}.tableframe{margin-inline:0}table{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+@media print{body{background:white;color:#222}.shell{display:block}nav{display:none}main{max-width:none;padding:0}h1,h2,h3{color:#111}a{color:#444}table{min-width:0}th{background:#eee;color:#111}td{background:white!important}code{color:#111;background:#eee}}
+</style></head><body><div class="shell"><nav><div class="brand">BRIGHT <span class="accent">AI</span></div><p>AIGAS · FINAL BETA GATE REPORT<br>08 NOV 2026</p><div class="navlinks"><a href="#section-1">القرار</a><a href="#section-2">النسب</a><a href="#section-3">المستودع</a><a href="#section-4">التصميم</a><a href="#section-5">Neon</a><a href="#section-6">المنتجات</a><a href="#section-7">الموانع</a><a href="#section-8">نطاق Beta</a><a href="#section-9">البرومبتات</a><a href="#section-10">ما لم يتم</a><a href="#section-11">المصادر</a></div></nav><main><div class="headernote"><b>مراجعة مصدر وبيانات وموقع عام — قراءة فقط</b><div>التصميم 80% حسب الأدلة المصدرية، والبوابات 22.2%، ومسارات التطبيق المحمية 0/7 بسبب 404. النسبة ليست تصريح إطلاق.</div></div><div class="tags"><span class="tag">15 Prompts</span><span class="tag">31 Tables</span><span class="tag">15 Public Routes</span><span class="tag warn">NO-GO</span></div><h1>التقرير النهائي — BRIGHT AI / AIGAS</h1>
+<p><strong>النوع:</strong> فحص مستقل قبل تجربة Beta، بتواريخ وأدلة وحدود ثقة واضحة.<br />
+<strong>تاريخ المصدر:</strong> 8 نوفمبر 2026 · توقيت الفحص المستقل.<br />
+<strong>GitHub:</strong> <a href="https://github.com/YEEEAE/BRIGHTAI"><code>YEEEAE/BRIGHTAI</code></a> عند <code>7994d3ce9df4797630d4dc9a2c51d2c141dedcab</code>.<br />
+<strong>Neon:</strong> مشروع واحد، فرع إنتاجي افتراضي. فحص SQL <strong>SELECT فقط</strong>؛ لا تغييرات.<br />
+<strong>الموقع العام:</strong> <a href="https://brightai.live/">brightai.live</a>.<br />
+<strong>ملاحظة:</strong> هذا تقييم مصدر/مخطط/ويب عام فقط، وليس تدقيق اختراق أو تشغيل بيئة Beta أو اعتماد امتثال.</p>
+<h2 id="section-1">1. القرار التنفيذي</h2>
+<p><strong>النظام تحسّن بصريًا وكوديًا، لكن الإطلاق التجريبي لعملاء حقيقيين الآن: NO-GO.</strong></p>
+<p>ليس السبب نقصًا في شكل الموقع، بل عدم إثبات عمل البوابة الخاصة والتحكم بالهوية والمؤسسات وعزل قاعدة البيانات، إضافة إلى مزودات AI غير معتمدة وبيئة تشغيل/استعادة غير موثقة. يُسمح بتحضير تجربة <strong>ببيانات اصطناعية في بيئة معزولة</strong> بعد إغلاق شروط العزل والأمان، ولا يعني ذلك تلقائيًا إطلاق Beta عامًا.</p>
+<h2 id="section-2">2. لوحة النسب المئوية ومنهج الحساب</h2>
+<div class="tableframe"><table>
+<thead>
+<tr>
+  <th>المؤشر</th>
+  <th style="text-align:right">النسبة</th>
+  <th>البسط / المقام</th>
+  <th>ماذا يثبت وما لا يثبت</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>تنفيذ نطاق التصميم السابق بالمصدر (مؤشر تدقيقي تقديري)</strong></td>
+  <td style="text-align:right"><strong>80.0%</strong></td>
+  <td>9 وحدات مكتملة مصدريًا ×1 + 6 جزئية ×0.5 = 12 / 15</td>
+  <td>يقيّم كود/سجل تنفيذ 15 برومبت؛ ليس قياسًا تلقائيًا للجودة، ولا نسبة مطابقة كاملة للشاشات</td>
+</tr>
+<tr>
+  <td><strong>بوابات التحضير الأولية للـBeta الموثقة</strong></td>
+  <td style="text-align:right"><strong>22.2%</strong></td>
+  <td>2 / 9</td>
+  <td>اثنتان لهما دليل بنية/مخطط؛ سبع بلا اجتياز مثبت؛ <strong>لا تُفسّر باعتبارها تصريح إطلاق</strong></td>
+</tr>
+<tr>
+  <td><strong>الصفحات العامة التي أعادت HTTP 200 في الفحص الحي</strong></td>
+  <td style="text-align:right"><strong>100%</strong></td>
+  <td>15 / 15</td>
+  <td>13 مسارًا عامًا + مقالان من المعرفة؛ <strong>لا يعني فحص كل صفحات الموقع</strong></td>
+</tr>
+<tr>
+  <td><strong>مسارات AIGAS المحمية التي أعادت استجابة صحيحة بدل 404</strong></td>
+  <td style="text-align:right"><strong>0%</strong></td>
+  <td>0 / 7</td>
+  <td>كل السبعة أعادت HTTP 404؛ يشمل Kernel والمنتجات الخمسة ومجموعة <code>/app/</code></td>
+</tr>
+<tr>
+  <td><strong>وجود جداول AIGAS الفعلية</strong></td>
+  <td style="text-align:right"><strong>100%</strong></td>
+  <td>31 / 31 من الجداول المرصودة</td>
+  <td>جرد وجود جدول فقط؛ ليس حكمًا على اكتمال جميع migrations أو الوظائف المطلوبة</td>
+</tr>
+<tr>
+  <td><strong>تفعيل RLS</strong></td>
+  <td style="text-align:right"><strong>100%</strong></td>
+  <td>31 / 31 جدولًا</td>
+  <td>وجود العلم؛ لا يثبت العزل، لأن الدور المالك يتجاوز RLS والسياسات المباشرة قليلة</td>
+</tr>
+<tr>
+  <td><strong>الجداول ذات سياسة RLS مباشرة</strong></td>
+  <td style="text-align:right"><strong>6.5%</strong></td>
+  <td>2 / 31</td>
+  <td>ملاحظة وصفية لا تعني وجوب وجود Policy على كل جدول؛ تحتاج مراجعة معمارية دور الخدمة/Data API</td>
+</tr>
+<tr>
+  <td><strong>الجداول التي تحتوي سجلات تشغيلية فعلية</strong></td>
+  <td style="text-align:right"><strong>0%</strong></td>
+  <td>0 / 31</td>
+  <td>لا يوجد أثر مستخدم/عملية في القاعدة المفحوصة؛ ليس حكمًا على صلاحية الكود</td>
+</tr>
+<tr>
+  <td><strong>منتجات AIGAS المحقق تشغيلها E2E في هذه المراجعة</strong></td>
+  <td style="text-align:right"><strong>0%</strong></td>
+  <td>0 / 5</td>
+  <td>لم تتوفر جلسات أو حسابات/تشغيل معتمد؛ <strong>NOT_VERIFIED وليس FAIL</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>كيف احتسبت 80% التصميم؟</h3>
+<p>هذه <strong>درجة تدقيق مصدرية</strong> مستقلة لتقدير إغلاق البرومبتات السابقة، وليست ناتج اختبارات آلية. لكل واحدة من المهام الـ15: <code>1</code> = تغييرات واضحة بالمصدر/سجل التنفيذ، و<code>0.5</code> = تغييرات موجودة لكن النطاق الجزئي أو التحقق المنشور ناقص، و<code>0</code> = لم يوجد دليل. تساوي الوحدات في الوزن لا يعني تساوي حجمها الفعلي، ولذلك من الخطأ تقديم الرقم كتكلفة/جهد أو ضمان UX.</p>
+<div class="tableframe"><table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>مسار التصميم السابق</th>
+  <th style="text-align:right">النقاط</th>
+  <th>سبب التقدير</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>01</td>
+  <td>جرد الواجهات والمكوّنات وحدود الحماية</td>
+  <td style="text-align:right">1</td>
+  <td>سجل التطوير والمكونات وAGENTS.md؛ جرد موثق</td>
+</tr>
+<tr>
+  <td>02</td>
+  <td>النظام البصري والطباعة العربية</td>
+  <td style="text-align:right">1</td>
+  <td>tokens/variables/theme وPlex عربية وتوثيق تعديلها</td>
+</tr>
+<tr>
+  <td>03</td>
+  <td>البطاقات والأزرار والأيقونات</td>
+  <td style="text-align:right">1</td>
+  <td>ProductIcon/KnowledgeIcon والأنماط المشتركة</td>
+</tr>
+<tr>
+  <td>04</td>
+  <td>Motion وحركة النصوص</td>
+  <td style="text-align:right">1</td>
+  <td>MotionController/interior-motion وتمييز reduced-motion</td>
+</tr>
+<tr>
+  <td>05</td>
+  <td>الخرائط التفاعلية</td>
+  <td style="text-align:right">1</td>
+  <td>SystemMap وSectorDiagram وDecisionCircuit</td>
+</tr>
+<tr>
+  <td>06</td>
+  <td>فهرسة الأقسام والتنقل الداخلي</td>
+  <td style="text-align:right">1</td>
+  <td>PageShell وInteriorController وsection-compass</td>
+</tr>
+<tr>
+  <td>07</td>
+  <td>أقسام الرئيسية بعد الهيرو</td>
+  <td style="text-align:right">1</td>
+  <td>تعديلات المصدر الموثقة مع الحفاظ على Hero</td>
+</tr>
+<tr>
+  <td>08</td>
+  <td>فهرس المنتجات وصفحات الخمسة</td>
+  <td style="text-align:right">0.5</td>
+  <td>المكونات موجودة وصقلت؛ تغطية مرئية حديثة لكل حالة غير مثبتة</td>
+</tr>
+<tr>
+  <td>09</td>
+  <td>Kernel العام والأركان والقطاعات والخدمات</td>
+  <td style="text-align:right">1</td>
+  <td>PageMotionStudy وSectorDiagram وملفات الصفحات</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td>مركز المعرفة والمقالات</td>
+  <td style="text-align:right">1</td>
+  <td>docs.astro وknowledge-center/reader وتصحيح الجوال</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td>الأسعار والثقة والامتثال والسياسات</td>
+  <td style="text-align:right">0.5</td>
+  <td>تحسين pages.css؛ لم تُتحقق كل حالات القراءة/الجوال بعد التعديل</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td>بوابة Kernel والتسجيل والدعوات</td>
+  <td style="text-align:right">0.5</td>
+  <td>AppLayout وواجهات Auth؛ /app/ غير مثبت على الموقع الحي</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td>Firewall وLedger وHuman Gate داخل التطبيق</td>
+  <td style="text-align:right">0.5</td>
+  <td>scripts/CSS موجودة؛ لا جلسات حقيقية أو تحقق E2E</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td>Risk Engine وSecure Chat داخل التطبيق</td>
+  <td style="text-align:right">0.5</td>
+  <td>واجهات CSS موجودة؛ لا نموذج AI معتمد أو جلسة E2E</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td>صقل الجوال والوصول والأداء والتسليم</td>
+  <td style="text-align:right">0.5</td>
+  <td>تحسينات responsive موثقة؛ لا حزمة build/performance/accessibility شاملة على آخر SHA</td>
+</tr>
+</tbody>
+</table></div>
+<h3>بوابات الـBeta التسع (القياس 2/9)</h3>
+<div class="tableframe"><table>
+<thead>
+<tr>
+  <th>Gate</th>
+  <th>الشرط</th>
+  <th>الحالة</th>
+  <th>الدليل المحدود</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>G1</td>
+  <td>مسارات الموقع العامة قابلة للوصول</td>
+  <td>PASS</td>
+  <td>الفحص المباشر 2026-11-08: 15/15 URLs عامة أعادت HTTP 200</td>
+</tr>
+<tr>
+  <td>G2</td>
+  <td>بنية Astro SSR وخدمات المنتجات موجودة بالمصدر</td>
+  <td>PASS</td>
+  <td>Astro Node standalone + routes/API/server modules</td>
+</tr>
+<tr>
+  <td>G3</td>
+  <td>بوابة /app/* منشورة وتُفتح حسب صلاحيات المستخدم</td>
+  <td>BLOCKED</td>
+  <td>الفحص المباشر 2026-11-08: 0/7 مسارات <code>/app/*</code> تعمل؛ جميعها 404</td>
+</tr>
+<tr>
+  <td>G4</td>
+  <td>عزل قواعد بيانات مؤسستين بدور تشغيل محدود مثبت</td>
+  <td>NOT_VERIFIED</td>
+  <td>owner BYPASSRLS؛ لا runtime role؛ منح authenticated واسعة</td>
+</tr>
+<tr>
+  <td>G5</td>
+  <td>حسابات Auth + Tenant bootstrap + دعوات تعمل E2E</td>
+  <td>NOT_VERIFIED</td>
+  <td>0 users و0 sessions و0 tenant</td>
+</tr>
+<tr>
+  <td>G6</td>
+  <td>ترحيلات staging والإنتاج متطابقة ومراجَعة</td>
+  <td>NOT_VERIFIED</td>
+  <td>23 migrations بالمصدر؛ بعض الحقول/الضوابط ناقصة حسب الجرد</td>
+</tr>
+<tr>
+  <td>G7</td>
+  <td>مزود AI وسياسات خصوصية معتمدة لنطاق تجربة محدد</td>
+  <td>NOT_VERIFIED</td>
+  <td>APPROVED_MODELS=[] وapprovedProviders=[]</td>
+</tr>
+<tr>
+  <td>G8</td>
+  <td>فرع محمي ونسخ احتياطي واستعادة ومراقبة معتمدة</td>
+  <td>NOT_VERIFIED</td>
+  <td>فرع واحد غير محمي، لا دليل استعادة</td>
+</tr>
+<tr>
+  <td>G9</td>
+  <td>دليل إصدار مؤرخ لنفس SHA وموافقة Go/No-Go</td>
+  <td>NOT_VERIFIED</td>
+  <td>لا build/اختبارات تشغيل على نفس SHA وقرار مالك مُثبت</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>تصحيح منهجي:</strong> ظهور أي <code>NOT_VERIFIED</code> يعني عدم إثباته، لا أنه سقط حتمًا في اختبار. لكن الشرط الإلزامي لا يُعتمد من دون دليل.</p>
+<h2 id="section-3">3. أحدث تغييرات GitHub</h2>
+<ul>
+<li>آخر SHA: <code>7994d3ce9df4797630d4dc9a2c51d2c141dedcab</code>؛ بتاريخ 8 نوفمبر 2026. <strong>7 commits</strong> جديدة مقارنة بلقطة 3 نوفمبر (<code>7a8a342c...</code>)، غيّرت <strong>23 ملفًا</strong> حسب GitHub Compare؛ ركزت على CSS للموقع والمقالات والمنتجات، AppLayout وAuth/UI وإرشادات الوكيل.</li>
+<li>المسارات المهمة موجودة داخل <code>src/pages/</code>, <code>src/styles/</code>, <code>src/components/</code>, <code>src/scripts/</code>, <code>src/server/</code>، و23 ملف SQL Migration (<code>0001–0023</code>).</li>
+<li>شجرة GitHub فيها <strong>6,945 ملفًا</strong>؛ الغالبية داخل <code>.agents/</code> و<code>.dsh/</code> و<code>.opencode/</code> و<code>plugins/</code>. هذه موارد وكيل/مهارات غالبًا؛ لا تحذفها دون جرد تبعيات وترخيص. الجرد وحده لا يقيس تعقيد كود التطبيق.</li>
+<li>ملف <code>Audit/ALL-15-OPENCODE-MCP-PROMPTS.md</code> في آخر SHA وجدته قصيرًا جدًا (~320 بايت)، على خلاف حزمة الـ15 السابقة. <strong>تحقق من أنه ليس Artifact مبتورًا أو مختصرًا عمدًا</strong>؛ لا تعتمد عليه مرجعًا كاملًا للبرومبتات.</li>
+<li><code>docs/FINAL-RELEASE-HANDOFF.md</code> و<code>docs/RELEASE-BLOCKERS-REGISTER.md</code> يعود أساسهما لـ3 نوفمبر وSHA أقدم؛ يجب إعادة تحديثهما بعد إثبات الحالة الحالية. لا تنقل موانع قديمة إلى التقرير كأنها جديدة بلا فحص.</li>
+<li>Source-oriented successes: توحيد Visual tokens، إزالة تداخل بعض أنماط Motion، تحسين <code>SystemMap</code>, <code>PageShell</code>, <code>knowledge-center</code>, إعداد حالات واضحة للـUI وبدائل RTL. سجل <code>.agents/mind/01-mind-latest.md</code> يؤكد بعض أعمال 8 نوفمبر <strong>PARTIAL</strong> بسبب عدم تحقق نشرها.</li>
+</ul>
+<h2 id="section-4">4. المكونات التي تحسّنت في المصدر وما بقي</h2>
+<h3>الرئيسية</h3>
+<ul>
+<li>الموقع العام يحافظ على Header/Hero وConstellation، وترتيب الأركان والمنتجات والقطاعات.</li>
+<li><code>governance-statement</code>, <code>.pillar</code>, <code>.workflow</code>, البطاقات/CTA صُقلت في المصدر، ولا يوجد تفويض لتغيير نصوصها أو مواقعها.</li>
+<li>التحسين الإضافي يجب أن يكون محدودًا للتباين الداخلي ودلالات Hover/Focus وReduced Motion؛ لا إعادة تصميم للهيرو.</li>
+</ul>
+<h3>فهرس المنتجات والمنتجات الخمسة</h3>
+<ul>
+<li>موجودة صفحات التعريف لكل منتج، و<code>ProductExperience</code>, <code>DecisionCircuit</code>, <code>SystemMap</code>؛ المحاكاة ليست دليلًا على حماية فعلية.</li>
+<li>لا يُلغى وصف المنتج بأنه <strong>مخطط/غير متحقق</strong> قبل توفر خدمة منشورة ودليل تشغيل مستقل.</li>
+<li>الإغلاق النهائي البصري: تجانس أزرار قرار Firewall على الجوال، مساحة القراءة في Risk Matrix، تأخير ظهور demo بعد Hero، ومواقع أدوات التنقل؛ تُحل بحسب المشاهدة الحديثة فقط.</li>
+</ul>
+<h3>مركز المعرفة</h3>
+<ul>
+<li><code>src/pages/docs.astro</code> و<code>src/scripts/knowledge-center.ts</code> و<code>src/styles/knowledge-center.css</code> تحتوي بحثًا وفلاتر وروابط ومقالة Preview، والواجهات تُعرض مبدئيًا مع <code>disabled</code> ثم تفعّلها JS؛ هذا <strong>Progressive Enhancement</strong>، وليس دليلًا منفردًا أن البحث معطل.</li>
+<li>آخر كود يتضمن تعديلات للوصول، إدخال <code>aria-*</code>, فهرس المواضيع، وتقليل كثافة الفلاتر على الجوال. أعمال التحقق المحلية لا تثبت نسخة النشر نفسها.</li>
+</ul>
+<h3>صفحات المؤسسة والقطاعات والخدمات</h3>
+<ul>
+<li>تحسينات <code>src/styles/pages.css</code>, <code>SectorDiagram.astro</code>, <code>PageMotionStudy.astro</code> وألوان الشارات والحركة موثقة.</li>
+<li>الأسعار والتجربة <strong>ليستا تفعيل اشتراك ذاتي</strong>؛ التواصل إن كان mailto لا يعني وصول الطلب للمؤسسة.</li>
+</ul>
+<h3>بوابة AIGAS</h3>
+<ul>
+<li><code>AppLayout.astro</code>, <code>/app/kernel/</code>, صفحتا Auth والمنتجات لها واجهات وأنماط HTML/CSS متقدمة.</li>
+<li><strong>لم يتحقق نشر/عمل بوابة محمية</strong> ضمن هذه المراجعة؛ حتى مع وجود CSS مكتمل، لا يجوز حساب تجربة مستخدم أصلية في لوحة الإنتاج أو تكاملها حتى توجد جلسة Auth مأذونة.</li>
+</ul>
+<h3>النتائج البصرية الفعلية — 8 نوفمبر 2026</h3>
+<ul>
+<li>فُحصت 15 URL عامة: <a href="https://brightai.live/">الرئيسية</a>، <a href="https://brightai.live/products/">المنتجات</a>، المنتجات الخمسة، <a href="https://brightai.live/kernel/">Kernel التعليمية</a>، <a href="https://brightai.live/docs/">مركز المعرفة</a>، <a href="https://brightai.live/pricing/">الأسعار</a>، <a href="https://brightai.live/contact/">التواصل</a>، <a href="https://brightai.live/trust/">الثقة</a>، <a href="https://brightai.live/about/">من نحن</a>، ومقالتان من <code>/knowledge/</code>. أعادت جميعها <strong>200/OK (15/15)</strong> عند 1440 و390 بكسل؛ وهذا لا يعني أن كل صفحات المستودع فُحصت.</li>
+<li>فُحصت <strong>7 مسارات خاصة</strong>: <code>/app/</code>, <code>/app/kernel/</code>, <code>/app/firewall/</code>, <code>/app/ledger/</code>, <code>/app/human-gate/</code>, <code>/app/risk-engine/</code>, <code>/app/secure-chat/</code>. <strong>جميعها HTTP 404</strong>، وبالتالي ليست مسارات Beta متاحة للمستخدمين.</li>
+<li>في الجوال لا يوجد overflow أفقي ظاهر أو صور مكسورة؛ اتجاه <code>ar-SA/RTL</code> سليم. الهيرو المتحرك توقف عند تفضيل <code>prefers-reduced-motion: reduce</code>.</li>
+<li>في <a href="https://brightai.live/docs/">مركز المعرفة</a>؛ أدت كتابة <strong>«البيانات»</strong> إلى <strong>2 نتائج من 12 دليلًا</strong>، وعملت عملية Reset. هذا إثبات نطاق بحث عام محدد فقط، وليس تحققًا من أن كل فلاتر التطبيق تعمل.</li>
+<li><strong>خلل إمكانية الوصول:</strong> قائمة الجوال تستخدم <code>&lt;details&gt;</code> وتظهر عند فتحها، لكن <code>summary</code> يبقى بـ<code>aria-expanded=&quot;false&quot;</code>. تحتاج معالجة حالة ARIA دون تغيير شكل الهيدر المحمي، وبعد إذن المالك لتعديل سلوكه التقني.</li>
+<li>لم تُجرّب عملية إرسال نموذج التواصل ولا WhatsApp ولا المحاكاة التفاعلية الحساسة؛ لا تُعتبر ناجحة أو فاشلة بناءً على هذه المراجعة.</li>
+</ul>
+<h2 id="section-5">5. Neon — النتائج الدقيقة الآن</h2>
+<ul>
+<li><strong>31</strong> جدول <code>public.aigas_*</code>, جميعها <code>relrowsecurity=true</code>، وجميعها <code>relforcerowsecurity=false</code>.</li>
+<li>سياسات RLS الظاهرة: <code>sc_request_owner</code> على <code>aigas_sc_requests</code>, و<code>sc_cancellation_owner</code> على <code>aigas_sc_cancellations</code>، كلاهما <code>FOR ALL</code> لأدوار policy كما في كتالوج PostgreSQL.</li>
+<li>دور <code>authenticated</code>: صلاحيات <code>SELECT/INSERT/UPDATE/DELETE</code> على <strong>31 جدولًا</strong>. الدور المالك <code>neondb_owner</code> لديه <code>BYPASSRLS=true</code>. لم يظهر <code>aigas_runtime</code> ضمن الأدوار المستهدفة التي فحصتها.</li>
+<li><strong>كل الجداول الـ31 بها صفر صف</strong> بعملية <code>COUNT(*)</code> فعلية. Neon Auth <code>user</code>, <code>session</code>, <code>organization</code>, <code>member</code> كلها <strong>صفر</strong>.</li>
+<li>فرع واحد <code>production</code> مُحدد <code>protected=false</code> وفق أداة Neon؛ لا staging متاح في هذا المشروع حاليًا.</li>
+<li>لا تصف هذه البيانات بأنها اختراق مثبت. الخطر المؤكد هو <strong>غياب إثبات least privilege وtenant isolation</strong>، مع منح واسعة/مسار مالك يتجاوز الحماية؛ يلزم تأكيد كيفية اتصال الخادم وData API قبل عميل واحد.</li>
+<li><strong>نطاق الترحيلات:</strong> يوجد 23 ملفًا بالمستودع، بينما اكتمال تطبيق كل ترحيل/Trigger/Grant ليس مؤكدًا. لا تعادل «31 جدولًا موجودًا» مع «23/23 migrations طبّقت».</li>
+</ul>
+<h2 id="section-6">6. تفاصيل المنتجات — ماذا يوجد وماذا يمنع Beta؟</h2>
+<div class="tableframe"><table>
+<thead>
+<tr>
+  <th>الوحدة</th>
+  <th>الموجود بالمصدر</th>
+  <th>غير مثبت / مانع Beta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Kernel</td>
+  <td>هوية/تنقل/عضويات/سياسات/منح وتجربة مبدئية</td>
+  <td>غياب أول Tenant/مستخدم، Runtime Auth، عزل DB، نشر <code>/app</code></td>
+</tr>
+<tr>
+  <td>Firewall</td>
+  <td>Rules/Evaluate/Guarded Execution + 2 جداول</td>
+  <td>Approved Provider فارغ؛ لا إنفاذ حقيقي مفحوص؛ لا ادعاء حماية عامة خارج Guard</td>
+</tr>
+<tr>
+  <td>Ledger</td>
+  <td>Event writer + Chain/Verify/Export + 2 جداول</td>
+  <td>لا حدث حقيقي/تصدير مُتحقق، مراجعة 0013، لا توقيع خارجي مثبت</td>
+</tr>
+<tr>
+  <td>Human Gate</td>
+  <td>Policy/Request/Decide/Execute + جداول</td>
+  <td>لا مسار مستخدم/مراجع حقيقي؛ SoD/expiry لا تحقق E2E بعد</td>
+</tr>
+<tr>
+  <td>Risk Engine</td>
+  <td>Assets/Assessments/Treatments/Revisions + جداول</td>
+  <td>لا سجل أصل حقيقي، لا قبول مخاطر مؤسسي مثبت، محرك قواعدي لا AI مستقل</td>
+</tr>
+<tr>
+  <td>Secure Chat</td>
+  <td>واجهة محادثة + API + adapter + جداول</td>
+  <td><code>APPROVED_MODELS=[]</code>؛ لا provider ولا رسائل E2E؛ عدم تدريب بيانات العملاء شرط اعتماد</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="section-7">7. موانع P0 المؤكدة وقرار التعامل</h2>
+<ol>
+<li><strong>بوابة Node SSR:</strong> مصدر Astro موجود وقالب Render مضبوط افتراضيًا على <code>AIGAS_APP_ENABLED=false</code>، والربط المنشور بـNode لم يثبت؛ جميع مسارات <code>/app/</code> السبعة أعادت 404 يوم 8 نوفمبر. يجب إبقاء البوابة مقفلة حتى اعتماده.</li>
+<li><strong>صلاحيات قاعدة البيانات:</strong> <code>authenticated</code> منح واسعة، وOwner BYPASSRLS، وسياسات مباشرة محدودة، ودور Runtime Least Privilege لم يظهر. إصلاح مصدر/ترحيل ثم إثبات isolation بمؤسستين.</li>
+<li><strong>غياب تجربة مستخدم كاملة:</strong> Auth 0 Users/Sessions/Tenants؛ لا اعتماد لرحلة دعوة/اشتراك أو منتج.</li>
+<li><strong>فرع إنتاج وحيد غير محمي:</strong> يحتاج حماية وstaging/استعادة قبل أي Migration كبيرة أو تجارب عميل.</li>
+<li><strong>AI Provider approvals:</strong> Firewall وSecure Chat دون مزود أو نموذج معتمد؛ يحظر إرسال أي محتوى لطرف خارجي.</li>
+<li><strong>سياسات الخصوصية والتجربة:</strong> بيانات اصطناعية افتراضيًا؛ 48 ساعة PoV تحتاج قرار أهلية وتفعيل حقيقي بعد الموافقة، لا تحويل تلقائي إلى مدفوع، دون أسعار أو شهادات مخترعة.</li>
+<li><strong>دليل إصدار:</strong> لا يوجد في النتائج التي فحصتها دليل نشر/Build/اختبارات/استعادة مؤرخ على أحدث SHA يتيح قرار Go.</li>
+<li><strong>دفاتر المشروع قديمة:</strong> موانع P0/P1/P2 التاريخية لا تزال تحتاج إعادة تسوية على آخر Source + Neon + Live، دون تخمين حالة CLOSED.</li>
+</ol>
+<h2 id="section-8">8. ما يُعتمد للـBeta وما يجب استبعاده</h2>
+<p><strong>الحد الأدنى المقترح:</strong> Beta محصور، مؤسسات محددة، بيانات اصطناعية، تشغّل فقط المنتجات التي اجتازت Gates الحماية/التوثيق/الاعتماد الخاصة بها. نطاق Gov/Finance/Healthcare لا يُفعل ببيانات حساسة لمجرد وجود صفحة تسويقية له. <code>Air-Gapped</code>, <code>On-Prem</code>, تكاملات SIEM وتوقيع خارجي ليست وظائف متحققة لمجرد اعتمادها في Blueprint.</p>
+<p><strong>لا تفتح البوابة العامة ولا الـProvider إلا بقرار مسؤول.</strong> توثيق عدم التوفر على الموقع العام يبقى صادقًا حتى رفعه بالدليل.</p>
+<h2 id="section-9">9. ترتيب معالجة البرومبتات الخمسة عشر</h2>
+<ol>
+<li>ضبط مصدر الحقيقة ووثائق الإصدار.</li>
+<li>صقل الموقع العام الحالي دون العبث بالهيرو/الهيدر.</li>
+<li>مركز المعرفة وSEO/الوصول.</li>
+<li>SSR/Node وعلم فتح البوابة — كود/Runbook محلي.</li>
+<li>مراجعة ترحيلات Neon وحماية الفرع — دون تنفيذ على الإنتاج.</li>
+<li>أقل صلاحيات وRLS/Data API وعزل المؤسسات.</li>
+<li>Auth وأول Tenant والدعوات.</li>
+<li>Kernel وسياساته ومنح المنتجات وتجربة 48 ساعة.</li>
+<li>Firewall والـGuard وموافقة المزود.</li>
+<li>Ledger وسلامة السلسلة والتصدير.</li>
+<li>Human Gate وSeparation of Duties.</li>
+<li>Risk Engine وسجل المخاطر والمعالجة.</li>
+<li>Secure Chat وخصوصية الرسائل والنماذج والحصص.</li>
+<li>الخصوصية/CSP والمراقبة والحوادث.</li>
+<li>شهادة قرار Go/No-Go وأدلة Release Candidate، <strong>من دون تشغيل أو نشر تلقائي</strong>.</li>
+</ol>
+<h2 id="section-10">10. ما لم أقم به</h2>
+<ul>
+<li>لم أعدّل GitHub أو Neon أو إعدادات الموقع.</li>
+<li>لم أنشئ Tenant حقيقيًا أو مستخدمًا، ولم أرسل محادثة أو أطبّق migration.</li>
+<li>لم أشغّل اختبارات أو Build على هذه النسخة، ولا يمكن ادعاء Runtime Verified للخدمات المحمية.</li>
+<li>أي نسبة في هذا التقرير ليست شهادة SOC/ISO أو تأكيد حماية بيانات أو تقرير اختبار اختراق.</li>
+</ul>
+<h2 id="section-11">11. مصادر قابلة للتتبع</h2>
+<ul>
+<li>GitHub main HEAD: https://github.com/YEEEAE/BRIGHTAI/tree/7994d3ce9df4797630d4dc9a2c51d2c141dedcab</li>
+<li>تغييرات الفترة: https://github.com/YEEEAE/BRIGHTAI/compare/7a8a342c242d26dd5bdb6c0526ec6694f55fd32...7994d3ce9df4797630d4dc9a2c51d2c141dedcab</li>
+<li>ملف النشر: https://github.com/YEEEAE/BRIGHTAI/blob/7994d3ce9df4797630d4dc9a2c51d2c141dedcab/render.yaml</li>
+<li>سجل الموانع: https://github.com/YEEEAE/BRIGHTAI/blob/7994d3ce9df4797630d4dc9a2c51d2c141dedcab/docs/RELEASE-BLOCKERS-REGISTER.md</li>
+<li>سجل التسليم: https://github.com/YEEEAE/BRIGHTAI/blob/7994d3ce9df4797630d4dc9a2c51d2c141dedcab/docs/FINAL-RELEASE-HANDOFF.md</li>
+<li>مصدر وثائق المعرفة: https://github.com/YEEEAE/BRIGHTAI/blob/7994d3ce9df4797630d4dc9a2c51d2c141dedcab/src/pages/docs.astro</li>
+<li>موقع التسويق العام: https://brightai.live/</li>
+<li>مركز المعرفة: https://brightai.live/docs/</li>
+<li>بوابة النظام: https://brightai.live/app/</li>
+</ul>
+<footer>BRIGHT AI / AIGAS · GitHub 7994d3ce9df4 / Neon read-only / Browser 8 Nov 2026. No repo, database or deployment writes.</footer></main></div></body></html>

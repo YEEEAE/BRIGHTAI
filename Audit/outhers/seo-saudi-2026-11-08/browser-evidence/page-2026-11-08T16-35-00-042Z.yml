@@ -1,0 +1,255 @@
+- generic [active] [ref=e1]:
+  - link "تخطّ إلى المحتوى" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - link "BRIGHTAI — الرئيسية" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=e5]
+    - group [ref=e6]:
+      - navigation "التنقل الرئيسي" [ref=e7]:
+        - link "المنتجات" [ref=e8] [cursor=pointer]:
+          - /url: /products/
+        - link "الحلول" [ref=e9] [cursor=pointer]:
+          - /url: /#solutions
+        - link "الخدمات" [ref=e10] [cursor=pointer]:
+          - /url: /services/
+        - link "الأسعار" [ref=e11] [cursor=pointer]:
+          - /url: /pricing/
+        - link "مركز المعرفة" [ref=e12] [cursor=pointer]:
+          - /url: /docs/
+    - link "اطلب معلومات" [ref=e13] [cursor=pointer]:
+      - /url: /contact/
+      - text: اطلب معلومات
+      - generic [aria-hidden] [ref=e14]: ↗
+  - main [ref=e15]:
+    - region [ref=e16]:
+      - generic [ref=e17]:
+        - heading "ذكاء اصطناعي تثق به... وتحاسبه" [level=1] [ref=e18]: ذكاء اصطناعيتثق به...وتحاسبه
+        - paragraph [ref=e19]: AIGAS / حوكمة وأمان الذكاء الاصطناعي
+        - paragraph [ref=e20]: AIGAS تصور لحوكمة وأمان الذكاء الاصطناعي، يضم Kernel كمكوّن مشترك وخمسة منتجات مستقلة وظيفياً وتجاريًا وفق الـBlueprint. الإتاحة التشغيلية للمنتجات غير متحققة حالياً.
+        - generic [ref=e21]:
+          - link "استكشف المنتجات" [ref=e22] [cursor=pointer]:
+            - /url: /products/
+            - text: استكشف المنتجات
+            - generic [aria-hidden] [ref=e23]: ↖
+          - link "اطلب معلومات أو عرض سعر" [ref=e24] [cursor=pointer]:
+            - /url: /contact/
+            - text: اطلب معلومات أو عرض سعر
+            - generic [aria-hidden] [ref=e25]: ←
+    - region "حوكمة وحماية البيانات" [ref=e29]:
+      - paragraph [ref=e30]:
+        - generic [ref=e31]: حوكمة تراعي طبيعة عملك.
+        - generic [ref=e32]: وحماية تبدأ من بياناتك.
+    - region [ref=e33]:
+      - generic [ref=e34]:
+        - paragraph [ref=e35]: 01 / السؤال الذي يستحق إجابة
+        - heading [level=2] [ref=e36]:
+          - text: موظفوك يستخدمونالذكاء الاصطناعي اليوم.
+          - generic [ref=e37]: "السؤال: هل تعرفماذا يرسلون؟"
+      - generic [ref=e38]:
+        - paragraph [ref=e39]: قد تتضمن المحادثة معلومات شخصية أو داخلية. قبل استخدام أي أداة، حدّد البيانات والغرض والحساب وشروط الخدمة والضوابط المصرح بها. تختلف الالتزامات حسب الجهة والسياق؛ لا تكفي عبارة عامة لإثبات الامتثال.
+        - link "اقرأ إرشادات الاستخدام" [ref=e40] [cursor=pointer]:
+          - /url: /docs/
+          - text: اقرأ إرشادات الاستخدام
+          - generic [aria-hidden] [ref=e41]: ↓
+    - region [ref=e42]:
+      - paragraph [ref=e43]: 02 / ثلاثة أركان. أساس واحد للثقة.
+      - heading "ذكاء أقوى. وضوابط أوضح." [level=2] [ref=e44]: ذكاء أقوى.وضوابط أوضح.
+      - generic [ref=e45]:
+        - article [ref=e46]:
+          - generic [ref=e48]: "01"
+          - generic [ref=e52]:
+            - heading "السلامة والموثوقية" [level=3] [ref=e53]
+            - paragraph [ref=e54]: حدد حدود الاستخدام والأضرار المحتملة ومسار المراجعة والإيقاف قبل اعتماد أي حالة استخدام.
+            - generic [ref=e55]: حدود واضحة ومسؤوليات محددة.
+            - link "اكتشف هذا الركن" [ref=e56] [cursor=pointer]:
+              - /url: /pillars/safety/
+              - text: اكتشف هذا الركن
+              - generic [aria-hidden] [ref=e57]: ←
+        - article [ref=e58]:
+          - generic [ref=e60]: "02"
+          - generic [ref=e64]:
+            - heading "الشفافية والمساءلة" [level=3] [ref=e65]
+            - paragraph [ref=e66]: وثّق الغرض والمالك والضوابط والقرارات لتسهيل المراجعة والمحاسبة.
+            - generic [ref=e67]: لكل استخدام مالك ودليل.
+            - link "اكتشف هذا الركن" [ref=e68] [cursor=pointer]:
+              - /url: /pillars/transparency/
+              - text: اكتشف هذا الركن
+              - generic [aria-hidden] [ref=e69]: ←
+        - article [ref=e70]:
+          - generic [ref=e72]: "03"
+          - generic [ref=e76]:
+            - heading "الخصوصية وحماية البيانات" [level=3] [ref=e77]
+            - paragraph [ref=e78]: حدد البيانات والغرض والمستلمين والقناة المعتمدة قبل استخدام أي خدمة خارجية.
+            - generic [ref=e79]: تحقق قبل مشاركة البيانات.
+            - link "اكتشف هذا الركن" [ref=e80] [cursor=pointer]:
+              - /url: /pillars/privacy/
+              - text: اكتشف هذا الركن
+              - generic [aria-hidden] [ref=e81]: ←
+    - region [ref=e82]:
+      - generic [ref=e83]:
+        - paragraph [ref=e84]: 03 / من الطلب إلى الرد
+        - heading "حوكمة واضحة. من تحديد الاستخدام حتى المراجعة." [level=2] [ref=e85]: حوكمة واضحة.من تحديد الاستخدامحتى المراجعة.
+        - paragraph [ref=e86]: مراحل مقترحة للتصميم؛وليست دليلاً على تشغيل منتج.
+      - list [ref=e87]:
+        - listitem [ref=e88]:
+          - generic [aria-hidden] [ref=e89]: ١
+          - heading "حدد حالة الاستخدام ومالكها" [level=3] [ref=e90]
+          - generic [aria-hidden] [ref=e91]: ↓
+        - listitem [ref=e92]:
+          - generic [aria-hidden] [ref=e93]: ٢
+          - heading "صنّف البيانات والأطراف المتأثرة" [level=3] [ref=e94]
+          - generic [aria-hidden] [ref=e95]: ↓
+        - listitem [ref=e96]:
+          - generic [aria-hidden] [ref=e97]: ٣
+          - heading "قيّم المخاطر واختر الضوابط" [level=3] [ref=e98]
+          - generic [aria-hidden] [ref=e99]: ↓
+        - listitem [ref=e100]:
+          - generic [aria-hidden] [ref=e101]: ٤
+          - heading "راقب النتائج وراجع القرار" [level=3] [ref=e102]
+    - region [ref=e103]:
+      - paragraph [ref=e104]: 04 / التصور المستهدف
+      - heading "خمسة منتجات مستقلة. وKernel أساس مشترك." [level=2] [ref=e105]: خمسة منتجات مستقلة.وKernel أساس مشترك.
+      - paragraph [ref=e106]: الإتاحة التشغيلية للمنتجات غير متحققة. القائمة تصف نطاق الـBlueprint ولا تعني توفر خدمات حالياً.
+      - generic [ref=e107]:
+        - link [ref=e108] [cursor=pointer]:
+          - /url: /products/firewall/
+          - heading "AIGAS Firewall" [level=3] [ref=e109]
+          - paragraph [ref=e110]: تصور لفحص المدخلات والمخرجات وفق سياسة الجهة.
+        - link [ref=e111] [cursor=pointer]:
+          - /url: /products/risk-engine/
+          - heading "AIGAS Risk Engine" [level=3] [ref=e112]
+          - paragraph [ref=e113]: تصور لتقييم مخاطر حالات الاستخدام وربطها بالضوابط.
+        - link [ref=e114] [cursor=pointer]:
+          - /url: /products/human-gate/
+          - heading "AIGAS Human Gate" [level=3] [ref=e115]
+          - paragraph [ref=e116]: تصور لمسارات المراجعة البشرية والاعتماد.
+        - link [ref=e117] [cursor=pointer]:
+          - /url: /products/ledger/
+          - heading "AIGAS Ledger" [level=3] [ref=e118]
+          - paragraph [ref=e119]: تصور لحوكمة الأدلة التشغيلية والوصول إليها.
+        - link [ref=e120] [cursor=pointer]:
+          - /url: /products/secure-chat/
+          - heading "AIGAS Secure Chat" [level=3] [ref=e121]
+          - paragraph [ref=e122]: تصور لواجهة مؤسسية لمساعدات الذكاء الاصطناعي.
+      - link "تفاصيل المنتجات وحالتها" [ref=e123] [cursor=pointer]:
+        - /url: /products/
+        - text: تفاصيل المنتجات وحالتها
+        - generic [aria-hidden] [ref=e124]: ←
+    - region [ref=e125]:
+      - generic [ref=e127]:
+        - paragraph [ref=e128]: 05 / أسئلة حسب القطاع
+        - heading "ابدأ من مسؤولياتك وسياقك التنظيمي." [level=2] [ref=e129]: ابدأ من مسؤولياتكوسياقك التنظيمي.
+      - generic [ref=e130]:
+        - link [ref=e131] [cursor=pointer]:
+          - /url: /solutions/government/
+          - text: 01 / GOVERNMENT
+          - heading "الجهات الحكومية" [level=3] [ref=e132]:
+            - text: الجهات الحكومية
+            - generic [aria-hidden] [ref=e133]: ↖
+          - paragraph [ref=e134]: ابتكار يخدم الناس، ضمن حدود واضحة.
+          - generic [ref=e135]:
+            - text: اكتشف الحل
+            - generic [aria-hidden] [ref=e136]: ←
+        - link [ref=e137] [cursor=pointer]:
+          - /url: /solutions/finance/
+          - text: 02 / FINANCIAL SERVICES
+          - heading "البنوك والمالية" [level=3] [ref=e138]:
+            - text: البنوك والمالية
+            - generic [aria-hidden] [ref=e139]: ↖
+          - paragraph [ref=e140]: حماية البيانات في كل تفاعل وقرار.
+          - generic [ref=e141]:
+            - text: اكتشف الحل
+            - generic [aria-hidden] [ref=e142]: ←
+        - link [ref=e143] [cursor=pointer]:
+          - /url: /solutions/healthcare/
+          - text: 03 / HEALTHCARE
+          - heading "الصحة" [level=3] [ref=e144]:
+            - text: الصحة
+            - generic [aria-hidden] [ref=e145]: ↖
+          - paragraph [ref=e146]: خصوصية المريض أولاً. دائماً.
+          - generic [ref=e147]:
+            - text: اكتشف الحل
+            - generic [aria-hidden] [ref=e148]: ←
+        - link [ref=e149] [cursor=pointer]:
+          - /url: /solutions/enterprise/
+          - text: 04 / ENTERPRISE
+          - heading "الشركات" [level=3] [ref=e150]:
+            - text: الشركات
+            - generic [aria-hidden] [ref=e151]: ↖
+          - paragraph [ref=e152]: مساحة لفريقك يبتكر فيها بثقة.
+          - generic [ref=e153]:
+            - text: اكتشف الحل
+            - generic [aria-hidden] [ref=e154]: ←
+    - region [ref=e155]:
+      - paragraph [ref=e156]: 06 / المعرفة أولاً
+      - heading "ابدأ بفهم المخاطر قبل اختيار الأداة." [level=2] [ref=e157]: ابدأ بفهم المخاطرقبل اختيار الأداة.
+      - paragraph [ref=e158]: أدلة عربية عن السياسات وتقييم المخاطر وحماية بيانات المنشأة.
+      - link "تصفح مركز المعرفة" [ref=e159] [cursor=pointer]:
+        - /url: /docs/
+        - text: تصفح مركز المعرفة
+        - generic [aria-hidden] [ref=e160]: ↖
+  - contentinfo [ref=e161]:
+    - generic [ref=e162]:
+      - link "BRIGHTAI — الرئيسية" [ref=e163] [cursor=pointer]:
+        - /url: /
+        - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=e164]
+      - paragraph [ref=e165]: ذكاء اصطناعي تثق به... وتحاسبه.
+    - generic [ref=e166]:
+      - generic [ref=e167]:
+        - heading "المنصة" [level=2] [ref=e168]
+        - list [ref=e169]:
+          - listitem [ref=e170]:
+            - link "Kernel والمنتجات" [ref=e171] [cursor=pointer]:
+              - /url: /products/
+              - generic [ref=e172]: Kernel
+              - text: والمنتجات
+          - listitem [ref=e173]:
+            - link "محاكاة توضيحية" [ref=e174] [cursor=pointer]:
+              - /url: /kernel/
+          - listitem [ref=e175]:
+            - link "طلب عرض سعر" [ref=e176] [cursor=pointer]:
+              - /url: /pricing/
+          - listitem [ref=e177]:
+            - link "مركز المعرفة" [ref=e178] [cursor=pointer]:
+              - /url: /docs/
+      - generic [ref=e179]:
+        - heading "الحوكمة" [level=2] [ref=e180]
+        - list [ref=e181]:
+          - listitem [ref=e182]:
+            - link "السلامة" [ref=e183] [cursor=pointer]:
+              - /url: /pillars/safety/
+          - listitem [ref=e184]:
+            - link "الشفافية" [ref=e185] [cursor=pointer]:
+              - /url: /pillars/transparency/
+          - listitem [ref=e186]:
+            - link "الخصوصية" [ref=e187] [cursor=pointer]:
+              - /url: /pillars/privacy/
+          - listitem [ref=e188]:
+            - link "الامتثال" [ref=e189] [cursor=pointer]:
+              - /url: /compliance/
+      - generic [ref=e190]:
+        - heading "الشركة" [level=2] [ref=e191]
+        - list [ref=e192]:
+          - listitem [ref=e193]:
+            - link "الخدمات" [ref=e194] [cursor=pointer]:
+              - /url: /services/
+          - listitem [ref=e195]:
+            - link "من نحن" [ref=e196] [cursor=pointer]:
+              - /url: /about/
+          - listitem [ref=e197]:
+            - link "مركز الثقة" [ref=e198] [cursor=pointer]:
+              - /url: /trust/
+          - listitem [ref=e199]:
+            - link "تواصل معنا" [ref=e200] [cursor=pointer]:
+              - /url: /contact/
+      - generic [ref=e201]:
+        - heading "قانوني" [level=2] [ref=e202]
+        - list [ref=e203]:
+          - listitem [ref=e204]:
+            - link "سياسة الخصوصية" [ref=e205] [cursor=pointer]:
+              - /url: /privacy/
+          - listitem [ref=e206]:
+            - link "الشروط والأحكام" [ref=e207] [cursor=pointer]:
+              - /url: /terms/
+    - generic [ref=e208]: © 2026 BRIGHTAI

@@ -12,8 +12,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "start": "node ./dist/server/entry.mjs",
-    "start:local": "node --env-file=.env ./dist/server/entry.mjs"
+    "start": "node ./scripts/server.mjs",
+    "start:local": "node --env-file=.env ./scripts/server.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^10.1.4",

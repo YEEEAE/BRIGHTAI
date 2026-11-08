@@ -99,6 +99,374 @@
     {
       "source": "/trust.html",
       "destination": "/trust/"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/"
+    },
+    {
+      "source": "/products/index.html",
+      "destination": "/products/"
+    },
+    {
+      "source": "/knowledge/",
+      "destination": "/docs/"
+    },
+    {
+      "source": "/knowledge.html",
+      "destination": "/docs/"
+    },
+    {
+      "source": "/knowledge/index.html",
+      "destination": "/docs/"
+    },
+    {
+      "source": "/knowledge/ai-governance-saudi.html",
+      "destination": "/knowledge/ai-governance-saudi/"
+    },
+    {
+      "source": "/knowledge/ai-risk-assessment.html",
+      "destination": "/knowledge/ai-risk-assessment/"
+    },
+    {
+      "source": "/knowledge/ai-use-policy-employees.html",
+      "destination": "/knowledge/ai-use-policy-employees/"
+    },
+    {
+      "source": "/knowledge/iso-42001-saudi.html",
+      "destination": "/knowledge/iso-42001-saudi/"
+    },
+    {
+      "source": "/knowledge/pdpl-and-ai.html",
+      "destination": "/knowledge/pdpl-and-ai/"
+    },
+    {
+      "source": "/knowledge/prompt-injection.html",
+      "destination": "/knowledge/prompt-injection/"
+    },
+    {
+      "source": "/knowledge/protect-company-data-chatgpt.html",
+      "destination": "/knowledge/protect-company-data-chatgpt/"
+    },
+    {
+      "source": "/knowledge/saudi-ai-ethics-principles.html",
+      "destination": "/knowledge/saudi-ai-ethics-principles/"
+    },
+    {
+      "source": "/knowledge/saudi-ai-law-binding-vs-guidance.html",
+      "destination": "/knowledge/saudi-ai-law-binding-vs-guidance/"
+    },
+    {
+      "source": "/knowledge/sdaia-ai-adoption-framework.html",
+      "destination": "/knowledge/sdaia-ai-adoption-framework/"
+    },
+    {
+      "source": "/knowledge/sdaia-ai-ethics-self-assessment.html",
+      "destination": "/knowledge/sdaia-ai-ethics-self-assessment/"
+    },
+    {
+      "source": "/knowledge/sdaia-generative-ai-guidelines.html",
+      "destination": "/knowledge/sdaia-generative-ai-guidelines/"
+    },
+    {
+      "source": "/about/index.html",
+      "destination": "/about/"
+    },
+    {
+      "source": "/compliance/index.html",
+      "destination": "/compliance/"
+    },
+    {
+      "source": "/contact/index.html",
+      "destination": "/contact/"
+    },
+    {
+      "source": "/docs/index.html",
+      "destination": "/docs/"
+    },
+    {
+      "source": "/knowledge/ai-governance-saudi/index.html",
+      "destination": "/knowledge/ai-governance-saudi/"
+    },
+    {
+      "source": "/knowledge/ai-risk-assessment/index.html",
+      "destination": "/knowledge/ai-risk-assessment/"
+    },
+    {
+      "source": "/knowledge/ai-use-policy-employees/index.html",
+      "destination": "/knowledge/ai-use-policy-employees/"
+    },
+    {
+      "source": "/knowledge/iso-42001-saudi/index.html",
+      "destination": "/knowledge/iso-42001-saudi/"
+    },
+    {
+      "source": "/knowledge/pdpl-and-ai/index.html",
+      "destination": "/knowledge/pdpl-and-ai/"
+    },
+    {
+      "source": "/knowledge/prompt-injection/index.html",
+      "destination": "/knowledge/prompt-injection/"
+    },
+    {
+      "source": "/knowledge/protect-company-data-chatgpt/index.html",
+      "destination": "/knowledge/protect-company-data-chatgpt/"
+    },
+    {
+      "source": "/knowledge/saudi-ai-ethics-principles/index.html",
+      "destination": "/knowledge/saudi-ai-ethics-principles/"
+    },
+    {
+      "source": "/knowledge/saudi-ai-law-binding-vs-guidance/index.html",
+      "destination": "/knowledge/saudi-ai-law-binding-vs-guidance/"
+    },
+    {
+      "source": "/knowledge/sdaia-ai-adoption-framework/index.html",
+      "destination": "/knowledge/sdaia-ai-adoption-framework/"
+    },
+    {
+      "source": "/knowledge/sdaia-ai-ethics-self-assessment/index.html",
+      "destination": "/knowledge/sdaia-ai-ethics-self-assessment/"
+    },
+    {
+      "source": "/knowledge/sdaia-generative-ai-guidelines/index.html",
+      "destination": "/knowledge/sdaia-generative-ai-guidelines/"
+    },
+    {
+      "source": "/pillars/privacy/index.html",
+      "destination": "/pillars/privacy/"
+    },
+    {
+      "source": "/pillars/safety/index.html",
+      "destination": "/pillars/safety/"
+    },
+    {
+      "source": "/pillars/transparency/index.html",
+      "destination": "/pillars/transparency/"
+    },
+    {
+      "source": "/pricing/index.html",
+      "destination": "/pricing/"
+    },
+    {
+      "source": "/privacy/index.html",
+      "destination": "/privacy/"
+    },
+    {
+      "source": "/products/firewall/index.html",
+      "destination": "/products/firewall/"
+    },
+    {
+      "source": "/products/human-gate/index.html",
+      "destination": "/products/human-gate/"
+    },
+    {
+      "source": "/products/ledger/index.html",
+      "destination": "/products/ledger/"
+    },
+    {
+      "source": "/products/risk-engine/index.html",
+      "destination": "/products/risk-engine/"
+    },
+    {
+      "source": "/products/secure-chat/index.html",
+      "destination": "/products/secure-chat/"
+    },
+    {
+      "source": "/services/index.html",
+      "destination": "/services/"
+    },
+    {
+      "source": "/solutions/enterprise/index.html",
+      "destination": "/solutions/enterprise/"
+    },
+    {
+      "source": "/solutions/finance/index.html",
+      "destination": "/solutions/finance/"
+    },
+    {
+      "source": "/solutions/government/index.html",
+      "destination": "/solutions/government/"
+    },
+    {
+      "source": "/solutions/healthcare/index.html",
+      "destination": "/solutions/healthcare/"
+    },
+    {
+      "source": "/terms/index.html",
+      "destination": "/terms/"
+    },
+    {
+      "source": "/trust/index.html",
+      "destination": "/trust/"
+    },
+    {
+      "source": "/kernel/index.html",
+      "destination": "/kernel/"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap-index.xml"
+    },
+    {
+      "source": "/knowledge/shadow-ai-detection.html",
+      "destination": "/knowledge/shadow-ai-detection/"
+    },
+    {
+      "source": "/knowledge/shadow-ai-detection/index.html",
+      "destination": "/knowledge/shadow-ai-detection/"
+    },
+    {
+      "source": "/knowledge/ai-hallucinations-controls.html",
+      "destination": "/knowledge/ai-hallucinations-controls/"
+    },
+    {
+      "source": "/knowledge/ai-hallucinations-controls/index.html",
+      "destination": "/knowledge/ai-hallucinations-controls/"
+    },
+    {
+      "source": "/knowledge/deepfake-policy-organizations.html",
+      "destination": "/knowledge/deepfake-policy-organizations/"
+    },
+    {
+      "source": "/knowledge/deepfake-policy-organizations/index.html",
+      "destination": "/knowledge/deepfake-policy-organizations/"
+    },
+    {
+      "source": "/knowledge/ai-inventory-register.html",
+      "destination": "/knowledge/ai-inventory-register/"
+    },
+    {
+      "source": "/knowledge/ai-inventory-register/index.html",
+      "destination": "/knowledge/ai-inventory-register/"
+    },
+    {
+      "source": "/knowledge/ai-employee-training.html",
+      "destination": "/knowledge/ai-employee-training/"
+    },
+    {
+      "source": "/knowledge/ai-employee-training/index.html",
+      "destination": "/knowledge/ai-employee-training/"
+    },
+    {
+      "source": "/knowledge/ai-vendor-assessment.html",
+      "destination": "/knowledge/ai-vendor-assessment/"
+    },
+    {
+      "source": "/knowledge/ai-vendor-assessment/index.html",
+      "destination": "/knowledge/ai-vendor-assessment/"
+    },
+    {
+      "source": "/knowledge/data-classification-for-ai.html",
+      "destination": "/knowledge/data-classification-for-ai/"
+    },
+    {
+      "source": "/knowledge/data-classification-for-ai/index.html",
+      "destination": "/knowledge/data-classification-for-ai/"
+    },
+    {
+      "source": "/knowledge/ai-governance-committee-raci.html",
+      "destination": "/knowledge/ai-governance-committee-raci/"
+    },
+    {
+      "source": "/knowledge/ai-governance-committee-raci/index.html",
+      "destination": "/knowledge/ai-governance-committee-raci/"
+    },
+    {
+      "source": "/knowledge/ai-impact-assessment.html",
+      "destination": "/knowledge/ai-impact-assessment/"
+    },
+    {
+      "source": "/knowledge/ai-impact-assessment/index.html",
+      "destination": "/knowledge/ai-impact-assessment/"
+    },
+    {
+      "source": "/knowledge/ai-audit-trail.html",
+      "destination": "/knowledge/ai-audit-trail/"
+    },
+    {
+      "source": "/knowledge/ai-audit-trail/index.html",
+      "destination": "/knowledge/ai-audit-trail/"
+    },
+    {
+      "source": "/knowledge/saudi-ai-regulators-map.html",
+      "destination": "/knowledge/saudi-ai-regulators-map/"
+    },
+    {
+      "source": "/knowledge/saudi-ai-regulators-map/index.html",
+      "destination": "/knowledge/saudi-ai-regulators-map/"
+    },
+    {
+      "source": "/knowledge/choose-ai-governance-platform.html",
+      "destination": "/knowledge/choose-ai-governance-platform/"
+    },
+    {
+      "source": "/knowledge/choose-ai-governance-platform/index.html",
+      "destination": "/knowledge/choose-ai-governance-platform/"
+    },
+    {
+      "source": "/knowledge/ai-cybersecurity-nca.html",
+      "destination": "/knowledge/ai-cybersecurity-nca/"
+    },
+    {
+      "source": "/knowledge/ai-cybersecurity-nca/index.html",
+      "destination": "/knowledge/ai-cybersecurity-nca/"
+    },
+    {
+      "source": "/knowledge/ai-governance-financial-sector.html",
+      "destination": "/knowledge/ai-governance-financial-sector/"
+    },
+    {
+      "source": "/knowledge/ai-governance-financial-sector/index.html",
+      "destination": "/knowledge/ai-governance-financial-sector/"
+    },
+    {
+      "source": "/knowledge/ai-governance-healthcare.html",
+      "destination": "/knowledge/ai-governance-healthcare/"
+    },
+    {
+      "source": "/knowledge/ai-governance-healthcare/index.html",
+      "destination": "/knowledge/ai-governance-healthcare/"
+    },
+    {
+      "source": "/knowledge/ai-bias-fairness.html",
+      "destination": "/knowledge/ai-bias-fairness/"
+    },
+    {
+      "source": "/knowledge/ai-bias-fairness/index.html",
+      "destination": "/knowledge/ai-bias-fairness/"
+    },
+    {
+      "source": "/knowledge/ai-contract-clauses.html",
+      "destination": "/knowledge/ai-contract-clauses/"
+    },
+    {
+      "source": "/knowledge/ai-contract-clauses/index.html",
+      "destination": "/knowledge/ai-contract-clauses/"
+    },
+    {
+      "source": "/knowledge/data-breach-72-hours-ai.html",
+      "destination": "/knowledge/data-breach-72-hours-ai/"
+    },
+    {
+      "source": "/knowledge/data-breach-72-hours-ai/index.html",
+      "destination": "/knowledge/data-breach-72-hours-ai/"
+    },
+    {
+      "source": "/knowledge/ai-data-residency-saudi.html",
+      "destination": "/knowledge/ai-data-residency-saudi/"
+    },
+    {
+      "source": "/knowledge/ai-data-residency-saudi/index.html",
+      "destination": "/knowledge/ai-data-residency-saudi/"
+    },
+    {
+      "source": "/knowledge/data-governance-vs-ai-governance.html",
+      "destination": "/knowledge/data-governance-vs-ai-governance/"
+    },
+    {
+      "source": "/knowledge/data-governance-vs-ai-governance/index.html",
+      "destination": "/knowledge/data-governance-vs-ai-governance/"
     }
   ]
 }

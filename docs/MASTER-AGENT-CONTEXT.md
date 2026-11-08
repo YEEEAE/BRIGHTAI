@@ -186,6 +186,8 @@
 
 ## 07 — الموقع الحالي: مصدر تقني وحالة مؤكدة ضمن حدود المراجعة
 
+**تحديث محلي 2026-11-08:** أضيفت 20 مقالة فعلية عبر `src/data/knowledge-guides.ts` و`src/pages/knowledge/[article].astro`؛ الأعداد الحالية 56 مسارًا عامًا عاديًا، و55 صفحة في sitemap، و32 مقال معرفة. ملف `public/llms.txt` موجود ويتجدد من HTML أثناء البناء. البناء وفحص الصفحات والتحويلات محليًا PASS، دون نشر أو اعتماد تخصصي. تفاصيل اللقطة الأقدم أدناه تاريخية؛ الأحدث في `Audit/knowledge-publication-2026-11-08/REPORT.md`.
+
 **التقنية المصدرية:** Astro، Node adapter `@astrojs/node` بنمط standalone، تكوين `trailingSlash: always`، صفحات `src/pages/` أغلبها `prerender = true`، ومكوّنات UI في `src/components/`. التحقق من النسخ الدقيقة يكون من `package.json`، لا من ذاكرة هذا المستند.
 
 **إحصاء شجرة `main` وقت الفحص (2026-10-31، مُحدَّث محليًا في 2026-11-03 على `ede38c28`):**

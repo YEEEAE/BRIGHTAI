@@ -19,7 +19,7 @@ const sectors = [
   { slug: 'enterprise', title: 'الشركات', label: 'ENTERPRISE', description: 'مساحة لفريقك يبتكر فيها بثقة.' },
 ];
 ---
-<BaseLayout title="حوكمة وأمان الذكاء الاصطناعي | BRIGHTAI" description="تعرّف على توجه BRIGHTAI لحوكمة الذكاء الاصطناعي ومخاطره، واستكشف الأدلة العربية والتصور المستهدف لمنتجات AIGAS غير المتحققة تشغيلياً.">
+<BaseLayout title="حوكمة وأمان الذكاء الاصطناعي في السعودية | BRIGHTAI" description="أدلة عربية لحوكمة الذكاء الاصطناعي في السعودية: سياسة الموظفين، تقييم المخاطر وحماية البيانات. تعرّف على تصور منتجات AIGAS وحدود إتاحتها التشغيلية.">
   <Header />
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
@@ -65,7 +65,14 @@ const sectors = [
       <div class="solutions-heading"><div><p class="eyebrow">05 / أسئلة حسب القطاع</p><h2 id="solutions-title">ابدأ من مسؤولياتك<br /><span class="muted">وسياقك التنظيمي.</span></h2></div></div>
       <div class="sectors">{sectors.map((s, i) => <a class="sector" href={`/solutions/${s.slug}/`}><span class="latin" dir="ltr">0{i + 1} / {s.label}</span><h3>{s.title} <span aria-hidden="true">↖</span></h3><p>{s.description}</p><span class="sector-link">اكتشف الحل <span aria-hidden="true">←</span></span></a>)}</div>
     </section>
-    <section class="closing section wrap" aria-labelledby="closing-title"><p class="eyebrow">06 / المعرفة أولاً</p><span class="closing-star" aria-hidden="true">✳</span><h2 id="closing-title">ابدأ بفهم المخاطر<br /><span class="muted">قبل اختيار الأداة.</span></h2><p>أدلة عربية عن السياسات وتقييم المخاطر وحماية بيانات المنشأة.</p><a class="button" href="/docs/">تصفح مركز المعرفة <span aria-hidden="true">↖</span></a></section>
+    <section class="closing section wrap" aria-labelledby="closing-title"><p class="eyebrow">06 / المعرفة أولاً</p><span class="closing-star" aria-hidden="true">✳</span><h2 id="closing-title">ابدأ بفهم المخاطر<br /><span class="muted">قبل اختيار الأداة.</span></h2><p>أدلة عربية عن السياسات وتقييم المخاطر وحماية بيانات المنشأة.</p><a class="button" href="/docs/">تصفح مركز المعرفة <span aria-hidden="true">↖</span></a>
+      <nav aria-label="أدلة عملية للمنشآت السعودية">
+        <p><a class="ghost" href="/knowledge/ai-governance-saudi/">حوكمة الذكاء الاصطناعي في السعودية: من أين تبدأ؟</a></p>
+        <p><a class="ghost" href="/knowledge/ai-use-policy-employees/">إعداد سياسة استخدام الذكاء الاصطناعي للموظفين</a></p>
+        <p><a class="ghost" href="/knowledge/ai-risk-assessment/">ورقة عمل تقييم مخاطر الذكاء الاصطناعي</a></p>
+        <p><a class="ghost" href="/knowledge/protect-company-data-chatgpt/">حماية بيانات المنشأة عند استخدام ChatGPT</a></p>
+      </nav>
+    </section>
   </main>
   <Footer />
 </BaseLayout>

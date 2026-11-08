@@ -1,0 +1,169 @@
+{
+  "method": "source evidence workstreams 1/0.5/0",
+  "design_points": 12.0,
+  "design_denominator": 15,
+  "design_percent": 80.0,
+  "beta_gate_passed": 2,
+  "beta_gate_denominator": 9,
+  "beta_gate_percent": 22.2,
+  "design_workstreams": [
+    {
+      "id": "01",
+      "title": "جرد الواجهات والمكوّنات وحدود الحماية",
+      "score": 1,
+      "evidence": "سجل التطوير والمكونات وAGENTS.md؛ جرد موثق"
+    },
+    {
+      "id": "02",
+      "title": "النظام البصري والطباعة العربية",
+      "score": 1,
+      "evidence": "tokens/variables/theme وPlex عربية وتوثيق تعديلها"
+    },
+    {
+      "id": "03",
+      "title": "البطاقات والأزرار والأيقونات",
+      "score": 1,
+      "evidence": "ProductIcon/KnowledgeIcon والأنماط المشتركة"
+    },
+    {
+      "id": "04",
+      "title": "Motion وحركة النصوص",
+      "score": 1,
+      "evidence": "MotionController/interior-motion وتمييز reduced-motion"
+    },
+    {
+      "id": "05",
+      "title": "الخرائط التفاعلية",
+      "score": 1,
+      "evidence": "SystemMap وSectorDiagram وDecisionCircuit"
+    },
+    {
+      "id": "06",
+      "title": "فهرسة الأقسام والتنقل الداخلي",
+      "score": 1,
+      "evidence": "PageShell وInteriorController وsection-compass"
+    },
+    {
+      "id": "07",
+      "title": "أقسام الرئيسية بعد الهيرو",
+      "score": 1,
+      "evidence": "تعديلات المصدر الموثقة مع الحفاظ على Hero"
+    },
+    {
+      "id": "08",
+      "title": "فهرس المنتجات وصفحات الخمسة",
+      "score": 0.5,
+      "evidence": "المكونات موجودة وصقلت؛ تغطية مرئية حديثة لكل حالة غير مثبتة"
+    },
+    {
+      "id": "09",
+      "title": "Kernel العام والأركان والقطاعات والخدمات",
+      "score": 1,
+      "evidence": "PageMotionStudy وSectorDiagram وملفات الصفحات"
+    },
+    {
+      "id": "10",
+      "title": "مركز المعرفة والمقالات",
+      "score": 1,
+      "evidence": "docs.astro وknowledge-center/reader وتصحيح الجوال"
+    },
+    {
+      "id": "11",
+      "title": "الأسعار والثقة والامتثال والسياسات",
+      "score": 0.5,
+      "evidence": "تحسين pages.css؛ لم تُتحقق كل حالات القراءة/الجوال بعد التعديل"
+    },
+    {
+      "id": "12",
+      "title": "بوابة Kernel والتسجيل والدعوات",
+      "score": 0.5,
+      "evidence": "AppLayout وواجهات Auth؛ /app/ غير مثبت على الموقع الحي"
+    },
+    {
+      "id": "13",
+      "title": "Firewall وLedger وHuman Gate داخل التطبيق",
+      "score": 0.5,
+      "evidence": "scripts/CSS موجودة؛ لا جلسات حقيقية أو تحقق E2E"
+    },
+    {
+      "id": "14",
+      "title": "Risk Engine وSecure Chat داخل التطبيق",
+      "score": 0.5,
+      "evidence": "واجهات CSS موجودة؛ لا نموذج AI معتمد أو جلسة E2E"
+    },
+    {
+      "id": "15",
+      "title": "صقل الجوال والوصول والأداء والتسليم",
+      "score": 0.5,
+      "evidence": "تحسينات responsive موثقة؛ لا حزمة build/performance/accessibility شاملة على آخر SHA"
+    }
+  ],
+  "beta_gates": [
+    {
+      "id": "G1",
+      "title": "مسارات الموقع العامة قابلة للوصول",
+      "status": "PASS",
+      "evidence": "2026-11-08 browser: 15/15 public URLs HTTP 200, 1440px and 390px"
+    },
+    {
+      "id": "G2",
+      "title": "بنية Astro SSR وخدمات المنتجات موجودة بالمصدر",
+      "status": "PASS",
+      "evidence": "Astro Node standalone + routes/API/server modules"
+    },
+    {
+      "id": "G3",
+      "title": "بوابة /app/* منشورة وتُفتح حسب صلاحيات المستخدم",
+      "status": "BLOCKED",
+      "evidence": "2026-11-08 browser: all 7 /app/* checked returned HTTP 404"
+    },
+    {
+      "id": "G4",
+      "title": "عزل قواعد بيانات مؤسستين بدور تشغيل محدود مثبت",
+      "status": "NOT_VERIFIED",
+      "evidence": "owner BYPASSRLS؛ لا runtime role؛ منح authenticated واسعة"
+    },
+    {
+      "id": "G5",
+      "title": "حسابات Auth + Tenant bootstrap + دعوات تعمل E2E",
+      "status": "NOT_VERIFIED",
+      "evidence": "0 users و0 sessions و0 tenant"
+    },
+    {
+      "id": "G6",
+      "title": "ترحيلات staging والإنتاج متطابقة ومراجَعة",
+      "status": "NOT_VERIFIED",
+      "evidence": "23 migrations بالمصدر؛ بعض الحقول/الضوابط ناقصة حسب الجرد"
+    },
+    {
+      "id": "G7",
+      "title": "مزود AI وسياسات خصوصية معتمدة لنطاق تجربة محدد",
+      "status": "NOT_VERIFIED",
+      "evidence": "APPROVED_MODELS=[] وapprovedProviders=[]"
+    },
+    {
+      "id": "G8",
+      "title": "فرع محمي ونسخ احتياطي واستعادة ومراقبة معتمدة",
+      "status": "NOT_VERIFIED",
+      "evidence": "فرع واحد غير محمي، لا دليل استعادة"
+    },
+    {
+      "id": "G9",
+      "title": "دليل إصدار مؤرخ لنفس SHA وموافقة Go/No-Go",
+      "status": "NOT_VERIFIED",
+      "evidence": "لا build/اختبارات تشغيل على نفس SHA وقرار مالك مُثبت"
+    }
+  ],
+  "live_public_http_200": {
+    "numerator": 15,
+    "denominator": 15,
+    "percent": 100.0,
+    "scope": "checked URLs only"
+  },
+  "live_private_app_http_not_404": {
+    "numerator": 0,
+    "denominator": 7,
+    "percent": 0.0,
+    "scope": "checked URLs only"
+  }
+}

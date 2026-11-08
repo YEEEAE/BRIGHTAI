@@ -1,0 +1,286 @@
+[
+  {
+    "url": "https://brightai.live/",
+    "title": "حوكمة وأمان الذكاء الاصطناعي في السعودية | BRIGHTAI",
+    "aliases": [
+      "/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/about/",
+    "title": "عن BRIGHTAI | حوكمة وأمان الذكاء الاصطناعي",
+    "aliases": [
+      "/about.html",
+      "/about/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/compliance/",
+    "title": "حوكمة ومتطلبات الذكاء الاصطناعي | BRIGHTAI",
+    "aliases": [
+      "/compliance.html",
+      "/compliance/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/contact/",
+    "title": "تواصل مع BRIGHTAI | استفسار أو عرض سعر",
+    "aliases": [
+      "/contact.html",
+      "/contact/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/docs/",
+    "title": "أدلة حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI",
+    "aliases": [
+      "/knowledge",
+      "/docs.html",
+      "/knowledge/",
+      "/knowledge.html",
+      "/knowledge/index.html",
+      "/docs/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/ai-governance-saudi/",
+    "title": "حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI",
+    "aliases": [
+      "/docs/حوكمة الذكاء الاصطناعي في السعودية",
+      "/knowledge/ai-governance-saudi.html",
+      "/knowledge/ai-governance-saudi/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/ai-risk-assessment/",
+    "title": "تقييم مخاطر الذكاء الاصطناعي | BRIGHTAI",
+    "aliases": [
+      "/knowledge/ai-risk-assessment.html",
+      "/knowledge/ai-risk-assessment/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/ai-use-policy-employees/",
+    "title": "سياسة استخدام الذكاء الاصطناعي للموظفين | BRIGHTAI",
+    "aliases": [
+      "/knowledge/ai-use-policy-employees.html",
+      "/knowledge/ai-use-policy-employees/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/iso-42001-saudi/",
+    "title": "ISO 42001 السعودية: نظام إدارة الذكاء الاصطناعي | BRIGHTAI",
+    "aliases": [
+      "/knowledge/iso-42001-saudi.html",
+      "/knowledge/iso-42001-saudi/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/pdpl-and-ai/",
+    "title": "PDPL والذكاء الاصطناعي: متى يخضع إدخال البيانات؟",
+    "aliases": [
+      "/knowledge/pdpl-and-ai.html",
+      "/knowledge/pdpl-and-ai/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/prompt-injection/",
+    "title": "Prompt Injection وطبقات الحماية | BRIGHTAI",
+    "aliases": [
+      "/knowledge/prompt-injection.html",
+      "/knowledge/prompt-injection/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/protect-company-data-chatgpt/",
+    "title": "حماية بيانات المنشأة عند استخدام ChatGPT | BRIGHTAI",
+    "aliases": [
+      "/knowledge/protect-company-data-chatgpt.html",
+      "/knowledge/protect-company-data-chatgpt/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/saudi-ai-ethics-principles/",
+    "title": "مبادئ أخلاقيات الذكاء الاصطناعي في السعودية | BRIGHTAI",
+    "aliases": [
+      "/knowledge/saudi-ai-ethics-principles.html",
+      "/knowledge/saudi-ai-ethics-principles/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "title": "قانون الذكاء الاصطناعي في السعودية: الملزم والإرشادي",
+    "aliases": [
+      "/knowledge/saudi-ai-law-binding-vs-guidance.html",
+      "/knowledge/saudi-ai-law-binding-vs-guidance/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/sdaia-ai-adoption-framework/",
+    "title": "إطار تبني الذكاء الاصطناعي سدايا: دليل المنشآت",
+    "aliases": [
+      "/knowledge/sdaia-ai-adoption-framework.html",
+      "/knowledge/sdaia-ai-adoption-framework/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/sdaia-ai-ethics-self-assessment/",
+    "title": "تقييم أخلاقيات الذكاء الاصطناعي سدايا: الاستعداد",
+    "aliases": [
+      "/knowledge/sdaia-ai-ethics-self-assessment.html",
+      "/knowledge/sdaia-ai-ethics-self-assessment/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/knowledge/sdaia-generative-ai-guidelines/",
+    "title": "مبادئ الذكاء الاصطناعي التوليدي سدايا: نسختان | BRIGHTAI",
+    "aliases": [
+      "/knowledge/sdaia-generative-ai-guidelines.html",
+      "/knowledge/sdaia-generative-ai-guidelines/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/pillars/privacy/",
+    "title": "الخصوصية وحماية البيانات | حوكمة الذكاء الاصطناعي — BRIGHTAI",
+    "aliases": [
+      "/pillars/privacy.html",
+      "/pillars/privacy/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/pillars/safety/",
+    "title": "السلامة والموثوقية | حوكمة الذكاء الاصطناعي — BRIGHTAI",
+    "aliases": [
+      "/pillars/safety.html",
+      "/pillars/safety/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/pillars/transparency/",
+    "title": "الشفافية والمساءلة | حوكمة الذكاء الاصطناعي — BRIGHTAI",
+    "aliases": [
+      "/pillars/transparency.html",
+      "/pillars/transparency/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/pricing/",
+    "title": "الأسعار وطلب عرض سعر | BRIGHTAI",
+    "aliases": [
+      "/pricing.html",
+      "/pricing/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/privacy/",
+    "title": "الخصوصية | BRIGHTAI",
+    "aliases": [
+      "/privacy.html",
+      "/privacy/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/products/",
+    "title": "منتجات حوكمة وأمان الذكاء الاصطناعي AIGAS | BRIGHTAI",
+    "aliases": [
+      "/products.html",
+      "/products/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/products/firewall/",
+    "title": "جدار حماية الذكاء الاصطناعي | AIGAS Firewall — BRIGHTAI",
+    "aliases": [
+      "/products/firewall.html",
+      "/products/firewall/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/products/human-gate/",
+    "title": "الموافقات البشرية على قرارات AI | AIGAS Human Gate — BRIGHTAI",
+    "aliases": [
+      "/products/human-gate.html",
+      "/products/human-gate/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/products/ledger/",
+    "title": "سجل تدقيق الذكاء الاصطناعي | AIGAS Ledger — BRIGHTAI",
+    "aliases": [
+      "/products/ledger.html",
+      "/products/ledger/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/products/risk-engine/",
+    "title": "تقييم مخاطر الذكاء الاصطناعي | AIGAS Risk Engine — BRIGHTAI",
+    "aliases": [
+      "/products/risk-engine.html",
+      "/products/risk-engine/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/products/secure-chat/",
+    "title": "محادثة ذكاء اصطناعي مؤسسية | AIGAS Secure Chat — BRIGHTAI",
+    "aliases": [
+      "/products/secure-chat.html",
+      "/products/secure-chat/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/services/",
+    "title": "حوكمة الذكاء الاصطناعي للمنشآت: نطاق الدعم | BRIGHTAI",
+    "aliases": [
+      "/services.html",
+      "/services/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/solutions/enterprise/",
+    "title": "حوكمة الذكاء الاصطناعي في المنشآت والشركات بالسعودية | BRIGHTAI",
+    "aliases": [
+      "/solutions/enterprise.html",
+      "/solutions/enterprise/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/solutions/finance/",
+    "title": "حوكمة الذكاء الاصطناعي في القطاع المالي بالسعودية | BRIGHTAI",
+    "aliases": [
+      "/solutions/finance.html",
+      "/solutions/finance/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/solutions/government/",
+    "title": "حوكمة الذكاء الاصطناعي في الجهات الحكومية بالسعودية | BRIGHTAI",
+    "aliases": [
+      "/solutions/government.html",
+      "/solutions/government/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/solutions/healthcare/",
+    "title": "حوكمة الذكاء الاصطناعي في الرعاية الصحية بالسعودية | BRIGHTAI",
+    "aliases": [
+      "/solutions/healthcare.html",
+      "/solutions/healthcare/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/terms/",
+    "title": "الشروط | BRIGHTAI",
+    "aliases": [
+      "/terms.html",
+      "/terms/index.html"
+    ]
+  },
+  {
+    "url": "https://brightai.live/trust/",
+    "title": "الثقة والشفافية | BRIGHTAI",
+    "aliases": [
+      "/trust.html",
+      "/trust/index.html"
+    ]
+  }
+]

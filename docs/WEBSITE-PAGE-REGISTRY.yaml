@@ -20,18 +20,22 @@ document:
   notes_ar: هذا السجل جرد للمسارات وأهدافها وليس إثباتًا لجاهزية منتجات AIGAS أو صحة ادعاءات الصفحات. كل المقترحات منفصلة
     تماماً عن المسارات الموجودة.
   current_source_refresh:
-    inspected_on: '2026-11-03'
-    local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+    inspected_on: '2026-11-08'
+    local_commit: 7994d3ce9df4797630d4dc9a2c51d2c141dedcab
+    working_tree: UNCOMMITTED_LOCAL_CHANGES
     scope: LOCAL_SOURCE_ONLY
     runtime_verified: false
     note_ar: >-
       الجرد التفصيلي أدناه يعود للقطة 2026-10-31. هذا التحديث يصحح الأعداد ويضيف المسارات التي أُنشئت بعدها،
-      دون تغيير حالة أي صفحة أو ادعاء نشر. المسارات التفصيلية الناقصة في القسم `page_routes` هي المقالات الستة
-      المضافة لاحقًا، ولم تُضف هنا لتجنّب نسخ محتوى مكرر.
-    public_route_count: 36
-    index_eligible_count: 35
+      دون ادعاء نشر. أضيفت 20 مقالة فعلية في knowledge-guides.ts عبر knowledge/[article].astro؛
+      المقالات الـ32 كلها في مركز المعرفة وخريطة الموقع وpublic/llms.txt، والتحقق محلي فقط.
+    publication_evidence: Audit/knowledge-publication-2026-11-08/REPORT.md
+    public_route_count: 56
+    index_eligible_count: 55
     noindex_public_routes: ['/kernel/']
-    knowledge_article_count: 12
+    knowledge_article_count: 32
+    new_guide_source: src/data/knowledge-guides.ts
+    new_guide_route: src/pages/knowledge/[article].astro
     knowledge_index_alias: /docs/
     knowledge_index_alias_note_ar: >-
       `/knowledge/` ليس صفحة فهرس؛ يعيد 301 إلى `/docs/` عبر `redirects.json`.
@@ -102,20 +106,21 @@ website:
   contact_delivery: MAILTO_CLIENT_SIDE_NOT_SERVER_CONFIRMED
   legal_documents: PROVISIONAL_PENDING_APPROVAL
 inventory_summary:
-  count_normal_public_routes_in_repo: 36
-  count_index_eligible_expected: 35
+  count_normal_public_routes_in_repo: 56
+  count_index_eligible_expected: 55
   count_noindex_public_routes_expected: 1
   count_special_error_handlers: 1
-  count_source_page_components: 21
+  count_source_page_components: 28
   count_routes_visually_inspected_in_prior_browser_review: 15
   counts_are_repo_derived_not_live_sitemap_verified: true
-  counts_refreshed_on: '2026-11-03'
-  counts_refresh_local_commit: ede38c28c11efe1ee79dc253c1e1e30b1feed5f2
+  counts_refreshed_on: '2026-11-08'
+  counts_refresh_local_commit: 7994d3ce9df4797630d4dc9a2c51d2c141dedcab
   dynamic_route_expansion:
     src/pages/products/[product].astro: 5
     src/pages/solutions/[sector].astro: 4
     src/pages/pillars/[pillar].astro: 3
-  knowledge_article_count: 12
+    src/pages/knowledge/[article].astro: 20
+  knowledge_article_count: 32
   proposed_routes_not_live: 9
 global_rules:
   single_intent_per_page: true

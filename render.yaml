@@ -1,5 +1,6 @@
 # BrightAI Render Blueprint — Astro with the standalone Node adapter.
-# Astro serves clean routes; src/middleware.ts reads redirects.json for .html aliases.
+# npm start applies redirects.json before static files via scripts/server.mjs;
+# src/middleware.ts also resolves aliases that reach Astro.
 
 services:
   - type: web

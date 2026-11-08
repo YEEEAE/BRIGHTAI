@@ -21,6 +21,9 @@ if (robots.includes('noindex')) Astro.response.headers.set('X-Robots-Tag', robot
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://brightai.live/#organization',
+  alternateName: ['BRIGHT AI', 'مؤسسة مُشرقة'],
+  description: 'مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).',
   name: 'BRIGHTAI',
   url: 'https://brightai.live',
   logo: new URL(brand.logo, 'https://brightai.live').href,
@@ -32,6 +35,8 @@ const organizationSchema = {
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': 'https://brightai.live/#website',
+  publisher: { '@id': 'https://brightai.live/#organization' },
   name: 'BRIGHTAI',
   url: 'https://brightai.live',
   inLanguage: 'ar-SA',

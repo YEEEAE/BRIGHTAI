@@ -1,0 +1,407 @@
+[
+  {
+    "slug": "shadow-ai-detection",
+    "title": "اكتشاف Shadow AI: استخدامات الذكاء الاصطناعي غير المعتمدة",
+    "url": "https://brightai.live/knowledge/shadow-ai-detection/",
+    "visibleGuideWords": 656,
+    "sources": [
+      {
+        "label": "الهيئة الوطنية للأمن السيبراني: الضوابط الأساسية ECC",
+        "url": "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "note": "تحقق من النسخة والنطاق المنطبق على الجهة قبل اعتماد أي مواءمة."
+      },
+      {
+        "label": "NIST AI 600-1: مخاطر الذكاء الاصطناعي التوليدي",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "note": "مرجع تقني للمخاطر؛ إجراءات التشغيل أدناه اقتراحات تطبيقية وليست نصوصًا من الوثيقة."
+      }
+    ],
+    "related": [
+      "ai-inventory-register",
+      "ai-vendor-assessment",
+      "ai-use-policy-employees"
+    ]
+  },
+  {
+    "slug": "ai-hallucinations-controls",
+    "title": "هلوسة الذكاء الاصطناعي: ضوابط التحقق من الإجابات",
+    "url": "https://brightai.live/knowledge/ai-hallucinations-controls/",
+    "visibleGuideWords": 647,
+    "sources": [
+      {
+        "label": "NIST AI 600-1: مخاطر الذكاء الاصطناعي التوليدي",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "note": "مرجع تقني للمخاطر؛ إجراءات التشغيل أدناه اقتراحات تطبيقية وليست نصوصًا من الوثيقة."
+      }
+    ],
+    "related": [
+      "ai-risk-assessment",
+      "ai-employee-training",
+      "ai-audit-trail"
+    ]
+  },
+  {
+    "slug": "deepfake-policy-organizations",
+    "title": "سياسة التزييف العميق للمنشآت: الصوت والصورة والتحقق",
+    "url": "https://brightai.live/knowledge/deepfake-policy-organizations/",
+    "visibleGuideWords": 630,
+    "sources": [
+      {
+        "label": "NIST AI 100-4: الحد من مخاطر المحتوى الاصطناعي",
+        "url": "https://www.nist.gov/publications/reducing-risks-posed-synthetic-content-overview-technical-approaches-digital-content",
+        "note": "يعرض مناهج تقنية وقيودها؛ مسار الاعتماد في هذا الدليل اقتراح تشغيلي."
+      }
+    ],
+    "related": [
+      "ai-employee-training",
+      "ai-use-policy-employees",
+      "ai-hallucinations-controls"
+    ]
+  },
+  {
+    "slug": "ai-inventory-register",
+    "title": "سجل جرد استخدامات الذكاء الاصطناعي: الحقول ودورة التحديث",
+    "url": "https://brightai.live/knowledge/ai-inventory-register/",
+    "visibleGuideWords": 646,
+    "sources": [
+      {
+        "label": "NIST: إطار إدارة مخاطر الذكاء الاصطناعي",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "note": "مرجع إرشادي لإدارة المخاطر، وليس لائحة سعودية أو شهادة اعتماد."
+      }
+    ],
+    "related": [
+      "shadow-ai-detection",
+      "ai-governance-committee-raci",
+      "ai-vendor-assessment"
+    ]
+  },
+  {
+    "slug": "ai-employee-training",
+    "title": "تدريب الموظفين على الذكاء الاصطناعي: من السياسة إلى السلوك",
+    "url": "https://brightai.live/knowledge/ai-employee-training/",
+    "visibleGuideWords": 613,
+    "sources": [
+      {
+        "label": "سدايا: مبادئ أخلاقيات الذكاء الاصطناعي",
+        "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf",
+        "note": "مرجع للمبادئ الأخلاقية؛ ليس إثباتًا لامتثال أو اعتماد منشأة."
+      }
+    ],
+    "related": [
+      "ai-use-policy-employees",
+      "ai-hallucinations-controls",
+      "deepfake-policy-organizations"
+    ]
+  },
+  {
+    "slug": "ai-vendor-assessment",
+    "title": "تقييم موردي الذكاء الاصطناعي قبل التعاقد والتكامل",
+    "url": "https://brightai.live/knowledge/ai-vendor-assessment/",
+    "visibleGuideWords": 622,
+    "sources": [
+      {
+        "label": "الهيئة الوطنية للأمن السيبراني: الضوابط الأساسية ECC",
+        "url": "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "note": "تحقق من النسخة والنطاق المنطبق على الجهة قبل اعتماد أي مواءمة."
+      }
+    ],
+    "related": [
+      "ai-contract-clauses",
+      "ai-data-residency-saudi",
+      "choose-ai-governance-platform"
+    ]
+  },
+  {
+    "slug": "data-classification-for-ai",
+    "title": "تصنيف البيانات قبل استخدامها في الذكاء الاصطناعي",
+    "url": "https://brightai.live/knowledge/data-classification-for-ai/",
+    "visibleGuideWords": 643,
+    "sources": [
+      {
+        "label": "سدايا: سياسات حوكمة البيانات الوطنية",
+        "url": "https://sdaia.gov.sa/ndmo/Files/Policiesar.pdf",
+        "note": "مرجع لسياسة التصنيف؛ حدّد نطاق تطبيقها وسياسة الجهة المعتمدة."
+      },
+      {
+        "label": "سدايا: اللائحة التنفيذية لنظام حماية البيانات الشخصية",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/",
+        "note": "راجع المادة المحددة وشروط انطباقها؛ لا تُعمّم حكمًا على كل استخدام للذكاء الاصطناعي."
+      }
+    ],
+    "related": [
+      "pdpl-and-ai",
+      "protect-company-data-chatgpt",
+      "ai-data-residency-saudi"
+    ]
+  },
+  {
+    "slug": "ai-governance-committee-raci",
+    "title": "لجنة حوكمة الذكاء الاصطناعي ومصفوفة RACI للمسؤوليات",
+    "url": "https://brightai.live/knowledge/ai-governance-committee-raci/",
+    "visibleGuideWords": 622,
+    "sources": [
+      {
+        "label": "سدايا: مبادئ أخلاقيات الذكاء الاصطناعي",
+        "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf",
+        "note": "مرجع للمبادئ الأخلاقية؛ ليس إثباتًا لامتثال أو اعتماد منشأة."
+      }
+    ],
+    "related": [
+      "ai-inventory-register",
+      "ai-impact-assessment",
+      "ai-audit-trail"
+    ]
+  },
+  {
+    "slug": "ai-impact-assessment",
+    "title": "تقييم أثر الذكاء الاصطناعي على الأشخاص والقرارات",
+    "url": "https://brightai.live/knowledge/ai-impact-assessment/",
+    "visibleGuideWords": 652,
+    "sources": [
+      {
+        "label": "NIST: إطار إدارة مخاطر الذكاء الاصطناعي",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "note": "مرجع إرشادي لإدارة المخاطر، وليس لائحة سعودية أو شهادة اعتماد."
+      },
+      {
+        "label": "سدايا: نظام حماية البيانات الشخصية",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/",
+        "note": "المادة 22 تتعلق بتقييم أثر معالجة البيانات الشخصية؛ تحقّق من المتطلبات التفصيلية المنطبقة في اللائحة."
+      }
+    ],
+    "related": [
+      "ai-risk-assessment",
+      "ai-bias-fairness",
+      "ai-governance-committee-raci"
+    ]
+  },
+  {
+    "slug": "ai-audit-trail",
+    "title": "سجل تدقيق الذكاء الاصطناعي: ما الذي تحفظه كدليل؟",
+    "url": "https://brightai.live/knowledge/ai-audit-trail/",
+    "visibleGuideWords": 637,
+    "sources": [
+      {
+        "label": "الهيئة الوطنية للأمن السيبراني: الضوابط الأساسية ECC",
+        "url": "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "note": "تحقق من النسخة والنطاق المنطبق على الجهة قبل اعتماد أي مواءمة."
+      }
+    ],
+    "related": [
+      "ai-governance-committee-raci",
+      "ai-inventory-register",
+      "data-breach-72-hours-ai"
+    ]
+  },
+  {
+    "slug": "saudi-ai-regulators-map",
+    "title": "خريطة الجهات والمتطلبات المرتبطة بالذكاء الاصطناعي في السعودية",
+    "url": "https://brightai.live/knowledge/saudi-ai-regulators-map/",
+    "visibleGuideWords": 672,
+    "sources": [
+      {
+        "label": "سدايا: نظام حماية البيانات الشخصية",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/",
+        "note": "المصدر النظامي لحماية البيانات الشخصية؛ لا يُغني هذا المقال عن النص الرسمي."
+      },
+      {
+        "label": "الهيئة الوطنية للأمن السيبراني: الضوابط الأساسية ECC",
+        "url": "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "note": "تحقق من النسخة والنطاق المنطبق على الجهة قبل اعتماد أي مواءمة."
+      },
+      {
+        "label": "هيئة التأمين: البوابة الرسمية واللوائح",
+        "url": "https://www.ia.gov.sa/ar/home",
+        "note": "مصدر رسمي لبدء فحص النشاط التأميني؛ لا يُخلط مع نطاق نشاط مالي آخر."
+      }
+    ],
+    "related": [
+      "saudi-ai-law-binding-vs-guidance",
+      "ai-cybersecurity-nca",
+      "ai-governance-financial-sector"
+    ]
+  },
+  {
+    "slug": "choose-ai-governance-platform",
+    "title": "كيف تختار منصة حوكمة ذكاء اصطناعي للمنشأة؟",
+    "url": "https://brightai.live/knowledge/choose-ai-governance-platform/",
+    "visibleGuideWords": 633,
+    "sources": [
+      {
+        "label": "NIST: إطار إدارة مخاطر الذكاء الاصطناعي",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "note": "مرجع إرشادي لإدارة المخاطر، وليس لائحة سعودية أو شهادة اعتماد."
+      }
+    ],
+    "related": [
+      "ai-vendor-assessment",
+      "ai-audit-trail",
+      "ai-contract-clauses"
+    ]
+  },
+  {
+    "slug": "ai-cybersecurity-nca",
+    "title": "حوكمة الذكاء الاصطناعي وضوابط NCA ECC: من المواءمة إلى الدليل",
+    "url": "https://brightai.live/knowledge/ai-cybersecurity-nca/",
+    "visibleGuideWords": 626,
+    "sources": [
+      {
+        "label": "الهيئة الوطنية للأمن السيبراني: الضوابط الأساسية ECC",
+        "url": "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "note": "تحقق من النسخة والنطاق المنطبق على الجهة قبل اعتماد أي مواءمة."
+      },
+      {
+        "label": "OWASP: مخاطر الصلاحيات المفرطة في تطبيقات LLM",
+        "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+        "note": "مرجع تقني يوضح خطر الاستقلالية والصلاحيات؛ لا يُعد لائحة سعودية."
+      }
+    ],
+    "related": [
+      "prompt-injection",
+      "ai-vendor-assessment",
+      "ai-audit-trail"
+    ]
+  },
+  {
+    "slug": "ai-governance-financial-sector",
+    "title": "حوكمة الذكاء الاصطناعي في القطاع المالي السعودي",
+    "url": "https://brightai.live/knowledge/ai-governance-financial-sector/",
+    "visibleGuideWords": 651,
+    "sources": [
+      {
+        "label": "البنك المركزي السعودي: تقنيات مكافحة الاحتيال، القسم 3.8",
+        "url": "https://rulebook.sama.gov.sa/en/38-counter-fraud-technology",
+        "note": "الاستشهاد لقابلية التدقيق في نطاق مكافحة الاحتيال المحدد، وليس قاعدة لكل نشاط مالي."
+      }
+    ],
+    "related": [
+      "ai-impact-assessment",
+      "ai-bias-fairness",
+      "ai-audit-trail"
+    ]
+  },
+  {
+    "slug": "ai-governance-healthcare",
+    "title": "حوكمة الذكاء الاصطناعي في الرعاية الصحية السعودية",
+    "url": "https://brightai.live/knowledge/ai-governance-healthcare/",
+    "visibleGuideWords": 656,
+    "sources": [
+      {
+        "label": "هيئة الغذاء والدواء: دليل AI وML في الأجهزة الطبية MDS–G010",
+        "url": "https://www.sfda.gov.sa/sites/default/files/2023-01/MDS_G010ML.pdf",
+        "note": "دليل منشور بإصدار 1.0؛ تحقق من المتطلبات والتحديثات المنطبقة على الوظيفة قبل الاعتماد."
+      },
+      {
+        "label": "سدايا: نظام حماية البيانات الشخصية",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/",
+        "note": "المصدر النظامي لحماية البيانات الشخصية؛ لا يُغني هذا المقال عن النص الرسمي."
+      }
+    ],
+    "related": [
+      "ai-impact-assessment",
+      "data-classification-for-ai",
+      "ai-vendor-assessment"
+    ]
+  },
+  {
+    "slug": "ai-bias-fairness",
+    "title": "العدالة والتحيز في أنظمة الذكاء الاصطناعي: ماذا تختبر؟",
+    "url": "https://brightai.live/knowledge/ai-bias-fairness/",
+    "visibleGuideWords": 644,
+    "sources": [
+      {
+        "label": "NIST SP 1270: تحديد التحيز وإدارته في AI",
+        "url": "https://www.nist.gov/publications/towards-standard-identifying-and-managing-bias-artificial-intelligence",
+        "note": "مرجع لفهم مصادر التحيز وحدود اختزاله في نموذج أو مقياس منفرد."
+      }
+    ],
+    "related": [
+      "ai-impact-assessment",
+      "ai-governance-financial-sector",
+      "saudi-ai-ethics-principles"
+    ]
+  },
+  {
+    "slug": "ai-contract-clauses",
+    "title": "بنود عقود الذكاء الاصطناعي: قائمة مراجعة قبل التوقيع",
+    "url": "https://brightai.live/knowledge/ai-contract-clauses/",
+    "visibleGuideWords": 649,
+    "sources": [
+      {
+        "label": "سدايا: اللائحة التنفيذية لنظام حماية البيانات الشخصية",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/",
+        "note": "المادة 17: اختيار جهة المعالجة واتفاقها؛ يلزم الرجوع إلى كامل النص وفق العلاقة الفعلية."
+      },
+      {
+        "label": "سدايا: لائحة نقل البيانات الشخصية خارج المملكة",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/RegulationonPersonalDataTransferOutsidetheKingdom/",
+        "note": "نقل البيانات يحتاج تقييم الوقائع والضمانات والاستثناءات المنطبقة، وليس اسم منطقة الاستضافة فقط."
+      }
+    ],
+    "related": [
+      "ai-vendor-assessment",
+      "ai-data-residency-saudi",
+      "data-breach-72-hours-ai"
+    ]
+  },
+  {
+    "slug": "data-breach-72-hours-ai",
+    "title": "تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟",
+    "url": "https://brightai.live/knowledge/data-breach-72-hours-ai/",
+    "visibleGuideWords": 669,
+    "sources": [
+      {
+        "label": "سدايا: اللائحة التنفيذية لنظام حماية البيانات الشخصية",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/",
+        "note": "المادة 24 هي المرجع لشروط الإشعار والمهلة والمحتوى واستكمال المعلومات؛ الشرح هنا موجز ولا يستبدلها."
+      }
+    ],
+    "related": [
+      "pdpl-and-ai",
+      "ai-audit-trail",
+      "ai-contract-clauses"
+    ]
+  },
+  {
+    "slug": "ai-data-residency-saudi",
+    "title": "إقامة بيانات الذكاء الاصطناعي في السعودية: ما الذي تتحقق منه؟",
+    "url": "https://brightai.live/knowledge/ai-data-residency-saudi/",
+    "visibleGuideWords": 637,
+    "sources": [
+      {
+        "label": "سدايا: لائحة نقل البيانات الشخصية خارج المملكة",
+        "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/RegulationonPersonalDataTransferOutsidetheKingdom/",
+        "note": "نقل البيانات يحتاج تقييم الوقائع والضمانات والاستثناءات المنطبقة، وليس اسم منطقة الاستضافة فقط."
+      }
+    ],
+    "related": [
+      "ai-vendor-assessment",
+      "data-classification-for-ai",
+      "ai-contract-clauses"
+    ]
+  },
+  {
+    "slug": "data-governance-vs-ai-governance",
+    "title": "حوكمة البيانات وحوكمة الذكاء الاصطناعي: الفرق والتكامل",
+    "url": "https://brightai.live/knowledge/data-governance-vs-ai-governance/",
+    "visibleGuideWords": 639,
+    "sources": [
+      {
+        "label": "سدايا: سياسات حوكمة البيانات الوطنية",
+        "url": "https://sdaia.gov.sa/ndmo/Files/Policiesar.pdf",
+        "note": "مرجع لسياسة التصنيف؛ حدّد نطاق تطبيقها وسياسة الجهة المعتمدة."
+      },
+      {
+        "label": "NIST: إطار إدارة مخاطر الذكاء الاصطناعي",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "note": "مرجع إرشادي لإدارة المخاطر، وليس لائحة سعودية أو شهادة اعتماد."
+      }
+    ],
+    "related": [
+      "ai-inventory-register",
+      "ai-governance-committee-raci",
+      "ai-impact-assessment"
+    ]
+  }
+]

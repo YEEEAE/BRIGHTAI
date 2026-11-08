@@ -14,7 +14,14 @@ export const products = [
 export function getStaticPaths() { return products.map(({ slug, ...props }) => ({ params: { product: slug }, props: { ...props, slug } })); }
 const { name, purpose, questions, slug } = Astro.props;
 const roles: Record<string,string> = { firewall: 'من الطلب إلى القرار', 'risk-engine': 'المخاطر في سياقها', 'human-gate': 'مراجعة لها صاحب صلاحية', ledger: 'لكل قرار أثر', 'secure-chat': 'محادثة ضمن حدود واضحة' };
-const description = `${purpose} المنتج مخطط، وإتاحته التشغيلية غير متحققة.`;
+const searchTopics: Record<string, string> = {
+  firewall: 'جدار حماية الذكاء الاصطناعي',
+  'risk-engine': 'تقييم مخاطر الذكاء الاصطناعي',
+  'human-gate': 'الموافقات البشرية على قرارات AI',
+  ledger: 'سجل تدقيق الذكاء الاصطناعي',
+  'secure-chat': 'محادثة ذكاء اصطناعي مؤسسية',
+};
+const description = `${searchTopics[slug]} للمنشآت السعودية: ${purpose} المنتج مخطط وإتاحته التشغيلية غير متحققة.`;
 const productSchema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -25,7 +32,7 @@ const productSchema = {
   url: new URL(`/products/${slug}/`, 'https://brightai.live').href,
 };
 ---
-<PageShell title={`${name} — تصور المنتج | BRIGHTAI`} description={description} crumbs={[{ name: 'المنتجات', href: '/products/' }, { name }]} structuredData={productSchema}>
+<PageShell title={`${searchTopics[slug]} | ${name} — BRIGHTAI`} description={description} crumbs={[{ name: 'المنتجات', href: '/products/' }, { name }]} structuredData={productSchema}>
   <div class="product-intro">
     <div><p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / تصور المنتج</p><h1><bdi dir="ltr" style={`view-transition-name:product-${slug}`}>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
     <aside class="product-meta"><span class="product-mark"><ProductIcon kind={slug}/></span><div><p>منتج مستقل ضمن المنظومة</p><p class="tag">مخطط · غير متحقق تشغيلياً</p><a class="ghost" href="/products/">كل المنتجات ←</a></div></aside>

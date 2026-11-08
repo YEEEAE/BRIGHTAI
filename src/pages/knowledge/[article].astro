@@ -1,0 +1,61 @@
+---
+import PageShell from '../../components/PageShell.astro';
+import { articleStructuredData } from '../../data/structured-data';
+import { newGuides, type Guide } from '../../data/knowledge-guides';
+import { articles } from '../../data/knowledge';
+
+export const prerender = true;
+export function getStaticPaths() {
+  return newGuides.map(guide => ({ params: { article: guide.slug }, props: { guide } }));
+}
+interface Props { guide: Guide }
+const { guide } = Astro.props;
+const path = `/knowledge/${guide.slug}/`;
+const article = {
+  ...articleStructuredData(guide.title, guide.description, path),
+  dateCreated: '2026-11-08',
+  dateModified: '2026-11-08',
+  citation: guide.sources.map(source => source.url),
+};
+const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: guide.faqs.map(item => ({
+  '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer },
+})) };
+const related = guide.related.map(slug => articles.find(item => item.href === `/knowledge/${slug}/`)).filter(Boolean);
+---
+<PageShell title={`${guide.title} | BRIGHTAI`} description={guide.description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: guide.title }]} ogType="article" structuredData={article}>
+  <article class="practical-guide">
+    <header>
+      <p class="eyebrow">{guide.tag} · إعداد وتحديث: <time datetime="2026-11-08">8 نوفمبر 2026</time></p>
+      <h1>{guide.title}</h1>
+      <p class="lead">{guide.answer}</p>
+      <p class="note">إعداد <a href="/about/">مؤسسة مُشرقة BRIGHT AI</a>. دليل تعليمي؛ الأمثلة افتراضية والنماذج الإجرائية مقترحة وليست نماذج تنظيمية معتمدة. راجع النص الرسمي والمختص المخول قبل تطبيق قرار نظامي أو صحي أو مالي.</p>
+    </header>
+    {guide.sections.map((section, index) => <section class="block" aria-labelledby={`guide-section-${index + 1}`}>
+      <h2 id={`guide-section-${index + 1}`}>{section.title}</h2>
+      {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}
+      {section.items && <ul class="list">{section.items.map(item => <li>{item}</li>)}</ul>}
+      {section.table && <div class="guide-table" role="region" aria-label={`جدول: ${section.title}`} tabindex="0">
+        <table><caption>{section.title} — أسئلة وأمثلة للمراجعة</caption><thead><tr>{section.table.headers.map(header => <th scope="col">{header}</th>)}</tr></thead>
+          <tbody>{section.table.rows.map(row => <tr>{row.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody>
+        </table>
+      </div>}
+    </section>)}
+    <section class="block"><h2>مثال تطبيقي افتراضي</h2><blockquote><p>{guide.example}</p></blockquote></section>
+    <section class="block"><h2>قائمة تحقق للعمل</h2><ol class="list">{guide.checklist.map(item => <li>{item}</li>)}</ol></section>
+    <section class="block"><h2>أسئلة شائعة</h2>{guide.faqs.map(item => <section><h3>{item.question}</h3><p>{item.answer}</p></section>)}</section>
+    <section class="block"><h2>المصادر الرسمية وحدود الاستشهاد</h2><p>اطُّلع على المصادر عند إعداد الدليل بتاريخ 8 نوفمبر 2026. الإحالات تدعم الموضوع المحدد في وصفها؛ الجداول والأمثلة والخطوات المقترحة صياغة تعليمية من BRIGHT AI، وليست نصوصًا منقولة عن الجهات.</p>
+      <ul class="list">{guide.sources.map(source => <li><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a><p>{source.note}</p></li>)}</ul>
+    </section>
+    <section class="block"><h2>أدلة تكمل الموضوع</h2><ul class="list">{related.map(item => item && <li><a href={item.href}>{item.title}</a><p>{item.text}</p></li>)}</ul><a class="ghost" href="/docs/">تصفح جميع أدلة المعرفة ←</a></section>
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(faq).replace(/</g, '\\u003c')} />
+</PageShell>
+<style>
+  .practical-guide p { line-height: 1.95; overflow-wrap: anywhere; }
+  .practical-guide h3 { margin-block: 28px 12px; }
+  .guide-table { overflow-x: auto; margin-block: 24px; max-inline-size: 100%; }
+  .guide-table:focus-visible { outline: 2px solid var(--color-accent, #ffb829); outline-offset: 4px; }
+  th { text-align: start; }
+  caption { text-align: start; padding-block: 12px; }
+  blockquote { margin-inline: 0; padding-inline-start: 20px; border-inline-start: 3px solid #ffb829; }
+</style>

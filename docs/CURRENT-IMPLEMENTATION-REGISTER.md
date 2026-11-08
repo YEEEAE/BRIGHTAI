@@ -8,6 +8,8 @@
 > **حدود الدليل:** لم يُشغّل build أو lint أو typecheck أو اختبارات أو متصفح أو Playwright، ولم يُنشر شيء. كل سلوك في هذا الملف هو `SOURCE_PRESENT` أو `SCHEMA_PRESENT` فقط، وليس `RUNTIME_VERIFIED`.
 > **قاعدة:** `APPROVED_REQ` يعني مطلبًا معتمدًا في `MASTER-PROJECT-BLUEPRINT.md` / `PRODUCT-MASTER-CATALOG.yaml`. وجود الكود أو الجدول لا يرفع الحالة إلى `WORKING`.
 
+> **تحديث المعرفة 2026-11-08:** الأعداد العامة أدناه حُدّثت من بناء محلي وفحص HTTP: 32 مقالًا، و56 مسارًا عامًا عاديًا منها 55 في sitemap و`public/llms.txt`. أضيفت 20 مقالة عبر `knowledge/[article].astro`. بقية أدلة المنتج والمخطط في هذا المستند تاريخية ولم يُعَد فحصها في هذه المهمة. لا نشر أو اعتماد تخصصي؛ الدليل: `Audit/knowledge-publication-2026-11-08/REPORT.md`.
+
 ---
 
 ## 1. سلّم الحقيقة المستخدم
@@ -39,8 +41,8 @@
 | منتجات | 6 | `/products/` + خمس صفحات منتجات |
 | قطاعات | 4 | `/solutions/government/`, `/solutions/finance/`, `/solutions/healthcare/`, `/solutions/enterprise/` |
 | أركان | 3 | `/pillars/safety/`, `/pillars/transparency/`, `/pillars/privacy/` |
-| معرفة | 12 | المقالات في `src/pages/knowledge/` |
-| **إجمالي المسارات العامة العادية** | **36** | منها 35 مؤهلة للفهرسة على مستوى المصدر، و`/kernel/` بـ`noindex` |
+| معرفة | 32 | 12 ملفًا مباشرًا و20 مقالة من `src/data/knowledge-guides.ts` عبر المسار الديناميكي |
+| **إجمالي المسارات العامة العادية** | **56** | منها 55 متحققة محليًا في sitemap، و`/kernel/` بـ`noindex` |
 | خاصة | 2 | `/auth/sign-up/`, `/auth/accept-invitation/` |
 | بوابة | 8 أنماط | `/app/`, `/app/firewall/`, `/app/human-gate/`, `/app/kernel/`, `/app/ledger/`, `/app/risk-engine/`, `/app/risk-engine/:assetId`, `/app/secure-chat/` |
 | خطأ | 1 | `/404/` |

@@ -4,10 +4,19 @@ import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
-const description = 'دليل عربي يشرح دورة حوكمة مخاطر الذكاء الاصطناعي من تحديد الاستخدام حتى المراجعة والتحسين.';
-const article = articleStructuredData('حوكمة الذكاء الاصطناعي في السعودية', description, Astro.url.pathname);
+const description = 'كيف تبدأ حوكمة الذكاء الاصطناعي في منشأتك السعودية؟ ست خطوات عملية، والمسؤوليات والوثائق المطلوبة، وروابط لسياسة الموظفين وتقييم المخاطر وحماية البيانات.';
+const article = { ...articleStructuredData('حوكمة الذكاء الاصطناعي في السعودية', description, Astro.url.pathname), dateModified: '2026-11-08' };
+// The same source supplies both the visible answers and FAQ JSON-LD.
+const faqs = [
+  { question: 'من أين تبدأ المنشأة السعودية حوكمة الذكاء الاصطناعي؟', answer: 'ابدأ بحصر استخدام واحد وتحديد مالكه وغرضه والبيانات التي يعالجها والقرار المتأثر. ثم قيّم المخاطر وحدد الضوابط وصاحب الموافقة وموعد المراجعة قبل التوسع.' },
+  { question: 'من المسؤول عن حوكمة الذكاء الاصطناعي داخل المنشأة؟', answer: 'حدّد مالكاً للاستخدام وصاحب صلاحية لاعتماد القرار. يشارك فريق الأعمال والتقنية والأمن والخصوصية بحسب السياق، مع إشراك المختص النظامي عند الحاجة؛ الأداة وحدها لا تحدد المسؤوليات.' },
+  { question: 'ما الوثائق التي أجهزها قبل اعتماد استخدام الذكاء الاصطناعي؟', answer: 'جهّز وصف الاستخدام والبيانات والمورد، وسجل المخاطر والضوابط ومالكيها، وسياسة الموظفين، ومسار الموافقة والتصعيد، ودليل الاختبار وموعد المراجعة. هذه نقطة بداية تعليمية تتكيف مع نطاق المنشأة.' },
+  { question: 'هل شراء منصة حوكمة ذكاء اصطناعي يكفي لتطبيق الحوكمة؟', answer: 'لا. تحتاج المنشأة مسؤوليات وسياسة معتمدة وتقييماً للمخاطر واختبارات ومراجعة مستمرة. قد تساعد الأدوات في تنفيذ الضوابط وتوثيق القرارات، ويجب التحقق من قدراتها الفعلية قبل الاعتماد عليها.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(({ question, answer }) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) };
 ---
 <PageShell title="حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'حوكمة الذكاء الاصطناعي في السعودية' }]} ogType="article" structuredData={article}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">دورة عمل من ست محطات</a><a href="#part-2">ماذا توثّق لكل استخدام؟</a><a href="/docs/">← كل الأدلة</a></aside><article>
     <p class="eyebrow">دليل تأسيسي · 31 أكتوبر 2026</p><h1>حوكمة الذكاء الاصطناعي في السعودية</h1>
     <p class="lead">حوكمة الذكاء الاصطناعي هي طريقة مؤسسية لتحديد من يملك الاستخدام، وما المخاطر التي قد تنتج عنه، وكيف تُعالج وتُراجع. البداية ليست شراء أداة؛ البداية فهم الحالة والقرار المتأثر بها.</p>
@@ -29,6 +38,12 @@ const article = articleStructuredData('حوكمة الذكاء الاصطناع�
 <section><h2>حوكمة AI وأمنه: مسؤوليتان متكاملتان</h2><div class="extension-columns"><div><h3>الحوكمة تحدد القرار</h3><p>من يعتمد الاستخدام؟ ما حدود البيانات؟ من يقبل المخاطر المتبقية؟ ومتى تتوقف الحالة؟ هذه أسئلة تحتاج مالكاً وسياسة ومسار مراجعة.</p></div><div><h3>الأمن يختبر الضوابط</h3><p>كيف تُمنع الصلاحيات الزائدة؟ أين تُفحص المدخلات؟ وماذا يحدث عند تعطل المسار؟ هذه أسئلة تحتاج تنفيذاً واختباراً ودليلاً.</p></div></div><p>تساعد أدوات الحماية والموافقات والأدلة في تطبيق القرار، لكن شراء الأداة لا يعين المسؤوليات ولا يحل محل اعتماد سياسة المنشأة.</p></section>
 <section><h2>أول اجتماع لحوكمة الذكاء الاصطناعي في منشأتك</h2><ol class="extension-path"><li>اختر استخداماً واحداً له مالك معروف؛ اكتب الغرض والبيانات والقرار المتأثر.</li><li>اجمع مالك الأعمال والأمن والخصوصية والتقنية لتحديد أسئلة المراجعة، مع إشراك المختص النظامي عند الحاجة.</li><li>اخرج بسجل خطر ومسؤولية وخطوة اختبار وموعد مراجعة؛ لا تكتفِ بمحضر يقول «تمت الموافقة».</li></ol><p>انتقل إلى <a href="/knowledge/ai-risk-assessment/">ورقة عمل المخاطر</a>، ثم <a href="/knowledge/ai-use-policy-employees/">دليل سياسة الموظفين</a>. ولتمييز أدوار الأدوات، راجع <a href="/products/">خريطة منتجات AIGAS المخططة</a>. ولفهم موقع هذا المسار داخل وثائق سدايا، اقرأ <a href="/knowledge/sdaia-ai-adoption-framework/">إطار تبني الذكاء الاصطناعي من سدايا</a>.</p><p>وقبل الاجتماع، تعطيك <a href="/knowledge/sdaia-ai-ethics-self-assessment/">أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي</a> صورة أولية عن الفجوات التي يستحق أن يبدأ منها النقاش.</p></section>
     </ContentExtension>
+    <section class="block" aria-labelledby="governance-faq">
+      <h2 id="governance-faq">أسئلة شائعة عن حوكمة الذكاء الاصطناعي في المنشآت السعودية</h2>
+      <p class="note">أضيفت الإجابات العملية في <time datetime="2026-11-08">8 نوفمبر 2026</time>. هذه إرشادات تنظيم عمل، وليست حكماً بامتثال منشأة.</p>
+      {faqs.map(({ question, answer }) => <section><h3>{question}</h3><p>{answer}</p></section>)}
+      <p>للخطوة التالية، استخدم <a href="/knowledge/ai-risk-assessment/">ورقة عمل تقييم المخاطر</a>، ثم راجع <a href="/knowledge/ai-use-policy-employees/">إعداد سياسة استخدام الذكاء الاصطناعي للموظفين</a>.</p>
+    </section>
     <ArticleContext headline="حوكمة الذكاء الاصطناعي في السعودية"/>
   </article></div>
 </PageShell>

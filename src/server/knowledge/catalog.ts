@@ -1,5 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { articles, products } from '../../data/knowledge';
+import { newGuides } from '../../data/knowledge-guides';
 import { summarizeDocument } from './document.mjs';
 
 const pages = import.meta.glob('../../pages/knowledge/*.astro');
@@ -9,9 +10,13 @@ export async function knowledgeCatalog() {
   const entries = [];
   for (const article of articles) {
     const slug = article.href.split('/')[2];
-    const page = await pages[`../../pages/knowledge/${slug}.astro`]();
+    const guide = newGuides.find(item => item.slug === slug);
+    const loader = pages[`../../pages/knowledge/${slug}.astro`] ?? pages['../../pages/knowledge/[article].astro'];
+    if (!loader || (!pages[`../../pages/knowledge/${slug}.astro`] && !guide)) throw new Error(`Missing knowledge page: ${slug}`);
+    const page = await loader();
     const html = await container.renderToString((page as { default: any }).default, {
       request: new Request(`https://brightai.live${article.href}`),
+      props: guide ? { guide } : {},
     });
     const summary = summarizeDocument(html);
     const linkedProducts = products.filter(([id]) => id === 'kernel'

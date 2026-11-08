@@ -4,7 +4,7 @@ import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
-const description = 'نموذج تعليمي لتوثيق مخاطر الذكاء الاصطناعي والآثار والضوابط والمالكين دون اختلاق درجات رسمية.';
+const description = 'ورقة عمل تعليمية لتقييم مخاطر الذكاء الاصطناعي في المنشآت السعودية: وصف الاستخدام، تسجيل الخطر والأثر، تحديد الضوابط والمالك وخطة المراجعة، دون درجات رسمية.';
 const article = articleStructuredData('تقييم مخاطر الذكاء الاصطناعي', description, Astro.url.pathname);
 ---
 <PageShell title="تقييم مخاطر الذكاء الاصطناعي | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'تقييم المخاطر' }]} ogType="article" structuredData={article}>
