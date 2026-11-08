@@ -432,8 +432,26 @@ select schemaname, tablename, policyname, permissive, roles, cmd from pg_policie
 | V12 Restore | استعادة | G7 | `NOT RUN` |
 | V13 Artifact parity | نشر | G2 | `NOT RUN` |
 | V14 RLS catalog | بيانات | G4 | `NOT RUN` |
+| V15 Monitoring opt-in | مراقبة/خصوصية | G8 | `NOT RUN` |
 
 **لا تُحوّل أي خلية إلى `PASS` دون تشغيلها وتسجيل دليلها.**
+
+---
+
+## V15 — Monitoring opt-in (Sentry/PostHog)
+
+**الهدف:** إثبات أن الطبقتين مطفأتان افتراضيًا، وأن الإرسال المخوّل خالٍ من PII، وأن مفتاح الإيقاف مستقل عن البوابة.
+
+**الخطوات (لم تُنفّذ):**
+
+1. تشغيل الخادم بلا أي متغير مراقبة؛ تأكيد عدم وجود محاولة اتصال خارجي.
+2. بناء حدث Sentry تجريبي واحد والتأكد من غياب `user`, `request`, `breadcrumbs`, `message`, `extra`.
+3. إرسال حدث واحد إلى **مشروع Sentry معتمد** والتحقق من `release`/`environment` وخلوّه من PII.
+4. ضبط `AIGAS_SENTRY_KILL_SWITCH=true` وإعادة المحاولة؛ يجب ألا يُرسل شيء.
+5. تفعيل PostHog بعد موافقة تحليلات؛ زيارة `/app/kernel/`؛ التأكد من `portal_viewed` + `product_opened` فقط.
+6. التأكد من عدم وجود autocapture/replay/heatmap/console/performance events، ومن `distinct_id` مختلف لكل حدث.
+
+**قبول:** صفر أحداث افتراضيًا، حدث واحد بعد التفعيل، صفر PII/معرفات خام، Kill Switch يعمل، وفصل `/` عن `/app/api/kernel/health/` موثق.
 
 ---
 

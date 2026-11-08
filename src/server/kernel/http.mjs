@@ -1,6 +1,7 @@
 import { authenticate } from './auth.mjs';
 import { KernelError, dependencyStatusForError } from './core.mjs';
 import { contractHeaders, errorBody } from './contracts.mjs';
+import { captureServerFailure } from '../observability/index.mjs';
 export const headers = contractHeaders({
   'Cache-Control': 'private, no-store',
   'X-Robots-Tag': 'noindex, nofollow',
@@ -58,8 +59,11 @@ export function kernelHandler(work, write = false) {
       const code = known ? error.code : error?.code === '42P01' || error?.code === '42703' ? 'KERNEL_SCHEMA_MISSING' : error?.code === '42501' ? 'KERNEL_DB_PRIVILEGE' : 'DB_UNAVAILABLE';
       const message = known ? error.message : code === 'KERNEL_SCHEMA_MISSING' ? 'يلزم تطبيق ترحيل إدارة Kernel المعتمد قبل استخدام هذه الوظيفة.' : code === 'KERNEL_DB_PRIVILEGE' ? 'صلاحية اتصال النظام غير مهيأة لهذه الوظيفة.' : 'تعذر الاتصال بالخدمة؛ لم يُؤكد الحفظ. حدّث البيانات قبل إعادة الإرسال.';
       const dependencyStatus=known?dependencyStatusForError(error):code==='KERNEL_SCHEMA_MISSING'?'not configured':code==='KERNEL_DB_PRIVILEGE'?'access denied':'temporarily unavailable';
+      const status = known ? error.status : 503;
+      // Fire-and-forget. The observer never changes the response or throws.
+      void captureServerFailure(error, { surface:'kernel', code, status, pathname:new URL(request.url).pathname, dependency:dependencyStatus, operation:request.method });
       const responseHeaders = code === 'RATE_LIMITED' ? { ...headers, 'Retry-After': '60' } : headers;
-      return Response.json(errorBody({ code, message, dependencyStatus }), { headers: responseHeaders, status: known ? error.status : 503 });
+      return Response.json(errorBody({ code, message, dependencyStatus }), { headers: responseHeaders, status });
     }
   };
 }

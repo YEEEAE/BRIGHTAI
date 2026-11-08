@@ -5,6 +5,7 @@ import { transaction } from '../kernel/db.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { contractHeaders, errorBody, HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { env } from '../kernel/env.mjs';
+import { captureProductEvent, captureServerFailure } from '../observability/index.mjs';
 import { findApprovedModel, listApprovedModels } from './models.mjs';
 import { complete, providerConfiguration, providerState } from './adapter.mjs';
 import { INPUT_POLICY, approvedEgress, protectText, usagePolicyStatus } from './policy.mjs';
@@ -211,8 +212,13 @@ export const privateHeaders = contractHeaders({ 'Cache-Control':'private, no-sto
 export function errorResponse(error) {
   const known=error instanceof KernelError;
   const code=known ? error.code : ['42P01','42703','42883'].includes(error?.code) ? 'SECURE_CHAT_SCHEMA_MISSING' : error?.code==='42501' ? 'SECURE_CHAT_DB_PRIVILEGE' : 'SECURE_CHAT_UNAVAILABLE';
+  const status=known ? error.status : 503;
+  // Quota exhaustion is a product signal, not an error: code only, no user,
+  // tenant, message text, model ID, or token counts.
+  if(code==='USAGE_LIMIT_REACHED') void captureProductEvent('quota_exhausted',{product:'secure-chat'});
+  void captureServerFailure(error,{surface:'secure-chat',code,status,pathname:'/app/api/secure-chat',dependency:known?dependencyStatusForError(error):code==='SECURE_CHAT_SCHEMA_MISSING'?'not configured':code==='SECURE_CHAT_DB_PRIVILEGE'?'access denied':'temporarily unavailable',operation:'POST'});
   const message=known ? error.message : code==='SECURE_CHAT_SCHEMA_MISSING' ? 'يلزم تجهيز مخطط Secure Chat على بيئة تطوير معتمدة. لم يُؤكد اكتمال الطلب.' : code==='SECURE_CHAT_DB_PRIVILEGE' ? 'صلاحيات قاعدة البيانات غير مهيأة. لم يُؤكد اكتمال الطلب.' : 'تعذر إكمال الطلب؛ لا تُعد إرساله تلقائيًا. لم يُؤكد استهلاك المزود أو اكتمال الرد.';
   const dependencyStatus=known?dependencyStatusForError(error):code==='SECURE_CHAT_SCHEMA_MISSING'?'not configured':code==='SECURE_CHAT_DB_PRIVILEGE'?'access denied':'temporarily unavailable';
   const responseHeaders=known&&error.status===429?{...privateHeaders,'Retry-After':'60'}:privateHeaders;
-  return Response.json(errorBody({code,message,dependencyStatus}),{status:known ? error.status : 503,headers:responseHeaders});
+  return Response.json(errorBody({code,message,dependencyStatus}),{status,headers:responseHeaders});
 }

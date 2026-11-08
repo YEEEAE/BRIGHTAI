@@ -1,6 +1,7 @@
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
+import { captureServerFailure } from '../observability/index.mjs';
 import { operate } from './service.mjs';
 const headers = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
 async function readBody(request) {
@@ -30,7 +31,10 @@ export function createHandler(auth=authenticate, service=operate) {
       if(error?.code==='23503')error=new KernelError(409,'RISK_ENGINE_REFERENCE','مرجع الأصل أو التقييم غير متاح في النسخة الحالية؛ حدّث السجل وأعد المحاولة.');
       const known=error instanceof KernelError;
       const dependencyStatus=known?(error.dependencyStatus??(error.code.includes('SCHEMA')?'not configured':error.code.includes('PRIVILEGE')?'access denied':dependencyStatusForError(error))):'temporarily unavailable';
-      return Response.json(errorBody({code:known?error.code:'RISK_ENGINE_UNAVAILABLE',message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.',dependencyStatus}),{status:known?error.status:503,headers});
+      const code=known?error.code:'RISK_ENGINE_UNAVAILABLE';
+      const status=known?error.status:503;
+      void captureServerFailure(error,{surface:'risk-engine',code,status,pathname:new URL(request.url).pathname,dependency:dependencyStatus,operation:'POST'});
+      return Response.json(errorBody({code,message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.',dependencyStatus}),{status,headers});
     }
   };
 }

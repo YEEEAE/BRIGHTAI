@@ -12,6 +12,9 @@ release_candidate:
   worktree: clean
   deployed: false
   previous_prompt_sha: 7994d3ce9df4797630d4dc9a2c51d2c141dedcab
+  observed_head_2026_11_09: 9bee68f450a55396528819d738e728b438475973
+  observed_branch_2026_11_09: main
+  evidence_basis: "No operational evidence has been produced on 9bee68f. Gate states below are carried from the 3eaf6907 candidate and the dated 2026-11-08/09 observations; they are not re-attributed to 9bee68f."
   note: "Previous SHA is historical and is not attributed to the current tree."
 
 decision:
@@ -36,9 +39,11 @@ gates:
     current_evidence:
       - "Browser scan 2026-11-08: 15/15 public routes returned 200"
       - "No evidence that the responding artifact matches this release candidate"
+      - "No public-route scan was re-run on observed head 9bee68f during the 2026-11-09 monitoring task"
     limitations:
       - "Does not prove the deployed artifact equals this SHA; that is G2."
       - "Does not open /app/*; that is G3."
+      - "The 2026-11-08 scan predates observed head 9bee68f."
     closes_when: "A dated public-route response log exists for the public host. Binding that host to this SHA remains G2."
     decision: PASS_NARROW_SCOPE
 
@@ -220,12 +225,20 @@ gates:
       - "No monitoring of /app/api/kernel/health"
       - "No incident contact route recorded"
       - "Render health check targets / only"
+      - "2026-11-09: opt-in Sentry/PostHog adapters exist in source only and are disabled by default"
+      - "2026-11-09: Sentry organization 659ec3bf0cec has zero projects; no DSN or approved project"
+      - "2026-11-09: PostHog has one Default project (720936) with ingested_event=false; no owner-approved project"
+      - "2026-11-09: no event has been sent; no SDK/package installed; no alert route or on-call created"
     missing_evidence:
       - "Roster"
       - "Alert configuration evidence"
       - "Contact routes"
       - "Incident runbook approval"
-    closes_when: "Operations and security sign the roster, alert rules, contact routes, and incident runbook."
+      - "Approved Sentry project and DSN in a secret store"
+      - "Approved PostHog project with autocapture/replay/heatmaps/console/performance disabled"
+      - "Payload review proving no PII, tenant/user ID, chat text, or secrets"
+      - "Executed staging verification and independent kill-switch test"
+    closes_when: "Operations and security sign the roster, alert rules, contact routes, and incident runbook, and a staging run shows a sanitized event plus a working independent kill switch."
     decision: null
 
   - id: G9

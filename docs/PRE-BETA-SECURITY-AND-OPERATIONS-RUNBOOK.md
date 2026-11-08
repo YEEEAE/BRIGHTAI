@@ -247,3 +247,47 @@ G4 Privacy approval:   retention & deletion matrix version / approver / date
 - لا إقامة بيانات سعودية (المشروع المفحوص سابقًا في `aws-us-east-2`).
 - لا SLA ولا RPO/RTO ولا zero retention.
 - لا تشغيل أو نشر: كل ما سبق `SOURCE_PRESENT` أو `NOT_VERIFIED` فقط.
+
+---
+
+## 10. طبقتا المراقبة والتحليلات (Sentry/PostHog) — بوابات مستقلة
+
+> **الحالة:** `SOURCE_PRESENT` فقط. لا مشروع Sentry، ولا مشروع PostHog معتمد، ولا إرسال. التفاصيل الكاملة في `docs/MONITORING-AND-ANALYTICS-WIRING.md`.
+
+### 10.1 الفصل الملزم
+
+1. **Sentry** = تتبع أخطاء الخادم فقط. لا بيانات عملاء، لا متن محادثة، لا أجسام طلبات، لا هوية.
+2. **PostHog** = أحداث استخدام صريحة فقط. لا auto-capture، لا replay، لا heatmaps، لا person profiles، لا tenant/user ID.
+3. **مفتاح إيقاف مستقل** لكل طبقة (`AIGAS_SENTRY_KILL_SWITCH` / `AIGAS_POSTHOG_KILL_SWITCH`) ولا يعتمد على `AIGAS_APP_ENABLED`.
+4. **صحة CDN/Render على `/`** لا تثبت `/app/api/kernel/health/`؛ يجب مراقبة المسارين منفصلين.
+
+### 10.2 بوابات التفعيل (كلها مغلقة الآن)
+
+| # | البوابة | معيار الإغلاق | المالك | الحالة |
+|---|---|---|---|---|
+| M1 | Sentry approval | مشروع محدد + DSN في Secret Store + سياسة احتفاظ + موافقة أمن/خصوصية | المالك + الأمن | `BLOCKED` |
+| M2 | Analytics approval | مشروع PostHog محدد + قرار تحليلات موقّع + تقوية إعدادات المشروع | المالك + الخصوصية | `BLOCKED` |
+| M3 | Alert routing | وجهات 5xx/Auth/RLS/Ledger/Provider معتمدة (قرارات 96/97) | العمليات + الأمن | `BLOCKED` |
+| M4 | On-call | Incident owner + جدول تصعيد + قناة إخطار موثقة | المالك | `BLOCKED` |
+| M5 | Payload review | فحص حدث Sentry وأحداث PostHog فعليًا وخلوّها من PII | الخصوصية | `BLOCKED` |
+
+### 10.3 قواعد تنبيه لا تُنشأ تلقائيًا
+
+1. أي `5xx` متكرر على أي `surface`.
+2. `AUTH_UNAVAILABLE` أو `INVITATION_*` متكرر.
+3. أي `*_DB_PRIVILEGE` أو `TENANT_*` أو `RLS_*`.
+4. أي `LEDGER_VERIFICATION_MISMATCH`.
+5. `PROVIDER_TIMEOUT` فوق العتبة المعتمدة.
+6. انحراف `/app/` عن 503 عند `AIGAS_APP_ENABLED=false`.
+7. `operationalHealth()` بحالة `blocked`/`degraded` متتالية.
+
+**لا تُضاف قنوات Slack/بريد/PagerDuty ولا أرقام on-call في هذه المرحلة.** أي ربط خارجي يحتاج تفويضًا منفصلًا.
+
+### 10.4 الإيقاف والتراجع
+
+```text
+AIGAS_SENTRY_KILL_SWITCH=true
+AIGAS_POSTHOG_KILL_SWITCH=true
+```
+
+لا يغيّر هذا البوابة أو المنتجات؛ يوقف الإرسال فقط. يُتحقق من التوقف بحدث اصطناعي واحد بعد إعادة التشغيل في بيئة معتمدة.

@@ -1,6 +1,7 @@
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
+import { captureServerFailure } from '../observability/index.mjs';
 import { operate } from './service.mjs';
 
 const headers = contractHeaders({ 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', Vary: 'Authorization', 'X-Content-Type-Options': 'nosniff' });
@@ -46,14 +47,21 @@ export function createHandler(auth = authenticate, service = operate) {
       const query = Object.fromEntries(['action', 'reason', 'mode', 'from', 'to', 'page'].map(key => [key, url.searchParams.get(key) ?? (key === 'page' ? '1' : '')]));
       const data = await service(identity, url.searchParams.get('workspace'), operation, body, query);
       const { httpStatus, ...payload } = data;
+      // A provider timeout is returned as data, not thrown: the provider state is
+      // UNKNOWN, so it must still surface as an operational signal.
+      if (data?.code === 'PROVIDER_UNAVAILABLE' && (data?.httpStatus ?? 200) >= 500) {
+        void captureServerFailure(null, { surface:'firewall', code:'PROVIDER_TIMEOUT', status:data.httpStatus, pathname:url.pathname, dependency:'temporarily unavailable', operation:'POST' });
+      }
       return Response.json(payload, { headers, status: httpStatus ?? (operation === 'create' ? 201 : 200) });
     } catch (error) {
       const known = error instanceof KernelError ? error : setupError(error);
       if (known) {
         const setup = ['FIREWALL_SCHEMA_MISSING', 'FIREWALL_SCHEMA_OUTDATED', 'FIREWALL_DB_PRIVILEGE'].includes(known.code);
         const dependencyStatus = known.dependencyStatus ?? (known.code.includes('SCHEMA') ? 'not configured' : known.code.includes('PRIVILEGE') ? 'access denied' : dependencyStatusForError(known));
+        void captureServerFailure(error,{surface:'firewall',code:known.code,status:known.status,pathname:new URL(request.url).pathname,dependency:dependencyStatus,operation:'POST'});
         return Response.json(errorBody({ code: known.code, message: known.message, dependencyStatus, extra: setup ? { setup: true } : {} }), { headers, status: known.status });
       }
+      void captureServerFailure(error,{surface:'firewall',code:'FIREWALL_UNAVAILABLE',status:503,pathname:new URL(request.url).pathname,dependency:'temporarily unavailable',operation:'POST'});
       return Response.json(errorBody({ code: 'FIREWALL_UNAVAILABLE', dependencyStatus:'temporarily unavailable', message: 'تعذر تأكيد نتيجة العملية؛ تحقق من إعداد قاعدة البيانات والسجل. لا تتابع خارج مسار الإنفاذ ولا تعِد التنفيذ تلقائيًا.' }), { headers, status: 503 });
     }
   };

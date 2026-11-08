@@ -1,8 +1,19 @@
 ---
 import BrandLogo from '../components/BrandLogo.astro';
+import { captureProductEvent } from '../server/observability/index.mjs';
+import { productSlug, sectionFor } from '../server/observability/redact.mjs';
 import '../styles/variables.css';
 import '../styles/kernel.css';
 const { title = 'مساحة العمل' } = Astro.props;
+// Server-side, explicit, and disabled unless the analytics approval gates are
+// satisfied. Only a fixed section slug and product slug are sent: no user,
+// tenant, workspace, email, query string, or page content.
+if (Astro.request.method === 'GET') {
+  const section = sectionFor(Astro.url.pathname);
+  if (section) void captureProductEvent('portal_viewed', { section });
+  const product = productSlug(Astro.url.pathname);
+  if (product) void captureProductEvent('product_opened', { product });
+}
 Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 Astro.response.headers.set('CDN-Cache-Control', 'no-store');
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');

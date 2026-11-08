@@ -1,3 +1,33 @@
+## [2026-11-09] — طبقتا مراقبة opt-in (Sentry/PostHog) وبوابات G8/G9
+
+### تم التنفيذ
+- HEAD الفعلي `9bee68f450a55396528819d738e728b438475973` (`main`). الـSHA `46ecaea…` والمرشح `3eaf6907…` تاريخيان؛ لم يُنسب أي دليل تشغيلي إلى HEAD الحالي.
+- أُضيفت طبقة `src/server/observability/` بلا أي حزمة SDK جديدة: تهيئة بوابات، قوائم سماح، عميل Sentry Envelope مبسّط، وعميل PostHog capture صريح. كلتاهما مطفأتان افتراضيًا وتحتاجان مرجع اعتماد + بيئة معتمدة + علمًا خاصًا.
+- Sentry (خادمي فقط؛ لا SDK متصفح): فقط 5xx وأكواد Auth/Invite/RLS/Ledger/Provider المحددة. لا `error.message` خام، ولا request/cookies/user/IP/body، ولا DSN/مفاتيح/متن محادثة. يُرسل رمز ثابت + مسار ثابت + stack من `src/dist/scripts` فقط.
+- PostHog: قائمة أحداث صريحة (`portal_viewed`, `product_opened`, `policy_action_result`, `quota_exhausted`, `login_flow_result` كعقد) وخصائص محددة فقط؛ `distinct_id` عشوائي و`$process_person_profile=false` و`$geoip_disable=true`. لا auto-capture/replay/heatmaps.
+- وُصلت Sentry بأخطاء Kernel/Human Gate/Ledger/Risk Engine/Firewall/Secure Chat، وبإشارة `LEDGER_VERIFICATION_MISMATCH`. وُصل PostHog بـ`AppLayout` (portal/product) وبـHuman Gate policy وSecure Chat quota. `login_flow_result` غير موصول لأن Neon Auth يتم في المتصفح.
+- مفتاح إيقاف مستقل لكل طبقة (`AIGAS_SENTRY_KILL_SWITCH`/`AIGAS_POSTHOG_KILL_SWITCH`) ولا يعتمد على `AIGAS_APP_ENABLED`. لم تُضف القيم إلى `render.yaml` أو `.env.example`.
+- وُثّق عقد البيانات وخطة تحقق Staging V1–V6 في `docs/MONITORING-AND-ANALYTICS-WIRING.md`، وأُضيف قسم 10 إلى Runbook، وحالة V15 إلى VERIFICATION-PLAN.
+- تحديث Gates: G1 بقي `PASS` بنطاق عام فقط مع تسجيل أن مسح 2026-11-08 أقدم من HEAD الحالي؛ G2–G8 بقيت `BLOCKED`؛ G9 بقي `NOT_VERIFIED`. لا GO.
+
+### الملفات المتأثرة
+- `src/server/observability/{config,redact,sentry,posthog,index}.mjs` (جديد)
+- `src/server/{kernel,human-gate,ledger,risk-engine,firewall}/http.mjs`, `src/server/secure-chat/service.mjs`, `src/layouts/AppLayout.astro`
+- `docs/MONITORING-AND-ANALYTICS-WIRING.md` (جديد), `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md`
+- `docs/beta/RC-3eaf6907c35d0a138984defb5cf9f947f9520f82/{GO-NO-GO-GATES.yaml,VERIFICATION-PLAN.md}`, `docs/FINAL-RELEASE-HANDOFF.md`
+
+### التحقق
+- `node --check` لكل ملفات `.mjs` المعدلة/الجديدة و`git diff --check`: PASS (فحص صياغة فقط).
+- YAML: 9 بوابات صالحة، القرار `NO-GO`، G1 PASS وG8 BLOCKED وG9 NOT_VERIFIED: PASS.
+- Build/tests/lint/typecheck/Playwright/E2E/HTTP/إرسال أحداث/نشر: NOT RUN حسب نطاق الدفعة. لا `RUNTIME_VERIFIED`.
+
+### النتيجة
+- **الحالة:** DONE محليًا للـwiring والتوثيق؛ **PARTIAL** للحالة العامة. **G8=BLOCKED** وG9=NOT_VERIFIED. لا ادعاء تفعيل أو مراقبة Live.
+
+### ملاحظات / مشاكل مفتوحة
+- Sentry MCP: منظمة `659ec3bf0cec` بلا أي مشروع. PostHog: مشروع `Default project` (720936) بلا أحداث، وإعداداته تحتاج تقوية (`autocapture_opt_out`, `capture_console_log_opt_in`, `capture_performance_opt_in`, `heatmaps_opt_in`, `anonymize_ips=true`). لم يُختر مشروع/منظمة نيابة عن المالك ولم تُغيَّر أي إعدادات.
+- يلزم: مشروع Sentry معتمد + DSN في Secret Store، مشروع PostHog معتمد + قرار تحليلات، مراجعة payload، وجهات Alert/on-call، ثم تنفيذ V1–V6 على Staging ببيانات اصطناعية وتوقيع G8/G9.
+
 ## [2026-11-09] — سجل موافقات G6 والتجربة المقيدة وحدود fail-closed
 
 ### تم التنفيذ
@@ -457,35 +487,3 @@
 - **الحالة:** PARTIAL — إصلاح CSS محلي، دون تحقق مرئي بعد التعديل.
 ### ملاحظات / مشاكل مفتوحة
 - لم تتوفر معاينة محلية بعد التغيير؛ لم يُنشر أو يُرفع أي شيء.
-
-## [2026-11-08] — توضيح حالات Ledger وHuman Gate
-### تم التنفيذ
-- رُبطت شارات Human Gate بحالة الطلب القادمة من الخادم؛ الانتظار كهرماني والاعتماد البنفسجي والتنفيذ الأخضر، مع بقاء نص الحالة ومسار القرار كما هما.
-- أضيف تمييز بصري لحالة سلامة كل حدث في جدول Ledger بحسب القيمة الفعلية، ويظهر `UNVERIFIED` تحذيريًا دون استنتاج نجاح.
-- لُوّنت رسائل Firewall حسب حالة الخطأ أو التحميل الناجح؛ لم تتغير قواعد السياسة أو API أو الخدمات.
-- المراجع: 21st `Audit Log Table` (29266) و`Approval Card` (36498). Figma بلا ملف BRIGHT AI محدد؛ Lazyweb tool غير متاح (`Tool lazyweb_search not found`)؛ Made Good Designs غير معروضة في الجلسة.
-### الملفات المتأثرة
-- `src/scripts/human-gate.ts`, `src/scripts/ledger.ts`
-- `src/styles/human-gate.css`, `src/styles/ledger.css`, `src/styles/firewall.css`
-### التحقق
-- `git diff --check`: PASS. Playwright المحلي على 390px مع بيانات اصطناعية مؤقتة: لا تجاوز لعرض الصفحة؛ حالة `UNVERIFIED` ظلت داخل منطقة تمرير الجدول، وتباينت شارات الطلب حسب قيم الحالة.
-- Chrome DevTools: BLOCKED لأن ملف المتصفح مشغول؛ استُخدم Playwright للمعاينة. لا تسجيل دخول أو API actions أو بيانات فعلية. Build والاختبارات: NOT RUN حسب الطلب.
-### النتيجة
-- **الحالة:** PARTIAL — صقل واجهة محلي، دون تحقق من حالات مستخدم موثقة/خلفية أو من المتصفح الأساسي.
-### ملاحظات / مشاكل مفتوحة
-- الوصول إلى بيانات المؤسسة الفعلية لم يُستخدم ولم يُتحقق؛ معاينة الحالات المحمية كانت اصطناعية فقط.
-
-## [2026-11-08] — تحسين Shell مساحة العمل ونماذج Auth
-### تم التنفيذ
-- أضيف عنوان الصفحة الحالية في شريط App، وصار مؤشر التنقل النشط يستخدم حدًا منطقيًا مناسبًا لـRTL؛ الروابط والشعار والهيدر العام وHero وConstellation لم تتغير.
-- وجّه التسجيل والدخول التركيز لأول حقل غير صالح، وأظهر حالة بدء التحقق من الجلسة.
-- منع قبول الدعوة من تكرار الإجراء أثناء الطلب مع توضيح حالة الانشغال؛ بقي التحقق الخادمي وNeon Auth وRBAC كما هي.
-- المرجع: 21st `Dashboard Shell` (43212) لهرمية shell وحالة التنقل؛ Figma لا fileKey؛ Lazyweb استدعى الاسم لكن الخادم أعاد `Tool lazyweb_search not found`؛ Chrome العام `/app/` = 404 والمحلي حُجب بـ`listen EPERM`؛ Made Good Designs غير متاح.
-### الملفات المتأثرة
-- `src/layouts/AppLayout.astro`, `src/styles/kernel.css`, `src/pages/auth/sign-up.astro`, `src/pages/auth/accept-invitation.astro`, `src/scripts/kernel.ts`
-### التحقق
-- `git diff --check`: PASS. Build/tests: NOT RUN حسب الطلب. المعاينة المحلية بعد التعديل: BLOCKED بسبب منع فتح المنفذ.
-### النتيجة
-- **الحالة:** PARTIAL — تعديل محلي؛ تحقق الواجهة بالمتصفح غير متاح.
-### ملاحظات / مشاكل مفتوحة
-- لم تُثبت إتاحة `/app/*` في الإنتاج؛ لم يُنفذ تسجيل دخول أو إجراء دعوة.

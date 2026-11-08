@@ -1,6 +1,7 @@
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
+import { captureProductEvent, captureServerFailure } from '../observability/index.mjs';
 import { operate } from './service.mjs';
 const headers = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
 function setupError(error) {
@@ -29,12 +30,18 @@ export function createHandler(auth=authenticate, service=operate) {
       const params=new URL(request.url).searchParams;
       const body=bodyOperations.has(operation)?await readBody(request):{};
       const data=await service(identity,params.get('workspace'),operation,body,params,id);
-      return Response.json(data,{status:operation==='create'?201:200,headers});
+      const status=operation==='create'?201:200;
+      const category={policy:'policy_update',decide:'decision',execute:'execution',delegate:'delegation','revoke-delegation':'revoke'}[operation];
+      // Category only: no request ID, tenant, reviewer, or decision content.
+      if(category) void captureProductEvent('policy_action_result',{action_category:category,status_code:status});
+      return Response.json(data,{status,headers});
     } catch(error) {
       const known=error instanceof KernelError;
       const setup=known?null:setupError(error);
       const dependencyStatus=known?dependencyStatusForError(error):setup?.code==='HUMAN_GATE_SCHEMA_MISSING'?'not configured':setup?'access denied':'temporarily unavailable';
-       return Response.json(errorBody({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.',dependencyStatus}),{status:known?error.status:503,headers});
+      const status=known?error.status:503;
+      void captureServerFailure(error,{surface:'human-gate',code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',status,pathname:new URL(request.url).pathname,dependency:dependencyStatus,operation:'POST'});
+       return Response.json(errorBody({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.',dependencyStatus}),{status,headers});
     }
   };
 }
