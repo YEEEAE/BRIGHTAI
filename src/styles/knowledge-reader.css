@@ -44,7 +44,18 @@
   border:1px solid var(--border-subtle);
   border-radius:10px;
   background:var(--surface-raised);
-  scrollbar-width:thin
+  scrollbar-width:thin;
+  scrollbar-color:var(--border-strong) transparent;
+  overscroll-behavior:contain
+}
+.kr-side-inner::-webkit-scrollbar {
+  inline-size:8px
+}
+.kr-side-inner::-webkit-scrollbar-thumb {
+  border:2px solid transparent;
+  border-radius:999px;
+  background:var(--border-strong);
+  background-clip:padding-box
 }
 .kr .kr-label {
   font-size:13px;
@@ -181,7 +192,12 @@
   padding:20px;
   text-decoration:none;
   display:block;
-  min-block-size:44px
+  min-block-size:44px;
+  transition:border-color 140ms,background 140ms
+}
+.kr-related a:is(:hover,:focus-visible) {
+  border-color:var(--color-action);
+  background:var(--surface-raised-hover)
 }
 .kr-related a>span {
   font-size:13px;
