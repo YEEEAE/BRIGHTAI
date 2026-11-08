@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { transaction } from './db.mjs';
+import { transaction, connectionPrivilege } from './db.mjs';
 import { productGrants } from './access.mjs';
 import { trialProductAccess } from './trial.mjs';
 import { tenantGuard, memberships, audit } from './service.mjs';
@@ -131,7 +131,14 @@ export async function manageInvitation(identity, requested, body) {
       await memberships(identity.userId, db);
       // Lock registration first: one acceptance cannot create duplicate memberships or audit events.
       const record = (await db.query('SELECT * FROM public.aigas_member_invitations WHERE invitation_id=$1 FOR UPDATE', [body.invitationId])).rows[0];
-      if (!record) throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير مسجلة في Kernel.');
+      if (!record) {
+        // Under the NOBYPASSRLS runtime role the invitation row is hidden until a
+        // membership exists, so acceptance needs a reviewed bootstrap path. Report
+        // configuration, not a false "unknown invitation", and grant nothing.
+        const posture = await connectionPrivilege(db).catch(() => ({ rlsEnforced: true }));
+        if (posture.rlsEnforced) throw new KernelError(503, 'INVITATION_BOOTSTRAP_REQUIRED', 'قبول الدعوة يتطلب مسار تهيئة معتمدًا قبل تفعيل دور التشغيل المقيد. لم تُمنح أي عضوية.');
+        throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير مسجلة في Kernel.');
+      }
       if (record.accepted_by === identity.userId) {
         const membership = (await db.query("SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2", [record.tenant_id, identity.userId])).rows[0];
         if (membership?.role === 'MEMBER') return { persisted: true, tenantId: record.tenant_id };
@@ -144,9 +151,14 @@ export async function manageInvitation(identity, requested, body) {
       if (!nativeInviter || !['owner','admin'].includes(nativeInviter.role)) throw new KernelError(403, 'INVITER_AUTHORITY_REVOKED', 'لم تعد صلاحية الداعي تسمح بإنهاء العضوية.');
       const valid = (await db.query(`SELECT i.id FROM neon_auth.invitation i JOIN public.aigas_auth_organizations o ON o.organization_id=i."organizationId" JOIN neon_auth."user" u ON lower(u.email)=lower(i.email) JOIN neon_auth.member m ON m."organizationId"=o.organization_id AND m."userId"=u.id WHERE i.id=$1 AND o.tenant_id=$2 AND i."inviterId"=$3 AND i.status='accepted' AND i.role='member' AND m.role='member' AND i."expiresAt">now() AND u.id=$4 AND u."emailVerified" IS TRUE AND u.banned IS NOT TRUE`, [body.invitationId, record.tenant_id, record.invited_by, identity.userId])).rows[0];
       if (!valid) throw new KernelError(403, 'INVITATION_NOT_ACCEPTED', 'يلزم قبول دعوة Auth الصحيحة ببريد موثّق؛ لم تُمنح أي عضوية.');
-      await db.query("INSERT INTO public.aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,'MEMBER') ON CONFLICT DO NOTHING", [record.tenant_id, identity.userId]);
-      await db.query('UPDATE public.aigas_member_invitations SET accepted_by=$2,accepted_at=now() WHERE invitation_id=$1', [body.invitationId, identity.userId]);
-      await audit(db, identity, record.tenant_id, 'kernel.invitation.accepted', auditContext());
+      try {
+        await db.query("INSERT INTO public.aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,'MEMBER') ON CONFLICT DO NOTHING", [record.tenant_id, identity.userId]);
+        await db.query('UPDATE public.aigas_member_invitations SET accepted_by=$2,accepted_at=now() WHERE invitation_id=$1', [body.invitationId, identity.userId]);
+        await audit(db, identity, record.tenant_id, 'kernel.invitation.accepted', auditContext());
+      } catch (error) {
+        if (error?.code === '42501') throw new KernelError(503, 'INVITATION_BOOTSTRAP_REQUIRED', 'قبول الدعوة يتطلب مسار تهيئة معتمدًا قبل تفعيل دور التشغيل المقيد. لم تُمنح أي عضوية.');
+        throw error;
+      }
       return { persisted: true, tenantId: record.tenant_id };
     });
   }

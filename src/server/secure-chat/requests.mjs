@@ -5,6 +5,9 @@ import { KernelError } from '../kernel/core.mjs';
 import { INPUT_POLICY, usagePolicy } from './policy.mjs';
 
 async function scope(db, identity, tenantId) {
+  // requireProductAccess verifies membership and sets the unified transaction scope
+  // (aigas.tenant_id / aigas.user_id). The sc_* GUCs below feed only the read-only
+  // usage aggregate; they are not an authorization source and are set after the check.
   await requireProductAccess(db, identity, tenantId, 'secure-chat');
   await db.query("SELECT set_config('aigas.sc_tenant_id',$1,true),set_config('aigas.sc_user_id',$2,true)", [tenantId,identity.userId]);
 }

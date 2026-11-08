@@ -91,6 +91,7 @@
 | `0017_aigas_kernel_audit_context` | **غير مطبّق** | `aigas_audit_events` بلا `correlation_id/policy_version/idempotency_key` |
 | `0018_aigas_data_api_grant_hardening` | **غير مطبّق** | دور `authenticated` ما زال يملك DML على 31 جدولًا؛ Data API نشط على `public` |
 | `0019_aigas_runtime_least_privilege` | **غير مطبّق** | لا يوجد دور `aigas_runtime` ولا سياسات نطاق مؤسسة؛ دور Neon `neondb_owner` يتجاوز RLS. هوية DSN للخدمة المنشورة غير مثبتة هنا |
+| `0025_aigas_tenant_isolation_closure` | **غير مطبّق** | مسودة محلية catalog-driven تستكمل 0018/0019: منح دنيا، سياسات لكل جدول `aigas_*`، رفض `RESTRICTIVE` لـ`authenticated/anonymous`، فهارس مرجع عالمية، وفحوص posture. تحتاج staging وموافقة قبل التطبيق |
 | `0020_aigas_kernel_policy_review_requirements` | مطبّق | `aigas_policy_versions.required_approvals` موجود (تحقق 2026-11-08) |
 | `0021_aigas_risk_engine_acceptance_guard` | مطبّق | الدالة `aigas_re_guard_treatment` والـtrigger `aigas_re_treatment_guard` موجودان (تحقق 2026-11-08) |
 | `0022_aigas_reference_scope_guard` | **غير مطبّق** | لا يوجد `aigas_fw_decisions_request_scope_idx` ولا `aigas_sc_requests_scope_idx` |

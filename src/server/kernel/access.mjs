@@ -1,5 +1,5 @@
 import { KernelError, requireRole, products, isUuid } from './core.mjs';
-import { setTenantScope } from './db.mjs';
+import { setActorScope, setTenantScope, requireRlsPosture } from './db.mjs';
 import { trialProductAccess } from './trial.mjs';
 
 // Administrative access is not a commercial licence. The grant table currently
@@ -66,16 +66,17 @@ const referenceScopes = Object.freeze({
 
 export async function assertReferenceTenant(db, tenantId, kind, value) {
   const scope = referenceScopes[kind];
-  if (!scope || !isUuid(tenantId) || !isUuid(value)) return;
+  // Unknown kind, malformed tenant or malformed reference is a server/input error, not a
+  // reason to skip the guard. Returning early here would silently allow the write.
+  if (!scope) throw new KernelError(503, 'REFERENCE_GUARD_UNAVAILABLE', 'تعذر التحقق من مرجع العملية؛ لم تُنفّذ العملية.');
+  if (!isUuid(tenantId) || !isUuid(value)) throw new KernelError(400, 'INVALID_REFERENCE', 'مرجع العملية غير صالح.');
   let foreign;
   try {
     foreign = (await db.query(`SELECT 1 FROM ${scope.table} WHERE ${scope.column}=$1 AND tenant_id<>$2 LIMIT 1`, [value, tenantId])).rowCount > 0;
-  } catch (error) {
-    // The primary operation writes to this table next and will fail closed if
-    // the schema or grant is absent. This secondary check never turns a missing
-    // table into an allow.
-    if (error?.code === '42P01' || error?.code === '42501') return;
-    throw error;
+  } catch {
+    // A guard that cannot run must stop the operation. Under RLS this read cannot see a
+    // foreign row; migrations/0025 adds a global unique index as the database backstop.
+    throw new KernelError(503, 'REFERENCE_GUARD_UNAVAILABLE', 'تعذر التحقق من مرجع العملية؛ لم تُنفّذ العملية.');
   }
   if (foreign) throw new KernelError(409, 'REFERENCE_TENANT_CONFLICT', 'هذا المرجع مستخدم في مؤسسة أخرى؛ استخدم معرّفًا جديدًا. لم تُنفّذ العملية.');
 }
@@ -86,10 +87,15 @@ export async function assertReferenceTenant(db, tenantId, kind, value) {
 export async function requireProductAccess(db, identity, tenantId, slug) {
   const product = products.find(item => item.slug === slug);
   if (!product) throw new KernelError(404, 'NOT_FOUND', 'المنتج غير موجود.');
+  // A caller may arrive here without a prior tenantGuard (for example a product
+  // request after a separate membership-discovery transaction). Set actor scope
+  // first so the self-membership policy can see the row; then set tenant scope
+  // only after the membership check. A NOBYPASSRLS role therefore never needs a
+  // tenant predicate to be trusted from the request.
+  await setActorScope(db, identity.userId);
   const member = await assertTenantMembership(db, identity, tenantId);
-  // Scope the transaction only after the membership check so a future runtime role can rely
-  // on RLS without ever trusting a client-supplied tenant.
   await setTenantScope(db, tenantId, identity.userId);
+  await requireRlsPosture(db);
   let access;
   let trial;
   try {

@@ -1,3 +1,27 @@
+## [2026-11-08] — إغلاق نموذج عزل المؤسسات محليًا (Data API / RLS / Runtime Role)
+
+### تم التنفيذ
+- أُعيد فحص Neon قراءة فقط على `production`/`neondb`: `current_user=neondb_owner` مع `rolbypassrls=true` وعضوية في `authenticated`؛ 31/31 جدولًا RLS مفعّل و`FORCE=false`، سياستان فقط، `authenticated` يملك DML على 31 وEXECUTE على دوال `aigas_*`، وData API `active` على `public`. `aigas_runtime` غير موجود، وكل جداول AIGAS وAuth بلا سجلات.
+- أُضيف `migrations/0025_aigas_tenant_isolation_closure.sql` محليًا: دور `aigas_runtime` بـ`NOBYPASSRLS`، منح مصنفة (read-only/append-only/DML)، سياسات نطاق catalog-driven لكل جداول `aigas_*`، سياسة `RESTRICTIVE` تمنع `authenticated/anonymous`، فهارس عالمية لمراجع `fw_decisions.request_id` و`sc_requests.id`، وفحوص posture تفشل الترحيل عند بقاء ثغرة.
+- الكود: `setTenantScope`/`setActorScope` يفشلان خارج معاملة ويتحققان من القيم بعد الضبط؛ `requireProductAccess` يضبط actor ثم يتحقق من العضوية ثم tenant؛ `assertReferenceTenant` fail-closed؛ `requireRlsPosture` يرفض الاتصال المتجاوز عند `AIGAS_REQUIRE_RLS=true`؛ `createWorkspace` وقبول الدعوة يعيدان `*_BOOTSTRAP_REQUIRED` تحت RLS بدل منح صامت.
+- أُضيف سيناريو Tenant A/B في `docs/TENANT-ISOLATION-VERIFICATION.md` (NOT RUN) وحدّثت وثائق RLS والـblockers.
+- لم يُطبّق أي DDL/DCL على Neon، ولم يُشغّل build/tests/lint. `0025` محلي فقط.
+
+### الملفات المتأثرة
+- `migrations/0025_aigas_tenant_isolation_closure.sql`
+- `src/server/kernel/db.mjs`, `src/server/kernel/access.mjs`, `src/server/kernel/service.mjs`, `src/server/kernel/administration.mjs`, `src/server/secure-chat/requests.mjs`
+- `docs/DATA-ACCESS-AND-RLS.md`, `docs/TENANT-ISOLATION-VERIFICATION.md`, `docs/RELEASE-BLOCKERS-REGISTER.md`, `docs/CURRENT-IMPLEMENTATION-REGISTER.md`, `docs/FINAL-RELEASE-HANDOFF.md`
+
+### التحقق
+- Neon MCP read-only catalog/config: PASS؛ لا كتابة على Neon.
+- `git diff --check`: PASS. SQL لم يُشغّل، وسيناريو A/B لم يُشغّل، وbuild/tests/lint: NOT RUN حسب نطاق المهمة.
+
+### النتيجة
+- **الحالة:** PARTIAL — نموذج الوصول المقيد موجود في المصدر/Migration محليًا؛ العزل التشغيلي يبقى `BLOCKED` حتى موافقة المالك وتطبيق staging وتشغيل سيناريو A/B.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم مالك Neon لإخراج `public` من Data API أو تعطيل endpoint، وإنشاء Login لـ`aigas_runtime`، وفرع staging/استعادة. bootstrap أول مساحة عمل وقبول الدعوة يحتاجان مسارًا مميزًا معتمدًا. `0014/0016/0024` ما زالت غير مطبقة على الفرع المفحوص.
+
 ## [2026-11-08] — مطابقة ترحيلات Neon وتجهيز إصلاح محلي تزايدي
 ### تم التنفيذ
 - أُعيد فحص HEAD المحلي `5404026c5f01172cd3175a66286d2375554b80d4` ومخطط Neon بالقراءة فقط؛ الفرع الوحيد `production` ما زال `protected=false`، ولا يوجد migration ledger.

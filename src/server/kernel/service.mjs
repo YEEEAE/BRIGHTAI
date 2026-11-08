@@ -170,12 +170,19 @@ export async function createWorkspace(identity, name) {
     if (owned >= MAX_WORKSPACES_PER_USER) throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب؛ تواصل مع مشغّل المنصة.');
     // A new workspace always starts with its creator as the only OWNER. Existing members,
     // policies, invitations and product approvals are never copied from another tenant.
+    // Under the NOBYPASSRLS runtime role this path has no INSERT policy by design: first
+    // workspace provisioning must run through an approved privileged path, not a self-grant.
     const id = randomUUID();
-    await db.query('INSERT INTO public.aigas_tenants (id, name) VALUES ($1, $2)', [id, validated]);
-    await db.query("INSERT INTO public.aigas_memberships (tenant_id, user_id, role) VALUES ($1, $2, 'OWNER')", [id, identity.userId]);
-    await db.query("INSERT INTO public.aigas_product_access (tenant_id, product_slug) SELECT $1, unnest($2::text[])", [id, ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']]);
-    await audit(db, identity, id, 'workspace.created');
-    return id;
+    try {
+      await db.query('INSERT INTO public.aigas_tenants (id, name) VALUES ($1, $2)', [id, validated]);
+      await db.query("INSERT INTO public.aigas_memberships (tenant_id, user_id, role) VALUES ($1, $2, 'OWNER')", [id, identity.userId]);
+      await db.query("INSERT INTO public.aigas_product_access (tenant_id, product_slug) SELECT $1, unnest($2::text[])", [id, ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']]);
+      await audit(db, identity, id, 'workspace.created');
+      return id;
+    } catch (error) {
+      if (error?.code === '42501') throw new KernelError(503, 'WORKSPACE_PROVISIONING_REQUIRED', 'إنشاء أول مساحة عمل يتطلب مسار تهيئة معتمدًا قبل تفعيل دور التشغيل المقيد. لم تُنشأ أي مساحة.');
+      throw error;
+    }
   });
 }
 // Setup-state codes only: no host names, credentials, versions or SQL error text are returned.
