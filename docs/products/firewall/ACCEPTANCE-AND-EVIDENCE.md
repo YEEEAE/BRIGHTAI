@@ -230,6 +230,7 @@ Firewall-Release-Evidence/<release-id>/
 - سجل المزودين المعتمدين وسجل تكامل Human Gate فارغان عمدًا: `PROVIDER_NOT_CONFIGURED` يمنع الإرسال، و`HUMAN_GATE_NOT_CONFIGURED` يوقف `ESCALATE` دون إنشاء طلب أو استدعاء مزود.
 - طُبّق على Neon `production` في 2026-11-03 بتفويض صريح من المالك: `0012_aigas_firewall_five_state_upgrade.sql` (ترقية المخطط القديم ثلاثي الحالات) و`0010_aigas_kernel_policy_hierarchy.sql`. كانت القاعدة قبل الترحيل وبعده بلا مؤسسات أو قواعد أو قرارات أو سياسات؛ لم تُحوّل أو تُحذف بيانات تطبيق. `0011` لم يُطبّق لأنه غير لازم لهذه القاعدة.
 - هذه الحالة `SOURCE_PRESENT` مع مخطط مطبّق فقط. لم يُشغّل build أو tests أو typecheck، ولم يحدث نشر، ولم يُتحقق من runtime role grants/RLS أو جلسة حقيقية. جميع معايير القبول أعلاه تبقى `NOT_VERIFIED`.
+- (2026-11-08، محلي) أُضيف محول تحقق بلا شبكة (`local-adapter.mjs`)، وحقن مزود في `enforceDecision` مقبول فقط لـ`localSandbox/external:false`، وشرط `external:true` للمزود المعتمد. أُضيف `scripts/firewall-local-verify.mjs` و`docs/products/firewall/STAGING-VERIFICATION.md` (S1–S14). لم يُشغّل harness أو staging، والسجل المعتمد ما زال فارغًا.
 
 ## 10. متطلبات ربط سجل الحالة
 

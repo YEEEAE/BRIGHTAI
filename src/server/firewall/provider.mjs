@@ -2,6 +2,8 @@
 // terms have been approved for Firewall. Environment keys alone are not approval.
 // A future reviewed entry must bind an adapter to exact tenant IDs, an approval
 // reference/expiry, model/region and no-training terms. Never accept these from JSON.
+// `external:true` is required here so a non-network local adapter can never be
+// registered as an approved AI provider and reported as available.
 const approvedProviders = Object.freeze([]);
 // No per-operation provider timeout has been approved. 15s is a local guard default,
 // not an approved provider SLA; it must be reviewed before any adapter is enabled.
@@ -14,6 +16,8 @@ function valid(provider, tenantId) {
     && typeof provider.model === 'string' && provider.model.length > 0
     && typeof provider.region === 'string' && provider.region.length > 0
     && provider.noTraining === true
+    && provider.external === true
+    && provider.localSandbox !== true
     && typeof provider.generate === 'function';
 }
 export function approvedProvider(tenantId) {

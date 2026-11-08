@@ -11,7 +11,11 @@ const policyVersionFormat = /^[a-zA-Z0-9_.:-]{1,120}$/;
 // client decision token, arbitrary URL, alternate prompt or provider override.
 // Fail-closed order: Kernel ALLOW + durable binding are required before any
 // provider lookup, and only ALLOW/REDACT may cross the provider boundary.
-export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation }) {
+// `resolveProvider` is a server-only verification seam. It is used by the local
+// harness and never by the HTTP route; an injected adapter is accepted only when it
+// declares `localSandbox:true` and `external:false`, so injection cannot enable a
+// real provider that the approved registry did not authorise.
+export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation }, { resolveProvider = null } = {}) {
   const base = {
     decision,
     policy: kernelPolicy ? { decision: kernelPolicy.decision, action: kernelPolicy.action ?? null, reason: kernelPolicy.reason, obligations: kernelPolicy.obligations ?? [], mandatory: kernelPolicy.mandatory === true, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
@@ -103,23 +107,45 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
   if (policyVersion !== expectedPolicy || requestFingerprint !== expectedFingerprint) {
     return { ...base, httpStatus: 503, code: 'EXECUTION_BINDING_MISMATCH', message: 'بصمة القرار أو نسخة السياسة لا تطابق الطلب المحفوظ؛ لم يُرسل الطلب.' };
   }
-  const provider = approvedProvider(tenantId);
-  if (!provider) return { ...base, httpStatus: 503, code: 'PROVIDER_NOT_CONFIGURED', message: 'حُفظ قرار السياسة، لكن لا توجد جهة AI معتمدة ومهيأة لهذه المؤسسة؛ لم يُرسل الطلب.' };
+  const injected = typeof resolveProvider === 'function';
+  const provider = (injected ? resolveProvider : approvedProvider)(tenantId);
+  // An injected adapter is usable only as a non-network sandbox; the approved
+  // registry path is usable only for an entry that declares `external:true`.
+  // Anything else is treated exactly like a missing provider: no call, fail closed.
+  const localSandbox = injected && provider?.localSandbox === true && provider?.external === false;
+  if (!provider || (injected ? !localSandbox : provider.external !== true)) {
+    return { ...base, httpStatus: 503, code: 'PROVIDER_NOT_CONFIGURED', message: 'حُفظ قرار السياسة، لكن لا توجد جهة AI معتمدة ومهيأة لهذه المؤسسة؛ لم يُرسل الطلب.' };
+  }
   const controller = new AbortController();
   let timer;
   try {
     // Only evaluated output is available to the adapter, never the raw request.
+    // The approved model/region/tenant travel with the call so an adapter cannot
+    // pick a different destination, and no request field can override them.
     // No automatic retries or fallback to another provider.
     const deadline = new Promise((_, reject) => {
       timer = setTimeout(() => { controller.abort(); reject(new Error('PROVIDER_TIMEOUT')); }, PROVIDER_TIMEOUT_MS);
     });
-    const output = await Promise.race([provider.generate({ text: forwardText, signal: controller.signal }), deadline]);
+    const call = Object.freeze({
+      text: forwardText, signal: controller.signal,
+      tenantId, model: provider.model, region: provider.region,
+      approvalReference: provider.approvalReference ?? null, localSandbox,
+    });
+    const output = await Promise.race([provider.generate(call), deadline]);
     if (typeof output !== 'string' || output.length > 16000) throw new Error('INVALID_PROVIDER_RESPONSE');
+    // A local sandbox never leaves the process, so it must never be reported as an
+    // external execution or as EXECUTED.
+    if (localSandbox) return { ...base, external_action_executed: false, execution_status: 'LOCAL_SANDBOX_COMPLETED',
+      provider_kind: 'LOCAL_SANDBOX', response_text: output, httpStatus: 200 };
     return { ...base, external_action_executed: true,
       execution_status: decision.action === 'REDACT' ? 'REDACTED_AND_EXECUTED' : 'EXECUTED',
       response_text: output, httpStatus: 200 };
   } catch {
-    // A timeout cannot prove that the provider did not receive the request.
+    // For an external adapter a timeout cannot prove that the provider did not
+    // receive the request. A local sandbox has no egress, so the truthful state is
+    // NOT_EXECUTED rather than UNKNOWN.
+    if (localSandbox) return { ...base, external_action_executed: false, execution_status: 'NOT_EXECUTED',
+      code: 'LOCAL_SANDBOX_FAILED', message: 'فشل المحوّل المحلي بلا شبكة؛ لم يُرسل أي نص خارجي ولا توجد إعادة تلقائية.' };
     return { ...base, external_action_executed: null, execution_status: 'UNKNOWN', httpStatus: 503,
       code: 'PROVIDER_UNAVAILABLE', message: 'تعذر تأكيد نتيجة المزود؛ قد يكون الطلب وصل. لا تعِد الإرسال تلقائيًا.' };
   } finally { clearTimeout(timer); }

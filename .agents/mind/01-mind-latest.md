@@ -1,3 +1,27 @@
+## [2026-11-08] — إغلاق مسار Firewall المحلي: محول بلا شبكة وربط المزود المعتمد
+
+### تم التنفيذ
+- HEAD المحلي `43677303` (يختلف عن `7994d3ce` في الطلب). أُعيد فحص مسار Firewall: CRUD والحالات الخمس وGuard وربط Kernel وبصمة القرار وHuman Gate موجودة مصدريًا؛ لم يُشغّل build/tests/HTTP ولم تُكتب أي بيانات على Neon.
+- أُضيف تحقق صريح لأن المزود المعتمد يجب أن يعلن `external:true`؛ منع تسجيل محول محلي كجهة AI متاحة وإبقاء `approvedProviders=[]` و`PROVIDER_NOT_CONFIGURED`.
+- أُضيف `local-adapter.mjs` بمخرج اصطناعي ثابت، بلا fetch/DNS/socket/key، ولا يعيد نص الطلب؛ لا يُسجّل في السجل المعتمد ولا يظهر في الواجهة.
+- `enforceDecision` يقبل حقن مزود للتحقق فقط عندما يكون `localSandbox:true` و`external:false`؛ حقن مزود خارجي يُرفض كـ`PROVIDER_NOT_CONFIGURED`. يمرّر للمحول وصفًا مجمدًا يحمل tenant/model/region/approvalReference، ويُبلّغ نجاح المحلي `LOCAL_SANDBOX_COMPLETED` و`external_action_executed:false` (لا `EXECUTED`)، وفشله `LOCAL_SANDBOX_FAILED/NOT_EXECUTED` بدل `UNKNOWN`.
+- أُضيف `scripts/firewall-local-verify.mjs` (8 حالات: DENY/WARN/ESCALATE بلا استدعاء، ALLOW/ REDACT عند الحدود، رفض المحول الخارجي المحقون، بصمة/سياسة Kernel غير صالحة) و`docs/products/firewall/STAGING-VERIFICATION.md` بمصفوفة S1–S14 وشروط الاعتماد.
+
+### الملفات المتأثرة
+- `src/server/firewall/guard.mjs`, `src/server/firewall/provider.mjs`, `src/server/firewall/local-adapter.mjs`
+- `scripts/firewall-local-verify.mjs`, `docs/products/firewall/STAGING-VERIFICATION.md`, `docs/FIREWALL-DEVELOPMENT.md`
+
+### التحقق
+- `node --check` للملفات المعدلة والجديدة و`git diff --check`: PASS.
+- Harness المحلي، staging، HTTP، RLS، timeout، build/tests/lint: NOT RUN حسب نطاق دفعة الإغلاق؛ الأوامر جاهزة في مستند التحقق.
+- Neon: لم يُتصل ولم تُنفّذ أي كتابة في هذه المهمة.
+
+### النتيجة
+- **الحالة:** PARTIAL — الحدود المحلية والرفض الافتراضي وربط المزود `SOURCE_PRESENT`؛ لا `RUNTIME_VERIFIED` ولا اعتماد مزود أو Human Gate ولا نشر.
+
+### ملاحظات / مشاكل مفتوحة
+- تشغيل harness أو staging يحتاج خطوة مخوّلة منفصلة؛ اعتماد المزود يبقى `BLOCKED` لدى مالك المنتج + الأمن/الخصوصية + القانوني، وتكامل Human Gate لدى مالك Human Gate + الأمن.
+
 ## [2026-11-08] — إغلاق صلاحيات Kernel ومنح المنتجات والتجربة المحدودة مصدريًا
 
 ### تم التنفيذ
