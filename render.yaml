@@ -24,6 +24,11 @@ services:
       # Enable only after the owner authorizes exposing the portal on this Node service.
       - key: AIGAS_APP_ENABLED
         value: "false"
+      # The full CSP is defined in src/middleware.ts and shipped as Report-Only.
+      # Set true only after an authorized browser check of the public site, the
+      # GA4 tag and the Neon Auth sign-in flow. See docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md.
+      - key: AIGAS_CSP_ENFORCE
+        value: "false"
       - key: DATABASE_URL
         sync: false
       - key: NEON_AUTH_BASE_URL

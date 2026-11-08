@@ -1,3 +1,29 @@
+## [2026-11-08] — إغلاق الثقة والترويسات والاحتفاظ واستعداد التشغيل (CSP محددة + Runbook)
+
+### تم التنفيذ
+- HEAD المحلي `fd6d4645` (يختلف عن `7994d3ce` في الطلب). جُردت موارد الصفحة: بلا iframes/workers، كل سكربتات التطبيق حزم Astro same-origin، المحمّل الخارجي الوحيد هو GTM لوسم GA4، والاتصالات same-origin عدا GA4 وأصل Neon Auth من إعداد الخادم.
+- `src/middleware.ts`: أُضيفت سياسة موارد كاملة (`script-src`, `connect-src`, `img-src`, `font-src`, `style-src`, `default-src`) بأقل مصادر، مع بصمتي SHA-256 للسكربتين inline الثابتين (تهيئة GA4 + كتلة `js` في صفحتي معرفة). تُرسل كـ`Content-Security-Policy-Report-Only` افتراضيًا؛ الفرض يتطلب `AIGAS_CSP_ENFORCE=true` بعد فحص متصفح مخوّل. لا `unsafe-eval`؛ `style-src` يحتفظ بـ`'unsafe-inline'` لتضمين Astro مع توثيق التخفيف.
+- بقي baseline المفروض كما هو (`frame-ancestors/base-uri/form-action/object-src`) وترويسات البوابة (`no-store`/`noindex`/`HSTS` على HTTPS/`no-referrer`/`DENY`)؛ وُسّعت `Permissions-Policy` بـ`payment=(), usb=()`.
+- أُضيف `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md`: جرد CSP وبوابة الفرض، مصفوفة الترويسات، قواعد السجلات، مصفوفة احتفاظ/حذف/تصدير/Legal Hold فارغة عمدًا، قالب Incident/on-call، مؤشرات 4xx/5xx/latency وتعريف أن `healthCheckPath=/` لا يثبت API، مسار الدعم والأدلة، وبوابات إيقاف G1–G7 بتوقيعات.
+- حُدّثت `docs/DATA-PRIVACY-AND-SECURITY.md` (2.4/4/5/11) و`docs/CURRENT-IMPLEMENTATION-REGISTER.md` و`render.yaml` (`AIGAS_CSP_ENFORCE=false` صريحًا). لم تُمس الهيدر/Hero/Constellation/الشعار أو ترتيب الأقسام.
+- لم يُتصل بـNeon ولم تُنفّذ أي كتابة/DDL/نشر/commit/push، ولم تُضف مدة احتفاظ أو جهة اتصال أو ادعاء استضافة أو اعتماد.
+
+### الملفات المتأثرة
+- `src/middleware.ts`, `render.yaml`
+- `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md` (جديد), `docs/DATA-PRIVACY-AND-SECURITY.md`, `docs/CURRENT-IMPLEMENTATION-REGISTER.md`
+
+### التحقق
+- `node --experimental-strip-types --check src/middleware.ts`: PASS. `git diff --check`: PASS.
+- فحص المصدر: لا `console.*` في `src/`، ورسائل أخطاء الخادم/المنتجات رموز ثابتة لا تُعيد رسالة السائق أو المتن.
+- Build/typecheck/HTTP/browser/E2E/Neon/النشر: NOT RUN حسب نطاق المهمة؛ بصمات inline غير متحققة على مخرجات build.
+
+### النتيجة
+- **الحالة:** PARTIAL — الترويسات وسياسة CSP المعرّفة ووثائق التشغيل `SOURCE_PRESENT`؛ الفرض والسلوك الفعلي `NOT_VERIFIED`، وسياسات الاحتفاظ/الحوادث/on-call `BLOCKED` حتى توقيع المالك/القانوني/الأمن.
+
+### ملاحظات / مشاكل مفتوحة
+- تفعيل `AIGAS_CSP_ENFORCE=true` يحتاج بناءً وفحص متصفح لصفحة عامة و`/auth/sign-up/` و`/app/kernel/` وتأكيد بصمات inline؛ لا يُفرض قبل ذلك.
+- لا نقطة جمع بلاغات CSP ولا SIEM، ولا مدة احتفاظ أو Incident owner أو جهة on-call معتمدة؛ G2 (تدوير الأسرار) وG5 (دور runtime/Data API) ما زالا مفتوحين.
+
 ## [2026-11-08] — إغلاق Secure Chat: حصة fail-closed وخصوصية المتن للمشارك فقط
 
 ### تم التنفيذ

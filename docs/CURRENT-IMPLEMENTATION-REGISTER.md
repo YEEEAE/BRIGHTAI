@@ -206,6 +206,7 @@
 | سياسات المؤسسة/الإدارات | Y (`kernel/policies.mjs`) | Y | لا سياسة منشورة |
 | التدقيق الأساسي | Y (`audit`) | P | `0017` ناقص |
 | Health/التشغيل | Y (`operationalHealth`) | Y | لا تشغيل معتمد |
+| ترويسات الأمان وCSP | Y (`src/middleware.ts`: baseline مفروض + سياسة موارد Report-Only) | — | لا تحقق متصفح؛ الفرض يحتاج `AIGAS_CSP_ENFORCE=true` بعد اعتماد |
 
 ---
 
@@ -219,6 +220,7 @@
 | Firewall FEATURE-STATUS يقول `neon_migration_applied: false` | المخطط الفعلي يثبت 0002 + 0012؛ صُحح مع بقاء 0013/0017 عائقًا | `docs/products/firewall/FEATURE-STATUS.yaml` |
 | Ledger FEATURE-STATUS يقول `ledger_migration_applied_to_neon: false` | 0003 موجودة، و0013 غير مطبّق؛ فُصلت الحالتان | `docs/products/ledger/FEATURE-STATUS.yaml` |
 | Catalog يستخدم `REQUEST_APPROVAL/BLOCK` والكود `ESCALATE/DENY` | تعيين صريح لا يغيّر المتطلب | `docs/PRODUCT-MASTER-CATALOG.yaml` |
+| CSP كانت baseline فقط بلا `script-src`/`connect-src` | أُضيفت سياسة موارد محددة تُرسل Report-Only، وجرد المصادر في runbook | `src/middleware.ts` |
 
 **لم يُغيَّر:** Hero، Constellation، الهيدر، الشعار، نصوص الأقسام التسويقية، روابط الحجز (`mailto`)، أو أي عقد API تشغيلي. لم تُضف ادعاءات إتاحة.
 

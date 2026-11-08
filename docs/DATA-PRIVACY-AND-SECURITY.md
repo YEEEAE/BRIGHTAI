@@ -1,7 +1,7 @@
 # الخصوصية والأمن — ضوابط مصدرية ومتطلبات تشغيل مستهدفة
 
 > **الحالة:** مرجع محلي. يفرّق هذا المستند بين ما هو **موجود في كود المصدر** (`SOURCE_PRESENT`)، وما هو **متطلب تشغيلي مستهدف** (`TARGET_REQUIREMENT`) لم يُبنَ بعد، وما يبقى **غير متحقق** (`NOT_VERIFIED`). لا يُعد هذا المستند شهادة امتثال ولا نتيجة اختبار أمني.
-> **تاريخ:** 2026-11-03 | **النطاق:** Astro 6 + `@astrojs/node` (standalone) + Neon Auth + `pg` + Secure Chat/AIGAS Kernel داخل هذا المستودع.
+> **تاريخ:** 2026-11-03، محدّث 2026-11-08 | **النطاق:** Astro 6 + `@astrojs/node` (standalone) + Neon Auth + `pg` + Secure Chat/AIGAS Kernel داخل هذا المستودع.
 > **العلاقة بوثائق أخرى:** عزل المؤسسات وRLS في `docs/DATA-ACCESS-AND-RLS.md`؛ تشغيل البوابة في `docs/APP-PORTAL-RUNTIME-HANDOFF.md`؛ حماية فرع قاعدة البيانات في `docs/NEON-BRANCH-PROTECTION-RUNBOOK.md`؛ سياسة التجربة في `docs/ENTERPRISE-TRIAL-POLICY.md`.
 
 ---
@@ -56,13 +56,14 @@
 | `X-Content-Type-Options` | `nosniff` |
 | `X-Frame-Options` | `DENY` لمنطقة `/app` وكل API؛ `SAMEORIGIN` للعام |
 | `Content-Security-Policy` | `frame-ancestors` + `base-uri 'self'` + `form-action 'self'` + `object-src 'none'`؛ تُدمج مع أي سياسة يضيفها المسار بدل استبدالها |
+| `Content-Security-Policy-Report-Only` | سياسة موارد كاملة (`script-src`, `connect-src`, `img-src`, `font-src`, `style-src`) بحد أدنى من المصادر |
 | `Referrer-Policy` | `no-referrer` لمنطقة `/app`، `strict-origin-when-cross-origin` للعام |
-| `Permissions-Policy` | تعطيل الكاميرا والميكروفون والموقع |
+| `Permissions-Policy` | تعطيل الكاميرا والميكروفون والموقع والدفع وUSB |
 | `Strict-Transport-Security` | `max-age=15552000` عند تأكيد HTTPS فقط |
 | `Cross-Origin-Resource-Policy` | `same-origin` |
 | `X-Permitted-Cross-Domain-Policies` | `none` |
 
-**ليست سياسة سكربتات كاملة:** لا `script-src` ولا `style-src` ولا `connect-src`، وبالتالي لا ادعاء حماية XSS شاملة. إضافة `unsafe-inline` أو `unsafe-eval` تبقى ممنوعة دون مراجعة سياسة موثقة.
+**سياسة السكربتات/الاتصالات معرّفة لكنها غير مفروضة:** أُضيفت في `src/middleware.ts` سياسة موارد كاملة تجرد المصادر المطلوبة فعليًا (`'self'`، GTM لوسم GA4، مضيفات جمع GA4، أصل Neon Auth من إعداد الخادم، بصمتا SHA-256 للسكربتين inline الثابتين). تُرسل افتراضيًا كـ`Content-Security-Policy-Report-Only` حتى لا تُعطّل Analytics أو عميل الدخول دون فحص متصفح؛ الفرض يتطلب `AIGAS_CSP_ENFORCE=true` بعد تحقق مخوّل. **لا `unsafe-eval`.** يبقى `style-src 'unsafe-inline'` تخفيفًا معروفًا لأن Astro يضمّن أنماطًا ولأن واجهة الدخول تعتمد عليها. الجرد وبوابة الفرض في `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md` §1.
 
 ### 2.5 بوابة `/app` لا تُتجاوز بمسار مُرمّز — `SOURCE_PRESENT` بعد هذه المهمة
 
@@ -108,7 +109,7 @@ Astro يطابق المسارات على مسار **مفكوك الترميز**�
 
 ## 4. التعامل مع الحوادث Incident handling — `TARGET_REQUIREMENT`
 
-**غير منفذ.** لا يوجد اليوم: جهة اتصال أمنية معلنة، حالة on-call، تصنيف شدة معتمد، مسار إبلاغ العميل، ولا صفحة حالة عامة.
+**غير منفذ.** لا يوجد اليوم: جهة اتصال أمنية معلنة، حالة on-call، تصنيف شدة معتمد، مسار إبلاغ العميل، ولا صفحة حالة عامة. القالب وحقول الملء في `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md` §5، وكل صف فيه ما زال `BLOCKED` حتى توقيع Incident owner والقانوني.
 
 المطلوب قبل أي وعد تعاقدي:
 
@@ -133,6 +134,8 @@ Astro يطابق المسارات على مسار **مفكوك الترميز**�
 - قيم مثل `support_log_retention` و`backup_purge_schedule` و`legal_hold_authority` غير محسومة (انظر `docs/ENTERPRISE-TRIAL-POLICY.md` §10.4).
 
 **العائق:** تحديد المدة يحتاج قرار مالك + تصنيف بيانات + مراجعة قانونية، ثم تنفيذ آلي للتنظيف. لا يُكتب رقم في الكود أو الموقع قبل ذلك.
+
+**القالب الملزم:** مصفوفة فئات البيانات مع أعمدة المدة/الأساس/Legal Hold/الحذف والتصدير/مالك الاعتماد، وحقول توقيع فارغة، في `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md` §4. لا تُملأ إلا بقرار موقّع.
 
 ---
 
@@ -230,6 +233,8 @@ Astro يطابق المسارات على مسار **مفكوك الترميز**�
 | Origin على كل كتابة | فحص مسارات الكتابة | `SOURCE_PRESENT` |
 | no-store/noindex لمنطقة `/app` | `src/middleware.ts` + `AppLayout` | `SOURCE_PRESENT` |
 | إغلاق مسار مُرمّز لبوابة `/app` | `normalizePath` في `src/middleware.ts` | `SOURCE_PRESENT` |
+| سياسة CSP موارد محددة | `resourcePolicy` في `src/middleware.ts`؛ تُرسل Report-Only | `SOURCE_PRESENT` / غير مفروضة |
+| الاحتفاظ/الحذف/الحوادث/on-call | قوالب ملء وحقول اعتماد في `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md` | `BLOCKED — توقيع المالك/القانوني/الأمن` |
 | تشغيل/اختبار/بناء/اختراق/نشر | لم يُشغّل بطلب المهمة | `NOT RUN` / `NOT_VERIFIED` |
 
 لا يُصدر هذا المستند شهادة Go-Live ولا نتيجة اختبار أمني.
