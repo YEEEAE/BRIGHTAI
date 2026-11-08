@@ -12,6 +12,8 @@
   --decision-block: #e5484d;
 }
 .interior-page .motion-study { margin-block: 56px; padding-block: 32px; border-block: 1px solid var(--ui-line); }
+.interior-page .content-status { display: inline-flex; align-items: center; min-block-size: 26px; padding: 2px 9px; margin-inline-start: 8px; border: 1px solid #8052ff66; border-radius: 999px; background: #8052ff12; color: #d7c7ff; font: 600 11px/1.4 ui-monospace,monospace; vertical-align: middle; white-space: nowrap; }
+.interior-page .content-status.status-planned { border-color: #ffb82966; background: #ffb82912; color: #ffcf69; }
 .interior-page .motion-study h2 { font-size: clamp(24px,3vw,38px); }
 .interior-page .motion-study p { max-inline-size: 68ch; line-height: 1.9; }
 .interior-page .motion-study details { padding-block: 8px; border-block-end: 1px solid var(--ui-line); }
@@ -19,6 +21,8 @@
 .interior-page .study-timeline { list-style: none; padding: 0; }
 .interior-page .study-timeline li { display: grid; grid-template-columns: 36px minmax(0,1fr); gap: 20px; }
 .interior-page .study-timeline li>span { color: var(--ui-amber); padding-block-start: 24px; border-inline-start: 1px solid var(--ui-line); padding-inline-start: 8px; font: 14px ui-monospace,monospace; }
+.interior-page .study-timeline li:has(details[open])>span { border-inline-start: 2px solid var(--ui-amber); }
+.interior-page .study-timeline details[open] summary { color: var(--ui-amber); }
 .interior-page .control-path { padding: 16px; border-inline-start: 2px solid var(--decision-review); }
 .interior-page .control-path>span { color: var(--ui-amber); font-size: 24px; }
 .interior-page .educational-checklist label { display: flex; align-items: center; gap: 14px; min-block-size: 48px; line-height: 1.8; cursor: pointer; }
@@ -48,8 +52,23 @@
 .interior-page .educational-hash li { min-block-size: 44px; line-height: 1.8; }
 .interior-page .sector-flow { inline-size: 100%; block-size: auto; max-block-size: 220px; }
 .interior-page .pillar-symbol { color: var(--ui-violet); }
-.interior-page .pillar-study-safety .pillar-symbol { color: #8ae0bd; }
+.interior-page .pillar-study-safety .pillar-symbol { color: var(--ui-amber); }
 .interior-page .pillar-study-transparency .pillar-symbol { color: var(--decision-warn); }
+.interior-page .pillar-study .pillar-symbol { display: block; inline-size: 88px; block-size: 88px; padding: 12px; margin-block-end: 16px; border: 1px solid currentColor; border-radius: 50%; background: #ffffff05; }
+.page-family-services .block .list { counter-reset: inquiry-topic; display: grid; gap: 10px; padding: 0; list-style: none; }
+.page-family-services .block .list li { counter-increment: inquiry-topic; display: grid; grid-template-columns: 36px minmax(0,1fr); align-items: start; gap: 14px; min-block-size: 58px; padding: 14px 16px; border: 1px solid var(--ui-line); border-radius: var(--ui-radius-sm); background: linear-gradient(105deg,#8052ff0c,transparent 60%); color: var(--ui-copy); line-height: 1.8; }
+.page-family-services .block .list li::before { content: counter(inquiry-topic,decimal-leading-zero); display: grid; place-items: center; inline-size: 32px; block-size: 32px; border: 1px solid #705986; border-radius: 50%; color: var(--ui-amber); font: 12px ui-monospace,monospace; direction: ltr; unicode-bidi: isolate; }
+.page-family-services .study-timeline li { position: relative; }
+.page-family-services .study-timeline li>span { display: grid; place-items: center; inline-size: 32px; block-size: 32px; padding: 0; margin-block-start: 18px; border: 1px solid #705986; border-radius: 50%; background: #120d19; }
+.page-family-services .study-timeline li:has(details[open])>span { border-color: var(--ui-amber); background: #221a0b; }
+.page-family-services .content-extension .extension-path { counter-reset: scope-step; list-style: none; padding: 0; }
+.page-family-services .content-extension .extension-path li { counter-increment: scope-step; position: relative; display: block; padding: 12px 48px 12px 12px; border-block-end: 1px solid var(--ui-line); line-height: 1.8; }
+.page-family-services .content-extension .extension-path li::before { content: counter(scope-step,decimal-leading-zero); position: absolute; inset-inline-start: 10px; inset-block-start: 14px; color: var(--ui-amber); font: 12px ui-monospace,monospace; direction: ltr; unicode-bidi: isolate; }
+.page-family-pillars .content-extension .extension-path { counter-reset: pillar-step; list-style: none; padding: 0; }
+.page-family-pillars .content-extension .extension-path li { counter-increment: pillar-step; position: relative; display: block; padding: 14px 46px 14px 12px; border-inline-start: 1px solid #705986; line-height: 1.8; }
+.page-family-pillars .content-extension .extension-path li::before { content: counter(pillar-step,decimal-leading-zero); position: absolute; inset-inline-start: -15px; inset-block-start: 50%; translate: 50% -50%; display: grid; place-items: center; inline-size: 28px; block-size: 28px; border: 1px solid #705986; border-radius: 50%; background: #09070d; color: var(--ui-amber); font: 11px ui-monospace,monospace; direction: ltr; unicode-bidi: isolate; }
+.interior-kernel-index [data-demo-state] { padding: 5px 9px; border: 1px solid #705986; border-radius: 999px; background: #8052ff10; }
+.interior-kernel-index .kernel-result[data-state="complete"] { border-color: var(--ui-amber); background: linear-gradient(145deg,#ffb82912,transparent 66%),var(--ui-panel); }
 .interior-page .saudi-accent { color: #8ae0bd; max-inline-size: 100%; }
 .interior-page .missing-route { max-inline-size: 100%; display: block; margin-block: 50px; }
 .interior-page .document-toc { border-block-end: 1px solid var(--ui-line); padding-block: 20px; font-size: 14px; }

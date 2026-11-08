@@ -19,7 +19,7 @@ const controls = [
 ];
 ---
 {journey && <section class={`motion-study study-${family}`} aria-label={journey.title}>
-  <p class="eyebrow">توضيح تعليمي</p><h2>{journey.title}</h2>
+  <p class="eyebrow">توضيح تعليمي <span class="content-status status-educational" lang="en" dir="ltr">Educational</span></p><h2>{journey.title}</h2>
   {family === 'about' && <svg class="saudi-accent" viewBox="0 0 240 54" width="240" height="54" fill="none" aria-hidden="true" data-motion="draw"><path d="M2 48H238M40 48V24L52 12L64 24V48M99 48V20L110 5L121 20V48M165 48V30L180 18L195 30V48" stroke="currentColor"/></svg>}
   <ol class="study-timeline" data-motion="stagger">{journey.steps.map(([title, text], i) => <li><span aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{title}</summary><p>{text}</p></details></li>)}</ol>
 </section>}
@@ -30,12 +30,12 @@ const controls = [
     {segment === 'transparency' && <><circle cx="40" cy="40" r="28"/><path d="M8 40h64M40 8v64M20 20l40 40"/><circle cx="40" cy="40" r="8"/></>}
     {segment === 'privacy' && <><rect x="17" y="34" width="46" height="36" rx="3"/><path d="M26 34V22a14 14 0 0 1 28 0v12M40 46v12"/></>}
   </svg>
-  <p>كل ركن يكمل سؤالاً مختلفاً؛ الرسوم توضيحية ولا تثبت تطبيق ضوابط.</p>
+  <p><span class="content-status status-educational" lang="en" dir="ltr">Educational</span> كل ركن يكمل سؤالاً مختلفاً؛ الرسوم توضيحية ولا تثبت تطبيق ضوابط.</p>
   {segment === 'privacy' && <RedactionDemo />}
   <a class="ghost" href={`/pillars/${next}/`}>الركن التالي: {['السلامة والموثوقية', 'الشفافية والمساءلة', 'الخصوصية وحماية البيانات'][(pillarIndex + 1) % 3]} ←</a>
 </section>}
 {family === 'solutions' && <section class={`motion-study sector-motion sector-motion-${segment}`}>
-  <p class="eyebrow">رسم تعليمي · لا اتصال تشغيلي</p>
+  <p class="eyebrow">رسم تعليمي · لا اتصال تشغيلي <span class="content-status status-educational" lang="en" dir="ltr">Educational</span></p>
   {segment === 'finance' ? <><h2>من القيمة الافتراضية إلى المراجعة</h2><RedactionDemo example="FIN-DEMO-0000"/><p>بعد التنقيح، يبقى التحقق من الغرض وصلاحية المعالجة والمراجعة البشرية عند الحاجة.</p></> : <>
     <h2>{segment === 'government' ? 'حدود البيانات قبل خروج الطلب' : segment === 'healthcare' ? 'من الإشارة إلى قرار الحماية' : 'من استخدام متفرق إلى مسار محكوم'}</h2>
     <svg viewBox="0 0 600 160" class="sector-flow" fill="none" aria-hidden="true" data-motion="draw">
