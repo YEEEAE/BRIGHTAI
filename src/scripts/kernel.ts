@@ -654,9 +654,14 @@ async function loadIncoming() {
             const result = await endpoint('members','POST',{operation:'accept',invitationId:invite.id});
             setWorkspace(result.tenantId); await load(result.tenantId); adminStatus.textContent = 'اعتمد الخادم عضويتك في المؤسسة بدور عضو.';
           } catch (error: any) {
+            if (error.code === 'INVITATION_EXPIRED') throw new Error('انتهت مدة الدعوة قبل الاعتماد؛ اطلب دعوة جديدة من مالك المؤسسة أو مديرها.');
+            if (error.code === 'INVITATION_REVOKED') throw new Error('أُلغيت الدعوة أو رُفضت؛ لم تُمنح عضوية. اطلب دعوة جديدة عند الحاجة.');
+            if (error.code === 'INVITATION_ALREADY_CONSUMED') throw new Error('سبق اعتماد الدعوة ثم سُحبت العضوية؛ لا يُعاد منحها من الدعوة نفسها.');
+            if (error.code === 'IDENTITY_NOT_VERIFIED') throw new Error('وثّق بريدك الإلكتروني أو استخدم حسابًا غير موقوف ثم أعد المحاولة؛ لم تُمنح عضوية.');
             if (error.code === 'INVALID_INVITATION') throw new Error('الدعوة غير متاحة الآن؛ ربما ألغيت أو سبق قبولها بحساب آخر. حدّث القائمة.');
             if (error.code === 'INVITER_AUTHORITY_REVOKED') throw new Error('توقفت صلاحية الداعي في المؤسسة؛ اطلب دعوة جديدة من مالك أو مدير حالي.');
             if (error.code === 'INVITATION_NOT_ACCEPTED') throw new Error('لم يثبت قبول الدعوة ببريدك الموثّق؛ أكمل خطوة Neon Auth ثم حدّث القائمة.');
+            if (error.code === 'INVITATION_BOOTSTRAP_REQUIRED') throw new Error('قبول الدعوة يحتاج مسار تهيئة معتمدًا على هذه البيئة؛ لم تُمنح عضوية.');
             throw error;
           }
         }));
@@ -701,7 +706,8 @@ if (url) {
   auth = makeAuth(url);
   void run(() => load());
   retry.addEventListener('click', () => void run(() => load()));
-  selector.addEventListener('change', () => { const workspace = selector.value; void run(() => load(workspace)); });
+  // Tenant switching is handled once in workspace-context: the page reloads and the
+  // server re-authorizes the selected workspace before any private view is restored.
   if (login && loginEmail && loginPassword && loginSubmit && loginPasswordToggle) {
     const validateLogin = () => {
       const emailValid = loginEmail.validity.valid;
@@ -718,7 +724,13 @@ if (url) {
     });
     login.addEventListener('submit', event => { event.preventDefault(); if (!validateLogin()) { (loginEmail.validity.valid ? loginPassword : loginEmail).focus(); login.reportValidity(); return; } const form = new FormData(login); void run(async () => {
       const result = await auth.signIn.email({ email: String(form.get('email')).trim(), password: String(form.get('password')) });
+      // One generic message for every credential failure: no account enumeration.
       if (result.error) { setLoginError(loginPassword, loginPasswordError, 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور وحاول مرة ثانية.'); const e = new Error('تعذر تسجيل الدخول. تحقق من بياناتك وحاول مرة ثانية.'); Object.assign(e,{unauthorized:true}); throw e; }
+      // A second-factor challenge is real provider state, but this portal has no
+      // approved MFA/SSO step. Fail closed instead of treating it as a session.
+      if ((result.data as unknown as { twoFactorRedirect?: unknown } | null)?.twoFactorRedirect) {
+        throw new Error('يتطلب هذا الحساب خطوة تحقق ثانية (MFA/SSO) غير مهيأة في هذه البوابة. لم تُفتح أي مساحة؛ تواصل مع مشغّل المنصة.');
+      }
       await load(); login.reset(); loginPassword.type = 'password'; loginPasswordToggle.textContent = 'إظهار كلمة المرور'; loginPasswordToggle.setAttribute('aria-pressed','false'); setLoginError(loginEmail, loginEmailError); setLoginError(loginPassword, loginPasswordError);
     }); });
   }

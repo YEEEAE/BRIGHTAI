@@ -185,9 +185,20 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
           const code = String((result.error as { code?: unknown }).code ?? '').toUpperCase();
           if (['INVALID_EMAIL', 'INVALID_EMAIL_ADDRESS'].includes(code)) setFieldError('email', 'تحقق من صيغة البريد الإلكتروني.');
           if (['PASSWORD_TOO_SHORT', 'PASSWORD_TOO_LONG', 'INVALID_PASSWORD'].includes(code)) setFieldError('password', mode === 'sign-up' ? 'راجع متطلبات كلمة المرور وحاول مرة ثانية.' : 'تعذر التحقق من كلمة المرور. حاول مرة ثانية.');
-          setStatus(mode === 'sign-up'
-            ? 'تعذر إنشاء الحساب. راجع الحقول وحاول مرة ثانية.'
-            : 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور وحاول مرة ثانية.');
+          // Messages never distinguish "unknown email" from "wrong password".
+          if (code === 'EMAIL_NOT_VERIFIED') {
+            setStatus('أكمل توثيق بريدك الإلكتروني من الرسالة المرسلة إليك، ثم سجّل الدخول. لم تُنشأ جلسة.');
+          } else {
+            setStatus(mode === 'sign-up'
+              ? 'تعذر إنشاء الحساب. راجع الحقول وحاول مرة ثانية.'
+              : 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور وحاول مرة ثانية.');
+          }
+          return;
+        }
+        // A second-factor challenge is real provider state, but no MFA/SSO step is
+        // approved for this portal yet. Stop before reading or displaying a session.
+        if ((result.data as unknown as { twoFactorRedirect?: unknown } | null)?.twoFactorRedirect) {
+          setStatus('يتطلب هذا الحساب خطوة تحقق ثانية (MFA/SSO) غير مهيأة في هذه البوابة. لم تُفتح جلسة؛ تواصل مع مشغّل المنصة.');
           return;
         }
         authSucceeded = true;

@@ -2,7 +2,13 @@ import { createAuthClient, type VanillaBetterAuthClient } from '@neon/neon-js/au
 import { BetterAuthVanillaAdapter } from '@neon/neon-js/auth/vanilla/adapters';
 export type WorkspaceAuth = VanillaBetterAuthClient & { getJWTToken: () => Promise<string | null> };
 let sessionEpoch = 0;
-document.addEventListener('workspace-session-ended', () => { sessionEpoch++; restored = false; });
+let restored = false;
+// Set only after the server has confirmed that this identity is a member of the
+// tenant. A URL parameter is a selector, never proof of membership; navigation
+// must not carry it until the backend has answered for it.
+let verifiedWorkspace = '';
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+document.addEventListener('workspace-session-ended', () => { sessionEpoch++; restored = false; verifiedWorkspace = ''; });
 const sessionChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('aigas-session') : null;
 sessionChannel?.addEventListener('message', event => { if (event.data === 'SIGN_OUT') document.dispatchEvent(new Event('workspace-session-ended')); });
 export function createWorkspaceAuth(url: string): WorkspaceAuth {
@@ -19,7 +25,9 @@ export function createWorkspaceAuth(url: string): WorkspaceAuth {
   });
 }
 export const selectedWorkspace = () => new URL(location.href).searchParams.get('workspace') || '';
+// Applies a tenant id that the server has already authorized for this session.
 export function setWorkspace(id: string) {
+  verifiedWorkspace = id;
   const url = new URL(location.href);
   if (id) url.searchParams.set('workspace', id); else url.searchParams.delete('workspace');
   history.replaceState(history.state, '', url);
@@ -31,7 +39,6 @@ export function setWorkspace(id: string) {
     }
   });
 }
-let restored = false;
 export async function getWorkspaceSession(auth: WorkspaceAuth, force = false) {
   // X-Force-Fetch bypasses the session cache when restoring or refreshing a session.
   force ||= !restored;
@@ -43,9 +50,16 @@ export async function appFetch(auth: WorkspaceAuth, input: string, init: Request
   const epoch = sessionEpoch;
   const session = await getWorkspaceSession(auth);
   const token = await auth.getJWTToken();
-  if (session.error || !session.data?.user || !token) throw Object.assign(new Error('سجّل الدخول من Kernel لاستعادة الجلسة.'), { unauthorized: true });
+  if (session.error || !session.data?.user || !token) {
+    document.dispatchEvent(new Event('workspace-session-ended'));
+    throw Object.assign(new Error('انتهت جلسة الدخول؛ سجّل الدخول مجددًا. لم يُنفذ الطلب.'), { unauthorized: true });
+  }
   const url = new URL(input, location.origin);
-  if (!url.searchParams.has('workspace') && selectedWorkspace()) url.searchParams.set('workspace', selectedWorkspace());
+  // The URL selector may be sent as a requested scope on the first read, because every
+  // endpoint re-authorizes it. It is never copied into navigation links until the
+  // backend has confirmed the tenant; `verifiedWorkspace` wins once available.
+  const requestedWorkspace = verifiedWorkspace || selectedWorkspace();
+  if (!url.searchParams.has('workspace') && requestedWorkspace) url.searchParams.set('workspace', requestedWorkspace);
   const headers = new Headers(init.headers); headers.set('Authorization', `Bearer ${token}`);
   let response = await fetch(url, { ...init, headers, cache: 'no-store' });
   if (response.status === 401) {
@@ -58,7 +72,7 @@ export async function appFetch(auth: WorkspaceAuth, input: string, init: Request
     }
     if (response.status === 401) document.dispatchEvent(new Event('workspace-session-ended'));
   }
-  if (epoch !== sessionEpoch) throw Object.assign(new Error('تغيرت جلسة الدخول؛ أعد تحميل المساحة.'), {unauthorized:true});
+  if (epoch !== sessionEpoch) throw Object.assign(new Error('انتهت جلسة الدخول أو تغيرت؛ أعد تحميل المساحة قبل إعادة المحاولة.'), { unauthorized: true });
   return response;
 }
 // Reload on tenant switches: abort old page work and discard forms, dialogs and responses.
@@ -67,9 +81,21 @@ document.addEventListener('change', event => {
   const select = event.target;
   if (!(select instanceof HTMLSelectElement) || !select.matches('[data-workspace]')) return;
   event.stopImmediatePropagation();
-  const url = new URL(location.href); url.searchParams.set('workspace', select.value);
-  document.querySelector('main')?.setAttribute('hidden', '');
+  const workspace = select.value;
+  // A malformed or already-applied value never triggers a navigation.
+  if (!UUID.test(workspace) || workspace === verifiedWorkspace) return;
+  const main = document.querySelector('main');
+  select.disabled = true;
+  select.setAttribute('aria-busy', 'true');
+  main?.setAttribute('aria-busy', 'true');
+  main?.setAttribute('hidden', '');
+  const url = new URL(location.href); url.searchParams.set('workspace', workspace);
   location.assign(url.href);
 }, true);
-window.addEventListener('pageshow', event => { if (event.persisted) { restored = false; document.querySelector('main')?.removeAttribute('hidden'); } });
-setWorkspace(selectedWorkspace());
+window.addEventListener('pageshow', event => {
+  if (!event.persisted) return;
+  restored = false;
+  const main = document.querySelector('main');
+  main?.removeAttribute('hidden');
+  main?.removeAttribute('aria-busy');
+});

@@ -1,3 +1,30 @@
+## [2026-11-08] — إغلاق دورة الهوية والدعوات وbootstrap أول مالك محليًا
+
+### تم التنفيذ
+- HEAD المحلي `b23bf5a5` (يختلف عن `7994d3ce` المذكور في الطلب). أُعيد فحص الملفات المرجعية؛ لم يُشغّل build/tests/lint ولم تُكتب أي بيانات على Neon.
+- `manageInvitation(accept)`: قراءة واحدة تربط الدعوة بالهوية الموثّقة والمؤسسة المرتبطة، وترفض الانتهاء بساعة القاعدة، والرفض/الإلغاء، والداعي الذي فقد صلاحيته، والحساب الموقوف/غير الموثّق، وتعيد `MEMBER` فقط. التكرار idempotent، ومنع إعادة المنح بعد سحب العضوية (`INVITATION_ALREADY_CONSUMED`).
+- `createWorkspace`: مالك واحد حرفيًا للمؤسسة الجديدة، تحقق قراءة بعد الكتابة (عضوية واحدة = المستدعي بدور OWNER)، ولا دور/tenant من الطلب. تحت `NOBYPASSRLS` يبقى `WORKSPACE_PROVISIONING_REQUIRED` فشلًا مغلقًا.
+- `workspace-context`: لا يُعاد كتابة روابط التنقل باختيار URL قبل تأكيد الخادم؛ التبديل يعيد التحميل مع `aria-busy`، والجلسة المنتهية تنقل المستخدم لحالة تسجيل الدخول دون إعادة كتابة العمليات.
+- معالجة `twoFactorRedirect` كحالة مغلقة واضحة (MFA/SSO غير مهيأ) في التسجيل وKernel، ورسائل دعوة مميزة (انتهاء/رفض/استهلاك/هوية غير موثقة) دون كشف وجود دعوات لمستخدم آخر.
+- أُضيف `docs/IDENTITY-AND-INVITATION-RUNBOOK.md` لسيناريو حسابين افتراضيين ومؤسستين (NOT RUN) دون إنشاء أو إرسال أي دعوة.
+
+### الملفات المتأثرة
+- `src/server/kernel/administration.mjs`, `src/server/kernel/service.mjs`
+- `src/scripts/workspace-context.ts`, `src/scripts/kernel.ts`
+- `src/pages/auth/sign-up.astro`, `src/pages/auth/accept-invitation.astro`
+- `docs/IDENTITY-AND-INVITATION-RUNBOOK.md`, `docs/RELEASE-BLOCKERS-REGISTER.md`, `docs/CURRENT-IMPLEMENTATION-REGISTER.md`
+
+### التحقق
+- `node --check` لملفي الخادم و`git diff --check`: PASS.
+- Build/typecheck/tests/HTTP/DB/Neon writes: NOT RUN حسب نطاق الدفعة. سيناريو A/B: NOT RUN.
+
+### النتيجة
+- **الحالة:** PARTIAL — مسار الهوية والدعوات وbootstrap مكتمل في المصدر (`SOURCE_PRESENT`)؛ لا ادعاء E2E أو عزل أو نشر.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم فرع staging معتمد وتطبيق `0018/0025` ومسار provisioning/definer لقبول الدعوة وأول مالك تحت `aigas_runtime`. المالكون: مسؤول الأمن + مشغّل قاعدة البيانات.
+- MFA/SSO وتوصيل البريد غير مهيّأين؛ لا ادعاء دعمهما.
+
 ## [2026-11-08] — إغلاق نموذج عزل المؤسسات محليًا (Data API / RLS / Runtime Role)
 
 ### تم التنفيذ

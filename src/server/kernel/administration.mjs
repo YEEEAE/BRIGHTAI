@@ -108,7 +108,7 @@ export async function incomingInvitations(identity) {
     const ready = (await db.query("SELECT to_regclass('public.aigas_member_invitations') IS NOT NULL AS ready")).rows[0].ready;
     if (!ready) return { invitations: [], available: false };
     const rows = (await db.query(`SELECT i.id,t.name,i."expiresAt" AS expires_at,
-      CASE WHEN i.status='pending' AND i."expiresAt"<=now() THEN 'expired'
+      CASE WHEN i.status IN ('pending','accepted') AND i."expiresAt"<=now() THEN 'expired'
            WHEN i.status IN ('pending','accepted') AND (COALESCE(km.role,'') NOT IN ('OWNER','ADMIN') OR COALESCE(nm.role,'') NOT IN ('owner','admin')) THEN 'inviter_unavailable'
            ELSE i.status END AS status
       FROM public.aigas_member_invitations k
@@ -130,7 +130,7 @@ export async function manageInvitation(identity, requested, body) {
     return transaction(async db => {
       await memberships(identity.userId, db);
       // Lock registration first: one acceptance cannot create duplicate memberships or audit events.
-      const record = (await db.query('SELECT * FROM public.aigas_member_invitations WHERE invitation_id=$1 FOR UPDATE', [body.invitationId])).rows[0];
+      const record = (await db.query('SELECT tenant_id,invited_by,accepted_by,accepted_at FROM public.aigas_member_invitations WHERE invitation_id=$1 FOR UPDATE', [body.invitationId])).rows[0];
       if (!record) {
         // Under the NOBYPASSRLS runtime role the invitation row is hidden until a
         // membership exists, so acceptance needs a reviewed bootstrap path. Report
@@ -139,39 +139,82 @@ export async function manageInvitation(identity, requested, body) {
         if (posture.rlsEnforced) throw new KernelError(503, 'INVITATION_BOOTSTRAP_REQUIRED', 'قبول الدعوة يتطلب مسار تهيئة معتمدًا قبل تفعيل دور التشغيل المقيد. لم تُمنح أي عضوية.');
         throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير مسجلة في Kernel.');
       }
+      // An invitation belongs to one identity. A row consumed by another account is
+      // reported with the same generic code and is never reassigned or revealed.
+      if (record.accepted_by && record.accepted_by !== identity.userId) throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير متاحة.');
       if (record.accepted_by === identity.userId) {
-        const membership = (await db.query("SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2", [record.tenant_id, identity.userId])).rows[0];
-        if (membership?.role === 'MEMBER') return { persisted: true, tenantId: record.tenant_id };
-        throw new KernelError(403, 'INVITATION_NOT_ACCEPTED', 'لم تعد عضوية Kernel المرتبطة بالدعوة فعالة.');
+        // Idempotent replay after a duplicate click or a session refresh. Any current
+        // Kernel role is returned as-is; this path never upgrades a role.
+        const membership = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2', [record.tenant_id, identity.userId])).rows[0];
+        if (membership) return { persisted: true, tenantId: record.tenant_id, role: membership.role, idempotent: true };
+        // The membership was revoked after acceptance. Re-accepting would re-grant
+        // access without a new invitation, so the consumed invitation stays closed.
+        throw new KernelError(403, 'INVITATION_ALREADY_CONSUMED', 'سبق اعتماد هذه الدعوة ثم سُحبت العضوية؛ اطلب دعوة جديدة من مالك المؤسسة أو مديرها.');
       }
-      if (record.accepted_by) throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير متاحة.');
-      const inviter = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [record.tenant_id, record.invited_by])).rows[0];
-      if (!inviter || !['OWNER','ADMIN'].includes(inviter.role)) throw new KernelError(403, 'INVITER_AUTHORITY_REVOKED', 'لم تعد صلاحية الداعي تسمح بإنهاء العضوية.');
-      const nativeInviter = (await db.query(`SELECT m.role FROM public.aigas_auth_organizations o JOIN neon_auth.member m ON m."organizationId"=o.organization_id WHERE o.tenant_id=$1 AND m."userId"=$2 FOR SHARE OF m`, [record.tenant_id, record.invited_by])).rows[0];
-      if (!nativeInviter || !['owner','admin'].includes(nativeInviter.role)) throw new KernelError(403, 'INVITER_AUTHORITY_REVOKED', 'لم تعد صلاحية الداعي تسمح بإنهاء العضوية.');
-      const valid = (await db.query(`SELECT i.id FROM neon_auth.invitation i JOIN public.aigas_auth_organizations o ON o.organization_id=i."organizationId" JOIN neon_auth."user" u ON lower(u.email)=lower(i.email) JOIN neon_auth.member m ON m."organizationId"=o.organization_id AND m."userId"=u.id WHERE i.id=$1 AND o.tenant_id=$2 AND i."inviterId"=$3 AND i.status='accepted' AND i.role='member' AND m.role='member' AND i."expiresAt">now() AND u.id=$4 AND u."emailVerified" IS TRUE AND u.banned IS NOT TRUE`, [body.invitationId, record.tenant_id, record.invited_by, identity.userId])).rows[0];
-      if (!valid) throw new KernelError(403, 'INVITATION_NOT_ACCEPTED', 'يلزم قبول دعوة Auth الصحيحة ببريد موثّق؛ لم تُمنح أي عضوية.');
+      // One read binds the invitation to this verified identity and to the mapped
+      // organization, then reports every dimension the server requires. Expiry uses
+      // the database clock, not the browser or application host clock.
+      const detail = (await db.query(`SELECT i.status,i.role,i."expiresAt"<=now() AS is_expired,
+          u.id AS user_id,u."emailVerified" IS TRUE AS email_verified,u.banned IS TRUE AS banned,
+          km.role AS kernel_inviter_role,nm.role AS native_inviter_role,tm.role AS target_native_role
+        FROM neon_auth.invitation i
+        JOIN public.aigas_auth_organizations o ON o.organization_id=i."organizationId" AND o.tenant_id=$2
+        JOIN neon_auth."user" u ON lower(u.email)=lower(i.email)
+        LEFT JOIN public.aigas_memberships km ON km.tenant_id=o.tenant_id AND km.user_id=i."inviterId"
+        LEFT JOIN neon_auth.member nm ON nm."organizationId"=o.organization_id AND nm."userId"=i."inviterId"
+        LEFT JOIN neon_auth.member tm ON tm."organizationId"=o.organization_id AND tm."userId"=u.id
+        WHERE i.id=$1 AND i."inviterId"=$3`, [body.invitationId, record.tenant_id, record.invited_by])).rows[0];
+      // Same generic answer whether the invitation is missing, bound to another
+      // email, or registered to another organization.
+      if (!detail || detail.user_id !== identity.userId) throw new KernelError(403, 'INVALID_INVITATION', 'الدعوة غير متاحة.');
+      if (detail.is_expired === true) throw new KernelError(410, 'INVITATION_EXPIRED', 'انتهت مدة الدعوة؛ اطلب دعوة جديدة من مالك المؤسسة أو مديرها.');
+      if (['canceled','rejected','expired'].includes(detail.status)) throw new KernelError(403, 'INVITATION_REVOKED', 'أُلغيت الدعوة أو رُفضت؛ لم تُمنح عضوية.');
+      if (detail.banned === true) throw new KernelError(403, 'IDENTITY_NOT_VERIFIED', 'الحساب غير مؤهل لقبول الدعوة؛ تواصل مع مالك المؤسسة.');
+      if (detail.email_verified !== true) throw new KernelError(403, 'IDENTITY_NOT_VERIFIED', 'وثّق بريدك الإلكتروني أولًا ثم أعد المحاولة؛ لم تُمنح عضوية.');
+      // The invitation role is fixed to member at creation; an unexpected value is
+      // rejected instead of being mapped to a higher Kernel role.
+      if (detail.role !== 'member') throw new KernelError(403, 'INVALID_INVITATION', 'دور الدعوة غير صالح؛ اطلب دعوة جديدة.');
+      // Authority is re-read at acceptance time: losing OWNER/ADMIN ends the pending
+      // invitation's authority even if the provider still shows it as accepted.
+      if (!['OWNER','ADMIN'].includes(detail.kernel_inviter_role ?? '')) throw new KernelError(403, 'INVITER_AUTHORITY_REVOKED', 'لم تعد صلاحية الداعي تسمح بإنهاء العضوية.');
+      if (!['owner','admin'].includes(detail.native_inviter_role ?? '')) throw new KernelError(403, 'INVITER_AUTHORITY_REVOKED', 'لم تعد صلاحية الداعي تسمح بإنهاء العضوية.');
+      if (detail.status !== 'accepted') throw new KernelError(409, 'INVITATION_NOT_ACCEPTED', 'أكمل قبول الدعوة لدى Auth بالبريد الموثّق ثم أعد المحاولة؛ لم تُمنح عضوية.');
+      // The provider must also show this identity as a member of the mapped
+      // organization. The Kernel role stays MEMBER regardless of that native role.
+      if (!detail.target_native_role) throw new KernelError(409, 'INVITATION_NOT_ACCEPTED', 'لم يُسجل قبول العضوية لدى Auth بعد؛ أكمل القبول ثم أعد المحاولة. لم تُمنح عضوية.');
       try {
+        // Membership starts as MEMBER only. ON CONFLICT never rewrites an existing
+        // row, so a co-member cannot promote themselves through this path.
         await db.query("INSERT INTO public.aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,'MEMBER') ON CONFLICT DO NOTHING", [record.tenant_id, identity.userId]);
-        await db.query('UPDATE public.aigas_member_invitations SET accepted_by=$2,accepted_at=now() WHERE invitation_id=$1', [body.invitationId, identity.userId]);
+        // The registration is consumed exactly once. A concurrent acceptance that
+        // already consumed it is reported as idempotent, never granted twice.
+        const consumed = await db.query('UPDATE public.aigas_member_invitations SET accepted_by=$2,accepted_at=now() WHERE invitation_id=$1 AND accepted_by IS NULL RETURNING accepted_at', [body.invitationId, identity.userId]);
+        if (!consumed.rowCount) {
+          const membership = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2', [record.tenant_id, identity.userId])).rows[0];
+          if (membership) return { persisted: true, tenantId: record.tenant_id, role: membership.role, idempotent: true };
+          throw new KernelError(409, 'INVITATION_ALREADY_CONSUMED', 'تعذر تأكيد اعتماد الدعوة؛ حدّث القائمة قبل إعادة المحاولة.');
+        }
         await audit(db, identity, record.tenant_id, 'kernel.invitation.accepted', auditContext());
       } catch (error) {
         if (error?.code === '42501') throw new KernelError(503, 'INVITATION_BOOTSTRAP_REQUIRED', 'قبول الدعوة يتطلب مسار تهيئة معتمدًا قبل تفعيل دور التشغيل المقيد. لم تُمنح أي عضوية.');
         throw error;
       }
-      return { persisted: true, tenantId: record.tenant_id };
+      return { persisted: true, tenantId: record.tenant_id, role: 'MEMBER' };
     });
   }
   if (body.operation === 'cancel') {
     exact(body, ['operation','invitationId']); uuid(body.invitationId);
     return transaction(async db => {
       const { tenant } = await adminScope(db, identity, requested, ['OWNER','ADMIN']);
-      const record = (await db.query('SELECT accepted_at FROM public.aigas_member_invitations WHERE invitation_id=$1 AND tenant_id=$2 FOR UPDATE', [body.invitationId, tenant.tenant_id])).rows[0];
+      const record = (await db.query('SELECT accepted_at,accepted_by FROM public.aigas_member_invitations WHERE invitation_id=$1 AND tenant_id=$2 FOR UPDATE', [body.invitationId, tenant.tenant_id])).rows[0];
       if (!record) throw new KernelError(404, 'INVITATION_NOT_FOUND', 'الدعوة غير مسجلة لهذه المؤسسة.');
-      if (record.accepted_at) throw new KernelError(409, 'INVITATION_ALREADY_ACCEPTED', 'الدعوة مقبولة؛ لا يمكن إلغاؤها من هذه الشاشة.');
+      if (record.accepted_at || record.accepted_by) throw new KernelError(409, 'INVITATION_ALREADY_ACCEPTED', 'الدعوة مقبولة؛ لا يمكن إلغاؤها من هذه الشاشة.');
       // The browser performs the provider cancellation. The server only records it after
-      // reading the real provider state; a pending invitation is never treated as canceled.
-      const provider = (await db.query('SELECT status FROM neon_auth.invitation WHERE id=$1', [body.invitationId])).rows[0];
+      // reading the real provider state for this tenant's mapped organization; a pending
+      // invitation is never treated as canceled.
+      const provider = (await db.query(`SELECT i.status FROM neon_auth.invitation i
+        JOIN public.aigas_auth_organizations o ON o.organization_id=i."organizationId" AND o.tenant_id=$2
+        WHERE i.id=$1`, [body.invitationId, tenant.tenant_id])).rows[0];
       if (!provider || provider.status !== 'canceled') throw new KernelError(409, 'CANCELLATION_NOT_CONFIRMED', 'لم يؤكد Auth إلغاء الدعوة. ألغِها من إدارة الدعوات ثم أعد المحاولة.');
       await audit(db, identity, tenant.tenant_id, 'kernel.invitation.canceled', auditContext());
       return { persisted: true, status: 'canceled' };

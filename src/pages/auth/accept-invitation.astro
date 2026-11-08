@@ -90,6 +90,9 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     const accept = async (invitation: { id: string; status: string }) => {
       if (busy) return;
       busy = true;
+      // A terminal answer (expired, revoked, consumed, foreign identity) cannot be
+      // retried from this page; the action stays disabled until the list is reloaded.
+      let terminal = false;
       card.setAttribute('aria-busy', 'true');
       list.querySelectorAll<HTMLButtonElement>('button').forEach((button) => { button.disabled = true; });
       setStatus('جارٍ قبول الدعوة لدى Auth ثم اعتماد العضوية في الخادم…');
@@ -97,6 +100,7 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
         if (invitation.status !== 'accepted') {
           const native = await auth.organization.acceptInvitation({ invitationId: invitation.id });
           if (native.error) {
+            terminal = true;
             setStatus('تعذر قبول الدعوة لدى Auth. قد تكون منتهية أو ملغاة أو أُرسلت لبريد آخر؛ حدّث القائمة أو اطلب دعوة جديدة.');
             return;
           }
@@ -105,16 +109,21 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
         setStatus('اعتمد الخادم عضويتك. جارٍ فتح مساحة العمل…');
         location.assign(`/app/kernel/?workspace=${encodeURIComponent(String(result.tenantId))}`);
       } catch (error: any) {
+        terminal = ['INVITATION_EXPIRED','INVITATION_REVOKED','INVITATION_ALREADY_CONSUMED','IDENTITY_NOT_VERIFIED','INVALID_INVITATION','INVITATION_NOT_FOUND','INVITATION_BOOTSTRAP_REQUIRED','INVITER_AUTHORITY_REVOKED'].includes(error.code);
         if (error.unauthorized) { signedOut.hidden = false; setStatus('انتهت الجلسة؛ سجّل الدخول ثم أعد المحاولة. القبول لا يُنفذ تلقائيًا.'); }
+        else if (error.code === 'INVITATION_EXPIRED') setStatus('انتهت مدة الدعوة قبل الاعتماد؛ اطلب دعوة جديدة من مالك المؤسسة أو مديرها.');
+        else if (error.code === 'INVITATION_REVOKED') setStatus('أُلغيت الدعوة أو رُفضت؛ لم تُمنح عضوية. اطلب دعوة جديدة عند الحاجة.');
+        else if (error.code === 'INVITATION_ALREADY_CONSUMED') setStatus('سبق اعتماد هذه الدعوة ثم سُحبت العضوية؛ لا يُعاد منحها من الدعوة نفسها.');
+        else if (error.code === 'IDENTITY_NOT_VERIFIED') setStatus('وثّق بريدك الإلكتروني أو استخدم حسابًا غير موقوف ثم أعد المحاولة؛ لم تُمنح عضوية.');
         else if (error.code === 'INVITER_AUTHORITY_REVOKED') setStatus('توقفت صلاحية الداعي في المؤسسة؛ اطلب دعوة جديدة من مالك أو مدير حالي.');
         else if (error.code === 'INVITATION_NOT_ACCEPTED') setStatus('لم يثبت قبول الدعوة ببريدك الموثّق؛ أكمل خطوة Auth ثم أعد المحاولة.');
         else if (error.code === 'INVALID_INVITATION' || error.code === 'INVITATION_NOT_FOUND') setStatus('الدعوة غير متاحة الآن؛ ربما أُلغيت أو سبق قبولها.');
-        else if (error.code === 'KERNEL_SCHEMA_MISSING' || error.status === 503) setStatus('الخدمة أو الإدارة غير مهيأة الآن؛ لم تُمنح عضوية. أعد المحاولة لاحقًا.');
+        else if (error.code === 'INVITATION_BOOTSTRAP_REQUIRED' || error.code === 'KERNEL_SCHEMA_MISSING' || error.status === 503) setStatus('الخدمة أو الإدارة غير مهيأة الآن؛ لم تُمنح عضوية. أعد المحاولة لاحقًا.');
         else setStatus(error.message || 'تعذر إكمال القبول؛ لم يُؤكد الحفظ.');
       } finally {
         busy = false;
         card.removeAttribute('aria-busy');
-        list.querySelectorAll<HTMLButtonElement>('button').forEach((button) => { button.disabled = false; });
+        if (!terminal) list.querySelectorAll<HTMLButtonElement>('button').forEach((button) => { button.disabled = false; });
       }
     };
 

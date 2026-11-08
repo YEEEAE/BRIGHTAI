@@ -170,12 +170,24 @@ export async function createWorkspace(identity, name) {
     if (owned >= MAX_WORKSPACES_PER_USER) throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب؛ تواصل مع مشغّل المنصة.');
     // A new workspace always starts with its creator as the only OWNER. Existing members,
     // policies, invitations and product approvals are never copied from another tenant.
-    // Under the NOBYPASSRLS runtime role this path has no INSERT policy by design: first
-    // workspace provisioning must run through an approved privileged path, not a self-grant.
+    // No role, tenant id or membership is accepted from the request body; the role below
+    // is a server literal. Under the NOBYPASSRLS runtime role this path has no INSERT
+    // policy by design: first workspace provisioning must run through an approved
+    // privileged path, not a self-grant.
     const id = randomUUID();
     try {
+      // The generated tenant must not already exist and must receive exactly one
+      // membership — the caller as OWNER — before anything else is written.
+      const collision = await db.query('SELECT 1 FROM public.aigas_tenants WHERE id=$1', [id]);
+      if (collision.rowCount) throw new KernelError(409, 'WORKSPACE_EXISTS', 'تعذر إنشاء مساحة جديدة؛ أعد المحاولة.');
       await db.query('INSERT INTO public.aigas_tenants (id, name) VALUES ($1, $2)', [id, validated]);
       await db.query("INSERT INTO public.aigas_memberships (tenant_id, user_id, role) VALUES ($1, $2, 'OWNER')", [id, identity.userId]);
+      // Read back the bootstrap result so a trigger, policy change or driver cannot
+      // silently create a second owner or a higher role for another account.
+      const bootstrap = (await db.query('SELECT user_id, role FROM public.aigas_memberships WHERE tenant_id=$1', [id])).rows;
+      if (bootstrap.length !== 1 || bootstrap[0].user_id !== identity.userId || bootstrap[0].role !== 'OWNER') {
+        throw new KernelError(409, 'WORKSPACE_BOOTSTRAP_CONFLICT', 'تعذر تأكيد مالك المساحة الوحيد؛ لم تُنشأ مساحة.');
+      }
       await db.query("INSERT INTO public.aigas_product_access (tenant_id, product_slug) SELECT $1, unnest($2::text[])", [id, ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']]);
       await audit(db, identity, id, 'workspace.created');
       return id;

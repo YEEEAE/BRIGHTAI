@@ -197,6 +197,8 @@
 |---|---|---|---|
 | الهوية والجلسات | P (Neon Auth + `auth.mjs`) | Y (`neon_auth`) | لا مستخدمون/جلسات؛ لا تحقق من جلسة حقيقية |
 | العضوية والمؤسسة | Y (`tenantGuard`, `memberships`) | Y | لا سجلات |
+| أول مساحة ومالكها | Y (`createWorkspace`: مالك وحيد، تحقق قراءة بعد الكتابة، لا دور من الطلب) | Y | لا سجلات؛ تحت `NOBYPASSRLS` يبقى `WORKSPACE_PROVISIONING_REQUIRED` |
+| الدعوات وقبولها | Y (`manageInvitation`: هوية/انتهاء/رفض/صلاحية داعي/تكرار) | Y (`0006`) | لا دعوات؛ الإرسال `NOT_CONFIRMED`؛ القبول تحت `NOBYPASSRLS` يبقى `INVITATION_BOOTSTRAP_REQUIRED` |
 | إتاحة المنتجات والمنح | Y (`requireProductAccess`, `trial.mjs`) | P (`ADMIN_NON_BILLED` فقط؛ `0023` غير مطبق) | لا منح؛ لا شراء أو ترخيص محلي؛ Trial غير مفعّل |
 | سياسات المؤسسة/الإدارات | Y (`kernel/policies.mjs`) | Y | لا سياسة منشورة |
 | التدقيق الأساسي | Y (`audit`) | P | `0017` ناقص |
