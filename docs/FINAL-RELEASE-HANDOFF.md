@@ -369,3 +369,4 @@
 - `docs/products/*/FEATURE-STATUS.yaml` — حالة كل منتج.
 - `docs/beta/RC-3eaf6907c35d0a138984defb5cf9f947f9520f82/` — حزمة قرار Beta للمرشح `3eaf6907`: البوابات التسع، خطة التحقق غير المنفذة، نطاق Beta، وRollback. **`NO-GO`** حتى التحقق الفعلي.
 - `docs/beta/TENANT-ISOLATION-RUNTIME-ROLE-POLICY-2026-11-09.md` — جرد 2026-11-09، تقييم `0018/0019/0025/0027`، تصميم `aigas_runtime` و`SET LOCAL`، خيارات Data API، وسيناريو A/B. **G4=BLOCKED**.
+- `docs/beta/RUNTIME-404-ROOT-CAUSE-2026-11-09.md` — تشخيص 404: الأصل يخدم ملفات ثابتة من Render وليس Node SSR، مع خطة تحقق G2/G3. **G2/G3=BLOCKED**.

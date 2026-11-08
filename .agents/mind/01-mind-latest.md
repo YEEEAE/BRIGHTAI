@@ -1,3 +1,24 @@
+## [2026-11-09] — تشخيص 404 البوابة: الأصل يخدم ملفات ثابتة لا Node SSR
+### تم التنفيذ
+- HEAD الفعلي `5ee9df758165c411e5f6e3677a4d4da5e1bb60b5` (`main`، شجرة نظيفة). قراءة HTTP عامة أثبتت أن `brightai.live` يصل عبر Cloudflare إلى Render (`rndr-id`)، وكل الاستجابات تحمل `last-modified` موحّد `2026-11-08T21:37:31Z` و`cache-control: public, max-age=0, s-maxage=300`.
+- `/app/` و`/app` و`/nonexistent-xyz/` تعيد نفس 404 ونفس `etag` (صفحة 404 الثابتة)؛ لا ترويسات middleware على أي مسار. `/app/api/kernel/health` يعيد HTML لا JSON.
+- المصدر صحيح: كل `src/pages/app/**` بـ`prerender=false`، و`dist/client` بلا `/app/*`، و`dist/server` يحتوي المسارات. `@astrojs/node` standalone يخدم الملفات الثابتة **قبل** middleware؛ لذلك الوصول لـNode كان سيعطي `503` لا `404`.
+- السبب الجذري: الدومين يقدّم artifacts ثابتة (`dist/client`) وليس خدمة Node `npm start`. لا تصحيح برمجي يعالج ذلك. لم يُعدّل كود التطبيق ولا `render.yaml`.
+- Render MCP أعاد `unauthorized`؛ لذلك service ID/type وdeploy ID وSHA وdigest `BLOCKED`. Sentry org بلا مشاريع، PostHog بلا أحداث، ولا SDK في `package.json` ⇒ G8 بلا تغيير.
+- Neon قراءة فقط: 31 جدولًا، RLS 31/31، سياستان، `aigas_runtime=0`، Auth users/sessions/orgs = 0، Data API `active` على `public`.
+### الملفات المتأثرة
+- `docs/beta/RUNTIME-404-ROOT-CAUSE-2026-11-09.md` (جديد)
+- `docs/FINAL-RELEASE-HANDOFF.md` (رابط مرجعي)
+### التحقق
+- `curl -D -` لمسارات `/`, `/app/`, `/app`, `/app/api/kernel/health`, `/nonexistent-xyz/`, `/images/...`, `/sitemap-index.xml`: PASS كدليل HTTP.
+- Neon MCP قراءة فقط: PASS. Build/test/lint/Playwright/local server: NOT RUN حسب نطاق الدفعة.
+### النتيجة
+- **الحالة:** DONE للتشخيص محليًا؛ **G2=BLOCKED** و**G3=BLOCKED** بلا تغيير. لا Beta ولا GO.
+### ملاحظات / مشاكل مفتوحة
+- يلزم اختيار المالك لـRender workspace وتفويض الوصول (MCP أعاد `unauthorized`)، ثم ربط الدومين بخدمة Node وتسجيل `service → deploy → SHA → digest → origin response`.
+- ملاحظة مؤجلة: الصفحات prerendered تتجاوز middleware في standalone فلا تحصل على CSP/HSTS؛ معالجتها تحتاج تفويضًا منفصلًا.
+- Rollover: نُقلت ثلاثة سجلات `2026-11-08` (صقل الصفحات/المعرفة/التعليم) إلى أعلى `02-mind-mid.md`؛ `01` صار 470 سطرًا.
+
 ## [2026-11-09] — تدقيق عزل المؤسسات ودور aigas_runtime (قراءة فقط)
 ### تم التنفيذ
 - HEAD الفعلي `aef462c3b1a26430813b3557145c7031c31d465a` (`main` محليًا)، وليس `46ecaeae…` المذكور في الطلب. جرد Neon قراءة فقط: 31 جدولًا، RLS 31/31، `FORCE=0`، سياستان فقط، `authenticated` 124 منح DML + EXECUTE على 10 دوال، `anonymous` بلا منح، `aigas_runtime` غائب، Data API `active` على `public`.
@@ -448,53 +469,3 @@
 - **الحالة:** PARTIAL — تعديل محلي؛ تحقق الواجهة بالمتصفح غير متاح.
 ### ملاحظات / مشاكل مفتوحة
 - لم تُثبت إتاحة `/app/*` في الإنتاج؛ لم يُنفذ تسجيل دخول أو إجراء دعوة.
-
-## [2026-11-08] — صقل صفحات الثقة والتسعير والتواصل والقانونية
-### تم التنفيذ
-- حسّن `pages.css` التدرج البصري للصفحات التعريفية، وربط تعريف مؤسسة مُشرقة وBRIGHT AI بمنظومة AIGAS بصريًا دون تعديل المحتوى.
-- أعاد تدفق صفوف جدول الثقة على الجوال، وصقل مقارنة السعر/التجربة ووضوح حدود الحقول والتركيز؛ بقي `mailto` كما هو.
-- حسّن مقياس قراءة الخصوصية والشروط دون تغيير نص قانوني، وأبرز 404 ومسارات الرجوع الموجودة.
-- مرجع 21st: `Feature Comparison Table` (21218)؛ لم تُنقل بنية React أو أسعار. Figma بلا ملف مشروع متاح؛ تعذر Lazyweb وChrome DevTools؛ Made Good Designs غير متاح.
-### الملفات المتأثرة
-- `src/styles/pages.css`
-### التحقق
-- `git diff --check`: PASS بعد إصلاح ترتيب السجل؛ الهيدر وHero و`Constellation` والصفحات الأخرى لم تتغير.
-- المعاينة المرئية وBuild والاختبارات: NOT RUN؛ خادم التطوير المحلي حُجب بـ`listen EPERM`، وتعذر Chrome DevTools.
-### النتيجة
-- **الحالة:** PARTIAL — التغييرات محلية، والسلوك المرئي لم يُتحقق منه بالمتصفح.
-### ملاحظات / مشاكل مفتوحة
-- لم يُفحص فرق النشر؛ لا commit/push/deploy.
-
-## [2026-11-08] — صقل مركز المعرفة والقارئ
-### تم التنفيذ
-- ضُغطت مجموعة فلاتر المنتجات على الجوال، ونُقلت التصنيفات من تمرير داخلي إلى تمرير الصفحة عند قصر ارتفاع العرض؛ بقيت المدخلات والروابط والنصوص والكتالوج كما هي.
-- تحسّن الفصل البصري بين نوع المقال وإجراءاته ومعاينته، وأضيف تفاعل بصري لبطاقات الأدلة المرتبطة.
-- المراجع: 21st `Table of Content` (22596) و`Table of Contents` (appica-dev، 34517)؛ Lazyweb لقطة GitHub `Ebooks & Whitepapers`. Figma بلا `fileKey` متاح؛ Made Good Designs غير متاح في الأدوات.
-### الملفات المتأثرة
-- `src/styles/knowledge-center.css`, `src/styles/knowledge-reader.css`
-### التحقق
-- Chrome محلي 1440×768 و390 و320: بلا تجاوز أفقي؛ تمرير التصنيفات داخليًا أُزيل عند ارتفاع 768؛ فتح المعاينة على 390 بقي ضمن التدفق. ارتفاع أدوات البحث/الفلاتر 552→485px على 390 و652→583px على 320. مقالة `/knowledge/ai-governance-saudi/` عرضت 3 روابط ذات صلة وعملت حالتها المرئية.
-- Chrome للموقع المنشور: `/docs/` ظل بارتفاع 552px عند 390؛ التغيير محلي وغير منشور. `git diff --check`: PASS. Build/tests: NOT RUN حسب الطلب.
-### النتيجة
-- **الحالة:** DONE محليًا؛ لا commit/push/deploy.
-### ملاحظات / مشاكل مفتوحة
-- Lazyweb `lazyweb_search` غير موجود، وسجل الشاشة عبر بديله يحتاج ترقية؛ استُخدمت لقطة عامة متاحة. لم يتوفر ملف BRIGHT AI في Figma ولا خادم Made Good Designs في هذه الجلسة.
-- خادم التطوير أظهر تحذير `Astro.request.headers` عند prerender لـ`/docs/` ومقال المعرفة؛ لم يُبحث لأنه خارج تعديل CSS.
-
-## [2026-11-08] — صقل التعليم والرسوم التفاعلية للصفحات الداخلية
-### تم التنفيذ
-- أضيفت وسوم `Educational` للمحاكاة والرسوم والمسارات التعليمية، و`Planned` لمجموعة المنتجات المرتبطة في التصور؛ لم تعرض أي حالة تشغيلية متحققة لعدم وجود دليل تشغيلي.
-- رُبطت أرقام عقد `SectorDiagram` بصفوف الأسئلة، وصارت المرحلة المفتوحة تبرز مسارها بصريًا؛ بقيت الرسوم توضيحية وبدون اتصال تشغيلي.
-- تحسنت قراءة رموز الأركان وتدفق موضوعات الاستفسار بخطوات مرقمة، مع إبقاء النصوص والأقسام وترتيبها ووظائفها.
-- مراجع: 21st `Timeline-02` (بنية نقاط رأسية واضحة)؛ Figma لا ملف BRIGHTAI محدد؛ Lazyweb تعذر (`lazyweb_search` غير موجود في السيرفر)؛ Made Good Designs غير متاح.
-### الملفات المتأثرة
-- `src/pages/kernel.astro`, `src/pages/pillars/[pillar].astro`, `src/pages/solutions/[sector].astro`, `src/pages/services.astro`
-- `src/components/PageMotionStudy.astro`, `src/components/SectorDiagram.astro`, `src/styles/interior-motion.css`
-### التحقق
-- Chrome محلي 320/390/1440 على الخدمات والأركان والقطاعات وKernel: `scrollWidth == innerWidth`؛ بقاء أعداد الأقسام؛ فتح تفاصيل القطاع أبرز المسار والعقد المطابقة.
-- `git diff --check`: PASS. build/tests/النشر: NOT RUN بطلب الدفعة.
-### النتيجة
-- **الحالة:** DONE محليًا؛ لا commit/push/deploy.
-### ملاحظات / مشاكل مفتوحة
-- خادم dev أصدر تحذير `Astro.request.headers` مع صفحات prerendered؛ الاستجابات كانت 200 والتحذير خارج ملفات الواجهة المعدلة.
-
