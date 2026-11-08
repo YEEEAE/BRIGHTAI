@@ -1,3 +1,30 @@
+## [2026-11-09] — حزمة قرار Beta مقيدة للمرشح `3eaf6907` (NO-GO)
+
+### تم التنفيذ
+- أُنشئت حزمة قرار محلية `docs/beta/RC-3eaf6907c35d0a138984defb5cf9f947f9520f82/` للمرشح الفريد `BRIGHTAI-AIGAS-RC-3eaf6907c35d0a138984defb5cf9f947f9520f82` على HEAD `3eaf6907c35d0a138984defb5cf9f947f9520f82` (شجرة نظيفة). الـSHA `7994d3ce` في الطلب تاريخي فقط، ويوجد 15 commit بينه وبين HEAD؛ لم يُنسب إليهما حالة واحدة.
+- `README.md`: هوية المرشح، قائمة تغييرات المرحلة (12 دفعة، 164 ملفًا)، مصفوفة المنتج/الخطر/المالك/الدليل، نطاق Beta (مؤسستان، 5 مستخدمين، بيانات اصطناعية، بلا تفعيل ذاتي أو إرسال خارجي)، Rollback، Feature Flags الحالية فقط، إشعار العملاء، On-call، وجدول توقيعات فارغ. آخر سطر قرار `NO-GO` مشروط.
+- `GO-NO-GO-GATES.yaml`: 9 بوابات. G1 `PASS` بنطاق المسارات العامة فقط؛ G2–G8 `BLOCKED`؛ G9 `NOT_VERIFIED`. كل بوابة بصاحب قرار، دليل مطلوب، ونقص موثق. بوابة App SSR/Auth `BLOCKED` بسبب 404 و`AIGAS_APP_ENABLED=false`، لا `PASS`.
+- `VERIFICATION-PLAN.md`: 14 حالة تحقق `NOT RUN` تغطي build نظيف، هوية/دعوات، عزل مؤسستين، مزود مغلق ثم معتمد، Ledger export/verify، HG SoD، RE acceptance، Chat quota، Chrome/Keyboard/Reduced Motion، CSP، timeouts، Restore، Artifact parity، وجرد RLS. كل حالة بأوامر ومتوقع ومعيار قبول ومسار دليل.
+- أُضيف رابط الحزمة إلى `docs/FINAL-RELEASE-HANDOFF.md` §10. لم تُمس الهيدر/Hero/Constellation/الشعار أو ترتيب/نصوص الأقسام العامة.
+- لم يُنفّذ build/test/lint/HTTP/E2E، ولم يُتصل بـNeon، ولم تُطبّق migrations، ولم يُغيّر `AIGAS_APP_ENABLED` أو Data API، ولم يُنشر أو يُعمل commit/push.
+
+### الملفات المتأثرة
+- `docs/beta/RC-3eaf6907c35d0a138984defb5cf9f947f9520f82/{README.md,VERIFICATION-PLAN.md,GO-NO-GO-GATES.yaml}` (جديد)
+- `docs/FINAL-RELEASE-HANDOFF.md`
+
+### التحقق
+- `python3` + YAML: الملف صالح، 9 بوابات، `decision.status=NO-GO`: PASS.
+- `git diff --check`: PASS. آخر سطر في `README.md` هو قرار `NO-GO` المشروط: CONFIRMED.
+- Build/typecheck/tests/browser/Neon/restore/deploy: NOT RUN حسب نطاق المهمة؛ كل حالات التحقق موسومة `NOT RUN`.
+
+### النتيجة
+- **الحالة:** DONE محليًا لإعداد حزمة القرار؛ قرار الإطلاق `NO-GO`. لا `RUNTIME_VERIFIED` ولا `APPROVED` لأي بوابة معلقة.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم توقيع مالك المنصة والأمن/الخصوصية والقانوني ومشغّل قاعدة البيانات والمشغّل المستقل، ثم تنفيذ خطة التحقق على staging معتمد.
+- خلل `aria-expanded` الأولي في هيدر الجوال قائم؛ الهيدر محمي ويحتاج تفويضًا منفصلًا. لا تُعد بوابة الوصول `PASS` قبله.
+- موانع P0 في `docs/RELEASE-BLOCKERS-REGISTER.md` لم تتغير؛ الحزمة تعكسها ولا تغلقها.
+
 ## [2026-11-08] — إغلاق الثقة والترويسات والاحتفاظ واستعداد التشغيل (CSP محددة + Runbook)
 
 ### تم التنفيذ

@@ -1,0 +1,281 @@
+# BRIGHTAI / AIGAS — Go/No-Go Gates
+# Release candidate: RC-3eaf6907c35d0a138984defb5cf9f947f9520f82
+# Prepared: 2026-11-09
+# This file records evidence state, not permission to deploy.
+# Allowed status values: PASS | BLOCKED | NOT_VERIFIED
+
+release_candidate:
+  id: BRIGHTAI-AIGAS-RC-3eaf6907c35d0a138984defb5cf9f947f9520f82
+  commit: 3eaf6907c35d0a138984defb5cf9f947f9520f82
+  branch: main
+  commit_date: "2026-11-08T23:59:24+03:00"
+  worktree: clean
+  deployed: false
+  previous_prompt_sha: 7994d3ce9df4797630d4dc9a2c51d2c141dedcab
+  note: "Previous SHA is historical and is not attributed to the current tree."
+
+decision:
+  status: NO-GO
+  condition: "No GO until every required P0 gate is verified with dated evidence on this SHA and signed by its owner."
+  signed_by: null
+  signed_on: null
+
+gates:
+  - id: G1
+    name_ar: "وصول الموقع"
+    name_en: "Site access"
+    priority: P0
+    status: PASS
+    scope: "public marketing and knowledge routes only"
+    owner:
+      - "Platform Owner"
+      - "Deploy Operator"
+    evidence_required:
+      - "HTTP 200 for public routes from a named host"
+      - "Recorded timestamp, host, path, status, and response headers"
+    current_evidence:
+      - "Browser scan 2026-11-08: 15/15 public routes returned 200"
+      - "No evidence that the responding artifact matches this release candidate"
+    limitations:
+      - "Does not prove the deployed artifact equals this SHA; that is G2."
+      - "Does not open /app/*; that is G3."
+    closes_when: "A dated public-route response log exists for the public host. Binding that host to this SHA remains G2."
+    decision: PASS_NARROW_SCOPE
+
+  - id: G2
+    name_ar: "مطابقة Source/Artifact"
+    name_en: "Source and artifact parity"
+    priority: P0
+    status: BLOCKED
+    owner:
+      - "Platform Owner"
+      - "Deploy Operator"
+    evidence_required:
+      - "Deployed commit SHA equals 3eaf6907c35d0a138984defb5cf9f947f9520f82"
+      - "Deploy ID, build logs, artifact/image digest"
+      - "Origin response proving the request reaches the Node service"
+      - "Domain and CDN mapping recorded"
+    current_evidence:
+      - "render.yaml is configuration only"
+      - "No deploy record binds the live host to this SHA"
+      - "No artifact digest recorded"
+    missing_evidence:
+      - "Deployment record"
+      - "Origin and edge response pair"
+      - "CDN bypass confirmation for /app/*"
+    closes_when: "The operator records host -> DNS/CDN -> service ID -> deploy ID -> SHA -> artifact digest -> origin response."
+    decision: null
+
+  - id: G3
+    name_ar: "App SSR + Auth"
+    name_en: "Application SSR and authentication"
+    priority: P0
+    status: BLOCKED
+    owner:
+      - "Security Lead"
+      - "Platform Owner"
+    evidence_required:
+      - "With AIGAS_APP_ENABLED=false: /app/* returns the expected 503 page and /app/api/* returns 503 JSON"
+      - "With the flag enabled only on staging: /app/ serves the portal and /app/api/kernel/health returns JSON"
+      - "Synthetic sign-in, session, membership, and invitation acceptance succeed"
+    current_evidence:
+      - "Browser scan 2026-11-08: /app/, /app/kernel/, /app/firewall/, /app/ledger/, /app/human-gate/, /app/risk-engine/, /app/secure-chat/, and /app/api/kernel/health all returned 404"
+      - "AIGAS_APP_ENABLED=false in render.yaml"
+      - "No users or sessions in the inspected database state"
+      - "No invite or login flow executed"
+    missing_evidence:
+      - "Origin-level response"
+      - "Authenticated session"
+      - "Invitation lifecycle evidence"
+    accessibility_blocker:
+      - "Header mobile summary starts with aria-expanded=true while the menu is closed; corrected only on toggle"
+      - "Header is protected; fixing it requires separate owner authorization"
+    closes_when: "An authorized operator records the 503 baseline, enables the flag on staging, and completes login plus one invitation journey."
+    decision: null
+
+  - id: G4
+    name_ar: "RLS role + tenant isolation"
+    name_en: "Runtime role, RLS, and tenant isolation"
+    priority: P0
+    status: BLOCKED
+    owner:
+      - "Security Lead"
+      - "Database Operator"
+    evidence_required:
+      - "Service connects with a NOBYPASSRLS runtime role"
+      - "Tenant-scoped policies cover every AIGAS table in use"
+      - "Client Data API cannot read public tables without an approved policy"
+      - "Tenant A cannot read or mutate Tenant B data through the application"
+    current_evidence:
+      - "31/31 tables have RLS enabled"
+      - "Only two RLS policies were observed"
+      - "authenticated has DML on 31 tables"
+      - "neondb_owner bypasses RLS; the actual service connection role is NOT_VERIFIED"
+      - "Data API is active on public"
+      - "aigas_runtime does not exist"
+      - "Migration 0025 is local only"
+    missing_evidence:
+      - "Approved runtime role login"
+      - "Applied tenant policies"
+      - "Executed Tenant A/B scenario"
+      - "Data API restriction"
+    closes_when: "Security and DB operator sign off a successful Tenant A/B run using the runtime role, with Data API restricted."
+    decision: null
+
+  - id: G5
+    name_ar: "Schema staging"
+    name_en: "Schema readiness on staging"
+    priority: P0
+    status: BLOCKED
+    owner:
+      - "Database Operator"
+      - "Platform Owner"
+    evidence_required:
+      - "Protected staging branch with synthetic data only"
+      - "Migrations applied in the approved order"
+      - "Post-migration catalog checks for columns, functions, indexes, policies, and grants"
+      - "Application smoke test against the migrated schema"
+    current_evidence:
+      - "Single production branch, protected=false"
+      - "No staging branch"
+      - "No migration ledger"
+      - "0013, 0014, 0016, 0017, 0018, 0019, 0022, 0023, 0025, 0026, 0027 are not applied on the inspected branch"
+      - "0020 and 0021 are applied"
+    missing_evidence:
+      - "Staging branch"
+      - "Migration execution evidence"
+      - "Post-migration checks"
+    closes_when: "A DB operator records the staging branch, applied order, and post-migration catalog evidence."
+    decision: null
+
+  - id: G6
+    name_ar: "Providers and privacy approvals"
+    name_en: "AI provider and privacy approvals"
+    priority: P0
+    status: BLOCKED
+    owner:
+      - "Product Owner"
+      - "Security and Privacy Lead"
+      - "Legal"
+    evidence_required:
+      - "Approved model IDs, provider, region, retention, and no-training terms"
+      - "Server-side key stored in an approved secret store"
+      - "Firewall provider registry populated only with approved external providers"
+      - "Privacy impact review signed for the Beta scope"
+    current_evidence:
+      - "APPROVED_MODELS is empty"
+      - "approvedProviders is empty"
+      - "No provider key configured"
+      - "No retention or no-training approval recorded"
+      - "No external send path is approved"
+    missing_evidence:
+      - "Signed model/provider approval"
+      - "Secret-store reference"
+      - "Privacy sign-off"
+    closes_when: "Product, security/privacy, and legal sign the provider record and the Beta privacy scope."
+    decision: null
+
+  - id: G7
+    name_ar: "Backups and restore"
+    name_en: "Backup and restore rehearsal"
+    priority: P0
+    status: BLOCKED
+    owner:
+      - "Database Operator"
+      - "Platform Owner"
+    evidence_required:
+      - "Protected production branch"
+      - "Restore point recorded with time/LSN"
+      - "Actual restore into a separate branch"
+      - "Row/table counts and migration head verified after restore"
+      - "Restore branch deleted or retained under an approved policy"
+    current_evidence:
+      - "production branch is not protected"
+      - "No staging or restore branch exists"
+      - "No restore rehearsal recorded"
+      - "No RPO/RTO evidence"
+    missing_evidence:
+      - "Snapshot or restore point reference"
+      - "Restore execution log"
+      - "Post-restore verification"
+    closes_when: "The operator records a successful restore into a separate branch and verifies the expected schema and counts."
+    decision: null
+
+  - id: G8
+    name_ar: "Incident monitoring"
+    name_en: "Incident monitoring and on-call"
+    priority: P0
+    status: BLOCKED
+    owner:
+      - "Operations Owner"
+      - "Security Lead"
+    evidence_required:
+      - "Named incident commander and on-call rotation"
+      - "Alerts for 5xx, latency, login failure, cross-tenant denial, and Ledger verification failure"
+      - "Security and outage email routes per decisions 96 and 97"
+      - "Incident runbook and rollback authority"
+    current_evidence:
+      - "No on-call roster"
+      - "No alert configuration"
+      - "No monitoring of /app/api/kernel/health"
+      - "No incident contact route recorded"
+      - "Render health check targets / only"
+    missing_evidence:
+      - "Roster"
+      - "Alert configuration evidence"
+      - "Contact routes"
+      - "Incident runbook approval"
+    closes_when: "Operations and security sign the roster, alert rules, contact routes, and incident runbook."
+    decision: null
+
+  - id: G9
+    name_ar: "Operator signoff"
+    name_en: "Independent operator signoff"
+    priority: P0
+    status: NOT_VERIFIED
+    owner:
+      - "Platform Owner"
+    evidence_required:
+      - "Named operator independent of the migration author"
+      - "Signed execution window"
+      - "Rollback owner named"
+      - "Final Go/No-Go signature on this decision package"
+    current_evidence:
+      - "Signature table is empty"
+      - "No execution window approved"
+      - "No independent operator named"
+    missing_evidence:
+      - "Signed operator appointment"
+      - "Signed window"
+      - "Final decision signature"
+    closes_when: "The platform owner records the operator name, window, and signatures without unresolved P0 gates."
+    decision: null
+
+required_p0_gates:
+  - G1
+  - G2
+  - G3
+  - G4
+  - G5
+  - G6
+  - G7
+  - G8
+  - G9
+
+beta_scope:
+  max_tenants: 2
+  max_users_per_tenant: 5
+  data: synthetic_only
+  production_data_allowed: false
+  self_activation_allowed: false
+  external_ai_send_allowed: false
+  poc_48h:
+    starts_only_after:
+      - "G2 through G9 signed"
+      - "staging available"
+      - "restore rehearsal complete"
+      - "one product approved in writing"
+    auto_conversion: false
+    billing: false
+
+final_condition: "NO-GO until all required P0 gates are verified with dated evidence on this SHA and signed by their owners."

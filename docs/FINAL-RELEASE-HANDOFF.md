@@ -367,3 +367,4 @@
 - `docs/APP-PORTAL-RUNTIME-HANDOFF.md` — تشغيل البوابة وNode SSR.
 - `docs/ENTERPRISE-TRIAL-POLICY.md` — التجربة والاعتمادات التجارية.
 - `docs/products/*/FEATURE-STATUS.yaml` — حالة كل منتج.
+- `docs/beta/RC-3eaf6907c35d0a138984defb5cf9f947f9520f82/` — حزمة قرار Beta للمرشح `3eaf6907`: البوابات التسع، خطة التحقق غير المنفذة، نطاق Beta، وRollback. **`NO-GO`** حتى التحقق الفعلي.
