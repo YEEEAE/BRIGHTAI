@@ -18,7 +18,7 @@ export const METHOD = Object.freeze({
   Object.freeze({min:6,max:9,level:'HIGH',label:'مرتفع'}),
  ]),
  inherent: 'الخطر الكامن = الاحتمال × الأثر قبل الاعتماد على الضوابط؛ الأسباب يكتبها المقيّم البشري.',
- residual: 'الخطر المتبقي وصف نصي بعد الضوابط؛ لا تُحتسب درجة رقمية ولا يخفض القبول درجة التقييم تلقائيًا.',
+ residual: 'الخطر المتبقي وصف نصي وتقدير بشري اختياري بالاحتمال × الأثر بعد الضوابط؛ لا يُخفض من الخطر الكامن تلقائيًا ولا يثبت تنفيذ الضوابط.',
  limitations: Object.freeze([
   'مدخلات بشرية بقواعد حتمية؛ ليست احتمالًا إحصائيًا معايرًا ولا تحليلًا من نموذج ذكاء اصطناعي.',
   'لا اعتماد ISO أو سدايا أو أي جهة تنظيمية، ولا ادعاء امتثال.',
@@ -29,7 +29,23 @@ export const METHOD = Object.freeze({
 // Acceptance is recorded as a decision, never as deployment or policy authority.
 export const acceptanceScope = Object.freeze({deployment_authorized:false,policy_override:false,mandatory_policy_override:false});
 export const treatmentStatuses = ['OPEN','IN_PROGRESS','MITIGATED','ACCEPTED'];
-export const treatmentFields = ['asset_version','assessment_id','treatment_version','owner','status','control_description','residual_risk_description','review_on','rationale'];
+// Residual axes are the same human-entered 3×3 matrix as the inherent score.
+// They are not an automatic reduction and never imply that controls are verified.
+export const residualFields = ['residual_likelihood','residual_impact'];
+export const treatmentFields = ['asset_version','assessment_id','treatment_version','owner','status','control_description','residual_risk_description','review_on','rationale',...residualFields];
+// One declared acceptance policy. There is no per-tenant policy store yet, so the
+// product policy is enforced identically for every tenant and labelled as such.
+export const ACCEPTANCE_POLICY_VERSION = 'risk-acceptance-policy-v1';
+export const acceptancePolicy = Object.freeze({
+ version: ACCEPTANCE_POLICY_VERSION,
+ roles: 'OWNER for HIGH or residual HIGH; OWNER/ADMIN for LOW/MEDIUM',
+ independent_owner_for_high: true,
+ min_rationale_length: 20,
+ review_on_required: true,
+ residual_assessment_required: true,
+ scope: 'ADMINISTRATIVE_DECISION_ONLY',
+ per_tenant_policy_store: false,
+});
 export const classifications = ['PUBLIC','INTERNAL','CONFIDENTIAL','RESTRICTED'];
 export const assetFields = ['name','owner','purpose','data_classification','data_context','provider_reference','model_reference','model_version','approval_status','lifecycle_status'];
 export const controls = {
@@ -74,6 +90,50 @@ export function evaluate(likelihood, impact) {
  const score=likelihood*impact,risk_level=score<=2?'LOW':score<=4?'MEDIUM':'HIGH';
  return {score,risk_level,requires_human_review:risk_level==='HIGH',method_version:METHOD_VERSION,explanation:`الاحتمال ${likelihood} × الأثر ${impact} = ${score}؛ التصنيف ${risk_level} حسب مسودة المصفوفة. ${risk_level==='HIGH'?'يلزم عرض النتيجة على مراجع بشري؛ هذا التقييم لا يجيز التشغيل.':''}`,suggested_control:controls[risk_level]};
 }
+export function riyadhToday(now=new Date()) {
+ const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
+ const part=type=>parts.find(item=>item.type===type)?.value||'';
+ return `${part('year')}-${part('month')}-${part('day')}`;
+}
+export function reviewDue(reviewOn) {
+ return typeof reviewOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(reviewOn)&&reviewOn<=riyadhToday();
+}
+// A residual estimate is optional until the plan claims MITIGATED or ACCEPTED.
+// When present, both axes are required and the same deterministic matrix applies.
+export function residualAssessment(body) {
+ const hasLikelihood=body.residual_likelihood!==undefined&&body.residual_likelihood!==null&&body.residual_likelihood!=='';
+ const hasImpact=body.residual_impact!==undefined&&body.residual_impact!==null&&body.residual_impact!=='';
+ if(!hasLikelihood&&!hasImpact)return {residual_likelihood:null,residual_impact:null,residual_score:null,residual_level:null};
+ if(!hasLikelihood||!hasImpact)throw new KernelError(400,'INCOMPLETE_RESIDUAL_MATRIX','الخطر المتبقي يحتاج احتمالًا وأثرًا معًا من 1 إلى 3.');
+ const likelihood=Number(body.residual_likelihood),impact=Number(body.residual_impact);
+ if(![1,2,3].includes(likelihood)||![1,2,3].includes(impact))throw new KernelError(400,'INVALID_RESIDUAL_MATRIX','الاحتمال والأثر المتبقيان عددان صحيحان من 1 إلى 3.');
+ const evaluated=evaluate(likelihood,impact);
+ return {residual_likelihood:likelihood,residual_impact:impact,residual_score:evaluated.score,residual_level:evaluated.risk_level};
+}
+export function acceptanceDecision(asset, assessment, treatment, member, actorId) {
+ const reasons=[];
+ if(!asset||asset.lifecycle_status!=='ACTIVE')reasons.push('ASSET_RETIRED');
+ if(!assessment||!asset||assessment.asset_version!==asset.version)reasons.push('ASSESSMENT_STALE');
+ if(!['OWNER','ADMIN'].includes(member?.role))reasons.push('ROLE_NOT_PERMITTED');
+ if(!treatment?.review_on)reasons.push('REVIEW_DATE_REQUIRED');
+ if(!treatment?.residual_level)reasons.push('RESIDUAL_ASSESSMENT_REQUIRED');
+ if(!treatment||treatment.rationale.trim().length<acceptancePolicy.min_rationale_length)reasons.push('RATIONALE_REQUIRED');
+ const high=assessment?.risk_level==='HIGH'||treatment?.residual_level==='HIGH';
+ if(high){
+  if(member?.role!=='OWNER')reasons.push('OWNER_REQUIRED');
+  if(assessment?.evaluator_id===actorId)reasons.push('SELF_ACCEPTANCE_DENIED');
+ }
+ return {allowed:reasons.length===0,reasons,policy_version:ACCEPTANCE_POLICY_VERSION,high_risk:high,deployment_authorized:false,policy_override:false};
+}
+export function recordState({asset,assessment,treatment,treatmentReviewRequired=false,acceptanceReviewDue=false}={}) {
+ if(!asset)return 'NOT_ASSESSED';
+ if(asset.lifecycle_status==='RETIRED')return 'RETIRED';
+ if(!assessment)return 'NOT_ASSESSED';
+ if(assessment.asset_version!==asset.version)return 'REASSESSMENT_REQUIRED';
+ if(treatmentReviewRequired)return 'TREATMENT_REVIEW_REQUIRED';
+ if(treatment?.status==='ACCEPTED'&&acceptanceReviewDue)return 'ACCEPTANCE_REVIEW_DUE';
+ return 'CURRENT';
+}
 export function assessmentInput(body) {
  return {...evaluate(body.likelihood,body.impact),method_name:METHOD_NAME,likelihood:body.likelihood,impact:body.impact,likelihood_reason:text(body.likelihood_reason),impact_reason:text(body.impact_reason),controls_reason:text(body.controls_reason),evidence_references:body.evidence_references==null||body.evidence_references===''?'':text(body.evidence_references,1000),asset_version:version(body.asset_version)};
 }
@@ -83,6 +143,9 @@ export function treatmentInput(body) {
  const review_on=body.review_on===undefined||body.review_on===null||body.review_on===''?null:body.review_on;
  if(review_on!==null&&(typeof review_on!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(review_on)||!Number.isFinite(Date.parse(review_on))||new Date(review_on).toISOString().slice(0,10)!==review_on))throw new KernelError(400,'INVALID_REVIEW_DATE','تاريخ المراجعة غير صالح.');
  const rationale=text(body.rationale,500);
- if(body.status==='ACCEPTED'&&rationale.length<20)throw new KernelError(400,'ACCEPTANCE_RATIONALE_REQUIRED','قبول الخطر يحتاج تعليلًا مسجلًا لا يقل عن 20 حرفًا يوضح سبب القبول ونطاقه.');
- return {asset_version:version(body.asset_version),assessment_id:body.assessment_id,treatment_version:body.treatment_version,owner:text(body.owner,120),status:body.status,control_description:text(body.control_description,500),residual_risk_description:text(body.residual_risk_description),review_on,rationale};
+ const residual=residualAssessment(body);
+ if(body.status==='ACCEPTED'&&rationale.length<acceptancePolicy.min_rationale_length)throw new KernelError(400,'ACCEPTANCE_RATIONALE_REQUIRED','قبول الخطر يحتاج تعليلًا مسجلًا لا يقل عن 20 حرفًا يوضح سبب القبول ونطاقه.');
+ if(body.status==='ACCEPTED'&&review_on===null)throw new KernelError(400,'ACCEPTANCE_REVIEW_REQUIRED','قبول الخطر يحتاج موعد مراجعة محددًا؛ القبول غير محدد المدة غير مسموح.');
+ if(['MITIGATED','ACCEPTED'].includes(body.status)&&residual.residual_level===null)throw new KernelError(400,'RESIDUAL_ASSESSMENT_REQUIRED','الادعاء بأن الخطر عولج أو قبوله يحتاج تقييم الخطر المتبقي بالاحتمال × الأثر.');
+ return {asset_version:version(body.asset_version),assessment_id:body.assessment_id,treatment_version:body.treatment_version,owner:text(body.owner,120),status:body.status,control_description:text(body.control_description,500),residual_risk_description:text(body.residual_risk_description),review_on,rationale,...residual};
 }

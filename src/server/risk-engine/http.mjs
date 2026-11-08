@@ -23,7 +23,7 @@ export function createHandler(auth=authenticate, service=operate) {
       const data=await service(identity,params.get('workspace'),operation,body,params,id);
       return Response.json(data,{status:['create','assess','save-treatment'].includes(operation)?201:200,headers:{...headers,...(operation==='export'?{'Content-Disposition':'attachment; filename="aigas-risk-register.json"'}:{})}});
     } catch(error) {
-      if(error?.code==='42P01'||error?.code==='42703')error=new KernelError(503,'RISK_ENGINE_SCHEMA_MISSING','مخطط Risk Engine أو أحدث حقوله غير متاح؛ يلزم تطبيق 0005 ثم 0008 ثم 0015 على بيئة معتمدة.');
+      if(error?.code==='42P01'||error?.code==='42703')error=new KernelError(503,'RISK_ENGINE_SCHEMA_MISSING','مخطط Risk Engine أو أحدث حقوله غير متاح؛ يلزم تطبيق 0005 ثم 0008 ثم 0015 ثم 0026 على بيئة معتمدة.');
       if(error?.code==='42501')error=new KernelError(503,'RISK_ENGINE_DB_PRIVILEGE','صلاحيات قاعدة البيانات لا تسمح بهذه العملية؛ راجع مسؤول التشغيل.');
       if(error?.code==='23505')error=new KernelError(409,'RISK_ENGINE_CONFLICT','تغيّر السجل أو الإصدار أثناء الحفظ؛ حدّث الصفحة وأعد المحاولة دون تكرار.');
       if(error?.code==='23514')error=new KernelError(400,'RISK_ENGINE_CONSTRAINT','المدخلات لا تحقق قيد سجل المخاطر المحفوظ؛ راجع الحقول المطلوبة.');

@@ -1,3 +1,34 @@
+## [2026-11-08] — إغلاق سجل Risk Engine: الخطر المتبقي وسياسة القبول والتصدير
+
+### تم التنفيذ
+- HEAD المحلي `2eaad980` (يختلف عن `7994d3ce` في الطلب). أُعيد فحص `core.mjs`/`service.mjs`/المسارات/`RiskWorkspace`/`0015`/`0021`، ولم يُشغّل build/tests/lint/E2E/HTTP، ولم تُنفّذ أي كتابة أو DDL على Neon.
+- أُبقي محرك `draft-likelihood-impact-v1` كما هو. أُضيف تقييم بشري اختياري للخطر المتبقي بنفس مصفوفة 3×3 (`residual_likelihood/impact/score/level`)، مع منع أي تخفيض تلقائي من الخطر الكامن. `MITIGATED` و`ACCEPTED` يتطلبان تقييمًا متبقيًا.
+- سياسة قبول صريحة `risk-acceptance-policy-v1`: تقييم للنسخة الحالية، دور OWNER/ADMIN، تعليل ≥20 حرفًا، موعد مراجعة إلزامي، وخطر متبقٍ مقيّم؛ والخطر المرتفع كامنًا أو متبقيًا يتطلب OWNER مستقلًا عن المقيّم. لا يوجد مخزن سياسة لكل مؤسسة بعد.
+- التصدير أصبح `risk-register-v2` بقائمة حقول مسموحة: نفس المستأجر، بلا `created_by/evaluator_id/changed_by/actor_role/asset_snapshot/evidence_references/data_context`، وحالة الاعتماد تُصدّر كوصف من الجهة غير متحقق منه. أُضيفت مؤشرات `residual_assessed/missing/acceptance_review_due`.
+- الواجهة تعرض حالات `CURRENT/NOT_ASSESSED/REASSESSMENT_REQUIRED/TREATMENT_REVIEW_REQUIRED/ACCEPTANCE_REVIEW_DUE/RETIRED` وحالة تصدير فارغة/فاشلة، دون تغيير أعمدة المصفوفة أو ألوانها أو ترتيب الأقسام.
+- `migrations/0026_aigas_risk_engine_residual_and_acceptance_policy.sql` مسودة محلية غير مطبّقة: أعمدة الخطر المتبقي، قيود `NOT VALID`، واستبدال حارس 0021 بسياسة القبول الكاملة. فحص Neon قراءة فقط أكد غياب الأعمدة من `production`.
+
+### الملفات المتأثرة
+- `src/server/risk-engine/core.mjs`, `src/server/risk-engine/service.mjs`, `src/server/risk-engine/http.mjs`
+- `src/scripts/risk-engine.ts`, `src/components/RiskWorkspace.astro`, `src/styles/risk-engine.css`
+- `migrations/0026_aigas_risk_engine_residual_and_acceptance_policy.sql`
+- `docs/RISK-ENGINE-DEVELOPMENT.md`, `docs/products/risk-engine/STAGING-VERIFICATION.md`, `docs/products/risk-engine/FEATURE-STATUS.yaml`
+- `docs/CURRENT-IMPLEMENTATION-REGISTER.md`, `docs/RELEASE-BLOCKERS-REGISTER.md`
+
+### التحقق
+- `node --check` لملفات الخادم الثلاثة و`node --experimental-strip-types --check` لـ`risk-engine.ts` و`git diff --check`: PASS.
+- Neon read-only: أعمدة `residual_likelihood/impact/score/level` و`acceptance_policy_version` غائبة من `aigas_re_treatment_revisions` في `production`: CONFIRMED. لا كتابة.
+- Build/typecheck/tests/E2E/HTTP/browser/0026 execution: NOT RUN حسب نطاق الدفعة.
+
+### النتيجة
+- **الحالة:** PARTIAL — سجل الأصول والتقييم الكامن والمتبقي والمعالجة والتصدير وسياسة القبول `SOURCE_PRESENT`؛ `SCHEMA_PRESENT` للخطر المتبقي ينتظر 0026، ولا `RUNTIME_VERIFIED` ولا اعتماد.
+
+### ملاحظات / مشاكل مفتوحة
+- تطبيق 0026 وتجربة staging بمخاطر اصطناعية تحتاج موافقة مالك قاعدة البيانات + الأمن + مالك المنتج. الكود يفشل مغلقًا بـ`RISK_ENGINE_SCHEMA_MISSING` قبل التطبيق.
+- لا سياسات مخاطر هرمية لكل مؤسسة (RE-03) ولا تحقق Privacy/Security مستقل؛ P1-03 يبقى `OPEN`. لا ادعاء ISO/SDAIA/NCA أو إطلاق Beta.
+
+
+
 ## [2026-11-08] — إغلاق دورة Human Gate والفصل بين مقدم الطلب والمراجع والمنفذ
 
 ### تم التنفيذ

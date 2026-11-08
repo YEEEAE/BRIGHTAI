@@ -44,11 +44,14 @@ local_foundation:
   schema_migration_applied: true
   real_neon_authenticated_flow_verified: false
   method: draft-likelihood-impact-v1
-  scope_ar: سجل أصول ونسخ وتقييمات ومعالجة؛ أحدث تعديل محلي يضيف سياق بيانات ومزوّد/نموذج وحالة اعتماد وصفية وأرشفة قابلة للعكس وخطرًا متبقيًا سرديًا واستعادة النسخ
+  scope_ar: سجل أصول ونسخ وتقييمات ومعالجة؛ أحدث تعديل محلي يضيف سياق بيانات ومزوّد/نموذج وحالة اعتماد وصفية وأرشفة قابلة للعكس وخطرًا متبقيًا بشريًا بالمصفوفة نفسها وسياسة قبول صريحة وتصديرًا مقيد الحقول واستعادة النسخ
   follow_up_slice: ASSET_CONTEXT_RESIDUAL_RISK_AND_REVISION_RESTORE_LOCAL_ONLY
-  latest_source_update: '2026-11-03'
-  latest_local_migration: migrations/0015_aigas_risk_engine_asset_context_residual_risk.sql
-  latest_local_draft_migration_unapplied: null
+  latest_source_update: '2026-11-08'
+  latest_local_migration: migrations/0026_aigas_risk_engine_residual_and_acceptance_policy.sql
+  latest_local_draft_migration_unapplied: migrations/0026_aigas_risk_engine_residual_and_acceptance_policy.sql
+  residual_estimate: HUMAN_ENTERED_SAME_MATRIX_NOT_AUTOMATIC_REDUCTION
+  acceptance_policy_version: risk-acceptance-policy-v1
+  per_tenant_risk_policy_store: false
   migration_0021_applied: true
   migration_0021_observed_on: '2026-11-03'
   migration_0021_evidence: function aigas_re_guard_treatment and trigger aigas_re_treatment_guard exist on production branch (read-only catalog)
@@ -62,14 +65,14 @@ local_foundation:
     runtime_verified: false
   capability_coverage:
     RE-01: PARTIAL_LOCAL_SLICE
-    RE-02: RULES_ONLY_DRAFT_SUBSET
+    RE-02: RULES_ONLY_DRAFT_SUBSET_INCLUDING_HUMAN_RESIDUAL
     RE-03: DEFERRED_HIERARCHICAL_POLICIES
     RE-04: PARTIAL_MANUAL_ASSET_CHANGE_REASSESSMENT
-    RE-05: PARTIAL_HIGH_ACCEPTANCE_INDEPENDENT_OWNER_LOCAL_UNVERIFIED
+    RE-05: PARTIAL_ACCEPTANCE_POLICY_LOCAL_UNVERIFIED
   commercial_availability_changed: false
 current_source_snapshot:
-  inspected_on: '2026-11-03'
-  local_commit: af6d721df6372fdbc9d4cb9a71820c033019afb1
+  inspected_on: '2026-11-08'
+  local_commit: 2eaad98078b2acc56a22e5b3708da012dce6994e
   runtime_verified: false
   sources:
   - src/server/risk-engine/{core,service,http}.mjs

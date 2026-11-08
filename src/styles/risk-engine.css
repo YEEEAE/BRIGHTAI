@@ -155,6 +155,23 @@
   font-size:13px;
   line-height:1.85;
 }
+.risk-engine :is([data-record-state],[data-export-state],[data-residual-preview]){
+  margin-block:.75rem;
+  padding:10px 12px;
+  border:1px solid var(--re-line);
+  border-inline-start:3px solid #6f6684;
+  border-radius:8px;
+  background:#0b0910;
+  color:var(--re-copy);
+  font-size:13px;
+  line-height:1.85;
+}
+.risk-engine [data-record-state][data-state="CURRENT"]{border-inline-start-color:#4f9d78;color:#c1f5d7}
+.risk-engine [data-record-state][data-state="ACCEPTANCE_REVIEW_DUE"],
+.risk-engine [data-record-state][data-state="TREATMENT_REVIEW_REQUIRED"],
+.risk-engine [data-record-state][data-state="REASSESSMENT_REQUIRED"],
+.risk-engine [data-record-state][data-state="NOT_ASSESSED"],
+.risk-engine [data-record-state][data-state="RETIRED"]{border-inline-start-color:#c88a2e;color:#ffe0a3}
 .risk-engine [data-preview]{color:#e7ddc9;font-size:13px;line-height:1.85}
 .risk-engine :is([data-empty],[data-no-results],[data-actions-empty],[data-history-empty],[data-revisions-empty],[data-treatment-empty]){
   padding:14px 16px;

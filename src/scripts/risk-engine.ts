@@ -3,14 +3,16 @@ const root=document.querySelector<HTMLElement>('[data-risk-engine]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'),area=get('[data-private]'),workspace=get<HTMLSelectElement>('[data-workspace]');
 const assetForm=get<HTMLFormElement>('[data-asset-form]'),assessmentForm=get<HTMLFormElement>('[data-assessment-form]'),filterForm=get<HTMLFormElement>('[data-filter-form]'),treatmentForm=get<HTMLFormElement>('[data-treatment-form]'),archiveForm=get<HTMLFormElement>('[data-archive-form]'),actionsFilter=get<HTMLFormElement>('[data-actions-filter]');
+const recordState=get('[data-record-state]'),exportState=get('[data-export-state]'),residualPreview=get('[data-residual-preview]');
 const auth=root.dataset.authUrl?createAuthClient(root.dataset.authUrl):null;
 let treatmentPage=1,treatmentMore=false,actionsPage=1,actionsMore=false,treatmentData:any=null,committedMessage='';
 const detailId=root.dataset.detailAsset||'';
 let busy=false,page=1,hasMore=false,historyPage=1,historyMore=false,revisionsPage=1,revisionsMore=false,canWrite=false,selected:any=null,editing:any=null;
 const labels:Record<string,string>={LOW:'منخفض',MEDIUM:'متوسط',HIGH:'مرتفع',PUBLIC:'عامة',INTERNAL:'داخلية',CONFIDENTIAL:'سرية',RESTRICTED:'مقيدة',NOT_ASSESSED:'يحتاج تقييمًا',REASSESSMENT_REQUIRED:'يحتاج إعادة تقييم',ASSESSED:'مقيّم',OPEN:'مفتوحة',IN_PROGRESS:'قيد المعالجة',MITIGATED:'تمت المعالجة',ACCEPTED:'مقبولة إداريًا',ACTIVE:'نشط',RETIRED:'مؤرشف'};
+const stateLabels:Record<string,string>={CURRENT:'السجل محدّث للنسخة الحالية.',NOT_ASSESSED:'لا يوجد تقييم محفوظ لهذا الأصل؛ أضف تقييمًا أوليًا.',REASSESSMENT_REQUIRED:'أحدث تقييم يخص نسخة سابقة من الأصل؛ يلزم إعادة تقييم قبل الاعتماد على النتيجة.',TREATMENT_REVIEW_REQUIRED:'خطة المعالجة المحفوظة تحتاج مراجعة بعد تغير الأصل أو التقييم.',ACCEPTANCE_REVIEW_DUE:'قبول الخطر المحفوظ تجاوز موعد المراجعة؛ راجع القرار قبل الاستمرار في الاعتماد عليه.',RETIRED:'الأصل مؤرشف؛ تاريخه محفوظ ولا تُنشأ تقييمات أو معالجات جديدة.'};
 const node=(tag:string,value:string)=>{const el=document.createElement(tag);el.textContent=value;return el;};
 const time=(value:string)=>new Date(value).toLocaleString('ar-SA',{timeZone:'Asia/Riyadh'});
-function clear(){area.hidden=true;get('[data-assets]').replaceChildren();get('[data-history]').replaceChildren();get('[data-revisions]').replaceChildren();get('[data-summary]').replaceChildren();get('[data-actions]').replaceChildren();get('[data-treatments]').replaceChildren();treatmentForm.reset();treatmentForm.hidden=true;archiveForm.reset();archiveForm.hidden=true;treatmentData=null;workspace.replaceChildren();get('[data-role]').textContent='';get('[data-selected-title]').textContent='';get('[data-selected-description]').textContent='';selected=null;editing=null;assetForm.reset();assessmentForm.reset();get('[data-editor]').hidden=true;get('[data-detail]').hidden=true;}
+function clear(){area.hidden=true;get('[data-assets]').replaceChildren();get('[data-history]').replaceChildren();get('[data-revisions]').replaceChildren();get('[data-summary]').replaceChildren();get('[data-actions]').replaceChildren();get('[data-treatments]').replaceChildren();treatmentForm.reset();treatmentForm.hidden=true;archiveForm.reset();archiveForm.hidden=true;treatmentData=null;workspace.replaceChildren();get('[data-role]').textContent='';get('[data-selected-title]').textContent='';get('[data-selected-description]').textContent='';recordState.textContent='';exportState.textContent='';residualPreview.textContent='';selected=null;editing=null;assetForm.reset();assessmentForm.reset();get('[data-editor]').hidden=true;get('[data-detail]').hidden=true;}
 async function api(path='',body?:object,method=body?'POST':'GET',history=false,resource='assets'){
  if(!auth)throw new Error('يلزم إعداد الدخول عبر Neon Auth.');
  const session=await getWorkspaceSession(auth),token=await auth.getJWTToken();
@@ -22,18 +24,27 @@ async function api(path='',body?:object,method=body?'POST':'GET',history=false,r
  const data=await response.json();if(!response.ok)throw Object.assign(new Error(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.'),{status:response.status,code:data.code});return data;
 }
 function sync(){get<HTMLButtonElement>('[data-treatment-prev]').disabled=busy||treatmentPage===1;get<HTMLButtonElement>('[data-treatment-next]').disabled=busy||!treatmentMore;get<HTMLButtonElement>('[data-actions-prev]').disabled=busy||actionsPage===1;get<HTMLButtonElement>('[data-actions-next]').disabled=busy||!actionsMore;syncTreatment();root.querySelectorAll<HTMLElement>('[data-write]').forEach(el=>el.hidden=!canWrite);get<HTMLButtonElement>('[data-archive-open]').hidden=!canWrite||selected?.lifecycle_status!=='ACTIVE';get<HTMLButtonElement>('[data-prev]').disabled=busy||page===1;get<HTMLButtonElement>('[data-next]').disabled=busy||!hasMore;get<HTMLButtonElement>('[data-history-prev]').disabled=busy||historyPage===1;get<HTMLButtonElement>('[data-history-next]').disabled=busy||!historyMore;get<HTMLButtonElement>('[data-revisions-prev]').disabled=busy||revisionsPage===1;get<HTMLButtonElement>('[data-revisions-next]').disabled=busy||!revisionsMore;}
-async function run(task:()=>Promise<void>,success='تمت قراءة البيانات من الخادم.'){
+async function run(task:()=>Promise<void>,success='تمت قراءة البيانات من الخادم.',errorNode?:HTMLElement){
  if(busy)return;committedMessage='';busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('button,input,select,textarea').forEach(el=>el.disabled=true);status.textContent='جارٍ التحقق من الخادم…';
  try{await task();status.textContent=success;}
- catch(error:any){if(committedMessage){clear();status.textContent=`${committedMessage} تعذر تحديث العرض؛ حدّث السجل قبل أي إرسال جديد.`;}else{if(error.status===401||error.status===403||error.unauthorized)clear();if(error.status===409){get('[data-detail]').hidden=true;get('[data-editor]').hidden=true;}status.textContent=`${error.message||'تعذر إكمال الطلب.'} عند انقطاع الاتصال بعد الإرسال، حدّث السجل قبل إعادة الإرسال.`;}}
+ catch(error:any){if(committedMessage){clear();status.textContent=`${committedMessage} تعذر تحديث العرض؛ حدّث السجل قبل أي إرسال جديد.`;}else{if(error.status===401||error.status===403||error.unauthorized)clear();if(error.status===409){get('[data-detail]').hidden=true;get('[data-editor]').hidden=true;}status.textContent=`${error.message||'تعذر إكمال الطلب.'} عند انقطاع الاتصال بعد الإرسال، حدّث السجل قبل إعادة الإرسال.`;}if(errorNode)errorNode.textContent=status.textContent;}
  finally{busy=false;root.removeAttribute('aria-busy');root.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('button,input,select,textarea').forEach(el=>el.disabled=false);sync();}
 }
 function preview(){const likelihood=get<HTMLSelectElement>('#re-likelihood').value,impact=get<HTMLSelectElement>('#re-impact').value,cell=get<HTMLElement>(`[data-cell="${likelihood}-${impact}"]`),high=cell.classList.contains('re-HIGH');get('[data-preview]').textContent=`معاينة غير محفوظة — ${cell.querySelector('strong')?.textContent}: ${cell.dataset.result} الضابط الأولي: ${cell.dataset.control}${high?' يلزم مراجعة بشرية، ولا يصرّح التقييم بالتشغيل.':''}`;}
+function previewResidual(){
+ const likelihood=get<HTMLSelectElement>('#re-treatment-residual-likelihood').value,impact=get<HTMLSelectElement>('#re-treatment-residual-impact').value;
+ if(!likelihood&&!impact){residualPreview.textContent='لم يُقيّم الخطر المتبقي بعد. التقييم مطلوب عند «تمت المعالجة» أو «مقبولة إداريًا».';syncAcceptanceOption();return;}
+ if(!likelihood||!impact){residualPreview.textContent='اختر الاحتمال والأثر المتبقيين معًا؛ لا يُقبل أحدهما وحده.';syncAcceptanceOption();return;}
+ const cell=get<HTMLElement>(`[data-cell="${likelihood}-${impact}"]`);
+ residualPreview.textContent=`الخطر المتبقي (تقدير بشري بالمصفوفة نفسها): ${cell.querySelector('strong')?.textContent}. لا يُخفض الخطر الكامن تلقائيًا ولا يعني أن الضوابط تحققت.`;
+ syncAcceptanceOption();
+}
 async function showHistory(id:string,focus=false){
  const [data,revisions,treatments]=await Promise.all([api(`${id}/assessments/`,undefined,'GET',true),api(`${id}/revisions/`),api(`${id}/treatments/`)]);
  if(data.asset.version!==revisions.asset.version||data.asset.version!==treatments.asset.version||data.latestAssessment?.id!==treatments.latestAssessment?.id)throw new Error('تغير السجل أثناء القراءة؛ حدّث التفاصيل.');
  renderTreatments(treatments);get<HTMLAnchorElement>('[data-detail-link]').href=assetLink(id);selected=data.asset;canWrite=data.canWrite;historyMore=data.hasMore;revisionsMore=revisions.hasMore;get<HTMLButtonElement>('[data-archive-open]').hidden=!canWrite||selected.lifecycle_status!=='ACTIVE';archiveForm.hidden=true;archiveForm.reset();
  get('[data-selected-title]').textContent=`${selected.name} · نسخة ${selected.version} · ${labels[selected.lifecycle_status]||'نشط'}`;get('[data-selected-description]').textContent=`المالك: ${selected.owner} · البيانات: ${labels[selected.data_classification]}\nالغرض: ${selected.purpose}\nالسياق: ${selected.data_context||'غير موثق'} · المزوّد: ${selected.provider_reference||'غير موثق'} · النموذج: ${selected.model_reference||'غير موثق'} ${selected.model_version||''}\nحالة الاعتماد الموصوفة من الجهة: ${selected.approval_status||'غير موثقة'} (غير متحقق منها ولا تمنح تصريح تشغيل)`;
+  const state=data.record_state||'CURRENT';recordState.dataset.state=state;recordState.textContent=stateLabels[state]||'حالة السجل غير معروفة؛ حدّث الصفحة.';
  const list=get('[data-history]');list.replaceChildren();get('[data-history-empty]').hidden=data.assessments.length>0;get('[data-history-page]').textContent=`صفحة التاريخ ${historyPage}`;
  for(const a of data.assessments){
   const card=document.createElement('article');card.append(node('h4',`${labels[a.risk_level]} · ${time(a.created_at)}${a.asset_version!==selected.version?' · تقييم لنسخة سابقة':''}${a.risk_level==='HIGH'?' · يتطلب مراجعة بشرية — لا يجيز التشغيل':''}`));
@@ -67,6 +78,7 @@ get('[data-add]').addEventListener('click',()=>edit());get('[data-edit]').addEve
  archiveForm.addEventListener('submit',event=>{event.preventDefault();const fields=Object.fromEntries(new FormData(archiveForm)),asset=selected;void run(async()=>{const result=await api(`${asset.id}/`,{reason:fields.reason,asset_version:asset.version,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on'},'DELETE');committedMessage='تمت أرشفة الحالة مع حفظ سجلها.';archiveForm.reset();archiveForm.hidden=true;await load();await showHistory(result.asset.id,true);},'تمت أرشفة الحالة؛ التاريخ محفوظ ويمكن إعادة تفعيلها بتعديلها.');});
 assetForm.addEventListener('submit',event=>{event.preventDefault();const fields=Object.fromEntries(new FormData(assetForm)),asset=editing;void run(async()=>{const result=await api(asset?`${asset.id}/`:'',{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',...(asset?{asset_version:asset.version}:{})},asset?'PATCH':'POST');committedMessage=asset?`تم حفظ تعديل الأصل${result.changed_fields?.length?` (${result.changed_fields.length} حقول)`:''}.${result.reassessment_required?' التقييم السابق يحتاج مراجعة للنسخة الجديدة.':''}`:'تم حفظ الأصل؛ حالته «يحتاج تقييمًا» حتى تُحفظ نسخة تقييم.';get('[data-editor]').hidden=true;assetForm.reset();editing=null;page=1;historyPage=1;revisionsPage=1;treatmentPage=1;await load();await showHistory(result.asset.id,true);preview();},asset?'تم تحديث الحالة المحفوظة.':'تم إنشاء الحالة وحفظها في الخادم.');});
 assessmentForm.addEventListener('change',preview);
+for(const selector of ['#re-treatment-residual-likelihood','#re-treatment-residual-impact','#re-treatment-status','#re-treatment-review'])get<HTMLInputElement>(selector).addEventListener('change',previewResidual);
 assessmentForm.addEventListener('submit',event=>{event.preventDefault();const fields=Object.fromEntries(new FormData(assessmentForm)),asset=selected;void run(async()=>{const result=await api(`${asset.id}/assessments/`,{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',likelihood:Number(fields.likelihood),impact:Number(fields.impact),asset_version:asset.version});committedMessage=`تم حفظ التقييم.${result.treatment_review_required?' خطة المعالجة السابقة تحتاج مراجعة.':''}`;assessmentForm.reset();historyPage=1;await load();await showHistory(asset.id);preview();},'تم حفظ التقييم الجديد كسجل مستقل؛ لا يصرّح بالتشغيل.');});
 filterForm.addEventListener('submit',event=>{event.preventDefault();page=1;get('[data-detail]').hidden=true;void run(load);});
 get('[data-filter-reset]').addEventListener('click',()=>{filterForm.reset();page=1;get('[data-detail]').hidden=true;void run(load);});
@@ -82,43 +94,58 @@ document.addEventListener('workspace-session-ended', () => { clear(); status.tex
 
 function assetLink(id:string){const q=new URLSearchParams();if(workspace.value)q.set('workspace',workspace.value);return `/app/risk-engine/${encodeURIComponent(id)}/?${q}`;}
 function dateOnly(value:string|null){return value?String(value).slice(0,10):'غير محدد';}
+function isReviewDue(value:string|null){if(!value)return false;const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),part=(type:string)=>parts.find(item=>item.type===type)?.value||'',today=`${part('year')}-${part('month')}-${part('day')}`;return String(value).slice(0,10)<=today;}
 function syncTreatment(){
  if(!treatmentData){treatmentForm.hidden=true;return;}
  const current=treatmentData.latestAssessment?.asset_version===selected?.version&&selected?.lifecycle_status==='ACTIVE';
  treatmentForm.hidden=!canWrite||!current;
   (assessmentForm.parentElement as HTMLElement).hidden=!canWrite||selected?.lifecycle_status!=='ACTIVE';
- const option=get<HTMLOptionElement>('#re-treatment-status option[value="ACCEPTED"]');
- option.disabled=treatmentData.latestAssessment?.risk_level==='HIGH'&&!treatmentData.canAcceptHigh;
+ syncAcceptanceOption();
+}
+function selectedResidualHigh(){const l=Number(get<HTMLSelectElement>('#re-treatment-residual-likelihood').value),i=Number(get<HTMLSelectElement>('#re-treatment-residual-impact').value);return Boolean(l&&i&&l*i>=6);}
+function syncAcceptanceOption(){
+ if(!treatmentData)return;
+ const option=get<HTMLOptionElement>('#re-treatment-status option[value="ACCEPTED"]'),high=treatmentData.latestAssessment?.risk_level==='HIGH'||selectedResidualHigh();
+ option.disabled=high&&!treatmentData.canAcceptHigh;
  if(option.disabled&&get<HTMLSelectElement>('#re-treatment-status').value==='ACCEPTED')get<HTMLSelectElement>('#re-treatment-status').value='OPEN';
 }
 function renderTreatments(data:any){
  treatmentData=data;treatmentMore=data.hasMore;
  const latest=data.latestTreatment,current=data.latestAssessment?.asset_version===data.asset.version;
- get('[data-treatment-state]').textContent=!current?'احفظ تقييمًا للنسخة الحالية قبل إضافة أو تحديث المعالجة.':!latest?'لا توجد خطة معالجة؛ أضف أول إصدار.':data.reviewRequired?`خطة النسخة ${latest.version} تحتاج مراجعة بعد تغير الأصل أو التقييم. حالتها السابقة: ${labels[latest.status]}.`:`المعالجة المحفوظة: ${labels[latest.status]} · إصدار ${latest.version} · مراجعة ${dateOnly(latest.review_on)}.`;
- treatmentForm.reset();if(latest)for(const key of ['owner','status','control_description','residual_risk_description','review_on'])(treatmentForm.elements.namedItem(key) as HTMLInputElement).value=key==='review_on'?(latest[key]?String(latest[key]).slice(0,10):''):latest[key]||'';
+ const base=!current?'احفظ تقييمًا للنسخة الحالية قبل إضافة أو تحديث المعالجة.':!latest?'لا توجد خطة معالجة؛ أضف أول إصدار.':data.reviewRequired?`خطة النسخة ${latest.version} تحتاج مراجعة بعد تغير الأصل أو التقييم. حالتها السابقة: ${labels[latest.status]}.`:`المعالجة المحفوظة: ${labels[latest.status]} · إصدار ${latest.version} · مراجعة ${dateOnly(latest.review_on)}.`;
+ const acceptanceDue=latest?.status==='ACCEPTED'&&(data.acceptance_review_due===true||isReviewDue(latest.review_on));
+ const highBlocked=data.latestAssessment?.risk_level==='HIGH'&&!data.canAcceptHigh;
+ get('[data-treatment-state]').textContent=`${base}${acceptanceDue?' قبول الخطر تجاوز موعد المراجعة؛ لا تعتمد عليه قبل إعادة المراجعة.':''}${highBlocked?' قبول الخطر المرتفع معطّل: يلزم OWNER مستقل عن المقيّم.':''}`;
+ treatmentForm.reset();if(latest)for(const key of ['owner','status','control_description','residual_risk_description','review_on','residual_likelihood','residual_impact'])(treatmentForm.elements.namedItem(key) as HTMLInputElement).value=key==='review_on'?(latest[key]?String(latest[key]).slice(0,10):''):key.startsWith('residual_')?(latest[key]??''):latest[key]||'';
  // A new decision needs its own rationale, rather than silently copying the old justification.
- if(data.reviewRequired)get<HTMLSelectElement>('#re-treatment-status').value='OPEN';
+ if(data.reviewRequired){get<HTMLSelectElement>('#re-treatment-status').value='OPEN';get<HTMLSelectElement>('#re-treatment-residual-likelihood').value='';get<HTMLSelectElement>('#re-treatment-residual-impact').value='';}
+ previewResidual();
  const list=get('[data-treatments]');list.replaceChildren();get('[data-treatment-empty]').hidden=data.treatments.length>0;get('[data-treatment-page]').textContent=`صفحة المعالجة ${treatmentPage}`;
- for(const t of data.treatments){const card=document.createElement('article');card.append(node('h4',`إصدار ${t.version} · ${labels[t.status]} · ${time(t.created_at)}`));const dl=document.createElement('dl');for(const [label,value]of Object.entries({'مالك المعالجة':t.owner,'ضوابط المعالجة':t.control_description,'الخطر المتبقي (وصف نصي)':t.residual_risk_description||'غير موصوف في النسخة السابقة','المبرر':t.rationale,'المراجعة':dateOnly(t.review_on),'نسخة الأصل':String(t.asset_version),'مرجع التقييم':t.assessment_id,'مرجع صاحب القرار':t.changed_by,'دوره وقت الحفظ':t.actor_role}))dl.append(node('dt',label),node('dd',String(value)));card.append(dl);if(t.status==='ACCEPTED')card.append(node('p','قبول إداري مسجل لهذا الإصدار؛ لا يغيّر التقييم ولا يصرّح بالنشر أو التشغيل ولا يتجاوز سياسة إلزامية.'));list.append(card);}
+ for(const t of data.treatments){const card=document.createElement('article');card.append(node('h4',`إصدار ${t.version} · ${labels[t.status]} · ${time(t.created_at)}`));const dl=document.createElement('dl');for(const [label,value]of Object.entries({'مالك المعالجة':t.owner,'ضوابط المعالجة':t.control_description,'الخطر المتبقي (وصف نصي)':t.residual_risk_description||'غير موصوف في النسخة السابقة','الخطر المتبقي (تقدير)':t.residual_level?`${labels[t.residual_level]} · ${t.residual_score} (${t.residual_likelihood} × ${t.residual_impact})`:'غير مقيّم','المبرر':t.rationale,'المراجعة':dateOnly(t.review_on),'نسخة الأصل':String(t.asset_version),'مرجع التقييم':t.assessment_id,'مرجع صاحب القرار':t.changed_by,'دوره وقت الحفظ':t.actor_role}))dl.append(node('dt',label),node('dd',String(value)));card.append(dl);if(t.status==='ACCEPTED')card.append(node('p',`قبول إداري مسجل لهذا الإصدار${t.acceptance_policy_version?` وفق ${t.acceptance_policy_version}`:''}؛ لا يغيّر التقييم ولا يصرّح بالنشر أو التشغيل ولا يتجاوز سياسة إلزامية.`));list.append(card);}
 }
 async function loadActions(){
  const data=await api('',undefined,'GET',false,'actions');actionsMore=data.hasMore;
  const list=get('[data-actions]');list.replaceChildren();get('[data-actions-empty]').hidden=data.actions.length>0;get('[data-actions-page]').textContent=`صفحة الإجراءات ${actionsPage}`;
- for(const action of data.actions){const t=action.treatment,card=document.createElement('article'),link=node('a',action.name) as HTMLAnchorElement;link.href=assetLink(action.asset_id);card.append(link,node('p',`${labels[t.status]} · مالك المعالجة: ${t.owner} · المراجعة: ${dateOnly(t.review_on)}${action.review_due?' · موعد المراجعة مستحق':''}${action.review_required?' · خطة قديمة تحتاج مراجعة':''}`),node('p',t.control_description));list.append(card);}
+ for(const action of data.actions){const t=action.treatment,card=document.createElement('article'),link=node('a',action.name) as HTMLAnchorElement;link.href=assetLink(action.asset_id);card.append(link,node('p',`${labels[t.status]} · مالك المعالجة: ${t.owner} · المراجعة: ${dateOnly(t.review_on)}${action.review_due?' · موعد المراجعة مستحق':''}${action.acceptance_review_due?' · قبول الخطر تجاوز المراجعة':''}${action.review_required?' · خطة قديمة تحتاج مراجعة':''}${t.residual_level?` · الخطر المتبقي: ${labels[t.residual_level]}`:' · الخطر المتبقي غير مقيّم'}`),node('p',t.control_description));list.append(card);}
 }
 treatmentForm.addEventListener('submit',event=>{
  event.preventDefault();if(!selected||!treatmentData?.latestAssessment)return;
  const fields=Object.fromEntries(new FormData(treatmentForm)),asset=selected,data=treatmentData;
- void run(async()=>{const result=await api(`${asset.id}/treatments/`,{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',asset_version:asset.version,assessment_id:data.latestAssessment.id,treatment_version:data.latestTreatment?.version||0},'PATCH');committedMessage=result.acceptance?`تم حفظ إصدار المعالجة وقبول الخطر كقرار إداري مسجل (دور ${result.acceptance.actor_role}، خطر ${labels[result.acceptance.risk_level]||result.acceptance.risk_level}). لا يصرّح بالنشر ولا يتجاوز سياسة إلزامية.`:'تم حفظ إصدار المعالجة.';treatmentPage=1;await load();await showHistory(asset.id);},'تم حفظ إصدار المعالجة في الخادم. القبول الإداري لا يصرح بالنشر.');
+ if(fields.status==='ACCEPTED'&&!fields.review_on){get('[data-treatment-state]').textContent='قبول الخطر يحتاج موعد مراجعة محددًا قبل الحفظ.';get<HTMLInputElement>('#re-treatment-review').focus();return;}
+ if(['MITIGATED','ACCEPTED'].includes(String(fields.status))&&(!fields.residual_likelihood||!fields.residual_impact)){get('[data-treatment-state]').textContent='«تمت المعالجة» أو «مقبولة إداريًا» يتطلبان اختيار الاحتمال والأثر المتبقيين معًا.';get<HTMLSelectElement>('#re-treatment-residual-likelihood').focus();return;}
+ if(fields.status==='ACCEPTED'&&String(fields.rationale||'').trim().length<20){get('[data-treatment-state]').textContent='قبول الخطر يحتاج تعليلًا لا يقل عن 20 حرفًا.';get<HTMLTextAreaElement>('#re-treatment-rationale').focus();return;}
+ void run(async()=>{const result=await api(`${asset.id}/treatments/`,{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',asset_version:asset.version,assessment_id:data.latestAssessment.id,treatment_version:data.latestTreatment?.version||0,residual_likelihood:fields.residual_likelihood?Number(fields.residual_likelihood):null,residual_impact:fields.residual_impact?Number(fields.residual_impact):null},'PATCH');committedMessage=result.acceptance?`تم حفظ إصدار المعالجة وقبول الخطر كقرار إداري مسجل (دور ${result.acceptance.actor_role}، خطر ${labels[result.acceptance.risk_level]||result.acceptance.risk_level}، متبقٍ ${labels[result.acceptance.residual_level]||result.acceptance.residual_level}، مراجعة ${dateOnly(result.acceptance.review_on)}). لا يصرّح بالنشر ولا يتجاوز سياسة إلزامية.`:'تم حفظ إصدار المعالجة.';treatmentPage=1;await load();await showHistory(asset.id);},'تم حفظ إصدار المعالجة في الخادم. القبول الإداري لا يصرح بالنشر.');
 });
 actionsFilter.addEventListener('submit',event=>{event.preventDefault();actionsPage=1;void run(loadActions);});
 get('[data-actions-prev]').addEventListener('click',()=>{actionsPage--;void run(loadActions);});
 get('[data-actions-next]').addEventListener('click',()=>{actionsPage++;void run(loadActions);});
 get('[data-treatment-prev]').addEventListener('click',()=>{treatmentPage--;void run(()=>showHistory(selected.id));});
 get('[data-treatment-next]').addEventListener('click',()=>{treatmentPage++;void run(()=>showHistory(selected.id));});
-get('[data-export]').addEventListener('click',()=>void run(async()=>{
+get('[data-export]').addEventListener('click',()=>{exportState.textContent='';void run(async()=>{
  const data=await api('',undefined,'GET',false,'export');
+ if(!data.assets?.length){exportState.textContent='لا توجد أصول في هذا المستأجر لتصديرها. لم يُنشأ ملف فارغ.';return;}
  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}));
  const link=document.createElement('a');link.href=url;link.download='aigas-risk-register.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-},'تم تجهيز ملف ملخص المؤسسة من الخادم وبدء تنزيله. يتضمن المنهج المعلن وحالة اكتمال البيانات والقيود؛ ليس شهادة امتثال.'));
+ exportState.textContent=`تم تصدير ${data.assets.length} أصلًا ضمن المستأجر الحالي وفق ${data.schema_version}. لا يتضمن معرّفات المستخدمين أو اللقطات أو مراجع الأدلة. ليس شهادة امتثال.`;
+},'تم تجهيز ملف ملخص المؤسسة من الخادم وبدء تنزيله. يتضمن المنهج المعلن وحالة اكتمال البيانات والقيود؛ ليس شهادة امتثال.',exportState);});
 preview();

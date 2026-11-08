@@ -97,6 +97,7 @@
 | `0022_aigas_reference_scope_guard` | **غير مطبّق** | لا يوجد `aigas_fw_decisions_request_scope_idx` ولا `aigas_sc_requests_scope_idx` |
 | `0023_aigas_enterprise_trial_lifecycle` | **غير مطبّق** | لا يوجد جدول `aigas_trial_requests` |
 | `0024_aigas_catalog_parity_repair` | **مسودة محلية فقط** | أعمدة Audit الثلاثة وحارس Ledger غير موجودة وقت الفحص؛ لم تُجرّب أو تطبق |
+| `0026_aigas_risk_engine_residual_and_acceptance_policy` | **مسودة محلية فقط** | تضيف أعمدة الخطر المتبقي وقيود `NOT VALID` وتستبدل حارس 0021 بسياسة القبول الكاملة؛ لم تُطبّق على أي فرع. تحقق 2026-11-08: الأعمدة غائبة من `production` |
 
 ### 3.1 أثر الترحيلات الناقصة على الكود الحالي
 
@@ -174,10 +175,10 @@
 | ID | APPROVED_REQ | SOURCE_PRESENT | SCHEMA_PRESENT | BLOCKED_BY | دليل الكود |
 |---|---|---|---|---|---|
 | RE-01 | نعم | Y | Y | إدخال يدوي فقط؛ لا اكتشاف آلي | `risk-engine/service.mjs`, `risk-engine/core.mjs:assetInput` |
-| RE-02 | نعم | P | Y | قواعد 3×3 حتمية؛ لا تحليل AI معتمد | `risk-engine/core.mjs:evaluate` |
+| RE-02 | نعم | P | P | قواعد 3×3 حتمية للخطر الكامن والمتبقي؛ لا تحليل AI معتمد؛ الترحيل 0026 غير مطبّق | `risk-engine/core.mjs:evaluate/residualAssessment` |
 | RE-03 | نعم | N | P | لا سياسات هرمية للمخاطر | — |
 | RE-04 | نعم | P | Y | إعادة تقييم يدوية/أرشفة؛ لا مراقبة drift | `risk-engine/service.mjs:update/archive` |
-| RE-05 | نعم | P | P | حالة اعتماد نصية؛ لا مسار مراجعة Privacy/Security | `risk-engine/service.mjs` (حقول الاعتماد) |
+| RE-05 | نعم | P | P | سياسة قبول صريحة وفصل مهام في المصدر؛ لا مسار مراجعة Privacy/Security ولا تحقق تشغيلي | `risk-engine/core.mjs:acceptanceDecision`; `0026` |
 
 ### 4.5 AIGAS Secure Chat — `SC-*`
 
