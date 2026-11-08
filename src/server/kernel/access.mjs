@@ -26,10 +26,20 @@ export function grantKindClass(kind) {
 // product never implies another, and Kernel is not a row or a separately priced grant.
 export async function productGrants(db, tenantId, slug = null) {
   if (!isUuid(tenantId)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة.');
-  const rows = (await db.query(`SELECT product_slug,access_kind,approved_at,expires_at,revoked_at,
+  const rows = (await db.query(`SELECT product_slug,access_kind,approval_reference,approved_at,expires_at,revoked_at,
     clock_timestamp() AS checked_at FROM public.aigas_product_grants
     WHERE tenant_id=$1 AND ($2::text IS NULL OR product_slug=$2) FOR SHARE`, [tenantId, slug])).rows;
-  return rows.map(grant => ({ ...grant, grantKind: grantKindClass(grant.access_kind), grantState: productGrantState(grant) }));
+  return rows.map(raw => {
+    const { approval_reference, ...rest } = raw;
+    const grant = {
+      ...rest,
+      // The operator approval reference is evidence, not display data. Only its
+      // presence leaves the server so a reference value never reaches a browser.
+      approvalReferencePresent: typeof approval_reference === 'string' && approval_reference.trim().length >= 2,
+      grantKind: grantKindClass(raw.access_kind),
+    };
+    return { ...grant, grantState: productGrantState(grant) };
+  });
 }
 
 // Only an explicit ADMIN_NON_BILLED window is an administrative access decision.
@@ -38,12 +48,73 @@ export function productGrantState(grant) {
   if (!grant) return 'NOT_APPROVED';
   if (grant.revoked_at) return 'REVOKED';
   if (grant.access_kind !== ADMINISTRATIVE_GRANT_KIND) return 'NOT_CONFIGURED';
+  // Evidence-required: an administrative grant without its operator approval
+  // reference is not an effective decision and grants nothing.
+  if (grant.approvalReferencePresent === false) return 'NOT_CONFIGURED';
   const approved = grant.approved_at == null ? NaN : new Date(grant.approved_at).getTime();
   const expires = grant.expires_at == null ? NaN : new Date(grant.expires_at).getTime();
   const checked = grant.checked_at == null ? Date.now() : new Date(grant.checked_at).getTime();
   if (![approved, expires, checked].every(Number.isFinite) || expires <= approved) return 'NOT_CONFIGURED';
   if (expires <= checked) return 'EXPIRED';
   return approved > checked ? 'PENDING' : 'ACTIVE';
+}
+
+// Single access decision shared by the dashboard read model and the server-side
+// product guard. Sources stay separate: an administrative grant is never a trial,
+// a licence, or a renewal, and an expired source is reported as expired instead of
+// being folded into another source. Absence of any active source is never access.
+export function resolveProductAccess({ storedStatus, grant, trial }) {
+  const administrativeActive = grant?.grantState === 'ACTIVE' && grant.approvalReferencePresent !== false;
+  const administrative = {
+    kind: ADMINISTRATIVE_GRANT_KIND,
+    state: administrativeActive ? 'ACTIVE' : grant?.approvalReferencePresent === false ? 'NOT_CONFIGURED' : grant?.grantState ?? 'NOT_APPROVED',
+    grantsProduct: administrativeActive,
+    approvedAt: grant?.approved_at ?? null,
+    expiresAt: grant?.expires_at ?? null,
+    // Evidence is the operator approval reference recorded with the grant. The
+    // value itself never leaves the server; only whether it exists.
+    evidence: !grant ? 'NONE' : grant.approvalReferencePresent === true ? 'OPERATOR_APPROVAL_RECORD' : 'MISSING_APPROVAL_REFERENCE',
+  };
+  const trialAccess = {
+    kind: COMMERCIAL_ACCESS_KINDS.TRIAL,
+    state: trial?.state ?? 'NOT_CONFIGURED',
+    grantsProduct: trial?.grantsProduct === true,
+    reason: trial?.reason ?? null,
+  };
+  const license = {
+    kind: 'LICENSE',
+    state: 'NOT_CONFIGURED',
+    grantsProduct: false,
+    reason: 'NO_APPROVED_LICENSE_ISSUER',
+  };
+  const expired = {
+    administrative: administrative.state === 'EXPIRED',
+    trial: trialAccess.state === 'EXPIRED',
+    license: false,
+  };
+  const storedState = !storedStatus || storedStatus === 'FOUNDATION' ? 'NOT_CONFIGURED' : storedStatus;
+  const productEnabled = storedState === 'ENABLED';
+  const grantsProduct = administrative.grantsProduct || trialAccess.grantsProduct;
+  const state = storedState !== 'ENABLED'
+    ? storedState
+    : grantsProduct ? 'ENABLED'
+      : administrative.state === 'REVOKED' ? 'REVOKED'
+        : expired.administrative || expired.trial ? 'EXPIRED'
+          : 'DISABLED';
+  const source = administrative.grantsProduct ? ADMINISTRATIVE_GRANT_KIND
+    : trialAccess.grantsProduct ? COMMERCIAL_ACCESS_KINDS.TRIAL
+      : null;
+  const reason = grantsProduct ? 'GRANTS_PRODUCT'
+    : administrative.state === 'REVOKED' ? 'ADMIN_GRANT_REVOKED'
+      : expired.administrative ? 'ADMIN_GRANT_EXPIRED'
+        : expired.trial ? 'TRIAL_WINDOW_ENDED'
+          : administrative.state === 'PENDING' || trialAccess.state === 'PENDING' || trialAccess.state === 'APPROVED' ? 'ACCESS_NOT_ACTIVE'
+            : 'NO_ACTIVE_ACCESS_SOURCE';
+  return {
+    state, storedState, productEnabled, grantsProduct, source, reason, expired,
+    administrative, trial: trialAccess, license,
+    sources: { administrative, trial: trialAccess, license },
+  };
 }
 
 // The only membership lookup products may trust. The tenant comes from server data, never
@@ -98,33 +169,35 @@ export async function requireProductAccess(db, identity, tenantId, slug) {
   await requireRlsPosture(db);
   let access;
   let trial;
+  let grant = null;
   try {
     const setup = (await db.query("SELECT to_regclass('public.aigas_product_access') IS NOT NULL AND to_regclass('public.aigas_product_grants') IS NOT NULL AS ready")).rows[0];
     if (!setup?.ready) throw new KernelError(503, 'KERNEL_ADMIN_SETUP_REQUIRED', `إتاحة ${product.name} غير مهيأة لهذه المؤسسة؛ راجع إعدادات Kernel المعتمدة.`, 'not configured');
     access = (await db.query('SELECT status FROM public.aigas_product_access WHERE tenant_id=$1 AND product_slug=$2 FOR SHARE', [tenantId, slug])).rows[0] ?? null;
     if (access) {
-      const grant = (await productGrants(db, tenantId, slug))[0] ?? null;
+      grant = (await productGrants(db, tenantId, slug))[0] ?? null;
       trial = await trialProductAccess(db, tenantId, slug);
-      access = { ...access, grantState: grant?.grantState ?? 'NOT_APPROVED', trialState: trial.state, trialGrantsProduct: trial.grantsProduct };
     }
   } catch (error) {
     if (error instanceof KernelError) throw error;
-    if (error.code === '42P01') throw new KernelError(503, 'KERNEL_ADMIN_SETUP_REQUIRED', `إتاحة ${product.name} غير مهيأة لهذه المؤسسة؛ راجع إعدادات Kernel المعتمدة.`, 'not configured');
+    if (error.code === '42P01' || error.code === '42703') throw new KernelError(503, 'KERNEL_ADMIN_SETUP_REQUIRED', `إتاحة ${product.name} غير مهيأة لهذه المؤسسة؛ راجع إعدادات Kernel المعتمدة.`, 'not configured');
     if (error.code === '42501') throw new KernelError(503, 'DB_PRIVILEGE_UNAVAILABLE', `صلاحية اتصال النظام لا تسمح بالتحقق من إتاحة ${product.name}.`, 'access denied');
     throw error;
   }
   if (!access) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `لم تُعتمد إتاحة ${product.name} لهذه المؤسسة.`, 'not configured');
-  const administrativeActive = access.grantState === 'ACTIVE';
-  const trialActive = access.trialGrantsProduct === true;
-  if (access.grantState === 'REVOKED' && !trialActive) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, 'access denied');
-  if ((access.grantState === 'EXPIRED' || access.status === 'EXPIRED' || access.trialState === 'EXPIRED') && !administrativeActive && !trialActive) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `انتهت صلاحية إتاحة ${product.name}؛ راجع مالك المؤسسة.`, 'expired');
-  if (!administrativeActive && !trialActive) {
-    const reason = access.trialState === 'PENDING' || access.trialState === 'APPROVED' || access.grantState === 'PENDING'
-      ? 'لا يوجد قرار إتاحة ساري بعد؛ طلب التجربة أو الموافقة لا يفعّل المنتج.'
-      : `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`;
-    const status = access.grantState === 'NOT_CONFIGURED' && access.trialState === 'NOT_CONFIGURED' ? 'not configured' : 'access denied';
-    throw new KernelError(403, 'PRODUCT_NOT_ENABLED', reason, status);
+  // The dashboard read model and this guard share one decision, so a product the
+  // UI reports as available is exactly the product the server permits.
+  const decision = resolveProductAccess({ storedStatus: access.status, grant, trial });
+  if (decision.grantsProduct && decision.productEnabled) return member;
+  if (decision.reason === 'ADMIN_GRANT_EXPIRED' || decision.reason === 'TRIAL_WINDOW_ENDED' || access.status === 'EXPIRED') {
+    throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `انتهت صلاحية إتاحة ${product.name}؛ راجع مالك المؤسسة.`, 'expired');
   }
-  if (access.status !== 'ENABLED') throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, 'access denied');
-  return member;
+  if (decision.reason === 'ADMIN_GRANT_REVOKED') {
+    throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, 'access denied');
+  }
+  if (decision.reason === 'ACCESS_NOT_ACTIVE') {
+    throw new KernelError(403, 'PRODUCT_NOT_ENABLED', 'لا يوجد قرار إتاحة ساري بعد؛ طلب التجربة أو الموافقة لا يفعّل المنتج.', 'access denied');
+  }
+  const status = decision.administrative.state === 'NOT_CONFIGURED' && decision.trial.state === 'NOT_CONFIGURED' ? 'not configured' : 'access denied';
+  throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `إتاحة ${product.name} غير متاحة لهذه المؤسسة؛ راجع مالكها.`, status);
 }

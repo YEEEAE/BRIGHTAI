@@ -1,3 +1,32 @@
+## [2026-11-08] — إغلاق صلاحيات Kernel ومنح المنتجات والتجربة المحدودة مصدريًا
+
+### تم التنفيذ
+- HEAD المحلي `1d5991f0`؛ أُعيد فحص الملفات المرجعية. لم يُشغّل build/tests/lint/نشر، ولم تُكتب أي بيانات أو DDL على Neon.
+- استُخرج قرار السياسة إلى `resolveKernelPolicy` نقي: ترتيب `ENTERPRISE > DEPARTMENT > PRODUCT > USER`، الأشد أولًا داخل المستوى نفسه ثم الأكثر شرطًا، وأي `BLOCK/HARD_DENY` يحسم، و`ALLOW` يتطلب سماحًا مؤسسيًا صريحًا. أُضيف `deciding`/`precedence` إلى النتيجة، وصُحح مرشح سياسات الإدارة بالمنتج.
+- قرار وصول واحد `resolveProductAccess` يستخدمه الـDashboard وحارس المنتج وتمكين المنتج؛ يفصل `ADMIN_NON_BILLED` و`TRIAL_48H` و`LICENSE` و`EXPIRED`، ولا يستمد مصدرًا من آخر. منحة إدارية بلا `approval_reference` لم تعد فعّالة، والمرجع نفسه لا يخرج للعميل.
+- `audit()` يتحقق من السجل بعد الإدراج ويفشل بـ`EVIDENCE_UNAVAILABLE` بدل اعتماد كتابة بلا دليل.
+- `0023` (محلي غير مطبّق): `ACTIVATED` يتطلب قرار مشغّل مستقلًا عن مقدّم الطلب وبيانات اصطناعية، وحارس استحقاق يمنع نافذة مختلفة عن `activated_at + 48h` أو تعديلها. `0025`: طلبات/استحقاقات التجربة قراءة فقط والأحداث إلحاق فقط لدور التشغيل.
+- أُضيف `docs/TRIAL-AND-GRANT-ROLLOUT-RUNBOOK.md` (`NOT RUN`) وتحديث ملاحظات §07.3 في سياسة التجربة.
+
+### الملفات المتأثرة
+- `src/server/kernel/policies.mjs`, `access.mjs`, `service.mjs`, `trial.mjs`, `administration.mjs`
+- `src/scripts/kernel.ts`
+- `migrations/0023_aigas_enterprise_trial_lifecycle.sql`, `migrations/0025_aigas_tenant_isolation_closure.sql`
+- `docs/ENTERPRISE-TRIAL-POLICY.md`, `docs/TRIAL-AND-GRANT-ROLLOUT-RUNBOOK.md`
+
+### التحقق
+- `node --check` للملفات الخمسة و`node --experimental-strip-types --check` لـ`kernel.ts` و`git diff --check`: PASS.
+- فحص نقي لدوال القرار (6 حالات هرمية + ترتيب، و11 حالة وصول/دليل): PASS.
+- فحص Neon قراءة فقط (`production/neondb`): جداول `0023` الثلاثة غائبة، `aigas_runtime` غير موجود، `approval_reference` موجود، صفر صفوف منح/تدقيق. لا كتابة.
+- Build/typecheck/HTTP/DB writes/0023-0025 execution: NOT RUN حسب نطاق المهمة.
+
+### النتيجة
+- **الحالة:** PARTIAL — فصل المصادر والهرمية والحراس وAudit موجودة في المصدر (`SOURCE_PRESENT`)؛ لا `RUNTIME_VERIFIED` ولا تفعيل أو بيع.
+
+### ملاحظات / مشاكل مفتوحة
+- يلزم اعتماد المالك/العمليات والأمن والخصوصية والمالية لسياسة التجربة والاحتفاظ، ثم تطبيق `0023` و`0025` على staging معتمد وإنشاء Login لـ`aigas_runtime`. منح `ADMIN_NON_BILLED` تبقى عملية مشغّل عبر مسار مالك قاعدة البيانات ولم تُنفّذ.
+- `LICENSE/SUBSCRIPTION/PERPETUAL` تبقى `NOT_CONFIGURED`؛ لا سعر أو حصة أو SLA.
+
 ## [2026-11-08] — إغلاق دورة الهوية والدعوات وbootstrap أول مالك محليًا
 
 ### تم التنفيذ

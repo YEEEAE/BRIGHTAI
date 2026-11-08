@@ -110,6 +110,12 @@ function renderProductTerms(card: HTMLElement, product: any) {
   terms.textContent = labels[product.grantState] ?? 'لم تُحمّل حالة الإتاحة.';
   appendRecordedTime(terms, 'موافقة الإتاحة الإدارية (بتوقيت الرياض)', product.approvedAt);
   appendRecordedTime(terms, 'نهاية الإتاحة الإدارية (بتوقيت الرياض)', product.expiresAt);
+  // The effective source is server data. It is shown as one of three distinct
+  // sources; the UI never converts a grant into a trial or a trial into a licence.
+  const sourceLabels: Record<string, string> = { ADMIN_NON_BILLED: 'منحة إدارية غير مفوترة', TRIAL_48H: 'استحقاق تجربة 48 ساعة', LICENSE: 'ترخيص مدفوع' };
+  const sourceLine = document.createElement('span');
+  sourceLine.textContent = ` · المصدر الساري: ${product.accessSource ? sourceLabels[product.accessSource] ?? 'غير معروف' : 'لا مصدر إتاحة ساري'}${product.accessSources?.administrative?.evidence === 'MISSING_APPROVAL_REFERENCE' ? ' · مرجع اعتماد المنحة غير مسجل' : ''}`;
+  terms.append(sourceLine);
   const commercial = card.querySelector('[data-product-commercial]')!;
   const details = product.trialDetails ?? {};
   const trialLabel = trialStateLabels[details.status] ?? 'غير مهيأة';

@@ -41,6 +41,10 @@ CREATE TABLE public.aigas_trial_requests (
   CHECK (requested_products <@ ARRAY['firewall','ledger','human-gate','risk-engine','secure-chat']::text[]),
   CHECK (activated_at IS NULL OR (expires_at IS NOT NULL AND expires_at = activated_at + interval '48 hours')),
   CHECK (state <> 'ACTIVATED' OR (activated_at IS NOT NULL AND expires_at IS NOT NULL)),
+  -- Activation needs an operator decision that is not the requesting identity, and
+  -- only synthetic data. A tenant request or an approval timestamp never activates.
+  CHECK (state <> 'ACTIVATED' OR (decision_source = 'OPERATOR' AND decided_by IS NOT NULL AND decided_by <> requested_by)),
+  CHECK (state <> 'ACTIVATED' OR data_mode = 'SYNTHETIC'),
   CHECK (state NOT IN ('APPROVED','ACTIVATED','EXPIRED') OR decided_at IS NOT NULL),
   CHECK (state <> 'REJECTED' OR decided_at IS NOT NULL),
   CHECK (state NOT IN ('REJECTED','CANCELLED') OR reason IS NOT NULL),
@@ -138,6 +142,40 @@ $$;
 CREATE TRIGGER aigas_trial_transition_guard
   BEFORE INSERT OR UPDATE ON public.aigas_trial_requests
   FOR EACH ROW EXECUTE FUNCTION public.aigas_trial_transition_guard();
+
+-- An entitlement is the per-product view of the one recorded activation window.
+-- The trigger rejects an entitlement before ACTIVATED, a start/end that differs
+-- from `activated_at`/`expires_at`, and any later change to that window.
+CREATE OR REPLACE FUNCTION public.aigas_trial_entitlement_guard() RETURNS trigger
+LANGUAGE plpgsql AS $$
+DECLARE request_row record;
+BEGIN
+  IF TG_OP = 'UPDATE' AND (
+    NEW.trial_id IS DISTINCT FROM OLD.trial_id OR
+    NEW.tenant_id IS DISTINCT FROM OLD.tenant_id OR
+    NEW.product_slug IS DISTINCT FROM OLD.product_slug OR
+    NEW.starts_at IS DISTINCT FROM OLD.starts_at OR
+    NEW.ends_at IS DISTINCT FROM OLD.ends_at
+  ) THEN
+    RAISE EXCEPTION 'Trial entitlement scope and window are immutable';
+  END IF;
+  SELECT state, activated_at, expires_at INTO request_row
+    FROM public.aigas_trial_requests WHERE id = NEW.trial_id AND tenant_id = NEW.tenant_id;
+  IF request_row IS NULL THEN
+    RAISE EXCEPTION 'Trial request does not exist for this tenant';
+  END IF;
+  IF request_row.state <> 'ACTIVATED' THEN
+    RAISE EXCEPTION 'Trial entitlement requires an ACTIVATED request';
+  END IF;
+  IF NEW.starts_at IS DISTINCT FROM request_row.activated_at OR NEW.ends_at IS DISTINCT FROM request_row.expires_at THEN
+    RAISE EXCEPTION 'Trial entitlement must match the recorded 48-hour window';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+CREATE TRIGGER aigas_trial_entitlement_guard
+  BEFORE INSERT OR UPDATE ON public.aigas_trial_entitlements
+  FOR EACH ROW EXECUTE FUNCTION public.aigas_trial_entitlement_guard();
 
 REVOKE ALL ON public.aigas_trial_requests, public.aigas_trial_events, public.aigas_trial_entitlements FROM PUBLIC;
 ALTER TABLE public.aigas_trial_requests ENABLE ROW LEVEL SECURITY;

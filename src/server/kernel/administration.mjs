@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { transaction, connectionPrivilege } from './db.mjs';
-import { productGrants } from './access.mjs';
+import { productGrants, resolveProductAccess } from './access.mjs';
 import { trialProductAccess } from './trial.mjs';
 import { tenantGuard, memberships, audit } from './service.mjs';
 import { KernelError, requireRole, products } from './core.mjs';
@@ -19,19 +19,21 @@ export async function updateProduct(identity, requested, body) {
   if (!products.some(p => p.slug === body.slug) || !['FOUNDATION','ENABLED','DISABLED'].includes(body.status) || !Number.isSafeInteger(body.version) || body.version < 1) throw new KernelError(400, 'INVALID_PRODUCT', 'اختر منتجًا وحالة صحيحة وحدّث البيانات.');
   return transaction(async db => {
     const { tenant } = await adminScope(db, identity, requested, ['OWNER']);
+    let decision = { grantsProduct: false, source: null, administrative: { state: 'NOT_APPROVED' }, trial: { state: 'NOT_CONFIGURED' } };
     if (body.status === 'ENABLED') {
+      const stored = (await db.query('SELECT status FROM public.aigas_product_access WHERE tenant_id=$1 AND product_slug=$2 FOR SHARE', [tenant.tenant_id, body.slug])).rows[0]?.status ?? null;
       const grant = (await productGrants(db, tenant.tenant_id, body.slug))[0];
       const trial = await trialProductAccess(db, tenant.tenant_id, body.slug);
-      // The toggle is not a commercial licence. It can be enabled only when one
-      // explicit access source is active: an operator administrative grant or a
-      // genuinely activated 48-hour trial entitlement. A request or an approval
-      // that has not been activated is never enough.
-      if (grant?.grantState !== 'ACTIVE' && trial?.grantsProduct !== true) throw new KernelError(403, 'APPROVAL_REQUIRED', 'يلزم قرار إتاحة إداري ساري أو استحقاق تجربة 48 ساعة مفعّل؛ طلب التجربة أو الموافقة وحدها لا يفعّل المنتج ولا ينشئ اشتراكًا أو ترخيصًا.');
+      // One shared decision with the dashboard and the product guard. The toggle is
+      // not a commercial licence; it needs one explicit active source and never
+      // creates a subscription, a trial, or a paid licence.
+      decision = resolveProductAccess({ storedStatus: stored, grant, trial });
+      if (!decision.grantsProduct) throw new KernelError(403, 'APPROVAL_REQUIRED', 'يلزم قرار إتاحة إداري ساري أو استحقاق تجربة 48 ساعة مفعّل؛ طلب التجربة أو الموافقة وحدها لا يفعّل المنتج ولا ينشئ اشتراكًا أو ترخيصًا.');
     }
     const result = await db.query('UPDATE public.aigas_product_access SET status=$3,version=version+1,updated_at=clock_timestamp() WHERE tenant_id=$1 AND product_slug=$2 AND version=$4 RETURNING status,version', [tenant.tenant_id, body.slug, body.status, body.version]);
     if (!result.rowCount) throw new KernelError(409, 'STALE_PRODUCT', 'تغيرت حالة المنتج؛ حدّث اللوحة قبل إعادة المحاولة.');
     await audit(db, identity, tenant.tenant_id, `kernel.product.${body.slug}.${body.status.toLowerCase()}`, auditContext());
-    return { persisted: true, ...result.rows[0] };
+    return { persisted: true, ...result.rows[0], accessSource: decision.source, administrativeState: decision.administrative.state, trialState: decision.trial.state };
   });
 }
 export async function manageMember(identity, requested, body) {

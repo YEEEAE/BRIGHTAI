@@ -158,13 +158,14 @@ GRANT USAGE ON SCHEMA public TO aigas_runtime;
 DO $$
 DECLARE
   target record;
-  read_only text[] := ARRAY['aigas_product_grants','aigas_ld_evidence_requirements'];
+  read_only text[] := ARRAY['aigas_product_grants','aigas_ld_evidence_requirements','aigas_trial_requests','aigas_trial_entitlements'];
   append_only text[] := ARRAY[
     'aigas_audit_events','aigas_ld_events','aigas_kernel_policy_decisions',
     'aigas_fw_decisions','aigas_hg_decisions','aigas_hg_events',
     'aigas_department_events','aigas_policy_approvals',
     'aigas_re_asset_revisions','aigas_re_treatment_revisions',
-    'aigas_sc_cancellations','aigas_sc_messages','aigas_sc_conversations'
+    'aigas_sc_cancellations','aigas_sc_messages','aigas_sc_conversations',
+    'aigas_trial_events'
   ];
   select_insert text[] := ARRAY['aigas_auth_organizations'];
   select_insert_update text[] := ARRAY[

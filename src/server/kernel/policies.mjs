@@ -14,6 +14,19 @@ const text = (value, min, max, code) => {
 };
 // A bounded audit reference for one immutable policy version. It never carries rule text.
 export const policyVersionReference = (policyId, version) => `kernel:${String(policyId).replace(/-/g,'')}:v${version}`;
+// KP-03 precedence: ENTERPRISE > DEPARTMENT > PRODUCT > USER. The order is a
+// server literal, never a value supplied by a caller or a policy row.
+export const POLICY_SCOPE_ORDER = Object.freeze(['ENTERPRISE','DEPARTMENT','PRODUCT','USER']);
+export const POLICY_REASON_CODES = Object.freeze({
+  allowed: 'POLICY_ALLOW',
+  block: 'BLOCK',
+  mandatoryBlock: 'MANDATORY_BLOCK',
+  unavailable: 'POLICY_UNAVAILABLE',
+  obligationUnavailable: 'POLICY_OBLIGATION_UNAVAILABLE',
+  contextIncomplete: 'POLICY_CONTEXT_INCOMPLETE',
+  integrityFailed: 'POLICY_INTEGRITY_FAILED',
+  contextRequired: 'CONTEXT_REQUIRED',
+});
 function validateDefinition(body) {
   const definition = body.definition;
   if (!definition || typeof definition !== 'object' || Array.isArray(definition)) throw new KernelError(400,'INVALID_POLICY','تعريف السياسة غير صالح.');
@@ -273,6 +286,53 @@ export async function policyOperation(identity, workspace, body) {
   });
 }
 
+const evidenceReason = row => (row.effect === 'BLOCK' || row.effect === 'HARD_DENY')
+  ? (row.is_mandatory ? 'MANDATORY_BLOCK' : 'BLOCK')
+  : ['ALLOW','REDACT','REQUEST_APPROVAL','WARN'].includes(row.effect) ? row.effect : 'UNKNOWN';
+const scopeRank = scope => {
+  const index = POLICY_SCOPE_ORDER.indexOf(scope);
+  return index === -1 ? POLICY_SCOPE_ORDER.length : index;
+};
+// Same-scope conflicts are resolved strictest-first, then by the more specific rule
+// (more literal condition keys), then by id for determinism. A lower scope is always
+// evaluated after a higher one, so it can only add restrictions.
+const conditionSpecificity = row => Object.keys(row.conditions ?? {}).length;
+const byPrecedence = (a, b) =>
+  scopeRank(a.scope) - scopeRank(b.scope) ||
+  conditionSpecificity(b) - conditionSpecificity(a) ||
+  String(a.id).localeCompare(String(b.id));
+const bound = (row, reason) => ({
+  policyId: row.id, version: row.version, scope: row.scope,
+  action: row.effect, reason: reason ?? evidenceReason(row),
+});
+// Pure resolution of the already-matched, published and effective rules. Keeping it
+// independent of the database makes the precedence contract testable: any BLOCK or
+// HARD_DENY at any level wins, obligations accumulate across levels, and an ALLOW
+// needs an explicit Enterprise ALLOW — the absence of a deny is never an allow.
+export function resolveKernelPolicy(active) {
+  const ordered = [...active].sort(byPrecedence);
+  const evidence = ordered.map(row => ({
+    policyId: row.id, version: row.version, scope: row.scope, action: row.effect,
+    reason: evidenceReason(row), mandatory: row.is_mandatory === true, checksum: row.checksum,
+  }));
+  const base = { policies: evidence, precedence: POLICY_SCOPE_ORDER };
+  const mandatoryBlock = ordered.find(row => (row.effect === 'BLOCK' || row.effect === 'HARD_DENY') && (row.is_mandatory || row.effect === 'HARD_DENY'));
+  if (mandatoryBlock) return { ...base, decision:'BLOCK', action:'DENY', reason:POLICY_REASON_CODES.mandatoryBlock, obligations:[], mandatory:true, deciding:bound(mandatoryBlock, POLICY_REASON_CODES.mandatoryBlock) };
+  const anyBlock = ordered.find(row => row.effect === 'BLOCK' || row.effect === 'HARD_DENY');
+  if (anyBlock) return { ...base, decision:'BLOCK', action:'DENY', reason:POLICY_REASON_CODES.block, obligations:[], mandatory:false, deciding:bound(anyBlock, POLICY_REASON_CODES.block) };
+  const obligations = [...new Set([...ordered.flatMap(row => row.obligations ?? []), ...ordered.map(row => row.effect).filter(effect => effect === 'REDACT' || effect === 'REQUEST_APPROVAL' || effect === 'WARN')])];
+  // REDACT and REQUEST_APPROVAL cannot be silently dropped at any level.
+  const supported = obligations.filter(item => item !== 'WARN');
+  if (supported.length) {
+    const source = ordered.find(row => row.effect === 'REDACT' || row.effect === 'REQUEST_APPROVAL' || (row.obligations ?? []).some(item => item !== 'WARN'));
+    return { ...base, decision:'BLOCK', action:'DENY', reason:POLICY_REASON_CODES.obligationUnavailable, obligations:supported, deciding: source ? bound(source, POLICY_REASON_CODES.obligationUnavailable) : null };
+  }
+  const enterpriseAllow = ordered.find(row => row.scope === 'ENTERPRISE' && row.effect === 'ALLOW');
+  if (!enterpriseAllow) return { ...base, decision:'BLOCK', action:'DENY', reason:POLICY_REASON_CODES.unavailable, obligations:[], deciding:null };
+  const warnings = ordered.filter(row => row.effect === 'WARN' || row.obligations?.includes('WARN')).map(row => ({ policyId: row.id, scope: row.scope, version: row.version }));
+  return { ...base, decision:'ALLOW', action:'ALLOW', reason:POLICY_REASON_CODES.allowed, obligations, warnings, deciding:bound(enterpriseAllow, POLICY_REASON_CODES.allowed) };
+}
+
 // Server-side authorizer. It returns the effective decision plus the exact policy
 // evidence (policyId, version, scope, action and reason) that produced it. A policy at
 // any level that denies wins, and a mandatory deny can never be softened by a lower
@@ -288,9 +348,10 @@ export async function evaluateKernelPolicy(db, identity, tenantId, context) {
   const contextJson=JSON.stringify({operation:context.operation,product_slug:context.productSlug,resource_type:context.resource_type});
   const hasDepartmentPolicies=(await db.query(`SELECT 1 FROM public.aigas_policies p JOIN public.aigas_policy_versions v ON v.tenant_id=p.tenant_id AND v.policy_id=p.id AND v.version=p.current_version
     WHERE p.tenant_id=$1 AND p.scope='DEPARTMENT' AND p.department_id IN (SELECT department_id FROM public.aigas_department_memberships WHERE tenant_id=$1 AND user_id=$2 AND status='ACTIVE')
+      AND (p.product_slug IS NULL OR p.product_slug=$4)
       AND v.status='PUBLISHED' AND (v.conditions->>'operation' IS NULL OR v.conditions->>'operation'=($3::jsonb)->>'operation')
       AND (v.conditions->>'resource_type' IS NULL OR v.conditions->>'resource_type'=($3::jsonb)->>'resource_type')
-      AND (v.effective_from IS NULL OR v.effective_from<=now()) AND (v.expires_at IS NULL OR v.expires_at>now()) LIMIT 1`,[tenantId,identity.userId,contextJson])).rowCount>0;
+      AND (v.effective_from IS NULL OR v.effective_from<=now()) AND (v.expires_at IS NULL OR v.expires_at>now()) LIMIT 1`,[tenantId,identity.userId,contextJson,context.productSlug])).rowCount>0;
   if (!departmentId && membership.length && hasDepartmentPolicies) return {decision:'BLOCK',action:'DENY',reason:'CONTEXT_REQUIRED',obligations:[],policies:[]};
   const rows=(await db.query(`SELECT p.id,p.scope,p.department_id,p.product_slug,p.user_id,v.version,v.conditions,v.effect,v.obligations,v.is_mandatory,v.checksum
     FROM public.aigas_policies p JOIN public.aigas_policy_versions v ON v.tenant_id=p.tenant_id AND v.policy_id=p.id AND v.version=p.current_version
@@ -307,21 +368,5 @@ export async function evaluateKernelPolicy(db, identity, tenantId, context) {
   }
   if (active.some(row=>row.checksum!==checksum(signedFields(row.conditions,row.effect,row.obligations,row.is_mandatory)))) return {decision:'BLOCK',action:'DENY',reason:'POLICY_INTEGRITY_FAILED',obligations:[],policies:[]};
   if (!active.length) return {decision:'BLOCK',action:'DENY',reason:'POLICY_UNAVAILABLE',obligations:[],policies:[]};
-  const evidenceReason = row => (row.effect === 'BLOCK' || row.effect === 'HARD_DENY')
-    ? (row.is_mandatory ? 'MANDATORY_BLOCK' : 'BLOCK')
-    : ['ALLOW','REDACT','REQUEST_APPROVAL','WARN'].includes(row.effect) ? row.effect : 'UNKNOWN';
-  const evidence = active.map(row => ({
-    policyId: row.id, version: row.version, scope: row.scope, action: row.effect,
-    reason: evidenceReason(row), mandatory: row.is_mandatory === true, checksum: row.checksum,
-  }));
-  const obligations=[...new Set([...active.flatMap(row=>row.obligations ?? []), ...active.map(row=>row.effect).filter(effect=>effect==='REDACT'||effect==='REQUEST_APPROVAL'||effect==='WARN')])];
-  const mandatoryBlock = active.find(row => (row.effect==='BLOCK'||row.effect==='HARD_DENY') && (row.is_mandatory || row.effect==='HARD_DENY'));
-  const anyBlock = active.find(row => row.effect==='BLOCK'||row.effect==='HARD_DENY');
-  if (anyBlock) return { decision:'BLOCK',action:'DENY',reason:mandatoryBlock?'MANDATORY_BLOCK':'BLOCK',obligations:[],mandatory:!!mandatoryBlock,policies:evidence };
-  const supported=[...new Set(obligations)].filter(item=>item!=='WARN');
-  if (supported.length) return {decision:'BLOCK',action:'DENY',reason:'POLICY_OBLIGATION_UNAVAILABLE',obligations:supported,policies:evidence};
-  // An enterprise allow is required. Absence of a deny is never an allow.
-  if (!active.some(row=>row.scope==='ENTERPRISE'&&row.effect==='ALLOW')) return {decision:'BLOCK',action:'DENY',reason:'POLICY_UNAVAILABLE',policies:evidence};
-  const warnings=active.filter(row=>row.effect==='WARN'||row.obligations?.includes('WARN')).map(row=>({policyId:row.id,scope:row.scope,version:row.version}));
-  return {decision:'ALLOW',action:'ALLOW',reason:'POLICY_ALLOW',obligations,warnings,policies:evidence};
+  return resolveKernelPolicy(active);
 }

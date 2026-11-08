@@ -4,8 +4,8 @@ import { randomUUID } from 'node:crypto';
 import { database, transaction, setActorScope, setTenantScope, connectionPrivilege } from './db.mjs';
 import { env } from './env.mjs';
 import { authConfig } from './auth.mjs';
-import { productGrants } from './access.mjs';
-import { trialLifecycle, trialAccessFor, buildPovReport, commercialAccessModel } from './trial.mjs';
+import { productGrants, resolveProductAccess } from './access.mjs';
+import { trialLifecycle, trialAccessFor, buildPovReport } from './trial.mjs';
 import { KernelError, products, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole, isUuid } from './core.mjs';
 import { HTTP_CONTRACT_VERSION } from './contracts.mjs';
 export async function memberships(userId, db = database()) {
@@ -63,30 +63,30 @@ export async function dashboard(identity, requested) {
       const grant = grants.find(g => g.product_slug === p.slug);
       const tables = relations[p.slug];
       const ready = tables.length ? (await db.query("SELECT bool_and(to_regclass('public.' || name) IS NOT NULL) AS ready FROM unnest($1::text[]) AS name", [tables])).rows[0].ready : false;
-      const grantState = grant?.grantState ?? 'NOT_APPROVED';
       const trialAccess = trialAccessFor(trial, p.slug);
-      const administrativeActive = grantState === 'ACTIVE';
-      const trialActive = trialAccess.grantsProduct === true;
-      const accessValid = administrativeActive || trialActive;
-      const accessState = p.state;
-      const state = accessState !== 'ENABLED' ? accessState : accessValid ? 'ENABLED' : grantState === 'REVOKED' ? 'REVOKED' : grantState === 'EXPIRED' || trialAccess.state === 'EXPIRED' ? 'EXPIRED' : 'DISABLED';
-      const enabled = state === 'ENABLED';
+      // The dashboard and the product guard share one access decision, so the
+      // state shown here is the state the server would enforce.
+      const decision = resolveProductAccess({ storedStatus: p.storedState, grant, trial: trialAccess });
+      const enabled = decision.state === 'ENABLED';
       const trialIncluded = trial?.products?.includes(p.slug) === true;
-      states.push({ ...p, state, configuredStatus: p.storedState, grantState, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
-        canEnable: accessValid, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
+      states.push({ ...p, state: decision.state, configuredStatus: p.storedState, grantState: decision.administrative.state, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
+        canEnable: decision.grantsProduct, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
         operationalReadiness: { schema: ready ? 'PRESENT' : 'MISSING', verifiedOperational: false },
         commercial: { kernelIncluded: true, independentProduct: true, separateKernelLicense: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false },
         setupMessage: p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
         accessKind: grant?.access_kind ?? null, approvedAt: grant?.approved_at ?? null, expiresAt: grant?.expires_at ?? null,
+        // The effective source is explicit and is never inferred from a product
+        // toggle or merged with another commercial source.
+        accessSource: decision.source, accessReason: decision.reason, accessExpired: decision.expired,
         // Access sources stay separate. A missing issuer is NOT_CONFIGURED and is
         // never converted into a price, an SLA, or an active trial.
-        accessSources: commercialAccessModel(grantState, trialAccess.state),
+        accessSources: { administrative: decision.administrative, trial: decision.trial, license: decision.license },
         subscription: 'NOT_CONFIGURED', license: 'NOT_CONFIGURED', trial: trialAccess.state,
         trialDetails: { status: trialAccess.state, lifecycleState: trial?.state ?? 'NOT_CONFIGURED', productIncluded: trialIncluded,
           decided_at: trialIncluded ? trial?.decidedAt ?? null : null, decision_source: trialIncluded ? trial?.decisionSource ?? null : null,
           activated_at: trialIncluded ? trial?.activatedAt ?? null : null, expires_at: trialIncluded ? trial?.expiresAt ?? null : null,
           durationSeconds: 172800, selfServiceAvailable: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false, dataEligibility: 'SYNTHETIC_ONLY', requiresOperatorActivation: true },
-        label: state === 'ENABLED' ? p.label : state === 'EXPIRED' ? (trialAccess.state === 'EXPIRED' && !administrativeActive ? 'منتهية: انتهت نافذة تجربة 48 ساعة' : 'منتهٍ: انتهى قرار الإتاحة الإداري') : state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : state === 'DISABLED' ? (trialAccess.state === 'PENDING' || trialAccess.state === 'APPROVED' ? 'بانتظار تفعيل التجربة — لا وصول بعد' : accessState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة ساري' : 'معطّل إداريًا من المالك') : state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : p.label });
+        label: decision.state === 'ENABLED' ? p.label : decision.state === 'EXPIRED' ? (decision.expired.trial && !decision.expired.administrative ? 'منتهية: انتهت نافذة تجربة 48 ساعة' : 'منتهٍ: انتهى قرار الإتاحة الإداري') : decision.state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : decision.state === 'DISABLED' ? (trialAccess.state === 'PENDING' || trialAccess.state === 'APPROVED' ? 'بانتظار تفعيل التجربة — لا وصول بعد' : p.storedState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة ساري' : 'معطّل إداريًا من المالك') : decision.state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : p.label });
     }
     const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, count(*)::int AS events FROM public.aigas_audit_events WHERE tenant_id=$1', [tenantId])).rows[0];
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));
@@ -144,7 +144,17 @@ export async function audit(db, identity, tenantId, action, context = {}) {
     SELECT $1,m.tenant_id,m.user_id,$4,$5,$6,$7 FROM public.aigas_memberships m
     WHERE m.tenant_id=$2 AND m.user_id=$3
     ON CONFLICT DO NOTHING RETURNING id`, [auditId, tenantId, identity.userId, action, correlationId, policyVersion, idempotencyKey]);
-  if (result.rowCount === 1) return auditId;
+  if (result.rowCount === 1) {
+    // Grant, policy and membership mutations are evidence-required: a committed
+    // change must have an effective audit record. A row that cannot be read back
+    // is treated as no record, so the caller's transaction rolls back instead of
+    // committing an unaudited decision.
+    const evidence = await db.query('SELECT action,actor_user_id FROM public.aigas_audit_events WHERE id=$1', [auditId]).catch(() => null);
+    if (!evidence?.rowCount || evidence.rows[0].action !== action || evidence.rows[0].actor_user_id !== identity.userId) {
+      throw new KernelError(503, 'EVIDENCE_UNAVAILABLE', 'تعذر تأكيد حفظ سجل الإدارة؛ لم تكتمل العملية.');
+    }
+    return auditId;
+  }
   if (idempotencyKey) {
     const member = (await db.query('SELECT 1 FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
     if (!member) throw new KernelError(403, 'FORBIDDEN', 'صلاحياتك لا تسمح بهذه العملية.');
