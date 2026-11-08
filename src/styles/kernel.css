@@ -129,8 +129,9 @@
 .app-frame .app-nav nav a[aria-current="page"]{
   background:var(--app-panel-hover);
   border-color:#413351;
+  border-inline-start:3px solid var(--app-accent);
   color:#fff;
-  box-shadow:inset -3px 0 0 var(--app-accent),inset 0 1px 0 #ffffff0a;
+  box-shadow:inset 0 1px 0 #ffffff0a;
 }
 .app-frame .app-nav nav a[aria-current="page"] bdi{color:var(--app-copy)}
 .app-frame .app-nav p,
@@ -148,6 +149,8 @@
   letter-spacing:0;
 }
 .app-frame .app-top > span{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.app-frame .app-page-title{color:var(--app-ink);font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.app-frame .app-breadcrumb-separator{color:#655d70;font-size:11px}
 .app-frame .tag{
   display:inline-flex;align-items:center;
   min-height:24px;

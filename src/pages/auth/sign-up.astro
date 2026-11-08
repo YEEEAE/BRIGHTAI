@@ -57,7 +57,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         <button class="button" type="button" data-sign-out>تسجيل الخروج</button>
       </div>
 
-      <p class="auth-status" data-auth-status role="status" aria-live="polite"></p>
+      <p class="auth-status" data-auth-status role="status" aria-live="polite">جارٍ التحقق من جلسة الدخول…</p>
     </section>
   ) : (
     <p class="card auth-unavailable" role="status">التسجيل غير متاح حالياً؛ لم يُضبط عنوان Neon Auth لهذا التشغيل.</p>
@@ -156,8 +156,12 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       clearFieldErrors();
-      const valid = [validate('email'), validate('password'), validate('name')].every(Boolean);
-      if (!valid || !form.reportValidity()) return;
+      const valid = [validate('name'), validate('email'), validate('password')].every(Boolean);
+      if (!valid) {
+        [nameInput, emailInput, passwordInput].find((input) => input.getAttribute('aria-invalid') === 'true')?.focus();
+        return;
+      }
+      if (!form.reportValidity()) return;
 
       submitButton.disabled = true;
       switchButton.disabled = true;
@@ -207,6 +211,8 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       } finally {
         form.querySelectorAll<HTMLInputElement | HTMLButtonElement>('input,button').forEach((control) => { control.disabled = false; });
         form.removeAttribute('aria-busy');
+        if (emailInput.getAttribute('aria-invalid') === 'true') emailInput.focus();
+        else if (passwordInput.getAttribute('aria-invalid') === 'true') passwordInput.focus();
         if (authSucceeded) passwordInput.value = '';
       }
     });
@@ -252,6 +258,8 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         setStatus('تعذر التحقق من الجلسة. تقدر تتابع بتسجيل الدخول.');
       } else if (data?.user?.email) {
         showUser(data.user.email);
+      } else {
+        setStatus('أكمل الحقول لإنشاء حساب، أو سجّل الدخول إذا كان لديك حساب.');
       }
       submitButton.disabled = false;
     }).catch(() => {

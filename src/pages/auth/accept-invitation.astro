@@ -90,6 +90,8 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     const accept = async (invitation: { id: string; status: string }) => {
       if (busy) return;
       busy = true;
+      card.setAttribute('aria-busy', 'true');
+      list.querySelectorAll<HTMLButtonElement>('button').forEach((button) => { button.disabled = true; });
       setStatus('جارٍ قبول الدعوة لدى Auth ثم اعتماد العضوية في الخادم…');
       try {
         if (invitation.status !== 'accepted') {
@@ -111,6 +113,8 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
         else setStatus(error.message || 'تعذر إكمال القبول؛ لم يُؤكد الحفظ.');
       } finally {
         busy = false;
+        card.removeAttribute('aria-busy');
+        list.querySelectorAll<HTMLButtonElement>('button').forEach((button) => { button.disabled = false; });
       }
     };
 
@@ -167,6 +171,8 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
   .accept-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 14px; padding: 12px; border: 1px solid #241f2d; border-radius: 8px; background: #0a090d; font-size: 14px; min-width: 0; }
   .accept-list li > span { color: #a9a3b8; font-size: 12px; line-height: 1.7; }
   .accept-list li button { grid-column: 2; }
+  .accept-card :is(a, button):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+  .accept-list button:disabled { cursor: progress; opacity: .72; }
   .accept-note { margin: 14px 0 0; color: #8f8a9b; font-size: 12px; line-height: 1.9; }
   .accept-signed-out { margin-block-start: 14px; color: var(--color-silver-mist); font-size: 14px; line-height: 1.9; }
   .accept-signed-out .button { display: inline-block; margin-inline-start: 8px; }
