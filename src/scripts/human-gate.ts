@@ -9,7 +9,17 @@ const eventLabels:Record<string,string>={CREATED:'أُنشئ الطلب',APPROVE
 const reasons:Record<string,string>={TIMEOUT:'انتهت المهلة',POLICY_CHANGED:'تغيرت السياسة أو أُوقفت',TARGET_CHANGED:'تغير الهدف أو نسخته',AUTHORITY_CHANGED:'تغير النطاق أو الصلاحية أو التفويض',LEGACY_UNBOUND:'طلب قديم غير مربوط ببصمة؛ يلزم طلب جديد',BINDING_UPGRADED:'طلب سابق لبصمة المورد v3؛ يلزم طلب جديد',CANCELLED_BY_REQUESTER:'ألغاه مقدم الطلب',CANCELLED_BY_REVIEWER:'ألغاه مراجع مخول'};
 const levelLabels:Record<string,string>={ADMIN:'مدير',OWNER:'مالك'};
 const operationLabels:Record<string,string>={KERNEL_WORKSPACE_RENAME:'تغيير اسم مساحة العمل',INTERNAL_DEMO_NOTE:'ملاحظة داخلية تجريبية'};
-const time=(value:string)=>new Date(value).toLocaleString('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'medium'});
+// Server-provided codes only; no local inference of authority or status.
+const reviewBlocks:Record<string,string>={
+ BINDING_INVALID:'تغيّرت السياسة أو الهدف أو صلاحية أحد الطرفين بعد إنشاء الطلب؛ لا يمكن حسمه. أنشئ طلبًا جديدًا.',
+ SELF_REVIEW:'فصل المهام يمنعك من اعتماد طلبك أو رفضه؛ يلزم مراجع مخوّل مستقل.',
+ NO_AUTHORITY:'مراجعة هذا الطلب تتطلب مستوى أعلى من صلاحيتك أو تفويضًا مؤقتًا نشطًا لنطاق العملية.',
+};
+const executeBlocks:Record<string,string>={
+ REVIEWER_LOST:'فقد المراجع صلاحيته أو انتهى تفويضه بعد الموافقة؛ لا يمكن التنفيذ. أعد الاعتماد ضمن سياسة سارية.',
+ PERMIT_INACTIVE:'إذن التنفيذ غير نشط أو منتهٍ أو مستهلك؛ لا يتكرر التنفيذ إلا بإذن جديد من مراجعة مستقلة.',
+};
+const time=(value:string|null)=>value?new Date(value).toLocaleString('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'medium'}):'—';
 function node(tag:string,value:string){const el=document.createElement(tag);el.textContent=value;return el;}
 function clear(){area.hidden=true;get('[data-requests]').replaceChildren();workspace.replaceChildren();get('[data-role]').textContent='';get('[data-refreshed]').textContent='';policy=null;canManage=false;canReview=false;canDelegate=false;reviewers=[];delegations=[];get('[data-delegation-panel]').hidden=true;get('[data-delegate-user]').replaceChildren();get('[data-delegations]').replaceChildren();}
 function scopeFields(){
@@ -99,12 +109,12 @@ async function load(){
   if(request.status==='EXECUTED'){fields['الأثر الفعلي']=rename?`تغيّر اسم المساحة من «${request.payload.expected_name}» إلى «${request.payload.new_name}» داخل Kernel.`:'اكتمل تسجيل الملاحظة التجريبية فقط؛ لا أثر على أنظمة خارجية.';fields['وقت التنفيذ']=time(request.completed_at);fields['المنفذ']=request.executed_by;fields['نتيجة الخادم']=JSON.stringify(request.execution_result);}
   const dl=document.createElement('dl');for(const [label,value]of Object.entries(fields)){const dd=node('dd',value);if(['مرجع الطلب','مرجع الهدف','مرجع مقدم الطلب','نسخة السياسة','إصدار الربط','بصمة العملية','مرجع القرار','مرجع المراجع','المنفذ'].includes(label))dd.dir='ltr';dl.append(node('dt',label),dd);}card.append(dl);
   if(['PENDING','APPROVED'].includes(request.status)&&!request.bindingValid)card.append(node('p','تغيرت صلاحية العملية أو الهدف أو السياسة. الإجراء غير متاح؛ أنشئ طلبًا جديدًا.'));
-  if(request.status==='APPROVED'&&request.isRequester&&request.bindingValid&&!request.canExecute)card.append(node('p','إذن التنفيذ غير نشط أو تغيّرت صلاحية المراجع أو التفويض. لا يمكن التنفيذ؛ أنشئ طلبًا جديدًا أو أعد الاعتماد ضمن سياسة سارية.'));
+  if(request.status==='APPROVED'&&request.isRequester&&request.bindingValid&&!request.canExecute)card.append(node('p',executeBlocks[request.executeBlock]||'إذن التنفيذ غير نشط أو تغيّرت صلاحية المراجع أو التفويض. لا يمكن التنفيذ؛ أنشئ طلبًا جديدًا أو أعد الاعتماد ضمن سياسة سارية.'));
   if(request.canDecide){
    const form=document.createElement('form'),label=node('label','سبب القرار (إلزامي، دون بيانات حساسة)'),input=document.createElement('textarea');input.id=`reason-${request.id}`;label.setAttribute('for',input.id);input.required=true;input.minLength=2;input.maxLength=500;input.rows=2;const actions=document.createElement('div');actions.className='hg-actions';
    for(const [decision,title]of [['APPROVE','اعتماد الطلب المحدد'],['REJECT','رفض الطلب']]){const button=document.createElement('button');button.type='submit';button.value=decision;button.textContent=title;actions.append(button);}
    form.append(label,input,actions);form.addEventListener('submit',event=>{event.preventDefault();const decision=(event.submitter as HTMLButtonElement|null)?.value;if(!decision)return;const reason=input.value;void run(async()=>{await api(`${request.id}/decide/`,{decision,reason});view=decision==='REJECT'?'completed':'mine';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حُفظ القرار من الخادم. الموافقة لا تعني أن العملية نُفّذت.');});card.append(form);
-  }else if(request.status==='PENDING')card.append(node('p','بانتظار مراجع مخول مستقل. مقدم الطلب لا يراجع طلبه.'));
+  }else if(request.status==='PENDING')card.append(node('p',reviewBlocks[request.reviewBlock]||'بانتظار مراجع مخوّل مستقل. مقدم الطلب لا يراجع طلبه.'));
   if(request.canCancel){const form=document.createElement('form'),label=node('label','سبب الإلغاء (إلزامي، دون بيانات حساسة)'),input=document.createElement('textarea');input.id=`cancel-${request.id}`;label.setAttribute('for',input.id);input.required=true;input.minLength=2;input.maxLength=500;input.rows=2;const button=document.createElement('button');button.type='submit';button.textContent=request.status==='APPROVED'?'إلغاء الطلب وإبطال إذن التنفيذ':'إلغاء الطلب';form.append(label,input,button);form.addEventListener('submit',event=>{event.preventDefault();void run(async()=>{await api(`${request.id}/cancel/`,{reason:input.value});view='completed';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حُفظ إلغاء الطلب من الخادم وأُبطل أي إذن تنفيذ نشط.');});card.append(form);}
   if(request.canExecute){const button=document.createElement('button');button.type='button';button.textContent=rename?'تنفيذ تغيير اسم المساحة الموافق عليه':'إكمال الملاحظة التجريبية';button.addEventListener('click',()=>void run(async()=>{await api(`${request.id}/execute/`,{});view='completed';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حفظ الخادم نتيجة التنفيذ وسجل العملية.'));card.append(button);}
   const details=document.createElement('details');details.append(node('summary','سجل الطلب والقرار والتنفيذ'));const history=document.createElement('ol');

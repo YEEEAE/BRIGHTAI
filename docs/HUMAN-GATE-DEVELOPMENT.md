@@ -35,6 +35,23 @@ Approval inserts one `ACTIVE` permit bound to the tenant, requester, operation, 
 
 Unapplied SQL hardening in `0014` now also requires a decision to reference a still-`PENDING` request with the same digest and policy version, requires an executed request to hold a consumed permit for the same requester and binding, forbids a permit from outliving its approved request, and requires permit consumption by the requester before expiry. It introduces no seed rows, grants or access changes.
 
+**0014 review pass — 2026-11-08 (local, not executed).** The guards were re-read against `0004`/`0007` and tightened so the database does not have to trust caller-supplied authority:
+
+- `aigas_hg_decision_guard` now joins the policy only when `enabled`, requires the reviewer to be an active, non-banned tenant member, and rejects a non-delegated decision whose `authority_level` exceeds the reviewer's current role. Delegated decisions remain governed by the delegation's live delegator role and window.
+- `aigas_hg_grant_guard` now requires both the reviewer and the requester to be active members, requires an OWNER/ADMIN requester for `KERNEL_WORKSPACE_RENAME`, and refuses a permit where reviewer and requester are the same person while the live policy requires separation or the operation is a rename.
+- `aigas_hg_request_guard` now binds `terminal_reason` (`CANCELLED_BY_REQUESTER`/`CANCELLED_BY_REVIEWER`) to the actual cancelling actor.
+- The legacy 0004 table check `reviewer_id <> requester_id` (auto-named `aigas_hg_decisions_check`) is dropped because separation is now policy-aware inside the trigger. If a target carries a differently named duplicate, the stricter unconditional check remains: self-approval stays impossible (fail-closed), it never becomes permitted.
+
+Constraint names inherited from `0004`/`0007` are auto-generated; a target whose catalog differs can fail the migration transaction rather than apply a weaker guard. The migration was not executed, and no catalog was read or changed for this pass.
+
+## Separation model and current limits
+
+Three distinct acts exist and none is implied by another: the requester creates the bound task, a separate reviewer decides, and the original requester triggers server-side execution against a single-use permit. When `separation_of_duties` is on (the default) the reviewer cannot be the requester; for `KERNEL_WORKSPACE_RENAME` that separation is unconditional even if an operator turns the policy switch off. Execution is never available to the reviewer, and it is refused if the reviewer, the requester, the delegation, the policy version, the target revision or the digest changed after approval.
+
+This is a **single-stage** review. There is no escalation chain, no second approver, no notification transport and no silent approval. A workspace with one privileged member cannot complete a rename cycle: the requester needs an independent second reviewer. Organisations that require multi-level approval or escalation must not treat this as implemented.
+
+The list payload now also returns `reviewBlock` (`SELF_REVIEW`, `NO_AUTHORITY`, `BINDING_INVALID`) and `executeBlock` (`REVIEWER_LOST`, `PERMIT_INACTIVE`) so the page can state why a control is unavailable instead of implying withheld authority. These are display codes only; every action is re-authorized on the server.
+
 Review authority is resolved on the server from the current policy: the required level (`ADMIN` or `OWNER`), separation of duties, and any active delegation. A delegation is constrained to one operation, one tenant, a bounded duration, and a level no higher than the delegator's current role. Any delegation or role change is rechecked at decision and execution time.
 
 Within a transaction the service locks the request, policy, relevant current memberships and Auth identities. It checks both parties again at execution, compares the target version/name and immutable payload digest, performs the name update and writes the linked base audit/timeline. Final consumption checks expiry after audit/evidence waits. Any audit failure or late expiry rolls the side effect back. Decision and timeline rows are append-only under ordinary SQL operations; a privileged database administrator can still change schema/triggers, so no absolute immutability claim is made.

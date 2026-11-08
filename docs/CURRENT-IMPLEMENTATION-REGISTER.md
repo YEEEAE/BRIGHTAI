@@ -85,7 +85,7 @@
 | `0011_aigas_firewall_execution_binding` | متجاوز/غير مطبّق | غطّاه `0012`؛ لا أثر مستقل له |
 | `0012_aigas_firewall_five_state_upgrade` | مطبّق | قيود الحالات الخمس والحقول المرصودة |
 | `0013_aigas_ledger_five_state_and_chain_guard` | **جزئي / غير متكامل** | حقول السلسلة و`hash_profile=aigas-ledger-sha256-chain-v2` موجودة؛ دالة/trigger `aigas_ld_events_chain_guard` غائبان، وقيد `metadata_json` لا يزال يقبل قرارات Firewall الثلاثة فقط |
-| `0014_aigas_human_gate_cancellation_delegation_and_grant` | **غير مطبّق** | لا يوجد `aigas_hg_delegations` ولا `aigas_hg_grants`؛ لا أعمدة `provider_ref/cancelled_at/review_level/...` |
+| `0014_aigas_human_gate_cancellation_delegation_and_grant` | **غير مطبّق** | لا يوجد `aigas_hg_delegations` ولا `aigas_hg_grants`؛ لا أعمدة `provider_ref/cancelled_at/review_level/...`. روجع محليًا 2026-11-08 وعُزّزت حراسه (عضوية/دور المراجع، طالب التنفيذ، فصل المهام عند الإذن، اتساق سبب الإلغاء) دون تنفيذ SQL |
 | `0015_aigas_risk_engine_asset_context_residual_risk` | مطبّق | أعمدة السياق والمراجع وحالة الأصل و`residual_risk_description` موجودة |
 | `0016_aigas_sc_user_token_quota` | **غير مطبّق** | لا توجد دالة `aigas_sc_usage_window_v2`؛ الموجودة `aigas_sc_usage_window` فقط |
 | `0017_aigas_kernel_audit_context` | **غير مطبّق** | `aigas_audit_events` بلا `correlation_id/policy_version/idempotency_key` |

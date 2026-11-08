@@ -1,6 +1,10 @@
 -- REVIEW ONLY. Requires 0004, 0006 and 0007. Not applied by this change.
 -- Adds CANCELLED, provider binding v3, review level/SoD policy, time-boxed
 -- delegation and a single-use execution permit. No seeds, grants or data are inserted.
+-- 2026-11-08 review pass: the SQL guards now also verify the reviewer and
+-- requester identities against current memberships/roles, require an enabled
+-- policy, bind the cancellation reason to the actor, and refuse a permit that
+-- removes requester/reviewer separation while the policy needs it.
 BEGIN;
 
 ALTER TABLE public.aigas_hg_policies
@@ -59,6 +63,10 @@ BEGIN
    IF NEW.cancelled_by<>NEW.requester_id AND NOT EXISTS (
     SELECT 1 FROM public.aigas_memberships m WHERE m.tenant_id=NEW.tenant_id AND m.user_id=NEW.cancelled_by AND m.role IN ('OWNER','ADMIN')
    ) THEN RAISE EXCEPTION 'Cancellation not authorized' USING ERRCODE='23514'; END IF;
+   IF NEW.terminal_reason IS NULL
+    OR NEW.terminal_reason NOT IN ('CANCELLED_BY_REQUESTER','CANCELLED_BY_REVIEWER')
+    OR (NEW.terminal_reason='CANCELLED_BY_REQUESTER') IS DISTINCT FROM (NEW.cancelled_by=NEW.requester_id)
+   THEN RAISE EXCEPTION 'Cancellation reason must match the actor' USING ERRCODE='23514'; END IF;
   END IF;
   IF NEW.status IN ('APPROVED','REJECTED','EXECUTED') AND NOT EXISTS (
    SELECT 1 FROM public.aigas_hg_decisions d WHERE d.tenant_id=NEW.tenant_id AND d.request_id=NEW.id
@@ -74,6 +82,11 @@ BEGIN
  RETURN NEW;
 END $$;
 
+-- 0004 added an unnamed table CHECK (reviewer_id <> requester_id); Postgres
+-- auto-named it aigas_hg_decisions_check. Separation of duties now lives in the
+-- policy-aware decision trigger, so the unconditional legacy check is dropped
+-- here. If a target carries a differently named duplicate, the stricter check
+-- remains and self-approval stays impossible (fail-closed) rather than unsafe.
 ALTER TABLE public.aigas_hg_decisions DROP CONSTRAINT IF EXISTS aigas_hg_decisions_check;
 ALTER TABLE public.aigas_hg_decisions
  ADD COLUMN delegation_id uuid,
@@ -137,7 +150,7 @@ BEGIN
  IF NEW.authority_level IS NULL THEN RAISE EXCEPTION 'Decision authority level required' USING ERRCODE='23514'; END IF;
  SELECT r.operation_type,r.status,r.payload_digest,r.policy_version,p.review_level,p.separation_of_duties
   INTO request_type,request_status,request_digest,request_policy,required_level,sod
-  FROM public.aigas_hg_requests r JOIN public.aigas_hg_policies p ON p.tenant_id=r.tenant_id
+  FROM public.aigas_hg_requests r JOIN public.aigas_hg_policies p ON p.tenant_id=r.tenant_id AND p.enabled
   WHERE r.tenant_id=NEW.tenant_id AND r.id=NEW.request_id;
  IF request_type IS NULL THEN RAISE EXCEPTION 'Decision task not found' USING ERRCODE='23514'; END IF;
  IF request_status<>'PENDING' THEN RAISE EXCEPTION 'Decision requires a pending request' USING ERRCODE='23514'; END IF;
@@ -150,6 +163,19 @@ BEGIN
  IF (CASE NEW.authority_level WHEN 'OWNER' THEN 3 ELSE 2 END) < (CASE required_level WHEN 'OWNER' THEN 3 ELSE 2 END) THEN
   RAISE EXCEPTION 'Decision below required review level' USING ERRCODE='23514';
  END IF;
+ -- The reviewer identity itself must be an active member of the tenant, so a
+ -- direct write cannot attach a decision to an outsider or a banned account.
+ IF NOT EXISTS (
+  SELECT 1 FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id
+  WHERE m.tenant_id=NEW.tenant_id AND m.user_id=NEW.reviewer_id AND u.banned IS NOT TRUE
+ ) THEN RAISE EXCEPTION 'Reviewer must be an active tenant member' USING ERRCODE='23514'; END IF;
+ -- A non-delegated decision cannot claim a level above the reviewer's own role.
+ -- Delegated decisions are validated below against the delegator's live role.
+ IF NEW.delegation_id IS NULL AND NOT EXISTS (
+  SELECT 1 FROM public.aigas_memberships m
+  WHERE m.tenant_id=NEW.tenant_id AND m.user_id=NEW.reviewer_id
+   AND (CASE m.role WHEN 'OWNER' THEN 3 WHEN 'ADMIN' THEN 2 ELSE 1 END) >= (CASE NEW.authority_level WHEN 'OWNER' THEN 3 ELSE 2 END)
+ ) THEN RAISE EXCEPTION 'Reviewer role is below the claimed authority level' USING ERRCODE='23514'; END IF;
  IF NEW.delegation_id IS NOT NULL THEN
   IF NOT EXISTS (
    SELECT 1 FROM public.aigas_hg_delegations d JOIN public.aigas_memberships dm ON dm.tenant_id=d.tenant_id AND dm.user_id=d.delegator_id
@@ -199,6 +225,22 @@ BEGIN
     AND d.decision='APPROVE' AND d.reviewer_id=NEW.reviewer_id
     AND d.payload_digest=NEW.payload_digest AND d.policy_version=NEW.policy_version
   ) THEN RAISE EXCEPTION 'Permit must bind an approved request and its reviewer' USING ERRCODE='23514'; END IF;
+  IF NOT EXISTS (
+   SELECT 1 FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id
+   WHERE m.tenant_id=NEW.tenant_id AND m.user_id=NEW.reviewer_id AND u.banned IS NOT TRUE
+  ) THEN RAISE EXCEPTION 'Permit reviewer must be an active tenant member' USING ERRCODE='23514'; END IF;
+  IF NOT EXISTS (
+   SELECT 1 FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id
+   WHERE m.tenant_id=NEW.tenant_id AND m.user_id=NEW.requester_id AND u.banned IS NOT TRUE
+    AND (NEW.operation_type<>'KERNEL_WORKSPACE_RENAME' OR m.role IN ('OWNER','ADMIN'))
+  ) THEN RAISE EXCEPTION 'Permit requester must be an active member for this operation' USING ERRCODE='23514'; END IF;
+  -- The permit must always separate requester and reviewer when the live policy
+  -- requires it, or for the Kernel rename where separation is unconditional.
+  IF NEW.reviewer_id=NEW.requester_id AND EXISTS (
+   SELECT 1 FROM public.aigas_hg_requests r JOIN public.aigas_hg_policies p ON p.tenant_id=r.tenant_id
+   WHERE r.tenant_id=NEW.tenant_id AND r.id=NEW.request_id
+    AND (p.separation_of_duties OR r.operation_type='KERNEL_WORKSPACE_RENAME')
+  ) THEN RAISE EXCEPTION 'Permit requires a reviewer independent of the requester' USING ERRCODE='23514'; END IF;
  ELSE
   IF ROW(NEW.id,NEW.tenant_id,NEW.request_id,NEW.requester_id,NEW.reviewer_id,NEW.operation_type,NEW.subject_ref,NEW.payload_digest,NEW.policy_version,NEW.issued_at,NEW.expires_at)
    IS DISTINCT FROM ROW(OLD.id,OLD.tenant_id,OLD.request_id,OLD.requester_id,OLD.reviewer_id,OLD.operation_type,OLD.subject_ref,OLD.payload_digest,OLD.policy_version,OLD.issued_at,OLD.expires_at)

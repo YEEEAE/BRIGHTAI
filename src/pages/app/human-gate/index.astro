@@ -52,7 +52,7 @@ const config=authConfig();
     <p data-empty hidden>لا توجد طلبات ضمن هذا العرض.</p><p data-review-notice hidden>المراجعة متاحة للمالك أو المسؤول، أو لعضو يحمل تفويضًا مؤقتًا نشطًا لنطاق العملية.</p><p data-refreshed></p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div>
    </section>
   </div>
-  <p class="notice">الإيقاف الأساسي عند سياسة Kernel التي تطلب مراجعة (REQUEST_APPROVAL/ESCALATE) يبقى داخل Kernel ولا يشترط ترخيص Human Gate. هذه الصفحة تضيف التفويض المؤقت وربط القرار بعملية واحدة وإذن تنفيذ يُستهلك مرة واحدة، مع تدقيق أساسي مستقل عن Ledger. تغيير اسم مساحة Kernel هو الأثر الفعلي المحدود في هذه النسخة؛ لا تفعيل سياسة Firewall أو تغيير تصنيف Risk Engine أو تنفيذ أنظمة خارجية. لا تُرسل البيانات لمزود AI ولا تُستخدم للتدريب. الموافقات المتعددة المراحل والتصعيد والتنبيهات الخارجية غير متاحة هنا.</p>
+  <p class="notice">الإيقاف الأساسي عند سياسة Kernel التي تطلب مراجعة (REQUEST_APPROVAL/ESCALATE) يبقى داخل Kernel ولا يشترط ترخيص Human Gate. هذه الصفحة تضيف التفويض المؤقت وربط القرار بعملية واحدة وإذن تنفيذ يُستهلك مرة واحدة، مع تدقيق أساسي مستقل عن Ledger. تغيير اسم مساحة Kernel هو الأثر الفعلي المحدود في هذه النسخة؛ لا تفعيل سياسة Firewall أو تغيير تصنيف Risk Engine أو تنفيذ أنظمة خارجية. لا تُرسل البيانات لمزود AI ولا تُستخدم للتدريب. الموافقات المتعددة المراحل والتصعيد التلقائي والتنبيهات الخارجية غير متاحة هنا؛ المراجعة أحادية المرحلة وتتطلب مراجعًا مستقلًا واحدًا على الأقل، لذا لا تكتمل الدورة في مؤسسة بعضو واحد.</p>
  </section>
 </AppLayout>
 <script src="../../../scripts/human-gate.ts"></script>

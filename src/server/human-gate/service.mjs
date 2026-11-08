@@ -234,14 +234,28 @@ export function createHumanGateService(transact=transaction) {
      if(valid&&request.status==='APPROVED') reviewerValid=await reviewerStillAuthorized(db,tenantId,request,policy);
      const grantActive=request.grant_status==='ACTIVE'&&request.grant_expires_at&&new Date(request.grant_expires_at).getTime()>new Date(serverTime).getTime();
      const history=(await db.query('SELECT event_type,reason_code,actor_user_id,created_at,audit_id FROM public.aigas_hg_events WHERE tenant_id=$1 AND request_id=$2 ORDER BY created_at,id',[tenantId,request.id])).rows;
+     const canDecide=!!valid&&decisionAllowed(request,identity.userId,policy,authority);
+     const canExecute=!!valid&&reviewerValid&&request.requester_id===identity.userId&&request.status==='APPROVED'&&grantActive;
+     // Codes only; the UI owns the Arabic wording. They explain a disabled control
+     // instead of implying that the viewer has authority the server did not grant.
+     const reviewBlock=request.status!=='PENDING'?null
+      :!valid?'BINDING_INVALID'
+      :request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||request.operation_type==='KERNEL_WORKSPACE_RENAME')?'SELF_REVIEW'
+      :!authority.allowed?'NO_AUTHORITY'
+      :null;
+     const executeBlock=request.status==='APPROVED'&&request.requester_id===identity.userId&&valid&&!canExecute
+      ?(!reviewerValid?'REVIEWER_LOST':!grantActive?'PERMIT_INACTIVE':null)
+      :null;
      requests.push({...request,history,
       bindingValid:!!valid,
        binding_version:bindingVersion,
        approval_expires_at:request.status==='APPROVED'?request.expires_at:null,
       isRequester:request.requester_id===identity.userId,
-      canDecide:!!valid&&decisionAllowed(request,identity.userId,policy,authority),
+      canDecide,
+      reviewBlock,
+      executeBlock,
       canCancel:['PENDING','APPROVED'].includes(request.status)&&cancelAllowed(request,member,identity.userId),
-      canExecute:!!valid&&reviewerValid&&request.requester_id===identity.userId&&request.status==='APPROVED'&&grantActive,
+      canExecute,
       decision_level:request.decision_level??null,
       grant:request.grant_id?{id:request.grant_id,status:request.grant_status,expires_at:request.grant_expires_at,consumed_at:request.grant_consumed_at,consumed_by:request.grant_consumed_by,active:grantActive}:null,
      });
