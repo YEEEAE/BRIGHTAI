@@ -1,3 +1,23 @@
+## [2026-11-09] — سجل موافقات G6 والتجربة المقيدة وحدود fail-closed
+
+### تم التنفيذ
+- HEAD الفعلي `13926fb2197ca1fc34e05da59320e9c2243b5a97` (`main`، شجرة نظيفة). الـSHA `46ecaea…` وقرار RC `3eaf6907…` تاريخيان فقط.
+- أُنشئ سجل اعتماد جديد `docs/beta/G6-PROVIDER-TRIAL-APPROVAL-REGISTER-2026-11-09.md`: حقول provider/model/region/retention/no-training/DPA/scope/endpoint/rate-quota/secret-store/expiry لفريقي Secure Chat وFirewall، فارغ عمدًا (`NOT_APPROVED`).
+- التجربة 48 ساعة وُثّقت كطلب اعتماد: مؤسستان، 5 مستخدمين، بيانات اصطناعية، بلا إرسال خارجي/دفع/self-service؛ لا تفعيل إلا بمشغّل مسمّى مستقل ومنتج اجتاز تحققًا فعليًا بعد التفويض (`0023` غير مطبقة).
+- ثبت أن Neon في `aws-us-east-2` (منصة `aws`، PG 18، فرع `production` وحيد `protected=false`) عبر Neon MCP قراءة فقط؛ ادعاء الاستضافة السعودية يبقى ممنوعًا (`P0-09`). النص العام الحالي لا يدّعيه.
+- وُثّقت 14 حالة fail-closed ومقرراتها في الكود (نماذج/حصة/مزود/Human Gate/RLS/Kernel setup/حجب الأسرار/التدقيق)، مع بقاء حماية Kernel الأساسية مستقلة عن رخص المنتجات.
+- لم تُضف مدخلات إلى `APPROVED_MODELS` أو `approvedProviders`، ولم يُفعّل إرسال خارجي، ولم تُنفّذ migrations أو كتابة/نشر/commit/push.
+### الملفات المتأثرة
+- `docs/beta/G6-PROVIDER-TRIAL-APPROVAL-REGISTER-2026-11-09.md` (جديد)
+- `docs/FINAL-RELEASE-HANDOFF.md`
+### التحقق
+- Neon MCP قراءة فقط (`describe_project`, `list_branches`): PASS للحالة والمنطقة.
+- فحص المصدر لمسارات fail-closed: PASS. Build/tests/HTTP/E2E: NOT RUN حسب النطاق.
+### النتيجة
+- **الحالة:** DONE محليًا للسجل والتحليل؛ **G6=BLOCKED** و**Trial=BLOCKED**. لا `RUNTIME_VERIFIED` ولا `APPROVED` ولا Beta.
+### ملاحظات / مشاكل مفتوحة
+- يلزم توقيع Product + Security/Privacy + Legal + DB Operator، و`0016/0023` على staging، وقرار إقامة بيانات (A/B)، قبل أي إغلاق.
+
 ## [2026-11-09] — تشخيص 404 البوابة: الأصل يخدم ملفات ثابتة لا Node SSR
 ### تم التنفيذ
 - HEAD الفعلي `5ee9df758165c411e5f6e3677a4d4da5e1bb60b5` (`main`، شجرة نظيفة). قراءة HTTP عامة أثبتت أن `brightai.live` يصل عبر Cloudflare إلى Render (`rndr-id`)، وكل الاستجابات تحمل `last-modified` موحّد `2026-11-08T21:37:31Z` و`cache-control: public, max-age=0, s-maxage=300`.
