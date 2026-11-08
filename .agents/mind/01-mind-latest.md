@@ -1,3 +1,17 @@
+## [2026-11-08] — ربط 404 البوابة بالخدمة والـartifact
+### تم التنفيذ
+- أكّد فحص المصدر أن Astro يعمل بوضع `server` مع Node standalone، وأن Render Blueprint يبني ويشغّل `npm start` على Node 22 مع `AIGAS_APP_ENABLED=false`.
+- رُصدت 404 على الروابط العامة سابقًا؛ هوية الـOrigin والـdeploy SHA والـartifact الذي أجاب الطلب ما زالت `NOT VERIFIED`، فلا تُنسب المشكلة إلى CSS.
+- أضيف handoff لتسجيل سلسلة hostname/DNS-CDN/service/deploy/SHA/artifact والاستجابة، مع التحقق المتوقع للبوابة المغلقة وخطوات rollback.
+### الملفات المتأثرة
+- `docs/APP-PORTAL-RUNTIME-HANDOFF.md`
+### التحقق
+- فحص المصدر و`git diff --check`: PASS. Build والاختبارات والنشر: NOT RUN حسب نطاق المهمة.
+### النتيجة
+- **الحالة:** PARTIAL — توثيق التشخيص المحلي جاهز؛ تحديد السبب وإثبات الإصلاح ينتظران مشغّل البيئة.
+### ملاحظات / مشاكل مفتوحة
+- لا دليل أن الـdeployment المنشور يطابق HEAD أو أن الطلبات تمر إلى خدمة Node؛ يتطلب ذلك وصول المشغّل إلى Render وDNS/CDN والتحقق بعد أي تغيير مخوّل.
+
 ## [2026-11-08] — حماية استعلامات مركز المعرفة من Analytics
 ### تم التنفيذ
 - عُدّل إعداد GA4 في `BaseLayout` لتنقية `q` و`from` من `page_location` و`page_referrer` لمسارات `/docs/` و`/knowledge/`؛ بقيت معاملات الحملات وغيرها دون تغيير.
