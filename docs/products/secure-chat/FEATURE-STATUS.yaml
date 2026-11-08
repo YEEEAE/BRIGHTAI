@@ -76,11 +76,14 @@ current_source_snapshot:
     request_cancellation_conversation_message_tables: PRESENT
     usage_quota_function_v2_0016: NOT_APPLIED
     kernel_audit_context_0017: NOT_APPLIED
+    sc_content_participant_only_0027: NOT_APPLIED
   approved_models: []
   blockers:
   - no_approved_provider_or_model
+  - no_approved_usage_quota
   - migration_0016_not_applied
   - migration_0017_not_applied
+  - migration_0027_not_applied
   - no_runtime_session_verified
 features:
 - id: SC-01.01
@@ -617,7 +620,7 @@ acceptance_traceability:
 update_policy: غيّر PLANNED إلى WORKING فقط برقم إصدار وبيئة ودليل قابل للمراجعة وموافقة صاحب الصلاحية. لا تغيّر حالة عامة
   بسبب نجاح اختبار الواجهة التعليمية.
 local_foundation_snapshot:
-  date: '2026-11-03'
+  date: '2026-11-08'
   status: PARTIAL_SOURCE_IMPLEMENTATION_NOT_OPERATIONALLY_VERIFIED
   implemented:
   - صفحة /app/secure-chat/ مرتبطة بـ Neon Auth وعضوية Kernel من الخادم.
@@ -628,12 +631,17 @@ local_foundation_snapshot:
   - منطق حصة طلبات دقيقة/يومية وحصة رموز يومية للمستخدم والمؤسسة موجود خلف مرجع اعتماد وحدود بيئية؛ لا يعلن أرقامًا افتراضية.
   - بوابة خروج نهائية (`approvedEgress`) تعيد فحص الرسائل وتجميدها قبل المزود، ولا تعتمد على رخصة Firewall؛ وحجب الإدخال والمخرج مسجل بلا متن.
   - دورة reserve/settle/cancel واحدة لكل طلب: لا إعادة إرسال لنفس المعرّف، ولا خصم مزدوج، وفشل التسوية يبقي الحجز ويُرجع SETTLEMENT_UNAVAILABLE.
-  - الواجهة تعرض Disabled/Loading/Timeout/Cancelled/Limit/Error بالعربية، وتتحقق أن الاستجابة تفيد بعدم حفظ المتن.
+  - الحصة بوابة إغلاق: غياب `AIGAS_SC_LIMITS_APPROVAL_REF` أو الحدود أو دالة `0016` يمنع الإرسال ويُعلن `USAGE_POLICY_NOT_CONFIGURED`/`USAGE_POLICY_INVALID`/`USAGE_POLICY_NOT_READY`؛ لا مسار «حدود معطلة = بلا حد».
+  - روجع `0016` محليًا (SECURITY DEFINER، search_path، شرط GUC والعضوية، منح EXECUTE صريح) ولم يُطبّق.
+  - مسودة `0027` محلية تجعل متن `aigas_sc_conversations/aigas_sc_messages` للمشارك فقط، وتفعّل `FORCE ROW LEVEL SECURITY`، وتمنع أي صلاحية قراءة/كتابة لدور التشغيل حتى اعتماد سياسة قراءة/احتفاظ.
+  - الواجهة تعرض Disabled/Loading/Timeout/Cancelled/Limit/NoQuota/ProviderOffline/Error بالعربية، وتتحقق أن الاستجابة تفيد بعدم حفظ المتن؛ زر الإرسال يُعطّل بخاصية `disabled` من الحالة لا بـCSS.
   - المشاركة والتصدير والملفات وRAG وحفظ المتن ووصول المسؤول إلى المتن معلنة مغلقة في استجابة النماذج والواجهة.
   limitations:
   - لا مزود أو نموذج أو منطقة معالجة ثبت اعتمادها وشروط عدم التدريب؛ سجل النماذج فارغ افتراضيًا ولا يُرسل رد AI فعلي حتى اعتماد وإعداد الموصل.
   - لا حفظ جلسات أو رسائل ولا حصة تكلفة معتمدة. تفعيل حصة الرموز الجديدة يحتاج مراجعة وتطبيق `migrations/0016_aigas_sc_user_token_quota.sql` ومنح EXECUTE مناسب؛ الترحيل محلي وغير مطبق.
+  - المسودة `0027` محلية غير مطبّقة؛ على الفرع المفحوص تبقى جداول المتن بلا صلاحيات تطبيق ولا سياسة مشارك.
   - غياب `0017` (سياق التدقيق) يمنع أي تسجيل Kernel، وبالتالي يمنع مسار الإرسال حتى يُعتمد ويُطبّق.
   - التشغيل، grants/RLS، اعتماد الحدود/السياسة، وحالة Neon الحالية غير متحققة ضمن هذه المهمة.
+  - خطة التحقق ببيانات اصطناعية وشروط الموافقة في `CLOSURE-RUNBOOK.md`؛ لم تُنفّذ.
   verification_status: NOT_VERIFIED
   operational_readiness: NOT_VERIFIED

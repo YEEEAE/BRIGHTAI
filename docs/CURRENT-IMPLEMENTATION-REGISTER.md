@@ -98,6 +98,7 @@
 | `0023_aigas_enterprise_trial_lifecycle` | **غير مطبّق** | لا يوجد جدول `aigas_trial_requests` |
 | `0024_aigas_catalog_parity_repair` | **مسودة محلية فقط** | أعمدة Audit الثلاثة وحارس Ledger غير موجودة وقت الفحص؛ لم تُجرّب أو تطبق |
 | `0026_aigas_risk_engine_residual_and_acceptance_policy` | **مسودة محلية فقط** | تضيف أعمدة الخطر المتبقي وقيود `NOT VALID` وتستبدل حارس 0021 بسياسة القبول الكاملة؛ لم تُطبّق على أي فرع. تحقق 2026-11-08: الأعمدة غائبة من `production` |
+| `0027_aigas_sc_content_participant_only` | **مسودة محلية فقط** | تلغي سياسة `tenant_id` على `aigas_sc_conversations/aigas_sc_messages`، وتضع سياسة مشارك واحد، وتسحب صلاحيات جدولي المتن من `aigas_runtime/authenticated/anonymous`، وتفشل عند بقاء سياسة غير مقيدة بالمؤلف. تعتمد على `0025`. لم تُطبّق |
 
 ### 3.1 أثر الترحيلات الناقصة على الكود الحالي
 
@@ -107,6 +108,7 @@
 | `0014` | خدمة Human Gate تقرأ/تكتب `aigas_hg_delegations` و`aigas_hg_grants` وأعمدة `provider_ref` وغيرها؛ كل عمليات Human Gate محجوبة على المخطط الحالي |
 | `0013` | كاتب Ledger يسمح بـ`WARN/ESCALATE/DENY` و`request_fingerprint` في metadata؛ قيد Neon الحالي يرفضها، فتفشل أدلة Firewall المصنفة بهذه الحالات |
 | `0016` | `reserve()` في Secure Chat يستدعي `aigas_sc_usage_window_v2`؛ الاستدعاء غير موجود على المخطط الحالي |
+| `0027` | جداول المتن اليوم بلا سياسات ولا صلاحيات تطبيق (fail-closed)؛ بعد تطبيق `0019/0025` قد تظهر عليها سياسة `tenant_id` فقط حتى تُطبّق `0027` |
 
 **تحديث مطابقة 2026-11-08:** فرع Neon الوحيد `production` غير محمي (`protected=false`)، وData API نشط على `public`. دور `aigas_runtime` غير موجود؛ `authenticated` لديه DML على الجداول الـ31. Migration `0019` تعتمد على دالة `0016` وتوصي بـ`0018` أولًا؛ قائمة سياسات `0019` لا تشمل جداول Human Gate الجديدة في `0014` ولا جداول trial في `0023`. لذلك لا يُعد تطبيق `0019` من المصدر وحده إثباتًا لصلاحية أقل أو جاهزية cutover. مسودة `0024` محدودة بأعمدة Audit nullable وحارس سلسلة Ledger ولا تعالج قيد metadata أو المنح/RLS.
 

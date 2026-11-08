@@ -182,6 +182,10 @@ BEGIN
   LOOP
     IF target.relname = ANY(read_only) THEN
       EXECUTE format('GRANT SELECT ON TABLE public.%I TO aigas_runtime', target.relname);
+    ELSIF target.relname IN ('aigas_sc_messages','aigas_sc_conversations') THEN
+      -- Stored chat text has no approved application read/write path. `0027`
+      -- makes the RLS predicate participant-only; keep the verbs closed too.
+      EXECUTE format('REVOKE ALL ON TABLE public.%I FROM aigas_runtime', target.relname);
     ELSIF target.relname = ANY(append_only) THEN
       EXECUTE format('GRANT SELECT, INSERT ON TABLE public.%I TO aigas_runtime', target.relname);
     ELSIF target.relname = ANY(select_insert) THEN
@@ -315,7 +319,8 @@ BEGIN
   END LOOP;
 END $$;
 
--- One tenant-scoped policy for every table that carries tenant_id. aigas_tenants
+-- One tenant-scoped policy for every table that carries tenant_id, except the
+-- Secure Chat content tables: their text is participant-only (`0027`). aigas_tenants
 -- and aigas_memberships are handled explicitly below.
 DO $$
 DECLARE
@@ -327,6 +332,9 @@ BEGIN
     JOIN pg_namespace n ON n.oid = c.relnamespace
     WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relname LIKE 'aigas\_%'
       AND c.relname NOT IN ('aigas_tenants','aigas_memberships')
+      -- Secure Chat text is participant-only, not tenant-wide. `0027` installs
+      -- the author-scoped policy; never recreate a tenant predicate here.
+      AND c.relname NOT IN ('aigas_sc_messages','aigas_sc_conversations')
       AND EXISTS (
         SELECT 1 FROM information_schema.columns col
         WHERE col.table_schema = 'public' AND col.table_name = c.relname

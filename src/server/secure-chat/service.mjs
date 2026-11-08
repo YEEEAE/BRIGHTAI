@@ -7,7 +7,7 @@ import { contractHeaders, errorBody, HTTP_CONTRACT_VERSION } from '../kernel/con
 import { env } from '../kernel/env.mjs';
 import { findApprovedModel, listApprovedModels } from './models.mjs';
 import { complete, providerConfiguration, providerState } from './adapter.mjs';
-import { INPUT_POLICY, approvedEgress, protectText, usagePolicy } from './policy.mjs';
+import { INPUT_POLICY, approvedEgress, protectText, usagePolicyStatus } from './policy.mjs';
 import { reserve, settleUnknown, cancel, cancellationRequested } from './requests.mjs';
 import { uuid } from '../kernel/http.mjs';
 
@@ -45,30 +45,44 @@ export async function listModels(request) {
   const approvedModels = listApprovedModels(tenant.tenant_id);
   const states = approvedModels.map(model => ({ model, state: providerState(model) }));
   const ready = states.filter(item => item.state === 'READY');
-  const policy = usagePolicy();
+  const quota = usagePolicyStatus();
   // A configured quota policy is only usable after the reviewed 0016 function
   // exists. Probing is read-only and failure is treated as not ready, never open.
-  let usageQuotaReady = true;
-  if (ready.length > 0 && policy) {
+  let usageQuotaReady = false;
+  if (ready.length > 0 && quota.approved) {
     try {
       // Existence alone is not enough: the connected role must also hold EXECUTE.
       usageQuotaReady = (await transaction(db => db.query("WITH fn AS (SELECT to_regprocedure('public.aigas_sc_usage_window_v2(uuid,uuid)') AS oid) SELECT CASE WHEN oid IS NULL THEN false ELSE has_function_privilege(current_user, oid, 'EXECUTE') END AS ready FROM fn"))).rows[0].ready;
     } catch { usageQuotaReady = false; }
   }
-  const sendable = ready.length > 0 && usageQuotaReady;
+  // An approved model without an approved quota is not sendable: it would meter
+  // nothing. The gate stays closed until both are configured and reviewed.
+  const sendable = ready.length > 0 && quota.approved && usageQuotaReady;
   const models = sendable ? ready.map(({ model }) => ({ id: model.id, label: model.label, region: model.region, ready: true, state: 'READY' })) : [];
   const available = sendable;
+  const allExpired = states.length > 0 && states.every(item => item.state === 'EXPIRED');
   const dependencyStatus = available ? 'available'
     : states.length === 0 ? 'not configured'
-      : !usageQuotaReady ? 'not configured'
-        : states.every(item => item.state === 'EXPIRED') ? 'expired'
-          : 'not configured';
+      : ready.length === 0 ? (allExpired ? 'expired' : 'not configured')
+        : 'not configured';
   const availabilityCode = available ? null
     : states.length === 0 ? 'NO_APPROVED_MODEL'
-      : !usageQuotaReady ? 'USAGE_POLICY_NOT_READY'
+      : ready.length === 0 ? (allExpired ? 'MODEL_APPROVAL_EXPIRED'
         : states.some(item => item.state === 'PROVIDER_NOT_CONFIGURED') ? 'PROVIDER_NOT_CONFIGURED'
-          : dependencyStatus === 'expired' ? 'MODEL_APPROVAL_EXPIRED'
-            : 'NO_APPROVED_MODEL';
+          : 'NO_APPROVED_MODEL')
+        : !quota.approved ? quota.code
+          : 'USAGE_POLICY_NOT_READY';
+  const unavailableMessage = availabilityCode === 'PROVIDER_NOT_CONFIGURED'
+    ? 'الموصل إلى المزود المعتمد غير مهيأ على الخادم؛ لم يُرسل أي محتوى.'
+    : availabilityCode === 'MODEL_APPROVAL_EXPIRED'
+      ? 'انتهت صلاحية اعتماد النموذج المسجل؛ يلزم اعتماد جديد قبل الإرسال.'
+      : availabilityCode === 'USAGE_POLICY_NOT_CONFIGURED'
+        ? 'لا توجد حصة استخدام معتمدة لهذا المنتج؛ الإرسال موقوف ولم يُرسل أي محتوى.'
+        : availabilityCode === 'USAGE_POLICY_INVALID'
+          ? 'إعداد حصة الاستخدام غير صالح؛ الإرسال موقوف ولم يُرسل أي محتوى.'
+          : availabilityCode === 'USAGE_POLICY_NOT_READY'
+            ? 'سياسة الحصة معتمدة لكن مكوّن قياسها غير مهيأ على قاعدة البيانات؛ الإرسال موقوف.'
+            : 'لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة؛ لم يُرسل أي محتوى إلى مزود AI.';
   return {
     models, available, dependencyStatus, availabilityCode, tenant: { id: tenant.tenant_id, name: tenant.name },
     conversationMode: 'EPHEMERAL_TAB_ONLY',
@@ -78,8 +92,8 @@ export async function listModels(request) {
     capabilities: { sharing: false, export: false, fileUpload: false, rag: false, savedTranscripts: false, adminContentAccess: false },
     contentVisibility: 'PARTICIPANT_ONLY',
     policy: { version: INPUT_POLICY.version, syntheticOnly: true, firewallLicenceRequired: false, message: 'نصوص اصطناعية فقط. حماية خروج أساسية محدودة تعمل دون رخصة Firewall وتحجب الأسرار وتنقح بعض بيانات الاتصال والهوية؛ لا تضمن كشف جميع البيانات الحساسة.' },
-    usage: { cost: 'غير متاح', tokens: null, limits: policy, configuredMessageCharacters: configuredMessageLimit() },
-    message: available ? 'النماذج المعتمدة والمهيأة متاحة للنصوص الاصطناعية فقط؛ كل إرسال يخضع لفحص الخادم.' : 'لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة؛ يلزم اعتماد النموذج والمنطقة ودليل عدم التدريب وإعداد الموصل. لم يُرسل أي محتوى إلى مزود AI.',
+    usage: { cost: 'غير متاح', tokens: null, quotaStatus: quota.code ?? 'APPROVED', limits: quota.policy, configuredMessageCharacters: configuredMessageLimit() },
+    message: available ? 'النماذج المعتمدة والمهيأة متاحة للنصوص الاصطناعية فقط؛ كل إرسال يخضع لفحص الخادم.' : unavailableMessage,
     contract_version: HTTP_CONTRACT_VERSION,
   };
 }

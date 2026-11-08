@@ -30,7 +30,7 @@ const consent = root.querySelector<HTMLInputElement>('[data-synthetic]')!;
 const usageLabel = root.querySelector<HTMLElement>('[data-usage]')!;
 const composerState = root.querySelector<HTMLElement>('[data-composer-state]')!;
 
-type ComposerState = 'READY' | 'DISABLED' | 'LOADING' | 'TIMEOUT' | 'CANCELLED' | 'LIMIT' | 'ERROR';
+type ComposerState = 'READY' | 'DISABLED' | 'LOADING' | 'TIMEOUT' | 'CANCELLED' | 'LIMIT' | 'NO_QUOTA' | 'PROVIDER_OFFLINE' | 'ERROR';
 function setComposerState(state: ComposerState, text = '') {
   composer.dataset.state = state;
   composerState.hidden = !text;
@@ -195,7 +195,7 @@ function applyModelAvailability(data: {
   policy?: { message: string; firewallLicenceRequired?: boolean };
   retention?: { message?: string };
   capabilities?: Record<string, boolean>;
-  usage?: { configuredMessageCharacters?: number; limits?: Record<string, number | null> };
+  usage?: { configuredMessageCharacters?: number; limits?: Record<string, number | null> | null; quotaStatus?: string };
 }) {
   available = data.available;
   const previous = model.value;
@@ -208,7 +208,12 @@ function applyModelAvailability(data: {
   if (!available) consent.checked = false;
   root.querySelector('[data-policy-note]')!.textContent = data.policy?.message || '';
   const names: Record<string,string> = { userMinute:'طلباتك خلال دقيقة', tenantMinute:'طلبات المؤسسة خلال دقيقة', userDay:'طلباتك خلال 24 ساعة', tenantDay:'طلبات المؤسسة خلال 24 ساعة', userTokensDay:'سقف رموزك خلال 24 ساعة', tenantTokensDay:'سقف رموز المؤسسة خلال 24 ساعة' };
-  root.querySelector('[data-limits]')!.textContent = data.usage?.limits ? Object.entries(data.usage.limits).filter(([,value]) => value !== null).map(([key,value]) => `${names[key]}: ${value}`).join('، ') : 'الحصص غير مفعّلة حتى اعتمادها. التكلفة غير متاحة.';
+  const limits = data.usage?.limits ? Object.entries(data.usage.limits).filter(([,value]) => value !== null) : [];
+  root.querySelector('[data-limits]')!.textContent = limits.length
+    ? limits.map(([key,value]) => `${names[key]}: ${value}`).join('، ')
+    : data.usage?.quotaStatus === 'USAGE_POLICY_INVALID'
+      ? 'إعداد الحصة غير صالح؛ الإرسال موقوف. التكلفة غير متاحة.'
+      : 'لم تُعتمد حصة استخدام لهذا المنتج؛ الإرسال موقوف حتى اعتمادها. التكلفة غير متاحة.';
   updateSend();
   const maxLength = data.usage?.configuredMessageCharacters || 4000;
   message.maxLength = maxLength;
@@ -217,8 +222,10 @@ function applyModelAvailability(data: {
   stateTitle.textContent = data.available ? 'النماذج المعتمدة'
     : data.availabilityCode === 'PROVIDER_NOT_CONFIGURED' ? 'الموصل إلى المزود غير مهيأ'
       : data.availabilityCode === 'MODEL_APPROVAL_EXPIRED' ? 'انتهت صلاحية اعتماد النموذج'
-        : data.availabilityCode === 'USAGE_POLICY_NOT_READY' ? 'مكوّن الحصص غير مهيأ'
-          : 'لا يوجد نموذج معتمد ومهيأ';
+        : data.availabilityCode === 'USAGE_POLICY_NOT_CONFIGURED' ? 'لا توجد حصة استخدام معتمدة'
+          : data.availabilityCode === 'USAGE_POLICY_INVALID' ? 'إعداد الحصة غير صالح'
+            : data.availabilityCode === 'USAGE_POLICY_NOT_READY' ? 'مكوّن الحصص غير مهيأ'
+              : 'لا يوجد نموذج معتمد ومهيأ';
   status.textContent = data.message;
   if (!available) {
     const code = data.availabilityCode || 'NO_APPROVED_MODEL';
@@ -226,10 +233,14 @@ function applyModelAvailability(data: {
       ? 'الإرسال متوقف: الموصل إلى المزود المعتمد غير مهيأ على الخادم، ولم يُرسل أي محتوى.'
       : code === 'MODEL_APPROVAL_EXPIRED'
         ? 'الإرسال متوقف: انتهت صلاحية اعتماد النموذج المسجل؛ يلزم اعتماد جديد قبل الإرسال.'
-        : code === 'USAGE_POLICY_NOT_READY'
-          ? 'الإرسال متوقف: سياسة الحصص معتمدة لكن مكوّن قياسها غير مهيأ على قاعدة البيانات؛ يلزم اعتماد الترحيل.'
-          : 'الإرسال متوقف: لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة. لا تُعرض قائمة نماذج بديلة ولا يُرسل المحتوى.';
-    setComposerState('DISABLED', text);
+        : code === 'USAGE_POLICY_NOT_CONFIGURED'
+          ? 'الإرسال متوقف: لا توجد حصة استخدام معتمدة لهذا المنتج. لا يوجد إرسال بلا قياس ولا حصة افتراضية.'
+          : code === 'USAGE_POLICY_INVALID'
+            ? 'الإرسال متوقف: إعداد حصة الاستخدام غير صالح؛ يلزم تصحيح إعداد المشغّل واعتماده.'
+            : code === 'USAGE_POLICY_NOT_READY'
+              ? 'الإرسال متوقف: سياسة الحصص معتمدة لكن مكوّن قياسها غير مهيأ على قاعدة البيانات؛ يلزم اعتماد الترحيل.'
+              : 'الإرسال متوقف: لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة. لا تُعرض قائمة نماذج بديلة ولا يُرسل المحتوى.';
+    setComposerState(code === 'USAGE_POLICY_NOT_CONFIGURED' || code === 'USAGE_POLICY_INVALID' || code === 'USAGE_POLICY_NOT_READY' ? 'NO_QUOTA' : 'DISABLED', text);
   } else {
     setComposerState('READY');
   }
@@ -369,9 +380,13 @@ composer.addEventListener('submit', event => {
             ? 'وصلت إلى حد الاستخدام المعتمد. لا خصم أو ترقية تلقائية؛ انتظر تجدد الحصة.'
             : value.code === 'NO_APPROVED_MODEL' || value.code === 'PROVIDER_NOT_CONFIGURED' || value.code === 'MODEL_APPROVAL_EXPIRED'
               ? 'الإرسال غير متاح: لا يوجد نموذج معتمد ومهيأ. لم يُرسل المحتوى إلى أي مزود.'
-              : value.code === 'SENSITIVE_CONTENT_BLOCKED'
-                ? 'حُجب النص قبل الإرسال لأنه يشبه سرًا أو مفتاح وصول. عدّل المسودة ثم أعد المحاولة.'
-                : friendlyError(value);
+              : value.code === 'USAGE_POLICY_NOT_CONFIGURED' || value.code === 'USAGE_POLICY_INVALID' || value.code === 'USAGE_POLICY_NOT_READY'
+                ? 'الإرسال غير متاح: لا توجد حصة استخدام معتمدة وقابلة للقياس. لم يُرسل المحتوى إلى أي مزود.'
+                : value.code === 'PROVIDER_UNAVAILABLE' || value.code === 'PROVIDER_REJECTED'
+                  ? 'المزود غير متاح أو رفض الطلب دون تأكيد نتيجة. قد يكون الاستهلاك حدث؛ لا تُعد الإرسال تلقائيًا.'
+                  : value.code === 'SENSITIVE_CONTENT_BLOCKED'
+                    ? 'حُجب النص قبل الإرسال لأنه يشبه سرًا أو مفتاح وصول. عدّل المسودة ثم أعد المحاولة.'
+                    : friendlyError(value);
       sendErrorText.textContent = `${failure} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
       retrySend.hidden = false;
       sendError.hidden = false;
@@ -379,6 +394,8 @@ composer.addEventListener('submit', event => {
       if (value.code === 'PROVIDER_TIMEOUT') setComposerState('TIMEOUT', 'انتهت المهلة قبل تأكيد الرد. الحصة قد تبقى محجوزة؛ لا إعادة إرسال تلقائية.');
       else if (value.code === 'REQUEST_CANCELLED') setComposerState('CANCELLED', 'أُوقف الطلب؛ قد يكون المزود استهلكه. بقيت المسودة في الحقل.');
       else if (value.code === 'USAGE_LIMIT_REACHED') setComposerState('LIMIT', 'وصلت إلى حد الاستخدام المعتمد؛ الإرسال متوقف حتى تتجدد الحصة.');
+      else if (value.code === 'USAGE_POLICY_NOT_CONFIGURED' || value.code === 'USAGE_POLICY_INVALID' || value.code === 'USAGE_POLICY_NOT_READY') setComposerState('NO_QUOTA', 'الإرسال متوقف: لا توجد حصة استخدام معتمدة وقابلة للقياس.');
+      else if (value.code === 'PROVIDER_UNAVAILABLE' || value.code === 'PROVIDER_REJECTED') setComposerState('PROVIDER_OFFLINE', 'المزود غير متاح أو رفض الطلب؛ لا تأكيد لنجاح ولا إعادة إرسال تلقائية.');
       else if (value.code === 'NO_APPROVED_MODEL' || value.code === 'PROVIDER_NOT_CONFIGURED' || value.code === 'MODEL_APPROVAL_EXPIRED') setComposerState('DISABLED', 'الإرسال متوقف: لا يوجد نموذج معتمد ومهيأ.');
       else setComposerState('ERROR', 'تعذر إكمال الطلب. لم يُعلن نجاح ولم يُحفظ المتن.');
     })

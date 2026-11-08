@@ -1,3 +1,30 @@
+## [2026-11-08] — إغلاق Secure Chat: حصة fail-closed وخصوصية المتن للمشارك فقط
+
+### تم التنفيذ
+- HEAD المحلي `1681d45e` (يختلف عن `7994d3ce` في الطلب). أُعيد فحص ملفات Secure Chat والواجهة و`0009/0016/0017/0019/0022/0025`. لم يُشغّل build/tests/HTTP/E2E، ولم يُتصل بـNeon ولم تُنفّذ أي كتابة أو DDL.
+- أُغلق تسريب حصص حقيقي: `usagePolicy()` كانت تعيد `null` عند غياب `AIGAS_SC_LIMITS_APPROVAL_REF` فيتجاوز `reserve()` كل الحدود. الآن `usagePolicyStatus()` تفصل `USAGE_POLICY_NOT_CONFIGURED`/`USAGE_POLICY_INVALID`، و`usagePolicy()` ترمي، و`reserve()` لا يحجز بلا حصة معتمدة، و`listModels()` لا يعلن الإتاحة إلا بنموذج `READY` + حصة معتمدة + دالة `0016` قابلة للتنفيذ.
+- أُضيفت حالات صريحة في استجابة النماذج والواجهة: `USAGE_POLICY_NOT_CONFIGURED`, `USAGE_POLICY_INVALID`, `USAGE_POLICY_NOT_READY`, `NO_QUOTA`, `PROVIDER_OFFLINE`، مع إبقاء `usage.tokens=null` و`cost='غير متاح'` و`quotaStatus` وصفًا لا رقمًا. زر الإرسال يبقى معطّلًا بخاصية `disabled` من الحالة لا عبر CSS.
+- أُضيف `migrations/0027_aigas_sc_content_participant_only.sql` محليًا: سياسة مشارك واحد (`tenant_id + user_id` من GUC المعاملة) على `aigas_sc_conversations/aigas_sc_messages` بدل سياسة المؤسسة، `FORCE ROW LEVEL SECURITY`، سحب كل صلاحيات جدولي المتن من `aigas_runtime/authenticated/anonymous`، وفحوص تفشل الترحيل عند بقاء سياسة غير مقيدة بالمؤلف أو `SELECT`. واستُثني الجدولان من سياسة ومنح `0025`.
+- روجع `0016` محليًا (SECURITY DEFINER، `search_path`، شرط GUC والعضوية، الحاجة لمنح EXECUTE صريح) دون تطبيقه، وأُضيف `CLOSURE-RUNBOOK.md` بخطة تحقق ببيانات اصطناعية وموافقات موقّعة ومصفوفة S1–S11، مع التأكيد أن `APPROVED_MODELS=[]` يبقى فارغًا.
+
+### الملفات المتأثرة
+- `src/server/secure-chat/{policy,requests,service}.mjs`, `src/scripts/secure-chat.ts`
+- `migrations/0027_aigas_sc_content_participant_only.sql`, `migrations/0025_aigas_tenant_isolation_closure.sql` (استثناء جدولي المتن فقط)
+- `docs/products/secure-chat/{CLOSURE-RUNBOOK.md,FEATURE-STATUS.yaml}`, `docs/CURRENT-IMPLEMENTATION-REGISTER.md`
+
+### التحقق
+- `node --check` للملفات الثلاثة و`node --experimental-strip-types --check` لـ`secure-chat.ts` و`git diff --check`: PASS.
+- فحص نقي لسياسة الحصة بلا DB: غياب المرجع → `USAGE_POLICY_NOT_CONFIGURED`، مرجع بلا حدود أو حد صفري → `USAGE_POLICY_INVALID`، حدود صحيحة → سياسة مقروءة: PASS.
+- فحص ثابت لـ`0027`: `$$` متوازنة (4)، `BEGIN/COMMIT` واحد، 2 سياسات جديدة و6 إسقاطات: PASS. SQL لم يُنفّذ.
+- Build/typecheck/HTTP/tests/E2E/Neon reads+writes/0016/0027 execution: NOT RUN حسب نطاق الدفعة.
+
+### النتيجة
+- **الحالة:** PARTIAL — بوابة الحصة والخصوصية والحالات `SOURCE_PRESENT`؛ `0027` و`0016` غير مطبقتين، ولا `RUNTIME_VERIFIED` ولا `APPROVED`، ولا إطلاق Beta.
+
+### ملاحظات / مشاكل مفتوحة
+- تطبيق `0016` ثم `0027` وتجربة S1–S11 ببيانات اصطناعية تحتاج موافقة موقّعة من مالك المنتج + الأمن/الخصوصية + مالك قاعدة البيانات + مالك النموذج/المزود، وفرع staging قابل للاستعادة.
+- `APPROVED_MODELS=[]` ما زال فارغًا: لا مزود/نموذج/منطقة/احتفاظ/عدم تدريب معتمد، ولا حصة معتمدة، فلا مسار إرسال فعلي.
+
 ## [2026-11-08] — إغلاق سجل Risk Engine: الخطر المتبقي وسياسة القبول والتصدير
 
 ### تم التنفيذ

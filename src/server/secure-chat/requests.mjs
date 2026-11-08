@@ -27,17 +27,17 @@ export async function reserve(identity, tenantId, id, model) {
     if ((await db.query('SELECT 1 FROM public.aigas_sc_cancellations WHERE tenant_id=$1 AND user_id=$2 AND request_id=$3',[tenantId,identity.userId,id])).rowCount) throw new KernelError(409,'REQUEST_CANCELLED','سُجل إلغاء هذا الطلب قبل الإرسال؛ لن يُرسل إلى المزود.');
     const old = (await db.query('SELECT state FROM public.aigas_sc_requests WHERE tenant_id=$1 AND user_id=$2 AND id=$3', [tenantId,identity.userId,id])).rows[0];
     if (old) throw new KernelError(409, 'REQUEST_ALREADY_SEEN', 'هذا الطلب مسجل مسبقًا ولن يُرسل مرة أخرى. قد يكون استهلاك المزود حدث؛ لا تُعد الإرسال تلقائيًا.');
+    // Fail closed: without an approved quota policy this throws instead of
+    // reserving an unmetered request. There is no "limits disabled = unlimited".
     const policy = usagePolicy();
-    if (policy) {
-      // Deliberate tenant-wide aggregate; no content or per-employee usage is returned.
-      // Runtime role needs this reviewed aggregate access; RLS must not hide peers.
-      const row = (await db.query(`SELECT * FROM public.aigas_sc_usage_window_v2($1,$2)`, [tenantId,identity.userId])).rows[0];
-      const comparisons = [[policy.userMinute,row.user_minute],[policy.tenantMinute,row.tenant_minute],[policy.userDay,row.user_day],[policy.tenantDay,row.tenant_day]];
-      if (comparisons.some(([limit,count]) => limit && Number(count) >= limit) ||
-          (policy.userTokensDay && Number(row.user_token_charge) + model.maxRequestTokens > policy.userTokensDay) ||
-          (policy.tenantTokensDay && Number(row.tenant_token_charge) + model.maxRequestTokens > policy.tenantTokensDay)) {
-        throw new KernelError(429, 'USAGE_LIMIT_REACHED', 'وصلت إلى حد الاستخدام المعتمد. انتظر تجدد الحصة؛ لا يوجد خصم أو ترقية تلقائية.');
-      }
+    // Deliberate tenant-wide aggregate; no content or per-employee usage is returned.
+    // Runtime role needs this reviewed aggregate access; RLS must not hide peers.
+    const row = (await db.query(`SELECT * FROM public.aigas_sc_usage_window_v2($1,$2)`, [tenantId,identity.userId])).rows[0];
+    const comparisons = [[policy.userMinute,row.user_minute],[policy.tenantMinute,row.tenant_minute],[policy.userDay,row.user_day],[policy.tenantDay,row.tenant_day]];
+    if (comparisons.some(([limit,count]) => limit && Number(count) >= limit) ||
+        (policy.userTokensDay && Number(row.user_token_charge) + model.maxRequestTokens > policy.userTokensDay) ||
+        (policy.tenantTokensDay && Number(row.tenant_token_charge) + model.maxRequestTokens > policy.tenantTokensDay)) {
+      throw new KernelError(429, 'USAGE_LIMIT_REACHED', 'وصلت إلى حد الاستخدام المعتمد. انتظر تجدد الحصة؛ لا يوجد خصم أو ترقية تلقائية.');
     }
     try {
       // The full approved request ceiling is reserved, not an imagined provider cost.

@@ -49,9 +49,7 @@ function positive(name) {
   return Number(raw);
 }
 
-export function usagePolicy() {
-  // Unapproved values have no effect. Never interpret a key as model approval.
-  if (!env('AIGAS_SC_LIMITS_APPROVAL_REF')?.trim()) return null;
+function readLimits() {
   const policy = {
     userMinute: positive('AIGAS_SC_USER_REQUESTS_PER_MINUTE'),
     tenantMinute: positive('AIGAS_SC_TENANT_REQUESTS_PER_MINUTE'),
@@ -62,4 +60,21 @@ export function usagePolicy() {
   };
   if (!Object.values(policy).some(Boolean)) throw new KernelError(503, 'USAGE_POLICY_INVALID', 'مرجع اعتماد الحصص موجود دون حدود؛ راجع إعداد المشغّل.');
   return policy;
+}
+
+export function usagePolicyStatus() {
+  // Unapproved values have no effect. Never interpret a key as model approval.
+  // A missing or invalid quota is a closed gate, not "unlimited".
+  if (!env('AIGAS_SC_LIMITS_APPROVAL_REF')?.trim()) return { policy: null, approved: false, code: 'USAGE_POLICY_NOT_CONFIGURED' };
+  try { return { policy: readLimits(), approved: true, code: null }; }
+  catch { return { policy: null, approved: false, code: 'USAGE_POLICY_INVALID' }; }
+}
+
+export function usagePolicy() {
+  // The send path must never run without an approved quota. Returning null here
+  // would silently skip every limit in requests.reserve().
+  const status = usagePolicyStatus();
+  if (status.code === 'USAGE_POLICY_NOT_CONFIGURED') throw new KernelError(503, 'USAGE_POLICY_NOT_CONFIGURED', 'لم تُعتمد حصة استخدام لهذا المنتج؛ الإرسال موقوف.');
+  if (status.code) throw new KernelError(503, 'USAGE_POLICY_INVALID', 'إعداد حدود الاستخدام غير صالح؛ الإرسال موقوف.');
+  return status.policy;
 }

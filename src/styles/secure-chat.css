@@ -138,7 +138,9 @@
 .secure-chat .composer-state[data-tone="progress"]{border-color:#4a4270;background:#120f1d;color:#ded7ff}
 .secure-chat .composer-state[data-tone="alert"]{border-color:#6b3437;background:#1c0d10;color:#ffd0d0}
 .secure-chat .composer-state[data-tone="muted"]{color:var(--sc-muted)}
-.secure-chat .composer[data-state="DISABLED"] .composer-actions button[type="submit"]{border-style:dashed}
+.secure-chat .composer[data-state="DISABLED"] .composer-actions button[type="submit"],
+.secure-chat .composer[data-state="NO_QUOTA"] .composer-actions button[type="submit"],
+.secure-chat .composer[data-state="PROVIDER_OFFLINE"] .composer-actions button[type="submit"]{border-style:dashed}
 .secure-chat .send-error{
   margin-block:14px;
   padding:13px 15px;
