@@ -87,7 +87,7 @@ async function load(){
  if(!canManage)get<HTMLSelectElement>('[name=operation_type]').value='INTERNAL_DEMO_NOTE';scopeFields();
  const list=get('[data-requests]');list.replaceChildren();
  for(const request of data.requests){
-  const card=document.createElement('article');card.className='hg-request';card.append(node('h3',request.title));const state=node('p',labels[request.status]||request.status);state.className='hg-state';card.append(state);
+  const card=document.createElement('article');card.className='hg-request';card.append(node('h3',request.title));const state=node('p',labels[request.status]||request.status);state.className='hg-state';state.dataset.state=request.status;card.append(state);
   const rename=request.operation_type==='KERNEL_WORKSPACE_RENAME';
   const fields:Record<string,string>={'مرجع الطلب':request.id,'العملية':rename?'تغيير اسم مساحة العمل في Kernel':'ملاحظة داخلية تجريبية','المورد':request.provider_ref||'غير محدد','مرجع الهدف':request.subject_ref,'الوصف':request.description,'سبب الإحالة':request.reason,'مرجع مقدم الطلب':request.requester_id,'وقت الإنشاء':time(request.created_at),'موعد انتهاء الصلاحية':time(request.expires_at),'نسخة السياسة':request.policy_version,'إصدار الربط':request.binding_version||'غير محدد','بصمة العملية':request.payload_digest||'طلب قديم دون بصمة'};
   if(request.status==='APPROVED'&&request.approval_expires_at)fields['صلاحية الموافقة حتى']=time(request.approval_expires_at);

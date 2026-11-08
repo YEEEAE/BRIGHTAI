@@ -175,5 +175,7 @@
 /* 09 — Five decision states, copy/delete actions and honest setup/result metadata. */
 .firewall .fw-danger{border-color:#5e2c2c;color:#ffb1b1}
 .firewall .fw-danger:hover{border-color:#7a3a3a;background:#1a0d0d;color:#ffd1d1}
+.firewall [data-status][data-state="ok"]{color:#8fe3d3}
+.firewall [data-status][data-state="error"]{color:#ffb1b1}
 .firewall .fw-rule-actions{flex-wrap:wrap}
 @media(max-width:800px){.firewall .fw-counts{grid-template-columns:repeat(auto-fit,minmax(92px,1fr))}}

@@ -60,8 +60,10 @@ async function load(){
   const tr=document.createElement('tr');
   const meta=event.metadata_json||{};
   const ref=meta.decision_ref||meta.request_ref||meta.assessment_ref||meta.asset_ref||meta.audit_ref;
-  for(const value of [time(event.created_at),labels[event.event_type]||event.event_type,ref,event.created_by,stateLabel(event.verification_state||event.integrity)]){
+  const eventState=event.verification_state||event.integrity||'UNVERIFIED';
+  for(const value of [time(event.created_at),labels[event.event_type]||event.event_type,ref,event.created_by,stateLabel(eventState)]){
    const td=document.createElement('td'),bdi=document.createElement('bdi');bdi.textContent=value;td.append(bdi);
+   if(tr.children.length===4){bdi.className='ledger-event-state';bdi.dataset.state=String(eventState);}
    if(tr.children.length===1){const small=document.createElement('small');small.textContent=`${event.source} · ${meta.synthetic?'اصطناعي / تجريبي':'تشغيلي داخل التطبيق'}`;td.append(small);const profile=document.createElement('small');profile.textContent=event.hash_profile;td.append(profile);if(event.metadata_valid===false){const invalid=document.createElement('small');invalid.textContent='البيانات الوصفية غير صالحة ولا تُعرض';td.append(invalid);}}
    tr.append(td);
   }

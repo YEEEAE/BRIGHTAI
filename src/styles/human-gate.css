@@ -23,6 +23,11 @@
 .human-gate .hg-request{padding:1.1rem 1.2rem;border:1px solid #302a39;border-radius:10px;background:linear-gradient(160deg,#100c17,#0e0b14 72%);box-shadow:inset 0 1px 0 #ffffff08}
 .human-gate .hg-request h3{font-size:20px;line-height:1.6;margin:0 0 .35rem;color:#f4f1f8}
 .human-gate .hg-request .hg-state{display:inline-flex;align-items:center;margin:0 0 .9rem;padding:.3rem .7rem;border:1px solid #3a3346;border-radius:6px;background:#100c17;color:#e4dfeb;font-size:12px;line-height:1.7}
+.human-gate .hg-request .hg-state[data-state="PENDING"]{border-color:#5b4520;background:#191307;color:#ffc65c}
+.human-gate .hg-request .hg-state[data-state="APPROVED"]{border-color:#4b3a78;background:#130f1f;color:#d4c3ff}
+.human-gate .hg-request .hg-state[data-state="REJECTED"]{border-color:#5e2c2c;background:#1a0d0d;color:#ffb1b1}
+.human-gate .hg-request .hg-state[data-state="EXECUTED"]{border-color:#1f5c4c;background:#07130f;color:#8fe3d3}
+.human-gate .hg-request .hg-state[data-state="EXPIRED"],.human-gate .hg-request .hg-state[data-state="CANCELLED"]{border-color:#3a3346;background:#0b0910;color:#b9b3c6}
 .human-gate .hg-request>p{color:#c6c1cf;font-size:13px;line-height:1.85}
 .human-gate .hg-request dl{gap:.55rem 1rem;margin-block:.25rem 0;padding-block-start:.9rem;border-block-start:1px solid #241f2d}
 .human-gate .hg-request dt{color:#a9a3b8;font-size:12px;line-height:1.7}
