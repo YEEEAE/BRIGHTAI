@@ -25,7 +25,9 @@ export async function appendEvent(db, identity, tenantId, input) {
   const event = {event_id:randomUUID(),tenant_id:tenantId,source:input.source,event_type:input.event_type,policy_version:input.policy_version,metadata_json:metadata(input.metadata_json,input.source,input.event_type),created_by:identity.userId,hash_profile:profile,idempotency_key:input.idempotency_key};
   const existing = (await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND source=$2 AND idempotency_key=$3`,[tenantId,event.source,event.idempotency_key])).rows[0];
   if (existing) {
-    if (existing.created_by!==event.created_by || existing.event_type!==event.event_type || existing.policy_version!==event.policy_version || JSON.stringify(metadata(existing.metadata_json,existing.source,existing.event_type))!==JSON.stringify(event.metadata_json) || verifyEvent(existing)!=='MATCH') throw new KernelError(409,'EVIDENCE_KEY_CONFLICT','مرجع العملية مرتبط بدليل مختلف أو تعذر فحصه.');
+    // A legacy v1 row with the same scoped key is not a replay of a v2 event.
+    // Treat any profile drift as a conflicting key, never as success.
+    if (existing.hash_profile!==event.hash_profile || existing.created_by!==event.created_by || existing.event_type!==event.event_type || existing.policy_version!==event.policy_version || JSON.stringify(metadata(existing.metadata_json,existing.source,existing.event_type))!==JSON.stringify(event.metadata_json) || verifyEvent(existing)!=='MATCH') throw new KernelError(409,'EVIDENCE_KEY_CONFLICT','مرجع العملية مرتبط بدليل مختلف أو تعذر فحصه.');
     return {...existing,replayed:true};
   }
   const tail = (await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 ORDER BY sequence_no DESC LIMIT 1`,[tenantId])).rows[0];
@@ -117,16 +119,23 @@ export async function recordProductEvent(db, identity, tenantId, input) {
   } catch (error) {
     await db.query('ROLLBACK TO SAVEPOINT aig_optional_ledger_event');
     await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
-    if (error instanceof KernelError && ['INVALID_EVENT','UNTRUSTED_EVENT','INVALID_AUDIT_CONTEXT','INVALID_EVENT_CONTEXT','EVENT_REFERENCE_MISMATCH','OUTCOME_NOT_CONFIRMED','EVIDENCE_KEY_CONFLICT','LEDGER_INTEGRITY_UNAVAILABLE','EVIDENCE_UNAVAILABLE'].includes(error.code)) throw error;
+    // Caller/contract misuse can never be downgraded to an optional skip: the
+    // product request itself is wrong and must fail with its precise code.
+    if (error instanceof KernelError && ['INVALID_EVENT','UNTRUSTED_EVENT','INVALID_AUDIT_CONTEXT','INVALID_EVENT_CONTEXT','EVENT_REFERENCE_MISMATCH','OUTCOME_NOT_CONFIRMED','EVIDENCE_KEY_CONFLICT'].includes(error.code)) throw error;
+    // A declared requirement blocks only the operation that produced this event.
+    // Without one, Ledger stays an optional dependency: no append happens, the
+    // caller receives the classified state, and the Kernel baseline continues.
     if (requirement) {
       if (error instanceof KernelError && error.code === 'MANDATORY_EVIDENCE_UNAVAILABLE') throw error;
       throw mandatoryFailure(error?.code === '42501' ? dependencyClasses.NOT_ENTITLED : dependencyClasses.TEMPORARILY_UNAVAILABLE);
     }
+    const integrityBlocked = error?.code === 'LEDGER_INTEGRITY_UNAVAILABLE' || error?.code === 'EVIDENCE_UNAVAILABLE';
+    const privilegeDenied = error?.code === '42501';
     return {
       recorded:false,
-      dependencyStatus:error?.code === '42501' ? dependencyClasses.NOT_ENTITLED : dependencyClasses.TEMPORARILY_UNAVAILABLE,
-      dependencyCode:error?.code === '42501' ? 'LEDGER_DB_PRIVILEGE' : 'LEDGER_TEMPORARILY_UNAVAILABLE',
-      entitled:error?.code !== '42501', required:false, reason:'LEDGER_TEMPORARILY_UNAVAILABLE',
+      dependencyStatus: privilegeDenied ? dependencyClasses.NOT_ENTITLED : integrityBlocked ? dependencyClasses.BLOCKED : dependencyClasses.TEMPORARILY_UNAVAILABLE,
+      dependencyCode: privilegeDenied ? 'LEDGER_DB_PRIVILEGE' : integrityBlocked ? 'LEDGER_INTEGRITY_UNAVAILABLE' : 'LEDGER_TEMPORARILY_UNAVAILABLE',
+      entitled:!privilegeDenied, required:false, reason:integrityBlocked?'LEDGER_INTEGRITY_UNAVAILABLE':'LEDGER_TEMPORARILY_UNAVAILABLE',
       contract: envelope.contract, event: publicEventEnvelope(envelope),
     };
   }

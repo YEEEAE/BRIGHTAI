@@ -11,15 +11,20 @@ function bundleFor(events, tenantId, targetId) {
   const last=events.at(-1);
   const versions=[...new Set(events.map(event=>event.policy_version))].sort();
   const sources=[...new Set(events.map(event=>event.source))].sort();
-  return {format:FORMAT,manifest:{profile,chain_version:chainVersion,tenant_id:tenantId,coverage:'GENESIS_THROUGH_TARGET',target_event_id:targetId,event_count:events.length,first_sequence:'1',last_sequence:String(last?.sequence_no ?? 0),head_hash:last?.integrity_hash ?? null,policy_versions:versions,sources,verifier:{version:VERIFIER_VERSION,path:'/downloads/aigas-ledger-verifier.mjs'}},entries:events.map(event=>({event,canonical_hash_inputs:canonical(event)})),verification_spec:{encoding:'UTF-8',hash:'SHA-256 lowercase hex',canonicalization:'JSON.stringify array, no whitespace; metadata keys sorted by JavaScript .sort(); UTC ISO timestamp with milliseconds; sequence decimal string',field_order:['hash_profile','tenant_id','event_id','source','event_type','policy_version','metadata_json','created_at','created_by','sequence_no','previous_hash','idempotency_key'],genesis_previous_hash:null,verifier:'/downloads/aigas-ledger-verifier.mjs',verifier_version:VERIFIER_VERSION,offline_command:'node aigas-ledger-verifier.mjs ledger-EVENT_ID.json'},limitations:'Consistency of the supplied prefix only; no independent signature, external anchor, source/time authenticity, proof of latest tail, legal validity, administrator tamper prevention, permanent retention or Legal Hold. Metadata and evidence are not used to train AI models.'};
+  const profiles=[...new Set(events.map(event=>event.hash_profile))].sort();
+  return {format:FORMAT,manifest:{profile,chain_version:chainVersion,tenant_id:tenantId,coverage:'GENESIS_THROUGH_TARGET',target_event_id:targetId,event_count:events.length,first_sequence:'1',last_sequence:String(last?.sequence_no ?? 0),head_hash:last?.integrity_hash ?? null,policy_versions:versions,sources,hash_profiles:profiles,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',verifier:{version:VERIFIER_VERSION,path:'/downloads/aigas-ledger-verifier.mjs'}},entries:events.map(event=>({event,canonical_hash_inputs:canonical(event)})),verification_spec:{encoding:'UTF-8',hash:'SHA-256 lowercase hex',canonicalization:'JSON.stringify array, no whitespace; metadata keys sorted by JavaScript .sort(); UTC ISO timestamp with milliseconds; sequence decimal string',field_order:['hash_profile','tenant_id','event_id','source','event_type','policy_version','metadata_json','created_at','created_by','sequence_no','previous_hash','idempotency_key'],genesis_previous_hash:null,state_mapping:{VERIFIED:'offline result MATCH / state VERIFIED_WITHIN_SCOPE',UNVERIFIED:'offline result INDETERMINATE / state UNVERIFIED',BLOCKED:'offline result MISMATCH (state TAMPERED) or a technical/structural block'},verifier:'/downloads/aigas-ledger-verifier.mjs',verifier_version:VERIFIER_VERSION,offline_command:'node aigas-ledger-verifier.mjs ledger-EVENT_ID.json'},limitations:'Consistency of the supplied prefix only; no independent signature, external anchor, source/time authenticity, proof of latest tail, legal validity, administrator tamper prevention, permanent retention or Legal Hold. Metadata and evidence are not used to train AI models.'};
 }
 async function chainThrough(db,tenantId,event) {
   const events=(await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND sequence_no<=$2 ORDER BY sequence_no LIMIT $3`,[tenantId,event.sequence_no,MAX_EVENTS+1])).rows;
-  if (events.length>MAX_EVENTS) return {report:{result:'INDETERMINATE',reason:'PREFIX_LIMIT',state:'UNVERIFIED'},events:[]};
+  if (events.length>MAX_EVENTS) return {report:{result:'INDETERMINATE',reason:'PREFIX_LIMIT',state:'BLOCKED'},events:[]};
+  // A prefix that mixes hash profiles cannot be checked by one canonical rule.
+  // Refuse a bundle instead of exporting material the pinned verifier would have
+  // to reinterpret or silently accept.
+  if (events.some(row=>row.hash_profile!==profile)) return {events,report:{result:'INDETERMINATE',reason:'UNSUPPORTED_HASH_PROFILE',state:'BLOCKED'}};
   try {
     const bundle=bundleFor(events,tenantId,event.event_id);
     return {events,bundle,report:verifyBundle(bundle)};
-  } catch { return {events,report:{result:'INDETERMINATE',reason:'INVALID_EVENT',state:'UNVERIFIED'}}; }
+  } catch { return {events,report:{result:'INDETERMINATE',reason:'INVALID_EVENT',state:'BLOCKED'}}; }
 }
 // One public shape: allowlisted metadata only, plus the derived integrity facts.
 // verification_state combines the stored row hash with the supplied-prefix
@@ -29,7 +34,7 @@ function publicEvent(event, chainReport) {
   const integrity=verifyEvent(event);
   const chain=chainReport??{result:'INDETERMINATE'};
   const verification=verificationState(integrity,chain);
-  return {...event,metadata_json:safe.value,metadata_valid:safe.valid,integrity,chain_integrity:chain.result??null,verification_state:verification.state,verification_reasons:verification.reasons};
+  return {...event,metadata_json:safe.value,metadata_valid:safe.valid,integrity,chain_integrity:chain.result??null,verification_state:verification.state,verification_mismatch:verification.mismatch,verification_reasons:verification.reasons};
 }
 export function createLedgerService(transact = transaction) {
   return async (identity,requested,operation,body={},params=new URLSearchParams(),id) => {
@@ -56,7 +61,7 @@ export function createLedgerService(transact = transaction) {
         const events=rows.slice(0,25);
         // Verify the unfiltered prefix, so filtering cannot disguise missing links.
         const chain=events.length?await chainThrough(db,tenantId,events[0]):{report:{result:'EMPTY',state:'EMPTY'},events:[]};
-        const summary=chain.report.result==='EMPTY'?{state:'EMPTY',reasons:[]}:verificationState('MATCH',chain.report);
+        const summary=chain.report.result==='EMPTY'?{state:'UNVERIFIED',mismatch:false,reasons:['NO_EVIDENCE']}:verificationState('MATCH',chain.report);
         return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,permissions,events:events.map(event=>publicEvent(event,chain.report)),chain:chain.report,verification:summary,chain_version:chainVersion,page:filter.page,hasMore:rows.length>25 && filter.page<100,maxVerificationEvents:MAX_EVENTS,verifier:{version:VERIFIER_VERSION},contract_version:HTTP_CONTRACT_VERSION};
       }
       const event=(await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND event_id=$2`,[tenantId,id])).rows[0];
@@ -66,18 +71,19 @@ export function createLedgerService(transact = transaction) {
       if (operation==='verify') {
         const integrity=verifyEvent(event,body.candidate);
         const verification=verificationState(integrity,chain.report);
-        return {result:integrity,state:verification.state,reasons:verification.reasons,chain:chain.report,profile:event.hash_profile,chain_version:chainVersion,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',scope:'SUPPLIED_PREFIX_ONLY',independentSignature:false,verifier:{version:VERIFIER_VERSION}};
+        return {result:integrity,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,chain:chain.report,profile:event.hash_profile,chain_version:chainVersion,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',scope:'SUPPLIED_PREFIX_ONLY',independentSignature:false,verifier:{version:VERIFIER_VERSION}};
       }
       if (operation==='export') {
         if (chain.report.reason==='PREFIX_LIMIT') throw new KernelError(413,'LEDGER_EXPORT_LIMIT','يتجاوز التسلسل حد الحزمة الأساسية (10000 حدث)؛ يلزم مسار تصدير أكبر معتمد. لم تُنشأ حزمة ناقصة.');
+        if (chain.report.reason==='UNSUPPORTED_HASH_PROFILE') throw new KernelError(409,'LEDGER_EXPORT_UNSUPPORTED_PROFILE','تحتوي البادئة على حدث بإصدار بصمة غير مدعوم؛ لا تُصدَّر حزمة يتعذر التحقق منها مستقلًا. يلزم مسار ترحيل/فحص معتمد لهذا الإصدار.');
         if (!chain.bundle) throw new KernelError(409,'LEDGER_INTEGRITY_INVALID','تعذر تكوين حزمة قابلة للفحص بسبب بيانات غير صالحة. لم تُعد حزمة تدّعي السلامة.');
         // Export even a hash mismatch for investigation, with an explicit status.
         await audit(db,identity,tenantId,`ledger.event.exported:${id}`);
         const verification=verificationState(verifyEvent(event),chain.report);
-        return {...chain.bundle,verification:{...chain.report,state:verification.state,reasons:verification.reasons,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',scope:'SUPPLIED_PREFIX_ONLY'}};
+        return {...chain.bundle,verification:{...chain.report,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',scope:'SUPPLIED_PREFIX_ONLY'}};
       }
-      const verification={state:stored.verification_state,reasons:stored.verification_reasons};
-      return {event:stored,profile:event.hash_profile,chain_version:chainVersion,permissions,integrity:stored.integrity,chain:chain.report,state:verification.state,reasons:verification.reasons,verification,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',verifier:{version:VERIFIER_VERSION}};
+      const verification={state:stored.verification_state,mismatch:stored.verification_mismatch,reasons:stored.verification_reasons};
+      return {event:stored,profile:event.hash_profile,chain_version:chainVersion,permissions,integrity:stored.integrity,chain:chain.report,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,verification,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',verifier:{version:VERIFIER_VERSION}};
     });
   };
 }

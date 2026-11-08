@@ -78,15 +78,42 @@ export function filters(params) {
 // every event; export also states it as chain_version so an offline reader never
 // has to infer which interpretation produced the digest.
 export const chainVersion = profile;
-// Derive one explicit state. Never report a positive state from a single MATCH
-// when the prefix limit, an unreadable row or a broken link leaves the chain
-// unproven. TAMPERED means an observed mismatch, not proof of intent.
+// Server-facing state has exactly three values: VERIFIED, UNVERIFIED, BLOCKED.
+// `mismatch` keeps an observed contradiction distinguishable from an evidence
+// gap without adding a fourth state that clients might read as success.
+//
+// BLOCKED covers both an observed mismatch and a condition that prevents the
+// check itself: a declared technical bound, an unsupported profile/envelope or a
+// structurally invalid event. UNVERIFIED is reserved for evidence that is
+// genuinely insufficient or absent. A MATCH on one row is never positive unless
+// the supplied prefix also matches.
+export const verificationStates = Object.freeze({ VERIFIED:'VERIFIED', UNVERIFIED:'UNVERIFIED', BLOCKED:'BLOCKED' });
+const blockingReasons = new Set([
+  'PREFIX_LIMIT',
+  'UNSUPPORTED_HASH_PROFILE',
+  'UNSUPPORTED_BUNDLE',
+  'VERIFIER_VERSION_MISMATCH',
+  'MALFORMED_BUNDLE',
+  'MANIFEST_RANGE',
+  'MANIFEST_TARGET',
+  'MANIFEST_POLICY_VERSIONS',
+  'INVALID_EVENT',
+]);
 export function verificationState(integrity, chain) {
   const chainResult = chain?.result ?? 'INDETERMINATE';
   const chainReason = chain?.reason ?? null;
-  if (integrity === 'MISMATCH' || chainResult === 'MISMATCH') return {state:'TAMPERED',reasons:[...(integrity==='MISMATCH'?['EVENT_HASH_MISMATCH']:[]),...(chainResult==='MISMATCH'?[chainReason||'CHAIN_MISMATCH']:[])]};
-  if (integrity !== 'MATCH' || chainResult !== 'MATCH') return {state:'UNVERIFIED',reasons:[...(integrity!=='MATCH'?['EVENT_HASH_INDETERMINATE']:[]),...(chainResult==='EMPTY'?['NO_EVIDENCE']:[chainReason||'CHAIN_INDETERMINATE'])]};
-  return {state:'VERIFIED_WITHIN_SCOPE',reasons:[]};
+  const reasons = [];
+  const add = reason => { if (reason && !reasons.includes(reason)) reasons.push(reason); };
+  const mismatch = integrity === 'MISMATCH' || chainResult === 'MISMATCH';
+  if (integrity === 'MISMATCH') add('EVENT_HASH_MISMATCH');
+  if (chainResult === 'MISMATCH') add(chainReason || 'CHAIN_MISMATCH');
+  if (mismatch) return {state:verificationStates.BLOCKED,mismatch:true,reasons};
+  if (integrity === 'MATCH' && chainResult === 'MATCH') return {state:verificationStates.VERIFIED,mismatch:false,reasons};
+  if (integrity !== 'MATCH') add('EVENT_HASH_INDETERMINATE');
+  if (chainResult === 'EMPTY') add('NO_EVIDENCE');
+  else if (chainResult !== 'MATCH') add(chainReason || 'CHAIN_INDETERMINATE');
+  const blocked = chainResult !== 'EMPTY' && reasons.some(reason => blockingReasons.has(reason));
+  return {state:blocked?verificationStates.BLOCKED:verificationStates.UNVERIFIED,mismatch:false,reasons};
 }
 // Only allowlisted, scalar metadata leaves the server. A row that no longer
 // satisfies the current profile is returned as an empty object, never raw.

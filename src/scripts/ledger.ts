@@ -14,6 +14,7 @@ const reasonLabels:Record<string,string>={EVENT_HASH_MISMATCH:'بصمة الحد
 const resultLabel=(value:string)=>resultLabels[value]||'لم يُفحص';
 const reasonsText=(reasons:unknown)=>Array.isArray(reasons)&&reasons.length?` الأسباب: ${reasons.map((reason:string)=>reasonLabels[reason]||reason).join('؛ ')}.`:'';
 const stateLabel=(value:string)=>resultLabels[value]||'غير متحقق';
+const stateText=(value:string,mismatch:boolean)=>mismatch?'محجوب — تعارض مرصود في البصمة أو رابط السلسلة':stateLabel(value);
 function clearDetail(){selected=null;get('[data-fields]').replaceChildren();integrity.textContent='لم يُفحص بعد.';if(dialog.open)dialog.close();}
 function clearPrivate(){epoch++;area.hidden=true;clearDetail();get('[data-events]').replaceChildren();workspace.replaceChildren();get('[data-role]').textContent='';get('[data-chain]').textContent='';pendingSynthetic=null;}
 async function api(path='',method='GET',body?:object){
@@ -33,7 +34,7 @@ function syncButtons(){get<HTMLButtonElement>('[data-prev]').disabled=busy||page
 async function run(task:()=>Promise<void>){
  if(busy)return;busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll<HTMLButtonElement|HTMLSelectElement>('button,select').forEach(el=>el.disabled=true);status.textContent='جارٍ تنفيذ الطلب…';
  try{await task();status.textContent='اكتمل طلب الخادم؛ راجع حالة السلامة المعروضة وحدودها.';}
- catch(error:any){clearDetail();area.hidden=true;get('[data-events]').replaceChildren();status.textContent=error.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ أو التحقق.';}
+ catch(error:any){clearDetail();area.hidden=true;get('[data-events]').replaceChildren();status.textContent=`محجوب — ${error.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ أو التحقق.'} لم تُثبت سلامة السجل في هذه المحاولة.`;}
  finally{busy=false;root.removeAttribute('aria-busy');root.querySelectorAll<HTMLButtonElement|HTMLSelectElement>('button,select').forEach(el=>el.disabled=false);syncButtons();}
 }
 async function detail(id:string){
@@ -44,7 +45,7 @@ async function detail(id:string){
  for(const [key,label] of Object.entries(names)){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=key==='metadata_json'?JSON.stringify(selected[key],null,2):key==='created_at'?time(selected[key]):String(selected[key]??'بداية السلسلة');dl.append(dt,dd);}
  get('[data-export]').hidden=!data.permissions.export;
  integrity.dataset.state=data.state||'UNVERIFIED';
- integrity.textContent=`الحالة: ${stateLabel(data.state)}.${reasonsText(data.reasons)} فحص الحدث: ${resultLabel(data.integrity)}. السلسلة حتى هذا الحدث: ${resultLabel(data.chain.result)}. طريقة السلسلة: ${data.chain_version||data.profile||'غير محددة'} · الضمان: سلامة النسخة الموردة فقط، بلا توقيع مستقل.${selected.metadata_valid===false?' البيانات الوصفية المحفوظة لا تطابق العقد الحالي ولا تُعرض.':''}`;
+ integrity.textContent=`الحالة: ${stateText(data.state,data.mismatch===true)}.${reasonsText(data.reasons)} فحص الحدث: ${resultLabel(data.integrity)}. السلسلة حتى هذا الحدث: ${resultLabel(data.chain.result)}. طريقة السلسلة: ${data.chain_version||data.profile||'غير محددة'} · الضمان: سلامة النسخة الموردة فقط، بلا توقيع مستقل.${selected.metadata_valid===false?' البيانات الوصفية المحفوظة لا تطابق العقد الحالي ولا تُعرض.':''}`;
  if(!dialog.open)dialog.showModal();get<HTMLButtonElement>('[data-close]').focus();
 }
 async function load(){
@@ -53,17 +54,18 @@ async function load(){
  workspace.replaceChildren(...data.memberships.map((m:any)=>{const option=document.createElement('option');option.value=m.tenant_id;option.textContent=m.name;option.selected=m.tenant_id===data.tenant.tenant_id;return option;}));
  get('[data-role]').textContent=`الدور: ${data.tenant.role} · ${data.permissions.create?'الإضافة الاصطناعية والتصدير متاحان':'عرض وفحص فقط؛ الإضافة والتصدير للمالك والمسؤول'}`;
  get('[data-create-panel]').hidden=!data.permissions.create;get('[data-page]').textContent=`الصفحة ${page}`;get('[data-empty]').hidden=data.events.length!==0;
- get('[data-chain]').textContent=`حالة السلسلة حتى أحدث حدث في الصفحة: ${stateLabel(data.verification?.state)}.${reasonsText(data.verification?.reasons)}${data.chain.reason==='PREFIX_LIMIT'?' تجاوز حد الفحص الأساسي (10000 حدث)؛ لا تُدّعى السلامة.':''} طريقة السلسلة: ${data.chain_version||'غير محددة'}؛ الضمان سلامة البادئة الموردة فقط.`;
+ get('[data-chain]').textContent=`حالة السلسلة حتى أحدث حدث في الصفحة: ${stateText(data.verification?.state,data.verification?.mismatch===true)}.${reasonsText(data.verification?.reasons)}${data.chain.reason==='PREFIX_LIMIT'?' تجاوز حد الفحص الأساسي (10000 حدث)؛ لا تُدّعى السلامة.':''}${data.chain.reason==='UNSUPPORTED_HASH_PROFILE'?' توجد أحداث بإصدار بصمة غير مدعوم؛ لا تُدّعى السلامة.':''} طريقة السلسلة: ${data.chain_version||'غير محددة'}؛ الضمان سلامة البادئة الموردة فقط.`;
  get('[data-chain]').dataset.state=data.verification?.state||'UNVERIFIED';
  const tbody=get('[data-events]');tbody.replaceChildren();
  for(const event of data.events){
   const tr=document.createElement('tr');
   const meta=event.metadata_json||{};
   const ref=meta.decision_ref||meta.request_ref||meta.assessment_ref||meta.asset_ref||meta.audit_ref;
-  const eventState=event.verification_state||event.integrity||'UNVERIFIED';
-  for(const value of [time(event.created_at),labels[event.event_type]||event.event_type,ref,event.created_by,stateLabel(eventState)]){
+  const eventState=event.verification_state==='VERIFIED'||event.verification_state==='BLOCKED'?event.verification_state:'UNVERIFIED';
+  const eventLabel=stateText(eventState,event.verification_mismatch===true);
+  for(const value of [time(event.created_at),labels[event.event_type]||event.event_type,ref,event.created_by,eventLabel]){
    const td=document.createElement('td'),bdi=document.createElement('bdi');bdi.textContent=value;td.append(bdi);
-   if(tr.children.length===4){bdi.className='ledger-event-state';bdi.dataset.state=String(eventState);}
+   if(tr.children.length===4){bdi.className='ledger-event-state';bdi.dataset.state=eventState;}
    if(tr.children.length===1){const small=document.createElement('small');small.textContent=`${event.source} · ${meta.synthetic?'اصطناعي / تجريبي':'تشغيلي داخل التطبيق'}`;td.append(small);const profile=document.createElement('small');profile.textContent=event.hash_profile;td.append(profile);if(event.metadata_valid===false){const invalid=document.createElement('small');invalid.textContent='البيانات الوصفية غير صالحة ولا تُعرض';td.append(invalid);}}
    tr.append(td);
   }
@@ -86,8 +88,8 @@ get('form[data-create]').addEventListener('submit',event=>{
  page=1;type.value='';source.value='';classification.value='';period.value='all';search.value='';await load();await detail(data.event.event_id);
 });});
 get('[data-close]').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{selected=null;get('[data-fields]').replaceChildren();});
-get('[data-verify]').addEventListener('click',()=>void run(async()=>{if(!selected)return;const data=await api(`${selected.event_id}/verify/`,'POST',{});integrity.dataset.state=data.state||'UNVERIFIED';integrity.textContent=`حالة التحقق: ${stateLabel(data.state)}.${reasonsText(data.reasons)} فحص الحدث: ${resultLabel(data.result)}. السلسلة: ${resultLabel(data.chain.result)}. ليس توقيعًا مستقلًا.`;}));
-get('[data-export]').addEventListener('click',()=>void run(async()=>{if(!selected)return;const id=selected.event_id;const data=await api(`${id}/export/`);const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`ledger-${id}.json`;a.click();const verification=data.verification||{};integrity.dataset.state=verification.state||'UNVERIFIED';integrity.textContent=`اكتمل تصدير ${data.manifest.event_count} حدثًا بعد صلاحية وتدقيق الخادم. حالة الحزمة: ${stateLabel(verification.state)}.${reasonsText(verification.reasons)} إصدار الفاحص المطلوب: ${data.manifest.verifier?.version||'غير محدد'}. راجعها محليًا بالفاحص المستقل.`;setTimeout(()=>URL.revokeObjectURL(url),1000);}));
+get('[data-verify]').addEventListener('click',()=>void run(async()=>{if(!selected)return;const data=await api(`${selected.event_id}/verify/`,'POST',{});integrity.dataset.state=data.state||'UNVERIFIED';integrity.textContent=`حالة التحقق: ${stateText(data.state,data.mismatch===true)}.${reasonsText(data.reasons)} فحص الحدث: ${resultLabel(data.result)}. السلسلة: ${resultLabel(data.chain.result)}. ليس توقيعًا مستقلًا؛ الحالة مشتقة من البادئة الموردة فقط.`;}));
+get('[data-export]').addEventListener('click',()=>void run(async()=>{if(!selected)return;const id=selected.event_id;const data=await api(`${id}/export/`);const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`ledger-${id}.json`;a.click();const verification=data.verification||{};integrity.dataset.state=verification.state||'UNVERIFIED';integrity.textContent=`اكتمل تصدير ${data.manifest.event_count} حدثًا بعد صلاحية وتدقيق الخادم. حالة الحزمة: ${stateText(verification.state,verification.mismatch===true)}.${reasonsText(verification.reasons)} إصدار الفاحص المطلوب: ${data.manifest.verifier?.version||'غير محدد'}. شغّل الفاحص المستقل محليًا؛ نتيجة MATCH تقابل VERIFIED ضمن نطاق البادئة، وMISMATCH تقابل BLOCKED مع تعارض مرصود. SHA-256 يثبت اتساق الحزمة الموردة فقط ولا يعادل توقيعًا خارجيًا أو منعًا مطلقًا للتلاعب.`;setTimeout(()=>URL.revokeObjectURL(url),1000);}));
 window.addEventListener('pagehide',clearPrivate);window.addEventListener('pageshow',event=>{if(event.persisted)void run(load);});
 if(auth)void run(load);
 document.addEventListener('workspace-session-ended',()=>{clearPrivate();status.textContent='انتهت الجلسة؛ سجّل الدخول مجددًا من Kernel.';});

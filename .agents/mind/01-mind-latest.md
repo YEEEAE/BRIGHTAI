@@ -1,3 +1,31 @@
+## [2026-11-08] — إغلاق سلامة Ledger وسلاسل الأدلة والتحقق المستقل محليًا
+
+### تم التنفيذ
+- HEAD المحلي `65184bd0` (يختلف عن `7994d3ce` في الطلب)؛ أُعيد فحص ملفات Ledger والترحيلات. لم يُشغّل build/tests/E2E/نشر، ولم يُتصل بـNeon ولم تُكتب أي بيانات أو DDL.
+- روجعت بصمة `aigas-ledger-sha256-chain-v2`: ترتيب `[profile, tenant, event, source, type, policy, sorted metadata, UTC ms, actor, sequence, previous_hash, idempotency]` مطابق بين `core.canonical` والفاحص `2.2.0`؛ لم يُعدّل أي حدث أو حساب تاريخي.
+- صارت حالة الخادم ثلاثية حرفيًا: `VERIFIED` فقط عند تطابق بصمة الحدث وبادئة السلسلة، `UNVERIFIED` عند نقص الدليل، و`BLOCKED` عند تعارض مرصود أو حد تقني/بنية غير مدعومة؛ أُضيف `mismatch` لفصل التعارض عن نقص الدليل. الواجهة لم تعد تسقط إلى `integrity=MATCH` ولا تعرض نجاحًا عند التحميل.
+- التصدير يرفض بادئة بإصدار بصمة غير مدعوم بـ`409 LEDGER_EXPORT_UNSUPPORTED_PROFILE` بدل حزمة لا يتحقق منها الفاحص، ويسجل `hash_profiles` و`assurance` و`state_mapping` في الحزمة.
+- إعادة المفتاح ترفض اختلاف `hash_profile` كتعارض؛ وفشل سلامة/إدراج Ledger الاختياري لم يعد يُرجع العملية الأساسية، ويُبلَّغ كحالة اعتماد `blocked`. أخطاء عقد المستدعي وأي شرط دليل معتمد ما زالت تُفشل العملية المعنية وحدها.
+- روجع `0013` محليًا: لا يضيف أعمدة السلسلة ولا المنح/RLS؛ يعتمد على `0003` و(عند نقص الأعمدة/المشغّل) على `0024`. أُضيف Runbook للمشغّل يغطي preflight و`NOT VALID` وخطر اسم القيد وتجربة export/verify على بيانات اصطناعية.
+
+### الملفات المتأثرة
+- `src/server/ledger/core.mjs`, `src/server/ledger/service.mjs`, `src/server/ledger/writer.mjs`
+- `src/scripts/ledger.ts`, `src/pages/app/ledger/index.astro`
+- `docs/LEDGER-DEVELOPMENT.md`, `docs/products/ledger/ACCEPTANCE-AND-EVIDENCE.md`, `docs/products/ledger/EXPORT-VERIFY-RUNBOOK.md`
+
+### التحقق
+- `node --check` للملفات الثلاثة و`node --experimental-strip-types --check` لـ`ledger.ts` و`git diff --check`: PASS.
+- فحص نقي محلي ببيانات اصطناعية: حزمة من حدثين `MATCH`، نسخة معدّلة `MISMATCH`، والحالات الست (VERIFIED/UNVERIFIED/BLOCKED) بلا نتائج ناجحة كاذبة: PASS. الفاحص لم يُعدّل.
+- Build/typecheck/E2E/HTTP/Neon writes/0013 execution: NOT RUN حسب نطاق المهمة.
+
+### النتيجة
+- **الحالة:** PARTIAL — الحالات الثلاث وحراسة التصدير والاعتماد الاختياري وعقد idempotency `SOURCE_PRESENT`؛ لا `RUNTIME_VERIFIED` ولا تطبيق `0013` ولا حزمة أدلة إنتاجية.
+
+### ملاحظات / مشاكل مفتوحة
+- تطبيق `0013`/`0024` وتجربة export/verify وidempotency على بيانات اصطناعية تحتاج موافقة مالك قاعدة البيانات + الأمن وبيئة staging معتمدة. `0013` ما زال غير مطبّق على الفرع المفحوص.
+- لا يوجد توقيع خارجي أو مرساة زمنية؛ `VERIFIED` يثبت اتساق البادئة الموردة فقط. الاحتفاظ/Legal Hold/الامتثال تبقى `BLOCKED` لدى القانوني والامتثال.
+
+
 ## [2026-11-08] — إغلاق مسار Firewall المحلي: محول بلا شبكة وربط المزود المعتمد
 
 ### تم التنفيذ
