@@ -2,8 +2,8 @@
 
 > **الغرض:** مصدر واحد لتوحيد الحقيقة بين المتطلبات والكود والمخطط والواجهات، دون تحويل أي متطلب إلى إثبات تشغيل.
 > **آخر مراجعة مصدر ومخطط وتشغيل:** 2026-11-08
-> **نسخة العمل المحلية:** الفرع `main`، HEAD `55cd41567d82439790acbd871f917905df89e78a`. توجد تعديلات مستخدم غير ملتزمة في `Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/ALL-15-PRE-BETA-PROMPTS.md`؛ حُفظت دون تعديل.
-> **لقطة الحالة الحالية:** المرجع القابل للتتبع هو `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md`. تقرير Neon قراءة فقط 2026-11-08 وقياس المتصفح الحي موضحان هناك؛ سجل 2026-11-03 أدناه تاريخي عند التعارض.
+> **نسخة العمل المحلية:** الفرع `main`، HEAD `5404026c5f01172cd3175a66286d2375554b80d4`. working tree كان نظيفًا قبل مهمة مطابقة Neon بتاريخ 2026-11-08.
+> **لقطة الحالة الحالية:** تفاصيل مخطط Neon وترتيب migrations في `Audit/outhers/MIGRATION-SCHEMA-RECONCILIATION-2026-11-08.md`؛ خط أساس الإصدار/المتصفح في `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md`. فحص Neon الجديد قراءة فقط.
 > **ملاحظة على المرجع الخارجي:** اللقطة المرجعية في نص المهمة كانت GitHub `main` عند `e33b480744b5d0b44344bf469f09b6cbbb50248f`. النسخة المحلية متقدمة عنها، وهذا السجل يعتمد **النسخة المحلية** عند أي اختلاف.
 > **حدود الدليل:** لم يُشغّل build أو lint أو typecheck أو اختبارات. فُحصت عبر المتصفح قراءةً فقط URLs البوابة وHealth API وأعادت 404؛ هذا تحقق ضيق من الاستجابة العامة، لا من handler أو نشر HEAD. لم يُنشر شيء.
 > **قاعدة:** `APPROVED_REQ` يعني مطلبًا معتمدًا في `MASTER-PROJECT-BLUEPRINT.md` / `PRODUCT-MASTER-CATALOG.yaml`. وجود الكود أو الجدول لا يرفع الحالة إلى `WORKING`.
@@ -66,7 +66,7 @@
 
 ## 3. حالة الترحيلات والمخطط (Neon قراءة فقط)
 
-**آخر تحقق:** Neon MCP قراءة فقط في 2026-11-08 على مشروع `young-frog-60183055`، فرع `production`، قاعدة `neondb`. لا كتابة ولا DDL ولا جدول migration ledger؛ الحالات استنتاج من الكائنات الفعلية. صفوف هذا القسم الموسومة 2026-11-03 تاريخية عند التعارض.
+**آخر تحقق:** Neon MCP قراءة فقط في 2026-11-08 على مشروع `young-frog-60183055`، فرع `production` (`br-young-bird-b43proeb`)، قاعدة `neondb`. لا كتابة ولا DDL ولا جدول migration ledger؛ الحالات استنتاج من الكائنات الفعلية. التفصيل في `Audit/outhers/MIGRATION-SCHEMA-RECONCILIATION-2026-11-08.md`.
 
 عدد جداول `public` المرصود: **31**. لا يوجد جدول تتبع ترحيلات، لذا الحالة أدناه **استنتاج من المخطط الفعلي** لا من سجل تطبيق.
 
@@ -90,11 +90,12 @@
 | `0016_aigas_sc_user_token_quota` | **غير مطبّق** | لا توجد دالة `aigas_sc_usage_window_v2`؛ الموجودة `aigas_sc_usage_window` فقط |
 | `0017_aigas_kernel_audit_context` | **غير مطبّق** | `aigas_audit_events` بلا `correlation_id/policy_version/idempotency_key` |
 | `0018_aigas_data_api_grant_hardening` | **غير مطبّق** | دور `authenticated` ما زال يملك DML على 31 جدولًا؛ Data API نشط على `public` |
-| `0019_aigas_runtime_least_privilege` | **غير مطبّق** | لا يوجد دور `aigas_runtime` ولا سياسات نطاق مؤسسة؛ `DATABASE_URL` ما زال `neondb_owner` بـ`BYPASSRLS` |
+| `0019_aigas_runtime_least_privilege` | **غير مطبّق** | لا يوجد دور `aigas_runtime` ولا سياسات نطاق مؤسسة؛ دور Neon `neondb_owner` يتجاوز RLS. هوية DSN للخدمة المنشورة غير مثبتة هنا |
 | `0020_aigas_kernel_policy_review_requirements` | مطبّق | `aigas_policy_versions.required_approvals` موجود (تحقق 2026-11-08) |
 | `0021_aigas_risk_engine_acceptance_guard` | مطبّق | الدالة `aigas_re_guard_treatment` والـtrigger `aigas_re_treatment_guard` موجودان (تحقق 2026-11-08) |
 | `0022_aigas_reference_scope_guard` | **غير مطبّق** | لا يوجد `aigas_fw_decisions_request_scope_idx` ولا `aigas_sc_requests_scope_idx` |
 | `0023_aigas_enterprise_trial_lifecycle` | **غير مطبّق** | لا يوجد جدول `aigas_trial_requests` |
+| `0024_aigas_catalog_parity_repair` | **مسودة محلية فقط** | أعمدة Audit الثلاثة وحارس Ledger غير موجودة وقت الفحص؛ لم تُجرّب أو تطبق |
 
 ### 3.1 أثر الترحيلات الناقصة على الكود الحالي
 
@@ -104,6 +105,8 @@
 | `0014` | خدمة Human Gate تقرأ/تكتب `aigas_hg_delegations` و`aigas_hg_grants` وأعمدة `provider_ref` وغيرها؛ كل عمليات Human Gate محجوبة على المخطط الحالي |
 | `0013` | كاتب Ledger يسمح بـ`WARN/ESCALATE/DENY` و`request_fingerprint` في metadata؛ قيد Neon الحالي يرفضها، فتفشل أدلة Firewall المصنفة بهذه الحالات |
 | `0016` | `reserve()` في Secure Chat يستدعي `aigas_sc_usage_window_v2`؛ الاستدعاء غير موجود على المخطط الحالي |
+
+**تحديث مطابقة 2026-11-08:** فرع Neon الوحيد `production` غير محمي (`protected=false`)، وData API نشط على `public`. دور `aigas_runtime` غير موجود؛ `authenticated` لديه DML على الجداول الـ31. Migration `0019` تعتمد على دالة `0016` وتوصي بـ`0018` أولًا؛ قائمة سياسات `0019` لا تشمل جداول Human Gate الجديدة في `0014` ولا جداول trial في `0023`. لذلك لا يُعد تطبيق `0019` من المصدر وحده إثباتًا لصلاحية أقل أو جاهزية cutover. مسودة `0024` محدودة بأعمدة Audit nullable وحارس سلسلة Ledger ولا تعالج قيد metadata أو المنح/RLS.
 
 **تنبيه:** هذه ليست قائمة أخطاء مكتشفة بالتشغيل؛ هي استنتاجات من مقارنة الكود بكتالوج Neon. أي تطبيق فعلي يحتاج اعتمادًا بشريًا وبيئة معتمدة. تحقق 2026-11-08 يؤكد RLS على 31/31، وسياسات على جدولين فقط، ومنح DML لـ`authenticated` على 31؛ لا يثبت ذلك استغلالًا أو وصولًا عابرًا للمؤسسات.
 
