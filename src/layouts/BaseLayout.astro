@@ -79,7 +79,22 @@ const websiteSchema = {
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-9LMB4PGTWJ');
+      function analyticsLocation(value) {
+        try {
+          const url = new URL(value, window.location.href);
+          if (/^\/(?:docs|knowledge)(?:\/|$)/.test(url.pathname)) {
+            for (const key of [...url.searchParams.keys()]) {
+              if (['q', 'from'].includes(key.toLowerCase())) url.searchParams.delete(key);
+            }
+          }
+          return url.href;
+        } catch {
+          return value;
+        }
+      }
+      const analyticsPage = { page_location: analyticsLocation(window.location.href) };
+      if (document.referrer) analyticsPage.page_referrer = analyticsLocation(document.referrer);
+      gtag('config', 'G-9LMB4PGTWJ', analyticsPage);
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
