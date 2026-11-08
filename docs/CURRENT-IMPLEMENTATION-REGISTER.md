@@ -1,11 +1,11 @@
 # CURRENT IMPLEMENTATION REGISTER — BRIGHT AI / AIGAS
 
 > **الغرض:** مصدر واحد لتوحيد الحقيقة بين المتطلبات والكود والمخطط والواجهات، دون تحويل أي متطلب إلى إثبات تشغيل.
-> **تاريخ الفحص:** 2026-11-03
-> **نسخة العمل المحلية:** الفرع `main` عند `ede38c28c11efe1ee79dc253c1e1e30b1feed5f2` (رسالة: `update site`)، وشجرة العمل نظيفة وقت الفحص.
-> **تحديث 2026-11-03 (حزمة التسليم):** HEAD المحلي أصبح `24b242505589493ef6ab2d8a7bd393cc44a580c2` وشجرة العمل غير نظيفة. أُعيد جرد Neon قراءة فقط، وصُحح تعداد مسارات API إلى 29، وأُضيفت حالة `0020`–`0023`. المرجع الأحدث للتسليم هو `docs/FINAL-RELEASE-HANDOFF.md`.
+> **آخر مراجعة مصدر ومخطط وتشغيل:** 2026-11-08
+> **نسخة العمل المحلية:** الفرع `main`، HEAD `55cd41567d82439790acbd871f917905df89e78a`. توجد تعديلات مستخدم غير ملتزمة في `Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/ALL-15-PRE-BETA-PROMPTS.md`؛ حُفظت دون تعديل.
+> **لقطة الحالة الحالية:** المرجع القابل للتتبع هو `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md`. تقرير Neon قراءة فقط 2026-11-08 وقياس المتصفح الحي موضحان هناك؛ سجل 2026-11-03 أدناه تاريخي عند التعارض.
 > **ملاحظة على المرجع الخارجي:** اللقطة المرجعية في نص المهمة كانت GitHub `main` عند `e33b480744b5d0b44344bf469f09b6cbbb50248f`. النسخة المحلية متقدمة عنها، وهذا السجل يعتمد **النسخة المحلية** عند أي اختلاف.
-> **حدود الدليل:** لم يُشغّل build أو lint أو typecheck أو اختبارات أو متصفح أو Playwright، ولم يُنشر شيء. كل سلوك في هذا الملف هو `SOURCE_PRESENT` أو `SCHEMA_PRESENT` فقط، وليس `RUNTIME_VERIFIED`.
+> **حدود الدليل:** لم يُشغّل build أو lint أو typecheck أو اختبارات. فُحصت عبر المتصفح قراءةً فقط URLs البوابة وHealth API وأعادت 404؛ هذا تحقق ضيق من الاستجابة العامة، لا من handler أو نشر HEAD. لم يُنشر شيء.
 > **قاعدة:** `APPROVED_REQ` يعني مطلبًا معتمدًا في `MASTER-PROJECT-BLUEPRINT.md` / `PRODUCT-MASTER-CATALOG.yaml`. وجود الكود أو الجدول لا يرفع الحالة إلى `WORKING`.
 
 > **تحديث المعرفة 2026-11-08:** الأعداد العامة أدناه حُدّثت من بناء محلي وفحص HTTP: 32 مقالًا، و56 مسارًا عامًا عاديًا منها 55 في sitemap و`public/llms.txt`. أضيفت 20 مقالة عبر `knowledge/[article].astro`. بقية أدلة المنتج والمخطط في هذا المستند تاريخية ولم يُعَد فحصها في هذه المهمة. لا نشر أو اعتماد تخصصي؛ الدليل: `Audit/knowledge-publication-2026-11-08/REPORT.md`.
@@ -66,7 +66,7 @@
 
 ## 3. حالة الترحيلات والمخطط (Neon قراءة فقط)
 
-**نوع الفحص:** استعلامات كتالوج `information_schema` و`pg_constraint` و`pg_proc` و`pg_class` على مشروع `young-frog-60183055`، فرع `production`. لا كتابة ولا DDL.
+**آخر تحقق:** Neon MCP قراءة فقط في 2026-11-08 على مشروع `young-frog-60183055`، فرع `production`، قاعدة `neondb`. لا كتابة ولا DDL ولا جدول migration ledger؛ الحالات استنتاج من الكائنات الفعلية. صفوف هذا القسم الموسومة 2026-11-03 تاريخية عند التعارض.
 
 عدد جداول `public` المرصود: **31**. لا يوجد جدول تتبع ترحيلات، لذا الحالة أدناه **استنتاج من المخطط الفعلي** لا من سجل تطبيق.
 
@@ -84,15 +84,15 @@
 | `0010_aigas_kernel_policy_hierarchy` | مطبّق | `aigas_departments`, `aigas_department_memberships`, `aigas_department_events`, `aigas_policy_delegations`, `aigas_policies`, `aigas_policy_versions`, `aigas_policy_approvals`, `aigas_kernel_policy_decisions` |
 | `0011_aigas_firewall_execution_binding` | متجاوز/غير مطبّق | غطّاه `0012`؛ لا أثر مستقل له |
 | `0012_aigas_firewall_five_state_upgrade` | مطبّق | قيود الحالات الخمس والحقول المرصودة |
-| `0013_aigas_ledger_five_state_and_chain_guard` | **غير مطبّق** | لا توجد دالة `aigas_ld_events_chain_guard`، وقيد `aigas_ld_events_check` يقبل `ALLOW/BLOCK/REDACT` فقط |
+| `0013_aigas_ledger_five_state_and_chain_guard` | **جزئي / غير متكامل** | حقول السلسلة و`hash_profile=aigas-ledger-sha256-chain-v2` موجودة؛ دالة/trigger `aigas_ld_events_chain_guard` غائبان، وقيد `metadata_json` لا يزال يقبل قرارات Firewall الثلاثة فقط |
 | `0014_aigas_human_gate_cancellation_delegation_and_grant` | **غير مطبّق** | لا يوجد `aigas_hg_delegations` ولا `aigas_hg_grants`؛ لا أعمدة `provider_ref/cancelled_at/review_level/...` |
-| `0015_aigas_risk_engine_asset_context_residual_risk` | مطبّق | `aigas_re_assets.data_context/provider_reference/model_reference/model_version/approval_status/lifecycle_status`, و`aigas_re_treatment_revisions.residual_risk_description` |
+| `0015_aigas_risk_engine_asset_context_residual_risk` | مطبّق | أعمدة السياق والمراجع وحالة الأصل و`residual_risk_description` موجودة |
 | `0016_aigas_sc_user_token_quota` | **غير مطبّق** | لا توجد دالة `aigas_sc_usage_window_v2`؛ الموجودة `aigas_sc_usage_window` فقط |
 | `0017_aigas_kernel_audit_context` | **غير مطبّق** | `aigas_audit_events` بلا `correlation_id/policy_version/idempotency_key` |
 | `0018_aigas_data_api_grant_hardening` | **غير مطبّق** | دور `authenticated` ما زال يملك DML على 31 جدولًا؛ Data API نشط على `public` |
 | `0019_aigas_runtime_least_privilege` | **غير مطبّق** | لا يوجد دور `aigas_runtime` ولا سياسات نطاق مؤسسة؛ `DATABASE_URL` ما زال `neondb_owner` بـ`BYPASSRLS` |
-| `0020_aigas_kernel_policy_review_requirements` | مطبّق | `aigas_policy_versions.required_approvals` موجود |
-| `0021_aigas_risk_engine_acceptance_guard` | مطبّق | `aigas_re_guard_treatment` وtrigger `aigas_re_treatment_guard` موجودان (جرد 2026-11-03) |
+| `0020_aigas_kernel_policy_review_requirements` | مطبّق | `aigas_policy_versions.required_approvals` موجود (تحقق 2026-11-08) |
+| `0021_aigas_risk_engine_acceptance_guard` | مطبّق | الدالة `aigas_re_guard_treatment` والـtrigger `aigas_re_treatment_guard` موجودان (تحقق 2026-11-08) |
 | `0022_aigas_reference_scope_guard` | **غير مطبّق** | لا يوجد `aigas_fw_decisions_request_scope_idx` ولا `aigas_sc_requests_scope_idx` |
 | `0023_aigas_enterprise_trial_lifecycle` | **غير مطبّق** | لا يوجد جدول `aigas_trial_requests` |
 
@@ -105,7 +105,7 @@
 | `0013` | كاتب Ledger يسمح بـ`WARN/ESCALATE/DENY` و`request_fingerprint` في metadata؛ قيد Neon الحالي يرفضها، فتفشل أدلة Firewall المصنفة بهذه الحالات |
 | `0016` | `reserve()` في Secure Chat يستدعي `aigas_sc_usage_window_v2`؛ الاستدعاء غير موجود على المخطط الحالي |
 
-**تنبيه:** هذه ليست قائمة أخطاء مكتشفة بالتشغيل؛ هي استنتاجات من مقارنة الكود بكتالوج Neon. أي تطبيق فعلي يحتاج اعتمادًا بشريًا وبيئة معتمدة.
+**تنبيه:** هذه ليست قائمة أخطاء مكتشفة بالتشغيل؛ هي استنتاجات من مقارنة الكود بكتالوج Neon. أي تطبيق فعلي يحتاج اعتمادًا بشريًا وبيئة معتمدة. تحقق 2026-11-08 يؤكد RLS على 31/31، وسياسات على جدولين فقط، ومنح DML لـ`authenticated` على 31؛ لا يثبت ذلك استغلالًا أو وصولًا عابرًا للمؤسسات.
 
 ### 3.2 أسماء الجداول الـ31 المرصودة (Neon `public`)
 
@@ -120,7 +120,7 @@
 | Secure Chat | `aigas_sc_requests`, `aigas_sc_cancellations`, `aigas_sc_conversations`, `aigas_sc_messages` |
 | هرمية السياسات والإدارات | `aigas_departments`, `aigas_department_memberships`, `aigas_department_events`, `aigas_policy_delegations`, `aigas_policies`, `aigas_policy_versions`, `aigas_policy_approvals`, `aigas_kernel_policy_decisions` |
 
-**غير موجود:** `aigas_hg_delegations`, `aigas_hg_grants` (من 0014). لا توجد دالة `aigas_sc_usage_window_v2` (من 0016)، ولا trigger سلسلة Ledger (من 0013)، ولا أعمدة سياق التدقيق (من 0017).
+**غير موجود وقت فحص 2026-11-08:** `aigas_hg_delegations`, `aigas_hg_grants` (0014)، دالة `aigas_sc_usage_window_v2` (0016)، trigger حارس سلسلة Ledger (0013)، أعمدة سياق التدقيق في `aigas_audit_events` (0017)، دور `aigas_runtime` وسياسات نطاقه (0019)، فهارس النطاق (0022)، وجدول تجربة `aigas_trial_requests` (0023).
 
 ---
 
@@ -217,8 +217,8 @@
 
 ## 6. العوائق المفتوحة (لا تتجاوزها بافتراض)
 
-1. **اعتماد الترحيلات:** `0013`, `0014`, `0016`, `0017`, `0018`, `0019`, `0022`, `0023` تحتاج مراجعة بشرية وتطبيقًا على بيئة معتمدة. لا تُطبّق هنا. (`0020` و`0021` مطبقتان فعليًا بحسب جرد 2026-11-03.)
-2. **صلاحيات runtime وRLS:** RLS مفعّل بلا سياسات على 29 جدولًا؛ يلزم إثبات دور التطبيق وسياسات العزل قبل أي تشغيل.
+1. **اعتماد الترحيلات:** فجوات المخطط تشمل `0013` (جزئي وغير متكامل)، `0014`, `0016`, `0017`, `0018`, `0019`, `0022`, `0023`؛ تحتاج مراجعة بشرية وتطبيقًا على بيئة معتمدة. لا تُطبّق هنا. (`0015`, `0020`, `0021` مثبتة بعناصر المخطط في فحص 2026-11-08.)
+2. **صلاحيات runtime وRLS:** RLS مفعّل على 31/31، والسياسات على جدولين فقط؛ `authenticated` يملك DML على 31 جدولًا، ودور `neondb_owner` يتجاوز RLS. يلزم إغلاق فجوة المنح والدور والسياسات قبل تشغيل معتمد.
 3. **الجلسة والمستخدمون:** لا مستخدم/جلسة في Neon Auth؛ لا يمكن إثبات أي رحلة موثقة.
 4. **مزود/نموذج AI:** لا نموذج معتمد؛ أي إرسال حقيقي محجوب بقرار منتج وموافقة تشغيل.
 5. **النشر:** لا دليل أن `/app/` يعمل على `brightai.live`؛ اللقطة المرجعية ذكرت 404، والكود الحالي يعطي 302/503 عند التعطيل. لا يُدّعى أي منهما دون فحص حي.
@@ -231,4 +231,5 @@
 
 - أي إثبات تشغيلي جديد يُسجّل باسم البيئة والإصدار والتاريخ في `docs/products/*/ACCEPTANCE-AND-EVIDENCE.md` أولًا.
 - لا يُرفع أي `status` إلى `WORKING` أو `AVAILABLE` من هذا الملف؛ هذا الملف يوثّق الحالة ولا يمنح اعتمادًا.
+- مصفوفة traceability وأدلة التشغيل الحالية: `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md`.
 - عند تغيّر المخطط، أعد فحص Neon قراءة فقط وحدّث القسم 3 بتاريخ جديد.

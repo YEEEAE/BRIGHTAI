@@ -1,14 +1,15 @@
 # وصول البيانات وعزل المؤسسات — RLS وGRANT ودور التشغيل
 
 > الحالة: **مرجع مصدر مؤرخ + خطة ترحيل محلية غير مطبقة**. لا يمثل هذا المستند دليل تشغيل أو إثبات عزل.
-> تاريخ الجرد: 2026-11-03 | المصدر: قراءة فقط عبر Neon MCP على مشروع `young-frog-60183055` / فرع `production` / قاعدة `neondb`.
-> نطاق الجرد: `pg_roles`، `role_table_grants`، `pg_default_acl`، `pg_policies`، `pg_class.relrowsecurity`، إعداد Neon Data API. لا كتابة، ولا migrations، ولا تغيير إعدادات.
+> جرد 2026-11-03 HISTORICAL. آخر تحقق: 2026-11-08 عبر Neon MCP قراءة فقط على مشروع `young-frog-60183055` / فرع `production` / قاعدة `neondb`؛ لا كتابة ولا migrations ولا تغيير إعدادات.
+> **الحالة الراهنة:** 31/31 جدول AIGAS عليه RLS، سياستان فقط على جدولين، 4 امتيازات DML لـ`authenticated` على 31 جدولًا، ودور `neondb_owner` لديه `BYPASSRLS`. Data API حالته `active` على `public`. الجداول التشغيلية الأساسية ومستخدمو Neon Auth وجلساته: 0. وجود دور المالك لا يثبت أن اتصال الخدمة الحية يستخدمه؛ role الفعلي للخدمة `NOT_VERIFIED`. التفاصيل الحالية في `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md`؛ فقرات الجرد القديمة أدناه لا تتجاوز تاريخها.
+> النطاق: `pg_roles`، `role_table_grants`، `pg_policies`، `pg_class.relrowsecurity`، وإعداد Neon Data API. كل استعلامات Neon كانت للقراءة فقط.
 
 ---
 
 ## 1. الخلاصة التنفيذية
 
-1. الاتصال الخادمي الحالي (`DATABASE_URL`) يستخدم `neondb_owner` و`rolbypassrls=true`. أي سياسة RLS على الجداول **لا تُطبَّق على مسار الخادم**؛ العزل الفعلي اليوم يأتي من شروط `tenant_id=$n` الصريحة في الاستعلامات، لا من RLS.
+1. جرد 2026-11-03 في هذا المستند ذكر أن الاتصال الخادمي (`DATABASE_URL`) يستخدم `neondb_owner`. فحص 2026-11-08 أكد أن الدور موجود و`rolbypassrls=true`، لكنه لا يكشف أي دور تستخدمه خدمة Node؛ role اتصال الخدمة الحالية `NOT_VERIFIED`. إذا استخدم الاتصال دورًا يتجاوز RLS فلن تطبق سياسات RLS عليه؛ ويظل التحقق التشغيلي من شروط النطاق مطلوبًا.
 2. `authenticated` يملك `SELECT/INSERT/UPDATE/DELETE` على الجداول الـ31 جميعًا، ويملك `EXECUTE` على دوال `public` عبر `ALTER DEFAULT PRIVILEGES`. RLS مفعّل على 31 جدولًا، لكن السياسات موجودة على جدولين فقط؛ لذلك الوصول الفعلي حاليًا **default deny** من RLS، وليس منتهيًا بغياب المنح.
 3. Neon Data API **مفعّل** (`status: active`) على مخطط `public` مع `db_anon_role=anonymous` وتحويل الدور من `jwt_role_claim_key=.role`. لا توجد بيانات عمل ولا مستخدمون الآن، لكن أي خطأ مستقبلي في سياسة أو منح يتحول مباشرة إلى وصول عميل.
 4. السياستان الموجودتان (`aigas_sc_requests`, `aigas_sc_cancellations`) تعتمدان فقط على GUCين (`aigas.sc_tenant_id`, `aigas.sc_user_id`) دون التحقق من عضوية. لا يوجد مسار عميل يضبطهما اليوم (لا RPC مكشوف)، لكنهما ليستا طبقة دفاع مستقلة.
@@ -20,7 +21,7 @@
 
 | الدور | تسجيل دخول | `rolsuper` | `rolbypassrls` | الاستخدام |
 |---|---|---|---|---|
-| `neondb_owner` | نعم | لا | **نعم** | مالك الجداول؛ يستخدمه `DATABASE_URL` الحالي |
+| `neondb_owner` | نعم | لا | **نعم** | دور مالك الجداول؛ استخدامه من خدمة Node الحالية `NOT_VERIFIED` |
 | `cloud_admin` | نعم | نعم | نعم | إدارة منصة |
 | `neon_service` | نعم | لا | نعم | خدمة Neon |
 | `neon_superuser` | لا | لا | نعم | منصة |

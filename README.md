@@ -1,5 +1,7 @@
 # BRIGHT AI
 
+> **تنبيه حالة (2026-11-08):** الوصف التشغيلي أدناه مؤرخ في 2026-07-18 وهو HISTORICAL، وليس جردًا للمصدر الحالي. أسماء Groq/Gemini و`/api/ai/chat/` وRedis/SSE لا تثبت مزودًا أو route أو إعدادًا عاملًا الآن؛ راجع `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md` للتصنيف الحالي. المصدر الحالي يملك واجهات AIGAS تحت `/app/api/*`، لكن صفحات `/app/*` وHealth API أعادت 404 وقت الفحص، واعتمادات النماذج والمزودين فارغة.
+
 AI Governance and Safety (AIGAS)
 
 الأركان الرئيسية لحوكمة الذكاء الاصطناعي :

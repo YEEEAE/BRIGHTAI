@@ -251,3 +251,19 @@
 - Build/tests وإرسال النماذج والنشر: NOT RUN. الجرد الدلالي التفصيلي لكل صفحة عامة و320px والوصول الشامل: NOT VERIFIED.
 ### النتيجة
 - **الحالة:** PARTIAL للجرد الشامل؛ التحسين المحدود منفذ محلياً. لا commit/push/deploy أو تغيير خارجي.
+## [2026-11-08] — Baseline release وTraceability للبوابة والمنتجات
+### تم التنفيذ
+- أُعيدت مراجعة HEAD الحالي `55cd41567d82439790acbd871f917905df89e78a` ومخطط Neon الحالي والمتصفح العام؛ لا تغيير كود منتج أو مورد خارجي.
+- Neon production: 31 جدول AIGAS مع RLS، سياستان على جدولين فقط، 124 امتياز DML لـ`authenticated`، `neondb_owner` يتجاوز RLS، Data API نشط على `public`، ولا توجد سجلات في الجداول التشغيلية المفحوصة أو مستخدمون/جلسات Auth.
+- فحص `/app/*` للصفحات السبع وHealth API أعاد 404؛ Origin وSHA المنشور غير معروفين. `0013` موجود جزئيًا دون chain guard، و`0015/0020/0021` لها أدلة مخطط؛ migrations الباقية مذكورة في سجل التتبع.
+- أُعيد تجميع مرجع 15 prompt من النسخ المحلية المنفصلة؛ حُفظت النسخة المعدلة مسبقًا في مجلد التسليم كما هي.
+### الملفات المتأثرة
+- `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md`, `Audit/outhers/ALL-15-OPENCODE-MCP-PROMPTS.md`
+- `README.md`, `docs/MASTER-AGENT-CONTEXT.md`, `docs/CURRENT-IMPLEMENTATION-REGISTER.md`, `docs/RELEASE-BLOCKERS-REGISTER.md`, `docs/FINAL-RELEASE-HANDOFF.md`, `docs/DATA-ACCESS-AND-RLS.md`, `docs/APP-PORTAL-RUNTIME-HANDOFF.md`
+### التحقق
+- Neon read-only catalog/counts/config: PASS؛ public browser routes: 404 on all 8 URLs; local source + docs review: PASS.
+- Build, tests, lint, migration, deployment: NOT RUN / NOT PERFORMED per scope.
+### النتيجة
+- **الحالة:** DONE — سجل محلي متسق ومؤرخ؛ إتاحة المنتج والعزل التشغيلي لا تزال BLOCKED/NOT VERIFIED.
+### ملاحظات / مشاكل مفتوحة
+- يلزم اعتماد مشغل النشر ومالك المنصة لتحديد Origin/نسخة النشر؛ مشغل Neon والأمن لمراجعة/تطبيق least privilege على staging؛ والمالك/الأمن/الخصوصية/القانوني لاعتماد المزودين وأي إتاحة beta.
