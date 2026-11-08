@@ -195,7 +195,12 @@
 @media(max-width:360px) {
   .interior-page .system-map .map-core { width: 34%; }
   .interior-page .system-map .map-core bdi { font-size: 12px; }
-  .interior-page .system-map .map-core small { font-size: 9px; }
+  .interior-page .system-map .map-core small {
+    inline-size: 100%;
+    max-inline-size: 18ch;
+    font-size: 10px;
+    line-height: 1.45;
+  }
   .interior-page .system-map .map-node { padding: 8px; gap: 0; grid-template-columns: auto minmax(0,1fr); align-items: baseline; column-gap: 6px; }
   .interior-page .system-map .map-node strong { line-height: 1.5; }
   .interior-page .system-map .map-node bdi:last-of-type { grid-column: 1/-1; line-height: 1.4; }
