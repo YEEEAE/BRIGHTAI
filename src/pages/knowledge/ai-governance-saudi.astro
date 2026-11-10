@@ -5,7 +5,7 @@ import PageShell from '../../components/PageShell.astro';
 import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
 const description = 'كيف تبدأ حوكمة الذكاء الاصطناعي في منشأتك السعودية؟ ست خطوات عملية، والمسؤوليات والوثائق المطلوبة، وروابط لسياسة الموظفين وتقييم المخاطر وحماية البيانات.';
-const article = { ...articleStructuredData('حوكمة الذكاء الاصطناعي في السعودية', description, Astro.url.pathname), dateModified: '2026-11-08' };
+const article = { ...articleStructuredData('حوكمة الذكاء الاصطناعي في السعودية', description, Astro.url.pathname, { published: '2026-10-31' }), dateModified: '2026-11-08' };
 // The same source supplies both the visible answers and FAQ JSON-LD.
 const faqs = [
   { question: 'من أين تبدأ المنشأة السعودية حوكمة الذكاء الاصطناعي؟', answer: 'ابدأ بحصر استخدام واحد وتحديد مالكه وغرضه والبيانات التي يعالجها والقرار المتأثر. ثم قيّم المخاطر وحدد الضوابط وصاحب الموافقة وموعد المراجعة قبل التوسع.' },

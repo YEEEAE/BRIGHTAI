@@ -14,6 +14,7 @@ const path = `/knowledge/${guide.slug}/`;
 const article = {
   ...articleStructuredData(guide.title, guide.description, path),
   dateCreated: '2026-11-08',
+  datePublished: '2026-11-08',
   dateModified: '2026-11-08',
   citation: guide.sources.map(source => source.url),
 };

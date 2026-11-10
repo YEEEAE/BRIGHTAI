@@ -10,7 +10,7 @@ const xml = await readFile(new URL('../dist/client/sitemap-0.xml', import.meta.u
 const routes = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(([, url]) => new URL(url).pathname);
 assert(routes.length > 0, 'Sitemap must contain pages');
 assert.equal(new Set(routes).size, routes.length, 'Duplicate sitemap routes');
-assert(!routes.includes('/kernel/'), 'Noindex demo must be omitted from sitemap');
+assert(routes.includes('/kernel/'), 'Public kernel page must be in sitemap');
 assert(!routes.includes('/404/'), '404 route must be omitted from sitemap');
 assert(!routes.some(path => /^\/(app|auth)(\/|$)/.test(path)), 'Private routes must be omitted');
 // Derive expected pages from actual build output, including expanded dynamic routes.
@@ -71,6 +71,7 @@ for (const path of routes) {
     const articles = schemas.filter(s => s['@type'] === 'Article');
     assert.equal(articles.length, 1, `Exactly one Article entity: ${path}`);
     assert(articles[0].author && articles[0].publisher && articles[0].dateModified, `Article ownership and date: ${path}`);
+    assert(articles[0].datePublished && articles[0].image, `Article needs a real datePublished and image: ${path}`);
   }
   for (const faq of schemas.filter(s => s['@type'] === 'FAQPage')) {
     for (const question of faq.mainEntity) {
@@ -84,8 +85,13 @@ for (const path of routes) {
   }
 }
 
+// Private app/auth routes are gated by runtime configuration (P04: they answer
+// 503 without DB/Auth), so they are not public crawl targets. They must stay
+// out of the sitemap and noindex; front-end links to them are checked there.
+const privatePrefix = path => /^\/(app|auth|healthz)(\/|$)/.test(path);
 const checked = new Set();
 for (const { from, url } of references) {
+  if (privatePrefix(url.pathname)) continue;
   if (!checked.has(url.pathname)) {
     const response = await fetch(url, { redirect: 'manual' });
     assert.equal(response.status, 200, `Broken reference: ${from} -> ${url.pathname}`);
@@ -116,7 +122,7 @@ assert(catalog.every(item => item.headings.length > 0 && item.minutes > 0), 'Art
 const sourceLlms = await readFile(new URL('../public/llms.txt', import.meta.url), 'utf8');
 assert.equal(sourceLlms, await readFile(new URL('../dist/client/llms.txt', import.meta.url), 'utf8'), 'Source and deployed llms.txt must match');
 for (const { source, destination } of redirects) {
-  if (!['/kernel/', '/404/', '/sitemap-index.xml'].includes(destination)) {
+  if (!['/404/', '/sitemap-index.xml'].includes(destination)) {
     assert(routes.includes(destination), `Redirect target missing from sitemap: ${destination}`);
   }
   const query = '?topic=%D8%B9%D8%B1%D8%B6&source=audit';
@@ -142,6 +148,16 @@ while (previous !== reachable.size) {
   }
 }
 assert.equal(reachable.size, routes.length, 'Orphan sitemap pages');
+for (const path of ['/app/kernel/', '/app/operator/trials/', '/healthz/']) {
+  const response = await fetch(new URL(path, base), { redirect: 'manual' });
+  assert(![200, 301].includes(response.status), `Private route must not be public: ${path}`);
+  assert(!routes.includes(path), `Private route leaked into sitemap: ${path}`);
+}
+// The account surface is the only retained noindex: it is a signed-out screen,
+// not public content, and every public page must stay indexable.
+const signUp = await fetch(new URL('/auth/sign-up/', base));
+assert.equal(signUp.status, 200, 'Auth surface must render');
+assert((await signUp.text()).includes('name="robots" content="noindex, nofollow"'), 'Account surface stays private');
 for (const path of ['/missing-page.html', '/products/missing/', '/api/ai/chat/']) {
   const response = await fetch(new URL(path, base));
   assert.equal(response.status, 404, `Unexpected route: ${path}`);
@@ -149,7 +165,8 @@ for (const path of ['/missing-page.html', '/products/missing/', '/api/ai/chat/']
 }
 const demo = await fetch(new URL('/kernel/', base));
 assert.equal(demo.status, 200, 'Kernel explainer route');
-assert((await demo.text()).includes('name="robots" content="noindex, follow"'), 'Kernel demo must be noindex');
+assert((await demo.text()).includes('name="robots" content="index, follow"'), 'Kernel demo must be indexable');
+assert(routes.includes('/kernel/'), 'Kernel demo must be discoverable in the sitemap');
 for (const path of ['/knowledge/ai-governance-saudi/', '/knowledge/protect-company-data-chatgpt/',
   '/knowledge/ai-risk-assessment/', '/knowledge/prompt-injection/', '/knowledge/ai-use-policy-employees/']) {
   assert(routes.includes(path), `Knowledge article missing from sitemap: ${path}`);

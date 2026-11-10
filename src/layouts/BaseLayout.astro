@@ -12,10 +12,10 @@ interface Props {
 }
 
 const { title, description, robots: requestedRobots = 'index, follow', ogType = 'website' } = Astro.props;
-const sensitiveQueryKeys = new Set(['token', 'access_token', 'refresh_token', 'id_token', 'oauth_token', 'invite_token', 'reset_token', 'code', 'auth_code', 'state', 'invite', 'invitation', 'key', 'secret', 'client_secret', 'session', 'ticket', 'signature', 'credential', 'password', 'verification', 'challenge', 'email']);
-const hasSensitiveQuery = [...Astro.url.searchParams.keys()].some((key) => sensitiveQueryKeys.has(key.toLowerCase()));
+// Public content is always indexable, including parameterized URLs; the clean
+// canonical below consolidates them. Only the account surface stays private.
 const isPrivateRoute = Astro.url.pathname.startsWith('/auth/');
-const robots = hasSensitiveQuery || isPrivateRoute ? 'noindex, nofollow' : requestedRobots;
+const robots = isPrivateRoute ? 'noindex, nofollow' : requestedRobots;
 const canonical = new URL(Astro.url.pathname, 'https://brightai.live').href;
 if (robots.includes('noindex')) Astro.response.headers.set('X-Robots-Tag', robots);
 const organizationSchema = {

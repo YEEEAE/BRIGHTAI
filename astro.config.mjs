@@ -12,6 +12,6 @@ export default defineConfig({
   integrations: [sitemap({ filter: (page) => {
     const pathname = new URL(page).pathname;
     if (['/healthz', '/healthz/'].includes(pathname)) return false;
-    return !pathname.startsWith('/app/') && !pathname.startsWith('/auth/') && !['/README/', '/kernel/', '/404/'].includes(pathname);
+    return !pathname.startsWith('/app/') && !pathname.startsWith('/auth/') && !['/README/', '/404/'].includes(pathname);
   } }), seoBuild(), buildVersion()],
 });

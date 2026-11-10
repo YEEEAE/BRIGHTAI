@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-10 VERIFIED LOCAL (P14): HEAD `2eb45b7`+working tree؛ 56 صفحة مفهرسة (أُدخل `/kernel/`) و117 alias 301 (GET/HEAD، query محفوظ، صفر loop/chain) وcanonical/OG/alt/JSON-LD وصفر روابط مكسورة؛ أُزيل noindex للاستعلام الحساس، وArticle يحمل datePublished+image؛ noindex مقصور على `/auth/*` و`/app/*` و`/healthz/` و`/404/`؛ SE04 الحي BLOCKED على push؛ `Audit/p14-seo-links-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL (P12): تنقل موحد للمنتجات وreturnTo بقائمة سماح؛ الكتالوج بلا شارات إتاحة بتوجيه المستخدم، بتصميم تحريري ورسوم وحركة تدريجية؛ build55/routes55/unit17 وChrome360/390/768/1440 وreduced-motion/no-JS PASS؛ الرحلة المخولة والعمليات/الحصص والنشر NOT VERIFIED؛ `Audit/p12-product-journey-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL+STAGING-READONLY (P03): HEAD `9f70334`؛ مصفوفة RLS 69/69 محليًا (owner0 لـruntime، صفر منح عميل، A/B CRUD، GUC، COPY، DB07)؛ staging 9/9 قراءة (36 جدول/77 سياسة/25 دالة)؛ contracts36/36؛ دليل `Audit/p03-runtime-rls-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL: HEAD `60777c9739d5584360e57bd5238d3a075b06c09a` + working tree؛ AR02/AR03 (مقيسة على `5725727`): unit31/combined36 PASS،0 FAIL/0 SKIP؛ DB18.6 بخمس قواعد ودورruntime/NOBYPASSRLS؛ build/routes55 PASS؛ مرجع `Audit/ar02-ar03-2026-11-10/REPORT.md`؛ لا إطلاق.
@@ -35,6 +36,14 @@
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — P14: روابط SEO وCanonical والفهرسة
+- **تم:** فهرسة `/kernel/` وإدخالها الخريطة وllms (56 صفحة)؛ إزالة noindex المرتبط بالاستعلام الحساس؛ datePublished+image لكل Article من تواريخ المنشأ الحقيقية.
+- **تم:** إصلاح حد الزحف العام في `verify-routes` (app/auth/healthz غير عامة) وحراسة أن `/auth/*` هو noindex الوحيد المتبقي.
+- **التحقق:** PASS محليًا — build56، routes56، 117 redirect، 2945 مرجعًا، 0 loop/chain/مكسور/noindex عام، negative 400/404/503.
+- **الحالة:** PARTIAL — SE01–SE03 PASS محليًا، SE04 محليًا ونشرُه BLOCKED على push، SE05/SE06 إلى P25.
+- **ملفات:** `Audit/p14-seo-links-2026-11-10/REPORT.md`، `scripts/verify-routes.mjs`، `src/data/structured-data.ts`.
+- **مفتوح:** التحقق الحي بعد نشر المالك؛ بقاء `/app` و`/auth` و`/404` و`/healthz` غير مفهرسة بقرار صلاحيات لا SEO.
 
 ## [2026-11-10] — P13: عقد المراقبة والحمولة
 - **تم:** مسودة URL/referrer غير معتمدة؛ معاينة payload واختبارات محولات محلية؛ لا دليل منع تسرب GA4.

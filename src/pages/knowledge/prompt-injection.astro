@@ -5,7 +5,7 @@ import PageShell from '../../components/PageShell.astro';
 import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
 const description = 'شرح عربي مبسط لهجمات Prompt Injection ومراحل التعامل مع المدخلات غير الموثوقة وحدود وسائل الحماية.';
-const article = articleStructuredData('Prompt Injection: افصل التعليمات الموثوقة عن المحتوى', description, Astro.url.pathname);
+const article = articleStructuredData('Prompt Injection: افصل التعليمات الموثوقة عن المحتوى', description, Astro.url.pathname, { published: '2026-10-31' });
 ---
 <PageShell title="Prompt Injection وطبقات الحماية | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'Prompt Injection' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">تدفق مبسط للمراجعة</a><a href="#part-2">طبقات دفاع تساعد على تقليل الخطر</a><a href="/docs/">← كل الأدلة</a></aside><article>
