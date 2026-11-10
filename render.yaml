@@ -12,8 +12,10 @@ services:
     # Forward /app/* and /app/api/* unchanged; bypass every CDN cache for /app/*.
     # Existing static hosting requires an operator-managed origin change; not deployed here.
     startCommand: npm start
-    # Checks website availability only, not product/API readiness.
-    healthCheckPath: /
+    # Readiness, not liveness: a failed database or auth dependency keeps the
+    # deploy unhealthy instead of routing traffic to an unready process.
+    # /healthz/ answers JSON with dependency states and the build identity.
+    healthCheckPath: /healthz/
     envVars:
       - key: NODE_VERSION
         value: 22.22.2
@@ -29,6 +31,19 @@ services:
       # GA4 tag and the Neon Auth sign-in flow. See docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md.
       - key: AIGAS_CSP_ENFORCE
         value: "false"
+      # Readiness probes the auth JWKS host (2s timeout, 15s cache). It is the
+      # only readiness check that leaves the service; disable it only if the
+      # deployment cannot reach the auth host at all.
+      - key: AIGAS_HEALTH_AUTH_PROBE
+        value: "true"
+      # Runtime secret names required for a working service. Values are set in
+      # the Render dashboard only, never in this file:
+      #   DATABASE_URL, NEON_AUTH_BASE_URL, NEON_AUTH_JWKS_URL.
+      # Staging additionally decides AIGAS_REQUIRE_RLS=true once DATABASE_URL
+      # uses the least-privilege runtime role (see docs/RUNTIME-RLS-PERMISSION-MATRIX.md).
+      # Traceability: RENDER_SERVICE_ID / RENDER_SERVICE_NAME / RENDER_GIT_COMMIT
+      # are injected by Render; AIGAS_DEPLOY_ID and AIGAS_IMAGE_DIGEST are
+      # optional operator/CI values that /healthz/ reports when present.
       - key: DATABASE_URL
         sync: false
       - key: NEON_AUTH_BASE_URL

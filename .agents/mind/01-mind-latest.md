@@ -9,9 +9,16 @@
 - توجيه المستخدم2026-11-10: لا سقف15 لبرومبتات الإغلاق؛ الخطة الحالية25 بتقسيم تخصصي وتبعيات مفحوصة في `Audit/final-360-2026-11-10/EXECUTION-PROMPTS.md`؛ أرقام التدقيق وNO-GO دون تغيير.
 - 2026-11-10 HISTORICAL LIVE CHECK: SHA `7b1f533f71c7b1f41884790366a4d5967c85a87b` طابق Render deploy `dep-dbpg8kgae00c73easjr0`؛ الخدمة `srv-d7m5bcjbc2fs73826v20` static_site/dist/client وapp/Auth/API404؛ لم يُعد فحصها بجولةAR02/AR03؛ Beta/Commercial NO-GO.
 - تدقيق360 تاريخي: tests18 PASS/9 FAIL/5 SKIP تجاوزتها نتائجAR02/AR03 المحلية أعلاه؛ Firewall harness8/8 و55 صفحة حية200 دليل مؤرخ في `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md`، دون عمليات منتج حية مثبتة.
+- 2026-11-10 VERIFIED LOCAL (P04): HEAD `655a8b9` (ملفاتP04 مطابقة للمرجع `7b1f533`)؛ `/healthz/` عام 200/503 يفحص DB/schema/auth/portal بلا أسرار، و`dist/server/version.json`+readback يربطان service/deploy/SHA/artifact مع `consistent`؛ `healthCheckPath=/healthz/`؛ دليل `Audit/p04-node-ssr-2026-11-10/REPORT.md`.
+- 2026-11-10 STAGING FREE (Render): `brightai-staging-node`=`srv-dbpj8jajnfac739je6lg` خطة free/oregon، auto-deploy من `main`، بلا دومين؛ كشف أول نشر أن `scripts/server.mjs` يستمع على loopback ⇒ صار الافتراضي `0.0.0.0`. الخدمة المرجعية `srv-d7m5bcjbc2fs73826v20` ليست في workspace الـCLI (`tea-dade102fngtc739064v0`).
 - المراقبة: اعتماد مستقل لكل طبقة + SHA كامل؛ PostHog staging/beta فقط؛ واجهة App/Auth ترسل رموزًا ثابتة عبر same-origin relay؛ لا SDK أو stack؛ خطة التحقق O1–O8 غير منفذة.
+- 2026-11-10 VERIFIED LOCAL: `~/.config/opencode/opencode.json` فيه provider `explabs` (openai-compatible→`api.experientiallabs.ai/v1`، مفتاح من `secrets/explabs-api-key` بصلاحية600) بثمانية نماذج؛ `/v1/models` 200 (306 slugs) لكن كل completion يفشل 402/429 من جهة الحساب.
 
 ## Open Issues / Blockers
+- 2026-11-10 BLOCKED (explabs): بوابة Experiential Labs ترفض completions بحالة الحساب (`card_required` على `deepseek-v4.1-flash`، `insufficient_quota` على `claude-sonnet-4.5`/`gpt-5.1-codex`)؛ لا توجيه فعلي قبل توثيق بطاقة من `platform.experientiallabs.ai/credits`.
+- 2026-11-10 BLOCKED (P04): تغييرات P04+إصلاح الربط غير مرفوعة؛ `push` ممنوع على الوكيل ⇒ خدمة `brightai-staging-node` لم تصبح live بعد. بعد push المالك تُثبت الحالات الحية.
+- 2026-11-10 BLOCKED (P04): Render MCP غير مخوّل (`list_workspaces`=`unauthorized`) — الوصول عبر CLI/لوحة فقط؛ قراءة `static_site` المرجعية تبقى HISTORICAL وليست في workspace الـCLI.
+- 2026-11-10 INVARIANT: `healthCheckPath=/healthz/` في blueprint؛ نشر بلا DB/Auth صالحين لا يصبح healthy (مقصود). `AIGAS_HEALTH_AUTH_PROBE=true` هو الفحص الوحيد الذي يخرج من الخدمة.
 - 2026-11-10 VERIFIED: Neon production وحيد غير محمي؛ 31 جدولًا/RLS31/سياسات2/FORCE0؛ runtime role وmigration ledger غائبان؛ لا استعادة مقاسة.
 - 2026-11-10 VERIFIED: الفرع الحي على `0001`–`0012`+`0015` فقط؛ `aigas_ld_events_chain_guard` (دالة+trigger) غائب فسلسلة Ledger غير مفروضة في DB؛ يحتاج `0013`+`0024`.
 - 2026-11-10 CLOSED B9: `0018`/`0025` لم تعد تفشل 42704 — حُرست بـ`to_regrole`، وكذلك `0028` الذي كشفه اختبار `client_roles_absent`. ثلاث hashes أصبحت `MODIFIED_AFTER_REFERENCE`؛ لم يتغيّر أي منح.
@@ -24,6 +31,22 @@
 - Sentry projects=[] ضمن الاتصال؛ PostHog720936 ingested_event=false وإعدادات خصوصية تحتاج مراجعة؛ لا وجهة معتمدة، وحد الخطة التاريخي لم يُعد التحقق منه. Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — ربط OpenCode ببوابة Experiential Labs
+- **تم:** provider `explabs` عام في `~/.config/opencode/opencode.json` (baseURL + `{file:...}`) بثمانية نماذج، وملف مفتاح 600، ونسخة `.bak-before-explabs`.
+- **التحقق:** PASS للمصادقة (`/v1/models` 200، 306 slugs)؛ FAIL للـcompletion — 402 `card_required` و429 `insufficient_quota` من الحساب لا من الإعداد.
+- **الحالة:** PARTIAL — الإعداد مكتمل، والتوجيه الفعلي ينتظر توثيق وسيلة دفع.
+- **ملفات:** `~/.config/opencode/opencode.json`، `~/.config/opencode/secrets/explabs-api-key`.
+- **مفتوح:** توثيق الدفع ثم إعادة اختبار completion والتحقق من التتبع.
+
+## [2026-11-10] — P04: readiness وتتبع الإصدار لخدمة Node
+- **تم:** `/healthz/` عام (200/503؛ DB/schema/auth/portal؛ `no-store`/`noindex`) وخارج بوابة `/app`، و`version.json`+readback لـservice/deploy/SHA/digest مع `consistent`.
+- **تم:** `healthCheckPath`→`/healthz/`، وتصنيف `AUTH_SETUP_REQUIRED`/`DB_SETUP_REQUIRED` كـ`not configured` بدل «متاح مؤقتًا».
+- **التحقق:** PASS محليًا — 15/15 runtime، build55، unit31/5skip/0fail، routes 55/0 كسر؛ المسار المشفر والبوابة و401/503 وفشل DB/Auth مقيسة بلا شبكة.
+- **تم:** خدمة `brightai-staging-node` (free/oregon، بلا دومين) وأول نشر كشف استماع loopback فأُصلح افتراضي `HOST=0.0.0.0`.
+- **الحالة:** PARTIAL — الخدمة غير live حتى push المالك؛ OP04 ما زال P18.
+- **ملفات:** `Audit/p04-node-ssr-2026-11-10/REPORT.md`، `src/server/kernel/readiness.mjs`، `docs/APP-PORTAL-RUNTIME-HANDOFF.md`.
+- **مفتوح:** push ثم تحقق حي، وضبط DB/Auth ثم تحويل `healthCheckPath` إلى `/healthz/`.
 
 ## [2026-11-10] — P03: Runtime RLS وData API
 - **تم:** سكربت مصفوفة RLS (69 فحصًا على PG18 مؤقت) وسكربت لقطة قراءة فقط؛ مصفوفة صلاحيات وقرار Data API A/B/C.

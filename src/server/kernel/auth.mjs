@@ -16,7 +16,7 @@ export async function authenticate(request) {
   const header = request.headers.get('authorization');
   if (!header?.startsWith('Bearer ') || header.length > 16384) throw new KernelError(401, 'UNAUTHORIZED', 'سجّل الدخول لعرض بيانات مؤسستك.');
   const config = authConfig();
-  if (!config) throw new KernelError(503, 'AUTH_SETUP_REQUIRED', 'يلزم إعداد الدخول عبر Neon Auth.');
+  if (!config) throw new KernelError(503, 'AUTH_SETUP_REQUIRED', 'يلزم إعداد الدخول عبر Neon Auth.', 'not configured');
   keys ??= createRemoteJWKSet(new URL(config.jwks), { timeoutDuration: 5000 });
   try {
     return await verifyIdentity(header.slice(7), keys, config.issuer);

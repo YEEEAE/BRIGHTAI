@@ -3,7 +3,7 @@ import pg from 'pg';
 import { KernelError, isUuid } from './core.mjs';
 let pool;
 export function database() {
-  if (!env('DATABASE_URL')) throw new KernelError(503, 'DB_SETUP_REQUIRED', 'يلزم إعداد اتصال قاعدة البيانات.');
+  if (!env('DATABASE_URL')) throw new KernelError(503, 'DB_SETUP_REQUIRED', 'يلزم إعداد اتصال قاعدة البيانات.', 'not configured');
   if (!pool) {
     pool = new pg.Pool({
       connectionString: env('DATABASE_URL'),
@@ -20,6 +20,30 @@ export function database() {
   }
   return pool;
 }
+// Short-lived readiness probe. It deliberately does not reuse the request pool:
+// while the database is down a platform health checker would otherwise open a
+// new pooled connection on every attempt and starve real requests.
+// Returns a state only; never a role name, host or driver message.
+export async function probeDatabase(timeoutMs = 2000) {
+  if (!env('DATABASE_URL')) return { state: 'UNCONFIGURED' };
+  const client = new pg.Client({
+    connectionString: env('DATABASE_URL'),
+    application_name: 'brightai-readiness',
+    connectionTimeoutMillis: timeoutMs,
+    statement_timeout: timeoutMs,
+    query_timeout: timeoutMs,
+  });
+  try {
+    await client.connect();
+    const row = (await client.query("SELECT to_regclass('public.aigas_tenants') IS NOT NULL AS kernel_schema")).rows[0] ?? {};
+    return { state: row.kernel_schema === true ? 'READY' : 'SCHEMA_MISSING' };
+  } catch (error) {
+    return { state: error?.code === '42501' ? 'PRIVILEGE_DENIED' : 'UNAVAILABLE' };
+  } finally {
+    try { await client.end(); } catch {}
+  }
+}
+
 export async function transaction(work) {
   const client = await database().connect();
   try {

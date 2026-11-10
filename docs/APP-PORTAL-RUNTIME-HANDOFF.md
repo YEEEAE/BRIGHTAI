@@ -2,7 +2,7 @@
 
 > **الغرض:** تسليم تشغيلي موجز لمشغّل مخوّل، لا تنفيذ نشر.
 > **الحالة:** `SOURCE_PRESENT`; رُصد HTTP 404 على الروابط العامة بتاريخ 2026-11-08. خدمة الـOrigin وDeployment SHA والـartifact الذي أجاب الطلب `NOT_VERIFIED`؛ لذلك لا تنسب 404 إلى CSS أو إلى source قبل ربط الطلب ببيئته.
-> **آخر مراجعة:** 2026-11-08. لم يُشغّل build أو خادم محلي، ولم يُنشر شيء.
+> **آخر مراجعة:** 2026-11-10 (P04: readiness + تتبع إصدار؛ محلي فقط، بلا نشر). لم يُنشر شيء.
 
 > **تحديث التشغيل 2026-11-08:** `npm start` يشغّل الآن `scripts/server.mjs` الذي يطبّق `redirects.json` قبل معالج Astro standalone، لأن ملفات `index.html` الثابتة تتجاوز middleware. البناء والتحقق المحلي لصفحات SEO والتحويلات: PASS؛ لا نشر. الدليل: `Audit/seo-saudi-2026-11-08/REPORT.md`.
 
@@ -92,3 +92,103 @@ AIGAS_APP_ENABLED=true npm run start:local
 - نجاح التشغيل المحلي لا يثبت إتاحة البوابة أو صحة الجلسة أو صلاحيات قاعدة البيانات.
 - لا مستخدمين أو بيانات عملاء؛ Neon production لم يُقرأ أو يُكتب في هذه المهمة.
 - تفعيل البوابة يحتاج اعتماد مالك مستقل، ثم تحقق ترويسات الاستجابة من البيئة الفعلية.
+
+## 9. تهيئة Node SSR وتتبع الإصدار (P04 — 2026-11-10، محلي فقط)
+
+> **الحالة:** تمهيد محلي مُثبت، **بلا نشر**. لم تُنشأ خدمة Render، ولم يُعدّل `env` أو دومين أو DNS.
+> **الدليل:** `Audit/p04-node-ssr-2026-11-10/REPORT.md`. **OP04** (حماية كل الاستجابات والكاش من edge) ما زال مسؤولية P18، واكتماله ليس شرطًا لتهيئة الخدمة.
+
+### 9.1 أوامر قابلة للتكرار
+
+```bash
+npm ci
+npm run build                       # ينتج dist/client و dist/server و dist/server/version.json
+npm start                           # node ./scripts/server.mjs على PORT/HOST
+node scripts/verify-node-runtime.mjs # يبدأ الخادم نفسه بثلاث تهيئات ويقيس السلوك
+```
+
+`scripts/verify-node-runtime.mjs` لا يتصل بالشبكة الخارجية: يستخدم `127.0.0.1` و`127.0.0.1:1` كحالة فشل. الحالة الموجبة للـreadiness تحتاج قاعدة محلية مُهيأة:
+
+```bash
+createdb aigas_p04_readiness
+psql -d aigas_p04_readiness -c 'CREATE TABLE aigas_tenants(id uuid primary key default gen_random_uuid())'
+P04_READY_DATABASE_URL="postgresql://$USER@127.0.0.1:5432/aigas_p04_readiness" node scripts/verify-node-runtime.mjs
+```
+
+### 9.2 عقد readiness — `/healthz/`
+
+| البند | السلوك |
+|---|---|
+| الغرض | جاهزية الخدمة، لا مجرد إتاحة الصفحة الرئيسية |
+| الاستجابة | JSON غير مخزّن (`no-store`، `noindex`، `CDN-Cache-Control: no-store`) |
+| `200` | فقط عندما تكون قاعدة البيانات والـAuth جاهزتين |
+| `503` | `setup_required` (إعداد ناقص) أو `blocked` (schema/صلاحية) أو `unavailable` (تبعية لا تستجيب) |
+| `HEAD` | نفس الرمز بلا جسم |
+| الأسرار | لا DSN، لا توكن، لا اسم دور، لا رسالة سائق؛ حالات ورموز فقط |
+| البوابة المغلقة | `portal: "DISABLED"` ولا تُفشل الجاهزية؛ إغلاق البوابة قرار منتج لا عطل تبعية |
+
+الفحوص: `database` (اتصال قصير العمر + وجود `aigas_tenants`)، `auth` (تهيئة `NEON_AUTH_BASE_URL`/`NEON_AUTH_JWKS_URL`، وفحص فعلي لـJWKS عند `AIGAS_HEALTH_AUTH_PROBE=true` بمهلة 2s وكاش 15s)، `schema` يميّز `SCHEMA_MISSING` عن `UNAVAILABLE`، `PRIVILEGE_DENIED` منفصل.
+
+> اتصال الفحص قصير العمر ومستقل عن pool الطلبات، فلا يجوع الخدمة أثناء عطل DB. على Neon اضبط فاصل فحص المنصة على 10s أو أكثر حتى لا يستهلك كل فحص اتصالًا جديدًا بلا داعٍ. المسار عام ويُظهر معرّفات وdigests فقط؛ ليست أسرارًا، لكنها ليست للفهرسة (`noindex`).
+
+### 9.3 تتبع الإصدار: service → deploy → SHA → artifact
+
+| المصدر | المحتوى | من يضبطه |
+|---|---|---|
+| `dist/server/version.json` | `commit`, `builtAt`, `node`, `packageLock` (sha256) | `scripts/build-version.mjs` أثناء البناء |
+| `release.artifact.digest` | sha256 لملف `version.json` نفسه | الخادم عند القراءة |
+| `RENDER_SERVICE_ID` / `RENDER_SERVICE_NAME` / `RENDER_SERVICE_TYPE` | هوية الخدمة | Render |
+| `RENDER_GIT_COMMIT` | SHA الذي intent الـdeploy | Render |
+| `AIGAS_RELEASE_SHA` | SHA صريح من CI عند الحاجة | المشغّل/CI |
+| `AIGAS_DEPLOY_ID` | معرّف الـdeploy للتتبع | المشغّل/CI (اختياري) |
+| `AIGAS_IMAGE_DIGEST` | `sha256:…` عند النشر بصورة | المشغّل (اختياري، غير منطبق على Node runtime الأصلي) |
+| `release.consistent` | مقارنة artifact مع قيمة المنصة | الخادم؛ `null` تعني لا يوجد طرف للمقارنة |
+
+`consistent=false` يعني أن الـartifact لا يطابق ما تظنه المنصة: لا تُفتح البوابة ولا يُحوّل الدومين حتى يُفسَّر التعارض.
+
+### 9.4 خطة خدمة Node Staging (تحتاج تفويضًا — لم تُنفّذ)
+
+| البند | القيمة المقترحة |
+|---|---|
+| النوع | `type: web`، `runtime: node` (ليس `static_site`) |
+| البناء | `npm ci && npm run build` |
+| التشغيل | `npm start` (`scripts/server.mjs` → Astro standalone) |
+| فحص الصحة | `/healthz/` |
+| Node | `22.22.2` |
+| `AIGAS_APP_ENABLED` | `false` حتى اعتماد المالك |
+| `AIGAS_CSP_ENFORCE` | `false` (السياسة الكاملة Report-Only حتى P18) |
+| `AIGAS_HEALTH_AUTH_PROBE` | `true` لبيئة staging |
+| `AIGAS_REQUIRE_RLS` | `true` فقط بعد ربط `DATABASE_URL` بدور runtime بأقل صلاحية |
+| أسرار (أسماء فقط) | `DATABASE_URL`، `NEON_AUTH_BASE_URL`، `NEON_AUTH_JWKS_URL` |
+| الدومين | لا يُنقل؛ تُستخدم `onrender.com` للاختبار حتى قرار الإطلاق |
+
+**التكلفة:** لا تُنشأ قاعدة أو خدمة مدفوعة إضافية داخل هذه المهمة؛ التكلفة = خدمة web واحدة على خطة الحساب الحالية (خطة الخدمة + ساعات التشغيل). يجب أن يؤكد المشغّل الخطة والسعر داخل Render قبل التفويض؛ لا يُفترض رقم من هذا المستند.
+
+### 9.5 التراجع
+
+- إبقاء `AIGAS_APP_ENABLED=false` وعدم ربط الدومين يجعل التراجع إغلاق الخدمة أو إعادة آخر deploy صالح.
+- لا حذف خدمة أو deploy؛ التتبع يبقى عبر `deployId` و`commit` المسجلين في `/healthz/`.
+- أي rollback يرافقه إعادة قراءة `/healthz/` وسجل `consistent` للنسخة السابقة.
+
+### 9.6 الحدود
+
+- OP04 (CSP/HSTS على كل استجابات HTTP، وكاش edge للخاص) وP18 هما مالك إثبات الحماية الكاملة؛ هذا المستند لا يدّعيها.
+- `healthCheckPath: /healthz/` يعني أن تعطل التبعيات يُفشل الـdeploy بدل توجيه الحركة؛ هذا مقصود، ويجب أن يبقى `DATABASE_URL` مضبوطًا قبل أول نشر ناجح.
+- لا يوجد تمرين rollback حقيقي لأن لا خدمة Node قائمة.
+
+### 9.7 خدمة Free Staging الفعلية (2026-11-10)
+
+| البند | القيمة |
+|---|---|
+| الخدمة | `brightai-staging-node` · `srv-dbpj8jajnfac739je6lg` |
+| النوع/الخطة/المنطقة | `web_service` · `free` · `oregon` |
+| المصدر | `github.com/YEEEAE/BRIGHTAI` · `main` · auto-deploy على كل push |
+| العنوان | `https://brightai-staging-node.onrender.com` (بلا دومين مخصص، بلا DNS) |
+| فحص الصحة | `/` مؤقتًا؛ يتحول إلى `/healthz/` فقط بعد ضبط `DATABASE_URL` وAuth، وإلا صار كل نشر غير صحي |
+| التكلفة | **صفر**؛ 750 ساعة/شهر للـworkspace، والخدمة النائمة لا تستهلك |
+
+**درس إلزامي (عيب حقيقي ظهر عند أول نشر):** `scripts/server.mjs` كان يستخدم `HOST` من المهايئ فيستمع على `localhost`، وRender يعلن `No open ports detected on 0.0.0.0`. صار الافتراضي `0.0.0.0`، و`HOST=127.0.0.1` خيار محلي صريح. أي خدمة تُنشأ بدون `HOST` ستعمل الآن بلا هذا العيب.
+
+**انحراف مقصود:** هذه الخدمة أُنشئت بـCLI لا من Blueprint، لذلك `render.yaml` لا يحكمها؛ الـBlueprint يبقى تعريفًا للنشر المعتمد، والخدمة المجانية دليل staging مؤقت. الفرق المؤثر حاليًا: `healthCheckPath`.
+
+**قيود الخطة المجانية:** نوم بعد 15 دقيقة خمول وإيقاظ ~دقيقة (فحص المنصة يحدث عند النشر لا كمراقبة uptime)؛ قرص مؤقت؛ Rollback لآخر نشرين؛ ليست للإنتاج؛ وقد تُوقف عند حركة خارجية غير معتادة.

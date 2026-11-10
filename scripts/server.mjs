@@ -36,6 +36,10 @@ const server = process.env.SERVER_CERT_PATH && process.env.SERVER_KEY_PATH
   ? httpsServer({ key: readFileSync(process.env.SERVER_KEY_PATH), cert: readFileSync(process.env.SERVER_CERT_PATH) }, listener)
   : httpServer(listener);
 const port = Number(process.env.PORT ?? options.port ?? 8080);
-const host = process.env.HOST ?? (typeof options.host === 'boolean' ? (options.host ? '0.0.0.0' : 'localhost') : options.host);
+// A hosting container reaches the process over its network interface, so the
+// default must be all interfaces: binding loopback makes the platform report
+// "no open ports" while the process looks healthy in its own logs.
+// HOST=127.0.0.1 opts back in to loopback for local-only use.
+const host = process.env.HOST || '0.0.0.0';
 server.listen(port, host, () => console.log(`BRIGHTAI listening on ${host ?? 'localhost'}:${port}`));
 server.on('error', error => { console.error(error); process.exitCode = 1; });
