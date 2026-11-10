@@ -1,0 +1,307 @@
+{
+  "scores": {
+    "Source Implementation Completion": {
+      "earned": 164.25,
+      "possible": 322,
+      "percent": 51.01
+    },
+    "Runtime Verification Completion": {
+      "earned": 12,
+      "possible": 304,
+      "percent": 3.95
+    },
+    "Security & Compliance Readiness": {
+      "earned": 7.5,
+      "possible": 204,
+      "percent": 3.68
+    },
+    "Product Functional Readiness": {
+      "earned": 0,
+      "possible": 116,
+      "percent": 0.0
+    },
+    "UI/UX Completion": {
+      "earned": 2,
+      "possible": 62,
+      "percent": 3.23
+    },
+    "SEO Readiness": {
+      "earned": 7,
+      "possible": 16,
+      "percent": 43.75
+    },
+    "Beta Launch Readiness": {
+      "earned": 18.5,
+      "possible": 278,
+      "percent": 6.65
+    },
+    "Commercial Production Readiness": {
+      "earned": 27.5,
+      "possible": 322,
+      "percent": 8.54
+    },
+    "Overall staged evidence completion": {
+      "earned": 176.25,
+      "possible": 767,
+      "percent": 22.98
+    }
+  },
+  "modules": {
+    "Architecture": {
+      "source": {
+        "earned": 7.5,
+        "possible": 16,
+        "percent": 46.88
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 8,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 5.5,
+        "possible": 16,
+        "percent": 34.38
+      }
+    },
+    "Operations": {
+      "source": {
+        "earned": 16.25,
+        "possible": 21,
+        "percent": 77.38
+      },
+      "runtime": {
+        "earned": 3,
+        "possible": 21,
+        "percent": 14.29
+      },
+      "readiness": {
+        "earned": 3,
+        "possible": 21,
+        "percent": 14.29
+      }
+    },
+    "Database": {
+      "source": {
+        "earned": 15.0,
+        "possible": 35,
+        "percent": 42.86
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 35,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 35,
+        "percent": 0.0
+      }
+    },
+    "Auth/Kernel": {
+      "source": {
+        "earned": 16.25,
+        "possible": 35,
+        "percent": 46.43
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 35,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 35,
+        "percent": 0.0
+      }
+    },
+    "Firewall": {
+      "source": {
+        "earned": 14.25,
+        "possible": 26,
+        "percent": 54.81
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 26,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 26,
+        "percent": 0.0
+      }
+    },
+    "Ledger": {
+      "source": {
+        "earned": 10.5,
+        "possible": 21,
+        "percent": 50.0
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 21,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 21,
+        "percent": 0.0
+      }
+    },
+    "Human Gate": {
+      "source": {
+        "earned": 12.5,
+        "possible": 25,
+        "percent": 50.0
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 25,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 25,
+        "percent": 0.0
+      }
+    },
+    "Risk Engine": {
+      "source": {
+        "earned": 9.5,
+        "possible": 19,
+        "percent": 50.0
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 19,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 19,
+        "percent": 0.0
+      }
+    },
+    "Secure Chat": {
+      "source": {
+        "earned": 12.5,
+        "possible": 25,
+        "percent": 50.0
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 25,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 25,
+        "percent": 0.0
+      }
+    },
+    "Trial": {
+      "source": {
+        "earned": 12.25,
+        "possible": 26,
+        "percent": 47.12
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 21,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 5,
+        "possible": 26,
+        "percent": 19.23
+      }
+    },
+    "Privacy/Provider": {
+      "source": {
+        "earned": 10.0,
+        "possible": 20,
+        "percent": 50.0
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 15,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 5,
+        "possible": 20,
+        "percent": 25.0
+      }
+    },
+    "Monitoring": {
+      "source": {
+        "earned": 5.5,
+        "possible": 11,
+        "percent": 50.0
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 11,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 11,
+        "percent": 0.0
+      }
+    },
+    "UI/UX": {
+      "source": {
+        "earned": 7.5,
+        "possible": 13,
+        "percent": 57.69
+      },
+      "runtime": {
+        "earned": 2,
+        "possible": 13,
+        "percent": 15.38
+      },
+      "readiness": {
+        "earned": 2,
+        "possible": 13,
+        "percent": 15.38
+      }
+    },
+    "SEO": {
+      "source": {
+        "earned": 11.5,
+        "possible": 16,
+        "percent": 71.88
+      },
+      "runtime": {
+        "earned": 7,
+        "possible": 16,
+        "percent": 43.75
+      },
+      "readiness": {
+        "earned": 7,
+        "possible": 16,
+        "percent": 43.75
+      }
+    },
+    "Commercial": {
+      "source": {
+        "earned": 3.25,
+        "possible": 13,
+        "percent": 25.0
+      },
+      "runtime": {
+        "earned": 0,
+        "possible": 13,
+        "percent": 0.0
+      },
+      "readiness": {
+        "earned": 0,
+        "possible": 13,
+        "percent": 0.0
+      }
+    }
+  },
+  "requirements": 76
+}

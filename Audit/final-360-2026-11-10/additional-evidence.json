@@ -1,0 +1,280 @@
+{
+  "observedAt": "2026-11-10",
+  "counts": {
+    "content": [
+      {
+        "type": "text",
+        "text": "[\n  {\n    \"auth_users\": \"0\",\n    \"auth_sessions\": \"0\",\n    \"auth_orgs\": \"0\",\n    \"tenants\": \"0\",\n    \"memberships\": \"0\",\n    \"force_rls\": \"0\",\n    \"scope_constraints\": \"5\"\n  }\n]"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "migration": {
+    "content": [
+      {
+        "type": "text",
+        "text": "[\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_trial_requests\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_trial_events\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_trial_entitlements\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_hg_delegations\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_hg_grants\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"column\",\n    \"name\": \"aigas_ld_events.sequence_no\",\n    \"value\": \"bigint\"\n  },\n  {\n    \"kind\": \"column\",\n    \"name\": \"aigas_ld_events.previous_hash\",\n    \"value\": \"text\"\n  },\n  {\n    \"kind\": \"column\",\n    \"name\": \"aigas_re_treatment_revisions.residual_risk_description\",\n    \"value\": \"text\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_hg_immutable\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_hg_tenant_revision\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_policy_version_guard\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_policy_append_only\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_hg_request_guard\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_fw_decisions_append_only\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_ld_events_reject_mutation\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_sc_usage_window\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_re_reject_history_mutation\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_re_guard_treatment\",\n    \"value\": \"true\"\n  }\n]"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "extraHttp": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n[{\"path\":\"/auth/login/\",\"status\":404,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/auth/login/\"},{\"path\":\"/products/firewall.html\",\"status\":404,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/products/firewall.html\"},{\"path\":\"/products/firewall/index.html\",\"status\":200,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/products/firewall/index.html\"},{\"path\":\"/app/firewall/\",\"status\":404,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/app/firewall/\"},{\"path\":\"/app/ledger/\",\"status\":404,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/app/ledger/\"},{\"path\":\"/app/human-gate/\",\"status\":404,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/app/human-gate/\"},{\"path\":\"/app/risk-engine/\",\"status\":404,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/app/risk-engine/\"},{\"path\":\"/app/secure-chat/\",\"status\":404,\"type\":\"text/html; charset=utf-8\",\"url\":\"https://brightai.live/app/secure-chat/\"}]\n```"
+      }
+    ]
+  },
+  "links": {
+    "checked": 56,
+    "errors": [],
+    "rows": [
+      {
+        "path": "/services/",
+        "status": 200
+      },
+      {
+        "path": "/products/",
+        "status": 200
+      },
+      {
+        "path": "/pricing/",
+        "status": 200
+      },
+      {
+        "path": "/docs/",
+        "status": 200
+      },
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/contact/",
+        "status": 200
+      },
+      {
+        "path": "/trust/",
+        "status": 200
+      },
+      {
+        "path": "/pillars/transparency/",
+        "status": 200
+      },
+      {
+        "path": "/pillars/safety/",
+        "status": 200
+      },
+      {
+        "path": "/kernel/",
+        "status": 200
+      },
+      {
+        "path": "/compliance/",
+        "status": 200
+      },
+      {
+        "path": "/pillars/privacy/",
+        "status": 200
+      },
+      {
+        "path": "/privacy/",
+        "status": 200
+      },
+      {
+        "path": "/terms/",
+        "status": 200
+      },
+      {
+        "path": "/about/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-governance-saudi/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-risk-assessment/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/protect-company-data-chatgpt/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/prompt-injection/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-use-policy-employees/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/sdaia-ai-adoption-framework/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/pdpl-and-ai/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/saudi-ai-ethics-principles/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/sdaia-generative-ai-guidelines/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/iso-42001-saudi/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/shadow-ai-detection/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-hallucinations-controls/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/deepfake-policy-organizations/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-inventory-register/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-vendor-assessment/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-governance-committee-raci/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-employee-training/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/data-classification-for-ai/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-cybersecurity-nca/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-impact-assessment/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/saudi-ai-regulators-map/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/choose-ai-governance-platform/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-audit-trail/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-governance-healthcare/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-governance-financial-sector/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-bias-fairness/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/data-breach-72-hours-ai/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-contract-clauses/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/ai-data-residency-saudi/",
+        "status": 200
+      },
+      {
+        "path": "/products/firewall/",
+        "status": 200
+      },
+      {
+        "path": "/knowledge/data-governance-vs-ai-governance/",
+        "status": 200
+      },
+      {
+        "path": "/products/risk-engine/",
+        "status": 200
+      },
+      {
+        "path": "/products/human-gate/",
+        "status": 200
+      },
+      {
+        "path": "/solutions/healthcare/",
+        "status": 200
+      },
+      {
+        "path": "/solutions/finance/",
+        "status": 200
+      },
+      {
+        "path": "/solutions/government/",
+        "status": 200
+      },
+      {
+        "path": "/products/secure-chat/",
+        "status": 200
+      },
+      {
+        "path": "/products/ledger/",
+        "status": 200
+      },
+      {
+        "path": "/solutions/enterprise/",
+        "status": 200
+      }
+    ]
+  },
+  "posthog": [
+    "id: 720936",
+    "name: Default project",
+    "anonymize_ips: false",
+    "completed_snippet_onboarding: false",
+    "ingested_event: false",
+    "autocapture_opt_out: null",
+    "capture_console_log_opt_in: true",
+    "capture_performance_opt_in: true",
+    "session_recording_opt_in: false",
+    "heatmaps_opt_in: null"
+  ],
+  "snapshots": [],
+  "snapshotSchedule": [],
+  "notes": [
+    "Connector reads only. SQL SELECT only.",
+    "Render workspace explicitly confirmed by user.",
+    "PostHog token deliberately excluded."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "observed_at": "2026-11-10T12:20:22.799258+00:00",
+  "source_sha": "7b1f533f71c7b1f41884790366a4d5967c85a87b",
+  "commands": [
+    {
+      "command": "npm run build",
+      "exit_code": 0,
+      "result": "PASS with prerender request.headers warnings"
+    },
+    {
+      "command": "env -u DATABASE_URL -u KERNEL_TEST_DATABASE_URL -u FIREWALL_TEST_DATABASE_URL -u HUMAN_GATE_TEST_DATABASE_URL -u LEDGER_TEST_DATABASE_URL -u RISK_ENGINE_TEST_DATABASE_URL node --test tests/*.test.mjs",
+      "exit_code": 1,
+      "result": "18 PASS / 9 FAIL / 5 SKIP"
+    },
+    {
+      "command": "node scripts/firewall-local-verify.mjs",
+      "exit_code": 0,
+      "result": "8/8 local no-egress assertions PASS"
+    },
+    {
+      "command": "HOST=127.0.0.1 PORT=4391 AIGAS_APP_ENABLED=false npm start",
+      "result": "listened after sandbox localhost escalation; no .env loaded"
+    },
+    {
+      "command": "node scripts/verify-routes.mjs http://127.0.0.1:4391",
+      "exit_code": 1,
+      "result": "stopped on stale Analytics assertion at line67"
+    }
+  ],
+  "source_sha256": {
+    "package.json": "49067134b62ee0338ef7a6831c3f574cc852e8a2de10a04b76cf9990ce6db9dc",
+    "package-lock.json": "362c1a0c27d9275362c984382192314082a233ccab79d5faf9daeaec65a1cf3a",
+    "scripts/firewall-local-verify.mjs": "ddea6e4c340f4966ed7953639b02cd3618f4946d93d8dee8e906c3681ce7e31b",
+    "scripts/server.mjs": "a4a4d97f31208b94bd2197f918b73e0615f25787f02f0cfd8c850e86dfae7b37",
+    "src/server/firewall/core.mjs": "1919baf7a160bec32db60a54d6595799d0d70d85ec6ab01849ed997cac0b60c1",
+    "src/server/firewall/guard.mjs": "7f05593008dc2df0fd1e296a1ca58fbcb3bc77f07e4e5b6354d7716f9587f955",
+    "src/server/firewall/binding.mjs": "a45ca562644957e431cc99012c82ceee3838563f3ae1bd2a42f8b9b96c43d2f9",
+    "src/server/firewall/local-adapter.mjs": "935d87cc60979ac22a817a374c78273f2a7404174afc7ecdfeb40e1418640ec5"
+  },
+  "database_tests_skipped_reason": "Five explicit TEST_DATABASE_URL variables unset; no disposable PostgreSQL18 configured; production credentials were not loaded. Local binaries PG14.19 were not treated as PG18 evidence.",
+  "network_limit": "Shell network URLError; Browser used for live GET evidence. Local read/listen needed approved sandbox escalation."
+}

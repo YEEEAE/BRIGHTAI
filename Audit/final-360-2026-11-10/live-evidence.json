@@ -1,0 +1,259 @@
+{
+  "observedAt": "2026-11-10",
+  "render": {
+    "service": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"autoDeploy\":\"yes\",\"autoDeployTrigger\":\"commit\",\"branch\":\"main\",\"createdAt\":\"2026-04-25T05:48:35.046206Z\",\"dashboardUrl\":\"https://dashboard.render.com/static/srv-d7m5bcjbc2fs73826v20\",\"environmentId\":\"evm-d7m5bcjeo5us73ekekpg\",\"id\":\"srv-d7m5bcjbc2fs73826v20\",\"name\":\"BRIGHTAI\",\"notifyOnFail\":\"default\",\"ownerId\":\"tea-d7m59qbeo5us73ekdu80\",\"repo\":\"https://github.com/YEEEAE/BRIGHTAI\",\"rootDir\":\"\",\"serviceDetails\":{\"buildCommand\":\"pnpm install \\u0026\\u0026 pnpm run build\",\"buildPlan\":\"starter\",\"ipAllowList\":[{\"cidrBlock\":\"0.0.0.0/0\",\"description\":\"everywhere\"}],\"previews\":{\"generation\":\"off\"},\"publishPath\":\"dist/client\",\"pullRequestPreviewsEnabled\":\"no\",\"renderSubdomainPolicy\":\"enabled\",\"url\":\"https://brightai-4x39.onrender.com\"},\"slug\":\"brightai-4x39\",\"suspended\":\"not_suspended\",\"suspenders\":[],\"type\":\"static_site\",\"updatedAt\":\"2026-11-10T11:48:06.831688Z\"}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "deploy": {
+      "content": [
+        {
+          "type": "text",
+          "text": "[{\"commit\":{\"createdAt\":\"2026-11-10T11:47:26Z\",\"id\":\"7b1f533f71c7b1f41884790366a4d5967c85a87b\",\"message\":\"update site\"},\"createdAt\":\"2026-11-10T11:47:30.022926Z\",\"finishedAt\":\"2026-11-10T11:48:06.828415Z\",\"id\":\"dep-dbpg8kgae00c73easjr0\",\"startedAt\":\"2026-11-10T11:47:30.021169Z\",\"status\":\"live\",\"trigger\":\"new_commit\",\"updatedAt\":\"2026-11-10T11:48:06.828658Z\"},{\"commit\":{\"createdAt\":\"2026-11-10T11:10:10Z\",\"id\":\"00d6de9197836179ecebcca46a2c731cc961a260\",\"message\":\"update site\"},\"createdAt\":\"2026-11-10T11:10:14.407262Z\",\"finishedAt\":\"2026-11-10T11:11:05.142696Z\",\"id\":\"dep-dbpfn5navr4c73em4l2g\",\"startedAt\":\"2026-11-10T11:10:14.405549Z\",\"status\":\"deactivated\",\"trigger\":\"new_commit\",\"updatedAt\":\"2026-11-10T11:48:06.827018Z\"},{\"commit\":{\"createdAt\":\"2026-11-08T21:59:53Z\",\"id\":\"c6c280bb41cbcfbd97c3bfaec8ebdb879a3626be\",\"message\":\"update site\"},\"createdAt\":\"2026-11-08T21:59:58.563057Z\",\"finishedAt\":\"2026-11-08T22:00:35.055706Z\",\"id\":\"dep-dbof1ng473hc73aidgu0\",\"startedAt\":\"2026-11-08T21:59:58.561531Z\",\"status\":\"deactivated\",\"trigger\":\"new_commit\",\"updatedAt\":\"2026-11-10T11:11:05.140704Z\"}]\n\n cursor: hyM5_6p-_4kxbmc0NzNoYzczYWlkZ3Uw"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    }
+  },
+  "neon": {
+    "project": {
+      "id": "young-frog-60183055",
+      "region": "aws-us-east-2",
+      "pgVersion": 18,
+      "historyRetentionSeconds": 21600
+    },
+    "branches": {
+      "content": [
+        {
+          "type": "text",
+          "text": "[\n  {\n    \"id\": \"br-young-bird-b43proeb\",\n    \"project_id\": \"young-frog-60183055\",\n    \"name\": \"production\",\n    \"slug\": \"br-young-bird-b43proeb\",\n    \"project_slug\": \"young-frog-60183055\",\n    \"current_state\": \"ready\",\n    \"state_changed_at\": \"2026-11-01T00:12:42Z\",\n    \"logical_size\": 34193408,\n    \"creation_source\": \"console\",\n    \"primary\": true,\n    \"default\": true,\n    \"protected\": false,\n    \"cpu_used_sec\": 0,\n    \"compute_time_seconds\": 7133,\n    \"active_time_seconds\": 26960,\n    \"written_data_bytes\": 0,\n    \"data_transfer_bytes\": 3375011,\n    \"created_at\": \"2026-11-01T00:12:40Z\",\n    \"updated_at\": \"2026-11-09T04:12:48Z\",\n    \"created_by\": {\n      \"name\": \"B\",\n      \"image\": \"\"\n    },\n    \"init_source\": \"parent-data\"\n  }\n]"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "catalog": {
+      "content": [
+        {
+          "type": "text",
+          "text": "[\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_product_grants\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_tenants\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_memberships\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_audit_events\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_product_access\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_auth_organizations\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_member_invitations\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_hg_requests\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_hg_decisions\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_hg_policies\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_hg_events\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_sc_cancellations\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_sc_requests\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_sc_conversations\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_sc_messages\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_ld_events\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_ld_evidence_requirements\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_fw_rules\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_re_asset_revisions\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_fw_decisions\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_re_assessments\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_re_assets\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_re_treatment_revisions\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_departments\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_department_memberships\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_department_events\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_policy_delegations\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_policies\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_kernel_policy_decisions\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_policy_versions\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"table\",\n    \"name\": \"aigas_policy_approvals\",\n    \"details\": {\n      \"rls\": true,\n      \"force\": false,\n      \"owner\": \"neondb_owner\"\n    }\n  },\n  {\n    \"kind\": \"policy\",\n    \"name\": \"aigas_sc_cancellations\",\n    \"details\": {\n      \"cmd\": \"ALL\",\n      \"name\": \"sc_cancellation_owner\",\n      \"qual\": \"((tenant_id = (NULLIF(current_setting('aigas.sc_tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.sc_user_id'::text, true), ''::text))::uuid))\",\n      \"check\": \"((tenant_id = (NULLIF(current_setting('aigas.sc_tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.sc_user_id'::text, true), ''::text))::uuid))\",\n      \"roles\": [\n        \"public\"\n      ]\n    }\n  },\n  {\n    \"kind\": \"policy\",\n    \"name\": \"aigas_sc_requests\",\n    \"details\": {\n      \"cmd\": \"ALL\",\n      \"name\": \"sc_request_owner\",\n      \"qual\": \"((tenant_id = (NULLIF(current_setting('aigas.sc_tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.sc_user_id'::text, true), ''::text))::uuid))\",\n      \"check\": \"((tenant_id = (NULLIF(current_setting('aigas.sc_tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.sc_user_id'::text, true), ''::text))::uuid))\",\n      \"roles\": [\n        \"public\"\n      ]\n    }\n  },\n  {\n    \"kind\": \"grant\",\n    \"name\": \"authenticated\",\n    \"details\": {\n      \"privilege\": \"DELETE\",\n      \"table_count\": 31\n    }\n  },\n  {\n    \"kind\": \"grant\",\n    \"name\": \"authenticated\",\n    \"details\": {\n      \"privilege\": \"INSERT\",\n      \"table_count\": 31\n    }\n  },\n  {\n    \"kind\": \"grant\",\n    \"name\": \"authenticated\",\n    \"details\": {\n      \"privilege\": \"SELECT\",\n      \"table_count\": 31\n    }\n  },\n  {\n    \"kind\": \"grant\",\n    \"name\": \"authenticated\",\n    \"details\": {\n      \"privilege\": \"UPDATE\",\n      \"table_count\": 31\n    }\n  }\n]"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "dataApi": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"url\": \"https://ep-quiet-resonance-b4ad4356.apirest.c-6.us-east-2.aws.neon.tech/neondb/rest/v1\",\n  \"status\": \"active\",\n  \"settings\": {\n    \"db_aggregates_enabled\": true,\n    \"db_anon_role\": \"anonymous\",\n    \"db_schemas\": [\n      \"public\"\n    ],\n    \"jwt_role_claim_key\": \".role\"\n  },\n  \"available_schemas\": [\n    \"auth\",\n    \"neon_auth\",\n    \"public\"\n  ],\n  \"observed_at\": \"2026-11-10T11:51:12Z\"\n}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    }
+  },
+  "sentry": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"projects\":[],\"hasMore\":false,\"nextCursor\":null}"
+      }
+    ],
+    "structuredContent": {
+      "projects": [],
+      "hasMore": false,
+      "nextCursor": null
+    }
+  },
+  "posthog": [
+    "id: 720936",
+    "name: Default project",
+    "anonymize_ips: false",
+    "completed_snippet_onboarding: false",
+    "ingested_event: false",
+    "autocapture_opt_out: null",
+    "capture_console_log_opt_in: true",
+    "capture_performance_opt_in: true",
+    "session_recording_opt_in: false",
+    "heatmaps_opt_in: null"
+  ],
+  "http": [
+    {
+      "path": "/",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 112020,
+      "title": "حوكمة وأمان الذكاء الاصطناعي في السعودية | BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/app/",
+      "status": 404,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:06 UTC",
+      "bytes": 10173,
+      "title": "الصفحة غير موجودة | BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/app/api/kernel/health/",
+      "status": 404,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:06 UTC",
+      "bytes": 10173,
+      "title": "الصفحة غير موجودة | BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/auth/sign-in/",
+      "status": 404,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:06 UTC",
+      "bytes": 10173,
+      "title": "الصفحة غير موجودة | BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/auth/sign-up/",
+      "status": 404,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:06 UTC",
+      "bytes": 10173,
+      "title": "الصفحة غير موجودة | BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "type": "text/plain; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 73,
+      "title": null,
+      "content": "User-agent: *\nAllow: /\n\nSitemap: https://brightai.live/sitemap-index.xml\n"
+    },
+    {
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "type": "application/xml",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 184,
+      "title": null,
+      "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"><sitemap><loc>https://brightai.live/sitemap-0.xml</loc></sitemap></sitemapindex>"
+    },
+    {
+      "path": "/products/firewall/",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 28209,
+      "title": "جدار حماية الذكاء الاصطناعي | AIGAS Firewall — BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/products/ledger/",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 24755,
+      "title": "سجل تدقيق الذكاء الاصطناعي | AIGAS Ledger — BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/products/human-gate/",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 24345,
+      "title": "الموافقات البشرية على قرارات AI | AIGAS Human Gate — BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/products/risk-engine/",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 25556,
+      "title": "تقييم مخاطر الذكاء الاصطناعي | AIGAS Risk Engine — BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/products/secure-chat/",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 24141,
+      "title": "محادثة ذكاء اصطناعي مؤسسية | AIGAS Secure Chat — BRIGHTAI",
+      "content": null
+    },
+    {
+      "path": "/llms.txt",
+      "status": 200,
+      "type": "text/plain; charset=utf-8",
+      "cache": "public, max-age=0, s-maxage=300",
+      "csp": null,
+      "hsts": null,
+      "robots": null,
+      "lastModified": "Tue, 10 Nov 2026 11:48:07 UTC",
+      "bytes": 13992,
+      "title": null,
+      "content": "# BRIGHTAI — مؤسسة مُشرقة\n\n> محتوى عربي عن حوكمة وأمان الذكاء الاصطناعي للمنشآت في السعودية.\n\nالمواد تعليمية وليست استشارة قانونية أو شهادة امتثال. منتجات AIGAS مخططة وإتاحتها التشغيلية غير متحققة؛ لا توجد أسعار نهائية معتمدة.\nالصفحات التالية هي الروابط العامة الأساسية. لا يشمل الدليل مساحة العمل أو المصادقة أو المحاكاة غير المفهرسة.\n\nخريطة XML: https://brightai.live/sitemap-index.xml\n\n## التعريف والخدمات والثقة\n\n- [حوكمة وأمان الذكاء الاصطناعي في السعودية | BRIGHTAI](https://brightai.live/): أدلة عربية لحوكمة الذكاء الاصطناعي في السعودية: سياسة الموظفين، تقييم المخاطر وحماية البيانات. تعرّف على تصور منتجات AIGAS وحدود إتاحتها التشغيلية.\n- [عن BRIGHTAI | حوكمة وأمان الذكاء الاصطناعي](https://brightai.live/about/): تعرف على توجه BRIGHTAI في حوكمة وأمان الذكاء الاصطناعي، وما هو مخطط وما لم يتم التحقق من تشغيله.\n- [حوكمة ومتطلبات الذكاء الاصطناعي | BRIGHTAI](https://brightai.live/compliance/): معلومات توعوية عن إدارة مخاطر الذكاء الاصطناعي في السعودية. تختلف الالتزامات حسب الجهة والقطاع والاستخدام.\n- [تواصل مع BRIGHTAI | استفسار أو عرض سعر](https://brightai.live/contact/): أرسل استفساراً عن تصور منتجات BRIGHTAI أو اطلب عرض سعر. نموذج الموقع يفتح رسالة بريد ولا يؤكد إرسال الطلب.\n- [أدلة حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI](https://brightai.live/docs/): أدلة عربية عملية عن حوكمة الذكاء الاصطناعي وحماية البيانات وتقييم المخاطر والسياسات في بيئة العمل السعودية.\n- [الأسعار وطلب عرض سعر | BRIGHTAI](https://brightai.live/pricing/): لا يوجد سعر نهائي معتمد لمنتجات BRIGHTAI. أرسل استفساراً لطلب معلومات أو عرض سعر دون التزام.\n- [الخصوصية | BRIGHTAI](https://brightai.live/privacy/): معلومات أولية عن الخصوصية في موقع BRIGHTAI. تفاصيل الكيان القانوني والمعالجة والاحتفاظ تحتاج مراجعة واعتماداً قبل النشر النهائي.\n- [حوكمة الذكاء الاصطناعي للمنشآت: نطاق الدعم | BRIGHTAI](https://brightai.live/services/): جهّز استفسارك عن سياسة استخدام الذكاء الاصطناعي وتقييم المخاطر وتوثيق الضوابط. اطّلع على مواد تعليمية متاحة؛ أي نطاق عمل أو سعر يحتاج اتفاقاً مكتوباً.\n- [الشروط | BRIGHTAI](https://brightai.live/terms/): بيان أولي يوضح حدود محتوى BRIGHTAI العام. شروط الخدمة والمنتج تحتاج مراجعة واعتماداً قانونياً قبل النشر.\n- [الثقة والشفافية | BRIGHTAI](https://brightai.live/trust/): حالة الأدلة المعلنة عن منتجات BRIGHTAI والبيانات والموردين والضوابط، مع توضيح ما لم يتم التحقق منه.\n\n## المنتجات المخططة\n\n- [منتجات حوكمة وأمان الذكاء الاصطناعي AIGAS | BRIGHTAI](https://brightai.live/products/): قارن الأدوار المستهدفة لمنتجات AIGAS للمنشآت السعودية: حماية الطلبات، تقييم المخاطر، الموافقات البشرية، سجل التدقيق والمحادثة المؤسسية. المنتجات مخططة وغير متحققة تشغيلياً.\n- [جدار حماية الذكاء الاصطناعي | AIGAS Firewall — BRIGHTAI](https://brightai.live/products/firewall/): جدار حماية الذكاء الاصطناعي للمنشآت السعودية: تصور منتج لفحص مدخلات ومخرجات الذكاء الاصطناعي بحثاً عن معلومات أو تعليمات قد تتطلب معالجة وفق سياسة المنشأة. المنتج مخطط وإتاحته التشغيلية غير متحققة.\n- [الموافقات البشرية على قرارات AI | AIGAS Human Gate — BRIGHTAI](https://brightai.live/products/human-gate/): الموافقات البشرية على قرارات AI للمنشآت السعودية: تصور لمسار مراجعة بشرية قبل اعتماد مخرجات محددة وفق سياسة الجهة، مع تحديد صاحب الصلاحية ومسار التصعيد. المنتج مخطط وإتاحته التشغيلية غير متحققة.\n- [سجل تدقيق الذكاء الاصطناعي | AIGAS Ledger — BRIGHTAI](https://brightai.live/products/ledger/): سجل تدقيق الذكاء الاصطناعي للمنشآت السعودية: تصور لحفظ أدلة تشغيلية مرتبطة بالاستخدام والقرارات وفق ضوابط وصول واحتفاظ تعتمدها الجهة. المنتج مخطط وإتاحته التشغيلية غير متحققة.\n- [تقييم مخاطر الذكاء الاصطناعي | AIGAS Risk Engine — BRIGHTAI](https://brightai.live/products/risk-engine/): تقييم مخاطر الذكاء الاصطناعي للمنشآت السعودية: تصور لتقييم مخاطر حالة الاستخدام وربطها بضوابط ومراجعات يحددها مالك المنشأة. المنتج مخطط وإتاحته التشغيلية غير متحققة.\n- [محادثة ذكاء اصطناعي مؤسسية | AIGAS Secure Chat — BRIGHTAI](https://brightai.live/products/secure-chat/): محادثة ذكاء اصطناعي مؤسسية للمنشآت السعودية: تصور لواجهة محادثة مؤسسية يمكن أن تخضع لسياسات اختيار الأدوات والمراجعة بعد إثبات البنية والتكاملات. المنتج مخطط وإتاحته التشغيلية غير متحققة.\n\n## القطاعات وأركان الحوكمة\n\n- [الخصوصية وحماية البيانات | حوكمة الذكاء الاصطناعي — BRIGHTAI](https://brightai.live/pillars/privacy/): حدد أنواع البيانات والغرض والقناة والمستلمين قبل إدخالها في أداة ذكاء اصطناعي.\n- [السلامة والموثوقية | حوكمة الذكاء الاصطناعي — BRIGHTAI](https://brightai.live/pillars/safety/): صمّم الاستخدام بحيث يعرف الفريق حدود النظام، ومتى يحتاج إلى تحقق أو مراجعة أو إيقاف.\n- [الشفافية والمساءلة | حوكمة الذكاء الاصطناعي — BRIGHTAI](https://brightai.live/pillars/transparency/): اربط كل استخدام بغرض ومالك ومسؤولية واضحة، ووثق القرار والضوابط التي اعتمدتها الجهة.\n- [حوكمة الذكاء الاصطناعي في المنشآت والشركات بالسعودية | BRIGHTAI](https://brightai.live/solutions/enterprise/): حوكمة الذكاء الاصطناعي للشركات السعودية: سياسة استخدام الموظفين، تصنيف البيانات، الأدوات المعتمدة ومسار الإبلاغ والمراجعة. ابدأ بحالة استخدام ومالك مسؤول.\n- [حوكمة الذكاء الاصطناعي في القطاع المالي بالسعودية | BRIGHTAI](https://brightai.live/solutions/finance/)"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "path": "/",
+    "error": "URLError"
+  },
+  {
+    "path": "/app/",
+    "error": "URLError"
+  },
+  {
+    "path": "/app/api/kernel/health/",
+    "error": "URLError"
+  },
+  {
+    "path": "/auth/sign-in/",
+    "error": "URLError"
+  },
+  {
+    "path": "/auth/sign-up/",
+    "error": "URLError"
+  },
+  {
+    "path": "/robots.txt",
+    "error": "URLError"
+  },
+  {
+    "path": "/sitemap-index.xml",
+    "error": "URLError"
+  },
+  {
+    "path": "/products/firewall/",
+    "error": "URLError"
+  },
+  {
+    "path": "/products/ledger/",
+    "error": "URLError"
+  },
+  {
+    "path": "/products/human-gate/",
+    "error": "URLError"
+  },
+  {
+    "path": "/products/risk-engine/",
+    "error": "URLError"
+  },
+  {
+    "path": "/products/secure-chat/",
+    "error": "URLError"
+  },
+  {
+    "path": "/llms.txt",
+    "error": "URLError"
+  }
+]

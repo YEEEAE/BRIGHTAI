@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "file": "FINAL-360-AUDIT.html",
+  "desktopAndMobile": [
+    {
+      "requestedWidth": 360,
+      "width": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "fonts": true,
+      "h1": 1,
+      "requirements": 76,
+      "prompts": 25,
+      "resources": [],
+      "placeholder": true
+    },
+    {
+      "requestedWidth": 390,
+      "width": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "fonts": true,
+      "h1": 1,
+      "requirements": 76,
+      "prompts": 25,
+      "resources": [],
+      "placeholder": true
+    },
+    {
+      "requestedWidth": 768,
+      "width": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "fonts": true,
+      "h1": 1,
+      "requirements": 76,
+      "prompts": 25,
+      "resources": [],
+      "placeholder": true
+    },
+    {
+      "requestedWidth": 1440,
+      "width": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "fonts": true,
+      "h1": 1,
+      "requirements": 76,
+      "prompts": 25,
+      "resources": [],
+      "placeholder": true
+    }
+  ],
+  "interaction": {
+    "req": [
+      "req-LD05",
+      "req-TR04",
+      "req-PR03"
+    ],
+    "empty": true,
+    "moduleCount": 6,
+    "promptCount": 2,
+    "printAll": true,
+    "printRestore": true,
+    "copyOk": true,
+    "anchorOpen": true,
+    "allOpened": true,
+    "finalWidth": 1440,
+    "scrollWidth": 1440
+  },
+  "offlineAndCsv": {
+    "downloadTriggered": true,
+    "csvRows": 77,
+    "header": "\"id\",\"module\",\"requirement\",\"weight\",\"source\",\"runtime\",\"approval\",\"status\",\"evidence\",\"gap\",\"closure\",\"dependency\"",
+    "fileProtocol": "file:",
+    "externalResources": 0
+  },
+  "limitations": [
+    "Printing preparation/restoration and print CSS checked; no exported PDF was generated.",
+    "No comprehensive WCAG claim; browser coverage is Chromium.",
+    "Original audit values are preserved, not rechecked against live services."
+  ]
+}

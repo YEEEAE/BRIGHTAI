@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "checks": [
+    "76 unique requirements; CSV/JSON consistent",
+    "all JSON parseable",
+    "25 prompts",
+    "176.25/767=22.98%",
+    "local report links resolve",
+    "no credential-like values detected in audit text",
+    "harness copy matches source"
+  ],
+  "limitations": "Pattern scan is not proof of absence of all secret formats. Source tests remain FAIL as recorded, not rerun after documentation-only edits.",
+  "prompt_update": "User removed15 cap; expanded25 checked in prompt-plan-checks.json; independent original review not extended."
+}

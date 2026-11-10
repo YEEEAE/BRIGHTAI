@@ -1,13 +1,24 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
-- 2026-11-10: HEAD أساس `00d6de9197836179ecebcca46a2c731cc961a260` + patch مراقبة محلي؛ G1 PASS ضيق تاريخيًا، G2–G8 BLOCKED، G9 NOT_VERIFIED؛ لا runtime/deploy أو موافقة قياس مثبتة.
+- التقرير له قارئHTML مستقل دون شبكة: `Audit/final-360-2026-11-10/FINAL-360-AUDIT.html`؛ يولد بـbuild-report.mjs؛76 متطلبًا و25 برومبتًا؛ Chromium360/390/768/1440 والبحث/النسخ/CSV وتهيئة الطباعة PASS؛ بيانات التدقيق لم تتغير.
+- توجيه المستخدم2026-11-10: لا سقف15 لبرومبتات الإغلاق؛ الخطة الحالية25 بتقسيم تخصصي وتبعيات مفحوصة في `Audit/final-360-2026-11-10/EXECUTION-PROMPTS.md`؛ أرقام التدقيق وNO-GO دون تغيير.
+- 2026-11-10 VERIFIED: HEAD `7b1f533f71c7b1f41884790366a4d5967c85a87b` يطابق Render live deploy `dep-dbpg8kgae00c73easjr0`؛ الخدمة `srv-d7m5bcjbc2fs73826v20` هي static_site وتنشر dist/client؛ app/Auth sign-up/API حية404؛ Beta/Commercial NO-GO.
+- 2026-11-10: build PASS؛ Node tests 18 PASS/9 FAIL/5 DB SKIP؛ Firewall harness 8/8 LOCAL PASS؛ 55 صفحة عامة200؛ لا عمليات منتج حية مثبتة. مرجع: `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md`.
 - المراقبة: اعتماد مستقل لكل طبقة + SHA كامل؛ PostHog staging/beta فقط؛ واجهة App/Auth ترسل رموزًا ثابتة عبر same-origin relay؛ لا SDK أو stack؛ خطة التحقق O1–O8 غير منفذة.
 
 ## Open Issues / Blockers
-- Sentry بلا مشاريع؛ PostHog إنشاء مشروع جديد محجوب بحد الخطة 1/1؛ لا وجهة قياس معتمدة. Render workspace listing يعمل الآن دون خدمة مختارة؛ Neon production وحيد غير محمي. مرجع: `docs/beta/MONITORING-READONLY-STATUS-2026-11-10.md`.
+- 2026-11-10 VERIFIED: Neon production وحيد غير محمي؛ 31 جدولًا/RLS31/سياسات2/FORCE0؛ runtime role وmigration ledger غائبان؛ لا staging أو استعادة مقاسة.
+- Sentry projects=[] ضمن الاتصال؛ PostHog720936 ingested_event=false وإعدادات خصوصية تحتاج مراجعة؛ لا وجهة معتمدة، وحد الخطة التاريخي لم يُعد التحقق منه. Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — تدقيق 360 ومصفوفة أدلة حالية
+- **تم:** إثبات Render static/deploy/SHA بقراءة MCP بعد اختيار المستخدم؛ جرد Neon والمراقبة وزحف55 صفحة؛ مصفوفة76 متطلبًا ومواصفات تجربة و15 برومبت إغلاق.
+- **التحقق:** build PASS؛ unit18 PASS/9 FAIL/5 SKIP؛ guard8/8 LOCAL PASS؛ routes FAIL عند assertion analytics قديم؛ لا E2E/DB writes/provider/deploy.
+- **الحالة:** DONE للتدقيق ضمن حدوده؛ المنتجات/Beta/Commercial BLOCKED؛ النسب مؤشرات أدلة أولية لا موافقات إطلاق.
+- **ملفات:** `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md`، `Audit/final-360-2026-11-10/EXECUTION-PROMPTS.md`.
+- **مفتوح:** SSR معزول وparity/runtime RLS وbootstrap/trial lifecycle/purge وموافقات AI/خصوصية واستعادة وUAT؛ .env بقيت ignored/untracked وصلاحيتها600 دون تغيير قيم.
 
 ## [2026-11-10] — استكمال المراقبة المحلية
 - **تم:** تنقيح بقوائم ثابتة بلا stack، ربط إشارات الواجهة ونتائج الدخول، استقلال موافقة analytics، وتوثيق alert/on-call كمسودة بلا وجهات.

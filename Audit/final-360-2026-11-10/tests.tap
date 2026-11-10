@@ -1,0 +1,371 @@
+TAP version 13
+# Subtest: Postgres: policy CRUD, priority, tenant isolation, permissions, metadata privacy and fail-closed log
+ok 1 - Postgres: policy CRUD, priority, tenant isolation, permissions, metadata privacy and fail-closed log # SKIP
+  ---
+  duration_ms: 0.330542
+  type: 'test'
+  ...
+# Subtest: synthetic outcomes, denial precedence and priority within the winning action
+not ok 2 - synthetic outcomes, denial precedence and priority within the winning action
+  ---
+  duration_ms: 2.242042
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/firewall.test.mjs:9:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '[نص منقّح]'
+    - '[معرّف منقّح]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '[معرّف منقّح]'
+  actual: '[نص منقّح]'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/firewall.test.mjs:11:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: literal patterns are never compiled; corrupt policy and empty policy fail closed
+not ok 3 - literal patterns are never compiled; corrupt policy and empty policy fail closed
+  ---
+  duration_ms: 0.47125
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/firewall.test.mjs:25:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    'DENY' !== 'BLOCK'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'BLOCK'
+  actual: 'DENY'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/firewall.test.mjs:31:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: server-side rule validation stays literal and bounded
+not ok 4 - server-side rule validation stays literal and bounded
+  ---
+  duration_ms: 0.743791
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/firewall.test.mjs:41:1'
+  failureType: 'testCodeFailure'
+  error: 'اختر إجراءً معتمدًا: ALLOW أو WARN أو REDACT أو ESCALATE أو DENY.'
+  code: 'INVALID_RULE_ACTION'
+  stack: |-
+    ruleAction (file:///Users/yzydalshmry/Desktop/BRIGHTAI/src/server/firewall/core.mjs:38:39)
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/firewall.test.mjs:48:16)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP rejects missing identity, cross origin, tenant injection, unknown fields and oversized bodies
+ok 5 - HTTP rejects missing identity, cross origin, tenant injection, unknown fields and oversized bodies
+  ---
+  duration_ms: 16.122625
+  type: 'test'
+  ...
+# Subtest: missing Firewall tables and unknown failures never return ALLOW
+ok 6 - missing Firewall tables and unknown failures never return ALLOW
+  ---
+  duration_ms: 1.006042
+  type: 'test'
+  ...
+# Subtest: Human Gate: durable decisions, independent reviewer, isolation, concurrency, enforced effect, audit rollback
+ok 7 - Human Gate: durable decisions, independent reviewer, isolation, concurrency, enforced effect, audit rollback # SKIP
+  ---
+  duration_ms: 0.28375
+  type: 'test'
+  ...
+# Subtest: Human Gate input and separation of duties
+not ok 8 - Human Gate input and separation of duties
+  ---
+  duration_ms: 2.301458
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/human-gate.test.mjs:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/human-gate.test.mjs:9:46)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: Human Gate HTTP: auth first, origin, size, JSON and private errors
+ok 9 - Human Gate HTTP: auth first, origin, size, JSON and private errors
+  ---
+  duration_ms: 17.4005
+  type: 'test'
+  ...
+# Subtest: Human Gate reports missing schema and database privilege without leaking driver details
+ok 10 - Human Gate reports missing schema and database privilege without leaking driver details
+  ---
+  duration_ms: 0.772583
+  type: 'test'
+  ...
+# Subtest: Kernel DB: real product state, tenant-scoped totals, activity and member roles
+ok 11 - Kernel DB: real product state, tenant-scoped totals, activity and member roles # SKIP
+  ---
+  duration_ms: 0.281416
+  type: 'test'
+  ...
+# Subtest: tenant selection cannot manufacture membership
+not ok 12 - tenant selection cannot manufacture membership
+  ---
+  duration_ms: 0.513583
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/kernel.test.mjs:5:1'
+  failureType: 'testCodeFailure'
+  error: 'حدد مؤسسة صالحة قبل تنفيذ العملية.'
+  code: 'INVALID_WORKSPACE'
+  stack: |-
+    selectMembership (file:///Users/yzydalshmry/Desktop/BRIGHTAI/src/server/kernel/core.mjs:78:54)
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/kernel.test.mjs:7:16)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: role guard rejects member escalation
+ok 13 - role guard rejects member escalation
+  ---
+  duration_ms: 0.847166
+  type: 'test'
+  ...
+# Subtest: workspace names validate type and limits
+ok 14 - workspace names validate type and limits
+  ---
+  duration_ms: 0.108542
+  type: 'test'
+  ...
+# Subtest: product state comes from the access row, not the interface
+not ok 15 - product state comes from the access row, not the interface
+  ---
+  duration_ms: 0.95575
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/kernel.test.mjs:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'NOT_CONFIGURED'
+    - 'FOUNDATION'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'FOUNDATION'
+  actual: 'NOT_CONFIGURED'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/kernel.test.mjs:24:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: labels never expose a raw role or audit code to the interface
+ok 16 - labels never expose a raw role or audit code to the interface
+  ---
+  duration_ms: 0.169875
+  type: 'test'
+  ...
+# Subtest: missing and forged authentication are rejected before DB access
+ok 17 - missing and forged authentication are rejected before DB access
+  ---
+  duration_ms: 26.138875
+  type: 'test'
+  ...
+# Subtest: signed identity verifies signature, issuer, expiry and anonymous denial
+not ok 18 - signed identity verifies signature, issuer, expiry and anonymous denial
+  ---
+  duration_ms: 7.028167
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/kernel.test.mjs:46:1'
+  failureType: 'testCodeFailure'
+  error: 'invalid identity'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    verifyIdentity (file:///Users/yzydalshmry/Desktop/BRIGHTAI/src/server/kernel/auth.mjs:31:199)
+    async TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/kernel.test.mjs:51:20)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Arabic diacritics, hamza, tatweel and word order
+ok 19 - Arabic diacritics, hamza, tatweel and word order
+  ---
+  duration_ms: 1.212208
+  type: 'test'
+  ...
+# Subtest: OR within products and AND across groups
+ok 20 - OR within products and AND across groups
+  ---
+  duration_ms: 0.192959
+  type: 'test'
+  ...
+# Subtest: Extract actual headings and reading words, excluding scripts
+ok 21 - Extract actual headings and reading words, excluding scripts
+  ---
+  duration_ms: 1.451
+  type: 'test'
+  ...
+# Subtest: Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolation, roles, privacy, paging and rollback
+ok 22 - Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolation, roles, privacy, paging and rollback # SKIP
+  ---
+  duration_ms: 0.372625
+  type: 'test'
+  ...
+# Subtest: canonical digest survives DB time/JSON ordering; detects changes to each covered field
+not ok 23 - canonical digest survives DB time/JSON ordering; detects changes to each covered field
+  ---
+  duration_ms: 0.781625
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/ledger.test.mjs:8:1'
+  failureType: 'testCodeFailure'
+  error: 'Invalid chain'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    canonical (file:///Users/yzydalshmry/Desktop/BRIGHTAI/src/server/ledger/core.mjs:56:234)
+    hashEvent (file:///Users/yzydalshmry/Desktop/BRIGHTAI/src/server/ledger/core.mjs:59:42)
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/ledger.test.mjs:9:36)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: bounded filters reject huge pages and invalid types/periods
+ok 24 - bounded filters reject huge pages and invalid types/periods
+  ---
+  duration_ms: 0.561
+  type: 'test'
+  ...
+# Subtest: HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures
+ok 25 - HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures
+  ---
+  duration_ms: 14.932459
+  type: 'test'
+  ...
+# Subtest: Risk Engine DB: persistence, version history, tenant/role rejection, races and atomic audit
+ok 26 - Risk Engine DB: persistence, version history, tenant/role rejection, races and atomic audit # SKIP
+  ---
+  duration_ms: 0.32225
+  type: 'test'
+  ...
+# Subtest: Risk Engine: every draft matrix cell and untrusted fields
+not ok 27 - Risk Engine: every draft matrix cell and untrusted fields
+  ---
+  duration_ms: 1.607
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/risk-engine.test.mjs:6:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+    +   approval_status: '',
+        data_classification: 'PUBLIC',
+    +   data_context: '',
+    +   lifecycle_status: 'ACTIVE',
+    +   model_reference: '',
+    +   model_version: '',
+        name: 'Synthetic asset',
+        owner: 'Synthetic team',
+    +   provider_reference: '',
+        purpose: 'Synthetic use'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    name: 'Synthetic asset'
+    owner: 'Synthetic team'
+    purpose: 'Synthetic use'
+    data_classification: 'PUBLIC'
+  actual:
+    name: 'Synthetic asset'
+    owner: 'Synthetic team'
+    purpose: 'Synthetic use'
+    data_classification: 'PUBLIC'
+    data_context: ''
+    provider_reference: ''
+    model_reference: ''
+    model_version: ''
+    approval_status: ''
+    lifecycle_status: 'ACTIVE'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/risk-engine.test.mjs:12:118)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: Risk Engine service: validate search and filter input before database access
+ok 28 - Risk Engine service: validate search and filter input before database access
+  ---
+  duration_ms: 0.541125
+  type: 'test'
+  ...
+# Subtest: Risk Engine HTTP: auth before data, origin, JSON limit, private failure
+ok 29 - Risk Engine HTTP: auth before data, origin, JSON limit, private failure
+  ---
+  duration_ms: 13.5255
+  type: 'test'
+  ...
+# Subtest: Secure Chat remains fail-closed while no provider approval exists
+ok 30 - Secure Chat remains fail-closed while no provider approval exists
+  ---
+  duration_ms: 0.576792
+  type: 'test'
+  ...
+# Subtest: configured message size accepts only bounded integer limits
+ok 31 - configured message size accepts only bounded integer limits
+  ---
+  duration_ms: 0.105291
+  type: 'test'
+  ...
+# Subtest: database setup errors are mapped without exposing SQL details
+ok 32 - database setup errors are mapped without exposing SQL details
+  ---
+  duration_ms: 10.321041
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 18
+# fail 9
+# cancelled 0
+# skipped 5
+# todo 0
+# duration_ms 271.282292

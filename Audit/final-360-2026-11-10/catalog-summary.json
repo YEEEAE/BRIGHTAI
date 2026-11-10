@@ -1,0 +1,18 @@
+{
+  "observed_date": "2026-11-10",
+  "tool": "Neon MCP run_sql",
+  "project_id": "young-frog-60183055",
+  "branch_id": "br-young-bird-b43proeb",
+  "database_name": "neondb",
+  "query_reference": "catalog-queries.sql, summary SELECT",
+  "result": {
+    "db": "neondb",
+    "version": "PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
+    "tables": "31",
+    "rls_tables": "31",
+    "policies": "2",
+    "runtime_roles": "0",
+    "migration_ledgers": "0"
+  },
+  "note": "Transcribed from the actual read-only tool response in this audit; no SQL rerun or mutation."
+}

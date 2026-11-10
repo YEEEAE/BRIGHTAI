@@ -1,0 +1,16 @@
+{
+  "sourceHashes": {
+    "FINAL-360-AUDIT.md": "0c1f168fa58175f3832b3424be05267bd8e87135f2dd3af2a26672912e0eea45",
+    "requirements.json": "769c8fb7288dc220c29aa2c21794dd694aa853025b3dcf2e2d2f350fa965d234",
+    "scores.json": "46297a5a3988e5293b1480bc59fc6b9315e5ac5ad35eee42ee399078605f2b8f",
+    "EXECUTION-PROMPTS.md": "574d93ee0380f3d73e6935c594fb3d0c7326eb6f53570702f8b8ea57d4d63850",
+    "REAL-TRIAL-SPEC.md": "a572df534d06dc3e7b663aa12e4423dc6b8b693b6ac6e7e71cb6559105ae2891",
+    "INDEPENDENT-REVIEW.md": "d4ad40968fb3e486b75a8407c67b9e21a8a89df232a4be01870bb04d3ef479f7"
+  },
+  "chapters": 21,
+  "requirements": 76,
+  "prompts": 25,
+  "selfContained": true,
+  "networkRequestsRequired": false,
+  "htmlSha256": "9024a6706951aa48c43ef3eb03d35e1a253fcdbddf4f0c555cc9582524cb0d23"
+}

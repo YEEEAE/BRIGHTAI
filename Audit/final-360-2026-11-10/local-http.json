@@ -1,0 +1,72 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "location": null,
+    "type": "text/html; charset=utf-8",
+    "cache": "public, max-age=0",
+    "robots": null,
+    "csp": null,
+    "bodyPrefix": null
+  },
+  {
+    "path": "/app/",
+    "status": 503,
+    "location": null,
+    "type": "text/html; charset=utf-8",
+    "cache": "private, no-store, max-age=0",
+    "robots": "noindex, nofollow",
+    "csp": "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
+    "bodyPrefix": null
+  },
+  {
+    "path": "/app/api/kernel/health/",
+    "status": 503,
+    "location": null,
+    "type": "application/json; charset=utf-8",
+    "cache": "private, no-store, max-age=0",
+    "robots": "noindex, nofollow",
+    "csp": "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
+    "bodyPrefix": "{\"code\":\"APP_UNAVAILABLE\",\"message\":\"بوابة مساحة العمل غير متاحة حاليًا.\"}"
+  },
+  {
+    "path": "/auth/sign-in/",
+    "status": 404,
+    "location": null,
+    "type": "text/html; charset=utf-8",
+    "cache": null,
+    "robots": null,
+    "csp": null,
+    "bodyPrefix": null
+  },
+  {
+    "path": "/auth/sign-up/",
+    "status": 200,
+    "location": null,
+    "type": "text/html",
+    "cache": "private, no-store, max-age=0",
+    "robots": null,
+    "csp": "frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'",
+    "bodyPrefix": null
+  },
+  {
+    "path": "/%61pp/",
+    "status": 503,
+    "location": null,
+    "type": "text/html; charset=utf-8",
+    "cache": "private, no-store, max-age=0",
+    "robots": "noindex, nofollow",
+    "csp": "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
+    "bodyPrefix": null
+  },
+  {
+    "path": "/products/firewall.html",
+    "status": 301,
+    "location": "/products/firewall/",
+    "type": null,
+    "cache": null,
+    "robots": null,
+    "csp": null,
+    "bodyPrefix": null
+  }
+]

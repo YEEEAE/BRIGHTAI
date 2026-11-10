@@ -1,0 +1,10 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "[\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_trial_requests\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_trial_events\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_trial_entitlements\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_hg_delegations\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"object\",\n    \"name\": \"aigas_hg_grants\",\n    \"value\": \"false\"\n  },\n  {\n    \"kind\": \"column\",\n    \"name\": \"aigas_ld_events.sequence_no\",\n    \"value\": \"bigint\"\n  },\n  {\n    \"kind\": \"column\",\n    \"name\": \"aigas_ld_events.previous_hash\",\n    \"value\": \"text\"\n  },\n  {\n    \"kind\": \"column\",\n    \"name\": \"aigas_re_treatment_revisions.residual_risk_description\",\n    \"value\": \"text\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_hg_immutable\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_hg_tenant_revision\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_policy_version_guard\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_policy_append_only\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_hg_request_guard\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_fw_decisions_append_only\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_ld_events_reject_mutation\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_sc_usage_window\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_re_reject_history_mutation\",\n    \"value\": \"true\"\n  },\n  {\n    \"kind\": \"function\",\n    \"name\": \"aigas_re_guard_treatment\",\n    \"value\": \"true\"\n  }\n]"
+    }
+  ],
+  "structuredContent": null,
+  "isError": false
+}
